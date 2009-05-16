@@ -105,19 +105,19 @@ $messageindex_template .= qq~
 		&nbsp;
 	</td>
 	<td class="titlebg" width="32%" align="left">
-		{yabb sortsubject}
+		<span style="white-space: nowrap;">{yabb sortsubject}</span>
 	</td>
 	<td class="titlebg" width="14%" align="center">
-		{yabb sortstarter}
+		<span style="white-space: nowrap;">{yabb sortstarter}</span>
 	</td>
 	<td class="titlebg" width="8%" align="center">
-		{yabb sortanswer}
+		<span style="white-space: nowrap;">{yabb sortanswer}</span>
 	</td>
 	<td class="titlebg" width="8%" align="center">
 		$messageindex_txt{'301'}
 	</td>
 	<td class="titlebg" width="22%" align="center">
-		{yabb sortlastpostim}
+		<span style="white-space: nowrap;">{yabb sortlastpostim}</span>
 	</td>
 	{yabb admin column}
 </tr>
