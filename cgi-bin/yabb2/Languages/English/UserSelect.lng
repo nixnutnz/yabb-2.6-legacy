@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$userselectlngver = 'YaBB 2.4 $Revision: 1.18 $';
+$userselectlngver = 'YaBB 2.4 $Revision$';
 
 %usersel_txt = (
 'addselected' => 'Add Selected',

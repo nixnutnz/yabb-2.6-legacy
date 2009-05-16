@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$movesplitsplicelngver = 'YaBB 2.4 $Revision: 1.2 $';
+$movesplitsplicelngver = 'YaBB 2.4 $Revision$';
 
 %sstxt=(
 '1' => 'Move, Split &amp; Splice',

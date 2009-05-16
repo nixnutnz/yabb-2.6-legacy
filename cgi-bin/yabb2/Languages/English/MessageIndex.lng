@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$messageindexlngver = 'YaBB 2.4 $Revision: 1.10 $';
+$messageindexlngver = 'YaBB 2.4 $Revision$';
 
 %messageindex_txt = (
 '2' => 'Admin',
@@ -77,6 +77,15 @@ $messageindexlngver = 'YaBB 2.4 $Revision: 1.10 $';
 '843' => 'RSS feed for this board',
 '844' => 'Hide',
 '845' => 'Moved Topic',
+);
+
+%messageindex_sort = (
+'sort_az' => "Sort (A-Z)",
+'sort_za' => "Sort (Z-A)",
+'sort_min' => "Sort (min answer)",
+'sort_max' => "Sort (max answer)",
+'sort_last' => "Sort (new answer)",
+'sort_first' => "Sort (old answer)",
 );
 
 %messageindex_stickygrp = (

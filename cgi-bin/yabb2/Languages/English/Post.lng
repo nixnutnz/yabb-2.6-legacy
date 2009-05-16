@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$postlngver = 'YaBB 2.4 $Revision: 1.35 $';
+$postlngver = 'YaBB 2.4 $Revision$';
 
 %post_txt = (
 '10' => 'Save',

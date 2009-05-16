@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$debugplver = 'YaBB 2.4 $Revision: 1.9.4.1 $';
+$debugplver = 'YaBB 2.4 $Revision$';
 
 sub Debug {
 	if ($debug == 1 or ($debug == 2 && $iamadmin)) {

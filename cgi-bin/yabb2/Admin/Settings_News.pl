@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$settings_newsplver = 'YaBB 2.4 $Revision: 1.11.2.1 $';
+$settings_newsplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 # Load the news from news.txt

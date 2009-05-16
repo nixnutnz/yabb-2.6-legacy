@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$mailmembersplver = 'YaBB 2.4 $Revision: 1.16.2.1.2.2 $';
+$mailmembersplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 if ($iamguest) { &fatal_error("no_access"); }

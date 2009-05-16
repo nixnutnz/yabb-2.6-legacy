@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$subsplver = 'YaBB 2.4 $Revision: 1.132.4.5 $';
+$subsplver = 'YaBB 2.4 $Revision$';
 if ($debug) { &LoadLanguage('Debug'); }
 
 use subs 'exit';
@@ -1497,13 +1497,12 @@ sub dirsize {
 }
 
 sub MemberPageindex {
-	my ($msindx, $trindx, $mbindx, $pmindx);
-	($msindx, $trindx, $mbindx, $pmindx) = split(/\|/, ${$uid.$username}{'pageindex'});
+	my ($msindx, $trindx, $mbindx, $pmindx, $tsort) = split(/\|/, ${$uid.$username}{'pageindex'});
 	if ($INFO{'action'} eq "memberpagedrop") {
-		${$uid.$username}{'pageindex'} = qq~$msindx|$trindx|0|$pmindx~;
+		${$uid.$username}{'pageindex'} = qq~$msindx|$trindx|0|$pmindx|$tsort~;
 	}
 	if ($INFO{'action'} eq "memberpagetext") {
-		${$uid.$username}{'pageindex'} = qq~$msindx|$trindx|1|$pmindx~;
+		${$uid.$username}{'pageindex'} = qq~$msindx|$trindx|1|$pmindx|$tsort~;
 	}
 	&UserAccount($username, "update");
 	my $SearchStr = $FORM{'member'} || $INFO{'member'};
@@ -1858,33 +1857,123 @@ sub CheckUserPM_Level {
 	# key = folder.['extension of the file' or 'variable in file/colum in table']
 	# values = ['name of the table','key of the table',[qw[colums to get/update]]]
 	my %db_table = (
-		$boardsdir."control"    => ["",'',[qw[]]],
-		$boardsdir."mail"       => ["",'',[qw[]]],
-		$boardsdir."master"     => ["",'',[qw[]]],
-		$boardsdir."totals"     => ["",'',[qw[]]],
+		$boardsdir."control" =>
+		[
+			"",
+			'',
+			[qw[]],
+		],
+		$boardsdir."mail" =>
+		[
+			"",
+			'',
+			[qw[]],
+		],
+		$boardsdir."master" =>
+		[
+			"",
+			'',
+			[qw[]],
+		],
+		$boardsdir."totals" =>
+		[
+			"",
+			'',
+			[qw[]],
+		],
 		# Changes here on @{$db_table{$datadir."ctb"}}[2] must also be done
 		# in exactly the same order in:
 		# System.pl -> sub MessageTotals -> my @tag = ... and in
 		# Post.pl -> sub Post2 -> my @tag = ...
-		$datadir."ctb"          => ["$db_prefix\_ctb",'threadnum',[qw[board replies views lastposter lastpostdate threadstatus repliers]]],
-		$datadir."mail"         => ["$db_prefix\_ctb",'threadnum',[qw[mail]]],
-		$datadir."poll"         => ["$db_prefix\_ctb",'threadnum',[qw[poll]]],
-		$datadir."polled"       => ["$db_prefix\_ctb",'threadnum',[qw[polled]]],
+		$datadir."ctb" =>
+		[
+			"$db_prefix\_ctb",
+			'threadnum',
+			[qw[board replies views lastposter lastpostdate threadstatus repliers]],
+		],
+		$datadir."mail" =>
+		[
+			"$db_prefix\_ctb",
+			'threadnum',
+			[qw[mail]],
+		],
+		$datadir."poll" =>
+		[
+			"$db_prefix\_ctb",
+			'threadnum',
+			[qw[poll]],
+		],
+		$datadir."polled" =>
+		[
+			"$db_prefix\_ctb",
+			'threadnum',
+			[qw[polled]],
+		],
 		#$datadir."txt"          => ["$db_prefix\_messages",'mess_threadnum',[qw[subject displayname email date username icon post_number user_ip message no_smilies modified_date modified_by attachments]]],
-		$memberdir."imdraft"    => ["$db_prefix\_vars",'yabbusername',[qw[imdraft]]],
-		$memberdir."ims"        => ["$db_prefix\_vars",'yabbusername',[qw[ims]]],
-		$memberdir."imstore"    => ["$db_prefix\_vars",'yabbusername',[qw[imstore]]],
-		$memberdir."log"        => ["$db_prefix\_vars",'yabbusername',[qw[log]]],
-		$memberdir."msg"        => ["$db_prefix\_vars",'yabbusername',[qw[msg]]],
-		$memberdir."outbox"     => ["$db_prefix\_vars",'yabbusername',[qw[outbox]]],
-		$memberdir."rlog"       => ["$db_prefix\_vars",'yabbusername',[qw[rlog]]],
+		$memberdir."imdraft" =>
+		[
+			"$db_prefix\_vars",
+			'yabbusername',
+			[qw[imdraft]],
+		],
+		$memberdir."ims" =>
+		[
+			"$db_prefix\_vars",
+			'yabbusername',
+			[qw[ims]],
+		],
+		$memberdir."imstore" =>
+		[
+			"$db_prefix\_vars",
+			'yabbusername',
+			[qw[imstore]],
+		],
+		$memberdir."log" =>
+		[
+			"$db_prefix\_vars",
+			'yabbusername',
+			[qw[log]],
+		],
+		$memberdir."msg" =>
+		[
+			"$db_prefix\_vars",
+			'yabbusername',
+			[qw[msg]],
+		],
+		$memberdir."outbox" =>
+		[
+			"$db_prefix\_vars",
+			'yabbusername',
+			[qw[outbox]],
+		],
+		$memberdir."rlog" =>
+		[
+			"$db_prefix\_vars",
+			'yabbusername',
+			[qw[rlog]],
+		],
 		# Changes here on @{$db_table{$memberdir."vars"}}[2] must also be done
 		# in exactly the same order in:
 		# Admin/Database.pl -> @db_vars_tabs_order =; my @tags = and
 		# System.pl -> sub UserAccount -> my @tags = ...
-		$memberdir."vars"       => ["---",'yabbusername',[qw[realname password position addgroups email hidemail regdate regtime regreason location bday gender userpic usertext signature template language stealth webtitle weburl icq aim yim skype myspace facebook msn gtalk timeselect timeformat timeoffset dsttimeoffset dynamic_clock postcount lastonline lastpost lastim im_ignorelist im_popup im_imspop pmmessprev pmviewMess pmactprev notify_me board_notifications thread_notifications favorites buddylist cathide pageindex reversetopic postlayout sesquest sesanswer session lastips onlinealert offlinestatus awaysubj awayreply awayreplysent spamcount spamtime]]],
-		$memberdir."lastonline" => [($db_vars_laston_table || "$db_prefix\_vars"),($db_vars_laston_table ? $db_user_vars_key : 'yabbusername'),[($db_vars_laston || 'lastonline')]],
-		$vardir."log"."txt"     => ["$db_prefix\_log",'',[split(/,/, $db_log_order)]],
+		$memberdir."vars" =>
+		[
+			"---",
+			'yabbusername',
+			[qw[realname password position addgroups email hidemail regdate regtime regreason location bday gender userpic usertext signature template language stealth webtitle weburl icq aim yim skype myspace facebook msn gtalk timeselect timeformat timeoffset dsttimeoffset dynamic_clock postcount lastonline lastpost lastim im_ignorelist im_popup im_imspop pmmessprev pmviewMess pmactprev notify_me board_notifications thread_notifications favorites buddylist cathide pageindex reversetopic postlayout sesquest sesanswer session lastips onlinealert offlinestatus awaysubj awayreply awayreplysent spamcount spamtime]],
+		],
+		$memberdir."lastonline" =>
+		[
+			($db_vars_laston_table || "$db_prefix\_vars"),
+			($db_vars_laston_table ? $db_user_vars_key : 'yabbusername'),
+			[($db_vars_laston || 'lastonline')],
+		],
+		$vardir."log"."txt" =>
+		[
+			"$db_prefix\_log",
+			'',
+			[split(/,/, $db_log_order)],
+		],
 	);
 
 	# read from DB or file

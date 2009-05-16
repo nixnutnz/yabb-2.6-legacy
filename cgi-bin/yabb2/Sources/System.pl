@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$systemplver = 'YaBB 2.4 $Revision: 1.38.2.1.2.9 $';
+$systemplver = 'YaBB 2.4 $Revision$';
 
 sub BoardTotals {
 	my ($testboard, $line, @lines, @new_lines, $updateboard, @boardvars, $tag, $cnt);

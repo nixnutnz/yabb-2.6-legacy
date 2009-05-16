@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$registerlngver = 'YaBB 2.4 $Revision: 1.27.2.2 $';
+$registerlngver = 'YaBB 2.4 $Revision$';
 
 %register_txt = (
 '4' => 'For security reasons, it\'s advisable to have your displayed name not the same as your login ID.',

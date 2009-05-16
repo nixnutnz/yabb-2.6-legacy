@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$settings_advancedplver = 'YaBB 2.4 $Revision: 1.17.2.2 $';
+$settings_advancedplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 my $uploaddiriscorrect = qq~<span style="color: red;">$admin_txt{'164'}</span>~;

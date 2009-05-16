@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$modifymessageplver = 'YaBB 2.4 $Revision: 1.32.4.2 $';
+$modifymessageplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 if (!$post_txt_loaded) {

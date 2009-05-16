@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$adminsublistplver = 'YaBB 2.4 $Revision: 1.20.4.2 $';
+$adminsublistplver = 'YaBB 2.4 $Revision$';
 
 %director=( # in alphabetical Order!
 'addboard',"ManageBoards.pl&AddBoards",

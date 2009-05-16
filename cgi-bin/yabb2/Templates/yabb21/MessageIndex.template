@@ -13,7 +13,7 @@
 # Sponsored by: Xnull Internet Media, Inc. - http://www.ximinc.com            #
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
-# $Revision: 1.10 $
+# $Revision$
 
 $topichandellist = qq~
 	<yabb new post button> <yabb new poll button> <yabb notify button> <yabb markall button>
@@ -67,19 +67,19 @@ $messageindex_template .= qq~
 		<yabb rss>
 	</td>
 	<td class="titlebg" width="48%" align="left">
-		$messageindex_txt{'70'}
+		<yabb sortsubject>
 	</td>
 	<td class="titlebg" width="14%" align="center">
-		$messageindex_txt{'109'}
+		<yabb sortstarter>
 	</td>
 	<td class="titlebg" width="4%" align="center">
-		$messageindex_txt{'110'}
+		<yabb sortanswer>
 	</td>
 	<td class="titlebg" width="4%" align="center">
 		$messageindex_txt{'301'}
 	</td>
 	<td class="titlebg" width="27%" align="center">
-		$messageindex_txt{'22'}
+		<yabb sortlastpostim>
 	</td>
 	<yabb admin column>
 </tr>

@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$registrationlogplver = 'YaBB 2.4 $Revision: 1.33.4.4 $';
+$registrationlogplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Register');

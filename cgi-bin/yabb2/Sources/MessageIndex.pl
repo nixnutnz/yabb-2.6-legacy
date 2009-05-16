@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$messageindexplver = 'YaBB 2.4 $Revision: 1.51.2.2 $';
+$messageindexplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('MessageIndex');
@@ -26,7 +26,7 @@ sub MessageIndex {
 	if ($annboard eq $currentboard && !$iamadmin && !$iamgmod) { &fatal_error("no_access"); }
 
 	my ($counter, $mcount, $buffer, $pages, $showmods, $mnum, $msub, $mname, $memail, $mdate, $mreplies, $musername, $micon, $mstate, $dlp, $threadlength);
-	my ($numanns, $threadcount, $countsticky, $countnosticky, $stkynum, @tmpanns, @anns, @threadlist, @stickythreadlist, @nostickythreadlist, @threads);
+	my ($numanns, $threadcount, $countsticky, $countnosticky, $stkynum, @temp_list, @threadlist, @stickythreadlist, @nostickythreadlist, @threads, $usermessagepage, $tsort, %user_info);
 	&BoardTotals("load", $currentboard);
 
 	# Build a list of the board's moderators.
@@ -58,15 +58,14 @@ sub MessageIndex {
 	if ($annboard && $annboard ne $currentboard && ${$uid.$currentboard}{'rbin'} != 1) {
 		chomp $annboard;
 		fopen(ANN, "$boardsdir/$annboard.txt");
-		@tmpanns = <ANN>;
+		@temp_list = <ANN>;
 		fclose(ANN);
-		foreach my $realanns (@tmpanns) {
+		foreach my $realanns (@temp_list) {
 			my $threadstatus = (split /\|/, $realanns)[8];
 			if ($threadstatus =~ /h/i && !$iamadmin && !$iamgmod && !$iammod) { next; }
 			push (@threads, $realanns);
 			$numanns++;
 		}
-		undef @tmpanns;
 	}
 
 	# Determine what category we are in.
@@ -75,16 +74,61 @@ sub MessageIndex {
 	&ToChars($cat);
 
 	fopen(BRDTXT, "$boardsdir/$currentboard.txt") || &fatal_error("cannot_open","$boardsdir/$currentboard.txt", 1);
-	@threadlist = <BRDTXT>;
+	@temp_list = <BRDTXT>;
 	fclose(BRDTXT);
-	foreach my $threadlist (@threadlist) {
-		my $threadstatus = (split /\|/, $threadlist)[8];
+
+	# Sort the messages START
+	if (!$iamguest) { ($usermessagepage, undef, undef, undef, $tsort) = split(/\|/, ${$uid.$username}{'pageindex'}); }
+	else { $tsort = $INFO{'tsort'}; }
+
+	$sort_subject    = qq~<a href="$scripturl?action=messagesortorder;board=$currentboard;tsort=3" rel="nofollow">$messageindex_txt{'70'}</a>~;
+	$sort_starter    = qq~<a href="$scripturl?action=messagesortorder;board=$currentboard;tsort=5" rel="nofollow">$messageindex_txt{'109'}</a>~;
+	$sort_answer     = qq~<a href="$scripturl?action=messagesortorder;board=$currentboard;tsort=7" rel="nofollow">$messageindex_txt{'110'}</a>~;
+	$sort_lastpostim = qq~<a href="$scripturl?action=messagesortorder;board=$currentboard;tsort=0" rel="nofollow">$messageindex_txt{'22'}</a>~;
+
+	&ManageMemberinfo("load");
+	if ($tsort == 1) {
+		$sort_lastpostim = qq~<a href="$scripturl?action=messagesortorder;board=$currentboard;tsort=0" rel="nofollow">$messageindex_txt{'22'}</a> <img src="$imagesdir/sort_down.gif" border="0" alt="$messageindex_sort{'sort_first'}" title="$messageindex_sort{'sort_first'}" />~;
+		@threadlist = reverse (@temp_list);
+	} elsif ($tsort == 2) {
+		$sort_subject = qq~<a href="$scripturl?action=messagesortorder;board=$currentboard;tsort=3" rel="nofollow">$messageindex_txt{'70'}</a> <img src="$imagesdir/sort_up.gif" border="0" alt="$messageindex_sort{'sort_za'}" title="$messageindex_sort{'sort_za'}" />~;
+		@threadlist = sort {lc((split /\|/,$b,3)[1]) cmp lc((split /\|/,$a,3)[1])} @temp_list;
+	} elsif ($tsort == 3) {
+		$sort_subject = qq~<a href="$scripturl?action=messagesortorder;board=$currentboard;tsort=2" rel="nofollow">$messageindex_txt{'70'}</a> <img src="$imagesdir/sort_down.gif" border="0" alt="$messageindex_sort{'sort_az'}" title="$messageindex_sort{'sort_az'}" />~;
+		@threadlist = sort {lc((split /\|/,$a,3)[1]) cmp lc((split /\|/,$b,3)[1])} @temp_list;
+	} elsif ($tsort == 4) {
+		$sort_starter = qq~<a href="$scripturl?action=messagesortorder;board=$currentboard;tsort=5" rel="nofollow">$messageindex_txt{'109'}</a> <img src="$imagesdir/sort_up.gif" border="0" alt="$messageindex_sort{'sort_za'}" title="$messageindex_sort{'sort_za'}" />~;
+		@threadlist = sort { &starter((split /\|/, $b, 8)[6], $b) cmp &starter((split /\|/, $a, 8)[6], $a) } @temp_list;
+	} elsif ($tsort == 5) {
+		$sort_starter = qq~<a href="$scripturl?action=messagesortorder;board=$currentboard;tsort=4" rel="nofollow">$messageindex_txt{'109'}</a> <img src="$imagesdir/sort_down.gif" border="0" alt="$messageindex_sort{'sort_az'}" title="$messageindex_sort{'sort_az'}" />~;
+		@threadlist = sort { &starter((split /\|/, $a, 8)[6], $a) cmp &starter((split /\|/, $b, 8)[6], $b) } @temp_list;
+	} elsif ($tsort == 6) {
+		$sort_answer = qq~<a href="$scripturl?action=messagesortorder;board=$currentboard;tsort=7" rel="nofollow">$messageindex_txt{'110'}</a> <img src="$imagesdir/sort_up.gif" border="0" alt="$messageindex_sort{'sort_max'}" title="$messageindex_sort{'sort_max'}" />~;
+		@threadlist = sort {(split /\|/,$b,7)[5] <=> (split /\|/,$a,7)[5]} @temp_list;
+	} elsif ($tsort == 7) {
+		$sort_answer = qq~<a href="$scripturl?action=messagesortorder;board=$currentboard;tsort=6" rel="nofollow">$messageindex_txt{'110'}</a> <img src="$imagesdir/sort_down.gif" border="0" alt="$messageindex_sort{'sort_min'}" title="$messageindex_sort{'sort_min'}" />~;
+		@threadlist = sort {(split /\|/,$a,7)[5] <=> (split /\|/,$b,7)[5]} @temp_list;
+	} else {
+		$sort_lastpostim = qq~<a href="$scripturl?action=messagesortorder;board=$currentboard;tsort=1" rel="nofollow">$messageindex_txt{'22'}</a> <img src="$imagesdir/sort_up.gif" border="0" alt="$messageindex_sort{'sort_last'}" title="$messageindex_sort{'sort_last'}" />~;
+		@threadlist = @temp_list;
+	}
+	sub starter {
+		return $user_info{$_[0]} if exists $user_info{$_[0]};
+		return lc((split /\|/, $_[1], 4)[2]) unless exists $memberinf{$_[0]};
+		$user_info{$_[0]} = lc((split /\|/, $memberinf{$_[0]}, 3)[1]);
+	}
+	undef @temp_list;
+	undef %user_info;
+	# Sort the messages END
+
+	foreach (@threadlist) {
+		my $threadstatus = (split /\|/, $_)[8];
 		if ($threadstatus =~ /h/i && !$iamadmin && !$iamgmod && !$iammod) { next; }
 		if ($threadstatus =~ /s/i) {
-			push (@threads, $threadlist);
+			push (@threads, $_);
 			$countsticky++;
 		} else {
-			$nostickythreadlist[$threadcount] = $threadlist;
+			push (@nostickythreadlist, $_);
 			$threadcount++;
 		}
 	}
@@ -97,7 +141,6 @@ sub MessageIndex {
 	# - Mark Twain
 
 	# Construct the page links for this board.
-	if (!$iamguest) { ($usermessagepage, undef, undef, undef) = split(/\|/, ${$uid.$username}{'pageindex'}); }
 	my ($pagetxtindex, $pagetextindex, $pagedropindex1, $pagedropindex2, $all, $allselected);
 	$indexdisplaynum = 3;              # max number of pages to display
 	$dropdisplaynum  = 10;
@@ -127,14 +170,14 @@ sub MessageIndex {
 			$pagetxtindexst = qq~<span class="small" style="float: left; height: 21px; margin: 0px; margin-top: 2px;">~;
 			if (!$iamguest) { $pagetxtindexst .= qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=messagepagedrop"><img src="$imagesdir/index_togl.gif" border="0" alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" style="vertical-align: middle;" /></a> $messageindex_txt{'139'}: ~; }
 			else { $pagetxtindexst .= qq~<img src="$imagesdir/index_togl.gif" border="0" alt="$messageindex_txt{'139'}" title="$messageindex_txt{'139'}" style="vertical-align: middle;" /> $messageindex_txt{'139'}: ~; }
-			if ($startpage > 0) { $pagetxtindex = qq~<a href="$scripturl?board=$currentboard/0" style="font-weight: normal;">1</a>&nbsp;<a href='javascript: void(0);' onclick='ListPages2("$currentboard","$threadcount");'>...</a>&nbsp;~; }
-			if ($startpage == $maxindex) { $pagetxtindex = qq~<a href="$scripturl?board=$currentboard/0" style="font-weight: normal;">1</a>&nbsp;~; }
+			if ($startpage > 0) { $pagetxtindex = qq~<a href="$scripturl?tsort=$tsort;board=$currentboard/0" style="font-weight: normal;">1</a>&nbsp;<a href='javascript: void(0);' onclick='ListPages2("$currentboard","$threadcount");'>...</a>&nbsp;~; }
+			if ($startpage == $maxindex) { $pagetxtindex = qq~<a href="$scripturl?tsort=$tsort;board=$currentboard/0" style="font-weight: normal;">1</a>&nbsp;~; }
 			for ($counter = $startpage; $counter < $endpage; $counter += $maxindex) {
 				$pagetxtindex .= $start == $counter ? qq~<b>$tmpa</b>&nbsp;~ : qq~<a href="$scripturl?board=$currentboard/$counter" style="font-weight: normal;">$tmpa</a>&nbsp;~;
 				$tmpa++;
 			}
 			if ($endpage < $threadcount - $maxindex) { $pageindexadd = qq~<a href='javascript: void(0);' onclick='ListPages2("$currentboard","$threadcount");'>...</a>&nbsp;~; }
-			if ($endpage != $threadcount) { $pageindexadd .= qq~<a href="$scripturl?board=$currentboard/$lastptn" style="font-weight: normal;">$lastpn</a>~; }
+			if ($endpage != $threadcount) { $pageindexadd .= qq~<a href="$scripturl?tsort=$tsort;board=$currentboard/$lastptn" style="font-weight: normal;">$lastpn</a>~; }
 
 			$pagetxtindex .= $pageindexadd;
 			$pageindex1 = qq~$pagetxtindexst $pagetxtindex</span>~;
@@ -267,7 +310,7 @@ sub MessageIndex {
 
 	my $homelink = qq~<a href="$scripturl" class="nav">$mbname</a>~;
 	my $catlink = qq~<a href="$scripturl?catselect=$catid" class="nav">$cat</a>~;
-	my $boardlink = qq~<a href="$scripturl?board=$currentboard" class="a"><b>$boardname</b></a>~;
+	my $boardlink = qq~<a href="$scripturl?tsort=$tsort;board=$currentboard" class="a"><b>$boardname</b></a>~;
 	my $modslink = qq~$showmods~;
 
 	# check howmany col's must be spanned
@@ -399,10 +442,13 @@ sub MessageIndex {
 
 		# Load the current nickname of the account name of the thread starter.
 		if ($musername ne 'Guest') {
-			&LoadUser($musername);
+			#&LoadUser($musername);
+			$user_info{$musername} = [split(/\|/, $memberinf{$musername}, 3)] if !exists $user_info{$musername};
 			# See if they are an ex-member.
-			if ((${$uid.$musername}{'regdate'} && $mdate > ${$uid.$musername}{'regtime'}) || ${$uid.$musername}{'position'} eq "Administrator" || ${$uid.$musername}{'position'} eq "Global Moderator") {
-				$mname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">${$uid.$musername}{'realname'}</a>~;
+			#if ((${$uid.$musername}{'regdate'} && $mdate > ${$uid.$musername}{'regtime'}) || ${$uid.$musername}{'position'} eq "Administrator" || ${$uid.$musername}{'position'} eq "Global Moderator") {
+			if ($memberinf{$musername} && $mdate > ${$user_info{$musername}}[0]) {
+				&FormatUserName($musername);
+				$mname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">${$user_info{$musername}}[1]</a>~;
 			} else {
 				$mname .= qq~ ($messageindex_txt{'470a'})~;
 			}
@@ -563,6 +609,7 @@ sub MessageIndex {
 		$tmptempbar .= $tempbar;
 		$counter++;
 	}
+	undef %memberinf;
 
 	# Put a "no messages" message if no threads exisit - just a  bit more friendly...
 	if (!$tmptempbar) {
@@ -676,6 +723,10 @@ sub MessageIndex {
 	$messageindex_template =~ s/({|<)yabb category(}|>)/$catlink/g;
 	$messageindex_template =~ s/({|<)yabb board(}|>)/$boardlink/g;
 	$messageindex_template =~ s/({|<)yabb moderators(}|>)/$template_mods/g;
+	$messageindex_template =~ s/({|<)yabb sortsubject(}|>)/$sort_subject/g;
+	$messageindex_template =~ s/({|<)yabb sortstarter(}|>)/$sort_starter/g;
+	$messageindex_template =~ s/({|<)yabb sortanswer(}|>)/$sort_answer/g;
+	$messageindex_template =~ s/({|<)yabb sortlastpostim(}|>)/$sort_lastpostim/g;
 
 	if ($ShowBDescrip) {
 		if ($bdescrip ne "") {
@@ -891,13 +942,13 @@ sub ListPages {
 }
 
 sub MessagePageindex {
-	# my ($msindx, $trindx, $mbindx);
-	my ($msindx, $trindx, $mbindx, $pmindx) = split(/\|/, ${$uid.$username}{'pageindex'});
+	my ($msindx, $trindx, $mbindx, $pmindx, $tsort) = split(/\|/, ${$uid.$username}{'pageindex'});
 	if ($INFO{'action'} eq "messagepagedrop") {
-		${$uid.$username}{'pageindex'} = qq~0|$trindx|$mbindx|$pmindx~;
-	}
-	if ($INFO{'action'} eq "messagepagetext") {
-		${$uid.$username}{'pageindex'} = qq~1|$trindx|$mbindx|$pmindx~;
+		${$uid.$username}{'pageindex'} = qq~0|$trindx|$mbindx|$pmindx|$tsort~;
+	} elsif ($INFO{'action'} eq "messagepagetext") {
+		${$uid.$username}{'pageindex'} = qq~1|$trindx|$mbindx|$pmindx|$tsort~;
+	} elsif ($INFO{'action'} eq "messagesortorder") {
+		${$uid.$username}{'pageindex'} = qq~$msindx|$trindx|$mbindx|$pmindx|$INFO{'tsort'}~;
 	}
 	&UserAccount($username, "update");
 	&redirectinternal;

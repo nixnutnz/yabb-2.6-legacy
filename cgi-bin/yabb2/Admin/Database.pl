@@ -7,7 +7,7 @@
 # Software by:  Detlef Pilzecker                                              #
 ###############################################################################
 
-$databaseplver = 'YaBB Mod $Revision: 1.1.2.5 $';
+$databaseplver = 'YaBB Mod $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Database');

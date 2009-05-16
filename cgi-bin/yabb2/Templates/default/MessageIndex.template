@@ -13,7 +13,7 @@
 # Sponsored by: Xnull Internet Media, Inc. - http://www.ximinc.com            #
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
-# $Revision: 1.16 $
+# $Revision$
 
 LoadLanguage("BoardIndex");
 
@@ -105,19 +105,19 @@ $messageindex_template .= qq~
 		&nbsp;
 	</td>
 	<td class="titlebg" width="32%" align="left">
-		$messageindex_txt{'70'}
+		{yabb sortsubject}
 	</td>
 	<td class="titlebg" width="14%" align="center">
-		$messageindex_txt{'109'}
+		{yabb sortstarter}
 	</td>
 	<td class="titlebg" width="8%" align="center">
-		$messageindex_txt{'110'}
+		{yabb sortanswer}
 	</td>
 	<td class="titlebg" width="8%" align="center">
 		$messageindex_txt{'301'}
 	</td>
 	<td class="titlebg" width="22%" align="center">
-		$messageindex_txt{'22'}
+		{yabb sortlastpostim}
 	</td>
 	{yabb admin column}
 </tr>

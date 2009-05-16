@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$mycenterlngver = 'YaBB 2.4 $Revision: 1.18 $';
+$mycenterlngver = 'YaBB 2.4 $Revision$';
 
 ## LEAVE USERLABEL intact. Move within the string for correct language syntax!
 

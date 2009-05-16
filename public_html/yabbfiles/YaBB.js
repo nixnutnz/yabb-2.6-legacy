@@ -14,7 +14,7 @@
 //#               Your source for web hosting, web design, and domains.        #
 //##############################################################################
 
-//YaBB 2.4 $Revision: 1.2.2.1.2.1 $
+//YaBB 2.4 $Revision$
 
 // Caps Lock detection
 function capsLock(eve,ident){

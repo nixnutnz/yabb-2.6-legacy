@@ -14,7 +14,7 @@
 //#               Your source for web hosting, web design, and domains.        #
 //##############################################################################
 
-//YaBB 2.4 $Revision: 1.5 $
+//YaBB 2.4 $Revision$
 
 var op = ( navigator.userAgent.indexOf( 'Opera' ) != -1 );
 var konq = ( navigator.userAgent.indexOf( 'Konqueror' ) != -1 );

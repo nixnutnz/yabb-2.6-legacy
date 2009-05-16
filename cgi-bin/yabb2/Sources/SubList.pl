@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$sublistplver = 'YaBB 2.4 $Revision: 1.27 $';
+$sublistplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 %director=( # in alphabetical Order!
@@ -68,6 +68,7 @@ if ($action eq 'detailedversion') { return 1; }
 'messageindex',"MessageIndex.pl&MessageIndex",
 'messagepagedrop',"MessageIndex.pl&MessagePageindex",
 'messagepagetext',"MessageIndex.pl&MessagePageindex",
+'messagesortorder',"MessageIndex.pl&MessagePageindex",
 'ml',"Memberlist.pl&Ml",
 'modalert',"Post.pl&modAlert",
 'modalert2',"Post.pl&modAlert2",

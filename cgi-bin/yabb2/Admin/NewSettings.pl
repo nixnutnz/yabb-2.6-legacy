@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$newsettingsplver = 'YaBB 2.4 $Revision: 1.63.4.4 $';
+$newsettingsplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 # Figure out what tabset to use, depending on the page= parameter.

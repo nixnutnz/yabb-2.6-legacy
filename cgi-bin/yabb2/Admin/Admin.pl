@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$adminplver  = 'YaBB 2.4 $Revision: 1.81.2.4.2.5 $';
+$adminplver  = 'YaBB 2.4 $Revision$';
 
 sub Admin {
 	&is_admin_or_gmod;
@@ -1468,7 +1468,7 @@ sub AddMember2 {
 	${$uid.$reguser}{'timeformat'}    = qq~MM D+ YYYY @ HH:mm:ss*~;
 	${$uid.$reguser}{'template'}      = $new_template;
 	${$uid.$reguser}{'language'}      = $member{'userlang'};
-	${$uid.$reguser}{'pageindex'}     = qq~1|1|1~;
+	${$uid.$reguser}{'pageindex'}     = qq~1|1|1|0|0~;
 
 	&UserAccount($reguser, "register") & MemberIndex("add", $reguser) & FormatUserName($reguser);
 

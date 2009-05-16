@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$edithelpcentreplver = 'YaBB 2.4 $Revision: 1.6.2.1 $';
+$edithelpcentreplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('HelpCentre');

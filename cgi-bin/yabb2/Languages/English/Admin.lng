@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$adminlngver = 'YaBB 2.4 $Revision: 1.96.4.4 $';
+$adminlngver = 'YaBB 2.4 $Revision$';
 
 $yycharset = 'ISO-8859-1';
 

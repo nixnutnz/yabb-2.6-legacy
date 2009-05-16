@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$falngver = 'YaBB 2.4 $Revision: 1.9.2.1 $',
+$falngver = 'YaBB 2.4 $Revision$',
 
 %fatxt = (
 '1' => 'Attachment deleted',

@@ -16,7 +16,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$spellcheckerplver = 'YaBB 2.4 $Revision: 1.2 $';
+$spellcheckerplver = 'YaBB 2.4 $Revision$';
 
 if ($action eq 'detailedversion') { return 1; }
 

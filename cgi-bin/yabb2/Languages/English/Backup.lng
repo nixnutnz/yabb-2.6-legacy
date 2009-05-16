@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$backuplngver = 'YaBB 2.4 $Revision: 1.2 $';
+$backuplngver = 'YaBB 2.4 $Revision$';
 
 %backup_txt = (
 '1', 'YaBB Backup',

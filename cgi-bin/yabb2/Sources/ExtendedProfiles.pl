@@ -13,7 +13,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$extendedprofilesplver = 'YaBB 2.4 $Revision: 1.2.2.2.2.3 $';
+$extendedprofilesplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 ###############################################################################

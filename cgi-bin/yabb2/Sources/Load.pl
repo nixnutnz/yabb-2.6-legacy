@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$loadplver = 'YaBB 2.4 $Revision: 1.42.4.5 $';
+$loadplver = 'YaBB 2.4 $Revision$';
 
 sub LoadBoardControl {
 	my ($cntcat, $cntboard, $cntpic, $cntdescription, $cntmods, $cntmodgroups, $cnttopicperms, $cntreplyperms, $cntpollperms, $cntzero, $dummy, $dummy, $dummy, $cnttotals);

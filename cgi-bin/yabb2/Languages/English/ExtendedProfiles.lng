@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$extendedprofileslngver = 'YaBB 2.4 $Revision: 1.2.4.1 $';
+$extendedprofileslngver = 'YaBB 2.4 $Revision$';
 
 %lang_ext = (
 'true' => 'yes',

@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$settings_securityplver = 'YaBB 2.4 $Revision: 1.15.2.1.2.1 $';
+$settings_securityplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Sessions');

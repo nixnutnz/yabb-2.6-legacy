@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$mycenterplver = 'YaBB 2.4 $Revision: 1.124.4.4 $';
+$mycenterplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('InstantMessage');
@@ -666,9 +666,9 @@ sub MarkAll {
 
 # change type of page index for PM
 sub PmPageindex {
-	my ($msindx, $trindx, $mbindx, undef) = split(/\|/, ${$uid.$username}{'pageindex'});
-	if ($INFO{'action'} eq 'pmpagedrop') { ${$uid.$username}{'pageindex'} = qq~$msindx|$trindx|$mbindx|1~; }
-	if ($INFO{'action'} eq 'pmpagetext') { ${$uid.$username}{'pageindex'} = qq~$msindx|$trindx|$mbindx|0~; }
+	my ($msindx, $trindx, $mbindx, $dummy, $tsort) = split(/\|/, ${$uid.$username}{'pageindex'});
+	if ($INFO{'action'} eq 'pmpagedrop') { ${$uid.$username}{'pageindex'} = qq~$msindx|$trindx|$mbindx|1|$tsort~; }
+	if ($INFO{'action'} eq 'pmpagetext') { ${$uid.$username}{'pageindex'} = qq~$msindx|$trindx|$mbindx|0|$tsort~; }
 	&UserAccount($username, 'update');
 	if ($INFO{'pmaction'} =~ /\//) {
 		my ($act, $val) = split(/\//, $INFO{'pmaction'});

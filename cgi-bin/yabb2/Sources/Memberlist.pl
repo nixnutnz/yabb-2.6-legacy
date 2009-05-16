@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$memberlistplver = 'YaBB 2.4 $Revision: 1.23.2.1.2.1 $';
+$memberlistplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 if ($iamguest && $ML_Allowed) { &fatal_error('no_access'); }
@@ -278,7 +278,7 @@ sub showRows {
 sub buildIndex {
 	unless ($memcount == 0) {
 		if (!$iamguest) {
-			(undef, undef, $usermemberpage,undef ) = split(/\|/, ${$uid.$username}{'pageindex'});
+			(undef, undef, $usermemberpage,undef ) = split(/\|/, ${$uid.$username}{'pageindex'}, 4);
 		}
 
 		# Build the page links list.

@@ -14,7 +14,7 @@
 //#               Your source for web hosting, web design, and domains.        #
 //##############################################################################
 
-//YaBB 2.4 $Revision: 1.6 $
+//YaBB 2.4 $Revision$
 
 function submitproc() {
 	if (window.submitted) return false;

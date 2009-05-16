@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$profileplver = 'YaBB 2.4 $Revision: 1.111.2.3.2.5 $';
+$profileplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Profile');

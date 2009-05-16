@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$mailerplver = 'YaBB 2.4 $Revision: 1.26 $';
+$mailerplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 sub sendmail {

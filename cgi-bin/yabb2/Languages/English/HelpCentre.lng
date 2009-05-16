@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$helpcentrelngver = 'YaBB 2.4 $Revision: 1.6 $';
+$helpcentrelngver = 'YaBB 2.4 $Revision$';
 
 %helptxt = (
 '1' => "Help Section",

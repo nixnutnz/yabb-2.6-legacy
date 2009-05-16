@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$registerplver = 'YaBB 2.4 $Revision: 1.58.2.3.2.4 $';
+$registerplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 require "$sourcedir/Mailer.pl";
@@ -691,7 +691,7 @@ sub Register2 {
 	${$uid.$reguser}{'timeformat'} = qq~MM D+ YYYY @ HH:mm:ss*~;
 	${$uid.$reguser}{'template'} = $new_template;
 	${$uid.$reguser}{'language'} = $language;
-	${$uid.$reguser}{'pageindex'} = qq~1|1|1|1~;
+	${$uid.$reguser}{'pageindex'} = qq~1|1|1|1|0~;
 	if (($addmemgroup_enabled == 1 || $addmemgroup_enabled == 3) && $member{'joinmemgroup'} ne '') {
 		my @newmemgr;
 		foreach (split(/, /, $member{'joinmemgroup'})) {

@@ -16,7 +16,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$rssplver = 'YaBB 2.4 $Revision: 1.28.4.2 $';
+$rssplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 # Change the error routine for here.

@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$printpageplver = 'YaBB 2.4 $Revision: 1.7.4.4 $';
+$printpageplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 sub Print_IM {

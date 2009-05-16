@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$displayplver = 'YaBB 2.4 $Revision: 1.61.2.1.2.3 $';
+$displayplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Display');
@@ -190,7 +190,7 @@ sub Display {
 
 	# Build the page links list.
 	if (!$iamguest) {
-		(undef, $userthreadpage, undef,undef) = split(/\|/, ${$uid.$username}{'pageindex'});
+		(undef, $userthreadpage, undef) = split(/\|/, ${$uid.$username}{'pageindex'}, 3);
 	}
 	my ($pagetxtindex, $pagetextindex, $pagedropindex1, $pagedropindex2, $all, $allselected);
 	$postdisplaynum = 3; # max number of pages to display
@@ -1089,20 +1089,16 @@ $gtalkstyle
 }
 
 sub ThreadPageindex {
-	#my ($msindx, $trindx, $mbindx);
-	my ($msindx, $trindx, $mbindx,$pmindx) = split(/\|/, ${$uid.$username}{'pageindex'});
+	my ($msindx, $trindx, $mbindx, $pmindx, $tsort) = split(/\|/, ${$uid.$username}{'pageindex'});
 	if ($INFO{'action'} eq "threadpagedrop") {
-		${$uid.$username}{'pageindex'} = qq~$msindx|0|$mbindx|$pmindx~;
-	}
-	if ($INFO{'action'} eq "threadpagetext") {
-		${$uid.$username}{'pageindex'} = qq~$msindx|1|$mbindx|$pmindx~;
-	}
-	if (exists($INFO{'reversetopic'})) {
+		${$uid.$username}{'pageindex'} = qq~$msindx|0|$mbindx|$pmindx|$tsort~;
+	} elsif ($INFO{'action'} eq "threadpagetext") {
+		${$uid.$username}{'pageindex'} = qq~$msindx|1|$mbindx|$pmindx|$tsort~;
+	} elsif (exists($INFO{'reversetopic'})) {
 		${$uid.$username}{'reversetopic'} = $INFO{'reversetopic'} ? 0 : 1;
 	}
 	&UserAccount($username, "update");
-	$yySetLocation = qq~$scripturl?num=$INFO{'num'}/$INFO{'start'}~;
-	&redirectexit;
+	&redirectinternal;
 }
 
 sub undumplog { # Used to mark a thread as unread

@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$attachmentsplver = 'YaBB 2.4 $Revision: 1.14.2.1.2.1 $';
+$attachmentsplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 sub Attachments {

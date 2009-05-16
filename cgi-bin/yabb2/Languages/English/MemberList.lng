@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$memberlistlngver = 'YaBB 2.4 $Revision: 1.7.2.1 $';
+$memberlistlngver = 'YaBB 2.4 $Revision$';
 
 %ml_txt = (
 '1' => 'Sort by:',

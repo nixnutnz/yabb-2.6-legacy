@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$sessionslngver = 'YaBB 2.4 $Revision: 1.7 $';
+$sessionslngver = 'YaBB 2.4 $Revision$';
 
 %session_txt = (
 '1' => 'Activate Session ID\'s?',

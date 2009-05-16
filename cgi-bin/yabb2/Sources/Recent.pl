@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$recentplver = 'YaBB 2.4 $Revision: 1.18.4.2 $';
+$recentplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 # Sub RecentTopics shows all the most recently posted topics

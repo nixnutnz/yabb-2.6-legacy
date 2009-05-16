@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$emaillngver = 'YaBB 2.4 $Revision: 1.27 $';
+$emaillngver = 'YaBB 2.4 $Revision$';
 
 $emailcharset = 'ISO-8859-1';
 

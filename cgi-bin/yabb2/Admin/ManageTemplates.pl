@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$managetemplatesplver = 'YaBB 2.4 $Revision: 1.27.2.1.2.1 $';
+$managetemplatesplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Templates');
@@ -1923,6 +1923,10 @@ sub MessageTempl {
 	$messageindex_template =~ s/({|<)yabb category(}|>)/$tempcatnm/g;
 	$messageindex_template =~ s/({|<)yabb board(}|>)/$tempboardnm/g;
 	$messageindex_template =~ s/({|<)yabb moderators(}|>)/$tempmodslink/g;
+	$messageindex_template =~ s/({|<)yabb sortsubject(}|>)/$sort_subject/g;
+	$messageindex_template =~ s/({|<)yabb sortstarter(}|>)/$sort_starter/g;
+	$messageindex_template =~ s/({|<)yabb sortanswer(}|>)/$sort_answer/g;
+	$messageindex_template =~ s/({|<)yabb sortlastpostim(}|>)/$sort_lastpostim/g;
 	$messageindex_template =~ s/({|<)yabb bdpicture(}|>)/$bdpic/g;
 	$messageindex_template =~ s/({|<)yabb threadcount(}|>)/1/g;
 	$messageindex_template =~ s/({|<)yabb messagecount(}|>)/2/g;

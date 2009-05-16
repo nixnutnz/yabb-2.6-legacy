@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$managecatsplver = 'YaBB 2.4 $Revision: 1.10.2.2.2.1 $';
+$managecatsplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 sub DoCats {

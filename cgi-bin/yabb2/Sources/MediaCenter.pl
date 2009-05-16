@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$mediacenterplver = 'YaBB 2.4 $Revision: 1.22 $';
+$mediacenterplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 sub embed {

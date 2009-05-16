@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$guardianplver = 'YaBB 2.4 $Revision: 1.11 $';
+$guardianplver = 'YaBB 2.4 $Revision$';
 
 $not_from   = qq~$webmaster_email~;
 $not_to     = qq~$webmaster_email~;

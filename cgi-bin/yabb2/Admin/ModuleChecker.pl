@@ -16,7 +16,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$modulecheckerplver = 'YaBB 2.4 $Revision: 1.2.4.1 $';
+$modulecheckerplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 if ($ENV{'SCRIPT_FILENAME'} =~ /ModuleChecker\.\w+$/) {

@@ -16,7 +16,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$setupplver = 'YaBB 2.4 $Revision: 1.35.2.3.2.2 $';
+$setupplver = 'YaBB 2.4 $Revision$';
 
 # use CGI::Carp qw(fatalsToBrowser); # used only for tests
 
@@ -1317,7 +1317,7 @@ sub IllegalUser {
 		'cathide'       => "$settings[30]",
 		'postlayout'    => "$settings[31]|0",
 		'dsttimeoffset' => "$dstoffset",
-		'pageindex'     => "1|1|1",
+		'pageindex'     => "1|1|1|0|0",
 		'lastips'       => "$c_ip_one|$c_ip_two|$c_ip_three",
 	);
 
@@ -1437,7 +1437,7 @@ sub MyUpdateUser {
 		'cathide'       => "$settings[30]",
 		'postlayout'    => "$settings[31]|0",
 		'dsttimeoffset' => "$dstoffset",
-		'pageindex'     => "1|1|1",
+		'pageindex'     => "1|1|1|0|0",
 		'lastips'       => "$c_ip_one|$c_ip_two|$c_ip_three",
 	);
 

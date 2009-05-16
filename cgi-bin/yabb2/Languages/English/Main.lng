@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$mainlngver = 'YaBB 2.4 $Revision: 1.30 $';
+$mainlngver = 'YaBB 2.4 $Revision$';
 
 $yycharset = 'ISO-8859-1';
 $abbr_lang = 'en-us';

@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$errorlngver = 'YaBB 2.4 $Revision: 1.30.4.1 $';
+$errorlngver = 'YaBB 2.4 $Revision$';
 
 %error_txt = (
 ## General Errors ##

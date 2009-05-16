@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$boardindexlngver = 'YaBB 2.4 $Revision: 1.9 $';
+$boardindexlngver = 'YaBB 2.4 $Revision$';
 
 %boardindex_txt = (
 '18' => 'Index',

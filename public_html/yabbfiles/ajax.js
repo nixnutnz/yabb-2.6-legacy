@@ -14,7 +14,7 @@
 //#               Your source for web hosting, web design, and domains.        #
 //##############################################################################
 
-//YaBB 2.4 $Revision: 1.2 $
+//YaBB 2.4 $Revision$
 
 var xmlHttp = null;
 var browser = '';

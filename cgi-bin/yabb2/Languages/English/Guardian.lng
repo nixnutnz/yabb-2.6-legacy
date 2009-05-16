@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$guardianlngver = 'YaBB 2.4 $Revision: 1.7 $';
+$guardianlngver = 'YaBB 2.4 $Revision$';
 
 %guardian_txt = (
 'main' => 'The Guardian&trade;',

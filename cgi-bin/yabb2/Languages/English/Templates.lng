@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$templateslngver = 'YaBB 2.4 $Revision: 1.12 $';
+$templateslngver = 'YaBB 2.4 $Revision$';
 
 %templ_txt=(
 '1' => 'Style Sheet',

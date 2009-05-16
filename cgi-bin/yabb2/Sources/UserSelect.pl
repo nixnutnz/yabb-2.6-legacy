@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$userselectplver = 'YaBB 2.4 $Revision: 1.54.2.1.2.3 $';
+$userselectplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 if ($iamguest && $INFO{'toid'} ne "userspec") { &fatal_error("members_only"); }
@@ -338,7 +338,7 @@ sub MemberList {
 sub buildIndex {
 	unless ($memcount == 0) {
 		if (!$iamguest) {
-			(undef, undef, $usermemberpage, undef) = split(/\|/, ${$uid.$username}{'pageindex'});
+			(undef, undef, $usermemberpage, undef) = split(/\|/, ${$uid.$username}{'pageindex'}, 4);
 		}
 		my ($pagetxtindex, $pagetextindex, $pagedropindex, $all, $allselected);
 		$indexdisplaynum = 3;

@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$advancedtabsplver = 'YaBB 2.4 $Revision: 1.3.2.2 $';
+$advancedtabsplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 sub AddNewTab {

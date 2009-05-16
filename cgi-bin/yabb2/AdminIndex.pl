@@ -18,7 +18,7 @@
 
 ### Version Info ###
 $YaBBversion = 'YaBB 2.4';
-$adminindexplver = 'YaBB 2.4 $Revision: 1.27.4.3 $';
+$adminindexplver = 'YaBB 2.4 $Revision$';
 
  use CGI::Carp qw(fatalsToBrowser); # used only for tests
 

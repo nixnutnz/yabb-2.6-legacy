@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$displaylngver = 'YaBB 2.4 $Revision: 1.15 $';
+$displaylngver = 'YaBB 2.4 $Revision$';
 
 %display_txt = (
 '10' => 'Permalink for this article',

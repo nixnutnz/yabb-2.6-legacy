@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$maintenanceplver = 'YaBB 2.4 $Revision: 1.2.4.5 $';
+$maintenanceplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 sub RebuildMessageIndex {

@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$removetopicplver = 'YaBB 2.4 $Revision: 1.12.4.2 $';
+$removetopicplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 sub RemoveThread {

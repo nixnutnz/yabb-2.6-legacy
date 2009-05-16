@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$datetimeplver = 'YaBB 2.4 $Revision: 1.12 $';
+$datetimeplver = 'YaBB 2.4 $Revision$';
 
 sub calcdifference { # Input: $date1 $date2
 	$result = int($date2 / 86400) - int($date1 / 86400);
