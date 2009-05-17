@@ -71,6 +71,10 @@ $SectionBody4 = qq~If you would like other members of this YaBB community to be 
 <br />If you have Google Talk, you may enter your address here.</p>
 <p><u><b>Skype or VoIP</b></u><br />
 If you have a Skype or VoIP address, you may enter it here.</p>
+<p><u><b>MySpace</b></u><br />
+If you have a MySpace page, you may enter it here. Note, you only need to fill in the last part of the URL. For example, if your MySpace page is 'http://myspace.com/yourname', you only need to enter 'yourname'.</p>
+<p><u><b>Facebook</b></u><br />
+If you have a Facebook page, you may enter here. Note, you only need to add the string of numbers from the last part of the URL. For example, if your Facebook URL is 'http://facebook.com/profile.php?id=123456', you only need to enter '123456'.</p>
 <p><u><b>Website Title</b></u>
 <br />If you have a website, you can enter the title here. This will be the text the URL (below) will attached to.</p>
 <p><u><b>Website URL</b></u>
