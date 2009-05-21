@@ -35,9 +35,7 @@ sub RemoveOldThreads {
 	$action_area = "deleteoldthreads";
 	$yymain .= qq~<br /><b>$removemess_txt{'1'} $maxdays $removemess_txt{'2'}</b><br />~;
 
-	fopen(FILE, ">$vardir/oldestmes.txt");
-	print FILE $maxdays;
-	fclose(FILE);
+	&write_DBorFILE(0,'',$vardir,'oldestmes','txt',($maxdays));
 
 	require "$boardsdir/forum.master";
 	require "$admindir/Attachments.pl";
@@ -48,9 +46,7 @@ sub RemoveOldThreads {
 		if ($checkboard == 1) {
 			$keep_sticky = ($FORM{'keep_them'} || $INFO{'keep_them'}) ? 1 : 0;
 
-			fopen(BOARDFILE, "$boardsdir/$boards[$j].txt");
-			@threads = <BOARDFILE>;
-			fclose(BOARDFILE);
+			@threads = &read_DBorFILE(0,'',$boardsdir,$boards[$j],'txt');
 
 			my $totalthreads = @threads;
 			my ($boardname) = split(/\|/, $board{$boards[$j]}, 2);
@@ -81,11 +77,11 @@ sub RemoveOldThreads {
 
 					} else {
 						# remove thread files
-						unlink("$datadir/$num.txt");
-						funlink("$datadir/$num.ctb");
-						unlink("$datadir/$num.mail");
-						unlink("$datadir/$num.poll");
-						unlink("$datadir/$num.polled");
+						&delete_DBorFILE("$datadir/$num.txt");
+						&delete_DBorFILE("$datadir/$num.ctb");
+						&delete_DBorFILE("$datadir/$num.mail");
+						&delete_DBorFILE("$datadir/$num.poll");
+						&delete_DBorFILE("$datadir/$num.polled");
 
 						# delete all attachments of removed topic later
 						$attachfile{$num} = undef;
@@ -103,9 +99,7 @@ sub RemoveOldThreads {
 						$date1 = sprintf("%010d", $date1);
 						push(@temparray_1, "$date1|$threads[$x]");
 					}
-					fopen(BOARDFILE, ">$boardsdir/$boards[$j].txt", 1) || &fatal_error('cannot_open', "$boardsdir/$boards[$j].txt", 1);
-					print BOARDFILE map({ s/^.*?\|//; $_; } sort({ lc($b) cmp lc($a) } @temparray_1) );
-					fclose(BOARDFILE);
+					&write_DBorFILE(0,'',$boardsdir,$boards[$j],'txt',(map { s/^.*?\|//; $_; } sort { lc($b) cmp lc($a) } @temparray_1));
 
 					# remove attachments of removed topics
 					&RemoveAttachments(\%attachfile);
@@ -116,9 +110,7 @@ sub RemoveOldThreads {
 				}
 			}
 
-			fopen(BOARDFILE, ">$boardsdir/$boards[$j].txt", 1) || &fatal_error('cannot_open', "$boardsdir/$boards[$j].txt", 1);
-			print BOARDFILE map({ s/^.*?\|//; $_; } sort({ lc($b) cmp lc($a) } @temparray_1) );
-			fclose(BOARDFILE);
+			&write_DBorFILE(0,'',$boardsdir,$boards[$j],'txt',(map({ s/^.*?\|//; $_; } sort({ lc($b) cmp lc($a) } @temparray_1) )));
 
 			&BoardCountTotals($boards[$j]);
 			$INFO{'total_rem_count'} += $tempcount;

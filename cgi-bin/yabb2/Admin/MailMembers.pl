@@ -139,8 +139,8 @@ sub Mailing {
 	</td>
 	</tr>~;
 
-		if (-e "$vardir/yabbaddress.csv") {
-		$yymain .= qq~
+		if (&checkfor_DBorFILE("$vardir/yabbaddress.csv")) {
+			$yymain .= qq~
 	<tr>
 	<td class="windowbg2" align="center" valign="top">
 		<input type="button" value="$amv_txt{'51'}" class="button" onclick="MailListWin('$adminurl?action=mailing3');" />
@@ -164,14 +164,11 @@ sub Mailing {
 
 	<div class="windowbg2" style="float: left; width: 50%; height: 145px; margin: 1%; border: 1px #cccccc solid; overflow: auto;">
 	~;
-		if (-e ("$vardir/maillist.dat")) {
-			fopen(FILE, "$vardir/maillist.dat");
-			@maillist = <FILE>;
-			fclose(FILE);
+		if (&checkfor_DBorFILE("$vardir/maillist.dat")) {
 			$yymain .= qq~
 		<table border="0" width="99%" cellspacing="0" cellpadding="3" align="center" class="windowbg2">
 		~;
-			foreach $curmail (@maillist) {
+			foreach my $curmail (&read_DBorFILE(0,'',$vardir,'maillist','dat')) {
 				chomp $curmail;
 				($otime, $osubject, $otext, $osender) = split(/\|/, $curmail);
 				&LoadUser($osender);
@@ -292,12 +289,9 @@ sub Mailing2 {
 	}
 	undef %memberinf;
 	if (@convlist) {
-		fopen(ADDRESSLIST, ">$vardir/yabbaddress.csv", 1);
-		print ADDRESSLIST "Name\;E-mail Address\n";
-		print ADDRESSLIST @convlist;
-		fclose(ADDRESSLIST);
+		&write_DBorFILE(0,'',$vardir,'yabbaddress','csv',("Name\;E-mail Address\n",@convlist));
 	} elsif ($FORM{'convert'}) {
-		unlink "$vardir/yabbaddress.csv"
+		&delete_DBorFILE("$vardir/yabbaddress.csv");
 	}
 
 	$yySetLocation = qq~$adminurl?action=mailing~;
@@ -305,11 +299,8 @@ sub Mailing2 {
 }
 
 sub Mailing3 {
-	fopen(FILE, "$vardir/yabbaddress.csv");
-	@addlist = <FILE>;
-	fclose(FILE);
 	print qq~Content-disposition: inline; filename=yabbaddress.csv\n\n~;
-	foreach $curadd (@addlist) {
+	foreach $curadd (&read_DBorFILE(1,'',$vardir,'yabbaddress','csv')) {
 		chomp $curadd;
 		print qq~$curadd\n~;
 	}
@@ -546,14 +537,11 @@ sub MailingMembers {
 
 	<div class="windowbg2" style="float: left; width: 50%; height: 115px; margin: 1%; border: 1px #cccccc solid; overflow: auto;">
 	~;
-		if (-e ("$vardir/maillist.dat")) {
-			fopen(FILE, "$vardir/maillist.dat");
-			@maillist = <FILE>;
-			fclose(FILE);
+		if (&checkfor_DBorFILE("$vardir/maillist.dat")) {
 			$yymain .= qq~
 		<table border="0" width="99%" cellspacing="0" cellpadding="3" class="windowbg2">
 		~;
-			foreach $curmail (@maillist) {
+			foreach my $curmail (&read_DBorFILE(0,'',$vardir,'maillist','dat')) {
 				chomp $curmail;
 				($otime, $osubject, $otext, $osender) = split(/\|/, $curmail);
 				&LoadUser($osender);

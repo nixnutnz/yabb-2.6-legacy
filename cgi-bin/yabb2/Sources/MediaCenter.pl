@@ -35,7 +35,7 @@ sub embed {
 	} else {
 		if (!$player_version) {$player_version = 6;}
 		my ($media_url,$play_pars) = @_;
-		if ($media_url !~ m/^http:\/\//){ $media_url = "media://" + $media_url; } else { $media_url =~s~http:~media:~g; }
+		if ($media_url !~ m/^http(s)?:\/\//){ $media_url = "media://" + $media_url; } else { $media_url =~s~http$1:~media:~g; }
 
 		&ToHTML($media_url); ## convert url to html
 

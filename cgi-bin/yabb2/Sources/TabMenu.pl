@@ -19,6 +19,8 @@ if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('TabMenu');
 
+my ($tab_lang);
+
 $tabsep = qq~<img src="$imagesdir/tabsep211.png" border="0" alt="" style="float: left; vertical-align: middle;" />~;
 $tabfill = qq~<img src="$imagesdir/tabfill.gif" border="0" alt="" style="vertical-align: middle;" />~;
 
@@ -124,15 +126,9 @@ sub mainMenu {
 
 sub GetTabtxt {
 	$tab_lang = $language ? $language : $lang;
-	if (fopen(TABTXT, "$langdir/$tab_lang/tabtext.txt")) {
-		%tabtxt = map /(.*)\t(.*)/, <TABTXT>;
-		fclose(TABTXT);
-	} elsif (fopen(TABTXT, "$langdir/English/tabtext.txt")) {
-		%tabtxt = map /(.*)\t(.*)/, <TABTXT>;
-		fclose(TABTXT);
-		fopen(TABTXT, ">$langdir/$tab_lang/tabtext.txt");
-		print TABTXT map "$_\t$tabtxt{$_}\n", keys %tabtxt;
-		fclose(TABTXT);
+	return if %tabtxt = map /(.*)\t(.*)/, &read_DBorFILE(1,'',"$langdir/$tab_lang",'tabtext','txt');
+	if (%tabtxt = map /(.*)\t(.*)/, &read_DBorFILE(1,'',"$langdir/English",'tabtext','txt')) {
+		&write_DBorFILE(0,'',"$langdir/$tab_lang",'tabtext','txt',(map "$_\t$tabtxt{$_}\n", keys %tabtxt));
 	}
 }
 

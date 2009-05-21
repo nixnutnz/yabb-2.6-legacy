@@ -40,7 +40,7 @@ sub RebuildMessageIndex {
 		my @blist = grep { /\.tmp$/ } readdir(BOARDSDIR);
 		closedir(BOARDSDIR);
 
-		foreach (@blist) { unlink "$boardsdir/$_"; }
+		foreach (@blist) { &delete_DBorFILE("$boardsdir/$_"); }
 
 		foreach (keys %board) { push(@{$rebuildboards{$_}}, ''); }
 
@@ -53,10 +53,7 @@ sub RebuildMessageIndex {
 
 		# storing the 'board' and the 'status' of all threads
 		foreach $oldboard (keys %board) {
-			my @temparray;
-			fopen(OLDBOARD, "$boardsdir/$oldboard.txt") || &fatal_error('cannot_open', "$boardsdir/$oldboard.txt", 1);
-			my @temparray = <OLDBOARD>;
-			fclose(OLDBOARD);
+			my @temparray = &read_DBorFILE(0,'',$boardsdir,$oldboard,'txt');
 			chomp(@temparray);
 
 			foreach (@temparray) {
@@ -66,13 +63,13 @@ sub RebuildMessageIndex {
 			}
 		}
 
-		opendir(TXT, $datadir) || &fatal_error('cannot_open', "$datadir", 1);
-		my @threadlist = sort( grep { /\d+\.txt$/ } readdir(TXT) );
-		closedir(TXT);
-
-		my $sth;
+		my @threadlist;
 		if ($use_MySQL) {
-			$sth = &mysql_process(0,'prepare',"SELECT threadnum FROM $db_prefix\_ctb WHERE threadnum=?");
+			@threadlist = &get_messages_array();
+		} else {
+			opendir(TXT, $datadir) || &fatal_error('cannot_open', "$datadir", 1);
+			@threadlist = sort( grep { /\d+\.txt$/ } readdir(TXT) );
+			closedir(TXT);
 		}
 
 		$totalthreads = @threadlist;
@@ -80,26 +77,24 @@ sub RebuildMessageIndex {
 			$thread = $threadlist[$j];
 			$thread =~ s/\.txt$//;
 
-			if ($thread eq '' || !-e "$datadir/$thread.txt" || -s "$datadir/$thread.txt" < 35) {
-				unlink("$datadir/$thread.txt");
-				funlink("$datadir/$thread.ctb");
-				unlink("$datadir/$thread.mail");
-				unlink("$datadir/$thread.poll");
-				unlink("$datadir/$thread.polled");
+			if ($thread eq '' || !&checkfor_DBorFILE("$datadir/$thread.txt") || (!$use_MySQL && -s "$datadir/$thread.txt" < 35)) {
+				&delete_DBorFILE("$datadir/$thread.txt");
+				&delete_DBorFILE("$datadir/$thread.ctb");
+				&delete_DBorFILE("$datadir/$thread.mail");
+				&delete_DBorFILE("$datadir/$thread.poll");
+				&delete_DBorFILE("$datadir/$thread.polled");
 				$attachfile{$thread} = undef;
 				$INFO{'count_del_threads'}++;
 				next;
 			}
 
 			${$thread}{'board'} = '';
-			if ($use_MySQL && &mysql_process($sth,'execute',$thread) != 0) {
+			if ($use_MySQL && &checkfor_DBorFILE("$datadir/$thread.ctb")) {
 				&MessageTotals("load",$thread);
-			} elsif (!$use_MySQL && -e "$datadir/$thread.ctb") {
+			} elsif (!$use_MySQL && &checkfor_DBorFILE("$datadir/$thread.ctb")) {
 				# &MessageTotals("load", $thread) not used here
 				# for upgraders form 2-2.1 to the actual version.
-				fopen(CTB, "$datadir/$thread.ctb",1);
-				my @ctb = <CTB>;
-				fclose(CTB);
+				my @ctb = &read_DBorFILE(0,'',$datadir,$thread,'ctb');
 				if ($ctb[0] =~ /###/) { # new format
 					foreach (@ctb) {
 						if ($_ =~ /^'(.*?)',"(.*?)"/) { ${$thread}{$1} = $2; }
@@ -125,20 +120,18 @@ sub RebuildMessageIndex {
 				if ($binboard) {
 					$theboard = $binboard;
 				} else {
-					unlink("$datadir/$thread.txt");
-					funlink("$datadir/$thread.ctb");
-					unlink("$datadir/$thread.mail");
-					unlink("$datadir/$thread.poll");
-					unlink("$datadir/$thread.polled");
+					&delete_DBorFILE("$datadir/$thread.txt");
+					&delete_DBorFILE("$datadir/$thread.ctb");
+					&delete_DBorFILE("$datadir/$thread.mail");
+					&delete_DBorFILE("$datadir/$thread.poll");
+					&delete_DBorFILE("$datadir/$thread.polled");
 					$attachfile{$thread} = undef;
 					$INFO{'count_del_threads'}++;
 					next;
 				}
 			}
 
-			fopen(FILETXT, "$datadir/$thread.txt") || &fatal_error('cannot_open', "$datadir/$thread.txt", 1);
-			my @threaddata = <FILETXT>;
-			fclose(FILETXT);
+			my @threaddata = &read_DBorFILE(0,'',$datadir,$thread,'txt');
 
 			@firstinfo = split(/\|/, $threaddata[0]);
 			@lastinfo = split(/\|/, $threaddata[$#threaddata]);
@@ -157,9 +150,7 @@ sub RebuildMessageIndex {
 
 			if (time() > $time_to_jump && ($j + 1) < $totalthreads) {
 				foreach (keys %rebuildboards) {
-					fopen(REBBOARD, ">>$boardsdir/$_.tmp") || &fatal_error('cannot_open', "$boardsdir/$_.tmp", 1);
-					print REBBOARD @{$rebuildboards{$_}};
-					fclose(REBBOARD);
+					&write_DBorFILE(0,REBBOARD,$boardsdir,$_,'tmp',(&read_DBorFILE(1,REBBOARD,$boardsdir,$_,'tmp'),@{$rebuildboards{$_}}));
 				}
 
 				&RemoveAttachments(\%attachfile);
@@ -169,9 +160,7 @@ sub RebuildMessageIndex {
 		}
 
 		foreach (keys %rebuildboards) {
-			fopen(REBBOARD, ">>$boardsdir/$_.tmp") || &fatal_error('cannot_open', "$boardsdir/$_.tmp", 1);
-			print REBBOARD @{$rebuildboards{$_}};
-			fclose(REBBOARD);
+			&write_DBorFILE(0,REBBOARD,$boardsdir,$_,'tmp',(&read_DBorFILE(1,REBBOARD,$boardsdir,$_,'tmp'),@{$rebuildboards{$_}}));
 		}
 
 		&RemoveAttachments(\%attachfile);
@@ -190,15 +179,11 @@ sub RebuildMessageIndex {
 			my $boardname = $rebuilds[$j];
 			$boardname =~ s/\.tmp$//;
 
-			fopen(FILETXT, "$boardsdir/$boardname.tmp") || &fatal_error('cannot_open', "$boardsdir/$boardname.tmp", 1);
-			my @tempboard = <FILETXT>;
-			fclose(FILETXT);
+			my @tempboard = &read_DBorFILE(0,'',$boardsdir,$boardname,'tmp');
 
-			fopen(NEWBOARD, ">$boardsdir/$boardname.txt") || &fatal_error('cannot_open', "$boardsdir/$boardname.txt", 1);
-			print NEWBOARD map({ s/^.*?\|//; $_; } sort({ lc($b) cmp lc($a) } @tempboard) );
-			fclose(NEWBOARD);
+			&write_DBorFILE(0,'',$boardsdir,$boardname,'txt',(map({ s/^.*?\|//; $_; } sort({ lc($b) cmp lc($a) } @tempboard) )));
 
-			unlink "$boardsdir/$boardname.tmp";
+			&delete_DBorFILE("$boardsdir/$boardname.tmp");
 
 			if (time() > $time_to_jump && ($j + 1) < $totalrebuilds) {
 				&RebuildMessageIndexText(2,-1,$totalrebuilds);
@@ -210,15 +195,20 @@ sub RebuildMessageIndex {
 	if ($INFO{'rebuild'} == 3) { # remove 1234567890.ctb without 1234567890.txt
 		if ($use_MySQL) {
 			foreach (@{&mysql_process(0,'selectall_arrayref',"SELECT threadnum FROM $db_prefix\_ctb")}) {
-				funlink("$datadir/$$_[0].ctb") if !-e "$datadir/$$_[0].txt";
+				&delete_DBorFILE("$datadir/$$_[0].ctb") if !&checkfor_DBorFILE("$datadir/$$_[0].txt");
 			}
 		} else {
-			opendir(TXT, $datadir) || &fatal_error('cannot_open', "$datadir", 1);
-			my @ctblist = map { /(\d+)\.ctb$/; $1; } grep { /\d+\.ctb$/ } readdir(TXT);
-			closedir(TXT);
+			my @ctblist;
+			if ($use_MySQL) {
+				@ctblist = &get_ctb_array();
+			} else {
+				opendir(TXT, $datadir) || &fatal_error('cannot_open', "$datadir", 1);
+				@ctblist = map { /(\d+)\.ctb$/; $1; } grep { /\d+\.ctb$/ } readdir(TXT);
+				closedir(TXT);
+			}
 
 			foreach (@ctblist) {
-				funlink("$datadir/$_.ctb") if !-e "$datadir/$_.txt";
+				&delete_DBorFILE("$datadir/$_.ctb") if !&checkfor_DBorFILE("$datadir/$_.txt");
 			}
 		}
 	}
@@ -233,7 +223,7 @@ sub RebuildMessageIndex {
 	foreach (keys %moved_file) { &moved_loop($_); }
 	sub moved_loop {
 		my $key = shift;
-		if (exists $moved_file{$key} && !-e "$datadir/$moved_file{$key}.txt") {
+		if (exists $moved_file{$key} && !&checkfor_DBorFILE("$datadir/$moved_file{$key}.txt")) {
 			$save_moved = 1;
 			if (exists $moved_file{$moved_file{$key}}) { $moved_file{$key} = $moved_file{$moved_file{$key}}; &moved_loop($key); }
 			else { delete $moved_file{$key}; }
@@ -314,16 +304,18 @@ sub AdminBoardRecount {
 
 	if (!$INFO{'tnext'}) {
 		# Get the thread list
-		opendir(TXT, $datadir);
-		@topiclist = sort( grep { /^\d+\.txt$/ } readdir(TXT) );
-		closedir(TXT);
+		if ($use_MySQL) {
+			@topiclist = &get_messages_array();
+		} else {
+			opendir(TXT, $datadir) || &fatal_error('cannot_open', "$datadir", 1);
+			@topiclist = sort( grep { /^\d+\.txt$/ } readdir(TXT) );
+			closedir(TXT);
+		}
 
 		for ($i = $topicnum; $i < @topiclist; $i++) {
 			($filename, undef) = split(/\./, $topiclist[$i]);
 
-			fopen(MSG, "$datadir/$filename.txt");
-			@messages = <MSG>;
-			fclose(MSG);
+			@messages = &read_DBorFILE(0,'',$datadir,$filename,'txt');
 
 			@lastmessage = split(/\|/, $messages[$#messages]);
 			&MessageTotals("load", $filename);
@@ -404,24 +396,19 @@ sub RebuildMemList {
 	$begin_time = time();
 
 	if (-e "$memberdir/memberrest.txt.rebuild" && -M "$memberdir/memberrest.txt.rebuild" < 1) {
-		fopen(MEMBERREST, "$memberdir/memberrest.txt.rebuild") || &fatal_error('cannot_open', "$memberdir/memberrest.txt.rebuild", 1);
-		@contents = <MEMBERREST>;
-		fclose(MEMBERREST);
+		@contents = &read_DBorFILE(0,'',$memberdir,'memberrest','txt.rebuild');
 
-		fopen(MEMBERCALC, "$memberdir/membercalc.txt.rebuild") || &fatal_error('cannot_open', "$memberdir/membercalc.txt.rebuild", 1);
-		$start_time = <MEMBERCALC>;
-		$sumuser = <MEMBERCALC>;
-		fclose(MEMBERCALC);
+		($start_time,$sumuser) = &read_DBorFILE(0,'',$memberdir,'membercalc','txt.rebuild');
 		chomp ($start_time, $sumuser);
 
 	} else {
-		unlink("$memberdir/memberinfo.txt.rebuild");
+		&delete_DBorFILE("$memberdir/memberinfo.txt.rebuild");
 	}
 
 	if (!@contents) {
 		# Get the list
 		if ($use_MySQL) {
-			@contents = map { "$$_[0]\n"; } @{&mysql_process(0,'selectall_arrayref',(%db_vars_col ? "SELECT `yabbusername` FROM $db_prefix\_vars" : "SELECT `$db_user_vars_key` FROM `$db_user_vars_table`"))};
+			@contents = map { "$_\n"; } &get_members_array();
 		} else {
 			opendir(MEMBERS, $memberdir) || die "$txt{'230'} ($memberdir) :: $!";
 			@contents = map { $_ =~ s/\.vars$//; "$_\n"; } grep { /.\.vars$/ } readdir(MEMBERS);
@@ -430,9 +417,7 @@ sub RebuildMemList {
 
 		$start_time = $begin_time;
 		$sumuser = @contents;
-		fopen(MEMBERCALC, ">$memberdir/membercalc.txt.rebuild") || &fatal_error('cannot_open', "$memberdir/membercalc.txt.rebuild", 1);
-		print MEMBERCALC "$start_time\n$sumuser\n";
-		fclose(MEMBERCALC);
+		&write_DBorFILE(0,'',$memberdir,'membercalc','txt.rebuild',("$start_time\n$sumuser\n"));
 	}
 
 	# Loop through each -rest- member
@@ -469,30 +454,28 @@ sub RebuildMemList {
 	}
 
 	# Save what we have rebuilt so far
-	fopen(MEMBERINFO, ">>$memberdir/memberinfo.txt.rebuild") || &fatal_error('cannot_open', "$memberdir/memberinfo.txt.rebuild", 1);
-	foreach (keys %memberinf) { print MEMBERINFO "$_\t$memberinf{$_}\n" };
-	fclose(MEMBERINFO);
+	my @temp = &read_DBorFILE(0,MEMBERINFO,$memberdir,'memberinfo','txt.rebuild');
+	foreach (keys %memberinf) { push(@temp, "$_\t$memberinf{$_}\n"); }
+	&write_DBorFILE(0,MEMBERINFO,$memberdir,'memberinfo','txt.rebuild',@temp);
 
 	# If it is completely done ...
 	if(!@contents) {
 		# Sort memberinfo.txt
-		fopen(MEMBERINFO, "$memberdir/memberinfo.txt.rebuild") || &fatal_error('cannot_open', "$memberdir/memberinfo.txt.rebuild", 1);
-		%memberinf = map { split(/\t/, $_) } <MEMBERINFO>;
-		fclose(MEMBERINFO);
+		%memberinf = map { split(/\t/, $_) } &read_DBorFILE(0,'',$memberdir,'memberinfo','txt.rebuild');
 
 		$members_total = 0;
-		fopen(MEMBERINFO, ">$memberdir/memberinfo.txt.rebuild") || &fatal_error('cannot_open', "$memberdir/memberinfo.txt.rebuild", 1);
+		my @temp;
 		foreach (sort {$memberinf{$a} cmp $memberinf{$b}} keys %memberinf) {
-			print MEMBERINFO "$_\t$memberinf{$_}";
+			push(@temp, "$_\t$memberinf{$_}");
 			$members_total++;
 			$last_member = $_;
 		}
-		fclose(MEMBERINFO);
+		&write_DBorFILE(0,'',$memberdir,'memberinfo','txt.rebuild',@temp);
 
 		# Move the updated copy back
 		rename("$memberdir/memberinfo.txt.rebuild", "$memberdir/memberinfo.txt");
-		unlink("$memberdir/memberrest.txt.rebuild");
-		unlink("$memberdir/membercalc.txt.rebuild");
+		&delete_DBorFILE("$memberdir/memberrest.txt.rebuild");
+		&delete_DBorFILE("$memberdir/membercalc.txt.rebuild");
 
 		&automaintenance("off"); # must be done before &SaveSettingsTo(...
 
@@ -509,9 +492,7 @@ sub RebuildMemList {
 
 	# ... or continue looping
 	} else {
-		fopen(MEMBERREST, ">$memberdir/memberrest.txt.rebuild") || &fatal_error('cannot_open', "$memberdir/memberrest.txt.rebuild", 1);
-		print MEMBERREST @contents;
-		fclose(MEMBERREST);
+		&write_DBorFILE(0,'',$memberdir,'memberrest','txt.rebuild',@contents);
 
 		$restuser = @contents;
 		$run_time = int(time() - $start_time);
@@ -590,14 +571,9 @@ sub RebuildMemHistory {
 	$begin_time = time();
 
 	if (-e "$datadir/topicrest.txt.rebuild"  && -M "$datadir/topicrest.txt.rebuild" < 1) {
-		fopen(TOPICREST, "$datadir/topicrest.txt.rebuild") || &fatal_error('cannot_open', "$datadir/topicrest.txt.rebuild", 1);
-		@contents = <TOPICREST>;
-		fclose(TOPICREST);
+		@contents = &read_DBorFILE(0,'',$datadir,'topicrest','txt.rebuild');
 
-		fopen(TOPICCALC, "$datadir/topiccalc.txt.rebuild") || &fatal_error('cannot_open', "$datadir/topiccalc.txt.rebuild", 1);
-		$start_time = <TOPICCALC>;
-		$sumtopic = <TOPICCALC>;
-		fclose(TOPICCALC);
+		($start_time,$sumtopic) = &read_DBorFILE(0,'',$datadir,'topiccalc','txt.rebuild');
 		chomp ($begin_time,$sumtopic);
 	}
 
@@ -610,20 +586,22 @@ sub RebuildMemHistory {
 			@contents = grep { /\.rlog$/ } readdir(MEMBERS);
 			closedir(MEMBERS);
 			foreach (@contents) {
-				unlink "$memberdir/$_";
+				&delete_DBorFILE("$memberdir/$_");
 			}
 		}
 
-		# Get and store the thread list
-		opendir(TXT, $datadir);
-		@contents = map { $_ =~ s/\.txt$//; "$_\n"; } grep { /^\d+\.txt$/ } readdir(TXT);
-		closedir(TXT);
+		# Get the thread list
+		if ($use_MySQL) {
+			@contents = map { "$_\n"; } &get_messages_array();
+		} else {
+			opendir(TXT, $datadir);
+			@contents = map { $_ =~ s/\.txt$//; "$_\n"; } grep { /^\d+\.txt$/ } readdir(TXT);
+			closedir(TXT);
+		}
 
 		$start_time = $begin_time;
 		$sumtopic = @contents;
-		fopen(TOPICCALC, ">$datadir/topiccalc.txt.rebuild") || &fatal_error('cannot_open', "$datadir/topiccalc.txt.rebuild", 1);
-		print TOPICCALC "$start_time\n$sumtopic\n";
-		fclose(TOPICCALC);
+		&write_DBorFILE(0,'',$datadir,'topiccalc','txt.rebuild',("$start_time\n$sumtopic\n"));
 	}
 
 	my $rlog_sth;
@@ -636,9 +614,7 @@ sub RebuildMemHistory {
 		$topic = pop @contents;
 		chomp $topic;
 
-		fopen(TOPIC, "$datadir/$topic.txt");
-		my @topic = <TOPIC>;
-		fclose(TOPIC);
+		my @topic = &read_DBorFILE(0,'',$datadir,$topic,'txt');
 
 		my %dates = ();
 		my %posts = ();
@@ -651,13 +627,11 @@ sub RebuildMemHistory {
 		}
 
 		foreach $user (keys %posts) {
-			if (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$user) != 0) || (!$use_MySQL && -e "$memberdir/$user.vars")) {
+			if (&checkfor_DBorFILE("$memberdir/$user.vars")) {
 				if ($use_MySQL) {
 					&mysql_process($rlog_sth,'execute',"$topic\t$posts{$user},$dates{$user}\n",$user);
 				} else {
-					fopen(HIST, ">>$memberdir/$user.rlog");
-					print HIST "$topic\t$posts{$user},$dates{$user}\n";
-					fclose(HIST);
+					&write_DBorFILE(0,HIST,$memberdir,$user,'rlog',(&read_DBorFILE(0,HIST,$memberdir,$user,'rlog'),"$topic\t$posts{$user},$dates{$user}\n"));
 				}
 			}
 		}
@@ -669,16 +643,14 @@ sub RebuildMemHistory {
 	if(!@contents) {
 		&automaintenance("off");
 
-		unlink("$datadir/topicrest.txt.rebuild");
-		unlink("$datadir/topiccalc.txt.rebuild");
+		&delete_DBorFILE("$datadir/topicrest.txt.rebuild");
+		&delete_DBorFILE("$datadir/topiccalc.txt.rebuild");
 
 		$yymain .= qq~<b>$admin_txt{'598'}</b>~;
 
 	# Or prepare to continue looping
 	} else {
-		fopen(TOPICREST, ">$datadir/topicrest.txt.rebuild") || &fatal_error('cannot_open', "$datadir/topicrest.txt.rebuild", 1);
-		print TOPICREST @contents;
-		fclose(TOPICREST);
+		&write_DBorFILE(0,'',$datadir,'topicrest','txt.rebuild',@contents);
 
 		$resttopic = @contents;
 
@@ -751,39 +723,36 @@ sub RebuildNotifications {
 	require "$sourcedir/Notify.pl";
 
 	if (-e "$memberdir/NotificationsRebuild.txt.rebuild" && -M "$memberdir/NotificationsRebuild.txt.rebuild" < 1) {
-		fopen(MEMBNOTIF, "$memberdir/NotificationsRebuild.txt.rebuild") || &fatal_error('cannot_open', "$memberdir/NotificationsRebuild.txt.rebuild", 1);
-		%members = map /(.*)\t(.*)/, <MEMBNOTIF>;
-		fclose(MEMBNOTIF);
+		%members = map /(.*)\t(.*)/, &read_DBorFILE(0,'',$memberdir,'NotificationsRebuild','txt.rebuild');
 
-		fopen(CALCNOTIF, "$vardir/NotificationsCalc.txt.rebuild") || &fatal_error('cannot_open', "$vardir/NotificationsCalc.txt.rebuild", 1);
-		$start_time = <CALCNOTIF>;
-		$sumuser = <CALCNOTIF>;
-		$sumbo = <CALCNOTIF>;
-		$sumthr = <CALCNOTIF>;
-		fclose(CALCNOTIF);
+		($start_time,$sumuser,$sumbo,$sumthr) = &read_DBorFILE(0,'',$vardir,'NotificationsCalc','txt.rebuild');
 		chomp($start_time,$sumuser,$sumbo,$sumthr);
 		$sumtotal = $sumuser + $sumbo + $sumthr;
 
-		fopen(BOARDNOTIF, "$boardsdir/NotificationsBmaildir.txt.rebuild") || &fatal_error('cannot_open', "$boardsdir/NotificationsBmaildir.txt.rebuild", 1);
-		@bmaildir = <BOARDNOTIF>;
-		fclose(BOARDNOTIF);
+		@bmaildir = &read_DBorFILE(0,'',$boardsdir,'NotificationsBmaildir','txt.rebuild');
 		chomp(@bmaildir);
-		fopen(THREADNOTIF, "$datadir/NotificationsTmaildir.txt.rebuild") || &fatal_error('cannot_open', "$datadir/NotificationsTmaildir.txt.rebuild", 1);
-		@tmaildir = <THREADNOTIF>;
-		fclose(THREADNOTIF);
+		@tmaildir = &read_DBorFILE(0,'',$datadir,'NotificationsTmaildir','txt.rebuild');
 		chomp(@tmaildir);
 
 	} else {
-		unlink("$memberdir/NotificationsRebuild.txt.rebuild");
-		unlink("$vardir/NotificationsCalc.txt.rebuild");
-		unlink("$boardsdir/NotificationsBmaildir.txt.rebuild");
-		unlink("$datadir/NotificationsTmaildir.txt.rebuild");
+		&delete_DBorFILE("$memberdir/NotificationsRebuild.txt.rebuild");
+		&delete_DBorFILE("$vardir/NotificationsCalc.txt.rebuild");
+		&delete_DBorFILE("$boardsdir/NotificationsBmaildir.txt.rebuild");
+		&delete_DBorFILE("$datadir/NotificationsTmaildir.txt.rebuild");
 	}
 
 	if (!%members) {
-		opendir(MEMBNOTIF, $memberdir) || &fatal_error('cannot_open', "$memberdir", 1);
-		map { $_ =~ /(.+)\.(vars|wait|pre)$/; $members{$1} = $2; } grep { /.\.(vars|wait|pre)$/ } readdir(MEMBNOTIF);
-		closedir(MEMBNOTIF);
+		if ($use_MySQL) {
+			map { $members{$_} = 'vars' } &get_members_array();
+
+			opendir(MEMBNOTIF, $memberdir) || &fatal_error('cannot_open', "$memberdir", 1);
+			map { $_ =~ /(.+)\.(wait|pre)$/; $members{$1} = $2; } grep { /.\.(wait|pre)$/ } readdir(MEMBNOTIF);
+			closedir(MEMBNOTIF);
+		} else {
+			opendir(MEMBNOTIF, $memberdir) || &fatal_error('cannot_open', "$memberdir", 1);
+			map { $_ =~ /(.+)\.(vars|wait|pre)$/; $members{$1} = $2; } grep { /.\.(vars|wait|pre)$/ } readdir(MEMBNOTIF);
+			closedir(MEMBNOTIF);
+		}
 
 		# get list of board (@bmaildir) and post (@tmaildir) .mail files
 		&getMailFiles;
@@ -793,9 +762,7 @@ sub RebuildNotifications {
 		$sumbo = @bmaildir;
 		$sumthr = @tmaildir;
 		$sumtotal = $sumuser + $sumbo + $sumthr;
-		fopen(CALCNOTIF, ">$vardir/NotificationsCalc.txt.rebuild") || &fatal_error('cannot_open', "$vardir/NotificationsCalc.txt.rebuild", 1);
-		print CALCNOTIF "$start_time\n$sumuser\n$sumbo\n$sumthr\n";
-		fclose(CALCNOTIF);
+		&write_DBorFILE(0,'',$vardir,'NotificationsCalc','txt.rebuild',("$start_time\n$sumuser\n$sumbo\n$sumthr\n"));
 	}
 
 	# Loop through each -rest- board-mail
@@ -895,10 +862,10 @@ sub RebuildNotifications {
 
 	# If it is completely done ...
 	if(!$exitloop) {
-		unlink("$memberdir/NotificationsRebuild.txt.rebuild");
-		unlink("$vardir/NotificationsCalc.txt.rebuild");
-		unlink("$boardsdir/NotificationsBmaildir.txt.rebuild");
-		unlink("$datadir/NotificationsTmaildir.txt.rebuild");
+		&delete_DBorFILE("$memberdir/NotificationsRebuild.txt.rebuild");
+		&delete_DBorFILE("$vardir/NotificationsCalc.txt.rebuild");
+		&delete_DBorFILE("$boardsdir/NotificationsBmaildir.txt.rebuild");
+		&delete_DBorFILE("$datadir/NotificationsTmaildir.txt.rebuild");
 
 		&automaintenance('off');
 
@@ -906,16 +873,9 @@ sub RebuildNotifications {
 
 	# ... or continue looping
 	} else {
-		fopen(MEMBNOTIF, ">$memberdir/NotificationsRebuild.txt.rebuild") || &fatal_error('cannot_open', "$memberdir/NotificationsRebuild.txt.rebuild", 1);
-		print MEMBNOTIF map { "$_\t$members{$_}\n" } keys %members;
-		fclose(MEMBNOTIF);
-
-		fopen(BOARDNOTIF, ">$boardsdir/NotificationsBmaildir.txt.rebuild") || &fatal_error('cannot_open', "$boardsdir/NotificationsBmaildir.txt.rebuild", 1);
-		print BOARDNOTIF map { "$_\n" } @bmaildir;
-		fclose(BOARDNOTIF);
-		fopen(THREADNOTIF, ">$datadir/NotificationsTmaildir.txt.rebuild") || &fatal_error('cannot_open', "$datadir/NotificationsTmaildir.txt.rebuild", 1);
-		print THREADNOTIF map { "$_\n" } @tmaildir;
-		fclose(THREADNOTIF);
+		&write_DBorFILE(0,'',$memberdir,'NotificationsRebuild','txt.rebuild',(map { "$_\t$members{$_}\n" } keys %members));
+		&write_DBorFILE(0,'',$boardsdir,'NotificationsBmaildir','txt.rebuild',(map { "$_\n" } @bmaildir));
+		&write_DBorFILE(0,'',$datadir,'NotificationsTmaildir','txt.rebuild',(map { "$_\n" } @tmaildir));
 
 		$restuser  = keys %members;
 		$restbo    = @bmaildir;

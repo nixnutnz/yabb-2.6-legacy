@@ -151,7 +151,7 @@ sub FixNopost {
 		fclose(FORUMCONTROL);
 	}
 	require "$admindir/NewSettings.pl";
-	&SaveSettingsTo('Settings.pl'); # save %Group, %NoPost, %Post and unlink $vardir/membergroups.txt
+	&SaveSettingsTo('Settings.pl'); # save %Group, %NoPost, %Post and &delete_DBorFILE $vardir/membergroups.txt
 
 	opendir(MEMBERS, $memberdir) || die "Unable to open ($memberdir) :: $!";
 	@contents = grep { /\.vars$/ } readdir(MEMBERS);
@@ -216,7 +216,7 @@ sub FixNopost {
 			}
 		}
 		fclose(FILE);
-		if (!-s "$boardsdir/$boardfile.mail") { unlink("$boardsdir/$boardfile.mail"); }
+		if (!-s "$boardsdir/$boardfile.mail") { &delete_DBorFILE("$boardsdir/$boardfile.mail"); }
 	}
 	foreach $threadfile (@tmaildir) {
 		chomp $threadfile;
@@ -235,7 +235,7 @@ sub FixNopost {
 			}
 		}
 		fclose(FILE);
-		if (!-s "$datadir/$threadfile.mail") { unlink("$datadir/$threadfile.mail"); }
+		if (!-s "$datadir/$threadfile.mail") { &delete_DBorFILE("$datadir/$threadfile.mail"); }
 	}
 }
 

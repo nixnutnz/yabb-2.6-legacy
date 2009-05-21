@@ -29,7 +29,7 @@ sub RecentTopics {
 	my $display = $INFO{'display'} || 10;
 	if ($display < 0) { $display = 5; }
 	elsif ($display > $maxrecentdisplay) { $display = $maxrecentdisplay; }
-	my (@memset, @categories, %data, $numfound, $curcat, %catid, %catname, %cataccess, %catboards, $openmemgr, @membergroups, %openmemgr, $curboard, @threads, @boardinfo, $i, $c, @messages, $tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $mns, $mtime, $counter, $board, $notify);
+	my (@memset, @categories, %data, $numfound, $curcat, %catid, %catname, %cataccess, %catboards, $openmemgr, @membergroups, %openmemgr, $curboard, @threads, @boardinfo, $i, $c, @messages, $tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $mns, $mtime, $counter, $board, $notify);
 	$numfound = 0;
 
 	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
@@ -50,9 +50,9 @@ sub RecentTopics {
 			$catid{$curboard} = $catid;
 			$catname{$curboard} = $catname;
 
-			fopen(REC_BDTXT, "$boardsdir/$curboard.txt");
-			for ($i = 0; $i < $display && ($buffer = <REC_BDTXT>); $i++) {
-				($tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate) = split(/\|/, $buffer);
+			my @buffer = &read_DBorFILE(0,'',$boardsdir,$curboard,'txt');
+			for ($i = 0; ($i < $display && $buffer[$i]); $i++) {
+				($tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate) = split(/\|/, $buffer[$i]);
 				chomp $tstate;
 				if ($tstate !~ /h/ || $iamadmin || $iamgmod) {
 					$mtime = $tdate;
@@ -60,7 +60,6 @@ sub RecentTopics {
 					$numfound++;
 				}
 			}
-			fclose(REC_BDTXT);
 		}
 	}
 
@@ -70,19 +69,18 @@ sub RecentTopics {
 	for ($i = 0; $i < @data; $i++) {
 		($mtime, $curboard, $tnum, $treplies, $tusername, $tname, $tstate) = split(/\|/, $data[$i]);
 		$tstart = $mtime;
-		fopen(REC_THRETXT, "$datadir/$tnum.txt") || next;
-		while (<REC_THRETXT>) { $message = $_; }
 
 		# get only the last post for this thread.
-		fclose(REC_THRETXT);
+		foreach (&read_DBorFILE(1,'',$datadir,$tnum,'txt')) { $message = $_; }
+
 		chomp $message;
 
 		if ($message) {
-			($msub, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $message, $mns) = split(/\|/, $message);
-			$messages[$numfound] = "$curboard|$tnum|$treplies|$tusername|$tname|$msub|$mname|$memail|$mdate|$musername|$micon|$mattach|$mip|$message|$mns|$tstate|$tstart";
+			($msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $mns) = split(/\|/, $message);
+			$messages[$numfound] = "$curboard|$tnum|$treplies|$tusername|$tname|$msub|$mname|$memail|$mdate|$musername|$micon|$mreplyno|$mip|$message|$mns|$tstate|$tstart";
 			$numfound++;
+			if ($numfound == $display) { last; }
 		}
-		if ($numfound == $display) { last; }
 	}
 
 	if ($numfound > 0) {
@@ -93,10 +91,10 @@ sub RecentTopics {
 	}
 
 	for ($i = 0; $i < $numfound; $i++) {
-		($board, $tnum, $c, $tusername, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $message, $mns, $tstate, $trstart) = split(/\|/, $messages[$i]);
+		($board, $tnum, $c, $tusername, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $mns, $tstate, $trstart) = split(/\|/, $messages[$i]);
 		$displayname = $mname;
 
-		if ($tusername ne 'Guest' && (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$tusername) != 0) || (!$use_MySQL && -e "$memberdir/$tusername.vars"))) { &LoadUser($tusername); }
+		if ($tusername ne 'Guest' && !exists ${$uid.$tusername}{'regtime'} && &checkfor_DBorFILE("$memberdir/$tusername.vars")) { &LoadUser($tusername); }
 		if (${$uid.$tusername}{'regtime'}) {
 			$registrationdate = ${$uid.$tusername}{'regtime'};
 		} else {
@@ -111,7 +109,7 @@ sub RecentTopics {
 			$tname = "$tname ($maintxt{'28'})";
 		}
 
-		if ($musername ne 'Guest' && (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$musername) != 0) || (!$use_MySQL && -e "$memberdir/$musername.vars"))) { &LoadUser($musername); }
+		if ($musername ne 'Guest' && !exists ${$uid.$musername}{'regtime'} && &checkfor_DBorFILE("$memberdir/$musername.vars")) { &LoadUser($musername); }
 		if (${$uid.$musername}{'regtime'}) {
 			$registrationdate = ${$uid.$musername}{'regtime'};
 		} else {
@@ -196,7 +194,7 @@ sub RecentPosts {
 	my $display = $FORM{'display'} ||= 10;
 	if ($display < 0) { $display = 5; }
 	elsif ($display > $maxrecentdisplay) { $display = $maxrecentdisplay; } 
-	my (@memset, @categories, %data, $numfound, $curcat, %catid, %catname, %cataccess, %catboards, $openmemgr, @membergroups, %openmemgr, $curboard, @threads, @boardinfo, $i, $c, @messages, $tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $mns, $mtime, $counter, $board, $notify);
+	my (@memset, @categories, %data, $numfound, $curcat, %catid, %catname, %cataccess, %catboards, $openmemgr, @membergroups, %openmemgr, $curboard, @threads, @boardinfo, $i, $c, @messages, $tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $mns, $mtime, $counter, $board, $notify);
 	$numfound = 0;
 
 	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
@@ -217,9 +215,9 @@ sub RecentPosts {
 			$catid{$curboard} = $catid;
 			$catname{$curboard} = $catname;
 
-			fopen(REC_BDTXT, "$boardsdir/$curboard.txt");
-			for ($i = 0; $i < $display && ($buffer = <REC_BDTXT>); $i++) {
-				($tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate) = split(/\|/, $buffer);
+			my @buffer = &read_DBorFILE(0,'',$boardsdir,$curboard,'txt');
+			for ($i = 0; ($i < $display && $buffer[$i]); $i++) {
+				($tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate) = split(/\|/, $buffer[$i]);
 				chomp $tstate;
 				if ($tstate !~ /h/ || $iamadmin || $iamgmod) {
 					$mtime = $tdate;
@@ -227,7 +225,6 @@ sub RecentPosts {
 					$numfound++;
 				}
 			}
-			fclose(REC_BDTXT);
 		}
 	}
 
@@ -240,16 +237,14 @@ sub RecentPosts {
 		($mtime, $curboard, $tnum, $treplies, $tusername, $tname, $tstate) = split(/\|/, $data[$i]);
 		# No need to check for hidden topics here, it was done above
 		$tstart = $mtime;
-		fopen(REC_THRETXT, "$datadir/$tnum.txt") || next;
-		@mess = <REC_THRETXT>;
-		fclose(REC_THRETXT);
+		next if !(@mess = &read_DBorFILE(0,'',$datadir,$tnum,'txt'));
 
 		$threadfrom = @mess > $display ? @mess - $display : 0;
 		for ($ii = $threadfrom; $ii < @mess + 1; $ii++) {
 			if ($mess[$ii]) {
-				($msub, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $message, $mns) = split(/\|/, $mess[$ii]);
+				($msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $mns) = split(/\|/, $mess[$ii]);
 				$mtime = $mdate;
-				$messages[$numfound] = "$mtime|$curboard|$tnum|$ii|$tusername|$tname|$msub|$mname|$memail|$mdate|$musername|$micon|$mattach|$mip|$message|$mns|$tstate|$tstart";
+				$messages[$numfound] = "$mtime|$curboard|$tnum|$ii|$tusername|$tname|$msub|$mname|$memail|$mdate|$musername|$micon|$mreplyno|$mip|$message|$mns|$tstate|$tstart";
 				$numfound++;
 			}
 		}
@@ -266,10 +261,10 @@ sub RecentPosts {
 	}
 
 	for ($i = 0; $i < $numfound; $i++) {
-		($dummy, $board, $tnum, $c, $tusername, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $message, $mns, $tstate, $trstart) = split(/\|/, $messages[$i]);
+		($dummy, $board, $tnum, $c, $tusername, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $mns, $tstate, $trstart) = split(/\|/, $messages[$i]);
 		$displayname = $mname;
 
-		if ($tusername ne 'Guest' && (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$tusername) != 0) || (!$use_MySQL && -e "$memberdir/$tusername.vars"))) { &LoadUser($tusername); }
+		if ($tusername ne 'Guest' && !exists ${$uid.$tusername}{'regtime'} && &checkfor_DBorFILE("$memberdir/$tusername.vars")) { &LoadUser($tusername); }
 		if (${$uid.$tusername}{'regtime'}) {
 			$registrationdate = ${$uid.$tusername}{'regtime'};
 		} else {
@@ -284,7 +279,7 @@ sub RecentPosts {
 			$tname = "$tname ($maintxt{'28'})";
 		}
 
-		if ($musername ne 'Guest' && (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$musername) != 0) || (!$use_MySQL && -e "$memberdir/$musername.vars"))) { &LoadUser($musername); }
+		if ($musername ne 'Guest' && !exists ${$uid.$musername}{'regtime'} && &checkfor_DBorFILE("$memberdir/$musername.vars")) { &LoadUser($musername); }
 		if (${$uid.$musername}{'regtime'}) {
 			$registrationdate = ${$uid.$musername}{'regtime'};
 		} else {

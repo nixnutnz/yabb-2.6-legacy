@@ -231,12 +231,12 @@ sub DeleteBoards {
 		@messages = &read_DBorFILE(0,'',$boardsdir,$board,'txt');
 		foreach $curmessage (@messages) {
 			my ($id, undef) = split(/\|/, $curmessage, 2);
-			unlink("$datadir/$id.txt");
-			unlink("$datadir/$id.mail");
-			funlink("$datadir/$id.ctb");
-			unlink("$datadir/$id.data");
-			unlink("$datadir/$id.poll");
-			unlink("$datadir/$id.polled");
+			&delete_DBorFILE("$datadir/$id.txt");
+			&delete_DBorFILE("$datadir/$id.mail");
+			&delete_DBorFILE("$datadir/$id.ctb");
+			&delete_DBorFILE("$datadir/$id.data");
+			&delete_DBorFILE("$datadir/$id.poll");
+			&delete_DBorFILE("$datadir/$id.polled");
 		}
 		for (my $cnt = 0; $cnt < @oldcontrols; $cnt++) {
 			my $oldboard;
@@ -249,10 +249,10 @@ sub DeleteBoards {
 				last;
 			}
 		}
-		unlink("$boardsdir/$board.txt");
-		unlink("$boardsdir/$board.ttl");
-		unlink("$boardsdir/$board.poster");
-		unlink("$boardsdir/$board.mail");
+		&delete_DBorFILE("$boardsdir/$board.txt");
+		&delete_DBorFILE("$boardsdir/$board.ttl");
+		&delete_DBorFILE("$boardsdir/$board.poster");
+		&delete_DBorFILE("$boardsdir/$board.mail");
 
 		my @buffer = &read_DBorFILE(0,ATM,$vardir,'attachments','txt');
 		my ($amcurrentboard,$amfn);
@@ -260,7 +260,7 @@ sub DeleteBoards {
 			(undef, undef, undef, undef, $amcurrentboard, undef, undef, $amfn, undef) = split(/\|/, $buffer[$a]);
 			if ($amcurrentboard eq $board) {
 				$buffer[$a] = '';
-				unlink("$upload_dir/$amfn");
+				&delete_DBorFILE("$upload_dir/$amfn");
 			}
 		}
 		&write_DBorFILE(0,ATM,$vardir,'attachments','txt',@buffer);
@@ -741,9 +741,7 @@ sub AddBoards2 {
 			my @bdlist = split(/\,/, $cat{$FORM{"cat$i"}});
 			push(@bdlist, "$id");
 			$cat{$FORM{"cat$i"}} = join(',', @bdlist);
-			fopen(BOARDINFO, ">$boardsdir/$id.txt");
-			print BOARDINFO '';
-			fclose(BOARDINFO);
+			&write_DBorFILE(0,'',$boardsdir,$id,'txt',(''));
 		}
 		if ($FORM{'screenornot'} eq "boardscreen") {
 			# editing a board
@@ -768,10 +766,8 @@ sub AddBoards2 {
 				else { $cat{$ncat} = $id; }
 			}
 
-			if (-e "$boardsdir/$id.txt") { # fix a(nnboard) in the boardid.txt
-				fopen(BOARDINFO, "$boardsdir/$id.txt") || &fatal_error('cannot_open', "$openboard/$id.txt", 1);
-				my @boardtomodify = <BOARDINFO>;
-				fclose(BOARDINFO);
+			if (&checkfor_DBorFILE("$boardsdir/$id.txt")) { # fix a(nnboard) in the boardid.txt
+				my @boardtomodify = &read_DBorFILE(0,'',$boardsdir,$id,'txt');
 				my $x;
 				if ($FORM{"ann$i"} && (split /\|/, $boardtomodify[0])[8] !~ /a/i) {
 					for ($x = 0; $x < @boardtomodify; $x++) {
@@ -784,9 +780,7 @@ sub AddBoards2 {
 					sub take_a_off { my $y = shift; $y =~ s/a//g; $y; }
 				}
 				if ($x) {
-					fopen(BOARDINFO, ">$boardsdir/$id.txt") || &fatal_error('cannot_open', "$openboard/$id.txt", 1);
-					print BOARDINFO @boardtomodify;
-					fclose(BOARDINFO);
+					&write_DBorFILE(0,'',$boardsdir,$id,'txt',@boardtomodify);
 				}
 			}
 		}

@@ -1457,24 +1457,15 @@ $ext_template_blockstop
 		&SaveSettingsTo('Settings.pl');
 
 		if ($use_MySQL) {
-			&mysql_process(0,'do',"ALTER TABLE `$db_prefix\_vars` DROP `ext_$FORM{'id'}`");
-
+			@contents = &get_members_array();
 		} else {
 			opendir(EXT_DIR, "$memberdir");
-			@contents = grep { /\.vars$/ } readdir(EXT_DIR);
+			@contents = map { s/\.vars$//; $_; } grep { /\.vars$/ } readdir(EXT_DIR);
 			closedir(EXT_DIR);
+		}
 
-			foreach (@contents) {
-				fopen(EXT_FILE, "+<$memberdir/$_") || &fatal_error('cannot_open', "$memberdir/$_");
-				seek EXT_FILE,0,0;
-				@old_content = <EXT_FILE>;
-				$new_content = join("",@old_content);
-				$new_content =~ s~\n'ext_$FORM{'id'}',"(?:.*?)"\n~\n~ig;
-				seek EXT_FILE,0,0;
-				truncate EXT_FILE,0;
-				print EXT_FILE $new_content;
-				fclose(EXT_FILE);
-			}
+		foreach (@contents) {
+			&write_DBorFILE(0,EXT_FILE,$memberdir,$_,'vars',(map { $_ =~ s~'ext_$FORM{'id'}',"(?:.*?)"\n+~~ig; $_; } &read_DBorFILE(0,EXT_FILE,$memberdir,$_,'vars')));
 		}
 
 		$yySetLocation = qq~$adminurl?action=ext_admin~;
@@ -1564,7 +1555,7 @@ sub ext_user_convert {
 	&is_admin_or_gmod;
 
 	if (-e "$old_membersdir/$pusername.ext") {
-		if (-e "$memberdir/$pusername.vars") {
+		if (&checkfor_DBorFILE("$memberdir/$pusername.vars")) {
 			&ext_get_profile($pusername);
 
 			fopen(EXT_FILE, "$old_membersdir/$pusername.ext") || &fatal_error('cannot_open', "$old_membersdir/$pusername.ext");
@@ -1579,7 +1570,7 @@ sub ext_user_convert {
 			}
 			&UserAccount($pusername,"update");
 			# don't delete old .ext files anymore, user can do that himself now.
-			#unlink "$old_membersdir/$pusername.ext";
+			#&delete_DBorFILE "$old_membersdir/$pusername.ext";
 		}
 	}
 }

@@ -68,9 +68,9 @@ sub quotemsg {
 	if ($qauthor) {
 		$usernames_life_quote{'temp_quote_autor'} = $qauthor; # for display names in Quotes in LivePreview
 		&ToChars($qauthor);
-		if (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$qauthor) == 0) || (!$use_MySQL && !-e "$memberdir/$qauthor.vars")) { # if the file is there it is an unencrypted user ID
+		if (!&checkfor_DBorFILE("$memberdir/$qauthor.vars")) { # if the file is there it is an unencrypted user ID
 			$qauthor = &decloak($qauthor); # if not, decrypt it and see if it is a regged user
-			if (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$qauthor) == 0) || (!$use_MySQL && !-e "$memberdir/$qauthor.vars")) { # if still not found probably the author is a screen name
+			if (!&checkfor_DBorFILE("$memberdir/$qauthor.vars")) { # if still not found probably the author is a screen name
 				$testauthor = &MemberIndex("who_is", "$qauthor"); # check if this name exists in the memberlist
 				if ($testauthor ne ""){ # if it is, load the user id returned
 					$qauthor = $testauthor;

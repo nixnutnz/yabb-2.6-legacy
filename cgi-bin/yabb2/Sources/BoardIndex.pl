@@ -137,14 +137,12 @@ sub BoardIndex {
 
 	# showcase poll start
 	my $polltemp;
-	if (-e "$datadir/showcase.poll") {
-		fopen (SCPOLLFILE, "$datadir/showcase.poll");
-		my $scthreadnum = <SCPOLLFILE>;
-		fclose (SCPOLLFILE);
+	if (&checkfor_DBorFILE("$datadir/showcase.poll")) {
+		my $scthreadnum = &read_DBorFILE(0,'',$datadir,'showcase','poll');
 
 		# Look for a valid poll file.
 		my $pollthread;
-		if (-e "$datadir/$scthreadnum.poll") {
+		if (&checkfor_DBorFILE("$datadir/$scthreadnum.poll")) {
 			&MessageTotals("load",$scthreadnum);
 			if ($iamadmin || $iamgmod) {
 				$pollthread = 1;
@@ -208,16 +206,11 @@ sub BoardIndex {
 			${$uid.$curboard}{'lastposter'} = $boardindex_txt{'470'};
 			${$uid.$curboard}{'lastposttime'} = '';
 			$lastposttime{$curboard} = $boardindex_txt{'470'};
-			fopen(MNUM, "$boardsdir/$curboard.txt");
-			my @threadlist = <MNUM>;
-			fclose(MNUM);
 			my ($messageid, $messagestate);
-			foreach (@threadlist) {
+			foreach (&read_DBorFILE(0,'',$boardsdir,$curboard,'txt')) {
 				($messageid, undef, undef, undef, undef, undef, undef, undef, $messagestate) = split(/\|/, $_);
 				if ($messagestate !~ /h/i) {
-					fopen(FILE, "$datadir/$messageid.txt") || next;
-					my @lastthreadmessages = <FILE>;
-					fclose(FILE);
+					next if !(@lastthreadmessages = &read_DBorFILE(0,'',$datadir,$messageid,'txt'));
 					my @lastmessage = split(/\|/, $lastthreadmessages[$#lastthreadmessages], 6);
 					${$uid.$curboard}{'lastpostid'} = $messageid;
 					${$uid.$curboard}{'lastsubject'} = $lastmessage[0];
@@ -415,9 +408,7 @@ sub BoardIndex {
 						$lastposter = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">${$uid.$lastposter}{'realname'}</a>~;
 					} else {
 						# Need to load thread to see lastposters DISPLAYname if is Ex-Member
-						fopen(EXMEMBERTHREAD, "$datadir/${$uid.$curboard}{'lastpostid'}.txt") || &fatal_error('cannot_open', "$datadir/${$uid.$curboard}{'lastpostid'}.txt", 1);
-						my @x = <EXMEMBERTHREAD>;
-						fclose(EXMEMBERTHREAD);
+						my @x = &read_DBorFILE(0,'',$datadir,${$uid.$curboard}{'lastpostid'},'txt');
 						$lastposter = (split(/\|/, $x[$#x], 3))[1] . " - $boardindex_txt{'470a'}";
 					}
 				}
@@ -569,33 +560,22 @@ sub BoardIndex {
 
 	$totalusers = $numusers + $guests;
 
-	if (!-e ("$vardir/mostlog.txt")) {
-		fopen(MOSTUSERS, ">$vardir/mostlog.txt");
-		print MOSTUSERS "$numusers|$date\n";
-		print MOSTUSERS "$guests|$date\n";
-		print MOSTUSERS "$totalusers|$date\n";
-		print MOSTUSERS "$numbots|$date\n";
-		fclose(MOSTUSERS);
+	if (!&checkfor_DBorFILE("$vardir/mostlog.txt")) {
+		&write_DBorFILE(0,'',$vardir,'mostlog','txt',("$numusers|$date\n","$guests|$date\n","$totalusers|$date\n","$numbots|$date\n"));
 	}
-	fopen(MOSTUSERS, "$vardir/mostlog.txt");
-	@mostentries = <MOSTUSERS>;
-	fclose(MOSTUSERS);
+	@mostentries = &read_DBorFILE(1,'',$vardir,'mostlog','txt');
 	($mostmemb, $datememb) = split(/\|/, $mostentries[0]);
 	($mostguest, $dateguest) = split(/\|/, $mostentries[1]);
 	($mostusers, $dateusers) = split(/\|/, $mostentries[2]);
 	($mostbots, $datebots) = split(/\|/, $mostentries[3]);
 	chomp ($datememb, $dateguest, $dateusers, $datebots);
 	if ($numusers > $mostmemb || $guests > $mostguest || $numbots > $mostbots || $totalusers > $mostusers) {
-		fopen(MOSTUSERS, ">$vardir/mostlog.txt");
 		if ($numusers > $mostmemb) { $mostmemb = $numusers; $datememb = $date; }
 		if ($guests > $mostguest) { $mostguest = $guests; $dateguest = $date; }
 		if ($totalusers > $mostusers) { $mostusers = $totalusers; $dateusers = $date; }
 		if ($numbots > $mostbots) { $mostbots  = $numbots; $datebots = $date; }
-		print MOSTUSERS "$mostmemb|$datememb\n";
-		print MOSTUSERS "$mostguest|$dateguest\n";
-		print MOSTUSERS "$mostusers|$dateusers\n";
-		print MOSTUSERS "$mostbots|$datebots\n";
-		fclose(MOSTUSERS);
+
+		&write_DBorFILE(0,'',$vardir,'mostlog','txt',("$mostmemb|$datememb\n","$mostguest|$dateguest\n","$mostusers|$dateusers\n","$mostbots|$datebots\n"));
 	}
 	$themostmembdate = &timeformat($datememb);
 	$themostguestdate = &timeformat($dateguest);
@@ -792,16 +772,12 @@ $boardindex_template~;
 }
 
 sub GetBotlist {
-	if (-e "$vardir/bots.hosts") {
-		fopen(BOTS, "$vardir/bots.hosts") || &fatal_error("cannot_open","$vardir/bots.hosts", 1);
-		my @botlist = <BOTS>;
-		fclose (BOTS);
-		chomp(@botlist);
-		foreach (@botlist) {
-			$_ =~ /(.*?)\|(.*)/;
-			push(@all_bots, $1);
-			$bot_name{$1} = $2;
-		}
+	my @botlist = &read_DBorFILE(1,'',$vardir,'bots','hosts');
+	chomp(@botlist);
+	foreach (@botlist) {
+		$_ =~ /(.*?)\|(.*)/;
+		push(@all_bots, $1);
+		$bot_name{$1} = $2;
 	}
 }
 
@@ -821,7 +797,7 @@ sub Collapse_Write {
 	}
 	${$uid.$username}{'cathide'} = join(",", @userhide);
 	&UserAccount($username, "update");
-	if (-e "$memberdir/$username.cat") { unlink "$memberdir/$username.cat"; }
+	if (&checkfor_DBorFILE("$memberdir/$username.cat")) { &delete_DBorFILE("$memberdir/$username.cat"); }
 }
 
 sub Collapse_Cat {

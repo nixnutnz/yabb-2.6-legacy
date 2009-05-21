@@ -78,7 +78,7 @@ $maintenance = 2 if !$maintenance && -e "$vardir/maintenance.lock";
 # in seconds, than the browser will call the script again
 # until all is done. Don't put it too high or you will run
 # into server or browser timeout.
-$max_process_time = 20;
+$max_process_time = 15;
 
 $action = $INFO{'action'};
 $SIG{__WARN__} = sub { &fatal_error("error_occurred","@_"); };
@@ -350,12 +350,7 @@ sub AdminTemplate {
 }
 
 sub TrackAdminLogins {
-	if (-e "$vardir/adminlog.txt") {
-		fopen(ADMINLOG, "$vardir/adminlog.txt");
-		@adminlog = <ADMINLOG>;
-		fclose(ADMINLOG);
-	}
-	fopen(ADMINLOG, ">$vardir/adminlog.txt");
+	@adminlog = &read_DBorFILE(1,ADMINLOG,$vardir,'adminlog','txt');
 	print ADMINLOG qq~$username|$user_ip|$date\n~;
 	for ($i = 0; $i < 4; $i++) {
 		if ($adminlog[$i]) {
@@ -363,5 +358,5 @@ sub TrackAdminLogins {
 			print ADMINLOG qq~$adminlog[$i]\n~;
 		}
 	}
-	fclose(ADMINLOG);
+	&write_DBorFILE(0,ADMINLOG,$vardir,'adminlog','txt',(''));
 }

@@ -29,11 +29,7 @@ sub ManageBoardNotify {
 	if ($todo eq "load" || $todo eq "update" || $todo eq "delete" || $todo eq "add") {
 		undef %theboard;
 		## open board mail file and build hash name / detail
-		if (-e "$boardsdir/$theboard.mail") {
-			fopen(BOARDNOTE, "$boardsdir/$theboard.mail");
-			%theboard = map /(.*)\t(.*)/, <BOARDNOTE>;
-			fclose(BOARDNOTE);
-		}
+		%theboard = map /(.*)\t(.*)/, &read_DBorFILE(1,'',$boardsdir,$theboard,'mail');
 	}
 	if ($todo eq "add") {
 		$theboard{$user} = "$userlang|$notetype|$noteview";
@@ -68,12 +64,10 @@ sub ManageBoardNotify {
 	}
 	if ($todo eq "save" || $todo eq "update" || $todo eq "delete" || $todo eq "add") {
 		if (%theboard) {
-			fopen(BOARDNOTE, ">$boardsdir/$theboard.mail");
-			print BOARDNOTE map "$_\t$theboard{$_}\n", sort { $theboard{$a} cmp $theboard{$b} } keys %theboard;
-			fclose(BOARDNOTE);
+			&write_DBorFILE(1,'',$boardsdir,$theboard,'mail',(map "$_\t$theboard{$_}\n", sort { $theboard{$a} cmp $theboard{$b} } keys %theboard));
 			undef %theboard;
 		} else {
-			unlink("$boardsdir/$theboard.mail");
+			&delete_DBorFILE("$boardsdir/$theboard.mail");
 		}
 	}
 }
@@ -159,11 +153,7 @@ sub ManageThreadNotify {
 	if ($todo eq "load" || $todo eq "update" || $todo eq "delete" || $todo eq "add") {
 		undef %thethread;
 		##  open mail file and build hash 
-		if (-e "$datadir/$thethread.mail") {
-			fopen(THREADNOTE, "$datadir/$thethread.mail");
-			%thethread = map /(.*)\t(.*)/, <THREADNOTE>;
-			fclose(THREADNOTE);
-		}
+		%thethread = map /(.*)\t(.*)/, &read_DBorFILE(1,'',$datadir,$thethread,'mail');
 	}
 	if ($todo eq "add") {
 		$thethread{$user} = "$userlang|$notetype|$noteview";
@@ -198,12 +188,10 @@ sub ManageThreadNotify {
 	}
 	if ($todo eq "save" || $todo eq "update" || $todo eq "delete" || $todo eq "add") {
 		if (%thethread) {
-			fopen(THREADNOTE, ">$datadir/$thethread.mail");
-			print THREADNOTE map "$_\t$thethread{$_}\n", sort { $thethread{$a} cmp $thethread{$b} } keys %thethread;
-			fclose(THREADNOTE);
+			&write_DBorFILE(1,'',$datadir,$thethread,'mail',(map "$_\t$thethread{$_}\n", sort { $thethread{$a} cmp $thethread{$b} } keys %thethread));
 			undef %thethread;
 		} else {
-			unlink("$datadir/$thethread.mail");
+			&delete_DBorFILE("$datadir/$thethread.mail");
 		}
 	}
 }
@@ -273,9 +261,13 @@ sub getMailFiles {
 	opendir(BOARDNOT, "$boardsdir");
 	@bmaildir = map { (split(/\./, $_))[0] } grep { /\.mail$/ } readdir(BOARDNOT);
 	closedir(BOARDNOT);
-	opendir(THREADNOT, "$datadir");
-	@tmaildir = map { (split(/\./, $_))[0] } grep { /\.mail$/ } readdir(THREADNOT);
-	closedir(THREADNOT);
+	if ($use_MySQL) {
+		@tmaildir = &get_mail_array();
+	} else {
+		opendir(THREADNOT, "$datadir");
+		@tmaildir = map { (split(/\./, $_))[0] } grep { /\.mail$/ } readdir(THREADNOT);
+		closedir(THREADNOT);
+	}
 }
 
 sub ShowNotifications {
@@ -440,7 +432,7 @@ sub NotificationAlert {
 
 	## run through boards list
 	foreach $myboard (@bmaildir) { # board name from file name
-		if (!-e "$boardsdir/$myboard.txt") { # remove from user board_notifications
+		if (!&checkfor_DBorFILE("$boardsdir/$myboard.txt")) { # remove from user board_notifications
 			&ManageBoardNotify("delete", $myboard, $username);
 			next;
 		}
@@ -468,13 +460,13 @@ sub NotificationAlert {
 
 	foreach $mythread (@tmaildir) { # number of next thread
 		# see if thread exists and search for it if moved
-		if (!-e "$datadir/$mythread.txt") {
+		if (!&checkfor_DBorFILE("$datadir/$mythread.txt")) {
 			&ManageThreadNotify("delete", $mythread, $username);
 			eval { require "$datadir/movedthreads.cgi" };
 			next if !exists $moved_file{$mythread} || !$moved_file{$mythread};
 			while ($moved_file{$mythread}) {
 				$mythread = $moved_file{$mythread};
-				if (-e "$datadir/$mythread.txt") { last; }
+				if (&checkfor_DBorFILE("$datadir/$mythread.txt")) { last; }
 				elsif (!exists $moved_file{$mythread} || !$moved_file{$mythread}) { $mythread = 0; last; }
 			}
 			next if !$mythread;
@@ -494,12 +486,10 @@ sub NotificationAlert {
 			if ($action eq 'shownotify') {
 				unless (${${'notify'.$boardid.$mythread}}[0]) {
 					my ($messageid,$messagesubject);
-					fopen(BOARDTXT, "$boardsdir/$boardid.txt") || &fatal_error("cannot_open","$boardsdir/$boardid.txt", 1);
-					foreach (<BOARDTXT>) {
+					foreach (&read_DBorFILE(0,'',$boardsdir,$boardid,'txt')) {
 						($messageid, $messagesubject, $mname, undef, undef, undef, $musername, undef) = split(/\|/, $_, 8);
 						${'notify'.$boardid.$messageid} = [$messagesubject,$mname,$musername];
 					}
-					fclose(BOARDTXT);
 				}
 				$msub = ${${'notify'.$boardid.$mythread}}[0];
 				$mname = ${${'notify'.$boardid.$mythread}}[1];

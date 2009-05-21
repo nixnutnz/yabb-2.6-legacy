@@ -1409,7 +1409,7 @@ sub IMsendMessage {
 				}
 			} else { $sendAutoReply = 0; }
 
-			if (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$UserTo) == 0) || (!$use_MySQL && !-e "$memberdir/$UserTo.vars")) { 
+			if (!&checkfor_DBorFILE("$memberdir/$UserTo.vars")) { 
 				# adds invalid user's name to array which error list will be built from later
 				push(@nouser, $UserTo);
 				$ignored = 1;
@@ -1470,13 +1470,7 @@ sub IMsendMessage {
 
 	##  moved sender's reply marker here, open the sender's inbox and mark 'replied'
 	if (!$FORM{'draft'} && $isBMess) {
-		fopen(INBOX, "$memberdir/broadcast.messages");
-		my @inmessages = <INBOX>;
-		fclose(INBOX);
-		fopen(INBOX, ">$memberdir/broadcast.messages");
-		print INBOX "$messageid|$username|$FORM{'toshow'}|||$subject|$date|$message|$messageid|0|$ENV{'REMOTE_ADDR'}|$FORM{'status'}b|u||\n";
-		print INBOX @inmessages;
-		fclose(INBOX);
+		&write_DBorFILE(0,'',$memberdir,'broadcast','messages',("$messageid|$username|$FORM{'toshow'}|||$subject|$date|$message|$messageid|0|$ENV{'REMOTE_ADDR'}|$FORM{'status'}b|u||\n",&read_DBorFILE(1,'',$memberdir,'broadcast','messages')));
 	}
 
 	if ($FORM{'reply'} && $FORM{'info'}) { # mark msg replied

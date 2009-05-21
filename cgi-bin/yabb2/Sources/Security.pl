@@ -36,12 +36,12 @@ if ($INFO{'thread'} =~ m~/~) { ($INFO{'thread'}, $INFO{'start'}) = split('/', $I
 $curnum = $INFO{'num'} || $INFO{'thread'} || $FORM{'threadid'};
 if ($curnum ne '') {
 	if ($curnum =~ /\D/) { &fatal_error("only_numbers_allowed","Thread ID: '$curnum'"); }
-	if (!-e "$datadir/$curnum.txt") {
+	if (!&checkfor_DBorFILE("$datadir/$curnum.txt")) {
 		eval { require "$datadir/movedthreads.cgi" };
 		&fatal_error("not_found","$datadir/$curnum.txt") if !$moved_file{$curnum};
 		while ($moved_file{$curnum}) {
 			$curnum = $moved_file{$curnum};
-			if (-e "$datadir/$curnum.txt") { last; }
+			if (&checkfor_DBorFILE("$datadir/$curnum.txt")) { last; }
 			elsif (!$moved_file{$curnum}) { &fatal_error("not_found","$datadir/$curnum.txt"); }
 		}
 		$INFO{'num'} = $INFO{'thread'} = $FORM{'threadid'} = $curnum;
@@ -55,7 +55,7 @@ if ($curnum ne '') {
 
 if ($currentboard ne '') {
 	if ($currentboard !~ /\A[\s0-9A-Za-z#%+,-\.:=?@^_]+\Z/) { &fatal_error("invalid_character","$maintxt{'board'}"); }
-	if (!-e "$boardsdir/$currentboard.txt") { &fatal_error("cannot_open","$boardsdir/$currentboard.txt"); }
+	if (!&checkfor_DBorFILE("$boardsdir/$currentboard.txt")) { &fatal_error("cannot_open","$boardsdir/$currentboard.txt"); }
 	($boardname, $boardperms, $boardview) = split(/\|/, $board{"$currentboard"});
 	my $access = &AccessCheck($currentboard, '', $boardperms);
 	if (!$iamadmin && $access ne "granted" && $boardview != 1) { &fatal_error("no_access"); }
@@ -96,11 +96,9 @@ if ($currentboard ne '') {
 		if ($access ne "granted") { &fatal_error("no_access"); }
 	}
 
-	fopen(BOARDFILE, "$boardsdir/$currentboard.txt") || &fatal_error("not_found","$boardsdir/$currentboard.txt", 1);
-	while ($yyThreadLine = <BOARDFILE>) {
-		if ($yyThreadLine =~ m~\A$curnum\|~o) { last; }
+	foreach (&read_DBorFILE(0,'',$boardsdir,$currentboard,'txt')) {
+		if ($_ =~ m~\A$curnum\|~o) { $yyThreadLine = $_; last; }
 	}
-	fclose(BOARDFILE);
 	chomp $yyThreadLine;
 
 } else {
@@ -152,9 +150,7 @@ sub banning {
 
 	sub write_banlog {
 		&fatal_error("banned","$register_txt{'678'}$register_txt{'430'}!") if $admincheck;
-		fopen(LOG, ">>$vardir/ban_log.txt");
-		print LOG "$date|$_[0]\n";
-		fclose(LOG);
+		&write_DBorFILE(0,LOG,$vardir,'ban_log','txt',(&read_DBorFILE(0,LOG,$vardir,'ban_log','txt'),"$date|$_[0]\n"));
 		&UpdateCookie("delete", $ban_user);
 		$username = "Guest";
 		&fatal_error("banned","$security_txt{'678'}$security_txt{'430'}!");
@@ -311,7 +307,7 @@ sub email_domain_check {
 	### Based upon Distilled Email Domains mod by AstroPilot ###
 	my $checkdomain = $_[0];
 	if ($checkdomain) {
-		if (-e "$vardir/email_domain_filter.txt" ) { require "$vardir/email_domain_filter.txt"; }
+		if (&checkfor_DBorFILE("$vardir/email_domain_filter.txt")) { require "$vardir/email_domain_filter.txt"; }
 		if ($bdomains) {
 			foreach (split (/,/, $bdomains)) {
 				if ($_ !~ /\@/) {$_ = "\@$_";}

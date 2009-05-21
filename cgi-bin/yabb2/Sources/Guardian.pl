@@ -436,43 +436,35 @@ sub str_replace {
 }
 
 sub update_htaccess {
-	my ($action, @values) = @_;
+	my ($action, $value) = @_;
 	my ($htheader, $htfooter, @denies, @htout);
 	if (!$action) { return 0; }
-	fopen(HTA, ".htaccess");
-	@htlines = <HTA>;
-	fclose(HTA);
 
 	# header to determine only who has access to the main script, not the admin script
 	$htheader = qq~<Files YaBB*>~;
-	$htfooter .= qq~</Files>~;
+	$htfooter = qq~</Files>~;
 	$start = 0;
-	foreach (@htlines) {
+	foreach (&read_DBorFILE(1,'',".",'','htaccess')) {
 		chomp $_;
-		if ($_ eq $htheader){$start = 1;}
-		if ($start == 0 && !($_ =~ m/\#/) && $_ ne ""){push(@htout, "$_\n");}
-		if ($_ eq $htfooter){$start = 0;}
-		if ($_ =~ m/Deny from / && $start == 1) {
-			$_ =~ s~Deny from ~~g;
+		if ($_ eq $htheader) { $start = 1; }
+		if ($start == 0 && $_ !~ m/#/ && $_ ne "") { push(@htout, "$_\n"); }
+		if ($_ eq $htfooter) { $start = 0; }
+		if ($start == 1 && $_ =~ s/Deny from //g) {
 			push(@denies, $_);
 		}
 	}
-	if (($action eq "add" || $action eq "remove") && $use_htaccess) {
-		$mylastdate = &timeformat($date, 1);
-		fopen(HTA, ">.htaccess");
-		print HTA "# Last modified by The Guardian: $mylastdate GMT #\n\n";
-		print HTA @htout;
-		if($values[0] ne ""){
-			print HTA "$htheader\n";
+	if ($use_htaccess && ($action eq "add" || $action eq "remove")) {
+		my $htaccess  = "# Last modified by The Guardian: " . &timeformat($date, 1) . " #\n\n";
+		$htaccess    .= "@htout";
+		if ($value) {
+			$htaccess .= "\n$htheader\n";
 			foreach (@denies) {
-				chomp $_;
-				chomp $values[0];
-				if ($_ ne $values[0]) { print HTA "Deny from $_\n"; }
+				if ($_ ne $value) { $htaccess .= "Deny from $_\n"; }
 			}
-			if ($action eq "add") { print HTA "Deny from $values[0]\n"; }
-			print HTA "$htfooter\n";
+			if ($action eq "add") { $htaccess .= "Deny from $value\n"; }
+			$htaccess .= "$htfooter\n";
 		}
-		fclose(HTA);
+		&write_DBorFILE(0,'',".",'','htaccess',($htaccess));
 	}
 }
 

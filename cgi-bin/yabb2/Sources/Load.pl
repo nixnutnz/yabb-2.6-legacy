@@ -21,9 +21,7 @@ sub LoadBoardControl {
 	$binboard = "";
 	$annboard = "";
 
-	fopen(FORUMCONTROL, "$boardsdir/forum.control") || &fatal_error('cannot_open', "$boardsdir/forum.control", 1);
-	my @boardcontrols = <FORUMCONTROL>;
-	fclose(FORUMCONTROL);
+	my @boardcontrols = &read_DBorFILE(0,'',$boardsdir,'forum','control');
 	$maxboards = $#boardcontrols;
 
 	foreach my $boardline (@boardcontrols) {
@@ -76,8 +74,7 @@ sub LoadIMs {
 
 sub LoadCensorList {
 	if ($#censored > 0 || -s "$langdir/$language/censor.txt" < 3 || !-e "$langdir/$language/censor.txt") { return; }
-	fopen(CENSOR, "$langdir/$language/censor.txt") || &fatal_error("cannot_open","$langdir/$language/censor.txt", 1);
-	while (chomp($buffer = <CENSOR>)) {
+	foreach my $buffer (&read_DBorFILE(0,'',"$langdir/$language",'censor','txt')) {
 		$buffer =~ s/\r(?=\n*)//g;
 		if ($buffer =~ m/\~/) {
 			($tmpa, $tmpb) = split(/\~/, $buffer);
@@ -88,7 +85,6 @@ sub LoadCensorList {
 		}
 		push(@censored, [$tmpa, $tmpb, $tmpc]);
 	}
-	fclose(CENSOR);
 }
 
 sub LoadUserSettings {
@@ -149,10 +145,10 @@ sub LoadUser {
 	return 0 if $user eq '' || $user eq 'Guest';
 
 	if (!$userextension){ $userextension = 'vars'; }
-	if (($regtype == 1 || $regtype == 2) && -e "$memberdir/$user.pre") { $userextension = 'pre'; }
-	elsif ($regtype == 1 && -e "$memberdir/$user.wait") { $userextension = 'wait'; }
+	if (($regtype == 1 || $regtype == 2) && &checkfor_DBorFILE("$memberdir/$user.pre")) { $userextension = 'pre'; }
+	elsif ($regtype == 1 && &checkfor_DBorFILE("$memberdir/$user.wait")) { $userextension = 'wait'; }
 
-	if ($use_MySQL || -e "$memberdir/$user.$userextension") {
+	if (&checkfor_DBorFILE("$memberdir/$user.$userextension")) {
 		if ($use_MySQL || $user ne $username) {
 			my $i = 0;
 			foreach (&read_DBorFILE(0,'',$memberdir,$user,$userextension)) {
@@ -491,11 +487,9 @@ sub LoadMiniUser {
 		# No need to open the message file so many times.
 		# Opening it once is enough to do the access checks.
 		unless ($topicstarter) {
-			if (-e "$datadir/$viewnum.txt") {
+			if (&checkfor_DBorFILE("$datadir/$viewnum.txt")) {
 				unless (ref($thread_arrayref{$viewnum})) {
-					fopen(TOPSTART, "$datadir/$viewnum.txt");
-					@{$thread_arrayref{$viewnum}} = <TOPSTART>;
-					fclose(TOPSTART);
+					@{$thread_arrayref{$viewnum}} = &read_DBorFILE(1,'',$datadir,$viewnum,'txt');
 				}
 				(undef, undef, undef, undef, $topicstarter, undef) = split(/\|/, ${$thread_arrayref{$viewnum}}[0], 6);
 			}
@@ -759,7 +753,7 @@ sub buildIMS {
 	}
 
 	## inbox if it exists, either load and count totals or parse and update format.
-	if ($use_MySQL || -e "$memberdir/$builduser.msg") {
+	if (&checkfor_DBorFILE("$memberdir/$builduser.msg")) {
 		my @messages = &read_DBorFILE(0,'',$memberdir,$builduser,'msg');
 
 		# test the data for version. 16 elements in new format, no more than 8 in old.
@@ -776,7 +770,7 @@ sub buildIMS {
 	}
 
 	## do the outbox
-	if ($use_MySQL || -e "$memberdir/$builduser.outbox") {
+	if (&checkfor_DBorFILE("$memberdir/$builduser.outbox")) {
 		my @outmessages = &read_DBorFILE(0,'',$memberdir,$builduser,'outbox');
 		if (split(/\|/, $outmessages[0]) > 8) { # > 10 elements in new format, no more than 8 in old
 			$outcurr = @outmessages;
@@ -786,7 +780,7 @@ sub buildIMS {
 	}
 
 	## do the draft store - slightly easier - only exists in y22
-	if ($use_MySQL || -e "$memberdir/$builduser.imdraft") {
+	if (&checkfor_DBorFILE("$memberdir/$builduser.imdraft")) {
 		$draftcount = scalar &read_DBorFILE(0,'',$memberdir,$builduser,'imdraft');
 	}
 
@@ -794,7 +788,7 @@ sub buildIMS {
 	## else, create an entry for the two 'default ones' for the in/out status stuff
 	my $storefolders = ${$builduser}{'PMfolders'} || "in|out";
 	my @currStoreFolders = split(/\|/, $storefolders);
-	if ($use_MySQL || -e "$memberdir/$builduser.imstore") {
+	if (&checkfor_DBorFILE("$memberdir/$builduser.imstore")) {
 		@imstore = &read_DBorFILE(0,'',$memberdir,$builduser,'imstore');
 		if (@imstore) {
 			# > 10 elements in new format, no more than 8 in old
@@ -828,7 +822,7 @@ sub buildIMS {
 			$storefolders = join('|', @currStoreFolders);
 
 		} elsif (!$use_MySQL) {
-			unlink "$memberdir/$builduser.imstore";
+			&delete_DBorFILE("$memberdir/$builduser.imstore");
 		}
 	}
 	## run through the messages and count against the folder name
@@ -868,7 +862,7 @@ sub update_IMS {
 sub load_IMS {
 	my $builduser = shift;
 	my @ims;
-	if ($use_MySQL || -e "$memberdir/$builduser.ims") { @ims = &read_DBorFILE(0,'',$memberdir,$builduser,'ims'); }
+	if (&checkfor_DBorFILE("$memberdir/$builduser.ims")) { @ims = &read_DBorFILE(0,'',$memberdir,$builduser,'ims'); }
 
 	if ($ims[0] =~ /###/) {
 		foreach (@ims) { if ($_ =~ /'(.*?)',"(.*?)"/) { ${$builduser}{$1} = $2; } }
@@ -883,7 +877,7 @@ sub LoadBroadcastMessages { #check broadcast messages
 	my $builduser = shift;
 	$BCnewMessage = 0;
 	$BCCount = 0;
-	if (-e "$memberdir/broadcast.messages") {
+	if (&checkfor_DBorFILE("$memberdir/broadcast.messages")) {
 		my %PMbcRead;
 		map { $PMbcRead{$_} = 0; } split(/,/, ${$builduser}{'PMbcRead'});
 

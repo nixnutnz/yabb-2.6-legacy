@@ -187,7 +187,7 @@ sub DeleteConverterFiles {
 			@convlist = readdir("CNVDIR");
 			closedir("CNVDIR");
 			foreach $file (@convlist) {
-				unlink "$convdir/$file" || &fatal_error("cannot_open_dir","$convdir/$file");
+				&delete_DBorFILE("$convdir/$file") || &fatal_error("cannot_open_dir","$convdir/$file");
 			}
 			rmdir("$convdir");
 		}
@@ -198,11 +198,11 @@ sub DeleteConverterFiles {
 		@convlist = readdir("CNVDIR");
 		closedir("CNVDIR");
 		foreach $file (@convlist) {
-			unlink "$convdir/$file";
+			&delete_DBorFILE("$convdir/$file");
 		}
 		rmdir("$convdir");
 	}
-	if (-e "./Setup.pl") { unlink("./Setup.pl"); }
+	if (-e "./Setup.pl") { &delete_DBorFILE("./Setup.pl"); }
 
 	$yymain .= qq~<b>$admintxt{'10'}</b>~;
 	$yytitle = "$admintxt{'10'}";
@@ -745,7 +745,7 @@ sub DeleteMultiMembers {
 	while ($members_total >= $count) {
 		$currentmem = $FORM{"member$count"};
 		if (exists $FORM{"member$count"}) {
-			if (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$currentmem) != 0) || (!$use_MySQL && -e "$memberdir/$currentmem.vars")) { # Bypass dead entries.
+			if (&checkfor_DBorFILE("$memberdir/$currentmem.vars")) { # Bypass dead entries.
 				&LoadUser($currentmem);
 				if ($FORM{'emailtext'} ne '') {
 					$emailsubject = $FORM{'emailsubject'};
@@ -764,17 +764,17 @@ sub DeleteMultiMembers {
 				undef %{$uid.$currentmem} if $currentmem ne $username;
 			}
 			if ($FORM{'button'} == 2) {
-				unlink("$memberdir/$currentmem.dat");
-				# funlink("$memberdir/$currentmem.vars") does delete also the
-				# other files content if in SQL-Database!!! So no further need for funlink(...)
-				funlink("$memberdir/$currentmem.vars");
-				unlink("$memberdir/$currentmem.ims");
-				unlink("$memberdir/$currentmem.msg");
-				unlink("$memberdir/$currentmem.log");
-				unlink("$memberdir/$currentmem.rlog");
-				unlink("$memberdir/$currentmem.outbox");
-				unlink("$memberdir/$currentmem.imstore");
-				unlink("$memberdir/$currentmem.imdraft");
+				&delete_DBorFILE("$memberdir/$currentmem.dat");
+				# &delete_DBorFILE("$memberdir/$currentmem.vars") does delete also the
+				# other files content if in SQL-Database!!! So no further need for &delete_DBorFILE(...)
+				&delete_DBorFILE("$memberdir/$currentmem.vars");
+				&delete_DBorFILE("$memberdir/$currentmem.ims");
+				&delete_DBorFILE("$memberdir/$currentmem.msg");
+				&delete_DBorFILE("$memberdir/$currentmem.log");
+				&delete_DBorFILE("$memberdir/$currentmem.rlog");
+				&delete_DBorFILE("$memberdir/$currentmem.outbox");
+				&delete_DBorFILE("$memberdir/$currentmem.imstore");
+				&delete_DBorFILE("$memberdir/$currentmem.imdraft");
 				# save name up
 				push (@userslist, $currentmem);
 				# For security, remove username from mod position
@@ -1357,7 +1357,7 @@ sub AddMember2 {
 	&fatal_error("id_reserved","($member{'regusername'})") if $member{'regusername'} =~ /guest/i;
 	&fatal_error("invalid_character","$register_txt{'35'} $register_txt{'241re'}") if $member{'regusername'} =~ /[^\w\+\-\.\@]/;
 	&fatal_error("no_email","($member{'regusername'})") if $member{'email'} eq "";
-	&fatal_error("id_taken","($member{'regusername'})") if (($use_MySQL && &mysql_process(0,'selectrow_array',(%db_vars_col ? qq~SELECT `yabbusername` FROM $db_prefix\_vars WHERE `yabbusername`="$member{'regusername'}"~ : qq~SELECT `$db_user_vars_key` FROM `$db_user_vars_table` WHERE `$db_user_vars_key`="$member{'regusername'}"~))) || (!$use_MySQL && -e "$memberdir/$member{'regusername'}.vars"));
+	&fatal_error("id_taken","($member{'regusername'})") if &checkfor_DBorFILE("$memberdir/$member{'regusername'}.vars");
 	&fatal_error("password_is_userid") if $member{'regusername'} eq $member{'passwrd1'};
 
 	&FromChars($member{'regrealname'});
@@ -1436,7 +1436,7 @@ sub AddMember2 {
 		}
 	}
 
-	&fatal_error("id_taken") if (($use_MySQL && &mysql_process(0,'selectrow_array',(%db_vars_col ? qq~SELECT `yabbusername` FROM $db_prefix\_vars WHERE `yabbusername`="$member{'username'}"~ : qq~SELECT `$db_user_vars_key` FROM `$db_user_vars_table` WHERE `$db_user_vars_key`="$member{'username'}"~))) || (!$use_MySQL && -e "$memberdir/$member{'username'}.vars"));
+	&fatal_error("id_taken") if &checkfor_DBorFILE("$memberdir/$member{'username'}.vars");
 
 	if ($send_welcomeim == 1) {
 		# new format msg file:

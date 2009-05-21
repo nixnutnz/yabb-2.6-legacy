@@ -38,9 +38,7 @@ sub Display {
 		$dlp = $dlp > $date - ($max_log_days_old * 86400) ? $dlp : $date - ($max_log_days_old * 86400);
 
 		unless (ref($thread_arrayref{$mnum})) {
-			fopen(MNUM, "$datadir/$mnum.txt");
-			@{$thread_arrayref{$mnum}} = <MNUM>;
-			fclose(MNUM);
+			@{$thread_arrayref{$mnum}} = &read_DBorFILE(0,'',$datadir,$mnum,'txt');
 		}
 		my $i = -1;
 		foreach (@{$thread_arrayref{$mnum}}) {
@@ -57,7 +55,7 @@ sub Display {
 	# strip off any non numeric values to avoid exploitation
 	$maxmessagedisplay ||= 10;
 	my ($msubthread, $mnum, $mstate, $mdate, $msub, $mname, $memail, $mreplies, $musername, $micon, $mip, $mlm, $mlmb);
-	my ($counter, $counterwords, $threadclass, $notify, $max, $start, $windowbg, $mattach, $pagedropindex, $template_viewers, $template_favorite, $template_pollmain, $navback, $mark_unread, $pollbutton, $icanbypass, $replybutton, $bypassReplyButton);
+	my ($counter, $counterwords, $threadclass, $notify, $max, $start, $windowbg, $mreplyno, $pagedropindex, $template_viewers, $template_favorite, $template_pollmain, $navback, $mark_unread, $pollbutton, $icanbypass, $replybutton, $bypassReplyButton);
 
 	&LoadCensorList;
 
@@ -128,7 +126,7 @@ sub Display {
 	if (&AccessCheck($currentboard, 3) eq 'granted') {
 		$pollbutton = qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;title=AddPoll">$img{'addpoll'}</a>~;
 	}
-	if (-e "$datadir/$viewnum.poll") {
+	if (&checkfor_DBorFILE("$datadir/$viewnum.poll")) {
 		$has_poll = 1;
 		$pollbutton = '';
 	} else {
@@ -181,7 +179,7 @@ sub Display {
 	elsif ($mstate =~ /s/i) { $threadclass = 'sticky'; }
 	elsif (${$mnum}{'board'} eq $annboard) { $threadclass = $threadclass eq 'locked' ? 'announcementlock' : 'announcement'; }
 
-	if (-e "$datadir/$mnum.mail" && !$iamguest) {
+	if (&checkfor_DBorFILE("$datadir/$mnum.mail") && !$iamguest) {
 		require "$sourcedir/Notify.pl";
 		&ManageThreadNotify("update", $mnum, $username, '', '', '1');
 	}
@@ -440,9 +438,7 @@ sub Display {
 	if (!$UseMenuType) { $sm = 1; }
 
 	unless (ref($thread_arrayref{$viewnum})) {
-		fopen(MSGTXT, "$datadir/$viewnum.txt") || &fatal_error("cannot_open","$datadir/$viewnum.txt", 1);
-		@{$thread_arrayref{$viewnum}} = <MSGTXT>;
-		fclose(MSGTXT);
+		@{$thread_arrayref{$viewnum}} = &read_DBorFILE(0,'',$datadir,$viewnum,'txt');
 	}
 	$counter = 0;
 	my @messages;
@@ -469,7 +465,7 @@ sub Display {
 		my ($userlocation, $aimad, $yimad, $msnad, $gtalkad, $skypead, $myspacead, $facebookad, $icqad, $buddyad, $addbuddy, $isbuddy, $addbuddylink, $userOnline, $signature_hr, $lastmodified, $memberinfo, $template_postinfo, $template_ext_prof, $template_profile, $template_quote, $template_email, $template_www, $template_pm);
 
 		$css = $cssvalues[($counter % $cssnum)];
-		($msub, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $postmessage, $ns, $mlm, $mlmb, $mfn) = split(/[\|]/, $_);
+		($msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $postmessage, $ns, $mlm, $mlmb, $mfn) = split(/[\|]/, $_);
 
 		# Do we have an attachment file?
 		chomp $mfn;
@@ -480,12 +476,10 @@ sub Display {
 			# store all downloadcounts in variable
 			if (!%attach_count) {
 				my ($atfile,$atcount);
-				fopen(ATM, "$vardir/attachments.txt");
-				while (<ATM>) {
+				foreach (&read_DBorFILE(1,'',$vardir,'attachments','txt')) {
 					(undef, undef, undef, undef, undef, undef, undef, $atfile, $atcount) =split(/\|/, $_);
 					$attach_count{$atfile} = $atcount;
 				}
-				fclose(ATM);
 				$attach_count{'no_attachments'} = 1 if !%attach_count;
 			}
 
@@ -524,7 +518,7 @@ sub Display {
 		else { $mip = $display_txt{'511'}; }
 
 		# If the user isn't a guest, load their info.
-		if ($musername ne 'Guest' && !$yyUDLoaded{$musername} && (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$musername) != 0) || (!$use_MySQL && -e "$memberdir/$musername.vars"))) {
+		if ($musername ne 'Guest' && !$yyUDLoaded{$musername} && &checkfor_DBorFILE("$memberdir/$musername.vars")) {
 			&LoadUserDisplay($musername);
 		}
 		$messagedate = $mdate;
@@ -923,17 +917,11 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 }
 
 sub NextPrev {
-	fopen(MSGTXT, "$boardsdir/$currentboard.txt") || &fatal_error("cannot_open","$boardsdir/$currentboard.txt", 1);
-	my @threadlist = <MSGTXT>;
-	fclose(MSGTXT);
+	my @threadlist = &read_DBorFILE(0,'',$boardsdir,$currentboard,'txt');
 
 	$thevirboard = qq~num=~;
 	if ($vircurrentboard) {
-		fopen(MSGTXT, "$boardsdir/$vircurrentboard.txt") || &fatal_error("cannot_open","$boardsdir/$vircurrentboard.txt", 1);
-		my @virthreadlist = <MSGTXT>;
-		fclose(MSGTXT);
-		push(@threadlist, @virthreadlist);
-		undef @virthreadlist;
+		push(@threadlist, &read_DBorFILE(0,'',$boardsdir,$vircurrentboard,'txt'));
 		$thevirboard = qq~virboard=$vircurrentboard;num=~;
 	}
 

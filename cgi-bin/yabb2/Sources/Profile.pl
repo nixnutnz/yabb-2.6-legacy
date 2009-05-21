@@ -1408,19 +1408,14 @@ sub ModifyProfile2 {
 
 			if ($user ne "admin") {
 				# Check to see if name is reserved
-				fopen(FILE, "$vardir/reservecfg.txt") || &fatal_error("cannot_open","$vardir/reservecfg.txt", 1);
-				my @reservecfg = <FILE>;
-				fclose(FILE);
+				my @reservecfg = &read_DBorFILE(0,'',$vardir,'reservecfg','txt');
 				chomp(@reservecfg);
 				my $matchword = $reservecfg[0] eq 'checked';
 				my $matchcase = $reservecfg[1] eq 'checked';
 				my $matchname = $reservecfg[3] eq 'checked';
 				my $namecheck = $matchcase eq 'checked' ? $member{'name'} : lc $member{'name'};
 
-				fopen(FILE, "$vardir/reserve.txt") || &fatal_error("cannot_open","$vardir/reserve.txt", 1);
-				my @reserve = <FILE>;
-				fclose(FILE);
-				foreach my $reserved (@reserve) {
+				foreach my $reserved (&read_DBorFILE(0,'',$vardir,'reserve','txt')) {
 					chomp $reserved;
 					my $reservecheck = $matchcase ? $reserved : lc $reserved;
 					if ($matchname) {
@@ -1483,18 +1478,18 @@ sub ModifyProfile2 {
 
 		$noteuser = $iamadmin ? $member{'username'} : $user;
 
-		unlink("$memberdir/$noteuser.dat");
-		# funlink("$memberdir/$noteuser.vars") does delete also the
-		# other files content if in SQL-Database!!! So no further need for funlink(...)
-		funlink("$memberdir/$noteuser.vars");
-		unlink("$memberdir/$noteuser.ims");
-		unlink("$memberdir/$noteuser.msg");
-		unlink("$memberdir/$noteuser.log");
-		unlink("$memberdir/$noteuser.rlog");
-		unlink("$memberdir/$noteuser.outbox");
-		unlink("$memberdir/$noteuser.imstore");
-		unlink("$memberdir/$noteuser.imdraft");
-		unlink("$facesdir/UserAvatars/$1") if ${$uid.$user}{'userpic'} && ${$uid.$user}{'userpic'} =~ /$facesurl\/UserAvatars\/(.+)/;
+		&delete_DBorFILE("$memberdir/$noteuser.dat");
+		# &delete_DBorFILE("$memberdir/$noteuser.vars") does delete also the
+		# other files content if in SQL-Database!!! So no further need for &delete_DBorFILE(...)
+		&delete_DBorFILE("$memberdir/$noteuser.vars");
+		&delete_DBorFILE("$memberdir/$noteuser.ims");
+		&delete_DBorFILE("$memberdir/$noteuser.msg");
+		&delete_DBorFILE("$memberdir/$noteuser.log");
+		&delete_DBorFILE("$memberdir/$noteuser.rlog");
+		&delete_DBorFILE("$memberdir/$noteuser.outbox");
+		&delete_DBorFILE("$memberdir/$noteuser.imstore");
+		&delete_DBorFILE("$memberdir/$noteuser.imdraft");
+		&delete_DBorFILE("$facesdir/UserAvatars/$1") if ${$uid.$user}{'userpic'} && ${$uid.$user}{'userpic'} =~ /$facesurl\/UserAvatars\/(.+)/;
 
 		&MemberIndex("remove", $noteuser);
 
@@ -1750,7 +1745,7 @@ sub ModifyProfileOptions2 {
 			}
 		}
 
-		unlink("$facesdir/UserAvatars/$1") if ${$uid.$user}{'userpic'} =~ /$facesurl\/UserAvatars\/(.+)/;
+		&delete_DBorFILE("$facesdir/UserAvatars/$1") if ${$uid.$user}{'userpic'} =~ /$facesurl\/UserAvatars\/(.+)/;
 		$fixfile = &check_existence("$facesdir/UserAvatars", $fixfile);
 
 		# create a new file on the server using the formatted ( new instance ) filename
@@ -1784,7 +1779,7 @@ sub ModifyProfileOptions2 {
 		}
 		fclose(ATTFILE);
 		if ($illegal) { # delete the file as it contains illegal code
-			unlink("$facesdir/UserAvatars/$fixfile");
+			&delete_DBorFILE("$facesdir/UserAvatars/$fixfile");
 			&ToHTML($illegal);
 			&fatal_error("file_not_uploaded","$fixfile <= illegal code ($illegal) inside image file!");
 		}
@@ -1796,7 +1791,7 @@ sub ModifyProfileOptions2 {
 	}
 	if ($member{'userpic'} eq "" || !$allowpics) { $member{'userpic'} = "blank.gif"; }
 	&fatal_error("invalid_character","$profile_txt{'592'}") if $member{'userpic'} !~ m^\A[0-9a-zA-Z_\.\#\%\-\:\+\?\$\&\~\.\,\@/]+\Z^;
-	unlink("$facesdir/UserAvatars/$1") if $member{'userpic'} ne ${$uid.$user}{'userpic'} && ${$uid.$user}{'userpic'} =~ /$facesurl\/UserAvatars\/(.+)/;
+	&delete_DBorFILE("$facesdir/UserAvatars/$1") if $member{'userpic'} ne ${$uid.$user}{'userpic'} && ${$uid.$user}{'userpic'} =~ /$facesurl\/UserAvatars\/(.+)/;
 
 	if ($member{'usertemplate'} ne '' && !$templateset{$member{'usertemplate'}}) { &fatal_error('invalid_template'); }
 	if ($member{'usertemplate'} eq '') { $member{'usertemplate'} = $template; }
@@ -2602,7 +2597,7 @@ sub usersrecentposts {
 	if ($iamguest) { &fatal_error("members_only"); }
 	if ($INFO{'username'} =~ /\//) { &fatal_error("no_user_slash"); }
 	if ($INFO{'username'} =~ /\\/) { &fatal_error("no_user_backslash"); }
-	if (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$INFO{'username'}) == 0) || (!$use_MySQL && !-e "$memberdir/$INFO{'username'}.vars")) { &fatal_error("no_profile_exists"); }
+	if (!&checkfor_DBorFILE("$memberdir/$INFO{'username'}.vars")) { &fatal_error("no_profile_exists"); }
 	&spam_protection if $action =~ /^(?:my)?usersrecentposts$/;
 
 	my $curuser = $INFO{'username'};
@@ -2613,7 +2608,7 @@ sub usersrecentposts {
 	elsif ($display =~ /\D/) { &fatal_error("only_numbers_allowed"); }
 	if ($display > $maxrecentdisplay) { $display = $maxrecentdisplay; }
 
-	my (%data, $numfound, %threadfound, %boardtxt, %recentthreadfound, $recentfound, $save_recent, $boardperms, $curcat, %boardcat, %catinfos, %catboards, $openmemgr, @membergroups, $tmpa, %openmemgr, $curboard, @threads, @boardinfo, $i, $c, @messages, $tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $mns, $counter, $board, $notify, $catid);
+	my (%data, $numfound, %threadfound, %boardtxt, %recentthreadfound, $recentfound, $save_recent, $boardperms, $curcat, %boardcat, %catinfos, %catboards, $openmemgr, @membergroups, $tmpa, %openmemgr, $curboard, @threads, @boardinfo, $i, $c, @messages, $tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $mns, $counter, $board, $notify, $catid);
 
 	&Recent_Load($curuser);
 	my @recent = sort { ${$recent{$b}}[1] <=> ${$recent{$a}}[1] } grep { ${$recent{$_}}[1] > 0 } keys %recent;
@@ -2645,9 +2640,7 @@ sub usersrecentposts {
 
 			if (!$iamadmin && (!&CatAccess(${$catinfos{$curboard}}[1]) || &AccessCheck($curboard,'',$boardperms) ne "granted")) { $recentcount--; next recentcheck; }
 
-			fopen(FILE, "$boardsdir/$curboard.txt");
-			@{$boardtxt{$curboard}} = <FILE>;
-			fclose(FILE);
+			@{$boardtxt{$curboard}} = &read_DBorFILE(1,'',$boardsdir,$curboard,'txt');
 
 			if (!@{$boardtxt{$curboard}}) {
 				$save_recent = 1;
@@ -2668,14 +2661,12 @@ sub usersrecentposts {
 				if ($tstate =~ /h/ && !$iamadmin && !$iamgmod) {
 					$recentcount--;
 				} else {
-					fopen(FILE, "$datadir/$tnum.txt");
-					@messages = <FILE>;
-					fclose(FILE);
+					@messages = &read_DBorFILE(1,'',$datadir,$tnum,'txt');
 
 					my $usercheck = 0;
 
 					for ($c = $#messages; $c >= 0 ; $c--) {
-						($msub, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $message, $mns) = split(/\|/, $messages[$c]);
+						($msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $mns) = split(/\|/, $messages[$c]);
 
 						if ($curuser eq $musername) {
 							my @i = @data;
@@ -2683,7 +2674,7 @@ sub usersrecentposts {
 							@data = sort { $b <=> $a } @i;
 							if (pop(@data) != $mdate) {
 								chomp $mns;
-								$data{$mdate} = [$curboard, $tnum, $c, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $message, $mns, $tstate];
+								$data{$mdate} = [$curboard, $tnum, $c, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $mns, $tstate];
 								if (!$usercheck) {
 									$numfound++;
 									$threadfound{$tnum} = 1;
@@ -2721,9 +2712,7 @@ sub usersrecentposts {
 
 					if (!$iamadmin && &AccessCheck($curboard,'',$boardperms) ne "granted") { next boardcheck; }
 
-					fopen(FILE, "$boardsdir/$curboard.txt") || next boardcheck;
-					@{$boardtxt{$curboard}} = <FILE>;
-					fclose(FILE);
+					next boardcheck if !(@{$boardtxt{$curboard}} = &read_DBorFILE(1,'',$boardsdir,$curboard,'txt'));
 				}
 
 				for ($i = 0; $i < @{$boardtxt{$curboard}}; $i++) {
@@ -2731,14 +2720,12 @@ sub usersrecentposts {
 
 					if (exists($recent{$tnum}) && !exists $threadfound{$tnum}) {
 						unless ($tstate =~ /h/ && !$iamadmin && !$iamgmod) {
-							fopen(FILE, "$datadir/$tnum.txt");
-							@messages = <FILE>;
-							fclose(FILE);
+							@messages = &read_DBorFILE(0,'',$datadir,$tnum,'txt');
 
 							my $usercheck = 0;
 
 							for ($c = $#messages; $c >= 0 ; $c--) {
-								($msub, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $message, $mns) = split(/\|/, $messages[$c]);
+								($msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $mns) = split(/\|/, $messages[$c]);
 
 								if ($curuser eq $musername) {
 									my @i = @data;
@@ -2746,7 +2733,7 @@ sub usersrecentposts {
 									@data = sort { $b <=> $a } @i;
 									if (pop(@data) != $mdate) {
 										chomp $mns;
-										$data{$mdate} = [$curboard, $tnum, $c, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $message, $mns, $tstate];
+										$data{$mdate} = [$curboard, $tnum, $c, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $mns, $tstate];
 										if (${$recent{$tnum}}[1] < $mdate) {
 											$save_recent = 1;
 											${$recent{$tnum}}[1] = $mdate;
@@ -2773,7 +2760,7 @@ sub usersrecentposts {
 
 	if ($display == 1) {
 		return if !$data[0];
-		($board, $tnum, $c, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $message, $mns, $tstate) = @{$data{$data[0]}};
+		($board, $tnum, $c, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $mns, $tstate) = @{$data{$data[0]}};
 		&ToChars($msub);
 		($msub, undef) = &Split_Splice_Move($msub,0);
 		return (&timeformat($mdate) . qq~<br />$profile_txt{'view'} &rsaquo; <a href="$scripturl?num=$tnum/$c#$c">$msub</a>~);
@@ -2784,7 +2771,7 @@ sub usersrecentposts {
 	for ($i = 0; $i < @data; $i++) {
 		next if !$data[$i];
 
-		($board, $tnum, $c, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $message, $mns, $tstate) = @{$data{$data[$i]}};
+		($board, $tnum, $c, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $mns, $tstate) = @{$data{$data[$i]}};
 		($msub, undef) = &Split_Splice_Move($msub,0);
 		&wrap;
 		$displayname = $mname;

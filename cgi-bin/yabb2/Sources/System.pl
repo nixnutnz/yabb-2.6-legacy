@@ -100,7 +100,7 @@ sub BoardSetLastInfo {
 	unless ($setboard) { return undef; }
 	my ($lastthread, $lastthreadid, $lastthreadstate, @lastthreadmessages, @lastmessage);
 
-	$lastthread = &read_DBorFILE(0,'',$boardsdir,$setboard,'txt');
+	$lastthread = (&read_DBorFILE(0,'',$boardsdir,$setboard,'txt'))[0];
 	chomp $lastthread;
 	if ($lastthread) {
 		($lastthreadid, undef, undef, undef, undef, undef, undef, undef, $lastthreadstate) = split(/\|/, $lastthread);
@@ -186,12 +186,11 @@ sub MessageTotals {
 		return;
 	}
 
-	if (-e "$datadir/$updatethread.txt") { # trap writing false ctb files on forged num= actions
+	if (&checkfor_DBorFILE("$datadir/$updatethread.txt")) { # trap writing false ctb files on forged num= actions
 		${$updatethread}{'repliers'} = join(",", @repliers);
 
 		if ($use_MySQL) {
 			@tag = map { ${$updatethread}{$_} } @tag;
-			unshift(@tag, $updatethread) if !${$updatethread}{'mysql'};
 		} else {
 			@tag = map { qq~'$_',"${$updatethread}{$_}"\n~ } @tag;
 			unshift(@tag, "### ThreadID: $updatethread ###\n\n");
@@ -223,13 +222,12 @@ sub UserAccount {
 	} elsif ($action eq "register") {
 		$userext = "vars";
 	} elsif ($action eq "delete") {
-		funlink "$memberdir/$user.vars";
+		&delete_DBorFILE("$memberdir/$user.vars");
 		return;
 	} else { $userext = "vars"; }
 
 	# using sequential tag writing as hashes do not sort the way we like them to
-	# This array must be exactly the same as in Admin/Database.pl
-	# and in Subs.pl in the SQL/File management block: my %db_table = (...!!!
+	# This array must be exactly the same as in Admin/Database.pl!!!
 	# If you want to add Mods, don't add your variables here. See 7 lines below.
 	my @tags = qw(realname password position addgroups email hidemail regdate regtime regreason location bday gender userpic usertext signature template language stealth webtitle weburl icq aim yim skype myspace facebook msn gtalk timeselect timeformat timeoffset dsttimeoffset dynamic_clock postcount lastonline lastpost lastim im_ignorelist im_popup im_imspop pmmessprev pmviewMess pmactprev notify_me board_notifications thread_notifications favorites buddylist cathide pageindex reversetopic postlayout sesquest sesanswer session lastips onlinealert offlinestatus awaysubj awayreply awayreplysent spamcount spamtime);
 	my @additional_tags;
@@ -244,7 +242,7 @@ sub UserAccount {
 
 	if ($use_MySQL && $userext eq 'vars') {
 		${$uid.$user}{'additional_variables'} = join('', map { qq~'$_',\\"${$uid.$user}{$_}\\"\n~ } @additional_tags);
-		@tags = map { ${$uid.$user}{$_} } (@tags,'additional_variables');
+		#@tags = map { ${$uid.$user}{$_} } (@tags,'additional_variables');
 	} else {
 		@tags = map { qq~'$_',"${$uid.$user}{$_}"\n~ } (@tags,@additional_tags);
 		unshift(@tags, "### User variables for ID: $user ###\n\n");
@@ -354,7 +352,7 @@ sub activation_check {
 	foreach (&read_DBorFILE(0,INACT,$memberdir,'memberlist','inactive')) {
 		($regtime, undef, $regmember, undef) = split(/\|/, $_, 4);
 		if ($date - $regtime > $timespan) {
-			unlink "$memberdir/$regmember.pre";
+			&delete_DBorFILE("$memberdir/$regmember.pre");
 
 			# add entry to registration log
 			&write_DBorFILE(0,REGLOG,$vardir,'registration','log',(&read_DBorFILE(0,REGLOG,$vardir,'registration','log'),"$date|T|$regmember|\n"));

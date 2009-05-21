@@ -55,9 +55,7 @@ sub Split_Splice {
 
 	# Get posts of current thread
 	unless (ref($thread_arrayref{$curthread})) {
-		fopen(FILE, "$datadir/$curthread.txt");
-		@{$thread_arrayref{$curthread}} = <FILE>;
-		fclose(FILE);
+		@{$thread_arrayref{$curthread}} = &read_DBorFILE(1,'',$datadir,$curthread,'txt');
 	}
 	my @messages = @{$thread_arrayref{$curthread}};
 
@@ -111,9 +109,7 @@ sub Split_Splice {
 	# Get threads and make the current one the default selection
 	my ($threadlist,$threadids,$positionlist);
 	if ($cat{$newcat} =~ /\b$newboard\b/) {
-		fopen(FILE, "$boardsdir/$newboard.txt");
-		my @threads = <FILE>;
-		fclose(FILE);
+		my @threads = &read_DBorFILE(1,'',$boardsdir,$newboard,'txt');
 
 		$threadlist = qq~<option value="new">$sstxt{'30'}</option>\n~;
 		my $threadid;
@@ -142,9 +138,7 @@ sub Split_Splice {
 		# Get new thread posts to select splice site
 		if ($FORM{'newthread'} ne "new") {
 			unless (ref($thread_arrayref{$newthread})) {
-				fopen(FILE, "$datadir/$newthread.txt");
-				@{$thread_arrayref{$newthread}} = <FILE>;
-				fclose(FILE);
+				@{$thread_arrayref{$newthread}} = &read_DBorFILE(1,'',$datadir,$newthread,'txt');
 			}
 			@messages = @{$thread_arrayref{$newthread}};
 
@@ -292,16 +286,14 @@ sub Split_Splice_2 {
 	&fatal_error('',"$sstxt{'22b'} $sstxt{'23'} $sstxt{'50'}") if $movingposts eq '';
 	&fatal_error('',"$sstxt{'22'}") if $newcat eq 'cats';
 	&fatal_error('',"$sstxt{'22a'}") if $newboard eq 'boards';
-	&fatal_error('',"$sstxt{'51'} $sstxt{'50'}") if -e "$datadir/$curthreadid.poll" && -e "$datadir/$newthreadid.poll";
+	&fatal_error('',"$sstxt{'51'} $sstxt{'50'}") if &checkfor_DBorFILE("$datadir/$curthreadid.poll") && &checkfor_DBorFILE("$datadir/$newthreadid.poll");
 
 	my (@postnum,@utdcurthread,@utdnewthread,$i);
 	my $linkcount = 0;
 
 	# Get current thread posts
 	unless (ref($thread_arrayref{$curthreadid})) {
-		fopen(FILE, "$datadir/$curthreadid.txt");
-		@{$thread_arrayref{$curthreadid}} = <FILE>;
-		fclose(FILE);
+		@{$thread_arrayref{$curthreadid}} = &read_DBorFILE(1,'',$datadir,$curthreadid,'txt');
 	}
 	my @curthread = @{$thread_arrayref{$curthreadid}};
 	&MessageTotals("load", $curthreadid);
@@ -314,7 +306,7 @@ sub Split_Splice_2 {
 	if ($newthreadid eq "new") {
 		# Find a valid random ID for new thread.
 		$newthreadid = (split(/\|/, $curthread[$postnum[0]], 5))[3] + 1;
-		while (-e "$datadir/$newthreadid.txt") { $newthreadid++; }
+		while (&checkfor_DBorFILE("$datadir/$newthreadid.txt")) { $newthreadid++; }
 
 		foreach (@postnum) {
 			if ($newthreadsub || $leavemess == 1) { # insert new subject name || add 'no_postcount' into copies
@@ -331,9 +323,7 @@ sub Split_Splice_2 {
 	} else {
 		# Get existing thread posts
 		unless (ref($thread_arrayref{$newthreadid})) {
-			fopen(FILE, "$datadir/$newthreadid.txt");
-			@{$thread_arrayref{$newthreadid}} = <FILE>;
-			fclose(FILE);
+			@{$thread_arrayref{$newthreadid}} = &read_DBorFILE(1,'',$datadir,$newthreadid,'txt');
 		}
 		my @newthread = @{$thread_arrayref{$newthreadid}};
 		&MessageTotals("load", $newthreadid);
@@ -382,7 +372,7 @@ sub Split_Splice_2 {
 				$tmpsub = qq~[m by=$hidename destboard=$newboard dest=$newthreadid]: '$tmpsub'~;
 			}
 			&FromChars($tmpmessage);
-			$utdcurthread[0] = qq~$tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$username|no_postcount||$user_ip|$tmpmessage||\n~;
+			$utdcurthread[0] = qq~$tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$username|no_postcount||$user_ip|$tmpmessage||||\n~;
 
 			eval { require "$datadir/movedthreads.cgi" };
 			$moved_file{$curthreadid} = $newthreadid;
@@ -400,7 +390,7 @@ sub Split_Splice_2 {
 				if ($leavemess == 0 && $i == $postnum[$#postnum]){
 					my $tmpsub;
 					($tmpsub, undef) = split(/\|/, $curthread[$i], 2);
-					push (@utdcurthread, qq~$tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$username|no_postcount||$user_ip|[split] [link=$scripturl?num=$newthreadid/$linkcount#$linkcount][splithere][/link][splithere_end]||\n~);
+					push (@utdcurthread, qq~$tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$username|no_postcount||$user_ip|[split] [link=$scripturl?num=$newthreadid/$linkcount#$linkcount][splithere][/link][splithere_end]||||\n~);
 				}
 			} else {
 				push (@utdcurthread, $curthread[$i]);
@@ -418,6 +408,7 @@ sub Split_Splice_2 {
 		splice(@utdnewthread, ($linkcount + @postnum), 0,qq~$sstxt{'21'} $tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$username|no_postcount||$user_ip|$tmpmessage||||\n~);
 	}
 
+	my (@curthread_mail,@curthread_poll,@curthread_polled);
 	if (@utdcurthread) {
 		for ($i = 0; $i < @utdcurthread; $i++) { # sort post numbers
 			my @x = split(/\|/, $utdcurthread[$i]);
@@ -425,10 +416,13 @@ sub Split_Splice_2 {
 			$utdcurthread[$i] = join('|', @x);
 		}
 		# Update current thread
-		fopen(FILE, ">$datadir/$curthreadid.txt");
-		print FILE @utdcurthread;
-		fclose(FILE);
+		&write_DBorFILE(0,'',$datadir,$curthreadid,'txt',@utdcurthread);
 	} else {
+		if ($use_MySQL) {
+			@curthread_mail = &read_DBorFILE(0,'',$datadir,$curthreadid,'mail');
+			@curthread_poll = &read_DBorFILE(0,'',$datadir,$curthreadid,'poll');
+			@curthread_polled = &read_DBorFILE(0,'',$datadir,$curthreadid,'polled');
+		}
 		require "$sourcedir/RemoveTopic.pl";
 		my $moveit = $INFO{'moveit'};
 		$INFO{'moveit'} = 1;
@@ -442,9 +436,7 @@ sub Split_Splice_2 {
 		$utdnewthread[$i] = join('|', @x);
 	}
 	# Update new thread
-	fopen(FILE, ">$datadir/$newthreadid.txt");
-	print FILE @utdnewthread;
-	fclose(FILE);
+	&write_DBorFILE(0,'',$datadir,$newthreadid,'txt',@utdnewthread);
 
 	# Update the .rlog files of the users
 	my ($reply,$ms,$mn,$md,$mu,$mnp,$mi,%mu,%curthreadusersdate,%curthreaduserscount,%newthreadusersdate,%newthreaduserscount,%BoardTotals);
@@ -530,9 +522,9 @@ sub Split_Splice_2 {
 				$musername = $username;
 				# alter message icon to 'exclamation' to match status 'lm'
 				$micon = 'exclamation' if $micon ne 'no_postcount';
-				# thread status - (l)ocked,  (m)oved, (h)idden and (a)nnoumcement
+				# thread status - (a)nnoumcement, (h)idden, (l)ocked, (m)oved and (s)ticky
 				$old_mstate = $mstate;
-				if ($mstate =~ /a/i) { $mstate .= "h"; }
+				if ($curboard eq $annboard && $mstate !~ /a/i) { $mstate .= "a"; }
 				if ($mstate !~ /l/i) { $mstate .= "l"; }
 				if ($mstate !~ /m/i) { $mstate .= "m"; }
 				${$curthreadid}{'threadstatus'} = $mstate;
@@ -550,7 +542,7 @@ sub Split_Splice_2 {
 			}
 			$curmessindex[$i] = qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'replies'}|$musername|$micon|$mstate\n~;
 			${$BoardTotals{$mnum}}[6] = $mstate;
-			if (($enable_notifications == 1 || $enable_notifications == 3) && (-e "$boardsdir/$curboard.mail" || -e "$datadir/$newthreadid.mail")) {
+			if (($enable_notifications == 1 || $enable_notifications == 3) && (&checkfor_DBorFILE("$boardsdir/$curboard.mail") || &checkfor_DBorFILE("$datadir/$newthreadid.mail"))) {
 				require "$sourcedir/Post.pl";
 				$currentboard = $curboard;
 				$msub = &Censor($msub);
@@ -564,7 +556,7 @@ sub Split_Splice_2 {
 		if ($old_mstate !~ /0/i) { $old_mstate .= "0"; }
 		unshift (@curmessindex, qq~$newthreadid|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'replies'}|$musername|$micon|$old_mstate\n~);
 		${$BoardTotals{$newthreadid}}[6] = $old_mstate;
-		if (($enable_notifications == 1 || $enable_notifications == 3) && -e "$boardsdir/$newboard.mail") {
+		if (($enable_notifications == 1 || $enable_notifications == 3) && &checkfor_DBorFILE("$boardsdir/$newboard.mail")) {
 			require "$sourcedir/Post.pl";
 			$currentboard = $curboard;
 			$msub = &Censor($msub);
@@ -590,11 +582,15 @@ sub Split_Splice_2 {
 
 			my ($msub,$mname,$memail,$musername,$micon);
 			($msub, $mname, $memail, undef, $musername, $micon, undef) = split(/\|/, $utdnewthread[0], 7);
-			if ($old_mstate !~ /a/i && $newboard eq $annboard) { $old_mstate .= "a"; }
+			if ($old_mstate =~ /a/i) { 
+				if ($newboard ne $annboard) { $old_mstate =~ s/a//gi; }
+			} elsif ($newboard eq $annboard) {
+				$old_mstate .= "a";
+			}
 			if ($old_mstate !~ /0/i) { $old_mstate .= "0"; }
 			unshift (@newmessindex, qq~$newthreadid|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'replies'}|$musername|$micon|$old_mstate\n~);
 			${$BoardTotals{$newthreadid}}[6] = $old_mstate;
-			if (($enable_notifications == 1 || $enable_notifications == 3) && -e "$boardsdir/$newboard.mail") {
+			if (($enable_notifications == 1 || $enable_notifications == 3) && &checkfor_DBorFILE("$boardsdir/$newboard.mail")) {
 				require "$sourcedir/Post.pl";
 				$currentboard = $newboard;
 				$msub = &Censor($msub);
@@ -614,7 +610,7 @@ sub Split_Splice_2 {
 					${$BoardTotals{$mnum}}[6] = $mstate;
 				}
 			}
-			if (($enable_notifications == 1 || $enable_notifications == 3) && (-e "$boardsdir/$newboard.mail" || -e "$datadir/$newthreadid.mail")) {
+			if (($enable_notifications == 1 || $enable_notifications == 3) && (&checkfor_DBorFILE("$boardsdir/$newboard.mail") || &checkfor_DBorFILE("$datadir/$newthreadid.mail"))) {
 				require "$sourcedir/Post.pl";
 				$currentboard = $newboard;
 				$msub = &Censor($msub);
@@ -712,7 +708,7 @@ sub Split_Splice_2 {
 				($msub, $mname, undef, $mdate, undef, undef, undef, undef, undef, undef, undef, undef, $mfn) = split(/\|/, $_);
 				chomp $mfn;
 				foreach (split(/,/, $mfn)) {
-					if (-e "$uploaddir/$_") {
+					if (&checkfor_DBorFILE("$uploaddir/$_")) {
 						my $asize = int((-s "$uploaddir/$_") / 1024) || 1;
 						push (@newattachments, qq~$curthreadid|$mreplies|$msub|$mname|$curboard|$asize|$mdate|$_|~ . ($attachments{$_} || 0) . qq~\n~);
 					}
@@ -726,7 +722,7 @@ sub Split_Splice_2 {
 			($msub, $mname, undef, $mdate, undef, undef, undef, undef, undef, undef, undef, undef, $mfn) = split(/\|/, $_);
 			chomp $mfn;
 			foreach (split(/,/, $mfn)) {
-				if (-e "$uploaddir/$_") {
+				if (&checkfor_DBorFILE("$uploaddir/$_")) {
 					my $asize = int((-s "$uploaddir/$_") / 1024) || 1;
 					push (@newattachments, qq~$newthreadid|$mreplies|$msub|$mname|$newboard|$asize|$mdate|$_|~ . ($attachments{$_} || 0) . qq~\n~);
 				}
@@ -738,14 +734,26 @@ sub Split_Splice_2 {
 	}
 
 	if ($#postnum == $#curthread) {
-		if (-e "$datadir/$curthreadid.poll") {
-			rename("$datadir/$curthreadid.poll", "$datadir/$newthreadid.poll");
+		if (&checkfor_DBorFILE("$datadir/$curthreadid.poll")) {
+			if ($use_MySQL) {
+				&write_DBorFILE(1,'',$datadir,$newthreadid,'poll',@curthread_poll);
+			} else {
+				rename("$datadir/$curthreadid.poll", "$datadir/$newthreadid.poll");
+			}
 		}
-		if (-e "$datadir/$curthreadid.polled") {
-			rename("$datadir/$curthreadid.polled", "$datadir/$newthreadid.polled");
+		if (&checkfor_DBorFILE("$datadir/$curthreadid.polled")) {
+			if ($use_MySQL) {
+				&write_DBorFILE(1,'',$datadir,$newthreadid,'polled',@curthread_polled);
+			} else {
+				rename("$datadir/$curthreadid.polled", "$datadir/$newthreadid.polled");
+			}
 		}
-		if (-e "$datadir/$curthreadid.mail") {
-			rename("$datadir/$curthreadid.mail", "$datadir/$newthreadid.mail");
+		if (&checkfor_DBorFILE("$datadir/$curthreadid.mail")) {
+			if ($use_MySQL) {
+				&write_DBorFILE(1,'',$datadir,$newthreadid,'mail',@curthread_mail);
+			} else {
+				rename("$datadir/$curthreadid.mail", "$datadir/$newthreadid.mail");
+			}
 			require "$sourcedir/Notify.pl";
 			&ManageThreadNotify("load", $newthreadid);
 			my ($u,%t);

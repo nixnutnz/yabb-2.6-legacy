@@ -379,9 +379,7 @@ sub SaveSettingsTo {
 			# The following is for upgrades from YaBB versions < 2.4 START
 			if (-e "$vardir/membergroups.txt") { require "$vardir/membergroups.txt"; }
 			if (!@nopostorder && -e "$vardir/nopostorder.txt") {
-				fopen(NPORDER, "$vardir/nopostorder.txt");
-				@nopostorder = <NPORDER>;
-				fclose(NPORDER);
+				@nopostorder = &read_DBorFILE(0,'',$vardir,'nopostorder','txt');
 				chomp(@nopostorder);
 			}
 
@@ -404,48 +402,40 @@ sub SaveSettingsTo {
 			if (-e "$vardir/Guardian.settings") { require "$vardir/Guardian.settings"; }
 
 			if (-e "$vardir/ban.txt") {
-				fopen(BAN, "$vardir/ban.txt");
-				foreach (<BAN>) {
+				foreach (&read_DBorFILE(0,'',$vardir,'ban','txt')) {
 					my ($type, $bannedlist) = split(/\|/, $line, 2);
 					chomp($bannedlist);
 					$ip_banlist = $bannedlist if $type =~ /I/i;
 					$email_banlist = $bannedlist if $type =~ /E/i;
 					$user_banlist = $bannedlist if $type =~ /U/i;
 				}
-				fclose(BAN);
 			}
 
 			if (-e "$vardir/HelpSettings.txt") { require "$vardir/HelpSettings.txt"; }
 			if (-e "$vardir/BackupSettings.cgi") { require "$vardir/BackupSettings.cgi"; @backup_paths = @paths; }
 
 			if (-e "$vardir/extended_profiles_order.txt") {
-				fopen(EXT_FILE, "$vardir/extended_profiles_order.txt");
-				@ext_prof_order = <EXT_FILE>;
-				fclose(EXT_FILE);
+				@ext_prof_order = &read_DBorFILE(0,'',$vardir,'extended_profiles_order','txt');
 				chomp(@ext_prof_order);
 			}
 			if (-e "$vardir/extended_profiles_fields.txt") {
-				fopen(EXT_FILE, "$vardir/extended_profiles_fields.txt");
-				@ext_prof_fields = <EXT_FILE>;
-				fclose(EXT_FILE);
+				@ext_prof_fields = &read_DBorFILE(0,'',$vardir,'extended_profiles_fields','txt');
 				chomp(@ext_prof_fields);
 			}
 
 			if (-e "$vardir/palette.def") {
-				fopen(DEFPAL, "$vardir/palette.def"); @pallist = <DEFPAL>; fclose(DEFPAL); chomp(@pallist);
+				@pallist = &read_DBorFILE(0,'',$vardir,'palette','def'); chomp(@pallist);
 			}
 
 			if (!@AdvancedTabs) {
 				if (-e "$vardir/taborder.txt") {
-					fopen(TABFILE, "$vardir/taborder.txt");
-					@AdvancedTabs = <TABFILE>;
-					fclose(TABFILE);
+					@AdvancedTabs = &read_DBorFILE(0,'',$vardir,'taborder','txt');
 					chomp(@AdvancedTabs);
 				} else { @AdvancedTabs = qw (home help search ml admin revalidatesession login register guestpm mycenter logout); }
 
-				if (fopen(EXTTAB, "$vardir/tabs_ext.def")) {
-					my %exttabs = map /(.*)\t(.*)/, <EXTTAB>;
-					fclose(EXTTAB);
+				my @temp = &read_DBorFILE(1,'',$vardir,'tabs_ext','def');
+				if (@temp) {
+					my %exttabs = map /(.*)\t(.*)/, @temp;
 					for (my $i = 0; $i < @AdvancedTabs; $i++) {
 						if ($exttabs{$AdvancedTabs[$i]}) {
 							$exttabs{$AdvancedTabs[$i]} =~ s/"//g;
@@ -1024,46 +1014,46 @@ EOF
 		die "I don't know how to write to this file.";
 	}
 
-	WriteSettingsTo("$vardir/$file", $setfile);
+	&WriteSettingsTo($setfile);
 
 	if ($settings_file_version ne $YaBBversion) { # START upgrade codes
 		# The following is for upgrades from YaBB versions < 2.5 START
-		unlink("$memberdir/members.ttl") if -e "$memberdir/members.ttl";
-		unlink("$memberdir/memberlist.txt") if -e "$memberdir/memberlist.txt";
+		&delete_DBorFILE("$memberdir/members.ttl") if -e "$memberdir/members.ttl";
+		&delete_DBorFILE("$memberdir/memberlist.txt") if -e "$memberdir/memberlist.txt";
 		# The following is for upgrades from YaBB versions < 2.5 END
 
 		# The following is for upgrades from YaBB versions < 2.4 START
-		unlink("$vardir/nopostorder.txt") if -e "$vardir/nopostorder.txt";
-		unlink("$vardir/advsettings.txt") if -e "$vardir/advsettings.txt";
-		unlink("$vardir/secsettings.txt") if -e "$vardir/secsettings.txt";
-		unlink("$vardir/membergroups.txt") if -e "$vardir/membergroups.txt";
-		unlink("$vardir/Smilies.txt") if -e "$vardir/Smilies.txt";
-		unlink("$vardir/template.cfg") if -e "$vardir/template.cfg";
-		unlink("$vardir/Guardian.banned") if -e "$vardir/Guardian.banned";
-		unlink("$vardir/Guardian.settings") if -e "$vardir/Guardian.settings";
-		unlink("$vardir/ban.txt") if -e "$vardir/ban.txt";
-		unlink("$vardir/ban_email.txt") if -e "$vardir/ban_email.txt";
-		unlink("$vardir/ban_memname.txt") if -e "$vardir/ban_memname.txt";
-		unlink("$vardir/HelpSettings.txt") if -e "$vardir/HelpSettings.txt";
-		unlink("$vardir/BackupSettings.cgi") if -e "$vardir/BackupSettings.cgi";
-		unlink("$vardir/extended_profiles_order.txt") if -e "$vardir/extended_profiles_order.txt";
-		unlink("$vardir/extended_profiles_fields.txt") if -e "$vardir/extended_profiles_fields.txt";
-		unlink("$vardir/palette.def") if -e "$vardir/palette.def";
-		unlink("$vardir/taborder.txt") if -e "$vardir/taborder.txt";
-		unlink("$vardir/tabs_ext.def") if -e "$vardir/tabs_ext.def";
+		&delete_DBorFILE("$vardir/nopostorder.txt") if -e "$vardir/nopostorder.txt";
+		&delete_DBorFILE("$vardir/advsettings.txt") if -e "$vardir/advsettings.txt";
+		&delete_DBorFILE("$vardir/secsettings.txt") if -e "$vardir/secsettings.txt";
+		&delete_DBorFILE("$vardir/membergroups.txt") if -e "$vardir/membergroups.txt";
+		&delete_DBorFILE("$vardir/Smilies.txt") if -e "$vardir/Smilies.txt";
+		&delete_DBorFILE("$vardir/template.cfg") if -e "$vardir/template.cfg";
+		&delete_DBorFILE("$vardir/Guardian.banned") if -e "$vardir/Guardian.banned";
+		&delete_DBorFILE("$vardir/Guardian.settings") if -e "$vardir/Guardian.settings";
+		&delete_DBorFILE("$vardir/ban.txt") if -e "$vardir/ban.txt";
+		&delete_DBorFILE("$vardir/ban_email.txt") if -e "$vardir/ban_email.txt";
+		&delete_DBorFILE("$vardir/ban_memname.txt") if -e "$vardir/ban_memname.txt";
+		&delete_DBorFILE("$vardir/HelpSettings.txt") if -e "$vardir/HelpSettings.txt";
+		&delete_DBorFILE("$vardir/BackupSettings.cgi") if -e "$vardir/BackupSettings.cgi";
+		&delete_DBorFILE("$vardir/extended_profiles_order.txt") if -e "$vardir/extended_profiles_order.txt";
+		&delete_DBorFILE("$vardir/extended_profiles_fields.txt") if -e "$vardir/extended_profiles_fields.txt";
+		&delete_DBorFILE("$vardir/palette.def") if -e "$vardir/palette.def";
+		&delete_DBorFILE("$vardir/taborder.txt") if -e "$vardir/taborder.txt";
+		&delete_DBorFILE("$vardir/tabs_ext.def") if -e "$vardir/tabs_ext.def";
 		# The following is for upgrades from YaBB versions < 2.4 END
 
 		# The following is for upgrades from YaBB versions < 2.3 START
-		unlink("$vardir/upgrade_secsettings.txt") if -e "$vardir/upgrade_secsettings.txt";
-		unlink("$vardir/upgrade_advsettings.txt") if -e "$vardir/upgrade_advsettings.txt";
-		unlink("$vardir/upgrade_Settings.pl") if -e "$vardir/upgrade_Settings.pl";
+		&delete_DBorFILE("$vardir/upgrade_secsettings.txt") if -e "$vardir/upgrade_secsettings.txt";
+		&delete_DBorFILE("$vardir/upgrade_advsettings.txt") if -e "$vardir/upgrade_advsettings.txt";
+		&delete_DBorFILE("$vardir/upgrade_Settings.pl") if -e "$vardir/upgrade_Settings.pl";
 		# The following is for upgrades from YaBB versions < 2.3 END
 	} # END upgrade codes
 }
 
 # Subroutine for writing the common format of settings file
 sub WriteSettingsTo {
-	my ($file, $setfile) = @_;
+	my ($setfile) = @_;
 
 	# Fix a certain type of syntax error
 	$setfile =~ s~=\s+;~= 0;~g;
@@ -1090,9 +1080,7 @@ sub WriteSettingsTo {
 	}
 
 	# Write it out
-	fopen(SETTINGS, ">$file") || &fatal_error('cannot_open', $file, 1);
-	print SETTINGS $setfile;
-	fclose(SETTINGS);
+	&write_DBorFILE(0,'',$vardir,'Settings','pl',($setfile));
 }
 
 1;

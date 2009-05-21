@@ -22,14 +22,12 @@ if ($action eq 'detailedversion') { return 1; }
 sub DoVote {
 	$pollnum = $INFO{'num'};
 	$start   = $INFO{'start'};
-	unless (-e "$datadir/$pollnum.poll") { &fatal_error('poll_not_found',$pollnum); }
+	unless (&checkfor_DBorFILE("$datadir/$pollnum.poll")) { &fatal_error('poll_not_found',$pollnum); }
 
 	$novote = 0;
 	$vote   = "";
-	fopen(FILE, "$datadir/$pollnum.poll");
-	$poll_question = <FILE>;
-	@poll_data     = <FILE>;
-	fclose(FILE);
+	@poll_data     = &read_DBorFILE(1,'',$datadir,$pollnum,'poll');
+	$poll_question = shift(@poll_data);
 	chomp $poll_question;
 	(undef, $poll_locked, undef, undef, undef, undef, $guest_vote, undef, $multi_vote, undef, undef, undef, $vote_limit,undef) = split(/\|/, $poll_question, 14);
 	for (my $i = 0; $i < @poll_data; $i++) {
@@ -50,9 +48,7 @@ sub DoVote {
 	if ($iamguest && !$guest_vote) { &fatal_error('members_only'); }
 	if ($poll_locked) { &fatal_error('locked_poll_no_count'); }
 
-	fopen(FILE, "$datadir/$pollnum.polled");
-	@polled = <FILE>;
-	fclose(FILE);
+	@polled = &read_DBorFILE(1,'',$datadir,$pollnum,'polled');
 
 	for (my $i = 0; $i < @polled; $i++) {
 		($voters_ip, $voters_name, $voters_vote, $vote_time) = split(/\|/, $polled[$i]);
@@ -69,16 +65,13 @@ sub DoVote {
 		}
 	}
 
-	fopen(FILE, ">$datadir/$pollnum.poll");
+	&read_DBorFILE(1,FILE,$datadir,$pollnum,'poll');
 	print FILE "$poll_question\n";
 	for (my $i = 0; $i < @poll_data; $i++) { print FILE "$votes[$i]|$options[$i]|$slicecols[$i]|$split[$i]\n"; }
-	fclose(FILE);
+	&write_DBorFILE(1,FILE,$datadir,$pollnum,'poll',(''));
 
-	fopen(FILE, ">$datadir/$pollnum.polled");
-	print FILE "$user_ip|$username|$vote|$date\n";
-	print FILE @polled;
-	fclose(FILE);
-			
+	&write_DBorFILE(1,'',$datadir,$pollnum,'polled',("$user_ip|$username|$vote|$date\n",@polled));
+
 	if ($start) { $start = "/$start"; }
 	if ($INFO{'scp'}) {
 		$yySetLocation = qq~$scripturl~;
@@ -90,15 +83,13 @@ sub DoVote {
 
 sub UndoVote {
 	$pollnum = $INFO{'num'};
-	unless (-e "$datadir/$pollnum.poll") { &fatal_error('poll_not_found',$pollnum); }
+	unless (&checkfor_DBorFILE("$datadir/$pollnum.poll")) { &fatal_error('poll_not_found',$pollnum); }
 
 	&check_deletepoll;
 	if (!$iamadmin && $poll_nodelete{$username}) { &fatal_error('no_access'); }
 
-	fopen(FILE, "$datadir/$pollnum.poll");
-	$poll_question = <FILE>;
-	@poll_data     = <FILE>;
-	fclose(FILE);
+	@poll_data     = &read_DBorFILE(0,'',$datadir,$pollnum,'poll');
+	$poll_question = shift(@poll_data);
 	$poll_locked = (split /\|/, $poll_question, 2)[1];
 	my @options;
 	my @votes;
@@ -108,9 +99,7 @@ sub UndoVote {
 		($votes[$i], $options[$i], $slicecols[$i], $split[$i]) = split(/\|/, $poll_data[$i]);
 	}
 
-	fopen(FILE, "$datadir/$pollnum.polled");
-	@polled = <FILE>;
-	fclose(FILE);
+	@polled = &read_DBorFILE(1,'',$datadir,$pollnum,'polled');
 
 	if ($FORM{'multidel'} eq "1") {
 		&is_admin;
@@ -144,15 +133,13 @@ sub UndoVote {
 		if (!$found) { &fatal_error('not_completed'); }
 	}
 
-	fopen(FILE, ">$datadir/$pollnum.poll");
+	&read_DBorFILE(0,FILE,$datadir,$pollnum,'poll');
 	print FILE $poll_question;
 	for (my $i = 0; $i < @poll_data; $i++) { print FILE "$votes[$i]|$options[$i]|$slicecols[$i]|$split[$i]\n"; }
-	fclose(FILE);
+	&write_DBorFILE(1,FILE,$datadir,$pollnum,'poll',(''));
 
-	fopen(FILE, ">$datadir/$pollnum.polled");
-	print FILE @polled;
-	fclose(FILE);
-			
+	&write_DBorFILE(1,'',$datadir,$pollnum,'polled',@polled);
+
 	if ($start) { $start = "/$start"; }
 	if ($INFO{'scp'}) {
 		$yySetLocation = qq~$scripturl~;
@@ -164,12 +151,10 @@ sub UndoVote {
 
 sub LockPoll {
 	$pollnum = $INFO{'num'};
-	unless (-e "$datadir/$pollnum.poll") { &fatal_error('poll_not_found',$pollnum); }
+	unless (&checkfor_DBorFILE("$datadir/$pollnum.poll")) { &fatal_error('poll_not_found',$pollnum); }
 
-	fopen(FILE, "$datadir/$pollnum.poll");
-	$poll_question = <FILE>;
-	@poll_data     = <FILE>;
-	fclose(FILE);
+	@poll_data     = &read_DBorFILE(1,'',$datadir,$pollnum,'poll');
+	$poll_question = shift(@poll_data);
 	chomp $poll_question;
 	($poll_question, $poll_locked, $poll_uname, $poll_stuff) = split(/\|/, $poll_question, 4);
 	unless ($username eq $poll_uname || $iamadmin || $iamgmod || $iammod) { &fatal_error('not_allowed'); }
@@ -177,10 +162,7 @@ sub LockPoll {
 	if ($poll_locked) { $poll_locked = 0; }
 	else { $poll_locked = 1; }
 
-	fopen(FILE, ">$datadir/$pollnum.poll");
-	print FILE "$poll_question|$poll_locked|$poll_uname|$poll_stuff\n";
-	print FILE @poll_data;
-	fclose(FILE);
+	&write_DBorFILE(1,'',$datadir,$pollnum,'poll',("$poll_question|$poll_locked|$poll_uname|$poll_stuff\n",@poll_data));
 
 	if ($start) { $start = "/$start"; }
 	if ($INFO{'scp'}){
@@ -195,7 +177,7 @@ sub votedetails {
 	&is_admin;
 
 	$pollnum = $INFO{'num'};
-	unless (-e "$datadir/$pollnum.poll") { &fatal_error('poll_not_found',$pollnum); }
+	unless (&checkfor_DBorFILE("$datadir/$pollnum.poll")) { &fatal_error('poll_not_found',$pollnum); }
 	if ($start) { $start = "/$start"; }
 
 	&LoadCensorList;
@@ -204,16 +186,12 @@ sub votedetails {
 	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	($curcat, $catperms) = split(/\|/, $catinfo{"$cat"});
 
-	fopen(FILE, "$datadir/$pollnum.poll");
-	$poll_question = <FILE>;
-	@poll_data     = <FILE>;
-	fclose(FILE);
+	@poll_data     = &read_DBorFILE(0,'',$datadir,$pollnum,'poll');
+	$poll_question = shift(@poll_data);
 	chomp $poll_question;
 	($poll_question, $poll_locked, $poll_uname, $poll_name, $poll_email, $poll_date, $guest_vote, $hide_results, $multi_vote, $poll_mod, $poll_modname, $poll_comment, undef) = split(/\|/, $poll_question, 13);
 	unless (ref($thread_arrayref{$pollnum})) {
-		fopen(POLLTP, "$datadir/$pollnum.txt");
-		@{$thread_arrayref{$pollnum}} = <POLLTP>;
-		fclose(POLLTP);
+		@{$thread_arrayref{$pollnum}} = &read_DBorFILE(1,'',$datadir,$pollnum,'txt');
 	}
 	$psub = (split /\|/, ${$thread_arrayref{$pollnum}}[0], 2)[0];
 	&ToChars($psub);
@@ -246,9 +224,7 @@ sub votedetails {
 		&ToChars($options[$i]);
 	}
 
-	fopen(FILE, "$datadir/$pollnum.polled");
-	@polled = <FILE>;
-	fclose(FILE);
+	@polled = &read_DBorFILE(0,'',$datadir,$pollnum,'polled');
 
 	if ($poll_modname ne '' && $poll_mod ne '') {
 		$poll_mod = &timeformat($poll_mod);
@@ -257,7 +233,7 @@ sub votedetails {
 	}
 	if ($poll_uname ne '' && $poll_date ne '') {
 		$poll_date = &timeformat($poll_date);
-		if ($poll_uname ne 'Guest' && (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$poll_uname) != 0) || (!$use_MySQL && -e "$memberdir/$poll_uname.vars"))) {
+		if ($poll_uname ne 'Guest' && &checkfor_DBorFILE("$memberdir/$poll_uname.vars")) {
 			&LoadUser($poll_uname);
 			$displaydate = qq~<span class="small">&#171; $polltxt{'45'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_uname}">${$uid.$poll_uname}{'realname'}</a> $polltxt{'46'}: $poll_date &#187;</span>~;
 		} else {
@@ -296,7 +272,7 @@ sub votedetails {
 		$voted = '';
 		($voters_ip, $voters_name, $voters_vote, $vote_date) = split(/\|/, $entry);
 		$id = qq~$voters_ip-$voters_name~;
-		if ($voters_name ne 'Guest' && (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$voters_name) != 0) || (!$use_MySQL && -e "$memberdir/$voters_name.vars"))) {
+		if ($voters_name ne 'Guest' && &checkfor_DBorFILE("$memberdir/$voters_name.vars")) {
 			&LoadUser($voters_name);
 			$voters_name = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$voters_name}">${$uid.$voters_name}{'realname'}</a>~;
 		}
@@ -346,10 +322,8 @@ sub display_poll {
 		$scp = qq~;scp=1~;
 		$viewthread = qq~<a href="$scripturl?num=$pollnum" class="altlink">$img{'viewthread'}</a>~;
 		$boardpoll = qq~&nbsp;/ <a href="$scripturl?action=scpolldel" class="altlink">$polltxt{'showcaserem'}</a>~ if ($iamadmin || $iamgmod);
-	} elsif (-e "$datadir/showcase.poll") {
-		fopen (FILE, "$datadir/showcase.poll");
-		$boardpoll = qq~&nbsp;/ $polltxt{'showcased'}~ if $pollnum == <FILE>;
-		fclose (FILE);
+	} elsif (&checkfor_DBorFILE("$/showcase.poll")) {
+		$boardpoll = qq~&nbsp;/ $polltxt{'showcased'}~ if $pollnum == (&read_DBorFILE(1,'',$datadir,'showcase','poll'))[0];
 		if ($iamadmin || $iamgmod) {
 			$boardpoll = $boardpoll ? qq~&nbsp;/ <a href="$scripturl?action=scpolldel" class="altlink">$polltxt{'showcaserem'}</a>~ : qq~&nbsp;/ <a href="javascript:Check=confirm('$polltxt{'confirm'}');if(Check==true){window.location.href='$scripturl?action=scpoll;num=$pollnum';}else{void Check;}" class="altlink">$polltxt{'setshowcased'}</a>~;
 		}
@@ -360,20 +334,15 @@ sub display_poll {
 
 	&LoadCensorList;
 
-	fopen(FILE, "$datadir/$pollnum.poll");
-	$poll_question = <FILE>;
-	@poll_data = <FILE>;
-	fclose(FILE);
+	@poll_data = &read_DBorFILE(0,'',$datadir,$pollnum,'poll');
+	$poll_question = shift(@poll_data);
 	chomp $poll_question;
 	($poll_question, $poll_locked, $poll_uname, $poll_name, $poll_email, $poll_date, $guest_vote, $hide_results, $multi_vote, $poll_mod, $poll_modname, $poll_comment, $vote_limit, $pie_radius, $pie_legends, $poll_end) = split(/\|/, $poll_question);
 
 	if ($poll_end && !$poll_locked && $poll_end < $date) {
 		$poll_locked = 1;
 		$poll_end = '';
-		fopen(FILE, ">$datadir/$pollnum.poll");
-		print FILE "$poll_question|$poll_locked|$poll_uname|$poll_name|$poll_email|$poll_date|$guest_vote|$hide_results|$multi_vote|$poll_mod|$poll_modname|$poll_comment|$vote_limit|$pie_radius|$pie_legends|$poll_end\n";
-		print FILE @poll_data;
-		fclose(FILE);
+		&write_DBorFILE(1,'',$datadir,$pollnum,'poll',("$poll_question|$poll_locked|$poll_uname|$poll_name|$poll_email|$poll_date|$guest_vote|$hide_results|$multi_vote|$poll_mod|$poll_modname|$poll_comment|$vote_limit|$pie_radius|$pie_legends|$poll_end\n",@poll_data));
 	}
 
 	$pie_radius ||= 100;
@@ -383,10 +352,7 @@ sub display_poll {
 	$has_voted = 0;
 	if (!$guest_vote && $iamguest) { $has_voted = 4; }
 	else {
-		fopen(FILE, "$datadir/$pollnum.polled");
-		@polled = <FILE>;
-		fclose(FILE);
-		foreach $tmpLine (@polled) {
+		foreach $tmpLine (&read_DBorFILE(1,'',$datadir,$pollnum,'polled')) {
 			chomp $tmpline;
 			($voters_ip, $voters_name, $voters_vote, $vote_date) = split(/\|/, $tmpLine);
 			if ($iamguest && $voters_name eq 'Guest' && lc $voters_ip eq lc $user_ip) { $has_voted = 1; last; }
@@ -460,7 +426,7 @@ sub display_poll {
 		$displaydate = qq~<span class="small">&#171; $polltxt{'45a'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_modname}">${$uid.$poll_modname}{'realname'}</a> $polltxt{'46'}: $poll_mod &#187;</span>~;
 	} elsif ($poll_uname ne '' && $poll_date ne '') {
 		$poll_date = &timeformat($poll_date);
-		if ($poll_uname ne 'Guest' && (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$poll_uname) != 0) || (!$use_MySQL && -e "$memberdir/$poll_uname.vars"))) {
+		if ($poll_uname ne 'Guest' && &checkfor_DBorFILE("$memberdir/$poll_uname.vars")) {
 			&LoadUser($poll_uname);
 			$displaydate = qq~<span class="small">&#171; $polltxt{'45'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_uname}">${$uid.$poll_uname}{'realname'}</a> $polltxt{'46'}: $poll_date &#187;</span>~;
 		} elsif ($poll_name ne '') {
@@ -680,9 +646,7 @@ sub display_poll {
 }
 
 sub check_deletepoll {
-	fopen(FILE, "$datadir/$pollnum.poll");
-	$poll_chech = <FILE>;
-	fclose(FILE);
+	$poll_chech = &read_DBorFILE(1,'',$datadir,$pollnum,'poll');
 	chomp $poll_chech;
 	$vote_limit = (split /\|/, $poll_chech, 14)[12];
 	$poll_nodelete{$username} = 0;
@@ -690,18 +654,14 @@ sub check_deletepoll {
 		$poll_nodelete{$username} = 1;
 		return;
 	}
-	if (-e "$datadir/$pollnum.polled") {
-		fopen(FILE, "$datadir/$pollnum.polled");
-		@chpolled = <FILE>;
-		fclose(FILE);
-		foreach $chvoter (@chpolled) {
-			(undef, $chvotersname, undef, $chvotedate) = split(/\|/, $chvoter);
-			if ($chvotersname eq $username) {
-				$chdiff = $date - $chvotedate;
-				if ($chdiff > ($vote_limit * 60)) {
-					$poll_nodelete{$username} = 1;
-					last;
-				}
+
+	foreach $chvoter (&read_DBorFILE(1,'',$datadir,$pollnum,'polled')) {
+		(undef, $chvotersname, undef, $chvotedate) = split(/\|/, $chvoter);
+		if ($chvotersname eq $username) {
+			$chdiff = $date - $chvotedate;
+			if ($chdiff > ($vote_limit * 60)) {
+				$poll_nodelete{$username} = 1;
+				last;
 			}
 		}
 	}
@@ -710,16 +670,14 @@ sub check_deletepoll {
 sub ShowcasePoll {
 	is_admin_or_gmod;
 	my $thrdid = $INFO{'num'};
-	fopen (SCFILE, ">$datadir/showcase.poll");
-	print SCFILE $thrdid;
-	fclose (SCFILE);
+	&write_DBorFILE(1,'',$datadir,'showcase','poll',($thrdid));
 	$yySetLocation = qq~$scripturl~;
 	&redirectexit;
 }
 
 sub DelShowcasePoll{
 	is_admin_or_gmod;
-	if (-e "$datadir/showcase.poll") { unlink("$datadir/showcase.poll"); }
+	if (&checkfor_DBorFILE("$datadir/showcase.poll")) { &delete_DBorFILE("$datadir/showcase.poll"); }
 	$yySetLocation = qq~$scripturl~;
 	&redirectexit;
 }

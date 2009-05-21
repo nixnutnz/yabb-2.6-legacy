@@ -203,9 +203,7 @@ sub MLPosition {
 }
 
 sub MLDate {
-	fopen(MEMBERINFOREAD, "$memberdir/memberinfo.txt");
-	my @tempmemlist = <MEMBERINFOREAD>;
-	fclose(MEMBERINFOREAD);
+	my @tempmemlist = &read_DBorFILE(0,'',$memberdir,'memberinfo','txt');
 	if ($FORM{'reversed'} || $INFO{'reversed'}) {
 		@tempmemlist = reverse @tempmemlist;
 	}

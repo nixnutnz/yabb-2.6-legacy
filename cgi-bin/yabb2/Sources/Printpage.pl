@@ -157,9 +157,7 @@ sub Print {
 
 	# Lets open up the thread file itself
 	unless (ref($thread_arrayref{$num})) {
-		fopen(THREADS, "$datadir/$num.txt") || &donoopen;
-		@{$thread_arrayref{$num}} = <THREADS>;
-		fclose(THREADS);
+		&donoopen if !(@{$thread_arrayref{$num}} = &read_DBorFILE(1,'',$datadir,$num,'txt'));
 	}
 	$cat =~ s/\n//g;
 
@@ -262,12 +260,10 @@ function do_images() {
 			# store all downloadcounts in variable
 			if (!%attach_count) {
 				my ($atfile,$atcount);
-				fopen(ATM, "$vardir/attachments.txt");
-				while (<ATM>) {
+				foreach (&read_DBorFILE(1,'',$vardir,'attachments','txt')) {
 					(undef, undef, undef, undef, undef, undef, undef, $atfile, $atcount) =split(/\|/, $_);
 					$attach_count{$atfile} = $atcount;
 				}
-				fclose(ATM);
 				$attach_count{'no_attachments'} = 1 if !%attach_count;
 			}
 
@@ -568,9 +564,9 @@ sub do_print {
 
 		if ($author) { # out of YaBBC.pl -> sub quotemsg {
 			&ToChars($author);
-			if (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$author) == 0) || (!$use_MySQL && !-e "$memberdir/$author.vars")) { # if the file is there it is an unencrypted user ID
+			if (!&checkfor_DBorFILE("$memberdir/$author.vars")) { # if the file is there it is an unencrypted user ID
 				$author = &decloak($author); # if not, decrypt it and see if it is a regged user
-				if (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$author) == 0) || (!$use_MySQL && !-e "$memberdir/$author.vars")) { # if still not found probably the author is a screen name
+				if (!&checkfor_DBorFILE("$memberdir/$author.vars")) { # if still not found probably the author is a screen name
 					$testauthor = &MemberIndex("who_is", "$author"); # check if this name exists in the memberlist
 					if ($testauthor ne ""){ # if it is, load the user id returned
 						$author = $testauthor;

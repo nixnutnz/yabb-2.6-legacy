@@ -91,15 +91,13 @@ sub ModifyTemplate {
 		}
 	}
 
-	fopen(TMPL, "$templatesdir/$templatefile");
-	while ($line = <TMPL>) {
+	foreach $line (&read_DBorFILE(0,'',$templatesdir,split(/\./, $templatefile))) {
 		$line =~ s~[\r\n]~~g;
 		$line =~ s~&nbsp;~&#38;nbsp;~g;
 		$line =~ s~&amp;~&#38;amp;~g;
 		&FromHTML($line);
 		$fulltemplate .= qq~$line\n~;
 	}
-	fclose(TMPL);
 
 	$yymain .= qq~
  <div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
@@ -150,10 +148,9 @@ sub ModifyTemplate2 {
 	$FORM{'template'} =~ s~\n\Z~~;
 	if ($FORM{'filename'}) { $templatefile = $FORM{'filename'}; }
 	else { $templatefile = "default.html"; }
-	fopen(TMPL, ">$templatesdir/$templatefile");
 
-	print TMPL "$FORM{'template'}\n";
-	fclose(TMPL);
+	&write_DBorFILE(0,'',$templatesdir,split(/\./, $templatefile),("$FORM{'template'}\n"));
+
 	$yySetLocation = qq~$adminurl?action=modtemp;templatefile=$templatefile~;
 	&redirectexit;
 }
@@ -162,9 +159,9 @@ sub ModifyStyle {
 	&is_admin_or_gmod;
 	my ($fullcss, $line, $csstype);
 	$admincs = 0;
-	if ($FORM{'cssfile'}) { $cssfile = $FORM{'cssfile'}; $csstype = qq~$forumstylesdir/$cssfile~; }
-	elsif ($FORM{'admcssfile'}) { $cssfile = $FORM{'admcssfile'}; $csstype = qq~$adminstylesdir/$cssfile~; $admincs = 1; }
-	else { $cssfile = "default.css"; $csstype = qq~$forumstylesdir/$cssfile~; }
+	if ($FORM{'cssfile'}) { $cssfile = $FORM{'cssfile'}; $csstype = qq~$forumstylesdir~; }
+	elsif ($FORM{'admcssfile'}) { $cssfile = $FORM{'admcssfile'}; $csstype = qq~$adminstylesdir~; $admincs = 1; }
+	else { $cssfile = "default.css"; $csstype = qq~$forumstylesdir~; }
 	opendir(TMPLDIR, "$forumstylesdir");
 	@styles = readdir(TMPLDIR);
 	closedir(TMPLDIR);
@@ -194,15 +191,13 @@ sub ModifyStyle {
 		}
 	}
 
-	fopen(CSS, "$csstype") or &fatal_error("cannot_open","$csstype");
-	while ($line = <CSS>) {
+	foreach $line (&read_DBorFILE(0,'',$csstype,split(/\./, $cssfile))) {
 		$line =~ s~[\r\n]~~g;
 		$line =~ s~&nbsp;~&#38;nbsp;~g;
 		$line =~ s~&amp;~&#38;amp;~g;
 		&FromHTML($line);
 		$fullcss .= qq~$line\n~;
 	}
-	fclose(CSS);
 
 	$yymain .= qq~
  <div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
@@ -270,12 +265,10 @@ sub ModifyStyle2 {
 	if ($FORM{'filename'}) { $cssfile = $FORM{'filename'}; }
 	else { $cssfile = "default.css"; }
 	if ($FORM{'type'}) {
-		fopen(CSS, ">$adminstylesdir/$cssfile") || &fatal_error("cannot_open","$adminstylesdir/$cssfile", 1);
+		&write_DBorFILE(0,'',$adminstylesdir,split(/\./, $cssfile),("$FORM{'css'}\n"));
 	} else {
-		fopen(CSS, ">$forumstylesdir/$cssfile") || &fatal_error("cannot_open","$forumstylesdir/$cssfile", 1);
+		&write_DBorFILE(0,'',$forumstylesdir,split(/\./, $cssfile),("$FORM{'css'}\n"));
 	}
-	print CSS "$FORM{'css'}\n";
-	fclose(CSS);
 	$yySetLocation = qq~$adminurl?action=modcss;cssfile=$cssfile~;
 	&redirectexit;
 }
@@ -315,9 +308,8 @@ sub ModifyCSS {
 		}
 	}
 
-	fopen(CSS, "$forumstylesdir/$cssfile") or &fatal_error("cannot_open","$forumstylesdir/$cssfile");
-	@thecss = <CSS>;
-	fclose(CSS);
+	@thecss = &read_DBorFILE(0,'',$forumstylesdir,split(/\./, $cssfile));
+
 	foreach $style_sgl (@thecss) {
 		$style_sgl =~ s/[\n\r]//g;
 		$style_sgl =~ s/\A\s*//;
@@ -1312,14 +1304,14 @@ sub ModifyCSS2 {
 		$style_cnt =~ s~(\;)~$1\n~g;
 		@style_arr = split(/\n/, $style_cnt);
 
-		fopen(TMPCSS, ">$forumstylesdir/$style_name.css") || &fatal_error("cannot_open","$forumstylesdir/$style_name.css", 1);
+		my @temp;
 		foreach $style_sgl (@style_arr) {
 			$style_sgl =~ s~\A\s+?~~g;
 			if($style_sgl =~ m~\;+\Z~) { $style_sgl = qq~\t$style_sgl~; }
 			$style_sgl =~ s/$forumstylesurl/\./g;
-			print TMPCSS "$style_sgl\n";
+			push(@temp, "$style_sgl\n");
 		}
-		fclose(TMPCSS);
+		&write_DBorFILE(0,'',$forumstylesdir,$style_name,'css',@temp);
 
 		$yySetLocation = qq~$adminurl?action=modcss;cssfile=$style_name.css~;
 		&redirectexit;
@@ -1327,7 +1319,7 @@ sub ModifyCSS2 {
 	} elsif ($FORM{'button'} == 3) {
 		$style_name = $FORM{'cssfile'};
 		if ($style_name eq "default.css") { &fatal_error("no_delete_default"); }
-		unlink "$forumstylesdir/$style_name";
+		&delete_DBorFILE("$forumstylesdir/$style_name");
 		$yySetLocation = qq~$adminurl?action=modcss;cssfile=default.css~;
 		&redirectexit;
 	}
@@ -1397,13 +1389,11 @@ sub ModifySkin {
 		}
 	}
 
-	fopen(CSS, "$forumstylesdir/$cssfile") or &fatal_error("cannot_open","$forumstylesdir/$cssfile");
-	while ($line = <CSS>) {
+	foreach $line (&read_DBorFILE(0,'',$forumstylesdir,split(/\./, $cssfile))) {
 		$line =~ s~[\r\n]~~g;
 		&FromHTML($line);
 		$fullcss .= qq~$line\n~;
 	}
-	fclose(CSS);
 
 	opendir(TMPLDIR, "$templatesdir");
 	@temptemplates = readdir(TMPLDIR);
@@ -1461,12 +1451,10 @@ sub ModifySkin {
 		}
 	}
 
-	fopen(TMPL, "$templatesdir/$viewhead/$viewhead.html");
-	while ($line = <TMPL>) {
+	foreach $line (&read_DBorFILE(0,'',"$templatesdir/$viewhead",$viewhead,'html')) {
 		$line =~ s~[\r\n]~~g;
 		$fulltemplate .= qq~$line\n~;
 	}
-	fclose(TMPL);
 
 	$tabsep = qq~<img src="$imagesdir/tabsep211.png" border="0" alt="" style="float: left; vertical-align: middle;" />~;
 	$tabfill = qq~<img src="$imagesdir/tabfill.gif" border="0" alt="" style="vertical-align: middle;" />~;
@@ -1721,7 +1709,7 @@ sub formatTempname {
 }
 
 sub TmpImgLoc {
-	if (!-e "$_[2]/$_[0]") { $thisimgloc = qq~img src="$forumstylesurl/default/$_[0]"~; }
+	if (!&checkfor_DBorFILE("$_[2]/$_[0]")) { $thisimgloc = qq~img src="$forumstylesurl/default/$_[0]"~; }
 	else { $thisimgloc = qq~img src="$_[1]/$_[0]"~; }
 	$thisimgloc;
 }
@@ -1732,10 +1720,8 @@ sub BoardTempl {
 	$imagesdir = qq~$_[1]~;
 	require "$templatesdir/$_[0]/BoardIndex.template";
 
-	if (-e ("$vardir/mostlog.txt")) {
-		fopen(MOSTUSERS, "$vardir/mostlog.txt");
-		@mostentries = <MOSTUSERS>;
-		fclose(MOSTUSERS);
+	if (&checkfor_DBorFILE("$vardir/mostlog.txt")) {
+		@mostentries = &read_DBorFILE(0,'',$vardir,'mostlog','txt');
 		($mostmemb,  $datememb) = split(/\|/, $mostentries[0]);
 		($mostguest, $dateguest) = split(/\|/, $mostentries[1]);
 		($mostusers, $dateusers) = split(/\|/, $mostentries[2]);
@@ -2231,7 +2217,7 @@ sub UpdateTemplates {
 		if ($template_menutype) { $templateset{"$testname"} .= "|$tempelement"; }
 		else { $templateset{"$testname"} .= "|"; }
 
-		unlink "$templatesdir/$tempelement/$tempelement.cfg";
+		&delete_DBorFILE("$templatesdir/$tempelement/$tempelement.cfg");
 		return;
 
 	} elsif ($tempjob eq "save") {

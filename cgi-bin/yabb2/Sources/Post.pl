@@ -46,7 +46,7 @@ sub Post {
 	}
 	if ($currentboard eq '' && !$iamguest) { &fatal_error("no_access"); }
 	my ($filetype_info, $filesize_info);
-	my ($subtitle, $x, $mnum, $msub, $mname, $memail, $mdate, $mreplies, $musername, $micon, $mstate, $msubject, $mattach, $mip, $mmessage, $mns);
+	my ($subtitle, $x, $mnum, $msub, $mname, $memail, $mdate, $mreplies, $musername, $micon, $mstate, $msubject, $mreplyno, $mip, $mmessage, $mns);
 	my $quotemsg = $INFO{'quote'};
 	$threadid = $INFO{'num'};
 
@@ -113,12 +113,10 @@ sub Post {
 	$settofield = 'subject';
 	if ($threadid ne '') {
 		unless (ref($thread_arrayref{$threadid})) {
-			fopen(FILE, "$datadir/$threadid.txt") || &fatal_error("cannot_open","$datadir/$threadid.txt", 1);
-			@{$thread_arrayref{$threadid}} = <FILE>;
-			fclose(FILE);
+			@{$thread_arrayref{$threadid}} = &read_DBorFILE(0,'',$datadir,$threadid,'txt');
 		}
 		if ($quotemsg ne '') {
-			($msubject, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $mmessage, $mns) = split(/\|/, ${$thread_arrayref{$threadid}}[$quotemsg]);
+			($msubject, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $mmessage, $mns) = split(/\|/, ${$thread_arrayref{$threadid}}[$quotemsg]);
 			$message = $mmessage;
 			$message =~ s~<br.*?>~\n~ig;
 			$message =~ s/ \&nbsp; \&nbsp; \&nbsp;/\t/ig;
@@ -144,7 +142,7 @@ sub Post {
 			$message = qq~[quote author=$hidename link=$threadid/$quotemsg#$quotemsg date=$mdate\]$message\[/quote\]\n~;
 			if ($mns eq 'NS') { $nscheck = qq~ checked="checked"~; }
 		} else {
-			($msubject, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $mmessage, $mns) = split(/\|/, ${$thread_arrayref{$threadid}}[0]);
+			($msubject, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $mmessage, $mns) = split(/\|/, ${$thread_arrayref{$threadid}}[0]);
 		}
 		$msubject =~ s/\bre:\s+//ig;
 		$sub = "Re: $msubject";
@@ -537,10 +535,8 @@ function checkForm(theForm) {
 		$vote_limit     ||= 0;
 		$pie_radius     ||= 100;
 
-		if (($iamadmin || $iamgmod) && -e "$datadir/showcase.poll") {
-			fopen (FILE, "$datadir/showcase.poll");
-			$scchecked = ' checked="checked"' if $threadid == <FILE>;
-			fclose (FILE);
+		if ($iamadmin || $iamgmod) {
+			$scchecked = ' checked="checked"' if $threadid == (&read_DBorFILE(0,'',$datadir,'showcase','poll'))[0];
 		}
 		if ($guest_vote)   { $gvchecked = ' checked="checked"'; }
 		if ($hide_results) { $hrchecked = ' checked="checked"'; }
@@ -1185,7 +1181,7 @@ function checkForm(theForm) {
 
 			my $startcount;
 			for (my $y = 1; $y <= $allowattach; $y++) {
-				if (($action eq 'modify' || $action eq 'modify2') && $files[$y-1] ne "" && -e "$uploaddir/$files[$y-1]") {
+				if (($action eq 'modify' || $action eq 'modify2') && $files[$y-1] ne "" && &checkfor_DBorFILE("$uploaddir/$files[$y-1]")) {
 					$startcount++;
 					$yymain .= qq~
 			<div id="attform_a_$y" style="float:left; width:23%;~ . ($y > 1 ? qq~ padding-top:5px~ : '') . qq~"><b>$fatxt{'6'} $y:</b></div>
@@ -2185,7 +2181,7 @@ sub Post2 {
 	$message =~ s/([\000-\x09\x0b\x0c\x0e-\x1f\x7f])/\x0d/g;
 	&CheckIcon;
 
-	if (!$use_MySQL) { unlink("$datadir/.txt"); }
+	if (!$use_MySQL) { &delete_DBorFILE("$datadir/.txt"); }
 
 	if (!$iamguest) {
 		# If not guest, get name and email.
@@ -2315,7 +2311,7 @@ sub Post2 {
 					${$uid.$username}{'spamtime'} = $date;
 					&UserAccount($username,"update");
 					$spam_hits_left_count = $post_speed_count - ${$uid.$username}{'spamcount'};
-					foreach (@filelist) { unlink("$uploaddir/$_"); }
+					foreach (@filelist) { &delete_DBorFILE("$uploaddir/$_"); }
 					&fatal_error("tsc_alert");
 				}
 			}
@@ -2325,8 +2321,8 @@ sub Post2 {
 			$fixfile = qq~$fixname$fixext~;
 
 			if (!$overwrite) { $fixfile = &check_existence($uploaddir, $fixfile); }
-			elsif ($overwrite == 2 && -e "$uploaddir/$fixfile") {
-				foreach (@filelist) { unlink("$uploaddir/$_"); }
+			elsif ($overwrite == 2 && &checkfor_DBorFILE("$uploaddir/$fixfile")) {
+				foreach (@filelist) { &delete_DBorFILE("$uploaddir/$_"); }
 				&fatal_error("file_overwrite");
 			}
 
@@ -2339,24 +2335,24 @@ sub Post2 {
 			}
 			if ($match) {
 				unless ($allowattach && (($allowguestattach == 0 && $username ne 'Guest') || $allowguestattach == 1)) {
-					foreach (@filelist) { unlink("$uploaddir/$_"); }
+					foreach (@filelist) { &delete_DBorFILE("$uploaddir/$_"); }
 					&fatal_error("no_perm_att");
 				}
 			} else {
-				foreach (@filelist) { unlink("$uploaddir/$_"); }
+				foreach (@filelist) { &delete_DBorFILE("$uploaddir/$_"); }
 				&Preview("$fixfile $fatxt{'20'} @ext");
 			}
 
 			my ($size,$buffer,$filesize,$file_buffer);
 			while ($size = read($file, $buffer, 512)) { $filesize += $size; $file_buffer .= $buffer; }
 			if ($limit && $filesize > (1024 * $limit)) {
-				foreach (@filelist) { unlink("$uploaddir/$_"); }
+				foreach (@filelist) { &delete_DBorFILE("$uploaddir/$_"); }
 				&Preview("$fatxt{'21'} $fixfile (" . int($filesize / 1024) . " KB) $fatxt{'21b'} " . $limit);
 			}
 			if ($dirlimit) {
 				my $dirsize = &dirsize($uploaddir);
 				if ($filesize > ((1024 * $dirlimit) - $dirsize)) {
-					foreach (@filelist) { unlink("$uploaddir/$_"); }
+					foreach (@filelist) { &delete_DBorFILE("$uploaddir/$_"); }
 					&Preview("$fatxt{'22'} $fixfile (" . (int($filesize / 1024) - $dirlimit + int($dirsize / 1024)) . " KB) $fatxt{'22b'}");
 				}
 			}
@@ -2368,14 +2364,14 @@ sub Post2 {
 				fclose(NEWFILE);
 
 			} else { # return the server's error message if the new file could not be created
-				foreach (@filelist) { unlink("$uploaddir/$_"); }
+				foreach (@filelist) { &delete_DBorFILE("$uploaddir/$_"); }
 				&fatal_error("file_not_open","$uploaddir");
 			}
 
 			# check if file has actually been uploaded, by checking the file has a size
 			$filesizekb{$fixfile} = -s "$uploaddir/$fixfile";
 			unless ($filesizekb{$fixfile}) {
-				foreach (qw("@filelist" $fixfile)) { unlink("$uploaddir/$_"); }
+				foreach (qw("@filelist" $fixfile)) { &delete_DBorFILE("$uploaddir/$_"); }
 				&fatal_error("file_not_uploaded",$fixfile);
 			}
 			$filesizekb{$fixfile} = int($filesizekb{$fixfile} / 1024);
@@ -2397,7 +2393,7 @@ sub Post2 {
 				}
 				fclose(ATTFILE);
 				if(!$okatt) { # delete the file as it contains illegal code
-					foreach (qw("@filelist" $fixfile)) { unlink("$uploaddir/$_"); }
+					foreach (qw("@filelist" $fixfile)) { &delete_DBorFILE("$uploaddir/$_"); }
 					&fatal_error("file_not_uploaded","$fixfile <= illegal code inside image file!");
 				}
 			}
@@ -2432,28 +2428,21 @@ sub Post2 {
 		my @buffer = &read_DBorFILE(0,FILE,$boardsdir,$currentboard,'txt');
 		&write_DBorFILE(0,FILE,$boardsdir,$currentboard,'txt',(qq~$newthreadid|$subject|$name|$email|$date|$mreplies|$username|$icon|$mstate\n~,@buffer));
 
-		fopen(FILE, ">$datadir/$newthreadid.txt") || &fatal_error("cannot_open","$datadir/$newthreadid.txt", 1);
-		print FILE qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfile\n~;
-		fclose(FILE);
-
+		&write_DBorFILE(0,'',$datadir,$newthreadid,'txt',(qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfile\n~));
 
 		if (@filelist) {
-			fopen(AMP, ">>$vardir/attachments.txt") || &fatal_error("cannot_open","$vardir/attachments.txt");
+			my @temp = &read_DBorFILE(0,AMP,$vardir,'attachments','txt');
 			foreach $fixfile (@filelist) {
-				print AMP qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$date|$fixfile|0\n~;
+				push(@temp, qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$date|$fixfile|0\n~);
 			}
-			fclose(AMP);
+			&write_DBorFILE(0,AMP,$vardir,'attachments','txt',@temp);
 		}
 		if ($pollthread) { # Save Poll data for new thread
 			if (($iamadmin || $iamgmod) && $FORM{'scpoll'}) { # Save ShowcasePoll
-					fopen (SCFILE, ">$datadir/showcase.poll");
-					print SCFILE $newthreadid;
-					fclose (SCFILE);
+					&write_DBorFILE(1,'',$datadir,'showcase','poll',($newthreadid));
 			}
 
-			fopen(POLL, ">$datadir/$newthreadid.poll");
-			print POLL @poll_data;
-			fclose(POLL);
+			&write_DBorFILE(1,'',$datadir,$newthreadid,'poll',@poll_data);
 		}
 		## write the ctb file for the new thread
 		${$newthreadid}{'board'}        = $currentboard;
@@ -2464,7 +2453,7 @@ sub Post2 {
 		${$newthreadid}{'threadstatus'} = $mstate;
 		&MessageTotals("update", $newthreadid);
 
-		if (($enable_notifications == 1 || $enable_notifications == 3) && -e "$boardsdir/$currentboard.mail") {
+		if (($enable_notifications == 1 || $enable_notifications == 3) && &checkfor_DBorFILE("$boardsdir/$currentboard.mail")) {
 			&ToChars($subject);
 			$subject = &Censor($subject);
 			&NewNotify($newthreadid, $subject);
@@ -2525,7 +2514,6 @@ sub Post2 {
 
 		if ($use_MySQL) {
 			@tag = map { ${$threadid}{$_} } @tag;
-			unshift(@tag, $threadid) if !${$threadid}{'mysql'};
 		} else {
 			@tag = map { qq~'$_',"${$threadid}{$_}"\n~ } @tag;
 			unshift(@tag, "### ThreadID: $threadid ###\n\n");
@@ -2538,13 +2526,9 @@ sub Post2 {
 
 		if ($pollthread) { # Save new Poll data
 			if (($iamadmin || $iamgmod) && $FORM{'scpoll'}) { # Save ShowcasePoll
-					fopen (SCFILE, ">$datadir/showcase.poll");
-					print SCFILE $threadid;
-					fclose (SCFILE);
+					&write_DBorFILE(1,'',$datadir,'showcase','poll',($threadid));
 			}
-			fopen(POLL, ">$datadir/$threadid.poll");
-			print POLL @poll_data;
-			fclose(POLL);
+			&write_DBorFILE(1,'',$datadir,$threadid,'poll',@poll_data);
 		}
 
 		my @buffer = &read_DBorFILE(0,BOARDFILE,$boardsdir,$currentboard,'txt');
@@ -2553,16 +2537,14 @@ sub Post2 {
 		}
 		&write_DBorFILE(0,BOARDFILE,$boardsdir,$currentboard,'txt',(qq~$mnum|$msub|$mname|$memail|$date|$mreplies|$musername|$micon|$mstate\n~,@buffer));
 
-		fopen(THREADFILE, ">>$datadir/$threadid.txt") || &fatal_error("cannot_open","$datadir/$threadid.txt", 1);
-		print THREADFILE qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfile\n~;
-		fclose(THREADFILE);
+		&write_DBorFILE(0,THREADFILE,$datadir,$threadid,'txt',(@{$thread_arrayref{$threadid}},qq~$subject|$name|$email|$date|$username|$icon|~ . scalar(@{$thread_arrayref{$threadid}}) . qq~|$user_ip|$message|$ns|||$fixfile\n~));
 
 		if (@filelist) {
-			fopen(AMP, ">>$vardir/attachments.txt") || &fatal_error("cannot_open","$vardir/attachments.txt");
+			my @temp = &read_DBorFILE(0,AMP,$vardir,'attachments','txt');
 			foreach $fixfile (@filelist) {
-				print AMP qq~$mnum|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$date|$fixfile|0\n~;
+				push(@temp, qq~$mnum|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$date|$fixfile|0\n~);
 			}
-			fclose(AMP);
+			&write_DBorFILE(0,AMP,$vardir,'attachments','txt',@temp);
 		}
 
 		&ToChars($subject);
@@ -2721,7 +2703,7 @@ sub ReplyNotify {
 
 	my %mailsent;
 	&ManageMemberinfo("load");
-	if (-e "$boardsdir/$currentboard.mail") {
+	if (&checkfor_DBorFILE("$boardsdir/$currentboard.mail")) {
 		&ManageBoardNotify("load", $currentboard);
 		my %languages;
 		foreach (keys %theboard) {
@@ -2743,7 +2725,7 @@ sub ReplyNotify {
 		}
 		undef %theboard;
 	}
-	if (-e "$datadir/$thisthread.mail") {
+	if (&checkfor_DBorFILE("$datadir/$thisthread.mail")) {
 		&ManageThreadNotify("load", $thisthread);
 		my %languages;
 		foreach (keys %thethread) {
@@ -2773,9 +2755,7 @@ sub doshowthread {
 	if ($INFO{'start'}) { $INFO{'start'} = "/$INFO{'start'}"; }
 
 	unless (ref($thread_arrayref{$threadid}) || !$threadid) {
-		fopen(THREADFILE, "$datadir/$threadid.txt") || &fatal_error("cannot_open","$datadir/$threadid.txt", 1);
-		@{$thread_arrayref{$threadid}} = <THREADFILE>;
-		fclose(THREADFILE);
+		@{$thread_arrayref{$threadid}} = &read_DBorFILE(0,'',$datadir,$threadid,'txt');
 	}
 	my @messages = @{$thread_arrayref{$threadid}};
 
@@ -2808,7 +2788,7 @@ sub doshowthread {
 			$tempdate = &timeformat($tempdate);
 			$parseflash = 0;
 
-			if ($tempname ne 'Guest' && (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$tempname) != 0) || (!$use_MySQL && -e "$memberdir/$tempname.vars"))) { &LoadUser($tempname); }
+			if ($tempname ne 'Guest' && &checkfor_DBorFILE("$memberdir/$tempname.vars")) { &LoadUser($tempname); }
 			if (${$uid.$tempname}{'regtime'}) {
 				$registrationdate = ${$uid.$tempname}{'regtime'};
 			} else {
@@ -3014,7 +2994,7 @@ sub sendGuestPM2 {
 	$message =~ s/([\000-\x09\x0b\x0c\x0e-\x1f\x7f])/\x0d/g;
 	&CheckIcon;
 
-	if (-e ("$datadir/.txt")) { unlink("$datadir/.txt"); }
+	if (-e ("$datadir/.txt")) { &delete_DBorFILE("$datadir/.txt"); }
 
 	# User is Guest, then make sure the chosen name and email is not reserved or used by a member
 	if (lc $name eq lc &MemberIndex('check_exist', $name)) { &fatal_error('guest_taken', "($name)"); }
@@ -3027,18 +3007,11 @@ sub sendGuestPM2 {
 	$mreplies = 0;
 
 	# set announcement flag according to status of current board
-	if(-e "$memberdir/broadcast.messages") {
-		fopen(INBOX, "$memberdir/broadcast.messages");
-		@bmessages = <INBOX>;
-		fclose(INBOX);
-	}
-	fopen(INBOX, ">$memberdir/broadcast.messages");
+	@bmessages = &read_DBorFILE(1,'',$memberdir,'broadcast','messages');
 	# new format:  #messageid|from user|touser(s)|(ccuser(s))|(bccuser(s))|
 	#    subject|date|message|(parentmid)|(reply#)|ip|
 	#		messagestatus|flags|storefolder|attachment
-	print INBOX "$newthreadid|$name $email|admin|||$subject|$date|$message|$newthreadid|0|$ENV{'REMOTE_ADDR'}|g|||\n";
-	print INBOX @bmessages;
-	fclose(INBOX);
+	&write_DBorFILE(0,'',$memberdir,'broadcast','messages',("$newthreadid|$name $email|admin|||$subject|$date|$message|$newthreadid|0|$ENV{'REMOTE_ADDR'}|g|||\n",@bmessages));
 	undef @bmessages;
 
 	# The thread ID, regardless of whether it's a new thread or not
@@ -3100,12 +3073,10 @@ sub modAlert {
 	$settofield = 'subject';
 	if ($threadid ne '') {
 		unless (ref($thread_arrayref{$threadid})) {
-			fopen(FILE, "$datadir/$threadid.txt") || &fatal_error("cannot_open","$datadir/$threadid.txt", 1);
-			@{$thread_arrayref{$threadid}} = <FILE>;
-			fclose(FILE);
+			@{$thread_arrayref{$threadid}} = &read_DBorFILE(0,'',$datadir,$threadid,'txt');
 		}
 		if ($quotemsg ne '') {
-			($msubject, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $mmessage, $mns) = split(/\|/, ${$thread_arrayref{$threadid}}[$quotemsg]);
+			($msubject, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $mmessage, $mns) = split(/\|/, ${$thread_arrayref{$threadid}}[$quotemsg]);
 			$message = $mmessage;
 			$message =~ s~<br.*?>~\n~ig;
 			$message =~ s/ \&nbsp; \&nbsp; \&nbsp;/\t/ig;
@@ -3126,7 +3097,7 @@ sub modAlert {
 			$msubject =~ s/\bre:\s+//ig;
 			if ($mns eq 'NS') { $nscheck = 'checked'; }
 		} else {
-			($msubject, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $mmessage, $mns) = split(/\|/, ${$thread_arrayref{$threadid}}[0]);
+			($msubject, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $mmessage, $mns) = split(/\|/, ${$thread_arrayref{$threadid}}[0]);
 			$msubject =~ s/\bre:\s+//ig;
 		}
 		$sub = "Re: $msubject";
@@ -3262,7 +3233,7 @@ sub modAlert2 {
 	$message =~ s~\n~<br />~g;
 	$message =~ s/([\000-\x09\x0b\x0c\x0e-\x1f\x7f])/\x0d/g;
 
-	if (-e ("$datadir/.txt")) { unlink("$datadir/.txt"); }
+	if (-e ("$datadir/.txt")) { &delete_DBorFILE("$datadir/.txt"); }
 	
 	# Find a valid random ID for it
 	$newthreadid = &getnewid;
@@ -3334,16 +3305,11 @@ sub modAlert2 {
 
 	if ($PMenableBm_level && $x) {
 		# set announcement flag according to status of current board
-		fopen(INBOX, "$memberdir/broadcast.messages") || &fatal_error("cannot_open","$memberdir/broadcast.messages");
-		my @inmessages = <INBOX>;
-		fclose(INBOX);
-		fopen(INBOX, ">$memberdir/broadcast.messages");
+		my @inmessages = &read_DBorFILE(0,'',$memberdir,'broadcast','messages');
 		# new format:  #messageid|from user|touser(s)|(ccuser(s))|(bccuser(s))|
 		#    subject|date|message|(parentmid)|(reply#)|ip|
 		#		messagestatus|flags|storefolder|attachment
-		print INBOX "$newthreadid|$name|$modgrps|||$subject|$date|$message|$newthreadid|0|$ENV{'REMOTE_ADDR'}|ab|||\n";
-		print INBOX @inmessages;
-		fclose(INBOX);
+		&write_DBorFILE(0,'',$memberdir,'broadcast','messages',("$newthreadid|$name|$modgrps|||$subject|$date|$message|$newthreadid|0|$ENV{'REMOTE_ADDR'}|ab|||\n",@inmessages));
 	}
 
 	$yySetLocation = qq~$scripturl?num=$threadid/$postid#$postid~;

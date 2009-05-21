@@ -196,21 +196,19 @@ sub MLPosition {
 }
 
 sub MLDate {
-	my $buffer;
 	$memcount = $members_total;
 	&buildIndex;
 	&buildPages(1);
-	fopen(MEMBERINFOREAD, "$memberdir/memberinfo.txt");
+	my @buffer = &read_DBorFILE(0,'',$memberdir,'memberinfo','txt');
 	my $counter = 0;
-	while ($counter < $start && ($buffer = <MEMBERINFOREAD>)) { $counter++; }
-	for ($counter = 0; $counter < $MembersPerPage && ($buffer = <MEMBERINFOREAD>); $counter++) {
-		chomp $buffer;
-		if ($buffer) {
-			($membername, undef) = split(/\t/, $buffer, 2);
+	while ($counter < $start && shift(@buffer)) { $counter++; }
+	for ($counter = 0; ($counter < $MembersPerPage && $buffer[$counter]); $counter++) {
+		chomp $buffer[$counter];
+		if ($buffer[$counter]) {
+			($membername, undef) = split(/\t/, $buffer[$counter], 2);
 			&showRows($membername);
 		}
 	}
-	fclose(MEMBERINFOREAD);
 	&buildPages(0);
 	$yytitle = "$ml_txt{'313'} $ml_txt{'4'} $ml_txt{'233'} $numshow";
 	&template;

@@ -287,7 +287,7 @@ sub backupsettings {
 	if ($newcommand) {
 		if (&ak_system("tar -cf $vardir/backuptest.$curtime.tar ./$yyexec.$yyext")) {
 			($style,$disabledtext) = ('','');
-			unlink("$vardir/backuptest.$curtime.tar");
+			&delete_DBorFILE("$vardir/backuptest.$curtime.tar");
 		} else {
 			$input = qq~disabled="disabled"~;
 			$style = qq~style="font-style:italic; color:grey"~;
@@ -310,7 +310,7 @@ sub backupsettings {
 	if ($newcommand) {
 		if (&ak_system("zip -gq $vardir/backuptest.$curtime.zip ./$yyexec.$yyext")) {
 			($style,$disabledtext) = ('','');
-			unlink("$vardir/backuptest.$curtime.zip");
+			&delete_DBorFILE("$vardir/backuptest.$curtime.zip");
 		} else {
 			$input = qq~disabled="disabled"~;
 			$style = qq~style="font-style:italic; color:grey"~;
@@ -520,9 +520,7 @@ sub backupsettings2 {
 	# Set $rememberbackup for alert into Settings.pl
 	if ($rememberbackup != $FORM{'rememberbackup'}) {
 		$rememberbackup = $FORM{'rememberbackup'};
-		fopen(SETTINGS, "$vardir/Settings.pl");
-		@settings = <SETTINGS>;
-		fclose(SETTINGS);
+		my @settings = &read_DBorFILE(0,'',$vardir,'Settings','pl');
 		for ($i = 0; $i < @settings; $i++) {
 			if ($settings[$i] =~ /\$rememberbackup = \d+;/) {
 				$rememberbackup = 0 if !$rememberbackup;
@@ -535,9 +533,7 @@ sub backupsettings2 {
 			$rememberbackup *= 86400; # days in seconds
 			unshift(@settings, "\$rememberbackup = $rememberbackup;\n");
 		}
-		fopen(SETTINGS, ">$vardir/Settings.pl");
-		print SETTINGS @settings;
-		fclose(SETTINGS);
+		&write_DBorFILE(0,'',$vardir,'Settings','pl',@settings);
 	}
 
 	$yySetLocation = qq~$adminurl?action=backupsettings~;
@@ -587,7 +583,7 @@ sub print_BackupSettings {
 
 # This routine actually does the backup.
 sub runbackup {
-	my(@settings, $prevmainsetting, $prevmaintext, $newmaintext, %pathconvert);
+	my($prevmainsetting, $prevmaintext, $newmaintext, %pathconvert);
 
 	if ($INFO{'runbackup_again'}) {
 		&fatal_error("","$backup_txt{32} \$INFO{'runbackup_again'}=$INFO{'runbackup_again'}") if $INFO{'runbackup_again'} !~ /^backup/;
@@ -711,7 +707,7 @@ sub BackupMethodInit {
 		# We need this for the loops, when preventing to run into browser/server timeout.
 		if (-e "$backupdir/backup$backuptype.$curtime.$filedirs.a.tar") {
 			$tarball->read("$backupdir/backup$backuptype.$curtime.$filedirs.a.tar", 0);
-			unlink("$backupdir/backup$backuptype.$curtime.$filedirs.a.tar");
+			&delete_DBorFILE("$backupdir/backup$backuptype.$curtime.$filedirs.a.tar");
 		}
 
 	} elsif ($backupmethod eq 'Archive::Zip') {
@@ -799,13 +795,13 @@ sub BackupMethodFinalize {
 			my ($gzip) = gzopen("$backupdir/backup$backuptype.$curtime.$filedirs.a.tar.gz", 'wb');
 			$gzip->gzwrite($tarball->write);
 			$gzip->gzclose();
-			unlink("$backupdir/backup$backuptype.$curtime.$filedirs.tar");
+			&delete_DBorFILE("$backupdir/backup$backuptype.$curtime.$filedirs.tar");
 
 		} elsif ($compressmethod eq 'Compress::Bzip2') { # Bzip2 as a module
 			my ($bzip2) = bzopen("$backupdir/backup$backuptype.$curtime.$filedirs.a.tar.bz2", 'wb');
 			$bzip2->bzwrite($tarball->write);
 			$bzip2->bzclose();
-			unlink("$backupdir/backup$backuptype.$curtime.$filedirs.tar");
+			&delete_DBorFILE("$backupdir/backup$backuptype.$curtime.$filedirs.tar");
 		}
 
 	} elsif ($backupmethod eq 'Archive::Zip') {
@@ -906,7 +902,7 @@ sub deletebackup2 {
 	if ($filename !~ /\Abackup/ || $filename !~ /\d{9,10}/) { &fatal_error("",$backup_txt{'45'}); }
 
 	# Just remove it!
-	unlink("$backupdir/$filename") || &fatal_error("","$backup_txt{51} $backupdir/$filename",1);
+	&delete_DBorFILE("$backupdir/$filename") || &fatal_error("","$backup_txt{51} $backupdir/$filename",1);
 
 	$yySetLocation = "$adminurl?action=backupsettings";
 	&redirectexit();

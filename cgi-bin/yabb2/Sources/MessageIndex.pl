@@ -57,9 +57,7 @@ sub MessageIndex {
 	# Load announcements, if they exist.
 	if ($annboard && $annboard ne $currentboard && ${$uid.$currentboard}{'rbin'} != 1) {
 		chomp $annboard;
-		fopen(ANN, "$boardsdir/$annboard.txt");
-		@temp_list = <ANN>;
-		fclose(ANN);
+		@temp_list = &read_DBorFILE(0,'',$boardsdir,$annboard,'txt');
 		foreach my $realanns (@temp_list) {
 			my $threadstatus = (split /\|/, $realanns)[8];
 			if ($threadstatus =~ /h/i && !$iamadmin && !$iamgmod && !$iammod) { next; }
@@ -73,9 +71,7 @@ sub MessageIndex {
 	($cat, undef) = split(/\|/, $catinfo{$catid});
 	&ToChars($cat);
 
-	fopen(BRDTXT, "$boardsdir/$currentboard.txt") || &fatal_error("cannot_open","$boardsdir/$currentboard.txt", 1);
-	@temp_list = <BRDTXT>;
-	fclose(BRDTXT);
+	@temp_list = &read_DBorFILE(0,'',$boardsdir,$currentboard,'txt');
 
 	# Sort the messages START
 	if (!$iamguest) { ($usermessagepage, undef, undef, undef, $tsort) = split(/\|/, ${$uid.$username}{'pageindex'}); }
@@ -293,11 +289,9 @@ sub MessageIndex {
 
 	my %attachments;
 	if (-s "$vardir/attachments.txt" > 5) {
-		fopen(ATM, "$vardir/attachments.txt");
-		while (<ATM>) {
+		foreach (&read_DBorFILE(1,'',$vardir,'attachments','txt')) {
 			$attachments{(split(/\|/, $_, 2))[0]}++;
 		}
-		fclose(ATM);
 	}
 
 	&LoadCensorList;
@@ -370,8 +364,6 @@ sub MessageIndex {
 			&MessageTotals('recover', $mnum);
 		}
 
-		my ($movedFlag, $movedSubject);
-
 		$permlinkboard = ${$mnum}{'board'} eq $annboard ? $annboard : $currentboard;
 		my $permdate = &permtimer($_);
 		my $message_permalink = qq~<a href="http://$perm_domain/$symlink$permdate/$permlinkboard/$mnum">$messageindex_txt{'10'}</a>~;
@@ -389,7 +381,7 @@ sub MessageIndex {
 		elsif ($mstate =~ /s/i && $mstate !~ /h/i) { $threadclass = 'sticky'; }
 		elsif (${$mnum}{'board'} eq $annboard && $mstate !~ /h/i) { $threadclass = $threadclass eq 'locked' ? 'announcementlock' : 'announcement'; }
 
-		($movedSubject, $movedFlag) = &Split_Splice_Move($msub,$mnum);
+		my ($movedSubject, $movedFlag) = &Split_Splice_Move($msub,$mnum);
 		$threadclass = 'locked_moved' if $movedFlag;
 
 		if (!$iamguest && $max_log_days_old) {
@@ -410,20 +402,16 @@ sub MessageIndex {
 
 		$micon = qq~<img src="$imagesdir/$micon.gif" alt="" border="0" align="middle" />~;
 		$mpoll = "";
-		if (-e "$datadir/$mnum.poll") {
+		if (&checkfor_DBorFILE("$datadir/$mnum.poll")) {
 			$mpoll = qq~<b>$messageindex_txt{'15'}: </b>~;
-			fopen(POLL, "$datadir/$mnum.poll");
-			my @poll = <POLL>;
-			fclose(POLL);
+			&write_DBorFILE(1,'',$datadir,$mnum,'poll',@poll);
 			my ($poll_question, $poll_locked, $poll_uname, $poll_name, $poll_email, $poll_date, $guest_vote, $hide_results, $multi_vote, $poll_mod, $poll_modname, $poll_comment, $vote_limit, $pie_radius, $pie_legends, $poll_end) = split(/\|/, $poll[0]);
 			chomp $poll_end;
 			if ($poll_end && !$poll_locked && $poll_end < $date) {
 				$poll_locked = 1;
 				$poll_end = '';
 				$poll[0] = "$poll_question|$poll_locked|$poll_uname|$poll_name|$poll_email|$poll_date|$guest_vote|$hide_results|$multi_vote|$poll_mod|$poll_modname|$poll_comment|$vote_limit|$pie_radius|$pie_legends|$poll_end\n";
-				fopen(POLL, ">$datadir/$mnum.poll");
-				print POLL @poll;
-				fclose(POLL);
+				&write_DBorFILE(1,'',$datadir,$mnum,'poll',@poll);
 			}
 			$micon = qq~$img{'pollicon'}~;
 			if ($poll_locked) { $micon = $img{'polliconclosed'}; }
@@ -431,10 +419,7 @@ sub MessageIndex {
 				if ($dlp < $createpoll_date) {
 					$micon = qq~$img{'polliconnew'}~;
 				} else {
-					fopen(POLLED, "$datadir/$mnum.polled");
-					$polled = <POLLED>;
-					fclose(POLLED);
-					(undef, undef, undef, $vote_date, undef) = split(/\|/, $polled);
+					(undef, undef, undef, $vote_date, undef) = split(/\|/, (&read_DBorFILE(0,'',$datadir,$mnum,'polled'))[0]);
 					if ($dlp < $vote_date) { $micon = qq~$img{'polliconnew'}~; }
 				}
 			}
@@ -500,9 +485,7 @@ sub MessageIndex {
 				$lastposter = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">${$uid.$lastposter}{'realname'}</a>~;
 			} else {
 				# Need to load thread to see lastposters DISPLAYname if is Ex-Member
-				fopen(EXMEMBERTHREAD, "$datadir/$mnum.txt") || &fatal_error('cannot_open', "$datadir/$mnum.txt", 1);
-				my @x = <EXMEMBERTHREAD>;
-				fclose(EXMEMBERTHREAD);
+				my @x = &read_DBorFILE(0,'',$datadir,$mnum,'txt');
 				$lastposter = (split(/\|/, $x[$#x], 3))[1] . " - $messageindex_txt{'470a'}";
 			}
 		}
@@ -658,8 +641,8 @@ sub MessageIndex {
 				$adminselector = qq~
 				<input type="radio" name="multiaction" id="multiactionlock" value="lock" class="titlebg" style="border: 0px;" /> <label for="multiactionlock">$messageindex_txt{'104'}</label>
 				<input type="radio" name="multiaction" id="multiactionhide" value="hide" class="titlebg" style="border: 0px;" /> <label for="multiactionhide">$messageindex_txt{'844'}</label>
-				<input type="radio" name="multiaction" id="multiactiondelete" value="delete" class="titlebg" style="border: 0px;" checked="checked" /> <label for="multiactiondelete">$messageindex_txt{'31'}</label>
-				<input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" style="border: 0px;" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <select name="toboard" onchange="document.multiadmin.multiaction[1].checked=true;askfornewinfo();">$boardlist</select>
+				<input type="radio" name="multiaction" id="multiactiondelete" value="delete" class="titlebg" style="border: 0px;" /> <label for="multiactiondelete">$messageindex_txt{'31'}</label>
+				<input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" style="border: 0px;" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <select name="toboard" onchange="document.multiadmin.multiaction[3].checked=true;askfornewinfo();">$boardlist</select>
 				<input type="hidden" name="fromboard" value="$currentboard" />
 				<input type="submit" value="$messageindex_txt{'462'}" class="button" />
 			~;
@@ -863,9 +846,7 @@ sub MarkRead { # Mark all threads in this board as read.
 	&getlog;
 
 	# Look for any threads marked unread in the current board and remove them
-	fopen(BRDTXT, "$boardsdir/$currentboard.txt") || &fatal_error("cannot_open","$boardsdir/$currentboard.txt", 1);
-	my @threadlist = map {/^(\d+)\|/} <BRDTXT>;
-	fclose(BRDTXT);
+	my @threadlist = map {/^(\d+)\|/} &read_DBorFILE(0,'',$boardsdir,$currentboard,'txt');
 
 	# Loop through @threadlist and delete the corresponding item from %yyuserlog
 	foreach (@threadlist) { delete $yyuserlog{"$_--unread"}; }

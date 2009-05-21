@@ -30,11 +30,7 @@ sub SetStatus {
 		$currentboard = ${$threadid}{'board'};
 	}
 
-	fopen(BOARDFILE, "$boardsdir/$currentboard.txt") || &fatal_error("cannot_open","$boardsdir/$currentboard.txt", 1);
-	@boardfile = <BOARDFILE>;
-	fclose(BOARDFILE);
-
-	fopen(BOARDFILE, ">$boardsdir/$currentboard.txt") || &fatal_error("cannot_open","$boardsdir/$currentboard.txt", 1);
+	my @boardfile = &read_DBorFILE(0,BOARDFILE,$boardsdir,$currentboard,'txt');
 	foreach my $line (@boardfile) {
 		if ($line =~ m~\A$threadid\|~) {
 			my ($mnum, $msub, $mname, $memail, $mdate, $mreplies, $musername, $micon, $mstate) = split(/\|/, $line);
@@ -63,7 +59,7 @@ sub SetStatus {
 			print BOARDFILE $line;
 		}
 	}
-	fclose(BOARDFILE);
+	&write_DBorFILE(0,BOARDFILE,$boardsdir,$currentboard,'txt',(''));
 
 	&MessageTotals("load",$threadid);
 	${$threadid}{'threadstatus'} = $thisstatus;

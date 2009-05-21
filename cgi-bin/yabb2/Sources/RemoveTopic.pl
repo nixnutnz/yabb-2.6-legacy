@@ -43,9 +43,7 @@ sub RemoveThread {
 
 	if ($threadline) {
 		unless (ref($thread_arrayref{$thread})) {
-			fopen(FILE, "$datadir/$thread.txt") || &fatal_error("cannot_open","$datadir/$thread.txt", 1);
-			@{$thread_arrayref{$thread}} = <FILE>;
-			fclose(FILE);
+			@{$thread_arrayref{$thread}} = &read_DBorFILE(0,'',$datadir,$thread,'txt');
 		}
 
 		&BoardTotals("load", $currentboard);
@@ -54,11 +52,11 @@ sub RemoveThread {
 		&BoardTotals("update", $currentboard);
 		&BoardSetLastInfo($currentboard);
 		# remove thread files
-		unlink("$datadir/$thread.txt");
-		funlink("$datadir/$thread.ctb");
-		unlink("$datadir/$thread.mail");
-		unlink("$datadir/$thread.poll");
-		unlink("$datadir/$thread.polled");
+		&delete_DBorFILE("$datadir/$thread.txt");
+		&delete_DBorFILE("$datadir/$thread.ctb");
+		&delete_DBorFILE("$datadir/$thread.mail");
+		&delete_DBorFILE("$datadir/$thread.poll");
+		&delete_DBorFILE("$datadir/$thread.polled");
 		# remove attachments
 		require "$admindir/Attachments.pl";
 		my %remattach;

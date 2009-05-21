@@ -47,7 +47,7 @@ sub SaveSettings {
 	my %settings = @_;
 
 	if ($settings{'maintenance'} != 1) {
-		unlink "$vardir/maintenance.lock" || &fatal_error('cannot_open_dir', "$vardir/maintenance.lock");
+		&delete_DBorFILE("$vardir/maintenance.lock") || &fatal_error('cannot_open_dir', "$vardir/maintenance.lock");
 	}
 
 	SaveSettingsTo('Settings.pl', %settings);

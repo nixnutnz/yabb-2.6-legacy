@@ -18,9 +18,7 @@ $settings_newsplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 # Load the news from news.txt
-fopen(NEWS, "$vardir/news.txt") || &fatal_error('cannot_open', "$vardir/news.txt", 1);
-my $yabbnews = join('', <NEWS>);
-fclose(NEWS);
+my $yabbnews = join('', &read_DBorFILE(0,'',$vardir,'news','txt'));
 # ToHTML, in case they have some crazy HTML in it like </textarea>
 &ToHTML($yabbnews);
 &ToChars($yabbnews);
@@ -130,10 +128,8 @@ sub SaveSettings {
 	chomp $settings{'news'};
 	&FromChars($settings{'news'});
 	# news.txt stuff
-	fopen(NEWS, ">$vardir/news.txt", 1) || &fatal_error('cannot_open', "$vardir/news.txt", 1);
-	print NEWS $settings{'news'}; # Remove it from the hash
-	fclose(NEWS);
-	delete $settings{'news'};
+	&write_DBorFILE(0,'',$vardir,'news','txt',($settings{'news'}));
+	delete $settings{'news'}; # Remove it from the hash
 
 	# Settings.pl stuff
 	&SaveSettingsTo('Settings.pl', %settings);

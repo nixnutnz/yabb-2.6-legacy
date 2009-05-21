@@ -21,9 +21,7 @@ sub ErrorLog {
 	&is_admin_or_gmod;
 	$yytitle    = "$errorlog{'1'}";
 	$errorcount = 0;
-	fopen(ERRORFILE, "$vardir/errorlog.txt");
-	@errors = <ERRORFILE>;
-	fclose(ERRORFILE);
+	my @errors = &read_DBorFILE(0,'',$vardir,'errorlog','txt');
 	$errorcount = @errors;
 	$date2      = $date;
 	for ($i = 0; $i < $errorcount; $i++) {
@@ -247,7 +245,7 @@ if ($errorcount > 0) {
 
 sub CleanErrorLog {
 	&is_admin_or_gmod;
-	if (-e ("$vardir/errorlog.txt")) { unlink("$vardir/errorlog.txt") || die "$!" }
+	if (&checkfor_DBorFILE("$vardir/errorlog.txt")) { &delete_DBorFILE("$vardir/errorlog.txt") || die "$!" }
 	$yySetLocation = qq~$adminurl?action=errorlog~;
 	&redirectexit;
 }
@@ -257,12 +255,11 @@ sub DeleteError {
 	my ($count, $currentmem, @deademails, $start, $sortmode, $sortorder);
 	chomp $FORM{"button"};
 	if ($FORM{"button"} ne "4") { &fatal_error("no_access"); }
-	fopen(FILE, "$vardir/errorlog.txt");
-	@errors = <FILE>;
-	fclose(FILE);
-	unlink("$vardir/errorlog.txt");
-	fopen(FILE, ">>$vardir/errorlog.txt");
+	my @errors = &read_DBorFILE(0,'',$vardir,'errorlog','txt');
 
+	&delete_DBorFILE("$vardir/errorlog.txt");
+
+	&read_DBorFILE(0,FILE,$vardir,'errorlog','txt');
 	foreach my $line (@errors) {
 		chomp $line;
 		my ($tmp_id, $tmp_date, $tmp_username, $tmp_error, $tmp_board, $tmp_action) = split(/\|/, $line);
@@ -270,7 +267,8 @@ sub DeleteError {
 			print FILE $line . "\n";
 		}
 	}
-	fclose(FILE);
+	&write_DBorFILE(0,FILE,$vardir,'errorlog','txt',(''));
+
 	$yySetLocation = qq~$adminurl?action=errorlog~;
 	&redirectexit;
 }

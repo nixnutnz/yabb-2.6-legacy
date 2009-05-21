@@ -120,13 +120,11 @@ sub GetHelpFiles {
 
 	# This determines if the order file is present and if it isn't
 	# It creates a new one, in default alphabetical order
-	if (!-e ("$vardir/$help_area.helporder")) {
+	if (!&checkfor_DBorFILE("$vardir/$help_area.helporder")) {
 		&CreateOrderFile;
 	}
 
-	fopen(HELPORDER, "$vardir/$help_area.helporder");
-	@helporderlist = <HELPORDER>;
-	fclose(HELPORDER);
+	@helporderlist = &read_DBorFILE(0,'',$vardir,$help_area,'helporder');
 
 	foreach $line (@helporderlist) {
 		chomp $line;
@@ -272,10 +270,7 @@ sub CreateOrderFile {
 
 	}
 
-	fopen(HELPORDER, ">$vardir/$help_area.helporder") || die("couldn't write order file - check permissions on $vardir and $vardir/$help_area.helporder");
-	print HELPORDER qq~$order_list~;
-	fclose(HELPORDER);
-
+	&write_DBorFILE(0,'',$vardir,$help_area,'helporder',($order_list));
 }
 
 1;

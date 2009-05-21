@@ -256,10 +256,10 @@ sub CallBack {
 sub CallBackRec {
 	my ($receiver,$rid,$do_it) = @_;
 
-	if (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$receiver) == 0) || (!$use_MySQL && !-e "$memberdir/$receiver.vars")) {
+	if (!&checkfor_DBorFILE("$memberdir/$receiver.vars")) {
 		return 0 ;
 	} else {
-		${$uid.$receiver}{'mysql'} = 1;
+		${$uid.$receiver}{'mysql'} = 1 if $use_MySQL;
 	}
 
 	my ($nodel,$rmessageid,$fromuser,$flags,@rmsg);
@@ -309,7 +309,7 @@ sub checkMessageFlag { # look for $user.$pmFile, find $id message and check for 
 	my $messageFoundFlag = 0;
 	if (%{'MF' . $user . $pmFile}) {
 		if (exists ${'MF' . $user . $pmFile}{$id} && ${'MF' . $user . $pmFile}{$id} =~ /$messageFlag/i) { $messageFoundFlag = 1; }
-	} elsif ($use_MySQL || -e "$memberdir/$user.$pmFile") {
+	} elsif (&checkfor_DBorFILE("$memberdir/$user.$pmFile")) {
 		my @userMessages = &read_DBorFILE(0,'',$memberdir,$user,$pmFile);
 		my ($uMessageId,$uMessageFlags);
 		foreach (@userMessages) {
@@ -324,7 +324,7 @@ sub checkMessageFlag { # look for $user.$pmFile, find $id message and check for 
 sub updateMessageFlag { # look for $user.$pmFile, find $id message and check for $messageFlag. change to $newMessageFlag
 	my ($user, $id, $pmFile, $messageFlag, $newMessageFlag) = @_;
 	my $messageFoundFlag = 0;
-	if ((!exists ${'MF' . $user . $pmFile}{$id} || ($messageFlag ne '' && ${'MF' . $user . $pmFile}{$id} =~ /$messageFlag/) || ($messageFlag eq '' && !${'MF' . $user . $pmFile}{$id} =~ /$newMessageFlag/)) && ($use_MySQL || -e "$memberdir/$user.$pmFile")) {
+	if ((!exists ${'MF' . $user . $pmFile}{$id} || ($messageFlag ne '' && ${'MF' . $user . $pmFile}{$id} =~ /$messageFlag/) || ($messageFlag eq '' && !${'MF' . $user . $pmFile}{$id} =~ /$newMessageFlag/)) && &checkfor_DBorFILE("$memberdir/$user.$pmFile")) {
 		my @userFile;
 		foreach my $userMessage (&read_DBorFILE(0,USERFILE,$memberdir,$user,$pmFile)) {
 			my ($uMessageId, $uFrom, $uToUser, $uTocc, $uTobcc, $uSubject, $uDate, $uMessage, $uPid, $uReply , $uip, $uStatus, $uMessageFlags, $uStorefolder, $uAttach) = split(/\|/, $userMessage);
@@ -497,7 +497,7 @@ sub Del_Some_IM {
 # if the user is valid...
 sub LoadValidUserDisplay {
 	my $muser = $_[0];
-	if (!$yyUDLoaded{$muser} && (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$muser) != 0) || (!$use_MySQL && -e "$memberdir/$muser.vars"))) { $sm = 1; &LoadUserDisplay($muser); }
+	if (!$yyUDLoaded{$muser} && &checkfor_DBorFILE("$memberdir/$muser.vars")) { $sm = 1; &LoadUserDisplay($muser); }
 }
 
 # create either a full link or just a name for the IM display
@@ -699,14 +699,10 @@ sub drawPMbox {
 					}
 				}
 			} else {
-				fopen(NFILE, "$memberdir/broadcast.messages");
-				@bmessages = <NFILE>;
-				fclose(NFILE);
+				@bmessages = &read_DBorFILE(1,'',$memberdir,'broadcast','messages');
 			}
 		} elsif ($INFO{'focus'} eq 'bmess' && $PMenableBm_level > 0) {
-			fopen(BFILE, "$memberdir/broadcast.messages");
-			@bmessages = <BFILE>;
-			fclose(BFILE);
+			@bmessages = &read_DBorFILE(1,'',$memberdir,'broadcast','messages');
 		}
 		$stkmess = 0;
 		if (@bmessages > 0) {
@@ -802,10 +798,10 @@ function insert_user (oElement,username,userid) {
 
 	if ($action =~ /^im/ && (!@dimmessages && $INFO{'focus'} ne 'bmess') && ($PM_level == 1 || $PM_level == 2 && ($iamadmin || $iamgmod || $iammod) || $PM_level == 3 && ($iamadmin || $iamgmod))) {
 		if (!@dimmessages) {
-			if    ($action eq 'im')        { funlink("$memberdir/$username.msg"); }
-			elsif ($action eq 'imoutbox')  { funlink("$memberdir/$username.outbox"); }
-			elsif ($action eq 'imstorage') { funlink("$memberdir/$username.imstore"); }
-			elsif ($action eq 'imdraft')   { funlink("$memberdir/$username.imdraft"); }
+			if    ($action eq 'im')        { &delete_DBorFILE("$memberdir/$username.msg"); }
+			elsif ($action eq 'imoutbox')  { &delete_DBorFILE("$memberdir/$username.outbox"); }
+			elsif ($action eq 'imstorage') { &delete_DBorFILE("$memberdir/$username.imstore"); }
+			elsif ($action eq 'imdraft')   { &delete_DBorFILE("$memberdir/$username.imdraft"); }
 		}
 	}
 
@@ -2234,7 +2230,7 @@ sub LoadBuddyList {
 		$css = $cssvalues[($counter % $cssnum)];
 		my ($buddyrealname);
 		my ($online, $buddyemail, $buddypm, $buddywww) = '&nbsp;';
-		if (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$buddyname) != 0) || (!$use_MySQL && -e "$memberdir/$buddyname.vars")) {
+		if (&checkfor_DBorFILE("$memberdir/$buddyname.vars")) {
 			&LoadUser($buddyname);
 			$online = &userOnLineStatus($buddyname);
 			$buddyrealname = ${$uid.$buddyname}{'realname'};

@@ -96,22 +96,37 @@ sub setup_guardian {
      </tr>
      <tr valign="middle">
        <td align="left" class="windowbg2"><br />
-		 <div class="setting_cell3">
+		<div class="setting_cell3">
 			<label for="use_guardian">$guardian_txt{'use_guardian'}</label>
 			<input type="checkbox" name="use_guardian" id="use_guardian" value="1"$guardian_checked />
-		 </div>
-	   <br />
-		 <div class="setting_cell3">
+		</div>
+		<br />
+		<div class="setting_cell3">
 			<label for="use_htaccess">$guardian_txt{'use_htaccess'}
-			<input type="checkbox" name="use_htaccess" id="use_htaccess" value="1"$htaccess_checked /><br />$guardian_txt{'htaccess_support'}</label>
-		 </div>
-	   <br />
-		 <div class="setting_cell3">
+			<input type="checkbox" name="use_htaccess" id="use_htaccess" value="1"$htaccess_checked onmouseup="remove_htaccess();" /><br />$guardian_txt{'use_htaccess_support'}</label>
+		</div>
+		<script type="text/javascript" language="JavaScript">
+		 <!--
+			var old_htaccess = '';
+			function remove_htaccess() {
+				if (document.getElementById("use_htaccess").checked) {
+					old_htaccess = document.getElementById("access_denied").value;
+					document.getElementById("access_denied").value = '';
+					document.getElementById("access_denied").disabled = "disabled";
+				} else {
+					document.getElementById("access_denied").value = old_htaccess;
+					document.getElementById("access_denied").disabled = "";
+				}
+			}
+		 // -->
+		</script>
+		<br />
+		<div class="setting_cell3">
 			<label for="access_denied">$guardian_txt{'htaccess_list'}</label>
-		 </div>
-		 <div class="setting_cell4">
-			<textarea cols="40" rows="8" name="access_denied" id="access_denied" style="width:98%">$acc_denied</textarea>
-		 </div>
+		</div>
+		<div class="setting_cell4">
+			<textarea cols="40" rows="8" name="access_denied" id="access_denied" style="width:98%"~ . ($use_htaccess ? '' : ' disabled="disabled"') . qq~>$acc_denied</textarea>
+		</div>
 	   </td>
      </tr>
    </table>
@@ -455,7 +470,7 @@ sub setup_guardian2 {
 	@access_denied = split(/\,/, $access_denied);
 	&update_htaccess("save", @access_denied);
 
-	$yySetLocation = qq~$adminurl~;
+	$yySetLocation = qq~$adminurl?action=setup_guardian~;
 	&redirectexit;
 }
 
@@ -463,9 +478,7 @@ sub update_htaccess {
 	my ($action, @values) = @_;
 	my ($htheader, $htfooter, @denies, @htout);
 	if (!$action) { return 0; }
-	fopen(HTA, ".htaccess");
-	@htlines = <HTA>;
-	fclose(HTA);
+	@htlines = &read_DBorFILE(1,'',".",'','htaccess');
 
 	# header to determine only who has access to the main script, not the admin script
 	$htheader = qq~<Files YaBB*>~;
@@ -473,30 +486,27 @@ sub update_htaccess {
 	$start = 0;
 	foreach (@htlines) {
 		chomp $_;
-		if ($_ eq $htheader){$start = 1;}
-		if ($start == 0 && !($_ =~ m/\#/) && $_ ne ""){push(@htout, "$_\n");}
-		if ($_ eq $htfooter){$start = 0;}
-		if ($_ =~ m/Deny from / && $start == 1) {
-			$_ =~ s~Deny from ~~g;
+		if ($_ eq $htheader) { $start = 1; }
+		if ($start == 0 && $_ !~ m/#/ && $_ ne "") { push(@htout, "$_\n"); }
+		if ($_ eq $htfooter) { $start = 0; }
+		if ($start == 1 && $_ =~ s/Deny from //g) {
 			push(@denies, $_);
 		}
 	}
 	if ($action eq "load") {
 		return @denies;
-	} elsif ($action eq "save" && $use_htaccess) {
-		$mylastdate = &timeformat($date, 1);
-		fopen(HTA, ">.htaccess");
-		print HTA "# Last modified by The Guardian: $mylastdate GMT #\n\n";
-		print HTA @htout;
-		if(@values){
-			print HTA "$htheader\n";
+	} elsif ($action eq "save") {
+		my $htaccess  = "# Last modified by The Guardian: " . &timeformat($date, 1) . " #\n\n";
+		$htaccess    .= "@htout";
+		if (@values){
+			$htaccess .= "\n$htheader\n";
 			foreach (@values) {
 				chomp $_;
-				if ($_ ne "") { print HTA "Deny from $_\n"; }
+				if ($_ ne "") { $htaccess .= "Deny from $_\n"; }
 			}
-			print HTA "$htfooter\n";
+			$htaccess .= "$htfooter\n";
 		}
-		fclose(HTA);
+		&write_DBorFILE(0,'',".",'','htaccess',($htaccess));
 	}
 }
 

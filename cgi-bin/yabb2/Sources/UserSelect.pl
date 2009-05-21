@@ -23,7 +23,7 @@ if ($iamguest && $INFO{'toid'} ne "userspec") { &fatal_error("members_only"); }
 $MembersPerPage = 10;
 
 sub FindMem {
-	if (-e "$memberdir/$username.usctmp") { unlink("$memberdir/$username.usctmp"); }
+	if (&checkfor_DBorFILE("$memberdir/$username.usctmp")) { &delete_DBorFILE("$memberdir/$username.usctmp"); }
 
 	$SearchStr = $FORM{'member'};
 
@@ -52,7 +52,7 @@ sub FindMem {
 sub MemberList {
 	if ($iamguest && $INFO{'toid'} ne "userspec") { &fatal_error("members_only"); }
 
-	if (-e "$memberdir/$username.usctmp" && $INFO{'sort'} ne "pmsearch") { unlink("$memberdir/$username.usctmp"); }
+	if (&checkfor_DBorFILE("$memberdir/$username.usctmp") && $INFO{'sort'} ne "pmsearch") { &delete_DBorFILE("$memberdir/$username.usctmp"); }
 
 	if ($INFO{'start'} eq '') { $start = 0; }
 	else { $start = $INFO{'start'}; }
@@ -170,10 +170,10 @@ sub MemberList {
 		}
 
 	} elsif ($INFO{'sort'} eq 'pmsearch') {
-		if (!-e "$memberdir/$username.usctmp") {
+		if (!&checkfor_DBorFILE("$memberdir/$username.usctmp")) {
 			&ManageMemberinfo("load");
 			my ($membername, $mregdate, $memrealname, $mememail);
-			fopen(FILE, ">$memberdir/$username.usctmp");
+			&read_DBorFILE(1,FILE,$memberdir,$username,'usctmp');
 			foreach $membername (sort { lc $memberinf{$a} cmp lc $memberinf{$b} } keys %memberinf) {
 				($mregdate, $memrealname, $mememail, undef) = split(/\|/, $memberinf{$membername}, 4);
 				## don't find own name - unless for search or board mods!
@@ -191,16 +191,14 @@ sub MemberList {
 					}
 				}
 			}
-			fclose(FILE);
+			&write_DBorFILE(0,FILE,$memberdir,$username,'usctmp',(''));
 			undef %memberinf;
 		}
-		fopen(FILE, "$memberdir/$username.usctmp");
-		while (my $line = <FILE>) {
+		foreach my $line (&read_DBorFILE(0,'',$memberdir,$username,'usctmp')) {
 			chomp $line;
 			($recentname, $realinfo) = split(/,/, $line);
 			$memberinf{$recentname} = $realinfo;
 		}
-		fclose(FILE);
 
 	} elsif ($to_id eq 'groups') {
 		$ToShow[0] = 'bmallmembers';
@@ -687,17 +685,17 @@ sub loadRecentPMs {
 	## put simple, this reads the msg , outbox and storage files to
 	## harvest already-used membernames
 	my (@userinbox, @useroutbox, @userstore, @usermessages);
-	if ($use_MySQL || -e "$memberdir/$username.msg") {
+	if (&checkfor_DBorFILE("$memberdir/$username.msg")) {
 		@userinbox = &read_DBorFILE(0,'',$memberdir,$username,'msg');
 		if (@userinbox) { push(@usermessages, @userinbox); }
 		undef @userinbox;
 	}
-	if ($use_MySQL || -e "$memberdir/$username.outbox") {
+	if (&checkfor_DBorFILE("$memberdir/$username.outbox")) {
 		@useroutbox = &read_DBorFILE(0,'',$memberdir,$username,'outbox');
 		if (@useroutbox) { push(@usermessages, @useroutbox); }
 		undef @useroutbox;
 	}
-	if ($use_MySQL || -e "$memberdir/$username.imstore") {
+	if (&checkfor_DBorFILE("$memberdir/$username.imstore")) {
 		@userstore = &read_DBorFILE(0,'',$memberdir,$username,'imstore');
 		if (@userstore) { push(@usermessages, @userstore); }
 		undef @userstore;

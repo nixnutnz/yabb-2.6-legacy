@@ -178,9 +178,7 @@ sub editemailtemplates2 {
 	&fatal_error('no_info') unless $message && $string;
 
 	# Read the current file
-	fopen(LANG, "$langdir/$editlang/Email.lng") || &fatal_error('cannot_open_language',"$langdir/$editlang/Email.lng", 1);
-	my $langfile = join('', <LANG>);
-	fclose(LANG);
+	my $langfile = join('', &read_DBorFILE(0,'',"$langdir/$editlang",'Email','lng'));
 
 	# Vague hardcoded error since it was tampered with
 	&fatal_error('error_occurred', 'Language Error') unless $string =~ /\Q$string\E/;
@@ -189,9 +187,7 @@ sub editemailtemplates2 {
 	$langfile =~ s!\$\Q$string\E = qq~.+?~;!\$$string = qq~$message~;!s;
 
 	# Write it out
-	fopen(LANG, ">$langdir/$editlang/Email.lng") || &fatal_error('cannot_open_language',"$langdir/$editlang/Email.lng", 1);
-	print LANG $langfile;
-	fclose(LANG);
+	&write_DBorFILE(0,'',"$langdir/$editlang",'Email','lng',($langfile));
 
 	$yySetLocation = qq~$adminurl~;
 	&redirectexit();

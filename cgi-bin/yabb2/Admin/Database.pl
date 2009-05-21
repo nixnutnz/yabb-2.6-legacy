@@ -140,8 +140,7 @@ sub SelectDatabase {
 
 
 		# This array must be exactly the same as the @db_vars_tabs_order array
-		# further down, the @tags in Sources/System.pl
-		# and in Subs.pl in the SQL/File management block: my %db_table = (...!!!
+		# further down, the @tags in Sources/System.pl!!!
 		my @tags = qw(realname password position addgroups email hidemail regdate regtime regreason location bday gender userpic usertext signature template language stealth webtitle weburl icq aim yim skype myspace facebook msn gtalk timeselect timeformat timeoffset dsttimeoffset dynamic_clock postcount lastonline lastpost lastim im_ignorelist im_popup im_imspop pmmessprev pmviewMess pmactprev notify_me board_notifications thread_notifications favorites buddylist cathide pageindex reversetopic postlayout sesquest sesanswer session lastips onlinealert offlinestatus awaysubj awayreply awayreplysent spamcount spamtime);
 		push(@tags, 'additional_variables');
 
@@ -276,8 +275,7 @@ sub SaveDatabase {
 
 	# vars
 	my (@ex_colums,@var_colums,@order);
-	# This array must be exactly the same as @tags from above, in Sources/System.pl
-	# and in Subs.pl in the SQL/File management block: my %db_table = (...!!!
+	# This array must be exactly the same as @tags from above, in Sources/System.pl!!!
 	@db_vars_tabs_order = qw(realname password position addgroups email hidemail regdate regtime regreason location bday gender userpic usertext signature template language stealth webtitle weburl icq aim yim skype myspace facebook msn gtalk timeselect timeformat timeoffset dsttimeoffset dynamic_clock postcount lastonline lastpost lastim im_ignorelist im_popup im_imspop pmmessprev pmviewMess pmactprev notify_me board_notifications thread_notifications favorites buddylist cathide pageindex reversetopic postlayout sesquest sesanswer session lastips onlinealert offlinestatus awaysubj awayreply awayreplysent spamcount spamtime);
 	push(@db_vars_tabs_order, 'additional_variables');
 	%db_user_vars_col = ();
@@ -513,22 +511,22 @@ sub SaveDatabase {
 
 
 	# messages.txt
-	#my $buildnew_message_txt;
-	#$buildnew_message_txt = qq~CREATE TABLE `$FORM{'db_prefix'}_messages` (\n`mess_threadnum` int(11) NOT NULL,\n~;
-	#$buildnew_message_txt .= qq~`subject` char(50) default NULL,\n~;
-	#$buildnew_message_txt .= qq~`displayname` char(30) default NULL,\n~;
-	#$buildnew_message_txt .= qq~`email` varchar(100) default NULL,\n~;
-	#$buildnew_message_txt .= qq~`date` int(11) default NULL,\n~;
-	#$buildnew_message_txt .= qq~`username` char(20) default NULL,\n~;
-	#$buildnew_message_txt .= qq~`icon` char(15) default NULL,\n~;
-	#$buildnew_message_txt .= qq~`post_number` int(5) NOT NULL default '0',\n~;
-	#$buildnew_message_txt .= qq~`user_ip` char(15) default NULL,\n~;
-	#$buildnew_message_txt .= qq~`message` text,\n~;
-	#$buildnew_message_txt .= qq~`no_smilies` char(2) default NULL,\n~;
-	#$buildnew_message_txt .= qq~`modified_date` int(11) default NULL,\n~;
-	#$buildnew_message_txt .= qq~`modified_by` char(20) default NULL,\n~;
-	#$buildnew_message_txt .= qq~`attachments` varchar(500) default NULL,\n~;
-	#$buildnew_message_txt .= qq~PRIMARY KEY (`threadnum`)) TYPE=MyISAM~;
+	my $buildnew_message_txt;
+	$buildnew_message_txt = qq~CREATE TABLE `$FORM{'db_prefix'}_messages` (\n`mess_threadnum` int(11) NOT NULL,\n~;
+	$buildnew_message_txt .= qq~`subject` char(50) default NULL,\n~;
+	$buildnew_message_txt .= qq~`displayname` char(30) default NULL,\n~;
+	$buildnew_message_txt .= qq~`email` varchar(100) default NULL,\n~;
+	$buildnew_message_txt .= qq~`date` int(11) default NULL,\n~;
+	$buildnew_message_txt .= qq~`username` char(20) default NULL,\n~;
+	$buildnew_message_txt .= qq~`icon` char(15) default NULL,\n~;
+	$buildnew_message_txt .= qq~`post_number` int(5) NOT NULL default '0',\n~;
+	$buildnew_message_txt .= qq~`user_ip` char(15) default NULL,\n~;
+	$buildnew_message_txt .= qq~`message` text,\n~;
+	$buildnew_message_txt .= qq~`no_smilies` char(2) default NULL,\n~;
+	$buildnew_message_txt .= qq~`modified_date` int(11) default NULL,\n~;
+	$buildnew_message_txt .= qq~`modified_by` char(20) default NULL,\n~;
+	$buildnew_message_txt .= qq~`attachments` varchar(500) default NULL,\n~;
+	$buildnew_message_txt .= qq~PRIMARY KEY (`mess_threadnum`,`post_number`)) TYPE=MyISAM~;
 
 
 	# do the work now
@@ -537,21 +535,19 @@ sub SaveDatabase {
 
 	require DBI;
 	# remove old tables
-	&mysql_process(0,'do',"DROP TABLE IF EXISTS `$FORM{'db_prefix'}_vars`, `$FORM{'db_prefix'}_log`, `$FORM{'db_prefix'}_ctb`"); # , `$FORM{'db_prefix'}_messages`
+	&mysql_process(0,'do',"DROP TABLE IF EXISTS `$FORM{'db_prefix'}_vars`, `$FORM{'db_prefix'}_log`, `$FORM{'db_prefix'}_ctb`, `$FORM{'db_prefix'}_messages`");
 
 	# build new tables
 	&mysql_process(0,'do',$buildnew_vars);
 	&mysql_process(0,'do',$buildnew_online);
 	&mysql_process(0,'do',$buildnew_ctb);
-	#&mysql_process(0,'do',$buildnew_message_txt);
+	&mysql_process(0,'do',$buildnew_message_txt);
 
 	# remove old conversion files if exist
-	unlink("$memberdir/memberrest.dbconvert");
-	unlink("$memberdir/membercalc.dbconvert");
-	unlink("$datadir/ctbrest.dbconvert");
-	unlink("$datadir/ctbcalc.dbconvert");
-	#unlink("$datadir/mestxtrest.dbconvert");
-	#unlink("$datadir/mestxtcalc.dbconvert");
+	&delete_DBorFILE("$memberdir/memberrest.dbconvert");
+	&delete_DBorFILE("$memberdir/membercalc.dbconvert");
+	&delete_DBorFILE("$datadir/messrest.dbconvert");
+	&delete_DBorFILE("$datadir/messcalc.dbconvert");
 
 	my $db_user_vars_col = join("", map { qq~'$_' => '$db_user_vars_col{$_}',~; } keys %db_user_vars_col) if %db_user_vars_col;
 	my $db_vars_col = join("", map { qq~'$_' => 1,~; } keys %db_vars_col) if %db_vars_col;
@@ -658,15 +654,11 @@ sub ConvertDatabase {
 	$begin_time = time();
 
 	# convert .vars
-	unless (-e "$datadir/ctbrest.dbconvert" && -e "$datadir/ctbcalc.dbconvert") {
+	unless (-e "$datadir/messrest.dbconvert" && -e "$datadir/messrest.dbconvert") {
 		if (-e "$memberdir/memberrest.dbconvert" && -M "$memberdir/memberrest.dbconvert" < 1) {
-			fopen(MEMBERREST, "$memberdir/memberrest.dbconvert") || &fatal_error('cannot_open', "$memberdir/memberrest.dbconvert", 1);
-			@contents = <MEMBERREST>;
-			fclose(MEMBERREST);
+			@contents = &read_DBorFILE(0,'',$memberdir,'memberrest','dbconvert');
 
-			fopen(MEMBERCALC, "$memberdir/membercalc.dbconvert") || &fatal_error('cannot_open', "$memberdir/membercalc.dbconvert", 1);
-			($start_time,$sumuser) = <MEMBERCALC>;
-			fclose(MEMBERCALC);
+			($start_time,$sumuser) = &read_DBorFILE(0,'',$memberdir,'membercalc','dbconvert');
 			chomp ($start_time, $sumuser);
 		}
 
@@ -678,12 +670,11 @@ sub ConvertDatabase {
 
 			$start_time = $begin_time;
 			$sumuser = @contents;
-			fopen(MEMBERCALC, ">$memberdir/membercalc.dbconvert") || &fatal_error('cannot_open', "$memberdir/membercalc.dbconvert", 1);
-			print MEMBERCALC "$start_time\n$sumuser\n";
-			fclose(MEMBERCALC);
+			&write_DBorFILE(0,'',$memberdir,'membercalc','dbconvert',("$start_time\n$sumuser\n"));
 		}
 
 		# Loop through each -rest- member
+		my $member;
 		while (@contents) {
 			$member = pop @contents;
 			chomp $member;
@@ -697,9 +688,10 @@ sub ConvertDatabase {
 			&UserAccount($member);
 
 			foreach (qw(msg ims outbox imstore imdraft log rlog)) {
-				fopen(USER, "$memberdir/$member.$_");
-				&mysql_process(0,'do',qq~UPDATE `$db_prefix\_vars` SET `$_`="~ . join('', (map { s/"/\\"/g; $_; } <USER>)) . qq~" WHERE `yabbusername`="$member"~);
-				fclose(USER);
+				$use_MySQL = 0;
+				my @temp = &read_DBorFILE(0,'',$memberdir,$member,$_);
+				$use_MySQL = 1;
+				&write_DBorFILE(1,'',$memberdir,$member,$_,@temp);
 			}
 
 			undef %{$uid.$member} if $member ne $username;
@@ -709,9 +701,7 @@ sub ConvertDatabase {
 
 		# If it isn't completely done ...
 		if (@contents) {
-			fopen(MEMBERREST, ">$memberdir/memberrest.dbconvert") || &fatal_error('cannot_open', "$memberdir/memberrest.dbconvert", 1);
-			print MEMBERREST @contents;
-			fclose(MEMBERREST);
+			&write_DBorFILE(0,'',$memberdir,'memberrest','dbconvert',@contents);
 
 			&do_info(scalar(@contents),$start_time,$sumuser,'database3','varstodb');
 
@@ -721,140 +711,81 @@ sub ConvertDatabase {
 
 	# onlinelog will be build new, don't need conversion
 
-	# convert .ctb
-	unless (-e "$datadir/memtxtrest.dbconvert" && -e "$datadir/memtxtcalc.dbconvert") {
-		if (-e "$datadir/ctbrest.dbconvert" && -M "$datadir/ctbrest.dbconvert" < 1) {
-			fopen(CTBREST, "$datadir/ctbrest.dbconvert") || &fatal_error('cannot_open', "$datadir/ctbrest.dbconvert", 1);
-			@contents = <CTBREST>;
-			fclose(CTBREST);
+	# convert Messages/....[txt|ctb|mail|poll|polled]
+	#unless (-e "$.../...rest.dbconvert" && -e "$.../...calc.dbconvert") {
+		if (-e "$datadir/messrest.dbconvert" && -M "$datadir/messrest.dbconvert" < 1) {
+			@contents = &read_DBorFILE(0,'',$datadir,'messrest','dbconvert');
 
-			fopen(CTBCALC, "$datadir/ctbcalc.dbconvert") || &fatal_error('cannot_open', "$datadir/ctbcalc.dbconvert", 1);
-			$start_time = <CTBCALC>;
-			$sumuser = <CTBCALC>;
-			fclose(CTBCALC);
+			($start_time,$sumuser) = &read_DBorFILE(0,'',$datadir,'messcalc','dbconvert');
 			chomp ($start_time, $sumuser);
 		}
 
 		if (!@contents) {
 			# Get the list
-			opendir(CTB, $datadir) || die "$txt{'230'} ($datadir) :: $!";
-			@contents = map { $_ =~ s/\.ctb$//; "$_\n"; } grep { /\d+\.ctb$/ } readdir(CTB);
-			closedir(CTB);
+			opendir(TXT, $datadir) || die "$txt{'230'} ($datadir) :: $!";
+			@contents = map { $_ =~ s/\.txt$//; "$_\n"; } grep { /\d+\.txt$/ } readdir(TXT);
+			closedir(TXT);
 
 			$sumuser = @contents;
-			fopen(CTBCALC, ">$datadir/ctbcalc.dbconvert") || &fatal_error('cannot_open', "$datadir/ctbcalc.dbconvert", 1);
-			print CTBCALC "$start_time\n$sumuser\n";
-			fclose(CTBCALC);
+			&write_DBorFILE(0,'',$datadir,'messcalc','dbconvert',("$start_time\n$sumuser\n"));
 		}
 
-		# Loop through each -rest- ctb
+		# Loop through each -rest- thread
+		my $thread;
 		while (@contents) {
-			my $ctb = pop @contents;
-			chomp $ctb;
+			$thread = pop @contents;
+			chomp $thread;
 
-			# Load ctb-file
 			$use_MySQL = 0;
-			&MessageTotals("load",$ctb);
-
-			# Save ctb to MySQL
-			$use_MySQL = 1;
-			&MessageTotals("update",$ctb);
-
-			my @temp;
-			foreach (qw(mail poll polled)) {
-				next if !-e "$datadir/$ctb.$_";
-				$use_MySQL = 0;
-				@temp = &read_DBorFILE(0,'',$datadir,$ctb,$_);
-				$use_MySQL = 1;
-				&write_DBorFILE(1,'',$datadir,$ctb,$_,@temp);
+			# Load thread-file
+			my @temp = &read_DBorFILE(0,'',$datadir,$thread,'txt');
+			for (my $i = 0; $i < @temp; $i++) {
+				my @x = split(/\|/, $temp[$i]);
+				$x[5] = 'no_postcount' if $x[6] eq 'no_postcount';
+				$x[6] = $i;
+				$x[12] = $x[12] || "\n"; # fix of mistake in old moved infos
+				splice(@x,13); # make sure we don't have too much entrys
+				$temp[$i] = join('|', @x);
 			}
 
-			undef %{$ctb};
+			# Load ctb-file
+			&MessageTotals("load",$thread);
+
+			$use_MySQL = 1;
+			# Save thread to MySQL
+			&write_DBorFILE(0,'',$datadir,$thread,'txt',@temp);
+
+			# Save ctb to MySQL
+			&MessageTotals("update",$thread);
+			undef %{$thread};
+
+			foreach (qw(mail poll polled)) {
+				next if !-e "$datadir/$thread.$_";
+				$use_MySQL = 0;
+				@temp = &read_DBorFILE(0,'',$datadir,$thread,$_);
+				$use_MySQL = 1;
+				&write_DBorFILE(1,'',$datadir,$thread,$_,@temp);
+			}
+
 			last if time() > ($begin_time + $max_process_time);
 		}
 		$use_MySQL = 0;
 
 		# If it isn't completely done ...
 		if (@contents) {
-			fopen(CTBREST, ">$datadir/ctbrest.dbconvert") || &fatal_error('cannot_open', "$datadir/ctbrest.dbconvert", 1);
-			print CTBREST @contents;
-			fclose(CTBREST);
+			&write_DBorFILE(0,'',$datadir,'messrest','dbconvert',@contents);
 
-			&do_info(scalar(@contents),$start_time,$sumuser,'database3','ctbtodb');
+			&do_info(scalar(@contents),$start_time,$sumuser,'database3','threadtodb');
 
 			&AdminTemplate;
 		}
-	}
-
-
-	# convert Messages/....txt
-	#unless (-e "$.../...rest.dbconvert" && -e "$.../...calc.dbconvert") {
-	#	if (-e "$datadir/mestxtrest.dbconvert" && -M "$datadir/mestxtrest.dbconvert" < 1) {
-	#		fopen(MESTXTREST, "$datadir/mestxtrest.dbconvert") || &fatal_error('cannot_open', "$datadir/mestxtrest.dbconvert", 1);
-	#		@contents = <MESTXTREST>;
-	#		fclose(MESTXTREST);
-
-	#		fopen(MESTXTCALC, "$datadir/mestxtcalc.dbconvert") || &fatal_error('cannot_open', "$datadir/mestxtcalc.dbconvert", 1);
-	#		$start_time = <MESTXTCALC>;
-	#		$sumuser = <MESTXTCALC>;
-	#		fclose(MESTXTCALC);
-	#		chomp ($start_time, $sumuser);
-	#	}
-
-	#	if (!@contents) {
-	#		# Get the list
-	#		opendir(TXT, $datadir) || die "$txt{'230'} ($datadir) :: $!";
-	#		@contents = map { $_ =~ s/\.txt$//; "$_\n"; } grep { /\d+\.txt$/ } readdir(TXT);
-	#		closedir(TXT);
-
-	#		$sumuser = @contents;
-	#		fopen(MESTXTCALC, ">$datadir/mestxtcalc.dbconvert") || &fatal_error('cannot_open', "$datadir/mestxtcalc.dbconvert", 1);
-	#		print MESTXTCALC "$start_time\n$sumuser\n";
-	#		fclose(MESTXTCALC);
-	#	}
-
-	#	# Loop through each -rest- thread
-	#	while (@contents) {
-	#		$thread = pop @contents;
-	#		chomp $thread;
-
-	#		# Load thread-file
-	#		$use_MySQL = 0;
-	#		my @temp = &read_DBorFILE(0,'',$datadir,$thread,'txt');
-	#		for (my $i = 0; $i < @temp; $i++) {
-	#			my @x = split(/\|/, $temp[$i]);
-	#			$x[5] = 'no_postcount' if $message[6] eq 'no_postcount';
-	#			$x[6] = $i;
-	#			$temp[$i] = join('|', @x);
-	#		}
-
-	#		# Save thread to MySQL
-	#		$use_MySQL = 1;
-	#		&write_DBorFILE(0,'',$datadir,$thread,'txt',@temp);
-
-	#		last if time() > ($begin_time + $max_process_time);
-	#	}
-	#	$use_MySQL = 0;
-
-	#	# If it isn't completely done ...
-	#	if (@contents) {
-	#		fopen(MESTXTREST, ">$datadir/mestxtrest.dbconvert") || &fatal_error('cannot_open', "$datadir/mestxtrest.dbconvert", 1);
-	#		print MESTXTREST @contents;
-	#		fclose(MESTXTREST);
-
-	#		&do_info(scalar(@contents),$start_time,$sumuser,'database3','thread');
-
-	#		&AdminTemplate;
-	#	}
 	#}
 
 
-	unlink("$memberdir/memberrest.dbconvert");
-	unlink("$memberdir/membercalc.dbconvert");
-	unlink("$datadir/ctbrest.dbconvert");
-	unlink("$datadir/ctbcalc.dbconvert");
-	#unlink("$datadir/mestxtrest.dbconvert");
-	#unlink("$datadir/mestxtcalc.dbconvert");
+	&delete_DBorFILE("$memberdir/memberrest.dbconvert");
+	&delete_DBorFILE("$memberdir/membercalc.dbconvert");
+	&delete_DBorFILE("$datadir/messrest.dbconvert");
+	&delete_DBorFILE("$datadir/messcalc.dbconvert");
 
 	&automaintenance("off"); # Must be set to off before &SaveSettingsTo(... !
 
@@ -881,14 +812,9 @@ sub ReturnFileDB {
 	# convert .vars
 	unless (-e "$datadir/ctbrest.dbconvert" && -e "$datadir/ctbcalc.dbconvert") {
 		if (-e "$memberdir/memberrest.dbconvert" && -M "$memberdir/memberrest.dbconvert" < 1) {
-			fopen(MEMBERREST, "$memberdir/memberrest.dbconvert") || &fatal_error('cannot_open', "$memberdir/memberrest.dbconvert", 1);
-			@contents = <MEMBERREST>;
-			fclose(MEMBERREST);
+			@contents = &read_DBorFILE(0,'',$memberdir,'memberrest','dbconvert');
 
-			fopen(MEMBERCALC, "$memberdir/membercalc.dbconvert") || &fatal_error('cannot_open', "$memberdir/membercalc.dbconvert", 1);
-			$start_time = <MEMBERCALC>;
-			$sumuser = <MEMBERCALC>;
-			fclose(MEMBERCALC);
+			($start_time,$sumuser) = &read_DBorFILE(0,'',$memberdir,'membercalc','dbconvert');
 			chomp ($start_time, $sumuser);
 		}
 
@@ -898,9 +824,7 @@ sub ReturnFileDB {
 
 			$start_time = $begin_time;
 			$sumuser = @contents;
-			fopen(MEMBERCALC, ">$memberdir/membercalc.dbconvert") || &fatal_error('cannot_open', "$memberdir/membercalc.dbconvert", 1);
-			print MEMBERCALC "$start_time\n$sumuser\n";
-			fclose(MEMBERCALC);
+			&write_DBorFILE(0,'',$memberdir,'membercalc','dbconvert',("$start_time\n$sumuser\n"));
 		}
 
 		# Loop through each -rest- member
@@ -912,26 +836,25 @@ sub ReturnFileDB {
 			$use_MySQL = 1;
 			&LoadUser($member);
 
-			foreach (qw(msg ims outbox imstore imdraft log rlog)) {
-				fopen(USER, ">$memberdir/$member.$_");
-				print USER &mysql_process(0,'selectrow_array',qq~SELECT `$_` FROM `$db_prefix\_vars` WHERE `yabbusername`="$member"~);
-				fclose(USER);
-			}
-
 			# save the users info to file
 			$use_MySQL = 0;
 			&UserAccount($member);
-
 			undef %{$uid.$member} if $member ne $username;
+
+			foreach (qw(msg ims outbox imstore imdraft log rlog)) {
+				$use_MySQL = 1;
+				my @temp = &read_DBorFILE(0,'',$memberdir,$member,$_);
+				$use_MySQL = 0;
+				&write_DBorFILE(0,'',$memberdir,$member,$_,@temp);
+			}
+
 			last if time() > ($begin_time + $max_process_time);
 		}
 		$use_MySQL = 1;
 
 		# If it isn't completely done ...
 		if (@contents) {
-			fopen(MEMBERREST, ">$memberdir/memberrest.dbconvert") || &fatal_error('cannot_open', "$memberdir/memberrest.dbconvert", 1);
-			print MEMBERREST @contents;
-			fclose(MEMBERREST);
+			&write_DBorFILE(0,'',$memberdir,'memberrest','dbconvert',@contents);
 
 			&do_info(scalar(@contents),$start_time,$sumuser,'database4','dbtovars');
 
@@ -943,14 +866,9 @@ sub ReturnFileDB {
 
 	# convert .ctb
 	if (-e "$datadir/ctbrest.dbconvert" && -M "$datadir/ctbrest.dbconvert" < 1) {
-		fopen(CTBREST, "$datadir/ctbrest.dbconvert") || &fatal_error('cannot_open', "$datadir/ctbrest.dbconvert", 1);
-		@contents = <CTBREST>;
-		fclose(CTBREST);
+		@contents = &read_DBorFILE(0,'',$datadir,'ctbrest','dbconvert');
 
-		fopen(CTBCALC, "$datadir/ctbcalc.dbconvert") || &fatal_error('cannot_open', "$datadir/ctbcalc.dbconvert", 1);
-		$start_time = <CTBCALC>;
-		$sumuser = <CTBCALC>;
-		fclose(CTBCALC);
+		($start_time,$sumuser) = &read_DBorFILE(0,'',$datadir,'ctbcalc','dbconvert');
 		chomp ($start_time, $sumuser);
 	}
 
@@ -959,9 +877,7 @@ sub ReturnFileDB {
 		@contents = map { "$$_[0]\n"; } @{&mysql_process(0,'selectall_arrayref',"SELECT `threadnum` FROM `$db_prefix\_ctb`")};
 
 		$sumuser = @contents;
-		fopen(CTBCALC, ">$datadir/ctbcalc.dbconvert") || &fatal_error('cannot_open', "$datadir/ctbcalc.dbconvert", 1);
-		print CTBCALC "$start_time\n$sumuser\n";
-		fclose(CTBCALC);
+		&write_DBorFILE(0,'',$datadir,'ctbcalc','dbconvert',("$start_time\n$sumuser\n"));
 	}
 
 	# Loop through each -rest- member
@@ -994,19 +910,17 @@ sub ReturnFileDB {
 
 	# If it isn't completely done ...
 	if (@contents) {
-		fopen(CTBREST, ">$datadir/ctbrest.dbconvert") || &fatal_error('cannot_open', "$datadir/ctbrest.dbconvert", 1);
-		print CTBREST @contents;
-		fclose(CTBREST);
+		&write_DBorFILE(0,'',$datadir,'ctbrest','dbconvert',@contents);
 
 		&do_info(scalar(@contents),$start_time,$sumuser,'database4','dbtoctb');
 
 		&AdminTemplate;
 	}
 
-	unlink("$memberdir/memberrest.dbconvert");
-	unlink("$memberdir/membercalc.dbconvert");
-	unlink("$datadir/ctbrest.dbconvert");
-	unlink("$datadir/ctbcalc.dbconvert");
+	&delete_DBorFILE("$memberdir/memberrest.dbconvert");
+	&delete_DBorFILE("$memberdir/membercalc.dbconvert");
+	&delete_DBorFILE("$datadir/ctbrest.dbconvert");
+	&delete_DBorFILE("$datadir/ctbcalc.dbconvert");
 
 	&automaintenance("off"); # Must be set to off before &SaveSettingsTo(... !
 
@@ -1033,14 +947,9 @@ sub Delete_files {
 	# delete .vars
 	unless (-e "$datadir/ctbdel.dbconvert" && -e "$datadir/ctbdelcalc.dbconvert") {
 		if (-e "$memberdir/memberdel.dbconvert" && -M "$memberdir/memberdel.dbconvert" < 1) {
-			fopen(MEMBERREST, "$memberdir/memberdel.dbconvert") || &fatal_error('cannot_open', "$memberdir/memberdel.dbconvert", 1);
-			@contents = <MEMBERREST>;
-			fclose(MEMBERREST);
+			@contents = &read_DBorFILE(0,'',$memberdir,'memberdel','dbconvert');
 
-			fopen(MEMBERCALC, "$memberdir/memberdelcalc.dbconvert") || &fatal_error('cannot_open', "$memberdir/memberdelcalc.dbconvert", 1);
-			$start_time = <MEMBERCALC>;
-			$sumuser = <MEMBERCALC>;
-			fclose(MEMBERCALC);
+			($start_time,$sumuser) = &read_DBorFILE(0,'',$memberdir,'memberdelcalc','dbconvert');
 			chomp ($start_time, $sumuser);
 		}
 
@@ -1052,9 +961,7 @@ sub Delete_files {
 
 			$start_time = $begin_time;
 			$sumuser = @contents;
-			fopen(MEMBERCALC, ">$memberdir/memberdelcalc.dbconvert") || &fatal_error('cannot_open', "$memberdir/memberdelcalc.dbconvert", 1);
-			print MEMBERCALC "$start_time\n$sumuser\n";
-			fclose(MEMBERCALC);
+			&write_DBorFILE(0,'',$memberdir,'memberdelcalc','dbconvert',("$start_time\n$sumuser\n"));
 		}
 
 		# Loop through each -rest- member
@@ -1064,7 +971,7 @@ sub Delete_files {
 
 			if ($member ne 'admin') {
 				foreach (qw(vars msg ims outbox imstore imdraft log rlog)) {
-					unlink("$memberdir/$member.$_");
+					&delete_DBorFILE("$memberdir/$member.$_");
 				}
 			}
 
@@ -1073,9 +980,7 @@ sub Delete_files {
 
 		# If it isn't completely done ...
 		if (@contents) {
-			fopen(MEMBERREST, ">$memberdir/memberdel.dbconvert") || &fatal_error('cannot_open', "$memberdir/memberdel.dbconvert", 1);
-			print MEMBERREST @contents;
-			fclose(MEMBERREST);
+			&write_DBorFILE(0,'',$memberdir,'memberdel','dbconvert',@contents);
 
 			&do_info(scalar(@contents),$start_time,$sumuser,'database5','varsdel');
 
@@ -1085,19 +990,14 @@ sub Delete_files {
 
 
 	# empty onlinelog
-	fopen(LOG, ">$vardir/log.txt"); print LOG ""; fclose(LOG);
+	&write_DBorFILE(0,'',$vardir,'log','txt',(''));
 
 
 	# delete .ctb
 	if (-e "$datadir/ctbdel.dbconvert" && -M "$datadir/ctbdel.dbconvert" < 1) {
-		fopen(CTBREST, "$datadir/ctbdel.dbconvert") || &fatal_error('cannot_open', "$datadir/ctbdel.dbconvert", 1);
-		@contents = <CTBREST>;
-		fclose(CTBREST);
+		@contents = &read_DBorFILE(0,'',$datadir,'ctbdel','dbconvert');
 
-		fopen(CTBCALC, "$datadir/ctbdelcalc.dbconvert") || &fatal_error('cannot_open', "$datadir/ctbdelcalc.dbconvert", 1);
-		$start_time = <CTBCALC>;
-		$sumuser = <CTBCALC>;
-		fclose(CTBCALC);
+		($start_time,$sumuser) = &read_DBorFILE(0,'',$datadir,'ctbdelcalc','dbconvert');
 		chomp ($start_time, $sumuser);
 	}
 
@@ -1108,9 +1008,7 @@ sub Delete_files {
 		closedir(CTB);
 
 		$sumuser = @contents;
-		fopen(CTBCALC, ">$datadir/ctbdelcalc.dbconvert") || &fatal_error('cannot_open', "$datadir/ctbdelcalc.dbconvert", 1);
-		print CTBCALC "$start_time\n$sumuser\n";
-		fclose(CTBCALC);
+		&write_DBorFILE(0,'',$datadir,'ctbdelcalc','dbconvert',("$start_time\n$sumuser\n"));
 	}
 
 	# Loop through each -rest- member
@@ -1118,29 +1016,28 @@ sub Delete_files {
 		$ctb = pop @contents;
 		chomp $ctb;
 
-		unlink("$datadir/$ctb.ctb");
-		unlink("$datadir/$ctb.mail");
-		unlink("$datadir/$ctb.poll");
-		unlink("$datadir/$ctb.polled");
+		#&delete_DBorFILE("$datadir/$ctb.txt");
+		&delete_DBorFILE("$datadir/$ctb.ctb");
+		&delete_DBorFILE("$datadir/$ctb.mail");
+		&delete_DBorFILE("$datadir/$ctb.poll");
+		&delete_DBorFILE("$datadir/$ctb.polled");
 
 		last if time() > ($begin_time + $max_process_time);
 	}
 
 	# If it isn't completely done ...
 	if (@contents) {
-		fopen(CTBREST, ">$datadir/ctbdel.dbconvert") || &fatal_error('cannot_open', "$datadir/ctbdel.dbconvert", 1);
-		print CTBREST @contents;
-		fclose(CTBREST);
+		&write_DBorFILE(0,'',$datadir,'ctbdel','dbconvert',@contents);
 
 		&do_info(scalar(@contents),$start_time,$sumuser,'database5','ctbdel');
 
 		&AdminTemplate;
 	}
 
-	unlink("$memberdir/memberdel.dbconvert");
-	unlink("$memberdir/memberdelcalc.dbconvert");
-	unlink("$datadir/ctbdel.dbconvert");
-	unlink("$datadir/ctbdelcalc.dbconvert");
+	&delete_DBorFILE("$memberdir/memberdel.dbconvert");
+	&delete_DBorFILE("$memberdir/memberdelcalc.dbconvert");
+	&delete_DBorFILE("$datadir/ctbdel.dbconvert");
+	&delete_DBorFILE("$datadir/ctbdelcalc.dbconvert");
 
 	&automaintenance("off");
 
@@ -1202,7 +1099,7 @@ sub do_info {
 					location.href = "$adminurl?action=$action";
 				}
 
-				setTimeout("membtick()", 5000)
+				setTimeout("membtick()", 5000);
 			 // -->
 			</script>
 		</td>

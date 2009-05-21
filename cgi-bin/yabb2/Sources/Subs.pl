@@ -57,39 +57,16 @@ sub automaintenance {
 	my $maction = $_[0];
 	my $mreason = $_[1];
 	if (lc($maction) eq "on") {
-		fopen (MAINT, ">$vardir/maintenance.lock");
-		print MAINT qq~Remove this file if your board is in maintenance for no reason\n~;
-		fclose (MAINT);
+		&write_DBorFILE(0,'',$vardir,'maintenance','lock',(qq~Remove this file if your board is in maintenance for no reason\n~));
 		if ($mreason eq "low_disk"){ 
 			&LoadLanguage('Error');
 			&alertbox($error_txt{'low_diskspace'}); 
 		}
 		$maintenance = 2 if !$maintenance;
 	} elsif (lc($maction) eq "off") {
-		unlink "$vardir/maintenance.lock" || &fatal_error("cannot_open_dir","$vardir/maintenance.lock");
+		&delete_DBorFILE("$vardir/maintenance.lock") || &fatal_error("cannot_open_dir","$vardir/maintenance.lock");
 		$maintenance = 0 if $maintenance == 2;
 	}
-}
-
-sub getnewid {
-	my $newid = $date;
-	while (-e "$datadir/$newid.txt") { ++$newid; }
-	return $newid;
-}
-
-sub undupe {
-	@in  = @_;
-	@out = ();
-	foreach $check (@in) {
-		$duped = 0;
-		foreach $checkout (@out) {
-			if ($checkout eq $check) { $duped = 1; last; }
-		}
-		if ($duped == 0) {
-			push(@out, $check);
-		}
-	}
-	return @out;
 }
 
 sub exit {
@@ -200,11 +177,8 @@ sub template {
 	$yynavback .= qq~<img src="$imagesdir/tabsep211.png" border="0" alt="" style="vertical-align: middle;" />~ if !$yynavback;
 	$yynavback .= qq~ <a href="#pagetop" class="nav">$img_txt{'102'}</a> <img src="$imagesdir/tabsep211.png" border="0" alt="" style="vertical-align: middle;" />~;
 
-	if (!$usehead) { $usehead = qq~default~; }
-	$yytemplate = "$templatesdir/$usehead/$usehead.html";
-	fopen(TEMPLATE, $yytemplate) || die("$maintxt{'23'}: $yytemplate");
-	$output = join('', <TEMPLATE>);
-	fclose(TEMPLATE);
+	if (!$usehead) { $usehead = "default"; }
+	$output = join('', &read_DBorFILE(0,'',"$templatesdir/$usehead",$usehead,'html'));
 
 	if ($iamadmin || $iamgmod) {
 		if ($maintenance) { $yyadmin_alert .= qq~<br /><span class="highlight"><b>$load_txt{'616'}</b></span>~; }
@@ -372,9 +346,7 @@ sub template {
 		}
 	}
 	if ($enable_news && -s "$vardir/news.txt" > 5) {
-		fopen(NEWS, "$vardir/news.txt");
-		my @newsmessages = <NEWS>;
-		fclose(NEWS);
+		my @newsmessages = &read_DBorFILE(0,'',$vardir,'news','txt');
 		chomp(@newsmessages);
 		my $startnews = int(rand(@newsmessages));
 		my $newstitle = qq~<b>$maintxt{'102'}:</b>~;
@@ -628,9 +600,9 @@ sub FindPermalink {
 	## get date/time/board/topic from permalink
 
 	($permyear, $permmonth, $permday, $permboard, $permnum) = split (/\//, $old_env);
-	if(-e "$boardsdir/$permboard.txt") {
+	if (&checkfor_DBorFILE("$boardsdir/$permboard.txt")) {
 		$permboardfound = 1;
-		if($permnum ne "" && -e "$datadir/$permnum.txt") {
+		if ($permnum ne "" && &checkfor_DBorFILE("$datadir/$permnum.txt")) {
 			$new_env = qq~num=$permnum~;
 			$permtopicfound = 1;
 		} else { $new_env = qq~board=$permboard~; }
@@ -756,7 +728,7 @@ sub readform {
 }
 
 sub getlog {
-	return if defined %yyuserlog || $iamguest || !$max_log_days_old || (!$use_MySQL && !-e "$memberdir/$username.log");
+	return if defined %yyuserlog || $iamguest || !$max_log_days_old || !&checkfor_DBorFILE("$memberdir/$username.log");
 
 	%yyuserlog = ();
 	my @logentries = &read_DBorFILE(0,'',$memberdir,$username,'log');
@@ -854,24 +826,20 @@ sub spam_protection {
 	unless ($timeout) { return; }
 	my ($time, $flood_ip, $flood_time, $flood, @floodcontrol);
 
-	if (-e "$vardir/flood.txt") {
-		fopen(FLOOD, "$vardir/flood.txt");
+	if (&checkfor_DBorFILE("$vardir/flood.txt")) {
 		push(@floodcontrol, "$user_ip|$date\n");
-		while (<FLOOD>) {
+		foreach (&read_DBorFILE(0,'',$vardir,'flood','txt')) {
 			chomp($_);
 			($flood_ip, $flood_time) = split(/\|/, $_);
 			if ($user_ip eq $flood_ip && $date - $flood_time <= $timeout) { $flood = 1; }
 			elsif ($date - $flood_time < $timeout) { push(@floodcontrol, "$_\n"); }
 		}
-		fclose(FLOOD);
 	}
 	if ($flood && !$iamadmin && $action eq 'post2') { &Preview("$maintxt{'409'} $timeout $maintxt{'410'}"); }
 	if ($flood && !$iamadmin) {
 		&fatal_error("post_flooding","$timeout $maintxt{'410'}");
 	}
-	fopen(FLOOD, ">$vardir/flood.txt", 1);
-	print FLOOD @floodcontrol;
-	fclose(FLOOD);
+	&write_DBorFILE(0,'',$vardir,'flood','txt',@floodcontrol);
 }
 
 sub CountChars {
@@ -947,7 +915,7 @@ sub WrapChars {
 		$char    = $curword;
 		$length  = 0;
 		$curword = '';
-		while ($char) {
+		while ($char ne '') {
 			if   ( $char =~ s/^(&#?[a-z\d]+;)//i ) { $curword .= $1; }
 			else { $char =~ s/^(.)//;                $curword .= $1; }
 			$length++;
@@ -1091,9 +1059,7 @@ sub Split_Splice_Move {
 		return (qq~<b>$maintxt{'160a'} </b><a href="$scripturl?num=$dest"><i><b>$maintxt{'160b'}</b></i></a><b> $maintxt{'525'} <i>${$uid.$mover}{'realname'}</i></b>~,1);
 
 	} elsif ($s_s_m =~ /^\[m\]/) { # Old style topic that was moved/spliced before this code
-		fopen(MOVEDFILE, "$datadir/$_[1].txt");
-		(undef, undef, undef, undef, undef, undef, undef, undef, $s_s_m, undef) = split(/\|/, <MOVEDFILE>, 10);
-		fclose(MOVEDFILE);
+		(undef, undef, undef, undef, undef, undef, undef, undef, $s_s_m, undef) = split(/\|/, (&read_DBorFILE(0,'',$datadir,$_[1],'txt'))[0], 10);
 		&ToChars($s_s_m);
 		$ssm += 1;
 	}
@@ -1359,10 +1325,7 @@ sub referer_check {
 	my $refererdomain = substr($ENV{HTTP_REFERER}, 7, (index($ENV{HTTP_REFERER}, "/", 7)) - 7);
 	if ($refererdomain !~ /$referencedomain/ && $ENV{QUERY_STRING} ne "" && length($refererdomain) > 0) {
 		my $goodaction = 0;
-		fopen(ALLOWED, "$vardir/allowed.txt");
-		my @allowed = <ALLOWED>;
-		fclose(ALLOWED);
-		foreach my $allow (@allowed) {
+		foreach my $allow (&read_DBorFILE(0,'',$vardir,'allowed','txt')) {
 			chomp $allow;
 			if ($action eq $allow) { $goodaction = 1; last; }
 		}
@@ -1404,15 +1367,13 @@ sub LoadLanguage {
 sub Recent_Load {
 	my $who_to_load = $_[0];
 	undef %recent;
-	if (-e "$memberdir/$who_to_load.rlog") {
+	if (&checkfor_DBorFILE("$memberdir/$who_to_load.rlog")) {
 		my %r = map { /(.*)\t(.*)/ } &read_DBorFILE(0,'',$memberdir,$who_to_load,'rlog');
 		map { @{$recent{$_}} = split(/,/, $r{$_}) } keys %r;
 	} elsif (-e "$memberdir/$who_to_load.wlog") {
-		require "$memberdir/$who_to_load.wlog";
-		fopen(RLOG, ">$memberdir/$who_to_load.rlog");
-		print RLOG map "$_\t$recent{$_}\n", keys %recent;
-		fclose(RLOG);
-		unlink "$memberdir/$who_to_load.wlog";
+		require "$memberdir/.wlog";
+		&write_DBorFILE(0,'',$memberdir,$who_to_load,'rlog',(map "$_\t$recent{$_}\n", keys %recent));
+		&delete_DBorFILE("$memberdir/$who_to_load.wlog");
 		&Recent_Load($who_to_load); 
 	}
 }
@@ -1434,7 +1395,7 @@ sub Recent_Write {
 sub Recent_Save {
 	my $who_to_save = $_[0];
 	if (!%recent) {
-		funlink("$memberdir/$who_to_save.rlog");
+		&delete_DBorFILE("$memberdir/$who_to_save.rlog");
 		return;
 	}
 	&write_DBorFILE(1,'',$memberdir,$who_to_save,'rlog', map { "$_\t" . join(',', @{$recent{$_}}) . "\n" } keys %recent);
@@ -1442,13 +1403,11 @@ sub Recent_Save {
 
 sub save_moved_file {
 	# This sub saves the hash for the moved files: key == old id, value == new id
-	fopen(MOVEDFILE, ">$datadir/movedthreads.cgi") || &fatal_error("cannot_open",">$datadir/movedthreads.cgi", 1);
-	print MOVEDFILE "%moved_file = (" . join(',', map { qq~"$_","$moved_file{$_}"~ } grep { ($_ > 0 && $moved_file{$_} > 0 && $_ != $moved_file{$_}) } keys %moved_file) . ");\n1;";
-	fclose(MOVEDFILE);
+	&write_DBorFILE(0,'',$datadir,'movedthreads','cgi',("%moved_file = (" . join(',', map { qq~"$_","$moved_file{$_}"~ } grep { ($_ > 0 && $moved_file{$_} > 0 && $_ != $moved_file{$_}) } keys %moved_file) . ");\n1;"));
 }
 
 sub Write_ForumMaster {
-	fopen(FORUMMASTER, ">$boardsdir/forum.master", 1);
+	&read_DBorFILE(0,FORUMMASTER,$boardsdir,'forum','master');
 	print FORUMMASTER qq~\$mloaded = 1;\n~;
 	@catorder = &undupe(@categoryorder);
 	print FORUMMASTER qq~\@categoryorder = qw(@catorder);\n~;
@@ -1484,8 +1443,7 @@ sub Write_ForumMaster {
 		$value =~ s/\~//g;
 		print FORUMMASTER qq~\$board{'$key'} = qq\~$value\~;\n~;
 	}
-	print FORUMMASTER qq~\n1;~;
-	fclose(FORUMMASTER);
+	&write_DBorFILE(0,FORUMMASTER,$boardsdir,'forum','master',("\n1;"));
 }
 
 sub dirsize {
@@ -1518,18 +1476,38 @@ sub MemberPageindex {
 	&redirectexit;
 }
 
-#changed sub for improve perfomance, code from Zoo
+sub undupe {
+	@in  = @_;
+	@out = ();
+	foreach $check (@in) {
+		$duped = 0;
+		foreach $checkout (@out) {
+			if ($checkout eq $check) { $duped = 1; last; }
+		}
+		if ($duped == 0) {
+			push(@out, $check);
+		}
+	}
+	return @out;
+}
+
+sub getnewid {
+	my $newid = $date;
+	while (&checkfor_DBorFILE("$datadir/$newid.txt")) { ++$newid; }
+	return $newid;
+}
+
+#changed sub for improve perfomance
 sub check_existence {
 	my ($dir, $filename) = @_;
 
 	$filename =~ /(\S+?)(\.\S+$)/;
 	my $origname = $1;
 	my $filext = $2;
-	my $numdelim = "_";
 	my $filenumb = 0;
-	while ( -e "$dir/$filename") {
+	while (&checkfor_DBorFILE("$dir/$filename")) {
 			$filenumb = sprintf("%03d", ++$filenumb);
-			$filename = qq~$origname$numdelim$filenumb$filext~;
+			$filename = qq~$origname\_$filenumb$filext~;
 	}
 	return ($filename);
 }
@@ -1547,9 +1525,7 @@ sub ManageMemberinfo {
 	## pull hash of member name + other data
 	if ($todo eq "load" || $todo eq "update" || $todo eq "delete" || $todo eq "add") {
 		return if %memberinf && $todo eq "load";
-		fopen(MEMBINFO, "$memberdir/memberinfo.txt");
-		%memberinf = map /(.*)\t(.*)/, <MEMBINFO>;
-		fclose(MEMBINFO);
+		%memberinf = map /(.*)\t(.*)/, &read_DBorFILE(0,'',$memberdir,'memberinfo','txt');
 	}
 	if      ($todo eq "add") {
 		$memberinf{$user} = "$userreg|$userdisp|$usermail|$usergrp|$usercnt|$useraddgrp";
@@ -1569,9 +1545,7 @@ sub ManageMemberinfo {
 		foreach (split(/,/, $user)) { delete $memberinf{$_}; } # been sent a single or a list to kill
 	}
 	if ($todo eq "save" || $todo eq "update" || $todo eq "delete" || $todo eq "add") {
-		fopen(MEMBINFO, ">$memberdir/memberinfo.txt");
-		print MEMBINFO map "$_\t$memberinf{$_}\n", sort { $memberinf{$a} cmp $memberinf{$b} } keys %memberinf;
-		fclose(MEMBINFO);
+		&write_DBorFILE(0,'',$memberdir,'memberinfo','txt',(map "$_\t$memberinf{$_}\n", sort { $memberinf{$a} cmp $memberinf{$b} } keys %memberinf));
 		undef %memberinf;
 	}
 }
@@ -1601,11 +1575,9 @@ sub MailList {
 	} else {
 		$delmailline = $INFO{'delmail'};
 	}
-	if (-e ("$vardir/maillist.dat")) {
-		fopen(FILE, "$vardir/maillist.dat");
-		@maillist = <FILE>;
-		fclose(FILE);
-		fopen(FILE, ">$vardir/maillist.dat");
+	if (&checkfor_DBorFILE("$vardir/maillist.dat")) {
+		my @maillist = &read_DBorFILE(0,FILE,$vardir,'maillist','dat');
+
 		if (!$INFO{'delmail'}) {
 			print FILE "$mailline\n";
 		}
@@ -1616,11 +1588,9 @@ sub MailList {
 				print FILE "$curmail\n";
 			}
 		}
-		fclose(FILE);
+		&write_DBorFILE(0,FILE,$vardir,'maillist','dat',(''));
 	} else {
-		fopen(FILE, ">$vardir/maillist.dat");
-		print FILE "$mailline\n";
-		fclose(FILE);
+		&write_DBorFILE(0,'',$vardir,'maillist','dat',("$mailline\n"));
 	}
 	if ($INFO{'delmail'}) {
 		$yySetLocation = qq~$adminurl?action=mailing~;
@@ -1854,33 +1824,38 @@ sub CheckUserPM_Level {
 # Block for File and SQL management START
 {
 
-	# key = folder.['extension of the file' or 'variable in file/colum in table']
+	# BE CAREFUL what you add, especially if this file is renamed somewhere in the
+	# the code! There is no routine for thie in SQL at the moment!!!
+	# key = folder.['extension of the file'] OR
+	# key = folder.['variable in file/colum in table'] OR
+	# key = folder.[name of the file].['extension of the file']
 	# values = ['name of the table','key of the table',[qw[colums to get/update]]]
 	my %db_table = (
-		$boardsdir."control" =>
-		[
-			"",
-			'',
-			[qw[]],
-		],
-		$boardsdir."mail" =>
-		[
-			"",
-			'',
-			[qw[]],
-		],
-		$boardsdir."master" =>
-		[
-			"",
-			'',
-			[qw[]],
-		],
-		$boardsdir."totals" =>
-		[
-			"",
-			'',
-			[qw[]],
-		],
+		#$boardsdir."control" =>
+		#[
+		#	"",
+		#	'',
+		#	[qw[]],
+		#],
+		#$boardsdir."mail" =>
+		#[
+		#	"",
+		#	'',
+		#	[qw[]],
+		#],
+		#$boardsdir."master" =>
+		#[
+		#	"",
+		#	'',
+		#	[qw[]],
+		#],
+		#$boardsdir."totals" =>
+		#[
+		#	"",
+		#	'',
+		#	[qw[]],
+		#],
+
 		# Changes here on @{$db_table{$datadir."ctb"}}[2] must also be done
 		# in exactly the same order in:
 		# System.pl -> sub MessageTotals -> my @tag = ... and in
@@ -1909,7 +1884,25 @@ sub CheckUserPM_Level {
 			'threadnum',
 			[qw[polled]],
 		],
-		#$datadir."txt"          => ["$db_prefix\_messages",'mess_threadnum',[qw[subject displayname email date username icon post_number user_ip message no_smilies modified_date modified_by attachments]]],
+		$datadir."txt" =>
+		[
+			"$db_prefix\_messages",
+			'mess_threadnum',
+			[qw[subject displayname email date username icon post_number user_ip message no_smilies modified_date modified_by attachments]],
+		],
+
+		$memberdir."vars" =>
+		[ # setting are in Settings.pl
+			"$db_prefix\_vars",
+			'yabbusername',
+			[qw[yabbusername realname]],
+		],
+		$memberdir."lastonline" =>
+		[
+			($db_vars_laston_table || "$db_prefix\_vars"),
+			($db_vars_laston_table ? $db_user_vars_key : 'yabbusername'),
+			[($db_vars_laston || 'lastonline')],
+		],
 		$memberdir."imdraft" =>
 		[
 			"$db_prefix\_vars",
@@ -1952,39 +1945,62 @@ sub CheckUserPM_Level {
 			'yabbusername',
 			[qw[rlog]],
 		],
-		# Changes here on @{$db_table{$memberdir."vars"}}[2] must also be done
-		# in exactly the same order in:
-		# Admin/Database.pl -> @db_vars_tabs_order =; my @tags = and
-		# System.pl -> sub UserAccount -> my @tags = ...
-		$memberdir."vars" =>
-		[
-			"---",
-			'yabbusername',
-			[qw[realname password position addgroups email hidemail regdate regtime regreason location bday gender userpic usertext signature template language stealth webtitle weburl icq aim yim skype myspace facebook msn gtalk timeselect timeformat timeoffset dsttimeoffset dynamic_clock postcount lastonline lastpost lastim im_ignorelist im_popup im_imspop pmmessprev pmviewMess pmactprev notify_me board_notifications thread_notifications favorites buddylist cathide pageindex reversetopic postlayout sesquest sesanswer session lastips onlinealert offlinestatus awaysubj awayreply awayreplysent spamcount spamtime]],
-		],
-		$memberdir."lastonline" =>
-		[
-			($db_vars_laston_table || "$db_prefix\_vars"),
-			($db_vars_laston_table ? $db_user_vars_key : 'yabbusername'),
-			[($db_vars_laston || 'lastonline')],
-		],
+
 		$vardir."log"."txt" =>
-		[
-			"$db_prefix\_log",
-			'',
-			[split(/,/, $db_log_order)],
+		[ # setting are in Settings.pl
+			"---",
+			'---',
+			[qw[---]],
 		],
 	);
 
+	# check if file/row entry exists
+	my %check_sth;
+	sub checkfor_DBorFILE {
+		my $file = $_[0];
+		if ($use_MySQL) {
+			$file =~ /(.*)\/(.*)\.(.*?)$/;
+			my ($folder,$name,$ext) = ($1,$2,$3);
+			if ($db_table{$folder.$ext}[0] || $db_table{$folder.$name.$ext}[0]) {
+				my $DBfile = $db_table{$folder.$ext}[0] ? $folder.$ext : $folder.$name.$ext;
+				unless ($check_sth{$DBfile.$db_table{$DBfile}[0]}) {
+					$check_sth{$DBfile.$db_table{$DBfile}[0]} = &mysql_process(0,'prepare',"SELECT `" . join('`,`', @{$db_table{$DBfile}[2]}) . "` FROM `$db_table{$DBfile}[0]` WHERE `$db_table{$DBfile}[1]`=?");
+				}
+				&mysql_process($check_sth{$DBfile.$db_table{$DBfile}[0]},'execute',$name);
+				return (&mysql_process($check_sth{$DBfile.$db_table{$DBfile}[0]},'fetchrow_array',0,1) ? 1 : 0);
+			}
+		}
+
+		return (-e $file ? 1 : 0);
+	}
+
+	# get array with all member names
+	sub get_members_array {
+		map { $$_[0] } @{&mysql_process(0,'selectall_arrayref',qq~SELECT `yabbusername` FROM `$db_prefix\_vars`~)};
+	}
+	# get array with all thread numbers from table messages
+	sub get_messages_array {
+		map { $$_[0] } @{&mysql_process(0,'selectall_arrayref',qq~SELECT `mess_threadnum` FROM `$db_prefix\_messages` WHERE `post_number`=0 ORDER BY `mess_threadnum` ASC~)};
+	}
+	# get array with all thread numbers from table ctb
+	sub get_ctb_array {
+		map { $$_[0] } @{&mysql_process(0,'selectall_arrayref',qq~SELECT `threadnum` FROM `$db_prefix\_ctb`~)};
+	}
+	# get array with all thread numbers from table ctb with mail entrys
+	sub get_mail_array {
+		map { $$_[0] } @{&mysql_process(0,'selectall_arrayref',qq~SELECT `threadnum` FROM `$db_prefix\_ctb` WHERE `mail`<>''~)};
+	}
+
 	# read from DB or file
 	sub read_DBorFILE {
-		# $dummy: not used at the moment
+		# $ignore_error without FILEHANDLE: 1 -> ignore error message when open file; 0 -> write error message on error
+		# $ignore_error with FILEHANDLE: 1 -> no error when file not exists; 0 -> error when file not exists
 		# $LOCKHANDLE: File handle if read and write in same file == Lock table if read and write from/in same table
 		# $folder: foldername of file == table name
 		# $name: name of file == name searched in table key
 		# $ext: file extension == table colum name
 		# return value is always array or ref to array
-		my ($dummy, $LOCKHANDLE, $folder, $name, $ext) = @_;
+		my ($ignore_error, $LOCKHANDLE, $folder, $name, $ext) = @_;
 
 		if ($debug) {
 			my ($file, $line, $sub) = &get_caller;
@@ -1993,27 +2009,27 @@ sub CheckUserPM_Level {
 
 		if ($use_MySQL && ($db_table{$folder.$ext}[0] || $db_table{$folder.$name.$ext}[0])) {
 			my $DBfile = $db_table{$folder.$ext}[0] ? $folder.$ext : $folder.$name.$ext;
-			&mysql_process(0,'do',"LOCK TABLES `$db_table{$DBfile}[0]` WRITE") if $LOCKHANDLE;
-
-			my $temp_sth = &get_read_DBsth($folder, $name, $ext);
-			&mysql_process($temp_sth,'execute',$name);
-			if (@{$db_table{$DBfile}[2]} == 1) {
-				split(/^/m, &mysql_process($temp_sth,'fetchrow_array',0,1));
+			if      ($folder eq $boardsdir) {
+				&boards_DB_r($LOCKHANDLE, $name, $DBfile);
+			} elsif ($folder eq $datadir) {
+				&threads_DB_r($LOCKHANDLE, $name, $DBfile);
+			} elsif ($folder eq $memberdir) {
+				&members_DB_r($LOCKHANDLE, $name, $DBfile);
+			} elsif ($folder eq $vardir) {
+				&variables_DB_r($LOCKHANDLE, $name, $DBfile);
 			} else {
-				($DBfile eq $vardir."log"."txt" || $DBfile eq $datadir."txt") ? 
-					map { $$_[0] } @{&mysql_process($temp_sth,'fetchall_arrayref',0,1)} :
-					&mysql_process($temp_sth,'fetchrow_array',0,1);
+				&fatal_error("cannot_open","$folder/$name.$ext");
 			}
 
 		} elsif ($LOCKHANDLE) {
-			fopen($LOCKHANDLE, "+<$folder/$name.$ext") || &fatal_error('cannot_open', "$folder/$name.$ext", 1);
+			fopen($LOCKHANDLE, "+" . ($ignore_error ? '>' : '<') . "$folder/$name.$ext") || &fatal_error('cannot_open', "$folder/$name.$ext", 1);
 			@_ = <$LOCKHANDLE>;
 			seek $LOCKHANDLE, 0, 0;
 			truncate *$LOCKHANDLE, 0;
 			@_;
 
 		} else {
-			fopen(READ, "$folder/$name.$ext") || &fatal_error('cannot_open', "$folder/$name.$ext", 1);
+			fopen(READ, "$folder/$name.$ext") || ($ignore_error ? return () : &fatal_error('cannot_open', "$folder/$name.$ext", 1));
 			@_ = <READ>;
 			fclose(READ);
 			@_;
@@ -2023,7 +2039,10 @@ sub CheckUserPM_Level {
 	# write in DB or file
 	sub write_DBorFILE {
 		# $update_DB: if SQL-DB is enabled: 1 = UPDATE; 0 or '' = INSERT
-		# $... see sub read_DBorFILE above
+		# $LOCKHANDLE: File handle if read and write in same file == Lock table if read and write from/in same table
+		# $folder: foldername of file == table name
+		# $name: name of file == name searched in table key
+		# $ext: file extension == table colum name
 		# @data: data to write in the DB or file
 		my ($update_DB, $LOCKHANDLE, $folder, $name, $ext, @data) = @_;
 
@@ -2033,18 +2052,27 @@ sub CheckUserPM_Level {
 		}
 
 		if ($use_MySQL && ($db_table{$folder.$ext}[0] || $db_table{$folder.$name.$ext}[0])) {
-			@data = map { s/"/\\"/g; $_; } @data;
-			&mysql_process(0,'do',&get_write_DBstatement($update_DB, $folder, $name, $ext, @data));
-
+			my $DBfile = $db_table{$folder.$ext}[0] ? $folder.$ext : $folder.$name.$ext;
+			if      ($folder eq $boardsdir) {
+				&boards_DB_w($update_DB, $name, $DBfile, ref($data[0]) ? $data[0] : \@data);
+			} elsif ($folder eq $datadir) {
+				&threads_DB_w($update_DB, $name, $DBfile, ref($data[0]) ? $data[0] : \@data);
+			} elsif ($folder eq $memberdir) {
+				&members_DB_w($update_DB, $name, $DBfile, ref($data[0]) ? $data[0] : \@data);
+			} elsif ($folder eq $vardir) {
+				&variables_DB_w($update_DB, $name, $DBfile, ref($data[0]) ? $data[0] : \@data);
+			} else {
+				&fatal_error("cannot_open","$folder/$name.$ext");
+			}
 			&mysql_process(0,'do',"UNLOCK TABLES") if $LOCKHANDLE;
 
 		} elsif ($LOCKHANDLE) {
-			print $LOCKHANDLE @data;
+			print $LOCKHANDLE (ref($data[0]) ? @{$data[0]} : @data);
 			fclose($LOCKHANDLE);
 
 		} else {
 			fopen(WRITE, ">$folder/$name.$ext") || &fatal_error('cannot_open', "$folder/$name.$ext", 1);
-			print WRITE @data;
+			print WRITE (ref($data[0]) ? @{$data[0]} : @data);
 			fclose(WRITE);
 		}
 	}
@@ -2054,119 +2082,185 @@ sub CheckUserPM_Level {
 		# $folder: foldername of original file
 		# $name: ---
 		# $ext: extension of original file
-		# @what: what to delete (key values)
+		# @where: what to delete (key values)
 		# no return value
-		my ($folder, $name, $ext, @what) = @_;
+		my ($folder, $name, $ext, @where) = @_;
 
 		if ($use_MySQL && ($db_table{$folder.$ext}[0] || $db_table{$folder.$name.$ext}[0])) {
-			my $DBfile = $db_table{$folder.$ext}[0] ? $folder.$ext : $folder.$name.$ext;
 			if ($debug && (!$LOCKHANDLE || $use_MySQL)) {
 				my ($file, $line, $sub) = &get_caller;
 				$openfiles .= qq~\n[$file, $line, $sub]~;
 			}
 
+			my $DBfile = $db_table{$folder.$ext}[0] ? $folder.$ext : $folder.$name.$ext;
+
 			if ($DBfile eq $vardir."log"."txt") { # only for Variables/log.txt
-				&mysql_process(0,'do',"DELETE FROM `$db_prefix\_log`" . ($db_user_log_table ? ",`$db_user_log_table` USING `$db_prefix\_log`,`$db_user_log_table` WHERE `yabbuserlogname`=`$db_user_log_key` AND" : " WHERE") . qq~ (`yabbuserlogname`="$what[0]" OR `yabbuserlogname`="$what[1]" OR $db_log_date<$what[2])~);
+				&mysql_process(0,'do',"DELETE FROM `$db_prefix\_log`" . ($db_user_log_table ? ",`$db_user_log_table` WHERE `yabbuserlogname`=`$db_user_log_key` AND" : " WHERE") . qq~ (`yabbuserlogname`="$where[0]" OR `yabbuserlogname`="$where[1]" OR $db_log_date<$where[2])~);
 
 			} else {
-				&mysql_process(0,'do',qq~DELETE FROM `$db_table{$DBfile}[0]` WHERE `$db_table{$DBfile}[1]`="~ . join('" OR `$db_table{$DBfile}[1]`="', @what) . qq~"~);
+				&mysql_process(0,'do',qq~DELETE FROM `$db_table{$DBfile}[0]` WHERE `$db_table{$DBfile}[1]`="~ . join('" OR `$db_table{$DBfile}[1]`="', @where) . qq~"~);
 			}
 
 		}
 	}
 
-	my %sth;
-	sub get_read_DBsth {
-		my ($folder, $name, $ext) = @_;
-		my $DBfile = $db_table{$folder.$ext}[0] ? $folder.$ext : $folder.$name.$ext;
 
-		return $sth{$DBfile.$db_table{$DBfile}[0]} if $sth{$DBfile.$db_table{$DBfile}[0]};
+	my (%sth_r,%sth_w);
+	# read
+	sub boards_DB_r {
+		my ($LOCKHANDLE, $name, $DBfile) = @_;
 
-		if ($ext ne 'vars') {
-			if ($DBfile eq $vardir."log"."txt") { # only for Variables/log.txt
-				return $sth{$DBfile.$db_table{$DBfile}[0]} = 
-					&mysql_process(0,'prepare',qq~SELECT CONCAT_WS('|', ~ . join(',', @{$db_table{$DBfile}[2]}) . qq~) FROM `$db_prefix\_log`~ . ($db_user_log_table ? ",`$db_user_log_table` WHERE `yabbuserlogname`=`$db_user_log_key` OR " : " WHERE ") . "`yabbuserlogname`<>? ORDER BY $db_log_date ASC");
-			} elsif ($DBfile eq $datadir."txt") { # only for Messages/[threadnumber].txt
-				return $sth{$DBfile.$db_table{$DBfile}[0]} = 
-					&mysql_process(0,'prepare',qq~SELECT CONCAT_WS('|', `~ . join('`,`', @{$db_table{$DBfile}[2]}) . qq~`) FROM `$db_table{$DBfile}[0]` WHERE `$db_table{$DBfile}[1]`=? ORDER BY `post_number` ASC~);
-			}
-
-			return $sth{$DBfile.$db_table{$DBfile}[0]} = 
-				&mysql_process(0,'prepare',qq~SELECT `~ . join('`,`', @{$db_table{$DBfile}[2]}) . qq~` FROM `$db_table{$DBfile}[0]` WHERE `$db_table{$DBfile}[1]`=?~);
-		} 
-
-		# only for Members/username.vars
-		return $sth{$DBfile.$db_table{$DBfile}[0]} = 
-			&mysql_process(0,'prepare',"SELECT $db_vars_order FROM `" .
-				($db_user_vars_table ? $db_user_vars_table : "") . (%db_vars_col ? ($db_user_vars_table ? "`,`$db_prefix\_vars" : "$db_prefix\_vars") : "") .
-				"` WHERE " .
-				($db_user_vars_table ? qq~`$db_user_vars_key`=`yabbusername`~ : "") . (%db_vars_col ? ($db_user_vars_table ? " AND " : "") . qq~`yabbusername`=?~ : ""));
+		&fatal_error('', "No table for .../Boards/... jet!!!", 1);
+		&mysql_process(0,'do',"LOCK TABLES `$db_table{$DBfile}[0]` WRITE") if $LOCKHANDLE;
 	}
 
-	sub get_write_DBstatement {
-		my ($update_DB, $folder, $name, $ext, @data) = @_;
-		my $DBfile = $db_table{$folder.$ext}[0] ? $folder.$ext : $folder.$name.$ext;
+	sub threads_DB_r {
+		my ($LOCKHANDLE, $name, $DBfile) = @_;
+
+		&mysql_process(0,'do',"LOCK TABLES `$db_table{$DBfile}[0]` WRITE") if $LOCKHANDLE;
+
+		if ($DBfile eq $datadir."txt") { # for Messages/[threadnumber].txt
+			if (!$sth_r{$DBfile.$db_table{$DBfile}[0]}) {
+				$sth_r{$DBfile.$db_table{$DBfile}[0]} = 
+					&mysql_process(0,'prepare',qq~SELECT CONCAT_WS('|', `~ . join('`,`', @{$db_table{$DBfile}[2]}) . qq~`) FROM `$db_table{$DBfile}[0]` WHERE `$db_table{$DBfile}[1]`=? ORDER BY `post_number` ASC~);
+			}
+			&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'execute',$name);
+			return map { $$_[0] } @{&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchall_arrayref',0,1)};
+
+		} else { # for Messages/[threadnumber].[ctb|mail|poll|polled]
+			if (!$sth_r{$DBfile.$db_table{$DBfile}[0]}) {
+				$sth_r{$DBfile.$db_table{$DBfile}[0]} = 
+					&mysql_process(0,'prepare',qq~SELECT `~ . join('`,`', @{$db_table{$DBfile}[2]}) . qq~` FROM `$db_table{$DBfile}[0]` WHERE `$db_table{$DBfile}[1]`=?~);
+			}
+			&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'execute',$name);
+			if (@{$db_table{$DBfile}[2]} > 1) {
+				return &mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchrow_array',0,1);
+			} else {
+				return split(/^/m, &mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchrow_array',0,1));
+			}
+		}
+	}
+
+	sub members_DB_r {
+		my ($LOCKHANDLE, $name, $DBfile) = @_;
+
+		&mysql_process(0,'do',"LOCK TABLES `" . ($db_user_vars_table ? "$db_user_vars_table` WRITE, `$db_prefix\_vars" : "$db_prefix\_vars") . "` WRITE") if $LOCKHANDLE;
+
+		if (!$sth_r{$DBfile.$db_table{$DBfile}[0]}) {
+			if (@{$db_table{$DBfile}[2]} > 1) {
+				$sth_r{$DBfile.$db_table{$DBfile}[0]} = 
+					&mysql_process(0,'prepare',"SELECT $db_vars_order FROM `" .
+						($db_user_vars_table ? "$db_user_vars_table`,`$db_prefix\_vars" : "$db_prefix\_vars") .
+						"` WHERE " .
+						($db_user_vars_table ? qq~`$db_user_vars_key`=`yabbusername` AND ~ : "") . qq~`yabbusername`=?~);
+			} else {
+				$sth_r{$DBfile.$db_table{$DBfile}[0]} = 
+					&mysql_process(0,'prepare',"SELECT `${$db_table{$DBfile}[2]}[0]` FROM `$db_prefix\_vars` WHERE `yabbusername`=?");
+			}
+		}
+		&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'execute',$name);
+		if (@{$db_table{$DBfile}[2]} > 1) {
+			return &mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchrow_array',0,1);
+		} else {
+			return split(/^/m, &mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchrow_array',0,1));
+		}
+	}
+
+	sub variables_DB_r {
+		my ($LOCKHANDLE, $name, $DBfile) = @_;
+
+		if ($DBfile eq $vardir."log"."txt") { # only for Variables/log.txt
+			&mysql_process(0,'do',"LOCK TABLES `$db_prefix\_log` WRITE" . ($db_user_log_table ? ",`$db_user_log_table` WRITE" : "")) if $LOCKHANDLE;
+
+			return map { $$_[0] } @{&mysql_process(0,'selectall_arrayref',qq~SELECT CONCAT_WS('|', ~ . join(',', split(/,/, $db_log_order)) . qq~) FROM `$db_prefix\_log`~ . ($db_user_log_table ? ",`$db_user_log_table` WHERE `yabbuserlogname`=`$db_user_log_key`" : "") . " ORDER BY $db_log_date ASC")};
+
+		} else {
+			&mysql_process(0,'do',"LOCK TABLES `$db_table{$DBfile}[0]` WRITE") if $LOCKHANDLE;
+
+			# to be done
+		}
+	}
+
+
+	# write
+	sub boards_DB_w {
+		my ($update_DB, $name, $DBfile, $data) = @_;
+
+	}
+
+	sub threads_DB_w {
+		my ($update_DB, $name, $DBfile, $data) = @_;
 
 		if ($update_DB) { # UPDATE table
-			if ($ext eq 'vars') { # only for Members/username.vars
-				return "UPDATE `$db_user_vars_table` SET " . join(',', map { qq~`$_`="${$uid.$name}{ $db_user_vars_col{$_} }"~; } keys %db_user_vars_col) . qq~ WHERE `$db_user_vars_key`="$name"~ if $db_user_vars_table;
-				return "UPDATE `$db_prefix\_vars` SET " . join(',', map { qq~`$_`="${$uid.$name}{ $_ }"~ } keys %db_vars_col) . qq~ WHERE `yabbusername`="$name"~ if %db_vars_col;
+			if ($DBfile eq $datadir."txt") { # for Messages/[threadnumber].txt
+				&fatal_error('', "No DB-UPDATE for '$FORM{'db_prefix'}_messages'-table!!!", 1);
 
-			} else {
-				return qq~UPDATE `$db_table{$DBfile}[0]` SET ~ . &write_set($DBfile,@data) . qq~ WHERE `$db_table{$DBfile}[1]`="$name"~;
+			} else { # for Messages/[threadnumber].[ctb|mail|poll|polled]
+				if (!$sth_w{$DBfile.$db_table{$DBfile}[0]}) {
+					$sth_w{$DBfile.$db_table{$DBfile}[0]} = 
+						&mysql_process(0,'prepare',qq~UPDATE `$db_table{$DBfile}[0]` SET ~ . join(",", map { "`$_`=?" } @{$db_table{$DBfile}[2]}) . qq~ WHERE `$db_table{$DBfile}[1]`=?~);
+				}
+				if (@{$db_table{$DBfile}[2]} > 1) {
+					&mysql_process($sth_w{$DBfile.$db_table{$DBfile}[0]},'execute',(map { s/"/\\"/g; $_; } @$data,$name));
+				} else {
+					&mysql_process($sth_w{$DBfile.$db_table{$DBfile}[0]},'execute',(join('', map { s/"/\\"/g; $_; } @$data),$name));
+				}
 			}
 
 		} else { # INSERT table
-			if ($ext eq 'vars') { # only for Members/username.vars
+			if ($DBfile eq $datadir."txt") { # for Messages/[threadnumber].txt
+				if (!$sth_w{$DBfile.$db_table{$DBfile}[0]}) {
+					$sth_w{$DBfile.$db_table{$DBfile}[0]} = 
+						&mysql_process(0,'prepare',qq~INSERT INTO `$db_table{$DBfile}[0]` (`$db_table{$DBfile}[1]`,`~ . join('`,`', @{$db_table{$DBfile}[2]}) . qq~`) VALUES (?,~ . join(',', map { '?' } @{$db_table{$DBfile}[2]}) . qq~)~);
+				}
+				&mysql_process(0,'do',qq~DELETE FROM `$db_table{$DBfile}[0]` WHERE `$db_table{$DBfile}[1]`="$name"~); # must delete all old entries first because there is no update!
+				foreach (@$data) {
+					&mysql_process($sth_w{$DBfile.$db_table{$DBfile}[0]},'execute',($name,(map { s/"/\\"/g; $_; } split(/\|/, $_))));
+				}
+
+			} else { # for Messages/[threadnumber].ctb; mail,poll,polled are empty here
+				&mysql_process(0,'do',qq~DELETE FROM `$db_table{$DBfile}[0]` WHERE `$db_table{$DBfile}[1]`="$name"~); # delete old entries first to avoid error because of double
+				&mysql_process(0,'do',qq~INSERT INTO `$db_table{$DBfile}[0]` VALUES ("$name","~ . join('","', (map { s/"/\\"/g; $_; } @$data)) . qq~","","","")~);
+			}
+		}
+	}
+
+	sub members_DB_w {
+		my ($update_DB, $name, $DBfile, $data) = @_;
+
+		if ($update_DB) { # UPDATE table(s)
+			if ($DBfile ne $memberdir."vars") { # update single colums in .vars table
+				&mysql_process(0,'do',qq~UPDATE `$db_table{$DBfile}[0]` SET `${$db_table{$DBfile}[2]}[0]`="~ . join('', map { s/"/\\"/g; $_; } @$data) . qq~" WHERE `$db_table{$DBfile}[1]`="$name"~);
+
+			} else { # update all .vars colums
+				&mysql_process(0,'do',"UPDATE `$db_user_vars_table` SET " . join(',', map { qq~`$_`="${$uid.$name}{ $db_user_vars_col{$_} }"~; } keys %db_user_vars_col) . qq~ WHERE `$db_user_vars_key`="$name"~) if $db_user_vars_table;
+				&mysql_process(0,'do',"UPDATE `$db_prefix\_vars` SET " . join(',', map { qq~`$_`="${$uid.$name}{ $_ }"~ } keys %db_vars_col) . qq~ WHERE `yabbusername`="$name"~);
+			}
+
+		} else { # INSERT table(s)
 				my @keys;
-				# Insert new values into `$db_user_vars_table` if no key with same name exists
+				# INSERT new values into `$db_user_vars_table` if no key with same name exists
 				if ($db_user_vars_table && !&mysql_process(0,'selectrow_array',qq~SELECT `$db_user_vars_key` FROM `$db_user_vars_table` WHERE `$db_user_vars_key`="$name"~)) {
 					@keys = keys %db_user_vars_col;
-					if (%db_vars_col) {
-						&mysql_process(0,'do',"INSERT INTO `$db_user_vars_table` (`$db_user_vars_key`,`" . join('`,`', @keys) . qq~`) VALUES ("$name","~ . join('","', map { ${$uid.$name}{ $db_user_vars_col{$_} } } @keys) . '")');
-					} else {
-						return "INSERT INTO `$db_user_vars_table` (`$db_user_vars_key`,`" . join('`,`', @keys) . qq~`) VALUES ("$name","~ . join('","', map { ${$uid.$name}{ $db_user_vars_col{$_} } } @keys) . '")';
-					}
+					&mysql_process(0,'do',"INSERT INTO `$db_user_vars_table` (`$db_user_vars_key`,`" . join('`,`', @keys) . qq~`) VALUES ("$name","~ . join('","', map { ${$uid.$name}{ $db_user_vars_col{$_} } } @keys) . '")');
 				}
-				# Insert new values into `$db_prefix\_vars`
+				# INSERT new values into `$db_prefix\_vars`
 				@keys = keys %db_vars_col;
-				return "INSERT INTO `$db_prefix\_vars` (`yabbusername`,`" . join('`,`', @keys) . qq~`) VALUES ("$name","~ . join('","', map { ${$uid.$name}{ $_ } } @keys) . '")';
-
-			} elsif ($DBfile eq $vardir."log"."txt") { # only for Variables/log.txt
-				my @temp_array = split(/\|/, $data[0]);
-				&mysql_process(0,'do',qq~INSERT INTO `$db_user_log_table` (`$db_user_log_key`,`$db_user_log_col`) VALUES ("$name","~ . join('","', map { $temp_array[$_] } @db_user_log_array_order) . qq~")~) if $db_user_log_table;
-				return qq~INSERT INTO `$db_prefix\_log` (`$db_log_col`) VALUES ("~ . join('","', map { $temp_array[$_] } @db_log_array_order) . qq~")~;
-
-			} elsif ($DBfile eq $datadir."txt") { # only for Messages/[threadnumber].txt
-				my $temp_sth = &mysql_process(0,'prepare',qq~INSERT INTO `$db_table{$DBfile}[0]` (`$db_table{$DBfile}[1]`,`~ . join('`,`', @{$db_table{$DBfile}[2]}) . qq~`) VALUES ("$name",~ . join(',', map { '?' } @{$db_table{$DBfile}[2]}) . qq~)~);
-				foreach (@data) {
-					&mysql_process($temp_sth,'execute',(split(/\|/, $_)));
-				}
-			}
-
-			return qq~INSERT INTO `$db_table{$DBfile}[0]` VALUES (~ . &write_set($DBfile,@data) . qq~)~;
+				&mysql_process(0,'do',"INSERT INTO `$db_prefix\_vars` (`yabbusername`,`" . join('`,`', @keys) . qq~`) VALUES ("$name","~ . join('","', map { ${$uid.$name}{ $_ } } @keys) . '")');
 		}
+	}
 
-		sub write_set { # wites the settings for non .vars files
-			my ($DBfile, @data) = @_;
-			if (@{$db_table{$DBfile}[2]} == 1) { # single colum update
-				# @data may contain many lines!
-				return qq~`${$db_table{$DBfile}[2]}[0]`="~ . join('', @data) . qq~"~;
-			} else { # multiple colums update
-				if (!$update_DB && $DBfile eq $datadir."ctb") { push(@data, '','',''); }
-				my ($i,@temp) = (0,());
-				while (@data) {
-					if ($update_DB) { # join values for UPDATE
-						push(@temp, qq~`${$db_table{$DBfile}[2]}[$i]`="~ . shift(@data) . qq~"~);
-						$i++;
-					} else { # join values for INSERT
-						push(@temp, qq~"~ . shift(@data) . qq~"~);
-					}
-				}
-				return join(',', @temp);
-			}
+	sub variables_DB_w {
+		my ($update_DB, $name, $DBfile, $data) = @_;
+
+		if ($DBfile eq $vardir."log"."txt") { # only for Variables/log.txt
+			my @temp_array = split(/\|/, $$data[0]);
+			&mysql_process(0,'do',qq~INSERT INTO `$db_user_log_table` (`$db_user_log_key`,`$db_user_log_col`) VALUES ("$name","~ . join('","', map { $temp_array[$_] } @db_user_log_array_order) . qq~")~) if $db_user_log_table;
+			&mysql_process(0,'do',qq~INSERT INTO `$db_prefix\_log` (`$db_log_col`) VALUES ("~ . join('","', map { $temp_array[$_] } @db_log_array_order) . qq~")~);
+
+		} else {
+			# to be done
 		}
-
 	}
 
 
@@ -2225,7 +2319,7 @@ sub CheckUserPM_Level {
 				else { last; }
 				++$count;
 			}
-			unlink($filehandle) if ($count == 15);
+			&delete_DBorFILE($filehandle) if ($count == 15);
 			local *LFH;
 			CORE::open(LFH, ">$filehandle");
 			$yyLckFile{$filehandle} = *LFH;
@@ -2311,7 +2405,7 @@ sub CheckUserPM_Level {
 		if ($use_flock == 2) {
 			if (exists $yyLckFile{$filehandle} && -e $filehandle) {
 				CORE::close($yyLckFile{$filehandle});
-				unlink($filehandle);
+				&delete_DBorFILE($filehandle);
 				delete $yyLckFile{$filehandle};
 			}
 		}
@@ -2328,12 +2422,12 @@ sub CheckUserPM_Level {
 			}
 
 			# Switch the temporary file with the original.
-			unlink("$bakfile.bak") if (-e "$bakfile.bak");
+			unlink("$bakfile.bak") if -e "$bakfile.bak";
 			rename($bakfile, "$bakfile.bak");
 			rename("$bakfile.tmp", $bakfile);
 			delete $yyTmpFile{$filehandle};
 			if (-e $bakfile) {
-				unlink("$bakfile.bak");    # Delete the original file to save space.
+				&delete_DBorFILE("$bakfile.bak");    # Delete the original file to save space.
 			}
 		}
 		$file_close++;
@@ -2396,34 +2490,47 @@ sub CheckUserPM_Level {
 		&fatal_error('', qq~<u>DBI::errstr:</u><br /><pre style="overflow:scroll;">$_[0]</pre>~, 1);
 	}
 
-	sub funlink {
+	sub delete_DBorFILE {
 		my $file = shift;
 		if (!$use_MySQL) { return unlink($file); }
 
-		if ($file =~ /(\d+)\.ctb$/) {
-			&mysql_process(0,'do',"DELETE FROM `$db_prefix\_ctb` WHERE `threadnum`='$1'");
-		#} elsif ($file =~ /$datadir\/([^\/]+)\.txt$/) {
-		#	&mysql_process(0,'do',qq~DELETE FROM `$db_prefix\_messages` WHERE `mess_threadnum`='$1'~);
+		# the return value sometimes is required (0|'' or something)
+		if ($file =~ /$datadir\/([^\/]+)\.txt$/) {
+			&mysql_process(0,'do',qq~DELETE FROM `$db_prefix\_messages` WHERE `mess_threadnum`='$1'~);
 		} elsif ($file =~ /$datadir\/([^\/]+)\.mail$/) {
-			&mysql_process(0,'do',qq~UPDATE `$db_prefix\_messages` SET `mail`='' WHERE `threadnum`="$1"~);
+			&mysql_process(0,'do',qq~UPDATE `$db_prefix\_ctb` SET `mail`='' WHERE `threadnum`="$1"~);
 		} elsif ($file =~ /$datadir\/([^\/]+)\.poll$/) {
-			&mysql_process(0,'do',qq~UPDATE `$db_prefix\_messages` SET `poll`='' WHERE `threadnum`="$1"~);
+			&mysql_process(0,'do',qq~UPDATE `$db_prefix\_ctb` SET `poll`='' WHERE `threadnum`="$1"~);
 		} elsif ($file =~ /$datadir\/([^\/]+)\.polled$/) {
-			&mysql_process(0,'do',qq~UPDATE `$db_prefix\_messages` SET `polled`='' WHERE `threadnum`="$1"~);
-		} elsif (%db_vars_col && $file =~ /\/([^\/]+)\.vars$/) {
-			&mysql_process(0,'do',qq~DELETE FROM `$db_prefix\_vars` WHERE `yabbusername`="$1"~);
-		} elsif ($file =~ /\/([^\/]+)\.msg$/) {
-			&mysql_process(0,'do',qq~UPDATE `$db_prefix\_vars` SET `msg`='' WHERE `yabbusername`="$1"~);
-		#} elsif ($file =~ /\/([^\/]+)\.ims$/) {
-		#	&mysql_process(0,'do',qq~UPDATE `$db_prefix\_vars` SET `ims`='' WHERE `yabbusername`="$1"~);
-		} elsif ($file =~ /\/([^\/]+)\.imstore$/) {
-			&mysql_process(0,'do',qq~UPDATE `$db_prefix\_vars` SET `imstore`='' WHERE `yabbusername`="$1"~);
-		}
-	}
+			&mysql_process(0,'do',qq~UPDATE `$db_prefix\_ctb` SET `polled`='' WHERE `threadnum`="$1"~);
+		} elsif ($file =~ /(\d+)\.ctb$/) {
+			&mysql_process(0,'do',"DELETE FROM `$db_prefix\_ctb` WHERE `threadnum`='$1'");
 
-	# Global statement handle checking for valid users
-	if ($use_MySQL) {
-		$glob_vars_sth = &mysql_process(0,'prepare',(%db_vars_col ? "SELECT `yabbusername` FROM `$db_prefix\_vars` WHERE `yabbusername`=?" : "SELECT `$db_user_vars_key` FROM `$db_user_vars_table` WHERE `$db_user_vars_key`=?"));
+		} elsif ($file =~ /$memberdir\/([^\/]+)\.vars$/) {
+			&mysql_process(0,'do',qq~DELETE FROM `$db_user_vars_table` WHERE `$db_user_vars_key`="$1"~) if $db_user_vars_table;
+			&mysql_process(0,'do',qq~DELETE FROM `$db_prefix\_vars` WHERE `yabbusername`="$1"~);
+		} elsif ($file =~ /$memberdir\/([^\/]+)\.msg$/) {
+			&mysql_process(0,'do',qq~UPDATE `$db_prefix\_vars` SET `msg`='' WHERE `yabbusername`="$1"~);
+		} elsif ($file =~ /$memberdir\/([^\/]+)\.ims$/) {
+			&mysql_process(0,'do',qq~UPDATE `$db_prefix\_vars` SET `ims`='' WHERE `yabbusername`="$1"~);
+		} elsif ($file =~ /$memberdir\/([^\/]+)\.imstore$/) {
+			&mysql_process(0,'do',qq~UPDATE `$db_prefix\_vars` SET `imstore`='' WHERE `yabbusername`="$1"~);
+		} elsif ($file =~ /$memberdir\/([^\/]+)\.imdraft$/) {
+			&mysql_process(0,'do',qq~UPDATE `$db_prefix\_vars` SET `imdraft`='' WHERE `yabbusername`="$1"~);
+		} elsif ($file =~ /$memberdir\/([^\/]+)\.log$/) {
+			&mysql_process(0,'do',qq~UPDATE `$db_prefix\_vars` SET `log`='' WHERE `yabbusername`="$1"~);
+		} elsif ($file =~ /$memberdir\/([^\/]+)\.outbox$/) {
+			&mysql_process(0,'do',qq~UPDATE `$db_prefix\_vars` SET `outbox`='' WHERE `yabbusername`="$1"~);
+		} elsif ($file =~ /$memberdir\/([^\/]+)\.rlog$/) {
+			&mysql_process(0,'do',qq~UPDATE `$db_prefix\_vars` SET `rlog`='' WHERE `yabbusername`="$1"~);
+
+		#} elsif ($file =~ /\/([^\/]+)\.$/) {
+		#	&mysql_process(0,'do',qq~DELETE FROM `` WHERE ``="$1"~);
+		#}
+
+		} else {
+			unlink($file);
+		}
 	}
 
 }

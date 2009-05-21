@@ -32,13 +32,13 @@ sub Favorites {
 	} 
 	foreach my $myfav (split(/,/, ${$uid.$username}{'favorites'})) {
 		# see if thread exists and search for it if moved
-		if ((!$use_MySQL && !-e "$datadir/$myfav.ctb") || ($use_MySQL && &mysql_process($fav_sth,'execute',$myfav) == 0)) {
+		if ((!$use_MySQL && !&checkfor_DBorFILE("$datadir/$myfav.ctb")) || ($use_MySQL && &mysql_process($fav_sth,'execute',$myfav) == 0)) {
 			&RemFav($myfav, "nonexist");
 			eval { require "$datadir/movedthreads.cgi" };
 			next if !exists $moved_file{$myfav} || !$moved_file{$myfav};
 			while ($moved_file{$myfav}) {
 				$myfav = $moved_file{$myfav};
-				if (-e "$datadir/$myfav.txt") { last; }
+				if (&checkfor_DBorFILE("$datadir/$myfav.txt")) { last; }
 				elsif (!exists $moved_file{$myfav} || !$moved_file{$myfav}) { $myfav = 0; last; }
 			}
 			next if !$myfav;
@@ -57,11 +57,9 @@ sub Favorites {
 
 		next if !$iamadmin && !&CatAccess((split(/\|/, $catinfo{"${$uid.$loadboard}{'cat'}"}))[1]);
 
-		fopen(BRDTXT, "$boardsdir/$loadboard.txt") || &fatal_error("cannot_open","$boardsdir/$currentboard.txt", 1);
-		foreach (<BRDTXT>) {
+		foreach (&read_DBorFILE(0,'',$boardsdir,$loadboard,'txt')) {
 			if ((split(/\|/, $_, 2))[0] eq $loadfav) { push(@threads, $_); }
 		}
-		fclose(BRDTXT);
 	}
 
 	my $curfav = @threads;
@@ -70,11 +68,9 @@ sub Favorites {
 
 	my %attachments;
 	if (-s "$vardir/attachments.txt" > 5) {
-		fopen(ATM, "$vardir/attachments.txt");
-		while (<ATM>) {
+		foreach (&read_DBorFILE(0,'',$vardir,'attachments','txt')) {
 			$attachments{(split(/\|/, $_, 2))[0]}++;
 		}
-		fclose(ATM);
 	}
 
 	# Print the header and board info.
@@ -133,20 +129,16 @@ sub Favorites {
 
 		$micon = qq~<img src="$imagesdir/$micon.gif" alt="" border="0" align="middle" />~;
 		$mpoll = "";
-		if (-e "$datadir/$mnum.poll") {
+		if (&checkfor_DBorFILE("$datadir/$mnum.poll")) {
 			$mpoll = qq~<b>$messageindex_txt{'15'}: </b>~;
-			fopen(POLL, "$datadir/$mnum.poll");
-			my @poll = <POLL>;
-			fclose(POLL);
+			my @poll = &read_DBorFILE(0,'',$datadir,$mnum,'poll');
 			my ($poll_question, $poll_locked, $poll_uname, $poll_name, $poll_email, $poll_date, $guest_vote, $hide_results, $multi_vote, $poll_mod, $poll_modname, $poll_comment, $vote_limit, $pie_radius, $pie_legends, $poll_end) = split(/\|/, $poll[0]);
 			chomp $poll_end;
 			if ($poll_end && !$poll_locked && $poll_end < $date) {
 				$poll_locked = 1;
 				$poll_end = '';
 				$poll[0] = "$poll_question|$poll_locked|$poll_uname|$poll_name|$poll_email|$poll_date|$guest_vote|$hide_results|$multi_vote|$poll_mod|$poll_modname|$poll_comment|$vote_limit|$pie_radius|$pie_legends|$poll_end\n";
-				fopen(POLL, ">$datadir/$mnum.poll");
-				print POLL @poll;
-				fclose(POLL);
+				&write_DBorFILE(1,'',$datadir,$mnum,'poll',@poll);
 			}
 			$micon = qq~$img{'pollicon'}~;
 			if ($poll_locked) { $micon = $img{'polliconclosed'}; }
@@ -154,9 +146,7 @@ sub Favorites {
 				if ($dlp < $createpoll_date) {
 					$micon = qq~$img{'polliconnew'}~;
 				} else {
-					fopen(POLLED, "$datadir/$mnum.polled");
-					my $polled = <POLLED>;
-					fclose(POLLED);
+					my $polled = &read_DBorFILE(0,'',$datadir,$mnum,'polled');
 					if ($dlp < (split(/\|/, $polled))[3]) { $micon = qq~$img{'polliconnew'}~; }
 				}
 			}
@@ -210,10 +200,10 @@ sub Favorites {
 		$lastposter = ${$mnum}{'lastposter'};
 		if ($lastposter =~ m~\AGuest-(.*)~) {
 			$lastposter = $1;
-		} elsif ($lastposter !~ m~Guest~ && (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$lastposter) == 0) || (!$use_MySQL && !-e "$memberdir/$lastposter.vars"))) {
+		} elsif ($lastposter !~ m~Guest~ && !&checkfor_DBorFILE("$memberdir/$lastposter.vars")) {
 			$lastposter = $messageindex_txt{'470a'};
 		} else {
-			unless (($lastposter eq $messageindex_txt{'470'} || $lastposter eq $messageindex_txt{'470a'}) && (($use_MySQL && &mysql_process($glob_vars_sth,'execute',$lastposter) != 0) || (!$use_MySQL && -e "$memberdir/$lastposter.vars"))) {
+			unless (($lastposter eq $messageindex_txt{'470'} || $lastposter eq $messageindex_txt{'470a'}) && &checkfor_DBorFILE("$memberdir/$lastposter.vars")) {
 				&LoadUser($lastposter);
 				if (${$uid.$lastposter}{'realname'}) { $lastposter = qq~<a href="$scripturl?action=viewprofile;username=$lastposter">${$uid.$lastposter}{'realname'}</a>~; }
 			}
