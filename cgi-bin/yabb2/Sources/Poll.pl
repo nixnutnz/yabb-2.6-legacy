@@ -65,7 +65,7 @@ sub DoVote {
 		}
 	}
 
-	&read_DBorFILE(1,FILE,$datadir,$pollnum,'poll');
+	&read_DBorFILE(0,FILE,$datadir,$pollnum,'poll');
 	print FILE "$poll_question\n";
 	for (my $i = 0; $i < @poll_data; $i++) { print FILE "$votes[$i]|$options[$i]|$slicecols[$i]|$split[$i]\n"; }
 	&write_DBorFILE(1,FILE,$datadir,$pollnum,'poll',(''));

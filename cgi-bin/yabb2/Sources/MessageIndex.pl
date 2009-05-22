@@ -427,10 +427,7 @@ sub MessageIndex {
 
 		# Load the current nickname of the account name of the thread starter.
 		if ($musername ne 'Guest') {
-			#&LoadUser($musername);
 			$user_info{$musername} = [split(/\|/, $memberinf{$musername}, 3)] if !exists $user_info{$musername};
-			# See if they are an ex-member.
-			#if ((${$uid.$musername}{'regdate'} && $mdate > ${$uid.$musername}{'regtime'}) || ${$uid.$musername}{'position'} eq "Administrator" || ${$uid.$musername}{'position'} eq "Global Moderator") {
 			if ($memberinf{$musername} && $mdate > ${$user_info{$musername}}[0]) {
 				&FormatUserName($musername);
 				$mname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">${$user_info{$musername}}[1]</a>~;

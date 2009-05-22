@@ -330,8 +330,7 @@ sub BoardIndex {
 
 		## loop through any non collapsed boards to show the board index
 		## Also shows whether collapsed or not due to QuickCollapse (Unilat)
-		#if (($catcol{$catid} || !$catcol{$catid})|| $INFO{'catselect'} ne '' || $iamguest) {  <= Unilat
-		if (!$INFO{'oldcollapse'} || $catcol{$catid} || $INFO{'catselect'} ne '' || $iamguest) { # deti
+		if (!$INFO{'oldcollapse'} || $catcol{$catid} || $INFO{'catselect'} ne '' || $iamguest) {
 			foreach my $boardinfo (@goodboards) {
 				my $testcat;
 				($testcat, $curboard) = split(/\|/, $boardinfo);
@@ -362,7 +361,6 @@ sub BoardIndex {
 				}
 				$showmods =~ s/, \Z//;
 
-				&LoadUser($username);
 				%moderatorgroups = ();
 				foreach my $curgroup (split(/, /, ${$uid.$curboard}{'modgroups'})) {
 					if (${$uid.$username}{'position'} eq $curgroup) { $iammod = 1; }

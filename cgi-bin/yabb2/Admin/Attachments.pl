@@ -144,7 +144,7 @@ sub RemoveOldAttachments {
 
 			if ($time_to_jump < time() && ($a + 1) < @attachments) { 
 				# save the $info of this run until the end of 'RemoveOldAttachments'
-				&write_DBorFILE(0,FILE,$vardir,'rem_old_attach','tmp',(&read_DBorFILE(0,FILE,$vardir,'rem_old_attach','tmp'),$info));
+				&write_DBorFILE(0,FILE,$vardir,'rem_old_attach','tmp',(&read_DBorFILE(1,FILE,$vardir,'rem_old_attach','tmp'),$info));
 
 				$yySetLocation = qq~$adminurl?action=removeoldattachments;maxdaysattach=$maxdaysattach;next=~ . ($a + 1 - &RemoveAttachments(\%rem_attachments));
 				&redirectexit;

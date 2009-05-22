@@ -87,7 +87,10 @@ $formsession = &cloak("$mbname$username");
 # check for valid form sessionid in any POST request
 if ($ENV{REQUEST_METHOD} =~ /post/i) {
 	if ($CGI_query && $CGI_query->cgi_error()) { &fatal_error("denial_of_service", $CGI_query->cgi_error()); }
-	if (&decloak($FORM{'formsession'}) ne "$mbname$username") { &fatal_error("form_spoofing","$user_ip"); }
+	if (&decloak($FORM{'formsession'}) ne "$mbname$username") {
+		&fatal_error("logged_in_already",$username) if $action eq 'login2' && $username ne 'Guest';
+		&fatal_error("form_spoofing",$user_ip);
+	}
 }
 
 if ($is_perm && $accept_permalink) {

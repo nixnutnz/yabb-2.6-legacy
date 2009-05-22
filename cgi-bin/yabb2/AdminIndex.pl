@@ -350,7 +350,7 @@ sub AdminTemplate {
 }
 
 sub TrackAdminLogins {
-	@adminlog = &read_DBorFILE(1,ADMINLOG,$vardir,'adminlog','txt');
+	@adminlog = &read_DBorFILE(0,ADMINLOG,$vardir,'adminlog','txt');
 	print ADMINLOG qq~$username|$user_ip|$date\n~;
 	for ($i = 0; $i < 4; $i++) {
 		if ($adminlog[$i]) {

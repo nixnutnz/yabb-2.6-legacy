@@ -26,6 +26,7 @@ $errorlngver = 'YaBB 2.4 $Revision$';
 'cannot_delete'			=> "Unable to delete",
 'not_completed'			=> "An error has occurred and this action could not be completed. Sorry for the inconvenience.",
 'not_logged_in'			=> "To perform this action you must be logged in. If you don't have an account yet, please register.",
+'logged_in_already'		=> "You are logged in already with the username: ",
 'no_access'			=> "You are not allowed to access this section.",
 'not_found'			=> "The information you are trying to access is not available to you.",
 'not_allowed'			=> "You are not allowed to perform that action",

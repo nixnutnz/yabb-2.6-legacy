@@ -173,7 +173,7 @@ sub MemberList {
 		if (!&checkfor_DBorFILE("$memberdir/$username.usctmp")) {
 			&ManageMemberinfo("load");
 			my ($membername, $mregdate, $memrealname, $mememail);
-			&read_DBorFILE(1,FILE,$memberdir,$username,'usctmp');
+			&read_DBorFILE(0,FILE,$memberdir,$username,'usctmp');
 			foreach $membername (sort { lc $memberinf{$a} cmp lc $memberinf{$b} } keys %memberinf) {
 				($mregdate, $memrealname, $mememail, undef) = split(/\|/, $memberinf{$membername}, 4);
 				## don't find own name - unless for search or board mods!
@@ -483,18 +483,20 @@ sub buildPages {
 			~;
 	unless ($to_id eq 'groups') {
 		$TableHeader .= qq~
-			<form action="$scripturl?action=findmember;sort=pmsearch;toid=$to_id" method="post" id="form1" name="form1" enctype="application/x-www-form-urlencoded" style="display:inline">
-			<input type="text" name="member" id="member" style="font-size: 11px; width: 100px" />
-			<input name="submit" type="submit" class="button" style="font-size: 10px;" value="$usersel_txt{'gobutton'}" />
-		</form>~;
+			<form action="$scripturl?action=findmember;sort=pmsearch;toid=$to_id" method="post" id="form1" name="form1" enctype="application/x-www-form-urlencoded" style="display:inline; vertical-align:middle;">
+				<input type="text" name="member" id="member" value="$usersel_txt{'wildcardinfo'}" onfocus="this.value=''" style="font-size: 11px; width: 140px" />
+				<input name="submit" type="submit" class="button" style="font-size: 10px;" value="$usersel_txt{'gobutton'}" />
+			</form>~;
 	}
 	$TableHeader .= qq~
 			</div>
 			</td>
 		</tr>
+	</table>
+	<form method="post" action="" name="selectuser">
+	<table border="0" width="464" cellspacing="1" cellpadding="3" class="bordercolor" style="height: 275px; table-layout: fixed;">
 		<tr>
 			<td class="catbg" align="center">
-			<form method="post" action="" name="selectuser">
 	~;
 	if ($recent_exist && $to_id =~ /toshow/) {
 		$TableHeader .= qq~
@@ -530,19 +532,19 @@ sub buildPages {
 	else { $numshow = qq~($numbegin - $numend $usersel_txt{'of'} $memcount)~; }
 
 	if ($_[0]) {
-	$yymain .= qq~
-	<table border="0" width="464" cellspacing="1" cellpadding="3" class="bordercolor" align="left" style="height: 325px; table-layout: fixed;">
-	$TableHeader
-	<tr>
-	<td class="catbg" width="100%" height="26" align="left" valign="middle">
-	$pageindex
-	</td>
-	</tr>
-	~;
+		$yymain .= qq~
+	<table border="0" width="464" cellspacing="1" cellpadding="3" class="bordercolor" style="table-layout: fixed;">
+		$TableHeader
+		<tr>
+		<td class="catbg" width="100%" height="26" align="left" valign="middle">
+		$pageindex
+		</td>
+		</tr>
+		~;
 	} else {
 		$yymain .= qq~
 		<tr>
-			<td class="windowbg2" height="67" align="left" valign="middle">
+			<td class="windowbg2" height="62" align="left" valign="middle">
 			<span class="small">
 			$instruct_start $instruct_end
 			<br />
@@ -554,10 +556,10 @@ sub buildPages {
 
 		$yymain .= qq~
 			</span>
-			</form>
 			</td>
 		</tr>
 	</table>
+	</form>
 	$pageindexjs
 		~;
 	}

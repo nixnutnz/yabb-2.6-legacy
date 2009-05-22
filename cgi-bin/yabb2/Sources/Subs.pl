@@ -1993,8 +1993,7 @@ sub CheckUserPM_Level {
 
 	# read from DB or file
 	sub read_DBorFILE {
-		# $ignore_error without FILEHANDLE: 1 -> ignore error message when open file; 0 -> write error message on error
-		# $ignore_error with FILEHANDLE: 1 -> no error when file not exists; 0 -> error when file not exists
+		# $ignore_error: 1 -> ignore error message when open file; 0 -> write error message on error
 		# $LOCKHANDLE: File handle if read and write in same file == Lock table if read and write from/in same table
 		# $folder: foldername of file == table name
 		# $name: name of file == name searched in table key
@@ -2022,11 +2021,14 @@ sub CheckUserPM_Level {
 			}
 
 		} elsif ($LOCKHANDLE) {
-			fopen($LOCKHANDLE, "+" . ($ignore_error ? '>' : '<') . "$folder/$name.$ext") || &fatal_error('cannot_open', "$folder/$name.$ext", 1);
-			@_ = <$LOCKHANDLE>;
-			seek $LOCKHANDLE, 0, 0;
-			truncate *$LOCKHANDLE, 0;
-			@_;
+			if (fopen($LOCKHANDLE, "+<$folder/$name.$ext")) {
+				@_ = <$LOCKHANDLE>;
+				seek $LOCKHANDLE, 0, 0;
+				truncate *$LOCKHANDLE, 0;
+				@_;
+			} else {
+				fopen($LOCKHANDLE, "+>$folder/$name.$ext");
+			}
 
 		} else {
 			fopen(READ, "$folder/$name.$ext") || ($ignore_error ? return () : &fatal_error('cannot_open', "$folder/$name.$ext", 1));
@@ -2319,7 +2321,7 @@ sub CheckUserPM_Level {
 				else { last; }
 				++$count;
 			}
-			&delete_DBorFILE($filehandle) if ($count == 15);
+			unlink($filehandle) if ($count == 15);
 			local *LFH;
 			CORE::open(LFH, ">$filehandle");
 			$yyLckFile{$filehandle} = *LFH;
@@ -2405,7 +2407,7 @@ sub CheckUserPM_Level {
 		if ($use_flock == 2) {
 			if (exists $yyLckFile{$filehandle} && -e $filehandle) {
 				CORE::close($yyLckFile{$filehandle});
-				&delete_DBorFILE($filehandle);
+				unlink($filehandle);
 				delete $yyLckFile{$filehandle};
 			}
 		}
@@ -2427,7 +2429,7 @@ sub CheckUserPM_Level {
 			rename("$bakfile.tmp", $bakfile);
 			delete $yyTmpFile{$filehandle};
 			if (-e $bakfile) {
-				&delete_DBorFILE("$bakfile.bak");    # Delete the original file to save space.
+				unlink("$bakfile.bak");    # Delete the original file to save space.
 			}
 		}
 		$file_close++;

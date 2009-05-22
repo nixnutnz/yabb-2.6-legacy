@@ -39,6 +39,7 @@ $memberlistlngver = 'YaBB 2.4 $Revision$';
 '760' => 'There are no entries available for this letter.',
 '800' => 'Other',
 '801' => 'Find Member by Name or Email',
+'801a' => 'Use * for wildcard',
 '802' => 'Sorry - no matches found for',
 );
 

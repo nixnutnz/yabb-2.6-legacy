@@ -429,7 +429,7 @@ sub buildIndex {
 		
 		$FindForm .= qq~
 			<form action="$scripturl?action=ml;sort=memsearch" method="post" id="form1" name="form1" enctype="application/x-www-form-urlencoded" style="display: inline;">
-			<label for="member">$ml_txt{'801'}</label>: <input type="text" name="member" id="member" style="font-size: 11px; width: 100px;" />
+			<label for="member">$ml_txt{'801'}</label>: <input type="text" name="member" id="member" value="$ml_txt{'801a'}" onfocus="this.value=''" style="font-size: 11px; width: 140px;" />
 			<input name="submit" type="submit" class="button" style="font-size: 10px;" value="$ml_txt{'2'}" />
 			</form>
 		~;

@@ -631,7 +631,7 @@ sub RebuildMemHistory {
 				if ($use_MySQL) {
 					&mysql_process($rlog_sth,'execute',"$topic\t$posts{$user},$dates{$user}\n",$user);
 				} else {
-					&write_DBorFILE(0,HIST,$memberdir,$user,'rlog',(&read_DBorFILE(0,HIST,$memberdir,$user,'rlog'),"$topic\t$posts{$user},$dates{$user}\n"));
+					&write_DBorFILE(0,HIST,$memberdir,$user,'rlog',(&read_DBorFILE(1,HIST,$memberdir,$user,'rlog'),"$topic\t$posts{$user},$dates{$user}\n"));
 				}
 			}
 		}

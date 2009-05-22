@@ -689,9 +689,9 @@ sub ConvertDatabase {
 
 			foreach (qw(msg ims outbox imstore imdraft log rlog)) {
 				$use_MySQL = 0;
-				my @temp = &read_DBorFILE(0,'',$memberdir,$member,$_);
+				my @temp = &read_DBorFILE(1,'',$memberdir,$member,$_);
 				$use_MySQL = 1;
-				&write_DBorFILE(1,'',$memberdir,$member,$_,@temp);
+				&write_DBorFILE(1,'',$memberdir,$member,$_,@temp) if @temp;
 			}
 
 			undef %{$uid.$member} if $member ne $username;
@@ -764,7 +764,7 @@ sub ConvertDatabase {
 				$use_MySQL = 0;
 				@temp = &read_DBorFILE(0,'',$datadir,$thread,$_);
 				$use_MySQL = 1;
-				&write_DBorFILE(1,'',$datadir,$thread,$_,@temp);
+				&write_DBorFILE(1,'',$datadir,$thread,$_,@temp) if @temp;
 			}
 
 			last if time() > ($begin_time + $max_process_time);
