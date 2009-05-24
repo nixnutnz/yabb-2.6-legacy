@@ -47,10 +47,12 @@ sub RemoveThread {
 		}
 
 		&BoardTotals("load", $currentboard);
-		${$uid.$currentboard}{'threadcount'}--;
-		${$uid.$currentboard}{'messagecount'} -= @{$thread_arrayref{$thread}};
-		&BoardTotals("update", $currentboard);
-		&BoardSetLastInfo($currentboard);
+		unless ((split(/\|/, $threadline))[8] =~ /m/) {
+			${$uid.$currentboard}{'threadcount'}--;
+			${$uid.$currentboard}{'messagecount'} -= @{$thread_arrayref{$thread}};
+			# &BoardTotals("update", ...) is done in &BoardSetLastInfo
+		}
+		&BoardSetLastInfo($currentboard,\@buffer);
 		# remove thread files
 		&delete_DBorFILE("$datadir/$thread.txt");
 		&delete_DBorFILE("$datadir/$thread.ctb");
@@ -64,17 +66,25 @@ sub RemoveThread {
 		&RemoveAttachments(\%remattach);
 	}
 
-	# remove from moved file if in it
-	my $save_moved;
+	# remove from movedthreads.cgi only if it's the final thread
+	# then look backwards to delete the other entries in
+	# the Moved-Info-row if their files were deleted
 	eval { require "$datadir/movedthreads.cgi" };
-	foreach (keys %moved_file) {
-		if ($moved_file{$_} == $thread) {
-			$save_moved = 1;
-			if (exists $moved_file{$thread}) { $moved_file{$_} = $moved_file{$thread}; }
-			else { delete $moved_file{$_}; }
+	unless ($moved_file{$thread}) {
+		my $save_moved;
+		&moved_loop($thread);
+		sub moved_loop {
+			my $th = shift;
+			foreach (keys %moved_file) {
+				if (exists $moved_file{$_} && $moved_file{$_} == $th && !&checkfor_DBorFILE("$datadir/$th.txt")) {
+					delete $moved_file{$_};
+					$save_moved = 1;
+					&moved_loop($_);
+				}
+			}
 		}
+		&save_moved_file if $save_moved;
 	}
-	&save_moved_file if $save_moved;
 
 	if ($INFO{'moveit'} != 1) {
 		$yySetLocation = qq~$scripturl?board=$currentboard~;

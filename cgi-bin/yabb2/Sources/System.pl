@@ -17,7 +17,7 @@
 $systemplver = 'YaBB 2.4 $Revision$';
 
 sub BoardTotals {
-	my ($testboard, $line, @lines, @new_lines, $updateboard, @boardvars, $tag, $cnt);
+	my ($testboard, $line, @lines, $updateboard, @boardvars, $tag, $cnt);
 	my ($job, @updateboards) = @_;
 	if (!@updateboards) { @updateboards = @allboards; }
 	chomp(@updateboards);
@@ -26,51 +26,53 @@ sub BoardTotals {
 		if ($job eq "load") {
 			@lines = &read_DBorFILE(0,'',$boardsdir,'forum','totals');
 			chomp(@lines);
-			foreach $line (@lines) {
-				@boardvars = split(/\|/, $line);
-				foreach $updateboard (@updateboards) {
+			foreach $updateboard (@updateboards) {
+				foreach $line (@lines) {
+					@boardvars = split(/\|/, $line);
 					if ($boardvars[0] eq $updateboard && exists($board{ $boardvars[0] })) {
 						for ($cnt = 1; $cnt < @tags; $cnt++) {
 							${$uid.$updateboard}{ $tags[$cnt] } = $boardvars[$cnt];
 						}
+						last;
 					}
 				}
 			}
 
 		} elsif ($job eq "update") {
 			@lines = &read_DBorFILE(0,FORUMTOTALS,$boardsdir,'forum','totals');
-			push(@new_lines, "$updateboards[0]|");
 			for ($line = 0; $line < @lines; $line++) {
 				@boardvars = split(/\|/, $lines[$line]);
-				if ($boardvars[0] eq $updateboards[0] && exists($board{ $boardvars[0] })) {
-					$lines[$line] = '';
+				if (exists $board{$boardvars[0]}) {
+					next if $boardvars[0] ne $updateboards[0];
+					$lines[$line] = "$updateboards[0]|";
 					chomp $boardvars[9];
 					for ($cnt = 1; $cnt < @tags; $cnt++) {
 						if (exists(${$uid.$boardvars[0]}{ $tags[$cnt] })) {
-							push(@new_lines, ${$uid.$boardvars[0]}{ $tags[$cnt] });
+							$lines[$line] .= ${$uid.$boardvars[0]}{ $tags[$cnt] };
 						} else {
-							push(@new_lines, $boardvars[$cnt]);
+							$lines[$line] .= $boardvars[$cnt];
 						}
-						if ($cnt < $#tags) { push(@new_lines, "|"); }
+						$lines[$line] .= $cnt < $#tags ? "|" : "\n";
 					}
+				} else {
+					$lines[$line] = '';
 				}
 			}
-			push(@new_lines, "\n");
-			&write_DBorFILE(0,FORUMTOTALS,$boardsdir,'forum','totals',(@new_lines,@lines));
+			&write_DBorFILE(0,FORUMTOTALS,$boardsdir,'forum','totals',@lines);
 
 		} elsif ($job eq "delete") {
 			@lines = &read_DBorFILE(0,FORUMTOTALS,$boardsdir,'forum','totals');
-			foreach $line (@lines) {
-				@boardvars = split(/\|/, $line, 2);
-				if ($boardvars[0] ne $updateboards[0] && exists($board{ $boardvars[0] })) {
-					push(@new_lines, $line);
+			for ($line = 0; $line < @lines; $line++) {
+				@boardvars = split(/\|/, $lines[$line], 2);
+				if ($boardvars[0] eq $updateboards[0] || !exists $board{$boardvars[0]}) {
+					$lines[$line] = '';
 				}
 			}
-			&write_DBorFILE(0,FORUMTOTALS,$boardsdir,'forum','totals',@new_lines);
+			&write_DBorFILE(0,FORUMTOTALS,$boardsdir,'forum','totals',@lines);
 
 		} elsif ($job eq "add") {
 			@lines = &read_DBorFILE(0,FORUMTOTALS,$boardsdir,'forum','totals');
-			foreach (@updateboards) { print FORUMTOTALS "$_|0|0|N/A|N/A||||\n"; }
+			foreach (@updateboards) { push(@lines, "$_|0|0|N/A|N/A||||\n"); }
 			&write_DBorFILE(0,FORUMTOTALS,$boardsdir,'forum','totals',@lines);
 		}
 	}
@@ -84,36 +86,43 @@ sub BoardCountTotals {
 	@threads = &read_DBorFILE(0,'',$boardsdir,$cntboard,'txt');
 	$threadcount  = @threads;
 	$messagecount = $threadcount;
-	if ($threadcount) {
-		for ($i = 0; $i < @threads; $i++) {
-			@threadline = split(/\|/, $threads[$i]);
-			$messagecount += $threadline[5];
+	for ($i = 0; $i < @threads; $i++) {
+		@threadline = split(/\|/, $threads[$i]);
+		if ($threadline[8] =~ /m/) {
+			$threadcount--;
+			$messagecount--;
+			next;
 		}
+		$messagecount += $threadline[5];
 	}
 	${$uid.$cntboard}{'threadcount'}  = $threadcount;
 	${$uid.$cntboard}{'messagecount'} = $messagecount;
-	&BoardSetLastInfo($cntboard);
+	&BoardSetLastInfo($cntboard,\@threads);
 }
 
 sub BoardSetLastInfo {
-	my $setboard = $_[0];
-	unless ($setboard) { return undef; }
+	my ($setboard,$board_ref) = @_;
 	my ($lastthread, $lastthreadid, $lastthreadstate, @lastthreadmessages, @lastmessage);
 
-	$lastthread = (&read_DBorFILE(0,'',$boardsdir,$setboard,'txt'))[0];
-	chomp $lastthread;
-	if ($lastthread) {
-		($lastthreadid, undef, undef, undef, undef, undef, undef, undef, $lastthreadstate) = split(/\|/, $lastthread);
-		@lastthreadmessages = &read_DBorFILE(0,'',$datadir,$lastthreadid,'txt');
-		@lastmessage = split(/\|/, $lastthreadmessages[$#lastthreadmessages], 7);
+	foreach $lastthread (@$board_ref) {
+		if ($lastthread) {
+			($lastthreadid, undef, undef, undef, undef, undef, undef, undef, $lastthreadstate) = split(/\|/, $lastthread);
+			if ($lastthreadstate !~ /m/) {
+				chomp $lastthreadstate;
+				@lastthreadmessages = &read_DBorFILE(0,'',$datadir,$lastthreadid,'txt');
+				@lastmessage = split(/\|/, $lastthreadmessages[$#lastthreadmessages], 7);
+				last;
+			}
+			$lastthreadid = '';
+		}
 	}
-	${$uid.$setboard}{'lastposttime'}   = $lastthread ? $lastmessage[3]      : 'N/A';
-	${$uid.$setboard}{'lastposter'}     = $lastthread ? ($lastmessage[4] eq "Guest" ? "Guest-$lastmessage[1]" : $lastmessage[4]) : 'N/A';
-	${$uid.$setboard}{'lastpostid'}     = $lastthread ? $lastthreadid        : '';
-	${$uid.$setboard}{'lastreply'}      = $lastthread ? $#lastthreadmessages : '';
-	${$uid.$setboard}{'lastsubject'}    = $lastthread ? $lastmessage[0]      : '';
-	${$uid.$setboard}{'lasttopicstate'} = ($lastthread && $lastthreadstate) ? $lastthreadstate : "0";
-	${$uid.$setboard}{'lasticon'}       = $lastthread ? $lastmessage[5]      : '';
+	${$uid.$setboard}{'lastposttime'}   = $lastthreadid ? $lastmessage[3]      : 'N/A';
+	${$uid.$setboard}{'lastposter'}     = $lastthreadid ? ($lastmessage[4] eq "Guest" ? "Guest-$lastmessage[1]" : $lastmessage[4]) : 'N/A';
+	${$uid.$setboard}{'lastpostid'}     = $lastthreadid ? $lastthreadid        : '';
+	${$uid.$setboard}{'lastreply'}      = $lastthreadid ? $#lastthreadmessages : '';
+	${$uid.$setboard}{'lastsubject'}    = $lastthreadid ? $lastmessage[0]      : '';
+	${$uid.$setboard}{'lasticon'}       = $lastthreadid ? $lastmessage[5]      : '';
+	${$uid.$setboard}{'lasttopicstate'} = ($lastthreadid && $lastthreadstate) ? $lastthreadstate : "0";
 	&BoardTotals("update", $setboard);
 }
 

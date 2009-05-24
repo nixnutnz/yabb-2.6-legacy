@@ -1050,24 +1050,24 @@ sub Split_Splice_Move {
 		$mover = &decloak($mover);
 		&LoadUser($mover);
 		$board{$destboard} =~ /^(.+?)\|/;
-		return (qq~<b>$maintxt{'160'} </b><a href="$scripturl?num=$dest"><i><b>$1</b></i></a><b> $maintxt{'525'} <i>${$uid.$mover}{'realname'}</i></b>~,1);
+		return (qq~<b>$maintxt{'160'} <a href="$scripturl?num=$dest"><b>$maintxt{'160a'}</b></a> $maintxt{'160b'}</b> <a href="$scripturl?board=$destboard"><i><b>$1</b></i></a><b> $maintxt{'525'} <i>${$uid.$mover}{'realname'}</i></b>~,$dest);
 
 	} elsif ($s_s_m =~ /\[m by=(.+?) dest=(.+?)\]/) { # 'The contents of this Topic have been moved to''this Topic'
 		my($mover, $dest) = ($1, $2); # Who moved the topic; destination id number
 		$mover = &decloak($mover);
 		&LoadUser($mover);
-		return (qq~<b>$maintxt{'160a'} </b><a href="$scripturl?num=$dest"><i><b>$maintxt{'160b'}</b></i></a><b> $maintxt{'525'} <i>${$uid.$mover}{'realname'}</i></b>~,1);
+		return (qq~<b>$maintxt{'160c'}</b> <a href="$scripturl?num=$dest"><i><b>$maintxt{'160d'}</b></i></a><b> $maintxt{'525'} <i>${$uid.$mover}{'realname'}</i></b>~,$dest);
 
 	} elsif ($s_s_m =~ /^\[m\]/) { # Old style topic that was moved/spliced before this code
 		(undef, undef, undef, undef, undef, undef, undef, undef, $s_s_m, undef) = split(/\|/, (&read_DBorFILE(0,'',$datadir,$_[1],'txt'))[0], 10);
 		&ToChars($s_s_m);
-		$ssm += 1;
+		$ssm = 1;
 	}
 
-	$ssm += $s_s_m =~ s/\[spliced\]/$maintxt{'160a'}/g; # The contents of this Topic have been moved to
-	$ssm += $s_s_m =~ s/\[splicedhere\]|\[splithere\]/$maintxt{'160b'}/g; # this Topic
-	$ssm += $s_s_m =~ s/\[split\]/$maintxt{'160c'}/g; # Off-Topic replies have been moved to
-	$ssm += $s_s_m =~ s/\[splithere_end\]/$maintxt{'160d'}/g; # .
+	$ssm += $s_s_m =~ s/\[spliced\]/$maintxt{'160c'}/g; # The contents of this Topic have been moved to
+	$ssm += $s_s_m =~ s/\[splicedhere\]|\[splithere\]/$maintxt{'160d'}/g; # this Topic
+	$ssm += $s_s_m =~ s/\[split\]/$maintxt{'160e'}/g; # Off-Topic replies have been moved to
+	$ssm += $s_s_m =~ s/\[splithere_end\]/$maintxt{'160f'}/g; # .
 	$ssm += $s_s_m =~ s/\[moved\]/$maintxt{'160'}/g; # This Topic has been moved to
 	$ssm += $s_s_m =~ s/\[movedhere\]/$maintxt{'161'}/g; # This Topic was moved here from
 	$ssm += $s_s_m =~ s/\[postsmovedhere1\]/$maintxt{'161a'}/g; # The last
@@ -1477,16 +1477,11 @@ sub MemberPageindex {
 }
 
 sub undupe {
-	@in  = @_;
-	@out = ();
-	foreach $check (@in) {
+	my (@out,$duped,$check);
+	foreach $check (@_) {
 		$duped = 0;
-		foreach $checkout (@out) {
-			if ($checkout eq $check) { $duped = 1; last; }
-		}
-		if ($duped == 0) {
-			push(@out, $check);
-		}
+		foreach (@out) { if ($_ eq $check) { $duped = 1; last; } }
+		if (!$duped) { push(@out, $check); }
 	}
 	return @out;
 }

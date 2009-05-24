@@ -509,7 +509,7 @@ sub Split_Splice_2 {
 		$boardlog = 0 if $mdate > $yyuserlog{$curboard}; # For: Mark boards as read
 		if ($mnum == $curthreadid) {
 			chomp $mstate;
-			if ($#postnum == $#curthread && $leavemess != 1) {
+			if ($#postnum == $#curthread && $leavemess != 1) { # thread was moved
 				my $hidename = &cloak($username);
 				if ($curboard eq $newboard) {
 					$msub = qq~[m by=$hidename dest=$newthreadid]: '$msub'~;
@@ -628,33 +628,41 @@ sub Split_Splice_2 {
 	# update current board totals
 	# BoardTotals- tags => (board threadcount messagecount lastposttime lastposter lastpostid lastreply lastsubject lasticon lasttopicstate)
 	&BoardTotals("load", $curboard);
-	if ($FORM{'newthread'} eq 'new' && $curboard eq $newboard) { ${$uid.$curboard}{'threadcount'}++; }
-	if ($leavemess == 0) {
-		if ($curboard ne $newboard) { ${$uid.$curboard}{'messagecount'} -= $#postnum; }
-		else { ${$uid.$curboard}{'messagecount'} += ($forcenewinfo ? 2 : 1); }
-	} elsif ($leavemess == 1 && $curboard eq $newboard) {
-		${$uid.$curboard}{'messagecount'} += $#postnum + ($forcenewinfo ? 1 : 0);
-	} elsif ($leavemess == 2 && $curboard ne $newboard && @utdcurthread) {
-		${$uid.$curboard}{'messagecount'} -= @postnum;
+	if (${$BoardTotals{$curthreadid}}[6] =~ /m/) { # Moved-Info thread
+		if ($curboard ne $newboard) {
+			${$uid.$curboard}{'threadcount'}--;
+			${$uid.$curboard}{'messagecount'} -= @postnum;
+		}
+		&BoardSetLastInfo($curboard,\@curmessindex);
+	} else {
+		if ($FORM{'newthread'} eq 'new' && $curboard eq $newboard) { ${$uid.$curboard}{'threadcount'}++; }
+		if ($leavemess == 0) {
+			if ($curboard ne $newboard) { ${$uid.$curboard}{'messagecount'} -= $#postnum; }
+			else { ${$uid.$curboard}{'messagecount'} += ($forcenewinfo ? 2 : 1); }
+		} elsif ($leavemess == 1 && $curboard eq $newboard) {
+			${$uid.$curboard}{'messagecount'} += $#postnum + ($forcenewinfo ? 1 : 0);
+		} elsif ($leavemess == 2 && $curboard ne $newboard && @utdcurthread) {
+			${$uid.$curboard}{'messagecount'} -= @postnum;
+		}
+		if (((${$uid.$curboard}{'threadcount'} == 1 && @utdcurthread) || ${$BoardTotals{$curthreadid}}[0] >= ${$uid.$curboard}{'lastposttime'}) && ($curboard ne $newboard || ${$BoardTotals{$curthreadid}}[0] >= ${$BoardTotals{$newthreadid}}[0])) {
+			${$uid.$curboard}{'lastposttime'}   = ${$BoardTotals{$curthreadid}}[0];
+			${$uid.$curboard}{'lastposter'}     = ${$BoardTotals{$curthreadid}}[1] eq 'Guest' ? "Guest-${$BoardTotals{$curthreadid}}[4]" : ${$BoardTotals{$curthreadid}}[1];
+			${$uid.$curboard}{'lastpostid'}     = $curthreadid;
+			${$uid.$curboard}{'lastreply'}      = ${$BoardTotals{$curthreadid}}[2]--;
+			${$uid.$curboard}{'lastsubject'}    = ${$BoardTotals{$curthreadid}}[3];
+			${$uid.$curboard}{'lasticon'}       = ${$BoardTotals{$curthreadid}}[5];
+			${$uid.$curboard}{'lasttopicstate'} = ${$BoardTotals{$curthreadid}}[6];
+		} elsif (${$BoardTotals{$newthreadid}}[0] >= ${$uid.$curboard}{'lastposttime'} && $curboard eq $newboard) {
+			${$uid.$curboard}{'lastposttime'}   = ${$BoardTotals{$newthreadid}}[0];
+			${$uid.$curboard}{'lastposter'}     = ${$BoardTotals{$newthreadid}}[1] eq 'Guest' ? "Guest-${$BoardTotals{$newthreadid}}[4]" : ${$BoardTotals{$newthreadid}}[1];
+			${$uid.$curboard}{'lastpostid'}     = $newthreadid;
+			${$uid.$curboard}{'lastreply'}      = ${$BoardTotals{$newthreadid}}[2]--;
+			${$uid.$curboard}{'lastsubject'}    = ${$BoardTotals{$newthreadid}}[3];
+			${$uid.$curboard}{'lasticon'}       = ${$BoardTotals{$newthreadid}}[5];
+			${$uid.$curboard}{'lasttopicstate'} = ${$BoardTotals{$newthreadid}}[6];
+		}
+		&BoardTotals("update", $curboard);
 	}
-	if (((${$uid.$curboard}{'threadcount'} == 1 && @utdcurthread) || ${$BoardTotals{$curthreadid}}[0] >= ${$uid.$curboard}{'lastposttime'}) && ($curboard ne $newboard || ${$BoardTotals{$curthreadid}}[0] >= ${$BoardTotals{$newthreadid}}[0])) {
-		${$uid.$curboard}{'lastposttime'}   = ${$BoardTotals{$curthreadid}}[0];
-		${$uid.$curboard}{'lastposter'}     = ${$BoardTotals{$curthreadid}}[1] eq 'Guest' ? "Guest-${$BoardTotals{$curthreadid}}[4]" : ${$BoardTotals{$curthreadid}}[1];
-		${$uid.$curboard}{'lastpostid'}     = $curthreadid;
-		${$uid.$curboard}{'lastreply'}      = ${$BoardTotals{$curthreadid}}[2]--;
-		${$uid.$curboard}{'lastsubject'}    = ${$BoardTotals{$curthreadid}}[3];
-		${$uid.$curboard}{'lasticon'}       = ${$BoardTotals{$curthreadid}}[5];
-		${$uid.$curboard}{'lasttopicstate'} = ${$BoardTotals{$curthreadid}}[6];
-	} elsif (${$BoardTotals{$newthreadid}}[0] >= ${$uid.$curboard}{'lastposttime'} && $curboard eq $newboard) {
-		${$uid.$curboard}{'lastposttime'}   = ${$BoardTotals{$newthreadid}}[0];
-		${$uid.$curboard}{'lastposter'}     = ${$BoardTotals{$newthreadid}}[1] eq 'Guest' ? "Guest-${$BoardTotals{$newthreadid}}[4]" : ${$BoardTotals{$newthreadid}}[1];
-		${$uid.$curboard}{'lastpostid'}     = $newthreadid;
-		${$uid.$curboard}{'lastreply'}      = ${$BoardTotals{$newthreadid}}[2]--;
-		${$uid.$curboard}{'lastsubject'}    = ${$BoardTotals{$newthreadid}}[3];
-		${$uid.$curboard}{'lasticon'}       = ${$BoardTotals{$newthreadid}}[5];
-		${$uid.$curboard}{'lasttopicstate'} = ${$BoardTotals{$newthreadid}}[6];
-	}
-	&BoardTotals("update", $curboard);
 
 	# update new board totals if needed
 	if ($curboard ne $newboard) {

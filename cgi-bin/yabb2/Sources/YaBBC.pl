@@ -174,6 +174,12 @@ sub sizefont {
 		$_ =~ s~CODE~$code~g;
 		$_;
 	}
+
+	sub noparse {
+		my $noubbc = $_[0];
+		$noubbc =~ s~([\/\]\[\.])~$killhash{$1}~g;
+		$noubbc;
+	}
 }
 
 sub imagemsg {
@@ -215,7 +221,11 @@ sub imagemsg {
 }
 
 sub DoUBBC {
+	return if $ns eq "NS" || $message =~ s/#nosmileys//isg;
+
 	my $image_type = $_[0];
+
+	$message =~ s~\[noparse\]\n*(.*?)\n*\[/noparse\]~ &noparse($1) ~eisg;
 
 	$message =~ s~\[code\]~ \[code\]~ig;
 	$message =~ s~\[/code\]~ \[/code\]~ig;
@@ -376,9 +386,8 @@ sub DoUBBC {
 		$message =~ s~<img src=".+?>~[oops]~g;
 		$message =~ s~\[oops\]~$oops~g;
 	}
-	
-	if ($message =~ /\#nosmileys/isg || $ns =~ "NS") { $message =~ s/\#nosmileys//isg; }
-	else { &MakeSmileys; }
+
+	&MakeSmileys;
 
 	$message =~ s~\s*\[\*\]~</li><li>~isg;
 	$message =~ s~\[olist\]~<ol>~isg;

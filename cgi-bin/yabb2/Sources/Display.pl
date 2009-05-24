@@ -83,6 +83,24 @@ sub Display {
 	# Check to make sure this thread isn't locked.
 	($mnum, $msubthread, $mname, $memail, $mdate, $mreplies, $musername, $micon, $mstate) = split(/\|/, $yyThreadLine);
 
+	if ($mstate =~ /m/) {
+		$msubthread =~ / dest=(\d+)\]/;
+		my $newnum = $1;
+		if (&checkfor_DBorFILE("$datadir/$newnum.txt")) {
+			$yySetLocation = "$scripturl?num=$newnum";
+			&redirectexit;
+		}
+		eval { require "$datadir/movedthreads.cgi" };
+		while (exists $moved_file{$newnum}) {
+			$newnum = $moved_file{$newnum};
+			next if exists $moved_file{$newnum};
+			if (&checkfor_DBorFILE("$datadir/$newnum.txt")) {
+				$yySetLocation = "$scripturl?num=$newnum";
+				&redirectexit;
+			}
+		}
+	}
+
 	($msubthread, undef) = &Split_Splice_Move($msubthread,0);
 	&ToChars($msubthread);
 	$msubthread = &Censor($msubthread);

@@ -464,13 +464,13 @@ sub NotificationAlert {
 			&ManageThreadNotify("delete", $mythread, $username);
 			eval { require "$datadir/movedthreads.cgi" };
 			next if !exists $moved_file{$mythread} || !$moved_file{$mythread};
-			while ($moved_file{$mythread}) {
+			my $newthread;
+			while (exists $moved_file{$mythread}) {
 				$mythread = $moved_file{$mythread};
-				if (&checkfor_DBorFILE("$datadir/$mythread.txt")) { last; }
-				elsif (!exists $moved_file{$mythread} || !$moved_file{$mythread}) { $mythread = 0; last; }
+				$newthread = $mythread if !exists $moved_file{$mythread} && &checkfor_DBorFILE("$datadir/$mythread.txt");
 			}
-			next if !$mythread;
-			&ManageThreadNotify("add", $mythread, $username, ${$uid.$username}{'language'}, 1, 1);
+			next if !$newthread;
+			&ManageThreadNotify("add", $newthread, $username, ${$uid.$username}{'language'}, 1, 1);
 		}
 
 		## load threads hash

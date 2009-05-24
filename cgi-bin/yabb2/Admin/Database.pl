@@ -513,7 +513,7 @@ sub SaveDatabase {
 	# messages.txt
 	my $buildnew_message_txt;
 	$buildnew_message_txt = qq~CREATE TABLE `$FORM{'db_prefix'}_messages` (\n`mess_threadnum` int(11) NOT NULL,\n~;
-	$buildnew_message_txt .= qq~`subject` char(50) default NULL,\n~;
+	$buildnew_message_txt .= qq~`subject` varchar(100) default NULL,\n~;
 	$buildnew_message_txt .= qq~`displayname` char(30) default NULL,\n~;
 	$buildnew_message_txt .= qq~`email` varchar(100) default NULL,\n~;
 	$buildnew_message_txt .= qq~`date` int(11) default NULL,\n~;

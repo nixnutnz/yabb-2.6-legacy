@@ -438,12 +438,6 @@ sub MessageIndex {
 			$mname .= " ($maintxt{'28'})";
 		}
 
-
-		($msub, undef) = &Split_Splice_Move($msub,0);
-		# Censor the subject of the thread.
-		$msub = &Censor($msub);
-		&ToChars($msub);
-
 		# Build the page links list.
 		my ($pages, $pagesall);
 		if ($showpageall) { $pagesall = qq~<a href="$scripturl?num=$mnum/all">$pidtxt{'01'}</a>~; }
@@ -556,19 +550,26 @@ sub MessageIndex {
 			$admincol = $admincolumn;
 			$admincol =~ s/({|<)yabb admin(}|>)/$adminbar/g;
 		}
-		my $threadpic = qq~<img src="$imagesdir/$threadclass.gif" alt="" />~;
+
+		$msub = &Censor($msub);
+		&ToChars($msub);
 		if(!$movedFlag) {
 			if (${$mnum}{'board'} eq $annboard) {
 				$msublink = qq~<a href="$scripturl?virboard=$currentboard;num=$mnum">$msub</a>~;
 			} else {
 				$msublink = qq~<a href="$scripturl?num=$mnum">$msub</a>~;
 			}
-		} else {$msublink = qq~$msub<br /><span class="small">$movedSubject</span>~;}
-		my $lastpostlink = qq~<a href="$scripturl?num=$mnum/$mreplies#$mreplies">$img{'lastpost'} $mydate</a>~;
-		my $tempbar      = $threadbar;
-		if ($movedFlag) { $tempbar = $threadbarMoved; }
+		} elsif ($movedFlag < 100) {
+			&Split_Splice_Move($msub,0);
+			$msublink = qq~$msub<br /><span class="small">$movedSubject</span>~;
+		} else {
+			$msub =~ /^(Re: )?\[m.*?\]: '(.*)'/; # newer then code in &Split_Splice_Move
+			$msublink = qq~$maintxt{'758'}: '<a href="$scripturl?num=$movedFlag">$2</a>'<br /><span class="small">$movedSubject</span>~;
+		}
+
+		my $tempbar = $movedFlag ? $threadbarMoved : $threadbar;
 		$tempbar =~ s/({|<)yabb admin column(}|>)/$admincol/g;
-		$tempbar =~ s/({|<)yabb threadpic(}|>)/$threadpic/g;
+		$tempbar =~ s/({|<)yabb threadpic(}|>)/<img src="$imagesdir\/$threadclass.gif" alt="" \/>/g;
 		$tempbar =~ s/({|<)yabb icon(}|>)/$micon/g;
 		$tempbar =~ s/({|<)yabb new(}|>)/$new/g;
 		$tempbar =~ s/({|<)yabb poll(}|>)/$mpoll/g;
@@ -579,7 +580,7 @@ sub MessageIndex {
 		$tempbar =~ s/({|<)yabb starter(}|>)/$mname/g;
 		$tempbar =~ s/({|<)yabb replies(}|>)/$mreplies/g;
 		$tempbar =~ s/({|<)yabb views(}|>)/$views/g;
-		$tempbar =~ s/({|<)yabb lastpostlink(}|>)/$lastpostlink/g;
+		$tempbar =~ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies">$img{'lastpost'} $mydate<\/a>/g;
 		$tempbar =~ s/({|<)yabb lastposter(}|>)/$lastpostername/g;
 		if($accept_permalink == 1) {
 			$tempbar =~ s/({|<)yabb permalink(}|>)/$message_permalink/g;

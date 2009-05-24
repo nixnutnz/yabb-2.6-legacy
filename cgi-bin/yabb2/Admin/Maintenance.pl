@@ -217,16 +217,27 @@ sub RebuildMessageIndex {
 
 	foreach (keys %board) { &BoardCountTotals($_); }
 
-	# remove from or relink in moved-file if thread does not exist any more
+	# remove from movedthreads.cgi only if it's the final thread
+	# then look backwards to delete the other entries in
+	# the Moved-Info-row if their files were deleted
 	eval { require "$datadir/movedthreads.cgi" };
 	my $save_moved;
-	foreach (keys %moved_file) { &moved_loop($_); }
+	foreach my $th (keys %moved_file) {
+		if (exists $moved_file{$th}) { # 'exists' because may be deleted in &moved_loop
+			while (exists $moved_file{$th}) { # to get the final/last thread
+				$th = $moved_file{$th};
+			}
+			unless (&checkfor_DBorFILE("$datadir/$th.txt")) { &moved_loop($th); }
+		}
+	}
 	sub moved_loop {
-		my $key = shift;
-		if (exists $moved_file{$key} && !&checkfor_DBorFILE("$datadir/$moved_file{$key}.txt")) {
-			$save_moved = 1;
-			if (exists $moved_file{$moved_file{$key}}) { $moved_file{$key} = $moved_file{$moved_file{$key}}; &moved_loop($key); }
-			else { delete $moved_file{$key}; }
+		my $th = shift;
+		foreach (keys %moved_file) {
+			if (exists $moved_file{$_} && $moved_file{$_} == $th && !&checkfor_DBorFILE("$datadir/$th.txt")) {
+				delete $moved_file{$_};
+				$save_moved = 1;
+				&moved_loop($_);
+			}
 		}
 	}
 	&save_moved_file if $save_moved;
@@ -376,9 +387,7 @@ sub AdminBoardRecount {
 
 	# Get the board list from the forum.master file
 	require "$boardsdir/forum.master";
-	foreach (keys %board) {
-		&BoardCountTotals($_);
-	}
+	foreach (keys %board) { &BoardCountTotals($_); }
 
 	$yymain .= qq~<b>$admin_txt{'503'}</b>~;
 	&automaintenance('off');

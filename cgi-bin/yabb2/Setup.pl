@@ -2011,8 +2011,8 @@ sub MyReCountTotals {
 		&BoardTotals("load", $cntboard);
 		${ $uid . $cntboard }{'threadcount'}  = $threadcount;
 		${ $uid . $cntboard }{'messagecount'} = $messagecount;
-		&BoardTotals("update", $cntboard);
-		&BoardSetLastInfo($cntboard);
+		# &BoardTotals("update", ...) is done in &BoardSetLastInfo
+		&BoardSetLastInfo($cntboard,\@threads);
 
 		if (time() > $time_to_jump && ($j + 1) < $totalboards) {
 			$yySetLocation = qq~$set_cgi?action=cleanup2;st=~ . int($INFO{'st'} + time() - $time_to_jump + $max_process_time) . qq~;starttime=$time_to_jump;clean=1;total_boards=$INFO{'total_boards'};total_re_tot=$totalboards;my_re_tot=~ . ($j + 1);

@@ -26,23 +26,33 @@ sub Favorites {
 
 	# grab all relevant info on the favorite thread for this user and check access to them
 	if (!$maxfavs) { $maxfavs = 10; }
-	my (@favboards, $fav_sth);
-	if ($use_MySQL) {
-		$fav_sth = &mysql_process(0,'prepare_cached',"SELECT threadnum FROM $db_prefix\_ctb WHERE threadnum=?");
-	} 
+	my @favboards;
+	eval { require "$datadir/movedthreads.cgi" };
 	foreach my $myfav (split(/,/, ${$uid.$username}{'favorites'})) {
 		# see if thread exists and search for it if moved
-		if ((!$use_MySQL && !&checkfor_DBorFILE("$datadir/$myfav.ctb")) || ($use_MySQL && &mysql_process($fav_sth,'execute',$myfav) == 0)) {
-			&RemFav($myfav, "nonexist");
-			eval { require "$datadir/movedthreads.cgi" };
-			next if !exists $moved_file{$myfav} || !$moved_file{$myfav};
-			while ($moved_file{$myfav}) {
+		if (exists $moved_file{$myfav}) {
+			my @moved = ($myfav);
+			while (exists $moved_file{$myfav}) {
 				$myfav = $moved_file{$myfav};
-				if (&checkfor_DBorFILE("$datadir/$myfav.txt")) { last; }
-				elsif (!exists $moved_file{$myfav} || !$moved_file{$myfav}) { $myfav = 0; last; }
+				unshift(@moved, $myfav);
+			}
+			foreach (@moved) {
+				$myfav = $_;
+				if ($myfav ne $moved[$#moved]) {
+					if (&checkfor_DBorFILE("$datadir/$myfav.ctb")) {
+						&RemFav($moved[$#moved], "nonexist");
+						&AddFav($myfav,0,1);
+						last;
+					}
+				} elsif (!&checkfor_DBorFILE("$datadir/$myfav.ctb")) {
+					&RemFav($myfav, "nonexist");
+					$myfav = 0;
+				}
 			}
 			next if !$myfav;
-			&AddFav($myfav,0,1);
+		} elsif (!&checkfor_DBorFILE("$datadir/$myfav.ctb")) {
+			&RemFav($myfav, "nonexist");
+			next;
 		}
 		&MessageTotals("load", $myfav);
 		$favoboard = ${$myfav}{'board'};

@@ -31,9 +31,9 @@ sub SetStatus {
 	}
 
 	my @boardfile = &read_DBorFILE(0,BOARDFILE,$boardsdir,$currentboard,'txt');
-	foreach my $line (@boardfile) {
-		if ($line =~ m~\A$threadid\|~) {
-			my ($mnum, $msub, $mname, $memail, $mdate, $mreplies, $musername, $micon, $mstate) = split(/\|/, $line);
+	for (my $line = 0; $line < @boardfile; $line++) {
+		if ($boardfile[$line] =~ m~\A$threadid\|~) {
+			my ($mnum, $msub, $mname, $memail, $mdate, $mreplies, $musername, $micon, $mstate) = split(/\|/, $boardfile[$line]);
 			chomp $mstate;
 
 			$mstate .= 0 if $mstate !~ /0/;
@@ -53,19 +53,17 @@ sub SetStatus {
 			}
 			$thisstatus = $mstate;
 
-			print BOARDFILE "$mnum|$msub|$mname|$memail|$mdate|$mreplies|$musername|$micon|$mstate\n";
+			$boardfile[$line] = "$mnum|$msub|$mname|$memail|$mdate|$mreplies|$musername|$micon|$mstate\n";
 
-		} elsif ($line =~ /\|/) {
-			print BOARDFILE $line;
 		}
 	}
-	&write_DBorFILE(0,BOARDFILE,$boardsdir,$currentboard,'txt',(''));
+	&write_DBorFILE(0,BOARDFILE,$boardsdir,$currentboard,'txt',@boardfile);
 
 	&MessageTotals("load",$threadid);
 	${$threadid}{'threadstatus'} = $thisstatus;
 	&MessageTotals("update",$threadid);
 
-	&BoardSetLastInfo($currentboard);
+	&BoardSetLastInfo($currentboard,\@boardfile);
 	if (!$INFO{'moveit'}) {
 		&redirectexit;
 	}

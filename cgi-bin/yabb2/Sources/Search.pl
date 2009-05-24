@@ -326,7 +326,7 @@ sub plushSearch2 {
 	else { @search = ($search); }
 	my $case = $FORM{'casesensitiv'};
 
-	my ($curboard, @threads, $curthread, $tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate, @messages, $curpost, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $mns, $subfound, $msgfound, $numfound, %data, $i, $board, $curcat, @categories, %catid, %catname, %cataccess, %openmemgr, @membergroups, %cats, @boardinfo, %boardinfo, @boards, $counter, $msgnum);
+	my ($curboard, @threads, $curthread, $tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate, @messages, $curpost, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $ns, $subfound, $msgfound, $numfound, %data, $i, $board, $curcat, @categories, %catid, %catname, %cataccess, %openmemgr, @membergroups, %cats, @boardinfo, %boardinfo, @boards, $counter, $msgnum);
 	my $maxtime = $date + (3600 * ${$uid.$username}{'timeoffset'}) - ($maxage * 86400);
 	my $oldestfound = 9999999999;
 
@@ -376,7 +376,7 @@ sub plushSearch2 {
 				$curpost = $messages[$msgnum];
 				chomp $curpost;
 
-				my ($msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $savedmessage, $mns) = split(/\|/, $curpost);
+				my ($msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $savedmessage, $ns) = split(/\|/, $curpost);
 
 				## if either max to display or outside of filter, next
 				if ($mdate < $maxtime || ($numfound >= $display && $mdate <= $oldestfound)) { next postcheck; }
@@ -389,7 +389,7 @@ sub plushSearch2 {
 				if ($FORM{'searchyabbtags'} && $message =~ /\[\w[^\[]*?\]/) {
 					&wrap;
 					($message, undef) = &Split_Splice_Move($message,$tnum);
-					if ($enable_ubbc) { $ns = "NS"; &DoUBBC; }
+					if ($enable_ubbc) { &DoUBBC; }
 					&wrap2;
 					$savedmessage = $message;
 					$message =~ s/<.+?>//g;
@@ -466,7 +466,7 @@ sub plushSearch2 {
 				## blank? try next = else => build list from found mess/sub
 				unless ($msgfound || $subfound) { next postcheck; }
 
-				$data{$mdate} = [$curboard, $tnum, $msgnum, $tusername, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $savedmessage, $mns, $tstate];
+				$data{$mdate} = [$curboard, $tnum, $msgnum, $tusername, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $savedmessage, $ns, $tstate];
 				if ($mdate < $oldestfound) { $oldestfound = $mdate; }
 				$numfound++;
 				if ($one_per_thread) { last postcheck; }
@@ -492,7 +492,7 @@ sub plushSearch2 {
 	@search = grep(!$found{$_}++, @tmpsearch);
 
 	for ($i = 0; $i < @messages; $i++) {
-		($board, $tnum, $msgnum, $tusername, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $mns, $tstate) = @{ $data{ $messages[$i] } };
+		($board, $tnum, $msgnum, $tusername, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $ns, $tstate) = @{ $data{ $messages[$i] } };
 
 		$tname = &addMemberLink($tusername,$tname,$tnum);
 		$mname = &addMemberLink($musername,$mname,$mdate);
@@ -502,7 +502,7 @@ sub plushSearch2 {
 		if (!$FORM{'searchyabbtags'}) {
 			&wrap;
 			($message, undef) = &Split_Splice_Move($message,$tnum);
-			if ($enable_ubbc) { $ns = "NS"; &DoUBBC; }
+			if ($enable_ubbc) { &DoUBBC; }
 			&wrap2;
 		}
 
@@ -510,7 +510,6 @@ sub plushSearch2 {
 		$msub    = &Censor($msub);
 
 		&Highlight(\$msub,\$message,\@search,$case);
-		&MakeSmileys if $enable_ubbc && $mns !~ /NS/;
 
 		&ToChars($catname{$board});
 		&ToChars($boardname{$board});
@@ -613,7 +612,7 @@ sub pmsearch {
 	elsif ($searchtype != 3) { @search = split(/\s+/, lc $search); }
 	else { @search = (lc $search); }
 
-	my ($curboard, @threads, $curthread, $tnum, $tsub, $tname, $temail, $treplies, $tusername, $ticon, $tstate, @messages, $mname, $memail, $mdate, $mattachment, $mip, $mns, $userfound, $subfound, $msgfound, $numfound, %data, $i, $board, $curcat, @categories, %catname, %cataccess, %openmemgr, @membergroups, %cats, @boardinfo, %boardinfo, @boards, $counter, $msgnum, @scanthreads);
+	my ($curboard, @threads, $curthread, $tnum, $tsub, $tname, $temail, $treplies, $tusername, $ticon, $tstate, @messages, $mname, $memail, $mdate, $mattachment, $mip, $userfound, $subfound, $msgfound, $numfound, %data, $i, $board, $curcat, @categories, %catname, %cataccess, %openmemgr, @membergroups, %cats, @boardinfo, %boardinfo, @boards, $counter, $msgnum, @scanthreads);
 	my $oldestfound = 9999999999;
 
 	if (($pmbox eq "!all" || $pmbox == 1) && &checkfor_DBorFILE("$memberdir/$username.msg")) {
@@ -659,7 +658,7 @@ sub pmsearch {
 			$message = $savedmessage;
 			if ($message =~ /\[\w[^\[]*?\]/) {
 				&wrap;
-				if ($enable_ubbc) { $ns = "NS"; &DoUBBC; }
+				if ($enable_ubbc) { &DoUBBC; }
 				&wrap2;
 				$savedmessage = $message;
 				$message =~ s/<.+?>//g;

@@ -39,10 +39,10 @@ if ($curnum ne '') {
 	if (!&checkfor_DBorFILE("$datadir/$curnum.txt")) {
 		eval { require "$datadir/movedthreads.cgi" };
 		&fatal_error("not_found","$datadir/$curnum.txt") if !$moved_file{$curnum};
-		while ($moved_file{$curnum}) {
+		while (exists $moved_file{$curnum}) {
 			$curnum = $moved_file{$curnum};
-			if (&checkfor_DBorFILE("$datadir/$curnum.txt")) { last; }
-			elsif (!$moved_file{$curnum}) { &fatal_error("not_found","$datadir/$curnum.txt"); }
+			next if exists $moved_file{$curnum};
+			if (!&checkfor_DBorFILE("$datadir/$curnum.txt")) { &fatal_error("not_found","$datadir/$curnum.txt"); }
 		}
 		$INFO{'num'} = $INFO{'thread'} = $FORM{'threadid'} = $curnum;
 	}

@@ -403,7 +403,7 @@ sub SaveSettingsTo {
 
 			if (-e "$vardir/ban.txt") {
 				foreach (&read_DBorFILE(0,'',$vardir,'ban','txt')) {
-					my ($type, $bannedlist) = split(/\|/, $line, 2);
+					my ($type, $bannedlist) = split(/\|/, $_, 2);
 					chomp($bannedlist);
 					$ip_banlist = $bannedlist if $type =~ /I/i;
 					$email_banlist = $bannedlist if $type =~ /E/i;
