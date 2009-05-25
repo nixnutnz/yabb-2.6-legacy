@@ -316,8 +316,6 @@ sub plushSearch2 {
 	if ($search =~ m~\\~) { &fatal_error("no_search_slashes"); }
 	my $searchsubject = $FORM{'subfield'} eq 'on';
 	my $searchmessage = $FORM{'msgfield'} eq 'on';
-	require "$sourcedir/Decoder.pl";
-	&scrambled_eggs($search);
 	&ToHTML($search);
 	$search =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/g;
 	$search =~ s/\cM//g;
