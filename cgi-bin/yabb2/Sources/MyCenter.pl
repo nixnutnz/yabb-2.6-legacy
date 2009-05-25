@@ -2094,8 +2094,12 @@ sub drawPMView {
 				if ($cliped) { $immessage .= "..."; }
 				$immessage = qq~$quoteimg$codeimg $immessage~;
 				$immessage = &Censor($immessage);
-				$immessage =~ s/#nosmileys//isg;
-				else {$message = $immessage; if (!$yyYaBBCloaded) { require "$sourcedir/YaBBC.pl"; } &MakeSmileys; $immessage = $message; }
+				unless ($immessage =~ s/#nosmileys//isg) {
+					$message = $immessage;
+					if (!$yyYaBBCloaded) { require "$sourcedir/YaBBC.pl"; }
+					&MakeSmileys;
+					$immessage = $message;
+				}
 				$MCContent .= qq~
 		$immessage<br /><br />
 		<hr width="100%" class="hr" />
