@@ -607,11 +607,11 @@ sub MessageIndex {
 	elsif ((($iamadmin && $adminview == 2) || ($iamgmod && $gmodview == 2) || ($iammod && $modview == 2 && !$iamadmin && !$iamgmod)) && $sessionvalid == 1) { $multiview = 2; }
 
 	if ($multiview >= 2) {
-		&moveto;
+		my $boardlist = &moveto;
 		if ($multiview eq '3') {
 			$tempfooter    = $subfooterbar;
 			$adminselector = qq~
-				<label for="toboard">$messageindex_txt{'133'}</label>: <select name="toboard" id="toboard" onchange="askfornewinfo();">$boardlist</select><input type="submit" value="$messageindex_txt{'462'}" class="button" />
+				<label for="toboard">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" /> <select name="toboard" id="toboard">$boardlist</select><input type="submit" value="$messageindex_txt{'462'}" class="button" />
 			~;
 			if ($currentboard eq $annboard) {
 				$admincheckboxes = qq~
@@ -640,7 +640,7 @@ sub MessageIndex {
 				<input type="radio" name="multiaction" id="multiactionlock" value="lock" class="titlebg" style="border: 0px;" /> <label for="multiactionlock">$messageindex_txt{'104'}</label>
 				<input type="radio" name="multiaction" id="multiactionhide" value="hide" class="titlebg" style="border: 0px;" /> <label for="multiactionhide">$messageindex_txt{'844'}</label>
 				<input type="radio" name="multiaction" id="multiactiondelete" value="delete" class="titlebg" style="border: 0px;" /> <label for="multiactiondelete">$messageindex_txt{'31'}</label>
-				<input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" style="border: 0px;" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <select name="toboard" onchange="document.multiadmin.multiaction[3].checked=true;askfornewinfo();">$boardlist</select>
+				<input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" style="border: 0px;" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" /> <select name="toboard" onchange="document.multiadmin.multiaction[3].checked=true;">$boardlist</select>
 				<input type="hidden" name="fromboard" value="$currentboard" />
 				<input type="submit" value="$messageindex_txt{'462'}" class="button" />
 			~;
@@ -650,7 +650,7 @@ sub MessageIndex {
 				<input type="radio" name="multiaction" id="multiactionstick" value="stick" class="titlebg" style="border: 0px;" /> <label for="multiactionstick">$messageindex_txt{'781'}</label>
 				<input type="radio" name="multiaction" id="multiactionhide" value="hide" class="titlebg" style="border: 0px;" /> <label for="multiactionhide">$messageindex_txt{'844'}</label>
 				<input type="radio" name="multiaction" id="multiactiondelete" value="delete" class="titlebg" style="border: 0px;" /> <label for="multiactiondelete">$messageindex_txt{'31'}</label>
-				<input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" style="border: 0px;" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <select name="toboard" onchange="document.multiadmin.multiaction[4].checked=true;askfornewinfo();">$boardlist</select>
+				<input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" style="border: 0px;" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" /> <select name="toboard" onchange="document.multiadmin.multiaction[4].checked=true;">$boardlist</select>
 				<input type="hidden" name="fromboard" value="$currentboard" />
 				<input type="submit" value="$messageindex_txt{'462'}" class="button" />
 			~;
@@ -749,16 +749,7 @@ sub MessageIndex {
 	}
 
 	if ((($iamadmin && $adminview >= 2) || ($iamgmod && $gmodview >= 2) || ($iammod && $modview >= 2 && !$iamadmin && !$iamgmod)) && $sessionvalid == 1) {
-		$formstart = qq~<form name="multiadmin" action="$scripturl?board=$currentboard;action=multiadmin" method="post" style="display: inline">
-		<script language="JavaScript1.2" type="text/javascript">
-		<!--
-			function askfornewinfo() {
-				ask = confirm('$messageindex_txt{200}');
-				if (ask) document.multiadmin.action = '$scripturl?board=$currentboard;action=multiadmin;newinfo=1';
-				else document.multiadmin.action = '$scripturl?board=$currentboard;action=multiadmin';
-			}
-		//-->
-	</script>~;
+		$formstart = qq~<form name="multiadmin" action="$scripturl?board=$currentboard;action=multiadmin" method="post" style="display: inline">~;
 		$formend   = qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
 		$messageindex_template =~ s/({|<)yabb modupdate(}|>)/$formstart/g;
 		$messageindex_template =~ s/({|<)yabb modupdateend(}|>)/$formend/g;
@@ -934,22 +925,22 @@ sub MessagePageindex {
 }
 
 sub moveto {
-	my ($category, $boardname);
+	my ($boardlist, $catid, $board, $category, $boardname, $boardperms, $boardview, $brdlist, @bdlist, $catname, $catperms, $access);
 	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	foreach $catid (@categoryorder) {
 		$brdlist = $cat{$catid};
 		if(!$brdlist) { next; }
-		(@bdlist) = split(/\,/, $brdlist);
+		@bdlist = split(/,/, $brdlist);
 		($catname, $catperms) = split(/\|/, $catinfo{"$catid"});
 
-		$cataccess = &CatAccess($catperms);
-		if (!$cataccess) { next; }
+		$access = &CatAccess($catperms);
+		if (!$access) { next; }
 		&ToChars($catname);
 		$boardlist .= qq~<optgroup label="$catname">~;
 		foreach $board (@bdlist) {
 			($boardname, $boardperms, $boardview) = split(/\|/, $board{"$board"});
 			&ToChars($boardname);
-			my $access = &AccessCheck($board, '', $boardperms);
+			$access = &AccessCheck($board, '', $boardperms);
 			if (!$iamadmin && $access ne "granted") { next; }
 			if ($board ne $currentboard) {
 				$boardlist .= qq~<option value="$board">$boardname</option>\n~;
@@ -957,6 +948,7 @@ sub moveto {
 		}
 		$boardlist .= qq~</optgroup>~;
 	}
+	$boardlist;
 }
 
 1;

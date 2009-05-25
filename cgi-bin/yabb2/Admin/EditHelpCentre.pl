@@ -25,6 +25,11 @@ sub HelpEdit {
 	$page      = $FORM{'page'};
 	$help_area = $INFO{'area'};
 
+	if ($page eq "user00_agreement") {
+		$yySetLocation = qq~$adminurl?action=modagreement;agreementlanguage=$language;destination=helpadmin~;
+		&redirectexit;
+	}
+
 	require "$helpfile/$language/$help_area/$page.help";
 
 	$SectionName =~ s/_/ /g;

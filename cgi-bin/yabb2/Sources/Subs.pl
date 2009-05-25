@@ -2526,7 +2526,7 @@ sub CheckUserPM_Level {
 		#}
 
 		} else {
-			unlink($file);
+			return unlink($file);
 		}
 	}
 

@@ -917,9 +917,6 @@ EOF
 			$forumstarttext = qq~The Forum Start date was set to $setforumstart but the first member was registered $firstmember. So we changed the Forum Start Date to $firstmember.~;
 		}
 
-		# End of conversion  ;)
-		&automaintenance('off');
-
 		$yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6a;
 
 		$formsession = &cloak("$mbname$username");
@@ -3542,7 +3539,7 @@ sub SetInstall {
 sub SetInstall2 {
 	if ($action eq "checkmodules" || $action eq "setinstall2") {
 		$settings_file_version = "YaBB 0.0.0";
-		$maintenance = 0;
+		$maintenance = 1;
 		$members_total = 1;
 		$last_member = "admin";  
 		$rememberbackup = 0;

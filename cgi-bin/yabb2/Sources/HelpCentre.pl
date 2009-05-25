@@ -107,7 +107,6 @@ sub SectionPrint {
 }
 
 sub GetHelpFiles {
-
 	unless ($HelpTemplateLoaded) {
 		if (-e ("$templatesdir/$usestyle/HelpCentre.template")) {
 			require "$templatesdir/$usestyle/HelpCentre.template";
@@ -120,18 +119,16 @@ sub GetHelpFiles {
 
 	# This determines if the order file is present and if it isn't
 	# It creates a new one, in default alphabetical order
-	if (!&checkfor_DBorFILE("$vardir/$help_area.helporder")) {
-		&CreateOrderFile;
-	}
+	&CreateOrderFile if (!&checkfor_DBorFILE("$vardir/$help_area.helporder"));
 
-	@helporderlist = &read_DBorFILE(0,'',$vardir,$help_area,'helporder');
+	my @helporderlist = &read_DBorFILE(0,'',$vardir,$help_area,'helporder');
+	chomp(@helporderlist);
 
-	foreach $line (@helporderlist) {
-		chomp $line;
-		if (-e ("$helpfile/$language/$help_area/$line.help")) {
-			require "$helpfile/$language/$help_area/$line.help";
-		} elsif (-e ("$helpfile/English/$help_area/$line.help")) {
-			require "$helpfile/English/$help_area/$line.help";
+	foreach (@helporderlist) {
+		if (-e ("$helpfile/$language/$help_area/$_.help")) {
+			require "$helpfile/$language/$help_area/$_.help";
+		} elsif (-e ("$helpfile/English/$help_area/$_.help")) {
+			require "$helpfile/English/$help_area/$_.help";
 		} else {
 			next;
 		}
@@ -220,12 +217,10 @@ sub MainHelp {
 }
 
 sub ContentContainer {
-
 	$MainLayout =~ s/<yabb contents>/$Contents/g;
 	$MainLayout =~ s/<yabb body>/$Body/g;
 
 	$yymain .= qq~$MainLayout~;
-
 }
 
 sub DoContents {
@@ -262,12 +257,10 @@ sub CreateOrderFile {
 	@contents = readdir(HELPDIR);
 	closedir(HELPDIR);
 
-	foreach $line (sort { uc($a) cmp uc($b) } @contents) {
-		($name, $extension) = split(/\./, $line);
-		if ($extension !~ /help/i) { next; }
-
+	foreach (sort { uc($a) cmp uc($b) } @contents) {
+		($name, $extension) = split(/\./, $_);
+		next if $extension !~ /help/i;
 		$order_list .= "$name\n";
-
 	}
 
 	&write_DBorFILE(0,'',$vardir,$help_area,'helporder',($order_list));

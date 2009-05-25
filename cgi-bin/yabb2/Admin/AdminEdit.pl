@@ -326,16 +326,12 @@ sub SetReserve2 {
 
 sub ModifyAgreement {
 	&is_admin_or_gmod;
-	my ($agreementlanguage, $line);
-	if ($FORM{'agreementlanguage'}) {
-		$agreementlanguage = $FORM{'agreementlanguage'};
-	} else {
-		$agreementlanguage = $lang;
-	}
+
 	opendir(LNGDIR, $langdir);
 	my @lfilesanddirs = readdir(LNGDIR);
 	close(LNGDIR);
 
+	my $agreementlanguage = $FORM{'agreementlanguage'} || $INFO{'agreementlanguage'} || $lang;
 	foreach my $fld (sort {lc($a) cmp lc($b)} @lfilesanddirs) {
 		if (-d "$langdir/$fld" && $fld =~ m^\A[0-9a-zA-Z_\#\%\-\:\+\?\$\&\~\,\@/]+\Z^ && -e "$langdir/$fld/Main.lng") {
 			if ($agreementlanguage eq $fld) { $drawnldirs .= qq~<option value="$fld" selected="selected">$fld</option>~; }
@@ -375,6 +371,7 @@ sub ModifyAgreement {
      <tr valign="middle">
        <td align="center" class="windowbg2"><br />
 	<form action="$adminurl?action=modagreement2" method="post" enctype="application/x-www-form-urlencoded">
+	<input type="hidden" name="destination" value="$INFO{'destination'}" />
 	<input type="hidden" name="agreementlanguage" value="$agreementlanguage" />
 	<textarea rows="35" cols="95" name="agreement" id="agreement" style="width:95%">$fullagreement</textarea><br /><br />
        </td>
@@ -393,14 +390,27 @@ sub ModifyAgreement {
 
 sub ModifyAgreement2 {
 	&is_admin_or_gmod;
+
 	if ($FORM{'agreementlanguage'}) { $agreementlanguage = $FORM{'agreementlanguage'}; }
 	else { $agreementlanguage = $lang; }
 	$FORM{'agreement'} =~ tr/\r//d;
-	$FORM{'agreement'} =~ s~\A\n~~;
-	$FORM{'agreement'} =~ s~\n\Z~~;
+	$FORM{'agreement'} =~ s~\A\n+~~;
+	$FORM{'agreement'} =~ s~\n+\Z~~;
 	&write_DBorFILE(0,'',"$langdir/$agreementlanguage",'agreement','txt',($FORM{'agreement'}));
-	$action_area = "modagreement";
-	$yySetLocation = qq~$adminurl?action=modagreement~;
+
+	$FORM{'agreement'} =~ s/\n/<br \/>\n/g;
+	&write_DBorFILE(0,'',"$helpfile/$agreementlanguage/User/",'user00_agreement','help',(qq^\$SectionName = "$register_txt{'764a'}";
+
+### Section 1
+#############################################
+\$SectionSub1 = "$register_txt{'764a'}";
+\$SectionBody1 = qq~<p>$FORM{'agreement'}</p>~;
+#############################################
+
+
+1;^));
+
+	$yySetLocation = $FORM{'destination'} ? qq~$adminurl?action=$FORM{'destination'}~ : qq~$adminurl?action=modagreement;agreementlanguage=$FORM{'agreementlanguage'}~;
 	&redirectexit;
 }
 
