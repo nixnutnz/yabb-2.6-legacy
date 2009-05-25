@@ -2023,6 +2023,7 @@ sub CheckUserPM_Level {
 				@_;
 			} else {
 				fopen($LOCKHANDLE, "+>$folder/$name.$ext");
+				return;
 			}
 
 		} else {
