@@ -1647,37 +1647,35 @@ sub old_decloak {
 	return $user;
 }
 
-# this is the one from InstantMessage.pl, given a facelift.
+# run through the log.txt and return the online/offline/away string near by the username
+my %users_online;
 sub userOnLineStatus {
 	my $userToCheck = $_[0];
-	if ($userToCheck eq 'Guest') { return ''; }
-	## run through the log. If the username is found, return 'on'. If the user isn't there, return 'off'
-	my $online = qq~<span class="useroffline">$maintxt{'61'}</span>~;
+
+	return '' if $userToCheck eq 'Guest';
+	return ${$uid.$userToCheck}{'offlinestatus'} if ${$uid.$userToCheck}{'offlinestatus'} =~ /^</;
+
 	&LoadUser($userToCheck);
-	if (!${$uid.$userToCheck}{'stealth'} || $iamadmin || $iamgmod) {
-		foreach (@logentries) {
-			if ((split(/\|/, $_, 2))[0] eq $userToCheck) {
-				$online = qq~<span class="useronline">$maintxt{'60'}</span>~ . (${$uid.$userToCheck}{'stealth'} ? "*" : "");
-				${$uid.$userToCheck}{'offlinestatus'} = 'online';
-				last;
-			}
+
+	my $online = qq~<span class="useroffline">$maintxt{'61'}</span>~;
+	if (!${$uid.$userToCheck}{'stealth'} || !$iamadmin || !$iamgmod) {
+		unless (%users_online) {
+			map { $users_online{(split(/\|/, $_, 2))[0]} = 1 } @logentries;
+		}
+		if ($users_online{$userToCheck}) {
+			$online = qq~<span class="useronline">$maintxt{'60'}</span>~ . (${$uid.$userToCheck}{'stealth'} ? "*" : "");
+			${$uid.$userToCheck}{'offlinestatus'} = 'online';
 		}
 	}
-	if ($enable_MCstatusStealth && ${$uid.$userToCheck}{'offlinestatus'} ne 'offline') {
-		# enable 'away' indicator 0=Off 1=Staff to Staff 2=Staff to all 3=Members
-		if ($enable_MCaway > 0 && ${$uid.$userToCheck}{'offlinestatus'} eq 'away' && !$iamguest) {
-			#enable for staff
-			if ($enable_MCaway == 1 && ($iamadmin || $iamgmod || $iammod)) {
-				$online = qq~<span class="useraway">$maintxt{'away'}</span>~;
-			}
-			## enabled for all
-			if ($enable_MCaway > 1) {
-				$online = qq~<span class="useraway">$maintxt{'away'}</span>~;
-			}
+	# enable 'away' indicator $enable_MCaway: 0=Off; 1=Staff to Staff; 2=Staff to all; 3=Members
+	if ($enable_MCstatusStealth && $enable_MCaway > 0 && !$iamguest && ${$uid.$userToCheck}{'offlinestatus'} eq 'away') {
+		if ($enable_MCaway == 1 && ($iamadmin || $iamgmod || $iammod)) { #enable for staff
+			$online = qq~<span class="useraway">$maintxt{'away'}</span>~;
+		} elsif ($enable_MCaway > 1) { # enabled for all
+			$online = qq~<span class="useraway">$maintxt{'away'}</span>~;
 		}
-		## if the useris 'away' but the above conditions are not met, they show as 'offline'
 	}
-	$online;
+	${$uid.$userToCheck}{'offlinestatus'} = $online;
 }
 
 ## moved from Register.pl so we can use for guest browsing

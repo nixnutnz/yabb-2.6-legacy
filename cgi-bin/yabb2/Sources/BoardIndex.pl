@@ -29,10 +29,11 @@ sub BoardIndex {
 	&GetBotlist;
 
 	my $checkadded = 0;
-	if (($iamadmin && $show_online_ip_admin) || ($iamgmod && $show_online_ip_gmod)) {$guestlist = qq~<span class="small">~;}
+	my $guestlist = qq~<span class="small">~ if ($iamadmin && $show_online_ip_admin) || ($iamgmod && $show_online_ip_gmod);
 	$guests = 0;
 	$numusers = 0;
 	$numbots = 0;
+	my $user_in_log;
 	my $lastonline = $date - ($OnlineLogTime * 60);
 	foreach (@logentries) {
 		($name, $date1, $last_ip, $last_host) = split(/\|/, $_);
@@ -43,7 +44,8 @@ sub BoardIndex {
 			$bot_count{$is_a_bot}++;
 		} elsif ($name) {
 			if (&LoadUser($name)) {
-				next if ${$uid.$name}{'lastonline'} < $lastonline && $name ne $username;
+				if ($name eq $username) { $user_in_log = 1; }
+				elsif (${$uid.$name}{'lastonline'} < $lastonline) { next; }
 				if ($iamadmin || $iamgmod) {
 					$numusers++;
 					$users .= &QuickLinks($name);
@@ -61,6 +63,19 @@ sub BoardIndex {
 				}
 			}
 		}
+	}
+	if (!$iamguest && !$user_in_log) {
+		if ($iamadmin || $iamgmod) {
+			$numusers++;
+			$users .= &QuickLinks($username);
+			$users .= (${$uid.$username}{'stealth'} ? "*" : "") .
+				  ((($iamadmin && $show_online_ip_admin) || ($iamgmod && $show_online_ip_gmod)) ? "&nbsp;<i>($user_ip)</i>" : "");
+		} elsif (!${$uid.$username}{'stealth'}) {
+			$numusers++;
+			$users .= &QuickLinks($username);
+		}
+		$guests--;
+		$guestlist =~ s|<i>$last_ip</i>, ||o;
 	}
 	$users =~ s~, \Z~~;
 
@@ -667,8 +682,7 @@ sub BoardIndex {
 		$boardindex_template =~ s/({|<)yabb recentposts(}|>)//g;
 		$boardindex_template =~ s/({|<)yabb lastpostdate(}|>)//g;
 	}
-	$membercountlink = qq~<a href="$scripturl?action=ml"><b>$members_total</b></a>~;
-	$boardindex_template =~ s/({|<)yabb membercount(}|>)/$membercountlink/g;
+	$boardindex_template =~ s~({|<)yabb membercount(}|>)~<a href="$scripturl?action=ml"><b>$members_total</b></a>~g;
 	if ($showlatestmember) {
 		&LoadUser($last_member);
 		$boardindex_template =~ s/({|<)yabb latestmember(}|>)/qq~$boardindex_txt{'201'} ~ . &QuickLinks($last_member) . qq~.<br \/>~/eg;

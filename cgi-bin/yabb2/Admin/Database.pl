@@ -417,7 +417,7 @@ sub SaveDatabase {
 			} elsif ($_ eq 'awayreply') {
 				$buildnew_vars .= qq~`$_` varchar(1000) default NULL,\n~;
 			} elsif ($_ eq 'awayreplysent') {
-				$buildnew_vars .= qq~`$_` varchar(255) default NULL,\n~;
+				$buildnew_vars .= qq~`$_` varchar(500) default NULL,\n~;
 			} elsif ($_ eq 'spamcount') {
 				$buildnew_vars .= qq~`$_` int(6) NOT NULL default '0',\n~;
 			} elsif ($_ eq 'spamtime') {

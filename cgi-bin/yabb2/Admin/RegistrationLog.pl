@@ -24,6 +24,7 @@ sub view_reglog {
 
 	$yytitle = $prereg_txt{'15a'};
 
+	my @logentries;
 	if (&checkfor_DBorFILE("$vardir/registration.log")) {
 		@logentries = &read_DBorFILE(0,'',$vardir,'registration','log');
 		@logentries = reverse @logentries;
