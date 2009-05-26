@@ -1122,12 +1122,12 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'threadtodba' => '<b>thread.[txt|ctb|mail|poll|polled]</b>-files remaining to convert:',
 'dbtovars' => '<b>users</b> found:',
 'dbtovarsa' => '<b>users</b> remaining to convert:',
-'dbtoctb' => '<b>ctb</b> infos found:',
-'dbtoctba' => '<b>ctb</b> infos remaining to convert:',
+'dbtotxt' => '<b>threads</b> found:',
+'dbtotxta' => '<b>threads</b> remaining to convert:',
 'varsdel' => '<b>vars</b>-files found:',
 'varsdela' => '<b>vars</b>-files remaining to delete:',
-'ctbdel' => '<b>ctb</b>-files found:',
-'ctbdela' => '<b>ctb</b>-files remaining to delete:',
+'txtdel' => '<b>ctb</b>-files found:',
+'txtdela' => '<b>ctb</b>-files remaining to delete:',
 );
 
 %bypassLock_txt = (

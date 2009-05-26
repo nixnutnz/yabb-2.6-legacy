@@ -912,7 +912,7 @@ sub ReturnFileDB {
 	if (@contents) {
 		&write_DBorFILE(0,'',$datadir,'ctbrest','dbconvert',@contents);
 
-		&do_info(scalar(@contents),$start_time,$sumuser,'database4','dbtoctb');
+		&do_info(scalar(@contents),$start_time,$sumuser,'database4','dbtotxt');
 
 		&AdminTemplate;
 	}
@@ -935,7 +935,7 @@ sub ReturnFileDB {
 }
 
 sub Delete_files {
-	my (@contents, $begin_time, $start_time, $sumuser);
+	my (@contents, $begin_time, $start_time, $sumuser, $member, $txt);
 
 	# Security
 	&is_admin;
@@ -944,8 +944,8 @@ sub Delete_files {
 	# Set up the multi-step action
 	$begin_time = time();
 
-	# delete .vars
-	unless (-e "$datadir/ctbdel.dbconvert" && -e "$datadir/ctbdelcalc.dbconvert") {
+	# delete Members/....[vars|msg|ims|outbox|imstore|imdraft|log|rlog]
+	unless (-e "$datadir/txtdel.dbconvert" && -e "$datadir/txtdelcalc.dbconvert") {
 		if (-e "$memberdir/memberdel.dbconvert" && -M "$memberdir/memberdel.dbconvert" < 1) {
 			@contents = &read_DBorFILE(0,'',$memberdir,'memberdel','dbconvert');
 
@@ -965,6 +965,7 @@ sub Delete_files {
 		}
 
 		# Loop through each -rest- member
+		$use_MySQL = 0;
 		while (@contents) {
 			$member = pop @contents;
 			chomp $member;
@@ -977,6 +978,7 @@ sub Delete_files {
 
 			last if time() > ($begin_time + $max_process_time);
 		}
+		$use_MySQL = 1;
 
 		# If it isn't completely done ...
 		if (@contents) {
@@ -993,51 +995,51 @@ sub Delete_files {
 	&write_DBorFILE(0,'',$vardir,'log','txt',(''));
 
 
-	# delete .ctb
-	if (-e "$datadir/ctbdel.dbconvert" && -M "$datadir/ctbdel.dbconvert" < 1) {
-		@contents = &read_DBorFILE(0,'',$datadir,'ctbdel','dbconvert');
+	# delete Messages/....[vars|ctb|mail|poll|polled]
+	if (-e "$datadir/txtdel.dbconvert" && -M "$datadir/txtdel.dbconvert" < 1) {
+		@contents = &read_DBorFILE(0,'',$datadir,'txtdel','dbconvert');
 
-		($start_time,$sumuser) = &read_DBorFILE(0,'',$datadir,'ctbdelcalc','dbconvert');
+		($start_time,$sumuser) = &read_DBorFILE(0,'',$datadir,'txtdelcalc','dbconvert');
 		chomp ($start_time, $sumuser);
 	}
 
 	if (!@contents) {
 		# Get the list
-		opendir(CTB, $datadir) || die "$txt{'230'} ($datadir) :: $!";
-		@contents = map { $_ =~ s/\.ctb$//; "$_\n"; } grep { /\d+\.ctb$/ } readdir(CTB);
-		closedir(CTB);
+		opendir(TXT, $datadir) || die "$txt{'230'} ($datadir) :: $!";
+		@contents = map { $_ =~ s/\.txt$//; "$_\n"; } grep { /\d+\.txt$/ } readdir(TXT);
+		closedir(TXT);
 
 		$sumuser = @contents;
-		&write_DBorFILE(0,'',$datadir,'ctbdelcalc','dbconvert',("$start_time\n$sumuser\n"));
+		&write_DBorFILE(0,'',$datadir,'txtdelcalc','dbconvert',("$start_time\n$sumuser\n"));
 	}
 
-	# Loop through each -rest- member
+	# Loop through each -rest- thread
+	$use_MySQL = 0;
 	while (@contents) {
-		$ctb = pop @contents;
-		chomp $ctb;
+		$txt = pop @contents;
+		chomp $txt;
 
-		#&delete_DBorFILE("$datadir/$ctb.txt");
-		&delete_DBorFILE("$datadir/$ctb.ctb");
-		&delete_DBorFILE("$datadir/$ctb.mail");
-		&delete_DBorFILE("$datadir/$ctb.poll");
-		&delete_DBorFILE("$datadir/$ctb.polled");
+		foreach (qw(txt ctb mail poll polled)) {
+			&delete_DBorFILE("$datadir/$txt.$_");
+		}
 
 		last if time() > ($begin_time + $max_process_time);
 	}
+	$use_MySQL = 1;
 
 	# If it isn't completely done ...
 	if (@contents) {
-		&write_DBorFILE(0,'',$datadir,'ctbdel','dbconvert',@contents);
+		&write_DBorFILE(0,'',$datadir,'txtdel','dbconvert',@contents);
 
-		&do_info(scalar(@contents),$start_time,$sumuser,'database5','ctbdel');
+		&do_info(scalar(@contents),$start_time,$sumuser,'database5','txtdel');
 
 		&AdminTemplate;
 	}
 
 	&delete_DBorFILE("$memberdir/memberdel.dbconvert");
 	&delete_DBorFILE("$memberdir/memberdelcalc.dbconvert");
-	&delete_DBorFILE("$datadir/ctbdel.dbconvert");
-	&delete_DBorFILE("$datadir/ctbdelcalc.dbconvert");
+	&delete_DBorFILE("$datadir/txtdel.dbconvert");
+	&delete_DBorFILE("$datadir/txtdelcalc.dbconvert");
 
 	&automaintenance("off");
 
