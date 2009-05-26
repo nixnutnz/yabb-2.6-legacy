@@ -1160,7 +1160,7 @@ sub WriteLog {
 
 	@logentries = &read_DBorFILE(0,LOG,$vardir,'log','txt'); # @logentries is a global variable
 
-	push(@new_log, "$field|$date|$user_ip|$user_host#$ENV{'HTTP_USER_AGENT'}|\n");
+	@new_log = ("$field|$date|$user_ip|$user_host#$ENV{'HTTP_USER_AGENT'}|\n");
 	if (!$use_MySQL) {
 		foreach (@logentries) {
 			($name, $logtime, undef) = split(/\|/, $_, 3);

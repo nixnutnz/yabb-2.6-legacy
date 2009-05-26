@@ -96,18 +96,20 @@ sub Login2 {
 	$sessionvalid = 1;
 	$iamguest = 0;
 
+	if ($maintenance && !$iamadmin) { $username = 'Guest'; &fatal_error("admin_login_only"); }
+	&banning;
+
 	if ($FORM{'cookielength'} == 1) { $ck{'len'} = 'Sunday, 17-Jan-2038 00:00:00 GMT'; }
 	elsif ($FORM{'cookielength'} == 2) { $ck{'len'} = ''; }
-	else { $ck{'len'} = "\+$FORM{'cookielength'}m"; }
-	$password = &encode_password("$FORM{'passwrd'}");
+	else { $ck{'len'} = "+$FORM{'cookielength'}m"; }
 	${$uid.$username}{'session'} = &encode_password($user_ip);
-	&UserAccount($username, "update", "-"); # "-" to not update 'lastonline' here
-	&UpdateCookie("write", "$username", "$password", "${$uid.$username}{'session'}", "/", "$ck{'len'}");
+	&UpdateCookie("write", $username, &encode_password($FORM{'passwrd'}), ${$uid.$username}{'session'}, "/", $ck{'len'});
 
-	if ($maintenance && !$iamadmin) { $username = 'Guest'; &fatal_error("admin_login_only"); }
+	&UserAccount($username, "update", "-"); # "-" to not update 'lastonline' here
 	&buildIMS($username,'load'); # isn't loaded because was Guest before
 	&buildIMS($username,''); # rebuild the Members/$username.ims file on login
-	&banning;
+	&WriteLog;
+
 	if($FORM{'sredir'}) {
 		$FORM{'sredir'} =~ s/\~/\=/g;
 		$FORM{'sredir'} =~ s/x3B/;/g;

@@ -43,7 +43,7 @@ sub BoardIndex {
 			$bot_count{$is_a_bot}++;
 		} elsif ($name) {
 			if (&LoadUser($name)) {
-				next if ${$uid.$name}{'lastonline'} < $lastonline;
+				next if ${$uid.$name}{'lastonline'} < $lastonline && $name ne $username;
 				if ($iamadmin || $iamgmod) {
 					$numusers++;
 					$users .= &QuickLinks($name);
@@ -60,17 +60,6 @@ sub BoardIndex {
 					$guestlist .= qq~<i>$last_ip</i>, ~;
 				}
 			}
-		}
-	}
-	if (!$iamguest && $users !~ /;username=$useraccount{$username}"/) {
-		if ($iamadmin || $iamgmod) {
-			$numusers++;
-			$users .= &QuickLinks($username);
-			$users .= (${$uid.$username}{'stealth'} ? "*" : "") .
-				  ((($iamadmin && $show_online_ip_admin) || ($iamgmod && $show_online_ip_gmod)) ? "&nbsp;<i>($user_ip)</i>" : "");
-		} elsif (!${$uid.$username}{'stealth'}) {
-			$numusers++;
-			$users .= &QuickLinks($username);
 		}
 	}
 	$users =~ s~, \Z~~;
