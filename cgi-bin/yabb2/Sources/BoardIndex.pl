@@ -21,19 +21,14 @@ if ($action eq 'detailedversion') { return 1; }
 require "$templatesdir/$useboard/BoardIndex.template";
 
 sub BoardIndex {
-	my ($users, $lspostid, $lspostbd, $lssub, $lsposttime, $lsposter, $lsreply, $lsdatetime, $lastthreadtime, @goodboards, @loadboards);
+	my ($users, $lspostid, $lspostbd, $lssub, $lsposttime, $lsposter, $lsreply, $lsdatetime, $lastthreadtime, @goodboards, @loadboards, $guestlist);
 	$totalm = 0;
 	$totalt = 0;
 	$lastposttime   = 0;
 	$lastthreadtime = 0;
 	&GetBotlist;
 
-	my $checkadded = 0;
-	my $guestlist = qq~<span class="small">~ if ($iamadmin && $show_online_ip_admin) || ($iamgmod && $show_online_ip_gmod);
-	$guests = 0;
-	$numusers = 0;
-	$numbots = 0;
-	my $user_in_log;
+	my ($numusers, $guests, $numbots, $user_in_log, $guest_in_log) = (0,0,0,0,0);
 	my $lastonline = $date - ($OnlineLogTime * 60);
 	foreach (@logentries) {
 		($name, $date1, $last_ip, $last_host) = split(/\|/, $_);
@@ -57,6 +52,7 @@ sub BoardIndex {
 					$users .= &QuickLinks($name) . ", ";
 				}
 			} else {
+				if ($name eq $user_ip) { $guest_in_log = 1; }
 				$guests++;
 				if (($iamadmin && $show_online_ip_admin) || ($iamgmod && $show_online_ip_gmod)) {
 					$guestlist .= qq~<i>$last_ip</i>, ~;
@@ -65,35 +61,34 @@ sub BoardIndex {
 		}
 	}
 	if (!$iamguest && !$user_in_log) {
+		$guests-- if $guests;
+		$numusers++;
+		$users .= &QuickLinks($username);
 		if ($iamadmin || $iamgmod) {
-			$numusers++;
-			$users .= &QuickLinks($username);
-			$users .= (${$uid.$username}{'stealth'} ? "*" : "") .
-				  ((($iamadmin && $show_online_ip_admin) || ($iamgmod && $show_online_ip_gmod)) ? "&nbsp;<i>($user_ip)</i>" : "");
-		} elsif (!${$uid.$username}{'stealth'}) {
-			$numusers++;
-			$users .= &QuickLinks($username);
+			$users .= ${$uid.$username}{'stealth'} ? "*" : "";
+			if (($iamadmin && $show_online_ip_admin) || ($iamgmod && $show_online_ip_gmod)) {
+				$users .= "&nbsp;<i>($user_ip)</i>";
+				$guestlist =~ s|<i>$last_ip</i>, ||o;
+			}
 		}
-		$guests--;
-		$guestlist =~ s|<i>$last_ip</i>, ||o;
+	} elsif ($iamguest && !$guest_in_log) {
+		$guests++;
 	}
-	$users =~ s~, \Z~~;
 
-	if ($numusers) { $users .= qq~<br />~; }
-	if ((($iamadmin && $show_online_ip_admin) || ($iamgmod && $show_online_ip_gmod)) && $guests >= 1) {
-		$guestlist =~ s~, \Z~~;
-		$guestlist .= qq~</span>~;
-	} elsif ((($iamadmin && $show_online_ip_admin) || ($iamgmod && $show_online_ip_gmod)) && $guests == 0) {
-		$guestlist = qq~~;
+	if ($numusers) {
+		$users =~ s~, \Z~~;
+		$users .= qq~<br />~;
 	}
-	if ($guestlist ne '') {$guestlist .= qq~<br />~;}
-	## let's build the bot list now ##
-	if ($numbots > 0) {
-		$botlist = qq~<span class="small">~;
+	if ($guestlist) { # build the guest list
+		$guestlist =~ s/, $//;
+		$guestlist = qq~<span class="small">$guestlist</span><br />~;
+	}
+	if ($numbots) { # build the bot list
 		foreach (sort keys(%bot_count)) { $botlist .= qq~$_&nbsp;($bot_count{$_}), ~; }
-		$botlist =~ s~, \Z~~;
-		$botlist .= qq~</span>~;
+		$botlist =~ s/, $//;
+		$botlist = qq~<span class="small">$botlist</span>~;
 	}
+
 	if (!$INFO{'catselect'}) {
 		$yytitle = $boardindex_txt{'18'};
 	} else {

@@ -108,7 +108,6 @@ sub Login2 {
 	&UserAccount($username, "update", "-"); # "-" to not update 'lastonline' here
 	&buildIMS($username,'load'); # isn't loaded because was Guest before
 	&buildIMS($username,''); # rebuild the Members/$username.ims file on login
-	&WriteLog;
 
 	if($FORM{'sredir'}) {
 		$FORM{'sredir'} =~ s/\~/\=/g;
