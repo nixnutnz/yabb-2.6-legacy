@@ -537,7 +537,10 @@ sub Display {
 
 		# If the user isn't a guest, load their info.
 		if ($musername ne 'Guest' && !$yyUDLoaded{$musername} && &checkfor_DBorFILE("$memberdir/$musername.vars")) {
+			my $tmpns = $ns;
+			$ns = "";
 			&LoadUserDisplay($musername);
+			$ns = $tmpns;
 		}
 		$messagedate = $mdate;
 		if (${$uid.$musername}{'regtime'}) {
