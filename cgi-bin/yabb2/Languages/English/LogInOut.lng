@@ -39,6 +39,7 @@ $loginoutlngver = 'YaBB 2.4 $Revision$';
 '753' => 'Need to register?',
 '837' => 'Your username is case sensitive.',
 'capslock' => 'Caps lock is activated.',
+'wrong_char' => 'This character in the Password is invalid',
 );
 
 %floodtxt=(

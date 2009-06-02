@@ -69,6 +69,7 @@ $registerlngver = 'YaBB 2.4 $Revision$';
 'birthday_a' => '(<label for="birth_month">MM</label>/<label for="birth_day">DD</label>/<label for="birth_year">YYYY</label>)',
 'birthday_b' => '(<label for="birth_day">DD</label>/<label for="birth_month">MM</label>/<label for="birth_year">YYYY</label>)',
 'capslock' => 'Caps lock is activated.',
+'wrong_char' => 'This character in the Password is invalid',
 
 # the following error_ variables are inside JavaScript!
 'error_username' => 'You must insert a user ID.',

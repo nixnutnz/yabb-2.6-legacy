@@ -209,6 +209,7 @@ $profilelngver = 'YaBB 2.4 $Revision$';
 'sid_expires_1' => 'Your Profile-Session expires in',
 'sid_expires_2' => 'seconds.',
 'capslock' => 'Caps lock is activated.',
+'wrong_char' => 'This character in the Password is invalid',
 );
 
 %mycenter_profile_txt = (

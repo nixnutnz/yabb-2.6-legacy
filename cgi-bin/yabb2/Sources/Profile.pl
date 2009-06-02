@@ -83,7 +83,8 @@ sub ProfileCheck {
 			<input type="hidden" name="redir" value="$redirsid" />
 			<div style="padding-top: 4px;">
 				<div><input type="password" name="passwrd" id="passwrd" size="15" style="width: 150px;" onkeypress="capsLock(event,'cappasswrd')" /></div>
-				<div style="color: red; display: none" id="cappasswrd"><b>$profile_txt{'capslock'}</b></div>
+				<div style="color: red; font-weight: bold; display: none" id="cappasswrd">$profile_txt{'capslock'}</div>
+				<div style="color: red; font-weight: bold; display: none" id="cappasswrd_char">$profile_txt{'wrong_char'}: <span id="cappasswrd_character">&nbsp;</span></div>
 			</div>
 			<div style="padding-top: 8px;">
 				<input type="submit" value="$profile_txt{'900'}" class="button" />
@@ -233,7 +234,8 @@ sub ModifyProfile {
 			<div class="pstrength-bar" id="passwrd1_bar" style="border: 1px solid #FFFFFF; height: 4px"></div>
 			<div class="pstrength-info" id="passwrd1_text">&nbsp;</div>
 			</div>
-			<div style="clear:left; color: red; display: none" id="cappasswrd1"><b>$profile_txt{'capslock'}</b></div>
+			<div style="clear:left; color: red; font-weight: bold; display: none" id="cappasswrd1">$profile_txt{'capslock'}</div>
+			<div style="clear:left; color: red; font-weight: bold; display: none" id="cappasswrd1_char">$profile_txt{'wrong_char'}: <span id="cappasswrd1_character">&nbsp;</span></div>
 		</td>
 	</tr>
 	<tr class="windowbg">
@@ -242,7 +244,8 @@ sub ModifyProfile {
 		</td>
 		<td align="left">
 			<input type="password" maxlength="30" name="passwrd2" id="passwrd2" size="20" onkeypress="capsLock(event,'cappasswrd2')" />
-			<div style="color: red; display: none" id="cappasswrd2"><b>$profile_txt{'capslock'}</b></div>
+			<div style="color: red; font-weight: bold; display: none" id="cappasswrd2">$profile_txt{'capslock'}</div>
+			<div style="color: red; font-weight: bold; display: none" id="cappasswrd2_char">$profile_txt{'wrong_char'}: <span id="cappasswrd2_character">&nbsp;</span></div>
 		</td>
 	</tr>
 	<tr class="windowbg">

@@ -273,7 +273,8 @@ sub Register {
 				<div class="pstrength-bar" id="passwrd1_bar" style="border: 1px solid #FFFFFF; height: 4px"></div>
 				<div class="pstrength-info" id="passwrd1_text">&nbsp;</div>
 			</div>
-			<div style="clear:left; color: red; display: none" id="cappasswrd1"><b>$register_txt{'capslock'}</b></div>
+			<div style="clear:left; color: red; font-weight: bold; display: none" id="cappasswrd1">$register_txt{'capslock'}</div>
+			<div style="clear:left; color: red; font-weight: bold; display: none" id="cappasswrd1_char">$register_txt{'wrong_char'}: <span id="cappasswrd1_character">&nbsp;</span></div>
 		</td>
 	</tr>
 	<tr>
@@ -282,7 +283,8 @@ sub Register {
 		</td>
 		<td class="windowbg2" align="left" valign="top">
 			<input type="password" maxlength="30" name="passwrd2" id="passwrd2" value="$tmpregpasswrd2" size="30" onkeypress="capsLock(event,'cappasswrd2')" /> *
-			<div style="color: red; display: none" id="cappasswrd2"><b>$register_txt{'capslock'}</b></div>
+			<div style="color: red; font-weight: bold; display: none" id="cappasswrd2">$register_txt{'capslock'}</div>
+			<div style="color: red; font-weight: bold; display: none" id="cappasswrd2_char">$register_txt{'wrong_char'}: <span id="cappasswrd2_character">&nbsp;</span></div>
 		</td>
 	</tr>~;
 	}

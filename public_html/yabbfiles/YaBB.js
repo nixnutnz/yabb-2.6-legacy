@@ -16,15 +16,31 @@
 
 //YaBB 2.4 $Revision$
 
-// Caps Lock detection
+// Caps Lock and Not Allowed Characters detection
 function capsLock(eve,ident){
 	keyCode = eve.keyCode ? eve.keyCode : eve.which;
 	shiftKey = eve.shiftKey ? eve.shiftKey : ((keyCode == 16) ? true : false);
-	if (((keyCode >= 65 && keyCode <= 90) && !shiftKey)||((keyCode >= 97 && keyCode <= 122) && shiftKey))
+
+	// check for Caps Lock
+	if (((keyCode > 64 && keyCode < 91) && !shiftKey)||((keyCode > 96 && keyCode < 123) && shiftKey)) {
+		document.getElementById(ident + '_char').style.display = 'none';
 		document.getElementById(ident).style.display = 'block';
-	else
+
+	} else {
 		document.getElementById(ident).style.display = 'none';
+
+		// check for Not Allowed Characters
+		character = String.fromCharCode(keyCode);
+		if (((keyCode > 31 && keyCode < 127) || keyCode > 159) &&
+		    /[^\s\w!@#$%\^&\*\(\)\+\|`~\-=\\:;'",\.\/\?\[\]\{\}]/.test(character)) {
+			document.getElementById(ident + '_char').style.display = 'block';
+			document.getElementById(ident + '_character').childNodes[0].nodeValue = character;
+		} else {
+			document.getElementById(ident + '_char').style.display = 'none';
+		}
+	}
 }
+
 
 //scroll fix for IE
 window.onload = function () {

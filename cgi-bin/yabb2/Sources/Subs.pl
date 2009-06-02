@@ -1822,7 +1822,7 @@ sub CheckUserPM_Level {
 	# key = folder.['extension of the file'] OR
 	# key = folder.['variable in file/colum in table'] OR
 	# key = folder.[name of the file].['extension of the file']
-	# values = ['name of the table','key of the table',[qw[colums to get/update]]]
+	# values = ['name of the table','key of the table',[qw[colums to get/be update]]]
 	my %db_table = (
 		#$boardsdir."control" =>
 		#[

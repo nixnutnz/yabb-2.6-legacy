@@ -215,7 +215,8 @@ $border
 					</span>
 					<br /><br />
 				</div>
-				<div style="width: 600px; text-align: left; color: red; display: none" id="shared_login"><b>$loginout_txt{'capslock'}</b></div>
+				<div style="width: 600px; text-align: left; color: red; font-weight: bold; display: none" id="shared_login">$loginout_txt{'capslock'}</div>
+				<div style="width: 600px; text-align: left; color: red; font-weight: bold; display: none" id="shared_login_char">$loginout_txt{'wrong_char'}: <span id="shared_login_character">&nbsp;</span></div>
 			</form>
 		</td>
 	</tr>
