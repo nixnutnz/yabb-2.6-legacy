@@ -225,6 +225,11 @@ sub RebuildMessageIndex {
 	foreach my $th (keys %moved_file) {
 		if (exists $moved_file{$th}) { # 'exists' because may be deleted in &moved_loop
 			while (exists $moved_file{$th}) { # to get the final/last thread
+				if ($th > $moved_file{$th}) { # jump out and kill endless ...
+					# ... loops that may have been created in older versions
+					delete $moved_file{$th};
+					last;
+				}
 				$th = $moved_file{$th};
 			}
 			unless (&checkfor_DBorFILE("$datadir/$th.txt")) { &moved_loop($th); }

@@ -306,7 +306,8 @@ sub Split_Splice_2 {
 	if ($newthreadid eq "new") {
 		# Find a valid random ID for new thread.
 		$newthreadid = (split(/\|/, $curthread[$postnum[0]], 5))[3] + 1;
-		while (&checkfor_DBorFILE("$datadir/$newthreadid.txt")) { $newthreadid++; }
+		eval { require "$datadir/movedthreads.cgi" };
+		while (exists $moved_file{$newthreadid} || &checkfor_DBorFILE("$datadir/$newthreadid.txt")) { $newthreadid++; }
 
 		foreach (@postnum) {
 			if ($newthreadsub || $leavemess == 1) { # insert new subject name || add 'no_postcount' into copies
@@ -376,6 +377,7 @@ sub Split_Splice_2 {
 
 			eval { require "$datadir/movedthreads.cgi" };
 			$moved_file{$curthreadid} = $newthreadid;
+			delete $moved_file{$newthreadid};
 			&save_moved_file;
 			$leavemess = 0;
 		} else {
