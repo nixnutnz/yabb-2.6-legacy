@@ -791,7 +791,7 @@ sub Split_Splice_2 {
 	}
 	if ($INFO{'ss_submit'}) {
 		$currentboard = $newboard;
-		$INFO{'num'} = $newthreadid;
+		$INFO{'num'} = $INFO{'thread'} = $FORM{'threadid'} = $curnum = $newthreadid;
 		&redirectinternal;
 	}
 	if ($debug == 1 or ($debug == 2 && $iamadmin)) {
