@@ -1570,7 +1570,7 @@ sub ext_user_convert {
 			}
 			&UserAccount($pusername,"update");
 			# don't delete old .ext files anymore, user can do that himself now.
-			#&delete_DBorFILE "$old_membersdir/$pusername.ext";
+			#&delete_DBorFILE("$old_membersdir/$pusername.ext");
 		}
 	}
 }

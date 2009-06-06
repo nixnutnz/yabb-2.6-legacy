@@ -897,7 +897,7 @@ EOF
 					fclose(BOARDTTL);
 					chomp $line;
 					print FORUMTOTALS "$testboard|$line|\n";
-					#&delete_DBorFILE "$boardsdir/$testboard.ttl";
+					#&delete_DBorFILE("$boardsdir/$testboard.ttl");
 				}
 			}
 			fclose(FORUMTOTALS);
@@ -1143,16 +1143,16 @@ sub PrepareConv {
 
 	&automaintenance('on');
 
-	&delete_DBorFILE "$vardir/fixusers.txt";
+	&delete_DBorFILE("$vardir/fixusers.txt");
 
 	foreach $file (@boardlist) {
-		unless ($file eq ".htaccess" || $file eq "index.html" || $file eq "forum.control" || $file eq "." || $file eq "..") { &delete_DBorFILE "$boardsdir/$file"; }
+		unless ($file eq ".htaccess" || $file eq "index.html" || $file eq "forum.control" || $file eq "." || $file eq "..") { &delete_DBorFILE("$boardsdir/$file"); }
 	}
 	foreach $file (@memblist) {
-		unless ($file eq ".htaccess" || $file eq "index.html" || $file eq "admin.vars" || $file eq "." || $file eq "..") { &delete_DBorFILE "$memberdir/$file"; }
+		unless ($file eq ".htaccess" || $file eq "index.html" || $file eq "admin.vars" || $file eq "." || $file eq "..") { &delete_DBorFILE("$memberdir/$file"); }
 	}
 	foreach $file (@msglist) {
-		unless ($file eq ".htaccess" || $file eq "index.html" || $file eq "." || $file eq "..") { &delete_DBorFILE "$datadir/$file"; }
+		unless ($file eq ".htaccess" || $file eq "index.html" || $file eq "." || $file eq "..") { &delete_DBorFILE("$datadir/$file"); }
 	}
 }
 
@@ -3065,7 +3065,7 @@ EOF
 	print FILE &nicely_aligned_file($setfile);
 	fclose(FILE);
 
-	if (-e "$vardir/Paths.pl") { &delete_DBorFILE "$vardir/Paths.pl"; }
+	if (-e "$vardir/Paths.pl") { &delete_DBorFILE("$vardir/Paths.pl"); }
 
 	$yySetLocation = qq~$set_cgi?action=checkmodules~;
 	&redirectexit;
@@ -4518,7 +4518,7 @@ sub ready {
 	elsif (-e "$INFO{'nextstep'}.$yyext") { $yySetLocation = qq~$INFO{'nextstep'}.$yyext?action=revalidatesession~; }
 
 	&CreateSetupLock;
-	&delete_DBorFILE "$vardir/cook.txt";
+	&delete_DBorFILE("$vardir/cook.txt");
 	&redirectexit;
 }
 

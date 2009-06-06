@@ -141,7 +141,7 @@ sub ModifyMessage2 {
 			# showcase poll start
 			# Look for a showcase.poll file to &delete_DBorFILE.
 			if ($threadid == (&read_DBorFILE(1,'',$datadir,$showcase,'poll'))[0]) {
-				&delete_DBorFILE ("$datadir/showcase.poll");
+				&delete_DBorFILE("$datadir/showcase.poll");
 			}
 			# showcase poll end
 			&delete_DBorFILE("$datadir/$threadid.poll");

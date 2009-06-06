@@ -151,7 +151,7 @@ sub FixNopost {
 		fclose(FORUMCONTROL);
 	}
 	require "$admindir/NewSettings.pl";
-	&SaveSettingsTo('Settings.pl'); # save %Group, %NoPost, %Post and &delete_DBorFILE $vardir/membergroups.txt
+	&SaveSettingsTo('Settings.pl'); # save %Group, %NoPost, %Post and &delete_DBorFILE("$vardir/membergroups.txt")
 
 	opendir(MEMBERS, $memberdir) || die "Unable to open ($memberdir) :: $!";
 	@contents = grep { /\.vars$/ } readdir(MEMBERS);
