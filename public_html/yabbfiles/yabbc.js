@@ -39,9 +39,11 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 	ubbcstr=ubbcstr.replace(/\>/g, "&gt;");
 
 	ubbcstr=ubbcstr.replace(/\r/g, "");
-	ubbcstr=ubbcstr.replace(/\n/g, "<br />");
 
-	if (document.postmodify.ns.checked) return ubbcstr;
+	if (document.postmodify.ns.checked) {
+		ubbcstr=ubbcstr.replace(/\n/g, "<br />");
+		return ubbcstr;
+	}
 
 	ubbcstr=ubbcstr.replace(/\cM/g, "");
 	ubbcstr=ubbcstr.replace(/\[([^\]]{0,30})\n([^\]]{0,30})\]/g, '[$1$2]');
@@ -76,8 +78,7 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 
 	while( a=ubbcstr.match(/\[code\]\n*(.*?)\n*\[\/code\]/i) ) {
 		var cmessage=a[1];
-		linepatt = /\<br \/\>/;
-		linecount = cmessage.split(linepatt);
+		linecount = cmessage.split(/\n/);
 		if (linecount.length > 20) {
 			theight = " height: 300px; ";
 		} else {
@@ -100,7 +101,7 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 		cmessage=cmessage.replace(/\&\#91\;highlight\&\#93\;(.*?)\&\#91\;\&\#47\;highlight\&\#93\;/ig, "<span class='highlight'>$1</span>");
 		cmessage=cmessage.replace(/\&nbsp; \&nbsp; \&nbsp;/ig, "\t");
 		cmessage=cmessage.replace(/\&nbsp;/ig, " ");
-		cmessage=cmessage.replace(/\n/ig, "[code_br]");
+		cmessage=cmessage.replace(/\n/g, "[code_br]");
 		cmessage = "<pre class='code' style='margin: 0px; width: 90%;"+theight+"overflow: auto;'>"+cmessage+"[code_br][code_br]</pre>";
 
 		ubbcstr=ubbcstr.replace(/\[code\]\n*(.*?)\n*\[\/code\]/i, cmessage);
@@ -161,11 +162,10 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 	ubbcstr=ubbcstr.replace(/\[blue\](.*?)\[\/blue\]/ig, "<div style='display:inline; color:#0000FF'>$1</div>");
 
 
-	function ltTen(number)
-	{
-		if (number < 10) number = '0' + number;
-		return number;
-	}
+		function ltTen(number) {
+			if (number < 10) number = '0' + number;
+			return number;
+		}
 
 
 	while ( c=ubbcstr.match(/\[timestamp=([\d]{9,10})\]/i) ) {
@@ -263,13 +263,13 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 
 	ubbcstr=ubbcstr.replace(/\[font=(.+?)\](.+?)\[\/font\]/ig, "<div style='display:inline; font-family:$1'>$2</div>");
 
-	function fontConvSize(tsize, ttext) {
-		var csize = parseInt(tsize);
-		if(csize < fontmin) csize = fontmin;
-		else if(csize > fontmax) csize = fontmax;
-		var resized = '<div style="display:inline; font-size: ' + csize + 'pt;">' + ttext + '</div>';
-		ubbcstr=ubbcstr.replace(/\[size=(\d+)\](.+?)\[\/size\]/i, resized);
-	}
+		function fontConvSize(tsize, ttext) {
+			var csize = parseInt(tsize);
+			if(csize < fontmin) csize = fontmin;
+			else if(csize > fontmax) csize = fontmax;
+			var resized = '<div style="display:inline; font-size: ' + csize + 'pt;">' + ttext + '</div>';
+			ubbcstr=ubbcstr.replace(/\[size=(\d+)\](.+?)\[\/size\]/i, resized);
+		}
 
 	while(fontsize=ubbcstr.match(/\[size=(\d+)\](.+?)\[\/size\]/i)) { fontConvSize(fontsize[1], fontsize[2]); }
 
@@ -286,7 +286,9 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 			ubbcstr=ubbcstr.replace(/\[img width=(\d+) height=(\d+)\][\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*(http\:\/\/)*(.+?)[\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*\[\/img\]/i, imgrest);
 		}
 
-	while(picr=ubbcstr.match(/\[img width=(\d+) height=(\d+)\][\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*(http\:\/\/)*(.+?)[\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*\[\/img\]/i)) { restrictimage(picr[1],picr[2],'http://$4') }
+	while(picr=ubbcstr.match(/\[img width=(\d+) height=(\d+)\][\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*(http\:\/\/)*(.+?)[\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*\[\/img\]/i)) {
+		restrictimage(picr[1],picr[2],'http://$4')
+	}
 
 	ubbcstr=ubbcstr.replace(/\[tt\](.*?)\[\/tt\]/ig, "<tt>$1</tt>");
 	ubbcstr=ubbcstr.replace(/\[left\](.+?)\[\/left\]/ig, "<p align=left>$1</p>");
@@ -320,33 +322,33 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 	ubbcstr=ubbcstr.replace(/\[gopher\](\S+?)\[\/gopher\]/ig, '<a href="$1">$1</a>');
 	ubbcstr=ubbcstr.replace(/\[ftp\](\S+?)\[\/ftp\]/ig, '<a href="$1">$1</a>');
 
-	function squoteConv(nosqmessage, sqauthor, sqlink, sqdate, sqmessage) {
-		if ( !sqauthor || !sqlink || !sqdate ) stquotstrg = squotstrg;
-		else stquotstrg = quotstrg;
+		function squoteConv(nosqmessage, sqauthor, sqlink, sqdate, sqmessage) {
+			if ( !sqauthor || !sqlink || !sqdate ) stquotstrg = squotstrg;
+			else stquotstrg = quotstrg;
 
-		sqmessage=sqmessage.replace(/([\S]{80})/g, "$1<br />");
+			sqmessage=sqmessage.replace(/([\S]{80})/g, "$1<br />");
 
-		if ( sqauthor ) {
-			sqmessage=sqmessage.replace(/\/me /ig, "<i>" + sqauthor + "</i> ");
-		} else {
-			sqmessage=sqmessage.replace(/\/me /ig, "<i>" + dspname + "</i> ");
+			if ( sqauthor ) {
+				sqmessage=sqmessage.replace(/\/me /ig, "<i>" + sqauthor + "</i> ");
+			} else {
+				sqmessage=sqmessage.replace(/\/me /ig, "<i>" + dspname + "</i> ");
+			}
+
+			if (LivePrevDisplayNames[sqauthor]) sqauthor = LivePrevDisplayNames[sqauthor];
+			else sqauthor = post_txt_807;
+
+			stquotstrg=stquotstrg.replace(/AUTHOR/g, sqauthor);
+			stquotstrg=stquotstrg.replace(/QUOTELINK/g, scriptul+'?num='+sqlink+'" target="_blank');
+			stquotstrg=stquotstrg.replace(/DATE/g, sqdate);
+			stquotstrg=stquotstrg.replace(/QUOTE/g, sqmessage);
+
+			ubbcstr=ubbcstr.replace(/\[quote(\s+author=(.*?)\s+link=(.*?)\s+date=(.*?)\s*)?\]\n*(.+?)\n*\[\/quote\]/i, nosqmessage + stquotstrg);
 		}
 
-		if (LivePrevDisplayNames[sqauthor]) sqauthor = LivePrevDisplayNames[sqauthor];
-		else sqauthor = post_txt_807;
-
-		stquotstrg=stquotstrg.replace(/AUTHOR/g, sqauthor);
-		stquotstrg=stquotstrg.replace(/QUOTELINK/g, scriptul+'?num='+sqlink+'" target="_blank');
-		stquotstrg=stquotstrg.replace(/DATE/g, sqdate);
-		stquotstrg=stquotstrg.replace(/QUOTE/g, sqmessage);
-
-		ubbcstr=ubbcstr.replace(/\[quote(\s+author=(.*?)\s+link=(.*?)\s+date=(.*?)\s*)?\]\n*(.+?)\n*\[\/quote\]/i, nosqmessage + stquotstrg);
-	}
-
-	function nstsquoteConv(nsqmessage) {
-		c=nsqmessage.match(/(.*)\[quote(\s+author=(.*?)\s+link=(.*?)\s+date=(.*?)\s*)?\]\n*(.+?)\n*\[\/quote\]/i);
-		squoteConv(c[1], c[3], c[4], c[5], c[6]);
-	}
+		function nstsquoteConv(nsqmessage) {
+			c=nsqmessage.match(/(.*)\[quote(\s+author=(.*?)\s+link=(.*?)\s+date=(.*?)\s*)?\]\n*(.+?)\n*\[\/quote\]/i);
+			squoteConv(c[1], c[3], c[4], c[5], c[6]);
+		}
 
 	while ( d=ubbcstr.match(/(\[quote(\s+author=(.*?)\s+link=(.*?)\s+date=(.*?)\s*)?\]\n*(.+?)\n*\[\/quote\])/i) ) {
 		nstsquoteConv(d[1]);
@@ -357,7 +359,6 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 		function wrapstr(wraptext) {
 			wraptext=wraptext.replace(/([\S]{80})/g, "$1\n");
 			ubbcstr=ubbcstr.replace(/\[edit\]\n*(.+?)\n*\[\/edit\]/i, "<b>" + editxt + ": </b><br /><div class='editbg'>" + wraptext + "</div>");
-
 		}
 
 	while(longstrg=ubbcstr.match(/\[edit\](.+?)\[\/edit\]/i)) { wrapstr(longstrg[1]); }
@@ -379,10 +380,10 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 	ubbcstr=ubbcstr.replace(/\[\*\]/ig, "<li>");
 	ubbcstr=ubbcstr.replace(/\[\/list\]/ig, "</ul>");
 
-	function jsdopre(prestrg) {
-		prestrg=prestrg.replace(/\<br \/\>/g, "\n");
-		ubbcstr=ubbcstr.replace(/\[pre\](.+?)\[\/pre\]/i, "<pre>"+prestrg+"</pre>");
-	}
+		function jsdopre(prestrg) {
+			prestrg=prestrg.replace(/\n/g, "[code_br]");
+			ubbcstr=ubbcstr.replace(/\[pre\](.+?)\[\/pre\]/i, "<pre>"+prestrg+"</pre>");
+		}
 
 	while ( prestr=ubbcstr.match(/\[pre\](.+?)\[\/pre\]/i) ) { jsdopre(prestr[1]) }
 
@@ -394,8 +395,8 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 			if (fwidth > 500) { fwidth = 500; }
 			if (fheight > 500) { fheight = 500; }
 			ubbcstr=ubbcstr.replace(/\[flash\=(\S+?),(\S+?)\](\S+?)\[\/flash\]/, '<object classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" width='+fwidth+' height='+fheight+'><param name=movie value=$3><param name=play value=true><param name=loop value=true><param name=quality value=high><embed src=$3 width='+fwidth+' height='+fheight+' play=true loop=true quality=high></embed></object>');
-		}
-		else {
+
+		} else {
 			ubbcstr=ubbcstr.replace(/\[flash\=(\S+?),(\S+?)\](\S+?)\[\/flash\]/, "<b>Flash location ($1 x $2):</b> <a href=\"$3\" target=\"_blank\" onClick=\"window.open('$3', 'flash', 'resizable,width=$1,height=$2'); return false;\">$3</a>");
 		}
 	}

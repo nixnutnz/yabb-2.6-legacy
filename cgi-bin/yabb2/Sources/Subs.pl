@@ -2065,11 +2065,13 @@ sub CheckUserPM_Level {
 		} elsif ($LOCKHANDLE) {
 			print $LOCKHANDLE (ref($data[0]) ? @{$data[0]} : @data);
 			fclose($LOCKHANDLE);
+			chmod(0666, "$folder/$name.$ext");
 
 		} else {
 			fopen(WRITE, ">$folder/$name.$ext") || &fatal_error('cannot_open', "$folder/$name.$ext", 1);
 			print WRITE (ref($data[0]) ? @{$data[0]} : @data);
 			fclose(WRITE);
+			chmod(0666, "$folder/$name.$ext");
 		}
 	}
 

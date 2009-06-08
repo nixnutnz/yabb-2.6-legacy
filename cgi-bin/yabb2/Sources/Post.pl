@@ -2537,7 +2537,7 @@ sub Post2 {
 		}
 		&write_DBorFILE(0,BOARDFILE,$boardsdir,$currentboard,'txt',(qq~$mnum|$msub|$mname|$memail|$date|$mreplies|$musername|$micon|$mstate\n~,@buffer));
 
-		&write_DBorFILE(0,THREADFILE,$datadir,$threadid,'txt',(@{$thread_arrayref{$threadid}},qq~$subject|$name|$email|$date|$username|$icon|~ . scalar(@{$thread_arrayref{$threadid}}) . qq~|$user_ip|$message|$ns|||$fixfile\n~));
+		&write_DBorFILE(0,'',$datadir,$threadid,'txt',(@{$thread_arrayref{$threadid}},qq~$subject|$name|$email|$date|$username|$icon|~ . scalar(@{$thread_arrayref{$threadid}}) . qq~|$user_ip|$message|$ns|||$fixfile\n~));
 
 		if (@filelist) {
 			my @temp = &read_DBorFILE(0,AMP,$vardir,'attachments','txt');

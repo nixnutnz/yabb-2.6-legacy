@@ -864,7 +864,7 @@ sub ReturnFileDB {
 
 	# onlinelog will be build new, don't need conversion
 
-	# convert .ctb
+	# convert Messages/....[txt|ctb|mail|poll|polled]
 	if (-e "$datadir/ctbrest.dbconvert" && -M "$datadir/ctbrest.dbconvert" < 1) {
 		@contents = &read_DBorFILE(0,'',$datadir,'ctbrest','dbconvert');
 
@@ -882,27 +882,27 @@ sub ReturnFileDB {
 
 	# Loop through each -rest- member
 	while (@contents) {
-		$ctb = pop @contents;
-		chomp $ctb;
-
-		# Load ctb MySQL
-		$use_MySQL = 1;
-		&MessageTotals("load",$ctb);
-
-		# Save ctb to file
-		$use_MySQL = 0;
-		&MessageTotals("update",$ctb);
-
-		undef %{$ctb};
+		$thread = pop @contents;
+		chomp $thread;
 
 		my @temp;
-		foreach (qw(mail poll polled)) {
+		foreach (qw(txt mail poll polled)) {
 			$use_MySQL = 1;
-			@temp = &read_DBorFILE(0,'',$datadir,$ctb,$_);
+			@temp = &read_DBorFILE(0,'',$datadir,$thread,$_);
 			next if !@temp;
 			$use_MySQL = 0;
-			&write_DBorFILE(0,'',$datadir,$ctb,$_,@temp);
+			&write_DBorFILE(0,'',$datadir,$thread,$_,@temp);
 		}
+
+		$use_MySQL = 1;
+		# Load ctb MySQL
+		&MessageTotals("load",$thread);
+
+
+		$use_MySQL = 0;
+		# Save ctb to file
+		&MessageTotals("update",$thread);
+		undef %{$thread};
 
 		last if time() > ($begin_time + $max_process_time);
 	}
