@@ -302,8 +302,8 @@ sub ShowNotifications {
 
 	($board_notify,$thread_notify) = &NotificationAlert;
 	my ($num,$new);
-	# Board notifications
-	foreach (keys %$board_notify) { # boardname, boardnotifytype , new
+	# Board notifications sorted lexically and case-insensitively
+	foreach (sort {lc(${$$board_notify{$a}}[0]) cmp lc(${$$board_notify{$b}}[0])} keys %$board_notify) { # boardname, boardnotifytype , new
 		$num++;
 
 		my ($selected1, $selected2);
@@ -367,14 +367,19 @@ sub ShowNotifications {
 	~;
 
 	$num = 0;
-	foreach (keys %$thread_notify) { # mythread, msub, new, username_link, catname_link, boardname_link, lastpostdate
+	# sort numerically descending
+	# mythread, msub, new, username_link, catname_link, boardname_link, lastpostdate
+	foreach (sort { ${$$thread_notify{$b}}[6] <=> ${$$thread_notify{$a}}[6] } keys %$thread_notify) {
 		$num++;
+
+		## format last post date for output
+		my $lastpostdate = &timeformat(${$$thread_notify{$_}}[6]);
 
 		## build block for display
 		$threadblock .= qq~
 		<tr><td align="left" width="85%" class="windowbg2">
-				<b><a href="$scripturl?num=${$$thread_notify{$_}}[0]/new">${$$thread_notify{$_}}[2] ${$$thread_notify{$_}}[1]</a></b> $notify_txt{'120'} ${$$thread_notify{$_}}[3]
-				<br /><span class="small">${$$thread_notify{$_}}[4] &raquo; ${$$thread_notify{$_}}[5] - $notify_txt{'lastpost'} ${$$thread_notify{$_}}[6]</span>
+				<b><a href="$scripturl?num=${$$thread_notify{$_}}[0]/new#new">${$$thread_notify{$_}}[2] ${$$thread_notify{$_}}[1]</a></b> $notify_txt{'120'} ${$$thread_notify{$_}}[3]
+				<br /><span class="small">${$$thread_notify{$_}}[4] &raquo; ${$$thread_notify{$_}}[5] - $notify_txt{'lastpost'} $lastpostdate</span>
 		</td><td align="center" width="15%" class="windowbg2">
 				<input type="checkbox" name="thread-${$$thread_notify{$_}}[0]" value="1" />
 		</td></tr>
@@ -482,7 +487,7 @@ sub NotificationAlert {
 
 			## pull out board and last post
 			my $boardid = ${$mythread}{'board'};
-			my ($msub,$mname,$musername,$new,$username_link,$catname_link,$boardname_link,$lastpostdate);
+			my ($msub,$mname,$musername,$new,$username_link,$catname_link,$boardname_link);
 			if ($action eq 'shownotify') {
 				unless (${${'notify'.$boardid.$mythread}}[0]) {
 					my ($messageid,$messagesubject);
@@ -524,9 +529,6 @@ sub NotificationAlert {
 				} else {
 					$username_link = $musername;
 				}
-
-				## format last post for output
-				$lastpostdate = &timeformat(${$mythread}{'lastpostdate'});
 			}
 
 			if ($max_log_days_old) {
@@ -541,7 +543,7 @@ sub NotificationAlert {
 				}
 			}
 
-			$thread_notify{$mythread} = [$mythread, $msub, $new, $username_link, $catname_link, $boardname_link, $lastpostdate];
+			$thread_notify{$mythread} = [$mythread, $msub, $new, $username_link, $catname_link, $boardname_link, ${$mythread}{'lastpostdate'}];
 		}
 	}
 

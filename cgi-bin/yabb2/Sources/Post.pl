@@ -2656,7 +2656,6 @@ sub NewNotify {
 	&ToChars($boardname);
 
 	$thissubject .= " ($boardname)";
-	$thissubject =~ s/\[.*?\]//g;
 	$thissubject =~ s/<.*?>//g;
 	&FromHTML($thissubject);
 
@@ -2695,7 +2694,6 @@ sub ReplyNotify {
 	&ToChars($boardname);
 
 	$thissubject .= " ($boardname)";
-	$thissubject =~ s/\[.*?\]//g;
 	$thissubject =~ s/<.*?>//g;
 	&FromHTML($thissubject);
 

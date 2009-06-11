@@ -2113,11 +2113,6 @@ sub ViewProfile {
 	# Defaults to 1st Jan, 2005
 	$forumstart = $forumstart ? &stringtotime($forumstart) : "1104537600";
 
-	$memsettingsd[9] = ${$uid.$user}{'aim'};
-	$memsettingsd[9] =~ tr/+/ /;
-	$memsettingsd[10] = ${$uid.$user}{'yim'};
-	$memsettingsd[10] =~ tr/+/ /;
-
 	if (${$uid.$user}{'regtime'}) {
 		$dr = &timeformat(${$uid.$user}{'regtime'});
 	} else {
@@ -2192,28 +2187,29 @@ sub ViewProfile {
 			<b>$profile_txt{'513'}:</b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<a href="http://web.icq.com/${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" target="_blank">
-			<img src="http://web.icq.com/whitepages/online?icq=${$uid.$user}{'icq'}&#38;img=5" alt="${$uid.$user}{'icq'}" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'icq'}</a>
+			<a href="http://web.icq.com/${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" target="_blank"><img src="http://web.icq.com/whitepages/online?icq=${$uid.$user}{'icq'}&#38;img=5" alt="${$uid.$user}{'icq'}" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'icq'}</a>
 			</div>~;
 	}
 	if (${$uid.$user}{'aim'}) {
+		my $aim_user = ${$uid.$user}{'aim'};
+		$aim_user =~ tr/+/ /;
 		$row_aim = qq~
 			<div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
 			<b>$profile_txt{'603'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<a href="aim:goim?screenname=${$uid.$user}{'aim'}&#38;message=Hi,+are+you+there?">
-			<img src="$imagesdir/aim.gif" alt="${$uid.$user}{'aim'}" border="0" style="vertical-align: middle;" /> $memsettingsd[9]</a>
+			<a href="aim:goim?screenname=${$uid.$user}{'aim'}&#38;message=Hi,+are+you+there?"><img src="$imagesdir/aim.gif" alt="${$uid.$user}{'aim'}" border="0" style="vertical-align: middle;" /> $aim_user</a>
 			</div>~;
 	}
 	if (${$uid.$user}{'yim'}) {
+		my $yim_user = ${$uid.$user}{'yim'};
+		$yim_user =~ tr/+/ /;
 		$row_yim = qq~
 			<div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
 			<b>$profile_txt{'604'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<img src="http://opi.yahoo.com/online?u=${$uid.$user}{'yim'}&#38;m=g&#38;t=0" border="0" alt="${$uid.$user}{'yim'}" style="vertical-align: middle;" />
-			<a href="http://edit.yahoo.com/config/send_webmesg?.target=${$uid.$user}{'yim'}" target="_blank"> $memsettingsd[10]</a>
+			<a href="http://edit.yahoo.com/config/send_webmesg?.target=${$uid.$user}{'yim'}" target="_blank"><img src="http://opi.yahoo.com/online?u=${$uid.$user}{'yim'}&#38;m=g&#38;t=0" border="0" alt="${$uid.$user}{'yim'}" style="vertical-align: middle;" /> $yim_user</a>
 			</div>~;
 	}
 	if (${$uid.$user}{'msn'}) {
@@ -2222,8 +2218,7 @@ sub ViewProfile {
 			<b>$profile_txt{'823'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<img src="$imagesdir/msn3.gif" alt="" border="0" style="vertical-align: middle;" />
-			<a href="#" onclick="window.open('$scripturl?action=setmsn;msnname=$user','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false">$profile_txt{'823'} ${$uid.$user}{'realname'}</a>
+			<a href="#" onclick="window.open('$scripturl?action=setmsn;msnname=$user','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false"><img src="$imagesdir/msn3.gif" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'realname'}</a>
 			</div>~;
 	}
 	if (${$uid.$user}{'gtalk'}) {
@@ -2232,8 +2227,7 @@ sub ViewProfile {
 			<b>$profile_txt{'825'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<img src="$imagesdir/gtalk2.gif" alt="" border="0" style="vertical-align: middle;" />
-			<a href="#" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$user','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false">$profile_txt{'825'} ${$uid.$user}{'realname'}</a>
+			<a href="#" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$user','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false"><img src="$imagesdir/gtalk2.gif" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'realname'}</a>
 			</div>~;
 	}
 	if (${$uid.$user}{'skype'}) {
@@ -2242,8 +2236,7 @@ sub ViewProfile {
 			<b>$profile_txt{'827'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<img src="$imagesdir/skype.gif" alt="" border="0" style="vertical-align: middle;" />
-			<a href="javascript:void(window.open('callto://${$uid.$user}{'skype'}','skype','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'))">$profile_txt{'827'} ${$uid.$user}{'realname'}</a>
+			<a href="javascript:void(window.open('callto://${$uid.$user}{'skype'}','skype','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'))"><img src="$imagesdir/skype.gif" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'realname'}</a>
 			</div>~;
 	}
 	if (${$uid.$user}{'myspace'}) {
@@ -2252,8 +2245,7 @@ sub ViewProfile {
 			<b>$profile_txt{'570'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<img src="$imagesdir/myspace.gif" alt="" border="0" style="vertical-align: middle;" />
-			<a href="http://www.myspace.com/${$uid.$user}{'myspace'}" target="_blank">$profile_txt{'570'} ${$uid.$user}{'realname'}</a>
+			<a href="http://www.myspace.com/${$uid.$user}{'myspace'}" target="_blank"><img src="$imagesdir/myspace.gif" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'realname'}</a>
 			</div>~;
 	}
 	if (${$uid.$user}{'facebook'}) {
@@ -2262,8 +2254,7 @@ sub ViewProfile {
 			<b>$profile_txt{'573'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<img src="$imagesdir/facebook.gif" alt="" border="0" style="vertical-align: middle;" />
-			<a href="http://www.facebook.com/profile.php?id=${$uid.$user}{'facebook'}" target="_blank">$profile_txt{'573'} ${$uid.$user}{'realname'}</a>
+			<a href="http://www.facebook.com/profile.php?id=${$uid.$user}{'facebook'}" target="_blank"><img src="$imagesdir/facebook.gif" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'realname'}</a>
 			</div>~;
 	}
 	if (!${$uid.$user}{'hidemail'} || $iamadmin || !$allow_hide_email || $view) {
@@ -2461,14 +2452,14 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 	$showProfile .= qq~
 			$row_email
 			$row_website
-			$row_aim
 			$row_msn
-			$row_skype
-			$row_yim
 			$row_gtalk
+			$row_skype
 			$row_myspace
 			$row_facebook
 			$row_icq
+			$row_yim
+			$row_aim
 		</td>
 	</tr>~;
 
@@ -2653,7 +2644,7 @@ sub usersrecentposts {
 			}
 		} elsif ($numfound) {
 			$recentfound += $recentthreadfound{$thread} if exists $recentthreadfound{$thread};
-			last if $recentfound >= $display;
+			last if $recentfound >= $display && $data[$#data] > ${$recent{$thread}}[1];
 			next;
 		}
 
@@ -2672,10 +2663,9 @@ sub usersrecentposts {
 						($msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $mns) = split(/\|/, $messages[$c]);
 
 						if ($curuser eq $musername) {
-							my @i = @data;
-							push(@i, $mdate);
+							my @i = (@data, $mdate);
 							@data = sort { $b <=> $a } @i;
-							if (pop(@data) != $mdate) {
+							if (pop(@data) < $mdate) {
 								chomp $mns;
 								$data{$mdate} = [$curboard, $tnum, $c, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $mns, $tstate];
 								if (!$usercheck) {
@@ -2686,7 +2676,6 @@ sub usersrecentposts {
 									$recentthreadfound{$tnum}++;
 									$recentfound++ if $thread == $tnum;
 								}
-								last recentcheck if $display == $recentfound;
 								if (${$recent{$tnum}}[1] < $mdate) {
 									$save_recent = 1;
 									${$recent{$tnum}}[1] = $mdate;

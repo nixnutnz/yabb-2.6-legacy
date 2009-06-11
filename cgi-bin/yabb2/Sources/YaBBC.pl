@@ -94,12 +94,13 @@ sub quotemsg {
 	delete $usernames_life_quote{'temp_quote_autor'};
 
 	$qmessage = &parseimgflash($qmessage);
-	$qdate    = &timeformat($qdate);
-	$_ = $post_txt{'599'};
-	if ($action ne 'imshow' && $action ne 'imsend' && $action ne 'imsend2') { $_ = $post_txt{'600'}; }
-	if ($fqauthor eq '' || $qlink eq '' || $qdate eq '') { $_ = $post_txt{'601'}; }
-	if ($qlink eq 'impost') { $_ = $post_txt{'600a'}; $fqauthor2 = qq~$scripturl?action=viewprofile;username=$useraccount{$qauthor}~; }
-	$_ =~ s~AUTHOR2~$fqauthor2~g;
+	$qdate    = &timeformat($qdate); # generates also the global variable $daytxt
+	if    ($fqauthor eq '' || $qlink eq '' || $qdate eq '') { $_ = $post_txt{'601'}; }
+	elsif ($qlink eq 'impost') {
+		$_ = $daytxt ? $post_txt{'600a_d'} : $post_txt{'600a'};
+		$_ =~ s~AUTHOR2~$scripturl?action=viewprofile;username=$useraccount{$qauthor}~g; }
+	elsif ($action ne 'imshow' && $action ne 'imsend' && $action ne 'imsend2') { $_ = $daytxt ? $post_txt{'600_d'} : $post_txt{'600'}; }
+	else  { $_ = $daytxt ? $post_txt{'599_d'} : $post_txt{'599'}; }
 	$_ =~ s~AUTHOR~$fqauthor~g;
 	$_ =~ s~QUOTELINK~$scripturl?num=$qlink~g;
 	$_ =~ s~DATE~$qdate~g;

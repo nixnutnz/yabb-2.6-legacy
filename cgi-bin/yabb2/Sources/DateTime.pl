@@ -147,7 +147,7 @@ sub timeformat {
 	(undef, undef, undef, undef, undef, $yy, undef, $yd, undef) = gmtime($date + (3600 * $toffs));
 	$yy += 1900;
 
-	my $daytxt;
+	$daytxt = undef; # must be a global variable
 	unless ($dontusetoday) {
 		if ($yd == $newyearday && $yy == $newyear) {
 			# today

@@ -531,7 +531,6 @@ sub Display {
 			$lastmodified = qq~&#171; <i>$display_txt{'211'}: ~ . &timeformat($mlm) . qq~ $display_txt{'525'} $mlmb</i> &#187;~;
 		}
 
-		$messdate = &timeformat($mdate);
 		if ($iamadmin || $iamgmod && $gmod_access2{'ipban2'} eq "on") { $mip = $mip }
 		else { $mip = $display_txt{'511'}; }
 
@@ -542,7 +541,7 @@ sub Display {
 			&LoadUserDisplay($musername);
 			$ns = $tmpns;
 		}
-		$messagedate = $mdate;
+
 		if (${$uid.$musername}{'regtime'}) {
 			$registrationdate = ${$uid.$musername}{'regtime'};
 		} else {
@@ -559,7 +558,7 @@ sub Display {
 		}
 
 		# user is current / admin / gmod
-		if ((${$uid.$musername}{'regdate'} && $messagedate > $registrationdate) || ${$uid.$musername}{'position'} eq 'Administrator' || ${$uid.$musername}{'position'} eq 'Global Moderator') {
+		if ((${$uid.$musername}{'regdate'} && $mdate > $registrationdate) || ${$uid.$musername}{'position'} eq 'Administrator' || ${$uid.$musername}{'position'} eq 'Global Moderator') {
 			if (!$iamguest && $musername ne $username) {
 				## check whether user is a buddy
 				if ($mybuddie{$musername}) { $buddyad = $isbuddy; }
@@ -597,7 +596,7 @@ sub Display {
 				require "$sourcedir/ExtendedProfiles.pl";
 				$usernamelink = &ext_viewinposts_popup($musername,$usernamelink);
 			}
-		} elsif ($musername !~ m~Guest~ && $messagedate < $registrationdate) {
+		} elsif ($musername !~ m~Guest~ && $mdate < $registrationdate) {
 			$exmem = 1;
 			$memberinfo = $display_txt{'470a'};
 			$usernamelink = qq~<b>$mname</b>~;
@@ -742,7 +741,7 @@ sub Display {
 		$outblock =~ s/({|<)yabb stars(}|>)/$memberstar{$musername}/g;
 		$outblock =~ s/({|<)yabb subject(}|>)/$msub/g;
 		$outblock =~ s/({|<)yabb msgimg(}|>)/$msgimg/g;
-		$outblock =~ s/({|<)yabb msgdate(}|>)/$messdate/g;
+		$outblock =~ s/({|<)yabb msgdate(}|>)/ &timeformat($mdate) /eg;
 		$outblock =~ s/({|<)yabb replycount(}|>)/$counterwords/g;
 		$outblock =~ s/({|<)yabb count(}|>)/$counter/g;
 		$outblock =~ s/({|<)yabb att(}|>)/$attachment/g;
