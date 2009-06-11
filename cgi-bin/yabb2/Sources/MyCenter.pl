@@ -523,17 +523,16 @@ sub CreateUserDisplayLine {
 				$sendEmail = qq~$menusep<a href="mailto:${$uid.$usrname}{'email'}">$img{'email_sm'}</a>~;
 			}
 
-			my $wwwlink = ${$uid.$usrname}{'weburl'} ? qq~$menusep${$uid.$usrname}{'weburl'}~ : '';
-			my $aimad = ${$uid.$usrname}{'aim'} ? qq~$menusep${$uid.$usrname}{'aim'}~ : '';
-			my $icqad = ${$uid.$usrname}{'icq'} ? qq~$menusep${$uid.$usrname}{'icq'}~ : '';
-			my $yimad = ${$uid.$usrname}{'yim'} ? qq~$menusep${$uid.$usrname}{'yim'}~ : '';
-			my $msnad = ${$uid.$usrname}{'msn'} ? qq~$menusep${$uid.$usrname}{'msn'}~ : '';
-			my $gtalkad = ${$uid.$usrname}{'gtalk'} ? qq~$menusep${$uid.$usrname}{'gtalk'}~ : '';
-			my $skypead = ${$uid.$usrname}{'skype'} ? qq~$menusep${$uid.$usrname}{'skype'}~ : '';
-			my $myspacead = ${$uid.$usrname}{'myspace'} ? qq~$menusep${$uid.$usrname}{'myspace'}~ : '';
-			my $facebookad = ${$uid.$usrname}{'facebook'} ? qq~$menusep${$uid.$usrname}{'facebook'}~ : '';
-
-			$membAdInfo = $profbutton . $wwwlink . $msnad . $gtalkad . $icqad . $yimad . $aimad . $skypead . $myspacead . $facebookad;
+			$membAdInfo = $profbutton;
+			$membAdInfo .= ${$uid.$usrname}{'weburl'}   ? $menusep.${$uid.$usrname}{'weburl'} : '';
+			$membAdInfo .= ${$uid.$usrname}{'msn'}      ? $menusep.${$uid.$usrname}{'msn'} : '';
+			$membAdInfo .= ${$uid.$usrname}{'gtalk'}    ? $menusep.${$uid.$usrname}{'gtalk'} : '';
+			$membAdInfo .= ${$uid.$usrname}{'skype'}    ? $menusep.${$uid.$usrname}{'skype'} : '';
+			$membAdInfo .= ${$uid.$usrname}{'myspace'}  ? $menusep.${$uid.$usrname}{'myspace'} : '';
+			$membAdInfo .= ${$uid.$usrname}{'facebook'} ? $menusep.${$uid.$usrname}{'facebook'} : '';
+			$membAdInfo .= ${$uid.$usrname}{'icq'}      ? $menusep.${$uid.$usrname}{'icq'} : '';
+			$membAdInfo .= ${$uid.$usrname}{'yim'}      ? $menusep.${$uid.$usrname}{'yim'} : '';
+			$membAdInfo .= ${$uid.$usrname}{'aim'}      ? $menusep.${$uid.$usrname}{'aim'} : '';
 		}
 		$usernamelink = $link{$usrname};
 		if ($musername eq $username) {
