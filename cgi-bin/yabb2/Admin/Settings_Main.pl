@@ -200,6 +200,18 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 			validate => 'text',
 		},
 		{
+			description => qq~<label for="forumnumberformat">$admin_txt{'forumnumbformat'}</label>~,
+			input_html => qq~<select name="forumnumberformat" id="forumnumberformat" size="1">
+  <option value="1" ${isselected($forumnumberformat == 1)}>10987.65</option>
+  <option value="2" ${isselected($forumnumberformat == 2)}>10987,65</option>
+  <option value="3" ${isselected($forumnumberformat == 3)}>10,987.65</option>
+  <option value="4" ${isselected($forumnumberformat == 4)}>10.987,65</option>
+  <option value="5" ${isselected($forumnumberformat == 5)}>10 987,65</option>
+</select>~,
+			name => 'forumnumberformat',
+			validate => 'number',
+		},
+		{
 			description => qq~<label for="timeselected">$admin_txt{'587'}</label>~,
 			input_html => qq~<select name="timeselected" id="timeselected" size="1">
   <option value="1" ${isselected($timeselected == 1)}>$admin_txt{'480'}</option>
@@ -353,16 +365,16 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 			validate => 'boolean',
 		},
 		{
-			description => qq~<label for="showtopicviewers">$admin_txt{'394'}<br />$admin_txt{'396'}</label>~,
-			input_html => qq~<input type="checkbox" name="showtopicviewers" id="showtopicviewers" value="1"${ischecked($showtopicviewers)} />~,
+			description => qq~<label for="showtopicviewers">$admin_txt{'394'}</label>~,
+			input_html => qq~
+				<select name="showtopicviewers" id="showtopicviewers" size="1">
+				  <option value="0"${isselected($showtopicviewers == 0)}>$userlevel_txt{'none'}</option>
+				  <option value="1"${isselected($showtopicviewers == 1)}>$userlevel_txt{'modgmodadmin'}</option>
+				  <option value="2"${isselected($showtopicviewers == 2)}>$userlevel_txt{'members'}</option>
+				  <option value="3"${isselected($showtopicviewers == 3)}>$userlevel_txt{'all'}</option>
+				</select>~,
 			name => 'showtopicviewers',
-			validate => 'boolean',
-		},
-		{
-			description => qq~<label for="showtopicrepliers">$admin_txt{'395'}<br />$admin_txt{'396'}</label>~,
-			input_html => qq~<input type="checkbox" name="showtopicrepliers" id="showtopicrepliers" value="1"${ischecked($showtopicrepliers)} />~,
-			name => 'showtopicrepliers',
-			validate => 'boolean',
+			validate => 'number',
 		},
 		{
 			description => qq~<label for="showimageinquote">$admin_txt{'imageinquote'}</label>~,
@@ -712,6 +724,38 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 			description => qq~<label for="allow_hide_email">$admin_txt{'723'}</label>~,
 			input_html => qq~<input type="checkbox" name="allow_hide_email" id="allow_hide_email" value="1"${ischecked($allow_hide_email)} />~,
 			name => 'allow_hide_email',
+			validate => 'boolean',
+		},
+		{
+			description => qq~<label for="user_hide_avatars">$admin_txt{'751'}</label>~,
+			input_html => qq~<input type="checkbox" name="user_hide_avatars" id="user_hide_avatars" value="1"${ischecked((($user_hide_avatars && $showuserpic && $allowpics) ? 1 : 0))} />~,
+			name => 'user_hide_avatars',
+			validate => 'boolean',
+			depends_on => ['showuserpic','allowpics'],
+		},
+		{
+			description => qq~<label for="user_hide_user_text">$admin_txt{'752'}</label>~,
+			input_html => qq~<input type="checkbox" name="user_hide_user_text" id="user_hide_user_text" value="1"${ischecked((($user_hide_user_text && $showusertext) ? 1 : 0))} />~,
+			name => 'user_hide_user_text',
+			validate => 'boolean',
+			depends_on => ['showusertext'],
+		},
+		{
+			description => qq~<label for="user_hide_attach_img">$admin_txt{'753'}</label>~,
+			input_html => qq~<input type="checkbox" name="user_hide_attach_img" id="user_hide_attach_img" value="1"${ischecked($user_hide_attach_img)}~ . ($allowattach ? '' : ' disabled="disabled"') . qq~ />~,
+			name => 'user_hide_attach_img',
+			validate => 'boolean',
+		},
+		{
+			description => qq~<label for="user_hide_signat">$admin_txt{'754'}</label>~,
+			input_html => qq~<input type="checkbox" name="user_hide_signat" id="user_hide_signat" value="1"${ischecked($user_hide_signat)} />~,
+			name => 'user_hide_signat',
+			validate => 'boolean',
+		},
+		{
+			description => qq~<label for="user_hide_smilies_row">$admin_txt{'755'}</label>~,
+			input_html => qq~<input type="checkbox" name="user_hide_smilies_row" id="user_hide_smilies_row" value="1"${ischecked((($user_hide_smilies_row && !$removenormalsmilies) ? 1 : 0))}~ . ($removenormalsmilies ? ' disabled="disabled"' : '') . qq~ />~,
+			name => 'user_hide_smilies_row',
 			validate => 'boolean',
 		},
 		{

@@ -297,4 +297,33 @@ sub CalcAge {
 	}
 }
 
+sub NumberFormat {
+	my ($decimal, $fraction) = split(/\./, $_[0]);
+	my ($separator,$decimalpt);
+	my $numberformat = ${$uid.$username}{'numberformat'} || $forumnumberformat || 1;
+	if ($numberformat == 1) {
+		$separator = "";
+		$decimalpt = ".";
+	} elsif ($numberformat == 2) {
+		$separator = "";
+		$decimalpt = ",";
+	} elsif ($numberformat == 3) {
+		$separator = ",";
+		$decimalpt = ".";
+	} elsif ($numberformat == 4) {
+		$separator = ".";
+		$decimalpt = ",";
+	} elsif ($numberformat == 5) {
+		$separator = " ";
+		$decimalpt = ",";
+	}
+	if ($decimal =~ m/\d{4,}/) {
+		$decimal = reverse $decimal;
+		$decimal =~ s/(\d{3})/$1$separator/g;
+		$decimal = reverse $decimal;
+		$decimal =~ s/^(\.|\,| )//;
+	}
+	($fraction ? "$decimal$decimalpt$fraction" : $decimal);
+}
+
 1;

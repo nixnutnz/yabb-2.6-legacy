@@ -512,7 +512,7 @@ function checkForm(theForm) {
 		@repliers = @tmprepliers;
 		&MessageTotals("update", $curnum);
 
-		if ($showtopicrepliers && $template_viewers && (($iamadmin || $iamgmod || $iammod) && $sessionvalid == 1)) {
+		if (($showtopicviewers == 1 && $staff && $sessionvalid == 1) || ($showtopicviewers == 2 && !$iamguest) || $showtopicviewers == 3) {
 			$template_viewers =~ s/\, \Z/\./;
 			$yymain .= qq~
 	<tr>
@@ -1115,11 +1115,11 @@ function checkForm(theForm) {
 	<tr>
 		<td class="windowbg2" width="23%" valign="bottom">
 			<span  class="small"><img name="feature_col" id="feature_col" src="$defaultimagesdir/cat_collapse.gif" alt="$npf_txt{'collapse_features'}" title="$npf_txt{'collapse_features'}" border="0" style="cursor:pointer;" onclick="show_features(0);" /> $npf_txt{'features_text'}</span>
-			<input type="hidden" name="col_row" id="col_row" value="$col_row" />~;
+			<input type="hidden" name="col_row" id="col_row" value="$col_row" />
+		</td>
+		<td width="77%" valign="middle" class="windowbg2">~;
 
 		$yymain .= qq~
-		</td>
-		<td width="77%" valign="middle" class="windowbg2">
 			<script language="JavaScript1.2" type="text/javascript">
 			<!--
 			HAND = "style='cursor: pointer; cursor: hand;'";
@@ -1140,10 +1140,11 @@ function checkForm(theForm) {
 			document.write("<img src='$imagesdir/kiss.gif' onclick='kiss();' "+HAND+" align='bottom' alt='$post_txt{'529'}' title='$post_txt{'529'}' border='0'> ");
 			document.write("<img src='$imagesdir/cry.gif' onclick='cry();' "+HAND+" align='bottom' alt='$post_txt{'530'}' title='$post_txt{'530'}' border='0'> ");$moresmilieslist
 			//-->
-			</script>\n~ if !$removenormalsmilies;
+			</script>~ if !$removenormalsmilies && (!${$uid.$username}{'hide_smilies_row'} || !$user_hide_smilies_row);
 
 		if (($showadded == 3 && $showsmdir != 2) || ($showsmdir == 3 && $showadded != 2)) {
 			$yymain .= qq~
+			&nbsp;
 		</td>
 		<td width="77%" valign="middle" class="windowbg2">~ if $removenormalsmilies;
 			$yymain .= qq~

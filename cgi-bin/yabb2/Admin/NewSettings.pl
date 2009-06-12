@@ -612,6 +612,11 @@ $use_MySQL_comment use DBI;				# Add DBI only if needed, comment out otherwise!
 \$profilebutton = $profilebutton;			# 1 to show view profile button under post, or 0 for blank
 \$usertools = $usertools;				# Allow admin to hide the list of tools that show when clicking a userlink
 \$allow_hide_email = $allow_hide_email;			# Allow users to hide their email from public. Set 0 to disable
+\$user_hide_avatars = $user_hide_avatars;		# Allow users to hide Avatars in threads. Set 0 to disable
+\$user_hide_user_text = $user_hide_user_text;		# Allow users to hide User Text in threads. Set 0 to disable
+\$user_hide_attach_img = $user_hide_attach_img;		# Allow users to hide Attached Images in threads. Set 0 to disable
+\$user_hide_signat = $user_hide_signat;			# Allow users to hide User Signatures in threads. Set 0 to disable
+\$user_hide_smilies_row = $user_hide_smilies_row;	# Allow users to hide Smilies row below the Post Message-inputarea. Set 0 to disable
 \$buddyListEnabled = $buddyListEnabled;			# Enable Buddy List
 \$addmemgroup_enabled = $addmemgroup_enabled;		# Enable Users choose additional MemberGroups
 \$showlatestmember = $showlatestmember;			# Set to 1 to display "Welcome Newest Member" on the Board Index
@@ -621,8 +626,8 @@ $use_MySQL_comment use DBI;				# Add DBI only if needed, comment out otherwise!
 \$ShowBDescrip = $ShowBDescrip;				# Set to 1 to display board descriptions on the topic (message) index for each board
 \$showuserpic = $showuserpic;				# Set to 1 to display each member's picture in the message view (by the ICQ.. etc.)
 \$showusertext = $showusertext;				# Set to 1 to display each member's personal text in the message view (by the ICQ.. etc.)
-\$showtopicviewers = $showtopicviewers;			# Set to 1 to display members viewing a topic
-\$showtopicrepliers = $showtopicrepliers;		# Set to 1 to display members replying to a topic
+\$showtopicviewers = $showtopicviewers;			# Set to 1 to display members viewing/replying a topic for staff
+							# Set to 2 for all members; 3 for all; 0 for none
 \$showgenderimage = $showgenderimage;			# Set to 1 to display each member's gender in the message view (by the ICQ.. etc.)
 \$showyabbcbutt = $showyabbcbutt;			# Set to 1 to display the yabbc buttons on Posting and IM Send Pages
 \$nestedquotes = $nestedquotes;				# Set to 1 to allow quotes within quotes (0 will filter out quotes within a quoted message)
@@ -654,6 +659,7 @@ $use_MySQL_comment use DBI;				# Add DBI only if needed, comment out otherwise!
 \$NewNotificationAlert = $NewNotificationAlert;		# enable notification alerts (popup) for new notifications
 \$autolinkurls = $autolinkurls;				# Set to 1 to turn URLs into links, or 0 for no auto-linking.
 
+\$forumnumberformat = $forumnumberformat;		# Select your preferred output Format for Numbers
 \$timeselected = $timeselected;				# Select your preferred output Format of Time and Date
 \$timecorrection = $timecorrection;			# Set time correction for server time in seconds
 \$timeoffset = "\Q$timeoffset\E";				# Time Offset to GMT/UTC (0 for GMT/UTC)

@@ -3569,6 +3569,11 @@ sub SetInstall2 {
 		$MenuType = 2;
 		$profilebutton = 0;
 		$allow_hide_email = 1;
+		$user_hide_avatars = 0;
+		$user_hide_user_text = 0;
+		$user_hide_attach_img = 0;
+		$user_hide_signat = 0;
+		$user_hide_smilies_row = 0;
 		$showlatestmember = 1;
 		$shownewsfader = 0;
 		$Show_RecentBar = 1;
@@ -3577,7 +3582,6 @@ sub SetInstall2 {
 		$showuserpic = 1;
 		$showusertext = 1;
 		$showtopicviewers = 1;
-		$showtopicrepliers = 1;
 		$showgenderimage = 1;
 		$showyabbcbutt = 1;
 		$nestedquotes = 1;
@@ -3771,6 +3775,11 @@ sub SetInstall2 {
 \$MenuType = $MenuType;                             # 1 for text menu or anything else for images menu
 \$profilebutton = $profilebutton;                   # 1 to show view profile button under post, or 0 for blank
 \$allow_hide_email = $allow_hide_email;             # Allow users to hide their email from public. Set 0 to disable
+\$user_hide_avatars = $user_hide_avatars;           # Allow users to hide Avatars in threads. Set 0 to disable
+\$user_hide_user_text = $user_hide_user_text;       # Allow users to hide User Text in threads. Set 0 to disable
+\$user_hide_attach_img = $user_hide_attach_img;     # Allow users to hide Attached Images in threads. Set 0 to disable
+\$user_hide_signat = $user_hide_signat;             # Allow users to hide User Signatures in threads. Set 0 to disable
+\$user_hide_smilies_row = $user_hide_smilies_row;   # Allow users to hide Smilies row below the Post-Message-inputarea. Set 0 to disable
 \$showlatestmember = $showlatestmember;             # Set to 1 to display "Welcome Newest Member" on the Board Index
 \$shownewsfader = $shownewsfader;                   # 1 to allow or 0 to disallow NewsFader javascript on the Board Index
                                                     # If 0, you'll have no news at all unless you put <yabb news> tag
@@ -3782,8 +3791,8 @@ sub SetInstall2 {
                                                     # message view (by the ICQ.. etc.)
 \$showusertext = $showusertext;                     # Set to 1 to display each member's personal text
                                                     # in the message view (by the ICQ.. etc.)
-\$showtopicviewers = $showtopicviewers;             # Set to 1 to display members viewing a topic
-\$showtopicrepliers = $showtopicrepliers;           # Set to 1 to display members replying to a topic
+\$showtopicviewers = $showtopicviewers;             # Set to 1 to display members viewing/replying a topic for staff
+                                                    # Set to 2 for all members; 3 for all; 0 for none
 \$showgenderimage = $showgenderimage;               # Set to 1 to display each member's gender in the
                                                     # message view (by the ICQ.. etc.)
 \$showyabbcbutt = $showyabbcbutt;                   # Set to 1 to display the yabbc buttons on Posting and IM Send Pages

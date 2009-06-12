@@ -141,7 +141,7 @@ sub SelectDatabase {
 
 		# This array must be exactly the same as the @db_vars_tabs_order array
 		# further down, the @tags in Sources/System.pl!!!
-		my @tags = qw(realname password position addgroups email hidemail regdate regtime regreason location bday gender userpic usertext signature template language stealth webtitle weburl icq aim yim skype myspace facebook msn gtalk timeselect timeformat timeoffset dsttimeoffset dynamic_clock postcount lastonline lastpost lastim im_ignorelist im_popup im_imspop pmmessprev pmviewMess pmactprev notify_me board_notifications thread_notifications favorites buddylist cathide pageindex reversetopic postlayout sesquest sesanswer session lastips onlinealert offlinestatus awaysubj awayreply awayreplysent spamcount spamtime);
+		my @tags = qw(realname password position addgroups email hidemail regdate regtime regreason location bday gender userpic usertext signature template language stealth webtitle weburl icq aim yim skype myspace facebook msn gtalk timeselect timeformat timeoffset dsttimeoffset dynamic_clock postcount lastonline lastpost lastim im_ignorelist im_popup im_imspop pmmessprev pmviewMess pmactprev notify_me board_notifications thread_notifications favorites buddylist cathide pageindex reversetopic postlayout sesquest sesanswer session lastips onlinealert offlinestatus awaysubj awayreply awayreplysent spamcount spamtime hide_avatars hide_user_text hide_attach_img hide_signat hide_smilies_row numberformat);
 		push(@tags, 'additional_variables');
 
 		my $x = 3;
@@ -276,7 +276,7 @@ sub SaveDatabase {
 	# vars
 	my (@ex_colums,@var_colums,@order);
 	# This array must be exactly the same as @tags from above, in Sources/System.pl!!!
-	@db_vars_tabs_order = qw(realname password position addgroups email hidemail regdate regtime regreason location bday gender userpic usertext signature template language stealth webtitle weburl icq aim yim skype myspace facebook msn gtalk timeselect timeformat timeoffset dsttimeoffset dynamic_clock postcount lastonline lastpost lastim im_ignorelist im_popup im_imspop pmmessprev pmviewMess pmactprev notify_me board_notifications thread_notifications favorites buddylist cathide pageindex reversetopic postlayout sesquest sesanswer session lastips onlinealert offlinestatus awaysubj awayreply awayreplysent spamcount spamtime);
+	@db_vars_tabs_order = qw(realname password position addgroups email hidemail regdate regtime regreason location bday gender userpic usertext signature template language stealth webtitle weburl icq aim yim skype myspace facebook msn gtalk timeselect timeformat timeoffset dsttimeoffset dynamic_clock postcount lastonline lastpost lastim im_ignorelist im_popup im_imspop pmmessprev pmviewMess pmactprev notify_me board_notifications thread_notifications favorites buddylist cathide pageindex reversetopic postlayout sesquest sesanswer session lastips onlinealert offlinestatus awaysubj awayreply awayreplysent spamcount spamtime hide_avatars hide_user_text hide_attach_img hide_signat hide_smilies_row numberformat);
 	push(@db_vars_tabs_order, 'additional_variables');
 	%db_user_vars_col = ();
 	%db_vars_col = ();
@@ -422,6 +422,20 @@ sub SaveDatabase {
 				$buildnew_vars .= qq~`$_` int(6) NOT NULL default '0',\n~;
 			} elsif ($_ eq 'spamtime') {
 				$buildnew_vars .= qq~`$_` int(11) default NULL,\n~;
+			} elsif ($_ eq 'hide_avatars') {
+				$buildnew_vars .= qq~`$_` int(1) NOT NULL default '0',\n~;
+			} elsif ($_ eq 'hide_user_text') {
+				$buildnew_vars .= qq~`$_` int(1) NOT NULL default '0',\n~;
+			} elsif ($_ eq 'hide_attach_img') {
+				$buildnew_vars .= qq~`$_` int(1) NOT NULL default '0',\n~;
+			} elsif ($_ eq 'hide_signat') {
+				$buildnew_vars .= qq~`$_` int(1) NOT NULL default '0',\n~;
+			} elsif ($_ eq 'hide_smilies_row') {
+				$buildnew_vars .= qq~`$_` int(1) NOT NULL default '0',\n~;
+			} elsif ($_ eq 'numberformat') {
+				$buildnew_vars .= qq~`$_` int(1) NOT NULL default '0',\n~;
+
+			# add new variables here before
 			} elsif ($_ eq 'additional_variables') {
 				$buildnew_vars .= qq~`$_` varchar(1500) default NULL,\n~;
 			}

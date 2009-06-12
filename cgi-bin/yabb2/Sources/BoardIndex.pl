@@ -451,8 +451,8 @@ sub BoardIndex {
 				$templateblock =~ s/({|<)yabb boardname(}|>)/$boardname/g;
 				$templateblock =~ s/({|<)yabb boarddesc(}|>)/$bddescr/g;
 				$templateblock =~ s/({|<)yabb moderators(}|>)/$showmods$showmodgroups/g;
-				$templateblock =~ s/({|<)yabb threadcount(}|>)/${$uid.$curboard}{'threadcount'}/g;
-				$templateblock =~ s/({|<)yabb messagecount(}|>)/${$uid.$curboard}{'messagecount'}/g;
+				$templateblock =~ s/({|<)yabb threadcount(}|>)/ &NumberFormat(${$uid.$curboard}{'threadcount'}) /e;
+				$templateblock =~ s/({|<)yabb messagecount(}|>)/ &NumberFormat(${$uid.$curboard}{'messagecount'}) /e;
 				$templateblock =~ s/({|<)yabb lastpostlink(}|>)/$lastpostlink/g;
 				$templateblock =~ s/({|<)yabb lastposter(}|>)/$lastposter/g;
 				$templateblock =~ s/({|<)yabb lasttopiclink(}|>)/$lasttopiclink/g;
@@ -646,8 +646,8 @@ sub BoardIndex {
 	$boardhandellist     =~ s/({|<)yabb markallread(}|>)/$markalllink/g;
 
 	$boardindex_template =~ s/({|<)yabb boardhandellist(}|>)/$boardhandellist/g;
-	$boardindex_template =~ s/({|<)yabb totaltopics(}|>)/$totalt/g;
-	$boardindex_template =~ s/({|<)yabb totalmessages(}|>)/$totalm/g;
+	$boardindex_template =~ s/({|<)yabb totaltopics(}|>)/ &NumberFormat($totalt) /e;
+	$boardindex_template =~ s/({|<)yabb totalmessages(}|>)/ &NumberFormat($totalm) /e;
 
 	if ($Show_RecentBar) {
 		($lssub, undef) = &Split_Splice_Move($lssub,0);
@@ -677,7 +677,7 @@ sub BoardIndex {
 		$boardindex_template =~ s/({|<)yabb recentposts(}|>)//g;
 		$boardindex_template =~ s/({|<)yabb lastpostdate(}|>)//g;
 	}
-	$boardindex_template =~ s~({|<)yabb membercount(}|>)~<a href="$scripturl?action=ml"><b>$members_total</b></a>~g;
+	$boardindex_template =~ s~({|<)yabb membercount(}|>)~ qq*<a href="$scripturl?action=ml"><b>* . &NumberFormat($members_total). qq*</b></a>* ~e;
 	if ($showlatestmember) {
 		&LoadUser($last_member);
 		$boardindex_template =~ s/({|<)yabb latestmember(}|>)/qq~$boardindex_txt{'201'} ~ . &QuickLinks($last_member) . qq~.<br \/>~/eg;
@@ -691,10 +691,10 @@ sub BoardIndex {
 	$boardindex_template =~ s/({|<)yabb onlineusers(}|>)/$users/g;
 	$boardindex_template =~ s/({|<)yabb onlineguests(}|>)/$guestlist/g;
 	$boardindex_template =~ s/({|<)yabb onlinebots(}|>)/$botlist/g;
-	$boardindex_template =~ s/({|<)yabb mostmembers(}|>)/$mostmemb/g;
-	$boardindex_template =~ s/({|<)yabb mostguests(}|>)/$mostguest/g;
-	$boardindex_template =~ s/({|<)yabb mostbots(}|>)/$mostbots/g;
-	$boardindex_template =~ s/({|<)yabb mostusers(}|>)/$mostusers/g;
+	$boardindex_template =~ s/({|<)yabb mostmembers(}|>)/ &NumberFormat($mostmemb) /e;
+	$boardindex_template =~ s/({|<)yabb mostguests(}|>)/ &NumberFormat($mostguest) /e;
+	$boardindex_template =~ s/({|<)yabb mostbots(}|>)/ &NumberFormat($mostbots) /e;
+	$boardindex_template =~ s/({|<)yabb mostusers(}|>)/ &NumberFormat($mostusers) /e;
 	$boardindex_template =~ s/({|<)yabb mostmembersdate(}|>)/$themostmembdate/g;
 	$boardindex_template =~ s/({|<)yabb mostguestsdate(}|>)/$themostguestdate/g;
 	$boardindex_template =~ s/({|<)yabb mostbotsdate(}|>)/$themostbotsdate/g;

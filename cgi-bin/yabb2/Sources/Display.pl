@@ -421,7 +421,7 @@ sub Display {
 		$navback = qq~<a href="$scripturl?board=$currentboard" class="nav">&lsaquo; $maintxt{'board'}</a>~;
 		$template_mods  = qq~$showmods$showmodgroups~;
 	}
-	if ($showtopicviewers && ($iamadmin || $iamgmod || $iammod) && $sessionvalid == 1) {
+	if (($showtopicviewers == 1 && $staff && $sessionvalid == 1) || ($showtopicviewers == 2 && !$iamguest) || $showtopicviewers == 3) {
 		my ($mrepuser, $misreplying, $replying);
 		foreach (@repliers) {
 			(undef, $mrepuser, $misreplying) = split(/\|/, $_);
@@ -477,10 +477,15 @@ sub Display {
 		@messages = reverse(@messages);
 	}
 
+	my $hideavatar = 1 if !$allowpics || !$showuserpic || (${$uid.$username}{'hide_avatars'} && $user_hide_avatars);
+	my $hideusertext = 1 if !$showusertext || (${$uid.$username}{'hide_user_text'} && $user_hide_user_text);
+	my $hideattachimg = 1 if ${$uid.$username}{'hide_attach_img'} && $user_hide_attach_img;
+	my $hidesignat = 1 if ${$uid.$username}{'hide_signat'} && $user_hide_signat;
+
 	# For each post in this thread:
 	my (%attach_gif,%attach_count,$movedflag);
 	foreach (@messages) {
-		my ($userlocation, $aimad, $yimad, $msnad, $gtalkad, $skypead, $myspacead, $facebookad, $icqad, $buddyad, $addbuddy, $isbuddy, $addbuddylink, $userOnline, $signature_hr, $lastmodified, $memberinfo, $template_postinfo, $template_ext_prof, $template_profile, $template_quote, $template_email, $template_www, $template_pm);
+		my ($userlocation, $aimad, $yimad, $msnad, $gtalkad, $skypead, $myspacead, $facebookad, $icqad, $buddyad, $addbuddy, $isbuddy, $addbuddylink, $userOnline, $lastmodified, $memberinfo, $template_postinfo, $template_ext_prof, $template_profile, $template_quote, $template_email, $template_www, $template_pm);
 
 		$css = $cssvalues[($counter % $cssnum)];
 		($msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $postmessage, $ns, $mlm, $mlmb, $mfn) = split(/[\|]/, $_);
@@ -489,7 +494,6 @@ sub Display {
 		chomp $mfn;
 		$attachment = '';
 		$showattach = '';
-		$showattachhr = '';
 		if ($mfn ne '') {
 			# store all downloadcounts in variable
 			if (!%attach_count) {
@@ -509,7 +513,7 @@ sub Display {
 				}
 				my $filesize = -s "$uploaddir/$_";
 				if ($filesize) {
-					if ($_ =~ /\.(bmp|jpe|jpg|jpeg|gif|png)$/i && $amdisplaypics == 1) {
+					if ($_ =~ /\.(bmp|jpe|jpg|jpeg|gif|png)$/i && $amdisplaypics == 1 && !$hideattachimg) {
 						$showattach .= qq~<div class="small" style="float:left; margin:8px;"><a href="$scripturl?action=downloadfile;file=$_" target="_blank"><img src="$imagesdir/$attach_gif{$ext}" border="0" align="bottom" alt="" /> $_</a> (~ . int($filesize / 1024) . qq~ KB | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> )<br />~ . ($img_greybox ? ($img_greybox == 2 ? qq~<a href="$scripturl?action=downloadfile;file=$_" rel="gb_imageset[nice_pics]" title="$_">~ : qq~<a href="$scripturl?action=downloadfile;file=$_" rel="gb_image[nice_pics]" title="$_">~) : qq~<a href="$scripturl?action=downloadfile;file=$_" target="_blank">~) . qq~<img src="$uploadurl/$_" name="attach_img_resize" alt="$_" title="$_" border="0" style="display:none" /></a></div>\n~;
 					} else {
 						$attachment .= qq~<div class="small"><a href="$scripturl?action=downloadfile;file=$_"><img src="$imagesdir/$attach_gif{$ext}" border="0" align="bottom" alt="" /> $_</a> (~ . int($filesize / 1024) . qq~ KB | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> )</div>~;
@@ -518,7 +522,6 @@ sub Display {
 					$attachment .= qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" border="0" align="bottom" alt="" />  $_ ($fatxt{'1'}~ . (exists $attach_count{$_} ? qq~ | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> ~ : '') . qq~)</div>~;
 				}
 			}
-			$showattachhr = qq~<hr width="100%" size="1" class="hr" style="margin: 0; margin-top: 5px; margin-bottom: 5px; padding: 0;" />~;
 			if ($showattach && $attachment) {
 				$attachment =~ s/<div class="small">/<div class="small" style="margin:8px;">/g;
 			}
@@ -570,7 +573,7 @@ sub Display {
 				}
 			}
 
-			$template_postinfo = qq~$display_txt{'21'}: ${$uid.$musername}{'postcount'}<br />~;
+			$template_postinfo = qq~$display_txt{'21'}: ~ . &NumberFormat(${$uid.$musername}{'postcount'}) . qq~<br />~;
 			$template_profile = ($profilebutton && !$iamguest) ? qq~$menusep<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$img{'viewprofile_sm'}</a>~ : '';
 			$template_www = ${$uid.$musername}{'weburl'} ? qq~$menusep${$uid.$musername}{'weburl'}~ : '';
 
@@ -579,7 +582,6 @@ sub Display {
 			if (${$uid.$musername}{'location'}) {
 				$userlocation = ${$uid.$musername}{'location'} . "<br />";
 			}
-			$signature_hr = qq~<hr width="100%" size="1" class="hr" style="margin: 0; margin-top: 5px; margin-bottom: 5px; padding: 0;" />~ if ${$uid.$musername}{'signature'};
 			$memberinfo = "$memberinfo{$musername}$addmembergroup{$musername}";
 
 			$aimad = ${$uid.$musername}{'aim'} ? qq~$menusep${$uid.$musername}{'aim'}~ : '';
@@ -744,19 +746,27 @@ sub Display {
 		$outblock =~ s/({|<)yabb msgdate(}|>)/ &timeformat($mdate) /eg;
 		$outblock =~ s/({|<)yabb replycount(}|>)/$counterwords/g;
 		$outblock =~ s/({|<)yabb count(}|>)/$counter/g;
-		$outblock =~ s/({|<)yabb att(}|>)/$attachment/g;
+		if ($showattach || $attachment) {
+			$outblock =~ s~({|<)yabb showatthr(}|>)~<hr width="100%" size="1" class="hr" style="margin: 0; margin-top: 5px; margin-bottom: 5px; padding: 0;" />~;
+			$outblock =~ s/({|<)yabb att(}|>)/$attachment/;
+			$outblock =~ s/({|<)yabb showatt(}|>)/$showattach/;
+		} else {
+			$outblock =~ s/({|<)yabb hideatt(}|>)/ display: none;/;
+		}
 		$outblock =~ s/({|<)yabb css(}|>)/$css/g;
 		$outblock =~ s/({|<)yabb gender(}|>)/${$uid.$musername}{'gender'}/g;
 		$outblock =~ s/({|<)yabb ext_prof(}|>)/$template_ext_prof/g;
 		$outblock =~ s/({|<)yabb postinfo(}|>)/$template_postinfo/g;
-		$outblock =~ s/({|<)yabb usertext(}|>)/${$uid.$musername}{'usertext'}/g;
-		$outblock =~ s/({|<)yabb userpic(}|>)/${$uid.$musername}{'userpic'}/g;
+		$outblock =~ s/({|<)yabb usertext(}|>)/${$uid.$musername}{'usertext'}/ if !$hideusertext;
+		$outblock =~ s/({|<)yabb userpic(}|>)/${$uid.$musername}{'userpic'}/ if !$hideavatar;
 		$outblock =~ s/({|<)yabb message(}|>)/$message/g;
-		$outblock =~ s/({|<)yabb showatt(}|>)/$showattach/g;
-		$outblock =~ s/({|<)yabb showatthr(}|>)/$showattachhr/g;
 		$outblock =~ s/({|<)yabb modified(}|>)/$lastmodified/g;
-		$outblock =~ s/({|<)yabb signature(}|>)/${$uid.$musername}{'signature'}/g;
-		$outblock =~ s/({|<)yabb signaturehr(}|>)/$signature_hr/g;
+		if (!$hidesignat && ${$uid.$musername}{'signature'}) {
+			$outblock =~ s~({|<)yabb signaturehr(}|>)~<hr width="100%" size="1" class="hr" style="margin: 0; margin-top: 5px; margin-bottom: 5px; padding: 0;" />~;
+			$outblock =~ s/({|<)yabb signature(}|>)/${$uid.$musername}{'signature'}/;
+		} else {
+			$outblock =~ s/({|<)yabb hidesignat(}|>)/ display: none;/;
+		}
 		$outblock =~ s/({|<)yabb ipimg(}|>)/$ipimg/g;
 		$outblock =~ s/({|<)yabb ip(}|>)/$mip/g;
 		$outblock =~ s/({|<)yabb posthandellist(}|>)/$posthandelblock/g;
@@ -847,7 +857,7 @@ sub Display {
 	$display_template =~ s/({|<)yabb threadhandellist(}|>)/$threadhandellist/g;
 	$display_template =~ s/({|<)yabb threadimage(}|>)/$template_threadimage/g;
 	$display_template =~ s/({|<)yabb threadurl(}|>)/$curthreadurl/g;
-	$display_template =~ s/({|<)yabb views(}|>)/ ${$viewnum}{'views'} - 1 /eg;
+	$display_template =~ s/({|<)yabb views(}|>)/ &NumberFormat(${$viewnum}{'views'} - 1) /eg;
 	if (($iamadmin || $iamgmod || $iammod) && $sessionvalid == 1) {
 		# Board=$currentboard is necessary for multidel - DO NOT REMOVE!!
 		# This form is necessary to allow thread deletion in locked topics.
@@ -1102,8 +1112,9 @@ sub ThreadPageindex {
 		${$uid.$username}{'pageindex'} = qq~$msindx|0|$mbindx|$pmindx|$tsort~;
 	} elsif ($INFO{'action'} eq "threadpagetext") {
 		${$uid.$username}{'pageindex'} = qq~$msindx|1|$mbindx|$pmindx|$tsort~;
-	} elsif (exists($INFO{'reversetopic'})) {
-		${$uid.$username}{'reversetopic'} = $INFO{'reversetopic'} ? 0 : 1;
+	}
+	if (exists $INFO{'reversetopic'}) {
+		$ttsreverse = ${$uid.$username}{'reversetopic'} = $INFO{'reversetopic'} ? 0 : 1;
 	}
 	&UserAccount($username, "update");
 	&redirectinternal;

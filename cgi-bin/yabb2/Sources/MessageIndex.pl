@@ -578,8 +578,8 @@ sub MessageIndex {
 		$tempbar =~ s/({|<)yabb attachmenticon(}|>)/$temp_attachment/g;
 		$tempbar =~ s/({|<)yabb pages(}|>)/$pages/g;
 		$tempbar =~ s/({|<)yabb starter(}|>)/$mname/g;
-		$tempbar =~ s/({|<)yabb replies(}|>)/$mreplies/g;
-		$tempbar =~ s/({|<)yabb views(}|>)/$views/g;
+		$tempbar =~ s/({|<)yabb replies(}|>)/ &NumberFormat($mreplies) /eg;
+		$tempbar =~ s/({|<)yabb views(}|>)/ &NumberFormat($views) /eg;
 		$tempbar =~ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies">$img{'lastpost'} $mydate<\/a>/g;
 		$tempbar =~ s/({|<)yabb lastposter(}|>)/$lastpostername/g;
 		if($accept_permalink == 1) {
@@ -725,8 +725,8 @@ sub MessageIndex {
 		if ($bdpic =~ /\//i) { $bdpic = qq~ <img src="$bdpic" alt="$boardname" title="$boardname" border="0" align="middle" /> ~; }
 		elsif ($bdpic) { $bdpic = qq~ <img src="$imagesdir/$bdpic" alt="$boardname" title="$boardname" border="0" align="middle" /> ~; }
 		$messageindex_template =~ s/({|<)yabb bdpicture(}|>)/$bdpic/g;
-		$messageindex_template =~ s/({|<)yabb threadcount(}|>)/${$uid.$currentboard}{'threadcount'}/g;
-		$messageindex_template =~ s/({|<)yabb messagecount(}|>)/${$uid.$currentboard}{'messagecount'}/g;
+		$messageindex_template =~ s/({|<)yabb threadcount(}|>)/ &NumberFormat(${$uid.$currentboard}{'threadcount'}) /eg;
+		$messageindex_template =~ s/({|<)yabb messagecount(}|>)/ &NumberFormat(${$uid.$currentboard}{'messagecount'}) /eg;
 	}
 	$messageindex_template =~ s/({|<)yabb colspan(}|>)/$colspan/g;
 

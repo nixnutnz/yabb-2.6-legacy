@@ -238,20 +238,19 @@ sub UserAccount {
 	# using sequential tag writing as hashes do not sort the way we like them to
 	# This array must be exactly the same as in Admin/Database.pl!!!
 	# If you want to add Mods, don't add your variables here. See 7 lines below.
-	my @tags = qw(realname password position addgroups email hidemail regdate regtime regreason location bday gender userpic usertext signature template language stealth webtitle weburl icq aim yim skype myspace facebook msn gtalk timeselect timeformat timeoffset dsttimeoffset dynamic_clock postcount lastonline lastpost lastim im_ignorelist im_popup im_imspop pmmessprev pmviewMess pmactprev notify_me board_notifications thread_notifications favorites buddylist cathide pageindex reversetopic postlayout sesquest sesanswer session lastips onlinealert offlinestatus awaysubj awayreply awayreplysent spamcount spamtime);
+	my @tags = qw(realname password position addgroups email hidemail regdate regtime regreason location bday gender userpic usertext signature template language stealth webtitle weburl icq aim yim skype myspace facebook msn gtalk timeselect timeformat timeoffset dsttimeoffset dynamic_clock postcount lastonline lastpost lastim im_ignorelist im_popup im_imspop pmmessprev pmviewMess pmactprev notify_me board_notifications thread_notifications favorites buddylist cathide pageindex reversetopic postlayout sesquest sesanswer session lastips onlinealert offlinestatus awaysubj awayreply awayreplysent spamcount spamtime hide_avatars hide_user_text hide_attach_img hide_signat hide_smilies_row numberformat);
 	my @additional_tags;
 	if ($extendedprofiles) {
 		require "$sourcedir/ExtendedProfiles.pl";
 		push(@additional_tags, &ext_get_fields_array());
 	}
 	# Add here something like this for Mods:
-	# push(@tags, 'name_of_mod_variable_1' [, 'name_of_mod_variable_2' , 'name_of_mod_variable_3' , ... ]);
+	# push(@additional_tags, 'name_of_mod_variable_1' [, 'name_of_mod_variable_2' , 'name_of_mod_variable_3' , ... ]);
 	# Dont't use the variable name 'additional_variables' or one
 	# of the names from @tags above, nor one beginning with 'ext_'!
 
 	if ($use_MySQL && $userext eq 'vars') {
 		${$uid.$user}{'additional_variables'} = join('', map { qq~'$_',\\"${$uid.$user}{$_}\\"\n~ } @additional_tags);
-		#@tags = map { ${$uid.$user}{$_} } (@tags,'additional_variables');
 	} else {
 		@tags = map { qq~'$_',"${$uid.$user}{$_}"\n~ } (@tags,@additional_tags);
 		unshift(@tags, "### User variables for ID: $user ###\n\n");

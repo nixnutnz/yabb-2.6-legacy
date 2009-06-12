@@ -208,6 +208,7 @@ $profilelngver = 'YaBB 2.4 $Revision$';
 'isbuddy' => 'in my Buddy List!',
 'sid_expires_1' => 'Your Profile-Session expires in',
 'sid_expires_2' => 'seconds.',
+'usernumbformat' => 'Select your Number Format:',
 'capslock' => 'Caps lock is activated.',
 'wrong_char' => 'This character in the Password is invalid',
 );
@@ -215,6 +216,14 @@ $profilelngver = 'YaBB 2.4 $Revision$';
 %mycenter_profile_txt = (
 'siddescript' => 'For security reasons you must confirm your password to access the settings.',
 'timeoutdescript' => 'Profile Session timed out. Please Re-Authenticate.',
+);
+
+%profile_display_options = (
+'hide_avatars'     => 'Hide User Avatars in Threads',
+'hide_user_text'   => 'Hide User Text in Threads',
+'hide_attach_img'  => 'Hide Attached Images in Threads',
+'hide_signat'      => 'Hide User Signatures in Threads',
+'hide_smilies_row' => 'Hide Smilies row below the Post-Message-inputarea',
 );
 
 %profile_imtxt = (

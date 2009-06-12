@@ -72,7 +72,7 @@ sub Favorites {
 		}
 	}
 
-	my $curfav = @threads;
+	my $curfav =  &NumberFormat(scalar @threads);
 
 	&LoadCensorList;
 
@@ -231,7 +231,6 @@ sub Favorites {
 		if (!$movedFlag && ${$mnum}{'board'} eq $annboard) {
 			$msublink = qq~<a href="$scripturl?virboard=$currentboard;num=$mnum">$msub</a>~;
 		}
-		my $lastpostlink = qq~<a href="$scripturl?num=$mnum/$mreplies#$mreplies">$img{'lastpost'}$mydate</a>~;
 		my $tempbar = $threadbar;
 		if ($movedFlag) { $tempbar = $threadbarMoved; }
 
@@ -249,9 +248,9 @@ sub Favorites {
 		$tempbar =~ s/({|<)yabb attachmenticon(}|>)/$temp_attachment/g;
 		$tempbar =~ s/({|<)yabb pages(}|>)/$pages/g;
 		$tempbar =~ s/({|<)yabb starter(}|>)/$mname/g;
-		$tempbar =~ s/({|<)yabb replies(}|>)/$mreplies/g;
-		$tempbar =~ s/({|<)yabb views(}|>)/$views/g;
-		$tempbar =~ s/({|<)yabb lastpostlink(}|>)/$lastpostlink/g;
+		$tempbar =~ s/({|<)yabb replies(}|>)/ &NumberFormat($mreplies) /eg;
+		$tempbar =~ s/({|<)yabb views(}|>)/ &NumberFormat($views) /eg;
+		$tempbar =~ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies">$img{'lastpost'}$mydate<\/a>/g;
 		$tempbar =~ s/({|<)yabb lastposter(}|>)/$lastpostername/g;
 		if ($accept_permalink == 1) {
 			$tempbar =~ s/({|<)yabb permalink(}|>)/$message_permalink/g;
@@ -328,7 +327,7 @@ sub Favorites {
 	$bdpic = qq~ <img src="$imagesdir/favboards.gif" alt="$img_txt{'70'}" title="$img_txt{'70'}" border="0" align="middle" /> ~;
 	$messageindex_template =~ s/({|<)yabb bdpicture(}|>)/$bdpic/g;
 	$messageindex_template =~ s/({|<)yabb threadcount(}|>)/$curfav/g;
-	$messageindex_template =~ s/({|<)yabb messagecount(}|>)/$treplies/g;
+	$messageindex_template =~ s/({|<)yabb messagecount(}|>)/ &NumberFormat($treplies) /eg;
 
 	$messageindex_template =~ s/({|<)yabb colspan(}|>)/$colspan/g;
 	$messageindex_template =~ s/({|<)yabb notify button(}|>)//g;

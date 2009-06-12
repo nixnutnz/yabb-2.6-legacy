@@ -746,6 +746,17 @@ sub ModifyProfileOptions {
 	</tr>~ if $addmemgroup;
 	}
 
+	if    (${$uid.$user}{'numberformat'} == 1) { $unfsl1 = ' selected="selected" '; }
+	elsif (${$uid.$user}{'numberformat'} == 2) { $unfsl2 = ' selected="selected" '; }
+	elsif (${$uid.$user}{'numberformat'} == 3) { $unfsl3 = ' selected="selected" '; }
+	elsif (${$uid.$user}{'numberformat'} == 4) { $unfsl4 = ' selected="selected" '; }
+	elsif (${$uid.$user}{'numberformat'} == 5) { $unfsl5 = ' selected="selected" '; }
+	elsif ($forumnumberformat == 1) { $unfsl1 = ' selected="selected" '; }
+	elsif ($forumnumberformat == 2) { $unfsl2 = ' selected="selected" '; }
+	elsif ($forumnumberformat == 3) { $unfsl3 = ' selected="selected" '; }
+	elsif ($forumnumberformat == 4) { $unfsl4 = ' selected="selected" '; }
+	elsif ($forumnumberformat == 5) { $unfsl5 = ' selected="selected" '; }
+
 	if    (${$uid.$user}{'timeselect'} == 7) { $tsl7 = ' selected="selected" '; }
 	elsif (${$uid.$user}{'timeselect'} == 6) { $tsl6 = ' selected="selected" '; }
 	elsif (${$uid.$user}{'timeselect'} == 5) { $tsl5 = ' selected="selected" '; }
@@ -764,6 +775,18 @@ sub ModifyProfileOptions {
 	my @usertimeoffset = split(/\./, ${$uid.$user}{'timeoffset'});
 
 	$showProfile .= qq~
+	<tr class="windowbg">
+		<td align="left"><label for="usernumberformat"><b>$profile_txt{'usernumbformat'}:</b></label></td>
+		<td align="left">
+			<select name="usernumberformat" id="usernumberformat" size="1">
+			<option value="1"$unfsl1>10987165</option>
+			<option value="2"$unfsl2>10987,65</option>
+			<option value="3"$unfsl3>10,987.65</option>
+			<option value="4"$unfsl4>10.987,65</option>
+			<option value="5"$unfsl5>10 987,65</option>
+			</select>
+		</td>
+	</tr>
 	<tr class="windowbg">
 		<td align="left"><label for="usertimeselect"><b>$profile_txt{'486'}:</b><br />
 			<span class="small">$profile_txt{'479'}</span></label></td>
@@ -876,6 +899,42 @@ sub ModifyProfileOptions {
 		<td align="left"><label for="userlanguage"><b>$profile_txt{'817'}</b><br /><span class="small">$profile_txt{'815'}</span></label></td>
 		<td align="left"><select name="userlanguage" id="userlanguage">$drawnldirs</select></td>
 	</tr>~;
+
+	if ($user_hide_avatars && $showuserpic && $allowpics) { # checkbox to hide avatars in threads
+		$showProfile .= qq~
+	<tr class="windowbg">
+		<td align="left"><label for="hide_avatars"><b>$profile_display_options{'hide_avatars'}</b></label></td>
+		<td align="left"><input type="checkbox" name="hide_avatars" id="hide_avatars" value="1"~ . (${$uid.$user}{'hide_avatars'} ? ' checked="checked"' : '') . qq~ /></td>
+	</tr>~;
+	}
+	if ($user_hide_user_text && $showusertext) { # checkbox to hide user-text in threads
+		$showProfile .= qq~
+	<tr class="windowbg">
+		<td align="left"><label for="hide_user_text"><b>$profile_display_options{'hide_user_text'}</b></label></td>
+		<td align="left"><input type="checkbox" name="hide_user_text" id="hide_user_text" value="1"~ . (${$uid.$user}{'hide_user_text'} ? ' checked="checked"' : '') . qq~ /></td>
+	</tr>~;
+	}
+	if ($user_hide_attach_img && $allowattach) { # checkbox to hide attached images in threads
+		$showProfile .= qq~
+	<tr class="windowbg">
+		<td align="left"><label for="hide_attach_img"><b>$profile_display_options{'hide_attach_img'}</b></label></td>
+		<td align="left"><input type="checkbox" name="hide_attach_img" id="hide_attach_img" value="1"~ . (${$uid.$user}{'hide_attach_img'} ? ' checked="checked"' : '') . qq~ /></td>
+	</tr>~;
+	}
+	if ($user_hide_signat) { # checkbox to hide signatures in threads
+		$showProfile .= qq~
+	<tr class="windowbg">
+		<td align="left"><label for="hide_signat"><b>$profile_display_options{'hide_signat'}</b></label></td>
+		<td align="left"><input type="checkbox" name="hide_signat" id="hide_signat" value="1"~ . (${$uid.$user}{'hide_signat'} ? ' checked="checked"' : '') . qq~ /></td>
+	</tr>~;
+	}
+	if ($user_hide_smilies_row && !$removenormalsmilies) { # checkbox to hide the row of smilies below the the post-message-inputbox
+		$showProfile .= qq~
+	<tr class="windowbg">
+		<td align="left"><label for="hide_smilies_row"><b>$profile_display_options{'hide_smilies_row'}</b></label></td>
+		<td align="left"><input type="checkbox" name="hide_smilies_row" id="hide_smilies_row" value="1"~ . (${$uid.$user}{'hide_smilies_row'} ? ' checked="checked"' : '') . qq~ /></td>
+	</tr>~;
+	}
 
 	if ($extendedprofiles) {
 		require "$sourcedir/ExtendedProfiles.pl";
@@ -1863,6 +1922,12 @@ sub ModifyProfileOptions2 {
 	${$uid.$user}{'template'} = $member{'usertemplate'};
 	${$uid.$user}{'language'} = $member{'userlanguage'};
 	${$uid.$user}{'timeformat'} = $member{'timeformat'};
+	${$uid.$user}{'numberformat'} = int($member{'usernumberformat'});
+	${$uid.$user}{'hide_avatars'} = ($member{'hide_avatars'} && $user_hide_avatars) ? 1 : 0;
+	${$uid.$user}{'hide_user_text'} = ($member{'hide_user_text'} && $user_hide_user_text) ? 1 : 0;
+	${$uid.$user}{'hide_attach_img'} = ($member{'hide_attach_img'} && $user_hide_attach_img) ? 1 : 0;
+	${$uid.$user}{'hide_signat'} = ($member{'hide_signat'} && $user_hide_signat) ? 1 : 0;
+	${$uid.$user}{'hide_smilies_row'} = ($member{'hide_smilies_row'} && $user_hide_smilies_row) ? 1 : 0;
 
 	&UserAccount($user, "update");
 
@@ -2187,38 +2252,40 @@ sub ViewProfile {
 			<b>$profile_txt{'513'}:</b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<a href="http://web.icq.com/${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" target="_blank"><img src="http://web.icq.com/whitepages/online?icq=${$uid.$user}{'icq'}&#38;img=5" alt="${$uid.$user}{'icq'}" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'icq'}</a>
+			<a href="http://web.icq.com/${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" target="_blank"><img src="http://status.icq.com/online.gif?icq=${$uid.$user}{'icq'}&amp;img=21" alt="${$uid.$user}{'icq'}" border="0" style="vertical-align: middle;" />${$uid.$user}{'icq'}</a>
 			</div>~;
 	}
 	if (${$uid.$user}{'aim'}) {
 		my $aim_user = ${$uid.$user}{'aim'};
-		$aim_user =~ tr/+/ /;
+		$aim_user =~ tr/\+/ /;
 		$row_aim = qq~
 			<div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
 			<b>$profile_txt{'603'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<a href="aim:goim?screenname=${$uid.$user}{'aim'}&#38;message=Hi,+are+you+there?"><img src="$imagesdir/aim.gif" alt="${$uid.$user}{'aim'}" border="0" style="vertical-align: middle;" /> $aim_user</a>
+			<a href="aim:goim?screenname=${$uid.$user}{'aim'}&amp;message=Hi,+are+you+there?"><img src="http://big.oscar.aol.com/?on_url=http://www.seekcodes.com/aim/aim_status_online.gif&amp;off_url=http://www.seekcodes.com/aim/aim_status_offline.gif" alt="${$uid.$user}{'aim'}" border="0" style="vertical-align: middle;" /> $aim_user</a>
 			</div>~;
 	}
 	if (${$uid.$user}{'yim'}) {
 		my $yim_user = ${$uid.$user}{'yim'};
-		$yim_user =~ tr/+/ /;
+		$yim_user =~ tr/\+/ /;
 		$row_yim = qq~
 			<div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
 			<b>$profile_txt{'604'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<a href="http://edit.yahoo.com/config/send_webmesg?.target=${$uid.$user}{'yim'}" target="_blank"><img src="http://opi.yahoo.com/online?u=${$uid.$user}{'yim'}&#38;m=g&#38;t=0" border="0" alt="${$uid.$user}{'yim'}" style="vertical-align: middle;" /> $yim_user</a>
+			<a href="http://edit.yahoo.com/config/send_webmesg?.target=${$uid.$user}{'yim'}" target="_blank"><img src="http://presence.msg.yahoo.com/online?u=${$uid.$user}{'yim'}&amp;m=g&amp;t=2&amp;l=us" border="0" alt="${$uid.$user}{'yim'}" style="vertical-align: middle;" /> $yim_user</a>
 			</div>~;
 	}
 	if (${$uid.$user}{'msn'}) {
+		my $msn_user = ${$uid.$user}{'msn'};
+		$msn_user =~ tr/\+/ /;
 		$row_msn = qq~
 			<div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
 			<b>$profile_txt{'823'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<a href="#" onclick="window.open('$scripturl?action=setmsn;msnname=$user','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false"><img src="$imagesdir/msn3.gif" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'realname'}</a>
+			<a href="#" onclick="window.open('$scripturl?action=setmsn;msnname=$user','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false"><img src="$imagesdir/msn3.gif" alt="" border="0" style="vertical-align: middle;" /> $msn_user</a>
 			</div>~;
 	}
 	if (${$uid.$user}{'gtalk'}) {
@@ -2227,7 +2294,7 @@ sub ViewProfile {
 			<b>$profile_txt{'825'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<a href="#" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$user','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false"><img src="$imagesdir/gtalk2.gif" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'realname'}</a>
+			<a href="#" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$user','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false"><img src="$imagesdir/gtalk2.gif" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'gtalk'}</a>
 			</div>~;
 	}
 	if (${$uid.$user}{'skype'}) {
@@ -2236,7 +2303,7 @@ sub ViewProfile {
 			<b>$profile_txt{'827'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<a href="javascript:void(window.open('callto://${$uid.$user}{'skype'}','skype','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'))"><img src="$imagesdir/skype.gif" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'realname'}</a>
+			<a href="javascript:void(window.open('callto://${$uid.$user}{'skype'}','skype','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'))"><img src="http://mystatus.skype.com/smallclassic/${$uid.$user}{'skype'}" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'skype'}</a>
 			</div>~;
 	}
 	if (${$uid.$user}{'myspace'}) {
@@ -2245,7 +2312,7 @@ sub ViewProfile {
 			<b>$profile_txt{'570'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<a href="http://www.myspace.com/${$uid.$user}{'myspace'}" target="_blank"><img src="$imagesdir/myspace.gif" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'realname'}</a>
+			<a href="http://www.myspace.com/${$uid.$user}{'myspace'}" target="_blank"><img src="$imagesdir/myspace.gif" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'myspace'}</a>
 			</div>~;
 	}
 	if (${$uid.$user}{'facebook'}) {
@@ -2254,7 +2321,7 @@ sub ViewProfile {
 			<b>$profile_txt{'573'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<a href="http://www.facebook.com/profile.php?id=${$uid.$user}{'facebook'}" target="_blank"><img src="$imagesdir/facebook.gif" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'realname'}</a>
+			<a href="http://www.facebook.com/profile.php?id=${$uid.$user}{'facebook'}" target="_blank"><img src="$imagesdir/facebook.gif" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'facebook'}</a>
 			</div>~;
 	}
 	if (!${$uid.$user}{'hidemail'} || $iamadmin || !$allow_hide_email || $view) {
@@ -2335,20 +2402,19 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 	# End empty field checking
 
 	# Just maths below...
-	$post_count = ${$uid.$user}{'postcount'};
-	if (!$post_count) { $post_count = 0 }
+	my $post_count = ${$uid.$user}{'postcount'} || 0;
 
-	$string_regdate = &stringtotime(${$uid.$user}{'regdate'});
-	$string_curdate = $date;
+	my $string_regdate = &stringtotime(${$uid.$user}{'regdate'});
+	my $string_curdate = $date;
 
 	if ($string_regdate < $forumstart) { $string_regdate = $forumstart }
 	if ($string_curdate < $forumstart) { $string_curdate = $forumstart }
 
-	$member_for_days = int(($string_curdate - $string_regdate) / 86400);
-
-	if ($member_for_days < 1) { $tmpmember_for_days = 1; }
-	else { $tmpmember_for_days = $member_for_days; }
-	$post_per_day = sprintf("%.2f", ($post_count / $tmpmember_for_days));
+	my $member_for_days = int(($string_curdate - $string_regdate) / 86400);
+	if ($member_for_days < 1) { $member_for_days = 1; }
+	my $post_per_day = &NumberFormat( sprintf("%.2f", ($post_count / $member_for_days)) );
+	$post_count = &NumberFormat($post_count);
+	$member_for_days = &NumberFormat($member_for_days);
 
 	# End statistics.
 	if (${$uid.$user}{'usertext'}) {
@@ -2401,7 +2467,7 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 			<b>$profile_txt{'21'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<b>${$uid.$user}{'postcount'}<br />$post_per_day</b> $profile_txt{'893'}
+			<b>$post_count<br />$post_per_day</b> $profile_txt{'893'}
 			</div>
 			<div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
 			<b>$profile_txt{'233'}: </b>

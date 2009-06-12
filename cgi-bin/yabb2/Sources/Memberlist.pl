@@ -265,7 +265,7 @@ sub showRows {
 		$yymain .= qq~
 		<td align="center" class="windowbg2">$wwwshow</td>
 		<td class="windowbg">$memberinfo{$user}&nbsp;</td>
-		<td class="windowbg2" width="5%" align="center">${$uid.$user}{'postcount'}&nbsp;</td>
+		<td class="windowbg2" width="5%" align="center">~ . &NumberFormat(${$uid.$user}{'postcount'}) . qq~&nbsp;</td>
 		<td class="windowbg" width="18%">$Bar</td>
 		<td class="windowbg">$dr_regdate &nbsp;</td>
 		$additional_tds

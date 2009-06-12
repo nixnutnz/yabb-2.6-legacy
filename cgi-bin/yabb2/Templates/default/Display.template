@@ -199,6 +199,12 @@ $messageblock = qq~
 		<div class="$messageclass" style="float: left; width: 99%; overflow: auto;">
 			{yabb message}
 		</div>
+		<div class="small" style="float: left; width: 99%; padding-top: 20px; text-align: right;">
+			{yabb modified} &nbsp;
+		</div>
+		<div class="small" style="float: left; width: 99%; text-align: left;{yabb hideatt}">
+			{yabb showatthr}{yabb att}{yabb showatt}
+		</div>
 	</td>
 </tr>
 <tr>
@@ -206,13 +212,7 @@ $messageblock = qq~
 		<a href="#top">$display_txt{'643'}</a>
 	</td>
 	<td class="{yabb css}" align="left" valign="bottom">
-		<div class="small" style="float: left; width: 99%; text-align: right;">
-			{yabb modified} &nbsp;
-		</div>
-		<div class="small" style="float: left; width: 99%; text-align: left;">
-			{yabb showatthr}{yabb att}{yabb showatt}
-		</div>
-		<div class="small" style="float: left; width: 99%; text-align: left;">
+		<div class="small" style="float: left; width: 99%; text-align: left;{yabb hidesignat}">
 			{yabb signaturehr}{yabb signature}
 		</div>
 		<div style="float: left; width: 99%; padding-top: 5px; margin-top: 5px;" class="dividertop">
