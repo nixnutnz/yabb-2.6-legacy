@@ -629,6 +629,7 @@ $use_MySQL_comment use DBI;				# Add DBI only if needed, comment out otherwise!
 \$showtopicviewers = $showtopicviewers;			# Set to 1 to display members viewing/replying a topic for staff
 							# Set to 2 for all members; 3 for all; 0 for none
 \$showgenderimage = $showgenderimage;			# Set to 1 to display each member's gender in the message view (by the ICQ.. etc.)
+\$hide_signat_for_guests = $hide_signat_for_guests;	# Set to 1 to hide all signatures for Guests (only Members can see them).
 \$showyabbcbutt = $showyabbcbutt;			# Set to 1 to display the yabbc buttons on Posting and IM Send Pages
 \$nestedquotes = $nestedquotes;				# Set to 1 to allow quotes within quotes (0 will filter out quotes within a quoted message)
 \$parseflash = $parseflash;				# Set to 1 to parse the flash tag
@@ -880,7 +881,7 @@ $ext_prof_fields
 
 ########## bypass post for locked thread ##########
 
-\$bypass_lock_perm = "\Q$bypass_lock_perm\E";		# set level of permission - fa / fa+gmod / fa+gmod+mod; '' if disabled
+\$bypass_lock_perm = "\Q$bypass_lock_perm\E";		# set level of permission - fa / fa+gmod / fa+gmod+mod
 
 ########## File Attachment Settings ##########
 

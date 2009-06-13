@@ -359,6 +359,12 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 			validate => 'boolean',
 		},
 		{
+			description => qq~<label for="hide_signat_for_guests">$admin_txt{'409'}</label>~,
+			input_html => qq~<input type="checkbox" name="hide_signat_for_guests" id="hide_signat_for_guests" value="1"${ischecked($hide_signat_for_guests)} />~,
+			name => 'hide_signat_for_guests',
+			validate => 'boolean',
+		},
+		{
 			description => qq~<label for="showallgroups">$amv_txt{'12'}</label>~,
 			input_html => qq~<input type="checkbox" name="showallgroups" id="showallgroups" value="1"${ischecked($showallgroups)} />~,
 			name => 'showallgroups',
@@ -1002,19 +1008,18 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 			validate => 'number',
 		},
 		{
-			description => qq~<label for="enable_MCstatusStealth">$admin_txt{'stealh'}</label>~,
+			description => qq~<label for="enable_MCstatusStealth">$admin_txt{'stealth'}</label>~,
 			input_html => qq~<input type="checkbox" name="enable_MCstatusStealth" id="enable_MCstatusStealth" value="1"${ischecked($enable_MCstatusStealth)}/>~,
 			name => 'enable_MCstatusStealth',
 			validate => 'boolean',
 		},
 		{
-			description => qq~<label for="bypass_lock_perm">$bypassLock_txt{'allow'}</label>~,
+			description => qq~<label for="bypass_lock_perm">$admin_txt{'by_pass_lock'}</label>~,
 			input_html => qq~
 <select name="bypass_lock_perm" id="bypass_lock_perm" size="1">
-  <option value="0" ${isselected($bypass_lock_perm eq '0')}>$userlevel_txt{'none'}</option>
-  <option value="mod" ${isselected($bypass_lock_perm eq 'mod')}>$userlevel_txt{'modgmodadmin'}</option>
-  <option value="gmod" ${isselected($bypass_lock_perm eq 'gmod')}>$userlevel_txt{'gmodadmin'}</option>
   <option value="fa" ${isselected($bypass_lock_perm eq 'fa')}>$userlevel_txt{'admin'}</option>
+  <option value="gmod" ${isselected($bypass_lock_perm eq 'gmod')}>$userlevel_txt{'gmodadmin'}</option>
+  <option value="mod" ${isselected($bypass_lock_perm eq 'mod')}>$userlevel_txt{'modgmodadmin'}</option>
 </select>~,
 			name => 'bypass_lock_perm',
 			validate => 'text',

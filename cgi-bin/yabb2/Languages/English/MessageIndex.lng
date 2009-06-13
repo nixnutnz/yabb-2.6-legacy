@@ -78,6 +78,8 @@ $messageindexlngver = 'YaBB 2.4 $Revision$';
 '843' => 'RSS feed for this board',
 '844' => 'Hide',
 '845' => 'Moved Topic',
+'modifylocked' => 'Warning: You are about to modify a locked thread! Click [OK] to confirm this or [Cancel] to stop.',
+'selectall_modifylocked' => 'Warning: You are about to select (also) a locked thread! Click [OK] to confirm this or [Cancel] to stop.',
 );
 
 %messageindex_sort = (

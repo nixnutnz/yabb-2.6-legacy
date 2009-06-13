@@ -60,7 +60,7 @@ sub MessageIndex {
 		@temp_list = &read_DBorFILE(0,'',$boardsdir,$annboard,'txt');
 		foreach my $realanns (@temp_list) {
 			my $threadstatus = (split /\|/, $realanns)[8];
-			if ($threadstatus =~ /h/i && !$iamadmin && !$iamgmod && !$iammod) { next; }
+			if ($threadstatus =~ /h/i && !$staff) { next; }
 			push (@threads, $realanns);
 			$numanns++;
 		}
@@ -119,7 +119,7 @@ sub MessageIndex {
 
 	foreach (@threadlist) {
 		my $threadstatus = (split /\|/, $_)[8];
-		if ($threadstatus =~ /h/i && !$iamadmin && !$iamgmod && !$iammod) { next; }
+		if ($threadstatus =~ /h/i && !$staff) { next; }
 		if ($threadstatus =~ /s/i) {
 			push (@threads, $_);
 			$countsticky++;
@@ -296,9 +296,17 @@ sub MessageIndex {
 
 	&LoadCensorList;
 
+	# check the Multi-admin setting
+	my $multiview = 0;
+	if ($sessionvalid == 1 && $staff) {
+		if    (($iamadmin && $adminview == 1) || ($iamgmod && $gmodview == 1) || ($iammod && $modview == 1)) { $multiview = 1; }
+		elsif (($iamadmin && $adminview == 2) || ($iamgmod && $gmodview == 2) || ($iammod && $modview == 2)) { $multiview = 2; }
+		elsif (($iamadmin && $adminview == 3) || ($iamgmod && $gmodview == 3) || ($iammod && $modview == 3)) { $multiview = 3; }
+	}
+
 	# Print the header and board info.
 	&ToChars($boardname);
-	if ((($iammod && $modview == 1 && !$iamadmin && !$iamgmod) || ($iamadmin && $adminview == 1) || ($iamgmod && $gmodview == 1)) && $sessionvalid == 1) {
+	if ($multiview == 1) {
 		$yymain .= qq~<script language="JavaScript1.2" src="$yyhtml_root/ubbc.js" type="text/javascript"></script>~;
 	}
 
@@ -308,7 +316,7 @@ sub MessageIndex {
 	my $modslink = qq~$showmods~;
 
 	# check howmany col's must be spanned
-	if ((($iamadmin && $adminview >= 1) || ($iamgmod && $gmodview >= 1) || ($iammod && $modview >= 1 && !$iamadmin && !$iamgmod)) && $sessionvalid == 1) {
+	if ($multiview >= 1) {
 		$colspan = 8;
 	} else {
 		$colspan = 7;
@@ -327,14 +335,14 @@ sub MessageIndex {
 		$polllink = qq~$menusep<a href="$scripturl?board=$INFO{'board'};action=post;title=CreatePoll">$img{'createpoll'}</a>~;
 	}
 
-	if ((($iamadmin && $adminview == 3) || ($iamgmod && $gmodview == 3) || ($iammod && $modview == 3 && !$iamadmin && !$iamgmod)) && $sessionvalid == 1) {
+	if ($multiview == 3) {
 		if ($currentboard eq $annboard) {
 			$adminlink = qq~<img src="$imagesdir/announcementlock.gif" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" border="0" /><img src="$imagesdir/hide.gif" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" border="0" /><img src="$imagesdir/admin_move.gif" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" border="0" /><img src="$imagesdir/admin_rem.gif" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" border="0" />~;
 		} else {
 			$adminlink = qq~<img src="$imagesdir/locked.gif" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" border="0" /><img src="$imagesdir/sticky.gif" alt="$messageindex_txt{'781'}" title="$messageindex_txt{'781'}" border="0" /><img src="$imagesdir/hide.gif" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" border="0" /><img src="$imagesdir/admin_move.gif" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" border="0" /><img src="$imagesdir/admin_rem.gif" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" border="0" />~;
 		}
 		$adminheader =~ s/({|<)yabb admin(}|>)/$adminlink/g;
-	} elsif ((($iamadmin && $adminview != 0) || ($iamgmod && $gmodview != 0) || ($iammod && $modview != 0 && !$iamadmin && !$iamgmod)) && $sessionvalid == 1) {
+	} elsif ($multiview) {
 		$adminlink = qq~$messageindex_txt{'2'}~;
 		$adminheader =~ s/({|<)yabb admin(}|>)/$adminlink/g;
 	}
@@ -349,12 +357,18 @@ sub MessageIndex {
 	# load Favorites in a hash
 	if (${$uid.$username}{'favorites'}) { foreach (split(/,/, ${$uid.$username}{'favorites'})) { $favicon{$_} = 1; } }
 
+	# check if user can bypass locked threads
+	my $icanbypass = &checkUserLockBypass;
+	my ($bypasslock,$exist_locked);
+
 	# Begin printing the message index for current board.
 	$counter = $start;
 	&dumplog($currentboard); # Mark current board as seen
 	my $dmax = $date - ($max_log_days_old * 86400);
 	foreach (@threads) {
 		($mnum, $msub, $mname, $memail, $mdate, $mreplies, $musername, $micon, $mstate) = split(/\|/, $_);
+
+		my ($movedSubject, $movedFlag) = &Split_Splice_Move($msub,$mnum);
 
 		&MessageTotals('load', $mnum);
 
@@ -368,20 +382,25 @@ sub MessageIndex {
 		my $permdate = &permtimer($_);
 		my $message_permalink = qq~<a href="http://$perm_domain/$symlink$permdate/$permlinkboard/$mnum">$messageindex_txt{'10'}</a>~;
 
+		$bypasslock = 0; # 0 - not locked; 1 - locked and I can bypass; 2 - locked
 		$threadclass = 'thread';
 		if ($mstate =~ /h/i) { $threadclass = 'hide'; }
-		elsif ($mstate =~ /l/i) { $threadclass = 'locked'; }
+		elsif ($mstate =~ /l/i) {
+			$threadclass = 'locked';
+			if (!$movedFlag) { $bypasslock = $icanbypass ? 1 : 2; $exist_locked = 1; }
+		}
 		elsif ($mreplies >= $VeryHotTopic) { $threadclass = 'veryhotthread'; }
 		elsif ($mreplies >= $HotTopic) { $threadclass = 'hotthread'; }
 		elsif ($mstate == '') { $threadclass = 'thread'; }
 		if ($threadclass eq 'hide' && $mstate =~ /s/i && $mstate !~ /l/i) { $threadclass = 'hidesticky'; }
-		elsif ($threadclass eq 'hide' && $mstate =~ /l/i && $mstate !~ /s/i) { $threadclass = 'hidelock'; }
+		elsif ($threadclass eq 'hide' && $mstate =~ /l/i && $mstate !~ /s/i) {
+			$threadclass = 'hidelock';
+			if (!$movedFlag) { $bypasslock = $icanbypass ? 1 : 2; $exist_locked = 1; }
+		}
 		elsif ($threadclass eq 'hide' && $mstate =~ /s/i && $mstate =~ /l/i) { $threadclass = 'hidestickylock'; }
 		elsif ($threadclass eq 'locked' && $mstate =~ /s/i && $mstate !~ /h/i) { $threadclass = 'stickylock'; }
 		elsif ($mstate =~ /s/i && $mstate !~ /h/i) { $threadclass = 'sticky'; }
 		elsif (${$mnum}{'board'} eq $annboard && $mstate !~ /h/i) { $threadclass = $threadclass eq 'locked' ? 'announcementlock' : 'announcement'; }
-
-		my ($movedSubject, $movedFlag) = &Split_Splice_Move($msub,$mnum);
 		$threadclass = 'locked_moved' if $movedFlag;
 
 		if (!$iamguest && $max_log_days_old) {
@@ -498,53 +517,58 @@ sub MessageIndex {
 
 		$mcount++;
 		# Print the thread info.
-		$mydate = &timeformat($mdate);
-		if ((($iamadmin && $adminview == 3) || ($iamgmod && $gmodview == 3) || ($iammod && $modview == 3 && !$iamadmin && !$iamgmod)) && $sessionvalid == 1) {
-			if ($currentboard eq $annboard) {
-				$adminbar = qq~
-		<input type="checkbox" name="lockadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />
-		<input type="checkbox" name="hideadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />
-		<input type="checkbox" name="moveadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />
-		<input type="checkbox" name="deleteadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />
-		~;
-			} elsif ($counter < $numanns) {
+		my $admincol;
+		if ($multiview == 3) {
+			my $js_confirm = qq~ onclick="if (confirm('$messageindex_txt{'modifylocked'}') == false) this.checked = false;"~ if $bypasslock == 1;
+			if ($counter < $numanns || $bypasslock == 2) {# ~ . ($bypasslock == 1 ? "$messageindex_txt{'modifylocked'}\\n\\n" : '') . qq~
 				$adminbar = qq~&nbsp;~;
+			} elsif ($currentboard eq $annboard) {
+				$adminbar = qq~
+		<input type="checkbox" name="lockadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum"$js_confirm />
+		<input type="checkbox" name="hideadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum"$js_confirm />
+		<input type="checkbox" name="moveadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum"$js_confirm />
+		<input type="checkbox" name="deleteadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum"$js_confirm />
+		~;
 			} else {
 				$adminbar = qq~
-		<input type="checkbox" name="lockadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />
-		<input type="checkbox" name="stickadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />
-		<input type="checkbox" name="hideadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />
-		<input type="checkbox" name="moveadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />
-		<input type="checkbox" name="deleteadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />
+		<input type="checkbox" name="lockadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum"$js_confirm />
+		<input type="checkbox" name="stickadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum"$js_confirm />
+		<input type="checkbox" name="hideadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum"$js_confirm />
+		<input type="checkbox" name="moveadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum"$js_confirm />
+		<input type="checkbox" name="deleteadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum"$js_confirm />
 		~;
 			}
 			$admincol = $admincolumn;
 			$admincol =~ s/({|<)yabb admin(}|>)/$adminbar/g;
-		} elsif ((($iamadmin && $adminview == 2) || ($iamgmod && $gmodview == 2) || ($iammod && $modview == 2 && !$iamadmin && !$iamgmod)) && $sessionvalid == 1) {
-			if ($currentboard ne $annboard && $counter < $numanns) {
+
+		} elsif ($multiview == 2) {
+			my $js_confirm = qq~ onclick="if (confirm('$messageindex_txt{'modifylocked'}') == false) this.checked = false;"~ if $bypasslock == 1;
+			if ($currentboard ne $annboard && $counter < $numanns || $bypasslock == 2) {
 				$adminbar = qq~&nbsp;~;
 			} else {
-				$adminbar = qq~<input type="checkbox" name="admin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />~;
+				$adminbar = qq~<input type="checkbox" name="admin$mcount" class="windowbg" style="border: 0px;" value="$mnum"$js_confirm />~;
 			}
 			$admincol = $admincolumn;
 			$admincol =~ s/({|<)yabb admin(}|>)/$adminbar/g;
-		} elsif ((($iamadmin && $adminview == 1) || ($iamgmod && $gmodview == 1) || ($iammod && $modview == 1 && !$iamadmin && !$iamgmod)) && $sessionvalid == 1) {
-			if ($currentboard eq $annboard) {
-				$adminbar = qq~
-		<a href="$scripturl?action=lock;thread=$mnum;tomessageindex=1"><img src="$imagesdir/announcementlock.gif" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" border="0" /></a>&nbsp;
-		<a href="$scripturl?action=hide;thread=$mnum;tomessageindex=1"><img src="$imagesdir/hide.gif" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" border="0" /></a>&nbsp;
-		<a href="javascript:void(window.open('$scripturl?action=split_splice;board=$currentboard;thread=$mnum;oldposts=all;leave=0;newcat=${$uid.$currentboard}{'cat'};newboard=$currentboard;position=end','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))"><img src="$imagesdir/admin_move.gif" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" border="0" /></a>&nbsp;
-		<a href="$scripturl?action=removethread;thread=$mnum" onclick="return confirm('$messageindex_txt{'162'}')"><img src="$imagesdir/admin_rem.gif" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" border="0" /></a>
-		~;
-			} elsif ($counter < $numanns) {
+
+		} elsif ($multiview == 1) {
+			my $js_confirm = qq~ onclick="return confirm('$messageindex_txt{'modifylocked'}');"~ if $bypasslock == 1;
+			if ($counter < $numanns || $bypasslock == 2) {
 				$adminbar = qq~&nbsp;~;
+			} elsif ($currentboard eq $annboard) {
+				$adminbar = qq~
+		<a href="$scripturl?action=lock;thread=$mnum;tomessageindex=1"$js_confirm><img src="$imagesdir/announcementlock.gif" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" border="0" /></a>&nbsp;
+		<a href="$scripturl?action=hide;thread=$mnum;tomessageindex=1"$js_confirm><img src="$imagesdir/hide.gif" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" border="0" /></a>&nbsp;
+		<a href="javascript:void(window.open('$scripturl?action=split_splice;board=$currentboard;thread=$mnum;oldposts=all;leave=0;newcat=${$uid.$currentboard}{'cat'};newboard=$currentboard;position=end','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))"$js_confirm><img src="$imagesdir/admin_move.gif" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" border="0" /></a>&nbsp;
+		<a href="$scripturl?action=removethread;thread=$mnum" onclick="return confirm('~ . ($bypasslock == 1 ? "$messageindex_txt{'modifylocked'}\\n\\n" : '') . qq~$messageindex_txt{'162'}')"><img src="$imagesdir/admin_rem.gif" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" border="0" /></a>
+		~;
 			} else {
 				$adminbar = qq~
-		<a href="$scripturl?action=lock;thread=$mnum;tomessageindex=1"><img src="$imagesdir/locked.gif" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" border="0" /></a>&nbsp;
-		<a href="$scripturl?action=sticky;thread=$mnum"><img src="$imagesdir/sticky.gif" alt="$messageindex_txt{'781'}" title="$messageindex_txt{'781'}" border="0" /></a>&nbsp;
-		<a href="$scripturl?action=hide;thread=$mnum;tomessageindex=1"><img src="$imagesdir/hide.gif" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" border="0" /></a>&nbsp;
-		<a href="javascript:void(window.open('$scripturl?action=split_splice;board=$currentboard;thread=$mnum;oldposts=all;leave=0;newcat=${$uid.$currentboard}{'cat'};newboard=$currentboard;position=end','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))"><img src="$imagesdir/admin_move.gif" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" border="0" /></a>&nbsp;
-		<a href="$scripturl?action=removethread;thread=$mnum" onclick="return confirm('$messageindex_txt{'162'}')"><img src="$imagesdir/admin_rem.gif" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" border="0" /></a>
+		<a href="$scripturl?action=lock;thread=$mnum;tomessageindex=1"$js_confirm><img src="$imagesdir/locked.gif" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" border="0" /></a>&nbsp;
+		<a href="$scripturl?action=sticky;thread=$mnum"$js_confirm><img src="$imagesdir/sticky.gif" alt="$messageindex_txt{'781'}" title="$messageindex_txt{'781'}" border="0" /></a>&nbsp;
+		<a href="$scripturl?action=hide;thread=$mnum;tomessageindex=1"$js_confirm><img src="$imagesdir/hide.gif" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" border="0" /></a>&nbsp;
+		<a href="javascript:void(window.open('$scripturl?action=split_splice;board=$currentboard;thread=$mnum;oldposts=all;leave=0;newcat=${$uid.$currentboard}{'cat'};newboard=$currentboard;position=end','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))"$js_confirm><img src="$imagesdir/admin_move.gif" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" border="0" /></a>&nbsp;
+		<a href="$scripturl?action=removethread;thread=$mnum" onclick="return confirm('~ . ($bypasslock == 1 ? "$messageindex_txt{'modifylocked'}\\n\\n" : '') . qq~$messageindex_txt{'162'}')"><img src="$imagesdir/admin_rem.gif" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" border="0" /></a>
 		~;
 			}
 			$admincol = $admincolumn;
@@ -567,6 +591,7 @@ sub MessageIndex {
 			$msublink = qq~$maintxt{'758'}: '<a href="$scripturl?num=$movedFlag">$2</a>'<br /><span class="small">$movedSubject</span>~;
 		}
 
+		my $mydate = &timeformat($mdate);
 		my $tempbar = $movedFlag ? $threadbarMoved : $threadbar;
 		$tempbar =~ s/({|<)yabb admin column(}|>)/$admincol/g;
 		$tempbar =~ s/({|<)yabb threadpic(}|>)/<img src="$imagesdir\/$threadclass.gif" alt="" \/>/g;
@@ -601,40 +626,33 @@ sub MessageIndex {
 		~;
 	}
 
-	my $multiview = 0;
 	my $tmptempfooter;
-	if    ((($iamadmin && $adminview == 3) || ($iamgmod && $gmodview == 3) || ($iammod && $modview == 3 && !$iamadmin && !$iamgmod)) && $sessionvalid == 1) { $multiview = 3; }
-	elsif ((($iamadmin && $adminview == 2) || ($iamgmod && $gmodview == 2) || ($iammod && $modview == 2 && !$iamadmin && !$iamgmod)) && $sessionvalid == 1) { $multiview = 2; }
-
-	if ($multiview >= 2) {
+	if ($multiview > 1) {
 		my $boardlist = &moveto;
-		if ($multiview eq '3') {
-			$tempfooter    = $subfooterbar;
-			$adminselector = qq~
-				<label for="toboard">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" /> <select name="toboard" id="toboard">$boardlist</select><input type="submit" value="$messageindex_txt{'462'}" class="button" />
-			~;
+		my ($admincheckboxes,$adminselector);
+		if ($multiview == 3) {
 			if ($currentboard eq $annboard) {
 				$admincheckboxes = qq~
-				<input type="checkbox" name="lockall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(1); else uncheckAll(1);" />
-				<input type="checkbox" name="hideall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(2); else uncheckAll(2);" />
-				<input type="checkbox" name="moveall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(3); else uncheckAll(3);" />
-				<input type="checkbox" name="deleteall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(4); else uncheckAll(4);" />
-				<input type="hidden" name="fromboard" value="$currentboard" />
-			~;
+				<input type="checkbox" name="lockall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(1,'lockall'); else uncheckAll(1);" />
+				<input type="checkbox" name="hideall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(2,'hideall'); else uncheckAll(2);" />
+				<input type="checkbox" name="moveall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(3,'moveall'); else uncheckAll(3);" />
+				<input type="checkbox" name="deleteall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(4,'deleteall'); else uncheckAll(4);" />
+				<input type="hidden" name="fromboard" value="$currentboard" />\n~;
 			} else {
 				$admincheckboxes = qq~
-				<input type="checkbox" name="lockall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(1); else uncheckAll(1);" />
-				<input type="checkbox" name="stickall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(2); else uncheckAll(2);" />
-				<input type="checkbox" name="hideall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(3); else uncheckAll(3);" />
-				<input type="checkbox" name="moveall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(4); else uncheckAll(4);" />
-				<input type="checkbox" name="deleteall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(5); else uncheckAll(5);" />
-				<input type="hidden" name="fromboard" value="$currentboard" />
-			~;
+				<input type="checkbox" name="lockall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(1,'lockall'); else uncheckAll(1);" />
+				<input type="checkbox" name="stickall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(2,'stickall'); else uncheckAll(2);" />
+				<input type="checkbox" name="hideall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(3,'hideall'); else uncheckAll(3);" />
+				<input type="checkbox" name="moveall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(4,'moveall'); else uncheckAll(4);" />
+				<input type="checkbox" name="deleteall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(5,'deleteall'); else uncheckAll(5);" />
+				<input type="hidden" name="fromboard" value="$currentboard" />\n~;
 			}
-			$tempfooter =~ s/({|<)yabb admin selector(}|>)/$adminselector/g;
-			$tempfooter =~ s/({|<)yabb admin checkboxes(}|>)/$admincheckboxes/g;
-		} elsif ($multiview eq '2') {
-			$tempfooter = $subfooterbar;
+			$adminselector = qq~
+				<label for="toboard">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" /> <select name="toboard" id="toboard">$boardlist</select><input type="submit" value="$messageindex_txt{'462'}" class="button" />\n~;
+
+		} else {
+			$admincheckboxes = qq~
+				<input type="checkbox" name="checkall" id="checkall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(0,'checkall'); else uncheckAll(0);" />\n~;
 			if ($currentboard eq $annboard) {
 				$adminselector = qq~
 				<input type="radio" name="multiaction" id="multiactionlock" value="lock" class="titlebg" style="border: 0px;" /> <label for="multiactionlock">$messageindex_txt{'104'}</label>
@@ -642,8 +660,7 @@ sub MessageIndex {
 				<input type="radio" name="multiaction" id="multiactiondelete" value="delete" class="titlebg" style="border: 0px;" /> <label for="multiactiondelete">$messageindex_txt{'31'}</label>
 				<input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" style="border: 0px;" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" /> <select name="toboard" onchange="document.multiadmin.multiaction[3].checked=true;">$boardlist</select>
 				<input type="hidden" name="fromboard" value="$currentboard" />
-				<input type="submit" value="$messageindex_txt{'462'}" class="button" />
-			~;
+				<input type="submit" value="$messageindex_txt{'462'}" class="button" />\n~;
 			} else {
 				$adminselector = qq~
 				<input type="radio" name="multiaction" id="multiactionlock" value="lock" class="titlebg" style="border: 0px;" /> <label for="multiactionlock">$messageindex_txt{'104'}</label>
@@ -652,17 +669,13 @@ sub MessageIndex {
 				<input type="radio" name="multiaction" id="multiactiondelete" value="delete" class="titlebg" style="border: 0px;" /> <label for="multiactiondelete">$messageindex_txt{'31'}</label>
 				<input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" style="border: 0px;" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" /> <select name="toboard" onchange="document.multiadmin.multiaction[4].checked=true;">$boardlist</select>
 				<input type="hidden" name="fromboard" value="$currentboard" />
-				<input type="submit" value="$messageindex_txt{'462'}" class="button" />
-			~;
+				<input type="submit" value="$messageindex_txt{'462'}" class="button" />\n~;
 			}
-			$admincheckboxes = qq~
-				<input type="checkbox" name="checkall" id="checkall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(0); else uncheckAll(0);" />
-			~;
-			$tempfooter =~ s/({|<)yabb admin selector(}|>)/$adminselector/g;
-			$tempfooter =~ s/({|<)yabb admin checkboxes(}|>)/$admincheckboxes/g;
 		}
+		$tmptempfooter = $subfooterbar;
+		$tmptempfooter =~ s/({|<)yabb admin checkboxes(}|>)/$admincheckboxes/g;
+		$tmptempfooter =~ s/({|<)yabb admin selector(}|>)/$adminselector/g;
 	}
-	$tmptempfooter .= $tempfooter;
 
 	$yabbicons = qq~
 	<img src="$imagesdir/thread.gif" alt="$messageindex_txt{'457'}" title="$messageindex_txt{'457'}" /> $messageindex_txt{'457'}<br />
@@ -671,11 +684,12 @@ sub MessageIndex {
 	<img src="$imagesdir/stickylock.gif" alt="$messageindex_txt{'456'}" title="$messageindex_txt{'780'}" /> $messageindex_txt{'780'}<br />
 	<img src="$imagesdir/locked_moved.gif" alt="$messageindex_txt{'845'}" title="$messageindex_txt{'845'}" /> $messageindex_txt{'845'}<br />
 ~;
-	if (($iamadmin || $iamgmod || $iammod) && $sessionvalid == 1) {
-		$yabbadminicons = qq~<img src="$imagesdir/hide.gif" alt="$messageindex_txt{'458'}" title="$messageindex_txt{'458'}" /> $messageindex_txt{'458'}<br />~;
-		$yabbadminicons .= qq~<img src="$imagesdir/hidesticky.gif" alt="$messageindex_txt{'459'}" title="$messageindex_txt{'459'}" /> $messageindex_txt{'459'}<br />~;
-		$yabbadminicons .= qq~<img src="$imagesdir/hidelock.gif" alt="$messageindex_txt{'460'}" title="$messageindex_txt{'460'}" /> $messageindex_txt{'460'}<br />~;
-		$yabbadminicons .= qq~<img src="$imagesdir/hidestickylock.gif" alt="$messageindex_txt{'461'}" title="$messageindex_txt{'461'}" /> $messageindex_txt{'461'}<br />~;
+	if ($staff && $sessionvalid == 1) {
+		$yabbadminicons = qq~
+	<img src="$imagesdir/hide.gif" alt="$messageindex_txt{'458'}" title="$messageindex_txt{'458'}" /> $messageindex_txt{'458'}<br />
+	<img src="$imagesdir/hidesticky.gif" alt="$messageindex_txt{'459'}" title="$messageindex_txt{'459'}" /> $messageindex_txt{'459'}<br />
+	<img src="$imagesdir/hidelock.gif" alt="$messageindex_txt{'460'}" title="$messageindex_txt{'460'}" /> $messageindex_txt{'460'}<br />
+	<img src="$imagesdir/hidestickylock.gif" alt="$messageindex_txt{'461'}" title="$messageindex_txt{'461'}" /> $messageindex_txt{'461'}<br />~;
 	}
 	$yabbadminicons .= qq~
 	<img src="$imagesdir/announcement.gif" alt="$messageindex_txt{'779a'}" title="$messageindex_txt{'779a'}" /> $messageindex_txt{'779a'}<br />
@@ -740,15 +754,15 @@ sub MessageIndex {
 	$messageindex_template =~ s/({|<)yabb pageindex top(}|>)/$pageindex1/g;
 	$messageindex_template =~ s/({|<)yabb pageindex bottom(}|>)/$pageindex2/g;
 
-	if ((($iamadmin && $adminview == 3) || ($iamgmod && $gmodview == 3) || ($iammod && $modview == 3 && !$iamadmin && !$iamgmod)) && $sessionvalid == 1) {
+	if ($multiview == 3) {
 		$messageindex_template =~ s/({|<)yabb admin column(}|>)/$adminheader/g;
-	} elsif ((($iamadmin && $adminview != 0) || ($iamgmod && $gmodview != 0) || ($iammod && $modview != 0 && !$iamadmin && !$iamgmod)) && $sessionvalid == 1) {
+	} elsif ($multiview) {
 		$messageindex_template =~ s/({|<)yabb admin column(}|>)/$adminheader/g;
 	} else {
 		$messageindex_template =~ s/({|<)yabb admin column(}|>)//g;
 	}
 
-	if ((($iamadmin && $adminview >= 2) || ($iamgmod && $gmodview >= 2) || ($iammod && $modview >= 2 && !$iamadmin && !$iamgmod)) && $sessionvalid == 1) {
+	if ($multiview > 1) {
 		$formstart = qq~<form name="multiadmin" action="$scripturl?board=$currentboard;action=multiadmin" method="post" style="display: inline">~;
 		$formend   = qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
 		$messageindex_template =~ s/({|<)yabb modupdate(}|>)/$formstart/g;
@@ -771,33 +785,37 @@ sub MessageIndex {
 	$messageindex_template =~ s/({|<)yabb icons(}|>)/$yabbicons/g;
 	$messageindex_template =~ s/({|<)yabb admin icons(}|>)/$yabbadminicons/g;
 	$messageindex_template =~ s/({|<)yabb access(}|>)/$accesses/g;
+
 	$yymain .= qq~
 	$messageindex_template
 	$pageindexjs
 	~;
 
-	if ((($iamadmin && $adminview >= 2) || ($iamgmod && $gmodview >= 2) || ($iammod && $modview >= 2 && !$iamadmin && !$iamgmod)) && $sessionvalid == 1) {
+	if ($multiview > 1) {
 		my $modul = $currentboard eq $annboard ? 4 : 5;
-
-		if ($sessionvalid == 1) {
-			$yymain .= qq~
+		$yymain .= qq~
 <script language="JavaScript1.2" type="text/javascript">
 <!--
-	function checkAll(j) {
+	function checkAll(j,ElemName) {~ . (($exist_locked && $icanbypass) ? qq~
+		if (confirm('$messageindex_txt{'selectall_modifylocked'}') == false) {
+			document.multiadmin.elements[ElemName].checked = false;
+			return;
+		}~ : '') . qq~
 		for (var i = 0; i < document.multiadmin.elements.length; i++) {
-			if (document.multiadmin.elements[i].type == "checkbox" && !/all\$/.test(document.multiadmin.elements[i].name) && (j == 0 || (j != 0 && (i % $modul) == (j - 1))))
+			if (document.multiadmin.elements[i].type == "checkbox" && !/newinfo|all\$/.test(document.multiadmin.elements[i].name) && (j == 0 || (j != 0 && (i % $modul) == (j - 1)))) {
 				document.multiadmin.elements[i].checked = true;
+			}
 		}
 	}
 	function uncheckAll(j) {
 		for (var i = 0; i < document.multiadmin.elements.length; i++) {
-			if (document.multiadmin.elements[i].type == "checkbox" && !/all\$/.test(document.multiadmin.elements[i].name) && (j == 0 || (j != 0 && (i % $modul) == (j - 1))))
+			if (document.multiadmin.elements[i].type == "checkbox" && !/all\$/.test(document.multiadmin.elements[i].name) && (j == 0 || (j != 0 && (i % $modul) == (j - 1)))) {
 				document.multiadmin.elements[i].checked = false;
+			}
 		}
 	}
 //-->
 </script>\n~;
-		}
 	}
 
 	$yyjavascript .= qq~\nvar markallreadlang = '$messageindex_txt{'500'}';\nvar markfinishedlang = '$messageindex_txt{'500a'}';~;

@@ -56,7 +56,7 @@ sub LoadBoardControl {
 }
 
 sub LoadIMs {
-	return if ($iamguest || $PM_level == 0 || ($maintenance && !$iamadmin) || ($PM_level == 2 && (!$iamadmin && !$iamgmod && !$iammod)) || ($PM_level == 3 && (!$iamadmin && !$iamgmod)));
+	return if ($iamguest || $PM_level == 0 || ($maintenance && !$iamadmin) || ($PM_level == 2 && !$staff) || ($PM_level == 3 && (!$iamadmin && !$iamgmod)));
 
 	&buildIMS($username, 'load') unless exists ${$username}{'PMmnum'};
 
@@ -872,7 +872,7 @@ sub load_IMS {
 }
 
 sub LoadBroadcastMessages { #check broadcast messages
-	return if ($iamguest || $PM_level == 0 || ($maintenance && !$iamadmin) || ($PM_level == 2 && (!$iamadmin && !$iamgmod && !$iammod)) || ($PM_level == 3 && (!$iamadmin && !$iamgmod)));
+	return if ($iamguest || $PM_level == 0 || ($maintenance && !$iamadmin) || ($PM_level == 2 && !$staff) || ($PM_level == 3 && (!$iamadmin && !$iamgmod)));
 
 	my $builduser = shift;
 	$BCnewMessage = 0;

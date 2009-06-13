@@ -54,7 +54,7 @@ sub Post {
 
 	my $icanbypass;
 	## only if bypass switched on
-	if ($mstate =~ /l/i && $bypass_lock_perm) { $icanbypass = &checkUserLockBypass; }
+	if ($mstate =~ /l/i) { $icanbypass = &checkUserLockBypass; }
 	if ($action eq 'modalert') { $icanbypass = 1; }
 	if ($mstate =~ /l/i && !$icanbypass) { &fatal_error('topic_locked'); }
 	#if ($mstate =~ /a/i && !$iamadmin && !$iamgmod) { &fatal_error('no_access'); }
@@ -2465,7 +2465,7 @@ sub Post2 {
 		($mnum, $msub, $mname, $memail, $mdate, $mreplies, $musername, $micon, $mstate) = split(/\|/, $yyThreadLine);
 
 		if ($mstate =~ /l/i) { # locked thread
-			my $icanbypass = &checkUserLockBypass if $bypass_lock_perm; # only if bypass switched on
+			my $icanbypass = &checkUserLockBypass;
 			if (!$icanbypass) { &fatal_error('topic_locked');}
 		}
 		if ($iammod || $iamgmod || $iamadmin) { $mstate = $currentboard eq $annboard ? "0a$thestatus" : "0$thestatus"; } # Leave the status as is if the user isn't allowed to change it

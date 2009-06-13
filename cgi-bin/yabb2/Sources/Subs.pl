@@ -1714,12 +1714,7 @@ sub setGuestLang {
 
 ##  check for locked post bypass status - user must be at least mod and bypass lock must be set right.
 sub checkUserLockBypass {
-	my $canbypass;
-	## work down the levels
-	if ($bypass_lock_perm eq "fa" && $iamadmin) { $canbypass = 1; }
-	elsif ($bypass_lock_perm eq "gmod" && ($iamadmin || $iamgmod)) { $canbypass = 1; }
-	elsif ($bypass_lock_perm eq "mod" && ($iamadmin || $iamgmod || $iammod)) { $canbypass = 1; } 
-	$canbypass;
+	return 1 if ($staff && $sessionvalid == 1 && (($bypass_lock_perm eq "fa" && $iamadmin) || ($bypass_lock_perm eq "gmod" && ($iamadmin || $iamgmod)) || $bypass_lock_perm eq "mod"));
 }
 
 sub alertbox {

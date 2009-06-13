@@ -42,7 +42,7 @@ sub ModifyMessage {
 	$postthread = 2;
 
 	if ($mstate =~ /l/i) {
-		my $icanbypass = &checkUserLockBypass if $bypass_lock_perm;
+		my $icanbypass = &checkUserLockBypass;
 		if (!$icanbypass) { &fatal_error("topic_locked"); }
 	} elsif (!$iamadmin && !$iamgmod && !$iammod && $tlnomodflag && $date > $mdate + ($tlnomodtime * 3600 * 24)) {
 		&fatal_error("time_locked","$tlnomodtime$timelocktxt{'02'}");
@@ -387,7 +387,7 @@ sub ModifyMessage2 {
 	}
 
 	if ($tstate =~ /l/i) {
-		my $icanbypass = &checkUserLockBypass if $bypass_lock_perm;
+		my $icanbypass = &checkUserLockBypass;
 		if (!$icanbypass) { &fatal_error('topic_locked');}
 	}
 	if ($iammod || $iamgmod || $iamadmin) {
@@ -404,7 +404,7 @@ sub ModifyMessage2 {
 	else { $useredit_ip = "$mip $user_ip"; }
 
 	my (@attachments,%post_attach,%del_filename);
-	while (&read_DBorFILE(0,ATM,$vardir,'attachments','txt')) {
+	foreach (&read_DBorFILE(0,ATM,$vardir,'attachments','txt')) {
 		$_ =~ /^(\d+)\|(\d+)\|.+\|(.+)\|\d+\s+/;
 		$del_filename{$3}++;
 		if ($threadid == $1 && $postid == $2) {

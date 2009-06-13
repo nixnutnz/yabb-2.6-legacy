@@ -4010,6 +4010,10 @@ sub SetInstall2 {
                                                   # the specified time limit w/o showing "last Edit" message
 \$tllastmodtime = 60;                             # Time limit to modify posts w/o triggering "last Edit" message (in minutes)
 
+########## bypass post for locked thread ##########
+
+\$bypass_lock_perm = "fa";                        # set level of permission - fa / fa+gmod / fa+gmod+mod
+
 ########## File Attachment Settings ##########
 
 \$limit = 250;                                    # Set to the maximum number of kilobytes an attachment can be.

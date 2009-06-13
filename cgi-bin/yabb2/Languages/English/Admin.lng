@@ -214,13 +214,14 @@ $yycharset = 'ISO-8859-1';
 '391' => 'Use File-Locking?',
 '392' => 'Lock EX',
 '393' => 'Lock UN',
-'394' => 'Show who is viewing/replying the Topic now?',
+'394' => 'Show who is now viewing/replying the Topic to:',
 '401' => 'No File-Locking',
 '402' => 'Unix/Linux &amp; Win2k/NT File-Locking',
 '403' => 'Windows 9x/ME File-Locking',
 '404' => 'Send Emails using',
 '407' => 'SMTP-Server<br /><span class="small">For Net::SMTP::TLS, specify the port number with a ":&lt;portnumber&gt;" at the end. Example: smtp.gmail.com<i>:25</i></span>',
 '408' => 'Minimum time between two postings from the same IP (in seconds)',
+'409' => 'Hide signatures from Guests?<br /><span class="small">Only Members can see signatures.</span>',
 '425' => 'Your Version/Current Version',
 '429' => 'Detailed Version Check',
 '430' => 'Files in Admin Dir:',
@@ -435,7 +436,8 @@ $yycharset = 'ISO-8859-1';
 'diskspacecheck' => 'Enable free disk space check?<br /><span class="small">This checks for the available physical disk space on the Linux or Windows server. Be aware that not all of that disk space may be usable by you. It may show a number greater than allowed by your personal hosting plan!<br />If your available disk space drops below 100&thinsp;000 Bytes (100 KB), the forum will automatically go into Maintenance Mode to prevent running out of space and losing data.<br />Reminder: Only Admins can access the forum when in Maintenance Mode.</span>',
 'minlinkpost' => 'Number of posts a member must have before links and images can be posted',
 'minlinkpost_exp' => 'This avoids spambots from doing spamposts directly after registering',
-'stealh' => 'Enable \'Stealth\' mode for Admins and Gmods?<br /><span class="small">Allows status label to stay at Offline/Away for all members viewing</span>',
+'stealth' => 'Enable \'Stealth\' mode for Admins and Gmods?<br /><span class="small">Allows status label to stay at Offline/Away for all members viewing</span>',
+'by_pass_lock' => 'Select which Staff Members to allow bypassing the lock on posts:<br /><span class="small">This allows the selected to reply, modify, unlock, delete, ... a locked thread.</span>',
 'mlview' => 'Select the Member Groups allowed to view  the Member List?',
 'buddylist' => 'Enable Buddy List?',
 'regreason' => 'Maximum allowed characters in User\'s Reason(s) for Registering',
@@ -1132,15 +1134,6 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'varsdela' => '<b>vars</b>-files remaining to delete:',
 'txtdel' => '<b>ctb</b>-files found:',
 'txtdela' => '<b>ctb</b>-files remaining to delete:',
-);
-
-%bypassLock_txt = (
-'enable' => 'Enable?',
-'explain' => 'This allows FA/GMod/Mod to post or modifying a locked thread without having to explicitly unlock/lock it',
-'allow' => 'Select which Staff Members to allow bypassing the lock on posts:',
-'fa' => 'FA only',
-'gmod' => 'FA/GMod only',
-'mod' => 'FA/GMod/Mod',
 );
 
 %admin_updated_txt = (

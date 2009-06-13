@@ -2172,7 +2172,7 @@ sub ViewProfile {
 	&LoadMiniUser($user) if $user eq $username;
 
 	my ($memberinfo, $modify, $email, $gender, $avstyle, $pic);
-	my ($pic_row, $buddybutton, $row_addgrp, $row_gender, $row_age, $row_location, $row_icq, $row_aim, $row_yim, $row_msn, $row_gtalk, $row_skype, $row_myspace, $row_facebook, $row_email, $row_website, $row_signature, $showusertext);
+	my ($pic_row, $buddybutton, $row_addgrp, $row_gender, $row_age, $row_location, $row_icq, $row_aim, $row_yim, $row_msn, $row_gtalk, $row_skype, $row_myspace, $row_facebook, $row_email, $row_website, $row_signature, $send_PM, $showusertext);
 
 	# Convert forum start date to string, if there is no date set,
 	# Defaults to 1st Jan, 2005
@@ -2354,7 +2354,7 @@ sub ViewProfile {
 			<a href="${$uid.$user}{'weburl'}" target="_blank">${$uid.$user}{'webtitle'}</a>
 			</div>~;
 	}
-	if (${$uid.$user}{'signature'}) {
+	if (${$uid.$user}{'signature'} && (!$hide_signat_for_guests || !$iamguest)) {
 		# do some ubbc on the signature to display in the view profile area
 		$message     = ${$uid.$user}{'signature'};
 		$displayname = ${$uid.$user}{'realname'};
@@ -2494,19 +2494,9 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 		$showProfile .= &ext_viewprofile($user);
 	}
 
-	$showProfile .= qq~
-	<tr>
-		<td class="catbg" align="left">
-			<img src="$imagesdir/profile.gif" alt="" border="0" style="vertical-align: middle;" />&nbsp;
-			<span class="text1"><b>$profile_txt{'819'}</b></span>
-		</td>
-	</tr>
-	<tr>
-		<td class="windowbg2" align="left">~;
-
 	&CheckUserPM_Level($user);
 	if (!$view && $user ne $username && ($PM_level == 1 || ($PM_level == 2 && $UserPM_Level{$user} > 1 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && $UserPM_Level{$user} == 3 && ($iamadmin || $iamgmod)))) {
-		$showProfile .= qq~
+		$send_PM = qq~
 			<div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
 			<b>$profile_txt{'144'}: </b>
 			</div>
@@ -2515,7 +2505,17 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 			</div>~;
 	}
 
-	$showProfile .= qq~
+	if ($send_PM || $row_email || $row_website || $row_msn || $row_gtalk || $row_skype || $row_myspace || $row_facebook || $row_icq || $row_yim || $row_aim) {
+		$showProfile .= qq~
+	<tr>
+		<td class="catbg" align="left">
+			<img src="$imagesdir/profile.gif" alt="" border="0" style="vertical-align: middle;" />&nbsp;
+			<span class="text1"><b>$profile_txt{'819'}</b></span>
+		</td>
+	</tr>
+	<tr>
+		<td class="windowbg2" align="left">
+			$send_PM
 			$row_email
 			$row_website
 			$row_msn
@@ -2528,6 +2528,7 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 			$row_aim
 		</td>
 	</tr>~;
+	}
 
 	$userlastlogin = &timeformat(${$uid.$user}{'lastonline'});
 	$userlastpost = &timeformat(${$uid.$user}{'lastpost'});
@@ -2552,8 +2553,7 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 		$lastPM = qq~$profile_amv_txt{'mylastpm'}~;
 	}
 
-	$showProfile .= qq~
-	$row_signature
+	$showProfile .= qq~$row_signature
 	<tr>
 		<td class="catbg" align="left">
 			<img src="$imagesdir/profile.gif" alt="" border="0" style="vertical-align: middle;" />&nbsp;

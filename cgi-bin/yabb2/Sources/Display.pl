@@ -131,10 +131,12 @@ sub Display {
 
 	## now we've established credentials,
 	## can this user bypass locks?
-	## work out who can bypass locked thread post only if bypass switched on
+	## work out who can bypass locked thread
 	if ($mstate =~ /l/i) {
-		if ($bypass_lock_perm) { $icanbypass = &checkUserLockBypass; }
+		$icanbypass = &checkUserLockBypass;
 		$enable_quickreply = 0;
+	} elsif ($staff && $sessionvalid == 1) {
+		$icanbypass = 2;
 	}
 
 	my $permdate = &permtimer($mnum);
@@ -480,7 +482,7 @@ sub Display {
 	my $hideavatar = 1 if !$allowpics || !$showuserpic || (${$uid.$username}{'hide_avatars'} && $user_hide_avatars);
 	my $hideusertext = 1 if !$showusertext || (${$uid.$username}{'hide_user_text'} && $user_hide_user_text);
 	my $hideattachimg = 1 if ${$uid.$username}{'hide_attach_img'} && $user_hide_attach_img;
-	my $hidesignat = 1 if ${$uid.$username}{'hide_signat'} && $user_hide_signat;
+	my $hidesignat = 1 if (${$uid.$username}{'hide_signat'} && $user_hide_signat) || ($hide_signat_for_guests && $iamguest);
 
 	# For each post in this thread:
 	my (%attach_gif,%attach_count,$movedflag);
@@ -551,7 +553,7 @@ sub Display {
 			$registrationdate = $date;
 		}
 		## moderator alert button!
-		if ($PMenableAlertButton && $PM_level && !$iamadmin && !$iamgmod && !$iammod && (!$iamguest || ($iamguest && $PMAlertButtonGuests))) {
+		if ($PMenableAlertButton && $PM_level && !$staff && (!$iamguest || ($iamguest && $PMAlertButtonGuests))) {
 			$PMAlertButton = qq~$menusep<a href="$scripturl?action=modalert;num=$viewnum;title=PostReply;quote=$counter" onclick="return confirm('$display_txt{'alertmod_confirm'}');">$img{'alertmod'}</a>~;
 		}
 		## is member a buddy of mine?
@@ -642,9 +644,8 @@ sub Display {
 		&ToChars($message);
 		$message = &Censor($message);
 
-		if ($icanbypass) { $template_modify = qq~$menusep<a href="$scripturl?board=$currentboard;action=modify;message=$counter;thread=$viewnum" onclick="return confirm('$display_txt{'modifyinlocked'}');">$img{'modify'}</a> ~; }
-
-		if ($mstate !~ /l/i) {
+		$template_modify = '';
+		if ($mstate !~ /l/i || $icanbypass) {
 			if ($replybutton) {
 				my $quote_mname = $displayname;
 				$quote_mname =~ s/'/\\'/g;
@@ -676,29 +677,27 @@ sub Display {
 							$template_quote .= qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;quote=$counter;title=PostReply">$img{'quote'}</a>~;
 						}
 					} else {
-						$template_quote = qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;quote=$counter;title=PostReply">$img{'quote'}</a>~;
+						$template_quote = qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;quote=$counter;title=PostReply"~ . ($icanbypass == 1 ? qq~ onclick="return confirm('$display_txt{'modifyinlocked'}');"~ : '') . qq~>$img{'quote'}</a>~;
 					}
 				}
 			}
-			if ($sessionvalid == 1 && ($iamadmin || $iamgmod || $iammod || ($username eq $musername && !$exmem && (!$tlnomodflag || $date < $mdate + ($tlnomodtime * 3600 * 24))))) {
-				$template_modify = qq~$menusep<a href="$scripturl?board=$currentboard;action=modify;message=$counter;thread=$viewnum">$img{'modify'}</a>~;
-			} else {
-				$template_modify = '';
+			if ($counter > 0 && $icanbypass) {
+				$template_split = qq~$menusep<a href="$scripturl?action=split_splice;board=$currentboard;thread=$viewnum;oldposts=~ . join(',%20', ($counter .. $mreplies)) . qq~;leave=0;newcat=$curcat;newboard=$currentboard;newthread=new;ss_submit=1" onclick="return confirm('~ . ($icanbypass == 1 ? qq~$display_txt{'modifyinlocked'}\\n\\n~ : '') . qq~$display_txt{'split_confirm'}');">$img{'admin_split'}</a>~;
 			}
-			if ($counter > 0 && ($iamadmin || $iamgmod || $iammod) && $sessionvalid == 1) {
-				$template_split = qq~$menusep<a href="$scripturl?action=split_splice;board=$currentboard;thread=$viewnum;oldposts=~ . join(',%20', ($counter .. $mreplies)) . qq~;leave=0;newcat=$curcat;newboard=$currentboard;newthread=new;ss_submit=1" onclick="return confirm('$display_txt{'split_confirm'}');">$img{'admin_split'}</a>~;
+			if ($sessionvalid == 1 && ($staff || ($username eq $musername && !$exmem && (!$tlnomodflag || $date < $mdate + ($tlnomodtime * 3600 * 24))))) {
+				$template_modify = qq~$menusep<a href="$scripturl?board=$currentboard;action=modify;message=$counter;thread=$viewnum"~ . ($icanbypass == 1 ? qq~ onclick="return confirm('$display_txt{'modifyinlocked'}');"~ : '') . qq~>$img{'modify'}</a>~;
 			}
-			if ($sessionvalid == 1 && ($iamadmin || $iamgmod || $iammod || ($username eq $musername && !$exmem && (!$tlnodelflag || $date < $mdate + ($tlnodeltime * 3600 * 24))))) {
-				$template_delete = qq~$menusep<span style="cursor: pointer; cursor: hand;" onclick="if(confirm('$display_txt{'rempost'}')) {uncheckAllBut($counter);}">$img{'delete'}</span>~;
-				if ((($iammod && $mdmod == 1) || ($iamadmin && $mdadmin == 1) || ($iamgmod && $mdglobal == 1)) && $sessionvalid == 1) {
+			if ($sessionvalid == 1 && ($staff || ($username eq $musername && !$exmem && (!$tlnodelflag || $date < $mdate + ($tlnodeltime * 3600 * 24))))) {
+				$template_delete = qq~$menusep<span style="cursor: pointer; cursor: hand;" onclick="if(confirm('~ . ($icanbypass == 1 ? qq~$display_txt{'modifyinlocked'}\\n\\n~ : '') . qq~$display_txt{'rempost'}')) {uncheckAllBut($counter);}">$img{'delete'}</span>~;
+				if (($iammod && $mdmod == 1) || ($iamadmin && $mdadmin == 1) || ($iamgmod && $mdglobal == 1)) {
 					$template_admin = qq~<input type="checkbox" class="$css" style="border: 0px;" name="del$counter" value="$counter" />~;
 				} else {
 					# need to set visibility to hidden - used for regular users to delete their posts too,
-					$template_admin = qq~ <input type="checkbox" class="$css" style="border: 0px; visibility: hidden; display: none;" name="del$counter" value="$counter" />~;
+					$template_admin = qq~<input type="checkbox" class="$css" style="border: 0px; visibility: hidden; display: none;" name="del$counter" value="$counter" />~;
 				}
 			} else {
 				$template_delete = '';
-				$template_admin = qq~ <input type="checkbox" class="$css" style="border: 0px; visibility: hidden; display: none;" name="del$counter" value="$counter" />~;
+				$template_admin = qq~<input type="checkbox" class="$css" style="border: 0px; visibility: hidden; display: none;" name="del$counter" value="$counter" />~;
 			}
 		}
 
@@ -788,19 +787,14 @@ sub Display {
 
 	# Insert 5
 	my ($template_remove, $template_splice, $template_lock, $template_hide, $template_sticky, $template_multidelete);
-	if (($iammod || $iamadmin || $iamgmod) && $sessionvalid == 1) {
-		$template_remove = qq~$menusep<a href="javascript:document.removethread.submit();" onclick="return confirm('$display_txt{'162'}')"> $img{'admin_rem'}</a>~;
-
-		$template_splice = qq~$menusep<a href="javascript:void(window.open('$scripturl?action=split_splice;board=$currentboard;thread=$viewnum;oldposts=all;leave=0;newcat=$curcat;newboard=$currentboard;position=end','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">$img{'admin_move_split_splice'}</a>~;
-
-		$template_lock = qq~$menusep<a href="$scripturl?action=lock;thread=$viewnum">$img{'admin_lock'}</a>~;
-		$template_hide = qq~$menusep<a href="$scripturl?action=hide;thread=$viewnum">$img{'hide'}</a>~;
-		$template_sticky = qq~$menusep<a href="$scripturl?action=sticky;thread=$viewnum">$img{'admin_sticky'}</a>~;
-		if (${$mnum}{'board'} eq $annboard) { $template_sticky = ''; }
-	}
-	if ((($iammod && $mdmod == 1) || ($iamadmin && $mdadmin == 1) || ($iamgmod && $mdglobal == 1)) && $sessionvalid == 1) {
-		if ($mstate !~ /l/i) {
-			$template_multidelete = qq~$menusep<a href="javascript:document.multidel.submit();" onclick="return confirm('$display_txt{'739'}')">$img{'admin_del'}</a>~;
+	if ($icanbypass) {
+		$template_remove = qq~$menusep<a href="javascript:document.removethread.submit();" onclick="return confirm('~ . ($icanbypass == 1 ? qq~$display_txt{'modifyinlocked'}\\n\\n~ : '') . qq~$display_txt{'162'}')">$img{'admin_rem'}</a>~;
+		$template_splice = qq~$menusep<a href="javascript:void(window.open('$scripturl?action=split_splice;board=$currentboard;thread=$viewnum;oldposts=all;leave=0;newcat=$curcat;newboard=$currentboard;position=end','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))"~ . ($icanbypass == 1 ? qq~ onclick="return confirm('$display_txt{'modifyinlocked'}');"~ : '') . qq~>$img{'admin_move_split_splice'}</a>~;
+		$template_lock = qq~$menusep<a href="$scripturl?action=lock;thread=$viewnum"~ . ($icanbypass == 1 ? qq~ onclick="return confirm('$display_txt{'modifyinlocked'}');"~ : '') . qq~>$img{'admin_lock'}</a>~;
+		$template_hide = qq~$menusep<a href="$scripturl?action=hide;thread=$viewnum"~ . ($icanbypass == 1 ? qq~ onclick="return confirm('$display_txt{'modifyinlocked'}');"~ : '') . qq~>$img{'hide'}</a>~;
+		$template_sticky = qq~$menusep<a href="$scripturl?action=sticky;thread=$viewnum"~ . ($icanbypass == 1 ? qq~ onclick="return confirm('$display_txt{'modifyinlocked'}');"~ : '') . qq~>$img{'admin_sticky'}</a>~ if ${$mnum}{'board'} ne $annboard;
+		if (($iammod && $mdmod == 1) || ($iamadmin && $mdadmin == 1) || ($iamgmod && $mdglobal == 1)) {
+			$template_multidelete = qq~$menusep<a href="javascript:document.multidel.submit();" onclick="return confirm('~ . ($icanbypass == 1 ? qq~$display_txt{'modifyinlocked'}\\n\\n~ : '') . qq~$display_txt{'739'}')">$img{'admin_del'}</a>~;
 		}
 	}
 
@@ -820,7 +814,6 @@ sub Display {
 	}
 
 	# Template it
-
 	$tabsep = qq~<img src="$imagesdir/tabsep211.png" border="0" alt="" style="vertical-align: middle;" />~;
 	$yynavback = qq~$tabsep <a href="$scripturl" class="nav">&#171; $img_txt{'103'}</a> $tabsep $navback $tabsep~;
 	$yynavigation = qq~&rsaquo; $template_cat &rsaquo; $template_board &rsaquo; $msubthread~;
@@ -858,19 +851,19 @@ sub Display {
 	$display_template =~ s/({|<)yabb threadimage(}|>)/$template_threadimage/g;
 	$display_template =~ s/({|<)yabb threadurl(}|>)/$curthreadurl/g;
 	$display_template =~ s/({|<)yabb views(}|>)/ &NumberFormat(${$viewnum}{'views'} - 1) /eg;
-	if (($iamadmin || $iamgmod || $iammod) && $sessionvalid == 1) {
+	my $formstart;
+	if ($icanbypass) {
 		# Board=$currentboard is necessary for multidel - DO NOT REMOVE!!
 		# This form is necessary to allow thread deletion in locked topics.
-		$formstart .= qq~<form name="removethread" action="$scripturl?action=removethread" method="post" style="display: inline">
-		<input type="hidden" name="thread" value="$viewnum" />
-		</form>~;
-
+		$formstart = qq~
+	<form name="removethread" action="$scripturl?action=removethread" method="post" style="display: inline">
+	<input type="hidden" name="thread" value="$viewnum" />
+	</form>~;
 	}
-	$formstart .= qq~<form name="multidel" action="$scripturl?board=$currentboard;action=multidel;thread=$viewnum/~ . (!$ttsreverse ? $start : $mreplies - $start) . qq~" method="post" style="display: inline">~;
-	$formend = qq~</form>~;
-
+	$formstart .= qq~
+	<form name="multidel" action="$scripturl?board=$currentboard;action=multidel;thread=$viewnum/~ . (!$ttsreverse ? $start : $mreplies - $start) . qq~" method="post" style="display: inline">~;
 	$display_template =~ s/({|<)yabb multistart(}|>)/$formstart/g;
-	$display_template =~ s/({|<)yabb multiend(}|>)/$formend/g;
+	$display_template =~ s/({|<)yabb multiend(}|>)/<\/form>/g;
 
 	$display_template =~ s/({|<)yabb pollmain(}|>)/$template_pollmain/g;
 	$display_template =~ s/({|<)yabb postsblock(}|>)/$tmpoutblock/g;
@@ -888,7 +881,6 @@ sub Display {
 		document.forms["multidel"].elements["del"+counter].checked = true;
 		document.multidel.submit();
 	}~;
-
 
 	if ($sendtopicmail) {
 		my ($esubject,$emessage);
@@ -912,7 +904,7 @@ sub Display {
 	}~;
 	}
 
-$yymain .= qq~
+	$yymain .= qq~
 
 	$pageindexjs
 	function ListPages(tid) { window.open('$scripturl?action=pages;num='+tid, '', 'menubar=no,toolbar=no,top=50,left=50,scrollbars=yes,resizable=no,width=400,height=300'); }
