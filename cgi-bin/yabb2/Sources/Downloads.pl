@@ -68,13 +68,13 @@ sub DownloadView {
 		@{$thread_arrayref{$thread}} = &read_DBorFILE(0,'',$datadir,$thread,'txt');
 	}
 	my $threadname = (split(/\|/, ${$thread_arrayref{$thread}}[0], 2))[0];
-	my @attachinput = map split(/,/, (split(/\|/, $_))[12]), @{$thread_arrayref{$thread}};
+	my @attachinput = map { split(/,/, (split(/\|/, $_))[12]) } @{$thread_arrayref{$thread}};
 	chomp(@attachinput);
 
 	my (%attachinput,$viewattachments);
 	map { $attachinput{$_} = 1; } @attachinput;
 
-	my @attachinput = grep { $_ =~ /$thread\|.+\|(.+)\|\d+\s+/; $attachinput{$1}; } &read_DBorFILE(0,'',$vardir,'attachments','txt');
+	@attachinput = grep { $_ =~ /$thread\|.+\|(.+)\|\d+\s+/ && exists $attachinput{$1} } &read_DBorFILE(0,'',$vardir,'attachments','txt');
 
 	my $max = @attachinput;
 
