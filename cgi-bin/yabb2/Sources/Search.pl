@@ -489,6 +489,8 @@ sub plushSearch2 {
 	undef %found;
 	@search = grep(!$found{$_}++, @tmpsearch);
 
+	my $icanbypass = &checkUserLockBypass;
+
 	for ($i = 0; $i < @messages; $i++) {
 		($board, $tnum, $msgnum, $tusername, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $ns, $tstate) = @{ $data{ $messages[$i] } };
 
@@ -537,10 +539,15 @@ sub plushSearch2 {
 					$notify = qq~$menusep<a href="$scripturl?action=notify2;oldnotify=1;num=$tnum/$msgnum#$msgnum">$img{'add_notify'}</a>~;
 				}
 			}
-			$yymain .= qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$msgnum#$msgnum;title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num=$tnum;quote=$msgnum;title=PostReply">$img{'recentquote'}</a>$notify &nbsp;~;
+			$yymain .= qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$msgnum#$msgnum;title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num=$tnum;quote=$msgnum;title=PostReply">$img{'recentquote'}</a>$notify~;
 		}
 
-		$yymain .= qq~
+		if ($staff && ($icanbypass || $tstate !~ /l/i) && (!$iammod || &is_moderator($username,$board))) {
+				&LoadLanguage('Display');
+				$yymain .= qq~$menusep<a href="$scripturl?action=multidel;recent=1;thread=$tnum;del$c=$c" onclick="return confirm('~ . (($icanbypass && $tstate =~ /l/i) ? qq~$display_txt{'modifyinlocked'}\\n\\n~ : '') . qq~$display_txt{'rempost'}')">$img{'delete'}</a>~;
+		}
+
+		$yymain .= qq~ &nbsp;
 					</td>
 				</tr>
 			</table>
