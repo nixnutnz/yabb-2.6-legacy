@@ -23,7 +23,7 @@ sub RemoveThread {
 	$thread = $INFO{'thread'};
 	&fatal_error ('only_numbers_allowed') if ($thread =~ /\D/);
 
-	if (!$iammod && !$iamadmin && !$iamgmod && !$iamposter) {
+	if (!$staff && !$iamposter) {
 		&fatal_error("delete_not_allowed");
 	}
 	if (!$currentboard) {
@@ -87,7 +87,7 @@ sub RemoveThread {
 	}
 
 	if ($INFO{'moveit'} != 1) {
-		$yySetLocation = qq~$scripturl?board=$currentboard~;
+		$yySetLocation = $INFO{'recent'} ? qq~$scripturl?action=recent~ : qq~$scripturl?board=$currentboard~;
 		&redirectexit;
 	}
 }
@@ -120,12 +120,12 @@ sub DeleteThread {
 		$INFO{'thread'} = $delete;
 		&RemoveThread;
 	}
-	$yySetLocation = qq~$scripturl?board=$currentboard~;
+	$yySetLocation = $INFO{'recent'} ? qq~$scripturl?action=recenttopics~ : qq~$scripturl?board=$currentboard~;
 	&redirectexit;
 }
 
 sub Multi {
-	if (!$iammod && !$iamadmin && !$iamgmod) { &fatal_error("not_allowed"); }
+	if (!$staff) { &fatal_error("not_allowed"); }
 
 	require "$sourcedir/SetStatus.pl";
 	require "$sourcedir/MoveSplitSplice.pl";

@@ -34,7 +34,7 @@ $set_subjectMaxLength ||= 50;
 
 sub Post {
 	if ($iamguest && $enable_guestposting == 0) { &fatal_error("not_logged_in"); }
-	if (!$iamadmin && !$iamgmod && !$iammod && $speedpostdetection && ${$uid.$username}{'spamcount'} >= $post_speed_count) {
+	if (!$staff && $speedpostdetection && ${$uid.$username}{'spamcount'} >= $post_speed_count) {
 		$detention_time = ${$uid.$username}{'spamtime'} + $spd_detention_time;
 		if($date <= $detention_time){
 			$detention_left = $detention_time - $date;
@@ -52,11 +52,8 @@ sub Post {
 
 	($mnum, $msub, $mname, $memail, $mdate, $mreplies, $musername, $micon, $mstate) = split(/\|/, $yyThreadLine);
 
-	my $icanbypass;
 	## only if bypass switched on
-	if ($mstate =~ /l/i) { $icanbypass = &checkUserLockBypass; }
-	if ($action eq 'modalert') { $icanbypass = 1; }
-	if ($mstate =~ /l/i && !$icanbypass) { &fatal_error('topic_locked'); }
+	if ($mstate =~ /l/i) { &fatal_error('topic_locked') unless &checkUserLockBypass; }
 	#if ($mstate =~ /a/i && !$iamadmin && !$iamgmod) { &fatal_error('no_access'); }
 
 	# Determine category
@@ -380,7 +377,7 @@ function checkForm(theForm) {
 		if ($curnum) { $thecurboard = qq~num=$curnum\;action=$destination~; }
 		elsif ($destination eq "guestpm2") { $thecurboard = qq~action=$destination~; }
 		else { $thecurboard = qq~board=$currentboard\;action=$destination~; }
-		if (&AccessCheck($currentboard, 4) eq "granted" && $allowattach && ${$uid.$currentboard}{'attperms'} == 1) {
+		if (&AccessCheck($currentboard, 4) eq 'granted' && $allowattach && ${$uid.$currentboard}{'attperms'} == 1 && -d "$uploaddir" && $action =~ /^(post|modify)2?$/ && (($allowguestattach == 0 && !$iamguest) || $allowguestattach == 1)) {
 			$yymain .= qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctype="multipart/form-data" onsubmit="if(!checkForm(this)) {return false} else {return submitproc()}">~;
 		} else {
 			$yymain .= qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctype="application/x-www-form-urlencoded" onsubmit="if(!checkForm(this)) {return false} else {return submitproc()}">~;
@@ -512,7 +509,7 @@ function checkForm(theForm) {
 		@repliers = @tmprepliers;
 		&MessageTotals("update", $curnum);
 
-		if (($showtopicviewers == 1 && $staff && $sessionvalid == 1) || ($showtopicviewers == 2 && !$iamguest) || $showtopicviewers == 3) {
+		if (($showtopicviewers == 1 && $staff) || ($showtopicviewers == 2 && !$iamguest) || $showtopicviewers == 3) {
 			$template_viewers =~ s/\, \Z/\./;
 			$yymain .= qq~
 	<tr>
@@ -708,6 +705,7 @@ function checkForm(theForm) {
 	$yymain .= qq~
 <table border="0" width="100%" cellpadding="3" cellspacing="0" class="windowbg" style="table-layout: fixed;">~;
 
+	my ($threadclass,$hidestatus);
 	if ($postid ne 'Poll') {
 		$yymain .= qq~
 		<tr>
@@ -741,36 +739,35 @@ function checkForm(theForm) {
 		</td>
 	</tr>~;
 
-		$topicstatus_row = "";
-		$stselect        = "";
-		$lcselect        = "";
-		$hdselect        = "";
-		$threadclass     = 'thread';
-
+		$threadclass = 'thread';
 		($mnum, $msub, $mname, $memail, $mdate, $mreplies, $musername, $micon, $mstate) = split(/\|/, $yyThreadLine);
 		if ($FORM{'topicstatus'}) { $thestatus = $FORM{'topicstatus'}; }
 		else { $thestatus = $mstate; }
 		if ($currentboard eq $annboard) {
-			$threadclass     = 'announcement';
+			$threadclass = 'announcement';
 		} else {
 			if ($mreplies >= $VeryHotTopic) { $threadclass = 'veryhotthread'; }
 			elsif ($mreplies >= $HotTopic) { $threadclass = 'hotthread'; }
 		}
 		if($action ne "modalert") {
-			if ($thestatus =~ /s/) { $stselect = qq~selected="selected"~; }
-			if ($thestatus =~ /l/) { $lcselect = qq~selected="selected"~; }
-			if ($thestatus =~ /h/) { $hdselect = qq~selected="selected"~; }
-			$hidestatus = "";
+			if ($staff) {
+				my $stselect = $thestatus =~ /s/ ? qq~ selected="selected"~ : '';
+				my $lcselect = $thestatus =~ /l/ ? qq~ selected="selected"~ : '';
+				my $hdselect = $thestatus =~ /h/ ? qq~ selected="selected"~ : '';
 
-			if (($iamadmin || $iamgmod || $iammod) && $sessionvalid == 1) {
+				# check if user can bypass locked threads
+				my $icanbypass = &checkUserLockBypass;
+				my $size = $currentboard ne $annboard ? 3 : 2;
+				$size-- unless $icanbypass;
+
 				$yymain .= qq~
 	<tr id="feature_status_4">
 		<td class="windowbg" align="left" valign="top" width="23%"><label for="topicstatus"><b>$post_txt{'34'}:</b></label></td>
 		<td class="windowbg" align="left" valign="middle" width="77%">
-			<select multiple="multiple" name="topicstatus" id="topicstatus" size="~ . ($currentboard ne $annboard ? 3 : 2) . qq~" style="vertical-align: middle;" onchange="showtpstatus()">
-			~ . ($currentboard ne $annboard ? qq~<option value="s" $stselect>$post_txt{'35'}</option>~ : "") . qq~
-			<option value="l" $lcselect>$post_txt{'36'}</option>
-			<option value="h" $hdselect>$post_txt{'37'}</option>
+			<select multiple="multiple" name="topicstatus" id="topicstatus" size="$size" style="vertical-align: middle;" onchange="showtpstatus()">~ . ($currentboard ne $annboard ? qq~
+			<option value="s"$stselect>$post_txt{'35'}</option>~ : "") . ($icanbypass ? qq~
+			<option value="l"$lcselect>$post_txt{'36'}</option>~ : "") . qq~
+			<option value="h"$hdselect>$post_txt{'37'}</option>
 			</select>
 			<img src="$imagesdir/$threadclass.gif" name="thrstat" border="0" hspace="15" alt="" style="vertical-align: middle;" />
 		</td>
@@ -1159,7 +1156,7 @@ function checkForm(theForm) {
 	</tr>~;
 
 		# File Attachment's Browse Box Code
-		if (&AccessCheck($currentboard, 4) eq 'granted' && $allowattach && ${$uid.$currentboard}{'attperms'} == 1 && -d "$uploaddir" && ($action eq 'post' || $action eq 'post2' || $action eq 'modify' || $action eq 'modify2') && (($allowguestattach == 0 && !$iamguest) || $allowguestattach == 1)) {
+		if (&AccessCheck($currentboard, 4) eq 'granted' && $allowattach && ${$uid.$currentboard}{'attperms'} == 1 && -d "$uploaddir" && $action =~ /^(post|modify)2?$/ && (($allowguestattach == 0 && !$iamguest) || $allowguestattach == 1)) {
 			$mfn = $mfn || $FORM{'oldattach'};
 			my @files = split(/,/, $mfn);
 
@@ -1488,7 +1485,7 @@ show_features();
 </script>~;
 	}
 
-	if ($postid ne 'Poll' && $post ne 'imsend' && ($iamadmin || $iamgmod || $iammod) && $sessionvalid == 1) {
+	if ($postid ne 'Poll' && $post ne 'imsend' && $staff) {
 		$yymain .= qq~
 <script language="JavaScript1.2" type="text/javascript">
 <!--
@@ -2032,7 +2029,7 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 sub Post2 {
 	if ($iamguest && $enable_guestposting == 0) { &fatal_error("not_logged_in"); }
 	#if ($currentboard eq $annboard && !$iamadmin && !$iamgmod) { &fatal_error('not_allowed'); }
-	if (!$iamadmin && !$iamgmod && !$iammod && $speedpostdetection && ${$uid.$username}{'spamcount'} >= $post_speed_count) {
+	if (!$staff && $speedpostdetection && ${$uid.$username}{'spamcount'} >= $post_speed_count) {
 		$detention_time = ${$uid.$username}{'spamtime'} + $spd_detention_time;
 		if($date <= $detention_time){
 			$detention_left = $detention_time - $date;
@@ -2084,7 +2081,7 @@ sub Post2 {
 	my $spamdetected = &spamcheck("$name $subject $message");
 	if (!${$uid.$FORM{$username}}{'spamcount'}) { ${$uid.$FORM{$username}}{'spamcount'} = 0; }
 	$postspeed = $date - $posttime;
-	if (!$iamadmin && !$iamgmod && !$iammod){
+	if (!$staff){
 		if (($speedpostdetection && $postspeed < $min_post_speed) || $spamdetected == 1) {
 			${$uid.$username}{'spamcount'}++;
 			${$uid.$username}{'spamtime'} = $date;
@@ -2158,7 +2155,7 @@ sub Post2 {
 	if ($testmessage eq "" && $message ne "" && $pollthread != 2) { fatal_error("useless_post","$testmessage"); }
 
 	if (!$minlinkpost){ $minlinkpost = 0 ;}
-	if (${$uid.$username}{'postcount'} < $minlinkpost && !$iamadmin && !$iamgmod && !$iammod) { 
+	if (${$uid.$username}{'postcount'} < $minlinkpost && !$staff) { 
 		if ($message =~ m~http:\/\/~ || $message =~ m~https:\/\/~ || $message =~ m~ftp:\/\/~ || $message =~ m~www.~ || $message =~ m~ftp.~ =~ m~\[url~ || $message=~ m~\[link~ || $message=~ m~\[img~ || $message=~ m~\[ftp~) {
 			&fatal_error("no_links_allowed");
 		}
@@ -2306,7 +2303,7 @@ sub Post2 {
 			my $fixext = $2;
 
 			my $spamdetected = &spamcheck("$fixname");
-			if (!$iamadmin && !$iamgmod && !$iammod){
+			if (!$staff){
 				if ($spamdetected == 1) {
 					${$uid.$username}{'spamcount'}++;
 					${$uid.$username}{'spamtime'} = $date;
@@ -2335,7 +2332,7 @@ sub Post2 {
 				}
 			}
 			if ($match) {
-				unless ($allowattach && (($allowguestattach == 0 && $username ne 'Guest') || $allowguestattach == 1)) {
+				unless ($allowattach && (($allowguestattach == 0 && !$iamguest) || $allowguestattach == 1)) {
 					foreach (@filelist) { &delete_DBorFILE("$uploaddir/$_"); }
 					&fatal_error("no_perm_att");
 				}
@@ -2465,10 +2462,9 @@ sub Post2 {
 		($mnum, $msub, $mname, $memail, $mdate, $mreplies, $musername, $micon, $mstate) = split(/\|/, $yyThreadLine);
 
 		if ($mstate =~ /l/i) { # locked thread
-			my $icanbypass = &checkUserLockBypass;
-			if (!$icanbypass) { &fatal_error('topic_locked');}
+			unless (&checkUserLockBypass) { &fatal_error('topic_locked'); }
 		}
-		if ($iammod || $iamgmod || $iamadmin) { $mstate = $currentboard eq $annboard ? "0a$thestatus" : "0$thestatus"; } # Leave the status as is if the user isn't allowed to change it
+		if ($staff) { $mstate = $currentboard eq $annboard ? "0a$thestatus" : "0$thestatus"; } # Leave the status as is if the user isn't allowed to change it
 
 		# ctb START
 		# Load the current .ctb info but don't close the file befor saving the changed data
@@ -3174,7 +3170,7 @@ sub modAlert2 {
 	my $spamdetected = &spamcheck("$name $subject $message");
 	if (!${$uid.$FORM{$username}}{'spamcount'}) { ${$uid.$FORM{$username}}{'spamcount'} = 0; }
 	$postspeed = $date - $posttime;
-	if (!$iamadmin && !$iamgmod && !$iammod){
+	if (!$staff){
 		if (($speedpostdetection && $postspeed < $min_post_speed) || $spamdetected == 1) {
 			${$uid.$username}{'spamcount'}++;
 			${$uid.$username}{'spamtime'} = $date;

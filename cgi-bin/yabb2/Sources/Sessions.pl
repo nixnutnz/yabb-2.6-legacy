@@ -109,7 +109,6 @@ sub SessionReval2 {
 	if (!$FORM{'cookieneverexp'}) { $ck{'len'} = "\+$FORM{'cookielength'}m"; }
 	else { $ck{'len'} = 'Sunday, 17-Jan-2038 00:00:00 GMT'; }
 	${$uid.$username}{'session'} = &encode_password($user_ip);
-	chomp ${$uid.$username}{'session'};
 	&UserAccount($username, "update");
 	&UpdateCookie("write", $username, ${$uid.$username}{'password'}, ${$uid.$username}{'session'}, "/", $ck{'len'});
 

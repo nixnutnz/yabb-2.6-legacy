@@ -923,6 +923,12 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 			depends_on => ['regtype!=0'],
 		},
 		{
+			description => qq~<label for="allow_self_del">$admin_txt{'586'}</label>~,
+			input_html => qq~<input type="checkbox" name="allow_self_del" id="allow_self_del" value="1"${ischecked($allow_self_del)} />~,
+			name => 'allow_self_del',
+			validate => 'boolean',
+		},
+		{
 			header => $settings_txt{'memberlist'},
 		},
 		{

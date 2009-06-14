@@ -105,10 +105,10 @@ sub buildIMsend {
 	elsif ($thestatus eq 'sb') { $stselect = qq~ selected="selected"~; $sendBMess = 1; }
 	elsif ($thestatus eq 'ub') { $urselect = qq~ selected="selected"~; $sendBMess = 1; }
 	elsif ($thestatus eq 'cb') { $cnselect = qq~ selected="selected"~; $sendBMess = 1; }
-	$sendBMess = 0 unless $sendBMess == 1 && (($PMenableBm_level == 1 && ($iamadmin || $iamgmod || $iammod)) || ($PMenableBm_level == 2 && ($iamadmin || $iamgmod)) || ($PMenableBm_level == 3 && $iamadmin));
+	$sendBMess = 0 unless $sendBMess == 1 && (($PMenableBm_level == 1 && $staff) || ($PMenableBm_level == 2 && ($iamadmin || $iamgmod)) || ($PMenableBm_level == 3 && $iamadmin));
 
 	##########   post code   #########
-	if (!$iamadmin && !$iamgmod && !$staff && ${$uid.$username}{'postcount'} < $numposts) {
+	if (!$staff && ${$uid.$username}{'postcount'} < $numposts) {
 		&fatal_error('im_low_postcount');
 	}
 

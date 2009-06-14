@@ -92,28 +92,24 @@ sub LoadUserSettings {
 	$iamguest = $username eq 'Guest' ? 1 : 0;
 	if ($username ne 'Guest') {
 		&LoadUser($username);
-		if (!$maintenance || ${$uid.$username}{'position'} eq 'Administrator') {
+		# Make sure that if the password doesn't match,
+		# or the forum is in maintenace and you are not the admin,
+		# you get FULLY Logged out
+		if (${$uid.$username}{'password'} eq $password && (!$maintenance || ${$uid.$username}{'position'} eq 'Administrator')) {
+			($iamadmin,$iamgmod,$staff) = (0,0,0);
+			if    (${$uid.$username}{'position'} eq 'Administrator')    { $staff = $iamadmin = 1; }
+			elsif (${$uid.$username}{'position'} eq 'Global Moderator') { $staff = $iamgmod  = 1; }
 			$iammod = &is_moderator($username);
-			if (${$uid.$username}{'position'} eq 'Administrator' || ${$uid.$username}{'position'} eq 'Global Moderator' || $iammod) { $staff = 1; }
-			else { $staff = 0; }
+			$staff = $staff || $iammod;
+
 			$sessionvalid = 1;
-			if ($sessions == 1 && $staff == 1) {
-				$cursession = &encode_password($user_ip);
-				chomp $cursession;
-				if (${$uid.$username}{'session'} ne $cursession || ${$uid.$username}{'session'} ne $cookiesession) { $sessionvalid = 0; }
-			}
-			$spass = ${$uid.$username}{'password'};
-
-			# Make sure that if the password doesn't match you get FULLY Logged out
-			if ($spass && $spass ne $password && $action ne 'logout') {
-				$yySetLocation = $guestaccess ? qq~$scripturl~ : qq~$scripturl?action=login~;
-				&UpdateCookie("delete");
-				&redirectexit;
+			if ($sessions && $staff) {
+				my $cursession = &encode_password($user_ip);
+				if (${$uid.$username}{'session'} !~ /^($cursession|$cookiesession)$/) {
+					$staff = $iammod = $iamgmod = $iamadmin = $sessionvalid = 0;
+				}
 			}
 
-			$iamadmin  = (${$uid.$username}{'position'} eq 'Administrator' && $sessionvalid == 1) ? 1 : 0;
-			$iamgmod   = (${$uid.$username}{'position'} eq 'Global Moderator' && $sessionvalid == 1) ? 1 : 0;
-			if ($sessionvalid == 1) { ${$uid.$username}{'session'} = $cursession; }
 			&CalcAge($username, "calc");
 			# Set the order how Topic summaries are displayed
 			$ttsreverse = ${$uid.$username}{'reversetopic'} if !$adminscreen && $ttsureverse;
@@ -173,7 +169,7 @@ sub LoadUser {
 	if (${$uid.$user}{'realname'} ne "") {
 		if ($use_MySQL) {
 			${$uid.$user}{'mysql'} = 1;
-			if ($user eq $username) {
+			if ($user eq $username && $userextension eq 'vars') {
 				&write_DBorFILE(${$uid.$user}{'mysql'},'',$memberdir,$user,'lastonline',($date));
 			}
 
@@ -576,7 +572,7 @@ sub LoadCookie {
 	if ($yyCookies{$cookiepassword}) {
 		$password      = $yyCookies{$cookiepassword};
 		$username      = $yyCookies{$cookieusername} || 'Guest';
-		$cookiesession = $yyCookies{$session_id};
+		$cookiesession = $yyCookies{$cookiesession_name};
 	} else {
 		$password = '';
 		$username = 'Guest';
@@ -609,49 +605,21 @@ sub UpdateCookie {
 	if ($valid) {
 		if ($expire eq "persistent") { $expiration = "Sunday, 17-Jan-2038 00:00:00 GMT"; }
 		$yySetCookies1 = &write_cookie(
-			-name    => "$cookieusername",
-			-value   => "$user",
-			-path    => "$pathval",
-			-expires => "$expiration");
+			-name    => $cookieusername,
+			-value   => $user,
+			-path    => $pathval,
+			-expires => $expiration);
 		$yySetCookies2 = &write_cookie(
-			-name    => "$cookiepassword",
-			-value   => "$passw",
-			-path    => "$pathval",
-			-expires => "$expiration");
+			-name    => $cookiepassword,
+			-value   => $passw,
+			-path    => $pathval,
+			-expires => $expiration);
 		$yySetCookies3 = &write_cookie(
-			-name    => "$cookiesession_name",
-			-value   => "$sessionval",
-			-path    => "$pathval",
-			-expires => "$expiration");
+			-name    => $cookiesession_name,
+			-value   => $sessionval,
+			-path    => $pathval,
+			-expires => $expiration);
 	}
-}
-
-sub LoadAccess {
-	$yesaccesses .= "$load_txt{'805'} $load_txt{'806'} $load_txt{'808'}<br />";
-	$noaccesses = "";
-
-	# Reply Check
-	my $rcaccess = &AccessCheck($currentboard, 2) || 0;
-	if ($rcaccess eq "granted") { $yesaccesses .= "$load_txt{'805'} $load_txt{'806'} $load_txt{'809'}<br />"; }
-	else { $noaccesses .= "$load_txt{'805'} $load_txt{'807'} $load_txt{'809'}<br />"; }
-
-	# Topic Check
-	my $tcaccess = &AccessCheck($currentboard, 1) || 0;
-	if ($tcaccess eq "granted") { $yesaccesses .= "$load_txt{'805'} $load_txt{'806'} $load_txt{'810'}<br />"; }
-	else { $noaccesses .= "$load_txt{'805'} $load_txt{'807'} $load_txt{'810'}<br />"; }
-
-	# Poll Check
-	my $access = &AccessCheck($currentboard, 3) || 0;
-	if ($access eq "granted") { $yesaccesses .= "$load_txt{'805'} $load_txt{'806'} $load_txt{'811'}<br />"; }
-	else { $noaccesses .= "$load_txt{'805'} $load_txt{'807'} $load_txt{'811'}<br />"; }
-
-	# Zero Post Check
-	if ($username ne 'Guest') {
-		if ($INFO{'zeropost'} != 1 && $rcaccess eq "granted") { $yesaccesses .= "$load_txt{'805'} $load_txt{'806'} $load_txt{'812'}<br />"; }
-		else { $noaccesses .= "$load_txt{'805'} $load_txt{'807'} $load_txt{'812'}<br />"; }
-	}
-
-	$accesses = qq~$yesaccesses<br />$noaccesses~;
 }
 
 sub WhatTemplate {

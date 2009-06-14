@@ -145,7 +145,7 @@ sub Print {
 		$ishidden = 1;
 	}
 
-	if ($ishidden && !$iammod && !$iamadmin && !$iamgmod) { &fatal_error("no_access"); }
+	if ($ishidden && !$staff) { &fatal_error("no_access"); }
 
 	# Figure out the name of the category
 	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }

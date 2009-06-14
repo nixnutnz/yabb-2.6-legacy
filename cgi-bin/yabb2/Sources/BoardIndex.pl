@@ -518,7 +518,7 @@ sub BoardIndex {
 		}
 
 		$ims = '';
-		if ($PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod))){
+		if ($PM_level == 1 || ($PM_level == 2 && $staff) || ($PM_level == 3 && ($iamadmin || $iamgmod))){
 			$ims = qq~$boardindex_txt{'795'} <a href="$scripturl?action=im"><b>${$username}{'PMmnum'}</b></a> $boardindex_txt{'796'}~;
 			if (${$username}{'PMmnum'} > 0) {
 				if (${$username}{'PMimnewcount'} == 1) {

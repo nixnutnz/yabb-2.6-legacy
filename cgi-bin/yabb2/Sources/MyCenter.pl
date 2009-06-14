@@ -685,7 +685,7 @@ sub drawPMbox {
 	$PMfileToOpen = $_[0];
 	@dimmessages;
 	@bmessages;
-	if (($PMfileToOpen || $INFO{'focus'}) && $view eq 'pm' && ($PM_level  == 1 || $PM_level  == 2 && ($iamadmin || $iamgmod || $iammod) || $PM_level  == 3 && ($iamadmin || $iamgmod))) {
+	if (($PMfileToOpen || $INFO{'focus'}) && $view eq 'pm' && ($PM_level  == 1 || ($PM_level  == 2 && $staff) || ($PM_level  == 3 && ($iamadmin || $iamgmod)))) {
 		if (!$INFO{'focus'}) {
 			if ($callerid < 5) {
 				@dimmessages = &read_DBorFILE(0,'',$memberdir,$username,$PMfileToOpen);
@@ -795,7 +795,7 @@ function insert_user (oElement,username,userid) {
 </script>
 	~;
 
-	if ($action =~ /^im/ && (!@dimmessages && $INFO{'focus'} ne 'bmess') && ($PM_level == 1 || $PM_level == 2 && ($iamadmin || $iamgmod || $iammod) || $PM_level == 3 && ($iamadmin || $iamgmod))) {
+	if ($action =~ /^im/ && (!@dimmessages && $INFO{'focus'} ne 'bmess') && ($PM_level == 1 || ($PM_level == 2 && $staff) || ($PM_level == 3 && ($iamadmin || $iamgmod)))) {
 		if (!@dimmessages) {
 			if    ($action eq 'im')        { &delete_DBorFILE("$memberdir/$username.msg"); }
 			elsif ($action eq 'imoutbox')  { &delete_DBorFILE("$memberdir/$username.outbox"); }
@@ -820,7 +820,7 @@ function insert_user (oElement,username,userid) {
 		$newtemplate = 1;
 	}
 
-	if ($view eq 'profile' || ($view eq 'mycenter' && ($PM_level == 0 || ($PM_level == 2 && !$iamadmin && !$iamgmod && !$iammod ) || ($PM_level == 3 && !$iamadmin && !$iamgmod)))) {
+	if ($view eq 'profile' || ($view eq 'mycenter' && ($PM_level == 0 || ($PM_level == 2 && !$staff) || ($PM_level == 3 && !$iamadmin && !$iamgmod)))) {
 		$display_prof = 'inline';
 		$tabProfHighlighted = 'windowbg2';
 	} else {
@@ -836,7 +836,7 @@ function insert_user (oElement,username,userid) {
 		$tabNotifyHighlighted = 'windowbg';
 	}
 
-	if ($view eq 'pm' || ($view eq 'mycenter' && ($PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod))))) {
+	if ($view eq 'pm' || ($view eq 'mycenter' && ($PM_level == 1 || ($PM_level == 2 && $staff) || ($PM_level == 3 && ($iamadmin || $iamgmod))))) {
 		$display_pm = 'inline';
 
 		$tabPMHighlighted = 'windowbg2';
@@ -846,7 +846,7 @@ function insert_user (oElement,username,userid) {
 	}
 
 	my $tabWidth = '33%';
-	if ($PM_level == 0 || ($PM_level == 2 && !$iamadmin && !$iamgmod && !$iammod ) || ($PM_level == 3 && !$iamadmin && !$iamgmod)) { $tabWidth = '50%'; }
+	if ($PM_level == 0 || ($PM_level == 2 && !$staff) || ($PM_level == 3 && !$iamadmin && !$iamgmod)) { $tabWidth = '50%'; }
 	$MCViewMenu = '';
 	$MCPmMenu = '';
 	$MCProfMenu = '';
@@ -859,7 +859,7 @@ function insert_user (oElement,username,userid) {
 		<script language="JavaScript1.2" type="text/javascript">
 		<!--
 		function changeToTab(tab) {~;
-		if ($PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
+		if ($PM_level == 1 || ($PM_level == 2 && $staff) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
 			$MCViewMenu .= qq~
 			document.getElementById('cont_pm').style.display = 'none';
 			document.getElementById('menu_pm').className = '';~;
@@ -879,7 +879,7 @@ function insert_user (oElement,username,userid) {
 		<script language="JavaScript1.2" type="text/javascript">
 		<!--
 		function changeToTab(tab) {~;
-		if ($PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
+		if ($PM_level == 1 || ($PM_level == 2 && $staff) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
 			$MCViewMenu .= qq~
 			document.getElementById('cont_pm').style.display = 'none';
 			document.getElementById('menu_pm').className = 'windowbg';~;
@@ -897,11 +897,11 @@ function insert_user (oElement,username,userid) {
 		$MCViewMenu .= qq~
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
 		<tr>~;
-		if ($PM_level == 0 || ($PM_level == 2 && !$iamadmin && !$iamgmod && !$iammod ) || ($PM_level == 3 && !$iamadmin && !$iamgmod)) {
+		if ($PM_level == 0 || ($PM_level == 2 && !$staff) || ($PM_level == 3 && !$iamadmin && !$iamgmod)) {
 			$display_prof = 'inline';
 			$tabProfHighlighted = 'windowbg2';
 		}
-		if ($PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod))   ) {
+		if ($PM_level == 1 || ($PM_level == 2 && $staff) || ($PM_level == 3 && ($iamadmin || $iamgmod))   ) {
 			$MCViewMenu .= qq~
 			<td width="$tabWidth" align="center" valign="middle" class="$tabPMHighlighted" id="menu_pm"><a href="javascript:void(0);" onclick="changeToTab('pm'); return false;">$mc_menus{'messages'}</a></td>~;
 		}
@@ -955,7 +955,7 @@ function insert_user (oElement,username,userid) {
 		<span class="nav"><b><a href="$scripturl?$thisLink">$profile_buddy_list{'buddylist'}</a></b></span><br />~;
 	}
 
-	if ($PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
+	if ($PM_level == 1 || ($PM_level == 2 && $staff) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
 		$thisLink = $profileLink . 'myprofileIM;username=' . $useraccount{$username} . $sidLink;
 		$MCProfMenu .= qq~
 		<span class="nav"><b><a href="$scripturl?$thisLink">$inmes_txt{'765'}</a></b></span>
@@ -1303,13 +1303,13 @@ function insert_user (oElement,username,userid) {
 	}
 
 	## start PM div
-	if ($PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
+	if ($PM_level == 1 || ($PM_level == 2 && $staff) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
 		$MCPmMenu .= qq~
 	<div id="cont_pm" style="display: $display_pm">
 		<table id="pms" width="100%" align="center" class="windowbg2" cellpadding="1">
 		~;
 
-		if (($PMenableBm_level == 1 && ($iamadmin || $iamgmod || $iammod)) || ($PMenableBm_level == 2 && ($iamadmin || $iamgmod)) || ($PMenableBm_level == 3 && $iamadmin)) {
+		if (($PMenableBm_level == 1 && $staff) || ($PMenableBm_level == 2 && ($iamadmin || $iamgmod)) || ($PMenableBm_level == 3 && $iamadmin)) {
 			$MCPmMenu .= qq~
 			<tr>
 				<td style="text-align: left;" colspan="3">
@@ -2246,7 +2246,7 @@ sub LoadBuddyList {
 			}
 
 			&CheckUserPM_Level($buddyname);
-			if ($PM_level == 1 || ($PM_level == 2 && $UserPM_Level{$buddyname} > 1 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && $UserPM_Level{$buddyname} == 3 && ($iamadmin || $iamgmod))) {
+			if ($PM_level == 1 || ($PM_level == 2 && $UserPM_Level{$buddyname} > 1 && $staff) || ($PM_level == 3 && $UserPM_Level{$buddyname} == 3 && ($iamadmin || $iamgmod))) {
 				$buddypm = qq~<a href="$scripturl?action=imsend;to=$useraccount{$buddyname}"><img src="$imagesdir/imclose.gif" border="0" alt="$profile_txt{'688'} $buddyrealname" title="$profile_txt{'688'} $buddyrealname" /></a>~;
 			}
 
@@ -2269,7 +2269,7 @@ sub mcMenu {
 	my ($pmclass, $profclass, $postclass);
 	if ($action eq "mycenter" || $action eq "im" || $action eq "imdraft" || $action eq "imoutbox" || $action eq "imstorage" || $action eq "imsend" || $action eq "imsend2" || $action eq "imshow") {
 		$pmclass = qq~ class="selected"~;
-		if ($PM_level == 0 || ($PM_level == 2 && !$iamadmin && !$iamgmod && !$iammod ) || ($PM_level == 3 && !$iamadmin && !$iamgmod)) {
+		if ($PM_level == 0 || ($PM_level == 2 && !$staff) || ($PM_level == 3 && !$iamadmin && !$iamgmod)) {
 			$profclass = qq~ class="selected"~;
 		}
 	}
@@ -2286,7 +2286,7 @@ sub mcMenu {
 	my $tabfill = qq~<img src="$imagesdir/tabfill.gif" border="0" alt="" style="vertical-align: middle;" />~;
 
 	# pm link
-	if ($PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
+	if ($PM_level == 1 || ($PM_level == 2 && $staff) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
 		$yymcmenu .= qq~<span onclick="changeToTab('pm'); return false;"$pmclass id="menu_pm"><a href="$scripturl?action=mycenter" onclick="changeToTab('pm'); return false;">$tabfill$mc_menus{'messages'}$tabfill</a></span>$tabsep
 		~;
 	}

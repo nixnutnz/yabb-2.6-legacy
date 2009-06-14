@@ -95,7 +95,7 @@ sub Favorites {
 
 		# Set thread class depending on locked status and number of replies.
 		if ($mnum == '') { next; }
-		#if ($mstate =~ /h/i && ((!$iamadmin && !$iamgmod && !$iammod) || $sessionvalid == 0)) { next; }
+		#if ($mstate =~ /h/i && !$staff) { next; }
 
 		&MessageTotals('load', $mnum);
 
@@ -279,7 +279,7 @@ sub Favorites {
 		<img src="$imagesdir/stickylock.gif" alt="$messageindex_txt{'780'}" title="$messageindex_txt{'780'}" /> $messageindex_txt{'780'}<br />
 	~;
 
-	if (($iamadmin || $iamgmod || $iammod) && $sessionvalid == 1) {
+	if ($staff) {
 		$yabbadminicons = qq~<img src="$imagesdir/hide.gif" alt="$messageindex_txt{'458'}" title="$messageindex_txt{'458'}" /> $messageindex_txt{'458'}<br />~;
 		$yabbadminicons .= qq~<img src="$imagesdir/hidesticky.gif" alt="$messageindex_txt{'459'}" title="$messageindex_txt{'459'}" /> $messageindex_txt{'459'}<br />~;
 		$yabbadminicons .= qq~<img src="$imagesdir/hidelock.gif" alt="$messageindex_txt{'460'}" title="$messageindex_txt{'460'}" /> $messageindex_txt{'460'}<br />~;
@@ -295,8 +295,6 @@ sub Favorites {
 
 	$formstart = qq~<form name="multiremfav" action="$scripturl?board=$currentboard;action=multiremfav" method="post" style="display: inline">~;
 	$formend   = qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
-
-	&LoadAccess;
 
 	$adminselector = qq~
 	<input type="submit" value="$messageindex_txt{'842'}" class="button" />

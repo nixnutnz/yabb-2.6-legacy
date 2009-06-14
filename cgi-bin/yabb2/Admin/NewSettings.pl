@@ -544,6 +544,7 @@ $templateset);						# Forum templates settings
 \$regtype = $regtype;					# 0 = registration closed (only admin can register), 1 = pre registration with admin approval, 
 							# 2 = pre registration and email activation, 3 = open registration
 \$RegAgree = $RegAgree;					# Set to 1 to display the registration agreement when registering
+\$allow_self_del = $allow_self_del;				# Set to 1 to allow users to delete their Profile.
 \$RegReasonSymbols = $RegReasonSymbols;			# Maximum allowed symbols in User reason(s) for registering
 \$preregspan = $preregspan;				# Time span in hours for users to account activation before cleanup
 \$pwstrengthmeter_scores = "\Q$pwstrengthmeter_scores\E";	# Password-Strength-Meter Scores

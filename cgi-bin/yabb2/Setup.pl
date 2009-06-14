@@ -2431,19 +2431,19 @@ sub adminlogin2 {
 		&setup_fatal_error("Setup Error: Could not find the admin data file in $memberdir! Please check your access rights.");
 	}
 
+	# check if forum.control can be open (needed in &LoadBoardControl used by &LoadUserSettings)
+	fopen(FORUMCONTROL, "$boardsdir/forum.control") || &setup_fatal_error("$maintext_23 $boardsdir/forum.control: ", 1);
+	fclose(FORUMCONTROL);
+
 	if ($FORM{'cookielength'} < 1 || $FORM{'cookielength'} > 9999) { $FORM{'cookielength'} = $Cookie_Length; }
 	if (!$FORM{'cookieneverexp'}) { $ck{'len'} = "\+$FORM{'cookielength'}m"; }
 	else { $ck{'len'} = 'Sunday, 17-Jan-2038 00:00:00 GMT'; }
 	$password = &encode_password("$FORM{'password'}");
 	${$uid.$username}{'session'} = &encode_password($user_ip);
-	chomp ${$uid.$username}{'session'};
-
-	# check if forum.control can be open (needed in &LoadBoardControl used by &LoadUserSettings)
-	fopen(FORUMCONTROL, "$boardsdir/forum.control") || &setup_fatal_error("$maintext_23 $boardsdir/forum.control: ", 1);
-	fclose(FORUMCONTROL);
 
 	&UpdateCookie("write", "$username", "$password", "${$uid.$username}{'session'}", "/", "$ck{'len'}");
 	&LoadUserSettings;
+
 	$yymain .= qq~
 	<br /><br /><br /><form action="$set_cgi?action=setup1" method="post"><center>
 	<table width="50%" border="0" bgcolor= "#000000" cellspacing="1" cellpadding="0">

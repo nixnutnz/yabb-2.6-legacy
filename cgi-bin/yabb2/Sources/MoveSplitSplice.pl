@@ -20,7 +20,7 @@ if ($action eq 'detailedversion') { return 1; }
 &LoadLanguage('MoveSplitSplice');
 
 sub Split_Splice {
-	if (!$iammod && !$iamadmin && !$iamgmod) { &fatal_error("split_splice_not_allowed"); }
+	if (!$staff) { &fatal_error("split_splice_not_allowed"); }
 	&Split_Splice_2 if $FORM{'ss_submit'} || $INFO{'ss_submit'};
 
 	$output = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -266,7 +266,7 @@ sub Split_Splice {
 }
 
 sub Split_Splice_2 {
-	if (!$iammod && !$iamadmin && !$iamgmod && $INFO{'newboard'} ne $binboard) { &fatal_error("split_splice_not_allowed"); }
+	if (!$staff && $INFO{'newboard'} ne $binboard) { &fatal_error("split_splice_not_allowed"); }
 
 	my $curboard       = $INFO{'board'};
 	my $curthreadid    = $INFO{'thread'};

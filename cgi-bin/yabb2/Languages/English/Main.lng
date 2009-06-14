@@ -93,7 +93,7 @@ $abbr_lang = 'en-us';
 '199' => 'Post not found',
 '213' => 'Users Last Posts',
 '214' => 'Recent Posts',
-'214b' => 'most Recent Topics',
+'214b' => 'Recent Topics',
 '236' => 'Return',
 '237' => 'to the Board Index.',
 '247m' => 'Good Morning',
@@ -156,6 +156,7 @@ $abbr_lang = 'en-us';
 '810' => 'start new Topics in this Board.',
 '811' => 'start Polls in this Board.',
 '812' => 'post towards your Post Count in this Board.',
+'813' => 'post Attachments in this Board.',
 );
 
 %load_imtxt = (

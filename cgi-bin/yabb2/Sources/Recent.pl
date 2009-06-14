@@ -17,35 +17,32 @@
 $recentplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
-# Sub RecentTopics shows all the most recently posted topics
-# Meaning each thread will show up ONCE in the list.
+# Sub Recent_Topics_Posts shows
+# - all the most recently posted topics (recenttopics)
+# - OR the X last POSTS (recent)
+# Meaning each thread will show up ONCE in the list (recenttopics)
+# OR all new post will be shown even if from the same thread (recent)
 
-# Sub RecentPosts will show the X last POSTS
-# Even if they are all from the same thread
-
-sub RecentTopics {
+sub Recent_Topics_Posts {
 	&spam_protection;
 
-	my $display = $INFO{'display'} || 10;
+	my ($recent_topics, $display, @data, $numfound, %catid, %catname, $curboard, $boardperms, $i, $c, @mess, @messages, $tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $mns, $mtime, $board, $notify, $registrationdate, $icanbypass);
+
+	$recent_topics = $action eq 'recenttopics' ? 1 : 0;
+
+	$display = $FORM{'display'} || $INFO{'display'} || 10;
 	if ($display < 0) { $display = 5; }
 	elsif ($display > $maxrecentdisplay) { $display = $maxrecentdisplay; }
-	my (@memset, @categories, %data, $numfound, $curcat, %catid, %catname, %cataccess, %catboards, $openmemgr, @membergroups, %openmemgr, $curboard, @threads, @boardinfo, $i, $c, @messages, $tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $mns, $mtime, $counter, $board, $notify);
+
 	$numfound = 0;
+	foreach my $catid (@categoryorder) {
+		my ($catname, $catperms) = split(/\|/, $catinfo{$catid});
+		unless (&CatAccess($catperms)) { next; }
 
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
-	foreach $catid (@categoryorder) {
-		$boardlist = $cat{$catid};
+		foreach $curboard (split(/\,/, $cat{$catid})) {
+			($boardname{$curboard}, $boardperms, undef) = split(/\|/, $board{$curboard});
 
-		(@bdlist) = split(/\,/, $boardlist);
-		($catname, $catperms) = split(/\|/, $catinfo{$catid});
-		$cataccess = &CatAccess($catperms);
-		if (!$cataccess) { next; }
-
-		foreach $curboard (@bdlist) {
-			($boardname{$curboard}, $boardperms, $boardview) = split(/\|/, $board{$curboard});
-
-			my $access = &AccessCheck($curboard, '', $boardperms);
-			if (!$iamadmin && $access ne "granted") { next; }
+			if (!$iamadmin && &AccessCheck($curboard, '', $boardperms) ne "granted") { next; }
 
 			$catid{$curboard} = $catid;
 			$catname{$curboard} = $catname;
@@ -55,8 +52,7 @@ sub RecentTopics {
 				($tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate) = split(/\|/, $buffer[$i]);
 				chomp $tstate;
 				if ($tstate !~ /h/ || $iamadmin || $iamgmod) {
-					$mtime = $tdate;
-					$data[$numfound] = "$mtime|$curboard|$tnum|$treplies|$tusername|$tname|$tstate";
+					$data[$numfound] = "$tdate|$curboard|$tnum|$treplies|$tusername|$tname|$tstate";
 					$numfound++;
 				}
 			}
@@ -64,52 +60,54 @@ sub RecentTopics {
 	}
 
 	@data = sort {$b <=> $a} @data;
+
 	$numfound = 0;
-
-	for ($i = 0; $i < @data; $i++) {
+	$notify = $recent_topics ? scalar @data : (@data > $display ? $display : scalar @data);
+	for ($i = 0; $i < $notify; $i++) {
 		($mtime, $curboard, $tnum, $treplies, $tusername, $tname, $tstate) = split(/\|/, $data[$i]);
-		$tstart = $mtime;
 
-		# get only the last post for this thread.
-		foreach (&read_DBorFILE(1,'',$datadir,$tnum,'txt')) { $message = $_; }
+		next if !(@mess = &read_DBorFILE(0,'',$datadir,$tnum,'txt'));
 
-		chomp $message;
-
-		if ($message) {
-			($msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $mns) = split(/\|/, $message);
-			$messages[$numfound] = "$curboard|$tnum|$treplies|$tusername|$tname|$msub|$mname|$memail|$mdate|$musername|$micon|$mreplyno|$mip|$message|$mns|$tstate|$tstart";
-			$numfound++;
-			if ($numfound == $display) { last; }
+		for ($c = ($recent_topics ? $#mess : (@mess > $display ? @mess - $display : 0)); $c < @mess; $c++) {
+			chomp($mess[$c]);
+			if ($mess[$c]) {
+				($msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $mns) = split(/\|/, $mess[$c]);
+				$messages[$numfound] = "$mdate|$curboard|$tnum|$c|$tusername|$tname|$msub|$mname|$memail|$mdate|$musername|$micon|$mreplyno|$mip|$message|$mns|$tstate|$mtime";
+				$numfound++;
+			}
 		}
+		if ($recent_topics && $numfound == $display) { last; }
 	}
 
+	@messages  = sort {$b <=> $a} @messages;
+
 	if ($numfound > 0) {
-		$counter = 1;
+		if ($numfound > $display) { $numfound = $display; }
 		&LoadCensorList;
+		$icanbypass = &checkUserLockBypass;
 	} else {
 		$yymain .= qq~<hr class="hr" /><b>$maintxt{'170'}</b><hr />~;
 	}
 
 	for ($i = 0; $i < $numfound; $i++) {
-		($board, $tnum, $c, $tusername, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $mns, $tstate, $trstart) = split(/\|/, $messages[$i]);
-		$displayname = $mname;
+		(undef, $board, $tnum, $c, $tusername, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $mns, $tstate, $trstart) = split(/\|/, $messages[$i]);
 
-		if ($tusername ne 'Guest' && !exists ${$uid.$tusername}{'regtime'} && &checkfor_DBorFILE("$memberdir/$tusername.vars")) { &LoadUser($tusername); }
+		if ($tusername ne 'Guest') { &LoadUser($tusername); }
 		if (${$uid.$tusername}{'regtime'}) {
 			$registrationdate = ${$uid.$tusername}{'regtime'};
 		} else {
 			$registrationdate = $date;
 		}
 
-		if (${$uid.$tusername}{'regdate'} && $mtime > $registrationdate) {
+		if (${$uid.$tusername}{'regdate'} && $trstart > $registrationdate) {
 			$tname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tusername}">${$uid.$tusername}{'realname'}</a>~;
-		} elsif ($tusername !~ m~Guest~ && $mtime < $registrationdate) {
+		} elsif ($tusername !~ m~Guest~ && $trstart < $registrationdate) {
 			$tname = qq~$tname - $maintxt{'470a'}~;
 		} else {
 			$tname = "$tname ($maintxt{'28'})";
 		}
 
-		if ($musername ne 'Guest' && !exists ${$uid.$musername}{'regtime'} && &checkfor_DBorFILE("$memberdir/$musername.vars")) { &LoadUser($musername); }
+		if ($musername ne 'Guest') { &LoadUser($musername); }
 		if (${$uid.$musername}{'regtime'}) {
 			$registrationdate = ${$uid.$musername}{'regtime'};
 		} else {
@@ -154,7 +152,7 @@ sub RecentTopics {
 		$yymain .= qq~
 <table border="0" width="100%" cellspacing="1" class="bordercolor" style="table-layout: fixed;">
 	<tr>
-		<td align="center" width="5%" class="titlebg">$counter</td>
+		<td align="center" width="5%" class="titlebg">~ . ($i + 1) . qq~</td>
 		<td align="left" width="95%" class="titlebg">&nbsp;<a href="$scripturl?catselect=$catid{$board}"><u>$catname{$board}</u></a> / <a href="$scripturl?board=$board"><u>$boardname{$board}</u></a> / <a href="$scripturl?num=$tnum/$c#$c"><u>$msub</u></a><br />
 		&nbsp;<span class="small">$maintxt{'30'}: $mdate</span>&nbsp;</td>
 	</tr>
@@ -166,10 +164,16 @@ sub RecentTopics {
 					<td align="right">&nbsp;~;
 
 		if ($tstate != 1 && (!$iamguest || $enable_guestposting)) {
-			$yymain .= qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$c#$c;title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num=$tnum;quote=$c;title=PostReply">$img{'recentquote'}</a>$notify &nbsp;~;
+			$yymain .= qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$c#$c;title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num=$tnum;quote=$c;title=PostReply">$img{'recentquote'}</a>$notify~;
 		}
 
-		$yymain .= qq~
+		if ($staff && ($icanbypass || $tstate !~ /l/i) && (!$iammod || &is_moderator($username,$board))) {
+				&LoadLanguage('Display');
+				$yymain .= $recent_topics ? qq~$menusep<a href="$scripturl?action=removethread;recent=1;thread=$tnum" onclick="return confirm('~ . (($icanbypass && $tstate =~ /l/i) ? qq~$display_txt{'modifyinlocked'}\\n\\n~ : '') . qq~$display_txt{'162'}')">$img{'delete'}</a>~ :
+				                            qq~$menusep<a href="$scripturl?action=multidel;recent=1;thread=$tnum;del$c=$c" onclick="return confirm('~ . (($icanbypass && $tstate =~ /l/i) ? qq~$display_txt{'modifyinlocked'}\\n\\n~ : '') . qq~$display_txt{'rempost'}')">$img{'delete'}</a>~;
+		}
+
+		$yymain .= qq~ &nbsp;
 					</td>
 				</tr>
 			</table>
@@ -180,175 +184,6 @@ sub RecentTopics {
 	</tr>
 </table><br />
 ~;
-		++$counter;
-	}
-
-	$yynavigation = qq~&rsaquo; $maintxt{'214'}~;
-	$yytitle = $maintxt{'214'};
-	&template;
-}
-
-sub RecentPosts {
-	&spam_protection;
-
-	my $display = $FORM{'display'} ||= 10;
-	if ($display < 0) { $display = 5; }
-	elsif ($display > $maxrecentdisplay) { $display = $maxrecentdisplay; } 
-	my (@memset, @categories, %data, $numfound, $curcat, %catid, %catname, %cataccess, %catboards, $openmemgr, @membergroups, %openmemgr, $curboard, @threads, @boardinfo, $i, $c, @messages, $tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $mns, $mtime, $counter, $board, $notify);
-	$numfound = 0;
-
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
-	foreach $catid (@categoryorder) {
-		$boardlist = $cat{$catid};
-
-		(@bdlist) = split(/\,/, $boardlist);
-		($catname, $catperms) = split(/\|/, $catinfo{$catid});
-		$cataccess = &CatAccess($catperms);
-		if (!$cataccess) { next; }
-
-		foreach $curboard (@bdlist) {
-			($boardname{$curboard}, $boardperms, $boardview) = split(/\|/, $board{$curboard});
-
-			my $access = &AccessCheck($curboard, '', $boardperms);
-			if (!$iamadmin && $access ne "granted") { next; }
-
-			$catid{$curboard} = $catid;
-			$catname{$curboard} = $catname;
-
-			my @buffer = &read_DBorFILE(0,'',$boardsdir,$curboard,'txt');
-			for ($i = 0; ($i < $display && $buffer[$i]); $i++) {
-				($tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate) = split(/\|/, $buffer[$i]);
-				chomp $tstate;
-				if ($tstate !~ /h/ || $iamadmin || $iamgmod) {
-					$mtime = $tdate;
-					$data[$numfound] = "$mtime|$curboard|$tnum|$treplies|$tusername|$tname|$tstate";
-					$numfound++;
-				}
-			}
-		}
-	}
-
-	@data = sort {$b <=> $a} @data;
-
-	$numfound    = 0;
-	$threadfound = @data > $display ? $display : @data;
-
-	for ($i = 0; $i < $threadfound; $i++) {
-		($mtime, $curboard, $tnum, $treplies, $tusername, $tname, $tstate) = split(/\|/, $data[$i]);
-		# No need to check for hidden topics here, it was done above
-		$tstart = $mtime;
-		next if !(@mess = &read_DBorFILE(0,'',$datadir,$tnum,'txt'));
-
-		$threadfrom = @mess > $display ? @mess - $display : 0;
-		for ($ii = $threadfrom; $ii < @mess + 1; $ii++) {
-			if ($mess[$ii]) {
-				($msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $mns) = split(/\|/, $mess[$ii]);
-				$mtime = $mdate;
-				$messages[$numfound] = "$mtime|$curboard|$tnum|$ii|$tusername|$tname|$msub|$mname|$memail|$mdate|$musername|$micon|$mreplyno|$mip|$message|$mns|$tstate|$tstart";
-				$numfound++;
-			}
-		}
-	}
-
-	@messages  = sort {$b <=> $a} @messages;
-
-	if ($numfound > 0) {
-		if ($numfound > $display) { $numfound = $display; }
-		$counter = 1;
-		&LoadCensorList;
-	} else {
-		$yymain .= qq~<hr class="hr"><b>$maintxt{'170'}</b><hr>~;
-	}
-
-	for ($i = 0; $i < $numfound; $i++) {
-		($dummy, $board, $tnum, $c, $tusername, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $mns, $tstate, $trstart) = split(/\|/, $messages[$i]);
-		$displayname = $mname;
-
-		if ($tusername ne 'Guest' && !exists ${$uid.$tusername}{'regtime'} && &checkfor_DBorFILE("$memberdir/$tusername.vars")) { &LoadUser($tusername); }
-		if (${$uid.$tusername}{'regtime'}) {
-			$registrationdate = ${$uid.$tusername}{'regtime'};
-		} else {
-			$registrationdate = $date;
-		}
-
-		if (${$uid.$tusername}{'regdate'} && $trstart > $registrationdate) {
-			$tname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tusername}">${$uid.$tusername}{'realname'}</a>~;
-		} elsif ($tusername !~ m~Guest~ && $trstart < $registrationdate) {
-			$tname = qq~$tname - $maintxt{'470a'}~;
-		} else {
-			$tname = "$tname ($maintxt{'28'})";
-		}
-
-		if ($musername ne 'Guest' && !exists ${$uid.$musername}{'regtime'} && &checkfor_DBorFILE("$memberdir/$musername.vars")) { &LoadUser($musername); }
-		if (${$uid.$musername}{'regtime'}) {
-			$registrationdate = ${$uid.$musername}{'regtime'};
-		} else {
-			$registrationdate = $date;
-		}
-
-		if (${$uid.$musername}{'regdate'} && $mdate > $registrationdate) {
-			$mname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">${$uid.$musername}{'realname'}</a>~;
-		} elsif ($musername !~ m~Guest~ && $mdate < $registrationdate) {
-			$mname = qq~$mname - $maintxt{'470a'}~;
-		} else {
-			$mname = "$mname ($maintxt{'28'})";
-		}
-
-		&wrap;
-		($message, undef) = &Split_Splice_Move($message,$tnum);
-		if ($enable_ubbc) {
-			$ns = $mns;
-			if (!$yyYaBBCloaded) { require "$sourcedir/YaBBC.pl"; }
-			&DoUBBC;
-		}
-		&wrap2;
-		&ToChars($message);
-		$message = &Censor($message);
-
-		($msub, undef) = &Split_Splice_Move($msub,0);
-		&ToChars($msub);
-		$msub = &Censor($msub);
-
-		if ($iamguest) {
-			$notify = ''; 
-		} else {
-			if (${$uid.$username}{'thread_notifications'} =~ /\b$tnum\b/) {
-				$notify = qq~$menusep<a href="$scripturl?action=notify3;num=$tnum/$c;oldnotify=1">$img{'del_notify'}</a>~;
-			} else {
-				$notify = qq~$menusep<a href="$scripturl?action=notify2;num=$tnum/$c;oldnotify=1">$img{'add_notify'}</a>~;
-			}
-		}
-		$mdate = &timeformat($mdate);
-		$yymain .= qq~
-<table border="0" width="100%" cellspacing="1" class="bordercolor" style="table-layout: fixed;">
-	<tr>
-		<td align="center" width="5%" class="titlebg">$counter</td>
-		<td align="left" width="95%" class="titlebg">&nbsp;<a href="$scripturl?catselect=$catid{$board}"><u>$catname{$board}</u></a> / <a href="$scripturl?board=$board"><u>$boardname{$board}</u></a> / <a href="$scripturl?num=$tnum/$c#$c"><u>$msub</u></a><br />
-		&nbsp;<span class="small">$maintxt{'30'}: $mdate</span>&nbsp;</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<table border="0" width="100%" class="catbg">
-				<tr>
-					<td align="left">$maintxt{'109'} $tname | $maintxt{'197'} $mname</td>
-					<td align="right">&nbsp;~;
-
-		if ($tstate != 1 && (!$iamguest || $enable_guestposting)) {
-			$yymain .= qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$c#$c;title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num=$tnum;quote=$c;title=PostReply">$img{'recentquote'}</a>$notify &nbsp;~;
-		}
-
-		$yymain .= qq~
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td align="left" height="80" colspan="2" class="windowbg2" valign="top"><div style="float: left; width: 99%; overflow: auto;">$message</div></td>
-	</tr>
-</table><br />
-~;
-		++$counter;
 	}
 
 	if ($img_greybox) {
@@ -364,8 +199,13 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 <!--~;
 	}
 
-	$yynavigation = qq~&rsaquo; $maintxt{'214'}~;
-	$yytitle = $maintxt{'214'};
+	if ($recent_topics) {
+		$yynavigation = qq~&rsaquo; $maintxt{'214b'}~;
+		$yytitle = $maintxt{'214b'};
+	} else {
+		$yynavigation = qq~&rsaquo; $maintxt{'214'}~;
+		$yytitle = $maintxt{'214'};
+	}
 	&template;
 }
 

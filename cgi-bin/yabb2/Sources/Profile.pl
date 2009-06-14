@@ -122,8 +122,8 @@ sub ProfileCheck2 {
 
 	# update only this cookie since we don't know when the others will expire
 	$yySetCookies3 = &write_cookie(
-			-name    => "$cookiesession_name",
-			-value   => "${$uid.$username}{'session'}",
+			-name    => $cookiesession_name,
+			-value   => ${$uid.$username}{'session'},
 			-path    => "/",
 			-expires => "Sunday, 17-Jan-2038 00:00:00 GMT");
 
@@ -148,7 +148,7 @@ sub ProfileMenu {
 		<td class="$menucolors[3]" valign="bottom" align="center" width="16%"><span class="small"><b><a href="$scripturl?action=profileBuddy;username=$useraccount{$user};sid=$INFO{'sid'}">$profile_buddy_list{'buddylist'}</a></b></span></td>~;
 	}
 
-	if ($PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
+	if ($PM_level == 1 || ($PM_level == 2 && $staff) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
 		$yymain .= qq~
 		<td class="$menucolors[4]" valign="bottom" align="center" width="16%"><span class="small"><b><a href="$scripturl?action=profileIM;username=$useraccount{$user};sid=$INFO{'sid'}">$profile_imtxt{56} $profile_txt{323}</a></b></span></td>~;
 	}
@@ -276,7 +276,7 @@ sub ModifyProfile {
 		$showProfile .= &ext_editprofile($user, "edit");
 	}
 
-	if ($sessions == 1 && $sessionvalid == 1 && ($iamadmin || $iamgmod || $iammod) && $username eq $user) {
+	if ($sessions == 1 && $staff && $username eq $user) {
 		&LoadLanguage('Sessions');
 		require "$sourcedir/Decoder.pl";
 		my $decanswer = &descramble(${$uid.$user}{'sesanswer'}, $user);
@@ -304,7 +304,7 @@ sub ModifyProfile {
 	$showProfile .= qq~
 	<tr class="catbg">
 		<td height="50" valign="middle" align="center" colspan="2"><input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />~;
-	if (($iamadmin && ($username ne $user)) || ($username ne "admin")) {
+	if ($user ne "admin" && ($iamadmin || $allow_self_del)) {
 		$showProfile .= qq~ &nbsp; &nbsp; &nbsp; <input type="submit" name="moda" value="$profile_txt{'89'}" onclick="return confirm('$confdel_text')" class="button" />~;
 	}
 	$showProfile .= qq~<br /><span class="small">$profile_txt{'sid_expires_1'} $sid_expires $profile_txt{'sid_expires_2'}</span>
@@ -502,7 +502,7 @@ sub ModifyProfileContacts {
 		<td align="left"><input type="text" name="weburl" id="weburl" size="40" value="${$uid.$user}{'weburl'}" /></td>
 	</tr>~;
 
-	if (($PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod))) && ($enable_MCaway > 2 || ($enable_MCaway && (${$uid.$user}{'position'} eq 'Administrator' || ${$uid.$user}{'position'} eq 'Global Moderator' || &is_moderator($user))))) {
+	if (($PM_level == 1 || ($PM_level == 2 && $staff) || ($PM_level == 3 && ($iamadmin || $iamgmod))) && ($enable_MCaway > 2 || ($enable_MCaway && (${$uid.$user}{'position'} eq 'Administrator' || ${$uid.$user}{'position'} eq 'Global Moderator' || &is_moderator($user))))) {
 		my $offChecked = qq~ selected="selected"~;
 		my $awayChecked = '';
 
@@ -1416,7 +1416,7 @@ sub ModifyProfile2 {
 	$member{'username'} = $user;
 
 	if ($member{'moda'} eq $profile_txt{'88'}) {
-		if ($sessions == 1 && $sessionvalid == 1 && ($iamadmin || $iamgmod) && $username eq $user) {
+		if ($sessions == 1 && ($iamadmin || $iamgmod) && $username eq $user) {
 			if ($member{'sesquest'} eq "password") { $member{'sesanswer'} = ''; }
 			elsif ($member{'sesanswer'} eq '') { &fatal_error('no_secret_answer'); }
 		}
@@ -1526,14 +1526,13 @@ sub ModifyProfile2 {
 		${$uid.$username}{'session'} = &encode_password($user_ip);
 
 		&UserAccount($user, "update");
-
 		&UpdateCookie("write", $user, ${$uid.$user}{'password'}, ${$uid.$user}{'session'}, "/", "") if $member{'passwrd1'} && $username eq $user;
 
 		my $scriptAction = $view ? 'myprofileContacts' : 'profileContacts';
 		$yySetLocation = qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};sid=$INFO{'sid'}~;
 
 	} elsif ($member{'moda'} eq $profile_txt{'89'}) {
-		&fatal_error("cannot_kill_admin") if ($member{'username'} eq 'admin');
+		&fatal_error("cannot_kill_admin",$member{'username'}) if $member{'username'} eq 'admin' || !($iamadmin || $allow_self_del);
 
 		# For security, remove username from mod position
 		&KillModerator($member{'username'});
@@ -1569,7 +1568,7 @@ sub ModifyProfile2 {
 		$yySetLocation = $scripturl;
 
 	} else {
-		&fatal_error('not_allowed');
+		&fatal_error("not_allowed");
 	}
 
 	&redirectexit;
@@ -1783,7 +1782,7 @@ sub ModifyProfileOptions2 {
 
 		require "$sourcedir/SpamCheck.pl";
 		my $spamdetected = &spamcheck("$fixfile");
-		if (!$iamadmin && !$iamgmod && !$iammod){
+		if (!$staff){
 			if ($spamdetected == 1) {
 				${$uid.$username}{'spamcount'}++;
 				${$uid.$username}{'spamtime'} = $date;
@@ -1937,7 +1936,7 @@ sub ModifyProfileOptions2 {
 	} else {
 		$scriptAction = qq~viewprofile~;
 	}
-	if ($PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
+	if ($PM_level == 1 || ($PM_level == 2 && $staff) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
 		$scriptAction = qq~profileIM~;
 	}
 	if ($buddyListEnabled) {
@@ -1984,7 +1983,7 @@ sub ModifyProfileBuddy2 {
 	} else {
 		$scriptAction = qq~viewprofile~;
 	}
-	if ($PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
+	if ($PM_level == 1 || ($PM_level == 2 && $staff) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
 		$scriptAction = qq~profileIM~;
 	}
 	if ($view) { $scriptAction = qq~my$scriptAction~; }
@@ -2063,7 +2062,7 @@ sub ModifyProfileAdmin2 {
 	}
 	$member{'username'} = $user;
 
-	&fatal_error("cannot_kill_admin") if $member{'moda'} ne $profile_txt{'88'};
+	&fatal_error("not_allowed") if $member{'moda'} ne $profile_txt{'88'};
 
 	if (!$iamadmin && ($member{'settings7'} eq "Administrator" || $member{'settings7'} eq "Global Moderator")) {
 		$member{'settings7'} = ${$uid.$user}{'position'};
@@ -2252,7 +2251,7 @@ sub ViewProfile {
 			<b>$profile_txt{'513'}:</b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<a href="http://web.icq.com/${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" target="_blank"><img src="http://status.icq.com/online.gif?icq=${$uid.$user}{'icq'}&amp;img=21" alt="${$uid.$user}{'icq'}" border="0" style="vertical-align: middle;" />${$uid.$user}{'icq'}</a>
+			<a href="http://web.icq.com/${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" target="_blank"><img src="$imagesdir/icqflow.gif" alt="${$uid.$user}{'icq'}" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'icq'} <img src="http://status.icq.com/online.gif?icq=${$uid.$user}{'icq'}&amp;img=7" alt="${$uid.$user}{'icq'}" border="0" style="vertical-align: middle;" /></a>
 			</div>~;
 	}
 	if (${$uid.$user}{'aim'}) {
@@ -2263,7 +2262,7 @@ sub ViewProfile {
 			<b>$profile_txt{'603'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<a href="aim:goim?screenname=${$uid.$user}{'aim'}&amp;message=Hi,+are+you+there?"><img src="http://big.oscar.aol.com/?on_url=http://www.seekcodes.com/aim/aim_status_online.gif&amp;off_url=http://www.seekcodes.com/aim/aim_status_offline.gif" alt="${$uid.$user}{'aim'}" border="0" style="vertical-align: middle;" /> $aim_user</a>
+			<a href="aim:goim?screenname=${$uid.$user}{'aim'}&amp;message=Hi,+are+you+there?"><img src="$imagesdir/aim.gif" alt="${$uid.$user}{'aim'}" border="0" style="vertical-align: middle;" /> $aim_user <img src="http://big.oscar.aol.com/?on_url=$imagesdir/aim_online.gif&amp;off_url=$imagesdir/aim_offline.gif" alt="${$uid.$user}{'aim'}" border="0" style="vertical-align: middle;" /></a>
 			</div>~;
 	}
 	if (${$uid.$user}{'yim'}) {
@@ -2274,7 +2273,7 @@ sub ViewProfile {
 			<b>$profile_txt{'604'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<a href="http://edit.yahoo.com/config/send_webmesg?.target=${$uid.$user}{'yim'}" target="_blank"><img src="http://presence.msg.yahoo.com/online?u=${$uid.$user}{'yim'}&amp;m=g&amp;t=2&amp;l=us" border="0" alt="${$uid.$user}{'yim'}" style="vertical-align: middle;" /> $yim_user</a>
+			<a href="http://edit.yahoo.com/config/send_webmesg?.target=${$uid.$user}{'yim'}" target="_blank"><img src="$imagesdir/yim.gif" alt="${$uid.$user}{'yim'}" border="0" style="vertical-align: middle;" /> $yim_user <img src="http://presence.msg.yahoo.com/online?u=${$uid.$user}{'yim'}&amp;m=g&amp;t=2&amp;l=us" border="0" alt="${$uid.$user}{'yim'}" style="vertical-align: middle;" /></a>
 			</div>~;
 	}
 	if (${$uid.$user}{'msn'}) {
@@ -2303,7 +2302,7 @@ sub ViewProfile {
 			<b>$profile_txt{'827'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<a href="javascript:void(window.open('callto://${$uid.$user}{'skype'}','skype','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'))"><img src="http://mystatus.skype.com/smallclassic/${$uid.$user}{'skype'}" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'skype'}</a>
+			<a href="javascript:void(window.open('callto://${$uid.$user}{'skype'}','skype','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'))"><img src="$imagesdir/skype.gif" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'skype'} <img src="http://mystatus.skype.com/smallclassic/${$uid.$user}{'skype'}" alt="" border="0" style="vertical-align: middle;" /></a>
 			</div>~;
 	}
 	if (${$uid.$user}{'myspace'}) {
@@ -2467,7 +2466,8 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 			<b>$profile_txt{'21'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<b>$post_count<br />$post_per_day</b> $profile_txt{'893'}
+			<b>$post_count<br />
+			$post_per_day</b> $profile_txt{'893'}
 			</div>
 			<div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
 			<b>$profile_txt{'233'}: </b>
@@ -2495,7 +2495,7 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 	}
 
 	&CheckUserPM_Level($user);
-	if (!$view && $user ne $username && ($PM_level == 1 || ($PM_level == 2 && $UserPM_Level{$user} > 1 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && $UserPM_Level{$user} == 3 && ($iamadmin || $iamgmod)))) {
+	if (!$view && $user ne $username && ($PM_level == 1 || ($PM_level == 2 && $UserPM_Level{$user} > 1 && $staff) || ($PM_level == 3 && $UserPM_Level{$user} == 3 && ($iamadmin || $iamgmod)))) {
 		$send_PM = qq~
 			<div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
 			<b>$profile_txt{'144'}: </b>
@@ -2567,7 +2567,7 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 			<div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;"><b>$lastpost:</b></div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">$userlastpost</div>\n~;
 
-	if ($PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
+	if ($PM_level == 1 || ($PM_level == 2 && $staff) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
 		$showProfile .= qq~
 			<div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;"><b>$lastPM: </b></div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">$userlastim</div>~;
@@ -2616,12 +2616,12 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 	</tr>~;
 	}
 
-	if (${$uid.$user}{'postcount'} > 0 && $maxrecentdisplay > 0 && !$view) {
+	if (${$uid.$user}{'postcount'} > 0 && $maxrecentdisplay > 0) {
 		$showProfile .= qq~
 	<tr>
 		<td class="windowbg2" align="left">
 			<form action="$scripturl?action=usersrecentposts;username=$useraccount{$user}" method="post">
-			$profile_txt{'460'} <select name="viewscount" size="1">~;
+			~ . ($view ? $inmes_txt{'viewrecentposts'} : $profile_txt{'460'}) . qq~ <select name="viewscount" size="1">~;
 
 		my ($x,$y) = (int($maxrecentdisplay/5),0);
 		if ($x) {
@@ -2635,7 +2635,7 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 			<option value="$maxrecentdisplay">$maxrecentdisplay</option>~ if $maxrecentdisplay > $y;
 
 		$showProfile .= qq~
-			</select> $profile_txt{'461'} ${$uid.$user}{'realname'}.
+			</select> ~ . ($view ? $inmes_txt{'viewrecentposts2'} : "$profile_txt{'461'} ${$uid.$user}{'realname'}") . qq~.
 			<input type="submit" value="$profile_txt{'462'}" class="button" />
 			</form>
 		</td>
@@ -2826,6 +2826,8 @@ sub usersrecentposts {
 
 	&LoadCensorList;
 
+	my $icanbypass = &checkUserLockBypass;
+
 	for ($i = 0; $i < @data; $i++) {
 		next if !$data[$i];
 
@@ -2871,10 +2873,15 @@ sub usersrecentposts {
 			} else {
 				$notify = qq~$menusep<a href="$scripturl?action=notify2;num=$tnum/$c;oldnotify=1">$img{'add_notify'}</a>~;
 			}
-			$showProfile .= qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$c#$c;title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num=$tnum;quote=$c;title=PostReply">$img{'recentquote'}</a>$notify &nbsp;~;
+			$showProfile .= qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$c#$c;title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num=$tnum;quote=$c;title=PostReply">$img{'recentquote'}</a>$notify~;
 		}
 
-		$showProfile .= qq~
+		if ($staff && ($icanbypass || $tstate !~ /l/i) && (!$iammod || &is_moderator($username,$board))) {
+				&LoadLanguage('Display');
+				$showProfile .= qq~$menusep<a href="$scripturl?action=multidel;recent=1;thread=$tnum;del$c=$c" onclick="return confirm('~ . (($icanbypass && $tstate =~ /l/i) ? qq~$display_txt{'modifyinlocked'}\\n\\n~ : '') . qq~$display_txt{'rempost'}')">$img{'delete'}</a>~;
+		}
+
+		$showProfile .= qq~ &nbsp;
 					</td>
 				</tr>
 			</table>

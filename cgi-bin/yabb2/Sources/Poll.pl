@@ -157,7 +157,7 @@ sub LockPoll {
 	$poll_question = shift(@poll_data);
 	chomp $poll_question;
 	($poll_question, $poll_locked, $poll_uname, $poll_stuff) = split(/\|/, $poll_question, 4);
-	unless ($username eq $poll_uname || $iamadmin || $iamgmod || $iammod) { &fatal_error('not_allowed'); }
+	unless ($username eq $poll_uname || $staff) { &fatal_error('not_allowed'); }
 
 	if ($poll_locked) { $poll_locked = 0; }
 	else { $poll_locked = 1; }
@@ -398,7 +398,7 @@ sub display_poll {
 	$piearray .= qq~]~;
 
 	my ($endedtext, $displayvoters);
-	if (!$iamguest && ($username eq $poll_uname || $iamadmin || $iamgmod || $iammod)) {
+	if (!$iamguest && ($username eq $poll_uname || $staff)) {
 		if ($poll_locked) {
 			$lockpoll = qq~<a href="$scripturl?action=lockpoll;num=$pollnum$scp" class="altlink">$img{'openpoll'}</a>~;
 		} else {

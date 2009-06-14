@@ -2154,11 +2154,11 @@ sub MyCenterTempl {
 	my $tmpimagesdir = $imagesdir;
 	$imagesdir = $_[1];
 	require "$templatesdir/$_[0]/MyCenter.template";
-	
+
 	$tabsep = qq~<img src="$imagesdir/tabsep211.png" border="0" alt="" style="float: left; vertical-align: middle;" />~;
 	$tabfill = qq~<img src="$imagesdir/tabfill.gif" border="0" alt="" style="vertical-align: middle;" />~;
 
-	if ($PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod))   )	{
+	if ($PM_level == 1 || ($PM_level == 2 && $staff) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
 		$yymcmenu .= qq~<span title="$mc_menus{'messages'}" class="selected">$tabsep$tabfill$mc_menus{'messages'}$tabfill</span>
 		~;
 	}
@@ -2178,7 +2178,7 @@ sub MyCenterTempl {
 	$mycenter_template =~ s/{yabb mccontent}/$MCContent/g;
 	$mycenter_template =~ s/{yabb mctitle}/$mctitle/g;
 	$mycenter_template =~ s/{yabb selecthtml}/$selecthtml/g;
-	
+
 	$mycenter_template =~ s~img src\=\"$tmpimagesdir\/(.+?)\"~&TmpImgLoc($1, $_[1], $_[2])~eisg;
 	$mycenter_template =~ s~img src\=\"$_[1]\/(.+?)\"~&TmpImgLoc($1, $_[1], $_[2])~eisg;
 	$imagesdir = $tmpimagesdir;

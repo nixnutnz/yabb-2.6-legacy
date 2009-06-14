@@ -79,7 +79,10 @@ if ($currentboard ne '') {
 		$moderatorgroups{$_} = $_;
 	}
 
-	$iammod = &is_moderator($username,$currentboard);
+	if ($staff) {
+		$iammod = &is_moderator($username,$currentboard);
+		$staff = 0 if !$iammod && !$iamadmin && !$iamgmod;
+	}
 
 	unless ($iamadmin) {
 		my $accesstype = "";

@@ -44,7 +44,7 @@ sub ModifyMessage {
 	if ($mstate =~ /l/i) {
 		my $icanbypass = &checkUserLockBypass;
 		if (!$icanbypass) { &fatal_error("topic_locked"); }
-	} elsif (!$iamadmin && !$iamgmod && !$iammod && $tlnomodflag && $date > $mdate + ($tlnomodtime * 3600 * 24)) {
+	} elsif (!$staff && $tlnomodflag && $date > $mdate + ($tlnomodtime * 3600 * 24)) {
 		&fatal_error("time_locked","$tlnomodtime$timelocktxt{'02'}");
 	}
 	if ($postid eq "Poll") {
@@ -61,7 +61,7 @@ sub ModifyMessage {
 			&ToChars($options[$i]);
 		}
 
-		unless ($poll_uname eq $username || $iammod || $iamadmin || $iamgmod) { &fatal_error("not_allowed"); }
+		unless ($poll_uname eq $username || $staff) { &fatal_error("not_allowed"); }
 
 		$poll_comment =~ s~<br \/>~\n~g;
 		$poll_comment =~ s~<br>~\n~g;
@@ -76,7 +76,7 @@ sub ModifyMessage {
 		($sub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $message, $mns, $mlm, $mlmb, $mfn) = split(/\|/, ${$thread_arrayref{$threadid}}[$postid]);
 		chomp $mfn;
 
-		if ((${$uid.$username}{'regtime'} > $mdate || $musername ne $username) && !($iammod || $iamadmin || $iamgmod)) {
+		if ((${$uid.$username}{'regtime'} > $mdate || $musername ne $username) && !$staff) {
 			&fatal_error("change_not_allowed");
 		}
 
@@ -159,8 +159,8 @@ sub ModifyMessage2 {
 			if ($postid >= 0 && $postid < $msgcnt) {
 				($msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $mmessage, $mns, $mlm, $mlmb, $mfn) = split(/\|/, ${$thread_arrayref{$threadid}}[$postid]);
 				chomp $mfn;
-				if (${$uid.$username}{'regdate'} > $mdate || (!$iamadmin && !$iamgmod && !$iammod && $musername ne $username) || !$sessionvalid) { &fatal_error("delete_not_allowed"); }
-				if (!$iamadmin && !$iamgmod && !$iammod && $tlnodelflag && $date > $mdate + ($tlnodeltime * 3600 * 24)) { &fatal_error("time_locked","$tlnodeltime$timelocktxt{'02a'}"); }
+				if (${$uid.$username}{'regdate'} > $mdate || (!$staff && $musername ne $username)) { &fatal_error("delete_not_allowed"); }
+				if (!$staff && $tlnodelflag && $date > $mdate + ($tlnodeltime * 3600 * 24)) { &fatal_error("time_locked","$tlnodeltime$timelocktxt{'02a'}"); }
 			} else {
 				&fatal_error("bad_postnumber",$postid);
 			}
@@ -189,7 +189,7 @@ sub ModifyMessage2 {
 		chomp($poll_data);
 		($poll_question, $poll_locked, $poll_uname, $poll_name, $poll_email, $poll_date, $guest_vote, $hide_results, $multi_choice, $poll_mod, $poll_modname, $poll_comment, $vote_limit, $pie_radius, $pie_legends, $poll_end) = split(/\|/, $poll_data[0]);
 
-		unless ($poll_uname eq $username || $iammod || $iamadmin || $iamgmod) { &fatal_error("not_allowed"); }
+		unless ($poll_uname eq $username || $staff) { &fatal_error("not_allowed"); }
 
 		my $numcount = 0;
 		unless ($FORM{"question"}) { &fatal_error("no_question"); }
@@ -299,7 +299,7 @@ sub ModifyMessage2 {
 	if ($postid >= 0 && $postid < @{$thread_arrayref{$threadid}}) {
 		($msub, $mname, $memail, $mdate, $musername, $micon, $mreplyno, $mip, $mmessage, $mns, $mlm, $mlmb, $mfn) = split(/\|/, ${$thread_arrayref{$threadid}}[$postid]);
 		chomp $mfn;
-		unless ((${$uid.$username}{'regdate'} < $mdate && $musername eq $username) || $iammod || $iamadmin || $iamgmod) {
+		unless ((${$uid.$username}{'regdate'} < $mdate && $musername eq $username) || $staff) {
 			&fatal_error("change_not_allowed");
 		}
 	} else {
@@ -327,7 +327,7 @@ sub ModifyMessage2 {
 	$spamdetected = &spamcheck("$subject $message");
 	if (!${$uid.$FORM{$username}}{'spamcount'}) { ${$uid.$FORM{$username}}{'spamcount'} = 0; }
 	$postspeed = $date - $posttime;
-	if (!$iamadmin && !$iamgmod && !$iammod){
+	if (!$staff){
 		if (($speedpostdetection && $postspeed < $min_post_speed) || $spamdetected == 1) {
 			${$uid.$username}{'spamcount'}++;
 			${$uid.$username}{'spamtime'} = $date;
@@ -367,7 +367,7 @@ sub ModifyMessage2 {
 	if ($testmessage eq "" && $message ne "" && $pollthread != 2) { fatal_error("useless_post","$testmessage"); }
 
 	if (!$minlinkpost){ $minlinkpost = 0 ;}
-	if (${$uid.$username}{'postcount'} < $minlinkpost && !$iamadmin && !$iamgmod && !$iammod && !$iamguest) { 
+	if (${$uid.$username}{'postcount'} < $minlinkpost && !$staff && !$iamguest) { 
 		if ($message =~ m~http:\/\/~ || $message =~ m~https:\/\/~ || $message =~ m~ftp:\/\/~ || $message =~ m~www.~ || $message =~ m~ftp.~ =~ m~\[url~ || $message=~ m~\[link~ || $message=~ m~\[img~ || $message=~ m~\[ftp~) {
 			&fatal_error("no_links_allowed");
 		}
@@ -428,7 +428,7 @@ sub ModifyMessage2 {
 			my $fixext = $2;
 
 			my $spamdetected = &spamcheck("$fixname");
-			if (!$iamadmin && !$iamgmod && !$iammod){
+			if (!$staff){
 				if ($spamdetected == 1) {
 					${$uid.$username}{'spamcount'}++;
 					${$uid.$username}{'spamtime'} = $date;
@@ -593,14 +593,14 @@ sub MultiDel { # deletes singel- or multi-Posts
 	my $kill = 0;
 	my $postid;
 	for ($count = $#messages; $count >= 0; $count--) {
-		if ($FORM{"del$count"} ne '') {
+		if (($FORM{"del$count"} || $INFO{"del$count"}) ne '') {
 			chomp $messages[$count];
 			@message = split(/\|/, $messages[$count]);
 			$musername = $message[4];
 
 			# Checks that the user is actually allowed to access multidel
-			if (${$uid.$username}{'regdate'} > $message[3] || (!$iamadmin && !$iamgmod && !$iammod && $musername ne $username) || !$sessionvalid) { &fatal_error("delete_not_allowed"); }
-			if (!$iamadmin && !$iamgmod && !$iammod && $tlnodelflag && $date > $message[3] + ($tlnodeltime * 3600 * 24)) { &fatal_error("time_locked","$tlnodeltime$timelocktxt{'02a'}"); }
+			if (${$uid.$username}{'regdate'} > $message[3] || (!$staff && $musername ne $username)) { &fatal_error("delete_not_allowed"); }
+			if (!$staff && $tlnodelflag && $date > $message[3] + ($tlnodeltime * 3600 * 24)) { &fatal_error("time_locked","$tlnodeltime$timelocktxt{'02a'}"); }
 
 			if ($message[12]) { # delete post attachments
 				require "$admindir/Attachments.pl";
@@ -710,9 +710,13 @@ sub MultiDel { # deletes singel- or multi-Posts
 
 	&BoardSetLastInfo($currentboard,\@buffer);
 
-	$postid = $postid > ${$thread}{'replies'} ? ${$thread}{'replies'} : ($postid - 1);
-	my $start = !$ttsreverse ? (int($postid / $maxmessagedisplay) * $maxmessagedisplay) : ${$thread}{'replies'} - (int((${$thread}{'replies'} - $postid) / $maxmessagedisplay) * $maxmessagedisplay);
-	$yySetLocation = qq~$scripturl?num=$thread/$start#$postid~;
+	if ($INFO{'recent'}) {
+		$yySetLocation = qq~$scripturl?action=recent~;
+	} else {
+		$postid = $postid > ${$thread}{'replies'} ? ${$thread}{'replies'} : ($postid - 1);
+		my $start = !$ttsreverse ? (int($postid / $maxmessagedisplay) * $maxmessagedisplay) : ${$thread}{'replies'} - (int((${$thread}{'replies'} - $postid) / $maxmessagedisplay) * $maxmessagedisplay);
+		$yySetLocation = qq~$scripturl?num=$thread/$start#$postid~;
+	}
 
 	&redirectexit;
 }

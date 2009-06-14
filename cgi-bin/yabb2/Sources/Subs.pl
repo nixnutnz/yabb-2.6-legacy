@@ -291,7 +291,7 @@ sub template {
 			my ($usermonth, $userday, $useryear) = split(/\//, ${$uid.$username}{'bday'});
 			if ($usermonth == $mon_num && $userday == $mday) { $wmessage = $maintxt{'247bday'}; }
 		}
-		$yyuname = ($PM_level == 0 || ($PM_level == 2 && !$iamadmin && !$iamgmod && !$iammod) || ($PM_level == 3 && !$iamadmin && !$iamgmod)) ? "$wmessage ${$uid.$username}{'realname'}" : "$wmessage ${$uid.$username}{'realname'}, ";
+		$yyuname = ($PM_level == 0 || ($PM_level == 2 && !$staff) || ($PM_level == 3 && !$iamadmin && !$iamgmod)) ? "$wmessage ${$uid.$username}{'realname'}" : "$wmessage ${$uid.$username}{'realname'}, ";
 	}
 
 	# Add new notifications if allowed
@@ -780,7 +780,7 @@ sub jumpto {
 	## as guests don't have these, why show them?
 	if (!$iamguest) {
 		$selecthtml .= qq~
-	<option value="action=im" class="forumjumpcatm">$jumpto_txt{'mess'}</option>~ if $PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod));
+	<option value="action=im" class="forumjumpcatm">$jumpto_txt{'mess'}</option>~ if $PM_level == 1 || ($PM_level == 2 && $staff) || ($PM_level == 3 && ($iamadmin || $iamgmod));
 		$selecthtml .= qq~
 	<option value="action=shownotify" class="forumjumpcatmf">$jumpto_txt{'note'}</option>
 	<option value="action=favorites" class="forumjumpcatm">$jumpto_txt{'fav'}</option>~;
@@ -823,20 +823,20 @@ sub dojump {
 }
 
 sub spam_protection {
-	unless ($timeout) { return; }
-	my ($time, $flood_ip, $flood_time, $flood, @floodcontrol);
+	return if !$timeout || $iamadmin;
+	my ($flood_ip, $flood_time, $flood, @floodcontrol);
 
 	if (&checkfor_DBorFILE("$vardir/flood.txt")) {
 		push(@floodcontrol, "$user_ip|$date\n");
 		foreach (&read_DBorFILE(0,'',$vardir,'flood','txt')) {
-			chomp($_);
 			($flood_ip, $flood_time) = split(/\|/, $_);
+			chomp($flood_time);
 			if ($user_ip eq $flood_ip && $date - $flood_time <= $timeout) { $flood = 1; }
-			elsif ($date - $flood_time < $timeout) { push(@floodcontrol, "$_\n"); }
+			elsif ($date - $flood_time < $timeout) { push(@floodcontrol, $_); }
 		}
 	}
-	if ($flood && !$iamadmin && $action eq 'post2') { &Preview("$maintxt{'409'} $timeout $maintxt{'410'}"); }
-	if ($flood && !$iamadmin) {
+	if ($flood) {
+		if ($action eq 'post2') { &Preview("$maintxt{'409'} $timeout $maintxt{'410'}"); }
 		&fatal_error("post_flooding","$timeout $maintxt{'410'}");
 	}
 	&write_DBorFILE(0,'',$vardir,'flood','txt',@floodcontrol);
@@ -1669,7 +1669,7 @@ sub userOnLineStatus {
 	}
 	# enable 'away' indicator $enable_MCaway: 0=Off; 1=Staff to Staff; 2=Staff to all; 3=Members
 	if ($enable_MCstatusStealth && $enable_MCaway > 0 && !$iamguest && ${$uid.$userToCheck}{'offlinestatus'} eq 'away') {
-		if ($enable_MCaway == 1 && ($iamadmin || $iamgmod || $iammod)) { #enable for staff
+		if ($enable_MCaway == 1 && $staff) { #enable for staff
 			$online = qq~<span class="useraway">$maintxt{'away'}</span>~;
 		} elsif ($enable_MCaway > 1) { # enabled for all
 			$online = qq~<span class="useraway">$maintxt{'away'}</span>~;
@@ -1714,7 +1714,7 @@ sub setGuestLang {
 
 ##  check for locked post bypass status - user must be at least mod and bypass lock must be set right.
 sub checkUserLockBypass {
-	return 1 if ($staff && $sessionvalid == 1 && (($bypass_lock_perm eq "fa" && $iamadmin) || ($bypass_lock_perm eq "gmod" && ($iamadmin || $iamgmod)) || $bypass_lock_perm eq "mod"));
+	return 1 if ($staff && (($bypass_lock_perm eq "fa" && $iamadmin) || ($bypass_lock_perm eq "gmod" && ($iamadmin || $iamgmod)) || $bypass_lock_perm eq "mod"));
 }
 
 sub alertbox {

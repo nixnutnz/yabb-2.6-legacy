@@ -305,6 +305,7 @@ $yycharset = 'ISO-8859-1';
 '579' => 'days',
 '584' => 'Show and require Registration Agreement when Users register?',
 '585' => 'Disable user registration (only admin can register)?',
+'586' => 'Allow users to delete their Profile?<br /><span class="small">If checked a Submit-Button will be added to the users Profile to remove himself from the forum.</span>',
 '587' => 'Select default Time Format:',
 '593' => 'Rebuild Members List',
 '594' => 'The membership list (memberinfo.txt) has been rebuilt and is holding',

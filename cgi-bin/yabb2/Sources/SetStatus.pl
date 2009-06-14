@@ -18,7 +18,7 @@ $setstatusplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 sub SetStatus {
-	&fatal_error('no_access') unless ($iammod || $iamadmin || $iamgmod);
+	&fatal_error('no_access') unless $staff;
 
 	my $start      = $INFO{'start'} || 0;
 	my $status     = substr($INFO{'action'}, 0, 1) || substr($FORM{'action'}, 0, 1);

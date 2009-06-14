@@ -135,7 +135,7 @@ sub Display {
 	if ($mstate =~ /l/i) {
 		$icanbypass = &checkUserLockBypass;
 		$enable_quickreply = 0;
-	} elsif ($staff && $sessionvalid == 1) {
+	} elsif ($staff) {
 		$icanbypass = 2;
 	}
 
@@ -165,7 +165,7 @@ sub Display {
 	## hidden threads
 	if ($mstate =~ /h/i) {
 		$threadclass = 'hide';
-		if (!$iamadmin && !$iamgmod && !$iammod) { &fatal_error('no_access'); }
+		if (!$staff) { &fatal_error('no_access'); }
 	}
 	## locked thread
 	elsif ($mstate =~ /l/i) {
@@ -423,7 +423,7 @@ sub Display {
 		$navback = qq~<a href="$scripturl?board=$currentboard" class="nav">&lsaquo; $maintxt{'board'}</a>~;
 		$template_mods  = qq~$showmods$showmodgroups~;
 	}
-	if (($showtopicviewers == 1 && $staff && $sessionvalid == 1) || ($showtopicviewers == 2 && !$iamguest) || $showtopicviewers == 3) {
+	if (($showtopicviewers == 1 && $staff) || ($showtopicviewers == 2 && !$iamguest) || $showtopicviewers == 3) {
 		my ($mrepuser, $misreplying, $replying);
 		foreach (@repliers) {
 			(undef, $mrepuser, $misreplying) = split(/\|/, $_);
@@ -570,7 +570,7 @@ sub Display {
 				else { $addbuddy = $addbuddylink; }
 				# Allow instant message sending if current user is a member.
 				&CheckUserPM_Level($musername);
-				if ($PM_level == 1 || ($PM_level == 2 && $UserPM_Level{$musername} > 1 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && $UserPM_Level{$musername} == 3 && ($iamadmin || $iamgmod))) {
+				if ($PM_level == 1 || ($PM_level == 2 && $UserPM_Level{$musername} > 1 && $staff) || ($PM_level == 3 && $UserPM_Level{$musername} == 3 && ($iamadmin || $iamgmod))) {
 					$template_pm = qq~$menusep<a href="$scripturl?action=imsend;to=$useraccount{$musername}">$img{'message_sm'}</a>~;
 				}
 			}
@@ -651,7 +651,7 @@ sub Display {
 				$quote_mname =~ s/'/\\'/g;
 				$usernamelink = qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote_mname\[/b]\\r\\n\\r\\n'))"><img src="$imagesdir/qquname.gif" border="0" alt="$display_txt{'146n'}" title="$display_txt{'146n'}" /></a> $usernamelink~ if $enable_quickreply && $enable_quoteuser && (!$iamguest || $enable_guestposting);
 
-				if (!$movedflag || $iamadmin || $iamgmod || $iammod) {
+				if (!$movedflag || $staff) {
 					if ($enable_quickreply) {
 						$quote_mname = $useraccount{$musername};
 						$quote_mname =~ s/'/\\'/g;
@@ -684,10 +684,10 @@ sub Display {
 			if ($counter > 0 && $icanbypass) {
 				$template_split = qq~$menusep<a href="$scripturl?action=split_splice;board=$currentboard;thread=$viewnum;oldposts=~ . join(',%20', ($counter .. $mreplies)) . qq~;leave=0;newcat=$curcat;newboard=$currentboard;newthread=new;ss_submit=1" onclick="return confirm('~ . ($icanbypass == 1 ? qq~$display_txt{'modifyinlocked'}\\n\\n~ : '') . qq~$display_txt{'split_confirm'}');">$img{'admin_split'}</a>~;
 			}
-			if ($sessionvalid == 1 && ($staff || ($username eq $musername && !$exmem && (!$tlnomodflag || $date < $mdate + ($tlnomodtime * 3600 * 24))))) {
+			if ($staff || ($username eq $musername && !$exmem && (!$tlnomodflag || $date < $mdate + ($tlnomodtime * 3600 * 24)))) {
 				$template_modify = qq~$menusep<a href="$scripturl?board=$currentboard;action=modify;message=$counter;thread=$viewnum"~ . ($icanbypass == 1 ? qq~ onclick="return confirm('$display_txt{'modifyinlocked'}');"~ : '') . qq~>$img{'modify'}</a>~;
 			}
-			if ($sessionvalid == 1 && ($staff || ($username eq $musername && !$exmem && (!$tlnodelflag || $date < $mdate + ($tlnodeltime * 3600 * 24))))) {
+			if ($staff || ($username eq $musername && !$exmem && (!$tlnodelflag || $date < $mdate + ($tlnodeltime * 3600 * 24)))) {
 				$template_delete = qq~$menusep<span style="cursor: pointer; cursor: hand;" onclick="if(confirm('~ . ($icanbypass == 1 ? qq~$display_txt{'modifyinlocked'}\\n\\n~ : '') . qq~$display_txt{'rempost'}')) {uncheckAllBut($counter);}">$img{'delete'}</span>~;
 				if (($iammod && $mdmod == 1) || ($iamadmin && $mdadmin == 1) || ($iamgmod && $mdglobal == 1)) {
 					$template_admin = qq~<input type="checkbox" class="$css" style="border: 0px;" name="del$counter" value="$counter" />~;
@@ -790,7 +790,7 @@ sub Display {
 	if ($icanbypass) {
 		$template_remove = qq~$menusep<a href="javascript:document.removethread.submit();" onclick="return confirm('~ . ($icanbypass == 1 ? qq~$display_txt{'modifyinlocked'}\\n\\n~ : '') . qq~$display_txt{'162'}')">$img{'admin_rem'}</a>~;
 		$template_splice = qq~$menusep<a href="javascript:void(window.open('$scripturl?action=split_splice;board=$currentboard;thread=$viewnum;oldposts=all;leave=0;newcat=$curcat;newboard=$currentboard;position=end','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))"~ . ($icanbypass == 1 ? qq~ onclick="return confirm('$display_txt{'modifyinlocked'}');"~ : '') . qq~>$img{'admin_move_split_splice'}</a>~;
-		$template_lock = qq~$menusep<a href="$scripturl?action=lock;thread=$viewnum"~ . ($icanbypass == 1 ? qq~ onclick="return confirm('$display_txt{'modifyinlocked'}');"~ : '') . qq~>$img{'admin_lock'}</a>~;
+		$template_lock = qq~$menusep<a href="$scripturl?action=lock;thread=$viewnum"~ . ($icanbypass == 1 ? qq~ onclick="return confirm('$display_txt{'modifyinlocked'}');"~ : '') . qq~>$img{'admin_lock'}</a>~ if &checkUserLockBypass;
 		$template_hide = qq~$menusep<a href="$scripturl?action=hide;thread=$viewnum"~ . ($icanbypass == 1 ? qq~ onclick="return confirm('$display_txt{'modifyinlocked'}');"~ : '') . qq~>$img{'hide'}</a>~;
 		$template_sticky = qq~$menusep<a href="$scripturl?action=sticky;thread=$viewnum"~ . ($icanbypass == 1 ? qq~ onclick="return confirm('$display_txt{'modifyinlocked'}');"~ : '') . qq~>$img{'admin_sticky'}</a>~ if ${$mnum}{'board'} ne $annboard;
 		if (($iammod && $mdmod == 1) || ($iamadmin && $mdadmin == 1) || ($iamgmod && $mdglobal == 1)) {
@@ -951,7 +951,7 @@ sub NextPrev {
 	my (@stickythreadlist,@nostickythreadlist);
 	for ($i = 0; $i < @threadlist; $i++) {
 		my $threadstatus = (split /\|/, $threadlist[$i])[8];
-		if ($threadstatus =~ /h/i && !$iamadmin && !$iamgmod && !$iammod) { next; }
+		if ($threadstatus =~ /h/i && !$staff) { next; }
 		if ($threadstatus =~ /s/i || $threadstatus =~ /a/i) {
 			$stickythreadlist[$countsticky] = $threadlist[$i];
 			$countsticky++;
