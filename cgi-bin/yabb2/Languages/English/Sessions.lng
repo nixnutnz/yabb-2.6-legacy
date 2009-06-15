@@ -23,7 +23,7 @@ $sessionslngver = 'YaBB 2.4 $Revision$';
 '4' => 'To check your credentials answer the following question you entered in your profile',
 '6' => 'You failed to validate your credentials and are logged out',
 '8' => 'Select your Session Revalidation Question here',
-'9' => 'To check your credentials select a question and provide an answer to Revalidate an Admin session',
+'9' => 'To check your credentials select a question and provide an answer to Revalidate an Staff session',
 '9a' => 'If you select your password as validation you can leave the field empty.',
 '10' => 'You did not select a Session Question in your profile<br />so the only way to check your credentials is your password.',
 );

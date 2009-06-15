@@ -1401,11 +1401,11 @@ sub AddMember2 {
 	&fatal_error("invalid_character","$register_txt{'69'} $register_txt{'241e'}") if ($member{'email'} !~ /^[\w\-\.\+]+\@[\w\-\.\+]+\.\w{2,4}$/);
 	&fatal_error("invalid_email") if (($member{'email'} =~ /(@.*@)|(\.\.)|(@\.)|(\.@)|(^\.)|(\.$)/) || ($member{'email'} !~ /\A.+@\[?(\w|[-.])+\.[a-zA-Z]{2,4}|[0-9]{1,4}\]?\Z/));
 
+	if ($name_cannot_be_userid && lc $member{'regusername'} eq lc $member{'regrealname'}) { &fatal_error("name_is_userid"); }
+
 	if (lc $member{'regusername'} eq lc &MemberIndex("check_exist", $member{'regusername'})) { &fatal_error("id_taken","($member{'regusername'})"); }
 	if (lc $member{'email'} eq lc &MemberIndex("check_exist", $member{'email'})) { &fatal_error("email_taken","($member{'email'})"); }
 	if (lc $member{'regrealname'} eq lc &MemberIndex("check_exist", $member{'regrealname'})) { &fatal_error("name_taken","($member{'regrealname'})"); }
-
-	if ($name_cannot_be_userid && lc $member{'regusername'} eq lc $member{'regrealname'}) { &fatal_error("name_is_userid"); }
 
 	@reserve = &read_DBorFILE(0,'',$vardir,'reserve','txt');
 	@reservecfg = &read_DBorFILE(0,'',$vardir,'reservecfg','txt');

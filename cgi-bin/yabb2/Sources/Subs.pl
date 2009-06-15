@@ -157,15 +157,15 @@ sub redirectinternal {
 my %img_check;
 sub ImgLoc {
 	unless (exists $img_check{$_[0]}) {
-		if (-e "$forumstylesdir/$useimages/$_[0]") {
+		if (-e "$imagesdir/$_[0]") {
 			$img_check{$_[0]} = 1;
 			qq~$imagesdir/$_[0]~;
 		} else {
 			$img_check{$_[0]} = 0;
-			qq~$forumstylesurl/default/$_[0]~;
+			qq~$defaultimagesdir/$_[0]~;
 		}
 	} else {
-		$img_check{$_[0]} == 1 ? qq~$imagesdir/$_[0]~ : qq~$forumstylesurl/default/$_[0]~;
+		$img_check{$_[0]} == 1 ? qq~$imagesdir/$_[0]~ : qq~$defaultimagesdir/$_[0]~;
 	}
 }
 

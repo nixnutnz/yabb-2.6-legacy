@@ -250,13 +250,18 @@ sub ModifyProfile {
 	</tr>
 	<tr class="windowbg">
 		<td width="220" align="left"><label for="name"><b>$profile_txt{68}: </b><br />~;
-	if ($name_cannot_be_userid) {
-		$showProfile .= qq~
-			<span class="small">$profile_txt{'8'}</span></label>~;
+	if (!$cannot_change_displayname || $iamadmin) {
+		if ($name_cannot_be_userid) {
+			$showProfile .= qq~
+				<span class="small">$profile_txt{'8'}</span></label>~;
+		} else {
+			$showProfile .= qq~
+				<span class="small">$profile_txt{'9'}</span></label>~;
+		}
 	}
 	$showProfile .= qq~
 		</td>
-		<td align="left"><input type="text" maxlength="30" name="name" id="name" size="30" value="${$uid.$user}{'realname'}" /></td>
+		<td align="left"><input type="text" maxlength="30" name="name" id="name" size="30" value="${$uid.$user}{'realname'}"~ . (($cannot_change_displayname && !$iamadmin) ? ' readonly="readonly"' : '') . qq~ /></td>
 	</tr>
 	<tr class="windowbg">
 		<td width="220" align="left"><label for="gender"><b>$profile_txt{231}: </b></label></td>
@@ -1413,19 +1418,18 @@ sub ModifyProfile2 {
 		$value =~ s~[\n\r]~~g;
 		$member{$key} = $value;
 	}
-	$member{'username'} = $user;
 
 	if ($member{'moda'} eq $profile_txt{'88'}) {
-		if ($sessions == 1 && ($iamadmin || $iamgmod) && $username eq $user) {
+		if ($sessions == 1 && $staff && $username eq $user) {
 			if ($member{'sesquest'} eq "password") { $member{'sesanswer'} = ''; }
 			elsif ($member{'sesanswer'} eq '') { &fatal_error('no_secret_answer'); }
 		}
 
 		if ($member{'passwrd1'} || $member{'passwrd2'}) {
-			&fatal_error("password_mismatch","$member{'username'}") if ($member{'passwrd1'} ne $member{'passwrd2'});
-			&fatal_error("no_password","$member{'username'}") if ($member{'passwrd1'} eq '');
-			&fatal_error("invalid_character","$profile_txt{'36'} $profile_txt{'241'}") if ($member{'passwrd1'} =~ /[^\s\w!\@#\$\%\^&\*\(\)\+\|`~\-=\\:;'",\.\/\?\[\]\{\}]/);
-			&fatal_error("password_is_userid") if ($member{'username'} eq $member{'passwrd1'});
+			&fatal_error("no_password") if $member{'passwrd1'} eq '';
+			&fatal_error("password_mismatch") if $member{'passwrd1'} ne $member{'passwrd2'};
+			&fatal_error("password_is_userid") if $user eq $member{'passwrd1'};
+			&fatal_error("invalid_character","$profile_txt{'36'} $profile_txt{'241'}") if $member{'passwrd1'} =~ /[^\s\w!\@#\$\%\^&\*\(\)\+\|`~\-=\\:;'",\.\/\?\[\]\{\}]/;
 		}
 
 
@@ -1448,9 +1452,9 @@ sub ModifyProfile2 {
 		}
 
 
-		if (${$uid.$user}{'realname'} ne $member{'name'}) {
+		if ((!$cannot_change_displayname || $iamadmin) && ${$uid.$user}{'realname'} ne $member{'name'}) {
 			if ($member{'name'} eq '') { &fatal_error("no_name"); }
-			if ($name_cannot_be_userid && lc $member{'name'} eq lc $member{'username'}) { &fatal_error('name_is_userid'); }
+			if ($name_cannot_be_userid && lc $member{'name'} eq lc $user) { &fatal_error('name_is_userid'); }
 
 			&LoadCensorList;
 			if (&Censor($member{'name'}) ne $member{'name'}) { &fatal_error("name_censored", &CheckCensor("$member{'name'}")); }
@@ -1490,7 +1494,7 @@ sub ModifyProfile2 {
 				}
 			}
 
-			if (lc &MemberIndex("check_exist", $member{'name'}) eq lc $member{'name'}) { &fatal_error('name_taken',"($member{'name'})"); }
+			if (lc &MemberIndex("check_exist", $member{'name'}, $user) eq lc $member{'name'}) { &fatal_error('name_taken',"($member{'name'})"); }
 
 			# rewrite attachments.txt with new username
 			my @attachments = &read_DBorFILE(0,ATM,$vardir,'attachments','txt');
@@ -1501,6 +1505,8 @@ sub ModifyProfile2 {
 
 			#Since we haven't encountered a fatal error, time to rewrite our memberlist.
 			&ManageMemberinfo("update", $user, '', $member{'name'});
+		} else {
+			$member{'name'} = ${$uid.$user}{'realname'}
 		}
 
 		&ToHTML($member{'gender'});
@@ -1529,30 +1535,28 @@ sub ModifyProfile2 {
 		&UpdateCookie("write", $user, ${$uid.$user}{'password'}, ${$uid.$user}{'session'}, "/", "") if $member{'passwrd1'} && $username eq $user;
 
 		my $scriptAction = $view ? 'myprofileContacts' : 'profileContacts';
-		$yySetLocation = qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};sid=$INFO{'sid'}~;
+		$yySetLocation = qq~$scripturl?action=$scriptAction;username=$useraccount{$user};sid=$INFO{'sid'}~;
 
 	} elsif ($member{'moda'} eq $profile_txt{'89'}) {
-		&fatal_error("cannot_kill_admin",$member{'username'}) if $member{'username'} eq 'admin' || !($iamadmin || $allow_self_del);
+		&fatal_error("cannot_kill_admin", $user) if $user eq 'admin' || !($iamadmin || $allow_self_del);
 
 		# For security, remove username from mod position
-		&KillModerator($member{'username'});
+		&KillModerator($user);
 
-		$noteuser = $iamadmin ? $member{'username'} : $user;
-
-		&delete_DBorFILE("$memberdir/$noteuser.dat");
-		# &delete_DBorFILE("$memberdir/$noteuser.vars") does delete also the
+		&delete_DBorFILE("$memberdir/$user.dat");
+		# &delete_DBorFILE("$memberdir/$user.vars") does delete also the
 		# other files content if in SQL-Database!!! So no further need for &delete_DBorFILE(...)
-		&delete_DBorFILE("$memberdir/$noteuser.vars");
-		&delete_DBorFILE("$memberdir/$noteuser.ims");
-		&delete_DBorFILE("$memberdir/$noteuser.msg");
-		&delete_DBorFILE("$memberdir/$noteuser.log");
-		&delete_DBorFILE("$memberdir/$noteuser.rlog");
-		&delete_DBorFILE("$memberdir/$noteuser.outbox");
-		&delete_DBorFILE("$memberdir/$noteuser.imstore");
-		&delete_DBorFILE("$memberdir/$noteuser.imdraft");
+		&delete_DBorFILE("$memberdir/$user.vars");
+		&delete_DBorFILE("$memberdir/$user.ims");
+		&delete_DBorFILE("$memberdir/$user.msg");
+		&delete_DBorFILE("$memberdir/$user.log");
+		&delete_DBorFILE("$memberdir/$user.rlog");
+		&delete_DBorFILE("$memberdir/$user.outbox");
+		&delete_DBorFILE("$memberdir/$user.imstore");
+		&delete_DBorFILE("$memberdir/$user.imdraft");
 		&delete_DBorFILE("$facesdir/UserAvatars/$1") if ${$uid.$user}{'userpic'} && ${$uid.$user}{'userpic'} =~ /$facesurl\/UserAvatars\/(.+)/;
 
-		&MemberIndex("remove", $noteuser);
+		&MemberIndex("remove", $user);
 
 		if (!$iamadmin) {
 			&UpdateCookie("delete");

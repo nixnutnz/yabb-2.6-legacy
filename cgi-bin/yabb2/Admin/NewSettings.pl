@@ -554,6 +554,7 @@ $templateset);						# Forum templates settings
 \$emailnewpass = $emailnewpass;				# Set to 1 to email a new password to members if they change their email address
 \$emailwelcome = $emailwelcome;				# Set to 1 to email a welcome message to users even when you have mail password turned off
 \$name_cannot_be_userid = $name_cannot_be_userid;	# Set to 1 to require users to have different usernames and display names
+\$cannot_change_displayname = $cannot_change_displayname;	# Set to 1 for users can not change their displayname
 \$birthday_on_reg = $birthday_on_reg;			# Set to 0: don't ask for birthday on registration
 							# 1: ask for the birthday, no input required
 							# 2: ask for the birthday, input required

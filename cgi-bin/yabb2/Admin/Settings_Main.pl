@@ -880,6 +880,12 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 			validate => 'boolean',
 		},
 		{
+			description => qq~<label for="cannot_change_displayname">$register_txt{'769'}</label>~,
+			input_html => qq~<input type="checkbox" name="cannot_change_displayname" id="cannot_change_displayname" value="1"${ischecked($cannot_change_displayname)} />~,
+			name => 'cannot_change_displayname',
+			validate => 'boolean',
+		},
+		{
 			description => qq~<label for="birthday_on_reg">$register_txt{'770'}</label>~,
 			input_html => qq~
 			<select name="birthday_on_reg" id="birthday_on_reg" size="1">

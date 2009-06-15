@@ -259,7 +259,7 @@ sub UserAccount {
 }
 
 sub MemberIndex {
-	my ($memaction, $user) = @_;
+	my ($memaction, $user, $actual_username) = @_;
 	return if $user eq '';
 	if ($memaction eq "add" && &LoadUser($user)) {
 		if (!${$uid.$user}{'postcount'}) { ${$uid.$user}{'postcount'} = 0; }
@@ -295,10 +295,15 @@ sub MemberIndex {
 		my ($curname, $curmail);
 		foreach (keys %memberinf) {
 			(undef, $curname, $curmail, undef) = split(/\|/, $memberinf{$_}, 4);
-			if    (lc $user eq lc $_)       { undef %memberinf; return $_; }
-			elsif (lc $user eq lc $curmail) { undef %memberinf; return $curmail; }
-			elsif (lc $user eq lc $curname) { undef %memberinf; return $curname; }
+			if (($name_cannot_be_userid || $actual_username eq '' || (!$name_cannot_be_userid && lc $actual_username ne lc $user)) && lc $user eq lc $_) { 
+				undef %memberinf; return $_;
+			} elsif (lc $user eq lc $curmail) {
+				undef %memberinf; return $curmail;
+			} elsif (lc $user eq lc $curname) {
+				undef %memberinf; return $curname;
+			}
 		}
+		undef %memberinf;
 
 	} elsif ($memaction eq "who_is") {
 		&ManageMemberinfo("load");

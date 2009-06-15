@@ -114,6 +114,9 @@ sub Register {
 	if ($name_cannot_be_userid) {
 		$yymain .= qq~
 			<br /><span class="small">$register_txt{'521'}</span>~;
+	} else {
+		$yymain .= qq~
+			<br /><span class="small">$register_txt{'522'}</span>~;
 	}
 	$yymain .= qq~</label>
 		</td>
