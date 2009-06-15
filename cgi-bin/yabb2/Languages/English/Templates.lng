@@ -101,6 +101,12 @@ $templateslngver = 'YaBB 2.4 $Revision$';
 'tabtitlea' => 'Board Index Title link (.tabtitle a)',
 'forum' => 'Forum',
 'admincenter' => 'Admin Center',
+'buttontext' => 'CSS Buttons',
+'buttondescription' => 'Here you can change the position of the icon and text inside the buttons and the background graphics for the buttons.',
+'moveicon1' => 'Icon down',
+'moveicon2' => 'Icon right',
+'iconspace' => 'Icon space',
+'movetext' => 'Text down',
 );
 
 1;

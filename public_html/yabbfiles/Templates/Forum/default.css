@@ -1,17 +1,15 @@
 /*--------------------------------------------------------*/
-/*                      YaBB 2009                         */
+/* YaBB 2009 */
 /*--------------------------------------------------------*/
-/*      Created by: XIMinc http://www.ximinc.com          */
-/*            YaBB http://www.yabbforum.com               */
+/* Created by: XIMinc http://www.ximinc.com */
+/* YaBB http://www.yabbforum.com */
 /*--------------------------------------------------------*/
-/*    You may adapt elements of this CSS in your own      */
-/*   projects, but please give credit to yabbforum.com.   */
+/* You may adapt elements of this CSS in your own */
+/* projects, but please give credit to yabbforum.com. */
 /*--------------------------------------------------------*/
-/*   This is the css file for YaBB 2.4 default Template   */
+/* This is the css file for YaBB 2.4 default Template */
 /*--------------------------------------------------------*/
 /* $Revision$ */
-
-
 /* General layout */
 a {
 	font-weight: normal;
@@ -93,7 +91,30 @@ input, .button {
 	padding-right: 1px;
 	color: #000033;
 }
-
+/* Soft coded css buttons */
+.buttonleft {
+	padding: 0px 0px 0px 6px;
+	background-image: url(../../Buttons/Button22_left.png);
+}
+.buttonright {
+	padding: 0px 6px 0px 0px;
+	background-image: url(../../Buttons/Button22_right.png);
+}
+.buttonimage {
+	padding: 0px 0px 0px 25px;
+	background-position: 0px 0px;
+}
+.buttontext {
+	position: relative;
+	top: 5px;
+	left: 0px;
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 9px;
+	color: #000000;
+	font-weight: normal;
+	font-style: normal;
+}
+/* Soft coded css buttons end */
 /* Advanced Tabs start */
 .menutop {
 	height: 24px;
@@ -172,7 +193,6 @@ input, .button {
 	color: #000033;
 }
 /* Advanced Tabs end */
-
 .usermenu {
 	width: 96%;
 	height: 24px;
@@ -241,20 +261,19 @@ select optgroup {
 #fscroller {
 	line-height: 1.3;
 }
-
-
 /* users/members on-off-away line status */
 .useronline {
-	font-weight: bold; color: #2E8B57;
+	font-weight: bold;
+	color: #2E8B57;
 }
 .useroffline {
-	font-weight: bold; color: #7B68EE;
+	font-weight: bold;
+	color: #7B68EE;
 }
 .useraway {
-	font-weight: bold; color: #6078B0;
+	font-weight: bold;
+	color: #6078B0;
 }
-
-
 /* YaBB navigation links */
 .nav, a.nav, a.nav:visited {
 	font-weight: bold;
@@ -266,8 +285,6 @@ a.nav:hover {
 	color: #990000;
 	text-decoration: underline;
 }
-
-
 /* Quick-Profile-Links */
 .QuickLinks {
 	background-color: #DDDDDD;
@@ -297,8 +314,6 @@ a.nav:hover {
 .QuickLinks a:hover {
 	text-decoration:none;
 }
-
-
 /* YaBB alternating bgcolors */
 .windowbg {
 	background-color: #DEE4EC;
@@ -316,8 +331,6 @@ a.nav:hover {
 	font-family: Verdana, Sans-Serif;
 	color: #304B58;
 }
-
-
 /* Misc/title/category colors */
 .dividerbot {
 	border-bottom: 1px #A7B8CC solid;
@@ -371,7 +384,7 @@ a.nav:hover {
 	text-decoration: none;
 	font-family: Verdana, Helvetica, Arial, Sans-Serif;
 	color: #FFFFFF;
-	background-color: #88A0C8; 
+	background-color: #88A0C8;
 }
 .catbg a {
 	font-weight: bold;
@@ -430,8 +443,6 @@ a.nav:hover {
 	background-color: #FFFF33;
 	color: #000000;
 }
-
-
 /* Image fonts */
 .imgbg {
 	font-style: normal;
@@ -461,8 +472,6 @@ a.nav:hover {
 	color: #000000;
 	font-weight: bold;
 }
-
-
 /* Post quote/code colors */
 .quote {
 	font-size: 11px;
@@ -514,7 +523,6 @@ a.nav:hover {
 	color: #000000;
 	background-color: #EEE8AA;
 	font-style: italic;
-
 }
 .forumjumpcatmf {
 	color: #000000;
@@ -527,8 +535,6 @@ a.nav:hover {
 	background-color: #F0FFF0;
 	font-weight: bold;
 }
-
-
 /* Anything below here is just for the template */
 #PMcontainer {
 	float: left;
@@ -557,3 +563,4 @@ a.nav:hover {
 .navbarcontainer{
 	margin: 0px;
 }
+
