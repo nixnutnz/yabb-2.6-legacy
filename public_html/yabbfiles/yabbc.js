@@ -303,7 +303,7 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 	ubbcstr=ubbcstr.replace(/\[br\]/ig, "\n");
 
 
-	if(autolinkurls != 0) ubbcstr=ubbcstr.replace(/((http:\/\/|www\.){1,}\S+?\.\S+)/ig, "[url]$1[/url]"); 
+	if(autolinkurls != 0) ubbcstr=ubbcstr.replace(/(^|\]|\s+)((http:\/\/|www\.){1,}\S+?\.\S+)/ig, "$1[url]$2[/url]");
 	ubbcstr=ubbcstr.replace(/\[url\]\s*www\.(\S+?)\s*\[\/url\]/ig, "<a href='http://www.$1' target='_blank'>www.$1</a>");
 	ubbcstr=ubbcstr.replace(/\[url=\s*(\S\w+\:\/\/\S+?)\s*\](.+?)\[\/url\]/ig, "<a href='$1' target='_blank'>$2</a>");
 	ubbcstr=ubbcstr.replace(/\[url=\s*(\S+?)\](.+?)\s*\[\/url\]/ig, "<a href='http://$1' target='_blank'>$2</a>");
