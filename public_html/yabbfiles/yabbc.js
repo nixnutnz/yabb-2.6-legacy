@@ -65,8 +65,8 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 	ubbcstr=ubbcstr.replace(/\[\/code\]/ig, " [/code]");
 	ubbcstr=ubbcstr.replace(/\[quote\]/ig, " [quote]");
 	ubbcstr=ubbcstr.replace(/\[\/quote\]/ig, " [/quote]");
-	ubbcstr=ubbcstr.replace(/\[glow\]/ig, " [glow]");
-	ubbcstr=ubbcstr.replace(/\[\/glow\]/ig, " [/glow]");
+	ubbcstr=ubbcstr.replace(/\[edit\]/ig, " [edit]");
+	ubbcstr=ubbcstr.replace(/\[\/edit\]/ig, " [/edit]");
 
 		function codeConvStr() {
 			comessage='$1';
