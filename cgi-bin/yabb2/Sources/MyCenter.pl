@@ -1239,20 +1239,14 @@ function insert_user (oElement,username,userid) {
 			}
 		}
 
-		$MCContent .= qq~
-			$showIM
-		<br />
-		~;
+		$MCContent .= $showIM;
 
 	} elsif ($view eq 'pm' && $action eq 'pmsearch') {
 		&spam_protection;
 		$yysearchmain = '';
 		require "$sourcedir/Search.pl";
 		&pmsearch;
-		$MCContent .= qq~
-			$yysearchmain
-		<br />
-		~;
+		$MCContent .= $yysearchmain;
 		$mctitle = "$pm_search{'desc'}";
 
 	} elsif ($view eq 'profile') {
@@ -1273,33 +1267,24 @@ function insert_user (oElement,username,userid) {
 		elsif ($action eq 'myviewprofile') { &ViewProfile; }
 		elsif ($action eq 'myprofileAdmin') { &ModifyProfileAdmin; }
 		elsif ($action eq 'myprofileAdmin2') { &ModifyProfileAdmin2; }
-		$MCContent .= qq~
-			$showProfile
-		<br />
-		~;
+		$MCContent .= $showProfile;
 
 	} elsif ($view eq 'notify') {
 		require "$sourcedir/Notify.pl";
 		if ($action eq 'shownotify') { &ShowNotifications; }
 		elsif ($action eq 'boardnotify2') { &BoardNotify2; &ShowNotifications; }
 		elsif ($action eq 'notify4') { &Notify4; }
-		$MCContent .= qq~$showNotifications 
-		<br />
-		~;
+		$MCContent .= $showNotifications;
 
 	} elsif ($view eq 'recentposts') {
 		require "$sourcedir/Profile.pl";
 		&usersrecentposts;
-		$MCContent .= qq~$showProfile 
-		<br />
-		~;
+		$MCContent .= $showProfile;
 
 	} elsif ($view eq 'favorites'){
 		require "$sourcedir/Favorites.pl";
 		&Favorites;
-		$MCContent .= qq~$showFavorites 
-		<br />
-		~;
+		$MCContent .= $showFavorites;
 	}
 
 	## start PM div
@@ -1592,7 +1577,7 @@ sub drawPMView {
 		if ($sortBy eq 'gpdate') {
 			$MCContent .= qq~
 	  <tr>
-	    <td class="titlebg"  width="100%" colspan="3"><span class="imgtitlebg">$im_sorted{$uselegend}</span>	</td>
+	    <td class="titlebg"  width="100%" colspan="3"><span class="imgtitlebg">$im_sorted{$uselegend}</span></td>
 	  </tr>
 			~;
 
@@ -2157,8 +2142,8 @@ sub drawPMView {
 			else { $dorest = qq~<img src="$imagesdir/usageempty.gif" height="8" width="$imrest" align="middle" alt="" />~; }
 			$imbargfx = qq~$inmes_imtxt{'67'}:&nbsp;<img src="$imagesdir/usage.gif" align="middle" alt="" /><img src="$imagesdir/usagebar.gif" height="8" width="$imbar" align="middle" alt="" />$dorest<img src="$imagesdir/usage.gif" align="middle" alt="" />&nbsp;$impercent&nbsp;%&nbsp;<br />~;
 		} else {
-			$intext = qq~&nbsp;~;
-			$imbargfx = qq~&nbsp;~;
+			$intext = '';
+			$imbargfx = '';
 		}
 		unless ($action eq 'imstorage' && $INFO{'viewfolder'} eq '') { 
 			$removeButton = qq~<input type="submit" name="imaction" value="$inmes_txt{'remove'}" class="button" onclick="return confirm('$inmes_txt{'delmultipms'}');" />~;
@@ -2169,14 +2154,14 @@ sub drawPMView {
 			$MCContent .= qq~
 	  <tr>
 	    <td class="titlebg" colspan="3" align="right" height="21" >
-			~;
+			<br />~;
 			if (!$viewBMess) {
 				$MCContent .= qq~
-		<span  class="small"><b>$imbargfx&nbsp;$intext<br /><br /></b></span>~;
+		<span  class="small"><b>$imbargfx&nbsp;$intext</b><br /><br /></span>~ if $imbargfx || $intext;
 				unless ($action eq 'imstorage' && $INFO{'viewfolder'} eq '') { $MCContent .= $movebutton; }
 			}
 			if (!$viewBMess || ($viewBMess && ($iamadmin|| $deleteButton))) {
-				$MCContent .= qq~ $removeButton~;
+				$MCContent .= qq~ $removeButton<br /><br />~;
 			}
 			$MCContent .= qq~
 	    </td>
