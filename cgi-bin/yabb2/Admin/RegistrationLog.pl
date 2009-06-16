@@ -408,8 +408,11 @@ sub approve_registration {
 		}
 
 		## user is approved, so let him/her in ##
-		if ($use_MySQL) { &UserAccount($apruser); &delete_DBorFILE("$memberdir/$apruser.wait"); }
-		else { rename("$memberdir/$apruser.wait", "$memberdir/$apruser.vars"); }
+		if ($use_MySQL) {
+			&UserAccount($apruser);
+			${$uid.$apruser}{'mysql'} = 1;
+			&delete_DBorFILE("$memberdir/$apruser.wait");
+		} else { rename("$memberdir/$apruser.wait", "$memberdir/$apruser.vars"); }
 		&MemberIndex("add", $apruser);
 
 		## send a approval email ##
@@ -437,7 +440,7 @@ sub approve_registration {
 			# new format msg file:
 			# messageid|(from)user|(touser(s))|(ccuser(s))|(bccuser(s))|subject|date|message|(parentmid)|reply#|ip|messagestatus|flags|storefolder|attachment
 			$messageid = $^T . $$;
-			&write_DBorFILE(0,'',$memberdir,$apruser,'msg',"$messageid|$sendname|$apruser|||$imsubject|$date|$imtext|$messageid|0|$ENV{'REMOTE_ADDR'}|s|u||\n");
+			&write_DBorFILE(${$uid.$apruser}{'mysql'},'',$memberdir,$apruser,'msg',"$messageid|$sendname|$apruser|||$imsubject|$date|$imtext|$messageid|0|$ENV{'REMOTE_ADDR'}|s|u||\n");
 		}
 
 		# update approval user list
