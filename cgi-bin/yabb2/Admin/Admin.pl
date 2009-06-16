@@ -783,9 +783,9 @@ sub DeleteMultiMembers {
 		}
 		$count++;
 	}
-	if (@userslist) { &MemberIndex("remove", join(',', @userslist)); }
-
 	&automaintenance("off");
+
+	if (@userslist) { &MemberIndex("remove", join(',', @userslist)); }
 
 	$language = $templanguage;
 	if ($FORM{'button'} == 1) {

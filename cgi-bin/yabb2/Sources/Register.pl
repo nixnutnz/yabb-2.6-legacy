@@ -760,6 +760,7 @@ sub Register2 {
 			&ext_saveprofile($reguser);
 		}
 		&UserAccount($reguser, "register");
+		${$uid.$reguser}{'mysql'} = 1 if $use_MySQL;
 		&MemberIndex("add", $reguser);
 		&FormatUserName($reguser);
 
@@ -884,8 +885,11 @@ sub user_activation {
 				}
 
 				# user is in list and the keys match, so let him/her in
-				if ($use_MySQL) { &UserAccount($reguser); &delete_DBorFILE("$memberdir/$reguser.pre"); }
-				else { rename("$memberdir/$reguser.pre", "$memberdir/$reguser.vars"); }
+				if ($use_MySQL) {
+					&UserAccount($reguser); 
+					${$uid.$reguser}{'mysql'} = 1;
+					&delete_DBorFILE("$memberdir/$reguser.pre");
+				} else { rename("$memberdir/$reguser.pre", "$memberdir/$reguser.vars"); }
 				&MemberIndex("add", $reguser);
 
 				if ($iamadmin || $iamgmod) { $actuser = $username; } else { $actuser = $reguser; }

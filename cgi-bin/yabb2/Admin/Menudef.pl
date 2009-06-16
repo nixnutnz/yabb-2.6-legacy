@@ -64,9 +64,9 @@ sub SetMenu {
 		$helpstyle = $_ eq 'help' ? " cursor: help;" : " cursor: pointer;";
 
 		if ($_ !~/^(lastpost|pollicon|polliconnew|polliconclosed)$/) {
-			$def0{$_} = qq~<img src="$button_imgurl/$button_icon.$imgext" border="0" alt="\$$alt_text{'$alt_num'}" /> <span style="white-space: nowrap;" class="$span_class" title="\$$alt_text\{'$alt_num'}">\$$button_text\{'$text_num'}</span>~;
+			$def0{$_} = qq~<span style="white-space: nowrap;" class="$span_class"><img src="$button_imgurl/$button_icon.$imgext" border="0" alt="\$$alt_text\{'$alt_num'}" /> \$$button_text\{'$text_num'}</span>~;
 
-			$def1{$_} = qq~<span style="white-space: nowrap;" class="$span_class" title="\$$alt_text\{'$alt_num'}">\$$button_text\{'$text_num'}</span>~;
+			$def1{$_} = qq~<span style="white-space: nowrap;" class="$span_class">\$$button_text\{'$text_num'}</span>~;
 
 			$def2{$_} = qq~<span class="buttonleft" title="\$$alt_text\{'$alt_num'}" style="height: 20px; border: 0px; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;$helpstyle">~;
 			$def2{$_} .= qq~<span class="buttonright" style="height: 20px; border: 0px; margin: 0px; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;">~;
@@ -98,7 +98,7 @@ sub SetMenu {
 ");
 
 		if ($deffile == 0) {
-			push(@file, "\$menusep = ' ';\n\n\%img = (\n");
+			push(@file, "\$menusep = ' &nbsp; ';\n\n\%img = (\n");
 			foreach (sort(keys %def0)) {
 				push(@file, qq*'$_' => qq~$def0{$_}~,\n*);
 			}
