@@ -79,7 +79,7 @@ Please click on the link below to activate your user account
 
 {yabb scripturl}?action=activate&username={yabb cryptusername}&activationkey={yabb activationcode}
 
-If the link does not work (or if you use AOL or a browser-based Email program), copy the link and insert it  in the address bar of your Web browser.
+If the link does not work (or if you use AOL or a browser-based Email program), copy the link and insert it in the address bar of your Web browser.
 
 Regards,
 The {yabb mbname} team~;

@@ -159,7 +159,7 @@ $yycharset = 'ISO-8859-1';
 '340' => 'Edit Ban List',
 '341' => 'Set Reserved Names',
 '342' => 'One word per line.',
-'347' => 'This page allows you to change every setting for your YaBB forum.  Be very careful with these settings, as they may render your YaBB dysfunctional.  Also note that some of these options are default options for guests only (such as time format).',
+'347' => 'This page allows you to change every setting for your YaBB forum. Be very careful with these settings, as they may render your YaBB dysfunctional. Also note that some of these options are default options for guests only (such as time format).',
 '348' => 'Maintenance Mode?',
 '348Text' => 'User-defined "Maintenance Mode" text<br /><span class="small">(leave blank for default message)</span>',
 '350' => 'Forum Name',
@@ -334,7 +334,7 @@ $yycharset = 'ISO-8859-1';
 '670' => 'Please place one news item per line. YaBBC tags, such as [b], [i] and [u] are allowed in your news, as well as smilies.',
 '677' => 'From this screen you can add or edit multiple boards! Click the button in front of the category name, and you can reorder the listing of the boards you see in that category.',
 '678' => 'Edit your categories here. Click the button in front of the title above to reorder the listing of the categories. Click the button in front of the category name, and you can reorder the listing of the boards you see in that category.',
-'682' => 'This is your template for your YaBB forum.  You can change anything you like here using HTML, and your Forum will automatically look different after you save the template!',
+'682' => 'This is your template for your YaBB forum. You can change anything you like here using HTML, and your Forum will automatically look different after you save the template!',
 '684' => 'Forum Administrators',
 '684a' => 'Global Moderators',
 '689' => 'Maximum allowed characters in signatures',
@@ -404,7 +404,7 @@ $yycharset = 'ISO-8859-1';
 '830' => 'Category with ID',
 '831' => 'has been removed successfully.',
 '832' => 'Reorder Boards in this category',
-'833' => 'You have an invalid ID.  Please try again.',
+'833' => 'You have an invalid ID. Please try again.',
 '834' => 'HTML Root URL',
 '838' => 'Referring Pages',
 '842' => 'Number of replies needed for a "Hot Topic"',
@@ -439,7 +439,7 @@ $yycharset = 'ISO-8859-1';
 'minlinkpost_exp' => 'This avoids spambots from doing spamposts directly after registering',
 'stealth' => 'Enable \'Stealth\' mode for Admins and Gmods?<br /><span class="small">Allows status label to stay at Offline/Away for all members viewing</span>',
 'by_pass_lock' => 'Select which Staff Members to allow bypassing the lock on posts:<br /><span class="small">This allows the selected to reply, modify, unlock, delete, ... a locked thread.</span>',
-'mlview' => 'Select the Member Groups allowed to view  the Member List?',
+'mlview' => 'Select the Member Groups allowed to view the Member List?',
 'buddylist' => 'Enable Buddy List?',
 'regreason' => 'Maximum allowed characters in User\'s Reason(s) for Registering',
 'showall' => 'Show "All" on page selectors and Topic Summary?',
@@ -901,7 +901,7 @@ $yycharset = 'ISO-8859-1';
 '47' => 'Sent Emails',
 '48' => 'No Members selected to receive Email!!',
 '49' => 'Export Email address list',
-'50' => 'Export the Email address of the members in the groups you selected above to a semicolon separated text file. This file is saved under the name <i>yabbaddress.csv</i> in your Variables folder. If you have done this, you can download the file with the Button that will appear if the file is once in  place.',
+'50' => 'Export the Email address of the members in the groups you selected above to a semicolon separated text file. This file is saved under the name <i>yabbaddress.csv</i> in your Variables folder. If you have done this, you can download the file with the Button that will appear if the file is once in place.',
 '51' => 'Download address list',
 '52' => 'Copy to Clipboard',
 '53' => 'Mail Members',
@@ -1279,7 +1279,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 ## for the userselect controlled bits.
 %selector_txt = (
 'linklabel' => 'Click here to select/add moderators(s)',
-'instructions' =>  'double-click to remove a name from the list',
+'instructions' => 'double-click to remove a name from the list',
 'remove' => 'Are you sure you want to remove member from list?',
 );
 

@@ -42,7 +42,7 @@ $backuplngver = 'YaBB 2.4 $Revision$';
 '15', 'Backup method',
 
 # Don't translate command names (such as /bin/tar) or 'tar'.
-'16', 'First choice should be to use Tar (with compression) or Zip.<br />Use Archive::Tar (with Compress::Zlib or Compress::Bzip2) or Archive::Zip methods as a last resort.<br />bzip2 or Bzip2 makes the smallest backups but takes the longest.<br /><span style="color: red;"><b>Note:</b><br /></span> Some servers do not support large Backups. In this case you get an Error message like "Internal server error" or just a blank page. Try another Backup Method and use this instead. If this does not help, try with  less YaBB directories checked above.',
+'16', 'First choice should be to use Tar (with compression) or Zip.<br />Use Archive::Tar (with Compress::Zlib or Compress::Bzip2) or Archive::Zip methods as a last resort.<br />bzip2 or Bzip2 makes the smallest backups but takes the longest.<br /><span style="color: red;"><b>Note:</b><br /></span> Some servers do not support large Backups. In this case you get an Error message like "Internal server error" or just a blank page. Try another Backup Method and use this instead. If this does not help, try with less YaBB directories checked above.',
 '17', 'No tar compression',
 '18', '(for Tar compression)',
 '19', 'Directory to put the backups into',

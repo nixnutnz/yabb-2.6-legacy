@@ -98,7 +98,7 @@ $errorlngver = 'YaBB 2.4 $Revision$';
 'time_out'			=> "You did not activate your account within $preregspan hours!<br />As a result your pre-registration has been removed!<br />Please re-register again!",
 'wrong_code'			=> "Your activation code is wrong!",
 'admin_login_only'		=> "Only the admin can login at the moment, because our forum is in Maintenance Mode.<br />Please try again later. Thank you!",
-'wrong_id'			=> "You have an invalid ID.  Please try again.",
+'wrong_id'			=> "You have an invalid ID. Please try again.",
 
 ## Mailer ##
 'net_fatal'			=> "Net::SMTP fatal error",
