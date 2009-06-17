@@ -24,3 +24,8 @@ INSTALLATION NOTES
 	4)  If converting, run Setup.pl again, and follow the instructions on the web page before proceeding.
 	5)  The default administrator username's password is "admin."
 	6)  Remove Setup.pl when installation (and conversion if applicable) is complete.
+
+
+
+**************************************************
+    Please report bugs in http://www.yabbforum.com/community/YaBB.pl
