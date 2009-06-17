@@ -45,7 +45,7 @@ function AddSelText(bbopen, bbclose) {
 		document.postmodify.message.scrollTop = currentTop;		
 	}
 	else document.postmodify.message.value += bbopen + bbclose;
-	document.postmodify.message.focus()
+	document.postmodify.message.focus();
 }
 
 function AddText(text) {
@@ -55,7 +55,7 @@ function AddText(text) {
 function AddSelTextUrl(bbopen, bbclose) {
 	var thetext = '';
 	var theurl = '';
-	blopen = bbopen.substring(0, bbopen.length - 1)
+	blopen = bbopen.substring(0, bbopen.length - 1);
 	if (document.postmodify.message.caretPos) {
 		tmpString=document.postmodify.message.caretPos.text.replace(/\s*(.+?)\s*$/i, "$1");
 		var old_length = tmpString.length;
@@ -90,13 +90,12 @@ function AddSelTextUrl(bbopen, bbclose) {
 		document.postmodify.message.scrollTop = currentTop;		
 	}
 	else document.postmodify.message.value += bbopen + bbclose;
-	document.postmodify.message.focus()
+	document.postmodify.message.focus();
 }
 
 function emai1() {
 	AddSelTextUrl("[email]","[/email]");
 }
-
 
 function hyperlink() {
 	AddSelTextUrl("[url]","[/url]");

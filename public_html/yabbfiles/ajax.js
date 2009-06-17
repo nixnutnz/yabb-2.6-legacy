@@ -53,6 +53,7 @@ function Collapse_All (url,action,imgdir,lng) {
 		document.getElementById("expandall").style.display = "";
 		document.getElementById("collapseall").style.display = "none";
 	}
+
 	for (i = 0 ; i < catNames.length; i++) {
 		document.getElementById(catNames[i]).style.display = boards;
 		document.getElementById("col"+catNames[i]).style.display = noboards;
