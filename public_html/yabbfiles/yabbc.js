@@ -25,11 +25,10 @@ function jsDoTohtml(tohtmlstr) {
 	tohtmlstr=tohtmlstr.replace(/\|/g, "&#124;");
 	tohtmlstr=tohtmlstr.replace(/\</g, "&lt;");
 	tohtmlstr=tohtmlstr.replace(/\>/g, "&gt;");
-	return tohtmlstr
+	return tohtmlstr;
 }
 
 function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,imagesdir,smilieurl,parsflash,fontmax,fontmin,autolinkurls,month,timeselect,splittxt,dontusetoday,todaytext,yesterdaytext,timetxt1,timetxt2,timetxt3,timetxt4,jssmilieurl,jssmiliecode) {
-
 	ubbcstr=ubbcstr.replace(/\&/g, "&amp;");
 	ubbcstr=ubbcstr.replace(/\"/g, "&quot;");
 	ubbcstr=ubbcstr.replace(/  /g, " &nbsp;");
@@ -163,7 +162,7 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 
 
 		function ltTen(number) {
-			if (number < 10) number = '0' + number;
+			if (number < 10) {number = '0' + number;}
 			return number;
 		}
 
