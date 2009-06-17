@@ -1160,7 +1160,7 @@ sub KickGuest {
 sub WriteLog {
 	# comment out (#) the next line if you have problems with
 	# 'Reverse DNS lookup timeout causes slow page loads'
-	# (http://www.yabbforum.com/community/YaBB.pl?num=1199991357)
+	#
 	# Search Engine identification and display will be turned off
 	my $user_host = (gethostbyaddr(pack("C4", split(/\./, $user_ip)), 2))[0];
 
