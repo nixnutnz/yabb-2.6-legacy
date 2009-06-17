@@ -1056,7 +1056,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 '1' => 'Select SMTP Server Authorization Type<br /><span class="small">OFF means No Authorization is required</span>',
 '3' => 'SMTP Authorization Username',
 '4' => 'SMTP Authorization Password',
-'sendmail' => 'Unix/Linux Sendmail',
+'sendmail' => 'Unix/Linux/BSD Sendmail',
 'smtp' => 'YaBB SMTP Engine',
 'net' => 'Net::SMTP (Perl Module)',
 'tslnet' => 'Net::SMTP::TLS (Perl Module)',
