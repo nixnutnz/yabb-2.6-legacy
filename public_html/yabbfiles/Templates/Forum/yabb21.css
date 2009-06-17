@@ -10,6 +10,7 @@
 /* This is the css file for YaBB 2.1 style Templates */
 /*--------------------------------------------------------*/
 /* $Revision$ */
+
 /* General layout */
 a {
 	font-weight: normal;
@@ -476,4 +477,3 @@ a.nav:hover {
 .sortingblock {
 	width: 100%;
 }
-
