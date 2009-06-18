@@ -391,7 +391,7 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 		if (parsflash == 1) {
 			var fwidth = fw[1];
 			var fheight = fw[2];
-			if (fwidth > 500) { fwidth = 500; }
+			if (fwidth  > 500) { fwidth  = 500; }
 			if (fheight > 500) { fheight = 500; }
 			ubbcstr=ubbcstr.replace(/\[flash\=(\S+?),(\S+?)\](\S+?)\[\/flash\]/, '<object classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" width='+fwidth+' height='+fheight+'><param name=movie value=$3><param name=play value=true><param name=loop value=true><param name=quality value=high><embed src=$3 width='+fwidth+' height='+fheight+' play=true loop=true quality=high></embed></object>');
 		} else {

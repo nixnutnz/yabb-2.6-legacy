@@ -18,14 +18,13 @@
 
 // Caps Lock and Not Allowed Characters detection
 function capsLock(eve,ident){
-	keyCode = eve.keyCode ? eve.keyCode : eve.which;
-	shiftKey = eve.shiftKey ? eve.shiftKey : ((keyCode == 16) ? true : false);
+	var keyCode = eve.keyCode ? eve.keyCode : eve.which;
+	var shiftKey = eve.shiftKey ? eve.shiftKey : ((keyCode == 16) ? true : false);
 
 	// check for Caps Lock
-	if (((keyCode > 64 && keyCode < 91) && !shiftKey)||((keyCode > 96 && keyCode < 123) && shiftKey)) {
+	if (((keyCode > 64 && keyCode < 91) && !shiftKey) || ((keyCode > 96 && keyCode < 123) && shiftKey)) {
 		document.getElementById(ident + '_char').style.display = 'none';
 		document.getElementById(ident).style.display = 'block';
-
 	} else {
 		document.getElementById(ident).style.display = 'none';
 
@@ -42,22 +41,23 @@ function capsLock(eve,ident){
 }
 
 
-//scroll fix for IE
-window.onload = function () {
-			if (document.all) {
-				var codeFix = document.all.tags("div");
-				for (var codeI = 0; codeI < codeFix.length; codeI++) {
-					if (codeFix[codeI].className == "scroll" && (codeFix[codeI].scrollWidth > codeFix[codeI].clientWidth || codeFix[codeI].clientWidth == 0))
-					codeFix[codeI].style.height = (codeFix[codeI].clientHeight + 34) + "px";
-				}
-			}
+// scroll fix for IE
+window.onload = function() {
+	if (document.all) {
+		var codeFix = document.all.tags("div");
+		for (var codeI = 0; codeI < codeFix.length; codeI++) {
+			if (codeFix[codeI].className == "scroll" && (codeFix[codeI].scrollWidth > codeFix[codeI].clientWidth || codeFix[codeI].clientWidth == 0))
+			codeFix[codeI].style.height = (codeFix[codeI].clientHeight + 34) + "px";
 		}
+	}
+}
 
 
 // for email decoding
 function SpamInator(title,v1,v2,adr,subbody) {
-	v2 = unescape(v2); var v3 = '';
-	for(var v4 = 0; v4 < v1.length; v4++) { v3 += String.fromCharCode(v1.charCodeAt(v4)^v2.charCodeAt(v4)); }
+	v2 = unescape(v2);
+	var v3 = '';
+	for (var v4 = 0; v4 < v1.length; v4++) { v3 += String.fromCharCode(v1.charCodeAt(v4)^v2.charCodeAt(v4)); }
 	if (!title) title = v3;
 	document.write('<a href="javascript:void(0)" onclick="window.location=\'' + adr + v3 + subbody + '\'">' + title + '</a>');
 }
@@ -135,10 +135,9 @@ function resize_images() {
 	var tmp_array = new Array ();
 	for (var i = 0; i < img_resize_names.length; i++) {
 		var tmp_image_name = img_resize_names[i];
-
-		var maxwidth  = 0;
-		var maxheight = 0;
+		var maxwidth  = 0, maxheight = 0;
 		var type = (tmp_image_name.split("_", 1))[0];
+
 		if (type == 'avatar') {
 			maxwidth  = avatar_img_w;
 			maxheight = avatar_img_h;
@@ -242,7 +241,7 @@ var closetag = '';
 function HexToR(h) { return parseInt((cutHex(h)).substring(0,2),16) }
 function HexToG(h) { return parseInt((cutHex(h)).substring(2,4),16) }
 function HexToB(h) { return parseInt((cutHex(h)).substring(4,6),16) }
-function cutHex(h) { return (h.charAt(0)=="#") ? h.substring(1,7) : h}
+function cutHex(h) { return (h.charAt(0)=="#") ? h.substring(1,7) : h }
 
 function changecontent() {
 	if (index >= fcontent.length) index = 0;
