@@ -67,11 +67,11 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 	ubbcstr=ubbcstr.replace(/\[edit\]/ig, " [edit]");
 	ubbcstr=ubbcstr.replace(/\[\/edit\]/ig, " [/edit]");
 
-		function codeConvStr() {
-			comessage='$1';
-			codestrg=codestrg.replace(/CODE/g, comessage);
-			return codestrg;
-		}
+	function codeConvStr() {
+		comessage='$1';
+		codestrg=codestrg.replace(/CODE/g, comessage);
+		return codestrg;
+	}
 
 	ubbcstr=ubbcstr.replace(/(\[code\]\n*(.+?)\n*\[\/code\])/ig, codeConvStr());
 
@@ -83,8 +83,9 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 		} else {
 			theight = " ";
 		}
-		if(! cmessage.match(/\&\S*\;/g)) {
-		cmessage=cmessage.replace(/\;/g, "&#059;"); }
+		if (! cmessage.match(/\&\S*\;/g)) {
+			cmessage=cmessage.replace(/\;/g, "&#059;");
+		}
 		cmessage=cmessage.replace(/\!/g, "&#33;");
 		cmessage=cmessage.replace(/\(/g, "&#40;");
 		cmessage=cmessage.replace(/\)/g, "&#41;");
@@ -161,10 +162,10 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 	ubbcstr=ubbcstr.replace(/\[blue\](.*?)\[\/blue\]/ig, "<div style='display:inline; color:#0000FF'>$1</div>");
 
 
-		function ltTen(number) {
-			if (number < 10) {number = '0' + number;}
-			return number;
-		}
+	function ltTen(number) {
+		if (number < 10) {number = '0' + number;}
+		return number;
+	}
 
 
 	while ( c=ubbcstr.match(/\[timestamp=([\d]{9,10})\]/i) ) {
@@ -196,7 +197,7 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 			if (tsday == aday && tsmonth == amonth && tyear == ayear) {
 				daytxt = "\<b\>" + todaytext + "\<\/b\> " + splittxt + ' ';
 			}
-			else if(tsday == yday && tsmonth == ymonth && tyear == yyear) {
+			else if (tsday == yday && tsmonth == ymonth && tyear == yyear) {
 				daytxt = "\<b\>" + yesterdaytext + "\<\/b\> " + splittxt + ' ';
 			}
 		}
@@ -221,11 +222,10 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 
 
 		if (!daytxt) {
-			if(timeselect == 1) { daytxt = tmonth + '/' + tday + '/' + tyear + ' ' + splittxt + ' '; }
-			else if(timeselect == 2) { daytxt = tday + '.' + tmonth + '.' + tyear + ' ' + splittxt + ' '; }
-			else if(timeselect == 3) { daytxt = tday + '.' + tmonth + '.' + tlyear + ' ' + splittxt + ' '; }
-			else if(timeselect == 4) {
-
+			if (timeselect == 1) { daytxt = tmonth + '/' + tday + '/' + tyear + ' ' + splittxt + ' '; }
+			else if (timeselect == 2) { daytxt = tday + '.' + tmonth + '.' + tyear + ' ' + splittxt + ' '; }
+			else if (timeselect == 3) { daytxt = tday + '.' + tmonth + '.' + tlyear + ' ' + splittxt + ' '; }
+			else if (timeselect == 4) {
 				tsday += "\<sup\>" + timetxt4 + "\<\/sup\>";
 				if (tsday > 10 && tsday < 20) {
 					tsday += "\<sup\>" + timetxt4 + "\<\/sup\>";
@@ -242,18 +242,18 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 
 				daytxt = tlmonth + ' ' + tsday + ', ' + tlyear + ', ';
 			}
-			else if(timeselect == 5) { daytxt = tmonth + '/' + tday + '/' + tyear + ' ' + splittxt + ' '; }
-			else if(timeselect == 6) { daytxt = tday + '. ' + tlmonth + ' ' + tlyear + ' ' + splittxt + ' '; }
-			else if(timeselect == 7) { daytxt = tmonth + '/' + tday + '/' + tyear + ' ' + splittxt + ' '; }
+			else if (timeselect == 5) { daytxt = tmonth + '/' + tday + '/' + tyear + ' ' + splittxt + ' '; }
+			else if (timeselect == 6) { daytxt = tday + '. ' + tlmonth + ' ' + tlyear + ' ' + splittxt + ' '; }
+			else if (timeselect == 7) { daytxt = tmonth + '/' + tday + '/' + tyear + ' ' + splittxt + ' '; }
 		}
 
-		if(timeselect == 1) { tstr = daytxt + thours + ':' + tminutes + ':' + tseconds; }
-		else if(timeselect == 2) { tstr = daytxt + thours + ':' + tminutes + ':' + tseconds; }
-		else if(timeselect == 3) { tstr = daytxt + thours + ':' + tminutes + ':' + tseconds; }
-		else if(timeselect == 4) { tstr = daytxt + tshours + ':' + tminutes + ampm; }
-		else if(timeselect == 5) { tstr = daytxt + tshours + ':' + tminutes + ampm; }
-		else if(timeselect == 6) { tstr = daytxt + thours + ':' + tminutes; }
-		else if(timeselect == 7) { tstr = daytxt + thours + ':' + tminutes + ':' + tseconds; }
+		if (timeselect == 1) { tstr = daytxt + thours + ':' + tminutes + ':' + tseconds; }
+		else if (timeselect == 2) { tstr = daytxt + thours + ':' + tminutes + ':' + tseconds; }
+		else if (timeselect == 3) { tstr = daytxt + thours + ':' + tminutes + ':' + tseconds; }
+		else if (timeselect == 4) { tstr = daytxt + tshours + ':' + tminutes + ampm; }
+		else if (timeselect == 5) { tstr = daytxt + tshours + ':' + tminutes + ampm; }
+		else if (timeselect == 6) { tstr = daytxt + thours + ':' + tminutes; }
+		else if (timeselect == 7) { tstr = daytxt + thours + ':' + tminutes + ':' + tseconds; }
 
 		ubbcstr=ubbcstr.replace(/\[timestamp=[\d]{9,10}\]/i, tstr);
 	}
@@ -262,13 +262,13 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 
 	ubbcstr=ubbcstr.replace(/\[font=(.+?)\](.+?)\[\/font\]/ig, "<div style='display:inline; font-family:$1'>$2</div>");
 
-		function fontConvSize(tsize, ttext) {
-			var csize = parseInt(tsize);
-			if(csize < fontmin) csize = fontmin;
-			else if(csize > fontmax) csize = fontmax;
-			var resized = '<div style="display:inline; font-size: ' + csize + 'pt;">' + ttext + '</div>';
-			ubbcstr=ubbcstr.replace(/\[size=(\d+)\](.+?)\[\/size\]/i, resized);
-		}
+	function fontConvSize(tsize, ttext) {
+		var csize = parseInt(tsize);
+		if (csize < fontmin) csize = fontmin;
+		else if (csize > fontmax) csize = fontmax;
+		var resized = '<div style="display:inline; font-size: ' + csize + 'pt;">' + ttext + '</div>';
+		ubbcstr=ubbcstr.replace(/\[size=(\d+)\](.+?)\[\/size\]/i, resized);
+	}
 
 	while(fontsize=ubbcstr.match(/\[size=(\d+)\](.+?)\[\/size\]/i)) { fontConvSize(fontsize[1], fontsize[2]); }
 
@@ -276,14 +276,14 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 	ubbcstr=ubbcstr.replace(/\[img\][\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*(https\:\/\/)(.+?)[\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*\[\/img\]/ig, '<img src="https://$2" alt="" border="0">');
 	ubbcstr=ubbcstr.replace(/\[img\][\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*(http\:\/\/)*(.+?)[\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*\[\/img\]/ig, '<img src="http://$2" alt="" border="0">');
 
-		function restrictimage(w,h,s) {
-			var maximgwidth = 400;
-			var maximgheight = 500;
-			if (w > maximgwidth) w = maximgwidth;
-			if (h > maximgheight) h = maximgheight;
-			var imgrest = '<img src='+s+' width='+w+' height='+h+' alt="" border="0">';
-			ubbcstr=ubbcstr.replace(/\[img width=(\d+) height=(\d+)\][\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*(http\:\/\/)*(.+?)[\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*\[\/img\]/i, imgrest);
-		}
+	function restrictimage(w,h,s) {
+		var maximgwidth = 400;
+		var maximgheight = 500;
+		if (w > maximgwidth) w = maximgwidth;
+		if (h > maximgheight) h = maximgheight;
+		var imgrest = '<img src='+s+' width='+w+' height='+h+' alt="" border="0">';
+		ubbcstr=ubbcstr.replace(/\[img width=(\d+) height=(\d+)\][\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*(http\:\/\/)*(.+?)[\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*\[\/img\]/i, imgrest);
+	}
 
 	while(picr=ubbcstr.match(/\[img width=(\d+) height=(\d+)\][\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*(http\:\/\/)*(.+?)[\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*\[\/img\]/i)) {
 		restrictimage(picr[1],picr[2],'http://$4')
@@ -302,7 +302,7 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 	ubbcstr=ubbcstr.replace(/\[br\]/ig, "\n");
 
 
-	if(autolinkurls != 0) ubbcstr=ubbcstr.replace(/(^|\]|\s+)((http:\/\/|www\.){1,}\S+?\.\S+)/ig, "$1[url]$2[/url]");
+	if (autolinkurls != 0) ubbcstr=ubbcstr.replace(/(^|\]|\s+)((http:\/\/|www\.){1,}\S+?\.\S+)/ig, "$1[url]$2[/url]");
 	ubbcstr=ubbcstr.replace(/\[url\]\s*www\.(\S+?)\s*\[\/url\]/ig, "<a href='http://www.$1' target='_blank'>www.$1</a>");
 	ubbcstr=ubbcstr.replace(/\[url=\s*(\S\w+\:\/\/\S+?)\s*\](.+?)\[\/url\]/ig, "<a href='$1' target='_blank'>$2</a>");
 	ubbcstr=ubbcstr.replace(/\[url=\s*(\S+?)\](.+?)\s*\[\/url\]/ig, "<a href='http://$1' target='_blank'>$2</a>");
@@ -321,33 +321,33 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 	ubbcstr=ubbcstr.replace(/\[gopher\](\S+?)\[\/gopher\]/ig, '<a href="$1">$1</a>');
 	ubbcstr=ubbcstr.replace(/\[ftp\](\S+?)\[\/ftp\]/ig, '<a href="$1">$1</a>');
 
-		function squoteConv(nosqmessage, sqauthor, sqlink, sqdate, sqmessage) {
-			if ( !sqauthor || !sqlink || !sqdate ) stquotstrg = squotstrg;
-			else stquotstrg = quotstrg;
+	function squoteConv(nosqmessage, sqauthor, sqlink, sqdate, sqmessage) {
+		if ( !sqauthor || !sqlink || !sqdate ) stquotstrg = squotstrg;
+		else stquotstrg = quotstrg;
 
-			sqmessage=sqmessage.replace(/([\S]{80})/g, "$1<br />");
+		sqmessage=sqmessage.replace(/([\S]{80})/g, "$1<br />");
 
-			if ( sqauthor ) {
-				sqmessage=sqmessage.replace(/\/me /ig, "<i>" + sqauthor + "</i> ");
-			} else {
-				sqmessage=sqmessage.replace(/\/me /ig, "<i>" + dspname + "</i> ");
-			}
-
-			if (LivePrevDisplayNames[sqauthor]) sqauthor = LivePrevDisplayNames[sqauthor];
-			else sqauthor = post_txt_807;
-
-			stquotstrg=stquotstrg.replace(/AUTHOR/g, sqauthor);
-			stquotstrg=stquotstrg.replace(/QUOTELINK/g, scriptul+'?num='+sqlink+'" target="_blank');
-			stquotstrg=stquotstrg.replace(/DATE/g, sqdate);
-			stquotstrg=stquotstrg.replace(/QUOTE/g, sqmessage);
-
-			ubbcstr=ubbcstr.replace(/\[quote(\s+author=(.*?)\s+link=(.*?)\s+date=(.*?)\s*)?\]\n*(.+?)\n*\[\/quote\]/i, nosqmessage + stquotstrg);
+		if ( sqauthor ) {
+			sqmessage=sqmessage.replace(/\/me /ig, "<i>" + sqauthor + "</i> ");
+		} else {
+			sqmessage=sqmessage.replace(/\/me /ig, "<i>" + dspname + "</i> ");
 		}
 
-		function nstsquoteConv(nsqmessage) {
-			c=nsqmessage.match(/(.*)\[quote(\s+author=(.*?)\s+link=(.*?)\s+date=(.*?)\s*)?\]\n*(.+?)\n*\[\/quote\]/i);
-			squoteConv(c[1], c[3], c[4], c[5], c[6]);
-		}
+		if (LivePrevDisplayNames[sqauthor]) sqauthor = LivePrevDisplayNames[sqauthor];
+		else sqauthor = post_txt_807;
+
+		stquotstrg=stquotstrg.replace(/AUTHOR/g, sqauthor);
+		stquotstrg=stquotstrg.replace(/QUOTELINK/g, scriptul+'?num='+sqlink+'" target="_blank');
+		stquotstrg=stquotstrg.replace(/DATE/g, sqdate);
+		stquotstrg=stquotstrg.replace(/QUOTE/g, sqmessage);
+
+		ubbcstr=ubbcstr.replace(/\[quote(\s+author=(.*?)\s+link=(.*?)\s+date=(.*?)\s*)?\]\n*(.+?)\n*\[\/quote\]/i, nosqmessage + stquotstrg);
+	}
+
+	function nstsquoteConv(nsqmessage) {
+		c=nsqmessage.match(/(.*)\[quote(\s+author=(.*?)\s+link=(.*?)\s+date=(.*?)\s*)?\]\n*(.+?)\n*\[\/quote\]/i);
+		squoteConv(c[1], c[3], c[4], c[5], c[6]);
+	}
 
 	while ( d=ubbcstr.match(/(\[quote(\s+author=(.*?)\s+link=(.*?)\s+date=(.*?)\s*)?\]\n*(.+?)\n*\[\/quote\])/i) ) {
 		nstsquoteConv(d[1]);
@@ -355,10 +355,10 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 
 	ubbcstr=ubbcstr.replace(/\/me /ig, "<i>" + dspname + "</i> ");
 
-		function wrapstr(wraptext) {
-			wraptext=wraptext.replace(/([\S]{80})/g, "$1\n");
-			ubbcstr=ubbcstr.replace(/\[edit\]\n*(.+?)\n*\[\/edit\]/i, "<b>" + editxt + ": </b><br /><div class='editbg'>" + wraptext + "</div>");
-		}
+	function wrapstr(wraptext) {
+		wraptext=wraptext.replace(/([\S]{80})/g, "$1\n");
+		ubbcstr=ubbcstr.replace(/\[edit\]\n*(.+?)\n*\[\/edit\]/i, "<b>" + editxt + ": </b><br /><div class='editbg'>" + wraptext + "</div>");
+	}
 
 	while(longstrg=ubbcstr.match(/\[edit\](.+?)\[\/edit\]/i)) { wrapstr(longstrg[1]); }
 
@@ -379,35 +379,34 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 	ubbcstr=ubbcstr.replace(/\[\*\]/ig, "<li>");
 	ubbcstr=ubbcstr.replace(/\[\/list\]/ig, "</ul>");
 
-		function jsdopre(prestrg) {
-			prestrg=prestrg.replace(/\n/g, "[code_br]");
-			ubbcstr=ubbcstr.replace(/\[pre\](.+?)\[\/pre\]/i, "<pre>"+prestrg+"</pre>");
-		}
+	function jsdopre(prestrg) {
+		prestrg=prestrg.replace(/\n/g, "[code_br]");
+		ubbcstr=ubbcstr.replace(/\[pre\](.+?)\[\/pre\]/i, "<pre>"+prestrg+"</pre>");
+	}
 
 	while ( prestr=ubbcstr.match(/\[pre\](.+?)\[\/pre\]/i) ) { jsdopre(prestr[1]) }
 
 
 	while(fw=ubbcstr.match(/\[flash\=(\S+?),(\S+?)](\S+?)\[\/flash\]/)) {
-		if(parsflash == 1) {
+		if (parsflash == 1) {
 			var fwidth = fw[1];
 			var fheight = fw[2];
 			if (fwidth > 500) { fwidth = 500; }
 			if (fheight > 500) { fheight = 500; }
 			ubbcstr=ubbcstr.replace(/\[flash\=(\S+?),(\S+?)\](\S+?)\[\/flash\]/, '<object classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" width='+fwidth+' height='+fheight+'><param name=movie value=$3><param name=play value=true><param name=loop value=true><param name=quality value=high><embed src=$3 width='+fwidth+' height='+fheight+' play=true loop=true quality=high></embed></object>');
-
 		} else {
 			ubbcstr=ubbcstr.replace(/\[flash\=(\S+?),(\S+?)\](\S+?)\[\/flash\]/, "<b>Flash location ($1 x $2):</b> <a href=\"$3\" target=\"_blank\" onClick=\"window.open('$3', 'flash', 'resizable,width=$1,height=$2'); return false;\">$3</a>");
 		}
 	}
 
-	if( ubbcstr.match(/\[table\](?:.*?)\[\/table\]/i) ) {
+	if ( ubbcstr.match(/\[table\](?:.*?)\[\/table\]/i) ) {
 		while( ubbcstr.match(/\<marquee\>(.*?)\[table\](.*?)\[\/table\](.*?)\<\/marquee\>/g) ) {ubbcstr=ubbcstr.replace(/\<marquee\>(.*?)\[table\](.*?)\[\/table\](.*?)\<\/marquee\>/, "<marquee>$1<table>$2<\/table>$3<\/marquee>")}
 		while( ubbcstr.match(/\<marquee\>(.*?)\[table\](.*?)\<\/marquee\>(.*?)\[\/table\]/g) ) {ubbcstr=ubbcstr.replace(/\<marquee\>(.*?)\[table\](.*?)\<\/marquee\>(.*?)\[\/table\]/, "<marquee>$1\[//table\]$2</marquee>$3\[//table\]")}
 		while( ubbcstr.match(/\[table\](.*?)\<marquee\>(.*?)\[\/table\](.*?)\<\/marquee\>/g) ) {ubbcstr=ubbcstr.replace(/\[table\](.*?)\<marquee\>(.*?)\[\/table\](.*?)\<\/marquee\>/, "[//table\]$1<marquee>$2[//table\]$3</marquee>")}
 		ubbcstr=ubbcstr.replace(/\n{0,1}\[table\]\n*(.+?)\n*\[\/table\]\n{0,1}/ig, "<table>$1</table>");
 		while( ubbcstr.match(/\<table\>(.*?)\n*\[tr\]\n*(.*?)\n*\[\/tr\]\n*(.*?)\<\/table\>/ig) ) {ubbcstr=ubbcstr.replace(/\<table\>(.*?)\n*\[tr\]\n*(.*?)\n*\[\/tr\]\n*(.*?)\<\/table\>/i, "<table>$1<tr>$2</tr>$3</table>")}
 		while( ubbcstr.match(/\<tr\>(.*?)\n*\[td\]\n{0,1}(.*?)\n{0,1}\[\/td\]\n*(.*?)\<\/tr\>/ig) ) {ubbcstr=ubbcstr.replace(/\<tr\>(.*?)\n*\[td\]\n{0,1}(.*?)\n{0,1}\[\/td\]\n*(.*?)\<\/tr\>/i, "<tr>$1<td>$2</td>$3</tr>")}
-                ubbcstr=ubbcstr.replace(/\<table\>((?:(?!\<tr\>|\<\/tr\>|\<td\>|\<\/td\>|\<table\>|\<\/table\>).)*)\<tr\>/ig, "<table><tr>");
+               ubbcstr=ubbcstr.replace(/\<table\>((?:(?!\<tr\>|\<\/tr\>|\<td\>|\<\/td\>|\<table\>|\<\/table\>).)*)\<tr\>/ig, "<table><tr>");
 		ubbcstr=ubbcstr.replace(/\<tr\>((?:(?!\<tr\>|\<\/tr\>|\<td\>|\<\/td\>|\<table\>|\<\/table\>).)*)\<td\>/ig, "<tr><td>");
 		ubbcstr=ubbcstr.replace(/\<\/td\>((?:(?!\<tr\>|\<\/tr\>|\<td\>|\<\/td\>|\<table\>|\<\/table\>).)*)\<td\>/ig, "</td><td>");
 		ubbcstr=ubbcstr.replace(/\<\/td\>((?:(?!\<tr\>|\<\/tr\>|\<td\>|\<\/td\>|\<table\>|\<\/table\>).)*)\<\/tr\>/ig, "</td></tr>");
