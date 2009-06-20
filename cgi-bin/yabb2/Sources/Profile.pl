@@ -2266,7 +2266,7 @@ sub ViewProfile {
 			<b>$profile_txt{'603'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<a href="aim:goim?screenname=${$uid.$user}{'aim'}&amp;message=Hi,+are+you+there?"><img src="$imagesdir/aim.gif" alt="${$uid.$user}{'aim'}" border="0" style="vertical-align: middle;" /> $aim_user <img src="http://big.oscar.aol.com/?on_url=$imagesdir/aim_online.gif&amp;off_url=$imagesdir/aim_offline.gif" alt="${$uid.$user}{'aim'}" border="0" style="vertical-align: middle;" /></a>
+			<a href="aim:goim?screenname=${$uid.$user}{'aim'}&amp;message=Hi,+are+you+there?"><img src="$imagesdir/aim.gif" alt="${$uid.$user}{'aim'}" border="0" style="vertical-align: middle;" /> $aim_user <img src="http://big.oscar.aol.com/${$uid.$user}{'aim'}?on_url=$defaultimagesdir/aim_online.gif&amp;off_url=$defaultimagesdir/aim_offline.gif" alt="${$uid.$user}{'aim'}" border="0" style="vertical-align: middle;" /></a>
 			</div>~;
 	}
 	if (${$uid.$user}{'yim'}) {
@@ -2277,7 +2277,7 @@ sub ViewProfile {
 			<b>$profile_txt{'604'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<a href="http://edit.yahoo.com/config/send_webmesg?.target=${$uid.$user}{'yim'}" target="_blank"><img src="$imagesdir/yim.gif" alt="${$uid.$user}{'yim'}" border="0" style="vertical-align: middle;" /> $yim_user <img src="http://presence.msg.yahoo.com/online?u=${$uid.$user}{'yim'}&amp;m=g&amp;t=2&amp;l=us" border="0" alt="${$uid.$user}{'yim'}" style="vertical-align: middle;" /></a>
+			<a href="http://edit.yahoo.com/config/send_webmesg?.target=${$uid.$user}{'yim'}" target="_blank"><img src="$imagesdir/yim.gif" alt="${$uid.$user}{'yim'}" border="0" style="vertical-align: middle;" /> $yim_user <img src="http://presence.msg.yahoo.com/online?u=${$uid.$user}{'yim'}&amp;m=g&amp;t=1&amp;l=us" border="0" alt="${$uid.$user}{'yim'}" style="vertical-align: middle;" /></a>
 			</div>~;
 	}
 	if (${$uid.$user}{'msn'}) {

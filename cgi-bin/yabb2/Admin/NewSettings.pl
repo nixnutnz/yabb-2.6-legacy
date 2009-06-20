@@ -856,7 +856,7 @@ $ext_prof_fields
 \$enable_PMautoAway = $enable_PMautoAway;		# enable PM 'away' auto reply for inbox.
 \$enable_MCaway = $enable_MCaway;			# enable 'away' indicator 0=Off 1=Staff to Staff 2=Staff to all 3=Members
 \$MaxAwayLen = $MaxAwayLen; 				# maximum allowed characters in Away message
-\$enable_MCstatusStealth = $enable_MCstatusStealth;	# enable 'stealth' mode for fa/gmods. Allows status label to stay at offline/away for all members viewing.
+\$enable_MCstatusStealth = $enable_MCstatusStealth;	# enable 'stealth' mode for fa/gmods.
 
 ########## Topic Summary Cutter ##########
 

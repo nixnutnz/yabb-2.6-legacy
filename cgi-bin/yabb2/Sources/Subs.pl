@@ -154,21 +154,6 @@ sub redirectinternal {
 	}
 }
 
-my %img_check;
-sub ImgLoc {
-	unless (exists $img_check{$_[0]}) {
-		if (-e "$imagesdir/$_[0]") {
-			$img_check{$_[0]} = 1;
-			qq~$imagesdir/$_[0]~;
-		} else {
-			$img_check{$_[0]} = 0;
-			qq~$defaultimagesdir/$_[0]~;
-		}
-	} else {
-		$img_check{$_[0]} == 1 ? qq~$imagesdir/$_[0]~ : qq~$defaultimagesdir/$_[0]~;
-	}
-}
-
 sub template {
 	&print_output_header;
 
@@ -333,13 +318,10 @@ sub template {
 		}
 	}
 
-	# This next line fixes problems created when a fatal_error is called before Security.pl is loaded
-	# We don't want to require since it's an error and trying to do anything extra for an error could be bad
-	if ($output =~ m~<yabb copyright>~ || $output =~ m~{yabb copyright}~) { $yycopyin = 1; } ## new template style in also
+	# build little search box on every page
 	$yysearchbox = '';
-	unless ($iamguest && $guestaccess == 0) {
-		if ($maxsearchdisplay > -1) {
-			$yysearchbox = qq~
+	if ((!$iamguest || $guestaccess != 0) && $maxsearchdisplay > -1) {
+		$yysearchbox = qq~
 		<script language="JavaScript1.2" src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
 		<form action="$scripturl?action=search2" method="post">
 		<input type="hidden" name="searchtype" value="allwords" />
@@ -352,10 +334,10 @@ sub template {
 		<input type="hidden" name="searchboards" value="!all" />
 		<input type="text" name="search" size="16" style="font-size: 11px; vertical-align: middle;" />
 		<input type="image" src="$imagesdir/search.gif" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />
-		</form>
-		~;
-		}
+		</form>~;
 	}
+
+	# show news
 	if ($enable_news && -s "$vardir/news.txt" > 5) {
 		my @newsmessages = &read_DBorFILE(0,'',$vardir,'news','txt');
 		chomp(@newsmessages);
@@ -423,19 +405,31 @@ sub template {
 	} else {
 		$yynews = '&nbsp;';
 	}
-	# Moved this down here so it shows more
-	##  pushed to own file for flexibility
-	if ($debug == 1 or ($debug == 2 && $iamadmin)) { require "$sourcedir/Debug.pl"; &Debug; }
-	$yyurl      = $scripturl;
-	## new and old tag template style decoding ##
+
+	# Debug display
+	if ($debug == 1 || ($debug == 2 && $iamadmin)) { require "$sourcedir/Debug.pl"; &Debug; }
+
+	$yyurl = $scripturl;
+	my $copyright = $output =~ m~(<|{)yabb copyright(}|>)~ ? 1 : 0;
+	# new and old tag template style decoding
 	while ($output =~ s~(<|{)yabb\s+(\w+)(}|>)~${"yy$2"}~g) {}
-	$output =~ s~(a href=\S+?action=viewprofile;username=.+?)>~$1 rel="nofollow">~isg;
+
+	# check if image exists, otherwise use the default template image
 	if ($imagesdir ne $defaultimagesdir) {
-		$output =~ s~img src=("|')$imagesdir/(.+?)('|")~ "img src=$1" . &ImgLoc($2) . $3 ~eisg;
-		$output =~ s~\.src='$imagesdir/(.+?)'~ ".src='" . &ImgLoc($1) . "'" ~eisg; # For Javascript generated images
-		$output =~ s~input type="image" src="$imagesdir/(.+?)"~ 'input type="image" src="' . &ImgLoc($1) . '"' ~eisg; # For input images
-		$output =~ s~option value="$imagesdir/(.+?)"~ 'option value="' . &ImgLoc($1) . '"' ~eisg; # For the post page
+		my %img_locs;
+		sub ImgLoc {
+			if (exists $img_locs{$_[0]}) {
+				$img_locs{$_[0]};
+			} elsif (-e "$forumstylesdir/$useimages/$_[0]") {
+				$img_locs{$_[0]} = qq~$imagesdir/$_[0]~;
+			} else {
+				$img_locs{$_[0]} = qq~$defaultimagesdir/$_[0]~;
+			}
+		}
+		$output =~ s~(src|value|url)\s*(=|\()\s*("|')$imagesdir/([^'"]+).~ "$1$2$3" . &ImgLoc($4) . $3 ~eisg;
 	}
+
+	# add formsession to each <form ..>-tag
 	$output =~ s~</form>~<input type="hidden" name="formsession" value="$formsession" /></form>~g;
 
 	&image_resize;
@@ -448,7 +442,7 @@ sub template {
 	# sub URL_modify { my $x = shift; $x =~ s/;/&/g; $x; }
 	# End of workaround
 
-	if ($yycopyin == 0) {
+	if (!$copyright) {
 		$output = q~<center><h1><b>Sorry, the copyright tag <yabb copyright> must be in the template.<br />Please notify this forum's administrator that this site is using an ILLEGAL copy of YaBB!</b></h1></center>~;
 	}
 
@@ -1664,29 +1658,27 @@ sub userOnLineStatus {
 	my $userToCheck = $_[0];
 
 	return '' if $userToCheck eq 'Guest';
-	return ${$uid.$userToCheck}{'offlinestatus'} if ${$uid.$userToCheck}{'offlinestatus'} =~ /^</;
+	if (exists $users_online{$userToCheck}) {
+		return $users_online{$userToCheck} if $users_online{$userToCheck};
+	} else {
+		map { $users_online{(split(/\|/, $_, 2))[0]} = 0 } @logentries;
+		$users_online{$username} = 0;
+	}
 
 	&LoadUser($userToCheck);
 
-	my $online = qq~<span class="useroffline">$maintxt{'61'}</span>~;
-	if (!${$uid.$userToCheck}{'stealth'} || !$iamadmin || !$iamgmod) {
-		unless (%users_online) {
-			map { $users_online{(split(/\|/, $_, 2))[0]} = 1 } @logentries;
-		}
-		if ($users_online{$userToCheck}) {
-			$online = qq~<span class="useronline">$maintxt{'60'}</span>~ . (${$uid.$userToCheck}{'stealth'} ? "*" : "");
-			${$uid.$userToCheck}{'offlinestatus'} = 'online';
-		}
+	if (exists $users_online{$userToCheck} && (!${$uid.$userToCheck}{'stealth'} || !$iamadmin || !$iamgmod)) {
+		${$uid.$userToCheck}{'offlinestatus'} = 'online';
+		$users_online{$userToCheck} = qq~<span class="useronline">$maintxt{'60'}</span>~ . (${$uid.$userToCheck}{'stealth'} ? "*" : "");
+	} else {
+		$users_online{$userToCheck} = qq~<span class="useroffline">$maintxt{'61'}</span>~;
 	}
 	# enable 'away' indicator $enable_MCaway: 0=Off; 1=Staff to Staff; 2=Staff to all; 3=Members
-	if ($enable_MCstatusStealth && $enable_MCaway > 0 && !$iamguest && ${$uid.$userToCheck}{'offlinestatus'} eq 'away') {
-		if ($enable_MCaway == 1 && $staff) { #enable for staff
-			$online = qq~<span class="useraway">$maintxt{'away'}</span>~;
-		} elsif ($enable_MCaway > 1) { # enabled for all
-			$online = qq~<span class="useraway">$maintxt{'away'}</span>~;
-		}
+	if (!$iamguest && (($enable_MCaway == 1 && $staff) || $enable_MCaway > 1) &&
+	    ${$uid.$userToCheck}{'offlinestatus'} eq 'away') {
+		$users_online{$userToCheck} = qq~<span class="useraway">$maintxt{'away'}</span>~;
 	}
-	${$uid.$userToCheck}{'offlinestatus'} = $online;
+	$users_online{$userToCheck};
 }
 
 ## moved from Register.pl so we can use for guest browsing
