@@ -523,7 +523,7 @@ sub NotificationAlert {
 				## build view profile link, if real name exists
 				&LoadUser($musername); # load poster
 				if (${$uid.$musername}{'realname'}) {
-					$username_link = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">${$uid.$musername}{'realname'}</a>~;
+					$username_link = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}" rel="nofollow">${$uid.$musername}{'realname'}</a>~;
 				} elsif ($mname) {
 					$username_link = $mname;
 				} else {

@@ -229,13 +229,13 @@ sub votedetails {
 	if ($poll_modname ne '' && $poll_mod ne '') {
 		$poll_mod = &timeformat($poll_mod);
 		&LoadUser($poll_modname);
-		$displaydate = qq~<span class="small">&#171; $polltxt{'45a'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_modname}">${$uid.$poll_modname}{'realname'}</a> $polltxt{'46'}: $poll_mod &#187;</span>~;
+		$displaydate = qq~<span class="small">&#171; $polltxt{'45a'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_modname}" rel="nofollow">${$uid.$poll_modname}{'realname'}</a> $polltxt{'46'}: $poll_mod &#187;</span>~;
 	}
 	if ($poll_uname ne '' && $poll_date ne '') {
 		$poll_date = &timeformat($poll_date);
 		if ($poll_uname ne 'Guest' && &checkfor_DBorFILE("$memberdir/$poll_uname.vars")) {
 			&LoadUser($poll_uname);
-			$displaydate = qq~<span class="small">&#171; $polltxt{'45'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_uname}">${$uid.$poll_uname}{'realname'}</a> $polltxt{'46'}: $poll_date &#187;</span>~;
+			$displaydate = qq~<span class="small">&#171; $polltxt{'45'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_uname}" rel="nofollow">${$uid.$poll_uname}{'realname'}</a> $polltxt{'46'}: $poll_date &#187;</span>~;
 		} else {
 			$displaydate = qq~<span class="small">&#171; $polltxt{'45'}: $poll_name $polltxt{'46'}: $poll_date &#187;</span>~;
 		}
@@ -274,7 +274,7 @@ sub votedetails {
 		$id = qq~$voters_ip-$voters_name~;
 		if ($voters_name ne 'Guest' && &checkfor_DBorFILE("$memberdir/$voters_name.vars")) {
 			&LoadUser($voters_name);
-			$voters_name = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$voters_name}">${$uid.$voters_name}{'realname'}</a>~;
+			$voters_name = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$voters_name}" rel="nofollow">${$uid.$voters_name}{'realname'}</a>~;
 		}
 		foreach $oldvote (split(/\,/, $voters_vote)) {
 			if ($ubbcpolls) {
@@ -423,12 +423,12 @@ sub display_poll {
 	if ($poll_modname ne '' && $poll_mod ne '' && $showmodify) {
 		$poll_mod = &timeformat($poll_mod);
 		&LoadUser($poll_modname);
-		$displaydate = qq~<span class="small">&#171; $polltxt{'45a'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_modname}">${$uid.$poll_modname}{'realname'}</a> $polltxt{'46'}: $poll_mod &#187;</span>~;
+		$displaydate = qq~<span class="small">&#171; $polltxt{'45a'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_modname}" rel="nofollow">${$uid.$poll_modname}{'realname'}</a> $polltxt{'46'}: $poll_mod &#187;</span>~;
 	} elsif ($poll_uname ne '' && $poll_date ne '') {
 		$poll_date = &timeformat($poll_date);
 		if ($poll_uname ne 'Guest' && &checkfor_DBorFILE("$memberdir/$poll_uname.vars")) {
 			&LoadUser($poll_uname);
-			$displaydate = qq~<span class="small">&#171; $polltxt{'45'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_uname}">${$uid.$poll_uname}{'realname'}</a> $polltxt{'46'}: $poll_date &#187;</span>~;
+			$displaydate = qq~<span class="small">&#171; $polltxt{'45'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_uname}" rel="nofollow">${$uid.$poll_uname}{'realname'}</a> $polltxt{'46'}: $poll_date &#187;</span>~;
 		} elsif ($poll_name ne '') {
 			$displaydate = qq~<span class="small">&#171; $polltxt{'45'}: $poll_name $polltxt{'46'}: $poll_date &#187;</span>~;
 		} else {

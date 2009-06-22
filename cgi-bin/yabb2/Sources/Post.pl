@@ -2790,7 +2790,7 @@ sub doshowthread {
 				$registrationdate = int(time);
 			}
 			if (${$uid.$tempname}{'regdate'} && $messagedate > $registrationdate) {
-				$displaynamelink = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tempname}" class="catbg a">${$uid.$tempname}{'realname'}</a>~;
+				$displaynamelink = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tempname}" rel="nofollow" class="catbg a">${$uid.$tempname}{'realname'}</a>~;
 			} elsif ($tempname !~ m~Guest~ && $messagedate < $registrationdate) {
 				$displaynamelink = qq~$tempname - $display_txt{'470a'}~;
 			} else {

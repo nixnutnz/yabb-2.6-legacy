@@ -166,7 +166,7 @@ sub Favorites {
 		if ($musername ne 'Guest') {
 			&LoadUser($musername);
 			if (${$uid.$musername}{'realname'}) {
-				$mname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$ {$uid.$musername}{'realname'}</a>~;
+				$mname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}" rel="nofollow">$ {$uid.$musername}{'realname'}</a>~;
 			} else {
 				$mname .= qq~ ($messageindex_txt{'470a'})~;
 			}
@@ -215,7 +215,7 @@ sub Favorites {
 		} else {
 			unless (($lastposter eq $messageindex_txt{'470'} || $lastposter eq $messageindex_txt{'470a'}) && &checkfor_DBorFILE("$memberdir/$lastposter.vars")) {
 				&LoadUser($lastposter);
-				if (${$uid.$lastposter}{'realname'}) { $lastposter = qq~<a href="$scripturl?action=viewprofile;username=$lastposter">${$uid.$lastposter}{'realname'}</a>~; }
+				if (${$uid.$lastposter}{'realname'}) { $lastposter = qq~<a href="$scripturl?action=viewprofile;username=$lastposter" rel="nofollow">${$uid.$lastposter}{'realname'}</a>~; }
 			}
 		}
 		$lastpostername = $lastposter || $messageindex_txt{'470'};

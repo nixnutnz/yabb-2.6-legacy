@@ -1628,7 +1628,7 @@ sub drawPMView {
 							if (!$yyUDLoaded{$muser}) { &LoadUser($muser); }
 							if ($usernameto && $switchComma == 0) { $usernameto .= qq~ ...~; $switchComma = 1; }
 							elsif (!$usernameto) {
-								$usernameto = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$muser}">${$uid.$muser}{'realname'}</a>~;
+								$usernameto = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$muser}" rel="nofollow">${$uid.$muser}{'realname'}</a>~;
 							}
 						}
 						if ($musernamecc) {
@@ -1666,7 +1666,7 @@ sub drawPMView {
 					if ($messageStatus !~ /b/) {
 						$userToMessRead = &checkIMS($musernameto, $messageid, 'messageopened');
 						if (!$yyUDLoaded{$musernameto}) { &LoadUser($musernameto); }
-						$usernameto = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musernameto}">${$uid.$musernameto}{'realname'}</a>~;
+						$usernameto = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musernameto}" rel="nofollow">${$uid.$musernameto}{'realname'}</a>~;
 					} else {
 						if ($musernameto eq 'all') { $usernameto = $inmes_txt{'bmallmembers'}; }
 						elsif ($musernameto eq 'mods') { $usernameto = $inmes_txt{'bmmods'}; }
@@ -1859,7 +1859,7 @@ sub drawPMView {
 					$usernamefrom = qq~$guestName<br />(<a href="mailto:$guestEmail">$guestEmail</a>)~;
 				} else {
 					&LoadUser($musername); # is from user
-					$usernamefrom = ${$uid.$musername}{'realname'} ? qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">${$uid.$musername}{'realname'}</a>~ : ($musername ? qq~$musername ($maintxt{'470a'})~ : $maintxt{'470a'}); # 470a == Ex-Member
+					$usernamefrom = ${$uid.$musername}{'realname'} ? qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}" rel="nofollow">${$uid.$musername}{'realname'}</a>~ : ($musername ? qq~$musername ($maintxt{'470a'})~ : $maintxt{'470a'}); # 470a == Ex-Member
 				}
 				$MCContent .= $usernamefrom; # [inbox / broadcast / storage in]
 
@@ -1894,7 +1894,7 @@ sub drawPMView {
 					}
 					foreach $uname (split(/,/, $uname)) {
 						&LoadUser($uname);
-						push(@usernameto, (${$uid.$uname}{'realname'} ? qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$uname}">${$uid.$uname}{'realname'}</a>~ : ($uname ? qq~$uname ($maintxt{'470a'})~ : $maintxt{'470a'}))); # 470a == Ex-Member
+						push(@usernameto, (${$uid.$uname}{'realname'} ? qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$uname}" rel="nofollow">${$uid.$uname}{'realname'}</a>~ : ($uname ? qq~$uname ($maintxt{'470a'})~ : $maintxt{'470a'}))); # 470a == Ex-Member
 					}
 				}
 				$MCContent .= join(', ', @usernameto); # [outbox / storage out]
@@ -1926,7 +1926,7 @@ sub drawPMView {
 					}
 					foreach $uname (split(/,/, $uname)) {
 						&LoadUser($uname);
-						push(@usernameto, (${$uid.$uname}{'realname'} ? qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$uname}">${$uid.$uname}{'realname'}</a>~ : ($uname ? qq~$uname ($maintxt{'470a'})~ : $maintxt{'470a'}))); # 470a == Ex-Member
+						push(@usernameto, (${$uid.$uname}{'realname'} ? qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$uname}" rel="nofollow">${$uid.$uname}{'realname'}</a>~ : ($uname ? qq~$uname ($maintxt{'470a'})~ : $maintxt{'470a'}))); # 470a == Ex-Member
 					}
 				}
 				$MCContent .= join(', ', @usernameto); # [draft]
@@ -1951,7 +1951,7 @@ sub drawPMView {
 					}
 					foreach $uname (split(/,/, $uname)) {
 						&LoadUser($uname);
-						push(@usernameto, (${$uid.$uname}{'realname'} ? qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$uname}">${$uid.$uname}{'realname'}</a>~ : ($uname ? qq~$uname ($maintxt{'470a'})~ : $maintxt{'470a'}))); # 470a == Ex-Member
+						push(@usernameto, (${$uid.$uname}{'realname'} ? qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$uname}" rel="nofollow">${$uid.$uname}{'realname'}</a>~ : ($uname ? qq~$uname ($maintxt{'470a'})~ : $maintxt{'470a'}))); # 470a == Ex-Member
 					} 
 					$usernameto = join(', ', @usernameto);
 
@@ -1961,7 +1961,7 @@ sub drawPMView {
 					$usernameto = qq~$guestName<br />(<a href="mailto:$guestEmail">$guestEmail</a>)~;
 
 					&LoadUser($musername); # is from user
-					$usernamefrom = ${$uid.$musername}{'realname'} ? qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">${$uid.$musername}{'realname'}</a>~ : ($musername ? qq~$musername ($maintxt{'470a'})~ : $maintxt{'470a'}); # 470a == Ex-Member
+					$usernamefrom = ${$uid.$musername}{'realname'} ? qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}" rel="nofollow">${$uid.$musername}{'realname'}</a>~ : ($musername ? qq~$musername ($maintxt{'470a'})~ : $maintxt{'470a'}); # 470a == Ex-Member
 
 				} elsif ($messageStatus =~ /b/) {
 					foreach my $uname (split(/,/, $musernameto)) {
@@ -1977,7 +1977,7 @@ sub drawPMView {
 					$usernameto = join(', ', @usernameto); 
 
 					&LoadUser($musername); # is from user
-					$usernamefrom = ${$uid.$musername}{'realname'} ? qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">${$uid.$musername}{'realname'}</a>~ : ($musername ? qq~$musername ($maintxt{'470a'})~ : $maintxt{'470a'}); # 470a == Ex-Member
+					$usernamefrom = ${$uid.$musername}{'realname'} ? qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}" rel="nofollow">${$uid.$musername}{'realname'}</a>~ : ($musername ? qq~$musername ($maintxt{'470a'})~ : $maintxt{'470a'}); # 470a == Ex-Member
 
 				} else {
 					my $uname = $musernameto; # is to user
@@ -1993,12 +1993,12 @@ sub drawPMView {
 					}
 					foreach $uname (split(/,/, $uname)) {
 						&LoadUser($uname);
-						push(@usernameto, (${$uid.$uname}{'realname'} ? qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$uname}">${$uid.$uname}{'realname'}</a>~ : ($uname ? qq~$uname ($maintxt{'470a'})~ : $maintxt{'470a'}))); # 470a == Ex-Member
+						push(@usernameto, (${$uid.$uname}{'realname'} ? qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$uname}" rel="nofollow">${$uid.$uname}{'realname'}</a>~ : ($uname ? qq~$uname ($maintxt{'470a'})~ : $maintxt{'470a'}))); # 470a == Ex-Member
 					} 
 					$usernameto = join(', ', @usernameto);
 
 					&LoadUser($musername); # is from user
-					$usernamefrom = ${$uid.$musername}{'realname'} ? qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">${$uid.$musername}{'realname'}</a>~ : ($musername ? qq~$musername ($maintxt{'470a'})~ : $maintxt{'470a'}); # 470a == Ex-Member 
+					$usernamefrom = ${$uid.$musername}{'realname'} ? qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}" rel="nofollow">${$uid.$musername}{'realname'}</a>~ : ($musername ? qq~$musername ($maintxt{'470a'})~ : $maintxt{'470a'}); # 470a == Ex-Member 
 				}
 				$MCContent .= qq~$usernamefrom / $usernameto~; #[store other]
 			}

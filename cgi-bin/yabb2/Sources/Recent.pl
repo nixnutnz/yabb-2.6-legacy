@@ -100,7 +100,7 @@ sub Recent_Topics_Posts {
 		}
 
 		if (${$uid.$tusername}{'regdate'} && $trstart > $registrationdate) {
-			$tname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tusername}">${$uid.$tusername}{'realname'}</a>~;
+			$tname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tusername}" rel="nofollow">${$uid.$tusername}{'realname'}</a>~;
 		} elsif ($tusername !~ m~Guest~ && $trstart < $registrationdate) {
 			$tname = qq~$tname - $maintxt{'470a'}~;
 		} else {
@@ -115,7 +115,7 @@ sub Recent_Topics_Posts {
 		}
 
 		if (${$uid.$musername}{'regdate'} && $trstart > $registrationdate) {
-			$mname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">${$uid.$musername}{'realname'}</a>~;
+			$mname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}" rel="nofollow">${$uid.$musername}{'realname'}</a>~;
 		} elsif ($musername !~ m~Guest~ && $mdate < $registrationdate) {
 			$mname = qq~$mname - $maintxt{'470a'}~;
 		} else {

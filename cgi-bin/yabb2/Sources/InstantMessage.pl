@@ -1461,7 +1461,7 @@ sub IMsendMessage {
 			my $badusers;
 			foreach my $baduser (@nouser) {
 				&LoadUser($baduser);
-				$badusers .= qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">${$uid.$baduser}{'realname'}</a>, ~;
+				$badusers .= qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}" rel="nofollow">${$uid.$baduser}{'realname'}</a>, ~;
 			}
 			$badusers =~ s/, \Z//;
 			&fatal_error('im_bad_users', $badusers);
@@ -1560,7 +1560,7 @@ sub IMsendMessage {
 			my $badusers;
 			foreach my $baduser (@nouser) {
 				&LoadUser($baduser);
-				$badusers .= qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">${$uid.$baduser}{'realname'}</a>, ~;
+				$badusers .= qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}" rel="nofollow">${$uid.$baduser}{'realname'}</a>, ~;
 			}
 			$badusers =~ s/, \Z//;
 			&fatal_error('im_bad_users', $badusers);

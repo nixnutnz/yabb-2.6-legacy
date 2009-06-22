@@ -835,7 +835,7 @@ sub addMemberLink {
 	my ($user,$displayname,$mdate) = @_;
 	if (&checkfor_DBorFILE("$memberdir/$user.vars")) { &LoadUser($user); }
 	if (${$uid.$user}{'regdate'} && $mdate >= (${$uid.$user}{'regtime'} || $date)) {
-		$mname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">${$uid.$user}{'realname'}</a>~;
+		$mname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}" rel="nofollow">${$uid.$user}{'realname'}</a>~;
 	} elsif ($user !~ m~Guest~ && $mdate < (${$uid.$user}{'regtime'} || $date)) {
 		$mname = qq~$displayname - $maintxt{'470a'}~;
 	} else {

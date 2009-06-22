@@ -451,7 +451,7 @@ sub MessageIndex {
 			$user_info{$musername} = [split(/\|/, $memberinf{$musername}, 3)] if !exists $user_info{$musername};
 			if ($memberinf{$musername} && $mdate > ${$user_info{$musername}}[0]) {
 				&FormatUserName($musername);
-				$mname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">${$user_info{$musername}}[1]</a>~;
+				$mname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}" rel="nofollow">${$user_info{$musername}}[1]</a>~;
 			} else {
 				$mname .= qq~ ($messageindex_txt{'470a'})~;
 			}
@@ -494,7 +494,7 @@ sub MessageIndex {
 		} else {
 			&LoadUser($lastposter);
 			if ((${$uid.$lastposter}{'regdate'} && ${$mnum}{'lastpostdate'} > ${$uid.$lastposter}{'regtime'}) || ${$uid.$lastposter}{'position'} eq "Administrator" || ${$uid.$lastposter}{'position'} eq "Global Moderator") {
-				$lastposter = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">${$uid.$lastposter}{'realname'}</a>~;
+				$lastposter = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}" rel="nofollow">${$uid.$lastposter}{'realname'}</a>~;
 			} else {
 				# Need to load thread to see lastposters DISPLAYname if is Ex-Member
 				my @x = &read_DBorFILE(0,'',$datadir,$mnum,'txt');

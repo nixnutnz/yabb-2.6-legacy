@@ -349,7 +349,7 @@ sub LoadUserDisplay {
 		${$uid.$user}{'userpic'} = qq~<img src="~ .(${$uid.$user}{'userpic'} =~ m~\A[\s\n]*https?://~i ? ${$uid.$user}{'userpic'} : "$facesurl/${$uid.$user}{'userpic'}") . qq~" name="avatar_img_resize" alt="" border="0" style="display:none" /><br />~;
 	} elsif ($showuserpic && $allowpics) {
 		${$uid.$user}{'userpic'} ||= 'blank.gif';
-		${$uid.$user}{'userpic'} = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}"><img src="~ .(${$uid.$user}{'userpic'} =~ m~\A[\s\n]*https?://~i ? ${$uid.$user}{'userpic'} : "$facesurl/${$uid.$user}{'userpic'}") . qq~" name="avatar_img_resize" alt="" border="0" style="display:none" /></a><br />~;
+		${$uid.$user}{'userpic'} = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user} rel="nofollow""><img src="~ .(${$uid.$user}{'userpic'} =~ m~\A[\s\n]*https?://~i ? ${$uid.$user}{'userpic'} : "$facesurl/${$uid.$user}{'userpic'}") . qq~" name="avatar_img_resize" alt="" border="0" style="display:none" /></a><br />~;
 	} else {
 		${$uid.$user}{'userpic'} = '<br />';
 	}
@@ -440,11 +440,11 @@ sub LoadMiniUser {
 	else { $memberinfo{$user} = qq~<b>$title</b>~; }
 
 	if ($color ne "") {
-		$link{$user}      = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}" style="color:$color;">$userlink</a>~;
+		$link{$user}      = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}" rel="nofollow" style="color:$color;">$userlink</a>~;
 		$format{$user}    = qq~<span style="color: $color;">$userlink</span>~;
 		$col_title{$user} = qq~<span style="color: $color;">$memberinfo{$user}</span>~;
 	} else {
-		$link{$user}      = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$userlink</a>~;
+		$link{$user}      = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}" rel="nofollow">$userlink</a>~;
 		$format{$user}    = qq~$userlink~;
 		$col_title{$user} = qq~$memberinfo{$user}~;
 	}
@@ -541,7 +541,7 @@ sub QuickLinks {
 			<ul id="ql$useraccount{$user}$qlcount" class="QuickLinks" onmouseover="keepLinks('$useraccount{$user}$qlcount')" onmouseout="TimeClose('$useraccount{$user}$qlcount')">
 				<li>~ . &userOnLineStatus($user) . qq~<a href="javascript:closeLinks('$useraccount{$user}$qlcount')" style="position:absolute;right:3px"><b>X</b></a></li>\n~;
 		if ($user ne $username) {
-			$quicklinks .= qq~				<li><a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$maintxt{'2'} ${$uid.$user}{'realname'}$maintxt{'3'}</a></li>\n~;
+			$quicklinks .= qq~				<li><a href="$scripturl?action=viewprofile;username=$useraccount{$user}" rel="nofollow">$maintxt{'2'} ${$uid.$user}{'realname'}$maintxt{'3'}</a></li>\n~;
 			&CheckUserPM_Level($user);
 			if ($PM_level == 1 || ($PM_level == 2 && $UserPM_Level{$user} > 1 && $staff) || ($PM_level == 3 && $UserPM_Level{$user} == 3 && ($iamadmin || $iamgmod))) {
 				$quicklinks .= qq~				<li><a href="$scripturl?action=imsend;to=$useraccount{$user}">$maintxt{'0'} ${$uid.$user}{'realname'}</a></li>\n~;
@@ -555,7 +555,7 @@ sub QuickLinks {
 			}
 
 		} else {
-			$quicklinks .= qq~				<li><a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$maintxt{'6'}</a></li>\n~;
+			$quicklinks .= qq~				<li><a href="$scripturl?action=viewprofile;username=$useraccount{$user}" rel="nofollow">$maintxt{'6'}</a></li>\n~;
 		}
 		$quicklinks .= qq~			</ul><a href="javascript:quickLinks('$useraccount{$user}$qlcount')"$lastonline>~;
 		$quicklinks .= $_[1] ? ${$uid.$user}{'realname'} : $format{$user};

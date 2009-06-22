@@ -576,7 +576,7 @@ sub Display {
 			}
 
 			$template_postinfo = qq~$display_txt{'21'}: ~ . &NumberFormat(${$uid.$musername}{'postcount'}) . qq~<br />~;
-			$template_profile = ($profilebutton && !$iamguest) ? qq~$menusep<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$img{'viewprofile_sm'}</a>~ : '';
+			$template_profile = ($profilebutton && !$iamguest) ? qq~$menusep<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}" rel="nofollow">$img{'viewprofile_sm'}</a>~ : '';
 			$template_www = ${$uid.$musername}{'weburl'} ? qq~$menusep${$uid.$musername}{'weburl'}~ : '';
 
 			$userOnline = &userOnLineStatus($musername) . "<br />";
