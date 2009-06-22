@@ -1023,7 +1023,7 @@ sub ModifyProfileBuddy {
 	<tr class="windowbg">
 		<td width="320" align="left"><b>$profile_buddy_list{'buddylist'}</b><br /><span class="small">$profile_buddy_list{'explain'}</span></td>
 		<td align="left"><select name="buddylist" id="buddylist" multiple="multiple" size="3" style="width: 250px; height: 150px;" ondblclick="removeUser(this);">$buildBuddyList</select>
-		<br /><span class="small"><a href="javascript: void(0);" onclick="imWin();">$profile_buddy_list{'add'}</a></span>
+		<br /><span class="small"><a href="javascript: void(0);" onclick="imWin();" rel="nofollow">$profile_buddy_list{'add'}</a></span>
 		</td>
 	</tr>
 	~;
@@ -1111,7 +1111,7 @@ sub ModifyProfileIM {
 			</select>
 			<br />
 			<input type="checkbox" name="ignoreall" id="ignoreall" $ignoreallChecked /> <label for="ignoreall">$profile_txt{'ignoreall'}</label><br />
-			<span class="small"><a href="javascript:void(0);" onclick="imWin();">$profile_txt{'ignorelistadd'}</a></span>
+			<span class="small"><a href="javascript:void(0);" onclick="imWin();" rel="nofollow">$profile_txt{'ignorelistadd'}</a></span>
 		</td>
 	</tr>~;
 
@@ -2288,7 +2288,7 @@ sub ViewProfile {
 			<b>$profile_txt{'823'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<a href="#" onclick="window.open('$scripturl?action=setmsn;msnname=$user','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false"><img src="$imagesdir/msn3.gif" alt="" border="0" style="vertical-align: middle;" /> $msn_user</a>
+			<a href="#" onclick="window.open('$scripturl?action=setmsn;msnname=$user','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false;" rel="nofollow"><img src="$imagesdir/msn3.gif" alt="" border="0" style="vertical-align: middle;" /> $msn_user</a>
 			</div>~;
 	}
 	if (${$uid.$user}{'gtalk'}) {
@@ -2297,7 +2297,7 @@ sub ViewProfile {
 			<b>$profile_txt{'825'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<a href="#" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$user','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false"><img src="$imagesdir/gtalk2.gif" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'gtalk'}</a>
+			<a href="#" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$user','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false;" rel="nofollow"><img src="$imagesdir/gtalk2.gif" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'gtalk'}</a>
 			</div>~;
 	}
 	if (${$uid.$user}{'skype'}) {
@@ -2306,7 +2306,7 @@ sub ViewProfile {
 			<b>$profile_txt{'827'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<a href="javascript:void(window.open('callto://${$uid.$user}{'skype'}','skype','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'))"><img src="$imagesdir/skype.gif" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'skype'} <img src="http://mystatus.skype.com/smallclassic/${$uid.$user}{'skype'}" alt="" border="0" style="vertical-align: middle;" /></a>
+			<a href="javascript:void(window.open('callto://${$uid.$user}{'skype'}','skype','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'))" rel="nofollow"><img src="$imagesdir/skype.gif" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'skype'} <img src="http://mystatus.skype.com/smallclassic/${$uid.$user}{'skype'}" alt="" border="0" style="vertical-align: middle;" /></a>
 			</div>~;
 	}
 	if (${$uid.$user}{'myspace'}) {
@@ -2900,7 +2900,7 @@ sub usersrecentposts {
 	if (!$counter) { 
 		$showProfile .= qq~<span class="text1"><b>$profile_txt{'755'}</b></span>~;
 	} elsif (!$view) {
-		$showProfile .= qq~<p align=left><a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}"><b>$profile_txt{'92'} ${$uid.$curuser}{'realname'}</b></a></p>~;
+		$showProfile .= qq~<p align=left><a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}" rel="nofollow"><b>$profile_txt{'92'} ${$uid.$curuser}{'realname'}</b></a></p>~;
 	}
 
 	if ($img_greybox) {
