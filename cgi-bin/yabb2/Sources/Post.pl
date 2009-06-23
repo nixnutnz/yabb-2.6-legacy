@@ -1498,21 +1498,21 @@ function showtpstatus() {
 	}~;
 		if ($currentboard ne $annboard) {
 			$yymain .= qq~
-	if(z == 1 && x == 0)  theimg = 'sticky';
-	if(z == 1 && x == 1)  theimg = 'locked';
-	if(z == 2 && x == 1)  theimg = 'stickylock';
-	if(z == 1 && x == 2)  theimg = 'hide';
-	if(z == 2 && x == 2)  theimg = 'hidesticky';
-	if(z == 2 && x == 3)  theimg = 'hidelock';
-	if(z == 3 && x == 3)  theimg = 'hidestickylock';~;
+	if(z == 1 && x == 0) theimg = 'sticky';
+	if(z == 1 && x == 1) theimg = 'locked';
+	if(z == 2 && x == 1) theimg = 'stickylock';
+	if(z == 1 && x == 2) theimg = 'hide';
+	if(z == 2 && x == 2) theimg = 'hidesticky';
+	if(z == 2 && x == 3) theimg = 'hidelock';
+	if(z == 3 && x == 3) theimg = 'hidestickylock';~;
 		} else {
 			$yymain .= qq~
-	if(z == 1 && x == 0)  theimg = 'announcementlock';
-	if(z == 1 && x == 1)  theimg = 'hide';
-	if(z == 2 && x == 1)  theimg = 'hidelock';~;
+	if(z == 1 && x == 0) theimg = 'announcementlock';
+	if(z == 1 && x == 1) theimg = 'hide';
+	if(z == 2 && x == 1) theimg = 'hidelock';~;
 		}
 		$yymain .= qq~
-	document.images.thrstat.src='$imagesdir/'+theimg+'.gif';
+	document.images.thrstat.src='$defaultimagesdir/'+theimg+'.gif';
 }
 showtpstatus();
 //-->

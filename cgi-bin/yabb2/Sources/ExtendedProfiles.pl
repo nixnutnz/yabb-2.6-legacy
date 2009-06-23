@@ -326,15 +326,13 @@ sub ext_has_access {
 
 # applies UBBC code to a string
 sub ext_parse_ubbc {
-	my ($source, $pusername, $bak, $bak2) = (shift, shift, $message, $displayname);
+	my ($source, $displayname, $bak) = (shift, shift, $message);
 	$message = $source;
 	require "$sourcedir/YaBBC.pl";
-	$displayname = $pusername; # must be set for /me tag
 	&DoUBBC;
 	&ToChars($message);
 	$source = $message;
 	$message = $bak;
-	$displayname = $bak2;
 
 	$source;
 }

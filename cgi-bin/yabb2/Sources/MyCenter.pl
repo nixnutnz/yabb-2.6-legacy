@@ -523,7 +523,6 @@ sub CreateUserDisplayLine {
 				$sendEmail = qq~$menusep<a href="mailto:${$uid.$usrname}{'email'}">$img{'email_sm'}</a>~;
 			}
 
-			$membAdInfo = $profbutton;
 			$membAdInfo .= ${$uid.$usrname}{'weburl'}   ? $menusep.${$uid.$usrname}{'weburl'} : '';
 			$membAdInfo .= ${$uid.$usrname}{'msn'}      ? $menusep.${$uid.$usrname}{'msn'} : '';
 			$membAdInfo .= ${$uid.$usrname}{'gtalk'}    ? $menusep.${$uid.$usrname}{'gtalk'} : '';

@@ -63,17 +63,17 @@ sub SetMenu {
 
 		$helpstyle = $_ eq 'help' ? " cursor: help;" : " cursor: pointer;";
 
-		if ($_ !~/^(lastpost|pollicon|polliconnew|polliconclosed)$/) {
+		if ($_ !~/^(lastpost|poll(icon|iconnew|iconclosed))$/) {
 			$def0{$_} = qq~<span style="white-space: nowrap;" class="$span_class"><img src="$button_imgurl/$button_icon.$imgext" border="0" alt="\$$alt_text\{'$alt_num'}" /> \$$button_text\{'$text_num'}</span>~;
 
 			$def1{$_} = qq~<span style="white-space: nowrap;" class="$span_class">\$$button_text\{'$text_num'}</span>~;
 
 			$def2{$_} = qq~<span class="buttonleft" title="\$$alt_text\{'$alt_num'}" style="height: 20px; border: 0px; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;$helpstyle">~;
 			$def2{$_} .= qq~<span class="buttonright" style="height: 20px; border: 0px; margin: 0px; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;">~;
-			$def2{$_} .= qq~<span class="buttonimage" style="height: 20px; border: 0px; margin: 0px; background-image: url('$button_imgurl/$button_icon.$imgext'); background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;">~;
+			$def2{$_} .= qq~<span class="buttonimage" style="height: 20px; border: 0px; margin: 0px; background-image: url( $button_imgurl/$button_icon.$imgext ); background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;">~;
 			$def2{$_} .= qq~<span class="buttontext" style="height: 20px; border: 0px; margin: 0px; padding: 0px; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block;">\$$button_text\{'$text_num'}</span></span></span></span>~;
 		} else {
-			$def0{$_} = $def1{$_} = $def2{$_} = qq~<img src="$button_imgurl/$button_icon.$imgext" alt="\$$button_text{'$text_num'}" border="0" />~;
+			$def0{$_} = $def1{$_} = $def2{$_} = qq~<img src="$button_imgurl/$button_icon.$imgext" alt="\$$button_text\{'$text_num'}" border="0" />~;
 		}
 	}
 

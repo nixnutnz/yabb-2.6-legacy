@@ -995,18 +995,16 @@ sub NextPrev {
 }
 
 sub SetMsn {
-	$msnstyle = qq~<link rel="stylesheet" href="$forumstylesurl/$usestyle.css" type="text/css" />~;
-	$msnstyle =~ s~$usestyle\/~~g;
 	my $msnname = $INFO{'msnname'};
-	if (!${$uid.$msnname}{'password'}) { &LoadUser($msnname); }
-	$msnuser = ${$uid.$msnname}{'msn'};
+	$msnname = $do_scramble_id ? &decloak($msnname) : $msnname;
+	&LoadUser($msnname);
 
 	print qq~Content-type: text/html\n\n~;
 	print qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title>$msntxt{'5'}</title>
-$msnstyle
+<link rel="stylesheet" href="$forumstylesurl/$usestyle.css" type="text/css" />
 </head>
 <body class="windowbg2" style="margin: 0px; padding: 0px;">
 <table border="0" width="100%" cellspacing="1" cellpadding="4" class="bordercolor">
@@ -1017,7 +1015,7 @@ $msnstyle
 	</tr>
 	<tr>
 		<td class="windowbg" align="left" height="58">
-		<img src="$defaultimagesdir/msn3.gif" width="16" height="16" style="vertical-align: middle;" alt="${$uid.$msnname}{'realname'}" title="${$uid.$msnname}{'realname'}" border="0" /> $msnuser<br /><br />
+		<img src="$defaultimagesdir/msn3.gif" width="16" height="16" style="vertical-align: middle;" alt="${$uid.$msnname}{'realname'}" title="${$uid.$msnname}{'realname'}" border="0" /> ${$uid.$msnname}{'msn'}<br /><br />
 		</td>
 	</tr>
 </table>
@@ -1066,30 +1064,28 @@ window.onerror = notOnline;
 }
 
 sub SetGtalk {
-	$gtalkstyle = qq~<link rel="stylesheet" href="$forumstylesurl/$usestyle.css" type="text/css" />~;
-	$gtalkstyle =~ s~$usestyle\/~~g;
 	my $gtalkname = $INFO{'gtalkname'};
-	if (!${$uid.$gtalkname}{'password'}) { &LoadUser($gtalkname); }
-	$gtalkuser = ${$uid.$gtalkname}{'gtalk'};
+	$gtalkname = $do_scramble_id ? &decloak($gtalkname) : $gtalkname;
+	&LoadUser($gtalkname);
 
 	print qq~Content-type: text/html\n\n~;
 	print qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title>Google Talk</title>
-$gtalkstyle
+<link rel="stylesheet" href="$forumstylesurl/$usestyle.css" type="text/css" />
 </head>
 <body class="windowbg2" style="margin: 0px; padding: 0px;">
 <table border="0" width="100%" cellspacing="1" cellpadding="4" class="bordercolor">
   <tr>
     <td class="titlebg" align="left" height="22">
-      <img src="$defaultimagesdir/gtalk2.gif" width="16" height="14" alt="" title="" border="0" />
+      <img src="$defaultimagesdir/gtalk.gif" width="16" height="14" alt="" title="" border="0" />
        Google Talk
     </td>
   </tr>
   <tr>
     <td class="windowbg" align="left" height="58">
-      <img src="$defaultimagesdir/gtalk2.gif" width="16" height="14" style="vertical-align: middle;" alt="${$uid.$gtalkname}{'realname'}" title="${$uid.$gtalkname}{'realname'}" border='0' /> $gtalkuser<br /><br />
+      <img src="$defaultimagesdir/gtalk.gif" width="16" height="14" style="vertical-align: middle;" alt="${$uid.$gtalkname}{'realname'}" title="${$uid.$gtalkname}{'realname'}" border='0' /> ${$uid.$gtalkname}{'gtalk'}<br /><br />
     </td>
   </tr>
 </table>

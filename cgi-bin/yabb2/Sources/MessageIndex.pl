@@ -607,7 +607,7 @@ sub MessageIndex {
 		$tempbar =~ s/({|<)yabb icon(}|>)/$micon/g;
 		$tempbar =~ s/({|<)yabb new(}|>)/$new/g;
 		$tempbar =~ s/({|<)yabb poll(}|>)/$mpoll/g;
-		$tempbar =~ s/({|<)yabb favorite(}|>)/ ($favicon{$mnum} ? qq~<img src="$imagesdir\/addfav.gif" alt="$img_txt{'70'}" title="$img_txt{'70'}" \/>~ : '') /eg;
+		$tempbar =~ s/({|<)yabb favorite(}|>)/ ($favicon{$mnum} ? qq~<img src="$imagesdir\/myfav.gif" alt="$img_txt{'70'}" title="$img_txt{'70'}" \/>~ : '') /eg;
 		$tempbar =~ s/({|<)yabb subjectlink(}|>)/$msublink/g;
 		$tempbar =~ s/({|<)yabb attachmenticon(}|>)/$temp_attachment/g;
 		$tempbar =~ s/({|<)yabb pages(}|>)/$pages/g;

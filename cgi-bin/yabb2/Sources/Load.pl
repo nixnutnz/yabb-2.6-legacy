@@ -264,7 +264,6 @@ sub LoadUserDisplay {
 
 	${$uid.$user}{'weburl'} = ${$uid.$user}{'weburl'} ? qq~<a href="${$uid.$user}{'weburl'}" target="_blank">~ . ($sm ? $img{'website_sm'} : $img{'website'}) . '</a>' : '';
 
-	$displayname = ${$uid.$user}{'realname'};
 	if (${$uid.$user}{'signature'}) {
 		$message = ${$uid.$user}{'signature'};
 
@@ -285,50 +284,14 @@ sub LoadUserDisplay {
 		}
 	}
 
-	$themsnuser   = $user;
-	$themsnname   = ${$uid.$user}{'realname'};
-	$thegtalkuser = $user;
-	$thegtalkname = ${$uid.$user}{'realname'};
-
-	if ($UseMenuType == 0) {
-		$yimimg = qq~<img src="$imagesdir/yim.gif" alt="${$uid.$user}{'yim'}" title="${$uid.$user}{'yim'}" border="0" />~;
-		$aimimg = qq~<img src="$imagesdir/aim.gif" alt="${$uid.$user}{'aim'}" title="${$uid.$user}{'aim'}" border="0" />~;
-		$skypeimg = qq~<img src="$imagesdir/skype.gif" alt="${$uid.$user}{'skype'}" title="${$uid.$user}{'skype'}" border="0" />~;
-		$myspaceimg = qq~<img src="$imagesdir/myspace.gif" alt="${$uid.$user}{'myspace'}" title="${$uid.$user}{'myspace'}" border="0" />~;
-		$facebookimg = qq~<img src="$imagesdir/facebook.gif" alt="${$uid.$user}{'facebook'}" title="${$uid.$user}{'facebook'}" border="0" />~;
-		$msnimg = qq~<img src="$imagesdir/msn3.gif" style="cursor: pointer" onclick="window.open('$scripturl?action=setmsn;msnname=$themsnuser','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false" alt="$themsnname" title="$themsnname" border="0" />~;
-		$gtalkimg = qq~<img src="$imagesdir/gtalk2.gif" style="cursor: pointer" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false" alt="$thegtalkname" title="$thegtalkname" border="0" />~;
-		$icqimg = qq~<img src="http://web.icq.com/whitepages/online?icq=${$uid.$user}{'icq'}&#38;img=5" alt="${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" border="0" />~;
-	} elsif ($UseMenuType == 1) {
-		$yimimg = qq~<span class="imgwindowbg">YIM</span>~;
-		$aimimg = qq~<span class="imgwindowbg">AIM</span>~;
-		$skypeimg = qq~<span class="imgwindowbg">Skype/VoIP</span>~;
-		$myspaceimg = qq~<span class="imgwindowbg">MySpace</span>~;
-		$facebookimg = qq~<span class="imgwindowbg">Facebook</span>~;
-		$msnimg = qq~<span class="imgwindowbg" style="cursor: pointer" onclick="window.open('$scripturl?action=setmsn;msnname=$themsnuser','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false">MSN</span>~;
-		$gtalkimg = qq~<span class="imgwindowbg" style="cursor: pointer" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false">GTalk</span>~;
-		$icqimg   = qq~<span class="imgwindowbg">ICQ</span>~;
-	} else {
-		$yimimg = qq~<img src="$yyhtml_root/Buttons/$language/yim.png" alt="${$uid.$user}{'yim'}" title="${$uid.$user}{'yim'}" border="0" />~;
-		$aimimg = qq~<img src="$yyhtml_root/Buttons/$language/aim.png" alt="${$uid.$user}{'aim'}" title="${$uid.$user}{'aim'}" border="0" />~;
-		$skypeimg = qq~<img src="$yyhtml_root/Buttons/$language/skype.png" alt="${$uid.$user}{'skype'}" title="${$uid.$user}{'skype'}" border="0" />~;
-		$myspaceimg = qq~<img src="$yyhtml_root/Buttons/$language/myspace.png" alt="${$uid.$user}{'myspace'}" title="${$uid.$user}{'myspace'}" border="0" />~;
-		$facebookimg = qq~<img src="$yyhtml_root/Buttons/$language/facebook.png" alt="${$uid.$user}{'facebook'}" title="${$uid.$user}{'facebook'}" border="0" />~;
-		$msnimg = qq~<img src="$yyhtml_root/Buttons/$language/msn.png" style="cursor: pointer" onclick="window.open('$scripturl?action=setmsn;msnname=$themsnuser','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false" alt="$themsnname" title="$themsnname" border="0" />~;
-		$gtalkimg = qq~<img src="$yyhtml_root/Buttons/$language/gtalk.png" style="cursor: pointer" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false" alt="$thegtalkname" title="$thegtalkname" border="0" />~;
-		$icqimg = qq~<img src="$yyhtml_root/Buttons/$language/icq.png" alt="${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" border="0" />~;
-	}
-
-	$icqad{$user} = $icqad{$user} ? qq~<a href="http://web.icq.com/${$uid.$user}{'icq'}" target="_blank"><img src="$imagesdir/icqadd.gif" alt="${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" border="0" /></a>~ : '';
-	${$uid.$user}{'icq'} = ${$uid.$user}{'icq'} ? qq~<a href="http://web.icq.com/${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" target="_blank">$icqimg</a>~ : '';
-	${$uid.$user}{'aim'} = ${$uid.$user}{'aim'} ? qq~<a href="aim:goim?screenname=${$uid.$user}{'aim'}&#38;message=Hi.+Are+you+there?">$aimimg</a>~ : '';
-	${$uid.$user}{'skype'} = ${$uid.$user}{'skype'} ? qq~<a href="javascript:void(window.open('callto://${$uid.$user}{'skype'}','skype','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'))">$skypeimg</a>~ : '';
-	${$uid.$user}{'myspace'} = ${$uid.$user}{'myspace'} ? qq~<a href="http://www.myspace.com/${$uid.$user}{'myspace'}" target="_blank">$myspaceimg</a>~ : '';
-	${$uid.$user}{'facebook'} = ${$uid.$user}{'facebook'} ? qq~<a href="http://www.facebook.com/profile.php?id=${$uid.$user}{'facebook'}" target="_blank">$facebookimg</a>~ : '';
-	${$uid.$user}{'msn'} = ${$uid.$user}{'msn'}   ? $msnimg : '';
-	${$uid.$user}{'gtalk'} = ${$uid.$user}{'gtalk'} ? $gtalkimg : '';
-	$yimon{$user} = $yimon{$user} ? qq~<img src="http://opi.yahoo.com/online?u=${$uid.$user}{'yim'}&#38;m=g&#38;t=0" border="0" alt="" />~ : '';
-	${$uid.$user}{'yim'} = ${$uid.$user}{'yim'} ? qq~<a href="http://edit.yahoo.com/config/send_webmesg?.target=${$uid.$user}{'yim'}" target="_blank">$yimimg</a>~ : '';
+	${$uid.$user}{'aim'} = ${$uid.$user}{'aim'} ? qq~<a href="aim:goim?screenname=${$uid.$user}{'aim'}&#38;message=Hi.+Are+you+there?">$img{'aim'}</a>~ : '';
+	${$uid.$user}{'facebook'} = ${$uid.$user}{'facebook'} ? qq~<a href="http://www.facebook.com/profile.php?id=${$uid.$user}{'facebook'}" target="_blank">$img{'facebook'}</a>~ : '';
+	${$uid.$user}{'gtalk'} = ${$uid.$user}{'gtalk'} ? qq~<a href="javascript:void(window.open('$scripturl?action=setgtalk;gtalkname=$useraccount{$user}','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'))">$img{'gtalk'}</a>~ : '';
+	${$uid.$user}{'icq'} = ${$uid.$user}{'icq'} ? qq~<a href="http://web.icq.com/${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" target="_blank">$img{'icq'}</a>~ : '';
+	${$uid.$user}{'msn'} = ${$uid.$user}{'msn'} ? qq~<a href="javascript:void(window.open('$scripturl?action=setmsn;msnname=$useraccount{$user}','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'))">$img{'msn'}</a>~ : '';
+	${$uid.$user}{'myspace'} = ${$uid.$user}{'myspace'} ? qq~<a href="http://www.myspace.com/${$uid.$user}{'myspace'}" target="_blank">$img{'myspace'}</a>~ : '';
+	${$uid.$user}{'skype'} = ${$uid.$user}{'skype'} ? qq~<a href="javascript:void(window.open('callto://${$uid.$user}{'skype'}','skype','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'))">$img{'skype'}</a>~ : '';
+	${$uid.$user}{'yim'} = ${$uid.$user}{'yim'} ? qq~<a href="http://edit.yahoo.com/config/send_webmesg?.target=${$uid.$user}{'yim'}" target="_blank">$img{'yim'}</a>~ : '';
 
 	if ($showgenderimage && ${$uid.$user}{'gender'}) {
 		${$uid.$user}{'gender'} = ${$uid.$user}{'gender'} =~ m~Female~i ? 'female' : 'male';
@@ -357,7 +320,6 @@ sub LoadUserDisplay {
 	&LoadMiniUser($user);
 
 	$yyUDLoaded{$user} = 1;
-	return 1;
 }
 
 sub LoadMiniUser {

@@ -2297,7 +2297,7 @@ sub ViewProfile {
 			<b>$profile_txt{'825'}: </b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-			<a href="#" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$user','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false;" rel="nofollow"><img src="$imagesdir/gtalk2.gif" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'gtalk'}</a>
+			<a href="#" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$user','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false" rel="nofollow"><img src="$imagesdir/gtalk.gif" alt="" border="0" style="vertical-align: middle;" /> ${$uid.$user}{'gtalk'}</a>
 			</div>~;
 	}
 	if (${$uid.$user}{'skype'}) {

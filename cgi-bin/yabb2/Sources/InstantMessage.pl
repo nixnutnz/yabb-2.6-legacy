@@ -1131,6 +1131,12 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 			}\n~;
 	}
 
+	if ($action eq 'modify' || $action eq 'modify2') {
+		$displayname = $mename;
+	} else {
+		$displayname = ${$uid.$username}{'realname'};
+	}
+
 	$imsend .= qq~
 			function calcCharLeft() {
 				clipped = false;
@@ -1265,12 +1271,6 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 			<br /><br />
 		</td>
 	</tr>\n~;
-
-	if ($action eq 'modify' || $action eq 'modify2') {
-		$displayname = $mename;
-	} else {
-		$displayname = ${$uid.$username}{'realname'};
-	}
 
 	require "$templatesdir/$usedisplay/Display.template";
 

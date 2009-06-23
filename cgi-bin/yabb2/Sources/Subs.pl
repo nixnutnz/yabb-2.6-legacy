@@ -426,7 +426,7 @@ sub template {
 				$img_locs{$_[0]} = qq~$defaultimagesdir/$_[0]~;
 			}
 		}
-		$output =~ s~(src|value|url)\s*(=|\()\s*("|')$imagesdir/([^'"]+).~ "$1$2$3" . &ImgLoc($4) . $3 ~eisg;
+		$output =~ s~(src|value|url)(=|\()("|'| )$imagesdir/([^'" ]+).~ "$1$2$3" . &ImgLoc($4) . $3 ~eisg;
 	}
 
 	# add formsession to each <form ..>-tag

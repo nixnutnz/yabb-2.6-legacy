@@ -2265,23 +2265,6 @@ sub DisplayTempl {
 	$imagesdir = $_[1];
 	require "$templatesdir/$_[0]/Display.template";
 	($title, $stars, $starpic, $color, $noshow, $viewperms, $topicperms, $replyperms, $pollperms, $attachperms) = split(/\|/, $Group{"Administrator"});
-	if ($UseMenuType == 0) {
-		$yimimg = qq~$menusep<img src="$_[1]/yim.gif" alt="" border="0" />~;
-		$aimimg = qq~$menusep<img src="$_[1]/aim.gif" alt="" border="0" />~;
-		$msnimg = qq~$menusep<img src="$_[1]/msn3.gif" alt="" border="0" />~;
-	} elsif ($UseMenuType == 1) {
-		$yimimg = qq~$menusep<span class="imgwindowbg">YIM</span>~;
-		$aimimg = qq~$menusep<span class="imgwindowbg">AIM</span>~;
-		$msnimg = qq~$menusep<span class="imgwindowbg">MSN</span>~;
-	} else {
-		$viewstyleleft = qq~style="height: 20px; border: 0px; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
-		$viewstyleright = qq~style="height: 20px; border: 0px; margin: 0px; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
-		$viewstyleimage = qq~height: 20px; border: 0px; margin: 0px; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;~;
-		$viewstyletext = qq~style="height: 20px; border: 0px; margin: 0px; padding: 0px; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block;"~;
-		$yimimg = qq~<span class="buttonleft"}" $viewstyleleft><span class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/yim.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>YIM</span></span></span></span>~;
-		$aimimg = qq~<span class="buttonleft" $viewstyleleft><span class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/aim.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>AIM</span></span></span></span>~;
-		$msnimg = qq~<span class="buttonleft" $viewstyleleft><span class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/msn3.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>MSN</span></span></span></span>~;
-	}
 	my $template_home = qq~<span class="nav">$mbname</span>~;
 	my $tempcatnm = $templ_txt{'72'};
 	my $tempboardnm = $templ_txt{'73'};
@@ -2351,10 +2334,10 @@ sub DisplayTempl {
 		$contactblock =~ s/({|<)yabb profile(}|>)//g;
 		$contactblock =~ s/({|<)yabb pm(}|>)/$template_pm/g;
 		$contactblock =~ s/({|<)yabb www(}|>)//g;
-		$contactblock =~ s/({|<)yabb aim(}|>)/$aimimg/g;
-		$contactblock =~ s/({|<)yabb yim(}|>)/$yimimg/g;
+		$contactblock =~ s/({|<)yabb aim(}|>)/$menusep$img{'aim'}/g;
+		$contactblock =~ s/({|<)yabb yim(}|>)/$menusep$img{'yim'}/g;
 		$contactblock =~ s/({|<)yabb icq(}|>)//g;
-		$contactblock =~ s/({|<)yabb msn(}|>)/$msnimg/g;
+		$contactblock =~ s/({|<)yabb msn(}|>)/$menusep$img{'msn'}/g;
 		$contactblock =~ s/({|<)yabb gtalk(}|>)//g;
 		$contactblock =~ s/({|<)yabb skype(}|>)//g;
 		$contactblock =~ s/({|<)yabb myspace(}|>)/$myspacead/g;
