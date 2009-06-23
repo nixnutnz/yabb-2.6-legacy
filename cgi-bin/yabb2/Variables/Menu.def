@@ -48,7 +48,7 @@ message,message|img_txt|144|||imgwindowbg|tmp
 message_sm,message|img_txt|144|||imgwindowbg|tmp
 modify,modify|img_txt|66|||imgwindowbg|tmp
 modify_profile,modify|img_txt|66|||imgmenu|tmp
-modifypoll,poll_modify|img_polltxt|39|||imgcatbg|tmp
+modifypoll,poll_mod|img_polltxt|39|||imgcatbg|tmp
 mquote,mark_quote|img_txt|145q|||imgwindowbg|tmp
 msn,msn3|img_txt|msn|||imgwindowbg|tmp
 mycenter,mycenter|img_txt|mycenter|||imgmenu|tmp
@@ -56,7 +56,7 @@ myspace,myspace|img_txt|myspace|||imgwindowbg|tmp
 newthread,new_thread|img_txt|33|||imgcatbg|tmp
 notification,notify|img_txt|418|||imgmenu|tmp
 notify,notify|img_txt|131|||imgcatbg|tmp
-openpoll,poll_unlock|img_polltxt|20|||imgcatbg|tmp
+openpoll,poll_open|img_polltxt|20|||imgcatbg|tmp
 pmadmin,message|img_txt|pmadmin|||imgmenu|tmp
 pollicon,poll_open|img_polltxt|44||||tmp
 polliconclosed,poll_lock|img_polltxt|46||||tmp
