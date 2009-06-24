@@ -26,7 +26,6 @@ sub BoardIndex {
 	$totalt = 0;
 	$lastposttime   = 0;
 	$lastthreadtime = 0;
-	&GetBotlist;
 
 	my ($numusers, $guests, $numbots, $user_in_log, $guest_in_log) = (0,0,0,0,0);
 	my $lastonline = $date - ($OnlineLogTime * 60);
@@ -71,7 +70,7 @@ sub BoardIndex {
 				$guestlist =~ s|<i>$last_ip</i>, ||o;
 			}
 		}
-	} elsif ($iamguest && !$guest_in_log) {
+	} elsif ($iamguest && !$iambot && !$guest_in_log) {
 		$guests++;
 	}
 
@@ -765,21 +764,6 @@ $boardindex_template~;
 	}
 
 	&template;
-}
-
-sub GetBotlist {
-	my @botlist = &read_DBorFILE(1,'',$vardir,'bots','hosts');
-	chomp(@botlist);
-	foreach (@botlist) {
-		$_ =~ /(.*?)\|(.*)/;
-		push(@all_bots, $1);
-		$bot_name{$1} = $2;
-	}
-}
-
-sub Is_Bot {
-	my $bothost = $_[0];
-	foreach (@all_bots){ return $bot_name{$_} if $bothost =~ /$_/i; }
 }
 
 sub Collapse_Write {

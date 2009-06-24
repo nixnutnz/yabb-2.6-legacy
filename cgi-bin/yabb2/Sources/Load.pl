@@ -89,14 +89,18 @@ sub LoadCensorList {
 
 sub LoadUserSettings {
 	&LoadBoardControl;
-	$iamguest = $username eq 'Guest' ? 1 : 0;
+
+	($iamadmin,$iamgmod,$iammod,$staff,$iamguest,$iambot) = (0,0,0,0,0,0);
+
+	&GetBotlist; # Here because some users can be bots :-(
+	$iambot = 1 if &Is_Bot("$user_host#$ENV{'HTTP_USER_AGENT'}");
+
 	if ($username ne 'Guest') {
 		&LoadUser($username);
 		# Make sure that if the password doesn't match,
 		# or the forum is in maintenace and you are not the admin,
 		# you get FULLY Logged out
 		if (${$uid.$username}{'password'} eq $password && (!$maintenance || ${$uid.$username}{'position'} eq 'Administrator')) {
-			($iamadmin,$iamgmod,$staff) = (0,0,0);
 			if    (${$uid.$username}{'position'} eq 'Administrator')    { $staff = $iamadmin = 1; }
 			elsif (${$uid.$username}{'position'} eq 'Global Moderator') { $staff = $iamgmod  = 1; }
 			$iammod = &is_moderator($username);
@@ -120,9 +124,7 @@ sub LoadUserSettings {
 	&FormatUserName('');
 	&UpdateCookie("delete");
 	$username           = 'Guest';
-	$iamguest           = '1';
-	$iamadmin           = '';
-	$iamgmod            = '';
+	$iamguest           = 1;
 	$password           = '';
 	$ENV{'HTTP_COOKIE'} = '';
 	$yyim               = '';

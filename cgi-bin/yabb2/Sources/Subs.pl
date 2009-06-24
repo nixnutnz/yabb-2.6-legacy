@@ -48,6 +48,11 @@ if ($user_ip eq "127.0.0.1") {
 	elsif ($ENV{'HTTP_X_FORWARDED_FOR'} && $ENV{'HTTP_X_FORWARDED_FOR'} ne "127.0.0.1") { $user_ip = $ENV{'HTTP_X_FORWARDED_FOR'}; }
 }
 
+# comment out (#) the next line if you have problems with
+# 'Reverse DNS lookup timeout causes slow page loads'
+# Search Engine identification and display will be turned off
+$user_host = (gethostbyaddr(pack("C4", split(/\./, $user_ip)), 2))[0];
+
 if (-e "$yyexec.cgi") { $yyext = "cgi"; }
 else { $yyext = "pl"; }
 if (-e "AdminIndex.cgi") { $yyaext = "cgi"; }
@@ -1152,12 +1157,6 @@ sub KickGuest {
 # - writes/removes old data (username/ip,date,REQUEST_URI,HTTP_REFERER,HTTP_USER_AGENT)
 #   into/from the clicklog.txt.
 sub WriteLog {
-	# comment out (#) the next line if you have problems with
-	# 'Reverse DNS lookup timeout causes slow page loads'
-	#
-	# Search Engine identification and display will be turned off
-	my $user_host = (gethostbyaddr(pack("C4", split(/\./, $user_ip)), 2))[0];
-
 	my ($name, $logtime, @new_log);
 	my $onlinetime = $date - ($OnlineLogTime * 60);
 	my $field = $username;
@@ -1213,9 +1212,9 @@ sub RemoveUserOnline {
 		if ($user) {
 			my $x = -1;
 			for (my $i = 0; $i < @logentries; $i++) {
-				if ((split(/\|/, $logentries[$i], 2))[0] ne $user) { print LOG $logentries[$i]; }
-				elsif ($user eq $username) { $logentries[$i] =~ s/^$user\|/$user_ip\|/; print LOG $logentries[$i]; }
-				else { $x = $i; }
+				next if (split(/\|/, $logentries[$i], 2))[0] ne $user;
+				if ($user eq $username) { $logentries[$i] =~ s/^$user\|/$user_ip\|/; last; }
+				else { $x = $i; last; }
 			}
 			splice(@logentries,$x,1) if $x > -1;
 		} else {
@@ -1224,6 +1223,22 @@ sub RemoveUserOnline {
 		}
 		&write_DBorFILE(0,LOG,$vardir,'log','txt',@logentries);
 	}
+}
+
+my (@all_bots,%bot_name);
+sub GetBotlist {
+	my @botlist = &read_DBorFILE(1,'',$vardir,'bots','hosts');
+	chomp(@botlist);
+	foreach (@botlist) {
+		$_ =~ /(.*?)\|(.*)/;
+		push(@all_bots, $1);
+		$bot_name{$1} = $2;
+	}
+}
+
+sub Is_Bot {
+	my $bothost = $_[0];
+	foreach (@all_bots){ return $bot_name{$_} if $bothost =~ /$_/i; }
 }
 
 sub freespace {
