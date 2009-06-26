@@ -368,7 +368,7 @@ sub activation_check {
 			&delete_DBorFILE("$memberdir/$regmember.pre");
 
 			# add entry to registration log
-			&write_DBorFILE(0,REGLOG,$vardir,'registration','log',(&read_DBorFILE(0,REGLOG,$vardir,'registration','log'),"$date|T|$regmember|\n"));
+			&write_DBorFILE(0,REGLOG,$vardir,'registration','log',(&read_DBorFILE(0,REGLOG,$vardir,'registration','log'),"$date|T|$regmember||$user_ip\n"));
 		} else {
 			# update non activate user list
 			# write valid registration to the list again

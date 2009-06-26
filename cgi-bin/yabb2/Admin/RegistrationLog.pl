@@ -42,7 +42,7 @@ sub view_reglog {
 		}
 	} else {
 		$servertime = $date;
-		push(@logentries, "$servertime|LD|$username|$username");
+		push(@logentries, "$servertime|LD|$username|$username|$user_ip");
 	}
 
 	if (@logentries > 0) {
@@ -83,27 +83,24 @@ sub view_reglog {
 	}
 
 	foreach $logentry (@logentries) {
-		($logtime, $status, $userid, $actid) = split(/\|/, $logentry);
-		chomp $userid;
-		chomp $actid;
-		if($do_scramble_id){
+		chomp $logentry;
+		my ($logtime, $status, $userid, $actid, $ipadd) = split(/\|/, $logentry);
+		if ($do_scramble_id) {
 			$cryptactid = &cloak($actid);
 			$cryptuserid = &cloak($userid);
-		} 
-		else {
-			$cryptactid = $actid; 
+		} else {
+			$cryptactid = $actid;
 			$cryptuserid = $userid;
 		}
-		if($userid ne $actid && $actid ne '') {
+		if ($userid ne $actid && $actid ne '') {
 			&LoadUser($actid);
 			$actadminlink = qq~ $prereg_txt{'by'} <a href="$scripturl?action=viewprofile;username=$cryptactid">${$uid.$actid}{'realname'}</a>~;
 		} else {
 			$actadminlink = '';
 		}
-		if ($status eq 'AA'){ 
-			&LoadUser($userid);
-			$linkuserid = qq~$userid (<a href="$scripturl?action=viewprofile;username=$cryptuserid">${$uid.$userid}{'realname'}</a>)~; 
-		} else { 
+		if ($status eq 'AA' && &LoadUser($userid)){
+			$linkuserid = qq~$userid (<a href="$scripturl?action=viewprofile;username=$cryptuserid">${$uid.$userid}{'realname'}</a>)~;
+		} else {
 			$linkuserid = $userid; 
 		}
 		if ($do_scramble_id){ $cryptid = &cloak($userid); } else { $cryptid = $userid; }
@@ -116,13 +113,13 @@ sub view_reglog {
 			$delrecord = qq~<a href="$adminurl?action=rej_regentry;username=$cryptid">$prereg_txt{'reject'}</a>~;
 			$delrecord .= qq~<br /><a href="$adminurl?action=view_regentry;username=$cryptid;type=approve">$prereg_txt{'view'}</a>~;
 			$delrecord .= qq~<br /><a href="$adminurl?action=apr_regentry;username=$cryptid">$prereg_txt{'apr'}</a>~;
-		} else { 
-			$delrecord = '---'; 
+		} else {
+			$delrecord = '---';
 		}
 		$loglist .= qq~
 		<tr>
 		<td class="windowbg" width="20%" align="center">$reclogtime</td>
-		<td class="windowbg2" width="35%" align="center">$prereg_txt{$status}$actadminlink</td>
+		<td class="windowbg2" width="35%" align="center">$prereg_txt{$status}$actadminlink<br />IP: $ipadd</td>
 		<td class="windowbg" width="25%" align="center">$linkuserid</td>
 		<td class="windowbg2" width="20%" align="center">$delrecord</td>
 		</tr>~;
@@ -173,7 +170,7 @@ sub clean_reglog {
 	@reglist = &read_DBorFILE(0,'',$vardir,'registration','log');
 	## depending on registration type only leave uncompleted entries in the log for completion and remove the failed or completed ones ##
 	foreach (@reglist) {
-		(undef, $regstatus, $reguser, undef) = split(/\|/, $_);
+		(undef, $regstatus, $reguser, undef) = split(/\|/, $_, 4);
 		if (($regtype == 1 || $regtype == 2) && $regstatus eq "N" && &checkfor_DBorFILE("$memberdir/$reguser.pre")) {
 			push(@outlist, $_);
 		}
@@ -203,7 +200,7 @@ sub kill_registration {
 			&delete_DBorFILE("$memberdir/$regmember.pre");
 
 			# add entry to registration log
-			&write_DBorFILE(0,REG,$vardir,'registration','log',(&read_DBorFILE(0,REG,$vardir,'registration','log'),"$date|D|$regmember|$username\n"));
+			&write_DBorFILE(0,REG,$vardir,'registration','log',(&read_DBorFILE(0,REG,$vardir,'registration','log'),"$date|D|$regmember|$username|$user_ip\n"));
 		} else {
 			# update non activate user list
 			# write valid registration to the list again
@@ -373,7 +370,7 @@ sub reject_registration {
 		&write_DBorFILE(0,'',$memberdir,'memberlist','approve',@aprchnglist);
 
 		## add entry to registration log ##
-		&write_DBorFILE(0,REG,$vardir,'registration','log',(&read_DBorFILE(0,REG,$vardir,'registration','log'),"$date|AR|$deluser|$username\n"));
+		&write_DBorFILE(0,REG,$vardir,'registration','log',(&read_DBorFILE(0,REG,$vardir,'registration','log'),"$date|AR|$deluser|$username|$user_ip\n"));
 	}
 	$yySetLocation = qq~$adminurl?action=view_reglog~;
 	&redirectexit;
@@ -447,7 +444,7 @@ sub approve_registration {
 		&write_DBorFILE(0,'',$memberdir,'memberlist','approve',@aprchnglist);
 
 		## add entry to registration log ##
-		&write_DBorFILE(0,REG,$vardir,'registration','log',(&read_DBorFILE(0,REG,$vardir,'registration','log'),"$date|AA|$apruser|$username\n"));
+		&write_DBorFILE(0,REG,$vardir,'registration','log',(&read_DBorFILE(0,REG,$vardir,'registration','log'),"$date|AA|$apruser|$username|$user_ip\n"));
 	}
 	$yySetLocation = qq~$adminurl?action=view_reglog~;
 	&redirectexit;

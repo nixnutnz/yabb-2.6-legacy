@@ -733,7 +733,7 @@ sub Register2 {
 		if ($do_scramble_id) { $cryptuser = &cloak($reguser); } else { $cryptuser = $reguser; }
 		&write_DBorFILE(0,INACT,$memberdir,'memberlist','inactive',(&read_DBorFILE(0,INACT,$memberdir,'memberlist','inactive'),"$date|$activationcode|$reguser|$member{'passwrd1'}|$member{'email'}|\n"));
 
-		&write_DBorFILE(0,REGLOG,$vardir,'registration','log',(&read_DBorFILE(0,REGLOG,$vardir,'registration','log'),"$date|N|$member{'regusername'}|\n"));
+		&write_DBorFILE(0,REGLOG,$vardir,'registration','log',(&read_DBorFILE(0,REGLOG,$vardir,'registration','log'),"$date|N|$member{'regusername'}||$user_ip\n"));
 
 		## send an e-mail to the user that registration is pending e-mail validation within the given timespan. ##
 		my $templanguage = $language;
@@ -841,7 +841,7 @@ sub user_activation {
 		fclose(INACT);
 	} else {
 		# add entry to registration log
-		&write_DBorFILE(0,REGLOG,$vardir,'registration','log',(&read_DBorFILE(0,REGLOG,$vardir,'registration','log'),"$date|E|$reguser|\n"));
+		&write_DBorFILE(0,REGLOG,$vardir,'registration','log',(&read_DBorFILE(0,REGLOG,$vardir,'registration','log'),"$date|E|$reguser||$user_ip\n"));
 		&fatal_error("prereg_expired");
 	}
 	if ($regtype == 1 && &checkfor_DBorFILE("$memberdir/memberlist.approve")) {
@@ -858,7 +858,7 @@ sub user_activation {
 			my $templanguage = $language;
 			if ($activationkey ne $testkey) {
 				# add entry to registration log
-				&write_DBorFILE(0,REGLOG,$vardir,'registration','log',(&read_DBorFILE(0,REGLOG,$vardir,'registration','log'),"$date|E|$reguser|\n"));
+				&write_DBorFILE(0,REGLOG,$vardir,'registration','log',(&read_DBorFILE(0,REGLOG,$vardir,'registration','log'),"$date|E|$reguser||$user_ip\n"));
 				&fatal_error("wrong_code");
 
 			} elsif ($regtype == 1) {
@@ -870,7 +870,7 @@ sub user_activation {
 				# add entry to registration log
 				if ($iamadmin || $iamgmod) { $actuser = $username; } else { $actuser = $reguser; }
 				# add entry to registration log
-				&write_DBorFILE(0,REGLOG,$vardir,'registration','log',(&read_DBorFILE(0,REGLOG,$vardir,'registration','log'),"$date|W|$reguser|$actuser\n"));
+				&write_DBorFILE(0,REGLOG,$vardir,'registration','log',(&read_DBorFILE(0,REGLOG,$vardir,'registration','log'),"$date|W|$reguser|$actuser|$user_ip\n"));
 
 				&LoadUser($reguser);
 				$language = ${$uid.$reguser}{'language'};
@@ -894,7 +894,7 @@ sub user_activation {
 
 				if ($iamadmin || $iamgmod) { $actuser = $username; } else { $actuser = $reguser; }
 				# add entry to registration log
-				&write_DBorFILE(0,REGLOG,$vardir,'registration','log',(&read_DBorFILE(0,REGLOG,$vardir,'registration','log'),"$date|A|$reguser|$actuser\n"));
+				&write_DBorFILE(0,REGLOG,$vardir,'registration','log',(&read_DBorFILE(0,REGLOG,$vardir,'registration','log'),"$date|A|$reguser|$actuser|$user_ip\n"));
 
 				if ($emailpassword) {
 					chomp $regpassword;
@@ -939,7 +939,7 @@ sub user_activation {
 		}
 	} else {
 		# add entry to registration log
-		&write_DBorFILE(0,REGLOG,$vardir,'registration','log',(&read_DBorFILE(0,REGLOG,$vardir,'registration','log'),"$date|E|$reguser|\n"));
+		&write_DBorFILE(0,REGLOG,$vardir,'registration','log',(&read_DBorFILE(0,REGLOG,$vardir,'registration','log'),"$date|E|$reguser||$user_ip\n"));
 		&fatal_error("wrong_id");
 	}
 
