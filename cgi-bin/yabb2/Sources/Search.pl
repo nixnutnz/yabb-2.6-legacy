@@ -554,7 +554,7 @@ sub plushSearch2 {
 		</td>
 	</tr>
 	<tr>
-		<td align="left" height="80" colspan="2" class="windowbg2" valign="top"><div style="float: left; width: 99%; overflow: auto;">$message</div></td>
+		<td align="left" height="80" colspan="2" class="windowbg2" valign="top"><div class="message" style="float: left; width: 99%; overflow: auto;">$message</div></td>
 	</tr>
 </table><br />~;
 	}
@@ -816,7 +816,7 @@ sub pmsearch {
 		</td>
 	</tr>
 	<tr>
-		<td align="left" height="80" colspan="2" class="windowbg2" valign="top"><div style="float: left; width: 99%; overflow: auto;">$message</div></td>
+		<td align="left" height="80" colspan="2" class="windowbg2" valign="top"><div class="message" style="float: left; width: 99%; overflow: auto;">$message</div></td>
 	</tr>
 </table><br />
 ~;
