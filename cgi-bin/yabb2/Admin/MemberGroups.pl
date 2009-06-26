@@ -338,6 +338,7 @@ sub editAddGroup {
 	elsif ($starpic eq "stargold.gif")   { $stars6 = "selected=\"selected\"" }
 	elsif ($starpic eq "")               { $stars1 = "selected=\"selected\"" }
 	else { $stars7 = "selected=\"selected\""; $pick = $starpic; $otherdisable = ""; }
+	my $starurl = ($starpic !~ m~http://~ ? "$imagesdir/" : "") . ($starpic ? $starpic : "blank.gif");
 
 	$color =~ s/\#//g;
 
@@ -379,7 +380,7 @@ sub editAddGroup {
 	</tr><tr>
 		<td class="windowbg"><label for="starsadmin">$amgtxt{'38'}:</label></td>
 		<td class="windowbg2">
-			<select name="starsadmin" id="starsadmin" onchange="stars(this.value)">
+			<select name="starsadmin" id="starsadmin" onchange="stars(this.value); showimage();">
 			<option value="staradmin.gif" $stars1>$amgtxt{'20'}</option>
 			<option value="stargmod.gif" $stars2>$amgtxt{'21'}</option>
 			<option value="starmod.gif" $stars3>$amgtxt{'22'}</option>
@@ -389,7 +390,9 @@ sub editAddGroup {
 			<option value="other" $stars7>$amgtxt{'26'}</option>
 			</select>
 			&nbsp;
-			<label for="otherstar"><b>$amgtxt{'26'}</b></label> <input type="text" name="otherstar" id="otherstar" value="$pick"$otherdisable />
+			<label for="otherstar"><b>$amgtxt{'26'}</b></label> <input type="text" name="otherstar" id="otherstar" onchange="showimage();" value="$pick"$otherdisable />
+			&nbsp;
+			<img src="$starurl" name="starpic" border="0" alt="" />
 		</td>
 	</tr><tr>
 		<td class="windowbg"><label for="color">$amgtxt{'08'}:</label></td>
@@ -536,6 +539,17 @@ function previewColor(color) {
 function stars(value) {
 	if (value == "other") document.getElementById('otherstar').disabled = false;
 	else document.getElementById('otherstar').disabled = true;
+}
+
+function showimage() {
+	selected = document.groups.starsadmin.options[document.groups.starsadmin.selectedIndex].value;
+	otherurl = document.groups.otherstar.value;
+	useimg = (selected != "other") ? "$imagesdir/"+selected : ((otherurl != "") ? otherurl : "$imagesdir/blank.gif");
+	document.images.starpic.src=useimg;
+	if (document.images.starpic.complete == false) {
+		useimg = (selected != "other") ? "$defaultimagesdir/"+selected : ((otherurl != "") ? otherurl : "$defaultimagesdir/blank.gif");
+		document.images.starpic.src=useimg;
+	}
 }
 
 function depend(value) {
