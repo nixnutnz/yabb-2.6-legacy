@@ -1128,7 +1128,7 @@ function insert_user (oElement,username,userid) {
 
 		my $memberinfo = "$memberinfo{$username}$addmembergroup{$username}";
 		my $userOnline = &userOnLineStatus($username) . "<br />";
-		my $template_postinfo = qq~$mycenter_txt{'posts'}: ${$uid.$username}{'postcount'}<br />~;
+		my $template_postinfo = qq~$mycenter_txt{'posts'}: ~ . &NumberFormat(${$uid.$username}{'postcount'}) . qq~<br />~;
 		my $userlocation;
 		if (${$uid.$username}{'location'}) {
 			$userlocation = ${$uid.$username}{'location'} . "<br />";
