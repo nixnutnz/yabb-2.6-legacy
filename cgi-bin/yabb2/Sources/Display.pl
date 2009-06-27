@@ -618,6 +618,7 @@ sub Display {
 		# Insert 2
 		if ((!${$uid.$musername}{'hidemail'} || $iamadmin || $allow_hide_email != 1 || $musername eq 'Guest') && !$exmem) {
 			$template_email = $menusep . &enc_eMail($img{'email_sm'},$memail,'','');
+			if ($iamadmin) { $template_email =~ s~title=\\"$img_txt{'69'}\\"~title=\\"$memail\\"~; }
 		}
 		if ($iamguest) { $template_email = ''; }
 

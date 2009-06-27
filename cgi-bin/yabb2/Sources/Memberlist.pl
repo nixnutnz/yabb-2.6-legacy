@@ -254,7 +254,7 @@ sub showRows {
 		} else {
 			if (!$iamguest){
 				$yymain .= qq~
-				<td align="center" class="windowbg2">~ . &enc_eMail(qq~<img src="$imagesdir/email.gif" border="0" alt="$img_txt{'69'}" title="$img_txt{'69'}" />~,${$uid.$user}{'email'},'','') . qq~</td>
+				<td align="center" class="windowbg2">~ . &enc_eMail(qq~<img src="$imagesdir/email.gif" border="0" alt="$img_txt{'69'}" title="~ . ($iamadmin ? ${$uid.$user}{'email'} : $img_txt{'69'}) . qq~" />~,${$uid.$user}{'email'},'','') . qq~</td>
 			~;
 			} else {
 				$yymain .= qq~
