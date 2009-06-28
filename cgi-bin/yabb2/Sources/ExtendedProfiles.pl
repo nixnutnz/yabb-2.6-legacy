@@ -70,17 +70,19 @@ $ext_max_email_length = 60;
 $ext_max_url_length = 100;
 $ext_max_image_length = 100;
 
+my %field;
+
 # outputs the value of a user's extended profile field
 ## USAGE: $value = ext_get("admin","my_custom_fieldname");
 ##  or    $value_raw = ext_get("admin","my_custom_fieldname",1);
 ## pass the third argument if you want to get the raw content e.g. an unformated date
 sub ext_get {
-	my ($pusername, $fieldname, $no_parse, @ext_profile, @options, $field, $id, $value, $width, $height, @allowed_extensions, $extension, $match) = (shift, shift, shift);
+	my ($pusername, $fieldname, $no_parse, @ext_profile, @options, $id, $value, $width, $height, @allowed_extensions, $extension, $match) = (shift, shift, shift);
 	&ext_get_profile($pusername);
 	$id = &ext_get_field_id($fieldname);
 	$value = ${$uid.$pusername}{'ext_'.$id};
 	if ($no_parse eq "" || $no_parse == 0) {
-		$field = &ext_get_field($id);
+		&ext_get_field($id);
 		if ($field{'type'} eq "text") {
 			@options = split(/\^/,$field{'options'});
 			if ($options[3] ne "" && $value eq "") { $value = $options[3]; }
@@ -137,15 +139,14 @@ sub ext_get {
 
 # loads the (extended) profile of a user
 sub ext_get_profile {
-	my ($pusername) = (shift);
-	if (${$uid.$pusername}{'realname'} eq "") { &LoadUser($pusername); }
+	&LoadUser(shift);
 }
 
 # returns an array of the form qw(ext_0 ext_1 ext_2 ...)
 sub ext_get_fields_array {
-	my ($count, @result,  $line) = (0);
-	foreach $line (@ext_prof_fields) {
-		push(@result,"ext_" . $count);
+	my ($count, @result) = (0);
+	foreach (@ext_prof_fields) {
+		push(@result, "ext_$count");
 		$count++;
 	}
 	@result;
@@ -164,9 +165,8 @@ sub ext_get_field_id {
 
 # returns all settings of a specifig field
 sub ext_get_field {
-	my ($id, $field, @fields, $dummy) = (shift);
-	@fields = @ext_prof_fields;
-	$field{'id'} = $id;
+	$field{'id'} = shift;
+
 	($field{'name'},
 	$field{'type'},
 	$field{'options'},
@@ -188,8 +188,7 @@ sub ext_get_field {
 	$field{'pp_users'},
 	$field{'pp_groups'},
 	$field{'pp_displayfieldname'},
-	$dummy) = split(/\|/,$fields[$field{'id'}]);
-	$field;
+	 undef) = split(/\|/, $ext_prof_fields[$field{'id'}]);
 }
 
 # formats a MM/DD/YYYY string to the user's prefered format, ignores time completely!
@@ -339,20 +338,17 @@ sub ext_parse_ubbc {
 
 # returns the output for the viewprofile page
 sub ext_viewprofile {
-	my ($pusername, @ext_profile, $field, $id, $output, $fieldname, @options, $value, $previous, @field_order, $count, $last_field_id, $pre_output) = (shift);
+	my ($pusername, @ext_profile, $id, $output, $fieldname, @options, $value, $previous, $count, $last_field_id, $pre_output) = (shift);
 
-	@field_order = @ext_prof_order;
-	if ($#$field_order > 0) { $last_field_id = &ext_get_field_id($field_order[$#$field_order]); }
+	if ($#ext_prof_order > 0) { $last_field_id = &ext_get_field_id($ext_prof_order[$#ext_prof_order]); }
 
 	foreach $fieldname (@ext_prof_order) {
 		$id = &ext_get_field_id($fieldname);
-		$field = &ext_get_field($id);
+		&ext_get_field($id);
 		$value = &ext_get($pusername,$fieldname);
 
 		# make sure the field is visible and the user allowed to view the current field
-		if (($field{'visible_in_viewprofile'} == 1) &&
-		    ($field{'active'} == 1) &&
-		    (&ext_has_access($field{'v_users'},$field{'v_groups'}) == 1)) {
+		if ($field{'visible_in_viewprofile'} == 1 && $field{'active'} == 1 && &ext_has_access($field{'v_users'},$field{'v_groups'}) == 1) {
 			if ($output eq "" && $previous ne 1) {
 				$pre_output = qq~
 	<tr>
@@ -444,18 +440,17 @@ sub ext_viewprofile {
 		</td>
 	</tr>~;
 	}
-	return $output;
+	$output;
 }
 
 # returns the output for the post page
 sub ext_viewinposts {
-	my ($pusername, $popup, @ext_profile, $field, $id, $output, $fieldname, @options, $value, $previous, $pre_output, $visible, $users, $groups, $displayfieldname) = (shift, shift);
+	my ($pusername, $popup, @ext_profile, $id, $output, $fieldname, @options, $value, $previous, $pre_output, $visible, $users, $groups, $displayfieldname) = (shift, shift);
 
 	if ($pusername ne 'Guest') {
-
 		foreach $fieldname (@ext_prof_order) {
 			$id = &ext_get_field_id($fieldname);
-			$field = &ext_get_field($id);
+			&ext_get_field($id);
 			$value = &ext_get($pusername,$fieldname);
 
 			if ($popup ne "") {
@@ -471,7 +466,7 @@ sub ext_viewinposts {
 			}
 
 			# make sure the field is visible and the user allowed to view the current field
-			if (($visible == 1) && ($field{'active'} == 1) && (&ext_has_access($users,$groups) == 1)) {
+			if ($visible == 1 && $field{'active'} == 1 && &ext_has_access($users,$groups) == 1) {
 				if ($displayfieldname == 1) { $displayedfieldname = "$field{'name'}: "; } else { $displayedfieldname = ""; }
 				if ($output eq "") { $output = qq~$ext_spacer_br\n~; }
 				# format the output dependend of the field type
@@ -532,15 +527,13 @@ sub ext_viewinposts_popup {
 
 # returns the output for the table header in memberlist
 sub ext_memberlist_tableheader {
-	my ($field, $output, $fieldname);
+	my ($output, $fieldname);
 
 	foreach $fieldname (@ext_prof_order) {
-		$field = &ext_get_field(&ext_get_field_id($fieldname));
+		&ext_get_field(&ext_get_field_id($fieldname));
 
 		# make sure the field is visible and the user allowed to view the current field
-		if (($field{'visible_in_memberlist'} == 1) &&
-		    ($field{'active'} == 1) &&
-		    (&ext_has_access($field{'m_users'},$field{'m_groups'}) == 1)) {
+		if ($field{'visible_in_memberlist'} == 1 && $field{'active'} == 1 && &ext_has_access($field{'m_users'},$field{'m_groups'}) == 1) {
 			$output .= qq~<td class="catbg" align="center">$field{'name'}</td>\n~;
 		}
 	}
@@ -557,18 +550,16 @@ sub ext_memberlist_get_headercount { # count the linebreaks to get the number of
 
 # returns the output for the table tds in memberlist
 sub ext_memberlist_tds {
-	my ($pusername, $usergroup, @ext_profile, $field, $id, $output, $access, @users, $user, @groups, $group, $fieldname, @options, $count, $color, $value) = (shift, ${$uid.$username}{'position'});
+	my ($pusername, $usergroup, @ext_profile, $id, $output, $access, @users, $user, @groups, $group, $fieldname, @options, $count, $color, $value) = (shift, ${$uid.$username}{'position'});
 
 	$count = 0;
 	foreach $fieldname (@ext_prof_order) {
 		$id = &ext_get_field_id($fieldname);
-		$field = &ext_get_field($id);
+		&ext_get_field($id);
 		$value = &ext_get($pusername,$fieldname);
 
 		# make sure the field is visible and the user allowed to view the current field
-		if (($field{'visible_in_memberlist'} == 1) &&
-		    ($field{'active'} == 1) &&
-		    (&ext_has_access($field{'m_users'},$field{'m_groups'}) == 1)) {
+		if ($field{'visible_in_memberlist'} == 1 && $field{'active'} == 1 && &ext_has_access($field{'m_users'},$field{'m_groups'}) == 1) {
 			$color = $count % 2 == 1 ? "windowbg" : "windowbg2";
 			#if ($using_yams5 eq "1") {
 			#	$td_attributs = qq~class="windowbg2" style="border-top: #6394BD 1px solid; border-right: #6394BD 1px solid; padding: 2px" bgcolor="#F8F8F8" align="center" valign="middle"~;
@@ -592,11 +583,11 @@ sub ext_memberlist_tds {
 
 # returns the edit mask of a field (used on registration and edit profile page)
 sub ext_gen_editfield {
-	my ($id, $pusername, @ext_profile, $output, $field, @options, $selected, $count, $required_prefix, $dayormonth, $dayormonthd, $dayormonthm, $value, $template1, $template2) = (shift, shift);
+	my ($id, $pusername, @ext_profile, $output, @options, $selected, $count, $required_prefix, $dayormonth, $dayormonthd, $dayormonthm, $value, $template1, $template2) = (shift, shift);
 
 	&LoadLanguage("Profile");
 
-	$field = &ext_get_field($id);
+	&ext_get_field($id);
 
 	# if username is obmitted, we'll generate the code for the registration page
 	if ($pusername ne "") { $value = &ext_get($pusername,$field{'name'},1); }
@@ -721,13 +712,13 @@ sub ext_gen_editfield {
 # returns the output for the edit profile page
 ## USAGE: $value = ext_editprofile("admin","required");
 sub ext_editprofile {
-	my ($pusername, $part, $usergroup, $field, $id, $output, $fieldname, @options, $selected, $count) = (shift, shift, ${$uid.$username}{'position'});
+	my ($pusername, $part, $usergroup, $id, $output, $fieldname, @options, $selected, $count) = (shift, shift, ${$uid.$username}{'position'});
 
 	if(-e ("$vardir/gmodsettings.txt")) { require "$vardir/gmodsettings.txt"; }
 
 	foreach $fieldname (@ext_prof_order) {
 		$id = &ext_get_field_id($fieldname);
-		$field = &ext_get_field($id);
+		&ext_get_field($id);
 
 		# make sure the field is visible, the user allowed to edit the current field and only the requested fields are returned
 		if (($field{'active'} == 1) &&
@@ -748,12 +739,11 @@ sub ext_editprofile {
 
 # returns the output for the registration page
 sub ext_register {
-	my ($field, $id, $output, $fieldname, @options, @selected);
+	my ($id, $output, $fieldname, @options, @selected);
 
 	foreach $fieldname (@ext_prof_order) {
 		$id = &ext_get_field_id($fieldname);
-		$field = &ext_get_field($id);
-		#if ($field{'active'} == 1 && $field{'editable_by_user'} != 0 && $field{'required_on_reg'} != 0) {
+		&ext_get_field($id);
 		if ($field{'active'} == 1 && $field{'required_on_reg'} != 0) {
 			$output .= &ext_gen_editfield($id);
 		}
@@ -764,7 +754,7 @@ sub ext_register {
 
 # returns if the submitted profile is valid, if not, return error messages
 sub ext_validate_submition {
-	my ($username, $pusername, $usergroup, %newprofile, @oldprofile, $output, $key, $value, $id, $field, @options) = (shift, shift, ${$uid.$username}{'position'}, %FORM);
+	my ($username, $pusername, $usergroup, %newprofile, @oldprofile, $output, $key, $value, $id, @options) = (shift, shift, ${$uid.$username}{'position'}, %FORM);
 
 	if (-e "$vardir/gmodsettings.txt") { require "$vardir/gmodsettings.txt"; }
 
@@ -772,7 +762,7 @@ sub ext_validate_submition {
 		# only validate fields with prefix "ext_"
 		if ($key =~ /^ext_(\d+)$/) {
 			$id = $1;
-			$field = &ext_get_field($id);
+			&ext_get_field($id);
 
 			if (!$field{'name'}) { $output .= $lang_ext{'field_not_existing1'}.$id.$lang_ext{'field_not_existing2'}."<br />\n"; }
 
@@ -868,7 +858,7 @@ sub ext_validate_submition {
 	# check if required fields are filled and add missing fields to $newprofile, just to be on the saver side
 	$id = 0;
 	foreach (@ext_prof_fields) {
-		$field = &ext_get_field($id);
+		&ext_get_field($id);
 		$value = &ext_get($pusername, $field{'name'}, 1);
 		if (defined $newprofile{'ext_'.$id} && ($field{'type'} eq "checkbox" || $field{'type'} eq "select" || $field{'type'} eq "radiobuttons")) {
 			if ($newprofile{'ext_'.$id} eq "") { $newprofile{'ext_'.$id} = 0; }
@@ -902,7 +892,7 @@ sub ext_validate_submition {
 	# write our now validated profile information back into the usually used variable
 	%FORM = %newprofile;
 
-	return $output;
+	$output;
 }
 
 # stores the submitted profile on disk
@@ -957,7 +947,7 @@ sub ext_admin_htmlreq {
 
 # returns the output for the Extended Profile Controls in admin center
 sub ext_admin {
-	my ($field, $id, $output, $fieldname, @options, $active, @selected, @contents);
+	my ($id, $output, $fieldname, @options, $active, @selected, @contents);
 
 	&is_admin_or_gmod;
 	&ext_admin_htmlreq;
@@ -995,7 +985,7 @@ $ext_template_contentstart
 	} else {
 		foreach $fieldname (@ext_prof_order) {
 			$id = &ext_get_field_id($fieldname);
-			$field = &ext_get_field($id);
+			&ext_get_field($id);
 			if ($field{'type'} eq "text") { $selected[0] = " selected=\"selected\""; } else { $selected[0] = ""; }
 			if ($field{'type'} eq "text_multi") { $selected[1] = " selected=\"selected\""; } else { $selected[1] = ""; }
 			if ($field{'type'} eq "select") { $selected[2] = " selected=\"selected\""; } else { $selected[2] = ""; }
@@ -1196,7 +1186,7 @@ sub ext_admin_gen_inputfield {
 	$output .= qq~$ext_template_option_part3$var3~;
 	$output .= qq~$ext_template_option_part4~;
 
-	return $output;
+	$output;
 }
 
 # generate html form option list depending on the passed groups string
@@ -1221,12 +1211,12 @@ sub ext_admin_gen_groupslist {
 		$output .= qq~<option value="Post{$groupid}"$groupcheck{'Post{'.$groupid.'}'}>~.(split(/\|/, (split(/\|/, $Post{$groupid}))[0]))[0].qq~</option>\n~;
 	}
 
-	return $output;
+	$output;
 }
 
 # performs all actions done in the edit profile field panel
 sub ext_admin_edit {
-	my ($field, @fields, @order, $type, $active, $id, $name, $oldname, $req1, $req2, $req3, $v_check, $p_check, $p_d_check, $m_check, @editable_check, $is_numeric, $ubbc, @options, $check1, $check2, @contents, @old_content, $new_content, $output);
+	my (@fields, @order, $type, $active, $id, $name, $oldname, $req1, $req2, $req3, $v_check, $p_check, $p_d_check, $m_check, @editable_check, $is_numeric, $ubbc, @options, $check1, $check2, @contents, @old_content, $new_content, $output);
 	&is_admin_or_gmod;
 
 	if ($FORM{'apply'} ne "") {
@@ -1258,7 +1248,7 @@ sub ext_admin_edit {
 
 	} elsif ($FORM{'options'} ne "") {
 		&ext_admin_htmlreq;
-		$field = &ext_get_field($FORM{'id'});
+		&ext_get_field($FORM{'id'});
 		if ($field{'active'} == 1) { $active = $lang_ext{'true'}; } else { $active = $lang_ext{'false'}; }
 		if ($field{'required_on_reg'} == 1) { $req1 = ""; $req2 = " checked=\"checked\""; $req3 = ""; }
 		elsif ($field{'required_on_reg'} == 2) { $req1 = ""; $req2 = ""; $req3 = " checked=\"checked\""; }
@@ -1437,7 +1427,7 @@ $ext_template_blockstop
 
 	} elsif ($FORM{'delete'} ne "") {
 		$id = 0;
-		$field = &ext_get_field($FORM{'id'});
+		&ext_get_field($FORM{'id'});
 		@fields = @ext_prof_fields;
 		@ext_prof_fields = ();
 		foreach (@fields) {
@@ -1622,12 +1612,12 @@ sub ext_admin_convert_fixgroupnames {
 			$j--;
 		}
 	}
-	return join(',',@groups);
+	join(',', @groups);
 }
 
 # converts ALL old .ext files into the the YaBB 2 file format
 sub ext_admin_convert {
-	my (@contents, $filename, $old_membersdir, $old_vardir, $field, $i);
+	my (@contents, $filename, $old_membersdir, $old_vardir, $i);
 	&is_admin_or_gmod;
 
 	&fatal_error("", $lang_ext{'converter_no_sql'}) if $use_MySQL;
@@ -1658,7 +1648,7 @@ sub ext_admin_convert {
 
 	#check if used membergroups still exist + convert to YaBB's new format
 	for ($i = 0; $i < @ext_prof_fields; $i++) {
-		@field = split(/\|/, $ext_prof_fields[$i]);
+		my @field = split(/\|/, $ext_prof_fields[$i]);
 		$field[8]  = &ext_admin_convert_fixgroupnames($field[8]);
 		$field[11] = &ext_admin_convert_fixgroupnames($field[11]);
 		$field[15] = &ext_admin_convert_fixgroupnames($field[15]);
