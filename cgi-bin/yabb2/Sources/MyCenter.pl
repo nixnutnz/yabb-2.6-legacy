@@ -687,7 +687,7 @@ sub drawPMbox {
 	if (($PMfileToOpen || $INFO{'focus'}) && $view eq 'pm' && ($PM_level  == 1 || ($PM_level  == 2 && $staff) || ($PM_level  == 3 && ($iamadmin || $iamgmod)))) {
 		if (!$INFO{'focus'}) {
 			if ($callerid < 5) {
-				@dimmessages = &read_DBorFILE(0,'',$memberdir,$username,$PMfileToOpen);
+				@dimmessages = &read_DBorFILE(1,'',$memberdir,$username,$PMfileToOpen);
 				my ($mID,$mFlag);
 				foreach (reverse(@dimmessages)) {
 					($mID, undef, undef, undef, undef, undef, undef, undef, undef, undef, undef, undef, $mFlag, undef) = split(/\|/, $_, 14);

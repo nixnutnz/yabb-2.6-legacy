@@ -514,7 +514,7 @@ sub ext_viewinposts_popup {
 	$output = &ext_viewinposts($pusername, "popup");
 	$output =~ s~^$ext_spacer_br\n~~ig;
 	if ($output ne "") {
-		$link =~ s~<a ~<a onMouseover="document.getElementById('ext_$ext_usercount').style.visibility = 'visible'" onMouseout="document.getElementById('ext_$ext_usercount').style.visibility = 'hidden'" ~ig;
+		$link =~ s~<a ~<a onmouseover="document.getElementById('ext_$ext_usercount').style.visibility = 'visible'" onmouseout="document.getElementById('ext_$ext_usercount').style.visibility = 'hidden'" ~ig;
 		$output = qq~$link<div id="ext_$ext_usercount" class="code" style="visibility:hidden; position:absolute; z-index:1; width:auto;">$output</div>~;
 		$ext_usercount++;
 	} else {
