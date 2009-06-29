@@ -533,7 +533,7 @@ function checkForm(theForm) {
 		$pie_radius     ||= 100;
 
 		if ($iamadmin || $iamgmod) {
-			$scchecked = ' checked="checked"' if $threadid == (&read_DBorFILE(1,'',$datadir,'showcase','poll'))[0];
+			$scchecked = ' checked="checked"' if $threadid == (&read_DBorFILE(1,'',$datadir,'poll','showcase'))[0];
 		}
 		if ($guest_vote)   { $gvchecked = ' checked="checked"'; }
 		if ($hide_results) { $hrchecked = ' checked="checked"'; }
@@ -2437,7 +2437,7 @@ sub Post2 {
 		}
 		if ($pollthread) { # Save Poll data for new thread
 			if (($iamadmin || $iamgmod) && $FORM{'scpoll'}) { # Save ShowcasePoll
-					&write_DBorFILE(1,'',$datadir,'showcase','poll',($newthreadid));
+					&write_DBorFILE(1,'',$datadir,'poll','showcase',($newthreadid));
 			}
 
 			&write_DBorFILE(1,'',$datadir,$newthreadid,'poll',@poll_data);
@@ -2523,7 +2523,7 @@ sub Post2 {
 
 		if ($pollthread) { # Save new Poll data
 			if (($iamadmin || $iamgmod) && $FORM{'scpoll'}) { # Save ShowcasePoll
-					&write_DBorFILE(1,'',$datadir,'showcase','poll',($threadid));
+					&write_DBorFILE(1,'',$datadir,'poll','showcase',($threadid));
 			}
 			&write_DBorFILE(1,'',$datadir,$threadid,'poll',@poll_data);
 		}

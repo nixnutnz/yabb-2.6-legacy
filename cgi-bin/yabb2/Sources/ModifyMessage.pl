@@ -140,9 +140,9 @@ sub ModifyMessage2 {
 		if ($postid eq "Poll") {
 			&fatal_error("not_allowed") unless $staff;
 
-			# First look for a showcase.poll file to delete
-			if ($threadid == (&read_DBorFILE(1,'',$datadir,'showcase','poll'))[0]) {
-				&delete_DBorFILE("$datadir/showcase.poll");
+			# First look for a poll.showcase file to delete
+			if ($threadid == (&read_DBorFILE(1,'',$datadir,'poll','showcase'))[0]) {
+				&delete_DBorFILE("$datadir/poll.showcase");
 			}
 			# showcase poll end
 			&delete_DBorFILE("$datadir/$threadid.poll");
@@ -276,11 +276,10 @@ sub ModifyMessage2 {
 
 		# showcase poll start
 		if ($iamadmin || $iamgmod) {
-			my $scthreadid = &read_DBorFILE(1,'',$datadir,'showcase','poll');
-			if ($threadid == $scthreadid && !$FORM{'scpoll'}) {
-				&delete_DBorFILE("$datadir/showcase.poll");
+			if ($threadid == (&read_DBorFILE(1,'',$datadir,'poll','showcase'))[0] && !$FORM{'scpoll'}) {
+				&delete_DBorFILE("$datadir/poll.showcase");
 			} elsif ($FORM{'scpoll'}) {
-				&write_DBorFILE(1,'',$datadir,'showcase','poll',($threadid));
+				&write_DBorFILE(1,'',$datadir,'poll','showcase',($threadid));
 			}
 		}
 		# showcase poll end

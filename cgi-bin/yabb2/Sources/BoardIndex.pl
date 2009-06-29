@@ -135,8 +135,8 @@ sub BoardIndex {
 
 	# showcase poll start
 	my $polltemp;
-	if (&checkfor_DBorFILE("$datadir/showcase.poll")) {
-		my $scthreadnum = (&read_DBorFILE(0,'',$datadir,'showcase','poll'))[0];
+	if (&checkfor_DBorFILE("$datadir/poll.showcase")) {
+		my $scthreadnum = (&read_DBorFILE(0,'',$datadir,'poll','showcase'))[0];
 
 		# Look for a valid poll file.
 		my $pollthread;

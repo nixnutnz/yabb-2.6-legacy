@@ -1029,6 +1029,7 @@ EOF
 		# The following is for upgrades from YaBB versions < 2.5 START
 		&delete_DBorFILE("$memberdir/members.ttl") if -e "$memberdir/members.ttl";
 		&delete_DBorFILE("$memberdir/memberlist.txt") if -e "$memberdir/memberlist.txt";
+		rename("$datadir/showcase.poll","$datadir/poll.showcase");
 		# The following is for upgrades from YaBB versions < 2.5 END
 
 		# The following is for upgrades from YaBB versions < 2.4 START

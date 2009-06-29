@@ -319,8 +319,8 @@ sub display_poll {
 		$scp = qq~;scp=1~;
 		$viewthread = qq~<a href="$scripturl?num=$pollnum" class="altlink">$img{'viewthread'}</a>~;
 		$boardpoll = qq~&nbsp;/ <a href="$scripturl?action=scpolldel" class="altlink">$polltxt{'showcaserem'}</a>~ if $iamadmin || $iamgmod;
-	} elsif (&checkfor_DBorFILE("$datadir/showcase.poll")) {
-		$boardpoll = qq~&nbsp;/ $polltxt{'showcased'}~ if $pollnum == (&read_DBorFILE(1,'',$datadir,'showcase','poll'))[0];
+	} elsif (&checkfor_DBorFILE("$datadir/poll.showcase")) {
+		$boardpoll = qq~&nbsp;/ $polltxt{'showcased'}~ if $pollnum == (&read_DBorFILE(1,'',$datadir,'poll','showcase'))[0];
 		if ($iamadmin || $iamgmod) {
 			$boardpoll = $boardpoll ? qq~&nbsp;/ <a href="$scripturl?action=scpolldel" class="altlink">$polltxt{'showcaserem'}</a>~ : qq~&nbsp;/ <a href="javascript:Check=confirm('$polltxt{'confirm'}');if(Check==true){window.location.href='$scripturl?action=scpoll;num=$pollnum';}else{void Check;}" class="altlink">$polltxt{'setshowcased'}</a>~;
 		}
@@ -675,14 +675,14 @@ sub check_deletepoll {
 sub ShowcasePoll {
 	&is_admin_or_gmod;
 	my $thrdid = $INFO{'num'};
-	&write_DBorFILE(1,'',$datadir,'showcase','poll',($thrdid));
+	&write_DBorFILE(1,'',$datadir,'poll','showcase',($thrdid));
 	$yySetLocation = qq~$scripturl~;
 	&redirectexit;
 }
 
 sub DelShowcasePoll{
 	&is_admin_or_gmod;
-	if (&checkfor_DBorFILE("$datadir/showcase.poll")) { &delete_DBorFILE("$datadir/showcase.poll"); }
+	if (&checkfor_DBorFILE("$datadir/poll.showcase")) { &delete_DBorFILE("$datadir/poll.showcase"); }
 	$yySetLocation = qq~$scripturl~;
 	&redirectexit;
 }
