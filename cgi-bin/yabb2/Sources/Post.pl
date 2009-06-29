@@ -2272,7 +2272,7 @@ sub Post2 {
 				&ToHTML($FORM{"option$i"});
 
 				$numcount++;
-				$split[$i] = $FORM{"split$i"} || 0;
+				$split[$i] = $FORM{"split$i"} ? 1 : 0;
 				push(@poll_data, qq~0|$FORM{"option$i"}|$FORM{"slicecol$i"}|$split[$i]\n~);
 			}
 		}

@@ -28,12 +28,11 @@ sub DoVote {
 	$vote   = "";
 	@poll_data     = &read_DBorFILE(1,'',$datadir,$pollnum,'poll');
 	$poll_question = shift(@poll_data);
-	chomp $poll_question;
 	(undef, $poll_locked, undef, undef, undef, undef, $guest_vote, undef, $multi_vote, undef, undef, undef, $vote_limit,undef) = split(/\|/, $poll_question, 14);
 	for (my $i = 0; $i < @poll_data; $i++) {
 		chomp $poll_data[$i];
 		($votes[$i], $options[$i], $slicecols[$i], $split[$i]) = split(/\|/, $poll_data[$i]);
-		$tmp_vote = qq~$FORM{"option$i"}~;
+		$tmp_vote = $FORM{"option$i"};
 		if ($multi_vote && $tmp_vote ne "") {
 			$votes[$i]++;
 			$novote = 1;
@@ -65,17 +64,16 @@ sub DoVote {
 		}
 	}
 
-	&read_DBorFILE(0,FILE,$datadir,$pollnum,'poll');
-	print FILE "$poll_question\n";
-	for (my $i = 0; $i < @poll_data; $i++) { print FILE "$votes[$i]|$options[$i]|$slicecols[$i]|$split[$i]\n"; }
-	&write_DBorFILE(1,FILE,$datadir,$pollnum,'poll',(''));
+	@_ = ($poll_question);
+	for (my $i = 0; $i < @poll_data; $i++) { push(@_, "$votes[$i]|$options[$i]|$slicecols[$i]|$split[$i]\n"); }
+	&write_DBorFILE(1,'',$datadir,$pollnum,'poll',@_);
 
-	&write_DBorFILE(1,'',$datadir,$pollnum,'polled',("$user_ip|$username|$vote|$date\n",@polled));
+	&write_DBorFILE(1,'',$datadir,$pollnum,'polled',("$user_ip|$username|$vote|$date\n", @polled));
 
-	if ($start) { $start = "/$start"; }
 	if ($INFO{'scp'}) {
 		$yySetLocation = qq~$scripturl~;
 	} else {
+		$start = $start ? "/$start" : '';
 		$yySetLocation = qq~$scripturl?num=$pollnum$start~;
 	}
 	&redirectexit;
@@ -105,10 +103,8 @@ sub UndoVote {
 		&is_admin;
 		for (my $i = 0; $i < @polled; $i++) {
 			($voters_ip, $voters_name, $voters_vote, $vote_date) = split(/\|/, $polled[$i]);
-			chomp $voters_vote;
-			$id = $FORM{"$voters_ip-$voters_name"};
-			if ($id eq "1") {
-				foreach $oldvote (split(/\,/, $voters_vote)) {
+			if ($FORM{"$voters_ip-$voters_name"} == 1) {
+				foreach $oldvote (split(/,/, $voters_vote)) {
 					$votes[$oldvote]--;
 				}
 				$polled[$i] = '';
@@ -120,10 +116,9 @@ sub UndoVote {
 		$found = 0;
 		for (my $i = 0; $i < @polled; $i++) {
 			($voters_ip, $voters_name, $voters_vote, $vote_date) = split(/\|/, $polled[$i]);
-			chomp $voters_vote;
 			if ($voters_name eq $username) {
 				$found = 1;
-				foreach $oldvote (split(/\,/, $voters_vote)) {
+				foreach $oldvote (split(/,/, $voters_vote)) {
 					$votes[$oldvote]--;
 				}
 				$polled[$i] = '';
@@ -133,17 +128,20 @@ sub UndoVote {
 		if (!$found) { &fatal_error('not_completed'); }
 	}
 
-	&read_DBorFILE(0,FILE,$datadir,$pollnum,'poll');
-	print FILE $poll_question;
-	for (my $i = 0; $i < @poll_data; $i++) { print FILE "$votes[$i]|$options[$i]|$slicecols[$i]|$split[$i]\n"; }
-	&write_DBorFILE(1,FILE,$datadir,$pollnum,'poll',(''));
+	@_ = ($poll_question);
+	for (my $i = 0; $i < @poll_data; $i++) { push(@_, "$votes[$i]|$options[$i]|$slicecols[$i]|$split[$i]\n"); }
+	&write_DBorFILE(1,'',$datadir,$pollnum,'poll',@_);
 
-	&write_DBorFILE(1,'',$datadir,$pollnum,'polled',@polled);
+	if (join('', @polled)) {
+		&write_DBorFILE(1,'',$datadir,$pollnum,'polled',@polled);
+	} else {
+		&delete_DBorFILE("$datadir/$pollnum.polled");
+	}
 
-	if ($start) { $start = "/$start"; }
 	if ($INFO{'scp'}) {
 		$yySetLocation = qq~$scripturl~;
 	} else {
+		$start = $start ? "/$start" : '';
 		$yySetLocation = qq~$scripturl?num=$pollnum$start~;
 	}
 	&redirectexit;
@@ -153,20 +151,19 @@ sub LockPoll {
 	$pollnum = $INFO{'num'};
 	unless (&checkfor_DBorFILE("$datadir/$pollnum.poll")) { &fatal_error('poll_not_found',$pollnum); }
 
-	@poll_data     = &read_DBorFILE(1,'',$datadir,$pollnum,'poll');
-	$poll_question = shift(@poll_data);
-	($poll_question, $poll_locked, $poll_uname, $poll_stuff) = split(/\|/, $poll_question, 4);
+	@poll_data = &read_DBorFILE(1,'',$datadir,$pollnum,'poll');
+	my ($poll_question, $poll_locked, $poll_uname, $poll_name, $poll_email, $poll_date, $guest_vote, $hide_results, $multi_vote, $poll_mod, $poll_modname, $poll_comment, $vote_limit, $pie_radius, $pie_legends, $poll_end) = split(/\|/, shift(@poll_data));
+
 	unless ($username eq $poll_uname || $staff) { &fatal_error('not_allowed'); }
 
-	if ($poll_locked) { $poll_locked = 0; }
-	else { $poll_locked = 1; }
+	$poll_locked = $poll_locked ? 0 : 1;
 
-	&write_DBorFILE(1,'',$datadir,$pollnum,'poll',("$poll_question|$poll_locked|$poll_uname|$poll_stuff\n",@poll_data));
+	&write_DBorFILE(1,'',$datadir,$pollnum,'poll',("$poll_question|$poll_locked|$poll_uname|$poll_name|$poll_email|$poll_date|$guest_vote|$hide_results|$multi_vote|$poll_mod|$poll_modname|$poll_comment|$vote_limit|$pie_radius|$pie_legends|\n", @poll_data));
 
-	if ($start) { $start = "/$start"; }
 	if ($INFO{'scp'}){
 		$yySetLocation = qq~$scripturl~;
 	} else {
+		$start = $start ? "/$start" : '';
 		$yySetLocation = qq~$scripturl?num=$pollnum$start~;
 	}
 	&redirectexit;
@@ -187,7 +184,6 @@ sub votedetails {
 
 	@poll_data     = &read_DBorFILE(0,'',$datadir,$pollnum,'poll');
 	$poll_question = shift(@poll_data);
-	chomp $poll_question;
 	($poll_question, $poll_locked, $poll_uname, $poll_name, $poll_email, $poll_date, $guest_vote, $hide_results, $multi_vote, $poll_mod, $poll_modname, $poll_comment, undef) = split(/\|/, $poll_question, 13);
 	unless (ref($thread_arrayref{$pollnum})) {
 		@{$thread_arrayref{$pollnum}} = &read_DBorFILE(1,'',$datadir,$pollnum,'txt');
@@ -374,7 +370,7 @@ sub display_poll {
 	my @votes;
 	my $totalvotes = 0;
 	my $maxvote    = 0;
-	$piearray = qq~[~;
+	my $piearray = qq~[~;
 	for (my $i = 0; $i < @poll_data; $i++) {
 		chomp $poll_data[$i];
 		($votes[$i], $options[$i], $slicecolor[$i], $split[$i]) = split(/\|/, $poll_data[$i]);
