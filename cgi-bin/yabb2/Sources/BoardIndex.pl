@@ -136,7 +136,7 @@ sub BoardIndex {
 	# showcase poll start
 	my $polltemp;
 	if (&checkfor_DBorFILE("$datadir/showcase.poll")) {
-		my $scthreadnum = &read_DBorFILE(0,'',$datadir,'showcase','poll');
+		my $scthreadnum = (&read_DBorFILE(0,'',$datadir,'showcase','poll'))[0];
 
 		# Look for a valid poll file.
 		my $pollthread;
@@ -156,11 +156,11 @@ sub BoardIndex {
 		if ($pollthread) {
 			my $tempcurrentboard = $currentboard;
 			$currentboard = ${$scthreadnum}{'board'};
-			my $tempmod = $iammod;
-			$iammod = 0;
+			my $tempstaff = $staff;
+			$staff = 0 unless $iamadmin || $iamgmod;
 			require "$sourcedir/Poll.pl";
 			&display_poll($scthreadnum,1);
-			$iammod = $tempmod;
+			$staff = $tempstaff;
 			$polltemp = qq~<script language="JavaScript1.2" src="$yyhtml_root/ubbc.js" type="text/javascript"></script>~ . $pollmain . '<br />';
 			$currentboard = $tempcurrentboard;
 		 }

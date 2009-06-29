@@ -533,7 +533,7 @@ function checkForm(theForm) {
 		$pie_radius     ||= 100;
 
 		if ($iamadmin || $iamgmod) {
-			$scchecked = ' checked="checked"' if $threadid == (&read_DBorFILE(0,'',$datadir,'showcase','poll'))[0];
+			$scchecked = ' checked="checked"' if $threadid == (&read_DBorFILE(1,'',$datadir,'showcase','poll'))[0];
 		}
 		if ($guest_vote)   { $gvchecked = ' checked="checked"'; }
 		if ($hide_results) { $hrchecked = ' checked="checked"'; }

@@ -90,7 +90,7 @@ sub UndoVote {
 
 	@poll_data     = &read_DBorFILE(0,'',$datadir,$pollnum,'poll');
 	$poll_question = shift(@poll_data);
-	$poll_locked = (split /\|/, $poll_question, 2)[1];
+	$poll_locked   = (split /\|/, $poll_question, 2)[1];
 	my @options;
 	my @votes;
 
@@ -155,7 +155,6 @@ sub LockPoll {
 
 	@poll_data     = &read_DBorFILE(1,'',$datadir,$pollnum,'poll');
 	$poll_question = shift(@poll_data);
-	chomp $poll_question;
 	($poll_question, $poll_locked, $poll_uname, $poll_stuff) = split(/\|/, $poll_question, 4);
 	unless ($username eq $poll_uname || $staff) { &fatal_error('not_allowed'); }
 
@@ -242,14 +241,14 @@ sub votedetails {
 	}
 	&ToChars($boardname);
 	$yytitle = $polltxt{'42'};
-	
+
 	$template_home = qq~<a href="$scripturl" class="nav">$mbname</a>~;
 	$template_cat = qq~<a href="$scripturl?catselect=$curcat" class="nav">$cat</a>~;
 	$template_board = qq~<a href="$scripturl?board=$currentboard" class="nav">$boardname</a>~;
 	$curthreadurl = qq~<a href="$scripturl?num=$pollnum" class="nav">$psub</a> &rsaquo; $polltxt{'42'}~;
-	
+
 	$yynavigation = qq~&rsaquo; $template_cat &rsaquo; $template_board &rsaquo; $curthreadurl~;
-	
+
 	$yymain .= qq~
 <br />
 <form action="$scripturl?action=undovote;num=$pollnum$start" method="post" style="display: inline;">
@@ -311,24 +310,22 @@ sub votedetails {
 }
 
 sub display_poll {
-	$pollnum = @_[0];
+	($pollnum, $brdpoll) = @_; # $pollnum = number of poll; $brdpoll => if 1 = show on BoardIndex (showcasepoll)
 
-	# showcase poll start
-	$brdpoll = @_[1];
 	$scp = '';
 	$viewthread = '';
 	$boardpoll = '';
 	if ($brdpoll) {
 		$scp = qq~;scp=1~;
 		$viewthread = qq~<a href="$scripturl?num=$pollnum" class="altlink">$img{'viewthread'}</a>~;
-		$boardpoll = qq~&nbsp;/ <a href="$scripturl?action=scpolldel" class="altlink">$polltxt{'showcaserem'}</a>~ if ($iamadmin || $iamgmod);
-	} elsif (&checkfor_DBorFILE("$/showcase.poll")) {
+		$boardpoll = qq~&nbsp;/ <a href="$scripturl?action=scpolldel" class="altlink">$polltxt{'showcaserem'}</a>~ if $iamadmin || $iamgmod;
+	} elsif (&checkfor_DBorFILE("$datadir/showcase.poll")) {
 		$boardpoll = qq~&nbsp;/ $polltxt{'showcased'}~ if $pollnum == (&read_DBorFILE(1,'',$datadir,'showcase','poll'))[0];
 		if ($iamadmin || $iamgmod) {
 			$boardpoll = $boardpoll ? qq~&nbsp;/ <a href="$scripturl?action=scpolldel" class="altlink">$polltxt{'showcaserem'}</a>~ : qq~&nbsp;/ <a href="javascript:Check=confirm('$polltxt{'confirm'}');if(Check==true){window.location.href='$scripturl?action=scpoll;num=$pollnum';}else{void Check;}" class="altlink">$polltxt{'setshowcased'}</a>~;
 		}
 	} else {
-		$boardpoll = qq~&nbsp;/ <a href="$scripturl?action=scpoll;num=$pollnum" class="altlink">$polltxt{'setshowcased'}</a>~ if ($iamadmin || $iamgmod);
+		$boardpoll = qq~&nbsp;/ <a href="$scripturl?action=scpoll;num=$pollnum" class="altlink">$polltxt{'setshowcased'}</a>~ if $iamadmin || $iamgmod;
 	}
 	# showcase poll end
 
@@ -350,8 +347,9 @@ sub display_poll {
 
 	$users_votetext = '';
 	$has_voted = 0;
-	if (!$guest_vote && $iamguest) { $has_voted = 4; }
-	else {
+	if (!$guest_vote && $iamguest) {
+		$has_voted = 4;
+	} else {
 		foreach $tmpLine (&read_DBorFILE(1,'',$datadir,$pollnum,'polled')) {
 			chomp $tmpline;
 			($voters_ip, $voters_name, $voters_vote, $vote_date) = split(/\|/, $tmpLine);
@@ -405,7 +403,7 @@ sub display_poll {
 			$lockpoll = qq~<a href="$scripturl?action=lockpoll;num=$pollnum$scp" class="altlink">$img{'closepoll'}</a>~;
 		}
 		$modifypoll = qq~$menusep<a href="$scripturl?board=$currentboard;action=modify;message=Poll;thread=$pollnum" class="altlink">$img{'modifypoll'}</a>~;
-		$deletepoll = qq~$menusep<a href="javascript:document.removepoll.submit();" class="altlink" onclick="return confirm('$polltxt{'44'}')">$img{'deletepoll'}</a>~;
+		$deletepoll = qq~$menusep<a href="javascript:document.removepoll.submit();" class="altlink" onclick="return confirm('$polltxt{'44'}')">$img{'deletepoll'}</a>~ if $staff;
 		if ($iamadmin) {
 			$displayvoters = $menusep if $viewthread;
 			$displayvoters .= qq~<a href="$scripturl?action=showvoters;num=$pollnum">$img{'viewvotes'}</a>~;
@@ -517,7 +515,8 @@ sub display_poll {
 		<b>$polltxt{'16'}:</b> $poll_question
 	</div>
 	~;
-	if($has_voted) {
+
+	if ($has_voted) {
 		unless($hide_results && !$poll_locked) {
 			$pollmain .= qq~
 	<div style="float: left; width: 20%; text-align: right;">
@@ -531,6 +530,7 @@ sub display_poll {
 	~;
 		}
 	}
+
 	$pollmain .= qq~
 </td>
 </tr>
@@ -540,12 +540,11 @@ sub display_poll {
 	<div class="$bgclass" id="piestyle" style="width: 100%;"><br />~;
 
 	if ($has_voted && $hide_results && !$poll_locked) {
-
 		# Display Poll Hidden Message
 		$pollmain .= qq~$polltxt{'47'}<br /><span class="small">($polltxt{'48'})</span><br />~;
 
 	} else {
-		if($has_voted) {
+		if ($has_voted) {
 			if($INFO{'view'} eq "pie") {
 				$pollmain .= qq~
 		<script language="JavaScript1.2" src="$yyhtml_root/piechart.js" type="text/javascript"></script>
@@ -567,8 +566,8 @@ sub display_poll {
 			pie.sliceAdd();
 			//-->
 		</script>~;
-			}
-			else {
+
+			} else {
 				for ($i = 0; $i < @options; $i++) {
 					unless ($options[$i]) { next; }
 					# Display Poll Results
@@ -588,13 +587,16 @@ sub display_poll {
 	</div>~;
 				}
 			}
-		}
-		else {
+
+		} else {
 			for ($i = 0; $i < @options; $i++) {
 				unless ($options[$i]) { next; }
 				# Display Poll Options
-				if ($multi_vote) { $input = qq~<input type="checkbox" name="option$i" id="option$i" value="$i" style="margin: 0; padding: 0; vertical-align: middle;" />~; }
-				else { $input = qq~<input type="radio" name="option" id="option$i" value="$i" style="margin: 0; padding: 0; vertical-align: middle;" />~; }
+				if ($multi_vote) {
+					$input = qq~<input type="checkbox" name="option$i" id="option$i" value="$i" style="margin: 0; padding: 0; vertical-align: middle;" />~;
+				} else {
+					$input = qq~<input type="radio" name="option" id="option$i" value="$i" style="margin: 0; padding: 0; vertical-align: middle;" />~;
+				}
 				$pollmain .= qq~
 	<div style="clear: both;">
 		<div style="float: left; height: 22px; text-align: right;">$input <label for="option$i"><b>$options[$i]</b></label></div>
@@ -602,12 +604,14 @@ sub display_poll {
 			}
 		}
 	}
+
 	$pollmain .= qq~
 		<br />
 	</div>
 	<div style="width: 100%;">
 		<br />$footer
 	</div>~;
+
 	if ($poll_comment ne '') {
 		$poll_comment = &Censor($poll_comment);
 		$message = $poll_comment;
@@ -620,6 +624,7 @@ sub display_poll {
 		$pollmain .= qq~
 	<div style="width: 100%;"><br />$poll_comment</div>~;
 	}
+
 	if (!$poll_locked && $poll_end) {
 		my $x = $poll_end - $date;
 		my $days  = int($x / 86400);
@@ -632,6 +637,7 @@ sub display_poll {
 	} else {
 		$poll_end = '';
 	}
+
 	$pollmain .= qq~
 	<div style="float: left; width: 49%; text-align: left;">
 		<span class="small">$poll_end$displaydate</span>
@@ -646,17 +652,16 @@ sub display_poll {
 }
 
 sub check_deletepoll {
-	$poll_chech = &read_DBorFILE(1,'',$datadir,$pollnum,'poll');
-	chomp $poll_chech;
-	$vote_limit = (split /\|/, $poll_chech, 14)[12];
+	my $poll_chech = (&read_DBorFILE(1,'',$datadir,$pollnum,'poll'))[0];
+	my $vote_limit = (split /\|/, $poll_chech, 14)[12];
 	$poll_nodelete{$username} = 0;
 	if (!$vote_limit) {
 		$poll_nodelete{$username} = 1;
 		return;
 	}
 
-	foreach $chvoter (&read_DBorFILE(1,'',$datadir,$pollnum,'polled')) {
-		(undef, $chvotersname, undef, $chvotedate) = split(/\|/, $chvoter);
+	foreach (&read_DBorFILE(1,'',$datadir,$pollnum,'polled')) {
+		my ($dummy, $chvotersname, $dummy, $chvotedate) = split(/\|/, $_);
 		if ($chvotersname eq $username) {
 			$chdiff = $date - $chvotedate;
 			if ($chdiff > ($vote_limit * 60)) {
@@ -668,7 +673,7 @@ sub check_deletepoll {
 }
 
 sub ShowcasePoll {
-	is_admin_or_gmod;
+	&is_admin_or_gmod;
 	my $thrdid = $INFO{'num'};
 	&write_DBorFILE(1,'',$datadir,'showcase','poll',($thrdid));
 	$yySetLocation = qq~$scripturl~;
@@ -676,7 +681,7 @@ sub ShowcasePoll {
 }
 
 sub DelShowcasePoll{
-	is_admin_or_gmod;
+	&is_admin_or_gmod;
 	if (&checkfor_DBorFILE("$datadir/showcase.poll")) { &delete_DBorFILE("$datadir/showcase.poll"); }
 	$yySetLocation = qq~$scripturl~;
 	&redirectexit;

@@ -138,9 +138,10 @@ sub ModifyMessage2 {
 		$postid   = $FORM{'id'};
 
 		if ($postid eq "Poll") {
-			# showcase poll start
-			# Look for a showcase.poll file to &delete_DBorFILE.
-			if ($threadid == (&read_DBorFILE(1,'',$datadir,$showcase,'poll'))[0]) {
+			&fatal_error("not_allowed") unless $staff;
+
+			# First look for a showcase.poll file to delete
+			if ($threadid == (&read_DBorFILE(1,'',$datadir,'showcase','poll'))[0]) {
 				&delete_DBorFILE("$datadir/showcase.poll");
 			}
 			# showcase poll end

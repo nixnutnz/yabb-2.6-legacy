@@ -425,7 +425,7 @@ sub MessageIndex {
 		$mpoll = "";
 		if (&checkfor_DBorFILE("$datadir/$mnum.poll")) {
 			$mpoll = qq~<b>$messageindex_txt{'15'}: </b>~;
-			&write_DBorFILE(1,'',$datadir,$mnum,'poll',@poll);
+			my @poll = &read_DBorFILE(1,'',$datadir,$mnum,'poll');
 			my ($poll_question, $poll_locked, $poll_uname, $poll_name, $poll_email, $poll_date, $guest_vote, $hide_results, $multi_vote, $poll_mod, $poll_modname, $poll_comment, $vote_limit, $pie_radius, $pie_legends, $poll_end) = split(/\|/, $poll[0]);
 			chomp $poll_end;
 			if ($poll_end && !$poll_locked && $poll_end < $date) {
@@ -440,7 +440,7 @@ sub MessageIndex {
 				if ($dlp < $createpoll_date) {
 					$micon = qq~$img{'polliconnew'}~;
 				} else {
-					(undef, undef, undef, $vote_date, undef) = split(/\|/, (&read_DBorFILE(0,'',$datadir,$mnum,'polled'))[0]);
+					(undef, undef, undef, $vote_date, undef) = split(/\|/, (&read_DBorFILE(1,'',$datadir,$mnum,'polled'))[0]);
 					if ($dlp < $vote_date) { $micon = qq~$img{'polliconnew'}~; }
 				}
 			}
