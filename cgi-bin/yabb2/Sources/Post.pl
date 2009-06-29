@@ -2435,13 +2435,7 @@ sub Post2 {
 			}
 			&write_DBorFILE(0,AMP,$vardir,'attachments','txt',@temp);
 		}
-		if ($pollthread) { # Save Poll data for new thread
-			if (($iamadmin || $iamgmod) && $FORM{'scpoll'}) { # Save ShowcasePoll
-					&write_DBorFILE(1,'',$datadir,'poll','showcase',($newthreadid));
-			}
 
-			&write_DBorFILE(1,'',$datadir,$newthreadid,'poll',@poll_data);
-		}
 		## write the ctb file for the new thread
 		${$newthreadid}{'board'}        = $currentboard;
 		${$newthreadid}{'replies'}      = 0;
@@ -2450,6 +2444,14 @@ sub Post2 {
 		${$newthreadid}{'lastpostdate'} = $newthreadid;
 		${$newthreadid}{'threadstatus'} = $mstate;
 		&MessageTotals("update", $newthreadid);
+
+		if ($pollthread) { # Save Poll data of new thread AFTER ctb is created (for SQL)!!!
+			if (($iamadmin || $iamgmod) && $FORM{'scpoll'}) { # Save ShowcasePoll
+					&write_DBorFILE(1,'',$datadir,'poll','showcase',($newthreadid));
+			}
+
+			&write_DBorFILE(1,'',$datadir,$newthreadid,'poll',@poll_data);
+		}
 
 		if (($enable_notifications == 1 || $enable_notifications == 3) && &checkfor_DBorFILE("$boardsdir/$currentboard.mail")) {
 			&ToChars($subject);
