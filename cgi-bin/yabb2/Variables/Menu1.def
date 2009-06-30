@@ -97,6 +97,7 @@ $menusep = ' | ';
 'skype' => qq~<span style="white-space: nowrap;" class="imgwindowbg">$img_txt{'skype'}</span>~,
 'viewprofile' => qq~<span style="white-space: nowrap;" class="imgwindowbg">$img_txt{'27'}</span>~,
 'viewprofile_sm' => qq~<span style="white-space: nowrap;" class="imgwindowbg">$img_txt{'27'}</span>~,
+'viewthread' => qq~<span style="white-space: nowrap;" class="imgwindowbg">$img_polltxt{'33a'}</span>~,
 'viewvotes' => qq~<span style="white-space: nowrap;" class="imgwindowbg">$img_polltxt{'33'}</span>~,
 'website' => qq~<span style="white-space: nowrap;" class="imgwindowbg">$img_txt{'515'}</span>~,
 'website_sm' => qq~<span style="white-space: nowrap;" class="imgwindowbg">$img_txt{'515'}</span>~,

@@ -78,6 +78,7 @@ sessreval,session|img_txt|34a|||imgmenu|tmp
 skype,skype|img_txt|skype|||imgwindowbg|tmp
 viewprofile,profile|img_txt|27|||imgwindowbg|tmp
 viewprofile_sm,profile|img_txt|27|||imgwindowbg|tmp
+viewthread,thread|img_polltxt|33a|||imgwindowbg|tmp
 viewvotes,poll_vvote|img_polltxt|33|||imgwindowbg|tmp
 website,www|img_txt|515|||imgwindowbg|tmp
 website_sm,www|img_txt|515|||imgwindowbg|tmp
