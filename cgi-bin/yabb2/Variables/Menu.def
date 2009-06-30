@@ -48,7 +48,7 @@ message,message|img_txt|144|||imgwindowbg|tmp
 message_sm,message|img_txt|144|||imgwindowbg|tmp
 modify,modify|img_txt|66|||imgwindowbg|tmp
 modify_profile,modify|img_txt|66|||imgmenu|tmp
-modifypoll,poll_mod|img_polltxt|39|||imgcatbg|tmp
+modifypoll,poll_modify|img_polltxt|39|||imgcatbg|tmp
 mquote,mark_quote|img_txt|145q|||imgwindowbg|tmp
 msn,msn3|img_txt|msn|||imgwindowbg|tmp
 mycenter,mycenter|img_txt|mycenter|||imgmenu|tmp
