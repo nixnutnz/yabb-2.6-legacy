@@ -67,7 +67,7 @@ $menusep = ' &nbsp; ';
 'message_sm' => qq~<span style="white-space: nowrap;" class="imgwindowbg"><img src="$forumstylesurl/$usestyle/message.gif" border="0" alt="$img_txt{'144'}" /> $img_txt{'144'}</span>~,
 'modify' => qq~<span style="white-space: nowrap;" class="imgwindowbg"><img src="$forumstylesurl/$usestyle/modify.gif" border="0" alt="$img_txt{'66'}" /> $img_txt{'66'}</span>~,
 'modify_profile' => qq~<span style="white-space: nowrap;" class="imgmenu"><img src="$forumstylesurl/$usestyle/modify.gif" border="0" alt="$img_txt{'66'}" /> $img_txt{'66'}</span>~,
-'modifypoll' => qq~<span style="white-space: nowrap;" class="imgcatbg"><img src="$forumstylesurl/$usestyle/poll_mod.gif" border="0" alt="$img_polltxt{'39'}" /> $img_polltxt{'39'}</span>~,
+'modifypoll' => qq~<span style="white-space: nowrap;" class="imgcatbg"><img src="$forumstylesurl/$usestyle/poll_modify.gif" border="0" alt="$img_polltxt{'39'}" /> $img_polltxt{'39'}</span>~,
 'mquote' => qq~<span style="white-space: nowrap;" class="imgwindowbg"><img src="$forumstylesurl/$usestyle/mark_quote.gif" border="0" alt="$img_txt{'145q'}" /> $img_txt{'145q'}</span>~,
 'msn' => qq~<span style="white-space: nowrap;" class="imgwindowbg"><img src="$forumstylesurl/$usestyle/msn3.gif" border="0" alt="$img_txt{'msn'}" /> $img_txt{'msn'}</span>~,
 'mycenter' => qq~<span style="white-space: nowrap;" class="imgmenu"><img src="$forumstylesurl/$usestyle/mycenter.gif" border="0" alt="$img_txt{'mycenter'}" /> $img_txt{'mycenter'}</span>~,
