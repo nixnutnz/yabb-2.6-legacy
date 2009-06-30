@@ -97,7 +97,7 @@ $menusep = ' &nbsp; ';
 'skype' => qq~<span style="white-space: nowrap;" class="imgwindowbg"><img src="$forumstylesurl/$usestyle/skype.gif" border="0" alt="$img_txt{'skype'}" /> $img_txt{'skype'}</span>~,
 'viewprofile' => qq~<span style="white-space: nowrap;" class="imgwindowbg"><img src="$forumstylesurl/$usestyle/profile.gif" border="0" alt="$img_txt{'27'}" /> $img_txt{'27'}</span>~,
 'viewprofile_sm' => qq~<span style="white-space: nowrap;" class="imgwindowbg"><img src="$forumstylesurl/$usestyle/profile.gif" border="0" alt="$img_txt{'27'}" /> $img_txt{'27'}</span>~,
-'viewthread' => qq~<span style="white-space: nowrap;" class="imgwindowbg"><img src="$forumstylesurl/$usestyle/thread.gif" border="0" alt="$img_polltxt{'33a'}" /> $img_polltxt{'33a'}</span>~,
+'viewthread' => qq~<span style="white-space: nowrap;" class="imgwindowbg"><img src="$forumstylesurl/$usestyle/viewthread.gif" border="0" alt="$img_polltxt{'33a'}" /> $img_polltxt{'33a'}</span>~,
 'viewvotes' => qq~<span style="white-space: nowrap;" class="imgwindowbg"><img src="$forumstylesurl/$usestyle/poll_vvote.gif" border="0" alt="$img_polltxt{'33'}" /> $img_polltxt{'33'}</span>~,
 'website' => qq~<span style="white-space: nowrap;" class="imgwindowbg"><img src="$forumstylesurl/$usestyle/www.gif" border="0" alt="$img_txt{'515'}" /> $img_txt{'515'}</span>~,
 'website_sm' => qq~<span style="white-space: nowrap;" class="imgwindowbg"><img src="$forumstylesurl/$usestyle/www.gif" border="0" alt="$img_txt{'515'}" /> $img_txt{'515'}</span>~,
