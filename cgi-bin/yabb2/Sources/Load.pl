@@ -314,7 +314,7 @@ sub LoadUserDisplay {
 		${$uid.$user}{'userpic'} = qq~<img src="~ .(${$uid.$user}{'userpic'} =~ m~\A[\s\n]*https?://~i ? ${$uid.$user}{'userpic'} : "$facesurl/${$uid.$user}{'userpic'}") . qq~" name="avatar_img_resize" alt="" border="0" style="display:none" /><br />~;
 	} elsif ($showuserpic && $allowpics) {
 		${$uid.$user}{'userpic'} ||= 'blank.gif';
-		${$uid.$user}{'userpic'} = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user} rel="nofollow""><img src="~ .(${$uid.$user}{'userpic'} =~ m~\A[\s\n]*https?://~i ? ${$uid.$user}{'userpic'} : "$facesurl/${$uid.$user}{'userpic'}") . qq~" name="avatar_img_resize" alt="" border="0" style="display:none" /></a><br />~;
+		${$uid.$user}{'userpic'} = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}" rel="nofollow"><img src="~ .(${$uid.$user}{'userpic'} =~ m~\A[\s\n]*https?://~i ? ${$uid.$user}{'userpic'} : "$facesurl/${$uid.$user}{'userpic'}") . qq~" name="avatar_img_resize" alt="" border="0" style="display:none" /></a><br />~;
 	} else {
 		${$uid.$user}{'userpic'} = '<br />';
 	}
