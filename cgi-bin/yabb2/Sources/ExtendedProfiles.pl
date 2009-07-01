@@ -168,26 +168,26 @@ sub ext_get_field {
 	$field{'id'} = shift;
 
 	($field{'name'},
-	$field{'type'},
-	$field{'options'},
-	$field{'active'},
-	$field{'comment'},
-	$field{'required_on_reg'},
-	$field{'visible_in_viewprofile'},
-	$field{'v_users'},
-	$field{'v_groups'},
-	$field{'visible_in_posts'},
-	$field{'p_users'},
-	$field{'p_groups'},
-	$field{'p_displayfieldname'},
-	$field{'visible_in_memberlist'},
-	$field{'m_users'},
-	$field{'m_groups'},
-	$field{'editable_by_user'},
-	$field{'visible_in_posts_popup'},
-	$field{'pp_users'},
-	$field{'pp_groups'},
-	$field{'pp_displayfieldname'},
+	 $field{'type'},
+	 $field{'options'},
+	 $field{'active'},
+	 $field{'comment'},
+	 $field{'required_on_reg'},
+	 $field{'visible_in_viewprofile'},
+	 $field{'v_users'},
+	 $field{'v_groups'},
+	 $field{'visible_in_posts'},
+	 $field{'p_users'},
+	 $field{'p_groups'},
+	 $field{'p_displayfieldname'},
+	 $field{'visible_in_memberlist'},
+	 $field{'m_users'},
+	 $field{'m_groups'},
+	 $field{'editable_by_user'},
+	 $field{'visible_in_posts_popup'},
+	 $field{'pp_users'},
+	 $field{'pp_groups'},
+	 $field{'pp_displayfieldname'},
 	 undef) = split(/\|/, $ext_prof_fields[$field{'id'}]);
 }
 
@@ -278,61 +278,56 @@ sub ext_timeformat {
 
 # returns whenever the current user is allowed to view a field or not
 sub ext_has_access {
-	my ($allowed_users, $allowed_groups, $access, $usergroup, $useraddgroup, $postcount, $user, @users, $group, @groups, $groupid, $postamount) = (shift, shift, 0, ${$uid.$username}{'position'}, ${$uid.$username}{'addgroups'}, ${$uid.$username}{'postcount'});
+	my ($allowed_users, $allowed_groups, $usergroup, $useraddgroup, $postcount, $groupid) = (shift, shift, 0, ${$uid.$username}{'position'}, ${$uid.$username}{'addgroups'}, ${$uid.$username}{'postcount'}, undef);
 
-	if (($allowed_users ne "") || ($allowed_groups ne "")) {
-		if ($allowed_users ne "") {
-			@users = split(/\,/,$allowed_users);
-			foreach $user (@users) {
-				if ($user eq $username) { $access = 1; return $access; }
-			}
-		}
-		if ($allowed_groups ne "") {
-			# generate list of allowed groups
-			# example: @groups = ('Administrator', 'Moderator', 'Global Moderator', 'Post{-1}', 'NoPost{1}');
-			@groups = split(/\s*\,\s*/,$allowed_groups);
-			foreach $group (@groups) {
-				# check if user is in one of these groups
-				if ($group eq "Administrator" || $group eq "Moderator" || $group eq "Global Moderator") {
-					if ($group eq $usergroup) { $access = 1; return $access; }
-				} elsif ($group =~ m~^NoPost{(\d+)}$~) {
-					# check if user is on a post-independend groups
-					$groupid = $1;
-					# check if group exists at all
-					if (exists $NoPost{$groupid} && $groupid ne "") {
-						# check if group id is in user position or addgroup field
-						if ($usergroup eq $groupid) { $access = 1; return $access; }
-						foreach $group (split(/,/,$useraddgroup)) {
-							if ($group eq $groupid) { $access = 1; return $access; }
-						}
+	if ($allowed_users ne "" || $allowed_groups ne "") {
+		foreach (split(/,/, $allowed_users)) { return 1 if $_ eq $username; }
+
+		# example list of allowed groups:
+		# ('Administrator', 'Moderator', 'Global Moderator', 'Post{-1}', 'NoPost{1}')
+		foreach my $group (split(/\s*,\s*/, $allowed_groups)) {
+			# check if user is in one of these groups
+			if ($group eq "Administrator" || $group eq "Moderator" || $group eq "Global Moderator") {
+				if ($usergroup eq $group) { return 1; }
+
+			# check if user is on a post-independend group
+			} elsif ($group =~ m~^NoPost{(\d+)}$~) {
+				$groupid = $1;
+				# check if group exists at all
+				if ($groupid ne "" && exists $NoPost{$groupid}) {
+					# check if group id is in user position or addgroup field
+					if ($usergroup eq $groupid) { return 1; }
+					foreach (split(/,/,$useraddgroup)) {
+						if ($_ eq $groupid) { return 1; }
 					}
-				} elsif ($group =~ m~^Post{(\d+)}$~) {
-					# check if user is in one of the post-depending groups...
-					$groupid = $1;
-					foreach $postamount (sort { $b <=> $a } keys %Post) {
-						if ($postcount > $postamount) {
-							# found the group the user is in
-							if ($postamount eq $groupid) { $access = 1; return $access; }
-						}
+				}
+
+			# check if user is in one of the post-depending groups...
+			} elsif ($group =~ m~^Post{(\d+)}$~) {
+				$groupid = $1;
+				foreach (sort { $b <=> $a } keys %Post) {
+					if ($postcount > $_) {
+						# found the group the user is in
+						if ($_ eq $groupid) { return 1; }
 					}
 				}
 			}
 		}
-	} else { $access = 1; }
-
-	$access;
+		return 0;
+	}
+	return 1;
 }
 
 # applies UBBC code to a string
 sub ext_parse_ubbc {
-	my ($source, $displayname, $bak) = (shift, shift, $message);
+	my ($source, $temp);
+	($source, $displayname, $temp) = ($_[0], $_[1], $message);
 	$message = $source;
 	require "$sourcedir/YaBBC.pl";
 	&DoUBBC;
 	&ToChars($message);
 	$source = $message;
-	$message = $bak;
-
+	$message = $temp;
 	$source;
 }
 
@@ -348,7 +343,7 @@ sub ext_viewprofile {
 		$value = &ext_get($pusername,$fieldname);
 
 		# make sure the field is visible and the user allowed to view the current field
-		if ($field{'visible_in_viewprofile'} == 1 && $field{'active'} == 1 && &ext_has_access($field{'v_users'},$field{'v_groups'}) == 1) {
+		if ($field{'visible_in_viewprofile'} == 1 && $field{'active'} == 1 && &ext_has_access($field{'v_users'},$field{'v_groups'})) {
 			if ($output eq "" && $previous ne 1) {
 				$pre_output = qq~
 	<tr>
@@ -466,7 +461,7 @@ sub ext_viewinposts {
 			}
 
 			# make sure the field is visible and the user allowed to view the current field
-			if ($visible == 1 && $field{'active'} == 1 && &ext_has_access($users,$groups) == 1) {
+			if ($visible == 1 && $field{'active'} == 1 && &ext_has_access($users,$groups)) {
 				if ($displayfieldname == 1) { $displayedfieldname = "$field{'name'}: "; } else { $displayedfieldname = ""; }
 				if ($output eq "") { $output = qq~$ext_spacer_br\n~; }
 				# format the output dependend of the field type
@@ -506,23 +501,23 @@ sub ext_viewinposts {
 }
 
 {
-# we need a "static" variable to produce unique element ids
-my $ext_usercount = 0;
-# returns the output for the post page (popup box)
-sub ext_viewinposts_popup {
-	my ($pusername,$link,$output) = (shift,shift);
-	$output = &ext_viewinposts($pusername, "popup");
-	$output =~ s~^$ext_spacer_br\n~~ig;
-	if ($output ne "") {
-		$link =~ s~<a ~<a onmouseover="document.getElementById('ext_$ext_usercount').style.visibility = 'visible'" onmouseout="document.getElementById('ext_$ext_usercount').style.visibility = 'hidden'" ~ig;
-		$output = qq~$link<div id="ext_$ext_usercount" class="code" style="visibility:hidden; position:absolute; z-index:1; width:auto;">$output</div>~;
-		$ext_usercount++;
-	} else {
-		$output = $link;
-	}
+	# we need a "static" variable to produce unique element ids
+	my $ext_usercount = 0;
+	# returns the output for the post page (popup box)
+	sub ext_viewinposts_popup {
+		my ($pusername,$link,$output) = (shift,shift);
+		$output = &ext_viewinposts($pusername, "popup");
+		$output =~ s~^$ext_spacer_br\n~~ig;
+		if ($output ne "") {
+			$link =~ s~<a ~<a onmouseover="document.getElementById('ext_$ext_usercount').style.visibility = 'visible'" onmouseout="document.getElementById('ext_$ext_usercount').style.visibility = 'hidden'" ~ig;
+			$output = qq~$link<div id="ext_$ext_usercount" class="code" style="visibility:hidden; position:absolute; z-index:1; width:auto;">$output</div>~;
+			$ext_usercount++;
+		} else {
+			$output = $link;
+		}
 
-	$output;
-}
+		$output;
+	}
 }
 
 # returns the output for the table header in memberlist
@@ -533,7 +528,7 @@ sub ext_memberlist_tableheader {
 		&ext_get_field(&ext_get_field_id($fieldname));
 
 		# make sure the field is visible and the user allowed to view the current field
-		if ($field{'visible_in_memberlist'} == 1 && $field{'active'} == 1 && &ext_has_access($field{'m_users'},$field{'m_groups'}) == 1) {
+		if ($field{'visible_in_memberlist'} == 1 && $field{'active'} == 1 && &ext_has_access($field{'m_users'},$field{'m_groups'})) {
 			$output .= qq~<td class="catbg" align="center">$field{'name'}</td>\n~;
 		}
 	}
@@ -559,7 +554,7 @@ sub ext_memberlist_tds {
 		$value = &ext_get($pusername,$fieldname);
 
 		# make sure the field is visible and the user allowed to view the current field
-		if ($field{'visible_in_memberlist'} == 1 && $field{'active'} == 1 && &ext_has_access($field{'m_users'},$field{'m_groups'}) == 1) {
+		if ($field{'visible_in_memberlist'} == 1 && $field{'active'} == 1 && &ext_has_access($field{'m_users'},$field{'m_groups'})) {
 			$color = $count % 2 == 1 ? "windowbg" : "windowbg2";
 			#if ($using_yams5 eq "1") {
 			#	$td_attributs = qq~class="windowbg2" style="border-top: #6394BD 1px solid; border-right: #6394BD 1px solid; padding: 2px" bgcolor="#F8F8F8" align="center" valign="middle"~;
@@ -568,8 +563,7 @@ sub ext_memberlist_tds {
 			#}
 			if ($field{'type'} eq "email") {
 				if ($value ne "") { $value = &enc_eMail($img_txt{'69'},$value,'',''); }
-			}
-			elsif ($field{'type'} eq "url") {
+			} elsif ($field{'type'} eq "url") {
 				if ($value ne "") { $value = qq~<a href="$value" target="_blank">$value</a>~; }
 			}
 			if ($value eq "") { $value .= "&nbsp;"; }
@@ -714,22 +708,22 @@ sub ext_gen_editfield {
 sub ext_editprofile {
 	my ($pusername, $part, $usergroup, $id, $output, $fieldname, @options, $selected, $count) = (shift, shift, ${$uid.$username}{'position'});
 
-	if(-e ("$vardir/gmodsettings.txt")) { require "$vardir/gmodsettings.txt"; }
+	if (-e ("$vardir/gmodsettings.txt")) { require "$vardir/gmodsettings.txt"; }
 
 	foreach $fieldname (@ext_prof_order) {
 		$id = &ext_get_field_id($fieldname);
 		&ext_get_field($id);
 
 		# make sure the field is visible, the user allowed to edit the current field and only the requested fields are returned
-		if (($field{'active'} == 1) &&
-		    (($field{'editable_by_user'} != 0) || ($iamadmin) || ($iamgmod && $allow_gmod_profile)) &&
-		    ((($part eq "required")   && ($field{'required_on_reg'} == 1)) ||   # show all required fields
-		     (($part eq "additional") && ($field{'required_on_reg'} != 1)) ||   # show all additional fields
-		     (($part eq "admin")      && ($field{'editable_by_user'} == 0)) ||  # all fields for "admin edits" page
-		     (($part eq "edit")       && ($field{'editable_by_user'} == 1)) ||  # all fields for "edit profile" page
-		     (($part eq "contact")    && ($field{'editable_by_user'} == 2)) ||  # contact information page
-		     (($part eq "options")    && ($field{'editable_by_user'} == 3)) ||  # options page
-		     (($part eq "im")         && ($field{'editable_by_user'} == 4)))) { # im prefs page
+		if ($field{'active'} == 1 &&
+		    ($field{'editable_by_user'} != 0 || $iamadmin || $iamgmod && $allow_gmod_profile) &&
+		    (($part eq "required"   && $field{'required_on_reg'}  == 1) ||  # show all required fields
+		     ($part eq "additional" && $field{'required_on_reg'}  != 1) ||  # show all additional fields
+		     ($part eq "admin"      && $field{'editable_by_user'} == 0) ||  # all fields for "admin edits" page
+		     ($part eq "edit"       && $field{'editable_by_user'} == 1) ||  # all fields for "edit profile" page
+		     ($part eq "contact"    && $field{'editable_by_user'} == 2) ||  # contact information page
+		     ($part eq "options"    && $field{'editable_by_user'} == 3) ||  # options page
+		     ($part eq "im"         && $field{'editable_by_user'} == 4))) { # im prefs page
 			$output .= &ext_gen_editfield($id, $pusername);
 		}
 	}
@@ -1224,7 +1218,7 @@ sub ext_admin_edit {
 		$name = $FORM{'name'};
 		$id = $FORM{'id'};
 		$type = $FORM{'type'};
-		$active = $FORM{'active'}; if ($active ne "") { $active = "1"; } else { $active = "0"; }
+		$active = $FORM{'active'} ne "" ? 1 : 0;
 
 		@fields = @ext_prof_fields;
 		@_ = split(/\|/,$fields[$FORM{'id'}]);
