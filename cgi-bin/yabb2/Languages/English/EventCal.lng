@@ -15,7 +15,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$eventcallngver = 'YaBB 2.3 $Revision: 1.3 $';
+$eventcallngver = 'YaBB 2.3 $Revision$';
 
 ### Event Calendar ###
 

@@ -37,7 +37,7 @@
 # You may not remove any of these header notices.		    #
 #-------------------------------------------------------------------#
 
-$menuplver = 'YaBB 2.4 $Revision: $';
+$menuplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 $imgext = "gif";

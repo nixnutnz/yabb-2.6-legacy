@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$eventcalsetplver = 'YaBB 2.5 $Revision: $';
+$eventcalsetplver = 'YaBB 2.5 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('EventCal');
