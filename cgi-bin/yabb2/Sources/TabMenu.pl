@@ -87,15 +87,15 @@ sub mainMenu {
 	} else {
 		$tab{'mycenter'} = qq~<span |><a href="$scripturl?action=mycenter" title="$img_txt{'mycenter'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'mycenter'}$tabfill</a></span>~;
 		$tab{'logout'} = qq~<span |><a href="$scripturl?action=logout" title="$img_txt{'108'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'108'}$tabfill</a></span>~;
-		# EventCal START
-		if ($Show_EventButton && $EventCal_Active) {
-			$tab{'eventcal'} = qq~<span |><a href="$scripturl?action=get_cal;calshow=1" title="$img_txt{'eventcal'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'eventcal'}$tabfill</a></span>~;
-		}
-		if ($Show_BirthdayButton && $BirthdayList_Active) {
-			$tab{'birthdaylist'} = qq~<span |><a href="$scripturl?action=cal_birthdaylist" title="$img_txt{'birthdaylist'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'birthdaylist'}$tabfill</a></span>~;
-		}
-		# EventCal END
 	}
+	# EventCal START
+	if ($Show_EventButton == 2 || (!$iamguest && $Show_EventButton == 1)) {
+		$tab{'eventcal'} = qq~<span |><a href="$scripturl?action=get_cal;calshow=1" title="$img_txt{'eventcal'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'eventcal'}$tabfill</a></span>~;
+	}
+	if ($Show_BirthdayButton == 2 || (!$iamguest && $Show_BirthdayButton == 1)) {
+		$tab{'birthdaylist'} = qq~<span |><a href="$scripturl?action=cal_birthdaylist" title="$img_txt{'birthdaylist'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'birthdaylist'}$tabfill</a></span>~;
+	}
+	# EventCal END
 
 	# Advanced Tabs starts here 
 	for (my $i = 0; $i < @AdvancedTabs; $i++) {

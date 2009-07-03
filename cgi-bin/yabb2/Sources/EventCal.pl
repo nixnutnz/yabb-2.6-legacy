@@ -1326,7 +1326,7 @@ $option_noname
 	# Print Mini EventCal begin
 	#<--------------------------------------------->#
 
-	if ($Show_BirthdaysList && $BirthdayList_Active) {
+	if ($Show_BirthdaysList) {
 		unless ($iamguest && ($Show_BirthdaysList == 1)) {
 			$ShowBirthdaysLink = qq~<span class="small"> <img src="$imagesdir/eventmore.gif" border="0" alt="$var_calpost{'var_cal'}" /> <a href="$scripturl?action=cal_birthdaylist">$var_cal{'calbdaylist'}</a></span>~;
 		}
@@ -1352,7 +1352,7 @@ $option_noname
 			$cal_out .= "<td width=\"14%\" class=\"windowbg\">&nbsp;</td>";
 		}
 	}
-	if (!$Event_TodayColor) { $Event_TodayColor = "ff0000"; }
+	if (!$Event_TodayColor) { $Event_TodayColor = "#FF0000"; }
 
 	for ($i = 1; $i <= $days; $i++) {
 		$dddd = $i;
@@ -1360,7 +1360,7 @@ $option_noname
 
 		$sel = "<span class=\"small\">$i</span>";
 		if ($i == $callnewday && $mon == $callnewmonth && $year == $callnewyear) {
-			$sel = "<span class=\"small\"><font color=\"#$Event_TodayColor\"><b>$i</b></font></span>";
+			$sel = "<span class=\"small\"><font color=\"$Event_TodayColor\"><b>$i</b></font></span>";
 		}
 
 		$cal_pic = '';

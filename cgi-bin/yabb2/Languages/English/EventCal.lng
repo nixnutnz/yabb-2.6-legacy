@@ -147,8 +147,7 @@ $eventcallngver = 'YaBB 2.3 $Revision: 1.3 $';
 
 %event_cal = (
 '1' => 'Event Calendar Settings',
-'2' => 'XTC, Jet Li and deti',
-'3' => 'Show Event Calendar on BoardIndex',
+'3' => 'Show Event Calendar?',
 '4' => 'Show \'Event Calendar\' Button on YaBB menu?',
 '5' => 'Show Birthdays in Calendar/Events?',
 '6' => 'Determine length of characters from each event(s)?',
@@ -194,8 +193,6 @@ $eventcallngver = 'YaBB 2.3 $Revision: 1.3 $';
 '47' => 'Guests and Members',
 '48' => 'Show \'Birthday List\' Button on YaBB menu?',
 '49' => 'Birthday List Settings',
-'50' => 'Activate Event Calendar?',
-'51' => 'Activate Birthday List?',
 '52' => 'By creating Events delete <u>old</u> Events until this date:',
 '53' => 'Format: YYYYMMDD (Example: 20050131)<br />(0 == every old event | 1 == keep all old events)',
 '56' => 'Marquee',

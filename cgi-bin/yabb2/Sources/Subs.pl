@@ -217,14 +217,13 @@ sub template {
 		if (!$ML_Allowed || ($ML_Allowed == 1 && !$iamguest) || ($ML_Allowed == 2 && $staff) || ($ML_Allowed == 3 && ($iamadmin || $iamgmod))) {
 			$yymenu .= qq~$menusep<a href="$scripturl?action=ml">$img{'memberlist'}</a>~;
 		}
+
 		# EventCal START
-		if (!$iamguest) {
-			if ($Show_EventButton && $EventCal_Active) {
-				$yymenu .= qq~$menusep<a href="$scripturl?action=get_cal;calshow=1">$img{'eventcal'}</a>~;
-			}
-			if ($Show_BirthdayButton && $BirthdayList_Active) {
-				$yymenu .= qq~$menusep<a href="$scripturl?action=cal_birthdaylist">$img{'birthdaylist'}</a>~;
-			}
+		if ($Show_EventButton == 2 || (!$iamguest && $Show_EventButton == 1)) {
+			$yymenu .= qq~$menusep<a href="$scripturl?action=get_cal;calshow=1">$img{'eventcal'}</a>~;
+		}
+		if ($Show_BirthdayButton == 2 || (!$iamguest && $Show_BirthdayButton == 1)) {
+			$yymenu .= qq~$menusep<a href="$scripturl?action=cal_birthdaylist">$img{'birthdaylist'}</a>~;
 		}
 		# EventCal END
 

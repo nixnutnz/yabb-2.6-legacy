@@ -1030,30 +1030,28 @@ $ext_prof_fields
 ###############################################################################
 
 # Standard Calendar Setting
-\$EventCal_Active = $eventcal_active;
-\$Show_EventCal = $showeventcal;
-\$Show_EventButton = $showeventbutton;
-\$Show_EventBirthdays = $showeventbirthdays;
-\$Show_MiniCalIcons = $showminicalicons;
-\$ShowSunday = $showsunday;
-\$Show_ColorLinks = $showcolorlinks;
-\$No_ShortUbbc = $noshortubbc;
+\$Show_EventCal = $Show_EventCal;
+\$Show_EventButton = $Show_EventButton;
+\$Show_EventBirthdays = $Show_EventBirthdays;
+\$Show_MiniCalIcons = $Show_MiniCalIcons;
+\$ShowSunday = $ShowSunday;
+\$Show_ColorLinks = $Show_ColorLinks;
+\$No_ShortUbbc = $No_ShortUbbc;
 \$Event_TodayColor = "$Event_TodayColor";
-\$Delete_EventsUntil = $deleteeventsuntil;
-\$CalShortEvent = "$calshortevent";
-\$CalEventPerms = qq~$caleventperms~;
-\$CalEventMods = qq~$caleventmods~;
-\$CalEventPrivate = $caleventprivate;
-\$CalEventNoName = $caleventnoname;
-\$Scroll_Events = $scrollevents;
-\$DisplayCalEvents = $displaycalevents;
-\$DisplayEvents = $displayevents;
+\$Delete_EventsUntil = $Delete_EventsUntil;
+\$CalShortEvent = $CalShortEvent;
+\$CalEventPerms = qq~$CalEventPerms~;
+\$CalEventMods = qq~$CalEventMods~;
+\$CalEventPrivate = $CalEventPrivate;
+\$CalEventNoName = $CalEventNoName;
+\$Scroll_Events = $Scroll_Events;
+\$DisplayCalEvents = $DisplayCalEvents;
+\$DisplayEvents = $DisplayEvents;
 
 # Birthdaylist Setting
-\$BirthdayList_Active = $bdaylist_active;
-\$Show_BirthdaysList = $showbirthdayslist;
-\$Show_BirthdayButton = $showbdbutton;
-\$Show_BdColorLinks = $showbdcolorlinks;
+\$Show_BirthdaysList = $Show_BirthdaysList;
+\$Show_BirthdayButton = $Show_BirthdayButton;
+\$Show_BdColorLinks = $Show_BdColorLinks;
 
 1;
 EOF

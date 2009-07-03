@@ -20,8 +20,7 @@ if ($action eq 'detailedversion') { return 1; }
 &LoadLanguage('EventCal');
 
 sub cal_birthdaylist {
-	if (!$Show_BirthdaysList || !$BirthdayList_Active) { &fatal_error($var_cal{'calnobdlist'}); }
-	if ($iamguest && ($Show_BirthdaysList == 1)) { &fatal_error($var_cal{'calnobdlist'}); }
+	if (!$Show_BirthdaysList || ($iamguest && $Show_BirthdaysList != 2)) { &fatal_error('not_allowed'); }
 
 	(undef, undef, undef, undef, undef, undef, undef, undef, $newisdst) = localtime($heute);
 	if ($newisdst > 0) { $userdst = ${$uid.$username}{'dsttimeoffset'} || $dstoffset; $dst = 1; }
