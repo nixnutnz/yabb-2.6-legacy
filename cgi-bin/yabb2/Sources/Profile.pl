@@ -1524,7 +1524,7 @@ sub ModifyProfile2 {
 			&ManageMemberinfo("update", $user, '', $member{'name'}, '', '', '', '', ($UpdateBday ? ($member{'bday'} ? $member{'bday'} : '-') : ''));
 
 		} else {
-			$member{'name'} = ${$uid.$user}{'realname'}
+			$member{'name'} = ${$uid.$user}{'realname'};
 			&ManageMemberinfo("update", $user, '', '', '', '', '', '', ($member{'bday'} ? $member{'bday'} : '-')) if $UpdateBday;
 		}
 
