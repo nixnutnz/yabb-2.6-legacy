@@ -492,6 +492,10 @@ admin => "$FORM{'allow_gmod_admin'}",
 newsettings => "$mynewsettings",
 newsettings2 => "$mynewsettings",
 
+eventcal_set => "$FORM{'eventcal_set'}",
+eventcal_set2 => "$FORM{'eventcal_set'}",
+eventcal_set3 => "$FORM{'eventcal_set'}",
+
 deleteattachment => "$FORM{'manageattachments'}",
 manageattachments2 => "$FORM{'manageattachments'}",
 removeoldattachments => "$FORM{'manageattachments'}",

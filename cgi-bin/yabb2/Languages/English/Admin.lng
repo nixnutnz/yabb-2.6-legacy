@@ -587,6 +587,8 @@ $yycharset = 'ISO-8859-1';
 'a2_label4' => 'Edit Registration Agreement',
 'a2_sub5' => 'Global Moderator Access',
 'a2_label5' => 'Edit Global Moderator Access',
+'a2_sub6' => 'Event Calendar Settings',
+'a2_label6' => 'Edit your Event Calendar Settings',
 
 'a3_title' => 'Security Center',
 'a3_label' => 'Security Center Section',

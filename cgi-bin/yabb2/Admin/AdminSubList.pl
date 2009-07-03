@@ -66,6 +66,9 @@ $adminsublistplver = 'YaBB 2.4 $Revision$';
 'editpaths2',"AdminEdit.pl&EditPaths2",
 'emailbackup',"Backup.pl&emailbackup",
 'errorlog',"ErrorLog.pl&ErrorLog",
+'eventcal_set',"EventCalSet.pl&EventCalSet",
+'eventcal_set2',"EventCalSet.pl&EventCalSet2",
+'eventcal_set3',"EventCalSet.pl&EventCalSet3",
 'ext_admin',"ExtendedProfiles.pl&ext_admin", # all beginning with ext_
 'ext_convert',"ExtendedProfiles.pl&ext_admin_convert", # $admindir !
 'ext_create',"ExtendedProfiles.pl&ext_admin_create", # and not

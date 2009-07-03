@@ -188,7 +188,7 @@ sub FixNopost {
 			}
 			$formatregdate = sprintf("%010d", &stringtotime(${$uid.$member}{'regdate'}));
 			if (!$actposition) { $actposition = &MemberPostGroup(${$uid.$member}{'postcount'}); }
-			$memberinf{$member}  = qq~$formatregdate|${$uid.$member}{'realname'}|${$uid.$member}{'email'}|$actposition|${$uid.$member}{'postcount'}|$newaddigrp~;
+			$memberinf{$member}  = qq~$formatregdate|${$uid.$member}{'realname'}|${$uid.$member}{'email'}|$actposition|${$uid.$member}{'postcount'}|$newaddigrp|${$uid.$member}{'bday'}~;
 			undef %{$uid.$member};
 			$regcounter++;
 		}

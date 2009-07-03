@@ -217,6 +217,16 @@ sub template {
 		if (!$ML_Allowed || ($ML_Allowed == 1 && !$iamguest) || ($ML_Allowed == 2 && $staff) || ($ML_Allowed == 3 && ($iamadmin || $iamgmod))) {
 			$yymenu .= qq~$menusep<a href="$scripturl?action=ml">$img{'memberlist'}</a>~;
 		}
+		# EventCal START
+		if (!$iamguest) {
+			if ($Show_EventButton && $EventCal_Active) {
+				$yymenu .= qq~$menusep<a href="$scripturl?action=get_cal;calshow=1">$img{'eventcal'}</a>~;
+			}
+			if ($Show_BirthdayButton && $BirthdayList_Active) {
+				$yymenu .= qq~$menusep<a href="$scripturl?action=cal_birthdaylist">$img{'birthdaylist'}</a>~;
+			}
+		}
+		# EventCal END
 
 		if ($iamadmin) { $yymenu .= qq~$menusep<a href="$boardurl/AdminIndex.$yyaext">$img{'admin'}</a>~; }
 		if ($iamgmod) {
@@ -1537,15 +1547,16 @@ sub ManageMemberinfo {
 	my $usergrp    = $_[5];
 	my $usercnt    = $_[6];
 	my $useraddgrp = $_[7];
+	my $userbday   = $_[8];
 	## pull hash of member name + other data
 	if ($todo eq "load" || $todo eq "update" || $todo eq "delete" || $todo eq "add") {
 		return if %memberinf && $todo eq "load";
 		%memberinf = map /(.*)\t(.*)/, &read_DBorFILE(0,'',$memberdir,'memberinfo','txt');
 	}
 	if      ($todo eq "add") {
-		$memberinf{$user} = "$userreg|$userdisp|$usermail|$usergrp|$usercnt|$useraddgrp";
+		$memberinf{$user} = "$userreg|$userdisp|$usermail|$usergrp|$usercnt|$useraddgrp|$userbday";
 	} elsif ($todo eq "update") {
-		my ($regdate, $memrealname, $mememail, $memposition, $memposts, $memaddgrp) = split(/\|/, $memberinf{$user});
+		my ($regdate, $memrealname, $mememail, $memposition, $memposts, $memaddgrp, $membday) = split(/\|/, $memberinf{$user});
 		if ($userreg) { $regdate = $userreg; }
 		if ($userdisp) { $memrealname = $userdisp; }
 		if ($usermail) { $mememail = $usermail; }
@@ -1555,7 +1566,8 @@ sub ManageMemberinfo {
 			if ($useraddgrp =~ /###blank###/) { $useraddgrp = ''; }
 			$memaddgrp = $useraddgrp;
 		}
-		$memberinf{$user} = "$regdate|$memrealname|$mememail|$memposition|$memposts|$memaddgrp";
+		if ($userbday) { $membday = $userbday ne '-' ? $userbday : ''; }
+		$memberinf{$user} = "$regdate|$memrealname|$mememail|$memposition|$memposts|$memaddgrp|$membday";
 	} elsif ($todo eq "delete") {
 		foreach (split(/,/, $user)) { delete $memberinf{$_}; } # been sent a single or a list to kill
 	}

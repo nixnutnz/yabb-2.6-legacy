@@ -1334,153 +1334,51 @@ $lastmod
 		$yymain .= qq~
 <script type="text/javascript" language="JavaScript1.2">
 <!--
+	// set size of messagebox and text START
+	var oldwidth = parseInt(document.getElementById('message').style.width) - $jsdragwpos;
+	var olddragwidth = parseInt(document.getElementById('dragbgh').style.width) - $jsdragwpos;
+	var oldheight = parseInt(document.getElementById('message').style.height) - $jsdraghpos;
+	var olddragheight = parseInt(document.getElementById('dragbgw').style.height) - $jsdraghpos;
+	var orgsize = $textsize;
+	skydobject.initialize();
+	// set size of messagebox and text END
 
-var oldwidth = parseInt(document.getElementById('message').style.width) - $jsdragwpos;
-var olddragwidth = parseInt(document.getElementById('dragbgh').style.width) - $jsdragwpos;
-var oldheight = parseInt(document.getElementById('message').style.height) - $jsdraghpos;
-var olddragheight = parseInt(document.getElementById('dragbgw').style.height) - $jsdraghpos;
-
-var skydobject={
-x: 0, y: 0, temp2 : null, temp3 : null, targetobj : null, skydNu : 0, delEnh : 0,
-
-initialize:function() {
-	document.onmousedown = this.skydeKnap
-	document.onmouseup=function(){
-		this.skydNu = 0;
-		document.getElementById('messagewidth').value = parseInt(document.getElementById('message').style.width);
-		document.getElementById('messageheight').value = parseInt(document.getElementById('message').style.height);
-	}
-},
-changeSize:function(deleEnh, knapId) {
-	if (knapId == "dragImg1") {
-		newwidth = oldwidth+parseInt(deleEnh);
-		newdragwidth = olddragwidth+parseInt(deleEnh);
-		document.getElementById('message').style.width = newwidth+'px';
-		document.getElementById('dragbgh').style.width = newdragwidth+'px';
-		document.getElementById('dragImg2').style.width = newdragwidth+'px';
-	}
-	if (knapId == "dragImg2") {
-		newheight = oldheight+parseInt(deleEnh);
-		newdragheight = olddragheight+parseInt(deleEnh);
-		document.getElementById('message').style.height = newheight+'px';
-		document.getElementById('dragbgw').style.height = newdragheight+'px';
-		document.getElementById('dragImg1').style.height = newdragheight+'px';
-		document.getElementById('dragcanvas').style.height = newdragheight+'px';
-
-	}
-},
-flytKnap:function(e) {
-	var evtobj = window.event ? window.event : e
-	if (this.skydNu == 1) {
-		sizestop = f_clientWidth()
-		maxstop = parseInt(((sizestop*66)/100)-427)
-		if(maxstop > 413) maxstop = 413
-		if(maxstop < 60) maxstop = 60
-
-		glX = parseInt(this.targetobj.style.left)
-		this.targetobj.style.left = this.temp2 + evtobj.clientX - this.x + "px"
-		nyX = parseInt(this.temp2 + evtobj.clientX - this.x)
-		if (nyX > glX) retning = "vn"; else retning = "hj";
-		if (nyX < 1 && retning == "hj") { this.targetobj.style.left = 0 + "px"; nyX = 0; retning = "vn"; }
-		if (nyX > maxstop && retning == "vn") { this.targetobj.style.left = maxstop + "px"; nyX = maxstop; retning = "hj"; }
-		delEnh = parseInt(nyX)
-		var knapObj = this.targetobj.id
-		skydobject.changeSize(delEnh, knapObj)
-		return false
-	}
-	if (this.skydNu == 2) {
-		glY = parseInt(this.targetobj.style.top)
-		this.targetobj.style.top = this.temp3 + evtobj.clientY - this.y + "px"
-		nyY = parseInt(this.temp3 + evtobj.clientY - this.y)
-		if (nyY > glY) retning = "vn"; else retning = "hj";
-		if (nyY < 1 && retning == "hj") { this.targetobj.style.top = 0 + "px"; nyY = 0; retning = "vn"; }
-		if (nyY > 270 && retning == "vn") { this.targetobj.style.top = 270 + "px"; nyY = 270; retning = "hj"; }
-		delEnh = parseInt(nyY)
-		var knapObj = this.targetobj.id
-		skydobject.changeSize(delEnh, knapObj)
-		return false
-	}
-},
-skydeKnap:function(e) {
-	var evtobj = window.event ? window.event : e
-	this.targetobj = window.event ? event.srcElement : e.target
-	if (this.targetobj.className == "drag") {
-		if(this.targetobj.id == "dragImg1") this.skydNu = 1
-		if(this.targetobj.id == "dragImg2") this.skydNu = 2
-		this.knapObj = this.targetobj
-		if (isNaN(parseInt(this.targetobj.style.left))) this.targetobj.style.left = 0
-		if (isNaN(parseInt(this.targetobj.style.top))) this.targetobj.style.top = 0
-		this.temp2 = parseInt(this.targetobj.style.left)
-		this.temp3 = parseInt(this.targetobj.style.top)
-		this.x = evtobj.clientX
-		this.y = evtobj.clientY
-		if (evtobj.preventDefault) evtobj.preventDefault()
-		document.onmousemove = skydobject.flytKnap
-	}
-}
-}
-
-function f_clientWidth() {
-	return f_filterResults (
-		window.innerWidth ? window.innerWidth : 0,
-		document.documentElement ? document.documentElement.clientWidth : 0,
-		document.body ? document.body.clientWidth : 0
-	);
-}
-
-function f_filterResults(n_win, n_docel, n_body) {
-	var n_result = n_win ? n_win : 0;
-	if (n_docel && (!n_result || (n_result > n_docel))) n_result = n_docel;
-	return n_body && (!n_result || (n_result > n_body)) ? n_body : n_result;
-}
-
-var orgsize = $textsize;
-
-function sizetext(sizefact) {
-	orgsize = orgsize + sizefact;
-	if(orgsize < 6) orgsize = 6;
-	if(orgsize > 16) orgsize = 16;
-	document.getElementById('message').style.fontSize = orgsize+'pt';
-	document.getElementById('txtsize').value = orgsize;
-}
-
-skydobject.initialize()
-
-// Collapse/Expand additional features
-var col_row = $col_row;
-function show_features() {
-	document.getElementById('col_row').value = col_row;
-	if (col_row == 1) {
-		for (var i = 1; 14 > i; i++) {
-			try {
-				if (typeof(document.getElementById("feature_status_" + i).style)) throw "1";
-			} catch (e) {
-				if (e == "1") {
-					document.getElementById("feature_status_" + i).style.display = "none";
+	// Collapse/Expand additional features START
+	var col_row = $col_row;
+	function show_features() {
+		document.getElementById('col_row').value = col_row;
+		if (col_row == 1) {
+			for (var i = 1; 14 > i; i++) {
+				try {
+					if (typeof(document.getElementById("feature_status_" + i).style)) throw "1";
+				} catch (e) {
+					if (e == "1") {
+						document.getElementById("feature_status_" + i).style.display = "none";
+					}
 				}
 			}
-		}
-		document.images.feature_col.alt = "$npf_txt{'expand_features'}";
-		document.images.feature_col.title = "$npf_txt{'expand_features'}";
-		document.images.feature_col.src="$defaultimagesdir/cat_expand.gif";
-		col_row = 0;
-	} else {
-		for (var i = 1; 14 > i; i++) {
-			try {
-				if (typeof(document.getElementById("feature_status_" + i).style)) throw "1";
-			} catch (e) {
-				if (e == "1") {
-					document.getElementById("feature_status_" + i).style.display = "";
+			document.images.feature_col.alt = "$npf_txt{'expand_features'}";
+			document.images.feature_col.title = "$npf_txt{'expand_features'}";
+			document.images.feature_col.src = "$defaultimagesdir/cat_expand.gif";
+			col_row = 0;
+		} else {
+			for (var i = 1; 14 > i; i++) {
+				try {
+					if (typeof(document.getElementById("feature_status_" + i).style)) throw "1";
+				} catch (e) {
+					if (e == "1") {
+						document.getElementById("feature_status_" + i).style.display = "";
+					}
 				}
 			}
+			document.images.feature_col.alt = "$npf_txt{'collapse_features'}";
+			document.images.feature_col.title = "$npf_txt{'collapse_features'}";
+			document.images.feature_col.src = "$defaultimagesdir/cat_collapse.gif";
+			col_row = 1;
 		}
-		document.images.feature_col.alt = "$npf_txt{'collapse_features'}";
-		document.images.feature_col.title = "$npf_txt{'collapse_features'}";
-		document.images.feature_col.src="$defaultimagesdir/cat_collapse.gif";
-		col_row = 1;
 	}
-}
-show_features();
+	show_features();
+	// Collapse/Expand additional features END
 //-->
 </script>~;
 	}
@@ -1795,7 +1693,7 @@ sub Preview {
 	$postid = $FORM{'postid'};
 	$thestatus = $FORM{'topicstatus'};
 	$isBMess = $FORM{'isBMess'};
-	if (!$iamguest) {
+	if (!$iamguest && ${$uid.$username}{'postlayout'} ne qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'}~) {
 		${$uid.$username}{'postlayout'} = qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'}~;
 		&UserAccount($username, "update");
 	}
@@ -3258,7 +3156,7 @@ sub modAlert2 {
 		else {
 			&ManageMemberinfo("load");
 			manageinfo: foreach (keys %memberinf) {
-				map { if ($_ && $modgrps =~ /\b$_\b/) { $x = 1; last manageinfo; } } split(/,/, (split(/\|/, $memberinf{$_}))[5]);
+				map { if ($_ && $modgrps =~ /\b$_\b/) { $x = 1; last manageinfo; } } split(/,/, (split(/\|/, $memberinf{$_}, 7))[5]);
 			}
 			$mods = 'admin' if !$x && !$mods;
 		}
@@ -3288,7 +3186,7 @@ sub modAlert2 {
 
 			} elsif ($PMenableBm_level && $x) {
 				&ManageMemberinfo("load");
-				map { if ($_ && $modgrps =~ /\b$_\b/) { next managemods; } } split(/,/, (split(/\|/, $memberinf{$toBoardMod}))[5]);
+				map { if ($_ && $modgrps =~ /\b$_\b/) { next managemods; } } split(/,/, (split(/\|/, $memberinf{$toBoardMod}, 7))[5]);
 			}
 
 			# Send message to user

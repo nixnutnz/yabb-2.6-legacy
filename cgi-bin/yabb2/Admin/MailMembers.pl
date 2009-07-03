@@ -256,7 +256,7 @@ sub Mailing2 {
 	&ManageMemberinfo("load");
 	$i = 0;
 	foreach my $user (keys %memberinf) {
-		(undef, $memrealname, $mememail, $memposition, $memposts, $memaddgrp) = split(/\|/, $memberinf{$user});
+		(undef, $memrealname, $mememail, $memposition, $memposts, $memaddgrp, undef) = split(/\|/, $memberinf{$user}, 7);
 		&FromHTML($memrealname);
 
 		if ($FORM{'mailsend'} && $FORM{'emailtext'} ne '') {
@@ -354,7 +354,7 @@ sub MailingMembers {
 
 	&ManageMemberinfo("load");
 	foreach my $membername (keys %memberinf) {
-		(undef, $memberrealname, undef, $memposition, $memposts, undef) = split(/\|/, $memberinf{$membername});
+		(undef, $memberrealname, undef, $memposition, $memposts, undef) = split(/\|/, $memberinf{$membername}, 6);
 		$pstsort    = 99999999 - $memposts;
 		$sortgroups = "";
 		$j          = 0;
@@ -397,7 +397,7 @@ sub MailingMembers {
 	while (($numshown < $memcount)) {
 		$user = $toplist[$b];
 
-		(undef, $memrealname, $mememail, $memposition, $memposts, undef) = split(/\|/, $memberinf{$user});
+		(undef, $memrealname, $mememail, $memposition, $memposts, undef) = split(/\|/, $memberinf{$user}, 6);
 
 		if ($user eq $username) { $bagcolor = "windowbg2"; }
 		else { $bagcolor = "windowbg"; }
@@ -406,7 +406,7 @@ sub MailingMembers {
 			$addel = qq~<input type="checkbox" name="member$actualnum" value="$user" class="windowbg" style="border: 0;" />~;
 			$actualnum++;
 
-			my $memberinfo = "$memposition";
+			my $memberinfo = $memposition;
 			if ($memberinfo eq "Administrator") {
 				($memberinfo, undef) = split(/\|/, $Group{"Administrator"}, 2);
 			} elsif ($memberinfo eq "Global Moderator") {

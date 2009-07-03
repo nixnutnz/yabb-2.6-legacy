@@ -90,6 +90,8 @@ if (!$language){$language = $lang;}
 'myspace' => 'MySpace',
 'skype' => 'Skype/VoIP',
 'yim' => 'YIM',
+'birthdaylist' => 'Birthday List',
+'eventcal' => 'Event Calendar',
 );
 
 %img_polltxt = (

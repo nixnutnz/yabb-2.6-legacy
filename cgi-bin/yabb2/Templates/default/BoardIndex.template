@@ -133,6 +133,10 @@ $boardindex_template .= qq~
 </tr>
 </table>
 <br />
+<table class="bordercolor" cellpadding="4" cellspacing="1" border="0" width="100%">
+		{yabb caldisplay}
+</table>
+<br />
 	{yabb sharedlogin}
 
 <!-- Info Center block end -->

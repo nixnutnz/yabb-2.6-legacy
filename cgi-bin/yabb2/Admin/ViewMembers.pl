@@ -33,7 +33,7 @@ sub Ml {
 		$barmax = 1;
 		&ManageMemberinfo("load");
 		foreach (keys %memberinf) {
-			(undef, undef, undef, undef, $memposts, undef) = split(/\|/, $memberinf{$_});
+			(undef, undef, undef, undef, $memposts, undef) = split(/\|/, $memberinf{$_}, 6);
 			if ($memposts > $barmax) { $barmax = $memposts; }
 		}
 		undef %memberinf;
@@ -122,7 +122,7 @@ sub MLTop {
 
 	&ManageMemberinfo("load");
 	foreach (keys %memberinf) {
-		(undef, $memrealname, undef, undef, $memposts, undef) = split(/\|/, $memberinf{$_});
+		(undef, $memrealname, undef, undef, $memposts, undef) = split(/\|/, $memberinf{$_}, 6);
 		$memposts = sprintf("%06d", (999999 - $memposts));
 		$top_list{$_} = qq~$memposts|$memrealname~;
 	}
@@ -156,7 +156,7 @@ sub MLPosition {
 
 	&ManageMemberinfo("load");
 	while (($membername, $value) = each(%memberinf)) {
-		(undef, $memberrealname, undef, $memposition, $memposts) = split(/\|/, $value);
+		(undef, $memberrealname, undef, $memposition, $memposts, undef) = split(/\|/, $value, 6);
 		$pstsort    = 99999999 - $memposts;
 		$sortgroups = "";
 		foreach my $key (keys %Group) {

@@ -700,6 +700,13 @@ sub BoardIndex {
 	$boardindex_template =~ s/({|<)yabb mostusersdate(}|>)/$themostuserdate/g;
 	$boardindex_template =~ s/({|<)yabb groupcolors(}|>)/$grpcolors/g;
 	$boardindex_template =~ s/({|<)yabb sharedlogin(}|>)/$shared_login/g;
+	# EventCal START
+	if ($Show_EventCal && $EventCal_Active && (!$iamguest || $ShowCalendarGuest == 1)) {
+		require "$sourcedir/EventCal.pl";
+		&get_cal;
+	}
+	$boardindex_template =~ s/({|<)yabb caldisplay(}|>)/$cal_display/g;
+	# EventCal END
 
 	chop($template_catnames);
 	$yyjavascript .= qq~\nvar markallreadlang = '$boardindex_txt{'500'}';\nvar markfinishedlang = '$boardindex_txt{'500a'}';~;

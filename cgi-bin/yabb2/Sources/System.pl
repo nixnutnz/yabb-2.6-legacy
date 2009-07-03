@@ -264,7 +264,7 @@ sub MemberIndex {
 	if ($memaction eq "add" && &LoadUser($user)) {
 		if (!${$uid.$user}{'postcount'}) { ${$uid.$user}{'postcount'} = 0; }
 		if (!${$uid.$user}{'position'})  { ${$uid.$user}{'position'}  = &MemberPostGroup(${$uid.$user}{'postcount'}); }
-		&ManageMemberinfo("add", $user, sprintf("%010d", &stringtotime(${$uid.$user}{'regdate'})), ${$uid.$user}{'realname'}, ${$uid.$user}{'email'}, ${$uid.$user}{'position'}, ${$uid.$user}{'postcount'});
+		&ManageMemberinfo("add", $user, sprintf("%010d", &stringtotime(${$uid.$user}{'regdate'})), ${$uid.$user}{'realname'}, ${$uid.$user}{'email'}, ${$uid.$user}{'position'}, ${$uid.$user}{'postcount'},${$uid.$user}{'bday'});
 
 		$members_total++;
 		$last_member = $user;

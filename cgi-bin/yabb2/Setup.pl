@@ -2073,7 +2073,7 @@ sub MyMemberIndex {
 
 		&UserAccount($member, "update");
 
-		$memberinf{$member} = sprintf("%010d", ${$uid.$member}{'regtime'}) . qq~|${$uid.$member}{'realname'}|${$uid.$member}{'email'}|${$uid.$member}{'position'}|${$uid.$member}{'postcount'}~;
+		$memberinf{$member} = sprintf("%010d", ${$uid.$member}{'regtime'}) . qq~|${$uid.$member}{'realname'}|${$uid.$member}{'email'}|${$uid.$member}{'position'}|${$uid.$member}{'postcount'}|${$uid.$member}{'bday'}~;
 
 		if (time() > $time_to_jump && ($j + 1) < $totalmemb) {
 			&ManageMemberinfo("save");
@@ -4040,7 +4040,7 @@ sub SetInstall2 {
 
 ########## Advanced Tabs ##########
 
-\@AdvancedTabs = qw(home help search ml admin revalidatesession login register guestpm mycenter logout); # Advanced Tabs order and infos
+\@AdvancedTabs = qw(home help search ml admin revalidatesession login register guestpm mycenter logout eventcal birthdaylist); # Advanced Tabs order and infos
 
 ########## Smilies ##########
 

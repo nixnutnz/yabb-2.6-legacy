@@ -173,6 +173,8 @@ sub EditTab {
 	$edittab{'guestpm'} = qq~<span $tabstyle>$tabfill$img_txt{'pmadmin'}$tabfill</span>~;
 	$edittab{'mycenter'} = qq~<span $tabstyle>$tabfill$img_txt{'mycenter'}$tabfill</span>~;
 	$edittab{'logout'} = qq~<span $tabstyle>$tabfill$img_txt{'108'}$tabfill</span>~;
+	$edittab{'eventcal'} = qq~<span $tabstyle>$tabfill$img_txt{'eventcal'}$tabfill</span>~;
+	$edittab{'birthdaylist'} = qq~<span $tabstyle>$tabfill$img_txt{'birthdaylist'}$tabfill</span>~;
 
 	&GetTexttab;
 
@@ -349,6 +351,8 @@ sub GetTexttab {
 	$texttab{'guestpm'} = $img_txt{'pmadmin'};
 	$texttab{'mycenter'} = $img_txt{'mycenter'};
 	$texttab{'logout'} = $img_txt{'108'};
+	$texttab{'eventcal'} = $img_txt{'eventcal'};
+	$texttab{'birthdaylist'} = $img_txt{'birthdaylist'};
 
 	&GetTabtxt unless $tab_lang;
 	foreach (keys %tabtxt) { $texttab{$_} = $tabtxt{$_}; }

@@ -343,3 +343,192 @@ function Clock(ampm) {
 	}
 	return (hour + ":" + min + ":" + sec);
 }
+
+
+// Event Calendar START
+function insert(aTag, eTag) {
+	var input = document.forms['eventcal'].elements['calevent'];
+	input.focus();
+	if (typeof document.selection != 'undefined') {
+		var range = document.selection.createRange();
+		var insText = range.text;
+		range.text = aTag + insText + eTag;
+		range = document.selection.createRange();
+		if (insText.length == 0) {
+			range.move('character', -eTag.length);
+		} else {
+			range.moveStart('character', aTag.length + insText.length + eTag.length);      
+		}
+		range.select();
+	} else if (typeof input.selectionStart != 'undefined') {
+		var start = input.selectionStart;
+		var end = input.selectionEnd;
+		var insText = input.value.substring(start, end);
+		input.value = input.value.substr(0, start) + aTag + insText + eTag + input.value.substr(end);
+		var pos;
+		if (insText.length == 0) {
+			pos = start + aTag.length;
+		} else {
+			pos = start + aTag.length + insText.length + eTag.length;
+		}
+		input.selectionStart = pos;
+		input.selectionEnd = pos;
+	} else {
+		var pos;
+		var re = new RegExp('^[0-9]{0,3}$');
+		while (!re.test(pos)) {
+			pos = prompt("Einfügen an Position/Insert at position (0.." + input.value.length + "):", "0");
+		}
+		if (pos > input.value.length) {
+			pos = input.value.length;
+		}
+		var insText = prompt("Bitte geben Sie den zu formatierenden Text ein/Please enter text to be formatted:");
+		input.value = input.value.substr(0, pos) + aTag + insText + eTag + input.value.substr(pos);
+	}
+}
+
+function insert_emo(aTag, eTag) {
+	var input = opener.document.forms['eventcal'].elements['calevent'];
+	input.focus();
+	if (typeof opener.document.selection != 'undefined') {
+		var range = opener.document.selection.createRange();
+		var insText = range.text;
+		range.text = aTag + insText + eTag;
+		range = opener.document.selection.createRange();
+		if (insText.length == 0) {
+			range.move('character', -eTag.length);
+		} else {
+		range.moveStart('character', aTag.length + insText.length + eTag.length);      
+		}
+		range.select();
+	} else if (typeof input.selectionStart != 'undefined') {
+		var start = input.selectionStart;
+		var end = input.selectionEnd;
+		var insText = input.value.substring(start, end);
+		input.value = input.value.substr(0, start) + aTag + insText + eTag + input.value.substr(end);
+		var pos;
+		if (insText.length == 0) {
+			pos = start + aTag.length;
+		} else {
+			pos = start + aTag.length + insText.length + eTag.length;
+		}
+		input.selectionStart = pos;
+		input.selectionEnd = pos;
+	} else {
+		var pos;
+		var re = new RegExp('^[0-9]{0,3}$');
+		while (!re.test(pos)) {
+			pos = prompt("Einfügen an Position/Insert at position (0.." + input.value.length + "):", "0");
+		}
+		if (pos > input.value.length) {
+			pos = input.value.length;
+		}
+		var insText = prompt("Bitte geben Sie den zu formatierenden Text ein/Please enter text to be formatted:");
+		input.value = input.value.substr(0, pos) + aTag + insText + eTag + input.value.substr(pos);
+	}
+}
+// Event Calendar END
+
+// Size of messagebox and text START
+var skydobject = {
+	x: 0, y: 0, temp2 : null, temp3 : null, targetobj : null, skydNu : 0, delEnh : 0,
+
+	initialize:function() {
+		document.onmousedown = this.skydeKnap
+		document.onmouseup = function(){
+			this.skydNu = 0;
+			document.getElementById('messagewidth').value = parseInt(document.getElementById('message').style.width);
+			document.getElementById('messageheight').value = parseInt(document.getElementById('message').style.height);
+		}
+	},
+	changeSize:function(deleEnh, knapId) {
+		if (knapId == "dragImg1") {
+			newwidth = oldwidth+parseInt(deleEnh);
+			newdragwidth = olddragwidth+parseInt(deleEnh);
+			document.getElementById('message').style.width = newwidth+'px';
+			document.getElementById('dragbgh').style.width = newdragwidth+'px';
+			document.getElementById('dragImg2').style.width = newdragwidth+'px';
+		}
+		if (knapId == "dragImg2") {
+			newheight = oldheight+parseInt(deleEnh);
+			newdragheight = olddragheight+parseInt(deleEnh);
+			document.getElementById('message').style.height = newheight+'px';
+			document.getElementById('dragbgw').style.height = newdragheight+'px';
+			document.getElementById('dragImg1').style.height = newdragheight+'px';
+			document.getElementById('dragcanvas').style.height = newdragheight+'px';
+		}
+	},
+
+	flytKnap:function(e) {
+		var evtobj = window.event ? window.event : e;
+		if (this.skydNu == 1) {
+			sizestop = f_clientWidth()
+			maxstop = parseInt(((sizestop*66)/100)-427);
+			if (maxstop > 413) maxstop = 413;
+			if (maxstop < 60) maxstop = 60;
+
+			glX = parseInt(this.targetobj.style.left);
+			this.targetobj.style.left = this.temp2 + evtobj.clientX - this.x + "px";
+			nyX = parseInt(this.temp2 + evtobj.clientX - this.x);
+			if (nyX > glX) retning = "vn"; else retning = "hj";
+			if (nyX < 1 && retning == "hj") { this.targetobj.style.left = 0 + "px"; nyX = 0; retning = "vn"; }
+			if (nyX > maxstop && retning == "vn") { this.targetobj.style.left = maxstop + "px"; nyX = maxstop; retning = "hj"; }
+			delEnh = parseInt(nyX);
+			var knapObj = this.targetobj.id;
+			skydobject.changeSize(delEnh, knapObj);
+			return false;
+		}
+		if (this.skydNu == 2) {
+			glY = parseInt(this.targetobj.style.top);
+			this.targetobj.style.top = this.temp3 + evtobj.clientY - this.y + "px";
+			nyY = parseInt(this.temp3 + evtobj.clientY - this.y);
+			if (nyY > glY) retning = "vn"; else retning = "hj";
+			if (nyY < 1 && retning == "hj") { this.targetobj.style.top = 0 + "px"; nyY = 0; retning = "vn"; }
+			if (nyY > 270 && retning == "vn") { this.targetobj.style.top = 270 + "px"; nyY = 270; retning = "hj"; }
+			delEnh = parseInt(nyY);
+			var knapObj = this.targetobj.id;
+			skydobject.changeSize(delEnh, knapObj);
+			return false;
+		}
+	},
+	skydeKnap:function(e) {
+		var evtobj = window.event ? window.event : e;
+		this.targetobj = window.event ? event.srcElement : e.target;
+		if (this.targetobj.className == "drag") {
+			if (this.targetobj.id == "dragImg1") this.skydNu = 1;
+			if (this.targetobj.id == "dragImg2") this.skydNu = 2;
+			this.knapObj = this.targetobj;
+			if (isNaN(parseInt(this.targetobj.style.left))) this.targetobj.style.left = 0;
+			if (isNaN(parseInt(this.targetobj.style.top))) this.targetobj.style.top = 0;
+			this.temp2 = parseInt(this.targetobj.style.left);
+			this.temp3 = parseInt(this.targetobj.style.top);
+			this.x = evtobj.clientX;
+			this.y = evtobj.clientY;
+			if (evtobj.preventDefault) evtobj.preventDefault();
+			document.onmousemove = skydobject.flytKnap;
+		}
+	}
+} // End of: var skydobject={
+
+function f_clientWidth() {
+	return f_filterResults (
+		window.innerWidth ? window.innerWidth : 0,
+		document.documentElement ? document.documentElement.clientWidth : 0,
+		document.body ? document.body.clientWidth : 0
+	);
+}
+
+function f_filterResults(n_win, n_docel, n_body) {
+	var n_result = n_win ? n_win : 0;
+	if (n_docel && (!n_result || n_result > n_docel)) n_result = n_docel;
+	return n_body && (!n_result || n_result > n_body) ? n_body : n_result;
+}
+
+function sizetext(sizefact) {
+	orgsize = orgsize + sizefact;
+	if(orgsize < 6) orgsize = 6;
+	if(orgsize > 16) orgsize = 16;
+	document.getElementById('message').style.fontSize = orgsize+'pt';
+	document.getElementById('txtsize').value = orgsize;
+}
+// Size of message box, characters in message box END

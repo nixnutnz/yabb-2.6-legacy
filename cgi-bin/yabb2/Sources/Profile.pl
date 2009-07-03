@@ -209,8 +209,28 @@ sub ModifyProfile {
 	elsif ($timeselected == 2) { $timeorder = 1; }
 
 	&CalcAge($user, "parse");
-	$dayormonthm = qq~<label for="bday1">$profile_txt{'564'}</label><input type="text" name="bday1" id="bday1" size="2" maxlength="2" value="$umonth" /> ~; 
-	$dayormonthd = qq~<label for="bday2">$profile_txt{'565'}</label><input type="text" name="bday2" id="bday2" size="2" maxlength="2" value="$uday" /> ~; 
+	$seluyear = qq~<label for="bday3">$profile_txt{'566'}</label><select name="bday3" id="bday3"><option value="">  </option>\n~;
+	for (my $e = 1905; $e < ($year-4); $e++) {
+		my $selectyear = $uyear == $e ? 'selected' : '';
+		$seluyear .= qq~<option value="$e" $selectyear>$e</option>\n~;
+	}
+	$seluyear .= qq~</select> ~;
+
+	$dayormonthm = qq~<label for="bday1">$profile_txt{'564'}</label><select name="bday1" id="bday1"><option value="">  </option>\n~;
+	for (my $b = 1; $b < 13; $b++) {
+		my $selectmnth = $umonth == $b ? 'selected' : '';
+		my $c = $b < 10 ? "0$b" : $b;
+		$dayormonthm .= qq~<option value="$c" $selectmnth>$c</option>\n~;
+	}
+	$dayormonthm .= qq~</select> ~;
+
+	$dayormonthd = qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"><option value="">  </option>\n~;
+	for (my $a = 1; $a < 32; $a++) {
+		my $selectday = $uday == $a ? 'selected' : '';
+		my $d = $a < 10 ? "0$a" : $a;
+		$dayormonthd .= qq~<option value="$d" $selectday>$d</option>\n~;
+	}
+	$dayormonthd .= qq~</select> ~;
 	if ($timeorder) { $dayormonth = $dayormonthd . $dayormonthm; } 
 	else { $dayormonth = $dayormonthm . $dayormonthd; } 
 	$dayormonth =~ s/for="bday\d"/for="birthday"/o; 
@@ -269,7 +289,7 @@ sub ModifyProfile {
 	</tr>
 	<tr class="windowbg">
 		<td width="220" align="left"><label for="birthday"><b>$profile_txt{'563'}: </b></label></td>
-		<td align="left"><span class="small">$dayormonth<label for="bday3">$profile_txt{'566'}</label><input type="text" name="bday3" id="bday3" size="4" maxlength="4" value="$uyear" /></span></td>
+		<td align="left"><span class="small">$dayormonth$seluyear</span></td>
 	</tr>
 	<tr class="windowbg">
 		<td width="220" align="left"><label for="location"><b>$profile_txt{'227'}: </b></label></td>
@@ -1437,12 +1457,10 @@ sub ModifyProfile2 {
 			&fatal_error("invalid_birthdate","($member{'bday1'}/$member{'bday2'}/$member{'bday3'})") if ($member{'bday1'} !~ /^[0-9]+$/ || $member{'bday2'} !~ /^[0-9]+$/ || $member{'bday3'} !~ /^[0-9]+$/ || length($member{'bday3'}) < 4);
 			&fatal_error("invalid_birthdate","($member{'bday1'}/$member{'bday2'}/$member{'bday3'})") if ($member{'bday1'} < 1 || $member{'bday1'} > 12 || $member{'bday2'} < 1 || $member{'bday2'} > 31 || $member{'bday3'} < 1901 || $member{'bday3'} > $year - 5);
 		}
-		$member{'bday1'} =~ s/[^0-9]//g;
-		$member{'bday2'} =~ s/[^0-9]//g;
-		$member{'bday3'} =~ s/[^0-9]//g;
 		if ($member{'bday1'}) { $member{'bday'} = "$member{'bday1'}/$member{'bday2'}/$member{'bday3'}"; }
 		else { $member{'bday'} = ''; }
-
+		my $UpdateBday;
+		if (${$uid.$user}{'bday'} ne $member{'bday'}) { $UpdateBday = 1; }
 
 		if ($extendedprofiles) { # run this before you start to save something!
 			require "$sourcedir/ExtendedProfiles.pl";
@@ -1450,7 +1468,6 @@ sub ModifyProfile2 {
 			if ($error ne "") { &fatal_error("extended_profiles_validation",$error); }
 			&ext_saveprofile($user);
 		}
-
 
 		if ((!$cannot_change_displayname || $iamadmin) && ${$uid.$user}{'realname'} ne $member{'name'}) {
 			if ($member{'name'} eq '') { &fatal_error("no_name"); }
@@ -1504,9 +1521,11 @@ sub ModifyProfile2 {
 			&write_DBorFILE(0,ATM,$vardir,'attachments','txt',@attachments);
 
 			#Since we haven't encountered a fatal error, time to rewrite our memberlist.
-			&ManageMemberinfo("update", $user, '', $member{'name'});
+			&ManageMemberinfo("update", $user, '', $member{'name'}, '', '', '', '', ($UpdateBday ? ($member{'bday'} ? $member{'bday'} : '-') : ''));
+
 		} else {
 			$member{'name'} = ${$uid.$user}{'realname'}
+			&ManageMemberinfo("update", $user, '', '', '', '', '', '', ($member{'bday'} ? $member{'bday'} : '-')) if $UpdateBday;
 		}
 
 		&ToHTML($member{'gender'});

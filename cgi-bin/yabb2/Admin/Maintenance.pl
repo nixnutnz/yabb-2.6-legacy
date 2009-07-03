@@ -459,7 +459,7 @@ sub RebuildMemList {
 		}
 		&UserAccount($member, "update") if $savesettings == 1;
 
-		$memberinf{$member} = sprintf("%010d", (&stringtotime(${$uid.$member}{'regdate'}) || &stringtotime($forumstart))) . qq~|${$uid.$member}{'realname'}|${$uid.$member}{'email'}|${$uid.$member}{'position'}|${$uid.$member}{'postcount'}|${$uid.$member}{'addgroups'}~;
+		$memberinf{$member} = sprintf("%010d", (&stringtotime(${$uid.$member}{'regdate'}) || &stringtotime($forumstart))) . qq~|${$uid.$member}{'realname'}|${$uid.$member}{'email'}|${$uid.$member}{'position'}|${$uid.$member}{'postcount'}|${$uid.$member}{'addgroups'}|${$uid.$member}{'bday'}~;
 
 		&buildIMS($member, ''); # rebuild the messages files
 

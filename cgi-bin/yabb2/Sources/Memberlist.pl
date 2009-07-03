@@ -35,7 +35,7 @@ sub Ml {
 		$barmax = 1;
 		&ManageMemberinfo("load");
 		while (($key, $value) = each(%memberinf)) {
-			(undef, undef, undef, undef, $memposts) = split(/\|/, $value);
+			(undef, undef, undef, undef, $memposts, undef) = split(/\|/, $value, 6);
 			if ($memposts > $barmax) { $barmax = $memposts; }
 		}
 		undef %memberinf;

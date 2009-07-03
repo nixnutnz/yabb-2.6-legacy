@@ -38,11 +38,11 @@ function AddSelText(bbopen, bbclose) {
 	else if (document.postmodify.message.setSelectionRange) {
 		var selectionStart = document.postmodify.message.selectionStart;
 		var selectionEnd = document.postmodify.message.selectionEnd;
-		var currentTop = document.postmodify.message.scrollTop;		
+		var currentTop = document.postmodify.message.scrollTop;
 		var replaceString = bbopen + document.postmodify.message.value.substring(selectionStart, selectionEnd) + bbclose;
 		document.postmodify.message.value = document.postmodify.message.value.substring(0, selectionStart) + replaceString + document.postmodify.message.value.substring(selectionEnd);
 		document.postmodify.message.setSelectionRange(selectionStart + bbopen.length, selectionEnd + bbopen.length);
-		document.postmodify.message.scrollTop = currentTop;		
+		document.postmodify.message.scrollTop = currentTop;
 	}
 	else document.postmodify.message.value += bbopen + bbclose;
 	document.postmodify.message.focus();
@@ -87,7 +87,7 @@ function AddSelTextUrl(bbopen, bbclose) {
 		else replaceString = bbopen + tmpString + bbclose;
 		document.postmodify.message.value = document.postmodify.message.value.substring(0, selectionStart) + replaceString + document.postmodify.message.value.substring(selectionEnd);
 		document.postmodify.message.setSelectionRange(selectionStart + markString.length, selectionEnd + bbopen.length);
-		document.postmodify.message.scrollTop = currentTop;		
+		document.postmodify.message.scrollTop = currentTop;
 	}
 	else document.postmodify.message.value += bbopen + bbclose;
 	document.postmodify.message.focus();

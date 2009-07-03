@@ -13,6 +13,7 @@ admin_split,admin_split|img_txt|620|img_txt|620a|imgwindowbg|tmp
 admin_sticky,admin_sticky|img_txt|781|||imgwindowbg|tmp
 aim,aim|img_txt|aim|||imgwindowbg|tmp
 alertmod,alert|img_txt|alertmodtext|img_txt|alertmod|imgwindowbg|tmp
+birthdaylist,birthdaylist|img_txt|birthdaylist|||imgmenu|tmp
 closepoll,poll_lock|img_polltxt|21|||imgcatbg|tmp
 collapse,collapse|img_txt|623|||imgcatbg|tmp
 createpoll,poll_create|img_polltxt|1|||imgcatbg|tmp
@@ -22,6 +23,7 @@ deletepoll,poll_del|img_polltxt|27|||imgcatbg|tmp
 deletevote,poll_dvote|img_polltxt|43|||imgwindowbg|tmp
 email,email|img_txt|69|||imgcatbg|tmp
 email_sm,email|img_txt|69|||imgwindowbg|tmp
+eventcal,eventcal|img_txt|eventcal|||imgmenu|tmp
 expand,expand|img_txt|624|||imgcatbg|tmp
 facebook,facebook|img_txt|facebook|||imgwindowbg|tmp
 favorites,favorites|img_txt|70|||imgmenu|tmp

@@ -431,7 +431,7 @@ sub SaveSettingsTo {
 				if (-e "$vardir/taborder.txt") {
 					@AdvancedTabs = &read_DBorFILE(0,'',$vardir,'taborder','txt');
 					chomp(@AdvancedTabs);
-				} else { @AdvancedTabs = qw (home help search ml admin revalidatesession login register guestpm mycenter logout); }
+				} else { @AdvancedTabs = qw (home help search ml admin revalidatesession login register guestpm mycenter logout eventcal birthdaylist); }
 
 				my @temp = &read_DBorFILE(1,'',$vardir,'tabs_ext','def');
 				if (@temp) {
@@ -446,6 +446,16 @@ sub SaveSettingsTo {
 				}
 			}
 			# The following is for upgrades from YaBB versions < 2.4 END
+
+			# The following is for upgrades from YaBB versions < 2.5 START
+			# Add event calendar to Tabs
+			my %testTabs;
+			map { $testTabs{$_} = 1 } @AdvancedTabs;
+			push(@AdvancedTabs, 'eventcal') if !$testTabs{'eventcal'};
+			push(@AdvancedTabs, 'birthdaylist') if !$testTabs{'birthdaylist'};
+
+			
+			# The following is for upgrades from YaBB versions < 2.5 END
 
 			# The following is for upgrades from YaBB versions < 2.3 START
 			if (-e "$vardir/upgrade_secsettings.txt") { require "$vardir/upgrade_secsettings.txt"; }
@@ -1012,6 +1022,38 @@ $ext_prof_fields
 \$backupdir = '$backupdir';
 \$lastbackup = $lastbackup;
 \$backupsettingsloaded = $backupsettingsloaded;
+
+
+
+###############################################################################
+# CalEventSet.txt                                                             #
+###############################################################################
+
+# Standard Calendar Setting
+\$EventCal_Active = $eventcal_active;
+\$Show_EventCal = $showeventcal;
+\$Show_EventButton = $showeventbutton;
+\$Show_EventBirthdays = $showeventbirthdays;
+\$Show_MiniCalIcons = $showminicalicons;
+\$ShowSunday = $showsunday;
+\$Show_ColorLinks = $showcolorlinks;
+\$No_ShortUbbc = $noshortubbc;
+\$Event_TodayColor = "$Event_TodayColor";
+\$Delete_EventsUntil = $deleteeventsuntil;
+\$CalShortEvent = "$calshortevent";
+\$CalEventPerms = qq~$caleventperms~;
+\$CalEventMods = qq~$caleventmods~;
+\$CalEventPrivate = $caleventprivate;
+\$CalEventNoName = $caleventnoname;
+\$Scroll_Events = $scrollevents;
+\$DisplayCalEvents = $displaycalevents;
+\$DisplayEvents = $displayevents;
+
+# Birthdaylist Setting
+\$BirthdayList_Active = $bdaylist_active;
+\$Show_BirthdaysList = $showbirthdayslist;
+\$Show_BirthdayButton = $showbdbutton;
+\$Show_BdColorLinks = $showbdcolorlinks;
 
 1;
 EOF

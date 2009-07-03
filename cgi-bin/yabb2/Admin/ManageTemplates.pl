@@ -2141,6 +2141,7 @@ sub BoardTempl {
 	$boardindex_template =~ s/({|<)yabb onlineguests(}|>)//g;
 	$boardindex_template =~ s/({|<)yabb bots(}|>)/$tempbotson/g;
 	$boardindex_template =~ s/({|<)yabb onlinebots(}|>)/$tempbotlist/g;
+	$boardindex_template =~ s/({|<)yabb caldisplay(}|>)/$cal_display/g;
 	$boardindex_template =~ s/({|<)yabb sharedlogin(}|>)//g;
 	$boardindex_template =~ s/({|<)yabb selecthtml(}|>)//g;
 	$boardindex_template =~ s~img src\=\"$_[1]\/(.+?)\"~&TmpImgLoc($1, $_[1], $_[2])~eisg;
