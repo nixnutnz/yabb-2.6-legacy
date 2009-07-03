@@ -193,7 +193,7 @@ sub get_cal {
 	#<--------------------------------------------->#
 
 
-	$sdays = qq~<select class="input" name="selday" size="1" style="height= 18px;">~;
+	$sdays = qq~<select class="input" name="selday" id="calday" size="1" style="height= 18px;">~;
 	for ($i = 1; $i < 32; $i++) {
 		$sel = "";
 		if ($mday == $i && !$sel_day) {
@@ -204,7 +204,7 @@ sub get_cal {
 		$sdays .= "<option value=\"" . sprintf("%02d",$i) . "\"$sel>$i</option>";
 	}
 	$sdays .= "</select>";
-	$smonths = qq~<select class="input" name="selmon" size="1" style="height= 18px;">~;
+	$smonths = qq~<select class="input" name="selmon" id="calmon" size="1" style="height= 18px;">~;
 	for ($i = 1; $i < 13; $i++) {
 		$sel = "";
 		if ($mon == $i && !$sel_mon) {
@@ -217,7 +217,7 @@ sub get_cal {
 
 	$smonths .= "</select>";
 
-	$syears = qq~<select class="input" name="selyear" size="1" style="height= 18px;">~;
+	$syears = qq~<select class="input" name="selyear" id="calyear" size="1" style="height= 18px;">~;
 
 	for ($i = $year; $i < $year + 4; $i++) {
 		$sel = "";
@@ -241,17 +241,17 @@ sub get_cal {
 
 	$calgotobox = qq~
 	<form action="$scripturl?action=get_cal;calshow=1;calgotobox=1" method="post">
-	<span class="small">
-	<b>$var_cal{'calsubmit'}</b> $var_cal{'calday'}</span>
-	<select class="input" name="selday" size="1" style="font-size: 7pt; font-family: Tahoma">
+	<label for="selday"><span class="small">
+	<b>$var_cal{'calsubmit'}</b> $var_cal{'calday'}</span></label>
+	<select class="input" name="selday" id="selday" size="1" style="font-size: 7pt; font-family: Tahoma">
 	<option value="0" selected="selected">$var_cal{'calnone'}</option>\n~;
 
 	for ($i = 1; $i < 32; $i++) {
 		$sel = "";
 		$calgotobox .= "	<option value=\"" . sprintf("%02d",$i) . "\">$i</option>\n";
 	}
-	$calgotobox .= qq~	</select><span class="small">&nbsp;&nbsp;$var_cal{'calmonth'}</span>
-	<select class="input" name="selmon" size="1" style="font-size: 7pt; font-family: Tahoma">\n~;
+	$calgotobox .= qq~	</select><label for="selmon"><span class="small">&nbsp;&nbsp;$var_cal{'calmonth'}</span></label>
+	<select class="input" name="selmon" id="selmon" size="1" style="font-size: 7pt; font-family: Tahoma">\n~;
 
 	for ($i = 1; $i < 13; $i++) {
 		$sel = "";
@@ -263,14 +263,14 @@ sub get_cal {
 		$calgotobox .= "	<option value=\"" . sprintf("%02d",$i) . "\"$sel>$i</option>\n";
 	}
 
-	$calgotobox .= qq~	</select><span class="small">&nbsp;&nbsp;$var_cal{'calyear'}</span>~;
+	$calgotobox .= qq~	</select><label for="selyear"><span class="small">&nbsp;&nbsp;$var_cal{'calyear'}</span></label>~;
 
 	$gyears3 = $year - 3;
 	$gyears2 = $year - 2;
 	$gyears1 = $year - 1;
 
 	$calgotobox .= qq~
-	<select class="input" name="selyear" size="1" style="font-size: 7pt; font-family: Tahoma">
+	<select class="input" name="selyear" id="selyear" size="1" style="font-size: 7pt; font-family: Tahoma">
 	<option value="$gyears3">$gyears3</option>
 	<option value="$gyears2">$gyears2</option>
 	<option value="$gyears1">$gyears1</option>\n~;
@@ -334,10 +334,10 @@ sub get_cal {
 <table cellspacing="0" cellpadding="0" border="0">
 	<tr> 
 		<td width="140" height="23">
-			<span class="small"><b>$var_cal{'date'}:</b></span>
+			<label for="calday"><span class="small"><b>$var_cal{'date'}:</b></span></label>
 		</td>
 		<td>
-			<span class="small"> $sdays $var_cal{'calday'}&nbsp;&nbsp;$smonths $var_cal{'calmonth'} &nbsp;&nbsp;$syears $var_cal{'calyear'}</span>
+			<span class="small"> <label for="calday">$sdays $var_cal{'calday'}</label>&nbsp;&nbsp;<label for="calmon">$smonths $var_cal{'calmonth'}</label> &nbsp;&nbsp;<label for="calyear">$syears $var_cal{'calyear'}</label></span>
 		</td>
 	</tr>~;
 
@@ -347,10 +347,10 @@ sub get_cal {
 			$option_noname = qq~
 	<tr> 
 		<td width="140" height="23">
-			<span class="small"><b>$var_cal{'calnoname'}:</b></span>
+			<span class="small"><label for="calnoname"><b>$var_cal{'calnoname'}:</b></label></span>
 		</td>
 		<td>
-			<input type="checkbox" value="1" name="calnoname" $cecknonam/>
+			<input type="checkbox" value="1" name="calnoname" id="calnoname" $cecknonam/>
 		</td>
 	</tr>~;
 		}
@@ -359,10 +359,10 @@ sub get_cal {
 $option_noname
 	<tr> 
 		<td width="140" height="23">
-			<span class="small"><b>$var_cal{'calview'}:</b></span>
+			<span class="small"><label for="caltype"><b>$var_cal{'calview'}:</b></label></span>
 		</td>
 		<td> 
-			<select name="caltype" size="1">
+			<select name="caltype" id="caltype" size="1">
 			<option value="0"$aevt1>$var_cal{'calpublic'}</option>
 			<option value="1"$aevt2>$var_cal{'calmembers'}</option>
 			$option_private
@@ -376,13 +376,13 @@ $option_noname
 	</tr>
 	<tr> 
 		<td  align="left" width="140" height="26">
-			<span class="small"><b>$var_cal{'event_icon'}:</b></span>
+			<span class="small"><label for="calicon"><b>$var_cal{'event_icon'}:</b></label></span>
 		</td>
 		<td>
 			<table cellspacing="0" cellpadding="0" border="0">
 			<tr>
 				<td>
-					<select name="calicon" onchange="calshowimage();">
+					<select name="calicon" id="calicon" onchange="calshowimage();">
 					<option value="eventinfo"$calicon_eventinfo>$var_cal{'eventinfo'}</option>
 					<option value="eventholiday"$calicon_eventholiday>$var_cal{'eventholiday'}</option>
 					<option value="eventannounce"$calicon_eventannounce>$var_cal{'eventannounce'}</option>
