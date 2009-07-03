@@ -864,7 +864,7 @@ $option_noname
 <table cellpadding="4" cellspacing="1" border="0" width="100%">
 	<tr>
 		<td align="left" class="$title_class">
-		<div style="float: left; width: 30%; text-align: left;"><img src="$imagesdir/eventcal.gif" align="top" border="0" alt="" /> $var_cal{'caltitle'}</div>
+		<div style="float: left; width: 30%; text-align: left;"><img src="$imagesdir/eventcalicon.gif" align="top" border="0" alt="" /> $var_cal{'caltitle'}</div>
 		<div style="float: left; width: 70%; text-align: right;">$calgotobox</div>
 		</td>
 	</tr>
@@ -993,7 +993,7 @@ $option_noname
 <table cellpadding="4" cellspacing="1" border="0" width="100%">
 	<tr>
 		<td align="left" class="$title_class">
-		<div style="float: left; width: 30%; padding-top: 1px; padding-bottom: 1px; text-align: left;"><img src="$imagesdir/eventcal.gif" border="0" alt="" /> $var_cal{'caltitle'}</div>
+		<div style="float: left; width: 30%; padding-top: 1px; padding-bottom: 1px; text-align: left;"><img src="$imagesdir/eventcalicon.gif" border="0" alt="" /> $var_cal{'caltitle'}</div>
 		<div style="float: left; width: 70%; padding-top: 1px; padding-bottom: 1px;; text-align: right;">$calgotobox</div>
 		</td>
 	</tr>

@@ -369,7 +369,7 @@ sub cal_birthdaylist {
 <table border="0" cellspacing="1" cellpadding="3" class="bordercolor" align="center" width="100%">
 <tr>
 <td class="titlebg" colspan="4">
-		<div style="float: left; width: 30%; padding-top: 1px; padding-bottom: 1px; text-align: left;"><img align="top" src="$imagesdir/eventcal.gif" border="0" alt="" /> $var_cal{'caltitle'}</div>
+		<div style="float: left; width: 30%; padding-top: 1px; padding-bottom: 1px; text-align: left;"><img align="top" src="$imagesdir/eventcalicon.gif" border="0" alt="" /> $var_cal{'caltitle'}</div>
 		<div style="float: left; width: 70%; padding-top: 1px; padding-bottom: 1px; text-align: right;">$calgotobox</div>
 </td>
 </tr><tr>
