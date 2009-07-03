@@ -108,8 +108,8 @@ sub cal_birthdaylist {
 	# Begin Birthdaylist
 	#<--------------------------------------------->#
 
-	my $sortiert = "$INFO{'sort'}";
-	my $letter = lc ($INFO{'letter'});
+	my $sortiert = $INFO{'sort'};
+	my $letter   = lc($INFO{'letter'});
 
 	#<--------------------------------------------->#
 	# Add Star sign and age begin
@@ -117,7 +117,7 @@ sub cal_birthdaylist {
 
 	&ManageMemberinfo("load");
 
-	my @birthmembers1 = ();
+	my @birthmembers = ();
 	foreach $user_bdname (keys %memberinf) {
 		(undef, $memrealname, undef, undef, undef, undef, $user_bdyear) = split(/\|/, $memberinf{$user_bdname}, 7);
 		next if !$user_bdyear;
@@ -179,7 +179,7 @@ sub cal_birthdaylist {
 		}
 
 		$string = "$user_bdyear|$user_bdmon|$user_bdday|$user_bdname|$age|$sternzeichen|$memrealname\n";
-		push (@birthmembers1, $string);
+		push (@birthmembers, $string);
 	}
 	undef %memberinf;
 
@@ -191,9 +191,7 @@ sub cal_birthdaylist {
 	# What sort we use?
 	#<--------------------------------------------->#
 
-	if (!$birthday_sort) { $birthday_sort = 'sortdate'; }
-	if (!$sortiert) { $sortiert = "$birthday_sort";} else { $sortiert = $sortiert; }
-	my @birthmembers2 = sort { &$sortiert($a,$b); } @birthmembers1;
+	if (!$sortiert) { $sortiert = 'sortdate';}
 
 	#<--------------------------------------------->#
 	# What sort we use end
@@ -203,10 +201,8 @@ sub cal_birthdaylist {
 	# sorting <dt> style begin
 	#<--------------------------------------------->#
 
-	$class = "class_$INFO{'sort'}";
-	$$class = ' class="windowbg"';
-	$class = "styleletter_$INFO{'letter'}";
-	$$class = ' class="catbg"';
+	${"class_$sortiert"} = ' class="windowbg"';
+	${"styleletter_$letter"} = ' class="catbg"';
 
 	if (!$class_sortuser) { $class_sortuser = ' class="catbg"'; }
 	if (!$class_sortage) { $class_sortage = ' class="catbg"'; }
@@ -221,10 +217,11 @@ sub cal_birthdaylist {
 	# view birthdays begin
 	#<--------------------------------------------->#
 
-	if (1 > @birthmembers2) {
+	if (!@birthmembers) {
 		$viewbirthdays .= qq~<tr><td class="windowbg2" colspan="4"><center><b><i>$var_cal{'calbirthday1'}</i></b></center></td></tr>~;
 	} else {
-		foreach $user_name (@birthmembers2) {
+		&timeformat(); # get only correct $mytimeselected
+		foreach $user_name (sort { &$sortiert($a,$b); } @birthmembers) {
 			chomp $user_name;
 			($user_bdyear, $user_bdmon, $user_bdday, $user_bdname, $age, $sternzeichen, $user_bdrealname) = split(/\|/,$user_name);
 
@@ -360,10 +357,10 @@ sub cal_birthdaylist {
 
 	$cal_info_header = qq~
 <tr>
-<td class="catbg" align="center" width="30%"><a href="$scripturl?action=cal_birthdaylist;sort=sortuser" style="text-decoration:none;"><b>$var_cal{'calname'}</b></a></td>
-<td class="catbg" align="center" width="20%"><a href="$scripturl?action=cal_birthdaylist;sort=sortage" style="text-decoration:none;"><b>$var_cal{'calage'}</b></a></td>
-<td class="catbg" align="center" width="30%"><a href="$scripturl?action=cal_birthdaylist;sort=sortstarsign" style="text-decoration:none;"><b>$var_cal{'calstarsign'}</b></a></td>
-<td class="catbg" align="center" width="20%"><a href="$scripturl?action=cal_birthdaylist;sort=sortdate" style="text-decoration:none;"><b>$var_cal{'calbddate'}</b></a></td>
+<td$class_sortuser align="center" width="30%"><a href="$scripturl?action=cal_birthdaylist;sort=sortuser;letter=$letter" style="text-decoration:none;"><b>$var_cal{'calname'}</b></a></td>
+<td$class_sortage align="center" width="20%"><a href="$scripturl?action=cal_birthdaylist;sort=sortage;letter=$letter" style="text-decoration:none;"><b>$var_cal{'calage'}</b></a></td>
+<td$class_sortstarsign align="center" width="30%"><a href="$scripturl?action=cal_birthdaylist;sort=sortstarsign;letter=$letter" style="text-decoration:none;"><b>$var_cal{'calstarsign'}</b></a></td>
+<td$class_sortdate align="center" width="20%"><a href="$scripturl?action=cal_birthdaylist;sort=sortdate;letter=$letter" style="text-decoration:none;"><b>$var_cal{'calbddate'}</b></a></td>
 </tr>
 ~;
 
@@ -435,13 +432,13 @@ $bd_today
 			<td$styleletter_y><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=y" style="text-decoration:none;">Y</a></font></td>
 			<td$styleletter_z><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=z" style="text-decoration:none;">Z</a></font></td>
 		</tr>
-
 </table>
 </td>
 </tr>
 $viewbirthdays
 </table>
 </div>
+<br /><br />
 ~;
 
 	if ($view_January) {
@@ -686,26 +683,26 @@ $view_December
 #<--------------------------------------------->#
 
 sub sortdate {
-	@zahl1 = split(/\|/,$a);
-	@zahl2 = split(/\|/,$b);
-	$zahl1[2] <=> $zahl2[2];
+	my @zahl1 = split(/\|/,$a);
+	my @zahl2 = split(/\|/,$b);
+	$zahl1[2].$zahl1[0] <=> $zahl2[2].$zahl2[0];
 }
 
 sub sortage {
-	@zahl1 = split(/\|/,$a);
-	@zahl2 = split(/\|/,$b);
-	$zahl1[4] <=> $zahl2[4];
+	my @zahl1 = split(/\|/,$a);
+	my @zahl2 = split(/\|/,$b);
+	$zahl1[4].$zahl1[2].$zahl1[0] <=> $zahl2[4].$zahl2[2].$zahl2[0];
 }
 
 sub sortstarsign {
-	@name1 = split(/\|/,$a);
-	@name2 = split(/\|/,$b);
+	my @name1 = split(/\|/,$a);
+	my @name2 = split(/\|/,$b);
 	$name1[5] cmp $name2[5];
 }
 
 sub sortuser {
-	@name1 = split(/\|/,$a);
-	@name2 = split(/\|/,$b);
+	my @name1 = split(/\|/,$a);
+	my @name2 = split(/\|/,$b);
 	lc $name1[6] cmp lc $name2[6];
 }
 

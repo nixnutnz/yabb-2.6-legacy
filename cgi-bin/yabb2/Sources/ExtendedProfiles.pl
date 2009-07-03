@@ -193,9 +193,9 @@ sub ext_get_field {
 
 # formats a MM/DD/YYYY string to the user's prefered format, ignores time completely!
 sub ext_timeformat {
-	my ($mytimeselected,$oldformat,$newformat,$mytimeformat,$newday,$newday2,$newmonth,$newmonth2,$newyear,$newshortyear,$oldmonth,$oldday,$oldyear,$newweekday,$newyearday,$newweek,$dummy,$usefullmonth);
+	my ($oldformat,$newformat,$mytimeformat,$newday,$newday2,$newmonth,$newmonth2,$newyear,$newshortyear,$oldmonth,$oldday,$oldyear,$newweekday,$newyearday,$newweek,$dummy,$usefullmonth);
 
-	if (${$uid.$username}{'timeselect'} > 0) { $mytimeselected = ${$uid.$username}{'timeselect'}; } else { $mytimeselected = $timeselected; }
+	&timeformat(); # get only correct $mytimeselected
 
 	$oldformat = shift;
 	if ($oldformat eq '' || $oldformat eq "\n") { return $oldformat; }
