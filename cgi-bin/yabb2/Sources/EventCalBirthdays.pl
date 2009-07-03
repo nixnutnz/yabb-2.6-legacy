@@ -260,21 +260,16 @@ sub cal_birthdaylist {
 
 			if ($showviewbd) {
 				## User date display begin ##
-				$monst="calmon_".$user_bdmon;
-				if ($mytimeselected == 1) {
-					$cdate="$user_bdday/$user_bdmon/$user_bdyear";
-				} elsif ($mytimeselected == 2) {
-					$cdate="$user_bdday.$user_bdmon.$user_bdyear";
-				} elsif ($mytimeselected == 3) {
-					$cdate="$user_bdday.$user_bdmon.$user_bdyear";
+				if ($mytimeselected == 1 || $mytimeselected == 5) {
+					$cdate = "$user_bdmon/$user_bdday/$user_bdyear";
+				} elsif ($mytimeselected == 2 || $mytimeselected == 3) {
+					$cdate = "$user_bdday.$user_bdmon.$user_bdyear";
 				} elsif ($mytimeselected == 4) {
-					$cdate="$var_cal{$monst} $user_bdday, $user_bdyear";
-				} elsif ($mytimeselected == 5) {
-					$cdate="$user_bdmon/$user_bdday/$user_bdyear";
+					$cdate = qq~$var_cal{"calmon_$user_bdmon"} $user_bdday, $user_bdyear~;
 				} elsif ($mytimeselected == 6) {
-					$cdate="$user_bdday $var_cal{$monst}, $user_bdyear";
+					$cdate = qq~$user_bdday. $var_cal{"calmon_$user_bdmon"} $user_bdyear~;
 				} else {
-					$cdate="$user_bdday-$user_bdmon-$user_bdyear";
+					$cdate = "$user_bdday-$user_bdmon-$user_bdyear";
 				}
 				## User date display end ##
 

@@ -222,8 +222,7 @@ sub ext_timeformat {
 			qq~$newday.$newmonth.$newyear~;
 
 		} elsif ($mytimeselected == 4) {
-			$newmonth--;
-			$newmonth2 = $months[$newmonth];
+			$newmonth2 = $months[$newmonth - 1];
 			if( $newday > 10 && $newday < 20 ) { $newday2 = "<sup>$timetxt{'4'}</sup>"; }
 			elsif( $newday % 10 == 1 ) { $newday2 = "<sup>$timetxt{'1'}</sup>"; }
 			elsif( $newday % 10 == 2 ) { $newday2 = "<sup>$timetxt{'2'}</sup>"; }
@@ -235,7 +234,7 @@ sub ext_timeformat {
 			qq~$newmonth/$newday/$newshortyear~;
 
 		} elsif ($mytimeselected == 6) {
-			$newmonth2 = $months[$newmonth-1];
+			$newmonth2 = $months[$newmonth - 1];
 			qq~$newday. $newmonth2 $newyear~;
 
 		} elsif ($mytimeselected == 7) {
@@ -265,7 +264,7 @@ sub ext_timeformat {
 			$mytimeformat =~ s/D/$newday/g;
 			$mytimeformat =~ s/\+/$dayext/g;
 			if ($usefullmonth == 1){
-				$mytimeformat =~ s/MM/$months[$newmonth-1]/g;
+				$mytimeformat =~ s/MM/$months[$newmonth - 1]/g;
 			} else {
 				$mytimeformat =~ s/M/$newmonth/g;
 			}

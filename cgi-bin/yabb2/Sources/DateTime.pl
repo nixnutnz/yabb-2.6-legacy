@@ -200,8 +200,8 @@ sub timeformat {
 			$mytimeformat =~ s/D/$newday/g;
 			$mytimeformat =~ s/\+/$dayext/g;
 			if ($mytimeformat =~ m/MM/) {
-				if ($use_rfc) { $mytimeformat =~ s/MM/$months_rfc[$newmonth-1]/g; }
-				else { $mytimeformat =~ s/MM/$months[$newmonth-1]/g; }
+				if ($use_rfc) { $mytimeformat =~ s/MM/$months_rfc[$newmonth - 1]/g; }
+				else { $mytimeformat =~ s/MM/$months[$newmonth - 1]/g; }
 			} elsif ($mytimeformat =~ m/M/){
 				$mytimeformat =~ s/M/$newmonth/g;
 			}
