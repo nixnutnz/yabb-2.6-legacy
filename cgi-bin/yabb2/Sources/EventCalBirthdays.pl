@@ -447,7 +447,7 @@ $viewbirthdays
    <table width="100%" cellspacing="1" cellpadding="4">
      <tr valign="middle">
        <td colspan="4" align="left" class="titlebg">
-		<img align="middle" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_01'}</b> ($countJanuary)
+		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_01'}</b> ($countJanuary)
        </td>
      </tr>
 $cal_info_header
@@ -465,7 +465,7 @@ $view_January
 
      <tr valign="middle">
        <td  colspan="4" align="left" class="titlebg">
-		<img align="middle" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_02'}</b> ($countFebruary)
+		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_02'}</b> ($countFebruary)
        </td>
      </tr>
 $cal_info_header
@@ -482,7 +482,7 @@ $view_February
    <table width="100%" cellspacing="1" cellpadding="4">
      <tr valign="middle">
        <td  colspan="4" align="left" class="titlebg">
-		<img align="middle" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_03'}</b> ($countMarch)
+		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_03'}</b> ($countMarch)
        </td>
      </tr>
 $cal_info_header
@@ -499,7 +499,7 @@ $view_March
    <table width="100%" cellspacing="1" cellpadding="4">
      <tr valign="middle">
        <td  colspan="4" align="left" class="titlebg">
-		<img align="middle" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_04'}</b> ($countApril)
+		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_04'}</b> ($countApril)
        </td>
      </tr>
 $cal_info_header
@@ -516,7 +516,7 @@ $view_April
    <table width="100%" cellspacing="1" cellpadding="4">
      <tr valign="middle">
        <td  colspan="4" align="left" class="titlebg">
-		<img align="middle" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_05'}</b> ($countMay)
+		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_05'}</b> ($countMay)
        </td>
      </tr>
 $cal_info_header
@@ -533,7 +533,7 @@ $view_May
    <table width="100%" cellspacing="1" cellpadding="4">
      <tr valign="middle">
        <td  colspan="4" align="left" class="titlebg">
-		<img align="middle" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_06'}</b> ($countJune)
+		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_06'}</b> ($countJune)
        </td>
      </tr>
 $cal_info_header
@@ -550,7 +550,7 @@ $view_June
    <table width="100%" cellspacing="1" cellpadding="4">
      <tr valign="middle">
        <td  colspan="4" align="left" class="titlebg">
-		<img align="middle" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_07'}</b> ($countJuly)
+		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_07'}</b> ($countJuly)
        </td>
      </tr>
 $cal_info_header
@@ -567,7 +567,7 @@ $view_July
    <table width="100%" cellspacing="1" cellpadding="4">
      <tr valign="middle">
        <td  colspan="4" align="left" class="titlebg">
-		<img align="middle" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_08'}</b> ($countAugust)
+		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_08'}</b> ($countAugust)
        </td>
      </tr>
 $cal_info_header
@@ -584,7 +584,7 @@ $view_August
    <table width="100%" cellspacing="1" cellpadding="4">
      <tr valign="middle">
        <td  colspan="4" align="left" class="titlebg">
-		<img align="middle" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_09'}</b> ($countSeptember)
+		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_09'}</b> ($countSeptember)
        </td>
      </tr>
 $cal_info_header
@@ -601,7 +601,7 @@ $view_September
    <table width="100%" cellspacing="1" cellpadding="4">
      <tr valign="middle">
        <td  colspan="4" align="left" class="titlebg">
-		<img align="middle" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_10'}</b> ($countOctober)
+		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_10'}</b> ($countOctober)
        </td>
      </tr>
 $cal_info_header
@@ -618,7 +618,7 @@ $view_October
    <table width="100%" cellspacing="1" cellpadding="4">
      <tr valign="middle">
        <td  colspan="4" align="left" class="titlebg">
-		<img align="middle" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_11'}</b> ($countNovember)
+		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_11'}</b> ($countNovember)
        </td>
      </tr>
 $cal_info_header
@@ -635,7 +635,7 @@ $view_November
    <table width="100%" cellspacing="1" cellpadding="4">
      <tr valign="middle">
        <td  colspan="4" align="left" class="titlebg">
-		<img align="middle" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_12'}</b> ($countDecember)
+		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_12'}</b> ($countDecember)
        </td>
      </tr>
 $cal_info_header
