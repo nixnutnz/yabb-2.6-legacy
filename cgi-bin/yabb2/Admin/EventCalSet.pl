@@ -267,10 +267,10 @@ sub EventCalSet {
 	while($CalIconURL[$i]) {
 		$yymain .= qq~
      <tr>
-       <td class='windowbg' width='24%' align="center"><input type="text" name="caliimg[$i]" value=$CalIconURL[$i] /></td>
-       <td class='windowbg' width='24%' align="center"><input type="text" name="calidescr[$i]" value='$CalIDescription[$i]' /></td>
-       <td class='windowbg' width='10%' align='center'><img src="$imagesdir/$CalIconURL[$i].gif" alt="" /></td>
-       <td class='windowbg' width='6%' align="center"><input type="checkbox" name=calidelbox[$i] value=1 /></td>
+       <td class="windowbg" width="24%" align="center"><input type="text" name="caliimg[$i]" value="$CalIconURL[$i]" /></td>
+       <td class="windowbg" width="24%" align="center"><input type="text" name="calidescr[$i]" value="$CalIDescription[$i]" /></td>
+       <td class="windowbg" width="10%" align='center'><img src="$imagesdir/../../../EventCalIcons/$CalIconURL[$i].gif" alt="" /></td>
+       <td class="windowbg" width="6%" align="center"><input type="checkbox" name="calidelbox[$i]" value="1" /></td>
      </tr>~;
 		$i++
 	}
@@ -284,9 +284,9 @@ sub EventCalSet {
 	while ($inew <= "3") {
 		$yymain .= qq~
      <tr>
-       <td class='windowbg' width='24%' align="center"><input type="text" name="caliimg[$i]" /></td>
-       <td class='windowbg' width='24%' align="center"><input type="text" name="calidescr[$i]" /></td>
-       <td class='windowbg' width='10%' align='center' colspan="2">&nbsp;</td>
+       <td class="windowbg" width="24%" align="center"><input type="text" name="caliimg[$i]" /></td>
+       <td class="windowbg" width="24%" align="center"><input type="text" name="calidescr[$i]" /></td>
+       <td class="windowbg" width="10%" align="center" colspan="2">&nbsp;</td>
      </tr>~;
 		$i++;
 		$inew++;

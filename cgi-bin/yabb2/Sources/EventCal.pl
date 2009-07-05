@@ -405,7 +405,7 @@ $option_noname
 		$YaBBC_calout .= qq~
 					</select>
 				</td><td>
-						<img src="$imagesdir/$calicon.gif" name="calicons" border="0" hspace="26" alt="" />
+						<img src="$imagesdir/../../../EventCalIcons/$calicon.gif" name="calicons" border="0" hspace="26" alt="" />
 				</td>
 			</tr>
 			</table>
@@ -697,10 +697,10 @@ $option_noname
 
 				function calshowimage() {
 					selected = document.postmodify.calicon.options[document.postmodify.calicon.selectedIndex].value + ".gif";
-					document.images.calicons.src = "$imagesdir/" + selected;
+					document.images.calicons.src = "$imagesdir/../../../EventCalIcons/" + selected;
 
 					if (document.images.calicons.complete == false) {
-						document.images.calicons.src = "$defaultimagesdir/" + selected;
+						document.images.calicons.src = "$defaultimagesdir/../../../EventCalIcons/" + selected;
 					}
 				}
 			//-->
@@ -929,10 +929,10 @@ $option_noname
 
 						if ($ctyp == 2) {
 							$yymain .= qq~
-			<img src="$imagesdir/eventprivate.gif" border="0" alt="Event" /> <img src="$imagesdir/$cico.gif" border="0" alt="$icon_text" /> $cdate <b>$icon_text</b> $eventuserlink~;
+			<img src="$imagesdir/eventprivate.gif" border="0" alt="Event" /> <img src="$imagesdir/../../../EventCalIcons/$cico.gif" border="0" alt="$icon_text" /> $cdate <b>$icon_text</b> $eventuserlink~;
 						} else {
 							$yymain .= qq~
-			<img src="$imagesdir/$cico.gif" border="0" alt="$icon_text" /> $cdate <b>$icon_text</b> $eventuserlink~;
+			<img src="$imagesdir/../../../EventCalIcons/$cico.gif" border="0" alt="$icon_text" /> $cdate <b>$icon_text</b> $eventuserlink~;
 						}
 
 						$yymain .= qq~
@@ -965,7 +965,7 @@ $option_noname
 				<tr>
 					<td width=100% valign=top>
 						<hr class="hr" />
-						<img src="$imagesdir/eventinfo.gif" border="0" alt="Event" /> $var_cal{'calnoevent'}
+						<img src="$imagesdir/../../../EventCalIcons/eventinfo.gif" border="0" alt="Event" /> $var_cal{'calnoevent'}
 						<hr class="hr" />
 					</td>
 				</tr>
@@ -993,7 +993,7 @@ $option_noname
 <table cellpadding="4" cellspacing="1" border="0" width="100%">
 	<tr>
 		<td align="left" class="$title_class">
-		<div style="float: left; width: 30%; padding-top: 1px; padding-bottom: 1px; text-align: left;"><img src="$imagesdir/eventcalicon.gif" border="0" alt="" /> $var_cal{'caltitle'}</div>
+		<div style="float: left; width: 30%; padding-top: 1px; padding-bottom: 1px; text-align: left;"><img src="$imagesdir/../../../EventCalIcons/eventcalicon.gif" border="0" alt="" /> $var_cal{'caltitle'}</div>
 		<div style="float: left; width: 70%; padding-top: 1px; padding-bottom: 1px;; text-align: right;">$calgotobox</div>
 		</td>
 	</tr>
@@ -1056,10 +1056,10 @@ $option_noname
 		<td align="left" colspan="2" class="windowbg2">~;
 						if ($ctyp == 2) {
 							$yymain .= qq~
-			<img src="$imagesdir/eventprivate.gif" border="0" alt="Event" /> <img src="$imagesdir/$cico.gif" border="0" alt="$icon_text" /> $cdate <b>$icon_text</b> $eventuserlink~;
+			<img src="$imagesdir/eventprivate.gif" border="0" alt="Event" /> <img src="$imagesdir/../../../EventCalIcons/$cico.gif" border="0" alt="$icon_text" /> $cdate <b>$icon_text</b> $eventuserlink~;
 						} else {
 							$yymain .= qq~
-			<img src="$imagesdir/$cico.gif" border="0" alt="$icon_text" /> $cdate <b>$icon_text</b> $eventuserlink~;
+			<img src="$imagesdir/../../../EventCalIcons/$cico.gif" border="0" alt="$icon_text" /> $cdate <b>$icon_text</b> $eventuserlink~;
 						}
 						$yymain .= qq~
 		</td>
@@ -1146,7 +1146,7 @@ $option_noname
 	} elsif ($Scroll_Events == 2) {
 		$outstring .= "<div style='overflow:auto;height:150px;'>";
 	} elsif ($Scroll_Events == 3) {
-		$yyinlinestyle .= qq~\n<link rel="stylesheet" href="$imagesdir/scroller.css" type="text/css" />~;
+		$yyinlinestyle .= qq~\n<link rel="stylesheet" href="$forumstylesurl/$usestyle.css" type="text/css" />~;
 		$outstring  .= qq~
 <script language="JavaScript1.2" type="text/javascript">
 <!--
@@ -1299,9 +1299,9 @@ $option_noname
 				if ($cicon eq "birthday") {
 					$outstring .="<div><span class=\"small\"><img src=\"$imagesdir/eventbd.gif\" border=\"0\" alt=\"$var_cal{'calbirthday'}\" /> $cdate <b>$var_cal{'calbirthday'}</b><br /> $eventbduserlink $var_cal{'calis'} $cevent $var_cal{'calold'}</span><hr class=\"hr\" size=\"1\" /></div>";
 				} elsif ($ctype == 2) {
-					$outstring .="<div><span class=\"small\"><img src=\"$imagesdir/eventprivate.gif\" border=\"0\" alt=\"$var_cal{'calprivate'} Event\" /> <img src=\"$imagesdir/$cicon.gif\" border=\"0\" alt=\"$icon_text\" /> $cdate <b>$icon_text</b> $eventuserlink<br />$cevent</span><hr class=\"hr\" size=\"1\" /></div>";
+					$outstring .="<div><span class=\"small\"><img src=\"$imagesdir/eventprivate.gif\" border=\"0\" alt=\"$var_cal{'calprivate'} Event\" /> <img src=\"$imagesdir/../../../EventCalIcons/$cicon.gif\" border=\"0\" alt=\"$icon_text\" /> $cdate <b>$icon_text</b> $eventuserlink<br />$cevent</span><hr class=\"hr\" size=\"1\" /></div>";
 				} else {
-					$outstring .="<div><span class=\"small\"><img src=\"$imagesdir/$cicon.gif\" border=\"0\" alt=\"$icon_text\" /> $cdate <b>$icon_text</b> $eventuserlink<br />$cevent</span><hr class=\"hr\" size=\"1\" /></div>";
+					$outstring .="<div><span class=\"small\"><img src=\"$imagesdir/../../../EventCalIcons/$cicon.gif\" border=\"0\" alt=\"$icon_text\" /> $cdate <b>$icon_text</b> $eventuserlink<br />$cevent</span><hr class=\"hr\" size=\"1\" /></div>";
 				}
 			} else {
 				if ($cicon eq "birthday") {
@@ -1309,7 +1309,7 @@ $option_noname
 				} elsif ($ctype == 2) {
 					$outstring .="<tr><td width=\"100%\" valign=\"top\"><span class=\"small\"><img src=\"$imagesdir/eventprivate.gif\" border=\"0\" alt=\"$var_cal{'calprivate'} Event\" /> <img src=\"$imagesdir/$cicon.gif\" border=\"0\" alt=\"$icon_text\" /> $cdate <b>$icon_text</b> $eventuserlink<br />$cevent</span><hr class=\"hr\" size=\"1\" /></td></tr>";
 				} else {
-					$outstring .="<tr><td width=\"100%\" valign=\"top\"><span class=\"small\"><img src=\"$imagesdir/$cicon.gif\" border=\"0\" alt=\"$icon_text\" /> $cdate <b>$icon_text</b> $eventuserlink<br />$cevent</span><hr class=\"hr\" size=\"1\" /></td></tr>";
+					$outstring .="<tr><td width=\"100%\" valign=\"top\"><span class=\"small\"><img src=\"$imagesdir/../../../EventCalIcons/$cicon.gif\" border=\"0\" alt=\"$icon_text\" /> $cdate <b>$icon_text</b> $eventuserlink<br />$cevent</span><hr class=\"hr\" size=\"1\" /></td></tr>";
 				}
 			}
 		}
@@ -1368,7 +1368,7 @@ $option_noname
 			$cal_pic = "$imagesdir/eventbd.gif";
 		}
 		if (exists(${event.$year.$view_mon.$dddd}{'calday'}) && !exists(${bday.$year.$view_mon.$dddd}{'calday'})) {
-			$cal_pic = "$imagesdir/eventinfo.gif";
+			$cal_pic = "$imagesdir/../../../EventCalIcons/eventinfo.gif";
 		}
 		if (exists(${event.$year.$view_mon.$dddd}{'calday'}) && exists(${bday.$year.$view_mon.$dddd}{'calday'})) {
 			$cal_pic = "$imagesdir/eventinfobd.gif";
@@ -1419,7 +1419,7 @@ $option_noname
 	#<--------------------------------------------->#
 
 	if ($outstring !~ /$imagesdir\//) {
-		$outstring = "<table><tr><td width=\"100%\" valign=\"top\"><span class=\"small\"><img src=\"$imagesdir/eventinfo.gif\" border=\"0\" alt=\"Event\" /> $var_cal{'calnoevent'}</span><hr class=\"hr\" size=\"1\" /></td></tr></table>";
+		$outstring = "<table><tr><td width=\"100%\" valign=\"top\"><span class=\"small\"><img src=\"$imagesdir/../../../EventCalIcons/eventinfo.gif\" border=\"0\" alt=\"Event\" /> $var_cal{'calnoevent'}</span><hr class=\"hr\" size=\"1\" /></td></tr></table>";
 	}
 	$caltablecal = "30%";
 	$caltablespan = "1";

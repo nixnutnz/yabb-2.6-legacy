@@ -177,7 +177,7 @@ $eventcallngver = 'YaBB 2.3 $Revision$';
 '30' => 'Add new Calendar Event-Icons here',
 '31' => 'Save Event Calendar Setting',
 '32' => 'Save Event-Icon Setting',
-'33' => "Here you can add more 'Event-Icons'. All added 'Event-Icon' images must be upload before in the 'EventIcons' directory <span class=\"small\">($yyhtml_root/ModImages/EventCal/EventIcons)</span><br />Allowed 'Event-Icon' extension are .gif",
+'33' => "Here you can add more 'Event-Icons'. All added 'Event-Icon' images must be upload before in the 'EventCalIcons' directory <span class=\"small\">($yyhtml_root/EventCalIcons)</span><br />Allowed 'Event-Icon' extension are .gif",
 '34' => 'Displayed Event(s)-Days in Board- CalendarIndex?',
 '35' => '(0 == actual month)',
 '36' => 'First day of week (mini calendar)?',
