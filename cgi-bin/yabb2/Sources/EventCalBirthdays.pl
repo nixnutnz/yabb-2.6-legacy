@@ -283,51 +283,51 @@ sub cal_birthdaylist {
 				#<--------------------------------------------->#
 
 				if ($user_bdmon == 1 || $user_bdmon == '1') {
-					$view_January .= qq~<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
+					$view_January .= qq~	<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
 					$countJanuary++;
 				}
 				if ($user_bdmon == 2 || $user_bdmon == 2) {
-					$view_February .= qq~<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
+					$view_February .= qq~	<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
 					$countFebruary++;
 				}
 				if ($user_bdmon == 3 || $user_bdmon == 3) {
-					$view_March .= qq~<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
+					$view_March .= qq~	<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
 					$countMarch++;
 				}
 				if ($user_bdmon == 4 || $user_bdmon == 4) {
-					$view_April .= qq~<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
+					$view_April .= qq~	<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
 					$countApril++;
 				}
 				if ($user_bdmon == 5 || $user_bdmon == 5) {
-					$view_May .= qq~<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
+					$view_May .= qq~	<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
 					$countMay++;
 				}
 				if ($user_bdmon == 6 || $user_bdmon == 6) {
-					$view_June .= qq~<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
+					$view_June .= qq~	<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
 					$countJune++;
 				}
 				if ($user_bdmon == 7 || $user_bdmon == 7) {
-					$view_July .= qq~<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
+					$view_July .= qq~	<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
 					$countJuly++;
 				}
 				if ($user_bdmon == 8 || $user_bdmon == 8) {
-					$view_August .= qq~<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
+					$view_August .= qq~	<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
 					$countAugust++;
 				}
 				if ($user_bdmon == 9 || $user_bdmon == 9) {
-					$view_September .= qq~<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
+					$view_September .= qq~	<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
 					$countSeptember++;
 				}
 				if ($user_bdmon == 10) {
-					$view_October .= qq~<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
+					$view_October .= qq~	<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
 					$countOctober++;
 				}
 				if ($user_bdmon == 11) {
-					$view_November .= qq~<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
+					$view_November .= qq~	<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
 					$countNovember++;
 				}
 				if ($user_bdmon == 12) {
-					$view_December .= qq~<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
+					$view_December .= qq~	<tr><td class="windowbg2" align="center" valign="middle" width="30%">$user_linkprofile</td><td class="windowbg2" align="center" valign="middle" width="20%">$age</td><td class="windowbg2" align="center" valign="middle" width="30%">$sternzeichen</td><td class="windowbg2" align="center" valign="middle" width="20%">$cdate</td></tr>\n~;
 					$countDecember++;
 				}
 			}
@@ -356,16 +356,16 @@ sub cal_birthdaylist {
 	#<--------------------------------------------->#
 
 	$cal_info_header = qq~
-<tr>
-<td$class_sortuser align="center" width="30%"><a href="$scripturl?action=cal_birthdaylist;sort=sortuser;letter=$letter" style="text-decoration:none;"><b>$var_cal{'calname'}</b></a></td>
-<td$class_sortage align="center" width="20%"><a href="$scripturl?action=cal_birthdaylist;sort=sortage;letter=$letter" style="text-decoration:none;"><b>$var_cal{'calage'}</b></a></td>
-<td$class_sortstarsign align="center" width="30%"><a href="$scripturl?action=cal_birthdaylist;sort=sortstarsign;letter=$letter" style="text-decoration:none;"><b>$var_cal{'calstarsign'}</b></a></td>
-<td$class_sortdate align="center" width="20%"><a href="$scripturl?action=cal_birthdaylist;sort=sortdate;letter=$letter" style="text-decoration:none;"><b>$var_cal{'calbddate'}</b></a></td>
-</tr>
+	<tr>
+		<td$class_sortuser align="center" width="30%"><a href="$scripturl?action=cal_birthdaylist;sort=sortuser;letter=$letter" style="text-decoration:none;"><b>$var_cal{'calname'}</b></a></td>
+		<td$class_sortage align="center" width="20%"><a href="$scripturl?action=cal_birthdaylist;sort=sortage;letter=$letter" style="text-decoration:none;"><b>$var_cal{'calage'}</b></a></td>
+		<td$class_sortstarsign align="center" width="30%"><a href="$scripturl?action=cal_birthdaylist;sort=sortstarsign;letter=$letter" style="text-decoration:none;"><b>$var_cal{'calstarsign'}</b></a></td>
+		<td$class_sortdate align="center" width="20%"><a href="$scripturl?action=cal_birthdaylist;sort=sortdate;letter=$letter" style="text-decoration:none;"><b>$var_cal{'calbddate'}</b></a></td>
+	</tr>
 ~;
 
 	$yymain .= qq~
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
+<div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
 <table border="0" cellspacing="1" cellpadding="3" class="bordercolor" align="center" width="100%">
 <tr>
 <td class="titlebg" colspan="4">
@@ -403,35 +403,35 @@ $bd_today
 <tr>
 <td class="windowbg" colspan="4" align="center" width="100%">
 <table border="0" cellpadding="4" cellspacing="1" width="100%">
-		<tr align="center">
-			<td$styleletter_other><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=other" style="text-decoration:none;">123</a></font></td>
-			<td$styleletter_a><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=a" style="text-decoration:none;">A</a></font></td>
-			<td$styleletter_b><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=b" style="text-decoration:none;">B</a></font></td>
-			<td$styleletter_c><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=c" style="text-decoration:none;">C</a></font></td>
-			<td$styleletter_d><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=d" style="text-decoration:none;">D</a></font></td>
-			<td$styleletter_e><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=e" style="text-decoration:none;">E</a></font></td>
-			<td$styleletter_f><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=f" style="text-decoration:none;">F</a></font></td>
-			<td$styleletter_g><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=g" style="text-decoration:none;">G</a></font></td>
-			<td$styleletter_h><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=h" style="text-decoration:none;">H</a></font></td>
-			<td$styleletter_i><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=i" style="text-decoration:none;">I</a></font></td>
-			<td$styleletter_j><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=j" style="text-decoration:none;">J</a></font></td>
-			<td$styleletter_k><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=k" style="text-decoration:none;">K</a></font></td>
-			<td$styleletter_l><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=l" style="text-decoration:none;">L</a></font></td>
-			<td$styleletter_m><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=m" style="text-decoration:none;">M</a></font></td>
-			<td$styleletter_n><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=n" style="text-decoration:none;">N</a></font></td>
-			<td$styleletter_o><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=o" style="text-decoration:none;">O</a></font></td>
-			<td$styleletter_p><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=p" style="text-decoration:none;">P</a></font></td>
-			<td$styleletter_q><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=q" style="text-decoration:none;">Q</a></font></td>
-			<td$styleletter_r><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=r" style="text-decoration:none;">R</a></font></td>
-			<td$styleletter_s><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=s" style="text-decoration:none;">S</a></font></td>
-			<td$styleletter_t><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=t" style="text-decoration:none;">T</a></font></td>
-			<td$styleletter_u><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=u" style="text-decoration:none;">U</a></font></td>
-			<td$styleletter_v><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=v" style="text-decoration:none;">V</a></font></td>
-			<td$styleletter_w><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=w" style="text-decoration:none;">W</a></font></td>
-			<td$styleletter_x><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=x" style="text-decoration:none;">X</a></font></td>
-			<td$styleletter_y><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=y" style="text-decoration:none;">Y</a></font></td>
-			<td$styleletter_z><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=z" style="text-decoration:none;">Z</a></font></td>
-		</tr>
+	<tr align="center">
+		<td$styleletter_other><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=other" style="text-decoration:none;">123</a></font></td>
+		<td$styleletter_a><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=a" style="text-decoration:none;">A</a></font></td>
+		<td$styleletter_b><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=b" style="text-decoration:none;">B</a></font></td>
+		<td$styleletter_c><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=c" style="text-decoration:none;">C</a></font></td>
+		<td$styleletter_d><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=d" style="text-decoration:none;">D</a></font></td>
+		<td$styleletter_e><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=e" style="text-decoration:none;">E</a></font></td>
+		<td$styleletter_f><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=f" style="text-decoration:none;">F</a></font></td>
+		<td$styleletter_g><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=g" style="text-decoration:none;">G</a></font></td>
+		<td$styleletter_h><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=h" style="text-decoration:none;">H</a></font></td>
+		<td$styleletter_i><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=i" style="text-decoration:none;">I</a></font></td>
+		<td$styleletter_j><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=j" style="text-decoration:none;">J</a></font></td>
+		<td$styleletter_k><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=k" style="text-decoration:none;">K</a></font></td>
+		<td$styleletter_l><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=l" style="text-decoration:none;">L</a></font></td>
+		<td$styleletter_m><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=m" style="text-decoration:none;">M</a></font></td>
+		<td$styleletter_n><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=n" style="text-decoration:none;">N</a></font></td>
+		<td$styleletter_o><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=o" style="text-decoration:none;">O</a></font></td>
+		<td$styleletter_p><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=p" style="text-decoration:none;">P</a></font></td>
+		<td$styleletter_q><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=q" style="text-decoration:none;">Q</a></font></td>
+		<td$styleletter_r><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=r" style="text-decoration:none;">R</a></font></td>
+		<td$styleletter_s><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=s" style="text-decoration:none;">S</a></font></td>
+		<td$styleletter_t><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=t" style="text-decoration:none;">T</a></font></td>
+		<td$styleletter_u><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=u" style="text-decoration:none;">U</a></font></td>
+		<td$styleletter_v><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=v" style="text-decoration:none;">V</a></font></td>
+		<td$styleletter_w><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=w" style="text-decoration:none;">W</a></font></td>
+		<td$styleletter_x><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=x" style="text-decoration:none;">X</a></font></td>
+		<td$styleletter_y><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=y" style="text-decoration:none;">Y</a></font></td>
+		<td$styleletter_z><font class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=z" style="text-decoration:none;">Z</a></font></td>
+	</tr>
 </table>
 </td>
 </tr>
@@ -443,16 +443,16 @@ $viewbirthdays
 
 	if ($view_January) {
 		$yymain .= qq~
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td colspan="4" align="left" class="titlebg">
-		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_01'}</b> ($countJanuary)
-       </td>
-     </tr>
+<div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
+<table width="100%" cellspacing="1" cellpadding="4">
+	<tr valign="middle">
+		<td colspan="4" align="left" class="titlebg">
+			<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_01'}</b> ($countJanuary)
+		</td>
+	</tr>
 $cal_info_header
 $view_January
-   </table>
+</table>
 </div>
 <br /><br />
 ~;
@@ -460,17 +460,16 @@ $view_January
 
 	if ($view_February) {
 		$yymain .= qq~
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-
-     <tr valign="middle">
-       <td  colspan="4" align="left" class="titlebg">
-		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_02'}</b> ($countFebruary)
-       </td>
-     </tr>
+<div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
+<table width="100%" cellspacing="1" cellpadding="4">
+	<tr valign="middle">
+		<td  colspan="4" align="left" class="titlebg">
+			<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_02'}</b> ($countFebruary)
+		</td>
+	</tr>
 $cal_info_header
 $view_February
-   </table>
+</table>
 </div>
 <br /><br />
 ~;
@@ -478,16 +477,16 @@ $view_February
 
 	if ($view_March) {
 		$yymain .= qq~
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td  colspan="4" align="left" class="titlebg">
-		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_03'}</b> ($countMarch)
-       </td>
-     </tr>
+<div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
+<table width="100%" cellspacing="1" cellpadding="4">
+	<tr valign="middle">
+		<td  colspan="4" align="left" class="titlebg">
+			<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_03'}</b> ($countMarch)
+		</td>
+	</tr>
 $cal_info_header
 $view_March
-   </table>
+</table>
 </div>
 <br /><br />
 ~;
@@ -495,16 +494,16 @@ $view_March
 
 	if ($view_April) {
 		$yymain .= qq~
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td  colspan="4" align="left" class="titlebg">
-		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_04'}</b> ($countApril)
-       </td>
-     </tr>
+<div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
+<table width="100%" cellspacing="1" cellpadding="4">
+	<tr valign="middle">
+		<td  colspan="4" align="left" class="titlebg">
+			<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_04'}</b> ($countApril)
+		</td>
+	</tr>
 $cal_info_header
 $view_April
-   </table>
+</table>
 </div>
 <br /><br />
 ~;
@@ -512,16 +511,16 @@ $view_April
 
 	if ($view_May) {
 		$yymain .= qq~
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td  colspan="4" align="left" class="titlebg">
-		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_05'}</b> ($countMay)
-       </td>
-     </tr>
+<div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
+<table width="100%" cellspacing="1" cellpadding="4">
+	<tr valign="middle">
+		<td  colspan="4" align="left" class="titlebg">
+			<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_05'}</b> ($countMay)
+		</td>
+	</tr>
 $cal_info_header
 $view_May
-   </table>
+</table>
 </div>
 <br /><br />
 ~;
@@ -529,16 +528,16 @@ $view_May
 
 	if ($view_June) {
 		$yymain .= qq~
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td  colspan="4" align="left" class="titlebg">
-		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_06'}</b> ($countJune)
-       </td>
-     </tr>
+<div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
+<table width="100%" cellspacing="1" cellpadding="4">
+	<tr valign="middle">
+		<td  colspan="4" align="left" class="titlebg">
+			<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_06'}</b> ($countJune)
+		</td>
+	</tr>
 $cal_info_header
 $view_June
-   </table>
+</table>
 </div>
 <br /><br />
 ~;
@@ -546,16 +545,16 @@ $view_June
 
 	if ($view_July) {
 		$yymain .= qq~
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td  colspan="4" align="left" class="titlebg">
-		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_07'}</b> ($countJuly)
-       </td>
-     </tr>
+<div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
+<table width="100%" cellspacing="1" cellpadding="4">
+	<tr valign="middle">
+		<td  colspan="4" align="left" class="titlebg">
+			<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_07'}</b> ($countJuly)
+		</td>
+	</tr>
 $cal_info_header
 $view_July
-   </table>
+</table>
 </div>
 <br /><br />
 ~;
@@ -563,16 +562,16 @@ $view_July
 
 	if ($view_August) {
 		$yymain .= qq~
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td  colspan="4" align="left" class="titlebg">
-		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_08'}</b> ($countAugust)
-       </td>
-     </tr>
+<div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
+<table width="100%" cellspacing="1" cellpadding="4">
+	<tr valign="middle">
+		<td  colspan="4" align="left" class="titlebg">
+			<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_08'}</b> ($countAugust)
+		</td>
+	</tr>
 $cal_info_header
 $view_August
-   </table>
+</table>
 </div>
 <br /><br />
 ~;
@@ -580,16 +579,16 @@ $view_August
 
 	if ($view_September) {
 		$yymain .= qq~
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td  colspan="4" align="left" class="titlebg">
-		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_09'}</b> ($countSeptember)
-       </td>
-     </tr>
+<div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
+<table width="100%" cellspacing="1" cellpadding="4">
+	<tr valign="middle">
+		<td  colspan="4" align="left" class="titlebg">
+			<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_09'}</b> ($countSeptember)
+		</td>
+	</tr>
 $cal_info_header
 $view_September
-   </table>
+</table>
 </div>
 <br /><br />
 ~;
@@ -597,16 +596,16 @@ $view_September
 
 	if ($view_October) {
 		$yymain .= qq~
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td  colspan="4" align="left" class="titlebg">
-		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_10'}</b> ($countOctober)
-       </td>
-     </tr>
+<div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
+<table width="100%" cellspacing="1" cellpadding="4">
+	<tr valign="middle">
+		<td  colspan="4" align="left" class="titlebg">
+			<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_10'}</b> ($countOctober)
+		</td>
+	</tr>
 $cal_info_header
 $view_October
-   </table>
+</table>
 </div>
 <br /><br />
 ~;
@@ -614,16 +613,16 @@ $view_October
 
 	if ($view_November) {
 		$yymain .= qq~
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td  colspan="4" align="left" class="titlebg">
-		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_11'}</b> ($countNovember)
-       </td>
-     </tr>
+<div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
+<table width="100%" cellspacing="1" cellpadding="4">
+	<tr valign="middle">
+		<td  colspan="4" align="left" class="titlebg">
+			<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_11'}</b> ($countNovember)
+		</td>
+	</tr>
 $cal_info_header
 $view_November
-   </table>
+</table>
 </div>
 <br /><br />
 ~;
@@ -631,16 +630,16 @@ $view_November
 
 	if ($view_December) {
 		$yymain .= qq~
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td  colspan="4" align="left" class="titlebg">
-		<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_12'}</b> ($countDecember)
-       </td>
-     </tr>
+<div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
+<table width="100%" cellspacing="1" cellpadding="4">
+	<tr valign="middle">
+		<td  colspan="4" align="left" class="titlebg">
+			<img align="bottom" src="$imagesdir/eventbd.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calmon_12'}</b> ($countDecember)
+		</td>
+	</tr>
 $cal_info_header
 $view_December
-   </table>
+</table>
 </div>
 <br /><br />
 ~;
@@ -648,18 +647,18 @@ $view_December
 
 	if ($no_bd_found == 1) {
 		$yymain .= qq~
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
+<div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
 <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td  colspan="4" align="left" class="titlebg">
-		<img src="$imagesdir/info.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calbirthday1'}</b>
-       </td>
-     </tr>
-     <tr>
-       <td class="windowbg2" align="left" valign="middle" colspan="4">
-	$no_birthday_found
-       </td>
-     </tr>
+	<tr valign="middle">
+		<td  colspan="4" align="left" class="titlebg">
+			<img src="$imagesdir/info.gif" border="0" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calbirthday1'}</b>
+		</td>
+	</tr>
+	<tr>
+		<td class="windowbg2" align="left" valign="middle" colspan="4">
+			$no_birthday_found
+		</td>
+	</tr>
 </table>
 </div>
 ~;
