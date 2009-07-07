@@ -1,0 +1,157 @@
+/*** Page elements ***/
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 90%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 5%;
+    border: 1px solid black;
+    background: #abf;
+}
+
+body div {
+    background: white;
+}
+
+/*** header / logo ***/
+
+#header {
+    font-size: 60px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    padding: 10px;
+    color: #339;
+    line-height: 60px;
+    vertical-align: middle;
+}
+
+#header sup {
+    font-size: 20px;
+}
+
+#header .small {
+    font-size: .25em;
+}
+
+#header .subheader {
+    font-size: 20px;
+    line-height: 20px;
+    font-style: normal;
+}
+
+/*** Menu ***/
+
+#menu ul {
+    list-style: none;
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background: #333;
+}
+
+#menu ul li {
+    float: left;
+    border: 0px;
+    padding: 0px;
+}
+
+#menu ul li.curpage a {
+    background: #336 url("images/seperator.gif") bottom right no-repeat;
+    color: #fff;
+/*	display: block;
+	float: left;
+	margin: 0;
+	padding: 8px 12px;
+	text-decoration: none;*/
+}
+
+#menu a {
+	background: #333 url("images/seperator.gif") bottom right no-repeat;
+	color: #ccc;
+	display: block;
+	float: left;
+	margin: 0;
+	padding: 8px 12px;
+	text-decoration: none;
+}
+
+#menu a:hover {
+    background: #339;
+    color: #fff;
+}
+
+/*** content styles ***/
+#content {
+    clear: both;
+    padding: 10px;
+}
+
+.levels dt {
+    font-weight: bold;
+}
+
+.highlight {
+    color: blue;
+    font-size: 14pt;
+}
+
+h3 {
+    font-weight: bold;
+    font-size: 20pt;
+    color: #339;
+}
+
+h5 {
+    font-size: 1.2em;
+    font-style: italic;
+    margin-bottom: .2em;
+}
+
+/*** footer ***/
+#foooter {
+    padding-top: 10px;
+}
+
+#footer ul {
+    list-style: none;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+#footer ul li {
+    display: inline;
+    border: 0px;
+    padding: 0px;
+    margin-right: 10px;
+}
+
+#footer ul li.curpage {
+    color: #336;
+}
+
+#footer ul li a {
+    color: #339;
+    text-decoration: none;
+}
+
+#footer ul li a:hover {
+    color: blue;
+    text-decoration: underline;
+}
+
+/*** copyright ***/
+#copy {
+    padding-top: 10px;
+    font-size: .7em;
+    text-align: center;
+}
+
+/*** misc. classes ***/
+
+.clearfix {
+    clear: both;
+}
