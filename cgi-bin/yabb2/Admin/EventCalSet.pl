@@ -25,29 +25,41 @@ if ($Show_EventCal eq '') { &EventCalSet2; }
 
 sub EventCalSet {
 	&is_admin_or_gmod;
-	my ($onbirthchecked, $caleventprivatechecked);
+	my ($caleventprivatechecked);
 
 	# figure out what to print
 	my $status_calendar = "red1.gif";
 	my $status_bdlist = "red1.gif";
 
-	if    ($Show_EventCal == 0)       { $bevt1  = ' selected="selected"'; }
+	if    (!$Scroll_Events)           { $aevt1  = ' selected="selected"'; }
+	elsif ($Scroll_Events == 1)       { $aevt2  = ' selected="selected"'; }
+	elsif ($Scroll_Events == 2)       { $aevt3  = ' selected="selected"'; }
+	elsif ($Scroll_Events == 3)       { $aevt4  = ' selected="selected"'; }
+
+	if    (!$Show_EventCal)           { $bevt1  = ' selected="selected"'; }
 	elsif ($Show_EventCal == 1)       { $bevt2  = ' selected="selected"'; $status_calendar = "green1.gif"; }
 	elsif ($Show_EventCal == 2)       { $bevt3  = ' selected="selected"'; $status_calendar = "green1.gif"; }
 
-	if    ($Show_EventButton == 0)    { $cevt1  = ' selected="selected"'; }
+	if    (!$Show_EventButton)        { $cevt1  = ' selected="selected"'; }
 	elsif ($Show_EventButton == 1)    { $cevt2  = ' selected="selected"'; }
 	elsif ($Show_EventButton == 2)    { $cevt3  = ' selected="selected"'; }
 
-	if    ($Show_BirthdaysList == 0)  { $devt1  = ' selected="selected"'; }
+	if    (!$Show_BirthdaysList)      { $devt1  = ' selected="selected"'; }
 	elsif ($Show_BirthdaysList == 1)  { $devt2  = ' selected="selected"'; $status_bdlist = "green1.gif"; }
 	elsif ($Show_BirthdaysList == 2)  { $devt3  = ' selected="selected"'; $status_bdlist = "green1.gif"; }
 
-	if    ($Show_BirthdayButton == 0) { $eevt1  = ' selected="selected"'; }
+	if    (!$Show_BirthdayButton)     { $eevt1  = ' selected="selected"'; }
 	elsif ($Show_BirthdayButton == 1) { $eevt2  = ' selected="selected"'; }
 	elsif ($Show_BirthdayButton == 2) { $eevt3  = ' selected="selected"'; }
 
-	if    ($Show_EventBirthdays)      { $onbirthchecked = "checked='checked'" }
+	if    (!$Show_BirthdayDate)       { $fevt1  = ' selected="selected"'; }
+	elsif ($Show_BirthdayDate == 1)   { $fevt2  = ' selected="selected"'; }
+	elsif ($Show_BirthdayDate == 2)   { $fevt3  = ' selected="selected"'; }
+
+	if    (!$Show_EventBirthdays)     { $gevt1  = ' selected="selected"'; }
+	elsif ($Show_EventBirthdays == 1) { $gevt2  = ' selected="selected"'; }
+	elsif ($Show_EventBirthdays == 2) { $gevt3  = ' selected="selected"'; }
+
 	if    ($Show_BirthdaysList)       { $onbirthlistchecked = "checked='checked'" }
 	if    ($Show_MiniCalIcons)        { $onminiiconchecked = "checked='checked'" }
 	if    ($ShowSunday)               { $onsundaychecked = "checked='checked'" }
@@ -60,12 +72,7 @@ sub EventCalSet {
 	else                              { $Event_TodayColor = lc($Event_TodayColor); }
 	if    (!$Delete_EventsUntil)      { $Delete_EventsUntil = "0"; }
 
-	if    ($Scroll_Events == 0)       { $aevt1  = ' selected="selected"'; }
-	elsif ($Scroll_Events == 1)       { $aevt2  = ' selected="selected"'; }
-	elsif ($Scroll_Events == 2)       { $aevt3  = ' selected="selected"'; }
-	elsif ($Scroll_Events == 3)       { $aevt4  = ' selected="selected"'; }
-
-	if    ($CalEventNoName == 0)      { $noname1 = ' selected="selected"'; }
+	if    (!$CalEventNoName)          { $noname1 = ' selected="selected"'; }
 	elsif ($CalEventNoName == 1)      { $noname2 = ' selected="selected"'; }
 	elsif ($CalEventNoName == 2)      { $noname3 = ' selected="selected"'; }
 
@@ -111,7 +118,13 @@ sub EventCalSet {
      </tr>
      <tr valign="middle">
        <td align="left" class="windowbg2"><label for="Show_EventBirthdays">$event_cal{'5'}</label></td>
-       <td align="left" class="windowbg2"><input type="checkbox" name="Show_EventBirthdays" id="Show_EventBirthdays" $onbirthchecked /></td>
+       <td align="left" class="windowbg2">
+		<select name="Show_EventBirthdays" id="Show_EventBirthdays" size="1">
+		<option value="0"$gevt1>$event_cal{'11'}</option>
+		<option value="1"$gevt2>$event_cal{'46'}</option>
+		<option value="2"$gevt3>$event_cal{'47'}</option>
+		</select>
+       </td>
      </tr>
      <tr valign="middle">
        <td align="left" class="windowbg2"><label for="ShowSunday">$event_cal{'36'}<br /><span class="small">$event_cal{'37'}</span></label></td>
@@ -221,6 +234,16 @@ sub EventCalSet {
        </td>
      </tr>
      <tr valign="middle">
+       <td align="left" class="windowbg2"><label for="Show_BirthdayDate">$event_cal{'48'}</label></td>
+       <td align="left" class="windowbg2">
+		<select name="Show_BirthdayDate" id="Show_BirthdayDate" size="1">
+		<option value="0"$fevt1>$event_cal{'11'}</option>
+		<option value="1"$fevt2>$event_cal{'46'}</option>
+		<option value="2"$fevt3>$event_cal{'47'}</option>
+		</select>
+       </td>
+     </tr>
+     <tr valign="middle">
        <td align="left" class="windowbg2"><label for="Show_BdColorLinks">$event_cal{'44'}<br /><span class="small">$event_cal{'45'}</span></label></td>
        <td align="left" class="windowbg2"><input type="checkbox" name="Show_BdColorLinks" id="Show_BdColorLinks" $onbdcolorlinkschecked /></td>
      </tr>
@@ -320,7 +343,7 @@ sub EventCalSet2 {
 	&is_admin_or_gmod;
 
 	# Set 1 or 0 if box was checked or not
-	map { ${$_} = $FORM{$_} ? 1 : 0; } qw/Show_EventBirthdays Show_MiniCalIcons CalEventPrivate DisplayCalEvents ShowSunday Show_ColorLinks No_ShortUbbc Show_BdColorLinks/;
+	map { ${$_} = $FORM{$_} ? 1 : 0; } qw/Show_MiniCalIcons CalEventPrivate DisplayCalEvents ShowSunday Show_ColorLinks No_ShortUbbc Show_BdColorLinks/;
 
 	# If empty fields are submitted, set them to default-values to save yabb from crashing
 	$DisplayEvents       = $FORM{'DisplayEvents'};
@@ -330,9 +353,12 @@ sub EventCalSet2 {
 	$Show_EventCal       = $FORM{'Show_EventCal'} || 0;
 	$Show_EventButton    = $FORM{'Show_EventButton'} || 0;
 	$Show_EventButton    = $Show_EventCal if $Show_EventButton > $Show_EventCal;
+	$Show_EventBirthdays = $FORM{'Show_EventBirthdays'} || 0;
+	$Show_EventBirthdays = $Show_EventCal if $Show_EventBirthdays > $Show_EventCal;
 	$Show_BirthdaysList  = $FORM{'Show_BirthdaysList'} || 0;
 	$Show_BirthdayButton = $FORM{'Show_BirthdayButton'} || 0;
 	$Show_BirthdayButton = $Show_BirthdaysList if $Show_BirthdayButton > $Show_BirthdaysList;
+	$Show_BirthdayDate   = $FORM{'Show_BirthdayDate'} || 0;
 	$CalEventNoName      = $FORM{'CalEventNoName'} || 0;
 	$Event_TodayColor    = uc($FORM{'Event_TodayColor'} || "#FF0000") . '000000';
 	$Event_TodayColor    =~ s/[^a-fA-F0-9#]//g;

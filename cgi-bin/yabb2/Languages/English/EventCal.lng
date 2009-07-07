@@ -106,6 +106,7 @@ $eventcallngver = 'YaBB 2.3 $Revision$';
 'eventsport' => 'Sport',
 'eventmedia' => 'Media (TV)',
 'eventmeeting' => 'Meeting',
+'hidden' => '<i>Hidden</i>',
 );
 
 ### Event Calendar YaBBC ###
@@ -159,8 +160,8 @@ $eventcallngver = 'YaBB 2.3 $Revision$';
 '11' => 'Off',
 '12' => 'Auto-Scroll',
 '13' => 'Manual-Scroll',
-'14' => 'Select which membergroups are allowed to add/edit events',
-'15' => "Leaving selections empty allows all groups and users to add/edit events<br /><br />$admin_txt{'14'}",
+'14' => 'Select which membergroups are allowed to add/edit events:',
+'15' => "Leaving selections empty allows all Groups, Users and Guests to add/edit events.<br /><br />$admin_txt{'14'}",
 '16' => 'Allow these members to add Events',
 '17' => 'List multiple members as \'username1,username2\'.',
 '18' => 'Allow members to add \'Private Events\'?',
@@ -194,6 +195,7 @@ $eventcallngver = 'YaBB 2.3 $Revision$';
 '47' => 'Guests and Members',
 '48' => 'Show \'Birthday List\' Button on YaBB menu?',
 '49' => 'Birthday List Settings',
+'50' => 'Show birthday date?',
 '52' => 'By creating Events delete <u>old</u> Events until this date:',
 '53' => 'Format: YYYYMMDD (Example: 20050131)<br />(0 == every old event | 1 == keep all old events)',
 '56' => 'Marquee',

@@ -1051,6 +1051,7 @@ $ext_prof_fields
 # Birthdaylist Setting
 \$Show_BirthdaysList = $Show_BirthdaysList;
 \$Show_BirthdayButton = $Show_BirthdayButton;
+\$Show_BirthdayDate = $Show_BirthdayDate;
 \$Show_BdColorLinks = $Show_BdColorLinks;
 
 1;

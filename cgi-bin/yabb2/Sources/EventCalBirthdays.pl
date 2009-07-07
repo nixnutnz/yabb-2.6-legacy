@@ -244,9 +244,9 @@ sub cal_birthdaylist {
 			if ($letter) {
 				$searchbdname = $user_bdrealname;
 				$searchbdname ||= $user_bdname;
-				$SearchLetter = lc substr($searchbdname,0,1);
-				if ($letter ne "other" && $SearchLetter eq "$letter") { $showviewbd = 1; }
-				if ($letter eq "other" && $SearchLetter !~ /\A[A-Za-z]+\Z/) { $showviewbd = 1; }
+				if ($letter ne "other") {
+					$showviewbd = 1 if $searchbdname =~ /^$letter/i;
+				} elsif ($searchbdname !~ /^[a-z]/i) { $showviewbd = 1; }
 			} else {
 				$showviewbd = 1;
 			}
@@ -256,19 +256,22 @@ sub cal_birthdaylist {
 			#<--------------------------------------------->#
 
 			if ($showviewbd) {
-				## User date display begin ##
-				if ($mytimeselected == 1 || $mytimeselected == 5) {
-					$cdate = "$user_bdmon/$user_bdday/$user_bdyear";
-				} elsif ($mytimeselected == 2 || $mytimeselected == 3) {
-					$cdate = "$user_bdday.$user_bdmon.$user_bdyear";
-				} elsif ($mytimeselected == 4) {
-					$cdate = qq~$var_cal{"calmon_$user_bdmon"} $user_bdday, $user_bdyear~;
-				} elsif ($mytimeselected == 6) {
-					$cdate = qq~$user_bdday. $var_cal{"calmon_$user_bdmon"} $user_bdyear~;
-				} else {
-					$cdate = "$user_bdday-$user_bdmon-$user_bdyear";
+				my $cdate = $var_cal{'hidden'};
+				if ($Show_BirthdayDate == 2 || ($Show_BirthdayDate == 1 && !$iamguest)) {
+					## User date display begin ##
+					if ($mytimeselected == 1 || $mytimeselected == 5) {
+						$cdate = "$user_bdmon/$user_bdday/$user_bdyear";
+					} elsif ($mytimeselected == 2 || $mytimeselected == 3) {
+						$cdate = "$user_bdday.$user_bdmon.$user_bdyear";
+					} elsif ($mytimeselected == 4) {
+						$cdate = qq~$var_cal{"calmon_$user_bdmon"} $user_bdday, $user_bdyear~;
+					} elsif ($mytimeselected == 6) {
+						$cdate = qq~$user_bdday. $var_cal{"calmon_$user_bdmon"} $user_bdyear~;
+					} else {
+						$cdate = "$user_bdday-$user_bdmon-$user_bdyear";
+					}
+					## User date display end ##
 				}
-				## User date display end ##
 
 				if ($Show_BdColorLinks) {
 					&LoadUser($user_bdname);
