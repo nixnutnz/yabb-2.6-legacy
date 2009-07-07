@@ -234,7 +234,7 @@ sub EventCalSet {
        </td>
      </tr>
      <tr valign="middle">
-       <td align="left" class="windowbg2"><label for="Show_BirthdayDate">$event_cal{'48'}</label></td>
+       <td align="left" class="windowbg2"><label for="Show_BirthdayDate">$event_cal{'50'}</label></td>
        <td align="left" class="windowbg2">
 		<select name="Show_BirthdayDate" id="Show_BirthdayDate" size="1">
 		<option value="0"$fevt1>$event_cal{'11'}</option>
