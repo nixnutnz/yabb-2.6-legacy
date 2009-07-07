@@ -200,14 +200,6 @@ sub ModifyProfile {
 	if (${$uid.$user}{'gender'} eq 'Male')   { $GenderMale   = ' selected="selected" '; }
 	if (${$uid.$user}{'gender'} eq 'Female') { $GenderFemale = ' selected="selected" '; }
 
-	my $timeorder;
-	if    (${$uid.$user}{'timeselect'} == 6) { $timeorder = 1; }
-	elsif (${$uid.$user}{'timeselect'} == 3) { $timeorder = 1; }
-	elsif (${$uid.$user}{'timeselect'} == 2) { $timeorder = 1; }
-	elsif ($timeselected == 6) { $timeorder = 1; }
-	elsif ($timeselected == 3) { $timeorder = 1; }
-	elsif ($timeselected == 2) { $timeorder = 1; }
-
 	&CalcAge($user, "parse");
 	$seluyear = qq~<label for="bday3">$profile_txt{'566'}</label><select name="bday3" id="bday3"><option value="">  </option>\n~;
 	for (my $e = 1905; $e < ($year-4); $e++) {
@@ -231,7 +223,7 @@ sub ModifyProfile {
 		$dayormonthd .= qq~<option value="$d" $selectday>$d</option>\n~;
 	}
 	$dayormonthd .= qq~</select> ~;
-	if ($timeorder) { $dayormonth = $dayormonthd . $dayormonthm; }
+	if (${$uid.$user}{'timeselect'} == 6 || ${$uid.$user}{'timeselect'} == 3 || ${$uid.$user}{'timeselect'} == 2) { $dayormonth = $dayormonthd . $dayormonthm; }
 	else { $dayormonth = $dayormonthm . $dayormonthd; }
 	$dayormonth =~ s/for="bday\d"/for="birthday"/o;
 	$dayormonth =~ s/id="bday\d"/id="birthday"/o;
