@@ -30,8 +30,8 @@ sub get_cal {
 	# select class depending on template style
 	my ($seperator,$title_class) = ('','tabtitle');
 	if ($usehead =~ /21$/) {
-		$title_class = 'catbg';
 		$seperator   = 'seperator';
+		$title_class = 'catbg';
 	}
 
 	#<--------------------------------------------->#
@@ -241,7 +241,7 @@ sub get_cal {
 	<form action="$scripturl?action=get_cal;calshow=1;calgotobox=1" method="post">
 	<label for="selday"><span class="small">
 	<b>$var_cal{'calsubmit'}</b> $var_cal{'calday'}</span></label>
-	<select class="input" name="selday" id="selday" size="1" style="font-size: 7pt; font-family: Tahoma">
+	<select class="input" name="selday" id="selday">
 	<option value="0" selected="selected">$var_cal{'calnone'}</option>\n~;
 
 	for ($i = 1; $i < 32; $i++) {
@@ -249,7 +249,7 @@ sub get_cal {
 		$calgotobox .= "	<option value=\"" . sprintf("%02d",$i) . "\">$i</option>\n";
 	}
 	$calgotobox .= qq~	</select><label for="selmon"><span class="small">&nbsp;&nbsp;$var_cal{'calmonth'}</span></label>
-	<select class="input" name="selmon" id="selmon" size="1" style="font-size: 7pt; font-family: Tahoma">\n~;
+	<select class="input" name="selmon" id="selmon">\n~;
 
 	for ($i = 1; $i < 13; $i++) {
 		$sel = "";
@@ -268,7 +268,7 @@ sub get_cal {
 	$gyears1 = $year - 1;
 
 	$calgotobox .= qq~
-	<select class="input" name="selyear" id="selyear" size="1" style="font-size: 7pt; font-family: Tahoma">
+	<select class="input" name="selyear" id="selyear">
 	<option value="$gyears3">$gyears3</option>
 	<option value="$gyears2">$gyears2</option>
 	<option value="$gyears1">$gyears1</option>\n~;
@@ -284,7 +284,7 @@ sub get_cal {
 	}
 
 	$calgotobox .= qq~	</select><span class="small">&nbsp;&nbsp;</span> 
-	<input type="submit" name="Go" value="$var_cal{'calgo'}" size="1" style="font-size: 7pt; font-family: Tahoma" />
+	<input type="submit" name="Go" value="$var_cal{'calgo'}" />
 	</form>~;
 
 	#<--------------------------------------------->#
@@ -1257,7 +1257,7 @@ $YaBBC_calout
 		if ($cicon eq "") { $cico = "eventinfo"; }
 		if ($CalShortEvent && length($cevent) > $CalShortEvent) {
 			unless ($ctime eq "birthday") {
-				if ($No_ShortUbbc == 1) {
+				if ($enable_ubbc && $No_ShortUbbc == 1) {
 					$cevent =~ s~\[url(.*?)\](.*?)\[\/url\]~$2~isg;
 					$cevent =~ s~\[ftp(.*?)\](.*?)\[\/ftp\]~$2~isg;
 					$cevent =~ s~\[email(.*?)\](.*?)\[\/email\]~$2~isg;
@@ -1268,16 +1268,22 @@ $YaBBC_calout
 					$cevent =~ s~\[i\](.*?)\[/i\]~/$1/~isg;
 					$cevent =~ s~\[u\](.*?)\[/u\]~_$1_~isg;
 					$cevent =~ s~\[.*?\]~~g;
-					$cevent =~ s~http\:\/\/~~ig;
+					$cevent =~ s~https?://~~ig;
 				}
-				$ceventshort = substr($cevent,0,$CalShortEvent);
-				$cevent = substr($ceventshort, 0, rindex($ceventshort,' '));
-				$cevent .= qq~ ... <br /><br /><a href="$scripturl?action=get_cal;calshow=1;eventdate=$cyear$cmon$cday;calid=$ctime;showthisdate=1" title="$var_cal{'calshowevent'}"><font color="#FF6600">$var_cal{'calmore'}</font> <img src="$imagesdir/eventmore.gif" border="0" alt="$var_cal{'calshowevent'}" /></a>~;
+				$convertstr = $cevent;
+				$convertcut = $CalShortEvent;
+				&CountChars;
+				$cevent = $convertstr;
+				$cevent .= " ..." if $cliped;
+				$cevent .= qq~<br /><br /><a href="$scripturl?action=get_cal;calshow=1;eventdate=$cyear$cmon$cday;calid=$ctime;showthisdate=1" title="$var_cal{'calshowevent'}"><font color="#FF6600">$var_cal{'calmore'}</font> <img src="$imagesdir/eventmore.gif" border="0" alt="$var_cal{'calshowevent'}" /></a>~;
 			}
 		}
-		$message = $cevent;
-		if (!$yyYaBBCloaded) { require "$sourcedir/YaBBC.pl"; } &DoUBBC;
-		$cevent = $message;
+		if ($enable_ubbc) {
+			$message = $cevent;
+			if (!$yyYaBBCloaded) { require "$sourcedir/YaBBC.pl"; }
+			&DoUBBC;
+			$cevent = $message;
+		}
 
 		if ($event_found == 1) {
 			if ($mytimeselected == 1) {
@@ -1446,14 +1452,37 @@ $YaBBC_calout
 		$caltablecal = "100%"; $caltablespan = "2";
 	}
 
-	my $cal_display .= qq~
+	my $cal_display;
+	if ($seperator) {
+		$cal_display = qq~
 <tr>
 	<td align="left" class="$title_class" colspan="2">
 		<div style="float: left; width: 30%; padding-top: 1px; padding-bottom: 1px; text-align: left;"> $var_cal{'caltitle'}</div>
 		<div style="float: left; width: 70%; padding-top: 1px; padding-bottom: 1px; text-align: right;">$calgotobox</div>
 	</td>
 </tr>
+~;
+	} else {
+		$cal_display = qq~
+<tr>
+	<td class="tabtitle" width="1%" height="25" valign="middle">
+		&nbsp;
+	</td>
+	<td class="tabtitle" width="29%" height="25" valign="middle" align="left">
+		$var_cal{'caltitle'}
+	</td>
+	<td class="tabtitle" width="69%" height="25" valign="middle" align="right">
+		$calgotobox
+	</td>
+	<td class="tabtitle" width="1%" height="25" valign="middle">
+		&nbsp;
+	</td>
+</tr>
+</table>
+<table class="bordercolor" cellpadding="0" cellspacing="0" border="0" width="100%">~;
+	}
 
+	$cal_display .= qq~
 <tr>
 	<td class="windowbg" width="5%" valign="middle" align="center">
 		<img src="$imagesdir/eventcal.gif" border="0" alt="" />
@@ -1529,16 +1558,30 @@ $YaBBC_calout
 
 	## Print EventCal in new window ##
 	if ($INFO{'calshow'} == 1) {
-		$yymain .= qq~
+		$yymain .= $seperator ? qq~
 		<div class="$seperator">
 		<table cellpadding="4" cellspacing="1" border="0" width="100%">
 			$cal_display
 		</table>
 		</div>
+		~ : qq~
+		<table cellpadding="0" cellspacing="0" border="0" width="100%">
+			$cal_display
+		</table>
 		~;
 
 		$yytitle = $var_cal{'yytitle'};
 		&template;
+	}
+
+	if ($seperator) {
+		$cal_display;
+	} else {
+		qq~
+<br />
+<table class="bordercolor" cellpadding="0" cellspacing="0" border="0" width="100%">
+		$cal_display
+</table>~;
 	}
 }
 

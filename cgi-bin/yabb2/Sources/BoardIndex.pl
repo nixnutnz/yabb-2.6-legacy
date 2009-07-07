@@ -701,9 +701,10 @@ sub BoardIndex {
 	$boardindex_template =~ s/({|<)yabb groupcolors(}|>)/$grpcolors/g;
 	$boardindex_template =~ s/({|<)yabb sharedlogin(}|>)/$shared_login/g;
 	# EventCal START
+	my $cal_display;
 	if ($Show_EventCal == 2 || (!$iamguest && $Show_EventCal == 1)) {
 		require "$sourcedir/EventCal.pl";
-		&get_cal;
+		$cal_display = &get_cal;
 	}
 	$boardindex_template =~ s/({|<)yabb caldisplay(}|>)/$cal_display/g;
 	# EventCal END
