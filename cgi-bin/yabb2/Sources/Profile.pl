@@ -231,9 +231,9 @@ sub ModifyProfile {
 		$dayormonthd .= qq~<option value="$d" $selectday>$d</option>\n~;
 	}
 	$dayormonthd .= qq~</select> ~;
-	if ($timeorder) { $dayormonth = $dayormonthd . $dayormonthm; } 
-	else { $dayormonth = $dayormonthm . $dayormonthd; } 
-	$dayormonth =~ s/for="bday\d"/for="birthday"/o; 
+	if ($timeorder) { $dayormonth = $dayormonthd . $dayormonthm; }
+	else { $dayormonth = $dayormonthm . $dayormonthd; }
+	$dayormonth =~ s/for="bday\d"/for="birthday"/o;
 	$dayormonth =~ s/id="bday\d"/id="birthday"/o;
 
 	&LoadLanguage('Register');

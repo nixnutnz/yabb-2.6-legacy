@@ -20,7 +20,6 @@ $eventcallngver = 'YaBB 2.3 $Revision$';
 ### Event Calendar ###
 
 %var_cal = (
-'calnone' => '--',
 'calgo' => 'Go',
 'calname' => 'Name',
 'calmon_01' => 'January',

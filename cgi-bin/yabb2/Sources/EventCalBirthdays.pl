@@ -41,64 +41,70 @@ sub cal_birthdaylist {
 	if ($actualmon < 10) { $actualmon = "0$actualmon"; }
 	if ($actualday < 10) { $actualday = "0$actualday"; }
 
+	&timeformat(); # get only correct $mytimeselected
+
 
 	#<--------------------------------------------->#
 	# GoTo begin
 	#<--------------------------------------------->#
 
-	$calgotobox = qq~
-	<form action="$scripturl?action=get_cal;calshow=1;calgotobox=1" method="post">
-	<span class="small">
-	<b>$var_cal{'calsubmit'}</b> $var_cal{'calday'}</span>
-	<select class="input" name="selday" size="1" style="font-size: 7pt; font-family: Tahoma">
-	<option value="0" selected="selected">$var_cal{'calnone'}</option>
-~;
-
-	for ($i=1;$i<32;$i++) {
-		$sel="";
-		$calgotobox .= "<option value=\"".sprintf("%02d",$i)."\">$i</option>";
+	my $boxdays = qq~ <label for="selday"><span class="small">$var_cal{'calday'}</span></label>
+	<select class="input" name="selday" id="selday">\n~;
+	for ($i = 1; $i < 32; $i++) {
+		my $sel = "";
+		if ($mday == $i && !$sel_day) {
+			$sel = ' selected="selected"';
+		} elsif ($sel_day == $i) {
+			$sel = ' selected="selected"';
+		}
+		$boxdays .= "		<option value=\"" . sprintf("%02d",$i) . "\"$sel>$i</option>\n";
 	}
+	$boxdays .= "	</select>";
 
-	$calgotobox .= qq~</select><span class="small">&nbsp;&nbsp;$var_cal{'calmonth'}</span>
-	<select class="input" name="selmon" size="1" style="font-size: 7pt; font-family: Tahoma">
-~;
-
-	for ($i=1;$i<13;$i++) {
-		$sel = "";
+	my $boxmonths = qq~ <label for="selmon"><span class="small">$var_cal{'calmonth'}</span></label>
+	<select class="input" name="selmon" id="selmon">\n~;
+	for ($i = 1; $i < 13; $i++) {
+		my $sel = "";
 		if ($mon == $i && !$sel_mon) {
 			$sel = ' selected="selected"';
 		} elsif ($sel_mon == $i) {
 			$sel = ' selected="selected"';
 		}
-		$calgotobox .= "<option value=\"".sprintf("%02d",$i)."\"$sel>$i</option>";
+		$boxmonths .= "		<option value=\"" . sprintf("%02d",$i) . "\"$sel>$i</option>\n";
 	}
+	$boxmonths .= "	</select>";
 
-	$calgotobox .= qq~</select><span class="small">&nbsp;&nbsp;$var_cal{'calyear'}</span> ~;
-
-	$gyears3 = $year-3;
-	$gyears2 = $year-2;
-	$gyears1 = $year-1;
-
-	$calgotobox .= qq~<select class="input" name="selyear" size="1" style="font-size: 7pt; font-family: Tahoma">
-	<option value="$gyears3">$gyears3</option>
-	<option value="$gyears2">$gyears2</option>
-	<option value="$gyears1">$gyears1</option>
-~;
-
-	for ($i=$year;$i<$year+4;$i++) {
-		$sel = "";
+	my $gyears3 = $year - 3;
+	my $gyears2 = $year - 2;
+	my $gyears1 = $year - 1;
+	my $boxyears .= qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></label>
+	<select class="input" name="selyear" id="selyear">
+		<option value="$gyears3">$gyears3</option>
+		<option value="$gyears2">$gyears2</option>
+		<option value="$gyears1">$gyears1</option>\n~;
+	for ($i = $year; $i < $year + 4; $i++) {
+		my $sel = "";
 		if ($year == $i && !$sel_year) {
 			$sel = ' selected="selected"';
 		} elsif ($sel_year == $i) {
 			$sel = ' selected="selected"';
 		}
-		$calgotobox .= qq~<option value="$i"$sel>$i</option>~;
+		$boxyears .= qq~		<option value="$i"$sel>$i</option>\n~;
 	}
+	$boxyears .= "	</select>";
 
-	$calgotobox .= qq~</select><span class="small">&nbsp;&nbsp;</span> 
-	<input type="submit" name="Go" value="$var_cal{'calgo'}" size="1" style="font-size: 7pt; font-family: Tahoma" />
-	</form>
-~;
+	my $calgotobox = qq~
+	<form action="$scripturl?action=get_cal;calshow=1;calgotobox=1" method="post">
+	<span class="small"><b>$var_cal{'calsubmit'}</b></span>~;
+
+	if ($mytimeselected == 6 || $mytimeselected == 3 || $mytimeselected == 2) {
+		$calgotobox .= $boxdays . $boxmonths;
+	} else {
+		$calgotobox .= $boxmonths . $boxdays;
+	}
+	$calgotobox .= qq~$boxyears
+	&nbsp; <input type="submit" name="Go" value="$var_cal{'calgo'}" />
+	</form>\n~;
 
 	#<--------------------------------------------->#
 	# GoTo end
@@ -220,7 +226,6 @@ sub cal_birthdaylist {
 	if (!@birthmembers) {
 		$viewbirthdays .= qq~<tr><td class="windowbg2" colspan="4"><center><b><i>$var_cal{'calbirthday1'}</i></b></center></td></tr>~;
 	} else {
-		&timeformat(); # get only correct $mytimeselected
 		foreach $user_name (sort { &$sortiert($a,$b); } @birthmembers) {
 			chomp $user_name;
 			($user_bdyear, $user_bdmon, $user_bdday, $user_bdname, $age, $sternzeichen, $user_bdrealname) = split(/\|/,$user_name);

@@ -23,6 +23,7 @@ if ($action eq 'detailedversion') { return 1; }
 use Time::Local 'timelocal';
 
 sub get_cal {
+	my ($i);
 	## SSI Variables ##
 	#my $ssicalmode = $_[0];
 	#my $ssicaldisplay = $_[1];
@@ -125,6 +126,8 @@ sub get_cal {
 		$mon = $INFO{'calmon'}-1;
 	}
 
+	&timeformat(); # get only correct $mytimeselected
+
 	#<--------------------------------------------->#
 	# Time/Days end
 	#<--------------------------------------------->#
@@ -187,108 +190,85 @@ sub get_cal {
 	#<--------------------------------------------->#
 
 	#<--------------------------------------------->#
-	# Add Events begin
+	# Add Events and GoTo begin
 	#<--------------------------------------------->#
 
-
-	$sdays = qq~<select class="input" name="selday" id="calday" size="1" style="height: 18px;">~;
+	my $sdays   = qq~ <label for="calday">$var_cal{'calday'}</label>
+	<select class="input" name="selday" id="calday">\n~;
+	my $boxdays = qq~ <label for="selday"><span class="small">$var_cal{'calday'}</span></label>
+	<select class="input" name="selday" id="selday">\n~;
 	for ($i = 1; $i < 32; $i++) {
-		$sel = "";
+		my $sel = "";
 		if ($mday == $i && !$sel_day) {
 			$sel = ' selected="selected"';
 		} elsif ($sel_day == $i) {
 			$sel = ' selected="selected"';
 		}
-		$sdays .= "<option value=\"" . sprintf("%02d",$i) . "\"$sel>$i</option>";
+		$sdays   .= "		<option value=\"" . sprintf("%02d",$i) . "\"$sel>$i</option>\n";
+		$boxdays .= "		<option value=\"" . sprintf("%02d",$i) . "\"$sel>$i</option>\n";
 	}
-	$sdays .= "</select>";
-	$smonths = qq~<select class="input" name="selmon" id="calmon" size="1" style="height: 18px;">~;
-	for ($i = 1; $i < 13; $i++) {
-		$sel = "";
-		if ($mon == $i && !$sel_mon) {
-			$sel = ' selected="selected"';
-		} elsif ($sel_mon == $i) {
-			$sel = ' selected="selected"';
-		}
-		$smonths .= "<option value=\"".sprintf("%02d",$i)."\"$sel>$i</option>";
-	}
+	$sdays   .= "	</select>";
+	$boxdays .= "	</select>";
 
-	$smonths .= "</select>";
-
-	$syears = qq~<select class="input" name="selyear" id="calyear" size="1" style="height: 18px;">~;
-
-	for ($i = $year; $i < $year + 4; $i++) {
-		$sel = "";
-		if ($year == $i && !$sel_year) {
-			$sel = ' selected="selected"';
-		} elsif ($sel_year == $i) {
-			$sel = ' selected="selected"';
-		}
-		$syears .= "<option value=\"$i\"$sel>$i</option>";
-	}
-
-	$syears .= "</select>";
-
-	#<--------------------------------------------->#
-	# Add Events end
-	#<--------------------------------------------->#
-
-	#<--------------------------------------------->#
-	# GoTo begin
-	#<--------------------------------------------->#
-
-	$calgotobox = qq~
-	<form action="$scripturl?action=get_cal;calshow=1;calgotobox=1" method="post">
-	<label for="selday"><span class="small">
-	<b>$var_cal{'calsubmit'}</b> $var_cal{'calday'}</span></label>
-	<select class="input" name="selday" id="selday">
-	<option value="0" selected="selected">$var_cal{'calnone'}</option>\n~;
-
-	for ($i = 1; $i < 32; $i++) {
-		$sel = "";
-		$calgotobox .= "	<option value=\"" . sprintf("%02d",$i) . "\">$i</option>\n";
-	}
-	$calgotobox .= qq~	</select><label for="selmon"><span class="small">&nbsp;&nbsp;$var_cal{'calmonth'}</span></label>
+	my $smonths   = qq~ <label for="calmon">$var_cal{'calmonth'}</label>
+	<select class="input" name="selmon" id="calmon">\n~;
+	my $boxmonths = qq~ <label for="selmon"><span class="small">$var_cal{'calmonth'}</span></label>
 	<select class="input" name="selmon" id="selmon">\n~;
-
 	for ($i = 1; $i < 13; $i++) {
-		$sel = "";
+		my $sel = "";
 		if ($mon == $i && !$sel_mon) {
 			$sel = ' selected="selected"';
 		} elsif ($sel_mon == $i) {
 			$sel = ' selected="selected"';
 		}
-		$calgotobox .= "	<option value=\"" . sprintf("%02d",$i) . "\"$sel>$i</option>\n";
+		$smonths   .= "		<option value=\"" . sprintf("%02d",$i) . "\"$sel>$i</option>\n";
+		$boxmonths .= "		<option value=\"" . sprintf("%02d",$i) . "\"$sel>$i</option>\n";
 	}
+	$smonths   .= "	</select>";
+	$boxmonths .= "	</select>";
 
-	$calgotobox .= qq~	</select><label for="selyear"><span class="small">&nbsp;&nbsp;$var_cal{'calyear'}</span></label>~;
-
-	$gyears3 = $year - 3;
-	$gyears2 = $year - 2;
-	$gyears1 = $year - 1;
-
-	$calgotobox .= qq~
+	my $syears = qq~ <label for="calyear">$var_cal{'calyear'}</label>
+	<select class="input" name="selyear" id="calyear">\n~;
+	my $gyears3 = $year - 3;
+	my $gyears2 = $year - 2;
+	my $gyears1 = $year - 1;
+	my $boxyears .= qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></label>
 	<select class="input" name="selyear" id="selyear">
-	<option value="$gyears3">$gyears3</option>
-	<option value="$gyears2">$gyears2</option>
-	<option value="$gyears1">$gyears1</option>\n~;
-
-	for ( $i = $year; $i < $year + 4; $i++) {
-		$sel = "";
+		<option value="$gyears3">$gyears3</option>
+		<option value="$gyears2">$gyears2</option>
+		<option value="$gyears1">$gyears1</option>\n~;
+	for ($i = $year; $i < $year + 4; $i++) {
+		my $sel = "";
 		if ($year == $i && !$sel_year) {
 			$sel = ' selected="selected"';
 		} elsif ($sel_year == $i) {
 			$sel = ' selected="selected"';
 		}
-		$calgotobox .= qq~	<option value="$i"$sel>$i</option>\n~;
+		$syears   .= qq~		<option value="$i"$sel>$i</option>\n~;
+		$boxyears .= qq~		<option value="$i"$sel>$i</option>\n~;
 	}
+	$syears   .= "	</select>";
+	$boxyears .= "	</select>";
 
-	$calgotobox .= qq~	</select><span class="small">&nbsp;&nbsp;</span> 
-	<input type="submit" name="Go" value="$var_cal{'calgo'}" />
-	</form>~;
+	my $addevdate;
+	my $calgotobox = qq~
+	<form action="$scripturl?action=get_cal;calshow=1;calgotobox=1" method="post">
+	<span class="small"><b>$var_cal{'calsubmit'}</b></span>~;
+
+	if ($mytimeselected == 6 || $mytimeselected == 3 || $mytimeselected == 2) {
+		$addevdate .= $sdays . $smonths;
+		$calgotobox .= $boxdays . $boxmonths;
+	} else {
+		$addevdate .= $smonths . $sdays;
+		$calgotobox .= $boxmonths . $boxdays;
+	}
+	$addevdate  .= $syears;
+	$calgotobox .= qq~$boxyears
+	&nbsp; <input type="submit" name="Go" value="$var_cal{'calgo'}" />
+	</form>\n~;
 
 	#<--------------------------------------------->#
-	# GoTo end
+	# Add Events and GoTo end
 	#<--------------------------------------------->#
 
 	#<--------------------------------------------->#
@@ -318,7 +298,7 @@ sub get_cal {
 			$calicon = "$INFO{'edit_icon'}";
 		}
 
-		if ($INFO{'edit_nonam'} == 1) { $cecknonam = "checked" }
+		if ($INFO{'edit_nonam'} == 1) { $cecknonam = "checked='checked'" }
 		## Edit Infos End ##
 
 		$YaBBC_calout = qq~
@@ -336,7 +316,7 @@ sub get_cal {
 			<label for="calday"><span class="small"><b>$var_cal{'date'}:</b></span></label>
 		</td>
 		<td>
-			<span class="small"> <label for="calday">$sdays $var_cal{'calday'}</label>&nbsp;&nbsp;<label for="calmon">$smonths $var_cal{'calmonth'}</label> &nbsp;&nbsp;<label for="calyear">$syears $var_cal{'calyear'}</label></span>
+			<span class="small">$addevdate</span>
 		</td>
 	</tr>~;
 
@@ -860,23 +840,17 @@ $option_noname
 		$d_year = substr($event_date,0,4);
 		$d_mon = substr($event_date,4,2);
 		$d_day = substr($event_date,6,2);
-		$monst = "calmon_$d_mon";
 
-		$cname = ${event.$d_year.$d_mon.$d_day}{'calname'} || ${bday.$d_year.$d_mon.$d_day}{'calname'};
-		if ($mytimeselected == 1) {
-			$cdate="$d_day/$d_mon/$d_year";
-		} elsif ($mytimeselected == 2) {
-			$cdate="$d_day.$d_mon.$d_year";
-		} elsif ($mytimeselected == 3) {
-			$cdate="$d_day.$d_mon.$d_year";
+		if ($mytimeselected == 1 || $mytimeselected == 5) {
+			$cdate = "$d_mon/$d_day/$d_year";
+		} elsif ($mytimeselected == 2 || $mytimeselected == 3) {
+			$cdate = "$d_day.$d_mon.$d_year";
 		} elsif ($mytimeselected == 4) {
-			$cdate="$var_cal{$monst} $d_day, $d_year";
-		} elsif ($mytimeselected == 5) {
-			$cdate="$d_mon/$d_day/$d_year";
+			$cdate = qq~$var_cal{"calmon_$d_mon"} $d_day, $d_year~;
 		} elsif ($mytimeselected == 6) {
-			$cdate="$d_day $var_cal{$monst}, $d_year";
+			$cdate = qq~$d_day. $var_cal{"calmon_$d_mon"} $d_year~;
 		} else {
-			$cdate="$d_day-$d_mon-$d_year";
+			$cdate = "$d_day-$d_mon-$d_year";
 		}
 
 		if ($INFO{'showmini'}) {
@@ -1245,7 +1219,6 @@ $YaBBC_calout
 		}
 		$cdate =~ /(\d{4})(\d{2})(\d{2})/;
 		my ($cyear,$cmon,$cday) = ($1,$2,$3);
-		$monst = "calmon_$cmon";
 		if ($DisplayEvents > 0 && !$INFO{'calyear'}) {
 			if ($cdate >= $caleventbegin && $cdate <= $caleventend) { $event_found = 1; } else { $event_found = 0; }
 			if ($DisplayEvents == 1) { $event_index = qq~$var_cal{'caltoday'} $var_cal{'calsubtitle'}:~; } else { $event_index = qq~$var_cal{'calcoming'} $var_cal{'calsubtitle'} ($DisplayEvents $var_cal{'caldays'}):~; }
@@ -1286,18 +1259,14 @@ $YaBBC_calout
 		}
 
 		if ($event_found == 1) {
-			if ($mytimeselected == 1) {
-				$cdate = "$cday/$cmon/$cyear";
-			} elsif ($mytimeselected == 2) {
-				$cdate = "$cday.$cmon.$cyear";
-			} elsif ($mytimeselected == 3) {
+			if ($mytimeselected == 1 || $mytimeselected == 5) {
+				$cdate = "$cmon/$cday/$cyear";
+			} elsif ($mytimeselected == 2 || $mytimeselected == 3) {
 				$cdate = "$cday.$cmon.$cyear";
 			} elsif ($mytimeselected == 4) {
-				$cdate = "$var_cal{$monst} $cday, $cyear";
-			} elsif ($mytimeselected == 5) {
-				$cdate = "$cmon/$cday/$cyear";
+				$cdate = qq~$var_cal{"calmon_$cmon"} $cday, $cyear~;
 			} elsif ($mytimeselected == 6) {
-				$cdate = "$cday $var_cal{$monst}, $cyear";
+				$cdate = qq~$cday. $var_cal{"calmon_$cmon"} $cyear~;
 			} else {
 				$cdate = "$cday-$cmon-$cyear";
 			}
