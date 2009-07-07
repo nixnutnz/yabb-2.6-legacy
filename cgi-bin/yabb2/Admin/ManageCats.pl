@@ -29,7 +29,6 @@ sub DoCats {
 
 	if    ($FORM{'baction'} eq "edit")  { &AddCats(@editcats); }
 	elsif ($FORM{'baction'} eq "delme") {
-		if (!$mloaded) { require "$boardsdir/forum.master"; }
 		foreach $catid (@editcats) {
 			##Check if category has any boards, and if it does remove them.
 			if ($cat{$catid} ne "") { require "$admindir/ManageBoards.pl"; &DeleteBoards(split(/,/, $cat{$catid})); }
@@ -57,8 +56,6 @@ sub AddCats {
 
 	my @editcats = @_;
 	if ($INFO{"action"} eq "catscreen") { $FORM{"amount"} = @editcats; }
-
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 
 	$yymain .= qq~
 <form action="$adminurl?action=addcat2" method="post">
@@ -141,7 +138,6 @@ sub AddCats {
 
 sub AddCats2 {
 	&is_admin_or_gmod;
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 
 	for ($i = 0; $i < $FORM{'amount'}; $i++) {
 		if ($FORM{"catimage$i"} ne "") {
@@ -176,7 +172,6 @@ sub AddCats2 {
 
 sub ReorderCats {
 	&is_admin_or_gmod;
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	if (@categoryorder > 1) {
 		$catcnt = @categoryorder;
 		$catnum = $catcnt;
@@ -231,7 +226,6 @@ sub ReorderCats {
 sub ReorderCats2 {
 	&is_admin_or_gmod;
 	my $moveitem = $FORM{'selectcats'};
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	if ($moveitem) {
 		if ($FORM{'moveup'}) {
 			for ($i = 0; $i < @categoryorder; $i++) {

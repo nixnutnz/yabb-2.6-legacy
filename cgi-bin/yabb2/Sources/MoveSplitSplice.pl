@@ -410,7 +410,14 @@ sub Split_Splice_2 {
 		splice(@utdnewthread, ($linkcount + @postnum), 0,qq~$sstxt{'21'} $tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$username|no_postcount||$user_ip|$tmpmessage||||\n~);
 	}
 
+	# get mail, poll and polled data before eventually deleting the thread
 	my (@curthread_mail,@curthread_poll,@curthread_polled);
+	if ($use_MySQL && $#postnum == $#curthread) {
+		@curthread_mail = &read_DBorFILE(0,'',$datadir,$curthreadid,'mail');
+		@curthread_poll = &read_DBorFILE(0,'',$datadir,$curthreadid,'poll');
+		@curthread_polled = &read_DBorFILE(0,'',$datadir,$curthreadid,'polled');
+	}
+
 	if (@utdcurthread) {
 		for ($i = 0; $i < @utdcurthread; $i++) { # sort post numbers
 			my @x = split(/\|/, $utdcurthread[$i]);
@@ -420,11 +427,6 @@ sub Split_Splice_2 {
 		# Update current thread
 		&write_DBorFILE(0,'',$datadir,$curthreadid,'txt',@utdcurthread);
 	} else {
-		if ($use_MySQL) {
-			@curthread_mail = &read_DBorFILE(0,'',$datadir,$curthreadid,'mail');
-			@curthread_poll = &read_DBorFILE(0,'',$datadir,$curthreadid,'poll');
-			@curthread_polled = &read_DBorFILE(0,'',$datadir,$curthreadid,'polled');
-		}
 		require "$sourcedir/RemoveTopic.pl";
 		my $moveit = $INFO{'moveit'};
 		$INFO{'moveit'} = 1;
@@ -747,6 +749,7 @@ sub Split_Splice_2 {
 		if (&checkfor_DBorFILE("$datadir/$curthreadid.poll")) {
 			if ($use_MySQL) {
 				&write_DBorFILE(1,'',$datadir,$newthreadid,'poll',@curthread_poll);
+				&delete_DBorFILE("$datadir/$curthreadid.poll");
 			} else {
 				rename("$datadir/$curthreadid.poll", "$datadir/$newthreadid.poll");
 			}
@@ -754,6 +757,7 @@ sub Split_Splice_2 {
 		if (&checkfor_DBorFILE("$datadir/$curthreadid.polled")) {
 			if ($use_MySQL) {
 				&write_DBorFILE(1,'',$datadir,$newthreadid,'polled',@curthread_polled);
+				&delete_DBorFILE("$datadir/$curthreadid.polled");
 			} else {
 				rename("$datadir/$curthreadid.polled", "$datadir/$newthreadid.polled");
 			}
@@ -761,6 +765,7 @@ sub Split_Splice_2 {
 		if (&checkfor_DBorFILE("$datadir/$curthreadid.mail")) {
 			if ($use_MySQL) {
 				&write_DBorFILE(1,'',$datadir,$newthreadid,'mail',@curthread_mail);
+				&delete_DBorFILE("$datadir/$curthreadid.mail");
 			} else {
 				rename("$datadir/$curthreadid.mail", "$datadir/$newthreadid.mail");
 			}

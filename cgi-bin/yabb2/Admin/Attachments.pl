@@ -441,8 +441,6 @@ sub FullRebuildAttachents {
 	# Set up the multi-step action
 	$time_to_jump = time() + $max_process_time;
 
-	# Get the board list from the forum.master file
-	require "$boardsdir/forum.master";
 	@boardlist = sort( keys(%board) );
 
 	# Find the current board:

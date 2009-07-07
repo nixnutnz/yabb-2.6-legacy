@@ -231,7 +231,6 @@ sub FullStats {
 
 	$numcats = 0;
 
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	foreach $catid (@categoryorder) {
 		$boardlist = $cat{$catid};
 		$numcats++;
@@ -325,7 +324,6 @@ sub FullStats {
 
 	# Sorts the threads to find the most recent post
 	# No need to check for board access here because only admins have access to this page
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	foreach $catid (@categoryorder) {
 		$boardlist = $cat{$catid};
 		(@bdlist) = split(/\,/, $boardlist);
@@ -682,8 +680,6 @@ sub DeleteOldMessages {
       <label for="keep_them">$admin_txt{'4'}:</label> <input type="checkbox" name="keep_them" id="keep_them" value="1" /><br />
       <label for="maxdays">$admin_txt{'124'} <input type=text name="maxdays" id="maxdays" size="4" value="$maxdays" /> $admin_txt{'579'} $admin_txt{'2'}:</label><br /><br />
       <div align="left" style="margin-left: 25px; margin-right: auto;">~;
-
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 
 	foreach $catid (@categoryorder) {
 		$boardlist = $cat{$catid};

@@ -593,7 +593,7 @@ sub MultiDel { # deletes singel- or multi-Posts
 	my $kill = 0;
 	my $postid;
 	for ($count = $#messages; $count >= 0; $count--) {
-		if (($FORM{"del$count"} || $INFO{"del$count"}) ne '') {
+		if ($FORM{"del$count"} ne '' || $INFO{"del$count"} ne '') {
 			chomp $messages[$count];
 			@message = split(/\|/, $messages[$count]);
 			$musername = $message[4];

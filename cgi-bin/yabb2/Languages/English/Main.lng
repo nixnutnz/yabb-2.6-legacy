@@ -216,21 +216,17 @@ $abbr_lang = 'en-us';
 ##  jump menu
 %jumpto_txt = (
 'to' => 'Forum Jump &raquo;',
-'mess' => ' &raquo; my Messages',
-'fav' => ' &raquo; my Favorites',
-'note' => ' &raquo; my Notifications',
+'mess' => 'My Private Messages',
+'fav' => 'My Favorites',
+'note' => 'My Notifications',
+'recenttopic' => '10 most Recent Topics',
+'recentposts' => '10 most Recent Posts',
 );
 
 ## guest language selector
 %guest_txt =(
 'sellanguage' => 'Choose Language',
 'changelanguage' => 'Change Language',
-);
-
-## recent lists
-%recent_txt = (
-'recenttopic' => ' &raquo; 10 most recent Topics',
-'recentposts' => ' &raquo; 10 most recent Posts',
 );
 
 ## pm to email forward

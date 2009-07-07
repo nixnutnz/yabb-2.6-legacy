@@ -125,11 +125,6 @@ $display_template = qq~
 <div class="navbarcontainer">
 <table width="100%" border="0">
 <tr>
-	<td align="left">
-	<span class="small">
-		<b><yabb home> &rsaquo; <yabb category> &rsaquo; <yabb board></b><br /><yabb moderators>
-	</span>
-	</td>
 	<td valign="top" align="right">
 	<span class="small">
 		&lsaquo; <yabb prev> | <yabb next> &rsaquo;
@@ -142,7 +137,7 @@ $display_template = qq~
 <!-- Navigation Bar end -->
 
 
-<!-- Threads Admin Button Bar and Jump box start -->
+<!-- Threads Admin Button Bar start -->
 
 <div style="margin: 4px;">
 <table cellpadding="4" cellspacing="1" border="0" width="100%">
@@ -154,7 +149,7 @@ $display_template = qq~
 </table>
 </div>
 
-<!-- Threads Admin Button Bar and Jump box end -->
+<!-- Threads Admin Button Bar end -->
 
 ~;
 

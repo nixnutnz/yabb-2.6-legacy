@@ -61,7 +61,6 @@ sub Post {
 	&BoardTotals("load", $currentboard);
 
 	# Figure out the name of the category
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	($cat, $catperms) = split(/\|/, $catinfo{$curcat});
 	&ToChars($cat);
 
@@ -2931,7 +2930,6 @@ sub modAlert {
 	&BoardTotals("load", $currentboard);
 
 	# Figure out the name of the category
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	($cat, $catperms) = split(/\|/, $catinfo{$curcat});
 	&ToChars($cat);
 

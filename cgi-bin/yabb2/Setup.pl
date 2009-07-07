@@ -1626,7 +1626,7 @@ sub GetCats {
 		push(@temparray, qq~\$board{'$key'} = qq\~$value\~;\n~);
 	}
 	fopen(FILE, ">$boardsdir/forum.master") || &setup_fatal_error("$maintext_23 $boardsdir/forum.master: ", 1);
-	print FILE qq~\$mloaded = 1;\n~, qq~\@categoryorder = qw(@categoryorder);\n~, @temparray, "\n1;";
+	print FILE qq~\@categoryorder = qw(@categoryorder);\n~, @temparray, "\n1;";
 	fclose(FILE);
 }
 

@@ -59,6 +59,7 @@ require "$sourcedir/Subs.pl";
 require "$sourcedir/System.pl";
 require "$sourcedir/DateTime.pl";
 require "$sourcedir/Load.pl";
+require "$boardsdir/forum.master";
 
 &LoadCookie;       # Load the user's cookie (or set to guest)
 &LoadUserSettings; # Load user settings

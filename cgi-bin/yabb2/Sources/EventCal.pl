@@ -38,7 +38,7 @@ sub get_cal {
 	# Access check to add events begin
 	#<--------------------------------------------->#
 
-	if ($iamguest && $INFO{'calshow'} == 1 ) { &fatal_error('not_allowed'); }
+	if (!$Show_EventCal || ($iamguest && $Show_EventCal != 2)) { &fatal_error('not_allowed'); }
 
 	my $Allow_Event_Imput = 0;
 	if    ($iamadmin)                   { $Allow_Event_Imput = 1; }
@@ -193,7 +193,7 @@ sub get_cal {
 	#<--------------------------------------------->#
 
 
-	$sdays = qq~<select class="input" name="selday" id="calday" size="1" style="height= 18px;">~;
+	$sdays = qq~<select class="input" name="selday" id="calday" size="1" style="height: 18px;">~;
 	for ($i = 1; $i < 32; $i++) {
 		$sel = "";
 		if ($mday == $i && !$sel_day) {
@@ -204,7 +204,7 @@ sub get_cal {
 		$sdays .= "<option value=\"" . sprintf("%02d",$i) . "\"$sel>$i</option>";
 	}
 	$sdays .= "</select>";
-	$smonths = qq~<select class="input" name="selmon" id="calmon" size="1" style="height= 18px;">~;
+	$smonths = qq~<select class="input" name="selmon" id="calmon" size="1" style="height: 18px;">~;
 	for ($i = 1; $i < 13; $i++) {
 		$sel = "";
 		if ($mon == $i && !$sel_mon) {
@@ -217,7 +217,7 @@ sub get_cal {
 
 	$smonths .= "</select>";
 
-	$syears = qq~<select class="input" name="selyear" id="calyear" size="1" style="height= 18px;">~;
+	$syears = qq~<select class="input" name="selyear" id="calyear" size="1" style="height: 18px;">~;
 
 	for ($i = $year; $i < $year + 4; $i++) {
 		$sel = "";
@@ -696,13 +696,39 @@ $option_noname
 				// set size of messagebox and text END
 
 				function calshowimage() {
-					selected = document.postmodify.calicon.options[document.postmodify.calicon.selectedIndex].value + ".gif";
-					document.images.calicons.src = "$imagesdir/../../../EventCalIcons/" + selected;
-
-					if (document.images.calicons.complete == false) {
-						document.images.calicons.src = "$defaultimagesdir/../../../EventCalIcons/" + selected;
-					}
+					document.images.calicons.src = "$imagesdir/../../../EventCalIcons/" + document.postmodify.calicon.options[document.postmodify.calicon.selectedIndex].value + ".gif";
 				}
+
+				// count left characters START
+				var noalert = true, gralert = false, rdalert = false, clalert = false;
+				var cntsec = 0
+
+				function tick() {
+					cntsec++;
+					calcCharLeft();
+					var timerID = setTimeout("tick()",1000);
+				}
+
+				function calcCharLeft() {
+					var clipped = false;
+					var maxLength = $MaxMessLen;
+					if (document.postmodify.message.value.length > maxLength) {
+						document.postmodify.message.value = document.postmodify.message.value.substring(0,maxLength);
+						var charleft = 0;
+						clipped = true;
+					} else {
+						charleft = maxLength - document.postmodify.message.value.length;
+					}
+					document.postmodify.msgCL.value = charleft;
+					if (charleft >= 100 && noalert) { noalert = false; gralert = true; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/green1.gif"; }
+					if (charleft < 100 && charleft >= 50 && gralert) { noalert = true; gralert = false; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/green0.gif"; }
+					if (charleft < 50 && charleft > 0 && rdalert) { noalert = true; gralert = true; rdalert = false; clalert = true; document.images.chrwarn.src="$defaultimagesdir/red0.gif"; }
+					if (charleft == 0 && clalert) { noalert = true; gralert = true; rdalert = true; clalert = false; document.images.chrwarn.src="$defaultimagesdir/red1.gif"; }
+					return clipped;
+				}
+
+				tick();
+				// count left characters END
 			//-->
 			</script>~;
 
@@ -949,7 +975,7 @@ $option_noname
 							$yymain .= qq~
 	<tr>
 		<td align="left" colspan="2" class="windowbg">
-			<a href="$scripturl?action=get_cal;calshow=1;eventdate=$cdat;calid=$ctim;edit_cal_even=1;addnew=1;edit_typ=$ctyp;edit_icon=$cico;edit_nonam=$cnonam;edit_typ1=$ctyp2" title='$var_cal{'caledit'}'><img src="$imagesdir/modify.gif" alt="$var_cal{'caledit'}" title="$var_cal{'caledit'}" border="0" /> $var_cal{'caledit'}</a>&nbsp;&nbsp;&nbsp;<a href="$scripturl?action=del_cal;caldel=1;calid=$ctim" title='$var_cal{'caldel'}'><img src="$imagesdir/delete.gif" alt="$var_cal{'caldel'}" title="$var_cal{'caldel'}" border="0" /> $var_cal{'caldel'}</a>
+			<a href="$scripturl?action=get_cal;calshow=1;eventdate=$cdat;calid=$ctim;edit_cal_even=1;addnew=1;edit_typ=$ctyp;edit_icon=$cico;edit_nonam=$cnonam;edit_typ1=$ctyp2" title='$var_cal{'caledit'}'><img src="$imagesdir/modify.gif" alt="$var_cal{'caledit'}" title="$var_cal{'caledit'}" border="0" /> $var_cal{'caledit'}</a>&nbsp;&nbsp;&nbsp;<a href="javascript:if(confirm('$var_cal{'caldelalert'}')){ location.href='$scripturl?action=del_cal;caldel=1;calid=$ctim'; }" title='$var_cal{'caldel'}'><img src="$imagesdir/delete.gif" alt="$var_cal{'caldel'}" title="$var_cal{'caldel'}" border="0" /> $var_cal{'caldel'}</a>
 		</td>
 	</tr>~;
 						}
@@ -1075,7 +1101,7 @@ $option_noname
 							$yymain .= qq~
 	<tr>
 		<td align="left" colspan="2" class="windowbg">
-			<a href="$scripturl?action=get_cal;calshow=1;eventdate=$cdat;calid=$ctim;edit_cal_even=1;addnew=1;edit_typ=$ctyp;edit_icon=$cico;edit_nonam=$cnonam;edit_typ1=$ctyp2" title='$var_cal{'caledit'}'><img src="$imagesdir/modify.gif" alt="$var_cal{'caledit'}" title="$var_cal{'caledit'}" border="0" /> $var_cal{'caledit'}</a>&nbsp;&nbsp;&nbsp;<a href="$scripturl?action=del_cal;caldel=1;calid=$ctim" title='$var_cal{'caldel'}'><img src="$imagesdir/delete.gif" alt="$var_cal{'caldel'}" title="$var_cal{'caldel'}" border="0" /> $var_cal{'caldel'}</a>
+			<a href="$scripturl?action=get_cal;calshow=1;eventdate=$cdat;calid=$ctim;edit_cal_even=1;addnew=1;edit_typ=$ctyp;edit_icon=$cico;edit_nonam=$cnonam;edit_typ1=$ctyp2" title='$var_cal{'caledit'}'><img src="$imagesdir/modify.gif" alt="$var_cal{'caledit'}" title="$var_cal{'caledit'}" border="0" /> $var_cal{'caledit'}</a>&nbsp;&nbsp;&nbsp;<a href="javascript:if(confirm('$var_cal{'caldelalert'}')){ location.href='$scripturl?action=del_cal;caldel=1;calid=$ctim'; }" title="$var_cal{'caldel'}"><img src="$imagesdir/delete.gif" alt="$var_cal{'caldel'}" title="$var_cal{'caldel'}" border="0" /> $var_cal{'caldel'}</a>
 		</td>
 	</tr>~;
 						}

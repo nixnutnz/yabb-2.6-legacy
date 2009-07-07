@@ -782,56 +782,59 @@ sub dumplog {
 
 ## standard jump to menu
 sub jumpto {
-	my (@masterdata, $category, @data, $found, $tmp, @memgroups, @newcatdata, $boardname);
-	## jump links to messages/favourites/notifications.
-	my $action = 'action=jump';
-	my $onchange = qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$scripturl?' + this.options[this.selectedIndex].value;"~;
-	if ($templatejump == 1) { 
-		$action = 'action=';
-		$onchange = '';
+	# jump links to messages/favourites/notifications.
+	my $selecthtml = qq~
+<form method="post" action="$scripturl?action=jump" name="jump" style="display: inline;">
+<select name="values" onchange="window.location.href='$scripturl?' + this.options[this.selectedIndex].value;">~;
+	if ($_[0]) { 
+		$selecthtml = qq~
+<form method="post" action="$scripturl?action=" name="jump" style="display: inline;">
+<select name="values">~;
 	}
-	$selecthtml = qq~
-<form method="post" action="$scripturl?$action" name="jump" style="display: inline;">
-<select name="values"$onchange>
-	<option value="" class="forumjump">$jumpto_txt{'to'}</option>\n
-	<option value="gohome">$img_txt{'103'}</option>\n~;
+	$selecthtml .= qq~
+	<option value="" class="forumjump">$jumpto_txt{'to'}</option>
+	<option value="">$img_txt{'103'}</option>\n~;
 
-	## as guests don't have these, why show them?
+	# as guests don't have these
 	if (!$iamguest) {
 		$selecthtml .= qq~
-	<option value="action=im" class="forumjumpcatm">$jumpto_txt{'mess'}</option>~ if $PM_level == 1 || ($PM_level == 2 && $staff) || ($PM_level == 3 && ($iamadmin || $iamgmod));
+	<option value="action=im" class="~ . ($action eq 'im' ? 'forumcurrentboard">&raquo;&raquo;' : 'forumjumpcatm">&nbsp; -') . qq~ $jumpto_txt{'mess'}</option>~ if $PM_level == 1 || ($PM_level == 2 && $staff) || ($PM_level == 3 && ($iamadmin || $iamgmod));
 		$selecthtml .= qq~
-	<option value="action=shownotify" class="forumjumpcatmf">$jumpto_txt{'note'}</option>
-	<option value="action=favorites" class="forumjumpcatm">$jumpto_txt{'fav'}</option>~;
+	<option value="action=shownotify" class="~ . ($action eq 'shownotify' ? 'forumcurrentboard">&raquo;&raquo;' : 'forumjumpcatmf">&nbsp; -') . qq~ $jumpto_txt{'note'}</option>
+	<option value="action=favorites" class="~ . ($action eq 'favorites' ? 'forumcurrentboard">&raquo;&raquo;' : 'forumjumpcatm">&nbsp; -') . qq~ $jumpto_txt{'fav'}</option>~;
 	}
 
 	# drop in recent topics/posts lists. guests can see if browsing permitted
 	$selecthtml .= qq~
-	<option value="action=recent;display=10">$recent_txt{'recentposts'}</option>
-	<option value="action=recenttopics;display=10">$recent_txt{'recenttopic'}</option>\n~;
+	<option value="action=recent;display=10" class="~ . ($action eq 'recent' ? 'forumcurrentboard">&raquo;&raquo;' : '">&nbsp; -') . qq~ $jumpto_txt{'recentposts'}</option>
+	<option value="action=recenttopics;display=10" class="~ . ($action eq 'recenttopics' ? 'forumcurrentboard">&raquo;&raquo;' : '">&nbsp; -') . qq~ $jumpto_txt{'recenttopic'}</option>\n~;
 
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
-	foreach $catid (@categoryorder) {
-		@bdlist = split(/,/, $cat{$catid});
-		($catname, $catperms) = split(/\|/, $catinfo{"$catid"});
+	foreach my $catid (@categoryorder) {
+		my @bdlist = split(/,/, $cat{$catid});
+		my ($catname, $catperms) = split(/\|/, $catinfo{"$catid"});
 
-		$cataccess = &CatAccess($catperms);
-		if (!$cataccess) { next; }
+		my $cataccess = &CatAccess($catperms);
+		next if !$cataccess;
 		&ToChars($catname);
 		## I've removed the dashed bands and css handles the cat highlighting.
-		$selecthtml .= $INFO{'catselect'} eq $catid ? qq~	<option selected=\"selected\" value="catselect=$catid" class="forumjumpcat">&raquo;&raquo; $catname</option>\n~ : qq~	<option value="catselect=$catid" class="forumjumpcat">$catname</option>\n~;
-		foreach $board (@bdlist) {
-			($boardname, $boardperms, $boardview) = split(/\|/, $board{"$board"});
+		$selecthtml .= qq~	<option value="catselect=$catid" class="~ . ($INFO{'catselect'} eq $catid ? 'forumcurrentboard">&raquo;&raquo;' : 'forumjumpcat">') . qq~ $catname</option>\n~;
+		foreach my $board (@bdlist) {
+			my ($boardname, $boardperms, $boardview) = split(/\|/, $board{"$board"});
 			&ToChars($boardname);
 			my $access = &AccessCheck($board, '', $boardperms);
 			if (!$iamadmin && $access ne "granted" && $boardview != 1) { next; }
 			if ($board eq $annboard && !$iamadmin && !$iamgmod) { next; }
 
-			if ($board eq $currentboard) { $selecthtml .= $INFO{'num'} ? "	<option value=\"board=$board\" class=\"forumcurrentboard\">&nbsp; - $boardname &#171;&#171;</option>\n" : "	<option selected=\"selected\" value=\"board=$board\" class=\"forumcurrentboard\">&raquo;&raquo; $boardname</option>\n"; }
-			else { $selecthtml .= "	<option value=\"board=$board\">&nbsp; - $boardname</option>\n"; }
+			$selecthtml .= qq~	<option value="board=$board"~;
+			if ($board eq $currentboard) {
+				$selecthtml .= qq~ class="forumcurrentboard">~ . ($INFO{'num'} ? qq~&nbsp; - $boardname &#171;&#171; &nbsp;~ : qq~&raquo;&raquo; $boardname~);
+			} else {
+				$selecthtml .= qq~>&nbsp; - $boardname~;
+			}
+			$selecthtml .= qq~</option>\n~;
 		}
 	}
-	$selecthtml .= qq~</select>
+	qq~$selecthtml</select>
 <noscript><input type="submit" value="$maintxt{'32'}" class="button" /></noscript>
 </form>~;
 }
@@ -1437,7 +1440,6 @@ sub save_moved_file {
 
 sub Write_ForumMaster {
 	&read_DBorFILE(0,FORUMMASTER,$boardsdir,'forum','master');
-	print FORUMMASTER qq~\$mloaded = 1;\n~;
 	@catorder = &undupe(@categoryorder);
 	print FORUMMASTER qq~\@categoryorder = qw(@catorder);\n~;
 	my ($key, $value);

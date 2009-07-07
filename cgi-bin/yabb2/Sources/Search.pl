@@ -22,7 +22,6 @@ if ($action eq 'detailedversion') { return 1; }
 if($FORM{'searchboards'} =~ /\A\!/) {
 	my($checklist, $catid, $curboard);
 	$checklist = '';
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	foreach $catid (@categoryorder) {
 		my($boardlist, @bdlist, $curboard);
 #		if ($catselect ne $catid && $catselect) { next; }
@@ -156,7 +155,6 @@ function searchMe(chelem) {
 	$allselected = 0;
 	$isselected  = 0;
 	$boardscheck = "";
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 
 	foreach $catid (@categoryorder) {
 		$boardlist = $cat{$catid};
@@ -328,7 +326,6 @@ sub plushSearch2 {
 	my $maxtime = $date + (3600 * ${$uid.$username}{'timeoffset'}) - ($maxage * 86400);
 	my $oldestfound = 9999999999;
 
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	foreach $catid (@categoryorder) {
 		$boardlist = $cat{$catid};
 		(@bdlist) = split(/\,/, $boardlist);

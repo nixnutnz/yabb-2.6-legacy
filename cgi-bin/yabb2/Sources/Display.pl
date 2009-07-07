@@ -62,9 +62,6 @@ sub Display {
 	# Determine category
 	$curcat = ${$uid.$currentboard}{'cat'};
 
-	# Figure out the name of the category
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
-
 	if ($currentboard eq $annboard) {
 		$vircurrentboard = $INFO{'virboard'};
 		$vircurcat = ${$uid.$vircurrentboard}{'cat'};
@@ -199,9 +196,9 @@ sub Display {
 	elsif ($mstate =~ /s/i) { $threadclass = 'sticky'; }
 	elsif (${$mnum}{'board'} eq $annboard) { $threadclass = $threadclass eq 'locked' ? 'announcementlock' : 'announcement'; }
 
-	if (&checkfor_DBorFILE("$datadir/$mnum.mail") && !$iamguest) {
+	if (!$iamguest && &checkfor_DBorFILE("$datadir/$mnum.mail")) {
 		require "$sourcedir/Notify.pl";
-		&ManageThreadNotify("update", $mnum, $username, '', '', '1');
+		&ManageThreadNotify("update", $mnum, $username, '', '', 1);
 	}
 
 	if ($showmodgroups ne "" && $showmods ne "") { $showmods .= qq~ - ~; }

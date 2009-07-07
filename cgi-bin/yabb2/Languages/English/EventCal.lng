@@ -79,6 +79,7 @@ $eventcallngver = 'YaBB 2.3 $Revision$';
 'calpublic' => 'Public',
 'calclickinfo' => '(Show event by clicking on date)',
 'caldel' => 'Delete',
+'caldelalert' => 'Are you sure you want to remove this event?', # Inside JavaScript!
 'caledit' => 'Edit Event',
 'calsave' => 'Save Event',
 'calshowmini' => 'Show event(s) of this day',

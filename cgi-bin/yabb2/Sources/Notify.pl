@@ -110,8 +110,7 @@ sub BoardNotify {
 		$deloption
 		</select>
 		</td></tr>
-		<tr>
-		<td colspan="2" class="catbg" align="center">
+		<tr><td colspan="2" class="catbg" align="center">
 		<input type="submit" value="$notify_txt{'124'}" class="button" />
 		</td>
 		</tr>
@@ -402,7 +401,7 @@ sub ShowNotifications {
 		</td></tr>
 		$threadblock
 		<tr><td align="right" width="85%" class="catbg"><span class="small"><label for="checkall">$notify_txt{'144'}</label></span></td>
-		<td align="center" width="15%" class="catbg"><input type="checkbox" name="checkall" id="checkall" value="" onclick="if (this.checked) checkAll(0); else uncheckAll(0);" /></td>
+		<td align="center" width="15%" class="catbg"><input type="checkbox" name="checkall" id="checkall" value="" onclick="if (this.checked) checkAll(0); else uncheckAll(0);" /></td></tr>
 		<tr><td colspan="2" align="center" class="windowbg">
 		<input type="submit" value="$notify_txt{'124'}" class="button" />&nbsp; <input type="reset" value="$notify_txt{'121'}" class="button" />
 		</td></tr>
@@ -459,9 +458,6 @@ sub NotificationAlert {
 	}
 
 	&LoadCensorList if $action eq 'shownotify';
-
-	## load board names
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; } # for $board{...}
 
 	foreach $mythread (@tmaildir) { # number of next thread
 		# see if thread exists and search for it if moved

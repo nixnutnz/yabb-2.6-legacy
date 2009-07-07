@@ -179,7 +179,6 @@ sub votedetails {
 	&LoadCensorList;
 
 	# Figure out the name of the category
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	($curcat, $catperms) = split(/\|/, $catinfo{"$cat"});
 
 	@poll_data     = &read_DBorFILE(0,'',$datadir,$pollnum,'poll');

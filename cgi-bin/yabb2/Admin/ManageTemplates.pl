@@ -1769,8 +1769,7 @@ sub ModifySkin {
 	my $tempsearchbox = qq~<input type="text" name="search" size="16" style="font-size: 11px; vertical-align: middle;" />~;
 	$tempsearchbox .= qq~<img src="$imagesdir/search.gif" alt="" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />~;
 
-	$templatejump = 1;
-	$tempforumjump = &jumpto;
+	$tempforumjump = &jumpto(1);
 
 	$fulltemplate =~ s/({|<)yabb charset(}|>)/$yycharset/g;
 	$fulltemplate =~ s/({|<)yabb title(}|>)/$temptitle/g;

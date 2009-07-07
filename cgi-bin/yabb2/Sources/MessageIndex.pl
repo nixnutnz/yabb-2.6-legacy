@@ -952,7 +952,6 @@ sub MessagePageindex {
 
 sub moveto {
 	my ($boardlist, $catid, $board, $category, $boardname, $boardperms, $boardview, $brdlist, @bdlist, $catname, $catperms, $access);
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	foreach $catid (@categoryorder) {
 		$brdlist = $cat{$catid};
 		if(!$brdlist) { next; }

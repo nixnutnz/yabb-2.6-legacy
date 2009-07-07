@@ -20,7 +20,6 @@ if ($action eq 'detailedversion') { return 1; }
 sub ManageBoards {
 	&is_admin_or_gmod;
 	&LoadBoardControl;
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	if ($INFO{'action'} eq 'managecats') {
 		$colspan = qq~colspan="2"~;
 		$add = $admin_txt{'47'};
@@ -171,7 +170,6 @@ sub ManageBoards {
 
 sub BoardScreen {
 	&is_admin_or_gmod;
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	$i = 0;
 	while ($_ = each(%FORM)) {
 		if ($FORM{$_} && $_ =~ /^yitem_(.+)$/) {
@@ -196,7 +194,6 @@ sub BoardScreen {
 	if    ($FORM{'baction'} eq "edit")  { &AddBoards(@editbrd); }
 	elsif ($FORM{'baction'} eq "delme") {
 		shift(@editbrd);
-		if (!$mloaded) { require "$boardsdir/forum.master"; }
 		foreach my $bd (@editbrd) {
 			# Remove Board form category it belongs to
 			$category = ${$uid.$bd}{'cat'};
@@ -276,7 +273,6 @@ sub AddBoards {
 	&is_admin_or_gmod;
 	$addtext = $admin_txt{'50'};
 	if ($INFO{'action'} eq 'boardscreen') { $FORM{'amount'} = $#editboards; $addtext = $admin_txt{'50a'}; }
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	$yymain .= qq~
 <script language="JavaScript1.2" type="text/javascript">
 <!--
@@ -718,7 +714,6 @@ sub DrawPerms {
 
 sub AddBoards2 {
 	&is_admin_or_gmod;
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	$anncount  = 0;
 	$rbincount = 0;
 	my (@boardcontrol,@changes);
@@ -841,7 +836,6 @@ sub AddBoards2 {
 
 sub ReorderBoards {
 	&is_admin_or_gmod;
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	if ($#categoryorder > 0) {
 		foreach $category (@categoryorder) {
 			chomp $category;
@@ -924,7 +918,6 @@ sub ReorderBoards {
 
 sub ReorderBoards2 {
 	&is_admin_or_gmod;
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	@itemorder = split(/,/, $cat{ $INFO{"item"} });
 	my $moveitem = $FORM{'selectboards'};
 	my $category = $INFO{"item"};

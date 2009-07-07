@@ -148,7 +148,6 @@ sub Print {
 	if ($ishidden && !$staff) { &fatal_error("no_access"); }
 
 	# Figure out the name of the category
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	($cat, $catperms) = split(/\|/, $catinfo{"$curcat"});
 
 	($boardname, $boardperms, $boardview) = split(/\|/, $board{"$currentboard"});
