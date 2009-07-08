@@ -1737,8 +1737,11 @@ sub setGuestLang {
 		&redirectexit;
 	}
 	# otherwise, grab the selected language from the form and redirect to load it.
-	$guestLang = $FORM{'guestlang'};
-	$language = $guestLang;
+	$yySetCookies1 = &write_cookie(
+		-name    => "guestlanguage",
+		-value   => $FORM{'guestlang'},
+		-path    => '/',
+		-expires => "Sunday, 17-Jan-2038 00:00:00 GMT");
 	$yySetLocation = qq~$scripturl~;
 	&redirectexit;
 }

@@ -544,7 +544,7 @@ sub LoadCookie {
 		$password = '';
 		$username = 'Guest';
 	}
-	if ($yyCookies{'guestlanguage'} && !$FORM{'guestlang'} && $enable_guestlanguage) {
+	if ($yyCookies{'guestlanguage'} && $enable_guestlanguage) {
 		$language = $guestLang = $yyCookies{'guestlanguage'};
 	}
 }
@@ -554,22 +554,14 @@ sub UpdateCookie {
 	my ($valid, $expiration);
 	if ($what eq "delete") {
 		$expiration = "Thursday, 01-Jan-1970 00:00:00 GMT";
-		if ($pathval eq "") { $pathval = qq~/~; }
-		if ($iamguest && $FORM{'guestlang'} && $enable_guestlanguage) {
-			if($FORM{'guestlang'} && !$guestLang) { $guestLang = qq~$FORM{'guestlang'}~; }
-			$language = qq~$guestLang~;
-			$cookiepassword = "guestlanguage";
-			$passw = qq~$language~;
-			$expire = "persistent";
-		}
 		$valid = 1;
 	} elsif ($what eq "write") {
 		$expiration = $expire;
-		if ($pathval eq "") { $pathval = qq~/~; }
 		$valid = 1;
 	}
 
 	if ($valid) {
+		if ($pathval eq "") { $pathval = '/'; }
 		if ($expire eq "persistent") { $expiration = "Sunday, 17-Jan-2038 00:00:00 GMT"; }
 		$yySetCookies1 = &write_cookie(
 			-name    => $cookieusername,
@@ -625,11 +617,11 @@ sub WhatTemplate {
 sub WhatLanguage {
 	if (${$uid.$username}{'language'} ne '') {
 		$language = ${$uid.$username}{'language'};
-	} elsif($FORM{'guestlang'} && $enable_guestlanguage) {
+	} elsif ($FORM{'guestlang'} && $enable_guestlanguage) {
 		$language = $FORM{'guestlang'};
-	} elsif($guestLang && $enable_guestlanguage) {
+	} elsif ($guestLang && $enable_guestlanguage) {
 		$language = $guestLang;
-	} else	{
+	} else {
 		$language = $lang;
 	}
 
