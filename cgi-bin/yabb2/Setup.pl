@@ -4146,9 +4146,13 @@ EOF
 	if ($action eq "setinstall2") {
 		&LoadUser('admin');
 		${$uid.'admin'}{'email'} = $webmaster_email;
+		${$uid.'admin'}{'timeoffset'} = $timeoffset; # must set before &timetostring($date)
+		${$uid.'admin'}{'regdate'} = &timetostring($date);
+		${$uid.'admin'}{'regtime'} = $date;
 		${$uid.'admin'}{'timeselect'} = $timeselected;
 		${$uid.'admin'}{'language'} = $lang;
 		&UserAccount('admin', "update");
+		&ManageMemberinfo('update', 'admin', $date, '', $webmaster_email);
 		$yySetLocation = qq~$set_cgi?action=setup3~;
 		&redirectexit;
 	}
@@ -4175,9 +4179,6 @@ sub tempstarter {
 	require "$vardir/Settings.pl";
 	if (-e "$vardir/ConvSettings.txt") { require "$vardir/ConvSettings.txt"; }
 	else { $convertdir = "./Convert"; }
-	require "$sourcedir/Subs.pl";
-	require "$sourcedir/DateTime.pl";
-	require "$sourcedir/Load.pl";
 
 	&LoadCookie; # Load the user's cookie (or set to guest)
 	&LoadUserSettings;
