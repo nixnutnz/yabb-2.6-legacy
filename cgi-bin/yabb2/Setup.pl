@@ -3681,6 +3681,7 @@ sub SetInstall2 {
 		my @chars = ('A' .. 'Z', 'a' .. 'z', 0 .. 9);
 		$masterkey .= $chars[rand @chars] for 1 .. 24;
 
+		
 	} else {
 		$forumstart = &timetostring($INFO{'firstforum'});
 		$MaxSigLen  = $siglength || 200;
@@ -4144,6 +4145,8 @@ EOF
 	fclose(SETTING);
 	if ($action eq "setinstall2") {
 		&LoadUser('admin');
+		${$uid.'admin'}{'email'} = $webmaster_email;
+		${$uid.'admin'}{'timeselect'} = $timeselected;
 		${$uid.'admin'}{'language'} = $lang;
 		&UserAccount('admin', "update");
 		$yySetLocation = qq~$set_cgi?action=setup3~;

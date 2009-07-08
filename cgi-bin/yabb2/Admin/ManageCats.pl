@@ -145,7 +145,7 @@ sub AddCats2 {
 			&fatal_error("",$admintxt{'44'}) if $FORM{"catimage$i"} !~ /\.(gif|png|jpe?g)$/;
 		}
 		if ($FORM{"theid$i"} eq "") { next; }
-		$id = lc $FORM{"theid$i"};
+		$id = $FORM{"theid$i"};
 		&fatal_error("invalid_character","$admin_txt{'44'} $admin_txt{'241'}") if ($id !~ /^[0-9A-Za-z#%+-\.@^_]+$/);
 		if ($FORM{'screenornot'} ne "catscreen") {
 			if ($catinfo{"$id"}) { &fatal_error("cat_defined"); }
