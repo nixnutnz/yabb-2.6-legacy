@@ -536,8 +536,8 @@ sub BoardIndex {
 			if (${$uid.$username}{'cathide'}) { $exp_vis = ""; }
 			else { $exp_vis = " style='display:none;'"; }
 
-			$expandlink = qq~<span id="expandall" $exp_vis><a href="javascript:Collapse_All('$scripturl?action=collapse_all;status=1',1,'$imagesdir','$boardindex_exptxt{'2'}','$boardindex_exptxt{'1'}')">$img{'expand'}</a>$menusep</span>~;
-			$collapselink = qq~<span id="collapseall" $col_vis><a href="javascript:Collapse_All('$scripturl?action=collapse_all;status=0',0,'$imagesdir','$boardindex_exptxt{'2'}','$boardindex_exptxt{'1'}')">$img{'collapse'}</a>$menusep</span>~;
+			$expandlink = qq~<span id="expandall" $exp_vis><a href="javascript:Collapse_All('$scripturl?action=collapse_all;status=1',1,'$imagesdir','$boardindex_exptxt{'2'}')">$img{'expand'}</a>$menusep</span>~;
+			$collapselink = qq~<span id="collapseall" $col_vis><a href="javascript:Collapse_All('$scripturl?action=collapse_all;status=0',0,'$imagesdir','$boardindex_exptxt{'1'}')">$img{'collapse'}</a>$menusep</span>~;
 			$markalllink = qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread','$imagesdir')">$img{'markallread'}</a>~;
 
 		} else {

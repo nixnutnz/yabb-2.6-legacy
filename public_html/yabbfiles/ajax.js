@@ -26,7 +26,7 @@ if (navigator.appName == "Microsoft Internet Explorer") {
 	browser = "table"; 
 }
 
-function Collapse_All (url,action,imgdir,lng_collapse,lng_expand) {
+function Collapse_All (url,action,imgdir,lng) {
 	GetXmlHttpObject();
 	if (xmlHttp == null) {
 		window.location = url + ";oldcollapse=1";
@@ -44,14 +44,12 @@ function Collapse_All (url,action,imgdir,lng_collapse,lng_expand) {
 		boards = browser;
 		noboards = "none";
 		imgsrc = "/cat_collapse.gif";
-		lng = lng_collapse;
 		document.getElementById("expandall").style.display = "none";
 		document.getElementById("collapseall").style.display = "";
 	} else {
 		noboards = "";
 		boards = "none";
 		imgsrc = "/cat_expand.gif";
-		lng = lng_expand;
 		document.getElementById("expandall").style.display = "";
 		document.getElementById("collapseall").style.display = "none";
 	}
