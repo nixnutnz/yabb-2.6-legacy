@@ -364,7 +364,7 @@ sub FixFileTemplate {
 					if (!$yyYaBBCloaded) { require "$sourcedir/YaBBC.pl"; }
 					&DoUBBC;
 				}
-				$yynews   = $message;
+				$yynews = $message;
 			}
 		}
 		$yyurl = $scripturl;
