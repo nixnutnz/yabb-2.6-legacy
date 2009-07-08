@@ -312,7 +312,7 @@ sub get_cal {
 
 <table cellspacing="0" cellpadding="0" border="0">
 	<tr> 
-		<td width="140" height="23">
+		<td width="160" height="23">
 			<label for="calday"><span class="small"><b>$var_cal{'date'}:</b></span></label>
 		</td>
 		<td>
@@ -325,7 +325,7 @@ sub get_cal {
 		if ($iamadmin || $CalEventNoName == 1) { 
 			$option_noname = qq~
 	<tr> 
-		<td width="140" height="23">
+		<td width="160" height="23">
 			<span class="small"><label for="calnoname"><b>$var_cal{'calnoname'}:</b></label></span>
 		</td>
 		<td>
@@ -337,7 +337,7 @@ sub get_cal {
 		$YaBBC_calout .= qq~
 $option_noname
 	<tr> 
-		<td width="140" height="23">
+		<td width="160" height="23">
 			<span class="small"><label for="caltype"><b>$var_cal{'calview'}:</b></label></span>
 		</td>
 		<td> 
@@ -354,7 +354,7 @@ $option_noname
 		</td>
 	</tr>
 	<tr> 
-		<td  align="left" width="140" height="26">
+		<td  align="left" width="160" height="26">
 			<span class="small"><label for="calicon"><b>$var_cal{'event_icon'}:</b></label></span>
 		</td>
 		<td>
@@ -710,6 +710,25 @@ $option_noname
 				// count left characters END
 			//-->
 			</script>~;
+
+		if ($iamguest && $gpvalid_en) {
+			require "$sourcedir/Decoder.pl";
+			&validation_code;
+			$YaBBC_calout .= qq~
+			<br /><br /><br />
+			<table>
+			<tr>
+				<td class="windowbg2" width="160" valign="middle"><span class="small"><label for="verification"><b>$floodtxt{'1'}:</b></label></span></td>
+				<td class="windowbg2">$showcheck<br /><label for="verification"><span class="small">$floodtxt{'casewarning'}</span></label></td>
+			</tr>
+			<tr>
+				<td class="windowbg2" width="160" valign="middle"><span class="small"><label for="verification"><b>$floodtxt{'3'}:</b></label></span></td>
+				<td class="windowbg2">
+				<input type="text" maxlength="30" name="verification" id="verification" size="30" />
+				</td>
+			</tr>
+			</table>\n~;
+		}
 
 		if (!$INFO{'edit_cal_even'}) {
 			$YaBBC_calout .= qq~
@@ -1448,7 +1467,7 @@ $YaBBC_calout
 	</td>
 </tr>
 </table>
-<table class="bordercolor" cellpadding="0" cellspacing="0" border="0" width="100%">~;
+<table class="bordercolor" cellpadding="3" cellspacing="1" border="0" width="100%">~;
 	}
 
 	$cal_display .= qq~
@@ -1565,6 +1584,7 @@ $YaBBC_calout
 ## Delete Events ##
 
 sub del_cal {
+	if ($iamguest) { &fatal_error('not_allowed'); }
 	if ("$INFO{'caldel'}" == 1) {
 		&write_DBorFILE(0,'',$vardir,'eventcal','db',grep(!/$INFO{'calid'}/, &read_DBorFILE(1,'',$vardir,'eventcal','db')));
 	}
@@ -1577,6 +1597,11 @@ sub del_cal {
 ## Add Events ##
 
 sub add_cal {
+	if (!$Show_EventCal || ($iamguest && $Show_EventCal != 2)) { &fatal_error('not_allowed'); }
+	if ($iamguest && $gpvalid_en) {
+		require "$sourcedir/Decoder.pl";
+		&validation_check($FORM{'verification'});
+	}
 	if (length($FORM{'message'}) > 0) {
 		$calmessage = $FORM{'message'};
 		$calmessage =~ s/\|//g;
