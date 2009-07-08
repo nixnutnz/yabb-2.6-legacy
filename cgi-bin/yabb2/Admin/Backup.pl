@@ -424,7 +424,7 @@ $presetjavascriptcode
 			}
 
 			$filename = "$1$2.$3.$4.$5";
-			$filelist .= qq~          <tr><td align="left">~ . &timeformat($3) . qq~</td><td align="right">$filesize</td><td align="left">- ~ . join('<br />- ', @dirs) . qq~</td><td align="left">~ . ($2 ? "<acronym title='$backup_txt{62}'>N</acronym><br />" : '') . qq~$5</td><td><a href="$adminurl?action=downloadbackup;backupid=$file">$backup_txt{60}</a></td><td><a href="$adminurl?action=emailbackup;backupid=$file">$backup_txt{52}</a></td><td><a href="$adminurl?action=runbackup;runbackup_again=$1$2.0.$4.$5">$backup_txt{61}</a><br /><a href="$adminurl?action=runbackup;runbackup_again=$filename">$backup_txt{62}</a></td><td align="center">~ . (($5 =~ /^a\.tar/|| $5 !~ /tar/) ? '-' : qq~<a href="$adminurl?action=recoverbackup1;recoverfile=$filename">$backup_txt{63}</a>~) . qq~</td><td><a href="$adminurl?action=deletebackup;backupid=$file">$backup_txt{53}</a></td></tr>\n~;
+			$filelist .= qq~          <tr><td align="left">~ . &timeformat($3) . qq~</td><td align="right">$filesize</td><td align="left">- ~ . join('<br />- ', @dirs) . qq~</td><td align="left">~ . ($2 ? "<acronym title='$backup_txt{62}'>$backup_txt{'62a'}</acronym><br />" : '') . qq~$5</td><td><a href="$adminurl?action=downloadbackup;backupid=$file">$backup_txt{60}</a></td><td><a href="$adminurl?action=emailbackup;backupid=$file">$backup_txt{52}</a></td><td><a href="$adminurl?action=runbackup;runbackup_again=$1$2.0.$4.$5">$backup_txt{61}</a><br /><a href="$adminurl?action=runbackup;runbackup_again=$filename">$backup_txt{62}</a></td><td align="center">~ . (($5 =~ /^a\.tar/|| $5 !~ /tar/) ? '-' : qq~<a href="$adminurl?action=recoverbackup1;recoverfile=$filename">$backup_txt{63}</a>~) . qq~</td><td><a href="$adminurl?action=deletebackup;backupid=$file">$backup_txt{53}</a></td></tr>\n~;
 		}
 
 		$filelist ||= qq~          <tr><td align="left" colspan="9"><i>$backup_txt{38}</i></td></tr>\n~;
@@ -1092,7 +1092,7 @@ sub recoverbackup2 {
 	if ($FORM{'originalrestore'}) {
 		$restore_root = "/";
 	} else {
-		$restore_root = "$backupdir/$date/";
+		$restore_root = "$backupdir/recovered_$date/";
 		mkdir($restore_root,oct("0$FORM{'u-newdir'}$FORM{'g-newdir'}$FORM{'a-newdir'}"));
 		chmod(oct("0$FORM{'u-newdir'}$FORM{'g-newdir'}$FORM{'a-newdir'}"), $restore_root); # mkdir somtimes does not set the CHMOD as expected
 	}
@@ -1109,7 +1109,7 @@ sub recoverbackup2 {
 		$path = "";
 		foreach (split(/\//, $1)) {
 			$path .= "$_/";
-			if (!$checkdirexists{$path}) { $checkdirexists{$path} = -d ($FORM{'originalrestore'} ? "/$path" : "$backupdir/$date/$path") ? 1 : -1; }
+			if (!$checkdirexists{$path}) { $checkdirexists{$path} = -d "$restore_root/$path" ? 1 : -1; }
 		}
 	}
 
@@ -1155,14 +1155,14 @@ sub recoverbackup2 {
 			if (!$checkdir{$path}) {
 				$checkdir{$path} = 1;
 				if ($checkdirexists{$path} == -1) { # set directories CHMOD
-					my $od = $FORM{'originalrestore'} ? "/$path" : "$backupdir/$date/$path";
+					my $od = "$restore_root/$path";
 					$yymain .= chmod(oct("0$FORM{'u-newdir'}$FORM{'g-newdir'}$FORM{'a-newdir'}"), $od) . " - CHMOD 0$FORM{'u-newdir'}$FORM{'g-newdir'}$FORM{'a-newdir'} - $od\n";
 				}
 			}
 		}
 
 		if ($CHMOD) {
-			$o = $FORM{'originalrestore'} ? "/$o" : "$backupdir/$date/$o";
+			$o = "$restore_root/$o";
 			$yymain .= chmod(oct("0$CHMOD"), $o) . " - CHMOD 0$CHMOD - $o\n";
 		}
 	}

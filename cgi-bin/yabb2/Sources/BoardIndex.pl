@@ -254,7 +254,7 @@ sub BoardIndex {
 			$collapse_link = '';
 			
 			if ($catallowcol) {
-				$collapse_link = qq~<a href="javascript:SendRequest('$scripturl?action=collapse_cat;cat=$catid','$catid','$imagesdir','$boardindex_exptxt{'1'}','$boardindex_exptxt{'2'}')">~;
+				$collapse_link = qq~<a href="javascript:SendRequest('$scripturl?action=collapse_cat;cat=$catid','$catid','$imagesdir','$boardindex_exptxt{'2'}','$boardindex_exptxt{'1'}')">~;
 			}
 
 			# loop through any collapsed boards to find new posts in it and change the image to match
@@ -433,7 +433,7 @@ sub BoardIndex {
 				$fulltopictext = &Censor($fulltopictext);
 
 				if (${$uid.$curboard}{'lastreply'} ne "") {
-					$lastpostlink = qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'lastreply'}#${$uid.$curboard}{'lastreply'}">$img{'lastpost'}</a> $lastposttime{$curboard}~;
+					$lastpostlink = qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'lastreply'}#${$uid.$curboard}{'lastreply'}" title="$boardindex_txt{'22'}">$img{'lastpost'}</a> $lastposttime{$curboard}~;
 				} else {
 					$lastpostlink = qq~$img{'lastpost'} $boardindex_txt{'470'}~;
 				}
@@ -482,33 +482,33 @@ sub BoardIndex {
 		}
 		my $imsweredeleted = 0;
 		if (${$username}{'PMmnum'} > $numibox && $numibox && $enable_imlimit) {
+			&Del_Max_IM('msg',$numibox);
+			$imsweredeleted = ${$username}{'PMmnum'} - $numibox;
 			$yymain .= qq~\n<script language="JavaScript1.2" type="text/javascript">
 <!--
-	if (confirm('$boardindex_imtxt{'11'} ${$username}{'PMmnum'} $boardindex_imtxt{'12'} $boardindex_txt{'316'}, $boardindex_imtxt{'16'} $numibox $boardindex_imtxt{'18'} $boardindex_imtxt{'19'}')) viewIM();
+	if (confirm('$boardindex_imtxt{'11'} ${$username}{'PMmnum'} $boardindex_imtxt{'12'} $boardindex_txt{'316'}, $boardindex_imtxt{'16'} $numibox $boardindex_imtxt{'18'}. $boardindex_imtxt{'19'} $imsweredeleted $boardindex_imtxt{'20'} $boardindex_txt{'316'} $boardindex_imtxt{'21'}')) viewIM();
 // -->
 </script>~;
-			&Del_Max_IM('msg',$numibox);
-			$imsweredeleted = 1;
 			${$username}{'PMmnum'} = $numibox;
 		}
 		if (${$username}{'PMmoutnum'} > $numobox && $numobox && $enable_imlimit) {
+			&Del_Max_IM('outbox',$numobox);
+			$imsweredeleted = ${$username}{'PMmoutnum'} - $numobox;
 			$yymain .= qq~\n<script language="JavaScript1.2" type="text/javascript">
 <!--
-	if (confirm('$boardindex_imtxt{'11'} ${$username}{'PMmoutnum'} $boardindex_imtxt{'12'} $boardindex_txt{'320'}! $boardindex_imtxt{'16'} $numobox $boardindex_imtxt{'18'} $boardindex_imtxt{'19'}')) viewIMOUT();
+	if (confirm('$boardindex_imtxt{'11'} ${$username}{'PMmoutnum'} $boardindex_imtxt{'12'} $boardindex_txt{'320'}, $boardindex_imtxt{'16'} $numobox $boardindex_imtxt{'18'}. $boardindex_imtxt{'19'}' $imsweredeleted $boardindex_imtxt{'20'} $boardindex_txt{'320'} $boardindex_imtxt{'21'}')) viewIMOUT();
 // -->
 </script>~;
-			&Del_Max_IM('outbox',$numobox);
-			$imsweredeleted = 1;
 			${$username}{'PMmoutnum'} = $numobox;
 		}
 		if (${$username}{'PMstorenum'} > $numstore && $numstore && $enable_imlimit) {
+			&Del_Max_IM('imstore',$numstore);
+			$imsweredeleted = ${$username}{'PMstorenum'} - $numstore;
 			$yymain .= qq~\n<script language="JavaScript1.2" type="text/javascript">
 <!--
-	if (confirm('$boardindex_imtxt{'11'} ${$username}{'PMstorenum'} $boardindex_imtxt{'12'} $boardindex_imtxt{'46'}! $boardindex_imtxt{'16'} $numstore $boardindex_imtxt{'18'} $boardindex_imtxt{'19'}')) viewIMSTORE();
+	if (confirm('$boardindex_imtxt{'11'} ${$username}{'PMstorenum'} $boardindex_imtxt{'12'} $boardindex_imtxt{'46'}, $boardindex_imtxt{'16'} $numstore $boardindex_imtxt{'18'}. $boardindex_imtxt{'19'}' $imsweredeleted $boardindex_imtxt{'20'} $boardindex_imtxt{'46'} $boardindex_imtxt{'21'}')) viewIMSTORE();
 // -->
 </script>~;
-			&Del_Max_IM('imstore',$numstore);
-			$imsweredeleted = 1;
 			${$username}{'PMstorenum'} = $numstore;
 		}
 		if ($imsweredeleted) {
@@ -536,8 +536,8 @@ sub BoardIndex {
 			if (${$uid.$username}{'cathide'}) { $exp_vis = ""; }
 			else { $exp_vis = " style='display:none;'"; }
 
-			$expandlink = qq~<span id="expandall" $exp_vis><a href="javascript:Collapse_All('$scripturl?action=collapse_all;status=1',1,'$imagesdir','$boardindex_exptxt{'2'}')">$img{'expand'}</a>$menusep</span>~;
-			$collapselink = qq~<span id="collapseall" $col_vis><a href="javascript:Collapse_All('$scripturl?action=collapse_all;status=0',0,'$imagesdir','$boardindex_exptxt{'1'}')">$img{'collapse'}</a>$menusep</span>~;
+			$expandlink = qq~<span id="expandall" $exp_vis><a href="javascript:Collapse_All('$scripturl?action=collapse_all;status=1',1,'$imagesdir','$boardindex_exptxt{'2'}','$boardindex_exptxt{'1'}')">$img{'expand'}</a>$menusep</span>~;
+			$collapselink = qq~<span id="collapseall" $col_vis><a href="javascript:Collapse_All('$scripturl?action=collapse_all;status=0',0,'$imagesdir','$boardindex_exptxt{'2'}','$boardindex_exptxt{'1'}')">$img{'collapse'}</a>$menusep</span>~;
 			$markalllink = qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread','$imagesdir')">$img{'markallread'}</a>~;
 
 		} else {

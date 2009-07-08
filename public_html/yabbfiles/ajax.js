@@ -26,7 +26,7 @@ if (navigator.appName == "Microsoft Internet Explorer") {
 	browser = "table"; 
 }
 
-function Collapse_All (url,action,imgdir,lng) {
+function Collapse_All (url,action,imgdir,lng_collapse,lng_expand) {
 	GetXmlHttpObject();
 	if (xmlHttp == null) {
 		window.location = url + ";oldcollapse=1";
@@ -44,12 +44,14 @@ function Collapse_All (url,action,imgdir,lng) {
 		boards = browser;
 		noboards = "none";
 		imgsrc = "/cat_collapse.gif";
+		lng = lng_collapse;
 		document.getElementById("expandall").style.display = "none";
 		document.getElementById("collapseall").style.display = "";
 	} else {
 		noboards = "";
 		boards = "none";
 		imgsrc = "/cat_expand.gif";
+		lng = lng_expand;
 		document.getElementById("expandall").style.display = "";
 		document.getElementById("collapseall").style.display = "none";
 	}
@@ -59,6 +61,7 @@ function Collapse_All (url,action,imgdir,lng) {
 		document.getElementById("col"+catNames[i]).style.display = noboards;
 		document.getElementById("img"+catNames[i]).src = imgdir + imgsrc;
 		document.getElementById("img"+catNames[i]).title = lng;
+		document.getElementById("img"+catNames[i]).alt = lng;
 	}
 }
 
@@ -80,12 +83,14 @@ function SendRequest (url,cat,imgdir,lng_collapse,lng_expand) {
 		document.getElementById("col"+cat).style.display = "none";
 		document.getElementById("img"+cat).src = imgdir+"/cat_collapse.gif";
 		document.getElementById("img"+cat).title = lng_collapse;
+		document.getElementById("img"+cat).alt = lng_collapse;
 		document.getElementById("collapseall").style.display = "";
 	} else {
 		document.getElementById(cat).style.display = "none";
 		document.getElementById("col"+cat).style.display = "";
 		document.getElementById("img"+cat).src = imgdir+"/cat_expand.gif";
 		document.getElementById("img"+cat).title = lng_expand;
+		document.getElementById("img"+cat).alt = lng_expand;
 		document.getElementById("expandall").style.display = "";
 	}
 	for (i = 0; i < catNames.length; i++) {
