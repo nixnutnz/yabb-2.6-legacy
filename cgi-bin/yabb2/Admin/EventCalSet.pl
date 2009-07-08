@@ -201,7 +201,7 @@ sub EventCalSet {
        <td align="left" class="windowbg2"><input type="checkbox" name="CalEventPrivate" id="CalEventPrivate" $caleventprivatechecked /></td>
      </tr>
      <tr valign="middle">
-       <td align="left" class="windowbg2"><label for="CalEventNoName">$event_cal{'24'}<br /><span class="small">$event_cal{'25'}</span></label></td>
+       <td align="left" class="windowbg2"><label for="CalEventNoName">$event_cal{'24'}</label></td>
        <td align="left" class="windowbg2">
 		<select name="CalEventNoName" id="CalEventNoName" size="1">
 		<option value="0"$noname1>$event_cal{'39'}</option>

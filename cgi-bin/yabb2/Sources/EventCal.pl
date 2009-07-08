@@ -320,9 +320,8 @@ sub get_cal {
 		</td>
 	</tr>~;
 
-		my $option_noname;
-		if ($iamadmin || $CalEventPrivate == 1) { $option_private = qq~			<option value="2"$aevt3>$var_cal{'calprivate'}</option>~; }
-		if ($iamadmin || $CalEventNoName == 1) { 
+		my ($option_noname,$option_private);
+		if (($CalEventNoName == 0 && ($iamadmin || $iamgmod)) || ($CalEventNoName == 1 && !$iamguest)) { 
 			$option_noname = qq~
 	<tr> 
 		<td width="160" height="23">
@@ -334,8 +333,11 @@ sub get_cal {
 	</tr>~;
 		}
 
-		$YaBBC_calout .= qq~
-$option_noname
+		if ($iamadmin || $iamgmod || ($CalEventPrivate == 1 && !$iamguest)) {
+			$option_private = qq~<option value="2"$aevt3>$var_cal{'calprivate'}</option>~;
+		}
+
+		$YaBBC_calout .= qq~$option_noname
 	<tr> 
 		<td width="160" height="23">
 			<span class="small"><label for="caltype"><b>$var_cal{'calview'}:</b></label></span>
