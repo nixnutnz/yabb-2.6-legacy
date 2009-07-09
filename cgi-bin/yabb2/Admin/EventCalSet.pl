@@ -167,12 +167,12 @@ sub EventCalSet {
        </td>
      </tr>
      <tr valign="middle">
-       <td align="left" class="windowbg2"><label for="DisplayEvents">$event_cal{'34'}<br /><span class="small">$event_cal{'35'}</span></label></td>
-       <td align="left" class="windowbg2"><input type="text" name="DisplayEvents" id="DisplayEvents" size="5" value="$DisplayEvents" /></td>
-     </tr>
-     <tr valign="middle">
        <td align="left" class="windowbg2"><label for="DisplayCalEvents">$event_cal{'20'}</label></td>
        <td align="left" class="windowbg2"><input type="checkbox" name="DisplayCalEvents" id="DisplayCalEvents" $dcaleventschecked /></td>
+     </tr>
+     <tr valign="middle">
+       <td align="left" class="windowbg2"><label for="DisplayEvents">$event_cal{'34'}<br /><span class="small">$event_cal{'35'}</span></label></td>
+       <td align="left" class="windowbg2"><input type="text" name="DisplayEvents" id="DisplayEvents" size="5" value="$DisplayEvents" /></td>
      </tr>
      <tr valign="middle">
        <td align="left" class="windowbg2"><label for="CalShortEvent">$event_cal{'6'}<br /><span class="small">$event_cal{'7'}</span></label></td>
