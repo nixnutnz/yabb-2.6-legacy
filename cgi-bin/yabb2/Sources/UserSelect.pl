@@ -17,7 +17,7 @@
 $userselectplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
-if ($iamguest && $INFO{'toid'} ne "userspec") { &fatal_error("members_only"); }
+if ($iamguest && $INFO{'toid'} ne "userspec" && $action ne "checkavail") { &fatal_error("members_only"); }
 &LoadLanguage('UserSelect');
 
 $MembersPerPage = 10;
@@ -780,6 +780,26 @@ sub doquicksearch {
 	}
 	print "Content-type: text/plain\n\n";
 	print join(",", @matches);
+
+	CORE::exit; # This is here only to avoid server error log entries!
+}
+
+sub checkUserAvail {
+	my $taken = "false$INFO{'type'}";
+
+	if ($INFO{'type'} eq "email") {
+		$INFO{'email'} =~ s~\A\s+|\s+\z~~g;
+		if (lc $INFO{'email'} eq lc &MemberIndex("check_exist", $INFO{'email'})) { $taken = "trueemail" };
+	} elsif ($INFO{'type'} eq "display") {
+		$INFO{'display'} =~ s~\A\s+|\s+\z~~g;
+		if (lc $INFO{'display'} eq lc &MemberIndex("check_exist", $INFO{'display'})) { $taken = "truedisplay" };
+	} elsif ($INFO{'type'} eq "user") {
+		$INFO{'user'} =~ s~\A\s+|\s+\z~~g;
+		$INFO{'user'} =~ s/\s/_/g;
+		if (lc $INFO{'user'} eq lc &MemberIndex("check_exist", $INFO{'user'})) { $taken = "trueuser" };
+	}
+
+	print "Content-type: text/plain\n\n$taken";
 
 	CORE::exit; # This is here only to avoid server error log entries!
 }

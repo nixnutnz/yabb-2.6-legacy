@@ -314,6 +314,35 @@ function browserAdd(name,value) {
 }
 // End Member Search
 
+// Check username availability
+function checkAvail(scripturl,val,type) {
+	GetXmlHttpObject();
+	if (xmlHttp == null) { alert("AJAX not supported."); return; }
+	xmlHttp.onreadystatechange=returnAvail;
+	xmlHttp.open("GET", scripturl + "?action=checkavail;type=" + type + ";" + type + "=" + val, true);
+	xmlHttp.send(null);
+}
+
+function returnAvail() {
+	if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete") { 
+		var avail = xmlHttp.responseText;
+		var check = '<img src="'+imgdir+'/Check.png">&nbsp;&nbsp;';
+		var cross = '<img src="'+imgdir+'/Cross.png">&nbsp;&nbsp;';
+		if (avail == "falseuser") {
+			document.getElementById("useravailability").innerHTML = check + '<span style="color:#00dd00">' + tuser + nottaken + '</span>'; }
+		else if (avail == "falseemail") {
+			document.getElementById("emailavailability").innerHTML = check + '<span style="color:#00dd00">' + temail + nottaken + '</span>'; }
+		else if (avail == "falsedisplay") {
+			document.getElementById("displayavailability").innerHTML = check + '<span style="color:#00dd00">' + tdisplay + nottaken + '</span>'; }
+		else if (avail == "trueuser") {
+			document.getElementById("useravailability").innerHTML = cross + '<span style="color:#dd0000">' + tuser + taken + '</span>'; }
+		else if (avail == "trueemail") {
+			document.getElementById("emailavailability").innerHTML = cross + '<span style="color:#dd0000">' + temail + taken + '</span>'; }
+		else if (avail == "truedisplay") {
+			document.getElementById("displayavailability").innerHTML = cross + '<span style="color:#dd0000">' + tdisplay + taken + '</span>'; }
+	}
+}
+
 function HideAlert() {
 	document.getElementById("ImageAlert").style.visibility = "hidden";
 }

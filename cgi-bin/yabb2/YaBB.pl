@@ -135,7 +135,7 @@ sub yymain {
 	}
 
 	# Guest can do the very few following actions
-	&KickGuest if $iamguest && !$guestaccess && $action !~ /^(login|register|reminder|validate|activate|resetpass|guestpm|$randaction)2?$/;
+	&KickGuest if $iamguest && !$guestaccess && $action !~ /^(login|register|reminder|validate|activate|resetpass|guestpm|checkavail|$randaction)2?$/;
 
 	if ($action ne "") {
 		if ($action eq $randaction) {

@@ -27,6 +27,7 @@ if ($action eq 'detailedversion') { return 1; }
 'boardnotify2',"MyCenter.pl&mycenter",
 'boardnotify3',"Notify.pl&BoardNotify2",
 'cal_birthdaylist',"EventCalBirthdays.pl&cal_birthdaylist",
+'checkavail',"UserSelect.pl&checkUserAvail",
 'collapse_all',"BoardIndex.pl&Collapse_All",
 'collapse_cat',"BoardIndex.pl&Collapse_Cat",
 'del_cal',"EventCal.pl&del_cal",

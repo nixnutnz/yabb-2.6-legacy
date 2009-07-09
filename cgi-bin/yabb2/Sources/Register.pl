@@ -60,10 +60,19 @@ sub Register {
 		$aedomains .= qq~</select></td></tr></table>~;
 
 	} else {
-		$aedomains .= qq~<input type="text" maxlength="100" name="email" id="email" value="$tmpregemail" size="45" />~;
+		$aedomains .= qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.value,'email')" name="email" id="email" value="$tmpregemail" size="45" />~;
 	}
 
+	$yyjavascript .= qq~
+var tuser = "$register_txt{'110'}";
+var tdisplay = "$register_txt{'111'}";
+var temail = "$register_txt{'112'}";
+var taken = "$register_txt{'113'}";
+var nottaken = "$register_txt{'114'}";
+var imgdir = "$imagesdir";~;
+
 	$yymain .= qq~
+<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/ajax.js"></script>
 <form action="$scripturl?action=register2" method="post" name="creator" onsubmit="return CheckRegFields();">
 <table border="0" width="100%" cellpadding="4" cellspacing="1" class="bordercolor">
 	<colgroup>
@@ -104,8 +113,9 @@ sub Register {
 			<span class="small">$register_txt{'520'}</span></label>
 		</td>
 		<td class="windowbg2" align="left" valign="top">
-			<input type="text" name="regusername" id="regusername" size="30" value="$tmpregname" maxlength="18"$regstyle /> *
+			<input type="text" name="regusername" onchange="checkAvail('$scripturl',this.value,'user')" id="regusername" size="30" value="$tmpregname" maxlength="18"$regstyle /> *
 			<input type="hidden" name="language" id="language" value="$language" />
+			<div id="useravailability"></div>
 		</td>
 	</tr>
 	<tr>
@@ -121,7 +131,8 @@ sub Register {
 	$yymain .= qq~</label>
 		</td>
 		<td class="windowbg2" align="left" valign="top">
-			<input type="text" name="regrealname" id="regrealname" size="30" value="$tmprealname" maxlength="30" /> *
+			<input type="text" name="regrealname" onchange="checkAvail('$scripturl',this.value,'display')" id="regrealname" size="30" value="$tmprealname" maxlength="30" /> *
+			<div id="displayavailability"></div>
 		</td>
 	</tr>
 	<tr>
@@ -130,6 +141,7 @@ sub Register {
 		</td>
 		<td class="windowbg2" align="left" valign="top">
 			$aedomains *
+			<div id="emailavailability"></div>
 	~;
 	if ($allow_hide_email == 1) {
 		$yymain .= qq~
