@@ -1269,7 +1269,7 @@ $YaBBC_calout
 				&CountChars;
 				$cevent = $convertstr;
 				$cevent .= " ..." if $cliped;
-				$cevent .= qq~<br /><br /><a href="$scripturl?action=get_cal;calshow=1;eventdate=$cyear$cmon$cday;calid=$ctime;showthisdate=1" title="$var_cal{'calshowevent'}"><font color="#FF6600">$var_cal{'calmore'}</font> <img src="$imagesdir/eventmore.gif" border="0" alt="$var_cal{'calshowevent'}" /></a>~;
+				$cevent .= qq~<br /><br /><a  href="$scripturl?action=get_cal;calshow=1;eventdate=$cyear$cmon$cday;calid=$ctime;showthisdate=1" title="$var_cal{'calshowevent'}"><font color="#FF6600">$var_cal{'calmore'}</font> <img  src="$imagesdir/eventmore.gif" border="0" alt="$var_cal{'calshowevent'}" /></a>~; # There MUST be two spaces after "<a" and "<img" here or you will get this message here after going through &DoUBBC: "Multimedia File Viewing and Clickable Links are available for Registered Members only!! You need to Login or Register"
 			}
 		}
 		if ($enable_ubbc) {
