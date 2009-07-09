@@ -89,9 +89,12 @@ sub get_cal {
 	# Time/Days begin
 	#<--------------------------------------------->#
 
+	my ($sel_year,$sel_mon,$sel_day);
 	my $event_date = $INFO{'eventdate'};
-	$event_date =~ /(\d{4})(\d{2})(\d{2})/;
-	my ($sel_year,$sel_mon,$sel_day) = ($1,$2,$3);
+	if ($event_date) {
+		$event_date =~ /(\d{4})(\d{2})(\d{2})/;
+		($sel_year,$sel_mon,$sel_day) = ($1,$2,$3);
+	}
 
 	my ($newisdst, $toffs, $newdate);
 	$newdate = $date;
