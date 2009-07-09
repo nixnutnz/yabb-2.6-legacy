@@ -23,7 +23,7 @@ if ($action eq 'detailedversion') { return 1; }
 use Time::Local 'timelocal';
 
 sub get_cal {
-	my ($i);
+	my ($i,$eventfound);
 	## SSI Variables ##
 	#my $ssicalmode = $_[0];
 	#my $ssicaldisplay = $_[1];
@@ -921,8 +921,8 @@ sub get_cal {
 				}
 				$cdat =~ /(\d{4})(\d{2})(\d{2})/;
 				my ($dd_year,$dd_mon,$dd_day) = ($1,$2,$3);
-				if ($ctyp2 == 2) { $cdat = "$bd_year$d_mon$dd_day"; $eventfound = 1; } else { $cdat = "$cdat"; }
-				if ($ctyp2 == 3) { $cdat = "$bd_year$dd_mon$dd_day"; $eventfound = 1; } else { $cdat = "$cdat"; }
+				if ($ctyp2 == 2) { $cdat = "$bd_year$d_mon$dd_day"; } else { $cdat = "$cdat"; }
+				if ($ctyp2 == 3) { $cdat = "$bd_year$dd_mon$dd_day"; } else { $cdat = "$cdat"; }
 				$delete_event = "";
 				$edit_event = "";
 				$icon_text = $var_cal{$cico};
@@ -932,6 +932,7 @@ sub get_cal {
 				$event_message = $message;
 
 				if ($event_date == $cdat && !$INFO{'edit_cal_even'}) {
+					$eventfound = 1;
 					if ($cnam eq "Guest") {
 						$eventuserlink = $maintxt{'28'};
 					} elsif ($Show_ColorLinks) {
@@ -1070,8 +1071,8 @@ sub get_cal {
 				if ($cico eq "") { $cico = "eventinfo"; }
 				$cdat =~ /(\d{4})(\d{2})(\d{2})/;
 				my ($dd_year,$dd_mon,$dd_day) = ($1,$2,$3);
-				if ($ctyp2 == 2) { $cdat = "$d_year$d_mon$dd_day"; $eventfound = 1; } else { $cdat = "$cdat"; }
-				if ($ctyp2 == 3) { $cdat = "$d_year$dd_mon$dd_day"; $eventfound = 1; } else { $cdat = "$cdat"; }
+				if ($ctyp2 == 2) { $cdat = "$d_year$d_mon$dd_day"; } else { $cdat = "$cdat"; }
+				if ($ctyp2 == 3) { $cdat = "$d_year$dd_mon$dd_day"; } else { $cdat = "$cdat"; }
 				$delete_event = "";
 				$edit_event = "";
 				$icon_text = $var_cal{$cico};
@@ -1081,6 +1082,7 @@ sub get_cal {
 				$event_message = $message;
 
 				if ($event_id eq $ctim && $cdat == $event_date) {
+					$eventfound = 1;
 					if ($cnam eq "Guest") {
 						$eventuserlink = $maintxt{'28'};
 					} elsif ($Show_ColorLinks) {
