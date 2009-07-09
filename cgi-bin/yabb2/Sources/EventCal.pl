@@ -1218,7 +1218,7 @@ $YaBBC_calout
 	<div id="eventcaldata">~;
 	}
 	if ($Scroll_Events != 3) {
-		$outstring .= "<table width=\"90%\" border=\"0\">";
+		$outstring .= qq~<table width="90%" border="0">~;
 	}
 
 	my ($caleventbegin,$caleventend);
@@ -1431,16 +1431,6 @@ $YaBBC_calout
 	if ($outstring !~ /$imagesdir\//) {
 		$outstring = "<table><tr><td width=\"100%\" valign=\"top\"><span class=\"small\"><img src=\"$imagesdir/../../../EventCalIcons/eventinfo.gif\" border=\"0\" alt=\"Event\" /> $var_cal{'calnoevent'}</span><hr class=\"hr\" size=\"1\" /></td></tr></table>";
 	}
-	$caltablecal = "30%";
-	$caltablespan = "1";
-	$D_CalEvents = 1;
-	unless ($INFO{'calshow'} == 1) {
-		if (!$DisplayCalEvents) { $D_CalEvents = 0; }
-	}
-
-	if (!$D_CalEvents) { 
-		$caltablecal = "100%"; $caltablespan = "2";
-	}
 
 	my $cal_display;
 	if ($seperator) {
@@ -1481,7 +1471,7 @@ $YaBBC_calout
 	<td class="windowbg2">
 		<table width="100%">
 		<tr>
-			<td colspan="$caltablespan" width="$caltablecal">
+			<td width="30%">
 				<table width="100%" cellpadding="0" cellspacing="1">
 				<tr>
 					<td class="windowbg">
@@ -1502,22 +1492,17 @@ $YaBBC_calout
 				</table>
 				$ShowBirthdaysLink
 				$ShowEventAddLink
-			</td>~;
+			</td>
+			<td class="windowbg2" width="70%" align="left" valign="top">~;
 
-	$D_CalEvents = 1;
-	unless ($INFO{'calshow'} == 1) { 
-		if (!$DisplayCalEvents) { $D_CalEvents = 0; }
-	}
-
-	if ($D_CalEvents) {
+	if ($DisplayCalEvents || $INFO{'calshow'}) {
 		$cal_display .= qq~
-			<td class="windowbg2" width="70%" align="left" valign="top">
 				<b>$event_index</b><br />
-				$outstring
-			</td>~;
+				$outstring~;
 	}
 
 	$cal_display .= qq~
+			&nbsp;</td>
 		</tr>
 		</table>~;
 
@@ -1648,14 +1633,18 @@ sub add_cal {
 ## Delete old events ##
 
 sub del_old_events {
-	my $toffs = $timeoffset;
-	$toffs += (localtime($date + (3600 * $toffs)))[8] ? $dstoffset : 0;
+	return if $Delete_EventsUntil < 1;
 
-	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$dst) = gmtime($date + (3600 * $toffs));
-	$year += 1900;
-	$mon++;
-	my $caltoday = $year . sprintf("%02d", $mon) . sprintf("%02d", $mday);
-	if ($Delete_EventsUntil != 0 && $Delete_EventsUntil < $caltoday) { $caltoday = $Delete_EventsUntil; }
+	my $caltoday = $Delete_EventsUntil;
+	if ($caltoday == 1) {
+		my $toffs = $timeoffset;
+		$toffs += (localtime($date + (3600 * $toffs)))[8] ? $dstoffset : 0;
+
+		my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$dst) = gmtime($date + (3600 * $toffs));
+		$year += 1900;
+		$mon++;
+		$caltoday = $year . sprintf("%02d", $mon) . sprintf("%02d", $mday);
+	}
 
 	my @calinput = &read_DBorFILE(1,'',$vardir,'eventcal','db');
 	for (my $i = 0; $i < @calinput; $i++) {
