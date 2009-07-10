@@ -326,8 +326,8 @@ function checkAvail(scripturl,val,type) {
 function returnAvail() {
 	if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete") { 
 		var avail = xmlHttp.responseText;
-		var check = '<img src="'+imgdir+'/Check.png">&nbsp;&nbsp;';
-		var cross = '<img src="'+imgdir+'/Cross.png">&nbsp;&nbsp;';
+		var check = '<img src="'+imgdir+'/check.png">&nbsp;&nbsp;';
+		var cross = '<img src="'+imgdir+'/cross.png">&nbsp;&nbsp;';
 		if (avail == "falseuser") {
 			document.getElementById("useravailability").innerHTML = check + '<span style="color:#00dd00">' + tuser + nottaken + '</span>'; }
 		else if (avail == "falseemail") {
