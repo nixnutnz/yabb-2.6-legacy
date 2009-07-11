@@ -18,7 +18,6 @@ $eventcalplver = 'YaBB 2.5 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('EventCal');
-&LoadLanguage('Post');
 
 use Time::Local 'timelocal';
 
@@ -410,32 +409,32 @@ sub get_cal {
 			<!--
 			HAND = "style='cursor: pointer;'";
 			document.write('<div style="width: 437px; float: left;">');
-			document.write("<img src='$imagesdir/url.gif' onclick='hyperlink();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'257'}' title='$post_txt{'257'}' border='0' />");
-			document.write("<img src='$imagesdir/ftp.gif' onclick='ftp();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'434'}' title='$post_txt{'434'}' border='0' />");
-			document.write("<img src='$imagesdir/img.gif' onclick='image();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'435'}' title='$post_txt{'435'}' border='0' />");
-			document.write("<img src='$imagesdir/email2.gif' onclick='emai1();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'258'}' title='$post_txt{'258'}' border='0' />");
-			document.write("<img src='$imagesdir/media.gif' onclick='flash();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'433'}' title='$post_txt{'433'}' border='0' />");
-			document.write("<img src='$imagesdir/table.gif' onclick='table();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'436'}' title='$post_txt{'436'}' border='0' />");
-			document.write("<img src='$imagesdir/tr.gif' onclick='trow();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'449'}' title='$post_txt{'449'}' border='0' />");
-			document.write("<img src='$imagesdir/td.gif' onclick='tcol();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'437'}' title='$post_txt{'437'}' border='0' />");
-			document.write("<img src='$imagesdir/hr.gif' onclick='hr();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'531'}' title='$post_txt{'531'}' border='0' />");
-			document.write("<img src='$imagesdir/tele.gif' onclick='teletype();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'440'}' title='$post_txt{'440'}' border='0' />");
-			document.write("<img src='$imagesdir/code.gif' onclick='showcode();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'259'}' title='$post_txt{'259'}' border='0' />");
-			document.write("<img src='$imagesdir/quote2.gif' onclick='quote();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'260'}' title='$post_txt{'260'}' border='0' />");
-			document.write("<img src='$imagesdir/edit.gif' onclick='edit();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'603'}' title='$post_txt{'603'}' border='0' />");
-			document.write("<img src='$imagesdir/sup.gif' onclick='superscript();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'447'}' title='$post_txt{'447'}' border='0' />");
-			document.write("<img src='$imagesdir/sub.gif' onclick='subscript();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'448'}' title='$post_txt{'448'}' border='0' />");
-			document.write("<img src='$imagesdir/list.gif' onclick='list();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'261'}' title='$post_txt{'261'}' border='0' />");
-			document.write("<img src='$imagesdir/me.gif' onclick='me();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'604'}' title='$post_txt{'604'}' border='0' />");
-			document.write("<img src='$imagesdir/move.gif' onclick='move();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'439'}' title='$post_txt{'439'}' border='0' />");
-			document.write("<img src='$imagesdir/timestamp.gif' onclick='timestamp($date);' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'245'}' title='$post_txt{'245'}' border='0' /><br />");
+			document.write("<img src='$imagesdir/url.gif' onclick='hyperlink();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'url'}' title='$var_calpost{'url'}' border='0' />");
+			document.write("<img src='$imagesdir/ftp.gif' onclick='ftp();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'ftp'}' title='$var_calpost{'ftp'}' border='0' />");
+			document.write("<img src='$imagesdir/img.gif' onclick='image();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'img'}' title='$var_calpost{'img'}' border='0' />");
+			document.write("<img src='$imagesdir/email2.gif' onclick='emai1();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'email'}' title='$var_calpost{'email'}' border='0' />");
+			document.write("<img src='$imagesdir/media.gif' onclick='media();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'media'}' title='$var_calpost{'media'}' border='0' />");
+			document.write("<img src='$imagesdir/table.gif' onclick='table();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'table'}' title='$var_calpost{'table'}' border='0' />");
+			document.write("<img src='$imagesdir/tr.gif' onclick='trow();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'tr'}' title='$var_calpost{'tr'}' border='0' />");
+			document.write("<img src='$imagesdir/td.gif' onclick='tcol();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'td'}' title='$var_calpost{'td'}' border='0' />");
+			document.write("<img src='$imagesdir/hr.gif' onclick='hr();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'hr'}' title='$var_calpost{'hr'}' border='0' />");
+			document.write("<img src='$imagesdir/tele.gif' onclick='teletype();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'tt'}' title='$var_calpost{'tt'}' border='0' />");
+			document.write("<img src='$imagesdir/code.gif' onclick='showcode();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'code'}' title='$var_calpost{'code'}' border='0' />");
+			document.write("<img src='$imagesdir/quote2.gif' onclick='quote();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'quote'}' title='$var_calpost{'quote'}' border='0' />");
+			document.write("<img src='$imagesdir/edit.gif' onclick='edit();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'edit'}' title='$var_calpost{'edit'}' border='0' />");
+			document.write("<img src='$imagesdir/sup.gif' onclick='superscript();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'sup'}' title='$var_calpost{'sup'}' border='0' />");
+			document.write("<img src='$imagesdir/sub.gif' onclick='subscript();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'sub'}' title='$var_calpost{'sub'}' border='0' />");
+			document.write("<img src='$imagesdir/list.gif' onclick='list();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'list'}' title='$var_calpost{'list'}' border='0' />");
+			document.write("<img src='$imagesdir/me.gif' onclick='me();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'me'}' title='$var_calpost{'me'}' border='0' />");
+			document.write("<img src='$imagesdir/move.gif' onclick='move();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'move'}' title='$var_calpost{'move'}' border='0' />");
+			document.write("<img src='$imagesdir/timestamp.gif' onclick='timestamp($date);' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'timestamp'}' title='$var_calpost{'timestamp'}' border='0' /><br />");
 			document.write('</div>');
 			document.write('<div style="width: 115px; float: left;">');
-			document.write("<img src='$imagesdir/bold.gif' onclick='bold();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'253'}' title='$post_txt{'253'}' border='0' />");
-			document.write("<img src='$imagesdir/italicize.gif' onclick='italicize();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'254'}' title='$post_txt{'254'}' border='0' />");
-			document.write("<img src='$imagesdir/underline.gif' onclick='underline();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'255'}' title='$post_txt{'255'}' border='0' />");
-			document.write("<img src='$imagesdir/strike.gif' onclick='strike();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'441'}' title='$post_txt{'441'}' border='0' />");
-			document.write("<img src='$imagesdir/highlight.gif' onclick='highlight();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'246'}' title='$post_txt{'246'}' border='0' />");
+			document.write("<img src='$imagesdir/bold.gif' onclick='bold();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'bold'}' title='$var_calpost{'bold'}' border='0' />");
+			document.write("<img src='$imagesdir/italicize.gif' onclick='italicize();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'italicize'}' title='$var_calpost{'italicize'}' border='0' />");
+			document.write("<img src='$imagesdir/underline.gif' onclick='underline();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'underline'}' title='$var_calpost{'underline'}' border='0' />");
+			document.write("<img src='$imagesdir/strike.gif' onclick='strike();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'strike'}' title='$var_calpost{'strike'}' border='0' />");
+			document.write("<img src='$imagesdir/highlight.gif' onclick='highlight();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'highlight'}' title='$var_calpost{'highlight'}' border='0' />");
 			document.write('</div>');
 			document.write('<div style="width: 139px; float: left; text-align: center;">');
 			document.write('<select name="fontface" id="fontface" onchange="if(this.options[this.selectedIndex].value) fontfce(this.options[this.selectedIndex].value);" style="width: 90px; margin-top: 2px; margin-left: 2px; margin-right: 1px; font-size: 9px;">');
@@ -544,17 +543,17 @@ sub get_cal {
 				<span id="defaultpal6" style="float: left; background-color: $pallist[5]; width: 10px; height: 9px; margin-right: 1px; margin-bottom: 1px; border: 0px; font-size: 5px; cursor: pointer; cursor: hand;" onclick="ConvShowcolor(this.style.backgroundColor)">&nbsp;</span>
 			</div>
 			<div style="height: 22px; width: 23px; padding-left: 1px; float: right;">
-				<img src="$imagesdir/palette1.gif" style="cursor: pointer" onclick="window.open('$scripturl?action=palette;task=post', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" border="0" />
+				<img src="$imagesdir/palette1.gif" style="cursor: pointer" onclick="window.open('$scripturl?action=palette;task=post', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="$var_calpost{'color'}" title="$var_calpost{'color'}" border="0" />
 			</div>
 			</div>
 			<script language="JavaScript1.2" type="text/javascript">
 			<!--
 			HAND = "style='cursor: pointer; cursor: hand;'";
 			document.write('<div style="width: 92px; float: left;">');
-			document.write("<img src='$imagesdir/pre.gif' onclick='pre();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'444'}' title='$post_txt{'444'}' border='0' />");
-			document.write("<img src='$imagesdir/left.gif' onclick='left();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'445'}' title='$post_txt{'445'}' border='0' />");
-			document.write("<img src='$imagesdir/center.gif' onclick='center();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'256'}' title='$post_txt{'256'}' border='0' />");
-			document.write("<img src='$imagesdir/right.gif' onclick='right();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'446'}' title='$post_txt{'446'}' border='0' />");
+			document.write("<img src='$imagesdir/pre.gif' onclick='pre();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'pre'}' title='$var_calpost{'pre'}' border='0' />");
+			document.write("<img src='$imagesdir/left.gif' onclick='left();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'left'}' title='$var_calpost{'left'}' border='0' />");
+			document.write("<img src='$imagesdir/center.gif' onclick='center();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'center'}' title='$var_calpost{'center'}' border='0' />");
+			document.write("<img src='$imagesdir/right.gif' onclick='right();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'right'}' title='$var_calpost{'right'}' border='0' />");
 			document.write('</div>');
 			//-->
 			</script>
@@ -603,10 +602,10 @@ sub get_cal {
 			</div>
 			<div style="float: left; width: 315px; text-align: left;"> 
 			<img src="$imagesdir/green1.gif" name="chrwarn" height="8" width="8" border="0" vspace="0" hspace="0" alt="" align="middle" />
-			<span class="small">$npf_txt{'03'} <input value="$MaxMessLen" size="3" name="msgCL" class="windowbg2" style="border: 0px; font-size: 11px; width: 40px; padding: 1px" readonly="readonly" /></span>
+			<span class="small">$var_calpost{'eventmaxlength'} <input value="$MaxMessLen" size="3" name="msgCL" class="windowbg2" style="border: 0px; font-size: 11px; width: 40px; padding: 1px" readonly="readonly" /></span>
 			</div>
 			<div style="float: left; width: 127px; text-align: right;">
-				<span class="small">$post_txt{'textsize'} <input value="$textsize" size="2" name="txtsize" id="txtsize" class="windowbg2" style="border: 0px; font-size: 11px; width: 15px; padding: 1px" readonly="readonly" />pt <img src="$imagesdir/smaller.gif" height="11" width="11" border="0" alt="" align="middle" onclick="sizetext(-1);" /><img src="$imagesdir/larger.gif" height="11" width="11" border="0" alt="" align="middle" onclick="sizetext(1);" /></span>
+				<span class="small">$var_calpost{'textsize'} <input value="$textsize" size="2" name="txtsize" id="txtsize" class="windowbg2" style="border: 0px; font-size: 11px; width: 15px; padding: 1px" readonly="readonly" />pt <img src="$imagesdir/smaller.gif" height="11" width="11" border="0" alt="" align="middle" onclick="sizetext(-1);" /><img src="$imagesdir/larger.gif" height="11" width="11" border="0" alt="" align="middle" onclick="sizetext(1);" /></span>
 			</div>
 			</div>
 		</td>
@@ -629,12 +628,12 @@ sub get_cal {
 			<!--
 			GOOGIE_DEFAULT_LANG = '$userdefaultlang';
 			var googie1 = new GoogieSpell("$yyhtml_root/googiespell/", "$boardurl/Sources/SpellChecker.pl?lang=");
-			googie1.lang_chck_spell = '$spell_check{'chck_spell'}';
-			googie1.lang_revert = '$spell_check{'revert'}';
-			googie1.lang_close = '$spell_check{'close'}';
-			googie1.lang_rsm_edt = '$spell_check{'rsm_edt'}';
-			googie1.lang_no_error_found = '$spell_check{'no_error_found'}';
-			googie1.lang_no_suggestions = '$spell_check{'no_suggestions'}';
+			googie1.lang_chck_spell = '$var_calspell{'chck_spell'}';
+			googie1.lang_revert = '$var_calspell{'revert'}';
+			googie1.lang_close = '$var_calspell{'close'}';
+			googie1.lang_rsm_edt = '$var_calspell{'rsm_edt'}';
+			googie1.lang_no_error_found = '$var_calspell{'no_error_found'}';
+			googie1.lang_no_suggestions = '$var_calspell{'no_suggestions'}';
 			googie1.setSpellContainer("spell_container");
 			googie1.decorateTextarea("message");
 			//-->
@@ -646,22 +645,22 @@ sub get_cal {
 			<script language="JavaScript1.2" type="text/javascript">
 			<!--
 			HAND = "style='cursor: pointer; cursor: hand;'";
-			document.write("<img src='$imagesdir/smiley.gif' onclick='smiley();' "+HAND+" align='bottom' alt='$post_txt{'287'}' title='$post_txt{'287'}' border='0'> ");
-			document.write("<img src='$imagesdir/wink.gif' onclick='wink();' "+HAND+" align='bottom' alt='$post_txt{'292'}' title='$post_txt{'292'}' border='0'> ");
-			document.write("<img src='$imagesdir/cheesy.gif' onclick='cheesy();' "+HAND+" align='bottom' alt='$post_txt{'289'}' title='$post_txt{'289'}' border='0'> ");
-			document.write("<img src='$imagesdir/grin.gif' onclick='grin();' "+HAND+" align='bottom' alt='$post_txt{'293'}' title='$post_txt{'293'}' border='0'> ");
-			document.write("<img src='$imagesdir/angry.gif' onclick='angry();' "+HAND+" align='bottom' alt='$post_txt{'288'}' title='$post_txt{'288'}' border='0'> ");
-			document.write("<img src='$imagesdir/sad.gif' onclick='sad();' "+HAND+" align='bottom' alt='$post_txt{'291'}' title='$post_txt{'291'}' border='0'> ");
-			document.write("<img src='$imagesdir/shocked.gif' onclick='shocked();' "+HAND+" align='bottom' alt='$post_txt{'294'}' title='$post_txt{'294'}' border='0'> ");
-			document.write("<img src='$imagesdir/cool.gif' onclick='cool();' "+HAND+" align='bottom' alt='$post_txt{'295'}' title='$post_txt{'295'}' border='0'> ");
-			document.write("<img src='$imagesdir/huh.gif' onclick='huh();' "+HAND+" align='bottom' alt='$post_txt{'296'}' title='$post_txt{'296'}' border='0'> ");
-			document.write("<img src='$imagesdir/rolleyes.gif' onclick='rolleyes();' "+HAND+" align='bottom' alt='$post_txt{'450'}' title='$post_txt{'450'}' border='0'> ");
-			document.write("<img src='$imagesdir/tongue.gif' onclick='tongue();' "+HAND+" align='bottom' alt='$post_txt{'451'}' title='$post_txt{'451'}' border='0'> ");
-			document.write("<img src='$imagesdir/embarassed.gif' onclick='embarassed();' "+HAND+" align='bottom' alt='$post_txt{'526'}' title='$post_txt{'526'}' border='0'> ");
-			document.write("<img src='$imagesdir/lipsrsealed.gif' onclick='lipsrsealed();' "+HAND+" align='bottom' alt='$post_txt{'527'}' title='$post_txt{'527'}' border='0'> ");
-			document.write("<img src='$imagesdir/undecided.gif' onclick='undecided();' "+HAND+" align='bottom' alt='$post_txt{'528'}' title='$post_txt{'528'}' border='0'> ");
-			document.write("<img src='$imagesdir/kiss.gif' onclick='kiss();' "+HAND+" align='bottom' alt='$post_txt{'529'}' title='$post_txt{'529'}' border='0'> ");
-			document.write("<img src='$imagesdir/cry.gif' onclick='cry();' "+HAND+" align='bottom' alt='$post_txt{'530'}' title='$post_txt{'530'}' border='0'> ");$moresmilieslist
+			document.write("<img src='$imagesdir/smiley.gif' onclick='smiley();' "+HAND+" align='bottom' alt='$var_calsmiley{'smiley'}' title='$var_calsmiley{'smiley'}' border='0'> ");
+			document.write("<img src='$imagesdir/wink.gif' onclick='wink();' "+HAND+" align='bottom' alt='$var_calsmiley{'wink'}' title='$var_calsmiley{'wink'}' border='0'> ");
+			document.write("<img src='$imagesdir/cheesy.gif' onclick='cheesy();' "+HAND+" align='bottom' alt='$var_calsmiley{'cheesy'}' title='$var_calsmiley{'cheesy'}' border='0'> ");
+			document.write("<img src='$imagesdir/grin.gif' onclick='grin();' "+HAND+" align='bottom' alt='$var_calsmiley{'grin'}' title='$var_calsmiley{'grin'}' border='0'> ");
+			document.write("<img src='$imagesdir/angry.gif' onclick='angry();' "+HAND+" align='bottom' alt='$var_calsmiley{'angry'}' title='$var_calsmiley{'angry'}' border='0'> ");
+			document.write("<img src='$imagesdir/sad.gif' onclick='sad();' "+HAND+" align='bottom' alt='$var_calsmiley{'sad'}' title='$var_calsmiley{'sad'}' border='0'> ");
+			document.write("<img src='$imagesdir/shocked.gif' onclick='shocked();' "+HAND+" align='bottom' alt='$var_calsmiley{'shocked'}' title='$var_calsmiley{'shocked'}' border='0'> ");
+			document.write("<img src='$imagesdir/cool.gif' onclick='cool();' "+HAND+" align='bottom' alt='$var_calsmiley{'cool'}' title='$var_calsmiley{'cool'}' border='0'> ");
+			document.write("<img src='$imagesdir/huh.gif' onclick='huh();' "+HAND+" align='bottom' alt='$var_calsmiley{'huh'}' title='$var_calsmiley{'huh'}' border='0'> ");
+			document.write("<img src='$imagesdir/rolleyes.gif' onclick='rolleyes();' "+HAND+" align='bottom' alt='$var_calsmiley{'rolleyes'}' title='$var_calsmiley{'rolleyes'}' border='0'> ");
+			document.write("<img src='$imagesdir/tongue.gif' onclick='tongue();' "+HAND+" align='bottom' alt='$var_calsmiley{'tongue'}' title='$var_calsmiley{'tongue'}' border='0'> ");
+			document.write("<img src='$imagesdir/embarassed.gif' onclick='embarassed();' "+HAND+" align='bottom' alt='$var_calsmiley{'embarrassed'}' title='$var_calsmiley{'embarrassed'}' border='0'> ");
+			document.write("<img src='$imagesdir/lipsrsealed.gif' onclick='lipsrsealed();' "+HAND+" align='bottom' alt='$var_calsmiley{'lipssealed'}' title='$var_calsmiley{'lipssealed'}' border='0'> ");
+			document.write("<img src='$imagesdir/undecided.gif' onclick='undecided();' "+HAND+" align='bottom' alt='$var_calsmiley{'undecided'}' title='$var_calsmiley{'undecided'}' border='0'> ");
+			document.write("<img src='$imagesdir/kiss.gif' onclick='kiss();' "+HAND+" align='bottom' alt='$var_calsmiley{'kiss'}' title='$var_calsmiley{'kiss'}' border='0'> ");
+			document.write("<img src='$imagesdir/cry.gif' onclick='cry();' "+HAND+" align='bottom' alt='$var_calsmiley{'cry'}' title='$var_calsmiley{'cry'}' border='0'> ");$moresmilieslist
 			//-->
 			</script>~ if !$removenormalsmilies && (!${$uid.$username}{'hide_smilies_row'} || !$user_hide_smilies_row);
 
@@ -724,11 +723,11 @@ sub get_cal {
 			<br /><br /><br />
 			<table>
 			<tr>
-				<td class="windowbg2" width="160" valign="middle"><span class="small"><label for="verification"><b>$floodtxt{'1'}:</b></label></span></td>
-				<td class="windowbg2">$showcheck<br /><label for="verification"><span class="small">$floodtxt{'casewarning'}</span></label></td>
+				<td class="windowbg2" width="160" valign="middle"><span class="small"><label for="verification"><b>$var_calflood{'1'}:</b></label></span></td>
+				<td class="windowbg2">$showcheck<br /><label for="verification"><span class="small">$var_calflood{'casewarning'}</span></label></td>
 			</tr>
 			<tr>
-				<td class="windowbg2" width="160" valign="middle"><span class="small"><label for="verification"><b>$floodtxt{'3'}:</b></label></span></td>
+				<td class="windowbg2" width="160" valign="middle"><span class="small"><label for="verification"><b>$var_calflood{'2'}:</b></label></span></td>
 				<td class="windowbg2">
 				<input type="text" maxlength="30" name="verification" id="verification" size="30" />
 				</td>
