@@ -1,4 +1,6 @@
-#!/usr/bin/perl --
+#!/usr/bin/perl
+use strict;
+# this should be fun
 
 ###############################################################################
 # YaBB.pl                                                                     #
@@ -15,50 +17,61 @@
 # Sponsored by: Xnull Internet Media, Inc. - http://www.ximinc.com            #
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
+#
+# $Id$
 
 ### Version Info ###
-$YaBBversion = 'YaBB 2.4';
-$YaBBplver = 'YaBB 2.4 $Revision$';
+(our $VERSION = '$Revision$') =~ s~^\$ R e v i s i o n: \s (.*) \s \$$~$1~x;
 
-if ($action eq 'detailedversion') { return 1; }
-
- use CGI::Carp qw(fatalsToBrowser); # used only for tests
+use CGI::Carp qw(fatalsToBrowser); # used only for tests
 
 BEGIN {
 	# Make sure the module path is present
 	push(@INC, "./Modules");
 
-	if ($ENV{'SERVER_SOFTWARE'} =~ /IIS/) {
-		$yyIIS = 1;
+	if (defined $ENV{'SERVER_SOFTWARE'} and $ENV{'SERVER_SOFTWARE'} =~ /IIS/) {
+		$GLOBAL::IIS = 1;
 		$0 =~ m~(.*)(\\|/)~;
-		$yypath = $1;
-		$yypath =~ s~\\~/~g;
-		chdir($yypath);
-		push(@INC, $yypath);
+        my $path = $1;
+		$path =~ s~\\~/~g;
+		chdir($path);
+		push(@INC, $path);
 	}
 
 	# Modify the following line if your forum main scriptname must be different.
 	# The default is: "YaBB". Do this also in AdminIndex.pl!!!
 	# Don't forget to modify also all index.html files in the folders!!!
-	$yyexec = "YaBB";
-	$script_root = $ENV{'SCRIPT_FILENAME'};
-	$script_root =~ s/\/$yyexec\.(pl|cgi)//ig;
+	$GLOBAL::EXEC = "YaBB";
 
-	require "Paths.pl";
-	require "$vardir/Settings.pl";
+	my $script_root = $ENV{'SCRIPT_FILENAME'};
+    $script_root = defined $script_root ? $script_root : "" ;
+	$script_root =~ s/\/$GLOBAL::EXEC\.(pl|cgi)//ig;
 
-	# Check for Time::HiRes if debugmodus is on
-	if ($debug) { eval { require Time::HiRes; import Time::HiRes qw(time); }; }
-	$START_TIME = time();
+    use YaBB3::Paths qw(:all); #exporting variables naughty
+	require "$vardir/Settings.pl"; #TODO: lots of work on Settings.pl
+
+	# If we're debugging, try to use HiRes time.
+    if ($GLOBAL::DEBUG) {
+        eval { require Time::HiRes; import Time::HiRes qw(time); };
+    }
+	our $START_TIME = time();
 
 	require "$sourcedir/Subs.pl";
 	require "$sourcedir/System.pl";
-	require "$sourcedir/DateTime.pl";
+    use YaBB3::DateTime qw(:all);
 	require "$sourcedir/Load.pl";
 
 	require "$sourcedir/Guardian.pl";
 	require "$boardsdir/forum.master";
+
+    sub warn {
+        open my $log, ">>", "ERROR.LOG" or die "Could not open logfile. $@";
+        print $log, @_;
+        close $log;
+    }
 } # END of BEGIN block
+
+no strict; # I can only do so much in a day...
 
 # If enabled: check if hard drive has enough space to safely operate the board
 my $hostchecked = &freespace;
@@ -88,7 +101,7 @@ $formsession = &cloak("$mbname$username");
 if ($ENV{REQUEST_METHOD} =~ /post/i) {
 	if ($CGI_query && $CGI_query->cgi_error()) { &fatal_error("denial_of_service", $CGI_query->cgi_error()); }
 	if (&decloak($FORM{'formsession'}) ne "$mbname$username") {
-		&fatal_error("logged_in_already",$username) if $action eq 'login2' && $username ne 'Guest';
+		&fatal_error("logged_in_already",$username) if $GLOBAL::ACTION eq 'login2' && $username ne 'Guest';
 		&fatal_error("form_spoofing",$user_ip);
 	}
 }
@@ -124,26 +137,26 @@ if ($@) { &fatal_error("untrapped",":<br />$@"); }
 sub yymain {
 	# Choose what to do based on the form action
 	if ($maintenance) {
-		if    ($action eq 'login2')    { require "$sourcedir/LogInOut.pl"; &Login2; }
+		if    ($GLOBAL::ACTION eq 'login2')    { require "$sourcedir/LogInOut.pl"; &Login2; }
 		# Allow password reminders in case admins forgets their admin password
-		elsif ($action eq 'reminder')  { require "$sourcedir/LogInOut.pl"; &Reminder; }
-		elsif ($action eq 'validate')  { require "$sourcedir/Decoder.pl"; &convert; }
-		elsif ($action eq 'reminder2') { require "$sourcedir/LogInOut.pl"; &Reminder2; }
-		elsif ($action eq 'resetpass') { require "$sourcedir/LogInOut.pl"; &Reminder3; }
+		elsif ($GLOBAL::ACTION eq 'reminder')  { require "$sourcedir/LogInOut.pl"; &Reminder; }
+		elsif ($GLOBAL::ACTION eq 'validate')  { require "$sourcedir/Decoder.pl"; &convert; }
+		elsif ($GLOBAL::ACTION eq 'reminder2') { require "$sourcedir/LogInOut.pl"; &Reminder2; }
+		elsif ($GLOBAL::ACTION eq 'resetpass') { require "$sourcedir/LogInOut.pl"; &Reminder3; }
 
 		if (!$iamadmin) { require "$sourcedir/LogInOut.pl"; &InMaintenance; }
 	}
 
 	# Guest can do the very few following actions
-	&KickGuest if $iamguest && !$guestaccess && $action !~ /^(login|register|reminder|validate|activate|resetpass|guestpm|checkavail|$randaction)2?$/;
+	&KickGuest if $iamguest && !$guestaccess && $GLOBAL::ACTION !~ /^(login|register|reminder|validate|activate|resetpass|guestpm|checkavail|$randaction)2?$/;
 
-	if ($action ne "") {
-		if ($action eq $randaction) {
+	if ($GLOBAL::ACTION ne "") {
+		if ($GLOBAL::ACTION eq $randaction) {
 			require "$sourcedir/Decoder.pl"; &convert;
 		} else {
 			require "$sourcedir/SubList.pl";
-			if ($director{$action}) {
-				my @act = split(/&/, $director{$action});
+			if ($director{$GLOBAL::ACTION}) {
+				my @act = split(/&/, $director{$GLOBAL::ACTION});
 				require "$sourcedir/$act[0]";
 				&{$act[1]};
 			} else {

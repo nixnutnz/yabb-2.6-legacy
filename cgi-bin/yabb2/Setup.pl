@@ -43,6 +43,7 @@ $script_root =~ s/\/Setup\.(pl|cgi)//ig;
 if (-e "./Paths.pl") { require "./Paths.pl"; }
 elsif (-e "$script_root/Paths.pl") { require "$script_root/Paths.pl"; }
 elsif (-e "$script_root/Variables/Paths.pl") { require "$script_root/Variables/Paths.pl"; }
+elsif (-e "$script_root/YaBB3/Paths.pm" { use YaBB3::Paths qw(:all); }
 
 # Check if it's blank Paths.pl or filled in one
 unless ($lastsaved) {
@@ -105,12 +106,12 @@ if (-e "$vardir/Setup.lock") {
 	&tempstarter;
 	&tabmenushow;
 
-	if ($action && !$INFO{'convert'}) {
+	if ($GLOBAL::ACTION && !$INFO{'convert'}) {
 		# needed for: sub conv_stringtotime
 		require Time::Local;
 		import Time::Local 'timelocal';
 
-	} elsif (!$action || $INFO{'convert'}) {
+	} elsif (!$GLOBAL::ACTION || $INFO{'convert'}) {
 		$yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
 
 		$yymain = qq~
@@ -160,7 +161,7 @@ if (-e "$vardir/Setup.lock") {
 		~;
 	}
 
-	if ($action eq "prepare") {
+	if ($GLOBAL::ACTION eq "prepare") {
 		&UpdateCookie("delete");
 
 		$username = 'Guest';
@@ -247,7 +248,7 @@ EOF
 		~;
 
 
-	} elsif ($action eq "members") {
+	} elsif ($GLOBAL::ACTION eq "members") {
 		unless (exists $INFO{'mstart1'}) { &PrepareConv; }
 
 		$INFO{'mstart2'} ? &ConvertMembers2 : &ConvertMembers1;
@@ -355,7 +356,7 @@ EOF
 		}
 
 
-	} elsif ($action eq "members2") {
+	} elsif ($GLOBAL::ACTION eq "members2") {
 		&setup_fatal_error("Member conversion (members2) 'mstart1' ($INFO{'mstart1'}), 'mstart2' ($INFO{'mstart2'}) error!") if $INFO{'mstart1'} <= 0 || $INFO{'mstart2'} < 0;
 
 		$yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
@@ -431,7 +432,7 @@ EOF
 		~;
 
 
-	} elsif ($action eq "cats") {
+	} elsif ($GLOBAL::ACTION eq "cats") {
 		unless (exists $INFO{'bstart'} && exists $INFO{'bfstart'}) {
 			&GetCats;
 			&CreateControl;
@@ -501,7 +502,7 @@ EOF
 		~;
 
 
-	} elsif ($action eq "cats2") {
+	} elsif ($GLOBAL::ACTION eq "cats2") {
 		&setup_fatal_error("Boards conversion (cats2) 'bstart' ($INFO{'bstart'}) or 'bfstart' ($INFO{'bfstart'}) error!") if (!$INFO{'bstart'} && !$INFO{'bfstart'}) || $INFO{'bstart'} < 0 || $INFO{'bfstart'} < 0;
 
 		$yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
@@ -578,7 +579,7 @@ EOF
 		~;
 
 
-	} elsif ($action eq "messages") {
+	} elsif ($GLOBAL::ACTION eq "messages") {
 		&ConvertMessages;
 
 		$yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4a . $NavLink5 . $NavLink6;
@@ -644,7 +645,7 @@ EOF
 		~;
 
 
-	} elsif ($action eq "messages2") {
+	} elsif ($GLOBAL::ACTION eq "messages2") {
 		&setup_fatal_error("Message conversion (messages2) 'count' ($INFO{'count'}) or 'tcount' ($INFO{'tcount'}) error!", 1) if (!$INFO{'count'} && !$INFO{'tcount'}) || $INFO{'count'} < 0 || $INFO{'tcount'} < 0;
 
 		my $bwidth = int($INFO{'count'} / $INFO{'totboard'} * 100);
@@ -729,7 +730,7 @@ EOF
 		~;
 
 
-	} elsif ($action eq "dates") {
+	} elsif ($GLOBAL::ACTION eq "dates") {
 		&ConvertTimeToString;
 
 		$yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5a . $NavLink6;
@@ -792,7 +793,7 @@ EOF
 		~;
 
 
-	} elsif ($action eq "dates2") {
+	} elsif ($GLOBAL::ACTION eq "dates2") {
 		&setup_fatal_error("Date & Time conversion (dates2) error! pollfile($INFO{'pollfile'}), polledfile($INFO{'polledfile'})", 1) if $INFO{'pollfile'} <= 0 && $INFO{'polledfile'} <= 0;
 
 		my $pollwidth = ($INFO{'totalpolls'} && $INFO{'pollfile'}) ? int($INFO{'pollfile'} / $INFO{'totalpolls'} * 100) : 100;
@@ -884,7 +885,7 @@ EOF
 		~;
 
 
-	} elsif ($action eq "cleanup") {
+	} elsif ($GLOBAL::ACTION eq "cleanup") {
 		require "$boardsdir/forum.master";
 
 		if (!$INFO{'clean'}) {
@@ -995,7 +996,7 @@ EOF
 		&CreateConvLock;
 
 
-	} elsif ($action eq "cleanup2") {
+	} elsif ($GLOBAL::ACTION eq "cleanup2") {
 		&setup_fatal_error("Clean Up (cleanup2) error! pass_error($INFO{'pass_error'}), my_re_tot($INFO{'my_re_tot'}), memb_index($INFO{'memb_index'}), my_mail_n($INFO{'my_mail_n'})", 1) if (!$INFO{'pass_error'} && $INFO{'my_re_tot'} <= 0) && $INFO{'memb_index'} <= 0 && $INFO{'my_mail_n'} <= 0 && $INFO{'fix_nopost'} <= 1;
 
 		my $re_tot_width = ($INFO{'total_re_tot'} && $INFO{'my_re_tot'}) ? int($INFO{'my_re_tot'} / $INFO{'total_re_tot'} * 100) : ($INFO{'total_re_tot'} ? 100 : 0);
@@ -2325,7 +2326,7 @@ sub conv_stringtotime {
 # Setup starts here                         #
 #############################################
 
-if (!$action) {
+if (!$GLOBAL::ACTION) {
 	$rand_integer   = int(rand(99999));
 	$rand_cook_user = "Y2User-$rand_integer";
 	$rand_cook_pass = "Y2Pass-$rand_integer";
@@ -2349,22 +2350,22 @@ $cookieusername = "$cookinfo[0]";
 $cookiepassword = "$cookinfo[1]";
 $cookiesession_name = "$cookinfo[2]";
 
-if    ($action eq "adminlogin2") { &adminlogin2; }
-elsif ($action eq "setup1")      { &autoconfig; }
-elsif ($action eq "setup2")      {
+if    ($GLOBAL::ACTION eq "adminlogin2") { &adminlogin2; }
+elsif ($GLOBAL::ACTION eq "setup1")      { &autoconfig; }
+elsif ($GLOBAL::ACTION eq "setup2")      {
 	&BrdInstall;
 	&MemInstall;
 	&MesInstall;
 	&VarInstall;
 	&save_paths;
 }
-elsif ($action eq "checkmodules") { &SetInstall2; &checkmodules; }
-elsif ($action eq "setinstall")   { &SetInstall; }
-elsif ($action eq "setinstall2")  { &SetInstall2; }
-elsif ($action eq "setup3")       { &CheckInstall; }
-elsif ($action eq "ready")        { &ready; }
+elsif ($GLOBAL::ACTION eq "checkmodules") { &SetInstall2; &checkmodules; }
+elsif ($GLOBAL::ACTION eq "setinstall")   { &SetInstall; }
+elsif ($GLOBAL::ACTION eq "setinstall2")  { &SetInstall2; }
+elsif ($GLOBAL::ACTION eq "setup3")       { &CheckInstall; }
+elsif ($GLOBAL::ACTION eq "ready")        { &ready; }
 
-$yymain = "End of script reached without action: $action";
+$yymain = "End of script reached without action: $GLOBAL::ACTION";
 &SimpleOutput;
 
 
@@ -3001,9 +3002,12 @@ sub save_paths {
 	#$modimgdir      = $FORM{'modimgdir'};
 	#$modimgurl      = $FORM{'modimgurl'};
 
-	my $setfile = << "EOF";
+	my $setfile = << 'EOF';
+package YaBB3::Paths;
+use strict;
+
 ###############################################################################
-# Paths.pl                                                                    #
+# YaBB3/Paths.pm                                                              #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -3017,6 +3021,37 @@ sub save_paths {
 # Sponsored by: Xnull Internet Media, Inc. - http://www.ximinc.com            #
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
+
+# We really shouldn't do this, and by the Beta, this should be removed. We are
+# only doing this because it is going to take a while to fix all the code that
+# depends on yucky globals.
+BEGIN {
+    use Exporter ();
+
+    @YaBB3::Paths::ISA         = qw( Exporter );
+
+    @YaBB3::Paths::EXPORT_OK   = qw(
+        $lastsaved      $lastdate       $boardurl       $boarddir   $boardsdir
+        $datadir        $memberdir      $sourcedir      $admindir   $vardir
+        $langdir        $helpfile       $templatesdir   $htmldir    $facesdir
+        $uploaddir      $yyhtml_root    $facesurl       $uploadurl
+    );
+
+    %YaBB3::Paths::EXPORT_TAGS = ( all => [qw(
+        $lastsaved      $lastdate       $boardurl       $boarddir   $boardsdir
+        $datadir        $memberdir      $sourcedir      $admindir   $vardir
+        $langdir        $helpfile       $templatesdir   $htmldir    $facesdir
+        $uploaddir      $yyhtml_root    $facesurl       $uploadurl
+    )]);
+}
+
+our ($lastsaved,    $lastdate,  $boardurl, $boarddir,  $boardsdir,   $datadir);
+our ($memberdir,    $sourcedir, $admindir, $vardir,    $langdir,     $helpfile);
+our ($templatesdir, $htmldir,   $facesdir, $uploaddir, $yyhtml_root, $facesurl);
+our ($uploadurl);
+EOF
+	$setfile .= << "EOF";
+###
 
 \$lastsaved = "$lastsaved";
 \$lastdate = "$lastdate";
@@ -3044,24 +3079,24 @@ sub save_paths {
 \$facesurl = "$facesurl";                                         # Base URL for all avatar files
 \$uploadurl = "$uploadurl";                                       # Base URL for all attachment files
 
-########## Old Path Settings ################################
-########## The following variables are deprecated! ##########
-########## Don't use them for new code! #####################
-
-\$forumstylesdir = \$htmldir . "/Templates/Forum";                # Directory with forum style files and folders
-\$adminstylesdir = \$htmldir . "/Templates/Admin";                # Directory with admin style files and folders
-\$smiliesdir = \$htmldir . "/Smilies";                            # Base Path for all smilie files
-\$modimgdir = \$htmldir . "/ModImages";                           # Base Path for all mod images
-
-\$forumstylesurl = \$yyhtml_root . "/Templates/Forum";            # Default Forum Style Directory
-\$adminstylesurl = \$yyhtml_root . "/Templates/Admin";            # Default Admin Style Directory
-\$smiliesurl = \$yyhtml_root . "/Smilies";                        # Base URL for all smilie files
-\$modimgurl = \$yyhtml_root . "/ModImages";                       # Base URL for all mod images
+# deprecated values removed, major version changes let you do that :-)
+EOF
+	$setfile .= << 'EOF';
+#TODO
+# must go away by beta
+no strict 'refs';
+for my $var (qw/
+        lastsaved      lastdate       boardurl       boarddir   boardsdir
+        datadir        memberdir      sourcedir      admindir   vardir
+        langdir        helpfile       templatesdir   htmldir    facesdir
+        uploaddir      yyhtml_root    facesurl       uploadurl/) {
+    eval "\$PATHS::$var = \$$var";
+}
 
 1;
 EOF
 
-	fopen(FILE, ">./Paths.pl") || &setup_fatal_error("$maintext_23 ./Paths.pl: ", 1);
+	fopen(FILE, ">./YaBB3/Paths.pm") || &setup_fatal_error("$maintext_23 ./Paths.pl: ", 1);
 	print FILE &nicely_aligned_file($setfile);
 	fclose(FILE);
 
@@ -3537,7 +3572,7 @@ sub SetInstall {
 }
 
 sub SetInstall2 {
-	if ($action eq "checkmodules" || $action eq "setinstall2") {
+	if ($GLOBAL::ACTION eq "checkmodules" || $GLOBAL::ACTION eq "setinstall2") {
 		$settings_file_version = "YaBB 0.0.0";
 		$maintenance = 1;
 		$members_total = 1;
@@ -3681,7 +3716,6 @@ sub SetInstall2 {
 		my @chars = ('A' .. 'Z', 'a' .. 'z', 0 .. 9);
 		$masterkey .= $chars[rand @chars] for 1 .. 24;
 
-		
 	} else {
 		$forumstart = &timetostring($INFO{'firstforum'});
 		$MaxSigLen  = $siglength || 200;
@@ -4143,16 +4177,10 @@ EOF
 	fopen(SETTING, ">$vardir/Settings.pl") || &setup_fatal_error("$maintext_23 $vardir/Settings.pl: ", 1);
 	print SETTING &nicely_aligned_file($setfile);
 	fclose(SETTING);
-	if ($action eq "setinstall2") {
+	if ($GLOBAL::ACTION eq "setinstall2") {
 		&LoadUser('admin');
-		${$uid.'admin'}{'email'} = $webmaster_email;
-		${$uid.'admin'}{'timeoffset'} = $timeoffset; # must set before &timetostring($date)
-		${$uid.'admin'}{'regdate'} = &timetostring($date);
-		${$uid.'admin'}{'regtime'} = $date;
-		${$uid.'admin'}{'timeselect'} = $timeselected;
 		${$uid.'admin'}{'language'} = $lang;
 		&UserAccount('admin', "update");
-		&ManageMemberinfo('update', 'admin', $date, '', $webmaster_email);
 		$yySetLocation = qq~$set_cgi?action=setup3~;
 		&redirectexit;
 	}
@@ -4179,6 +4207,9 @@ sub tempstarter {
 	require "$vardir/Settings.pl";
 	if (-e "$vardir/ConvSettings.txt") { require "$vardir/ConvSettings.txt"; }
 	else { $convertdir = "./Convert"; }
+	require "$sourcedir/Subs.pl";
+	require "$sourcedir/DateTime.pl";
+	require "$sourcedir/Load.pl";
 
 	&LoadCookie; # Load the user's cookie (or set to guest)
 	&LoadUserSettings;

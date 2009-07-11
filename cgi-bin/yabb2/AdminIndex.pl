@@ -38,11 +38,12 @@ $adminscreen = 1;
 
 # modify the following line if your forum main scriptname is different
 # from the default: "YaBB".
-$yyexec = "YaBB";
+$GLOBAL::EXEC = "YaBB";
 $script_root = $ENV{'SCRIPT_FILENAME'};
 $script_root =~ s/\/AdminIndex\.(pl|cgi)//ig;
 
-require "Paths.pl";
+#require "Paths.pl";
+use YaBB3::Paths qw(:all);
 require "$vardir/Settings.pl";
 
 # Check allways for Time::HiRes
@@ -59,7 +60,6 @@ require "$sourcedir/Subs.pl";
 require "$sourcedir/System.pl";
 require "$sourcedir/DateTime.pl";
 require "$sourcedir/Load.pl";
-require "$boardsdir/forum.master";
 
 &LoadCookie;       # Load the user's cookie (or set to guest)
 &LoadUserSettings; # Load user settings
@@ -81,14 +81,14 @@ $maintenance = 2 if !$maintenance && -e "$vardir/maintenance.lock";
 # into server or browser timeout.
 $max_process_time = 15;
 
-$action = $INFO{'action'};
+$GLOBAL::ACTION = $INFO{'action'};
 $SIG{__WARN__} = sub { &fatal_error("error_occurred","@_"); };
 eval { &yymain; };
 if ($@) { &fatal_error("untrapped",":<br />$@"); }
 
 sub yymain {
 	# Choose what to do based on the form action
-	if ($maintenance && $action eq 'login2') { require "$sourcedir/LogInOut.pl"; &Login2; }
+	if ($maintenance && $GLOBAL::ACTION eq 'login2') { require "$sourcedir/LogInOut.pl"; &Login2; }
 
 	# Do Sessions Checking
 	if (!$iamguest && $sessions == 1 && $sessionvalid != 1) {
@@ -111,14 +111,14 @@ sub yymain {
 		}
 	}
 
-	if ($action ne "") {
-		if ($action eq $randaction) {
+	if ($GLOBAL::ACTION ne "") {
+		if ($GLOBAL::ACTION eq $randaction) {
 			require "$sourcedir/Decoder.pl"; &convert;
 		} else {
 			require "$admindir/AdminSubList.pl";
-			if ($director{$action}) {
-				my @act = split(/&/, $director{$action});
-				if ($action =~ /^ext_/) {
+			if ($director{$GLOBAL::ACTION}) {
+				my @act = split(/&/, $director{$GLOBAL::ACTION});
+				if ($GLOBAL::ACTION =~ /^ext_/) {
 					require "$sourcedir/$act[0]";
 				} else {
 					require "$admindir/$act[0]";
@@ -140,9 +140,9 @@ sub ParseNavArray {
 	foreach $element (@_) {
 
 		chomp $element;
-		($action_to_take, $vistext, $whatitdoes, $isheader) = split(/\|/, $element);
+		($GLOBAL::ACTION_to_take, $vistext, $whatitdoes, $isheader) = split(/\|/, $element);
 
-		if ($action_area eq $action_to_take) {
+		if ($GLOBAL::ACTION_area eq $GLOBAL::ACTION_to_take) {
 			$currentclass = "class=\"current\"";
 		} else {
 			$currentclass = "";
@@ -156,13 +156,13 @@ sub ParseNavArray {
 			next;
 		}
 
-		if ($iamgmod && $gmod_access{$action_to_take} ne "on") {
+		if ($iamgmod && $gmod_access{$GLOBAL::ACTION_to_take} ne "on") {
 			next;
 		}
 
-		if ($action_to_take ne "#") {
+		if ($GLOBAL::ACTION_to_take ne "#") {
 			$leftmenu .= qq~
-			<li><a href="$adminurl?action=$action_to_take" title="$whatitdoes" $currentclass>$vistext</a></li>~;
+			<li><a href="$adminurl?action=$GLOBAL::ACTION_to_take" title="$whatitdoes" $currentclass>$vistext</a></li>~;
 		} else {
 			$leftmenu .= qq~
 			<li><a name="none" title="none">$vistext</a></li>~;
@@ -309,7 +309,7 @@ sub AdminTemplate {
 	&ParseNavArray(@forum_stats);
 	&ParseNavArray(@boardmod_mods);
 
-	$topmenu_one  = qq~<a href="$boardurl/$yyexec.$yyext">$admintxt{'15'}</a>~;
+	$topmenu_one  = qq~<a href="$boardurl/$GLOBAL::EXEC.$yyext">$admintxt{'15'}</a>~;
 	$topmenu_two  = qq~<a href="$adminurl">$admintxt{'33'}</a>~;
 	$topmenu_tree = qq~<a href="$scripturl?action=help;section=admin">$admintxt{'35'}</a>~;
 	$topmenu_four = qq~<a href="http://www.yabbforum.com">$admintxt{'36'}</a>~;

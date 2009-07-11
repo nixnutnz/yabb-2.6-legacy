@@ -30,6 +30,7 @@ $script_root =~ s/\/Setup\.(pl|cgi)//ig;
 
 if (-e "./Paths.pl") { require "./Paths.pl"; }
 elsif (-e "./Variables/Paths.pl") { require "./Variables/Paths.pl"; }
+elsif (-e "./YaBB3/Paths.pm") { use YaBB3::Paths qw(:all); }
 else {
 	$boardsdir = "./Boards";
 	$sourcedir = "./Sources";
@@ -56,7 +57,7 @@ $yytabmenu = '';
 $yymenu = '';
 $yymain = '';
 
-if (!$action) {
+if (!$GLOBAL::ACTION) {
 	&tempstarter;
 	$yytabmenu = qq~$tabsep<span onclick="location.href='$set_cgi?action=members2';"><a href="$set_cgi?action=members2" title="Update file structure">$tabfill Update file structure $tabfill</a></span>$tabsep~;
 	$yyim = 'Update file structure';
@@ -64,7 +65,7 @@ if (!$action) {
 	&FixFileTemplate;
 }
 
-if ($action eq 'members2') {
+if ($GLOBAL::ACTION eq 'members2') {
 	&tempstarter;
 	&FixNopost;
 	$yytabmenu = qq~$tabsep<span onclick="location.href='$scripturl?action=login';"><a href="$scripturl?action=login" title="$img_txt{'34'}">$tabfill$img_txt{'34'}$tabfill</a></span>$tabsep~;
@@ -364,7 +365,7 @@ sub FixFileTemplate {
 					if (!$yyYaBBCloaded) { require "$sourcedir/YaBBC.pl"; }
 					&DoUBBC;
 				}
-				$yynews = $message;
+				$yynews   = $message;
 			}
 		}
 		$yyurl = $scripturl;
