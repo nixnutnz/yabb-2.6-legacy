@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>YaBB 3 - Open source forum software</title>
+<link type="text/css" rel="stylesheet" href="../site.css" />
+</head>
+<body>
+<div id="header">
+YaBB 3
+<span class="subheader">open source forum software</span>
+</div>
+<div id="menu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li class="curpage"><a href="../standards.html">Coding Standards</a></li>
+<li><a href="../roadmap.html">Project Roadmap</a></li>
+<li><a href="../source.html">Browse SVN</a></li>
+<li><a href="https://sourceforge.net/pm/?group_id=9008">Task Tracker</a></li>
+<li><a href="http://www.yabbforum.com/team.php">Team</a></li>
+</ul>
+</div>
+<div id="content">
+<p><a href="../standards.html">&lt;&lt; Back</a></p>
+
+<h2>Subroutines</h2>
+
+<h3>Calling</h3>
+<ul>
+<li>Do not use '&' when calling subroutines. Using '&' modifies how the 
+arguments are passed into the subroutine and can cause strange problems. </li>
+<li>Use parenthesis when calling user-defined subroutines. Parenthesis are not required
+when calling core functions.</li>
+<li>When calling the open and split builtins, use the three argument variants.</li>
+</ul>
+<pre>
+<span class="code_builtin">open my</span> <span class="code_var">$file</span>, <span class="code_string">"<"</span>, <span class="code_string">"/path/to/file"</span> <span class="code_builtin">or die</span> <span class="code_string">"Error! $@"</span>;
+<span class="code_builtin">close</span> <span class="code_var">$file</span>;
+<span class="code_builtin">my</span> (<span class="code_var">$var1</span>, <span class="code_var">$var2</span>, <span class="code_var">$var3</span>) = <span class="code_builtin">split</span> <span class="code_string">/:/</span>, <span class="code_var">$variable</span>, 3;
+
+<span class="code_builtin">my</span> <span class="code_var">$result</span> = get_data( <span class="code_var">$param1</span>, <span class="code_var">$param2</span> );
+</pre>
+
+<h3>Defining</h3>
+<ul>
+<li>Unpack '@_' first. Then check the variables for <em>defined</em>ness.</li>
+<li><em>return</em> explicitly.</li>
+</ul>
+<pre>
+<span class="code_builtin">sub</span> get_data {
+    <span class="code_builtin">my</span> (<span class="code_var">$param1</span>, <span class="code_var">$param2</span>) = <span class="code_var">@_</span>;
+    <span class="code_builtin">if</span> (<span class="code_builtin">not defined</span> <span class="code_var">$param1</span> <span class="code_builtin">or not defined</span> <span class="code_var">$param2</span>) {
+        <span class="code_builtin">die</span> <span class="code_string">"Error: required arguments not found!"</span>;
+    }
+    
+    <span class="code_comment"># do some stuff ...</span>
+    
+    <span class="code_builtin">return</span> <span class="code_var">$value</span>;
+}
+</pre>
+
+<div class="clearfix"></div>
+</div>
+<div id="footer">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li class="curpage"><a href="../standards.html">Coding Standards</a></li>
+<li><a href="../roadmap.html">Project Roadmap</a></li>
+<li><a href="../source.html">Browse SVN</a></li>
+<li><a href="https://sourceforge.net/pm/?group_id=9008">Task Tracker</a></li>
+<li><a href="http://www.yabbforum.com/team.php">Team</a></li>
+</ul>
+</div>
+<div id="copy">Copyright &copy; 2009 Yet another Bulliten Board. All rights reserved.</div>
+<div class="clearfix"></div>
+</body>
+</html>

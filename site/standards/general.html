@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>YaBB 3 - Open source forum software</title>
+<link type="text/css" rel="stylesheet" href="../site.css" />
+</head>
+<body>
+<div id="header">
+YaBB 3
+<span class="subheader">open source forum software</span>
+</div>
+<div id="menu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li class="curpage"><a href="../standards.html">Coding Standards</a></li>
+<li><a href="../roadmap.html">Project Roadmap</a></li>
+<li><a href="../source.html">Browse SVN</a></li>
+<li><a href="https://sourceforge.net/pm/?group_id=9008">Task Tracker</a></li>
+<li><a href="http://www.yabbforum.com/team.php">Team</a></li>
+</ul>
+</div>
+<div id="content">
+<p><a href="../standards.html">&lt;&lt; Back</a></p>
+
+<h2>General Rules</h2>
+<ul>
+<li>All code files must <em>use strict;</em>.</li>
+<li>While not currently mandatory, please use 4 spaces for indentation. At some point in the
+near future, we will automate the layout standards for the code with perltidy.</li>
+<li>"<em>Code in Commented Paragraphs</em> ... Break each piece of code into sequences that achieve 
+a single task, placing a single empty line between each sequence. To further improve the 
+maintainability of the code, place a one-line comment at the start of each such paragraph, 
+describing what the sequence of statements does." 
+<a href="http://www.perl.com/pub/a/2005/07/14/bestpractices.html?page=5">For more information, 
+click here</a></li>
+<li><em>Throw exceptions.</em> Any errors that are critical should <em>die</em>. Return codes 
+and error flags can be ignored. If an error is not critical, it should <em>warn</em> and properly
+handle it. <a href="http://www.perl.com/pub/a/2005/07/14/bestpractices.html?page=6">
+For more information, click here.</a></li>
+<li><em>Avoid string eval.</em> The string form of eval can not only execute unsafe code, but
+it also causes unacceptable performance degradation. They should be avoided unless there is absolutely
+no other alternative.</li>
+<li><em>Don't prematurely optimize code.</em> Running benchmarks is much more effective at identifying
+areas where we should spend our limited time speeding the code up.</li>
+</ul>
+
+<div class="clearfix"></div>
+</div>
+<div id="footer">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li class="curpage"><a href="../standards.html">Coding Standards</a></li>
+<li><a href="../roadmap.html">Project Roadmap</a></li>
+<li><a href="../source.html">Browse SVN</a></li>
+<li><a href="https://sourceforge.net/pm/?group_id=9008">Task Tracker</a></li>
+<li><a href="http://www.yabbforum.com/team.php">Team</a></li>
+</ul>
+</div>
+<div id="copy">Copyright &copy; 2009 Yet another Bulliten Board. All rights reserved.</div>
+<div class="clearfix"></div>
+</body>
+</html>

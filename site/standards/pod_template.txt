@@ -1,0 +1,50 @@
+=pod
+
+=head1 NAME
+
+YaBB3::Module
+
+=head1 SYNOPSIS
+
+  short code example here, if the module is an object, other
+  it can be ommitted
+
+=head1 DESCRIPTION
+
+Short statement on what the file does
+
+=head1 FUNCTIONS
+
+A list of the functions provided by the module, if it does not provide any functions, this may be ommitted.
+
+=head2 new()
+
+Creates an object of type YaBB3::Module
+
+=head2 some_function($arg1, \@arg_two)
+
+Does something with C<$arg1> and C<\@arg_two>
+
+=head1 METHODS
+
+A list of the method for the object, if none are provided or it isn't an object, this may be ommitted.
+
+=head2 $obj->is_something()
+
+Returns true if the object represented is 'something' and returns false otherwise.
+
+=head2 $obj->do_something($arg1, \@arg_two)
+
+Does something to the object with C<$arg1> and sets other things to C<\@arg_two>
+
+=head1 SEE ALSO
+
+This modules depends on L<DBI> and L<YaBB3::SomeModule>.
+
+=head1 COPYRIGHT
+
+This module was written as part of the YaBB 3 project.
+
+Copyright (C) 2002-2008, YaBB 3 Development Team. All Rights Reserved. You may distribute this module under the terms of YaBB 3.
+
+=cut

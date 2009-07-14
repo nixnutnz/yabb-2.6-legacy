@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>YaBB 3 - Open source forum software</title>
+<link type="text/css" rel="stylesheet" href="../site.css" />
+</head>
+<body>
+<div id="header">
+YaBB 3
+<span class="subheader">open source forum software</span>
+</div>
+<div id="menu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li class="curpage"><a href="../standards.html">Coding Standards</a></li>
+<li><a href="../roadmap.html">Project Roadmap</a></li>
+<li><a href="../source.html">Browse SVN</a></li>
+<li><a href="https://sourceforge.net/pm/?group_id=9008">Task Tracker</a></li>
+<li><a href="http://www.yabbforum.com/team.php">Team</a></li>
+</ul>
+</div>
+<div id="content">
+<p><a href="../standards.html">&lt;&lt; Back</a></p>
+
+<h2>Regular Expressions</h2>
+
+<p>Many of these can be found in the Regular Expressions section of Perl Best Practices. In fact, some
+are directly from the book. If you would like more detail than is provided here, you can find 
+further information in PBP.
+</p>
+<ul>
+<li>Use the flags 'x' on any regex that is not obvious. The 'x' flag allows whitespace and comments
+to be used in the regex. These can be used to make a 'difficult' regex readable.</li>
+<li>Use the 'm' and 's' flags. Perl will treat the string as a single long line, 
+but detects multiple lines. '.' matches any character, even "\n" . '^' and '$' , match at the 
+start or end of any line within the string.</li>
+<li>Use '\A' and '\z' in preference to '^' and '$'. The '^' and '$' can change their meaning depending
+on the flags. '\A' and '\z' always denote the same thing.</li>
+<li>Use '\z' to indicate the end of the string, not '\Z'. '\z' matches the end of the string. '\Z' is
+basically just another name for '$'.</li>
+<li>Use m{…} in preference to /…/ in multiline regexes.</li>
+<li>Don’t use any delimiters other than /…/ or m{…}.</li>
+<li>Prefer properties to enumerated character classes. '\w' is better than '[A-Za-z0-9_]' because
+it properly handles non-ascii word characters. YaBB is used world-wide, and we must support these other
+languages.</li>
+<li>Consider matching arbitrary whitespace, rather than specific whitespace characters.</li>
+<li>Be specific when matching ‘as much as possible’.</li>
+<li>Use capturing parentheses <em>()</em> only when you intend to capture. Otherwise, use grouping 
+parenthesis <em>(?:)</em></li>
+<li>Use the numeric capture variables only when you’re sure that the preceding match succeeded.</li>
+<li>Always give captured substrings proper names.</li>
+<li>Prefer fixed-string eq comparisons to fixed-pattern regex matches.</li>
+</ul>
+
+<div class="clearfix"></div>
+</div>
+<div id="footer">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li class="curpage"><a href="../standards.html">Coding Standards</a></li>
+<li><a href="../roadmap.html">Project Roadmap</a></li>
+<li><a href="../source.html">Browse SVN</a></li>
+<li><a href="https://sourceforge.net/pm/?group_id=9008">Task Tracker</a></li>
+<li><a href="http://www.yabbforum.com/team.php">Team</a></li>
+</ul>
+</div>
+<div id="copy">Copyright &copy; 2009 Yet another Bulliten Board. All rights reserved.</div>
+<div class="clearfix"></div>
+</body>
+</html>

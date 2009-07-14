@@ -14,7 +14,7 @@ YaBB 3
 <ul>
 <li><a href="index.html">Home</a></li>
 <li class="curpage"><a href="standards.html">Coding Standards</a></li>
-<li><a href="roadmap.html">Project Roadmap</a></li>
+<li><a href="roadmap.html">Project Roadmap</a></li><li><a href="source.html">Browse SVN</a></li>
 <li><a href="https://sourceforge.net/pm/?group_id=9008">Task Tracker</a></li>
 <li><a href="http://www.yabbforum.com/team.php">Team</a></li>
 </ul>
@@ -36,86 +36,13 @@ the standards listed in the book, it still contains many excellent recommendatio
 <p>These standards are designed to be guides to how YaBB developers should write code. While these standards
 may be broken in special cases, you should be prepared to explain why you have broken them.</p>
 <p>We encourage mod writers to follow these standards as well.</p>
-<dl>
-<dt>General Rules</dt>
-<dd><ul>
-<li>All code files must <em>use strict;</em>.</li>
-<li>While not currently mandatory, please use 4 spaces for indentation. At some point in the
-near future, we will automate the layout standards for the code with perltidy.</li>
-<li>"<em>Code in Commented Paragraphs</em> ... Break each piece of code into sequences that achieve 
-a single task, placing a single empty line between each sequence. To further improve the 
-maintainability of the code, place a one-line comment at the start of each such paragraph, 
-describing what the sequence of statements does." 
-<a href="http://www.perl.com/pub/a/2005/07/14/bestpractices.html?page=5">For more information, 
-click here</a></li>
-<li><em>Throw exceptions.</em> Any errors that are critical should <em>die</em>. Return codes 
-and error flags can be ignored. If an error is not critical, it should <em>warn</em> and properly
-handle it. <a href="http://www.perl.com/pub/a/2005/07/14/bestpractices.html?page=6">
-For more information, click here.</a></li>
-<li><em>Avoid string eval.</em> The string form of eval can not only execute unsafe code, but
-it also causes unacceptable performance degradation. They should be avoided unless there is absolutely
-no other alternative.</li>
-<li><em>Don't prematurely optimize code.</em> Running benchmarks is much more effective at identifying
-areas where we should spend our limited time speeding the code up.</li>
-</ul></dd>
-<dt>Variable naming</dt>
-<dd><ul>
-<li>Variables should be named descriptively. The length of the names should be somewhat 
-proportional to their scope. For example, <strong>$a</strong> is fine for a custom sort block, but
-not as a module-scoped variable.</li>
-<li>Use <em>UPPER_CASE</em> for globals and constants. Use <em>CamelCase</em> for module names. Use 
-<em>lower_case</em> in all other situations.</li>
-</ul></dd>
-<dt>Regular Expressions</dt>
-<dd>
-<p>Many of these can be found in the Regular Expressions section of Perl Best Practices. In fact, some
-are directly from the book. If you would like more detail than is provided here, you can find 
-further information in PBP.
-</p>
 <ul>
-<li>Use the flags 'x' on any regex that is not obvious. The 'x' flag allows whitespace and comments
-to be used in the regex. These can be used to make a 'difficult' regex readable.</li>
-<li>Use the 'm' and 's' flags. Perl will treat the string as a single long line, 
-but detects multiple lines. '.' matches any character, even "\n" . '^' and '$' , match at the 
-start or end of any line within the string.</li>
-<li>Use '\A' and '\z' in preference to '^' and '$'. The '^' and '$' can change their meaning depending
-on the flags. '\A' and '\z' always denote the same thing.</li>
-<li>Use '\z' to indicate the end of the string, not '\Z'. '\z' matches the end of the string. '\Z' is
-basically just another name for '$'.</li>
-<li>Use m{…} in preference to /…/ in multiline regexes.</li>
-<li>Don’t use any delimiters other than /…/ or m{…}.</li>
-<li>Prefer properties to enumerated character classes. '\w' is better than '[A-Za-z0-9_]' because
-it properly handles non-ascii word characters. YaBB is used world-wide, and we must support these other
-languages.</li>
-<li>Consider matching arbitrary whitespace, rather than specific whitespace characters.</li>
-<li>Be specific when matching ‘as much as possible’.</li>
-<li>Use capturing parentheses <em>()</em> only when you intend to capture. Otherwise, use grouping 
-parenthesis <em>(?:)</em></li>
-<li>Use the numeric capture variables only when you’re sure that the preceding match succeeded.</li>
-<li>Always give captured substrings proper names.</li>
-<li>Prefer fixed-string eq comparisons to fixed-pattern regex matches.</li>
-</ul></dd>
-<dt>Subroutines</dt>
-<dd><ul>
-<li>Do not use '&' when calling subroutines, but do use parenthesis. Using '&' modifies how the 
-arguments are passed into the subroutine and can cause strange problems. </li>
-<li>Unpack '@_' first. Then check the variables for <em>defined</em>ness.</li>
-<li><em>return</em> explicitly.</li>
+<li><a href="standards/general.html">General Rules</a> -- General information that applies to all code.</li>
+<li><a href="standards/pod.html">POD</a> -- Information on how we will use POD for our code's documentation</li>
+<li><a href="standards/naming.html">Variables</a> -- Information on variable names and characteristics</li>
+<li><a href="standards/regex.html">Regular Expressions</a> -- How we will keep our regexes from getting too unreadable.</li>
+<li><a href="standards/subs.html">Subroutines</a> -- Some basic rules on writing subroutines.</li>
 </ul>
-<pre>
-get_data( $param1, $param2 );
-
-sub get_data {
-    my ($param1, $param2) = @_;
-    
-    # do some stuff ...
-    
-    return $value;
-}
-</pre>
-</dd>
-</dl>
-
 <a name="tips"></a>
 <h2>Tips</h2>
 <p>We will be putting links to interesting articles about various Perl things in this section.</p>
@@ -124,7 +51,7 @@ sub get_data {
 <ul>
 <li><a href="index.html">Home</a></li>
 <li class="curpage"><a href="standards.html">Coding Standards</a></li>
-<li><a href="roadmap.html">Project Roadmap</a></li>
+<li><a href="roadmap.html">Project Roadmap</a></li><li><a href="source.html">Browse SVN</a></li>
 <li><a href="https://sourceforge.net/tm/?group_id=9008">Task Tracker</a></li>
 <li><a href="http://www.yabbforum.com/team.php">Team</a></li>
 </ul>

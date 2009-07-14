@@ -97,6 +97,22 @@ body div {
     font-size: 14pt;
 }
 
+.url {
+    background: #ddd;
+    color: #900;
+}
+
+dt {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #339;
+}
+
+h2 {
+    font-weight: bold;
+    font-size: 24pt;
+}
+
 h3 {
     font-weight: bold;
     font-size: 20pt;
@@ -107,6 +123,31 @@ h5 {
     font-size: 1.2em;
     font-style: italic;
     margin-bottom: .2em;
+}
+
+pre {
+    color: #006;
+    background: #f7f7ff;
+    border: 1px solid #339;
+    margin: 1em;
+    padding: 2em;
+}
+
+.code_var {
+    color: orange;
+}
+
+.code_string {
+    color: red;
+}
+
+.code_builtin {
+    color: blue;
+}
+
+.code_comment {
+    font-style: italic;
+    color: green;
 }
 
 /*** footer ***/
