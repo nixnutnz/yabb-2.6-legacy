@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>YaBB 3 - Open source forum software</title>
+<link type="text/css" rel="stylesheet" href="../site.css" />
+</head>
+<body>
+<div id="header">
+YaBB 3
+<span class="subheader">open source forum software</span>
+</div>
+<div id="menu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../standards.html">Coding Standards</a></li>
+<li><a href="../roadmap.html">Project Roadmap</a></li>
+<li class="curpage"><a href="../documentation.html">Documentation</a></li>
+<li><a href="../source.html">Browse SVN</a></li>
+<li><a href="https://sourceforge.net/pm/?group_id=9008">Task Tracker</a></li>
+<li><a href="http://www.yabbforum.com/team.php">Team</a></li>
+</ul>
+</div>
+<div id="content">
+<p><a href="../documentation.html">&lt;&lt; Back</a></p>
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#methods">METHODS</a></li>
+	<ul>
+
+		<li><a href="#new_option_____value__">new(option =&gt; 'value')</a></li>
+
+		<ul>
+
+			<li><a href="#options">Options</a></li>
+			<li><a href="#return_value">Return Value</a></li>
+		</ul>
+
+		<li><a href="#do_query___sql____bind_values________">do_query( $sql, [ bind_values, ... ])</a></li>
+		<li><a href="#prepare___sql__">prepare( $sql )</a></li>
+
+	</ul>
+
+	<li><a href="#statement_handlers">STATEMENT HANDLERS</a></li>
+	<ul>
+
+		<li><a href="#execute__bind_values_______">execute( bind_values, ... )</a></li>
+		<li><a href="#fetch___">fetch( )</a></li>
+	</ul>
+
+	<li><a href="#protected_methods">PROTECTED METHODS</a></li>
+	<ul>
+
+		<li><a href="#_initialize___arg_ref__">_initialize( $arg_ref )</a></li>
+		<ul>
+
+			<li><a href="#arguments">Arguments</a></li>
+			<li><a href="#return_value">Return Value</a></li>
+
+		</ul>
+
+		<li><a href="#_connect___">_connect( )</a></li>
+		<ul>
+
+			<li><a href="#arguments">Arguments</a></li>
+			<li><a href="#return_value">Return Value</a></li>
+		</ul>
+
+		<li><a href="#_get_dbh___">_get_dbh( )</a></li>
+		<ul>
+
+			<li><a href="#arguments">Arguments</a></li>
+			<li><a href="#return_value">Return Value</a></li>
+		</ul>
+
+	</ul>
+
+	<li><a href="#references">REFERENCES</a></li>
+	<li><a href="#license">LICENSE</a></li>
+	<li><a href="#author">AUTHOR</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<hr />
+
+<h1><a name="name">NAME</a></h1>
+<p>YaBB3::DataSource::sql_base - Datasource base class for SQL-like backends</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>Provides a base class for <code>YaBB3::DataSource::*</code> modules that use DBI-based
+sources for data</p>
+
+<p>
+</p>
+<hr />
+<h1><a name="methods">METHODS</a></h1>
+<p>
+</p>
+<h2><a name="new_option_____value__">new(option =&gt; 'value')</a></h2>
+<p>This functions is usually called by the YaBB3::DataSource module. It will
+supply the user, password and database arguments based on the current board's
+configuration.</p>
+<p>
+</p>
+<h3><a name="options">Options</a></h3>
+
+<dl>
+<dt><strong><a name="item_db_type">db_type</a></strong><br />
+</dt>
+<dd>
+This indicates what type of database we are connecting to. In most cases, this
+is not set here and is instead initialized in the subclassed c&lt;initialize()&gt;
+method.
+</dd>
+<p></p>
+<dt><strong><a name="item_user">user</a></strong><br />
+</dt>
+<dd>
+This is the user to use for DB connection. It should be set by the user of the
+module.
+</dd>
+
+<p></p>
+<dt><strong><a name="item_password">password</a></strong><br />
+</dt>
+<dd>
+This is the password for the DB connection. It should be set by the user of
+the module.
+</dd>
+<p></p>
+<dt><strong><a name="item_database">database</a></strong><br />
+</dt>
+<dd>
+This is the name of the database to connect to. It should be set by the user
+of the module.
+</dd>
+<p></p></dl>
+<p>
+</p>
+
+<h3><a name="return_value">Return Value</a></h3>
+<p>Returns an object of the class that new was called in.</p>
+<p>
+</p>
+<h2><a name="do_query___sql____bind_values________">do_query( $sql, [ bind_values, ... ])</a></h2>
+<p>Behaves in accordance with the API defined in <a href="DataSource.html">the YaBB3::DataSource manpage</a></p>
+<p>
+</p>
+<h2><a name="prepare___sql__">prepare( $sql )</a></h2>
+<p>Behaves in accordance with the API defined in <a href="DataSource.html">the YaBB3::DataSource manpage</a></p>
+
+<p>
+</p>
+<hr />
+<h1><a name="statement_handlers">STATEMENT HANDLERS</a></h1>
+<p>
+</p>
+<h2><a name="execute__bind_values_______">execute( bind_values, ... )</a></h2>
+<p>Behaves in accordance with the API defined in <a href="DataSource.html">the YaBB3::DataSource manpage</a></p>
+<p>
+</p>
+<h2><a name="fetch___">fetch( )</a></h2>
+<p>Behaves in accordance with the API defined in <a href="DataSource.html">the YaBB3::DataSource manpage</a></p>
+
+<p>
+</p>
+<hr />
+<h1><a name="protected_methods">PROTECTED METHODS</a></h1>
+<p>These methods are for use in subclasses only and are not so be called by other
+modules.</p>
+<p>
+</p>
+<h2><a name="_initialize___arg_ref__">_initialize( $arg_ref )</a></h2>
+<p>This is not a method designed for public calling. It is for use only by this
+class and it's sub-classes. (A protected method in C++ speak.)</p>
+<p>This method is empty and is designed to be overriden by a subclass. It is run
+just before <code>new()</code> returns. It is passed a hashref to the arguments passed
+to <code>new()</code>.</p>
+
+<p>
+</p>
+<h3><a name="arguments">Arguments</a></h3>
+<dl>
+<dt><strong><a name="item__24arg_ref">$arg_ref</a></strong><br />
+</dt>
+<dd>
+A hash reference to the hash of arguments passed into the new method.
+</dd>
+<p></p></dl>
+<p>
+</p>
+<h3><a name="return_value">Return Value</a></h3>
+<p>Does not return a value.</p>
+
+<p>
+</p>
+<h2><a name="_connect___">_connect( )</a></h2>
+<p>This is not a method designed for public calling. It is for use only by this
+class and it's sub-classes. (A protected method in C++ speak.)</p>
+<p>This method connects to the database using DBI. It does it's best to build a
+dsn, but if you are supporting a weird database it may get it wrong.</p>
+<p>When overriding this method, you must ensure the following:
+=over
+=item $self-&gt;{dbh} contains a handle to the database
+=item $self-&gt;{connected} is set to one on succesful connection
+=back</p>
+<p>
+</p>
+<h3><a name="arguments">Arguments</a></h3>
+<p>None.</p>
+
+<p>
+</p>
+<h3><a name="return_value">Return Value</a></h3>
+<p>Does not return a value.</p>
+<p>
+</p>
+<h2><a name="_get_dbh___">_get_dbh( )</a></h2>
+<p>
+</p>
+<h3><a name="arguments">Arguments</a></h3>
+<p>None.</p>
+<p>
+
+</p>
+<h3><a name="return_value">Return Value</a></h3>
+<p>Returns the connected handle to DBI. Will connect if required.</p>
+<p>
+</p>
+<hr />
+<h1><a name="references">REFERENCES</a></h1>
+<p>This following links were helpful when creating this document and may contain
+further helpful information:</p>
+<p><em>DBI</em></p>
+<p>
+</p>
+<hr />
+
+<h1><a name="license">LICENSE</a></h1>
+<p>This module is licensed under the same terms as YaBB.</p>
+<p>
+</p>
+<hr />
+<h1><a name="author">AUTHOR</a></h1>
+<p>Matthew Siegman</p>
+<p>Copyright (c) 2000-2009 YaBB (www.yabbforum.com) - All Rights Reserved.</p>
+
+</div>
+<div id="footer">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../standards.html">Coding Standards</a></li>
+<li><a href="../roadmap.html">Project Roadmap</a></li>
+<li class="curpage"><a href="../documentation.html">Documentation</a></li>
+<li><a href="../source.html">Browse SVN</a></li>
+<li><a href="https://sourceforge.net/pm/?group_id=9008">Task Tracker</a></li>
+<li><a href="http://www.yabbforum.com/team.php">Team</a></li>
+</ul>
+</div>
+<div id="copy">Copyright &copy; 2009 Yet another Bulliten Board. All rights reserved.</div>
+<div class="clearfix"></div>
+</body>
+</html>

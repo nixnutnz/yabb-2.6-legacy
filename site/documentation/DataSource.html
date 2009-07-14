@@ -1,0 +1,562 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>YaBB 3 - Open source forum software</title>
+<link type="text/css" rel="stylesheet" href="../site.css" />
+</head>
+<body>
+<div id="header">
+YaBB 3
+<span class="subheader">open source forum software</span>
+</div>
+<div id="menu">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../standards.html">Coding Standards</a></li>
+<li><a href="../roadmap.html">Project Roadmap</a></li>
+<li class="curpage"><a href="../documentation.html">Documentation</a></li>
+<li><a href="../source.html">Browse SVN</a></li>
+<li><a href="https://sourceforge.net/pm/?group_id=9008">Task Tracker</a></li>
+<li><a href="http://www.yabbforum.com/team.php">Team</a></li>
+</ul>
+</div>
+<div id="content">
+<p><a href="../documentation.html">&lt;&lt; Back</a></p>
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#functions">FUNCTIONS</a></li>
+	<ul>
+
+		<li><a href="#new__type____sourcetype___">new( type =&gt; ``SourceType'' );</a></li>
+
+	</ul>
+
+	<li><a href="#valid_sql">VALID SQL</a></li>
+	<ul>
+
+		<li><a href="#joins">Joins</a></li>
+		<li><a href="#sql_functions">SQL Functions</a></li>
+		<li><a href="#supported_operators">Supported Operators</a></li>
+
+		<li><a href="#concatenation">Concatenation</a></li>
+		<li><a href="#identifiers_and_aliases">Identifiers and Aliases</a></li>
+		<li><a href="#create">CREATE</a></li>
+		<li><a href="#drop">DROP</a></li>
+		<li><a href="#insert">INSERT</a></li>
+		<li><a href="#delete">DELETE</a></li>
+
+		<li><a href="#update">UPDATE</a></li>
+		<li><a href="#select">SELECT</a></li>
+	</ul>
+
+	<li><a href="#api_definition">API DEFINITION</a></li>
+	<ul>
+
+		<li><a href="#main_datasource_package">Main DataSource Package</a></li>
+
+		<ul>
+
+			<li><a href="#do_query___statement____val1___val2________">do_query( $statement, [$val1, $val2, ...] )</a></li>
+			<ul>
+
+				<li><a href="#arguments">Arguments</a></li>
+				<li><a href="#return_value">Return Value</a></li>
+			</ul>
+
+			<li><a href="#prepare___statement__">prepare( $statement )</a></li>
+			<ul>
+
+				<li><a href="#arguments">Arguments</a></li>
+				<li><a href="#return_value">Return Value</a></li>
+			</ul>
+
+		</ul>
+
+		<li><a href="#statement_handler_package">Statement Handler Package</a></li>
+		<ul>
+
+			<li><a href="#execute___val1___val2_______">execute( $val1, $val2, ... )</a></li>
+			<ul>
+
+				<li><a href="#arguments">Arguments</a></li>
+				<li><a href="#return_value">Return Value</a></li>
+
+			</ul>
+
+			<li><a href="#fetch___">fetch( )</a></li>
+			<ul>
+
+				<li><a href="#arguments">Arguments</a></li>
+				<li><a href="#return_value">Return Value</a></li>
+			</ul>
+
+		</ul>
+
+	</ul>
+
+	<li><a href="#references">REFERENCES</a></li>
+	<li><a href="#license">LICENSE</a></li>
+	<li><a href="#author">AUTHOR</a></li>
+</ul>
+
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<hr />
+<h1><a name="name">NAME</a></h1>
+<pre>
+ YaBB3::DataSource</pre>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+
+<pre>
+    # create object
+    my $ds = YaBB3::DataSource-&gt;new(type =&gt; &quot;some_type&quot;);</pre>
+<pre>
+    # SELECT
+    my $sth = $ds-&gt;do_query(&quot;SELECT * FROM somewhere&quot;);
+    while (defined(my $row = $sth-&gt;fetch)) {
+        print &quot;@$row\n&quot;;
+    }</pre>
+
+<pre>
+    # INSERT
+    my $sth = $ds-&gt;prepare(&quot;INSERT INTO somewhere ( ?, ?, ?)&quot;);
+    $ds-&gt;execute($val1, $val2, $val3);</pre>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>YaBB3::DataSource is like our own special version of DBI. It loads the drivers
+for request DataSources and then gets out of the way. The standard driver API
+is defined in this document, and all drivers for YaBB3 must implement the
+functions listed in the <a href="#api_definition">API DEFINITION</a> section of this document.</p>
+
+<p>YaBB3 code will call these functions to perform data operations. Where SQL
+statements are specified as the argument, they will adhere to a standard
+subset of SQL, which can be found in the <a href="#valid_sql">VALID SQL</a> section of this
+document.</p>
+<p>
+</p>
+<hr />
+<h1><a name="functions">FUNCTIONS</a></h1>
+<p>
+</p>
+<h2><a name="new__type____sourcetype___">new( type =&gt; ``SourceType'' );</a></h2>
+<p>Creates a DataSource object which supports the data source type requested.
+Currently, the only argument is type. It defaults to ``File'' if left blank. The
+DataSource types that are planned to ship with YaBB are:</p>
+
+<dl>
+<dt><strong><a name="item_mysql__2d_2d_recommended_wherever_possible_2e">MySQL -- Recommended wherever possible.</a></strong><br />
+</dt>
+<dt><strong><a name="item_file__2d_2d_for_hosts_who_do_not_provide_database_">File -- For hosts who do not provide database connectivity.</a></strong><br />
+</dt>
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="valid_sql">VALID SQL</a></h1>
+<p>This section describes the SQL queries that must be supported by all
+DataSource drivers. Several portions of it were borrowed from the
+<a href="http://search.cpan.org/perldoc?SQL::Statement::Syntax">the SQL::Statement::Syntax manpage</a> document so that I wouldn't have to retype it all.</p>
+
+<p>The basic overview of support is:</p>
+<pre>
+   CREATE [TEMP] TABLE &lt;table&gt; &lt;column_def_clause&gt;
+   DELETE FROM &lt;table&gt; [&lt;where_clause&gt;]
+   DROP TABLE [IF EXISTS] &lt;table&gt;
+
+   INSERT [INTO] &lt;table&gt; [&lt;column_list&gt;] VALUES &lt;value_list&gt;
+   SELECT &lt;select_clause&gt;
+          &lt;from_clause&gt;
+          [&lt;where_clause&gt;] 
+          [ ORDER BY ocol1 [ASC|DESC], ... ocolN [ASC|DESC]] ]
+          [ GROUP BY gcol1 [, ... gcolN] ]
+          [ LIMIT [start,] length ]
+   UPDATE &lt;table&gt; SET &lt;set_clause&gt; [&lt;where_clause&gt;]</pre>
+
+<p>Comments should not be used in SQL, just comment in the Perl code.</p>
+<p>Further detail on supported SQL can be found below.</p>
+<p>
+</p>
+<h2><a name="joins">Joins</a></h2>
+<p>The following JOIN types should be supported</p>
+<ul>
+<li><strong><a name="item_natural">NATURAL</a></strong><br />
+</li>
+<li><strong><a name="item_inner">INNER</a></strong><br />
+</li>
+
+<li><strong><a name="item_outer">OUTER</a></strong><br />
+</li>
+<li><strong><a name="item_left">LEFT</a></strong><br />
+</li>
+<li><strong><a name="item_right">RIGHT</a></strong><br />
+</li>
+<li><strong><a name="item_full">FULL</a></strong><br />
+</li>
+</ul>
+<p>
+</p>
+<h2><a name="sql_functions">SQL Functions</a></h2>
+
+<p>The following SQL functions should be supported</p>
+<pre>
+   * Aggregate : MIN, MAX, AVG, SUM, COUNT
+   * Date/Time : CURRENT_DATE, CURRENT_TIME, CURRENT_TIMESTAMP
+   * String    : CHAR_LENGTH, CONCAT, COALESCE, DECODE, LOWER, POSITION,
+                 REGEX, REPLACE, SOUNDEX, SUBSTRING, TRIM, UPPER</pre>
+<p>
+</p>
+<h2><a name="supported_operators">Supported Operators</a></h2>
+<pre>
+       $op  = |  &lt;&gt; |  &lt; | &gt; | &lt;= | &gt;=
+              | IS NULL | IS NOT NULL | LIKE | CLIKE | BETWEEN | IN</pre>
+
+<pre>
+        CLIKE is a case-insensitive LIKE. LIKE should support standard
+        wildcards, such as %</pre>
+<p>
+</p>
+<h2><a name="concatenation">Concatenation</a></h2>
+<pre>
+    Use either ANSI SQL || or the CONCAT() function to concatenate data.</pre>
+<p>
+</p>
+<h2><a name="identifiers_and_aliases">Identifiers and Aliases</a></h2>
+<pre>
+
+   * regular identifiers are case insensitive (though see note on table names)
+   * delimited identifiers (inside double quotes) are case sensitive
+   * column and table aliases are supported</pre>
+<p>
+</p>
+<h2><a name="create">CREATE</a></h2>
+<pre>
+ CREATE TABLE $table
+        (
+           $col_1 $col_type1 $col_constraints1,
+           ...,
+           $col_N $col_typeN $col_constraintsN,
+        )
+        [ ON COMMIT {DELETE|PRESERVE} ROWS ]</pre>
+<p><code>col_constriaints</code> may be ``PRIMARY KEY'' or one or both of ``UNIQUE'' and/or ``NOT NULL''</p>
+<p><code>col_type</code> is checked for syntax, but is not neccessarily enforced.
+
+<code>col_type</code> must be one of the following types:</p>
+<dl>
+<dt><strong><a name="item_char">CHAR( n )</a></strong><br />
+</dt>
+<dd>
+The CHAR structure is a fixed length string of length <code>n</code>. These are
+generally limited to a maximum of 255 characters.
+</dd>
+<p></p>
+<dt><strong><a name="item_varchar">VARCHAR( n )</a></strong><br />
+</dt>
+
+<dd>
+The VARCHAR structure is a variable length string, with a set maximum of <code>n</code>.
+These are generally limited to a mazimum of 255 characters.
+</dd>
+<p></p>
+<dt><strong><a name="item_text">TEXT</a></strong><br />
+</dt>
+<dd>
+While not specifically an ANSI type, we must support storage of blocks larger
+than 255 characters. TEXT values can store character strings of any length.
+</dd>
+<p></p>
+<dt><strong><a name="item_blob">BLOB</a></strong><br />
+</dt>
+<dd>
+
+In addition to large text values, we may occasionally need to store large
+binary values. BLOB values can store byte strings of any length.
+</dd>
+<p></p>
+<dt><strong><a name="item_integer">INTEGER</a></strong><br />
+</dt>
+<dd>
+INTEGER values may be any positive or negative whole number.
+</dd>
+<p></p>
+<dt><strong><a name="item_decimal">DECIMAL( p, s )</a></strong><br />
+</dt>
+<dd>
+DECIMAL is a fixed point number.
+</dd>
+<dd>
+
+<p>The total number of digits of the number is limited to <code>p</code>, the precision.
+The number will have a set number of digits to the right of the decimal point
+<code>s</code>, the scale. For example: DECIMAL( 5, 3 ) would allow five total digits,
+with three to the right of the decimal. 50.3333 would be stored as 50.333
+and 33.3456 would be stored as 33.346.</p>
+</dd>
+<p></p>
+<dt><strong><a name="item_float">FLOAT( p )</a></strong><br />
+</dt>
+<dd>
+A floating point value. A precision from 1 to 21 will result in a single
+precision float. A precision from 22-53 will result in a double precision
+float. Do not attempt to specify a precision beyond 53.
+</dd>
+<p></p>
+<dt><strong>FLOAT</strong><br />
+
+</dt>
+<dd>
+If precision is undefined, the float will be treated as double precision.
+</dd>
+<p></p>
+<dt><strong><a name="item_numeric">NUMERIC(p, s)</a></strong><br />
+</dt>
+<dd>
+A number with precision <code>p</code> and scale <code>s</code>.
+</dd>
+<p></p>
+
+<dt><strong>NUMERIC( p )</strong><br />
+</dt>
+<dd>
+A NUMERIC with precision <code>p</code> with scale set to 0.
+</dd>
+<p></p>
+<dt><strong>NUMERIC</strong><br />
+</dt>
+<dd>
+The NUMERIC will only be limited by the specific implementation
+</dd>
+<p></p></dl>
+
+<p>
+</p>
+<h2><a name="drop">DROP</a></h2>
+<pre>
+ DROP TABLE $table</pre>
+<p>
+</p>
+<h2><a name="insert">INSERT</a></h2>
+<pre>
+ INSERT INTO $table [ ( $col1, ..., $colN ) ] VALUES ( $val1, ... $valN )</pre>
+<pre>
+
+     * default values are not supported
+     * inserting from a subquery is not supported</pre>
+<p>
+</p>
+<h2><a name="delete">DELETE</a></h2>
+<pre>
+ DELETE FROM $table [ WHERE search_condition ]</pre>
+<pre>
+     * see &quot;search_condition&quot; below</pre>
+
+<p>
+</p>
+<h2><a name="update">UPDATE</a></h2>
+<pre>
+ UPDATE $table SET $col1 = $val1, ... $colN = $valN [ WHERE search_condition ]</pre>
+<pre>
+     * default values are not supported
+     * see &quot;search_condition&quot; below</pre>
+<p>
+</p>
+
+<h2><a name="select">SELECT</a></h2>
+<pre>
+      SELECT select_clause
+        FROM from_clause
+     [ WHERE search_condition ]
+  [ ORDER BY $ocol1 [ASC|DESC], ... $ocolN [ASC|DESC] ]
+     [ LIMIT [start,] length ]</pre>
+<pre>
+      * select clause ::=
+             [DISTINCT|ALL] *
+           | [DISTINCT|ALL] col1 [,col2, ... colN]
+           | set_function1 [,set_function2, ... set_functionN]</pre>
+<pre>
+      * set function ::=
+             COUNT ( [DISTINCT|ALL] * )
+           | COUNT | MIN | MAX | AVG | SUM ( [DISTINCT|ALL] col_name )</pre>
+<pre>
+      * from clause ::=
+             table1 [, table2, ... tableN]
+           | table1 NATURAL [join_type] JOIN table2
+           | table1 [join_type] table2 USING (col1,col2, ... colN)
+           | table1 [join_type] JOIN table2 ON table1.colA = table2.colB</pre>
+
+<pre>
+      * join type ::=
+             INNER
+           | [OUTER] LEFT | RIGHT | FULL</pre>
+<pre>
+      * search condition ::=
+             [NOT] $val1 $op1 $val1 [ ... AND|OR $valN $opN $valN ]</pre>
+<pre>
+      * $op ::=
+                = |  &lt;&gt; |  &lt; | &gt; | &lt;= | &gt;=
+              | IS NULL | IS NOT NULL | LIKE | CLIKE | BETWEEN | IN</pre>
+
+<pre>
+      * if join_type is not specified, INNER is the default
+      * if DISTINCT or ALL is not specified, ALL is the default
+      * if start position is omitted from LIMIT clause, position 0 is
+        the default
+      * ON clauses may only contain equal comparisons and AND combiners
+      * self-joins are not currently supported
+      * if implicit joins are used, the WHERE clause must contain
+        and equijoin condition for each table</pre>
+<p>
+</p>
+<hr />
+<h1><a name="api_definition">API DEFINITION</a></h1>
+<p>This section describes the functions that must be implemented in each
+YaBB3::DataSource::* module.</p>
+<p>All functions are to <code>die</code> on an error.</p>
+<p>See the <a href="#synopsis"> SYNOPSIS </a> for how this may be used.</p>
+
+<p>
+</p>
+<h2><a name="main_datasource_package">Main DataSource Package</a></h2>
+<p>
+</p>
+<h3><a name="do_query___statement____val1___val2________">do_query( $statement, [$val1, $val2, ...] )</a></h3>
+<p>Executes a query immediatly. Is equivalent to calling:</p>
+<pre>
+  my $sth = $ds-&gt;prepare( $statement );
+  $sth-&gt;execute( $val1, $val2, ... );</pre>
+<p>
+
+</p>
+<h4><a name="arguments">Arguments</a></h4>
+<dl>
+<dt><strong><a name="item__24statement">$statement</a></strong><br />
+</dt>
+<dd>
+Contains a query written in SQL.
+</dd>
+<p></p>
+<dt><strong><a name="item__5b_24val1_2c__24val2_2c__2e_2e_2e_5d">[$val1, $val2, ...]</a></strong><br />
+</dt>
+<dd>
+Contains the data values to be inserted where placeholders are found.
+</dd>
+
+<p></p></dl>
+<p>
+</p>
+<h4><a name="return_value">Return Value</a></h4>
+<p>Returns an object which <code>-&gt;fetch()</code> can be called on to return the results
+of the statement executed.</p>
+<p>
+</p>
+<h3><a name="prepare___statement__">prepare( $statement )</a></h3>
+<p>Preparse an SQL query to be executed. Useful for situations when the same
+query must executed multiple times with different values</p>
+
+<p>
+</p>
+<h4><a name="arguments">Arguments</a></h4>
+<dl>
+<dt><strong>$statement</strong><br />
+</dt>
+<dd>
+Contains a query written in SQL.
+</dd>
+<p></p></dl>
+<p>
+</p>
+<h4><a name="return_value">Return Value</a></h4>
+<p>Returns an object which <code>-&gt;execute()&gt;</code> and <code>-&gt;fetch()</code> can be called 
+to execute and retrieve query results.</p>
+
+<p>
+</p>
+<h2><a name="statement_handler_package">Statement Handler Package</a></h2>
+<p>
+</p>
+<h3><a name="execute___val1___val2_______">execute( $val1, $val2, ... )</a></h3>
+<p>Runs a query using <code>$val</code>, <code>$val2</code>, <code>...</code> for the placeholder values.</p>
+
+<p>
+</p>
+<h4><a name="arguments">Arguments</a></h4>
+<dl>
+<dt><strong><a name="item__24val1_2c__24val2_2c__2e_2e_2e">$val1, $val2, ...</a></strong><br />
+</dt>
+<dd>
+Contains the values to replace the placeholders.
+</dd>
+<p></p></dl>
+<p>
+</p>
+<h4><a name="return_value">Return Value</a></h4>
+<p>Does not return a value.</p>
+
+<p>
+</p>
+<h3><a name="fetch___">fetch( )</a></h3>
+<p>Returns the results of the query that has been run.</p>
+<p>
+</p>
+<h4><a name="arguments">Arguments</a></h4>
+<p>None.</p>
+<p>
+</p>
+<h4><a name="return_value">Return Value</a></h4>
+<p>Returns an array reference of a single row of data. To get all rows, call
+
+<code>-&gt;fetch()</code> until it returns an undefined value.</p>
+<p>
+</p>
+<hr />
+<h1><a name="references">REFERENCES</a></h1>
+<p>This following links were helpful when creating this document and may contain
+further helpful information:</p>
+<p><a href="http://search.cpan.org/perldoc?SQL::Statement::Syntax">the SQL::Statement::Syntax manpage</a>,
+<a href="http://dev.mysql.com/doc/">MySQL Documentation</a>,
+
+<a href="http://www.cyberarmy.net/library/article/190">SQL Data Structures</a>,
+<a href="http://home.fnal.gov/~dbox/SQL_API_Portability.html">SQL API Portability</a></p>
+<p>
+</p>
+<hr />
+<h1><a name="license">LICENSE</a></h1>
+<p>This module is licensed under the same terms as YaBB.</p>
+<p>
+</p>
+
+<hr />
+<h1><a name="author">AUTHOR</a></h1>
+<p>Matthew Siegman
+Copyright (c) 2000-2009 YaBB (www.yabbforum.com) - All Rights Reserved.</p><div class="clearfix"></div>
+</div>
+<div id="footer">
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../standards.html">Coding Standards</a></li>
+<li><a href="../roadmap.html">Project Roadmap</a></li>
+<li class="curpage"><a href="../documentation.html">Documentation</a></li>
+<li><a href="../source.html">Browse SVN</a></li>
+<li><a href="https://sourceforge.net/pm/?group_id=9008">Task Tracker</a></li>
+<li><a href="http://www.yabbforum.com/team.php">Team</a></li>
+</ul>
+</div>
+<div id="copy">Copyright &copy; 2009 Yet another Bulliten Board. All rights reserved.</div>
+<div class="clearfix"></div>
+</body>
+</html>
