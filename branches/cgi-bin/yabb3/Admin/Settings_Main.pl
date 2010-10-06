@@ -854,9 +854,9 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 			validate => 'number,null',
 		},
 		{
-			description => $register_txt{'gender_reg'},
+			description => qq~<label for="gender_on_reg">$register_txt{'gender_reg'}</label>~,
 			input_html => qq~
-			<select name="gender_on_reg" size="1">
+			<select name="gender_on_reg" id="gender_on_reg" size="1">
 			  <option value="0">$register_txt{'771'}</option>
 			  <option value="1"${isselected($gender_on_reg == 1)}>$register_txt{'gender_reg_opt'}</option>
 			  <option value="2"${isselected($gender_on_reg == 2)}>$register_txt{'gender_reg_req'}</option>
