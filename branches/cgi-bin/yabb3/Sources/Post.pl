@@ -926,6 +926,9 @@ function checkForm(theForm) {
 			function olist() {
 				AddSelText("[olist][*]", "\\n[/olist]");
 			}
+			function ulist() {
+				AddSelText("[list][*]", "\\n[/list]");
+			}
 
 			// Palette
 			var thistask = 'post';
@@ -1058,7 +1061,7 @@ function checkForm(theForm) {
 			<img id="dragImg2" src="$defaultimagesdir/resize_hb.gif" class="drag" style="position: absolute; top: $draghpos; left: 0px; z-index: 4; width: $dwidth; height: 3px; cursor: n-resize;" alt= "" />
 			</div>
 			<div class="ubboptions" id="bullets" style="position: absolute; top: -22px; left: 345px; width: 63px; border: 1px solid #666666; padding: 2px; text-align: center; background-color: #CCCCCC; display: none;">
-			<input type="button" value="$npf_txt{'default'}" style="width: 56px; margin: 3px 0px 0px 0px; font-size: 9px; padding: 0px; text-align: center;" onclick="list(), bulletset()" /><br />
+			<input type="button" value="$npf_txt{'default'}" style="width: 56px; margin: 3px 0px 0px 0px; font-size: 9px; padding: 0px; text-align: center;" onclick="ulist(), bulletset()" /><br />
 			<input type="button" value="$npf_txt{'ordered'}" style="width: 56px; margin: 3px 0px 3px 0px; font-size: 9px; padding: 0px; text-align: center;" onclick="olist(), bulletset()" /><br />
 			<img src="$defaultimagesdir/bull-redball.gif" style="width: 8px; height: 8px; background-color: #CCCCCC; margin: 3px; cursor: pointer;" onclick="showbullets('bull-redball'), bulletset()" /><img src="$defaultimagesdir/bull-greenball.gif" style="width: 8px; height: 8px; background-color: #CCCCCC; margin: 3px; cursor: pointer;" onclick="showbullets('bull-greenball'), bulletset()" /><img src="$defaultimagesdir/bull-blueball.gif" style="width: 8px; height: 8px; background-color: #CCCCCC; margin: 3px; cursor: pointer;" onclick="showbullets('bull-blueball'), bulletset()" /><img src="$defaultimagesdir/bull-blackball.gif" style="width: 8px; height: 8px; background-color: #CCCCCC; margin: 3px; cursor: pointer;" onclick="showbullets('bull-blackball'), bulletset()" /><br />
 			<img src="$defaultimagesdir/bull-redsq.gif" style="width: 8px; height: 8px; background-color: #CCCCCC; margin: 3px; cursor: pointer;" onclick="showbullets('bull-redsq'), bulletset()" /><img src="$defaultimagesdir/bull-greensq.gif" style="width: 8px; height: 8px; background-color: #CCCCCC; margin: 3px; cursor: pointer;" onclick="showbullets('bull-greensq'), bulletset()" /><img src="$defaultimagesdir/bull-bluesq.gif" style="width: 8px; height: 8px; background-color: #CCCCCC; margin: 3px; cursor: pointer;" onclick="showbullets('bull-bluesq'), bulletset()" /><img src="$defaultimagesdir/bull-blacksq.gif" style="width: 8px; height: 8px; background-color: #CCCCCC; margin: 3px; cursor: pointer;" onclick="showbullets('bull-blacksq'), bulletset()" /><br />
