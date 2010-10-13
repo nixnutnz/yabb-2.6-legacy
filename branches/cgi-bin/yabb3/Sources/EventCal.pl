@@ -413,7 +413,7 @@ sub get_cal {
 			document.write("<img src='$imagesdir/ftp.gif' onclick='ftp();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'ftp'}' title='$var_calpost{'ftp'}' border='0' />");
 			document.write("<img src='$imagesdir/img.gif' onclick='image();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'img'}' title='$var_calpost{'img'}' border='0' />");
 			document.write("<img src='$imagesdir/email2.gif' onclick='emai1();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'email'}' title='$var_calpost{'email'}' border='0' />");
-			document.write("<img src='$imagesdir/media.gif' onclick='media();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'media'}' title='$var_calpost{'media'}' border='0' />");
+			document.write("<img src='$imagesdir/media.gif' onclick='flash();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'media'}' title='$var_calpost{'media'}' border='0' />");
 			document.write("<img src='$imagesdir/table.gif' onclick='table();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'table'}' title='$var_calpost{'table'}' border='0' />");
 			document.write("<img src='$imagesdir/tr.gif' onclick='trow();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'tr'}' title='$var_calpost{'tr'}' border='0' />");
 			document.write("<img src='$imagesdir/td.gif' onclick='tcol();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'td'}' title='$var_calpost{'td'}' border='0' />");
@@ -1424,7 +1424,7 @@ $YaBBC_calout
 					$cevent =~ s~\[email(.*?)\](.*?)\[\/email\]~$2~isg;
 					$cevent =~ s~\[link(.*?)\](.*?)\[\/link\]~$2~isg;
 					$cevent =~ s~\[img\](.*?)\[\/img\]~~ig;
-					$cevent =~ s~\[flash\](.*?)\[\/flash\]~~ig;
+					$cevent =~ s~\[media\](.*?)\[\/media\]~~ig;
 					$cevent =~ s~\[b\](.*?)\[/b\]~*$1*~isg;
 					$cevent =~ s~\[i\](.*?)\[/i\]~/$1/~isg;
 					$cevent =~ s~\[u\](.*?)\[/u\]~_$1_~isg;
