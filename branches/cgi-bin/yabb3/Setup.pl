@@ -3600,6 +3600,9 @@ sub SetInstall2 {
 		$quick_quotelength = 1000;
 		$enable_quoteuser = 0;
 		$quoteuser_color = "#0033cc";
+		$display_postpopup = 0;
+		$mindex_postpopup = 0;
+		$mdrop_postpopup = 0;
 		$guest_media_disallowed = 0;
 		$enable_guestlanguage = 1;
 		$enable_notifications = 0;
@@ -3876,6 +3879,12 @@ sub SetInstall2 {
 \$quick_quotelength = $quick_quotelength;           # Set the max length for Quick Quotes
 \$enable_quoteuser = $enable_quoteuser;             # Set to 1 if you want to enable userquote
 \$quoteuser_color = "$quoteuser_color";             # Set the default color of @ in userquote
+
+########## Post Popup configuration ##########
+
+\$display_postpopup = $display_postpopup;		# Set to 1 if you want to enable the post popup on the display page
+\$mindex_postpopup = $mindex_postpopup;			# Set to 1 if you want to enable the post popup on the message index page
+\$mdrop_postpopup = $mdrop_postpopup;			# Set to 1 if you want to enable the post popup on the message drop downs
 
 ########## MemberPic Settings ##########
 

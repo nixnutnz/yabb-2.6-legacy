@@ -389,10 +389,13 @@ function checkForm(theForm) {
 		if ($curnum) { $thecurboard = qq~num=$curnum\;action=$destination~; }
 		elsif ($destination eq "guestpm2") { $thecurboard = qq~action=$destination~; }
 		else { $thecurboard = qq~board=$currentboard\;action=$destination~; }
+		
+		# Change the target of the form submit to the parent if this is a pop up
+		$target_pop_up = $INFO{'popup'} ? qq~target="_parent"~ : "";
 		if (&AccessCheck($currentboard, 4) eq "granted" && $allowattach && ${$uid.$currentboard}{'attperms'} == 1) {
-			$yymain .= qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctype="multipart/form-data" onsubmit="if(!checkForm(this)) {return false} else {return submitproc()}">~;
+			$yymain .= qq~<form action="$scripturl?$thecurboard" $target_pop_up method="post" id="postmodify" name="postmodify" enctype="multipart/form-data" onsubmit="if(!checkForm(this)) {return false} else {return submitproc()}">~;
 		} else {
-			$yymain .= qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctype="application/x-www-form-urlencoded" onsubmit="if(!checkForm(this)) {return false} else {return submitproc()}">~;
+			$yymain .= qq~<form action="$scripturl?$thecurboard" $target_pop_up method="post" id="postmodify" name="postmodify" enctype="application/x-www-form-urlencoded" onsubmit="if(!checkForm(this)) {return false} else {return submitproc()}">~;
 		}
 	}
 	if ($postthread == 2) { $yymain .= qq~<input type="hidden" id="title" name="PostReply" value="title" />~; }
@@ -463,6 +466,17 @@ function checkForm(theForm) {
 		document.images.icons.src="$imagesdir/"+document.postmodify.icon.options[document.postmodify.icon.selectedIndex].value+".gif";
 	}~;
 	}
+	
+	# no round corners if this is a popup
+	if (!$INFO{'popup'}) {
+		$roundtopright = qq~class="round_top_right"~;
+		$roundtopleft = qq~class="round_top_left"~;
+		$roundbottomright = qq~class="round_bottom_right"~;
+		$roundbottomleft = qq~class="round_bottom_left"~;
+	}
+	
+	# Add a call in here to resize the popup when collapsable features are altered
+	$call_pop_up_resize = qq~ResizeIFrame();~;
 
 	$yymain .= qq~
 //-->
@@ -477,10 +491,10 @@ function checkForm(theForm) {
 <div style="width:100%">
 <table class="tabtitle" border="0" width="100%" cellpadding="3" cellspacing="0">
 	<tr>
-		<td class="round_top_left" height="18" width="98%">
+		<td $roundtopleft height="18" width="98%">
 			<img src="$imagesdir/$icon.gif" name="icons2" border="0" alt="" style="vertical-align:middle;" /> $yytitle
 		</td>
-		<td class="round_top_right" width="1%">&nbsp;</td>
+		<td $roundtopright width="1%">&nbsp;</td>
 	</tr>
 </table>
 <div class="bordercolor">
@@ -988,7 +1002,7 @@ function checkForm(theForm) {
 			//-->
 			</script>
 			<div style="float: left; height: 22px; width: 91px;">
-			<div class="bordercolor" style="height: 20px; width: 66px; padding-left: 1px; padding-top: 1px; margin-top: 1px; float: left;">
+			<div style="height: 20px; width: 66px; padding-left: 1px; padding-top: 1px; margin-top: 1px; float: left;">
 				<span style="float: left; background-color: #000000; width: 10px; height: 9px; margin-right: 1px; margin-bottom: 1px; border: 0px; font-size: 5px; cursor: pointer; cursor: hand;" onclick="ConvShowcolor('#000000')">&nbsp;</span>
 				<span style="float: left; background-color: #333333; width: 10px; height: 9px; margin-right: 1px; margin-bottom: 1px; border: 0px; font-size: 5px; cursor: pointer; cursor: hand;" onclick="ConvShowcolor('#333333')">&nbsp;</span>
 				<span style="float: left; background-color: #666666; width: 10px; height: 9px; margin-right: 1px; margin-bottom: 1px; border: 0px; font-size: 5px; cursor: pointer; cursor: hand;" onclick="ConvShowcolor('#666666')">&nbsp;</span>
@@ -1327,6 +1341,7 @@ function checkForm(theForm) {
 				} else {
 					document.getElementById("attform_add").style.visibility = "visible";
 				}
+				$call_pop_up_resize
 			}
 			//-->
 			</script>~ if $allowattach > 1;
@@ -1400,11 +1415,11 @@ $lastmod
 </div>
 <table class="tabtitle" cellspacing="0" cellpadding="0" border="0" width="100%">
 	<tr>
-		<td class="round_bottom_left" width="1%">
+		<td $roundbottomleft width="1%">
 		<td width="99%" height="25" align="center">
 			<input type="submit" name="$post" id="$post" value="$submittxt" accesskey="s" tabindex="5" class="button" />~ . ($postid ne 'Poll' ? qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" id="$preview" name="$preview" value="$post_txt{'507'}" accesskey="p" tabindex="6" class="button" />~ : '') . qq~
 		</td>
-		<td class="round_bottom_right" width="1%">&nbsp;</td>
+		<td $roundbottomright width="1%">&nbsp;</td>
 	</tr>
 	
 </table>
@@ -1433,6 +1448,7 @@ if ($speedpostdetection){
 
 
 	if($postid ne 'Poll') {
+	
 		$yymain .= qq~
 <script type="text/javascript" language="JavaScript1.2">
 <!--
@@ -1468,8 +1484,8 @@ changeSize:function(deleEnh, knapId) {
 		document.getElementById('dragbgw').style.height = newdragheight+'px';
 		document.getElementById('dragImg1').style.height = newdragheight+'px';
 		document.getElementById('dragcanvas').style.height = newdragheight+'px';
-
 	}
+	$call_pop_up_resize
 },
 flytKnap:function(e) {
 	var evtobj = window.event ? window.event : e
@@ -1558,7 +1574,7 @@ function show_features() {
 				if (typeof(document.getElementById("feature_status_" + i).style)) throw "1";
 			} catch (e) {
 				if (e == "1") {
-					document.getElementById("feature_status_" + i).style.display = "none";
+					document.getElementById("feature_status_" + i).style.display = "none";		
 				}
 			}
 		}
@@ -1581,6 +1597,7 @@ function show_features() {
 		document.images.feature_col.src="$defaultimagesdir/cat_collapse.gif";
 		col_row = 1;
 	}
+	$call_pop_up_resize	
 }
 show_features();
 //-->
@@ -1680,6 +1697,7 @@ function enabPrev() {
 		document.images.prevwin.src="$defaultimagesdir/cat_expand.gif";
 	}
 	calcCharLeft();
+	$call_pop_up_resize
 }
 
 function calcCharLeft() {
@@ -1754,7 +1772,8 @@ function autoPreview() {
 	LivePrevImgResize();
 	scrlto += parseInt(document.getElementById("saveframe").scrollTop) + parseInt(document.getElementById("saveframe").offsetHeight);
 	document.getElementById("saveframe").scrollTop = scrlto;
-	prevsec = 0
+	prevsec = 0;
+	$call_pop_up_resize
 }
 
 var visikon = '';
@@ -1820,6 +1839,50 @@ tick();
 //-->
 </script>
 ~;
+	}
+	
+	if ($INFO{'popup'}) {
+		&print_output_header;
+
+		$output = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+		<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
+		<title></title>
+		<link rel="stylesheet" href="$forumstylesurl/$usestyle.css" type="text/css" />
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_main.js"></script>
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_cpp.js"></script>
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_css.js"></script>
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_html.js"></script>
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_java.js"></script>
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_javascript.js"></script>
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_pascal.js"></script>
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_perl.js"></script>
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_php.js"></script>
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_sql.js"></script>
+		<script language="JavaScript1.2" type="text/javascript">
+		function ResizeIFrame() {
+			var height = document.body.scrollHeight;
+			if(typeof parent.window !== 'undefined' && typeof parent.window.IFrameShrink === 'function'){
+				parent.window.IFrameShrink();
+				parent.window.ResizeIFrame(height);
+			} else {
+				parent.IFrameShrink();
+				parent.ResizeIFrame(height);
+			}
+		}
+		</script>
+		$yyinlinestyle
+		</head>
+		<body onload="ResizeIFrame(); parent.InsertQuote()" style="background-color:#2f7dce; height: 100%; width: 100%">
+		$yymain
+		</body>
+		</html>~;
+		
+		$output =~ s~</form>~<input type="hidden" name="formsession" value="$formsession" /></form>~g;
+
+		&print_HTML_output_and_finish;
 	}
 }
 

@@ -207,10 +207,18 @@ sub RebuildMessageIndex {
 	# the Moved-Info-row if their files were deleted
 	eval { require "$datadir/movedthreads.cgi" };
 	my $save_moved;
-	foreach my $th (keys %moved_file) {
-		if (exists $moved_file{$th}) { # 'exists' because may be deleted in &moved_loop
-			while (exists $moved_file{$th}) { # to get the final/last thread
-				$th = $moved_file{$th};
+	foreach my $th (sort { $a <=> $b } keys %moved_file) {
+		if ($moved_file{$th}) {
+			my %loop_control;
+			while ($moved_file{$th}) { # to get the final/last thread
+				$loop_control{$th} = 1;
+				# break through loops
+				if ($loop_control{ $moved_file{$th} }) {
+					delete $moved_file{$th};
+					$save_moved = 1;
+				} else {
+					$th = $moved_file{$th};
+				}
 			}
 			unless (-e "$datadir/$th.txt") { &moved_loop($th); }
 		}
@@ -218,7 +226,7 @@ sub RebuildMessageIndex {
 	sub moved_loop {
 		my $th = shift;
 		foreach (keys %moved_file) {
-			if (exists $moved_file{$_} && $moved_file{$_} == $th && !-e "$datadir/$th.txt") {
+			if ($moved_file{$_} && $moved_file{$_} == $th && !-e "$datadir/$th.txt") {
 				delete $moved_file{$_};
 				$save_moved = 1;
 				&moved_loop($_);

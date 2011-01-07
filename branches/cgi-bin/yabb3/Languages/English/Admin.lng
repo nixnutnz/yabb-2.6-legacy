@@ -7,7 +7,7 @@
 # Packaged:       October 05, 2010                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2010 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2011 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -442,6 +442,9 @@ $yycharset = 'ISO-8859-1';
 '914' => 'Username',
 '999' => 'Run Board in Debug Mode?',
 '999a' => 'This will show all useful File Actions below each page if the appropriate tags are in the template',
+'1000' => 'Enable Post Popup Page on Message Index?',
+'1001' => 'Enable Post Popup Page on Thread Display?',
+'1002' => 'Enable Post Popup Page on Message Index Dropdowns?',
 'nodebug' => 'Do not use Debug Mode',
 'alldebug' => 'Use Debug Mode - everyone sees output',
 'admindebug' => 'Use Debug Mode - only Admin sees output',
@@ -1305,7 +1308,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'remove' => 'Are you sure you want to remove the member from the list?',
 );
 
-$yycopyright = qq~<a href="$boardurl/$yyexec.$yyext"><span style="font-size: 10px">$mbname</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">$YaBBversion</span></a><span style="font-size: 10px">!<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-2009. All Rights Reserved.</span>~;
+$yycopyright = qq~<a href="$boardurl/$yyexec.$yyext"><span style="font-size: 10px">$mbname</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">$YaBBversion</span></a><span style="font-size: 10px">!<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-2011. All Rights Reserved.</span>~;
 
 $yabbThanks = 'Special thanks to';
 

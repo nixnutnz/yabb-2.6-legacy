@@ -2970,7 +2970,7 @@ sub usersrecentposts {
 <table border="0" width="100%" cellspacing="0" class="tabtitle">
 	<tr>
 		<td align="center" width="5%" class="$round_left">$counter</td>
-		<td align="left" width="95%" class="$round_right">&nbsp;<a href="$scripturl?catselect=$boardcat{$board}"><u>${$catinfos{$board}}[0]</u></a> / <a href="$scripturl?board=$board"><u>$boardname{$board}</u></a> / <a href="$scripturl?num=$tnum/$c#$c"><u>$msub</u></a><br />
+		<td align="left" width="95%" class="$round_right">&nbsp;<a href="$scripturl?catselect=$boardcat{$board}"><u>${$catinfos{$board}}[0]</u></a>$boardtree / <a href="$scripturl?num=$tnum/$c#$c"><u>$msub</u></a><br />
 		&nbsp;<span class="small">$profile_txt{'30'}: $mdate</span>&nbsp;</td>
 	</tr>
 </table>

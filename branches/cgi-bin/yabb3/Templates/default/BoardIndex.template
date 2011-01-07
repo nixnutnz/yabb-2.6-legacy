@@ -173,6 +173,8 @@ $catheader = qq~
 		$boardindex_txt{'22'}
 	</td>
 </tr>
+</table>
+<table {yabb colboardtable} cellpadding="4" cellspacing="1" border="0" width="100%" class="bordercolor">
 {yabb newmsg start}{yabb newmsg icon}{yabb newmsg}{yabb newmsg end}
 </table>
 <table {yabb boardtable} cellpadding="4" cellspacing="1" border="0" width="100%" class="bordercolor">
@@ -187,10 +189,15 @@ $boardblock = qq~
 		<a href="{yabb boardurl}">{yabb boardpic}</a>
 	</td>
 	<td class="{yabb altbrdcolor}" width="54%" align="left" valign="middle">
+		<div style="position: relative; height: 100%; width: 100%">
 		{yabb new} <a name="{yabb boardanchor}" href="{yabb boardurl}"><b>{yabb boardname}</b></a><br />
 		{yabb boarddesc}
 		<div class="small" style="font-style:italic;">{yabb moderators}</div>
-		{yabb subboardlist}
+		{yabb subdropdown}{yabb subboardlist}
+		<div style="position: absolute; bottom: 0px; right: 0px;">
+			{yabb messagedropdown}
+		</div>
+		</div>
 	</td>
 	<td class="{yabb altbrdcolor}" valign="middle" align="center" width="8%">{yabb threadcount}</td>
 	<td class="{yabb altbrdcolor}" valign="middle" align="center" width="8%">{yabb messagecount}</td>
@@ -201,7 +208,9 @@ $boardblock = qq~
 	<b>$boardindex_txt{'525'}:</b> {yabb lastposter}
 	</span>
 	</td>
-</tr>~;
+</tr>
+{yabb expandmessages}
+~;
 
 $nopost_boardblock = qq~
 <tr>
@@ -212,18 +221,19 @@ $nopost_boardblock = qq~
 		{yabb new} <a name="{yabb boardanchor}" href="{yabb boardurl}"><b>{yabb boardname}</b></a><br />
 		{yabb boarddesc}
 		<div class="small" style="font-style:italic;">{yabb moderators}</div>
-		{yabb subboardlist}
+		{yabb subdropdown}{yabb subboardlist}
 	</td>
-</tr>~;
+</tr>
+{yabb expandmessages}
+~;
 
 $subboard_links = qq~{yabb new} <a href="{yabb boardurl}">{yabb boardname}</a>~;
-$subboard_list = qq~<div class="small" style="margin-top:5px"><b>{yabb subboardtxt}:</b> {yabb subboardlinks}</div>~;
+$subboard_list = qq~<div class="small" style="display: inline-block; float: float; margin-top:5px"><b>{yabb subboardtxt}:</b> {yabb subboardlinks}</div>~;
 
 # Category footer                          #
 
 $catfooter = qq~
 </table>
-<br />
-~;
+<br />~;
 
 1;

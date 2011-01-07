@@ -687,7 +687,7 @@ sub buildIMsend {
 			//-->
 			</script>
 			<div style="float: left; height: 22px; width: 91px;">
-			<div class="bordercolor" style="height: 20px; width: 66px; padding-left: 1px; padding-top: 1px; margin-top: 1px; float: left;">
+			<div style="height: 20px; width: 66px; padding-left: 1px; padding-top: 1px; margin-top: 1px; float: left;">
 				<span style="float: left; background-color: #000000; width: 10px; height: 9px; margin-right: 1px; margin-bottom: 1px; border: 0px; font-size: 5px; cursor: pointer; cursor: hand;" onclick="ConvShowcolor('#000000')">&nbsp;</span>
 				<span style="float: left; background-color: #333333; width: 10px; height: 9px; margin-right: 1px; margin-bottom: 1px; border: 0px; font-size: 5px; cursor: pointer; cursor: hand;" onclick="ConvShowcolor('#333333')">&nbsp;</span>
 				<span style="float: left; background-color: #666666; width: 10px; height: 9px; margin-right: 1px; margin-bottom: 1px; border: 0px; font-size: 5px; cursor: pointer; cursor: hand;" onclick="ConvShowcolor('#666666')">&nbsp;</span>
@@ -774,7 +774,7 @@ sub buildIMsend {
 		</div>
 		<div class="ubboptions" id="codelang" style="position: absolute; top: -22px; left: 230px; width: 92px; padding: 0px; background-color: #CCCCCC; display: none;">
 			<select size="10" name="codesyntax" id="codesyntax" onchange="syntaxlang(this.options[this.selectedIndex].value, this.selectedIndex);" style="margin:0px; font-size: 9px; width: 92px;">
-			<option value="" title="$npf_txt{'default'}">$npf_txt{'default'}</option>
+			<option value="" title="$npf_txt{'default'}" selected="selected">$npf_txt{'default'}</option>
 			<option value=" c++" title="C++">C++</option>
 			<option value=" css" title="CSS">CSS</option>
 			<option value=" html" title="HTML">HTML</option>
@@ -1088,8 +1088,15 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 		<td align="center" class="titlebg">
 			$hidestatus
 			$sendBMessFlag
-			<br />
+	~;
+	
+	if ($INFO{'popup'}) {
+		$imsend .= qq~
+			<input onclick="postQuery()" type="button" name="$post" value="$submittxt" accesskey="s" tabindex="5" class="button" />~;
+	} else {
+		$imsend .= qq~
 			<input type="submit" name="$post" value="$submittxt" accesskey="s" tabindex="5" class="button" />~;
+	}
 
 	if ($speedpostdetection) {
 		$imsend .= qq~
@@ -1346,7 +1353,6 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 
 			// -->
 			</script>
-			<br /><br />
 		</td>
 	</tr>\n~;
 
@@ -1690,10 +1696,16 @@ sub IMsendMessage {
 	if (!$FORM{'draft'}) { &UserAccount($username, 'update', 'lastim'); }
 	&UserAccount($username, 'update', 'lastonline');
 
-	if ($FORM{'dontstoreinoutbox'}) { $yySetLocation = qq~$scripturl?action=im~; }
-	elsif ($FORM{'draft'}) { $yySetLocation = qq~$scripturl?action=imdraft~; }
-	else { $yySetLocation = qq~$scripturl?action=imoutbox~; }
-	&redirectexit;
+	if ($INFO{'popup'}) {
+		print "Content-type: text/plain\n\n";
+		print qq~Complete~;
+		CORE::exit; # This is here only to avoid server error log entries!
+	} else {
+		if ($FORM{'dontstoreinoutbox'}) { $yySetLocation = qq~$scripturl?action=im~; }
+		elsif ($FORM{'draft'}) { $yySetLocation = qq~$scripturl?action=imdraft~; }
+		else { $yySetLocation = qq~$scripturl?action=imoutbox~; }
+		&redirectexit;
+	}
 }
 
 

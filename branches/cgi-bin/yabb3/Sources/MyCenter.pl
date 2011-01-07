@@ -1240,6 +1240,71 @@ function insert_user (oElement,username,userid) {
 		</div>
 		</form>~;
 		$MCGlobalFormStart = '';
+		
+		if ($INFO{'popup'}) {
+		&print_output_header;
+
+		$output = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+		<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
+		<title></title>
+		<link rel="stylesheet" href="$forumstylesurl/$usestyle.css" type="text/css" />
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_main.js"></script>
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_cpp.js"></script>
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_css.js"></script>
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_html.js"></script>
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_java.js"></script>
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_javascript.js"></script>
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_pascal.js"></script>
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_perl.js"></script>
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_php.js"></script>
+		<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_sql.js"></script>
+		<script language="JavaScript1.2" type="text/javascript">
+		function ResizeIFrame() {
+			parent.IFrameShrink();
+			var height = document.body.scrollHeight;
+			parent.ResizeIFrame(height);
+		}
+		
+		function postQuery() { 
+			var theForm = document.forms.postmodify; 
+			var postText = ""; 
+			var amp = ""; 
+			for(i = 0; i < theForm.elements.length; i++){ 
+				var elem = theForm.elements[i];
+				if(elem.type == "text" || elem.type == "textarea" || elem.type == "hidden"){ 
+					postText += amp + elem.name + "=" + encodeURIComponent(elem.value); 
+				} else if (elem.type == "checkbox") {
+					if (elem.checked) {
+						postText += amp + elem.name + "=checked";
+					}
+				} else if (elem.type == "select-multiple") { 
+					for (var j = 0; j < elem.options.length; j++) {
+						postText += amp + elem.name + "=" + elem.options[j].value;
+					}
+				} else if (elem.type == "select-one") {
+					postText += amp + elem.name + "=" + elem.options[elem.selectedIndex].value; 
+				}
+				amp = "&";
+			}
+			parent.sendIM(document.forms.postmodify.action, postText);
+		}
+		</script>
+		$yyinlinestyle
+		</head>
+		<body onload="ResizeIFrame()" style="background-color:#2f7dce; height: 100%; width: 100%; min-width:650px">
+		$MCContent
+		</body>
+		</html>~;
+		
+		$output =~ s~</form>~<input type="hidden" name="formsession" value="$formsession" /></form>~g;
+
+		&print_HTML_output_and_finish;
+		}
+		
+		
 
 	# inbox/outbox/ storage/draft  viewing
 	} elsif ($view eq 'pm' && ($action eq 'im' || $action eq 'imoutbox' || $action eq 'imstorage' || $action eq 'imdraft')) {
@@ -1503,7 +1568,7 @@ function insert_user (oElement,username,userid) {
 				- <input type="checkbox" name="searchtype" id="searchtype" value="user" /> <label for="searchtype">$pm_search{'byuser'}</label><br />
 				<input type="text" name="search" id="search" size="16" style="font-size: 11px; vertical-align: middle;" />
 
-				<input type="image" src="$imagesdir/search.gif" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />
+				<input type="image" src="$imagesdir/search.png" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />
 				</form>
 				</td>
 			</tr>

@@ -119,7 +119,7 @@ sub Login2 {
 	if ($no_error_page) {
 		&print_output_header;
 		print "confirmed$yySetLocation";
-		CORE::exit; # This is here only to avoid server error log entries!$errormessage; }
+		CORE::exit; # This is here only to avoid server error log entries! }
 	}
 	
 	&redirectexit;

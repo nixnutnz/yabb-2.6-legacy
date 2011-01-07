@@ -556,14 +556,22 @@ sub QuickLinks {
 			$quicklinks .= qq~				<li><a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$maintxt{'2'} ${$uid.$user}{'realname'}$maintxt{'3'}</a></li>\n~;
 			&CheckUserPM_Level($user);
 			if ($PM_level == 1 || ($PM_level == 2 && $UserPM_Level{$user} > 1 && $staff) || ($PM_level == 3 && $UserPM_Level{$user} == 3 && ($iamadmin || $iamgmod))) {
-				$quicklinks .= qq~				<li><a href="$scripturl?action=imsend;to=$useraccount{$user}">$maintxt{'0'} ${$uid.$user}{'realname'}</a></li>\n~;
+				if (1) {#links_impopup
+					$quicklinks .= qq~
+				<li><a href="javascript://" onclick="IMPage('$scripturl?action=imsend;to=$useraccount{$user}','${$uid.$user}{'realname'}','$useraccount{$user}')">$maintxt{'0'} ${$uid.$user}{'realname'}</a></li>\n~;
+				} else {
+					$quicklinks .= qq~
+				<li><a href="$scripturl?action=imsend;to=$useraccount{$user}">$maintxt{'0'} ${$uid.$user}{'realname'}</a></li>\n~;
+				}
 			}
 			if (!${$uid.$user}{'hidemail'} || $iamadmin) {
-				$quicklinks .= "				<li>" . &enc_eMail("$maintxt{'1'} ${$uid.$user}{'realname'}",${$uid.$user}{'email'},'','') . "</li>\n";
+				$quicklinks .= "
+				<li>" . &enc_eMail("$maintxt{'1'} ${$uid.$user}{'realname'}",${$uid.$user}{'email'},'','') . "</li>\n";
 			}
 			if (!%mybuddie) { &loadMyBuddy; }
 			if ($buddyListEnabled && !$mybuddie{$user}) {
-				$quicklinks .= qq~				<li><a href="$scripturl?action=addbuddy;name=$useraccount{$user}">$maintxt{'4'} ${$uid.$user}{'realname'} $maintxt{'5'}</a></li>\n~;
+				$quicklinks .= qq~
+				<li><a href="$scripturl?action=addbuddy;name=$useraccount{$user}">$maintxt{'4'} ${$uid.$user}{'realname'} $maintxt{'5'}</a></li>\n~;
 			}
 
 		} else {

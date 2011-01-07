@@ -509,15 +509,13 @@ sub SaveSettingsTo {
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.4                                                    #
-# Packaged:       April 12, 2009                                              #
+# Version:        YaBB 3.0 Beta                                               #
+# Packaged:       October 05, 2010                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2009 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2010 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
-# Sponsored by: Xnull Internet Media, Inc. - http://www.ximinc.com            #
-#               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
 ########## Board Info ##########
@@ -681,6 +679,12 @@ $member_groups
 \$quick_quotelength = $quick_quotelength;		# Set the max length for Quick Quotes
 \$enable_quoteuser = $enable_quoteuser;			# Set to 1 if you want to enable userquote
 \$quoteuser_color = "\Q$quoteuser_color\E";		# Set the default color of @ in userquote
+
+########## Post Popup configuration ##########
+
+\$display_postpopup = $display_postpopup;		# Set to 1 if you want to enable the post popup on the display page
+\$mindex_postpopup = $mindex_postpopup;			# Set to 1 if you want to enable the post popup on the message index page
+\$mdrop_postpopup = $mdrop_postpopup;			# Set to 1 if you want to enable the post popup on the message drop downs
 
 ########## MemberPic Settings ##########
 

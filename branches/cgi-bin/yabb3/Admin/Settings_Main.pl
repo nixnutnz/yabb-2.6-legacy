@@ -459,6 +459,24 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 			validate => 'number',
 		},
 		{
+			description => qq~<label for="mindex_postpopup">$admin_txt{'1000'}</label>~,
+			input_html => qq~<input type="checkbox" name="mindex_postpopup" id="mindex_postpopup" value="1"${ischecked($mindex_postpopup)} />~,
+			name => 'mindex_postpopup',
+			validate => 'boolean',
+		},
+		{
+			description => qq~<label for="display_postpopup">$admin_txt{'1001'}</label>~,
+			input_html => qq~<input type="checkbox" name="display_postpopup" id="display_postpopup" value="1"${ischecked($display_postpopup)} />~,
+			name => 'display_postpopup',
+			validate => 'boolean',
+		},
+		{
+			description => qq~<label for="mdrop_postpopup">$admin_txt{'1002'}</label>~,
+			input_html => qq~<input type="checkbox" name="mdrop_postpopup" id="mdrop_postpopup" value="1"${ischecked($mdrop_postpopup)} />~,
+			name => 'mdrop_postpopup',
+			validate => 'boolean',
+		},
+		{
 			header => $timelocktxt{'01'},
 		},
 		{

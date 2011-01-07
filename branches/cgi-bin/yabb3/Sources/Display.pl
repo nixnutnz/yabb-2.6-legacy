@@ -162,9 +162,21 @@ sub Display {
 
 	# Get the class of this thread, based on lock status and number of replies.
 	if ((!$iamguest || $enable_guestposting) && &AccessCheck($currentboard, 2) eq 'granted') {
-		$replybutton = qq~$menusep<a href="~ . ($enable_quickreply && $enable_quickjump ? 'javascript:document.postmodify.message.focus();' : qq~$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;title=PostReply~);
+		# check if we want post pop up instead
+		my $postpopup;
+		$replybutton = qq~$menusep<a href="~;
 		$bypassReplyButton = $replybutton . qq~" onclick="return confirm('$display_txt{'posttolocked'}');">$img{'reply'}</a> ~;
-		$replybutton .= qq~">$img{'reply'}</a> ~;
+		if ($display_postpopup) {
+			$postpopup = qq~PostPage('$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;title=PostReply','$currentboard')~;
+			$replybutton .= "javascript://";
+			$bypassReplyButton = $replybutton . qq~" onclick="if (confirm('$display_txt{'posttolocked'}')) {$postpopup}">$img{'reply'}</a> ~;
+		}
+		elsif ($enable_quickreply && $enable_quickjump) {
+			$replybutton .= 'javascript:document.postmodify.message.focus();'
+		} else {
+			$replybutton .= qq~$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;title=PostReply~;
+		}
+		$replybutton .= qq~" onclick="$postpopup">$img{'reply'}</a> ~;
 	}
 
 	$threadclass = 'thread';
@@ -236,7 +248,7 @@ sub Display {
 	else { $endpage = $max; }
 	$lastpn = int($mreplies / $maxmessagedisplay) + 1;
 	$lastptn = ($lastpn - 1) * $maxmessagedisplay;
-	$pageindex1 = qq~<span class="small" style="float: left; height: 21px; margin: 0px; margin-top: 2px;"><img src="$imagesdir/index_togl.gif" border="0" alt="$display_txt{'19'}" title="$display_txt{'19'}" style="vertical-align: middle;" /> $display_txt{'139'}: $pagenumb</span>~;
+	$pageindex1 = qq~<span class="small" style="float: left; height: 21px; margin: 0px; margin-top: 2px;"><img src="$imagesdir/index_togl.png" border="0" alt="$display_txt{'19'}" title="$display_txt{'19'}" style="vertical-align: middle;" /> $display_txt{'139'}: $pagenumb</span>~;
 	$pageindex2 = $pageindex1;
 	if ($pagenumb > 1 || $all) {
 		if ($userthreadpage == 1 || $iamguest) {
@@ -661,12 +673,32 @@ sub Display {
 			if ($replybutton) {
 				my $quote_mname = $displayname;
 				$quote_mname =~ s/'/\\'/g;
-				$usernamelink = qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote_mname\[/b]\\r\\n\\r\\n'))"><img src="$imagesdir/qquname.gif" border="0" alt="$display_txt{'146n'}" title="$display_txt{'146n'}" /></a> $usernamelink~ if $enable_quickreply && $enable_quoteuser && (!$iamguest || $enable_guestposting);
-
+				
+				if ($display_postpopup) {
+					$usernamelink = qq~<a href="javascript://" onclick="popupqqusername('$quote_mname')"><img src="$imagesdir/qquname.gif" border="0" alt="$display_txt{'146n'}" title="$display_txt{'146n'}" /></a> $usernamelink~ if $enable_quickreply && $enable_quoteuser && (!$iamguest || $enable_guestposting);
+				} else {
+					$usernamelink = qq~<a href="javascript://" onclick="AddText('[color=$quoteuser_color]@[/color] [b]$quote_mname\[/b]\\r\\n\\r\\n'))"><img src="$imagesdir/qquname.gif" border="0" alt="$display_txt{'146n'}" title="$display_txt{'146n'}" /></a> $usernamelink~ if $enable_quickreply && $enable_quoteuser && (!$iamguest || $enable_guestposting);
+				}
+				
 				if (!$movedflag || $iamadmin || $iamgmod || $iammod) {
-					if ($enable_quickreply) {
-						$quote_mname = $useraccount{$musername};
-						$quote_mname =~ s/'/\\'/g;
+					$quote_mname = $useraccount{$musername};
+					$quote_mname =~ s/'/\\'/g;
+					
+					if ($display_postpopup) {
+						$template_markquote = qq~$menusep<a href="javascript://" onclick="popupquote('$quote_mname',$viewnum,$counter,$mdate,quote_selection[$counter])">$img{'mquote'}</a>~;
+						if (length($postmessage) <= $quick_quotelength) {
+							my $quickmessage = $postmessage;
+							if (!$nestedquotes) {
+								$quickmessage =~ s~(<(br|p).*?>){0,1}\[quote([^\]]*)\](.*?)\[/quote([^\]]*)\](<(br|p).*?>){0,1}~<br />~ig;
+							}
+							$quickmessage =~ s/<(br|p).*?>/\\r\\n/ig;
+							$quickmessage =~ s/'/\\'/g;
+							$template_quote = qq~$menusep<a href="javascript://" onclick="popupquote('$quote_mname',$viewnum,$counter,$mdate,'$quickmessage')">$img{'quote'}</a>~;
+						} else {
+							$template_quote = qq~$menusep<a href="javascript://" onclick="quick_quote_confirm('$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;quote=$counter;title=PostReply')">$img{'quote'}</a>~;
+						}					
+					}
+					elsif ($enable_quickreply) {
 						if ($enable_markquote) {
 							$template_markquote = qq~$menusep<a href="javascript:void(quoteSelection('$quote_mname',$viewnum,$counter,$mdate,''))">$img{'mquote'}</a>~;
 						} else {
@@ -940,6 +972,36 @@ sub Display {
 	$display_template
 	<script language="JavaScript1.2" type="text/javascript">
 	<!-- //
+	function popupquote(quote_name, quote_topic_id, quote_msg_id, quote_date, quote_message) {
+		if ((quote_selection[quote_msg_id] && quote_selection[quote_msg_id] != '') || (quote_message && quote_message != '')) {
+			if (cachedPostPage != 1) {
+				PostPage('$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;title=PostReply','$currentboard');
+				addQuote = "document.getElementById('ImageAlertIFrame').contentWindow.quoteSelection('"+quote_name+"', "+quote_topic_id+", "+quote_msg_id+", '"+quote_date+"', '"+escape(quote_message)+"')";
+			} else {
+				if (document.getElementById("ImageAlert").style.display == "none") {
+					PostPage('$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;title=PostReply','$currentboard');
+				}
+				document.getElementById("ImageAlertIFrame").contentWindow.quoteSelection(quote_name, quote_topic_id, quote_msg_id, quote_date, quote_message);
+			}
+		} else {
+			alert("$display_txt{'alertquote'}");
+		}
+	}
+	function popupqqusername(qquser) {
+		if (cachedPostPage != 1) {
+			PostPage('$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;title=PostReply','$currentboard');
+			addQuote = "qqusername('"+qquser+"')";
+		} else {
+			if (document.getElementById("ImageAlert").style.display == "none") {
+				PostPage('$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;title=PostReply','$currentboard');
+			}
+			document.getElementById("ImageAlertIFrame").contentWindow.AddText('[color=$quoteuser_color]@[/color] [b]'+qquser+'\[/b]\\r\\n\\r\\n');
+		}
+	}
+	
+	function qqusername(qquser) {
+		document.getElementById('ImageAlertIFrame').contentWindow.AddText('[color=$quoteuser_color]@[/color] [b]'+qquser+'\[/b]\\r\\n\\r\\n');
+	}
 	function uncheckAllBut(counter) {
 		for (var i = 0; i < document.forms["multidel"].length; ++i) {
 			if (document.forms["multidel"].elements[i].type == "checkbox") document.forms["multidel"].elements[i].checked = false;
@@ -993,7 +1055,8 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 	}
 
 	$yytitle = $msubthread;
-	if ($replybutton and $enable_quickreply) {
+	
+	if ($replybutton && $enable_quickreply && !$display_postpopup) {
 		$yymain =~ s~(<!-- Threads Admin Button Bar start -->.*?</td>)~$1<td align="right">{yabb forumjump}</td>~s;
 		require "$sourcedir/Post.pl";
 		$action = 'post';

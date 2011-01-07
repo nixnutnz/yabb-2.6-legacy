@@ -3,16 +3,18 @@
 //##############################################################################
 //# YaBB: Yet another Bulletin Board                                           #
 //# Open-Source Community Software for Webmasters                              #
-//# Version:        YaBB 3.0 Beta                                              #
-//# Packaged:       October 05, 2010                                           #
+//# Version:        YaBB 2.5 Anniversary Edition                               #
+//# Packaged:       July 04, 2010                                              #
 //# Distributed by: http://www.yabbforum.com                                   #
 //# ===========================================================================#
 //# Copyright (c) 2000-2010 YaBB (www.yabbforum.com) - All Rights Reserved.    #
 //# Software by:  The YaBB Development Team                                    #
 //#               with assistance from the YaBB community.                     #
+//# Sponsored by: Xnull Internet Media, Inc. - http://www.ximinc.com           #
+//#               Your source for web hosting, web design, and domains.        #
 //##############################################################################
 
-//YaBB 3.0 Beta $Revision: 100 $
+//YaBB 2.5 AE $Revision: 1.6.2.6 $
 
 var LivePrevDisplayNames = new Object();
 
@@ -50,8 +52,8 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 	ubbcstr=ubbcstr.replace(/\[\/code\]/ig, " [/code]");
 	ubbcstr=ubbcstr.replace(/\[quote\]/ig, " [quote]");
 	ubbcstr=ubbcstr.replace(/\[\/quote\]/ig, " [/quote]");
-	ubbcstr=ubbcstr.replace(/\[glow\]/ig, " [glow]");
-	ubbcstr=ubbcstr.replace(/\[\/glow\]/ig, " [/glow]");
+	ubbcstr=ubbcstr.replace(/\[img\]/ig, " [img]");
+	ubbcstr=ubbcstr.replace(/\[\/img\]/ig, " [/img]");
 
 		function codeConvStr() {
 			comessage='$1';
@@ -282,28 +284,22 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 	function squoteConv(nosqmessage, sqauthor, sqlink, sqdate, sqmessage) {
 		if ( !sqauthor || !sqlink || !sqdate ) stquotstrg = squotstrg;
 		else stquotstrg = quotstrg;
-
-		sqmessage=sqmessage.replace(/([\S]{80})/g, "$1<br />");
-
 		if ( sqauthor ) {
 			sqmessage=sqmessage.replace(/\/me /ig, "<i>" + sqauthor + "</i> ");
 		} else {
 			sqmessage=sqmessage.replace(/\/me /ig, "<i>" + dspname + "</i> ");
 		}
-
 		if (LivePrevDisplayNames[sqauthor]) sqauthor = LivePrevDisplayNames[sqauthor];
 		else sqauthor = post_txt_807;
-
 		if(!showimagequote) {
-			sqmessage=sqmessage.replace(/\[img(.*?)\][\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*(https\:\/\/)(.+?)[\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*\[\/img\]/ig, "[url]https://$3[/url]");
-			sqmessage=sqmessage.replace(/\[img(.*?)\][\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*(http\:\/\/)*(.+?)[\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*\[\/img\]/ig, "[url]http://$3[/url]");
+			sqmessage=sqmessage.replace(/\[img (.+?)\]/g, "[img]");
+			sqmessage=sqmessage.replace(/\[img\][\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*(https\:\/\/)(.+?)[\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*\[\/img\]/ig, "[url]https://$2[/url]");
+			sqmessage=sqmessage.replace(/\[img\][\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*(http\:\/\/)*(.+?)[\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*\[\/img\]/ig, "[url]http://$2[/url]");
 		}
-
 		stquotstrg=stquotstrg.replace(/AUTHOR/g, sqauthor);
 		stquotstrg=stquotstrg.replace(/QUOTELINK/g, scriptul+'?num='+sqlink+'" target="_blank');
 		stquotstrg=stquotstrg.replace(/DATE/g, sqdate);
 		stquotstrg=stquotstrg.replace(/QUOTE/g, sqmessage);
-
 		ubbcstr=ubbcstr.replace(/\[quote(\s+author=(.*?)\s+link=(.*?)\s+date=(.*?)\s*)?\]\n*(.+?)\n*\[\/quote\]/i, nosqmessage + stquotstrg);
 	}
 
@@ -331,11 +327,11 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 				if(params[0] == 'height') h = "height='" + new Number(params[1]) + "' ";
 				if(params[0] == 'align') a = "align='" + params[1] + "' ";
 			}
-			var imgrest = "<img src='" + s + "' " + w + h + a + "alt='' border='0' />";
+			var imgrest = "<img src='http://" + s + "' " + w + h + a + "alt='' border='0' />";
 			ubbcstr=ubbcstr.replace(/\[img (.+?)\][\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*(http\:\/\/)*(.+?)[\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*\[\/img\]/i, imgrest);
 		}
 
-	while(picr=ubbcstr.match(/\[img (.+?)\][\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*(http\:\/\/)*(.+?)[\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*\[\/img\]/i)) { restrictimage(picr[1],'http://$3') }
+	while(picr=ubbcstr.match(/\[img (.+?)\][\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*(http\:\/\/)*(.+?)[\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*\[\/img\]/i)) { restrictimage(picr[1],'$3') }
 
 	ubbcstr=ubbcstr.replace(/\[tt\](.*?)\[\/tt\]/ig, "<tt>$1</tt>");
 	ubbcstr=ubbcstr.replace(/\[left\](.+?)\[\/left\]/ig, "<p align=left>$1</p>");
@@ -349,7 +345,7 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 	ubbcstr=ubbcstr.replace(/\[hr\]/ig, "<hr width=40% align=left size=1 class='hr'>");
 	ubbcstr=ubbcstr.replace(/\[br\]/ig, "\n");
 
-	if(autolinkurls != 0) ubbcstr=ubbcstr.replace(/([^\w(?:\'|\")\=\[\]]|[\n\b]|\&quot\;|\]|^)((http\:\/\/|www\.){1,}\S+?\.(\w|\.)+)/ig, "$1[url]$2[/url]");
+	if(autolinkurls != 0) ubbcstr=ubbcstr.replace(/([^\w(?:\'|\")\=\[\]\/]|[\n\b]|\&quot\;|\]|^)((http\:\/\/|www\.){1,}\S+?\.(\w|\.|\/)+)/ig, "$1[url]$2[/url]");
 	ubbcstr=ubbcstr.replace(/\[url\]\s*www\.(\S+?)\s*\[\/url\]/ig, "<a href='http://www.$1' target='_blank'>www.$1</a>");
 	ubbcstr=ubbcstr.replace(/\[url=\s*(\S\w+\:\/\/\S+?)\s*\](.+?)\[\/url\]/ig, "<a href='$1' target='_blank'>$2</a>");
 	ubbcstr=ubbcstr.replace(/\[url=\s*(\S+?)\](.+?)\s*\[\/url\]/ig, "<a href='http://$1' target='_blank'>$2</a>");
@@ -441,6 +437,10 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 
 	ubbcstr=ubbcstr.replace(/\[\&table(.*?)\]/g, "<table$1>");
 	ubbcstr=ubbcstr.replace(/\[\/\&table\]/g, "</table>");
+
+
+	ubbcstr=ubbcstr.replace(/\<a (.+?)\>([\S]{80}?)(\S+?)\<\/a\>/g, "<a $1>$2...</a>");
+
 
 	ubbcstr=ubbcstr.replace(/\n/ig, "<br />");
 	ubbcstr=ubbcstr.replace(/\[code_br\]/ig, "\n");

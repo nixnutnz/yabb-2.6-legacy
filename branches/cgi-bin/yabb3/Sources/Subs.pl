@@ -254,6 +254,8 @@ else {
 	}
 
 	$yyjavascript .= qq~
+	
+	var imagedir = "$imagesdir";
 
 	function txtInFields(thefield, defaulttxt) {
 		if (thefield.value == defaulttxt) thefield.value = "";
@@ -422,7 +424,7 @@ else {
 		<input type="hidden" name="oneperthread" value="1" />
 		<input type="hidden" name="searchboards" value="!all" />
 		<input type="text" name="search" size="16" id="search1" value="$img_txt{'182'}" style="font-size: 11px;" onfocus="txtInFields(this, '$img_txt{'182'}');" onblur="txtInFields(this, '$img_txt{'182'}')" />
-		<input type="image" src="$imagesdir/search.gif" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />
+		<input type="image" src="$imagesdir/search.png" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />
 		</form>
 		~;
 		}
@@ -567,7 +569,7 @@ else {
 	while ($output =~ s~(<|{)yabb\s+(\w+)(}|>)~${"yy$2"}~g) {}
 	$output =~ s~(a href=\S+?action=viewprofile;username=.+?)>~$1 rel="nofollow">~isg;
 	if ($imagesdir ne $defaultimagesdir) {
-		$output =~ s~img src=(\\*"|')$imagesdir/(.+?)(\1)~ "img src=$1" . &ImgLoc($2) . $3 ~eisg;
+		$output =~ s~img(.*?)src=(\\*"|')$imagesdir/(.+?)(\2)~ "img$1src=$2" . &ImgLoc($3) . $4 ~eisg;
 		$output =~ s~\.src='$imagesdir/(.+?)'~ ".src='" . &ImgLoc($1) . "'" ~eisg; # For Javascript generated images
 		$output =~ s~input type="image" src="$imagesdir/(.+?)"~ 'input type="image" src="' . &ImgLoc($1) . '"' ~eisg; # For input images
 		$output =~ s~option value="$imagesdir/(.+?)"~ 'option value="' . &ImgLoc($1) . '"' ~eisg; # For the post page

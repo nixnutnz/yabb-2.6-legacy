@@ -189,41 +189,49 @@ sub BoardIndex {
 	&getlog;
 	my $dmax = $date - ($max_log_days_old * 86400);
 
-	# showcase poll start
-	my $polltemp;
-	if (-e "$datadir/showcase.poll") {
-		fopen (SCPOLLFILE, "$datadir/showcase.poll");
-		my $scthreadnum = <SCPOLLFILE>;
-		fclose (SCPOLLFILE);
+	# if loading subboard list by ajax we don't need this
+	
+	if (!$INFO{'a'})
+	{
+		# showcase poll start
+		my $polltemp;
+		if (-e "$datadir/showcase.poll") {
+			fopen (SCPOLLFILE, "$datadir/showcase.poll");
+			my $scthreadnum = <SCPOLLFILE>;
+			fclose (SCPOLLFILE);
 
-		# Look for a valid poll file.
-		my $pollthread;
-		if (-e "$datadir/$scthreadnum.poll") {
-			&MessageTotals("load",$scthreadnum);
-			if ($iamadmin || $iamgmod) {
-				$pollthread = 1;
-			} else {
-				my $curcat = ${$uid.${$scthreadnum}{'board'}}{'cat'};
-				my $catperms = (split /\|/,$catinfo{$curcat})[1];
-				$pollthread = 1 if &CatAccess($catperms);
-				my $boardperms = (split /\|/,$board{${$scthreadnum}{'board'}})[1];
-				$pollthread = &AccessCheck(${$scthreadnum}{'board'}, '', $boardperms) eq 'granted' ? $pollthread : 0;
+			# Look for a valid poll file.
+			my $pollthread;
+			if (-e "$datadir/$scthreadnum.poll") {
+				&MessageTotals("load",$scthreadnum);
+				if ($iamadmin || $iamgmod) {
+					$pollthread = 1;
+				} else {
+					my $curcat = ${$uid.${$scthreadnum}{'board'}}{'cat'};
+					my $catperms = (split /\|/,$catinfo{$curcat})[1];
+					$pollthread = 1 if &CatAccess($catperms);
+					my $boardperms = (split /\|/,$board{${$scthreadnum}{'board'}})[1];
+					$pollthread = &AccessCheck(${$scthreadnum}{'board'}, '', $boardperms) eq 'granted' ? $pollthread : 0;
+				}
 			}
-		}
 
-		if ($pollthread) {
-			my $tempcurrentboard = $currentboard;
-			$currentboard = ${$scthreadnum}{'board'};
-			my $tempmod = $iammod;
-			$iammod = 0;
-			require "$sourcedir/Poll.pl";
-			&display_poll($scthreadnum,1);
-			$iammod = $tempmod;
-			$polltemp = qq~<script language="JavaScript1.2" src="$yyhtml_root/ubbc.js" type="text/javascript"></script>~ . $pollmain . '<br />';
-			$currentboard = $tempcurrentboard;
-		 }
+			if ($pollthread) {
+				my $tempcurrentboard = $currentboard;
+				$currentboard = ${$scthreadnum}{'board'};
+				my $tempmod = $iammod;
+				$iammod = 0;
+				require "$sourcedir/Poll.pl";
+				&display_poll($scthreadnum,1);
+				$iammod = $tempmod;
+				$polltemp = qq~<script language="JavaScript1.2" src="$yyhtml_root/ubbc.js" type="text/javascript"></script>~ . $pollmain . '<br />';
+				$currentboard = $tempcurrentboard;
+			 }
+		}
+		# showcase poll end
+	} else {
+		# get rid of the tag in the template
+		$boardindex_template =~ s/({|<)yabb pollshowcase(}|>)//g;
 	}
-	# showcase poll end
 
 	foreach $curboard (@loadboards) {
 		chomp $curboard;
@@ -368,11 +376,13 @@ sub BoardIndex {
 					$template_catnames .= qq~"$catid",~;
 					$newrowend{$catname}   = qq~</span></td></tr>~;
 					if ($catcol{$catid}) {
-						$newrowstart{$catname} = qq~<tr id="col$catid" style="display:none;"><td colspan="5" class="$new_msg_bg" height="18"><span class="$new_msg_class">~;
+						$newrowstart{$catname} = qq~<tr><td colspan="5" class="$new_msg_bg" height="18"><span class="$new_msg_class">~;
 						$template_boardtable = qq~id="$catid"~;
+						$template_colboardtable = qq~id="col$catid" style="display:none;"~;
 					} else {
-						$newrowstart{$catname} = qq~<tr id="col$catid"><td colspan="5" class="$new_msg_bg" height="18"><span class="$new_msg_class">~;
+						$newrowstart{$catname} = qq~<tr><td colspan="5" class="$new_msg_bg" height="18"><span class="$new_msg_class">~;
 						$template_boardtable = qq~id="$catid" style="display:none;"~;
+						$template_colboardtable = qq~id="col$catid"~;
 					}
 					if ($newmsg) {
 						$newrowicon{$catname} = qq~<img src="$imagesdir/on.gif" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" border="0" style="margin-left: 4px; margin-right: 6px; vertical-align: middle;" />~;
@@ -389,6 +399,7 @@ sub BoardIndex {
 
 				} else {
 					$template_boardtable = qq~id="$catid"~;
+					$template_colboardtable = qq~id="col$catid" style="display:none;"~;
 				}
 
 			} else {
@@ -399,26 +410,77 @@ sub BoardIndex {
 			$catlink = qq~$collapse_link $hash{$catname} <a href="$scripturl?catselect=$catid" title="$boardindex_txt{'797'} $catname">$catname</a>~;
 		} else {
 			$template_boardtable = qq~id="$catid"~;
+			$template_colboardtable = qq~id="col$catid" style="display:none;"~;
 			$catlink = qq~<a href="$scripturl?catselect=$catid">$catname</a>~;
 		}
 
-		$templatecat = $catheader;
-		$tmpcatimg = "";
-		if ($catimage ne '') {
-			if ($catimage =~ /\//i) { $catimage = qq~<img src="$catimage" alt="" border="0" style="vertical-align: middle;" />~; }
-			elsif ($catimage) { $catimage = qq~<img src="$imagesdir/$catimage" alt="" border="0" style="vertical-align: middle;" />~; }
-			$tmpcatimg = qq~$catimage~;
+		# Don't need the category headers if we're loading ajax subboards
+		if (!$INFO{'a'}) {
+			$templatecat = $catheader;
+			$tmpcatimg = "";
+			if ($catimage ne '') {
+				if ($catimage =~ /\//i) { $catimage = qq~<img src="$catimage" alt="" border="0" style="vertical-align: middle;" />~; }
+				elsif ($catimage) { $catimage = qq~<img src="$imagesdir/$catimage" alt="" border="0" style="vertical-align: middle;" />~; }
+				$tmpcatimg = qq~$catimage~;
+			}
+			$templatecat =~ s/({|<)yabb catimage(}|>)/$tmpcatimg/g;
+			$templatecat =~ s/({|<)yabb catlink(}|>)/$catlink/g;
+			$templatecat =~ s/({|<)yabb newmsg start(}|>)/$newrowstart{$catname}/g;
+			$templatecat =~ s/({|<)yabb newmsg icon(}|>)/$newrowicon{$catname}/g;
+			$templatecat =~ s/({|<)yabb newmsg(}|>)/$newms{$catname}/g;
+			$templatecat =~ s/({|<)yabb newmsg end(}|>)/$newrowend{$catname}/g;
+			$templatecat =~ s/({|<)yabb boardtable(}|>)/$template_boardtable/g;
+			$templatecat =~ s/({|<)yabb colboardtable(}|>)/$template_colboardtable/g;
+			$tmptemplateblock .= $templatecat;
 		}
-		$templatecat =~ s/({|<)yabb catimage(}|>)/$tmpcatimg/g;
-		$templatecat =~ s/({|<)yabb catlink(}|>)/$catlink/g;
-		$templatecat =~ s/({|<)yabb newmsg start(}|>)/$newrowstart{$catname}/g;
-		$templatecat =~ s/({|<)yabb newmsg icon(}|>)/$newrowicon{$catname}/g;
-		$templatecat =~ s/({|<)yabb newmsg(}|>)/$newms{$catname}/g;
-		$templatecat =~ s/({|<)yabb newmsg end(}|>)/$newrowend{$catname}/g;
-		$templatecat =~ s/({|<)yabb boardtable(}|>)/$template_boardtable/g;
-		$tmptemplateblock .= $templatecat;
 		
 		my $alternateboardcolor = 0;
+		
+		# Moved this out of for loop. Gets the latest data for sub boards
+		sub find_latest_data {
+			my ($parentbd, @children) = @_;
+			$childcnt{$parentbd} = 0;
+			$sub_new_cnt{$parentbd} = 0;
+			foreach $childbd (@children) {
+				# make recursive call first so we can get latest post data working from bottom up.
+				if($subboard{$childbd}) {
+					&find_latest_data($childbd, split(/\|/,$subboard{$childbd}));
+				}
+
+				# don't check sub board if its lastposttime is N/A
+				if(${$uid.$childbd}{'lastposttime'} ne $boardindex_txt{'470'}) {
+					# update parent board last data if this child's is more recent
+					if($lastpostrealtime{$childbd} > $lastpostrealtime{$parentbd}) {
+						$lastposttime{$parentbd} = $lastposttime{$childbd};
+						$lastpostrealtime{$parentbd} = $lastpostrealtime{$childbd};
+						${$uid.$parentbd}{'lastposttime'} = ${$uid.$childbd}{'lastposttime'};
+						${$uid.$parentbd}{'lastposter'} = ${$uid.$childbd}{'lastposter'};
+						${$uid.$parentbd}{'lastpostid'} = ${$uid.$childbd}{'lastpostid'};
+						${$uid.$parentbd}{'lastreply'} = ${$uid.$childbd}{'lastreply'};
+						${$uid.$parentbd}{'lastsubject'} = ${$uid.$childbd}{'lastsubject'};
+						${$uid.$parentbd}{'lasticon'} = ${$uid.$childbd}{'lasticon'};
+						${$uid.$parentbd}{'lasttopicstate'} = ${$uid.$childbd}{'lasttopicstate'};
+					}
+				}
+
+				# Add to totals
+				${$uid.$parentbd}{'threadcount'} += ${$uid.$childbd}{'threadcount'};
+				${$uid.$parentbd}{'messagecount'} += ${$uid.$childbd}{'messagecount'};
+				# but if it's a parent board that can't be posted in, don't add to totals.
+				if($subboard{$childbd} && !${$uid.$childbd}{'canpost'}) {
+					${$uid.$parentbd}{'threadcount'} -= ${$uid.$childbd}{'threadcount'};
+					${$uid.$parentbd}{'messagecount'} -= ${$uid.$childbd}{'messagecount'};
+				}
+				if($new_icon{$childbd}) {
+					# parent board gets new status if child has something new
+					$new_icon{$parentbd} = $new_icon{$childbd};
+					# count sub boards with new posts
+					$sub_new_cnt{$parentbd}++;
+				}
+
+				$childcnt{$parentbd}++;
+			}
+		}
 
 		## loop through any non collapsed boards to show the board index
 		## Also shows whether collapsed or not due to QuickCollapse (Unilat)
@@ -432,6 +494,9 @@ sub BoardIndex {
 				
 				$brd_count++;
 				
+				# let's add this to javascript array of good boards.
+				$template_boardnames .= qq~"$curboard",~;
+				
 				# first off, lets find the most recent post data and total sub board posts/threads
 				if($subboard{$curboard}) {
 
@@ -442,50 +507,6 @@ sub BoardIndex {
 					}
 
 					&find_latest_data($curboard, split(/\|/,$subboard{$curboard}));
-					sub find_latest_data {
-						my ($parentbd, @children) = @_;
-						$childcnt{$parentbd} = 0;
-						$sub_new_cnt{$parentbd} = 0;
-						foreach $childbd (@children) {
-							# make recursive call first so we can get latest post data working from bottom up.
-							if($subboard{$childbd}) {
-								&find_latest_data($childbd, split(/\|/,$subboard{$childbd}));
-							}
-						
-							# don't check sub board if its lastposttime is N/A
-							if(${$uid.$childbd}{'lastposttime'} ne $boardindex_txt{'470'}) {
-								# update parent board last data if this child's is more recent
-								if($lastpostrealtime{$childbd} > $lastpostrealtime{$parentbd}) {
-									$lastposttime{$parentbd} = $lastposttime{$childbd};
-									$lastpostrealtime{$parentbd} = $lastpostrealtime{$childbd};
-									${$uid.$parentbd}{'lastposttime'} = ${$uid.$childbd}{'lastposttime'};
-									${$uid.$parentbd}{'lastposter'} = ${$uid.$childbd}{'lastposter'};
-									${$uid.$parentbd}{'lastpostid'} = ${$uid.$childbd}{'lastpostid'};
-									${$uid.$parentbd}{'lastreply'} = ${$uid.$childbd}{'lastreply'};
-									${$uid.$parentbd}{'lastsubject'} = ${$uid.$childbd}{'lastsubject'};
-									${$uid.$parentbd}{'lasticon'} = ${$uid.$childbd}{'lasticon'};
-									${$uid.$parentbd}{'lasttopicstate'} = ${$uid.$childbd}{'lasttopicstate'};
-								}
-							}
-							
-							# Add to totals
-							${$uid.$parentbd}{'threadcount'} += ${$uid.$childbd}{'threadcount'};
-							${$uid.$parentbd}{'messagecount'} += ${$uid.$childbd}{'messagecount'};
-							# but if it's a parent board that can't be posted in, don't add to totals.
-							if($subboard{$childbd} && !${$uid.$childbd}{'canpost'}) {
-								${$uid.$parentbd}{'threadcount'} -= ${$uid.$childbd}{'threadcount'};
-								${$uid.$parentbd}{'messagecount'} -= ${$uid.$childbd}{'messagecount'};
-							}
-							if($new_icon{$childbd}) {
-								# parent board gets new status if child has something new
-								$new_icon{$parentbd} = $new_icon{$childbd};
-								# count sub boards with new posts
-								$sub_new_cnt{$parentbd}++;
-							}
-							
-							$childcnt{$parentbd}++;
-						}
-					}
 				}
 				
 				if (${$uid.$curboard}{'ann'} == 1) { ${$uid.$curboard}{'pic'} = 'ann.gif'; }
@@ -673,6 +694,44 @@ sub BoardIndex {
 					$templateblock =~ s/({|<)yabb boardurl(}|>)/$scripturl\?board\=$curboard/g;
 				}
 				
+				# Make hidden table rows for drop down message list
+				$expandmessages = qq~
+				<tr id="dropsubrow_$curboard" style="display: none">
+					<td id="dropsub_$curboard" colspan="5" align="center"></td>
+				</tr>
+				<tr id="droprow_$curboard" style="display: none">
+					<td colspan="5" style="padding:0px; text-align: center">
+					<div style="width: 100%; position: relative">
+					<table cellpadding="0" cellspacing="0" border="0" width="100%">
+						<tr>
+							<td width="20" valign="bottom" style="background-image:url($imagesdir/fadeleftdropdown.gif)">
+								<img onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$curboard', 0)" style="position: absolute; cursor: pointer; bottom: -12px; left: -12px" src="$imagesdir/closebutton.png" border="0" />
+							</td>
+							<td id="drop_$curboard" style="padding: 0px; padding-bottom: 8px"></td>
+							<td width="20" valign="top" style="background-image:url($imagesdir/faderightdropdown.gif)">
+								<img onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$curboard', 0)" style="position: absolute; cursor: pointer; top: -12px; right: -12px" src="$imagesdir/closebutton.png" border="0" />
+							</td>
+						</tr>
+					</table>
+					</div>
+					</td>
+				</tr>
+				~;
+				$messagedropdown = qq~
+				<img onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$curboard', 0)" id="dropbutton_$curboard" style="cursor: pointer" src="$imagesdir/dropdown.png" border="0" />
+				~;
+				
+				# drop down arrow for expanding sub boards
+				# only do this if 1 or more sub boards and if this is an ajax call we dont want infinite levels of subboards
+				my $subdropdown;
+				if ($sub_count > 0 && !$INFO{'a'}) {
+					$subdropdown = qq~<img id="subdropbutton_$curboard" src="$imagesdir/dropdown.png" onclick="SubBoardList('$scripturl?board=$curboard','$curboard','$catid',$sub_count,$alternateboardcolor)" style="cursor: pointer; float: left" border="0" />&nbsp;~;
+				}
+				
+				$templateblock =~ s/({|<)yabb expandmessages(}|>)/$expandmessages/g;
+				$templateblock =~ s/({|<)yabb messagedropdown(}|>)/$messagedropdown/g;
+				$templateblock =~ s/({|<)yabb subdropdown(}|>)/$subdropdown/g;
+				
 				$templateblock =~ s/({|<)yabb boardanchor(}|>)/$boardanchor/g;
 				$templateblock =~ s/({|<)yabb new(}|>)/$new/g;
 				$templateblock =~ s/({|<)yabb boardpic(}|>)/$bdpic/g;
@@ -693,7 +752,7 @@ sub BoardIndex {
 				$alternateboardcolor++;
 			}
 		}
-		$tmptemplateblock .= $catfooter;
+		$tmptemplateblock .= $INFO{'a'} ? "" : $catfooter;
 		++$catcount;
 	}
 
@@ -958,7 +1017,7 @@ if (confirm('$boardindex_imtxt{'11'} ${$username}{'PMstorenum'} $boardindex_imtx
 		$boardindex_template =~ s/({|<)yabb mostbotsdate(}|>)/$themostbotsdate/g;
 		$boardindex_template =~ s/({|<)yabb mostusersdate(}|>)/$themostuserdate/g;
 		$boardindex_template =~ s/({|<)yabb groupcolors(}|>)/$grpcolors/g;
-		$boardindex_template =~ s/({|<)yabb sharedlogin(}|>)/$shared_login/g;
+		$boardindex_template =~ s/({|<)yabb sharedlogin(}|>)/$shared_login/g;		
 	# EventCal START
 		if(-e "$vardir/eventcalset.txt") { require "$vardir/eventcalset.txt"; }
 		my $cal_display;
@@ -970,12 +1029,26 @@ if (confirm('$boardindex_imtxt{'11'} ${$username}{'PMstorenum'} $boardindex_imtx
 	# EventCal END
 
 		chop($template_catnames);
+		chop($template_boardnames);
 		$yyjavascript .= qq~\nvar markallreadlang = '$boardindex_txt{'500'}';\nvar markfinishedlang = '$boardindex_txt{'500a'}';~;
 		$yymain .= qq~\n
 	<script language="JavaScript1.2" src="$yyhtml_root/ajax.js" type="text/javascript"></script>
 	<script language="JavaScript1.2" type="text/javascript">
 	<!--
 		var catNames = [$template_catnames];
+		var boardNames = [$template_boardnames];
+		var boardOpen = "";
+		var subboardOpen = "";
+		var arrowup = '<img style="margin: 2px" src="$imagesdir/arrowup.gif" />';
+		var openbutton = "$imagesdir/dropdown.png";
+		var closebutton = "$imagesdir/dropup.png";
+		var loadimg = "$imagesdir/loadbar.gif";
+		var cachedBoards = new Object();
+		var cachedSubBoards = new Object();
+		var curboard = "";
+		var insertindex;
+		var insertcat;
+		var prev_subcount;
 	//-->
 	</script>
 	$boardindex_template~;
@@ -1035,30 +1108,59 @@ if (confirm('$boardindex_imtxt{'11'} ${$username}{'PMstorenum'} $boardindex_imtx
 	}
 	# end info center, login, etc.
 	
-	if($INFO{'boardselect'}) {
-		$yymain .= $boardindex_template;
+	if (!$INFO{'a'}) {
+		if($INFO{'boardselect'}) {
+			$yymain .= $boardindex_template;
 
-		my $boardtree = '';
-		my $parentboard = $subboard_sel;
-		while($parentboard) {
-			my ($pboardname, undef, undef) = split(/\|/, $board{"$parentboard"});
-			if(${$uid.$parentboard}{'canpost'}) {
-				$pboardname = qq~<a href="$scripturl?board=$parentboard" class="a"><b>$pboardname</b></a>~;
-			} else {
-				$pboardname = qq~<a href="$scripturl?boardselect=$parentboard&subboards=1" class="a"><b>$pboardname</b></a>~;
+			my $boardtree = '';
+			my $parentboard = $subboard_sel;
+			while($parentboard) {
+				my ($pboardname, undef, undef) = split(/\|/, $board{"$parentboard"});
+				if(${$uid.$parentboard}{'canpost'}) {
+					$pboardname = qq~<a href="$scripturl?board=$parentboard" class="a"><b>$pboardname</b></a>~;
+				} else {
+					$pboardname = qq~<a href="$scripturl?boardselect=$parentboard&subboards=1" class="a"><b>$pboardname</b></a>~;
+				}
+				$boardtree = qq~ &rsaquo; $pboardname$boardtree~;
+				$parentboard = ${$uid.$parentboard}{'parent'};
 			}
-			$boardtree = qq~ &rsaquo; $pboardname$boardtree~;
-			$parentboard = ${$uid.$parentboard}{'parent'};
-		}
-		
-		$yynavigation .= qq~$boardtree~; 
-		&template;
-	}
-	elsif($subboard_sel) {
-		$brd_count ? $boardindex_template: "";
-	}
 
-	
+			$yynavigation .= qq~$boardtree~; 
+			&template;
+		}
+		elsif($subboard_sel) {
+			if ($brd_count) {
+				qq~
+				<script language="JavaScript1.2" type="text/javascript">
+				<!--
+				var catNames = [$template_catnames];
+				var boardNames = [$template_boardnames];
+				var boardOpen = "";
+				var subboardOpen = "";
+				var arrowup = '<img style="margin: 2px" src="$imagesdir/arrowup.gif" />';
+				var openbutton = "$imagesdir/dropdown.png";
+				var closebutton = "$imagesdir/dropup.png";
+				var loadimg = "$imagesdir/loadbar.gif";
+				var cachedBoards = new Object();
+				var cachedSubBoards = new Object();
+				var curboard = "";
+				var insertindex;
+				var insertcat;
+				var prev_subcount;
+				//-->
+				</script>
+				$boardindex_template~;
+			}
+		}
+	} else {
+		print "Content-type: text/plain\n\n";
+		print qq~
+		<table id="subloaded_$INFO{'board'}" style="display:none">
+		$boardindex_template
+		</table>
+		~;
+		CORE::exit; # This is here only to avoid server error log entries!		
+	}
 }
 
 sub GetBotlist {
@@ -1157,7 +1259,11 @@ sub MarkAllRead { # Mark all boards as read.
 			next;
 		}
 
-		foreach my $board (split(/\,/, $cat{$catid})) {
+		&recursive_mark(split(/\,/, $cat{$catid}));
+	}
+	
+	sub recursive_mark {
+		foreach $board (@_) {
 			# Security check
 			if (&AccessCheck($board, '', (split /\|/, $board{$board})[1]) ne 'granted') {
 				delete $yyuserlog{"$board--mark"};
@@ -1167,6 +1273,9 @@ sub MarkAllRead { # Mark all boards as read.
 				$yyuserlog{"$board--mark"} = $date;
 				$yyuserlog{$board} = $date;
 			}
+			
+			# make recursive call if this board has more children
+			if($subboard{$board}) { &recursive_mark(split(/\|/,$subboard{$board})); }
 		}
 	}
 

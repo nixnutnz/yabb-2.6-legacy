@@ -15,10 +15,12 @@
 $messageindexlngver = 'YaBB 3.0 Beta $Revision: 100 $';
 
 %messageindex_txt = (
+'1' => 'Action',
 '2' => 'Admin',
 '3' => 'This topic contains',
 '4' => 'attachments',
 '5' => 'attachment',
+'6' => 'Add Move Info',
 '10' => 'Permalink for this article',
 '15' => 'Poll',
 '18' => 'Index',

@@ -27,43 +27,45 @@ sub RecentTopics {
 	my $display = $INFO{'display'} || 10;
 	if ($display < 0) { $display = 5; }
 	elsif ($display > $maxrecentdisplay) { $display = $maxrecentdisplay; }
-	my (@memset, @categories, %data, $numfound, $curcat, %catid, %catname, %cataccess, %catboards, $openmemgr, @membergroups, %openmemgr, $curboard, @threads, @boardinfo, $i, $c, @messages, $tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $mns, $mtime, $counter, $board, $notify);
+	#my (@memset, @categories, %data, $numfound, $curcat, %catid, %catname, %cataccess, %catboards, $openmemgr, @membergroups, %openmemgr, $curboard, @threads, @boardinfo, $i, $c, @messages, $tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $mns, $mtime, $counter, $board, $notify);
 	$numfound = 0;
 
 	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	foreach $catid (@categoryorder) {
-		$boardlist = $cat{$catid};
+		#$boardlist = $cat{$catid};
 
-		(@bdlist) = split(/\,/, $boardlist);
+		(@bdlist2) = split(/\,/, $cat{$catid});
+		#(@bdlist) = split(/\,/, $boardlist);
 		($catname, $catperms) = split(/\|/, $catinfo{$catid});
 		$cataccess = &CatAccess($catperms);
 		if (!$cataccess) { next; }
 
-		&recursive_check(@bdlist);
-		sub recursive_check {
-			foreach $curboard (@_) {
-				($boardname{$curboard}, $boardperms, $boardview) = split(/\|/, $board{$curboard});
+		&recursive_check(@bdlist2);
+	}
+	
+	sub recursive_check {
+		foreach $curboard (@_) {
+			($boardname{$curboard}, $boardperms, $boardview) = split(/\|/, $board{$curboard});
 
-				my $access = &AccessCheck($curboard, '', $boardperms);
-				if (!$iamadmin && $access ne "granted") { next; }
+			my $access = &AccessCheck($curboard, '', $boardperms);
+			if (!$iamadmin && $access ne "granted") { next; }
 
-				$catid{$curboard} = $catid;
-				$catname{$curboard} = $catname;
+			$catid{$curboard} = $catid;
+			$catname{$curboard} = $catname;
 
-				fopen(REC_BDTXT, "$boardsdir/$curboard.txt");
-				for ($i = 0; $i < $display && ($buffer = <REC_BDTXT>); $i++) {
-					($tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate) = split(/\|/, $buffer);
-					chomp $tstate;
-					if ($tstate !~ /h/ || $iamadmin || $iamgmod) {
-						$mtime = $tdate;
-						$data[$numfound] = "$mtime|$curboard|$tnum|$treplies|$tusername|$tname|$tstate";
-						$numfound++;
-					}
+			fopen(REC_BDTXT, "$boardsdir/$curboard.txt");
+			for ($i = 0; $i < $display && ($buffer = <REC_BDTXT>); $i++) {
+				($tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate) = split(/\|/, $buffer);
+				chomp $tstate;
+				if ($tstate !~ /h/ || $iamadmin || $iamgmod) {
+					$mtime = $tdate;
+					$data[$numfound] = "$mtime|$curboard|$tnum|$treplies|$tusername|$tname|$tstate";
+					$numfound++;
 				}
-				fclose(REC_BDTXT);
-
-				if($subboard{$curboard}) { &recursive_check(split(/\|/,$subboard{$curboard})); }
 			}
+			fclose(REC_BDTXT);
+
+			if($subboard{$curboard}) { &recursive_check(split(/\|/,$subboard{$curboard})); }
 		}
 	}
 
@@ -217,46 +219,48 @@ sub RecentPosts {
 	my $display = $FORM{'display'} ||= 10;
 	if ($display < 0) { $display = 5; }
 	elsif ($display > $maxrecentdisplay) { $display = $maxrecentdisplay; }
-	my (@memset, @categories, %data, $numfound, $curcat, %catid, %catname, %cataccess, %catboards, $openmemgr, @membergroups, %openmemgr, $curboard, @threads, @boardinfo, $i, $c, @messages, $tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $mns, $mtime, $counter, $board, $notify);
+	#my (@memset, @categories, %data, $numfound, $curcat, %catid, %catname, %cataccess, %catboards, $openmemgr, @membergroups, %openmemgr, $curboard, @threads, @boardinfo, $i, $c, @messages, $tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $mns, $mtime, $counter, $board, $notify);
 	$numfound = 0;
 
 	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	foreach $catid (@categoryorder) {
-		$boardlist = $cat{$catid};
+		#$boardlist = $cat{$catid};
 
-		(@bdlist) = split(/\,/, $boardlist);
+		(@bdlist) = split(/\,/, $cat{$catid});
+		#(@bdlist) = split(/\,/, $boardlist);
 		($catname, $catperms) = split(/\|/, $catinfo{$catid});
 		$cataccess = &CatAccess($catperms);
 		if (!$cataccess) { next; }
 
 		&recursive_check2(@bdlist);
-		sub recursive_check2 {
-			foreach $curboard (@_) {
-				($boardname{$curboard}, $boardperms, $boardview) = split(/\|/, $board{$curboard});
-
-				my $access = &AccessCheck($curboard, '', $boardperms);
-				if (!$iamadmin && $access ne "granted") { next; }
-
-				$catid{$curboard} = $catid;
-				$catname{$curboard} = $catname;
-
-				fopen(REC_BDTXT, "$boardsdir/$curboard.txt");
-				for ($i = 0; $i < $display && ($buffer = <REC_BDTXT>); $i++) {
-					($tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate) = split(/\|/, $buffer);
-					chomp $tstate;
-					if ($tstate !~ /h/ || $iamadmin || $iamgmod) {
-						$mtime = $tdate;
-						$data[$numfound] = "$mtime|$curboard|$tnum|$treplies|$tusername|$tname|$tstate";
-						$numfound++;
-					}
-				}
-				fclose(REC_BDTXT);
-
-				if($subboard{$curboard}) { &recursive_check2(split(/\|/,$subboard{$curboard})); }
-			}
-		}
 	}
 
+	sub recursive_check2 {
+		foreach $curboard (@_) {
+			($boardname{$curboard}, $boardperms, $boardview) = split(/\|/, $board{$curboard});
+
+			my $access = &AccessCheck($curboard, '', $boardperms);
+			if (!$iamadmin && $access ne "granted") { next; }
+
+			$catid{$curboard} = $catid;
+			$catname{$curboard} = $catname;
+
+			fopen(REC_BDTXT, "$boardsdir/$curboard.txt");
+			for ($i = 0; $i < $display && ($buffer = <REC_BDTXT>); $i++) {
+				($tnum, $tsub, $tname, $temail, $tdate, $treplies, $tusername, $ticon, $tstate) = split(/\|/, $buffer);
+				chomp $tstate;
+				if ($tstate !~ /h/ || $iamadmin || $iamgmod) {
+					$mtime = $tdate;
+					$data[$numfound] = "$mtime|$curboard|$tnum|$treplies|$tusername|$tname|$tstate";
+					$numfound++;
+				}
+			}
+			fclose(REC_BDTXT);
+
+			if($subboard{$curboard}) { &recursive_check2(split(/\|/,$subboard{$curboard})); }
+		}
+	}
+		
 	@data = sort {$b <=> $a} @data;
 
 	$numfound    = 0;

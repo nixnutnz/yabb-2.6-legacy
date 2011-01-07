@@ -23,6 +23,7 @@ $tabfill = qq~<img src="$imagesdir/tabfill.gif" border="0" alt="" style="vertica
 sub mainMenu {
 	if ($action eq "addtab" && $iamadmin) { require "$sourcedir/AdvancedTabs.pl"; &AddNewTab; }
 	elsif ($action eq "edittab" && $iamadmin) { require "$sourcedir/AdvancedTabs.pl"; &EditTab; }
+	elsif ($INFO{'board'} || $INFO{'num'}) { $tmpaction = ""; }
 	elsif ($action ne "") {
 		if ($action eq "search2") {
 			$tmpaction = "search";
@@ -43,18 +44,18 @@ sub mainMenu {
 	if ($maxsearchdisplay > -1) {
 		$tab{'search'} = qq~<span |><a href="$scripturl?action=search" title = "$img_txt{'182'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'182'}$tabfill</a></span>~;
 	}
-	# EventCal START
-	if (-e "$vardir/eventcalset.txt") { require "$vardir/eventcalset.txt"; }
-	if ($Show_EventButton == 2 || (!$iamguest && $Show_EventButton == 1)) {
-		$tab{'eventcal'} = qq~<span |><a href="$scripturl?action=get_cal;calshow=1" title = "$img_txt{'eventcal'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'eventcal'}$tabfill</a></span>~;
-	}
-	if ($Show_BirthdayButton == 2 || (!$iamguest && $Show_BirthdayButton == 1)) {
-		$tab{'birthdaylist'} = qq~<span |><a href="$scripturl?action=cal_birthdaylist" title = "$img_txt{'birthdaylist'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'birthdaylist'}$tabfill</a></span>~;
-	}
-	# EventCal END
 	if (!$ML_Allowed || ($ML_Allowed == 1 && !$iamguest) || ($ML_Allowed == 2 && $staff) || ($ML_Allowed == 3 && ($iamadmin || $iamgmod))) {
 		$tab{'ml'} = qq~<span |><a href="$scripturl?action=ml" title = "$img_txt{'331'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'331'}$tabfill</a></span>~;
 	}
+	# EventCal START
+	if (-e "$vardir/eventcalset.txt") { require "$vardir/eventcalset.txt"; }
+	if ($Show_EventButton == 2 || (!$iamguest && $Show_EventButton == 1)) {
+		$tab{'eventcal'} = qq~<span |><a href="$scripturl?action=get_cal;calshow=1" title="$img_txt{'eventcal'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'eventcal'}$tabfill</a></span>~;
+	}
+	if ($Show_BirthdayButton == 2 || (!$iamguest && $Show_BirthdayButton == 1)) {
+		$tab{'birthdaylist'} = qq~<span |><a href="$scripturl?action=cal_birthdaylist" title="$img_txt{'birthdaylist'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'birthdaylist'}$tabfill</a></span>~;
+	}
+	# EventCal END
 	if ($iamadmin) {
 		$tab{'admin'} = qq~<span |><a href="$boardurl/AdminIndex.$yyaext" title = "$img_txt{'2'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'2'}$tabfill</a></span>~;
 	}
@@ -120,9 +121,9 @@ sub mainMenu {
 		my ($seladdtab, $seledittab);
 		if ($action eq "addtab") { $seladdtab = qq~class="selected"~; }
 		elsif ($action eq "edittab") { $seledittab = qq~class="selected"~; }
-		$yytabadd = qq~<div style="float: right; width: 100px; height: 21px; text-align: right;">~;
-		$yytabadd .= qq~$tabsep<span style="padding-top: 1px;"$seladdtab><a href="$scripturl?action=addtab" title = "$tabmenu_txt{'newtab'}" style="float: left;">$tabfill<img src="$imagesdir/tabadd.gif" height="23" width="20" border="0" alt="$tabmenu_txt{'newtab'}" title="$tabmenu_txt{'newtab'}" style="display: inline;" />$tabfill</a></span>$tabsep~;
-		$yytabadd .= qq~<span style="padding-top: 1px;"$seledittab><a href="$scripturl?action=edittab" title = "$tabmenu_txt{'edittab'}" style="float: left;">$tabfill<img src="$imagesdir/tabedit.gif" height="23" width="20" border="0" alt="$tabmenu_txt{'edittab'}" title="$tabmenu_txt{'edittab'}" />$tabfill</a></span>$tabsep~;
+		$yytabadd = qq~<div style="float: left; width: 100px; height: 24px; text-align: right;">~;
+		$yytabadd .= qq~<span $seladdtab><a href="$scripturl?action=addtab" title = "$tabmenu_txt{'newtab'}" style="float: left; padding: 1px 0;">$tabfill<img src="$imagesdir/tabadd.gif" height="23" width="20" border="0" alt="$tabmenu_txt{'newtab'}" title="$tabmenu_txt{'newtab'}" />$tabfill</a></span>$tabsep~;
+		$yytabadd .= qq~<span $seledittab><a href="$scripturl?action=edittab" title = "$tabmenu_txt{'edittab'}" style="float: left; padding: 1px 0;">$tabfill<img src="$imagesdir/tabedit.gif" height="23" width="20" border="0" alt="$tabmenu_txt{'edittab'}" title="$tabmenu_txt{'edittab'}" />$tabfill</a></span>$tabsep~;
 		$yytabadd .= qq~</div>~;
 	} else {
 		$yytabadd = qq~&nbsp;~;

@@ -22,7 +22,7 @@ LoadLanguage("BoardIndex");
 # $outsidde_ttsep will act as a seperator between the buttons outside thread tools.
 
 $outside_threadtools = qq~{yabb new post button} {yabb new poll button}~;
-$outside_ttsep = qq~&nbsp;&nbsp;&nbsp;~;
+$outside_ttsep = qq~~;
 
 $topichandellist = qq~ {yabb notify button} {yabb markall button}~;
 
@@ -33,6 +33,7 @@ if($threadtools) {
 }
 
 if (!$ShowBDescrip && $action ne "favorites") {
+if (!$messagelist) {
 $messageindex_template .= qq~
 
 
@@ -50,8 +51,8 @@ $messageindex_template .= qq~
 
 <!-- Board Moderators end -->
 
-
 ~;
+}
 }
 else {
 $messageindex_template .= qq~
@@ -93,6 +94,22 @@ $messageindex_template .= qq~
 {yabb modupdate}
 <table cellpadding="4" cellspacing="0" border="0" width="100%" class="tabtitle">
 <tr>
+~;
+
+if ($messagelist) {
+	$messageindex_template .= qq~
+	<td style="padding-left: 7px;">
+	 	{yabb pageindex top}
+	</td>
+	<td class="post_tools_a" align="right" style="padding-right: 10px">
+		<div style="float:right">{yabb outsidethreadtools}</div>
+	</td>
+	<td $threadhandelstyle>
+	 	{yabb topichandellist}
+	</td>
+	<td width="1%">&nbsp;</td>~;
+} else {
+	$messageindex_template .= qq~
 	<td class="round_top_left" style="padding-left: 7px;">
 	 	{yabb pageindex top}
 	</td>
@@ -102,7 +119,10 @@ $messageindex_template .= qq~
 	<td $threadhandelstyle>
 	 	{yabb topichandellist}
 	</td>
-	<td class="round_top_right" width="1%">&nbsp;	</td>
+	<td class="round_top_right" width="1%">&nbsp;	</td>~;
+}
+
+$messageindex_template .= qq~
 </tr>
 </table>
 
@@ -140,7 +160,7 @@ $messageindex_template .= qq~
 		{yabb pageindex bottom}
 	</td>
 	<td class="post_tools_a" align="right" style="padding-right: 10px;">
-		<div style="float:right">{yabb outsidethreadtools}</div>
+		<div style="width: 100%; text-align: right">{yabb outsidethreadtools}</div>
 	</td>
 	<td $threadhandelstyle>
 	 	{yabb topichandellist2}
@@ -151,7 +171,9 @@ $messageindex_template .= qq~
 {yabb modupdateend}
 
 <!-- Button Bar end -->
+~;
 
+$messageindex_template .= $messagelist ? "" : qq~
 <!-- Icon and access info start -->
 <br />
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -251,10 +273,10 @@ $threadbar = qq~
 ~;
 
 $threadbarMoved = qq~
-<tr>
-<td class="windowbg2" valign="middle" align="center" width="4%">{yabb threadpic}</td>
-<td class="windowbg2" valign="middle" align="center" width="4%">{yabb icon}</td>
-<td class="windowbg" colspan="5" valign="middle" align="left" width="62%">
+<tr class="{yabb altthdcolor}">
+<td valign="middle" align="center" width="4%">{yabb threadpic}</td>
+<td valign="middle" align="center" width="4%">{yabb icon}</td>
+<td colspan="5" valign="middle" align="left" width="62%">
 <div style="float: left; width: 99%;">{yabb subjectlink}</div>
 </td>
 {yabb admin column}

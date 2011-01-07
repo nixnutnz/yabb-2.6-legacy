@@ -18,32 +18,33 @@ if ($action eq 'detailedversion') { return 1; }
 &LoadLanguage('Search');
 
 if($FORM{'searchboards'} =~ /\A\!/) {
-	my($checklist, $catid, $curboard);
+	#my($checklist, $catid, $curboard);
 	$checklist = '';
 	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	foreach $catid (@categoryorder) {
 		my($boardlist, @bdlist, $curboard);
 #		if ($catselect ne $catid && $catselect) { next; }
-		$boardlist = $cat{$catid};
-		@bdlist = split(/\,/, $boardlist);
+		#$boardlist = $cat{$catid};
+		(@bdlist) = split(/\,/,$cat{$catid});
+		#@bdlist = split(/\,/, $boardlist);
 		my ($catname, $catperms, $catallowcol) = split(/\|/, $catinfo{$catid});
 		my $access = &CatAccess($catperms);
 		if (!$access) { next; }
 		
 		recursive_search(@bdlist);
-		sub recursive_search {
-			foreach $curboard (@_) {
-				chomp $curboard;
-				# don't add to count if it's a sub board
-				if(!${$uid.$curboard}{'parent'}) { $cat_boardcnt{$catid}++; }
-				my ($boardname, $boardperms, $boardview) = split(/\|/, $board{$curboard});
-				my $access = &AccessCheck($curboard, '', $boardperms);
-				if (!$iamadmin && $access ne 'granted') { next; }
-				$checklist .= qq~$curboard, ~;
-				
-				if($subboard{$curboard}) {
-					&recursive_search(split(/\|/,$subboard{$curboard}));
-				}
+	}
+	sub recursive_search {
+		foreach $curboard (@_) {
+			chomp $curboard;
+			# don't add to count if it's a sub board
+			if(!${$uid.$curboard}{'parent'}) { $cat_boardcnt{$catid}++; }
+			my ($boardname, $boardperms, $boardview) = split(/\|/, $board{$curboard});
+			my $access = &AccessCheck($curboard, '', $boardperms);
+			if (!$iamadmin && $access ne 'granted') { next; }
+			$checklist .= qq~$curboard, ~;
+
+			if($subboard{$curboard}) {
+				&recursive_search(split(/\|/,$subboard{$curboard}));
 			}
 		}
 	}
@@ -307,6 +308,10 @@ function searchMe(chelem) {
 	$yynavigation = qq~&rsaquo; $search_txt{'182'}~;
 	&template;
 }
+
+#searchtype=allwords&userkind=any&subfield=on&msgfield=on&age=31&numberreturned=25&oneperthread=1&searchboards=%21all&search=test&x=0&y=0&formsession=3A02212143200B021743020D0743301613130C111743200C0E0E160D0A171A2416061017630
+#searchtype=allwords&userkind=any&subfield=on&msgfield=on&age=31&numberreturned=15&oneperthread=1&searchboards=%21all&search=test&x=0&y=0&formsession=774F6C6C0E6A4B584B42415E434B405A0E68415C5B434941414A434F401F16182E0
+#search=test&searchtype=allwords&userspectext=&userspec=&userkind=noguests&searchboards=bugs&searchboards=opensub&searchboards=fixed&searchboards=request&searchboards=general&searchboards=cc&searchboards=test&searchboards=subtest&searchboards=test1&searchboards=test3&searchboards=test4&searchboards=test2&searchboards=stz2&searchboards=subtest2&searchboards=announcements&searchboards=recycle&srchAll=on&subfield=on&msgfield=on&age=31&numberreturned=15&oneperthread=1&submit=Search&formsession=566E4D4D2F4B6A796A63607F626A617B2F49607D7A626860606B626E613E37390F0
 
 sub plushSearch2 {
 	# generate error if admin has disabled search options

@@ -51,6 +51,7 @@ if ($action eq 'detailedversion') { return 1; }
 'imgroups',"MyCenter.pl&IMGroups",
 'imlist',"UserSelect.pl&MemberList",
 'imoutbox',"MyCenter.pl&mycenter",
+'impopup',"InstantMessage.pl&buildIMsend",
 'imprint',"Printpage.pl&Print_IM",
 'imsend',"MyCenter.pl&mycenter",
 'imsend2',"MyCenter.pl&mycenter",

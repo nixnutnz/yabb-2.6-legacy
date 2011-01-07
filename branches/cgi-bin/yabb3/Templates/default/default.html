@@ -18,18 +18,25 @@ if ((navigator.appVersion.substring(0,1) == "5" && navigator.userAgent.indexOf('
 </script>
 </head>
 <body>
-<div id="ImageAlert" style="visibility:hidden; position:fixed; background-color:#AAAAAA; width:200px; top:30%; left:41%">
-	<div id="ImageAlertText" style="background-color:#EEEEEE; text-align:center; padding: 3px; margin:1px;"> </div>
-	<div id="ImageAlertPic" style="background-color:#FFFFFF; text-align:center; margin:1px;"> </div>
+<div id="ImageAlert" style="text-align: center">
+	<a href="javascript://" onclick="HideAlert()">
+		<img style="position: absolute; top: -12px; right: -12px" src="{yabb images}/closebutton.png" border="0" />
+	</a>
+	<iframe id="ImageAlertIFrame" frameBorder="0" style="display: none; width: 100%; border: 0px">
+		<p>Your browser does not support iframes.</p>
+	</iframe>
+	<img id="ImageAlertLoad" src="{yabb images}/loadbar.gif" border="0" style="display: none; margin: 20px; margin-left: auto; margin-right: auto" />
+	<div id="ImageAlertBody" style="display:none">
+	</div>
 </div>
-<a name="pagetop">&nbsp;</a>
+<a name="pagetop" style="position:absolute">&nbsp;</a>
 <table id="maincontainer" cellpadding="0" cellspacing="0" border="0">
 <tr>
-<td style="background-image:url({yabb images}/fadeleft.gif)" width="21"></td>
+<td class="fadeleft" width="21"></td>
 <td>
-<table class="logorepeat" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 25px;">
+<table class="logorepeat" width="100%" cellpadding="0" cellspacing="0" border="0">
 	<tr>
-		<td width="290">
+		<td width="290" valign="bottom">
 			<a href="http://www.yabbforum.com"><img src="{yabb images}/yabblogo.png" alt="YaBB - Yet another Bulletin Board" title="YaBB - Yet another Bulletin Board" border="0" style="position: relative; bottom: 0px; left: 0px;" /></a>
 		</td>
 		<td style="padding: 5px;">
@@ -45,17 +52,25 @@ if ((navigator.appVersion.substring(0,1) == "5" && navigator.userAgent.indexOf('
 	</tr>
 </table>
 <div id="container">
-
-<div class="tabmenubottom"style="width:100%">
-		<div style="float:left; width:40px;" class="tabmenuleft">&nbsp;</div>
-		<div style="float:left" class="tabmenu">{yabb tabmenu}</div>
-		<div style="float:left; width:38px;" class="tabmenurightshort">&nbsp;</div>
-
-		<div style="float:right; width: 160px"><div style="float: left; width: 160px; height: 21px; text-align: center; padding-bottom: 5px; display: inline;">{yabb searchbox}</div></div>
-		<div style="float:right; width: 45px">&nbsp;</div>
-		<div style="float:right; width: 40px"><div style="float: left; width: 40px; height: 18px; text-align: center; padding-top: 4px; display: inline;">{yabb rss}</div></div>
-		<div style="float:right">{yabb tabadd}</div>
+<div class="tabmenubg" style="padding-top: 25px">
+<table width="100%" cellpadding="0" cellspacing="0">
+<tr>
+  <td width="40" class="tabmenuleft">
+	&nbsp;
+  </td>
+  <td class="tabmenu">
+	{yabb tabmenu}{yabb tabadd}
+  </td>
+  <td width="38" class="tabmenurightshort">
+	&nbsp;
+  </td>
+  <td class="tabmenubottom" valign="top" style="text-align: right; padding-right: 10px; min-width: 210px">
+		{yabb rss} &nbsp; {yabb searchbox}
+  </td>
+</tr>
+</table>
 </div>
+
 {yabb addtab}
 
 <div style="width: 96%; margin-left: auto; margin-right: auto; text-align: left;">
@@ -96,7 +111,7 @@ sh_highlightDocument();
 // -->
 </script>
 </td>
-<td style="background-image:url({yabb images}/faderight.gif)" width="21"></td>
+<td class="faderight" width="21"></td>
 </tr>
 </table>
 </body>

@@ -18,8 +18,14 @@
 	background-repeat:repeat-x;
 	background-color:#2f7ece;
 	text-align:center;
-	color:#fff;
+	color:#FFFFFF;
 	padding:0px;
+}
+.fadeleft {
+	background-image:url(./default/fadeleft.png);
+}
+.faderight {
+	background-image:url(./default/faderight.png);
 }
 a {
 	font-weight: normal;
@@ -39,21 +45,21 @@ a:visited {
 }
 .headerlink a {
 	font-weight: normal;
-	color: #fff;
+	color: #FFFFFF;
 	font-family: Verdana, Arial, Sans-Serif;
 	font-weight: bold;
 	text-decoration: none;
 }
 .headerlink a:hover {
 	font-weight: normal;
-	color: #fff;
+	color: #CCDDFF;
 	font-family: Verdana, Arial, Sans-Serif;
 	font-weight: bold;
 	text-decoration: underline;
 }
 .headerlink a:visited {
 	font-weight: normal;
-	color: #fff;
+	color: #FFFFFF;
 	font-family: Verdana, Arial, Sans-Serif;
 	font-weight: bold;
 	text-decoration: underline;
@@ -64,6 +70,8 @@ body {
 	font-family: Verdana, Helvetica, Arial, Sans-Serif;
 	font-size: 12px;
 	margin: 0px;
+	width: 100%;
+	height: 100%;
 	min-width: 770px;
 }
 form {
@@ -99,6 +107,25 @@ input, .button {
 .tabtitle a:hover {
 	color: #ccddff;
 	text-decoration: underline;
+}
+
+#ImageAlert {
+	display: none;
+	z-index: 10000;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin: 0 auto;
+	background: rgb(95, 125, 150);
+	background: rgba(95, 125, 150, 0.8);
+	padding: 10px;
+	border-radius: 8px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px 8px 8px 8px;
+	border-top-left-radius: 8px 8px;
+	border-top-right-radius: 8px 8px;
+	border-bottom-right-radius: 8px 8px;
+	border-bottom-left-radius: 8px 8px;
 }
 
 
@@ -206,7 +233,6 @@ input, .button {
 	margin-right: auto;
 	padding: 0px;
 	border-top: 0px;
-	background-color: #fff;
 }
 #container{
 	width: 100%;
@@ -238,13 +264,13 @@ input, .button {
 	text-align: left;
 	background-color: #fff;
 	background-image: url(./default/tableft211d.png);
-	background-repeat: no-repeat;
+	background-repeat: repeat-y;
 }
 .tabmenurightshort {
 	height: 24px;
 	background-color: #fff;
 	background-image: url(./default/tabrightshort211d.png);
-	background-repeat: no-repeat;
+	background-repeat: repeat-y;
 }
 .tabmenuright {
 	height: 24px;

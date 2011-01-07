@@ -17,15 +17,35 @@
 // DocClick object for registering multiple document.onclick events
 DocClick = new Array();
 
-function DocClicked() {
-		if(DocClick != null) {
-			for (var i = 0; i < DocClick.length; i++) {
-				eval(DocClick[i]);
-			}
+var ev;
+var addQuote;
+
+function DocClicked(e) {
+	ev = e;
+	if(DocClick != null) {
+		for (var i = 0; i < DocClick.length; i++) {
+			eval(DocClick[i]);
 		}
+	}
 }
 
 document.onclick = DocClicked;
+
+// Resize the pop up box and it's iframe
+function ResizeIFrame(height) {
+	var winheight = window.innerHeight === undefined ? document.documentElement.clientHeight : window.innerHeight;
+	if (height + 28 > winheight - 22) {
+		height = winheight - 50;
+	}
+	document.getElementById("ImageAlertIFrame").height = height + "px";
+	document.getElementById("ImageAlertLoad").style.display = "none";
+	var imagealert = document.getElementById("ImageAlert");
+	imagealert.style.marginTop = parseInt(-(height + 20) / 2) + "px";
+}
+
+function IFrameShrink() {
+	document.getElementById("ImageAlertIFrame").height = "0px";
+}
 
 // Caps Lock and Not Allowed Characters detection
 function capsLock(eve,ident){
@@ -102,9 +122,9 @@ function closeLinks(num) {
 
 DocClick.push("blurLinks()");
 
-function blurLinks(e){
+function blurLinks(){
 	if(lastOpen != null) {
-		var target = (e && e.target) || (event && event.srcElement);
+		var target = (ev && ev.target) || (event && event.srcElement);
 		var obj = document.getElementById(lastOpen); 
 		var obj2 = obj.parentNode; 
 		if (target != obj && target != obj2) { closeLinks(lastOpen); }
@@ -129,8 +149,8 @@ function selectNewattach(file_id) {
 var quote_selection = new Array();
 
 function quoteSelection(quote_name, quote_topic_id, quote_msg_id, quote_date, quote_message) {
-	if ((quote_selection[quote_msg_id] && quote_selection[quote_msg_id] != '') || quote_message != '') {
-		if (quote_message) quote_selection[quote_msg_id] = quote_message;
+	if ((quote_selection[quote_msg_id] && quote_selection[quote_msg_id] != '') || (quote_message && quote_message != '')) {
+		if (quote_message) quote_selection[quote_msg_id] = unescape(quote_message);
 		AddText('[quote author=' + quote_name + ' link=' + quote_topic_id + '/' + quote_msg_id + '#' + quote_msg_id + ' date=' + quote_date + ']' + quote_selection[quote_msg_id] + '[/quote]\r\n');
 		quote_selection[quote_msg_id] = '';
 		quote_message = '';
@@ -150,6 +170,12 @@ function get_selection(msg_id) {
 	// quote_selection[msg_id] = quote_selection[msg_id].replace(/_caret_/g, "\\r\\n");
 }
 
+function InsertQuote() {
+	if (addQuote && addQuote != "") {
+		eval(addQuote);
+		addQuote = "";
+	}
+}
 
 // for image resizing
 var noimgdir, noimgtitle;
