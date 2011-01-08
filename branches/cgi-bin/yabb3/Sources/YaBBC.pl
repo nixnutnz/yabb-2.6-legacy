@@ -240,7 +240,7 @@ sub imagemsg {
 }
 
 sub DoUBBC {
-	return $message if $ns eq "NS" || $message =~ s/# nosmileys//isg;
+	return $message if $ns eq "NS" || $message =~ s/#nosmileys//isg;
 
 	my $image_type = $_[0];
 
