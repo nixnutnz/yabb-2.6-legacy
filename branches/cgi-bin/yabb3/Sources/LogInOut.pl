@@ -153,13 +153,13 @@ sub sharedLogin {
 	elsif ($Cookie_Length == 1440) { $clsel1440 = ' selected="selected"'; }
 	if ($sharedLogin_title ne "") {
 		$sharedlog .= qq~
+<div style="width: 700px; margin-left: auto; margin-right: auto">
 <table cellpadding="0" cellspacing="0" border="0" width="700" align="center" class="tabtitle">
 	<tr>
 		<td class="round_top_left" width="99%" style="padding:4px"><b>$sharedLogin_title</b></td>
 		<td class="round_top_right" width="1%">&nbsp;</td>
 	</tr>
-	<tr>
-		<td colspan="2">
+</table>
 <table class="bordercolor" cellpadding="4" cellspacing="1" border="0" width="100%" align="center">~;
 		if ($sharedLogin_text ne "") {
 			$sharedlog .= qq~
@@ -170,7 +170,7 @@ sub sharedLogin {
 		<td class="windowbg2" colspan="2" align="center" valign="middle" style="padding: 10px;">~;
 	} else {
 		$sharedlog .= qq~
-
+<div style="width: 100%">
 <table class="tabtitle" align="center" cellpadding="0" cellspacing="0" border="0" width="100%">
 	<tr>
 		<td class="round_top_left" width="1%">&nbsp;</td>
@@ -228,6 +228,7 @@ sub sharedLogin {
 		</td>
 	</tr>
 </table>
+</div>
 <script type="text/javascript">
   var rpxJsHost = (("https:" == document.location.protocol) ? "https://" : "http://static.");
   document.write(unescape("%3Cscript src='" + rpxJsHost +
