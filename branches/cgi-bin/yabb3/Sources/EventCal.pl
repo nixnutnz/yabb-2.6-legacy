@@ -408,6 +408,7 @@ sub get_cal {
 			<script language="JavaScript1.2" type="text/javascript">
 			<!--
 			HAND = "style='cursor: pointer;'";
+			HAND += " onmouseover='contextTip(event, this.alt)' onmouseout='contextTip(event, this.alt)' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'";
 			document.write('<div style="width: 437px; float: left;">');
 			document.write("<img src='$imagesdir/url.gif' onclick='hyperlink();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'url'}' title='$var_calpost{'url'}' border='0' />");
 			document.write("<img src='$imagesdir/ftp.gif' onclick='ftp();' "+HAND+" align='top' width='23' height='22' alt='$var_calpost{'ftp'}' title='$var_calpost{'ftp'}' border='0' />");
@@ -528,7 +529,7 @@ sub get_cal {
 			//-->
 			</script>
 			<div style="float: left; height: 22px; width: 91px;">
-			<div class="bordercolor" style="height: 20px; width: 66px; padding-left: 1px; padding-top: 1px; margin-top: 1px; float: left;">
+			<div style="height: 20px; width: 66px; padding-left: 1px; padding-top: 1px; margin-top: 1px; float: left;">
 				<span style="float: left; background-color: #000000; width: 10px; height: 9px; margin-right: 1px; margin-bottom: 1px; border: 0px; font-size: 5px; cursor: pointer; cursor: hand;" onclick="ConvShowcolor('#000000')">&nbsp;</span>
 				<span style="float: left; background-color: #333333; width: 10px; height: 9px; margin-right: 1px; margin-bottom: 1px; border: 0px; font-size: 5px; cursor: pointer; cursor: hand;" onclick="ConvShowcolor('#333333')">&nbsp;</span>
 				<span style="float: left; background-color: #666666; width: 10px; height: 9px; margin-right: 1px; margin-bottom: 1px; border: 0px; font-size: 5px; cursor: pointer; cursor: hand;" onclick="ConvShowcolor('#666666')">&nbsp;</span>
