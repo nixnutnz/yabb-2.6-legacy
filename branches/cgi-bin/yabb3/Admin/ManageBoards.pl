@@ -437,28 +437,29 @@ sub AddBoards {
 	
 	# build recursive drop down of boards in each category for selecting parent board
 	foreach $thiscat (@categoryorder) {
-		my @catboards = split(/,/, $cat{$thiscat});
+		my @catboards = split(/\,/, $cat{$thiscat});
 		my $indent = -2;
-		$catboardlist{$thiscat} = qq~<option value=''>&nbsp;<\\/option>~;
+		$catboardlist{$thiscat} = qq~||~;
 
 		&get_subboards(@catboards);
-		sub get_subboards {
-			$indent += 2;
-			foreach $childbd (@_) {
-				my $dash;
-				if($indent > 0) { $dash = "-"; }
-				($chldboardname, undef, undef) = split(/\|/, $board{"$childbd"});
-				$catboardlist{$thiscat} .= qq~<option value='$childbd'>~ . ("&nbsp;" x $indent) . ($dash x ($indent / 2)) . qq~ $chldboardname<\\/option>~;
-				if($subboard{$childbd}) {
-					&get_subboards(split(/\|/,$subboard{$childbd}));
-				}
-			}
-			$indent -= 2;
-		}
 		
 		$catboardlist_js .= qq~
 			catboardlist['$thiscat'] = "$catboardlist{$thiscat}";
 		~;
+	}
+	
+	sub get_subboards {
+		$indent += 2;
+		foreach $childbd (@_) {
+			my $dash;
+			if($indent > 0) { $dash = "-"; }
+			($chldboardname, undef, undef) = split(/\|/, $board{"$childbd"});
+			$catboardlist{$thiscat} .= qq~$childbd|~ . (" " x $indent) . ($dash x ($indent / 2)) . qq~ $chldboardname|~;
+			if($subboard{$childbd}) {
+				&get_subboards(split(/\|/,$subboard{$childbd}));
+			}
+		}
+		$indent -= 2;
 	}
 	
 	$yymain .= qq~
@@ -535,12 +536,21 @@ function pasteNames(num,total) {
 // updates parent drop down list when new category is selected
 function updateParent(cat, board, id) {
 	var parentsel = document.getElementById("parent" + id);
-	parentsel.innerHTML = catboardlist[cat];
+	var insertbds = catboardlist[cat].split("|");
 	
-	for (var i = 0; i < parentsel.options.length; i++) {
-		if(parentsel.options[i].value == board) {
-			parentsel.options[i].style.backgroundColor = "#ffbbbb";
+	clearSelect(parentsel);
+	for (var j = 1; j < insertbds.length; j += 2) {
+		var op;
+		if(navigator.appName=="Microsoft Internet Explorer") {
+			op = new Option(insertbds[j],insertbds[j-1]);
+		} else {
+			op = new Option(insertbds[j],insertbds[j-1],null);
 		}
+		if(insertbds[j-1] == board) {
+			op.style.backgroundColor = "#ffbbbb";
+		}
+		op.value = insertbds[j-1];
+		parentsel.add(op);
 	}
 }
 // changes the parent board dropdown to whatever it should be, otherwise default is the first category's set of boards
@@ -549,21 +559,36 @@ function selectParentBoard() {
 		var parentsel = document.getElementById("parent" + i);
 		
 		var bdinfo = editbrds[i].split("|");
+		var insertbds;
 		
 		if(bdinfo[0]) {
-			parentsel.innerHTML = catboardlist[bdinfo[0]];
+			insertbds = catboardlist[bdinfo[0]].split("|");
 		} else {
-			parentsel.innerHTML = catboardlist[document.getElementById("cat" + i).value];
+			insertbds = catboardlist[document.getElementById("cat" + i).value].split("|");
 		}
 
-		for (var j = 0; j < parentsel.options.length; j++) {
-			if(parentsel.options[j].value == bdinfo[1]) {
-				parentsel.options[j].style.backgroundColor = "#ffbbbb";
+		clearSelect(parentsel);
+		for (var j = 1; j < insertbds.length; j += 2) {
+			var op = new Option(insertbds[j],insertbds[j-1]);
+			if(insertbds[j-1] == bdinfo[1]) {
+				op.style.backgroundColor = "#ffbbbb";
 			}
-			if(parentsel.options[j].value == bdinfo[2]) {
-				parentsel.options[j].selected = true;
+			if(insertbds[j-1] == bdinfo[2]) {
+				op.selected = true;
+			}
+			op.value = insertbds[j-1];
+			if(navigator.appName=="Microsoft Internet Explorer") {
+				parentsel.add(op);
+			} else {
+				parentsel.add(op,null);
 			}
 		}
+	}
+}
+// clear a select box
+function clearSelect(sel) {
+	for (var i = sel.options.length - 1; i >= 0 ; i--) {
+		sel.options[i] = null;
 	}
 }
 // make sure we don't select a board and decide to move it to itself....
