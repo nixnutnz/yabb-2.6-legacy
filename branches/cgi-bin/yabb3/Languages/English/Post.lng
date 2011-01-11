@@ -142,13 +142,13 @@ $postlngver = 'YaBB 3.0 Beta $Revision: 100 $';
 '537' => 'characters. Please shorten your message.',
 '568' => 'Please shorten your name. It is too long',
 ##### Do no edit any of the words in all capitals!
-'599' => '<a class="message" href="QUOTELINK">Quote from AUTHOR</a> on DATE:<br /><div class="quote" style="width: 90%; overflow: auto;">QUOTE</div>',
-'599_d' => '<a class="message" href="QUOTELINK">Quote from AUTHOR</a> DATE:<br /><div class="quote" style="width: 90%; overflow: auto;">QUOTE</div>',
-'600' => '<a class="message" href="QUOTELINK">AUTHOR wrote</a> on DATE:<br /><div class="quote" style="width: 90%; overflow: auto;">QUOTE</div>',
-'600_d' => '<a class="message" href="QUOTELINK">AUTHOR wrote</a> DATE:<br /><div class="quote" style="width: 90%; overflow: auto;">QUOTE</div>',
-'600a' => '<a class="message" href="AUTHOR2">AUTHOR</a> wrote on DATE:<br /><div class="quote" style="width: 90%; overflow: auto;">QUOTE</div>',
-'600a_d' => '<a class="message" href="AUTHOR2">AUTHOR</a> wrote DATE:<br /><div class="quote" style="width: 90%; overflow: auto;">QUOTE</div>',
-'601' => "<b>Quote:</b><br /><div class=\"quote\" style=\"width: 90%; overflow: auto;\">QUOTE</div>",
+'599' => '<a class="message" href="QUOTELINK">Quote from AUTHOR</a> on DATE:<br /><div class="QUOTECSS" style="width: 90%; overflow: auto;">QUOTE</div>',
+'599_d' => '<a class="message" href="QUOTELINK">Quote from AUTHOR</a> DATE:<br /><div class="QUOTECSS" style="width: 90%; overflow: auto;">QUOTE</div>',
+'600' => '<a class="message" href="QUOTELINK">AUTHOR wrote</a> on DATE:<br /><div class="QUOTECSS" style="width: 90%; overflow: auto;">QUOTE</div>',
+'600_d' => '<a class="message" href="QUOTELINK">AUTHOR wrote</a> DATE:<br /><div class="QUOTECSS" style="width: 90%; overflow: auto;">QUOTE</div>',
+'600a' => '<a class="message" href="AUTHOR2">AUTHOR</a> wrote on DATE:<br /><div class="QUOTECSS" style="width: 90%; overflow: auto;">QUOTE</div>',
+'600a_d' => '<a class="message" href="AUTHOR2">AUTHOR</a> wrote DATE:<br /><div class="QUOTECSS" style="width: 90%; overflow: auto;">QUOTE</div>',
+'601' => "<b>Quote:</b><br /><div class=\"QUOTECSS\" style=\"width: 90%; overflow: auto;\">QUOTE</div>",
 '602' => '<b>CodeXLANGX:</b>CODE',
 '602' => '<div class="titlebg" style="width: 90%; padding: 4px; border: 1px #34689A solid; border-bottom: 0px;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="left"><b>Code XLANGX</b></td><td align="right">XSELECTX</td></tr></table></div>CODE',
 'selectall' => 'Select All', 
@@ -181,7 +181,7 @@ $postlngver = 'YaBB 3.0 Beta $Revision: 100 $';
 'resizedescript' => 'You can resize the message area by dragging the right- or bottom border.',
 'textsize' => 'Text size:',
 'alertquote' => 'To use Quote mark the text of this user.',
-'quote_confirm' => 'If you want to cite this contribution, and you click OK, then your records in the response textbox below will get lost. If you do not want this, then click Cancel, then copy your records before you click OK next time. Than you can insert your records again on the next page.',
+'quote_confirm' => 'If you want to cite this contribution, and you click OK, then your records in the response textbox below will get lost. If you do not want this, then click Cancel, then copy your records before you click OK next time. Then you can insert your records again on the next page.',
 );
 
 %npf_txt=(

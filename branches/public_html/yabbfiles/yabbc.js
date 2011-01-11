@@ -281,6 +281,7 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 
 	while(fontsize=ubbcstr.match(/\[size=(\d+)\](.+?)\[\/size\]/i)) { fontConvSize(fontsize[1], fontsize[2]); }
 
+	var ycssvalue = 'quote2';
 	function squoteConv(nosqmessage, sqauthor, sqlink, sqdate, sqmessage) {
 		if ( !sqauthor || !sqlink || !sqdate ) stquotstrg = squotstrg;
 		else stquotstrg = quotstrg;
@@ -299,6 +300,9 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 		stquotstrg=stquotstrg.replace(/AUTHOR/g, sqauthor);
 		stquotstrg=stquotstrg.replace(/QUOTELINK/g, scriptul+'?num='+sqlink+'" target="_blank');
 		stquotstrg=stquotstrg.replace(/DATE/g, sqdate);
+		if(ycssvalue == 'quote') ycssvalue = 'quote2';
+		else ycssvalue = 'quote';
+		stquotstrg=stquotstrg.replace(/QUOTECSS/g, ycssvalue);
 		stquotstrg=stquotstrg.replace(/QUOTE/g, sqmessage);
 		ubbcstr=ubbcstr.replace(/\[quote(\s+author=(.*?)\s+link=(.*?)\s+date=(.*?)\s*)?\]\n*(.+?)\n*\[\/quote\]/i, nosqmessage + stquotstrg);
 	}

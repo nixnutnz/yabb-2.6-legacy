@@ -63,6 +63,9 @@ sub MakeSmileys {
 	return $message;
 }
 
+@ycssvalues = ('quote', 'quote2');
+$ycssnum = 2;
+$ycsscounter = 2;
 sub quotemsg {
 	my ($qauthor, $qlink, $qdate, $qmessage) = @_;
 	my ($testauthor,$fqauthor);
@@ -96,6 +99,8 @@ sub quotemsg {
 
 	$qmessage = &parseimgflash($qmessage);
 	$qdate    = &timeformat($qdate); # generates also the global variable $daytxt
+	$cssbg = $ycssvalues[($ycsscounter % $ycssnum)];
+	$ycsscounter++;
 	if ($fqauthor eq '' || $qlink eq '' || $qdate eq '') { $_ = $post_txt{'601'}; }
 	elsif ($qlink eq 'impost') {
 		$_ = $daytxt ? $post_txt{'600a_d'} : $post_txt{'600a'};
@@ -105,6 +110,7 @@ sub quotemsg {
 	$_ =~ s~AUTHOR~$fqauthor~g;
 	$_ =~ s~QUOTELINK~$scripturl?num=$qlink~g;
 	$_ =~ s~DATE~$qdate~g;
+	$_ =~ s~QUOTECSS~$cssbg~g;
 	$_ =~ s~QUOTE~$qmessage~g;
 	$_;
 }
@@ -243,6 +249,7 @@ sub DoUBBC {
 	return $message if $ns eq "NS" || $message =~ s/#nosmileys//isg;
 
 	my $image_type = $_[0];
+	$ycsscounter = 2;
 
 	$message =~ s~\[noparse\](.*?)(\[/noparse\]|$)~noparse($1)~eisg;
 
