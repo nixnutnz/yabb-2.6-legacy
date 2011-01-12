@@ -981,8 +981,7 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 					AddText(AddTxt);
 				}
 
-				HAND = "style='cursor: pointer;'"; // non valid css 'cursor: hand;' removed by the ContextHelp mod
-				HAND += " onmouseover='contextTip(event, this.alt)' onmouseout='contextTip(event, this.alt)' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'";
+				HAND = "style='cursor: pointer; cursor: hand;'";
 				document.write("<img src='$imagesdir/smiley.gif' onclick='smiley();' "+HAND+" align='bottom' alt='$post_txt{'287'}' title='$post_txt{'287'}' border='0'> ");
 				document.write("<img src='$imagesdir/wink.gif' onclick='wink();' "+HAND+" align='bottom' alt='$post_txt{'292'}' title='$post_txt{'292'}' border='0'> ");
 				document.write("<img src='$imagesdir/cheesy.gif' onclick='cheesy();' "+HAND+" align='bottom' alt='$post_txt{'289'}' title='$post_txt{'289'}' border='0'> ");
