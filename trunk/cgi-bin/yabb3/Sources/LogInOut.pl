@@ -199,7 +199,7 @@ sub sharedLogin {
 					</span>
 					<span style="float: left; text-align: left; margin-right: 15px;">
 						<label for="passwrd">$loginout_txt{'36'}</label>:<br />
-						<input onkeypress="enterKey(event)" type="password" name="passwrd" id="passwrd" size="15" maxlength="30" style="width: 110px;" tabindex="2" onkeypress="capsLock(event,'shared_login')" />
+						<input type="password" name="passwrd" id="passwrd" size="15" maxlength="30" style="width: 110px;" tabindex="2" onkeypress="capsLock(event,'shared_login')" />
 					</span>
 					<span style="float: left; text-align: center;">
 						&nbsp;<br />
