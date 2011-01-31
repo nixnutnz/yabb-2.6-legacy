@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$sessionslngver = 'YaBB 3.0 Beta $Revision: 100 $';
+$sessionslngver = 'YaBB 3.0 Beta $Revision$';
 
 %session_txt = (
 '1' => 'Activate Session ID\'s?',

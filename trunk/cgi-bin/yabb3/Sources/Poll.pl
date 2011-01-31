@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$pollplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$pollplver = 'YaBB 3.0 Beta $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Poll');

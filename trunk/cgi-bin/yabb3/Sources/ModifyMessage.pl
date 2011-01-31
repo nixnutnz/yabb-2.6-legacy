@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$modifymessageplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$modifymessageplver = 'YaBB 3.0 Beta $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 if (!$post_txt_loaded) {

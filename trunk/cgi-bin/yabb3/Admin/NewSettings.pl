@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$newsettingsplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$newsettingsplver = 'YaBB 3.0 Beta $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 # Figure out what tabset to use, depending on the page= parameter.

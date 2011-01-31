@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$backuplngver = 'YaBB 3.0 Beta $Revision: 100 $';
+$backuplngver = 'YaBB 3.0 Beta $Revision$';
 
 ($support_env_path = $ENV{'SCRIPT_FILENAME'}) =~ s~/\w+\.pl~~;
 

@@ -13,7 +13,7 @@
 # Sponsored by: Xnull Internet Media, Inc. - http://www.ximinc.com            #
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
-# $Revision: 100 $
+# $Revision$
 
 $mycenter_template = qq~
 <!-- My Center Title Bar start -->

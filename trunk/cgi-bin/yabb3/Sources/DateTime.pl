@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$datetimeplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$datetimeplver = 'YaBB 3.0 Beta $Revision$';
 
 sub calcdifference { # Input: $date1 $date2
 	$result = int($date2 / 86400) - int($date1 / 86400);

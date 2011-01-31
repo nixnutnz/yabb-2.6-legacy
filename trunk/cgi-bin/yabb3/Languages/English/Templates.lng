@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$templateslngver = 'YaBB 3.0 Beta $Revision: 100 $';
+$templateslngver = 'YaBB 3.0 Beta $Revision$';
 
 %templ_txt=(
 '1' => 'Style Sheet',

@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$loginoutplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$loginoutplver = 'YaBB 3.0 Beta $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 if ($regcheck) { require "$sourcedir/Decoder.pl"; }

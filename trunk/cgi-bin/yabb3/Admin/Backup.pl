@@ -14,7 +14,7 @@
 
 # Many thanks to AK108 (http://fkp.jkcsi.com/) for his contibution to the YaBB community
 
-$backupplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$backupplver = 'YaBB 3.0 Beta $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 # Add in support for Archive::Tar in the Modules directory and binaries in different places

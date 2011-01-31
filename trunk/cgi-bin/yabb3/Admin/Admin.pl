@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$adminplver  = 'YaBB 3.0 Beta $Revision: 100 $';
+$adminplver  = 'YaBB 3.0 Beta $Revision$';
 
 sub Admin {
 	&is_admin_or_gmod;

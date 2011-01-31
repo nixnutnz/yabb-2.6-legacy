@@ -14,7 +14,7 @@
 
 # Many thanks to Carsten Dalgaard (http://www.carsten-dalgaard.dk/) for his contibution to the YaBB community
 
-$contexthelpplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$contexthelpplver = 'YaBB 3.0 Beta $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 

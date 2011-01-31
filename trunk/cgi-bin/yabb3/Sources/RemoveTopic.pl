@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$removetopicplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$removetopicplver = 'YaBB 3.0 Beta $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 sub RemoveThread {

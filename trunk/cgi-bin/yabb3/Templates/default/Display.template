@@ -13,7 +13,7 @@
 # Sponsored by: Xnull Internet Media, Inc. - http://www.ximinc.com            #
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
-# $Revision: 100 $
+# $Revision$
 
 # When thread tools is turned off, these two lists will be combined to display the buttons in the order shown
 # When thread tools is on $outside_threadtools will show buttons normally, while the handle list will show in the thread tools' dropdown

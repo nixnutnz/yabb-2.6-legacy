@@ -14,7 +14,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$spellcheckerplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$spellcheckerplver = 'YaBB 3.0 Beta $Revision$';
 
 if ($action eq 'detailedversion') { return 1; }
 

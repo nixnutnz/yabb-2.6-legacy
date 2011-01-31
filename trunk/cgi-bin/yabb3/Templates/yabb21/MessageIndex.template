@@ -13,7 +13,7 @@
 # Sponsored by: Xnull Internet Media, Inc. - http://www.ximinc.com            #
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
-# $Revision: 100 $
+# $Revision$
 
 $topichandellist = qq~
 	<yabb new post button> <yabb new poll button> <yabb notify button> <yabb markall button>

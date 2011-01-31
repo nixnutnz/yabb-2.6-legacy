@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$subsplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$subsplver = 'YaBB 3.0 Beta $Revision$';
 
 # We now work with UTF-8 only
 $yycharset = "UTF-8";

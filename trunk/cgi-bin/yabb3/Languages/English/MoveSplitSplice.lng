@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$movesplitsplicelngver = 'YaBB 3.0 Beta $Revision: 100 $';
+$movesplitsplicelngver = 'YaBB 3.0 Beta $Revision$';
 
 %sstxt=(
 '1' => 'Move, Split &amp; Splice',

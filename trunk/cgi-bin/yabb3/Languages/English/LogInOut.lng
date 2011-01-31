@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$loginoutlngver = 'YaBB 3.0 Beta $Revision: 100 $';
+$loginoutlngver = 'YaBB 3.0 Beta $Revision$';
 
 %loginout_txt = (
 '34' => 'Login',

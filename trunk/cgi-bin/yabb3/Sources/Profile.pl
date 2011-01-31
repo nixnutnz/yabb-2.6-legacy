@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$profileplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$profileplver = 'YaBB 3.0 Beta $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Profile');

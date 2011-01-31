@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$debugplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$debugplver = 'YaBB 3.0 Beta $Revision$';
 
 sub Debug {
 	if ($debug == 1 or ($debug == 2 && $iamadmin)) {

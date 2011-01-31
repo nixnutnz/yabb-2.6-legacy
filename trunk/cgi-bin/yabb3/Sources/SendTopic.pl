@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$sendtopicplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$sendtopicplver = 'YaBB 3.0 Beta $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 if ($regcheck) { require "$sourcedir/Decoder.pl"; }

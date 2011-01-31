@@ -16,7 +16,7 @@
 
 require 5.008_001; # required perl version 5.8.1 because of unicode support
 
-$setupplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$setupplver = 'YaBB 3.0 Beta $Revision$';
 
 # use CGI::Carp qw(fatalsToBrowser); # used only for tests
 

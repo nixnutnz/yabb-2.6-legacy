@@ -12,7 +12,7 @@
 //#               with assistance from the YaBB community.                     #
 //##############################################################################
 
-//YaBB 3.0 Beta $Revision: 100 $
+//YaBB 3.0 Beta $Revision$
 
 function submitproc() {
 	if (window.submitted) return false;

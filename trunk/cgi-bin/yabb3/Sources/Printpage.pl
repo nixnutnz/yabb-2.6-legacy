@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$printpageplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$printpageplver = 'YaBB 3.0 Beta $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 sub Print_IM {

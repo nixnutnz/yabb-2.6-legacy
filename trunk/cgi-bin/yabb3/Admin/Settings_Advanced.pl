@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$settings_advancedplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$settings_advancedplver = 'YaBB 3.0 Beta $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 my $uploaddiriscorrect = qq~<span style="color: red;">$admin_txt{'164'}</span>~;

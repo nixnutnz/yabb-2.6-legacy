@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$managecatsplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$managecatsplver = 'YaBB 3.0 Beta $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 sub DoCats {

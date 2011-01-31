@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$systemplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$systemplver = 'YaBB 3.0 Beta $Revision$';
 
 sub BoardTotals {
 	my ($testboard, $line, @lines, $updateboard, @boardvars, $tag, $cnt);

@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$profilelngver = 'YaBB 3.0 Beta $Revision: 100 $';
+$profilelngver = 'YaBB 3.0 Beta $Revision$';
 
 %profile_txt = (
 '2' => 'Admin',

@@ -13,7 +13,7 @@
 # Sponsored by: Xnull Internet Media, Inc. - http://www.ximinc.com            #
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
-# $Revision: 100 $
+# $Revision$
 
 $threadhandellist = qq~
 	<yabb reply><yabb poll><yabb notify><yabb favorite><yabb sendtopic><yabb print><yabb markunread>

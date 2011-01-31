@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$loadplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$loadplver = 'YaBB 3.0 Beta $Revision$';
 
 sub LoadBoardControl {
 	my ($cntcat, $cntboard, $cntpic, $cntdescription, $cntmods, $cntmodgroups, $cnttopicperms, $cntreplyperms, $cntpollperms, $cntzero, $dummy, $dummy, $dummy, $cnttotals, $cntcanpost, $cntparent);

@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$searchlngver = 'YaBB 3.0 Beta $Revision: 100 $';
+$searchlngver = 'YaBB 3.0 Beta $Revision$';
 
 %search_txt = (
 '1' => 'This post was made in the last...',

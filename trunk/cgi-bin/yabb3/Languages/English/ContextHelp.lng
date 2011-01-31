@@ -16,7 +16,7 @@
 
 ### Do not translate uppercase words in sharp brackets
 
-$contexthelplngver = 'YaBB 3.0 Beta $Revision: 100 $';
+$contexthelplngver = 'YaBB 3.0 Beta $Revision$';
 
 %contextxt = (
 'clicktip' => "Right Click for help",

@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$userselectplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$userselectplver = 'YaBB 3.0 Beta $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 if ($iamguest && $INFO{'toid'} ne "userspec" && $action ne "checkavail") { &fatal_error("members_only"); }

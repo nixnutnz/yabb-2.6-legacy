@@ -16,7 +16,7 @@
 
 # Many thanks to Carsten Dalgaard (http://www.carsten-dalgaard.dk/) for his contibution to the YaBB community
 
-$contexthelpplver = 'YaBB 2.4 $Revision: 1.107.2.3 $';
+$contexthelpplver = 'YaBB 2.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 

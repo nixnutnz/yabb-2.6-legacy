@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$eventcalssiplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$eventcalssiplver = 'YaBB 3.0 Beta $Revision$';
 
 &LoadLanguage('EventCal');
 

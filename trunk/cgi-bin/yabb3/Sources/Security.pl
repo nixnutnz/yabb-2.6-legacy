@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$securityplver = 'YaBB 3.0 Beta $Revision: 100 $';
+$securityplver = 'YaBB 3.0 Beta $Revision$';
 
 # Updates profile with current IP, if changed from last IP.
 # Will only actually update the file when .vars is being updated anyway to save extra load on server.
