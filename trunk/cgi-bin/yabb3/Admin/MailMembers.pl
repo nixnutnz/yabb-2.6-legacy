@@ -504,9 +504,9 @@ sub MailingMembers {
 		$grp_data .= qq~""~;
 
 		$yymain .= qq~
-	<div class="windowbg2" style="float: left; width: 50%; height: 260px; margin: 1%; padding: 4px; border: 1px #cccccc solid;">
+	<div class="windowbg2" style="float: left; width: 50%; height: 260px; margin: 1%; border: 1px #cccccc solid;">
 
-	<table border="0" width="100%" cellspacing="0" cellpadding="2" class="windowbg2">
+	<table border="0" width="98%" cellspacing="0" cellpadding="3" align="center" class="windowbg2">
         <tr>
            <td align="left" width="100%"><label for="emailsubject"><b>$amv_txt{'1'}:</b></label></td>
         </tr>
