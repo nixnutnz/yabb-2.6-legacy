@@ -96,7 +96,7 @@ sub Mailing {
            <td align="left" width="100%"><input type="text" value="" size="40" name="emailsubject" id="emailsubject" style="width: 100%" /></td>
         </tr>
         <tr>
-           <td align="left" width="100%"><label for="emailtext"><b>$amv_txt{'2'}:</b></label></td>
+           <td align="left" width="100%"><label for="emailtext"><b>$amv_txt{'2'}:</b></label><div id="spell_container" style="float: right; display: inline; white-space: nowrap;"></div></td>
         </tr>
         <tr>
            <td align="left" width="100%"><textarea cols="38" rows="9" name="emailtext" id="emailtext" style="width:100%"></textarea></td>
@@ -106,8 +106,36 @@ sub Mailing {
         </tr>
 	</table>
 		<input type="hidden" name="reused" value="$reused" />
-	</div>
-
+	</div>~;
+	
+    # SpellChecker start
+    if ($enable_spell_check) {
+        $yyinlinestyle .= qq~<link rel="stylesheet" href="$yyhtml_root/googiespell/googiespell.css" type="text/css" />
+        
+<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>
+<script type="text/javascript" src="$yyhtml_root/googiespell/googiespell.js"></script>
+<script type="text/javascript" src="$yyhtml_root/googiespell/cookiesupport.js"></script>~;
+        my $userdefaultlang = (split(/-/, $abbr_lang))[0];
+        $userdefaultlang ||= 'en';
+        $yymain .= qq~
+        <script type="text/javascript">
+        <!--
+        GOOGIE_DEFAULT_LANG = '$userdefaultlang';
+        var googie1 = new GoogieSpell("$yyhtml_root/googiespell/", "$boardurl/Sources/SpellChecker.pl?lang=");
+        googie1.lang_chck_spell = '$spell_check{'chck_spell'}';
+        googie1.lang_revert = '$spell_check{'revert'}';
+        googie1.lang_close = '$spell_check{'close'}';
+        googie1.lang_rsm_edt = '$spell_check{'rsm_edt'}';
+        googie1.lang_no_error_found = '$spell_check{'no_error_found'}';
+        googie1.lang_no_suggestions = '$spell_check{'no_suggestions'}';
+        googie1.setSpellContainer("spell_container");
+        googie1.decorateTextarea("emailtext");
+        //-->
+        </script>~;
+    }
+    # SpellChecker end
+    
+        $yymain .= qq~
 	<div class="windowbg2" style="float: left; width: 44%; margin: 1%; margin-top: 0; margin-bottom: 0; border: 0;">
 	<table border="0" width="98%" cellspacing="0" cellpadding="3" align="center" class="windowbg2">
 	<tr>
@@ -486,7 +514,7 @@ sub MailingMembers {
            <td align="left" width="100%"><input type="text" value="" size="40" name="emailsubject" id="emailsubject" style="width: 100%" /></td>
         </tr>
         <tr>
-           <td align="left" width="100%"><label for="emailtext"><b>$amv_txt{'2'}:</b></label></td>
+           <td align="left" width="100%"><label for="emailtext"><b>$amv_txt{'2'}:</b></label><div id="spell_container" style="float: right; display: inline; white-space: nowrap;"></div></td>
         </tr>
         <tr>
            <td align="left" width="100%"><textarea cols="38" rows="9" name="emailtext" id="emailtext" style="width:100%"></textarea></td>
@@ -496,8 +524,36 @@ sub MailingMembers {
         </tr>
 	</table>
 		<input type="hidden" name="reused" value="$reused" />
-	</div>
-
+	</div>~;
+	
+    # SpellChecker start
+    if ($enable_spell_check) {
+        $yyinlinestyle .= qq~<link rel="stylesheet" href="$yyhtml_root/googiespell/googiespell.css" type="text/css" />
+        
+<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>
+<script type="text/javascript" src="$yyhtml_root/googiespell/googiespell.js"></script>
+<script type="text/javascript" src="$yyhtml_root/googiespell/cookiesupport.js"></script>~;
+        my $userdefaultlang = (split(/-/, $abbr_lang))[0];
+        $userdefaultlang ||= 'en';
+        $yymain .= qq~
+        <script type="text/javascript">
+        <!--
+        GOOGIE_DEFAULT_LANG = '$userdefaultlang';
+        var googie1 = new GoogieSpell("$yyhtml_root/googiespell/", "$boardurl/Sources/SpellChecker.pl?lang=");
+        googie1.lang_chck_spell = '$spell_check{'chck_spell'}';
+        googie1.lang_revert = '$spell_check{'revert'}';
+        googie1.lang_close = '$spell_check{'close'}';
+        googie1.lang_rsm_edt = '$spell_check{'rsm_edt'}';
+        googie1.lang_no_error_found = '$spell_check{'no_error_found'}';
+        googie1.lang_no_suggestions = '$spell_check{'no_suggestions'}';
+        googie1.setSpellContainer("spell_container");
+        googie1.decorateTextarea("emailtext");
+        //-->
+        </script>~;
+    }
+    # SpellChecker end
+    
+        $yymain .= qq~
 	<div class="windowbg2" style="float: left; width: 44%; margin: 1%; margin-top: 0; border: 0;">
 	<table border="0" width="100%" cellspacing="0" cellpadding="3" class="windowbg2">
 	<tr>

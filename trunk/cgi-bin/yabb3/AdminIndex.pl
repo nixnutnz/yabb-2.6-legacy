@@ -191,8 +191,9 @@ sub AdminTemplate {
 	$admin_template = ${ $uid . $username }{'template'};
 	if (!-d "$adminstylesdir/$admin_template" || $admin_template eq "") { $admin_template = "default"; }
 
-	$adminstyle = qq~<link rel="stylesheet" href="$adminstylesurl/$admin_template.css" type="text/css" />~;
+	$adminstyle = qq~<link rel="stylesheet" href="$adminstylesurl/$admin_template.css" type="text/css" />\n~;
 	$adminstyle =~ s~$admin_template\/~~g;
+	$adminstyle .= $yyinlinestyle; # This is to insert the Spell Checker CSS and JS
 
 	$adminimages = qq~$adminstylesurl/$admin_template~;
 	$adminimages =~ s~$admin_template\/~~g;
