@@ -258,7 +258,7 @@ sub Reminder {
 <table class="tabtitle" align="center" cellpadding="0" cellspacing="0" border="0" width="400">
 	<tr>
 		<td class="round_top_left" width="1%">&nbsp;</td>
-		<td width="98%" valign="middle" align="center" height="25"><span class="text1"><b>$mbname $loginout_txt{'36'} $loginout_txt{'194'}</b></td>
+		<td width="98%" valign="middle" align="center" height="25"><span class="text1"><b>$mbname $loginout_txt{'36'} $loginout_txt{'194'}</b></span></td>
 		<td class="round_top_right" width="1%">&nbsp;</td>
 	</tr>
 </table>
@@ -356,7 +356,7 @@ sub Reminder2 {
 <table class="tabtitle" align="center" cellpadding="0" cellspacing="0" border="0" width="400">
 	<tr>
 		<td class="round_top_left" width="1%">&nbsp;</td>
-		<td width="98%" valign="middle" align="center" height="25"><span class="text1"><b>$mbname $loginout_txt{'36'} $loginout_txt{'194'}</b></td>
+		<td width="98%" valign="middle" align="center" height="25"><span class="text1"><b>$mbname $loginout_txt{'36'} $loginout_txt{'194'}</b></span></td>
 		<td class="round_top_right" width="1%">&nbsp;</td>
 	</tr>
 </table>
