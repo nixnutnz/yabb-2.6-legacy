@@ -188,7 +188,8 @@ sub sharedLogin {
 		<td class="windowbg" width="5%" valign="middle" align="center"><img src="$imagesdir/login.gif" border="0" alt="" /></td>
 		<td class="windowbg2" align="center" valign="middle" style="padding: 10px;">~;
 	}
-	if ($maintenance || !$regtype) { $dbutton = ' disabled="disabled"'; }
+	if ($maintenance) { $dreminder = ' style="display: none;"'; }
+	if ($maintenance || !$regtype) { $dregister = ' style="display: none;"'; }
 	$sharedlog .= qq~
 			<form name="loginform" action="$scripturl?action=login2" method="post">
 				<input type="hidden" name="sredir" value="$INFO{'sesredir'}" />
@@ -214,10 +215,10 @@ sub sharedLogin {
 						<label for="cookielength">Keep me logged in.</label>
 					</span>
 					<span style="float: right; text-align: right; margin-left: 15px; margin-top:4px;">
-						<a href="$scripturl?action=reminder">$loginout_txt{'315'}</a>
+						<a href="$scripturl?action=reminder"$dreminder>$loginout_txt{'315'}</a>
 					</span>
 					<span style="float: right; text-align: right; margin-left: 15px; margin-top:4px;">
-						<a href="$scripturl?action=register">$maintxt{'97'}</a>
+						<a href="$scripturl?action=register"$dregister>$maintxt{'97'}</a>
 					</span>
 					<br /><br />
 				</div>
