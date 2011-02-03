@@ -255,12 +255,15 @@ sub sharedLogin {
 sub Reminder {
 	$yymain .= qq~<br /><br />
 <form action="$scripturl?action=reminder2" method="post">
+<table class="tabtitle" align="center" cellpadding="0" cellspacing="0" border="0" width="400">
+	<tr>
+		<td class="round_top_left" width="1%">&nbsp;</td>
+		<td width="98%" valign="middle" align="center" height="25">$mbname $loginout_txt{'36'} $loginout_txt{'194'}</td>
+		<td class="round_top_right" width="1%">&nbsp;</td>
+	</tr>
+</table>
 <table border="0" width="400" cellspacing="1" cellpadding="3" align="center" class="bordercolor">
 	<tr>
-	<td class="titlebg">
-	<span class="text1"><b>$mbname $loginout_txt{'36'} $loginout_txt{'194'}</b></span>
-	</td>
-	</tr><tr>
 	<td class="windowbg">
 	<label for="user"><span class="text1"><b>$loginout_txt{'35'}:</b></span></label>
 	<input type="text" name="user" id="user" $regstyle />
@@ -350,12 +353,15 @@ sub Reminder2 {
 	&sendmail(${$uid.$user}{'email'}, $subject, $message);
 
 	$yymain .= qq~<br /><br />
+<table class="tabtitle" align="center" cellpadding="0" cellspacing="0" border="0" width="400">
+	<tr>
+		<td class="round_top_left" width="1%">&nbsp;</td>
+		<td width="98%" valign="middle" align="center" height="25">$mbname $loginout_txt{'36'} $loginout_txt{'194'}</td>
+		<td class="round_top_right" width="1%">&nbsp;</td>
+	</tr>
+</table>
 <table border="0" width="400" cellspacing="1" cellpadding="3" align="center" class="bordercolor">
 	<tr>
-	<td class="titlebg">
-	<span class="text1"><b>$mbname $loginout_txt{'36'} $loginout_txt{'194'}</b></span>
-	</td>
-	</tr><tr>
  	<td class="windowbg" align="center">
 	<b>$loginout_txt{'192'} $FORM{'user'}</b></td>
       </tr>
