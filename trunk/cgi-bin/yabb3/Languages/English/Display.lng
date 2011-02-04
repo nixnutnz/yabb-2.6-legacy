@@ -61,6 +61,7 @@ $displaylngver = 'YaBB 3.0 Beta $Revision$';
 'isbuddy' => 'In my Buddy List!',
 'split_confirm' => 'Are you sure you want to split messages?',
 'alertmod_confirm' => 'Are you sure you want to alert moderator about this Message?',
+'alertquote' => 'To use Quote mark the text of this user.',
 'reverse' => 'Click here if you want to change the order topics are shown in.',
 'sendtopicemail' => 'Click [OK] if you want to send the Email through your Email program, otherwise the forums Email program will be used.',
 );
