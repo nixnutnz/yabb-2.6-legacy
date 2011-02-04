@@ -82,12 +82,17 @@ sub BoardNotify {
 	&ManageBoardNotify("load", $currentboard);
 	$yymain .= qq~
 	<form action="$scripturl?action=boardnotify3;board=$currentboard" method="post">
-	<table border="0" width="600" cellspacing="1" cellpadding="4" align="center" class="bordercolor">
+	<table class="tabtitle" align="center" cellpadding="0" cellspacing="0" border="0" width="400">
 		<tr>
-		<td colspan="2" align="left" class="titlebg">
-		<img src="$imagesdir/notify.gif" alt="$notify_txt{'136'} - $boardname" title="$notify_txt{'136'} - $boardname" /> <span class="text1"><b>$notify_txt{'136'} - $boardname</b></span>
-		</td>
-		</tr><tr>
+			<td class="round_top_left" width="1%">&nbsp;</td>
+			<td width="98%" valign="middle" align="center" height="25">
+				<img src="$imagesdir/notify.gif" alt="$notify_txt{'136'} - $boardname" title="$notify_txt{'136'} - $boardname" /> $notify_txt{'136'} - $boardname
+			</td>
+			<td class="round_top_right" width="1%">&nbsp;</td>
+		</tr>
+	</table>
+	<table border="0" width="400" cellspacing="1" cellpadding="3" align="center" class="bordercolor">
+		<tr>
 		<td class="windowbg" width="70%" align="left" valign="middle"><br />
 	~;
 
@@ -294,7 +299,7 @@ sub ShowNotifications {
 	<form action="$scripturl?action=boardnotify2" method="post" name="boardnotify">
 	<table border="0" width="100%" align="center" cellspacing="1" cellpadding="4" class="bordercolor">
 		<tr><td colspan="2" align="left" class="titlebg">
-			<img src="$imagesdir/notify.gif" alt="$notify_txt{'136'}" title="$notify_txt{'136'}" /> <span class="text1"><b>$notify_txt{'136'}</b></span>
+			<img src="$imagesdir/notify.gif" alt="$notify_txt{'136'}" title="$notify_txt{'136'}" /> $notify_txt{'136'}
 		</td></tr>
 	~;
 
