@@ -118,7 +118,7 @@ function MarkAllAsRead(url,imgdir) {
 	
 	var insert = '<div class="tabtitle" style="width: 100%; height: 30%; text-align: center">'+markallreadlang+'</div><div class="windowbg2" style="width: 100%; height: 70%; text-align: center"><img style="margin:4px" src="' + imagedir + '/Rotate.gif">';
 	imagebody.innerHTML = insert;
-	imagebody.style.width = "200px";
+	imagebody.style.width = "300px";
 	imagebody.style.height = "60px";
 	imagealert.style.display = "block";
 	imagealert.style.visibility = "visible";
