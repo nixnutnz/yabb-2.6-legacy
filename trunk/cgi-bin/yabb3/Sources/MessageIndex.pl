@@ -387,7 +387,9 @@ sub MessageIndex {
 	}
 
 	# Print the header and board info.
-	&ToChars($boardname);
+	($boardname, undef) = split(/\|/, $board{$currentboard});
+	my $curboardname = $boardname;
+	&ToChars($curboardname);
 	if ($multiview == 1) {
 		$yymain .= qq~<script language="JavaScript1.2" src="$yyhtml_root/ubbc.js" type="text/javascript"></script>\n~;
 	}
@@ -399,7 +401,7 @@ sub MessageIndex {
 
 	my $homelink = qq~<a href="$scripturl">$mbname</a>~;
 	my $catlink = qq~<a href="$scripturl?catselect=$catid">$cat</a>~;
-	my $boardlink = qq~<a href="$scripturl?board=$currentboard" class="a"><b>$boardname</b></a>~;
+	my $boardlink = qq~<a href="$scripturl?board=$currentboard" class="a"><b>$curboardname</b></a>~;
 	my $modslink = qq~$showmods~;
 	
 	$boardtree = '';
@@ -894,8 +896,8 @@ sub MessageIndex {
 		elsif (${$uid.$currentboard}{'rbin'} == 1) { ${$uid.$currentboard}{'pic'} = "recycle.gif"; }
 		else { if (!${$uid.$currentboard}{'pic'}) { ${$uid.$currentboard}{'pic'} = "boards.gif"; } }
 		$bdpic = ${$uid.$currentboard}{'pic'};
-		if ($bdpic =~ /\//i) { $bdpic = qq~ <img src="$bdpic" alt="$boardname" title="$boardname" border="0" align="middle" /> ~; }
-		elsif ($bdpic) { $bdpic = qq~ <img src="$imagesdir/$bdpic" alt="$boardname" title="$boardname" border="0" align="middle" /> ~; }
+		if ($bdpic =~ /\//i) { $bdpic = qq~ <img src="$bdpic" alt="$curboardname" title="$curboardname" border="0" align="middle" /> ~; }
+		elsif ($bdpic) { $bdpic = qq~ <img src="$imagesdir/$bdpic" alt="$curboardname" title="$curboardname" border="0" align="middle" /> ~; }
 		$messageindex_template =~ s/({|<)yabb bdpicture(}|>)/$bdpic/g;
 		my $tmpthreadcount = &NumberFormat(${$uid.$currentboard}{'threadcount'});
 		my $tmpmessagecount = &NumberFormat(${$uid.$currentboard}{'messagecount'});
@@ -1013,7 +1015,7 @@ sub MessageIndex {
 		$tabsep = qq~<img src="$imagesdir/tabsep211.png" border="0" alt="" style="vertical-align: middle;" />~;
 		$yynavback = qq~$tabsep <a href="$scripturl">&lsaquo; $img_txt{'103'}</a> $tabsep~;
 		$yynavigation = qq~&rsaquo; $catlink$boardtree~;
-		$yytitle = $boardname;
+		$yytitle = $curboardname;
 	
 		if ($postlink && $enable_quickpost && !$mindex_postpopup) {
 			$yymain =~ s~(<!-- Icon and access info end -->)~$1\n<div style="text-align: right; padding-top: 10px; padding-bottom: 10px;">{yabb forumjump}</div>~;

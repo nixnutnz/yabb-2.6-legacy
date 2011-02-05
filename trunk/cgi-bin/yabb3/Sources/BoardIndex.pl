@@ -1103,6 +1103,7 @@ if (confirm('$boardindex_imtxt{'11'} ${$username}{'PMstorenum'} $boardindex_imtx
 			while($parentboard) {
 				my ($pboardname, undef, undef) = split(/\|/, $board{"$parentboard"});
 				&ToChars($pboardname);
+				$yytitle = $pboardname;
 				if(${$uid.$parentboard}{'canpost'}) {
 					$pboardname = qq~<a href="$scripturl?board=$parentboard" class="a"><b>$pboardname</b></a>~;
 				} else {
