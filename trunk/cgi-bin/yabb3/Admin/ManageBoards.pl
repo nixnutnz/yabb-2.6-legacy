@@ -347,7 +347,7 @@ sub BoardScreen {
 sub DeleteBoards {
 	&is_admin_or_gmod;
 
-	my @oldcontrols = &read_DBorFILE(0,FORUMCONTROL,$boardsdir,'forum','control');
+	my @oldcontrols = &read_DBorFILE(0,'',$boardsdir,'forum','control');
 	foreach $board (@_) {
 		@messages = &read_DBorFILE(0,'',$boardsdir,$board,'txt');
 		foreach $curmessage (@messages) {
@@ -403,7 +403,7 @@ sub DeleteBoards {
 		}
 	}
 	
-	&write_DBorFILE(0,FORUMCONTROL,$boardsdir,'forum','control',sort(grep { $_; } @oldcontrols));
+	&write_DBorFILE(0,'',$boardsdir,'forum','control',sort(grep { $_; } @oldcontrols));
 
 	@forum_control = &read_DBorFILE(0,'',$boardsdir,'forum','control');
 }
