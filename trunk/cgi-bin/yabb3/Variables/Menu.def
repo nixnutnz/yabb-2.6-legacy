@@ -40,7 +40,7 @@ im_remove,remove|img_txt|31|||imgwindowbg|tmp
 im_send,im_new|img_txt|sendpm|||imgwindowbg|tmp
 lastpost,lastpost|img_txt|105||||tmp
 lock,locked|img_txt|104|||imgwindowbg|tmp
-login,login|img_txt|34|||imgmenu|tmp
+login,login_buttonicon|img_txt|34|||imgmenu|tmp
 logout,logout|img_txt|108|||imgmenu|tmp
 markallread,markread|img_txt|452|||imgcatbg|tmp
 markboardread,markread|img_txt|300|||imgcatbg|tmp

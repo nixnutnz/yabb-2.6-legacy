@@ -57,7 +57,7 @@ $menusep = ' &nbsp; ';
 'im_send' => qq~<span style="white-space: nowrap;" class="imgwindowbg"><img src="$yyhtml_root/$templatesdir/Forum/$usestyle/im_new.gif" border="0" alt="$img_txt{'sendpm'}" /> $img_txt{'sendpm'}</span>~,
 'lastpost' => qq~<img src="$yyhtml_root/$templatesdir/Forum/$usestyle/lastpost.gif" alt="$img_txt{'105'}" border="0" />~,
 'lock' => qq~<span style="white-space: nowrap;" class="imgwindowbg"><img src="$yyhtml_root/$templatesdir/Forum/$usestyle/locked.gif" border="0" alt="$img_txt{'104'}" /> $img_txt{'104'}</span>~,
-'login' => qq~<span style="white-space: nowrap;" class="imgmenu"><img src="$yyhtml_root/$templatesdir/Forum/$usestyle/login.gif" border="0" alt="$img_txt{'34'}" /> $img_txt{'34'}</span>~,
+'login' => qq~<span style="white-space: nowrap;" class="imgmenu"><img src="$yyhtml_root/$templatesdir/Forum/$usestyle/login_buttonicon.gif" border="0" alt="$img_txt{'34'}" /> $img_txt{'34'}</span>~,
 'logout' => qq~<span style="white-space: nowrap;" class="imgmenu"><img src="$yyhtml_root/$templatesdir/Forum/$usestyle/logout.gif" border="0" alt="$img_txt{'108'}" /> $img_txt{'108'}</span>~,
 'markallread' => qq~<span style="white-space: nowrap;" class="imgcatbg"><img src="$yyhtml_root/$templatesdir/Forum/$usestyle/markread.gif" border="0" alt="$img_txt{'452'}" /> $img_txt{'452'}</span>~,
 'markboardread' => qq~<span style="white-space: nowrap;" class="imgcatbg"><img src="$yyhtml_root/$templatesdir/Forum/$usestyle/markread.gif" border="0" alt="$img_txt{'300'}" /> $img_txt{'300'}</span>~,
