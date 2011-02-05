@@ -23,6 +23,8 @@ if ($action eq 'detailedversion') { return 1; }
 require "$sourcedir/Notify.pl";
 require "$sourcedir/SpamCheck.pl";
 
+use utf8; # this file contains UTF-8 characters
+
 if ($iamguest && $gpvalid_en && ($enable_guestposting || $PMenableGuestButton|| $PMAlertButtonGuests)) {
 	require "$sourcedir/Decoder.pl";
 }
@@ -2340,7 +2342,7 @@ sub Post2 {
 				# Transliteration
 				my @ISO_8859_1 = qw(A B V G D E JO ZH Z I J K L M N O P R S T U F H C CH SH SHH _ Y _ JE JU JA a b v g d e jo zh z i j k l m n o p r s t u f h c ch sh shh _ y _ je ju ja);
 				my $x = 0;
-				foreach (qw(À Á Â Ã Ä Å ¨ Æ Ç È É Ê Ë Ì Í Î Ï Ğ Ñ Ò Ó Ô Õ Ö × Ø Ù Ú Û Ü İ Ş ß à á â ã ä å ¸ æ ç è é ê ë ì í î ï ğ ñ ò ó ô õ ö ÷ ø ù ú û ü ı ş ÿ)) {
+				foreach (qw(Ã€ Ã Ã‚ Ãƒ Ã„ Ã… Â¨ Ã† Ã‡ Ãˆ Ã‰ ÃŠ Ã‹ ÃŒ Ã Ã Ã Ã Ã‘ Ã’ Ã“ Ã” Ã• Ã– Ã— Ã˜ Ã™ Ãš Ã› Ãœ Ã Ã ÃŸ Ã  Ã¡ Ã¢ Ã£ Ã¤ Ã¥ Â¸ Ã¦ Ã§ Ã¨ Ã© Ãª Ã« Ã¬ Ã­ Ã® Ã¯ Ã° Ã± Ã² Ã³ Ã´ Ãµ Ã¶ Ã· Ã¸ Ã¹ Ãº Ã» Ã¼ Ã½ Ã¾ Ã¿)) {
 					 $fixfile =~ s/$_/$ISO_8859_1[$x]/ig;
 					 $x++;
 				}
@@ -2430,6 +2432,7 @@ sub Post2 {
 				if ($fixfile =~ /gif$/i) {
 					my $header;
 					fopen(ATTFILE, "$uploaddir/$fixfile");
+					binmode ATTFILE;
 					read(ATTFILE, $header, 10);
 					my $giftest;
 					($giftest, undef, undef, undef, undef, undef) = unpack("a3a3C4", $header);
@@ -2437,6 +2440,7 @@ sub Post2 {
 					if ($giftest ne "GIF") { $okatt = 0; }
 				}
 				fopen(ATTFILE, "$uploaddir/$fixfile");
+				binmode ATTFILE;
 				while ( read(ATTFILE, $buffer, 1024) ) {
 					if ($buffer =~ /<(html|script|body)/ig) { $okatt = 0; last; }
 				}
@@ -2453,6 +2457,12 @@ sub Post2 {
 	}
 	#Create the list of files
 	$fixfile = join(",", @filelist);
+	
+	# make sure attachment filenames aren't too long
+	if (length("$fixfile") > 500) {
+		foreach (@filelist) { &delete_DBorFILE("$uploaddir/$_"); }
+		&fatal_error('filename_too_long', "$fixfile");
+	}
 
 	# If no thread specified, this is a new thread.
 	# Find a valid random ID for it.

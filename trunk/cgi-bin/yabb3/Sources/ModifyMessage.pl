@@ -440,6 +440,7 @@ sub ModifyMessage2 {
 			$fixext  =~ s/\.(pl|pm|cgi|php)/._$1/i;
 			$fixname =~ s/\./_/g;
 			$fixfile = qq~$fixname$fixext~;
+			if (length("$fixfile") > 255) { &fatal_error('filename_too_long', "$fixfile"); } # make sure path+filename isn't too long
 
 			&delete_DBorFILE(qq~$uploaddir/$FORM{"w_filename$y"}~) if $FORM{"w_filename$y"};
 			if (!$overwrite) { $fixfile = &check_existence($uploaddir, $fixfile); }
@@ -506,6 +507,7 @@ sub ModifyMessage2 {
 				if ($fixfile =~ /gif$/i) {
 					my $header;
 					fopen(ATTFILE, "$uploaddir/$fixfile");
+					binmode ATTFILE;
 					read(ATTFILE, $header, 10);
 					my $giftest;
 					($giftest, undef, undef, undef, undef, undef) = unpack("a3a3C4", $header);
@@ -513,6 +515,7 @@ sub ModifyMessage2 {
 					if ($giftest ne "GIF") { $okatt = 0; }
 				}
 				fopen(ATTFILE, "$uploaddir/$fixfile");
+				binmode ATTFILE;
 				while ( read(ATTFILE, $buffer, 1024) ) {
 					if ($buffer =~ /<(html|script|body)/ig) { $okatt = 0; last; }
 				}
@@ -537,11 +540,18 @@ sub ModifyMessage2 {
 			}
 		}
 	}
-	# Print attachments.txt
-	&write_DBorFILE(0,ATM,$vardir,'attachments','txt',sort( { (split /\|/,$a)[6] <=> (split /\|/,$b)[6] } @attachments ));
-
+	
 	# Create the list of files
 	$fixfile = join(",", @filelist);
+
+	# make sure attachment filenames aren't too long
+	if (length("$fixfile") > 500) {
+		foreach (@newfilelist) { &delete_DBorFILE("$uploaddir/$_"); }
+		&fatal_error('filename_too_long', "$fixfile");
+	}
+
+	# Print attachments.txt
+	&write_DBorFILE(0,ATM,$vardir,'attachments','txt',sort( { (split /\|/,$a)[6] <=> (split /\|/,$b)[6] } @attachments ));
 
 	${$thread_arrayref{$threadid}}[$postid] = qq~$subject|$mname|$memail|$mdate|$musername|$icon|$mreplyno|$useredit_ip|$message|$ns|$date|$username|$fixfile\n~;
 	&write_DBorFILE(0,'',$datadir,$threadid,'txt',@{$thread_arrayref{$threadid}});

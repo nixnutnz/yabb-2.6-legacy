@@ -328,7 +328,7 @@ sub SaveDatabase {
 			} elsif ($_ eq 'gender') {
 				$buildnew_vars .= qq~`$_` char(6) default NULL,\n~;
 			} elsif ($_ eq 'userpic') {
-				$buildnew_vars .= qq~`$_` varchar(100) default NULL,\n~;
+				$buildnew_vars .= qq~`$_` varchar(255) default NULL,\n~;
 			} elsif ($_ eq 'usertext') {
 				$buildnew_vars .= qq~`$_` varchar(255) default NULL,\n~;
 			} elsif ($_ eq 'signature') {

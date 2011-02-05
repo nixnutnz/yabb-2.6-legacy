@@ -65,6 +65,7 @@ $errorlngver = 'YaBB 3.0 Beta $Revision$';
 'low_diskspace'			=> "The available disk/hostspace is low. The forum was put to maintenance to avoid file corruption. Please notify the administrator of this error !!",
 'invalid_key'			=> "Masterkey is invalid !<br />This should be a text string between 8 and 24 characters long !",
 'corrupt_member_file'		=> "The member data file is corrupt. Please notify the administrator of this error!",
+'filename_too_long'		=> "The specified filename is too long: ",
 
 ## BoardIndex ##
 'collapse_no_member'		=> " You must be a member to use the collapsible/expandable categories!",

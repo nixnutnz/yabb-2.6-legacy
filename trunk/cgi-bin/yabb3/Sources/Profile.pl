@@ -19,6 +19,8 @@ if ($action eq 'detailedversion') { return 1; }
 
 if ($iamgmod && -e "$vardir/gmodsettings.txt") { require "$vardir/gmodsettings.txt"; }
 
+use utf8; # this file contains UTF-8 characters
+
 # make sure this person has access to this profile
 sub PrepareProfile {
 	if ($iamguest) { &fatal_error('no_access'); }
@@ -1850,7 +1852,7 @@ sub ModifyProfileOptions2 {
 			# Transliteration
 			my @ISO_8859_1 = qw(A B V G D E JO ZH Z I J K L M N O P R S T U F H C CH SH SHH _ Y _ JE JU JA a b v g d e jo zh z i j k l m n o p r s t u f h c ch sh shh _ y _ je ju ja);
 			my $x = 0;
-			foreach (qw(À Á Â Ã Ä Å ¨ Æ Ç È É Ê Ë Ì Í Î Ï Ð Ñ Ò Ó Ô Õ Ö × Ø Ù Ú Û Ü Ý Þ ß à á â ã ä å ¸ æ ç è é ê ë ì í î ï ð ñ ò ó ô õ ö ÷ ø ù ú û ü ý þ ÿ)) {
+			foreach (qw(Ã€ Ã Ã‚ Ãƒ Ã„ Ã… Â¨ Ã† Ã‡ Ãˆ Ã‰ ÃŠ Ã‹ ÃŒ Ã ÃŽ Ã Ã Ã‘ Ã’ Ã“ Ã” Ã• Ã– Ã— Ã˜ Ã™ Ãš Ã› Ãœ Ã Ãž ÃŸ Ã  Ã¡ Ã¢ Ã£ Ã¤ Ã¥ Â¸ Ã¦ Ã§ Ã¨ Ã© Ãª Ã« Ã¬ Ã­ Ã® Ã¯ Ã° Ã± Ã² Ã³ Ã´ Ãµ Ã¶ Ã· Ã¸ Ã¹ Ãº Ã» Ã¼ Ã½ Ã¾ Ã¿)) {
 				 $fixfile =~ s/$_/$ISO_8859_1[$x]/ig;
 				 $x++;
 			}
@@ -1858,6 +1860,7 @@ sub ModifyProfileOptions2 {
 			$fixfile =~ s/[^0-9A-Za-z\+\-\.:_]/_/g; 
 		}
 		$fixfile .= ".$ext";
+		if (length("$facesdir/UserAvatars/$fixfile") > 255) { &fatal_error('filename_too_long', "$facesdir/UserAvatars/$fixfile"); } # make sure path+filename isn't too long
 
 		require "$sourcedir/SpamCheck.pl";
 		my $spamdetected = &spamcheck("$fixfile");
@@ -1907,6 +1910,7 @@ sub ModifyProfileOptions2 {
 		if ($fixfile =~ /gif$/i) {
 			my $header;
 			fopen(ATTFILE, "$facesdir/UserAvatars/$fixfile");
+			binmode ATTFILE;
 			read(ATTFILE, $header, 10);
 			my $giftest;
 			($giftest, undef, undef, undef, undef, undef) = unpack("a3a3C4", $header);
@@ -1914,6 +1918,7 @@ sub ModifyProfileOptions2 {
 			if ($giftest ne "GIF") { $illegal = $giftest; }
 		}
 		fopen(ATTFILE, "$facesdir/UserAvatars/$fixfile");
+		binmode ATTFILE;
 		while ( read(ATTFILE, $buffer, 1024) ) {
 			if ($buffer =~ /<(html|script|body)/ig) { $illegal = $1; last; }
 		}
