@@ -2230,8 +2230,9 @@ sub CheckUserPM_Level {
 		} elsif ($LOCKHANDLE) {
 			if (fopen($LOCKHANDLE, "+<$folder/$name.$ext")) {
 				@_ = <$LOCKHANDLE>;
-				seek $LOCKHANDLE, 0, 0;
-				truncate *$LOCKHANDLE, 0;
+				# don't truncate the file yet, there might be an error occuring before write_DBorFILE is called, resulting in lost data
+				#seek $LOCKHANDLE, 0, 0;
+				#truncate *$LOCKHANDLE, 0;
 				@_;
 			} else {
 				fopen($LOCKHANDLE, "+>$folder/$name.$ext");
@@ -2281,6 +2282,9 @@ sub CheckUserPM_Level {
 			&mysql_process(0,'do',"UNLOCK TABLES") if $LOCKHANDLE;
 
 		} elsif ($LOCKHANDLE) {
+			# now we can savely truncate the file
+			seek $LOCKHANDLE, 0, 0;
+			truncate *$LOCKHANDLE, 0;
 			print $LOCKHANDLE (ref($data[0]) ? @{$data[0]} : @data);
 			fclose($LOCKHANDLE);
 			chmod(0666, "$folder/$name.$ext");
