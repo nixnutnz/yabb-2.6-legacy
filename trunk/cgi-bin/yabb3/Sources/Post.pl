@@ -3103,7 +3103,7 @@ sub modAlert {
 	&BoardTotals("load", $currentboard);
 
 	# Figure out the name of the category
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
+	&get_forum_master;
 	($cat, $catperms) = split(/\|/, $catinfo{$curcat});
 	&ToChars($cat);
 

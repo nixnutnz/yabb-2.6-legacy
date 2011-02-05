@@ -174,7 +174,7 @@ function searchMe(chelem) {
 	$allselected = 0;
 	$isselected  = 0;
 	$boardscheck = "";
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
+	&get_forum_master;
 
 	foreach $catid (@categoryorder) {
 		$boardlist = $cat{$catid};
@@ -372,7 +372,7 @@ sub plushSearch2 {
 	my $maxtime = $date + (3600 * ${$uid.$username}{'timeoffset'}) - ($maxage * 86400);
 	my $oldestfound = 99999999999;
 
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
+	&get_forum_master;
 	foreach $catid (@categoryorder) {
 		$boardlist = $cat{$catid};
 		(@bdlist) = split(/\,/, $boardlist);
