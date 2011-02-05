@@ -1450,6 +1450,10 @@ sub ModifyProfile2 {
 		$member{$key} = $value;
 	}
 
+	# Make sure we convert any &#123; html encodings to UTF-8 before doing string comparision
+	&FromChars($member{'moda'});
+	&FromChars($profile_txt{'88'});
+	&FromChars($profile_txt{'89'});
 	if ($member{'moda'} eq $profile_txt{'88'}) {
 		if ($sessions == 1 && $staff && $username eq $user) {
 			if ($member{'sesquest'} eq "password") { $member{'sesanswer'} = ''; }
