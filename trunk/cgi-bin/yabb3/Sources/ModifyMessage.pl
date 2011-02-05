@@ -411,10 +411,16 @@ sub ModifyMessage2 {
 			push(@attachments, $_);
 		}
 	}
+	# keed a list of old attachments
+	my @old_post_attach = split(',',$mfn);
+	while(@old_post_attach < $allowattach) { # fill remaining slots
+		push(@old_post_attach, '');
+	}
 
 	my ($file,$fixfile,@filelist,@newfilelist,@attachmentsfile);
 	for (my $y = 1; $y <= $allowattach; ++$y) {
 		$file = $CGI_query->upload("file$y") if $CGI_query;
+		my $oldattachfilename = $old_post_attach[$y-1];
 		if ($file && ($FORM{"w_file$y"} eq "attachnew" || !exists $FORM{"w_file$y"})) {
 			$fixfile = $file;
 			$fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/;
@@ -442,7 +448,7 @@ sub ModifyMessage2 {
 			$fixfile = qq~$fixname$fixext~;
 			if (length("$fixfile") > 255) { &fatal_error('filename_too_long', "$fixfile"); } # make sure path+filename isn't too long
 
-			&delete_DBorFILE(qq~$uploaddir/$FORM{"w_filename$y"}~) if $FORM{"w_filename$y"};
+			&delete_DBorFILE(qq~$uploaddir/$oldattachfilename~) if $oldattachfilename ne '';
 			if (!$overwrite) { $fixfile = &check_existence($uploaddir, $fixfile); }
 			elsif ($overwrite == 2 && &checkfor_DBorFILE("$uploaddir/$fixfile")) {
 				foreach (@newfilelist) { &delete_DBorFILE("$uploaddir/$_"); }
@@ -530,13 +536,13 @@ sub ModifyMessage2 {
 			push(@filelist, $fixfile);
 			push(@attachments, qq~$threadid|$postid|$subject|$mname|$currentboard|$filesizekb|$date|$fixfile|0\n~);
 
-		} elsif ($FORM{"w_filename$y"}) {
+		} elsif ($oldattachfilename ne '') {
 			if ($FORM{"w_file$y"} eq "attachdel") {
-				&delete_DBorFILE(qq~$uploaddir/$FORM{"w_filename$y"}~) if $del_filename{$FORM{"w_filename$y"}} == 1;
-				$del_filename{$FORM{"w_filename$y"}}--;
+				&delete_DBorFILE(qq~$uploaddir/$oldattachfilename~) if $del_filename{$oldattachfilename} == 1;
+				$del_filename{$oldattachfilename}--;
 			} elsif ($FORM{"w_file$y"} eq "attachold") {
-				push(@filelist, $FORM{"w_filename$y"});
-				push(@attachments, $post_attach{$FORM{"w_filename$y"}});
+				push(@filelist, $oldattachfilename);
+				push(@attachments, $post_attach{$oldattachfilename});
 			}
 		}
 	}
