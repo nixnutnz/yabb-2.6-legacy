@@ -893,35 +893,35 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 			depends_on => ['!emailpassword'],
 		},
 		{
-			description => qq~<label for="name_cannot_be_userid">$register_txt{'768'}</label>~,
+			description => qq~<label for="name_cannot_be_userid">$admin_txt{'768'}</label>~,
 			input_html => qq~<input type="checkbox" name="name_cannot_be_userid" id="name_cannot_be_userid" value="1"${ischecked($name_cannot_be_userid)} />~,
 			name => 'name_cannot_be_userid',
 			validate => 'boolean',
 		},
 		{
-			description => qq~<label for="cannot_change_displayname">$register_txt{'769'}</label>~,
+			description => qq~<label for="cannot_change_displayname">$admin_txt{'769'}</label>~,
 			input_html => qq~<input type="checkbox" name="cannot_change_displayname" id="cannot_change_displayname" value="1"${ischecked($cannot_change_displayname)} />~,
 			name => 'cannot_change_displayname',
 			validate => 'boolean',
 		},
 		{
-			description => qq~<label for="birthday_on_reg">$register_txt{'770'}</label>~,
+			description => qq~<label for="birthday_on_reg">$admin_txt{'770'}</label>~,
 			input_html => qq~
 			<select name="birthday_on_reg" id="birthday_on_reg" size="1">
-			  <option value="0">$register_txt{'771'}</option>
-			  <option value="1"${isselected($birthday_on_reg == 1)}>$register_txt{'772'}</option>
-			  <option value="2"${isselected($birthday_on_reg == 2)}>$register_txt{'773'}</option>
+			  <option value="0">$admin_txt{'771'}</option>
+			  <option value="1"${isselected($birthday_on_reg == 1)}>$admin_txt{'772'}</option>
+			  <option value="2"${isselected($birthday_on_reg == 2)}>$admin_txt{'773'}</option>
 			</select>~,
 			name => 'birthday_on_reg',
 			validate => 'number,null',
 		},
 		{
-			description => qq~<label for="gender_on_reg">$register_txt{'gender_reg'}</label>~,
+			description => qq~<label for="gender_on_reg">$admin_txt{'gender_reg'}</label>~,
 			input_html => qq~
 			<select name="gender_on_reg" id="gender_on_reg" size="1">
-			  <option value="0">$register_txt{'771'}</option>
-			  <option value="1"${isselected($gender_on_reg == 1)}>$register_txt{'gender_reg_opt'}</option>
-			  <option value="2"${isselected($gender_on_reg == 2)}>$register_txt{'gender_reg_req'}</option>
+			  <option value="0">$admin_txt{'771'}</option>
+			  <option value="1"${isselected($gender_on_reg == 1)}>$admin_txt{'gender_reg_opt'}</option>
+			  <option value="2"${isselected($gender_on_reg == 2)}>$admin_txt{'gender_reg_req'}</option>
 			</select>~,
 			name => 'gender_on_reg',
 			validate => 'number,null',
