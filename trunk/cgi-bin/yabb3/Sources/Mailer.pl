@@ -70,19 +70,18 @@ sub sendmail {
 
 	} elsif ($mailtype == 2 || $mailtype == 3) {
 		my $smtp;
-		my @arg = ("$smtp_server", Hello => "$smtp_server", Timeout => 30);
 		if ($mailtype == 2) {
 			eval q^
 				eval 'use Net::SMTP;';
-				push(@arg, Debug => 0);
+				my @arg = ("$smtp_server", Hello => "$smtp_server", Timeout => 30, Debug => 0);
 				$smtp = Net::SMTP->new(@arg) || die "Unable to create Net::SMTP object. Server: '$smtp_server'\n\n" . $!;
 			^;
 		} else {
 			eval q^
-				use Net::SMTP::TLS;';
+				use Net::SMTP::TLS;
 				my $port = 25;
 				if ($smtp_server =~ s/:(\d+)$//) { $port = $1; }
-				push(@arg, Port => $port);
+				my @arg = ("$smtp_server", Hello => "$smtp_server", Timeout => 30, Port => $port);
 				push(@arg, User => "$authuser") if $authuser;
 				push(@arg, Password => "$authpass") if $authpass;
 				$smtp = Net::SMTP::TLS->new(@arg) || die "Unable to create Net::SMTP::TLS object. Server: '$smtp_server', port '$port'\n\n" . $!;
