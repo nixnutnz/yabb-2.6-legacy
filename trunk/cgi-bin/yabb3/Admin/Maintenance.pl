@@ -179,7 +179,7 @@ sub RebuildMessageIndex {
 
 			my @tempboard = &read_DBorFILE(0,'',$boardsdir,$boardname,'tmp');
 
-			&write_DBorFILE(0,'',$boardsdir,$boardname,'txt',(map({ s/^.*?\|//; $_; } sort({ lc($b) cmp lc($a) } @tempboard) )));
+			&write_DBorFILE(1,'',$boardsdir,$boardname,'txt',(map({ s/^.*?\|//; $_; } sort({ lc($b) cmp lc($a) } @tempboard) )));
 
 			&delete_DBorFILE("$boardsdir/$boardname.tmp");
 
