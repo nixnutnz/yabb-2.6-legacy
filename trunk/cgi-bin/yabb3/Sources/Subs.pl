@@ -2021,11 +2021,11 @@ sub CheckUserPM_Level {
 	# key = folder.[name of the file].['extension of the file']
 	# values = ['name of the table','key of the table',[qw[colums to get/be update]]]
 	my %db_table = (
-		$boardsdir."txt" =>
+		$boardsdir."txt" => # this table does no longer exist in MySQL, it is generated on the fly
 		[
-			"$db_prefix"."boards",
-			'board',
-			[qw[txt]],
+			"---",
+			'---',
+			[qw[threadnum subject displayname email date replies username icon threadstatus]],
 		],
 		$boardsdir."mail" =>
 		[
@@ -2159,6 +2159,10 @@ sub CheckUserPM_Level {
 			my ($folder,$name,$ext) = ($1,$2,$3);
 			if ($db_table{$folder.$ext}[0] || $db_table{$folder.$name.$ext}[0]) {
 				my $DBfile = $db_table{$folder.$ext}[0] ? $folder.$ext : $folder.$name.$ext;
+				if ($db_table{$DBfile}[0] eq "---") {
+					# this is a "virtual" table, always exists
+					return 1;
+				}
 				unless ($check_sth{$DBfile.$db_table{$DBfile}[0]}) {
 					# There are two modes to check for "existance".
 					# If $db_table defines only one column, we check if that column contains any data for the specified key.
@@ -2215,6 +2219,7 @@ sub CheckUserPM_Level {
 
 		if ($use_MySQL && ($db_table{$folder.$ext}[0] || $db_table{$folder.$name.$ext}[0])) {
 			my $DBfile = $db_table{$folder.$ext}[0] ? $folder.$ext : $folder.$name.$ext;
+			$LOCKHANDLE = '' if ($db_table{$DBfile}[0] eq "---"); # if we're operating on a "virtual" table, we don't need to lock
 			if      ($folder eq $boardsdir) {
 				&boards_DB_r($LOCKHANDLE, $name, $DBfile);
 			} elsif ($folder eq $datadir) {
@@ -2268,6 +2273,7 @@ sub CheckUserPM_Level {
 
 		if ($use_MySQL && ($db_table{$folder.$ext}[0] || $db_table{$folder.$name.$ext}[0])) {
 			my $DBfile = $db_table{$folder.$ext}[0] ? $folder.$ext : $folder.$name.$ext;
+			$LOCKHANDLE = '' if ($db_table{$DBfile}[0] eq "---"); # if we're operating on a "virtual" table, we don't need to lock
 			if      ($folder eq $boardsdir) {
 				&boards_DB_w($update_DB, $name, $DBfile, ref($data[0]) ? $data[0] : \@data);
 			} elsif ($folder eq $datadir) {
@@ -2334,12 +2340,22 @@ sub CheckUserPM_Level {
 		
 		# for Boards/[board].[txt|mail] and Boards/forum.[master|control|totals]
 		if (!$sth_r{$DBfile.$db_table{$DBfile}[0]}) {
-			if ($db_table{$DBfile}[1]) { # board.[txt|mail] have primary key, forum.[master|control|totals] don't
+			if ($DBfile eq $boardsdir."txt") { # board.txt is a joined table
+				my $columns = join('`, `', @{$db_table{$DBfile}[2]});
 				$sth_r{$DBfile.$db_table{$DBfile}[0]} = 
-					&mysql_process(0,'prepare',qq~SELECT `~ . join('`, `', @{$db_table{$DBfile}[2]}) . qq~` FROM `$db_table{$DBfile}[0]` WHERE `$db_table{$DBfile}[1]`=?~);
-			} else {
-				$sth_r{$DBfile.$db_table{$DBfile}[0]} = 
-					&mysql_process(0,'prepare',qq~SELECT `~ . join('`, `', @{$db_table{$DBfile}[2]}) . qq~` FROM `$db_table{$DBfile}[0]`~);
+					&mysql_process(0,'prepare',qq~SELECT CONCAT_WS('|', `$columns`) FROM `yabb3_ctb`
+						INNER JOIN `yabb3_messages`
+						ON `threadnum`=`mess_threadnum` AND `post_number`="0" AND `board`=?
+						ORDER BY lastpostdate DESC~);
+			}
+			else { # Boards/[board].mail and Boards/forum.[master|control|totals]
+				if ($db_table{$DBfile}[1]) { # board.mail has primary key, forum.[master|control|totals] don't
+					$sth_r{$DBfile.$db_table{$DBfile}[0]} = 
+						&mysql_process(0,'prepare',qq~SELECT `~ . join('`, `', @{$db_table{$DBfile}[2]}) . qq~` FROM `$db_table{$DBfile}[0]` WHERE `$db_table{$DBfile}[1]`=?~);
+				} else {
+					$sth_r{$DBfile.$db_table{$DBfile}[0]} = 
+						&mysql_process(0,'prepare',qq~SELECT `~ . join('`, `', @{$db_table{$DBfile}[2]}) . qq~` FROM `$db_table{$DBfile}[0]`~);
+				}
 			}
 		}
 		if ($db_table{$DBfile}[1]) {
@@ -2347,7 +2363,9 @@ sub CheckUserPM_Level {
 		} else {
 			&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'execute');
 		}
-		if (@{$db_table{$DBfile}[2]} > 1) {
+		if ($DBfile eq $boardsdir."txt") { # [board].txt
+			return map { $$_[0] } @{&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchall_arrayref',0,1)};
+		} elsif (@{$db_table{$DBfile}[2]} > 1) {
 			return &mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchrow_array',0,1);
 		} else {
 			return split(/^/m, &mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchrow_array',0,1));
@@ -2426,6 +2444,8 @@ sub CheckUserPM_Level {
 	# write
 	sub boards_DB_w {
 		my ($update_DB, $name, $DBfile, $data) = @_;
+		
+		return if ($DBfile eq $boardsdir."txt"); # for virtual tables like [board].txt, we don't need to update the table
 
 		if ($update_DB) { # UPDATE table, only call if board exists
 			if (!$sth_w{$DBfile.$db_table{$DBfile}[0]}) {
@@ -2886,7 +2906,7 @@ sub CheckUserPM_Level {
 			&mysql_process(0,'do',qq~UPDATE `$db_prefix~.qq~vars` SET `rlog`='' WHERE `yabbusername`="$1"~);
 
 		} elsif ($file =~ /$boardsdir\/([^\/]+)\.txt$/) {
-			&mysql_process(0,'do',qq~UPDATE `$db_prefix~.qq~boards` SET `txt`='' WHERE `board`="$1"~);
+			# no need to delete anything -> virtual table
 		} elsif ($file =~ /$boardsdir\/([^\/]+)\.mail$/) {
 			&mysql_process(0,'do',qq~UPDATE `$db_prefix~.qq~boards` SET `mail`='' WHERE `board`="$1"~);
 		} elsif ($file =~ /$boardsdir\/forum\.(master|control|totals)$/) {

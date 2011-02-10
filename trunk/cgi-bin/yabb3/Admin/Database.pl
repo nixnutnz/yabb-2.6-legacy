@@ -550,11 +550,10 @@ sub SaveDatabase {
 	$buildnew_message_txt .= qq~PRIMARY KEY (`mess_threadnum`,`post_number`)) $default_table_options~;
 	
 	
-	# /Boards/*.[txt|mail]
+	# /Boards/*.mail
 	my $buildnew_boards;
 	$buildnew_boards = qq~CREATE TABLE IF NOT EXISTS `$FORM{'db_prefix'}boards` (\n~;
 	$buildnew_boards .= qq~`board` char(20) NOT NULL,\n~;
-	$buildnew_boards .= qq~`txt` longtext,\n~;
 	$buildnew_boards .= qq~`mail` text,\n~;
 	$buildnew_boards .= qq~PRIMARY KEY (`board`)) $default_table_options~;
 
@@ -876,9 +875,9 @@ sub ConvertDatabase {
 		while (@contents) {
 			$curboard = pop @contents;
 			$use_MySQL = 1;
-			&write_DBorFILE(0,'',$boardsdir,$curboard,'txt',(''));
+			&write_DBorFILE(0,'',$boardsdir,$curboard,'mail',(''));
 			
-			foreach (qw(txt mail)) {
+			foreach (qw(mail)) { # we don't need to convert txt anymore
 				$use_MySQL = 0;
 				my @temp = &read_DBorFILE(1,'',$boardsdir,$curboard,$_);
 				$use_MySQL = 1;
