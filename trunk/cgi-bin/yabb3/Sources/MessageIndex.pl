@@ -394,7 +394,7 @@ sub MessageIndex {
 		$yymain .= qq~<script language="JavaScript1.2" src="$yyhtml_root/ubbc.js" type="text/javascript"></script>\n~;
 	}
 	
-	if ($$multiview >= 2) {
+	if ($multiview >= 2) {
 		my $modul = $currentboard eq $annboard ? 4 : 5;
 		$yymain .= qq~<script language="JavaScript1.2" src="$yyhtml_root/MessageIndex.js" type="text/javascript"></script>\n~;
 	}
