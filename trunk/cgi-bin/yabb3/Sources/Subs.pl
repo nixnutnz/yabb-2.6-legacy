@@ -2477,8 +2477,8 @@ sub CheckUserPM_Level {
 					&mysql_process(0, 'do', qq~UPDATE `$db_table{$DBfile}[0]` SET ~ . join(", ", map { "`$_`=".$vari{"dbh"}->quote(join('', @$data)) } @{$db_table{$DBfile}[2]}));
 				}
 			} else { # do INSERT
-				if ($DBfile eq $boardsdir."txt" || $DBfile eq $boardsdir."mail") {
-					&mysql_process(0, 'do', qq~INSERT INTO `$db_table{$DBfile}[0]` VALUES (~.$vari{"dbh"}->quote($name).qq~, "", "")~);
+				if ($DBfile eq $boardsdir."mail") {
+					&mysql_process(0, 'do', qq~INSERT INTO `$db_table{$DBfile}[0]` VALUES (~.$vari{"dbh"}->quote($name).qq~, "")~);
 				} elsif ($DBfile eq $boardsdir."master" || $DBfile eq $boardsdir."control" || $DBfile eq $boardsdir."totals") {
 					my $master = $vari{"dbh"}->quote($DBfile eq $boardsdir."master" ? join('', @$data) : '');
 					my $control = $vari{"dbh"}->quote($DBfile eq $boardsdir."control" ? join('', @$data) : '');
