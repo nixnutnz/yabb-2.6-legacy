@@ -286,7 +286,7 @@ sub SaveDatabase {
 	%db_user_vars_col = ();
 	%db_vars_col = ();
 	
-	my $default_table_options = "TYPE=MyISAM, DEFAULT CHARACTER SET utf8 COLLATE utf8_bin";
+	my $default_table_options = "ENGINE MYISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_bin";
 
 	my $buildnew_vars = qq~CREATE TABLE `$FORM{'db_prefix'}vars` (\n`yabbusername` char(20) binary default NULL,\n~; # binary because we want case sensitive primary key (there might be duplicate legacy usernames if this would be case insensitive)
 	foreach (@db_vars_tabs_order) {
