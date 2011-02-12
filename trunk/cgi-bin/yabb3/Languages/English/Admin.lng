@@ -1262,6 +1262,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'Carp' => 'Used to send emails via "YaBB SMTP Engine".<br />This module is only needed if you want to send your emails via the "YaBB SMTP Engine". Otherwise you do not need this module.',
 'bytes' => 'Used to send emails via "YaBB SMTP Engine".<br />This module is only needed if you want to send your emails via the "YaBB SMTP Engine". Otherwise you do not need this module.',
 'integer' => 'Used to send emails via "YaBB SMTP Engine".<br />This module is only needed if you want to send your emails via the "YaBB SMTP Engine". Otherwise you do not need this module.',
+'Socket6' => 'Required for IPv6 hostname lookup support.<br />This module is only needed if your host uses IPv6 and you want the hostname lookup in logs to work. Otherwise you do not need this module.',
 );
 
 %settings_txt = (
