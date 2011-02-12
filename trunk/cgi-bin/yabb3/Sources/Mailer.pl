@@ -47,12 +47,18 @@ sub sendmail {
 	$message =~ s/^\./../m;
 	$message =~ s/[\r\n]/\n/g;
 
+	$toheader = Encode::encode('MIME-Header', $toheader);
+	$fromheader = Encode::encode('MIME-Header', $fromheader);
+	$subject = Encode::encode('MIME-Header', $subject);
+
 	if ($mailtype == 0) {
 		open(MAIL, "|$mailprog -t");
+		binmode MAIL, ':encoding(utf8)';
 		print MAIL "To: $toheader\n";
 		print MAIL "From: $fromheader\n";
 		print MAIL "X-Mailer: YaBB Sendmail\n";
 		print MAIL "Subject: $subject\n";
+		print MAIL "MIME-Version: 1.0\n";
 		print MAIL "Content-Type: text/plain\; charset=$charsetheader\n\n";
 		$message =~ s/\r\n/\n/g;
 		print MAIL "$message\n";
@@ -97,6 +103,7 @@ sub sendmail {
 			$smtp->datasend("From: $fromheader\r\n"); 
 			$smtp->datasend("X-Mailer: YaBB Net::SMTP\r\n"); 
 			$smtp->datasend("Subject: $subject\r\n");
+			$smtp->datasend("MIME-Version: 1.0\r\n");
 			$smtp->datasend("Content-Type: text/plain\; charset=$charsetheader\r\n");
 			$smtp->datasend("\r\n");
 			$smtp->datasend($message);
@@ -115,7 +122,9 @@ sub sendmail {
 			"To: $toheader\n",
 			"From: $fromheader\n",
 			"X-Mailer: YaBB Sendmail\n",
-			"Subject: $subject\n\n",
+			"Subject: $subject\n",
+			"MIME-Version: 1.0\n",
+			"Content-Type: text/plain\; charset=$charsetheader\n\n",
 			"$message\n",
 			"End of Message\n\n")
 		);

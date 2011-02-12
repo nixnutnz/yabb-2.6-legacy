@@ -138,6 +138,7 @@ sub use_smtp {
 	&send_line ("From: $fromheader\r\n");
 	&send_line ("X-Mailer: YaBB SMTP\r\n");
 	&send_line ("Subject: $smtp_subject\r\n");
+	&send_line ("MIME-Version: 1.0\r\n");
 	&send_line ("Content-Type: text/plain\; charset=$smtp_charset\r\n\r\n");
 	&send_line ("$smtp_message");
 	&send_line ("\r\n.\r\n");
