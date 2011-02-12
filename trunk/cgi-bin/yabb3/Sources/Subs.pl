@@ -2363,7 +2363,7 @@ sub CheckUserPM_Level {
 			if ($DBfile eq $boardsdir."txt") { # board.txt is a joined table
 				my $columns = join('`, `', @{$db_table{$DBfile}[2]});
 				$sth_r{$DBfile.$db_table{$DBfile}[0]} = 
-					&mysql_process(0,'prepare',qq~SELECT CONCAT_WS('|', `$columns`) FROM `yabb3_ctb`
+					&mysql_process(0,'prepare',qq~SELECT CAST(CONCAT_WS('|', `$columns`) AS CHAR) FROM `yabb3_ctb`
 						INNER JOIN `yabb3_messages`
 						ON `threadnum`=`mess_threadnum` AND `post_number`="0" AND `board`=?
 						ORDER BY lastpostdate DESC~);
@@ -2401,7 +2401,7 @@ sub CheckUserPM_Level {
 		if ($DBfile eq $datadir."txt") { # for Messages/[threadnumber].txt
 			if (!$sth_r{$DBfile.$db_table{$DBfile}[0]}) {
 				$sth_r{$DBfile.$db_table{$DBfile}[0]} = 
-					&mysql_process(0,'prepare',qq~SELECT CONCAT_WS('|', `~ . join('`, `', @{$db_table{$DBfile}[2]}) . qq~`) FROM `$db_table{$DBfile}[0]` WHERE `$db_table{$DBfile}[1]`=? ORDER BY `post_number` ASC~);
+					&mysql_process(0,'prepare',qq~SELECT CAST(CONCAT_WS('|', `~ . join('`, `', @{$db_table{$DBfile}[2]}) . qq~`) AS CHAR) FROM `$db_table{$DBfile}[0]` WHERE `$db_table{$DBfile}[1]`=? ORDER BY `post_number` ASC~);
 			}
 			&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'execute',$name);
 			return map { decode_utf8($$_[0]) } @{&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchall_arrayref',0,1)};
@@ -2461,7 +2461,7 @@ sub CheckUserPM_Level {
 		if ($DBfile eq $vardir."log"."txt") { # only for Variables/log.txt
 			&mysql_process(0,'do',"LOCK TABLES `$db_prefix"."log` WRITE" . ($db_user_log_table ? ",`$db_user_log_table` WRITE" : "")) if $LOCKHANDLE;
 
-			return map { decode_utf8($$_[0]) } @{&mysql_process(0,'selectall_arrayref',qq~SELECT CONCAT_WS('|', ~ . join(', ', split(/,/, $db_log_order)) . qq~) FROM `$db_prefix~.qq~log`~ . ($db_user_log_table ? ",`$db_user_log_table` WHERE `yabbuserlogname`=`$db_user_log_key`" : "") . " ORDER BY $db_log_date DESC")};
+			return map { decode_utf8($$_[0]) } @{&mysql_process(0,'selectall_arrayref',qq~SELECT CAST(CONCAT_WS('|', ~ . join(', ', split(/,/, $db_log_order)) . qq~) AS CHAR) FROM `$db_prefix~.qq~log`~ . ($db_user_log_table ? ",`$db_user_log_table` WHERE `yabbuserlogname`=`$db_user_log_key`" : "") . " ORDER BY $db_log_date DESC")};
 
 		} else {
 			&mysql_process(0,'do',"LOCK TABLES `$db_table{$DBfile}[0]` WRITE") if $LOCKHANDLE;
