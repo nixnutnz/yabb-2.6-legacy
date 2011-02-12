@@ -62,7 +62,24 @@ $user_ip = get_ip();
 # comment out (#) the next line if you have problems with
 # 'Reverse DNS lookup timeout causes slow page loads'
 # Search Engine identification and display will be turned off
-$user_host = (gethostbyaddr(pack("C4", split(/\./, $user_ip)), 2))[0];
+$resolve_user_host = 1;
+if ($resolve_user_host) {
+	$valid_user_ip = new NetAddr::IP::Lite "$user_ip";
+	if ($valid_user_ip) {
+		if ($valid_user_ip->version() == 4) {
+			$user_host = (gethostbyaddr(pack("C4", split(/\./, $valid_user_ip->addr())), 2))[0];
+		} else {
+			eval q^
+				use Socket;
+				use Socket6;
+				my $ip6_packed = inet_pton(AF_INET6, $valid_user_ip->addr());
+				my $sockaddr = pack_sockaddr_in6(80, $ip6_packed);
+				my ($address, $port) = getnameinfo($sockaddr);
+				$user_host = $address;
+			^;
+		}
+	}
+}
 
 if (-e "$yyexec.cgi") { $yyext = "cgi"; }
 else { $yyext = "pl"; }

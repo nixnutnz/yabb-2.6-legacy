@@ -55,12 +55,13 @@ if ($ENV{'SCRIPT_FILENAME'} =~ /ModuleChecker\.\w+$/) {
 	'bytes' => 'Used to send emails via "YaBB SMTP Engine".<br />This module is only needed if you want to send your emails via the "YaBB SMTP Engine". Otherwise you do not need this module.',
 	'integer' => 'Used to send emails via "YaBB SMTP Engine".<br />This module is only needed if you want to send your emails via the "YaBB SMTP Engine". Otherwise you do not need this module.',
 	'Encode' => 'Required for UTF-8 encoding support.<br />This module is essential! Without it YaBB will not work!',
+	'Socket6' => 'Required for IPv6 hostname lookup support.<br />This module is only needed if your host uses IPv6 and you want the hostname lookup in logs to work. Otherwise you do not need this module.',
 	);
 }
 
 my ($checker_output,$module,$i);
 
-foreach $module qw(Encode Digest::MD5 Time::HiRes Time::Local File::Find CGI DBI Net::SMTP Net::SMTP::TLS Compress::Zlib Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common Crypt::SSLeay IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer) {
+foreach $module qw(Encode Digest::MD5 Time::HiRes Time::Local File::Find CGI DBI Net::SMTP Net::SMTP::TLS Compress::Zlib Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common Crypt::SSLeay IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer Socket6) {
 	eval "require $module";
 
 	if ($@) {
