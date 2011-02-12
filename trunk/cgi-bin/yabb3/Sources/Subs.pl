@@ -2155,6 +2155,12 @@ sub CheckUserPM_Level {
 			'yabbusername',
 			[qw[rlog]],
 		],
+		$memberdir."txt" => # Memberinfo.txt, virtual table
+		[
+			"---",
+			'---',
+			[qw[regtime realname email position postcount addgroups bday]],
+		],
 
 		$vardir."log"."txt" =>
 		[ # setting are in Settings.pl
@@ -2420,16 +2426,26 @@ sub CheckUserPM_Level {
 		&mysql_process(0,'do',"LOCK TABLES `" . ($db_user_vars_table ? "$db_user_vars_table` WRITE, `$db_prefix"."vars" : "$db_prefix"."vars") . "` WRITE") if $LOCKHANDLE;
 
 		if (!$sth_r{$DBfile.$db_table{$DBfile}[0]}) {
-			if (@{$db_table{$DBfile}[2]} > 1) {
+			if ($DBfile eq $memberdir."txt" && $name eq "memberinfo") { # memberinfo.txt
 				$sth_r{$DBfile.$db_table{$DBfile}[0]} = 
-					&mysql_process(0,'prepare',"SELECT ".join(', ', split(/,/,$db_vars_order))." FROM `" .
-						($db_user_vars_table ? "$db_user_vars_table`,`$db_prefix"."vars" : "$db_prefix"."vars") .
-						"` WHERE " .
-						($db_user_vars_table ? qq~`$db_user_vars_key`=`yabbusername` AND ~ : "") . qq~`yabbusername`=?~);
+					&mysql_process(0,'prepare', "SELECT CAST(CONCAT_WS('\\t', `yabbusername`, CONCAT_WS('|', `" . join('`, `', @{$db_table{$DBfile}[2]}) . 
+						"`)) AS CHAR) FROM `" . ($db_user_vars_table ? "$db_user_vars_table`,`$db_prefix"."vars" : "$db_prefix"."vars") . "` ORDER BY `regtime` ASC");
 			} else {
-				$sth_r{$DBfile.$db_table{$DBfile}[0]} = 
-					&mysql_process(0,'prepare',"SELECT `${$db_table{$DBfile}[2]}[0]` FROM `$db_prefix"."vars` WHERE `yabbusername`=?");
+				if (@{$db_table{$DBfile}[2]} > 1) {
+					$sth_r{$DBfile.$db_table{$DBfile}[0]} = 
+						&mysql_process(0,'prepare',"SELECT ".join(', ', split(/,/,$db_vars_order))." FROM `" .
+							($db_user_vars_table ? "$db_user_vars_table`,`$db_prefix"."vars" : "$db_prefix"."vars") .
+							"` WHERE " .
+							($db_user_vars_table ? qq~`$db_user_vars_key`=`yabbusername` AND ~ : "") . qq~`yabbusername`=?~);
+				} else {
+					$sth_r{$DBfile.$db_table{$DBfile}[0]} = 
+						&mysql_process(0,'prepare',"SELECT `${$db_table{$DBfile}[2]}[0]` FROM `$db_prefix"."vars` WHERE `yabbusername`=?");
+				}
 			}
+		}
+		if ($DBfile eq $memberdir."txt" && $name eq "memberinfo") { # Memberinfo.txt
+			&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'execute');
+			return map { $$_[0] } @{&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchall_arrayref',0,1)};
 		}
 		&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'execute',$name);
 		if (@{$db_table{$DBfile}[2]} > 1) {
@@ -2542,6 +2558,8 @@ sub CheckUserPM_Level {
 
 	sub members_DB_w {
 		my ($update_DB, $name, $DBfile, $data) = @_;
+		
+		return if ($DBfile eq $memberdir."txt" && $name eq "memberinfo"); # memberinfo.txt is only a virtual table in MySQL
 
 		if ($update_DB) { # UPDATE table(s)
 			if ($DBfile ne $memberdir."vars") { # update single colums in .vars table
@@ -2918,6 +2936,8 @@ sub CheckUserPM_Level {
 			&mysql_process(0,'do',qq~UPDATE `$db_prefix~.qq~vars` SET `outbox`='' WHERE `yabbusername`="$1"~);
 		} elsif ($file =~ /$memberdir\/([^\/]+)\.rlog$/) {
 			&mysql_process(0,'do',qq~UPDATE `$db_prefix~.qq~vars` SET `rlog`='' WHERE `yabbusername`="$1"~);
+		} elsif ($file =~ /$memberdir\/memberinfo.txt$/) {
+			# no need to delete anything -> virtual table
 
 		} elsif ($file =~ /$boardsdir\/([^\/]+)\.txt$/) {
 			# no need to delete anything -> virtual table

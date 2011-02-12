@@ -1123,7 +1123,7 @@ sub Delete_files {
 	# Set up the multi-step action
 	$begin_time = time();
 
-	# delete Members/....[vars|msg|ims|outbox|imstore|imdraft|log|rlog]
+	# delete Members/....[vars|msg|ims|outbox|imstore|imdraft|log|rlog] and memberinfo.txt
 	unless (-e "$datadir/txtdel.dbconvert" && -e "$datadir/txtdelcalc.dbconvert") {
 		if (-e "$memberdir/memberdel.dbconvert" && -M "$memberdir/memberdel.dbconvert" < 1) {
 			@contents = &read_DBorFILE(0,'',$memberdir,'memberdel','dbconvert');
@@ -1157,6 +1157,7 @@ sub Delete_files {
 
 			last if time() > ($begin_time + $max_process_time);
 		}
+		&delete_DBorFILE("$memberdir/memberinfo.txt");
 		$use_MySQL = 1;
 
 		# If it isn't completely done ...
