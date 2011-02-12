@@ -21,6 +21,8 @@ use Encode;                   # Required for UTF-8 support
 use open ':encoding(utf8)';   # Assume UTF-8 encoding for any file opening
 binmode(STDOUT, ":utf8");     # Force output to be UTF-8 encoded
 use utf8;                     # We may have UTF-8 encoded source files (e.g. Settings.pl)
+
+use NetAddr::IP::Lite qw(:lower); # Required for IP address parsing
 	
 if ($debug) { &LoadLanguage('Debug'); }
 
@@ -55,12 +57,7 @@ $session_id = $cookiesession_name;
 
 $randaction = substr($date,0,length($date)-2);
 
-$user_ip = $ENV{'REMOTE_ADDR'};
-if ($user_ip eq "127.0.0.1") {
-	if    ($ENV{'HTTP_CLIENT_IP'}       && $ENV{'HTTP_CLIENT_IP'}       ne "127.0.0.1") { $user_ip = $ENV{'HTTP_CLIENT_IP'}; }
-	elsif ($ENV{'X_CLIENT_IP'}          && $ENV{'X_CLIENT_IP'}          ne "127.0.0.1") { $user_ip = $ENV{'X_CLIENT_IP'}; }
-	elsif ($ENV{'HTTP_X_FORWARDED_FOR'} && $ENV{'HTTP_X_FORWARDED_FOR'} ne "127.0.0.1") { $user_ip = $ENV{'HTTP_X_FORWARDED_FOR'}; }
-}
+$user_ip = get_ip();
 
 # comment out (#) the next line if you have problems with
 # 'Reverse DNS lookup timeout causes slow page loads'
@@ -2933,6 +2930,55 @@ sub get_forum_master() {
 			require "$boardsdir/forum.master";
 		}
 	}
+}
+
+# Returns an array of possible user IP addresses as defined by proxy servers
+# Don't trust any of these values! Useful to check for banned IPs
+sub get_alternative_ips {
+	# these sources are not save if coming from an untrusted source (e.g. outside private network)
+	my ($http_x_forwarded_for, undef) = split(', ', $ENV{'HTTP_X_FORWARDED_FOR'});
+	my @candidates;
+
+	# the order here defines priority
+	push(@candidates, $http_x_forwarded_for);
+	push(@candidates, $ENV{'HTTP_CLIENT_IP'});
+	push(@candidates, $ENV{'X_IP_CLIENT'});
+	push(@candidates, $ENV{'HTTP_VIA'});
+	
+	my @alternative_ips;
+	use NetAddr::IP::Lite qw(:lower);
+	foreach (@candidates) {
+		if ($_ ne '') {
+			my $valid_ip = new NetAddr::IP::Lite "$_";
+			push(@alternative_ips, $_) if ($valid_ip && ($valid_ip != new NetAddr::IP::Lite "127.0.0.1")); # check if valid address and not localhost
+		}
+	}
+	
+	return @alternative_ips;
+}
+
+# Returns real user IP address
+sub get_ip {
+	# we can only trust REMOTE_ADDR
+	my $remote_addr = $ENV{'REMOTE_ADDR'};
+
+	# If REMOTE_ADDR is a trusted IP, we can assume a private reverse proxy which will set headers properly, so we can trust HTTP_X_FORWARDED_FOR etc. which we usually would not.
+	if ($trusted_proxy_ips ne '') {
+		my $valid_ip = new NetAddr::IP::Lite "$remote_addr";
+		return $remote_addr if (!$valid_ip); # REMOTE_ADDR is invalid. This is the only address we can trust, so we're stuck. Should we throw an error?
+		
+		my @alternative_ips = get_alternative_ips();
+		return $remote_addr if ($#alternative_ips == -1); # look no further if there are no alternatives
+
+		my @trusted_ranges = map { $_ =~ s/ //g; $_; } split(',', $trusted_proxy_ips);
+		foreach my $trusted_range (@trusted_ranges) {
+			if ($valid_ip->within(new NetAddr::IP::Lite $trusted_range)) { # address is within trusted range
+				return $alternative_ips[0]; # take best (topmost) alternative ip
+			}
+		}
+	}
+
+	return $remote_addr;
 }
 
 1;

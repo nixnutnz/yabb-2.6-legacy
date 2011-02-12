@@ -64,6 +64,12 @@ if ($regcheck) {
 			name => 'show_online_ip_gmod',
 			validate => 'boolean',
 		},
+		{
+			description => qq~<label for="trusted_proxy_ips">$admin_txt{'trusted_proxy_ips'}</label>~,
+			input_html => qq~<input type="text" name="trusted_proxy_ips" id="trusted_proxy_ips" size="30" value="$trusted_proxy_ips" />~,
+			name => 'trusted_proxy_ips',
+			validate => 'text',
+		},
 	],
 },
 {

@@ -4093,6 +4093,7 @@ use utf8; # This file may contain UTF-8 encoded characters
 \$show_online_ip_admin = 1;                 # Set to 1 to show online IP's to admins.
 \$show_online_ip_gmod = 1;                  # Set to 1 to show online IP's to global moderators.
 \$masterkey = '$masterkey';                 # Seed for encryption of captcha's
+\$trusted_proxy_ips = "\Q$trusted_proxy_ips\E";		# Comma separated list of proxy IP addresses or IP ranges which are trustworthy (e.g. your load balancing proxies). To trust all private network IPs, use "0/8, 10/8, 127.0/8, 172.16/12, 192.168/16". IPv6 is also supported. Default value is "127.0.0.1, ::1". Trusted proxy IPs will be allowed to pass through user real IP addresses via HTTP headers.
 
 
 

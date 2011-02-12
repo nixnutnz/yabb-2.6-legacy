@@ -491,6 +491,7 @@ $adminlngver = 'YaBB 3.0 Beta $Revision$';
 'imageinquote' => 'If checked, embedded images within posts will appear in quotes of those posts.<br /><span class="small">If disabled, images in quoted posts will be shown as links to the images.</span>',
 'extendedprofiles' => 'Use Extended Profiles?<br /><span class="small">If enabled, an additional item called "Profile Fields" will be shown in the sidebar to the left. There, you can add functions to the users\' profiles.<br />Leave this unchecked if you don\'t use this feature to save server load!</span>',
 'forumnumbformat' => 'Select default number format:',
+'trusted_proxy_ips' => 'Trusted Proxy IPs<br /><span class="small">Comma separated list of proxy IP addresses or IP ranges which are trustworthy (e.g. your load balancing proxies). To trust all private network IPs, use "0/8, 10/8, 127.0/8, 172.16/12, 192.168/16". IPv6 is also supported. Default value is "127.0.0.1, ::1". Trusted proxy IPs will be allowed to pass through user real IP addresses via HTTP headers.</small>',
 );
 
 %floodtxt = (

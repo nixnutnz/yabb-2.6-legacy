@@ -23,47 +23,43 @@ sub guard {
 	if (!$use_guardian) { return; }
 
 	# Proxy Blocker
-	$proxy0 = &get_remote_addr;
-	$proxy1 = &get_x_ip_client;
-	$proxy2 = &get_x_forwarded;
-	$proxy3 = &get_http_via;
+	if ($disallow_proxy_on && !$iamadmin) {
+		my @possible_proxy_ips = get_alternative_ips();
 
-	@white_list = split(/\|/, $whitelist);
-	foreach (@white_list) {
-		chomp $_;
-		if (($proxy0 =~ m/$_/ || $proxy1 =~ m/$_/ || $proxy2 =~ m/$_/ || $proxy3 =~ m/$_/ || $username eq $_) && $_ ne "") { $whitelisted = 1; last; }
-	}
-	if ($disallow_proxy_on && !$whitelisted && !$iamadmin && ($proxy1 ne "empty" || $proxy2 ne "empty" || $proxy3 ne "empty")) {
-		if ($disallow_proxy_notify) {
-			&LoadLanguage('Guardian');
-			$not_subject = qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'proxy_abuse'} $guardian_txt{'abuse'}~;
-			$not_body    = qq~$guardian_txt{'proxy_abuse'} $guardian_txt{'abuse'} $maintxt{'30'} $abuse_time\n\n~;
-			$not_body .= qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
-			$not_body .= qq~$guardian_txt{'abuse_ip'}: (REMOTE_ADDR)->$proxy0, (X_IP_CLIENT)->$proxy1, (HTTP_X_FORWARDED_FOR)->$proxy2, (HTTP_VIA)->$proxy3\n~;
-			if ($use_htaccess && $disallow_proxy_htaccess && !$iamadmin && !$iamgmod) {
-				$not_body .= qq~$guardian_txt{'htaccess_added'}: $user_ip,\n\n~;
+		my @white_list = split(/\|/, $whitelist);
+		foreach my $proxyip (@possible_proxy_ips) {
+			my $whitelisted = 0;
+			foreach (@white_list) {
+				chomp $_;
+				if ($_ ne "" && $proxyip =~ m/$_/) {
+					$whitelisted = 1;
+					last; 
+				}
 			}
-			$not_body .= qq~$mbname, $guardian_txt{'main'}~;
-			$not_subject =~ s~\&trade\;~~g;
-			$not_body    =~ s~\&trade\;~~g;
-			&guardian_notify($not_to, $not_subject, $not_body, $not_from);
+			if (!$whitelisted) {
+				if ($disallow_proxy_notify) {
+					&LoadLanguage('Guardian');
+					$not_subject = qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'proxy_abuse'} $guardian_txt{'abuse'}~;
+					$not_body    = qq~$guardian_txt{'proxy_abuse'} $guardian_txt{'abuse'} $maintxt{'30'} $abuse_time\n\n~;
+					$not_body .= qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
+					$not_body .= qq~$guardian_txt{'abuse_ip'}: $user_ip, (REMOTE_ADDR)->$ENV{'REMOTE_ADDR'}, (HTTP_X_FORWARDED_FOR)->$ENV{'HTTP_X_FORWARDED_FOR'}, (HTTP_CLIENT_IP)->$ENV{'HTTP_CLIENT_IP'}, (X_IP_CLIENT)->$ENV{'X_IP_CLIENT'}, (HTTP_VIA)->$ENV{'HTTP_VIA'}\n~;
+					if ($use_htaccess && $disallow_proxy_htaccess && !$iamadmin && !$iamgmod) {
+						$not_body .= qq~$guardian_txt{'htaccess_added'}: $user_ip,\n\n~;
+					}
+					$not_body .= qq~$mbname, $guardian_txt{'main'}~;
+					$not_subject =~ s~\&trade\;~~g;
+					$not_body    =~ s~\&trade\;~~g;
+					&guardian_notify($not_to, $not_subject, $not_body, $not_from);
+				}
+				if ($use_htaccess && $disallow_proxy_htaccess && !$iamadmin && !$iamgmod) {
+					&update_htaccess("add", $user_ip);
+				}
+				&fatal_error("proxy_reason");
+			}
 		}
-		if ($use_htaccess && $disallow_proxy_htaccess && !$iamadmin && !$iamgmod) {
-			&update_htaccess("add", $user_ip);
-		}
-		&fatal_error("proxy_reason");
 	}
 
 	# Basic Value Setup
-	$remote = &get_ip;
-	if (index($remote, ", ")) {
-		@remotes = split("\, ", $remote);
-		if ($remotes[0] ne "unknown" && $remotes[0] ne "empty" && $remotes[0] ne "127.0.0.1" && $remotes[0] ne "") {
-			$remote = $remotes[0];
-		} else {
-			$remote = $remotes[1];
-		}
-	}
 	$querystring = &get_query_string;
 
 	# Check for Referer
@@ -361,67 +357,6 @@ sub get_user_agent {
 sub get_referer {
 	if ($ENV{'HTTP_REFERER'}) {
 		return $ENV{'HTTP_REFERER'};
-	} else {
-		return "empty";
-	}
-}
-
-sub get_ip {
-	$client_ip   = &get_client_ip;      ## HTTP_CLIENT_IP
-	$x_forwarded = &get_x_forwarded;    ## HTTP_X_FORWARDED_FOR
-	$x_ip_client = &get_x_ip_client;    ## X_IP_CLIENT
-	$http_via    = &get_http_via;       ## HTTP_VIA
-	$remote_addr = &get_remote_addr;    ## REMOTE_ADDR
-	if ($client_ip && $client_ip !~ m/empty/ && $client_ip !~ m/unknown/) {
-		return $client_ip;
-	} elsif ($x_forwarded && $x_forwarded !~ m/empty/ && $x_forwarded !~ m/unknown/) {
-		return $x_forwarded;
-	} elsif ($x_ip_client && $x_ip_client !~ m/empty/ && $x_ip_client !~ m/unknown/) {
-		return $x_ip_client;
-	} elsif ($http_via && $http_via !~ m/empty/ && $http_via !~ m/unknown/) {
-		return $http_via;
-	} elsif ($remote_addr && $remote_addr !~ m/empty/ && $remote_addr !~ m/unknown/) {
-		return $remote_addr;
-	} else {
-		return "empty";
-	}
-}
-
-sub get_client_ip {
-	if ($ENV{'HTTP_CLIENT_IP'} && $ENV{'HTTP_CLIENT_IP'} ne "127.0.0.1") {
-		return $ENV{'HTTP_CLIENT_IP'};
-	} else {
-		return "empty";
-	}
-}
-
-sub get_x_ip_client {
-	if ($ENV{'X_CLIENT_IP'} && $ENV{'X_CLIENT_IP'} ne "127.0.0.1") {
-		return $ENV{'X_CLIENT_IP'};
-	} else {
-		return "empty";
-	}
-}
-
-sub get_http_via {
-	if ($ENV{'HTTP_VIA'} && $ENV{'HTTP_VIA'} ne "127.0.0.1") {
-		return $ENV{'HTTP_VIA'};
-	} else {
-		return "empty";
-	}
-}
-
-sub get_x_forwarded {
-	if ($ENV{'HTTP_X_FORWARDED_FOR'} && $ENV{'HTTP_X_FORWARDED_FOR'} ne "127.0.0.1") {
-		return $ENV{'HTTP_X_FORWARDED_FOR'};
-	} else {
-		return "empty";
-	}
-}
-
-sub get_remote_addr {
-	if ($ENV{'REMOTE_ADDR'}) {
-		return $ENV{'REMOTE_ADDR'};
 	} else {
 		return "empty";
 	}
