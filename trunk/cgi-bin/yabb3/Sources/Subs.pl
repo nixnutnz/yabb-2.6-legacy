@@ -2363,8 +2363,8 @@ sub CheckUserPM_Level {
 			if ($DBfile eq $boardsdir."txt") { # board.txt is a joined table
 				my $columns = join('`, `', @{$db_table{$DBfile}[2]});
 				$sth_r{$DBfile.$db_table{$DBfile}[0]} = 
-					&mysql_process(0,'prepare',qq~SELECT CAST(CONCAT_WS('|', `$columns`) AS CHAR) FROM `yabb3_ctb`
-						INNER JOIN `yabb3_messages`
+					&mysql_process(0,'prepare',qq~SELECT CAST(CONCAT_WS('|', `$columns`) AS CHAR) FROM `~.$db_prefix.qq~ctb`
+						INNER JOIN `~.$db_prefix.qq~messages`
 						ON `threadnum`=`mess_threadnum` AND `post_number`="0" AND `board`=?
 						ORDER BY lastpostdate DESC~);
 			}
