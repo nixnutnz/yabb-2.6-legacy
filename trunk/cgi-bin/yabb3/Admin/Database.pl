@@ -414,7 +414,7 @@ sub SaveDatabase {
 			} elsif ($_ eq 'session') {
 				$buildnew_vars .= qq~`$_` char(22) binary default NULL,\n~;
 			} elsif ($_ eq 'lastips') {
-				$buildnew_vars .= qq~`$_` char(50) default NULL,\n~;
+				$buildnew_vars .= qq~`$_` varchar(150) default NULL,\n~;
 			} elsif ($_ eq 'onlinealert') {
 				$buildnew_vars .= qq~`$_` tinyint(1) NOT NULL default '0',\n~;
 			} elsif ($_ eq 'offlinestatus') {
@@ -492,7 +492,7 @@ sub SaveDatabase {
 			push(@var_colums, $_);
 			push(@db_log_array_order, $i);
 			$buildnew_online .= qq~`date` bigint(11) default NULL,\n~ if $_ eq 'date';
-			$buildnew_online .= qq~`ip` char(15) default NULL,\n~ if $_ eq 'ip';
+			$buildnew_online .= qq~`ip` varchar(50) default NULL,\n~ if $_ eq 'ip';
 			$buildnew_online .= qq~`user_host` char(100) default NULL,\n~ if $_ eq 'user_host';
 		}
 	}
@@ -541,7 +541,7 @@ sub SaveDatabase {
 	$buildnew_message_txt .= qq~`username` char(20) default NULL,\n~;
 	$buildnew_message_txt .= qq~`icon` char(15) default NULL,\n~;
 	$buildnew_message_txt .= qq~`post_number` int(5) NOT NULL default '0',\n~;
-	$buildnew_message_txt .= qq~`user_ip` char(15) default NULL,\n~;
+	$buildnew_message_txt .= qq~`user_ip` varchar(50) default NULL,\n~;
 	$buildnew_message_txt .= qq~`message` text,\n~;
 	$buildnew_message_txt .= qq~`no_smilies` char(2) default NULL,\n~;
 	$buildnew_message_txt .= qq~`modified_date` bigint(11) default NULL,\n~;
