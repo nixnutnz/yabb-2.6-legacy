@@ -2155,7 +2155,7 @@ sub CheckUserPM_Level {
 			'yabbusername',
 			[qw[rlog]],
 		],
-		$memberdir."txt" => # Memberinfo.txt, virtual table
+		$memberdir."memberinfo"."txt" => # virtual table
 		[
 			"---",
 			'---',
@@ -2426,7 +2426,7 @@ sub CheckUserPM_Level {
 		&mysql_process(0,'do',"LOCK TABLES `" . ($db_user_vars_table ? "$db_user_vars_table` WRITE, `$db_prefix"."vars" : "$db_prefix"."vars") . "` WRITE") if $LOCKHANDLE;
 
 		if (!$sth_r{$DBfile.$db_table{$DBfile}[0]}) {
-			if ($DBfile eq $memberdir."txt" && $name eq "memberinfo") { # memberinfo.txt
+			if ($DBfile eq $memberdir."memberinfo"."txt") {
 				$sth_r{$DBfile.$db_table{$DBfile}[0]} = 
 					&mysql_process(0,'prepare', "SELECT CAST(CONCAT_WS('\\t', `yabbusername`, CONCAT_WS('|', `" . join('`, `', @{$db_table{$DBfile}[2]}) . 
 						"`)) AS CHAR) FROM `" . ($db_user_vars_table ? "$db_user_vars_table`,`$db_prefix"."vars" : "$db_prefix"."vars") . "` ORDER BY `regtime` ASC");
@@ -2443,7 +2443,7 @@ sub CheckUserPM_Level {
 				}
 			}
 		}
-		if ($DBfile eq $memberdir."txt" && $name eq "memberinfo") { # Memberinfo.txt
+		if ($DBfile eq $memberdir."memberinfo"."txt") {
 			&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'execute');
 			return map { "$$_[0]\n" } @{&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchall_arrayref',0,1)};
 		}
@@ -2560,7 +2560,7 @@ sub CheckUserPM_Level {
 	sub members_DB_w {
 		my ($update_DB, $name, $DBfile, $data) = @_;
 		
-		return if ($DBfile eq $memberdir."txt" && $name eq "memberinfo"); # memberinfo.txt is only a virtual table in MySQL
+		return if ($DBfile eq $memberdir."memberinfo"."txt"); # memberinfo.txt is only a virtual table in MySQL
 
 		if ($update_DB) { # UPDATE table(s)
 			if ($DBfile ne $memberdir."vars") { # update single colums in .vars table
