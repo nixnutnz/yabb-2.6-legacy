@@ -73,7 +73,7 @@ sub buildIMsend {
 	$mctitle = $inmes_txt{'775'};
 	## check for a draft being opened
 	if ($INFO{'caller'} == 4 && $INFO{'id'}) {
-		my @draftPM = &read_DBorFILE(0,'',$memberdir,$username,'imdraft');
+		my @draftPM = &read_DBorFILE(1,'',$memberdir,$username,'imdraft');
 		chomp(@draftPM);
 		my $flagfound;
 		foreach my $draftMess (@draftPM) {
@@ -1393,7 +1393,7 @@ sub IMsendMessage {
 
 			if (!$ignored) {
 				# Send message to user
-				my @inmessages = &read_DBorFILE(0,'',$memberdir,$UserTo,'msg');
+				my @inmessages = &read_DBorFILE(1,'',$memberdir,$UserTo,'msg');
 				&write_DBorFILE(${$uid.$UserTo}{'mysql'},'',$memberdir,$UserTo,'msg',("$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|0|$ENV{'REMOTE_ADDR'}|$FORM{'status'}|u||\n", @inmessages));
 
 				# we've added the msg to the inbox, now update the ims file
@@ -1402,7 +1402,7 @@ sub IMsendMessage {
 				if ($sendAutoReply) {
 					my $rmessageid = &getnewid;
 
-					@inmessages = &read_DBorFILE(0,'',$memberdir,$username,'msg');
+					@inmessages = &read_DBorFILE(1,'',$memberdir,$username,'msg');
 					&write_DBorFILE(${$uid.$username}{'mysql'},'',$memberdir,$username,'msg',("$rmessageid|$UserTo|$username|||${$uid.$UserTo}{'awaysubj'}|$date|${$uid.$UserTo}{'awayreply'}|$messageid|1|$ENV{'REMOTE_ADDR'}|s|u||\n", @inmessages));
 				}
 				## relocated sender's msg out of the loop
@@ -1458,7 +1458,7 @@ sub IMsendMessage {
 
 	my $savetofile = 'outbox';
 	if ($FORM{'draft'}) { $savetofile = 'imdraft'; }
-	@outmessages = &read_DBorFILE(0,'',$memberdir,$username,$savetofile);
+	@outmessages = &read_DBorFILE(1,'',$memberdir,$username,$savetofile);
 
 	# add the PM to the outbox
 	# the sep users now live together
@@ -1519,7 +1519,7 @@ sub IMsendMessage {
 	if ($FORM{'draftid'} && $FORM{'draft'} ne $inmes_txt{'savedraft'}) {
 		&updateIMS($username, $messageid, 'draftsend');
 		my @draftPM;
-		foreach my $draftmess (&read_DBorFILE(0,'',$memberdir,$username,'imdraft')) {
+		foreach my $draftmess (&read_DBorFILE(1,'',$memberdir,$username,'imdraft')) {
 			chomp $draftmess; 
 			if ((split /\|/, $draftmess)[0] != $FORM{'draftid'}) {
 				push(@draftPM, "$draftmess\n");
