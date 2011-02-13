@@ -2384,7 +2384,7 @@ sub CheckUserPM_Level {
 			&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'execute');
 		}
 		if ($DBfile eq $boardsdir."txt") { # [board].txt
-			return map { $$_[0] } @{&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchall_arrayref',0,1)};
+			return map { "$$_[0]\n" } @{&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchall_arrayref',0,1)};
 		} elsif (@{$db_table{$DBfile}[2]} > 1) {
 			return &mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchrow_array',0,1);
 		} else {
@@ -2404,7 +2404,7 @@ sub CheckUserPM_Level {
 					&mysql_process(0,'prepare',qq~SELECT CAST(CONCAT_WS('|', `~ . join('`, `', @{$db_table{$DBfile}[2]}) . qq~`) AS CHAR) FROM `$db_table{$DBfile}[0]` WHERE `$db_table{$DBfile}[1]`=? ORDER BY `post_number` ASC~);
 			}
 			&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'execute',$name);
-			return map { decode_utf8($$_[0]) } @{&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchall_arrayref',0,1)};
+			return map { "$$_[0]\n" } @{&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchall_arrayref',0,1)};
 
 		} else { # for Messages/[threadnumber].[ctb|mail|poll|polled]
 			if (!$sth_r{$DBfile.$db_table{$DBfile}[0]}) {
@@ -2445,7 +2445,7 @@ sub CheckUserPM_Level {
 		}
 		if ($DBfile eq $memberdir."txt" && $name eq "memberinfo") { # Memberinfo.txt
 			&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'execute');
-			return map { $$_[0] } @{&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchall_arrayref',0,1)};
+			return map { "$$_[0]\n" } @{&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchall_arrayref',0,1)};
 		}
 		&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'execute',$name);
 		if (@{$db_table{$DBfile}[2]} > 1) {
@@ -2461,7 +2461,7 @@ sub CheckUserPM_Level {
 		if ($DBfile eq $vardir."log"."txt") { # only for Variables/log.txt
 			&mysql_process(0,'do',"LOCK TABLES `$db_prefix"."log` WRITE" . ($db_user_log_table ? ",`$db_user_log_table` WRITE" : "")) if $LOCKHANDLE;
 
-			return map { decode_utf8($$_[0]) } @{&mysql_process(0,'selectall_arrayref',qq~SELECT CAST(CONCAT_WS('|', ~ . join(', ', split(/,/, $db_log_order)) . qq~) AS CHAR) FROM `$db_prefix~.qq~log`~ . ($db_user_log_table ? ",`$db_user_log_table` WHERE `yabbuserlogname`=`$db_user_log_key`" : "") . " ORDER BY $db_log_date DESC")};
+			return map { "$$_[0]\n" } @{&mysql_process(0,'selectall_arrayref',qq~SELECT CAST(CONCAT_WS('|', ~ . join(', ', split(/,/, $db_log_order)) . qq~) AS CHAR) FROM `$db_prefix~.qq~log`~ . ($db_user_log_table ? ",`$db_user_log_table` WHERE `yabbuserlogname`=`$db_user_log_key`" : "") . " ORDER BY $db_log_date DESC")};
 
 		} else {
 			&mysql_process(0,'do',"LOCK TABLES `$db_table{$DBfile}[0]` WRITE") if $LOCKHANDLE;
@@ -2545,8 +2545,9 @@ sub CheckUserPM_Level {
 						&mysql_process(0,'prepare',qq~INSERT INTO `$db_table{$DBfile}[0]` (`$db_table{$DBfile}[1]`,`~ . join('`, `', @{$db_table{$DBfile}[2]}) . qq~`) VALUES (?,~ . join(', ', map { '?' } @{$db_table{$DBfile}[2]}) . qq~)~);
 				}
 				&mysql_process(0,'do',qq~DELETE FROM `$db_table{$DBfile}[0]` WHERE `$db_table{$DBfile}[1]`="$name"~); # must delete all old entries first because there is no update!
-				foreach (@$data) {
-					&mysql_process($sth_w{$DBfile.$db_table{$DBfile}[0]},'execute',($name,(map { $_; } split(/\|/, $_))));
+				foreach my $line(@$data) {
+					chomp($line); # make sure we don't write linebreak in last database field
+					&mysql_process($sth_w{$DBfile.$db_table{$DBfile}[0]},'execute',($name,(map { $_; } split(/\|/, $line, @{$db_table{$DBfile}[2]}))));
 				}
 
 			} else { # for Messages/[threadnumber].ctb; mail,poll,polled are empty here
