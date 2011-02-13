@@ -1060,7 +1060,7 @@ sub ReturnFileDB {
 			$use_MySQL = 1;
 		
 			# Get the list
-			@contents = map { "$$_[0]\n"; } @{&mysql_process(0,'selectall_arrayref',"SELECT `board` FROM `$db_prefix"."boards`")};
+			@contents = map { "$_\n"; } keys %board;
 
 			$sumuser = @contents;
 			&write_DBorFILE(0,'',$boardsdir,'boardscalc','dbconvert',("$start_time\n$sumuser\n"));
