@@ -1298,6 +1298,8 @@ $ci{'z'} = qq~
 	#   intervals to prevent it from adding so many entries that the decoder would
 	#   increase the expected code size to 9 bits.
 
+	binmode STDOUT, ":pop"; # make sure we don't output in UTF-8 here, use binary instead
+	
 	# GIF Signature
 	print 'Content-type: image/gif', "\x0A\x0A";
 
