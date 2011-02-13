@@ -39,6 +39,7 @@ if ($ENV{'SCRIPT_FILENAME'} =~ /ModuleChecker\.\w+$/) {
 	'File::Find' => 'Used for avatar and attachment upload.<br />If this module is not installed and these features are enabled you will get an error messages when you try to upload. Otherwise you do not need this module.',
 	'CGI' => 'Used for avatar and attachment upload.<br />If this module is not installed and these features are enabled you will get an error messages when you try to upload. Otherwise you do not need this module.',
 	'DBI' => 'Used if you want to use MySQL for saving your data.<br />If this module is not installed you can\'t use the MySQL database you will have to use the flat file database, what is not bad too!!! Especially for not too big forums I (deti) recommend to use the flat file database. If you do not want to use MySQL, you do not need this module.',
+	'DBD::mysql' => 'Used if you want to use MySQL for saving your data.<br />If this module is not installed you can\'t use the MySQL database you will have to use the flat file database, what is not bad too!!! Especially for not too big forums I (deti) recommend to use the flat file database. If you do not want to use MySQL, you do not need this module.',
 	'Net::SMTP' => 'Used to send emails via SMTP.<br />This module is only needed if you want to send your emails via Net::SMTP. Otherwise you do not need this module.',
 	'Net::SMTP::TLS' => 'Used to send emails via SMTP::TLS.<br />This module is only needed if you want to send your emails via Net::SMTP::TLS. Otherwise you do not need this module.',
 	'Compress::Zlib' => 'Used for the Backup feature and to compress the size of the HTML-Code sent from YaBB to the browser.<br />This module is only needed if you do not have other Backup methods available (see the page of the Backup feature for details) and/or if you want to enable "Use GZip-Compression?". Otherwise you do not need this module.',
@@ -61,7 +62,7 @@ if ($ENV{'SCRIPT_FILENAME'} =~ /ModuleChecker\.\w+$/) {
 
 my ($checker_output,$module,$i);
 
-foreach $module qw(Encode Digest::MD5 Time::HiRes Time::Local File::Find CGI DBI Net::SMTP Net::SMTP::TLS Compress::Zlib Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common Crypt::SSLeay IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer Socket6) {
+foreach $module qw(Encode Digest::MD5 Time::HiRes Time::Local File::Find CGI DBI DBD::mysql Net::SMTP Net::SMTP::TLS Compress::Zlib Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common Crypt::SSLeay IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer Socket6) {
 	eval "require $module";
 
 	if ($@) {
