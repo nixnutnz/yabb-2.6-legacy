@@ -1092,6 +1092,12 @@ sub ReturnFileDB {
 
 			&AdminTemplate;
 		}
+		
+		# recreate memberinfo.txt
+		my @temp = &read_DBorFILE(0,'',$memberdir,"memberinfo","txt");
+		$use_MySQL = 0;
+		&write_DBorFILE(0,'',$memberdir,"memberinfo","txt",@temp);
+		$use_MySQL = 1;
 	#}
 	
 	&delete_DBorFILE("$memberdir/memberrest.dbconvert");
