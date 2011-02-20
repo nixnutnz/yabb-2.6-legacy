@@ -204,7 +204,7 @@ sub sharedLogin {
 					</span>
 					<span style="float: left; text-align: center;">
 						&nbsp;<br />
-						<input type="button" name="submitlogin" onclick="CheckCredentials('$scripturl?action=login2;type=checkcred')" value="$loginout_txt{'34'}" tabindex="4" accesskey="l" style="width: 100px;" class="button" />
+						<input type="submit" name="submitlogin" onclick="CheckCredentials('$scripturl?action=login2;type=checkcred'); return false;" value="$loginout_txt{'34'}" tabindex="4" accesskey="l" style="width: 100px;" class="button" />
 					</span>
 				</div>
 				<div style="width: 535px;" class="small">

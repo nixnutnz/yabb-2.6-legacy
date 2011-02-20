@@ -586,7 +586,7 @@ function CheckCredentials(url) {
 		document.loginform.submit();
 		return;
 	}
-	var params = "username=" + document.getElementById("username").value + "&passwrd=" + document.getElementById("passwrd").value + "&cookielength=" + document.getElementById("cookielength").value + "&formsession=" + document.forms[0].formsession.value;
+	var params = "username=" + document.getElementById("username").value + "&passwrd=" + document.getElementById("passwrd").value + "&cookielength=" + document.getElementById("cookielength").value + "&formsession=" + document.forms[0].formsession.value + "&sredir=" + document.loginform.sredir.value;
 	
 	xmlHttp.onreadystatechange=CredentialResults;
 	xmlHttp.open("POST",url,true);
