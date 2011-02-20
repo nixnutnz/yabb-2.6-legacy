@@ -1276,7 +1276,7 @@ sub import {
 
 =head1 AUTHOR
 
-Luis E. Muñoz E<lt>luismunoz@cpan.orgE<gt>,
+Luis E. MuÃ±oz E<lt>luismunoz@cpan.orgE<gt>,
 Michael Robinton E<lt>michael@bizsystems.comE<gt>
 
 =head1 WARRANTY
@@ -1286,7 +1286,7 @@ so by using it you accept any and all the liability.
 
 =head1 LICENSE
 
- This software is (c) Luis E. Muñoz, 1999 - 2005
+ This software is (c) Luis E. MuÃ±oz, 1999 - 2005
  and (c) Michael Robinton, 2006 - 2010.
 
 It can be used under the terms of the perl artistic license provided that
