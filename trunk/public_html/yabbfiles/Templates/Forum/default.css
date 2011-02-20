@@ -716,6 +716,7 @@ select optgroup {
 	width: 90%;
 	padding: 4px;
 	max-height: 300px;
+	max-height: none\9 /* SUPER nasty IE8 hack to deal with overflow:scroll+max-height bug */
 }
 .editbg {
 	color: #000000;
