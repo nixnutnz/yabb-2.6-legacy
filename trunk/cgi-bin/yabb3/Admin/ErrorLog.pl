@@ -268,19 +268,16 @@ sub DeleteError {
 	my ($count, $currentmem, @deademails, $start, $sortmode, $sortorder);
 	chomp $FORM{"button"};
 	if ($FORM{"button"} ne "4") { &fatal_error("no_access"); }
-	my @errors = &read_DBorFILE(0,'',$vardir,'errorlog','txt');
 
-	&delete_DBorFILE("$vardir/errorlog.txt");
-
-	&read_DBorFILE(0,FILE,$vardir,'errorlog','txt');
-	foreach my $line (@errors) {
+	my @errorlog;
+	foreach my $line (&read_DBorFILE(0,FILE,$vardir,'errorlog','txt')) {
 		chomp $line;
 		my ($tmp_id, $tmp_date, $tmp_username, $tmp_error, $tmp_board, $tmp_action) = split(/\|/, $line);
 		unless (exists $FORM{"error$tmp_id"}) {
-			print FILE $line . "\n";
+			push(@errorlog, $line . "\n");
 		}
 	}
-	&write_DBorFILE(0,FILE,$vardir,'errorlog','txt',(''));
+	&write_DBorFILE(0,FILE,$vardir,'errorlog','txt',@errorlog);
 
 	$yySetLocation = qq~$adminurl?action=errorlog~;
 	&redirectexit;
