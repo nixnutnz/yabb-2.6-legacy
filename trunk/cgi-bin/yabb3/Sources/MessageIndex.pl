@@ -787,7 +787,7 @@ sub MessageIndex {
 		} elsif ($multiview eq '2') {
 			if ($currentboard eq $annboard) {
 				$adminselector = qq~
-				$messageindex_txt{'1'}: 
+				<label for="multiactionselect">$messageindex_txt{'1'}</label>: 
 				<select name="multiaction" id="multiactionselect" onchange="checkaction(this)">
 					<option value="lock">$messageindex_txt{'104'}</option>
 					<option value="hide">$messageindex_txt{'844'}</option>
@@ -796,14 +796,14 @@ sub MessageIndex {
 				</select>&nbsp;
 				<div id="moveoptions" style="display:none">
 					<select onchange="NoPost(this.selectedIndex, '$messageindex_txt{'27'}')" name="toboard" id="toboard">$boardlist</select>
-					&nbsp;$messageindex_txt{'6'}: <input type="checkbox" style="position: relative; top: 3px" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" />
+					&nbsp;<label for="newinfo">$messageindex_txt{'6'}</label>: <input type="checkbox" style="position: relative; top: 3px" name="newinfo" id="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" />
 				</div>
 				<input type="hidden" name="fromboard" value="$currentboard" />
 				<input type="submit" value="$messageindex_txt{'462'}" class="button" />
 			~;
 			} else {
 				$adminselector = qq~
-				$messageindex_txt{'1'}: 
+				<label for="multiactionselect">$messageindex_txt{'1'}</label>: 
 				<select name="multiaction" id="multiactionselect" onchange="checkaction(this)">
 					<option value="lock">$messageindex_txt{'104'}</option>
 					<option value="stick">$messageindex_txt{'781'}</option>
@@ -813,7 +813,7 @@ sub MessageIndex {
 				</select>&nbsp;
 				<div id="moveoptions" style="display:none">
 					<select onchange="NoPost(this.selectedIndex, '$messageindex_txt{'27'}')" name="toboard" id="toboard">$boardlist</select>
-					&nbsp;$messageindex_txt{'6'}: <input type="checkbox" style="position: relative; top: 3px" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" />
+					&nbsp;<label for="newinfo">$messageindex_txt{'6'}</label>: <input type="checkbox" style="position: relative; top: 3px" name="newinfo" id="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" />
 				</div>
 				<input type="hidden" name="fromboard" value="$currentboard" />
 				<input type="submit" value="$messageindex_txt{'462'}" class="button" />
