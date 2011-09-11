@@ -109,7 +109,7 @@ sub LoadUserSettings {
 			$sessionvalid = 1;
 			if ($sessions && $staff) {
 				my $cursession = &encode_password($user_ip);
-				if (${$uid.$username}{'session'} !~ /^($cursession|$cookiesession)$/) {
+				if (${$uid.$username}{'session'} !~ /^(\Q$cursession\E|\Q$cookiesession\E)$/) {
 					$staff = $iammod = $iamgmod = $iamadmin = $sessionvalid = 0;
 				}
 			}
