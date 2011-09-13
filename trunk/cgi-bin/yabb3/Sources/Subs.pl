@@ -224,7 +224,7 @@ $yysyntax_js = qq~
 
 	# add 'back to top' Button on the end of each page
 	$yynavback .= qq~<img src="$imagesdir/tabsep211.png" border="0" alt="" style="vertical-align: middle;" />~ if !$yynavback;
-	$yynavback .= qq~ <a href="#pagetop" class="nav">$img_txt{'102'}</a> <img src="$imagesdir/tabsep211.png" border="0" alt="" style="vertical-align: middle;" />~;
+	$yynavback .= qq~ <span onclick="toTop(0)" style="cursor: pointer;" />$img_txt{'102'}</span> <img src="$imagesdir/tabsep211.png" border="0" alt="" style="vertical-align: middle;" />~;
 
 	if (!$usehead) { $usehead = "default"; }
 	$output = join('', &read_DBorFILE(1,'',"$templatesdir/$usehead",$usehead,'html'));
@@ -260,6 +260,9 @@ $yysyntax_js = qq~
 	
 	var imagedir = "$imagesdir";
 
+		function toTop(scrpoint) {
+		window.scrollTo(0,scrpoint);
+	}
 	function txtInFields(thefield, defaulttxt) {
 		if (thefield.value == defaulttxt) thefield.value = "";
 		else { if (thefield.value == "") thefield.value = defaulttxt; }
@@ -2155,7 +2158,7 @@ sub CheckUserPM_Level {
 			'yabbusername',
 			[qw[rlog]],
 		],
-		$memberdir."memberinfo"."txt" => # virtual table
+		$memberdir."txt" => # Memberinfo.txt, virtual table
 		[
 			"---",
 			'---',
@@ -2363,8 +2366,8 @@ sub CheckUserPM_Level {
 			if ($DBfile eq $boardsdir."txt") { # board.txt is a joined table
 				my $columns = join('`, `', @{$db_table{$DBfile}[2]});
 				$sth_r{$DBfile.$db_table{$DBfile}[0]} = 
-					&mysql_process(0,'prepare',qq~SELECT CAST(CONCAT_WS('|', `$columns`) AS CHAR) FROM `~.$db_prefix.qq~ctb`
-						INNER JOIN `~.$db_prefix.qq~messages`
+					&mysql_process(0,'prepare',qq~SELECT CAST(CONCAT_WS('|', `$columns`) AS CHAR) FROM `yabb3_ctb`
+						INNER JOIN `yabb3_messages`
 						ON `threadnum`=`mess_threadnum` AND `post_number`="0" AND `board`=?
 						ORDER BY lastpostdate DESC~);
 			}
@@ -2384,7 +2387,7 @@ sub CheckUserPM_Level {
 			&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'execute');
 		}
 		if ($DBfile eq $boardsdir."txt") { # [board].txt
-			return map { "$$_[0]\n" } @{&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchall_arrayref',0,1)};
+			return map { $$_[0] } @{&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchall_arrayref',0,1)};
 		} elsif (@{$db_table{$DBfile}[2]} > 1) {
 			return &mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchrow_array',0,1);
 		} else {
@@ -2404,7 +2407,7 @@ sub CheckUserPM_Level {
 					&mysql_process(0,'prepare',qq~SELECT CAST(CONCAT_WS('|', `~ . join('`, `', @{$db_table{$DBfile}[2]}) . qq~`) AS CHAR) FROM `$db_table{$DBfile}[0]` WHERE `$db_table{$DBfile}[1]`=? ORDER BY `post_number` ASC~);
 			}
 			&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'execute',$name);
-			return map { "$$_[0]\n" } @{&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchall_arrayref',0,1)};
+			return map { decode_utf8($$_[0]) } @{&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchall_arrayref',0,1)};
 
 		} else { # for Messages/[threadnumber].[ctb|mail|poll|polled]
 			if (!$sth_r{$DBfile.$db_table{$DBfile}[0]}) {
@@ -2426,7 +2429,7 @@ sub CheckUserPM_Level {
 		&mysql_process(0,'do',"LOCK TABLES `" . ($db_user_vars_table ? "$db_user_vars_table` WRITE, `$db_prefix"."vars" : "$db_prefix"."vars") . "` WRITE") if $LOCKHANDLE;
 
 		if (!$sth_r{$DBfile.$db_table{$DBfile}[0]}) {
-			if ($DBfile eq $memberdir."memberinfo"."txt") {
+			if ($DBfile eq $memberdir."txt" && $name eq "memberinfo") { # memberinfo.txt
 				$sth_r{$DBfile.$db_table{$DBfile}[0]} = 
 					&mysql_process(0,'prepare', "SELECT CAST(CONCAT_WS('\\t', `yabbusername`, CONCAT_WS('|', `" . join('`, `', @{$db_table{$DBfile}[2]}) . 
 						"`)) AS CHAR) FROM `" . ($db_user_vars_table ? "$db_user_vars_table`,`$db_prefix"."vars" : "$db_prefix"."vars") . "` ORDER BY `regtime` ASC");
@@ -2443,9 +2446,9 @@ sub CheckUserPM_Level {
 				}
 			}
 		}
-		if ($DBfile eq $memberdir."memberinfo"."txt") {
+		if ($DBfile eq $memberdir."txt" && $name eq "memberinfo") { # Memberinfo.txt
 			&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'execute');
-			return map { "$$_[0]\n" } @{&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchall_arrayref',0,1)};
+			return map { $$_[0] } @{&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'fetchall_arrayref',0,1)};
 		}
 		&mysql_process($sth_r{$DBfile.$db_table{$DBfile}[0]},'execute',$name);
 		if (@{$db_table{$DBfile}[2]} > 1) {
@@ -2461,7 +2464,7 @@ sub CheckUserPM_Level {
 		if ($DBfile eq $vardir."log"."txt") { # only for Variables/log.txt
 			&mysql_process(0,'do',"LOCK TABLES `$db_prefix"."log` WRITE" . ($db_user_log_table ? ",`$db_user_log_table` WRITE" : "")) if $LOCKHANDLE;
 
-			return map { "$$_[0]\n" } @{&mysql_process(0,'selectall_arrayref',qq~SELECT CAST(CONCAT_WS('|', ~ . join(', ', split(/,/, $db_log_order)) . qq~) AS CHAR) FROM `$db_prefix~.qq~log`~ . ($db_user_log_table ? ",`$db_user_log_table` WHERE `yabbuserlogname`=`$db_user_log_key`" : "") . " ORDER BY $db_log_date DESC")};
+			return map { decode_utf8($$_[0]) } @{&mysql_process(0,'selectall_arrayref',qq~SELECT CAST(CONCAT_WS('|', ~ . join(', ', split(/,/, $db_log_order)) . qq~) AS CHAR) FROM `$db_prefix~.qq~log`~ . ($db_user_log_table ? ",`$db_user_log_table` WHERE `yabbuserlogname`=`$db_user_log_key`" : "") . " ORDER BY $db_log_date DESC")};
 
 		} else {
 			&mysql_process(0,'do',"LOCK TABLES `$db_table{$DBfile}[0]` WRITE") if $LOCKHANDLE;
@@ -2545,9 +2548,8 @@ sub CheckUserPM_Level {
 						&mysql_process(0,'prepare',qq~INSERT INTO `$db_table{$DBfile}[0]` (`$db_table{$DBfile}[1]`,`~ . join('`, `', @{$db_table{$DBfile}[2]}) . qq~`) VALUES (?,~ . join(', ', map { '?' } @{$db_table{$DBfile}[2]}) . qq~)~);
 				}
 				&mysql_process(0,'do',qq~DELETE FROM `$db_table{$DBfile}[0]` WHERE `$db_table{$DBfile}[1]`="$name"~); # must delete all old entries first because there is no update!
-				foreach my $line(@$data) {
-					chomp($line); # make sure we don't write linebreak in last database field
-					&mysql_process($sth_w{$DBfile.$db_table{$DBfile}[0]},'execute',($name,(map { $_; } split(/\|/, $line, @{$db_table{$DBfile}[2]}))));
+				foreach (@$data) {
+					&mysql_process($sth_w{$DBfile.$db_table{$DBfile}[0]},'execute',($name,(map { $_; } split(/\|/, $_))));
 				}
 
 			} else { # for Messages/[threadnumber].ctb; mail,poll,polled are empty here
@@ -2560,7 +2562,7 @@ sub CheckUserPM_Level {
 	sub members_DB_w {
 		my ($update_DB, $name, $DBfile, $data) = @_;
 		
-		return if ($DBfile eq $memberdir."memberinfo"."txt"); # memberinfo.txt is only a virtual table in MySQL
+		return if ($DBfile eq $memberdir."txt" && $name eq "memberinfo"); # memberinfo.txt is only a virtual table in MySQL
 
 		if ($update_DB) { # UPDATE table(s)
 			if ($DBfile ne $memberdir."vars") { # update single colums in .vars table
