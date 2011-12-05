@@ -701,7 +701,7 @@ sub Split_Splice_2 {
 			${$uid.$curboard}{'lasticon'}       = ${$BoardTotals{$newthreadid}}[5];
 			${$uid.$curboard}{'lasttopicstate'} = ${$BoardTotals{$newthreadid}}[6];
 		}
-		&BoardTotals("update", $curboard);
+		&BoardSetLastInfo($curboard,\@curmessindex);
 	}
 
 	# update new board totals if needed
