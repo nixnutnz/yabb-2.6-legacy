@@ -2798,8 +2798,15 @@ sub usersrecentposts {
 
 
 	recentcheck: foreach $thread (@recent) {
-		&MessageTotals("load",$thread);
-		if (${$thread}{'board'} eq '') {
+		# check if the thread we'll be trying to load actually exists. This is required because MessageTotals() will die with an file open error if we do not (note: this behaviour was different in YaBB 2.5)
+		if (!&checkfor_DBorFILE("$datadir/$thread.ctb")) {
+			$save_recent = 1;
+			delete $recent{$thread};
+			$recentcount--;
+			next recentcheck;
+		}
+		&MessageTotals("load",$thread); # thread should exist, try to load
+		if (${$thread}{'board'} eq '') { # check if MessageTotals() failed for this thread
 			$save_recent = 1;
 			delete $recent{$thread};
 			$recentcount--;
