@@ -81,7 +81,7 @@ $backuplngver = 'YaBB 3.0 Beta $Revision$';
 '35', 'Manage Backups',
 '36', 'Backups available in',
 '37', 'For each available backup, you can:<ul><li>DOWNLOAD the archive file</li><li>EMAIL the archive file to',
-'37a', '</li><li>erform another (full) BACKUP with identical settings</li><li>Perform an INCREMENTAL backup with identical settings (only for files changed since the backup time)</li><li>RECOVER the backup to the live forum, if supported</li><li>DELETE the Backup</li></ul>',
+'37a', '</li><li>Perform another (full) BACKUP with identical settings</li><li>Perform an INCREMENTAL backup with identical settings (only for files changed since the backup time)</li><li>RECOVER the backup to the live forum, if supported</li><li>DELETE the Backup</li></ul>',
 '38', 'No backups found',
 
 # These should've been here from the beginning...
