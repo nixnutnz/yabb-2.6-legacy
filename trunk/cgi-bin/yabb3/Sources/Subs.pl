@@ -17,12 +17,11 @@ $subsplver = 'YaBB 3.0 Beta $Revision$';
 # We now work with UTF-8 only
 $yycharset = "UTF-8";
 $emailcharset = "UTF-8";
+use NetAddr::IP::Lite;        # Required for IP address parsing. Note: this line needs to be before the "use utf8" line below, because it may not be unicode encoded!
 use Encode;                   # Required for UTF-8 support
 use open ':encoding(utf8)';   # Assume UTF-8 encoding for any file opening
 binmode(STDOUT, ":utf8");     # Force output to be UTF-8 encoded
 use utf8;                     # We may have UTF-8 encoded source files (e.g. Settings.pl)
-
-use NetAddr::IP::Lite qw(:lower); # Required for IP address parsing
 	
 if ($debug) { &LoadLanguage('Debug'); }
 
@@ -2987,7 +2986,6 @@ sub get_alternative_ips {
 	push(@candidates, $ENV{'HTTP_VIA'});
 	
 	my @alternative_ips;
-	use NetAddr::IP::Lite qw(:lower);
 	foreach (@candidates) {
 		if ($_ ne '') {
 			my $valid_ip = new NetAddr::IP::Lite "$_";
