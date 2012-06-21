@@ -69,6 +69,12 @@ $registerlngver = 'YaBB 3.0 Beta $Revision$';
 '767a' => ' Hold down Ctrl or Shift key (Apple key on Mac) and click to select more groups.',
 'capslock' => 'Caps lock is activated.',
 'wrong_char' => 'This character in the Password is invalid',
+'birthday' => 'Birthday',
+'birthday_a' => '(<label for="birth_month">MM</label>/<label for="birth_day">DD</label>/<label for="birth_year">YYYY</label>)',
+'birthday_b' => '(<label for="birth_day">DD</label>/<label for="birth_month">MM</label>/<label for="birth_year">YYYY</label>)',
+'gender' => 'Gender',
+'gender_male' => 'Male',
+'gender_female' => 'Female',
 
 # the following error_ variables are inside JavaScript!
 'error_username' => 'You must insert a user ID.',
