@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$registerlngver = 'YaBB 2.5.2 $Revision: 1.2 $';
+$registerlngver = 'YaBB 2.5.2 $Revision: 1.3 $';
 
 %register_txt = (
 '4' => 'For security reasons, it\'s advisable to have your displayed name not the same as your login ID.',
@@ -36,7 +36,7 @@ $registerlngver = 'YaBB 2.5.2 $Revision: 1.2 $';
 '112' => 'This e-mail address ',
 '113' => ' is already registered.',
 '114' => ' is available!',
-'115' => 'is reserved.',
+'115' => ' is reserved.',
 '209' => 'I love YaBB 2.5.2!',
 '213' => 'Passwords aren\'t the same!',
 '241' => 'field. Valid Characters are Letters(A-Z,a-z), Numbers (0-9), Spaces and ( _ ! @ # $ % ^ & * ( ) + | ` ~ - = \ : ; \' " , . / ? [ ] { } )',
