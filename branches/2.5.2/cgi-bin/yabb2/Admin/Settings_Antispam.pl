@@ -72,6 +72,12 @@ $bdomains =~ s~,~\n~g;
 			validate => 'number',
 		},
 		{
+			description => qq~<label for="honeypot">$admin_txt{'honeypot'}</label>~,
+			input_html => qq~<input type="checkbox" name="honeypot" id="honeypot" value="1"${ischecked($honeypot)} />~,
+			name => 'honeypot',
+			validate => 'boolean',
+		},
+		{
 			header => $settings_txt{'speedban'},
 		},
 		{
