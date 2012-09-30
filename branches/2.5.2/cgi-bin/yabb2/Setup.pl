@@ -14,7 +14,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$setupplver = 'YaBB 2.5.2 $Revision: 1.1 $';
+$setupplver = 'YaBB 2.5.2 $Revision: 1.2 $';
 
 # use CGI::Carp qw(fatalsToBrowser); # used only for tests
 
@@ -117,7 +117,7 @@ if (-e "$vardir/Setup.lock") {
             <table width="100%" cellspacing="1" cellpadding="4">
             <tr valign="middle">
                   <td width="100%" colspan="2" class="titlebg" align="left">
-                  YaBB 2 Converter
+                  YaBB 2.5.2 Converter
                   </td>
             </tr>
             <tr valign="middle">
@@ -125,19 +125,19 @@ if (-e "$vardir/Setup.lock") {
                   <img src="$imagesdir/thread.gif" alt="" />
                   </td>
                   <td class="windowbg2" align="left" style="font-size: 11px;">
-                  Make sure your YaBB 2 installation is running and that it has all the correct folder paths and URLs.<br />
-                  Proceed through the following steps to convert your YaBB 1 Gold - SP 1.x forum to YaBB 2!<br /><br />
-                  <b>If</b> your YaBB 1 Gold - SP 1.x forum is located on the same server as your YaBB 2 installation:
+                  Make sure your YaBB 2.5.2 installation is running and that it has all the correct folder paths and URLs.<br />
+                  Proceed through the following steps to convert your YaBB 1 Gold - SP 1.x forum to YaBB 2.5.2!<br /><br />
+                  <b>If</b> your YaBB 1 Gold - SP 1.x forum is located on the same server as your YaBB 2.5.2 installation:
                   <ol>
                   <li>Insert the path to your YaBB 1 Gold - SP 1.x forum in the input field below</li>
                   <li>Click on the 'Continue' button</li>
                   </ol>
-                  <b>Else</b> if your YaBB 1 Gold - SP 1.x forum is located on a different server than your YaBB 2 installation or if you dont know the path to your SP 1.x forum:
+                  <b>Else</b> if your YaBB 1 Gold - SP 1.x forum is located on a different server than your YaBB 2.5.2 installation or if you do not know the path to your SP 1.x forum:
                   <ol>
                   <li>Copy all files in the /Boards, /Members, and /Messages folders from your YaBB 1 Gold - SP 1.x installation, to the corresponding Convert/Boards,
-                  Convert/Members, and Convert/Messages folders of your YaBB 2 installation, and chmod them 777.</li>
-                  <li>Copy cat.txt from the /Variables folder of your YaBB 1 Gold - SP 1.x installation to the Convert/Variables folder of your YaBB 2 installation, and chmod it 666.</li>
-                  <li>If you have 'Add More Membergroups' installed on your YaBB 1 Gold - SP 1.x, copy MemberStats.txt from the /Variables folder of your YaBB 1 Gold - SP 1.x installation to the Convert/Variables folder of your YaBB 2 installation, and chmod it 666.</li>
+                  Convert/Members, and Convert/Messages folders of your YaBB 2.5.2 installation, and chmod them 777.</li>
+                  <li>Copy cat.txt from the /Variables folder of your YaBB 1 Gold - SP 1.x installation to the Convert/Variables folder of your YaBB 2.5.2 installation, and chmod it 666.</li>
+                  <li>If you have 'Add More Membergroups' installed on your YaBB 1 Gold - SP 1.x, copy MemberStats.txt from the /Variables folder of your YaBB 1 Gold - SP 1.x installation to the Convert/Variables folder of your YaBB 2.5.2 installation, and chmod it 666.</li>
 
                   <li>Click on the 'Continue' button</li>
                   </ol>
@@ -203,7 +203,7 @@ EOF
             <table width="100%" cellspacing="1" cellpadding="4">
             <tr valign="middle">
                   <td width="100%" colspan="2" class="titlebg" align="left">
-                  YaBB 2 Converter
+                  YaBB 2.5.2 Converter
                   </td>
             </tr>
             <tr valign="middle">
@@ -257,7 +257,7 @@ EOF
             <table width="100%" cellspacing="1" cellpadding="4">
             <tr valign="middle">
                   <td width="100%" colspan="2" class="titlebg" align="left">
-                  YaBB 2 Converter
+                  YaBB 2.5.2 Converter
                   </td>
             </tr>
             <tr valign="middle">
@@ -324,7 +324,7 @@ EOF
             <tr>
             <td align="left" class="windowbg" colspan="5">
              Member(s) with illegal username(s) were found and converted to legal name(s).<br />
-             You can find this informations in the <i>$vardir/fixusers.txt</i> file. If you do not need it, you can delete it later.
+             You can find this information in the <i>$vardir/fixusers.txt</i> file. If you do not need it, you can delete it later.
             </td>
             <tr>
             <td align="center" class="catbg">Invalid name</td>
@@ -365,7 +365,7 @@ EOF
             <table width="100%" cellspacing="1" cellpadding="4">
             <tr valign="middle">
                   <td width="100%" colspan="2" class="titlebg" align="left">
-                  YaBB 2 Converter
+                  YaBB 2.5.2 Converter
                   </td>
             </tr>
             <tr valign="middle">
@@ -443,7 +443,7 @@ EOF
             <table width="100%" cellspacing="1" cellpadding="4">
             <tr valign="middle">
                   <td width="100%" colspan="2" class="titlebg" align="left">
-                  YaBB 2 Converter
+                  YaBB 2.5.2 Converter
                   </td>
             </tr>
             <tr valign="middle">
@@ -511,7 +511,7 @@ EOF
             <table width="100%" cellspacing="1" cellpadding="4">
             <tr valign="middle">
                   <td width="100%" colspan="2" class="titlebg" align="left">
-                  YaBB 2 Converter
+                  YaBB 2.5.2 Converter
                   </td>
             </tr>
             <tr valign="middle">
@@ -586,7 +586,7 @@ EOF
             <table width="100%" cellspacing="1" cellpadding="4">
             <tr valign="middle">
                   <td width="100%" colspan="2" class="titlebg" align="left">
-                  YaBB 2 Converter
+                  YaBB 2.5.2 Converter
                   </td>
             </tr>
             <tr valign="middle">
@@ -655,7 +655,7 @@ EOF
             <table width="100%" cellspacing="1" cellpadding="4">
             <tr valign="middle">
                   <td width="100%" colspan="2" class="titlebg" align="left">
-                  YaBB 2 Converter
+                  YaBB 2.5.2 Converter
                   </td>
             </tr>
             <tr valign="middle">
@@ -737,7 +737,7 @@ EOF
             <table width="100%" cellspacing="1" cellpadding="4">
             <tr valign="middle">
                   <td width="100%" colspan="2" class="titlebg" align="left">
-                  YaBB 2 Converter
+                  YaBB 2.5.2 Converter
                   </td>
             </tr>
             <tr valign="middle">
@@ -805,7 +805,7 @@ EOF
             <table width="100%" cellspacing="1" cellpadding="4">
             <tr valign="middle">
                   <td width="100%" colspan="2" class="titlebg" align="left">
-                  YaBB 2 Converter
+                  YaBB 2.5.2 Converter
                   </td>
             </tr>
             <tr valign="middle">
@@ -932,7 +932,7 @@ EOF
             <table width="100%" cellspacing="1" cellpadding="4">
             <tr valign="middle">
                   <td width="100%" colspan="2" class="titlebg" align="left">
-                  YaBB 2 Converter
+                  YaBB 2.5.2 Converter
                   </td>
             </tr>
             <tr valign="middle">
@@ -976,7 +976,7 @@ EOF
                   - Attachment Functions => Rebuild Attachments<br /></font>
                   <br />
                   <br />
-                  You may now login to your forum. Enjoy using YaBB 2!
+                  You may now login to your forum. Enjoy using YaBB 2.5.2!
                   </td>
             </tr>
             <tr>
@@ -1011,7 +1011,7 @@ EOF
             <table width="100%" cellspacing="1" cellpadding="4">
             <tr valign="middle">
                   <td width="100%" colspan="2" class="titlebg" align="left">
-                  YaBB 2 Converter
+                  YaBB 2.5.2 Converter
                   </td>
             </tr>
             <tr valign="middle">
@@ -1109,8 +1109,8 @@ EOF
             ~;
       }
 
-      $yyim    = 'You are running the YaBB 2 Converter.';
-      $yytitle = 'YaBB 2 Converter';
+      $yyim    = 'You are running the YaBB 2.5.2 Converter.';
+      $yytitle = 'YaBB 2.5.2 Converter';
       &SetupTemplate;
 }
 
@@ -2436,6 +2436,12 @@ sub adminlogin2 {
             &setup_fatal_error("Setup Error: Could not find the admin data file in $memberdir! Please check your access rights.");
       }
 
+#	if ($FORM{'cookielength'} == 1) { $ck{'len'} = 'Sunday, 17-Jan-2038 00:00:00 GMT'; }
+#	elsif ($FORM{'cookielength'} == 2) { $ck{'len'} = ''; }
+#	else { $ck{'len'} = "+$FORM{'cookielength'}m"; }
+#	${$uid.$username}{'session'} = &encode_password($user_ip);
+#	&UpdateCookie("write", $username, &encode_password($FORM{'passwrd'}), ${$uid.$username}{'session'}, "/", $ck{'len'});
+
       if ($FORM{'cookielength'} < 1 || $FORM{'cookielength'} > 9999) { $FORM{'cookielength'} = $Cookie_Length; }
       if (!$FORM{'cookieneverexp'}) { $ck{'len'} = "\+$FORM{'cookielength'}m"; }
       else { $ck{'len'} = 'Sunday, 17-Jan-2038 00:00:00 GMT'; }
@@ -3341,9 +3347,8 @@ EOF
       if (!-e "$varsdir/news.txt") {
             fopen(NEWSFILE, ">$varsdir/news.txt") || &setup_fatal_error("$maintext_23 $varsdir/news.txt: ", 1);
             print NEWSFILE "Welcome to our forum.\n";
-            print NEWSFILE "We've upgraded to YaBB 2!\n";
+            print NEWSFILE "We've upgraded to YaBB 2.5.2!\n";
             print NEWSFILE "Visit [url=http://www.yabbforum.com]YaBB[/url] today \;\)\n";
-            print NEWSFILE "YaBB is sponsored by [url=http://www.ximinc.com]XIMinc[/url]!\n";
             print NEWSFILE "Signup for free on our forum and benefit from new features!\n";
             print NEWSFILE "Latest info can be found on the [url=http://www.yabbforum.com/community/]YaBB Chat and Support Community[/url].\n";
             fclose(NEWSFILE);
@@ -3368,9 +3373,7 @@ EOF
             print RESERVEFILE "administrator\n";
             print RESERVEFILE "admin\n";
             print RESERVEFILE "y2\n";
-            print RESERVEFILE "xnull\n";
             print RESERVEFILE "yabb2\n";
-            print RESERVEFILE "XIMinc\n";
             print RESERVEFILE "yabbforum\n";
             fclose(RESERVEFILE);
       }
@@ -3428,8 +3431,8 @@ sub checkmodules {
 </form>
 ~;
 
-      $yyim    = "You are running YaBB 2 Setup.";
-      $yytitle = "YaBB 2 Setup";
+      $yyim    = "You are running YaBB 2.5.2 Setup.";
+      $yytitle = "YaBB 2.5.2 Setup";
       &SetupTemplate;
 }
 
@@ -3460,7 +3463,7 @@ sub SetInstall {
             </td>
       </tr><tr valign="middle">
             <td width="100%" class="windowbg" align="left">
-            Here you can set some of the default settings for your new YaBB 2 forum.<br />
+            Here you can set some of the default settings for your new YaBB 2.5.2 forum.<br />
             After finishing the setup procedure, you should login to your forum and go to your 'Admin Center' -&gt; 'Forum Settings' where you can modify this and other settings.
             </td>
       </tr><tr valign="middle">
@@ -3534,8 +3537,8 @@ sub SetInstall {
 </form>
 ~;
 
-      $yyim    = "You are running YaBB 2 Setup.";
-      $yytitle = "YaBB 2 Setup";
+      $yyim    = "You are running YaBB 2.5.2 Setup.";
+      $yytitle = "YaBB 2.5.2 Setup";
       &SetupTemplate;
 }
 
@@ -3670,6 +3673,7 @@ sub SetInstall2 {
             $post_speed_count = 3;
             $minlinkpost = 0;
             $minlinksig = 0;
+            $minlinkweb = 0;
 
             $maxsteps = 40;
             $stepdelay = 75;
@@ -3845,7 +3849,7 @@ sub SetInstall2 {
 \$min_post_speed = $min_post_speed;                 # Minimum time in seconds between entering a post form and submitting a post
 \$minlinkpost = $minlinkpost;                       # Minimum amount of posts a member needs to post links and images
 \$minlinksig = $minlinksig;                         # Minimum amount of posts a member needs to create links and images in signature
-\$minlinkweb = $minlinkweb;                         # Minimum amount of posts a member needs to link to a website in their profile
+\$minlinkweb = $minlinkweb;
 \$post_speed_count = $post_speed_count;             # Maximum amount of abuses befor a user gets banned
 \$MaxSigLen = $MaxSigLen;                           # Maximum Allowed Characters in Signatures
 \$MaxAwayLen = $MaxAwayLen;                         # Maximum Allowed Characters in Away message
@@ -4296,7 +4300,7 @@ sub CheckInstall {
       A problem has occurred in the /Boards folder!
       </td></tr>
       <tr><td width="6%" class="windowbg" align="center">
-      <img src="$imagesdir/on.gif" alt="" />
+      <img src="$imagesdir/a_on.gif" alt="" />
       </td><td width="94%" class="windowbg2" align="left">
       No /Boards folder available!
       </td></tr>
@@ -4308,7 +4312,7 @@ sub CheckInstall {
       A problem has occurred in the /Boards folder!
       </td></tr>
       <tr><td width="6%" class="windowbg" align="left">
-      <img src="$imagesdir/on.gif" alt="" />
+      <img src="$imagesdir/a_on.gif" alt="" />
       </td><td width="94%" class="windowbg2" align="left">
       <b>Missing: </b><br />
       $brd_missing
@@ -4324,7 +4328,7 @@ sub CheckInstall {
                   }
                   $yymain .= qq~
       <tr><td width="6%" class="windowbg" align="center">
-      <img src="$imagesdir/off.gif" alt="" />
+      <img src="$imagesdir/a_off.gif" alt="" />
       </td><td width="94%" class="windowbg2" align="left">
       <b>Installed: </b><br />
       $brd_created
@@ -4342,7 +4346,7 @@ sub CheckInstall {
       A Problem has occurred in the /Members folder!
       </td></tr>
       <tr><td width="6%" class="windowbg" align="center">
-      <img src="$imagesdir/on.gif" alt="" />
+      <img src="$imagesdir/a_on.gif" alt="" />
       </td><td width="94%" class="windowbg2" align="left">
       No /Members folder available!
       </td></tr>
@@ -4354,7 +4358,7 @@ sub CheckInstall {
       A problem has occurred in the /Members folder!
       </td></tr>
       <tr><td width="6%" class="windowbg" align="center">
-      <img src="$imagesdir/on.gif" alt="" />
+      <img src="$imagesdir/a_on.gif" alt="" />
       </td><td width="94%" class="windowbg2" align="left">
       <b>Missing: </b><br />
       $mem_missing
@@ -4370,7 +4374,7 @@ sub CheckInstall {
                   }
                   $yymain .= qq~
       <tr><td width="6%" class="windowbg" align="center">
-      <img src="$imagesdir/off.gif" alt="" />
+      <img src="$imagesdir/a_off.gif" alt="" />
       </td><td width="94%" class="windowbg2" align="left">
       <b>Installed: </b><br />
       $mem_created
@@ -4388,7 +4392,7 @@ sub CheckInstall {
       A problem has occurred in the /Messages folder!
       </td></tr>
       <tr><td width="6%" class="windowbg" align="center">
-      <img src="$imagesdir/on.gif" alt="" />
+      <img src="$imagesdir/a_on.gif" alt="" />
       </td><td width="94%" class="windowbg2" align="left">
       No /Messages folder available!
       </td></tr>
@@ -4400,7 +4404,7 @@ sub CheckInstall {
       A problem has occurred in the /Messages folder!
       </td></tr>
       <tr><td width="6%" class="windowbg" align="center">
-      <img src="$imagesdir/on.gif" alt="" />
+      <img src="$imagesdir/a_on.gif" alt="" />
       </td><td width="94%" class="windowbg2" align="left">
       <b>Missing: </b><br />
       $msg_missing
@@ -4416,7 +4420,7 @@ sub CheckInstall {
                   }
                   $yymain .= qq~
       <tr><td width="6%" class="windowbg" align="center">
-      <img src="$imagesdir/off.gif" alt="" />
+      <img src="$imagesdir/a_off.gif" alt="" />
       </td><td width="94%" class="windowbg2" align="left">
       <b>Installed: </b><br />
       $msg_created
@@ -4433,7 +4437,7 @@ sub CheckInstall {
       A problem has occurred in the /Variables folder!
       </td></tr>
       <tr><td width="6%" class="windowbg" align="center">
-      <img src="$imagesdir/on.gif" alt="" />
+      <img src="$imagesdir/a_on.gif" alt="" />
       </td><td width="94%" class="windowbg2" align="left">
       No /Variables folder available!
       </td></tr>
@@ -4445,7 +4449,7 @@ sub CheckInstall {
       A problem has occurred in the /Variables folder!
       </td></tr>
       <tr><td width="6%" class="windowbg" align="center">
-      <img src="$imagesdir/on.gif" alt="" />
+      <img src="$imagesdir/a_on.gif" alt="" />
       </td><td width="94%" class="windowbg2" align="left">
       <b>Missing: </b><br />
       $var_missing
@@ -4461,7 +4465,7 @@ sub CheckInstall {
                   }
                   $yymain .= qq~
       <tr><td width="6%" class="windowbg" align="center">
-      <img src="$imagesdir/off.gif" alt="" />
+      <img src="$imagesdir/a_off.gif" alt="" />
       </td><td width="94%" class="windowbg2" align="left">
       <b>Installed: </b><br />
       $var_created
@@ -4486,10 +4490,10 @@ sub CheckInstall {
       Successfully checked Settings.pl!
       </td></tr>
       <tr><td width="6%" class="windowbg" align="center">
-      <img src="$imagesdir/off.gif" alt="" />
+      <img src="$imagesdir/a_off.gif" alt="" />
       </td><td width="94%" class="windowbg2" align="left">
-      Click on 'Continue' and go to your <i>Admin Center - Forum Settings</i> to set the options for your YaBB 2.<br />
-      Click on 'Convert' to convert your YaBB 1 Gold - SP 1.x forum to YaBB 2.
+      Click on 'Continue' and go to your <i>Admin Center - Forum Settings</i> to set the options for your YaBB 2.5.2 forum.<br />
+      Click on 'Convert' to convert your YaBB 1 Gold - SP 1.x forum to YaBB 2.5.2.
       </td></tr>
             ~;
       }
@@ -4518,14 +4522,15 @@ sub CheckInstall {
       </table>
 </div>
       ~;
-      $yyim    = "You are running YaBB 2 Setup.";
-      $yytitle = "YaBB 2 Setup";
+      $yyim    = "You are running YaBB 2.5.2 Setup.";
+      $yytitle = "YaBB 2.5.2 Setup";
       &SetupTemplate;
 }
 
 sub ready {
       if ($INFO{'nextstep'} eq 'Setup') { $yySetLocation = qq~$INFO{'nextstep'}.$yyext?convert=1~; }
-      elsif (-e "$INFO{'nextstep'}.$yyext") { $yySetLocation = qq~$INFO{'nextstep'}.$yyext?action=revalidatesession~; }
+#      elsif (-e "$INFO{'nextstep'}.$yyext") { $yySetLocation = qq~$INFO{'nextstep'}.$yyext?action=revalidatesession~; }
+      elsif (-e "$INFO{'nextstep'}.$yyext") { $yySetLocation = qq~$INFO{'nextstep'}.$yyext?action=login2~; }
 
       &CreateSetupLock;
       unlink "$vardir/cook.txt";
@@ -4600,7 +4605,7 @@ sub FoundConvLock {
       <table width="100%" cellspacing="1" cellpadding="4">
       <tr valign="middle">
             <td width="100%" colspan="2" class="titlebg" align="left">
-            YaBB 2 Converter
+            YaBB 2.5.2 Converter
             </td>
       </tr>
       <tr valign="middle">
@@ -4626,8 +4631,8 @@ sub FoundConvLock {
 </div>
       ~;
 
-      $yyim    = "YaBB 2 Setup and Converter has already been run.";
-      $yytitle = "YaBB 2 Setup/Converter";
+      $yyim    = "YaBB 2.5.2 Setup and Converter has already been run.";
+      $yytitle = "YaBB 2.5.2 Setup/Converter";
       &SetupTemplate;
 }
 
@@ -4654,8 +4659,8 @@ sub setup_fatal_error {
 </table>
 <center><br /><a href="javascript:history.go(-1)">Back</a></center>
       ~;
-      $yyim    = "YaBB 2 Convertor Error.";
-      $yytitle = "YaBB 2 Convertor Error.";
+      $yyim    = "YaBB 2.5.2 Convertor Error.";
+      $yytitle = "YaBB 2.5.2 Convertor Error.";
 
       &SimpleOutput if !-e "$vardir/Settings.pl";
 
@@ -4671,7 +4676,7 @@ sub SimpleOutput {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>YaBB 2 Setup</title>
+<title>YaBB 2.5.2 Setup</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 </head>
 <body>
