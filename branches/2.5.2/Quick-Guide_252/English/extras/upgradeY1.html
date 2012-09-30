@@ -1,15 +1,15 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang='en-US'>
 <head>
-<!-- YaBB 2.5 $Revision: 1.3.2.1 $ -->
+<!-- YaBB 2.5.2 $Revision: 1.0 $ -->
 <title>YaBB Quick Start Guide - Upgrading from YaBB 1.x</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" href="../../style.css" type="text/css" />
 </head>
 <body>
-<div id="header"><a href="http://www.yabbforum.com/community/" title="Support Forum">Support Forums</a> | <a href="http://www.yabbforum.com/donate.php" title="Help keep YaBB going strong!">Donate to YaBB</a></div>
+<div id="header"><a href="http://www.yabbforum.com/community/" title="Support Forum">Support Forums</a> | <a href="http://www.yabbforum.com/contribute.php" title="Help keep YaBB going strong!">Donate to YaBB</a></div>
 <div id="content">
-	<div class="shead">
+		<div class="shead">
 		<div class="lang">
 			<span><a href="../../English/index.html" title="Switch to English Guide"><img src="../../images/English.gif" alt="Switch to English Guide" title="Switch to English Guide" /></a></span>
 		</div>
@@ -27,9 +27,10 @@
 				<li><a href="../install/2.html">Step 2 - Uploading</a></li>
 				<li><a href="../install/3.html">Step 3 - CHMOD</a></li>
 				<li><a href="../install/setup.html">Step 4 - Setting Up</a></li>
-				<li><span>Extras</span></li>
+				<li><span><a href="../extras/index.html">Converting</a></span></li>
 				<li><a href="../extras/upgradeY1.html">Upgrading YaBB 1</a></li>
 				<li><a href="../extras/upgradeY2.html">Upgrading YaBB 2</a></li>
+				<li><a href="../extras/upgradeY24.html">Upgrading YaBB 2.4/2.5</a></li>
 				<li><a href="../extras/troubleshooting.html">Troubleshooting</a></li>
 				<li><span>Other</span></li>
 				<li><a href="../info/license.html">License</a></li>
@@ -38,15 +39,15 @@
 		</div>
 		<div class="body">
 			<h3>Upgrading from YaBB 1.x</h3>
-			<p><img src="../../images/convertY1.gif" alt="Converting YaBB 1.x" title="Converting YaBB 1.x" style="float:right;margin-left:5px;overflow:hidden;"/>This section only applies to those converting YaBB 1.x data from an existing old forum to the new YaBB 2 data format. You must also have already installed a NEW YaBB 2.5 AE forum using all of the preceeding instruction pages before continuing. </p>
-			<h4 style="font-size:14px;">Running the Converter</h4>
+			<p><img src="../../images/convertY1.gif" alt="Converting YaBB 1.x" title="Converting YaBB 1.x" class="yabb1" />This section only applies to those converting YaBB 1.x data from an existing old forum to the new YaBB 2 data format.<br /><b>First you will need to install a completely new version of YaBB 2.5.2!</b></p>
+			<h4>Running the Converter</h4>
 			<ol>
-				<li><b>If</b> your YaBB 1 Gold - SP 1.x forum is located on the same server as your YaBB 2.5 AE installation:
+				<li>Before doing anything - in your YaBB 1 Gold forum, go to your Admin Center and run the forum maintenance utilites to make sure everything is up to date.</li>
+				<li><b>If</b> your YaBB 1 Gold - SP 1.x forum is located on the same server as your YaBB 2.5.2 installation:
 					<ul><li>Insert the path to your YaBB 1 Gold - SP 1.x forum in the input field on the Converters start page - and go to point 4.</li></ul><br />
-				<b>Else</b> if your YaBB 1 Gold - SP 1.x forum is located on a different server than your YaBB 2.5 AE installation or if you dont know the path to your SP 1.x forum:
+				<b>Else</b> if your YaBB 1 Gold - SP 1.x forum is located on a different server than your YaBB 2.5.2 installation or if you don't know the path to your SP 1.x forum:
 					<ul>
-					<li>You must upload the /Convert/Boards, /Convert/Members, /Convert/Messages and /Convert/Variables folders from the YaBB 2.5 AE zip package and CHMOD them 755. </li>
-					</ul>
+					<li>You must upload the /Convert/Boards, /Convert/Members, /Convert/Messages and /Convert/Variables folders from the YaBB 2.5.2 zip package and CHMOD them 755. 
 					<ul class="st3">
 					<li><span class="chmod">drwxr-xr-x (CHMOD 755)</span>cgi-bin/yabb2/Convert</li>
 					<li><span class="chmod">drwxr-xr-x (CHMOD 755)</span>cgi-bin/yabb2/Convert/Boards</li>
@@ -54,22 +55,18 @@
 					<li><span class="chmod">drwxr-xr-x (CHMOD 755)</span>cgi-bin/yabb2/Convert/Messages</li>
 					<li><span class="chmod">drwxr-xr-x (CHMOD 755)</span>cgi-bin/yabb2/Convert/Variables</li>
 					</ul>
-					<br />
-					<ul>
-					<li>Copy all files from /Boards, /Members, and /Messages from your OLD YaBB 1.x forum to the corresponding /Convert folders in your NEW YaBB 2.5 AE installation. You must then copy Variables/cat.txt, Variables/attachments.txt and Variables/Membergroups.txt from your OLD YaBB 1.x forum to the /Convert/Variables folder of the NEW YaBB 2.5 AE installation. </li>
+					</li>
+					<li>Copy all files from /Boards, /Members, and /Messages from your OLD YaBB 1.x forum to the corresponding /Convert folders in your NEW YaBB 2.5.2 installation. You must then copy Variables/cat.txt, Variables/attachments.txt, Variables/membergroups.txt, and (if it exists) Variables/MemberStats.txt from your OLD YaBB 1.x forum to the /Convert/Variables folder of the NEW YaBB 2.5.2. installation. </li>
 					</ul>
 				</li>
-					<li>Visit the following URL to start the Converter (note it is the same as the URL used to install a new forum). 
-					<ul><li>http://www.example.com/cgi-bin/yabb2/Setup.pl</li></ul>
-				<br /> Modify this URL to fit your installation! If your website domain is "mysite.com" and you installed YaBB in "forum," then your url would be http://www.mysite.com/forum/Setup.pl. 
+					<li>Point your browser to yabbsetup.html again and click on the Setup link to start the Converter (note that it is the same as the URL used to install a new forum). 
 				</li>
-				<li>The Converter will print the steps required to proceed. Make sure you have a backup of your existing YaBB 1.x data! </li>
+				<li>The Converter will show the steps required to proceed. Make sure you have a backup of your existing YaBB 1.x data in a safe place!</li>
 				<li>You can now follow the on-screen instructions provided by the Converter. It will step you through its 5 steps by having you click the next step's link when it is time.</li>
-				<li>After converting you should be ready to login and test your new forum.... Load YaBB.pl as shown in the previous setup stages (e.x. http://www.example.com/cgi-bin/yabb2/YaBB.pl). Again, modify this URL to fit your specific website and YaBB installation location.
+				<li>After converting you should be ready to login and test your new forum. You can load YaBB.pl from yabbsetup.html by clinking the YaBB link or by going directly to YaBB (ie. http://www.example.com/cgi-bin/yabb2/YaBB.pl). Modify this URL to fit your specific website and YaBB installation location.
 				</li>
-				<li>After you have successfully run your YaBB forum from the web, you need to try logging in with your existing account. </li>
-				<li>Test everything, such as posting, registering a new member, modifying messages, etc. </li>
-				<li>Once you are satisfied that your YaBB 1.x forum has properly been converted, use your FTP client to delete 'cgi-bin/yabb2/Setup.pl,' 'cgi-bin/yabb2/Variables/setup.lock' if it exists, and 'cgi-bin/yabb2/Variables/converter.lock.' This will prevent anyone from tampering with your forum using the Setup Utility.</li>
+				<li>Once you are satisfied that your YaBB 1.x forum has properly been converted, use your FTP client to delete 'cgi-bin/yabb2/Setup.pl,' 'cgi-bin/yabb2/Variables/setup.lock' if it exists, and 'cgi-bin/yabb2/Variables/converter.lock' as well as 'yabbsetup.html'. This will prevent anyone from tampering with your forum using the Setup Utility.</li>
+				<li>YaBB 2.5.2 has many new features and settings so be sure to go over each section of the Admin Center and customize the settings to your forum - also make sure to turn on the anti-spam features and create custom questions in Anti-spam Question.</li>
 			</ol>
 		</div>
 		<div class="clr"></div>
