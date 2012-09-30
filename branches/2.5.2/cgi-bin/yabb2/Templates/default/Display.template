@@ -3,8 +3,8 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.5 Anniversary Edition                                #
-# Packaged:       July 04, 2010                                               #
+# Version:        YaBB 2.4                                                    #
+# Packaged:       April 12, 2009                                              #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2009 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -37,7 +37,7 @@ $display_template = qq~
 	</td>
 	<td valign="bottom" align="right">
 	<span class="small">
-		‹ {yabb prev} | {yabb next} ›
+		&lsaquo; {yabb prev} | {yabb next} &rsaquo;
 	</span>
 	</td>
 </tr>
@@ -127,7 +127,7 @@ $display_template = qq~
 <tr>
 	<td valign="top" align="right">
 	<span class="small">
-		‹ {yabb prev} | {yabb next} ›
+		&lsaquo; {yabb prev} | {yabb next} &rsaquo;
 	</span>
 	</td>
 </tr>
@@ -169,57 +169,43 @@ $messageblock = qq~
 <div class="displaycontainer">
 <table cellpadding="4" cellspacing="0" border="0" width="100%" class="bordercolor" align="center" style="table-layout: fixed;">
 <tr>
-	<td align="left" class="catbg" valign="top" width="100%">
-			<span class="small" style="float: left; width: 3%; text-align: center; padding: 2px;">{yabb msgimg}</span>
-		<span class="small" style="float: left; width: 46%; vertical-align: middle; padding-top: 4px;">
-			<span><b>{yabb replycount}</b>{yabb msgdate}</span>
-		</span>
-	</td>
-</tr>
-</table>
-<table cellpadding="0" cellspacing="0" border="0" width="100%" class="bordercolor" align="center" style="table-layout: fixed;">
-<tr>
-    <td>
-	   <table cellpadding="0" cellspacing="0" border="0" width="100%">
-<tr>
-
-	<td align="left" class="shadow" valign="top" width="100%">
-	<div style="float: left; width: 100%; padding-top: 2px; padding-bottom: 4px; margin-bottom: 2px;" class="userinfo">
-		<span style="float: left; text-align: left; padding-right: 5px;">		
+	<td align="left" class="{yabb css}" valign="top" width="140">
+		<a name="{yabb count}"></a>
+		{yabb userlink}
+		<div class="small">
+		{yabb memberinfo}<br />
+		{yabb stars}
+		{yabb useronline}<br />
 		{yabb userpic}
-		</span>
-			<div class="small">
-			<span style="float: left; line-height: 11pt; text-align: left; padding-right: 5px;">
-			<a name="{yabb count}"></a>
-		 {yabb userlink} &nbsp; {yabb useronline}
-		 {yabb memberinfo}<br />
-         {yabb usertext}
-         {yabb location}		 
-		 
-        </span>
-			</div>
-
-	 <span class="small" style="float: right; line-height: 10pt; text-align: left; width: 15%;"> 
-		  {yabb isbuddy}<br />
-	    <b>{yabb gender}</b>
-		<b>{yabb postinfo}</b>
-		 {yabb stars}
-	     {yabb ext_prof}		 
-		</span>
-
+		{yabb usertext}<br />
+		{yabb postinfo}
+		{yabb location}
+		{yabb gender}
+		{yabb ext_prof}
+		{yabb isbuddy}
 		</div>
-		</td>
-</tr>	
-  </table>	
-	<table cellpadding="4" cellspacing="0" border="0" width="100%" class="bordercolor" align="center" style="table-layout: fixed;">
-	<tr>
-	<td class="{yabb css}" align="left" valign="top" width="100%">
-		<span class="small" style="float: right; text-align: right; width: 50%;">
+	</td>
+	<td class="{yabb css}" align="left" valign="top">
+		<div style="float: left; width: 99%; padding-top: 2px; padding-bottom: 4px; margin-bottom: 2px;" class="dividerbot">
+		<span class="small" style="float: left; width: 3%; text-align: center; padding: 2px;">{yabb msgimg}</span>
+		<span class="small" style="float: left; width: 46%; vertical-align: middle;">
+			<b>{yabb subject}</b><br />
+			<span class="small"><b>{yabb replycount}</b>{yabb msgdate}</span>
+		</span>
+		<span class="small" style="float: left; text-align: right; width: 50%;">
 			{yabb posthandellist}
 		</span>
-		<div class="$messageclass" style="float: left; width: 99%; overflow: auto;">
-		{yabb message}
 		</div>
+		<div class="$messageclass" style="float: left; width: 99%; overflow: auto;">
+			{yabb message}
+		</div>
+	</td>
+</tr>
+<tr>
+	<td class="{yabb css}" valign="bottom">
+		<a href="#top">$display_txt{'643'}</a>
+	</td>
+	<td class="{yabb css}" align="left" valign="bottom">
 		<div class="small" style="float: left; width: 99%; text-align: right;">
 			{yabb modified} &nbsp;
 		</div>
@@ -230,16 +216,13 @@ $messageblock = qq~
 			{yabb signaturehr}{yabb signature}
 		</div>
 		<div style="float: left; width: 99%; padding-top: 5px; margin-top: 5px;" class="dividertop">
-		<div class="small" style="float: left; width: 10%;">
-			<a href="#top">$display_txt{'643'}</a>&nbsp;</div>
-		<div class="small" style="float: right; text-align: right; width: 89%;">
+		<div class="small" style="float: left; width: 74%;">
+			{yabb contactlist} &nbsp;
+		</div>
+		<div class="small" style="float: left; text-align: right; width: 25%;">
 			<span class="small">{yabb ipimg} {yabb ip}<br />{yabb permalink} &nbsp;</span>
 		</div>
 		</div>
-	</td>
-</tr>
-</table> 
-
 	</td>
 </tr>
 </table>
