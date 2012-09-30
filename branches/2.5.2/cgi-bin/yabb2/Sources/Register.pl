@@ -428,6 +428,24 @@ sub Register {
         </td>
     </tr>~;
     }
+	if ($honeypot == 1) {
+        	fopen(HONEY, "<$langdir/$language/honey.txt") || &fatal_error("cannot_open","$langdir/$language/honey.txt", 1);
+        	@honey = <HONEY>;
+        	fclose(HONEY);
+        	chomp @honey;
+	  	$hony = int rand $#honey;
+		$newfieldb = $honey[$hony];
+
+		$yymain .= qq~
+		<tr class="green">
+			<td class="windowbg" align="right" valign="top" class="green">
+				<label for="add_field0" class="green"><b>$newfieldb</b>
+			</td>
+			<td class="windowbg2" align="left" valign="top" class="green">
+				<input autocomplete="off" type="text" name="add_field0" id="add_field0" size="30" value="$newfield" maxlength="18" class="green" /> *
+			</td>
+		</tr>~;
+	}
 
 	if ($RegAgree) {
 		if ($language) {
@@ -455,24 +473,6 @@ sub Register {
 			<label for="regagree"><b>$register_txt{'585'}</b></label> <input type="radio" name="regagree" id="regagree" value="yes" /> * &nbsp;&nbsp; <label for="regnoagree"><b>$register_txt{'586'}</b></label> <input type="radio" name="regagree" id="regnoagree" value="no" />
 		</td>
 	</tr>~;
-	}
-	if ($honeypot == 1) {
-        	fopen(HONEY, "<$langdir/$language/honey.txt") || &fatal_error("cannot_open","$langdir/$language/honey.txt", 1);
-        	@honey = <HONEY>;
-        	fclose(HONEY);
-        	chomp @honey;
-	  	$hony = int rand $#honey;
-		$newfieldb = $honey[$hony];
-
-		$yymain .= qq~
-		<tr class="green">
-			<td class="windowbg" align="right" valign="top" class="green">
-				<label for="add_field0" class="green"><b>$newfieldb</b>
-			</td>
-			<td class="windowbg2" align="left" valign="top" class="green">
-				<input autocomplete="off" type="text" name="add_field0" id="add_field0" size="30" value="$newfield" maxlength="18" class="green" /> *
-			</td>
-		</tr>~;
 	}
 	$yymain .= qq~
 	<tr>
