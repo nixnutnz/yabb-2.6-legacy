@@ -32,7 +32,7 @@ if ($rss_limit eq '') { $rss_limit = 10; }
 if ($rss_message eq '') { $rss_message = 1; }
 
 # Free Disk Space Checking
-if( $^O eq 'MSWin32' ) {
+if( $^O =~ /Win/ ) {
       @x = qx{DIR /-C};
 	my $lastline = pop(@x); # should look like: 17 Directory(s), 21305790464 Bytes free
 	return -1 if $lastline !~ m/byte/i; # error trapping if output fails. The word byte should be in the line
