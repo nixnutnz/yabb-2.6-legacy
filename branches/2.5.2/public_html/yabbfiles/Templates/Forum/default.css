@@ -1,42 +1,36 @@
 /*--------------------------------------------------------*/
-/*                      YaBB 2010                         */
+/*                      YaBB 2012                         */
 /*--------------------------------------------------------*/
-/*      Created by: XIMinc http://www.ximinc.com          */
-/*            YaBB http://www.yabbforum.com               */
+/*      Created by: YaBB http://www.yabbforum.com         */
 /*--------------------------------------------------------*/
 /*    You may adapt elements of this CSS in your own      */
 /*   projects, but please give credit to yabbforum.com.   */
 /*--------------------------------------------------------*/
-/*  This is the css file for YaBB 2.5 AE default Template */
+/*   This is the css file for YaBB 2.5.2 default Template */
 /*--------------------------------------------------------*/
-/* $Revision: 1.26 $ */
+/* $Revision: 1.0 $ */
 
 
 /* General layout */
-a:focus {
-	outline: black dotted 0px;
-}
 a {
 	font-weight: normal;
 	color: #333366;
 	font-family: Verdana, Arial, Sans-Serif;
 	text-decoration: none;
-	outline: 0;
 }
 a:hover {
-	color: #333366;
+	color: #000000;
 	font-family: Verdana, Arial, Sans-Serif;
 	text-decoration: underline;
-	outline: 0;
 }
-a:visited  {
+a:visited {
 	font-weight: normal;
 	color: #333366;
 	font-family: Verdana, Arial, Sans-Serif;
- }
+}
 body {
 	padding: 0;
-	background-color: #eeeeee;
+	background-color: #F2F6F9;
 	font-family: Verdana, Helvetica, Arial, Sans-Serif;
 	font-size: 12px;
 	margin-top: 5px;
@@ -52,46 +46,33 @@ form {
 	padding: 0px;
 	margin: 0px;
 }
-.button {
+input, .button {
 	background-color: #F1F2F4;
-	background-image: url(./default/inputbutton.png);
 	border: 1px solid #B1BDC9;
 	color: #000000;
 	font-family: Verdana, Helvetica, Sans-Serif;
 	font-size: 12px;
 	font-weight: normal;
-	cursor: pointer; 
-}
-.titlecorner {
-	background-color: #cdcccb;
-	background-image: url(./default/rndcorner.png);
-	background-repeat:no-repeat;
-}
-.titlecorner2 {
-	background-color: #cdcccb;
-	background-image: url(./default/rndcorner2.png);
-	background-repeat:no-repeat;
-	background-position:right;
 }
 .tabtitle {
 	font-weight: bold;
 	font-style: normal;
 	font-size: 11px;
 	font-family: Verdana, Arial, Sans-Serif;
-	color : #01005f;
-	background-color: #cdcccb;
+	color : #FFFFFF;
+	background-color: #5488c1;
 	background-image: url(./default/catbg.png);
 }
 .tabtitle a {
 	font-weight: bold;
 	font-style: normal;
 	font-size: 11px;
-	color : #01005f;
+	color : #FFFFFF;
 	text-decoration: none;
 }
 .tabtitle a:hover {
-	color: #01005f;
-	text-decoration: none;
+	color: #990000;
+	text-decoration: underline;
 }
 #maincontainer{
 	width: 92%;
@@ -103,7 +84,7 @@ form {
 }
 #container{
 	width: 100%;
-	background-color: #cccccc;
+	background-color: #9CB9F3;
 	padding: 0px;
 	border: 0px;
 	margin: 0px;
@@ -112,45 +93,44 @@ form {
 	color: #000033;
 }
 
-
 /* Advanced Tabs start */
 .menutop {
 	height: 24px;
-	background-color: #cccccc;
+	background-color: #9CB9F3;
 	background-image: url(./default/menutop.png);
 	text-align: left;
 }
 .mainbottom {
 	height: 22px;
 	width: 100%;
-	background-color: #cccccc;
+	background-color: #9CB9F3;
 	background-image: url(./default/grad_bottom.png);
 	text-align: left;
 }
 .tabmenuleft {
-	height: 23px;
+	height: 24px;
 	text-align: left;
-	background-color: #cccccc;
+	background-color: #9CB9F3;
 	background-image: url(./default/tableft211.png);
 	background-repeat: no-repeat;
 }
 .tabmenuright {
-	height: 23px;
+	height: 24px;
 	text-align: left;
-	background-color: #cccccc;
+	background-color: #9CB9F3;
 	background-image: url(./default/tabright211.png);
 	background-repeat: no-repeat;
 }
 .tabmenu {
-	height: 23px;
-	background-color: #cccccc;
+	height: 24px;
+	background-color: #9CB9F3;
 	background-image: url(./default/tab211.png);
 	text-align: left;
 }
 .tabmenu span {
 	float: left;
-	height: 23px;
-	background-color: #cccccc;
+	height: 24px;
+	background-color: #9CB9F3;
 	background-image: url(./default/tab211.png);
 	background-repeat: repeat-x;
 	margin: 0;
@@ -169,21 +149,18 @@ form {
 	white-space: nowrap;
 }
 .tabmenu span a:hover {
-	color: #444444;
-	background-image: url(./default/tab_selected211.png);
-	background-repeat: repeat-x;
 	text-decoration: none;
 }
 .tabmenu span.selected {
-	font-weight: bold;
-	background-color: #cccccc;
+	font-weight: normal;
+	background-color: #9CB9F3;
 	background-image: url(./default/tab_selected211.png);
 	background-repeat: repeat-x;
 }
 .rightbox {
-	height: 23px;
+	height: 24px;
 	text-align: center;
-	background-color: #cccccc;
+	background-color: #9CB9F3;
 	background-image: url(./default/searchbg211.png);
 	background-repeat: repeat-x;
 	font-size: 11px;
@@ -194,7 +171,6 @@ form {
 	color: #000033;
 }
 /* Advanced Tabs end */
-
 
 .usermenu {
 	width: 96%;
@@ -250,28 +226,16 @@ select optgroup {
 .copyright {
 	font-family: Verdana, Helvetica, Arial, Sans-Serif;
 	font-size: 11px;
-	font-weight: normal;
+	font-weight: bold;
 	text-align: center;
 	color: #62686F;
 }
 .copyright a {
 	font-family: Verdana, Helvetica, Arial, Sans-Serif;
 	font-size: 11px;
-	font-weight: normal;
+	font-weight: bold;
 	text-align: center;
 	color: #333366;
-}
-
-
-/* News fader fore- and background colors */
-.newsfader {
-	color: #0000ff;
-	background-color: #FEFEFE;
-	font-size: 10px;
-	font-weight: normal;
-	font-style: normal;
-	font-family: Verdana, Sans-Serif;
-	text-decoration: none;
 }
 #fscroller {
 	line-height: 1.3;
@@ -280,34 +244,25 @@ select optgroup {
 
 /* users/members on-off-away line status */
 .useronline {
-	font-weight: bold;
-	color: #138a03;
+	font-weight: bold; color: #2E8B57;
 }
 .useroffline {
-	font-weight: bold;
-	color: #818281;
+	font-weight: bold; color: #7B68EE;
 }
 .useraway {
-	font-weight: bold;
-	color: #6078B0;
+	font-weight: bold; color: #6078B0;
 }
 
 
 /* YaBB navigation links */
-.nav {
+.nav, a.nav, a.nav:visited {
 	font-weight: bold;
 	font-size: 10px;
 	color : #000033;
 	text-decoration: none;
 }
-.nav a {
-	font-weight: bold;
-	font-size: 10px;
-	color : #000033;
-	text-decoration: none;
-}
-.nav a:hover {
-	color: #333366;
+a.nav:hover {
+	color: #990000;
 	text-decoration: underline;
 }
 
@@ -343,34 +298,9 @@ select optgroup {
 }
 
 
-/* BoardIndex*/
-.shadow {
-	background-color: #eeeeee;
-	background-image:url(./default/windowbgds.png);
-	background-repeat:repeat-x;
-	background-position:top;
-	font-size: 12px;
-	font-weight: normal;
-	font-style: normal;
-	font-family: Verdana, Sans-Serif;
-	color: #304B58;
-}
-
-
 /* YaBB alternating bgcolors */
-.userinfo {
-	background-color: #ececec;
-	background-image:url(./default/usrinfobg.png);
-	background-repeat:repeat-x;
-	background-position:top;
-	font-size: 12px;
-	font-weight: normal;
-	font-style: normal;
-	font-family: Verdana, Sans-Serif;
-	color: #304B58;
-}
 .windowbg {
-	background-color: #dddddd;
+	background-color: #DEE4EC;
 	font-size: 12px;
 	font-weight: normal;
 	font-style: normal;
@@ -378,7 +308,7 @@ select optgroup {
 	color: #304B58;
 }
 .windowbg2 {
-	background-color: #eeeeee;
+	background-color: #FEFEFE;
 	font-size: 12px;
 	font-weight: normal;
 	font-style: normal;
@@ -421,14 +351,14 @@ select optgroup {
 	font-style: normal;
 	text-decoration: none;
 	font-family: Verdana, Helvetica, Arial, Sans-Serif;
-	color: #01005f;
-	background-color: #b5b5b5;
+	color: #FFFFFF;
+	background-color: #6078B0;
 }
 .titlebg a {
 	font-weight: bold;
 	font-style: normal;
 	text-decoration: none;
-	color: #01005f;
+	color: #FFFFFF;
 }
 .titlebg a:hover {
 	text-decoration: underline;
@@ -439,15 +369,14 @@ select optgroup {
 	font-style: normal;
 	text-decoration: none;
 	font-family: Verdana, Helvetica, Arial, Sans-Serif;
-	color: #01005f;
-	background-color: #aaaaa9;
-	background-image:url(./default/catbg2.png);
+	color: #FFFFFF;
+	background-color: #88A0C8; 
 }
 .catbg a {
 	font-weight: bold;
 	font-style: normal;
 	text-decoration: none;
-	color: #01005f;
+	color: #FFFFFF;
 }
 .catbg a:hover {
 	text-decoration: underline;
@@ -493,7 +422,10 @@ select optgroup {
 	font-weight: normal;
 }
 .highlight {
+	font-size: inherit;
+	font-family: inherit;
 	font-weight: bold;
+	font-style: inherit;
 	background-color: #FFFF33;
 	color: #000000;
 }
@@ -581,6 +513,7 @@ select optgroup {
 	color: #000000;
 	background-color: #EEE8AA;
 	font-style: italic;
+
 }
 .forumjumpcatmf {
 	color: #000000;
@@ -598,7 +531,7 @@ select optgroup {
 /* Anything below here is just for the template */
 #PMcontainer {
 	float: left;
-	background-color: #cccccc;
+	background-color: #9CB9F3;
 	width: 100%;
 	padding: 0px;
 	border: 0px;
@@ -612,18 +545,13 @@ select optgroup {
 	margin-bottom: 10px;
 }
 .boardcontainer {
-	background-color: #cccccc;
+	background-color: #BBBBBB;
 	border: 0;
 }
 .displaycontainer {
 	width: 100%;
 	padding: 1px;
-	background-color: #cccccc;
-  	-webkit-border-radius: 10px;
-	-khtml-border-radius: 10px;	
-	-moz-border-radius: 10px;
-	-border-radius: 10px;
-
+	background-color: #BBBBBB;
 }
 .navbarcontainer{
 	margin: 0px;
