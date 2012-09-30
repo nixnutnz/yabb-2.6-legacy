@@ -1,0 +1,9 @@
+login
+logout
+display
+messageindex
+pages
+profile
+register
+resetpass
+viewprofile

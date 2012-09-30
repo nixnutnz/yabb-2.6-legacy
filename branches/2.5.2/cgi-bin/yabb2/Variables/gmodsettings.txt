@@ -1,0 +1,158 @@
+### Gmod Related Setttings ###
+
+$allow_gmod_admin = "on"; #
+$gmod_newfile = "on"; #
+
+### Areas Gmods can Access ###
+
+%gmod_access = (
+'ext_admin',"",
+
+'newsettings;page=main',"",
+'newsettings;page=advanced',"on",
+'editbots', "",
+
+'newsettings;page=news',"on",
+'smilies',"on",
+'setcensor',"on",
+'modagreement',"on",
+
+'referer_control',"",
+'newsettings;page=security',"",
+'setup_guardian',"",
+'newsettings;page=antispam',"",
+
+'managecats',"",
+'manageboards',"",
+'helpadmin',"on",
+'editemailtemplates',"",
+
+'addmember',"",
+'viewmembers',"on",
+'modmemgr',"",
+'mailing',"on",
+'ipban',"on",
+'setreserve',"on",
+
+'modskin',"",
+'modcss',"",
+'modtemp',"",
+
+'clean_log',"on",
+'boardrecount',"",
+'rebuildmesindex',"",
+'membershiprecount',"",
+'rebuildmemlist',"",
+'rebuildmemhist',"",
+'deleteoldthreads',"",
+'manageattachments',"on",
+
+'detailedversion',"on",
+'stats',"on",
+'showclicks',"on",
+'errorlog',"on",
+'view_reglog',"on",
+
+'modlist',"",
+);
+
+%gmod_access2 = (
+admin => "on",
+
+newsettings => "on",
+newsettings2 => "on",
+
+deleteattachment => "on",
+manageattachments2 => "on",
+removeoldattachments => "on",
+removebigattachments => "on",
+rebuildattach => "on",
+remghostattach => "on",
+
+profile => "",
+profile2 => "",
+profileAdmin => "",
+profileAdmin2 => "",
+profileContacts => "",
+profileContacts2 => "",
+profileIM => "",
+profileIM2 => "",
+profileOptions => "",
+profileOptions2 => "",
+
+ext_edit => "",
+ext_edit2 => "",
+ext_create => "",
+ext_reorder => "",
+ext_convert => "",
+
+myprofileAdmin => "",
+myprofileAdmin2 => "",
+
+delgroup => "",
+editgroup => "",
+editAddGroup2 => "",
+modmemgr2 => "",
+assigned => "",
+assigned2 => "",
+
+reordercats => "",
+modifycatorder => "",
+modifycat => "",
+createcat => "",
+catscreen => "",
+reordercats2 => "",
+addcat => "",
+addcat2 => "",
+
+modtemplate2 => "",
+modtemp2 => "",
+modstyle => "",
+modstyle2 => "",
+modcss => "",
+modcss2 => "",
+
+modifyboard => "",
+addboard => "",
+addboard2 => "",
+reorderboards2 => "",
+boardscreen => "",
+
+smilieput => "on",
+smilieindex => "on",
+smiliemove => "on",
+addsmilies => "on",
+
+addmember => "on",
+addmember2 => "on",
+deletemultimembers => "on",
+ml => "on",
+
+mailmultimembers => "on",
+mailing2 => "on",
+
+activate => "on",
+admin_descision => "on",
+apr_regentry => "on",
+del_regentry => "on",
+rej_regentry => "on",
+view_regentry => "on",
+clean_reglog => "on",
+
+cleanerrorlog => "on",
+deleteerror => "on",
+
+modagreement2 => "on",
+modsettings2 => "on",
+advsettings2 => "on",
+referer_control2 => "",
+removeoldthreads => "",
+ipban2 => "on",
+ipban3 => "on",
+setcensor2 => "on",
+setreserve2 => "on",
+
+editbots2 => "",
+);
+
+1;

@@ -1,0 +1,41 @@
+###############################################################################
+# SendTopic.lng (SendTopic text definitions)                                  #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.5.2                                                  #
+# Packaged:       September 30, 2012                                          #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$sendtopiclngver = 'YaBB 2.5.2 $Revision: 1.1 $';
+
+%sendtopic_txt = (
+'118' => 'Topic',
+'241' => 'field!',
+'318' => 'From',
+'335' => 'Your name',
+'336' => 'Your e-mail address',
+'339' => 'Send',
+'707' => 'Send Topic',
+'708' => 'to a friend!',
+'717' => 'Recipient\'s name',
+'718' => 'Recipient\'s e-mail address',
+'error_sender_name' => 'You must insert your name.',
+'error_sender_email' => 'You must insert your e-mail.',
+'error_recipient_name' => 'You must insert the recipient\'s name.',
+'error_recipient_email' => 'You must insert the recipient\'s e-mail.',
+'error_verification' => 'The verification code is missing.', 
+);
+
+%floodtxt=(
+'1' => 'Your Verification Code is',
+'3' => 'Verification Code',
+'casewarning' => 'Please type exactly what text appears in the image. The characters must be typed in the same order, and it is case-sensitive.',
+);
+
+1;

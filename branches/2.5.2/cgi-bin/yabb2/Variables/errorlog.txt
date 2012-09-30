@@ -1,0 +1,928 @@
+1345396780|1345396780|66.249.73.22|Unable to open test|||||
+1345400776|1345400776|199.15.234.66|Oops - we don't serve your kind here. |register2||||
+1345401003|1345401003|46.119.125.130|Oops - we don't serve your kind here. |register2||||
+1345401007|1345401007|46.119.125.130|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||damenomot|3B2u7wrygV
+1345401331|1345401331|108.178.12.34|Oops - we don't serve your kind here. |register2||||
+1345403971|1345403971|166.147.120.33|You are not allowed to access this section. |||future||
+1345403975|1345403975|199.15.234.66|Oops - we don't serve your kind here. |register2||||
+1345403976|1345403976|199.15.234.66|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||InosseWex|kyung123
+1345407649|1345407649|92.5.226.37|You are not allowed to access this section. |||future||
+1345408872|1345408872|91.121.55.63|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||KessyKenobymn|1xfO3byb8K
+1345410139|1345410139|89.178.67.171|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||diengo|123456789
+1345424295|1345424295|91.207.6.179|Oops - we don't serve your kind here. |register2||||
+1345424320|1345424320|91.207.6.179|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||imczffjv|r9v94VdjnS
+1345429262|1345429262|173.242.126.21|Oops - we don't serve your kind here. |register2||||
+1345429263|1345429263|173.242.126.21|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||betsannonee|br87yRlc4N
+1345430386|1345430386|199.15.234.66|Oops - we don't serve your kind here. |register2||||
+1345432761|1345432761|195.43.128.65|Oops - we don't serve your kind here. |register2||||
+1345432840|1345432840|109.111.16.243|Oops - we don't serve your kind here. |register2||||
+1345432962|1345432962|176.119.0.12|Oops - we don't serve your kind here. |register2||||
+1345432964|1345432964|176.119.0.12|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||losimkus|ix9yC14bcY
+1345438224|1345438224|175.44.1.13|Oops - we don't serve your kind here. |register2||||
+1345438232|1345438232|175.44.1.13|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||pemeErypewame|zhenyu2012
+1345441326|1345441326|188.143.235.9|Oops - we don't serve your kind here. |register2||||
+1345441329|1345441329|188.143.235.9|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||soboffido|vlg1Ut9q6P
+1345443634|1345443634|58.22.70.95|Oops - we don't serve your kind here. |register2||||
+1345443645|1345443645|58.22.70.95|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||occacuurb|g8k2gN7yfQ
+1345444336|1345444336|175.44.3.87|Oops - we don't serve your kind here. |register2||||
+1345444342|1345444342|175.44.3.87|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||alorrygloff|zhenyu2012
+1345453429|1345453429|91.237.249.22|Oops - we don't serve your kind here. |register2||||
+1345453444|1345453444|91.237.249.22|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||ergobkja|ogz2Hu7v7H
+1345457770|1345457770|175.44.2.59|Oops - we don't serve your kind here. |register2||||
+1345457778|1345457778|175.44.2.59|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PoenteePleamy|juyuan2012
+1345461245|1345461245|199.189.105.36|Oops - we don't serve your kind here. |register2||||
+1345461246|1345461246|199.189.105.36|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||jameaaf|Dd120710
+1345461512|1345461512|193.105.210.195|Oops - we don't serve your kind here. |register2||||
+1345461519|1345461519|193.105.210.195|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||LofassugWag|rbo9Zwb62A
+1345461673|1345461673|114.245.170.125|Oops - we don't serve your kind here. |register2||||
+1345473705|1345473705|211.162.103.4|For security reasons it is not allowed to have a Displayed Name the same as the login ID. |register2||||
+1345473714|1345473714|211.162.103.4|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||dekBlelry|2CxdN8S271
+1345473892|1345473892|212.113.35.162|Unable to open ./Boards/moddocs.txt|||moddocs||
+1345475756|1345475756|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1329019390.txt||1329019390|||
+1345476889|1345476889|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1327968209.txt|print|1327968209|||
+1345476890|1345476890|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1330577130.txt|print|1330577130|||
+1345476891|1345476891|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1329773345.txt||1329773345|||
+1345476892|1345476892|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1331219194.txt||1331219194|||
+1345476893|1345476893|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1338523720.txt||1338523720|||
+1345480121|1345480121|91.236.74.149|This displayed name is already in use by another member. |register2||||
+1345481458|1345481458|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1331398685.txt|print|1331398685|||
+1345481459|1345481459|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1327885775.txt||1327885775|||
+1345481460|1345481460|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1329258491.txt||1329258491|||
+1345481461|1345481461|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1329351414.txt||1329351414|||
+1345481935|1345481935|213.186.127.12|The information you are trying to access is not available to you. ./Messages/1327004293.txt||1327004293|||
+1345482078|1345482078|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1328158420.txt|print|1328158420|||
+1345482393|1345482393|68.169.35.164|The information you are trying to access is not available to you. ./Messages/1327036329.txt|print|1327036329|||
+1345483242|1345483242|188.143.232.119|For security reasons it is not allowed to have a Displayed Name the same as the login ID. |register2||||
+1345483245|1345483245|188.143.232.119|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Aleprorce|Bo87SjD323
+1345483787|1345483787|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1331789243.txt||1331789243|||
+1345484544|1345484544|91.237.249.22|Oops - we don't serve your kind here. |register2||||
+1345484549|1345484549|91.237.249.22|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||becogaml|ogz2Hu7v7H
+1345484834|1345484834|37.215.17.220|Oops - we don't serve your kind here. |register2||||
+1345484836|1345484836|37.215.17.220|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Ferdpessak|6p97IsaffD
+1345489253|1345489253|46.119.113.185|The information you are trying to access is not available to you. ./Messages/1329918392.txt|print|1329918392|||
+1345490036|1345490036|213.186.119.133|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345494942|1345494942|49.145.114.85|Oops - we don't serve your kind here. |register2||||
+1345494944|1345494944|49.145.114.85|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Daniel Patten|T5hyzr87qE
+1345498136|1345498136|212.113.37.106|The information you are trying to access is not available to you. ./Messages/1327558591.txt||1327558591|||
+1345498518|1345498518|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1327954295.txt|print|1327954295|||
+1345498998|1345498998|69.175.50.168|The information you are trying to access is not available to you. ./Messages/1329773345.txt|print|1329773345|||
+1345504757|1345504757|158.255.7.227|Oops - we don't serve your kind here. |register2||||
+1345504772|1345504772|158.255.7.227|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||traurdend|n8p4Fp5qsB
+1345506235|1345506235|213.186.127.14|The information you are trying to access is not available to you. ./Messages/1328642211.txt||1328642211|||
+1345506600|1345506600|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1327078775.txt|print|1327078775|||
+1345506600|1345506600|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1327004119.txt||1327004119|||
+1345506601|1345506601|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1327873333.txt||1327873333|||
+1345506603|1345506603|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1328056808.txt||1328056808|||
+1345508449|1345508449|109.87.146.58|Oops - we don't serve your kind here. |register2||||
+1345509137|1345509136|199.15.234.66|Oops - we don't serve your kind here. |register2||||
+1345509162|1345509161|113.195.134.231|You are not allowed to access this section. |||future||
+1345509683|1345509683|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1328642211.txt|print|1328642211|||
+1345509684|1345509684|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1327873333.txt||1327873333|||
+1345509685|1345509685|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1328056808.txt||1328056808|||
+1345510444|1345510444|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1327792978.txt|viewdownloads||||
+1345512341|1345512341|180.76.5.146|The information you are trying to access is not available to you. ./Messages/1329948168.txt||1329948168|||
+1345512939|1345512939|66.249.73.22|Unable to open test|||||
+1345513932|1345513932|180.76.5.188|The information you are trying to access is not available to you. ./Messages/1330572208.txt||1330572208|||
+1345514528|1345514528|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1327873333.txt||1327873333|||
+1345514641|1345514641|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1327792978.txt||1327792978|||
+1345515095|1345515095|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1331665264.txt||1331665264|||
+1345515436|1345515436|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1327955167.txt||1327955167|||
+1345522533|1345522533|213.186.119.131|The information you are trying to access is not available to you. ./Messages/1329333574.txt||1329333574|||
+1345522952|1345522952|68.169.35.164|The information you are trying to access is not available to you. ./Messages/1327036329.txt|print|1327036329|||
+1345525938|1345525938|91.237.249.128|Oops - we don't serve your kind here. |register2||||
+1345525942|1345525942|91.237.249.128|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||guildwlnq|p2wj6xd9NO
+1345526254|1345526254|173.208.212.242|Oops - we don't serve your kind here. |register2||||
+1345526255|1345526255|173.208.212.242|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||carpinteyropdo|fh1rB4b6zP
+1345526988|1345526988|91.237.249.22|Oops - we don't serve your kind here. |register2||||
+1345527004|1345527004|91.237.249.22|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||clclchfa|ogz2Hu7v7H
+1345528503|1345528503|188.115.189.190|Oops - we don't serve your kind here. |register2||||
+1345528505|1345528505|188.115.189.190|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||CedeReidly|rhUoy649eA
+1345530534|1345530533|213.186.127.3|The information you are trying to access is not available to you. ./Messages/1331595989.txt||1331595989|||
+1345533911|1345533911|93.182.137.183|The information you are trying to access is not available to you. ./Messages/1327036329.txt|print|1327036329|||
+1345534808|1345534807|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1329019390.txt|print|1329019390|||
+1345534816|1345534816|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1331595989.txt|print|1331595989|||
+1345534819|1345534819|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1327940840.txt||1327940840|||
+1345536453|1345536453|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1327792978.txt|viewdownloads||||
+1345536848|1345536848|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1327792978.txt|viewdownloads||||
+1345536965|1345536965|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1327792978.txt|viewdownloads||||
+1345538128|1345538128|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1327792978.txt|viewdownloads||||
+1345538518|1345538518|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1328642211.txt|print|1328642211|||
+1345538518|1345538518|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1327873333.txt||1327873333|||
+1345538520|1345538520|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1328056808.txt||1328056808|||
+1345538529|1345538529|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1327792978.txt|viewdownloads||||
+1345538696|1345538696|213.186.127.13|The information you are trying to access is not available to you. ./Messages/1333576362.txt||1333576362|||
+1345538911|1345538911|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1327792978.txt|viewdownloads||||
+1345539072|1345539072|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1327792978.txt|viewdownloads||||
+1345539354|1345539354|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1327792978.txt|viewdownloads||||
+1345539488|1345539488|31.134.230.40|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345539671|1345539671|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1327792978.txt|viewdownloads||||
+1345540937|1345540937|188.143.232.165|Oops - we don't serve your kind here. |register2||||
+1345540940|1345540940|188.143.232.165|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||buinsbraits|2ua6Vsjx9W
+1345542730|1345542730|93.182.151.48|The information you are trying to access is not available to you. ./Messages/1330986683.txt|print|1330986683|||
+1345542979|1345542979|93.182.151.48|The information you are trying to access is not available to you. ./Messages/1330986683.txt|print|1330986683|||
+1345544189|1345544189|198.143.189.26|Oops - we don't serve your kind here. |register2||||
+1345544189|1345544189|198.143.189.26|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||tuttaduch|jDnazp972X
+1345544672|1345544672|89.169.208.230|Oops - we don't serve your kind here. |register2||||
+1345544675|1345544675|89.169.208.230|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Otopleniekjz|zks84ai1OA
+1345547090|1345547090|158.255.7.231|This displayed name is already in use by another member. |register2||||
+1345547097|1345547097|158.255.7.231|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||wallacerecore|123456789
+1345547174|1345547174|158.255.7.231|This displayed name is already in use by another member. |register2||||
+1345547213|1345547213|158.255.7.231|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||pattiwharton|123456789
+1345549108|1345549108|93.182.175.41|This displayed name is already in use by another member. |register2||||
+1345549109|1345549109|93.182.175.41|This displayed name is already in use by another member. |register2||||
+1345549112|1345549112|93.182.175.41|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||deloisbollacker|123456789
+1345549122|1345549122|93.182.175.41|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||arlenmuscat|123456789
+1345550653|1345550653|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1326995644.txt||1326995644|||
+1345551651|1345551651|193.105.210.195|Oops - we don't serve your kind here. |register2||||
+1345551658|1345551658|193.105.210.195|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PLORIASLAPE|Rj1lohn59F
+1345552008|1345552008|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1327792978.txt||1327792978|||
+1345552369|1345552369|188.143.232.211|You cannot register unless you agree to the registration agreement. |register2||||
+1345552370|1345552370|188.143.232.211|You cannot register unless you agree to the registration agreement. |register2||||
+1345552870|1345552870|158.255.7.227|Oops - we don't serve your kind here. |register2||||
+1345552877|1345552877|158.255.7.227|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||icexicondof|7dow8x1nSF
+1345553747|1345553747|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1327873333.txt||1327873333|||
+1345555737|1345555737|27.159.233.93|For security reasons it is not allowed to have a Displayed Name the same as the login ID. |register2||||
+1345555741|1345555741|27.159.233.93|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||tuwnnYveT|Oassw0rd
+1345555888|1345555888|188.143.232.165|Oops - we don't serve your kind here. |register2||||
+1345555894|1345555894|188.143.232.165|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||FlonseDemsFam|hszP2n6y7W
+1345555948|1345555948|180.76.5.89|The information you are trying to access is not available to you. ./Messages/1328158420.txt||1328158420|||
+1345559722|1345559722|180.76.6.28|The information you are trying to access is not available to you. ./Messages/1329943403.txt||1329943403|||
+1345559864|1345559863|70.88.58.3|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||A Tester|live42day
+1345559882|1345559882|70.88.58.3|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||A Tester|ignatz2u
+1345559929|1345559929|70.88.58.3|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||A Tester|bjonboy
+1345559947|1345559947|70.88.58.3|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||A Tester|2bad4you
+1345561409|1345561409|180.76.5.176|The information you are trying to access is not available to you. ./Messages/1331595989.txt||1331595989|||
+1345565064|1345565064|77.121.105.139|For security reasons it is not allowed to have a Displayed Name the same as the login ID. |register2||||
+1345565067|1345565067|77.121.105.139|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||armin-atreid|a808080
+1345565574|1345565574|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1328158420.txt||1328158420|||
+1345566004|1345566004|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1327358460.txt||1327358460|||
+1345567197|1345567197|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1328642211.txt|print|1328642211|||
+1345567198|1345567198|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1327873333.txt||1327873333|||
+1345567199|1345567199|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1328056808.txt||1328056808|||
+1345571410|1345571409|199.15.234.66|Oops - we don't serve your kind here. |register2||||
+1345571412|1345571411|199.15.234.66|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||quigFummoto|kyung123
+1345571501|1345571501|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345571501|1345571501|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345573668|1345573668|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345573668|1345573668|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345575506|1345575506|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345575506|1345575506|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345576082|1345576082|175.44.1.182|Oops - we don't serve your kind here. |register2||||
+1345576087|1345576087|175.44.1.182|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PoenteePleamy|juyuan2012
+1345576853|1345576853|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345576853|1345576853|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345577757|1345577757|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345577757|1345577757|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345579806|1345579806|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345579806|1345579806|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345580251|1345580251|120.65.234.17|Oops - we don't serve your kind here. |register2||||
+1345581322|1345581322|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1330641557.txt||1330641557|||
+1345581613|1345581613|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345581613|1345581613|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345582598|1345582598|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345582599|1345582599|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345583328|1345583328|199.15.234.66|Oops - we don't serve your kind here. |register2||||
+1345583329|1345583329|199.15.234.66|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||quigFummoto|kyung123
+1345583424|1345583424|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345583425|1345583424|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345583575|1345583575|95.27.226.10|Oops - we don't serve your kind here. |register2||||
+1345583580|1345583580|95.27.226.10|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Fooxhada|kfx7Dz9v1D
+1345584339|1345584339|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345584340|1345584339|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345585318|1345585318|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345585319|1345585319|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345586098|1345586098|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345586098|1345586098|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345586671|1345586671|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345586672|1345586672|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345587339|1345587339|199.15.234.66|Oops - we don't serve your kind here. |register2||||
+1345587339|1345587339|199.15.234.66|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||quigFummoto|kyung123
+1345587799|1345587799|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345587800|1345587799|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345588654|1345588654|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345588654|1345588654|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345589487|1345589487|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345589487|1345589487|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345589951|1345589951|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345589952|1345589952|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345591914|1345591914|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345591915|1345591915|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345591948|1345591948|84.108.31.114|For security reasons it is not allowed to have a Displayed Name the same as the login ID. |register2||||
+1345591950|1345591950|84.108.31.114|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||nlp.grusla.com|joddE275
+1345594327|1345594327|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345594327|1345594327|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345594821|1345594821|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345594822|1345594822|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345595738|1345595738|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345595738|1345595738|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345597141|1345597141|91.237.249.22|Oops - we don't serve your kind here. |register2||||
+1345597151|1345597151|91.237.249.22|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||ergobfid|ogz2Hu7v7H
+1345598931|1345598931|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345598931|1345598931|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345599343|1345599343|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1329019390.txt||1329019390|||
+1345599423|1345599423|216.59.17.164|For security reasons it is not allowed to have a Displayed Name the same as the login ID. |register2||||
+1345599435|1345599435|216.59.17.164|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Fethababs|rabbit2009
+1345600561|1345600561|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345600561|1345600561|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345602207|1345602207|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345602208|1345602208|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345603878|1345603878|198.143.184.78|Oops - we don't serve your kind here. |register2||||
+1345603900|1345603900|198.143.184.78|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PaydayHal|Preetibuffy99
+1345609690|1345609689|194.90.190.44|You are not allowed to access this section. |||future||
+1345609700|1345609700|91.224.246.56|Oops - we don't serve your kind here. |register2||||
+1345609714|1345609714|91.224.246.56|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Heremscla|46325246Aa
+1345610307|1345610307|91.237.249.95|Oops - we don't serve your kind here. |register2||||
+1345610310|1345610309|91.237.249.95|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||veliopinel|4as76JsszT
+1345610560|1345610560|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1330641557.txt||1330641557|||
+1345612178|1345612178|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1328204615.txt||1328204615|||
+1345614466|1345614466|98.202.2.109|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||abbrakile|yOasmNU532
+1345614778|1345614778|91.121.156.224|Oops - we don't serve your kind here. |register2||||
+1345614780|1345614780|91.121.156.224|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||VibleWallmica|op4Hxsh35E
+1345618575|1345618575|91.237.249.128|Oops - we don't serve your kind here. |register2||||
+1345618578|1345618578|91.237.249.128|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||gsuildwqhd|swp7j7P4wW
+1345620375|1345620375|194.90.190.38|You are not allowed to access this section. |||future||
+1345622979|1345622979|198.143.189.26|Oops - we don't serve your kind here. |register2||||
+1345622979|1345622979|198.143.189.26|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||tuttaduch|jDnazp972X
+1345629682|1345629682|188.72.220.128|Oops - we don't serve your kind here. |register2||||
+1345629685|1345629685|188.72.220.128|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Vikusia|ic6jfXY383
+1345630190|1345630190|178.210.32.196|Oops - we don't serve your kind here. |register2||||
+1345630193|1345630193|178.210.32.196|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||toplistg|J37qp4bqtN
+1345632327|1345632326|66.249.73.22|The information you are trying to access is not available to you. ./Messages/1327873333.txt||1327873333|||
+1345632769|1345632769|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1327792978.txt|print|1327792978|||
+1345632770|1345632770|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1327967962.txt||1327967962|||
+1345632771|1345632771|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1329920271.txt||1329920271|||
+1345633365|1345633365|91.237.249.128|Oops - we don't serve your kind here. |register2||||
+1345633367|1345633367|91.237.249.128|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||warssfpx|swp7j7P4wW
+1345635312|1345635311|175.44.2.54|Oops - we don't serve your kind here. |register2||||
+1345635319|1345635319|175.44.2.54|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Friewlywheesy|zhenyu2012
+1345637734|1345637733|199.15.234.137|Oops - we don't serve your kind here. |register2||||
+1345637734|1345637734|199.15.234.137|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||hxzovjagq|8ivcc6pQ8C
+1345637859|1345637859|175.44.17.106|Oops - we don't serve your kind here. |register2||||
+1345637867|1345637867|175.44.17.106|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Kasynabaddy|W43hju2bpT
+1345640939|1345640939|121.205.248.254|You cannot register unless you agree to the registration agreement. |register2||||
+1345640942|1345640942|121.205.248.254|<b>ALERT!!</b> Form Spoofing Detected coming from IP address: 121.205.248.254|register2||||
+1345647562|1345647562|91.237.249.21|Oops - we don't serve your kind here. |register2||||
+1345647568|1345647568|91.237.249.21|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||asdasdzvjn|G3s1to1poE
+1345647896|1345647896|91.237.249.21|Oops - we don't serve your kind here. |register2||||
+1345647911|1345647911|91.237.249.21|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||ghffueexna|G3s1to1poE
+1345664935|1345664935|109.163.226.218|Oops - we don't serve your kind here. |register2||||
+1345664937|1345664937|109.163.226.218|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||gaineedeape|ntk7T2b7nW
+1345666263|1345666263|158.255.7.231|This displayed name is already in use by another member. |register2||||
+1345666285|1345666285|158.255.7.231|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||judithbrisbane|123456789
+1345666355|1345666355|222.77.206.8|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||dsawergnjy|d68pyfuH2V
+1345667814|1345667814|66.249.73.22|This field only accepts numbers from 0-9 Thread ID: 'dboaspbazx'||dboaspbazx|||
+1345668666|1345668666|91.237.249.128|Oops - we don't serve your kind here. |register2||||
+1345668670|1345668669|91.237.249.128|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||disabbrw|swp7j7P4wW
+1345671581|1345671581|208.115.113.88|Sorry, this service is for registered members only! |viewprofile||||
+1345672718|1345672717|121.205.241.185|Oops - we don't serve your kind here. |register2||||
+1345672725|1345672725|121.205.241.185|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||fdskakxzld|d68pyfuH2V
+1345674099|1345674099|211.100.52.196|Oops - we don't serve your kind here. |register2||||
+1345674113|1345674113|211.100.52.196|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||sammyph|tiddlywadder12
+1345680618|1345680618|212.87.179.10|Oops - we don't serve your kind here. |register2||||
+1345680621|1345680621|212.87.179.10|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||xxZUMAxx|ws2u39idPN
+1345686052|1345686052|61.55.141.10|You are not allowed to access this section. |||future||
+1345686574|1345686574|175.44.2.54|Oops - we don't serve your kind here. |register2||||
+1345686579|1345686579|175.44.2.54|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Friewlywheesy|zhenyu2012
+1345693781|1345693781|188.32.91.142|Oops - we don't serve your kind here. |register2||||
+1345693785|1345693785|188.32.91.142|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Tardhadyb|fer7hnbHbY
+1345694599|1345694599|77.120.199.195|Oops - we don't serve your kind here. |register2||||
+1345694614|1345694614|77.120.199.195|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||tanyunresse|4g3czEll2H
+1345697360|1345697360|89.70.247.240|Oops - we don't serve your kind here. |register2||||
+1345697362|1345697362|89.70.247.240|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||hetypomek|23yeonG9vE
+1345697703|1345697699|121.205.249.154|Oops - we don't serve your kind here. |register2||||
+1345697708|1345697708|121.205.249.154|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||jklsoeibmx|d68pyfuH2V
+1345703958|1345703958|112.101.64.208|Oops - we don't serve your kind here. |register2||||
+1345703961|1345703961|112.101.64.208|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Topgivino|8hhax59cPH
+1345705766|1345705766|95.25.147.156|There is an invalid character detected in the User ID field. Valid Characters are Letters, Numbers, Spaces and ( [ ] # % + , - | . : = ? @ ^ _ )|register2||||
+1345706929|1345706929|95.25.17.15|Oops - we don't serve your kind here. |register2||||
+1345707910|1345707910|198.148.106.3|Oops - we don't serve your kind here. |register2||||
+1345712049|1345712049|82.193.109.52|Oops - we don't serve your kind here. |register2||||
+1345712051|1345712051|82.193.109.52|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Envinly|1fVlb5c6sQ
+1345713570|1345713570|175.44.0.5|This displayed name is already in use by another member. |register2||||
+1345713575|1345713575|175.44.0.5|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||pemeErypewame|juyuan2012
+1345714300|1345714300|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345714971|1345714970|194.90.190.38|You are not allowed to access this section. |||future||
+1345718400|1345718400|220.161.148.150|Oops - we don't serve your kind here. |register2||||
+1345718402|1345718402|220.161.148.150|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||fupsaupsblump|8u3tCarv9D
+1345725657|1345725657|91.237.249.22|Oops - we don't serve your kind here. |register2||||
+1345725661|1345725661|91.237.249.22|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||clclcqap|ogz2Hu7v7H
+1345726251|1345726251|175.44.27.28|Oops - we don't serve your kind here. |register2||||
+1345726257|1345726257|175.44.27.28|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||pemeErypewame|juyuan2012
+1345729328|1345729322|117.26.77.170|Oops - we don't serve your kind here. |register2||||
+1345729340|1345729336|117.26.77.170|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||knjuwydgac|d68pyfuH2V
+1345729655|1345729654|176.31.18.156|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||yuanbxrwb|Ab7f23rSV
+1345731862|1345731860|117.26.195.92|Oops - we don't serve your kind here. |register2||||
+1345731864|1345731864|117.26.195.92|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||jnbaxfyewl|d68pyfuH2V
+1345731927|1345731927|124.201.122.43|Oops - we don't serve your kind here. |register2||||
+1345731939|1345731939|124.201.122.43|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Jasonterolkdt5|Fjwvuyoue
+1345743447|1345743447|146.0.74.103|Oops - we don't serve your kind here. |register2||||
+1345743449|1345743449|146.0.74.103|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||attaxUtilaxy|qq123456789
+1345745511|1345745511|190.202.87.134|Oops - we don't serve your kind here. |register2||||
+1345745526|1345745526|190.202.87.134|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||buy viagra now online|lrI6bvb14R
+1345748091|1345748091|180.76.5.54|The information you are trying to access is not available to you. ./Messages/1329948168.txt||1329948168|||
+1345749115|1345749115|95.25.0.245|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||deniska|49kslfUv3Y
+1345750627|1345750627|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1331583656.txt|print|1331583656|||
+1345751517|1345751517|50.53.170.37|Untrapped Error :<br />Nested quantifiers in regex; marked by <-- HERE in m/ .+{ <-- HERE 3}/ at ./Admin/Backup.pl line 462.Compilation failed in require at AdminIndex.pl line 119.|backupsettings|||admin|
+1345752042|1345752042|50.53.170.37|Untrapped Error :<br />syntax error at ./Admin/Backup.pl line 464, near "0]"Compilation failed in require at AdminIndex.pl line 119.|backupsettings|||admin|
+1345752258|1345752257|50.53.170.37|Untrapped Error :<br />syntax error at ./Admin/Backup.pl line 463, near "/;"Compilation failed in require at AdminIndex.pl line 119.|backupsettings|||admin|
+1345752667|1345752667|31.11.143.37|Oops - we don't serve your kind here. |register2||||
+1345752669|1345752669|31.11.143.37|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||marutefes|Hn1ns9hk2L
+1345752812|1345752812|180.76.5.59|The information you are trying to access is not available to you. ./Messages/1331219194.txt||1331219194|||
+1345752867|1345752866|50.53.170.37|Untrapped Error :<br />Can't modify array dereference in substitution (s///) at ./Admin/Backup.pl line 464, near "s/ .+//,"Compilation failed in require at AdminIndex.pl line 119.|backupsettings|||admin|
+1345755944|1345755943|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1329920271.txt||1329920271|||
+1345756105|1345756105|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1327873333.txt||1327873333|||
+1345756427|1345756427|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1331398685.txt|print|1331398685|||
+1345756589|1345756589|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1328642211.txt|print|1328642211|||
+1345757878|1345757878|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1329019390.txt||1329019390|||
+1345759489|1345759489|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1329918392.txt||1329918392|||
+1345762125|1345762125|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1326995644.txt||1326995644|||
+1345762126|1345762126|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1330577130.txt||1330577130|||
+1345762127|1345762127|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1342818585.txt||1342818585|||
+1345764421|1345764421|108.178.58.132|Oops - we don't serve your kind here. |register2||||
+1345764424|1345764424|108.178.58.132|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||bwilyqvr|Bassonee12
+1345765390|1345765390|180.76.5.147|The information you are trying to access is not available to you. ./Messages/1329333574.txt||1329333574|||
+1345767510|1345767510|94.142.135.48|Oops - we don't serve your kind here. |register2||||
+1345767512|1345767512|94.142.135.48|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||ferjuiklpo|olkjdsuiyt
+1345768916|1345768916|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345768917|1345768917|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1328233475.txt||1328233475|||
+1345775624|1345775624|93.182.171.4|The information you are trying to access is not available to you. ./Messages/1329862427.txt||1329862427|||
+1345780038|1345780038|91.236.74.171|Oops - we don't serve your kind here. |register2||||
+1345780040|1345780040|91.236.74.171|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Iceprogrept|I1fc6av5iB
+1345782659|1345782659|76.169.72.122|Oops - we don't serve your kind here. |register2||||
+1345782664|1345782664|76.169.72.122|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||mediabox0|4tq9G8ztzV
+1345783488|1345783488|50.53.170.37|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||admin|BlackKat
+1345785756|1345785756|5.34.24.209|Oops - we don't serve your kind here. |register2||||
+1345785759|1345785759|5.34.24.209|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Turneriff|y88Dg3zrdG
+1345787601|1345787601|122.72.0.1|Oops - we don't serve your kind here. |register2||||
+1345787680|1345787680|122.72.0.1|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||masvann|5492698qweasdzxc
+1345788472|1345788472|180.76.5.183|The information you are trying to access is not available to you. ./Messages/1330975279.txt||1330975279|||
+1345791219|1345791219|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1330641557.txt||1330641557|||
+1345793588|1345793588|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1327873333.txt||1327873333|||
+1345794383|1345794383|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1327004119.txt||1327004119|||
+1345794880|1345794880|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1328642211.txt||1328642211|||
+1345795178|1345795178|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1328712179.txt||1328712179|||
+1345795277|1345795277|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1330999896.txt|print|1330999896|||
+1345795675|1345795675|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1328642211.txt||1328642211|||
+1345797957|1345797957|222.186.17.99|Unable to open ./Boards/moddocs.txt|||moddocs||
+1345797961|1345797961|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1329333574.txt||1329333574|||
+1345798259|1345798259|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1327358460.txt||1327358460|||
+1345799360|1345799360|95.27.158.31|Oops - we don't serve your kind here. |register2||||
+1345799363|1345799363|95.27.158.31|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||ringfilisd|ore21aFa9W
+1345802616|1345802615|199.15.234.137|Oops - we don't serve your kind here. |register2||||
+1345802617|1345802617|199.15.234.137|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||hirchyqyn|8ivcc6pQ8C
+1345802852|1345802852|194.90.190.38|You are not allowed to access this section. |||future||
+1345803893|1345803893|180.76.5.51|The information you are trying to access is not available to you. ./Messages/1327358460.txt||1327358460|||
+1345804289|1345804289|59.57.14.123|The information you are trying to access is not available to you. ./Messages/1327036329.txt|print|1327036329|||
+1345809797|1345809797|95.79.96.132|Oops - we don't serve your kind here. |register2||||
+1345809800|1345809800|95.79.96.132|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||UsaksToorosof|3tks7P1dwN
+1345813442|1345813441|91.237.249.128|Oops - we don't serve your kind here. |register2||||
+1345813444|1345813444|91.237.249.128|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||warssoez|swp7j7P4wW
+1345814169|1345814169|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1328204615.txt||1328204615|||
+1345814207|1345814207|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345814207|1345814207|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1328712179.txt||1328712179|||
+1345814222|1345814222|146.0.74.103|Oops - we don't serve your kind here. |register2||||
+1345814225|1345814225|146.0.74.103|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||attaxUtilaxy|qq123456789
+1345815166|1345815166|192.162.19.194|The information you are trying to access is not available to you. ./Messages/1330564427.txt|print|1330564427|||
+1345816241|1345816241|178.187.185.243|Oops - we don't serve your kind here. |register2||||
+1345816245|1345816245|178.187.185.243|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||unorwayok|vresphjbs5
+1345818228|1345818228|91.237.249.22|Oops - we don't serve your kind here. |register2||||
+1345818236|1345818236|91.237.249.22|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||clclcjcs|ogz2Hu7v7H
+1345819170|1345819170|81.61.52.62|Oops - we don't serve your kind here. |register2||||
+1345819788|1345819787|157.55.17.151|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345819790|1345819790|157.56.229.138|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345821194|1345821194|109.163.226.218|Oops - we don't serve your kind here. |register2||||
+1345821196|1345821196|109.163.226.218|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||RutHeerSnanna|T7sll8dv7S
+1345821197|1345821197|157.55.17.151|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345821201|1345821201|207.46.199.21|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345822374|1345822374|157.55.17.151|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345823149|1345823149|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1326995644.txt||1326995644|||
+1345823150|1345823150|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1326995644.txt||1326995644|||
+1345823151|1345823151|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1329923728.txt||1329923728|||
+1345823536|1345823536|157.55.17.151|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345824659|1345824659|157.55.17.151|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345824889|1345824889|207.46.199.21|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345824933|1345824933|59.57.14.123|The information you are trying to access is not available to you. ./Messages/1327792978.txt||1327792978|||
+1345825709|1345825709|157.55.17.151|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345825831|1345825831|91.237.249.95|Oops - we don't serve your kind here. |register2||||
+1345825833|1345825833|91.237.249.95|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||veliopinet|4as76JsszT
+1345826038|1345826038|77.120.199.195|For security reasons it is not allowed to have a Displayed Name the same as the login ID. |register2||||
+1345826057|1345826057|207.46.204.210|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345826068|1345826068|77.120.199.195|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||SmeastePasy|18Rgu8hptJ
+1345826728|1345826728|157.55.17.151|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345827661|1345827661|157.55.17.151|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345828589|1345828589|157.55.17.151|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345829461|1345829461|157.55.17.151|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345829741|1345829741|207.46.204.210|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345830364|1345830364|70.88.58.7|You need to fill in the correct admin password to make changes to this profile. |profileCheck2|||anadmin|&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;
+1345830389|1345830389|157.55.17.151|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345831260|1345831259|157.55.17.151|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345833358|1345833357|180.76.5.186|The information you are trying to access is not available to you. ./Messages/1331481138.txt||1331481138|||
+1345833867|1345833867|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1329258491.txt|print|1329258491|||
+1345833868|1345833868|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345836241|1345836241|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1331219194.txt|print|1331219194|||
+1345837008|1345837008|2.121.108.90|You are not allowed to access this section. |||future||
+1345839463|1345839463|180.76.5.146|The information you are trying to access is not available to you. ./Messages/1331225040.txt||1331225040|||
+1345840790|1345840790|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345840792|1345840792|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1329714664.txt||1329714664|||
+1345840793|1345840793|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1331789243.txt||1331789243|||
+1345842492|1345842492|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1332292946.txt||1332292946|||
+1345845124|1345845124|180.76.5.144|The information you are trying to access is not available to you. ./Messages/1331059373.txt||1331059373|||
+1345846948|1345846948|74.120.15.150|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345846969|1345846969|77.247.181.165|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345846982|1345846982|77.247.181.162|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345846990|1345846990|87.236.194.191|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345846996|1345846995|212.84.206.250|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345846999|1345846999|78.108.63.44|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345847002|1345847002|109.163.233.205|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345847014|1345847014|209.17.191.117|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345847015|1345847015|96.44.189.102|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345847018|1345847018|96.44.189.102|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345847020|1345847020|93.182.129.84|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345847027|1345847027|212.84.206.250|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345847033|1345847033|176.61.137.221|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345847035|1345847035|146.185.23.179|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345847039|1345847039|88.198.100.230|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345847051|1345847051|31.172.30.3|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345847055|1345847055|77.247.181.165|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345847060|1345847060|77.247.181.163|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345847064|1345847064|146.185.23.179|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345847069|1345847069|77.247.181.163|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345847071|1345847071|81.170.186.175|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345848052|1345848052|180.76.5.111|The information you are trying to access is not available to you. ./Messages/1327967962.txt||1327967962|||
+1345849764|1345849764|62.31.203.252|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||xnoddyx|cyber1973
+1345849778|1345849778|62.31.203.252|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||xnoddyx|cybergames
+1345849790|1345849789|62.31.203.252|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||xnoddyx|test1973
+1345853421|1345853421|91.237.249.128|Oops - we don't serve your kind here. |register2||||
+1345853423|1345853423|91.237.249.128|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||warssmze|swp7j7P4wW
+1345853622|1345853622|180.76.5.62|The information you are trying to access is not available to you. ./Messages/1327358460.txt||1327358460|||
+1345855067|1345855067|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1329176379.txt|print|1329176379|||
+1345855068|1345855068|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1329860280.txt||1329860280|||
+1345859427|1345859427|199.15.234.137|Oops - we don't serve your kind here. |register2||||
+1345859429|1345859429|199.15.234.137|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||ikyrbynev|8ivcc6pQ8C
+1345860973|1345860973|59.57.14.123|The information you are trying to access is not available to you. ./Messages/1328642211.txt|print|1328642211|||
+1345862443|1345862443|180.76.5.48|The information you are trying to access is not available to you. ./Messages/1327004293.txt||1327004293|||
+1345862619|1345862619|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1329258491.txt|print|1329258491|||
+1345862620|1345862620|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345863263|1345863263|75.135.221.202|You are not allowed to access this section. |||future||
+1345868282|1345868282|180.76.5.87|The information you are trying to access is not available to you. ./Messages/1330975279.txt||1330975279|||
+1345868801|1345868801|222.76.234.47|Oops - we don't serve your kind here. |register2||||
+1345871469|1345871469|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1329920271.txt||1329920271|||
+1345871724|1345871724|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1327873333.txt||1327873333|||
+1345872235|1345872235|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1331398685.txt|print|1331398685|||
+1345872490|1345872490|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1328642211.txt|print|1328642211|||
+1345872575|1345872575|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1329019390.txt||1329019390|||
+1345875461|1345875460|91.237.249.128|Oops - we don't serve your kind here. |register2||||
+1345875463|1345875463|91.237.249.128|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||gsuildwnjk|swp7j7P4wW
+1345882228|1345882227|180.76.5.51|The information you are trying to access is not available to you. ./Messages/1330581931.txt||1330581931|||
+1345884179|1345884179|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1329176379.txt|print|1329176379|||
+1345884180|1345884180|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1329860280.txt||1329860280|||
+1345886766|1345886765|68.169.35.164|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345886912|1345886912|180.76.5.157|The information you are trying to access is not available to you. ./Messages/1332292946.txt||1332292946|||
+1345887669|1345887669|194.90.190.38|You are not allowed to access this section. |||future||
+1345887932|1345887932|157.55.17.151|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345887936|1345887936|157.55.112.206|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345888293|1345888293|70.88.58.3|You need to fill in the correct admin password to make changes to this profile. |profileCheck2|||anadmin|admin
+1345890439|1345890439|123.164.66.69|Oops - we don't serve your kind here. |register2||||
+1345890442|1345890442|123.164.66.69|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||bifytafesib|zzd4nFu88U
+1345891620|1345891620|157.55.112.206|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345891695|1345891695|180.76.6.211|The information you are trying to access is not available to you. ./Messages/1329839152.txt||1329839152|||
+1345891896|1345891896|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345891927|1345891927|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1329860280.txt||1329860280|||
+1345894901|1345894901|80.82.66.232|Oops - we don't serve your kind here. |register2||||
+1345894903|1345894903|80.82.66.232|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||VosseChoome|s37Rh1ibtN
+1345894970|1345894970|112.111.174.97|Oops - we don't serve your kind here. |register2||||
+1345894977|1345894977|112.111.174.97|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||appamibof|jDnazp972X
+1345895075|1345895075|2.121.108.90|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||depablo|wu4u8#e6AJeS 
+1345895087|1345895087|2.121.108.90|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||John|wu4u8#e6AJeS 
+1345895317|1345895317|2.121.108.90|You are not allowed to access this section. |||future|John|
+1345895335|1345895335|2.121.108.90|You are not allowed to access this section. |||future|John|
+1345895477|1345895477|2.121.108.90|You are not allowed to access this section. |||future|John|
+1345895713|1345895713|2.121.108.90|You are not allowed to access this section. ||1345162394|future|John|
+1345896571|1345896571|2.121.108.90|You are not allowed to access this section. |||future|John|
+1345899930|1345899930|192.162.19.196|Oops - we don't serve your kind here. |register2||||
+1345899932|1345899932|192.162.19.196|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||wewalteld|h5W1iwz4xH
+1345901710|1345901710|91.237.249.21|Oops - we don't serve your kind here. |register2||||
+1345901713|1345901713|91.237.249.21|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||ghffueefis|G3s1to1poE
+1345902664|1345902664|91.237.249.128|Oops - we don't serve your kind here. |register2||||
+1345902667|1345902666|91.237.249.128|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||gsuildwwzd|swp7j7P4wW
+1345902784|1345902784|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1329176379.txt|print|1329176379|||
+1345902785|1345902785|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1329860280.txt||1329860280|||
+1345904349|1345904349|175.44.0.12|Oops - we don't serve your kind here. |register2||||
+1345904360|1345904360|175.44.0.12|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||pemeErypewame|zhenyu2012
+1345905925|1345905925|180.76.5.143|The information you are trying to access is not available to you. ./Messages/1329176379.txt||1329176379|||
+1345906850|1345906850|91.237.249.22|Oops - we don't serve your kind here. |register2||||
+1345906852|1345906852|91.237.249.22|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||ergobhpg|ogz2Hu7v7H
+1345910240|1345910239|70.88.58.7|You are trying to send a personal message to too many users at once. This is being interpreted as possible spamming. |imsend2|||ATester|
+1345910606|1345910606|210.246.88.46|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||couffDactcauh|v1Tr64cigQ
+1345912749|1345912749|208.115.113.88|Sorry, this service is for registered members only! |viewprofile||||
+1345912779|1345912779|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1327873869.txt||1327873869|||
+1345912781|1345912781|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1329839152.txt||1329839152|||
+1345913656|1345913656|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1327873333.txt||1327873333|||
+1345913814|1345913814|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1327004119.txt||1327004119|||
+1345913971|1345913971|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1328642211.txt||1328642211|||
+1345914285|1345914285|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1328712179.txt||1328712179|||
+1345914442|1345914442|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1330999896.txt|print|1330999896|||
+1345914757|1345914756|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1328642211.txt||1328642211|||
+1345915522|1345915515|121.205.242.152|For security reasons it is not allowed to have a Displayed Name the same as the login ID. |register2||||
+1345915544|1345915538|121.205.242.152|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||jdtqqYzyT|Oassw0rd
+1345916413|1345916413|2.121.108.90|Your Current Password is incorrect |profileCheck2|||John|hvacman1690
+1345916679|1345916679|91.207.8.246|Oops - we don't serve your kind here. |register2||||
+1345916682|1345916682|91.207.8.246|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||LorSorgeTar|wqiqI43q7U
+1345918371|1345918371|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1329333574.txt||1329333574|||
+1345919220|1345919220|180.76.5.153|The information you are trying to access is not available to you. ./Messages/1327953930.txt||1327953930|||
+1345919313|1345919313|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1327358460.txt||1327358460|||
+1345919604|1345919604|91.237.249.21|Oops - we don't serve your kind here. |register2||||
+1345919607|1345919607|91.237.249.21|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||asdasdzphb|G3s1to1poE
+1345919649|1345919649|94.142.135.48|Oops - we don't serve your kind here. |register2||||
+1345919652|1345919652|94.142.135.48|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||ferjuiklpo|olkjdsuiyt
+1345921811|1345921811|208.115.111.72|Sorry, this service is for registered members only! |viewprofile||||
+1345921843|1345921843|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1329839152.txt||1329839152|||
+1345926484|1345926483|178.33.44.75|Oops - we don't serve your kind here. |register2||||
+1345930527|1345930527|91.237.249.128|Oops - we don't serve your kind here. |register2||||
+1345930529|1345930529|91.237.249.128|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||warssomu|swp7j7P4wW
+1345931438|1345931438|199.15.234.139|The information you are trying to access is not available to you. ./Messages/1327873333.txt|print|1327873333|||
+1345935200|1345935200|208.115.111.72|Unable to open test|RSSrecent||||
+1345937740|1345937740|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1327004119.txt||1327004119|||
+1345940207|1345940207|199.59.60.212|Oops - we don't serve your kind here. |register2||||
+1345940209|1345940209|199.59.60.212|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Anaescats|q71Bpk7vwC
+1345941241|1345941241|50.53.170.37|You need to fill in the correct admin password to make changes to this profile. |profileCheck2|||admin|BlackKat
+1345941304|1345941304|50.53.170.37|You need to fill in the correct admin password to make changes to this profile. |profileCheck2|||admin|BlackKat
+1345943014|1345943014|91.207.6.181|Oops - we don't serve your kind here. |register2||||
+1345943020|1345943020|91.207.6.181|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||caakgkiqkcfy|n5dor18OcD
+1345943570|1345943570|188.64.189.113|Oops - we don't serve your kind here. |register2||||
+1345943572|1345943572|188.64.189.113|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||indictumn|71uwbeL2fY
+1345944182|1345944182|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1327968039.txt||1327968039|||
+1345945300|1345945300|216.59.17.164|For security reasons it is not allowed to have a Displayed Name the same as the login ID. |register2||||
+1345945306|1345945306|216.59.17.164|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||CloneeIcelula|Rabbit2011
+1345945953|1345945953|180.76.5.168|The information you are trying to access is not available to you. ./Messages/1329773345.txt||1329773345|||
+1345946816|1345946816|62.31.203.252|Unable to open ./Messages/.txt<br /><b>Verbose</b>: No such file or directory|viewdownloads|||john1|
+1345946871|1345946871|62.31.203.252|Unable to open ./Messages/.txt<br /><b>Verbose</b>: No such file or directory|viewdownloads|||john1|
+1345948431|1345948431|94.142.135.48|Oops - we don't serve your kind here. |register2||||
+1345948433|1345948433|94.142.135.48|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||ferjuiklpo|olkjdsuiyt
+1345950973|1345950973|46.119.127.145|Oops - we don't serve your kind here. |register2||||
+1345950976|1345950976|46.119.127.145|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Peftdeewers|gT3qllu93P
+1345951033|1345951033|91.236.74.147|Oops - we don't serve your kind here. |register2||||
+1345951045|1345951045|91.236.74.147|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||lisapood|41zNsc9gyV
+1345952436|1345952436|91.236.74.147|Oops - we don't serve your kind here. |register2||||
+1345952480|1345952480|91.236.74.147|You are not allowed to access this section. |||future||
+1345952484|1345952484|91.236.74.147|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||joanpopv|41zNsc9gyV
+1345952587|1345952587|46.119.113.185|The information you are trying to access is not available to you. ./Messages/1329918392.txt|print|1329918392|||
+1345952957|1345952957|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1338523720.txt|print|1338523720|||
+1345952958|1345952958|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1330986683.txt||1330986683|||
+1345953516|1345953516|91.237.249.128|Oops - we don't serve your kind here. |register2||||
+1345953518|1345953518|91.237.249.128|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||warssslh|swp7j7P4wW
+1345953617|1345953617|91.236.74.151|Oops - we don't serve your kind here. |register2||||
+1345953620|1345953620|91.236.74.151|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||FedoEpheddy|5vkfk1Vi2V
+1345953644|1345953644|91.236.74.147|Oops - we don't serve your kind here. |register2||||
+1345953655|1345953655|91.236.74.147|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||sammpoov|41zNsc9gyV
+1345954522|1345954522|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1331219194.txt|print|1331219194|||
+1345956124|1345956124|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1329918392.txt||1329918392|||
+1345956239|1345956239|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1332292946.txt||1332292946|||
+1345956582|1345956582|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1327873333.txt||1327873333|||
+1345957445|1345957444|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1327873333.txt|print|1327873333|||
+1345957446|1345957446|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1329862427.txt||1329862427|||
+1345957920|1345957920|91.207.8.246|Oops - we don't serve your kind here. |register2||||
+1345957923|1345957923|91.207.8.246|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||LorSorgeTar|wqiqI43q7U
+1345958410|1345958410|199.15.234.139|The information you are trying to access is not available to you. ./Messages/1327873333.txt|print|1327873333|||
+1345958648|1345958648|180.76.5.176|The information you are trying to access is not available to you. ./Messages/1330975279.txt||1330975279|||
+1345960785|1345960785|66.249.68.48|Unable to open ./Boards/intros.txt|RSSboard||intros||
+1345963411|1345963411|58.22.98.29|You are not allowed to access this section. ||1345162394|future||
+1345963672|1345963672|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1329773345.txt|print|1329773345|||
+1345963673|1345963673|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1330581931.txt|print|1330581931|||
+1345963674|1345963674|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1331225040.txt|print|1331225040|||
+1345963675|1345963675|208.115.111.72|Sorry, this service is for registered members only! |viewprofile||||
+1345963705|1345963705|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1329920271.txt||1329920271|||
+1345966717|1345966716|46.119.127.145|Oops - we don't serve your kind here. |register2||||
+1345966720|1345966720|46.119.127.145|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||doollabuple|aXgflp591C
+1345967105|1345967105|59.57.14.123|The information you are trying to access is not available to you. ./Messages/1327792978.txt||1327792978|||
+1345967287|1345967287|188.234.6.198|Oops - we don't serve your kind here. |register2||||
+1345967290|1345967290|188.234.6.198|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Kniveshlvv|3G3n3kvkuE
+1345970557|1345970557|180.76.5.190|The information you are trying to access is not available to you. ./Messages/1327968209.txt||1327968209|||
+1345972248|1345972248|198.143.189.26|Oops - we don't serve your kind here. |register2||||
+1345972248|1345972248|198.143.189.26|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||tuttaduch|jDnazp972X
+1345972744|1345972744|91.237.249.128|Oops - we don't serve your kind here. |register2||||
+1345972746|1345972746|91.237.249.128|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||warssnxo|swp7j7P4wW
+1345973671|1345973671|159.224.130.96|The information you are trying to access is not available to you. ./Messages/1330564427.txt||1330564427|||
+1345975927|1345975927|91.237.249.22|Oops - we don't serve your kind here. |register2||||
+1345975929|1345975929|91.237.249.22|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||ergobbqa|ogz2Hu7v7H
+1345977215|1345977215|91.237.249.59|Oops - we don't serve your kind here. |register2||||
+1345977219|1345977219|91.237.249.59|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||chassisparts|2Kglog79vR
+1345982602|1345982602|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1332292946.txt||1332292946|||
+1345984653|1345984653|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1330581931.txt||1330581931|||
+1345985514|1345985514|194.90.190.38|You are not allowed to access this section. |||future||
+1345989579|1345989579|91.237.249.128|Oops - we don't serve your kind here. |register2||||
+1345989582|1345989582|91.237.249.128|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||disabvjb|swp7j7P4wW
+1345989820|1345989820|46.17.96.168|The information you are trying to access is not available to you. ./Messages/1330564427.txt||1330564427|||
+1345989988|1345989988|65.52.108.224|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1345992108|1345992108|208.115.111.72|Unable to open ./Boards/moddocs.txt|RSSboard||moddocs||
+1345992115|1345992115|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1327873333.txt||1327873333|||
+1345992232|1345992232|216.99.149.206|The information you are trying to access is not available to you. ./Messages/1327036329.txt|print|1327036329|||
+1345992232|1345992232|216.99.149.206|The information you are trying to access is not available to you. ./Messages/1328642211.txt|print|1328642211|||
+1345992245|1345992245|216.99.149.206|The information you are trying to access is not available to you. ./Messages/1327036329.txt|print|1327036329|||
+1345992245|1345992245|216.99.149.206|The information you are trying to access is not available to you. ./Messages/1328642211.txt|print|1328642211|||
+1345992846|1345992846|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1331842994.txt||1331842994|||
+1345993028|1345993028|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1331398685.txt|print|1331398685|||
+1345993199|1345993199|59.57.14.123|The information you are trying to access is not available to you. ./Messages/1327792978.txt||1327792978|||
+1345993572|1345993572|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1328642211.txt|print|1328642211|||
+1345994362|1345994362|37.59.131.9|You are not allowed to access this section. ||1345162394|future||
+1345995557|1345995557|216.99.152.116|The information you are trying to access is not available to you. ./Messages/1327036329.txt|print|1327036329|||
+1345995557|1345995557|216.99.152.116|The information you are trying to access is not available to you. ./Messages/1328642211.txt|print|1328642211|||
+1345995840|1345995840|216.99.152.116|The information you are trying to access is not available to you. ./Messages/1327036329.txt|print|1327036329|||
+1345995840|1345995840|216.99.152.116|The information you are trying to access is not available to you. ./Messages/1328642211.txt|print|1328642211|||
+1345997685|1345997685|180.76.5.149|The information you are trying to access is not available to you. ./Messages/1333576362.txt||1333576362|||
+1345999523|1345999523|208.115.113.88|Sorry, this service is for registered members only! |viewprofile||||
+1346000236|1346000236|222.186.17.99|Unable to open ./Boards/moddocs.txt|||moddocs||
+1346000572|1346000572|2.121.108.90|You are not allowed to access this section. ||1345994485|future||
+1346004295|1346004295|62.31.203.252|You are not allowed to access this section. ||1345994485|future||
+1346004642|1346004642|89.252.58.228|Oops - we don't serve your kind here. |register2||||
+1346004645|1346004645|89.252.58.228|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||NereNoumep|z8dCu1cd3A
+1346005002|1346005002|89.252.58.228|Oops - we don't serve your kind here. |register2||||
+1346005008|1346005008|89.252.58.228|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||NereNoumep|z8dCu1cd3A
+1346005019|1346005019|92.5.236.42|You are not allowed to access this section. |||future||
+1346006968|1346006967|91.237.249.128|Oops - we don't serve your kind here. |register2||||
+1346006970|1346006970|91.237.249.128|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||gsuildwgma|swp7j7P4wW
+1346009021|1346009020|91.207.6.181|Oops - we don't serve your kind here. |register2||||
+1346009025|1346009025|91.207.6.181|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||guicowhmdnjw|n5dor18OcD
+1346010708|1346010708|118.26.56.180|Oops - we don't serve your kind here. |register2||||
+1346012702|1346012702|92.5.236.42|Sorry, this service is for registered members only! |mycenter||||
+1346017258|1346017258|95.25.228.45|Oops - we don't serve your kind here. |register2||||
+1346017264|1346017264|95.25.228.45|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||gliness|fue2jSq63L
+1346017478|1346017478|95.25.228.45|Oops - we don't serve your kind here. |register2||||
+1346017482|1346017482|95.25.228.45|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||gliness|fue2jSq63L
+1346017618|1346017618|31.134.230.40|Oops - we don't serve your kind here. |register2||||
+1346017621|1346017621|31.134.230.40|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||MrSmithXse|BypeUnpamyJap
+1346019238|1346019238|46.119.127.145|Oops - we don't serve your kind here. |register2||||
+1346019241|1346019241|46.119.127.145|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Peftdeewers|gT3qllu93P
+1346020150|1346020150|92.5.236.42|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||derek barnstorm|spacerock
+1346020164|1346020164|92.5.236.42|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||derek barnstorm|spacerock
+1346020190|1346020190|92.5.236.42| The Username, Displayed Name or Email address which you entered does not exist on this forum.|reminder2||||
+1346020901|1346020901|109.163.226.218|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||RutHeerSnanna|T7sll8dv7S
+1346021140|1346021140|141.105.66.51|Oops - we don't serve your kind here. |register2||||
+1346021143|1346021143|141.105.66.51|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||kinoaxoto|d2O1c2chbH
+1346021951|1346021951|93.166.121.107|For security reasons it is not allowed to have a Displayed Name the same as the login ID. |register2||||
+1346021961|1346021961|93.166.121.107|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||armin-atreid|a808080
+1346023475|1346023475|91.237.249.128|Oops - we don't serve your kind here. |register2||||
+1346023477|1346023477|91.237.249.128|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||gsuildwlzv|swp7j7P4wW
+1346025929|1346025929|68.169.35.164|The information you are trying to access is not available to you. ./Messages/1327036329.txt|print|1327036329|||
+1346027038|1346027038|92.5.236.42|The User ID field was not filled out. It is required. |login2||||
+1346027957|1346027957|180.76.5.54|The information you are trying to access is not available to you. ./Messages/1327873333.txt||1327873333|||
+1346028025|1346028025|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1330641557.txt|print|1330641557|||
+1346028026|1346028026|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1327953930.txt||1327953930|||
+1346028027|1346028027|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1327968039.txt||1327968039|||
+1346028612|1346028612|62.31.203.252|You are not allowed to access this section. ||1345994485|future||
+1346029219|1346029219|222.189.152.68|Oops - we don't serve your kind here. |register2||||
+1346029229|1346029229|222.189.152.68|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||meoolie|my001lie0
+1346029880|1346029880|58.62.163.233|Oops - we don't serve your kind here. |register2||||
+1346030839|1346030838|112.111.188.41|Oops - we don't serve your kind here. |register2||||
+1346030846|1346030846|112.111.188.41|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||alorrygloff|zhenyu2012
+1346031037|1346031037|66.249.68.48|You are not allowed to access this section. ||1345994485|future||
+1346032260|1346032260|180.76.5.100|The information you are trying to access is not available to you. ./Messages/1329773345.txt||1329773345|||
+1346038512|1346038512|77.93.2.81|Oops - we don't serve your kind here. |register2||||
+1346038514|1346038514|77.93.2.81|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||CoatamokLal|p5sqjw7O2P
+1346041508|1346041508|80.82.66.232|Oops - we don't serve your kind here. |register2||||
+1346041510|1346041510|80.82.66.232|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Aspirmrorigox|4oxeh1O1gC
+1346043411|1346043410|46.119.127.145|Oops - we don't serve your kind here. |register2||||
+1346043414|1346043414|180.76.5.177|The information you are trying to access is not available to you. ./Messages/1330975279.txt||1330975279|||
+1346043416|1346043416|46.119.127.145|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Peftdeewers|gT3qllu93P
+1346045810|1346045810|82.193.109.249|Oops - we don't serve your kind here. |register2||||
+1346045812|1346045812|82.193.109.249|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||extegapMatMot|2pyvv37HcC
+1346046389|1346046389|91.237.249.128|Oops - we don't serve your kind here. |register2||||
+1346046393|1346046393|91.237.249.128|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||gsuildwduq|swp7j7P4wW
+1346046590|1346046590|91.237.249.128|Oops - we don't serve your kind here. |register2||||
+1346046593|1346046593|91.237.249.128|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||warssjsm|swp7j7P4wW
+1346046835|1346046835|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1328822512.txt|print|1328822512|||
+1346046836|1346046836|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1331665264.txt||1331665264|||
+1346047447|1346047447|175.44.17.106|Oops - we don't serve your kind here. |register2||||
+1346047452|1346047452|175.44.17.106|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Kasynabaddy|W43hju2bpT
+1346048338|1346048338|178.216.8.30|Oops - we don't serve your kind here. |register2||||
+1346048340|1346048340|178.216.8.30|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||artpostelM|Parol_00
+1346052911|1346052910|199.15.234.137|Oops - we don't serve your kind here. |register2||||
+1346052914|1346052914|199.15.234.137|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||dptieigem|8ivcc6pQ8C
+1346055623|1346055622|209.17.191.117|Oops - we don't serve your kind here. |register2||||
+1346055630|1346055630|209.17.191.117|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||olivialp55|8wwH19duyJ
+1346056848|1346056848|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1331665264.txt|print|1331665264|||
+1346056849|1346056849|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1328233475.txt||1328233475|||
+1346057181|1346057181|59.58.174.14|Oops - we don't serve your kind here. |register2||||
+1346057228|1346057228|180.76.5.192|The information you are trying to access is not available to you. ./Messages/1328642211.txt||1328642211|||
+1346057261|1346057261|199.15.234.243|Oops - we don't serve your kind here. |register2||||
+1346057265|1346057265|199.15.234.243|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||rottwittyvawl|7dtgC7h7qU
+1346058400|1346058400|95.25.228.45|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||gliness|fue2jSq63L
+1346060380|1346060380|109.87.146.58|Oops - we don't serve your kind here. |register2||||
+1346061001|1346061001|175.44.24.239|Oops - we don't serve your kind here. |register2||||
+1346061006|1346061006|175.44.24.239|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||PoenteePleamy|juyuan2012
+1346067887|1346067887|175.44.1.100|Oops - we don't serve your kind here. |register2||||
+1346067892|1346067892|175.44.1.100|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Friewlywheesy|zhenyu2012
+1346071376|1346071376|194.90.190.38|You are not allowed to access this section. |||future||
+1346076111|1346076111|188.143.232.165|Oops - we don't serve your kind here. |register2||||
+1346076117|1346076117|188.143.232.165|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||FlonseDemsFam|hszP2n6y7W
+1346076355|1346076355|119.127.213.132|Oops - we don't serve your kind here. |register2||||
+1346076359|1346076359|119.127.213.132|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||cameras|wq456123
+1346077065|1346077065|175.44.0.131|This displayed name is already in use by another member. |register2||||
+1346077076|1346077076|175.44.0.131|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||pemeErypewame|juyuan2012
+1346078340|1346078340|178.73.212.242|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Impepeswils|20122015
+1346079000|1346079000|180.76.5.91|The information you are trying to access is not available to you. ./Messages/1331219194.txt||1331219194|||
+1346080592|1346080592|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1328204615.txt||1328204615|||
+1346080777|1346080777|178.216.8.30|Oops - we don't serve your kind here. |register2||||
+1346080782|1346080782|178.216.8.30|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||artpostelM|Parol_00
+1346082078|1346082078|146.0.74.103|Oops - we don't serve your kind here. |register2||||
+1346082082|1346082082|146.0.74.103|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||attaxUtilaxy|qq123456789
+1346083834|1346083834|91.237.249.22|Oops - we don't serve your kind here. |register2||||
+1346083839|1346083839|91.237.249.22|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||ergobsaq|ogz2Hu7v7H
+1346083935|1346083935|175.44.0.241|Oops - we don't serve your kind here. |register2||||
+1346083941|1346083941|175.44.0.241|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||pemeErypewame|juyuan2012
+1346083992|1346083992|91.237.249.128|Oops - we don't serve your kind here. |register2||||
+1346083994|1346083994|91.237.249.128|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||gsuildwltn|swp7j7P4wW
+1346085499|1346085499|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1328158420.txt|print|1328158420|||
+1346085501|1346085501|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1331594305.txt|print|1331594305|||
+1346085502|1346085502|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1329918392.txt||1329918392|||
+1346089773|1346089773|91.237.249.128|Oops - we don't serve your kind here. |register2||||
+1346089777|1346089777|91.237.249.128|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||warsqlw|34qhkkaS5V
+1346089898|1346089898|176.53.43.107|Oops - we don't serve your kind here. |register2||||
+1346089900|1346089900|176.53.43.107|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Vettiltlype|Gd73ht5feS
+1346091176|1346091176|180.76.5.59|The information you are trying to access is not available to you. ./Messages/1329839152.txt||1329839152|||
+1346091939|1346091939|95.25.0.219|Oops - we don't serve your kind here. |register2||||
+1346091945|1346091945|95.25.0.219|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||ringfilisd|ore21aFa9W
+1346092347|1346092342|218.6.12.101|Oops - we don't serve your kind here. |register2||||
+1346092362|1346092356|218.6.12.101|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Kesqueted|zhenyu2012
+1346092407|1346092407|87.98.156.173|Oops - we don't serve your kind here. |register2||||
+1346092409|1346092409|87.98.156.173|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||AudimbbubWend|Aq3ey11grL
+1346094267|1346094267|82.139.6.62|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||jaruhetice|F1zae18bbH
+1346099734|1346099734|180.76.5.97|The information you are trying to access is not available to you. ./Messages/1326944567.txt||1326944567|||
+1346102212|1346102212|87.206.164.3|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||hetypomek|23yeonG9vE
+1346103820|1346103820|91.231.40.27|The information you are trying to access is not available to you. ./Messages/1330564427.txt|print|1330564427|||
+1346105829|1346105828|59.57.14.123|The information you are trying to access is not available to you. ./Messages/1331842994.txt||1331842994|||
+1346105947|1346105946|59.57.14.123|The information you are trying to access is not available to you. ./Messages/1330564427.txt||1330564427|||
+1346105947|1346105947|59.57.14.123|The information you are trying to access is not available to you. ./Messages/1328204615.txt||1328204615|||
+1346107212|1346107212|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1327873333.txt||1327873333|||
+1346107213|1346107213|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1331219194.txt||1331219194|||
+1346107214|1346107214|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1326944567.txt||1326944567|||
+1346108386|1346108386|180.76.5.51|The information you are trying to access is not available to you. ./Messages/1328594179.txt||1328594179|||
+1346109586|1346109586|59.57.14.123|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346109586|1346109586|59.57.14.123|The information you are trying to access is not available to you. ./Messages/1327078775.txt||1327078775|||
+1346109985|1346109985|212.79.114.89|Without giving a reason for applying for membership we cannot process your application. |register2||||
+1346109988|1346109988|212.79.114.89|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Urbasesem|8dVesld321
+1346112181|1346112181|95.79.96.132|Oops - we don't serve your kind here. |register2||||
+1346112183|1346112183|95.79.96.132|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||AmbirmReeme|198sotuzIB
+1346115029|1346115029|82.139.6.148|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||marutefes|Hn1ns9hk2L
+1346118342|1346118336|218.6.12.101|Oops - we don't serve your kind here. |register2||||
+1346118356|1346118350|218.6.12.101|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Kesqueted|zhenyu2012
+1346121274|1346121273|180.76.5.65|The information you are trying to access is not available to you. ./Messages/1328204615.txt||1328204615|||
+1346123045|1346123045|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1328158420.txt||1328158420|||
+1346126344|1346126344|176.53.43.109|Oops - we don't serve your kind here. |register2||||
+1346126347|1346126347|176.53.43.109|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||LorSorgeTar|6dp5bbH1lR
+1346129995|1346129995|180.76.6.26|The information you are trying to access is not available to you. ./Messages/1330975279.txt||1330975279|||
+1346131927|1346131927|209.188.18.146|Oops - we don't serve your kind here. |register2||||
+1346131932|1346131932|209.188.18.146|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||facefat6|swn9Ss7g2J
+1346134871|1346134871|173.252.249.160|Oops - we don't serve your kind here. |register2||||
+1346134873|1346134873|173.252.249.160|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||coodonfetty|r27acIqa8H
+1346136126|1346136126|92.47.227.50|Oops - we don't serve your kind here. |register2||||
+1346136130|1346136130|92.47.227.50|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||goondomiete|cbPf294nlP
+1346136145|1346136145|91.237.249.22|Oops - we don't serve your kind here. |register2||||
+1346136149|1346136149|91.237.249.22|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||ergobajb|ogz2Hu7v7H
+1346136325|1346136325|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1331481138.txt||1331481138|||
+1346136327|1346136327|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1327004119.txt|print|1327004119|||
+1346136339|1346136339|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1327954295.txt|print|1327954295|||
+1346136340|1346136340|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1329258491.txt||1329258491|||
+1346136341|1346136341|208.115.111.72|The information you are trying to access is not available to you. ./Messages/1329767458.txt||1329767458|||
+1346137871|1346137871|176.53.43.109|Oops - we don't serve your kind here. |register2||||
+1346137874|1346137874|176.53.43.109|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||LorSorgeTar|6dp5bbH1lR
+1346141211|1346141210|176.53.43.109|Oops - we don't serve your kind here. |register2||||
+1346141213|1346141213|176.53.43.109|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||LorSorgeTar|6dp5bbH1lR
+1346141719|1346141719|194.90.190.38|You are not allowed to access this section. |||future||
+1346142392|1346142392|216.244.93.7|Oops - we don't serve your kind here. |register2||||
+1346142393|1346142393|216.244.93.7|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Ri2e3efrla|DFSerr234
+1346145139|1346145139|77.65.32.42|Oops - we don't serve your kind here. |register2||||
+1346145142|1346145142|77.65.32.42|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Pozycjonowanie--G24|J9h31ibsrI
+1346147843|1346147843|180.76.5.145|The information you are trying to access is not available to you. ./Messages/1331842994.txt||1331842994|||
+1346149793|1346149793|111.8.33.249|Oops - we don't serve your kind here. |register2||||
+1346149796|1346149796|111.8.33.249|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||rubyjohntkik|RUBYJOHN8901
+1346150313|1346150313|69.64.58.32|Oops - we don't serve your kind here. |register2||||
+1346150314|1346150314|69.64.58.32|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||rubyjohntkik|RUBYJOHN8901
+1346153096|1346153096|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1331842994.txt||1331842994|||
+1346153224|1346153224|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1328204615.txt|print|1328204615|||
+1346154659|1346154659|176.53.43.109|Oops - we don't serve your kind here. |register2||||
+1346154662|1346154662|176.53.43.109|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||LorSorgeTar|6dp5bbH1lR
+1346155154|1346155153|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1328158420.txt||1328158420|||
+1346155461|1346155461|213.186.127.7|You are not allowed to access this section. |ml||||
+1346159781|1346159781|91.236.74.152|Oops - we don't serve your kind here. |register2||||
+1346159792|1346159792|91.236.74.152|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||smooreamp|atk9lTe45W
+1346162405|1346162405|174.128.229.102|Oops - we don't serve your kind here. |register2||||
+1346162439|1346162439|174.128.229.102|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||rilkfruirwelf|3lsBd4y3yI
+1346165026|1346165026|59.57.14.123|The information you are trying to access is not available to you. ./Messages/1331842994.txt||1331842994|||
+1346165141|1346165141|59.57.14.123|The information you are trying to access is not available to you. ./Messages/1330564427.txt||1330564427|||
+1346165142|1346165142|59.57.14.123|The information you are trying to access is not available to you. ./Messages/1328204615.txt||1328204615|||
+1346168558|1346168558|59.57.14.123|The information you are trying to access is not available to you. ./Messages/1327078775.txt||1327078775|||
+1346168558|1346168558|59.57.14.123|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346170281|1346170281|204.236.226.210|You are not allowed to access this section. |||future||
+1346170302|1346170302|204.236.226.210|You are not allowed to access this section. ||1345994485|future||
+1346170676|1346170676|218.9.29.171|Oops - we don't serve your kind here. |register2||||
+1346170683|1346170683|218.9.29.171|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Fluiniula|2P5ksel5xD
+1346171441|1346171441|198.143.189.26|Oops - we don't serve your kind here. |register2||||
+1346171442|1346171442|198.143.189.26|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||tuttaduch|jDnazp972X
+1346171576|1346171576|213.186.119.141|Unable to open ./Boards/intros.txt|||intros||
+1346172706|1346172706|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1328884662.txt||1328884662|||
+1346172870|1346172870|80.237.226.73|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346172873|1346172873|96.47.226.22|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346172875|1346172875|94.23.117.228|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346172878|1346172878|31.172.30.4|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346172882|1346172882|77.247.181.165|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346172894|1346172894|93.182.129.84|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346172901|1346172901|96.47.226.22|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346172904|1346172904|64.250.116.232|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346172908|1346172908|96.47.226.22|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346172911|1346172911|95.69.233.98|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346172913|1346172913|74.120.15.150|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346172923|1346172923|217.114.220.231|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346172932|1346172932|77.247.181.162|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346172941|1346172941|87.236.194.158|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346172945|1346172945|93.182.129.86|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346172952|1346172952|85.237.180.2|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346172954|1346172954|74.120.15.150|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346172957|1346172956|37.221.161.18|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346172960|1346172960|93.182.129.86|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346173013|1346173013|171.25.193.20|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346173014|1346173014|31.172.30.2|The information you are trying to access is not available to you. ./Messages/1327036329.txt||1327036329|||
+1346173656|1346173656|180.76.6.225|The information you are trying to access is not available to you. ./Messages/1327358460.txt||1327358460|||
+1346173975|1346173975|146.0.74.103|Oops - we don't serve your kind here. |register2||||
+1346173977|1346173977|146.0.74.103|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||inemyvam|qq123456789
+1346174069|1346174069|193.105.210.195|Oops - we don't serve your kind here. |register2||||
+1346174077|1346174077|193.105.210.195|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||CarlyBlerwate|8jx7Dlr6zA
+1346175094|1346175094|204.236.226.210|The User ID field was not filled out. It is required. |login2||||
+1346175099|1346175099|204.236.226.210|You are not allowed to access this section. |ml||||
+1346175119|1346175119|204.236.226.210|You must specify a search string! |search2||||
+1346179296|1346179296|158.255.7.227|Oops - we don't serve your kind here. |register2||||
+1346179299|1346179299|158.255.7.227|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||avemiaabusa|78sjCrw4kV
+1346180703|1346180702|176.53.43.109|Oops - we don't serve your kind here. |register2||||
+1346180705|1346180705|176.53.43.109|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||LorSorgeTar|6dp5bbH1lR
+1346181544|1346181544|180.76.5.192|The information you are trying to access is not available to you. ./Messages/1328158420.txt||1328158420|||
+1346182178|1346182178|175.44.0.131|This displayed name is already in use by another member. |register2||||
+1346182181|1346182181|175.44.0.131|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||pemeErypewame|beihai2012
+1346183237|1346183237|70.88.58.12|The information you are trying to access is not available to you. ./Messages/1326995644.txt||1326995644|||
+1346183260|1346183260|70.88.58.12|The information you are trying to access is not available to you. ./Messages/1326995644.txt||1326995644||ATester|
+1346183946|1346183945|175.44.3.19|Oops - we don't serve your kind here. |register2||||
+1346183949|1346183949|175.44.3.19|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||pemeErypewame|123456789
+1346188386|1346188386|175.44.0.61|Oops - we don't serve your kind here. |register2||||
+1346188389|1346188389|175.44.0.61|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||Friewlywheesy|zhenyu2012
+1346189324|1346189324|180.76.5.146|The information you are trying to access is not available to you. ./Messages/1328419201.txt||1328419201|||
+1346190540|1346190540|92.5.236.42|You are not allowed to access this section. ||1345994485|future||
+1346191550|1346191550|176.53.43.109|Oops - we don't serve your kind here. |register2||||
+1346191553|1346191553|176.53.43.109|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||LorSorgeTar|6dp5bbH1lR
+1346191715|1346191714|91.236.74.152|Oops - we don't serve your kind here. |register2||||
+1346191717|1346191717|91.236.74.152|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||smooreamp|atk9lTe45W
+1346194643|1346194642|176.53.43.109|Oops - we don't serve your kind here. |register2||||
+1346194645|1346194645|176.53.43.109|Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password. |login2|||LorSorgeTar|6dp5bbH1lR
+1346195513|1346195513|66.249.68.48|The information you are trying to access is not available to you. ./Messages/1331583656.txt|print|1331583656|||
+1346195876|1346195876|213.186.119.137|Unable to open test|||||
+1346197060|1346197060|180.76.5.180|The information you are trying to access is not available to you. ./Messages/1328884662.txt||1328884662|||
+1346200853|1346200853|208.115.113.88|The information you are trying to access is not available to you. ./Messages/1328884662.txt||1328884662|||
+1346200867|1346200867|180.76.5.139|The information you are trying to access is not available to you. ./Messages/1327873333.txt||1327873333|||
+1346203976|1346203976|213.186.119.137|The information you are trying to access is not available to you. ./Messages/1327873333.txt||1327873333|||
+1346435333|1346435332|127.0.0.1|You must specify a search string! |search2||||
+1346435335|1346435333|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346435335|1346435333|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346435337|1346435335|127.0.0.1|You are not allowed to access this section. |||future||
+1346435337|1346435335|127.0.0.1|You are not allowed to access this section. ||1345994485|future||
+1346435338|1346435336|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346435338|1346435336|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346435338|1346435337|127.0.0.1|The last POST request from your IP was less than 5 seconds ago, and was blocked to prevent overloading the forum. Please try later.|recent||||
+1346435338|1346435337|127.0.0.1|You are not allowed to access this section. |ml||||
+1346435338|1346435337|127.0.0.1|The User ID field was not filled out. It is required. |login2||||
+1346435338|1346435338|127.0.0.1|You are not allowed to access this section. |||future||
+1346435338|1346435338|127.0.0.1|You are not allowed to access this section. ||1345994485|future||
+1346435339|1346435339|127.0.0.1|You are not allowed to access this section. |ml||||
+1346435519|1346435518|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346435519|1346435518|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346435519|1346435518|127.0.0.1|You are not allowed to access this section. |||future||
+1346435519|1346435519|127.0.0.1|You are not allowed to access this section. ||1345994485|future||
+1346435520|1346435519|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346435520|1346435520|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346435520|1346435520|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346435520|1346435520|127.0.0.1|You are not allowed to access this section. |ml||||
+1346435520|1346435520|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346435520|1346435520|127.0.0.1|You are not allowed to access this section. |||future||
+1346435521|1346435520|127.0.0.1|You are not allowed to access this section. ||1345994485|future||
+1346435521|1346435521|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346435521|1346435521|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346435521|1346435521|127.0.0.1|You are not allowed to access this section. |ml||||
+1346437404|1346437403|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346437404|1346437403|127.0.0.1|You are not allowed to access this section. |||future||
+1346437404|1346437403|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346437404|1346437403|127.0.0.1|You are not allowed to access this section. ||1345994485|future||
+1346437404|1346437404|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346437404|1346437404|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346437404|1346437404|127.0.0.1|You are not allowed to access this section. |||future||
+1346437404|1346437404|127.0.0.1|You are not allowed to access this section. |ml||||
+1346437405|1346437405|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346437405|1346437405|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346437405|1346437405|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346437405|1346437405|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346437405|1346437405|127.0.0.1|You are not allowed to access this section. ||1345994485|future||
+1346437406|1346437406|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346437406|1346437406|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346437406|1346437406|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346437406|1346437406|127.0.0.1|You are not allowed to access this section. |ml||||
+1346437407|1346437406|127.0.0.1|Sorry, this service is for registered members only! |viewprofile||||
+1346618321|1346618320|127.0.0.1|You are not allowed to access this section. HelpCentre->SectionDecide|help||||
+1346618322|1346618322|127.0.0.1|You are not allowed to access this section. HelpCentre->SectionDecide|help||||
+1346618419|1346618419|127.0.0.1|You are not allowed to access this section. HelpCentre->SectionDecide|help||||
+1346618420|1346618420|127.0.0.1|You are not allowed to access this section. HelpCentre->SectionDecide|help||||
