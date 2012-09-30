@@ -182,11 +182,4 @@ $registerlngver = 'YaBB 2.5.2 $Revision: 1.2 $';
 'email_taken' => 'The following e-mail address is being used by a registered member already:',
 );
 
-%honeypot = (
-'0' => 'Your Zip Code',
-'1' => 'Your Location',
-'2' => 'Your Occupation',
-'3' => 'Who referred you?',
-);
-
 1;
