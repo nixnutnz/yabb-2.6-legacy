@@ -1238,12 +1238,12 @@ sub ModifyProfileAdmin {
 		$showProfile .= qq~\n			<option value="Global Moderator">$title</option>~;
 	}
 
-#	my $z = 0;
-#	foreach (@nopostorder) {
-#		($title, $stars, $starpic, $color, undef) = split(/\|/, $NoPost{$_}, 5);
-#		$showProfile .= qq~<option value="$_">$title</option>~;
-#		$z++;
-#	}
+	my $z = 0;
+	foreach (@nopostorder) {
+		($title, $stars, $starpic, $color, undef) = split(/\|/, $NoPost{$_}, 5);
+		$showProfile .= qq~<option value="$_">$title</option>~;
+		$z++;
+	}
 
 	$showProfile .= qq~
 			</select>
