@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$subsplver = 'YaBB 2.5.2 $Revision: 1.2 $';
+$subsplver = 'YaBB 2.5.2 $Revision: 1.3 $';
 if ($debug) { &LoadLanguage('Debug'); }
 
 use subs 'exit';
@@ -179,6 +179,7 @@ sub template {
 
 	if ($yytitle ne $maintxt{'error_description'}) {
 		if ((!$iamguest || ($iamguest && $guestaccess == 1)) && !$maintenance ) { $yyforumjump = &jumpto; }
+		else { $yyforumjump = '&nbsp;'; }
 	}
 	$yyposition      = $yytitle;
 	$yytitle         = "$mbname - $yytitle";
