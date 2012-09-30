@@ -43,6 +43,8 @@ sub editemailtemplates {
 		close(LNGDIR);
 		foreach my $item (sort {lc($a) cmp lc($b)} @langitems) {
 			if (-d "$langdir/$item" && $item =~ m~\A[0-9a-zA-Z_\#\%\-\:\+\?\$\&\~\,\@/]+\Z~ && -e "$langdir/$item/Email.lng") {
+				my $displang = $item;
+				$displang =~ s~(.+?)\_(.+?)$~$1 ($2)~gi;
 				$yymain .= qq~
           <option value="$item">$displang</option>~;
 			}
@@ -91,7 +93,7 @@ sub editemailtemplates {
     </tr>
     <tr valign="middle">
       <td align="center" class="catbg">
-   	<input type="submit" value="$emaileditor{'2'}" class="button" />
+    <input type="submit" value="$emaileditor{'2'}" class="button" />
       </td>
     </tr>
   </table>
@@ -144,13 +146,13 @@ sub editemailtemplates {
     </tr>
     <tr valign="middle">
       <td align="left" class="catbg">
-   	$emaileditor{'8'}
+    $emaileditor{'8'}
         <br />$emaileditor{'9'} <tt>Languages/$editlang/Email.lng</tt> $emaileditor{'10'}
       </td>
     </tr>
     <tr valign="middle">
       <td align="center" class="catbg">
-   	<input type="submit" value="$emaileditor{'11'}" class="button" />
+    <input type="submit" value="$emaileditor{'11'}" class="button" />
       </td>
     </tr>
   </table>
