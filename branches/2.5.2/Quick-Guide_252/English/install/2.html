@@ -1,15 +1,15 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang='en-US'>
 <head>
-<!-- YaBB 2.5 $Revision: 1.3.2.1 $ -->
+<!-- YaBB 2.5.2 $Revision: 1.0 $ -->
 <title>YaBB Quick Start Guide - Installation: Step 2 - Uploading YaBB</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" href="../../style.css" type="text/css" />
 </head>
 <body>
-<div id="header"><a href="http://www.yabbforum.com/community/" title="Support Forum">Support Forums</a> | <a href="http://www.yabbforum.com/donate.php" title="Help keep YaBB going strong!">Donate to YaBB</a></div>
+<div id="header"><a href="http://www.yabbforum.com/community/" title="Support Forum">Support Forums</a> | <a href="http://www.yabbforum.com/contribute.php" title="Help keep YaBB going strong!">Donate to YaBB</a></div>
 <div id="content">
-	<div class="shead">
+		<div class="shead">
 		<div class="lang">
 			<span><a href="../../English/index.html" title="Switch to English Guide"><img src="../../images/English.gif" alt="Switch to English Guide" title="Switch to English Guide" /></a></span>
 		</div>
@@ -22,14 +22,15 @@
 			<ul>
 				<li><a href="../index.html">Introduction</a></li>
 				<li><span>Installation</span></li>
-				<li><a href="before.html">Before Installing</a></li>
+				<li><a href="../install/before.html">Before Installing</a></li>
 				<li><a href="../install/1.html">Step 1 - Editing</a></li>
 				<li><a href="../install/2.html">Step 2 - Uploading</a></li>
 				<li><a href="../install/3.html">Step 3 - CHMOD</a></li>
 				<li><a href="../install/setup.html">Step 4 - Setting Up</a></li>
-				<li><span>Extras</span></li>
+				<li><span><a href="../extras/index.html">Converting</a></span></li>
 				<li><a href="../extras/upgradeY1.html">Upgrading YaBB 1</a></li>
 				<li><a href="../extras/upgradeY2.html">Upgrading YaBB 2</a></li>
+				<li><a href="../extras/upgradeY24.html">Upgrading YaBB 2.4/2.5</a></li>
 				<li><a href="../extras/troubleshooting.html">Troubleshooting</a></li>
 				<li><span>Other</span></li>
 				<li><a href="../info/license.html">License</a></li>
@@ -40,13 +41,10 @@
 			<h3>Step 2 - Uploading YaBB</h3>
 			<br /><br />
 			<ol>
-				<li>Your host should specify what folder(s) you may run Perl/cgi scripts in. Some may allow them only in the cgi-bin directory, On some web hosts, it is not required that Perl scripts reside in this cgi-bin folder. Verify this before proceeding. Others may allow anywhere in or below the public_html folder, it's totally up your host, and they can advise you if you are not sure. Use these examples as a guide.
- In your 'cgi-bin', create a directory called "yabb2" (or whatever name you wish to use in your forum's URL). See the example file structure provided below. </li>
-				<li><u>Upload all of the files in ASCII mode</u> from the 'cgi-bin/yabb2' folder into your new folder. You can select all of the folders and files at once to upload them in one step if you desire. Do not rename any of these folders for now, or the automatic path detection will not work when you run the setup script. You should have a folder structure similar to the following when this is complete:
+				<li>Your host should specify what folder(s) you may run Perl/cgi scripts in. Some may allow them only in the cgi-bin directory, On some web hosts, it is not required that Perl scripts reside in this cgi-bin folder. Verify this before proceeding. Others may allow anywhere in or below the public_html folder, this is totally up your host, and they can advise you if you are not sure. Use these examples as a guide.
+ In your 'cgi-bin', create a directory called "yabb2" (or whatever name you wish to use in your forum's URL). See the example file structure provided below.<br /><b>Note</b>: if you are upgrading from a previous version of YaBB, please check <a href="../extras/index.html">Converting</a> prior to installing your new YaBB 2.5.2 forum.</li>
+				<li><span class="underline">Upload all of the files in ASCII mode</span> from the 'cgi-bin/yabb2' folder into your new folder. You can select all of the folders and files at once to upload them in one step if you desire. Do not rename any of these folders for now, or the automatic path detection will not work when you run the setup script. You should have a folder structure similar to the following when this is complete:
 					<ul>
-						<li>Note: Only upload the cgi-bin/yabb2/Convert folder and its contents if you are upgrading from YaBB 1.</li>
-						<li>Note: Do not upload FixFile.pl if not upgrading from YaBB 2.0 prior to Pre-Relase</li>
-						<li>Note: Do not upload the Quick-Guide folder or files</li>
 						<li>cgi-bin/yabb2</li>
 						<li>cgi-bin/yabb2/Admin</li>
 						<li>cgi-bin/yabb2/Backups</li>
@@ -84,14 +82,14 @@
 						<li>yabbfiles/Templates/Forum/default</li>
 						<li>yabbfiles/Templates/Forum/yabb21</li>
 					</ul>
-				
 				</li>
+				<li>Finally, upload in ASCII 'yabbsetup.html' into your webspace, outside the 'yabbfiles' folder. This file will act as easy access to your YaBB Setup. (<b>Note</b>: if your installation file for YaBB is not 
+				'cgi-bin/yabb2', you will need to edit this file so the links point to the proper place.)</li> 
 			</ol>
 		</div>
 		<div class="clr"></div>
 	</div>
 </div>
 <div id="footer"></div>
-
 </body>
 </html>
