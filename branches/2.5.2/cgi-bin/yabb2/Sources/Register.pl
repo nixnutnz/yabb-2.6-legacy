@@ -14,7 +14,7 @@
 
 $registerplver = 'YaBB 2.5.2 $Revision: 1.3 $';
 if ($action eq 'detailedversion') { return 1; }
-if (!$iamguest) { &fatal_error("no_registration_logged_in"); }
+if (!$iamguest && (!$admin && $action ne 'activate' && $action ne 'admin_descision') ) { &fatal_error("no_registration_logged_in"); }
 
 require "$sourcedir/Mailer.pl";
 &LoadLanguage('Register');
@@ -99,10 +99,11 @@ sub Register {
 	}
       $newfield = q{};
 	$yymain .= qq~
+<!--user name section-->
 	<tr>
 		<td class="windowbg" align="right" valign="top">
 			<label for="regusername"><b>$register_txt{'98'}:</b><br />
-			<span class="small">$register_txt{'520'}</span></label>
+			<span class="small">$register_txt{'520'}$register_txt{'241ea'}</span></label>
 		</td>
 		<td class="windowbg2" align="left" valign="top">
 			<input type="text" name="regusername" id="regusername" onchange="checkAvail('$scripturl',this.value,'user')" size="30" value="$tmpregname" maxlength="18"$regstyle /> *
