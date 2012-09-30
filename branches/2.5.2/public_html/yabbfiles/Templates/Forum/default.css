@@ -1,52 +1,50 @@
-*--------------------------------------------------------*/
-/*                      YaBB 2012                         */
 /*--------------------------------------------------------*/
-/*      Created by: xnoddyx                               */
+/*                      YaBB 2010                         */
+/*--------------------------------------------------------*/
+/*      Created by: XIMinc http://www.ximinc.com          */
 /*            YaBB http://www.yabbforum.com               */
 /*--------------------------------------------------------*/
 /*    You may adapt elements of this CSS in your own      */
-/*   projects, but please give credit to yabbforum.com    */
+/*   projects, but please give credit to yabbforum.com.   */
 /*--------------------------------------------------------*/
+/*  This is the css file for YaBB 2.5 AE default Template */
+/*--------------------------------------------------------*/
+/* $Revision: 1.26 $ */
 
-/* $Revision: 1.12 */
 
 /* General layout */
-
-.head {
-	font-size: 12px;
-	font-weight: normal;
-	font-style: normal;
-	font-family: Verdana, Sans-Serif;
-	color: #ffffff;
-}
 a:focus {
 	outline: black dotted 0px;
 }
 a {
 	font-weight: normal;
-	color: #2a3c9c;
+	color: #333366;
 	font-family: Verdana, Arial, Sans-Serif;
-	text-decoration: underline;
+	text-decoration: none;
 	outline: 0;
 }
 a:hover {
-	color: #0083fd;
+	color: #333366;
 	font-family: Verdana, Arial, Sans-Serif;
 	text-decoration: underline;
 	outline: 0;
 }
-a:visited {
+a:visited  {
 	font-weight: normal;
-	color: #0083fd;
+	color: #333366;
 	font-family: Verdana, Arial, Sans-Serif;
-	text-decoration: underline;
-}
+ }
 body {
 	padding: 0;
 	background-color: #eeeeee;
 	font-family: Verdana, Helvetica, Arial, Sans-Serif;
 	font-size: 12px;
-	margin: 0;
+	margin-top: 5px;
+	margin-left: 0;
+	margin-right: 0;
+	padding-top: 0;
+	padding-left: 0;
+	padding-right: 0;
 	min-width: 770px;
 }
 form {
@@ -62,34 +60,25 @@ form {
 	font-family: Verdana, Helvetica, Sans-Serif;
 	font-size: 12px;
 	font-weight: normal;
-	cursor: pointer;
-}
-.time {
-	font-size: 14px;
-	font-family: Verdana, Helvetica, Arial, Sans-Serif;
-	color: #FFFFFF;
-	font-weight: normal;
-	text-decoration: none;
-    padding-bottom: 5px;
-	white-space: nowrap;
+	cursor: pointer; 
 }
 .titlecorner {
-	background-color: #bbd7fa;
-	background-image: url(./default/catbg.png);
+	background-color: #cdcccb;
+	background-image: url(./default/rndcorner.png);
 	background-repeat:no-repeat;
 }
 .titlecorner2 {
-	background-color: #bbd7fa;
-	background-image: url(./default/catbg.png);
+	background-color: #cdcccb;
+	background-image: url(./default/rndcorner2.png);
 	background-repeat:no-repeat;
-	background-position: top right;
+	background-position:right;
 }
 .tabtitle {
 	font-weight: bold;
 	font-style: normal;
 	font-size: 11px;
 	font-family: Verdana, Arial, Sans-Serif;
-	color : #E6E6FA;
+	color : #01005f;
 	background-color: #cdcccb;
 	background-image: url(./default/catbg.png);
 }
@@ -97,7 +86,7 @@ form {
 	font-weight: bold;
 	font-style: normal;
 	font-size: 11px;
-	color : #E6E6FA;
+	color : #01005f;
 	text-decoration: none;
 }
 .tabtitle a:hover {
@@ -105,124 +94,107 @@ form {
 	text-decoration: none;
 }
 #maincontainer{
-	max-width: 1100px;
-	min-width: 800px;
+	width: 92%;
 	margin-left: auto;
 	margin-right: auto;
 	padding: 0px;
 	border-top: 0px;
-	margin-top: 0px;
-	margin-bottom: 5px;
+	margin-bottom: 10px;
 }
 #container{
 	width: 100%;
-	background-color: #bbd7fa;
+	background-color: #cccccc;
 	padding: 0px;
 	border: 0px;
-                 margin-top: 0px;
 	margin: 0px;
 	padding-left: 1px;
 	padding-right: 1px;
 	color: #000033;
 }
 
-/* Advanced Tabs start */
 
+/* Advanced Tabs start */
 .menutop {
-	height: 30px;
+	height: 24px;
 	background-color: #cccccc;
 	background-image: url(./default/menutop.png);
 	text-align: left;
 }
 .mainbottom {
-	height: 30px;
+	height: 22px;
 	width: 100%;
 	background-color: #cccccc;
 	background-image: url(./default/grad_bottom.png);
 	text-align: left;
 }
 .tabmenuleft {
-	height: 30px;
+	height: 23px;
 	text-align: left;
-	background-position:right;
 	background-color: #cccccc;
 	background-image: url(./default/tableft211.png);
 	background-repeat: no-repeat;
 }
-.tabmenusep {
-	height: 30px;
-	text-align: left;
-	background-color: #cccccc;
-	background-image: url(./default/tabsep211.png);
-	background-repeat: no-repeat;
-}
 .tabmenuright {
-	height: 30px;
+	height: 23px;
 	text-align: left;
-    background-position:left;
 	background-color: #cccccc;
 	background-image: url(./default/tabright211.png);
 	background-repeat: no-repeat;
 }
 .tabmenu {
-	height: 30px;
-	background-color: #BBBBBB;
+	height: 23px;
+	background-color: #cccccc;
 	background-image: url(./default/tab211.png);
 	text-align: left;
 }
 .tabmenu span {
 	float: left;
-	height: 28px;
-	font-family: Verdana, Helvetica, Arial, Sans-Serif;
-	font-size: 12px;
-	color: #BBBBBB;
-	font-weight: normal;
-	margin-top: 2px;
+	height: 23px;
+	background-color: #cccccc;
+	background-image: url(./default/tab211.png);
+	background-repeat: repeat-x;
+	margin: 0;
 	border: 0;
 	padding: 0;
-	text-align: center;
 	vertical-align: middle;
+	text-align: center;
 	cursor: pointer;
 }
 .tabmenu span a {
-	font-size: 14px;
+	font-size: 11px;
 	font-family: Verdana, Helvetica, Arial, Sans-Serif;
-	color: #FFFFFF;
+	color: #000033;
 	font-weight: normal;
 	text-decoration: none;
 	white-space: nowrap;
 }
 .tabmenu span a:hover {
-	height: 23px;
-	color: #bababa;
+	color: #444444;
 	background-image: url(./default/tab_selected211.png);
 	background-repeat: repeat-x;
 	text-decoration: none;
 }
 .tabmenu span.selected {
-	height: 23px;
-	color: #BBBBBB;
 	font-weight: bold;
-	background-color: #FFFFFF;
-	background-image: url(./default/tabselected211.png);
+	background-color: #cccccc;
+	background-image: url(./default/tab_selected211.png);
 	background-repeat: repeat-x;
-	text-decoration: underline;
 }
 .rightbox {
 	height: 23px;
 	text-align: center;
 	background-color: #cccccc;
-	background-image: url(./default/tab211.png);
+	background-image: url(./default/searchbg211.png);
 	background-repeat: repeat-x;
-	font-size: 12px;
+	font-size: 11px;
 	font-weight: normal;
 	font-style: normal;
 	text-decoration: none;
 	font-family: Verdana, Helvetica, Arial, Sans-Serif;
-	color: #FFFFFF;
+	color: #000033;
 }
-
 /* Advanced Tabs end */
+
 
 .usermenu {
 	width: 96%;
@@ -290,8 +262,8 @@ select optgroup {
 	color: #333366;
 }
 
-/* News fader fore- and background colors */
 
+/* News fader fore- and background colors */
 .newsfader {
 	color: #0000ff;
 	background-color: #FEFEFE;
@@ -305,8 +277,8 @@ select optgroup {
 	line-height: 1.3;
 }
 
-/* users/members on-off-away line status */
 
+/* users/members on-off-away line status */
 .useronline {
 	font-weight: bold;
 	color: #138a03;
@@ -320,8 +292,8 @@ select optgroup {
 	color: #6078B0;
 }
 
-/* YaBB navigation links */
 
+/* YaBB navigation links */
 .nav {
 	font-weight: bold;
 	font-size: 10px;
@@ -339,35 +311,8 @@ select optgroup {
 	text-decoration: underline;
 }
 
-/* YaBB foot navigation links */
-
-.navf {
-	height: 30px;
-	background-color: #BBBBBB;
-	background-image: url(./default/tab211.png);
-	text-align: left;
-	font-weight: bold;
-	font-size: 10px;
-	color : #000033;
-	text-decoration: none;
-}
-.navf a {
-	font-size: 12px;
-	font-family: Verdana, Helvetica, Arial, Sans-Serif;
-	color: #FFFFFF;
-	font-weight: bold;
-	text-decoration: none;
-}
-.navf a:hover {
-	height: 23px;
-	color: #bababa;
-	background-image: url(./default/tab_selected211.png);
-	background-repeat: repeat-x;
-	text-decoration: none;
-}
 
 /* Quick-Profile-Links */
-
 .QuickLinks {
 	background-color: #DDDDDD;
 	position: absolute;
@@ -397,10 +342,10 @@ select optgroup {
 	text-decoration:none;
 }
 
-/* BoardIndex*/
 
+/* BoardIndex*/
 .shadow {
-	background-color: #deeaf9;
+	background-color: #eeeeee;
 	background-image:url(./default/windowbgds.png);
 	background-repeat:repeat-x;
 	background-position:top;
@@ -411,10 +356,10 @@ select optgroup {
 	color: #304B58;
 }
 
-/* YaBB alternating bgcolors */
 
+/* YaBB alternating bgcolors */
 .userinfo {
-	background-color: #bbd7fa;
+	background-color: #ececec;
 	background-image:url(./default/usrinfobg.png);
 	background-repeat:repeat-x;
 	background-position:top;
@@ -425,7 +370,7 @@ select optgroup {
 	color: #304B58;
 }
 .windowbg {
-	background-color: #E8F0FA;
+	background-color: #dddddd;
 	font-size: 12px;
 	font-weight: normal;
 	font-style: normal;
@@ -433,7 +378,7 @@ select optgroup {
 	color: #304B58;
 }
 .windowbg2 {
-	background-color: #DFEBFA;
+	background-color: #eeeeee;
 	font-size: 12px;
 	font-weight: normal;
 	font-style: normal;
@@ -441,8 +386,8 @@ select optgroup {
 	color: #304B58;
 }
 
-/* Misc/title/category colors */
 
+/* Misc/title/category colors */
 .dividerbot {
 	border-bottom: 1px #A7B8CC solid;
 }
@@ -477,7 +422,7 @@ select optgroup {
 	text-decoration: none;
 	font-family: Verdana, Helvetica, Arial, Sans-Serif;
 	color: #01005f;
-	background-color: #7fafe9;
+	background-color: #b5b5b5;
 }
 .titlebg a {
 	font-weight: bold;
@@ -495,7 +440,7 @@ select optgroup {
 	text-decoration: none;
 	font-family: Verdana, Helvetica, Arial, Sans-Serif;
 	color: #01005f;
-	background-color: #bbd7fa;
+	background-color: #aaaaa9;
 	background-image:url(./default/catbg2.png);
 }
 .catbg a {
@@ -513,7 +458,7 @@ select optgroup {
 	font-style: normal;
 	text-decoration: none;
 	font-family: Verdana, Helvetica, Arial, Sans-Serif;
-	color: #304b58;
+	color: #62686F;
 }
 .message a {
 	font-weight: normal;
@@ -548,16 +493,13 @@ select optgroup {
 	font-weight: normal;
 }
 .highlight {
-	font-size: inherit;
-	font-family: inherit;
 	font-weight: bold;
-	font-style: inherit;
 	background-color: #FFFF33;
 	color: #000000;
 }
 
-/* Image fonts */
 
+/* Image fonts */
 .imgbg {
 	font-style: normal;
 	font-size: 10px;
@@ -587,8 +529,8 @@ select optgroup {
 	font-weight: bold;
 }
 
-/* Post quote/code colors */
 
+/* Post quote/code colors */
 .quote {
 	font-size: 11px;
 	font-weight: normal;
@@ -652,10 +594,11 @@ select optgroup {
 	font-weight: bold;
 }
 
-/* Anything below here is just for the template */
 
+/* Anything below here is just for the template */
 #PMcontainer {
 	float: left;
+	background-color: #cccccc;
 	width: 100%;
 	padding: 0px;
 	border: 0px;
@@ -676,16 +619,16 @@ select optgroup {
 	width: 100%;
 	padding: 1px;
 	background-color: #cccccc;
-	-webkit-border-radius: 10px;
-	-khtml-border-radius: 10px;
+  	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px;	
 	-moz-border-radius: 10px;
 	-border-radius: 10px;
+
 }
 .navbarcontainer{
 	margin: 0px;
 }
 
-/* required for the Honeypot */
 .green {
 display:none;
 }
