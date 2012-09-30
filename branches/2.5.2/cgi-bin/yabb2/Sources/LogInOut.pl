@@ -21,7 +21,8 @@ if ($regcheck) { require "$sourcedir/Decoder.pl"; }
 $regstyle = '';
 
 sub Login {
-	if (!$iamguest) { &fatal_error("logged_in_already",$username); }
+#	if (!$iamguest) { &fatal_error("logged_in_already",$username); }
+	if (!$iamguest && $sessionvalid == 1) { &fatal_error("logged_in_already",$username); }
 	$sharedLogin_title = $loginout_txt{'34'};
 	$yymain .= &sharedLogin . qq~<script type="text/javascript" language="JavaScript">
 <!--
@@ -33,7 +34,8 @@ sub Login {
 }
 
 sub Login2 {
-	if (!$iamguest) { &fatal_error("logged_in_already",$username); }
+#	if (!$iamguest) { &fatal_error("logged_in_already",$username); }
+	if (!$iamguest && $sessionvalid == 1) { &fatal_error("logged_in_already",$username); }
 	&fatal_error("no_username") if ($FORM{'username'} eq "");
 	&fatal_error("no_password") if ($FORM{'passwrd'}  eq "");
 	$username = $FORM{'username'};
@@ -229,7 +231,8 @@ $border_bottom
 }
 
 sub Reminder {
-	if (!$iamguest) { &fatal_error("logged_in_already",$username); }
+#	if (!$iamguest) { &fatal_error("logged_in_already",$username); }
+	if (!$iamguest && $sessionvalid == 1) { &fatal_error("logged_in_already",$username); }
 	$yymain .= qq~<br /><br />
 <form action="$scripturl?action=reminder2" method="post" name="reminder" onsubmit="return CheckReminderField();">
 <table border="0" width="400" cellspacing="1" cellpadding="3" align="center" class="bordercolor">
@@ -294,7 +297,8 @@ sub Reminder {
 sub Reminder2 {
 	if (!$FORM{'user'}) { &fatal_error("", "$loginout_txt{'error_user_info'}"); }
 	# generate random ID for password reset.
-	if (!$iamguest) { &fatal_error("logged_in_already",$username); }
+#	if (!$iamguest) { &fatal_error("logged_in_already",$username); }
+	if (!$iamguest && $sessionvalid == 1) { &fatal_error("logged_in_already",$username); }
 	my $randid = &keygen(8,"A");
 
 	if ($regcheck) {
