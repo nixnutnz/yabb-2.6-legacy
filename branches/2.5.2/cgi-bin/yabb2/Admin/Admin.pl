@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$adminplver  = 'YaBB 2.5.2 $Revision: 1.0 $';
+$adminplver  = 'YaBB 2.5.2 $Revision: 1.1 $';
 
 sub Admin {
 	&is_admin_or_gmod;
@@ -55,6 +55,17 @@ sub Admin {
      <tr valign="middle">
        <td align="left" class="windowbg2"><br />
 Ron Hartendorp, Andrew Aitken, Carsten Dalgaard, Ryan Farrington, Zoltan Kovacs, Tim Ceuppens, Shoeb Omar, Torsten Mrotz, Brian Schaefer, Juvenall Wilson, Corey Chapman, Christer Jenson, Adrian Kreher, Steve Brereton, Jeffrey Man, Boris Tjuvanov, Detlef Pilzecker, Calvin Goodman<br /><br />
+      </td>
+     </tr>
+     <tr align="center" valign="middle">
+       <td align="left" class="catbg">
+        <span class="small">YaBB 2.5.2</span>
+       </td>
+     </tr>
+     <tr valign="middle">
+       <td align="left" class="windowbg2"><br />
+Jon Baker, Derek Barnstorm, Carsten Dalgaard, D.A. Rorabaugh, xnoddyx.<br />Included Mods in YaBB 2.5.2 written by Derek Barnstorm and D.A. Rorabaugh.<br /><br />
+Dedicated to the memory of Ron Hartendorp, AKA Spikecity. He left us too soon. <br /><br />
       </td>
      </tr>
      <tr align="center" valign="middle">
