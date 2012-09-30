@@ -13,6 +13,7 @@
 ###############################################################################
 
 # Many thanks to Carsten Dalgaard (http://www.carsten-dalgaard.dk/) for his contribution to the YaBB community
+$contexthelplngver = 'YaBB 2.5.2 $Revision: 1.0 $';
 
 ### Do not translate uppercase words in sharp brackets
 
