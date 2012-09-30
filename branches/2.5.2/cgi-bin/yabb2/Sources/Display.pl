@@ -688,7 +688,7 @@ sub Display {
 					}
 				}
 			}
-			if ($sessionvalid == 1 && ($iamadmin || $iamgmod || $iammod || ($username eq $musername && !$exmem && (!$tlnomodflag || $date < $mdate + ($tlnomodtime * 3600 * 24))))) {
+			if ($sessionvalid == 1 && ($iamadmin || $iamgmod || $iammod || ($username eq $musername && (!$tlnomodflag || $date < $mdate + ($tlnomodtime * 3600 * 24))))) {
 				$template_modify = qq~$menusep<a href="$scripturl?board=$currentboard;action=modify;message=$counter;thread=$viewnum">$img{'modify'}</a>~;
 			} else {
 				$template_modify = '';
@@ -696,7 +696,7 @@ sub Display {
 			if ($counter > 0 && ($iamadmin || $iamgmod || $iammod) && $sessionvalid == 1) {
 				$template_split = qq~$menusep<a href="$scripturl?action=split_splice;board=$currentboard;thread=$viewnum;oldposts=~ . join(',%20', ($counter .. $mreplies)) . qq~;leave=0;newcat=$curcat;newboard=$currentboard;newthread=new;ss_submit=1" onclick="return confirm('$display_txt{'split_confirm'}');">$img{'admin_split'}</a>~;
 			}
-			if ($sessionvalid == 1 && ($iamadmin || $iamgmod || $iammod || ($username eq $musername && !$exmem && (!$tlnodelflag || $date < $mdate + ($tlnodeltime * 3600 * 24))))) {
+			if ($sessionvalid == 1 && ($iamadmin || $iamgmod || $iammod || ($username eq $musername && (!$tlnodelflag || $date < $mdate + ($tlnodeltime * 3600 * 24))))) {
 				$template_delete = qq~$menusep<span style="cursor: pointer; cursor: hand;" onclick="if(confirm('$display_txt{'rempost'}')) {uncheckAllBut($counter);}">$img{'delete'}</span>~;
 				if ((($iammod && $mdmod == 1) || ($iamadmin && $mdadmin == 1) || ($iamgmod && $mdglobal == 1)) && $sessionvalid == 1) {
 					$template_admin = qq~<input type="checkbox" class="$css" style="border: 0px;" name="del$counter" value="$counter" />~;
