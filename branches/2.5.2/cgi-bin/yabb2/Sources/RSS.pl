@@ -130,12 +130,13 @@ sub RSS_board {
 			(undef, undef, undef, undef, $musername, undef, undef, undef, $message, $ns) = split(/\|/, $post);
 		}
 		if ($showauthor) {
-			# The spec really wants us to include their email.
-			# That's not adviseable for us (spambots anyone?). So we skip author if the email hidden flag is on for that user.
 			if (-e "$memberdir/$musername.vars") {
 				&LoadUser($musername);
 				if (!${$uid.$musername}{'hidemail'}){
 					$yymain .= qq~<author>~ . &RSSDescriptionTrim("${$uid.$musername}{'email'} (${$uid.$musername}{'realname'})") . qq~</author>~;
+				}
+				else {
+					$yymain .= qq~			<author><name>~ . &RSSDescriptionTrim("(${$uid.$musername}{'realname'})") . qq~</name></author>\n~;
 				}
 			}
 		}
@@ -302,6 +303,9 @@ sub RSS_recent {
 				&LoadUser($musername);
 				if (!${$uid.$musername}{'hidemail'}){
 					$yymain .= qq~			<author>~ . &RSSDescriptionTrim("${$uid.$musername}{'email'} (${$uid.$musername}{'realname'})") . qq~</author>\n~;
+				}
+				else {
+					$yymain .= qq~			<author><name>~ . &RSSDescriptionTrim("${$uid.$musername}{'realname'}") . qq~</name></author>\n~;
 				}
 			}
 		}
