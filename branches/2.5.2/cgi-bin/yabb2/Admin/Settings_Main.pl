@@ -1109,25 +1109,28 @@ qq~<input type="checkbox" name="nomailspammer" id="nomailspammer" value="1" ${is
 			depends_on => ['PM_level!=0'],
 		},
 		{
+			header => $settings_txt{'alertmessages'},
+		},
+		{
 			description => qq~<label for="PMenableGuestButton">$imtxt{'88'}</label>~,
 			input_html => qq~<input type="checkbox" name="PMenableGuestButton" id="PMenableGuestButton" value="1"${ischecked($PMenableGuestButton)} />~,
 			name => 'PMenableGuestButton',
 			validate => 'boolean',
-			depends_on => ['PMenableBm_level!=0', 'PM_level!=0'],
+			depends_on => ['PM_level!=0'],
 		},
 		{
 			description => qq~<label for="PMenableAlertButton">$imtxt{'89'}</label>~,
 			input_html => qq~<input type="checkbox" name="PMenableAlertButton" id="PMenableAlertButton" value="1"${ischecked($PMenableAlertButton)} />~,
 			name => 'PMenableAlertButton',
 			validate => 'boolean',
-			depends_on => ['PMenableBm_level!=0', 'PM_level!=0'],
+			depends_on => ['PM_level!=0'],
 		},
 		{
 			description => qq~<label for="PMAlertButtonGuests">$imtxt{'90'}</label>~,
 			input_html => qq~<input type="checkbox" name="PMAlertButtonGuests" id="PMAlertButtonGuests" value="1"${ischecked($PMAlertButtonGuests)} />~,
 			name => 'PMAlertButtonGuests',
 			validate => 'boolean',
-			depends_on => ['PMenableBm_level!=0', 'PMenableAlertButton', 'PM_level!=0'],
+			depends_on => ['PMenableAlertButton', 'PM_level!=0'],
 		},
 
 
@@ -1297,7 +1300,7 @@ sub SaveSettings {
 	$settings{'imtext'} =~ s~\n~<br />~g;
 
 	# Fix $pwstrengthmeter_common
-	$settings{'pwstrengthmeter_common'} =~ s/'//g; #' makje my syntax checker happy;
+	$settings{'pwstrengthmeter_common'} =~ s/'//g; #' make my syntax checker happy;
 	if (($settings{'set_subjectMaxLength'} < 10 && $settings{'set_subjectMaxLength'} != 0) || $settings{'set_subjectMaxLength'} > 255) { &admin_fatal_error("invalid_value", "set_subjectMaxLength ($admin_txt{'498a'})"); }
 
 	# Convert unwanted tags in Board Name
