@@ -370,8 +370,7 @@ sub donoopen {
 sub do_print {
 	$threadpost =~ s~<br />~\n~ig;
 	$threadpost =~ s~\[highlight(.*?)\](.*?)\[/highlight\]~$2~isg;
-	$threadpost =~ s~\[code\]\n*(.+?)\n*\[/code\]~<br /><b>Code:</b><br /><table cellspacing="1"><tr><td><table cellpadding="2" cellspacing="0"><tr><td><font face="Courier" size="1">$1</font></td></tr></table></td></tr></table>~isg;
-
+    $threadpost =~ s~\[code\s*(.+?)\]\n*(.+?)\n*\[/code\]~<br /><b>Code ($1):</b><br /><table cellspacing="1"><tr><td><table cellpadding="2" cellspacing="0"><tr><td><font face="Courier" size="1">$2</font></td></tr></table></td></tr></table>~isg; 
 	$threadpost =~ s~\[([^\]]{0,30})\n([^\]]{0,30})\]~\[$1$2\]~g;
 	$threadpost =~ s~\[/([^\]]{0,30})\n([^\]]{0,30})\]~\[/$1$2\]~g;
 	$threadpost =~ s~(\w+://[^<>\s\n\"\]\[]+)\n([^<>\s\n\"\]\[]+)~$1\n$2~g;
