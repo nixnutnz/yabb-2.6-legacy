@@ -448,6 +448,7 @@ $yycharset = 'ISO-8859-1';
 'extendedprofiles' => 'Use Extended Profiles?<br /><span class="small">If enabled, an additional item called "Profile Fields" will be shown in the sidebar to the left. There, you can add functions to the users\' profiles.<br />Leave this unchecked if you don\'t use this feature to save server load!</span>',
 'forumnumbformat' => 'Select default number format:',
 'nospammer' => 'Send default e-mail to rejected users even when no reason is given when registration is by Admin approval. Check for \'yes\'',
+'honeypot' => 'Activate Honeypot Spambot catcher. Check for \'yes\'',
 );
 
 %floodtxt = (
