@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$registerplver = 'YaBB 2.5.2 $Revision: 1.3 $';
+$registerplver = 'YaBB 2.5.2 $Revision: 1.4 $';
 if ($action eq 'detailedversion') { return 1; }
 if (!$iamguest && (!$admin && $action ne 'activate' && $action ne 'admin_descision') ) { &fatal_error("no_registration_logged_in"); }
 
@@ -26,8 +26,6 @@ if ($^O =~ /Win/) {
 	my $regstyle = '';
 }
 
-$hony = int rand 4;
-$newfieldb = $honeypot{$hony};
 sub Register {
 	if ($regtype == 0 && $iamguest) { &fatal_error("registration_disabled"); }
 	my ($tmpregname, $tmprealname, $tmpregemail, $tmpregpasswrd1, $tmpregpasswrd2, $hidechecked, @birthdate);
@@ -413,7 +411,7 @@ sub Register {
 	}
     if ($en_spam_questions) {
         srand;
-        fopen(SPAMQUESTIONS, "<$vardir/spam.questions") || &fatal_error("cannot_open","$vardir/spam.questions", 1);
+        fopen(SPAMQUESTIONS, "<$langdir/$language/spam.questions") || &fatal_error("cannot_open","$langdir/$language/spam.questions", 1);
         rand($.) < 1 && ($spam_question_rand = $_) while <SPAMQUESTIONS>;
         fclose(SPAMQUESTIONS);
         ($spam_question_id, $spam_question, undef) = split(/\|/, $spam_question_rand);
@@ -458,15 +456,25 @@ sub Register {
 		</td>
 	</tr>~;
 	}
+	if ($honeypot == 1) {
+        	fopen(HONEY, "<$langdir/$language/honey.txt") || &fatal_error("cannot_open","$langdir/$language/honey.txt", 1);
+        	@honey = <HONEY>;
+        	fclose(HONEY);
+        	chomp @honey;
+	  	$hony = int rand $#honey;
+		$newfieldb = $honey[$hony];
+
+		$yymain .= qq~
+		<tr class="green">
+			<td class="windowbg" align="right" valign="top" class="green">
+				<label for="add_field0" class="green"><b>$newfieldb</b>
+			</td>
+			<td class="windowbg2" align="left" valign="top" class="green">
+				<input autocomplete="off" type="text" name="add_field0" id="add_field0" size="30" value="$newfield" maxlength="18" class="green" /> *
+			</td>
+		</tr>~;
+	}
 	$yymain .= qq~
-	<tr class="green">
-		<td class="windowbg" align="right" valign="top" class="green">
-			<label for="add_field0" class="green"><b>$newfieldb</b>
-		</td>
-		<td class="windowbg2" align="left" valign="top" class="green">
-			<input autocomplete="off" type="text" name="add_field0" id="add_field0" size="30" value="$newfield" maxlength="18" class="green" /> *
-		</td>
-	</tr>
 	<tr>
 		<td colspan="2" align="center" class="titlebg">
 			<br />
@@ -636,7 +644,7 @@ sub Register2 {
 	if ( &CheckCensor($member{'regusername'}) ne "" ) { &fatal_error("censor1",&CheckCensor($member{'regusername'})); }
 	if ( &CheckCensor($member{'email'}) ne "" ) { &fatal_error("censor2",&CheckCensor($member{'email'})); }
 	if ( &CheckCensor($member{'regrealname'}) ne "" ) { &fatal_error("censor3",&CheckCensor($member{'regrealname'})); }
-	if ( $member{'add_field0'} ne q{}) {&fatal_error("bad_bot");}
+	if ( $honeypot == 1 && $member{'add_field0'} ne q{}) {&fatal_error("bad_bot");}
 
 	if ($regtype == 1) {
 		$convertstr = $member{'reason'};
@@ -652,7 +660,7 @@ sub Register2 {
 
 	if ($regcheck) { require "$sourcedir/Decoder.pl"; &validation_check($member{'verification'}); }
     if ($en_spam_questions) {
-        fopen(SPAMQUESTIONS, "<$vardir/spam.questions") || &fatal_error("cannot_open","$vardir/spam.questions", 1);
+        fopen(SPAMQUESTIONS, "<$langdir/$language/spam.questions") || &fatal_error("cannot_open","$langdir/$language/spam.questions", 1);
         @spam_questions = <SPAMQUESTIONS>;
         fclose(SPAMQUESTIONS);
         foreach my $verification_question (@spam_questions) {
