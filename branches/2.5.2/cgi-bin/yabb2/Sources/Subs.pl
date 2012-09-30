@@ -834,11 +834,10 @@ sub readform {
 	}
 	$action = $INFO{'action'} || $FORM{'action'};
 	# Formsession checking moved to YaBB.pl to fix a bug.
-	if ($INFO{'username'} && $do_scramble_id) { $INFO{'username'} = &decloak($INFO{'username'}); }
-	if ($FORM{'username'} && $do_scramble_id && $action ne "login2" && $action ne "reminder2" && $action ne "register2" && $action ne "profile2") { $FORM{'username'} = &decloak($FORM{'username'}); }
+	if ($INFO{'username'} && $do_scramble_id && $action ne 'view_regentry' && $action ne 'del_regentry' && $action ne 'activate' ) { $INFO{'username'} = &decloak($INFO{'username'}); }
+	if ($FORM{'username'} && $do_scramble_id && $action ne "login2" && $action ne "reminder2" && $action ne "register2" && $action ne "profile2" && $action ne 'admin_descision') { $FORM{'username'} = &decloak($FORM{'username'}); }
 	if ($INFO{'to'} && $do_scramble_id) { $INFO{'to'} = &decloak($INFO{'to'}); }
 	if ($FORM{'to'} && $do_scramble_id) { $FORM{'to'} = &decloak($FORM{'to'}); }
-
 	# Dont do this here or you get problems with foreign characters!!!!
 	#if ($action eq 'search2') { &FromHTML($FORM{'search'}); }
 	#&ToHTML($INFO{'title'});
@@ -1962,7 +1961,7 @@ sub decloak {
 	my ($input) =$_[0];
 	my ($user,$ascii,$key,$dec,$hexkey);
 	if (length($input) % 2 == 0) {return &old_decloak($input);} # Old style, return it
-	elsif ($input !~ /\A[0-9A-F]+\Z/) {return $input; }         # probably a non cloacked ID as it contains non hex code
+	elsif ($input !~ /\A[0-9A-F]+\Z/) {return $input; }         # probably a non cloaked ID as it contains non hex code
 	else {$input =~ s~0$~~;}
 	$hexkey = substr($input,length($input)-2,2);
 	$key = hex($hexkey);
