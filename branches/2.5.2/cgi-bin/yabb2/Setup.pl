@@ -14,7 +14,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$setupplver = 'YaBB 2.5.2 $Revision: 1.2 $';
+$setupplver = 'YaBB 2.5.2 $Revision: 1.3 $';
 
 # use CGI::Carp qw(fatalsToBrowser); # used only for tests
 
@@ -2436,12 +2436,6 @@ sub adminlogin2 {
             &setup_fatal_error("Setup Error: Could not find the admin data file in $memberdir! Please check your access rights.");
       }
 
-#	if ($FORM{'cookielength'} == 1) { $ck{'len'} = 'Sunday, 17-Jan-2038 00:00:00 GMT'; }
-#	elsif ($FORM{'cookielength'} == 2) { $ck{'len'} = ''; }
-#	else { $ck{'len'} = "+$FORM{'cookielength'}m"; }
-#	${$uid.$username}{'session'} = &encode_password($user_ip);
-#	&UpdateCookie("write", $username, &encode_password($FORM{'passwrd'}), ${$uid.$username}{'session'}, "/", $ck{'len'});
-
       if ($FORM{'cookielength'} < 1 || $FORM{'cookielength'} > 9999) { $FORM{'cookielength'} = $Cookie_Length; }
       if (!$FORM{'cookieneverexp'}) { $ck{'len'} = "\+$FORM{'cookielength'}m"; }
       else { $ck{'len'} = 'Sunday, 17-Jan-2038 00:00:00 GMT'; }
@@ -4529,8 +4523,7 @@ sub CheckInstall {
 
 sub ready {
       if ($INFO{'nextstep'} eq 'Setup') { $yySetLocation = qq~$INFO{'nextstep'}.$yyext?convert=1~; }
-#      elsif (-e "$INFO{'nextstep'}.$yyext") { $yySetLocation = qq~$INFO{'nextstep'}.$yyext?action=revalidatesession~; }
-      elsif (-e "$INFO{'nextstep'}.$yyext") { $yySetLocation = qq~$INFO{'nextstep'}.$yyext?action=login2~; }
+      elsif (-e "$INFO{'nextstep'}.$yyext") { &UpdateCookie("delete"); $yySetLocation = qq~$INFO{'nextstep'}.$yyext?action=revalidatesession~;}
 
       &CreateSetupLock;
       unlink "$vardir/cook.txt";
