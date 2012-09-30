@@ -3726,7 +3726,8 @@ sub SetInstall2 {
 \%templateset = (
 'Forum default' => "default|default|default|default|default|default|default|",
 'Old YaBB 2.1 style' => "yabb21|yabb21|yabb21|yabb21|yabb21|yabb21|yabb21|",
-'Old YaBB 2.4 style' => "yabb24|yabb24|yabb24|yabb24|yabb24|yabb24|yabb24|",
+'Old YaBB 2.5 style' => "yabb25|yabb25|yabb25|yabb25|yabb25|yabb25|yabb25|",
+'Blue_1' => "blue_1|blue_1|blue_1|blue_1|blue_1|blue_1|blue_1|",
 );                                                  # Forum templates settings
 
 \$maintenance = $maintenance;                       # Set to 1 to enable Maintenance mode
