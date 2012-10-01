@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$subsplver = 'YaBB 2.5.2 $Revision: 1.3 $';
+$subsplver = 'YaBB 2.5.2 $Revision: 1.4 $';
 if ($debug) { &LoadLanguage('Debug'); }
 
 use subs 'exit';
@@ -438,7 +438,7 @@ $yysyntax_js = qq~
 							var thiscolor = thecolor.split("|");
 							return thiscolor;
 						}
-					} #" make my syntax checker happy;
+					} //" make my syntax checker happy;
 
 					if (ie4 || DOM2) document.write('$newstitle<div class="windowbg2" id="fadestylebak" style="display: none;"><div class="newsfader" id="fadestyle" style="display: none;"> </div></div>');
 
