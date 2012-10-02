@@ -12,11 +12,11 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$guardianplver = 'YaBB 2.5.2 $Revision: 1.1 $';
+$guardianplver = 'YaBB 2.5.2 $Revision: 1.2 $';
 
 $not_from   = qq~$webmaster_email~;
 $not_to     = qq~$webmaster_email~;
-$abuse_time = &timeformat($date,1,0,1);
+$abuse_time = &timeformat($date,1,1,1);
 $abuse_time =~ s/<.*?>(.*?)<\/.*?>/$1/g;
 
 sub guard {
