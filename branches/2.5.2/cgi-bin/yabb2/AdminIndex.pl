@@ -16,7 +16,7 @@
 
 ### Version Info ###
 $YaBBversion = 'YaBB 2.5.2';
-$adminindexplver = 'YaBB 2.5.2 $Revision: 1.2 $';
+$adminindexplver = 'YaBB 2.5.2 $Revision: 1.3 $';
 
 # use CGI::Carp qw(fatalsToBrowser); # used only for tests
 
@@ -117,9 +117,6 @@ sub yymain {
                               require "$sourcedir/$act[0]";
                         } else {
                               require "$admindir/$act[0]";
-                        }
-                        if ($act[0] eq 'RegistrationLog.pl') {
-                            	$do_scramble_id = q{};
                         }
                         &{$act[1]};
                  } else {
