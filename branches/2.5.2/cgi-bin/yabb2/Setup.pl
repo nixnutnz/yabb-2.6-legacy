@@ -1,30 +1,22 @@
 #!/usr/bin/perl --
-# $Id: yabb setup $
-# $HeadURL: testbed $
-# $Revision: 2012 $
-# $Source: /Setup.pl $
 
 ###############################################################################
 # Setup.pl                                                                    #
-# $Date: 9/22/2012 $                                                          #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       September 30, 2012                                          #
+# Packaged:       October 5, 2012                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# use strict;
-#use warnings;
-#no warnings qw(uninitialized once redefine);
-use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.7;
 
-$setupplver = 'YaBB 2.5.2 $Revision: 1.8 $';
+$setupplver = 'YaBB 2.5.2 $Revision: 1.6 $';
+
+# use CGI::Carp qw(fatalsToBrowser); # used only for tests
 
 # conversion will stop after $max_process_time
 # in seconds, than the browser will call the script
@@ -58,8 +50,8 @@ unless ($lastsaved) {
       $vardir    = "./Variables";
 }
 
-if (-e 'YaBB.cgi') { $yyext = 'cgi'; }
-else { $yyext = 'pl'; }
+if (-e "YaBB.cgi") { $yyext = "cgi"; }
+else { $yyext = "pl"; }
 if ($boardurl) { $set_cgi = "$boardurl/Setup.$yyext"; }
 else { $set_cgi = "Setup.$yyext"; }
 
@@ -78,8 +70,7 @@ $catbg = '#ADC7E1';
 $maintext_23 = 'Unable to open';
 
 $yymenu = '';
-$yytabmenu = q~&nbsp;~;
-$px = 'px';
+$yytabmenu = qq~&nbsp;~;
 
 #############################################
 # Conversion starts here                    #
@@ -235,8 +226,8 @@ EOF
                   <td width="95%" class="windowbg2" align="left" style="font-size: 11px;">
                   - Conversion can take a long time depending on the size of your forum (30 seconds to a couple hours).<br />
                   - Your browser will be refreshed automaticly every $max_process_time seconds and you will see the ongoing process in the status bar.<br />
-                  - Some internet connections refresh their IP-Address automaticly every 24 hours.<br />
-                  &nbsp; Make sure that your IP-Address will not change during conversion, or you must restart the conversion after that! <br />
+                  - Some internet connections refresh their IP-Adress automaticly every 24 hours.<br />
+                  &nbsp; Make sure that your IP-Adress will not change during conversion, or you must restart the conversion after that! <br />
                   - Your forum will be set to maintenance while converting.
                   <p id="memcontinued">Click on 'Members' in the menu to start.<br />&nbsp;</p>
                   </td>
@@ -247,7 +238,7 @@ EOF
       <script type="text/javascript">
       <!--
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<font color="red"><b>Converting - please wait!<br />If you want to stop \\'Members\\' conversion, click here on STOP before this red message appears again on next page.</b></font>';
+                  document.getElementById("memcontinued").innerHTML = '<font color="red"><b>Converting - please wait!<br />If you want to stop \\'Members\\' conversion, click here on STOP before this red message apears again on next page.</b></font>';
             }
       // -->
       </script>
@@ -306,7 +297,7 @@ EOF
       <script type="text/javascript">
       <!--
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<font color="red"><b>Converting - please wait!<br />If you want to stop \\'Boards & Categories\\' conversion, click here on STOP before this red message appears again on next page.</b></font>';
+                  document.getElementById("memcontinued").innerHTML = '<font color="red"><b>Converting - please wait!<br />If you want to stop \\'Boards & Categories\\' conversion, click here on STOP before this red message apears again on next page.</b></font>';
             }
 
             function membtick() {
@@ -368,6 +359,7 @@ EOF
             $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
 
             my $mwidth = int((($INFO{'mstart2'} + $INFO{'mstart1'}) / 2) / $INFO{'mtotal'} * 100);
+
             $yymain = qq~
       <div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: 0px;">
             <table width="100%" cellspacing="1" cellpadding="4">
@@ -383,7 +375,7 @@ EOF
                   <td width="95%" class="windowbg2" align="left">
                   <div style="float: left; width: 250px; height: 14px; color: #FF3333;">Member Conversion.</div>
                   <div style="float: left; width: 102px; height: 10px; margin: 1px; background-color: #dddddd; border: 1px black solid; font-size: 5px;">
-                  <div style="position: relative; top: 0px; left: 0px; width: $mwidth$px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;">&nbsp;</div>
+                  <div style="position: relative; top: 0px; left: 0px; width: $mwidth\px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;">&nbsp;</div>
                   </div>
                   <div style="float: left; width: 50px; height: 14px; text-align: right; color: #FF3333;">$mwidth %</div><br />
                   <div style="float: left; width: 250px; height: 14px; color: #bbbbbb;">Board and Category Conversion.</div>
@@ -409,7 +401,7 @@ EOF
                   <br />
                   There are <b>~ . int($INFO{'mtotal'} - (($INFO{'mstart2'} + $INFO{'mstart1'}) / 2)) . qq~/$INFO{'mtotal'}</b> Members left to be converted.<br />
 
-                  <p id="memcontinued">If nothing happens in 5 seconds <a href="$set_cgi?action=members;st=$INFO{'st'};mstart1=$INFO{'mstart1'};mstart2=$INFO{'mstart2'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Members' conversion click here</a>. Then copy the actual browser address and type it in when you are going to continue the conversion.</p>
+                  <p id="memcontinued">If nothing happens in 5 seconds <a href="$set_cgi?action=members;st=$INFO{'st'};mstart1=$INFO{'mstart1'};mstart2=$INFO{'mstart2'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Members' conversion click here</a>. Then copy the actual browser adress and type it in when you are going to continue the conversion.</p>
                   </td>
             </tr>
             </table>
@@ -418,7 +410,7 @@ EOF
       <script type="text/javascript">
       <!--
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<font color="red"><b>Converting - please wait!<br />If you want to stop \\'Members\\' conversion, click here on STOP before this red message appears again on next page.</b></font>';
+                  document.getElementById("memcontinued").innerHTML = '<font color="red"><b>Converting - please wait!<br />If you want to stop \\'Members\\' conversion, click here on STOP before this red message apears again on next page.</b></font>';
             }
 
             function stoptick() { stop = 1; }
@@ -493,7 +485,7 @@ EOF
       <script type="text/javascript">
       <!--
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<font color="red"><b>Converting - please wait!<br />If you want to stop \\'Messages\\' conversion, click here on STOP before this red message appears again on next page.</b></font>';
+                  document.getElementById("memcontinued").innerHTML = '<font color="red"><b>Converting - please wait!<br />If you want to stop \\'Messages\\' conversion, click here on STOP before this red message apears again on next page.</b></font>';
             }
 
             function membtick() {
@@ -513,6 +505,7 @@ EOF
             $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
 
             my $bwidth = int($INFO{'bstart'} / $INFO{'btotal'} * 100);
+
             $yymain = qq~
       <div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: 0px;">
             <table width="100%" cellspacing="1" cellpadding="4">
@@ -530,7 +523,7 @@ EOF
                   $ConvDone
                   <div style="float: left; width: 250px; height: 14px; color: #FF3333;">Board and Category Conversion.</div>
                   <div style="float: left; width: 102px; height: 10px; margin: 1px; background-color: #dddddd; border: 1px black solid; font-size: 5px;">
-                  <div style="position: relative; top: 0px; left: 0px; width: $bwidth$px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;">&nbsp;</div>
+                  <div style="position: relative; top: 0px; left: 0px; width: $bwidth\px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;">&nbsp;</div>
                   </div>
                   <div style="float: left; width: 50px; height: 14px; text-align: right; color: #FF3333;">$bwidth %</div><br />
                   <div style="float: left; width: 250px; height: 14px; color: #bbbbbb;">Message Conversion.</div>
@@ -564,7 +557,7 @@ EOF
       <script type="text/javascript">
       <!--
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<font color="red"><b>Converting - please wait!<br />If you want to stop \\'Boards & Categories\\' conversion, click here on STOP before this red message appears again on next page.</b></font>';
+                  document.getElementById("memcontinued").innerHTML = '<font color="red"><b>Converting - please wait!<br />If you want to stop \\'Boards & Categories\\' conversion, click here on STOP before this red message apears again on next page.</b></font>';
             }
 
             function stoptick() { stop = 1; }
@@ -635,7 +628,7 @@ EOF
       <script type="text/javascript">
       <!--
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<font color="red"><b>Converting - please wait!<br />If you want to stop \\'Date & Time\\' conversion, click here on STOP before this red message appears again on next page.</b></font>';
+                  document.getElementById("memcontinued").innerHTML = '<font color="red"><b>Converting - please wait!<br />If you want to stop \\'Date & Time\\' conversion, click here on STOP before this red message apears again on next page.</b></font>';
             }
 
             function membtick() {
@@ -676,7 +669,7 @@ EOF
                   $ConvDone
                   <div style="float: left; width: 250px; height: 14px; color: #FF3333;">Message Conversion.</div>
                   <div style="float: left; width: 102px; height: 10px; margin: 1px; background-color: #dddddd; border: 1px black solid; font-size: 5px;">
-                  <div style="position: relative; top: 0px; left: 0px; width: $bwidth$px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;">&nbsp;</div>
+                  <div style="position: relative; top: 0px; left: 0px; width: $bwidth\px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;">&nbsp;</div>
                   </div>
                   <div style="float: left; width: 50px; height: 14px; text-align: right; color: #FF3333;">$bwidth %</div><br />
                   <div style="float: left; width: 250px; height: 14px; color: #bbbbbb;">Date & Time Conversion.</div>
@@ -702,7 +695,7 @@ EOF
                   There are <b>~ . ($INFO{'totboard'} - $INFO{'count'}) . qq~/$INFO{'totboard'}</b> Boards left, to convert the Messages in.<br />
                   <div style="float: left;">There are <b>~ . ($INFO{'totmess'} - $INFO{'tcount'}) . qq~/$INFO{'totmess'}</b> Threads left in the actual Board to be converted. &nbsp; </div>
                   <div style="float: left; width: 100px; height: 10px; margin: 1px; background-color: #dddddd; border: 1px black solid; font-size: 5px;">
-                  <div style="position: relative; top: 0px; left: 0px; width: $mwidth$px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;">&nbsp;</div>
+                  <div style="position: relative; top: 0px; left: 0px; width: $mwidth\px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;">&nbsp;</div>
                   </div>
                   <div style="float: left; width: 50px; height: 14px; text-align: right; color: #FF3333;">$mwidth %</div><br />
 
@@ -715,7 +708,7 @@ EOF
       <script type="text/javascript">
       <!--
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<font color="red"><b>Converting - please wait!<br />If you want to stop \\'Messages\\' conversion, click here on STOP before this red message appears again on next page.</b></font>';
+                  document.getElementById("memcontinued").innerHTML = '<font color="red"><b>Converting - please wait!<br />If you want to stop \\'Messages\\' conversion, click here on STOP before this red message apears again on next page.</b></font>';
             }
 
             function stoptick() { stop = 1; }
@@ -783,7 +776,7 @@ EOF
       <script type="text/javascript">
       <!--
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<font color="red"><b>Converting - please wait!<br />If you want to stop \\'Clean Up\\', click here on STOP before this red message appears again on next page.</b></font>';
+                  document.getElementById("memcontinued").innerHTML = '<font color="red"><b>Converting - please wait!<br />If you want to stop \\'Clean Up\\', click here on STOP before this red message apears again on next page.</b></font>';
             }
 
             function membtick() {
@@ -849,14 +842,14 @@ EOF
 
                   <div style="float: left; width: 350px; height: 14px;">There are <b>~ . ($INFO{'totalpolls'} - $INFO{'pollfile'}) . qq~/$INFO{'totalpolls'}</b> Polls left to be converted. &nbsp; </div>
                   <div style="float: left; width: 100px; height: 10px; margin: 1px; background-color: #dddddd; border: 1px black solid; font-size: 5px;">
-                  <div style="position: relative; top: 0px; left: 0px; width: $pollwidth$px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;">&nbsp;</div>
+                  <div style="position: relative; top: 0px; left: 0px; width: $pollwidth\px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;">&nbsp;</div>
                   </div>
                   <div style="float: left; width: 50px; height: 14px; text-align: right; color: #FF3333;">$pollwidth %</div>
                   </div><br /><br />
 
                   <div style="float: left; width: 350px; height: 14px;">There are <b>~ . ($INFO{'totalpolled'} - $INFO{'polledfile'}) . qq~/$INFO{'totalpolled'}</b> Polled-Files left to be converted. &nbsp; </div>
                   <div style="float: left; width: 100px; height: 10px; margin: 1px; background-color: #dddddd; border: 1px black solid; font-size: 5px;">
-                  <div style="position: relative; top: 0px; left: 0px; width: $polledwidth$px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;">&nbsp;</div>
+                  <div style="position: relative; top: 0px; left: 0px; width: $polledwidth\px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;">&nbsp;</div>
                   </div>
                   <div style="float: left; width: 50px; height: 14px; text-align: right; color: #FF3333;">$polledwidth %</div>
                   </div><br /><br />
@@ -870,7 +863,7 @@ EOF
       <script type="text/javascript">
       <!--
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<font color="red"><b>Converting - please wait!<br />If you want to stop \\'Date & Time\\' conversion, click here on STOP before this red message appears again on next page.</b></font>';
+                  document.getElementById("memcontinued").innerHTML = '<font color="red"><b>Converting - please wait!<br />If you want to stop \\'Date & Time\\' conversion, click here on STOP before this red message apears again on next page.</b></font>';
             }
 
             function stoptick() { stop = 1; }
@@ -906,7 +899,6 @@ EOF
                         }
                   }
                   print FORUMTOTALS "recycle|0|0|N/A|N/A||||\n";
-                  print FORUMTOTALS "announcements|0|0|N/A|N/A||||\n";
                   fclose(FORUMTOTALS);
 
                   $yySetLocation = qq~$set_cgi?action=cleanup2;st=~ . int($INFO{'st'} + time() - $time_to_jump + $max_process_time) . qq~;starttime=$time_to_jump;clean=1;pass_error=1;total_boards=~ . @allboards;
@@ -1064,33 +1056,33 @@ EOF
 
                   <div style="float: left; width: 350px; height: 14px;">There are <b>~ . ($INFO{'total_re_tot'} - $INFO{'my_re_tot'}) . qq~/$INFO{'total_re_tot'}</b> Boards (2) left to be recounted. &nbsp; </div>
                   <div style="float: left; width: 100px; height: 10px; margin: 1px; background-color: #dddddd; border: 1px black solid; font-size: 5px;">
-                  <div style="position: relative; top: 0px; left: 0px; width: $re_tot_width$px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;">&nbsp;</div>
+                  <div style="position: relative; top: 0px; left: 0px; width: $re_tot_width\px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;">&nbsp;</div>
                   </div>
                   <div style="float: left; width: 50px; height: 14px; text-align: right; color: #FF3333;">$re_tot_width %</div>
                   </div><br /><br />
 
                   <div style="float: left; width: 350px; height: 14px;">There are <b>~ . ($INFO{'total_memb'} - $INFO{'memb_index'}) . qq~/$INFO{'total_memb'}</b> Members left to be recounted. &nbsp; </div>
                   <div style="float: left; width: 100px; height: 10px; margin: 1px; background-color: #dddddd; border: 1px black solid; font-size: 5px;">
-                  <div style="position: relative; top: 0px; left: 0px; width: $memb_index_width$px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;">&nbsp;</div>
+                  <div style="position: relative; top: 0px; left: 0px; width: $memb_index_width\px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;">&nbsp;</div>
                   </div>
                   <div style="float: left; width: 50px; height: 14px; text-align: right; color: #FF3333;">$memb_index_width %</div>
                   </div><br /><br />
 
                   <div style="float: left; width: 350px; height: 14px;">There are <b>~ . ($INFO{'total_mail_n'} - $INFO{'my_mail_n'}) . qq~/$INFO{'total_mail_n'}</b> Notifications left to be written new. &nbsp; </div>
                   <div style="float: left; width: 100px; height: 10px; margin: 1px; background-color: #dddddd; border: 1px black solid; font-size: 5px;">
-                  <div style="position: relative; top: 0px; left: 0px; width: $mail_not_width$px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;">&nbsp;</div>
+                  <div style="position: relative; top: 0px; left: 0px; width: $mail_not_width\px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;">&nbsp;</div>
                   </div>
                   <div style="float: left; width: 50px; height: 14px; text-align: right; color: #FF3333;">$mail_not_width %</div>
                   </div><br /><br />
 
                   <div style="float: left; width: 350px; height: 14px;">There are <b>~ . ($INFO{'total_nopost'} - $INFO{'fix_nopost'}) . qq~/$INFO{'total_nopost'}</b> NoPost-Membergroups left to be updated. &nbsp; </div>
                   <div style="float: left; width: 100px; height: 10px; margin: 1px; background-color: #dddddd; border: 1px black solid; font-size: 5px;">
-                  <div style="position: relative; top: 0px; left: 0px; width: $nopost_width$px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;">&nbsp;</div>
+                  <div style="position: relative; top: 0px; left: 0px; width: $nopost_width\px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;">&nbsp;</div>
                   </div>
                   <div style="float: left; width: 50px; height: 14px; text-align: right; color: #FF3333;">$nopost_width %</div>
                   </div><br /><br />
 
-                  <p id="memcontinued">If nothing happens in 5 seconds <a href="$set_cgi?action=cleanup;st=$INFO{'st'};clean=$INFO{'clean'};total_boards=$INFO{'total_boards'};total_re_tot=$INFO{'total_re_tot'};my_re_tot=$INFO{'my_re_tot'};tmp_firstforum=$INFO{'tmp_firstforum'};firstforum=$INFO{'firstforum'};siglength=$INFO{'siglength'};total_memb=$INFO{'total_memb'};memb_index=$INFO{'memb_index'};total_mail_n=$INFO{'total_mail_n'};my_mail_n=$INFO{'my_mail_n'};total_nopost=$INFO{'total_nopost'};fix_nopost=$INFO{'fix_nopost'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Clean Up' conversion click here</a>. Then copy the actual browser address and type it in when you are going to continue the conversion.</p>
+                  <p id="memcontinued">If nothing happens in 5 seconds <a href="$set_cgi?action=cleanup;st=$INFO{'st'};clean=$INFO{'clean'};total_boards=$INFO{'total_boards'};total_re_tot=$INFO{'total_re_tot'};my_re_tot=$INFO{'my_re_tot'};tmp_firstforum=$INFO{'tmp_firstforum'};firstforum=$INFO{'firstforum'};siglength=$INFO{'siglength'};total_memb=$INFO{'total_memb'};memb_index=$INFO{'memb_index'};total_mail_n=$INFO{'total_mail_n'};my_mail_n=$INFO{'my_mail_n'};total_nopost=$INFO{'total_nopost'};fix_nopost=$INFO{'fix_nopost'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Clean Up' conversion click here</a>. Then copy the actual browser adress and type it in when you are going to continue the conversion.</p>
                   </td>
             </tr>
             </table>
@@ -1277,7 +1269,7 @@ sub IllegalUser {
 
       if ($settings[5]) {
             $settings[5] =~ s/&&/&amp;&amp;/g;
-            $settings[5] =~ s/\"/&quot;/g; #";
+            $settings[5] =~ s/\"/&quot;/g;
             $settings[5] =~ s~\[size=([+-]?\d)\](.*?)\[/size\]~ "\[size=" . &conv_size($1) . "\]$2\[/size\]" ~ige;
             $settings[5] =~ s~<br>~<br />~ig;
       }
@@ -1461,7 +1453,6 @@ sub groupconvert {
       while ($MemStat[$i]) {
             if ($MemPostNum[$i] eq "x") {
                   $NoPost{$z} = qq~$MemStat[$i]|$MemStarNum[$i]|$MemStarPic[$i]|$MemTypeCol[$i]|0|0|0|0|0|0~;
-                  push @nopostorder, $z;
                   $z++;
             } else {
                   $Post{$MemPostNum[$i]} = qq~$MemStat[$i]|$MemStarNum[$i]|$MemStarPic[$i]|$MemTypeCol[$i]|0|0|0|0|0|0~;
@@ -1603,19 +1594,17 @@ sub GetCats {
       # add trash if not exists
       unless (exists $cat{'staff'}) {
             push(@categoryorder, 'staff');
-		$cat{'staff'} = "announcements,recycle";
+            $cat{'staff'} = "recycle";
             $catinfo{'staff'} = "Forum Staff|Administrator, Global Moderator|0";
       } else {
             my @temp;
             foreach (split(/,/, $cat{'staff'})) {
-                  push(@temp, $_) if $_ ne 'recycle' && $_ ne 'announcements';
+                  push(@temp, $_) if $_ ne 'recycle';
             }
             push(@temp, 'recycle');
-            push(@temp, 'announcements');
             $cat{'staff'} = join(',', @temp);
       }
       $board{'recycle'} = "Recycle Bin||" unless exists $board{'recycle'};
-      $board{'announcements'} = "Global Announcements||" unless exists $board{'announcements'};
 
       @temparray = ();
       while (($key, $value) = each(%cat)) {
@@ -1684,16 +1673,9 @@ sub CreateControl {
             if ($cntcat && $foundboard) {
                   push(@boardcontrol, "$cntcat|$foundboard|$cntpic|$cntdescription|$cntmods|$cntmodgroups|$cntstartperms|$cntreplyperms|$cntpollperms|$cntzero|$cntpassword|$cnttotals|$cntattperms|$spare|||\n");
             } elsif (!$cntcat && $foundboard eq 'recycle') { # add trash if not exists
-                  push(@boardcontrol, qq{staff|recycle||If the Recycle Bin is turned on, removed topics will be moved to this board. This will allow you to recover them if it is necessary. You should purge messages in this board frequently to keep it clean.|admin|||||1|||1||||\n"});
+                  push(@boardcontrol, "staff|recycle||If the Recycle Bin is turned on, removed topics will be moved to this board. This will allow you to recover them if it is necessary.  You should purge messages in this board frequently to keep it clean.|admin|||||1|||1||||\n");
                   if (!-e "$convboardsdir/recycle.txt") {
                         fopen(BOARDFILE, ">$convboardsdir/recycle.txt") || &setup_fatal_error("$maintext_23 $convboardsdir/recycle.txt: ", 1);
-                        print BOARDFILE '';
-                        fclose(BOARDFILE);
-                  }
-            } elsif (!$cntcat && $foundboard eq 'announcements') { # add announcements
-                  push(@boardcontrol, qq{staff|announcements||Topics you place in this board will display as a "Global Announcement" on the top of all other boards. Use this for things such as forum rules, top news articles, or important statements.|admin||Administrator|||0||1|||||\n});
-                  if (!-e "$convboardsdir/announcements.txt") {
-                        fopen(BOARDFILE, ">$convboardsdir/announcements.txt") || &setup_fatal_error("$maintext_23 $convboardsdir/announcements.txt: ", 1);
                         print BOARDFILE '';
                         fclose(BOARDFILE);
                   }
@@ -3030,7 +3012,7 @@ sub save_paths {
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       September 30, 2012                                          #
+# Packaged:       October 5, 2012                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012  YaBB (www.yabbforum.com) - All Rights Reserved.    #
@@ -3710,7 +3692,7 @@ sub SetInstall2 {
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       September 30, 2012                                          #
+# Packaged:       October 5, 2012                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012  YaBB (www.yabbforum.com) - All Rights Reserved.    #
@@ -3726,8 +3708,7 @@ sub SetInstall2 {
 \%templateset = (
 'Forum default' => "default|default|default|default|default|default|default|",
 'Old YaBB 2.1 style' => "yabb21|yabb21|yabb21|yabb21|yabb21|yabb21|yabb21|",
-'Old YaBB 2.5 style' => "yabb25|yabb25|yabb25|yabb25|yabb25|yabb25|yabb25|",
-'Blue_1' => "blue_1|blue_1|blue_1|blue_1|blue_1|blue_1|blue_1|",
+'Old YaBB 2.4 style' => "yabb24|yabb24|yabb24|yabb24|yabb24|yabb24|yabb24|",
 );                                                  # Forum templates settings
 
 \$maintenance = $maintenance;                       # Set to 1 to enable Maintenance mode
@@ -4725,10 +4706,7 @@ sub SetupTemplate {
       my $output = '';
       $yyboardname = $mbname;
       $yytime = &timeformat($date, 1);
-	if    ($hour >= 12 && $hour < 18) { $wmessage = $maintxt{'247a'}; } # Afternoon
-	elsif ($hour <  12 && $hour >= 0) { $wmessage = $maintxt{'247m'}; } # Morning
-	else                              { $wmessage = $maintxt{'247e'}; } # Evening
-      $yyuname = $iamguest ? '' : qq~$wmessage ${$uid.$username}{'realname'}, ~;
+      $yyuname = $iamguest ? '' : qq~$maintxt{'247'} ${$uid.$username}{'realname'}, ~;
 
       if ($enable_news) {
             fopen(NEWS, "$vardir/news.txt");
@@ -4811,8 +4789,13 @@ sub SetupTemplate {
 sub nicely_aligned_file {
       my $filler = ' ' x 50; # Make files look nicely aligned. The comment starts after 50 Col
 
-       local *cut_comment = sub {
-#      sub cut_comment { # line brake of too long comments
+      my $setfile = shift;
+      $setfile =~ s~(.+;)[ \t]+(#.+$)~ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2 ~gem;
+      $setfile =~ s~\t+(#.+$)~$filler$1~gm;
+      $setfile =~ s~(.+)(#.+$)~ $1 . &cut_comment($1,$2) ~gem;
+      $setfile;
+
+      sub cut_comment { # line brake of too long comments
             my ($comment,$length) = ('',120); # 120 Col is the max width of page
             my $var_length = length($_[0]);
             while ($length < $var_length) { $length += 120; }
@@ -4824,14 +4807,8 @@ sub nicely_aligned_file {
                   } else { $comment .= "$_ "; }
             }
             $comment =~ s/ $//;
-            return $comment;
-      };
-      my $setfile = shift;
-      $setfile =~ s~(.+;)[ \t]+(#.+$)~ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2 ~gem;
-      $setfile =~ s~\t+(#.+$)~$filler$1~gm;
-      $setfile =~ s~(.+)(#.+$)~ $1 . &cut_comment($1,$2) ~gem;
-      return $setfile;
-
+            $comment;
+      }
 }
 
 1;
