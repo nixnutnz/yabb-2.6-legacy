@@ -4,7 +4,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       September 30, 2012                                          #
+# Packaged:       October 5, 2012                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$antispamquestionsplver = 'YaBB 2.5.2 $Revision: 1.0 $';
+$antispamquestionsplver = 'YaBB 2.5.2 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub SpamQuestions {
@@ -21,15 +21,6 @@ sub SpamQuestions {
 
     if ($en_spam_questions)   { $chk_spam_question = qq~ checked="checked"~; }
     if ($spam_questions_case) { $chk_spam_question_case = qq~ checked="checked"~; }
-#	opendir(LNGDIR, $langdir/$language);
-#	my @langitems = readdir(LNGDIR);
-#	close(LNGDIR);
-#	foreach my $item (sort {lc($a) cmp lc($b)} @langitems) {
-#		if (-d "$langdir/$language/$item" && $item =~ m~\A[0-9a-zA-Z_\#\%\-\:\+\?\$\&\~\,\@/]+\Z~ && -e "$langdir/$language/$item/spam.questions") {
-#			$yymain .= qq~
-#         <option value="$item">$displang</option>~;
-#		}
-#	}
 
     fopen(SPAMQUESTIONS, "<$langdir/$language/spam.questions") || &admin_fatal_error("cannot_open","$langdir/$language/spam.questions", 1);
     @spam_questions = <SPAMQUESTIONS>;

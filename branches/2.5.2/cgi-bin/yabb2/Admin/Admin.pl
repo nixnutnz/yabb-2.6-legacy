@@ -4,7 +4,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       September 30, 2012                                          #
+# Packaged:       October 5, 2012                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -64,7 +64,7 @@ Ron Hartendorp, Andrew Aitken, Carsten Dalgaard, Ryan Farrington, Zoltan Kovacs,
      </tr>
      <tr valign="middle">
        <td align="left" class="windowbg2"><br />
-Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe. D.A. Rorabaugh.<br />Included Mods in YaBB 2.5.2 written by Derek Barnstorm and D.A. Rorabaugh.<br /><br />
+Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, D.A. Rorabaugh.<br />Included Mods in YaBB 2.5.2 written by Derek Barnstorm and D.A. Rorabaugh.<br /><br />
 Dedicated to the memory of Ron Hartendorp, AKA Spikecity. He left us too soon. <br /><br />
       </td>
      </tr>
