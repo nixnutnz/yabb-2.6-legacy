@@ -30,6 +30,8 @@ color:#900;
 #content {
 background-color:#FFF;
 background-image:url(images/cbg.png);
+background-position:140px;
+background-repeat:repeat-y;
 border:1px solid #000;
 position:relative;
 }
@@ -126,8 +128,9 @@ color:#fff;
 }
 
 #content .body {
-margin-left:160px;
+margin-left:150px;
 margin-right:10px;
+padding-left:15px;
 }
 
 #content .body h3 {
