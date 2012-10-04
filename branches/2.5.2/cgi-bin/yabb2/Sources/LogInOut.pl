@@ -4,7 +4,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       September 30, 2012                                          #
+# Packaged:       October 5, 2012                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$loginoutplver = 'YaBB 2.5.2 $Revision: 1.0 $';
+$loginoutplver = 'YaBB 2.5.2 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 if ($regcheck) { require "$sourcedir/Decoder.pl"; }
@@ -21,7 +21,6 @@ if ($regcheck) { require "$sourcedir/Decoder.pl"; }
 $regstyle = '';
 
 sub Login {
-#	if (!$iamguest) { &fatal_error("logged_in_already",$username); }
 	if (!$iamguest && $sessionvalid == 1) { &fatal_error("logged_in_already",$username); }
 	$sharedLogin_title = $loginout_txt{'34'};
 	$yymain .= &sharedLogin . qq~<script type="text/javascript" language="JavaScript">
@@ -34,7 +33,6 @@ sub Login {
 }
 
 sub Login2 {
-#	if (!$iamguest) { &fatal_error("logged_in_already",$username); }
 	if (!$iamguest && $sessionvalid == 1) { &fatal_error("logged_in_already",$username); }
 	&fatal_error("no_username") if ($FORM{'username'} eq "");
 	&fatal_error("no_password") if ($FORM{'passwrd'}  eq "");
@@ -243,7 +241,7 @@ sub Reminder {
 	</tr><tr>
 	<td class="windowbg">
 	<label for="user"><span class="text1"><b>$loginout_txt{'35'}:</b></span></label>
-	<input type="text" name="user" id="user" $regstyle />
+	<input type="text" name="user" id="user" $regstyle size="50" />
 	</td>
 	</tr>
 ~;
@@ -297,7 +295,6 @@ sub Reminder {
 sub Reminder2 {
 	if (!$FORM{'user'}) { &fatal_error("", "$loginout_txt{'error_user_info'}"); }
 	# generate random ID for password reset.
-#	if (!$iamguest) { &fatal_error("logged_in_already",$username); }
 	if (!$iamguest && $sessionvalid == 1) { &fatal_error("logged_in_already",$username); }
 	my $randid = &keygen(8,"A");
 
@@ -309,7 +306,7 @@ sub Reminder2 {
 	$user =~ s/\s/_/g;
 
 	if (!-e "$memberdir/$user.vars"){
-		$test_id = &MemberIndex("who_is", $user);
+		$test_id = &MemberIndex("who_is", $FORM{'user'});
 		if ($test_id) { $user = $test_id; }
 		else { &fatal_error("", "$loginout_txt{'no_user_info_exists'}"); }
 	}
