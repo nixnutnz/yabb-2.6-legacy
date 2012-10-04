@@ -4,7 +4,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       September 30, 2012                                          #
+# Packaged:       October 5, 2012                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -844,6 +844,7 @@ function checkForm(theForm) {
 			document.write("<img src='$imagesdir/underline.gif' onclick='underline();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'255'}' title='$post_txt{'255'}' border='0' />");
 			document.write("<img src='$imagesdir/strike.gif' onclick='strike();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'441'}' title='$post_txt{'441'}' border='0' />");
 			document.write("<img src='$imagesdir/highlight.gif' onclick='highlight();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'246'}' title='$post_txt{'246'}' border='0' />");
+//			document.write("<img src='$imagesdir/noparse.gif' onclick='noparse();' "+HAND+" align='top' width='23' height='22' alt='$post_txt{'246a'}' title='$post_txt{'246a'}' border='0' />");
 			document.write('</div>');
 			document.write('<div style="width: 139px; float: left; text-align: center;">');
 			document.write('<select name="fontface" id="fontface" onchange="if(this.options[this.selectedIndex].value) fontfce(this.options[this.selectedIndex].value);" style="width: 90px; margin-top: 2px; margin-left: 2px; margin-right: 1px; font-size: 9px;">');
