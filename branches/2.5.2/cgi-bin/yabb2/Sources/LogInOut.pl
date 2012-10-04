@@ -229,7 +229,6 @@ $border_bottom
 }
 
 sub Reminder {
-#	if (!$iamguest) { &fatal_error("logged_in_already",$username); }
 	if (!$iamguest && $sessionvalid == 1) { &fatal_error("logged_in_already",$username); }
 	$yymain .= qq~<br /><br />
 <form action="$scripturl?action=reminder2" method="post" name="reminder" onsubmit="return CheckReminderField();">
