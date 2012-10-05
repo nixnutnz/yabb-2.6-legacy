@@ -16,7 +16,7 @@
 
 ### Version Info ###
 $YaBBversion = 'YaBB 2.5.2';
-$YaBBplver = 'YaBB 2.5.2 $Revision: 1.0 $';
+$YaBBplver = 'YaBB 2.5.2 $Revision: 1.1 $';
 
 if ($action eq 'detailedversion') { return 1; }
 
@@ -119,6 +119,8 @@ if ($@) { &fatal_error("untrapped",":<br />$@"); }
 sub yymain {
       # Choose what to do based on the form action
       if ($maintenance) {
+      #admin login issues with sessions and maintenance mode fix.
+            if ( ($iamadmin || $iamgmod ) && $sessionvalid == 0 ) {&UpdateCookie("delete"); require "$sourcedir/LogInOut.pl"; &InMaintenance; };
             if    ($action eq 'login2')    { require "$sourcedir/LogInOut.pl"; &Login2; }
             if (!$iamadmin) { require "$sourcedir/LogInOut.pl"; &InMaintenance; }
       }
