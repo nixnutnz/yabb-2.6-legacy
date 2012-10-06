@@ -1,7 +1,0 @@
-$convertdir = qq~./Convert~;
-$convboardsdir = qq~./Convert/Boards~;
-$convmemberdir = qq~./Convert/Members~;
-$convdatadir = qq~./Convert/Messages~;
-$convvardir = qq~./Convert/Variables~;
-
-1;
