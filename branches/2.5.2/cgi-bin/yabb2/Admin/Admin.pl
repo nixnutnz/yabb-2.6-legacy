@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$adminplver  = 'YaBB 2.5.2 $Revision: 1.1 $';
+$adminplver  = 'YaBB 2.5.2 $Revision: 1.2 $';
 
 sub Admin {
 	&is_admin_or_gmod;
@@ -64,7 +64,7 @@ Ron Hartendorp, Andrew Aitken, Carsten Dalgaard, Ryan Farrington, Zoltan Kovacs,
      </tr>
      <tr valign="middle">
        <td align="left" class="windowbg2"><br />
-Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, D.A. Rorabaugh.<br />Included Mods in YaBB 2.5.2 written by Derek Barnstorm and D.A. Rorabaugh.<br /><br />
+Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, D.A. Rorabaugh.<br />Included Mods in YaBB 2.5.2 written by Derek Barnstorm, Carsten Dalgaard, and D.A. Rorabaugh.<br /><br />
 Dedicated to the memory of Ron Hartendorp, AKA Spikecity. He left us too soon. <br /><br />
       </td>
      </tr>
