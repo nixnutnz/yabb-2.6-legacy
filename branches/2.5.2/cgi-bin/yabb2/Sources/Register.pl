@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$registerplver = 'YaBB 2.5.2 $Revision: 1.4 $';
+$registerplver = 'YaBB 2.5.2 $Revision: 1.6 $';
 if ($action eq 'detailedversion') { return 1; }
 if (!$iamguest && (!$admin && $action ne 'activate' && $action ne 'admin_descision') ) { &fatal_error("no_registration_logged_in"); }
 
@@ -104,7 +104,7 @@ sub Register {
 			<span class="small">$register_txt{'520'}$register_txt{'241ea'}</span></label>
 		</td>
 		<td class="windowbg2" align="left" valign="top">
-			<input type="text" name="regusername" id="regusername" onchange="checkAvail('$scripturl',this.value,'user')" size="30" value="$tmpregname" maxlength="18"$regstyle /> *
+			<input autocomplete="off" type="text" name="regusername" id="regusername" onchange="checkAvail('$scripturl',this.value,'user')" size="30" value="$tmpregname" maxlength="18"$regstyle /> *
 			<div id="useravailability"></div>
 			<input type="hidden" name="language" id="language" value="$language" />
 		</td>
@@ -438,13 +438,64 @@ sub Register {
 
 		$yymain .= qq~
 		<tr class="green">
-			<td class="windowbg" align="right" valign="top" class="green">
+			<td align="right" valign="top" class="green">
 				<label for="add_field0" class="green"><b>$newfieldb</b>
 			</td>
-			<td class="windowbg2" align="left" valign="top" class="green">
-				<input autocomplete="off" type="text" name="add_field0" id="add_field0" size="30" value="$newfield" maxlength="18" class="green" /> *
+			<td align="left" valign="top" class="green">
+				<input type="text" name="add_field0" id="add_field0" size="30" value="$newfield" maxlength="18" class="green" /> *
 			</td>
-		</tr>~;
+		</tr>~;	}
+		
+	# SpamFruits courtesy of Carsten Dalgaard #
+	if ($spamfruits == 1) {	
+		my @fruits = ($fruittxt{'2'},$fruittxt{'3'},$fruittxt{'4'},$fruittxt{'5'});
+		my $rdn = int(rand(4));
+		$fruit = $fruits[$rdn];
+		$yymain .= qq~
+		<tr>
+			<td class="windowbg" align="right" valign="top">
+				<b>$fruittxt{'1'} $fruit:</b>
+			</td>
+			<td class="windowbg2" align="left" valign="middle">
+				<input type="hidden" name="xcord" id="xcord" value="0" />
+				<input type="hidden" name="ycord" id="ycord" value="0" />
+				<input type="hidden" name="thefruit" id="thefruit" value="$fruit" />
+				<iframe id="fruits" name="fruits" width="290" height="87" marginwidth="0" marginheight="0" frameborder="0" scrolling="no"></iframe>
+				<script language="JavaScript1.2" type="text/javascript">
+				<!--
+					function ShowFruits() {
+						var visfruits = "<html><head><link rel='stylesheet' href='$extpagstyle' type='text/css' /></head><body class='windowbg2'> ";
+						visfruits += "<img src='$defaultimagesdir/fruits.png' width='290' height='75' name='fruitsview' id='fruitsview' border='0' style='position: absolute; top: 0px; left: 0px; cursor: pointer;' alt='' onclick='FruitClick(event)' /> ";
+						visfruits += "<img src='$defaultimagesdir/fruitcheck.png' id='frmarker' style='z-index: 2; display: none;'> ";
+						visfruits += "<script language='JavaScript1.2' type='text/javascript'> "
+						visfruits += "var xcor = 0; "
+						visfruits += "var ycor = 0; "
+						visfruits += "var mrkpos = 30; "
+						visfruits += "function FruitClick(event) \{ "
+						visfruits += "xcor = (event.clientX); "
+						visfruits += "ycor = (event.clientY); "
+						visfruits += "if(xcor > 0) mrkpos = 30; "
+						visfruits += "if(xcor > 75) mrkpos = 100; "
+						visfruits += "if(xcor > 145) mrkpos = 170; "
+						visfruits += "if(xcor > 215) mrkpos = 240; "
+						visfruits += "document.getElementById('frmarker').style.display = 'block'; "
+						visfruits += "document.getElementById('frmarker').style.position = 'absolute'; "
+						visfruits += "document.getElementById('frmarker').style.left = mrkpos + 'px'; "
+						visfruits += "document.getElementById('frmarker').style.top = '67px'; "
+						visfruits += "parent.document.creator.ycord.value = ycor; "
+						visfruits += "parent.document.creator.xcord.value = xcor; "
+						visfruits += "\} "
+						visfruits += "<\\/script> <\\/body> <\\/html>";
+						fruits.document.open("text/html");
+						fruits.document.write(visfruits);
+						fruits.document.close();
+					}
+					ShowFruits()
+				//-->
+				</script>
+			</td>
+		</tr>
+		~;
 	}
 
 	if ($RegAgree) {
@@ -627,6 +678,14 @@ sub Register2 {
 	&fatal_error("id_taken","($member{'regusername'})") if -e ("$memberdir/$member{'regusername'}.vars");
 	&fatal_error("password_is_userid") if $member{'regusername'} eq $member{'passwrd1'};
 	&fatal_error("no_reg_reason") if $member{'reason'} eq "" && $regtype == 1;
+
+	if ($spamfruits == 1) {	
+		if($member{'ycord'} < 5 || $member{'ycord'} > 70) { &fatal_error("", "$fruittxt{'6'}"); }
+		if($member{'thefruit'} eq $fruittxt{'2'} && ($member{'xcord'} < 5 || $member{'xcord'} > 75)) { &fatal_error("", "$fruittxt{'6'}"); }
+		if($member{'thefruit'} eq $fruittxt{'3'} && ($member{'xcord'} < 75 || $member{'xcord'} > 145)) { &fatal_error("", "$fruittxt{'6'}"); }
+		if($member{'thefruit'} eq $fruittxt{'4'} && ($member{'xcord'} < 145 || $member{'xcord'} > 215)) { &fatal_error("", "$fruittxt{'6'}"); }
+		if($member{'thefruit'} eq $fruittxt{'5'} && ($member{'xcord'} < 215 || $member{'xcord'} > 285)) { &fatal_error("", "$fruittxt{'6'}"); }
+	}
 
 	&FromChars($member{'regrealname'});
 	$convertstr = $member{'regrealname'};
