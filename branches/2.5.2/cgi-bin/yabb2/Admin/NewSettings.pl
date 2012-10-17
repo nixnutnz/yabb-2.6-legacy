@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$newsettingsplver = 'YaBB 2.5.2 $Revision: 1.3 $';
+$newsettingsplver = 'YaBB 2.5.2 $Revision: 1.5 $';
 if ($action eq 'detailedversion') { return 1; }
 
 # Figure out what tabset to use, depending on the page= parameter.
@@ -642,6 +642,7 @@ $member_groups
 \$set_subjectMaxLength = $set_subjectMaxLength;		# Maximum Allowed Characters in a Posts Subject
 \$MaxMessLen = $MaxMessLen;				# Maximum Allowed Characters in a Posts
 \$honeypot = $honeypot;					# Set to 1 to activate Honeypot spam deterrent
+\$spamfruits = $spamfruits;					# Set to 1 to activate SpamFruits spam deterrent
 \$speedpostdetection = $speedpostdetection;		# Set to 1 to detect speedposters and delay their spam actions
 \$spd_detention_time = $spd_detention_time;		# Time in seconds before a speedposting ban is lifted again
 \$min_post_speed = $min_post_speed;			# Minimum time in seconds between entering a post form and submitting a post

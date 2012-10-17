@@ -78,6 +78,12 @@ $bdomains =~ s~,~\n~g;
 			validate => 'boolean',
 		},
 		{
+			description => qq~<label for="spamfruits">$admin_txt{'spamfruits'}</label>~,
+			input_html => qq~<input type="checkbox" name="spamfruits" id="spamfruits" value="1"${ischecked($spamfruits)} />~,
+			name => 'spamfruits',
+			validate => 'boolean',
+		},
+		{
 			header => $settings_txt{'speedban'},
 		},
 		{
