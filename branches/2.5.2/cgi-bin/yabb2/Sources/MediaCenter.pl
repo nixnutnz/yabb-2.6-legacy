@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$mediacenterplver = 'YaBB 2.5.2 $Revision: 1.2 $';
+$mediacenterplver = 'YaBB 2.5.2 $Revision: 1.3 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub embed {
@@ -80,6 +80,7 @@ sub embed {
 			$controlheight = 42;
 
 		} elsif ($media_url =~ m/youtube\.com/i) {
+		      ($media_url, undef) = split /\&/g, $media_url;
             	$media_url =~ s~watch\?v=~v\/~g;
             	$video = $embed_youtube;
 			$controlheight = 36;
