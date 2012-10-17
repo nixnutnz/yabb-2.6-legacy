@@ -11,7 +11,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       September 30, 2012                                          #
+# Packaged:       October 05, 2012                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -3681,6 +3681,7 @@ sub SetInstall2 {
             $set_subjectMaxLength = 50;
             $MaxMessLen = 2000;
             $honeypot = 1;
+            $spamfruits = 0;
             $speedpostdetection = 1;
             $spd_detention_time = 300;
             $min_post_speed = 2;
@@ -3860,6 +3861,7 @@ sub SetInstall2 {
 \$set_subjectMaxLength = $set_subjectMaxLength;     # Maximum Allowed Characters in a Posts Subject
 \$MaxMessLen = $MaxMessLen;                         # Maximum Allowed Characters in a Posts
 \$honeypot = $honeypot;					    # Set to 1 to activate Honeypot spam deterrent
+\$spamfruits = $spamfruits;				    # Set to 1 to activate SpamFruits spam deterrent
 \$speedpostdetection = $speedpostdetection;         # Set to 1 to detect speedposters and delay their spam actions
 \$spd_detention_time = $spd_detention_time;         # Time in seconds before a speedposting ban is lifted again
 \$min_post_speed = $min_post_speed;                 # Minimum time in seconds between entering a post form and submitting a post
