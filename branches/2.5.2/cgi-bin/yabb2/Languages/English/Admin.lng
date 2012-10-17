@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$adminlngver = 'YaBB 2.5.2 $Revision: 1.2 $';
+$adminlngver = 'YaBB 2.5.2 $Revision: 1.3 $';
 
 $yycharset = 'ISO-8859-1';
 
@@ -143,6 +143,16 @@ $yycharset = 'ISO-8859-1';
 '233' => 'Date Registered',
 '240' => 'There is an invalid character in the',
 '241' => 'field!',
+'246' => 'None',
+'247' => 'Can Post?',
+'247a' => 'If this board contains child boards, this option will enable posting in this parent board. Otherwise, the board will serve as a folder containing the sub boards.',
+'248' => 'Child Boards',
+'249' => 'Parent Board',
+'250' => 'Add Sub Board',
+'251' => 'Delete {Board}',
+'252' => 'Reorder Sub Boards',
+'253' => 'Edit {Board}',
+'254' => 'Sub-',
 '303' => 'View All Users',
 '304' => 'View By Letter',
 '305' => 'View',
@@ -223,6 +233,8 @@ $yycharset = 'ISO-8859-1';
 '404' => 'Send e-mails using',
 '407' => 'SMTP-Server<br /><span class="small">For Net::SMTP::TLS, specify the port number with a ":&lt;portnumber&gt;" at the end. Example: smtp.gmail.com<i>:25</i></span>',
 '408' => 'Minimum time between two submissions from the same IP (in seconds)',
+'409' => 'Hide signatures from Guests?<br /><span class="small">If checked, only registered members can see signatures.</span>',
+'410' => 'NFSLock based File-Locking (Unix only)',
 '425' => 'Your Version/Current Version',
 '429' => 'Detailed Version Check',
 '430' => 'Files in Admin Dir:',
@@ -289,6 +301,9 @@ $yycharset = 'ISO-8859-1';
 '524' => 'Auto-link URLs?',
 '525' => 'Check for ALL CAPS?<br /><span class="small">If set to 0, no checking is done. Otherwise, the number determines how many characters in all caps are required to open a JavaScript alert on submission of the post.</span>',
 '526' => 'Show User Tools for username links?',
+'527' => 'Enable Post Tools?',
+'528' => 'Enable Topic Tools?',
+'529' => 'User Info style:<br /><span class="small">When checked, User Info will display to the left of posts as in previous versions. When unchecked User Info will be displayed above each post in the new format.</span>',
 '530' => 'Rebuilding the Message Index can take a long time in Boards with many Threads!<br />Do you really want to do this?<br />',
 '531' => 'Click here to start now!',
 '532' => 'The process step-time is set to',
@@ -334,6 +349,7 @@ $yycharset = 'ISO-8859-1';
 '658' => 'Total Categories:',
 '659' => 'Latest Post:',
 '665' => 'Total Boards:',
+'666' => 'Total Sub-Boards:',
 '670' => 'Please place one news item per line. YaBBC tags, such as [b], [i] and [u] are allowed in your news, as well as smilies.',
 '677' => 'From this screen you can add or edit multiple boards! Click the button in front of the category name, and you can reorder the listing of the boards you see in that category.',
 '678' => 'Edit your categories here. Click the button in front of the title above to reorder the listing of the categories. Click the button in front of the category name, and you can reorder the listing of the boards you see in that category.',
@@ -378,6 +394,14 @@ $yycharset = 'ISO-8859-1';
 '739c' => 'Move the selected board to another category.',
 '739d' => 'Move the selected board up or down.',
 '739e' => 'No boards in this category.',
+'739c' => 'Move the selected {board} to another category.',
+'739d' => 'Move the selected {board} up or down.',
+'739e' => 'No boards in this category.',
+'739f' => 'Move the selected {board} to another board.',
+'739g' => 'Update',
+'739h' => 'This is a list of the sub-boards in this board. Select the sub-board you wish to move.',
+'739i' => 'No sub-boards in this board.',
+'739j' => 'sub-',
 '740' => 'Show YaBBC buttons on Topic Post/Reply and PM Send pages?',
 '743' => 'Total Unique Visitors',
 '744' => 'Total Browsers',
@@ -388,6 +412,11 @@ $yycharset = 'ISO-8859-1';
 '748' => 'Specify the Member Groups that are allowed to upload avatars:<br /><span class ="small">If no Member Group is selected, all Member Groups are enabled.<br />Use Ctrl or Shift to select/deselect multiple groups.</span>',
 '749' => 'File size limit for avatars:<br /><span class ="small">Set to 0 to disable checking (not recommended) or to a reasonably high value, such as 100&nbsp;KB.</span>',
 '750' => 'Avatar directory size limit:<br /><span class ="small">Set to 0 to disable checking (not recommended).</span>',
+'751' => 'Allow users to hide avatars in threads',
+'752' => 'Allow users to hide "user text" in threads',
+'753' => 'Allow users to hide attached images in threads',
+'754' => 'Allow users to hide signatures in threads',
+'755' => 'Allow users to hide the Smilies-row below the Post Message inputarea',
 '764' => 'Edit Agreement',
 '765' => 'This form will allow you to edit the file "agreement.txt". This is a flat text file displayed to people when they sign up. Some HTML tags are permitted.',
 '802' => 'Browser Cache Behaviour?<br /><span class="small">Unchecked: No Cache, must revalidate. Checked: Cache allowed</span>',
@@ -402,6 +431,7 @@ $yycharset = 'ISO-8859-1';
 '830' => 'Category with ID',
 '831' => 'has been removed successfully.',
 '832' => 'Reorder boards in this category',
+'832a'=> 'Reorder sub-boards in this board',
 '833' => 'You have an invalid ID.  Please try again.',
 '834' => 'HTML Root URL',
 '838' => 'Referring Pages',
@@ -449,6 +479,7 @@ $yycharset = 'ISO-8859-1';
 'forumnumbformat' => 'Select default number format:',
 'nospammer' => 'Send default e-mail to rejected users even when no reason is given when registration is by Admin approval. Check for \'yes\'',
 'honeypot' => 'Activate Honeypot Spambot catcher. Check for \'yes\'',
+'spamfruits' => 'Activate SpamFruits Spambot catcher. Check for \'yes\'',
 );
 
 %floodtxt = (
