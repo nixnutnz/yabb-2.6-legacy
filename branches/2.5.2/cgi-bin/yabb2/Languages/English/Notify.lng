@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$notifylngver = 'YaBB 2.5.2 $Revision: 1.0 $';
+$notifylngver = 'YaBB 2.5.2 $Revision: 1.1 $';
 
 %notify_txt = (
 '118' => 'Topic Notification',
@@ -20,7 +20,7 @@ $notifylngver = 'YaBB 2.5.2 $Revision: 1.0 $';
 '120' => 'by',
 '121' => 'Reset',
 '122' => 'You are notified on replies in the following topics.',
-'123' => 'Activate checkbox to <b><i>deactivate</i></b> Notification on the Topic!',
+'123' => 'Check box to <b><i>deactivate</i></b> Notification on the Topic!', 
 '124' => 'Update Notifications',
 '125' => 'Notify',
 '126' => 'Receive Notification on replies to this board.',
