@@ -12,11 +12,11 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$sessionslngver = 'YaBB 2.5.2 $Revision: 1.0 $';
+$sessionslngver = 'YaBB 2.5.2 $Revision: 1.1 $';
 
 %session_txt = (
 '1' => 'Activate Session ID\'s?',
-'2' => 'This protects the Administrative Functions based on a three part Session Key based on IP address',
+'2' => 'This protects the Administrative Functions using a three part Session Key based on IP address',
 '3' => "Your Session has expired, as you entered the forum from a different IP address ($user_ip)",
 '4' => 'To check your credentials answer the following question you entered in your profile',
 '6' => 'You failed to validate your credentials and are logged out',
