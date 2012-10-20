@@ -2,4 +2,5 @@ YABB 2.5.2
 
 21 October, 2012
 
-Major bug fixes.
+Major bug fixes. Addition of Anti-spam utilities.
+Updated Setup and FixFile.
