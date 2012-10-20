@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang='en-US'>
 <head>
-<!-- YaBB 2.5.2 $Revision: 1.0 $ -->
+<!-- YaBB 2.5.2 $Revision: 1.1 $ -->
 <title>YaBB Quick Start Guide - Installation: Step 1 - Editing the Path to Perl</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" href="../../style.css" type="text/css" />
@@ -39,8 +39,8 @@
 		</div>
 		<div class="body">
 			<h3>Step 1 - Editing the Path to Perl</h3>
-			<p><img src="../../images/shebang.gif" alt="The Shebang in YaBB.pl" title="The Shebang in YaBB.pl" class="shebang" />Before you upload any files to your server, you first may need to make a few edits to <span>'AdminIndex.pl', 'Setup.pl' and 'YaBB.pl,'</span> which are in the <span>'cgi-bin/yabb2'</span> folder. Also <span>'ModuleChecker.pl'</span> in the <span>'cgi-bin/yabb2/Admin'</span> folder and <span>'SpellChecker.pl'</span> in the <span>'cgi-bin/yabb2/Sources'</span> folder of the package you downloaded. When you've found them, open each in a text editor such as Notepad or UltraEdit. Make note of the very first line in each of these files, which is called a shebang or "path to Perl." Depending on your server, this line may need to be changed. This line must -always- start with <b>#!</b>.</p>
-			<p>Generally, the default is correct on most Linux/*nix systems ( On a Linux host, the path is usually <span>#!/usr/bin/perl</span>), but Perl can be installed in different locations. For example on a Windows or WinNT host, your Perl path should probably be set to <span>#!C:/Perl/Bin/Perl.exe</span>. Check with your host or check your server for the proper path and change the file path accordingly in each of the files, noted above. </p>
+			<p><img src="../../images/shebang.gif" alt="The Shebang in YaBB.pl" title="The Shebang in YaBB.pl" class="shebang" />Before you upload any files to your server, you first may need to make a few edits to <span>'AdminIndex.pl', 'Setup.pl' and 'YaBB.pl,'</span> which are in the <span>'cgi-bin/yabb2'</span> folder. Also <span>'ModuleChecker.pl'</span> in the <span>'cgi-bin/yabb2/Admin'</span> folder and <span>'SpellChecker.pl'</span> in the <span>'cgi-bin/yabb2/Sources'</span> folder of the package you downloaded. When you've found them, open each in a text editor such as Notepad, UltraEdit or Notepad++. Make note of the very first line in each of these files, which is called a shebang or "path to Perl." Depending on your server, this line may need to be changed. This line must -always- start with <b>#!</b>.</p>
+			<p>Generally, the default is correct on most Linux/*nix systems ( On a Linux host, the path is usually <span>#!/usr/bin/perl</span>), but Perl can be installed in different locations. On a Windows host with Apache, your Perl path should probably be set to <span>#!C:/Perl/Bin/Perl.exe</span>. For Windows with IIS 6 or 7 and Active States Perl, you will not usually need to edit the Shebang line, Perl usually works as PerlISAPI or as an Application Handler. IIS itself actually maps the .pm and .pl files to the Perl dlls or ISAPI module that has been installed. Check with your host or check your server for the proper path and change the file path accordingly in each of the files, noted above.</p>
 		</div>
 		<div class="clr"></div>
 	</div>
