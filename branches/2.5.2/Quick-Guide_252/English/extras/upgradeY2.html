@@ -79,7 +79,6 @@
 <a href="http://codex.yabbforum.com/YaBB.pl?num=1223136303/0#0" target="_blank">Template and CSS Comparisons from earlier versions of YaBB</a>. One more edit: in your old css files you will need to add one additional class tag for the anti-spam Honeypot. Add:<br /><span style="font-family:Courier, monospace">".green {<br />display:none;<br />}"</span><br />to <b>every</b> template/css file. If you have a preexisting class with that name, it will need to be renamed. Custom 2.5AE Templates should need no editing aside from adding the ".green" class to the template/css files.</li>
 					</ul>
 				</li>
-				<li>Once the uploading is complete, <b>DO NOT</b> visit your new forum just yet. If you are upgrading from a "beta" version of YaBB 2.0, OR if you are upgrading from a YaBB 2.0 beta earlier than YaBB 2.0 Pre-Release, see <a href="#prerelease">this footnote</a> for further instructions on how to proceed before continuing.</li>
 				<li>Open FixFile.pl inside a text editor and change the path to Perl to match your server's requirements. Then point your browser to FixFile.pl (ie. http://www.example.com/cgi-bin/yabb2/FixFile.pl) and run the FixFile utility. This will update the file structure for your YaBB 2 data. If not, skip to step 9.</li>
 				<li>As soon as FixFile.pl has finished, delete that file so it cannot be run again.</li>
 				<li>Now verify CHMODs for all your imported files.</li>
@@ -87,10 +86,6 @@
 				<li>Then go to "Admin Center" =&gt; "Maintenance Controls" and <b>run the "Rebuild Notifications Files" first!</b><br />Now run the other Maintenance Controls starting with "Rebuild Message Index" going through "Rebuild Members History."</li>
 			</ol>
 
-		</div>
-		<div id="prerelease" class="body"><h4 style="font-size:14px;">Instructions If Updating from a beta version of 2.0</h4>
-			<p>If you are upgrading your forum from any of the following versions - <b>YaBB 2 RC1, YaBB 2 RC 2, YaBB 2 RC 3, or YaBB 2.0 Pre-Release</b> - you <i>may</i> need to edit Variables/Settings.pl:</p>
-			<p>1. Open Variables/Settings.pl from your website and add: <span>$cookiesession_name = "Y2Sess-55694";</span> into the file if it does not already exist. This will set the session cookie name for your upgrade and will prevent any problems when you're finished.</p>
 		</div>
 		<div class="clr"></div>
 	</div>
