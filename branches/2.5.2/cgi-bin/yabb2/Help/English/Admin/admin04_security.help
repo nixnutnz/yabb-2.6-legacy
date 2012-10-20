@@ -79,8 +79,8 @@ $SectionBody8 = qq~This feature is designed to limit spam by setting a limit on 
 
 ### Section 9
 #############################################
-$SectionSub9 = "Other Anti-spam Measures";
-$SectionBody9 = qq~YaBB 2.5.2 has additional features for helping you combat spam registrations. One such feature is the Honeypot which can be turned on or off from the Admin Center&#47;Security Center&#47;Anti-Spam Settings. Another is Anti-Spam Question found in the Admin Center&#47;Security Center&#47;Anti-Spam Question. 
+$SectionSub9 = "Other_Anti-spam_Measures";
+$SectionBody9 = qq~YaBB 2.5.2 has additional features for helping you combat spam registrations. Two such features are the Honeypot and SpamFruits both of which can be turned on or off from the Admin Center&#47;Security Center&#47;Anti-Spam Settings. Honeypot is a 'passive' spambot catcher that catches spambots when they fill in a registration field that can be seen by spambots but not by people using a browser. SpamFruits works by requiring a mouse move to choose the proper picture. Another effective anti-spam utility is Anti-Spam Question found in the Admin Center&#47;Security Center&#47;Anti-Spam Question. 
 <p>This option must be turned on and it is highly recommended that you change and/or add questions that reflect your forum's unique niche. Try not to use questions whose answers are too easily searchable on Google.</p>
 <p>Currently, the forum specific language for the Honeypot can be edited by downloading the file 'Languages/English/honey.txt', editing it and re-uploading it. The text in the Honeypot language should resemble something you <b>might</b> have as a real registration requirement.</p>
 ~;
