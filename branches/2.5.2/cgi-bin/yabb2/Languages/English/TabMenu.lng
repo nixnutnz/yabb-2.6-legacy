@@ -4,7 +4,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       October 5, 2012                                             #
+# Packaged:       October 21, 2012                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -12,11 +12,11 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$tabmenulngver = 'YaBB 2.5.2 $Revision: 1.0 $';
+$tabmenulngver = 'YaBB 2.5.2 $Revision: 1.1 $';
 
 %tabmenu_txt=(
 'texterr' => 'The Text field is empty!!',
-'tabext' => 'A tab for the same action or with the same name already excists!!',
+'tabext' => 'A tab for the same action or with the same name already exists!!',
 'tabfront' => 'Front',
 'taburl' => 'URL',
 'tabwin' => 'New window',
