@@ -1,0 +1,152 @@
+$SectionName = "Kontrollzentrum_und_Profil";
+
+### Section 1
+#############################################
+$SectionSub1 = "Kontrollzentrum";
+$SectionBody1 = qq~Das Kontrollzentrum ist eine Kombination Deines Benutzerprofil mit Freunde Liste, persönlichen Nachrichten, Benachrichtigungen und Favoriten.
+<p>Wenn Du das 'Kontrollzentrum' aufrufst, hast Du verschiedene Möglichkeiten um Aktionen auszuführen:</p>
+<ul>
+<li>Auf der linken Seite des Zentrums siehst Du verschiedene Punkte in Form eines Tabulator Menü, das die Elemente 'Nachrichten', 'Profil' und 'Beiträge' enthält.</li>
+<li>Unter dem Menüpunkt <b>Nachrichten</b> verwaltest Du alle Deine persönlichen Nachrichten, kannst diese in Deinen Ordnern sortieren (wenn aktiviert), neue Nachrichten senden sowie eine Suche nach bestimmten Kriterien durchführen.</li>
+<li>Unter dem Menüpunkt <b>Profil</b> kannst Du Deinen Profileintrag überprüfen und die Inhalte bearbeiten. Als neuen Bestandteil haben wir ein Tool mit Namen 'Freunde-Liste' integriert, das Du benutzen kannst, um den Online Status Deiner Freunde schnell festzustellen, Nachrichten an Deine Freunde zu senden und um ihre Details zu überprüfen.</li>
+<li>Unter dem Menüpunkt <b>Beiträge</b> kannst Du Deine Benachrichtigungen und Favoriten überprüfen oder aktualisieren sowie Deine eigenen letzten Beiträge anzeigen lassen.</li>
+<li>Auf der rechten Seite des Zentrums siehst Du genau den Teil Deines Profils, wie er auch neben Deinen eigenen Beiträgen zu sehen ist, Deine Freunde Liste, Informationen wie Dein Online/Offline Status dargestellt wird und in welcher Form Du neue Mitteilungen erhälst.</li>
+</ul>
+~;
+#############################################
+
+
+### Section 2
+#############################################
+$SectionSub2 = "Profil_Übersicht";
+$SectionBody2 = qq~ Innerhalb YaBB hast Du die Möglichkeit, Informationen über Dich auch anderen Mitgliedern des Forums zur Verfügung zu stellen. Du kannst Deinen Namen, Dein Alter, Messenger-Informationen etc. angeben. Du kannst auch ein persönliches Bild (Avatar) verwenden, welches neben Deinen Beiträgen und in Deinem Profil angezeigt wird.
+<p><b>Schritt 1:</b> Um Änderungen an Deinem Profil vorzunehmen, klicke einfach auf &quot;Kontrollzentrum&quot; im Forum Menü. Anschließend wählst Du die Option &quot;Profil&quot; im kleinen Tab-Menü, dass Du unterhalb des Registerkarten-Menü findest. Diese beiden Schritte bringen Dich auf die Profil Übersichtsseite.</p>
+<p><b>Schritt 2:</b> Auf der Profilübersichtsseite siehst Du verschiedene Links, die Dir den Zugriff auf jeden Abschnitt Deines Benutzerprofil erlauben. Dieser Part ist in 5 unterschiedliche Rubriken aufgeteilt: Profil bearbeiten, Kontaktinfomationen, Optionen, Freunde-Liste und PN-Einstellungen. Klicke auf den entsprechenden Link, um Zugriff auf den dazugehörigen Abschnitt in Deinem Profil zu erhalten.</p>
+<p><b>Schritt 3:</b> Aus Sicherheitsgründen wirst Du nun nach Deinem Passwort gefragt. Gib es bitte ein.</p>
+<p>Nun hast Du Zugriff auf die Einstellungen Deines Benutzerkontos für dieses YaBB Forum. Details zu jeder Einstellung findest Du in der Beschreibung unterhalb der jeweiligen Punkte.</p>
+~;
+#############################################
+
+
+### Section 3
+#############################################
+$SectionSub3 = "Profil_bearbeiten";
+$SectionBody3 = qq~Der 'Profil bearbeiten' Abschnitt erlaubt Dir einen schnellen Zugriff auf die Standard Einstellungen Deines Account in diesem Forum.
+<p><u><b>Neues Passwort</b></u><br />
+Hier kannst Du Dein Passwort ändern, es wird empfohlen, dass es aus <i>mindestens</i> 6 Zeichen besteht, eine Kombination aus Buchstaben und Zahlen wäre sinnvoll.</p>
+<p><u><b>Passwort wiederholen </b></u><br />
+Zur Vermeidung von Problemen bei falscher Eingabe muss das (neue) Passwort wiederholt werden.</p>
+<p><u><b>Name</b></u><br />
+Hier wird der Name eingetragen, der im Forum zu sehen ist. Normalerweise ist es der Name, den Du bei der Registrierung gewählt hast. Du kannst diesen Namen aber jederzeit ändern, wichtig ist, dass der Login immer mit dem ursprünglichen Namen erfolgen muss.</p>
+<p><u><b>Geschlecht </b></u><br />
+Hier gibt's zwei Möglichkeiten: männlich oder weiblich ;). Die Eingabe ist optional, wird aber in der Regel gewünscht.</p>
+<p><u><b>Geburtstag </b></u><br />
+Dein Geburtsdatum in der Form TT (Tag) MM (Monat) JJJJ (Jahr). Das Geburtsdatum ist nur notwendig, um sicher zu stellen, dass Du alt genug bist, um einen Benutzer Account im Forum zu registrieren. Außerdem kann YaBB an Deinem Geburtstag einen kleinen Hinweis einblenden. Trage Dein Geburtsdatum im Format DD (Tag), MM (Monat), YYYY (Jahr) ein.</p>
+<p><u><b>Wohnort </b></u><br />
+Hier kannst Du Deinen Wohnort angeben, der den anderen Mitgliedern in Deinem Profil angezeigt wird. Diese Eingabe ist optional.</p>
+<p><font color="#0099CC"><b><u>BENUTZER HINWEIS:</u></b> Bedenke, dass bei einigen Foren möglicherweise eine Zugriffsbeschränkung in Bezug auf Alter und/oder Geschlecht bestehen kann. Wenn Du beispielsweise kein Geburtsdatum in Deinem Profil einträgst, gibt es auch keinen Weg zu überprüfen, ob Du berechtigt bist ein Forum aufzurufen, dessen Zugriff auf ein Alterslimit von über 21 Jahren gesetzt wurde. Genauso verhält es sich mit der Angabe des Geschlechts. Wenn der Zugriff auf ein Forum ausschließlich weiblichen Mitgliedern vorbehalten ist, ist der Zugriff auch nur denjenigen gestattet, die in den Angaben zu Geschlecht Weiblich eingetragen haben.</font></p>
+~;
+#############################################
+
+
+### Section 4
+#############################################
+$SectionSub4 = "Kontaktinformationen";
+$SectionBody4 = qq~Wenn Du Mitgliedern des Forum die Möglichkeit geben willst, mit Dir außerhalb des Forums in Kontakt zu treten, hast Du hier vielfältige Möglichkeiten. Die Kontaktinformationen werden dann in Deinem Profil angezeigt.
+<p><u><b>eMail </b></u>
+<br />Du musst hier eine gültige eMail-Adresse angeben. Nachrichten, wie Benachrichtigungen über Antworten zu einem Thema, wird das Forum an diese eMail-Adresse senden. Außerdem ist die korrekte Eingabe absolut notwendig, wenn Du Dir ein vergessenes Passwort erneut zusenden lassen möchtest.</p>
+<p><u><b>eMail verstecken?</b></u>
+<br />Hier kannst Du auswählen, ob andere Mitglieder Deine eMail-Adresse sehen dürfen. Hinweis: Die Administratoren des Forums haben immer die Möglichkeit, Deine eMail-Adresse zu sehen.</p>
+<p><u><b>ICQ</b></u>
+<br />Wenn Du ICQ verwendest, kannst Du Deine UIN eintragen.</p>
+<p><u><b>AIM</b></u>
+<br />Wenn Du den AOL Instant Messenger (AIM) benutzt, kannst Du Deinen Benutzernamen hier eintragen.</p>
+<p><u><b>YIM</b></u>
+<br />Wenn Du den Yahoo! Instant Messenger hast, kannst Du Deinen angezeigten Namen hier eintragen.</p>
+<p><u><b>MSN</b></u>
+<br />Wenn Du eine MSN Messenger Adresse hast, kannst Du Deine Adresse hier eintragen.</p>
+<p><u><b>Google Talk</b></u>
+<br />Wenn Du Google Talk benutzt, kannst Du Deine Adresse hier eintragen.</p>
+<p><u><b>Skype oder VoIP</b></u><br />
+Wenn Du Skype oder VoIP benutzt, kannst Du Deine Adresse hier eintragen.</p>
+<p><u><b>My Space</b></u><br />
+Wenn Du ein My Space Profil hast, kannst Du es hier eintragen. Beachte bitte, dass Du nur den letzten Teil der URL eintragen musst. Zum Beispiel: Wenn die URL zu Deinem My Space Profil  wie folgt lautet 'http://myspace.com/deinname', brauchst Du nur 'deinname' eintragen.</p>
+<p><u><b>Facebook</b></u><br />
+Wenn Du ein Facebook Profil hast, kannst Du es hier eintragen. Beachte dabei bitte, dass Du Deine ID-Nummer wie auch Deinen Benutzernamen eintragen kannst. Zum Beispiel: Wenn Du Dein Facebook Profil mit der ID-Nummer eintragen möchtest, und Deine Facebook URL lautet 'http://facebook.com/profile.php?id=123456' trage nur '123456' ein. Möchtest Du Dein Facebook Profil mit dem Benutzernamen eintragen, und Deine Facebook URL lautet 'http://facebook.com/deinname', trage bitte nur 'deinname' ein. </p>
+<p><u><b>Webseiten-Titel </b></u>
+<br />Wenn Du eine eigene Webseite hast, kannst Du den Titel hier eintragen. Die URL zur Webseite wird im nächsten Feld eingetragen.</p>
+<p><u><b>Webseiten-URL</b></u>
+<br />Hier kannst Du die URL zu Deiner Website eintragen. Es muss der komplette Link sein, also mit http://www....</p>
+~;
+#############################################
+
+
+### Section 5
+#############################################
+$SectionSub5 = "Optionen";
+$SectionBody5 = qq~Der Abschnitt 'Optionen' Deines YaBB Profils erlaubt Dir das Bearbeiten der Forum Einstellungen in Bezug auf Dein Benutzerkonto.
+<p><u><b>Persönliches Bild</b></u>
+<br />YaBB erlaubt die Verwendung einer kleinen Grafik (Avatar genannt), die unter Deinem Namen an der linken Seite Deiner Beiträge angezeigt wird. Im Forum sind bereits einige Avatare vorinstalliert und Du hast die Möglichkeit eines davon aus der Liste auszuwählen. Falls Du lieber Dein eigenes Avatar benutzen möchtest, schaue Dir bitte die folgenden Optionen an.</p>
+<p>Der Foren Administrator kann eine oder auch beide der folgenden Optionen aktivieren:</p>
+<ul>
+<li><u><b>Verlinken Deiner eigenen Avatar Grafik</b></u>
+<br />Hast Du eine eigene Grafik und möchtest sie als Avatar in diesem Forum benutzen, dann musst Du die Url zur Grafik hier eintragen.</li>
+<li><u><b>Hochladen Deiner eigenen Avatar Grafik</b></u>
+<br />Wenn Du lieber Deine eigene Grafik hochladen und sie als Avatar in diesem Forum verwenden möchtest, klicke auf den &quot;Durchsuchen&quot; Button und wähle eine Datei von Deinem lokalen Rechner zum hochladen.</li>
+</ul>
+<p><u><b>Persönlicher Text </b></u>
+<br />Hier kannst Du einen kleinen Text eingeben, der unter Deinem Bild angezeigt wird.</p>
+<p><u><b>Signatur</b></u>
+<br />Deine Signatur wird unterhalb eines jeden Beitrags den Du schreibst und in Deinem Profil angezeigt.</p>
+<p><u><b>Standard-Zeitformat </b></u>
+<br />Hier kannst Du die Darstellung der Zeitformate unter Verwendung verschiedener Vorgaben ändern.</p>
+<p><u><b>Eigenes Zeitformat </b></u>
+<br />Hier kannst Du eine eigene Darstellung der Zeitanzeige erstellen.</p>
+<p><u><b>Zeitzone</b></u>
+<br />Da es durchaus möglich ist, dass Deine Zeit anders als die des Servers ist, kannst Du hier Deine richtige Zeitzone einstellen.</p>
+<p><u><b>Automatische Sommerzeitänderung aktivieren</b></u><br />
+Ist diese Option markiert, wird je nach Erfordernis Deiner eingestellten Zeitzone eine Stunde abgezogen oder hinzu addiert. Hinweis: Die Umstellung von Sommer auf Winterzeit oder von Winter auf Sommerzeit variiert in der ganzen Welt. Befindet sich ein Server in einem geografischen Bereich, der nicht identisch ist mit einem Benutzer in einer anderen geografischen Zone, ist es möglich, dass eine eigentlich korrekte Zeitumstellung bei diesem Benutzer nicht richtig angezeigt wird.</p>
+<p><u><b>Template</b></u>
+<br />Wenn der Webmaster von Deinem YaBB Forum mehrere Templates installiert hat, kannst Du es hier ggf. wechseln.</p>
+<p><u><b>Sprache</b></u>
+<br />Hier kannst Du Deine einheimische Sprache wählen, um diese Community zu betrachten, wenn die Sprache zur Verfügung steht.</p>
+~;
+#############################################
+
+
+### Section 6
+#############################################
+$SectionSub6 = "Freunde_Liste";
+$SectionBody6 = qq~Der Bereich <u><b>Freunde Liste</b></u> in Deinem Profil gibt Dir die Möglichkeit andere Mitglieder, mit denen Du beispielsweise häufig in Kontakt stehst, aufzunehmen. Diese Mitglieder werden anschließend in der Übersicht des Benutzerkontrollzentrums angezeigt. Deine Freunde Liste zeigt den Namen, den Online/Offline Status und Link Optionen zum Senden einer persönlichen Nachricht, einer eMail sowie einen Link um die Webseite zu besuchen.<br />
+<ul>
+<li>Um ein Mitglied zur Freunde Liste hinzuzufügen, klicke auf den Link unterhalb des Freunde Liste Fensters.</li>
+<li>Um ein Mitglied aus der Freunde Liste zu löschen, klicke doppelt auf den entsprechenden Benutzernamen innerhalb des Freunde Liste Fensters.</li>
+</ul>
+~;
+#############################################
+
+
+### Section 7
+#############################################
+$SectionSub7 = "PN_Einstellungen";
+$SectionBody7 = qq~Innerhalb des Forums können die Mitglieder persönliche Nachrichten (PN) miteinander austauschen. Die Einstellungen hierfür kannst Du verändern. 
+<p><font color="#0099CC"><b><u>BENUTZER TIP:</u></b> Denke daran, dass das persönliche Nachrichtensystem nur optional zur Verfügung steht, d.h. der Administrator muss dieses Feature für die Benutzung freigegeben haben. Auch einige der Optionen, die im folgenden gelistet und unterstrichen sind, sind möglicherweise nicht in Deinen Einstellungen für Persönliche Nachrichten zu sehen, da der Administrator vieleicht aus Gründen der Diskretion diese zusätzlichen Möglichkeiten deaktiviert hat.</font></p>
+<p><b>Ignorieren-Liste </b>
+<br />Du kannst verhindern, PN von bestimmten Mitgliedern zu erhalten. Außerdem gibt es eine Checkbox Option die es Dir ermöglicht, den Empfang aller PN zu deaktivieren, wenn Du dies wünscht.</p>
+<p><u><b>Bei neuen PN per eMail benachrichtigen:</b></u>
+<br />Hier stellst Du ein, ob Du eine eMail über den Eingang einer PN erhalten möchtest.</p>
+<p><b>Popup-Hinweis bei Privatnachrichten? </b><br />
+Wenn Du diese Checkbox markierst, wirst Du über ein kleines PopUp Fenster über den Eingang aller neuen PN benachrichtigt. Ist die Checkbox <u>nicht</u> markiert, wirst Du eine Nachricht im Kopfbereich des Forum unter &quot;Begrüßung&quot; in diesem Format sehen: Du hast X Nachricht&#40;en&#41;, und Y neue Nachricht&#40;en&#41;.</p>
+<p><b>Popup-Fenster öffnet PN in neuem Fenster? </b><br />
+Hier stellst Du ein, ob für das Betrachten einer PN ein neues Fenster geöffnet werden soll.</p>
+<p><u><b>Aktivieren des &quot;Vorschau&quot; Button auf der PN Nachrichten Seite: </b></u>
+<br />Durch Markieren der Checkbox wird unterhalb der PN Nachrichten Seite ein Button hinzugefügt, der Dir eine Vorschau Deiner persönlichen Nachricht vor dem Absenden an den Empfänger ermöglicht.</p>
+<p><u><b>Anzeige des Nachrichten Textes in der Übersichtsliste der persönlichen Nachrichten:</b></u><br />
+Ist diese Checkbox markiert, wird jeweils die erste Zeile einer persönlichen Nachricht auf der Übersichtsseite mit angezeigt. Wenn Du lediglich den Absender, den Betreff, das Datum usw. sehen möchtest, so markiere die Checkbox nicht.</p>
+<p><u><b>Aktivieren der &quot;Live&quot; Vorschau auf der PN Nachrichten Seite:</b></u><br />
+Durch Markieren der Checkbox wird oberhalb der PN Nachrichten Seite ein Button hinzugefügt, der es ermöglicht, eine Live Vorschau beim direkten Eingeben einer PN zu erhalten.</p>
+~;
+#############################################
+
+
+1;

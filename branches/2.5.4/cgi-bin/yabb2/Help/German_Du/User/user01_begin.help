@@ -1,0 +1,58 @@
+$SectionName = "Erste_Schritte";
+
+### Section 1
+#############################################
+$SectionSub1 = "Registrierung";
+$SectionBody1 = qq~Die Registrierung eines Benutzerkontos in einem YaBB-Forum ist so einfach, dass Du innerhalb kürzester Zeit im Forum aktiv sein kannst.
+<p><b>Schritt 1:</b> Im Menü oben findest Du Buttons mit den Namen &quot;Übersicht&quot;, &quot;Hilfe&quot;, &quot;Einloggen&quot;, &quot;Registrieren&quot; usw. Die Namen können auch variieren. Klicke auf den Button &quot;Registrieren&quot;.</p>
+<p><b>Schritt 2:</b> Auf der nächsten Seite kannst Du Deinen Benutzernamen und ein Passwort eintragen. Es kann auch eine Registrierungsform gewählt worden sein, bei der Du ein Passwort per eMail zugeschickt bekommst. Neben Benutzernamen und ggf. Passwort musst Du eine gültige eMail Adresse eingeben. Trage in die Felder die notwendigen Angaben ein.</p>
+<p><b>Schritt 3:</b> Wenn durch den Administrator aktiviert, kann es erforderlich sein, dass Du die vorgegebene Zeichenfolge des &#40;CAPTCHA&#41; Überprüfungscode in die Box eintragen musst.</p> 
+<p><b>Schritt 4:</b> Bestätige ggf. die vorgegebenen Registrierungsbedingungen des Forums, wenn der Administrator dies aktiviert hat.</p>
+<p><b>Schritt 5:</b> Klicke abschließend auf den &quot;Registrieren&quot; Button.</p>
+<p>Das war es schon! Es kann nun sein, dass Du eine eMail erhältst, in dem ein Link zur Registrierungsbestätigung angegeben ist. Diesen Link musst Du dann noch anklicken, bevor Du Dich im Forum einloggen kannst.</p>
+<p><font color="#0099CC"><b><u>BENUTZER HINWEIS:</u></b> Manche Internet Service Provider (ISP) und eMail Handler handhaben es so, dass Links in eMail's nicht angeklickt werden können. Ist das der Fall, versuche mit Copy &amp; Paste (Kopieren und Einfügen) den Link aus der eMail in Deine Browser Adresszeile zu kopieren und bestätige anschließend mit Return. Du erreichst das Forum so auch auf diesem Weg.</font></p>
+<p>Nun bist Du bereit, um dich einzuloggen und Beiträge zu schreiben!</p>
+~;
+#############################################
+
+
+### Section 2
+#############################################
+$SectionSub2 = "Einloggen";
+$SectionBody2 = qq~Nun, da Du ein Benutzerkonto registriert hast, ist es an der Zeit, sich einzuloggen. 
+<p><b>Schritt 1:</b> Im Menü oben findest Du Buttons mit den Namen &quot;Übersicht&quot;, &quot;Hilfe&quot;, &quot;Einloggen&quot;, &quot;Registrieren&quot; usw. Die Namen können auch variieren. Klicke auf den Button &quot;Einloggen&quot;.</p>
+<p><b>Schritt 2:</b> Auf der nächsten Seite siehst Du wieder mehrere Möglichkeiten:</p>
+<ul>
+<li><u>Benutzername oder eMail Adresse</u> - Gib Deinen Benutzernamen ein, mit dem Du Dich registriert hast.</li>
+<li><u>Passwort</u> - Gib Dein Passwort ein (ggf. das Passwort, welches Du per eMail erhalten hast.</li>
+<li><u>Eingeloggt für</u> - Wähle, wie lange Du gerne eingeloggt bleiben willst. </li>
+<li><u>Passwort vergessen?</u> - Wenn Du Dich nicht an Dein Passwort erinnern kannst, klicke diesen Button, um es erneut per Mail zu erhalten.</li>
+</ul>
+<p><b>Schritt 3</b> Wenn Du alles ausgefüllt hast, klicke bitte auf den Button &quot;Einloggen&quot;.</p>
+<p>Herzlichen Glückwunsch! Du bist nun Teil der Community.</p>
+<p><font color="#0099CC"><b><u>BENUTZER TIP:</u></b> Wenn Du den Button &quot;Einloggen&quot; nicht angezeigt bekommst, bist Du im Forum angemeldet. In der Regel wirst Du auch mit Deinem Benutzernamen im Kopf des Forums &quot;angesprochen&quot;.</font></p>
+~;
+#############################################
+
+
+### Section 3
+#############################################
+$SectionSub3 = "Ausloggen";
+$SectionBody3 = qq~Fertig mit dem Durchstöbern der Seite? Dann möchtest Du Dich vielleicht ausloggen. Dies ist vor allem dann ratsam, wenn Du den Computer mit anderen Personen teilst. Wenn Du eingeloggt bist, findest Du anstelle der Login-Schaltfläche, eine Logout-Schaltfläche. Ein Klick darauf und Du bist ausgeloggt.
+~;
+#############################################
+
+
+### Section 4
+#############################################
+$SectionSub4 = "Passwort_vergessen";
+$SectionBody4 = qq~Wenn Du Dein Passwort vergessen hast, kann Dir YaBB ein neues Kennwort automatisch an die von Dir angegebene eMail Adresse übersenden. Gehe dazu wie folgt vor: 
+<p><b>Schritt 1:</b> Im Menü oben findest Du Buttons mit den Namen &quot;Übersicht&quot;, &quot;Hilfe&quot;, &quot;Einloggen&quot;, &quot;Registrieren&quot; usw. Die Namen können auch variieren. Klicke auf den Button &quot;Einloggen&quot;.</p>
+<p><b>Schritt 2:</b> Auf der nächsten Seite klicke bitte auf den Button &quot;Passwort vergessen?&quot;.</p>
+<p><b>Schritt 3:</b> Es lädt eine neue Seite mit einem Eingabefeld. Hier gib bitte Deinen Benutzername oder Deine eMail Adresse an, mit der Du Dich im Forum registriert hast.</p>
+<p><b>Schritt 4:</b> Klicke abschließend auf &quot;Senden&quot;.</p>
+~;
+#############################################
+
+
+1;

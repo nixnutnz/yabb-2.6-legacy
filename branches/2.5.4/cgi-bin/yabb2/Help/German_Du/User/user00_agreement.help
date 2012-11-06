@@ -1,0 +1,26 @@
+$SectionName = "Registrierungs_Vereinbarung";
+
+### Section 1
+#############################################
+$SectionSub1 = "Registrierungs-Vereinbarung";
+$SectionBody1 = qq~Durch die Registrierung in diesem Forum stimmst Du den folgenden Nutzungsbedingungen zu:<br />
+<br />
+Wir übernehmen keine Verantwortung für die Inhalte der durch die Nutzer verfassten Beiträge. Jeder Nutzer ist selbst dafür verantwortlich, dass seine Beiträge nicht gegen Gesetze oder gegen Rechte Dritter verstoßen. Dies gilt sowohl für den direkt sichtbaren Teil des Beitrages wie auch für im Beitrag enthaltene Links.<br />
+<br />
+Wir untersagen hiermit ausdrücklich das Verfassen von rassistischen, pornographischen, menschenverachtenden und gegen die guten Sitten verstoßenden Beiträgen. Ebenfalls ausdrücklich untersagt ist die Verbreitung von Raubkopien. Sollten uns Beiträge solcher Art auffallen, werden wir diese ohne Rückmeldung an den Verfasser entfernen oder korrigieren. Wir behalten uns vor, einzelnen Teilnehmern zeitweise oder ganz die Schreibberechtigung zu entziehen.<br />
+<br />
+Da wir dies Forum nicht permanent überwachen können, kann es vorkommen dass wir unerwünschte Inhalte nicht sofort bemerken. Sollten Dir solche Inhalte auffallen, kannst Du diese per eMail oder mit der Kurzmitteilungs-Funktion dem Administrator melden.<br />
+<br />
+Wir speichern bei jedem Beitrag die IP-Nummer des Verfassers. Im Falle von Gesetzesverstößen werden wird diese den Strafverfolgungsbehörden auf Anforderung übergeben.<br />
+<br />
+Beachte, dass wir nicht verantwortlich sind für den Inhalt der Beiträge. Wir gewährleisten nicht die Identität der Verfasser, die Genauigkeit, die Vollständigkeit oder die Verwendungsfähigkeit irgendwelcher Informationen. Die Beiträge drücken die Meinungen des Autors aus, die nicht notwendigerweise mit unseren Ansichten übereinstimmen.<br />
+<br />
+Du darfst dein Kennwort nicht an andere weitergeben und Du darfst das Kennwort eines anderen, gleich wie Du es erhalten hast, nicht in diesem Forum nutzen.<br />
+<br />
+Es ist verboten, dies Forum und die hier zugänglichen Daten zum Zwecke von Werbung, Spam, Kettenbriefen und ähnlichem zu benutzen.<br />
+<br />
+Die bei der Registrierung gespeicherten persönlichen Daten werden durch uns nicht an Dritte weitergegeben oder zur Erstellung von Spam-eMail-Listen verwendet.~;
+#############################################
+
+
+1;

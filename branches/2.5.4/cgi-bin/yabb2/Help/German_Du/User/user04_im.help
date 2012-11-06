@@ -1,0 +1,42 @@
+$SectionName = "Private_und_Broadcast_Nachrichten";
+
+### Section 1
+#############################################
+$SectionSub1 = "Private_Nachrichten";
+$SectionBody1 = qq~Bei YaBB geht es um Gemeinschaft und Kommunikation. Und es gibt einige Wege zu kommunizieren: durch Beiträge im Forum, Private Nachrichten (PN), eMail, ICQ, AIM, YIM, MSN, SKYPE/VoIP und Gtalk. Diese Wege stehen aber nur registrierten Mitgliedern zur Verfügung, außer der Forenbetreiber erlaubt es Gästen, ebenfalls Beiträge im Forum zu schreiben. In so einem Fall können unregistrierte Nutzer lediglich die Mitgliederliste nicht einsehen und keine Privaten Nachrichten (PN) verschicken.<br />
+<p><b>Private Nachrichten</b><br /></p>
+<p>Obwohl eMails sicherlich eine gute Möglichkeit sind, um mit anderen Mitgliedern in Kontakt zu treten, so hat dieses Kommunikationsmittel doch einige Nachteile: Zum Schreiben und Senden einer Nachricht musst Du zuerst Dein eMail-Programm aufrufen; ebenso der Empfänger; zwischen all den anderen eMails kann eine wichtige schon mal untergehen und es dauert manchmal Minuten bis hin zu einer Stunde, bis die eMail den Empfänger erreicht.</p>
+<p>Als Alternative zur eMail bietet Dir YaBB eine schnellere und persönlichere Methode: Das System der Privaten Nachrichten (PN) im Forum garantiert eine unmittelbare Auslieferung der eMail in den Posteingang des Empfängers. Da die Nachricht ausschließlich über YaBB versendet wird, brauchen weder Du, noch der Empfänger, irgendein anderes Programm zu starten oder YaBB zu irgendeinem Zeitpunkt zu verlassen. Und dabei wird Deine Privatsphäre geschützt: Denn Du und auch der Empfänger, müssen keine persönlichen eMail-Adressen austauschen. Dem Empfänger wird lediglich der gewählte Benutzername angezeigt.</p>
+<p>YaBB bietet eine Option für Administratoren, die Gästen erlaubt eine Art &quot;Alarm&quot; an den Moderator zu senden, wenn ein Problem festgestellt wird. Wenn diese Option aktiviert ist, erhält der Moderator des Forums eine PN, die er aber nicht beantworten kann. Dem Moderator steht es aber frei, dem Gast eine eMail zu senden.</p>
+<font color="#0099CC"><b><u>BENUTZER TIP:</u></b> Wenn Du Gästen erlaubst Beiträge im Forum zu schreiben oder PN zu verschicken, erhöhst Du auch das Risiko von Spam in Beiträgen oder persönlichen Nachrichten. Um dieses Risiko auf ein Minimum zu reduzieren wird dem Administrator empfohlen, den Captcha Schutz für sämtliche Bereiche eines möglichen Gastzugriff &#40;Beiträge, Persönliche Nachrichten, PN an Moderator&#41; in den Sicherheitseinstellungen zu aktivieren.<br /></font>
+<p>Eine weitere Administrator Option ist das Zulassen von persönlichen Nachrichten die als Kopie, vergleichbar mit der eMail Funktion, verschickt werden können. Ist diese Option aktiviert, kannst Du mit sog. Carbon Copies (CC-Alle Empfänger erhalten dabei neben der PN auch die komplette Empfängerliste) und sog. Blind Carbon Copies (BCC-Beim Erstellen einer PN kann man im BCC-Feld angeben, welche Personen die PN ebenfalls erhalten sollen, ohne dass die anderen Empfänger dies erfahren) direkt antworten und zusätzlich eine Kopie Deiner PN auch an andere Empfänger weiterleiten.</p>
+<p>Du hast die Möglichkeit (falls dies aktiviert ist) zusätzliche Ordner für Deine Nachrichten anzulegen. Und falls Du viele Nachrichten hast, kannst Du spezielle Nachrichten durch die Suchfunktion schnell finden.</p>
+<p>Falls der Empfänger mal gerade nicht online sein sollte, bleiben die Nachrichten in seinem Posteingang solange gespeichert, bis er sich das nächste Mal einloggt und sie entweder liest oder löscht. Das in YaBB integrierte Private Nachrichten (PN) ist ein unabhängiges, sehr anonymes eMail-System.</p>
+~;
+#############################################
+
+
+### Section 2
+#############################################
+$SectionSub2 = "Broadcast_Nachrichten";
+$SectionBody2 = qq~YaBB erlaubt die Kommunikation des Foren Personals untereinander durch die Verwendung eines sog. <b>Broadcast Nachrichten System</b>.<br />
+<p>Das Broadcast Nachrichten System kann optional durch den Administrator zusätzlich durch Aktivierung der entsprechenden Auswahl aktiviert werden. Der Administrator kann das Broadcast Nachrichten für folgende Gruppen aktivieren:</p>
+<ul>
+<li>Nur für Administratoren</li>
+<li>Für Administratoren und Global Moderatoren</li>
+<li>Für Administratoren, Global Moderatoren und Moderatoren</li>
+</ul>
+<p>Mit Erlaubnis des Zugriffes auf das Broadcast Nachrichten System können solche Nachrichten an die folgenden Empfänger geschickt werden:</p>
+<ul>
+<li>An Administratoren</li>
+<li>An Global Moderatoren</li>
+<li>An Moderatoren und alle Mitglieder von Mitgliedergruppen die einen Moderatorstatus innehaben</li>
+<li>An alle Forum Mitglieder</li>
+<li>Jede der oben genannten Kombinationen</li>
+</ul>
+<p>Der Administrator kann auch die Option für Gäste aktivieren um eine <b>PN an Administrator</b> zu senden. Diese PN wird als Broadcast Nachricht an den Administrator übermittelt doch es ist erforderlich, dass sowohl die Option PN an Administrator und das Broadcast Nachrichten System aktiv ist, damit der Administrator damit arbeiten kann.</p>
+~;
+#############################################
+
+
+1;

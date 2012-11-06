@@ -1,0 +1,201 @@
+$SectionName = "Thema_Funktionen";
+
+### Section 1
+#############################################
+$SectionSub1 = "Ein_Thema_loeschen";
+$SectionBody1 = qq~Wenn Sie der Meinung sind, dass ein Thema zum Beispiel die Mitgliedsvereinbarungen verletzt, inhaltlich nicht angebracht ist, oder einfach nur aus Platzgründen, so haben Sie die Möglichkeit, das gesamte Thema oder die unangebrachten (möglicherweise beleidigende) Beiträge zu löschen. 
+<p><u><b>Ein Thema löschen</b></u></p>
+<p>Beim Betrachten der Themen</p>
+<ul>
+<li>Scrollen Sie bis zum Ende des Themas herunter. Dort sehen Sie den Menüpunkt &quot;Moderator Menü&quot;.</li>
+<li>Markieren Sie keine der Checkboxen rechts neben den Beiträgen.</li>
+<li>Klicken Sie auf die Schaltfläche (engl. Button) mit der Bezeichnung &quot;Löschen&quot;.</li>
+<li>Ein kleines Popup-Fenster wird geöffnet, in welchem Sie nochmals bestätigen müssen, dass Sie auch wirklich sicher sind, das dass gewählte Thema unwiederruflich gelöscht werden soll. Mit einem Klick auf &quot;OK&quot; erfolgt die Löschung oder mit &quot;Abbrechen&quot; fahren Sie fort ohne zu löschen.</li>
+</ul>
+<p>Beim Betrachten der Themenübersicht</p>
+<ul>
+<li>Wenn &quot;Single-Checkboxen&quot; in den Foreneinstellungen/Forum Personal aktiviert ist.
+<ul><li>Am Ende einer jeden Themenzeile sehen Sie eine kleines Kästchen, auch Checkbox genannt. Markieren Sie diese Checkbox, indem Sie sie anklicken. Wiederholen Sie diesen Vorgang für jedes Thema, das Sie löschen möchten.</li>
+<li>Wenn Sie alle Themen die Sie löschen möchten markiert haben, sehen Sie unterhalb des Themenübersicht eine Reihe von verschiedenen Buttons mit folgenden Bezeichnungen &quot;Sperren/Öffnen&quot;, &quot;Sticky&quot;, &quot;Löschen&quot; und &quot;Verschieben:&quot;. Klicken Sie auf den Button mit der Bezeichnung &quot;Löschen&quot;.</li>
+<li>Klicken Sie auf den Button mit der Bezeichnung &quot;Los&quot;, der unmittelbar rechtsseitig bei der zu sehenden Auswahlbox liegt.</li>
+</ul></li></ul><br />
+<ul>
+<li>Wenn &quot;Multiple-Checkboxen&quot; in den Foreneinstellungen/Forum Personal aktiviert ist.
+<ul><li>Am Ende der Zeile für jedes Thema, sehen Sie 5 kleine Checkboxen mit einem Icon darüber, dass folgendes symbolisieren: &quot;Sperren/Öffnen&quot;, &quot;Sticky&quot;, &quot;Verstecken&quot;, &quot;Verschieben&quot; and &quot;Löschen&quot;. Markieren Sie die Checkbox unterhalb des &quot;Löschen&quot; Icon für jedes Thema, das Sie entfernen möchten.</li>
+<li>Wenn Sie alle Themen entfernen möchten, markieren Sie die Checkbox &quot;Löschen&quot; die sich unterhalb aller Themen befindet.</li>
+<li>Klicken Sie auf den Button mit der Bezeichnung &quot;Los&quot;, der unmittelbar rechtsseitig bei der zu sehenden Auswahlbox liegt.</li>
+</ul></li></ul><br />
+<ul>
+<li>Wenn &quot;Icons zeigen&quot; in den Foreneinstellungen/Forum Personal aktiviert ist.
+<ul><li>Am Ende der Zeile für jedes Thema sehen Sie 5 kleine Icons die folgendes symbolisieren: &quot;Sperren/Öffnen&quot;, &quot;Sticky&quot;, &quot;Verstecken&quot;, &quot;Verschieben&quot; and &quot;Löschen&quot;.</li>
+<li>Klicken Sie auf das Icon ganz rechts, das &quot;Löschen&quot; symbolisiert.</li>
+</ul></li>
+</ul>
+~;
+#############################################
+
+
+### Section 2
+#############################################
+$SectionSub2 = "Ein_Thema_sperren_oder_oeffnen";
+$SectionBody2 = qq~Wenn Sie der Meinung sind, dass ein Thema seinen Zweck erfüllt hat, nicht mehr interessant ist, oder Sie einfach nur verhindern möchten, dass ein anderes Mitglied neue Beiträge hinzufügt, so können Sie die Sperren/Öffnen Funktion verwenden.
+<p><u><b>Ein Thema sperren/öffnen</b></u></p>
+<p>Beim Betrachten der Themen</p>
+<ul>
+<li>Scrollen Sie bis zum Ende des Themas herunter. Dort sehen Sie den Menüpunkt &quot;Moderator Menü&quot;.</li>
+<li>Markiere keine der Checkboxen rechts neben den Beiträgen.</li>
+<li>Klicken Sie auf die Schaltfläche (engl. Button) mit der Bezeichnung &quot;Sperren/Öffnen&quot;.</li>
+</ul>
+<p>Beim Betrachten der Themenübersicht</p>
+<ul>
+<li>Wenn &quot;Single-Checkboxen&quot; in den Foreneinstellungen/Forum Personal aktiviert ist.
+<ul><li>Am Ende einer jeden Themenzeile sehen Sie eine kleines Kästchen, auch Checkbox genannt. Markieren Sie diese Checkbox, indem Sie sie anklicken. Wiederholen Sie diesen Vorgang für jedes Thema, das Sie Sperren oder Öffnen möchten.</li>
+<li>Unterhalb der Themenübersicht finden Sie eine Reihe von Buttons mit den Bezeichnungen &quot;Sperren/Öffnen&quot;, &quot;Sticky&quot;, &quot;Löschen&quot; und &quot;Verschieben:&quot;. Klicken Sie auf den Button mit der Bezeichnung &quot;Sperren/Öffnen&quot;.</li>
+<li>Klicken Sie auf den Button mit der Bezeichnung &quot;Los&quot;, der unmittelbar rechtsseitig bei der zu sehenden Auswahlbox liegt.</li>
+</ul></li></ul><br />
+<ul>
+<li>Wenn &quot;Multiple-Checkboxen&quot; in den Foreneinstellungen/Forum Personal aktiviert ist.
+<ul><li>Am Ende der Zeile für jedes Thema, sehen Sie 5 kleine Checkboxen mit einem Icon darüber, dass folgendes symbolisieren: &quot;Sperren/Öffnen&quot;, &quot;Sticky&quot;, &quot;Verstecken&quot;, &quot;Verschieben&quot; and &quot;Löschen&quot;. Markieren Sie die Checkbox unterhalb des &quot;Sperren/Öffnen&quot; Icon für jedes Thema, das Sie Sperren oder Öffnen möchten.</li>
+<li>Wenn Sie alle Themen Sperren oder Öffnen möchten, markieren Sie die Checkbox &quot;Sperren/Öffnen&quot; die sich unterhalb aller Themen befindet.</li>
+<li>Klicken Sie auf den Button mit der Bezeichnung &quot;Los&quot;, der unmittelbar rechtsseitig bei der zu sehenden Auswahlbox liegt.</li>
+</ul></li></ul><br />
+<ul>
+<li>Wenn &quot;Icons zeigen&quot; in den Foreneinstellungen/Forum Personal aktiviert ist.
+<ul><li>Am Ende der Zeile für jedes Thema sehen Sie 5 kleine Icons die folgendes symbolisieren: &quot;Sperren/Öffnen&quot;, &quot;Sticky&quot;, &quot;Verstecken&quot;, &quot;Verschieben&quot; and &quot;Löschen&quot;.</li>
+<li>Klicken Sie auf das Icon ganz links, das &quot;Sperren/Öffnen&quot; symbolisiert.</li></ul></li>
+</ul>
+<p>Beim Beitrag schreiben</p>
+<ul>
+<li>Wenn Sie einen Beitrag schreibst, sehen Sie ein Auswahlfenster mit den Bezeichnungen &quot;Sperren/Öffnen&quot;, &quot;Anpinnen&quot;, und &quot;Verstecken&quot;. Markiere oder de-markiere &quot;Sperren/Öffnen&quot;. (Halten Sie die Strg/Ctrl oder Apple Taste gedrückt, um mehr als eine Option auszuwählen oder zu de-markieren.)</li>
+<li>Schreiben Sie Ihren Beitrag wie gewohnt. Sie können zum Beispiel erklären, warum das Thema geschlossen wurde.</li>
+</ul>
+<p><u><b>Überbrücken eines geschlossenen Themas</b></u></p>
+<ul>
+<li>Administratoren, Global Moderatoren und Moderatoren können berechtigt werden auch in einem Thema Beiträge zu schreiben, das für alle anderen Benutzer gesperrt ist.</li>
+<li>Diese Erlaubnis wird durch entsprechende Zugriffsrechte für die Benutzer erteilt, die in den Foreneinstellungen/Forum Personal gesetzt werden müssen.</li>
+</ul>
+~;
+#############################################
+
+
+### Section 3
+#############################################
+$SectionSub3 = "Ein_Thema_anpinnen";
+$SectionBody3 = qq~Wenn Sie der Meinung sind, dass ein Thema das Sie moderieren für alle deine Forenbesucher ganz besonders wichtig ist, können Sie es als &quot;Sticky&quot; (Wichtiges Thema) markieren. Diese Themen werden dann immer an erster Stelle, vor allen anderen Themen angezeigt. Ein nützliches Beispiel wäre die Anzeige der Forenregeln.
+<p><u><b>Ein Thema als Wichtig markieren</b></u></p>
+<p>Beim Betrachten der Themen</p>
+<ul>
+<li>Scrollen Sie bis zum Ende des Themas herunter. Dort sehen Sie den Menüpunkt &quot;Moderator Menü&quot;.</li>
+<li>Klicken Sie auf die Schaltfläche (engl. Button) mit der Bezeichnung &quot;Sticky&quot;.</li>
+</ul>
+<p>Beim Betrachten der Themenübersicht</p>
+<ul>
+<li>Wenn &quot;Einfache-Checkbox&quot; in den Foreneinstellungen/Forum Personal aktiviert ist.
+<ul><li>Am Ende einer jeden Themenzeile, sehen Sie ein kleines Kästchen, auch Checkbox genannt. Markieren Sie diese Checkbox, indem Sie sie anklicken. Wiederholen Sie diesen Vorgang für jedes Thema, von welchem Sie meinen, dass es wichtig ist.</li>
+<li>Unterhalb der Themenübersicht finden Sie eine Reihe von Buttons mit den Bezeichnungen &quot;Sperren/Öffnen&quot;, &quot;Sticky&quot;, &quot;Löschen&quot; und &quot;Verschieben:&quot;. Klicken Sie auf den Button mit der Bezeichnung &quot;Sticky&quot;.</li>
+<li>Klicken Sie auf den Button mit der Bezeichnung &quot;Los&quot;, der unmittelbar rechtsseitig bei der zu sehenden Auswahlbox liegt.</li>
+</ul></li></ul><br />
+<ul>
+<li>Wenn &quot;Multi-Checkboxen&quot; in den Foreneinstellungen/Forum Personal aktiviert ist.
+<ul><li>Am Ende der Zeile für jedes Thema, sehen Sie 5 kleine Checkboxen mit einem Icon darüber, dass folgendes symbolisieren: &quot;Sperren/Öffnen&quot;, &quot;Sticky&quot;, &quot;Verstecken&quot;, &quot;Verschieben&quot; and &quot;Löschen&quot;. Markieren Sie die Checkbox unterhalb des &quot;Anpinnen&quot; Icon für jedes wichtige Thema.</li>
+<li>Wenn Sie alle Themen als wichtige Themen deklarieren möchten, markieren Sie die Checkbox &quot;Anpinnen&quot; die sich unterhalb aller Themen befindet.</li>
+<li>Klicken Sie auf den Button mit der Bezeichnung &quot;Los&quot;, der unmittelbar rechtsseitig bei der zu sehenden Auswahlbox liegt.</li>
+</ul></li></ul><br />
+<ul>
+<li>Wenn &quot;Icons zeigen&quot; in den Foreneinstellungen/Forum Personal aktiviert ist.
+<ul><li>Unterhalb der Themenübersicht finden Sie eine Reihe von Buttons mit den Bezeichnungen &quot;Sperren/Öffnen&quot;, &quot;Sticky&quot;, &quot;Löschen&quot; und &quot;Verschieben:&quot;.</li>
+<li>Klicken Sie auf das zweite Icon von links, das &quot;Anpinnen&quot; symbolisiert.</li></ul></li>
+</ul>
+<p>Beim Beitrag schreiben</p>
+<ul>
+<li>Wenn Sie einen Beitrag schreibst, sehen Sie ein Auswahlfenster mit den Bezeichnungen &quot;Sperren/Öffnen&quot;, &quot;Anpinnen&quot;, und &quot;Verstecken&quot;. Markiere oder de-markiere &quot;Anpinnen&quot;. (Halten Sie die Strg/Ctrl oder Apple Taste gedrückt, um mehr als eine Option auszuwählen oder zu de-markieren.)</li>
+<li>Schreibe Deinen Beitrag wie gewohnt. Sie können zum Beispiel erklären, warum das Thema als wichtig markiert wurde.</li>
+</ul>
+<p><u><b>Markierung als wichtiges Thema aufheben</b></u></p>
+<p>Um ein Thema wieder als normales Thema einzustufen, führen Sie einfach die selben Schritte aus die Sie benutzt haben, um das Thema als Wichtiges Thema zu markieren. Klicken Sie auf den &quot;Sticky&quot; Button des als Wichtiges Thema deklarierten Themas und es wird im Anschluss wieder als normales Thema angezeigt.</p>
+~;
+#############################################
+
+
+### Section 4
+#############################################
+$SectionSub4 = "Ein_Thema_verstecken";
+$SectionBody4 = qq~Wenn Sie ein Thema nicht löschen möchten, es aber normalen Usern nicht angezeigt werden soll, so können Sie es verstecken. Versteckte Themen können nur von Administratoren, Global Moderatoren und Moderatoren deines Forum gesehen werden.
+<p><u><b>Ein Thema verstecken</b></u></p>
+<p>Beim Betrachten der Themen</p>
+<ul>
+<li>Scrollen Sie bis zum Ende des Themas herunter. Dort sehen Sie den Menüpunkt &quot;Moderator Menü&quot;.</li>
+<li>Klicken Sie auf die Schaltfläche (engl. Button) mit der Bezeichnung &quot;Verstecken&quot;.</li>
+</ul>
+<p>Beim Betrachten der Themenübersicht</p>
+<ul>
+<li>Wenn &quot;Einfache-Checkbox&quot; in den Foreneinstellungen/Forum Personal aktiviert ist.
+<ul><li>Am Ende einer jeden Themenzeile, sehen Sie ein kleines Kästchen, auch Checkbox genannt. Markieren Sie diese Checkbox, indem Sie sie anklicken. Wiederholen Sie diesen Vorgang für jedes Thema, das Sie verstecken möchten.</li>
+<li>Unterhalb der Themenübersicht finden Sie eine Reihe von Schaltflächen (engl. Buttons) mit den Bezeichnungen &quot;Sperren/Öffnen&quot;, &quot;Sticky&quot;, &quot;Löschen&quot; und &quot;Verschieben:&quot;. Klicken Sie auf den Button mit der Bezeichnung &quot;Verstecken&quot;.</li>
+<li>Klicken Sie auf den Button mit der Bezeichnung &quot;Los&quot;, der unmittelbar rechtsseitig bei der zu sehenden Auswahlbox liegt.</li>
+</ul></li></ul><br />
+<ul>
+<li>Wenn &quot;Multi-Checkboxen&quot; in den Foreneinstellungen/Forum Personal aktiviert ist.
+<ul><li>Am Ende der Zeile für jedes Thema, sehen Sie 5 kleine Checkboxen mit einem Icon darüber, dass folgendes symbolisieren: &quot;Sperren/Öffnen&quot;, &quot;Sticky&quot;, &quot;Verstecken&quot;, &quot;Verschieben&quot; and &quot;Löschen&quot;. Markieren Sie die Checkbox unterhalb des &quot;Verstecken&quot; Icon für jedes Thema, das Sie verstecken/unsichtbar machen möchten.</li>
+<li>Wenn Sie alle Themen verstecken/unsichtbar machen möchten, markieren Sie die Checkbox &quot;Verstecken&quot; die sich unterhalb aller Themen befindet.</li>
+<li>Klicken Sie auf den Button mit der Bezeichnung &quot;Los&quot;, der unmittelbar rechtsseitig bei der zu sehenden Auswahlbox liegt.</li>
+</ul></li></ul><br />
+<ul>
+<li>Wenn &quot;Icons zeigen&quot; in den Foreneinstellungen/Forum Personal aktiviert ist.
+<ul><li>Am Ende der Zeile für jedes Thema, sehen Sie 5 kleine Checkboxen mit einem Icon darüber, dass folgendes symbolisieren: &quot;Sperren/Öffnen&quot;, &quot;Sticky&quot;, &quot;Verstecken&quot;, &quot;Verschieben&quot; and &quot;Löschen&quot;.</li>
+<li>Klicken Sie auf das Icon in der Mitte, das &quot;Verstecken&quot; symbolisiert.</li></ul></li>
+</ul>
+<p>Beim Beitrag schreiben</p>
+<ul>
+<li>Wenn Sie einen Beitrag schreibst, sehen Sie ein Auswahlfenster mit den Bezeichnungen &quot;Sperren/Öffnen&quot;, &quot;Anpinnen&quot;, und &quot;Verstecken&quot;. Markieren Sie oder de-markiere &quot;Verstecken&quot;. (Halten Sie die Strg/Ctrl oder Apple Taste gedrückt, um mehr als eine Option auszuwählen oder zu de-markieren.)</li>
+<li>Schreibe Deinen Beitrag wie gewohnt. Sie können zum Beispiel erklären, warum das Thema als versteckt markiert wurde.</li>
+</ul>
+<p><u><b>Ein Thema wieder sichtbar machen</b></u></p>
+<p>Um ein Thema wieder sichtbar zu machen, führen Sie einfach die selben Schritte aus, die Sie zum Verstecken eines Thema benutzt haben. Klicken Sie auf den &quot;Verstecken&quot; Button des derzeit unsichtbaren Themas und es wird wieder sichtbar.</p>
+~;
+#############################################
+
+
+### Section 5
+#############################################
+$SectionSub5 = "Ein_Thema_verschieben";
+$SectionBody5 = qq~Wenn Sie ein Thema nicht löschen möchten und der Meinung sind, es passt von der Thematik her besser in ein anderes Forum, so können Sie diese Option zum Verschieben des Thema nutzen. Die Option hinterlässt eine Nachricht mit einem Link in der Themenübersicht des Originalforum in der Form: &quot;Dieses Thema wurde verschoben nach (Link zum neuen Forennamen) von (Mitgliedsname desjenigen, der das Thema verschoben hat)&quot;. Dies lässt die Benutzer zum einen sofort wissen, wo das Thema nun zu finden ist und ermöglicht zum anderen durch Klick auf den Link eine schnelle Navigation dorthin.
+<p><u><b>Ein Thema verschieben</b></u></p>
+<p>Beim Betrachten der Themen</p>
+<ul>
+<li>Scrollen Sie bis zum Ende des Themas herunter. Dort sehen Sie den Menüpunkt &quot;Moderator Menü&quot;.</li>
+<li>Klicken Sie auf den Button mit Namen &quot;Verschieben / Teilen / Verbinden&quot;.</li>
+</ul>
+<p>Beim Betrachten der Themenübersicht</p>
+<ul>
+<li>Wenn &quot;Einfache Checkbox&quot; in den Foreneinstellungen/Forum Personal aktiviert ist.
+<ul><li>Am Ende der Zeile für jedes Thema sehen Sie eine kleine Checkbox. Markieren Sie die Checkbox indem Sie sie einfach anklicken. Wiederholen Sie den Vorgang für jedes Thema das Sie verschieben möchten.</li>
+<li>Sie finden eine Auswahl von Radio Buttons &quot;Sperren/Öffnen&quot;, &quot;Anpinnen&quot;, &quot;Verstecken&quot;, &quot;Löschen&quot; und &quot;Verschieben&quot; am Ende der Themenübersicht. Klicken Sie auf den Radio Button für &quot;Verschieben&quot;.</li>
+<li>Im Dropdown Auswahlfeld rechts neben den Radio Buttons wählen Sie das Zielforum aus, in welches Sie das Thema verschieben möchten.</li>
+<li>Klicken Sie auf den Button mit der Bezeichnung &quot;Los&quot;, der unmittelbar rechtsseitig bei der zu sehenden Auswahlbox liegt.</li>
+</ul></li></ul><br />
+<ul>
+<li>Wenn &quot;Multi-Checkboxen&quot; in den Foreneinstellungen/Forum Personal aktiviert ist.
+<ul><li># Am Ende der Zeile für jedes Thema, sehen Sie 5 kleine Checkboxen mit einem Icon darüber, dass folgendes symbolisieren: &quot;Sperren/Öffnen&quot;, &quot;Sticky&quot;, &quot;Verstecken&quot;, &quot;Verschieben&quot; and &quot;Löschen&quot;. Markieren Sie die Checkbox unterhalb des &quot;Verschieben&quot; Icon (vierte Checkbox von links) für jedes Thema das Sie verschieben möchten.</li>
+<li>Wenn Sie alle Themen verschieben möchten, markieren Sie die Checkbox unterhalb der Themenübersicht zum Markieren aller Checkboxen.</li>
+<li>Im Dropdown Auswahlfeld rechts neben den Radio Buttons wähle das Zielforum aus, in welches Sie das Thema verschieben möchten.</li>
+<li>Klicken Sie auf den Button mit der Bezeichnung &quot;Los&quot;, der unmittelbar rechtsseitig bei der zu sehenden Auswahlbox liegt.</li>
+</ul></li></ul><br />
+<ul>
+<li>Wenn &quot;Icons zeigen&quot; in den Foreneinstellungen/Forum Personal aktiviert ist.
+<ul><li>Am Ende der Zeile für jedes Thema, sehen Sie 5 kleine Checkboxen mit einem Icon darüber, dass folgendes symbolisieren: &quot;Sperren/Öffnen&quot;, &quot;Sticky&quot;, &quot;Verstecken&quot;, &quot;Verschieben&quot; and &quot;Löschen&quot;.</li>
+<li>Klicken Sie auf das zweite Icon von rechts, das &quot;Verschieben&quot; symbolisiert.</li>
+<li>In dem darauf folgenden Bildschirm wählen Sie bitte das Forum aus, in das Sie das Thema/die Themen verschieben möchten. Treffen Sie Ihre Auswahl und klicke im Anschluss auf den Button &quot;Verschieben&quot;.</li></ul></li>
+</ul>
+~;
+#############################################
+
+### Section 6
+#############################################
+$SectionSub6 = "Ein_Thema_teilen";
+$SectionBody6 = qq~Nach Fertigstellung der Thementeilung Funktion in der Beitragsübersicht folgt die Erklärung dieses Punktes im nächsten Abschnitt, den <b>Beitrags Funktionen</b>.
+~;
+#############################################
+
+
+1;

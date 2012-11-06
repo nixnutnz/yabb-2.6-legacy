@@ -1,0 +1,313 @@
+$SectionName = "Beiträge_schreiben";
+
+### Sektion 1
+#############################################
+$SectionSub1 = "Ein_neues_Thema_beginnen";
+$SectionBody1 = qq~Wenn Sie ein Benutzerkonto registriert haben, möchten Sie sicherlich auch etwas schreiben. Sie können neue Themen beginnen:<br />
+Gehen Sie in die zu Ihrem Thema passende Kategorie. Innerhalb dieser Kategorie/dieses Forums suchen Sie den Button &quot;Neues Thema beginnen&quot; und klicken ihn einfach an. Die Position des Buttons kann je nach Forumeinstellung (Templates) variieren.
+
+<p>Es öffnet sich eine Seite, auf der Sie Ihr Posting schreiben können.</p>
+
+<p><b>Betreff:</b> Sie sollten hier zunächst einen aussagekräftigen Betreff eintragen!</p>
+
+<p><b>Symbol:</b> Sie können ein Bildchen (Icon) Ihrem Beitrag zuordnen. Hierzu wird Ihnen eine Auswahl angeboten. Dieses Icon wird dann in einer Forenübersicht dem Betreff vorangestellt.</p>
+
+<p><b>YaBBC-Tags hinzufügen:</b> Sie können auch sogenannte YaBBC-Tags verwenden. Damit können Sie Ihr Posting formatieren (Fettdruck etc.) Näheres hierzu weiter unten.</p>
+
+<p><b>Smileys hinzufügen:</b> Eine persönliche Note erhält Ihr Posting durch die Möglichkeit Smileys einzufügen. Diese eignen sich auch dazu, Stimmungslagen wieder zu geben. Wenn Sie ein Smiley anklicken, erscheint es automatisch an der Stelle in Ihrem Posting, an der sich der Cursor befindet.</p>
+
+<p><b>Anhängen:</b> Möglicherweise ist es gestattet, dem Posting Dateien anzuhängen. Diese können über den Button &quot;durchsuchen&quot; von der Festplatte Ihres PC’s direkt angebunden werden. Achten Sie hier auf die Beschränkungen bezüglich der Dateiendungen und Dateigrößen.</p>
+
+<p><b>Senden/Vorschau/Löschen:</b> Sie können das Posting sofort nach dem Schreiben absenden. Es empfiehlt sich aber, zunächst die Vorschau zu verwenden, um das Posting ggf. noch einmal auf Fehler zu überprüfen. Nicht in jedem Forum sind Änderungen nach dem Absenden mehr möglich. Den Inhalt des noch nicht abgesendeten Postings können Sie auch wieder löschen.</p>~;
+#############################################
+
+
+### Sektion 2
+#############################################
+$SectionSub2 = "Eine_Antwort_hinzufügen";
+$SectionBody2 = qq~Sie können neue Themen erstellen, natürlich können Sie auch auf vorhandene Themen antworten. Wenn Sie ein Thema sehen, welches Sie interessiert und in dem Sie eine Antwort erstellen möchten, dann suchen Sie den Button &quot;Antworten&quot; und klicken diesen an. Es öffnet sich ein Eingabefenster, in dem Sie Ihre Antwort formulieren können. Das Antworten funktioniert wie das Erstellen eines neuen Themas.
+<br /><br />
+[yabbc][quote]Dies ist ein Zitat[/quote][/yabbc]
+<br /><br />
+Insbesondere bei längeren Themen ist es sinnvoll, die Zitier-Funktion zu verwenden. Klicken Sie hierfür auf &quot;Zitieren&quot;, anstatt auf &quot;Antworten&quot;. Im folgenden Eingabefenster ist das Zitat bereits enthalten, Sie können mit der Antwort darunter beginnen. Sie können auch Teile des zitierten Textes löschen, achten Sie aber drauf, dass die &quot;quote-Befehle&quot; erhalten bleiben.~;
+#############################################
+
+
+### Sektion 3
+#############################################
+$SectionSub3 = "Umfrage_starten";
+$SectionBody3 = qq~Sie können – je nach Einstellung – in YaBB-Foren auch Umfragen starten. Eine Umfrage erscheint dann über Ihrem Thema. Um eine Umfrage zu starten, suchen Sie zunächst wieder das passende Forum bzw. die passende Kategorie. Suchen Sie dann den Button &quot;Umfrage starten&quot; und klicken Sie darauf. Auch hier gilt: die Position des Buttons kann variieren – je nach verwendetem Template.
+<br /><br />
+Es öffnet sich nun eine neue Seite, hier können Sie die Frage formulieren und diverse Antworten vorgeben. Anschließend können Sie die Umfrage noch näher beschreiben (in der &quot;Message-Box&quot;).~;
+#############################################
+
+
+### Sektion 4
+#############################################
+$SectionSub4 = "YaBBC_Reference";
+$SectionBody4 = qq~Aus naheliegenden Gründen ist die Verwendung von HTML-Code in Beiträgen nicht erlaubt. Stattdessen können Sie in Ihren Beiträgen den sogenanntem YaBB Bulletin Board Code (YaBBC) benutzen, der Ihnen ähnliche Formatierungsmöglichkeiten wie HTML bietet, dessen Benutzung aber sicher und für die Foren Benutzung standardisiert ist.
+
+<p><b><u>Was ist YaBBC?</u></b></p>
+
+<p>YaBBC ist ein Set sogenannter Tags die auf der HTML Sprache basieren. Diese Tags erlauben das formatieren von Text, ganz ähnlich wie bei HTML. Nur besitzen sie eine einfachere Syntax und sie verändern nicht das eigentliche Aussehen der angezeigten Seite. Bei der Benutzung des Internet Explorers können die meisten YaBBC Tags durch einfaches <span class="highlight">markieren</span> des gewünschten Textes und anschließendes Betätigen eines YaBB Buttons, formatiert werden.</p>
+<div class="yabbc" align="center">
+<table>
+<tr><th colspan="2"><img src="$imagesdir/url.gif" alt="URL Button" /> Hyperlink, Link einfügen</th></tr>
+<tr><td>Syntax:
+<br />Resultat:
+<br />Syntax:
+<br />Resultat:
+</td><td>[url]http://www.yabbforum.com[/url]
+<br />[yabbc][url]http://www.yabbforum.com[/url][/yabbc]
+<br />[url=http://www.yabbforum.com]YaBB Forum[/url] (hier ist der Link hinterlegt und durch Anklicken von „YaBB Forum“ erreichbar)
+<br />[yabbc][url=http://www.yabbforum.com]YaBB Forum[/url] (hier ist der Link hinterlegt und durch Anklicken von „YaBB Forum“ erreichbar)[/yabbc]</td></tr>
+<tr><td colspan="2"><ul><li>Angabe URL und Text: www.yabbforum.com YaBB Forum</li>
+<li>Alles markieren: <span class="highlight">www.yabbforum.com YaBB Forum</span></li>
+<li>Den Button für URL anklicken: [yabbc][url=www.yabbforum.com]YaBB Forum[/url][/yabbc]</li></ul>
+Der [link] YaBBC Tag funktioniert ähnlich wie der [url] Tag, nur mit dem Unterschied das der [link] Tag (es ist kein Button für diesen Tag verfügbar) Links im aktuellen Fenster öffnet, während der [url] Tag Links in einem neuen Fenster öffnet.</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/ftp.gif" alt="FTP Button" /> FTP einfügen</th></tr>
+<tr><td>Syntax:
+<br />Resultat:
+</td><td>[ftp]ftp://ftpdom[/ftp]
+<br />[yabbc][ftp]ftp://ftpdom[/ftp][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/img.gif" alt="Image Button" /> Bild einfügen</th></tr>
+<tr><td>Syntax:
+<br />
+<br />Resultat:
+</td><td>[img]$imagesdir/on.gif[/img]
+<br />
+<br />[yabbc][img]$imagesdir/on.gif[/img][/yabbc]
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/email2.gif" alt="Email Button" /> Email einfügen</th></tr>
+<tr><td>Syntax:
+<br />Resultat:
+<br />Syntax:
+<br />Resultat:
+</td><td>[email]meinname\@domain.de[/email]
+<br />[yabbc][email]meinname\@domain.de[/email][/yabbc]
+<br />[email=meinname\@domain.de]Klicke hier um mich anzumailen[/email]
+<br />[yabbc][email=meinname\@domain.de]Klicke hier um mich anzumailen[/email][/yabbc]</td></tr>
+<tr><td colspan="2"><ul><li>Gebe die eMail-Adresse und den Text ein: meinname\@domain.de Klicke hier um mich anzumailen</li>
+<li>Alles markieren: <span class="highlight">meinname\@domain.de Klicke hier um mich anzumailen</span></li>
+<li>Klicke den Button für eMail: [yabbc][email=meinname\@domain.de]Klicke hier um mich anzumailen[/email][/yabbc]</li></ul></td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/media.gif" alt="Media Button" /> Media einfügen</th></tr>
+<tr><td>Syntax:
+<br />Beispiel:
+<br />Resultat:
+</td><td>[media]Url zu Media Datei[/media]
+<br />[media]http://www.deine-domain.de/yabbchelp.swf[/media]
+<br />[yabbc][media]$imagesdir/yabbchelp.swf[/media][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/table.gif" alt="Table Button" /><img src="$imagesdir/td.gif" alt="Table Data Button" /><img src="$imagesdir/tr.gif" alt="Table Row Button" /> Tabelle - Zeile - Spalte einfügen</th></tr>
+<tr><td>Syntax:
+</td><td>[table][tr][td]text Beispiel[/td][/tr][/table]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/hr.gif" alt="Horizontal Rule Button" /> Horizontale Linie einfügen</th></tr>
+<tr><td>Syntax:
+<br />Resultat:
+</td><td>[hr]
+<br /><hr /></td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/tele.gif" alt="Teletype Button" /> Schreibmaschine</th></tr>
+<tr><td>Syntax:
+<br />Resultat:
+</td><td>[tt]text Beispiel[/tt]
+<br />[yabbc][tt]text Beispiel[/tt][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/code.gif" alt="Code Button" /> Code einfügen</th></tr>
+<tr><td>Syntax:
+<br />
+<br />
+<br />
+<br />
+<br /><!-- This is the break matching the blank break below -->
+<br />Resultat:
+</td><td>[code]&lt;script language="Javascript"&gt;
+<br />&lt;!--
+<br />alert("Hallo YaBB 2!");
+<br />//--&gt;
+<br />&lt;/script&gt; [/code]
+<br />
+<br />[yabbc][code]<script language="Javascript">
+<!--
+alert("Hallo YaBB 2!");
+//-->
+</script>[/code][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/quote2.gif" alt="Quote Button" /> Zitat einfügen</th></tr>
+<tr><td>Syntax:
+<br />Resultat:
+</td><td>[quote]Hallo YaBB 2[/quote]
+<br />[yabbc][quote]Hallo YaBB 2[/quote][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/edit.gif" alt="Edit Button" /> &quot;Änderung&quot; einfügen</th></tr>
+<tr><td>Syntax:
+<br />Resultat:
+</td><td>[edit]Dies wurde geändert in YaBB 2[/edit]
+<br />[yabbc][edit]Dies wurde geändert in YaBB 2[/edit][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/sup.gif" alt="Superscript Button" /> Hochstellung</th></tr>
+<tr><td>Syntax:
+<br />
+<br />Resultat:
+</td><td>text [sup]Beispiel[/sup]
+<br />
+<br />[yabbc]text [sup]Beispiel[/sup][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/sub.gif" alt="Subscript Button" /> Tiefstellung</th></tr>
+<tr><td>Syntax:
+<br />
+<br />Resultat:
+</td><td>text [sub]Beispiel[/sub]
+<br />
+<br />[yabbc]text [sub]Beispiel[/sub][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/list.gif" alt="List Button" />Aufzählung einfügen</th></tr>
+<tr><td>Syntax:
+<br />
+<br />
+<br />
+<br />Resultat:
+</td><td>[list][*]Teil 1 
+<br />[*]Teil 2
+<br />[*]Teil 3[/list]
+<br />[yabbc][list][*]Teil 1
+[*]Teil 2
+[*]Teil 3[/list][/yabbc]</td></tr>
+<tr><td colspan="2">Es ist ebenfalls möglich 2- oder 3- Listen zu verschachteln.</td></tr>
+<tr><td>Beispiel:
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />Resultat:
+</td><td>[list][*]Teil 1 
+<br />[*]Teil 2
+<br />[list][*]subTeil 1
+<br />[*]subTeil 2[/list]
+<br />[*]Teil 3[/list]
+<br />[yabbc][list][*]Teil 1
+[*]Teil 2
+[list][*]subTeil 1
+[*]subTeil 2[/list][*]Teil 3[/list][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/me.gif" alt="/me Button" />/me</th></tr>
+<tr><td>Syntax:
+<br />Resultat:
+</td><td>/me loves YaBB 2
+<br />[yabbc]/me loves YaBB 2[/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/move.gif" alt="Move Button" /> Laufschrift einfügen</th></tr>
+<tr><td>Syntax:
+<br />Resultat:
+</td><td>[move]text Beispiel[/move]
+<br />[yabbc][move]text Beispiel[/move][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/timestamp.gif" alt="Timestamp Button" /> Timestamp einfügen</th></tr>
+<tr><td>Syntax:
+<br />Resultat:
+</td><td>[timestamp=1121602762]
+<br />[yabbc][timestamp=1121602762][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/bold.gif" alt="Bold Button" /> Fetter Text</th></tr>
+<tr><td>Syntax:
+<br />Resultat:
+</td><td>[b]text Beispiel[/b]
+<br />[yabbc][b]text Beispiel[/b][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/italicize.gif" alt="Italic Button" /> Kursiver Text</th></tr>
+<tr><td>Syntax:
+<br />Resultat:
+</td><td>[i]text Beispiel[/i]
+<br />[yabbc][i]text Beispiel[/i][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/underline.gif" alt="Underline Button" /> Unterstrichener Text</th></tr>
+<tr><td>Syntax:
+<br />Resultat:
+</td><td>[u]text Beispiel[/u]
+<br />[yabbc][u]text Beispiel[/u][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/strike.gif" alt="Strikethrough Button" /> Durchgestrichener Text</th></tr>
+<tr><td>Syntax:
+<br />Resultat:
+</td><td>[s]text Beispiel[/s]
+<br />[yabbc][s]text Beispiel[/s][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/highlight.gif" alt="Highlight Button" /> Highlighted Text einfügen</th></tr>
+<tr><td>Syntax:
+<br />Resultat:
+</td><td>[highlight]text Beispiel[/highlight]
+<br />[yabbc][highlight]text Beispiel[/highlight][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/face1.gif" alt="Font Face Selector" /> Schrift Art ändern</th></tr>
+<tr><td>Syntax:
+<br />Resultat:
+</td><td>[font=Courier New]Courier New font[/font]
+<br />[yabbc][font=Courier New]Courier New font[/font][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/size1.gif" alt="Size Selector" /> Schrift Größe ändern</th></tr>
+<tr><td>Syntax:
+<br />Resultat:
+</td><td>[size=14]14 point font[/size]
+<br />[yabbc][size=14]14 point font[/size][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/palette_help.gif" alt="Farbauswahl und die Palette" /> Textfarbe auswählen</th></tr>
+<tr><td colspan="2">Sie können entweder die schnelle Farbauswahl verwenden und eine Textfarbe von der Palette wählen, die bereits 12 vordefinierte Farbwerte enthält oder die Farbpalette öffnen, um eine benutzerspezifische Farbe selbst zu erstellen.<br />
+<tr><td>Syntax:
+<br />Resultat:
+</td><td>[color=#ff0000]Roter Text[/color]
+<br />[yabbc][color=#ff0000]Roter Text[/color][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/pre.gif" alt="Preformatted Button" /> Vorformatierter Text</th></tr>
+<tr><td>Syntax:
+<br />
+<br />
+<br />Resultat:
+</td><td>[pre] Dies ist
+Vorformatierter Text [/pre]
+<br />
+<br />[yabbc][pre] Dies ist
+Vorformatierter Text [/pre][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/left.gif" alt="Left Align Button" /> Linksbündiger Text</th></tr>
+<tr><td>Syntax:
+<br />
+<br />
+<br />Resultat:
+</td><td>[left]text 
+<br />Beispiel[/left]
+<br />
+<br />[yabbc][left]text 
+Beispiel[/left][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/center.gif" alt="Center Align Button" /> Zentrierter Text</th></tr>
+<tr><td>Syntax:
+<br />
+<br />
+<br />Resultat:
+</td><td>[center]text 
+<br />Beispiel[/center]
+<br />
+<br />[yabbc][center]text 
+Beispiel[/center][/yabbc]</td></tr>
+<tr><td colspan="2"><hr /></td></tr>
+<tr><th colspan="2"><img src="$imagesdir/right.gif" alt="Right Align Button" /> Rechtsbündiger Text</th></tr>
+<tr><td>Syntax:
+<br />
+<br />
+<br />Resultat:
+</td><td>[right]text 
+<br />Beispiel[/right]
+<br />
+<br />[yabbc][right]text 
+Beispiel[/right][/yabbc]</td></tr>
+</table>
+</div>~;
+#############################################
+
+
+1;

@@ -1,0 +1,16 @@
+$SectionName = "Hilfe_fuer_Administratoren";
+
+### Section 1
+#############################################
+$SectionSub1 = "Einleitung";
+$SectionBody1 = qq~Wie Sie sicher wissen, ist YaBB eine tolle Kommunikationsplattform. Einfach zu installieren, einfach zu handhaben. Es ist die perfekte Lösung für eine stabile Unterstützung und Wartung der User-Datenbank. Diese Hilfe-Sektion soll dazu beitragen, dass Sie mit den vielen neuen und umfangreichen Möglichkeiten umgehen können. Wenn Sie zu einem bestimmten Problem eine Anleitung suchen, benutzen Sie bitte die Navigation links.
+<p>Für eine umfangreichere Hilfe besuchen Sie bitte <a href="http://www.codex.yabbforum.com" target = "_blank"><b>The YaBB Codex</b></a>.
+<br />Für Unterstützung und Rückfragen besuchen Sie bitte die <a href="http://www.yabbforum.com/community/" target = "_blank"><b>YaBB's Support Community</b></a>.</p>
+<p>Bitte beachten Sie auch den Glossar Abschnitt in der Benutzer Hilfe, wenn Ihnen der eine oder andere Begriff, der in den verschiedenen Beschreibungen der nachfolgenden Abschnitte vorkommt, unklar ist.</p>
+<p>Sie können das Menü auf der linken Seite verwenden, um schnell zu einem anderen Thema zu springen.</p>
+<p>Sie können den ^ Button benutzen, der sich auf der rechten Seite unterhalb eines jeden Hilfeabschnittes befindet, um wieder zum Anfang der Admin Hilfe Seite zu gelangen.</p>
+~;
+#############################################
+
+
+1;

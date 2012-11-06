@@ -1,0 +1,41 @@
+$SectionName = "Sicherheit";
+
+### Section 1
+#############################################
+$SectionSub1 = "Sicherheit_Intro";
+$SectionBody1 = qq~YaBB ist gegen Hacker und andere Eindringlinge jeglicher Art sehr gut geschützt. Aufgrund der vielen integrierten Features besteht ein hoher Schutz für Ihr Forum. Nimm zur Kenntnis, dass viele der Sicherheitsfunktionen auswählbar sind. Wenn Sie sie nicht aktivieren, kann dies ein erhöhtes Sicherheitsrisiko darstellen. Beispiele dafür sind unter anderem, Wenn Sie die Validierung (Captcha) Grafik für die Registrierung nicht nutzt oder es Gästen erlaubt wird Beiträge zu schreiben ohne das sie den Sicherheitscode der Validierung (Captcha) Grafik eintragen müssen.
+~;
+#############################################
+
+
+### Section 2
+#############################################
+$SectionSub2 = "Sessions";
+$SectionBody2 = qq~YaBB verfügt über eine Funktion, mit der die Durchführung administrativer Aufgaben geschützt wird. Diese Funktion wird <b>Sessions</b> genannt. Wenn diese Funktion aktiviert ist, werden Administratoren aufgefordert, sich zu verifizieren, falls Sie mit einer geänderten IP-Adresse in das Board kommen.
+<p>Um die Session erneut zu bestätigen (sich zu verifizieren), muss der Button &quot;Update Session&quot; angeklickt werden. Wenn dieser Button nicht präsent ist, ist keine Bestätigung erforderlich, der Button &quot;Admin Center&quot; steht stattdessen zur Verfügung. Nach dem Anklicken des Buttons &quot;Update Session&quot; ist grundsätzlich das normale Kennwort für das Board einzugeben. Diese Einstellung kann aber in den Profilen geändert werden.</p>
+<p>Um zu prüfen, ob die Funktion &quot;Sessions&quot; eingeschaltet ist, gehen Sie bitte in das Update-Center und schauen unter &quot;Flood/Session Sicherheit&quot; nach, ob der Haken bei &quot;Session ID's aktivieren&quot; gesetzt ist. Die Funktion ist aktiv, wenn der Haken gesetzt ist.</p>
+~;
+#############################################
+
+
+### Section 3
+#############################################
+$SectionSub3 = "Geist_Modus";
+$SectionBody3 = qq~Der <b>Geist Modus</b> ist eine YaBB Funktion die entwickelt wurde, um Administratoren und Global Moderatoren die Fähigkeit zu verleihen, den Betrieb innerhalb des Forum für andere unsichtbar und diskret zu überwachen. Ist diese Option aktiviert ist, wird der &quot;Online&quot; Status für Administratoren und Global Moderatoren vor allen Mitgliedergruppen und Gästen verborgen.
+<p>Diese Option wird aktiviert, indem Sie die entsprechende Checkbox &quot;Geist-Modus für Administratoren / Global Moderatoren aktivieren?&quot; im Admin Center unter Forum Konfiguration - Tab &quot;Forum Personal&quot; markieren.</p>
+~;
+#############################################
+
+
+### Section 4
+#############################################
+$SectionSub4 = "Administrative_Rechte";
+$SectionBody4 = qq~Der Adminstrator kann auswählen, welche administrative Rechte ein Globaler Moderator erhält. Er kann das Admin Center komplett sperren, oder auch Teile darin erlauben. Das beinhaltet z.B. auch das Bearbeiten von Mitglieder-Profilen oder das Anlegen und Löschen von Mitgliedern. Auch Einstellungen für die Forum-Sicherheit können erlaubt werden.
+<p>Der beste Weg um sicher herauszufinden, was Ihnen erlaubt wurde, ist ein Gespräch mit dem Administrator.</p>
+<p>Wenn Dir der Adminstrator ermöglicht hat, das Admin Center aufzurufen, stellt Ihnen die verschiedenen Menüs auf der linken Seite dar, was Sie (unter Umständen) kontrollieren können.</p>
+<p><font color="#0099CC"><b><u>GLOBAL MODERATOR TIP:</u></b> Der Zugriff auf manche Seiten erweckt den Anschein, dass <b><i>Sie eine entsprechende Berechtigung haben können</i></b>. Zum Beispiel hat Ihnen der Adminstrator erlaubt, Mitglieder anzulegen und Ihre Profile anzusehen, aber <u>nicht</u>, diese zu LÖSCHEN. Ihnen wird dennoch die Möglichkeit angezeigt, das Mitglied zu löschen. Wenn Sie den entsprechenden Button ohne das Recht anklicken, werden Sie eine Fehlermeldung erhalten. Das ist KEIN Fehler im Board, Sie haben einfach nicht das entsprechende Recht vom Administrator erhalten.</font></p>
+~;
+#############################################
+
+
+1;
