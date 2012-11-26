@@ -148,7 +148,7 @@ $SectionBody1 = qq~YaBB has many descriptive terms that refer to its component p
 <dl>
 <dd><font color="#0099CC"><b>Q</b><br /><br /></font></dd>
   <dt><b>Quote</b></dt>
-  <dd>This is a feature that allows a user replying to post to quote the entire contents of the post directly below the Quote button you click on.  This saves having to retype it in the reply.  You can also manually highlight and copy text in one post, then paste it into your reply and with the text highlighted, press the Insert Quote button above the post window to place it in a Quote Box &#40;See also Mark and Quote&#41;.</dd>
+  <dd>This is a feature that allows a user replying to a post to quote the entire contents of the post directly below the Quote button you click on.  This saves having to retype it in the reply.  You can also manually highlight and copy text in one post, then paste it into your reply and with the text highlighted, press the Insert Quote button above the post window to place it in a Quote Box &#40;See also Mark and Quote&#41;.</dd>
   <dt><b>Quote Box</b></dt>
   <dd>This is a box placed around quoted text that sets the quoted text apart from the words of your reply post.  You can enclose text in a Quote Box by highlighting the text with your mouse and clicking on the Insert Quote button above the Post Window.</dd>
 </dl>
