@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$registerplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$registerplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 if (!$iamguest && (!$admin && $action ne 'activate' && $action ne 'admin_descision') ) { &fatal_error("no_registration_logged_in"); }
 
@@ -904,7 +904,7 @@ sub Register2 {
 
 		&UserAccount($reguser, "preregister");
 		if ($do_scramble_id) { $cryptuser = &cloak($reguser); } else { $cryptuser = $reguser; }
-	      $regpass = encode_password($member{'passwrd1'});
+	      $regpass = $member{'passwrd1'};
 	      fopen(INACT, ">>$memberdir/memberlist.inactive", 1);
 		print INACT "$date|$activationcode|$reguser|$regpass|$member{'email'}|$user_ip\n";
 		fclose(INACT);
