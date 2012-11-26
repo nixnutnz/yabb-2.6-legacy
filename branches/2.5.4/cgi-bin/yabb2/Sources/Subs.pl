@@ -982,7 +982,7 @@ sub jumpto {
 	<option value="" class="forumjump">$jumpto_txt{'to'}</option>\n
 	<option value="gohome">$img_txt{'103'}</option>\n~;
 
-	## as guests don't have these, why show them?
+	## as guests do not have these, why show them?
 	if (!$iamguest) {
 		$selecthtml .= qq~
 	<option value="action=im" class="forumjumpcatm">$jumpto_txt{'mess'}</option>~ if $PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod));
@@ -2247,5 +2247,50 @@ sub CheckUserPM_Level {
 		}
 	}
 }
+
+sub get_forum_master {
+    if ( $mloaded != 1 ) {
+        require "$boardsdir/forum.master";
+    }
+    return;
+}
+
+sub regex_1 {
+    my ($message) = @_;
+    $message =~ s/[\r\n\ ]//gsm;
+    $message =~ s/\&nbsp;//gxsm;
+    $message =~ s/\[table\].*?\[tr\].*?\[td\]//gxsm;
+    $message =~ s/\[\/td\].*?\[\/tr\].*?\[\/table\]//gxsm;
+    $message =~ s/\[.*?\]//gxsm;
+
+    return $message;
+}
+
+sub regex_2 {
+    my ($message) = @_;
+    $message =~ s/\cM//gsm;
+    $message =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gsm;
+    $message =~ s/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[\/$1$2\]/gsm;
+    return $message;
+}
+
+sub regex_3 {
+    my ($message) = @_;
+    $message =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gsm;
+    $message =~ s/\n/<br \/>/gsm;
+    $message =~ s/([\000-\x09\x0b\x0c\x0e-\x1f\x7f])/\x0d/gxsm;
+    return $message;
+}
+
+sub regex_4 {
+    my ($message) = @_;
+    $message =~ s/\[b\](.*?)\[\/b\]/*$1*/igxsm;
+    $message =~ s/\[i\](.*?)\[\/i\]/\/$1\//igxsm;
+    $message =~ s/\[u\](.*?)\[\/u\]/_$1_/igxsm;
+    $message =~ s/\[.*?\]//gxsm;
+    $message =~ s/<br.*?>/\n/igxsm;
+    return $message;
+}
+
 
 1;
