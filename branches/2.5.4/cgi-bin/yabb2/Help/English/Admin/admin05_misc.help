@@ -3,8 +3,7 @@ $SectionName = "Miscellaneous_Things";
 ### Section 1
 #############################################
 $SectionSub1 = "General_Observations";
-$SectionBody1 = qq~In the making of YaBB 2.2, we have done an overhaul to the admin panel's various sections.<br />
-As the number of functions have grown larger, we have re-grouped some of them a bit into tabs and some functions may have changed places.
+$SectionBody1 = qq~YaBB is a 'living document'. It changes over time. Features are added, and occasionally removed, as YaBB evolves. The Sections below document many of the changes for the admin.
 ~;
 #############################################
 
@@ -12,7 +11,8 @@ As the number of functions have grown larger, we have re-grouped some of them a 
 ### Section 2
 #############################################
 $SectionSub2 = "Features_in_YaBB_2.2_and_later_versions";
-$SectionBody2 = qq~These are some features in YaBB 2.2 that naturally need some adjusting on admin level. These additions are as follows:
+$SectionBody2 = qq~In the making of YaBB 2.2, we have done an overhaul to the admin panel's various sections.<br />
+As the number of functions have grown larger, we have re-grouped some of them a bit into tabs and some functions may have changed places.<br />These are some features in YaBB 2.2 that naturally need some adjusting on admin level. These additions are as follows:
 <ul>
 <li><b>RSS</b><br />
 Anyone can now use RSS (Really Simple Syndication, see <a href="http://en.wikipedia.org/wiki/RSS" title="RSS on Wikipedia">this article in Wikipedia</a>) to pull the latest headlines from your forum into an external document or to a browser.</li>
