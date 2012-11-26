@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$favoritesplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$favoritesplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub Favorites {
@@ -454,13 +454,13 @@ sub IsFav {
 	my @oldfav = split(/,/, ${$uid.$username}{'favorites'});
 	my ($button,$nofav);
 	if (@oldfav < ($maxfavs || 10)) {
-		$button = qq~$menusep<a href="javascript:AddRemFav('$scripturl?action=addfav;fav=$favo;start=$goto','$imagesdir')" name="favlink">$img{'addfav'}</a>~;
+		$button = qq~$menusep<a href="javascript:AddRemFav('$scripturl?action=addfav;fav=$favo;start=$goto','$imagesdir')" id="favlink">$img{'addfav'}</a>~;
 		$nofav = 1;
 	} else { $nofav = 2; }
 
 	foreach (@oldfav) {
 		if ($favo eq $_) {
-			$button = qq~$menusep<a href="javascript:AddRemFav('$scripturl?action=remfav;fav=$favo;start=$goto','$imagesdir')" name="favlink">$img{'remfav'}</a>~;
+			$button = qq~$menusep<a href="javascript:AddRemFav('$scripturl?action=remfav;fav=$favo;start=$goto','$imagesdir')" id="favlink">$img{'remfav'}</a>~;
 			$nofav = 0;
 		}
 	}
