@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$newsettingsplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$newsettingsplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 # Figure out what tabset to use, depending on the page= parameter.
@@ -38,7 +38,7 @@ sub settings {
 	$yytitle = $page eq 'main' ? $admin_txt{'222'} : ($page eq 'advanced' ? $admin_txt{'223'} : ($page eq 'security' ? $admintxt{'a3_title'} : ($page eq 'antispam' ? $admintxt{'a3_sub4'} : ($page eq 'maintenance' ? $admintxt{'a7_title'} : $admintxt{'a2_sub1'}))));
 
 	my @requireorder; # an array for the correct order of the requirements
-	my %requirements; # an hash that says "Y is required by X"
+	my %requirements; # a hash that says "Y is required by X"
 
 	$yymain .= qq~
    <a name="top"></a>
@@ -975,6 +975,7 @@ $ext_prof_fields
 ###############################################################################
 
 \@backup_paths = qw($backup_paths);
+\$backupprog = '$backupprog';
 \$backupmethod = '$backupmethod';
 \$compressmethod = '$compressmethod';
 \$backupdir = '$backupdir';
