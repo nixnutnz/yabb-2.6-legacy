@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$loginoutplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$loginoutplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 if ($regcheck) { require "$sourcedir/Decoder.pl"; }
@@ -241,7 +241,7 @@ sub Reminder {
 	</tr><tr>
 	<td class="windowbg">
 	<label for="user"><span class="text1"><b>$loginout_txt{'35'}:</b></span></label>
-	<input type="text" name="user" id="user" $regstyle size="50" />
+	<input type="text" name="user" id="user" maxlength="100" $regstyle size="50" />
 	</td>
 	</tr>
 ~;
