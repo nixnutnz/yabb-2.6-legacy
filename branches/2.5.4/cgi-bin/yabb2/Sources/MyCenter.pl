@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$mycenterplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$mycenterplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('InstantMessage');
@@ -923,7 +923,7 @@ function insert_user (oElement,username,userid) {
 		//-->
 		</script>\n~;
 		$MCViewMenu .= qq~
-		<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
+		<table>
 		<tr>~;
 		if ($PM_level == 0 || ($PM_level == 2 && !$iamadmin && !$iamgmod && !$iammod ) || ($PM_level == 3 && !$iamadmin && !$iamgmod)) {
 			$display_prof = 'inline';
@@ -931,11 +931,11 @@ function insert_user (oElement,username,userid) {
 		}
 		if ($PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod))   ) {
 			$MCViewMenu .= qq~
-			<td width="$tabWidth" align="center" valign="middle" class="$tabPMHighlighted" id="menu_pm"><a href="javascript:void(0);" onclick="changeToTab('pm'); return false;">$mc_menus{'messages'}</a></td>~;
+			<td width="$tabWidth" class="$tabPMHighlighted center vtop" id="menu_pm"><a href="javascript:void(0);" onclick="changeToTab('pm'); return false;">$mc_menus{'messages'}</a></td>~;
 		}
 		$MCViewMenu .= qq~
-			<td width="$tabWidth" align="center" valign="middle" class="$tabProfHighlighted" id="menu_prof"><a href="javascript:void(0);" onclick="changeToTab('prof'); return false;">$mc_menus{'profile'}</a></td>
-			<td width="$tabWidth" align="center" valign="middle" class="$tabNotifyHighlighted" id="menu_posts"><a href="javascript:void(0);" onclick="changeToTab('posts'); return false;">$mc_menus{'posts'}</a></td>
+			<td width="$tabWidth" class="$tabProfHighlighted center" id="menu_prof"><a href="javascript:void(0);" onclick="changeToTab('prof'); return false;">$mc_menus{'profile'}</a></td>
+			<td width="$tabWidth" class="$tabNotifyHighlighted center" id="menu_posts"><a href="javascript:void(0);" onclick="changeToTab('posts'); return false;">$mc_menus{'posts'}</a></td>
 		</tr>
 		</table>\n~;
 	}
@@ -1009,7 +1009,7 @@ function insert_user (oElement,username,userid) {
 ## start Posts div
 	$MCPostsMenu = qq~
 	<div id="cont_posts" style="display: $display_posts">
-	<table id="posts" width="100%" align="center" class="windowbg2" cellpadding="4">
+	<table id="posts" class="windowbg2 center pad_4px">
 		<tr><td class="windowbg2">
 			<span class="nav"><b><a href="$scripturl?action=shownotify">$inmes_txt{'viewnotify'}</a></b></span><br />
 			<span class="nav"><b><a href="$scripturl?action=favorites">$inmes_txt{'viewfavs'}</a></b></span><br />
@@ -1037,7 +1037,7 @@ function insert_user (oElement,username,userid) {
 		</form>
 	~;
 	}
-	$MCPostsMenu .= qq~
+	$MCPostsMenu .= q~
 		</td></tr>
 	</table>
 	</div>
@@ -1120,22 +1120,22 @@ function insert_user (oElement,username,userid) {
 						}
 					}
 				}
-				$smilie_url_array  .= qq~""~;
-				$smilie_code_array .= qq~""~;
+				$smilie_url_array  .= q~""~;
+				$smilie_code_array .= q~""~;
 
 				$MCExtraSmilies .= qq~
 				smilieurl = new Array($smilie_url_array);
 				smiliecode = new Array($smilie_code_array);
-				document.write('<table class="bordercolor" height="90" width="120" border="0" cellpadding="2" cellspacing="1" align="center"><tr>');
-				document.write('<td height="15" align="center" valign="middle" class="titlebg"><span class="small"><b>$post_smiltxt{'1'}</b></span></td>');
+				document.write('<table class="bordercolor pad_2px cs_1px" style="height:90px; width:120px"><tr>');
+				document.write('<td class="titlebg center h_15px"><span class="small"><b>$post_smiltxt{'1'}</b></span></td>');
 				document.write('</tr><tr>');
-				document.write('<td height="20" align="center" valign="top" class="windowbg2"><select name="smiliextra_list" id="smiliextra_list" onchange="document.images.smiliextra_image.src=smilieurl[document.getElementById(\\'smiliextra_list\\').value]" style="width:114px; font-size:7pt;">');
+				document.write('<td class="windowbg2 center vtop" style="height:20px"><select name="smiliextra_list" id="smiliextra_list" onchange="document.images.smiliextra_image.src=smilieurl[document.getElementById(\\'smiliextra_list\\').value]" style="width:114px; font-size:7pt;">');
 				$smilieslist
 				document.write('</select></td>');
 				document.write('</tr><tr>');
-				document.write('<td height="70" align="center" valign="middle" class="windowbg2"><img name="smiliextra_image" src="'+smilieurl[0]+'" alt="" border="0" onclick="javascript: Smiliextra();" style="cursor: pointer;"></td>');
+				document.write('<td height="70" class="windowbg2 center"><img name="smiliextra_image" src="'+smilieurl[0]+'" alt="" onclick="javascript: Smiliextra();" style="cursor: pointer;"></td>');
 				document.write('</tr><tr>');
-				document.write('<td height="15" align="center" valign="middle" class="windowbg2"><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span></td>');
+				document.write('<td height="15" class="windowbg2 center"><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span></td>');
 				document.write('</tr></table>');
 				document.images.smiliextra_image.src = smilieurl[document.getElementById('smiliextra_list').value];
 				//-->
@@ -1634,7 +1634,7 @@ sub drawPMView {
 			chomp $dimmessages[$counter];
 			my ($messageid, $musername, $musernameto, $musernamecc, $musernamebcc, $msub, $mdate, $immessage, $mpmessageid, $mreplyno, $mips, $messageStatus, $messageFlags, $storeFolder, $messageAttachment) = split(/\|/, $dimmessages[$counter]);
 			## if we are viewing  one of the storage folders, filter out the
-			##  PMs that don't match
+			##  PMs that do not match
 			if ($action eq 'imstorage' && $INFO{'viewfolder'} ne $storeFolder) {
 				$class_PM_list = $class_PM_list eq 'windowbg2' ? 'windowbg' : 'windowbg2';
 				next;
