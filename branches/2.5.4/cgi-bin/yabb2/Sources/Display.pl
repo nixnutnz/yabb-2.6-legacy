@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$displayplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$displayplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Display');
@@ -352,9 +352,9 @@ sub Display {
 		var remnotlink = '$img{'del_notify'}';
 		~;
 		if (${$uid.$username}{'thread_notifications'} =~ /\b$viewnum\b/) {
-			$notify = qq~$menusep<a href="javascript:Notify('$scripturl?action=notify3;num=$viewnum/~ . (!$ttsreverse ? $start : $mreplies - $start) . qq~','$imagesdir')" name="notifylink">$img{'del_notify'}</a>~;
+			$notify = qq~$menusep<a href="javascript:Notify('$scripturl?action=notify3;num=$viewnum/~ . (!$ttsreverse ? $start : $mreplies - $start) . qq~','$imagesdir')" id="notifylink">$img{'del_notify'}</a>~;
 		} else {
-			$notify = qq~$menusep<a href="javascript:Notify('$scripturl?action=notify2;num=$viewnum/~ . (!$ttsreverse ? $start : $mreplies - $start) . qq~','$imagesdir')" name="notifylink">$img{'add_notify'}</a>~;
+			$notify = qq~$menusep<a href="javascript:Notify('$scripturl?action=notify2;num=$viewnum/~ . (!$ttsreverse ? $start : $mreplies - $start) . qq~','$imagesdir')" id="notifylink">$img{'add_notify'}</a>~;
 		}
 	}
 
