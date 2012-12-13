@@ -37,12 +37,12 @@ if(!$iamguest && !$subboard_sel) {
 $boardindex_template .= qq~
 
 <!-- Board Index Button Bar start -->
-<table class="bordercolor" cellpadding="4" cellspacing="1" border="0" width="100%">
+<table class="bordercolor" cellpadding="4" cellspacing="1">
 <tr>
-	<td class="windowbg" align="center">
+	<td class="windowbg center">
 		<div class="small" style="float: left; width: 49%; text-align: left;">
-			<img src="$imagesdir/on.gif" border="0" id="no_edit" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" style="vertical-align: middle;" /> $boardindex_txt{'333'}&nbsp;&nbsp;
-			<img src="$imagesdir/off.gif" border="0" id="no_edit" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" style="vertical-align: middle;" /> $boardindex_txt{'334'}
+			<img src="$imagesdir/on.gif" id="no_edit" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" /> $boardindex_txt{'333'}&nbsp;&nbsp;
+			<img src="$imagesdir/off.gif" id="no_edit" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" /> $boardindex_txt{'334'}
 		</div>
 		<div class="small" style="float: right; width: 49%; text-align: right;">
 			{yabb boardhandellist}
@@ -61,22 +61,24 @@ $boardindex_template .= qq~
 <!-- Info Center block start -->
 
 <br /><br />
-<table class="bordercolor" cellpadding="0" cellspacing="0" border="0" width="100%">
+<table class="bordercolor" cellpadding="0" cellspacing="0">
+<col style="width:1%" />
 <tr>
-	<td class="tabtitle" width="1%" height="25" valign="middle">
+	<td class="tabtitle" style="height:25px">
 		&nbsp;
 	</td>
-	<td class="tabtitle" width="99%" height="25" valign="middle">
+	<td class="tabtitle">
 		$boardindex_txt{'200'}
 	</td>
 </tr>
 </table>
-<table class="bordercolor" cellpadding="4" cellspacing="1" border="0" width="100%">
+<table class="bordercolor" cellpadding="4" cellspacing="1">
+    <col style="width:5%" />
 <tr>
-	<td class="windowbg" width="5%" valign="middle" align="center">
-		<img src="$imagesdir/info.gif" border="0" alt="" />
+	<td class="windowbg center">
+		<img src="$imagesdir/info.gif" alt="" />
 	</td>
-	<td class="windowbg2" valign="top" align="center">
+	<td class="windowbg2 center vtop">
 		<div class="small" style="float: left; width: 59%; text-align: left;">
 			$boardindex_txt{'489'} <b>{yabb totalmessages} $boardindex_txt{'21l'}</b> $boardindex_txt{'490'} <b>{yabb totaltopics} $boardindex_txt{'330l'}</b>.<br />
 			{yabb lastpostlink} {yabb lastpostdate}
@@ -90,10 +92,10 @@ $boardindex_template .= qq~
 	</td>
 </tr>
 <tr>
-	<td class="windowbg" width="5%" valign="middle" align="center">
-		<img src="$imagesdir/online.gif" border="0" alt="" />
+	<td class="windowbg center">
+		<img src="$imagesdir/online.gif" alt="" />
 	</td>
-	<td class="windowbg2" valign="top" align="center">
+	<td class="windowbg2 center vtop">
 		<div class="small" style="float: left; width: 90%; text-align: left;">
 		$boardindex_txt{'800'} <b>{yabb mostusers}</b> $maintxt{'30'} {yabb mostusersdate}.<br />
 		$boardindex_txt{'801'} <b>{yabb mostmembers}</b> $maintxt{'30'} {yabb mostmembersdate}.<br />
@@ -103,20 +105,22 @@ $boardindex_template .= qq~
 	</td>
 </tr>
 </table><br />
-<table class="bordercolor" cellpadding="0" cellspacing="0" border="0" width="100%">
+<table class="bordercolor" cellpadding="0" cellspacing="0">
+    <col style="width:1%" />
 <tr>
-	<td class="tabtitle" width="1%" height="25" valign="middle">
+	<td class="tabtitle" style="height:25px">
 		&nbsp;
 	</td>
-	<td class="tabtitle" width="99%" height="25" valign="middle">
+	<td class="tabtitle">
 		$boardindex_txt{'158'}
 	</td>
 </tr>
 </table>
-<table class="bordercolor" cellpadding="4" cellspacing="1" border="0" width="100%">
+<table class="bordercolor" cellpadding="4" cellspacing="1">
+    <col style="width:5%" />
 <tr>
-	<td class="windowbg" width="5%" valign="middle" align="center">
-		<img src="$imagesdir/online.gif" border="0" alt="" />
+	<td class="windowbg center">
+		<img src="$imagesdir/online.gif" alt="" />
 	</td>
 	<td class="windowbg2">
 		<div class="small" style="float: left; width: 59%; text-align: left;">
@@ -135,7 +139,7 @@ $boardindex_template .= qq~
 </table>
 <br />
 <!-- ## XTC Cal Mod ## -->
-<table class="bordercolor" cellpadding="4" cellspacing="1" border="0" width="100%">
+<table class="bordercolor" cellpadding="4" cellspacing="1">
 		{yabb caldisplay}
 </table>
 <br />
@@ -153,29 +157,32 @@ $new_msg_class = "small";
 
 $catheader = qq~
 
-<table cellpadding="0" cellspacing="0" border="0" width="100%" class="tabtitle">
+<table cellpadding="0" cellspacing="0" class="tabtitle">
+    <col style="width:1%" />
+    <col style="width:67%" />
+    <col style="width:8%" />
 <tr>
-	<td width="1%" height="25">
+	<td style="height:25px">
 		&nbsp;
 	</td>
-	<td width="59%" height="25" valign="middle">
+	<td>
 		{yabb catimage} {yabb catlink}
 	</td>
-      <td class="tabtitle" width="8%" height="25" align="center" valign="middle">
-            $boardindex_txt{'330'}
+      <td class="tabtitle center">
+       &nbsp;
       </td>
-      <td class="tabtitle" width="8%" height="25" align="center" valign="middle">
-            $boardindex_txt{'21'}
-      </td>
-      <td class="tabtitle" width="24%" height="25" align="center" valign="middle">
+      <td class="tabtitle center">
             $boardindex_txt{'22'}
       </td>
 </tr>
 </table>
-<table {yabb colboardtable} cellpadding="4" cellspacing="1" border="0" width="100%" class="bordercolor">
+<table {yabb colboardtable} cellpadding="4" cellspacing="1" class="bordercolor">
 {yabb newmsg start}{yabb newmsg icon}{yabb newmsg}{yabb newmsg end}
 </table>
-<table {yabb boardtable} cellpadding="4" cellspacing="1" border="0" width="100%" class="bordercolor">
+<table {yabb boardtable} cellpadding="4" cellspacing="1" class="bordercolor">
+    <col style="width:6%" />
+    <col style="width:62%" />
+    <col style="width:8%" />
 ~;
 
 # Looks of each board in category          #
@@ -183,10 +190,10 @@ $catheader = qq~
 $topiccut = 25;
 $boardblock = qq~
 <tr>
-	<td class="{yabb altbrdcolor}" width="6%" align="center" valign="middle">
+	<td class="{yabb altbrdcolor} center">
 		<a href="{yabb boardurl}">{yabb boardpic}</a>
 	</td>
-	<td class="{yabb altbrdcolor}" width="54%" align="left" valign="middle">
+	<td class="{yabb altbrdcolor}">
 		<div style="position: relative; height: 100%; width: 100%">
 		{yabb new} <a name="{yabb boardanchor}" href="{yabb boardurl}"><b>{yabb boardname}</b></a><br />
 		{yabb boarddesc}
@@ -197,9 +204,10 @@ $boardblock = qq~
 		</div>
 		</div>
 	</td>
-	<td class="{yabb altbrdcolor}" valign="middle" align="center" width="8%">{yabb threadcount}</td>
-	<td class="{yabb altbrdcolor}" valign="middle" align="center" width="8%">{yabb messagecount}</td>
-	<td class="{yabb altbrdcolor}" valign="middle" align="left" width="24%">
+	<td class="{yabb altbrdcolor} center"><span class="small">
+            <b>$boardindex_txt{'330'}:</b> {yabb threadcount}
+	<br /><b>$boardindex_txt{'21'}:</b> {yabb messagecount}</span></td>
+	<td class="{yabb altbrdcolor}">
 	<span class="small" style="float: left; margin-left: 12px;">
 	{yabb lastpostlink}<br />
 	<b>$boardindex_txt{'524'}:</b> {yabb lasttopiclink}<br />
@@ -212,10 +220,10 @@ $boardblock = qq~
 
 $nopost_boardblock = qq~
 <tr>
-	<td class="{yabb altbrdcolor}" width="6%" align="center" valign="middle">
+	<td class="{yabb altbrdcolor} center">
 		<a href="{yabb boardurl}">{yabb boardpic}</a>
 	</td>
-	<td class="{yabb altbrdcolor}" width="94%" align="left" valign="middle" colspan="4">
+	<td class="{yabb altbrdcolor}" colspan="4">
 		{yabb new} <a name="{yabb boardanchor}" href="{yabb boardurl}"><b>{yabb boardname}</b></a><br />
 		{yabb boarddesc}
 		<div class="small" style="font-style:italic;">{yabb moderators}</div>
