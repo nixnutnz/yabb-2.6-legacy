@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$helpcentreplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$helpcentreplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('HelpCentre');
@@ -92,14 +92,14 @@ sub SectionPrint {
 		$adminhlp = qq~<a href="$scripturl?action=help;section=admin">$helptxt{'6'}</a>~;
 	}
 
-	$HelpNavBar =~ s/<user menu>/$userhlp/g;
-	$HelpNavBar =~ s/<moderator menu>/$modhlp/g;
-	$HelpNavBar =~ s/<global mod menu>/$gmodhlp/g;
-	$HelpNavBar =~ s/<admin menu>/$adminhlp/g;
-	$HelpNavBar =~ s/<user class>/$UserClass/g;
-	$HelpNavBar =~ s/<moderator class>/$moderator_class/g;
-	$HelpNavBar =~ s/<global mod class>/$global_mod_class/g;
-	$HelpNavBar =~ s/<admin class>/$admin_class/g;
+	$HelpNavBar =~ s/{user menu}/$userhlp/g;
+	$HelpNavBar =~ s/{moderator menu}/$modhlp/g;
+	$HelpNavBar =~ s/{global mod menu}/$gmodhlp/g;
+	$HelpNavBar =~ s/{admin menu}/$adminhlp/g;
+	$HelpNavBar =~ s/{user class}/$UserClass/g;
+	$HelpNavBar =~ s/{moderator class}/$moderator_class/g;
+	$HelpNavBar =~ s/{global mod class}/$global_mod_class/g;
+	$HelpNavBar =~ s/{admin class}/$admin_class/g;
 	$yymain .= $HelpNavBar;
 
 }
@@ -147,10 +147,10 @@ sub GetHelpFiles {
 sub MainHelp {
 
 	$TempParse = $BodyHeader;
-	$TempParse =~ s/<yabb section_anchor>/$SectionName/g;
+	$TempParse =~ s/{yabb section_anchor}/$SectionName/g;
 	$SectionNam = $SectionName;
 	$SectionNam =~ s/_/ /g;
-	$TempParse  =~ s/<yabb section_name>/$SectionNam/g;
+	$TempParse  =~ s/{yabb section_name}/$SectionNam/g;
 	$Body .= qq~$TempParse~;
 
 	$i = 1;
@@ -162,8 +162,8 @@ sub MainHelp {
 		$SectionAnchor = ${ SectionSub . $i };
 		$SectionSub    = ${ SectionSub . $i };
 		$SectionSub =~ s/_/ /g;
-		$TempParse  =~ s/<yabb section_anchor>/$SectionAnchor/g;
-		$TempParse  =~ s/<yabb section_sub>/$SectionSub/g;
+		$TempParse  =~ s/{yabb section_anchor}/$SectionAnchor/g;
+		$TempParse  =~ s/{yabb section_sub}/$SectionSub/g;
 		$Body .= qq~$TempParse~;
 
 		$message = ${ SectionBody . $i };
@@ -183,7 +183,7 @@ sub MainHelp {
 		}
 
 		$TempParse = $BodyItem;
-		$TempParse =~ s/<yabb item>/$message/g;
+		$TempParse =~ s/{yabb item}/$message/g;
 		$Body .= qq~$TempParse~;
 		$i++;
 	}
@@ -217,8 +217,8 @@ sub MainHelp {
 }
 
 sub ContentContainer {
-	$MainLayout =~ s/<yabb contents>/$Contents/g;
-	$MainLayout =~ s/<yabb body>/$Body/g;
+	$MainLayout =~ s/{yabb contents}/$Contents/g;
+	$MainLayout =~ s/{yabb body}/$Body/g;
 
 	$yymain .= qq~$MainLayout~;
 }
@@ -226,10 +226,10 @@ sub ContentContainer {
 sub DoContents {
 	$TempParse = $ContentHeader;
 
-	$TempParse =~ s/<yabb section_anchor>/$SectionName/g;
+	$TempParse =~ s/{yabb section_anchor}/$SectionName/g;
 	$SectionNam = $SectionName;
 	$SectionNam =~ s/_/ /g;
-	$TempParse  =~ s/<yabb section_name>/$SectionNam/g;
+	$TempParse  =~ s/{yabb section_name}/$SectionNam/g;
 	$Contents .= qq~$TempParse~;
 
 	$Contents .= qq~<ul style="list-style: none; margin: 0; padding: 2px; border: none;">~;
@@ -242,8 +242,8 @@ sub DoContents {
 		${ SectionSub . $i } =~ s/_/ /g;
 
 		$TempParse = $ContentItem;
-		$TempParse =~ s/<yabb anchor>/$SectionAnchor/g;
-		$TempParse =~ s/<yabb content>/${SectionSub.$i}/g;
+		$TempParse =~ s/{yabb anchor}/$SectionAnchor/g;
+		$TempParse =~ s/{yabb content}/${SectionSub.$i}/g;
 
 		$Contents .= qq~$TempParse~;
 		${ SectionSub . $i } = "";
