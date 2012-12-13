@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$adminsublistplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$adminsublistplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 
 %director=( # in alphabetical Order!
 'addboard',"ManageBoards.pl&AddBoards",
@@ -26,6 +26,8 @@ $adminsublistplver = 'YaBB 2.5.4 $Revision: 1.0 $';
 'apr_regentry',"RegistrationLog.pl&approve_registration",
 'assigned',"MemberGroups.pl&Assigned_Members",
 'assigned2',"MemberGroups.pl&Assigned_Members2",
+'ban_clean',"Ban.pm&ban_clean",
+'banlog',"Ban.pm&banlog",
 'backupsettings',"Backup.pl&backupsettings",
 'backupsettings2',"Backup.pl&backupsettings2",
 'boardrecount',"Maintenance.pl&AdminBoardRecount",
@@ -56,9 +58,9 @@ $adminsublistplver = 'YaBB 2.5.4 $Revision: 1.0 $';
 'editgroup1',"MemberGroups.pl&editAddGroup",
 'editpaths',"AdminEdit.pl&EditPaths",
 'editpaths2',"AdminEdit.pl&EditPaths2",
-'eventcal_set',"EventCalSet.pl&EventCalSet", #EventCal Mod
-'eventcal_set2',"EventCalSet.pl&EventCalSet2", #EventCal Mod
-'eventcal_set3',"EventCalSet.pl&EventCalSet3", #EventCal Mod
+'eventcal_set',"EventCalSet.pl&EventCalSet",
+'eventcal_set2',"EventCalSet.pl&EventCalSet2",
+'eventcal_set3',"EventCalSet.pl&EventCalSet3",
 'emailbackup',"Backup.pl&emailbackup",
 'errorlog',"ErrorLog.pl&ErrorLog",
 'ext_admin',"ExtendedProfiles.pl&ext_admin", # all beginning with ext_
@@ -74,9 +76,12 @@ $adminsublistplver = 'YaBB 2.5.4 $Revision: 1.0 $';
 'helpediting2',"EditHelpCentre.pl&HelpEdit2",
 'helporder',"EditHelpCentre.pl&SetOrderFile",
 'helpsettings2',"EditHelpCentre.pl&HelpSet2",
-'ipban',"Admin.pl&ipban",
-'ipban2',"Admin.pl&ipban2",
-'ipban3',"Admin.pl&ipban_update",
+'ipban',"Ban.pm&ipban",
+'ipban_add',"Ban.pm&ipban_add",
+'ipban_err',"Ban.pm&ipban_err",
+'ipban_reg',"Ban.pm&ipban_reg",
+'ipban2',"Ban.pm&ipban2",
+'ipban3',"Ban.pm&ipban_update",
 'mailing',"MailMembers.pl&Mailing",
 'mailing2',"MailMembers.pl&Mailing2",
 'mailing3',"MailMembers.pl&Mailing3",
