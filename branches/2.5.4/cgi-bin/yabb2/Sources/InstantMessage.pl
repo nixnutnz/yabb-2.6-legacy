@@ -16,9 +16,9 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.2;
+our $VERSION = 1.4;
 
-$instantmessageplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$instantmessageplver = 'YaBB 2.5.4 $Revision: 1.4 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 require "$sourcedir/Postbox.pl";
 
@@ -191,7 +191,7 @@ sub buildIMsend {
 			<table class="pad_2px" style="width:95%; margin-left:0">
 			 <tr>
 			  <td>
-			   <img name="prevwin" id="prevwin" src="$defaultimagesdir/cat_expand.gif" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" border="0" style="cursor:pointer; cursor:hand;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
+			   <img name="prevwin" id="prevwin" src="$defaultimagesdir/cat_expand.gif" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor:pointer; cursor:hand;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
 			  </td>
 			 </tr>
 			</table>
@@ -224,7 +224,7 @@ sub buildIMsend {
     }
 
     $imsend .= qq~<tr>
-		<td class="windowbg" width="50%">
+		<td class="windowbg" style="width:50%">
 			<table class="pad_2px" style="width:95%; margin-left:0">~;
 
     if ( !$replyguest && !$sendBMess && ( $PMenable_cc || $PMenable_bcc ) ) {
@@ -1497,11 +1497,11 @@ sub pageLinksList {
     $lastpn  = int( $#tempim / $maxmessagedisplay ) + 1;
     $lastptn = ( $lastpn - 1 ) * $maxmessagedisplay;
     $pageindex1 =
-qq~<span class="small" style="float: left; height: 21px; margin: 0px; margin-top: 2px;"><img src="$imagesdir/index_togl.gif" alt="$display_txt{'19'}" title="$display_txt{'19'}" /> $display_txt{'139'}: $pagenumb</span>~;
+qq~<span class="small pgindex"><img src="$imagesdir/index_togl.gif" alt="$display_txt{'19'}" title="$display_txt{'19'}" /> $display_txt{'139'}: $pagenumb</span>~;
     if ( $pagenumb > 1 || $all ) {
         if ( $userthreadpage == 1 ) {
             $pagetxtindexst =
-qq~<span class="small" style="float: left; height: 21px; margin: 0px; margin-top: 2px;">~;
+qq~<span class="small pgindex">~;
             $pagetxtindexst .=
 qq~<a href="$scripturl?pmaction=$action$bmesslink;start=$start;action=pmpagetext$viewfolderinfo"><img src="$imagesdir/index_togl.gif" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a> $display_txt{'139'}: ~;
             if ( $startpage > 0 ) {
@@ -1536,7 +1536,7 @@ qq~<a href="$scripturl?action=$action$bmesslink;start=$lastptn$viewfolderinfo" s
             $pagedropindex1 =
 qq~<span style="float: left; width: 350px; margin: 0px; margin-top: 2px; border: 0px;">~;
             $pagedropindex1 .=
-qq~<span style="float: left; height: 21px; margin: 0; margin-right: 4px;"><a href="$scripturl?pmaction=$action$bmesslink;start=$start;action=pmpagedrop$viewfolderinfo"><img src="$imagesdir/index_togl.gif" border="0" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a></span>~;
+qq~<span style="float: left; height: 21px; margin: 0; margin-right: 4px;"><a href="$scripturl?pmaction=$action$bmesslink;start=$start;action=pmpagedrop$viewfolderinfo"><img src="$imagesdir/index_togl.gif" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a></span>~;
             $pagedropindex2 = $pagedropindex1;
             $tstart         = $start;
             if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' ) {
@@ -1950,7 +1950,7 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
     elsif ( $INFO{'caller'} == 5 && $mstatus =~ /b/sm ) {
         if ($mtousers) {
             foreach my $uname ( split /,/xsm, $mtousers ) {
-                $usernamelinkto .= lists_to($uname);
+                $usernamelinkto .= links_to($uname);
             }
             $usernamelinkto =~ s/, $//sm;
             $toTitle = qq~$inmes_txt{'324'} $inmes_txt{'327'}:~;
@@ -2067,7 +2067,7 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
 <tr>
 	<td class="windowbg right" colspan="2">
 	<div style="float: left; width: 99%; padding-top: 5px; margin-top: 2px; text-align: right;">
-		<span class="small"><img src="$imagesdir/ip.gif" border="0" alt="" /> $imip</span>
+		<span class="small"><img src="$imagesdir/ip.gif" alt="" /> $imip</span>
 	</div>
 	</td>
 </tr>
