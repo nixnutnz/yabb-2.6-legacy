@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$profilelngver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$profilelngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 
 %profile_txt = (
 '2' => 'Admin',
@@ -210,6 +210,14 @@ $profilelngver = 'YaBB 2.5.4 $Revision: 1.0 $';
 'usernumbformat' => 'Select your Number Format',
 'capslock' => 'Caps lock is activated.',
 'wrong_char' => 'This character in the Password is invalid',
+'day' => 'Day',
+'week' => 'Week',
+'month' => 'Month',
+'perm' => 'Permanent',
+'d' => 'Day',
+'w' => 'Week',
+'m' => 'Month',
+'p' => 'Permanent',
 );
 
 %mycenter_profile_txt = (
