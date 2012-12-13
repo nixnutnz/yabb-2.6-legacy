@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$sendtopiclngver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$sendtopiclngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 
 %sendtopic_txt = (
 '118' => 'Topic',
@@ -30,6 +30,9 @@ $sendtopiclngver = 'YaBB 2.5.4 $Revision: 1.0 $';
 'error_recipient_name' => 'You must insert the recipient\'s name.',
 'error_recipient_email' => 'You must insert the recipient\'s e-mail.',
 'error_verification' => 'The verification code is missing.', 
+'verification_question_desc' => 'Please answer the above verification question.',
+'verification_question_case' => 'Answers are case-sensitive.',
+'error_verification_question' => 'You must answer the verification question.',
 );
 
 %floodtxt=(
