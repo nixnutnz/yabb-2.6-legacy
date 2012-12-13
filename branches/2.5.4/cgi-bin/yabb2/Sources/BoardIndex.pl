@@ -538,12 +538,14 @@ qq~<img src="$imagesdir/cat_collapse.gif" id="img$catid" alt="$boardindex_exptxt
                         $hash{$catname} =
 qq~ <img src="$imagesdir/cat_expand.gif" id="img$catid" alt="$boardindex_exptxt{'1'}" title="$boardindex_exptxt{'1'}" border="0" /></a>~;
                     }
+
                 }
                 else {
                     $template_boardtable = qq~id="$catid"~;
                     $template_colboardtable =
                       qq~id="col$catid" style="display:none;"~;
                 }
+
             }
             else {
                 $collapse_link       = '';
@@ -1442,6 +1444,7 @@ qq~</select> </form> $boardindex_txt{'792'} $boardindex_txt{'793'}~;
 		$cal_display = &get_cal;
 	}
 	$boardindex_template =~ s/({|<)yabb caldisplay(}|>)/$cal_display/g;
+
 	# EventCal END
 
         chop($template_catnames);
