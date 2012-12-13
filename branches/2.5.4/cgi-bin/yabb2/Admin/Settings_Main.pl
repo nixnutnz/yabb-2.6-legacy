@@ -11,54 +11,79 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+# use strict;
+use CGI::Carp qw(fatalsToBrowser);
+our $VERSION = 1.2;
 
-$settings_mainplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+my $settings_mainplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ($action eq 'detailedversion') { return 1; }
 
 # Language requirements
-&LoadLanguage('Register');
+LoadLanguage('Register');
 
 # Date/Time selector
-my ($forumstart_month, $forumstart_day, $forumstart_year, $forumstart_hour, $forumstart_minute, $forumstart_secund) = $forumstart =~ m~(\d{2})\/(\d{2})\/(\d{2,4}).*?(\d{2})\:(\d{2})\:(\d{2})~s;
+my (
+    $forumstart_month, $forumstart_day,    $forumstart_year,
+    $forumstart_hour,  $forumstart_minute, $forumstart_secund
+  )
+  = $forumstart =~
+  m/(\d{2})\/(\d{2})\/(\d{2,4}).*?(\d{2})\:(\d{2})\:(\d{2})/xsm;
 
 if ($forumstart_month > 12) { $forumstart_month = 12; }
 if ($forumstart_month < 1) { $forumstart_month = 1; }
 if ($forumstart_day > 31) { $forumstart_day = 31; }
 if ($forumstart_day < 1) { $forumstart_day = 1; }
-if (length($forumstart_year) > 2) { $forumstart_year = substr($forumstart_year , length($forumstart_year) - 2, 2); }
+if ( length($forumstart_year) > 2 ) {
+    $forumstart_year = substr $forumstart_year, length($forumstart_year) - 2, 2;
+}
 if ($forumstart_year < 90 && $forumstart_year > 20) { $forumstart_year = 90; }
 if ($forumstart_year > 20 && $forumstart_year < 90) { $forumstart_year = 20; }
 if ($forumstart_hour > 23) { $forumstart_hour = 23; }
 if ($forumstart_minute > 59) { $forumstart_minute = 59; }
 if ($forumstart_secund > 59) { $forumstart_secund = 59; }
 
-my $sel_day = qq~
-<select name="forumstart_day"~ . (($timeselected == 1 || $timeselected == 4 || $timeselected == 5) ? '' : ' id="fd_fm"') . qq~>\n~;
-for ($i = 1; $i <= 31; $i++) {
-	$day_val = sprintf("%02d", $i);
-	$sel_day .= qq~<option value="$day_val" ${isselected($forumstart_day == $i)}>$i</option>\n~;
+my $sel_day = q~
+<select name="forumstart_day"~
+  . (
+    ( $timeselected == 1 || $timeselected == 4 || $timeselected == 5 )
+    ? q{}
+    : ' id="fd_fm"'
+  ) . qq~>\n~;
+foreach my $i ( 1 .. 31 ) {
+    $day_val = sprintf '%02d', $i;
+    $sel_day .=
+qq~<option value="$day_val" ${isselected($forumstart_day == $i)}>$i</option>\n~;
 }
 $sel_day .= qq~</select>\n~;
 
-my $sel_month = qq~
-<select name="forumstart_month"~ . (($timeselected == 1 || $timeselected == 4 || $timeselected == 5) ? ' id="fd_fm"' : '') . qq~>\n~;
-for ($i = 0; $i < 12; $i++) {
+my $sel_month = q~
+<select name="forumstart_month"~
+  . (
+    ( $timeselected == 1 || $timeselected == 4 || $timeselected == 5 )
+    ? ' id="fd_fm"'
+    : q{}
+  ) . qq~>\n~;
+foreach my $i ( 0 .. 11 ) {
 	$z = $i+1;
-	$month_val = sprintf("%02d", $z);
-	$sel_month .= qq~<option value="$month_val" ${isselected($forumstart_month == $z)}>$months[$i]</option>\n~;
+    $month_val = sprintf '%02d', $z;
+    $sel_month .=
+qq~<option value="$month_val" ${isselected($forumstart_month == $z)}>$months[$i]</option>\n~;
 }
 $sel_month .= qq~</select>\n~;
 
-my $sel_year = qq~
-<select name="forumstart_year">\n~;
-for ($i = 90; $i <= 120; $i++) {
-	if($i < 100) { $z = $i; $year_pre = qq~19~; } else { $z = $i-100; $year_pre = qq~20~; }
-	$year_val = sprintf("%02d", $z);
-	$sel_year .= qq~<option value="$year_val" ${isselected($forumstart_year == $z)}>$year_pre$year_val</option>\n~;
+my $sel_year = qq~<select name="forumstart_year">\n~;
+foreach my $i ( 90 .. 120 ) {
+    if   ( $i < 100 ) { $z = $i;       $year_pre = q~19~; }
+    else              { $z = $i - 100; $year_pre = q~20~; }
+    $year_val = sprintf '%02d', $z;
+    $sel_year .=
+qq~<option value="$year_val" ${isselected($forumstart_year == $z)}>$year_pre$year_val</option>\n~;
 }
 $sel_year .= qq~</select>\n~;
 
-if ($timeselected == 1 || $timeselected == 4 || $timeselected == 5) { $all_date = qq~$sel_month $sel_day $sel_year~; }
+if ( $timeselected == 1 || $timeselected == 4 || $timeselected == 5 ) {
+    $all_date = qq~$sel_month $sel_day $sel_year~;
+}
 else { $all_date = qq~$sel_day $sel_month $sel_year~; }
 
 my $sel_hour = qq~
@@ -341,6 +366,13 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 			name => 'showimageinquote',
 			validate => 'boolean',
 		},
+		{  
+			description => qq~<label for="addtab_on">$admin_txt{'addtab_on'}</label>~,
+			input_html => qq~<input type="checkbox" name="addtab_on" id="addtab_on" value="1"${ischecked($addtab_on)} />~,
+			name => 'addtab_on',
+			validate => 'boolean',
+		},
+
 	],
 },
 {
