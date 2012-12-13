@@ -8,7 +8,7 @@
 /*--------------------------------------------------------*/
 /*   This is the css file for YaBB 2.5.4 default Template */
 /*--------------------------------------------------------*/
-/* $Revision: 1.1 $ */
+/* $Revision: 1.3 $ */
 
 body {
 background-color:#F2F6F9;
@@ -43,17 +43,72 @@ margin:0;
 padding:0;
 }
 
+img {
+border:0 none;
+vertical-align:middle;
+}
+
 input,.button {
 background-color:#F1F2F4;
 border:1px solid #B1BDC9;
 color:#000;
 font-size:12px;
+font-family:Verdana, Helvetica, Arial, Sans-Serif;
 font-weight:400;
 }
 
-img {
-border:0 none;
+select {
+background-color:#E8EBEF;
+border:1px solid #B1BDC9;
+color:#000;
+font-size:10px;
+}
+
+select optgroup {
+color:#000;
+font-size:10px;
+}
+
+table {
+border-collapse:collapse;
+margin-left:auto;
+margin-right:auto;
+width:100%;
+}
+
+td {
+text-align:left;
 vertical-align:middle;
+}
+
+table.cs_1px{
+border-collapse:separate;
+border-spacing: 1px;
+}
+
+textarea {
+background-color:#E8EBEF;
+border:1px solid #B1BDC9;
+color:#000;
+font-size:12px;
+}
+
+#maincontainer {
+border-top:0;
+margin-bottom:10px;
+margin-left:auto;
+margin-right:auto;
+padding:0;
+width:1100px;
+}
+
+#container {
+background-color:#9CB9F3;
+border:0;
+color:#003;
+margin:0;
+padding:0 1px;
+width:100%;
 }
 
 .center {
@@ -80,27 +135,17 @@ vertical-align:bottom;
 font-size:10px;
 }
 
-table {
-border-collapse:collapse;
-margin-left:auto;
-margin-right:auto;
-width:100%;
-}
-
-td {
-text-align:left;
-vertical-align:middle;
-}
-
-table.cs_1px{
-border-collapse:separate;
-border-spacing: 1px;
+.green {
+display:none;
 }
 
 .tabtitle {
 background-color:#5488c1;
 background-image:url(./default/catbg.png);
+background-position: top;
+background-repeat: repeat-x;
 color:#FFF;
+font-family:Verdana, Helvetica, Arial, Sans-Serif;
 font-size:11px;
 font-style:normal;
 font-weight:700;
@@ -109,27 +154,15 @@ font-weight:700;
 .tabtitle a {
 color:#FFF;
 font-size:11px;
+font-family:Verdana, Helvetica, Arial, Sans-Serif;
 font-style:normal;
 font-weight:700;
 text-decoration:none;
 }
 
-#maincontainer {
-border-top:0;
-margin-bottom:10px;
-margin-left:auto;
-margin-right:auto;
-padding:0;
-width:1100px;
-}
-
-#container {
-background-color:#9CB9F3;
-border:0;
-color:#003;
-margin:0;
-padding:0 1px;
-width:100%;
+.tabtitle a:hover,a.nav:hover {
+color:#900;
+text-decoration:underline;
 }
 
 .menutop {
@@ -166,6 +199,7 @@ text-align:left;
 .tabmenu {
 background-color:#9CB9F3;
 background-image:url(./default/tab211.png);
+font-size:11px;
 height:24px;
 text-align:left;
 }
@@ -177,9 +211,10 @@ background-repeat:repeat-x;
 border:0;
 cursor:pointer;
 float:left;
+font-size:11px;
 height:24px;
-margin:0;
-padding:0;
+margin:-1px 0;
+padding:1px 0;
 text-align:center;
 vertical-align:middle;
 }
@@ -197,6 +232,11 @@ background-color:#9CB9F3;
 background-image:url(./default/tab_selected211.png);
 background-repeat:repeat-x;
 font-weight:400;
+font-size:11px;
+}
+
+.tabmenu span a:hover,.QuickLinks a:hover {
+text-decoration:none;
 }
 
 .rightbox {
@@ -235,18 +275,6 @@ width:92%;
 
 .containerbg {
 background-color:#9CB9F3;
-}
-
-select {
-background-color:#E8EBEF;
-border:1px solid #B1BDC9;
-color:#000;
-font-size:10px;
-}
-
-select optgroup {
-color:#000;
-font-size:10px;
 }
 
 .copyright {
@@ -357,12 +385,22 @@ border-top:0 solid #6078B0;
 color:#6078B0;
 height:1px;
 }
-
+.hr_s {
+background-color:#6078B0;
+border:0 solid #6078B0;
+border-top:0 solid #6078B0;
+color:#6078B0;
+height:1px;
+width:40%
+text-align:left;
+}
 .bordercolor {
 background-color:#B1BDC9;
 font-size:12px;
 }
 
+.border {
+border:thin solid #B1BDC9; }
 .top {
 color:#475F79;
 font-size:11px;
@@ -389,7 +427,18 @@ font-weight:700;
 text-decoration:none;
 }
 
-.message {
+.titlebg a,.catbg a {
+color:#FFF;
+font-style:normal;
+font-weight:700;
+text-decoration:none;
+}
+
+.titlebg a:hover,.catbg a:hover {
+text-decoration:underline;
+}
+
+.message, #message{
 color:#62686F;
 font-family:Verdana, Helvetica, Arial, Sans-Serif;
 font-size:8pt;
@@ -398,7 +447,7 @@ font-weight:400;
 text-decoration:none;
 }
 
-.message a {
+.message a,  {
 background-color:transparent;
 color:#900000;
 font-style:normal;
@@ -492,7 +541,7 @@ width:90%;
 background-color:#CCC;
 border:1px #34689A solid;
 color:#000;
-font-family:Courier, Courier New, Sans-Serif;
+font-family:Courier, Courier New, Serif;
 font-size:14px;
 font-style:normal;
 font-weight:400;
@@ -579,16 +628,37 @@ width:100%;
 margin:0;
 }
 
-.green {
-display:none;
-}
-
+/* postbox, post, PM, calendar */
 #dragcanvas {
 border:0;
 left:0;
 position:relative;
 top:0;
 z-index:1;
+}
+#usersto {
+width: 98%; display: inline; float: left;
+}
+#userscc, #usersbcc {
+width: 98%; display: none; float: left;
+}
+
+textarea#message {
+position: absolute; top: 0px; left: 0px; z-index: 2; padding: 5px; margin: 0px; visibility: visible;
+}
+
+div#dragbgw {
+position: absolute; top: 0px; left: 437px; width: 3px; border: 0; z-index: 3;
+}
+div#dragbgh {
+position: absolute; top: 142px; left: 0px; height: 3px; border: 0; z-index: 3;
+}
+
+img#dragImg1 {
+position: absolute; top: 0px; z-index: 4; width: 3px; cursor: e-resize;
+}
+img#dragImg2 {
+position: absolute; left: 0px; z-index: 4; height: 3px; cursor: n-resize;
 }
 
 .deftpal {
@@ -622,7 +692,6 @@ width:139px;
 }
 
 div.palettebox {
-background-color:silver;
 float:left;
 height:20px;
 margin-top:1px;
@@ -759,43 +828,20 @@ div#spell_container {
 float:left;
 }
 
-.tabtitle a:hover,a.nav:hover {
-color:#900;
-text-decoration:underline;
-}
-
-.tabmenu span a:hover,.QuickLinks a:hover {
-text-decoration:none;
-}
-
-input,textarea {
-background-color:#E8EBEF;
-border:1px solid #B1BDC9;
-color:#000;
-font-size:12px;
-}
-
-.titlebg a,.catbg a {
-color:#FFF;
-font-style:normal;
-font-weight:700;
-text-decoration:none;
-}
-
-.titlebg a:hover,.catbg a:hover {
-text-decoration:underline;
-}
-
 /* height, width, padding */
 
-table.pad_2px td, .pad_2px {
+table.pad_2px td, .padd_2px {
 padding: 2px;
 }
-table.pad_3px td, pad_3px {
+table.pad_3px td, padd_3px {
 padding: 3px;
 }
-table.pad_4px td, pad_4px {
+table.pad_4px td, padd_4px {
 padding: 4px;
+}
+
+table.pad_8px td, padd_8px {
+padding: 8px;
 }
 
 .h_18px {
@@ -805,11 +851,77 @@ height:18px;
 .h_15px {
 height:15px;
 }
-
 .h_20px {
 height:20px;
 }
-
+.h_22px {
+height:22px;
+}
+.h_23px {
+height:23px;
+}
+.h_25px {
+height:25px;
+}
+.h_30px {
+height:30px;
+}
+.h_40px {
+height:40px;
+}
+.h_50px {
+height:50px;
+}
+.h_60px
+height:60px;
+}
 .h_70px {
 height:70px;
+}
+.h_80px {
+height:80px;
+}
+
+#ImageAlert {
+visibility:hidden; position:fixed; background-color:#AAAAAA; width:200px; top:30%; left:41%;
+}
+
+.yabb_rss {
+float: left; width: 40px; height: 18px; text-align: center; padding-top: 6px; display: inline;
+}
+
+.yabb_searchbox {
+float: left; width: 160px; height: 21px; text-align: center; padding-top: 3px; display: inline;
+}
+
+.yabb_main {
+width: 96%; margin-left: auto; margin-right: auto; text-align: left;
+}
+
+.yabb_forumjump {
+width: 96%; margin-left: auto; margin-right: auto; text-align: right; padding-top: 10px;
+}
+
+.clear {
+clear:both;
+}
+
+.ongif {
+margin-left: 4px; margin-right: 6px; vertical-align: middle;
+}
+
+.grpcolors {
+font-size:10px;
+float: left; width: 49%;
+}
+.mctitle {
+float: left; width: 100%; height: 21px; text-align: center; padding-top: 3px;
+}
+
+.pgindex {
+float: left; height: 21px; margin: 0px; margin-top: 2px;
+}
+
+.bold {
+font-wight:bold;
 }
