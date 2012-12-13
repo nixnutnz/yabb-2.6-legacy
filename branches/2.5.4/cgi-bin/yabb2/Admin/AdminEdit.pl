@@ -11,88 +11,91 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use CGI::Carp qw(fatalsToBrowser);
+our $VERSION = 1.1;
 
-$admineditplver = 'YaBB 2.5.4 $Revision: 1.0 $';
-if ($action eq 'detailedversion') { return 1; }
+$admineditplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+if ( $action eq 'detailedversion' ) { return 1; }
 
-&LoadLanguage('Register');
+LoadLanguage('Register');
 
 sub GmodSettings {
-      &is_admin;
+    is_admin();
 
-      &LoadLanguage('GModPrivileges');
+    LoadLanguage('GModPrivileges');
 
-      if (!-e ("$vardir/gmodsettings.txt")) { &GmodSettings2; }
+    if ( !-e ("$vardir/gmodsettings.txt") ) { GmodSettings2(); }
 
-      require "$vardir/gmodsettings.txt";
+    require "$vardir/gmodsettings.txt";
 
-      if ($gmod_newfile eq '') { &GmodSettings2; }
+    if ( $gmod_newfile eq q{} ) { GmodSettings2(); }
 
-      fopen(MODACCESS, "$vardir/gmodsettings.txt");
-      @scriptlines = <MODACCESS>;
-      fclose(MODACCESS);
+    fopen( MODACCESS, "$vardir/gmodsettings.txt" );
+    @scriptlines = <MODACCESS>;
+    fclose(MODACCESS);
 
-      $startread = 0;
-      $counter   = 0;
-      foreach $scriptline (@scriptlines) {
-            chomp $scriptline;
-            if (substr($scriptline, 0, 1) eq "'") {
-                  $scriptline =~ s/newsettings\;page\=//;
-                  $scriptline =~ /\"(.*?)\"/;
-                  $allow = $1;
-                  $scriptline =~ /\'(.*?)\'/;
-                  $actionfound = $1;
-                  push(@actfound, $actionfound);
-                  push(@allowed,  $allow);
-                  $counter++;
+    $startread = 0;
+    $counter   = 0;
+    foreach my $scriptline (@scriptlines) {
+        chomp $scriptline;
+        if ( substr( $scriptline, 0, 1 ) eq q{'} ) {    #';
+            $scriptline =~ s/newsettings\;page\=//xsm;
+            if ( $scriptline =~ /\"(.*?)\"/sm ) {
+                $allow = $1;
             }
-      }
-      $column  = int($counter / 2);
-      $counter = 0;
-      $a       = 0;
-      foreach $actfound (@actfound) {
-            $checked = '';
-            if ($allowed[$a] eq 'on') { $checked = ' checked="checked"'; }
-            $dismenu .= qq~\n<input type="checkbox" name="$actfound" id="$actfound"$checked />&nbsp;<label for="$actfound"><img src="$imagesdir/question.gif" align="middle" alt="$reftxt{'1a'} $gmodprivexpl_txt{$actfound}" title="$reftxt{'1a'} $gmodprivexpl_txt{$actfound}" border="0" /> $actfound</label><br />~;
+            if ( $scriptline =~ /\'(.*?)\'/sm ) {
+                $actionfound = $1;
+            }
+            push @actfound, $actionfound;
+            push @allowed,  $allow;
             $counter++;
-            $a++;
-            if ($counter > $column + 1) {
-                  $dismenu .= qq~</td><td align="left" class="windowbg2" valign="top" width="50%">~;
-                  $counter = 0;
-            }
-      }
+        }
+    }
+    $column  = int( $counter / 2 );
+    $counter = 0;
+    $aa      = 0;
+    foreach my $actfound (@actfound) {
+        $checked = q{};
+        if ( $allowed[$aa] eq 'on' ) { $checked = ' checked="checked"'; }
+        $dismenu .=
+qq~\n<input type="checkbox" name="$actfound" id="$actfound"$checked />&nbsp;<label for="$actfound"><img src="$imagesdir/question.gif" alt="$reftxt{'1a'} $gmodprivexpl_txt{$actfound}" title="$reftxt{'1a'} $gmodprivexpl_txt{$actfound}" /> $actfound</label><br />~;
+        $counter++;
+        $aa++;
+        if ( $counter > $column + 1 ) {
+            $dismenu .= q~</td><td class="windowbg2 vtop">~;
+            $counter = 0;
+        }
+    }
 
-      if ($allow_gmod_admin) { $gmod_selected_a = ' checked="checked"'; }
-      if ($allow_gmod_profile) {
-            $gmod_selected_p = ' checked="checked"';
-            if ($allow_gmod_aprofile) { $gmod_selected_ap = ' checked="checked"'; }
-      } else {
-            $gmod_selected_ap = ' disabled="disabled"';
-      }
+    if ($allow_gmod_admin) { $gmod_selected_a = ' checked="checked"'; }
+    if ($allow_gmod_profile) {
+        $gmod_selected_p = ' checked="checked"';
+        if ($allow_gmod_aprofile) { $gmod_selected_ap = ' checked="checked"'; }
+    }
+    else {
+        $gmod_selected_ap = ' disabled="disabled"';
+    }
 
-      $yymain .= qq~
+    $yymain .= qq~
 <form action="$adminurl?action=gmodsettings2" method="post" enctype="application/x-www-form-urlencoded">
- <div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td align="left" class="titlebg" colspan="2"><img src="$imagesdir/preferences.gif" alt="" border="0" /><b>$gmod_settings{'1'}</b></td>
-     </tr>
-     <tr valign="middle">
-       <td align="left" class="windowbg2" colspan="2"><br />
+ <div class="bordercolor rightboxdiv">
+   <table class=" cs_1px pad_4px">
+     <col class="w_50px" />
+     <tr>
+       <td class="titlebg" colspan="2"><img src="$imagesdir/preferences.gif" alt="" /><b>$gmod_settings{'1'}</b></td>
+     </tr><tr>
+       <td class="windowbg2" colspan="2"><br />
 <input type="checkbox" id="allow_gmod_admin" name="allow_gmod_admin"$gmod_selected_a /> <label for="allow_gmod_admin">$gmod_settings{'2'}</label><br />
 <input type="checkbox" id="allow_gmod_profile" name="allow_gmod_profile"$gmod_selected_p onclick="depend(this.checked);" /> <label for="allow_gmod_profile">$gmod_settings{'3'}</label><br />
 <input type="checkbox" id="allow_gmod_aprofile" name="allow_gmod_aprofile"$gmod_selected_ap /> <label for="allow_gmod_aprofile">$gmod_settings{'3a'}</label><br />
 <br />
        </td>
-     </tr>
-     <tr valign="middle">
-       <td align="left" class="catbg" colspan="2"><span class="small">$gmod_settings{'4'}</span></td>
-     </tr>
-     <tr valign="middle">
-       <td align="left" class="windowbg2" valign="top" width="50%">$dismenu</td>
-     </tr>
-     <tr valign="middle">
-       <td align="center" class="catbg" colspan="2"><input type="submit" value="$reftxt{'4'}" class="button" /></td>
+     </tr><tr>
+       <td class="catbg" colspan="2"><span class="small">$gmod_settings{'4'}</span></td>
+     </tr><tr>
+       <td class="windowbg2 vtop">$dismenu</td>
+     </tr><tr>
+       <td class="catbg center" colspan="2"><input type="submit" value="$reftxt{'4'}" class="button" /></td>
      </tr>
    </table>
  </div>
@@ -112,95 +115,103 @@ function depend(value) {
 </script>
 
 ~;
-      $yytitle     = "$gmod_settings{'1'}";
-      $action_area = "gmodaccess";
-      &AdminTemplate;
+    $yytitle     = "$gmod_settings{'1'}";
+    $action_area = 'gmodaccess';
+    AdminTemplate();
+    return;
 }
 
 sub EditBots {
-      &is_admin_or_gmod;
-      my ($line);
-      $yymain .= qq~
+    is_admin_or_gmod();
+    my ($line);
+    $yymain .= qq~
 <form action="$adminurl?action=editbots2" method="post" enctype="application/x-www-form-urlencoded">
- <div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td align="left" class="titlebg"><img src="$imagesdir/xx.gif" alt="" border="0" /><b>$admin_txt{'18'}</b></td>
-     </tr>
-     <tr valign="middle">
-       <td align="left" class="windowbg2"><br />
-      <span class="small">
-      $admin_txt{'19'}
-      </span><br /><br />
-       </td>
-     </tr>
-     <tr valign="middle">
-       <td align="center" class="windowbg2"><br />
-      <textarea cols="70" rows="35" name="bots" style="width:98%">~;
-      fopen(BOTS, "$vardir/bots.hosts");
-      while ($line = <BOTS>) { chomp $line; $yymain .= qq~$line\n~; }
-      fclose(BOTS);
-      $yymain .= qq~</textarea>
+    <div class="bordercolor rightboxdiv">
+        <table class="cs_1px pad_4px">
+            <tr>
+                <td class="titlebg"><img src="$imagesdir/xx.gif" alt="" /><b>$admin_txt{'18'}</b></td>
+            </tr><tr>
+                <td class="windowbg2"><br />
+                    <span class="small">
+                    $admin_txt{'19'}
+                    </span><br /><br />
+                </td>
+            </tr><tr>
+                <td class="windowbg2 center"><br />
+                    <textarea cols="70" rows="35" name="bots" style="width:98%">~;
+    fopen( BOTS, "$vardir/bots.hosts" );
+    while ( $line = <BOTS> ) { chomp $line; $yymain .= qq~$line\n~; }
+    fclose(BOTS);
+    $yymain .= qq~</textarea>
       <br /><br />
-       </td>
-     </tr>
-     <tr valign="middle">
-       <td align="center" class="catbg"><input type="submit" value="$admin_txt{'10'}" class="button" /></td>
-     </tr>
-   </table>
- </div>
+                </td>
+            </tr><tr>
+                <td class="catbg center"><input type="submit" value="$admin_txt{'10'}" class="button" /></td>
+            </tr>
+        </table>
+    </div>
 </form>
 ~;
-      $yytitle     = "$admin_txt{'18'}";
-      $action_area = "editbots";
-      &AdminTemplate;
+    $yytitle     = "$admin_txt{'18'}";
+    $action_area = 'editbots';
+    AdminTemplate();
+    return;
 }
 
 sub EditBots2 {
-      &is_admin_or_gmod;
+    is_admin_or_gmod();
 
-      fopen(BOTS, ">$vardir/bots.hosts", 1);
-      print BOTS map { "$_\n"; } sort { (split(/\|/, $a))[1] cmp (split(/\|/, $b))[1] } split(/[\n\r]+/, $FORM{'bots'});
-      fclose(BOTS);
+    fopen( BOTS, ">$vardir/bots.hosts", 1 );
+    print {BOTS} map { "$_\n"; }
+      sort { ( split /\|/xsm, $a )[1] cmp( split /\|/xsm, $b )[1] }
+      split /[\n\r]+/xsm, $FORM{'bots'}
+      or croak 'cannot print BOTS';
+    fclose(BOTS);
 
-      $yySetLocation = qq~$adminurl?action=editbots~;
-      &redirectexit;
+    $yySetLocation = qq~$adminurl?action=editbots~;
+    redirectexit();
+    return;
 }
 
 sub SetCensor {
-      &is_admin_or_gmod;
-      my ($censorlanguage, $line);
-      if ($FORM{'censorlanguage'}) { $censorlanguage = $FORM{'censorlanguage'} }
-      else { $censorlanguage = $lang; }
-      opendir(LNGDIR, $langdir);
-      my @lfilesanddirs = readdir(LNGDIR);
-      close(LNGDIR);
+    is_admin_or_gmod();
+    my ( $censorlanguage, $line );
+    if ( $FORM{'censorlanguage'} ) { $censorlanguage = $FORM{'censorlanguage'} }
+    else                           { $censorlanguage = $lang; }
+    opendir LNGDIR, $langdir;
+    my @lfilesanddirs = readdir LNGDIR;
+    closedir LNGDIR;
 
-      foreach my $fld (sort {lc($a) cmp lc($b)} @lfilesanddirs) {
-            if (-d "$langdir/$fld" && $fld =~ m^\A[0-9a-zA-Z_\#\%\-\:\+\?\$\&\~\,\@/]+\Z^ && -e "$langdir/$fld/Main.lng") {
-                  if ($censorlanguage eq $fld) { $drawnldirs .= qq~<option value="$fld" selected="selected">$fld</option>~; }
-                  else { $drawnldirs .= qq~<option value="$fld">$fld</option>~; }
+    foreach my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
+        if (   -d "$langdir/$fld"
+            && $fld =~ m{\A[0-9a-zA-Z_\#\%\-\:\+\?\$\&\~\,\@/]+\Z}sm
+            && -e "$langdir/$fld/Main.lng" )
+        {
+            if ( $censorlanguage eq $fld ) {
+                $drawnldirs .=
+                  qq~<option value="$fld" selected="selected">$fld</option>~;
             }
-      }
+            else { $drawnldirs .= qq~<option value="$fld">$fld</option>~; }
+        }
+    }
 
-      my (@censored, $i);
-      fopen(CENSOR, "$langdir/$censorlanguage/censor.txt");
-      @censored = <CENSOR>;
-      fclose(CENSOR);
-      foreach $i (@censored) {
-            $i =~ tr/\r//d;
-            $i =~ tr/\n//d;
-      }
-      $yymain .= qq~
- <div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td align="left" class="titlebg">
-             <img src="$imagesdir/ban.gif" alt="" border="0" /><span class="legend"><b>$admin_txt{'135'}</b></span>
+    my ( @censored, $i );
+    fopen( CENSOR, "$langdir/$censorlanguage/censor.txt" );
+    @censored = <CENSOR>;
+    fclose(CENSOR);
+    foreach my $i (@censored) {
+        $i =~ tr/\r//d;
+        $i =~ tr/\n//d;
+    }
+    $yymain .= qq~
+ <div class="bordercolor rightboxdiv">
+   <table class="cs_1px pad_4px">
+     <tr>
+       <td>
+             <img src="$imagesdir/ban.gif" alt="" /><span class="legend"><b>$admin_txt{'135'}</b></span>
        </td>
-     </tr>
-     <tr align="center" valign="middle">
-       <td align="left" class="windowbg2">
+     </tr><tr>
+       <td class="windowbg2">
       <form action="$adminurl?action=setcensor" method="post" enctype="application/x-www-form-urlencoded">
       $templs{'7'}
       <select name="censorlanguage" id="censorlanguage" size="1">
@@ -213,29 +224,27 @@ sub SetCensor {
    </table>
  </div>
  <br />
- <div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
+ <div class="bordercolor rightboxdiv">
    <!-- Split for XHTML Validation purposes -->
    <form action="$adminurl?action=setcensor2" method="post" enctype="application/x-www-form-urlencoded">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td align="left" class="windowbg2"><br />
+   <table class="cs_1px pad_4px">
+     <tr>
+       <td class="windowbg2"><br />
          <label for="censored">$admin_txt{'136'}</label><br /><br />
        </td>
-     </tr>
-     <tr valign="middle">
-       <td align="center" class="windowbg2"><br />
+     </tr><tr>
+       <td class="windowbg2 center"><br />
       <input type="hidden" name="censorlanguage" value="$censorlanguage" />
       <textarea rows="35" cols="15" name="censored" id="censored" style="width:90%">~;
-      foreach $i (@censored) {
-            unless ($i && $i =~ m/.+[\=~].+/) { next; }
-            $yymain .= "$i\n";
-      }
-      $yymain .= qq~</textarea>
+    foreach my $i (@censored) {
+        if ( !$i || $i !~ m/.+[\=~].+/sm ) { next; }
+        $yymain .= "$i\n";
+    }
+    $yymain .= qq~</textarea>
         <br /><br />
       </td>
-     </tr>
-     <tr valign="middle">
-       <td align="center" class="catbg">
+     </tr><tr>
+       <td class="catbg center">
 <input type="submit" value="$admin_txt{'10'} $censorlanguage" class="button" />
        </td>
      </tr>
@@ -243,70 +252,70 @@ sub SetCensor {
    </form>
  </div>
 ~;
-      $yytitle     = "$admin_txt{'135'}";
-      $action_area = "setcensor";
-      &AdminTemplate;
+    $yytitle     = "$admin_txt{'135'}";
+    $action_area = 'setcensor';
+    AdminTemplate();
+    return;
 }
 
-sub SetCensor2 { # don't use &FromChars() here!!!
-      &is_admin_or_gmod;
-      $FORM{'censored'} =~ tr/\r//d;
-      $FORM{'censored'} =~ s~\A[\s\n]+~~;
-      $FORM{'censored'} =~ s~[\s\n]+\Z~~;
-      $FORM{'censored'} =~ s~\n\s*\n~\n~g;
-      if ($FORM{'censorlanguage'}) { $censorlanguage = $FORM{'censorlanguage'}; }
-      else { $censorlanguage = $lang; }
-      my @lines = split(/\n/, $FORM{'censored'});
-      fopen(CENSOR, ">$langdir/$censorlanguage/censor.txt", 1);
+sub SetCensor2 {    # don't use &FromChars() here!!!
+    is_admin_or_gmod();
+    $FORM{'censored'} =~ tr/\r//d;
+    $FORM{'censored'} =~ s/\A[\s\n]+//xsm;
+    $FORM{'censored'} =~ s/[\s\n]+\Z//xsm;
+    $FORM{'censored'} =~ s/\n\s*\n/\n/gxsm;
+    if ( $FORM{'censorlanguage'} ) {
+        $censorlanguage = $FORM{'censorlanguage'};
+    }
+    else { $censorlanguage = $lang; }
+    my @lines = split /\n/xsm, $FORM{'censored'};
+    fopen( CENSOR, ">$langdir/$censorlanguage/censor.txt", 1 );
 
-      foreach my $i (@lines) {
-            $i =~ tr/\n//d;
-            unless ($i && $i =~ m/.+[\=~].+/) { next; }
-            print CENSOR "$i\n";
-      }
-      fclose(CENSOR);
-      $yySetLocation = qq~$adminurl~;
-      &redirectexit;
+    foreach my $i (@lines) {
+        $i =~ tr/\n//d;
+        if ( !$i || $i !~ m/.+[\=~].+/sm ) { next; }
+        print {CENSOR} "$i\n" or croak 'cannot print CENSOR';
+    }
+    fclose(CENSOR);
+    $yySetLocation = qq~$adminurl~;
+    redirectexit();
+    return;
 }
 
 sub SetReserve {
-      my (@reserved, @reservecfg, $i);
-      &is_admin_or_gmod;
-      fopen(RESERVE, "$vardir/reserve.txt");
-      @reserved = <RESERVE>;
-      fclose(RESERVE);
-      fopen(RESERVECFG, "$vardir/reservecfg.txt");
-      @reservecfg = <RESERVECFG>;
-      fclose(RESERVECFG);
-      for (my $i = 0; $i < @reservecfg; $i++) {
-            chomp $reservecfg[$i];
-            if($reservecfg[$i]) { $reservecheck[$i] = qq~ checked="checked"~; }
-      }
-      $yymain .= qq~
+    is_admin_or_gmod();
+    fopen( RESERVE, "$vardir/reserve.txt" );
+    my @reserved = <RESERVE>;
+    fclose(RESERVE);
+    fopen( RESERVECFG, "$vardir/reservecfg.txt" );
+    my @reservecfg = <RESERVECFG>;
+    fclose(RESERVECFG);
+    for my $i ( 0 .. ( @reservecfg - 1 ) ) {
+        chomp $reservecfg[$i];
+        if ( $reservecfg[$i] ) { $reservecheck[$i] = q~ checked="checked"~; }
+    }
+    $yymain .= qq~
 <form action="$adminurl?action=setreserve2" method="post" enctype="application/x-www-form-urlencoded">
- <div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td align="left" class="titlebg"><img src="$imagesdir/profile.gif" alt="" border="0" /><b>$admin_txt{'341'}</b></td>
-     </tr>
-     <tr valign="middle">
-       <td align="left" class="windowbg2"><br />
+ <div class="bordercolor rightboxdiv">
+   <table class="cs_1px pad_4px">
+     <tr>
+       <td class="titlebg"><img src="$imagesdir/profile.gif" alt="" /><b>$admin_txt{'341'}</b></td>
+     </tr><tr>
+       <td class="windowbg2"><br />
              $admin_txt{'699'}<br /><br />
        </td>
-     </tr>
-     <tr valign="middle">
-       <td align="left" class="windowbg2"><br />
-            $admin_txt{'342'}<br /><br />
-                  <center><textarea cols="40" rows="35" name="reserved" style="width:95%">~;
-      foreach $i (@reserved) {
-            chomp $i;
-            $i =~ s~\t~~g;
-            if ($i !~ m~\A[\S|\s]*[\n\r]*\Z~) { next; }
-            $yymain .= "$i\n";
-      }
-      $yymain .= qq~</textarea>
-      </center>
-<br /><br />
+     </tr><tr>
+       <td class="windowbg2"><br />
+            $admin_txt{'342'}
+                  <p class="center"><textarea cols="40" rows="35" name="reserved" style="width:95%">~;
+    foreach my $i (@reserved) {
+        chomp $i;
+        $i =~ s/\t//gxsm;
+        if ( $i !~ m{\A[\S|\s]*[\n\r]*\Z}sm ) { next; }
+        $yymain .= "$i\n";
+    }
+    $yymain .= qq~</textarea>
+      </p>
       <input type="checkbox" name="matchword" id="matchword" value="checked"$reservecheck[0] />
       <label for="matchword">$admin_txt{'726'}</label><br />
       <input type="checkbox" name="matchcase" id="matchcase" value="checked"$reservecheck[1] />
@@ -316,79 +325,86 @@ sub SetReserve {
       <input type="checkbox" name="matchname" id="matchname" value="checked"$reservecheck[3] />
       <label for="matchname">$admin_txt{'729'}</label><br />
        </td>
-     </tr>
-     <tr valign="middle">
-       <td align="center" class="catbg"><input type="submit" value="$admin_txt{'10'}" class="button" /></td>
+     </tr><tr>
+       <td class="catbg center"><input type="submit" value="$admin_txt{'10'}" class="button" /></td>
      </tr>
    </table>
  </div>
 </form>
 ~;
-      $yytitle     = "$admin_txt{'341'}";
-      $action_area = "setreserve";
-      &AdminTemplate;
+    $yytitle     = "$admin_txt{'341'}";
+    $action_area = 'setreserve';
+    AdminTemplate();
+    return;
 }
 
 sub SetReserve2 {
-      &is_admin_or_gmod;
-      $FORM{'reserved'} =~ tr/\r//d;
-      $FORM{'reserved'} =~ s~\A[\s\n]+~~;
-      $FORM{'reserved'} =~ s~[\s\n]+\Z~~;
-      $FORM{'reserved'} =~ s~\n\s*\n~\n~g;
-      fopen(RESERVE, ">$vardir/reserve.txt", 1);
-      my $matchword = $FORM{'matchword'} eq 'checked' ? 'checked' : '';
-      my $matchcase = $FORM{'matchcase'} eq 'checked' ? 'checked' : '';
-      my $matchuser = $FORM{'matchuser'} eq 'checked' ? 'checked' : '';
-      my $matchname = $FORM{'matchname'} eq 'checked' ? 'checked' : '';
-      print RESERVE $FORM{'reserved'};
-      fclose(RESERVE);
-      fopen(RESERVECFG, "+>$vardir/reservecfg.txt");
-      print RESERVECFG "$matchword\n";
-      print RESERVECFG "$matchcase\n";
-      print RESERVECFG "$matchuser\n";
-      print RESERVECFG "$matchname\n";
-      fclose(RESERVECFG);
-      $yySetLocation = qq~$adminurl~;
-      &redirectexit;
+    is_admin_or_gmod();
+    $FORM{'reserved'} =~ tr/\r//d;
+    $FORM{'reserved'} =~ s/\A[\s\n]+//xsm;
+    $FORM{'reserved'} =~ s/[\s\n]+\Z//xsm;
+    $FORM{'reserved'} =~ s/\n\s*\n/\n/gxsm;
+    fopen( RESERVE, ">$vardir/reserve.txt", 1 );
+    my $matchword = $FORM{'matchword'} eq 'checked' ? 'checked' : q{};
+    my $matchcase = $FORM{'matchcase'} eq 'checked' ? 'checked' : q{};
+    my $matchuser = $FORM{'matchuser'} eq 'checked' ? 'checked' : q{};
+    my $matchname = $FORM{'matchname'} eq 'checked' ? 'checked' : q{};
+    print {RESERVE} $FORM{'reserved'} or croak 'cannot print RESERVE';
+    fclose(RESERVE);
+    fopen( RESERVECFG, "+>$vardir/reservecfg.txt" );
+    print {RESERVECFG} "$matchword\n" or croak 'cannot print RESERVECFG';
+    print {RESERVECFG} "$matchcase\n" or croak 'cannot print RESERVECFG';
+    print {RESERVECFG} "$matchuser\n" or croak 'cannot print RESERVECFG';
+    print {RESERVECFG} "$matchname\n" or croak 'cannot print RESERVECFG';
+    fclose(RESERVECFG);
+    $yySetLocation = qq~$adminurl~;
+    redirectexit();
+    return;
 }
 
 sub ModifyAgreement {
-      &is_admin_or_gmod;
+    is_admin_or_gmod();
 
-      opendir(LNGDIR, $langdir);
-      my @lfilesanddirs = readdir(LNGDIR);
-      close(LNGDIR);
+    opendir LNGDIR, $langdir;
+    my @lfilesanddirs = readdir LNGDIR;
+    closedir LNGDIR;
 
-      my $agreementlanguage = $FORM{'agreementlanguage'} || $INFO{'agreementlanguage'} || $lang;
-      foreach my $fld (sort {lc($a) cmp lc($b)} @lfilesanddirs) {
-            if (-d "$langdir/$fld" && $fld =~ m^\A[0-9a-zA-Z_\#\%\-\:\+\?\$\&\~\,\@/]+\Z^ && -e "$langdir/$fld/Main.lng") {
-                  if ($agreementlanguage eq $fld) { $drawnldirs .= qq~<option value="$fld" selected="selected">$fld</option>~; }
-                  else { $drawnldirs .= qq~<option value="$fld">$fld</option>~; }
+    my $agreementlanguage =
+         $FORM{'agreementlanguage'}
+      || $INFO{'agreementlanguage'}
+      || $lang;
+    foreach my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
+        if (   -d "$langdir/$fld"
+            && $fld =~ m{\A[0-9a-zA-Z_\#\%\-\:\+\?\$\&\~\,\@/]+\Z}sm
+            && -e "$langdir/$fld/Main.lng" )
+        {
+            if ( $agreementlanguage eq $fld ) {
+                $drawnldirs .=
+                  qq~<option value="$fld" selected="selected">$fld</option>~;
             }
-      }
+            else { $drawnldirs .= qq~<option value="$fld">$fld</option>~; }
+        }
+    }
 
-      my ($fullagreement, $line);
-      fopen(AGREE, "$langdir/$agreementlanguage/agreement.txt");
-      while ($line = <AGREE>) {
-            $line =~ tr/[\r\n]//d;
-            &FromHTML($line);
-            $fullagreement .= qq~$line\n~;
-      }
-      fclose(AGREE);
-      $yymain .= qq~
-
- <div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td align="left" class="titlebg"><img src="$imagesdir/xx.gif" alt="" border="0" /><b>$admin_txt{'764'}</b></td>
-     </tr>
-     <tr valign="middle">
-       <td align="left" class="windowbg2"><br />
+    my ( $fullagreement, $line );
+    fopen( AGREE, "$langdir/$agreementlanguage/agreement.txt" );
+    while ( $line = <AGREE> ) {
+        $line =~ tr/[\r\n]//d;
+        FromHTML($line);
+        $fullagreement .= qq~$line\n~;
+    }
+    fclose(AGREE);
+    $yymain .= qq~
+ <div class="bordercolor rightboxdiv">
+   <table class="cs_1px pad_4px">
+     <tr>
+       <td class="titlebg"><img src="$imagesdir/xx.gif" alt="" /><b>$admin_txt{'764'}</b></td>
+     </tr><tr>
+       <td class="windowbg2"><br />
             <label for="agreement">$admin_txt{'765'}</label><br /><br />
        </td>
-     </tr>
-     <tr valign="middle">
-       <td align="left" class="windowbg2"><br />
+     </tr><tr>
+       <td class="windowbg2"><br />
       <form action="$adminurl?action=modagreement" method="post" enctype="application/x-www-form-urlencoded">
       $templs{'8'}
       <select name="agreementlanguage" id="agreementlanguage" size="1">
@@ -397,42 +413,44 @@ sub ModifyAgreement {
       <input type="submit" value="$admin_txt{'462'}" class="button" />
       </form>
        </td>
-     </tr>
-     <tr valign="middle">
-       <td align="center" class="windowbg2"><br />
+     </tr><tr>
+       <td class="windowbg2 center"><br />
       <form action="$adminurl?action=modagreement2" method="post" enctype="application/x-www-form-urlencoded">
       <input type="hidden" name="destination" value="$INFO{'destination'}" />
       <input type="hidden" name="agreementlanguage" value="$agreementlanguage" />
       <textarea rows="35" cols="95" name="agreement" id="agreement" style="width:95%">$fullagreement</textarea><br /><br />
        </td>
-     </tr>
-     <tr valign="middle">
-       <td align="center" class="catbg"><input type="submit" value="$admin_txt{'10'} $agreementlanguage" class="button" /></td>
+     </tr><tr>
+       <td class="catbg center"><input type="submit" value="$admin_txt{'10'} $agreementlanguage" class="button" /></td>
      </tr>
       </form>
    </table>
  </div>
 ~;
-      $yytitle     = "$admin_txt{'764'}";
-      $action_area = "modagreement";
-      &AdminTemplate;
+    $yytitle     = "$admin_txt{'764'}";
+    $action_area = 'modagreement';
+    AdminTemplate();
+    return;
 }
 
 sub ModifyAgreement2 {
-      &is_admin_or_gmod;
+    is_admin_or_gmod();
 
-      if ($FORM{'agreementlanguage'}) { $agreementlanguage = $FORM{'agreementlanguage'}; }
-      else { $agreementlanguage = $lang; }
-      $FORM{'agreement'} =~ tr/\r//d;
-      $FORM{'agreement'} =~ s~\A\n+~~;
-      $FORM{'agreement'} =~ s~\n+\Z~~;
-      fopen(AGREE, ">$langdir/$agreementlanguage/agreement.txt");
-      print AGREE $FORM{'agreement'};
-      fclose(AGREE);
+    if ( $FORM{'agreementlanguage'} ) {
+        $agreementlanguage = $FORM{'agreementlanguage'};
+    }
+    else { $agreementlanguage = $lang; }
+    $FORM{'agreement'} =~ tr/\r//d;
+    $FORM{'agreement'} =~ s/\A\n+//xsm;
+    $FORM{'agreement'} =~ s/\n+\Z//xsm;
+    fopen( AGREE, ">$langdir/$agreementlanguage/agreement.txt" );
+    print {AGREE} $FORM{'agreement'} or croak 'cannot print AGREE';
+    fclose(AGREE);
 
-      $FORM{'agreement'} =~ s/\n/<br \/>\n/g;
-      fopen(HELPAGREE, ">$helpfile/$agreementlanguage/User/user00_agreement.help");
-      print HELPAGREE qq^\$SectionName = "$register_txt{'764a'}";
+    $FORM{'agreement'} =~ s/\n/<br \/>\n/gsm;
+    fopen( HELPAGREE,
+        ">$helpfile/$agreementlanguage/User/user00_agreement.help" );
+    print {HELPAGREE} qq^\$SectionName = "$register_txt{'764a'}";
 
 ### Section 1
 #############################################
@@ -441,29 +459,41 @@ sub ModifyAgreement2 {
 #############################################
 
 
-1;^;
-      fclose(HELPAGREE);
+1;^ or croak 'cannot print HELPAGREE';
+    fclose(HELPAGREE);
 
-      $yySetLocation = $FORM{'destination'} ? qq~$adminurl?action=$FORM{'destination'}~ : qq~$adminurl?action=modagreement;agreementlanguage=$FORM{'agreementlanguage'}~;
-      &redirectexit;
+    $yySetLocation =
+      $FORM{'destination'}
+      ? qq~$adminurl?action=$FORM{'destination'}~
+      : qq~$adminurl?action=modagreement;agreementlanguage=$FORM{'agreementlanguage'}~;
+    redirectexit();
+    return;
 }
 
 sub GmodSettings2 {
-      &is_admin;
+    is_admin();
 
-      # modstyle is set the same as modcss as modcss is useless without it.
-      $mynewsettings = $FORM{'main'} || $FORM{'advanced'} || $FORM{'news'} || $FORM{'security'}|| $FORM{'antispam'};
+    # modstyle is set the same as modcss as modcss is useless without it.
+    $mynewsettings =
+         $FORM{'main'}
+      || $FORM{'advanced'}
+      || $FORM{'news'}
+      || $FORM{'security'}
+      || $FORM{'antispam'};
 
-      $FORM{'viewmembers'} = "on" if $FORM{'deletemultimembers'} eq 'on' || $FORM{'addmember'} eq 'on';
+    if ( $FORM{'deletemultimembers'} eq 'on' || $FORM{'addmember'} eq 'on' ) {
+        $FORM{'viewmembers'} = 'on';
+    }
 
-      my $filler  = q~                                                                               ~;
-      my $setfile = << "EOF";
+    my $filler =
+q~                                                                               ~;
+    my $setfile = << "EOF";
 ### Gmod Related Setttings ###
 
 \$allow_gmod_admin = "$FORM{'allow_gmod_admin'}"; #
 \$allow_gmod_profile = "$FORM{'allow_gmod_profile'}"; #
 \$allow_gmod_aprofile = "$FORM{'allow_gmod_aprofile'}"; #
-\$gmod_newfile = "on"; #
+\$gmod_newfile = 'on'; #
 
 ### Areas Gmods can Access ###
 
@@ -628,49 +658,51 @@ editbots2 => "$FORM{'editbots'}",
 1;
 EOF
 
-      $setfile =~ s~(.+\;)\s+(\#.+$)~$1 . substr( $filler, 0, (70-(length $1)) ) . $2 ~gem;
-      $setfile =~ s~(.{64,}\;)\s+(\#.+$)~$1 . "\n   " . $2~gem;
-      $setfile =~ s~^\s\s\s+(\#.+$)~substr( $filler, 0, 70 ) . $1~gem;
+    $setfile =~
+      s/(.+\;)\s+(\#.+$)/$1 . substr( $filler, 0, (70-(length $1)) ) . $2 /gesm;
+    $setfile =~ s/(.{64,}\;)\s+(\#.+$)/$1 . "\n   " . $2/gesm;
+    $setfile =~ s/^\s\s\s+(\#.+$)/substr( $filler, 0, 70 ) . $1/gesm;
 
-      fopen(MODACCESS, ">$vardir/gmodsettings.txt");
-      print MODACCESS $setfile;
-      fclose(MODACCESS);
+    fopen( MODACCESS, ">$vardir/gmodsettings.txt" );
+    print {MODACCESS} $setfile or croak 'cannot print MODACCESS';
+    fclose(MODACCESS);
 
-      $yySetLocation = qq~$adminurl~;
-      &redirectexit;
+    $yySetLocation = qq~$adminurl~;
+    redirectexit();
+    return;
 }
 
 sub EditPaths {
-      # Simple output of env variables, for troubleshooting
-      if ($ENV{'SCRIPT_FILENAME'} ne "") {
-            $support_env_path = $ENV{'SCRIPT_FILENAME'};
 
-            # replace \'s with /'s for Windows Servers
-            $support_env_path =~ s~\\~/~g;
+    # Simple output of env variables, for troubleshooting
+    if ( $ENV{'SCRIPT_FILENAME'} ne q{} ) {
+        $support_env_path = $ENV{'SCRIPT_FILENAME'};
 
-            # Remove Setupl.pl and cgi - and also nph- for buggy IIS.
-            $support_env_path =~ s~(nph-)?AdminIndex.(pl|cgi)~~ig;
-      } elsif ($ENV{'PATH_TRANSLATED'} ne "") {
-            $support_env_path = $ENV{'PATH_TRANSLATED'};
+        # replace \'s with /'s for Windows Servers
+        $support_env_path =~ s/\\/\//gxsm;
 
-            # replace \'s with /'s for Windows Servers
-            $support_env_path =~ s~\\~/~g;
+        # Remove Setupl.pl and cgi - and also nph- for buggy IIS.
+        $support_env_path =~ s/(nph-)?AdminIndex.(pl|cgi)//igxsm;
+    }
+    elsif ( $ENV{'PATH_TRANSLATED'} ne q{} ) {
+        $support_env_path = $ENV{'PATH_TRANSLATED'};
 
-            # Remove Setupl.pl and cgi - and also nph- for buggy IIS.
-            $support_env_path =~ s~(nph-)?AdminIndex.(pl|cgi)~~ig;
-      }
+        # replace \'s with /'s for Windows Servers
+        $support_env_path =~ s/\\/\//gxsm;
 
-      $yymain .= qq~
- <div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td align="left" class="titlebg"><b>$edit_paths_txt{'33'}</b></td>
-     </tr>
-     <tr align="center" valign="middle">
-       <td align="left" class="catbg"><span class="small">$edit_paths_txt{'34'}</span></td>
-     </tr>
-     <tr valign="middle">
-       <td align="left" class="windowbg2">
+        # Remove Setupl.pl and cgi - and also nph- for buggy IIS.
+        $support_env_path =~ s/(nph-)?AdminIndex.(pl|cgi)//igxsm;
+    }
+
+    $yymain .= qq~
+ <div class="bordercolor rightboxdiv">
+   <table class="cs_1px pad_4px">
+     <tr>
+       <td class="titlebg"><b>$edit_paths_txt{'33'}</b></td>
+     </tr><tr>
+       <td class="catbg"><span class="small">$edit_paths_txt{'34'}</span></td>
+     </tr><tr>
+       <td class="windowbg2">
                   <br />
                   $support_env_path
                   <br />
@@ -679,24 +711,20 @@ sub EditPaths {
      </tr>
    </table>
  </div>
-
 <br />
 <br />
-
 <form action="$adminurl?action=editpaths2" method="post" enctype="application/x-www-form-urlencoded">
- <div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td align="left" class="titlebg">
-            <img src="$imagesdir/preferences.gif" alt="" border="0" />
+ <div class="bordercolor rightboxdiv">
+   <table class="cs_1px pad_4px">
+     <tr>
+       <td class="titlebg">
+            <img src="$imagesdir/preferences.gif" alt="" />
 &nbsp;<b>$edit_paths_txt{'1'}</b>
        </td>
-     </tr>
-     <tr align="center" valign="middle">
-       <td align="left" class="catbg"><span class="small">$edit_paths_txt{'2'}</span></td>
-     </tr>
-     <tr valign="middle">
-       <td align="left" class="windowbg2">
+     </tr><tr>
+       <td class="catbg"><span class="small">$edit_paths_txt{'2'}</span></td>
+     </tr><tr>
+       <td class="windowbg2">
             <div class="setting_cell">
                   <label for="boarddir">$edit_paths_txt{'4'}</label>
             </div>
@@ -817,12 +845,10 @@ sub EditPaths {
                   <input type="text" name="facesdir" id="facesdir" size="50" value="$facesdir" />
             </div>
        </td>
-     </tr>
-     <tr align="center" valign="middle">
-       <td align="left" class="catbg"><span class="small">$edit_paths_txt{'21'}</span></td>
-     </tr>
-     <tr valign="middle">
-       <td align="left" class="windowbg2">
+     </tr><tr>
+       <td class="catbg"><span class="small">$edit_paths_txt{'21'}</span></td>
+     </tr><tr>
+       <td class="windowbg2">
             <div class="setting_cell">
                   <label for="boardurl">$edit_paths_txt{'3'}</label>
             </div>
@@ -879,9 +905,8 @@ sub EditPaths {
                   <input type="text" name="facesurl" id="facesurl" size="50" value="$facesurl" />
             </div>
        </td>
-     </tr>
-     <tr valign="middle">
-       <td align="center" class="catbg">
+     </tr><tr>
+       <td class="catbg center">
              <input type="hidden" name="lastsaved" value="${$uid.$username}{'realname'}" />
              <input type="hidden" name="lastdate" value="$date" />
              <input type="submit" value="$admin_txt{'10'}" class="button" />
@@ -891,46 +916,40 @@ sub EditPaths {
  </div>
 </form>
 ~;
-      $yytitle     = "$edit_paths_txt{'1'}";
-      $action_area = "editpaths";
-      &AdminTemplate;
+    $yytitle     = "$edit_paths_txt{'1'}";
+    $action_area = 'editpaths';
+    AdminTemplate();
+    return;
 }
 
 sub EditPaths2 {
-      &LoadCookie;          # Load the user's cookie (or set to guest)
-      &LoadUserSettings;
-      if (!$iamadmin) { &admin_fatal_error("no_access"); }
+    LoadCookie();    # Load the user's cookie (or set to guest)
+    LoadUserSettings();
+    if ( !$iamadmin ) { admin_fatal_error('no_access'); }
 
-      $lastsaved      = $FORM{'lastsaved'};
-      $lastdate       = $FORM{'lastdate'};
-      $boardurl       = $FORM{'boardurl'};
-      $boarddir       = $FORM{'boarddir'};
-      $htmldir        = $FORM{'htmldir'};
-      $uploaddir      = $FORM{'uploaddir'};
-      $uploadurl      = $FORM{'uploadurl'};
-      $yyhtml_root    = $FORM{'yyhtml_root'};
-      $datadir        = $FORM{'datadir'};
-      $boardsdir      = $FORM{'boardsdir'};
-      $memberdir      = $FORM{'memberdir'};
-      $sourcedir      = $FORM{'sourcedir'};
-      $admindir       = $FORM{'admindir'};
-      $vardir         = $FORM{'vardir'};
-      $langdir        = $FORM{'langdir'};
-      $helpfile       = $FORM{'helpfile'};
-      $templatesdir   = $FORM{'templatesdir'};
-      #$forumstylesdir = $FORM{'forumstylesdir'};
-      #$forumstylesurl = $FORM{'forumstylesurl'};
-      #$adminstylesdir = $FORM{'adminstylesdir'};
-      #$adminstylesurl = $FORM{'adminstylesurl'};
-      $facesdir       = $FORM{'facesdir'};
-      $facesurl       = $FORM{'facesurl'};
-      #$smiliesdir     = $FORM{'smiliesdir'};
-      #$smiliesurl     = $FORM{'smiliesurl'};
-      #$modimgdir      = $FORM{'modimgdir'};
-      #$modimgurl      = $FORM{'modimgurl'};
+    $lastsaved    = $FORM{'lastsaved'};
+    $lastdate     = $FORM{'lastdate'};
+    $boardurl     = $FORM{'boardurl'};
+    $boarddir     = $FORM{'boarddir'};
+    $htmldir      = $FORM{'htmldir'};
+    $uploaddir    = $FORM{'uploaddir'};
+    $uploadurl    = $FORM{'uploadurl'};
+    $yyhtml_root  = $FORM{'yyhtml_root'};
+    $datadir      = $FORM{'datadir'};
+    $boardsdir    = $FORM{'boardsdir'};
+    $memberdir    = $FORM{'memberdir'};
+    $sourcedir    = $FORM{'sourcedir'};
+    $admindir     = $FORM{'admindir'};
+    $vardir       = $FORM{'vardir'};
+    $langdir      = $FORM{'langdir'};
+    $helpfile     = $FORM{'helpfile'};
+    $templatesdir = $FORM{'templatesdir'};
+    $facesdir     = $FORM{'facesdir'};
+    $facesurl     = $FORM{'facesurl'};
 
-      my $filler  = q~                                                                               ~;
-      my $setfile = << "EOF";
+    my $filler =
+q~                                                                               ~;
+    my $setfile = << "EOF";
 ###############################################################################
 # Paths.pl                                                                    #
 ###############################################################################
@@ -988,16 +1007,18 @@ sub EditPaths2 {
 1;
 EOF
 
-      $setfile =~ s~(.+\;)\s+(\#.+$)~$1 . substr( $filler, 0, (70-(length $1)) ) . $2 ~gem;
-      $setfile =~ s~(.{64,}\;)\s+(\#.+$)~$1 . "\n   " . $2~gem;
-      $setfile =~ s~^\s\s\s+(\#.+$)~substr( $filler, 0, 70 ) . $1~gem;
+    $setfile =~
+      s/(.+\;)\s+(\#.+$)/$1 . substr( $filler, 0, (70-(length $1)) ) . $2 /gesm;
+    $setfile =~ s/(.{64,}\;)\s+(\#.+$)/$1 . "\n   " . $2/gesm;
+    $setfile =~ s/^\s\s\s+(\#.+$)/substr( $filler, 0, 70 ) . $1/gesm;
 
-      fopen(FILE, ">Paths.pl");
-      print FILE $setfile;
-      fclose(FILE);
+    fopen( FILE, '>Paths.pl' );
+    print {FILE} $setfile or croak 'cannot print FILE';
+    fclose(FILE);
 
-      $yySetLocation = qq~$adminurl~;
-      &redirectexit;
+    $yySetLocation = qq~$adminurl~;
+    redirectexit();
+    return;
 }
 
 1;
