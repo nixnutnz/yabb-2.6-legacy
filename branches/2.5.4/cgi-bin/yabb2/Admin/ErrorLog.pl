@@ -11,12 +11,14 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use CGI::Carp qw(fatalsToBrowser);
+our $VERSION = 1.2;
 
-$errorlogplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$errorlogplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub ErrorLog {
-	&is_admin_or_gmod;
+    is_admin_or_gmod();
 	$yytitle    = "$errorlog{'1'}";
 	$errorcount = 0;
 	fopen(ERRORFILE, "$vardir/errorlog.txt");
@@ -24,21 +26,21 @@ sub ErrorLog {
 	fclose(ERRORFILE);
 	$errorcount = @errors;
 	$date2      = $date;
-	for ($i = 0; $i < $errorcount; $i++) {
-		my @tmpArray = split(/\|/, $errors[$i]);
+    for my $i ( 0 .. ( $errorcount - 1 ) ) {
+        my @tmpArray = split /\|/xsm, $errors[$i];
 		$date1 = $tmpArray[1];
-		&calcdifference;
+        calcdifference();
 		$date_ref = $result;
 		$tmplist[$i] = qq~$date_ref\|$errors[$i]~;
 	}
 
 	$sortmode  = $INFO{'sort'};
 	$sortorder = $INFO{'order'};
-	if ($sortmode eq "") {
-		$sortmode = "time";
+    if ( $sortmode eq q{} ) {
+        $sortmode = 'time';
 	}
-	if ($sortorder eq "") {
-		$sortorder = "reverse";
+    if ( $sortorder eq q{} ) {
+        $sortorder = 'reverse';
 	}
 	my @sortlist = ();
 	my $field    = '0';    # 0-based field defaults to the datecmp value
@@ -46,45 +48,53 @@ sub ErrorLog {
 	my $case     = '1';    # 0=case sensitive; 1=ignore case
 	my $dir      = '0';    # 0=increasing; 1=decreasing
 
-	if ($sortmode eq "time") {
+    if ( $sortmode eq 'time' ) {
 		$field = '1';
 		$type  = '0';
 		$case  = '1';
 		$dir   = '0';
-	} elsif ($sortmode eq "users") {
+    }
+    elsif ( $sortmode eq 'users' ) {
 		$field = '8';
 		$type  = '1';
 		$case  = '1';
 		$dir   = '0';
-	} elsif ($sortmode eq "ip") {
+    }
+    elsif ( $sortmode eq 'ip' ) {
 		$field = '3';
 		$type  = '0';
 		$case  = '0';
 		$dir   = '0';
 	}
-	@sortlist = map { $_->[0] } sort { YaBBsort($field, $type, $case, $dir) } map { [$_, split /\|/] } @tmplist;
+    @sortlist =
+      map { $_->[0] }
+      sort { YaBBsort( $field, $type, $case, $dir ) }
+      map { [ $_, split /\|/xsm ] } @tmplist;
 
-	if ($INFO{'order'} eq "reverse") {
+    if ( $INFO{'order'} eq 'reverse' ) {
 		@sortlist = reverse @sortlist;
-	} else {
-		if ($sortmode eq "time") {
-			$order_time = ";order=reverse";
-		} elsif ($sortmode eq "users") {
-			$order_users = ";order=reverse";
-		} elsif ($sortmode eq "ip") {
-			$order_ip = ";order=reverse";
+    }
+    else {
+        if ( $sortmode eq 'time' ) {
+            $order_time = ';order=reverse';
+        }
+        elsif ( $sortmode eq 'users' ) {
+            $order_users = ';order=reverse';
+        }
+        elsif ( $sortmode eq 'ip' ) {
+            $order_ip = ';order=reverse';
 		}
 	}
 
-	if ($sortmode ne "") {
-		$sortmode = ";sort=" . $INFO{'sort'};
+    if ( $sortmode ne q{} ) {
+        $sortmode = ';sort=' . $INFO{'sort'};
 	}
-	if ($sortorder ne "") {
-		$sortorder = ";order=" . $INFO{'order'};
+    if ( $sortorder ne q{} ) {
+        $sortorder = ';order=' . $INFO{'order'};
 	}
 	$yymain .= qq~\
-<script language="JavaScript1.2" src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
-<script language="JavaScript1.2" type="text/javascript">
+<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
+<script type="text/javascript">
 <!-- Begin
 function changeBox(cbox) {
   box = eval(cbox);
@@ -108,100 +118,118 @@ function uncheckAll() {
 </script>
 <form name="errorlog_form" action="$adminurl?action=deleteerror;$sortmode$sortorder" method="post" onsubmit="return submitproc()">
 <input type="hidden" name="button" value="4" />
-
- <div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td align="left" class="titlebg" colspan="5">
-<img src="$imagesdir/xx.gif" alt="" border="0" /><b>$yytitle</b>
+    <div class="bordercolor rightboxdiv">
+        <table class="cs_1px pad_4px">
+            <col style="width:5%" />
+            <col style="width:10%" />
+            <col style="width:15%" />
+            <col style="width:65%" />
+            <col style="width:5%" />
+            <tr>
+                <td class="titlebg" colspan="5">
+                    <img src="$imagesdir/xx.gif" alt="" /><b>$yytitle</b>
 	   </td>
-     </tr>
-     <tr valign="middle">
-       <td align="left" class="windowbg2" colspan="5"><br />
+            </tr><tr>
+                <td class="windowbg2" colspan="5">
+                    <br />
 		 $errorlog{'18'}<br /><br />
 	   </td>
-     </tr>
-     <tr valign="middle">
-       <td align="center" valign="middle" class="catbg">
+            </tr><tr>
+                <td class="catbg center">
 		 <b>$errorlog{'21'}</b>
 	   </td>
-       <td align="center" valign="middle" class="catbg">
+                <td class="catbg center">
 		 <a href="$adminurl?action=errorlog$startmode;sort=time$order_time"><b>$errorlog{'5'}</b></a>
 	   </td>
-       <td align="center" valign="middle" class="catbg">
+                <td class="catbg center">
 		 <a href="$adminurl?action=errorlog$startmode;sort=users$order_users"><b>$errorlog{'11'}</b></a> ( <a href="$adminurl?action=errorlog$startmode;sort=ip$order_ip"><b>$errorlog{'6'}</b></a> )
 	   </td>
-       <td align="center" valign="middle" class="catbg">
+                <td class="catbg center">
 		 <b>$errorlog{'7'} / $errorlog{'8'}</b>
 	   </td>
-       <td align="center" valign="middle" class="catbg">
+                <td class="catbg center">
 		 <b>$errorlog{'13'}</b>
 	   </td>
-     </tr>
-~;
+            </tr>~;
 	$numshown  = 0;
 	$actualnum = 0;
 	while ($numshown <= $errorcount) {
-		my ($tmp_user, $username, $numb, $ids, $all) = '';
+        my ( $tmp_user, $username, $numb, $ids, $all ) = q{};
 		$numshown++;
-		my ($tmp_datecmp, $tmp_id, $tmp_date, $tmp_userip, $tmp_error, $tmp_action, $tmp_topic_number, $tmp_board, $tmp_username, $tmp_password) = split(/\|/, $sortlist[$b]);
+        my (
+            $tmp_datecmp,      $tmp_id,    $tmp_date,
+            $tmp_userip,       $tmp_error, $tmp_action,
+            $tmp_topic_number, $tmp_board, $tmp_username,
+            $tmp_password
+        ) = split /\|/xsm, $sortlist[$b];
 		if (!$tmp_id) { next; }
-		&FormatUserName($tmp_username);
+        FormatUserName($tmp_username);
 		if (!$tmp_username) {
-			$tmp_user = "Guest";
-		} else {
+            $tmp_user = 'Guest';
+        }
+        else {
 			$tmp_user = $tmp_username;
 		}
 		$userlist{$tmp_user} = $userlist{$tmp_user} + 1;
-		$tmp_date = &timeformat($tmp_date);
-		&LoadUser($tmp_user);
+        $tmp_date = timeformat($tmp_date);
+        LoadUser($tmp_user);
 		if ($tmp_user eq "$useraccount{$tmp_user}") {
 			if ($userprofile{$tmp_user}->[1]) {
-				$username = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tmp_user}" target ="_blank">$userprofile{$tmp_user}->[1]</a>~;
-			} else {
+                $username =
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tmp_user}" onclick="target='_blank';">$userprofile{$tmp_user}->[1]</a>~;
+            }
+            else {
 				$username .= qq~$useraccount{$tmp_user}~;
 			}
-			$username .= qq~<br />($tmp_userip)~;
-		} else {
-			$username = qq~$tmp_user<br />($tmp_userip)~;
+            $username .=
+qq~<br />$tmp_userip - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p">$admin_txt{'725f'}</a>~;
 		}
-		if ($tmp_topic_number eq '') {
+        else {
+            $username =
+qq~$tmp_user<br />$tmp_userip - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p">$admin_txt{'725f'}</a>~;
+        }
+        if ( $tmp_topic_number eq q{} ) {
 			$numb = "&action=$tmp_action";
-		} else {
+        }
+        else {
 			$numb = "&action=$tmp_action&num=$tmp_topic_number";
 		}
-		if ($tmp_board eq '') {
-			$ids = "?board=";
-		} else {
+        if ( $tmp_board eq q{} ) {
+            $ids = '?board=';
+        }
+        else {
 			$ids = "?board=$tmp_board";
 		}
-		if ($tmp_action eq '' && $tmp_board eq '') {
+        if ( $tmp_action eq q{} && $tmp_board eq q{} ) {
 			$all = "$boardurl/$yyexec.$yyext";
-		} else {
+        }
+        else {
 			$all = "$boardurl/$yyexec.$yyext$ids$numb";
 		}
-		if ($tmp_error eq $admin_txt{'39'} || $tmp_error eq $admin_txt{'40'}) {
-			$tmp_error = $tmp_error . " - (<span style=\"color: #FF0000;\">$tmp_password</span>)";
+        if ( $tmp_error eq $admin_txt{'39'} || $tmp_error eq $admin_txt{'40'} )
+        {
+            $tmp_error =
+              $tmp_error . qq~ - (<span class="red">$tmp_password</span>)~;
 		}
 
 		$b++;
-		$addel = qq~<td class="windowbg" align="center"><input type="checkbox" name="error$tmp_id" value="$tmp_id" class="windowbg" style="border: 0px;" /></td>~;
+        $addel =
+qq~             <td class="windowbg center"><input type="checkbox" name="error$tmp_id" value="$tmp_id" class="windowbg" style="border: 0px;" /></td>~;
 		$actualnum++;
 		$print_errorlog .= qq~
 	<tr>
-		<td class="windowbg" align="center">$actualnum</td>
+                <td class="windowbg center">$actualnum</td>
 	        <td class="windowbg">$tmp_date</td>
-          	<td class="windowbg2" align="center">$username</td>
-          	<td class="windowbg" align="center">
+                <td class="windowbg2 center">$username</td>
+                <td class="windowbg center">
               <span class="small">$tmp_error<br /><br /><a href="$all">$all</a></span>
             </td>
           	$addel
         </tr>~;
 	}
 	if (!($actualnum)) {
-		$print_errorlog = qq~
-	<tr>
-		<td class="windowbg2" align="center" colspan="5">
+        $print_errorlog = qq~           <tr>
+                <td class="windowbg2 center" colspan="5">
 			$errorlog{'19'}
 		</td>
 	</tr>~;
@@ -210,41 +238,44 @@ function uncheckAll() {
 $print_errorlog
 	~;
 
-	@userlist = sort { $userlist{$b} <=> $userlist{$a} } keys %userlist;
-	foreach $member (@userlist) {
+    @userlist = reverse sort { $userlist{$a} <=> $userlist{$b} } keys %userlist;
+    foreach my $member (@userlist) {
 		$errmember .= qq~$member ($userlist{$member}), ~;
 	}
-	$errmember =~ s/, \Z//;
+    $errmember =~ s/, \Z//sm;
 
-	$yymain .= qq~
-     <tr valign="middle">
-       <td align="left" class="windowbg2" colspan="5"><br />
+    $yymain .= qq~          <tr>
+                <td class="windowbg2" colspan="5"><br />
        <strong>$errorlog{'26'}</strong> $errmember<br /><br />
 	   </td>
-     </tr>
-     <tr valign="middle">
-       <td align="right" class="windowbg" colspan="4">&nbsp;~;
-	if ($errorcount > 0) { $yymain .= qq~<label for="checkall"><b>$admin_txt{'737'}</label>&nbsp;</b>~; }
-	$yymain .= qq~
+            </tr><tr>
+                <td class="windowbg right" colspan="4">&nbsp;~;
+    if ( $errorcount > 0 ) {
+        $yymain .=
+          qq~<label for="checkall"><b>$admin_txt{'737'}</label>&nbsp;</b>~;
+    }
+    $yymain .= q~
 	   </td>
-	   <td class="windowbg" align="center">&nbsp;~;
-	if ($errorcount > 0) { $yymain .= qq~<input type="checkbox" name="checkall" id="checkall" class="windowbg" style="border: 0px;" onclick="if (this.checked) checkAll(); else uncheckAll();" />~; }
-	$yymain .= qq~
+                <td class="windowbg center">&nbsp;~;
+    if ( $errorcount > 0 ) {
+        $yymain .=
+q~<input type="checkbox" name="checkall" id="checkall" class="windowbg" style="border: 0px;" onclick="if (this.checked) checkAll(); else uncheckAll();" />~;
+    }
+    $yymain .= q~
 	   </td>
      </tr>
    </table>
  </div>
-
 <br />
 	~;
 
 if ($errorcount > 0) {
 
 	$yymain .= qq~
- <div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td align="center" class="catbg">
+    <div class="bordercolor rightboxdiv">
+        <table class="cs_1px pad_4px">
+            <tr>
+                <td class="catbg center">
 		 <input type="submit" value="$errorlog{'14'}" onclick="return confirm('$errorlog{'15'}')" class="button" />
 	   </td>
      </tr>
@@ -253,41 +284,49 @@ if ($errorcount > 0) {
 	~;
 }
 
-	$yymain .= qq~
+    $yymain .= q~
 </form>
 ~;
-	$action_area = "errorlog";
-	&AdminTemplate;
+    $action_area = 'errorlog';
+    AdminTemplate();
+    return;
 }
 
 sub CleanErrorLog {
-	&is_admin_or_gmod;
-	if (-e ("$vardir/errorlog.txt")) { unlink("$vardir/errorlog.txt") || die "$!" }
+    is_admin_or_gmod();
+    if ( -e ("$vardir/errorlog.txt") ) {
+        unlink "$vardir/errorlog.txt" or croak qq~$!~;
+    }
 	$yySetLocation = qq~$adminurl?action=errorlog~;
-	&redirectexit;
+    redirectexit();
+    return;
 }
 
 sub DeleteError {
-	&is_admin_or_gmod;
-	my ($count, $memnum, $currentmem, @deademails, $start, $sortmode, $sortorder);
-	chomp $FORM{"button"};
-	if ($FORM{"button"} ne "4") { &admin_fatal_error("no_access"); }
+    is_admin_or_gmod();
+    my ( $sortmode, $sortorder );
+    chomp $FORM{'button'};
+    if ( $FORM{'button'} ne '4' ) { admin_fatal_error('no_access'); }
 	fopen(FILE, "$vardir/errorlog.txt");
 	@errors = <FILE>;
 	fclose(FILE);
-	unlink("$vardir/errorlog.txt");
+    unlink "$vardir/errorlog.txt";
 	fopen(FILE, ">>$vardir/errorlog.txt");
 
 	foreach my $line (@errors) {
 		chomp $line;
-		my ($tmp_id, $tmp_date, $tmp_username, $tmp_error, $tmp_board, $tmp_action) = split(/\|/, $line);
-		unless (exists $FORM{"error$tmp_id"}) {
-			print FILE $line . "\n";
+        my (
+            $tmp_id,    $tmp_date,  $tmp_username,
+            $tmp_error, $tmp_board, $tmp_action
+        ) = split /\|/xsm, $line;
+        if ( !exists $FORM{"error$tmp_id"} ) {
+            print {FILE} $line . "\n" or croak 'cannot print FILE';
 		}
 	}
 	fclose(FILE);
 	$yySetLocation = qq~$adminurl?action=errorlog~;
-	&redirectexit;
+    redirectexit();
+    return;
 }
 
 # Moved here from Subs.pl since it was only used here
@@ -300,20 +339,25 @@ sub YaBBsort {
 	if ($type == 0) {
 		if ($dir == 0) {
 			$a->[$field] <=> $b->[$field];
-		} else {
+        }
+        else {
 			$b->[$field] <=> $a->[$field];
 		}
-	} else {
+    }
+    else {
 		if ($case == 0) {
 			if ($dir == 0) {
 				$a->[$field] cmp $b->[$field];
-			} else {
+            }
+            else {
 				$b->[$field] cmp $a->[$field];
 			}
-		} else {
+        }
+        else {
 			if ($dir == 0) {
 				uc $a->[$field] cmp uc $b->[$field];
-			} else {
+            }
+            else {
 				uc $b->[$field] cmp uc $a->[$field];
 			}
 		}
