@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$displayplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$displayplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Display');
@@ -154,7 +154,7 @@ sub Display {
 
 	# Get the class of this thread, based on lock status and number of replies.
 	if ((!$iamguest || $enable_guestposting) && &AccessCheck($currentboard, 2) eq 'granted') {
-		$replybutton = qq~$menusep<a href="~ . ($enable_quickreply && $enable_quickjump ? 'javascript:document.postmodify.message.focus();' : qq~$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;title=PostReply~);
+		$replybutton = qq~				$menusep<a href="~ . ($enable_quickreply && $enable_quickjump ? 'javascript:document.postmodify.message.focus();' : qq~$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;title=PostReply~);
 		$bypassReplyButton = $replybutton . qq~" onclick="return confirm('$display_txt{'posttolocked'}');">$img{'reply'}</a> ~;
 		$replybutton .= qq~">$img{'reply'}</a> ~; #" make my text-editor happy;
 	}
@@ -213,7 +213,7 @@ sub Display {
 	$dropdisplaynum = 10;
 	$startpage = 0;
 	$max = $mreplies + 1;
-	if (substr($INFO{'start'}, 0, 3) eq 'all' && $showpageall != 0) { $maxmessagedisplay = $max; $all = 1; $allselected = qq~ selected="selected"~; $start = !$ttsreverse ? 0 : $mreplies; }
+	if (substr($INFO{'start'}, 0, 3) eq 'all' && $showpageall != 0) { $maxmessagedisplay = $max; $all = 1; $allselected = q~ selected="selected"~; $start = !$ttsreverse ? 0 : $mreplies; }
 	else { $start = $INFO{'start'} !~ /\d/ ? (!$ttsreverse ? 0 : $mreplies) : $INFO{'start'}; }
 	$start = $start > $mreplies ? $mreplies : $start;
 	$start = !$ttsreverse ? (int($start / $maxmessagedisplay) * $maxmessagedisplay) : (int(($mreplies - $start) / $maxmessagedisplay) * $maxmessagedisplay);
@@ -228,28 +228,28 @@ sub Display {
 	else { $endpage = $max; }
 	$lastpn = int($mreplies / $maxmessagedisplay) + 1;
 	$lastptn = ($lastpn - 1) * $maxmessagedisplay;
-	$pageindex1 = qq~<span class="small" style="float: left; height: 21px; margin: 0px; margin-top: 2px;"><img src="$imagesdir/index_togl.gif" border="0" alt="$display_txt{'19'}" title="$display_txt{'19'}" style="vertical-align: middle;" /> $display_txt{'139'}: $pagenumb</span>~;
+	$pageindex1 = qq~<span class="small pgindex"><img src="$imagesdir/index_togl.gif" alt="$display_txt{'19'}" title="$display_txt{'19'}" /> $display_txt{'139'}: $pagenumb</span>~;
 	$pageindex2 = $pageindex1;
 	if ($pagenumb > 1 || $all) {
 		if ($userthreadpage == 1 || $iamguest) {
-			$pagetxtindexst = qq~<span class="small" style="float: left; height: 21px; margin: 0px; margin-top: 2px;">~;
-			if (!$iamguest) { $pagetxtindexst .= qq~<a href="$scripturl?num=$viewnum;start=~ . (!$ttsreverse ? $start : $mreplies - $start) . qq~;action=threadpagedrop"><img src="$imagesdir/index_togl.gif" border="0" alt="$display_txt{'19'}" style="vertical-align: middle;" /></a> $display_txt{'139'}: ~; }
-			else { $pagetxtindexst .= qq~<img src="$imagesdir/index_togl.gif" border="0" alt="" style="vertical-align: middle;" /> $display_txt{'139'}: ~; }
-			if ($startpage > 0) { $pagetxtindex = qq~<a href="$scripturl?num=$viewnum/~ . (!$ttsreverse ? 0 : $mreplies) . qq~" style="font-weight: normal;">1</a>&nbsp;<a href="javascript:void(0);" onclick="ListPages($mnum);">...</a>&nbsp;~; }
-			if ($startpage == $maxmessagedisplay) { $pagetxtindex = qq~<a href="$scripturl?num=$viewnum/~ . (!$ttsreverse ? 0 : $mreplies) . qq~" style="font-weight: normal;">1</a>&nbsp;~; }
+			$pagetxtindexst = qq~<span class="small pgindex">~;
+			if (!$iamguest) { $pagetxtindexst .= qq~<a href="$scripturl?num=$viewnum;start=~ . (!$ttsreverse ? $start : $mreplies - $start) . qq~;action=threadpagedrop"><img src="$imagesdir/index_togl.gif" alt="$display_txt{'19'}" /></a> $display_txt{'139'}: ~; }
+			else { $pagetxtindexst .= qq~<img src="$imagesdir/index_togl.gif" alt="" /> $display_txt{'139'}: ~; }
+			if ($startpage > 0) { $pagetxtindex = qq~<a href="$scripturl?num=$viewnum/~ . (!$ttsreverse ? 0 : $mreplies) . qq~" class="norm">1</a>&nbsp;<a href="javascript:void(0);" onclick="ListPages($mnum);">...</a>&nbsp;~; }
+			if ($startpage == $maxmessagedisplay) { $pagetxtindex = qq~<a href="$scripturl?num=$viewnum/~ . (!$ttsreverse ? 0 : $mreplies) . qq~" class="norm">1</a>&nbsp;~; }
 			for ($counter = $startpage; $counter < $endpage; $counter += $maxmessagedisplay) {
-				$pagetxtindex .= $start == $counter ? qq~<b>$tmpa</b>&nbsp;~ : qq~<a href="$scripturl?num=$viewnum/~ . (!$ttsreverse ? $counter : ($mreplies - $counter)) . qq~" style="font-weight: normal;">$tmpa</a>&nbsp;~;
+				$pagetxtindex .= $start == $counter ? qq~<b>$tmpa</b>&nbsp;~ : qq~<a href="$scripturl?num=$viewnum/~ . (!$ttsreverse ? $counter : ($mreplies - $counter)) . qq~" class="norm">$tmpa</a>&nbsp;~;
 				$tmpa++;
 			}
 			if ($endpage < $max - ($maxmessagedisplay)) { $pageindexadd = qq~<a href="javascript:void(0);" onclick="ListPages($mnum);">...</a>&nbsp;~; }
-			if ($endpage != $max) { $pageindexadd .= qq~<a href="$scripturl?num=$viewnum/~ . (!$ttsreverse ? $lastptn : $mreplies - $lastptn) . qq~" style="font-weight: normal;">$lastpn</a>~; }
+			if ($endpage != $max) { $pageindexadd .= qq~<a href="$scripturl?num=$viewnum/~ . (!$ttsreverse ? $lastptn : $mreplies - $lastptn) . qq~" class="norm">$lastpn</a>~; }
 			$pagetxtindex .= qq~$pageindexadd~;
 			$pageindex1 = qq~$pagetxtindexst$pagetxtindex</span>~;
 			$pageindex2 = $pageindex1;
 
 		} else {
 			$pagedropindex1 = qq~<span style="float: left; width: 350px; margin: 0px; margin-top: 2px; border: 0px;">~;
-			$pagedropindex1 .= qq~<span style="float: left; height: 21px; margin: 0; margin-right: 4px;"><a href="$scripturl?num=$viewnum;start=~ . (!$ttsreverse ? $start : $mreplies - $start) . qq~;action=threadpagetext"><img src="$imagesdir/index_togl.gif" border="0" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a></span>~;
+			$pagedropindex1 .= qq~<span style="float: left; height: 21px; margin: 0; margin-right: 4px;"><a href="$scripturl?num=$viewnum;start=~ . (!$ttsreverse ? $start : $mreplies - $start) . qq~;action=threadpagetext"><img src="$imagesdir/index_togl.gif" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a></span>~;
 			$pagedropindex2 = $pagedropindex1;
 			$tstart = $start;
 			#if (substr($INFO{'start'}, 0, 3) eq "all") { ($tstart, $start) = split(/\-/, $INFO{'start'}); }
@@ -291,12 +291,12 @@ sub Display {
 			$tmpmaxmessagedisplay = $maxmessagedisplay;
 			$prevpage = !$ttsreverse ? $start - $tmpmaxmessagedisplay : $mreplies - $start + $tmpmaxmessagedisplay;
 			$nextpage = !$ttsreverse ? $start + $maxmessagedisplay : $mreplies - $start - $maxmessagedisplay;
-			$pagedropindexpvbl = qq~<img src="$imagesdir/index_left0.gif" height="14" width="13" border="0" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
-			$pagedropindexnxbl = qq~<img src="$imagesdir/index_right0.gif" height="14" width="13" border="0" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
-			if ((!$ttsreverse and $start < $maxmessagedisplay) or ($ttsreverse and $prevpage > $mreplies)) { $pagedropindexpv .= qq~<img src="$imagesdir/index_left0.gif" height="14" width="13" border="0" alt="" style="display: inline; vertical-align: middle;" />~; }
-			else { $pagedropindexpv .= qq~<img src="$imagesdir/index_left.gif" border="0" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?num=$viewnum/$prevpage\\'" ondblclick="location.href=\\'$scripturl?num=$viewnum/~ . (!$ttsreverse ? 0 : $mreplies) . qq~\\'" />~; }
-			if ((!$ttsreverse and $nextpage > $lastptn) or ($ttsreverse and $nextpage < $mreplies - $lastptn)) { $pagedropindexnx .= qq~<img src="$imagesdir/index_right0.gif" border="0" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~; }
-			else { $pagedropindexnx .= qq~<img src="$imagesdir/index_right.gif" height="14" width="13" border="0" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?num=$viewnum/$nextpage\\'" ondblclick="location.href=\\'$scripturl?num=$viewnum/~ . (!$ttsreverse ? $lastptn : $mreplies - $lastptn) . qq~\\'" />~; }
+			$pagedropindexpvbl = qq~<img src="$imagesdir/index_left0.gif" height="14" width="13" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
+			$pagedropindexnxbl = qq~<img src="$imagesdir/index_right0.gif" height="14" width="13" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
+			if ((!$ttsreverse and $start < $maxmessagedisplay) or ($ttsreverse and $prevpage > $mreplies)) { $pagedropindexpv .= qq~<img src="$imagesdir/index_left0.gif" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~; }
+			else { $pagedropindexpv .= qq~<img src="$imagesdir/index_left.gif" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?num=$viewnum/$prevpage\\'" ondblclick="location.href=\\'$scripturl?num=$viewnum/~ . (!$ttsreverse ? 0 : $mreplies) . qq~\\'" />~; }
+			if ((!$ttsreverse and $nextpage > $lastptn) or ($ttsreverse and $nextpage < $mreplies - $lastptn)) { $pagedropindexnx .= qq~<img src="$imagesdir/index_right0.gif" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~; }
+			else { $pagedropindexnx .= qq~<img src="$imagesdir/index_right.gif" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?num=$viewnum/$nextpage\\'" ondblclick="location.href=\\'$scripturl?num=$viewnum/~ . (!$ttsreverse ? $lastptn : $mreplies - $lastptn) . qq~\\'" />~; }
 			$pageindex1 = qq~$pagedropindex1</span>~;
 			$pageindex2 = qq~$pagedropindex2</span>~;
 
@@ -309,24 +309,24 @@ sub Display {
 		var pagstart = parseInt(splitparam[3]);
 		//var allpagstart = parseInt(splitparam[3]);
 		if(visel == 'xx' && decparam == '$pagejsindex') visel = '$tstart';
-		var pagedropindex = '<table border="0" cellpadding="0" cellspacing="0"><tr>';
+		var pagedropindex = '<table><tr>';
 		for(i=vistart; i<=viend; i++) {
-			if(visel == pagstart) pagedropindex += '<td class="titlebg" height="14" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: bold;">' + i + '</td>';
-			else pagedropindex += '<td height="14" class="droppages"><a href="$scripturl?num=$viewnum/' + pagstart + '">' + i + '</a></td>';
+			if(visel == pagstart) pagedropindex += '<td class="titlebg" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: bold;">' + i + '</td>';
+			else pagedropindex += '<td class="droppages"><a href="$scripturl?num=$viewnum/' + pagstart + '">' + i + '</a></td>';
 			pagstart ~ . (!$ttsreverse ? '+' : '-') . qq~= maxpag;
 		}
 		~;
 		if ($showpageall) {
 			$pageindexjs .= qq~
 			if (vistart != viend) {
-				if(visel == 'all') pagedropindex += '<td class="titlebg" height="14" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: normal;"><b>$pidtxt{'01'}</b></td>';
-				else pagedropindex += '<td height="14" class="droppages"><a href="$scripturl?num=$viewnum/all">$pidtxt{'01'}</a></td>';
+				if(visel == 'all') pagedropindex += '<td class="titlebg" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: normal;"><b>$pidtxt{'01'}</b></td>';
+				else pagedropindex += '<td class="droppages"><a href="$scripturl?num=$viewnum/all">$pidtxt{'01'}</a></td>';
 			}
 			~;
 		}
 		$pageindexjs .= qq~
-		if(visel != 'xx') pagedropindex += '<td height="14" class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpv$pagedropindexnx</td>';
-		else pagedropindex += '<td height="14" class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpvbl$pagedropindexnxbl</td>';
+		if(visel != 'xx') pagedropindex += '<td class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpv$pagedropindexnx</td>';
+		else pagedropindex += '<td class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpvbl$pagedropindexnxbl</td>';
 		pagedropindex += '</tr></table>';
 		document.getElementById("ViewIndex1").innerHTML=pagedropindex;
 		document.getElementById("ViewIndex1").style.visibility = "visible";
@@ -359,8 +359,7 @@ sub Display {
 	}
 
 	$yymain .= qq~
-	<script language="JavaScript1.2" src="$yyhtml_root/ajax.js" type="text/javascript"></script>
-	<script language="JavaScript1.2" src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
+	<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
 	~;
 
 	# update the .ctb file START
@@ -444,9 +443,9 @@ sub Display {
 		require "$sourcedir/Favorites.pl";
 		$template_favorite = &IsFav($viewnum, (!$ttsreverse ? $start : $mreplies - $start));
 	}
-	$template_threadimage = qq~<a name="top"><img src="$imagesdir/$threadclass.gif" style="vertical-align: middle;" alt="" /></a>~;
+	$template_threadimage = qq~<a id="top"><img src="$imagesdir/$threadclass.gif" alt="" /></a>~;
 	$template_sendtopic = $sendtopicmail ? qq~$menusep<a href="javascript:sendtopicmail($sendtopicmail);">$img{'sendtopic'}</a>~ : '';
-	$template_print = qq~$menusep<a href="$scripturl?action=print;num=$viewnum" target="_blank">$img{'print'}</a>~;
+	$template_print = qq~$menusep<a href="$scripturl?action=print;num=$viewnum" onclick="target='_blank';">$img{'print'}</a>~;
 	if ($has_poll) { require "$sourcedir/Poll.pl"; &display_poll($viewnum); $template_pollmain = qq~$pollmain<br />~; }
 
 	# Load background color list.
@@ -523,22 +522,22 @@ sub Display {
 				$_ =~ /\.(.+?)$/;
 				my $ext = lc($1);
 				unless (exists $attach_gif{$ext}) {
-					$attach_gif{$ext} = ($ext && -e "$forumstylesdir/$useimages/$ext.gif") ? "$ext.gif" : "paperclip.gif";
+					$attach_gif{$ext} = ($ext && -e "$forumstylesdir/$useimages/$ext.gif") ? "$ext.gif" : 'paperclip.gif';
 				}
 				my $filesize = -s "$uploaddir/$_";
 				$urlname = $_;
 				$urlname =~ s/([^A-Za-z0-9])/sprintf("%%%02X", ord($1))/seg;
 				if ($filesize) {
 					if ($_ =~ /\.(bmp|jpe|jpg|jpeg|gif|png)$/i && $amdisplaypics == 1) {
-						$showattach .= qq~<div class="small" style="float:left; margin:8px;"><a href="$scripturl?action=downloadfile;file=$urlname" target="_blank"><img src="$imagesdir/$attach_gif{$ext}" border="0" align="bottom" alt="" /> $_</a> (~ . int($filesize / 1024) . qq~ KB | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> )<br />~ . ($img_greybox ? ($img_greybox == 2 ? qq~<a href="$scripturl?action=downloadfile;file=$urlname" rel="gb_imageset[nice_pics]" title="$_">~ : qq~<a href="$scripturl?action=downloadfile;file=$urlname" rel="gb_image[nice_pics]" title="$_">~) : qq~<a href="$scripturl?action=downloadfile;file=$urlname" target="_blank">~) . qq~<img src="$uploadurl/$_" name="attach_img_resize" alt="$_" title="$_" border="0" style="display:none" /></a></div>\n~;
+						$showattach .= qq~<div class="small" style="float:left; margin:8px;"><a href="$scripturl?action=downloadfile;file=$urlname" onclick="target='_blank';"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $_</a> (~ . int($filesize / 1024) . qq~ KB | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> )<br />~ . ($img_greybox ? ($img_greybox == 2 ? qq~<a href="$scripturl?action=downloadfile;file=$urlname" rel="gb_imageset[nice_pics]" title="$_">~ : qq~<a href="$scripturl?action=downloadfile;file=$urlname" rel="gb_image[nice_pics]" title="$_">~) : qq~<a href="$scripturl?action=downloadfile;file=$urlname" onclick="target='_blank';">~) . qq~<img src="$uploadurl/$_" name="attach_img_resize" alt="$_" title="$_" style="display:none" /></a></div>\n~;
 					} else {
-						$attachment .= qq~<div class="small"><a href="$scripturl?action=downloadfile;file=$urlname"><img src="$imagesdir/$attach_gif{$ext}" border="0" align="bottom" alt="" /> $_</a> (~ . int($filesize / 1024) . qq~ KB | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> )</div>~;
+						$attachment .= qq~<div class="small"><a href="$scripturl?action=downloadfile;file=$urlname"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $_</a> (~ . int($filesize / 1024) . qq~ KB | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> )</div>~;
 					}
 				} else {
-					$attachment .= qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" border="0" align="bottom" alt="" />  $_ ($fatxt{'1'}~ . (exists $attach_count{$_} ? qq~ | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> ~ : '') . qq~)</div>~;
+					$attachment .= qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" />  $_ ($fatxt{'1'}~ . (exists $attach_count{$_} ? qq~ | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> ~ : '') . qq~)</div>~;
 				}
 			}
-			$showattachhr = qq~<hr width="100%" size="1" class="hr" style="margin: 0; margin-top: 5px; margin-bottom: 5px; padding: 0;" />~;
+			$showattachhr = qq~<hr class="hr" style="margin: 0; margin-top: 5px; margin-bottom: 5px; padding: 0;" />~;
 			if ($showattach && $attachment) {
 				$attachment =~ s/<div class="small">/<div class="small" style="margin:8px;">/g;
 			}
@@ -557,11 +556,11 @@ sub Display {
 
 		## moderator alert button!
 		if ($PMenableAlertButton && $PM_level && !$iamadmin && !$iamgmod && !$iammod && (!$iamguest || ($iamguest && $PMAlertButtonGuests))) {
-			$PMAlertButton = qq~$menusep<a href="$scripturl?action=modalert;num=$viewnum;title=PostReply;quote=$counter" onclick="return confirm('$display_txt{'alertmod_confirm'}');">$img{'alertmod'}</a>~;
+			$PMAlertButton = qq~					$menusep<a href="$scripturl?action=modalert;num=$viewnum;title=PostReply;quote=$counter" onclick="return confirm('$display_txt{'alertmod_confirm'}');">$img{'alertmod'}</a>~;
 		}
 		## is member a buddy of mine?
 		if ($buddyListEnabled && !$iamguest && $musername ne $username) {
-			$isbuddy = qq~<br /><img src="$imagesdir/buddylist.gif" border="0" align="middle" alt="$display_txt{'isbuddy'}" title="$display_txt{'isbuddy'}" /> <br />$display_txt{'isbuddy'}~;
+			$isbuddy = qq~<br /><img src="$imagesdir/buddylist.gif" alt="$display_txt{'isbuddy'}" title="$display_txt{'isbuddy'}" /> <br />$display_txt{'isbuddy'}~;
 			$addbuddylink = qq~$menusep<a href="$scripturl?num=$viewnum;action=addbuddy;name=$useraccount{$musername};vpost=$counter">$img{'addbuddy'}</a>~;
 		}
 
@@ -588,7 +587,7 @@ sub Display {
 			if (${$uid.$musername}{'location'}) {
 				$userlocation = ${$uid.$musername}{'location'} . "<br />";
 			}
-			$signature_hr = qq~<hr width="100%" size="1" class="hr" style="margin: 0; margin-top: 5px; margin-bottom: 5px; padding: 0;" />~ if ${$uid.$musername}{'signature'};
+			$signature_hr = qq~<hr class="hr" style="margin: 0; margin-top: 5px; margin-bottom: 5px; padding: 0;" />~ if ${$uid.$musername}{'signature'};
 			$memberinfo = "$memberinfo{$musername}$addmembergroup{$musername}";
 
 			$aimad = ${$uid.$musername}{'aim'} ? qq~$menusep${$uid.$musername}{'aim'}~ : '';
@@ -656,7 +655,7 @@ sub Display {
 			if ($replybutton) {
 				my $quote_mname = $displayname;
 				$quote_mname =~ s/'/\\'/g;
-				$usernamelink = qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote_mname\[/b]\\r\\n\\r\\n'))"><img src="$imagesdir/qquname.gif" border="0" alt="$display_txt{'146n'}" title="$display_txt{'146n'}" /></a> $usernamelink~ if $enable_quickreply && $enable_quoteuser && (!$iamguest || $enable_guestposting);
+				$usernamelink = qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote_mname\[/b]\\r\\n\\r\\n'))"><img src="$imagesdir/qquname.gif" alt="$display_txt{'146n'}" title="$display_txt{'146n'}" /></a> $usernamelink~ if $enable_quickreply && $enable_quoteuser && (!$iamguest || $enable_guestposting);
 
 				if (!$movedflag || $iamadmin || $iamgmod || $iammod) {
 					if ($enable_quickreply) {
@@ -676,15 +675,15 @@ sub Display {
 								}
 								$quickmessage =~ s/<(br|p).*?>/\\r\\n/ig;
 								$quickmessage =~ s/'/\\'/g;
-								$template_quote .= qq~$menusep<a href="javascript:void(quoteSelection('$quote_mname',$viewnum,$counter,$mdate,'$quickmessage'))">$img{'quote'}</a>~;
+								$template_quote .= qq~					$menusep<a href="javascript:void(quoteSelection('$quote_mname',$viewnum,$counter,$mdate,'$quickmessage'))">$img{'quote'}</a>~;
 							} else {
-								$template_quote .= qq~$menusep<a href="javascript:void(quick_quote_confirm('$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;quote=$counter;title=PostReply'))">$img{'quote'}</a>~;
+								$template_quote .= qq~					$menusep<a href="javascript:void(quick_quote_confirm('$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;quote=$counter;title=PostReply'))">$img{'quote'}</a>~;
 							}
 						} else {
-							$template_quote .= qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;quote=$counter;title=PostReply">$img{'quote'}</a>~;
+							$template_quote .= qq~					$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;quote=$counter;title=PostReply">$img{'quote'}</a>~;
 						}
 					} else {
-						$template_quote = qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;quote=$counter;title=PostReply">$img{'quote'}</a>~;
+						$template_quote = qq~					$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;quote=$counter;title=PostReply">$img{'quote'}</a>~;
 					}
 				}
 			}
@@ -710,15 +709,15 @@ sub Display {
 			}
 		}
 
-		$msgimg = qq~<a href="$scripturl?num=$viewnum/$counter#$counter"><img src="$imagesdir/$micon.gif" alt="" border="0" style="vertical-align: middle;" /></a>~;
-		$ipimg = qq~<img src="$imagesdir/ip.gif" alt="" border="0" style="vertical-align: middle;" />~;
+		$msgimg = qq~<a href="$scripturl?num=$viewnum/$counter#$counter"><img src="$imagesdir/$micon.gif" alt="" /></a>~;
+		$ipimg = qq~<img src="$imagesdir/ip.gif" alt="" />~;
 		if ($extendedprofiles) {
 			require "$sourcedir/ExtendedProfiles.pl";
 			$template_ext_prof = &ext_viewinposts($musername);
 		}
 
 		# Jump to the "NEW" Post.
-		$usernamelink = qq~<a name="new"></a>$usernamelink~ if $newestpost && $newestpost == $counter;
+		$usernamelink = qq~<a id="new"></a>$usernamelink~ if $newestpost && $newestpost == $counter;
 
 		$posthandelblock =~ s/({|<)yabb quote(}|>)/$template_quote/g;
 		$posthandelblock =~ s/({|<)yabb modify(}|>)/$template_modify/g;
@@ -805,13 +804,11 @@ sub Display {
 	}
 
 	if ($template_viewers) {
-		$topic_viewers = qq~
-	<tr>
-		<td class="windowbg" valign="middle" align="left">
-			$display_txt{'644'} ($topviewers): $template_viewers
-		</td>
-	</tr>
-~;
+		$topic_viewers = qq~	<tr>
+			<td class="windowbg">
+				$display_txt{'644'} ($topviewers): $template_viewers
+			</td>
+		</tr>~;
 	}
 
 	# Mark as read button has no use in global announcements or for guests
@@ -821,11 +818,11 @@ sub Display {
 
 	# Template it
 
-	$tabsep = qq~<img src="$imagesdir/tabsep211.png" border="0" alt="" style="vertical-align: middle;" />~;
+	$tabsep = qq~<img src="$imagesdir/tabsep211.png" alt="" />~;
 	$yynavback = qq~$tabsep <a href="$scripturl">&#171; $img_txt{'103'}</a> $tabsep $navback $tabsep~;
 	$yynavigation = qq~&rsaquo; $template_cat &rsaquo; $template_board &rsaquo; $msubthread~;
 	# Create link to modify displayed post order if allowed
-	my $curthreadurl = (!$iamguest and $ttsureverse) ? qq~<a title="$display_txt{'reverse'}" href="$scripturl?num=$viewnum;start=~ . (!$ttsreverse ? $mreplies : 0) . qq~;action=~ . ($userthreadpage == 1 ? 'threadpagetext' : 'threadpagedrop') . qq~;reversetopic=$ttsreverse"><img src="$imagesdir/arrow_~ . ($ttsreverse ? 'up' : 'down') . qq~.gif" border="0" alt="" style="vertical-align: middle;" /> $msubthread</a>~ : $msubthread;
+	my $curthreadurl = (!$iamguest and $ttsureverse) ? qq~<a title="$display_txt{'reverse'}" href="$scripturl?num=$viewnum;start=~ . (!$ttsreverse ? $mreplies : 0) . qq~;action=~ . ($userthreadpage == 1 ? 'threadpagetext' : 'threadpagedrop') . qq~;reversetopic=$ttsreverse"><img src="$imagesdir/arrow_~ . ($ttsreverse ? 'up' : 'down') . qq~.gif" alt="" /> $msubthread</a>~ : $msubthread;
 
 	$threadhandellist =~ s/({|<)yabb markunread(}|>)/$mark_unread/g;
 	$threadhandellist =~ s/({|<)yabb reply(}|>)/$replybutton/g;
@@ -881,7 +878,7 @@ sub Display {
 
 	$yymain .= qq~
 	$display_template
-	<script language="JavaScript1.2" type="text/javascript">
+	<script type="text/javascript">
 	<!-- //
 	function uncheckAllBut(counter) {
 		for (var i = 0; i < document.forms["multidel"].length; ++i) {
@@ -915,7 +912,6 @@ sub Display {
 	}
 
 $yymain .= qq~
-
 	$pageindexjs
 	function ListPages(tid) { window.open('$scripturl?action=pages;num='+tid, '', 'menubar=no,toolbar=no,top=50,left=50,scrollbars=yes,resizable=no,width=400,height=300'); }
 	// -->
@@ -937,7 +933,7 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 
 	$yytitle = $msubthread;
 	if ($replybutton and $enable_quickreply) {
-		$yymain =~ s~(<!-- Threads Admin Button Bar start -->.*?</td>)~$1<td align="right">{yabb forumjump}</td>~s;
+		$yymain =~ s~(<!-- Threads Admin Button Bar start -->.*?</td>)~$1<td class="right">{yabb forumjump}</td>~s;
 		require "$sourcedir/Post.pl";
 		$action = 'post';
 		$INFO{'title'} = 'PostReply';
@@ -1025,20 +1021,19 @@ sub SetMsn {
 $msnstyle
 </head>
 <body class="windowbg2" style="margin: 0px; padding: 0px;">
-<table border="0" width="100%" cellspacing="1" cellpadding="4" class="bordercolor">
+<table class="bordercolor pad_4px cs_1px">
 	<tr>
-		<td class="titlebg" align="left" height="22">
-		<img src="$defaultimagesdir/msn.gif" width="16" height="14" alt="" title="" border="0" /> $msntxt{'5'}
+		<td class="titlebg h_22px">
+			<img src="$defaultimagesdir/msn.gif" width="16" height="14" alt="" title="" /> $msntxt{'5'}
 		</td>
-	</tr>
-	<tr>
-		<td class="windowbg" align="left" height="58">
-		<img src="$defaultimagesdir/msn.gif" width="16" height="16" style="vertical-align: middle;" alt="${$uid.$msnname}{'realname'}" title="${$uid.$msnname}{'realname'}" border="0" /> $msnuser<br /><br />
+	</tr><tr>
+		<td class="windowbg" style="height:58px">
+			<img src="$defaultimagesdir/msn.gif" width="16" height="16" alt="${$uid.$msnname}{'realname'}" title="${$uid.$msnname}{'realname'}" /> $msnuser<br /><br />
 		</td>
 	</tr>
 </table>
 
-<script language="JavaScript1.2" type="text/javascript">
+<script type="text/javascript">
 <!--
 function sendmsn(msnto) {
 	var msnControl = new ActiveXObject('Messenger.UIAutomation.1');
@@ -1096,18 +1091,16 @@ sub SetGtalk {
 $gtalkstyle
 </head>
 <body class="windowbg2" style="margin: 0px; padding: 0px;">
-<table border="0" width="100%" cellspacing="1" cellpadding="4" class="bordercolor">
-  <tr>
-    <td class="titlebg" align="left" height="22">
-      <img src="$defaultimagesdir/gtalk2.gif" width="16" height="14" alt="" title="" border="0" />
-       Google Talk
-    </td>
-  </tr>
-  <tr>
-    <td class="windowbg" align="left" height="58">
-      <img src="$defaultimagesdir/gtalk2.gif" width="16" height="14" style="vertical-align: middle;" alt="${$uid.$gtalkname}{'realname'}" title="${$uid.$gtalkname}{'realname'}" border='0' /> $gtalkuser<br /><br />
-    </td>
-  </tr>
+<table class="bordercolor pad_4px cs_1px">
+	<tr>
+		<td class="titlebg h_22px">
+			<img src="$defaultimagesdir/gtalk2.gif" width="16" height="14" alt="" title="" />Google Talk
+		</td>
+	</tr><tr>
+		<td class="windowbg" style="height:58px">
+			<img src="$defaultimagesdir/gtalk2.gif" width="16" height="14" alt="${$uid.$gtalkname}{'realname'}" title="${$uid.$gtalkname}{'realname'}" /> $gtalkuser<br /><br />
+    	</td>
+	</tr>
 </table>
 </body>
 </html>
