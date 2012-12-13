@@ -15,10 +15,10 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.1;
+our $VERSION = 1.3;
 use Time::Local 'timelocal';
 
-$eventcalplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$eventcalplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ($action eq 'detailedversion') { return 1; }
 
 LoadLanguage('EventCal');
@@ -69,13 +69,9 @@ sub get_cal {
 		}
 	}
 
-	#<--------------------------------------------->#
 	# Access check to add events end
-	#<--------------------------------------------->#
 
-	#<--------------------------------------------->#
 	# GoTo Box begin
-	#<--------------------------------------------->#
 
 	if ($INFO{'calgotobox'} == 1) {
 		$goyear = $FORM{'selyear'};
@@ -94,13 +90,9 @@ qq~$scripturl?action=get_cal;calshow=1;calmon=$gomon;calyear=$goyear~;
 		}
 	}
 
-	#<--------------------------------------------->#
 	# GoTo Box end
-	#<--------------------------------------------->#
 
-	#<--------------------------------------------->#
 	# Time/Days begin
-	#<--------------------------------------------->#
 
 	my ($sel_year,$sel_mon,$sel_day);
 	my $event_date = $INFO{'eventdate'};
@@ -557,6 +549,26 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
                 <td class="windowbg2"><span class="small"><label for="verification"><b>$floodtxt{'2'}:</b></label></span></td>
 				<td class="windowbg2">
 				<input type="text" maxlength="30" name="verification" id="verification" size="30" />
+				</td>
+			</tr>
+			</table>\n~;
+		}
+		if ($iamguest && $spam_questions_gp && -e "$langdir/$language/spam.questions") {
+            SpamQuestion();
+            my $verification_question_desc;
+            if ($spam_questions_case) { $verification_question_desc = qq~<br />$var_cal{'verification_question_case'}~; }
+			$YaBBC_calout .= qq~
+			<br /><br /><br />
+			<table>
+            <col style="width:160px" />
+			<tr>
+				<td class="windowbg2 vtop">
+				    <span class="small"><label for="verification_question"><b>$spam_question</b><br />
+				    $var_cal{'verification_question_desc'}$verification_question_desc</label></span>
+				</td>
+				<td class="windowbg2 vtop">
+		            <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" />
+		            <input type="hidden" name="verification_question_id" value="$spam_question_id" />				
 				</td>
 			</tr>
 			</table>\n~;
@@ -1697,6 +1709,7 @@ sub add_cal {
 		require "$sourcedir/Decoder.pl";
         validation_check( $FORM{'verification'} );
 	}
+	if ( $iamguest && $spam_questions_gp && -e "$langdir/$language/spam.questions" ) { SpamQuestionCheck($FORM{'verification_question'},$FORM{'verification_question_id'}); }
 	if (length($FORM{'message'}) > 0) {
 		$calmessage = $FORM{'message'};
         $calmessage =~ s/\|//gxsm;
