@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$dosmiliesplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$dosmiliesplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Main');
@@ -75,7 +75,7 @@ qq~<td><img src="$smiliesurl/$line" id="$name" onclick="javascript:MoreSmilies($
 <style type="text/css">
 td {border: #ccc solid thin; text-align:center; height:50px; width:90px;}
 </style>
-<script language="JavaScript1.2" type="text/javascript">
+<script type="text/javascript">
 <!--
 function AddText(text) {
 	if (window.opener && !window.opener.closed) {
@@ -105,7 +105,9 @@ function MoreSmilies(i) {
 </script>
 </head>
 <body style="background: #$popback; min-width:400px;">
-<p style="color:#$poptext; text-align:center">$smiltxt{'21'}</p><table><tr>~;
+<p style="color:#$poptext; text-align:center">$smiltxt{'21'}</p>
+<table>
+	<tr>~;
 
 	if ($showadded eq 3 || ($showadded eq 2 && $detachblock eq 1)) {
 		$output .= qq~ $moresmilieslist ~;
@@ -137,10 +139,10 @@ sub SmilieIndex {
 			else { $smiliescolor = qq~class="windowbg"~; }
 			if ($SmilieURL[$i] =~ /\//i) { $tmpurl = $SmilieURL[$i]; }
 			else { $tmpurl = qq~$defaultimagesdir/$SmilieURL[$i]~; }
-			$smilieslist .= qq~          <td align="center" valign="middle" height="60" $smiliescolor><img src="$tmpurl" border="0" alt="" onclick='javascript:MoreSmilies($i)' style='cursor:hand' /><br /><font size="1" color="#$poptext">$SmilieDescription[$i]</font></td>\n~;
+			$smilieslist .= qq~          <td class="center h_60px" $smiliescolor><img src="$tmpurl" alt="" onclick='javascript:MoreSmilies($i)' style='cursor:hand' /><br /><font size="1" color="#$poptext">$SmilieDescription[$i]</font></td>\n~;
 			$smilie_url_array .= qq~"$tmpurl", ~;
 			$tmpcode = $SmilieCode[$i];
-			$tmpcode =~ s/\&quot;/"+'"'+"/g;
+			$tmpcode =~ s/\&quot;/"+'"'+"/g; #';
 			&FromHTML($tmpcode);
 			$tmpcode =~ s/&#36;/\$/g;
 			$tmpcode =~ s/&#64;/\@/g;
@@ -157,12 +159,12 @@ sub SmilieIndex {
 			if ($extension =~ /gif/i || $extension =~ /jpg/i || $extension =~ /jpeg/i || $extension =~ /png/i) {
 				if ($line !~ /banner/i) {
 					if ($i % 4 == 0 && $i != 0) {
-						$smilieslist .= qq~      </tr>\n      <tr>\n~;
+						$smilieslist .= qq~      </tr><tr>\n~;
 						$offset++;
 					}
 					if (($i + $offset) % 2 == 0) { $smiliescolor = qq~class="windowbg2"~; }
 					else { $smiliescolor = qq~class="windowbg"~; }
-					$smilieslist .= qq~          <td align="center" valign="middle" height="60" $smiliescolor><img src="$smiliesurl/$line" border="0" alt="" onclick="javascript:MoreSmilies($i)" style="cursor:hand" /><br /><font size="1" color="#$poptext">$line</font></td>\n~;
+					$smilieslist .= qq~          <td class="center h_60px" $smiliescolor><img src="$smiliesurl/$line" alt="" onclick="javascript:MoreSmilies($i)" style="cursor:hand" /><br /><span style="font-size:"xx-small; color:#$poptext">$line</span></td>\n~;
 					$more_smilie_array .= qq~" [smiley=$line]", ~;
 					$i++;
 				}
@@ -172,13 +174,17 @@ sub SmilieIndex {
 	while ($i % 4 != 0) {
 		if (($i + $offset) % 2 == 0) { $smiliescolor = qq~class="windowbg2"~; }
 		else { $smiliescolor = qq~class="windowbg"~; }
-		$smilieslist .= qq~          <td align="center" valign="middle" height="60" $smiliescolor>&nbsp;</td>\n~;
+		$smilieslist .= qq~          <td class="center h_60px" $smiliescolor>&nbsp;</td>\n~;
 		$i++;
 	}
 	$smilie_code_array .= qq~""~;
 	$more_smilie_array .= qq~""~;
-	if (-e "$smiliesdir/banner.gif") { $smiliesheader = qq~<tr><td colspan="4" bgcolor="#$popback" align="center"><img src="$smiliesurl/banner.gif" alt="" /></td></tr>~; }
-	else { $smiliesheader = qq~<tr><td colspan="4" align="center"><b><font size="2">$smiltxt{'21'}</font></b></td></tr>~; }
+	if (-e "$smiliesdir/banner.gif") { $smiliesheader = qq~<tr>
+	<td class="center" style="background-color:#$popback" colspan="4">
+		<img src="$smiliesurl/banner.gif" alt="" />
+	</td>
+</tr>~; }
+	else { $smiliesheader = qq~<tr><td class="center" colspan="4"><b><span style="font-size:small">$smiltxt{'21'}</span></b></td></tr>~; }
 
 	$output = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -186,7 +192,7 @@ sub SmilieIndex {
 <title>$smiltxt{'1'}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
 <link rel="stylesheet" href="$forumstylesurl/$usestyle.css" type="text/css" />
-<script language="JavaScript1.2" type="text/javascript">
+<script type="text/javascript">
 <!--
 function AddText(text) {
 	if (window.opener && !window.opener.closed) {
@@ -215,7 +221,7 @@ function MoreSmilies(i) {
 </script>
 </head>
 <body style="background: #$popback; min-width:400px;">
-    <table border="0" cellpadding="4" cellspacing="1" class="bordercolor">
+    <table class="bordercolor pad_4px cs_1px">
 $smiliesheader
       <tr>
 $smilieslist
