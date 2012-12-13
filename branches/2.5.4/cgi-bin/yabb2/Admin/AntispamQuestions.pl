@@ -220,7 +220,7 @@ sub SpamQuestionsAdd {
       || admin_fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
         1 );
     print {SPAMQUESTIONS} "$date|$spam_question|$spam_answer\n"
-      or croak 'cannot print SPANQUESTIONS';
+      or croak 'cannot print SPAMQUESTIONS';
     fclose(SPAMQUESTIONS);
 
     if ( $action eq 'spam_questions_add' ) {
