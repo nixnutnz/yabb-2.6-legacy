@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision: 1.0 $
+# $Revision: 1.1 $
 
 $threadhandellist = qq~
 	{yabb reply}{yabb poll}{yabb notify}{yabb favorite}{yabb sendtopic}{yabb print}{yabb markunread}
@@ -26,14 +26,14 @@ $display_template = qq~
 <!-- Navigation Bar start -->
 
 <div class="navbarcontainer">
-<table width="100%" border="0">
+<table>
 <tr>
-	<td align="left">
+	<td>
 	<div class="small">
 		{yabb moderators}
 	</div>
 	</td>
-	<td valign="bottom" align="right">
+	<td class="bottom right">
 	<span class="small">
 		&lsaquo; {yabb prev} | {yabb next} &rsaquo;
 	</span>
@@ -55,9 +55,9 @@ $display_template = qq~
 <!-- Threads Button Bar start -->
 
 <div class="displaycontainer">
-<table cellpadding="4" cellspacing="0" border="0" width="100%" align="center">
+<table cellpadding="4" cellspacing="0">
 <tr>
-	<td class="catbg" valign="middle" align="left">
+	<td class="catbg">
 	<div style="float: left; text-align: left;">
 		{yabb pageindex top}
 	</div>
@@ -75,10 +75,10 @@ $display_template = qq~
 <!-- Threads Title Bar start -->
 
 <div class="displaycontainer">
-<table cellpadding="4" cellspacing="0" border="0" width="100%" align="center">
+<table cellpadding="4" cellspacing="0">
 {yabb topicviewers}
 <tr>
-	<td class="titlebg" valign="middle" align="left">
+	<td class="titlebg">
 		{yabb threadimage} {yabb threadurl} ($display_txt{'641'} {yabb views} $display_txt{'642'})
 	</td>
 </tr>
@@ -101,9 +101,9 @@ $display_template = qq~
 
 <div class="displaycontainer">
 <div style="clear: both;"></div>
-<table cellpadding="4" cellspacing="0" border="0" width="100%" align="center">
+<table cellpadding="4" cellspacing="0">
 <tr>
-	<td class="catbg" valign="middle" align="left">
+	<td class="catbg">
 	<div style="float: left; text-align: left;">
 		{yabb pageindex bottom}
 	</div>
@@ -121,9 +121,9 @@ $display_template = qq~
 <!-- Navigation Bar start -->
 
 <div class="navbarcontainer">
-<table width="100%" border="0">
+<table>
 <tr>
-	<td valign="top" align="right">
+	<td class="right vtop">
 	<span class="small">
 		&lsaquo; {yabb prev} | {yabb next} &rsaquo;
 	</span>
@@ -138,9 +138,9 @@ $display_template = qq~
 <!-- Threads Admin Button Bar start -->
 
 <div style="margin: 4px;">
-<table cellpadding="4" cellspacing="1" border="0" width="100%">
+<table cellpadding="4" cellspacing="1">
 <tr>
-	<td align="left" valign="top">
+	<td class="vtop">
 		<span class="small">{yabb adminhandellist}</span>
 	</td>
 </tr>
@@ -165,9 +165,9 @@ $messageclass = "message";
 
 $messageblock = qq~
 <div class="displaycontainer">
-<table cellpadding="4" cellspacing="0" border="0" width="100%" class="bordercolor" align="center" style="table-layout: fixed;">
+<table cellpadding="4" cellspacing="0" class="bordercolor" style="table-layout: fixed;">
 <tr>
-	<td align="left" class="{yabb css}" valign="top" width="140">
+	<td class="{yabb css} vtop" width="140">
 		<a name="{yabb count}"></a>
 		{yabb userlink}
 		<div class="small">
@@ -183,7 +183,7 @@ $messageblock = qq~
 		{yabb isbuddy}
 		</div>
 	</td>
-	<td class="{yabb css}" align="left" valign="top">
+	<td class="{yabb css} vtop">
 		<div style="float: left; width: 99%; padding-top: 2px; padding-bottom: 4px; margin-bottom: 2px;" class="dividerbot">
 		<span class="small" style="float: left; width: 3%; text-align: center; padding: 2px;">{yabb msgimg}</span>
 		<span class="small" style="float: left; width: 46%; vertical-align: middle;">
@@ -200,10 +200,10 @@ $messageblock = qq~
 	</td>
 </tr>
 <tr>
-	<td class="{yabb css}" valign="bottom">
+	<td class="{yabb css} bottom">
 		<a href="#top">$display_txt{'643'}</a>
 	</td>
-	<td class="{yabb css}" align="left" valign="bottom">
+	<td class="{yabb css} bottom">
 		<div class="small" style="float: left; width: 99%; text-align: right;">
 			{yabb modified} &nbsp;
 		</div>
