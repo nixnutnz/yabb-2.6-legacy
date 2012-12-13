@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$decoderplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$decoderplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub scramble {
@@ -95,7 +95,7 @@ sub validation_code {
 	$sessionid = &scramble ($captcha,$masterkey);
 	chomp $sessionid;
 
-	$showcheck .= qq~<img src="$scripturl?action=$randaction;$randaction=$sessionid" border="0" alt="" /><input type="hidden" name="sessionid" value="$sessionid" />~;
+	$showcheck .= qq~<img src="$scripturl?action=$randaction;$randaction=$sessionid" alt="" /><input type="hidden" name="sessionid" value="$sessionid" />~;
 	return $sessionid;
 }
 
