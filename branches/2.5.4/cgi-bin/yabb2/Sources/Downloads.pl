@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$downloadsplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$downloadsplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub DownloadView {
@@ -52,12 +52,11 @@ sub DownloadView {
 </script>
 </head>
 <body>
-<a name="pagetop">&nbsp;</a><br />
+<a id="pagetop">&nbsp;</a><br />
 <div id="maincontainer">
-<div id="container">
-<br />
-<br />~;
-
+	<div id="container">
+	<br />
+	<br />~;
 
 	my $thread = $INFO{'thread'};
 	unless (ref($thread_arrayref{$thread})) {
@@ -83,8 +82,8 @@ sub DownloadView {
 
 	my $colspan = ($iamadmin || $iamgmod) ? 8 : 7;
 	if (!$max) {
-		$viewattachments .= qq~<tr><td align="center" class="windowbg2" colspan="$colspan"><b><i>$fatxt{'48'}</i></b></td></tr>
-	<tr><td align="center" class="catbg" colspan="$colspan"><a href="javascript:try{if(typeof(opener.document)=='object'){throw '1';}else{throw '0';}}catch (e){if(e==1) {opener.location.href='$scripturl?num=$thread';self.close();}else{location.href='$scripturl?num=$thread';}}">$fatxt{'70'} "<i>$threadname</i>"</a> &nbsp; | &nbsp; <a href="javascript:window.close();">$fatxt{'71'}</a></td></tr>~;
+		$viewattachments .= qq~<tr><td class="windowbg2 center" colspan="$colspan"><b><i>$fatxt{'48'}</i></b></td></tr>
+	<tr><td class="catbg center" colspan="$colspan"><a href="javascript:try{if(typeof(opener.document)=='object'){throw '1';}else{throw '0';}}catch (e){if(e==1) {opener.location.href='$scripturl?num=$thread';self.close();}else{location.href='$scripturl?num=$thread';}}">$fatxt{'70'} "<i>$threadname</i>"</a> &nbsp; | &nbsp; <a href="javascript:window.close();">$fatxt{'71'}</a></td></tr>~;
 
 	} else {
 		if ($iamadmin || $iamgmod) {
@@ -160,7 +159,7 @@ sub DownloadView {
 		if ($endpage != $max) { $pageindexadd .= qq~<a href="$scripturl?action=downloadfile;newstart=$lastptn;sort=$sort">$lastpn</a>~; }
 		$pageindex .= $pageindexadd;
 
-		$pageindex = qq~<div class="small" style="text-align: right;">$fatxt{'64'}: $pageindex</div>~;
+		$pageindex = qq~<div class="small right;">$fatxt{'64'}: $pageindex</div>~;
 
 		$numbegin = ($newstart + 1);
 		$numend = ($newstart + 25);
@@ -183,33 +182,31 @@ sub DownloadView {
 			if (length($amthreadsub) > 20) { $amthreadsub = substr($amthreadsub, 0, 20) . "..."; }
 
 			$viewattachments .= qq~<tr>~ . (($iamadmin || $iamgmod) ? qq~
-		<td class="windowbg2" align="center" valign="middle"><input type="checkbox" name="del_$thread" value="$amfn" /></td>~ : '') . qq~
-		<td class="windowbg2" align="left" valign="middle"><a href="javascript:void(download_file('$amfn'));"> $amfn</a></td>
-		<td class="windowbg2" align="center" valign="middle"><img src="$imagesdir/$attach_gif{$ext}" border="0" align="bottom" alt="" /></td>
-		<td class="windowbg2" align="right" valign="middle">$amkb KB</td>
-		<td class="windowbg2" align="center" valign="middle">$amdate</td>
-		<td class="windowbg2" align="right" valign="middle">$amcount</td>
-		<td class="windowbg2" align="left" valign="middle"><a href="javascript:load_thread('$thread','$amreplies');">$amthreadsub</a></td>
-		<td class="windowbg2" align="center" valign="middle">$amposter</td>
+		<td class="windowbg2 center"><input type="checkbox" name="del_$thread" value="$amfn" /></td>~ : '') . qq~
+		<td class="windowbg2"><a href="javascript:void(download_file('$amfn'));"> $amfn</a></td>
+		<td class="windowbg2 center"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /></td>
+		<td class="windowbg2 right">$amkb KB</td>
+		<td class="windowbg2 center">$amdate</td>
+		<td class="windowbg2 right">$amcount</td>
+		<td class="windowbg2"><a href="javascript:load_thread('$thread','$amreplies');">$amthreadsub</a></td>
+		<td class="windowbg2 center">$amposter</td>
 		</tr>
 		~;
 		}
 
 		$viewattachments .= qq~<tr>~ . (($iamadmin || $iamgmod) ? qq~
-		<td class="catbg" align="center">
+		<td class="catbg center">
 			<input type="checkbox" name="checkall" value="" onclick="if(this.checked){checkAll();}else{uncheckAll();}" />
 		</td>~ : '') . qq~
 		<td class="catbg" colspan="7">
-			<table width="100%">
-			<colgroup>
-				<col width="33%" />
-				<col width="34%" />
-				<col width="33%" />
-			</colgroup>
+			<table>
+				<col style="width:33%" />
+				<col style="width:34%" />
+				<col style="width:33%" />
 				<tr>
-					<td align="left" valign="middle" class="small">~ . (($iamadmin || $iamgmod) ? qq~&lt;= $amv_txt{'38'} &nbsp; <input type="submit" value="$admin_txt{'32'}" class="button" />~ : '&nbsp;') . qq~</td>
-					<td align="center" valign="middle" nowrap="nowrap"> &nbsp; <a href="javascript:load_thread('$thread',0);">$fatxt{'70'} "<i>$threadname</i>"</a> &nbsp; | &nbsp; <a href="javascript:window.close();">$fatxt{'71'}</a> &nbsp; </td>
-					<td align="right" valign="middle" class="small">$pageindex</td>
+					<td class="small">~ . (($iamadmin || $iamgmod) ? qq~&lt;= $amv_txt{'38'} &nbsp; <input type="submit" value="$admin_txt{'32'}" class="button" />~ : '&nbsp;') . qq~</td>
+					<td class="center" style="white-space:nowrap"> &nbsp; <a href="javascript:load_thread('$thread',0);">$fatxt{'70'} "<i>$threadname</i>"</a> &nbsp; | &nbsp; <a href="javascript:window.close();">$fatxt{'71'}</a> &nbsp; </td>
+					<td class="small right">$pageindex</td>
 				</tr>
 			</table>
 		</td>
@@ -228,35 +225,34 @@ sub DownloadView {
 	my $class_sortuser   = $sort =~ /3/   ? 'windowbg2' : 'windowbg';
 
 	$output .= qq~
-<table border="0" cellspacing="1" cellpadding="8" class="bordercolor" align="center" width="90%">
+<table class="bordercolor pad_8px" style="width:90%">
 	<tr>
 		<td class="titlebg" colspan="$colspan">
-		<img src="$imagesdir/xx.gif" alt="" border="0" />&nbsp;<b>$fatxt{'39'}</b>
+			<img src="$imagesdir/xx.gif" alt="" />&nbsp;<b>$fatxt{'39'}</b>
 		</td>
 	</tr><tr>
-		<td class="windowbg" colspan="$colspan" align="center" width="100%">
-		<br />
-		$fatxt{'75'}:<br />
-		"<i>$threadname</i>"<br />
-		<br />
-		<span class="small">$fatxt{'76'}</span>
-		<br />
+		<td class="windowbg center" colspan="$colspan">
+			<br />
+			$fatxt{'75'}:<br />
+			"<i>$threadname</i>"<br />
+			<br />
+			<span class="small">$fatxt{'76'}</span>
+			<br />
 		</td>
 	</tr><tr>
-		<td class="titlebg" colspan="$colspan" width="100%">
-		<div class="small" style="float: left; text-align: left;">$fatxt{'28'} $max $numshow</div>
+		<td class="titlebg" colspan="$colspan">
+			<div class="small" style="float: left; text-align: left;">$fatxt{'28'} $max $numshow</div>
 		$pageindex
 		</td>
-	</tr>
-	<tr>~ . (($iamadmin || $iamgmod) ? qq~
-		<td align="center" class="windowbg"><b>$fatxt{'45'}</b></td>~ : '') . qq~
-		<td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == 7 ? -7 : 7) . qq~';" align="center" class="$class_sortattach" style="border: 0px; border-style: outset; cursor: pointer;"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == 7 ? -7 : 7) . qq~"><b>$fatxt{'40'}</b></a></td>
-		<td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == 100 ? -100 : 100) . qq~';" align="center" class="$class_sorttype" style="border: 0px; border-style: outset; cursor: pointer;"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == 100 ? -100 : 100) . qq~"><b>$fatxt{'40a'}</b></a></td>
-		<td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == -5 ? 5 : -5) . qq~';" align="center" class="$class_sortsize" style="border: 0px; border-style: outset; cursor: pointer;"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == -5 ? 5 : -5) . qq~"><b>$fatxt{'41'}</b></a></td>
-		<td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == -6 ? 6 : -6) . qq~';" align="center" class="$class_sortdate" style="border: 0px; border-style: outset; cursor: pointer;"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == -6 ? 6 : -6) . qq~"><b>$fatxt{'43'}</b></a></td>
-		<td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == -8 ? 8 : -8) . qq~';" align="center" class="$class_sorcount" style="border: 0px; border-style: outset; cursor: pointer;"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == -8 ? 8 : -8) . qq~"><b>$fatxt{'41a'}</b></a></td>
-		<td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == 1 ? -1 : 1) . qq~';" align="center" class="$class_sortsubj" style="border: 0px; border-style: outset; cursor: pointer;"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == 1 ? -1 : 1) . qq~"><b>$fatxt{'44'}</b></a></td>
-		<td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == 3 ? -3 : 3) . qq~';" align="center" class="$class_sortuser" style="border: 0px; border-style: outset; cursor: pointer;"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == 3 ? -3 : 3) . qq~"><b>$fatxt{'42'}</b></a></td>
+	</tr><tr>~ . (($iamadmin || $iamgmod) ? qq~
+		<td class="windowbg center"><b>$fatxt{'45'}</b></td>~ : '') . qq~
+		<td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == 7 ? -7 : 7) . qq~';" class="$class_sortattach" style="border: 0px; border-style: outset; cursor: pointer; text-align:center"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == 7 ? -7 : 7) . qq~"><b>$fatxt{'40'}</b></a></td>
+		<td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == 100 ? -100 : 100) . qq~';" class="$class_sorttype" style="border: 0px; border-style: outset; cursor: pointer;; text-align:center"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == 100 ? -100 : 100) . qq~"><b>$fatxt{'40a'}</b></a></td>
+		<td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == -5 ? 5 : -5) . qq~';" class="$class_sortsize" style="border: 0px; border-style: outset; cursor: pointer; text-align:center;"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == -5 ? 5 : -5) . qq~"><b>$fatxt{'41'}</b></a></td>
+		<td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == -6 ? 6 : -6) . qq~';" class="$class_sortdate" style="border: 0px; border-style: outset; cursor: pointer; text-align:center;"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == -6 ? 6 : -6) . qq~"><b>$fatxt{'43'}</b></a></td>
+		<td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == -8 ? 8 : -8) . qq~';" class="$class_sorcount" style="border: 0px; border-style: outset; cursor: pointer; text-align:center;"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == -8 ? 8 : -8) . qq~"><b>$fatxt{'41a'}</b></a></td>
+		<td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == 1 ? -1 : 1) . qq~';" class="$class_sortsubj" style="border: 0px; border-style: outset; cursor: pointer; text-align:center;"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == 1 ? -1 : 1) . qq~"><b>$fatxt{'44'}</b></a></td>
+		<td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == 3 ? -3 : 3) . qq~';" class="$class_sortuser" style="border: 0px; border-style: outset; cursor: pointer; text-align:center;"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~ . ($sort == 3 ? -3 : 3) . qq~"><b>$fatxt{'42'}</b></a></td>
 	</tr>
 	$viewattachments
 </table>~;
