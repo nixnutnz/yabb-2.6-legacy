@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$menulngver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$menulngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 
 if (!$language){$language = $lang;}
 
@@ -81,7 +81,7 @@ if (!$language){$language = $lang;}
 'sendpm' => 'Send message',
 'sendbmess' => 'Send broadcast message',
 'birthdaylist' => 'Birthday List',
-'eventcal' => 'Event Calendar',
+'eventcal' => 'Calendar',
 );
 
 %img_polltxt = (
