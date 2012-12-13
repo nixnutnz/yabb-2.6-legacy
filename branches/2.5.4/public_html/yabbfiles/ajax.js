@@ -3,16 +3,16 @@
 //##############################################################################
 //# YaBB: Yet another Bulletin Board                                           #
 //# Open-Source Community Software for Webmasters                              #
-//# Version:        YaBB 3.0 Beta                                              #
-//# Packaged:       October 05, 2010                                           #
+//# Version:        YaBB 2.5.4                                                 #
+//# Packaged:       January 1, 2013                                            #
 //# Distributed by: http://www.yabbforum.com                                   #
 //# ===========================================================================#
-//# Copyright (c) 2000-2010 YaBB (www.yabbforum.com) - All Rights Reserved.    #
+//# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.    #
 //# Software by:  The YaBB Development Team                                    #
 //#               with assistance from the YaBB community.                     #
 //##############################################################################
 
-//YaBB 3.0 Beta $Revision: 378 $
+//YaBB 2.5.4 Alpha $Revision: 1.1 $
 
 var xmlHttp = null;
 var browser = '';
@@ -116,10 +116,10 @@ function MarkAllAsRead(url,imgdir) {
 	document.getElementById("ImageAlertIFrame").style.display = "none";
 	imagebody.style.display = "block";
 	
-	var insert = '<div class="tabtitle" style="width: 100%; height: 30%; text-align: center">'+markallreadlang+'</div><div class="windowbg2" style="width: 100%; height: 70%; text-align: center"><img style="margin:4px" src="' + imagedir + '/Rotate.gif">';
+	var insert = '<div class="tabtitle" style="width: 100%; height: 25%; text-align: center">'+markallreadlang+'</div><div class="windowbg2" style="width: 100%; height: 75%; text-align: center"><img style="margin:4px" src="' + imagedir + '/Rotate.gif">';
 	imagebody.innerHTML = insert;
-	imagebody.style.width = "300px";
-	imagebody.style.height = "60px";
+	imagebody.style.width = "200px";
+	imagebody.style.height = "100px";
 	imagealert.style.display = "block";
 	imagealert.style.visibility = "visible";
 	imagealert.style.marginLeft = "-60px";
@@ -131,7 +131,7 @@ function MarkAllAsRead(url,imgdir) {
 
 function MarkFinished() {
 	if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete") { 
-		var insert = '<div class="tabtitle" style="width: 100%; height: 30%; text-align: center">'+markfinishedlang+'</div><div class="windowbg2" style="width: 100%; height: 70%; text-align: center"><img style="margin: 4px;" src="' + imagedir + '/Rotate.gif">';
+		var insert = '<div class="tabtitle" style="width: 100%; height: 25%; text-align: center">'+markfinishedlang+'</div><div class="windowbg2" style="width: 100%; height: 75%; text-align: center"><img style="margin: 4px;" src="' + imagedir + '/Rotate.gif">';
 		document.getElementById("ImageAlertBody").innerHTML = insert;
 		setTimeout("HideAlert()",1500);
 		var images = document.getElementsByTagName("img");
@@ -184,10 +184,10 @@ function AddRemFav(url,imgdir) {
 		if(document.postmodify != null) { document.postmodify.favorite.checked = ''; }
 	}
 	
-	var insert = '<div class="tabtitle" style="width: 100%; height: 30%; text-align: center">'+text+'</div><div class="windowbg2" style="width: 100%; height: 70%; text-align: center"><img style="margin:4px" src="' + imagedir + '/Rotate.gif"></div>';
+	var insert = '<div class="tabtitle" style="width: 100%; height: 25%; text-align: center">'+text+'</div><div class="windowbg2" style="width: 100%; height: 75%; text-align: center"><img style="margin:4px" src="' + imagedir + '/Rotate.gif"></div>';
 	imagebody.innerHTML = insert;
 	imagebody.style.width = "200px";
-	imagebody.style.height = "60px";
+	imagebody.style.height = "100px";
 	imagealert.style.display = "block";
 	imagealert.style.visibility = "visible";
 	imagealert.style.marginLeft = "-60px";
@@ -201,7 +201,7 @@ function AddRemFav(url,imgdir) {
 
 function AddRemFavFinished() {
 	if (xmlHttp.readyState == 4 || xmlHttp.readyState == "complete") {
-		document.getElementById("ImageAlertBody").innerHTML = '<div class="tabtitle" style="width: 100%; height: 30%; text-align: center">'+markfinishedlang+'</div><div class="windowbg2" style="width: 100%; height: 70%; text-align: center">&nbsp;</div>';
+		document.getElementById("ImageAlertBody").innerHTML = '<div class="tabtitle" style="width: 100%; height: 25%; text-align: center">'+markfinishedlang+'</div><div class="windowbg2" style="width: 100%; height: 75%; text-align: center">&nbsp;</div>';
 		setTimeout("HideAlert()",1500);
 		var links = document.getElementById("favlink");
 		var href = links.href;
@@ -213,16 +213,16 @@ function AddRemFavFinished() {
 			links.setAttribute("href",href.replace("remfav","addfav"));
 			links.innerHTML = addlink;
 		}
-		var links = document.getElementById("favlink2");
-		var href = links.href;
-		if (href.match("addfav")) {
-			links.setAttribute("href",href.replace("addfav","remfav"));
-			links.innerHTML = remlink;
-		}
-		if (href.match("remfav")) {
-			links.setAttribute("href",href.replace("remfav","addfav"));
-			links.innerHTML = addlink;
-		}
+//		var links = document.getElementById("favlink2");
+//		var href = links.href;
+//		if (href.match("addfav")) {
+//			links.setAttribute("href",href.replace("addfav","remfav"));
+//			links.innerHTML = remlink;
+//		}
+//		if (href.match("remfav")) {
+//			links.setAttribute("href",href.replace("remfav","addfav"));
+//			links.innerHTML = addlink;
+//		}
  	}
 }
 
@@ -248,10 +248,10 @@ function Notify(url,imgdir) {
 		if(document.postmodify != null) { document.postmodify.notify.checked = ''; }
 	}
 	
-	var insert = '<div class="tabtitle" style="width: 100%; height: 30%; text-align: center">'+text+'</div><div class="windowbg2" style="width: 100%; height: 70%; text-align: center"><img style="margin:4px" src="' + imagedir + '/Rotate.gif"></div>';
+	var insert = '<div class="tabtitle" style="width: 100%; height: 25%; text-align: center">'+text+'</div><div class="windowbg2" style="width: 100%; height: 75%; text-align: center"><img style="margin:4px" src="' + imagedir + '/Rotate.gif"></div>';
 	imagebody.innerHTML = insert;
 	imagebody.style.width = "200px";
-	imagebody.style.height = "60px";
+	imagebody.style.height = "100px";
 	imagealert.style.display = "block";
 	imagealert.style.visibility = "visible";
 	imagealert.style.marginLeft = "-60px";
@@ -264,7 +264,7 @@ function Notify(url,imgdir) {
 
 function NotifyFinished() {
 	if (xmlHttp.readyState == 4 || xmlHttp.readyState == "complete") {
-		document.getElementById("ImageAlertBody").innerHTML = '<div class="tabtitle" style="width: 100%; height: 30%; text-align: center">'+markfinishedlang+'</div><div class="windowbg2" style="width: 100%; height: 70%; text-align: center">&nbsp;</div>';
+		document.getElementById("ImageAlertBody").innerHTML = '<div class="tabtitle" style="width: 100%; height: 25%; text-align: center">'+markfinishedlang+'</div><div class="windowbg2" style="width: 100%; height: 75%; text-align: center">&nbsp;</div>';
 		setTimeout("HideAlert()",1500);
 		var links = document.getElementById("notifylink");
 		var href = links.href;
@@ -374,10 +374,10 @@ function sendIM(url,params) {
 	document.getElementById("ImageAlertIFrame").style.display = "none";
 	imagebody.style.display = "block";
 	
-	var insert = '<div class="tabtitle" style="width: 100%; height: 30%; text-align: center">Sending PM</div><div class="windowbg2" style="width: 100%; height: 70%; text-align: center"><img style="margin:4px" src="' + imagedir + '/Rotate.gif">';
+	var insert = '<div class="tabtitle" style="width: 100%; height: 25%; text-align: center">Sending PM</div><div class="windowbg2" style="width: 100%; height: 75%; text-align: center"><img style="margin:4px" src="' + imagedir + '/Rotate.gif">';
 	imagebody.innerHTML = insert;
 	imagebody.style.width = "200px";
-	imagebody.style.height = "60px";
+	imagebody.style.height = "100px";
 	imagealert.style.display = "block";
 	imagealert.style.visibility = "visible";
 	imagealert.style.marginLeft = "-60px";
@@ -393,7 +393,7 @@ function sendIM(url,params) {
 
 function IMComplete() {
 	if (xmlHttp.readyState == 4 || xmlHttp.readyState == "complete") {
-		var insert = '<div class="tabtitle" style="width: 100%; height: 30%; text-align: center">Complete</div><div class="windowbg2" style="width: 100%; height: 70%; text-align: center"><img style="margin: 4px;" src="' + imagedir + '/Rotate.gif">';
+		var insert = '<div class="tabtitle" style="width: 100%; height: 25%; text-align: center">Complete</div><div class="windowbg2" style="width: 100%; height: 75%; text-align: center"><img style="margin: 4px;" src="' + imagedir + '/Rotate.gif">';
 		document.getElementById("ImageAlertBody").innerHTML = insert;
 		setTimeout("HideAlert()",1500);
  	}
@@ -498,7 +498,7 @@ function SubBoardList(url,board,cat,subcount,index) {
 	document.getElementById("subdropbutton_"+board).src = closesubbutton;
 	
 	if (cachedSubBoards[board] == null) {
-		document.getElementById("dropsub_" + subboardOpen).innerHTML = '<img src="'+loadimg+'" border="0" />';
+		document.getElementById("dropsub_" + subboardOpen).innerHTML = '<img src="'+loadimg+'" />';
 		document.getElementById("dropsubrow_" + subboardOpen).style.display = "table-row";
 		
 		xmlHttp.onreadystatechange=SubBoardListFinished;
