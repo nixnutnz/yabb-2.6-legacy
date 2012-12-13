@@ -11,367 +11,440 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use CGI::Carp qw(fatalsToBrowser);
+our $VERSION = 1.1;
 
-$membergroupsplver = 'YaBB 2.5.4 $Revision: 1.0 $';
-if ($action eq 'detailedversion') { return 1; }
+$membergroupsplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+if ( $action eq 'detailedversion' ) { return 1; }
 
 sub EditMemberGroups {
-	&is_admin_or_gmod;
-	my ($MemStatAdmin, $MemStarNumAdmin, $MemStarPicAdmin, $MemTypeColAdmin, $noshowAdmin, $viewpermsAdmin, $topicpermsAdmin, $replypermsAdmin, $pollpermsAdmin, $attachpermsAdmin, undef) = split(/\|/, $Group{'Administrator'});
-	my ($MemStatGMod, $MemStarNumGMod, $MemStarPicGMod, $MemTypeColGMod, $noshowGMod, $viewpermsGMod, $topicpermsGMod, $replypermsGMod, $pollpermsGMod, $attachpermsGMod, undef) = split(/\|/, $Group{'Global Moderator'});
-	my ($MemStatMod, $MemStarNumMod, $MemStarPicMod, $MemTypeColMod, $noshowMod, $viewpermsMod, $topicpermsMod, $replypermsMod, $pollpermsMod, $attachpermsMod, undef) = split(/\|/, $Group{'Moderator'});
-	my $noshowAdmin = ($noshowAdmin == 1) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
-	my $noshowGMod = ($noshowGMod == 1) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
-	my $noshowMod = ($noshowMod == 1) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
-	my $adminpi = &permImage($viewpermsAdmin, $topicpermsAdmin, $replypermsAdmin, $pollpermsAdmin, $attachpermsAdmin);
-	my $gmodpi = &permImage($viewpermsGMod,  $topicpermsGMod, $replypermsGMod, $pollpermsGMod, $attachpermsGMod);
-	my $modpi = &permImage($viewpermsMod, $topicpermsMod, $replypermsMod, $pollpermsMod, $attachpermsMod);
+    is_admin_or_gmod();
+    my (
+        $MemStatAdmin,     $MemStarNumAdmin, $MemStarPicAdmin,
+        $MemTypeColAdmin,  $noshowAdmin,     $viewpermsAdmin,
+        $topicpermsAdmin,  $replypermsAdmin, $pollpermsAdmin,
+        $attachpermsAdmin, undef
+    ) = split /\|/xsm, $Group{'Administrator'};
+    my (
+        $MemStatGMod,   $MemStarNumGMod,  $MemStarPicGMod, $MemTypeColGMod,
+        $noshowGMod,    $viewpermsGMod,   $topicpermsGMod, $replypermsGMod,
+        $pollpermsGMod, $attachpermsGMod, undef
+    ) = split /\|/xsm, $Group{'Global Moderator'};
+    my (
+        $MemStatMod,   $MemStarNumMod,  $MemStarPicMod, $MemTypeColMod,
+        $noshowMod,    $viewpermsMod,   $topicpermsMod, $replypermsMod,
+        $pollpermsMod, $attachpermsMod, undef
+    ) = split /\|/xsm, $Group{'Moderator'};
+    $noshowAdmin =
+      ( $noshowAdmin == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
+    $noshowGMod =
+      ( $noshowGMod == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
+    $noshowMod =
+      ( $noshowMod == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
+    my $adminpi = permImage(
+        $viewpermsAdmin, $topicpermsAdmin, $replypermsAdmin,
+        $pollpermsAdmin, $attachpermsAdmin
+    );
+    my $gmodpi = permImage(
+        $viewpermsGMod, $topicpermsGMod, $replypermsGMod,
+        $pollpermsGMod, $attachpermsGMod
+    );
+    my $modpi = permImage(
+        $viewpermsMod, $topicpermsMod, $replypermsMod,
+        $pollpermsMod, $attachpermsMod
+    );
 
-	$yymain .= qq~
- <div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-   <table width="100%" cellspacing="1" cellpadding="4">
-     <tr valign="middle">
-       <td align="left" class="titlebg">
-<img src="$imagesdir/guest.gif" alt="" border="0" />&nbsp;<b>$admin_txt{'8'}</b>
-	   </td>
-     </tr>
-     <tr valign="middle">
-       <td align="left" class="windowbg2"><br />
-		$admin_txt{'11'}<br /><br />
-	   </td>
-     </tr>
-   </table>
- </div>
-
-<br />
-
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-<table width="100%" cellspacing="1" cellpadding="4">
-	<tr valign="middle">
-		<td align="left" class="titlebg" colspan="6">
-		<img src="$imagesdir/guest.gif" alt="" border="0" />&nbsp;<b>$admin_txt{'12'}</b>
-		</td>
-	</tr>
-	<tr valign="middle">
-		<td align="center" class="catbg" width="25%"><b>$amgtxt{'03'}</b></td>
-		<td align="center" class="catbg" width="15%"><b>$amgtxt{'19'}</b></td>
-		<td align="center" class="catbg" width="10%"><b>$amgtxt{'08'}</b></td>
-		<td align="center" class="catbg" width="25%"><b>$amgtxt{'01'}</b></td>
-		<td align="center" class="catbg" width="10%"><b>$admin_txt{'53'}</b></td>
-		<td align="center" class="catbg" width="15%"><b>&nbsp;</b></td>
-	</tr>
-	<tr valign="middle">
-		<td align="center" class="windowbg2">$MemStatAdmin</td>
-		<td align="center" class="windowbg2"><img src="$imagesdir/$MemStarPicAdmin" /> x $MemStarNumAdmin</td>~;
-
-	if ($MemTypeColAdmin) {
-		$thecolname = &hextoname($MemTypeColAdmin);
-		$yymain .= qq~
-		<td align="center" class="windowbg2"><span style="color:$MemTypeColAdmin">$thecolname</span></td>~;
-	} else {
-		$yymain .= qq~
-		<td align="center" class="windowbg2" width="10%">&nbsp;</td>~;
-	}
-	$yymain .= qq~
-		<td align="center" class="windowbg2">$noshowAdmin</td>
-		<td align="center" class="windowbg2"><a href="$adminurl?action=editgroup;group=Administrator">$admin_txt{'53'}</a></td>
-		<td align="center" class="windowbg2">&nbsp;</td>
-	</tr>
-	<tr valign="middle">
-		<td align="center" class="windowbg2">$MemStatGMod</td>
-		<td align="center" class="windowbg2"><img src="$imagesdir/$MemStarPicGMod" /> x $MemStarNumGMod</td>~;
-	if ($MemTypeColGMod) {
-		$thecolname = &hextoname($MemTypeColGMod);
-		$yymain .= qq~
-		<td align="center" class="windowbg2"><span style="color:$MemTypeColGMod">$thecolname</span></td>~;
-	} else {
-		$yymain .= qq~
-		<td align="center" class="windowbg2" width="10%">&nbsp;</td>~;
-	}
-	$yymain .= qq~
-		<td align="center" class="windowbg2">$noshowGMod</td>
-		<td align="center" class="windowbg2"><a href="$adminurl?action=editgroup;group=Global Moderator">$admin_txt{'53'}</a></td>
-		<td align="center" class="windowbg2">&nbsp;</td>
-	</tr>
-	<tr valign="middle">
-		<td align="center" class="windowbg2">$MemStatMod</td>
-		<td align="center" class="windowbg2"><img src="$imagesdir/$MemStarPicMod" /> x $MemStarNumMod</td>~;
-
-	if ($MemTypeColMod) {
-		$thecolname = &hextoname($MemTypeColMod);
-		$yymain .= qq~
-		<td align="center" class="windowbg2"><span style="color:$MemTypeColMod">$thecolname</span></td>~;
-	} else {
-		$yymain .= qq~
-		<td align="center" class="windowbg2" width="10%">&nbsp;</td>~;
-	}
-	$yymain .= qq~
-		<td align="center" class="windowbg2">$noshowMod</td>
-		<td align="center" class="windowbg2"><a href="$adminurl?action=editgroup;group=Moderator">$admin_txt{'53'}</a></td>
-		<td align="center" class="windowbg2">&nbsp;</td>
-	</tr>
-</table>
+    $yymain .= qq~
+<div class="bordercolor rightboxdiv">
+	<table class="cs_1px pad_4px">
+    	<tr>
+    		<td class="titlebg">
+				<img src="$imagesdir/guest.gif" alt="" />&nbsp;<b>$admin_txt{'8'}</b>
+	   		</td>
+     	</tr><tr>
+       		<td class="windowbg2">
+       			<br />
+				$admin_txt{'11'}
+				<br /><br />
+	   		</td>
+     	</tr>
+	</table>
 </div>
+<br />
+<div class="bordercolor rightboxdiv">
+	<table class="cs_1px pad_4px">
+    	<col class="w_25pc" />
+    	<col class="w_15pc" />
+    	<col class="w_10pc" />
+    	<col class="w_25pc" />
+    	<col class="w_10pc" />
+    	<col class="w_15pc" />
+		<tr>
+			<td class="titlebg" colspan="6">
+				<img src="$imagesdir/guest.gif" alt="" />&nbsp;<b>$admin_txt{'12'}</b>
+			</td>
+		</tr><tr>
+			<td class="catbg center"><b>$amgtxt{'03'}</b></td>
+			<td class="catbg center"><b>$amgtxt{'19'}</b></td>
+			<td class="catbg center"><b>$amgtxt{'08'}</b></td>
+			<td class="catbg center"><b>$amgtxt{'01'}</b></td>
+			<td class="catbg center"><b>$admin_txt{'53'}</b></td>
+			<td class="catbg center"><b>&nbsp;</b></td>
+		</tr><tr>
+			<td class="windowbg2 center">$MemStatAdmin</td>
+			<td class="windowbg2 center"><img src="$imagesdir/$MemStarPicAdmin" /> x $MemStarNumAdmin</td>~;
 
+    if ($MemTypeColAdmin) {
+        $thecolname = hextoname($MemTypeColAdmin);
+        $yymain .= qq~
+			<td class="windowbg2 center"><span style="color:$MemTypeColAdmin">$thecolname</span></td>~;
+    }
+    else {
+        $yymain .= q~
+			<td class="windowbg2 center">&nbsp;</td>~;
+    }
+    $yymain .= qq~
+			<td class="windowbg2 center">$noshowAdmin</td>
+			<td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Administrator">$admin_txt{'53'}</a></td>
+			<td class="windowbg2 center">&nbsp;</td>
+		</tr><tr>
+			<td class="windowbg2 center">$MemStatGMod</td>
+			<td class="windowbg2 center"><img src="$imagesdir/$MemStarPicGMod" /> x $MemStarNumGMod</td>~;
+    if ($MemTypeColGMod) {
+        $thecolname = hextoname($MemTypeColGMod);
+        $yymain .= qq~
+			<td class="windowbg2 center"><span style="color:$MemTypeColGMod">$thecolname</span></td>~;
+    }
+    else {
+        $yymain .= q~
+			<td class="windowbg2 center">&nbsp;</td>~;
+    }
+    $yymain .= qq~
+			<td class="windowbg2 center">$noshowGMod</td>
+			<td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Global Moderator">$admin_txt{'53'}</a></td>
+			<td class="windowbg2 center">&nbsp;</td>
+		</tr><tr>
+			<td class="windowbg2 center">$MemStatMod</td>
+			<td class="windowbg2 center"><img src="$imagesdir/$MemStarPicMod" /> x $MemStarNumMod</td>~;
+
+    if ($MemTypeColMod) {
+        $thecolname = hextoname($MemTypeColMod);
+        $yymain .= qq~
+			<td class="windowbg2 center"><span style="color:$MemTypeColMod">$thecolname</span></td>~;
+    }
+    else {
+        $yymain .= q~
+			<td class="windowbg2 center">&nbsp;</td>~;
+    }
+    $yymain .= qq~
+			<td class="windowbg2 center">$noshowMod</td>
+			<td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Moderator">$admin_txt{'53'}</a></td>
+			<td class="windowbg2 center">&nbsp;</td>
+		</tr>
+	</table>
+</div>
 <br />
 ~;
 
-	my $colspan = 6;
-	my $width1 = '25%';
-	my $width2 = '10%';
-	my $width3 = '15%';
-	if ($addmemgroup_enabled > 0) {
-		$additional_tablehead = qq~<td align="center" class="catbg" width="15%"><b>$amgtxt{'83'}</b></td>~;
-		$colspan = 7;
-		$width1 = '20%';
-		$width2 = '5%';
-		$width3 = '10%';
-	}
-	my $reorderlink = "";
-	if ($#nopostorder) {
-		$reorderlink = qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
-	}
+    my $colspan = 6;
+    my $width1  = 'w_25pc';
+    my $width2  = 'w_10pc';
+    my $width3  = 'w_15pc';
+    if ( $addmemgroup_enabled > 0 ) {
+        $additional_tablehead =
+          qq~<td class="catbg center w_15pc"><b>$amgtxt{'83'}</b></td>~;
+        $colspan = 7;
+        $width1  = 'w_20pc';
+        $width2  = 'w_5pc';
+        $width3  = 'w_10pc';
+    }
+    my $reorderlink = q{};
+    if ($#nopostorder) {
+        $reorderlink =
+qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
+    }
 
-	$yymain .= qq~
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-<table width="100%" cellspacing="1" cellpadding="4">
-	<tr valign="middle">
-		<td align="left" class="titlebg" colspan="$colspan">
-		<img src="$imagesdir/guest.gif" alt="" border="0" />&nbsp;<b>$amgtxt{'37'} (<a href="$adminurl?action=editgroup">$admintxt{'18c'}</a>$reorderlink)</b>
-		</td>
-	</tr>
-	<tr valign="middle">
-		<td align="center" class="catbg" width="25%"><b>$amgtxt{'03'}</b></td>
-		<td align="center" class="catbg" width="15%"><b>$amgtxt{'19'}</b></td>
-		<td align="center" class="catbg" width="10%"><b>$amgtxt{'08'}</b></td>
-		<td align="center" class="catbg" width="$width1"><b>$amgtxt{'01'}</b></td>
-		$additional_tablehead
-		<td align="center" class="catbg" width="$width2"><b>$admin_txt{'53'}</b></td>
-		<td align="center" class="catbg" width="$width3"><b>$admin_txt{'54'}</b></td>
-	</tr>~;
+    $yymain .= qq~
+<div class="bordercolor rightboxdiv">
+	<table class="cs_1px pad_4px">
+		<tr>
+			<td class="titlebg" colspan="$colspan">
+				<img src="$imagesdir/guest.gif" alt="" />&nbsp;<b>$amgtxt{'37'} (<a href="$adminurl?action=editgroup">$admintxt{'18c'}</a>$reorderlink)</b>
+			</td>
+		</tr><tr>
+			<td class="catbg center w_25pc"><b>$amgtxt{'03'}</b></td>
+			<td class="catbg center w_15pc"><b>$amgtxt{'19'}</b></td>
+			<td class="catbg center w_10pc"><b>$amgtxt{'08'}</b></td>
+			<td class="catbg center $width1"><b>$amgtxt{'01'}</b></td>
+			$additional_tablehead
+			<td class="catbg center $width2"><b>$admin_txt{'53'}</b></td>
+			<td class="catbg center $width3"><b>$admin_txt{'54'}</b></td>
+		</tr>~;
 
-	$count = 0;
-	foreach (@nopostorder) {
-		($title, $stars, $starpic, $color, $noshow, $viewperms, $topicperms, $replyperms, $pollperms, $attachperms, $additional) = split(/\|/, $NoPost{$_});
-		$permimage = "";
-		$permimage = &permImage($viewperms, $topicperms, $replyperms, $pollperms, $attachperms);
-		$noshow = ($noshow == 1) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
-		$additional = ($additional == 0) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
-		if (!$stars) { $stars = "0"; }
-		$yymain .= qq~
-	<tr>
-		<td align="center" class="windowbg2">$title</td>
-		<td align="center" class="windowbg2"><img src="$imagesdir/$starpic" /> x $stars</td>~;
+    $count = 0;
+    foreach (@nopostorder) {
+        (
+            $title,     $stars,       $starpic,    $color,
+            $noshow,    $viewperms,   $topicperms, $replyperms,
+            $pollperms, $attachperms, $additional
+        ) = split /\|/xsm, $NoPost{$_};
+        $permimage = q{};
+        $permimage =
+          permImage( $viewperms, $topicperms, $replyperms, $pollperms,
+            $attachperms );
+        $noshow = ( $noshow == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
+        $additional =
+          ( $additional == 0 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
+        if ( !$stars ) { $stars = '0'; }
+        $yymain .= qq~<tr>
+			<td class="windowbg2 center">$title</td>
+			<td class="windowbg2 center"><img src="$imagesdir/$starpic" /> x $stars</td>~;
 
-		if ($color) {
-			$thecolname = &hextoname($color);
-			$yymain .= qq~
-		<td align="center" class="windowbg2"><span style="color:$color">$thecolname</span></td>~;
-		} else {
-			$yymain .= qq~
-		<td align="center" class="windowbg2">&nbsp;</td>~;
-		}
+        if ($color) {
+            $thecolname = hextoname($color);
+            $yymain .= qq~
+			<td class="windowbg2 center"><span style="color:$color">$thecolname</span></td>~;
+        }
+        else {
+            $yymain .= q~
+			<td class="windowbg2 center">&nbsp;</td>~;
+        }
 
-		$yymain .= qq~
-		<td align="center" class="windowbg2">$noshow</td>~;
+        $yymain .= qq~
+			<td class="windowbg2 center">$noshow</td>~;
 
-		if ($addmemgroup_enabled > 0) {
-			$yymain .= qq~
-		<td align="center" class="windowbg2">$additional</td>~;
-		}
+        if ( $addmemgroup_enabled > 0 ) {
+            $yymain .= qq~
+			<td class="windowbg2 center">$additional</td>~;
+        }
 
-		$yymain .= qq~
-		<td align="center" class="windowbg2"><a href="$adminurl?action=editgroup;group=NP|$_">$admin_txt{'53'}</a></td>
-		<td align="center" class="windowbg2"><a href="$adminurl?action=delgroup;group=NP|$_">$admin_txt{'54'}</a></td>
-	</tr>~;
-		$count++;
-	}
+        $yymain .= qq~
+			<td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=NP|$_">$admin_txt{'53'}</a></td>
+			<td class="windowbg2 center"><a href="$adminurl?action=delgroup;group=NP|$_">$admin_txt{'54'}</a></td>
+		</tr>~;
+        $count++;
+    }
 
-	if ($count == 0) {
-		$yymain .= qq~
-	<tr>
-		<td align="center" class="windowbg2" colspan="6">$amgtxt{'35'}</td>
-	</tr>~;
-	}
+    if ( $count == 0 ) {
+        $yymain .= qq~<tr>
+			<td class="windowbg2 center" colspan="6">$amgtxt{'35'}</td>
+		</tr>~;
+    }
 
-	$yymain .= qq~
-</table>
+    $yymain .= qq~
+	</table>
 </div>
-
 <br />
+<div class="bordercolor rightboxdiv">
+	<table class="cs_1px pad_4px">
+    	<col class="w_25pc" />
+    	<col class="w_15pc" />
+    	<col class="w_10pc" />
+    	<col class="w_25pc" />
+    	<col class="w_10pc" />
+    	<col class="w_15pc" />
+		<tr>
+			<td class="titlebg" colspan="6">
+				<img src="$imagesdir/guest.gif" alt="" />&nbsp;<b>$amgtxt{'40'}&nbsp;(<a href="$adminurl?action=editgroup1">$admintxt{'18c'}</a>)</b>
+			</td>
+		</tr><tr>
+			<td class="catbg center"><b>$amgtxt{'03'}</b></td>
+			<td class="catbg center"><b>$amgtxt{'19'}</b></td>
+			<td class="catbg center"><b>$amgtxt{'08'}</b></td>
+			<td class="catbg center"><b>$admin_txt{'21'}</b></td>
+			<td class="catbg center"><b>$admin_txt{'53'}</b></td>
+			<td class="catbg center"><b>$admin_txt{'54'}</b></td>
+		</tr>~;
 
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-<table width="100%" cellspacing="1" cellpadding="4">
-	<tr valign="middle">
-		<td align="left" class="titlebg" colspan="6">
-		<img src="$imagesdir/guest.gif" alt="" border="0" />&nbsp;<b>$amgtxt{'40'}&nbsp;(<a href="$adminurl?action=editgroup1">$admintxt{'18c'}</a>)</b>
-		</td>
-	</tr>
-	<tr valign="middle">
-		<td align="center" class="catbg" width="25%"><b>$amgtxt{'03'}</b></td>
-		<td align="center" class="catbg" width="15%"><b>$amgtxt{'19'}</b></td>
-		<td align="center" class="catbg" width="10%"><b>$amgtxt{'08'}</b></td>
-		<td align="center" class="catbg" width="25%"><b>$admin_txt{'21'}</b></td>
-		<td align="center" class="catbg" width="10%"><b>$admin_txt{'53'}</b></td>
-		<td align="center" class="catbg" width="15%"><b>$admin_txt{'54'}</b></td>
-	</tr>~;
+    my $count = 0;
+    foreach ( reverse sort { $a <=> $b } keys %Post ) {
+        my (
+            $title,     $stars,       $starpic,    $color,
+            $noshow,    $viewperms,   $topicperms, $replyperms,
+            $pollperms, $attachperms, undef
+        ) = split /\|/xsm, $Post{$_};
 
-	my $count = 0;
-	foreach (sort { $b <=> $a } keys %Post) {
-		my ($title, $stars, $starpic, $color, $noshow, $viewperms, $topicperms, $replyperms, $pollperms, $attachperms, undef) = split(/\|/, $Post{$_});
+        $permimage = q{};
+        $permimage =
+          permImage( $viewperms, $topicperms, $replyperms, $pollperms,
+            $attachperms );
+        $noshow = ( $noshow == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
+        if ( !$stars )             { $stars   = '0'; }
+        if ( $starpic !~ /\//xsm ) { $starpic = "$imagesdir/$starpic"; }
+        $yymain .= qq~<tr>
+			<td class="windowbg2 center">$title</td>
+			<td class="windowbg2 center"><img src="$starpic" /> x $stars</td>~;
 
-		$permimage = "";
-		$permimage = &permImage($viewperms, $topicperms, $replyperms, $pollperms, $attachperms);
-		$noshow    = ($noshow == 1) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
-		if (!$stars) { $stars = "0"; }
-		if ($starpic !~ /\//) { $starpic = "$imagesdir/$starpic"; }
-		$yymain .= qq~
-	<tr>
-		<td align="center" class="windowbg2" width="25%">$title</td>
-		<td align="center" class="windowbg2" width="15%"><img src="$starpic" /> x $stars</td>~;
+        if ($color) {
+            $thecolname = hextoname($color);
+            $yymain .= qq~
+			<td class="windowbg2 center"><span style="color: $color;">$thecolname</span></td>~;
+        }
+        else {
+            $yymain .= q~
+			<td class="windowbg2 center">&nbsp;</td>~;
+        }
 
-		if ($color) {
-			$thecolname = &hextoname($color);
-			$yymain .= qq~
-		<td align="center" class="windowbg2" width="10%"><span style="color: $color;">$thecolname</span></td>~;
-		} else {
-			$yymain .= qq~
-		<td align="center" class="windowbg2" width="10%">&nbsp;</td>~;
-		}
+        $yymain .= qq~
+			<td class="windowbg2 center">$_</td>
+			<td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=P|$_">$admin_txt{'53'}</a></td>
+			<td class="windowbg2 center"><a href="$adminurl?action=delgroup;group=P|$_">$admin_txt{'54'}</a></td>
+		</tr>~;
+        $count++;
+    }
 
-		$yymain .= qq~
-		<td align="center" class="windowbg2" width="25%">$_</td>
-		<td align="center" class="windowbg2" width="10%"><a href="$adminurl?action=editgroup;group=P|$_">$admin_txt{'53'}</a></td>
-		<td align="center" class="windowbg2" width="15%"><a href="$adminurl?action=delgroup;group=P|$_">$admin_txt{'54'}</a></td>
-	</tr>~;
-		$count++;
-	}
-
-	if ($count == 0) {
-		$yymain .= qq~
-	<tr>
-		<td class="windowbg2" colspan="6">$amgtxt{'36'}</td>
-	</tr>~;
-	}
-	$yymain .= qq~
-</table>
+    if ( $count == 0 ) {
+        $yymain .= qq~<tr>
+			<td class="windowbg2" colspan="6">$amgtxt{'36'}</td>
+		</tr>~;
+    }
+    $yymain .= q~
+	</table>
 </div>
 ~;
 
-	$yytitle = $admin_txt{'8'};
-	$action_area = 'modmemgr';
+    $yytitle     = $admin_txt{'8'};
+    $action_area = 'modmemgr';
 
-	&AdminTemplate;
+    AdminTemplate();
+    return;
 }
 
 sub hextoname {
-	$colorname = $_[0];
-	$colorname =~ s~aqua|#00FFFF~$amgtxt{'56'}~i;
-	$colorname =~ s~black|#000000~$amgtxt{'57'}~i;
-	$colorname =~ s~blue|#0000FF~$amgtxt{'58'}~i;
-	$colorname =~ s~fuchsia|#FF00FF~$amgtxt{'59'}~i;
-	$colorname =~ s~gray|#808080~$amgtxt{'60'}~i;
-	$colorname =~ s~green|#008000~$amgtxt{'61'}~i;
-	$colorname =~ s~lime|#00FF00~$amgtxt{'62'}~i;
-	$colorname =~ s~maroon|#800000~$amgtxt{'63'}~i;
-	$colorname =~ s~navy|#000080~$amgtxt{'64'}~i;
-	$colorname =~ s~olive|#808000~$amgtxt{'65'}~i;
-	$colorname =~ s~purple|#800080~$amgtxt{'66'}~i;
-	$colorname =~ s~red|#FF0000~$amgtxt{'67'}~i;
-	$colorname =~ s~silver|#C0C0C0~$amgtxt{'68'}~i;
-	$colorname =~ s~teal|#008080~$amgtxt{'69'}~i;
-	$colorname =~ s~white|#FFFFFF~$amgtxt{'70'}~i;
-	$colorname =~ s~yellow|#FFFF00~$amgtxt{'71'}~i;
-	$colorname =~ s~#DEB887~$amgtxt{'75'}~i;
-	$colorname =~ s~#FFD700~$amgtxt{'76'}~i;
-	$colorname =~ s~#FFA500~$amgtxt{'77'}~i;
- 	$colorname =~ s~#A0522D~$amgtxt{'78'}~i;
-	$colorname =~ s~#87CEEB~$amgtxt{'79'}~i;
-	$colorname =~ s~#6A5ACD~$amgtxt{'80'}~i;
-	$colorname =~ s~#4682B4~$amgtxt{'81'}~i;
-	$colorname =~ s~#9ACD32~$amgtxt{'82'}~i;
-	return $colorname;
+    ($colorname) = @_;
+    $colorname =~ s/aqua|#00FFFF/$amgtxt{'56'}/ism;
+    $colorname =~ s/black|#000000/$amgtxt{'57'}/ism;
+    $colorname =~ s/blue|#0000FF/$amgtxt{'58'}/ism;
+    $colorname =~ s/fuchsia|#FF00FF/$amgtxt{'59'}/ism;
+    $colorname =~ s/gray|#808080/$amgtxt{'60'}/ism;
+    $colorname =~ s/green|#008000/$amgtxt{'61'}/ism;
+    $colorname =~ s/lime|#00FF00/$amgtxt{'62'}/ism;
+    $colorname =~ s/maroon|#800000/$amgtxt{'63'}/ism;
+    $colorname =~ s/navy|#000080/$amgtxt{'64'}/ism;
+    $colorname =~ s/olive|#808000/$amgtxt{'65'}/ism;
+    $colorname =~ s/purple|#800080/$amgtxt{'66'}/ism;
+    $colorname =~ s/red|#FF0000/$amgtxt{'67'}/ism;
+    $colorname =~ s/silver|#C0C0C0/$amgtxt{'68'}/ism;
+    $colorname =~ s/teal|#008080/$amgtxt{'69'}/ism;
+    $colorname =~ s/white|#FFFFFF/$amgtxt{'70'}/ism;
+    $colorname =~ s/yellow|#FFFF00/$amgtxt{'71'}/ism;
+    $colorname =~ s/#DEB887/$amgtxt{'75'}/ism;
+    $colorname =~ s/#FFD700/$amgtxt{'76'}/ism;
+    $colorname =~ s/#FFA500/$amgtxt{'77'}/ism;
+    $colorname =~ s/#A0522D/$amgtxt{'78'}/ism;
+    $colorname =~ s/#87CEEB/$amgtxt{'79'}/ism;
+    $colorname =~ s/#6A5ACD/$amgtxt{'80'}/ism;
+    $colorname =~ s/#4682B4/$amgtxt{'81'}/ism;
+    $colorname =~ s/#9ACD32/$amgtxt{'82'}/ism;
+    return $colorname;
 }
 
 sub editAddGroup {
-	&is_admin_or_gmod;
-	if ($INFO{'group'}) {
-		$viewtitle = $admintxt{'18a'};
-		($type, $element) = split(/\|/, $INFO{'group'});
-		if ($element ne '') {
-			if ($type eq 'P') {
-				$posts = $element;
-				($title, $stars, $starpic, $color, $noshow, $viewperms, $topicperms, $replyperms, $pollperms, $attachperms, $additional) = split(/\|/, $Post{$element});
-			} else {
-				$noposts = $element;
-				$choosable = 1;
-				($title, $stars, $starpic, $color, $noshow, $viewperms, $topicperms, $replyperms, $pollperms, $attachperms, $additional) = split(/\|/, $NoPost{$element});
-			}
-		} else {
-			($title, $stars, $starpic, $color, $noshow, $viewperms, $topicperms, $replyperms, $pollperms, $attachperms, $additional) = split(/\|/, $Group{$INFO{'group'}});
-		}
-	} else {
-		$viewtitle = $admintxt{'18b'};
-		$title = '';
-		$stars = '';
-		$starpic = '';
-		$color = '';
-		$posts = '';
-		$noposts = 1;
-		foreach (sort { $a <=> $b } keys %NoPost) {
-			$noposts = $_ + 1;
-		}
-	}
+    is_admin_or_gmod();
+    if ( $INFO{'group'} ) {
+        $viewtitle = $admintxt{'18a'};
+        ( $type, $element ) = split /\|/xsm, $INFO{'group'};
+        if ( $element ne q{} ) {
+            if ( $type eq 'P' ) {
+                $posts = $element;
+                (
+                    $title,     $stars,       $starpic,    $color,
+                    $noshow,    $viewperms,   $topicperms, $replyperms,
+                    $pollperms, $attachperms, $additional
+                ) = split /\|/xsm, $Post{$element};
+            }
+            else {
+                $noposts   = $element;
+                $choosable = 1;
+                (
+                    $title,     $stars,       $starpic,    $color,
+                    $noshow,    $viewperms,   $topicperms, $replyperms,
+                    $pollperms, $attachperms, $additional
+                ) = split /\|/xsm, $NoPost{$element};
+            }
+        }
+        else {
+            (
+                $title,     $stars,       $starpic,    $color,
+                $noshow,    $viewperms,   $topicperms, $replyperms,
+                $pollperms, $attachperms, $additional
+            ) = split /\|/xsm, $Group{ $INFO{'group'} };
+        }
+    }
+    else {
+        $viewtitle = $admintxt{'18b'};
+        $title     = q{};
+        $stars     = q{};
+        $starpic   = q{};
+        $color     = q{};
+        $posts     = q{};
+        $noposts   = 1;
+        foreach ( sort { $a <=> $b } keys %NoPost ) {
+            $noposts = $_ + 1;
+        }
+    }
 
-	if ($stars !~ /\A[0-9]+\Z/) { $stars = 0; }
+    if ( $stars !~ /\A[0-9]+\Z/xsm ) { $stars = 0; }
 
-	$otherdisable = qq~ disabled="disabled"~;
+    $otherdisable = q~ disabled="disabled"~;
 
-	# Get star selected if needed.
-	if    ($starpic eq "staradmin.gif")  { $stars1 = "selected=\"selected\"" }
-	elsif ($starpic eq "stargmod.gif")   { $stars2 = "selected=\"selected\"" }
-	elsif ($starpic eq "starmod.gif")    { $stars3 = "selected=\"selected\"" }
-	elsif ($starpic eq "starblue.gif")   { $stars4 = "selected=\"selected\"" }
-	elsif ($starpic eq "starsilver.gif") { $stars5 = "selected=\"selected\"" }
-	elsif ($starpic eq "stargold.gif")   { $stars6 = "selected=\"selected\"" }
-	elsif ($starpic eq "")               { $stars1 = "selected=\"selected\"" }
-	else { $stars7 = "selected=\"selected\""; $pick = $starpic; $otherdisable = ""; }
-	my $starurl = ($starpic !~ m~http://~ ? "$imagesdir/" : "") . ($starpic ? $starpic : "blank.gif");
+    # Get star selected if needed.
+    my @starsgif = (
+        q{},            'staradmin.gif',  'stargmod.gif', 'starmod.gif',
+        'starblue.gif', 'starsilver.gif', 'stargold.gif',
+    );
+    my @stara = ();
+    $stara[1]     = q{ selected="selected"};
+    $stara[7]     = q{ selected="selected"};
+    $pick         = $starpic;
+    $otherdisable = q{};
 
-	$color =~ s/\#//g;
+    foreach my $i ( 1 .. 6 ) {
+        if ( $starpic eq $starsgif[$i] ) {
+            $stara[$i] = q{ selected="selected"};
+        }
+    }
+    my $starurl =
+        ( $starpic !~ m{http://}xsm ? "$imagesdir/" : q{} )
+      . ( $starpic                  ? $starpic      : 'blank.gif' );
 
-	$pc = qq~ checked="checked"~;
-	$pd = "";
-	$pt = "";
+    $color =~ s/\#//gxsm;
 
-	if ($noshow) { $pc = ''; }
-	if ($additional) { $admg = qq~ checked="checked"~; }
+    $pc = q~ checked="checked"~;
+    $pd = q{};
+    $pt = q{};
 
-	if ($posts eq "" && $action ne "editgroup1") { $post2 = qq~ checked="checked"~; $pt = qq~ disabled="disabled"~; }
-	else { $post1 = qq~ checked="checked"~; $pd = qq~ disabled="disabled"~; }
+    if ($noshow)     { $pc   = q{}; }
+    if ($additional) { $admg = q~ checked="checked"~; }
 
-	if ($viewperms == 1) { $vc  = qq~ checked="checked"~; }
-	if ($topicperms == 1) { $tc  = qq~ checked="checked"~; }
-	if ($replyperms == 1) { $rc  = qq~ checked="checked"~; }
-	if ($pollperms == 1) { $poc = qq~ checked="checked"~; }
-	if ($attachperms == 1) { $ac  = qq~ checked="checked"~; }
+    if ( $posts eq q{} && $action ne 'editgroup1' ) {
+        $post2 = q{ checked="checked"};
+        $pt    = q{ disabled="disabled"};
+    }
+    else { $post1 = q~ checked="checked"~; $pd = q~ disabled="disabled"~; }
 
-	$yymain .= qq~
+    if ( $viewperms == 1 )   { $vc  = q~ checked="checked"~; }
+    if ( $topicperms == 1 )  { $tc  = q~ checked="checked"~; }
+    if ( $replyperms == 1 )  { $rc  = q~ checked="checked"~; }
+    if ( $pollperms == 1 )   { $poc = q~ checked="checked"~; }
+    if ( $attachperms == 1 ) { $ac  = q~ checked="checked"~; }
+
+    $yymain .= qq~
 
 <form name="groups" action="$adminurl?action=editAddGroup2" method="post">
 <input type="hidden" name="original" value="$INFO{'group'}" />
 <input type="hidden" name="origin" value="$action" />
 
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-<table width="100%" cellspacing="1" cellpadding="4">
-	<tr valign="middle">
-		<td align="left" class="titlebg" colspan="2">
-		<img src="$imagesdir/preferences.gif" alt="" border="0" /> <b>$viewtitle</b>
+<div class="bordercolor rightboxdiv">
+<table class="cs_1px pad_4px">
+    <col style="width:40%" />
+	<tr>
+		<td class="titlebg" colspan="2">
+		<img src="$imagesdir/preferences.gif" alt="" /> <b>$viewtitle</b>
 		</td>
-	</tr>
-	<tr valign="middle">
-		<td class="windowbg" width="40%"><label for="title">$amgtxt{'51'}:</label></td>
-		<td class="windowbg2" width="60%"><input type="text" name="title" id="title" value="$title" /></td>
+	</tr><tr>
+		<td class="windowbg"><label for="title">$amgtxt{'51'}:</label></td>
+		<td class="windowbg2"><input type="text" name="title" id="title" value="$title" /></td>
 	</tr><tr>
 		<td class="windowbg"><label for="numstars">$amgtxt{'05'}</label></td>
 		<td class="windowbg2"><input type="text" name="numstars" id="numstars" size="2" value="$stars" /></td>
@@ -379,18 +452,18 @@ sub editAddGroup {
 		<td class="windowbg"><label for="starsadmin">$amgtxt{'38'}:</label></td>
 		<td class="windowbg2">
 			<select name="starsadmin" id="starsadmin" onchange="stars(this.value); showimage();">
-			<option value="staradmin.gif" $stars1>$amgtxt{'20'}</option>
-			<option value="stargmod.gif" $stars2>$amgtxt{'21'}</option>
-			<option value="starmod.gif" $stars3>$amgtxt{'22'}</option>
-			<option value="starblue.gif" $stars4>$amgtxt{'23'}</option>
-			<option value="starsilver.gif" $stars5>$amgtxt{'24'}</option>
-			<option value="stargold.gif" $stars6>$amgtxt{'25'}</option>
-			<option value="other" $stars7>$amgtxt{'26'}</option>
+            	<option value="staradmin.gif" $stara[1]>$amgtxt{'20'}</option>
+                <option value="stargmod.gif" $stara[2]>$amgtxt{'21'}</option>
+                <option value="starmod.gif" $stara[3]>$amgtxt{'22'}</option>
+                <option value="starblue.gif" $stara[4]>$amgtxt{'23'}</option>
+                <option value="starsilver.gif" $stara[5]>$amgtxt{'24'}</option>
+                <option value="stargold.gif" $stara[6]>$amgtxt{'25'}</option>
+                <option value="other" $stara[7]>$amgtxt{'26'}</option>
 			</select>
 			&nbsp;
 			<label for="otherstar"><b>$amgtxt{'26'}</b></label> <input type="text" name="otherstar" id="otherstar" onchange="showimage();" value="$pick"$otherdisable />
 			&nbsp;
-			<img src="$starurl" name="starpic" border="0" alt="" />
+			<img src="$starurl" name="starpic" alt="" />
 		</td>
 	</tr><tr>
 		<td class="windowbg"><label for="color">$amgtxt{'08'}:</label></td>
@@ -422,21 +495,23 @@ sub editAddGroup {
 			<option value="4682B4">$amgtxt{'81'}</option>
 			<option value="9ACD32">$amgtxt{'82'}</option>
 			</select> &nbsp;
-			<span id="grpcolor"~ . ($color ne '' ? qq* style="color: #$color;"* : '') . qq~><label for="color2"><b>$amgtxt{'08'}</b></label></span>
+			<span id="grpcolor"~
+      . ( $color ne q{} ? qq* style="color: #$color;"* : q{} )
+      . qq~><label for="color2"><b>$amgtxt{'08'}</b></label></span>
 			#<input type="text" name="color2" id="color2" size="6" value="$color" maxlength="6" onkeyup="viscolor(this.value);" /> &nbsp;
-			<img src="$imagesdir/palette1.gif" style="cursor: pointer" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" align="top" alt="" border="0" />
+			<img src="$imagesdir/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
 		</td>
 	</tr>~;
 
-	# Get color selected
-	$yymain =~ s/(<option value="$color")/$1 selected="selected"/;
+    # Get color selected
+    $yymain =~ s/(<option value="$color")/$1 selected="selected"/sm;
 
-	unless (exists $Group{$INFO{'group'}}) {
-		$yymain .= qq~
-	<tr>
+    if ( !exists $Group{ $INFO{'group'} } ) {
+        $yymain .= qq~<tr>
 		<td class="windowbg"><label for="postindepend">$amgtxt{'39a'}</label></td>
 		<td class="windowbg2">
-			<input type="radio" name="postdepend" id="postindepend" value="No" $post2 class="windowbg2" style="border: 0px; vertical-align: middle;" onclick="depend(this.value)" /><br />
+            <input type="radio" name="postdepend" id="postindepend" value="No" $post2 class="windowbg2" style="border: 0px; vertical-align: middle;" onclick="depend(this.value)" />
+            <br />
 			<label for="viewpublic"><b>$amgtxt{'42'}?</b>
 			<input type="checkbox" name="viewpublic" id="viewpublic" value="1"$pc$pd style="vertical-align: middle;" /> <br />$amgtxt{'43'}</label>
 			<input type="hidden" name="noposts" id="noposts" value="$noposts" />
@@ -444,69 +519,70 @@ sub editAddGroup {
 	</tr><tr>
 		<td class="windowbg"><label for="postdepend">$amgtxt{'39'}</label></td>
 		<td class="windowbg2">
-			<input type="radio" name="postdepend" id="postdepend" value="Yes" $post1 class="windowbg2" style="border: 0px; vertical-align: middle;" onclick="depend(this.value)" /><br />
+			<input type="radio" name="postdepend" id="postdepend" value="Yes" $post1 class="windowbg2" style="border: 0px; vertical-align: middle;" onclick="depend(this.value)" />
+            <br />
 			<label for="posts"><b>$amgtxt{'04'}</b></label> <input type="text" name="posts" id="posts" size="5" value="$posts"$pt style="vertical-align: middle;" />
 		</td>
 	</tr>~;
 
-	} else {
-		$yymain .= qq~
-	<tr>
+    }
+    else {
+        $yymain .= qq~<tr>
 		<td class="windowbg"><label for="viewpublic"><b>$amgtxt{'42'}</b> <br /><b>$amgtxt{'43'}</b></label></td>
 		<td class="windowbg2">
 			<input type="checkbox" name="viewpublic" id="viewpublic" value="1"$pc$pd style="vertical-align: middle;" />
 		</td>
 	</tr>~;
-	}
+    }
 
-	if ($addmemgroup_enabled > 0) {
-		if ($choosable || (!$choosable && $action ne 'editgroup1' && !$INFO{'group'})) {
-			$yymain .= qq~
-	<tr>
+    if ( $addmemgroup_enabled > 0 ) {
+        if ( $choosable
+            || ( !$choosable && $action ne 'editgroup1' && !$INFO{'group'} ) )
+        {
+            $yymain .= qq~<tr>
 		<td class="windowbg"><label for="additional">$amgtxt{'83'}</label></td>
 		<td class="windowbg2">
 			<input type="checkbox" name="additional" id="additional" value="1"$admg style="vertical-align: middle;" /> <br /><label for="additional">$amgtxt{'84'}</label>
 		</td>
 	</tr>~;
-		}
-	}
-	unless ($INFO{'group'} eq "Administrator") {
-		$yymain .= qq~
+        }
+    }
+    if ( $INFO{'group'} ne 'Administrator' ) {
+        $yymain .= qq~
 </table>
 </div>
-
 <br />
+<div class="bordercolor rightboxdiv">
+	<table class="cs_1px pad_4px">
+	    <col span="2" class="w_20pc" />
+    	<col style="width:21%" />
+    	<col style="width:19%" />
+    	<col class="w_20pc" />
+		<tr>
+			<td class="titlebg" colspan="5">
+				<img src="$imagesdir/preferences.gif" alt="" /><b>$amgtxt{'44'}</b>
+			</td>
+		</tr><tr>
+			<td class="catbg center"><label for="view"><span class="small">$amgtxt{'45'} $amgtxt{'46'}</span></label></td>
+			<td class="catbg center"><label for="topics"><span class="small">$amgtxt{'45'} $amgtxt{'47'}</span></label></td>
+			<td class="catbg center"><label for="reply"><span class="small">$amgtxt{'45'} $amgtxt{'48'}</span></label></td>
+			<td class="catbg center"><label for="polls"><span class="small">$amgtxt{'45'} $amgtxt{'49'}</span></label></td>
+			<td class="catbg center"><label for="attach"><span class="small">$amgtxt{'45'} $amgtxt{'50'}</span></label></td>
+		</tr><tr>
+			<td class="windowbg2 center"><span class="small"><input type="checkbox" name="view" id="view" value="1"$vc /></span></td>
+			<td class="windowbg2 center"><span class="small"><input type="checkbox" name="topics" id="topics" value="1"$tc /></span></td>
+			<td class="windowbg2 center"><span class="small"><input type="checkbox" name="reply" id="reply" value="1"$rc /></span></td>
+			<td class="windowbg2 center"><span class="small"><input type="checkbox" name="polls" id="polls" value="1"$poc /></span></td>
+			<td class="windowbg2 center"><span class="small"><input type="checkbox" name="attach" id="attach" value="1"$ac /></span></td>
+		</tr>~;
+    }
 
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-<table width="100%" cellspacing="1" cellpadding="4">
-	<tr valign="middle">
-		<td align="left" class="titlebg" colspan="5">
-			<img src="$imagesdir/preferences.gif" alt="" border="0" /><b>$amgtxt{'44'}</b>
-		</td>
-	</tr>
-	<tr valign="middle">
-		<td align="center" class="catbg" width="20%"><label for="view"><span class="small">$amgtxt{'45'} $amgtxt{'46'}</span></label></td>
-		<td align="center" class="catbg" width="20%"><label for="topics"><span class="small">$amgtxt{'45'} $amgtxt{'47'}</span></label></td>
-		<td align="center" class="catbg" width="21%"><label for="reply"><span class="small">$amgtxt{'45'} $amgtxt{'48'}</span></label></td>
-		<td align="center" class="catbg" width="19%"><label for="polls"><span class="small">$amgtxt{'45'} $amgtxt{'49'}</span></label></td>
-		<td align="center" class="catbg" width="20%"><label for="attach"><span class="small">$amgtxt{'45'} $amgtxt{'50'}</span></label></td>
-	</tr>
-	<tr valign="middle">
-		<td align="center" class="windowbg2" width="20%"><span class="small"><input type="checkbox" name="view" id="view" value="1"$vc /></span></td>
-		<td align="center" class="windowbg2" width="20%"><span class="small"><input type="checkbox" name="topics" id="topics" value="1"$tc /></span></td>
-		<td align="center" class="windowbg2" width="21%"><span class="small"><input type="checkbox" name="reply" id="reply" value="1"$rc /></span></td>
-		<td align="center" class="windowbg2" width="19%"><span class="small"><input type="checkbox" name="polls" id="polls" value="1"$poc /></span></td>
-		<td align="center" class="windowbg2" width="20%"><span class="small"><input type="checkbox" name="attach" id="attach" value="1"$ac /></span></td>
-	</tr>~;
-	}
-
-	$yymain .= qq~
-	<tr valign="middle">
-		<td align="center" class="catbg" colspan="5">
-			<input type="submit" value="$admin_txt{'10'}" class="button" />
-		</td>
-	</tr>
-</table>
+    $yymain .= qq~<tr>
+			<td class="catbg center" colspan="5">
+				<input type="submit" value="$admin_txt{'10'}" class="button" />
+			</td>
+		</tr>
+	</table>
 </div>
 </form>
 
@@ -563,276 +639,339 @@ function depend(value) {
 }
 //-->
 </script>
-
 ~;
-	$yytitle     = $admin_txt{'8'};
-	$action_area = "modmemgr";
-
-	&AdminTemplate;
+    $yytitle     = $admin_txt{'8'};
+    $action_area = 'modmemgr';
+    AdminTemplate();
+    return;
 }
 
 sub editAddGroup2 {
-	&is_admin_or_gmod;
+    is_admin_or_gmod();
 
-	# Additional checks are:
-	# If post independent -> post dependent, then need to kill off post independent
-	# If post dependent -> post independent, then need to kill off post dependent.
-	# If post dependent -> NEW post dependent, then need to kill off OLD post dependent.
-	$newpostdep = 0;
+# Additional checks are:
+# If post independent -> post dependent, then need to kill off post independent
+# If post dependent -> post independent, then need to kill off post dependent.
+# If post dependent -> NEW post dependent, then need to kill off OLD post dependent.
+    $newpostdep = 0;
 
-	if (!$FORM{'title'}) { &admin_fatal_error("no_group_name"); }
-	$name = $FORM{'title'};
+    if ( !$FORM{'title'} ) { admin_fatal_error('no_group_name'); }
+    $name = $FORM{'title'};
 
-	$name =~ s~&amp;~&~g;
-	$name =~ s~'~&#39;~g;
-	$name =~ s~,~&#44;~g;
-	$name =~ s~\|~&#124;~g;
-	$lcname = lc($name);
+    $name =~ s/&amp;/&/gsm;
+    $name =~ s/'/&#39;/gxsm;     #' make my syntax checker happy;
+    $name =~ s/,/&#44;/gxsm;
+    $name =~ s/\|/&#124;/gxsm;
+    $lcname = lc $name;
 
-	$star       = ($FORM{'starsadmin'} eq "other") ? $FORM{'otherstar'} : $FORM{'starsadmin'};
-	$color      = $FORM{'color2'} ne '' ? "#$FORM{'color2'}" : '';
-	$postdepend = $FORM{'postdepend'};
-	if ($FORM{'posts'} !~ /\d+/ && $postdepend eq "Yes") { &admin_fatal_error("no_post_number"); }
-	else { $posts = $FORM{'posts'} }
-	if ($postdepend eq "No") { $noposts = $FORM{'noposts'}; }
+    $star =
+      ( $FORM{'starsadmin'} eq 'other' )
+      ? $FORM{'otherstar'}
+      : $FORM{'starsadmin'};
+    $color = $FORM{'color2'} ne q{} ? "#$FORM{'color2'}" : q{};
+    $postdepend = $FORM{'postdepend'};
+    if ( $FORM{'posts'} !~ /\d+/xsm && $postdepend eq 'Yes' ) {
+        admin_fatal_error('no_post_number');
+    }
+    else { $posts = $FORM{'posts'} }
+    if ( $postdepend eq 'No' ) { $noposts = $FORM{'noposts'}; }
 
-	if ($FORM{'viewpublic'}) { $viewpublic = 0 }
-	else { $viewpublic = 1 }
-	$view   = $FORM{'view'}   || 0;
-	$topics = $FORM{'topics'} || 0;
-	$reply  = $FORM{'reply'}  || 0;
-	$polls  = $FORM{'polls'}  || 0;
-	$attach = $FORM{'attach'} || 0;
-	$additional = $FORM{'additional'} || 0;
-	$original = $FORM{'original'};
+    if   ( $FORM{'viewpublic'} ) { $viewpublic = 0 }
+    else                         { $viewpublic = 1 }
+    $view       = $FORM{'view'}       || 0;
+    $topics     = $FORM{'topics'}     || 0;
+    $reply      = $FORM{'reply'}      || 0;
+    $polls      = $FORM{'polls'}      || 0;
+    $attach     = $FORM{'attach'}     || 0;
+    $additional = $FORM{'additional'} || 0;
+    $original   = $FORM{'original'};
 
-	# all the checks.
-	if ($original ne '') {
-		($type, $element) = split(/\|/, $original);
+    # all the checks.
+    if ( $original ne q{} ) {
+        ( $type, $element ) = split /\|/xsm, $original;
 
-		# Ignoring Administrative groups.
-		if ($element ne "") {
-			if ($type eq "P") {
-				if ($element != $posts || $postdepend eq "No") {
-					if ($iamgmod) { &admin_fatal_error("newpostdep_gmod"); }
+        # Ignoring Administrative groups.
+        if ( $element ne q{} ) {
+            if ( $type eq 'P' ) {
+                if ( $element != $posts || $postdepend eq 'No' ) {
+                    if ($iamgmod) { admin_fatal_error('newpostdep_gmod'); }
 
-					delete $Post{$element};
-					$newpostdep = 1;
-					$noposts    = 1;
-					foreach (sort { $a <=> $b } keys %NoPost) {
-						$noposts = $_ + 1;
-					}
-				}
-			} elsif ($type eq "NP") {
-				if ($element != $noposts || $postdepend eq "Yes") {
-					delete $NoPost{$element};
-					for ($i = 0; $i < @nopostorder; $i++) {
-						if ($nopostorder[$i] == $element) {
-							splice(@nopostorder,$i,1);
-							last;
-						}
-					}
-				}
-			}
-		}
-	}
+                    delete $Post{$element};
+                    $newpostdep = 1;
+                    $noposts    = 1;
+                    foreach ( sort { $a <=> $b } keys %NoPost ) {
+                        $noposts = $_ + 1;
+                    }
+                }
+            }
+            elsif ( $type eq 'NP' ) {
+                if ( $element != $noposts || $postdepend eq 'Yes' ) {
+                    delete $NoPost{$element};
+                    for my $i ( 0 .. ( @nopostorder - 1 ) ) {
+                        if ( $nopostorder[$i] == $element ) {
+                            splice @nopostorder, $i, 1;
+                            last;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-	if ((split(/\|/, $Group{$original}, 2))[0] ne $name) {
-		if ($lcname eq lc((split(/\|/, $Group{'Administrator'}, 2))[0])) { &admin_fatal_error("double_group", $lcname); }
-		if ($lcname eq lc((split(/\|/, $Group{'Global Moderator'}, 2))[0])) { &admin_fatal_error("double_group", $lcname); }
-		if ($lcname eq lc((split(/\|/, $Group{'Moderator'}, 2))[0])) { &admin_fatal_error("double_group", $lcname); }
-	}
+    if ( ( split /\|/xsm, $Group{$original}, 2 )[0] ne $name ) {
+        if ( $lcname eq lc( ( split /\|/xsm, $Group{'Administrator'}, 2 )[0] ) )
+        {
+            admin_fatal_error( 'double_group', $lcname );
+        }
+        if (
+            $lcname eq lc( ( split /\|/xsm, $Group{'Global Moderator'}, 2 )[0] )
+          )
+        {
+            admin_fatal_error( 'double_group', $lcname );
+        }
+        if ( $lcname eq lc( ( split /\|/xsm, $Group{'Moderator'}, 2 )[0] ) ) {
+            admin_fatal_error( 'double_group', $lcname );
+        }
+    }
 
-	# Check Post Independent
-	foreach my $key (keys %NoPost) {
-		if ($type eq "NP" && $key eq $element) { next; }
-		($value, undef) = split(/\|/, $NoPost{$key}, 2);
-		$lcvalue = lc($value);
-		if ($lcname eq $lcvalue) { &admin_fatal_error("double_group", $lcname); }
-	}
+    # Check Post Independent
+    foreach my $key ( keys %NoPost ) {
+        if ( $type eq 'NP' && $key eq $element ) { next; }
+        ( $value, undef ) = split /\|/xsm, $NoPost{$key}, 2;
+        $lcvalue = lc $value;
+        if ( $lcname eq $lcvalue ) {
+            admin_fatal_error( 'double_group', $lcname );
+        }
+    }
 
-	# Check Post Dependent
-	foreach my $key (keys %Post) {
-		if ($type eq "P" && $key eq $element) { next; }
-		($value, undef) = split(/\|/, $Post{$key}, 2);
-		$lcvalue = lc($value);
-		if ($lcname eq $lcvalue) { &admin_fatal_error("double_group", $lcname); }
-	}
+    # Check Post Dependent
+    foreach my $key ( keys %Post ) {
+        if ( $type eq 'P' && $key eq $element ) { next; }
+        ( $value, undef ) = split /\|/xsm, $Post{$key}, 2;
+        $lcvalue = lc $value;
+        if ( $lcname eq $lcvalue ) {
+            admin_fatal_error( 'double_group', $lcname );
+        }
+    }
 
-	if ($FORM{'numstars'} !~ /\A[0-9]+\Z/) { $FORM{'numstars'} = 0; }
-	# Now, we must deliberate on what type of thing this group is, and add/readd(when editing) it.
-	# First, using original variable, we check to see it's not a perma-group.
-	($type, $element) = split(/\|/, $original);
-	if ($element eq "" && $original ne "") {
-		# We have a perma-group! $type is now equal to the perma group or key for the hash.
-		# add in code to actually set the line.
-		$Group{"$type"} = "$name|$FORM{'numstars'}|$star|$color|$viewpublic|$view|$topics|$reply|$polls|$attach|$additional";
-	} else {
-		# post dependent group.
-		if ($postdepend eq "Yes") {
-			foreach my $key (keys %Post) {
-				if ($posts == $key && ($FORM{'origin'} eq "editgroup1" || $original ne "P|$posts")) {
-					&admin_fatal_error("double_count","($posts)");
-				}
-			}
+    if ( $FORM{'numstars'} !~ /\A[0-9]+\Z/xsm ) { $FORM{'numstars'} = 0; }
 
-			if ($iamgmod) { &admin_fatal_error("newpostdep_gmod"); }
+# Now, we must deliberate on what type of thing this group is, and add/read(when editing) it.
+# First, using original variable, we check to see it's not a perma-group.
+    ( $type, $element ) = split /\|/xsm, $original;
+    if ( $element eq q{} && $original ne q{} ) {
 
-			$Post{$posts} = "$name|$FORM{'numstars'}|$star|$color|0|$view|$topics|$reply|$polls|$attach|$additional";
-			$newpostdep = 1;
+# We have a perma-group! $type is now equal to the perma group or key for the hash.
+# add in code to actually set the line.
+        $Group{"$type"} =
+"$name|$FORM{'numstars'}|$star|$color|$viewpublic|$view|$topics|$reply|$polls|$attach|$additional";
+    }
+    else {
 
-		# no post group
-		} else {
-			$NoPost{$noposts} = "$name|$FORM{'numstars'}|$star|$color|$viewpublic|$view|$topics|$reply|$polls|$attach|$additional";
-			my $isinorder;
-			for ($i = 0; $i < @nopostorder; $i++) {
-				if ($NoPost{$nopostorder[$i]} && $nopostorder[$i] == $noposts) {
-					$isinorder = 1; last;
-				}
-			}
-			if (!$isinorder) { push(@nopostorder, $noposts); }
-		}
-	}
+        # post dependent group.
+        if ( $postdepend eq 'Yes' ) {
+            foreach my $key ( keys %Post ) {
+                if (
+                    $posts == $key
+                    && (   $FORM{'origin'} eq 'editgroup1'
+                        || $original ne "P|$posts" )
+                  )
+                {
+                    admin_fatal_error( 'double_count', "($posts)" );
+                }
+            }
 
-	require "$admindir/NewSettings.pl";
-	&SaveSettingsTo('Settings.pl'); # save @nopostorder, %Group, %NoPost and %Post
+            if ($iamgmod) { admin_fatal_error('newpostdep_gmod'); }
 
-	if ($newpostdep) {
-		$yySetLocation = qq~$adminurl?action=rebuildmemlist;actiononfinish=modmemgr~;
-	} else {
-		$yySetLocation = qq~$adminurl?action=modmemgr~;
-	}
-	&redirectexit;
+            $Post{$posts} =
+"$name|$FORM{'numstars'}|$star|$color|0|$view|$topics|$reply|$polls|$attach|$additional";
+            $newpostdep = 1;
+
+            # no post group
+        }
+        else {
+            $NoPost{$noposts} =
+"$name|$FORM{'numstars'}|$star|$color|$viewpublic|$view|$topics|$reply|$polls|$attach|$additional";
+            my $isinorder;
+            for my $i ( 0 .. ( @nopostorder - 1 ) ) {
+                if (   $NoPost{ $nopostorder[$i] }
+                    && $nopostorder[$i] == $noposts )
+                {
+                    $isinorder = 1;
+                    last;
+                }
+            }
+            if ( !$isinorder ) { push @nopostorder, $noposts; }
+        }
+    }
+
+    require "$admindir/NewSettings.pl";
+    SaveSettingsTo('Settings.pl');
+
+    # save @nopostorder, %Group, %NoPost and %Post
+
+    if ($newpostdep) {
+        $yySetLocation =
+          qq~$adminurl?action=rebuildmemlist;actiononfinish=modmemgr~;
+    }
+    else {
+        $yySetLocation = qq~$adminurl?action=modmemgr~;
+    }
+    redirectexit();
+    return;
 }
 
 sub permImage {
-	my $viewperms, $topicperms, $replyperms, $pollperms, $attachperms;
+    my @x = @_;
+    my $viewperms =
+      ( $x[0] != 1 ) ? qq~<img src="$imagesdir/open.gif" />~ : q{};
+    my $topicperms =
+      ( $x[1] != 1 ) ? qq~<img src="$imagesdir/new_thread.gif" />~ : q{};
+    my $replyperms =
+      ( $x[2] != 1 ) ? qq~<img src="$imagesdir/reply.gif" />~ : q{};
+    my $pollperms =
+      ( $x[3] != 1 ) ? qq~<img src="$imagesdir/poll_create.gif" />~ : q{};
+    my $attachperms =
+      ( $x[4] != 1 ) ? qq~<img src="$imagesdir/paperclip.gif" />~ : q{};
 
-	$viewperms   = ($_[0] != 1) ? "<img src=\"$imagesdir/open.gif\" />"        : "";
-	$topicperms  = ($_[1] != 1) ? "<img src=\"$imagesdir/new_thread.gif\" />"  : "";
-	$replyperms  = ($_[2] != 1) ? "<img src=\"$imagesdir/reply.gif\" />"       : "";
-	$pollperms   = ($_[3] != 1) ? "<img src=\"$imagesdir/poll_create.gif\" />" : "";
-	$attachperms = ($_[4] != 1) ? "<img src=\"$imagesdir/paperclip.gif\" />"   : "";
-
-	return "$viewperms $topicperms $replyperms $pollperms $attachperms";
+    return "$viewperms $topicperms $replyperms $pollperms $attachperms";
 }
 
 sub deleteGroup {
-	if ($INFO{'group'}) {
-		($type, $element) = split(/\|/, $INFO{'group'});
-		if ($element ne "") {
-			if ($type eq "P") {
-				delete $Post{$element};
-			} elsif ($type eq "NP") {
-				delete $NoPost{$element};
-				&KillModeratorGroup($element);
-			}
-		}
-	} else {
-		&admin_fatal_error("no_info");
-	}
+    if ( $INFO{'group'} ) {
+        ( $type, $element ) = split /\|/xsm, $INFO{'group'};
+        if ( $element ne q{} ) {
+            if ( $type eq 'P' ) {
+                delete $Post{$element};
+            }
+            elsif ( $type eq 'NP' ) {
+                delete $NoPost{$element};
+                KillModeratorGroup($element);
+            }
+        }
+    }
+    else {
+        admin_fatal_error('no_info');
+    }
 
-	my @new_nopostorder;
-	foreach (@nopostorder) {
-		if ($NoPost{$_}) { push(@new_nopostorder, $_); }
-	}
-	@nopostorder = @new_nopostorder;
+    my @new_nopostorder;
+    foreach (@nopostorder) {
+        if ( $NoPost{$_} ) { push @new_nopostorder, $_; }
+    }
+    @nopostorder = @new_nopostorder;
 
-	require "$admindir/NewSettings.pl";
-	&SaveSettingsTo('Settings.pl'); # save @nopostorder, %Group, %NoPost and %Post
+    require "$admindir/NewSettings.pl";
+    SaveSettingsTo('Settings.pl');
 
-	$yySetLocation = qq~$adminurl?action=rebuildmemlist;actiononfinish=modmemgr~;
-	&redirectexit;
+    # save @nopostorder, %Group, %NoPost and %Post
+
+    $yySetLocation =
+      qq~$adminurl?action=rebuildmemlist;actiononfinish=modmemgr~;
+    redirectexit();
+    return;
 }
 
 sub reorderGroups {
-	$selsize = 0;
-	foreach (@nopostorder) {
-		if ($NoPost{$_}) {
-			($title, undef) = split(/\|/, $NoPost{$_}, 2);
-			if ($_ eq $INFO{"thegroup"}) {
-				$orderopt .= qq~<option value="$_" selected="selected">$title</option>~;
-			} else {
-				$orderopt .= qq~<option value="$_">$title</option>~;
-			}
-			$selsize++;
-		}
-	}
+    $selsize = 0;
+    foreach (@nopostorder) {
+        if ( $NoPost{$_} ) {
+            ( $title, undef ) = split /\|/xsm, $NoPost{$_}, 2;
+            if ( $_ eq $INFO{'thegroup'} ) {
+                $orderopt .=
+                  qq~<option value="$_" selected="selected">$title</option>~;
+            }
+            else {
+                $orderopt .= qq~<option value="$_">$title</option>~;
+            }
+            $selsize++;
+        }
+    }
 
-	$rowspan = $#nopostorder + 2;
-	$yymain .= qq~
+    $rowspan = $#nopostorder + 2;
+    $yymain .= qq~
 <div class="bordercolor" style="padding: 0px; width: 75%; margin-left: auto; margin-right: auto;">
-<table width="100%" cellspacing="1" cellpadding="4">
-	<tr valign="middle">
-		<td align="left" class="titlebg" colspan="3">
-			<img src="$imagesdir/guest.gif" alt="" border="0" />&nbsp;<b>$admintxt{'reordergroups2'}</b>
-		</td>
-	</tr>
-	<tr valign="middle">
-		<td align="center" class="catbg" width="33%"><b>$amgtxt{'03'}</b></td>
-		<td align="center" class="catbg" width="33%"><b>$amgtxt{'19'}</b></td>
-		<td align="center" class="windowbg" width="34%" rowspan="$rowspan">
-			<form action="$adminurl?action=reordergroup2" method="post" name="groupsorder" style="display: inline; white-space: nowrap;">
-			<select name="ordergroups" class="small" size="$selsize" style="width: 130px;">
-				$orderopt
-			</select><br />
-			<input type="submit" value="$admin_txt{'739a'}" name="moveup" style="font-size: 11px; width: 65px;" class="button" /><input type="submit" value="$admin_txt{'739b'}" name="movedown" style="font-size: 11px; width: 65px;" class="button" />
-			</form>
-		</td>
-	</tr>~;
+	<table class="cs_1px pad_4px">
+    	<col span="2" class="w_33pc" />
+		<tr>
+			<td class="titlebg" colspan="3">
+				<img src="$imagesdir/guest.gif" alt="" />&nbsp;<b>$admintxt{'reordergroups2'}</b>
+			</td>
+		</tr><tr>
+			<td class="catbg center"><b>$amgtxt{'03'}</b></td>
+			<td class="catbg center"><b>$amgtxt{'19'}</b></td>
+			<td class="windowbg center" rowspan="$rowspan">
+				<form action="$adminurl?action=reordergroup2" method="post" name="groupsorder" style="display: inline; white-space: nowrap;">
+					<select name="ordergroups" class="small" size="$selsize" style="width: 130px;">
+						$orderopt
+					</select>
+					<br />
+					<input type="submit" value="$admin_txt{'739a'}" name="moveup" style="font-size: 11px; width: 65px;" class="button" /><input type="submit" value="$admin_txt{'739b'}" name="movedown" style="font-size: 11px; width: 65px;" class="button" />
+				</form>
+			</td>
+		</tr>~;
 
-	foreach (@nopostorder) {
-		($title, $stars, $starpic, $color, undef) = split(/\|/, $NoPost{$_}, 5);
-		if (!$stars) { $stars = "0"; }
-		$yymain .= qq~
-	<tr>
-		<td align="left" class="windowbg2">~;
+    foreach (@nopostorder) {
+        ( $title, $stars, $starpic, $color, undef ) = split /\|/xsm,
+          $NoPost{$_}, 5;
+        if ( !$stars ) { $stars = '0'; }
+        $yymain .= q~<tr>
+			<td class="windowbg2">~;
 
-		if ($color) { $yymain .= qq~<span style="color:$color"><b>$title</b></span>~; }
-		else { $yymain .= qq~<b>$title</b>~; }
-		$yymain .= qq~
-		</td>
-		<td align="center" class="windowbg2">~;
+        if ($color) {
+            $yymain .= qq~<span style="color:$color"><b>$title</b></span>~;
+        }
+        else { $yymain .= qq~<b>$title</b>~; }
+        $yymain .= q~
+			</td>
+			<td class="windowbg2 center">~;
 
-		for (1..$stars) { $yymain .= qq~<img src="$imagesdir/$starpic" />~; }
+        for ( 1 .. $stars ) {
+            $yymain .= qq~<img src="$imagesdir/$starpic" />~;
+        }
 
-		$yymain .= qq~
-		</td>
-	</tr>~;
-	}
+        $yymain .= q~
+			</td>
+		</tr>~;
+    }
 
-	$yymain .= qq~
-
-</table>
+    $yymain .= q~
+	</table>
 </div>~;
 
-	$yytitle = $admintxt{'reordergroups'};
-	$action_area = 'modmemgr';
+    $yytitle     = $admintxt{'reordergroups'};
+    $action_area = 'modmemgr';
 
-	&AdminTemplate;
+    AdminTemplate();
+    return;
 }
 
 sub reorderGroups2 {
-	my $moveitem = $FORM{'ordergroups'};
+    my $moveitem = $FORM{'ordergroups'};
 
-	if ($moveitem) {
-		for ($i = 0; $i < @nopostorder; $i++) {
-			if ($nopostorder[$i] == $moveitem &&
-			    (($FORM{'moveup'}   && $i > 0             && $i <= $#nopostorder) ||
-			     ($FORM{'movedown'} && $i < $#nopostorder && $i >= 0))) {
-				my $j = $FORM{'moveup'} ? $i - 1 : $i + 1;
-				$nopostorder[$i] = $nopostorder[$j];
-				$nopostorder[$j] = $moveitem;
-				last;
-			}
-		}
-	}
+    if ($moveitem) {
+        for my $i ( 0 .. ( @nopostorder - 1 ) ) {
+            if (
+                $nopostorder[$i] == $moveitem
+                && (   ( $FORM{'moveup'} && $i > 0 && $i <= $#nopostorder )
+                    || ( $FORM{'movedown'} && $i < $#nopostorder && $i >= 0 ) )
+              )
+            {
+                my $j = $FORM{'moveup'} ? $i - 1 : $i + 1;
+                $nopostorder[$i] = $nopostorder[$j];
+                $nopostorder[$j] = $moveitem;
+                last;
+            }
+        }
+    }
 
-	require "$admindir/NewSettings.pl";
-	&SaveSettingsTo('Settings.pl'); # save @nopostorder
+    require "$admindir/NewSettings.pl";
+    SaveSettingsTo('Settings.pl');
 
-	$yySetLocation = qq~$adminurl?action=reordergroup;thegroup=$moveitem~;
-	&redirectexit;
+    # save @nopostorder
+
+    $yySetLocation = qq~$adminurl?action=reordergroup;thegroup=$moveitem~;
+    redirectexit();
+    return;
 }
 
 1;
