@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$favoritesplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$favoritesplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub Favorites {
@@ -128,9 +128,9 @@ sub Favorites {
 			$dlp = int($yyuserlog{$mnum}) > int($yyuserlog{"$currentboard--mark"}) ? int($yyuserlog{$mnum}) : int($yyuserlog{"$currentboard--mark"});
 			if ($yyuserlog{"$mnum--unread"} || (!$dlp && $mdate > $dmax) || ($dlp > $dmax && $dlp < $mdate)) {
 				if (${$mnum}{'board'} eq $annboard) {
-					$new = qq~<a href="$scripturl?virboard=$currentboard;num=$mnum/new"><img src="$imagesdir/new.gif" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'302'}" border="0"/></a>~;
+					$new = qq~<a href="$scripturl?virboard=$currentboard;num=$mnum/new"><img src="$imagesdir/new.gif" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'302'}"/></a>~;
 				} else {
-					$new = qq~<a href="$scripturl?num=$mnum/new"><img src="$imagesdir/new.gif" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'302'}" border="0"/></a>~;
+					$new = qq~<a href="$scripturl?num=$mnum/new"><img src="$imagesdir/new.gif" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'302'}"/></a>~;
 				}
 
 			} else {
@@ -139,7 +139,7 @@ sub Favorites {
 		}
 		$new = '' if $movedFlag;
 
-		$micon = qq~<img src="$imagesdir/$micon.gif" alt="" border="0" align="middle" />~;
+		$micon = qq~<img src="$imagesdir/$micon.gif" alt="" />~;
 		$mpoll = "";
 		if (-e "$datadir/$mnum.poll") {
 			$mpoll = qq~<b>$messageindex_txt{'15'}: </b>~;
@@ -276,11 +276,9 @@ sub Favorites {
 
 	# Put a "no messages" message if no threads exisit:
 	if (!$tmptempbar) {
-		$tmptempbar = qq~
-		<tr>
-			<td class="windowbg2" valign="middle" align="center" colspan="8"><br />$messageindex_txt{'840'}<br /><br /></td>
-		</tr>
-		~;
+		$tmptempbar = qq~<tr>
+			<td class="windowbg2 center" colspan="8"><br />$messageindex_txt{'840'}<br /><br /></td>
+		</tr>~;
 	}
 
 	$yabbicons = qq~
@@ -337,7 +335,7 @@ sub Favorites {
 	&ToChars($bdescrip);
 	$boarddescription      =~ s/({|<)yabb boarddescription(}|>)/$bdescrip/g;
 	$messageindex_template =~ s/({|<)yabb description(}|>)/$boarddescription/g;
-	$bdpic = qq~ <img src="$imagesdir/favboards.gif" alt="$img_txt{'70'}" title="$img_txt{'70'}" border="0" align="middle" /> ~;
+	$bdpic = qq~ <img src="$imagesdir/favboards.gif" alt="$img_txt{'70'}" title="$img_txt{'70'}" /> ~;
 	$messageindex_template =~ s/({|<)yabb bdpicture(}|>)/$bdpic/g;
 	$messageindex_template =~ s/({|<)yabb threadcount(}|>)/$curfav/g;
 	$messageindex_template =~ s/({|<)yabb messagecount(}|>)/$treplies/g;
