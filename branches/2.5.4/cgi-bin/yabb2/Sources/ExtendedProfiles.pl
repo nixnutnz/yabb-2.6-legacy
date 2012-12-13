@@ -15,7 +15,7 @@
 # Added to the YaBB default code on 07. September 2008                        #
 ###############################################################################
 
-$extendedprofilesplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$extendedprofilesplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage("ExtendedProfiles");
@@ -87,7 +87,7 @@ sub ext_get {
 			if ($options[0] ne "" && $options[0] != 0) { $width = " width=\"".($options[0]+0)."\""; } else { $width = ""; }
 			if ($options[1] ne "" && $options[1] != 0) { $height = " height=\"".($options[1]+0)."\""; } else { $height = ""; }
 			if ($value !~ m~\Ahttp://~) { $value = "http://$value"; }
-			$value = qq~<img src="$value" align="top"$width$height alt="" />~;
+			$value = qq~<img src="$value" class="vtop"$width$height alt="" />~;
 		}
 	}
 
@@ -305,7 +305,7 @@ sub ext_viewprofile {
 			if ($output eq "" && $previous ne 1) {
 				$pre_output = qq~
 	<tr>
-		<td class="windowbg2" align="left" valign="top">~;
+		<td class="windowbg2 vtop">~;
 				$previous = 1;
 			}
 			# format the output dependend of the field type
@@ -340,16 +340,16 @@ sub ext_viewprofile {
 	<tr>~;
 						if ($field{'comment'} ne "") {
 							$output .= qq~
-		<td class="catbg" align="left">
-			<img src="$imagesdir/profile.gif" alt="" border="0" style="vertical-align: middle;" />&nbsp;
+		<td class="catbg">
+			<img src="$imagesdir/profile.gif" alt="" />&nbsp;
 			<span class="text1"><b>$field{'comment'}</b></span>
 		</td>
 	</tr>
 	<tr>
-		<td class="windowbg2" align="left" valign="top">~;
+		<td class="windowbg2 vtop">~;
 						} else {
 							$output .= qq~
-		<td class="windowbg2" align="left" valign="top">~;
+		<td class="windowbg2 vtop">~;
 						}
 						$previous = 1;
 					}
@@ -371,7 +371,7 @@ sub ext_viewprofile {
 			<b>$field{'name'}:</b>
 			</div>
 			<div style="float: left; width: 70%; padding-top: 5px;  padding-bottom: 5px;">
-			<a href="$value" target="_blank">$value</a>
+			<a href="$value" onclick="target='_blank';">$value</a>
 			</div>~;
 				$previous = 0;
 
@@ -441,7 +441,7 @@ sub ext_viewinposts {
 					$output .= $displayedfieldname . &enc_eMail($img_txt{'69'},$value,'','') . qq~<br />\n~;
 					$previous = "";
 				} elsif ($field{'type'} eq "url" && $value ne "") {
-					$output .= qq~$displayedfieldname<a href="$value" target="_blank">$value</a><br />\n~;
+					$output .= qq~$displayedfieldname<a href="$value" onclick="target='_blank';">$value</a><br />\n~;
 					$previous = "";
 				} elsif ($field{'type'} eq "image" && $value ne "") {
 					$output .= qq~$displayedfieldname$value<br />\n~;
@@ -487,7 +487,7 @@ sub ext_memberlist_tableheader {
 
 		# make sure the field is visible and the user allowed to view the current field
 		if ($field{'visible_in_memberlist'} == 1 && $field{'active'} == 1 && &ext_has_access($field{'m_users'},$field{'m_groups'})) {
-			$output .= qq~<td class="catbg" align="center">$field{'name'}</td>\n~;
+			$output .= qq~<td class="catbg center">$field{'name'}</td>\n~;
 		}
 	}
 
@@ -515,14 +515,14 @@ sub ext_memberlist_tds {
 		if ($field{'visible_in_memberlist'} == 1 && $field{'active'} == 1 && &ext_has_access($field{'m_users'},$field{'m_groups'})) {
 			$color = $count % 2 == 1 ? "windowbg" : "windowbg2";
 			#if ($using_yams5 eq "1") {
-			#	$td_attributs = qq~class="windowbg2" style="border-top: #6394BD 1px solid; border-right: #6394BD 1px solid; padding: 2px" bgcolor="#F8F8F8" align="center" valign="middle"~;
+			#	$td_attributs = qq~class="windowbg2 center" style="border-top: #6394BD 1px solid; border-right: #6394BD 1px solid; padding: 2px; background-color:#F8F8F8"~;
 			#} else {
 				$td_attributs = qq~class="$color"~;
 			#}
 			if ($field{'type'} eq "email") {
 				if ($value ne "") { $value = &enc_eMail($img_txt{'69'},$value,'',''); }
 			} elsif ($field{'type'} eq "url") {
-				if ($value ne "") { $value = qq~<a href="$value" target="_blank">$value</a>~; }
+				if ($value ne "") { $value = qq~<a href="$value" onclick="target='_blank';">$value</a>~; }
 			}
 			if ($value eq "") { $value .= "&nbsp;"; }
 			$output .= qq~<td $td_attributs>$value</td>\n~;
@@ -546,7 +546,7 @@ sub ext_gen_editfield {
 
 	&FromHTML($field{'comment'});
 
-	$template1 = qq~<tr class="windowbg"><td align="left" valign="top"><label for=""><b>$field{'name'}: </b><br /><span class="small">$field{'comment'}</span></label></td><td align="left">~;
+	$template1 = qq~<tr class="windowbg"><td class="vtop"><label for=""><b>$field{'name'}: </b><br /><span class="small">$field{'comment'}</span></label></td><td>~;
 	if ($field{'required_on_reg'} == 1) { $template2 = " * "; }
 	$template2 .= qq~</td></tr>\n~;
 
@@ -877,37 +877,37 @@ sub ext_saveprofile {
 sub ext_admin_htmlreq {
 	$ext_template_blockstart = qq~
 <div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-  <table cellpadding="4" cellspacing="1" width="100%">
-    <tbody>
+	<table class="pad_4px cs_1px">
 ~;
-	$ext_template_headerstart = qq~
-    <tr valign="middle"><td class="titlebg" align="left">
-      <img src="$imagesdir/profile.gif" alt="" border="0" /><b>~;
-	$ext_template_headerstop = qq~
-      </b>
-    </td></tr>~;
-	$ext_template_commentstart = qq~
-    <tr align="center" valign="middle"><td class="catbg" align="left">
-      <span class="small">~;
-	$ext_template_commentstop = qq~
-      </span></td>
+	$ext_template_headerstart = qq~<tr>
+		<td class="titlebg">
+			<img src="$imagesdir/profile.gif" alt="" /><b>~;
+	$ext_template_headerstop = qq~</b>
+		</td>
+	</tr>~;
+	$ext_template_commentstart = qq~<tr>
+		<td class="catbg">
+			<span class="small">~;
+	$ext_template_commentstop = qq~</span>
+		</td>
     </tr>~;
-	$ext_template_contentstart = qq~
-    <tr valign="middle"><td class="windowbg2" align="left">~;
+	$ext_template_contentstart = qq~<tr>
+		<td class="windowbg2">~;
 	$ext_template_contentstop = qq~
-    </td></tr>~;
+		</td>
+    </tr>~;
 	$ext_template_blockstop = qq~
-  </tbody></table>
+	</table>
 </div>
 ~;
-	$ext_template_option_part1 = qq~
-      <tr>
-        <td align="left" valign="top"><b>~;
+	$ext_template_option_part1 = qq~<tr>
+        <td class="vtop"><b>~;
 	$ext_template_option_part2 = qq~: </b><br /><span class="small">~;
 	$ext_template_option_part3 = qq~</span></td>
-        <td align="left" valign="top">~;
-	$ext_template_option_part4 = qq~</td>
-      </tr>~;
+        <td class="vtop">~;
+	$ext_template_option_part4 = qq~
+		</td>
+	</tr>~;
 }
 
 # returns the output for the Extended Profile Controls in admin center
@@ -937,16 +937,15 @@ $ext_template_contentstart
 $lang_ext{'edit_description'}
 $ext_template_contentstop
 $ext_template_contentstart
-    <table class="windowbg2" border="0" cellspacing="0" cellpadding="3" width="100%">
-      <tr>
-        <td align="center">$lang_ext{'active'}</td>
-        <td align="center">$lang_ext{'field_name'}</td>
-        <td align="center">$lang_ext{'field_type'}</td>
-        <td align="center">$lang_ext{'actions'}</td>
-      </tr>
-~;
+    <table class="windowbg2 pad_3px">
+		<tr>
+        	<td class="center">$lang_ext{'active'}</td>
+        	<td class="center">$lang_ext{'field_name'}</td>
+        	<td class="center">$lang_ext{'field_type'}</td>
+        	<td class="center">$lang_ext{'actions'}</td>
+      	</tr>~;
 	if (!@ext_prof_order) {
-		$yymain .= qq~<td class="windowbg2" colspan="4" align="center"><br /><i>$lang_ext{'no_additional_fields_set'}</i><br /><br /></td>~;
+		$yymain .= qq~<td class="windowbg2 center" colspan="4"><br /><i>$lang_ext{'no_additional_fields_set'}</i><br /><br /></td>~;
 	} else {
 		foreach $fieldname (@ext_prof_order) {
 			$id = &ext_get_field_id($fieldname);
@@ -965,14 +964,14 @@ $ext_template_contentstart
 			$yymain .= qq~
       <tr>
         <form action="$adminurl?action=ext_edit" method="post">
-        <td class="windowbg2" align="center">
+        <td class="windowbg2 center">
           <input name="id" type="hidden" value="$id" />
           <input type="checkbox" name="active" value="1"$active />
         </td>
-        <td class="windowbg2" align="center">
+        <td class="windowbg2 center">
           <input name="name" value="$field{'name'}" size="20" />
         </td>
-        <td class="windowbg2" align="center">
+        <td class="windowbg2 center">
           <select name="type" size="1">
             <option value="text"$selected[0]>$lang_ext{'text'}</option>
             <option value="text_multi"$selected[1]>$lang_ext{'text_multi'}</option>
@@ -986,7 +985,7 @@ $ext_template_contentstart
             <option value="image"$selected[9]>$lang_ext{'image'}</option>
           </select>
         </td>
-        <td class="windowbg2" align="center">
+        <td class="windowbg2 center">
           <input type="submit" name="apply" value="$lang_ext{'apply'}" />
           <input type="submit" name="options" value="$lang_ext{'options'}" />
           <input type="submit" name="delete" value="$lang_ext{'delete'}" />
@@ -1012,18 +1011,17 @@ $ext_template_contentstart
 $lang_ext{'create_new_description'}
 $ext_template_contentstop
 $ext_template_contentstart
-    <table border="0" cellspacing="0" cellpadding="3" width="100%">
+    <table class="pad_3px">
       <tr>
-        <td class="windowbg2" align="center"><label for="name">$lang_ext{'field_name'}</label></td>
-        <td class="windowbg2" align="center"><label for="type">$lang_ext{'field_type'}</label></td>
-        <td class="windowbg2" align="center">$lang_ext{'actions'}</td>
-      </tr>
-      <tr>
+        <td class="windowbg2 center"><label for="name">$lang_ext{'field_name'}</label></td>
+        <td class="windowbg2 center"><label for="type">$lang_ext{'field_type'}</label></td>
+        <td class="windowbg2 center">$lang_ext{'actions'}</td>
+      </tr><tr>
         <form action="$adminurl?action=ext_create" method="post">
-        <td class="windowbg2" align="center">
+        <td class="windowbg2 center">
           <input name="name" id="name" size="30" />
         </td>
-        <td class="windowbg2" align="center">
+        <td class="windowbg2 center">
           <select name="type" id="type" size="1">
             <option value="text" selected="selected">$lang_ext{'text'}</option>
             <option value="text_multi">$lang_ext{'text_multi'}</option>
@@ -1037,7 +1035,7 @@ $ext_template_contentstart
             <option value="image">$lang_ext{'image'}</option>
           </select>
         </td>
-        <td class="windowbg2" align="center">
+        <td class="windowbg2 center">
           <input type="submit" name="create" value="$lang_ext{'create_field'}" />
         </td>
         </form>
@@ -1045,31 +1043,29 @@ $ext_template_contentstart
     </table>
 $ext_template_contentstop
 $ext_template_blockstop
-
 <br />
-
 $ext_template_blockstart
 $ext_template_headerstart
 $lang_ext{'reorder_title'}
 $ext_template_headerstop
 $ext_template_contentstart
-      <table border="0" cellspacing="0" cellpadding="6" width="100%">
-      <tr>
-        <form action="$adminurl?action=ext_reorder" method="post">
-        <td class="windowbg2" valign="top">
-          <textarea name="reorder" cols="30" rows="6">~;
+	<table class="pad_6px">
+		<tr>
+        	<form action="$adminurl?action=ext_reorder" method="post">
+        	<td class="windowbg2 vtop">
+				<textarea name="reorder" cols="30" rows="6">~;
 
 	foreach $fieldname (@ext_prof_order) { $yymain .= $fieldname."\n"; }
 
           $yymain .= qq~</textarea>
-        </td>
-        <td class="windowbg2" width="100%" valign="top" align="left">
-          $lang_ext{'reorder_description'}<br /><br />
-          <input type="submit" name="reorder_submit" value="$lang_ext{'reorder'}" />
-        </td>
-        </form>
-      </tr>
-      </table>
+			</td>
+			<td class="windowbg2 vtop">
+				$lang_ext{'reorder_description'}<br /><br />
+				<input type="submit" name="reorder_submit" value="$lang_ext{'reorder'}" />
+			</td>
+			</form>
+		</tr>
+	</table>
 $ext_template_contentstop
 $ext_template_blockstop
 
@@ -1091,7 +1087,7 @@ $ext_template_headerstop
 $ext_template_contentstart
 $lang_ext{'converter_description'}
     <form action="$adminurl?action=ext_convert" method="post">
-    <p align="center"><br />
+    <p class="center"><br />
       <label for="members">$lang_ext{'path_old_members_folder'}:</label>  <input name="members" id="members" value="$convmemberdir" /><br />
       <label for="vars">$lang_ext{'path_old_variables_folder'}:</label>  <input name="vars" id="vars" value="$convvardir" /><br /><br />
       <input type="submit" name="convert" value="$lang_ext{'converter_button'}" /><br /><br /></p>
@@ -1236,17 +1232,17 @@ $ext_template_commentstart
 $lang_ext{'options_description'}
 $ext_template_commentstop
 $ext_template_contentstart
-<table class="windowbg2" border="0" cellspacing="0" cellpadding="6" width="100%">
+<table class="windowbg2 pad_6px">
 	<tr>
 		<td><b>$lang_ext{'active'}:</b> $active</td>
-		<td align="center"><b>$lang_ext{'field_name'}:</b> $field{'name'}</td>
-		<td align="center"><b>$lang_ext{'field_type'}:</b> $lang_ext{$field{'type'}}</td>
-		<td align="right"><a href="$adminurl?action=ext_admin">&lt;-- $lang_ext{'change_these_settings'}</a></td>
+		<td class="center"><b>$lang_ext{'field_name'}:</b> $field{'name'}</td>
+		<td class="center"><b>$lang_ext{'field_type'}:</b> $lang_ext{$field{'type'}}</td>
+		<td class="right"><a href="$adminurl?action=ext_admin">&lt;-- $lang_ext{'change_these_settings'}</a></td>
 	</tr>
 </table>
 $ext_template_contentstop
 $ext_template_contentstart
-<table class="windowbg2" border="0" cellspacing="0" cellpadding="6" width="100%">
+<table class="windowbg2 pad_6px">
 ~;
 		if ($field{'type'} eq "text") {
 			@options = split(/\^/,$field{'options'});
@@ -1327,9 +1323,9 @@ $ext_template_contentstart
 				qq~<input name="required_on_reg" type="radio" value="2"$req3 /> $lang_ext{'req2'}\n~).
 			&ext_admin_gen_inputfield(qq~<label for="visible_in_viewprofile">$lang_ext{'visible_in_viewprofile'}</label>~,qq~<label for="visible_in_viewprofile">$lang_ext{'visible_in_viewprofile_description'}</label>~,
 				qq~<input name="visible_in_viewprofile" id="visible_in_viewprofile" type="checkbox" value="1"$v_check /><br />\n~.
-				qq~<table class="windowbg2" border="0" cellspacing="4" cellpadding="0">\n~.
+				qq~<table class="windowbg2 pad_4px">\n~.
 				qq~  <tr><td><label for="v_users">$lang_ext{'v_users'}:</label> </td><td><input name="v_users" id="v_users" value="$field{'v_users'}" /></td></tr>\n~.
-				qq~  <tr><td valign="top"><label for="v_groups">$lang_ext{'v_groups'}:</label> </td><td>\n~.
+				qq~  <tr><td class="vtop"><label for="v_groups">$lang_ext{'v_groups'}:</label> </td><td>\n~.
 				qq~    <select multiple="multiple" name="v_groups" id="v_groups" size="4">\n~.
 			&ext_admin_gen_groupslist($field{'v_groups'}).
 				qq~    </select>\n~.
@@ -1337,10 +1333,10 @@ $ext_template_contentstart
 				qq~</table>\n~).
 			&ext_admin_gen_inputfield(qq~<label for="visible_in_posts">$lang_ext{'visible_in_posts'}</label>~,qq~<label for="visible_in_posts">$lang_ext{'visible_in_posts_description'}</label>~,
 				qq~<input name="visible_in_posts" id="visible_in_posts" type="checkbox" value="1"$p_check /><br />\n~.
-				qq~<table class="windowbg2" border="0" cellspacing="4" cellpadding="0">\n~.
+				qq~<table class="windowbg2 pad_4px">\n~.
 				qq~  <tr><td><label for="p_displayfieldname">$lang_ext{'display_fieldname'}:</label> </td><td><input name="p_displayfieldname" id="p_displayfieldname" type="checkbox" value="1"$p_d_check /></td></tr>\n~.
 				qq~  <tr><td><label for="p_users">$lang_ext{'p_users'}:</label> </td><td><input name="p_users" id="p_users" value="$field{'p_users'}" /></td></tr>\n~.
-				qq~  <tr><td valign="top"><label for="p_groups">$lang_ext{'p_groups'}:</label> </td><td>\n~.
+				qq~  <tr><td class="vtop"><label for="p_groups">$lang_ext{'p_groups'}:</label> </td><td>\n~.
 				qq~    <select multiple="multiple" name="p_groups" id="p_groups" size="4">\n~.
 			&ext_admin_gen_groupslist($field{'p_groups'}).
 				qq~    </select>\n~.
@@ -1348,10 +1344,10 @@ $ext_template_contentstart
 				qq~</table>\n~).
 			&ext_admin_gen_inputfield(qq~<label for="visible_in_posts_popup">$lang_ext{'visible_in_posts_popup'}</label>~,qq~<label for="visible_in_posts_popup">$lang_ext{'visible_in_posts_popup_description'}</label>~,
 				qq~<input name="visible_in_posts_popup" id="visible_in_posts_popup" type="checkbox" value="1"$pp_check /><br />\n~.
-				qq~<table class="windowbg2" border="0" cellspacing="4" cellpadding="0">\n~.
+				qq~<table class="windowbg2 pad_4px">\n~.
 				qq~  <tr><td><label for="pp_displayfieldname">$lang_ext{'display_fieldname'}:</label> </td><td><input name="pp_displayfieldname" id="pp_displayfieldname" type="checkbox" value="1"$pp_d_check /></td></tr>\n~.
 				qq~  <tr><td><label for="pp_users">$lang_ext{'p_users'}:</label> </td><td><input name="pp_users" id="pp_users" value="$field{'pp_users'}" /></td></tr>\n~.
-				qq~  <tr><td valign="top"><label for="pp_groups">$lang_ext{'p_groups'}:</label> </td><td>\n~.
+				qq~  <tr><td class="vtop"><label for="pp_groups">$lang_ext{'p_groups'}:</label> </td><td>\n~.
 				qq~    <select multiple="multiple" name="pp_groups" id="pp_groups" size="4">\n~.
 			&ext_admin_gen_groupslist($field{'pp_groups'}).
 				qq~    </select>\n~.
@@ -1359,9 +1355,9 @@ $ext_template_contentstart
 				qq~</table>\n~).
 			&ext_admin_gen_inputfield(qq~<label for="visible_in_memberlist">$lang_ext{'visible_in_memberlist'}</label>~,qq~<label for="visible_in_memberlist">$lang_ext{'visible_in_memberlist_description'}</label>~,
 				qq~<input name="visible_in_memberlist" id="visible_in_memberlist" type="checkbox" value="1"$m_check /><br />\n~.
-				qq~<table class="windowbg2" border="0" cellspacing="4" cellpadding="0">\n~.
+				qq~<table class="windowbg2 pad_4px">\n~.
 				qq~  <tr><td><label for="m_users">$lang_ext{'m_users'}:</label> </td><td><input name="m_users" id="m_users" value="$field{'m_users'}" /></td></tr>\n~.
-				qq~  <tr><td valign="top"><label for="m_groups">$lang_ext{'m_groups'}:</label> </td><td>\n~.
+				qq~  <tr><td class="vtop"><label for="m_groups">$lang_ext{'m_groups'}:</label> </td><td>\n~.
 				qq~    <select multiple="multiple" name="m_groups" id="m_groups" size="4">\n~.
 			&ext_admin_gen_groupslist($field{'m_groups'}).
 				qq~    </select>\n~.
@@ -1379,9 +1375,8 @@ $ext_template_contentstart
 					qq~  <option value="4"$editable_check[4]>$lang_ext{'page_im'}</option>\n~.
 					qq~</select>\n~);
 		}
-		$yymain .= qq~
-	<tr>
-		<td colspan="2" align="center">
+		$yymain .= qq~<tr>
+		<td class="center" colspan="2">
 			<input name="id" type="hidden" value="$FORM{'id'}" />
 			<input name="name" type="hidden" value="$FORM{'name'}" />
 			<input name="type" type="hidden" value="$FORM{'type'}" />
@@ -1677,7 +1672,7 @@ sub ext_viewprofile_r {
 			if ($output eq "" && $previous ne 1) {
 				$pre_output = qq~
 	<tr>
-		<td class="windowbg2" align="left" valign="top" colspan="2">~;
+		<td class="windowbg2 vtop" colspan="2">~;
 				$previous = 1;
 			}
 			# format the output dependent on the field type
@@ -1688,9 +1683,9 @@ sub ext_viewprofile_r {
 			    ($field{'type'} eq "date" && $value ne "") ||
 			    $field{'type'} eq "checkbox") {
 				$output .= qq~
-			<tr><td class="windowbg2" align="left" valign="top">
+			<tr><td class="windowbg2 vtop">
 			<b>$field{'name'}:</b>
-			</td><td class="windowbg2" align="left" valign="top">
+			</td><td class="windowbg2 vtop">
 			$value&nbsp;
 			</td></tr>~;
 				$previous = 0;
@@ -1700,7 +1695,7 @@ sub ext_viewprofile_r {
 				if (($previous eq 0 || $field{'comment'} ne "") && $id ne $last_field_id) {
 					if ($value eq $ext_spacer_br) {
 						$output .= qq~
-			<tr><td class="windowbg2" align="left" valign="top" colspan="2">
+			<tr><td class="windowbg2 vtop" colspan="2">
 			$ext_spacer_br
 			</td></tr>~;
 						$previous = 0;
@@ -1711,16 +1706,16 @@ sub ext_viewprofile_r {
 	<tr>~;
 						if ($field{'comment'} ne "") {
 							$output .= qq~
-		<td class="catbg" align="left" colspan="2">
-			<img src="$imagesdir/profile.gif" alt="" border="0" style="vertical-align: middle;" />&nbsp;
+		<td class="catbg" colspan="2">
+			<img src="$imagesdir/profile.gif" alt="" />&nbsp;
 			<span class="text1"><b>$field{'comment'}</b></span>
 		</td>
 	</tr>
 	<tr>
-		<td class="windowbg2" align="left" valign="top" colspan="2">~;
+		<td class="windowbg2 vtop" colspan="2">~;
 						} else {
 							$output .= qq~
-		<td class="windowbg2" align="left" valign="top" colspan="2">~;
+		<td class="windowbg2 vtop" colspan="2">~;
 						}
 						$previous = 1;
 					}
@@ -1728,27 +1723,27 @@ sub ext_viewprofile_r {
 
 			} elsif ($field{'type'} eq "email" && $value ne "") {
 				$output .= qq~
-			<tr><td class="windowbg2" align="left" valign="top">
+			<tr><td class="windowbg2 vtop">
 			<b>$field{'name'}:</b>
-			</td><td class="windowbg2" align="left" valign="top">
+			</td><td class="windowbg2 vtop">
 			~ . &enc_eMail($img_txt{'69'},$value,'','') . qq~
 			</td></tr>~;
 				$previous = 0;
 
 			} elsif ($field{'type'} eq "url" && $value ne "") {
 				$output .= qq~
-			<tr><td class="windowbg2" align="left" valign="top">
+			<tr><td class="windowbg2 vtop">
 			<b>$field{'name'}:</b>
-			</td><td class="windowbg2" align="left" valign="top">
-			<a href="$value" target="_blank">$value</a>
+			</td><td class="windowbg2 vtop">
+			<a href="$value" onclick="target='_blank';">$value</a>
 			</td></tr>~;
 				$previous = 0;
 
 			} elsif ($field{'type'} eq "image" && $value ne "") {
 				$output .= qq~
-			<tr><td class="windowbg2" align="left" valign="top">
+			<tr><td class="windowbg2 vtop">
 			<b>$field{'name'}:</b>
-			</td><td class="windowbg2" align="left" valign="top">
+			</td><td class="windowbg2 vtop">
 			$value
 			</td></tr>~;
 				$previous = 0;
