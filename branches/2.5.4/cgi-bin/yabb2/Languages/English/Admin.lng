@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$adminlngver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$adminlngver = 'YaBB 2.5.4 $Revision: 1.3 $';
 
-$yycharset = 'ISO-8859-1';
+$yycharset = 'UTF-8';
 
 @days = ('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
 @months = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
@@ -377,8 +377,14 @@ $yycharset = 'ISO-8859-1';
 '712' => 'Password-Strength-Meter minimum characters<br /><span class ="small">Enter the minimum number of characters required for the password to be considered "not too short."</span>',
 '723' => 'Allow users to hide their e-mail from public view (except from Administrators)?',
 '724' => 'IP banning: (e.g. 192.168.12.213 or 128.0.) - one entry per line',
-'725' => 'E-mail banning: (e.g. badguy\@somewhere.com) - one entry per line, asterisks or question mark wildcards are not permitted',
+'724a' => 'Click on the IP to remove from list',
+'725' => 'E-mail banning: (e.g. badguy@somewhere.com) - one entry per line, asterisks or question mark wildcards are not permitted',
+'725b' => 'Click on the E-mail address to remove from list.',
 '725a' => 'Username banning: (e.g. super_dude13) - one entry per line',
+'725c' => 'Click to unban Username',
+'725d' => 'Clean Ban List',
+'725e' => 'Clean',
+'725f' => 'Ban IP',
 '726' => 'Match whole name only. If unchecked, will search for reserved words within name.',
 '727' => 'Match case. If unchecked, search will be case insensitive.',
 '728' => 'Check username.',
@@ -482,12 +488,13 @@ $yycharset = 'ISO-8859-1';
 'spamfruits' => 'Activate SpamFruits Spambot catcher. Check for \'yes\'',
 'eventcal_set' => 'Event Calendar Settings',
 'eventcal_set1' => 'Edit your Event Calendar Settings',
+'addtab_on' => 'Show Add and Edit Tabs on Forum?',
 );
 
 %floodtxt = (
 '1' => 'YaBB Security Center:',
 '2' => 'Activate validation code (CAPTCHA) on registration, forgot password, and send topic?',
-'3' => 'Activate validation code (CAPTCHA) for Guest posting, Guest contact Admin by Broadcast Message and Guest sending Alert Moderator message?',
+'3' => 'Activate validation code (CAPTCHA) for Guest posting, Guest contact Admin by Broadcast Message, Guest sending Alert Moderator message and Guest adding event to Calendar?',
 '5' => 'Maximum number of messages returned for Recent Posts on forum and/or by user?<br /> <span class="small">-1 will disable Recent Posts</span>',
 '6' => 'Maximum number of messages returned for a search?<br /> <span class="small">-1 will disable Search</span>',
 '7' => 'Validation Code Max. Length (max 15)',
@@ -538,7 +545,7 @@ $yycharset = 'ISO-8859-1';
 '15' => 'Are you sure you want to delete the selected ERROR(S)?',
 '16' => 'Viewing All',
 '17' => 'Errors',
-'18' => 'The error log is a file that will be added automatically (if it isn\'t already on the server) when someone encounters even the smallest error, like a wrong password. <br />  This page gives you detailed information on the error, or errors, that has, or have, been encountered. <br />  This page will give you a summary of the time the error happened, the user who caused the error, the address (URL) of the error, and the error itself.<br />Note: All attempts to bypass, thwart or break YaBB Security features, will be shown here - because they FAILED!. YaBB Security Works!',
+'18' => 'The error log is a file that will be added automatically (if it isn\'t already on the server) when someone encounters even the smallest error, like a wrong password. <br />  This page gives you detailed information on the error, or errors, that has, or have, been encountered. <br />  This page will give you a summary of the time the error happened, the user who caused the error, the address (URL) of the error, and the error itself.<br />Note: All attempts to bypass, thwart or break YaBB Security features, will be shown here - because they FAILED! YaBB Security Works!',
 '19' => 'There are no new errors since you last cleaned the error log.',
 '20' => 'Clean Error Log',
 '21' => 'Error #',
@@ -941,6 +948,7 @@ $yycharset = 'ISO-8859-1';
 '46' => 'Here you can select Member Groups that will receive your e-mail. Use Ctrl or Shift to select/deselect multiple Groups.',
 '47' => 'Sent E-mails',
 '48' => 'No Members selected to receive e-mail!!',
+'48a' => 'No Groups selected to receive e-mail!!',
 '49' => 'Export e-mail address list',
 '50' => 'Export the e-mail address of the members in the groups you selected above to a comma-separated text file. This file is saved under the name <i>yabbaddress.csv</i> in your Variables folder. Once you have done this, you can download the file with the button that will appear after the file has been created.',
 '51' => 'Download address list',
@@ -1300,6 +1308,8 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'no_questions' => 'There are currently no Anti-spam Questions',
 'question_settings' => 'Anti-spam Question Settings',
 'enable_question' => 'Enable Anti-spam Questions on Registration?',
+'enable_question_send' => 'Enable Anti-spam Questions on Forgot Password and Send Topic?',
+'enable_question_gp' => 'Enable Anti-spam Questions for Guest posting, Guest contact Admin by Broadcast Message, Guest sending Alert Moderator message and Guest adding event to Calendar?',
 'case_sensitive' => 'Would you like the answers to be case-sensitive?',
 'answer_desc' => '- To accept more than one answer separate them with a comma.<br />e.g. 8,eight',
 'questions' => 'Anti-spam Questions',
