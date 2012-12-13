@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$postlngver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$postlngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 
 %post_txt = (
 '10' => 'Save',
@@ -180,6 +180,8 @@ $postlngver = 'YaBB 2.5.4 $Revision: 1.0 $';
 'textsize' => 'Text size:',
 'alertquote' => 'To use Quote mark the text of this user.',
 'quote_confirm' => 'If you want to cite this contribution, and you click OK, then your records in the response textbox below will get lost. If you do not want this, then click Cancel, then copy your records before you click OK next time. Then you can insert your records again on the next page.',
+'verification_question_desc' => 'Please answer the above verification question.',
+'verification_question_case' => 'Answers are case-sensitive.',
 );
 
 %npf_txt=(
