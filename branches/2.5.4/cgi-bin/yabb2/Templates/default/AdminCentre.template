@@ -11,17 +11,17 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision: 1.0 $
+# $Revision: 1.2 $
 
 $header = qq~<?xml version="1.0" encoding="ISO-8859-1" standalone="no" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>{yabb title}</title>
-<meta http-equiv="Content-Type" content="text/html; charset={yabb charset}" />
-<meta http-equiv="pragma" content="no-cache" />
-{yabb style}
-<script language="JavaScript" type="text/javascript">
+	<title>{yabb title}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset={yabb charset}" />
+	<meta http-equiv="pragma" content="no-cache" />
+	{yabb style}
+	<script type="text/javascript">
 <!--
 	function toggleList(e){
 		element = document.getElementById(e).style;
@@ -69,52 +69,52 @@ $header = qq~<?xml version="1.0" encoding="ISO-8859-1" standalone="no" ?>
 	}
 	{yabb javascript}
 -->
-</script>
+	</script>
 </head>
 ~;
 
 $leftmenutop = qq~
 <body>
-<img src="{yabb images}/adminlogo.gif" id="adminlogo" alt="Yet Another Bulletin Board"/>
-
-<div id="menu">
+	<img src="{yabb images}/adminlogo.gif" id="adminlogo" alt="Yet Another Bulletin Board"/>
+	<div id="menu">
 {yabb maintenance}
 ~;
 
 $leftmenubottom = qq~
-</div>
-<script language="JavaScript" type="text/javascript"><!--
+	</div>
+	<script type="text/javascript"><!--
 	setTimeout("AdminCheck()", 80);
 // -->
-</script>
+	</script>
 ~;
 
 $topnav = qq~
-<div id="ql">
-<table>
-	<tr>
-		<td width="190">&nbsp;</td>
-		<td align="center">{yabb topmenu_one}</td>
-		<td>&nbsp;|&nbsp;</td>
-		<td align="center">{yabb topmenu_two}</td>
-		<td align="center">&nbsp;|&nbsp;</td>
-		<td align="center">{yabb topmenu_tree}</td>
-		<td>&nbsp;|&nbsp;</td>
-		<td align="center">{yabb topmenu_four}</td>
-	</tr>
-</table>
-</div>
+	<div id="ql">
+		<table style="width:auto; margin-left:0">
+    		<col style="width:190px" />
+			<tr>
+				<td>&nbsp;</td>
+				<td class="center">{yabb topmenu_one}</td>
+				<td>&nbsp;|&nbsp;</td>
+				<td class="center">{yabb topmenu_two}</td>
+				<td class="center">&nbsp;|&nbsp;</td>
+				<td class="center">{yabb topmenu_tree}</td>
+				<td>&nbsp;|&nbsp;</td>
+				<td class="center">{yabb topmenu_four}</td>
+			</tr>
+		</table>
+	</div>
 ~;
 
 $mainbody = qq~
-<div id="content">
-{yabb main}
-<br />
-<br />
-<div align="center">{yabb_admin debug}</div>
-<br />
-<br />
-</div>
+	<div id="content">
+		{yabb main}
+		<br />
+		<br />
+		<div class="center">{yabb_admin debug}</div>
+		<br />
+		<br />
+	</div>
 </body>
 </html>
 ~;
