@@ -11,176 +11,174 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision: 1.1 $
+# $Revision: 1.2 $
 
 LoadLanguage("BoardIndex");
 
-$topichandellist = qq~{yabb new post button} {yabb new poll button} {yabb notify button} {yabb markall button}~;
+# When thread tools is turned off, these two lists will be combined to display the buttons in the order shown
+# When thread tools is on $outside_threadtools will show buttons normally, while the handle list will show in the thread tools' dropdown
+# $outsidde_ttsep will act as a seperator between the buttons outside thread tools.
 
-if (!$ShowBDescrip && $action ne "favorites") {
-$messageindex_template .= qq~
+$outside_threadtools = qq~{yabb new post button} {yabb new poll button}~;
+$outside_ttsep = q~~;
 
-
-<!-- Board Moderators start -->
-
-<div class="navbarcontainer">
-<table>
-<tr>
-	<td>
-	<div class="small">{yabb moderators}</div>
-	</td>
-</tr>
-</table>
-</div>
-
-<!-- Board Moderators end -->
-
-
-~;
+$topichandellist = qq~{yabb notify button} {yabb markall button}~;
+if($threadtools) {
+    $threadhandelstyle = qq~ class="post_tools center"~;
 }
 else {
-$messageindex_template .= qq~
+    $threadhandelstyle = qq~ class="right"~;
+}
 
-
-<!-- Board Description start -->
-
-<table cellpadding="4" cellspacing="1" class="bordercolor">
-<tr>
-	<td class="windowbg center" width="6%">
-	{yabb bdpicture}
-	</td>
-	<td class="windowbg" width="78%">
-		{yabb board}<br />
-		{yabb description}
-		<div class="small" style="font-style:italic;">{yabb moderators}</div>
-	</td>
-	<td class="windowbg center" width="16%">
-		<span class="small">
-		$boardindex_txt{'330'}: {yabb threadcount}<br />
-		$boardindex_txt{'21'}: {yabb messagecount}
-		</span>
-	</td>
-</tr>
-</table>
-<br />
-
+if (!$messagelist) {
+    if (!$ShowBDescrip && $action ne 'favorites') {
+		$messageindex_template .= qq~
+		<!-- Board Moderators start -->
+			<div class="navbarcontainer">
+				<table>
+					<tr>
+						<td class="small">{yabb moderators}</td>
+					</tr>
+				</table>
+			</div>
+<!-- Board Moderators end -->
+~;
+	}
+	else {
+    	$messageindex_template .= qq~<!-- Board Description start -->
+			<table class="bordercolor pad_4px cs_1px">
+    			<col style="width:6%" />
+    			<col style="width:78%" />
+    			<col style="width:16%" />
+				<tr>
+					<td class="windowbg center">{yabb bdpicture}</td>
+					<td class="windowbg">{yabb board}
+						<br />{yabb description}
+						<div class="small" style="font-style:italic;">{yabb moderators}</div>
+					</td>
+					<td class="windowbg center small">
+						$boardindex_txt{'330'}: {yabb threadcount}
+						<br />
+						$boardindex_txt{'21'}: {yabb messagecount}
+					</td>
+				</tr>
+			</table>
+			<br />
 <!-- Board Description end -->
-
-
 ~;
+	}
 }
 
-if ($action ne "favorites") {
-$messageindex_template .= qq~
-
-
+if ($action ne 'favorites') {
+	$messageindex_template .= qq~
 <!-- Button Bar start -->
-
-<table cellpadding="4" cellspacing="1" class="bordercolor">
-
-<tr>
-	<td class="catbg">
-	<div style="float: left; width: 25%;">
-	  {yabb pageindex top}
-	</div>
-	<div class="small" style="float: left; width: 74%; text-align: right;">
-	    {yabb topichandellist}
-	</div>
-	</td>
-</tr>
-</table>
-
-<!-- Button Bar end -->
-
-
+{yabb modupdate}
+<table class="tabtitle">
+    <tr>
 ~;
+	if ($messagelist) {
+    	$messageindex_template .= qq~
+        <td style="padding-left: 7px;">{yabb pageindex top}</td>
+        <td class="post_tools_a right" style="padding:4px 10px 4px 4px">
+            <div style="float:right">{yabb outsidethreadtools}</div>
+        </td>
+        <td $threadhandelstyle>
+	    	{yabb topichandellist}
+		</td>
+    ~;
+	} 
+	else {
+    	$messageindex_template .= qq~
+        <td style="padding:4px 4px 4px 7px;">{yabb pageindex top}
+        </td>
+        <td class="post_tools_a right" style="padding:4px 10px 4px 4px">
+            <div style="float:right">{yabb outsidethreadtools}</div>
+        </td>
+        <td $threadhandelstyle>{yabb topichandellist}</td>
+~;
+	}
+
+	$messageindex_template .= qq~
+				</tr>
+			</table>
+<!-- Button Bar end -->~;
 }
 $messageindex_template .= qq~
-	{yabb modupdate}
-<table cellpadding="3" cellspacing="1" class="bordercolor">
-<tr>
-	<td class="titlebg center" width="8%" colspan="2">
-		&nbsp;
-	</td>
-	<td class="titlebg" width="32%">
-		$messageindex_txt{'70'}
-	</td>
-	<td class="titlebg center" width="14%">
-		$messageindex_txt{'109'}
-	</td>
-	<td class="titlebg center" width="8%">
-		$messageindex_txt{'110'}
-	</td>
-	<td class="titlebg center" width="8%">
-		$messageindex_txt{'301'}
-	</td>
-	<td class="titlebg center" width="22%">
-		$messageindex_txt{'22'}
-	</td>
-	{yabb admin column}
-</tr>
-	{yabb stickyblock}
-	{yabb threadblock}
-	{yabb adminfooter}
-</table>
-	{yabb modupdateend}
+			<table class="bordercolor pad_3px cs_1px">
+    			<col span="2" style="width:4%" />
+    			<col style="width:32%" />
+    			<col style="width:14%" />
+    			<col span="2" style="width:8%" />
+    			<col style="width:22%" />
+				<tr>
+					<td class="titlebg center" colspan="2">&nbsp;</td>
+					<td class="titlebg">$messageindex_txt{'70'}	</td>
+					<td class="titlebg center">$messageindex_txt{'109'}</td>
+					<td class="titlebg center">$messageindex_txt{'110'}</td>
+					<td class="titlebg center">$messageindex_txt{'301'}</td>
+					<td class="titlebg center">$messageindex_txt{'22'}</td>
+					{yabb admin column}
+				</tr>
+				{yabb stickyblock}
+				{yabb threadblock}
+				{yabb adminfooter}
+			</table>
 ~;
 
-if ($action ne "favorites") {
-$messageindex_template .= qq~
-
-<!-- Button Bar start -->
-
-<table cellpadding="4" cellspacing="1" class="bordercolor">
-<tr>
-	<td class="catbg">
-	<div style="float: left; width: 25%;">
-	  {yabb pageindex bottom}
-	</div>
-	<div class="small" style="float: left; width: 74%; text-align: right;">
-	    {yabb topichandellist}
-	</div>
-	</td>
-</tr>
-</table>
+if ($action ne 'favorites') {
+	$messageindex_template .= qq~<!-- Button Bar start -->
+			<table class="bordercolor pad_4px">
+				<tr class="catbg">
+					<td>
+	  					{yabb pageindex bottom}
+        			</td>
+        			<td class="post_tools_a right" style="padding:4px 10px 4px 4px">
+            			<div style="width: 100%; text-align: right">{yabb outsidethreadtools}</div>
+					</td>
+        			<td $threadhandelstyle>
+            			{yabb topichandellist2}
+            		</td>
+				</tr>
+			</table>
+{yabb modupdateend}
 
 <!-- Button Bar end -->
-
+~;
+	$messageindex_template .= $messagelist ? q{} : qq~
 <!-- Icon and access info start -->
-
-<table cellspacing="0" cellpadding="8">
-<tr>
-	<td width="28%" class="vtop">
-		<span class="small">{yabb icons}</span>
-	</td>
-	<td width="38%" class="vtop">
-		<span class="small">{yabb admin icons}</span>
-	</td>
-	<td width="33%" class="vtop">
-		<span class="small">{yabb access}</span>
-	</td>
-</tr>
-</table>
-
+			<table class="pad_8px">
+				<col style="width:28%" />
+				<col style="width:38%" />
+				<col style="width:33%" />
+				<tr>
+					<td class="vtop">
+						<span class="small">{yabb icons}</span>
+					</td>
+					<td class="vtop">
+						<span class="small">{yabb admin icons}</span>
+					</td>
+					<td class="vtop">
+						<span class="small">{yabb access}</span>
+					</td>
+				</tr>
+			</table>
 <!-- Icon and access info end -->
 ~;
 }
 
 if ($action eq "favorites") {
-$messageindex_template .= qq~
-<!-- Icon and access info start -->
-
-<table cellspacing="0" cellpadding="8">
-<tr>
-	<td width="35%" class="vtop">
-		<span class="small">{yabb icons}</span>
-	</td>
-	<td class="vtop">
-		<span class="small">{yabb admin icons}</span>
-	</td>
-</tr>
-</table>
-
+	$messageindex_template .= qq~<!-- Icon and access info start -->
+			<table class="pad_8px">
+				<col style="width:35%" />
+				<tr>
+					<td class="vtop">
+						<span class="small">{yabb icons}</span>
+					</td>
+					<td class="vtop">
+						<span class="small">{yabb admin icons}</span>
+					</td>
+				</tr>
+			</table>
 <!-- Icon and access info end -->
 ~;
 }
@@ -188,81 +186,68 @@ $messageindex_template .= qq~
 # Board description                        #
 
 $boarddescription = qq~
-<span class="small">{yabb boarddescription}</span>
+						<span class="small">{yabb boarddescription}</span>
 ~;
-
 
 # Column Header definition for multi admin        #
 
-$adminheader = qq~
-<td class="titlebg center" width="20%" nowrap="nowrap">{yabb admin}</td>
-~;
+$adminheader = qq~<td class="titlebg center" style="white-space: nowrap">{yabb admin}</td>~;
 
 # Column definition for multi admin        #
 
-$admincolumn = qq~
-<td class="windowbg center" width="20%" nowrap="nowrap">{yabb admin}</td>
-~;
+$admincolumn = qq~<td class="windowbg center" style="white-space: nowrap">{yabb admin}</td>~;
 
 # Sticky or global announcements header    #
 
-$stickyheader = qq~
-<tr>
-<td colspan="{yabb colspan}" class="catbg">&nbsp;$messageindex_stickygrp{'1'}</td>
-</tr>
-~;
+$stickyheader = qq~<tr>
+					<td colspan="{yabb colspan}" class="catbg">&nbsp;$messageindex_stickygrp{'1'}</td>
+				</tr>~;
 
 # Non sticky or global announcements header#
 
-$nonstickyheader = qq~
-<tr>
-<td colspan="{yabb colspan}" class="catbg">&nbsp;$messageindex_stickygrp{'2'}</td>
-</tr>
-~;
+$nonstickyheader = qq~<tr>
+					<td colspan="{yabb colspan}" class="catbg">&nbsp;$messageindex_stickygrp{'2'}</td>
+				</tr>~;
 
 # Thread bar                               #
 
-$threadbar = qq~
-<tr>
-<td class="windowbg2 center" width="4%">{yabb threadpic}</td>
-<td class="windowbg2 center" width="4%">{yabb icon}</td>
-<td class="windowbg" width="32%">
-<div style="float: left; width: 95%;">{yabb favorite} {yabb new} {yabb poll}<b>{yabb subjectlink}</b>{yabb pages}<br /><span class="small">{yabb permalink}</span></div>
-<div style="float: left; width: 5%; text-align: center;">{yabb attachmenticon}</div>
-</td>
-<td class="windowbg2 center" width="14%"><span class="small">{yabb starter}</span></td>
-<td class="windowbg center" width="8%">{yabb replies}</td>
-<td class="windowbg center" width="8%">{yabb views}</td>
-<td class="windowbg2" width="22%">
-<span class="small">
-{yabb lastpostlink}<br />
-<b>$messageindex_txt{'525'}:</b> {yabb lastposter}</span></td>
-{yabb admin column}
-</tr>
-~;
+$threadbar = qq~<tr>
+					<td class="windowbg2 center">{yabb threadpic}</td>
+					<td class="windowbg2 center">{yabb icon}</td>
+					<td class="windowbg">
+						<div style="float: left; width: 95%;">{yabb favorite} {yabb new} {yabb poll}<b>{yabb subjectlink}</b>{yabb pages}<br /><span class="small">{yabb permalink}</span></div>
+						<div style="float: left; width: 5%; text-align: center;">{yabb attachmenticon}</div>
+					</td>
+					<td class="windowbg2 center">
+						<span class="small">{yabb starter}</span>
+					</td>
+					<td class="windowbg center">{yabb replies}</td>
+					<td class="windowbg center">{yabb views}</td>
+					<td class="windowbg2">
+						<span class="small">
+						{yabb lastpostlink}<br />
+						<b>$messageindex_txt{'525'}:</b> {yabb lastposter}</span></td>
+						{yabb admin column}
+				</tr>~;
 
-$threadbarMoved = qq~
-<tr>
-<td class="windowbg2 center" width="4%">{yabb threadpic}</td>
-<td class="windowbg2 center" width="4%">{yabb icon}</td>
-<td class="windowbg" colspan="5" width="62%">
-<div style="float: left; width: 99%;">{yabb subjectlink}</div>
-</td>
-{yabb admin column}
-</tr>
-~; 
+$threadbarMoved = qq~<tr>
+					<td class="windowbg2 center">{yabb threadpic}</td>
+					<td class="windowbg2 center">{yabb icon}</td>
+					<td class="windowbg" colspan="5">
+						<div style="float: left; width: 99%;">{yabb subjectlink}</div>
+					</td>
+					{yabb admin column}
+				</tr>~; 
 
 # Admin dependent subfooter                #
 
-$subfooterbar = qq~
-<tr>
-<td class="titlebg" align="right" colspan="7">
-<span class="small">{yabb admin selector} <label for="checkall">$messageindex_txt{'737'}</label></span>
-</td>
-<td class="titlebg center" nowrap="nowrap">
-{yabb admin checkboxes}
-</td>
-</tr>
-~;
+$subfooterbar = qq~<tr>
+					<td class="titlebg right" colspan="7">
+						<span class="small">{yabb admin selector} <label for="checkall">$messageindex_txt{'737'}</label></span>
+					</td>
+					<td class="titlebg center" style="white-space: nowrap">
+					{yabb admin checkboxes}
+					</td>
+				</tr>~;
 
 1;
