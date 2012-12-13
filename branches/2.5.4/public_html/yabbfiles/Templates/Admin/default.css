@@ -1,15 +1,12 @@
 /*--------------------------------------------------------*/
-/*                      YaBB 2010                         */
-/*--------------------------------------------------------*/
-/*      Created by: XIMinc http://www.ximinc.com          */
-/*                  YaBB http://www.yabbforum.com         */
+/*                      YaBB 2012                         */
 /*--------------------------------------------------------*/
 /*    You may adapt elements of this CSS in your own      */
 /*    projects, but please give credit to yabbforum.com.  */
 /*--------------------------------------------------------*/
-/*   This is the css file for YaBB 2.5 AE Admin Center    */
+/*   This is the css file for YaBB 2.5.4 Admin Center    */
 /*--------------------------------------------------------*/
-/* $Revision: 1.13.2.1 $ */
+/* $Revision: 1.2 $ */
 
 
 /* General layout */
@@ -34,6 +31,11 @@ html>body #menu li a {
 	font-family: Verdana, Arial, Sans-Serif;
 	font-size: 11px;
 }
+img {
+border:0 none;
+vertical-align:middle;
+}
+
 img#adminlogo {
 	left: 0px;
 	position: absolute;
@@ -53,6 +55,55 @@ select {
 	font-family: Verdana, Arial, Sans-Serif;
 	font-size: 10px;
 }
+table {
+border-collapse:collapse;
+margin-left:auto;
+margin-right:auto;
+width:100%;
+}
+
+td,th {
+text-align:left;
+vertical-align:middle;
+}
+
+table.cs_1px{
+border-collapse:separate;
+border-spacing: 1px;
+}
+
+table.left {
+width:auto; margin-left:0
+}
+
+.center {
+text-align:center;
+}
+
+.right {
+text-align:right;
+}
+
+.left {
+text-align:left;
+}
+
+.vtop {
+vertical-align:top;
+}
+
+.bottom {
+vertical-align:bottom;
+}
+
+.bold {
+font-weight:bold;
+}
+
+.norm {
+font-weight:normal;
+}
+
 .bordercolor {
 	background-color: #A7B8CC;
 }
@@ -314,3 +365,200 @@ textarea:disabled, input:disabled {
 /*  \*/
 * html #container {height: 1%;}
 /*  */
+
+table.pad_2px td, .padd_2px {
+padding: 2px;
+}
+table.pad_3px td, .padd_3px {
+padding: 3px;
+}
+table.pad_4px td, .padd_4px {
+padding: 4px;
+}
+.padd_5px {
+padding:5px;
+}
+table.border td {
+border:	#A7B8CC thin solid;
+}
+.index_tog1 {
+float: left; height: 21px; margin: 2px 0 0 0;
+}
+
+#decselector1, #decselector2 {
+font-size: 9px; border: 2px inset;
+}
+
+.rightboxdiv {
+padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;
+}
+.rightboxdiva {
+padding: 0px; width: 95%; margin-left: 0px; margin-right: auto;
+}
+.leftboxdiv {
+padding: 0px; width: 100%; margin-left: auto; margin-right: 0px;
+}
+
+.left_49div {
+float: left; width: 49%; text-align: left;}
+.right_50div {
+float: left; width: 50%; text-align: right;
+}
+
+.admin_total_left {
+float: left; clear: left; width: 35%; text-align: left; padding-top: 2px; padding-bottom: 2px;
+}
+.admin_total_right {
+float: left; width: 10%; text-align: right; padding-top: 2px; padding-bottom: 2px;
+}
+
+.admin_total_65pc {
+float: left; width: 65%; text-align: left; padding-top: 2px; padding-bottom: 2px;
+}
+
+.old_mess_box {
+margin-left: 25px; margin-right: auto; text-align:left;
+}
+
+.red {
+color:red;
+}
+
+/*height and width*/
+
+.padd_8_12px {
+padding-top:8px; padding-bottom:12px;
+}
+
+.att {
+border: 0px; border-style: outset; cursor: pointer;
+}
+.h_18px {
+height:18px;
+}
+.h_21px {
+height:21px;
+}
+.h_30px {
+height:30px;
+}
+.h_100px {
+height: 100px;
+}
+.h_115px {
+height: 115px;
+}
+.h_145px {
+height: 145px;
+}
+.h_260px{
+height:260px;
+}
+.w_5pc {
+width:5%
+}
+.w_7pc {
+width:7%
+}
+.w_10pc {
+width:10%
+}
+.w_15pc {
+width:15%
+}
+.w_20pc {
+width:20%
+}
+.w_25pc {
+width:25%
+}
+.w_30pc {
+width:30%
+}
+.w_33pc {
+width:33%
+}
+.w_35pc {
+width:35%
+}
+.w_40pc {
+width:40%
+}
+.w_43pc {
+width:43%
+}
+.w_50pc {
+width:50%;
+}
+.w_55pc {
+width: 55%;
+}
+.w_75pc {
+width:75%
+}
+.w_70pc {
+width:70%
+}
+.w_90pc {
+width:90%;
+}
+.w_99pc {
+width:98%;
+}
+.w_320px {
+width:320px
+}
+.w_440px {
+width:440px;
+}
+
+/*password meter*/
+.pass_box {
+float:left; width: 150px; height: 20px;
+}
+
+#password-strength-meter {
+background: transparent url("default/empty_bar.gif") repeat-x center left; height: 4px;
+}
+
+#passwrd1_bar {
+border: 1px solid #FFFFFF; height: 4px;
+}
+
+#cappasswrd1, #cappasswrd1_char {
+color: red; font-weight: bold; display: none;
+clear:left;
+}
+#cappasswrd2, #cappasswrd2_char {
+color: red; font-weight: bold; display: none;
+}
+
+.backup_disabled {
+font-style:italic; color:grey;}
+
+.help_200 {
+float: left; text-align: center; width: 200px;
+}
+
+.help_30 {
+float: left; text-align: center; vertical-align: middle; width: 30px;
+}
+
+.help_page {
+width: 180px; font-size: 10px; margin: 2px;
+}
+
+.border {
+border: 1px #cccccc solid;
+}
+
+.deftpal {
+border:0;
+cursor:pointer;
+float:left;
+font-size:5px;
+height:9px;
+margin-bottom:1px;
+margin-right:1px;
+width:10px;
+}
