@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$advancedtabsplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$advancedtabsplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub AddNewTab {
@@ -54,31 +54,30 @@ sub AddNewTab {
 	</script>
 
 	<form action="$scripturl?action=addtab2" method="post" name="addtabtext" style="font-size: 11px; display: inline;" onsubmit="if(!checkTab(this)) {return false} else {return submittab()}">
-	<table width="100%" cellpadding="0" cellspacing="0" border="0">
-	<tr>
-		<td class="tabmenuleft" width="40">&nbsp;</td>
-		<td class="tabmenu" align="right" valign="middle" style="text-align: left; vertical-align: middle;">
-			<span class="selected" style="cursor: auto; vertical-align: middle; padding-top: 1px; white-space: nowrap;"><label for="tabtext">$tabfill$tabmenu_txt{'tabtext'}</label> <input type="text" name="tabtext" id="tabtext" value="" size="10" class="small" style="vertical-align: middle;" /></span>
-			<span class="selected" style="cursor: auto; vertical-align: middle; padding-top: 1px; white-space: nowrap;"><label for="taburl">$tabfill$tabmenu_txt{'taburl'}</label> <input type="text" name="taburl" id="taburl" value="" size="25" class="small" style="vertical-align: middle;" /></span>
-
-			<span class="selected" style="cursor: auto; vertical-align: middle; padding-top: 1px; white-space: nowrap;"><label for="tabwin">$tabfill$tabmenu_txt{'tabwin'}</label> <input type="checkbox" name="tabwin" id="tabwin" style="border: 0; padding: 0; margin: 0; background-color: transparent; vertical-align: middle;" /></span>
-
-			<span class="selected" style="cursor: auto; vertical-align: middle; padding-top: 1px; white-space: nowrap;"><label for="showto">$tabfill$tabmenu_txt{'tabview'}</label>
-				<select name="showto" id="showto" class="small" style="vertical-align: middle;">
-					<option value="0" selected="selected">$tabmenu_txt{'viewall'}</option>
-					<option value="1">$tabmenu_txt{'viewmem'}</option>
-					<option value="2">$tabmenu_txt{'viewgm'}</option>
-					<option value="3">$tabmenu_txt{'viewadm'}</option>
-				</select>
-			</span>
-			<span class="selected" style="cursor: auto; vertical-align: middle; padding-top: 1px; white-space: nowrap;"><label for="addafter">$tabfill$tabmenu_txt{'tabinsert'}</label>
-				<select name="addafter" id="addafter" class="small" style="vertical-align: middle;">
-					$edittabs
-				</select>
-			</span>
-			<span class="selected" style="cursor: auto; vertical-align: middle; padding-top: 1px; white-space: nowrap;">$tabfill<input type="submit" value="$tabmenu_txt{'addtab'}" class="small" style="vertical-align: middle;" />$tabfill</span>$tabsep
-		</td>
-	</tr>
+	<table>
+	    <col style="width:40px" />
+		<tr>
+			<td class="tabmenuleft">&nbsp;</td>
+			<td class="tabmenu">
+				<span class="selected" style="cursor: auto; vertical-align: middle; padding-top: 1px; white-space: nowrap;"><label for="tabtext">$tabfill$tabmenu_txt{'tabtext'}</label> <input type="text" name="tabtext" id="tabtext" value="" size="10" class="small" style="vertical-align: middle;" /></span>
+				<span class="selected" style="cursor: auto; vertical-align: middle; padding-top: 1px; white-space: nowrap;"><label for="taburl">$tabfill$tabmenu_txt{'taburl'}</label> <input type="text" name="taburl" id="taburl" value="" size="25" class="small" style="vertical-align: middle;" /></span>
+				<span class="selected" style="cursor: auto; vertical-align: middle; padding-top: 1px; white-space: nowrap;"><label for="tabwin">$tabfill$tabmenu_txt{'tabwin'}</label> <input type="checkbox" name="tabwin" id="tabwin" style="border: 0; padding: 0; margin: 0; background-color: transparent; vertical-align: middle;" /></span>
+				<span class="selected" style="cursor: auto; vertical-align: middle; padding-top: 1px; white-space: nowrap;"><label for="showto">$tabfill$tabmenu_txt{'tabview'}</label>
+					<select name="showto" id="showto" class="small" style="vertical-align: middle;">
+						<option value="0" selected="selected">$tabmenu_txt{'viewall'}</option>
+						<option value="1">$tabmenu_txt{'viewmem'}</option>
+						<option value="2">$tabmenu_txt{'viewgm'}</option>
+						<option value="3">$tabmenu_txt{'viewadm'}</option>
+					</select>
+				</span>
+				<span class="selected" style="cursor: auto; vertical-align: middle; padding-top: 1px; white-space: nowrap;"><label for="addafter">$tabfill$tabmenu_txt{'tabinsert'}</label>
+					<select name="addafter" id="addafter" class="small" style="vertical-align: middle;">
+						$edittabs
+					</select>
+				</span>
+				<span class="selected" style="cursor: auto; vertical-align: middle; padding-top: 1px; white-space: nowrap;">$tabfill<input type="submit" value="$tabmenu_txt{'addtab'}" class="small" />$tabfill</span>$tabsep
+			</td>
+		</tr>
 	</table>
 	</form>
 ~;
@@ -88,13 +87,14 @@ sub AddNewTab2 {
 	if ($iamadmin) {
 		my $tabtext = $FORM{'tabtext'};
 		my $taburl = $FORM{'taburl'};
-		$taburl =~ s/"/\%22/g;
+		$taburl =~ s/"/\%22/g; #";
 		my $tabwin = $FORM{'tabwin'} ? 1 : 0;
 		my $tabview = $FORM{'showto'};
 		my $tabafter = $FORM{'addafter'};
 		my $tmpusernamereq = 0;
-
-		if ($taburl !~ /^\http:\/\//) { $taburl = qq~http://$taburl~; }
+		
+		if ($taburl !~ /^http:\/\// && $taburl !~ /^https:\/\// && $taburl !~ /^ftp:\/\// ) { $taburl = qq~http://$taburl~; }
+		else {$taburl = $taburl;}
 
 		if($taburl =~ /$boardurl\/$yyexec\.$yyaext/i && $taburl =~ /action\=(.*?)(\;|\Z)/i) {
 			$taburl = 1;
@@ -161,8 +161,8 @@ sub AddNewTab2 {
 }
 
 sub EditTab {
-	$tabsave = qq~<img src="$imagesdir/tabsave.gif" border="0" alt="$tabmenu_txt{'savetab'}" title="$tabmenu_txt{'savetab'}" style="vertical-align: middle;" />~;
-	$tabdel = qq~<img src="$imagesdir/tabdelete.gif" border="0" alt="$tabmenu_txt{'tabdel'}" title="$tabmenu_txt{'tabdel'}" style="vertical-align: middle;" />~;
+	$tabsave = qq~<img src="$imagesdir/tabsave.gif" alt="$tabmenu_txt{'savetab'}" title="$tabmenu_txt{'savetab'}" />~;
+	$tabdel = qq~<img src="$imagesdir/tabdelete.gif" alt="$tabmenu_txt{'tabdel'}" title="$tabmenu_txt{'tabdel'}" />~;
 	$tabstyle = qq~style="font-size: 11px; white-space: nowrap; cursor: auto;"~;
 
 	$edittab{'home'} = qq~<span $tabstyle>$tabfill$img_txt{'103'}$tabfill</span>~;
@@ -217,43 +217,43 @@ sub EditTab {
 
 	$yyaddtab = qq~
 	<br />
-	<table width="100%" cellpadding="0" cellspacing="0" border="0">
-	<tr>
-		<td class="tabmenuleft" width="40" style="text-align: left; vertical-align: top;">&nbsp;</td>
-		<td class="tabmenu" style="text-align: left; vertical-align: top;">
-			$edittabmenu
-		</td>
-		<td class="tabmenuright" width="45" style="text-align: left; vertical-align: top;">&nbsp;</td>
-		<td class="rightbox" width="160" align="center" valign="middle">
-			<b>$tabmenu_txt{'reordertab'}</b>
-		</td>
-
-	</tr>
-	<tr>
-		<td colspan="3">&nbsp;</td>
-		<td width="160" align="center" valign="top" rowspan="3">
-			<form action="$scripturl?action=reordertab" method="post" name="tabsorder" style="display: inline; white-space: nowrap;">
-			<select name="ordertabs" class="small" size="$selsize" style="width: 130px;">
-				$edittabs
-			</select><br />
-			<input type="submit" value="$tabmenu_txt{'tableft'}" name="moveleft" style="font-size: 11px; width: 65px;" /><input type="submit" value="$tabmenu_txt{'tabright'}" name="moveright" style="font-size: 11px; width: 65px;" />
-			</form>
-		</td>
-	</tr>
-	<tr>
-		<td width="40">&nbsp;</td>
-		<td class="windowbg" style="text-align: left;">
-			<div class="small" style="float: left; width: 98%; padding: 4px;">
-				$tabmenu_txt{'edittext1'} $tabsave$tabmenu_txt{'edittext2'}$tabdel$tabmenu_txt{'edittext3'}<br />
-				$tabmenu_txt{'reordertext'}
-			</div>
-
-		</td>
-		<td width="45">&nbsp;</td>
-	</tr>
-	<tr>
-		<td colspan="3" style="font-size: 50px; text-align: left; vertical-align: top;">&nbsp;</td>
-	</tr>
+	<table>
+		<col style="width:40px" />
+		<col style="width:auto" />
+		<col style="width:45px" />
+		<col style="width:160px" />
+		<tr>
+			<td class="tabmenuleft">&nbsp;</td>
+			<td class="tabmenu">
+				$edittabmenu
+			</td>
+			<td class="tabmenuright vtop">&nbsp;</td>
+			<td class="rightbox center">
+				<b>$tabmenu_txt{'reordertab'}</b>
+			</td>
+		</tr><tr>
+			<td colspan="3">&nbsp;</td>
+			<td class="center vtop" rowspan="3">
+				<form action="$scripturl?action=reordertab" method="post" name="tabsorder" style="display: inline; white-space: nowrap;">
+					<select name="ordertabs" class="small" size="$selsize" style="width: 130px;">
+						$edittabs
+					</select><br />
+					<input type="submit" value="$tabmenu_txt{'tableft'}" name="moveleft" style="font-size: 11px; width: 65px;" />
+					<input type="submit" value="$tabmenu_txt{'tabright'}" name="moveright" style="font-size: 11px; width: 65px;" />
+				</form>
+			</td>
+		</tr><tr>
+			<td>&nbsp;</td>
+			<td class="windowbg">
+				<div class="small" style="float: left; width: 98%; padding: 4px;">
+					$tabmenu_txt{'edittext1'} $tabsave$tabmenu_txt{'edittext2'}$tabdel$tabmenu_txt{'edittext3'}<br />
+					$tabmenu_txt{'reordertext'}
+				</div>
+			</td>
+			<td>&nbsp;</td>
+		</tr><tr>
+			<td colspan="3" style="font-size: 50px; text-align: left; vertical-align: top;">&nbsp;</td>
+		</tr>
 	</table>
 ~;
 	undef %edittab;
