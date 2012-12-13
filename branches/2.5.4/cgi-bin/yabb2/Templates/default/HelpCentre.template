@@ -11,20 +11,21 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision: 1.0 $
+# $Revision: 1.1 $
 
-$HelpTemplateLoaded = "1";
+$HelpTemplateLoaded = '1';
 
 ### Creates the Navigation Bar at the top ###
 $HelpNavBar = qq~
 <div class="bordercolor" style="width: 100%; margin-bottom: 10px;">
 <a name="helptop"></a>
-   <table width="100%" cellspacing="1" cellpadding="2">
-     <tr align="center" valign="middle">
-       <td width="25%" class="<user class>"><user menu></td>
-       <td width="25%" class="<moderator class>"><moderator menu></td>
-       <td width="25%" class="<global mod class>"><global mod menu></td>
-       <td width="25%" class="<admin class>"><admin menu></td>
+   <table cellspacing="1" cellpadding="2">
+   <col span="4" style="width:25%" />
+     <tr>
+       <td class="<user class> center"><user menu></td>
+       <td class="<moderator class> center"><moderator menu></td>
+       <td class="<global mod class> center"><global mod menu></td>
+       <td class="<admin class> center"><admin menu></td>
      </tr>
    </table>
 </div>
@@ -35,11 +36,11 @@ $MainLayout = qq~
 <div style="width: 100%; margin-bottom: 20px;">
 <div style="clear: both;"></div>
 <div class="bordercolor" style="float: left; width: 24%;">
-   <table width="100%" cellspacing="1" cellpadding="4">
+   <table cellspacing="1" cellpadding="4">
      <tr>
-       <td width="100%" class="catbg" align="left" valign="middle"><span class="small">$helptxt{'2'}</span></td>
+       <td class="catbg"><span class="small">$helptxt{'2'}</span></td>
      </tr><tr>
-       <td width="100%" class="windowbg2"><yabb contents></td>
+       <td class="windowbg2"><yabb contents></td>
      </tr>
    </table>
 </div>
@@ -68,9 +69,9 @@ $ContentItem = qq~
 #
 $BodyHeader = qq~
 <div class="bordercolor" style="float: right; margin-bottom: 10px; width: 74%;">
-   <table width="100%" cellspacing="1" cellpadding="4" style="table-layout: fixed;">
+   <table cellspacing="1" cellpadding="4" style="table-layout: fixed;">
      <tr>
-       <td width="100%" class="titlebg" align="left" valign="middle">
+       <td class="titlebg">
          <a name="<yabb section_anchor>"></a><b><yabb section_name></b>
        </td>
      </tr>
@@ -80,7 +81,7 @@ $BodyHeader = qq~
 #
 $BodySubHeader = qq~
 <tr>
-<td width="100%" class="catbg" align="left" valign="middle">
+<td class="catbg">
 <a name="<yabb section_anchor>"></a><b><yabb section_sub></b>
 </td>
 </tr>
@@ -90,7 +91,7 @@ $BodySubHeader = qq~
 #
 $BodyItem = qq~
 <tr>
-<td width="100%" class="windowbg2" align="left" valign="middle">
+<td class="windowbg2">
 <yabb item><br />
 <span style="float:right;"><b><a href="#helptop">&#94;</a></b>&nbsp;</span>
 </td>
