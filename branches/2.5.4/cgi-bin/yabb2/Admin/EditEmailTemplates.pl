@@ -11,190 +11,199 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use CGI::Carp qw(fatalsToBrowser);
+use English '-no_match_vars';
+our $VERSION = 1.1;
 
-$editemailtemplatesplver = 'YaBB 2.5.4 $Revision: 1.0 $';
-if ($action eq 'detailedversion') { return 1; }
+$editemailtemplatesplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+if ( $action eq 'detailedversion' ) { return 1; }
 
 sub editemailtemplates {
-      &is_admin_or_gmod();
-      my($editlang, $string);
+    is_admin_or_gmod();
+    my ( $editlang, $string );
 
-      $editlang = $INFO{'lang'} || '';
-      $string = $INFO{'string'} || '';
+    $editlang = $INFO{'lang'}   || q{};
+    $string   = $INFO{'string'} || q{};
 
-      if(!$editlang) {
-            # Select language
-            $yymain .= qq~
+    if ( !$editlang ) {
+
+        # Select language
+        $yymain .= qq~
 <form action="$adminurl?action=editemailtemplates" method="get" style="display: inline">
 <input type="hidden" name="action" value="editemailtemplates" />
-  <table class="bordercolor" align="center" width="440" cellspacing="1" cellpadding="4">
-    <tr valign="middle">
-      <td align="left" class="titlebg">
-        <img src="$imagesdir/preferences.gif" alt="" border="0" /><b>$emaileditor{'1'}</b>
-      </td>
-    </tr>
-    <tr valign="middle">
-      <td align="center" class="windowbg2">
-        <select name="lang">~;
+    <table class="bordercolor cs_1px pad_4px w_440px">
+        <tr>
+            <td class="titlebg">
+                <img src="$imagesdir/preferences.gif" alt="" /><b>$emaileditor{'1'}</b>
+            </td>
+        </tr><tr>
+            <td class="windowbg2 center">
+                <select name="lang">~;
 
-            # Find all the languages
-            opendir(LNGDIR, $langdir);
-            my @langitems = readdir(LNGDIR);
-            close(LNGDIR);
-            foreach my $item (sort {lc($a) cmp lc($b)} @langitems) {
-                  if (-d "$langdir/$item" && $item =~ m~\A[0-9a-zA-Z_\#\%\-\:\+\?\$\&\~\,\@/]+\Z~ && -e "$langdir/$item/Email.lng") {
-                        my $displang = $item;
-                        $displang =~ s~(.+?)\_(.+?)$~$1 ($2)~gi;
-                        $yymain .= qq~
-            <option value="$item">$displang</option>~;
-                  }
+        # Find all the languages
+        opendir LNGDIR, $langdir;
+        my @langitems = readdir LNGDIR;
+        closedir LNGDIR;
+        foreach my $item ( sort { lc($a) cmp lc $b } @langitems ) {
+            if (   -d "$langdir/$item"
+                && $item =~ m{\A[0-9a-zA-Z_\#\%\-\:\+\?\$\&\~\,\@/]+\Z}sm
+                && -e "$langdir/$item/Email.lng" )
+            {
+                my $displang = $item;
+                $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
+                $yymain .= qq~
+                    <option value="$item">$displang</option>~;
             }
+        }
 
-            $yymain .= qq~
-        </select>
-      </td>
-    </tr>
-    <tr valign="middle">
-      <td align="center" class="catbg">
-      <input type="submit" value="$emaileditor{'2'}" class="button" />
-      </td>
-    </tr>
-  </table>
+        $yymain .= qq~
+                </select>
+            </td>
+        </tr><tr>
+            <td class="catbg center">
+                <input type="submit" value="$emaileditor{'2'}" class="button" />
+            </td>
+        </tr>
+    </table>
 </form>~;
-      }
-      elsif(!$string) {
-            # Select string
+    }
+    elsif ( !$string ) {
 
-            $yymain .= qq~
+        # Select string
+
+        $yymain .= qq~
 <form action="$adminurl?action=editemailtemplates" method="get" style="display: inline">
-<input type="hidden" name="action" value="editemailtemplates" />
-<input type="hidden" name="lang" value="$editlang" />
-  <table class="bordercolor" align="center" width="440" cellspacing="1" cellpadding="4">
-    <tr valign="middle">
-      <td align="left" class="titlebg">
-        <img src="$imagesdir/preferences.gif" alt="" border="0" /><b>$emaileditor{'3'}</b>
-      </td>
-    </tr>
-    <tr valign="middle">
-      <td align="center" class="windowbg2">
-        <select name="string">~;
+    <input type="hidden" name="action" value="editemailtemplates" />
+    <input type="hidden" name="lang" value="$editlang" />
+    <table class="bordercolor cs_1px pad_4px w_440px">
+        <tr>
+            <td class="titlebg">
+                <img src="$imagesdir/preferences.gif" alt="" /><b>$emaileditor{'3'}</b>
+            </td>
+        </tr><tr>
+            <td class="windowbg2 center">
+                <select name="string">~;
 
-            # Find all the strings
-            &LoadLanguage('Email');
-            my @emaildescset = sort{ $emaildesc{$a} cmp $emaildesc{$b} } keys %emaildesc;
-            foreach my $varname (@emaildescset) {
-                  $yymain .= qq~
-          <option value="$varname">$emaildesc{$varname}</option>~;
-            }
-
+        # Find all the strings
+        LoadLanguage('Email');
+        my @emaildescset =
+          sort { $emaildesc{$a} cmp $emaildesc{$b} } keys %emaildesc;
+        foreach my $varname (@emaildescset) {
             $yymain .= qq~
-        </select>
-      </td>
-    </tr>
-    <tr valign="middle">
-      <td align="center" class="catbg">
-      <input type="submit" value="$emaileditor{'2'}" class="button" />
-      </td>
-    </tr>
-  </table>
+                    <option value="$varname">$emaildesc{$varname}</option>~;
+        }
+
+        $yymain .= qq~
+                </select>
+            </td>
+        </tr><tr>
+            <td class="catbg center">
+                <input type="submit" value="$emaileditor{'2'}" class="button" />
+            </td>
+        </tr>
+    </table>
 </form>~;
-      }
-      else {
-            # Show editor
-            my $reallang = $language;
-            $language = $editlang;
-            &LoadLanguage('Email');
-            $language = $reallang;
+    }
+    else {
 
-            my $message = ${$string};
-            &ToHTML($message);
-            my $comment = $emaildesc{$string};
+        # Show editor
+        my $reallang = $language;
+        $language = $editlang;
+        LoadLanguage('Email');
+        $language = $reallang;
 
-            $yymain .= qq~
+        my $message = ${$string};
+        ToHTML($message);
+        my $comment = $emaildesc{$string};
+
+        $yymain .= qq~
 <form action="$adminurl?action=editemailtemplates2;lang=$editlang;string=$string" method="post" style="display: inline">
-  <table class="bordercolor" align="center" cellspacing="1" cellpadding="4">
-    <tr valign="middle">
-      <td align="left" class="titlebg">
-        <img src="$imagesdir/preferences.gif" alt="" border="0" /><b>$emaileditor{'4'}</b>
-      </td>
-    </tr>
-    <tr valign="middle">
-      <td align="left" class="windowbg2">
-        $emaileditor{'5'} $comment<br /><br />
-        $emaileditor{'6'}<br />
-        <textarea name="message" rows="20" cols="80">$message</textarea>
-      </td>
-    </tr>
-    <tr valign="middle">
-      <td align="left" class="windowbg2">
-        $emaileditor{'7'}
-        <ul>
-          <li>{yabb scripturl} $yabbtagdesc{'scripturl'}</li>
-          <li>{yabb adminurl} $yabbtagdesc{'adminurl'}</li>
-          <li>{yabb mbname} $yabbtagdesc{'mbname'}</li>~;
+    <table class="bordercolor cs_1px pad_4px">
+        <tr>
+            <td class="titlebg">
+                <img src="$imagesdir/preferences.gif" alt="" /><b>$emaileditor{'4'}</b>
+            </td>
+        </tr><tr>
+            <td class="windowbg2">
+                $emaileditor{'5'} $comment<br /><br />
+                $emaileditor{'6'}<br />
+                <textarea name="message" rows="20" cols="80">$message</textarea>
+            </td>
+        </tr><tr>
+            <td class="windowbg2">
+                $emaileditor{'7'}
+                <ul>
+                    <li>{yabb scripturl} $yabbtagdesc{'scripturl'}</li>
+                    <li>{yabb adminurl} $yabbtagdesc{'adminurl'}</li>
+                    <li>{yabb mbname} $yabbtagdesc{'mbname'}</li>~;
 
-      # Find the list of usable YaBB tags
-      foreach my $yabbtag (split(/\s+/, $yabbtags{$string})) {
-            next unless $yabbtag =~ /\w/;
+        # Find the list of usable YaBB tags
+        foreach my $yabbtag ( split /\s+/xsm, $yabbtags{$string} ) {
+            if ( $yabbtag !~ /\w/xsm ) { next; }
             $yymain .= qq~
-          <li>{yabb $yabbtag} $yabbtagdesc{$yabbtag}</li>~;
-      }
+                    <li>{yabb $yabbtag} $yabbtagdesc{$yabbtag}</li>~;
+        }
 
-      $yymain .= qq~
-        </ul>
-      </td>
-    </tr>
-    <tr valign="middle">
-      <td align="left" class="catbg">
-      $emaileditor{'8'}
-        <br />$emaileditor{'9'} <tt>Languages/$editlang/Email.lng</tt> $emaileditor{'10'}
-      </td>
-    </tr>
-    <tr valign="middle">
-      <td align="center" class="catbg">
-      <input type="submit" value="$emaileditor{'11'}" class="button" />
-      </td>
-    </tr>
-  </table>
+        $yymain .= qq~
+                </ul>
+            </td>
+        </tr><tr>
+            <td class="catbg">
+                $emaileditor{'8'}
+                <br />$emaileditor{'9'} <span style="font-family:monospace">Languages/$editlang/Email.lng</span> $emaileditor{'10'}
+            </td>
+        </tr><tr>
+            <td class="catbg center">
+                <input type="submit" value="$emaileditor{'11'}" class="button" />
+            </td>
+        </tr>
+    </table>
 </form>~;
-      }
+    }
 
-      $yytitle = $admintxt{'a4_label4'};
-      $action_area = 'editemailtemplates';
-      &AdminTemplate();
+    $yytitle     = $admintxt{'a4_label4'};
+    $action_area = 'editemailtemplates';
+    AdminTemplate();
+    return;
 }
 
 sub editemailtemplates2 {
-      &is_admin_or_gmod();
-      my($editlang, $string, $message);
+    is_admin_or_gmod();
 
-      $editlang = $INFO{'lang'};
-      $string = $INFO{'string'};
-      $message = $FORM{'message'};
+    my $editlang = $INFO{'lang'};
+    my $string   = $INFO{'string'};
+    my $message  = $FORM{'message'};
 
-      $message =~ s~(\~|\\)~\\$1~g;
-      $message =~ s/\r(?=\n*)//g;
+    $message =~ s/(\~|\\)/\\$1/gxsm;
+    $message =~ s/\r(?=\n*)//gxsm;
 
-      &admin_fatal_error('no_info') unless $message && $string;
+    if ( !$message || !$string ) { admin_fatal_error('no_info'); }
 
-      # Read the current file
-      fopen(LANG, "$langdir/$editlang/Email.lng") || &admin_fatal_error('cannot_open_language',"$langdir/$editlang/Email.lng", 1);
-      my $langfile = join('', <LANG>);
-      fclose(LANG);
+    # Read the current file
+    fopen( LANG, "$langdir/$editlang/Email.lng" )
+      || admin_fatal_error( 'cannot_open_language',
+        "$langdir/$editlang/Email.lng", 1 );
+    my $langfile = do { local $INPUT_RECORD_SEPARATOR = undef; <LANG> };
+    fclose(LANG);
 
-      # Vague hardcoded error since it was tampered with
-      &admin_fatal_error('error_occurred', 'Language Error') unless $string =~ /\Q$string\E/;
+    # Vague hardcoded error since it was tampered with
+    if ( $string !~ /\Q$string\E/xsm ) {
+        admin_fatal_error( 'error_occurred', 'Language Error' );
+    }
 
-      # Make the change
-      $langfile =~ s!\$\Q$string\E = qq~.+?~;!\$$string = qq~$message~;!s;
+    # Make the change
+    $langfile =~ s/\$\Q$string\E = qq~.+?~;/\$$string = qq~$message~;/sm;
 
-      # Write it out
-      fopen(LANG, ">$langdir/$editlang/Email.lng") || &admin_fatal_error('cannot_open_language',"$langdir/$editlang/Email.lng", 1);
-      print LANG $langfile;
-      fclose(LANG);
+    # Write it out
+    fopen( LANG, ">$langdir/$editlang/Email.lng" )
+      || admin_fatal_error( 'cannot_open_language',
+        "$langdir/$editlang/Email.lng", 1 );
+    print {LANG} $langfile or croak 'cannot print LANG';
+    fclose(LANG);
 
-      $yySetLocation = qq~$adminurl~;
-      &redirectexit();
+    $yySetLocation = qq~$adminurl~;
+    redirectexit();
+    return;
 }
 
 1;
