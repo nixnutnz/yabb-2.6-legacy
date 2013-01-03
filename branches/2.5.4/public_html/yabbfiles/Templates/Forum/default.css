@@ -8,7 +8,7 @@
 /*--------------------------------------------------------*/
 /*   This is the css file for YaBB 2.5.4 default Template */
 /*--------------------------------------------------------*/
-/* $Revision: 1.3 $ */
+/* $Revision: 1.5 $ */
 
 body {
 background-color:#F2F6F9;
@@ -81,7 +81,7 @@ text-align:left;
 vertical-align:middle;
 }
 
-table.cs_1px{
+table.cs_thin{
 border-collapse:separate;
 border-spacing: 1px;
 }
@@ -160,7 +160,12 @@ font-weight:700;
 text-decoration:none;
 }
 
-.tabtitle a:hover,a.nav:hover {
+.tabtitle a:hover {
+color:#900;
+text-decoration:underline;
+}
+
+.nav a:hover {
 color:#900;
 text-decoration:underline;
 }
@@ -298,10 +303,12 @@ font-size:10px;
 font-style:normal;
 font-weight:400;
 text-decoration:none;
+min-height:20px;
 }
 
 #fscroller {
-line-height:1.3;
+line-height:130%;
+min-height:20px;
 }
 
 .useronline {
@@ -319,7 +326,7 @@ color:#6078B0;
 font-weight:700;
 }
 
-.nav,a.nav,a.nav:visited {
+.nav, .nav a, .nav a:visited {
 color:#003;
 font-size:10px;
 font-weight:700;
@@ -833,16 +840,21 @@ float:left;
 table.pad_2px td, .padd_2px {
 padding: 2px;
 }
-table.pad_3px td, padd_3px {
+table.pad_3px td, .padd_3px {
 padding: 3px;
 }
-table.pad_4px td, padd_4px {
+table.pad_4px td, .padd_4px {
 padding: 4px;
 }
 
-table.pad_8px td, padd_8px {
+table.pad_8px td, .padd_8px {
 padding: 8px;
 }
+
+table.pad_0 td, .padd_0 {
+padding:0;
+}
+
 
 .h_18px {
 height:18px;
@@ -924,4 +936,7 @@ float: left; height: 21px; margin: 0px; margin-top: 2px;
 
 .bold {
 font-wight:bold;
+}
+.under, .u {
+text-decoration:underline;
 }
