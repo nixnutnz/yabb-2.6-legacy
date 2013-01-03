@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$loginoutplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$loginoutplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ($action eq 'detailedversion') { return 1; }
 
 if ($regcheck) { require "$sourcedir/Decoder.pl"; }
@@ -148,23 +148,26 @@ sub sharedLogin {
 	if ($sharedLogin_title ne "") {
 		$sharedlog .= qq~
 $border_with_title
-<table cellpadding="4" cellspacing="1" border="0" width="100%" align="center">
-	<tr><td class="titlebg" colspan="2"><b>$sharedLogin_title</b></td></tr>~;
-		if ($sharedLogin_text ne "") {
-			$sharedlog .= qq~
-	<tr><td class="windowbg" colspan="2" align="left">$sharedLogin_text</td></tr>~;
-		}
-		$sharedlog .= qq~
+<table class="pad_4px cs_1px">
 	<tr>
-		<td class="windowbg2" colspan="2" align="center" valign="middle" style="padding: 10px;">~;
+		<td class="titlebg" colspan="2"><b>$sharedLogin_title</b></td></tr>~;
+		if ($sharedLogin_text ne "") {
+			$sharedlog .= qq~<tr>
+		<td class="windowbg" colspan="2">$sharedLogin_text</td>
+	</tr>~;
+		}
+		$sharedlog .= qq~<tr>
+		<td class="windowbg2 center padd_10px" colspan="2">~;
 	} else {
 		$sharedlog .= qq~
 $border
-<table class="bordercolor" align="center" cellpadding="0" cellspacing="1" border="0" width="100%">
-	<tr><td class="tabtitle" colspan="2" valign="middle" align="center" height="25">$loginout_txt{'34'}</td></tr>
+<table class="bordercolor cs_1px">
+	<col style="width:5%" />
 	<tr>
-		<td class="windowbg" width="5%" valign="middle" align="center"><img src="$imagesdir/login.gif" border="0" alt="" /></td>
-		<td class="windowbg2" align="center" valign="middle" style="padding: 10px;">~;
+		<td class="tabtitle center" style="height:25px" colspan="2">$loginout_txt{'34'}</td>
+	</tr><tr>
+		<td class="windowbg center"><img src="$imagesdir/login.gif" alt="" /></td>
+		<td class="windowbg2 center padd_10px">~;
 	}
     if ($maintenance) { $hide_passbutton = " visibility: hidden;"; }
     if ($maintenance || !$regtype) { $hide_regbutton = " visibility: hidden;"; }
@@ -233,45 +236,55 @@ sub Reminder {
 	if (!$iamguest && $sessionvalid == 1) { &fatal_error("logged_in_already",$username); }
 	$yymain .= qq~<br /><br />
 <form action="$scripturl?action=reminder2" method="post" name="reminder" onsubmit="return CheckReminderField();">
-<table border="0" width="400" cellspacing="1" cellpadding="3" align="center" class="bordercolor">
+<table class="bordercolor pad_3px cs_1px" style="width:400px">
 	<tr>
-	<td class="titlebg">
-	<span class="text1"><b>$mbname $loginout_txt{'36'} $loginout_txt{'194'}</b></span>
-	</td>
+		<td class="titlebg">
+			<span class="text1"><b>$mbname $loginout_txt{'36'} $loginout_txt{'194'}</b></span>
+		</td>
 	</tr><tr>
-	<td class="windowbg">
-	<label for="user"><span class="text1"><b>$loginout_txt{'35'}:</b></span></label>
-	<input type="text" name="user" id="user" maxlength="100" $regstyle size="50" />
-	</td>
-	</tr>
-~;
+		<td class="windowbg">
+			<label for="user"><span class="text1"><b>$loginout_txt{'35'}:</b></span></label>
+			<input type="text" name="user" id="user" maxlength="100" $regstyle size="50" />
+		</td>
+	</tr>~;
 
 	if ($regcheck) {
 		&validation_code;
-		$yymain .= qq~
-	<tr>
-	<td class="windowbg">
-	<label for="verification"><span class="text1"><b>$floodtxt{'1'}: </b></span>
-	$showcheck
-	<br /><span class="small">$floodtxt{'casewarning'}</span></label>
-	</td>
+		$yymain .= qq~<tr>
+		<td class="windowbg">
+			<label for="verification"><span class="text1"><b>$floodtxt{'1'}: </b></span>
+			$showcheck
+			<br /><span class="small">$floodtxt{'casewarning'}</span></label>
+		</td>
 	</tr><tr>
-	<td class="windowbg">
-	<label for="verification"><span class="text1"><b>$floodtxt{'3'}: </b></span></label>
-	<span class="text1"><input type="text" maxlength="30" name="verification" id="verification" size="20" /></span>
-	</td>
-	</tr>
-~;
+		<td class="windowbg">
+			<label for="verification"><span class="text1"><b>$floodtxt{'3'}: </b></span></label>
+			<span class="text1"><input type="text" maxlength="30" name="verification" id="verification" size="20" /></span>
+		</td>
+	</tr>~;
 	}
-	$yymain .= qq~
-	<tr>
-	<td align="center" class="windowbg">
-	<input type="submit" value="$loginout_txt{'339'}" class="button" />
-	</td>
+	if ($spam_questions_send && -e "$langdir/$language/spam.questions") {
+		SpamQuestion();
+		my $verification_question_desc;
+		if ($spam_questions_case) { $verification_question_desc = qq~<br />$loginout_txt{'verification_question_case'}~; }
+		$yymain .= qq~<tr>
+	<td class="windowbg">
+		<label for="verification_question"><b>$spam_question</b><br />
+		<input type="text" name="verification_question" id="verification_question" size="50" maxlength="50" />
+		<input type="hidden" name="verification_question_id" value="$spam_question_id" /><br />
+		<span class="small">$loginout_txt{'verification_question_desc'}$verification_question_desc</span></label>
+		</td>
+	</tr>~;
+	}
+
+	$yymain .= qq~<tr>
+		<td class="windowbg center">
+			<input type="submit" value="$loginout_txt{'339'}" class="button" />
+		</td>
 	</tr>
 </table>
 </form>
-<script type="text/javascript" language="JavaScript">
+<script type="text/javascript">
 <!--
     document.reminder.user.focus();
 
@@ -279,28 +292,47 @@ sub Reminder {
         if (document.reminder.user.value == '') {
             alert("$loginout_txt{'error_user_info'}");
             document.reminder.user.focus();
-        return false;
-        }
+            return false;
+        }~ .
+        
+        ($regcheck ? qq~
+        if (document.reminder.verification.value == '') {
+            alert("$loginout_txt{'error_verification'}");
+            document.reminder.verification.focus();
+            return false;
+        }~ : q{}) .
+
+        ($spam_questions_send  && -e "$langdir/$language/spam.questions" ? qq~
+        if (document.reminder.verification_question.value == '') {
+            alert("$loginout_txt{'error_verification_question'}");
+            document.reminder.verification_question.focus();
+            return false;
+        }~ : q{})
+
+        . q~
         return true;
     }
 //-->
-</script> <br /><br />
+</script>
+<br /><br />
 ~;
 
 	$yytitle = $loginout_txt{'669'};
 	$yynavigation = qq~&rsaquo; $loginout_txt{'669'}~;
-	&template;
+	template();
+	return;
 }
 
 sub Reminder2 {
-	if (!$FORM{'user'}) { &fatal_error("", "$loginout_txt{'error_user_info'}"); }
+	if (!$FORM{'user'}) { &fatal_error(q{}, "$loginout_txt{'error_user_info'}"); }
 	# generate random ID for password reset.
-	if (!$iamguest && $sessionvalid == 1) { &fatal_error("logged_in_already",$username); }
-	my $randid = &keygen(8,"A");
+	if (!$iamguest && $sessionvalid == 1) { fatal_error('logged_in_already',$username); }
+	my $randid = keygen(8,'A');
 
 	if ($regcheck) {
-		&validation_check($FORM{'verification'});
+		validation_check($FORM{'verification'});
 	}
+	if ($spam_questions_send && -e "$langdir/$language/spam.questions") { SpamQuestionCheck($FORM{'verification_question'},$FORM{'verification_question_id'}); }
 
 	my $user = $FORM{'user'};
 	$user =~ s/\s/_/g;
@@ -344,17 +376,19 @@ sub Reminder2 {
 	&sendmail(${$uid.$user}{'email'}, $subject, $message);
 
 	$yymain .= qq~<br /><br />
-<table border="0" width="400" cellspacing="1" cellpadding="3" align="center" class="bordercolor">
+<table class="bordercolor pad_3px cs_1px" style="width:400px">
 	<tr>
-	<td class="titlebg">
-	<span class="text1"><b>$mbname $loginout_txt{'36'} $loginout_txt{'194'}</b></span>
-	</td>
+		<td class="titlebg">
+			<span class="text1"><b>$mbname $loginout_txt{'36'} $loginout_txt{'194'}</b></span>
+		</td>
 	</tr><tr>
- 	<td class="windowbg" align="center">
-	<b>$loginout_txt{'192'} $FORM{'user'}</b></td>
-      </tr>
+ 		<td class="windowbg center">
+			<b>$loginout_txt{'192'} $FORM{'user'}</b>
+		</td>
+	</tr>
 </table>
-<br /><p align="center"><a href="$scripturl">$maintxt{'go_to_board'}</a></p><br />
+<br />
+<p class="center"><a href="$scripturl">$maintxt{'go_to_board'}</a></p><br />
 
 ~;
 	$yytitle = "$loginout_txt{'669'}";
