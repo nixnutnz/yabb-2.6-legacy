@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$memberlistplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$memberlistplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 if ($iamguest && $ML_Allowed) { &fatal_error('no_access'); }
@@ -94,8 +94,8 @@ sub MLByLetter {
 	undef %memberinf;
 	$memcount = @ToShow;
 	if (!$memcount && $letter) {
-		$pageindex1 = qq~<span class="small" style="float: left; height: 21px; margin: 0px; margin-top: 2px;"><img src="$imagesdir/index_togl.gif" border="0" alt="" style="vertical-align: middle;" /></span>~;
-		$pageindex2 = qq~<span class="small" style="float: left; height: 21px; margin: 0px; margin-top: 2px;"><img src="$imagesdir/index_togl.gif" border="0" alt="" style="vertical-align: middle;" /></span>~;
+		$pageindex1 = qq~<span class="small pgindex"><img src="$imagesdir/index_togl.gif" alt="" /></span>~;
+		$pageindex2 = qq~<span class="small pgindex"><img src="$imagesdir/index_togl.gif" alt="" /></span>~;
 	} else {
 		&buildIndex;
 	}
@@ -109,7 +109,7 @@ sub MLByLetter {
 			$b++;
 		}
 	} else {
-		if ($letter) { $yymain .= qq~<tr><td class="windowbg" colspan="$headercount" align="center"><br /><b>$ml_txt{'760'}</b><br /><br /></td></tr>~; }
+		if ($letter) { $yymain .= qq~<tr><td class="windowbg center" colspan="$headercount"><br /><b>$ml_txt{'760'}</b><br /><br /></td></tr>~; }
 	}
 	undef @ToShow;
 	&buildPages(0);
@@ -222,7 +222,7 @@ sub showRows {
 		&LoadUser($user);
 		if (${$uid.$user}{'realname'} eq "") { ${$uid.$user}{'realname'} = $user; }
 		if (!$minlinkweb) { $minlinkweb = 0; }
-		if (${$uid.$user}{'weburl'} && (${$uid.$user}{'postcount'} >= $minlinkweb || ${$uid.$user}{'position'} eq 'Administrator' || ${$uid.$user}{'position'} eq 'Global Moderator')) { $wwwshow = qq~<a href="${$uid.$user}{'weburl'}" target="_blank"><img src="$imagesdir/www.gif" border="0" alt="${$uid.$user}{'webtitle'}" title="${$uid.$user}{'webtitle'}" /></a>~; }
+		if (${$uid.$user}{'weburl'} && (${$uid.$user}{'postcount'} >= $minlinkweb || ${$uid.$user}{'position'} eq 'Administrator' || ${$uid.$user}{'position'} eq 'Global Moderator')) { $wwwshow = qq~<a href="${$uid.$user}{'weburl'}" onclick="target='_blank';"><img src="$imagesdir/www.gif" alt="${$uid.$user}{'webtitle'}" title="${$uid.$user}{'webtitle'}" /></a>~; }
 		$barchart = ${$uid.$user}{'postcount'};
 		$bartemp  = (${$uid.$user}{'postcount'} * $maxbar);
 		$barwidth = ($bartemp / $barmax);
@@ -230,7 +230,7 @@ sub showRows {
 		$barwidth = int($barwidth);
 		if ($barwidth > $maxbar) { $barwidth = $maxbar }
 		if ($barchart < 1) { $Bar = ''; }
-		else { $Bar = qq~<img src="$imagesdir/bar.gif" width="$barwidth" height="10" alt="" border="0" />~; }
+		else { $Bar = qq~<img src="$imagesdir/bar.gif" width="$barwidth" height="10" alt="" />~; }
 		if ($Bar eq "") { $Bar = "&nbsp;"; }
 		my $additional_tds = $extendedprofiles ? &ext_memberlist_tds($user) : '';
 
@@ -250,24 +250,24 @@ sub showRows {
 		~;
 		if (${$uid.$user}{'hidemail'} && !$iamadmin && $allow_hide_email == 1) {
 			$yymain .= qq~
-			<td align="center" class="windowbg2"><img src="$imagesdir/lockmail.gif" alt="$ml_txt{'308'}" title="$ml_txt{'308'}" /></td>
+			<td class="windowbg2 center"><img src="$imagesdir/lockmail.gif" alt="$ml_txt{'308'}" title="$ml_txt{'308'}" /></td>
 		~;
 		} else {
 			if (!$iamguest){
 				$yymain .= qq~
-				<td align="center" class="windowbg2">~ . &enc_eMail(qq~<img src="$imagesdir/email.gif" border="0" alt="$img_txt{'69'}" title="~ . ($iamadmin ? ${$uid.$user}{'email'} : $img_txt{'69'}) . qq~" />~,${$uid.$user}{'email'},'','') . qq~</td>
+				<td class="windowbg2 center">~ . &enc_eMail(qq~<img src="$imagesdir/email.gif" alt="$img_txt{'69'}" title="~ . ($iamadmin ? ${$uid.$user}{'email'} : $img_txt{'69'}) . qq~" />~,${$uid.$user}{'email'},'','') . qq~</td>
 			~;
 			} else {
 				$yymain .= qq~
-				<td align="center" class="windowbg2"><img src="$imagesdir/lockmail.gif" alt="$ml_txt{'308'}" title="$ml_txt{'308'}" /></td>
+				<td class="windowbg2 center"><img src="$imagesdir/lockmail.gif" alt="$ml_txt{'308'}" title="$ml_txt{'308'}" /></td>
 			~;
 			}
 		}
 		$yymain .= qq~
-		<td align="center" class="windowbg2">$wwwshow</td>
+		<td class="windowbg2 center">$wwwshow</td>
 		<td class="windowbg">$memberinfo{$user}&nbsp;</td>
-		<td class="windowbg2" width="5%" align="center">~ . &NumberFormat(${$uid.$user}{'postcount'}) . qq~&nbsp;</td>
-		<td class="windowbg" width="18%">$Bar</td>
+		<td class="windowbg2 center" style="width:5%">~ . &NumberFormat(${$uid.$user}{'postcount'}) . qq~&nbsp;</td>
+		<td class="windowbg" style="width:18%">$Bar</td>
 		<td class="windowbg">$dr_regdate &nbsp;</td>
 		$additional_tds
 		</tr>~;
@@ -304,14 +304,14 @@ sub buildIndex {
 		else { $endpage = $memcount }
 		$lastpn     = int(($memcount - 1) / $MembersPerPage) + 1;
 		$lastptn    = ($lastpn - 1) * $MembersPerPage;
-		$pageindex1 = qq~<span class="small" style="float: left; height: 21px; margin: 0px; margin-top: 2px;"><img src="$imagesdir/index_togl.gif" border="0" alt="" style="vertical-align: middle;" /> $ml_txt{'139'}: $pagenumb</span>~;
-		$pageindex2 = qq~<span class="small" style="float: left; height: 21px; margin: 0px; margin-top: 2px;"><img src="$imagesdir/index_togl.gif" border="0" alt="" style="vertical-align: middle;" /> $ml_txt{'139'}: $pagenumb</span>~;
+		$pageindex1 = qq~<span class="small pgindex"><img src="$imagesdir/index_togl.gif" alt="" /> $ml_txt{'139'}: $pagenumb</span>~;
+		$pageindex2 = qq~<span class="small pgindex"><img src="$imagesdir/index_togl.gif" alt="" /> $ml_txt{'139'}: $pagenumb</span>~;
 		if ($pagenumb > 1 || $all) {
 
 			if ($usermemberpage == 1 || $iamguest) {
-				$pagetxtindexst = qq~<span class="small" style="float: left; height: 21px; margin: 0px; margin-top: 2px;">~;
-				if (!$iamguest) { $pagetxtindexst .= qq~<a href="$scripturl?sort=$FORM{'sortform'};letter=$letter;start=$start;action=memberpagedrop$findmember"><img src="$imagesdir/index_togl.gif" border="0" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" style="vertical-align: middle;" /></a> $ml_txt{'139'}: ~; }
-				else { $pagetxtindexst .= qq~<img src="$imagesdir/xx.gif" border="0" alt="" style="vertical-align: middle;" /> $ml_txt{'139'}: ~; }
+				$pagetxtindexst = qq~<span class="small pgindex">~;
+				if (!$iamguest) { $pagetxtindexst .= qq~<a href="$scripturl?sort=$FORM{'sortform'};letter=$letter;start=$start;action=memberpagedrop$findmember"><img src="$imagesdir/index_togl.gif" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a> $ml_txt{'139'}: ~; }
+				else { $pagetxtindexst .= qq~<img src="$imagesdir/xx.gif" alt="" /> $ml_txt{'139'}: ~; }
 				if ($startpage > 0) { $pagetxtindex = qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter$findmember" style="font-weight: normal;">1</a>&nbsp;...&nbsp;~; }
 				if ($startpage == $MembersPerPage) { $pagetxtindex = qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter$findmember" style="font-weight: normal;">1</a>&nbsp;~; }
 				for ($counter = $startpage; $counter < $endpage; $counter += $MembersPerPage) {
@@ -325,7 +325,7 @@ sub buildIndex {
 				$pageindex2 = qq~$pagetxtindexst$pagetxtindex</span>~;
 			} else {
 				$pagedropindex1 = qq~<span style="float: left; width: 350px; margin: 0px; margin-top: 2px; border: 0px;">~;
-				$pagedropindex1 .= qq~<span style="float: left; height: 21px; margin: 0; margin-right: 4px;"><a href="$scripturl?sort=$FORM{'sortform'};letter=$letter;start=$start;action=memberpagetext$findmember"><img src="$imagesdir/index_togl.gif" border="0" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a></span>~;
+				$pagedropindex1 .= qq~<span style="float: left; height: 21px; margin: 0; margin-right: 4px;"><a href="$scripturl?sort=$FORM{'sortform'};letter=$letter;start=$start;action=memberpagetext$findmember"><img src="$imagesdir/index_togl.gif" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a></span>~;
 				$pagedropindex2 = $pagedropindex1;
 				$tstart         = $start;
 				if (substr($INFO{'start'}, 0, 3) eq "all") { ($tstart, $start) = split(/\-/, $INFO{'start'}); }
@@ -366,12 +366,12 @@ sub buildIndex {
 				if (substr($INFO{'start'}, 0, 3) eq "all") { $MembersPerPage = $MembersPerPage * $dropdisplaynum; }
 				$prevpage          = $start - $tmpMembersPerPage;
 				$nextpage          = $start + $MembersPerPage;
-				$pagedropindexpvbl = qq~<img src="$imagesdir/index_left0.gif" height="14" width="13" border="0" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
-				$pagedropindexnxbl = qq~<img src="$imagesdir/index_right0.gif" height="14" width="13" border="0" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
-				if ($start < $MembersPerPage) { $pagedropindexpv .= qq~<img src="$imagesdir/index_left0.gif" height="14" width="13" border="0" alt="" style="display: inline; vertical-align: middle;" />~; }
-				else { $pagedropindexpv .= qq~<img src="$imagesdir/index_left.gif" border="0" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$prevpage$findmember\\'" ondblclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=0$findmember\\'" />~; }
-				if ($nextpage > $lastptn) { $pagedropindexnx .= qq~<img src="$imagesdir/index_right0.gif" border="0" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~; }
-				else { $pagedropindexnx .= qq~<img src="$imagesdir/index_right.gif" height="14" width="13" border="0" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$nextpage$findmember\\'" ondblclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$lastptn$findmember\\'" />~; }
+				$pagedropindexpvbl = qq~<img src="$imagesdir/index_left0.gif" height="14" width="13" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
+				$pagedropindexnxbl = qq~<img src="$imagesdir/index_right0.gif" height="14" width="13" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
+				if ($start < $MembersPerPage) { $pagedropindexpv .= qq~<img src="$imagesdir/index_left0.gif" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~; }
+				else { $pagedropindexpv .= qq~<img src="$imagesdir/index_left.gif" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$prevpage$findmember\\'" ondblclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=0$findmember\\'" />~; }
+				if ($nextpage > $lastptn) { $pagedropindexnx .= qq~<img src="$imagesdir/index_right0.gif" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~; }
+				else { $pagedropindexnx .= qq~<img src="$imagesdir/index_right.gif" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$nextpage$findmember\\'" ondblclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$lastptn$findmember\\'" />~; }
 				$pageindex1 = qq~$pagedropindex1</span>~;
 				$pageindex2 = qq~$pagedropindex2</span>~;
 
@@ -386,7 +386,7 @@ sub buildIndex {
 		var pagstart = parseInt(splitparam[3]);
 		var allpagstart = parseInt(splitparam[3]);
 		if(visel == 'xx' && decparam == '$pagejsindex') visel = '$tstart';
-		var pagedropindex = '<table border="0" cellpadding="0" cellspacing="0"><tr>';
+		var pagedropindex = '<table><tr>';
 		for(i=vistart; i<=viend; i++) {
 			if(visel == pagstart) pagedropindex += '<td class="titlebg" height="14" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: bold;">' + i + '</td>';
 			else pagedropindex += '<td height="14" class="droppages"><a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=' + pagstart + '$findmember">' + i + '</a></td>';
@@ -457,23 +457,24 @@ sub buildIndex {
 			$headercount += &ext_memberlist_get_headercount($additional_headers);
 		}
 
-		$TableHeader .= qq(
-			<tr>
-				<td $selUser onclick="location.href='$scripturl?action=ml;sort=username';" width="23%" align="center" style="border: 1px; border-style: outset; cursor: pointer;"><a href="$scripturl?action=ml;sort=username"><b>$ml_txt{'35'}</b></a></td>
-				<td class="catbg" width="4%" align="center"><img src="$imagesdir/email.gif" border="0" alt="$ml_txt{'307'}" title="$ml_txt{'307'}" /></td>
-				<td class="catbg" width="4%" align="center"><img src="$imagesdir/www.gif" border="0" alt="$ml_txt{'96'}" title="$ml_txt{'96'}" /></td>
-				<td $selPos onclick="location.href='$scripturl?action=ml;sort=position';" width="23%" align="center" style="border: 1px; border-style: outset; cursor: pointer;"><a href="$scripturl?action=ml;sort=position"><b>$ml_txt{'87'}</b></a></td>
-				<td $selPost onclick="location.href='$scripturl?action=ml;sort=posts';" width="23%" colspan="2" align="center" style="border: 1px; border-style: outset; cursor: pointer;"><a href="$scripturl?action=ml;sort=posts"><b>$ml_txt{'21'}</b></a></td>
-				<td $selReg onclick="location.href='$scripturl?action=ml;sort=regdate';" width="23%" align="center" style="border: 1px; border-style: outset; cursor: pointer;"><a href="$scripturl?action=ml;sort=regdate"><b>$ml_txt{'234'}</b></a></td>
+		$TableHeader .= qq~<tr>
+				<td $selUser onclick="location.href='$scripturl?action=ml;sort=username';" style="border: 1px; border-style: outset; cursor: pointer; width:23%; text-align:center">
+				    <a href="$scripturl?action=ml;sort=username"><b>$ml_txt{'35'}</b></a>
+				</td>
+				<td class="catbg center" style="width:4%"><img src="$imagesdir/email.gif" alt="$ml_txt{'307'}" title="$ml_txt{'307'}" /></td>
+				<td class="catbg center" style="width:4%"><img src="$imagesdir/www.gif" alt="$ml_txt{'96'}" title="$ml_txt{'96'}" /></td>
+				<td $selPos onclick="location.href='$scripturl?action=ml;sort=position';" style="border: 1px; border-style: outset; cursor: pointer; text-align:center; width:23%">
+				    <a href="$scripturl?action=ml;sort=position"><b>$ml_txt{'87'}</b></a>
+				</td>
+				<td $selPost onclick="location.href='$scripturl?action=ml;sort=posts';" colspan="2" style="border: 1px; border-style: outset; cursor: pointer; text-align:center; width:23%"><a href="$scripturl?action=ml;sort=posts"><b>$ml_txt{'21'}</b></a></td>
+				<td $selReg onclick="location.href='$scripturl?action=ml;sort=regdate';" style="border: 1px; border-style: outset; cursor: pointer; text-align:center; width:23%"><a href="$scripturl?action=ml;sort=regdate"><b>$ml_txt{'234'}</b></a></td>
 				$additional_headers
-			</tr>
-		);
+			</tr>~;
 
 		if ($LetterLinks ne "") {
-			$TableHeader .= qq(<tr>
+			$TableHeader .= qq~<tr>
 				<td class="catbg" colspan="$headercount"><span class="small">$LetterLinks</span></td>
-			</tr>
-			);
+			</tr>~;
 		}
 
 		$numbegin = ($start + 1);
@@ -484,24 +485,23 @@ sub buildIndex {
 		if ($_[0]) {
 			$yynavigation = qq~&rsaquo; $ml_txt{'331'} $numshow~;
 			$yymain .= qq~
-		<table border="0" width="100%" cellspacing="1" cellpadding="3" class="bordercolor">
-		<tr>
-		<td class="catbg" colspan="$headercount" width="100%" align="left" valign="middle">
-		<div style="float: left; width: 25%; text-align: left;">$pageindex1</div>
-		<div class="small" style="float: left; width: 74%; text-align: right;">$FindForm &nbsp; $SortJump</div>
-		</td>
-		</tr>
-		$TableHeader
+		<table class="bordercolor pad_3px cs_1px">
+			<tr>
+				<td class="catbg" colspan="$headercount">
+					<div style="float: left; width: 25%; text-align: left;">$pageindex1</div>
+					<div class="small" style="float: left; width: 74%; text-align: right;">$FindForm &nbsp; $SortJump</div>
+				</td>
+			</tr>
+			$TableHeader
 		~;
 		} else {
-			$yymain .= qq~
-		<tr>
-		<td class="catbg" colspan="$headercount" width="100%" align="left" valign="middle">
-		<div style="float: left; width: 50%; text-align: left;">$pageindex2</div>
-		<div style="float: left; width: 49%; color: #AA0000; font-weight: normal; vertical-align: middle; text-align: right;">$dr_warning</div>
-		$pageindexjs
-		</td>
-		</tr>
+			$yymain .= qq~<tr>
+				<td class="catbg" colspan="$headercount">
+					<div style="float: left; width: 50%; text-align: left;">$pageindex2</div>
+					<div style="float: left; width: 49%; color: #AA0000; font-weight: normal; vertical-align: middle; text-align: right;">$dr_warning</div>
+					$pageindexjs
+				</td>
+			</tr>
 		</table>
 		~;
 		}
@@ -542,7 +542,7 @@ sub FindMembers {
 	} else {
 		$yymain .= qq~
 		<tr>
-			<td class="windowbg2" valign="middle" align="center" colspan="7"><br />$ml_txt{'802'} <i>$FORM{'member'}</i><br /><br /></td>
+			<td class="windowbg2 center" colspan="7"><br />$ml_txt{'802'} <i>$FORM{'member'}</i><br /><br /></td>
 		</tr>~;
 	}
 	undef @findmemlist;
