@@ -3,17 +3,17 @@
 //##############################################################################
 //# YaBB: Yet another Bulletin Board                                           #
 //# Open-Source Community Software for Webmasters                              #
-//# Version:        YaBB 3.0 Beta                                              #
-//# Packaged:       October 05, 2010                                           #
+//# Version:        YaBB 2.5.4 Beta                                            #
+//# Packaged:       January 1, 2013                                            #
 //# Distributed by: http://www.yabbforum.com                                   #
 //# ===========================================================================#
-//# Copyright (c) 2000-2010 YaBB (www.yabbforum.com) - All Rights Reserved.    #
+//# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.    #
 //# Software by:  The YaBB Development Team                                    #
 //#               with assistance from the YaBB community.                     #
 //##############################################################################
 
 
-//YaBB 3.0 Beta $Revision: 328 $
+//YaBB 2.5.4 Beta $Revision: 1.2 $
 
 var LivePrevDisplayNames = new Object();
 
@@ -298,9 +298,9 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 		if ( !sqauthor || !sqlink || !sqdate ) stquotstrg = squotstrg;
 		else stquotstrg = quotstrg;
 		if ( sqauthor ) {
-			sqmessage=sqmessage.replace(/\/me /ig, "<i>" + sqauthor + "</i> ");
+			sqmessage=sqmessage.replace(/\/me /ig, "<i><span style='color: #FF0000;'><b>" + sqauthor + "</b></span></i> ");
 		} else {
-			sqmessage=sqmessage.replace(/\/me /ig, "<i>" + dspname + "</i> ");
+			sqmessage=sqmessage.replace(/\/me /ig, "<i><span style='color: #FF0000;'><b>" + dspname + "</b></span></i> ");
 		}
 		if (LivePrevDisplayNames[sqauthor]) sqauthor = LivePrevDisplayNames[sqauthor];
 		else sqauthor = post_txt_807;
@@ -343,7 +343,7 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 			if(params[0] == 'height') h = "height='" + new Number(params[1]) + "' ";
 			if(params[0] == 'align') a = "align='" + params[1] + "' ";
 		}
-		var imgrest = "<img src='http://" + s + "' " + w + h + a + "alt='' border='0' />";
+		var imgrest = "<img src='http://" + s + "' " + w + h + a + "alt='' />";
 		ubbcstr=ubbcstr.replace(/\[img (.+?)\][\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*(http\:\/\/)*(.+?)[\s*\t*\n*(\&nbsp\;)*(\&#160\;)*]*\[\/img\]/i, imgrest);
 	}
 
@@ -380,7 +380,7 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 	ubbcstr=ubbcstr.replace(/\[gopher\](\S+?)\[\/gopher\]/ig, '<a href="$1">$1</a>');
 	ubbcstr=ubbcstr.replace(/\[ftp\](\S+?)\[\/ftp\]/ig, '<a href="$1">$1</a>');
 
-	ubbcstr=ubbcstr.replace(/\/me /ig, "<i>" + dspname + "</i> ");
+	ubbcstr=ubbcstr.replace(/\/me /ig, "<i><span style='color: #FF0000;'><b>" + dspname + "</b></span></i> ");
 
 	function wrapstr(wraptext) {
 		wraptext=wraptext.replace(/([\S]{80})/g, "$1\n");
