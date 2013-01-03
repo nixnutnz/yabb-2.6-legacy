@@ -12,7 +12,7 @@
 //#               with assistance from the YaBB community.                     #
 //##############################################################################
 
-//YaBB 3.0 Beta $Revision: 328 $
+//YaBB 2.5.4 Beta $Revision: 1.1 $
 
 // DocClick object for registering multiple document.onclick events
 DocClick = new Array();
@@ -99,8 +99,8 @@ var hideTimer = null;
 var lastOpen = null;
 function quickLinks(num) {
 	closeLinks(lastOpen);
-	document.getElementById(num).style.display = "inline-block";
-	document.getElementById(num).parentNode.style.zIndex = "1000";
+	document.getElementById("ql"+num).style.display = "inline-block";
+	document.getElementById("ql"+num).parentNode.style.zIndex = "1000";
 	lastOpen = num;
 }
 function TimeClose(num) {
@@ -112,8 +112,8 @@ function keepLinks(num) {
 }
 function closeLinks(num) {
 	if(lastOpen != null) {
-		document.getElementById(num).style.display = "none";
-		document.getElementById(num).parentNode.style.zIndex = "0";
+		document.getElementById("ql"+num).style.display = "none";
+		document.getElementById("ql"+num).parentNode.style.zIndex = "0";
 	}
 	lastOpen = null;
 	clearTimeout(hideTimer);
