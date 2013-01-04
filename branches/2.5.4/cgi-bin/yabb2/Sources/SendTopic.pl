@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$sendtopicplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$sendtopicplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 if (!$sendtopicmail || $sendtopicmail == 2) { &fatal_error("not_allowed"); }
@@ -38,54 +38,70 @@ sub SendTopic {
 
 	$yymain .= qq~
 <form action="$scripturl?action=sendtopic2" method="post" name="sendtopic" onsubmit="return CheckSendTopicFields();">
-<table width="70%" border="0" align="center" cellspacing="0" cellpadding="3">
+<table class="pad_3px" style="width:70%">
+    <col style="width:30%" />
 	<tr>
 		<td class="titlebg" colspan="2">
-			<img src="$imagesdir/email.gif" alt="" border="0" />
+			<img src="$imagesdir/email.gif" alt="" />
 			<span class="text1"><b>$sendtopic_txt{'707'}&nbsp; &#171; $subject &#187; &nbsp;$sendtopic_txt{'708'}</b></span>
 		</td>
 	</tr><tr>
-		<td width="30%" class="windowbg" align="left"><label for="y_name"><b>$sendtopic_txt{'335'}:</b></label></td>
-		<td width="70%" class="windowbg" align="left"><input type="text" name="y_name" id="y_name" size="50" maxlength="50" value="${$uid.$username}{'realname'}" /></td>
+		<td class="windowbg"><label for="y_name"><b>$sendtopic_txt{'335'}:</b></label></td>
+		<td class="windowbg"><input type="text" name="y_name" id="y_name" size="50" maxlength="50" value="${$uid.$username}{'realname'}" /></td>
 	</tr><tr>
-		<td width="30%" class="windowbg" align="left"><label for="y_email"><b>$sendtopic_txt{'336'}:</b></label></td>
-		<td width="70%" class="windowbg" align="left"><input type="text" name="y_email" id="y_email" size="50" maxlength="50" value="${$uid.$username}{'email'}" /></td>
+		<td class="windowbg"><label for="y_email"><b>$sendtopic_txt{'336'}:</b></label></td>
+		<td class="windowbg"><input type="text" name="y_email" id="y_email" size="50" maxlength="50" value="${$uid.$username}{'email'}" /></td>
 	</tr><tr>
-		<td class="windowbg" align="center" valign="top" colspan="2">
-			<hr width="100%" size="1" class="hr" />
+		<td class="windowbg center vtop" colspan="2">
+			<hr class="hr" />
 		</td>
 	</tr><tr>
-		<td width="30%" class="windowbg" align="left"><label for="r_name"><b>$sendtopic_txt{'717'}:</b></label></td>
-		<td width="70%" class="windowbg" align="left"><input type="text" name="r_name" id="r_name" size="50" maxlength="50" /></td>
+		<td class="windowbg"><label for="r_name"><b>$sendtopic_txt{'717'}:</b></label></td>
+		<td class="windowbg"><input type="text" name="r_name" id="r_name" size="50" maxlength="50" /></td>
 	</tr><tr>
-		<td width="30%" class="windowbg" align="left"><label for="r_email"><b>$sendtopic_txt{'718'}:</b></label></td>
-		<td width="70%" class="windowbg" align="left"><input type="text" name="r_email" id="r_email" size="50" maxlength="50" /></td>
-	</tr>
-~;
+		<td class="windowbg"><label for="r_email"><b>$sendtopic_txt{'718'}:</b></label></td>
+		<td class="windowbg"><input type="text" name="r_email" id="r_email" size="50" maxlength="50" /></td>
+	</tr>~;
 
 	if ($regcheck) {
 		&validation_code;
-		$yymain .= qq~
-	<tr>
-		<td class="windowbg" align="center" valign="top" colspan="2">
-			<hr width="100%" size="1" class="hr" />
+		$yymain .= qq~<tr>
+		<td class="windowbg center vtop" colspan="2">
+			<hr class="hr" />
 		</td>
 	</tr><tr>
-		<td width="30%" class="windowbg" align="left" valign="middle"><label for="verification"><b>$floodtxt{'1'}:</b></label></td>
-		<td width="70%" class="windowbg" align="left" valign="middle">$showcheck<br /><label for="verification"><span class="small">$floodtxt{'casewarning'}</span></label></td>
+		<td class="windowbg"><label for="verification"><b>$floodtxt{'1'}:</b></label></td>
+		<td class="windowbg" valign="middle">$showcheck<br /><label for="verification"><span class="small">$floodtxt{'casewarning'}</span></label></td>
 	</tr><tr>
-		<td width="30%" class="windowbg" align="left"><label for="verification"><b>$floodtxt{'3'}:</b></label></td>
-		<td width="70%" class="windowbg" align="left"><input type="text" maxlength="30" name="verification" id="verification" size="50" /></td>
-	</tr>
-~;
+		<td class="windowbg"><label for="verification"><b>$floodtxt{'3'}:</b></label></td>
+		<td class="windowbg"><input type="text" maxlength="30" name="verification" id="verification" size="50" /></td>
+	</tr>~;
+	}
+	if ($spam_questions_send && -e "$langdir/$language/spam.questions") {
+		SpamQuestion();
+		my $verification_question_desc;
+		if ($spam_questions_case) { $verification_question_desc = qq~<br />$sendtopic_txt{'verification_question_case'}~; }
+		$yymain .= qq~<tr>
+		<td class="windowbg center vtop" colspan="2">
+			<hr class="hr" />
+		</td>
+	</tr><tr>
+		<td class="windowbg"><label for="verification_question"><b>$spam_question</b><br />
+		    <span class="small">$sendtopic_txt{'verification_question_desc'}$verification_question_desc</span></label>
+		</td>
+		<td class="windowbg vtop">
+		    <input type="text" name="verification_question" id="verification_question" size="50" maxlength="50" />
+		    <input type="hidden" name="verification_question_id" value="$spam_question_id" />
+		</td>
+	</tr>~;
 	}
 	$yymain .= qq~
 	<tr>
-		<td class="windowbg" align="center" valign="top" colspan="2">
-			<hr width="100%" size="1" class="hr" />
+		<td class="windowbg center vtop" colspan="2">
+			<hr class="hr" />
 		</td>
 	</tr><tr>
-		<td class="windowbg" align="center" colspan="2">
+		<td class="windowbg center" colspan="2">
 			<input type="hidden" name="board" value="$board" />
 			<input type="hidden" name="topic" value="$topic" />
 			<input type="submit" name="Send" value="$sendtopic_txt{'339'}" class="button" />
@@ -93,7 +109,7 @@ sub SendTopic {
 	</tr>
 </table>
 </form>
-<script type="text/javascript" language="JavaScript">
+<script type="text/javascript">
 <!--
     $focus_y_name
 
@@ -123,7 +139,14 @@ sub SendTopic {
             alert("$sendtopic_txt{'error_verification'}");
             document.sendtopic.verification.focus();
             return false;
-        }~ : '') . qq~
+        }~ : q{}) .
+        ($spam_questions_send && -e "$langdir/$language/spam.questions" ? qq~
+        if (document.sendtopic.verification_question.value == '') {
+            alert("$sendtopic_txt{'error_verification_question'}");
+            document.sendtopic.verification_question.focus();
+            return false;
+        }~ : q{}) 
+        . qq~
         return true;
     }
 //-->
@@ -161,11 +184,11 @@ sub SendTopic2 {
 	&fatal_error("sendname_too_long","$sendtopic_txt{'717'}") if (length($rname) > 25);
 	&fatal_error("no_email","$sendtopic_txt{'718'}") if ($remail eq '');
 	&fatal_error("invalid_character","$sendtopic_txt{'718'} $sendtopic_txt{'241'}") if ($remail !~ /[\w\-\.\+]+\@[\w\-\.\+]+\.(\w{2,4}$)/);
-	&fatal_error("invalid_email","$sendtopic_txt{'718'}")                                            if (($remail =~ /(@.*@)|(\.\.)|(@\.)|(\.@)|(^\.)|(\.$)/) || ($remail !~ /^.+@\[?(\w|[-.])+\.[a-zA-Z]{2,4}|[0-9]{1,4}\]?$/));
+	&fatal_error("invalid_email","$sendtopic_txt{'718'}")  if (($remail =~ /(@.*@)|(\.\.)|(@\.)|(\.@)|(^\.)|(\.$)/) || ($remail !~ /^.+@\[?(\w|[-.])+\.[a-zA-Z]{2,4}|[0-9]{1,4}\]?$/));
 	if ($regcheck) {
-		&validation_check($FORM{'verification'});
+		validation_check($FORM{'verification'});
 	}
-
+	if ($spam_questions_send && -e "$langdir/$language/spam.questions") { SpamQuestionCheck($FORM{'verification_question'},$FORM{'verification_question_id'}); }
 	unless (ref($thread_arrayref{$topic})) {
 		fopen(FILE, "$datadir/$topic.txt") || &fatal_error("cannot_open","$datadir/$topic.txt", 1);
 		@{$thread_arrayref{$topic}} = <FILE>;
