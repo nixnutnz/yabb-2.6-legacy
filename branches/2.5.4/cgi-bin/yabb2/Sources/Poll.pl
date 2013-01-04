@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$pollplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$pollplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Poll');
@@ -276,18 +276,18 @@ sub votedetails {
 <br />
 <form action="$scripturl?action=undovote;num=$pollnum$start" method="post" style="display: inline;">
 <input type="hidden" name="multidel" value="1" />
-<table cellpadding="4" cellspacing="1" border="0" width="90%" class="bordercolor" align="center">
-        <tr>
-          <td class="titlebg" colspan="5">$img{'pollicon'} <span class="text1"><b>$polltxt{'42'}</b></span></td>
-        </tr><tr>
-          <td class="windowbg2" colspan="5"><br /><b>$polltxt{'16'}:</b> $poll_question<br /><br /></td>
-        </tr><tr>
-          <td class="catbg" align="center"><b>&nbsp;</b></td>
-          <td class="catbg" align="center"><b>$polltxt{'35'}</b></td>
-          <td class="catbg" align="center"><b>$polltxt{'30'}</b></td>
-          <td class="catbg" align="center"><b>$polltxt{'31'}</b></td>
-          <td class="catbg" align="center"><b>$polltxt{'24'}</b></td>
-        </tr><tr>~;
+<table class="bordercolor pad_4px cs_1px" style="width:90%">
+	<tr>
+    	<td class="titlebg" colspan="5">$img{'pollicon'} <span class="text1"><b>$polltxt{'42'}</b></span></td>
+    </tr><tr>
+        <td class="windowbg2" colspan="5"><br /><b>$polltxt{'16'}:</b> $poll_question<br /><br /></td>
+    </tr><tr>
+        <td class="catbg center"><b>&nbsp;</b></td>
+        <td class="catbg center"><b>$polltxt{'35'}</b></td>
+        <td class="catbg center"><b>$polltxt{'30'}</b></td>
+        <td class="catbg center"><b>$polltxt{'31'}</b></td>
+        <td class="catbg center"><b>$polltxt{'24'}</b></td>
+    </tr><tr>~;
 
 	foreach $entry (@polled) {
 		chomp $entry;
@@ -310,17 +310,17 @@ sub votedetails {
 
 		$vote_date = &timeformat($vote_date);
 		$yymain .= qq~
-          <td class="windowbg2" align="center"><input type="checkbox" name="$id" value="1" /></td>
-          <td class="windowbg2">$voters_name</td>
-          <td class="windowbg2" align="center">$voters_ip</td>
-          <td class="windowbg2" align="center">$vote_date</td>
-          <td class="windowbg2">$voted</td>
-        </tr><tr>~;
+        <td class="windowbg2 center"><input type="checkbox" name="$id" value="1" /></td>
+        <td class="windowbg2">$voters_name</td>
+        <td class="windowbg2 center">$voters_ip</td>
+        <td class="windowbg2 center">$vote_date</td>
+        <td class="windowbg2">$voted</td>
+    </tr><tr>~;
 	}
 
 	$yymain .= qq~
-          <td class="titlebg" align="center" colspan="5"><input type="submit" value="$polltxt{'49'}" class="button" /></td>
-        </tr>
+        <td class="titlebg center" colspan="5"><input type="submit" value="$polltxt{'49'}" class="button" /></td>
+    </tr>
 </table>
 </form>~;
 
@@ -444,9 +444,8 @@ sub display_poll {
 		}
 		if ($hide_results) {
 			$endedtext = qq~<span style="color: #FF0000;"><b>$polltxt{'53'}</b></span></td>
-                </tr>
-                <tr>
-                  <td colspan="2" align="center" class="windowbg2"><br />~;
+                </tr><tr>
+                  <td class="windowbg2 center" colspan="2"><br />~;
 			$hide_results = 0;
 			$bgclass = 'windowbg2';
 		}
@@ -475,7 +474,7 @@ sub display_poll {
 		$endedtext = qq~<span style="color: #FF0000;"><b>$polltxt{'22'}</b></span></td>
                 </tr>
                 <tr>
-                  <td colspan="2" align="center" class="windowbg2"><br />~;
+                  <td class="windowbg2 center" colspan="2"><br />~;
 		$poll_icon = $img{'polliconclosed'};
 		$has_voted = 5;
 	} else {
@@ -532,31 +531,30 @@ sub display_poll {
 </form>
 
 <form name="poll" method="post" action="$scripturl?action=vote;num=$pollnum$scp" style="display: inline;">
-<table cellpadding="4" cellspacing="1" border="0" width="100%" class="bordercolor" align="center">
-<tr>
-<td class="titlebg" valign="middle" align="left">
-	<div style="float: left; width: 50%; text-align: left;">
-		<span class="text1">$poll_icon <b>$polltxt{'15'}</b>$boardpoll</span>
-	</div>
-	<div style="float: left; width: 50%; text-align: right;">
-		<span class="small">$lockpoll$modifypoll$deletepoll</span>
-	</div>
-</td>
-</tr>
-<tr>
-<td valign="top" class="catbg">
-	<div style="float: left; width: 80%;">
-		<b>$polltxt{'16'}:</b> $poll_question
-	</div>
+<table class="bordercolor pad_4px cs_1px">
+	<tr>
+		<td class="titlebg">
+			<div style="float: left; width: 50%; text-align: left;">
+				<span class="text1">$poll_icon <b>$polltxt{'15'}</b>$boardpoll</span>
+			</div>
+			<div style="float: left; width: 50%; text-align: right;">
+				<span class="small">$lockpoll$modifypoll$deletepoll</span>
+			</div>
+		</td>
+	</tr><tr>
+		<td class="catbg vtop">
+			<div style="float: left; width: 80%;">
+				<b>$polltxt{'16'}:</b> $poll_question
+			</div>
 	~;
 	if($has_voted) {
 		unless($hide_results && !$poll_locked) {
 			$pollmain .= qq~
 	<div style="float: left; width: 20%; text-align: right;">
-		<script language="JavaScript1.2" type="text/javascript">
+		<script type="text/javascript">
 		<!--
-		document.write('<a href="$scripturl?num=$viewnum"><img src="$imagesdir/bars.gif" border="0" alt="" /></a>');
-		document.write('<a href="$scripturl?num=$viewnum;view=pie"><img src="$imagesdir/pie.gif" border="0" alt="" /></a>');
+		document.write('<a href="$scripturl?num=$viewnum"><img src="$imagesdir/bars.gif" alt="" /></a>');
+		document.write('<a href="$scripturl?num=$viewnum;view=pie"><img src="$imagesdir/pie.gif" alt="" /></a>');
 		//-->
 		</script>
 	</div>
@@ -564,12 +562,11 @@ sub display_poll {
 		}
 	}
 	$pollmain .= qq~
-</td>
-</tr>
-<tr>
-<td colspan="2" align="center" class="$bgclass">
+		</td>
+	</tr><tr>
+		<td class="$bgclass center" colspan="2">
 	$endedtext
-	<div class="$bgclass" id="piestyle" style="width: 100%;"><br />~;
+			<div class="$bgclass" id="piestyle" style="width: 100%;"><br />~;
 
 	if ($has_voted && $hide_results && !$poll_locked) {
 
@@ -580,8 +577,8 @@ sub display_poll {
 		if($has_voted) {
 			if($INFO{'view'} eq "pie") {
 				$pollmain .= qq~
-		<script language="JavaScript1.2" src="$yyhtml_root/piechart.js" type="text/javascript"></script>
-		<script language="JavaScript1.2" type="text/javascript">
+		<script src="$yyhtml_root/piechart.js" type="text/javascript"></script>
+		<script type="text/javascript">
 		<!--
 			if (document.getElementById('piestyle').currentStyle) {
 				pie_colorstyle = document.getElementById('piestyle').currentStyle['color'];
@@ -665,14 +662,14 @@ sub display_poll {
 		$poll_end = '';
 	}
 	$pollmain .= qq~
-	<div style="float: left; width: 49%; text-align: left;">
-		<span class="small">$poll_end$displaydate</span>
-	</div>
-	<div style="float: left; width: 50%; text-align: right;">
-		<span class="small">$viewthread$deletevote$displayvoters</span>
-	</div>
-    </td>
-  </tr>
+			<div style="float: left; width: 49%; text-align: left;">
+				<span class="small">$poll_end$displaydate</span>
+			</div>
+			<div style="float: left; width: 50%; text-align: right;">
+				<span class="small">$viewthread$deletevote$displayvoters</span>
+			</div>
+    	</td>
+	</tr>
 </table>
 </form>~;
 }
