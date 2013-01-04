@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$movesplitspliceplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$movesplitspliceplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('MoveSplitSplice');
@@ -174,10 +174,10 @@ sub Split_Splice {
 	}
 
 	$output .= qq~
-<script language="JavaScript1.2" src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
+<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
 <form action="$scripturl?action=split_splice;board=$currentboard;thread=$INFO{'thread'}" method="post" name="split_splice" onsubmit="return submitproc()">
 <input type="hidden" name="formsession" value="$formsession" />
-<table border="0" cellspacing="1" cellpadding="8" class="bordercolor" align="center" width="90%">
+<table class="bordercolor pad_8px cs_1px" style="width:90%">
 	<tr>
 		<td class="titlebg"><img src="$defaultimagesdir/admin_move_split_splice.gif" alt="$sstxt{'1'}" /> <b>$sstxt{'1'}</b></td>
 	</tr><tr>
@@ -254,7 +254,7 @@ sub Split_Splice {
 			<input type="checkbox" name="newinfo" id="newinfo" value="1"~ . ($FORM{'newinfo'} ? ' checked="checked"' : '') . qq~ /> <label for="newinfo">$sstxt{'15a'}</label>
 		</td>
 	</tr><tr>
-		<td class="catbg" align="center"><input type="submit" name="ss_submit" value="$sstxt{'24'}" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="$sstxt{'25'}" /></td>
+		<td class="catbg center"><input type="submit" name="ss_submit" value="$sstxt{'24'}" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="$sstxt{'25'}" /></td>
 	</tr>
 </table>
 </form>
