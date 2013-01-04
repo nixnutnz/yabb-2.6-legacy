@@ -16,10 +16,10 @@
 use warnings;
 no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.1;
+our $VERSION = 1.2;
 
 # from YaBB3.0 build 100 #
-$recentplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$recentplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Sub RecentTopics shows all the most recently posted topics
@@ -235,22 +235,20 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under"
         <td>
             <table class="titlebg">
                 <tr>
-                    <td style="padding-left:5px">$maintxt{'109'} $tname | $maintxt{'197'} $mname</td>
-                    ~;
+                    <td style="padding-left:5px">$maintxt{'109'} $tname | $maintxt{'197'} $mname</td>~;
 
         if ( $tstate != 1 && ( !$iamguest || $enable_guestposting ) ) {
             $yymain .= qq~
-            <td class="right">&nbsp;
-                <a href="$scripturl?board=$board;action=post;num=$tnum/$c#$c;title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num=$tnum;quote=$c;title=PostReply">$img{'recentquote'}</a>$notify &nbsp;
+            	<td class="right">&nbsp;
+                	<a href="$scripturl?board=$board;action=post;num=$tnum/$c#$c;title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num=$tnum;quote=$c;title=PostReply">$img{'recentquote'}</a>$notify &nbsp;
             </td>~;
         }
 
         $yymain .= qq~</tr>
             </table>
         </td>
-    </tr>
-    <tr>
-        <td class="windowbg2 vtop" style="padding:5px; height:80px"><div style="float: left; width: 99%; overflow: auto;">$message</div></td>
+    </tr><tr>
+        <td class="windowbg2 vtop h_80px" style="padding:5px"><div style="float: left; width: 99%; overflow: auto;">$message</div></td>
     </tr>
 </table><br />
 ~;
@@ -467,7 +465,7 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under"
 <table class="tabtitle">
     <col style="width:5%" />
     <tr>
-        <td class="center" style="height:30px">$counter</td>
+        <td class="center h_30px">$counter</td>
         <td>&nbsp;<a href="$scripturl?catselect=$catid{$board}"><span class="under">$catname{$board}</span></a>$boardtree / <a href="$scripturl?num=$tnum/$c#$c"><span class="under">$msub</span></a><br />
         &nbsp;<span class="small">$maintxt{'30'}: $mdate</span>&nbsp;</td>
     </tr>
@@ -477,8 +475,7 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under"
         <td>
             <table class="titlebg">
                 <tr>
-                    <td style="padding-left:5px">$maintxt{'109'} $tname | $maintxt{'197'} $mname</td>
-                    ~;
+                    <td style="padding-left:5px">$maintxt{'109'} $tname | $maintxt{'197'} $mname</td>~;
 
         if ( $tstate != 1 && ( !$iamguest || $enable_guestposting ) ) {
             $yymain .= qq~
@@ -487,13 +484,11 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under"
             </td>~;
         }
 
-        $yymain .= qq~
-                </tr>
+        $yymain .= qq~</tr>
             </table>
         </td>
-    </tr>
-    <tr>
-        <td class="windowbg2 vtop" style="padding:5px; height:80px"><div style="float: left; width: 99%; overflow: auto;">$message</div></td>
+    </tr><tr>
+        <td class="windowbg2 vtop h_80px" style="padding:5px"><div style="float: left; width: 99%; overflow: auto;">$message</div></td>
     </tr>
 </table><br />
 ~;
