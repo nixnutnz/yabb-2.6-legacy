@@ -12,34 +12,34 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$mycenterplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$mycenterplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ($action eq 'detailedversion') { return 1; }
 
-&LoadLanguage('InstantMessage');
-&LoadLanguage('MyCenter');
+LoadLanguage('InstantMessage');
+LoadLanguage('MyCenter');
 require "$templatesdir/$usemycenter/MyCenter.template";
 if (-e "$vardir/gmodsettings.txt" && $iamgmod) { require "$vardir/gmodsettings.txt"; }
 $mycenter_txt{'welcometxt'} =~ s/USERLABEL/${$uid.$username}{'realname'}/g;
 
-$showIM = '';
-$IM_box = '';
-$showProfile = '';
-$PMfileToOpen = '';
-$sendBMess = '';
-$isBMess = '';
-$showFavorites = '';
-$showNotifications = '';
+$showIM = q{};
+$IM_box = q{};
+$showProfile = q{};
+$PMfileToOpen = q{};
+$sendBMess = q{};
+$isBMess = q{};
+$showFavorites = q{};
+$showNotifications = q{};
 
 ##  here begins the user centre, from the old IMIndex
 sub mycenter {
-	if ($iamguest) { &fatal_error('members_only'); }
+	if ($iamguest) { fatal_error('members_only'); }
 
-	&LoadBroadcastMessages($username); # get the BM infos
+	LoadBroadcastMessages($username); # get the BM infos
 
-	$IM_box = '';
-	my $PMfileToOpen = '';
+	$IM_box = q{};
+	my $PMfileToOpen = q{};
 	my @otherStoreFolders = ();
-	my $otherStoreSelect = '';
+	my $otherStoreSelect = q{};
 	$replyguest = $INFO{'replyguest'} || $FORM{'replyguest'};
 	## select view by action
 	if ($action =~ /^im/ || $action eq 'deletemultimessages' || $action eq 'pmsearch') { $view = 'pm'; }
@@ -68,7 +68,7 @@ sub mycenter {
 					elsif ($otherFolder eq 'out') { $otherFolderName = $im_folders_txt{'out'}; }
 					$otherStoreSelect .= qq~<option value="$otherFolder">$otherFolderName</option>~;
 				}
-				$otherStoreSelect .= qq~</select>~;
+				$otherStoreSelect .= q~</select>~;
 			}
 		}
 		## inbox
@@ -148,11 +148,11 @@ sub mycenter {
 		}
 	}
 	## viewing front page
-	elsif ($view eq "mycenter") {
+	elsif ($view eq 'mycenter') {
 		$mctitle = "$inmes_txt{'mycenter'}";
 	}
 	## viewing my profile
-	elsif ($view eq "profile") {
+	elsif ($view eq 'profile') {
 		$mctitle = "$mc_menus{'profile'}";
 	}
 	## viewing my recent posts
@@ -161,8 +161,8 @@ sub mycenter {
 	}
 
 	## draw the container
-	&drawPMbox($PMfileToOpen);
-	&LoadIMs;
+	drawPMbox($PMfileToOpen);
+	LoadIMs();
 
 	# navigation link
 	$yynavigation = qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'}</a> &rsaquo; $mctitle~;
@@ -174,7 +174,7 @@ sub mycenter {
 	$mycenter_template =~ s/({|<)yabb mcprofmenu(}|>)/$MCProfMenu/g;
 	$mycenter_template =~ s/({|<)yabb mcpostsmenu(}|>)/$MCPostsMenu/g;
 	$mycenter_template =~ s/({|<)yabb mcglobformstart(}|>)/$MCGlobalFormStart/g;
-	$mycenter_template =~ s/({|<)yabb mcglobformend(}|>)/ ($MCGlobalFormStart ? "<\/form>" : "") /e;
+	$mycenter_template =~ s/({|<)yabb mcglobformend(}|>)/ ($MCGlobalFormStart ? '<\/form>' : q{}) /e;
 	$mycenter_template =~ s/({|<)yabb mcextrasmilies(}|>)/$MCExtraSmilies/g;
 	$mycenter_template =~ s/({|<)yabb mccontent(}|>)/$MCContent/g;
 	$mycenter_template =~ s/({|<)yabb mctitle(}|>)/$mctitle/g;
@@ -185,20 +185,21 @@ sub mycenter {
 	$yymain .= $mycenter_template;
 	if (%usernames_life_quote) { # for display names in Quotes in LivePreview
 		$yymain .= qq~
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 <!-- //
 	~ . join(';', map { qq~LivePrevDisplayNames['$_'] = "$usernames_life_quote{$_}"~ } keys %usernames_life_quote) . qq~;
 // -->
 </script>\n\n~;
 	}
-	&template;
+	template();
+	return;
 }
 
 sub AddFolder {
-	if ($iamguest) { &fatal_error("im_members_only"); }
+	if ($iamguest) { fatal_error('im_members_only'); }
 	my $storefolders = ${$username}{'PMfolders'};
-	my @currStoreFolders = split(/\|/, ${$username}{'PMfolders'});
-	my $newStoreFolders = "in|out";
+	my @currStoreFolders = split /\|/xsm, ${$username}{'PMfolders'};
+	my $newStoreFolders = 'in|out';
 
 	my $newFolderName = $FORM{'newfolder'};
 	chomp $newFolderName;
@@ -206,8 +207,8 @@ sub AddFolder {
 	my $x = 0;
 	nxtfdr: foreach my $currStoreFolder (@currStoreFolders) {
 		if ($FORM{'newfolder'}) {
-			if ($newFolderName =~ /[^0-9A-Za-z \-_]/) { &fatal_error('invalid_character', $inmes_txt{'foldererror'}); }
-			if ($FORM{'newfolder'} eq $currStoreFolder) { &fatal_error('im_folder_exists'); }
+			if ($newFolderName =~ /[^0-9A-Za-z \-_]/) { fatal_error('invalid_character', $inmes_txt{'foldererror'}); }
+			if ($FORM{'newfolder'} eq $currStoreFolder) { fatal_error('im_folder_exists'); }
 		} elsif ($FORM{'delfolders'}) {
 			if ($currStoreFolder ne 'in' && $currStoreFolder ne 'out' && $FORM{"delfolder$x"} ne 'del') {
 				$newStoreFolders .= qq~|$currStoreFolder~;
@@ -219,12 +220,13 @@ sub AddFolder {
 	elsif ($FORM{'delfolders'}) { ${$username}{'PMfolders'} = $newStoreFolders; }
 	&buildIMS($username, 'update');
 	$yySetLocation = qq~$scripturl?action=mycenter~;
-	&redirectexit;
+	redirectexit();
+	return;
 }
 
 ##  call an unopened message back
 sub CallBack {
-	if ($iamguest) { &fatal_error("im_members_only"); }
+	if ($iamguest) { fatal_error('im_members_only'); }
 
 	my $receiver = $INFO{'receiver'}; # set variables from GET - localised
 
@@ -943,9 +945,9 @@ function insert_user (oElement,username,userid) {
 ## start Profile div
 	$MCProfMenu = qq~
 	<div id="cont_prof" style="display: $display_prof">
-	<table id="prof"  width="100%" align="center" class="windowbg2" cellpadding="4">
+	<table id="prof" class="windowbg2 pad_4px">
 		<tr>
-			<td style="text-align: left;">~;
+			<td>~;
 
 	## links for profile pages. SID is now cloaked and controls whether or not
 	## the action goes to authenticate or straight to the page.
@@ -963,30 +965,30 @@ function insert_user (oElement,username,userid) {
 	else {$profileLink = 'action=';}
 	$thisLink = 'action=myviewprofile;username=' . $useraccount{$username};
 	$MCProfMenu .= qq~
-	<span class="nav"><b><a href="$scripturl?$thisLink">$inmes_txt{'viewprofile'}</a></b></span><br /><br />~;
+	<span class="nav bold"><a href="$scripturl?$thisLink">$inmes_txt{'viewprofile'}</a></span><br /><br />~;
 
 	$thisLink = $profileLink . 'myprofile;username=' . $useraccount{$username} . $sidLink;
 	$MCProfMenu .= qq~
-	<span class="nav"><b><a href="$scripturl?$thisLink">$profile_txt{'79'}</a></b></span><br />~;
+	<span class="nav bold"><a href="$scripturl?$thisLink">$profile_txt{'79'}</a></span><br />~;
 
 	$thisLink = $profileLink . 'myprofileContacts;username=' . $useraccount{$username} . $sidLink;
 	$MCProfMenu .= qq~
-	<span class="nav"><b><a href="$scripturl?$thisLink">$profile_txt{'819'}</a></b></span><br />~;
+	<span class="nav bold"><a href="$scripturl?$thisLink">$profile_txt{'819'}</a></span><br />~;
 
 	$thisLink = $profileLink . 'myprofileOptions;username=' . $useraccount{$username} . $sidLink;
 	$MCProfMenu .= qq~
-	<span class="nav"><b><a href="$scripturl?$thisLink">$profile_txt{'818'}</a></b></span><br />~;
+	<span class="nav bold"><a href="$scripturl?$thisLink">$profile_txt{'818'}</a></span><br />~;
 
 	if ($buddyListEnabled) {
 		$thisLink = $profileLink . 'myprofileBuddy;username=' . $useraccount{$username} . $sidLink;
 		$MCProfMenu .= qq~
-		<span class="nav"><b><a href="$scripturl?$thisLink">$profile_buddy_list{'buddylist'}</a></b></span><br />~;
+		<span class="nav bold"><a href="$scripturl?$thisLink">$profile_buddy_list{'buddylist'}</a></span><br />~;
 	}
 
 	if ($PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
 		$thisLink = $profileLink . 'myprofileIM;username=' . $useraccount{$username} . $sidLink;
 		$MCProfMenu .= qq~
-		<span class="nav"><b><a href="$scripturl?$thisLink">$inmes_txt{'765'}</a></b></span>
+		<span class="nav bold"><a href="$scripturl?$thisLink">$inmes_txt{'765'}</a></span>
 		<br />
 		~;
 	}
@@ -994,7 +996,7 @@ function insert_user (oElement,username,userid) {
 	if ($iamadmin || ($iamgmod && $allow_gmod_profile && $gmod_access2{'profileAdmin'} eq 'on')) {
 		$thisLink = $profileLink . 'myprofileAdmin;username=' . $useraccount{$username} . $sidLink;
 		$MCProfMenu .= qq~
-			<span class="nav"><b><a href="$scripturl?$thisLink">$profile_txt{'820'}</a></b></span>
+			<span class="nav bold"><a href="$scripturl?$thisLink">$profile_txt{'820'}</a></span>
 			<br />
 		~;
 	}
@@ -1010,9 +1012,10 @@ function insert_user (oElement,username,userid) {
 	$MCPostsMenu = qq~
 	<div id="cont_posts" style="display: $display_posts">
 	<table id="posts" class="windowbg2 center pad_4px">
-		<tr><td class="windowbg2">
-			<span class="nav"><b><a href="$scripturl?action=shownotify">$inmes_txt{'viewnotify'}</a></b></span><br />
-			<span class="nav"><b><a href="$scripturl?action=favorites">$inmes_txt{'viewfavs'}</a></b></span><br />
+		<tr>
+			<td class="windowbg2">
+				<span class="nav bold"><a href="$scripturl?action=shownotify">$inmes_txt{'viewnotify'}</a></span><br />
+				<span class="nav bold"><a href="$scripturl?action=favorites">$inmes_txt{'viewfavs'}</a></span><br />
 	~;
 	if (${$uid.$username}{'postcount'} > 0 && $maxrecentdisplay > 0) {
 		$MCPostsMenu .= qq~
@@ -1077,7 +1080,7 @@ function insert_user (oElement,username,userid) {
 			if ($showadded == 2 || $showsmdir == 2) {
 				$MCExtraSmilies .= qq~
 				<br />
-				<script language="JavaScript1.2" type="text/javascript">
+				<script type="text/javascript">
 				<!--
 				function Smiliextra() {
 					AddTxt=smiliecode[document.getElementById('smiliextra_list').value];
@@ -1169,10 +1172,10 @@ function insert_user (oElement,username,userid) {
 
 		my $memberinfo = "$memberinfo{$username}$addmembergroup{$username}";
 		my $userOnline = &userOnLineStatus($username) . "<br />";
-		my $template_postinfo = qq~$mycenter_txt{'posts'}: ~ . &NumberFormat(${$uid.$username}{'postcount'}) . qq~<br />~;
+		my $template_postinfo = qq~$mycenter_txt{'posts'}: ~ . NumberFormat(${$uid.$username}{'postcount'}) . q~<br />~;
 		my $userlocation;
 		if (${$uid.$username}{'location'}) {
-			$userlocation = ${$uid.$username}{'location'} . "<br />";
+			$userlocation = ${$uid.$username}{'location'} . q~<br />~;
 		}
 
 		$mctitle = $mycenter_txt{'welcometxt'};
@@ -1202,29 +1205,26 @@ function insert_user (oElement,username,userid) {
 		}
 
 		$MCContent .= qq~
-		<table width="100%" border="0" cellspacing="1" cellpadding="5" align="right">
-				<tr>
-					<td width="33%" class="windowbg2" valign="top">
-						$myprofileblock
-					</td>
-					<td width="67%" class="windowbg2" valign="top">
-						$buddiesCurrentStatus
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2" class="windowbg">
-						$mycenter_txt{'currentsettings'}
-					</td>
-				</tr>
-				<tr>
-					<td class="windowbg2">
-						$mycenter_txt{'onoffstatus'}<br />
-					</td>
-					<td class="windowbg2">
-
-		'$onOffStatus'</td>
-				</tr>
-		$stealthstatus
+		<table class="pad_5px cs_1px">
+		    <col style="width:33%" />
+			<tr>
+				<td class="windowbg2 vtop">
+					$myprofileblock
+				</td>
+				<td class="windowbg2 vtop">
+					$buddiesCurrentStatus
+				</td>
+			</tr><tr>
+				<td class="windowbg" colspan="2">
+					$mycenter_txt{'currentsettings'}
+				</td>
+			</tr><tr>
+				<td class="windowbg2">
+					$mycenter_txt{'onoffstatus'}<br />
+				</td>
+				<td class="windowbg2">'$onOffStatus'</td>
+			</tr>
+			$stealthstatus
 		</table>
 		~;
 
@@ -1234,7 +1234,7 @@ function insert_user (oElement,username,userid) {
 		if ($sendBMess) { $sendTitle = $inmes_txt{'sendbroadmess'}; }
 		$MCContent .= qq~
 		$MCGlobalFormStart
-		<table width="100%" border="0" cellspacing="0" cellpadding="5">
+		<table class="pad_5px">
 			$imsend
 		</table>
 		</form>~;
@@ -1333,14 +1333,15 @@ function insert_user (oElement,username,userid) {
 	if ($PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
 		$MCPmMenu .= qq~
 	<div id="cont_pm" style="display: $display_pm">
-		<table id="pms" width="100%" align="center" class="windowbg2" cellpadding="1">
+		<table id="pms" class="windowbg2 pad_1px">
+	    	<col style="width:15%" />
+		    <col style="width:60%" />
 		~;
 
 		if (($PMenableBm_level == 1 && ($iamadmin || $iamgmod || $iammod)) || ($PMenableBm_level == 2 && ($iamadmin || $iamgmod)) || ($PMenableBm_level == 3 && $iamadmin)) {
-			$MCPmMenu .= qq~
-			<tr>
-				<td style="text-align: left;" colspan="3">
-					<span class="nav"><b><a href="$scripturl?action=imsend;bmess=yes">$img{'sendbmess'}</a></b></span>
+			$MCPmMenu .= qq~<tr>
+				<td colspan="3">
+					<span class="nav bold"><a href="$scripturl?action=imsend;bmess=yes">$img{'sendbmess'}</a></span>
 				</td>
 			</tr>~;
 		}
@@ -1348,57 +1349,47 @@ function insert_user (oElement,username,userid) {
 		my $inboxNewCount = qq~<span class="NewLinks">, <a href="$scripturl?action=imshow;caller=1;id=-1">${$username}{'PMimnewcount'} $inmes_txt{'new'}</a></span>~;
 		if (${$username}{'PMimnewcount'} == 0) { $inboxNewCount = ''; }
 
-		$MCPmMenu .= qq~
-		 	<tr>
-		 		<td style="text-align: left;" colspan="3"><span class="nav"><b><a href="$scripturl?action=imsend">$img{'im_send'}</a></b></span></td>
-			</tr>
-			<tr>
-				<td width="15%" class="windowbg2"><img src="$imagesdir/im_inbox.gif" alt="$inmes_txt{'inbox'}" title="$inmes_txt{'inbox'}" border="0" /></td>
-				<td width="60%" class="windowbg2"><span class="nav"><b><a href="$scripturl?action=im">$inmes_txt{'inbox'}</a></b></span></td>
-				<td width="25%" class="windowbg2"><span class="nav">${$username}{'PMmnum'}$inboxNewCount</span></td>
+		$MCPmMenu .= qq~<tr>
+		 		<td colspan="3"><span class="nav bold"><a href="$scripturl?action=imsend">$img{'im_send'}</a></span></td>
+			</tr><tr>
+				<td class="windowbg2"><img src="$imagesdir/im_inbox.gif" alt="$inmes_txt{'inbox'}" title="$inmes_txt{'inbox'}" /></td>
+				<td class="windowbg2"><span class="nav bold"><a href="$scripturl?action=im">$inmes_txt{'inbox'}</a></span></td>
+				<td class="windowbg2"><span class="nav">${$username}{'PMmnum'}$inboxNewCount</span></td>
 			</tr>~;
 
 		if ($PMenableBm_level > 0 || ($PMenableGuestButton == 1 && ($iamadmin || $iamgmod))) {
 			$inboxNewCount = $BCnewMessage ? " <span class='NewLinks'>($inmes_txt{'new'})</span>" : "";
-			$MCPmMenu .= qq~
-			<tr>
-				<td width="15%" class="windowbg2"><img src="$imagesdir/im_inbox.gif" alt="$inmes_txt{'broadcast'}" title="$inmes_txt{'broadcast'}" border="0" /></td>
-				<td width="60%" class="windowbg2"><span class="nav"><b><a href="$scripturl?action=im;focus=bmess">$inmes_txt{'broadcast'}</a></b></span></td>
-				<td width="25%" class="windowbg2"><span class="nav">$BCCount$inboxNewCount</span></td>
+			$MCPmMenu .= qq~<tr>
+				<td class="windowbg2"><img src="$imagesdir/im_inbox.gif" alt="$inmes_txt{'broadcast'}" title="$inmes_txt{'broadcast'}" /></td>
+				<td class="windowbg2"><span class="nav bold"><a href="$scripturl?action=im;focus=bmess">$inmes_txt{'broadcast'}</a></span></td>
+				<td class="windowbg2"><span class="nav">$BCCount$inboxNewCount</span></td>
 			</tr>~;
 		}
 
 		my @folderCount = split(/\|/, ${$username}{'PMfoldersCount'});
-		$MCPmMenu .= qq~
-			<tr>
-				<td width="15%" class="windowbg2"><img src="$imagesdir/im_outbox.gif" alt="$inmes_txt{'draft'}" title="$inmes_txt{'draft'}" border="0" /></td>
-				<td width="60%" class="windowbg2"><span class="nav"><b><a href="$scripturl?action=imdraft">$inmes_txt{'draft'}</a></b></span>	</td>
-				<td width="25%" class="windowbg2"><span class="nav">${$username}{'PMdraftnum'}</span></td>
-			</tr>
-			<tr>
-				<td width="15%" class="windowbg2"><img src="$imagesdir/im_outbox.gif" alt="$inmes_txt{'outbox'}" title="$inmes_txt{'outbox'}" border="0" /></td>
-				<td width="60%" class="windowbg2"><span class="nav"><b><a href="$scripturl?action=imoutbox">$inmes_txt{'outbox'}</a></b></span>	</td>
-				<td width="25%" class="windowbg2"><span class="nav">${$username}{'PMmoutnum'}</span></td>
-			</tr>
-			<tr>
-				<td colspan="3"><hr width="100%" class="hr" /></td>
-			</tr>
-			<tr>
-				<td width="15%" class="windowbg2"><img src="$imagesdir/imstore.gif" alt="$inmes_txt{'storage'}" title="$inmes_txt{'storage'}" border="0" /></td>
-				<td width="60%" class="windowbg2"><span class="small">$inmes_txt{'storage'}</span></td>
-				<td width="25%" class="windowbg2"><span class="nav">${$username}{'PMstorenum'}</span></td>
-			</tr>
-			<tr>
-				<td width="15%" class="windowbg2">&nbsp;</td>
-				<td width="60%" class="windowbg2"><span class="nav">&nbsp; &nbsp;<b><a href="$scripturl?action=imstorage;viewfolder=in">$im_folders_txt{'in'}</a></b></span></td>
-				<td width="25%" class="windowbg2"><span class="nav">~; $MCPmMenu .= $folderCount[0] || 0; $MCPmMenu .= qq~</span></td>
-			</tr>
-			<tr>
-				<td width="15%" class="windowbg2">&nbsp;</td>
-				<td width="60%" class="windowbg2"><span class="nav">&nbsp; &nbsp;<b><a href="$scripturl?action=imstorage;viewfolder=out">$im_folders_txt{'out'}</a></b> </span></td>
-				<td width="25%" class="windowbg2"><span class="nav">~; $MCPmMenu .= $folderCount[1] || 0; $MCPmMenu .= qq~</span></td>
-			</tr>
-		~;
+		$MCPmMenu .= qq~<tr>
+				<td class="windowbg2"><img src="$imagesdir/im_outbox.gif" alt="$inmes_txt{'draft'}" title="$inmes_txt{'draft'}" /></td>
+				<td class="windowbg2"><span class="nav bold"><a href="$scripturl?action=imdraft">$inmes_txt{'draft'}</a></span>	</td>
+				<td class="windowbg2"><span class="nav">${$username}{'PMdraftnum'}</span></td>
+			</tr><tr>
+				<td class="windowbg2"><img src="$imagesdir/im_outbox.gif" alt="$inmes_txt{'outbox'}" title="$inmes_txt{'outbox'}" /></td>
+				<td class="windowbg2"><span class="nav bold"><a href="$scripturl?action=imoutbox">$inmes_txt{'outbox'}</a></span>	</td>
+				<td class="windowbg2"><span class="nav">${$username}{'PMmoutnum'}</span></td>
+			</tr><tr>
+				<td colspan="3"><hr class="hr" /></td>
+			</tr><tr>
+				<td class="windowbg2"><img src="$imagesdir/imstore.gif" alt="$inmes_txt{'storage'}" title="$inmes_txt{'storage'}" /></td>
+				<td class="windowbg2"><span class="small">$inmes_txt{'storage'}</span></td>
+				<td class="windowbg2"><span class="nav">${$username}{'PMstorenum'}</span></td>
+			</tr><tr>
+				<td class="windowbg2">&nbsp;</td>
+				<td class="windowbg2"><span class="nav">&nbsp; &nbsp;<b><a href="$scripturl?action=imstorage;viewfolder=in">$im_folders_txt{'in'}</a></b></span></td>
+				<td class="windowbg2"><span class="nav">~; $MCPmMenu .= $folderCount[0] || 0; $MCPmMenu .= qq~</span></td>
+			</tr><tr>
+				<td class="windowbg2">&nbsp;</td>
+				<td class="windowbg2"><span class="nav">&nbsp; &nbsp;<b><a href="$scripturl?action=imstorage;viewfolder=out">$im_folders_txt{'out'}</a></b> </span></td>
+				<td class="windowbg2"><span class="nav">~; $MCPmMenu .= $folderCount[1] || 0; $MCPmMenu .= qq~</span></td>
+			</tr>~;
 
 		## if there are some folders to show under storage
 		## split the list down and show it with link to each folder
@@ -1410,9 +1401,8 @@ function insert_user (oElement,username,userid) {
 				foreach my $storefolder (split(/\|/, ${$username}{'PMfolders'})) {
 					if ($storefolder ne 'in' && $storefolder ne 'out') {
 						$storeFoldersTotal++;
-						$MCPmMenuTemp .= qq~
-						<tr>
-							<td width="15%" class="windowbg2">~;
+						$MCPmMenuTemp .= qq~<tr>
+							<td class="windowbg2">~;
 						if ($storeFoldersTotal > 0 && $folderCount[$x] == 0) {
 							$DelAdFolder = 1;
 							$MCPmMenuTemp .= qq~
@@ -1423,8 +1413,8 @@ function insert_user (oElement,username,userid) {
 
 						$MCPmMenuTemp .= qq~
 							</td>
-							<td width="60%" class="windowbg2"><span class="nav">&nbsp; &nbsp;<b><a href="$scripturl?action=imstorage;viewfolder=$storefolder">$storefolder</a></b></span></td>
-							<td width="25%" class="windowbg2"><span class="nav">~;
+							<td class="windowbg2"><span class="nav">&nbsp; &nbsp;<b><a href="$scripturl?action=imstorage;viewfolder=$storefolder">$storefolder</a></b></span></td>
+							<td class="windowbg2"><span class="nav">~;
 						$MCPmMenuTemp .= $folderCount[$x] || 0;
 						$MCPmMenuTemp .= qq~</span></td>
 						</tr>~;
@@ -1433,46 +1423,39 @@ function insert_user (oElement,username,userid) {
 				}
 
 				if ($DelAdFolder) {
-					$MCPmMenuTemp .= qq~
-						<tr>
+					$MCPmMenuTemp .= qq~<tr>
 							<td class="windowbg2" colspan="3">
 							<input type="submit" name="deladdfolder" id="deladdfolder" value="$inmes_txt{'delete'}" class="button" />
 							<input type="hidden" name="delfolders" id="delfolders" value="yes" />
 							</td>
-						</tr>
-					~;
+						</tr>~;
 				}
 			}
 
 			if ($storeFoldersTotal) {
-				$MCPmMenu .= qq~
-					<tr>
+				$MCPmMenu .= qq~<tr>
 						<td class="windowbg2" colspan="3">
-						<form action="$scripturl?action=delpmfolder" method="post" name="delpmfolder" id="delpmfolder" enctype="application/x-www-form-urlencoded" style="display:inline;"  onsubmit="return submitproc()">
-						<table width="100%" border="0" cellspacing="0" cellpadding="2">
-						$MCPmMenuTemp
-						</table>
+							<form action="$scripturl?action=delpmfolder" method="post" name="delpmfolder" id="delpmfolder" enctype="application/x-www-form-urlencoded" style="display:inline;"  onsubmit="return submitproc()">
+							<table class="pad_2px">
+							$MCPmMenuTemp
+							</table>
 						</form>
 						</td>
-					</tr>
-				~;
+					</tr>~;
 			}
 
-			$MCPmMenu .= qq~
-			<tr>
-				<td colspan="3"><hr width="100%" class="hr" /></td>
-			</tr>
-			<tr>
-				<td colspan="3"><span class="nav"><b><a href="javascript:MarkAllAsRead('$scripturl?action=markims','$imagesdir')">$inmes_txt{'764'}</a></b></span></td>
+			$MCPmMenu .= qq~<tr>
+				<td colspan="3"><hr class="hr" /></td>
+			</tr><tr>
+				<td colspan="3"><span class="nav bold"><a href="javascript:MarkAllAsRead('$scripturl?action=markims','$imagesdir')">$inmes_txt{'764'}</a></span></td>
 			</tr>~;
 			$yyjavascript .= qq~\nvar markallreadlang = '$inmes_txt{'500'}';\nvar markfinishedlang = '$inmes_txt{'500a'}';~;
 
 			## this allows user to add a new folder on the fly
 			if ($storeFoldersTotal < $enable_storefolders ) {
-				$MCPmMenu .= qq~
-			<tr>
+				$MCPmMenu .= qq~<tr>
 				<td colspan="3">
-				<hr width="100%" class="hr" />
+					<hr  class="hr" />
 					<form action="$scripturl?action=newpmfolder" method="post" name="newpmfolder" id="newpmfolder" enctype="application/x-www-form-urlencoded" style="display:inline;"  onsubmit="return submitproc()">
 					<label for="newfolder">$inmes_imtxt{'newstorefolder'}</label><br />
 					<input type="text" name="newfolder" id="newfolder" size="15" value="$mc_folders{'foldername'}" onfocus="txtInFields(this, '$mc_folders{'foldername'}');" onblur="txtInFields(this, '$mc_folders{'foldername'}')" />
@@ -1484,11 +1467,10 @@ function insert_user (oElement,username,userid) {
 		}
 
 		unless ($enable_PMsearch == 0) {
-			$MCPmMenu .= qq~
-			<tr>
+			$MCPmMenu .= qq~<tr>
 				<td colspan="3">
-				<hr width="100%" class="hr" />
-				<script language="JavaScript1.2" src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
+				<hr class="hr" />
+				<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
 				<label for="search">$pm_search{'desc'}</label><br />
 				<form action="$scripturl?action=pmsearch" method="post" onsubmit="return submitproc()" style="display: inline">~;
 
@@ -1505,15 +1487,13 @@ function insert_user (oElement,username,userid) {
 				<input type="image" src="$imagesdir/search.gif" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />
 				</form>
 				</td>
-			</tr>
-			~;
+			</tr>~;
 		}
 
 		$MCPmMenu .= qq~
 		</table>
 	</div>
 		~;
-
 	}
 	## end PM div
 }
@@ -1531,13 +1511,15 @@ sub drawPMView {
 
 	$mctitle = $IM_box;
 	$MCContent .= qq~
-	<table border="0" width="100%" cellspacing="1" cellpadding="3" class="bordercolor">
+	<table class="bordercolor pad_3px cs_1px">
+	    <col style="width:65%" />
+	    <col style="width:15%" />
 	~;
 
 	if (($#dimmessages >= $maxmessagedisplay || $INFO{'start'} =~ /all/) && $action ne 'imstorage') {
-		$MCContent .= qq~
-		<tr><td colspan="3" class="titlebg">$pageindex1$pageindexjs</td></tr>
-		~;
+		$MCContent .= qq~<tr>
+		<td class="titlebg" colspan="3">$pageindex1$pageindexjs</td>
+	</tr>~;
 	}
 
 	if ($INFO{'viewfolder'} ne '') { $vfolder = qq~;viewfolder=$INFO{'viewfolder'}~; }
@@ -1547,9 +1529,9 @@ sub drawPMView {
 	unless ($action eq 'imstorage' && $INFO{'viewfolder'} eq '') {
 		$MCContent .= qq~
 	  <tr>
-	    <td class="titlebg"  width="65%"><b>$inmes_txt{'70'}</b></td>
-	    <td class="titlebg"  width="15%"><b>$senderinfo</b></td>
-	    <td class="titlebg"  width="20%"><b><a href="$scripturl?action=$action$sbgpdate$vfolder$vbmess">$dateColhead</a></b></td>
+	    <td class="titlebg"><b>$inmes_txt{'70'}</b></td>
+	    <td class="titlebg"><b>$senderinfo</b></td>
+	    <td class="titlebg"><b><a href="$scripturl?action=$action$sbgpdate$vfolder$vbmess">$dateColhead</a></b></td>
 	  </tr>
 		~;
 	}
@@ -1565,12 +1547,11 @@ sub drawPMView {
 
 	if (!@dimmessages || ($storeContentFound == 0 && $INFO{'viewfolder'})) {
 		## drop in the 'no messages' text
-		$MCContent .= qq~
-	  <tr>
-	    <td class="windowbg" colspan="3" height="21">$inmes_txt{'151'}</td>
+		$MCContent .= qq~<tr>
+	    <td class="windowbg" style="height:21px" colspan="3">$inmes_txt{'151'}</td>
 	  </tr>
 	</table>
-	<br clear="all" /><br />
+	<br class="clear" /><br />
 	~;
 	} else {
 		## set colours for display
@@ -1617,11 +1598,9 @@ sub drawPMView {
 		if ($latestPM < 24) { $latestDateSet = 1; $uselegend = 'latest'; }
 
 		if ($sortBy eq 'gpdate') {
-			$MCContent .= qq~
-	  <tr>
-	    <td class="titlebg"  width="100%" colspan="3"><span class="imgtitlebg">$im_sorted{$uselegend}</span>	</td>
-	  </tr>
-			~;
+			$MCContent .= qq~<tr>
+	    <td class="titlebg" colspan="3"><span class="imgtitlebg">$im_sorted{$uselegend}</span>	</td>
+	  </tr>~;
 
 			$counterCheck = $start;
 		}
@@ -1646,7 +1625,7 @@ sub drawPMView {
 			elsif ($messageStatus =~ /a/) { $messIconName = 'alertmod'; }
 			elsif ($messageStatus =~ /gr/) { $messIconName = 'guestpmreply'; }
 			elsif ($messageStatus =~ /g/) { $messIconName = 'guestpm'; }
-			my $messIcon = qq~<img src="$imagesdir/$messIconName.gif" name="icons" border="0" hspace="15" alt="$im_message_status{$messIconName}" title="$im_message_status{$messIconName}" style="vertical-align: middle;" />~;
+			my $messIcon = qq~<img src="$imagesdir/$messIconName.gif"  alt="$im_message_status{$messIconName}" title="$im_message_status{$messIconName}" style="margin:0 15px;vertical-align: middle;" />~;
 
 			my ($hasMultiRecs,$multiRecs);
 			if ($musernameto =~ /,/ || $musernamecc || $musernamebcc ) { $hasMultiRecs = 1; }
@@ -1753,23 +1732,23 @@ sub drawPMView {
 				if ($action eq 'im') {
 					## not opened
 					if (!$imOpened && !$hasMultiRecs) {
-						$messageIcon = qq~<img src="$imagesdir/imclose.gif" border="0" alt="$inmes_imtxt{'innotread'}" title="$inmes_imtxt{'innotread'}" style="vertical-align: middle;" />~;
+						$messageIcon = qq~<img src="$imagesdir/imclose.gif" alt="$inmes_imtxt{'innotread'}" title="$inmes_imtxt{'innotread'}" />~;
 					}
 					## replied to
 					elsif ($imRepliedTo && !$hasMultiRecs) {
-						$messageIcon = qq~<img src="$imagesdir/answered.gif" border="0" alt="$inmes_imtxt{'08'}" title="$inmes_imtxt{'08'}" style="vertical-align: middle;" />~;
+						$messageIcon = qq~<img src="$imagesdir/answered.gif" alt="$inmes_imtxt{'08'}" title="$inmes_imtxt{'08'}" />~;
 					}
 					## opened
 					elsif ($imOpened && !$hasMultiRecs) {
-						$messageIcon = qq~<img src="$imagesdir/imopen.gif" border="0" alt="$inmes_imtxt{'inread'}" title="$inmes_imtxt{'inread'}" style="vertical-align: middle;" />~;
+						$messageIcon = qq~<img src="$imagesdir/imopen.gif" alt="$inmes_imtxt{'inread'}" title="$inmes_imtxt{'inread'}" />~;
 					}
 					## not opened multi
 					elsif (!$imOpened && $hasMultiRecs) {
-						$messageIcon = qq~<img src="$imagesdir/imclose2.gif" border="0" alt="$inmes_imtxt{'inread'}" title="$inmes_imtxt{'inread'}" style="vertical-align: middle;" />~;
+						$messageIcon = qq~<img src="$imagesdir/imclose2.gif" alt="$inmes_imtxt{'inread'}" title="$inmes_imtxt{'inread'}" />~;
 					}
 					## opened multi
 					elsif ($imOpened && $hasMultiRecs) {
-						$messageIcon = qq~<img src="$imagesdir/imopen2.gif" border="0" alt="$inmes_imtxt{'inread'}" title="$inmes_imtxt{'inread'}" style="vertical-align: middle;" />~;
+						$messageIcon = qq~<img src="$imagesdir/imopen2.gif" alt="$inmes_imtxt{'inread'}" title="$inmes_imtxt{'inread'}" />~;
 					}
 				}
 
@@ -1779,15 +1758,15 @@ sub drawPMView {
 					if (!$imOpened && !$hasMultiRecs) {
 						&LoadUser($musernameto);
 						if (${$uid.$musernameto}{'notify_me'} < 2 || $enable_notifications < 2) {
-							$messageIcon = qq~<img src="$imagesdir/imclose.gif" border="0" alt="$inmes_imtxt{'outnotread'}" title="$inmes_imtxt{'outnotread'}" style="vertical-align: middle;" />~;
+							$messageIcon = qq~<img src="$imagesdir/imclose.gif" alt="$inmes_imtxt{'outnotread'}" title="$inmes_imtxt{'outnotread'}" />~;
 							$callBack = qq~<span class="small"><a href="$scripturl?action=imcb;rid=$messageid;receiver=$useraccount{$musernameto}" onclick="return confirm('$inmes_imtxt{'73'}')">$inmes_imtxt{'83'}</a> | </span>~;
 						} else {
-							$messageIcon = qq~<img src="$imagesdir/imclose.gif" border="0" alt="$inmes_imtxt{'outnotread'}" title="$inmes_imtxt{'outnotread'}" style="vertical-align: middle;" />~;
+							$messageIcon = qq~<img src="$imagesdir/imclose.gif" alt="$inmes_imtxt{'outnotread'}" title="$inmes_imtxt{'outnotread'}" />~;
 						}
 					}
 					## opened
 					elsif ($imOpened && !$hasMultiRecs) {
-						$messageIcon = $messageFlags =~ /c/i ? qq~<img src="$imagesdir/imcallback.gif" border="0" alt="$inmes_imtxt{'callback'}" title="$inmes_imtxt{'callback'}" style="vertical-align: middle;" />~ : qq~<img src="$imagesdir/imopen.gif" border="0" alt="$inmes_imtxt{'outread'}" title="$inmes_imtxt{'outread'}" style="vertical-align: middle;" />~;
+						$messageIcon = $messageFlags =~ /c/i ? qq~<img src="$imagesdir/imcallback.gif" alt="$inmes_imtxt{'callback'}" title="$inmes_imtxt{'callback'}" />~ : qq~<img src="$imagesdir/imopen.gif" alt="$inmes_imtxt{'outread'}" title="$inmes_imtxt{'outread'}" />~;
 					}
 
 					## for multi rec, and none opened
@@ -1802,12 +1781,12 @@ sub drawPMView {
 							if (&checkIMS($recname, $messageid, 'messageopened') || (${$uid.$recname}{'notify_me'} > 1 && $enable_notifications > 1)) { $countread++; } else { push(@receivers, $useraccount{$recname}); }
 						}
 						if (!$countread) {
-							$messageIcon = qq~<img src="$imagesdir/imclose2.gif" border="0" alt="$inmes_imtxt{'outmultinotread'}" title="$inmes_imtxt{'outmultinotread'}" style="vertical-align: middle;" />~;
+							$messageIcon = qq~<img src="$imagesdir/imclose2.gif" alt="$inmes_imtxt{'outmultinotread'}" title="$inmes_imtxt{'outmultinotread'}" />~;
 							$callBack = qq~<span class="small"><a href="$scripturl?action=imcb;rid=$messageid;receiver=~ . join(',', @receivers) . qq~" onclick="return confirm('$inmes_imtxt{'73'}')">$inmes_imtxt{'83'}</a> | </span>~;
 						} elsif ($countrecepients == $countread) {
-							$messageIcon = $messageFlags =~ /c/i ? qq~<img src="$imagesdir/imcallback2.gif" border="0" alt="$inmes_imtxt{'outmulticallback'}" title="$inmes_imtxt{'outmulticallback'}" style="vertical-align: middle;" />~ : qq~<img src="$imagesdir/imopen2.gif" border="0" alt="$inmes_imtxt{'outmultiread'}" title="$inmes_imtxt{'outmultiread'}" style="vertical-align: middle;" />~;
+							$messageIcon = $messageFlags =~ /c/i ? qq~<img src="$imagesdir/imcallback2.gif" alt="$inmes_imtxt{'outmulticallback'}" title="$inmes_imtxt{'outmulticallback'}" />~ : qq~<img src="$imagesdir/imopen2.gif" alt="$inmes_imtxt{'outmultiread'}" title="$inmes_imtxt{'outmultiread'}" />~;
 						} else {
-							$messageIcon = $messageFlags =~ /c/i ? qq~<img src="$imagesdir/imcallback3.gif" border="0" alt="$inmes_imtxt{'outsomemulticallback'}" title="$inmes_imtxt{'outsomemulticallback'}" style="vertical-align: middle;" />~ : qq~<img src="$imagesdir/imopen3.gif" border="0" alt="$inmes_imtxt{'outmultisomeread'}" title="$inmes_imtxt{'outmultisomeread'}" style="vertical-align: middle;" />~;
+							$messageIcon = $messageFlags =~ /c/i ? qq~<img src="$imagesdir/imcallback3.gif" alt="$inmes_imtxt{'outsomemulticallback'}" title="$inmes_imtxt{'outsomemulticallback'}" />~ : qq~<img src="$imagesdir/imopen3.gif" alt="$inmes_imtxt{'outmultisomeread'}" title="$inmes_imtxt{'outmultisomeread'}" />~;
 							$callBack = qq~<span class="small"><a href="$scripturl?action=imshow;id=$messageid;caller=2">$inmes_imtxt{'multicallback'}</a> | </span>~;
 						}
 					}
@@ -1822,11 +1801,9 @@ sub drawPMView {
 			if ($stkmess && $sortBy ne 'gpdate' && $normDateSet && $viewBMess) {
 				## sticky messages
 				$normDateSet = 0;
-				$MCContent .= qq~
-	  <tr>
-	    <td class="titlebg"  width="100%" colspan="3"><span class="imgtitlebg">$im_sorted{'standart'}</span></td>
-	  </tr>
-				~;
+				$MCContent .= qq~<tr>
+	    <td class="titlebg" colspan="3"><span class="imgtitlebg">$im_sorted{'standart'}</span></td>
+	  </tr>~;
 			}
 
 			if ($stkmess && $sortBy ne 'gpdate' && $stkDateSet && $viewBMess && ($messageStatus =~ /g/ || $messageStatus =~ /a/)) {
@@ -1886,12 +1863,12 @@ sub drawPMView {
 
 			my $BCnew;
 			if ($action eq 'im' && $viewBMess && !${$username}{'PMbcRead' . $messageid}) {
-				$BCnew = qq~&nbsp;<img src="$imagesdir/new.gif" alt="" border="0" style="vertical-align: middle;" />~;
+				$BCnew = qq~&nbsp;<img src="$imagesdir/new.gif" alt="" />~;
 			}
 
 			$MCContent .= qq~
 	  <tr>
-	    <td class="$class_PM_list" align="left">$BCnew$messageIcon$messIcon<a href="$scripturl?action=$actString;caller=$callerid;id=$messageid">$msub</a></td>
+	    <td class="$class_PM_list">$BCnew$messageIcon$messIcon<a href="$scripturl?action=$actString;caller=$callerid;id=$messageid">$msub</a></td>
 	    <td class="$class_PM_list">~;
 
 			if ($action eq 'im' || ($action eq 'imstorage' && $INFO{'viewfolder'} eq 'in')) {
@@ -2134,7 +2111,7 @@ sub drawPMView {
 			$MCContent .= qq~
 		<div style="float: left; text-align: left; width: 65%;"><span class="small">$actionsMenu</span></div>
 		<div style="float: right; text-align: right; width: 35%;"><span class="small">$actionsMenuselect</span></div>
-	    </td>
+		</td>
 	  </tr>~;
 			$acount++;
 			if ($acount == $stkmess +1) { $normDateSet = 1; }
@@ -2181,8 +2158,8 @@ sub drawPMView {
 			$imrest = 200 - $imbar;
 			if ($imbar > 200) { $imbar  = 200; }
 			if ($imrest <= 0) { $dorest = ''; }
-			else { $dorest = qq~<img src="$imagesdir/usageempty.gif" height="8" width="$imrest" align="middle" alt="" />~; }
-			$imbargfx = qq~$inmes_imtxt{'67'}:&nbsp;<img src="$imagesdir/usage.gif" align="middle" alt="" /><img src="$imagesdir/usagebar.gif" height="8" width="$imbar" align="middle" alt="" />$dorest<img src="$imagesdir/usage.gif" align="middle" alt="" />&nbsp;$impercent&nbsp;%&nbsp;<br />~;
+			else { $dorest = qq~<img src="$imagesdir/usageempty.gif" height="8" width="$imrest" alt="" />~; }
+			$imbargfx = qq~$inmes_imtxt{'67'}:&nbsp;<img src="$imagesdir/usage.gif" alt="" /><img src="$imagesdir/usagebar.gif" height="8" width="$imbar" alt="" />$dorest<img src="$imagesdir/usage.gif" alt="" />&nbsp;$impercent&nbsp;%&nbsp;<br />~;
 		} else {
 			$intext = qq~&nbsp;~;
 			$imbargfx = qq~&nbsp;~;
@@ -2195,11 +2172,11 @@ sub drawPMView {
 		if (@dimmessages) {
 			$MCContent .= qq~
 	  <tr>
-	    <td class="titlebg" colspan="3" align="right" height="21" >
+	    <td class="titlebg right" style="height:21px" colspan="3">
 			~;
 			if (!$viewBMess) {
 				$MCContent .= qq~
-		<span  class="small"><b>$imbargfx&nbsp;$intext<br /><br /></b></span>~;
+		<span class="small"><b>$imbargfx&nbsp;$intext<br /><br /></b></span>~;
 				unless ($action eq 'imstorage' && $INFO{'viewfolder'} eq '') { $MCContent .= $movebutton; }
 			}
 			if (!$viewBMess || ($viewBMess && ($iamadmin|| $deleteButton))) {
@@ -2213,12 +2190,12 @@ sub drawPMView {
 			if ((!$viewBMess || ($viewBMess && ($iamadmin || $deleteButton))) && !($action eq 'imstorage' && $INFO{'viewfolder'} eq '')) {
 				$MCContent .= qq~
 	  <tr>
-	    <td class="windowbg" colspan="3" align="right">
+	    <td class="windowbg right" colspan="3">
 		<div style="float: right;">
 		  <label for="delete_store"><i>$inmes_txt{'737'}</i></label>&nbsp;<input type="checkbox" id="delete_store" name="delete_store" onclick="if (this.checked) checkAll(); else uncheckAll();" />
 		</div>
 		<br />
-		<script language="JavaScript1.2" type="text/javascript">
+		<script type="text/javascript">
 			<!--
 			function checkAll() {
 				for (var i = 0; i < document.searchform.elements.length; i++) {
@@ -2253,8 +2230,8 @@ sub LoadBuddyList {
 	my @buddies = split('\|',${$uid.$username}{'buddylist'});
 	chomp @buddies;
 	$buddiesCurrentStatus = qq~
-		<table cellspacing="1" cellpadding="1" width="100%" align="center" border="0">
-		<tr class="catbg"><td align="center">$profile_txt{'68a'}</td><td align="center">$profile_txt{'68b'}</td><td align="center"><img src="$imagesdir/imclose.gif" border="0" alt="$profile_txt{'69a'}" title="$profile_txt{'69a'}" /></td><td align="center"><img src="$imagesdir/email.gif" border="0" alt="$profile_txt{'69'}" title="$profile_txt{'69'}" /></td><td align="center"><img src="$imagesdir/www.gif" border="0" alt="$profile_txt{'96'}" title="$profile_txt{'96'}" /></td></tr>
+		<table class="pad_1px cs_1px">
+		<tr class="catbg"><td class="center">$profile_txt{'68a'}</td><td class="center">$profile_txt{'68b'}</td><td class="center"><img src="$imagesdir/imclose.gif" alt="$profile_txt{'69a'}" title="$profile_txt{'69a'}" /></td><td class="center"><img src="$imagesdir/email.gif" alt="$profile_txt{'69'}" title="$profile_txt{'69'}" /></td><td class="center"><img src="$imagesdir/www.gif" alt="$profile_txt{'96'}" title="$profile_txt{'96'}" /></td></tr>
 	~;
 	foreach my $buddyname (@buddies) {
 		$css = $cssvalues[($counter % $cssnum)];
@@ -2269,22 +2246,22 @@ sub LoadBuddyList {
 			if (${$uid.$buddyname}{'hidemail'} && !$iamadmin && $allow_hide_email == 1) {
 				$buddyemail = qq~<img src="$imagesdir/lockmail.gif" alt="$mycenter_txt{'hiddenemail'}" title="$mycenter_txt{'hiddenemail'}" />~;
 			} else {
-				$buddyemail = qq~<a href="mailto:${$uid.$buddyname}{'email'}"><img src="$imagesdir/email.gif" border="0" alt="$profile_txt{'889'} ${$uid.$buddyname}{'email'}" title="$profile_txt{'889'} ${$uid.$buddyname}{'email'}" /></a>~;
+				$buddyemail = qq~<a href="mailto:${$uid.$buddyname}{'email'}"><img src="$imagesdir/email.gif" alt="$profile_txt{'889'} ${$uid.$buddyname}{'email'}" title="$profile_txt{'889'} ${$uid.$buddyname}{'email'}" /></a>~;
 			}
 
 			&CheckUserPM_Level($buddyname);
 			if ($PM_level == 1 || ($PM_level == 2 && $UserPM_Level{$buddyname} > 1 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && $UserPM_Level{$buddyname} == 3 && ($iamadmin || $iamgmod))) {
-				$buddypm = qq~<a href="$scripturl?action=imsend;to=$useraccount{$buddyname}"><img src="$imagesdir/imclose.gif" border="0" alt="$profile_txt{'688'} $buddyrealname" title="$profile_txt{'688'} $buddyrealname" /></a>~;
+				$buddypm = qq~<a href="$scripturl?action=imsend;to=$useraccount{$buddyname}"><img src="$imagesdir/imclose.gif" alt="$profile_txt{'688'} $buddyrealname" title="$profile_txt{'688'} $buddyrealname" /></a>~;
 			}
 
 			if (${$uid.$buddyname}{'weburl'}) {
-				$buddywww = qq~<a href="${$uid.$buddyname}{'weburl'}" target="_blank"><img src="$imagesdir/www.gif" border="0" alt="${$uid.$buddyname}{'webtitle'}" title="${$uid.$buddyname}{'webtitle'}" /></a>~;
+				$buddywww = qq~<a href="${$uid.$buddyname}{'weburl'}" onclick="target='_blank';"><img src="$imagesdir/www.gif" alt="${$uid.$buddyname}{'webtitle'}" title="${$uid.$buddyname}{'webtitle'}" /></a>~;
 			}
 
 		} else {
 			$usernamelink = $mycenter_txt{'buddydeleted'}; # Ex-Member
 		}
-		$buddiesCurrentStatus .= qq~<tr class="$css"><td align="left">$usernamelink</td><td align="center">$online</td><td align="center">$buddypm</td><td align="center">$buddyemail</td><td align="center">$buddywww</td></tr>~;
+		$buddiesCurrentStatus .= qq~<tr class="$css"><td>$usernamelink</td><td class="center">$online</td><td class="center">$buddypm</td><td class="center">$buddyemail</td><td class="center">$buddywww</td></tr>~;
 		$counter++;
 	}
 	undef %UserPM_Level;
@@ -2309,8 +2286,8 @@ sub mcMenu {
 		$postclass = qq~ class="selected"~;
 	}
 
-	my $tabsep = qq~<img src="$imagesdir/tabsep211.png" border="0" alt="" style="float: left; vertical-align: middle;" />~;
-	my $tabfill = qq~<img src="$imagesdir/tabfill.gif" border="0" alt="" style="vertical-align: middle;" />~;
+	my $tabsep = qq~<img src="$imagesdir/tabsep211.png" alt="" style="float: left; vertical-align: middle;" />~;
+	my $tabfill = qq~<img src="$imagesdir/tabfill.gif" alt="" />~;
 
 	# pm link
 	if ($PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod))) {
