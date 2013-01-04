@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$modifymessageplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$modifymessageplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 if (!$post_txt_loaded) {
@@ -85,12 +85,10 @@ sub ModifyMessage {
 		$lastmod = $mlm ? &timeformat($mlm) : '-';
 		$nscheck = $mns ? ' checked'        : '';
 
-		$lastmod = qq~
-<tr>
-	<td valign="top" width="23%"><span class="text1"><b>$post_txt{'211'}:</b></span></td>
-	<td><span class="text1">$lastmod</span></td>
-</tr>
-~;
+		$lastmod = qq~<tr>
+		<td class="vtop" style="width:23%"><span class="text1"><b>$post_txt{'211'}:</b></span></td>
+		<td><span class="text1">$lastmod</span></td>
+	</tr>~;
 		$icon = $micon;
 		if    ($icon eq "xx")          { $ic1  = " selected=\"selected\" "; }
 		elsif ($icon eq "thumbup")     { $ic2  = " selected=\"selected\" "; }
