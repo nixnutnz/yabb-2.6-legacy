@@ -10,16 +10,15 @@
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
-#               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$tabmenuplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$tabmenuplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('TabMenu');
 
-$tabsep = qq~<img src="$imagesdir/tabsep211.png" border="0" alt="" style="float: left; vertical-align: middle;" />~;
-$tabfill = qq~<img src="$imagesdir/tabfill.gif" border="0" alt="" style="vertical-align: middle;" />~;
+$tabsep = qq~<img src="$imagesdir/tabsep211.png" alt="" style="float: left; margin:-1px 0" />~;
+$tabfill = qq~<img src="$imagesdir/tabfill.gif" alt="" />~;
 
 sub mainMenu {
 	if ($action eq "addtab" && $iamadmin) { require "$sourcedir/AdvancedTabs.pl"; &AddNewTab; }
@@ -107,7 +106,7 @@ sub mainMenu {
 				if ($isaction) { $tab_url .= qq~?action=$tab_key~; }
 				if ($username_req) { $tab_url .= qq~;username=$useraccount{$username}~; }
 				if ($exttab_url) { $tab_url .= qq~;$exttab_url~; }
-				my $newwin = $tab_newwin ? qq~ target="_blank"~ : "";
+				my $newwin = $tab_newwin ? qq~ onclick="target='_blank';"~ : "";
 				&GetTabtxt unless $tab_lang;
 				#$tab{$tab_key} = qq~<span |><a href="$tab_url"$newwin title = "$tabtxt{$tab_key}" style="padding: 3px 0 4px 0;">$tabfill $tabtxt{$tab_key} $tabfill</a></span>~;
 				$yytabmenu .= qq~<span ~ . ($AdvancedTabs[$i] eq $tmpaction ? qq~class="selected"~ : "") . qq~><a href="$tab_url"$newwin title = "$tabtxt{$tab_key}" style="padding: 3px 0 4px 0;">$tabfill $tabtxt{$tab_key} $tabfill</a></span>$tabsep~;
@@ -118,16 +117,16 @@ sub mainMenu {
 		}
 	}
 
-	if ($iamadmin) {
+	if ($iamadmin && $addtab_on == 1) {
 		my ($seladdtab, $seledittab);
-		if ($action eq "addtab") { $seladdtab = qq~class="selected"~; }
-		elsif ($action eq "edittab") { $seledittab = qq~class="selected"~; }
+		if ($action eq "addtab") { $seladdtab = q~class="selected"~; }
+		elsif ($action eq "edittab") { $seledittab = q~class="selected"~; }
 		$yytabadd = qq~<div style="float: right; width: 100px; height: 21px; text-align: right;">~;
-		$yytabadd .= qq~$tabsep<span style="padding-top: 1px;"$seladdtab><a href="$scripturl?action=addtab" title = "$tabmenu_txt{'newtab'}" style="float: left;">$tabfill<img src="$imagesdir/tabadd.gif" height="23" width="20" border="0" alt="$tabmenu_txt{'newtab'}" title="$tabmenu_txt{'newtab'}" style="display: inline;" />$tabfill</a></span>$tabsep~;
-		$yytabadd .= qq~<span style="padding-top: 1px;"$seledittab><a href="$scripturl?action=edittab" title = "$tabmenu_txt{'edittab'}" style="float: left;">$tabfill<img src="$imagesdir/tabedit.gif" height="23" width="20" border="0" alt="$tabmenu_txt{'edittab'}" title="$tabmenu_txt{'edittab'}" />$tabfill</a></span>$tabsep~;
-		$yytabadd .= qq~</div>~;
+		$yytabadd .= qq~$tabsep<span style="padding-top: 1px;"$seladdtab><a href="$scripturl?action=addtab" title = "$tabmenu_txt{'newtab'}" style="float: left;">$tabfill<img src="$imagesdir/tabadd.gif" height="23" width="20" alt="$tabmenu_txt{'newtab'}" title="$tabmenu_txt{'newtab'}" style="display: inline;" />$tabfill</a></span>$tabsep~;
+		$yytabadd .= qq~<span style="padding-top: 1px;"$seledittab><a href="$scripturl?action=edittab" title = "$tabmenu_txt{'edittab'}" style="float: left;">$tabfill<img src="$imagesdir/tabedit.gif" height="23" width="20" alt="$tabmenu_txt{'edittab'}" title="$tabmenu_txt{'edittab'}" />$tabfill</a></span>$tabsep~;
+		$yytabadd .= q~</div>~;
 	} else {
-		$yytabadd = qq~&nbsp;~;
+		$yytabadd = q~&nbsp;~;
 	}
 }
 
