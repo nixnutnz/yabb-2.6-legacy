@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$searchplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$searchplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Search');
@@ -93,37 +93,32 @@ function searchMe(chelem) {
 </script>
 
 <form action="$scripturl?action=search2" method="post" name="searchform" onsubmit="return CheckSearchFields();">
-<table width="100%" align="center" border="0" cellpadding="4" cellspacing="1" class="bordercolor" >
-	<colgroup>
-		<col width="45%" />
-		<col width="55%" />
-	</colgroup>
+<table class="bordercolor pad_4px cs_1px" >
+	<col style="width:45%" />
+	<col style="width:55%" />
 	<tr>
-		<td align="left" colspan="2" class="catbg">
+		<td class="catbg" colspan="2">
 			<img src="$imagesdir/search.gif" alt="" /> <span class="text1"><b>$search_txt{'183'}</b></span>
 		</td>
-	</tr>
-	<tr>
-		<td class="windowbg" align="right" valign="top"><label for="search"><b>$search_txt{'582'}:</b></label></td>
-		<td class="windowbg2">
-			<div style="padding: 2px;">
+	</tr><tr>
+		<td class="windowbg right vtop"><label for="search"><b>$search_txt{'582'}:</b></label></td>
+		<td class="windowbg2 padd_2px">
 			<input type="text" size="30" name="search" id="search" /> <label for="searchtype">$search_txt{'582'}</label>
 			<select name="searchtype" id="searchtype">
-			<option value="allwords" selected="selected">$search_txt{'343'}</option>
-			<option value="anywords">$search_txt{'344'}</option>
-			<option value="asphrase">$search_txt{'345'}</option>
-			<option value="aspartial">$search_txt{'345a'}</option>
-			</select><br />
+				<option value="allwords" selected="selected">$search_txt{'343'}</option>
+				<option value="anywords">$search_txt{'344'}</option>
+				<option value="asphrase">$search_txt{'345'}</option>
+				<option value="aspartial">$search_txt{'345a'}</option>
+			</select>
+			<br />
 			<input type="checkbox" name="casesensitiv" id="casesensitiv" value="1" /><label for="casesensitiv">$search_txt{'casesensitiv'}</label>~ . ($enable_ubbc ? qq~<br />
-			<input type="checkbox" name="searchyabbtags" id="searchyabbtags" value="1" /><label for="searchyabbtags">$search_txt{'searchyabbtags'}</label>~ : '') . qq~
-			</div>~;
+			<input type="checkbox" name="searchyabbtags" id="searchyabbtags" value="1" /><label for="searchyabbtags">$search_txt{'searchyabbtags'}</label>~ : '');
 
 	if (!$ML_Allowed || ($ML_Allowed == 1 && !$iamguest) || ($ML_Allowed == 2 && $staff) || ($ML_Allowed == 3 && ($iamadmin || $iamgmod))) {
 		$yymain .= qq~
 		</td>
-	</tr>
-	<tr>
-		<td class="windowbg" align="right" valign="top">
+	</tr><tr>
+		<td class="windowbg right vtop">
 			<b>$search_txt{'583'}:</b>
 		</td>
 		<td class="windowbg2">
@@ -154,9 +149,8 @@ function searchMe(chelem) {
 
 	$yymain .= qq~
 		</td>
-	</tr>
-	<tr>
-		<td class="windowbg" align="right" valign="top"><b>$search_txt{'189'}:</b><br /><span class="small">$search_txt{'190'}</span></td>
+	</tr><tr>
+		<td class="windowbg right vtop"><b>$search_txt{'189'}:</b><br /><span class="small">$search_txt{'190'}</span></td>
 		<td class="windowbg2" >~;
 	$allselected = 0;
 	$isselected  = 0;
@@ -198,7 +192,7 @@ function searchMe(chelem) {
 			$checklist
 			</select>
 			<input type="checkbox" name="srchAll" id="srchAll"$boardscheck onclick="if (this.checked) searchAll(true); else searchAll(false);" /> <label for="srchAll">$search_txt{'737'}</label>
-			<script language="JavaScript1.2" type="text/javascript">
+			<script type="text/javascript">
 			<!-- //
 			function searchAll(_v) {
 				for(var i=0;i<document.searchform.searchboards.length;i++)
@@ -216,14 +210,13 @@ function searchMe(chelem) {
 		</td>
 	</tr>
 	<tr>
-		<td align="right" class="windowbg"><b>$search_txt{'573'}:</b></td>
+		<td class="windowbg right"><b>$search_txt{'573'}:</b></td>
 		<td class="windowbg2">
 			<input type="checkbox" name="subfield" id="subfield" value="on" checked="checked" /><label for="subfield"> $search_txt{'70'}</label> &nbsp;
 			<input type="checkbox" name="msgfield" id="msgfield" value="on" checked="checked" /><label for="msgfield"> $search_txt{'72'}</label>
 		</td>
-	</tr>
-	<tr>
-		<td align="right" class="windowbg"><label for="age"><b>$search_txt{'1'}</b></label></td>
+	</tr><tr>
+		<td class="windowbg right"><label for="age"><b>$search_txt{'1'}</b></label></td>
 		<td class="windowbg2">
 			<select name="age" id="age">
 				<option value="7" selected="selected">$search_txt{'2'}</option>
@@ -233,23 +226,20 @@ function searchMe(chelem) {
 				<option value="0">$search_txt{'6'}</option>
 			</select>
 		</td>
-	</tr>
-	<tr>
-		<td align="right" class="windowbg"><label for="numberreturned"><b>$search_txt{'191'}</b><br /><span class="small">$search_txt{'191b'}</span></label></td>
+	</tr><tr>
+		<td class="windowbg right"><label for="numberreturned"><b>$search_txt{'191'}</b><br /><span class="small">$search_txt{'191b'}</span></label></td>
 		<td class="windowbg2"><input type="text" size="5" name="numberreturned" id="numberreturned" maxlength="5" value="$maxsearchdisplay" /></td>
-	</tr>
-	<tr>
-		<td align="right" class="windowbg"><label for="oneperthread"><b>$search_txt{'191a'}</b></label></td>
+	</tr><tr>
+		<td class="windowbg right"><label for="oneperthread"><b>$search_txt{'191a'}</b></label></td>
 		<td class="windowbg2"><input type="checkbox" name="oneperthread" id="oneperthread" value="1"/></td>
-	</tr>
-	<tr>
-		<td class="catbg" colspan="2" height="50" valign="middle" align="center">
+	</tr><tr>
+		<td class="catbg center h_50px" colspan="2">
 			<input type="submit" name="submit" value="$search_txt{'182'}" class="button" />
 		</td>
 	</tr>
 </table>
 </form>
-<script type="text/javascript" language="JavaScript">
+<script type="text/javascript">
 <!--
 	document.searchform.search.focus();
 
@@ -524,18 +514,18 @@ sub plushSearch2 {
 		++$counter;
 
 		$yymain .= qq~
-<table border="0" width="100%" cellspacing="1" class="bordercolor" style="table-layout: fixed;">
+<table class="bordercolor cs_1px" style="table-layout: fixed;">
+    <col style="width:5%" />
 	<tr>
-		<td align="center" width="5%" class="titlebg">$counter</td>
-		<td align="left" width="95%" class="titlebg">&nbsp;<a href="$scripturl?catselect=$catid{$board}"><u>$catname{$board}</u></a> / <a href="$scripturl?board=$board"><u>$boardname{$board}</u></a> / <a href="$scripturl?num=$tnum/$msgnum#$msgnum"><u>$msub</u></a><br />
+		<td class="titlebg center">$counter</td>
+		<td class="titlebg">&nbsp;<a href="$scripturl?catselect=$catid{$board}"><u>$catname{$board}</u></a> / <a href="$scripturl?board=$board"><u>$boardname{$board}</u></a> / <a href="$scripturl?num=$tnum/$msgnum#$msgnum"><u>$msub</u></a><br />
 		&nbsp;<span class="small">$search_txt{'30'}: $mdate</span>&nbsp;</td>
-	</tr>
-	<tr>
+	</tr><tr>
 		<td colspan="2">
-			<table border="0" width="100%" class="catbg">
+			<table class="catbg">
 				<tr>
-					<td align="left">$search_txt{'109'} $tname | $search_txt{'105'} $search_txt{'525'} $mname</td>
-					<td align="right">&nbsp;~;
+					<td>$search_txt{'109'} $tname | $search_txt{'105'} $search_txt{'525'} $mname</td>
+					<td class="right">&nbsp;~;
 
 		if ($tstate != 1 && (!$iamguest || ($iamguest && $enable_guestposting))) {
 			my $notify = '';
@@ -554,9 +544,8 @@ sub plushSearch2 {
 				</tr>
 			</table>
 		</td>
-	</tr>
-	<tr>
-		<td align="left" height="80" colspan="2" class="windowbg2" valign="top"><div class="message" style="float: left; width: 99%; overflow: auto;">$message</div></td>
+	</tr><tr>
+		<td class="windowbg2 vtop h_80px" colspan="2"><div class="message" style="float: left; width: 99%; overflow: auto;">$message</div></td>
 	</tr>
 </table><br />~;
 	}
@@ -570,7 +559,7 @@ $search_txt{'167'}<hr class="hr" />
 	&template;
 }
 
-## does a search of all member's pm files
+## does a search of all member pm files
 
 sub pmsearch {
 	# generate error if admin has disabled search options
@@ -807,29 +796,28 @@ sub pmsearch {
 		++$counter;
 
 		$yysearchmain .= qq~
-<table border="0" width="100%" cellspacing="1" class="bordercolor" style="table-layout: fixed;">
+<table class="bordercolor cs_1px" style="table-layout: fixed;">
+	<col style="width:5%" />
 	<tr>
-		<td align="center" width="5%" class="titlebg">&nbsp;$counter&nbsp;</td>
-		<td align="left" width="95%" class="titlebg">&nbsp;$FolderName &raquo; <a href="$scripturl?action=imshow;caller=$thispmbox;id=$messageid"><u>$msub</u></a><br />
+		<td class="titlebg center">&nbsp;$counter&nbsp;</td>
+		<td class="titlebg">&nbsp;$FolderName &raquo; <a href="$scripturl?action=imshow;caller=$thispmbox;id=$messageid"><u>$msub</u></a><br />
 		&nbsp;<span class="small">$search_txt{'30'}: $mdate</span>&nbsp;</td>
-	</tr>
-	<tr>
+	</tr><tr>
 		<td colspan="2">
-			<table border="0" width="100%" class="catbg">
+			<table class="catbg">
 				<tr>
-					<td align="left">
+					<td>
 						$fromTitle
 						$toTitle
 						$toTitleCC
 						$toTitleBCC
 					</td>
-					<td align="right">&nbsp;<a href="$scripturl?action=imsend;caller=$thispmbox;reply=1;to=;id=$messageid">$img{'reply'}</a>$menusep<a href="$scripturl?action=imsend;caller=$thispmbox;num=;quote=1;to=;id=$messageid">$img{'recentquote'}</a>&nbsp;</td>
+					<td class="right">&nbsp;<a href="$scripturl?action=imsend;caller=$thispmbox;reply=1;to=;id=$messageid">$img{'reply'}</a>$menusep<a href="$scripturl?action=imsend;caller=$thispmbox;num=;quote=1;to=;id=$messageid">$img{'recentquote'}</a>&nbsp;</td>
 				</tr>
 			</table>
 		</td>
-	</tr>
-	<tr>
-		<td align="left" height="80" colspan="2" class="windowbg2" valign="top"><div class="message" style="float: left; width: 99%; overflow: auto;">$message</div></td>
+	</tr><tr>
+		<td class="windowbg2 vtop h_80px" colspan="2"><div class="message" style="float: left; width: 99%; overflow: auto;">$message</div></td>
 	</tr>
 </table><br />
 ~;
