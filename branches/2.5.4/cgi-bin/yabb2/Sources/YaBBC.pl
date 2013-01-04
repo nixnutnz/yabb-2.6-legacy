@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$yabbcplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$yabbcplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Post');
@@ -25,26 +25,26 @@ sub MakeSmileys {
 	my @HTMLtags;
 	while ($message =~ s/(<.+?>)/[HTML$i]/s) { push(@HTMLtags, $1); $i++; }
 
-	$message =~ s/(\W|^)\[smil(ie|ey)=(\S+?\.(gif|jpg|png|bmp))\]/$1<img src="$smiliesurl\/$3" border="0" alt="$post_txt{'287'}" title="$post_txt{'287'}" \/>/ig;
-	$message =~ s/(\W|^);-?\)/$1<img src="$imagesdir\/wink.gif" border="0" alt="$post_txt{'292'}" title="$post_txt{'292'}" \/>/g;
-	$message =~ s/(\W|^);D/$1<img src="$imagesdir\/grin.gif" border="0" alt="$post_txt{'293'}" title="$post_txt{'293'}" \/>/g;
-	$message =~ s/(\W|^):'\(/$1<img src="$imagesdir\/cry.gif" border="0" alt="$post_txt{'530'}" title="$post_txt{'530'}" \/>/g; #' make my text editor happy;
-	$message =~ s/(\W|^):-\//$1<img src="$imagesdir\/undecided.gif" border="0" alt="$post_txt{'528'}" title="$post_txt{'528'}" \/>/g;
-	$message =~ s/(\W|^):-X/$1<img src="$imagesdir\/lipsrsealed.gif" border="0" alt="$post_txt{'527'}" title="$post_txt{'527'}" \/>/g;
-	$message =~ s/(\W|^):-\[/$1<img src="$imagesdir\/embarassed.gif" border="0" alt="$post_txt{'526'}" title="$post_txt{'526'}" \/>/g;
-	$message =~ s/(\W|^):-\*/$1<img src="$imagesdir\/kiss.gif" border="0" alt="$post_txt{'529'}" title="$post_txt{'529'}" \/>/g;
-	$message =~ s/(\W|^)&gt;:\(/$1<img src="$imagesdir\/angry.gif" border="0" alt="$post_txt{'288'}" title="$post_txt{'288'}" \/>/g;
-	$message =~ s/(\W|^)::\)/$1<img src="$imagesdir\/rolleyes\.gif" border="0" alt="$post_txt{'450'}" title="$post_txt{'450'}" \/>/g;
-	$message =~ s/(\W|^):P/$1<img src="$imagesdir\/tongue\.gif" border="0" alt="$post_txt{'451'}" title="$post_txt{'451'}" \/>/g;
-	$message =~ s/(\W|^):-?\)/$1<img src="$imagesdir\/smiley\.gif" border="0" alt="$post_txt{'287'}" title="$post_txt{'287'}" \/>/g;
-	$message =~ s/(\W|^):D/$1<img src="$imagesdir\/cheesy.gif" border="0" alt="$post_txt{'289'}" title="$post_txt{'289'}" \/>/g;
-	$message =~ s/(\W|^):-?\(/$1<img src="$imagesdir\/sad.gif" border="0" alt="$post_txt{'291'}" title="$post_txt{'291'}" \/>/g;
-	$message =~ s/(\W|^):o/$1<img src="$imagesdir\/shocked.gif" border="0" alt="$post_txt{'294'}" title="$post_txt{'294'}" \/>/gi;
-	$message =~ s/(\W|^)8-\)/$1<img src="$imagesdir\/cool.gif" border="0" alt="$post_txt{'295'}" title="$post_txt{'295'}" \/>/g;
-	$message =~ s/(\W|^):-\?/$1<img src="$imagesdir\/huh.gif" border="0" alt="$post_txt{'296'}" title="$post_txt{'296'}" \/>/g;
-	$message =~ s/(\W|^)\^_\^/$1<img src="$imagesdir\/happy.gif" border="0" alt="$post_txt{'801'}" title="$post_txt{'801'}" \/>/g;
-	$message =~ s/(\W|^):thumb:/$1<img src="$imagesdir\/thumbsup.gif" border="0" alt="$post_txt{'282'}" title="$post_txt{'282'}" \/>/g;
-	$message =~ s/(\W|^)&gt;:-D/$1<img src="$imagesdir\/evil.gif" border="0" alt="$post_txt{'802'}" title="$post_txt{'802'}" \/>/g;
+	$message =~ s/(\W|^)\[smil(ie|ey)=(\S+?\.(gif|jpg|png|bmp))\]/$1<img src="$smiliesurl\/$3" alt="$post_txt{'287'}" title="$post_txt{'287'}" \/>/ig;
+	$message =~ s/(\W|^);-?\)/$1<img src="$imagesdir\/wink.gif" alt="$post_txt{'292'}" title="$post_txt{'292'}" \/>/g;
+	$message =~ s/(\W|^);D/$1<img src="$imagesdir\/grin.gif" alt="$post_txt{'293'}" title="$post_txt{'293'}" \/>/g;
+	$message =~ s/(\W|^):'\(/$1<img src="$imagesdir\/cry.gif" alt="$post_txt{'530'}" title="$post_txt{'530'}" \/>/g; #' make my text editor happy;
+	$message =~ s/(\W|^):-\//$1<img src="$imagesdir\/undecided.gif" alt="$post_txt{'528'}" title="$post_txt{'528'}" \/>/g;
+	$message =~ s/(\W|^):-X/$1<img src="$imagesdir\/lipsrsealed.gif" alt="$post_txt{'527'}" title="$post_txt{'527'}" \/>/g;
+	$message =~ s/(\W|^):-\[/$1<img src="$imagesdir\/embarassed.gif" alt="$post_txt{'526'}" title="$post_txt{'526'}" \/>/g;
+	$message =~ s/(\W|^):-\*/$1<img src="$imagesdir\/kiss.gif" alt="$post_txt{'529'}" title="$post_txt{'529'}" \/>/g;
+	$message =~ s/(\W|^)&gt;:\(/$1<img src="$imagesdir\/angry.gif" alt="$post_txt{'288'}" title="$post_txt{'288'}" \/>/g;
+	$message =~ s/(\W|^)::\)/$1<img src="$imagesdir\/rolleyes\.gif" alt="$post_txt{'450'}" title="$post_txt{'450'}" \/>/g;
+	$message =~ s/(\W|^):P/$1<img src="$imagesdir\/tongue\.gif" alt="$post_txt{'451'}" title="$post_txt{'451'}" \/>/g;
+	$message =~ s/(\W|^):-?\)/$1<img src="$imagesdir\/smiley\.gif" alt="$post_txt{'287'}" title="$post_txt{'287'}" \/>/g;
+	$message =~ s/(\W|^):D/$1<img src="$imagesdir\/cheesy.gif" alt="$post_txt{'289'}" title="$post_txt{'289'}" \/>/g;
+	$message =~ s/(\W|^):-?\(/$1<img src="$imagesdir\/sad.gif" alt="$post_txt{'291'}" title="$post_txt{'291'}" \/>/g;
+	$message =~ s/(\W|^):o/$1<img src="$imagesdir\/shocked.gif" alt="$post_txt{'294'}" title="$post_txt{'294'}" \/>/gi;
+	$message =~ s/(\W|^)8-\)/$1<img src="$imagesdir\/cool.gif" alt="$post_txt{'295'}" title="$post_txt{'295'}" \/>/g;
+	$message =~ s/(\W|^):-\?/$1<img src="$imagesdir\/huh.gif" alt="$post_txt{'296'}" title="$post_txt{'296'}" \/>/g;
+	$message =~ s/(\W|^)\^_\^/$1<img src="$imagesdir\/happy.gif" alt="$post_txt{'801'}" title="$post_txt{'801'}" \/>/g;
+	$message =~ s/(\W|^):thumb:/$1<img src="$imagesdir\/thumbsup.gif" alt="$post_txt{'282'}" title="$post_txt{'282'}" \/>/g;
+	$message =~ s/(\W|^)&gt;:-D/$1<img src="$imagesdir\/evil.gif" alt="$post_txt{'802'}" title="$post_txt{'802'}" \/>/g;
 
 	my $count = 0;
 	while ($SmilieURL[$count]) {
@@ -53,7 +53,7 @@ sub MakeSmileys {
 		$tmpcode = $SmilieCode[$count];
 		$tmpcode =~ s/&#36;/\$/g;
 		$tmpcode =~ s/&#64;/\@/g;
-		$message =~ s~\Q$tmpcode\E~<img src="$tmpurl" border="0" alt="$SmilieDescription[$count]" title="$SmilieDescription[$count]" />~g;
+		$message =~ s~\Q$tmpcode\E~<img src="$tmpurl" alt="$SmilieDescription[$count]" title="$SmilieDescription[$count]" />~g;
 		$count++;
 	}
 
@@ -116,7 +116,7 @@ sub quotemsg {
 
 sub parseimgflash {
 	my $tmp_message = $_[0];
-	$tmp_message =~ s~\[flash\=(\S+?),(\S+?)](\S+?)\[\/flash\]~<b>$display_txt{'769'} ($1 x $2):</b> <a href="$3" target="_blank" onclick="window.open('$3', 'flash', 'resizable,width=$1,height=$2'); return false;">>$3</a>~g;
+	$tmp_message =~ s~\[flash\=(\S+?),(\S+?)](\S+?)\[\/flash\]~<b>$display_txt{'769'} ($1 x $2):</b> <a href="$3" onclick="target='_blank';" onclick="window.open('$3', 'flash', 'resizable,width=$1,height=$2'); return false;">>$3</a>~g;
 	my $char_160  = chr(160);
 	my $hardspace = qq~&nbsp;~;
 	if (!$showimageinquote) {
@@ -191,7 +191,7 @@ sub sizefont {
 		$code =~ s~\&nbsp;~ ~ig;
 		$code =~ s~\s*?\n\s*?~\[code_br\]~ig; # we need to keep normal linebreaks inside <pre> tag
 		$codecnt++;
-		$prselect = qq~<a href="javascript:selectAllCode($codecnt)"><img src="$imagesdir/codeselect.png" border="0" alt="$post_txt{'selectall'}" title="$post_txt{'selectall'}" /></a>~;
+		$prselect = qq~<a href="javascript:selectAllCode($codecnt)"><img src="$imagesdir/codeselect.png" alt="$post_txt{'selectall'}" title="$post_txt{'selectall'}" /></a>~;
 		$code = qq~<pre class="$insclass" id="code$codecnt" style="margin: 0px; width: 90%; $height overflow: scroll;">$code\[code_br][code_br]</pre>~;
 		$_ =~ s~XSELECTX~$prselect~g;
 		$_ =~ s~XLANGX~$prclass~g;
@@ -236,12 +236,14 @@ sub imagemsg {
 	$parameter{'align'}  =~ s~[^a-z]~~ig;
 	$parameter{'width'}  =~ s~\D~~g;
 	$parameter{'height'} =~ s~\D~~g;
-	if ($parameter{'align'})  { $parameter{'align'}  = qq~ align="$parameter{'align'}"~; }
+    if ( $parameter{'align'} ) {
+        $parameter{'align'} = qq~ style="vertical-align:$parameter{'align'}"~;
+    }
 	if ($parameter{'width'})  { $parameter{'width'}  = qq~ width="$parameter{'width'}"~; }
 	if ($parameter{'height'}) { $parameter{'height'} = qq~ height="$parameter{'height'}"~; }
 
 	my $linkedimg = $rest =~ /\[url[^\[]*\]\s*$/i ? 1 : 0;
-	$rest . ((!$linkedimg && $img_greybox) ? qq~<a href="$url" rel="gb_image[nice_pics]" title="$parameter{'alt'}">~ : '') . qq~<img src="$url" name="$parameter{'name'}" alt="$parameter{'alt'}" title="$parameter{'alt'}"$parameter{'align'}$parameter{'width'}$parameter{'height'} border="0" style="display:none" />~ . ((!$linkedimg && $img_greybox) ? '</a>' : '');
+	$rest . ((!$linkedimg && $img_greybox) ? qq~<a href="$url" rel="gb_image[nice_pics]" title="$parameter{'alt'}">~ : '') . qq~<img src="$url" name="$parameter{'name'}" alt="$parameter{'alt'}" title="$parameter{'alt'}"$parameter{'align'}$parameter{'width'}$parameter{'height'} style="display:none" />~ . ((!$linkedimg && $img_greybox) ? '</a>' : '');
 }
 
 #greybox image bug fixed;
@@ -301,8 +303,8 @@ s/\[s\](.*?)\[\/s\]/<span style="text-decoration: line-through">$1<\/span>/isgm;
 	$message =~ s~\[sup\](.*?)\[/sup\]~<sup>$1</sup>~isg;
 	$message =~ s~\[fixed\](.*?)\[/fixed\]~<div style="display:inline; font-family: Courier New;">$1</div>~isg;
 
-	$message =~ s~\[hr\]\n~<hr width="40%" align="left" size="1" class="hr" />~g;
-	$message =~ s~\[hr\]~<hr width="40%" align="left" size="1" class="hr" />~g;
+	$message =~ s~\[hr\]\n~<hr class="hr_s" />~g;
+	$message =~ s~\[hr\]~<hr class="hr_s" />~g;
 	$message =~ s~\[br\]~\n~ig;
 	$message =~ s~\s$YaBBversion\s~ \<a style\=\"font-weight: bold;\" href\=\"http\:\/\/www\.yabbforum\.com\/downloads\.php\"\>$YaBBversion Forum Software\<\/a\> ~g;
 
@@ -360,22 +362,22 @@ s/\[s\](.*?)\[\/s\]/<span style="text-decoration: line-through">$1<\/span>/isgm;
 	}
 
 	if ($stealthurl) {
-		#$message =~ s~\[url\]\s*www\.\s*(.+?)\s*\[/url\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=http://www.$1" target="_blank">www.$1</a>~isg;
-		$message =~ s~\[url=\s*(\w+\://.+?)\](.+?)\s*\[/url\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=$1" target="_blank">$2</a>~isg;
-		$message =~ s~\[url=\s*(.+?)\]\s*(.+?)\s*\[/url\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=http://$1" target="_blank">$2</a>~isg;
-		#$message =~ s~\[url\]\s*(.+?)\s*\[/url\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=$1" target="_blank">$1</a>~isg;
+		#$message =~ s~\[url\]\s*www\.\s*(.+?)\s*\[/url\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=http://www.$1" onclick="target='_blank';">www.$1</a>~isg;
+		$message =~ s~\[url=\s*(\w+\://.+?)\](.+?)\s*\[/url\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=$1" onclick="target='_blank';">$2</a>~isg;
+		$message =~ s~\[url=\s*(.+?)\]\s*(.+?)\s*\[/url\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=http://$1" onclick="target='_blank';">$2</a>~isg;
+		#$message =~ s~\[url\]\s*(.+?)\s*\[/url\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=$1" onclick="target='_blank';">$1</a>~isg;
 
 		$message =~ s~\[link\]\s*www\.\s*(.+?)\s*\[/link\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=http://www.$1">www.$1</a>~isg;
 		$message =~ s~\[link=\s*(\w+\://.+?)\](.+?)\s*\[/link\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=$1">$2</a>~isg;
 		$message =~ s~\[link=\s*(.+?)\]\s*(.+?)\s*\[/link\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=http://$1">$2</a>~isg;
 		$message =~ s~\[link\]\s*(.+?)\s*\[/link\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=$1">$1</a>~isg;
 
-		$message =~ s~\[ftp\]\s*(.+?)\s*\[/ftp\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=$1" target="_blank">$1</a>~isg;
+		$message =~ s~\[ftp\]\s*(.+?)\s*\[/ftp\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=$1" onclick="target='_blank';">$1</a>~isg;
 	} else {
-		#$message =~ s~\[url\]\s*www\.(\S+?)\s*\[/url\]~<a href="http://www.$1" target="_blank">www.$1</a>~isg;
-		$message =~ s~\[url=\s*(\S\w+\://\S+?)\s*\](.+?)\[/url\]~<a href="$1" target="_blank">$2</a>~isg;
-		$message =~ s~\[url=\s*(\S+?)\](.+?)\s*\[/url\]~<a href="http://$1" target="_blank">$2</a>~isg;
-		#$message =~ s~\[url\]\s*(http://)?(\S+?)\s*\[/url\]~<a href="http://$2" target="_blank">$1$2</a>~isg;
+		#$message =~ s~\[url\]\s*www\.(\S+?)\s*\[/url\]~<a href="http://www.$1" onclick="target='_blank';">www.$1</a>~isg;
+		$message =~ s~\[url=\s*(\S\w+\://\S+?)\s*\](.+?)\[/url\]~<a href="$1" onclick="target='_blank';">$2</a>~isg;
+		$message =~ s~\[url=\s*(\S+?)\](.+?)\s*\[/url\]~<a href="http://$1" onclick="target='_blank';">$2</a>~isg;
+		#$message =~ s~\[url\]\s*(http://)?(\S+?)\s*\[/url\]~<a href="http://$2" onclick="target='_blank';">$1$2</a>~isg;
 
 		$message =~ s~\[link\]\s*www\.(\S+?)\s*\[/link\]~<a href="http://www.$1">www.$1</a>~isg;
 		$message =~ s~\[link=\s*(\S\w+\://\S+?)\s*\](.+?)\[/link\]~<a href="$1">$2</a>~isg;
