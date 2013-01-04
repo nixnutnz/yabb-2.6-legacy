@@ -16,7 +16,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = 1.3;
 
-$postplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+$postplver = 'YaBB 2.5.4 $Revision: 1.4 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Post');
@@ -109,14 +109,14 @@ sub Post {
     if ( $pollthread == 2 && $useraddpoll == 0 ) { fatal_error('no_access'); }
 
     $name_field = $iamguest
-      ? qq~      <tr>
+      ? qq~<tr>
     <td class="windowbg"><label for="name"><b>$post_txt{'68'}:</b></label></td>
     <td class="windowbg"><input type="text" name="name" id="name" size="25" value="$FORM{'name'}" maxlength="25" tabindex="2" /></td>
       </tr>~
       : q{};
 
     $email_field = $iamguest
-      ? qq~      <tr>
+      ? qq~<tr>
     <td class="windowbg"><label for="email"><b>$post_txt{'69'}:</b></label></td>
     <td class="windowbg"><input type="text" name="email" id="email" size="25" value="$FORM{'email'}" maxlength="40" tabindex="3" /></td>
       </tr>~
@@ -135,6 +135,24 @@ sub Post {
                 </td>
             </tr>~
           : q{};
+    }
+    if ($iamguest && $spam_questions_gp && -e "$langdir/$language/spam.questions") {
+        SpamQuestion();
+        my $verification_question_desc;
+        if ($spam_questions_case) { $verification_question_desc = qq~<br />$post_txt{'verification_question_case'}~; }
+        $verification_question_field = $verification_question eq q{} 
+        ? qq~<tr>
+				<td class="windowbg vtop">
+				    <label for="verification_question"><b>$spam_question</b><br />
+				    <span class="small">$post_txt{'verification_question_desc'}$verification_question_desc</span></label>
+				</td>
+				<td class="windowbg vtop">
+				    <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" />
+				    <input type="hidden" name="verification_question_id" value="$spam_question_id" />
+				    <input type="hidden" name="spam_question" value="$spam_question" />
+				</td>
+			</tr>~
+		 : q{};
     }
 
     $sub        = q{};
@@ -922,6 +940,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
     $name_field
     $email_field
     $verification_field
+	$verification_question_field
     <tr>
         <td class="windowbg2">
             <label for="subject"><b>$post_txt{'70'}:</b></label>
@@ -1036,7 +1055,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             $yymain .= qq~
             smilieurl = new Array($smilie_url_array)
             smiliecode = new Array($smilie_code_array)
-            document.write('<table class="bordercolor cs_1px pad_2px" style="height:90px; width:120px"><tr>');
+            document.write('<table class="bordercolor pad_2px border" style="height:90px; width:120px"><tr>');
             document.write('<td class="titlebg center h_15px"><span class="small"><b>$post_smiltxt{'1'}</b></span></td>');
             document.write('</tr><tr>');
             document.write('<td class="windowbg2 center vtop h_20px"><select name="smiliextra_list" onchange="document.images.smiliextra_image.src= smilieurl[document.postmodify.smiliextra_list.value]" style="width:114px; font-size:7pt;">');
@@ -1710,6 +1729,21 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
             </tr>~
           : q{};
     }
+	if ($iamguest && $en_spam_questions && -e "$langdir/$language/spam.questions") {
+		$verification_question = $FORM{'verification_question'};
+		$verification_question_id = $FORM{'verification_question_id'};
+		$spam_question = $FORM{'spam_question'};
+		$verification_question_field = $verification_question ne q{}
+		? qq~<tr>
+				<td class="windowbg vtop"><label for="verification_question"><b>$spam_question</b></label></td>
+				<td class="windowbg">$verification_question
+				<input type="hidden" name="verification_question" value="$verification_question" />
+				<input type="hidden" name="verification_question_id" value="$verification_question_id" />
+				<input type="hidden" name="spam_question" value="$spam_question" />
+				</td>
+			</tr>~
+			: q{};
+	}
     if ( $FORM{'ns'} eq 'NS' ) { $nscheck = q~ checked="checked"~; }
     if ( $FORM{'iecopy'} ) { $iecopycheck = q~ checked="checked"~; }
 
@@ -1888,6 +1922,7 @@ sub Post2 {
     if ( $iamguest && $gpvalid_en ) {
         validation_check( $FORM{'verification'} );
     }
+	if ($iamguest && $spam_questions_gp && -e "$langdir/$language/spam.questions") { SpamQuestionCheck($FORM{'verification_question'},$FORM{'verification_question_id'}); }
     my (
         $email,     $ns,    $notify, $hasnotify, $i,
         $mnum,      $msub,  $mname,  $memail,    $mdate,
@@ -2771,7 +2806,7 @@ sub NewNotify {
 
 sub ReplyNotify {
     my ( $thisthread, $thissubject, $tem ) = @_;
-    my $page = qq{$tem#w$tem};
+    my $page = qq{$tem#$tem};
 
     my $boardname;
     ( $boardname, undef ) = split /\|/xsm, $board{$currentboard}, 2;
@@ -3029,8 +3064,7 @@ sub sendGuestPM {
     if ($gpvalid_en) {
         validation_code();
         $verification_field = $verification eq q{}
-          ? qq~
-                  <tr class="windowbg">
+          ? qq~<tr class="windowbg">
                         <td class="vtop" style="padding:3px"><label for="verification"><b>$floodtxt{'1'}:</b></label></td>
                         <td style="padding:3px">$showcheck<br /><label for="verification"><span class="small">$floodtxt{'casewarning'}</span></label></td>
                   </tr><tr class="windowbg">
@@ -3038,9 +3072,26 @@ sub sendGuestPM {
                         <td style="padding:3px">
                         <input type="text" maxlength="30" name="verification" id="verification" size="30" />
                         </td>
-                  </tr>
-            ~
+                  </tr>~
           : q{};
+    }
+    if ($iamguest && $spam_questions_gp && -e "$langdir/$language/spam.questions") {
+        &SpamQuestion;
+        my $verification_question_desc;
+        if ($spam_questions_case) { $verification_question_desc = qq~<br />$post_txt{'verification_question_case'}~; }
+        $verification_question_field = $verification_question eq q{} 
+        ? qq~<tr>
+				<td class="windowbg vtop">
+				    <label for="verification_question"><b>$spam_question</b><br />
+				    <span class="small">$post_txt{'verification_question_desc'}$verification_question_desc</span></label>
+				</td>
+				<td class="windowbg vtop">
+				    <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" />
+				    <input type="hidden" name="verification_question_id" value="$spam_question_id" />
+				    <input type="hidden" name="spam_question" value="$spam_question" />
+				</td>
+			</tr>~
+			: q{};
     }
     $sub        = q{};
     $settofield = 'subject';
@@ -3069,6 +3120,7 @@ sub sendGuestPM2 {
     if ($gpvalid_en) {
         validation_check( $FORM{'verification'} );
     }
+	if ($iamguest && $spam_questions_gp && -e "$langdir/$language/spam.questions") { SpamQuestionCheck($FORM{'verification_question'},$FORM{'verification_question_id'}); }
 
     # Poster is a Guest then evaluate the legality of name and email
     $FORM{'name'} =~ s/\A\s+//xsm;
