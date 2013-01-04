@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$subsplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$subsplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 
 if ($debug) { &LoadLanguage('Debug'); }
 
@@ -195,22 +195,20 @@ sub template {
 	$yystyle  =~ s~$usestyle\/~~g;
 	$yystyle  .= qq~<link rel="stylesheet" href="$yyhtml_root/shjs/styles/sh_style.css" type="text/css" />\n~;
 	$yystyle .= $yyinlinestyle; # This is for the Help Center and anywhere else that wants to add inline CSS.
-$yysyntax_js = qq~
-<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_main.js"></script>
-<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_cpp.js"></script>
-<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_css.js"></script>
-<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_html.js"></script>
-<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_java.js"></script>
-<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_javascript.js"></script>
-<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_pascal.js"></script>
-<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_perl.js"></script>
-<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_php.js"></script>
-<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/shjs/sh_sql.js"></script>
-~;
+$yysyntax_js = qq~<script type="text/javascript" src="$yyhtml_root/shjs/sh_main.js"></script>
+<script type="text/javascript" src="$yyhtml_root/shjs/sh_cpp.js"></script>
+<script type="text/javascript" src="$yyhtml_root/shjs/sh_css.js"></script>
+<script type="text/javascript" src="$yyhtml_root/shjs/sh_html.js"></script>
+<script type="text/javascript" src="$yyhtml_root/shjs/sh_java.js"></script>
+<script type="text/javascript" src="$yyhtml_root/shjs/sh_javascript.js"></script>
+<script type="text/javascript" src="$yyhtml_root/shjs/sh_pascal.js"></script>
+<script type="text/javascript" src="$yyhtml_root/shjs/sh_perl.js"></script>
+<script type="text/javascript" src="$yyhtml_root/shjs/sh_php.js"></script>
+<script type="text/javascript" src="$yyhtml_root/shjs/sh_sql.js"></script>~;
 
 	# add 'back to top' Button on the end of each page
-	$yynavback .= qq~<img src="$imagesdir/tabsep211.png" border="0" alt="" style="vertical-align: middle;" />~ if !$yynavback;
-	$yynavback .= qq~ <a href="#pagetop" class="nav">$img_txt{'102'}</a> <img src="$imagesdir/tabsep211.png" border="0" alt="" style="vertical-align: middle;" />~;
+	$yynavback .= qq~<img src="$imagesdir/tabsep211.png" alt="" />~ if !$yynavback;
+	$yynavback .= qq~ <a href="#pagetop" class="nav">$img_txt{'102'}</a> <img src="$imagesdir/tabsep211.png" alt="" />~;
 
 	if (!$usehead) { $usehead = qq~default~; }
 	$yytemplate = "$templatesdir/$usehead/$usehead.html";
@@ -237,12 +235,11 @@ $yysyntax_js = qq~
 		my ($a,$b) = ($1,$3);
 		$a =~ s/<.+?>//g;
 		$b = ' ' if $mytimeselected == 6;
-		$yytime = qq~&nbsp;<script language="javascript" type="text/javascript">\n<!--\nWriteClock('yabbclock','$a','$b');\n//-->\n</script>~;
+		$yytime = qq~&nbsp;<script type="text/javascript">\n<!--\nWriteClock('yabbclock','$a','$b');\n//-->\n</script>~;
 		$yyjavascript .= qq~\n\nvar OurTime = ~ . sprintf("%d", ($date + (3600 * $toffs))) . qq~000;\nvar YaBBTime = new Date();\nvar TimeDif = YaBBTime.getTime() - (YaBBTime.getTimezoneOffset() * 60000) - OurTime - 1000; // - 1000 compromise to transmission time~;
 	}
 
 	$yyjavascript .= qq~
-
 	var imagedir = "$imagesdir";
 
 	function toTop(scrpoint) {
@@ -262,7 +259,7 @@ $yysyntax_js = qq~
 		}
 		else {
 			window.getSelection().removeAllRanges();
-			var txt = document.createRange();
+			txt = document.createRange();
 			txt.setStartBefore(elem);
 			txt.setEndAfter(elem);
 			window.getSelection().addRange(txt);
@@ -386,7 +383,7 @@ $yysyntax_js = qq~
 		if ($bo_num || $th_num) {
 			my $noti_text = ($bo_num ? "$notify_txt{'201'} $notify_txt{'205'} ($bo_num)" : "") . ($th_num ? ($bo_num ? " $notify_txt{'202'} " : "") . "$notify_txt{'201'}  $notify_txt{'206'} ($th_num)" : "");
 			$yyadmin_alert = qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a>.$yyadmin_alert~;
-			$yymain .= qq~<script language="javascript" type="text/javascript">
+			$yymain .= qq~<script type="text/javascript">
 			<!--
 			window.setTimeout("Noti_Popup();", 1000);
 			function Noti_Popup() {
@@ -406,20 +403,20 @@ $yysyntax_js = qq~
 	unless ($iamguest && $guestaccess == 0) {
 		if ($maxsearchdisplay > -1) {
 			$yysearchbox = qq~
-		<script language="JavaScript1.2" src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
-		<form action="$scripturl?action=search2" method="post">
-		<input type="hidden" name="searchtype" value="allwords" />
-		<input type="hidden" name="userkind" value="any" />
-		<input type="hidden" name="subfield" value="on" />
-		<input type="hidden" name="msgfield" value="on" />
-		<input type="hidden" name="age" value="31" />
-		<input type="hidden" name="numberreturned" value="$maxsearchdisplay" />
-		<input type="hidden" name="oneperthread" value="1" />
-		<input type="hidden" name="searchboards" value="!all" />
-		<input type="text" name="search" size="16" id="search1" value="$img_txt{'182'}" style="font-size: 11px;" onfocus="txtInFields(this, '$img_txt{'182'}');" onblur="txtInFields(this, '$img_txt{'182'}')" />
-		<input type="image" src="$imagesdir/search.gif" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />
-		</form>
-		~;
+					<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
+					<form action="$scripturl?action=search2" method="post">
+						<input type="hidden" name="searchtype" value="allwords" />
+						<input type="hidden" name="userkind" value="any" />
+						<input type="hidden" name="subfield" value="on" />
+						<input type="hidden" name="msgfield" value="on" />
+						<input type="hidden" name="age" value="31" />
+						<input type="hidden" name="numberreturned" value="$maxsearchdisplay" />
+						<input type="hidden" name="oneperthread" value="1" />
+						<input type="hidden" name="searchboards" value="!all" />
+						<input type="text" name="search" size="16" id="search1" value="$img_txt{'182'}" style="font-size: 11px;" onfocus="txtInFields(this, '$img_txt{'182'}');" onblur="txtInFields(this, '$img_txt{'182'}')" />
+						<input type="image" src="$imagesdir/search.gif" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />
+					</form>
+~;
 		}
 	}
 	if ($enable_news && -s "$vardir/news.txt" > 5) {
@@ -436,7 +433,7 @@ $yysyntax_js = qq~
 		if ($shownewsfader) {
 			$fadedelay = $maxsteps * $stepdelay;
 			$yynews .= qq~
-			<script language="JavaScript1.2" type="text/javascript">
+			<script type="text/javascript">
 				<!--
 					var index = $startnews;
 					var maxsteps = "$maxsteps";
@@ -451,7 +448,7 @@ $yysyntax_js = qq~
 						}
 						else if(thecolor.charAt(3) == "(") {
 							thecolor=thecolor.replace(/rgb\\((\\d+?\\%*?)\\,(\\s*?)(\\d+?\\%*?)\\,(\\s*?)(\\d+?\\%*?)\\)/i, "\$1|\$3|\$5");
-							var thiscolor = thecolor.split("|");
+							thiscolor = thecolor.split("|");
 							return thiscolor;
 						}
 						else {
@@ -473,7 +470,7 @@ $yysyntax_js = qq~
 							thecolor=thecolor.replace(/black/i, "0|0|0");
 							thecolor=thecolor.replace(/silver/i, "192|192|192");
 							thecolor=thecolor.replace(/gray/i, "128|128|128");
-							var thiscolor = thecolor.split("|");
+							thiscolor = thecolor.split("|");
 							return thiscolor;
 						}
 					} //" make my syntax checker happy;
@@ -573,7 +570,7 @@ $yysyntax_js = qq~
 		$output =~ s~option value="$imagesdir/(.+?)"~ 'option value="' . &ImgLoc($1) . '"' ~eisg; # For the post page
 	}
 	# add formsession to each <form ..>-tag
-	$output =~ s~</form>~<input type="hidden" name="formsession" value="$formsession" /></form>~g;
+	$output =~ s/<\/form>/	<input type="hidden" name="formsession" value="$formsession" \/><input class="green" type="submit" \/>\n					<\/form>/gsm;
 
 	&image_resize;
 
@@ -625,7 +622,7 @@ sub image_resize {
 
 	if ($resize_num) {
 		$resize_js =~ s/,$//;
-		$resize_js = qq~<script language="JavaScript1.2" type="text/javascript">
+		$resize_js = qq~<script type="text/javascript">
 <!--
 	// resize image start
 	var resize_time = 2;
@@ -686,14 +683,14 @@ sub fatal_error {
 	}
 
 	$yymain .= qq~
-<table border="0" width="80%" cellspacing="0" class="tabtitle" align="center" cellpadding="4">
+<table class="tabtitle pad_4px" style="width:80%">
 	<tr>
-		<td class="round_top_left" width="1%">&nbsp;</td>
-		<td align="center"><span class="text1"><b>$maintxt{'error_description'}</b></span></td>
-		<td class="round_top_right" width="1%">&nbsp;</td>
+		<td class="round_top_left" style="width:1%">&nbsp;</td>
+		<td class="center"><span class="text1"><b>$maintxt{'error_description'}</b></span></td>
+		<td class="round_top_right" style="width:1%">&nbsp;</td>
 	</tr>
 </table>
-<table border="0" width="80%" cellspacing="1" class="bordercolor" align="center" cellpadding="4">
+<table class="bordercolor pad_4px cs_1px" style="width:80%">
 	<tr>
 		<td class="windowbg"><br /><span class="text1">$errormessage</span><br /><br /></td>
 	</tr>
@@ -734,14 +731,14 @@ sub admin_fatal_error {
 	if ($elenable) { &fatal_error_logging($errormessage); }
 
 	$yymain .= qq~
-<table border="0" width="80%" cellspacing="1" class="bordercolor" align="center" cellpadding="4">
+<table class="bordercolor pad_4px cs_1px" style="width:80%">
 	<tr>
 		<td class="titlebg"><span class="text1"><b>$maintxt{'error_description'}</b></span></td>
 	</tr><tr>
 		<td class="windowbg"><br /><span class="text1">$errormessage</span><br /><br /></td>
 	</tr>
 </table>
-<center><br /><a href="javascript:history.go(-1)">$admin_txt{'193'}</a></center>
+<p class="center"><a href="javascript:history.go(-1)">$admin_txt{'193'}</a></p>
 ~;
 
 	$yytitle = "$maintxt{'error_description'}";
@@ -977,24 +974,24 @@ sub jumpto {
 		$onchange = '';
 	}
 	$selecthtml = qq~
-<form method="post" action="$scripturl?$action" name="jump" style="display: inline;">
-<select name="values"$onchange>
-	<option value="" class="forumjump">$jumpto_txt{'to'}</option>\n
-	<option value="gohome">$img_txt{'103'}</option>\n~;
+			<form method="post" action="$scripturl?$action" name="jump" style="display: inline;">
+				<select name="values"$onchange>
+					<option value="" class="forumjump">$jumpto_txt{'to'}</option>
+					<option value="gohome">$img_txt{'103'}</option>~;
 
 	## as guests do not have these, why show them?
 	if (!$iamguest) {
 		$selecthtml .= qq~
-	<option value="action=im" class="forumjumpcatm">$jumpto_txt{'mess'}</option>~ if $PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod));
+					<option value="action=im" class="forumjumpcatm">$jumpto_txt{'mess'}</option>~ if $PM_level == 1 || ($PM_level == 2 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && ($iamadmin || $iamgmod));
 		$selecthtml .= qq~
-	<option value="action=shownotify" class="forumjumpcatmf">$jumpto_txt{'note'}</option>
-	<option value="action=favorites" class="forumjumpcatm">$jumpto_txt{'fav'}</option>~;
+					<option value="action=shownotify" class="forumjumpcatmf">$jumpto_txt{'note'}</option>
+					<option value="action=favorites" class="forumjumpcatm">$jumpto_txt{'fav'}</option>~;
 	}
 
 	# drop in recent topics/posts lists. guests can see if browsing permitted
 	$selecthtml .= qq~
-	<option value="action=recent;display=10">$recent_txt{'recentposts'}</option>
-	<option value="action=recenttopics;display=10">$recent_txt{'recenttopic'}</option>\n~;
+					<option value="action=recent;display=10">$recent_txt{'recentposts'}</option>
+					<option value="action=recenttopics;display=10">$recent_txt{'recenttopic'}</option>~;
 
 	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
 	foreach $catid (@categoryorder) {
@@ -1004,8 +1001,9 @@ sub jumpto {
 		$cataccess = &CatAccess($catperms);
 		if (!$cataccess) { next; }
 		&ToChars($catname);
-		## I've removed the dashed bands and css handles the cat highlighting.
-		$selecthtml .= $INFO{'catselect'} eq $catid ? qq~	<option selected=\"selected\" value="catselect=$catid" class="forumjumpcat">&raquo;&raquo; $catname</option>\n~ : qq~	<option value="catselect=$catid" class="forumjumpcat">$catname</option>\n~;
+		$selecthtml .= $INFO{'catselect'} eq $catid ? qq~
+					<option selected="selected" value="catselect=$catid" class="forumjumpcat">&raquo;&raquo; $catname</option>~ : qq~
+					<option value="catselect=$catid" class="forumjumpcat">$catname</option>~;
 
 		my $indent = -2;
 		&jump_subboards(@bdlist);
@@ -1021,8 +1019,11 @@ sub jumpto {
 			if (!$iamadmin && $access ne "granted" && $boardview != 1) { next; }
 			if ($board eq $annboard && !$iamadmin && !$iamgmod) { next; }
 
-				if ($board eq $currentboard) { $selecthtml .= $INFO{'num'} ? qq~	<option value=\"board=$board\" class=\"forumcurrentboard\">&nbsp;~ . ("&nbsp;" x $indent) . ($dash x ($indent / 2)) . qq~ $boardname &#171;&#171;</option>\n~ : "	<option selected=\"selected\" value=\"board=$board\" class=\"forumcurrentboard\">&raquo;&raquo; $boardname</option>\n"; }
-				else { $selecthtml .= qq~	<option value=\"board=$board\">&nbsp;~ . ("&nbsp;" x $indent) . ($dash x ($indent / 2)) . qq~ $boardname</option>\n~; }
+				if ($board eq $currentboard) { $selecthtml .= $INFO{'num'} ? qq~
+					<option value="board=$board" class=\"forumcurrentboard\">&nbsp;~ . ("&nbsp;" x $indent) . ($dash x ($indent / 2)) . qq~ $boardname &#171;&#171;</option>~ : qq~
+					<option selected="selected" value="board=$board" class="forumcurrentboard">&raquo;&raquo; $boardname</option>~; }
+				else { $selecthtml .= qq~
+					<option value="board=$board">&nbsp;~ . ("&nbsp;" x $indent) . ($dash x ($indent / 2)) . qq~ $boardname</option>~; }
 
 				if($subboard{$board}) {
 					&jump_subboards(split(/\|/,$subboard{$board}));
@@ -1031,9 +1032,10 @@ sub jumpto {
 			$indent -= 2;
 		}
 	}
-	$selecthtml .= qq~</select>
-<noscript><input type="submit" value="$maintxt{'32'}" class="button" /></noscript>
-</form>~;
+	$selecthtml .= qq~
+				</select>
+				<noscript><input type="submit" value="$maintxt{'32'}" class="button" /></noscript>
+			</form>~;
 }
 
 sub dojump {
@@ -1063,6 +1065,41 @@ sub spam_protection {
 	fopen(FLOOD, ">$vardir/flood.txt", 1);
 	print FLOOD @floodcontrol;
 	fclose(FLOOD);
+}
+
+sub SpamQuestion {
+    srand;
+    fopen(SPAMQUESTIONS, "<$langdir/$language/spam.questions") || &fatal_error("cannot_open","$langdir/$language/spam.questions", 1);
+    rand($.) < 1 && ($spam_question_rand = $_) while <SPAMQUESTIONS>;
+    fclose(SPAMQUESTIONS);
+    ($spam_question_id, $spam_question, undef) = split(/\|/, $spam_question_rand);
+}
+
+sub SpamQuestionCheck { 
+    my $verification_question = $_[0];
+    my $verification_question_id = $_[1];
+    fopen(SPAMQUESTIONS, "<$langdir/$language/spam.questions") || &fatal_error("cannot_open","$langdir/$language/spam.questions", 1);
+    @spam_questions = <SPAMQUESTIONS>;
+    fclose(SPAMQUESTIONS);
+    foreach my $verification_question (@spam_questions) {
+        chomp $verification_question;
+        if ($verification_question =~ /$verification_question_id/) {
+            (undef, undef, $verification_answer) = split(/\|/, $verification_question);
+        }
+    }
+    $verification_question =~ s/\A\s+//;
+    $verification_question =~ s/\s+\Z//;
+    unless ($spam_questions_case) {
+        $verification_answer = lc($verification_answer);
+        $verification_question = lc($verification_question);
+    }
+    &fatal_error("no_verification_question") if $verification_question eq '';
+    @verificationanswer = split(/,/, $verification_answer);
+    foreach (@verificationanswer) {
+        $_ =~ s/\A\s+//;
+        $_ =~ s/\s+\Z//;
+    }
+    unless (grep { $verification_question eq $_ } @verificationanswer) { &fatal_error("wrong_verification_question"); }
 }
 
 sub CountChars {
@@ -2292,5 +2329,253 @@ sub regex_4 {
     return $message;
 }
 
+sub password_check {
+        $check = qq~<tr>
+        <td class="windowbg"><label for="passwrd1"><b>$register_txt{'81'}:</b></label></td>
+        <td class="windowbg">
+           <script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
+           <div style="float:left;"><input type="password" maxlength="30" name="passwrd1" id="passwrd1" size="30" onkeyup="runPassword(this.value);" onkeypress="capsLock(event,'cappasswrd1')" /> &nbsp; </div>
+           <div class="pass_box">
+               <div id="password-strength-meter"></div>
+               <div class="pstrength-bar" id="passwrd1_bar"></div>
+               <div class="pstrength-info" id="passwrd1_text">&nbsp;</div>
+           </div>
+           <div id="cappasswrd1">$register_txt{'capslock'}</div>
+           <div id="cappasswrd1_char">$register_txt{'wrong_char'}: <span id="cappasswrd1_character">&nbsp;</span></div>
+       </td>
+    </tr><tr>
+       <td class="windowbg"><label for="passwrd2"><b>$register_txt{'82'}:</b></label></td>
+       <td class="windowbg">
+           <input type="password" maxlength="30" name="passwrd2" id="passwrd2" size="30" onkeypress="capsLock(event,'cappasswrd2')" />
+           <div id="cappasswrd2">$register_txt{'capslock'}</div>
+           <div id="cappasswrd1_char">$register_txt{'wrong_char'}: <span id="cappasswrd1_character">&nbsp;</span></div>
+       </td>
+    </tr>
+    <script type="text/javascript">
+<!--
+        // Password_strength_meter start
+        var verdects = new Array("$pwstrengthmeter_txt{'1'}","$pwstrengthmeter_txt{'2'}","$pwstrengthmeter_txt{'3'}","$pwstrengthmeter_txt{'4'}","$pwstrengthmeter_txt{'5'}","$pwstrengthmeter_txt{'6'}","$pwstrengthmeter_txt{'7'}","$pwstrengthmeter_txt{'8'}");
+        var colors = new Array("#8F8F8F","#BF0000","#FF0000","#00A0FF","#33EE00","#339900");
+        var scores = new Array($pwstrengthmeter_scores);
+        var common = new Array($pwstrengthmeter_common);
+        var minchar = $pwstrengthmeter_minchar;
 
+        function runPassword(D) {
+                var nPerc = checkPassword(D);
+                if (nPerc > -199 && nPerc < 0) {
+                        strColor = colors[0];
+                        strText = verdects[1];
+                        strWidth = "5%";
+                } else if (nPerc == -200) {
+                        strColor = colors[1];
+                        strText = verdects[0];
+                        strWidth = "0%";
+                } else if (scores[0] == -1 && scores[1] == -1 && scores[2] == -1 && scores[3] == -1) {
+                        strColor = colors[4];
+                        strText = verdects[7];
+                        strWidth = "100%";
+                } else if (nPerc <= scores[0]) {
+                        strColor = colors[1];
+                        strText = verdects[2];
+                        strWidth = "10%";
+                } else if (nPerc > scores[0] && nPerc <= scores[1]) {
+                        strColor = colors[2];
+                        strText = verdects[3];
+                        strWidth = "25%";
+                } else if (nPerc > scores[1] && nPerc <= scores[2]) {
+                        strColor = colors[3];
+                        strText = verdects[4];
+                        strWidth = "50%";
+                } else if (nPerc > scores[2] && nPerc <= scores[3]) {
+                        strColor = colors[4];
+                        strText = verdects[5];
+                        strWidth = "75%";
+                } else {
+                        strColor = colors[5];
+                        strText = verdects[6];
+                        strWidth = "100%";
+                }
+                document.getElementById("passwrd1_bar").style.width = strWidth;
+                document.getElementById("passwrd1_bar").style.backgroundColor = strColor;
+                document.getElementById("passwrd1_text").style.color = strColor;
+                document.getElementById("passwrd1_text").childNodes[0].nodeValue = strText;
+        }
+
+        function checkPassword(C) {
+                if (C.length == 0 || C.length < minchar) return -100;
+
+                for (var D = 0; D < common.length; D++) {
+                        if (C.toLowerCase() == common[D]) return -200;
+                }
+
+                var F = 0;
+                if (C.length >= minchar && C.length <= (minchar+2)) {
+                        F = (F + 6)
+                } else if (C.length >= (minchar + 3) && C.length <= (minchar + 4)) {
+                        F = (F + 12)
+                } else if (C.length >= (minchar + 5)) {
+                        F = (F + 18)
+                }
+
+                if (C.match(/[a-z]/)) {
+                        F = (F + 1)
+                }
+                if (C.match(/[A-Z]/)) {
+                        F = (F + 5)
+                }
+                if (C.match(/d+/)) {
+                        F = (F + 5)
+                }
+                if (C.match(/(.*[0-9].*[0-9].*[0-9])/)) {
+                        F = (F + 7)
+                }
+                if (C.match(/.[!,\@,#,\$,\%,^,&,*,?,_,\~]/)) {
+                        F = (F + 5)
+                }
+                if (C.match(/(.*[!,\@,#,\$,\%,^,&,*,?,_,\~].*[!,\@,#,\$,\%,^,&,*,?,_,\~])/)) {
+                        F = (F + 7)
+                }
+                if (C.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)){
+                        F = (F + 2)
+                }
+                if (C.match(/([a-zA-Z])/) && C.match(/([0-9])/)) {
+                        F = (F + 3)
+                }
+                if (C.match(/([a-zA-Z0-9].*[!,\@,#,\$,\%,^,&,*,?,_,\~])|([!,\@,#,\$,\%,^,&,*,?,_,\~].*[a-zA-Z0-9])/)) {
+                        F = (F + 3)
+                }
+                return F;
+        }
+        // Password_strength_meter end
+// -->
+</script>
+~;
+    return $check;
+}
+
+sub passcheck_2 {
+        $check = qq~<tr>
+		<td class="windowbg right vtop">
+			<label for="passwrd1"><b>$register_txt{'81'}:</b></label>
+		</td>
+		<td class="windowbg2 vtop">
+			<script type="text/javascript">
+			<!--
+				// Password_strength_meter start
+				var verdects = new Array("$pwstrengthmeter_txt{'1'}","$pwstrengthmeter_txt{'2'}","$pwstrengthmeter_txt{'3'}","$pwstrengthmeter_txt{'4'}","$pwstrengthmeter_txt{'5'}","$pwstrengthmeter_txt{'6'}","$pwstrengthmeter_txt{'7'}","$pwstrengthmeter_txt{'8'}");
+				var colors = new Array("#8F8F8F","#BF0000","#FF0000","#00A0FF","#33EE00","#339900");
+				var scores = new Array($pwstrengthmeter_scores);
+				var common = new Array($pwstrengthmeter_common);
+				var minchar = $pwstrengthmeter_minchar;
+
+				function runPassword(D) {
+					var nPerc = checkPassword(D);
+					if (nPerc > -199 && nPerc < 0) {
+						strColor = colors[0];
+						strText = verdects[1];
+						strWidth = "5%";
+					} else if (nPerc == -200) {
+						strColor = colors[1];
+						strText = verdects[0];
+						strWidth = "0%";
+					} else if (scores[0] == -1 && scores[1] == -1 && scores[2] == -1 && scores[3] == -1) {
+						strColor = colors[4];
+						strText = verdects[7];
+						strWidth = "100%";
+					} else if (nPerc <= scores[0]) {
+						strColor = colors[1];
+						strText = verdects[2];
+						strWidth = "10%";
+					} else if (nPerc > scores[0] && nPerc <= scores[1]) {
+						strColor = colors[2];
+						strText = verdects[3];
+						strWidth = "25%";
+					} else if (nPerc > scores[1] && nPerc <= scores[2]) {
+						strColor = colors[3];
+						strText = verdects[4];
+						strWidth = "50%";
+					} else if (nPerc > scores[2] && nPerc <= scores[3]) {
+						strColor = colors[4];
+						strText = verdects[5];
+						strWidth = "75%";
+					} else {
+						strColor = colors[5];
+						strText = verdects[6];
+						strWidth = "100%";
+					}
+					document.getElementById("passwrd1_bar").style.width = strWidth;
+					document.getElementById("passwrd1_bar").style.backgroundColor = strColor;
+					document.getElementById("passwrd1_text").style.color = strColor;
+					document.getElementById("passwrd1_text").childNodes[0].nodeValue = strText;
+				}
+
+				function checkPassword(C) {
+					if (C.length == 0 || C.length < minchar) return -100;
+
+					for (var D = 0; D < common.length; D++) {
+						if (C.toLowerCase() == common[D]) return -200;
+					}
+
+					var F = 0;
+					if (C.length >= minchar && C.length <= (minchar+2)) {
+						F = (F + 6)
+					} else if (C.length >= (minchar + 3) && C.length <= (minchar + 4)) {
+						F = (F + 12)
+					} else if (C.length >= (minchar + 5)) {
+						F = (F + 18)
+					}
+
+					if (C.match(/[a-z]/)) {
+						F = (F + 1)
+					}
+					if (C.match(/[A-Z]/)) {
+						F = (F + 5)
+					}
+					if (C.match(/d+/)) {
+						F = (F + 5)
+					}
+					if (C.match(/(.*[0-9].*[0-9].*[0-9])/)) {
+						F = (F + 7)
+					}
+					if (C.match(/.[!,\@,#,\$,\%,^,&,*,?,_,\~]/)) {
+						F = (F + 5)
+					}
+					if (C.match(/(.*[!,\@,#,\$,\%,^,&,*,?,_,\~].*[!,\@,#,\$,\%,^,&,*,?,_,\~])/)) {
+						F = (F + 7)
+					}
+					if (C.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)){
+						F = (F + 2)
+					}
+					if (C.match(/([a-zA-Z])/) && C.match(/([0-9])/)) {
+						F = (F + 3)
+					}
+					if (C.match(/([a-zA-Z0-9].*[!,\@,#,\$,\%,^,&,*,?,_,\~])|([!,\@,#,\$,\%,^,&,*,?,_,\~].*[a-zA-Z0-9])/)) {
+						F = (F + 3)
+					}
+					return F;
+				}
+				// Password_strength_meter end
+			// -->
+			</script>
+			<div style="float:left;"><input type="password" maxlength="30" name="passwrd1" id="passwrd1" value="$tmpregpasswrd1" size="30" onkeypress="capsLock(event,'cappasswrd1')" onkeyup="runPassword(this.value);" /> *&nbsp;</div>
+			<div style="float:left; width: 150px; height: 20px; text-align:left;">
+				<div id="password-strength-meter" style="background: transparent url($imagesdir/empty_bar.gif) repeat-x center left; height: 4px"></div>
+				<div class="pstrength-bar" id="passwrd1_bar" style="border: 1px solid #FFFFFF; height: 4px"></div>
+				<div class="pstrength-info" id="passwrd1_text">&nbsp;</div>
+			</div>
+			<div style="clear:left; color: red; font-weight: bold; display: none" id="cappasswrd1">$register_txt{'capslock'}</div>
+			<div style="clear:left; color: red; font-weight: bold; display: none" id="cappasswrd1_char">$register_txt{'wrong_char'}: <span id="cappasswrd1_character">&nbsp;</span></div>
+		</td>
+	</tr><tr>
+		<td class="windowbg right vtop">
+			<label for="passwrd2"><b>$register_txt{'82'}:</b></label>
+		</td>
+		<td class="windowbg2 vtop">
+			<input type="password" maxlength="30" name="passwrd2" id="passwrd2" value="$tmpregpasswrd2" size="30" onkeypress="capsLock(event,'cappasswrd2')" /> *
+			<div style="color: red; font-weight: bold; display: none" id="cappasswrd2">$register_txt{'capslock'}</div>
+			<div style="color: red; font-weight: bold; display: none" id="cappasswrd2_char">$register_txt{'wrong_char'}: <span id="cappasswrd2_character">&nbsp;</span></div>
+		</td>
+	</tr>~;
+	return $check;
+}
 1;
