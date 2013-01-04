@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$sessionsplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$sessionsplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Sessions');
@@ -32,32 +32,33 @@ sub SessionReval {
 <br /><br />
 <form action="$scripturl?action=revalidatesession2" method="post" name="sesform">
 <div class="bordercolor" style="padding: 1px; width: 50%; margin-left: auto; margin-right: auto;">
-<table width="100%" cellspacing="0" cellpadding="3">
+<table>
     <tr>
-        <td class="titlebg" colspan="3" align="left">
+        <td class="titlebg" colspan="3">
             <img src="$imagesdir/session.gif" alt="" /><b>$img_txt{'34a'}</b>
         </td>
     </tr><tr>
-        <td align="left" class="windowbg" colspan="3">
+        <td class="windowbg" colspan="3">
             $session_txt{'3'}<br /><br />$session_txt{'4'}$sesremark
         </td>
     </tr><tr>
-        <td align="right" class="windowbg">
+        <td class="windowbg right">
             <label for="sesanswer"><b>$sesquest_txt{$sesquestion}:</b></label>
         </td>
-        <td align="left" class="windowbg">
+        <td class="windowbg">
             <input type="$sestype" name="sesanswer" id="sesanswer" size="20" tabindex="1" />
             <input type="hidden" name="sredir" value="$INFO{'sesredir'}" />
         </td>
     </tr><tr>
-        <td align="center" colspan="2" class="windowbg">
+        <td class="windowbg center" colspan="2">
             <br />
-            <input type="submit" value="$img_txt{'34a'}" tabindex="2" class="button" /></td>
+            <input type="submit" value="$img_txt{'34a'}" tabindex="2" class="button" />
+        </td>
     </tr>
 </table>
 </div>
 </form>
-<script type="text/javascript" language="JavaScript">
+<script type="text/javascript">
 <!--
     document.sesform.sesanswer.focus();
 //-->
