@@ -17,7 +17,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = 1.1;
 
-$postboxplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$postboxplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ( defined $actions && $action eq 'detailedversion' ) { return 1; }
 
 #InstantMessage.pl and Post.pl use the same code for the posting box - why have two copies? #
@@ -588,7 +588,7 @@ sub attach {
                 <option value="attachdel">$fatxt{'6c'}</option>
                 <option value="attachnew">$fatxt{'6b'}</option>
                 <option value="attachold" selected="selected">$fatxt{'6a'}</option>
-                </select>&nbsp;$fatxt{'40'}: <a href="$uploadurl/$files[$y-1]" onclick='target="_blank";'>$files[$y-1]</a>
+                </select>&nbsp;$fatxt{'40'}: <a href="$uploadurl/$files[$y-1]" onclick="target='_blank';">$files[$y-1]</a>
                 </span>~;
             }
             else {
