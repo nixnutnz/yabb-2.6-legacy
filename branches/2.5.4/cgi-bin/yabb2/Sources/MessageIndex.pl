@@ -11,54 +11,38 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+# use strict;
+# use warnings;
+no warnings qw(uninitialized once);
+use CGI::Carp qw(fatalsToBrowser);
+our $VERSION = 1.0;
 
-$messageindexplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$messageindexplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
-&LoadLanguage('MessageIndex');
-require "$templatesdir/$usemessage/MessageIndex.template";
-
-if ( $INFO{'tsort'} eq "" ) {
-    $tsortcookie = "tsort$currentboard$username";
-    $tsort       = $yyCookies{$tsortcookie};
-}
-else {
-    $tsort = $INFO{'tsort'};
-    my $cookiename = "tsort$currentboard$username";
-    my $expiration = "Sunday, 17-Jan-2038 00:00:00 GMT";
-    push @otherCookies,
-      write_cookie(
-        -name    => "$cookiename",
-        -value   => "$tsort",
-        -path    => "/",
-        -expires => "$expiration"
-      );
-}
+LoadLanguage('MessageIndex');
 
 sub MessageIndex {
 
     # Check if board was 'shown to all' - and whether they can view the board
-    if ( &AccessCheck( $currentboard, '', $boardperms ) ne "granted" ) {
-        &fatal_error("no_access");
+    if ( AccessCheck( $currentboard, q{}, $boardperms ) ne 'granted' ) {
+        fatal_error('no_access');
     }
     if ( $annboard eq $currentboard && !$iamadmin && !$iamgmod ) {
-        &fatal_error("no_access");
+        fatal_error('no_access');
     }
 
     my (
-        $counter,  $mcount, $buffer,   $pages,
-        $showmods, $mnum,   $msub,     $mname,
-        $memail,   $mdate,  $mreplies, $musername,
-        $micon,    $mstate, $dlp,      $threadlength
+        $counter,   $mcount, $pages,  $showmods, $mnum,
+        $msub,      $mname,  $memail, $mdate,    $mreplies,
+        $musername, $micon,  $mstate, $dlp,
     );
     my (
-        $numanns,          $threadcount,        $countsticky,
-        $countnosticky,    $stkynum,            @tmpanns,
-        @anns,             @temp_list,          @threadlist,
-        @stickythreadlist, @nostickythreadlist, @threads,
-        $usermessagepage,  %user_info
+        $numanns,            $threadcount, $countsticky,
+        $stkynum,            @tmpanns,     @threadlist,
+        @nostickythreadlist, @threads,     $usermessagepage
     );
-    &BoardTotals( "load", $currentboard );
+    BoardTotals( 'load', $currentboard );
 
     # See if we just want a message list from ajax
     if ( $INFO{'messagelist'} ) { $messagelist = $INFO{'messagelist'}; }
@@ -74,11 +58,11 @@ sub MessageIndex {
             }
             else { $showmods = qq~($messageindex_txt{'63'}: ~; }
 
-            while ( $_ = each(%moderators) ) {
-                &FormatUserName($_);
-                $showmods .= &QuickLinks( $_, 1 ) . ", ";
+            while ( $_ = each %moderators ) {
+                FormatUserName($_);
+                $showmods .= QuickLinks( $_, 1 ) . q{, };
             }
-            $showmods =~ s/, \Z/)/;
+            $showmods =~ s/, \Z/)/sm;
         }
         if ( keys %moderatorgroups > 0 ) {
             if ( keys %moderatorgroups == 1 ) {
@@ -87,37 +71,36 @@ sub MessageIndex {
             else { $showmodgroups = qq~($messageindex_txt{'63a'}: ~; }
 
             my ( $tmpmodgrp, $thismodgrp );
-            while ( $_ = each(%moderatorgroups) ) {
+            while ( $_ = each %moderatorgroups ) {
                 $tmpmodgrp = $moderatorgroups{$_};
-                ( $thismodgrp, undef ) = split( /\|/, $NoPost{$tmpmodgrp}, 2 );
+                ( $thismodgrp, undef ) = split /\|/xsm, $NoPost{$tmpmodgrp}, 2;
                 $showmodgroups .= qq~$thismodgrp, ~;
             }
-            $showmodgroups =~ s/, \Z/)/;
+            $showmodgroups =~ s/, \Z/)/sm;
         }
-        if ( $showmodgroups ne "" && $showmods ne "" ) { $showmods .= qq~ - ~; }
+        if ( $showmodgroups ne q{} && $showmods ne q{} ) {
+            $showmods .= q~ - ~;
+        }
     }
 
     # Thread Tools
     if ($threadtools) {
-        &LoadTools( 0, "newthread", "createpoll", "notify", "markboardread" );
+        LoadTools( 0, 'newthread', 'createpoll', 'notify', 'markboardread' );
     }
 
     # Load announcements, if they exist.
     if (   $annboard
         && $annboard ne $currentboard
-        && ${ $uid . $currentboard }{'rbin'} != 1 )
+        || ${ $uid . $currentboard }{'rbin'} != 1 )
     {
         chomp $annboard;
         fopen( ANN, "$boardsdir/$annboard.txt" );
         @tmpanns = <ANN>;
         fclose(ANN);
         foreach my $realanns (@tmpanns) {
-            my $threadstatus = ( split /\|/, $realanns )[8];
-            if ( $threadstatus =~ /h/i && !$iamadmin && !$iamgmod && !$iammod )
-            {
-                next;
-            }
-            push( @threads, $realanns );
+            my $threadstatus = ( split /\|/xsm, $realanns )[8];
+            if ( $threadstatus =~ /h/ism && !$staff ) { next; }
+            push @threads, $realanns;
             $numanns++;
         }
         undef @tmpanns;
@@ -125,20 +108,20 @@ sub MessageIndex {
 
     # Determine what category we are in.
     $catid = ${ $uid . $currentboard }{'cat'};
-    ( $cat, undef ) = split( /\|/, $catinfo{$catid} );
-    &ToChars($cat);
+    ( $cat, undef ) = split /\|/xsm, $catinfo{$catid};
+    ToChars($cat);
 
     fopen( BRDTXT, "$boardsdir/$currentboard.txt" )
-      || &fatal_error( "cannot_open", "$boardsdir/$currentboard.txt", 1 );
+      || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     @threadlist = <BRDTXT>;
     fclose(BRDTXT);
     foreach my $threadlist (@threadlist) {
-        my $threadstatus = ( split /\|/, $threadlist )[8];
-        if ( $threadstatus =~ /h/i && !$iamadmin && !$iamgmod && !$iammod ) {
+        my $threadstatus = ( split /\|/xsm, $threadlist )[8];
+        if ( $threadstatus =~ /h/ism && !$staff ) {
             next;
         }
-        if ( $threadstatus =~ /s/i ) {
-            push( @threads, $threadlist );
+        if ( $threadstatus =~ /s/ism ) {
+            push @threads, $threadlist;
             $countsticky++;
         }
         else {
@@ -151,16 +134,12 @@ sub MessageIndex {
     $threadcount = $threadcount + $countsticky + $numanns;
     my $maxindex = $INFO{'view'} eq 'all' ? $threadcount : $maxdisplay;
 
-    # There are three kinds of lies: lies, damned lies, and statistics.
-    # - Mark Twain
-
     # Construct the page links for this board.
     if ( !$iamguest ) {
         ( $usermessagepage, undef, undef, undef ) =
-          split( /\|/, ${ $uid . $username }{'pageindex'} );
+          split /\|/xsm, ${ $uid . $username }{'pageindex'};
     }
-    my ( $pagetxtindex, $pagetextindex, $pagedropindex1, $pagedropindex2, $all,
-        $allselected );
+    my ( $pagetxtindex, $pagedropindex1, $pagedropindex2, $all, $allselected );
     $indexdisplaynum = 3;              # max number of pages to display
     $dropdisplaynum  = 10;
     $startpage       = 0;
@@ -168,7 +147,7 @@ sub MessageIndex {
     if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' && $showpageall != 0 ) {
         $maxindex    = $max;
         $all         = 1;
-        $allselected = qq~ selected="selected"~;
+        $allselected = q~ selected="selected"~;
         $start       = 0;
     }
     else { $start = $INFO{'start'} || 0; }
@@ -189,64 +168,88 @@ sub MessageIndex {
     $lastpn = int( ( $threadcount - 1 ) / $maxindex ) + 1;
     $lastptn = ( $lastpn - 1 ) * $maxindex;
     $pageindex1 =
-qq~<span class="small" style="float: left; height: 21px; margin: 0px; margin-top: 2px;"><img src="$imagesdir/index_togl.gif" border="0" alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" style="vertical-align: middle;" /> $messageindex_txt{'139'}: $pagenumb</span>~;
+qq~<span class="small pgindex"><img src="$imagesdir/index_togl.gif"  alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" /> $messageindex_txt{'139'}: $pagenumb</span>~;
     $pageindex2 = $pageindex1;
 
     if ( $pagenumb > 1 || $all ) {
 
         if ( $usermessagepage == 1 || $iamguest ) {
-            $pagetxtindexst =
-qq~<span class="small" style="float: left; height: 21px; margin: 0px; margin-top: 2px;">~;
+            $pagetxtindexst = q~<span class="small pgindex">~;
             if ( !$iamguest ) {
                 $pagetxtindexst .=
-qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=messagepagedrop"><img src="$imagesdir/index_togl.gif" border="0" alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" style="vertical-align: middle;" /></a> $messageindex_txt{'139'}: ~;
+qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=messagepagedrop"><img src="$imagesdir/index_togl.gif"  alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" /></a> $messageindex_txt{'139'}: ~;
             }
             else {
                 $pagetxtindexst .=
-qq~<img src="$imagesdir/index_togl.gif" border="0" alt="$messageindex_txt{'139'}" title="$messageindex_txt{'139'}" style="vertical-align: middle;" /> $messageindex_txt{'139'}: ~;
+qq~<img src="$imagesdir/index_togl.gif"  alt="$messageindex_txt{'139'}" title="$messageindex_txt{'139'}" /> $messageindex_txt{'139'}: ~;
             }
             if ( $startpage > 0 ) {
+                if ($messagelist) {
+                    $pagetxtindex =
+qq~<a href="javascript:MessageList('$scripturl?board=$currentboard/0;messagelist=1','$yyhtml_root','$currentboard', 1)" style="font-weight: normal;">1</a>~;
+                }
+                else {
+                    $pagetxtindex =
+qq~<a href="$scripturl?board=$currentboard/0'" style="font-weight: normal;">1</a>~;
+                }
                 $pagetxtindex =
-qq~<a href="$scripturl?board=$currentboard/0" style="font-weight: normal;">1</a>&nbsp;<a href='javascript: void(0);' onclick='ListPages2("$currentboard","$threadcount");'>...</a>&nbsp;~;
+qq~&nbsp;<a href='javascript: void(0);' onclick='ListPages2("$currentboard","$threadcount");'>...</a>&nbsp;~;
             }
             if ( $startpage == $maxindex ) {
-                $pagetxtindex =
+                if ($messagelist) {
+                    $pagetxtindex =
+qq~<a href="javascript:MessageList('$scripturl?board=$currentboard/0;messagelist=1','$yyhtml_root','$currentboard', 1)" style="font-weight: normal;">1</a>&nbsp;~;
+                }
+                else {
+                    $pagetxtindex =
 qq~<a href="$scripturl?board=$currentboard/0" style="font-weight: normal;">1</a>&nbsp;~;
+                }
             }
-            for (
-                $counter = $startpage ;
-                $counter < $endpage ;
-                $counter += $maxindex
-              )
-            {
-                $pagetxtindex .=
-                  $start == $counter
-                  ? qq~<b>$tmpa</b>&nbsp;~
-                  : qq~<a href="$scripturl?board=$currentboard/$counter" style="font-weight: normal;">$tmpa</a>&nbsp;~;
-                $tmpa++;
+            foreach my $counter ( $startpage .. ( $endpage - 1 ) ) {
+                if ( $counter % $maxindex == 0 ) {
+                    if ($messagelist) {
+                        $pagetxtindex .=
+                          $start == $counter
+                          ? qq~<b>$tmpa</b>&nbsp;~
+                          : qq~<a href="javascript:MessageList('$scripturl?board=$currentboard/$counter;messagelist=1','$yyhtml_root','$currentboard', 1)" style="font-weight: normal;">$tmpa</a>&nbsp;~;
+                    }
+                    else {
+                        $pagetxtindex .=
+                          $start == $counter
+                          ? qq~<b>$tmpa</b>&nbsp;~
+                          : qq~<a href="$scripturl?board=$currentboard/$counter" style="font-weight: normal;">$tmpa</a>&nbsp;~;
+                    }
+                    $tmpa++;
+                }
             }
             if ( $endpage < $threadcount - $maxindex ) {
                 $pageindexadd =
 qq~<a href='javascript: void(0);' onclick='ListPages2("$currentboard","$threadcount");'>...</a>&nbsp;~;
             }
             if ( $endpage != $threadcount ) {
-                $pageindexadd .=
+                if ($messagelist) {
+                    $pageindexadd .=
+qq~<a href="javascript:MessageList('$scripturl?board=$currentboard/$lastptn;messagelist=1','$yyhtml_root','$currentboard', 1)" style="font-weight: normal;">$lastpn</a>~;
+                }
+                else {
+                    $pageindexadd .=
 qq~<a href="$scripturl?board=$currentboard/$lastptn" style="font-weight: normal;">$lastpn</a>~;
+                }
             }
 
             $pagetxtindex .= $pageindexadd;
             $pageindex1 = qq~$pagetxtindexst $pagetxtindex</span>~;
             $pageindex2 = $pageindex1;
-        }
-        else {
+            $pageindex2 =~ s/id=\"defaultpagelist/id=\"2defaultpagelist/gxsm;
+
             $pagedropindex1 =
-qq~<span style="float: left; width: 350px; margin: 0px; margin-top: 2px; border: 0px;">~;
+q~<span style="float: left; width: 350px; margin: 0px; margin-top: 2px; border: 0px;">~;
             $pagedropindex1 .=
-qq~<span style="float: left; height: 21px; margin: 0; margin-right: 4px;"><a href="$scripturl?board=$INFO{'board'};start=$start;action=messagepagetext"><img src="$imagesdir/index_togl.gif" border="0" alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" /></a></span>~;
+qq~<span style="float: left; height: 21px; margin: 0; margin-right: 4px;"><a href="$scripturl?board=$INFO{'board'};start=$start;action=messagepagetext"><img src="$imagesdir/index_togl.gif"  alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" /></a></span>~;
             $pagedropindex2 = $pagedropindex1;
             $tstart         = $start;
 
-#if (substr($INFO{'start'}, 0, 3) eq "all") { ($tstart, $start) = split(/\-/, $INFO{'start'}); }
+#if (substr($INFO{'start'}, 0, 3) eq 'all') { ($tstart, $start) = split(/\-/, $INFO{'start'}); }
             $d_indexpages = $pagenumb / $dropdisplaynum;
             $i_indexpages = int( $pagenumb / $dropdisplaynum );
             if ( $d_indexpages > $i_indexpages ) {
@@ -261,7 +264,7 @@ qq~<span style="float: left; height: 21px; margin: 0;"><select size="1" name="de
                 $pagedropindex2 .=
 qq~<span style="float: left; height: 21px; margin: 0;"><select size="1" name="decselector2" id="decselector2" style="font-size: 9px; border: 2px inset;" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
             }
-            for ( $i = 0 ; $i < $indexpages ; $i++ ) {
+            for my $i ( 0 .. ( $indexpages - 1 ) ) {
                 $indexpage = ( $i * $dropdisplaynum ) * $maxindex;
 
                 $indexstart = ( $i * $dropdisplaynum ) + 1;
@@ -271,9 +274,9 @@ qq~<span style="float: left; height: 21px; margin: 0;"><select size="1" name="de
                     $indxoption = qq~$indexstart~;
                 }
                 else { $indxoption = qq~$indexstart-$indexend~; }
-                $selected = "";
+                $selected = q{};
                 if ( $i == $selectedindex ) {
-                    $selected = qq~ selected="selected"~;
+                    $selected = q~ selected="selected"~;
                     $pagejsindex =
                       qq~$indexstart|$indexend|$maxindex|$indexpage~;
                 }
@@ -289,39 +292,68 @@ qq~<option value="$indexstart|$indexend|$maxindex|$indexpage"$selected>$indxopti
                 $pagedropindex2 .= qq~</select>\n</span>~;
             }
             $pagedropindex1 .=
-qq~<span id="ViewIndex1" class="droppageindex" style="height: 14px; visibility: hidden">&nbsp;</span>~;
+q~<span id="ViewIndex1" class="droppageindex" style="height: 14px; visibility: hidden">&nbsp;</span>~;
             $pagedropindex2 .=
-qq~<span id="ViewIndex2" class="droppageindex" style="height: 14px; visibility: hidden">&nbsp;</span>~;
+q~<span id="ViewIndex2" class="droppageindex" style="height: 14px; visibility: hidden">&nbsp;</span>~;
             $tmpmaxindex = $maxindex;
 
-#if (substr($INFO{'start'}, 0, 3) eq "all") { $maxindex = $maxindex * $dropdisplaynum; }
+#if (substr($INFO{'start'}, 0, 3) eq 'all') { $maxindex = $maxindex * $dropdisplaynum; }
             $prevpage = $start - $tmpmaxindex;
             $nextpage = $start + $maxindex;
             $pagedropindexpvbl =
-qq~<img src="$imagesdir/index_left0.gif" height="14" width="13" border="0" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/index_left0.gif" height="14" width="13"  alt="" style="margin: 0px; display: inline;" />~;
             $pagedropindexnxbl =
-qq~<img src="$imagesdir/index_right0.gif" height="14" width="13" border="0" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/index_right0.gif" height="14" width="13"  alt="" style="margin: 0px; display: inline;" />~;
             if ( $start < $maxindex ) {
                 $pagedropindexpv .=
-qq~<img src="$imagesdir/index_left0.gif" height="14" width="13" border="0" alt="" style="display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/index_left0.gif" height="14" width="13"  alt="" style="display: inline;" />~;
             }
             else {
                 $pagedropindexpv .=
-qq~<img src="$imagesdir/index_left.gif" border="0" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?board=$currentboard/$prevpage\\'" ondblclick="location.href=\\'$scripturl?board=$currentboard/0\\'" />~;
+qq~<img src="$imagesdir/index_left.gif"  height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" style="display: inline; cursor: pointer;" onclick="location.href=\\'$scripturl?board=$currentboard/$prevpage\\'" ondblclick="location.href=\\'$scripturl?board=$currentboard/0\\'" />~;
+                if ($messagelist) {
+                    $pagedropindexpv .=
+qq~onclick="MessageList(\\'$scripturl?board=$currentboard/$prevpage;messagelist=1\\',\\'$yyhtml_root\\', \\'$currentboard\\', 1)" ondblclick="MessageList(\\'$scripturl?board=$currentboard/0;messagelist=1\\', \\'$yyhtml_root\\',\\'$currentboard\\', 1)" />~;
+                }
+                else {
+                    $pagedropindexpv .=
+qq~onclick="location.href=\\'$scripturl?board=$currentboard/$prevpage\\'" ondblclick="location.href=\\'$scripturl?board=$currentboard/0\\'" />~;
+                }
             }
             if ( $nextpage > $lastptn ) {
                 $pagedropindexnx .=
-qq~<img src="$imagesdir/index_right0.gif" border="0" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/index_right0.gif"  height="14" width="13" alt="" style="display: inline;" />~;
             }
             else {
                 $pagedropindexnx .=
-qq~<img src="$imagesdir/index_right.gif" height="14" width="13" border="0" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?board=$currentboard/$nextpage\\'" ondblclick="location.href=\\'$scripturl?board=$currentboard/$lastptn\\'" />~;
+qq~<img src="$imagesdir/index_right.gif" height="14" width="13"  alt="$pidtxt{'03'}" title="$pidtxt{'03'}" style="display: inline; vertical-align: middle; cursor: pointer;" ~;
+                if ($messagelist) {
+                    $pagedropindexnx .=
+qq~onclick="MessageList(\\'$scripturl?board=$currentboard/$nextpage;messagelist=1\\', \\'$yyhtml_root\\',\\'$currentboard\\', 1)" ondblclick="MessageList(\\'$scripturl?board=$currentboard/$lastptn;messagelist=1\\', \\'$yyhtml_root\\',\\'$currentboard\\', 1)" />~;
+                }
+                else {
+                    $pagedropindexnx .=
+qq~onclick="location.href=\\'$scripturl?board=$currentboard/$nextpage\\'" ondblclick="location.href=\\'$scripturl?board=$currentboard/$lastptn\\'" />~;
+                }
             }
-            $pageindex1 = qq~$pagedropindex1</span>~;
-            $pageindex2 = qq~$pagedropindex2</span>~;
+
+            $pageindex1 .= qq~$pagedropindex1</span>~;
+            $pageindex2 .= qq~$pagedropindex2</span>~;
+            $pageindex2 =~
+              s/id=\"javascriptpagelist/id=\"2javascriptpagelist/gxsm;
+
+            # make select box have links for ajax vs default url
+            if ($messagelist) {
+                $default_or_ajax =
+qq~javascript:MessageList(\\'$scripturl?board=$currentboard/' + pagstart + ';messagelist=1\\', \\'$yyhtml_root\\',\\'$currentboard\\', 1)~;
+            }
+            else {
+                $default_or_ajax =
+                  qq~$scripturl?board=$currentboard/' + pagstart + '~;
+            }
 
             $pageindexjs = qq~
-<script id="RunSelDec" language="JavaScript1.2" type="text/javascript">
+<script id="RunSelDec" type="text/javascript">
 	function SelDec(decparam, visel) {
 		splitparam = decparam.split("|");
 		var vistart = parseInt(splitparam[0]);
@@ -330,9 +362,9 @@ qq~<img src="$imagesdir/index_right.gif" height="14" width="13" border="0" alt="
 		var pagstart = parseInt(splitparam[3]);
 		//var allpagstart = parseInt(splitparam[3]);
 		if (visel == 'xx' && decparam == '$pagejsindex') visel = '$tstart';
-		var pagedropindex = '<table border="0" cellpadding="0" cellspacing="0"><tr>';
+		var pagedropindex = '<table><tr>';
 		for(i=vistart; i<=viend; i++) {
-			if (visel == pagstart) pagedropindex += '<td class="titlebg" height="14" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: bold;">' + i + '</td>';
+			if (visel == pagstart) pagedropindex += '<td class="titlebg" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: bold;">' + i + '</td>';
 			else pagedropindex += '<td height="14" class="droppages"><a href="$scripturl?board=$currentboard/' + pagstart + '">' + i + '</a></td>';
 			pagstart += maxpag;
 		}
@@ -340,14 +372,14 @@ qq~<img src="$imagesdir/index_right.gif" height="14" width="13" border="0" alt="
             if ($showpageall) {
                 $pageindexjs .= qq~
 			if (vistart != viend) {
-				if(visel == 'all') pagedropindex += '<td class="titlebg" height="14" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: normal;"><b>$pidtxt{'01'}</b></td>';
-				else pagedropindex += '<td height="14" class="droppages"><a href="$scripturl?board=$currentboard/all">$pidtxt{'01'}</a></td>';
+				if(visel == 'all') pagedropindex += '<td class="titlebg" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: normal;"><b>$pidtxt{'01'}</b></td>';
+				else pagedropindex += '<td class="droppages"><a href="$scripturl?board=$currentboard/all">$pidtxt{'01'}</a></td>';
 			}
 			~;
             }
             $pageindexjs .= qq~
-		if(visel != 'xx') pagedropindex += '<td height="14" class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpv$pagedropindexnx</td>';
-		else pagedropindex += '<td height="14" class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpvbl$pagedropindexnxbl</td>';
+		if(visel != 'xx') pagedropindex += '<td class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpv$pagedropindexnx</td>';
+		else pagedropindex += '<td class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpvbl$pagedropindexnxbl</td>';
 		pagedropindex += '</tr></table>';
 		document.getElementById("ViewIndex1").innerHTML=pagedropindex;
 		document.getElementById("ViewIndex1").style.visibility = "visible";
@@ -355,64 +387,88 @@ qq~<img src="$imagesdir/index_right.gif" height="14" width="13" border="0" alt="
 		document.getElementById("ViewIndex2").style.visibility = "visible";
 		~;
             if ( $pagenumb > $dropdisplaynum ) {
-                $pageindexjs .= qq~
+                $pageindexjs .= q~
 		document.getElementById("decselector1").value = decparam;
 		document.getElementById("decselector2").value = decparam;
 		~;
             }
             $pageindexjs .= qq~
 	}
-	document.onload = SelDec('$pagejsindex', '$tstart');
-
+    var pagejsindex = "$pagejsindex";
+    var tstart = "$tstart";
+    document.onload = SelDec(pagejsindex, tstart);
 </script>
 ~;
         }
     }
 
     if ( $start <= $#threads ) { $stkynum = scalar @threads; }
-    push( @threads, @nostickythreadlist );
+    push @threads, @nostickythreadlist;
     undef @nostickythreadlist;
-    @threads = splice( @threads, $start, $maxindex );
+    @threads = splice @threads, $start, $maxindex;
     chomp @threads;
 
     my %attachments;
     if ( -s "$vardir/attachments.txt" > 5 ) {
         fopen( ATM, "$vardir/attachments.txt" );
         while (<ATM>) {
-            $attachments{ ( split( /\|/, $_, 2 ) )[0] }++;
+            $attachments{ ( split /\|/xsm, $_, 2 )[0] }++;
         }
         fclose(ATM);
     }
 
-    &LoadCensorList;
+    LoadCensorList();
+
+    # check the Multi-admin setting
+    my $multiview = 0;
+    if ($staff) {
+        if (   ( $iamadmin && $adminview == 3 )
+            || ( $iamgmod && $gmodview == 3 )
+            || ( $iammod  && $modview == 3 ) )
+        {
+            $multiview = 3;
+        }
+        elsif (( $iamadmin && $adminview == 2 )
+            || ( $iamgmod && $gmodview == 2 )
+            || ( $iammod  && $modview == 2 ) )
+        {
+            $multiview = 2;
+        }
+        elsif (( $iamadmin && $adminview == 1 )
+            || ( $iamgmod && $gmodview == 1 )
+            || ( $iammod  && $modview == 1 ) )
+        {
+            $multiview = 1;
+        }
+    }
 
     # Print the header and board info.
-    &ToChars($boardname);
-    if (
-        (
-               ( $iammod && $modview == 1 && !$iamadmin && !$iamgmod )
-            || ( $iamadmin && $adminview == 1 )
-            || ( $iamgmod  && $gmodview == 1 )
-        )
-        && $sessionvalid == 1
-      )
-    {
+    ( $boardname, undef ) = split /\|/xsm, $board{$currentboard};
+    my $curboardname = $boardname;
+    ToChars($curboardname);
+    if ( $multiview == 1 ) {
         $yymain .=
-qq~<script language="JavaScript1.2" src="$yyhtml_root/ubbc.js" type="text/javascript"></script>~;
+qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>\n~;
+    }
+
+    if ( $multiview >= 2 ) {
+        my $modul = $currentboard eq $annboard ? 4 : 5;
+        $yymain .=
+qq~<script src="$yyhtml_root/MessageIndex.js" type="text/javascript"></script>\n~;
     }
 
     my $homelink = qq~<a href="$scripturl">$mbname</a>~;
     my $catlink  = qq~<a href="$scripturl?catselect=$catid">$cat</a>~;
     my $boardlink =
-qq~<b>$boardname</b>~;
+qq~<a href="$scripturl?board=$currentboard" class="a"><b>$curboardname</b></a>~;
     my $modslink = qq~$showmods~;
 
-    $boardtree   = '';
+    $boardtree   = q{};
     $parentboard = $currentboard;
     while ($parentboard) {
         my ( $pboardname, undef, undef ) =
-          split( /\|/, $board{"$parentboard"} );
-        &ToChars($pboardname);
+          split /\|/xsm, $board{"$parentboard"};
+        ToChars($pboardname);
         if ( ${ $uid . $parentboard }{'canpost'} ) {
             $pboardname =
 qq~<a href="$scripturl?board=$parentboard" class="a"><b>$pboardname</b></a>~;
@@ -424,16 +480,9 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1" class="a"><b>$pboar
         $boardtree   = qq~ &rsaquo; $pboardname$boardtree~;
         $parentboard = ${ $uid . $parentboard }{'parent'};
     }
-    # check howmany col's must be spanned
-    if (
-        (
-               ( $iamadmin && $adminview >= 1 )
-            || ( $iamgmod && $gmodview >= 1 )
-            || ( $iammod && $modview >= 1 && !$iamadmin && !$iamgmod )
-        )
-        && $sessionvalid == 1
-      )
-    {
+
+    # check how many col's must be spanned
+    if ( $multiview > 0 ) {
         $colspan = 8;
     }
     else {
@@ -447,40 +496,51 @@ qq~$menusep<a href="javascript:MarkAllAsRead('$scripturl?board=$INFO{'board'};ac
 qq~$menusep<a href="$scripturl?action=boardnotify;board=$INFO{'board'}">$img{'notify'}</a>~;
     }
 
-    if ( &AccessCheck( $currentboard, 1 ) eq "granted" ) {
+    if ( AccessCheck( $currentboard, 1 ) eq 'granted' ) {
 
 # when Quick-Post and Quick-Jump: focus message first, then the subject to have a better display
-        $postlink = qq~$menusep<a href="~
-          . (
-            $enable_quickpost && $enable_quickjump
-            ? 'javascript:document.postmodify.message.focus();document.postmodify.subject.focus();'
-            : qq~$scripturl?board=$INFO{'board'};action=post;title=StartNewTopic~
-          ) . qq~">$img{'newthread'}</a>~;
+        if ($messagelist) {
+            if ($mdrop_postpopup) {
+                $postlink =
+qq~$menusep<a href="javascript://" onclick="PostPage('$scripturl?board=$INFO{'board'};action=post;title=StartNewTopic','$INFO{'board'}')">$img{'newthread'}</a>~;
+            }
+            else {
+                $postlink =
+qq~$menusep<a href="$scripturl?board=$INFO{'board'};action=post;title=StartNewTopic">$img{'newthread'}</a>~;
+            }
+        }
+        else {
+            if ($mindex_postpopup) {
+                $postlink =
+qq~$menusep<a href="javascript://" onclick="PostPage('$scripturl?board=$INFO{'board'};action=post;title=StartNewTopic','$INFO{'board'}')">$img{'newthread'}</a>~;
+            }
+            else {
+                $postlink = qq~$menusep<a href="~
+                  . (
+                    $enable_quickpost && $enable_quickjump
+                    ? 'javascript:document.postmodify.message.focus();document.postmodify.subject.focus();'
+                    : qq~$scripturl?board=$INFO{'board'};action=post;title=StartNewTopic~
+                  ) . qq~">$img{'newthread'}</a>~;
+            }
+        }
     }
-    if ( &AccessCheck( $currentboard, 3 ) eq "granted" ) {
+    if ( AccessCheck( $currentboard, 3 ) eq 'granted' ) {
         $polllink =
 qq~$menusep<a href="$scripturl?board=$INFO{'board'};action=post;title=CreatePoll">$img{'createpoll'}</a>~;
     }
 
-    if (
-        (
-               ( $iamadmin && $adminview == 3 )
-            || ( $iamgmod && $gmodview == 3 )
-            || ( $iammod && $modview == 3 && !$iamadmin && !$iamgmod )
-        )
-        && $sessionvalid == 1
-      )
-    {
+    if ( $multiview == 3 ) {
+        my $adminlink;
         if ( $currentboard eq $annboard ) {
-            $adminlink =
-qq~<img src="$imagesdir/announcementlock.gif" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" border="0" /><img src="$imagesdir/hide.gif" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" border="0" /><img src="$imagesdir/admin_move.gif" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" border="0" /><img src="$imagesdir/admin_rem.gif" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" border="0" />~;
-        }
+                $adminlink =
+qq~<img src="$imagesdir/announcementlock.gif" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" /><img src="$imagesdir/hide.gif" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" /><img src="$imagesdir/admin_move.gif" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" /><img src="$imagesdir/admin_rem.gif" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" />~;
+            }
         else {
-            $adminlink =
-qq~<img src="$imagesdir/locked.gif" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" border="0" /><img src="$imagesdir/sticky.gif" alt="$messageindex_txt{'781'}" title="$messageindex_txt{'781'}" border="0" /><img src="$imagesdir/hide.gif" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" border="0" /><img src="$imagesdir/admin_move.gif" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" border="0" /><img src="$imagesdir/admin_rem.gif" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" border="0" />~;
+                $adminlink =
+qq~<img src="$imagesdir/locked.gif" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" /><img src="$imagesdir/sticky.gif" alt="$messageindex_txt{'781'}" title="$messageindex_txt{'781'}" /><img src="$imagesdir/hide.gif" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" /><img src="$imagesdir/admin_move.gif" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" /><img src="$imagesdir/admin_rem.gif" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" />~;
+            }
+        $adminheader =~ s/({|<)yabb admin(}|>)/$adminlink/gsm;
         }
-        $adminheader =~ s/({|<)yabb admin(}|>)/$adminlink/g;
-    }
     elsif (
         (
                ( $iamadmin && $adminview != 0 )
@@ -491,19 +551,19 @@ qq~<img src="$imagesdir/locked.gif" alt="$messageindex_txt{'104'}" title="$messa
       )
     {
         $adminlink = qq~$messageindex_txt{'2'}~;
-        $adminheader =~ s/({|<)yabb admin(}|>)/$adminlink/g;
+        $adminheader =~ s/({|<)yabb admin(}|>)/$adminlink/gsm;
     }
 
     # check to display moderator column
     my $tmpstickyheader;
     if ($stkynum) {
-        $stickyheader =~ s/({|<)yabb colspan(}|>)/$colspan/g;
+        $stickyheader =~ s/({|<)yabb colspan(}|>)/$colspan/gsm;
         $tmpstickyheader = $stickyheader;
     }
 
     # load Favorites in a hash
     if ( ${ $uid . $username }{'favorites'} ) {
-        foreach ( split( /,/, ${ $uid . $username }{'favorites'} ) ) {
+        foreach ( split /,/xsm, ${ $uid . $username }{'favorites'} ) {
             $favicon{$_} = 1;
         }
     }
@@ -513,61 +573,70 @@ qq~<img src="$imagesdir/locked.gif" alt="$messageindex_txt{'104'}" title="$messa
 
     # Begin printing the message index for current board.
     $counter = $start;
-    &dumplog($currentboard);    # Mark current board as seen
-    my $dmax = $date - ( $max_log_days_old * 86400 );
+    dumplog($currentboard);    # Mark current board as seen
+    my $dmax = $date - ( $max_log_days_old * 86_400 );
     foreach (@threads) {
         (
             $mnum,     $msub,      $mname, $memail, $mdate,
             $mreplies, $musername, $micon, $mstate
-        ) = split( /\|/, $_ );
+        ) = split /\|/xsm, $_;
 
-        my ( $movedSubject, $movedFlag ) = &Split_Splice_Move( $msub, $mnum );
+        my ( $movedSubject, $movedFlag ) = Split_Splice_Move( $msub, $mnum );
 
-        &MessageTotals( 'load', $mnum );
+        MessageTotals( 'load', $mnum );
 
         my $altthdcolor =
-          ( ( $alternatethreadcolor % 2 ) == 1 ) ? "windowbg" : "windowbg2";
+          ( ( $alternatethreadcolor % 2 ) == 1 ) ? 'windowbg' : 'windowbg2';
         $alternatethreadcolor++;
 
-        my $goodboard = $mstate =~ /a/i ? $annboard : $currentboard;
+        my $goodboard = $mstate =~ /a/ism ? $annboard : $currentboard;
         if ( ${$mnum}{'board'} ne $goodboard ) {
-            ${$mnum}{'board'} = $goodboard if $goodboard;
-            &MessageTotals( 'recover', $mnum );
+            if ($goodboard) { ${$mnum}{'board'} = $goodboard; }
+            MessageTotals( 'recover', $mnum );
         }
 
         $permlinkboard =
           ${$mnum}{'board'} eq $annboard ? $annboard : $currentboard;
-        my $permdate = &permtimer($mnum);
+        my $permdate = permtimer($mnum);
         my $message_permalink =
 qq~<a href="http://$perm_domain/$symlink$permdate/$permlinkboard/$mnum">$messageindex_txt{'10'}</a>~;
 
         $threadclass = 'thread';
-        if    ( $mstate =~ /h/i ) { $threadclass = 'hide'; }
-        elsif ( $mstate =~ /l/i ) { $threadclass = 'locked'; }
+        if    ( $mstate =~ /h/ism ) { $threadclass = 'hide'; }
+        elsif ( $mstate =~ /l/ism ) { $threadclass = 'locked'; }
         elsif ( $mreplies >= $VeryHotTopic ) { $threadclass = 'veryhotthread'; }
         elsif ( $mreplies >= $HotTopic )     { $threadclass = 'hotthread'; }
-        elsif ( $mstate == '' )              { $threadclass = 'thread'; }
-        if ( $threadclass eq 'hide' && $mstate =~ /s/i && $mstate !~ /l/i ) {
+        elsif ( $mstate eq q{} ) { $threadclass = 'thread'; }
+        if ( $threadclass eq 'hide' && $mstate =~ /s/ism && $mstate !~ /l/ism )
+        {
             $threadclass = 'hidesticky';
         }
-        elsif ( $threadclass eq 'hide' && $mstate =~ /l/i && $mstate !~ /s/i ) {
+        elsif ($threadclass eq 'hide'
+            && $mstate =~ /l/ism
+            && $mstate !~ /s/ism )
+        {
             $threadclass = 'hidelock';
         }
-        elsif ( $threadclass eq 'hide' && $mstate =~ /s/i && $mstate =~ /l/i ) {
+        elsif ($threadclass eq 'hide'
+            && $mstate =~ /s/ism
+            && $mstate =~ /l/ism )
+        {
             $threadclass = 'hidestickylock';
         }
-        elsif ( $threadclass eq 'locked' && $mstate =~ /s/i && $mstate !~ /h/i )
+        elsif ($threadclass eq 'locked'
+            && $mstate =~ /s/ism
+            && $mstate !~ /h/ism )
         {
             $threadclass = 'stickylock';
         }
-        elsif ( $mstate =~ /s/i && $mstate !~ /h/i ) {
+        elsif ( $mstate =~ /s/ism && $mstate !~ /h/ism ) {
             $threadclass = 'sticky';
         }
-        elsif ( ${$mnum}{'board'} eq $annboard && $mstate !~ /h/i ) {
+        elsif ( ${$mnum}{'board'} eq $annboard && $mstate !~ /h/ism ) {
             $threadclass =
               $threadclass eq 'locked' ? 'announcementlock' : 'announcement';
         }
-        $threadclass = 'locked_moved' if $movedFlag;
+        if ($movedFlag) { $threadclass = 'locked_moved'; }
 
         if ( !$iamguest && $max_log_days_old ) {
 
@@ -578,7 +647,7 @@ qq~<a href="http://$perm_domain/$symlink$permdate/$permlinkboard/$mnum">$message
               int( $yyuserlog{$mnum} ) >
               int( $yyuserlog{"$currentboard--mark"} )
               ? int( $yyuserlog{$mnum} )
-              : int( $yyuserlog{"$currentboard--mark"} );
+              : int $yyuserlog{"$currentboard--mark"};
             if (
                 !$movedFlag
                 && (   $yyuserlog{"$mnum--unread"}
@@ -588,21 +657,20 @@ qq~<a href="http://$perm_domain/$symlink$permdate/$permlinkboard/$mnum">$message
             {
                 if ( ${$mnum}{'board'} eq $annboard ) {
                     $new =
-qq~<a href="$scripturl?virboard=$currentboard;num=$mnum/new#new"><img src="$imagesdir/new.gif" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'302'}" border="0"/></a>~;
+qq~<a href="$scripturl?virboard=$currentboard;num=$mnum/new#new"><img src="$imagesdir/new.gif" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'302'}" /></a>~;
                 }
                 else {
                     $new =
-qq~<a href="$scripturl?num=$mnum/new#new"><img src="$imagesdir/new.gif" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'302'}" border="0"/></a>~;
+qq~<a href="$scripturl?num=$mnum/new#new"><img src="$imagesdir/new.gif" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'302'}" /></a>~;
                 }
             }
             else {
-                $new = '';
+                $new = q{};
             }
         }
 
-        $micon =
-qq~<img src="$imagesdir/$micon.gif" alt="" border="0" align="middle" />~;
-        $mpoll = "";
+        $micon = qq~<img src="$imagesdir/$micon.gif" alt="" />~;
+        $mpoll = q{};
         if ( -e "$datadir/$mnum.poll" ) {
             $mpoll = qq~<b>$messageindex_txt{'15'}: </b>~;
             fopen( POLL, "$datadir/$mnum.poll" );
@@ -613,22 +681,22 @@ qq~<img src="$imagesdir/$micon.gif" alt="" border="0" align="middle" />~;
                 $poll_email,    $poll_date,   $guest_vote,   $hide_results,
                 $multi_vote,    $poll_mod,    $poll_modname, $poll_comment,
                 $vote_limit,    $pie_radius,  $pie_legends,  $poll_end
-            ) = split( /\|/, $poll[0] );
+            ) = split /\|/xsm, $poll[0];
             chomp $poll_end;
             if ( $poll_end && !$poll_locked && $poll_end < $date ) {
                 $poll_locked = 1;
-                $poll_end    = '';
+                $poll_end    = q{};
                 $poll[0] =
 "$poll_question|$poll_locked|$poll_uname|$poll_name|$poll_email|$poll_date|$guest_vote|$hide_results|$multi_vote|$poll_mod|$poll_modname|$poll_comment|$vote_limit|$pie_radius|$pie_legends|$poll_end\n";
                 fopen( POLL, ">$datadir/$mnum.poll" );
-                print POLL @poll;
+                print {POLL} @poll or croak 'cannot print POLL';
                 fclose(POLL);
             }
             $micon = qq~$img{'pollicon'}~;
             if ($poll_locked) { $micon = $img{'polliconclosed'}; }
             elsif ( !$iamguest
                 && $max_log_days_old
-                && $mdate > $date - ( $max_log_days_old * 86400 ) )
+                && $mdate > $date - ( $max_log_days_old * 86_400 ) )
             {
                 if ( $dlp < $createpoll_date ) {
                     $micon = qq~$img{'polliconnew'}~;
@@ -638,7 +706,7 @@ qq~<img src="$imagesdir/$micon.gif" alt="" border="0" align="middle" />~;
                     $polled = <POLLED>;
                     fclose(POLLED);
                     ( undef, undef, undef, $vote_date, undef ) =
-                      split( /\|/, $polled );
+                      split /\|/xsm, $polled;
                     if ( $dlp < $vote_date ) {
                         $micon = qq~$img{'polliconnew'}~;
                     }
@@ -648,7 +716,7 @@ qq~<img src="$imagesdir/$micon.gif" alt="" border="0" align="middle" />~;
 
         # Load the current nickname of the account name of the thread starter.
         if ( $musername ne 'Guest' ) {
-            &LoadUser($musername);
+            LoadUser($musername);
 
             # See if they are an ex-member.
             if (
@@ -656,8 +724,8 @@ qq~<img src="$imagesdir/$micon.gif" alt="" border="0" align="middle" />~;
                     ${ $uid . $musername }{'regdate'}
                     && $mdate > ${ $uid . $musername }{'regtime'}
                 )
-                || ${ $uid . $musername }{'position'} eq "Administrator"
-                || ${ $uid . $musername }{'position'} eq "Global Moderator"
+                || ${ $uid . $musername }{'position'} eq 'Administrator'
+                || ${ $uid . $musername }{'position'} eq 'Global Moderator'
               )
             {
                 $mname =
@@ -672,7 +740,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">${$
         }
 
         # Build the page links list.
-        my ( $pages, $pagesall );
+        my ( $pages,$pagesall );
         if ($showpageall) {
             $pagesall =
               qq~<a href="$scripturl?num=$mnum/all">$pidtxt{'01'}</a>~;
@@ -680,15 +748,15 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">${$
         if ( int( ( $mreplies + 1 ) / $maxmessagedisplay ) > 6 ) {
             $pages =
                 qq~ <a href="$scripturl?num=$mnum/~
-              . ( !$ttsreverse ? "0#0" : "$mreplies#$mreplies" )
-              . qq~">1</a>~;
+              . ( !$ttsreverse ? '0#0' : "$mreplies#$mreplies" )
+              . q~">1</a>~;
             $pages .= qq~ <a href="$scripturl?num=$mnum/~
               . (
                 !$ttsreverse
                 ? "$maxmessagedisplay#$maxmessagedisplay"
-                : ( $mreplies - $maxmessagedisplay ) . '#'
+                : ( $mreplies - $maxmessagedisplay ) . q{#}
                   . ( $mreplies - $maxmessagedisplay )
-              ) . qq~">2</a>~;
+              ) . q~">2</a>~;
             $endpage = int( $mreplies / $maxmessagedisplay ) + 1;
             $i       = ( $endpage - 1 ) * $maxmessagedisplay;
             $j       = $i - $maxmessagedisplay;
@@ -701,40 +769,37 @@ qq~ <a href="javascript:void(0);" onclick="ListPages($mnum);">...</a>~;
               . (
                 !$ttsreverse
                 ? "$tmpb#$tmpb"
-                : ( $mreplies - $tmpb ) . '#' . ( $mreplies - $tmpb )
+                : ( $mreplies - $tmpb ) . q{#} . ( $mreplies - $tmpb )
               ) . qq~">$tmpa</a>~;
             $pages .= qq~ <a href="$scripturl?num=$mnum/~
               . (
                 !$ttsreverse
                 ? "$j#$j"
-                : ( $mreplies - $j ) . '#' . ( $mreplies - $j )
+                : ( $mreplies - $j ) . q{#} . ( $mreplies - $j )
               ) . qq~">$k</a>~;
             $pages .= qq~ <a href="$scripturl?num=$mnum/~
               . (
                 !$ttsreverse
                 ? "$i#$i"
-                : ( $mreplies - $i ) . '#' . ( $mreplies - $i )
+                : ( $mreplies - $i ) . q{#} . ( $mreplies - $i )
               ) . qq~">$endpage</a>~;
             $pages =
 qq~<br /><span class="small">&#171; $messageindex_txt{'139'} $pages $pagesall &#187;</span>~;
         }
         elsif ( $mreplies + 1 > $maxmessagedisplay ) {
             $tmpa = 1;
-            for (
-                $tmpb = 0 ;
-                $tmpb < $mreplies + 1 ;
-                $tmpb += $maxmessagedisplay
-              )
-            {
-                $pages .= qq~<a href="$scripturl?num=$mnum/~
-                  . (
-                    !$ttsreverse
-                    ? "$tmpb#$tmpb"
-                    : ( $mreplies - $tmpb ) . '#' . ( $mreplies - $tmpb )
-                  ) . qq~">$tmpa</a>\n~;
-                ++$tmpa;
+            foreach my $tmpb ( 0 .. $mreplies ) {
+                if ( $tmpb % $maxmessagedisplay == 0 ) {
+                    $pages .= qq~<a href="$scripturl?num=$mnum/~
+                      . (
+                        !$ttsreverse
+                        ? "$tmpb#$tmpb"
+                        : ( $mreplies - $tmpb ) . q{#} . ( $mreplies - $tmpb )
+                      ) . qq~">$tmpa</a>\n~;
+                    ++$tmpa;
+                }
             }
-            $pages =~ s/\n\Z//;
+            $pages =~ s/\n\Z//xsm;
             $pages =
 qq~<br /><span class="small">&#171; $messageindex_txt{'139'} $pages $pagesall &#187;</span>~;
         }
@@ -742,19 +807,19 @@ qq~<br /><span class="small">&#171; $messageindex_txt{'139'} $pages $pagesall &#
         # build number of views
         my $views = ${$mnum}{'views'} ? ${$mnum}{'views'} - 1 : 0;
         $lastposter = ${$mnum}{'lastposter'};
-        if ( $lastposter =~ m~\AGuest-(.*)~ ) {
+        if ( $lastposter =~ m{\AGuest-(.*)}xsm ) {
             $lastposter = $1 . " ($maintxt{'28'})";
         }
         else {
-            &LoadUser($lastposter);
+            LoadUser($lastposter);
             if (
                 (
                        ${ $uid . $lastposter }{'regdate'}
                     && ${$mnum}{'lastpostdate'} >
                     ${ $uid . $lastposter }{'regtime'}
                 )
-                || ${ $uid . $lastposter }{'position'} eq "Administrator"
-                || ${ $uid . $lastposter }{'position'} eq "Global Moderator"
+                || ${ $uid . $lastposter }{'position'} eq 'Administrator'
+                || ${ $uid . $lastposter }{'position'} eq 'Global Moderator'
               )
             {
                 $lastposter =
@@ -764,18 +829,18 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">${
 
             # Need to load thread to see lastposters DISPLAYname if is Ex-Member
                 fopen( EXMEMBERTHREAD, "$datadir/$mnum.txt" )
-                  || &fatal_error( 'cannot_open', "$datadir/$mnum.txt", 1 );
+                  || fatal_error( 'cannot_open', "$datadir/$mnum.txt", 1 );
                 my @x = <EXMEMBERTHREAD>;
                 fclose(EXMEMBERTHREAD);
                 $lastposter =
-                  ( split( /\|/, $x[$#x], 3 ) )[1]
+                  ( split /\|/xsm, $x[-1], 3 )[1]
                   . " - $messageindex_txt{'470a'}";
             }
         }
         $lastpostername = $lastposter || $messageindex_txt{'470'};
 
         if ( ( $stkynum && ( $counter >= $stkynum ) ) && ( $stkyshowed < 1 ) ) {
-            $nonstickyheader =~ s/({|<)yabb colspan(}|>)/$colspan/g;
+            $nonstickyheader =~ s/({|<)yabb colspan(}|>)/$colspan/gsm;
             $tmptempbar .= $nonstickyheader;
             $stkyshowed = 1;
         }
@@ -793,12 +858,12 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">${
             : qq~<a href="javascript:void(window.open('$scripturl?action=viewdownloads;thread=$mnum','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">~
               . qq~<img src="$imagesdir/paperclip.gif" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" style="border-style:none;" /></a>~
           )
-          : "";
+          : q{};
 
         $mcount++;
 
         # Print the thread info.
-        $mydate = &timeformat($mdate);
+        $mydate = timeformat($mdate);
         if (
             (
                    ( $iamadmin && $adminview == 3 )
@@ -817,7 +882,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">${
 		~;
             }
             elsif ( $counter < $numanns ) {
-                $adminbar = qq~&nbsp;~;
+                $adminbar = q~&nbsp;~;
             }
             else {
                 $adminbar = qq~
@@ -829,7 +894,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">${
 		~;
             }
             $admincol = $admincolumn;
-            $admincol =~ s/({|<)yabb admin(}|>)/$adminbar/g;
+            $admincol =~ s/({|<)yabb admin(}|>)/$adminbar/gsm;
         }
         elsif (
             (
@@ -841,14 +906,14 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">${
           )
         {
             if ( $currentboard ne $annboard && $counter < $numanns ) {
-                $adminbar = qq~&nbsp;~;
+                $adminbar = q~&nbsp;~;
             }
             else {
                 $adminbar =
 qq~<input type="checkbox" name="admin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />~;
             }
             $admincol = $admincolumn;
-            $admincol =~ s/({|<)yabb admin(}|>)/$adminbar/g;
+            $admincol =~ s/({|<)yabb admin(}|>)/$adminbar/gsm;
         }
         elsif (
             (
@@ -861,30 +926,30 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" style="border: 0p
         {
             if ( $currentboard eq $annboard ) {
                 $adminbar = qq~
-		<a href="$scripturl?action=lock;thread=$mnum;tomessageindex=1"><img src="$imagesdir/announcementlock.gif" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" border="0" /></a>&nbsp;
-		<a href="$scripturl?action=hide;thread=$mnum;tomessageindex=1"><img src="$imagesdir/hide.gif" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" border="0" /></a>&nbsp;
-		<a href="javascript:void(window.open('$scripturl?action=split_splice;board=$currentboard;thread=$mnum;oldposts=all;leave=0;newcat=${$uid.$currentboard}{'cat'};newboard=$currentboard;position=end','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))"><img src="$imagesdir/admin_move.gif" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" border="0" /></a>&nbsp;
-		<a href="$scripturl?action=removethread;thread=$mnum" onclick="return confirm('$messageindex_txt{'162'}')"><img src="$imagesdir/admin_rem.gif" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" border="0" /></a>
+		<a href="$scripturl?action=lock;thread=$mnum;tomessageindex=1"><img src="$imagesdir/announcementlock.gif" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}"  /></a>&nbsp;
+		<a href="$scripturl?action=hide;thread=$mnum;tomessageindex=1"><img src="$imagesdir/hide.gif" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}"  /></a>&nbsp;
+		<a href="javascript:void(window.open('$scripturl?action=split_splice;board=$currentboard;thread=$mnum;oldposts=all;leave=0;newcat=${$uid.$currentboard}{'cat'};newboard=$currentboard;position=end','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))"><img src="$imagesdir/admin_move.gif" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}"  /></a>&nbsp;
+		<a href="$scripturl?action=removethread;thread=$mnum" onclick="return confirm('$messageindex_txt{'162'}')"><img src="$imagesdir/admin_rem.gif" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}"  /></a>
 		~;
             }
             elsif ( $counter < $numanns ) {
-                $adminbar = qq~&nbsp;~;
+                $adminbar = q~&nbsp;~;
             }
             else {
                 $adminbar = qq~
-		<a href="$scripturl?action=lock;thread=$mnum;tomessageindex=1"><img src="$imagesdir/locked.gif" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" border="0" /></a>&nbsp;
-		<a href="$scripturl?action=sticky;thread=$mnum"><img src="$imagesdir/sticky.gif" alt="$messageindex_txt{'781'}" title="$messageindex_txt{'781'}" border="0" /></a>&nbsp;
-		<a href="$scripturl?action=hide;thread=$mnum;tomessageindex=1"><img src="$imagesdir/hide.gif" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" border="0" /></a>&nbsp;
-		<a href="javascript:void(window.open('$scripturl?action=split_splice;board=$currentboard;thread=$mnum;oldposts=all;leave=0;newcat=${$uid.$currentboard}{'cat'};newboard=$currentboard;position=end','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))"><img src="$imagesdir/admin_move.gif" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" border="0" /></a>&nbsp;
-		<a href="$scripturl?action=removethread;thread=$mnum" onclick="return confirm('$messageindex_txt{'162'}')"><img src="$imagesdir/admin_rem.gif" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" border="0" /></a>
+		<a href="$scripturl?action=lock;thread=$mnum;tomessageindex=1"><img src="$imagesdir/locked.gif" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}"  /></a>&nbsp;
+		<a href="$scripturl?action=sticky;thread=$mnum"><img src="$imagesdir/sticky.gif" alt="$messageindex_txt{'781'}" title="$messageindex_txt{'781'}"  /></a>&nbsp;
+		<a href="$scripturl?action=hide;thread=$mnum;tomessageindex=1"><img src="$imagesdir/hide.gif" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}"  /></a>&nbsp;
+		<a href="javascript:void(window.open('$scripturl?action=split_splice;board=$currentboard;thread=$mnum;oldposts=all;leave=0;newcat=${$uid.$currentboard}{'cat'};newboard=$currentboard;position=end','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))"><img src="$imagesdir/admin_move.gif" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}"  /></a>&nbsp;
+		<a href="$scripturl?action=removethread;thread=$mnum" onclick="return confirm('$messageindex_txt{'162'}')"><img src="$imagesdir/admin_rem.gif" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}"  /></a>
 		~;
             }
             $admincol = $admincolumn;
-            $admincol =~ s/({|<)yabb admin(}|>)/$adminbar/g;
+            $admincol =~ s/({|<)yabb admin(}|>)/$adminbar/gsm;
         }
 
-        $msub = &Censor($msub);
-        &ToChars($msub);
+        $msub = Censor($msub);
+        ToChars($msub);
         if ( !$movedFlag ) {
             if ( ${$mnum}{'board'} eq $annboard ) {
                 $msublink =
@@ -895,54 +960,53 @@ qq~<a href="$scripturl?virboard=$currentboard;num=$mnum">$msub</a>~;
             }
         }
         elsif ( $movedFlag < 100 ) {
-            &Split_Splice_Move( $msub, 0 );
+            Split_Splice_Move( $msub, 0 );
             $msublink = qq~$msub<br /><span class="small">$movedSubject</span>~;
         }
         else {
-            $msub =~ /^(Re: )?\[m.*?\]: '(.*)'/
-              ;    # newer then code in &Split_Splice_Move
+            $msub =~ /^(Re: )?\[m.*?\]: '(.*)'/sm;
+
+            # newer than code in &Split_Splice_Move
             $msublink =
 qq~$maintxt{'758'}: '<a href="$scripturl?num=$movedFlag">$2</a>'<br /><span class="small">$movedSubject</span>~;
         }
 
-        my $mydate = &timeformat($mdate);
+        my $mydate = timeformat($mdate);
         my $tempbar = $movedFlag ? $threadbarMoved : $threadbar;
-        $tempbar =~ s/({|<)yabb admin column(}|>)/$admincol/g;
+        $tempbar =~ s/({|<)yabb admin column(}|>)/$admincol/gsm;
         $tempbar =~
-s/({|<)yabb threadpic(}|>)/<img src="$imagesdir\/$threadclass.gif" alt="" \/>/g;
-        $tempbar =~ s/({|<)yabb icon(}|>)/$micon/g;
-        $tempbar =~ s/({|<)yabb new(}|>)/$new/g;
-        $tempbar =~ s/({|<)yabb poll(}|>)/$mpoll/g;
+s/({|<)yabb threadpic(}|>)/<img src="$imagesdir\/$threadclass.gif" alt="" \/>/gsm;
+        $tempbar =~ s/({|<)yabb icon(}|>)/$micon/gsm;
+        $tempbar =~ s/({|<)yabb new(}|>)/$new/gsm;
+        $tempbar =~ s/({|<)yabb poll(}|>)/$mpoll/gsm;
         $tempbar =~
-s/({|<)yabb favorite(}|>)/ ($favicon{$mnum} ? qq~<img src="$imagesdir\/addfav.gif" alt="$img_txt{'70'}" title="$img_txt{'70'}" \/>~ : '') /eg;
-        $tempbar =~ s/({|<)yabb subjectlink(}|>)/$msublink/g;
-        $tempbar =~ s/({|<)yabb attachmenticon(}|>)/$temp_attachment/g;
-        $tempbar =~ s/({|<)yabb pages(}|>)/$pages/g;
-        $tempbar =~ s/({|<)yabb starter(}|>)/$mname/g;
-        $tempbar =~ s/({|<)yabb replies(}|>)/ &NumberFormat($mreplies) /eg;
-        $tempbar =~ s/({|<)yabb views(}|>)/ &NumberFormat($views) /eg;
+s/({|<)yabb favorite(}|>)/ ($favicon{$mnum} ? qq~<img src="$imagesdir\/addfav.gif" alt="$img_txt{'70'}" title="$img_txt{'70'}" \/>~ : '') /egsm;
+        $tempbar =~ s/({|<)yabb subjectlink(}|>)/$msublink/gsm;
+        $tempbar =~ s/({|<)yabb attachmenticon(}|>)/$temp_attachment/gsm;
+        $tempbar =~ s/({|<)yabb pages(}|>)/$pages/gsm;
+        $tempbar =~ s/({|<)yabb starter(}|>)/$mname/gsm;
+        $tempbar =~ s/({|<)yabb replies(}|>)/ NumberFormat($mreplies) /egsm;
+        $tempbar =~ s/({|<)yabb views(}|>)/ NumberFormat($views) /egsm;
         $tempbar =~
-s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies">$img{'lastpost'} $mydate<\/a>/g;
-        $tempbar =~ s/({|<)yabb lastposter(}|>)/$lastpostername/g;
-        $tempbar =~ s/({|<)yabb altthdcolor(}|>)/$altthdcolor/g;
+s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies">$img{'lastpost'} $mydate<\/a>/gsm;
+        $tempbar =~ s/({|<)yabb lastposter(}|>)/$lastpostername/gsm;
+        $tempbar =~ s/({|<)yabb altthdcolor(}|>)/$altthdcolor/gsm;
 
         if ( $accept_permalink == 1 ) {
-            $tempbar =~ s/({|<)yabb permalink(}|>)/$message_permalink/g;
+            $tempbar =~ s/({|<)yabb permalink(}|>)/$message_permalink/gsm;
         }
         else {
-            $tempbar =~ s/({|<)yabb permalink(}|>)//g;
+            $tempbar =~ s/({|<)yabb permalink(}|>)//gsm;
         }
         $tmptempbar .= $tempbar;
         $counter++;
     }
 
-# Put a "no messages" message if no threads exisit - just a  bit more friendly...
+# Put a "no messages" message if no threads exist - just a  bit more friendly...
     if ( !$tmptempbar ) {
-        $tmptempbar = qq~
-		<tr>
-			<td class="windowbg2" valign="middle" align="center" colspan="$colspan"><br />$messageindex_txt{'841'}<br /><br /></td>
-		</tr>
-		~;
+        $tmptempbar = qq~<tr>
+			<td class="windowbg2 center" colspan="$colspan"><br />$messageindex_txt{'841'}<br /><br /></td>
+		</tr>~;
     }
 
     my $multiview = 0;
@@ -971,7 +1035,7 @@ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies
     }
 
     if ( $multiview >= 2 ) {
-        my $boardlist = &moveto;
+        my $boardlist = moveto();
         if ( $multiview eq '3' ) {
             $tempfooter    = $subfooterbar;
             $adminselector = qq~
@@ -996,8 +1060,9 @@ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies
 				<input type="hidden" name="fromboard" value="$currentboard" />
 			~;
             }
-            $tempfooter =~ s/({|<)yabb admin selector(}|>)/$adminselector/g;
-            $tempfooter =~ s/({|<)yabb admin checkboxes(}|>)/$admincheckboxes/g;
+            $tempfooter =~ s/({|<)yabb admin selector(}|>)/$adminselector/gsm;
+            $tempfooter =~
+              s/({|<)yabb admin checkboxes(}|>)/$admincheckboxes/gsm;
         }
         elsif ( $multiview eq '2' ) {
             $tempfooter = $subfooterbar;
@@ -1006,7 +1071,8 @@ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies
 				<input type="radio" name="multiaction" id="multiactionlock" value="lock" class="titlebg" style="border: 0px;" /> <label for="multiactionlock">$messageindex_txt{'104'}</label>
 				<input type="radio" name="multiaction" id="multiactionhide" value="hide" class="titlebg" style="border: 0px;" /> <label for="multiactionhide">$messageindex_txt{'844'}</label>
 				<input type="radio" name="multiaction" id="multiactiondelete" value="delete" class="titlebg" style="border: 0px;" /> <label for="multiactiondelete">$messageindex_txt{'31'}</label>
-				<input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" style="border: 0px;" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" /> <select name="toboard" onchange="document.multiadmin.multiaction[3].checked=true;">$boardlist</select>
+				<input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" style="border: 0px;" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" /> 
+				<select name="toboard" onchange="document.multiadmin.multiaction[3].checked=true;">$boardlist</select>
 				<input type="hidden" name="fromboard" value="$currentboard" />
 				<input type="submit" value="$messageindex_txt{'462'}" class="button" />
 			~;
@@ -1017,126 +1083,168 @@ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies
 				<input type="radio" name="multiaction" id="multiactionstick" value="stick" class="titlebg" style="border: 0px;" /> <label for="multiactionstick">$messageindex_txt{'781'}</label>
 				<input type="radio" name="multiaction" id="multiactionhide" value="hide" class="titlebg" style="border: 0px;" /> <label for="multiactionhide">$messageindex_txt{'844'}</label>
 				<input type="radio" name="multiaction" id="multiactiondelete" value="delete" class="titlebg" style="border: 0px;" /> <label for="multiactiondelete">$messageindex_txt{'31'}</label>
-				<input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" style="border: 0px;" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" /> <select name="toboard" onchange="document.multiadmin.multiaction[4].checked=true;">$boardlist</select>
+				<input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" style="border: 0px;" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" /> 
+				<select name="toboard" onchange="document.multiadmin.multiaction[4].checked=true;">$boardlist</select>
 				<input type="hidden" name="fromboard" value="$currentboard" />
 				<input type="submit" value="$messageindex_txt{'462'}" class="button" />
 			~;
             }
-            $admincheckboxes = qq~
+            $admincheckboxes = q~
 				<input type="checkbox" name="checkall" id="checkall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(0); else uncheckAll(0);" />
 			~;
-            $tempfooter =~ s/({|<)yabb admin selector(}|>)/$adminselector/g;
-            $tempfooter =~ s/({|<)yabb admin checkboxes(}|>)/$admincheckboxes/g;
+            $tempfooter =~ s/({|<)yabb admin selector(}|>)/$adminselector/gsm;
+            $tempfooter =~
+              s/({|<)yabb admin checkboxes(}|>)/$admincheckboxes/gsm;
         }
         $tmptempfooter = $subfooterbar;
-        $tmptempfooter =~ s/({|<)yabb admin selector(}|>)/$adminselector/g;
-        $tmptempfooter =~ s/({|<)yabb admin checkboxes(}|>)/$admincheckboxes/g;
+        $tmptempfooter =~ s/({|<)yabb admin selector(}|>)/$adminselector/gsm;
+        $tmptempfooter =~
+          s/({|<)yabb admin checkboxes(}|>)/$admincheckboxes/gsm;
     }
 
-    $yabbicons = qq~
+    if ( !$messagelist ) {
+        $yabbicons = qq~
 	<img src="$imagesdir/thread.gif" alt="$messageindex_txt{'457'}" title="$messageindex_txt{'457'}" /> $messageindex_txt{'457'}<br />
 	<img src="$imagesdir/sticky.gif" alt="$messageindex_txt{'779'}" title="$messageindex_txt{'779'}" /> $messageindex_txt{'779'}<br />
 	<img src="$imagesdir/locked.gif" alt="$messageindex_txt{'456'}" title="$messageindex_txt{'456'}" /> $messageindex_txt{'456'}<br />
 	<img src="$imagesdir/stickylock.gif" alt="$messageindex_txt{'456'}" title="$messageindex_txt{'780'}" /> $messageindex_txt{'780'}<br />
 	<img src="$imagesdir/locked_moved.gif" alt="$messageindex_txt{'845'}" title="$messageindex_txt{'845'}" /> $messageindex_txt{'845'}<br />
 ~;
-    if ( ( $iamadmin || $iamgmod || $iammod ) && $sessionvalid == 1 ) {
-        $yabbadminicons =
+        if ( ( $iamadmin || $iamgmod || $iammod ) && $sessionvalid == 1 ) {
+            $yabbadminicons =
 qq~<img src="$imagesdir/hide.gif" alt="$messageindex_txt{'458'}" title="$messageindex_txt{'458'}" /> $messageindex_txt{'458'}<br />~;
-        $yabbadminicons .=
+            $yabbadminicons .=
 qq~<img src="$imagesdir/hidesticky.gif" alt="$messageindex_txt{'459'}" title="$messageindex_txt{'459'}" /> $messageindex_txt{'459'}<br />~;
-        $yabbadminicons .=
+            $yabbadminicons .=
 qq~<img src="$imagesdir/hidelock.gif" alt="$messageindex_txt{'460'}" title="$messageindex_txt{'460'}" /> $messageindex_txt{'460'}<br />~;
-        $yabbadminicons .=
+            $yabbadminicons .=
 qq~<img src="$imagesdir/hidestickylock.gif" alt="$messageindex_txt{'461'}" title="$messageindex_txt{'461'}" /> $messageindex_txt{'461'}<br />~;
-    }
-    $yabbadminicons .= qq~
+        }
+        $yabbadminicons .= qq~
 	<img src="$imagesdir/announcement.gif" alt="$messageindex_txt{'779a'}" title="$messageindex_txt{'779a'}" /> $messageindex_txt{'779a'}<br />
 	<img src="$imagesdir/announcementlock.gif" alt="$messageindex_txt{'779b'}" title="$messageindex_txt{'779b'}" /> $messageindex_txt{'779b'}<br />
 	<img src="$imagesdir/hotthread.gif" alt="$messageindex_txt{'454'} $HotTopic $messageindex_txt{'454a'}" title="$messageindex_txt{'454'} $HotTopic $messageindex_txt{'454a'}" /> $messageindex_txt{'454'} $HotTopic $messageindex_txt{'454a'}<br />
 	<img src="$imagesdir/veryhotthread.gif" alt="$messageindex_txt{'455'} $VeryHotTopic $messageindex_txt{'454a'}" title="$messageindex_txt{'455'} $VeryHotTopic $messageindex_txt{'454a'}" /> $messageindex_txt{'455'} $VeryHotTopic $messageindex_txt{'454a'}<br />
 ~;
 
-    &LoadAccess;
+        LoadAccess();
+    }
 
     #template it
-    $messageindex_template =~ s/({|<)yabb board(}|>)/$boardlink/g;
+    $messageindex_template =~ s/({|<)yabb board(}|>)/$boardlink/gsm;
     $template_mods = qq~$modslink$showmodgroups~;
 
     my ( $rss_link, $rss_text );
     if ( !$rss_disabled ) {
         $rss_link =
-qq~<a href="$scripturl?action=RSSboard;board=$currentboard" target="_blank"><img src="$imagesdir/rss.png" border="0" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" style="vertical-align: middle;" /></a>~;
+qq~<a href="$scripturl?action=RSSboard;board=$currentboard" onclick="target='_blank';"><img src="$imagesdir/rss.png"  alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
         $rss_text =
-qq~<a href="$scripturl?action=RSSboard;board=$INFO{'board'}" target="_blank">$messageindex_txt{843}</a>~;
+qq~<a href="$scripturl?action=RSSboard;board=$INFO{'board'}" onclick="target='_blank';">$messageindex_txt{843}</a>~;
     }
     $yyrssfeed = $rss_text;
     $yyrss     = $rss_link;
-    $messageindex_template =~ s/({|<)yabb rssfeed(}|>)/$rss_text/g;
-    $messageindex_template =~ s/({|<)yabb rss(}|>)/$rss_link/g;
+    $messageindex_template =~ s/({|<)yabb rssfeed(}|>)/$rss_text/gsm;
+    $messageindex_template =~ s/({|<)yabb rss(}|>)/$rss_link/gsm;
 
-    $messageindex_template =~ s/({|<)yabb home(}|>)/$homelink/g;
-    $messageindex_template =~ s/({|<)yabb category(}|>)/$catlink/g;
-    $messageindex_template =~ s/({|<)yabb board(}|>)/$boardlink/g;
-    $messageindex_template =~ s/({|<)yabb moderators(}|>)/$template_mods/g;
-    $messageindex_template =~ s/({|<)yabb sortsubject(}|>)/$sort_subject/g;
-    $messageindex_template =~ s/({|<)yabb sortstarter(}|>)/$sort_starter/g;
-    $messageindex_template =~ s/({|<)yabb sortanswer(}|>)/$sort_answer/g;
+    $messageindex_template =~ s/({|<)yabb home(}|>)/$homelink/gsm;
+    $messageindex_template =~ s/({|<)yabb category(}|>)/$catlink/gsm;
+    $messageindex_template =~ s/({|<)yabb board(}|>)/$boardlink/gsm;
+    $messageindex_template =~ s/({|<)yabb moderators(}|>)/$template_mods/gsm;
+    $messageindex_template =~ s/({|<)yabb sortsubject(}|>)/$sort_subject/gsm;
+    $messageindex_template =~ s/({|<)yabb sortstarter(}|>)/$sort_starter/gsm;
+    $messageindex_template =~ s/({|<)yabb sortanswer(}|>)/$sort_answer/gsm;
     $messageindex_template =~
-      s/({|<)yabb sortlastpostim(}|>)/$sort_lastpostim/g;
+      s/({|<)yabb sortlastpostim(}|>)/$sort_lastpostim/gsm;
 
     if ($ShowBDescrip) {
-        if ( $bdescrip ne "" ) {
-            &ToChars($bdescrip);
-            $boarddescription =~ s/({|<)yabb boarddescription(}|>)/$bdescrip/g;
+        if ( $bdescrip ne q{} ) {
+            ToChars($bdescrip);
+            $boarddescription =~
+              s/({|<)yabb boarddescription(}|>)/$bdescrip/gsm;
             $messageindex_template =~
-              s/({|<)yabb description(}|>)/$boarddescription/g;
+              s/({|<)yabb description(}|>)/$boarddescription/gsm;
         }
         else {
-            $messageindex_template =~ s/({|<)yabb description(}|>)//g;
+            $messageindex_template =~ s/({|<)yabb description(}|>)//gsm;
         }
         if ( ${ $uid . $currentboard }{'ann'} == 1 ) {
-            ${ $uid . $currentboard }{'pic'} = "ann.gif";
+            ${ $uid . $currentboard }{'pic'} = 'ann.gif';
         }
         elsif ( ${ $uid . $currentboard }{'rbin'} == 1 ) {
-            ${ $uid . $currentboard }{'pic'} = "recycle.gif";
+            ${ $uid . $currentboard }{'pic'} = 'recycle.gif';
         }
         else {
             if ( !${ $uid . $currentboard }{'pic'} ) {
-                ${ $uid . $currentboard }{'pic'} = "boards.gif";
+                ${ $uid . $currentboard }{'pic'} = 'boards.gif';
             }
         }
         $bdpic = ${ $uid . $currentboard }{'pic'};
-        if ( $bdpic =~ /\//i ) {
+        if ( $bdpic =~ /\//ism ) {
             $bdpic =
-qq~ <img src="$bdpic" alt="$curboardname" title="$curboardname" border="0" align="middle" /> ~;
+qq~ <img src="$bdpic" alt="$curboardname" title="$curboardname" /> ~;
         }
         elsif ($bdpic) {
             $bdpic =
-qq~ <img src="$imagesdir/$bdpic" alt="$curboardname" title="$curboardname" border="0" align="middle" /> ~;
+qq~ <img src="$imagesdir/$bdpic" alt="$curboardname" title="$curboardname" /> ~;
         }
-        $messageindex_template =~ s/({|<)yabb bdpicture(}|>)/$bdpic/g;
+        $messageindex_template =~ s/({|<)yabb bdpicture(}|>)/$bdpic/gsm;
         my $tmpthreadcount =
-          &NumberFormat( ${ $uid . $currentboard }{'threadcount'} );
+          NumberFormat( ${ $uid . $currentboard }{'threadcount'} );
         my $tmpmessagecount =
-          &NumberFormat( ${ $uid . $currentboard }{'messagecount'} );
+          NumberFormat( ${ $uid . $currentboard }{'messagecount'} );
         $messageindex_template =~
-          s/({|<)yabb threadcount(}|>)/$tmpthreadcount/g;
+          s/({|<)yabb threadcount(}|>)/$tmpthreadcount/gsm;
         $messageindex_template =~
-          s/({|<)yabb messagecount(}|>)/$tmpmessagecount/g;
+          s/({|<)yabb messagecount(}|>)/$tmpmessagecount/gsm;
     }
-    $messageindex_template =~ s/({|<)yabb colspan(}|>)/$colspan/g;
+    $messageindex_template =~ s/({|<)yabb_colspan(}|>)/$colspan/gxsm;
 
-    $topichandellist =~ s/({|<)yabb notify button(}|>)/$notify_board/g;
-    $topichandellist =~ s/({|<)yabb markall button(}|>)/$markalllink/g;
-    $topichandellist =~ s/({|<)yabb new post button(}|>)/$postlink/g;
-    $topichandellist =~ s/({|<)yabb new poll button(}|>)/$polllink/g;
-    $topichandellist =~ s/\Q$menusep//i;
+    $tool_sep = $threadtools ? q{|||} : q{};
+
+    $topichandellist =~
+      s/({|<)yabb notify button(}|>)/$notify_board$tool_sep/gsm;
+    $topichandellist =~
+      s/({|<)yabb markall button(}|>)/$markalllink$tool_sep/gsm;
+    $topichandellist =~ s/({|<)yabb new post button(}|>)/$postlink$tool_sep/gsm;
+    $topichandellist =~ s/({|<)yabb new poll button(}|>)/$polllink$tool_sep/gsm;
+    $topichandellist =~ s/\Q$menusep//ism;
+
+    if ( !$threadtools ) { $outside_ttsep = q{}; }
+    $outside_threadtools =~
+      s/({|<)yabb notify button(}|>)/$notify_board$outside_ttsep/gsm;
+    $outside_threadtools =~
+      s/({|<)yabb markall button(}|>)/$markalllink$outside_ttsep/gsm;
+    $outside_threadtools =~
+      s/({|<)yabb new post button(}|>)/$postlink$outside_ttsep/gsm;
+    $outside_threadtools =~
+      s/({|<)yabb new poll button(}|>)/$polllink$outside_ttsep/gsm;
+
+    if ( !$threadtools ) {
+        $topichandellist     = $outside_threadtools . $topichandellist;
+        $outside_threadtools = q{};
+    }
+    else {
+        $outside_threadtools =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$tmpimg{$1}/gsm;
+        $topichandellist     =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gsm;
+    }
+
+    $topichandellist2 = $topichandellist;
+
+    # Thread Tools #
+    if ($threadtools) {
+        $topichandellist2 =
+          MakeTools( 'bottom', $maintxt{'62'}, $topichandellist2 );
+        $topichandellist = MakeTools( 'top', $maintxt{'62'}, $topichandellist );
+    }
 
     $messageindex_template =~
-      s/({|<)yabb topichandellist(}|>)/$topichandellist/g;
-    $messageindex_template =~ s/({|<)yabb pageindex top(}|>)/$pageindex1/g;
-    $messageindex_template =~ s/({|<)yabb pageindex bottom(}|>)/$pageindex2/g;
+      s/({|<)yabb outsidethreadtools(}|>)/$outside_threadtools/gsm;
+    $messageindex_template =~
+      s/({|<)yabb topichandellist(}|>)/$topichandellist/gsm;
+    $messageindex_template =~
+      s/({|<)yabb topichandellist2(}|>)/$topichandellist2/gsm;
+    $messageindex_template =~ s/({|<)yabb pageindex top(}|>)/$pageindex1/gsm;
+    $messageindex_template =~ s/({|<)yabb pageindex bottom(}|>)/$pageindex2/gsm;
 
     if (
         (
@@ -1147,7 +1255,8 @@ qq~ <img src="$imagesdir/$bdpic" alt="$curboardname" title="$curboardname" borde
         && $sessionvalid == 1
       )
     {
-        $messageindex_template =~ s/({|<)yabb admin column(}|>)/$adminheader/g;
+        $messageindex_template =~
+          s/({|<)yabb admin column(}|>)/$adminheader/gsm;
     }
     elsif (
         (
@@ -1158,10 +1267,11 @@ qq~ <img src="$imagesdir/$bdpic" alt="$curboardname" title="$curboardname" borde
         && $sessionvalid == 1
       )
     {
-        $messageindex_template =~ s/({|<)yabb admin column(}|>)/$adminheader/g;
+        $messageindex_template =~
+          s/({|<)yabb admin column(}|>)/$adminheader/gsm;
     }
     else {
-        $messageindex_template =~ s/({|<)yabb admin column(}|>)//g;
+        $messageindex_template =~ s/({|<)yabb admin column(}|>)//gsm;
     }
 
     if (
@@ -1173,41 +1283,51 @@ qq~ <img src="$imagesdir/$bdpic" alt="$curboardname" title="$curboardname" borde
         && $sessionvalid == 1
       )
     {
-        $formstart =
+        if ( !$messagelist ) {
+            $formstart =
 qq~<form name="multiadmin" action="$scripturl?board=$currentboard;action=multiadmin" method="post" style="display: inline">~;
+        }
+        else {
+            $formstart = qq~
+            <form name="multiadmin$currentboard" id="multiadmin$currentboard" action="$scripturl?board=$currentboard;action=multiadmin" method="post" style="display: inline">
+            <input type="hidden" name="formsession" value="$formsession" />
+            ~;
+        }
         $formend =
 qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
-        $messageindex_template =~ s/({|<)yabb modupdate(}|>)/$formstart/g;
-        $messageindex_template =~ s/({|<)yabb modupdateend(}|>)/$formend/g;
+        $messageindex_template =~ s/({|<)yabb modupdate(}|>)/$formstart/gsm;
+        $messageindex_template =~ s/({|<)yabb modupdateend(}|>)/$formend/gsm;
     }
     else {
-        $messageindex_template =~ s/({|<)yabb modupdate(}|>)//g;
-        $messageindex_template =~ s/({|<)yabb modupdateend(}|>)//g;
+        $messageindex_template =~ s/({|<)yabb modupdate(}|>)//gsm;
+        $messageindex_template =~ s/({|<)yabb modupdateend(}|>)//gsm;
     }
     if ($tmpstickyheader) {
         $messageindex_template =~
-          s/({|<)yabb stickyblock(}|>)/$tmpstickyheader/g;
+          s/({|<)yabb stickyblock(}|>)/$tmpstickyheader/gsm;
     }
     else {
-        $messageindex_template =~ s/({|<)yabb stickyblock(}|>)//g;
+        $messageindex_template =~ s/({|<)yabb stickyblock(}|>)//gsm;
     }
-    $messageindex_template =~ s/({|<)yabb threadblock(}|>)/$tmptempbar/g;
+    $messageindex_template =~ s/({|<)yabb threadblock(}|>)/$tmptempbar/gsm;
     if ($tmptempfooter) {
-        $messageindex_template =~ s/({|<)yabb adminfooter(}|>)/$tmptempfooter/g;
+        $messageindex_template =~
+          s/({|<)yabb adminfooter(}|>)/$tmptempfooter/gsm;
     }
     else {
-        $messageindex_template =~ s/({|<)yabb adminfooter(}|>)//g;
+        $messageindex_template =~ s/({|<)yabb adminfooter(}|>)//gsm;
     }
-    $messageindex_template =~ s/({|<)yabb icons(}|>)/$yabbicons/g;
-    $messageindex_template =~ s/({|<)yabb admin icons(}|>)/$yabbadminicons/g;
-    $messageindex_template =~ s/({|<)yabb access(}|>)/ &LoadAccess /e;
+    $messageindex_template =~ s/({|<)yabb icons(}|>)/$yabbicons/gsm;
+    $messageindex_template =~ s/({|<)yabb admin icons(}|>)/$yabbadminicons/gsm;
+    $messageindex_template =~
+      s/({|<)yabb access(}|>)/ $messagelist ? q{} : LoadAccess() /esm;
 
     # Show subboards
     if ( $subboard{$currentboard} ) {
         $show_subboards = 1;
         $subboard_sel   = $currentboard;
         require "$sourcedir/BoardIndex.pl";
-        $boardindex_template = &BoardIndex;
+        $boardindex_template = BoardIndex();
     }
 
     $yymain .= qq~
@@ -1229,7 +1349,7 @@ qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
 
         if ( $sessionvalid == 1 ) {
             $yymain .= qq~
-<script language="JavaScript1.2" type="text/javascript">
+<script type="text/javascript">
 <!--
 	function checkAll(j) {
 		for (var i = 0; i < document.multiadmin.elements.length; i++) {
@@ -1251,8 +1371,7 @@ qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
     $yyjavascript .=
 qq~\nvar markallreadlang = '$messageindex_txt{'500'}';\nvar markfinishedlang = '$messageindex_txt{'500a'}';~;
     $yymain .= qq~
-<script language="JavaScript1.2" src="$yyhtml_root/ajax.js" type="text/javascript"></script>
-<script language="JavaScript1.2" type="text/javascript">
+<script type="text/javascript">
 <!--
 	function ListPages(tid) { window.open('$scripturl?action=pages;num='+tid, '', 'menubar=no,toolbar=no,top=50,left=50,scrollbars=yes,resizable=no,width=400,height=300'); }
 	function ListPages2(bid,cid) { window.open('$scripturl?action=pages;board='+bid+';count='+cid, '', 'menubar=no,toolbar=no,top=50,left=50,scrollbars=yes,resizable=no,width=400,height=300'); }
@@ -1266,56 +1385,71 @@ qq~\nvar markallreadlang = '$messageindex_txt{'500'}';\nvar markfinishedlang = '
         $yyinlinestyle .=
 qq~<link rel="alternate" type="application/rss+xml" title="$messageindex_txt{'843'}" href="$scripturl?action=RSSboard;board=$INFO{'board'}" />\n~;
     }
-    $tabsep =
-qq~<img src="$imagesdir/tabsep211.png" border="0" alt="" style="vertical-align: middle;" />~;
-    $yynavback =
-      qq~$tabsep <a href="$scripturl">&lsaquo; $img_txt{'103'}</a> $tabsep~;
+
+    if ( !$messagelist ) {
+
+        #        $tabsep = qq~<img src="$imagesdir/tabsep211.png" alt="" />~;
+        $tabsep = q{};
+        $yynavback =
+          qq~$tabsep <a href="$scripturl">&lsaquo; $img_txt{'103'}</a> $tabsep~;
         $yynavigation = qq~&rsaquo; $catlink$boardtree~;
         $yytitle      = $curboardname;
-    if ( $postlink and $enable_quickpost ) {
-        $yymain =~
-s~(<!-- Icon and access info end -->)~$1\n<div style="text-align: right; padding-top: 10px; padding-bottom: 10px;">{yabb forumjump}</div>~;
-        require "$sourcedir/Post.pl";
-        $action        = 'post';
-        $INFO{'title'} = 'StartNewTopic';
-        $Quick_Post    = 1;
-        &Post;
+
+        if ( $postlink && $enable_quickpost && !$mindex_postpopup ) {
+            $yymain =~
+s/(<!-- Icon and access info end -->)/$1\n<div style="text-align: right; padding-top: 10px; padding-bottom: 10px;">{yabb forumjump}<\/div>/sm;
+            require "$sourcedir/Post.pl";
+            $action        = 'post';
+            $INFO{'title'} = 'StartNewTopic';
+            $Quick_Post    = 1;
+            Post();
+        }
+        template();
     }
-    &template;
+    else {
+        print "Content-type: text/html; charset=UTF-8\n\n"
+          or croak 'cannot print top';
+        print qq~
+        $messageindex_template
+        $pageindexjs
+        ~ or croak 'cannot print content';
+        CORE::exit;    # This is here only to avoid server error log entries!
+    }
+    return;
 }
 
-sub MarkRead {    # Mark all threads in this board as read.
-                  # Load the log file
-    &getlog;
+sub MarkRead {         # Mark all threads in this board as read.
+                       # Load the log file
+    getlog();
 
     # Look for any threads marked unread in the current board and remove them
     fopen( BRDTXT, "$boardsdir/$currentboard.txt" )
-      || &fatal_error( "cannot_open", "$boardsdir/$currentboard.txt", 1 );
-    my @threadlist = map { /^(\d+)\|/ } <BRDTXT>;
+      || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+    my @threadlist = map { /^(\d+)\|/xsm } <BRDTXT>;
     fclose(BRDTXT);
 
     # Loop through @threadlist and delete the corresponding item from %yyuserlog
     foreach (@threadlist) { delete $yyuserlog{"$_--unread"}; }
 
     # Write it out
-    &dumplog("$currentboard--mark");
+    dumplog("$currentboard--mark");
 
     if ( $INFO{'oldmarkread'} ) {
-        &redirectinternal;
+        redirectinternal();
     }
     $elenable = 0;
-    die "";    # This is here only to avoid server error log entries!
+    croak q{};    # This is here only to avoid server error log entries!
 }
 
 sub ListPages {
     my ( $pcount, $maxvalue, $tlink );
-    if ( $INFO{'num'} ne '' ) {
+    if ( $INFO{'num'} ne q{} ) {
         $tlink    = $INFO{'num'};
         $pcount   = ${ $INFO{'num'} }{'replies'} + 1;
         $maxvalue = $maxmessagedisplay;
         $jcode    = 'num=';
     }
-    if ( $INFO{'board'} ne '' ) {
+    if ( $INFO{'board'} ne q{} ) {
         $tlink    = $INFO{'board'};
         $pcount   = $INFO{'count'};
         $maxvalue = $maxdisplay;
@@ -1323,18 +1457,20 @@ sub ListPages {
     }
 
     $tmpa = 1;
-    for ( $tmpb = 0 ; $tmpb < $pcount ; $tmpb += $maxvalue ) {
-        $pages .= qq~<a href='javascript: opp_page("$tlink","~
-          . (
-            ( !$ttsreverse or $INFO{'board'} )
-            ? $tmpb
-            : ( ${ $INFO{'num'} }{'replies'} - $tmpb )
-          ) . qq~");'>$tmpa</a>\n~;
-        ++$tmpa;
+    foreach my $tmpb ( 0 .. ( $pcount - 1 ) ) {
+        if ( $tmpb % $maxvalue == 0 ) {
+            $pages .= qq~<a href='javascript: opp_page("$tlink","~
+              . (
+                ( !$ttsreverse or $INFO{'board'} )
+                ? $tmpb
+                : ( ${ $INFO{'num'} }{'replies'} - $tmpb )
+              ) . qq~");'>$tmpa</a>\n~;
+            ++$tmpa;
+        }
     }
-    $pages =~ s/\n\Z//;
+    $pages =~ s/\n\Z//xsm;
 
-    &print_output_header;
+    print_output_header();
 
     $output =
 qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -1345,7 +1481,7 @@ qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3
 <link rel="stylesheet" href="$forumstylesurl/$usestyle.css" type="text/css" />
 </head>
 <body style="min-width: 350px;">
-	<script language="JavaScript1.2" type="text/javascript">
+	<script type="text/javascript">
 	<!--
 	function opp_page(tid,pid) {
 		opener.location= "$scripturl?$jcode" + tid + "/" + pid;
@@ -1353,105 +1489,105 @@ qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3
 	}
 	//-->
 	</script>
-	<table border="0" cellpadding="4" cellspacing="1" width="100%" class="bordercolor">
+	<table class="bordercolor pad_4px cs_1px">
 	<tr>
-		<td class="titlebg" align="center">$messageindex_txt{'139'} $messageindex_txt{'18'}</td>
-	</tr>
-	<tr>
-		<td class="catbg" align="center">
-		<br /><br /><br /><br />
-		<p>&laquo; $messageindex_txt{'139'} $pages &raquo;</p>
-		<br /><br /><br /><br />
+		<td class="titlebg center">$messageindex_txt{'139'} $messageindex_txt{'18'}</td>
+	</tr><tr>
+		<td class="catbg center">
+		    <br /><br /><br /><br />
+		    <p>&laquo; $messageindex_txt{'139'} $pages &raquo;</p>
+		    <br /><br /><br /><br />
 		</td>
-	</tr>
-	<tr>
-		<td class="windowbg" align="center"><a href="javascript: window.close();">$messageindex_txt{'903'}</a></td>
+	</tr><tr>
+		<td class="windowbg center"><a href="javascript: window.close();">$messageindex_txt{'903'}</a></td>
 	</tr>
 	</table>
 </body>
 </html>~;
 
-    &print_HTML_output_and_finish;
+    print_HTML_output_and_finish();
+    return;
 }
 
 sub MessagePageindex {
-
-    # my ($msindx, $trindx, $mbindx);
     my ( $msindx, $trindx, $mbindx, $pmindx ) =
-      split( /\|/, ${ $uid . $username }{'pageindex'} );
-    if ( $INFO{'action'} eq "messagepagedrop" ) {
+      split /\|/xsm, ${ $uid . $username }{'pageindex'};
+    if ( $INFO{'action'} eq 'messagepagedrop' ) {
         ${ $uid . $username }{'pageindex'} = qq~0|$trindx|$mbindx|$pmindx~;
     }
-    elsif ( $INFO{'action'} eq "messagepagetext" ) {
+    elsif ( $INFO{'action'} eq 'messagepagetext' ) {
         ${ $uid . $username }{'pageindex'} = qq~1|$trindx|$mbindx|$pmindx~;
     }
-    &UserAccount( $username, "update" );
-    &redirectinternal;
+    UserAccount( $username, 'update' );
+    redirectinternal();
+    return;
 }
 
 sub moveto {
     my (
-        $boardlist, $catid,      $board,     $category,
-        $boardname, $boardperms, $boardview, $brdlist,
-        @bdlist,    $catname,    $catperms,  $access
+        $boardlist,  $catid,     $board,   $boardname,
+        $boardperms, $boardview, $brdlist, @bdlist,
+        $catname,    $catperms,  $access
     );
-    unless ( $mloaded == 1 ) { require "$boardsdir/forum.master"; }
-    sub move_subboards {
+    get_forum_master();
+
+    *move_subboards = sub {
+        my @x = @_;
         $indent += 2;
-        foreach $board (@_) {
+        foreach my $board (@x) {
             my $dash;
-            if ( $indent > 0 ) { $dash = "-"; }
+            if ( $indent > 0 ) { $dash = q{-}; }
 
             ( $boardname, $boardperms, $boardview ) =
-              split( /\|/, $board{"$board"} );
-            &ToChars($boardname);
-            $access = &AccessCheck( $board, '', $boardperms );
-            if ( !$iamadmin && $access ne "granted" ) { next; }
+              split /\|/xsm, $board{"$board"};
+            ToChars($boardname);
+            $access = AccessCheck( $board, q{}, $boardperms );
+            if ( !$iamadmin && $access ne 'granted' ) { next; }
             if ( $board ne $currentboard ) {
                 my $bdnopost =
                   !${ $uid . $board }{'canpost'} && $subboard{$board}
-                  ? "class='nopost' style='background-color: #ffbbbb'"
-                  : "";
+                  ? q~class="nopost" style="background-color: #ffbbbb"~
+                  : q{};
                 $boardlist .=
                     qq~<option $bdnopost value="$board">~
-                  . ( "&nbsp;" x $indent )
+                  . ( '&nbsp;' x $indent )
                   . ( $dash x ( $indent / 2 ) )
                   . qq~$boardname</option>\n~;
             }
             if ( $subboard{$board} ) {
-                &move_subboards( split( /\|/, $subboard{$board} ) );
+                move_subboards( split /\|/xsm, $subboard{$board} );
             }
         }
         $indent -= 2;
-    }
+    };
 
-    foreach $catid (@categoryorder) {
+    foreach my $catid (@categoryorder) {
         $brdlist = $cat{$catid};
         if ( !$brdlist ) { next; }
-        (@bdlist) = split( /\,/, $cat{$catid} );
+        (@bdlist) = split /\,/xsm, $cat{$catid};
 
         #@bdlist = split(/\,/, $brdlist);
-        ( $catname, $catperms ) = split( /\|/, $catinfo{"$catid"} );
+        ( $catname, $catperms ) = split /\|/xsm, $catinfo{"$catid"};
 
-        $access = &CatAccess($catperms);
+        $access = CatAccess($catperms);
         if ( !$access ) { next; }
-        &ToChars($catname);
+        ToChars($catname);
         $boardlist .= qq~<optgroup label="$catname">~;
         my $indent = -2;
-        &move_subboards(@bdlist);
-        $boardlist .= qq~</optgroup>~;
+        move_subboards(@bdlist);
+        $boardlist .= q~</optgroup>~;
     }
-    $boardlist;
+    return $boardlist;
 }
 
 sub LoadAccess {
     my $yesaccesses .=
       "$load_txt{'805'} $load_txt{'806'} $load_txt{'808'}<br />";
-    my $noaccesses = "";
+    my $noaccesses = q{};
 
     # Reply Check
-    my $rcaccess = &AccessCheck( $currentboard, 2 ) || 0;
-    if ( $rcaccess eq "granted" ) {
+    my $rcaccess = AccessCheck( $currentboard, 2 ) || 0;
+    if ( $rcaccess eq 'granted' ) {
         $yesaccesses .=
           "$load_txt{'805'} $load_txt{'806'} $load_txt{'809'}<br />";
     }
@@ -1461,7 +1597,7 @@ sub LoadAccess {
     }
 
     # start new Topic Check
-    if ( &AccessCheck( $currentboard, 1 ) eq "granted" ) {
+    if ( AccessCheck( $currentboard, 1 ) eq 'granted' ) {
         $yesaccesses .=
           "$load_txt{'805'} $load_txt{'806'} $load_txt{'810'}<br />";
     }
@@ -1472,7 +1608,7 @@ sub LoadAccess {
 
     # Attachments Check
     if (
-           &AccessCheck( $currentboard, 4 ) eq 'granted'
+           AccessCheck( $currentboard, 4 ) eq 'granted'
         && $allowattach
         && ${ $uid . $currentboard }{'attperms'} == 1
         && ( ( $allowguestattach == 0 && !$iamguest )
@@ -1488,7 +1624,7 @@ sub LoadAccess {
     }
 
     # Poll Check
-    if ( &AccessCheck( $currentboard, 3 ) eq "granted" ) {
+    if ( AccessCheck( $currentboard, 3 ) eq 'granted' ) {
         $yesaccesses .=
           "$load_txt{'805'} $load_txt{'806'} $load_txt{'811'}<br />";
     }
@@ -1499,7 +1635,7 @@ sub LoadAccess {
 
     # Zero Post Check
     if ( $username ne 'Guest' ) {
-        if ( $INFO{'zeropost'} != 1 && $rcaccess eq "granted" ) {
+        if ( $INFO{'zeropost'} != 1 && $rcaccess eq 'granted' ) {
             $yesaccesses .=
               "$load_txt{'805'} $load_txt{'806'} $load_txt{'812'}<br />";
         }
@@ -1509,7 +1645,7 @@ sub LoadAccess {
         }
     }
 
-    qq~$yesaccesses<br />$noaccesses~;
+    return qq~$yesaccesses<br />$noaccesses~;
 }
 
 1;
