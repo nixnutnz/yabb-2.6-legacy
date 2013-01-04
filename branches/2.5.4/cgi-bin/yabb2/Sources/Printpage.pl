@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$printpageplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$printpageplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub Print_IM {
@@ -29,8 +29,8 @@ sub Print_IM {
 <title>$mbname - $maintxt{'668'}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
 
-<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
+<script type="text/javascript">
 <!--
 function printPage() {
 	if (window.print) {
@@ -58,17 +58,17 @@ function do_images() {
 
 <body onload="printPage()">
 
-<table width="96%" align="center">
+<table style="width:96%">
 	<tr>
-		<td align="left" valign="top">
+		<td class="vtop">
 			<span style="font-family: arial, sans-serif; font-size: 18px; font-weight: bold;">$mbname</span>
 		</td>
-		<td align="right" valign="top">
+		<td class="right vtop">
 			<input type="button" id="Hide_Image" value="$maintxt{'669a'}" onclick="do_images();" />
 		</td>
 	</tr>
 	<tr>
-		<td align="left" valign="top" colspan="2">
+		<td class="vtop" colspan="2">
 			<span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl</span>
 			<br />
 			<span style="font-family: arial, sans-serif; font-size: 14px; font-weight: bold;">$load_imtxt{'71'} $boxtitle $maintxt{'30'} $date</span>
@@ -85,34 +85,32 @@ function do_images() {
 
 		&do_print;
 		$output .= qq~
-<table width="96%" align="center" cellpadding="10" style="border: 1px solid #000000;">
+<table class="cs_10px" style="border: 1px solid #000000; width:96%">
 	<tr>
 		<td style="font-family: arial, sans-serif; font-size: 12px;">
 			$maintxt{'70'}: <b>$threadtitle</b><br />
 			$type <b>$threadposter</b> $maintxt{'30'} <b>$threaddate</b>
-			<hr width="100%" size="1" />
+			<hr />
 			<span style="font-family: arial, sans-serif; font-size: 12px;">
 			$threadpost
 			</span>
 		</td>
 	</tr>
 </table>
-
 <br />
 ~;
 	}
 
 	$output .= qq~
-<table width="96%" align="center">
+<table style="width:96%">
 	<tr>
-		<td align="center">
+		<td class="center">
 			<span style="font-family: arial, sans-serif; font-size: 10px;">
 			$yycopyright
 			</span>
 		</td>
 	</tr>
 </table>
-
 </body>
 </html>~;
 
@@ -165,9 +163,9 @@ sub Print {
 <head>
 <title>$mbname - $maintxt{'668'}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
-
-<script language="JavaScript1.2" type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
-<script language="JavaScript" type="text/javascript">
+<link rel="stylesheet" href="$forumstylesurl/$usestyle.css" type="text/css" />
+<script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
+<script type="text/javascript">
 <!--
 function printPage() {
 	if (window.print) {
@@ -202,29 +200,27 @@ function do_images() {
 
 <body onload="printPage()">
 
-<table width="96%" align="center">
+<table style="width:96%">
 	<tr>
-		<td align="left" valign="top">
+		<td class="vtop">
 			<span style="font-family: arial, sans-serif; font-size: 18px; font-weight: bold;">$mbname</span>
 		</td>
-		<td align="right" valign="top">
+		<td class="right vtop">
 			<input type="button" id="Hide_Image" value="$maintxt{'669a'}" onclick="do_images();" />
 		</td>
-	</tr>
-	<tr>
-		<td align="left" valign="top" colspan="2">
+	</tr><tr>
+		<td class="vtop" colspan="2">
 			<span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl</span>
 			<br />
 			<span style="font-family: arial, sans-serif; font-size: 16px; font-weight: bold;">$cat &gt;&gt; $boardname &gt;&gt; $messagetitle</span>
 			<br />
 			<span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl?num=$num</span>
 			<br />
-			<hr size="1" width="100%" />
+			<hr  />
 			<span style="font-family: arial, sans-serif; font-size: 14px; font-weight: bold;">$maintxt{'195'} $startedby $maintxt{'30'} $startedon</span>
 		</td>
 	</tr>
 </table>
-
 <br />~;
 
 	&LoadLanguage('FA');
@@ -237,12 +233,12 @@ function do_images() {
 		&do_print;
 
 		$output .= qq~
-<table width="96%" align="center" cellpadding="10" style="border: 1px solid #000000;">
+<table class="pad_10px" style="border: 1px solid #000000; width:96%">
 	<tr>
 		<td style="font-family: arial, sans-serif; font-size: 12px;">
 			$maintxt{'196'}: <b>$threadtitle</b><br />
 			$maintxt{'197'} <b>$threadposter</b> $maintxt{'30'} <b>$threaddate</b>
-			<hr width="100%" size="1" />
+			<hr />
 			<div style="font-family: arial, sans-serif; font-size: 12px;">
 			$threadpost~;
 
@@ -273,12 +269,12 @@ function do_images() {
 				if ($filesize) {
 					if ($_ =~ /\.(bmp|jpe|jpg|jpeg|gif|png)$/i && $amdisplaypics == 1) {
 						$imagecount++;
-						$showattach .= qq~<div class="small" style="float:left; margin:8px;"><img src="$imagesdir/$attach_gif{$ext}" border="0" align="bottom" alt="" /> <span id="urlimagecount$imagecount" style="display:none">$scripturl?action=downloadfile;file=</span>$_ (~ . int($filesize / 1024) . qq~ KB | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> )<br /><img src="$uploadurl/$_" name="attach_img_resize" alt="$_" id="imagecount$imagecount" title="$_" border="0" style="display:none" /></div>\n~;
+						$showattach .= qq~<div class="small" style="float:left; margin:8px;"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> <span id="urlimagecount$imagecount" style="display:none">$scripturl?action=downloadfile;file=</span>$_ (~ . int($filesize / 1024) . qq~ KB | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> )<br /><img src="$uploadurl/$_" name="attach_img_resize" alt="$_" id="imagecount$imagecount" title="$_" style="display:none" /></div>\n~;
 					} else {
-						$attachment .= qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" border="0" align="bottom" alt="" /> $scripturl?action=downloadfile;file=$_ (~ . int($filesize / 1024) . qq~ KB | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> )</div>~;
+						$attachment .= qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $scripturl?action=downloadfile;file=$_ (~ . int($filesize / 1024) . qq~ KB | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> )</div>~;
 					}
 				} else {
-					$attachment .= qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" border="0" align="bottom" alt="" />  $_ ($fatxt{'1'}~ . (exists $attach_count{$_} ? qq~ | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> ~ : '') . qq~)</div>~;
+					$attachment .= qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" />  $_ ($fatxt{'1'}~ . (exists $attach_count{$_} ? qq~ | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> ~ : '') . qq~)</div>~;
 				}
 			}
 			if ($showattach && $attachment) {
@@ -300,14 +296,13 @@ function do_images() {
 	}
 
 	$output .= qq~
-<table width="96%" align="center">
+<table style="width:96%">
 	<tr>
-		<td align="center" style="font-family: arial, sans-serif; font-size: 10px;">
+		<td class="center" style="font-family: arial, sans-serif; font-size: 10px;">
 			$yycopyright
 		</td>
 	</tr>
 </table>
-
 </body>
 </html>~;
 
@@ -348,7 +343,7 @@ sub sizefont {
 		my $code = $_[0];
 		if ($code !~ /&\S*;/) { $code =~ s/;/&#059;/g; }
 		$code =~ s~([\(\)\-\:\\\/\?\!\]\[\.\^])~$killhash{$1}~g;
-		$_ = qq~<br /><b>Code:</b><br /><table cellspacing="1" width="90%"><tr><td width="100%"><table width="100%" cellpadding="2" cellspacing="0"><tr><td><font face="courier" size="1">CODE</font></td></tr></table></td></tr></table>~;
+		$_ = qq~<br /><b>Code:</b><br /><table class="cs_1px" style="width:90%"><tr><td><table class="padd_2px"><tr><td><span style="font-family:courier; font-size:xx_small">CODE</span></td></tr></table></td></tr></table>~;
 		$_ =~ s~CODE~$code~g;
 		return $_;
 	}
@@ -361,7 +356,7 @@ sub donoopen {
 <title>$maintxt{'199'}</title>
 </head>
 <body>
-<font size="2" face="Arial,Helvetica"><center>$maintxt{'199'}</center></font>
+<p style="font-size:small; font-family:Arial,Helvetica; text-align:center">$maintxt{'199'}</p>
 </body>
 </html>~;
 	exit;
@@ -370,7 +365,7 @@ sub donoopen {
 sub do_print {
 	$threadpost =~ s~<br />~\n~ig;
 	$threadpost =~ s~\[highlight(.*?)\](.*?)\[/highlight\]~$2~isg;
-    $threadpost =~ s~\[code\s*(.+?)\]\n*(.+?)\n*\[/code\]~<br /><b>Code ($1):</b><br /><table cellspacing="1"><tr><td><table cellpadding="2" cellspacing="0"><tr><td><font face="Courier" size="1">$2</font></td></tr></table></td></tr></table>~isg; 
+    $threadpost =~ s~\[code\s*(.+?)\]\n*(.+?)\n*\[/code\]~<br /><b>Code ($1):</b><br /><table class="cs_1px"><tr><td><table class="pad_2px"><tr><td><span style="font-family:courier; font-size:xx_small">$2</span></td></tr></table></td></tr></table>~isg; 
 	$threadpost =~ s~\[([^\]]{0,30})\n([^\]]{0,30})\]~\[$1$2\]~g;
 	$threadpost =~ s~\[/([^\]]{0,30})\n([^\]]{0,30})\]~\[/$1$2\]~g;
 	$threadpost =~ s~(\w+://[^<>\s\n\"\]\[]+)\n([^<>\s\n\"\]\[]+)~$1\n$2~g;
@@ -422,7 +417,7 @@ sub do_print {
 		$attribut =~ s/(\s|$char_160)+/ /g;
 		foreach (split(/ +/, $attribut)) {
 			my ($key, $value) = split(/=/, $_);
-			$value =~ s/["']//g;
+			$value =~ s/["']//g; #'";
 			$parameter{$key} = $value;
 		}
 
@@ -431,12 +426,12 @@ sub do_print {
 		$parameter{'align'}  =~ s~[^a-z]~~ig;
 		$parameter{'width'}  =~ s~\D~~g;
 		$parameter{'height'} =~ s~\D~~g;
-		if ($parameter{'align'})  { $parameter{'align'}  = qq~ align="$parameter{'align'}"~; }
+		if ($parameter{'align'})  { $parameter{'align'}  = qq~ style="$parameter{'align'}"~; }
 		if ($parameter{'width'})  { $parameter{'width'}  = qq~ width="$parameter{'width'}"~; }
 		if ($parameter{'height'}) { $parameter{'height'} = qq~ height="$parameter{'height'}"~; }
 
 		$imagecount++;
-		qq~ <img src="$url" name="$parameter{'name'}" alt="$parameter{'alt'}"$parameter{'align'}$parameter{'width'}$parameter{'height'} border="0" id="imagecount$imagecount" style="display:none" /><span id="urlimagecount$imagecount" style="display:none">$url</span>~;
+		qq~ <img src="$url" name="$parameter{'name'}" alt="$parameter{'alt'}"$parameter{'align'}$parameter{'width'}$parameter{'height'} id="imagecount$imagecount" style="display:none" /><span id="urlimagecount$imagecount" style="display:none">$url</span>~;
 	}
 
 	$threadpost =~ s~\[tt\](.*?)\[/tt\]~<tt>$1</tt>~isg;
@@ -451,8 +446,8 @@ sub do_print {
 	$threadpost =~ s~\[\[~\{\{~g;
 	$threadpost =~ s~\]\]~\}\}~g;
 	$threadpost =~ s~\|~\&#124;~g;
-	$threadpost =~ s~\[hr\]\n~<hr width="40%" align="left" size="1" class="hr" />~g;
-	$threadpost =~ s~\[hr\]~<hr width="40%" align="left" size="1" class="hr" />~g;
+	$threadpost =~ s~\[hr\]\n~<hr style="width:40%; text-align:left" class="hr" />~g;
+	$threadpost =~ s~\[hr\]~<hr style="width:40%; text-align:left" class="hr" />~g;
 	$threadpost =~ s~\[br\]~\n~ig;
 
 	$threadpost =~ s~\[flash\](.*?)\[/flash\]~\[media\]$1\[/media\]~isg;
@@ -512,16 +507,16 @@ sub do_print {
 	}
 
 	if ($stealthurl) {
-		$threadpost =~ s~\[url=\s*(\w+\://.+?)\](.+?)\s*\[/url\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=$1" target="_blank">$2</a>~isg;
-		$threadpost =~ s~\[url=\s*(.+?)\]\s*(.+?)\s*\[/url\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=http://$1" target="_blank">$2</a>~isg;
+		$threadpost =~ s~\[url=\s*(\w+\://.+?)\](.+?)\s*\[/url\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=$1" onclick="target='_blank';">$2</a>~isg;
+		$threadpost =~ s~\[url=\s*(.+?)\]\s*(.+?)\s*\[/url\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=http://$1" onclick="target='_blank';">$2</a>~isg;
 		$threadpost =~ s~\[link\]\s*www\.\s*(.+?)\s*\[/link\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=http://www.$1">www.$1</a>~isg;
 		$threadpost =~ s~\[link=\s*(\w+\://.+?)\](.+?)\s*\[/link\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=$1">$2</a>~isg;
 		$threadpost =~ s~\[link=\s*(.+?)\]\s*(.+?)\s*\[/link\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=http://$1">$2</a>~isg;
 		$threadpost =~ s~\[link\]\s*(.+?)\s*\[/link\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=$1">$1</a>~isg;
-		$threadpost =~ s~\[ftp\]\s*(.+?)\s*\[/ftp\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=$1" target="_blank">$1</a>~isg;
+		$threadpost =~ s~\[ftp\]\s*(.+?)\s*\[/ftp\]~<a href="$boardurl/$yyexec.$yyext?action=dereferer;url=$1" onclick="target='_blank';">$1</a>~isg;
 	} else {
-		$threadpost =~ s~\[url=\s*(\S\w+\://\S+?)\s*\](.+?)\[/url\]~<a href="$1" target="_blank">$2</a>~isg;
-		$threadpost =~ s~\[url=\s*(\S+?)\](.+?)\s*\[/url\]~<a href="http://$1" target="_blank">$2</a>~isg;
+		$threadpost =~ s~\[url=\s*(\S\w+\://\S+?)\s*\](.+?)\[/url\]~<a href="$1" onclick="target='_blank';">$2</a>~isg;
+		$threadpost =~ s~\[url=\s*(\S+?)\](.+?)\s*\[/url\]~<a href="http://$1" onclick="target='_blank';">$2</a>~isg;
 		$threadpost =~ s~\[link\]\s*www\.(\S+?)\s*\[/link\]~<a href="http://www.$1">www.$1</a>~isg;
 		$threadpost =~ s~\[link=\s*(\S\w+\://\S+?)\s*\](.+?)\[/link\]~<a href="$1">$2</a>~isg;
 		$threadpost =~ s~\[link=\s*(\S+?)\](.+?)\s*\[/link\]~<a href="http://$1">$2</a>~isg;
@@ -577,9 +572,9 @@ sub do_print {
 			}
 		}
 
-		$threadpost =~ s~\[quote\s+author=.*?link=.*?\s+date=.*?\s*\]\n*(.*?)\n*\[/quote\]~<br /><i>$author $maintxt{'30a'} $date</a>:</i><table cellspacing="1" width="90%"><tr><td width="100%"><table cellpadding="2" cellspacing="0" width="100%"><tr><td width="100%"><font size="1">$1</font></td></tr></table></td></tr></table>~is;
+		$threadpost =~ s~\[quote\s+author=.*?link=.*?\s+date=.*?\s*\]\n*(.*?)\n*\[/quote\]~<br /><i>$author $maintxt{'30a'} $date</a>:</i><table class="cs_1px" style="width:90%"><tr><td><table class="pad_2px"><tr><td><style="font- size:xx-small">$1</span></td></tr></table></td></tr></table>~is;
 	}
-	$threadpost =~ s~\[quote\]\n*(.+?)\n*\[/quote\]~<br /><i>$maintxt{'31'}:</i><table cellspacing="1" width="90%"><tr><td width="100%"><table cellpadding="2" cellspacing="0" width="100%"><tr><td width="100%"><font face="Arial,Helvetica" size="1">$1</font></td></tr></table></td></tr></table>~isg;
+	$threadpost =~ s~\[quote\]\n*(.+?)\n*\[/quote\]~<br /><i>$maintxt{'31'}:</i><table class="cs_1px" style="width:90%"><tr><td><table class="cs_2px"><tr><td style="font-size:xx_small">$1</td></tr></table></td></tr></table>~isg;
 
 	$threadpost =~ s~\[list\]~<ul>~isg;
 	$threadpost =~ s~\[\*\]~<li>~isg;
