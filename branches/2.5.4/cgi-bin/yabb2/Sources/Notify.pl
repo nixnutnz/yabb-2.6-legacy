@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$notifyplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$notifyplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Notify');
@@ -88,13 +88,14 @@ sub BoardNotify {
 	&ManageBoardNotify("load", $currentboard);
 	$yymain .= qq~
 	<form action="$scripturl?action=boardnotify3;board=$currentboard" method="post">
-	<table border="0" width="600" cellspacing="1" cellpadding="4" align="center" class="bordercolor">
+	<table class="bordercolor pad_4px cs_1px" style="width:600px">
+	   <col style="width:70%" />
 		<tr>
-		<td colspan="2" align="left" class="titlebg">
-		<img src="$imagesdir/notify.gif" alt="$notify_txt{'136'} - $boardname" title="$notify_txt{'136'} - $boardname" /> <span class="text1"><b>$notify_txt{'136'} - $boardname</b></span>
-		</td>
+			<td class="titlebg" colspan="2">
+				<img src="$imagesdir/notify.gif" alt="$notify_txt{'136'} - $boardname" title="$notify_txt{'136'} - $boardname" /> <span class="text1"><b>$notify_txt{'136'} - $boardname</b></span>
+			</td>
 		</tr><tr>
-		<td class="windowbg" width="70%" align="left" valign="middle"><br />
+			<td class="windowbg"><br />
 	~;
 
 	if (exists $theboard{$username}) {
@@ -106,18 +107,18 @@ sub BoardNotify {
 		$yymain .= qq~$notify_txt{'126'} &nbsp;~;
 	}
 	$yymain .= qq~
-		<br /><br />
-		</td><td class="windowbg" width="30%" align="center" valign="middle">
-		<select name="$currentboard">
-		<option value="1"$selected1>$notify_txt{'132'}</option>
-		<option value="2"$selected2>$notify_txt{'133'}</option>
-		$deloption
-		</select>
-		</td></tr>
-		<tr>
-		<td colspan="2" class="catbg" align="center">
-		<input type="submit" value="$notify_txt{'124'}" class="button" />
-		</td>
+		<br /><br /></td>
+		<td class="windowbg">
+			<select name="$currentboard">
+				<option value="1"$selected1>$notify_txt{'132'}</option>
+				<option value="2"$selected2>$notify_txt{'133'}</option>
+				$deloption
+			</select>
+			</td>
+		</tr><tr>
+			<td class="catbg center" colspan="2">
+				<input type="submit" value="$notify_txt{'124'}" class="button" />
+			</td>
 		</tr>
 	</table>
 	</form>
@@ -300,11 +301,12 @@ sub ShowNotifications {
 </script>
 
 	<form action="$scripturl?action=boardnotify2" method="post" name="boardnotify">
-	<table border="0" width="100%" align="center" cellspacing="1" cellpadding="4" class="bordercolor">
-		<tr><td colspan="2" align="left" class="titlebg">
-			<img src="$imagesdir/notify.gif" alt="$notify_txt{'136'}" title="$notify_txt{'136'}" /> <span class="text1"><b>$notify_txt{'136'}</b></span>
-		</td></tr>
-	~;
+	<table class="bordercolor pad_4px cs_1px">
+		<tr>
+			<td class="titlebg" colspan="2">
+				<img src="$imagesdir/notify.gif" alt="$notify_txt{'136'}" title="$notify_txt{'136'}" /> <span class="text1"><b>$notify_txt{'136'}</b></span>
+			</td>
+		</tr>~;
 
 	($board_notify,$thread_notify) = &NotificationAlert;
 	my ($num,$new);
@@ -314,50 +316,51 @@ sub ShowNotifications {
 
 		my ($selected1, $selected2);
 		if (${$$board_notify{$_}}[1] == 1) { # new topics
-				$selected1 = qq~ selected="selected"~;
+				$selected1 = q~ selected="selected"~;
 		} else { # all new posts
-				$selected2 = qq~ selected="selected"~;
+				$selected2 = q~ selected="selected"~;
 		}
 
 		if (${$$board_notify{$_}}[2]) {
-			$new = qq~<img src="$imagesdir/on.gif" alt="$notify_txt{'333'}" title="$notify_txt{'333'}" border="0" style="vertical-align: middle;" />~;
+			$new = qq~<img src="$imagesdir/on.gif" alt="$notify_txt{'333'}" title="$notify_txt{'333'}" />~;
 		} else {
-			$new = qq~<img src="$imagesdir/off.gif" alt="$notify_txt{'334'}" title="$notify_txt{'334'}" border="0" style="vertical-align: middle;" />~;
+			$new = qq~<img src="$imagesdir/off.gif" alt="$notify_txt{'334'}" title="$notify_txt{'334'}" />~;
 		}
 
 		## output notify detail - option 3 = remove notify
-		$boardblock .= qq~
-		<tr><td align="left" width="65%" class="windowbg">
+		$boardblock .= qq~<tr>
+		<td class="windowbg" style="width:65%">
 			$new <a href="$scripturl?board=$_">${$$board_notify{$_}}[0]</a>
-		</td><td align="center" width="35%" class="windowbg">
-		<select name="$_">
+		</td>
+		<td class="windowbg center">
+			<select name="$_">
 				<option value="1"$selected1>$notify_txt{'132'}</option>
 				<option value="2"$selected2>$notify_txt{'133'}</option>
 				<option value="3">$notify_txt{'134'}</option>
-		</select>
-		</td></tr>
+			</select>
+		</td>
+	</tr>
 		~;
 	}
 
 	if (!$num) { # no board notifies up
-		$showNotifications .= qq~
-		<tr><td colspan="2" align="left" class="windowbg2">
-		<br />
-		$notify_txt{'139'}<br /><br />
-		</td></tr>
-		~;
+		$showNotifications .= qq~<tr>
+		<td class="windowbg2" colspan="2">
+			<br />
+			$notify_txt{'139'}<br /><br />
+			</td>
+		</tr>~;
 	} else { # list boards
-		$showNotifications .= qq~
-		<tr><td align="left" class="catbg">
-		<b>$notify_txt{'135'}</b>
-		</td><td align="center" class="catbg">
-		<b>$notify_txt{'138'}</b>
-		</td></tr>
-		$boardblock
-		<tr><td colspan="2" align="center" class="windowbg">
-		<input type="submit" value="$notify_txt{'124'}" class="button" />&nbsp; <input type="reset" value="$notify_txt{'121'}" class="button" />
-		</td></tr>
-		~;
+		$showNotifications .= qq~<tr>
+		<td class="catbg"><b>$notify_txt{'135'}</b></td>
+		<td class="catbg center"><b>$notify_txt{'138'}</b></td>
+	</tr>
+	$boardblock
+	<tr>
+		<td class="windowbg center" colspan="2">
+			<input type="submit" value="$notify_txt{'124'}" class="button" />&nbsp; <input type="reset" value="$notify_txt{'121'}" class="button" />
+		</td>
+	</tr>~;
 	}
 
 	$showNotifications .= qq~
@@ -366,48 +369,54 @@ sub ShowNotifications {
 	<br /><br />
 
 	<form action="$scripturl?action=notify4" method="post" name="threadnotify">
-	<table border="0" width="100%" align="center" cellspacing="1" cellpadding="4" class="bordercolor">
-	<tr><td align="left" colspan="2" class="titlebg">
-		<img src="$imagesdir/notify.gif" alt="$notify_txt{'118'}" title="$notify_txt{'118'}" /> <span class="text1"><b>$notify_txt{'118'}</b></span>
-	</td></tr>
-	~;
+	<table class="bordercolor pad_4pc cs_1px">
+		<tr>
+			<td class="titlebg" colspan="2">
+				<img src="$imagesdir/notify.gif" alt="$notify_txt{'118'}" title="$notify_txt{'118'}" /> <span class="text1"><b>$notify_txt{'118'}</b></span>
+			</td>
+		</tr>~;
 
 	$num = 0;
 	foreach (keys %$thread_notify) { # mythread, msub, new, username_link, catname_link, boardname_link, lastpostdate
 		$num++;
 
 		## build block for display
-		$threadblock .= qq~
-		<tr><td align="left" width="85%" class="windowbg2">
-				<b><a href="$scripturl?num=${$$thread_notify{$_}}[0]/new">${$$thread_notify{$_}}[2] ${$$thread_notify{$_}}[1]</a></b> $notify_txt{'120'} ${$$thread_notify{$_}}[3]
-				<br /><span class="small">${$$thread_notify{$_}}[4] &raquo; ${$$thread_notify{$_}}[5] - $notify_txt{'lastpost'} ${$$thread_notify{$_}}[6]</span>
-		</td><td align="center" width="15%" class="windowbg2">
-				<input type="checkbox" name="thread-${$$thread_notify{$_}}[0]" value="1" />
-		</td></tr>
-		~;
+		$threadblock .= qq~<tr>
+		<td class="windowbg2" style="width:85%">
+			<b><a href="$scripturl?num=${$$thread_notify{$_}}[0]/new">${$$thread_notify{$_}}[2] ${$$thread_notify{$_}}[1]</a></b> $notify_txt{'120'} ${$$thread_notify{$_}}[3]
+			<br /><span class="small">${$$thread_notify{$_}}[4] &raquo; ${$$thread_notify{$_}}[5] - $notify_txt{'lastpost'} ${$$thread_notify{$_}}[6]</span>
+		</td>
+		<td class="windowbg2 center">
+			<input type="checkbox" name="thread-${$$thread_notify{$_}}[0]" value="1" />
+		</td>
+	</tr>~;
 	}
 
 	if (!$num) { ## no threads listed
-		$showNotifications .= qq~
-		<tr><td colspan="2" align="left" class="windowbg2">
-		<br />
-		$notify_txt{'119'}<br /><br />
-		</td></tr>
-		~;
+		$showNotifications .= qq~<tr>
+		<td class="windowbg2" colspan="2">
+			<br />
+			$notify_txt{'119'}<br /><br />
+		</td>
+	</tr>~;
 	} else { ## output details
-		$showNotifications .= qq~
-		<tr><td align="left" class="catbg">
-		<b>$notify_txt{'140'}</b>
-		</td><td align="center" class="catbg">
-		<b>$notify_txt{'134'}</b>
-		</td></tr>
-		$threadblock
-		<tr><td align="right" width="85%" class="catbg"><span class="small"><label for="checkall">$notify_txt{'144'}</label></span></td>
-		<td align="center" width="15%" class="catbg"><input type="checkbox" name="checkall" id="checkall" value="" onclick="if (this.checked) checkAll(0); else uncheckAll(0);" /></td>
-		<tr><td colspan="2" align="center" class="windowbg">
-		<input type="submit" value="$notify_txt{'124'}" class="button" />&nbsp; <input type="reset" value="$notify_txt{'121'}" class="button" />
-		</td></tr>
-		~;
+		$showNotifications .= qq~<tr>
+		<td class="catbg">
+			<b>$notify_txt{'140'}</b>
+		</td>
+		<td class="catbg center">
+			<b>$notify_txt{'134'}</b>
+		</td>
+	</tr>
+	$threadblock
+	<tr>
+		<td class="catbg right"><span class="small"><label for="checkall">$notify_txt{'144'}</label></span></td>
+		<td class="catbg center"><input type="checkbox" name="checkall" id="checkall" value="" onclick="if (this.checked) checkAll(0); else uncheckAll(0);" /></td>
+	</tr><tr>
+		<td class="windowbg center" colspan="2">
+			<input type="submit" value="$notify_txt{'124'}" class="button" />&nbsp; <input type="reset" value="$notify_txt{'121'}" class="button" />
+		</td>
+	</tr>~;
 	}
 	$showNotifications .= qq~
 	</table>
@@ -545,7 +554,7 @@ sub NotificationAlert {
 				my $dlpb = int($yyuserlog{"$boardid--mark"});
 				$dlp     = $dlp > $dlpb ? $dlp : $dlpb;
 				if ($yyuserlog{"$mythread--unread"} || (!$dlp && ${$mythread}{'lastpostdate'} > $dmax) || ($dlp > $dmax && $dlp < ${$mythread}{'lastpostdate'})) {
-					$new = qq~<img src="$imagesdir/new.gif" alt="$notify_txt{'335'}" title="$notify_txt{'335'}" border="0"/>~;
+					$new = qq~<img src="$imagesdir/new.gif" alt="$notify_txt{'335'}" title="$notify_txt{'335'}"/>~;
 				}
 			}
 
