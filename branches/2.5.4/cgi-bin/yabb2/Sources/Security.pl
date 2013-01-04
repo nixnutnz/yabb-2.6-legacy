@@ -16,9 +16,9 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.1;
+our $VERSION = 1.2;
 
-$securityplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$securityplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 
 # Updates profile with current IP, if changed from last IP.
 # Will only actually update the file when .vars is being updated anyway to save extra load on server.
@@ -257,11 +257,24 @@ sub check_banlist {
         @banlist = <BAN>;
         fclose(BAN);
         chomp @banlist;
+        my @timeban = ( 'p', 'd', 'w', 'm',);
+        my @bandays = ( 36500, 1, 7, 30, );
+        my $tmb = 0;
+        $today = time;
+        *time_ban = sub{
+            for my $i (0..3) {
+                if ( $banned[4] eq $timeban[$i] ) {
+                    $tmb =  $banned[2] + ( $bandays[$i] * 84600 );
+                }
+            }
+            return $tmb;
+       };
         for my $i (@banlist) {
             @banned = split /\|/xsm, $i;
-            if ( $banned[0] eq 'E') {
+            $tmb = time_ban();
+            if ( $banned[0] eq 'E' ) {
                $banned[1] =~ s/\\@/@/xsm;
-               if ( $e_ban eq $banned[1] ) {
+               if ( ($e_ban eq $banned[1] && $banned[4] ne 'p' && $tmb > $today) || ($e_ban eq $banned[1] && $banned[4] eq 'p')  ) {
                    $ban_rtn .= $banned[0];
                    last;
                }
@@ -269,14 +282,16 @@ sub check_banlist {
         }
         for my $i (@banlist) {
             @banned = split /\|/xsm, $i;
-            if ( $banned[0] eq 'I' && $ip_ban eq $banned[1] ) {
+            $tmb = time_ban();
+            if ( ($banned[0] eq 'I' && $ip_ban eq $banned[1] && $banned[4] ne 'p' && $tmb > $today) || $banned[0] eq 'I' && $ip_ban eq $banned[1] && $banned[4] eq 'p' ) {
                 $ban_rtn .= $banned[0];
                 last;
             }
         }
         for my $i (@banlist) {
             @banned = split /\|/xsm, $i;
-            if ( $banned[0] eq 'U' && $u_ban eq $banned[1] ) {
+            $tmb = time_ban();
+            if ( ($banned[0] eq 'U' && $ip_ban eq $banned[1] && $banned[4] ne 'p' && $tmb > $today) || $banned[0] eq 'U' && $ip_ban eq $banned[1] && $banned[4] eq 'p' ) {
                 $ban_rtn .= $banned[0];
                 last;
             }
