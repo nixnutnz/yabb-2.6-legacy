@@ -13,9 +13,9 @@
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
-our $VERSION = 1.1;
+our $VERSION = 1.2;
 
-$settings_advancedplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$settings_advancedplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 my $uploaddiriscorrect = qq~<span class="red">$admin_txt{'164'}</span>~;
@@ -44,7 +44,7 @@ if ( $rss_limit    eq q{} ) { $rss_limit    = 10; }
 if ( $rss_message  eq q{} ) { $rss_message  = 1; }
 
 # Free Disk Space Checking
-if ( $OSNAME eq 'MSWin32' ) {
+if ( $OSNAME =~ /Win/ ) {
     @x = qx{DIR /-C};
     my $lastline =
       pop @x;    # should look like: 17 Directory(s), 21305790464 Bytes free
