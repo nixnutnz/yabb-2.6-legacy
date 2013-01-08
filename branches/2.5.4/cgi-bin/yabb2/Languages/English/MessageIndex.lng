@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$messageindexlngver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$messageindexlngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 
 %messageindex_txt = (
 '2' => 'Admin',
@@ -63,6 +63,8 @@ $messageindexlngver = 'YaBB 2.5.4 $Revision: 1.0 $';
 '500' => 'Marking all Threads as Read', # inside JavaScript!
 '500a' => 'Complete', # inside JavaScript!
 '525' => 'By',
+'526' => 'by',
+'527' => 'Started',
 '737' => 'Check all',
 '779' => 'Sticky Topic',
 '779a' => 'Global Announcement',
