@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.2;
+our $VERSION = 1.4;
 
-$managetemplatesplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$managetemplatesplver = 'YaBB 2.5.4 $Revision: 1.4 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Templates');
@@ -126,14 +126,14 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-	<table class="cs_1px pad_4px" style="table-layout: fixed;">
+	<table class="cs_thin pad_4px" style="table-layout: fixed;">
     	<tr>
         	<td class="titlebg">
             	<img src="$imagesdir/xx.gif" alt="" /><b> $templ_txt{'52'}</b> - $templatefile
             </td>
 		</tr><tr>
         	<td class="windowbg2 center">
-            	<form action="$adminurl?action=modtemp2" method="post" style="display: inline;">
+            	<form action="$adminurl?action=modtemp2" method="post" style="display: inline;" accept-charset="$yycharset">
                 <textarea rows="20" cols="95" name="template" style="width:99%; height: 350px;">$fulltemplate</textarea>
                 <input type="hidden" name="filename" value="$templatefile" />
             </td>
@@ -146,7 +146,7 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
         	<td class="windowbg2">
                 <div style="float: left; width: 30%; padding: 3px;"><label for="templatefile"><b>$templ_txt{'10'}</b></label></div>
                 <div style="float: left; width: 69%;">
-                	<form action="$adminurl?action=modtemp" method="post" style="display: inline;">
+                	<form action="$adminurl?action=modtemp" method="post" style="display: inline;" accept-charset="$yycharset">
             	    	<select name="templatefile" id="templatefile" size="1" onchange="submit()">
                 	$templs
                 		</select>
@@ -239,8 +239,8 @@ sub ModifyStyle {
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-	<table class="cs_1px pad_4px">
-    	<form action="$adminurl?action=modcss;cssfile=$cssfile" name="modcss" method="post" style="display: inline;">
+	<table class="cs_thin pad_4px">
+    	<form action="$adminurl?action=modcss;cssfile=$cssfile" name="modcss" method="post" style="display: inline;" accept-charset="$yycharset">
         <tr>
         	<td class="titlebg">
             	<img src="$imagesdir/xx.gif" alt="" /><b> $templ_txt{'51'}</b> - $cssfile &nbsp;
@@ -249,7 +249,7 @@ sub ModifyStyle {
             </td>
         </tr>
     	</form>
-        <form action="$adminurl?action=modstyle2" method="post">
+        <form action="$adminurl?action=modstyle2" method="post" accept-charset="$yycharset">
         <tr>
         	<td class="windowbg2 center">
                 <input type="hidden" name="filename" value="$cssfile" />
@@ -266,7 +266,7 @@ sub ModifyStyle {
             <td class="windowbg2">
                 <div style="float: left; width: 30%; padding: 3px;"><b>$templ_txt{'1'}</b></div>
                 <div style="float: left; width: 69%;">
-            	    <form action="$adminurl?action=modstyle" name="selcss" method="post" style="display: inline;">
+            	    <form action="$adminurl?action=modstyle" name="selcss" method="post" style="display: inline;" accept-charset="$yycharset">
                 	<div class="small" style="float: left; width: 25%;"><label for="cssfile">$templ_txt{'forum'}:</label><br />
                   	<select name="cssfile" id="cssfile" size="1" style="width: 90%;" onchange="if(this.options[this.selectedIndex].value) { document.aselcss.admcssfile.selectedIndex = '0'; submit(); }">
                         $forumcss
@@ -275,7 +275,7 @@ sub ModifyStyle {
                 	<noscript><input type="submit" value="$admin_txt{'32'}" style="width: 90%;" class="button" /></noscript>
                 	</div>
                 	</form>
-                	<form action="$adminurl?action=modstyle" name="aselcss" method="post" style="display: inline;">
+                	<form action="$adminurl?action=modstyle" name="aselcss" method="post" style="display: inline;" accept-charset="$yycharset">
                 	<div class="small" style="float: left; width: 25%;"><label for="admcssfile">$templ_txt{'admincenter'}:</label><br />
                   	<select name="admcssfile" id="admcssfile" size="1" style="width: 90%;" onchange="if(this.options[this.selectedIndex].value) { document.selcss.cssfile.selectedIndex = '0'; submit(); }">
                         $admincss
@@ -588,10 +588,10 @@ qq~					<option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</option>\n~;
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-	<table class="cs_1px pad_4px">
+	<table class="cs_thin pad_4px">
     	<tr>
         	<td class="titlebg">
-            	<form action="$adminurl?action=modstyle" name="modstyles" id="modstyles" method="post">
+            	<form action="$adminurl?action=modstyle" name="modstyles" id="modstyles" method="post" accept-charset="$yycharset">
                 	<img src="$imagesdir/xx.gif" alt="" /> <b>$templ_txt{'51'}</b> - $viewcss &nbsp;
                 	<input type="hidden" name="cssfile" value="$cssfile" />
                 	<input type="button" name="wysiwyg" id="wysiwyg" value="wysiwyg" disabled="disabled" />
@@ -600,15 +600,15 @@ qq~					<option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</option>\n~;
             </td>
         </tr>
 	</table>
-<form action="$adminurl?action=modcss2" name="allstyles" id="allstyles" method="post">
-	<table class="cs_1px">
+<form action="$adminurl?action=modcss2" name="allstyles" id="allstyles" method="post" accept-charset="$yycharset">
+	<table class="cs_thin">
     	<tr>
         	<td class="windowbg2 center">
             	<iframe id="StyleManager" name="StyleManager" width="100%" height="350" marginwidth="0" marginheight="0" frameborder="0" scrolling="yes" style="border-top: 1px inset; border-bottom: 1px inset; visibility: visible; display: inline"></iframe>
             </td>
         </tr>
 	</table>
-	<table class="cs_1px pad_4px">
+	<table class="cs_thin pad_4px">
     	<tr>
         	<td class="windowbg2">
             	<div style="float: left; width: 30%; padding: 3px;"><label for="cssfile"><b>$templ_txt{'1'}</b></label></div>
@@ -784,7 +784,7 @@ qq~<img src="$imagesdir/tabfill.gif" alt="" style="vertical-align: middle;" />~;
 ~;
     }
     $viewstyle .= qq~
-<table class="bordercolor cs_1px pad_4px">
+<table class="bordercolor cs_thin pad_4px">
 	<tr>
 		<td id="title" class="titlebg w_50pc">
 			$templ_txt{'30'}
@@ -805,7 +805,7 @@ qq~<img src="$imagesdir/tabfill.gif" alt="" style="vertical-align: middle;" />~;
         $viewstyle .= q~<div class="seperator">~;
     }
     $viewstyle .= qq~
-<table class="bordercolor cs_1px pad_4px">
+<table class="bordercolor cs_thin pad_4px">
 	<tr>
 		<td id="category" class="catbg w_50pc">
 			$templ_txt{'31'}
@@ -815,7 +815,7 @@ qq~<img src="$imagesdir/tabfill.gif" alt="" style="vertical-align: middle;" />~;
 		</td>
 	</tr>
 </table>
-<table class="bordercolor cs_1px pad_4px">
+<table class="bordercolor cs_thin pad_4px">
 	<tr>
 		<td id="window1" class="windowbg vtop">
 			$templ_txt{'32'}
@@ -1709,22 +1709,22 @@ s/<a href="http:\/\/jigsaw.w3.org\/css\-validator\/validator\?uri\=<yabb url>">.
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-	<table class="cs_1px pad_4px">
+	<table class="cs_thin pad_4px">
     	<tr>
         	<td class="titlebg">
             	<img src="$imagesdir/xx.gif" alt="" /><b> $templ_txt{'6'}</b>
             </td>
         </tr>
 	</table>
-	<table class="cs_1px">
+	<table class="cs_thin">
     	<tr>
         	<td class="windowbg2 center">
             	<iframe id="TempManager" name="TempManager" width="100%" height="350" marginwidth="0" marginheight="0" frameborder="0" scrolling="yes" style="border-top: 1px inset; border-bottom: 1px inset; visibility: visible; display: inline"></iframe>
             </td>
         </tr>
 	</table>
-<form action="$adminurl?action=modskin2" name="selskin" method="post" style="display: inline;">
-	<table class="cs_1px pad_4px">
+<form action="$adminurl?action=modskin2" name="selskin" method="post" style="display: inline;" accept-charset="$yycharset">
+	<table class="cs_thin pad_4px">
     	<tr>
         	<td class="windowbg2">
             	<div style="float: left; width: 30%; padding: 3px;"><label for="templateset"><b>$templ_txt{'10'}</b></label></div>
@@ -1755,7 +1755,7 @@ qq~                        <input type="submit" value="$templ_txt{'14'}" onclick
                                 <option value="2"$menutype2>$admin_txt{'521c'}</option>
                             </select>
                         </div>
-                        <br /><br /><br />
+                        <br />
                         <div style="float: left; width: 32%; text-align: left;">
                         	<label for="cssfile"><span class="small">$templ_txt{'1'}</span></label><br />
                             <select name="cssfile" id="cssfile" size="1" style="width: 90%;">

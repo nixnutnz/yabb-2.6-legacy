@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.2;
+our $VERSION = 1.5;
 
-$manageboardsplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$manageboardsplver = 'YaBB 2.5.4 $Revision: 1.5 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ManageBoards {
@@ -103,14 +103,14 @@ qq~<img src="$imagesdir/cat.gif" alt="" /> &nbsp;<b>$admin_txt{'51'}</b>~;
 </script>
 <form name="whattodo" id="whattodo" action="$adminurl?action=$act" onSubmit="return checkSubmit(this);" method="post">
 <div class="rightboxdiv">
-    <table class="bordercolor cs_1px pad_4px">
+    <table class="bordercolor cs_thin pad_4px">
         <tr>
             <td class="titlebg" $colspan>
                 $manage
             </td>
         </tr><tr>
-            <td class="windowbg2" $colspan><br />
-                $managedescr<br /><br />
+            <td class="windowbg2 padd_8_12px" $colspan>
+		        $managedescr
             </td>
         </tr>
     </table>
@@ -132,7 +132,7 @@ qq~<img src="$imagesdir/cat.gif" alt="" /> &nbsp;<b>$admin_txt{'51'}</b>~;
         }
 
         $yymain .= qq~
-    <table class="bordercolor cs_1px pad_4px" style="margin-top: 5px;">
+    <table class="bordercolor cs_thin pad_4px" style="margin-top: 5px;">
         <tr>
         <td class="$tempclass h_25px" $tempcolspan>
             <a href="$adminurl?action=reorderboards;item=$catid" $temphrefclass><img src="$imagesdir/reorder.gif" alt="$admin_txt{'832'}" title="$admin_txt{'832'}" /></a> &nbsp;<b>$curcatname</b>
@@ -211,7 +211,7 @@ qq~ <img src="$imagesdir/recycle.gif" alt="$admin_txt{'64i'}" title="$admin_txt{
                     }
 
                     $yymain .= q~
-    <table class="bordercolor cs_1px pad_4px" style="margin: 1px; margin-left:~
+    <table class="bordercolor cs_thin pad_4px" style="margin: 1px; margin-left:~
                       . $indent . q~%; width:~ . $tmpwidth . q~%">
         <col style="width:~ . $tmpwidth2 . qq~%" />
         <col span="2" class="w_5pc" />
@@ -241,7 +241,7 @@ qq~ <img src="$imagesdir/recycle.gif" alt="$admin_txt{'64i'}" title="$admin_txt{
     }
 
     $yymain .= qq~
-    <table class="bordercolor cs_1px pad_4px" style="margin-top: 3px">
+    <table class="bordercolor cs_thin pad_4px" style="margin-top: 3px">
         <tr>
             <td class="catbg center" $colspan> <label for="baction">$admin_txt{'52'}</label>
                 <input type="radio" name="baction" id="baction" value="edit" checked="checked" /> $admin_txt{'53'}
@@ -252,9 +252,9 @@ qq~ <img src="$imagesdir/recycle.gif" alt="$admin_txt{'64i'}" title="$admin_txt{
 </div>
 </form>
 <br />
-<form name="diff" id="diff" action="$adminurl?action=$act2" method="post">
+<form name="diff" id="diff" action="$adminurl?action=$act2" method="post" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
-    <table class="cs_1px pad_4px">
+    <table class="cs_thin pad_4px">
         <tr>
             <td class="catbg center"><label for="amount"><b>$add: </b></label>
                 <input type="text" name="amount" id="amount" value="3" size="2" maxlength="2" />
@@ -661,21 +661,20 @@ function checkParent(id, board) {
 }
 //-->
 </script>
-<form name="boardsadd" id="boardsadd" action="$adminurl?action=addboard2" method="post" onsubmit="selectNames($FORM{'amount'});">
+<form name="boardsadd" id="boardsadd" action="$adminurl?action=addboard2" method="post" onsubmit="selectNames($FORM{'amount'});" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
-    <table class="cs_1px pad_4px">
+    <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg" colspan="5">
                 <img src="$imagesdir/cat.gif" alt="" /><b>$addtext</b>
             </td>
         </tr><tr>
-            <td class="windowbg2" colspan="5"><br />$admin_txt{'57'}<br /><br /></td>
+            <td class="windowbg2 padd_8_12px" colspan="5">$admin_txt{'57'}</td>
         </tr>
     </table>
 </div>
-<br />
 <div class="bordercolor rightboxdiv">
-    <table class="cs_1px pad_4px">
+    <table class="cs_thin pad_4px">
 ~;
 
     # Check if and which board are set for announcements or recycle bin
@@ -949,9 +948,8 @@ qq~<select multiple="multiple" name="moderatorgroups$i" id="moderatorgroups$i" s
   </tr>
 </table>
 </div>
-<br /><br />
  <div class="bordercolor rightboxdiv">
-<table class="cs_1px pad_4px">
+<table class="cs_thin pad_4px">
 ~;
     }
     $yymain .= qq~<tr>
@@ -1487,8 +1485,8 @@ qq~<option value="$board" selected="selected">$boardname</option>~;
 
     $yymain .= qq~
 <br /><br />
-<form action="$adminurl?action=reorderboards2;item=$INFO{'item'}$INFO{'subboards'}" method="post" id="bdform">
-    <table class="bordercolor cs_1px pad_4px" style="width:535px">
+<form action="$adminurl?action=reorderboards2;item=$INFO{'item'}$INFO{'subboards'}" method="post" id="bdform" accept-charset="$yycharset">
+    <table class="bordercolor cs_thin pad_4px" style="width:535px">
         <tr>
             <td class="titlebg"><img src="$imagesdir/board.gif" alt="" /> <b>$cur_txt ($curname)</b></td>
         </tr><tr>
@@ -1789,7 +1787,7 @@ qq~$adminurl?action=reorderboards;item=$catorbd;theboard=$moveitem;subboards=1~;
 
 sub ConfRemBoard {
     $yymain .= qq~
-    <table class="bordercolor cs_1px">
+    <table class="bordercolor cs_thin">
         <tr>
             <td class="titlebg"><b>$admin_txt{'31'} - '$FORM{'boardname'}'?</b></td>
         </tr><tr>

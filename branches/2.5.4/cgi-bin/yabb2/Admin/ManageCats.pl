@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.1;
+our $VERSION = 1.3;
 
-$managecatsplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$managecatsplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub DoCats {
@@ -68,22 +68,21 @@ sub AddCats {
     get_forum_master();
 
     $yymain .= qq~
-<form action="$adminurl?action=addcat2" method="post">
+<form action="$adminurl?action=addcat2" method="post" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
-    <table class="cs_1px pad_4px">
+    <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg" colspan="5">
                 <img src="$imagesdir/cat.gif" alt="" />
                 <b>$admin_txt{'3'}</b>
             </td>
         </tr><tr>
-            <td class="windowbg2" colspan="5"><br />$admin_txt{'43'}<br /><br /></td>
+            <td class="windowbg2 padd_8_12px" colspan="5">$admin_txt{'43'}</td>
         </tr>
     </table>
 </div>
-<br />
 <div class="bordercolor rightboxdiv">
-    <table class="cs_1px pad_4px">~;
+    <table class="cs_thin pad_4px">~;
 
     require "$admindir/ManageBoards.pl";
 
@@ -124,12 +123,12 @@ sub AddCats {
         if ( $INFO{'action'} eq 'catscreen' ) {
             $yymain .= qq~
             <td class="windowbg"><label for="theid$i"><b>$admin_txt{'61a'}</b></label></td>
-            <td class="windowbg2"><br /><input type="hidden" name="theid$i" id="theid$i" value="$id" />$id<br /><br />~;
+            <td class="windowbg2 padd_8_12px"><input type="hidden" name="theid$i" id="theid$i" value="$id" />$id~;
         }
         else {
             $yymain .= qq~
             <td class="windowbg"><label for="theid$i"><b>$admin_txt{'61a'}</b><br />$admin_txt{'61b'}</label></td>
-            <td class="windowbg2"><br /><input type="text" name="theid$i" id="theid$i" value="$id" /><br /><br />~;
+            <td class="windowbg2 padd_8_12px"><input type="text" name="theid$i" id="theid$i" value="$id" />~;
         }
         $yymain .= qq~
             </td>
@@ -137,13 +136,13 @@ sub AddCats {
             <td class="windowbg2 center" rowspan="3"><input type="checkbox" $allowChecked name="allowcol$i" id="allowcol$i" /></td>
         </tr><tr>
             <td class="windowbg"><label for="name$i"><b>$admin_txt{'68'}:</b></label></td>
-            <td class="windowbg2"><br /><input type="text" name="name$i" id="name$i" value="$curcatname" size="40" /><br /><br /></td>
+            <td class="windowbg2 padd_8_12px"><input type="text" name="name$i" id="name$i" value="$curcatname" size="40" /></td>
         </tr><tr>
             <td class="windowbg"><label for="catimage$i"><b>$admin_txt{'64b2'}:</b></label></td>
-            <td class="windowbg2"><br /><input type="text" name="catimage$i" id="catimage$i" value="$catimage" size="40" />~
+            <td class="windowbg2  padd_8_12px"><input type="text" name="catimage$i" id="catimage$i" value="$catimage" size="40" />~
           . (
             $catimage ? qq~<br /><br  /><img src="$catimage" alt="" />~ : q{} )
-          . q~<br /><br /></td>
+          . q~</td>
         </tr>~;
     }
     $yymain .= qq~<tr>
@@ -235,8 +234,8 @@ qq~<option value="$category" selected="selected">$categoryname</option>~;
     }
     $yymain .= qq~
 <br /><br />
-<form action="$adminurl?action=reordercats2" method="post">
-    <table class="bordercolor cs_1px pad_4px" style="width:525px">
+<form action="$adminurl?action=reordercats2" method="post" accept-charset="$yycharset">
+    <table class="bordercolor cs_thin pad_4px" style="width:525px">
         <tr>
             <td class="titlebg"><img src="$imagesdir/board.gif" /> <b>$admin_txt{'829'}</b></td>
         </tr><tr>

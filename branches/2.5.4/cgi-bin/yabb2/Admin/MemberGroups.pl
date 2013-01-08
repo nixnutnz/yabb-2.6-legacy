@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.1;
+our $VERSION = 1.3;
 
-$membergroupsplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$membergroupsplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub EditMemberGroups {
@@ -56,23 +56,20 @@ sub EditMemberGroups {
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-	<table class="cs_1px pad_4px">
+	<table class="cs_thin pad_4px">
     	<tr>
     		<td class="titlebg">
 				<img src="$imagesdir/guest.gif" alt="" />&nbsp;<b>$admin_txt{'8'}</b>
 	   		</td>
      	</tr><tr>
-       		<td class="windowbg2">
-       			<br />
+       		<td class="windowbg2 padd_8_12px">
 				$admin_txt{'11'}
-				<br /><br />
 	   		</td>
      	</tr>
 	</table>
 </div>
-<br />
 <div class="bordercolor rightboxdiv">
-	<table class="cs_1px pad_4px">
+	<table class="cs_thin pad_4px">
     	<col class="w_25pc" />
     	<col class="w_15pc" />
     	<col class="w_10pc" />
@@ -143,7 +140,6 @@ sub EditMemberGroups {
 		</tr>
 	</table>
 </div>
-<br />
 ~;
 
     my $colspan = 6;
@@ -166,7 +162,7 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-	<table class="cs_1px pad_4px">
+	<table class="cs_thin pad_4px">
 		<tr>
 			<td class="titlebg" colspan="$colspan">
 				<img src="$imagesdir/guest.gif" alt="" />&nbsp;<b>$amgtxt{'37'} (<a href="$adminurl?action=editgroup">$admintxt{'18c'}</a>$reorderlink)</b>
@@ -234,9 +230,8 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
     $yymain .= qq~
 	</table>
 </div>
-<br />
 <div class="bordercolor rightboxdiv">
-	<table class="cs_1px pad_4px">
+	<table class="cs_thin pad_4px">
     	<col class="w_25pc" />
     	<col class="w_15pc" />
     	<col class="w_10pc" />
@@ -431,12 +426,12 @@ sub editAddGroup {
 
     $yymain .= qq~
 
-<form name="groups" action="$adminurl?action=editAddGroup2" method="post">
+<form name="groups" action="$adminurl?action=editAddGroup2" method="post" accept-charset="$yycharset">
 <input type="hidden" name="original" value="$INFO{'group'}" />
 <input type="hidden" name="origin" value="$action" />
 
 <div class="bordercolor rightboxdiv">
-<table class="cs_1px pad_4px">
+<table class="cs_thin pad_4px">
     <col style="width:40%" />
 	<tr>
 		<td class="titlebg" colspan="2">
@@ -551,9 +546,8 @@ sub editAddGroup {
         $yymain .= qq~
 </table>
 </div>
-<br />
 <div class="bordercolor rightboxdiv">
-	<table class="cs_1px pad_4px">
+	<table class="cs_thin pad_4px">
 	    <col span="2" class="w_20pc" />
     	<col style="width:21%" />
     	<col style="width:19%" />
@@ -890,7 +884,7 @@ sub reorderGroups {
     $rowspan = $#nopostorder + 2;
     $yymain .= qq~
 <div class="bordercolor" style="padding: 0px; width: 75%; margin-left: auto; margin-right: auto;">
-	<table class="cs_1px pad_4px">
+	<table class="cs_thin pad_4px">
     	<col span="2" class="w_33pc" />
 		<tr>
 			<td class="titlebg" colspan="3">
@@ -900,7 +894,7 @@ sub reorderGroups {
 			<td class="catbg center"><b>$amgtxt{'03'}</b></td>
 			<td class="catbg center"><b>$amgtxt{'19'}</b></td>
 			<td class="windowbg center" rowspan="$rowspan">
-				<form action="$adminurl?action=reordergroup2" method="post" name="groupsorder" style="display: inline; white-space: nowrap;">
+				<form action="$adminurl?action=reordergroup2" method="post" name="groupsorder" style="display: inline; white-space: nowrap;" accept-charset="$yycharset">
 					<select name="ordergroups" class="small" size="$selsize" style="width: 130px;">
 						$orderopt
 					</select>

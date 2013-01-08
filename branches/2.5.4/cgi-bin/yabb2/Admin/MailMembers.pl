@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.1;
+our $VERSION = 1.3;
 
-$mailmembersplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$mailmembersplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ($iamguest) { admin_fatal_error('no_access'); }
@@ -27,11 +27,11 @@ $reused = 0;
 sub Mailing {
     if ($iamguest) { admin_fatal_error('no_access'); }
     $yymain .= qq~
-    <table class="bordercolor cs_1px pad_3px">
+    <table class="bordercolor cs_thin pad_3px">
         <tr>
             <td class="titlebg">
                 <img src="$imagesdir/register.gif" alt="" /><b> $admintxt{'19'}</b>
-                <form action="$adminurl?action=mailinggrps" method="post" name="mailgrps" style="display: inline;" accept-charset="UTF-8">
+                <form action="$adminurl?action=mailinggrps" method="post" name="mailgrps" style="display: inline;" accept-charset="$yycharset">
                 <span style="float: right;">
                     <input type="submit" value="$amv_txt{'53'}" class="button" />
                 </span>
@@ -40,7 +40,7 @@ sub Mailing {
         </tr>
     </table>
     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
-    <form name="adv_membermail" action="$adminurl?action=mailing2" method="post" style="display: inline;" onsubmit="return checkIfSelected(); return submitproc();" accept-charset="UTF-8">
+    <form name="adv_membermail" action="$adminurl?action=mailing2" method="post" style="display: inline;" onsubmit="return checkIfSelected(); return submitproc();" accept-charset="$yycharset">
         <div class="windowbg2 border">
             <div class="windowbg2 border h_260px" style="float: left; width: 44%; margin: 1%;">
                 <table class="windowbg2 pad_3px w_98pc">
@@ -322,13 +322,13 @@ sub MailingMembers {
     if ($iamguest) { admin_fatal_error('no_access'); }
     $yymain .= qq~
 <div class="rightboxdiv">
-    <table class="bordercolor cs_1px pad_3px">
+    <table class="bordercolor cs_thin pad_3px">
         <tr>
             <td class="titlebg">
                 <span style="float: left;">
                     <img src="$imagesdir/register.gif" alt="" /><b> $admintxt{'19'}</b>
                 </span>
-                <form action="$adminurl?action=mailinggrps" method="post" name="selsort" style="display: inline" accept-charset="UTF-8">
+                <form action="$adminurl?action=mailinggrps" method="post" name="selsort" style="display: inline" accept-charset="$yycharset">
                 <span style="float: right;">
                     <label for="sortform"><b>$ml_txt{'1'}</b></label>
                     <select name="sortform" id="sortform" style="font-size: 9pt;" onchange="submit()">
@@ -343,7 +343,7 @@ sub MailingMembers {
         </tr>
     </table>
     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
-    <form name="adv_membermail" action="$adminurl?action=mailmultimembers;$sortmode" method="post" style="display: inline" onsubmit="return checkIfChecked(this); return submitproc()" accept-charset="UTF-8">
+    <form name="adv_membermail" action="$adminurl?action=mailmultimembers;$sortmode" method="post" style="display: inline" onsubmit="return checkIfChecked(this); return submitproc()" accept-charset="$yycharset">
     <input type="hidden" name="button" value="1" />
 
     <div class="windowbg2 border">

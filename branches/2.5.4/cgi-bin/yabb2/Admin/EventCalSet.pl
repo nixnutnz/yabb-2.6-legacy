@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.2;
+our $VERSION = 1.4;
 
-$eventcalsetplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$eventcalsetplver = 'YaBB 2.5.4 $Revision: 1.4 $';
 if ($action eq 'detailedversion') { return 1; }
 
 LoadLanguage('EventCal');
@@ -94,11 +94,11 @@ sub EventCalSet {
 	$CalEventPerms = DrawPerms($CalEventPerms);
 
 	$yymain .= qq~
-<form action="$adminurl?action=eventcal_set2" method="post">
+<form action="$adminurl?action=eventcal_set2" method="post" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
-   <table class="cs_1px pad_4px">
-            <col class="w_50px" />
-            <col class="w_50px" />
+   <table class="cs_thin pad_4px">
+     <col class="w_50pc" />
+     <col class="w_50pc" />
      <tr>
        <td class="titlebg" colspan="2">
          <img src="$imagesdir/preferences.gif" alt="" /><b>$event_cal{'1'}</b>
@@ -138,7 +138,8 @@ sub EventCalSet {
      </tr><tr>
        <td class="windowbg2"><label for="Event_TodayColor">$event_cal{'8'}</label></td>
        <td class="windowbg2">
-                    <input type="text" size="7" maxlength="7" name="Event_TodayColor" id="Event_TodayColor" value="$Event_TodayColor" onkeyup="previewColor(this.value);" /> <span id="Event_TodayColor2" style="background-color:$Event_TodayColor">&nbsp; &nbsp; &nbsp;</span> <img src="$defaultimagesdir/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+           <input type="text" size="7" maxlength="7" name="Event_TodayColor" id="Event_TodayColor" value="$Event_TodayColor" onkeyup="previewColor(this.value);" />
+            <span id="Event_TodayColor2" style="background-color:$Event_TodayColor">&nbsp; &nbsp; &nbsp;</span> <img src="$defaultimagesdir/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
 		<script type="text/javascript">
 		<!--
 			function previewColor(color) {
@@ -236,18 +237,16 @@ sub EventCalSet {
      </tr>
    </table>
  </div>
-<br />
  <div class="bordercolor rightboxdiv">
-   <table class="cs_1px pad_4px">
+   <table class="cs_thin pad_4px">
      <tr>
        <td class="catbg center">
-		 <input type="submit" name="savesetting" value="$event_cal{'31'}" /> <input type="submit" name="rebuiltbd" value="$event_cal{'54'}" />
+		 <input type="submit" name="savesetting" value="$event_cal{'31'}" />
 	   </td>
      </tr>
    </table>
  </div>
 </form>
-<br /><br />
 ~;
 
 	## Calendar Event-Icon Setting ##
@@ -255,16 +254,16 @@ sub EventCalSet {
 	eval{ require "$vardir/eventcalIcon.txt"; };
 
 	$yymain .= qq~
-<form action="$adminurl?action=eventcal_set3" method="post">
+<form action="$adminurl?action=eventcal_set3" method="post" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
-   <table class="cs_1px pad_4px">
+   <table class="cs_thin pad_4px">
     <col span="2" style="width:24%" />
     <col style="width:10%" />
     <col style="width:6%" />
      <tr>
        <td class="titlebg" colspan="4"><img src="$imagesdir/preferences.gif" alt="" /><b>$event_cal{'26'}</b></td>
      </tr><tr>
-       <td class="windowbg2" colspan="4"><br />$event_cal{'33'}<br /><br /></td>
+       <td class="windowbg2 padd_8_12px" colspan="4">$event_cal{'33'}</td>
      </tr><tr>
        <td class="catbg center"><b>$event_cal{'27'}</b></td>
        <td class="catbg center"><b>$event_cal{'28'}</b></td>
@@ -301,9 +300,8 @@ sub EventCalSet {
 	$yymain .= qq~
    </table>
  </div>
-<br />
  <div class="bordercolor rightboxdiv">
-   <table class="cs_1px pad_4px">
+   <table class="cs_thin pad_4px">
      <tr>
        <td class="catbg center"><input type="submit" value="$event_cal{'32'}" /></td>
      </tr>
@@ -322,38 +320,6 @@ sub EventCalSet {
 
 sub EventCalSet2 {
     is_admin_or_gmod();
-
-	if ($FORM{'rebuiltbd'} eq "$event_cal{'54'}") {
-        unlink "$vardir/eventcalbday.db";
-
-			fopen(FILE, "$memberdir/memberlist.txt");
-			@birthmembers = <FILE>;
-			fclose(FILE);
-			fopen(FILE,">$vardir/eventcalbday.db");
-			foreach my $user_name (@birthmembers) {
-			( $user_xy, $dummy ) = split /\t/, $user_name;
-				chomp $user_xy;
-            LoadUser($user_xy);
-				$user_xy_bd = ${$uid.$user_xy}{'bday'};
-				if ($user_xy_bd) {
-                ( $user_month, $user_day, $user_year ) =
-                  split /\//xsm, $user_xy_bd;
-                if ( $user_month < 10 && length($user_month) == 1 ) {
-                    $user_month = "0$user_month";
-                }
-                if ( $user_day < 10 && length($user_day) == 1 ) {
-                    $user_day = "0$user_day";
-                }
-                print {FILE} qq~$user_year|$user_month|$user_day|$user_xy\n~
-                  or croak 'cannot print FILE';
-				}
-			}
-			fclose(FILE);
-
-		$yySetLocation = qq~$adminurl?action=eventcal_set;rebok=1~;
-        redirectexit();
-    }
-    else {
 
 		# Set 1 or 0 if box was checked or not
         map { ${$_} = $FORM{$_} ? 1 : 0; }
@@ -467,7 +433,6 @@ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2
 
 		$yySetLocation = qq~$adminurl?action=eventcal_set~;
         redirectexit();
-	}
     return;
 }
 

@@ -13,9 +13,9 @@
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
-our $VERSION = 1.1;
+our $VERSION = 1.2;
 
-$registrationlogplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$registrationlogplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Register');
@@ -160,18 +160,18 @@ qq~<br /><a href="$scripturl?action=activate;username=$cryptid;activationkey=$ac
             && -e "$memberdir/$userid.wait" )
         {
             $delrecord =
-qq~<a href="$adminurl?action=rej_regentry;username=$cryptid">$prereg_txt{'reject'}</a>~;
+qq~<a href="$adminurl?action=rej_regentry;username=$userid">$prereg_txt{'reject'}</a>~;
             $delrecord .=
 qq~<br /><a href="$adminurl?action=view_regentry;username=$cryptid;type=approve">$prereg_txt{'view'}</a>~;
             $delrecord .=
-qq~<br /><a href="$adminurl?action=apr_regentry;username=$cryptid">$prereg_txt{'apr'}</a>~;
+qq~<br /><a href="$adminurl?action=apr_regentry;username=$userid">$prereg_txt{'apr'}</a>~;
         }
         else {
             $delrecord = '---';
         }
         $loglist .= qq~<tr>
             <td class="windowbg center">$reclogtime</td>
-            <td class="windowbg2 center">$prereg_txt{$status}$actadminlink<br />IP: $ipadd - <a href="$adminurl?action=ipban_reg;ban=$ipadd;lev=p">$admin_txt{'725f'}</a></td>
+            <td class="windowbg2 center">$prereg_txt{$status}$actadminlink<br />IP: $ipadd - <a href="$adminurl?action=ipban_err;ban=$ipadd;lev=p">$admin_txt{'725f'}</a></td>
             <td class="windowbg center">$linkuserid</td>
             <td class="windowbg2 center">$delrecord</td>
         </tr>~;
@@ -181,7 +181,7 @@ qq~<br /><a href="$adminurl?action=apr_regentry;username=$cryptid">$prereg_txt{'
     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
     <form name="reglog_form" action="$adminurl?action=clean_reglog" method="post" onsubmit="return submitproc();">
  <div class="bordercolor rightboxdiv">
-    <table class="cs_1px pad_4px">
+    <table class="cs_thin pad_4px">
         <col class="w_20pc" />
         <col class="w_35pc" />
         <col class="w_25pc" />
@@ -189,7 +189,7 @@ qq~<br /><a href="$adminurl?action=apr_regentry;username=$cryptid">$prereg_txt{'
     <tr>
         <td class="titlebg" colspan="4"><img src="$imagesdir/xx.gif" alt="" /> <b>$yytitle</b></td>
     </tr><tr>
-        <td class="windowbg2" colspan="4"><br />$prereg_txt{'20'}<br /><br /></td>
+        <td class="windowbg2 padd_8_12px" colspan="4">$prereg_txt{'20'}</td>
     </tr>
     $pageindex
     <tr>
@@ -201,10 +201,8 @@ qq~<br /><a href="$adminurl?action=apr_regentry;username=$cryptid">$prereg_txt{'
     $loglist
     </table>
  </div>
-
-<br />
  <div class="bordercolor rightboxdiv">
-   <table class="cs_1px pad_4px">
+   <table class="cs_thin pad_4px">
      <tr>
        <td class="catbg center">
          <input type="submit" value="$prereg_txt{'9'}" onclick="return confirm('$prereg_txt{'9'}');" class="button" />
@@ -319,7 +317,7 @@ sub view_registration {
     $yymain .= qq~
 <form action="$adminurl?action=admin_descision;activationkey=$actkey" method="post" name="creator">
 <input type="hidden" name="username" value="$viewuser" />
-<table class="bordercolor cs_1px pad_4px">
+<table class="bordercolor cs_thin pad_4px">
     <col class="w_320px" />
  <tr>
    <td colspan="2" class="catbg"><img src="$imagesdir/profile.gif" alt="" /> <b>$prereg_txt{'view'}</b>
@@ -368,7 +366,7 @@ sub view_registration {
    <td>${$uid.$readuser}{'language'}</td>
  </tr><tr class="windowbg">
    <td><b>$prereg_txt{'apr_ip'}: </b></td>
-   <td>${$uid.$readuser}{'lastips'}</td>
+   <td>${$uid.$readuser}{'lastips'} (<a href="$adminurl?action=ipban_err;ban=${$uid.$readuser}{'lastips'};lev=p">$admin_txt{'725f'}</a>)</td>
  </tr>~;
 
     if ( $regtype == 1 ) {
@@ -448,7 +446,7 @@ sub reject_registration {
     is_admin_or_gmod();
     my $deluser = $inp || $INFO{'username'};
     if ( !$admin_reason ) { $admin_reason = $FORM{'admin_reason'}; }
-    if ($do_scramble_id)  { $deluser      = decloak($deluser); }
+#    if ($do_scramble_id)  { $deluser      = decloak($deluser); }
 
     if ( -e "$memberdir/memberlist.approve" && $regtype == 1 ) {
         fopen( APR, "$memberdir/memberlist.approve" );
@@ -528,7 +526,7 @@ sub approve_registration {
     is_admin_or_gmod();
     my $apruser = $inp || $INFO{'username'};
     if ( !$admin_reason ) { $admin_reason = $FORM{'admin_reason'}; }
-    if ($do_scramble_id)  { $apruser      = decloak($apruser); }
+#    if ($do_scramble_id)  { $apruser      = decloak($apruser); }
 
     ## load the list with waiting approvals ##
     fopen( APR, "$memberdir/memberlist.approve" );
@@ -563,6 +561,18 @@ qq~<span class="red"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'email'}<
         ## user is approved, so let him/her in ##
         rename "$memberdir/$apruser.wait", "$memberdir/$apruser.vars";
         MemberIndex( 'add', $apruser );
+
+
+        # update approval user list
+        fopen( APR, ">$memberdir/memberlist.approve" );
+        print {APR} @aprchnglist or croak 'cannot print APR';
+        fclose(APR);
+
+        ## add entry to registration log ##
+        fopen( REG, ">>$vardir/registration.log", 1 );
+        print {REG} "$date|AA|$apruser|$username|$user_ip\n"
+          or croak 'cannot print REG';
+        fclose(REG);
 
         ## send a approval email ##
         my $templanguage = $language;
@@ -635,17 +645,6 @@ qq~<span class="red"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'email'}<
               or croak 'cannot print INBOX';
             fclose(INBOX);
         }
-
-        # update approval user list
-        fopen( APR, ">$memberdir/memberlist.approve" );
-        print {APR} @aprchnglist or croak 'cannot print APR';
-        fclose(APR);
-
-        ## add entry to registration log ##
-        fopen( REG, ">>$vardir/registration.log", 1 );
-        print {REG} "$date|AA|$apruser|$username|$user_ip\n"
-          or croak 'cannot print REG';
-        fclose(REG);
     }
     $yySetLocation = qq~$adminurl?action=view_reglog~;
     redirectexit();

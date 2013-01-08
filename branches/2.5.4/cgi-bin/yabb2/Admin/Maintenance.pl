@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.1;
+our $VERSION = 1.2;
 
-$maintenanceplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$maintenanceplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub RebuildMessageIndex {
@@ -399,16 +399,17 @@ sub AdminBoardRecount {
         $rebuild_txt{'1'}
         <br />
         $rebuild_txt{'5'} $max_process_time $rebuild_txt{'6'}
-        <br /><br />
+        <br />
+        <br />
         $rebuild_txt{'13'} $sumtopic
         <br />
         $rebuild_txt{'14'} $resttopic
         <br />
         <br />
-        <br />
         <div id="boardrecountcontinued">
         <br />
-        $rebuild_txt{'1'}<br />
+        $rebuild_txt{'1'}
+        <br />
         $rebuild_txt{'2'} <a href="$adminurl?action=boardrecount;topicnum=$topicnum" onclick="rebRecount();">$rebuild_txt{'3'}</a>
         </div>
         <script type="text/javascript">
@@ -660,7 +661,8 @@ qq~${$uid.$member}{'realname'}|${$uid.$member}{'email'}|${$uid.$member}{'positio
 $rebuild_txt{'1'}
 <br />
 $rebuild_txt{'5'} = $max_process_time $rebuild_txt{'6'}
-<br /><br />
+<br />
+<br />
 $rebuild_txt{'10'} $sumuser
 <br />
 $rebuild_txt{'10a'} $restuser
@@ -829,7 +831,8 @@ sub RebuildMemHistory {
 $rebuild_txt{'1'}
 <br />
 $rebuild_txt{'5'} $max_process_time $rebuild_txt{'6'}
-<br /><br />
+<br />
+<br />
 $rebuild_txt{'13'} $sumtopic
 <br />
 $rebuild_txt{'14'} $resttopic
@@ -1117,21 +1120,30 @@ sub RebuildNotifications {
 
         $yymain .= qq~
 <br />
-$rebuild_txt{'1'}<br />
-$rebuild_txt{'5'} = $max_process_time $rebuild_txt{'6'}<br />
+$rebuild_txt{'1'}
 <br />
-$rebuild_txt{'15'} $sumbo<br />
-$rebuild_txt{'15a'} $restbo<br />
-<br />
-$rebuild_txt{'16'} $sumthr<br />
-$rebuild_txt{'16a'} $restthr<br />
-<br />
-$rebuild_txt{'10'} $sumuser<br />
-$rebuild_txt{'10a'} $restuser<br />
+$rebuild_txt{'5'} = $max_process_time $rebuild_txt{'6'}
 <br />
 <br />
-$rebuild_txt{'7'} $run_time<br />
-$rebuild_txt{'8'} $time_left<br />
+$rebuild_txt{'15'} $sumbo
+<br />
+$rebuild_txt{'15a'} $restbo
+<br />
+<br />
+$rebuild_txt{'16'} $sumthr
+<br />
+$rebuild_txt{'16a'} $restthr
+<br />
+<br />
+$rebuild_txt{'10'} $sumuser
+<br />
+$rebuild_txt{'10a'} $restuser
+<br />
+<br />
+$rebuild_txt{'7'} $run_time
+<br />
+$rebuild_txt{'8'} $time_left
+<br />
 <br />
 <div id="memcontinued">
 $rebuild_txt{'2'} <a href="$adminurl?action=rebuildnotifications" onclick="clearMeminfo();">$rebuild_txt{'3'}</a>

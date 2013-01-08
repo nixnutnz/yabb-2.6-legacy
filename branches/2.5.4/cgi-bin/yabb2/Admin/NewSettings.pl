@@ -13,9 +13,9 @@
 ###############################################################################
 # use strict;
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.3;
+our $VERSION = 1.6;
 
-$newsettingsplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+$newsettingsplver = 'YaBB 2.5.4 $Revision: 1.6 $';
 if ($action eq 'detailedversion') { return 1; }
 
 # Figure out what tabset to use, depending on the page= parameter.
@@ -60,21 +60,19 @@ sub settings {
     $yymain .= qq~
     <a id="top"></a>
     <div class="bordercolor rightboxdiv">
-        <table class="cs_1px pad_4px">
+        <table class="cs_thin pad_4px">
                 <tr>
                     <td class="titlebg">
          <b>$yytitle</b>
        </td>
                </tr><tr>
-                <td class="windowbg2">
-                       <br />
+                <td class="windowbg2 padd_8_12px">
         $admin_txt{'347'}
        </td>
      </tr>
   </table>
   </div>
-  <br />
-  <form action="$adminurl?action=newsettings2;page=$page" onsubmit="undisableAll(this);" method="post">
+  <form action="$adminurl?action=newsettings2;page=$page" onsubmit="undisableAll(this);" method="post" accept-charset="$yycharset">
   <ul id="navlist">
 ~;
     my $i = 0;
@@ -209,7 +207,7 @@ qq~$C\document.getElementsByName("$ritem")[0].checked$AndOr ~;
     $default_tab = $INFO{'tab'} || $settings[0]->{'id'};
     $yymain .= qq~
 <div class="bordercolor rightboxdiv" style="margin: 1em auto 0 0">
-    <table class="cs_1px pad_4px">
+    <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg" colspan="2">
                 <img src="$imagesdir/preferences.gif" alt=""  /> <b>$admin_txt{'10'}</b>
@@ -493,6 +491,8 @@ sub SaveSettingsTo {
 
 \$settings_file_version = "$YaBBversion";	
 # If not equal actual YaBBversion then the updating process is run through
+\$yycharset = '$yycharset';                 # character encoding (usually ISO-8859-1 for older forums)
+                                            # or 'UTF-8';
 
 \%templateset = ($templateset);				# Forum templates settings
 
@@ -565,6 +565,7 @@ $member_groups
 \$showtopicviewers = $showtopicviewers;		# Set to 1 to display members viewing a topic
 \$showtopicrepliers = $showtopicrepliers;	# Set to 1 to display members replying to a topic
 \$showgenderimage = $showgenderimage;		# Set to 1 to display each member's gender in the message view (by the ICQ.. etc.)
+\$showage = $showage;						# Set to 1 to allow member to hide their age and birthyear (Except from the Administrator.)
 \$showyabbcbutt = $showyabbcbutt;			# Set to 1 to display the yabbc buttons on Posting and IM Send Pages
 \$nestedquotes = $nestedquotes;				# Set to 1 to allow quotes within quotes (0 will filter out quotes within a quoted message)
 \$parseflash = $parseflash;					# Set to 1 to parse the flash tag
@@ -611,6 +612,7 @@ $member_groups
 \$checkallcaps = $checkallcaps;				# Set to 0 to allow ALL CAPS in posts (subject and message) or set to a value > 0 to open a JS-alert if more characters in ALL CAPS were there.
 \$set_subjectMaxLength = $set_subjectMaxLength; # Maximum Allowed Characters in a Posts Subject
 \$MaxMessLen = $MaxMessLen;					# Maximum Allowed Characters in a Posts
+\$AdMaxMessLen = $AdMaxMessLen;				# Maximum Allowed Characters in a Posts for Admins
 \$honeypot = $honeypot;						# Set to 1 to activate Honeypot spam deterrent
 \$spamfruits = $spamfruits;					# Set to 1 to activate SpamFruits spam deterrent
 \$speedpostdetection = $speedpostdetection;	# Set to 1 to detect speedposters and delay their spam actions
@@ -874,6 +876,8 @@ $ext_prof_fields
 \$gpvalid_en = $gpvalid_en;			# Set to 1 if you want to enable validation code on guest posting
 \$codemaxchars = $codemaxchars;			# Set max length of validation code (15 is max)
 \$captchastyle = "\Q$captchastyle\E";		# Set L = lowercase only, U = uppercase only, A = both upper and lowercase letters
+\$captchaStartChars = "\Q$captchaStartChars\E";	# Set extra characters at the start of the validation code
+\$captchaEndChars = "\Q$captchaEndChars\E";	# Set extra characters at the end of the validation code
 \$rgb_foreground = "\Q$rgb_foreground\E";	# Set hex RGB value for validation image foreground color
 \$rgb_shade = "\Q$rgb_shade\E";			# Set hex RGB value for validation image shade color
 \$rgb_background = "\Q$rgb_background\E";	# Set hex RGB value for validation image background color

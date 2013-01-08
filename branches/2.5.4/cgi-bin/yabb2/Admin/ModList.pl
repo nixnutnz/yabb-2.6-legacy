@@ -11,11 +11,11 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use strict;
+# use strict;
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.1;
+our $VERSION = 1.3;
 
-my $modlistplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+our $modlistplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 my ($action);
 if ( $action eq 'detailedversion' ) { return 1; }
 
@@ -41,16 +41,14 @@ sub ListMods {
     if ( !@installed_mods ) {
         $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_1px pad_4px">
+    <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg" colspan="3">
                 <img src="$imagesdir/preferences.gif" alt="" /><b>$mod_list{'5'}</b>
              </td>
          </tr><tr>
-             <td class="windowbg2">
-                 <br />
+             <td class="windowbg2 padd_8_12px">
                  $mod_list{'8'} <a href="http://www.boardmod.org">$mod_list{'9'}</a>
-                 <br /><br />
              </td>
          </tr>
     </table>
@@ -85,7 +83,7 @@ sub ListMods {
 
         $full_description .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_1px pad_4px">
+    <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
                 <a id="$mod_anchor"><img src="$imagesdir/preferences.gif" alt="" /></a><b>$mod_displayname</b> &nbsp; <span class="small">$mod_list{'4'}: $mod_version</span>
@@ -95,8 +93,8 @@ sub ListMods {
                 <span class="small">$mod_list{'2'}: $mod_author</span>
             </td>
         </tr><tr>
-            <td class="windowbg2"><br />
-                $mod_desc<br /><br />
+            <td class="windowbg2 padd_8_12px">
+                $mod_desc
             </td>
         </tr><tr>
             <td class="catbg right">
@@ -105,13 +103,12 @@ sub ListMods {
         </tr>
     </table>
 </div>
-<br />
 ~;
     }
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_1px pad_4px">
+    <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg" colspan="3">
                 <img src="$imagesdir/preferences.gif" alt="" /><b>$mod_list{'5'}</b>
@@ -131,7 +128,7 @@ sub ListMods {
         </tr>
      </table>
 </div>
-<br /><br /><br />
+<br />
 $full_description
 ~;
 

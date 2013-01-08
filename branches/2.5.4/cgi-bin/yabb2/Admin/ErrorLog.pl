@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.2;
+our $VERSION = 1.3;
 
-$errorlogplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$errorlogplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub ErrorLog {
@@ -119,7 +119,7 @@ function uncheckAll() {
 <form name="errorlog_form" action="$adminurl?action=deleteerror;$sortmode$sortorder" method="post" onsubmit="return submitproc()">
 <input type="hidden" name="button" value="4" />
     <div class="bordercolor rightboxdiv">
-        <table class="cs_1px pad_4px">
+        <table class="cs_thin pad_4px">
             <col style="width:5%" />
             <col style="width:10%" />
             <col style="width:15%" />
@@ -130,9 +130,8 @@ function uncheckAll() {
                     <img src="$imagesdir/xx.gif" alt="" /><b>$yytitle</b>
 	   </td>
             </tr><tr>
-                <td class="windowbg2" colspan="5">
-                    <br />
-		 $errorlog{'18'}<br /><br />
+                <td class="windowbg2 padd_8_12px" colspan="5">
+		 $errorlog{'18'}
 	   </td>
             </tr><tr>
                 <td class="catbg center">
@@ -216,8 +215,7 @@ qq~$tmp_user<br />$tmp_userip - <a href="$adminurl?action=ipban_err;ban=$tmp_use
         $addel =
 qq~             <td class="windowbg center"><input type="checkbox" name="error$tmp_id" value="$tmp_id" class="windowbg" style="border: 0px;" /></td>~;
 		$actualnum++;
-		$print_errorlog .= qq~
-	<tr>
+		$print_errorlog .= qq~<tr>
                 <td class="windowbg center">$actualnum</td>
 	        <td class="windowbg">$tmp_date</td>
                 <td class="windowbg2 center">$username</td>
@@ -245,8 +243,8 @@ $print_errorlog
     $errmember =~ s/, \Z//sm;
 
     $yymain .= qq~          <tr>
-                <td class="windowbg2" colspan="5"><br />
-       <strong>$errorlog{'26'}</strong> $errmember<br /><br />
+                <td class="windowbg2 padd_8_12px" colspan="5">
+       <strong>$errorlog{'26'}</strong> $errmember
 	   </td>
             </tr><tr>
                 <td class="windowbg right" colspan="4">&nbsp;~;
@@ -266,14 +264,13 @@ q~<input type="checkbox" name="checkall" id="checkall" class="windowbg" style="b
      </tr>
    </table>
  </div>
-<br />
 	~;
 
 if ($errorcount > 0) {
 
 	$yymain .= qq~
     <div class="bordercolor rightboxdiv">
-        <table class="cs_1px pad_4px">
+        <table class="cs_thin pad_4px">
             <tr>
                 <td class="catbg center">
 		 <input type="submit" value="$errorlog{'14'}" onclick="return confirm('$errorlog{'15'}')" class="button" />

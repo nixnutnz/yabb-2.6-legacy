@@ -19,17 +19,22 @@
 ###############################################################################
 use strict;
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.1;
+our $VERSION = 1.3;
 
-my $modulecheckerplver = 'YaBB 2.5.4 $Revision: 1.1 $';
-my ( $action, $dont_continue_setup );
-our ( $yymain, %modulecheck );
+our $modulecheckerplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+my ( $dont_continue_setup );
+our ( $action, $yymain, %modulecheck );
 if ( $action eq 'detailedversion' ) { return 1; }
 
-if ( $ENV{'SCRIPT_FILENAME'} =~ /ModuleChecker\.\w+$/xsm ) {
+my $script_root = $ENV{'SCRIPT_FILENAME'};
+if( ! $script_root ) {
+	$script_root = $ENV{'PATH_TRANSLATED'};
+}
+
+if ( $script_root =~ /ModuleChecker\.\w+$/xsm ) {
 
     # This part is only needed if you call ModuleChecker.pl directly
-    # as stand allone script (only the language "English" is supported).
+    # as stand alone script (only the language "English" is supported).
 
     # Make sure the ./Modules path is present
     push @INC, './Modules';
@@ -132,10 +137,10 @@ foreach my $module (
     }
 }
 
-if ( $ENV{'SCRIPT_FILENAME'} !~ /ModuleChecker\.\w+$/xsm ) {
+if ( $script_root !~ /ModuleChecker\.\w+$/xsm ) {
     $yymain .= qq~
 <div class="bordercolor rightboxdiv" style="float: left; margin-top:1em">
-<table class="cs_1px pad_4px">
+<table class="cs_thin pad_4px">
     <tr>
         <td class="titlebg" colspan="3">
             <b>$modulecheck{'1'}</b>
