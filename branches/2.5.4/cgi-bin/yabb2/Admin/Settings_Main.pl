@@ -13,9 +13,9 @@
 ###############################################################################
 # use strict;
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.2;
+our $VERSION = 1.4;
 
-my $settings_mainplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+our $settings_mainplver = 'YaBB 2.5.4 $Revision: 1.4 $';
 if ($action eq 'detailedversion') { return 1; }
 
 # Language requirements
@@ -108,7 +108,7 @@ my $all_time = qq~$sel_hour $sel_minute $sel_secund~;
 
 # Timezone selector
 my @usertimeoffset = split(/\./, $timeoffset);
-my $timeoffsetselect = qq~<span class="small"><br /><br /></span><select name="usertimesign" id="usertimesign"><option value="">+</option><option value="-"~ . ($usertimeoffset[0] < 0 ? ' selected="selected"' : '') . qq~>-</option></select> <select name="usertimehour">~;
+my $timeoffsetselect = qq~<br /></span><select name="usertimesign" id="usertimesign"><option value="">+</option><option value="-"~ . ($usertimeoffset[0] < 0 ? ' selected="selected"' : '') . qq~>-</option></select> <select name="usertimehour">~;
 	for (my $i = 0; 15 > $i; $i++) {
 		$i = sprintf("%02d", $i);
 		$timeoffsetselect .= qq~<option value="$i"~ . (($usertimeoffset[0] == $i || $usertimeoffset[0] == -$i) ? ' selected="selected"' : '') . qq~>$i</option>~;
@@ -229,6 +229,12 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 			validate => 'text',
 		},
 		{
+			description => qq~<label for="yycharset">$admin_txt{'816a'}</label>~,
+			input_html => qq~<input type="text" size="20" name="yycharset" id="yycharset" value="$yycharset" />~,
+			name => 'yycharset',
+			validate => 'text',
+		},
+		{
 			description => qq~<label for="forumnumberformat">$admin_txt{'forumnumbformat'}</label>~,
 			input_html => qq~
 <select name="forumnumberformat" id="forumnumberformat" size="1">
@@ -343,6 +349,12 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 			validate => 'boolean',
 		},
 		{
+			description => qq~<label for="showage">$admin_txt{'386a'}</label>~,
+			input_html => qq~<input type="checkbox" name="showage" id="showage" value="1"${ischecked($showage)} />~,
+			name => 'showage',
+			validate => 'boolean',
+		},
+		{
 			description => qq~<label for="showallgroups">$amv_txt{'12'}</label>~,
 			input_html => qq~<input type="checkbox" name="showallgroups" id="showallgroups" value="1"${ischecked($showallgroups)} />~,
 			name => 'showallgroups',
@@ -436,6 +448,14 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 			name => 'MaxMessLen',
 			validate => 'number',
 		},
+            {
+                description =>
+                  qq~<label for="AdMaxMessLen">$admin_txt{'498b'}</label>~,
+                input_html =>
+qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdMaxMessLen" />~,
+                name     => 'AdMaxMessLen',
+                validate => 'number',
+            },
 		{
 			description => qq~<label for="fontsizemin">$admin_txt{'499'}</label>~,
 			input_html => qq~<input type="text" size="5" name="fontsizemin" id="fontsizemin" value="$fontsizemin" />~,
