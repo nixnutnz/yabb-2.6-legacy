@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$profilelngver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$profilelngver = 'YaBB 2.5.4 $Revision: 1.2 $';
 
 %profile_txt = (
 '2' => 'Admin',
@@ -104,6 +104,7 @@ $profilelngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 '520' => 'Enable dynamic clock at the top of the page?',
 '521' => 'Not available if you wrote your own time format.',
 '563' => 'Birthdate',
+'563a' => 'Hide age and birth year?',
 '564' => 'Month (MM)',
 '565' => 'Day (DD)',
 '566' => 'Year (YYYY)',
