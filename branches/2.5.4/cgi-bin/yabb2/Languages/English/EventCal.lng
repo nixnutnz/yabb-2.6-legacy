@@ -13,7 +13,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$eventcallngver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$eventcallngver = 'YaBB 2.5.4 $Revision: 1.2 $';
 
 ### Event Calendar ###
 
@@ -42,7 +42,7 @@ $eventcallngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 'calday' => 'Day',
 'calmonth' => 'Month',
 'calyear' => 'Year',
-'caltitle' => "<a href=\"$scripturl?action=get_cal;calshow=1\">Event-Calendar</a>",
+'caltitle' => qq~<a href="$scripturl?action=get_cal;calshow=1">Event-Calendar</a>~,
 'yytitle' => 'Event-Calendar',
 'calsubtitle' => 'Event(s)',
 'calevent' => 'New event:',
@@ -83,7 +83,7 @@ $eventcallngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 'calshowevent' => 'Show event',
 'calmore' => 'READ MORE',
 'calnoname' => 'Disable username-link',
-'caltoday' => 'Today\'s one',
+'caltoday' => 'Today&#39;s one',
 'calcoming' => 'Upcoming',
 'caldays' => 'Days',
 'calis' => 'is',
@@ -111,73 +111,8 @@ $eventcallngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 ### Event Calendar YaBBC ###
 
 %var_calpost = (
-'url' => 'Insert Hyperlink',
-'ftp' => 'Insert Ftp Link',
-'img' => 'Insert Image',
-'email' => 'Insert Email',
-'media' => 'Insert Media',
-'table' => 'Insert Table',
-'tr' => 'Insert Table Row',
-'td' => 'Insert Table Column',
-'hr' => 'Horizontal Rule',
-'tt' => 'Teletype',
-'code' => 'Insert Code',
-'quote' => 'Insert Quote',
-'edit' => 'Edited',
-'sup' => 'Superscript',
-'sub' => 'Subscript',
-'list' => 'Insert List',
-'me' => '/me - my name',
-'move' => 'Marquee',
-'timestamp' => 'Insert timestamp',
-'color' => 'Insert Color',
-'bold' => 'Bold',
-'italicize' => 'Italicized',
-'underline' => 'Underline',
-'strike' => 'Strikethrough',
-'highlight' => 'Highlight',
-'pre' => 'Preformatted Text',
-'left' => 'Left Align',
-'center' => 'Centered',
-'right' => 'Right Align',
-'textsize' => 'Text size:',
-'eventmaxlength' => "Max $MaxMessLen characters. Remaining characters: ",
 'getaddevent' => 'Add a new Event',
 'event_send' => 'Add Event',
-);
-
-%var_calsmiley = (
-'smiley' => 'Smiley',
-'wink' => 'Wink',
-'cheesy' => 'Cheesy',
-'grin' => 'Grin',
-'angry' => 'Angry',
-'sad' => 'Sad',
-'shocked' => 'Shocked',
-'cool' => 'Cool',
-'huh' => 'Huh',
-'rolleyes' => 'Roll Eyes',
-'tongue' => 'Tongue',
-'embarrassed' => 'Embarrassed',
-'lipssealed' => 'Lips Sealed',
-'undecided' => 'Undecided',
-'kiss' => 'Kiss',
-'cry' => 'Cry',
-);
-
-%var_calflood = (
-'1' => 'Your Verification Code is',
-'2' => 'Verification Code',
-'casewarning' => 'Please type exactly what text appears in the image. The characters must be typed in the same order, and it is case-sensitive.',
-);
-
-%var_calspell = (
-'chck_spell' => 'Check spelling',
-'revert' => 'Revert to',
-'close' => 'Close',
-'rsm_edt' => 'Resume editing',
-'no_error_found' => 'No spelling errors found',
-'no_suggestions' => 'No suggestions found',
 );
 
 ### Event Calendar Settings ###
@@ -185,12 +120,12 @@ $eventcallngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 %event_cal = (
 '1' => 'Event Calendar Settings',
 '3' => 'Show Event Calendar to:',
-'4' => 'Show \'Event Calendar\' Button on YaBB menu to:',
+'4' => 'Show &#39;Event Calendar&#39; Button on YaBB menu to:',
 '5' => 'Show Birthdays in Calendar/Events to:',
 '6' => 'Determine length of characters from each event(s)?',
-'7' => 'Shows a \'READ MORE\' link to posted event<br />(0 = deactivated)',
+'7' => 'Shows a &#39;READ MORE&#39; link to posted event<br />(0 = deactivated)',
 '8' => 'Emphasize current date with this color in the mini calendar',
-'9' => 'Enable \'Event-Scroll\' function',
+'9' => 'Enable &#39;Event-Scroll&#39; function',
 '10' => 'Very useful if you have many events.',
 '11' => 'Off',
 '12' => 'Auto-Scroll',
@@ -198,10 +133,10 @@ $eventcallngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 '14' => 'Select which member groups are allowed to add/edit events:',
 '15' => "Making NO selection allows all Groups, Users and Guests to add/edit events.<br /><br />$admin_txt{'14'}",
 '16' => 'Allow these members to add Events',
-'17' => 'List multiple members as \'username1,username2\'.',
-'18' => 'Allow members to add \'Private Events\'?',
-'19' => 'If unchecked only Global Moderators and Administrators can add \'Private Events\'',
-'20' => 'Enable show \'Events\' (Event-Scroll) on BoardIndex?',
+'17' => 'List multiple members as &#39;username1,username2&#39;.',
+'18' => 'Allow members to add &#39;Private Events&#39;?',
+'19' => 'If unchecked only Global Moderators and Administrators can add &#39;Private Events&#39;',
+'20' => 'Enable show &#39;Events&#39; (Event-Scroll) on BoardIndex?',
 '21' => 'Standard Settings',
 '22' => 'Event Settings',
 '23' => 'Access Settings',
@@ -213,7 +148,7 @@ $eventcallngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 '30' => 'Add new Calendar Event-Icons here',
 '31' => 'Save Event Calendar Setting',
 '32' => 'Save Event-Icon Setting',
-'33' => "This section allows you to customize your Calendar Events by using your own Event Icons. First you must upload the images to the <span class=\"small\">($yyhtml_root/EventCalIcons)</span> folder.<br />Images should be no larger than 25 X 25 px, (or whatever is a good size) must be in .gif format only, and must be uploaded in Binary transfer mode.",
+'33' => qq~This section allows you to customize your Calendar Events by using your own Event Icons. First you must upload the images to the <span class="small">($yyhtml_root/EventCalIcons)</span> folder.<br />Images should be no larger than 25 X 25 px, (or whatever is a good size) must be in .gif format only, and must be uploaded in Binary transfer mode.~,
 '34' => 'List upcoming events for __ days next to the Event Calendar',
 '35' => '(0 = All events for current month)',
 '36' => 'First day of week (mini calendar)?',
@@ -222,12 +157,12 @@ $eventcallngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 '40' => 'All Members',
 '41' => 'None',
 '42' => 'Show Member Birthdays List to:',
-'43' => 'Don\'t show \'Event-Icons\' in mini calendar?',
+'43' => 'Don&#39;t show &#39;Event-Icons&#39; in mini calendar?',
 '44' => 'Apply group colors when displaying username links?',
 '45' => 'Checking this option will use more forum resources!',
 '46' => 'Members only',
 '47' => 'Guests and Members',
-'48' => 'Show \'Birthday List\' Button on the YaBB menu to:',
+'48' => 'Show &#39;Birthday List&#39; Button on the YaBB menu to:',
 '49' => 'Birthday List Settings',
 '50' => 'Show dates of birth to:',
 '52' => 'Keep or delete events from past dates by entering one of the values below:',
