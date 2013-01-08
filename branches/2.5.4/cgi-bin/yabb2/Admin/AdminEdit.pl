@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.1;
+our $VERSION = 1.3;
 
-$admineditplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$admineditplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Register');
@@ -79,16 +79,15 @@ qq~\n<input type="checkbox" name="$actfound" id="$actfound"$checked />&nbsp;<lab
     $yymain .= qq~
 <form action="$adminurl?action=gmodsettings2" method="post" enctype="application/x-www-form-urlencoded">
  <div class="bordercolor rightboxdiv">
-   <table class=" cs_1px pad_4px">
+   <table class=" cs_thin pad_4px">
      <col class="w_50px" />
      <tr>
        <td class="titlebg" colspan="2"><img src="$imagesdir/preferences.gif" alt="" /><b>$gmod_settings{'1'}</b></td>
      </tr><tr>
-       <td class="windowbg2" colspan="2"><br />
+       <td class="windowbg2 padd_8_12px" colspan="2">
 <input type="checkbox" id="allow_gmod_admin" name="allow_gmod_admin"$gmod_selected_a /> <label for="allow_gmod_admin">$gmod_settings{'2'}</label><br />
 <input type="checkbox" id="allow_gmod_profile" name="allow_gmod_profile"$gmod_selected_p onclick="depend(this.checked);" /> <label for="allow_gmod_profile">$gmod_settings{'3'}</label><br />
-<input type="checkbox" id="allow_gmod_aprofile" name="allow_gmod_aprofile"$gmod_selected_ap /> <label for="allow_gmod_aprofile">$gmod_settings{'3a'}</label><br />
-<br />
+<input type="checkbox" id="allow_gmod_aprofile" name="allow_gmod_aprofile"$gmod_selected_ap /> <label for="allow_gmod_aprofile">$gmod_settings{'3a'}</label>
        </td>
      </tr><tr>
        <td class="catbg" colspan="2"><span class="small">$gmod_settings{'4'}</span></td>
@@ -125,25 +124,24 @@ sub EditBots {
     is_admin_or_gmod();
     my ($line);
     $yymain .= qq~
-<form action="$adminurl?action=editbots2" method="post" enctype="application/x-www-form-urlencoded">
+<form action="$adminurl?action=editbots2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
     <div class="bordercolor rightboxdiv">
-        <table class="cs_1px pad_4px">
+        <table class="cs_thin pad_4px">
             <tr>
                 <td class="titlebg"><img src="$imagesdir/xx.gif" alt="" /><b>$admin_txt{'18'}</b></td>
             </tr><tr>
-                <td class="windowbg2"><br />
+                <td class="windowbg2  padd_8_12px">
                     <span class="small">
                     $admin_txt{'19'}
-                    </span><br /><br />
+                    </span>
                 </td>
             </tr><tr>
-                <td class="windowbg2 center"><br />
+                <td class="windowbg2 center padd_8_12px">
                     <textarea cols="70" rows="35" name="bots" style="width:98%">~;
     fopen( BOTS, "$vardir/bots.hosts" );
     while ( $line = <BOTS> ) { chomp $line; $yymain .= qq~$line\n~; }
     fclose(BOTS);
     $yymain .= qq~</textarea>
-      <br /><br />
                 </td>
             </tr><tr>
                 <td class="catbg center"><input type="submit" value="$admin_txt{'10'}" class="button" /></td>
@@ -205,14 +203,14 @@ sub SetCensor {
     }
     $yymain .= qq~
  <div class="bordercolor rightboxdiv">
-   <table class="cs_1px pad_4px">
+   <table class="cs_thin pad_4px">
      <tr>
        <td>
              <img src="$imagesdir/ban.gif" alt="" /><span class="legend"><b>$admin_txt{'135'}</b></span>
        </td>
      </tr><tr>
        <td class="windowbg2">
-      <form action="$adminurl?action=setcensor" method="post" enctype="application/x-www-form-urlencoded">
+      <form action="$adminurl?action=setcensor" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
       $templs{'7'}
       <select name="censorlanguage" id="censorlanguage" size="1">
             $drawnldirs
@@ -223,17 +221,16 @@ sub SetCensor {
      </tr>
    </table>
  </div>
- <br />
  <div class="bordercolor rightboxdiv">
    <!-- Split for XHTML Validation purposes -->
-   <form action="$adminurl?action=setcensor2" method="post" enctype="application/x-www-form-urlencoded">
-   <table class="cs_1px pad_4px">
+   <form action="$adminurl?action=setcensor2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
+   <table class="cs_thin pad_4px">
      <tr>
-       <td class="windowbg2"><br />
-         <label for="censored">$admin_txt{'136'}</label><br /><br />
+       <td class="windowbg2 padd_8_12px">
+         <label for="censored">$admin_txt{'136'}</label>
        </td>
      </tr><tr>
-       <td class="windowbg2 center"><br />
+       <td class="windowbg2 center padd_8_12px">
       <input type="hidden" name="censorlanguage" value="$censorlanguage" />
       <textarea rows="35" cols="15" name="censored" id="censored" style="width:90%">~;
     foreach my $i (@censored) {
@@ -241,7 +238,6 @@ sub SetCensor {
         $yymain .= "$i\n";
     }
     $yymain .= qq~</textarea>
-        <br /><br />
       </td>
      </tr><tr>
        <td class="catbg center">
@@ -295,17 +291,17 @@ sub SetReserve {
         if ( $reservecfg[$i] ) { $reservecheck[$i] = q~ checked="checked"~; }
     }
     $yymain .= qq~
-<form action="$adminurl?action=setreserve2" method="post" enctype="application/x-www-form-urlencoded">
+<form action="$adminurl?action=setreserve2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
  <div class="bordercolor rightboxdiv">
-   <table class="cs_1px pad_4px">
+   <table class="cs_thin pad_4px">
      <tr>
        <td class="titlebg"><img src="$imagesdir/profile.gif" alt="" /><b>$admin_txt{'341'}</b></td>
      </tr><tr>
-       <td class="windowbg2"><br />
-             $admin_txt{'699'}<br /><br />
+       <td class="windowbg2 padd_8_12px">
+             $admin_txt{'699'}
        </td>
      </tr><tr>
-       <td class="windowbg2"><br />
+       <td class="windowbg2 padd_8_12px">
             $admin_txt{'342'}
                   <p class="center"><textarea cols="40" rows="35" name="reserved" style="width:95%">~;
     foreach my $i (@reserved) {
@@ -323,7 +319,7 @@ sub SetReserve {
       <input type="checkbox" name="matchuser" id="matchuser" value="checked"$reservecheck[2] />
       <label for="matchuser">$admin_txt{'728'}</label><br />
       <input type="checkbox" name="matchname" id="matchname" value="checked"$reservecheck[3] />
-      <label for="matchname">$admin_txt{'729'}</label><br />
+      <label for="matchname">$admin_txt{'729'}</label>
        </td>
      </tr><tr>
        <td class="catbg center"><input type="submit" value="$admin_txt{'10'}" class="button" /></td>
@@ -396,12 +392,12 @@ sub ModifyAgreement {
     fclose(AGREE);
     $yymain .= qq~
  <div class="bordercolor rightboxdiv">
-   <table class="cs_1px pad_4px">
+   <table class="cs_thin pad_4px">
      <tr>
        <td class="titlebg"><img src="$imagesdir/xx.gif" alt="" /><b>$admin_txt{'764'}</b></td>
      </tr><tr>
-       <td class="windowbg2"><br />
-            <label for="agreement">$admin_txt{'765'}</label><br /><br />
+       <td class="windowbg2 padd_8_12px">
+            <label for="agreement">$admin_txt{'765'}</label>
        </td>
      </tr><tr>
        <td class="windowbg2"><br />
@@ -414,11 +410,11 @@ sub ModifyAgreement {
       </form>
        </td>
      </tr><tr>
-       <td class="windowbg2 center"><br />
-      <form action="$adminurl?action=modagreement2" method="post" enctype="application/x-www-form-urlencoded">
+       <td class="windowbg2 center padd_8_12px">
+      <form action="$adminurl?action=modagreement2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
       <input type="hidden" name="destination" value="$INFO{'destination'}" />
       <input type="hidden" name="agreementlanguage" value="$agreementlanguage" />
-      <textarea rows="35" cols="95" name="agreement" id="agreement" style="width:95%">$fullagreement</textarea><br /><br />
+      <textarea rows="35" cols="95" name="agreement" id="agreement" style="width:95%">$fullagreement</textarea>
        </td>
      </tr><tr>
        <td class="catbg center"><input type="submit" value="$admin_txt{'10'} $agreementlanguage" class="button" /></td>
@@ -696,26 +692,21 @@ sub EditPaths {
 
     $yymain .= qq~
  <div class="bordercolor rightboxdiv">
-   <table class="cs_1px pad_4px">
+   <table class="cs_thin pad_4px">
      <tr>
        <td class="titlebg"><b>$edit_paths_txt{'33'}</b></td>
      </tr><tr>
        <td class="catbg"><span class="small">$edit_paths_txt{'34'}</span></td>
      </tr><tr>
-       <td class="windowbg2">
-                  <br />
+       <td class="windowbg2 padd_8_12px">
                   $support_env_path
-                  <br />
-                  <br />
        </td>
      </tr>
    </table>
  </div>
-<br />
-<br />
-<form action="$adminurl?action=editpaths2" method="post" enctype="application/x-www-form-urlencoded">
+<form action="$adminurl?action=editpaths2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
  <div class="bordercolor rightboxdiv">
-   <table class="cs_1px pad_4px">
+   <table class="cs_thin pad_4px">
      <tr>
        <td class="titlebg">
             <img src="$imagesdir/preferences.gif" alt="" />
