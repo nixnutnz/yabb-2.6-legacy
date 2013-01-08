@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-our $VERSION = 1.1;
+our $VERSION = 1.3;
 
-my $smiliesplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+our $smiliesplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub SmiliePanel {
@@ -62,8 +62,8 @@ sub SmiliePanel {
         }
     }
     $yymain .= qq~
-<form action="$adminurl?action=addsmilies" method="post">
-<table class="bordercolor cs_1px pad_4px" style="width:98%">
+<form action="$adminurl?action=addsmilies" method="post" accept-charset="$yycharset">
+<table class="bordercolor cs_thin pad_4px" style="width:98%">
   <col class="w_5pc" />
   <col span="3" class="w_20pc" />
   <col class="w_15pc" />
