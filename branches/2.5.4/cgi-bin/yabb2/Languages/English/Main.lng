@@ -12,9 +12,8 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$mainlngver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$mainlngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 
-$yycharset = 'ISO-8859-1';
 $abbr_lang = 'en-us';
 
 @days = ('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
