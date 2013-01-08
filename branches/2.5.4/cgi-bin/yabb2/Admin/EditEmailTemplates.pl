@@ -13,9 +13,9 @@
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
-our $VERSION = 1.1;
+our $VERSION = 1.3;
 
-$editemailtemplatesplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$editemailtemplatesplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub editemailtemplates {
@@ -31,7 +31,7 @@ sub editemailtemplates {
         $yymain .= qq~
 <form action="$adminurl?action=editemailtemplates" method="get" style="display: inline">
 <input type="hidden" name="action" value="editemailtemplates" />
-    <table class="bordercolor cs_1px pad_4px w_440px">
+    <table class="bordercolor cs_thin pad_4px w_440px">
         <tr>
             <td class="titlebg">
                 <img src="$imagesdir/preferences.gif" alt="" /><b>$emaileditor{'1'}</b>
@@ -75,7 +75,7 @@ sub editemailtemplates {
 <form action="$adminurl?action=editemailtemplates" method="get" style="display: inline">
     <input type="hidden" name="action" value="editemailtemplates" />
     <input type="hidden" name="lang" value="$editlang" />
-    <table class="bordercolor cs_1px pad_4px w_440px">
+    <table class="bordercolor cs_thin pad_4px w_440px">
         <tr>
             <td class="titlebg">
                 <img src="$imagesdir/preferences.gif" alt="" /><b>$emaileditor{'3'}</b>
@@ -117,8 +117,8 @@ sub editemailtemplates {
         my $comment = $emaildesc{$string};
 
         $yymain .= qq~
-<form action="$adminurl?action=editemailtemplates2;lang=$editlang;string=$string" method="post" style="display: inline">
-    <table class="bordercolor cs_1px pad_4px">
+<form action="$adminurl?action=editemailtemplates2;lang=$editlang;string=$string" method="post" style="display: inline" accept-charset="$yycharset">
+    <table class="bordercolor cs_thin pad_4px">
         <tr>
             <td class="titlebg">
                 <img src="$imagesdir/preferences.gif" alt="" /><b>$emaileditor{'4'}</b>
