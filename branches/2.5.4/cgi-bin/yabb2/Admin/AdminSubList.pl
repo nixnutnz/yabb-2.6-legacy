@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$adminsublistplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$adminsublistplver = 'YaBB 2.5.4 $Revision: 1.4 $';
 
 %director=( # in alphabetical Order!
 'addboard',"ManageBoards.pl&AddBoards",
@@ -79,7 +79,6 @@ $adminsublistplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 'ipban',"Ban.pm&ipban",
 'ipban_add',"Ban.pm&ipban_add",
 'ipban_err',"Ban.pm&ipban_err",
-'ipban_reg',"Ban.pm&ipban_reg",
 'ipban2',"Ban.pm&ipban2",
 'ipban3',"Ban.pm&ipban_update",
 'mailing',"MailMembers.pl&Mailing",
@@ -143,6 +142,11 @@ $adminsublistplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 'smiliemove',"Smilies.pl&SmilieMove",
 'smilieput',"Smilies.pl&SmiliePut",
 'smilies',"Smilies.pl&SmiliePanel",
+'honeypot',"HoneyPot.pm&honeypot",
+'honeypot_add',"HoneyPot.pm&honeypot_add",
+'honeypot_edit',"HoneyPot.pm&honeypot_edit",
+'honeypot_edit2',"HoneyPot.pm&honeypot_edit2",
+'honeypot_delete',"HoneyPot.pm&honeypot_delete",
 'spam_questions',"AntispamQuestions.pl&SpamQuestions",
 'spam_questions2',"AntispamQuestions.pl&SpamQuestions2",
 'spam_questions_add',"AntispamQuestions.pl&SpamQuestionsAdd",
