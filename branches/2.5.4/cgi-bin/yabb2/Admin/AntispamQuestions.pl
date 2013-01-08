@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.4;
+our $VERSION = 1.6;
 
-$antispamquestionsplver = 'YaBB 2.5.4 $Revision: 1.4 $';
+$antispamquestionsplver = 'YaBB 2.5.4 $Revision: 1.6 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 my $questions_language = $FORM{'questions_language'} || $INFO{'questions_language'} || $lang;
@@ -94,9 +94,9 @@ sub SpamQuestions {
     $yymain = qq~
 <form action="$adminurl?action=spam_questions2" method="post">
 <div class="bordercolor rightboxdiv">
-<table class="cs_1px pad_4px">
-    <col class="w_50px" />
-    <col class="w_50px" />
+<table class="cs_thin pad_4px">
+    <col class="w_50pc" />
+    <col class="w_50pc" />
 	<tr>
     	<th class="titlebg" colspan="2"><img src="$imagesdir/preferences.gif" alt="" /> $spam_question_txt{'question_settings'}</th>
 	</tr><tr class="windowbg2 vtop">
@@ -115,7 +115,7 @@ sub SpamQuestions {
 </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_1px pad_4px">
+<table class="cs_thin pad_4px">
 	<tr>
     	<th class="titlebg"><img src="$imagesdir/preferences.gif" alt="" /> $admin_txt{'10'}</th>
 	</tr><tr>
@@ -128,7 +128,7 @@ sub SpamQuestions {
 </div>
 </form>
 <div class="bordercolor rightboxdiv">
-<table class="cs_1px pad_4px">
+<table class="cs_thin pad_4px">
 	<col span="2" class="w_43pc" />
 	<col span="2" class="w_7pc" />
 	<tr>
@@ -146,9 +146,9 @@ sub SpamQuestions {
 $show_questions
 </table>
 </div>
-<form action="$adminurl?action=spam_questions_add" method="post">
+<form action="$adminurl?action=spam_questions_add" method="post" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
-<table class="cs_1px pad_4px">
+<table class="cs_thin pad_4px">
     <col class="w_25pc" />
     <col class="w_75pc" />
 	<tr>
@@ -163,7 +163,7 @@ $show_questions
 </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_1px pad_4px">
+<table class="cs_thin pad_4px">
 	<tr>
     	<th class="titlebg"><img src="$imagesdir/preferences.gif" alt="" /> $admin_txt{'10'}</th>
 	</tr><tr>
@@ -254,9 +254,9 @@ sub SpamQuestionsEdit {
       $question_edit;
 
     $yymain = qq~
-<form action="$adminurl?action=spam_questions_edit2" method="post">
+<form action="$adminurl?action=spam_questions_edit2" method="post" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
-<table class="cs_1px pad_4px">
+<table class="cs_thin pad_4px">
     <col class="w_25pc" />
     <col class="w_75pc" />
 	<tr>
@@ -271,7 +271,7 @@ sub SpamQuestionsEdit {
 </table>
 </div>
 <div class="bordercolor rightboxdiv" style="margin-top: 1em;">
-<table class="cs_1px pad_4px">
+<table class="cs_thin pad_4px">
 	<tr>
     	<th class="titlebg"><img src="$imagesdir/preferences.gif" alt="" /> $admin_txt{'10'}</th>
 	</tr><tr>
