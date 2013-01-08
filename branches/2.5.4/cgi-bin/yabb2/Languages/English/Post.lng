@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$postlngver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$postlngver = 'YaBB 2.5.4 $Revision: 1.3 $';
 
 %post_txt = (
 '10' => 'Save',
@@ -187,7 +187,8 @@ $postlngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 %npf_txt=(
 '01' => 'Open Live Preview',
 '02' => 'Close Live Preview',
-'03' => "Max $MaxMessLen characters. Remaining characters: ",
+'03' => 'Max',
+'03a' => 'characters. Remaining characters: ',
 '04' => 'Live Preview',
 '05' => '<b>Font Family / Size</b>',
 'default' => 'Default',
@@ -259,6 +260,11 @@ $postlngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 '1' => 'Your Verification Code is',
 '3' => 'Verification Code',
 'casewarning' => 'Please type exactly what text appears in the image. The characters must be typed in the same order, and it is case-sensitive.',
+'casewarning_1' => 'Please type exactly what text appears in the image,',
+'casewarning_2' => '<br /><span style="font-weight: bold;">without the first',
+'casewarning_3' => '<br /><span style="font-weight: bold;">without the last',
+'casewarning_4' => 'and last',
+'casewarning_5' => 'characters.</span><br />The characters must be typed in the same order,<br />and they are case-sensitive.',
 );
 
 %spell_check = (
