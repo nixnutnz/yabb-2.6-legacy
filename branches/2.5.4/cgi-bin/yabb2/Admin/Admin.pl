@@ -16,16 +16,16 @@ use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use English qw(-no_match_vars);
 use Time::Local 'timelocal';
-our $VERSION = 1.4;
+our $VERSION = 1.7;
 
-$adminplver = 'YaBB 2.5.4 $Revision: 1.4 $';
+$adminplver = 'YaBB 2.5.4 $Revision: 1.7 $';
 
 sub Admin {
     is_admin_or_gmod();
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_1px pad_4px">
+    <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg" colspan="2">
                 <b>$admintxt{'1'}</b>
@@ -40,10 +40,9 @@ sub Admin {
         </tr>
     </table>
 </div>
-<br />
 <div class="left_49div">
     <div class="bordercolor rightboxdiva">
-        <table class="cs_1px pad_4px">
+        <table class="cs_thin pad_4px">
             <tr>
                 <td class="titlebg">
                     <b>$admintxt{'6'}</b>
@@ -77,11 +76,10 @@ $noBytesHarmed
             </tr>
         </table>
     </div>
-    <br />
     <div class="bordercolor rightboxdiva">
         <script src="http://www.yabbforum.com/update/versioncheck.js" type="text/javascript"></script>
         <script type="text/javascript">
-        document.write('<table class="cs_1px pad_4px">');
+        document.write('<table class="cs_thin pad_4px">');
         document.write('<tr><td class="titlebg" colspan="2"><b>$admintxt{'3'}</b></td></tr>');
         document.write('<tr><td class="windowbg2">$versiontxt{'4'}</td><td class="windowbg2"><b>$YaBBversion</b></td></tr>');
         if (!STABLE) {
@@ -91,9 +89,9 @@ $noBytesHarmed
                 document.write('<tr><td class="windowbg2">$versiontxt{'7'}</td><td class="windowbg2"><b>'+BETA+'</b></td></tr>');
                 document.write('<tr><td class="windowbg2">$versiontxt{'8'}</td><td class="windowbg2"><b>'+ALPHA+'</b></td></tr>');
                 if (STABLE == "$YaBBversion") {
-                        document.write('<tr><td class="windowbg2" colspan="2"><br />$versiontxt{'6'}<br /><br /></td></tr>');
+                        document.write('<tr><td class="windowbg2 padd_8_12px" colspan="2">$versiontxt{'6'}</td></tr>');
                 } else {
-                        document.write('<tr><td class="windowbg2" colspan="2"><br />$versiontxt{'2'}'+STABLE+'$versiontxt{'3'}<br /><br /></td></tr>');
+                        document.write('<tr><td class="windowbg2 padd_8_12px" colspan="2">$versiontxt{'2'}'+STABLE+'$versiontxt{'3'}</td></tr>');
                 }
         }
         document.write('</table>');
@@ -103,7 +101,7 @@ $noBytesHarmed
 </div>
 <div class="right_50div">
     <div class="bordercolor leftboxdiv">
-        <table class="cs_1px pad_4px">
+        <table class="cs_thin pad_4px">
             <tr>
                 <td class="titlebg">
                     <b>$admintxt{'4'}</b>
@@ -115,9 +113,8 @@ $noBytesHarmed
             </tr>
         </table>
     </div>
-    <br />
     <div class="bordercolor leftboxdiv">
-        <table class="cs_1px pad_4px">
+        <table class="cs_thin pad_4px">
             <tr>
                 <td class="titlebg">
                     <b>$admintxt{'5'}</b>
@@ -135,10 +132,9 @@ $noBytesHarmed
 
     if ( -d './Convert' ) {
         $yymain .= qq~
-    <br />
-    <div class="bordercolor leftboxdiv">
+    <div class="bordercolor leftboxdiv" style="margin-top:.5em">
         <form name="backdelete" action="$adminurl?action=convdelete" method="post">
-            <table class="cs_1px pad_4px">
+            <table class="cs_thin pad_4px">
                 <tr>
                     <td class="titlebg">
                         <b>$admintxt{'7'}</b>
@@ -288,7 +284,7 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_1px pad_4px">
+    <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
                 <img src="$imagesdir/info.gif" alt="" /> <b>$admintxt{'28'}</b>
@@ -591,7 +587,7 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_1px pad_4px">
+    <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
                 <img src="$imagesdir/info.gif" alt="" /> <b>$admin_txt{'693'}</b>
@@ -608,7 +604,7 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
         $yymain .= qq~
 <br />
 <div class="bordercolor rightboxdiv">
-    <table class="cs_1px pad_4px">
+    <table class="cs_thin pad_4px">
         <col class="w_50pc" />
         <tr>
             <td class="titlebg" colspan="2">
@@ -638,7 +634,7 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
 </div>
 <br />
 <div class="bordercolor rightboxdiv">
-    <table class="cs_1px pad_4px">
+    <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
                 <img src="$imagesdir/cat.gif" alt="" /> <b>$admin_txt{'695'}</b>
@@ -656,7 +652,7 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
 </div>
 <br />
 <div class="bordercolor rightboxdiv">
-    <table class="cs_1px pad_4px">
+    <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
                 <img src="$imagesdir/cat.gif" alt="" /> <b>$admin_txt{'696'}</b>
@@ -674,7 +670,7 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
 </div>
 <br />
 <div class="bordercolor rightboxdiv">
-    <table class="cs_1px pad_4px">
+    <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
                 <img src="$imagesdir/cat.gif" alt="" /> <b>$admin_txt{'696a'}</b>
@@ -688,7 +684,7 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
 </div>
 <br />
 <div class="bordercolor rightboxdiv">
-    <table class="cs_1px pad_4px">
+    <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
                 <img src="$imagesdir/cat.gif" alt="" /> <b>$admin_txt{'838'}</b>
@@ -720,7 +716,7 @@ sub DeleteOldMessages {
     $yymain .= qq~
 <form action="$adminurl?action=removeoldthreads" method="post">
 <div class="bordercolor rightboxdiv">
-    <table class="cs_1px pad_4px">
+    <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
                 <img src="$imagesdir/ban.gif" alt="" /> <b>$aduptxt{'04'}</b>
@@ -884,7 +880,7 @@ sub ver_detail {
 
     $yymain .= qq~
         <div class="bordercolor rightboxdiv">
-        <table class="cs_1px pad_4px">
+        <table class="cs_thin pad_4px">
             <col class="w_40pc" />
             <col class="w_30pc" />
             <tr>
@@ -1052,7 +1048,7 @@ qq~<input type="checkbox" name="$actfound" id="$actfound"$selected />&nbsp;<labe
     $yymain .= qq~
 <form action="$adminurl?action=referer_control2" method="post">
     <div class="bordercolor rightboxdiv">
-        <table class="cs_1px pad_4px">
+        <table class="cs_thin pad_4px">
             <col class="w_33pc" />
             <tr>
                 <td class="titlebg" colspan="3">
@@ -1120,15 +1116,11 @@ sub Refcontrol2 {
 sub AddMember {
     is_admin_or_gmod();
     LoadLanguage('Register');
-    if ($regcheck) {
-        require "$sourcedir/Decoder.pl";
-        validation_code();
-    }
 
     $yymain .= qq~
 <script type="text/javascript" src="$yyhtml_root/ajax.js"></script>
-<form action="$adminurl?action=addmember2" method="post" name="creator">
-<table class="bordercolor cs_1px pad_3px">
+<form action="$adminurl?action=addmember2" method="post" name="creator" accept-charset="$yycharset">
+<table class="bordercolor cs_thin pad_3px">
     <col class="w_30pc" />
     <tr>
         <td colspan="2" class="titlebg">
@@ -1170,16 +1162,6 @@ sub AddMember {
 
     if ( !$emailpassword ) {
         $yymain .= password_check();
-    }
-
-    if ($regcheck) {
-        $yymain .= qq~<tr>
-        <td class="windowbg"><label for="verification"><b>$floodtxt{'1'}:</b></label></td>
-        <td class="windowbg">$showcheck<br /><label for="verification"><span class="small">$floodtxt{'casewarning'}</span></label></td>
-    </tr><tr>
-        <td class="windowbg"><label for="verification"><b>$floodtxt{'3'}:</b></label></td>
-        <td class="windowbg"><input type="text" maxlength="30" name="verification" id="verification" size="30" /></td>
-    </tr>~;
     }
 
     $yymain .= qq~<tr>
@@ -1261,11 +1243,6 @@ sub AddMember2 {
     {
         admin_fatal_error( 'invalid_character',
             "$register_txt{'38'} $register_txt{'241re'}" );
-    }
-
-    if ($regcheck) {
-        require "$sourcedir/Decoder.pl";
-        validation_check( $FORM{'verification'} );
     }
 
     if ($emailpassword) {
