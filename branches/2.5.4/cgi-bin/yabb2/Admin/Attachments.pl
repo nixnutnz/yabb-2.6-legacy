@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.1;
+our $VERSION = 1.2;
 
-$attachmentsplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$attachmentsplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub Attachments {
@@ -47,14 +47,14 @@ sub Attachments {
 
     my $totalattachnum = @attachments;
     $yymain .= qq~
-<table class="bordercolor cs_1px pad_3px w_70pc">
+<table class="bordercolor cs_thin pad_3px w_70pc">
     <tr>
         <td class="titlebg">
             <img src="$imagesdir/xx.gif" alt="" />
                 <b>$fatxt{'24'}</b>
         </td>
     </tr><tr>
-        <td class="windowbg"><br /><span class="small">$fatxt{'25'}</span><br /><br /></td>
+        <td class="windowbg padd_8_12px"><span class="small">$fatxt{'25'}</span></td>
     </tr><tr>
         <td class="catbg"><b>$fatxt{'26'}</b></td>
     </tr><tr>
@@ -494,16 +494,14 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
     my $class_sortuser   = $sort =~ /3/sm   ? 'catbg' : 'windowbg';
 
     $yymain .= qq~
-<table class="bordercolor cs_1px pad_8px w_90pc">
+<table class="bordercolor cs_thin pad_8px w_90pc">
     <tr>
         <td class="titlebg" colspan="8">
         <img src="$imagesdir/xx.gif" alt="" />&nbsp;<b>$fatxt{'39'}</b>
         </td>
     </tr><tr>
-        <td class="windowbg" colspan="8">
-        <br />
+        <td class="windowbg padd_8_12px" colspan="8">
         <span class="small">$fatxt{'38'}</span>
-        <br /><br />
         </td>
     </tr><tr>
         <td class="titlebg center" colspan="8"><b>$fatxt{'55'}</b></td>
