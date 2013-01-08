@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-our $VERSION = 1.1;
+our $VERSION = 1.3;
 
-my $settings_securityplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+our $settings_securityplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Sessions');
@@ -128,6 +128,24 @@ qq~<input type="text" name="codemaxchars" id="codemaxchars" size="5" value="$cod
             </select>~,
                 name       => 'captchastyle',
                 validate   => 'text',
+                depends_on => [ 'regcheck||', 'gpvalid_en||' ],
+            },
+            {
+                description =>
+                  qq~<label for="captchaStartChars">$floodtxt{'extra_chars_start'}<br /><span class="small">$floodtxt{'extra_chars_desc'}</span></label>~,
+                input_html =>
+qq~<input type="text" name="captchaStartChars" id="captchaStartChars" size="5" value="$captchaStartChars" />~,
+                name       => 'captchaStartChars',
+                validate   => 'text,null',
+                depends_on => [ 'regcheck||', 'gpvalid_en||' ],
+            },
+            {
+                description =>
+                  qq~<label for="captchaEndChars">$floodtxt{'extra_chars_end'}<br /><span class="small">$floodtxt{'extra_chars_desc'}</span></label>~,
+                input_html =>
+qq~<input type="text" name="captchaEndChars" id="captchaEndChars" size="5" value="$captchaEndChars" />~,
+                name       => 'captchaEndChars',
+                validate   => 'text,null',
                 depends_on => [ 'regcheck||', 'gpvalid_en||' ],
             },
             {
