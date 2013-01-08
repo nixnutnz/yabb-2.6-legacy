@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-our $VERSION = 1.1;
+our $VERSION = 1.2;
 
-$viewmembersplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$viewmembersplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('MemberList');
@@ -164,8 +164,8 @@ qq~<span class="index_tog1 small"><img src="$imagesdir/index_togl.gif" alt="" />
     else {
         if ($letter) {
             $yymain .= qq~<tr>
-    <td class="windowbg center" colspan="7">
-        <br /><b>$ml_txt{'760'}</b><br /><br />
+    <td class="windowbg center padd_8_12px" colspan="7">
+        <b>$ml_txt{'760'}</b>
     </td>
 </tr>~;
         }
@@ -661,7 +661,7 @@ sub buildPages {
         );
 
     $TableHeader .= qq~
-        <table class="bordercolor cs_1px pad_3px">
+        <table class="bordercolor cs_thin pad_3px">
           <tr>
             <td class="titlebg">
                 <span style="float: left;"><img src="$imagesdir/register.gif" alt=""  /><b> $admintxt{'17'}</b></span>
@@ -699,7 +699,7 @@ sub buildPages {
 
         <form name="adv_memberview" action="$adminurl?action=deletemultimembers$sortmode$sortorder$spages" method="post" style="display: inline" onsubmit="return submitproc()">
         <input type="hidden" name="button" value="0" />
-        <table class="bordercolor cs_1px pad_3px">
+        <table class="bordercolor cs_thin pad_3px">
             <col span="2" style="width:19%" />
             <col class="w_5pc" />
             <col style="width:14%" />
@@ -723,7 +723,7 @@ sub buildPages {
     }
 
     $sel_box = qq~
-            <table class="bordercolor cs_1px pad_3px">
+            <table class="bordercolor cs_thin pad_3px">
                 <tr>
                     <td class="titlebg right" colspan="2">
                     <label for="check_all"><b>$amv_txt{'38'}</b></label>
@@ -790,7 +790,7 @@ sub buildPages {
     if ($inp) {
         $yymain .= qq~
     <div class="rightboxdiv">
-    <table class="bordercolor cs_1px pad_3px">
+    <table class="bordercolor cs_thin pad_3px">
         <tr>
             <td class="catbg" colspan="9">
         <div style="float: left; width: 50%; text-align: left;">$pageindex1</div>
