@@ -11,13 +11,13 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use strict;
+# use strict;
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
-our $VERSION = 1.1;
+our $VERSION = 1.2;
 
 my ($action);
-my $settings_antispamplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+our $settings_antispamplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 our (
@@ -101,22 +101,6 @@ qq~<input type="text" name="timeout" id="timeout" size="4" value="$timeout" />~,
                 name     => 'timeout',
                 validate => 'number',
             },
-            {
-                description =>
-                  qq~<label for="honeypot">$admin_txt{'honeypot'}</label>~,
-                input_html =>
-qq~<input type="checkbox" name="honeypot" id="honeypot" value="1"${ischecked($honeypot)} />~,
-                name     => 'honeypot',
-                validate => 'boolean',
-            },
-            {
-                description =>
-                  qq~<label for="spamfruits">$admin_txt{'spamfruits'}</label>~,
-                input_html =>
-qq~<input type="checkbox" name="spamfruits" id="spamfruits" value="1"${ischecked($spamfruits)} />~,
-                name     => 'spamfruits',
-                validate => 'boolean',
-            },
             { header => $settings_txt{'speedban'}, },
             {
                 description =>
@@ -134,6 +118,23 @@ qq~<input type="text" name="min_post_speed" id="min_post_speed" size="5" value="
                 name       => 'min_post_speed',
                 validate   => 'number',
                 depends_on => ['speedpostdetection'],
+            },
+            { header => $settings_txt{'spambot'}, },
+            {
+                description =>
+                  qq~<label for="honeypot">$admin_txt{'honeypot'}</label>~,
+                input_html =>
+qq~<input type="checkbox" name="honeypot" id="honeypot" value="1"${ischecked($honeypot)} />~,
+                name     => 'honeypot',
+                validate => 'boolean',
+            },
+            {
+                description =>
+                  qq~<label for="spamfruits">$admin_txt{'spamfruits'}</label>~,
+                input_html =>
+qq~<input type="checkbox" name="spamfruits" id="spamfruits" value="1"${ischecked($spamfruits)} />~,
+                name     => 'spamfruits',
+                validate => 'boolean',
             },
         ],
     },
