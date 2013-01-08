@@ -20,9 +20,9 @@
 # no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
-our $VERSION = 1.3;
+our $VERSION = 1.6;
 
-$backupplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+$backupplver = 'YaBB 2.5.4 $Revision: 1.6 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Add in support for Archive::Tar in the Modules directory and binaries in different places
@@ -142,9 +142,9 @@ qq~<span class="red"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
     }
  -->
  </script>
- <form action="$adminurl?action=backupsettings2" method="post" name="backupsettings" accept-charset="UTF-8">
+ <form action="$adminurl?action=backupsettings2" method="post" name="backupsettings" accept-charset="$yycharset">
  <div class="bordercolor rightboxdiv">
-   <table class="cs_1px pad_4px">
+   <table class="cs_thin pad_4px">
      <tr>
        <td class="titlebg">
          <img src="$imagesdir/preferences.gif" alt="" /><b>$backup_txt{1}</b>
@@ -317,8 +317,9 @@ qq~name="backupmethod" id="backupmethod1" value="$backupprogusr/tar" onclick="do
         $disabledtext = $backup_txt{41};
     }
     $yymain .= qq~<tr>
-       <td class="windowbg2"><label for="backupprogusr">Path to Tar and Zip:<label> <input id="backupprogusr" type="text" value="$backupprogusr" size="20" name="backupprogusr" />
-       <br /><label for="backupprogbin">Path to gzip and bzip2:</label> <input id="backupprogbin" type="text" value="$backupprogbin" size="20" name="backupprogbin" />
+       <td class="windowbg2"><label for="backupprogusr">$backup_txt{'path1'}<label> <input id="backupprogusr" type="text" value="$backupprogusr" size="20" name="backupprogusr" />
+       <br /><label for="backupprogbin">$backup_txt{'path2'}</label> <input id="backupprogbin" type="text" value="$backupprogbin" size="20" name="backupprogbin" />
+       <br />$backup_txt{'path3'}
        </tr><tr>
        <td class="windowbg2 $style">
          <input type="radio" $input/> <label for="backupmethod1">Tar ($newcommand) $disabledtext</label>
@@ -485,7 +486,7 @@ $presetjavascriptcode
  <form action="$adminurl?action=runbackup" method="post" name="runbackup">
  <input type="hidden" name="backupnewest" value="0" />
  <div class="bordercolor rightboxdiv">
-   <table class="cs_1px pad_4px">
+   <table class="cs_thin pad_4px">
      <tr>
        <td class="titlebg" colspan="2">
          <img src="$imagesdir/preferences.gif" alt="" /><b>$backup_txt{21}</b>
@@ -519,9 +520,8 @@ $presetjavascriptcode
    </table>
  </div>
  </form>
- <br />
  <div class="bordercolor rightboxdiv">
-   <table class="cs_1px pad_4px">
+   <table class="cs_thin pad_4px">
      <tr>
        <td class="titlebg" colspan="2">
          <img src="$imagesdir/preferences.gif" alt="" /><b>$backup_txt{35}</b>
@@ -530,7 +530,7 @@ $presetjavascriptcode
        <td class="windowbg2" colspan="2">
          $backup_txt{37} <i>${$uid.$username}{'email'}</i> $backup_txt{'37a'}<br />
          $backup_txt{36} <tt>$backupdir</tt>
-         <table class="cs_1px pad_4px border">
+         <table class="cs_thin pad_4px border">
           <tr><td class="center">$backup_txt{70}</td><td class="center">$backup_txt{71}</td><td class="center">$backup_txt{72}</td><td class="center">$backup_txt{73}</td><td class="center" colspan="5">$backup_txt{74}</td></tr>
           $filelist
          </table>
@@ -1240,7 +1240,7 @@ sub recoverbackup1 {
  </script>
  <div class="bordercolor rightboxdiv">
    <form action="$adminurl?action=recoverbackup2" method="post" name="recover">
-   <table class="cs_1px pad_10px">
+   <table class="cs_thin pad_10px">
      <tr>
        <td class="titlebg" colspan="2">
          <img src="$imagesdir/preferences.gif" alt="" /><b>$backup_txt{100}</b>
@@ -1360,7 +1360,7 @@ sub recoverbackup2 {
 
     $yymain .= qq~
  <div class="bordercolor rightboxdiv">
-   <table class="cs_1px pad_10px">
+   <table class="cs_thin pad_10px">
      <tr>
        <td class="titlebg" colspan="2">
          <img src="$imagesdir/preferences.gif" alt="" /><b>$backup_txt{100}</b>
