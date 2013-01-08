@@ -13,9 +13,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-our $VERSION = 1.1;
+our $VERSION = 1.2;
 
-my $settings_maintenanceplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+our $settings_maintenanceplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # List of settings
