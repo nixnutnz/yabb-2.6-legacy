@@ -16,7 +16,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use Time::Local 'timelocal';
 
-$banpmver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$banpmver = 'YaBB 2.5.4 $Revision: 1.1 $';
 
 sub ipban {
     is_admin_or_gmod();
@@ -30,6 +30,7 @@ sub ipban {
     $today = time;
 
     *time_ban = sub {
+        my $ban_user = $banned[3];
         for my $i ( 0 .. 3 ) {
             $tm   = localtime $banned[2];
             $year = $tm->year + 1900;
@@ -42,10 +43,12 @@ sub ipban {
         }
 
         if ( $banned[4] eq 'p' ) {
-            $timeb = "$mon/$day/$year by $banned[3] - Permanent";
+            $timeb =
+"$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Permanent";
         }
         elsif ( $banned[4] ne 'p' && $tmb < $today ) {
-            $timeb = "$mon/$day/$year by $banned[3] - Expired";
+            $timeb =
+"$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expired";
         }
         else {
             $tma   = localtime $tmb;
@@ -53,7 +56,7 @@ sub ipban {
             $monb  = $tma->mon + 1;
             $dayb  = $tma->mday;
             $timeb =
-qq~$mon/$day/$year by $banned[3] - Expires on: $monb/$dayb/$yearb~;
+qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $monb/$dayb/$yearb~;
         }
         return $timeb;
     };
@@ -83,7 +86,7 @@ qq~$mon/$day/$year by $banned[3] - Expires on: $monb/$dayb/$yearb~;
     $yymain .= qq~
     <div class="bordercolor rightboxdiv">
     <form action="$adminurl?action=ipban2" method="post">
-        <table class="cs_1px pad_4px">
+        <table class="cs_thin pad_4px">
             <tr>
                 <td class="titlebg">
                     <img src="$imagesdir/ban.gif" alt="" /><b>$admin_txt{'340'}</b>
@@ -106,7 +109,7 @@ qq~$mon/$day/$year by $banned[3] - Expires on: $monb/$dayb/$yearb~;
         </table>
     </form>
     <form action="$adminurl?action=ipban2" method="post">
-        <table class="cs_1px pad_4px">
+        <table class="cs_thin pad_4px">
             <tr>
                 <td class="catbg">
                     <label for="ban_email"><span class="small">$admin_txt{'725b'}</span></label>
@@ -125,7 +128,7 @@ qq~$mon/$day/$year by $banned[3] - Expires on: $monb/$dayb/$yearb~;
         </table>
     </form>
     <form action="$adminurl?action=ipban2" method="post">
-        <table class="cs_1px pad_4px">
+        <table class="cs_thin pad_4px">
             <tr>
                 <td class="catbg">
                     <label for="ban_memname"><span class="small">$admin_txt{'725c'}</span></label>
@@ -144,7 +147,7 @@ qq~$mon/$day/$year by $banned[3] - Expires on: $monb/$dayb/$yearb~;
         </table>
         </form>
         <form action="$adminurl?action=ipban_add" method="post">
-        <table class="cs_1px pad_4px">
+        <table class="cs_thin pad_4px">
             <col class="w_50px" />
             <tr>
                 <td class="titlebg">
@@ -168,7 +171,6 @@ qq~$mon/$day/$year by $banned[3] - Expires on: $monb/$dayb/$yearb~;
                 <td class="windowbg2">
                 Are these: <input type='radio' name='type' value='U' />User <input type='radio' name='type' value='I' checked="checked" />IP or <input type='radio' name='type' value='E' />E-mail?<br />
                 <textarea rows="10" cols="100" name="banned" /></textarea>
-                <input type="hidden" name="admin" value="$iamadmin" />
                 <input type="hidden" name="unban" value="1" />
                 </td>
             </tr><tr>
@@ -179,7 +181,7 @@ qq~$mon/$day/$year by $banned[3] - Expires on: $monb/$dayb/$yearb~;
         </table>
         </form>
         <form action="$adminurl?action=ban_clean" method="post">
-        <table class="cs_1px pad_4px">
+        <table class="cs_thin pad_4px">
             <tr>
                 <td class="titlebg">
                     <img src="$imagesdir/ban.gif" alt="" /><b>$admin_txt{'725d'}</b>
@@ -255,10 +257,7 @@ sub ipban2 {
 sub ipban_add {
     is_admin_or_gmod();
     my $ban_in = $FORM{'banned'};
-    my $admin  = $FORM{'admin'};
     my $type   = $FORM{'type'};
-    if   ($admin) { $admina = 'admin'; }
-    else          { $admina = 'gmod'; }
 
     my @banin = split /\n/xsm, $ban_in;
 
@@ -282,8 +281,9 @@ sub ipban_add {
 
         fopen( BAN2, ">>$vardir/banlist.txt" )
           or croak 'cannot open BAN2 to write';
-        if ( $j && $ihave == 0 ) {
-            print {BAN2} qq~$type|$j|$time|$admina|h\n~
+        if ( $j && $ihave == 0 && $j ne '127.0.0.1' ) {
+            print {BAN2}
+              qq~$type|$j|$time|${$uid.$username}{'realname'} ($username)|h\n~
               or croak 'cannot write to BAN2';
         }
         else { print {BAN2} q~~ or croak 'cannot write to BAN2'; }
@@ -298,13 +298,14 @@ sub ipban_update {
 
     # This is for quick updating for banning + unbanning
     is_admin_or_gmod();
-    my $q         = CGI->new;
-    my $ban_email = $q->param('ban_email');
-    my $ban       = $q->param('ban');
-    my $ban_mem   = $q->param('ban_memname');
-    my $unban     = $q->param('unban');
-    my $user      = $q->param('username');
-    my $lev       = $q->param('lev');
+    my $ban       = $INFO{'ban'};
+    my $lev       = $INFO{'lev'};
+    my $ban_email = $INFO{'ban_email'};
+    my $ban_mem   = $INFO{'ban_memname'};
+    my $unban     = $INFO{'unban'};
+    my $user      = $INFO{'username'};
+    $ban_mem = $do_scramble_id ? decloak($ban_mem) : $ban_mem;
+    $ban_email =~ s/@/\\@/xsm;
 
     my $time = time;
     $ihave = 0;
@@ -329,8 +330,7 @@ sub ipban_update {
                 }
             }
             elsif ($ban_mem) {
-                $ban_mem = $do_scramble_id ? decloak($ban_mem) : $ban_mem;
-                if ( $banned[1] eq $ban_email ) {
+                if ( $banned[1] eq $ban_mem ) {
                     $uhave = 1;
                 }
             }
@@ -338,22 +338,23 @@ sub ipban_update {
 
         fopen( BAN2, ">>$vardir/banlist.txt" )
           or croak 'cannot open BAN2 to write';
-        if ( $ban && $ihave == 0 ) {
-            print {BAN2} qq~I|$ban|$time|admin|$lev|\n~
+        if ( $ban && $ihave == 0 && $ban ne '127.0.0.1' ) {
+            print {BAN2}
+              qq~I|$ban|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
               or croak 'cannot write to BAN2';
         }
         if ( $ban_email && $ehave == 0 ) {
-            $ban_email =~ s/@/\\@/xsm;
-            print {BAN2} qq~E|$ban_email|$time|admin|$lev|\n~
+            print {BAN2}
+qq~E|$ban_email|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
               or croak 'cannot write to BAN2';
         }
         if ( $ban_mem && $uhave == 0 ) {
-            print {BAN2} qq~U|$ban_mem|$time|admin|$lev|\n~
+            print {BAN2}
+qq~U|$ban_mem|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
               or croak 'cannot write to BAN2';
         }
         fclose(BAN2) or croak 'cannot close BAN2';
     }
-
     elsif ( $unban == 1 ) {
         fopen( BAN2, ">$vardir/banlist.txt" )
           or croak 'cannot open BAN2 to write';
@@ -441,42 +442,52 @@ sub banlog {
     return $banlog;
 }
 
-sub ipban_reg {
-    is_admin_or_gmod();
-    my $q   = CGI->new;
-    my $ban = $q->param('ban');
-    my $lev = $q->param('lev');
-
-    my $time = time;
-    fopen( BAN2, ">>$vardir/banlist.txt" )
-      or croak 'cannot open BAN2 to write';
-    if ($ban) {
-        print {BAN2} qq~I|$ban|$time|admin|$lev|\n~
-          or croak 'cannot write to BAN2';
-    }
-    fclose(BAN2) or croak 'cannot close BAN2';
-
-    $yySetLocation = qq~$adminurl?action=view_reglog~;
-    redirectexit();
-    return;
-}
-
 sub ipban_err {
     is_admin_or_gmod();
-    my $q   = CGI->new;
-    my $ban = $q->param('ban');
-    my $lev = $q->param('lev');
+    my $ip_ban  = $INFO{'ban'};
+    my $lev     = $INFO{'lev'};
+    my @timeban = ( 'p', 'd', 'w', 'm', );
+    my @bandays = ( 36500, 1, 7, 30, );
+    my $tmb     = 0;
 
     my $time = time;
+    my $ihave = 0;
+    $ban =~ tr/\r//d;
+    $ban =~ s/\A[\s\n]+| |[\s\n]+\Z//gsm;
+    $ban =~ s/\n\s*\n/\n/gsm;
+    fopen( BAN, "<$vardir/banlist.txt" )
+      or croak 'cannot open BANLOG to read';
+    my @myban = <BAN>;
+    chomp @myban;
+    fclose(BAN) or croak 'cannot close BANLOG';
+    *time_ban = sub {
+
+        for my $i ( 0 .. 3 ) {
+            if ( $banned[4] eq $timeban[$i] ) {
+                $tmb = $banned[2] + ( $bandays[$i] * 84600 );
+            }
+        }
+        return $tmb;
+    };
+    foreach my $i (@myban) {
+        @banned = split /\|/xsm, $i;
+        if ( $banned[0] eq 'I' && $banned[1] eq $ip_ban ) {
+            $tmb = time_ban();
+            if ( ( $banned[4] ne 'p' && $tmb > $today ) || $banned[4] eq 'p' ) {
+                $ihave = 1;
+            }
+    }
+}
+
     fopen( BAN2, ">>$vardir/banlist.txt" )
       or croak 'cannot open BAN2 to write';
-    if ($ban) {
-        print {BAN2} qq~I|$ban|$time|admin|$lev|\n~
+    if ( $ip_ban && $ihave == 0 && $ip_ban ne '127.0.0.1' ) {
+        print {BAN2} qq~I|$ip_ban|$time|${$uid.$username}{'realname'}|$lev|\n~
           or croak 'cannot write to BAN2';
     }
     fclose(BAN2) or croak 'cannot close BAN2';
 
-    $yySetLocation = qq~$adminurl?action=view_reglog~;
+    $yySetLocation = qq~$adminurl?action=$INFO{'return'}~;
     redirectexit();
     return;
 }
