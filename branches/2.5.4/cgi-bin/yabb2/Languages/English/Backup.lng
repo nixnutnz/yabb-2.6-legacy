@@ -12,9 +12,13 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$backuplngver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$backuplngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 
-($support_env_path = $ENV{'SCRIPT_FILENAME'}) =~ s~/\w+\.pl~~;
+$script_root = $ENV{'SCRIPT_FILENAME'};
+if( ! $script_root ) {
+	$script_root = $ENV{'PATH_TRANSLATED'};
+}
+($support_env_path = $script_root) =~ s~/\w+\.pl~~;
 
 %backup_txt = (
 '1', 'YaBB Backup',
@@ -23,6 +27,9 @@ $backuplngver = 'YaBB 2.5.4 $Revision: 1.0 $';
 '4', 'Directories to Backup',
 '5', 'Check/Uncheck All',
 '6', 'If you select every directory, you will have a complete copy of your forum. This is the recommended setting for most forums.<br />However, for <i>very</i> large forums, a full backup may cause recovery problems (e.g. timeouts). For such large forums, it may be better to create one backup of only the "static" framework directories (which change very little) and separate backups for each of the Boards, Members and Messages directories.',
+'path1' => 'Path to Tar and Zip:',
+'path2' => 'Path to gzip and bzip2 (also sets path to gzip in Advanced Settings):',
+'path3' => 'Fill in the paths <b>only</b> if YaBB cannot automatically find Tar, Zip, gzip, and bzip2. Otherwise, leave the above spaces blank.',
 
 # Begin description of directories
 # We don't translate directory names like Boards/.
@@ -155,7 +162,7 @@ $backuplngver = 'YaBB 2.5.4 $Revision: 1.0 $';
 );
 
 # The actual messages are here.
-# Don't translate WORDS IN ALL CAPITIALS from here to the end of the file
+# Don't translate WORDS IN ALL CAPITALS from here to the end of the file
 $backup_txt{'mailmessage1'} = qq~Hi USERNAME!
 
 The backup FILENAME should be attached to this message.
