@@ -12,9 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$adminlngver = 'YaBB 2.5.4 $Revision: 1.3 $';
-
-$yycharset = 'UTF-8';
+$adminlngver = 'YaBB 2.5.4 $Revision: 1.6 $';
 
 @days = ('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
 @months = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
@@ -35,7 +33,7 @@ $yycharset = 'UTF-8';
 '14' => '(Hold the control or apple key to select or de-select multiple entries)',
 '15' => 'You need at least one "Post-Independent Member Group" before you can assign Moderator Groups.',
 '18' => 'Edit Search Engine Identifiers',
-'19' => 'Please place one search engine entry per line. Format:<br /><i>(partial) domainname e.g. googlebot</i>|<i>Name as it appears on screen</i><br />Engines with the same display name will be counted together, regardless of domainname. If you don\'t like this, you must give them different display names.',
+'19' => 'Please place one search engine entry per line. Format:<br /><i>(partial) domainname e.g. googlebot</i>|<i>Name as it appears on screen</i><br />Engines with the same display name will be counted together, regardless of domainname. If you don&#39;t like this, you must give them different display names.',
 '21' => 'Posts',
 '22' => 'Allow Permalink Environment?',
 '23' => 'Permalink Domain',
@@ -76,11 +74,11 @@ $yycharset = 'UTF-8';
 '64b' => 'Board Picture',
 '64b2' => 'Category Picture',
 '64c' => 'Zero Post-Count Board?',
-'64d' => 'If checked, posts in this board will not contribute to a user\'s post count.',
+'64d' => 'If checked, posts in this board will not contribute to a user&#39;s post count.',
 '64e' => 'Show to all?',
 '64f' => 'If checked, the board is visible to anyone able to view the Board Index, even if they are not allowed to access the board itself.',
 '64g' => 'Global Announcements?',
-'64h' => 'If checked, topics in this board are shown as "Important Topics" at the top of every other board\'s Message Index. Only Administrators and Global Moderators (if allowed) may post in this board; all permissions for other groups are ignored. The board itself will be visible in the Board Index only for Admins and Global Mods (if allowed).',
+'64h' => 'If checked, topics in this board are shown as "Important Topics" at the top of every other board&#39;s Message Index. Only Administrators and Global Moderators (if allowed) may post in this board; all permissions for other groups are ignored. The board itself will be visible in the Board Index only for Admins and Global Mods (if allowed).',
 '64i' => 'Recycle Bin?',
 '64j' => 'If checked, this board is a recycle bin for topics deleted by Moderators and, if enabled in Forum Settings -> Staff, by Global Moderators and Administrators.',
 '64k' => 'Allow attachments?',
@@ -123,7 +121,7 @@ $yycharset = 'UTF-8';
 '106' => 'An Error Has Occurred!',
 '107' => 'at',
 '110' => 'Encrypt User IDs?',
-'111' => 'This will obscure any readable reference to a member\'s username.',
+'111' => 'This will obscure any readable reference to a member&#39;s username.',
 '122' => 'days old',
 '123' => 'REMOVED',
 '124' => 'Remove posts older than',
@@ -139,7 +137,7 @@ $yycharset = 'UTF-8';
 '216' => 'Edit Templates',
 '222' => 'Forum Preferences and Settings',
 '223' => 'Advanced Forum Preferences and Settings',
-'230' => 'Can\'t open directory',
+'230' => 'Can&#39;t open directory',
 '233' => 'Date Registered',
 '240' => 'There is an invalid character in the',
 '241' => 'field!',
@@ -202,21 +200,22 @@ $yycharset = 'UTF-8';
 '374' => 'Maximum Topics displayed per page in the Message Index',
 '375' => 'Maximum number of messages displayed per page of a Topic',
 '376' => 'Number of days after a post is made that it will no longer show as "new" in either the Board view or Message view.',
-'377' => 'Enable Spell Checking?<br /><span class="small">This spell checker relies on external websites belonging to Google (googiespell). You must take into consideration firewall settings and content blockers in using this feature.</span><br /><b><u>License:</u></b><br />The scripts in /yabbfiles/googiespell are dual licensed. One is for free software ("open source") the other is for proprietary software.<br />The free license is <a href="http://www.gnu.org/copyleft/gpl.html" onclick="target=&#39;_blank&#39;;">the GPL</a>. Under this license you can only use GoogieSpell with/in free software (i.e. software where the source isn\'t released). You can\'t use GoogieSpell with proprietary software even if you don\'t distribute your software.<br />For more details see <a href="http://orangoo.com/labs/GoogieSpell/License/" onclick="target=&#39;_blank&#39;;">http://orangoo.com/labs/GoogieSpell/License/</a>.',
-'377a' => 'If you see this message, some required Perl modules were not found.<br />If an error message like "Can\'t locate ..." is shown, then this module is not installed on your server.<br /><br />',
+'377' => 'Enable Spell Checking?<br /><span class="small">This spell checker relies on external websites belonging to Google (googiespell). You must take into consideration firewall settings and content blockers in using this feature.</span><br /><b><u>License:</u></b><br />The scripts in /yabbfiles/googiespell are dual licensed. One is for free software ("open source") the other is for proprietary software.<br />The free license is <a href="http://www.gnu.org/copyleft/gpl.html" onclick="target=&#39;_blank&#39;;">the GPL</a>. Under this license you can only use GoogieSpell with/in free software (i.e. software where the source isn&#39;t released). You can&#39;t use GoogieSpell with proprietary software even if you don&#39;t distribute your software.<br />For more details see <a href="http://orangoo.com/labs/GoogieSpell/License/" onclick="target=&#39;_blank&#39;;">http://orangoo.com/labs/GoogieSpell/License/</a>.',
+'377a' => 'If you see this message, some required Perl modules were not found.<br />If an error message like "Can&#39;t locate ..." is shown, then this module is not installed on your server.<br /><br />',
 '377b' => 'Installed',
 '377c' => '<br />To use SpellChecker, you must have installed all of these modules on your server. Ask your server host to install them for you.<br />Please install:<br />- Bundle::LWP (for LWP::UserAgent and HTTP::Request::Common)<br />- Crypt::SSLeay',
 '378' => 'Enable Bulletin Board Code?',
 '378a' => 'Enable Quotes within Quotes?',
 '379' => 'Enable News?',
 '380' => 'Enable Guest Posting?',
-'381' => 'Allow users to enable e-mail notifications for boards/threads listed in \'My Notifications\' when a new message is posted?',
+'381' => 'Allow users to enable e-mail notifications for boards/threads listed in &#39;My Notifications&#39; when a new message is posted?',
 '382' => 'Show Latest Member on Board Index?',
 '383' => 'Show Modification Date on Modified Posts?',
 '384' => 'Show User Avatar in Message View?',
 '385' => 'Show User Text in Message View?',
 '385a' => 'Default User Text (under user avatar)',
 '386' => 'Show Gender Image in Message View?',
+'386a' => 'Allow User to hide age in Profile and age and birth year in Calendar?',
 '387' => 'Enable News Fader?',
 '388' => 'Milliseconds to delay between messages in the news fader',
 '389' => 'News Fader Text Color',
@@ -282,6 +281,7 @@ $yycharset = 'UTF-8';
 '497d' => 'Until I quit the browser',
 '498' => 'Maximum Allowed Characters in Posts',
 '498a' => 'Maximum Allowed Characters in Post and PM Subject<br /> (0 = default(50) / min 10 / max 255)',
+'498b' => 'Maximum Allowed Characters in Posts for Admins',
 '499' => 'Minimum Font Height (in pixels)',
 '500' => 'Maximum Font Height (in pixels)',
 '501' => 'Maintenance Controls',
@@ -336,11 +336,11 @@ $yycharset = 'UTF-8';
 '601' => 'How to "Send topic e-mail to a friend"?',
 '602' => 'Disable "Send to a Friend" Button',
 '603' => 'Send topic e-mail to a friend over this forum',
-'604' => 'Send topic e-mail to a friend by user\'s e-mail program',
+'604' => 'Send topic e-mail to a friend by user&#39;s e-mail program',
 '605' => 'Let user decide how to send the e-mail',
 '617' => 'Are you sure you want to remove these items?',
 '619' => 'Send a Welcome E-mail to new users when you do not have "E-mail Random Password" turned on?',
-'630' => 'Use \'Fake\' File Truncation?<br /><span class="small">This option should only be enabled if your server gives the error: \'truncate() not supported on this platform.\'</span>',
+'630' => 'Use &#39;Fake&#39; File Truncation?<br /><span class="small">This option should only be enabled if your server gives the error: &#39;truncate() not supported on this platform.&#39;</span>',
 '632' => 'Disable all Guest access?',
 '639' => 'E-mail new password if a user changes his/her e-mail address?',
 '645' => 'YaBB Stats',
@@ -397,9 +397,6 @@ $yycharset = 'UTF-8';
 '739' => 'This is a list of the boards in this category. Select the board you wish to move.',
 '739a' => 'Up',
 '739b' => 'Down',
-'739c' => 'Move the selected board to another category.',
-'739d' => 'Move the selected board up or down.',
-'739e' => 'No boards in this category.',
 '739c' => 'Move the selected {board} to another category.',
 '739d' => 'Move the selected {board} up or down.',
 '739e' => 'No boards in this category.',
@@ -430,9 +427,10 @@ $yycharset = 'UTF-8';
 '804' => 'Parse Flash tags?<br /><span class="small">Enabling this may leave your board open to vulnerabilities</span>',
 '813' => 'Select the default forum template for Guests or new members:',
 '816' => 'Select default language for Guests or new members:',
+'816a' => 'Default character encoding (Usually either ISO-8859-1 or UTF-8)<br /><span class="small"><b>Caution</b>: choosing the wrong encoding may render some characters unreadable.</span>',
 '825' => 'Original Order',
 '826' => 'New Order',
-'827' => 'The \'New Order\' boards list contains boards that aren\'t in the \'Original Order\' list, or visa versa.',
+'827' => q~The 'New Order' boards list contains boards that aren't in the 'Original Order' list, or visa versa.~,
 '829' => 'Reorder Categories',
 '830' => 'Category with ID',
 '831' => 'has been removed successfully.',
@@ -462,12 +460,12 @@ $yycharset = 'UTF-8';
 'show_ip_gmod' => 'Show IP in Board Index Online List for all online Members/Guests to Global Moderators?',
 'guestmedia' => 'Prevent Guest from seeing media files or having clickable auto-linked urls in messages?',
 'guestlang' => 'Enable Guest language selection?',
-'quota' => '<i>quota</i>: Enabling this uses the Linux shell command \'quota\' to check for free disk space. This is the preferred method to use. The checkbox will be disabled if this command is not available on your server.<br /><span class="small">If your available disk space drops below 100&thinsp;000 Bytes (100 KB), the forum will automatically go into Maintenance Mode to prevent running out of space and losing data.<br />Reminder: Only Admins can access the forum when in Maintenance Mode.</span>',
-'quota_value' => '<i>quota</i>: Select the Filesystem your Forum is on:<br /><span class="small">The right Filesystem should be preselected if \'quota\' was saved <i>disabled</i> before.</span>',
+'quota' => '<i>quota</i>: Enabling this uses the Linux shell command &#39;quota&#39; to check for free disk space. This is the preferred method to use. The checkbox will be disabled if this command is not available on your server.<br /><span class="small">If your available disk space drops below 100&thinsp;000 Bytes (100 KB), the forum will automatically go into Maintenance Mode to prevent running out of space and losing data.<br />Reminder: Only Admins can access the forum when in Maintenance Mode.</span>',
+'quota_value' => '<i>quota</i>: Select the Filesystem your Forum is on:<br /><span class="small">The right Filesystem should be preselected if &#39;quota&#39; was saved <i>disabled</i> before.</span>',
 'quotahostuser' => '<i>quota</i>: Your username on your host server:<br /><span class="small">Should be prewritten. Available if the above is checked.</span>',
-'findtime' => '<i>find</i>: Time between the Linux shell command \'find\' checks file sizes in the directory you must insert below and its sub directories. This and the following two fields will be disabled if this command is not available on your server.<br />Set to 0 to be able to chose other checking method like \'quota\' or free disk space checking.<br /><span class="small">Since this can be a very time-extensive job, you should insert a reasonable high value such as 300 (five hours) or 1440 (one day). Once the free host space is obtained after each \'find\', this method is of very low server load.</span>',
-'findroot' => '<i>find</i>: Path to the root directory of your user account on a multiple user host system.<br /><span class="small">The path must be <b>from system root to your user root</b>. Example:<br />/var/www/your_domain_name/<br />/var/www/web1234/<br /><br />You can also specify a path to your forum or a directory in your forum and specify a maximum amount of space as a limit for it \'find\' will use that limit instead of your host account limits. Example:<br />/var/www/your_domain_name/cgi-bin/yabb2/<br />/var/www/your_domain_name/public_html/yabbfiles/Attachments/</span>',
-'findmax' => '<i>find</i>: Available space you are allowed to use in the above directory (in Megabytes).<br /><span class="small">This should be the same amount of disk space as your hosting plan advertises.<br />Since you should set \'find\' to check the available host space only all X hours or once per day, you should set this value lower than the space your host provides to you, to avoid running out of space due to some sudden increase of disk use for example by attachments or other high volume consuming postings.<br />To enable \'find\' for free host space checking this value must be &gt; 0. If the used space within the above directory is higher than this value, the forum will automatically go into Maintenance Mode to prevent running out of space and losing data.<br />Reminders:<br />Only Admins can access the forum when in Maintenance Mode.<br />Just in case you don\'t remember: 1 GB = 1024 MB</span>',
+'findtime' => '<i>find</i>: Time between the Linux shell command &#39;find&#39; checks file sizes in the directory you must insert below and its sub directories. This and the following two fields will be disabled if this command is not available on your server.<br />Set to 0 to be able to chose other checking method like &#39;quota&#39; or free disk space checking.<br /><span class="small">Since this can be a very time-extensive job, you should insert a reasonable high value such as 300 (five hours) or 1440 (one day). Once the free host space is obtained after each &#39;find&#39;, this method is of very low server load.</span>',
+'findroot' => '<i>find</i>: Path to the root directory of your user account on a multiple user host system.<br /><span class="small">The path must be <b>from system root to your user root</b>. Example:<br />/var/www/your_domain_name/<br />/var/www/web1234/<br /><br />You can also specify a path to your forum or a directory in your forum and specify a maximum amount of space as a limit for it &#39;find&#39; will use that limit instead of your host account limits. Example:<br />/var/www/your_domain_name/cgi-bin/yabb2/<br />/var/www/your_domain_name/public_html/yabbfiles/Attachments/</span>',
+'findmax' => '<i>find</i>: Available space you are allowed to use in the above directory (in Megabytes).<br /><span class="small">This should be the same amount of disk space as your hosting plan advertises.<br />Since you should set &#39;find&#39; to check the available host space only all X hours or once per day, you should set this value lower than the space your host provides to you, to avoid running out of space due to some sudden increase of disk use for example by attachments or other high volume consuming postings.<br />To enable &#39;find&#39; for free host space checking this value must be &gt; 0. If the used space within the above directory is higher than this value, the forum will automatically go into Maintenance Mode to prevent running out of space and losing data.<br />Reminders:<br />Only Admins can access the forum when in Maintenance Mode.<br />Just in case you don&#39;t remember: 1 GB = 1024 MB</span>',
 'diskspacecheck' => 'Enable free disk space check?<br /><span class="small">This checks for the available physical disk space on the Linux or Windows server. Be aware that not all of that disk space may be usable by you. It may show a number greater than allowed by your personal hosting plan!<br />If your available disk space drops below 100&thinsp;000 Bytes (100 KB), the forum will automatically go into Maintenance Mode to prevent running out of space and losing data.<br />Reminder: Only Admins can access the forum when in Maintenance Mode.</span>',
 'minlinkpost' => 'Minimum number of posts a member must have before links and images can be posted',
 'minlinkpost_exp' => 'This prevents spambots from spamposting directly after registering',
@@ -475,17 +473,17 @@ $yycharset = 'UTF-8';
 'minlinksig_exp' => 'This avoids spambots from creating spam-signatures directly after registering',
 'minlinkweb' => 'Number of posts a member must have before they can link to a website in their profile',
 'minlinkweb_exp' => 'This prevents spammers from linking to a website directly after registering',
-'stealth' => 'Enable \'Stealth\' mode for Admins and Global Mods?<br /><span class="small">If checked, Admins and Global Mods will not appear "online" to any other Member Groups or Guests.</span>',
+'stealth' => 'Enable &#39;Stealth&#39; mode for Admins and Global Mods?<br /><span class="small">If checked, Admins and Global Mods will not appear "online" to any other Member Groups or Guests.</span>',
 'mlview' => 'Select the Member Groups allowed to view the Member List?',
 'buddylist' => 'Enable Buddy List?',
-'regreason' => 'Maximum allowed characters in user\'s "Reason(s) for Registering"',
+'regreason' => 'Maximum allowed characters in user&#39;s "Reason(s) for Registering"',
 'showall' => 'Show "All" on page selectors and Topic Summary?',
 'imageinquote' => 'If checked, embedded images within posts will appear in quotes of those posts.<br /><span class="small">If disabled, images in quoted posts will be shown as links to the images.</span>',
-'extendedprofiles' => 'Use Extended Profiles?<br /><span class="small">If enabled, an additional item called "Profile Fields" will be shown in the sidebar to the left. There, you can add functions to the users\' profiles.<br />Leave this unchecked if you don\'t use this feature to save server load!</span>',
+'extendedprofiles' => 'Use Extended Profiles?<br /><span class="small">If enabled, an additional item called "Profile Fields" will be shown in the sidebar to the left. There, you can add functions to the users&#39; profiles.<br />Leave this unchecked if you don&#39;t use this feature to save server load!</span>',
 'forumnumbformat' => 'Select default number format:',
-'nospammer' => 'Send default e-mail to rejected users even when no reason is given when registration is by Admin approval. Check for \'yes\'',
-'honeypot' => 'Activate Honeypot Spambot catcher. Check for \'yes\'',
-'spamfruits' => 'Activate SpamFruits Spambot catcher. Check for \'yes\'',
+'nospammer' => 'Send default e-mail to rejected users even when no reason is given when registration is by Admin approval. Check for &#39;yes&#39;',
+'honeypot' => qq~Activate Honeypot Spambot catcher. Check for &#39;yes&#39; (<a href="$adminurl?action=honeypot">Edit Honeypot</a>)~,
+'spamfruits' => 'Activate SpamFruits Spambot catcher. Check for &#39;yes&#39;',
 'eventcal_set' => 'Event Calendar Settings',
 'eventcal_set1' => 'Edit your Event Calendar Settings',
 'addtab_on' => 'Show Add and Edit Tabs on Forum?',
@@ -513,7 +511,10 @@ $yycharset = 'UTF-8';
 'rm2' => 'Using only the foreground color',
 'rm3' => 'Using both the shade and foreground color',
 'dis' => 'CAPTCHA background to shade color randomizer level<br /><span class="small">Could make CAPTCHA very hard to read in certain color combinations!!</span>',
-'vpreview' => 'Preview your validation code<br /><span class="small">Check this after clicking \'Save\' to apply the new settings</span>',
+'vpreview' => 'Preview your validation code<br /><span class="small">Check this after clicking &#39;Save&#39; to apply the new settings</span>',
+'extra_chars_start' => 'Add extra characters to the start of the validation code:',
+'extra_chars_end' => 'Add extra characters to the end of the validation code:',
+'extra_chars_desc' => 'This will add characters which do not need to be entered by the user and will fool spambots.<br />e.g. XX',
 );
 
 %modtxt = (
@@ -545,7 +546,7 @@ $yycharset = 'UTF-8';
 '15' => 'Are you sure you want to delete the selected ERROR(S)?',
 '16' => 'Viewing All',
 '17' => 'Errors',
-'18' => 'The error log is a file that will be added automatically (if it isn\'t already on the server) when someone encounters even the smallest error, like a wrong password. <br />  This page gives you detailed information on the error, or errors, that has, or have, been encountered. <br />  This page will give you a summary of the time the error happened, the user who caused the error, the address (URL) of the error, and the error itself.<br />Note: All attempts to bypass, thwart or break YaBB Security features, will be shown here - because they FAILED! YaBB Security Works!',
+'18' => 'The error log is a file that will be added automatically (if it isn&#39;t already on the server) when someone encounters even the smallest error, like a wrong password. <br />  This page gives you detailed information on the error, or errors, that has, or have, been encountered. <br />  This page will give you a summary of the time the error happened, the user who caused the error, the address (URL) of the error, and the error itself.<br />Note: All attempts to bypass, thwart or break YaBB Security features, will be shown here - because they FAILED! YaBB Security Works!',
 '19' => 'There are no new errors since you last cleaned the error log.',
 '20' => 'Clean Error Log',
 '21' => 'Error #',
@@ -558,9 +559,9 @@ $yycharset = 'UTF-8';
 
 %admintxt = (
 '1' => 'Welcome to your YaBB Administration Center',
-'2' => 'This is your \'YaBB Admin Center\'. You can modify your forum preferences, edit your template and run maintenance on your forum from here. Please be careful with these functions!<br /><br />Please read the Quick-Guide or refer to the info in the Help section of your forum before you contact any form of support. If you need further help you may find answers to your problems on the YaBB Support Codex or the YaBB Chat and Support Community forum.<br /><br />We thank you for using YaBB!',
+'2' => 'This is your &#39;YaBB Admin Center&#39;. You can modify your forum preferences, edit your template and run maintenance on your forum from here. Please be careful with these functions!<br /><br />Please read the Quick-Guide or refer to the info in the Help section of your forum before you contact any form of support. If you need further help you may find answers to your problems on the YaBB Support Codex or the YaBB Chat and Support Community forum.<br /><br />We thank you for using YaBB!',
 '3' => 'Version Information',
-'4' => 'What\'s new at YaBB?',
+'4' => 'What&#39;s new at YaBB?',
 '5' => 'Last Logins:',
 '6' => 'Credits',
 '7' => 'Converter Back-up files',
@@ -919,7 +920,7 @@ $yycharset = 'UTF-8';
 '10' => 'Last Post',
 '11' => 'Last PM',
 '12' => 'Show Post-Dependent Member Groups in Member View?',
-'13' => 'Time in minutes before users are removed from the Online Log<br /><span class="small">Affects how long usernames are displayed in the "Users Online" section of the forum\'s Main Page</span>',
+'13' => 'Time in minutes before users are removed from the Online Log<br /><span class="small">Affects how long usernames are displayed in the "Users Online" section of the forum&#39;s Main Page</span>',
 '14' => 'Send E-mail Only',
 '15' => 'Delete Members',
 '16' => 'Viewing All',
@@ -971,14 +972,14 @@ $yycharset = 'UTF-8';
 '84' => 'Inbox',
 '85' => 'Sent box',
 'draft' => 'Draft',
-'allowcc' => 'Allow \'Cc\' list for PMs?<br /><span class="small">(\'Cc\' - member is \'copied\' and sees all other recipients.)</span>',
-'allowbcc' => 'Allow \'Bcc\' list for PMs?<br /><span class="small">(\'Bcc\' - member is \'copied\' but doesn\'t see other recipients.)</span>',
-'away' => 'Enable \'Away\' indicator for members, works alongside \'Online/Offline\'<br /><span class="small">Staff to Staff - Only forum Staff can use and see<br />Staff to All - Only forum Staff can use, All members can see<br />Members - All members can use and see</span>',
+'allowcc' => 'Allow &#39;Cc&#39; list for PMs?<br /><span class="small">(&#39;Cc&#39; - member is &#39;copied&#39; and sees all other recipients.)</span>',
+'allowbcc' => 'Allow &#39;Bcc&#39; list for PMs?<br /><span class="small">(&#39;Bcc&#39; - member is &#39;copied&#39; but doesn&#39;t see other recipients.)</span>',
+'away' => 'Enable &#39;Away&#39; indicator for members, works alongside &#39;Online/Offline&#39;<br /><span class="small">Staff to Staff - Only forum Staff can use and see<br />Staff to All - Only forum Staff can use, All members can see<br />Members - All members can use and see</span>',
 'extrastore' => 'Enable additional Store Folders<br /><span class="small">(In/Out are default for All, set to 0 to disable, max 25)</span>',
 'enablecontrols' => 'Enable extended PM controls for members?<br /><span class="small">(If unchecked, the following can be enabled individually)</span>',
-'enable_PMprev' => '&nbsp;&nbsp;&nbsp; - Enable the \'Preview\' button when sending PMs?',
+'enable_PMprev' => '&nbsp;&nbsp;&nbsp; - Enable the &#39;Preview&#39; button when sending PMs?',
 'enable_PMActprev' => '&nbsp;&nbsp;&nbsp; - Enable active (Live) Preview on PM sending screen?',
-'NewNotificationAlert' => 'Allow member\'s new board and post notifications to appear at the top of each page, and permit popups for these new notifications on the Board Index (based on the member\'s individual settings)?',
+'NewNotificationAlert' => 'Allow member&#39;s new board and post notifications to appear at the top of each page, and permit popups for these new notifications on the Board Index (based on the member&#39;s individual settings)?',
 'enable_PMviewMess' => '&nbsp;&nbsp;&nbsp; - Enable members to suppress the PM Message body in list view?',
 'enable_PMsearch' => 'Allow members to be able to search their PMs<br /><span class="small">(Set to 0 to disable; maximum 50 results returned)</span>',
 'enablePM' => 'Enable Personal Messaging for',
@@ -1000,7 +1001,7 @@ $yycharset = 'UTF-8';
 
 %dereftxt = (
 '2' => 'Use Stealth URLs in hyperlinks? (leave no referrer)',
-'4' => 'Subject to viewer\'s browser configuration',
+'4' => 'Subject to viewer&#39;s browser configuration',
 );
 
 %exptxt = (
@@ -1008,7 +1009,7 @@ $yycharset = 'UTF-8';
 );
 
 %versiontxt = (
-'1' => 'Either your browser doesn\'t support JavaScript or you need to enable it to allow the versioncheck to work!',
+'1' => 'Either your browser doesn&#39;t support JavaScript or you need to enable it to allow the versioncheck to work!',
 '2' => '<b><font color="red">There is a new release version available!</font></b><br />If you would like to download ',
 '3' => ', please go to <a href="http://www.yabbforum.com/downloads.php" onclick="target=&#39;_blank&#39;;">http://www.yabbforum.com/downloads.php</a>.',
 '4' => 'YOUR version:',
@@ -1019,7 +1020,7 @@ $yycharset = 'UTF-8';
 );
 
 %gztxt = (
-'1' => 'Use Output Compression?<br /><span class="small">Output Compression reduces the bandwidth used in communicating with a user\'s browser.<br />Option(s) are only available if the server supports them.</span>',
+'1' => 'Use Output Compression?<br /><span class="small">Output Compression reduces the bandwidth used in communicating with a user&#39;s browser.<br />Option(s) are only available if the server supports them.</span>',
 '2' => 'Send Output always compressed?<br /><span class="small">Checked = YaBB does not check if the browser supports Compression, and always compresses output. ** This could render your forum unusable for older browsers! **<br />Not Checked = YaBB checks if browser supports Compression and uses Compression (if selected above) only when supported by the browser.</span>',
 '3' => 'No Output Compression',
 '4' => 'Compression with external GZip Program',
@@ -1030,8 +1031,8 @@ $yycharset = 'UTF-8';
 '01' => 'Time Lock',
 '03' => 'Enable a time limit for users to modify posts?<br /><span class="small">If disabled, a member can modify his post whenever he wants.</span>',
 '04' => 'Time limit for normal members to modify their posts (in days):',
-'05' => 'Disable \'Last Edit\' message for post edits?',
-'06' => 'Time limit to modify posts without \'Last Edit\' message (in minutes):',
+'05' => 'Disable &#39;Last Edit&#39; message for post edits?',
+'06' => 'Time limit to modify posts without &#39;Last Edit&#39; message (in minutes):',
 '07' => 'Enable a time limit for users to delete posts?<br /><span class="small">If disabled, a member can delete his post whenever he wants.</span>',
 '08' => 'Time limit for normal members to delete their posts (in days):',
 );
@@ -1296,6 +1297,24 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 # Anti-spam Settings
 'generalspam' => 'General Anti-spam Controls',
 'speedban' => 'Speed-Posting Ban',
+'spambot' => qq~Spambot Registration Deterrents (Also see: <a href="$adminurl?action=spam_questions">Anti-Spam Questions</a>)~,
+);
+
+#HoneyPot
+%honeypot = (
+'edits' => 'Edit Honeypot Label',
+'edit' => 'Edit',
+'labels' => 'Honeypot Labels',
+'label' => 'Honeypot Label',
+'add_new_label' => 'Add New Label',
+'new_label' => 'New Label',
+'add_label' => 'Add Label',
+'no_label' => 'No Labels Found',
+'save' => 'Label',
+'cancel' => 'Cancel',
+'deletes' => 'Delete Label',
+'delete' => 'Delete',
+'confirm' => 'Are you sure you want to delete this label?',
 );
 
 # Anti-spam Question Settings
@@ -1327,7 +1346,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 '4' => 'No message (sort by Latest Reply Time)',
 '5' => 'Show Latest Reply (sort by Latest Reply Time)',
 '6' => 'Show Original Post (sort by Original Post Time)',
-'7' => 'Show the author\'s displayname and e-mail address (if not hidden)?',
+'7' => 'Show the author&#39;s displayname and e-mail address (if not hidden)?',
 '8' => 'Show Post Date?',
 );
 
