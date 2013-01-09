@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$profileplver = 'YaBB 2.5.4 $Revision: 1.4 $';
+$profileplver = 'YaBB 2.5.4 $Revision: 1.5 $';
 if ($action eq 'detailedversion') { return 1; }
 
 LoadLanguage('Profile');
