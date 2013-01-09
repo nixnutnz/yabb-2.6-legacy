@@ -14,9 +14,9 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.3;
+our $VERSION = 1.8;
 
-$postplver = 'YaBB 2.5.4 $Revision: 1.4 $';
+$postplver = 'YaBB 2.5.4 $Revision: 1.8 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Post');
@@ -38,6 +38,7 @@ if (   $iamguest
 $set_subjectMaxLength ||= 50;
 
 LoadCensorList();
+if ( $iamadmin || $iamgmod ) { $MaxMessLen = $AdMaxMessLen; }
 
 sub Post {
     if ( $iamguest && $enable_guestposting == 0 ) {
@@ -127,7 +128,7 @@ sub Post {
         $verification_field = $verification eq q{}
           ? qq~<tr class="windowbg>
                 <td class="vtop"><label for="verification"><b>$floodtxt{'1'}:</b></label></td>
-                <td>$showcheck<br /><label for="verification"><span class="small">$floodtxt{'casewarning'}</span></label></td>
+                <td>$showcheck<br /><label for="verification"><span class="small">$flood_text</span></label></td>
             </tr><tr class="windowbg>
                 <td class="vtop"><label for="verification"><b>$floodtxt{'3'}:</b></label></td>
                 <td>
@@ -214,7 +215,7 @@ qq~[quote author=$hidename link=$threadid/$quotemsg#$quotemsg date=$mdate\]$mess
         $settofield = 'message';
     }
 
-    if ( $ENV{'HTTP_USER_AGENT'} =~ /(MSIE) (\d)/xsm ) {
+    if ( $ENV{'HTTP_USER_AGENT'} =~ /(MSIE) ([\d]+)/) {
         if   ( $2 >= 7.0 ) { $iecopycheck = q{}; }
         else               { $iecopycheck = q~ checked="checked"~; }
     }
@@ -481,7 +482,7 @@ function checkForm(theForm) {
     # if this is an IM from the admin or to groups declare where it goes.
     if ( $INFO{'adminim'} || $INFO{'action'} eq 'imgroups' ) {
         $yymain .=
-qq~<form action="$scripturl?action=imgroups" method="post" name="postmodify" onsubmit="return submitproc()">~;
+qq~<form action="$scripturl?action=imgroups" method="post" name="postmodify" onsubmit="return submitproc()" accept-charset="$yycharset">~;
     }
     else {
         if ($curnum) { $thecurboard = qq~num=$curnum\;action=$destination~; }
@@ -494,11 +495,11 @@ qq~<form action="$scripturl?action=imgroups" method="post" name="postmodify" ons
             && ${ $uid . $currentboard }{'attperms'} == 1 )
         {
             $yymain .=
-qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctype="multipart/form-data" onsubmit="if(!checkForm(this)) {return false} else {return submitproc()}">~;
+qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctype="multipart/form-data" onsubmit="if(!checkForm(this)) {return false} else {return submitproc()}" accept-charset="$yycharset">~;
         }
         else {
             $yymain .=
-qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctype="application/x-www-form-urlencoded" onsubmit="if(!checkForm(this)) {return false} else {return submitproc()}">~;
+qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctype="application/x-www-form-urlencoded" onsubmit="if(!checkForm(this)) {return false} else {return submitproc()}" accept-charset="$yycharset">~;
         }
     }
     if ( $postthread == 2 ) {
@@ -860,7 +861,7 @@ qq~             document.write('<img src="$smiliesurl/$line" class="bottom" alt=
         $yymain .= qq~<tr>
         <td class="windowbg vtop">
             <div id="SaveInfo" style="height:16px;">
-            <img id="prevwin" src="$defaultimagesdir/cat_expand.gif" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
+            <img src="$defaultimagesdir/cat_expand.gif" id="prevwin" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
             </div>
         </td>
         <td class="windowbg">
@@ -1081,7 +1082,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         </td>
     </tr><tr>
         <td class="windowbg2 bottom">
-            <span  class="small"><img id="feature_col" src="$defaultimagesdir/cat_collapse.gif" alt="$npf_txt{'collapse_features'}" title="$npf_txt{'collapse_features'}" style="cursor:pointer;" onclick="show_features(0);" /> $npf_txt{'features_text'}</span>
+            <span  class="small"><img src="$defaultimagesdir/cat_collapse.gif" id="feature_col" alt="$npf_txt{'collapse_features'}" title="$npf_txt{'collapse_features'}" style="cursor:pointer;" onclick="show_features(0);" /> $npf_txt{'features_text'}</span>
             <input type="hidden" name="col_rowb" id="col_row" value="$col_row" />~;
 
         if (!$removenormalsmilies) { 
@@ -1138,8 +1139,8 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
 
             if ( $allowattach > 1 ) {
                 $yymain .= qq~
-            <img id="attform_add" src="$defaultimagesdir/cat_expand.gif" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" style="cursor:pointer;" onclick="enabPrev2(1);" />
-            <img id="attform_sub" src="$defaultimagesdir/cat_collapse.gif" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" style="cursor:pointer; visibility:hidden;" onclick="enabPrev2(-1);" />~;
+            <img src="$defaultimagesdir/cat_expand.gif" id="attform_add" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" style="cursor:pointer;" onclick="enabPrev2(1);" />
+            <img src="$defaultimagesdir/cat_collapse.gif" id="attform_sub" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" style="cursor:pointer; visibility:hidden;" onclick="enabPrev2(-1);" />~;
             }
 
             $yymain .= qq~
@@ -2920,7 +2921,7 @@ sub doshowthread {
     if (@messages) {
         if ( @messages < $cutamount ) { $cutamount = @messages; }
         $yymain .= q~
-<table class="bordercolor cs_1px pad_4px" style="table-layout: fixed">
+<table class="bordercolor cs_thin pad_4px" style="table-layout: fixed">
       <tr><td class="titlebg" colspan="2">
 ~;
         $showall = $post_cutts{'3'};
@@ -2967,7 +2968,7 @@ qq~$post_cutts{'3'} $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threa
                 && $messagedate > $registrationdate )
             {
                 $displaynamelink =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tempname}" class="catbg">${$uid.$tempname}{'realname'}</a>~;
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tempname}" class="catbg">$format_unbold{$tempname}</a>~;
             }
             elsif ($tempname !~ m{Guest}sm
                 && $messagedate < $registrationdate )
@@ -3066,7 +3067,7 @@ sub sendGuestPM {
         $verification_field = $verification eq q{}
           ? qq~<tr class="windowbg">
                         <td class="vtop" style="padding:3px"><label for="verification"><b>$floodtxt{'1'}:</b></label></td>
-                        <td style="padding:3px">$showcheck<br /><label for="verification"><span class="small">$floodtxt{'casewarning'}</span></label></td>
+                        <td style="padding:3px">$showcheck<br /><label for="verification"><span class="small">$flood_text</span></label></td>
                   </tr><tr class="windowbg">
                         <td class="vtop" style="padding:3px"><label for="verification"><b>$floodtxt{'3'}:</b></label></td>
                         <td style="padding:3px">
@@ -3095,7 +3096,7 @@ sub sendGuestPM {
     }
     $sub        = q{};
     $settofield = 'subject';
-    if ( $ENV{'HTTP_USER_AGENT'} =~ /(MSIE) (\d)/xsm ) {
+    if ( $ENV{'HTTP_USER_AGENT'} =~ /(MSIE) ([\d]+)/) {
         if   ( $2 >= 7.0 ) { $iecopycheck = q{}; }
         else               { $iecopycheck = q~ checked="checked"~; }
     }
@@ -3321,7 +3322,7 @@ sub modAlert {
         $verification_field = $verification eq q{}
           ? qq~<tr class="windowbg">
                         <td class="vtop" style="padding:3px"><label for="verification"><b>$floodtxt{'1'}:</b></label></td>
-                        <td style="padding:3px">$showcheck<br /><label for="verification"><span class="small">$floodtxt{'casewarning'}</span></label></td>
+                        <td style="padding:3px">$showcheck<br /><label for="verification"><span class="small">$flood_text</span></label></td>
                   </tr><tr class="windowbg">
                         <td class="vtop" style="padding:3px"><label for="verification"><b>$floodtxt{'3'}:</b></label></td>
                         <td style="padding:3px">
@@ -3383,7 +3384,7 @@ qq~[quote author=$hidename link=$threadid/$quotemsg#$quotemsg date=$mdate\]$mess
         $settofield = 'message';
     }
 
-    if ( $ENV{'HTTP_USER_AGENT'} =~ /(MSIE) (\d)/xsm ) {
+    if ( $ENV{'HTTP_USER_AGENT'} =~ /(MSIE) ([\d]+)/) {
         if   ( $2 >= 7.0 ) { $iecopycheck = q{}; }
         else               { $iecopycheck = q~ checked="checked"~; }
     }
