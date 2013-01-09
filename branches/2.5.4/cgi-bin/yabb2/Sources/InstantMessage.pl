@@ -16,9 +16,9 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.4;
+our $VERSION = 1.7;
 
-$instantmessageplver = 'YaBB 2.5.4 $Revision: 1.4 $';
+$instantmessageplver = 'YaBB 2.5.4 $Revision: 1.7 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 require "$sourcedir/Postbox.pl";
 
@@ -308,7 +308,7 @@ sub buildIMsend {
 		<script type="text/javascript">
 		<!--
 		function imWin() {
-			window.open('$scripturl?action=imlist;sort=recentpm;toid=$toIdtext','imWin','status=no,height=$us_winhight,width=464,menubar=no,toolbar=no,top=50,left=50,scrollbars=no');
+			window.open('$scripturl?action=imlist;sort=recentpm;toid=$toIdtext','imWin','status=no,height=$us_winhight,width=500,menubar=no,toolbar=no,top=50,left=50,scrollbars=no');
 		}
 		function imWinCC() {
 			window.open('$scripturl?action=imlist;sort=recentpm;toid=toshowcc','imWin','status=no,height=$us_winhight,width=464,menubar=no,toolbar=no,top=50,left=50,scrollbars=no');
@@ -445,7 +445,7 @@ qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'re
                                       <option value="s"$s_select[0]>$im_message_status{'standard'}</option>
                                       <option value="c"$s_select[2]>$im_message_status{'confidential'}</option>
                                       <option value="u"$s_select[1]>$im_message_status{'urgent'}</option>
-						</select><img src="$imagesdir/$pmicon.gif" name="icons" style="margin:0 10px" alt="$im_message_status{'$pmicon'}" title="$im_message_status{'$pmicon'}" />
+						</select><img src="$imagesdir/$pmicon.gif" name="icons" style="margin:1em 10px 0 10px; vertical-align:top" alt="$im_message_status{'$pmicon'}" title="$im_message_status{'$pmicon'}" />
 					</td>
 					</tr>
 				</table>
@@ -568,7 +568,6 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
         $imsend .= q~<tr>
 		<td class="windowbg2">
 			<script type="text/javascript">
-			<!--
 		~;
 
         $moresmilieslist   = q{};
@@ -622,7 +621,7 @@ qq~				document.write('<img src="$smiliesurl/$line" alt="$name" onclick="javascr
 				}~;
          $imsend .= smilies_list();
          $imsend .= qq~
-			</script>\n~;
+			</script><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span>\n~;
 
         if (   ( $showadded == 3 && $showsmdir != 2 )
             || ( $showsmdir == 3 && $showadded != 2 ) )
@@ -1243,7 +1242,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
             foreach my $baduser (@nouser) {
                 LoadUser($baduser);
                 $badusers .=
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">${$uid.$baduser}{'realname'}</a>, ~;
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$format_unbold{$baduser}</a>, ~;
             }
             $badusers =~ s/, \Z//sm;
             fatal_error( 'im_bad_users', $badusers );
@@ -1369,7 +1368,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">${$ui
             foreach my $baduser (@nouser) {
                 LoadUser($baduser);
                 $badusers .=
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">${$uid.$baduser}{'realname'}</a>, ~;
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$format_unbold{$baduser}</a>, ~;
             }
             $badusers =~ s/, \Z//sm;
             fatal_error( 'im_bad_users', $badusers );
@@ -1985,7 +1984,7 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
     $avstyle = q{};
 
     $showIM = qq~
-<table class="bordercolor cs_1px pad_1px" style="table-layout: fixed">
+<table class="bordercolor cs_thin pad_1px" style="table-layout: fixed">
 <tr>
 	<td class="windowbg vtop" colspan="2">
 		<div style="width: 99%; padding: 2px; margin: 2px;">
@@ -2063,15 +2062,13 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
     my $postMenuTemp = $sendEmail . $sendPM . $membAdInfo . '&nbsp;';
     $postMenuTemp =~ s/\Q$menusep//ism;
 
-    $showIM .= qq~
-<tr>
+    $showIM .= qq~<tr>
 	<td class="windowbg right" colspan="2">
 	<div style="float: left; width: 99%; padding-top: 5px; margin-top: 2px; text-align: right;">
 		<span class="small"><img src="$imagesdir/ip.gif" alt="" /> $imip</span>
 	</div>
 	</td>
-</tr>
-<tr>
+</tr><tr>
 	<td class="windowbg2" colspan="2">
 	<div style="float: left; text-align: left; width: 55%; padding: 2px; margin: 2px;">
 		<span class="small">$postMenuTemp</span>
@@ -2111,8 +2108,7 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;repl
 
     my $notme = $musername eq $username ? $mtousers : $musername;
     $notme = ${ $uid . $notme }{'realname'};
-    $showIM .= q~
-	</span>
+    $showIM .= q~</span>
 	</div>
 	</td>
 </tr><tr>
@@ -2123,13 +2119,12 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;repl
         ? qq~<a href="$scripturl?action=pmsearch;searchtype=user;search=$notme">$inmes_imtxt{'42'} <i>$notme</i></a>~
         : '&nbsp;'
       )
-      . qq~</span></div>
+      . qq~</span>
+     		</div>
 	<div style="float: right; text-align: right; padding: 2px; margin: 2px;"><span class="small">$PMnav</span></div>
 </td>
 </tr>
 </table>
-
-</div>
 ~;
 
     return $showIM;
@@ -2186,7 +2181,7 @@ sub doshowims {
 
     $imsend .= qq~<tr>
 	  <td class="windowbg">
-		<table class="bordercolor cs_1px"><tr><td>
+		<table class="bordercolor cs_thin"><tr><td>
 			<table class="windowbg pad_2px" style="table-layout:fixed">
 				<tr>
                     <td class="titlebg" colspan="2"><b>$inmes_txt{'70'}: $msub</b></td>
