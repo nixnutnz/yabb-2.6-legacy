@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$sessionsplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$sessionsplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Sessions');
@@ -30,7 +30,7 @@ sub SessionReval {
 
     $yymain .= qq~
 <br /><br />
-<form action="$scripturl?action=revalidatesession2" method="post" name="sesform">
+<form action="$scripturl?action=revalidatesession2" method="post" name="sesform" accept-charset="$yycharset">
 <div class="bordercolor" style="padding: 1px; width: 50%; margin-left: auto; margin-right: auto;">
 <table>
     <tr>
@@ -84,8 +84,6 @@ sub SessionReval2 {
         $question = descramble(${ $uid.$username }{'sesanswer'}, $username);
         $answer = $FORM{'sesanswer'};
 #       bug fix courtesy Derek Barnstorm;
-#        $question = ${ $uid . $username }{'sesanswer'};
-#        $answer = scramble( "$FORM{'sesanswer'}", $username );
         chomp $answer;
     }
     if ($answer ne $question) {
