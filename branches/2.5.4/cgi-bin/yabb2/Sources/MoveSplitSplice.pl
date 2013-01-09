@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$movesplitspliceplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$movesplitspliceplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('MoveSplitSplice');
@@ -175,9 +175,9 @@ sub Split_Splice {
 
 	$output .= qq~
 <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
-<form action="$scripturl?action=split_splice;board=$currentboard;thread=$INFO{'thread'}" method="post" name="split_splice" onsubmit="return submitproc()">
+<form action="$scripturl?action=split_splice;board=$currentboard;thread=$INFO{'thread'}" method="post" name="split_splice" onsubmit="return submitproc()" accept-charset="$yycharset">
 <input type="hidden" name="formsession" value="$formsession" />
-<table class="bordercolor pad_8px cs_1px" style="width:90%">
+<table class="bordercolor pad_8px cs_thin" style="width:90%">
 	<tr>
 		<td class="titlebg"><img src="$defaultimagesdir/admin_move_split_splice.gif" alt="$sstxt{'1'}" /> <b>$sstxt{'1'}</b></td>
 	</tr><tr>
