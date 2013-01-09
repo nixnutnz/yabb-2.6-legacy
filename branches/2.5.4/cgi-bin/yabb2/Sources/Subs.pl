@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$subsplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$subsplver = 'YaBB 2.5.4 $Revision: 1.4 $';
 
 if ($debug) { &LoadLanguage('Debug'); }
 
@@ -404,7 +404,7 @@ $yysyntax_js = qq~<script type="text/javascript" src="$yyhtml_root/shjs/sh_main.
 		if ($maxsearchdisplay > -1) {
 			$yysearchbox = qq~
 					<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
-					<form action="$scripturl?action=search2" method="post">
+					<form action="$scripturl?action=search2" method="post" accept-charset="$yycharset">
 						<input type="hidden" name="searchtype" value="allwords" />
 						<input type="hidden" name="userkind" value="any" />
 						<input type="hidden" name="subfield" value="on" />
@@ -690,7 +690,7 @@ sub fatal_error {
 		<td class="round_top_right" style="width:1%">&nbsp;</td>
 	</tr>
 </table>
-<table class="bordercolor pad_4px cs_1px" style="width:80%">
+<table class="bordercolor pad_4px cs_thin" style="width:80%">
 	<tr>
 		<td class="windowbg"><br /><span class="text1">$errormessage</span><br /><br /></td>
 	</tr>
@@ -731,7 +731,7 @@ sub admin_fatal_error {
 	if ($elenable) { &fatal_error_logging($errormessage); }
 
 	$yymain .= qq~
-<table class="bordercolor pad_4px cs_1px" style="width:80%">
+<table class="bordercolor pad_4px cs_thin" style="width:80%">
 	<tr>
 		<td class="titlebg"><span class="text1"><b>$maintxt{'error_description'}</b></span></td>
 	</tr><tr>
@@ -894,8 +894,8 @@ sub readform {
 	}
 	$action = $INFO{'action'} || $FORM{'action'};
 	# Formsession checking moved to YaBB.pl to fix a bug.
-	if ($INFO{'username'} && $do_scramble_id && $action ne 'view_regentry' && $action ne 'del_regentry' && $action ne 'activate' ) { $INFO{'username'} = &decloak($INFO{'username'}); }
-	if ($FORM{'username'} && $do_scramble_id && $action ne "login2" && $action ne "reminder2" && $action ne "register2" && $action ne "profile2" && $action ne 'admin_descision') { $FORM{'username'} = &decloak($FORM{'username'}); }
+	if ($INFO{'username'} && $do_scramble_id && $action ne 'view_regentry' && $action ne 'del_regentry' && $action ne 'activate' && $action ne 'rej_regentry' && $action ne 'apr_regentry' ) { $INFO{'username'} = &decloak($INFO{'username'}); }
+	if ($FORM{'username'} && $do_scramble_id && $action ne "login2" && $action ne "reminder2" && $action ne "register2" && $action ne "profile2" && $action ne 'admin_descision'&& $action ne 'rej_regentry' && $action ne 'apr_regentry') { $FORM{'username'} = &decloak($FORM{'username'}); }
 	if ($INFO{'to'} && $do_scramble_id) { $INFO{'to'} = &decloak($INFO{'to'}); }
 	if ($FORM{'to'} && $do_scramble_id) { $FORM{'to'} = &decloak($FORM{'to'}); }
 	# Dont do this here or you get problems with foreign characters!!!!
@@ -1352,8 +1352,8 @@ sub Split_Splice_Move {
 
 sub elimnests {
 	$_ = $_[0];
-	$_ =~ s~\[/*shadow([^\]]*)\]~~ig;
-	$_ =~ s~\[/*glow([^\]]*)\]~~ig;
+	$_ =~ s~\[/*shadow([^\]]*)\]~~ig; #*/ make my syntax checker happy;
+	$_ =~ s~\[/*glow([^\]]*)\]~~ig; #*/ make my syntax checker happy;
 	return $_;
 }
 
@@ -1987,7 +1987,8 @@ sub ManageMemberinfo {
 	}
 	if ($todo eq "add") {
 		$memberinf{$user} = "$userdisp|$usermail|$usergrp|$usercnt|$useraddgrp";
-	} elsif ($todo eq "update") {
+	} 
+	elsif ($todo eq "update") {
 		($memrealname, $mememail, $memposition, $memposts, $memaddgrp) = split(/\|/, $memberinf{$user});
 		if ($userdisp) { $memrealname = $userdisp; }
 		if ($usermail) { $mememail = $usermail; }
@@ -1998,7 +1999,8 @@ sub ManageMemberinfo {
 			$memaddgrp = $useraddgrp;
 		}
 		$memberinf{$user} = "$memrealname|$mememail|$memposition|$memposts|$memaddgrp";
-	} elsif ($todo eq "delete") {
+	} 
+	elsif ($todo eq "delete") {
 		if ($user =~ /,/) {    # been sent a list to kill, not a single
 			my @oldusers = split(',', $user);
 			foreach my $user (@oldusers) {
