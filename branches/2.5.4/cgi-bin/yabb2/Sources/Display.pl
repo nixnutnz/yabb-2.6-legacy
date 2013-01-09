@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$displayplver = 'YaBB 2.5.4 $Revision: 1.5 $';
+$displayplver = 'YaBB 2.5.4 $Revision: 1.6 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Display');
@@ -544,18 +544,18 @@ sub Display {
 		}
 
 		# Should we show "last modified by?"
-		if ($showmodify && $mlm ne '' && $mlmb ne '' && (!$tllastmodflag || ($mdate + ($tllastmodtime * 60)) < $mlm)) {
+		if ($showmodify && $mlm ne q{} && $mlmb ne q{} && (!$tllastmodflag || ($mdate + ($tllastmodtime * 60)) < $mlm)) {
             if ($mlmb) {
                 LoadUser($mlmb);
                 $mlmb = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$mlmb}">$format_unbold{$mlmb}</a>~;
             } else {
                 $mlmb = $display_txt{'470'};
             }
-			$lastmodified = qq~&#171; <i>$display_txt{'211'}: ~ . &timeformat($mlm) . qq~ $display_txt{'525'} $mlmb</i> &#187;~;
+            $lastmodified = qq~&#171; <i>$display_txt{'211'}: ~ . timeformat($mlm) . qq~ $display_txt{'525'} $mlmb</i> &#187;~;
 		}
 
 		$messdate = &timeformat($mdate);
-		if ($iamadmin || $iamgmod && $gmod_access2{'ipban2'} eq "on") { $mip = $mip }
+		if ($iamadmin || $iamgmod && $gmod_access2{'ipban2'} eq 'on') { $mip = $mip }
 		else { $mip = $display_txt{'511'}; }
 
 		## moderator alert button!
@@ -575,21 +575,21 @@ sub Display {
 				if ($mybuddie{$musername}) { $buddyad = $isbuddy; }
 				else { $addbuddy = $addbuddylink; }
 				# Allow instant message sending if current user is a member.
-				&CheckUserPM_Level($musername);
+				CheckUserPM_Level($musername);
 				if ($PM_level == 1 || ($PM_level == 2 && $UserPM_Level{$musername} > 1 && ($iamadmin || $iamgmod || $iammod)) || ($PM_level == 3 && $UserPM_Level{$musername} == 3 && ($iamadmin || $iamgmod))) {
 					$template_pm = qq~$menusep<a href="$scripturl?action=imsend;to=$useraccount{$musername}">$img{'message_sm'}</a>~;
 				}
 			}
 
-			$tmppostcount = &NumberFormat(${$uid.$musername}{'postcount'});
+			$tmppostcount = NumberFormat(${$uid.$musername}{'postcount'});
 			$template_postinfo = qq~$display_txt{'21'}: $tmppostcount<br />~;
 			$template_profile = ($profilebutton && !$iamguest) ? qq~$menusep<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$img{'viewprofile_sm'}</a>~ : '';
-			$template_www = ${$uid.$musername}{'weburl'} ? qq~$menusep${$uid.$musername}{'weburl'}~ : '';
+			$template_www = ${$uid.$musername}{'weburl'} ? qq~$menusep${$uid.$musername}{'weburl'}~ : q{};
 
-			$userOnline = &userOnLineStatus($musername) . "<br />";
+			$userOnline = userOnLineStatus($musername) . q~<br />~;
 			$displayname = ${$uid.$musername}{'realname'};
 			if (${$uid.$musername}{'location'}) {
-				$userlocation = ${$uid.$musername}{'location'} . "<br />";
+				$userlocation = qq~$display_txt{'location'}: ~ . ${$uid.$musername}{'location'} . q~<br />~;
 			}
 			$signature_hr = qq~<hr class="hr" style="margin: 0; margin-top: 5px; margin-bottom: 5px; padding: 0;" />~ if ${$uid.$musername}{'signature'};
 			$memberinfo = "$memberinfo{$musername}$addmembergroup{$musername}";
