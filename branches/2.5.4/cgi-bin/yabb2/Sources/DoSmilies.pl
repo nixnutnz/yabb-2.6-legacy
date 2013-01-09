@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$dosmiliesplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$dosmiliesplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Main');
@@ -221,7 +221,7 @@ function MoreSmilies(i) {
 </script>
 </head>
 <body style="background: #$popback; min-width:400px;">
-    <table class="bordercolor pad_4px cs_1px">
+    <table class="bordercolor pad_4px cs_thin">
 $smiliesheader
       <tr>
 $smilieslist
