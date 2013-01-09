@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$favoritesplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$favoritesplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub Favorites {
@@ -174,7 +174,7 @@ sub Favorites {
 		if ($musername ne 'Guest') {
 			&LoadUser($musername);
 			if (${$uid.$musername}{'realname'}) {
-				$mname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$ {$uid.$musername}{'realname'}</a>~;
+				$mname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$format_unbold{$musername}</a>~;
 			} else {
 				$mname .= qq~ ($messageindex_txt{'470a'})~;
 			}
@@ -223,7 +223,7 @@ sub Favorites {
 		} else {
 			unless (($lastposter eq $messageindex_txt{'470'} || $lastposter eq $messageindex_txt{'470a'}) && -e "$memberdir/$lastposter.vars") {
 				&LoadUser($lastposter);
-				if (${$uid.$lastposter}{'realname'}) { $lastposter = qq~<a href="$scripturl?action=viewprofile;username=$lastposter">${$uid.$lastposter}{'realname'}</a>~; }
+				if (${$uid.$lastposter}{'realname'}) { $lastposter = qq~<a href="$scripturl?action=viewprofile;username=$lastposter">$format_unbold{$lastposter}</a>~; }
 			}
 		}
 		$lastpostername = $lastposter || $messageindex_txt{'470'};
