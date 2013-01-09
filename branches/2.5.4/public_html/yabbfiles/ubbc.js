@@ -3,16 +3,16 @@
 //##############################################################################
 //# YaBB: Yet another Bulletin Board                                           #
 //# Open-Source Community Software for Webmasters                              #
-//# Version:        YaBB 3.0 Beta                                              #
-//# Packaged:       October 05, 2010                                           #
+//# Version:        YaBB 2.5.4                                                 #
+//# Packaged:       January 1, 2013                                            #
 //# Distributed by: http://www.yabbforum.com                                   #
 //# ===========================================================================#
-//# Copyright (c) 2000-2010 YaBB (www.yabbforum.com) - All Rights Reserved.    #
+//# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.    #
 //# Software by:  The YaBB Development Team                                    #
 //#               with assistance from the YaBB community.                     #
 //##############################################################################
 
-//YaBB 3.0 Beta $Revision: 328 $
+//YaBB 2.5.4 Alpha $Revision: 1.0 $
 
 function submitproc() {
 	if (window.submitted) return false;
@@ -218,6 +218,10 @@ function quote() {
 
 function center() {
 	AddSelText("[center]","[/center]");
+}
+
+function noparse() {
+	AddSelText("[noparse]","[/noparse]");
 }
 
 function showcode() {
