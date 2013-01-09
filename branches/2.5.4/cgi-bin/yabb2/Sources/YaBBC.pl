@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$yabbcplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$yabbcplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Post');
@@ -91,7 +91,7 @@ sub quotemsg {
 			&LoadUser($qauthor); # it was an old style user id which could be loaded and screen name set to final author
 			$fqauthor = ${$uid.$qauthor}{'realname'};
 		}
-		$qmessage =~ s~\/me\s+(.*?)(\n|\Z)(.*?)~<i><span style="color: #FF0000;"><b>$fqauthor says:</b><\/span> $1<\/i>$2$3~ig;
+		$qmessage =~ s~\/me\s+(.*?)(\n|\Z)(.*?)~<i><span style="color: #FF0000;"><b>$fqauthor</b><\/span> $1<\/i>$2$3~ig;
 	}
 	# next 2 lines: for display names in Quotes in LivePreview
 	$usernames_life_quote{$usernames_life_quote{'temp_quote_autor'}} = $fqauthor;
@@ -222,8 +222,15 @@ sub imagemsg {
 	if ($url !~ /^http.+\.(gif|jpg|jpeg|png|bmp)$/i) {return $rest . $url;}
 
 	my %parameter;
-	&FromHTML($attribut);
+	FromHTML($attribut);
 	$attribut =~ s/(\s|$char_160)+/ /g;
+	
+	*altconv = sub {
+		my ($attfirst,$attalt,$attlast) = @_;
+		$attalt =~ s~\s~_~g;
+		$attfirst . qq~ alt=$attalt $attlast~;
+	};
+	$attribut =~ s~(.*?)alt=(.+?)(\s\S+=|\Z)~ altconv($1,$2,$3)~eisg; 
 	foreach (split(/ +/, $attribut)) {
 		my ($key, $value) = split(/=/, $_);
 		$value =~ s/["']//g; #" make my text editor happy;
@@ -232,7 +239,9 @@ sub imagemsg {
 
 	$parameter{'name'} = $type ? 'signat_img_resize' : 'post_img_resize';
 	$parameter{'alt'} =~ s/[<>"]/*/g; #" make my text editor happy;
-	$parameter{'alt'} ||= "...";
+    $parameter{'alt'} =~ s/_/ /g;
+	$url =~ /([^\/]+?)$/;
+	$parameter{'alt'} ||= $1; 
 	$parameter{'align'}  =~ s~[^a-z]~~ig;
 	$parameter{'width'}  =~ s~\D~~g;
 	$parameter{'height'} =~ s~\D~~g;
@@ -394,7 +403,7 @@ s/\[s\](.*?)\[\/s\]/<span style="text-decoration: line-through">$1<\/span>/isgm;
 	$message =~ s~\[edit\](.*?)\[/edit\]~<b>$post_txt{'603'}: </b><br /><div class="editbg" style="overflow: auto;">$1</div>~isg;
 
 #	$message =~ s~/me ~<i>$displayname</i> ~ig;
-	$message =~ s~/me\s+(.*)~<i><span style="color: #FF0000;"><b>$displayname  says:</b></span> '$1'</i>~ig;
+	$message =~ s~/me\s+(.*)~<i><span style="color: #FF0000;"><b>$displayname</b></span> $1</i>~ig;
 
 	if($message =~ /\[media/ || $message =~ /\[flash/) {
 		require "$sourcedir/MediaCenter.pl";
