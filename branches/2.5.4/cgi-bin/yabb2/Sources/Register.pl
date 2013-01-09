@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$registerplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$registerplver = 'YaBB 2.5.4 $Revision: 1.5 $';
 if ($action eq 'detailedversion') { return 1; }
 if (!$iamguest && (!$admin && $action ne 'activate' && $action ne 'admin_descision') ) { &fatal_error("no_registration_logged_in"); }
 
@@ -63,8 +63,8 @@ sub Register {
 
 	$yymain .= qq~
 <script type="text/javascript" src="$yyhtml_root/ajax.js"></script>
-<form action="$scripturl?action=register2" method="post" name="creator" onsubmit="return CheckRegFields();">
-<table class="bordercolor pad_4px cs_1px">
+<form action="$scripturl?action=register2" method="post" name="creator" onsubmit="return CheckRegFields();" autocomplete="off"  accept-charset="$yycharset">
+<table class="bordercolor pad_4px cs_thin">
 	<col width="45%" />
 	<col width="55%" />
 	<tr>
@@ -100,7 +100,7 @@ sub Register {
 			<span class="small">$register_txt{'520'}$register_txt{'241ea'}</span></label>
 		</td>
 		<td class="windowbg2 vtop">
-			<input autocomplete="off" type="text" name="regusername" id="regusername" onchange="checkAvail('$scripturl',this.value,'user')" size="30" value="$tmpregname" maxlength="18"$regstyle /> *
+			<input type="text" name="regusername" id="regusername" onchange="checkAvail('$scripturl',this.value,'user')" size="30" value="$tmpregname" maxlength="18"$regstyle /> *
 			<div id="useravailability"></div>
 			<input type="hidden" name="language" id="language" value="$language" />
 		</td>
@@ -244,7 +244,7 @@ sub Register {
 
 	if ($extendedprofiles) {
 		require "$sourcedir/ExtendedProfiles.pl";
-		my $reg_ext_prof = &ext_register;
+		my $reg_ext_prof = ext_register();
 		$reg_ext_prof =~ s/class="vtop"/class="right vtop"/g;
 		$reg_ext_prof =~ s/<\/td><td>/<\/td><td class="windowbg2">/g;
 		$yymain .= $reg_ext_prof;
@@ -252,12 +252,11 @@ sub Register {
 
 	if ($regcheck) {
 		require "$sourcedir/Decoder.pl";
-		&validation_code;
-
+		validation_code();
 		$yymain .= qq~<tr>
 		<td class="windowbg right vtop">
 			<label for="verification"><b>$floodtxt{'1'}:</b><br />
-			<span class="small">$floodtxt{'casewarning'}</span></label>
+			<span class="small">$flood_text</span></label>
 		</td>
 		<td class="windowbg2">
 			$showcheck
@@ -732,8 +731,10 @@ sub Register2 {
 
 		&UserAccount($reguser, "preregister");
 		if ($do_scramble_id) { $cryptuser = &cloak($reguser); } else { $cryptuser = $reguser; }
-	      $regpass = $member{'passwrd1'};
-	      fopen(INACT, ">>$memberdir/memberlist.inactive", 1);
+#	      $regpass = $member{'passwrd1'};
+          if ($emailpassword) { $regpass = $member{'passwrd1'}; }
+        else { $regpass = encode_password($member{'passwrd1'}); } 
+	    fopen(INACT, ">>$memberdir/memberlist.inactive", 1);
 		print INACT "$date|$activationcode|$reguser|$regpass|$member{'email'}|$user_ip\n";
 		fclose(INACT);
 		fopen(REGLOG, ">>$vardir/registration.log", 1);
@@ -748,7 +749,7 @@ sub Register2 {
 		$language = $templanguage;
 		$yymain .= qq~
 			<div class="bordercolor" style="width: 650px; margin-bottom: 8px; margin-left: auto; margin-right: auto;">
-				<table class="pad_4px cs_1px">
+				<table class="pad_4px cs_thin">
 					<tr>
 						<td class="titlebg"><img src="$imagesdir/register.gif" alt="$prereg_txt{'1a'}" title="$prereg_txt{'1a'}" /><b>$prereg_txt{'1a'}</b></td>
 					</tr><tr>
@@ -793,7 +794,7 @@ sub Register2 {
 			$language = $templanguage;
 			$yymain .= qq~
 	<div class="bordercolor" style="width: 650px; margin-bottom: 8px; margin-left: auto; margin-right: auto;">
-		<table class="pad_4px cs_1px">
+		<table class="pad_4px cs_thin">
 			<tr>
 				<td class="titlebg"><b>$register_txt{'97'}</b></td>
 			</tr><tr>
@@ -814,7 +815,7 @@ sub Register2 {
 			$yymain .= qq~
 			<br /><br />
 			<form action="$scripturl?action=login2" method="post">
-			<table class="bordercolor cs_1px" style="width:300px">
+			<table class="bordercolor cs_thin" style="width:300px">
 				<tr>
 					<td class="titlebg">
 						<img src="$imagesdir/register.gif" alt="$register_txt{'97'}" title="$register_txt{'97'}" /> <span class="text1"><b>$register_txt{'97'}</b></span>
@@ -917,7 +918,7 @@ sub user_activation {
 					$language = ${$uid.$reguser}{'language'};
 					&LoadLanguage('Email');
 					&sendmail(${$uid.$reguser}{'email'}, "$mailreg_txt{'apr_result_validate'} $mbname", &template_email($activatedpassregemail, {'displayname' => ${$uid.$reguser}{'realname'}, 'username' => $reguser, 'password' => $regpassword}),'',$emailcharset);
-					$yymain .= qq~<br /><table class="bordercolor cs_1px">~;
+					$yymain .= qq~<br /><table class="bordercolor cs_thin">~;
 					$sharedLogin_title = $register_txt{'97'};
 					$sharedLogin_text  = $register_txt{'703'};
 					$yymain .= q~</table>~;
@@ -970,7 +971,7 @@ sub user_activation {
 	if ($regtype == 1) {
 			$yymain .= qq~
 				<div class="bordercolor" style="width: 650px; margin-bottom: 8px; margin-left: auto; margin-right: auto;">
-					<table class="pad_4px cs_1px">
+					<table class="pad_4px cs_thin">
 						<tr>
 							<td class="titlebg"><img src="$imagesdir/register.gif" alt="$prereg_txt{'1a'}" title="$prereg_txt{'1a'}" /><b>$prereg_txt{'1a'}</b></td>
 						</tr><tr>
@@ -983,7 +984,7 @@ sub user_activation {
 	} elsif ($regtype == 2) {
 		$yymain .= qq~
 		<br /><br />
-		<table class="bordercolor cs_1px" style="width:650px">
+		<table class="bordercolor cs_thin" style="width:650px">
 			<tr>
 				<td class="titlebg" colspan="2">
 					<img src="$imagesdir/register.gif" alt="$prereg_txt{'1a'}" title="$prereg_txt{'1a'}" /> <span class="text1"><b>$prereg_txt{'1a'}</b></span>
