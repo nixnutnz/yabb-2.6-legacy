@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$notifyplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$notifyplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Notify');
@@ -88,7 +88,7 @@ sub BoardNotify {
 	&ManageBoardNotify("load", $currentboard);
 	$yymain .= qq~
 	<form action="$scripturl?action=boardnotify3;board=$currentboard" method="post">
-	<table class="bordercolor pad_4px cs_1px" style="width:600px">
+	<table class="bordercolor pad_4px cs_thin" style="width:600px">
 	   <col style="width:70%" />
 		<tr>
 			<td class="titlebg" colspan="2">
@@ -301,7 +301,7 @@ sub ShowNotifications {
 </script>
 
 	<form action="$scripturl?action=boardnotify2" method="post" name="boardnotify">
-	<table class="bordercolor pad_4px cs_1px">
+	<table class="bordercolor pad_4px cs_thin">
 		<tr>
 			<td class="titlebg" colspan="2">
 				<img src="$imagesdir/notify.gif" alt="$notify_txt{'136'}" title="$notify_txt{'136'}" /> <span class="text1"><b>$notify_txt{'136'}</b></span>
@@ -369,7 +369,7 @@ sub ShowNotifications {
 	<br /><br />
 
 	<form action="$scripturl?action=notify4" method="post" name="threadnotify">
-	<table class="bordercolor pad_4pc cs_1px">
+	<table class="bordercolor pad_4pc cs_thin">
 		<tr>
 			<td class="titlebg" colspan="2">
 				<img src="$imagesdir/notify.gif" alt="$notify_txt{'118'}" title="$notify_txt{'118'}" /> <span class="text1"><b>$notify_txt{'118'}</b></span>
@@ -535,7 +535,7 @@ sub NotificationAlert {
 				## build view profile link, if real name exists
 				&LoadUser($musername); # load poster
 				if (${$uid.$musername}{'realname'}) {
-					$username_link = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">${$uid.$musername}{'realname'}</a>~;
+					$username_link = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$format_unbold{$musername}</a>~;
 				} elsif ($mname) {
 					$username_link = $mname;
 				} else {
