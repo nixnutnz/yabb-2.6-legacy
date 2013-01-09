@@ -15,9 +15,9 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.1;
+our $VERSION = 1.3;
 
-$eventcalbirthdaysplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$eventcalbirthdaysplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');
@@ -144,18 +144,15 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
 
     ManageMemberinfo('load');
 
-    fopen( EVENTBIRTH, "$vardir/eventcalbday.db" );
-    my @birthmembers = <EVENTBIRTH>;
-    fclose(EVENTBIRTH);
-
     my @birthmembers1 = ();
-    foreach my $user_name (@birthmembers) {
-        chomp $user_name;
-        ( $user_bdyear, $user_bdmon, $user_bdday, $user_bdname ) =
-          split /\|/xsm, $user_name;
+	foreach my $user_bdname (keys %memberinf) {
 
         $memrealname = ( split /\|/xsm, $memberinf{$user_bdname}, 2 )[0];
-
+        LoadUser($user_bdname);
+        $user_bday = $ {$uid.$user_bdname}{'bday'};
+        $user_bdhide = $ {$uid.$user_bdname}{'hideage'};
+        ( $user_bdmon, $user_bdday, $user_bdyear ) = split /\//xsm, $user_bday;
+        if ($user_bdmon) { 
         if (
             ( $user_bdmon < $actualmon )
             || (   ( $user_bdmon == $actualmon )
@@ -165,7 +162,8 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
             $age = $year - $user_bdyear;
         }
         else { $age = $year - $user_bdyear; $age-- }
-
+        }
+        else {$age = q{}; next}
         my @stars =
           qw(Capricorn Aquarius Aquarius Pisces Pisces Aries Aries Taurus Taurus Gemini Gemini Cancerian Cancerian Leo Leo Virgo Virgo Libra Libra Scorpio Scorpio Sagittarius Sagittarius Capricorn);
         my @bd_1 = (
@@ -189,10 +187,11 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
                 $sternzeichen = "$var_cal{$stars[$i]}";
             }
         }
-
+        if ( $age ) {
         $string =
-"$user_bdyear|$user_bdmon|$user_bdday|$user_bdname|$age|$sternzeichen|$memrealname\n";
+"$user_bdyear|$user_bdmon|$user_bdday|$user_bdname|$age|$sternzeichen|$memrealname|$user_bdhide\n";
         push @birthmembers1, $string;
+    }
     }
     undef %memberinf;
 
@@ -257,7 +256,7 @@ qq~<tr><td class="windowbg2 center" colspan="4"><b><i>$var_cal{'calbirthday1'}</
             chomp $user_name;
             (
                 $user_bdyear, $user_bdmon, $user_bdday, $user_bdname, $age,
-                $sternzeichen, $user_bdrealname
+                $sternzeichen, $user_bdrealname, $user_bdhide
             ) = split /\|/xsm, $user_name;
 
             # what birthday should we show begin
@@ -269,13 +268,12 @@ qq~<tr><td class="windowbg2 center" colspan="4"><b><i>$var_cal{'calbirthday1'}</
                 }
                 else {
                     $user_linkname = $user_bdrealname;
+                    LoadUser($user_bdname);
                     $user_linkprofile =
-                        qq~<a href="$scripturl?action=viewprofile;username=~
-                      . ( $do_scramble_id ? cloak($user_bdname) : $user_bdname )
-                      . qq~">$user_linkname</a>~;
+                        qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" rel="nofollow">$format_unbold{$user_bdname}</a>~;
                 }
                 $bd_today .=
-                  qq~$user_linkprofile <span class="small">($age)</span>, ~;
+                  qq~$user_linkprofile <span class="small">($myage)</span>, ~;
             }
 
             $showviewbd = 0;
@@ -300,10 +298,20 @@ qq~<tr><td class="windowbg2 center" colspan="4"><b><i>$var_cal{'calbirthday1'}</
                 {
                     ## User date display begin ##
                     if ( $mytimeselected == 1 || $mytimeselected == 5 ) {
+                        if ( $showage && $user_bdhide ){
+                            $cdate = "$user_bdmon/$user_bdday";
+                        }
+                        else {
                         $cdate = "$user_bdmon/$user_bdday/$user_bdyear";
                     }
+                    }
                     elsif ( $mytimeselected == 2 || $mytimeselected == 3 ) {
+                        if ($showage && $user_bdhide){
+                            $cdate = "$user_bdday.$user_bdmon";
+                        }
+                        else {
                         $cdate = "$user_bdday.$user_bdmon.$user_bdyear";
+                    }
                     }
                     elsif ( $mytimeselected == 4 ) {
                         my $sup;
@@ -322,15 +330,32 @@ qq~<tr><td class="windowbg2 center" colspan="4"><b><i>$var_cal{'calbirthday1'}</
                         else {
                             $sup = "<sup>$timetxt{'4'}</sup>";
                         }
+                        if ($showage && $user_bdhide) {
+                            $cdate =
+qq~$var_cal{"calmon_$user_bdmon"} $user_bdday$sup~;
+                        }
+                        else {
                         $cdate =
 qq~$var_cal{"calmon_$user_bdmon"} $user_bdday$sup, $user_bdyear~;
                     }
+                    }
                     elsif ( $mytimeselected == 6 ) {
+                        if ($showage && $user_bdhide) {
+                        $cdate =
+qq~$user_bdday. $var_cal{"calmon_$user_bdmon"}~;
+                        }
+                        else {
                         $cdate =
 qq~$user_bdday. $var_cal{"calmon_$user_bdmon"} $user_bdyear~;
                     }
+                    }
+                    else {
+                        if ($showage && $user_bdhide) {
+                        	$cdate = "$user_bdday-$user_bdmon";
+                        }
                     else {
                         $cdate = "$user_bdday-$user_bdmon-$user_bdyear";
+                    }
                     }
                     ## User date display end ##
                 }
@@ -341,18 +366,21 @@ qq~$user_bdday. $var_cal{"calmon_$user_bdmon"} $user_bdyear~;
                 }
                 else {
                     $user_linkname = $user_bdrealname;
+                    LoadUser($user_bdname);
                     $user_linkprofile =
-                        qq~<a href="$scripturl?action=viewprofile;username=~
-                      . ( $do_scramble_id ? cloak($user_bdname) : $user_bdname )
-                      . qq~">$user_linkname</a>~;
+                        qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" rel="nofollow">$format_unbold{$user_bdname}</a>~;
                 }
 
                 # handle with the months begin
                 for my $i ( 1 .. 12 ) {
                     if ( $user_bdmon == $i || $user_bdmon eq "$i" ) {
+                        if ( $showage && $user_bdhide ) { $myage = $var_cal{'hidden'};}
+                        else { $myage = $age;
+                        }
+                           
                         $viewmont[$i] .=
 qq~	<tr><td class="windowbg2 center">$user_linkprofile</td>
-						<td class="windowbg2 center">$age</td>
+						<td class="windowbg2 center">$myage</td>
 						<td class="windowbg2 center">$sternzeichen</td>
 						<td class="windowbg2 center">$cdate</td></tr>\n~;
                         $countmont[$i]++;
@@ -387,7 +415,7 @@ qq~	<tr><td class="windowbg2 center">$user_linkprofile</td>
 
     $yymain .= qq~
 <div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
-<table class="bordercolor pad_3px cs_1px">
+<table class="bordercolor pad_3px cs_thin">
 	<col style="width:30%" />
 	<col style="width:20%" />
 	<col style="width:30%" />
@@ -422,7 +450,7 @@ $bd_today
 		<td$class_sortdate><a href="$scripturl?action=cal_birthdaylist;sort=sortdate" style="text-decoration:none;"><b>$var_cal{'calbddate'}</b></a></td>
 	</tr><tr>
 		<td class="windowbg center" colspan="4">
-			<table class="pad_4px cs_1px">
+			<table class="pad_4px cs_thin">
 				<tr>
 					<td><span class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=other" style="text-decoration:none;">123</a></span></td>~;
     for my $i ( a .. z ) {
@@ -448,7 +476,7 @@ $viewbirthdays
         if ( $viewmont[$i] ) {
             $yymain .= qq~
 <div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
-<table class="pad_4px cs_1px">
+<table class="pad_4px cs_thin">
 	<col style="width:30%" />
 	<col style="width:20%" />
 	<col style="width:30%" />
@@ -470,7 +498,7 @@ $viewmont[$i]
     if ( $no_bd_found == 1 ) {
         $yymain .= qq~
 <div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
-<table class="pad_4px cs_1px">
+<table class="pad_4px cs_thin">
 	<tr>
 		<td  class="titlebg" colspan="4">
 			<img src="$imagesdir/info.gif" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calbirthday1'}</b>
