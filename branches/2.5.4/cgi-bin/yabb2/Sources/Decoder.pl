@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$decoderplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$decoderplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub scramble {
@@ -87,7 +87,18 @@ sub validation_check {
 
 sub validation_code {
 	# set the max length of the shown verification code
-	if (!$codemaxchars || $codemaxchars < 3) { $codemaxchars = 3; }
+    my ($firstCharsLen, $lastCharsLen);
+    if ($captchaStartChars) { $firstCharsLen = length($captchaStartChars); }
+    if ($captchaEndChars)   { $lastCharsLen  = length($captchaEndChars); }
+    if ($captchaStartChars && $captchaEndChars) {
+        $flood_text = qq~$floodtxt{'casewarning_1'}$floodtxt{'casewarning_2'} $firstCharsLen $floodtxt{'casewarning_4'} $lastCharsLen $floodtxt{'casewarning_5'}~;
+    } elsif ($captchaStartChars) {
+        $flood_text = qq~$floodtxt{'casewarning_1'}$floodtxt{'casewarning_2'} $firstCharsLen $floodtxt{'casewarning_5'}~;
+    } elsif ($captchaEndChars) {
+        $flood_text = qq~$floodtxt{'casewarning_1'}$floodtxt{'casewarning_3'} $lastCharsLen $floodtxt{'casewarning_5'}~;
+    } else {
+        $flood_text = qq~$floodtxt{'casewarning'}~;
+    } 	if (!$codemaxchars || $codemaxchars < 3) { $codemaxchars = 3; }
 	$codemaxchars2 = $codemaxchars + int(rand(2));
 	## Generate a random string
 	$captcha = &keygen($codemaxchars2,$captchastyle);
@@ -110,8 +121,11 @@ sub testcaptcha {
 
 sub convert {
 	require "$sourcedir/Captcha.pl";
+	my ($startChars, $endChars);
+	if ($captchaStartChars) { $startChars = $captchaStartChars; }
+	if ($captchaEndChars)   { $endChars   = $captchaEndChars; }
 	$captcha = &testcaptcha($INFO{$randaction});
-	&captcha($captcha);
+	captcha($startChars . $captcha . $endChars);
 }
 
 1;
