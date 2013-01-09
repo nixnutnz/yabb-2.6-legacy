@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$advancedtabsplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$advancedtabsplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub AddNewTab {
@@ -196,7 +196,7 @@ sub EditTab {
 				if ($isaction) { $tab_url .= qq~?action=$tab_key~; }
 				if ($username_req) { $tab_url .= qq~;username=$useraccount{$username}~; }
 				$inputlength = length($tabtxt{$tab_key});
-				$edittab{$tab_key} = qq~<form action="$scripturl?action=edittab2;savetab=$enc_key" method="post" name="$tab_key$isexttabs" style="display: inline; white-space: nowrap;">~;
+				$edittab{$tab_key} = qq~<form action="$scripturl?action=edittab2;savetab=$enc_key" method="post" name="$tab_key$isexttabs" style="display: inline; white-space: nowrap;" accept-charset="$yycharset">~;
 				$edittab{$tab_key} .= qq~<span $tabstyle>$tabfill~;
 				$edittab{$tab_key} .= qq~<input type="text" name="$tab_key" id="$tab_key" value="$tabtxt{$tab_key}" size="$inputlength" class="small" style="font-size: 11px; border: 0; margin: 0; padding: 0; background-color: transparent; vertical-align: middle;" />$tabfill~;
 				$edittab{$tab_key} .= qq~<input type="image" src="$imagesdir/tabsave.gif" alt="$tabmenu_txt{'savetab'}" title="$tabmenu_txt{'savetab'}" style="background-color: transparent; border:0; vertical-align: middle;" />~;
