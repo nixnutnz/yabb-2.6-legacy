@@ -14,9 +14,9 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.8;
+our $VERSION = 1.91;
 
-$postplver = 'YaBB 2.5.4 $Revision: 1.8 $';
+$postplver = 'YaBB 2.5.4 $Revision: 1.91 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Post');
@@ -523,7 +523,7 @@ qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctyp
             if ( $SmilieURL[$i] =~ /\//ism ) { $tmpurl = $SmilieURL[$i]; }
             else { $tmpurl = qq~$imagesdir/$SmilieURL[$i]~; }
             $moresmilieslist .=
-qq~             document.write('<img src="$tmpurl" class="bottom" alt="$SmilieDescription[$i]" title="$SmilieDescription[$i]" onclick="javascript: MoreSmilies($i);" style="cursor: pointer;" />$SmilieLinebreak[$i] ');\n~;
+qq~             document.write('<img src="$tmpurl" class="bottom pointer" alt="$SmilieDescription[$i]" title="$SmilieDescription[$i]" onclick="javascript: MoreSmilies($i);" />$SmilieLinebreak[$i] ');\n~;
             $tmpcode = $SmilieCode[$i];
             $tmpcode =~ s/\&quot;/"+'"'+"/gxsm;
     #" Adding that because if not it screws up my syntax view'
@@ -949,7 +949,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         <td class="windowbg2">
             <input type="text" name="subject" id="subject" value="$sub" size="50" maxlength="~
           . ( $set_subjectMaxLength + ( $sub =~ /^Re: /sm ? 4 : 0 ) )
-          . qq~" tabindex="1" style="width: 437px;" onkeyup="updatTopic()" />
+          . qq~" tabindex="1" style="width: 460px;" onkeyup="updatTopic()" />
         </td>
     </tr><tr>
         <td class="windowbg2 vtop">
@@ -967,7 +967,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         ~;
         if ( $enable_ubbc && $showyabbcbutt ) {
             $yymain .= qq~
-            <div style="float: left; width: 440px;">~;
+            <div style="float: left; width: 463px;">~;
             # ubbc set separated out into Postbox.pl DAR #
             $yymain .= postbox();
 
@@ -1063,7 +1063,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             $smilieslist
             document.write('</select></td>');
             document.write('</tr><tr>');
-            document.write('<td class="windowbg2 center h_70px"><img name="smiliextra_image" src="'+smilieurl[0]+'" alt="" onclick="javascript: Smiliextra();" style="cursor: pointer;"></td>');
+            document.write('<td class="windowbg2 center h_70px"><img name="smiliextra_image" src="'+smilieurl[0]+'" alt="" onclick="javascript: Smiliextra();" class="pointer"></td>');
             document.write('</tr><tr>');
             document.write('<td class="windowbg2 center h_15px"><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span></td>');
             document.write('</tr></table>');
@@ -1082,7 +1082,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         </td>
     </tr><tr>
         <td class="windowbg2 bottom">
-            <span  class="small"><img src="$defaultimagesdir/cat_collapse.gif" id="feature_col" alt="$npf_txt{'collapse_features'}" title="$npf_txt{'collapse_features'}" style="cursor:pointer;" onclick="show_features(0);" /> $npf_txt{'features_text'}</span>
+            <span class="small"><img src="$defaultimagesdir/cat_collapse.gif" id="feature_col" alt="$npf_txt{'collapse_features'}" title="$npf_txt{'collapse_features'}" class="pointer" onclick="show_features(0);" /> $npf_txt{'features_text'}</span>
             <input type="hidden" name="col_rowb" id="col_row" value="$col_row" />~;
 
         if (!$removenormalsmilies) { 
@@ -1139,8 +1139,8 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
 
             if ( $allowattach > 1 ) {
                 $yymain .= qq~
-            <img src="$defaultimagesdir/cat_expand.gif" id="attform_add" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" style="cursor:pointer;" onclick="enabPrev2(1);" />
-            <img src="$defaultimagesdir/cat_collapse.gif" id="attform_sub" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" style="cursor:pointer; visibility:hidden;" onclick="enabPrev2(-1);" />~;
+            <img src="$defaultimagesdir/cat_expand.gif" id="attform_add" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" class="pointer" onclick="enabPrev2(1);" />
+            <img src="$defaultimagesdir/cat_collapse.gif" id="attform_sub" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" class="pointer" style="visibility:hidden;" onclick="enabPrev2(-1);" />~;
             }
 
             $yymain .= qq~
