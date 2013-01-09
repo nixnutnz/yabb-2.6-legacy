@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$yabbcplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+$yabbcplver = 'YaBB 2.5.4 $Revision: 1.4 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Post');
@@ -261,7 +261,6 @@ sub DoUBBC {
 	$ycsscounter = 2;
 	if ( $ns eq 'NS' || $message =~ s/#nosmileys//isgm ) { return $message; }
 
-    $message =~ s/\[noparse\](.*?)(\[\/noparse\]|$)/noparse($1)/eisgm;
     $message =~ s/\[code\]/ \[code\]/igsm;
     $message =~ s/\[\/code\]/ \[\/code\]/igsm;
     $message =~ s/\[quote\]/ \[quote\]/igsm;
@@ -270,9 +269,9 @@ sub DoUBBC {
     $message =~ s/\[\/glow\]/ \[\/glow\]/igsm;
     $message =~ s/<br>|<br \/>/\n/igsm;
     $message =~ s/<br>\x1f|<br \/>\x1f/\n/igsm;
-    $message =~ s/\[code\s*(.*?)\]\n*(.+?)\n*\[\/code\]/&codemsg($2,$1)/eisgm
-      ;    # [code] must come at first! At least before image transformation!
-
+    $message =~ s/\[code\s*(.*?)\]\n*(.+?)\n*\[\/code\]/codemsg($2,$1)/eisgm;
+        # [code] must come at first! At least before image transformation!
+    $message =~ s/\[noparse\](.*?)(\[\/noparse\]|$)/noparse($1)/eisgm;
     $message =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gsm;
     $message =~ s/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[\/$1$2\]/gsm;
 
