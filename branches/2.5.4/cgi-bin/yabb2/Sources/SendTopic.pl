@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$sendtopicplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$sendtopicplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ($action eq 'detailedversion') { return 1; }
 
 if (!$sendtopicmail || $sendtopicmail == 2) { &fatal_error("not_allowed"); }
@@ -64,14 +64,14 @@ sub SendTopic {
 	</tr>~;
 
 	if ($regcheck) {
-		&validation_code;
+		validation_code();
 		$yymain .= qq~<tr>
 		<td class="windowbg center vtop" colspan="2">
 			<hr class="hr" />
 		</td>
 	</tr><tr>
 		<td class="windowbg"><label for="verification"><b>$floodtxt{'1'}:</b></label></td>
-		<td class="windowbg" valign="middle">$showcheck<br /><label for="verification"><span class="small">$floodtxt{'casewarning'}</span></label></td>
+		<td class="windowbg">$showcheck<br /><label for="verification"><span class="small">$flood_text</span></label></td>
 	</tr><tr>
 		<td class="windowbg"><label for="verification"><b>$floodtxt{'3'}:</b></label></td>
 		<td class="windowbg"><input type="text" maxlength="30" name="verification" id="verification" size="50" /></td>
