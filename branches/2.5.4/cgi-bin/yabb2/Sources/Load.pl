@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$loadplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$loadplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 
 sub LoadBoardControl {
 	my ($cntcat, $cntboard, $cntpic, $cntdescription, $cntmods, $cntmodgroups, $cnttopicperms, $cntreplyperms, $cntpollperms, $cntzero, $dummy, $dummy, $dummy, $cnttotals, $cntcanpost, $cntparent);
@@ -449,10 +449,12 @@ sub LoadMiniUser {
 	if ($color ne "") {
 		$link{$user}      = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}" style="color:$color;">$userlink</a>~;
 		$format{$user}    = qq~<span style="color: $color;">$userlink</span>~;
+        $format_unbold{$user} = qq~<span style="color: $color;">${$uid.$user}{'realname'}</span>~; 
 		$col_title{$user} = qq~<span style="color: $color;">$memberinfo{$user}</span>~;
 	} else {
 		$link{$user}      = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$userlink</a>~;
 		$format{$user}    = qq~$userlink~;
+		$format_unbold{$user} = qq~${$uid.$user}{'realname'}~;
 		$col_title{$user} = qq~$memberinfo{$user}~;
 	}
 	$addmembergroup{$user} = "<br />";
@@ -519,7 +521,7 @@ sub LoadMiniUser {
 sub QuickLinks {
 	my $user = $_[0];
 	my $lastonline;
-	if ($iamguest) { return ($_[1] ? ${$uid.$user}{'realname'} : $format{$user}); }
+	if ($iamguest) { return ($_[1] ? $format_unbold{$user} : $format{$user}); }
 
 	if ($iamadmin || $iamgmod || $lastonlineinlink) {
 		if(${$uid.$user}{'lastonline'}) {
@@ -571,11 +573,11 @@ sub QuickLinks {
 			$quicklinks .= qq~				<li><a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$maintxt{'6'}</a></li>\n~;
 		}
 		$quicklinks .= qq~			</ul><a href="javascript:quickLinks('$useraccount{$user}$qlcount')"$lastonline>~;
-		$quicklinks .= $_[1] ? ${$uid.$user}{'realname'} : $format{$user};
+		$quicklinks .= $_[1] ? $format_unbold{$user} : $format{$user};
 		qq~$quicklinks</a></div>~;
 
 	} else {
-		qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}"$lastonline>~ . ($_[1] ? ${$uid.$user}{'realname'} : $format{$user}) . qq~</a>~;
+        qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}"$lastonline>~ . ($_[1] ? $format_unbold{$user} : $format{$user}) . qq~</a>~;
 	}
 }
 
