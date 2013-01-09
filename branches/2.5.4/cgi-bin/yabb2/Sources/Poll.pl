@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$pollplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$pollplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Poll');
@@ -251,13 +251,13 @@ sub votedetails {
 	if ($poll_modname ne '' && $poll_mod ne '') {
 		$poll_mod = &timeformat($poll_mod);
 		&LoadUser($poll_modname);
-		$displaydate = qq~<span class="small">&#171; $polltxt{'45a'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_modname}">${$uid.$poll_modname}{'realname'}</a> $polltxt{'46'}: $poll_mod &#187;</span>~;
+		$displaydate = qq~<span class="small">&#171; $polltxt{'45a'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_modname}">$format_unbold{$poll_modname}</a> $polltxt{'46'}: $poll_mod &#187;</span>~;
 	}
 	if ($poll_uname ne '' && $poll_date ne '') {
 		$poll_date = &timeformat($poll_date);
 		if ($poll_uname ne 'Guest' && -e "$memberdir/$poll_uname.vars") {
 			&LoadUser($poll_uname);
-			$displaydate = qq~<span class="small">&#171; $polltxt{'45'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_uname}">${$uid.$poll_uname}{'realname'}</a> $polltxt{'46'}: $poll_date &#187;</span>~;
+			$displaydate = qq~<span class="small">&#171; $polltxt{'45'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_uname}">$format_unbold{$poll_uname}</a> $polltxt{'46'}: $poll_date &#187;</span>~;
 		} else {
 			$displaydate = qq~<span class="small">&#171; $polltxt{'45'}: $poll_name $polltxt{'46'}: $poll_date &#187;</span>~;
 		}
@@ -276,7 +276,7 @@ sub votedetails {
 <br />
 <form action="$scripturl?action=undovote;num=$pollnum$start" method="post" style="display: inline;">
 <input type="hidden" name="multidel" value="1" />
-<table class="bordercolor pad_4px cs_1px" style="width:90%">
+<table class="bordercolor pad_4px cs_thin" style="width:90%">
 	<tr>
     	<td class="titlebg" colspan="5">$img{'pollicon'} <span class="text1"><b>$polltxt{'42'}</b></span></td>
     </tr><tr>
@@ -296,7 +296,7 @@ sub votedetails {
 		$id = qq~$voters_ip-$voters_name~;
 		if ($voters_name ne 'Guest' && -e "$memberdir/$voters_name.vars") {
 			&LoadUser($voters_name);
-			$voters_name = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$voters_name}">${$uid.$voters_name}{'realname'}</a>~;
+			$voters_name = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$voters_name}">$format_unbold{$voters_name}</a>~;
 		}
 		foreach $oldvote (split(/\,/, $voters_vote)) {
 			if ($ubbcpolls) {
@@ -454,12 +454,12 @@ sub display_poll {
 	if ($poll_modname ne '' && $poll_mod ne '' && $showmodify) {
 		$poll_mod = &timeformat($poll_mod);
 		&LoadUser($poll_modname);
-		$displaydate = qq~<span class="small">&#171; $polltxt{'45a'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_modname}">${$uid.$poll_modname}{'realname'}</a> $polltxt{'46'}: $poll_mod &#187;</span>~;
+		$displaydate = qq~<span class="small">&#171; $polltxt{'45a'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_modname}">$format_unbold{$poll_modname</a> $polltxt{'46'}: $poll_mod &#187;</span>~;
 	} elsif ($poll_uname ne '' && $poll_date ne '') {
 		$poll_date = &timeformat($poll_date);
 		if ($poll_uname ne 'Guest' && -e "$memberdir/$poll_uname.vars") {
 			&LoadUser($poll_uname);
-			$displaydate = qq~<span class="small">&#171; $polltxt{'45'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_uname}">${$uid.$poll_uname}{'realname'}</a> $polltxt{'46'}: $poll_date &#187;</span>~;
+			$displaydate = qq~<span class="small">&#171; $polltxt{'45'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_uname}">$format_unbold{$poll_uname}</a> $polltxt{'46'}: $poll_date &#187;</span>~;
 		} elsif ($poll_name ne '') {
 			$displaydate = qq~<span class="small">&#171; $polltxt{'45'}: $poll_name $polltxt{'46'}: $poll_date &#187;</span>~;
 		} else {
@@ -531,7 +531,7 @@ sub display_poll {
 </form>
 
 <form name="poll" method="post" action="$scripturl?action=vote;num=$pollnum$scp" style="display: inline;">
-<table class="bordercolor pad_4px cs_1px">
+<table class="bordercolor pad_4px cs_thin">
 	<tr>
 		<td class="titlebg">
 			<div style="float: left; width: 50%; text-align: left;">
