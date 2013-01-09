@@ -16,9 +16,9 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.7;
+our $VERSION = 1.9;
 
-$instantmessageplver = 'YaBB 2.5.4 $Revision: 1.7 $';
+$instantmessageplver = 'YaBB 2.5.4 $Revision: 1.9 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 require "$sourcedir/Postbox.pl";
 
@@ -508,7 +508,7 @@ qq~						<b>$inmes_txt{'324'} $toUsersTitle:</b> <input type="text" name="togues
 			$JSandInput
 			<label for="subject"><b>$inmes_txt{'70'}:</b></label><br /><input type="text" name="subject" id="subject" value="$subject" size="50" maxlength="~
       . ( $set_subjectMaxLength + ( $subject =~ /^Re: / ? 4 : 0 ) )
-      . qq~" tabindex="3" style="width: 437px;"$onchangeText />
+      . qq~" tabindex="3" style="width: 460px;"$onchangeText />
 		</td>
 	</tr><tr>
 		<td class="windowbg2">
@@ -518,7 +518,7 @@ qq~						<b>$inmes_txt{'324'} $toUsersTitle:</b> <input type="text" name="togues
     if ( !$replyguest ) {
         if ( $enable_ubbc && $showyabbcbutt ) {
             $imsend .= qq~<b>$post_txt{'252'}:</b><br />
-			<div style="float: left; width: 440px;">~;
+			<div style="float: left; width: 463px;">~;
             # ubbc set separated out into Postbox.pl DAR 11/13/2012 #
             $imsend .= postbox();
             $imsend .= q~</div>~;
@@ -578,7 +578,7 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
                 if ( $SmilieURL[$i] =~ /\//ism ) { $tmpurl = $SmilieURL[$i]; }
                 else { $tmpurl = qq~$imagesdir/$SmilieURL[$i]~; }
                 $moresmilieslist .=
-qq~				document.write('<img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="javascript: MoreSmilies($i);" style="cursor: pointer; vertical-align:bottom" />$SmilieLinebreak[$i] ');\n~;
+qq~				document.write('<img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="javascript: MoreSmilies($i);" class="pointer bottom" />$SmilieLinebreak[$i] ');\n~;
                 $tmpcode = $SmilieCode[$i];
                 $tmpcode =~ s/\&quot;/"+'"'+"/gsm
                   ;   #" Adding that because if not it screws up my syntax view'
