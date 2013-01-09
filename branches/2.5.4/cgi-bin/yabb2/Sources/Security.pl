@@ -16,9 +16,9 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.2;
+our $VERSION = 1.3;
 
-$securityplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$securityplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 
 # Updates profile with current IP, if changed from last IP.
 # Will only actually update the file when .vars is being updated anyway to save extra load on server.
@@ -291,7 +291,7 @@ sub check_banlist {
         for my $i (@banlist) {
             @banned = split /\|/xsm, $i;
             $tmb = time_ban();
-            if ( ($banned[0] eq 'U' && $ip_ban eq $banned[1] && $banned[4] ne 'p' && $tmb > $today) || $banned[0] eq 'U' && $ip_ban eq $banned[1] && $banned[4] eq 'p' ) {
+            if ( ($banned[0] eq 'U' && $u_ban eq $banned[1] && $banned[4] ne 'p' && $tmb > $today) || $banned[0] eq 'U' && $u_ban eq $banned[1] && $banned[4] eq 'p' ) {
                 $ban_rtn .= $banned[0];
                 last;
             }
