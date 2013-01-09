@@ -15,7 +15,7 @@
 # Added to the YaBB default code on 07. September 2008                        #
 ###############################################################################
 
-$extendedprofilesplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$extendedprofilesplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage("ExtendedProfiles");
@@ -877,7 +877,7 @@ sub ext_saveprofile {
 sub ext_admin_htmlreq {
 	$ext_template_blockstart = qq~
 <div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-	<table class="pad_4px cs_1px">
+	<table class="pad_4px cs_thin">
 ~;
 	$ext_template_headerstart = qq~<tr>
 		<td class="titlebg">
@@ -1223,7 +1223,7 @@ sub ext_admin_edit {
 		if ($field{'radiounselect'} == 1) { $radiounselect = " checked=\"checked\""; } else { $radiounselect = ""; }
 		$editable_check[$field{'editable_by_user'}] = " selected=\"selected\"";
 		$yymain .= qq~
-<form action="$adminurl?action=ext_edit2" method="post">
+<form action="$adminurl?action=ext_edit2" method="post" accept-charset="$yycharset">
 $ext_template_blockstart
 $ext_template_headerstart
 $lang_ext{'options_title'}
