@@ -8,7 +8,7 @@
 /*--------------------------------------------------------*/
 /*   This is the css file for YaBB 2.5.4 default Template */
 /*--------------------------------------------------------*/
-/* $Revision: 1.5 $ */
+/* $Revision: 1.7 $ */
 
 body {
 background-color:#F2F6F9;
@@ -407,7 +407,9 @@ font-size:12px;
 }
 
 .border {
-border:thin solid #B1BDC9; }
+border:thin solid #B1BDC9;
+}
+
 .top {
 color:#475F79;
 font-size:11px;
@@ -454,7 +456,7 @@ font-weight:400;
 text-decoration:none;
 }
 
-.message a,  {
+.message a  {
 background-color:transparent;
 color:#900000;
 font-style:normal;
@@ -644,28 +646,56 @@ top:0;
 z-index:1;
 }
 #usersto {
-width: 98%; display: inline; float: left;
+width: 98%;
+display: inline;
+float: left;
 }
 #userscc, #usersbcc {
-width: 98%; display: none; float: left;
+width: 98%;
+display: none;
+float: left;
 }
 
 textarea#message {
-position: absolute; top: 0px; left: 0px; z-index: 2; padding: 5px; margin: 0px; visibility: visible;
+position: absolute;
+top: 0px;
+left: 0px;
+z-index: 2;
+padding: 5px;
+margin: 0px;
+visibility: visible;
 }
 
 div#dragbgw {
-position: absolute; top: 0px; left: 437px; width: 3px; border: 0; z-index: 3;
+position: absolute;
+top: 0px;
+left: 460px;
+width: 3px;
+border: 0;
+z-index: 3;
 }
 div#dragbgh {
-position: absolute; top: 142px; left: 0px; height: 3px; border: 0; z-index: 3;
+position: absolute;
+top: 142px;
+left: 0px;
+height: 3px;
+border: 0;
+z-index: 3;
 }
 
 img#dragImg1 {
-position: absolute; top: 0px; z-index: 4; width: 3px; cursor: e-resize;
+position: absolute;
+top: 0px;
+z-index: 4;
+width: 3px;
+cursor: e-resize;
 }
 img#dragImg2 {
-position: absolute; left: 0px; z-index: 4; height: 3px; cursor: n-resize;
+position: absolute;
+left: 0px;
+z-index: 4;
+height: 3px;
+cursor: n-resize;
 }
 
 .deftpal {
@@ -695,7 +725,7 @@ width:115px;
 div.fontface {
 float:left;
 text-align:center;
-width:139px;
+width:162px;
 }
 
 div.palettebox {
@@ -761,7 +791,7 @@ font-size:9px;
 margin-left:2px;
 margin-right:1px;
 margin-top:2px;
-width:90px;
+width:113px;
 }
 
 #fontsize {
@@ -794,7 +824,7 @@ width:440px;
 
 div.left437 {
 float:left;
-width:437px;
+width:460px;
 }
 
 div.chrwarn {
@@ -895,23 +925,45 @@ height:80px;
 }
 
 #ImageAlert {
-visibility:hidden; position:fixed; background-color:#AAAAAA; width:200px; top:30%; left:41%;
+visibility:hidden;
+position:fixed;
+background-color:#AAAAAA;
+width:200px;
+top:30%;
+left:41%;
 }
 
 .yabb_rss {
-float: left; width: 40px; height: 18px; text-align: center; padding-top: 6px; display: inline;
+float: left;
+width: 40px;
+height: 18px;
+text-align: center;
+padding-top: 6px;
+display: inline;
 }
 
 .yabb_searchbox {
-float: left; width: 160px; height: 21px; text-align: center; padding-top: 3px; display: inline;
+float: left;
+width: 160px;
+height: 21px;
+text-align: center;
+padding-top: 3px;
+display: inline;
 }
 
 .yabb_main {
-width: 96%; margin-left: auto; margin-right: auto; text-align: left;
+width: 96%;
+margin-left: auto;
+margin-right: auto;
+text-align: left;
 }
 
 .yabb_forumjump {
-width: 96%; margin-left: auto; margin-right: auto; text-align: right; padding-top: 10px;
+width: 96%;
+margin-left: auto;
+margin-right: auto;
+text-align: right;
+padding-top: 10px;
 }
 
 .clear {
@@ -919,19 +971,29 @@ clear:both;
 }
 
 .ongif {
-margin-left: 4px; margin-right: 6px; vertical-align: middle;
+margin-left: 4px;
+margin-right: 6px;
+vertical-align: middle;
 }
 
 .grpcolors {
 font-size:10px;
-float: left; width: 49%;
+float: left;
+width: 49%;
 }
 .mctitle {
-float: left; width: 100%; height: 21px; text-align: center; padding-top: 3px;
+float: left;
+width: 100%;
+height: 21px;
+text-align: center;
+padding-top: 3px;
 }
 
 .pgindex {
-float: left; height: 21px; margin: 0px; margin-top: 2px;
+float: left;
+height: 21px;
+margin: 0px;
+margin-top: 2px;
 }
 
 .bold {
@@ -939,4 +1001,8 @@ font-wight:bold;
 }
 .under, .u {
 text-decoration:underline;
+}
+
+.pointer {
+cursor:pointer;
 }
