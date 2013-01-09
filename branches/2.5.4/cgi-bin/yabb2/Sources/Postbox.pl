@@ -15,16 +15,16 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.3;
+our $VERSION = 1.5;
 
-$postboxplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+$postboxplver = 'YaBB 2.5.4 $Revision: 1.5 $';
 if ( defined $actions && $action eq 'detailedversion' ) { return 1; }
 
 #InstantMessage.pl and Post.pl use the same code for the posting box - why have two copies? #
 
 sub postbox {
     $box = qq~<script type="text/javascript">
-            HAND = "style='vertical-align:top; cursor: pointer;'";
+            HAND = 'class="vtop pointer"';
             HAND += " onmouseover='contextTip(event, this.alt)' onmouseout='contextTip(event, this.alt)' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'";
             document.write('<div class="left437">');
             document.write("<img src='$imagesdir/url.gif' onclick='hyperlink();' "+HAND+" width='23' height='22' alt='$post_txt{'257'}' title='$post_txt{'257'}' />");
@@ -47,6 +47,7 @@ sub postbox {
             document.write("<img src='$imagesdir/me.gif' onclick='me();' "+HAND+" width='23' height='22' alt='$post_txt{'604'}' title='$post_txt{'604'}' />");
             document.write("<img src='$imagesdir/move.gif' onclick='move();' "+HAND+" width='23' height='22' alt='$post_txt{'439'}' title='$post_txt{'439'}' />");
             document.write("<img src='$imagesdir/timestamp.gif' onclick='timestamp($date);' "+HAND+" width='23' height='22' alt='$post_txt{'245'}' title='$post_txt{'245'}' />");
+            document.write("<img src='$imagesdir/noparse.gif' onclick='noparse();' "+HAND+" width='23' height='22' alt='$post_txt{'noparse'}' title='$post_txt{'noparse'}' />");
             document.write('<br /></div>');
             document.write('<div class="textdecor">');
             document.write("<img src='$imagesdir/bold.gif' onclick='bold();' "+HAND+" width='23' height='22' alt='$post_txt{'253'}' title='$post_txt{'253'}' />");
@@ -213,7 +214,7 @@ sub postbox {
             </div>
             <script type="text/javascript">
 
-            HAND = "class='pointer' style='vertical-align:top'";
+            HAND = 'class="vtop pointer"';
             HAND += " onmouseover='contextTip(event, this.alt)' onmouseout='contextTip(event, this.alt)' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'";
             document.write('<div class="txtalgn">');
             document.write("<img src='$imagesdir/pre.gif' onclick='pre();' "+HAND+" width='23' height='22' alt='$post_txt{'444'}' title='$post_txt{'444'}' />");
@@ -523,7 +524,7 @@ sub googie {
 
 sub smilies_list {
     $smilies_list = qq~
-                HAND = "style='cursor: pointer; vertical-align:bottom'";
+                HAND = 'class="bottom pointer"';
                 document.write("<img src='$imagesdir/smiley.gif' onclick='smiley();' "+HAND+" alt='$post_txt{'287'}' title='$post_txt{'287'}'> ");
                 document.write("<img src='$imagesdir/wink.gif' onclick='wink();' "+HAND+" alt='$post_txt{'292'}' title='$post_txt{'292'}'> ");
                 document.write("<img src='$imagesdir/cheesy.gif' onclick='cheesy();' "+HAND+" alt='$post_txt{'289'}' title='$post_txt{'289'}'> ");
@@ -557,8 +558,8 @@ sub attach {
             <input type="hidden" name="oldattach" id="oldattach" value="$mfn" />~;
 
         if ($allowattach > 1) { $yymain .= qq~
-            <img name="attform_add" id="attform_add" src="$defaultimagesdir/cat_expand.gif" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" style="cursor:pointer;" onclick="enabPrev2(1);" />
-            <img name="attform_sub" id="attform_sub" src="$defaultimagesdir/cat_collapse.gif" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" style="cursor:pointer; visibility:hidden;" onclick="enabPrev2(-1);" />~;
+            <img name="attform_add" id="attform_add" src="$defaultimagesdir/cat_expand.gif" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" class="pointer" onclick="enabPrev2(1);" />
+            <img name="attform_sub" id="attform_sub" src="$defaultimagesdir/cat_collapse.gif" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" class="pointer" style="visibility:hidden;" onclick="enabPrev2(-1);" />~;
         }
 
         $yymain .= qq~
