@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$loginoutplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$loginoutplver = 'YaBB 2.5.4 $Revision: 1.5 $';
 if ($action eq 'detailedversion') { return 1; }
 
 if ($regcheck) { require "$sourcedir/Decoder.pl"; }
@@ -148,7 +148,7 @@ sub sharedLogin {
 	if ($sharedLogin_title ne "") {
 		$sharedlog .= qq~
 $border_with_title
-<table class="pad_4px cs_1px">
+<table class="pad_4px cs_thin">
 	<tr>
 		<td class="titlebg" colspan="2"><b>$sharedLogin_title</b></td></tr>~;
 		if ($sharedLogin_text ne "") {
@@ -161,7 +161,7 @@ $border_with_title
 	} else {
 		$sharedlog .= qq~
 $border
-<table class="bordercolor cs_1px">
+<table class="bordercolor cs_thin">
 	<col style="width:5%" />
 	<tr>
 		<td class="tabtitle center" style="height:25px" colspan="2">$loginout_txt{'34'}</td>
@@ -172,7 +172,7 @@ $border
     if ($maintenance) { $hide_passbutton = " visibility: hidden;"; }
     if ($maintenance || !$regtype) { $hide_regbutton = " visibility: hidden;"; }
     	$sharedlog .= qq~
-			<form name="loginform" action="$scripturl?action=login2" method="post">
+			<form name="loginform" action="$scripturl?action=login2" method="post" accept-charset="$yycharset">
 				<input type="hidden" name="sredir" value="$INFO{'sesredir'}" />
 				<div style="width: 600px;">
 					<span style="float: left; width: 50%; text-align: left; margin-bottom: 5px;">
@@ -235,8 +235,8 @@ sub Reminder {
 #	if (!$iamguest) { &fatal_error("logged_in_already",$username); }
 	if (!$iamguest && $sessionvalid == 1) { &fatal_error("logged_in_already",$username); }
 	$yymain .= qq~<br /><br />
-<form action="$scripturl?action=reminder2" method="post" name="reminder" onsubmit="return CheckReminderField();">
-<table class="bordercolor pad_3px cs_1px" style="width:400px">
+<form action="$scripturl?action=reminder2" method="post" name="reminder" onsubmit="return CheckReminderField();" accept-charset="$yycharset">
+<table class="bordercolor pad_3px cs_thin" style="width:400px">
 	<tr>
 		<td class="titlebg">
 			<span class="text1"><b>$mbname $loginout_txt{'36'} $loginout_txt{'194'}</b></span>
@@ -249,12 +249,12 @@ sub Reminder {
 	</tr>~;
 
 	if ($regcheck) {
-		&validation_code;
+		validation_code();
 		$yymain .= qq~<tr>
 		<td class="windowbg">
 			<label for="verification"><span class="text1"><b>$floodtxt{'1'}: </b></span>
 			$showcheck
-			<br /><span class="small">$floodtxt{'casewarning'}</span></label>
+			<br /><span class="small">$flood_text</span></label>
 		</td>
 	</tr><tr>
 		<td class="windowbg">
@@ -376,7 +376,7 @@ sub Reminder2 {
 	&sendmail(${$uid.$user}{'email'}, $subject, $message);
 
 	$yymain .= qq~<br /><br />
-<table class="bordercolor pad_3px cs_1px" style="width:400px">
+<table class="bordercolor pad_3px cs_thin" style="width:400px">
 	<tr>
 		<td class="titlebg">
 			<span class="text1"><b>$mbname $loginout_txt{'36'} $loginout_txt{'194'}</b></span>
