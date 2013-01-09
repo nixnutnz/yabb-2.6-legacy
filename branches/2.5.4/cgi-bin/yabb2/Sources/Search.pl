@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$searchplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$searchplver = 'YaBB 2.5.4 $Revision: 1.4 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Search');
@@ -92,8 +92,8 @@ function searchMe(chelem) {
 //-->
 </script>
 
-<form action="$scripturl?action=search2" method="post" name="searchform" onsubmit="return CheckSearchFields();">
-<table class="bordercolor pad_4px cs_1px" >
+<form action="$scripturl?action=search2" method="post" name="searchform" onsubmit="return CheckSearchFields();" accept-charset="$yycharset">
+<table class="bordercolor pad_4px cs_thin" >
 	<col style="width:45%" />
 	<col style="width:55%" />
 	<tr>
@@ -514,7 +514,7 @@ sub plushSearch2 {
 		++$counter;
 
 		$yymain .= qq~
-<table class="bordercolor cs_1px" style="table-layout: fixed;">
+<table class="bordercolor cs_thin" style="table-layout: fixed;">
     <col style="width:5%" />
 	<tr>
 		<td class="titlebg center">$counter</td>
@@ -796,7 +796,7 @@ sub pmsearch {
 		++$counter;
 
 		$yysearchmain .= qq~
-<table class="bordercolor cs_1px" style="table-layout: fixed;">
+<table class="bordercolor cs_thin" style="table-layout: fixed;">
 	<col style="width:5%" />
 	<tr>
 		<td class="titlebg center">&nbsp;$counter&nbsp;</td>
@@ -836,7 +836,7 @@ sub addMemberLink {
 	my ($user,$displayname,$mdate) = @_;
 	if (-e "$memberdir/$user.vars") { &LoadUser($user); }
 	if (${$uid.$user}{'regdate'} && $mdate >= (${$uid.$user}{'regtime'} || $date)) {
-		$mname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">${$uid.$user}{'realname'}</a>~;
+		$mname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$format_unbold{$user}</a>~;
 	} elsif ($user !~ m~Guest~ && $mdate < (${$uid.$user}{'regtime'} || $date)) {
 		$mname = qq~$displayname - $maintxt{'470a'}~;
 	} else {
