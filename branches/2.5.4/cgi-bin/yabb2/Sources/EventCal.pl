@@ -15,10 +15,10 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.7;
+our $VERSION = 1.8;
 use Time::Local 'timelocal';
 
-$eventcalplver = 'YaBB 2.5.4 $Revision: 1.7 $';
+$eventcalplver = 'YaBB 2.5.4 $Revision: 1.8 $';
 if ($action eq 'detailedversion') { return 1; }
 
 LoadLanguage('EventCal');
@@ -444,7 +444,7 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
             $YaBBC_calout .= q~
             <script type="text/javascript">
 			<!--
-			document.write('<div style="width: 437px; float: left;">');
+			document.write('<div class="left437">');
             </script>~;
 
             $YaBBC_calout .= postbox();
