@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$printpageplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$printpageplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub Print_IM {
@@ -28,7 +28,8 @@ sub Print_IM {
 <head>
 <title>$mbname - $maintxt{'668'}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
-
+<meta name="robots" content="noindex,noarchive" />
+<link rel="canonical" href="$scripturl?num=$num" />
 <script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
 <script type="text/javascript">
 <!--
@@ -343,7 +344,7 @@ sub sizefont {
 		my $code = $_[0];
 		if ($code !~ /&\S*;/) { $code =~ s/;/&#059;/g; }
 		$code =~ s~([\(\)\-\:\\\/\?\!\]\[\.\^])~$killhash{$1}~g;
-		$_ = qq~<br /><b>Code:</b><br /><table class="cs_1px" style="width:90%"><tr><td><table class="padd_2px"><tr><td><span style="font-family:courier; font-size:xx_small">CODE</span></td></tr></table></td></tr></table>~;
+		$_ = qq~<br /><b>Code:</b><br /><table class="cs_thin" style="width:90%"><tr><td><table class="padd_2px"><tr><td><span style="font-family:courier; font-size:xx_small">CODE</span></td></tr></table></td></tr></table>~;
 		$_ =~ s~CODE~$code~g;
 		return $_;
 	}
@@ -365,7 +366,7 @@ sub donoopen {
 sub do_print {
 	$threadpost =~ s~<br />~\n~ig;
 	$threadpost =~ s~\[highlight(.*?)\](.*?)\[/highlight\]~$2~isg;
-    $threadpost =~ s~\[code\s*(.+?)\]\n*(.+?)\n*\[/code\]~<br /><b>Code ($1):</b><br /><table class="cs_1px"><tr><td><table class="pad_2px"><tr><td><span style="font-family:courier; font-size:xx_small">$2</span></td></tr></table></td></tr></table>~isg; 
+    $threadpost =~ s~\[code\s*(.+?)\]\n*(.+?)\n*\[/code\]~<br /><b>Code ($1):</b><br /><table class="cs_thin"><tr><td><table class="pad_2px"><tr><td><span style="font-family:courier; font-size:xx_small">$2</span></td></tr></table></td></tr></table>~isg; 
 	$threadpost =~ s~\[([^\]]{0,30})\n([^\]]{0,30})\]~\[$1$2\]~g;
 	$threadpost =~ s~\[/([^\]]{0,30})\n([^\]]{0,30})\]~\[/$1$2\]~g;
 	$threadpost =~ s~(\w+://[^<>\s\n\"\]\[]+)\n([^<>\s\n\"\]\[]+)~$1\n$2~g;
@@ -572,9 +573,9 @@ sub do_print {
 			}
 		}
 
-		$threadpost =~ s~\[quote\s+author=.*?link=.*?\s+date=.*?\s*\]\n*(.*?)\n*\[/quote\]~<br /><i>$author $maintxt{'30a'} $date</a>:</i><table class="cs_1px" style="width:90%"><tr><td><table class="pad_2px"><tr><td><style="font- size:xx-small">$1</span></td></tr></table></td></tr></table>~is;
+		$threadpost =~ s~\[quote\s+author=.*?link=.*?\s+date=.*?\s*\]\n*(.*?)\n*\[/quote\]~<br /><i>$author $maintxt{'30a'} $date</a>:</i><table class="cs_thin" style="width:90%"><tr><td><table class="pad_2px"><tr><td><style="font- size:xx-small">$1</span></td></tr></table></td></tr></table>~is;
 	}
-	$threadpost =~ s~\[quote\]\n*(.+?)\n*\[/quote\]~<br /><i>$maintxt{'31'}:</i><table class="cs_1px" style="width:90%"><tr><td><table class="cs_2px"><tr><td style="font-size:xx_small">$1</td></tr></table></td></tr></table>~isg;
+	$threadpost =~ s~\[quote\]\n*(.+?)\n*\[/quote\]~<br /><i>$maintxt{'31'}:</i><table class="cs_thin" style="width:90%"><tr><td><table class="cs_2px"><tr><td style="font-size:xx_small">$1</td></tr></table></td></tr></table>~isg;
 
 	$threadpost =~ s~\[list\]~<ul>~isg;
 	$threadpost =~ s~\[\*\]~<li>~isg;
