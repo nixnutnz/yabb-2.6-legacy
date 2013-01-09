@@ -13,13 +13,13 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-use warnings;
-no warnings qw(uninitialized once);
+# use warnings;
+# no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.2;
+our $VERSION = 1.4;
 
 # from YaBB3.0 build 100 #
-$recentplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$recentplver = 'YaBB 2.5.4 $Revision: 1.4 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Sub RecentTopics shows all the most recently posted topics
@@ -140,7 +140,7 @@ sub RecentTopics {
         if ( ${ $uid . $tusername }{'regdate'} && $trstart > $registrationdate )
         {
             $tname =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tusername}" rel="nofollow" rel="nofollow">${$uid.$tusername}{'realname'}</a>~;
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tusername}" rel="nofollow">$format_unbold{$tusername}</a>~;
         }
         elsif ( $tusername !~ m{Guest}sm && $trstart < $registrationdate ) {
             $tname = qq~$tname - $maintxt{'470a'}~;
@@ -161,7 +161,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tusername}" rel
 
         if ( ${ $uid . $musername }{'regdate'} && $mdate > $registrationdate ) {
             $mname =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}" rel="nofollow" rel="nofollow">${$uid.$musername}{'realname'}</a>~;
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}" rel="nofollow">$format_unbold{$musername}</a>~;
         }
         elsif ( $musername !~ m{Guest}sm && $mdate < $registrationdate ) {
             $mname = qq~$mname - $maintxt{'470a'}~;
@@ -248,7 +248,7 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under"
             </table>
         </td>
     </tr><tr>
-        <td class="windowbg2 vtop h_80px" style="padding:5px"><div style="float: left; width: 99%; overflow: auto;">$message</div></td>
+        <td class="windowbg2 vtop h_80px" style="padding:5px"><div class="message" style="float: left; width: 99%; overflow: auto;">$message</div></td>
     </tr>
 </table><br />
 ~;
@@ -381,7 +381,7 @@ sub RecentPosts {
         if ( ${ $uid . $tusername }{'regdate'} && $trstart > $registrationdate )
         {
             $tname =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tusername}" rel="nofollow">${$uid.$tusername}{'realname'}</a>~;
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tusername}" rel="nofollow">$format_unbold{$tusername}</a>~;
         }
         elsif ( $tusername !~ m{Guest}sm && $trstart < $registrationdate ) {
             $tname = qq~$tname - $maintxt{'470a'}~;
@@ -402,7 +402,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tusername}" rel
 
         if ( ${ $uid . $musername }{'regdate'} && $mdate > $registrationdate ) {
             $mname =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}" rel="nofollow">${$uid.$musername}{'realname'}</a>~;
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}" rel="nofollow">$format_unbold{$musername}</a>~;
         }
         elsif ( $musername !~ m{Guest}sm && $mdate < $registrationdate ) {
             $mname = qq~$mname - $maintxt{'470a'}~;
@@ -488,7 +488,7 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under"
             </table>
         </td>
     </tr><tr>
-        <td class="windowbg2 vtop h_80px" style="padding:5px"><div style="float: left; width: 99%; overflow: auto;">$message</div></td>
+        <td class="windowbg2 vtop h_80px" style="padding:5px"><div class="message" style="float: left; width: 99%; overflow: auto;">$message</div></td>
     </tr>
 </table><br />
 ~;
