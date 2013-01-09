@@ -15,9 +15,9 @@
 # use warnings;
 no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.6;
+our $VERSION = 1.8;
 
-$mycenterplver = 'YaBB 2.5.4 $Revision: 1.6 $';
+$mycenterplver = 'YaBB 2.5.4 $Revision: 1.8 $';
 if ($action eq 'detailedversion') { return 1; }
 
 LoadLanguage('InstantMessage');
@@ -1551,7 +1551,7 @@ q~if(!checkForm(this)) { return false; } else { return submitproc(); }">~;
 				$smilieslist
 				document.write('</select></td>');
 				document.write('</tr><tr>');
-				document.write('<td class="windowbg2 center" style="height:70px"><img name="smiliextra_image" src="'+smilieurl[0]+'" alt="" onclick="javascript: Smiliextra();" style="cursor: pointer;"></td>');
+				document.write('<td class="windowbg2 center" style="height:70px"><img name="smiliextra_image" src="'+smilieurl[0]+'" alt="" onclick="javascript: Smiliextra();" class="pointer"></td>');
 				document.write('</tr><tr>');
 				document.write('<td class="windowbg2 center" style="height:15px"><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span></td>');
 				document.write('</tr></table>');
@@ -1593,14 +1593,14 @@ qq~<form action="$scripturl?action=$destination" method="post" name="postmodify"
 		}
 
 		my $memberinfo = "$memberinfo{$username}$addmembergroup{$username}";
-		my $userOnline = userOnLineStatus($username) . '<br />';
+		my $userOnline = userOnLineStatus($username) . q~<br />~;
 		my $template_postinfo =
             qq~$mycenter_txt{'posts'}: ~
             . NumberFormat(${$uid.$username}{'postcount'})
-            . '<br />';
+            . q~<br />~;
 		my $userlocation;
 		if (${$uid.$username}{'location'}) {
-			$userlocation = ${$uid.$username}{'location'} . '<br />';
+			$userlocation = qq~$mycenter_txt{'location'}: ~ . ${$uid.$username}{'location'} . q~<br />~;
 		}
 
 		$mctitle = $mycenter_txt{'welcometxt'};
