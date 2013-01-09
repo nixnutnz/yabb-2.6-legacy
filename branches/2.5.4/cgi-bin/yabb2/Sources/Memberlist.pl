@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$memberlistplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$memberlistplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ($action eq 'detailedversion') { return 1; }
 
 if ($iamguest && $ML_Allowed) { &fatal_error('no_access'); }
@@ -388,22 +388,22 @@ sub buildIndex {
 		if(visel == 'xx' && decparam == '$pagejsindex') visel = '$tstart';
 		var pagedropindex = '<table><tr>';
 		for(i=vistart; i<=viend; i++) {
-			if(visel == pagstart) pagedropindex += '<td class="titlebg" height="14" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: bold;">' + i + '</td>';
-			else pagedropindex += '<td height="14" class="droppages"><a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=' + pagstart + '$findmember">' + i + '</a></td>';
+			if(visel == pagstart) pagedropindex += '<td class="titlebg" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: bold;">' + i + '</td>';
+			else pagedropindex += '<td class="droppages"><a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=' + pagstart + '$findmember">' + i + '</a></td>';
 			pagstart += maxpag;
 		}
 		~;
 		if ($showpageall) {
 			$pageindexjs .= qq~
 			if (vistart != viend) {
-				if(visel == 'all') pagedropindex += '<td class="titlebg" height="14" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: normal;"><b>$pidtxt{'01'}</b></td>';
-				else pagedropindex += '<td height="14" class="droppages"><a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=all-' + allpagstart + '$findmember">$pidtxt{'01'}</a></td>';
+				if(visel == 'all') pagedropindex += '<td class="titlebg" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: normal;"><b>$pidtxt{'01'}</b></td>';
+				else pagedropindex += '<td class="droppages"><a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=all-' + allpagstart + '$findmember">$pidtxt{'01'}</a></td>';
 			}
 			~;
 		}
 		$pageindexjs .= qq~
-		if(visel != 'xx') pagedropindex += '<td height="14" class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpv$pagedropindexnx</td>';
-		else pagedropindex += '<td height="14" class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpvbl$pagedropindexnxbl</td>';
+		if(visel != 'xx') pagedropindex += '<td class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpv$pagedropindexnx</td>';
+		else pagedropindex += '<td class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpvbl$pagedropindexnxbl</td>';
 		pagedropindex += '</tr></table>';
 		document.getElementById("ViewIndex1").innerHTML=pagedropindex;
 		document.getElementById("ViewIndex1").style.visibility = "visible";
@@ -485,7 +485,7 @@ sub buildIndex {
 		if ($_[0]) {
 			$yynavigation = qq~&rsaquo; $ml_txt{'331'} $numshow~;
 			$yymain .= qq~
-		<table class="bordercolor pad_3px cs_1px">
+		<table class="bordercolor pad_3px cs_thin">
 			<tr>
 				<td class="catbg" colspan="$headercount">
 					<div style="float: left; width: 25%; text-align: left;">$pageindex1</div>
