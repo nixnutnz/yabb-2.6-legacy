@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$userselectplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$userselectplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ($action eq 'detailedversion') { return 1; }
 
 if ($iamguest && $INFO{'toid'} ne "userspec" && $action ne "checkavail") { &fatal_error("members_only"); }
@@ -481,7 +481,7 @@ sub buildPages {
 			~;
 	unless ($to_id eq 'groups') {
 		$TableHeader .= qq~
-			<form action="$scripturl?action=findmember;sort=pmsearch;toid=$to_id" method="post" id="form1" name="form1" enctype="application/x-www-form-urlencoded" style="display:inline; vertical-align:middle;">
+			<form action="$scripturl?action=findmember;sort=pmsearch;toid=$to_id" method="post" id="form1" name="form1" enctype="application/x-www-form-urlencoded" style="display:inline; vertical-align:middle;" accept-charset="$yycharset">
 				<input type="text" name="member" id="member" value="$usersel_txt{'wildcardinfo'}" onfocus="this.value=''" style="font-size: 11px; width: 140px" />
 				<input name="submit" type="submit" class="button" style="font-size: 10px;" value="$usersel_txt{'gobutton'}" />
 			</form>~;
@@ -492,7 +492,7 @@ sub buildPages {
 		</tr>
 	</table>
 	<form method="post" action="" name="selectuser">
-	<table class="bordercolor pad_3px cs_1px" style="width:464px; height: 275px; table-layout: fixed;">
+	<table class="bordercolor pad_3px cs_thin" style="width:464px; height: 275px; table-layout: fixed; margin-left:0">
 		<tr>
 			<td class="catbg center">
 	~;
@@ -528,7 +528,7 @@ sub buildPages {
 
 	if ($_[0]) {
 		$yymain .= qq~
-	<table class="bordercolor pad_3px cs_1px" style="table-layout: fixed; width:464px">
+	<table class="bordercolor pad_3px cs_thin" style="table-layout: fixed; width:464px; margin-left:0">
 		$TableHeader
 		<tr>
 			<td class="catbg" style="height:26px">
@@ -738,7 +738,7 @@ sub quickSearch {
 	$to_id = $INFO{'toid'};
 	$yymain = qq~
 	<div class="bordercolor" style="width:300px">
-	<table class="pad_3px cs_1px" style="width:300px">
+	<table class="pad_3px cs_thin" style="width:300px">
 		<tr>
 			<td class="titlebg"><label for="letter">$usersel_txt{'qsearch'}</label></td>
 		</tr><tr>
