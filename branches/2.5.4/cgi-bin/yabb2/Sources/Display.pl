@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$displayplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+$displayplver = 'YaBB 2.5.4 $Revision: 1.5 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Display');
@@ -490,7 +490,7 @@ sub Display {
 		if ($musername ne 'Guest' && !$yyUDLoaded{$musername} && -e ("$memberdir/$musername.vars")) {
 			my $tmpns = $ns;
 			$ns = "";
-			&LoadUserDisplay($musername);
+			LoadUserDisplay($musername);
 			$ns = $tmpns;
 		}
 		$messagedate = $mdate;
@@ -545,8 +545,12 @@ sub Display {
 
 		# Should we show "last modified by?"
 		if ($showmodify && $mlm ne '' && $mlmb ne '' && (!$tllastmodflag || ($mdate + ($tllastmodtime * 60)) < $mlm)) {
-			&LoadUser($mlmb);
-			$mlmb = ${$uid.$mlmb}{'realname'} || $display_txt{'470'};
+            if ($mlmb) {
+                LoadUser($mlmb);
+                $mlmb = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$mlmb}">$format_unbold{$mlmb}</a>~;
+            } else {
+                $mlmb = $display_txt{'470'};
+            }
 			$lastmodified = qq~&#171; <i>$display_txt{'211'}: ~ . &timeformat($mlm) . qq~ $display_txt{'525'} $mlmb</i> &#187;~;
 		}
 
@@ -1021,7 +1025,7 @@ sub SetMsn {
 $msnstyle
 </head>
 <body class="windowbg2" style="margin: 0px; padding: 0px;">
-<table class="bordercolor pad_4px cs_1px">
+<table class="bordercolor pad_4px cs_thin">
 	<tr>
 		<td class="titlebg h_22px">
 			<img src="$defaultimagesdir/msn.gif" width="16" height="14" alt="" title="" /> $msntxt{'5'}
@@ -1091,7 +1095,7 @@ sub SetGtalk {
 $gtalkstyle
 </head>
 <body class="windowbg2" style="margin: 0px; padding: 0px;">
-<table class="bordercolor pad_4px cs_1px">
+<table class="bordercolor pad_4px cs_thin">
 	<tr>
 		<td class="titlebg h_22px">
 			<img src="$defaultimagesdir/gtalk2.gif" width="16" height="14" alt="" title="" />Google Talk
