@@ -15,10 +15,10 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.3;
+our $VERSION = 1.7;
 use Time::Local 'timelocal';
 
-$eventcalplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+$eventcalplver = 'YaBB 2.5.4 $Revision: 1.7 $';
 if ($action eq 'detailedversion') { return 1; }
 
 LoadLanguage('EventCal');
@@ -340,7 +340,7 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
 		$YaBBC_calout = qq~
 <script src="$yyhtml_root/yabbc.js" type="text/javascript"></script>
 
-<form action="$scripturl?action=add_cal" name="postmodify" method="post">
+<form action="$scripturl?action=add_cal" name="postmodify" method="post" accept-charset="$yycharset">
 <table class="bordercolor">
 	<tr>
         <td class="windowbg2">
@@ -544,7 +544,7 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
             <col style="width:160px" />
 			<tr>
                 <td class="windowbg2"><span class="small"><label for="verification"><b>$floodtxt{'1'}:</b></label></span></td>
-                <td class="windowbg2">$showcheck<br /><label for="verification"><span class="small">$floodtxt{'casewarning'}</span></label></td>
+                <td class="windowbg2">$showcheck<br /><label for="verification"><span class="small">$flood_text</span></label></td>
             </tr><tr>
                 <td class="windowbg2"><span class="small"><label for="verification"><b>$floodtxt{'2'}:</b></label></span></td>
 				<td class="windowbg2">
@@ -789,7 +789,7 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_event|$cal_icon|$cal_noname|$cal
 			if ($seperator) {
 				$yymain .= qq~
 		<div class="$seperator">
-        <table class="cs_1px pad_4px">
+        <table class="cs_thin pad_4px">
 		<tr>
             <td class="$title_class" colspan="2">
                 <div style="float: left; width: 30%; padding-top: 1px; padding-bottom: 1px; text-align: left;"><img src="$yyhtml_root/Templates/Forum/default/eventcal.gif" alt="" /> $var_cal{'caltitle'}</div>
@@ -827,7 +827,7 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_event|$cal_icon|$cal_noname|$cal
 <table class="bordercolor">
   <tr>
     <td>
-            <table class="cs_1px pad_4px">~;
+            <table class="cs_thin pad_4px">~;
 
             foreach my $cal_events ( sort @caldata ) {
                 my ( $cdat, $ctyp, $cnam, $ctim, $ceve, $cico, $cnonam, $ctyp2 )
@@ -860,10 +860,9 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_event|$cal_icon|$cal_noname|$cal
 						$eventuserlink = $link{$cnam};
                     }
                     else {
+                        LoadUser($cnam);
                         $eventuserlink =
-                            qq~<a href="$scripturl?action=viewprofile;username=~
-                          . ( $do_scramble_id ? cloak($cnam) : $cnam )
-                          . qq~">$memrealname</a>~;
+                            qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cnam}" rel="nofollow">$format_unbold{$cnam}</a>~;
 					}
 					$eventbduserlink = $eventuserlink;
                     if (   $CalEventNoName == 1
@@ -960,7 +959,7 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_event|$cal_icon|$cal_noname|$cal
 			if ($seperator) {
 				$yymain = qq~
 		<div class="$seperator">
-        <table class="cs_1px pad_4px">
+        <table class="cs_thin pad_4px">
 		<tr>
             <td class="$title_class" colspan="2">
                 <div style="float: left; width: 30%; padding-top: 1px; padding-bottom: 1px; text-align: left;"><img src="$yyhtml_root/Templates/Forum/default/eventcal.gif" alt="" /> $var_cal{'caltitle'}</div>
@@ -997,7 +996,7 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_event|$cal_icon|$cal_noname|$cal
 			$yymain .= qq~
 <br />
 <div class="$seperator">
-<table class="bordercolor cs_1px pad_3px">~;
+<table class="bordercolor cs_thin pad_3px">~;
 
             foreach my $cal_events ( sort @caldata ) {
                 my ( $cdat, $ctyp, $cnam, $ctim, $ceve, $cico, $cnonam, $ctyp2 )
@@ -1031,10 +1030,9 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_event|$cal_icon|$cal_noname|$cal
 						$eventuserlink = $link{$cnam};
                     }
                     else {
+                        LoadUser($cnam);
                         $eventuserlink =
-                            qq~<a href="$scripturl?action=viewprofile;username=~
-                          . ( $do_scramble_id ? cloak($cnam) : $cnam )
-                          . qq~">$memrealname</a>~;
+                            qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cnam}" rel="nofollow">$format_unbold{$cnam}</a>~;
 					}
 					$eventbduserlink = $eventuserlink;
                     if (   $CalEventNoName == 1
@@ -1107,7 +1105,7 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_event|$cal_icon|$cal_noname|$cal
 
 						$yymain .= qq~
 <div class="$seperator">
-<table class="cs_1px pad_4px">
+<table class="cs_thin pad_4px">
 	<tr>
         <td class="catbg">
             <img src="$imagesdir/modify.gif" alt="$var_cal{'caledit'}" title="$var_cal{'caledit'}" /> $var_cal{'caledit'}
@@ -1354,10 +1352,9 @@ qq~<a href="$scripturl?action=get_cal;calshow=1;eventdate=$cyear$cmon$cday;calid
 				$eventuserlink = $link{$cname};
             }
             else {
+                LoadUser($cnam);
                 $eventuserlink =
-                    qq~<a href="$scripturl?action=viewprofile;username=~
-                  . ( $do_scramble_id ? cloak($cname) : $cname )
-                  . qq~">$memrealname</a>~;
+                            qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cnam}" rel="nofollow">$format_unbold{$cnam}</a>~;
 			}
 			$eventbduserlink = $eventuserlink;
             if (   $CalEventNoName == 1
@@ -1416,12 +1413,12 @@ qq~<tr><td class="vtop"><span class="small"><img src="$yyhtml_root/Templates/For
 	if ($Show_BirthdaysList) {
         if ( !$iamguest || ( $Show_BirthdaysList != 1 ) ) {
             $ShowBirthdaysLink =
-qq~<span class="small"> <img src="$yyhtml_root/Templates/Forum/default/eventmore.gif" alt="$var_calpost{'var_cal'}" /> <a href="$scripturl?action=cal_birthdaylist">$var_cal{'calbdaylist'}</a></span>~;
+qq~<span class="small"> <img src="$yyhtml_root/Templates/Forum/default/eventmore.gif" alt="$var_cal{'calbirthdays'}" /> <a href="$scripturl?action=cal_birthdaylist">$var_cal{'calbdaylist'}</a></span>~;
 		}
 	}
 	if ($Allow_Event_Imput && !$INFO{'addnew'} == 1) {
         $ShowEventAddLink =
-qq~<br /><span class="small"> <img src="$yyhtml_root/Templates/Forum/default/eventmore.gif" alt="$var_calpost{'getaddevent'}" /> <a href="$scripturl?action=get_cal;calshow=1;addnew=1">$var_calpost{'getaddevent'}</a></span>~;
+qq~<br /><span class="small"> <img src="$yyhtml_root/Templates/Forum/default/eventmore.gif" alt="$var_cal{'getaddevent'}" /> <a href="$scripturl?action=get_cal;calshow=1;addnew=1">$var_calpost{'getaddevent'}</a></span>~;
 	}
 
 	$mon_name=$var_cal{$st};
@@ -1564,7 +1561,7 @@ qq~<table><tr><td class="vtop"><span class="small"><img src="$yyhtml_root/Templa
 	</td>
 </tr>
 </table>
-<table class="bordercolor cs_1px pad_3px">
+<table class="bordercolor cs_thin pad_3px">
     <col style="width:5%" />~;
 	}
 
@@ -1577,11 +1574,11 @@ qq~<table><tr><td class="vtop"><span class="small"><img src="$yyhtml_root/Templa
         <col style="width:30%" />
 		<tr>
             <td>
-                <table class="cs_1px">
+                <table class="cs_thin">
 				<tr>
 					<td class="windowbg">~;
 
-    $cal_displayssi = qq~<table class="cs_1px pad_3px">
+    $cal_displayssi = qq~<table class="cs_thin pad_3px">
           <col span="6" style="width:14%" />
 						<tr>
                             <td class="$title_class center"><span class="small">$last_link</span></td>
@@ -1643,7 +1640,7 @@ qq~<table><tr><td class="vtop"><span class="small"><img src="$yyhtml_root/Templa
         $yymain .= $seperator
           ? qq~
 		<div class="$seperator">
-        <table class="cs_1px pad_4px">
+        <table class="cs_thin pad_4px">
 			$cal_display
 		</table>
 		</div>
