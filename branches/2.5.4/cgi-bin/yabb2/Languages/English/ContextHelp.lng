@@ -15,7 +15,7 @@
 # for his contribution to the YaBB community                                  #
 ###############################################################################
 
-$contexthelplngver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$contexthelplngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 
 ### Do not translate uppercase words in sharp brackets
 
@@ -50,6 +50,7 @@ $contexthelplngver = 'YaBB 2.5.4 $Revision: 1.0 $';
 'left' => "Left align text:<br /><br />Select the text:<br />[SELECT]This text<br />is left aligned[/SELECT]<br /><br />Click on the \"[TITLE]\" button: [BUTTON]<br /><br /><b>YaBBC Code:</b><br />[left]This text<br />is left aligned[/left]<br /><br /><b>Result:</b><br />[LEFT]This text<br />is left aligned[/LEFT]",
 'center' => "Center text:<br /><br />Select the text:<br />[SELECT]This text<br />is centered[/SELECT]<br /><br />Click on the \"[TITLE]\" button: [BUTTON]<br /><br /><b>YaBBC Code:</b><br />[center]This text<br />is centered[/center]<br /><br /><b>Result:</b><br />[CENTER]This text<br />is centered[/CENTER]",
 'right' => "Right align text:<br /><br />Select the text:<br />[SELECT]This text<br />is right aligned[/SELECT]<br /><br />Click on the \"[TITLE]\" button: [BUTTON]<br /><br /><b>YaBBC Code:</b><br />[right]This text<br />is right aligned[/right]<br /><br /><b>Result:</b><br />[RIGHT]This text<br />is right aligned[/RIGHT]",
+'noparse' => "No Parse:<br /><br />Select the YaBBC Code:<br />[SELECT][table][tr][td]This table will not be parsed[/td][/tr][/table][/SELECT]<br /><br />Click on the \"[TITLE]\" button: [BUTTON]<br /><br /><b>YaBBC Code:</b><br />[noparse][table][tr][td]This table will not be parsed[/td][/tr][/table][/noparse]<br /><br /><b>Result:</b><br />[table][tr][td]This table will not be parsed[/td][/tr][/table]",
 );
 
 
@@ -92,7 +93,8 @@ var contexthash = new Hash(
 'pre', '$contextxt{'pre'}',
 'left', '$contextxt{'left'}',
 'center', '$contextxt{'center'}',
-'right', '$contextxt{'right'}'
+'right', '$contextxt{'right'}',
+'noparse', '$contextxt{'noparse'}'
 );
 ~;
 
