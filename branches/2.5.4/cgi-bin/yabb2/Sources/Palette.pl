@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$paletteplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$paletteplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub ColorPicker {
@@ -159,11 +159,11 @@ function Pickshowcolor(color) {
 </div>
 <div class="catbg" style="position: relative; top: 15px; left: 10px; width: 277px; height: 56px; border-width: 1px; border-style: outset;">
 	<img src="$defaultimagesdir/knapbagrms01.gif" alt="" style="position: absolute; top: 0px; left: 0px; z-index: 1; width: 275px; height: 16px;" />
-	<img id="knapImg1" src="$defaultimagesdir/knapred.gif" alt="" class="skyd" style="position: absolute; left: 4px; top: 2px; cursor: pointer; cursor: hand; z-index: 2; width: 13px; height: 15px;" />
+	<img src="$defaultimagesdir/knapred.gif"  id="knapImg1" alt="" class="skyd" style="position: absolute; left: 4px; top: 2px; cursor: pointer; cursor: hand; z-index: 2; width: 13px; height: 15px;" />
 	<img src="$defaultimagesdir/knapbagrms01.gif" alt="" style="position: absolute; top: 16px; left: 0px; z-index: 1; width: 275px; height: 16px;" />
-	<img id="knapImg2" src="$defaultimagesdir/knapgreen.gif" alt="" class="skyd" style="position: absolute; left: 4px; top: 18px; cursor: pointer; cursor: hand; z-index: 2; width: 13px; height: 15px;" />
+	<img src="$defaultimagesdir/knapgreen.gif" id="knapImg2" alt="" class="skyd" style="position: absolute; left: 4px; top: 18px; cursor: pointer; cursor: hand; z-index: 2; width: 13px; height: 15px;" />
 	<img src="$defaultimagesdir/knapbagrms01.gif" alt="" style="position: absolute; top: 32px; left: 0px; z-index: 1; width: 275px; height: 16px;" />
-	<img id="knapImg3" src="$defaultimagesdir/knapblue.gif" alt="" class="skyd" style="position: absolute; left: 4px; top: 34px; cursor: pointer; cursor: hand; z-index: 2; width: 13px; height: 15px;" />
+	<img src="$defaultimagesdir/knapblue.gif" id="knapImg3" alt="" class="skyd" style="position: absolute; left: 4px; top: 34px; cursor: pointer; cursor: hand; z-index: 2; width: 13px; height: 15px;" />
 </div>
 </div>
 
