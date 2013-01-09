@@ -15,9 +15,9 @@
 # use warnings;
 no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.0;
+our $VERSION = 1.4;
 
-$messageindexplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$messageindexplver = 'YaBB 2.5.4 $Revision: 1.4 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('MessageIndex');
@@ -186,21 +186,9 @@ qq~<img src="$imagesdir/index_togl.gif"  alt="$messageindex_txt{'139'}" title="$
             if ( $startpage > 0 ) {
                 if ($messagelist) {
                     $pagetxtindex =
-qq~<a href="javascript:MessageList('$scripturl?board=$currentboard/0;messagelist=1','$yyhtml_root','$currentboard', 1)" style="font-weight: normal;">1</a>~;
-                }
-                else {
-                    $pagetxtindex =
-qq~<a href="$scripturl?board=$currentboard/0'" style="font-weight: normal;">1</a>~;
-                }
-                $pagetxtindex =
-qq~&nbsp;<a href='javascript: void(0);' onclick='ListPages2("$currentboard","$threadcount");'>...</a>&nbsp;~;
+qq~<a href="$scripturl?board=$currentboard/0" style="font-weight: normal;">1</a>&nbsp;<a href='javascript: void(0);' onclick='ListPages2("$currentboard","$threadcount");'>...</a>&nbsp;~;
             }
             if ( $startpage == $maxindex ) {
-                if ($messagelist) {
-                    $pagetxtindex =
-qq~<a href="javascript:MessageList('$scripturl?board=$currentboard/0;messagelist=1','$yyhtml_root','$currentboard', 1)" style="font-weight: normal;">1</a>&nbsp;~;
-                }
-                else {
                     $pagetxtindex =
 qq~<a href="$scripturl?board=$currentboard/0" style="font-weight: normal;">1</a>&nbsp;~;
                 }
@@ -227,25 +215,19 @@ qq~<a href="$scripturl?board=$currentboard/0" style="font-weight: normal;">1</a>
 qq~<a href='javascript: void(0);' onclick='ListPages2("$currentboard","$threadcount");'>...</a>&nbsp;~;
             }
             if ( $endpage != $threadcount ) {
-                if ($messagelist) {
-                    $pageindexadd .=
-qq~<a href="javascript:MessageList('$scripturl?board=$currentboard/$lastptn;messagelist=1','$yyhtml_root','$currentboard', 1)" style="font-weight: normal;">$lastpn</a>~;
-                }
-                else {
                     $pageindexadd .=
 qq~<a href="$scripturl?board=$currentboard/$lastptn" style="font-weight: normal;">$lastpn</a>~;
                 }
-            }
 
             $pagetxtindex .= $pageindexadd;
             $pageindex1 = qq~$pagetxtindexst $pagetxtindex</span>~;
             $pageindex2 = $pageindex1;
-            $pageindex2 =~ s/id=\"defaultpagelist/id=\"2defaultpagelist/gxsm;
-
+        }
+        else {
             $pagedropindex1 =
 q~<span style="float: left; width: 350px; margin: 0px; margin-top: 2px; border: 0px;">~;
             $pagedropindex1 .=
-qq~<span style="float: left; height: 21px; margin: 0; margin-right: 4px;"><a href="$scripturl?board=$INFO{'board'};start=$start;action=messagepagetext"><img src="$imagesdir/index_togl.gif"  alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" /></a></span>~;
+qq~<span style="float: left; margin: 0; margin-right: 4px;"><a href="$scripturl?board=$INFO{'board'};start=$start;action=messagepagetext"><img src="$imagesdir/index_togl.gif"  alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" /></a></span>~;
             $pagedropindex2 = $pagedropindex1;
             $tstart         = $start;
 
@@ -260,9 +242,9 @@ qq~<span style="float: left; height: 21px; margin: 0; margin-right: 4px;"><a hre
 
             if ( $pagenumb > $dropdisplaynum ) {
                 $pagedropindex1 .=
-qq~<span style="float: left; height: 21px; margin: 0;"><select size="1" name="decselector1" id="decselector1" style="font-size: 9px; border: 2px inset;" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
+qq~<span style="float: left; margin: 0;"><select size="1" name="decselector1" id="decselector1" style="font-size: 9px; border: 2px inset;" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
                 $pagedropindex2 .=
-qq~<span style="float: left; height: 21px; margin: 0;"><select size="1" name="decselector2" id="decselector2" style="font-size: 9px; border: 2px inset;" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
+qq~<span style="float: left; margin: 0;"><select size="1" name="decselector2" id="decselector2" style="font-size: 9px; border: 2px inset;" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
             }
             for my $i ( 0 .. ( $indexpages - 1 ) ) {
                 $indexpage = ( $i * $dropdisplaynum ) * $maxindex;
@@ -310,7 +292,7 @@ qq~<img src="$imagesdir/index_left0.gif" height="14" width="13"  alt="" style="d
             }
             else {
                 $pagedropindexpv .=
-qq~<img src="$imagesdir/index_left.gif"  height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" style="display: inline; cursor: pointer;" onclick="location.href=\\'$scripturl?board=$currentboard/$prevpage\\'" ondblclick="location.href=\\'$scripturl?board=$currentboard/0\\'" />~;
+qq~<img src="$imagesdir/index_left.gif"  height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" style="display: inline; cursor: pointer;" ~;
                 if ($messagelist) {
                     $pagedropindexpv .=
 qq~onclick="MessageList(\\'$scripturl?board=$currentboard/$prevpage;messagelist=1\\',\\'$yyhtml_root\\', \\'$currentboard\\', 1)" ondblclick="MessageList(\\'$scripturl?board=$currentboard/0;messagelist=1\\', \\'$yyhtml_root\\',\\'$currentboard\\', 1)" />~;
@@ -337,11 +319,6 @@ qq~onclick="location.href=\\'$scripturl?board=$currentboard/$nextpage\\'" ondblc
                 }
             }
 
-            $pageindex1 .= qq~$pagedropindex1</span>~;
-            $pageindex2 .= qq~$pagedropindex2</span>~;
-            $pageindex2 =~
-              s/id=\"javascriptpagelist/id=\"2javascriptpagelist/gxsm;
-
             # make select box have links for ajax vs default url
             if ($messagelist) {
                 $default_or_ajax =
@@ -351,6 +328,8 @@ qq~javascript:MessageList(\\'$scripturl?board=$currentboard/' + pagstart + ';mes
                 $default_or_ajax =
                   qq~$scripturl?board=$currentboard/' + pagstart + '~;
             }
+            $pageindex1 = qq~$pagedropindex1</span>~;
+            $pageindex2 = qq~$pagedropindex2</span>~;
 
             $pageindexjs = qq~
 <script id="RunSelDec" type="text/javascript">
@@ -362,10 +341,10 @@ qq~javascript:MessageList(\\'$scripturl?board=$currentboard/' + pagstart + ';mes
 		var pagstart = parseInt(splitparam[3]);
 		//var allpagstart = parseInt(splitparam[3]);
 		if (visel == 'xx' && decparam == '$pagejsindex') visel = '$tstart';
-		var pagedropindex = '<table><tr>';
+		var pagedropindex = '<table class="pad_0"><tr>';
 		for(i=vistart; i<=viend; i++) {
 			if (visel == pagstart) pagedropindex += '<td class="titlebg" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: bold;">' + i + '</td>';
-			else pagedropindex += '<td height="14" class="droppages"><a href="$scripturl?board=$currentboard/' + pagstart + '">' + i + '</a></td>';
+			else pagedropindex += '<td class="droppages"><a href="$scripturl?board=$currentboard/' + pagstart + '">' + i + '</a></td>';
 			pagstart += maxpag;
 		}
 		~;
@@ -483,10 +462,10 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1" class="a"><b>$pboar
 
     # check how many col's must be spanned
     if ( $multiview > 0 ) {
-        $colspan = 8;
+        $colspan = 7;
     }
     else {
-        $colspan = 7;
+        $colspan = 6;
     }
 
     if ( !$iamguest ) {
@@ -729,7 +708,7 @@ qq~<a href="$scripturl?num=$mnum/new#new"><img src="$imagesdir/new.gif" alt="$me
               )
             {
                 $mname =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">${$uid.$musername}{'realname'}</a>~;
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$format_unbold{$musername}</a>~;
             }
             else {
                 $mname .= qq~ ($messageindex_txt{'470a'})~;
@@ -823,7 +802,7 @@ qq~<br /><span class="small">&#171; $messageindex_txt{'139'} $pages $pagesall &#
               )
             {
                 $lastposter =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">${$uid.$lastposter}{'realname'}</a>~;
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">$format_unbold{$lastposter}</a>~;
             }
             else {
 
@@ -985,6 +964,7 @@ s/({|<)yabb favorite(}|>)/ ($favicon{$mnum} ? qq~<img src="$imagesdir\/addfav.gi
         $tempbar =~ s/({|<)yabb attachmenticon(}|>)/$temp_attachment/gsm;
         $tempbar =~ s/({|<)yabb pages(}|>)/$pages/gsm;
         $tempbar =~ s/({|<)yabb starter(}|>)/$mname/gsm;
+        $tempbar =~ s/({|<)yabb starttime(}|>)/ timeformat($mnum)/egsm;
         $tempbar =~ s/({|<)yabb replies(}|>)/ NumberFormat($mreplies) /egsm;
         $tempbar =~ s/({|<)yabb views(}|>)/ NumberFormat($views) /egsm;
         $tempbar =~
@@ -1407,7 +1387,7 @@ s/(<!-- Icon and access info end -->)/$1\n<div style="text-align: right; padding
         template();
     }
     else {
-        print "Content-type: text/html; charset=UTF-8\n\n"
+        print "Content-type: text/html; charset=$yycharset\n\n"
           or croak 'cannot print top';
         print qq~
         $messageindex_template
@@ -1489,7 +1469,7 @@ qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3
 	}
 	//-->
 	</script>
-	<table class="bordercolor pad_4px cs_1px">
+	<table class="bordercolor pad_4px cs_thin">
 	<tr>
 		<td class="titlebg center">$messageindex_txt{'139'} $messageindex_txt{'18'}</td>
 	</tr><tr>
