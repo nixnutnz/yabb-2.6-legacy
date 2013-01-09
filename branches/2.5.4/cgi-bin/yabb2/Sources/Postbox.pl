@@ -15,16 +15,16 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.1;
+our $VERSION = 1.3;
 
-$postboxplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$postboxplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ( defined $actions && $action eq 'detailedversion' ) { return 1; }
 
 #InstantMessage.pl and Post.pl use the same code for the posting box - why have two copies? #
 
 sub postbox {
     $box = qq~<script type="text/javascript">
-            HAND = "style='verical-align:top; cursor: pointer;'";
+            HAND = "style='vertical-align:top; cursor: pointer;'";
             HAND += " onmouseover='contextTip(event, this.alt)' onmouseout='contextTip(event, this.alt)' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'";
             document.write('<div class="left437">');
             document.write("<img src='$imagesdir/url.gif' onclick='hyperlink();' "+HAND+" width='23' height='22' alt='$post_txt{'257'}' title='$post_txt{'257'}' />");
@@ -268,10 +268,10 @@ sub postbox2 {
                     <div id="dragcanvas" style="height: $dheight; width: $dwidth;">
                         <textarea name="message" id="message" rows="8" cols="68" style="height: $mheight; width: $mwidth; font-size: $mtextsize;" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onchange="storeCaret(this);" tabindex="4">$message</textarea>
                         <div id="dragbgw" style="height: $dheight;">
-                            <img id="dragImg1" src="$defaultimagesdir/resize_wb.gif" class="drag" style="left: $dragwpos; height: $dheight" alt="resize_wb" />
+                            <img src="$defaultimagesdir/resize_wb.gif" id="dragImg1" class="drag" style="left: $dragwpos; height: $dheight" alt="resize_wb" />
                         </div>
                         <div id="dragbgh" style="width: $dwidth">
-                            <img id="dragImg2" src="$defaultimagesdir/resize_hb.gif" class="drag" style="top: $draghpos; width: $dwidth" alt="resize_hb" />
+                            <img src="$defaultimagesdir/resize_hb.gif" id="dragImg2" class="drag" style="top: $draghpos; width: $dwidth" alt="resize_hb" />
                         </div>
                         <div class="ubboptions" id="bullets">
                             <input type="button" value="$npf_txt{'default'}" class="npf_txt" onclick="ulist(), bulletset()" /><br />
@@ -299,7 +299,7 @@ sub postbox2 {
                     </div>
                     <div class="chrwarn">
                         <img src="$imagesdir/green1.gif" id="chrwarn" height="8" width="8" alt="" />
-                        <span class="small">$npf_txt{'03'}<input value="$MaxMessLen" size="3" name="msgCL" class="chrwarn" readonly="readonly" /></span>
+                        <span class="small">$npf_txt{'03'} $MaxMessLen $npf_txt{'03a'}<input value="$MaxMessLen" size="3" name="msgCL" class="chrwarn" readonly="readonly" /></span>
                     </div>
                     <div class="chrsize">
                         <span class="small">$post_txt{'textsize'} <input value="$textsize" size="2" name="txtsize" id="txtsize" class="chrsize" readonly="readonly" />pt <img src="$imagesdir/smaller.gif" height="11" width="11" alt="" onclick="sizetext(-1);" /><img src="$imagesdir/larger.gif" height="11" width="11" alt="" onclick="sizetext(1);" /></span>
@@ -523,7 +523,7 @@ sub googie {
 
 sub smilies_list {
     $smilies_list = qq~
-                HAND = "style='cursor: pointer; vertical-align:bottom'"; // non valid css 'cursor: hand;' removed by the ContextHelp mod
+                HAND = "style='cursor: pointer; vertical-align:bottom'";
                 document.write("<img src='$imagesdir/smiley.gif' onclick='smiley();' "+HAND+" alt='$post_txt{'287'}' title='$post_txt{'287'}'> ");
                 document.write("<img src='$imagesdir/wink.gif' onclick='wink();' "+HAND+" alt='$post_txt{'292'}' title='$post_txt{'292'}'> ");
                 document.write("<img src='$imagesdir/cheesy.gif' onclick='cheesy();' "+HAND+" alt='$post_txt{'289'}' title='$post_txt{'289'}'> ");
