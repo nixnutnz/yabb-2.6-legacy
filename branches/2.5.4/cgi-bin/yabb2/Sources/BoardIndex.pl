@@ -17,9 +17,9 @@
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
-our $VERSION = 1.0;
+our $VERSION = 1.4;
 
-$boardindexplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$boardindexplver = 'YaBB 2.5.4 $Revision: 1.4 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('BoardIndex');
@@ -197,8 +197,27 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
             if ( $subboard{$curboard} ) {
 
          # recursively check access to all sub boards then add them to load list
-                recursive_boards3( split /\|/xsm, $subboard{$curboard} );
+                *recursive_boards = sub {
+                    foreach $childbd (@_) {
+                        # now fill all the neccesary hashes to show all board index stuff
+                        if (!exists $board{$childbd}) {
+                            &gostRemove($catid, $childbd);
+                            next;
+                        }
+                        # hide the actual global announcement board for all normal users but admins and gmods
+                        if ($annboard eq $childbd && !$iamadmin && !$iamgmod) { next; }
+                        my ($boardname, $boardperms, $boardview) = split(/\|/, $board{"$childbd"});
+                        my $access = &AccessCheck($childbd, '', $boardperms);
+                        if (!$iamadmin && $access ne "granted" && $boardview != 1) { next; }
 
+                        # add it to list of boards to load data
+                        push(@loadboards, $childbd);
+
+                        # make recursive call if this board has more children
+                        if($subboard{$childbd}) { &recursive_boards(split(/\|/,$subboard{$childbd})); }
+                    }
+                };
+                recursive_boards(split /\|/xsm,$subboard{$curboard});
             }
 
             # if it's a sub board don't add to category count
@@ -563,6 +582,50 @@ qq~<img src="$imagesdir/$catimage" alt="" />~;
         my $alternateboardcolor = 0;
 
         # Moved this out of for loop. Gets the latest data for sub boards
+        sub find_latest_data {
+            my ($parentbd, @children) = @_;
+            $childcnt{$parentbd} = 0;
+            $sub_new_cnt{$parentbd} = 0;
+            foreach $childbd (@children) {
+                # make recursive call first so we can get latest post data working from bottom up.
+                if($subboard{$childbd}) {
+                    &find_latest_data($childbd, split(/\|/,$subboard{$childbd}));
+                }
+
+                # don't check sub board if its lastposttime is N/A
+                if(${$uid.$childbd}{'lastposttime'} ne $boardindex_txt{'470'}) {
+                    # update parent board last data if this child's is more recent
+                    if($lastpostrealtime{$childbd} > $lastpostrealtime{$parentbd}) {
+                        $lastposttime{$parentbd} = $lastposttime{$childbd};
+                        $lastpostrealtime{$parentbd} = $lastpostrealtime{$childbd};
+                        ${$uid.$parentbd}{'lastposttime'} = ${$uid.$childbd}{'lastposttime'};
+                        ${$uid.$parentbd}{'lastposter'} = ${$uid.$childbd}{'lastposter'};
+                        ${$uid.$parentbd}{'lastpostid'} = ${$uid.$childbd}{'lastpostid'};
+                        ${$uid.$parentbd}{'lastreply'} = ${$uid.$childbd}{'lastreply'};
+                        ${$uid.$parentbd}{'lastsubject'} = ${$uid.$childbd}{'lastsubject'};
+                        ${$uid.$parentbd}{'lasticon'} = ${$uid.$childbd}{'lasticon'};
+                        ${$uid.$parentbd}{'lasttopicstate'} = ${$uid.$childbd}{'lasttopicstate'};
+                    }
+                }
+
+                # Add to totals
+                ${$uid.$parentbd}{'threadcount'} += ${$uid.$childbd}{'threadcount'};
+                ${$uid.$parentbd}{'messagecount'} += ${$uid.$childbd}{'messagecount'};
+                # but if it's a parent board that can't be posted in, don't add to totals.
+                if($subboard{$childbd} && !${$uid.$childbd}{'canpost'}) {
+                    ${$uid.$parentbd}{'threadcount'} -= ${$uid.$childbd}{'threadcount'};
+                    ${$uid.$parentbd}{'messagecount'} -= ${$uid.$childbd}{'messagecount'};
+                }
+                if($new_icon{$childbd}) {
+                    # parent board gets new status if child has something new
+                    $new_icon{$parentbd} = $new_icon{$childbd};
+                    # count sub boards with new posts
+                    $sub_new_cnt{$parentbd}++;
+                }
+
+                $childcnt{$parentbd}++;
+            }
+        }
         if (  !$INFO{'oldcollapse'}
             || $catcol{$catid}
             || $INFO{'catselect'} ne q{}
@@ -715,7 +778,7 @@ qq~<img src="$imagesdir/off.gif" alt="$boardindex_txt{'334'}" title="$boardindex
                       )
                     {
                         $lastposter =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}" rel="nofollow">${$uid.$lastposter}{'realname'}</a>~;
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}" rel="nofollow">$format_unbold{$lastposter}</a>~;
                     }
                     else {
 
@@ -863,7 +926,7 @@ s/({|<)yabb boardurl(}|>)/$scripturl\?board\=$childbd/gsm;
                         }
                         else {
                             $subdropdown =
-qq~<a href="javascript://" id="subdropa_$curboard" style="font-weight:bold" onclick="SubBoardList('$scripturl?board=$curboard','$curboard','$catid',$sub_count,$alternateboardcolor)"><img id="subdropbutton_$curboard" style="position: relative; top: 2px; cursor: pointer;" src="$imagesdir/sub_arrow.png" alt="" />&nbsp;$sub_txt</a>~;
+qq~<a href="javascript://" id="subdropa_$curboard" style="font-weight:bold" onclick="SubBoardList('$scripturl?board=$curboard','$curboard','$catid',$sub_count,$alternateboardcolor)"><img src="$imagesdir/sub_arrow.png" id="subdropbutton_$curboard" style="position: relative; top: 2px; cursor: pointer;" alt="" />&nbsp;$sub_txt</a>~;
                         }
                     }
                     $tmp_sublist =~
@@ -927,9 +990,16 @@ s/({|<)yabb boardurl(}|>)/$scripturl\?board\=$curboard/gsm;
                     </div>
                 </td>
             </tr>~;
+                $messagedropdown;
+              ( $boardname, $boardperms, $boardview ) =
+                split /\|/xsm, $board{"$curboard"};
+              $access = AccessCheck( $curboard, q{}, $boardperms );
+                if ( $boardperms eq q{} || (!$iamguest && $access eq 'granted') ) {
                 $messagedropdown = qq~
                 <img onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$yyhtml_root','$curboard', 0)" id="dropbutton_$curboard" style="cursor: pointer" src="$imagesdir/dropdown.png" alt="" />
                         ~;
+                }
+                else {$messagedropdown = q{};}
 
                 $templateblock =~
                   s/({|<)yabb expandmessages(}|>)/$expandmessages/gsm;
@@ -1476,12 +1546,13 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1" class="a"><b>$pboar
                         var prev_subcount;
                         //-->
                         </script>
+                        $boardindex_template
                 ~;
             }
         }
     }
     else {
-        print "Content-type: text/html; charset=UTF-8\n\n"
+        print "Content-type: text/html; charset=$yycharset\n\n"
           or croak 'cannot print charset';
         print qq~
             <table id="subloaded_$INFO{'board'}" style="display:none">
@@ -1490,13 +1561,13 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1" class="a"><b>$pboar
         ~ or croak 'cannot print table';
         CORE::exit;    # This is here only to avoid server error log entries!
     }
-    return;
+# cannot have return here;
 }
 
 sub GetBotlist {
     if ( -e "$vardir/bots.hosts" ) {
         fopen( BOTS, "$vardir/bots.hosts" )
-          || &fatal_error( "cannot_open", "$vardir/bots.hosts", 1 );
+          || fatal_error( "cannot_open", "$vardir/bots.hosts", 1 );
         my @botlist = <BOTS>;
         fclose(BOTS);
         chomp(@botlist);
@@ -1509,8 +1580,8 @@ sub GetBotlist {
 }
 
 sub Is_Bot {
-    my $bothost = $_[0];
-    foreach (@all_bots) { return $bot_name{$_} if $bothost =~ /$_/i; }
+    my ($bothost) = @_;
+    foreach (@all_bots) { return $bot_name{$_} if $bothost =~ /$_/ism; }
 }
 
 sub Collapse_Write {
@@ -1605,16 +1676,6 @@ sub MarkAllRead {    # Mark all boards as read.
         recursive_mark( split /\,/xsm, $cat{$catid} );
     }
 
-    # Write it out
-    dumplog();
-
-    if ( $INFO{'oldmarkread'} ) {
-        redirectinternal();
-    }
-    $elenable = 0;
-    croak q{};    # This is here only to avoid server error log entries!
-    }
-
     sub recursive_mark {
     my @x = @_;
     foreach my $board (@x) {
@@ -1638,6 +1699,16 @@ sub MarkAllRead {    # Mark all boards as read.
             recursive_mark( split /\|/xsm, $subboard{$board} );
         }
     }
+    }
+
+    # Write it out
+    dumplog();
+
+    if ( $INFO{'oldmarkread'} ) {
+        redirectinternal();
+    }
+    $elenable = 0;
+    croak q{};    # This is here only to avoid server error log entries!
     return;
 }
 
@@ -1659,104 +1730,15 @@ sub gostRemove {
 
 sub Del_Max_IM {
     my ( $ext, $max ) = @_;
-    my @im_messages = read_DBorFILE( 0, DELMAXIM, $memberdir, $username, $ext );
-    splice @im_messages, $max;
-    write_DBorFILE( 0, DELMAXIM, $memberdir, $username, $ext, @im_messages );
-    return;
-}
+    fopen( DELMAXIM, "+<$memberdir/$username.$ext" );
+    seek DELMAXIM, 0, 0;
+    my @IMmessages = <DELMAXIM>;
+    seek DELMAXIM, 0, 0;
+    truncate DELMAXIM, 0;
+    splice( @IMmessages, $max );
 
-sub recursive_boards3 {
-    my @x = @_;
-    foreach my $childbd (@x) {
-        if ( !exists $board{$childbd} ) {
-            gostRemove( $catid, $childbd );
-            next;
-        }
-
-# hide the actual global announcement board for all normal users but admins and gmods
-        if ( $annboard eq $childbd && !$iamadmin && !$iamgmod ) {
-            next;
-        }
-        my ( $boardname, $boardperms, $boardview ) =
-          split /\|/xsm, $board{"$childbd"};
-        my $access = AccessCheck( $childbd, q{}, $boardperms );
-        if (  !$iamadmin
-            && $access ne 'granted'
-            && $boardview != 1 )
-        {
-            next;
-        }
-
-        # add it to list of boards to load data
-        push @loadboards, $childbd;
-
-        # make recursive call if this board has more children
-        if ( $subboard{$childbd} ) {
-            recursive_boards3( split /\|/xsm, $subboard{$childbd} );
-        }
-    }
-    return;
-}
-
-sub find_latest_data {
-    my ( $parentbd, @children ) = @_;
-    $childcnt{$parentbd}    = 0;
-    $sub_new_cnt{$parentbd} = 0;
-    foreach my $childbd (@children) {
-
-# make recursive call first so we can get latest post data working from bottom up.
-        if ( $subboard{$childbd} ) {
-            find_latest_data( $childbd, split /\|/xsm, $subboard{$childbd} );
-        }
-
-        # don't check sub board if its lastposttime is N/A
-        if ( ${ $uid . $childbd }{'lastposttime'} ne $boardindex_txt{'470'} ) {
-
-            # update parent board last data if this child's is more recent
-            if ( $lastpostrealtime{$childbd} > $lastpostrealtime{$parentbd} ) {
-                $lastposttime{$parentbd}     = $lastposttime{$childbd};
-                $lastpostrealtime{$parentbd} = $lastpostrealtime{$childbd};
-                ${ $uid . $parentbd }{'lastposttime'} =
-                  ${ $uid . $childbd }{'lastposttime'};
-                ${ $uid . $parentbd }{'lastposter'} =
-                  ${ $uid . $childbd }{'lastposter'};
-                ${ $uid . $parentbd }{'lastpostid'} =
-                  ${ $uid . $childbd }{'lastpostid'};
-                ${ $uid . $parentbd }{'lastreply'} =
-                  ${ $uid . $childbd }{'lastreply'};
-                ${ $uid . $parentbd }{'lastsubject'} =
-                  ${ $uid . $childbd }{'lastsubject'};
-                ${ $uid . $parentbd }{'lasticon'} =
-                  ${ $uid . $childbd }{'lasticon'};
-                ${ $uid . $parentbd }{'lasttopicstate'} =
-                  ${ $uid . $childbd }{'lasttopicstate'};
-            }
-        }
-
-        # Add to totals
-        ${ $uid . $parentbd }{'threadcount'} +=
-          ${ $uid . $childbd }{'threadcount'};
-        ${ $uid . $parentbd }{'messagecount'} +=
-          ${ $uid . $childbd }{'messagecount'};
-
-      # but if it's a parent board that can't be posted in, don't add to totals.
-        if ( $subboard{$childbd} && !${ $uid . $childbd }{'canpost'} ) {
-            ${ $uid . $parentbd }{'threadcount'} -=
-              ${ $uid . $childbd }{'threadcount'};
-            ${ $uid . $parentbd }{'messagecount'} -=
-              ${ $uid . $childbd }{'messagecount'};
-        }
-        if ( $new_icon{$childbd} ) {
-
-            # parent board gets new status if child has something new
-            $new_icon{$parentbd} = $new_icon{$childbd};
-
-            # count sub boards with new posts
-            $sub_new_cnt{$parentbd}++;
-        }
-
-        $childcnt{$parentbd}++;
-    }
+    print DELMAXIM @IMmessages;
+    fclose(DELMAXIM);
     return;
 }
 
