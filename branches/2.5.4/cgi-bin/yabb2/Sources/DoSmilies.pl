@@ -12,10 +12,10 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$dosmiliesplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$dosmiliesplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ($action eq 'detailedversion') { return 1; }
 
-&LoadLanguage('Main');
+LoadLanguage('Main');
 
 sub SmiliePut {
     print_output_header();
@@ -41,7 +41,7 @@ qq~<td><img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="javascript:MoreS
         $i++;
     }
     if ( $showsmdir == 3 || ( $showsmdir == 2 && $detachblock == 1 ) ) {
-        opendir DIR, "$smiliesdir";
+        opendir DIR, "$htmldir/Smilies";
         @contents = readdir DIR;
         closedir DIR;
         $smilieslist = {};
@@ -57,7 +57,7 @@ qq~<td><img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="javascript:MoreS
                         $evenmoresmilies .= qq~</tr>\n<tr>~;
                     }
                     $evenmoresmilies .=
-qq~<td><img src="$smiliesurl/$line" id="$name" onclick="javascript:MoreSmilies($i)" class="moresmiles" alt="moresmilies" /></td>\n~;
+qq~<td><img src="$yyhtml_root/Smilies/$line" id="$name" onclick="javascript:MoreSmilies($i)" class="moresmiles" alt="moresmilies" /></td>\n~;
                     $more_smilie_array .= qq~" [smiley=$line]", ~;
                     $i++;
                 }
@@ -71,7 +71,7 @@ qq~<td><img src="$smiliesurl/$line" id="$name" onclick="javascript:MoreSmilies($
 <head>
 <title>$smiltxt{'1'}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
-<link rel="stylesheet" href="$forumstylesurl/$usestyle.css" type="text/css" />
+<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
 <style type="text/css">
 td {border: #ccc solid thin; text-align:center; height:50px; width:90px;}
 </style>
@@ -151,7 +151,7 @@ sub SmilieIndex {
 		}
 	}
 	if ($showsmdir eq 3 || ($showsmdir eq 2 && $detachblock eq 1)) {
-		opendir(DIR, "$smiliesdir");
+		opendir(DIR, "$htmldir/Smilies");
 		@contents = readdir(DIR);
 		closedir(DIR);
 		foreach $line (sort { uc($a) cmp uc($b) } @contents) {
@@ -164,7 +164,7 @@ sub SmilieIndex {
 					}
 					if (($i + $offset) % 2 == 0) { $smiliescolor = qq~class="windowbg2"~; }
 					else { $smiliescolor = qq~class="windowbg"~; }
-					$smilieslist .= qq~          <td class="center h_60px" $smiliescolor><img src="$smiliesurl/$line" alt="" onclick="javascript:MoreSmilies($i)" style="cursor:hand" /><br /><span style="font-size:"xx-small; color:#$poptext">$line</span></td>\n~;
+					$smilieslist .= qq~          <td class="center h_60px" $smiliescolor><img src="$yyhtml_root/Smilies/$line" alt="" onclick="javascript:MoreSmilies($i)" style="cursor:hand" /><br /><span style="font-size:"xx-small; color:#$poptext">$line</span></td>\n~;
 					$more_smilie_array .= qq~" [smiley=$line]", ~;
 					$i++;
 				}
@@ -179,9 +179,9 @@ sub SmilieIndex {
 	}
 	$smilie_code_array .= qq~""~;
 	$more_smilie_array .= qq~""~;
-	if (-e "$smiliesdir/banner.gif") { $smiliesheader = qq~<tr>
+	if (-e "$htmldir/Smilies/banner.gif") { $smiliesheader = qq~<tr>
 	<td class="center" style="background-color:#$popback" colspan="4">
-		<img src="$smiliesurl/banner.gif" alt="" />
+		<img src="$yyhtml_root/Smilies/banner.gif" alt="" />
 	</td>
 </tr>~; }
 	else { $smiliesheader = qq~<tr><td class="center" colspan="4"><b><span style="font-size:small">$smiltxt{'21'}</span></b></td></tr>~; }
@@ -191,7 +191,7 @@ sub SmilieIndex {
 <head>
 <title>$smiltxt{'1'}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
-<link rel="stylesheet" href="$forumstylesurl/$usestyle.css" type="text/css" />
+<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
 <script type="text/javascript">
 <!--
 function AddText(text) {
