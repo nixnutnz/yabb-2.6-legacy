@@ -12,24 +12,59 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$printpageplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+$printpageplver = 'YaBB 2.5.4 $Revision: 1.6 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub Print_IM {
-	if    ($INFO{'caller'} == 1) { fopen(THREADS, "$memberdir/$username.msg")    || &donoopen; $boxtitle = "$maintxt{'316'}"; $type = "$maintxt{'318'}" }
-	elsif ($INFO{'caller'} == 2) { fopen(THREADS, "$memberdir/$username.outbox") || &donoopen; $boxtitle = "$maintxt{'320'}"; $type = "$maintxt{'324'}"; }
-	else { fopen(THREADS, "$memberdir/$username.imstore") || &donoopen; $boxtitle = "$load_imtxt{'46'}"; $type = "$maintxt{'318'}/$maintxt{'324'}"; }
+    if ($iamguest) { fatal_error('not_allowed'); } 
+    LoadLanguage('InstantMessage');
+    
+    my (
+        $fromTitle,      $toTitle,         $toTitleCC,      
+        $toTitleBCC,     $usernameFrom,    $usernameTo,
+        $usernameCC,     $usernameBCC
+    );
+    
+	if ( $INFO{'caller'} == 1 ) { 
+	    fopen( THREADS, "$memberdir/$username.msg" ) || &donoopen;
+	    $boxtitle = qq~$inmes_txt{'inbox'}~; 
+	} elsif ( $INFO{'caller'} == 2 ) { 
+	    fopen( THREADS, "$memberdir/$username.outbox" ) || &donoopen;
+	    $boxtitle = qq~$inmes_txt{'outbox'}~; 
+	} elsif ( $INFO{'caller'} == 3 ) { fopen( THREADS, "$memberdir/$username.imstore" ) || donoopen();
+        $boxtitle = qq~$inmes_txt{'storage'}~;
+	    $storetitle = qq~$INFO{'viewfolder'}~; 
+	} elsif ( $INFO{'caller'} == 5 ) { 
+	    fopen( THREADS, "$memberdir/broadcast.messages" ) || &donoopen; 
+	    $boxtitle = qq~$inmes_txt{'broadcast'}~; 
+	} 
 	@threads = <THREADS>;
 	fclose(THREADS);
-
-	### Lets output all that info. ###
+	
+	$threadid = $INFO{'id'};
+	foreach my $thread (@threads) { 
+    	chomp $thread;
+    	if ( $thread =~ /$threadid/ ) {
+	     ( undef, $threadposter, $threadtousers, $threadccusers, $threadbccusers, $threadtitle, $threaddate, $threadpost, undef, undef, undef, $threadstatus, undef, $fold ) = split /\|/xsm, $thread;
+	        if ($INFO{'caller'} == 3) {
+	     	    $folder = ucfirst($fold);
+	     	    $boxtitle .= qq~ &gt;&gt; $folder~;
+	     	} 
+		}
+	}
+	
+    $printDate = timeformat($date, 1);
+    
+	# Lets output all that info. 
 	$output = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title>$mbname - $maintxt{'668'}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
-<meta name="robots" content="noindex,noarchive" />
-<link rel="canonical" href="$scripturl?num=$num" />
+<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
+<style type="text/css" media="print">
+    .no-print { display: none; }
+</style>
 <script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
 <script type="text/javascript">
 <!--
@@ -65,14 +100,18 @@ function do_images() {
 			<span style="font-family: arial, sans-serif; font-size: 18px; font-weight: bold;">$mbname</span>
 		</td>
 		<td class="right vtop">
-			<input type="button" id="Hide_Image" value="$maintxt{'669a'}" onclick="do_images();" />
+			<input type="button" id="Hide_Image" value="$maintxt{'669a'}" class="no-print" onclick="do_images();" />
 		</td>
 	</tr>
 	<tr>
 		<td class="vtop" colspan="2">
-			<span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl</span>
-			<br />
-			<span style="font-family: arial, sans-serif; font-size: 14px; font-weight: bold;">$load_imtxt{'71'} $boxtitle $maintxt{'30'} $date</span>
+		<!-- Uncomment the following line if you want the Forum URL to appear-->
+			<!--<span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl</span><br />-->
+            <!--<span style="font-family: arial, sans-serif; font-size: 16px; font-weight: bold;">$load_imtxt{'71'} $boxtitle $inmes_txt{'30'} $printDate</span>-->
+            <!--<span style="font-family: arial, sans-serif; font-size: 16px; font-weight: bold;">$mbname &gt;&gt; $inmes_txt{'usercp'} &gt;&gt; $boxtitle $storetitle</span>-->
+            <span style="font-family: arial, sans-serif; font-size: 16px; font-weight: bold;">$load_imtxt{'71'} $inmes_txt{'usercp'} &gt;&gt; $boxtitle  $storetitle $inmes_txt{'30'} $printDate</span> 
+            <br />
+            <span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl?action=imshow;caller=$INFO{'caller'};id=$INFO{'id'}</span> 
 		</td>
 	</tr>
 </table>
@@ -80,17 +119,283 @@ function do_images() {
 <br />
 ~;
 
-	# Split the threads up so we can print them.
-	foreach $thread (@threads) {
-		($threadposter, $threadtitle, $threaddate, $threadpost, undef) = split(/\|/, $thread);
+	$threadDate = timeformat($threaddate, 1);
 
-		&do_print;
-		$output .= qq~
+    if ( $INFO{'caller'} == 1 ) {
+        if ($threadtousers) {
+            foreach my $uname ( split /,/xsm, $threadtousers ) {
+                LoadUser($uname);
+                $usernameTo .= (
+                    ${ $uid . $uname }{'realname'}
+                    ? ${ $uid . $uname }{'realname'}
+                    : (
+                          $uname ? qq~$uname ($maintxt{'470a'})~
+                        : $maintxt{'470a'}
+                    )
+                ) . q{, };    # 470a == Ex-Member
+            }
+            $usernameTo =~ s/, $//sm;
+            $usernameTo = qq~<span style="font-weight: bold;">$usernameTo</span><br />~;
+            $toTitle = qq~$inmes_txt{'324'}:~;
+        }
+        if ($threadccusers) {
+            foreach my $uname ( split /,/xsm, $threadccusers ) {
+                LoadUser($uname);
+                $usernameCC .= (
+                    ${ $uid . $uname }{'realname'}
+                    ? ${ $uid . $uname }{'realname'}
+                    : (
+                          $uname ? qq~$uname ($maintxt{'470a'})~
+                        : $maintxt{'470a'}
+                    )
+                ) . q{, };
+            }
+            $usernameCC =~ s/, $//sm;
+            $usernameCC = qq~<span style="font-weight: bold;">$usernameCC</span><br />~;
+            $toTitleCC = qq~$inmes_txt{'325'}:~;
+        }
+        if ($threadbccusers) {
+            foreach my $uname ( split /,/xsm, $threadbccusers ) {
+                if ( $uname eq $username ) {
+                    LoadUser($uname);
+                    $usernameBCC =
+                      ${ $uid . $uname }{'realname'}
+                      ? ${ $uid . $uname }{'realname'}
+                      : (
+                          $uname ? qq~$uname ($maintxt{'470a'})~
+                        : $maintxt{'470a'}
+                      );
+                }
+            }
+            if ($usernameBCC) {
+                $usernameBCC = qq~<span style="font-weight: bold;">$usernameBCC</span>~;
+                $toTitleBCC = qq~$inmes_txt{'326'}:~;
+            }
+        }
+
+        if ( $threadstatus eq 'g' || $threadstatus eq 'ga') {
+            my ( $guestName, $guestEmail ) = split / /sm, $threadposter;
+            $guestName =~ s/%20/ /gsm;
+            $usernameFrom =
+              qq~<span style="font-weight: bold;">$guestName ($guestEmail)</span><br />~;
+        }
+        else {
+            LoadUser($threadposter);
+            $usernameFrom =
+              ${ $uid . $threadposter }{'realname'}
+              ? ${ $uid . $threadposter }{'realname'}
+              : (
+                  $threadposter ? qq~$threadposter ($maintxt{'470a'})~
+                : $maintxt{'470a'}
+              );    # 470a == Ex-Member
+            $usernameFrom = qq~<span style="font-weight: bold;">$usernameFrom</span><br />~;
+        }
+        $fromTitle = qq~$inmes_txt{'318'}:~;
+
+    }
+    elsif ( $INFO{'caller'} == 2 ) {
+        LoadUser($threadposter);
+        $usernameFrom =
+          ${ $uid . $threadposter }{'realname'}
+          ? ${ $uid . $threadposter }{'realname'}
+          : (
+            $threadposter ? qq~$threadposter ($maintxt{'470a'})~ : $maintxt{'470a'} )
+          ;         # 470a == Ex-Member
+        $usernameFrom = qq~<span style="font-weight: bold;">$usernameFrom</span><br />~;
+        $fromTitle = qq~$inmes_txt{'318'}:~;
+
+        if ( $threadstatus !~ /b/sm ) {
+            if ( $threadstatus !~ /gr/sm ) {
+                foreach my $uname ( split /,/xsm, $threadtousers ) {
+                    LoadUser($uname);
+                    $usernameTo .= (
+                        ${ $uid . $uname }{'realname'}
+                        ? ${ $uid . $uname }{'realname'}
+                        : (
+                              $uname ? qq~$uname ($maintxt{'470a'})~
+                            : $maintxt{'470a'}
+                        )
+                    ) . q{, };    # 470a == Ex-Member
+                }
+            }
+            else {
+                my ( $guestName, $guestEmail ) = split / /sm, $threadtousers;
+                $guestName =~ s/%20/ /g;
+                $usernameTo =
+                  qq~$guestName ($guestEmail)~;
+            }
+            $toTitle = qq~$inmes_txt{'324'}:~;
+        }
+        else {
+        	require "$sourcedir/InstantMessage.pl";
+            foreach my $uname ( split /,/xsm, $threadtousers ) {
+                $usernameTo .= links_to($uname);
+            }
+            $toTitle = qq~$inmes_txt{'324'} $inmes_txt{'327'}:~;
+        }
+        $usernameTo =~ s/, $//s,;
+        $usernameTo = qq~<span style="font-weight: bold;">$usernameTo</span><br />~;
+        if ($threadccusers) {
+            foreach my $uname ( split /,/xsm, $threadccusers ) {
+                LoadUser($uname);
+                $usernameCC .= (
+                    ${ $uid . $uname }{'realname'}
+                    ? ${ $uid . $uname }{'realname'}
+                    : (
+                          $uname ? qq~$uname ($maintxt{'470a'})~
+                        : $maintxt{'470a'}
+                    )
+                ) . q{, };    # 470a == Ex-Member
+            }
+            $usernameCC =~ s/, $//sm;
+            $usernameCC = qq~<span style="font-weight: bold;">$usernameCC</span><br />~;
+            $toTitleCC = qq~$inmes_txt{'325'}:~;
+        }
+        if ($threadbccusers) {
+            foreach my $uname ( split /,/xsm, $threadbccusers ) {
+                LoadUser($uname);
+                $usernameBCC .= (
+                    ${ $uid . $uname }{'realname'}
+                    ? ${ $uid . $uname }{'realname'}
+                    : (
+                          $uname ? qq~$uname ($maintxt{'470a'})~
+                        : $maintxt{'470a'}
+                    )
+                ) . q{, };    # 470a == Ex-Member
+            }
+            $usernameBCC =~ s/, $//sm;
+            $usernameBCC = qq~<span style="font-weight: bold;">$usernameBCC</span>~;
+            $toTitleBCC = qq~$inmes_txt{'326'}:~;
+        }
+    }
+    elsif ( $INFO{'caller'} == 3 ) {
+        if ( $threadstatus !~ /b/sm ) {
+            if ( $threadstatus !~ /gr/sm ) {
+                foreach my $uname ( split /,/xsm, $threadtousers ) {
+                    LoadUser($uname);
+                    $usernameTo .= (
+                        ${ $uid . $uname }{'realname'}
+                        ? ${ $uid . $uname }{'realname'}
+                        : (
+                              $uname ? qq~$uname ($maintxt{'470a'})~
+                            : $maintxt{'470a'}
+                        )
+                    ) . q{, };    # 470a == Ex-Member
+                }
+            }
+            else {
+                my ( $guestName, $guestEmail ) = split / /sm, $threadtousers;
+                $guestName =~ s/%20/ /gsm;
+                $usernameTo =
+                  qq~$guestName ($guestEmail)~;
+            }
+            $toTitle = qq~$inmes_txt{'324'}:~;
+            if ( $threadccusers && $threadposter eq $username ) {
+                foreach my $uname ( split /,/xsm, $threadccusers ) {
+                    LoadUser($uname);
+                    $usernameCC .= (
+                        ${ $uid . $uname }{'realname'}
+                        ? ${ $uid . $uname }{'realname'}
+                        : (
+                              $uname ? qq~$uname ($maintxt{'470a'})~
+                            : $maintxt{'470a'}
+                        )
+                    ) . q{, };    # 470a == Ex-Member
+                }
+                $usernameCC =~ s/, $//sm;
+                $usernameCC = qq~<span style="font-weight: bold;">$usernameCC</span><br />~;
+                $toTitleCC = qq~$inmes_txt{'325'}:~;
+            }
+            if ( $threadbccusers && $threadposter eq $username ) {
+                foreach my $uname ( split /,/xsm, $threadbccusers ) {
+                    LoadUser($uname);
+                    $usernameBCC .= (
+                        ${ $uid . $uname }{'realname'}
+                        ? ${ $uid . $uname }{'realname'}
+                        : (
+                              $uname ? qq~$uname ($maintxt{'470a'})~
+                            : $maintxt{'470a'}
+                        )
+                    ) . q{, };    # 470a == Ex-Member
+                }
+                $usernameBCC =~ s/, $//sm;
+                $usernameBCC = qq~<span style="font-weight: bold;">$usernameBCC</span>~;
+                $toTitleBCC = qq~$inmes_txt{'326'}:~;
+            }
+        }
+        else {
+            foreach my $uname ( split /,/xsm, $threadtousers ) {
+        	    require "$sourcedir/InstantMessage.pl";
+                $usernameTo .= links_to($uname);
+            }
+            $toTitle = qq~$inmes_txt{'324'} $inmes_txt{'327'}:~;
+        }
+        $usernameTo =~ s/, $//sm;
+        $usernameTo = qq~<span style="font-weight: bold;">$usernameTo</span><br />~;
+
+        if ( $threadstatus eq 'g' || $threadstatus eq 'ga' ) {
+            my ( $guestName, $guestEmail ) = split / /sm, $threadposter;
+            $guestName =~ s/%20/ /gsm;
+            $usernameFrom =
+              qq~$guestName ($guestEmail)~;
+        }
+        else {
+            LoadUser($threadposter);
+            $usernameFrom =
+              ${ $uid . $threadposter }{'realname'}
+              ? ${ $uid . $threadposter }{'realname'}
+              : (
+                  $threadposter ? qq~$threadposter ($maintxt{'470a'})~
+                : $maintxt{'470a'}
+              );    # 470a == Ex-Member
+        }
+        $usernameFrom = qq~<span style="font-weight: bold;">$usernameFrom</span><br />~;
+        $fromTitle = qq~$inmes_txt{'318'}:~;
+
+    }
+    elsif ( $INFO{'caller'} == 5 && ( $threadstatus eq 'g' || $threadstatus eq 'ga' )  ) {
+        my ( $guestName, $guestEmail ) = split / /sm, $threadposter;
+        $guestName =~ s/%20/ /gsm;
+        $usernameFrom =
+          qq~<span style="font-weight: bold;">$guestName ($guestEmail)</span><br />~;
+        $fromTitle = qq~$inmes_txt{'318'}:~;
+
+    }
+    elsif ( $INFO{'caller'} == 5 && $threadstatus =~ /b/sm ) {
+        if ($threadtousers) {
+            require "$sourcedir/InstantMessage.pl"; # Needed for To Member Groups
+            foreach my $uname ( split /,/xsm, $threadtousers ) {
+                $usernameTo .= links_to($uname);
+            }
+            $usernameTo =~ s/, $//sm;
+            $usernameTo .= qq~<br />~;
+            $toTitle = qq~$inmes_txt{'324'} $inmes_txt{'327'}:~;
+        }
+
+        LoadUser($threadposter);
+        $usernameFrom =
+          ${ $uid . $threadposter }{'realname'}
+          ? ${ $uid . $threadposter }{'realname'}
+          : (
+            $threadposter ? qq~$threadposter ($maintxt{'470a'})~ : $maintxt{'470a'} )
+          ;    # 470a == Ex-Member
+
+        $usernameFrom = qq~<span style="font-weight: bold;">$usernameFrom</span><br />~;
+        $fromTitle = qq~$inmes_txt{'318'}:~;
+    }
+
+
+	&do_print;
+	$output .= qq~
 <table class="cs_10px" style="border: 1px solid #000000; width:96%">
 	<tr>
 		<td style="font-family: arial, sans-serif; font-size: 12px;">
-			$maintxt{'70'}: <b>$threadtitle</b><br />
-			$type <b>$threadposter</b> $maintxt{'30'} <b>$threaddate</b>
+			<div>$inmes_txt{'70'}: <span style="font-weight: bold;">$threadtitle</span></div>
+			<div>$inmes_txt{'317'}: <span style="font-weight: bold;">$threadDate</span></div>
+			$toTitle $usernameTo
+			$fromTitle $usernameFrom
+			$toTitleCC $usernameCC
+			$toTitleBCC $usernameBCC
 			<hr />
 			<span style="font-family: arial, sans-serif; font-size: 12px;">
 			$threadpost
@@ -98,9 +403,8 @@ function do_images() {
 		</td>
 	</tr>
 </table>
-<br />
-~;
-	}
+<br />~;
+
 
 	$output .= qq~
 <table style="width:96%">
@@ -115,10 +419,10 @@ function do_images() {
 </body>
 </html>~;
 
-	&image_resize;
+	image_resize();
 
-	&print_output_header;
-	&print_HTML_output_and_finish;
+	print_output_header();
+	print_HTML_output_and_finish();
 }
 
 sub Print {
@@ -136,7 +440,7 @@ sub Print {
 	if ($ishidden && !$iammod && !$iamadmin && !$iamgmod) { &fatal_error("no_access"); }
 
 	# Figure out the name of the category
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
+	get_forum_master();
 	($cat, $catperms) = split(/\|/, $catinfo{"$curcat"});
 
 	($boardname, $boardperms, $boardview) = split(/\|/, $board{"$currentboard"});
@@ -164,8 +468,10 @@ sub Print {
 <head>
 <title>$mbname - $maintxt{'668'}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
-<link rel="stylesheet" href="$forumstylesurl/$usestyle.css" type="text/css" />
-<script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
+<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
+<style type="text/css" media="print">
+    .no-print { display: none; }
+</style> <script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
 <script type="text/javascript">
 <!--
 function printPage() {
@@ -207,12 +513,12 @@ function do_images() {
 			<span style="font-family: arial, sans-serif; font-size: 18px; font-weight: bold;">$mbname</span>
 		</td>
 		<td class="right vtop">
-			<input type="button" id="Hide_Image" value="$maintxt{'669a'}" onclick="do_images();" />
+			<input type="button" id="Hide_Image" value="$maintxt{'669a'}" class="no-print" onclick="do_images();" />
 		</td>
 	</tr><tr>
 		<td class="vtop" colspan="2">
-			<span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl</span>
-			<br />
+		    <!-- Uncomment the following line if you want the Forum URL to appear -->
+			<!--<span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl</span><br />-->
 			<span style="font-family: arial, sans-serif; font-size: 16px; font-weight: bold;">$cat &gt;&gt; $boardname &gt;&gt; $messagetitle</span>
 			<br />
 			<span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl?num=$num</span>
@@ -264,7 +570,7 @@ function do_images() {
 				$_ =~ /\.(.+?)$/;
 				my $ext = lc($1);
 				unless (exists $attach_gif{$ext}) {
-					$attach_gif{$ext} = ($ext && -e "$forumstylesdir/$useimages/$ext.gif") ? "$ext.gif" : "paperclip.gif";
+					$attach_gif{$ext} = ($ext && -e "$htmldir/Templates/Forum/$useimages/$ext.gif") ? "$ext.gif" : "paperclip.gif";
 				}
 				my $filesize = -s "$uploaddir/$_";
 				if ($filesize) {
