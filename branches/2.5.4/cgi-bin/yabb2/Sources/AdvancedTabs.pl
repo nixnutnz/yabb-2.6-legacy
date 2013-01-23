@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$advancedtabsplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$advancedtabsplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub AddNewTab {
@@ -27,7 +27,7 @@ sub AddNewTab {
 	$yyaddtab = qq~
 	<br />
 
-	<script language="JavaScript1.2" type="text/javascript">
+	<script type="text/javascript">
 	<!--
 	function submittab() {
 		if (window.submitted) return false;
@@ -110,7 +110,7 @@ sub AddNewTab2 {
 			$tmpisaction = 0;
 		}
 		$tabaction =~ s/\W/_/g;
-		map { &fatal_error('tabext',$tabaction) if $_ =~ /^$tabaction\|?/; } @AdvancedTabs;
+		map { fatal_error('tabext',$tabaction) if $_ =~ /^$tabaction\|?/; } @AdvancedTabs;
 
 		if ($taburl == 1 || $taburl == 2) {
 			if ($FORM{'taburl'} =~ m/username\=/i) { $tmpusernamereq = 1; }
@@ -135,7 +135,7 @@ sub AddNewTab2 {
 				fclose(TABTXT);
 			}
 			$tabtxt{$tabaction} = $tabtext;
-			fopen(TABTXT, ">$langdir/$lngdir/tabtext.txt") || &fatal_error('file_not_open', "$langdir/$lngdir/tabtext.txt", 1);
+			fopen(TABTXT, ">$langdir/$lngdir/tabtext.txt") || fatal_error('file_not_open', "$langdir/$lngdir/tabtext.txt", 1);
 			print TABTXT map "$_\t$tabtxt{$_}\n", keys %tabtxt;
 			fclose(TABTXT);
 		}
@@ -266,11 +266,11 @@ sub EditTab2 {
 		$tosavetxt = $FORM{$tosave};
 		&ToHTML($tosavetxt);
 		$tab_lang = $language ? $language : $lang;
-		fopen(TABTXT, "$langdir/$tab_lang/tabtext.txt") || &fatal_error('file_not_open', "$langdir/$tab_lang/tabtext.txt");
+		fopen(TABTXT, "$langdir/$tab_lang/tabtext.txt") || fatal_error('file_not_open', "$langdir/$tab_lang/tabtext.txt");
 		%tabtxt = map /(.*)\t(.*)/, <TABTXT>;
 		fclose(TABTXT);
 		$tabtxt{$tosave} = $tosavetxt;
-		fopen(TABTXT, ">$langdir/$tab_lang/tabtext.txt") || &fatal_error('file_not_open', "$langdir/$tab_lang/tabtext.txt");
+		fopen(TABTXT, ">$langdir/$tab_lang/tabtext.txt") || fatal_error('file_not_open', "$langdir/$tab_lang/tabtext.txt");
 		print TABTXT map "$_\t$tabtxt{$_}\n", keys %tabtxt;
 		fclose(TABTXT);
 	}
@@ -324,7 +324,7 @@ sub DeleteTab {
 		closedir(DIR);
 		foreach $lngdir (@languages) {
 			if ($lngdir eq "." || $lngdir eq ".." || !-d "$langdir/$lngdir" || !-e "$langdir/$lngdir/tabtext.txt") { next; }
-			fopen(TABTXT, "$langdir/$lngdir/tabtext.txt") || &fatal_error('file_not_open', "$langdir/$lngdir/tabtext.txt");
+			fopen(TABTXT, "$langdir/$lngdir/tabtext.txt") || fatal_error('file_not_open', "$langdir/$lngdir/tabtext.txt");
 			%tabtxt = map /(.*)\t(.*)/, <TABTXT>;
 			fclose(TABTXT);
 			delete $tabtxt{$todelete};
