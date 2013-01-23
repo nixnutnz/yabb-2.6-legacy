@@ -12,10 +12,10 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$yabbcplver = 'YaBB 2.5.4 $Revision: 1.4 $';
+$yabbcplver = 'YaBB 2.5.4 $Revision: 1.41 $';
 if ($action eq 'detailedversion') { return 1; }
 
-&LoadLanguage('Post');
+LoadLanguage('Post');
 
 $yyYaBBCloaded = 1;
 
@@ -25,7 +25,7 @@ sub MakeSmileys {
 	my @HTMLtags;
 	while ($message =~ s/(<.+?>)/[HTML$i]/s) { push(@HTMLtags, $1); $i++; }
 
-	$message =~ s/(\W|^)\[smil(ie|ey)=(\S+?\.(gif|jpg|png|bmp))\]/$1<img src="$smiliesurl\/$3" alt="$post_txt{'287'}" title="$post_txt{'287'}" \/>/ig;
+	$message =~ s/(\W|^)\[smil(ie|ey)=(\S+?\.(gif|jpg|png|bmp))\]/$1<img src="$yyhtml_root\/Smilies\/$3" alt="$post_txt{'287'}" title="$post_txt{'287'}" \/>/ig;
 	$message =~ s/(\W|^);-?\)/$1<img src="$imagesdir\/wink.gif" alt="$post_txt{'292'}" title="$post_txt{'292'}" \/>/g;
 	$message =~ s/(\W|^);D/$1<img src="$imagesdir\/grin.gif" alt="$post_txt{'293'}" title="$post_txt{'293'}" \/>/g;
 	$message =~ s/(\W|^):'\(/$1<img src="$imagesdir\/cry.gif" alt="$post_txt{'530'}" title="$post_txt{'530'}" \/>/g; #' make my text editor happy;
@@ -231,7 +231,7 @@ sub imagemsg {
 		$attfirst . qq~ alt=$attalt $attlast~;
 	};
 	$attribut =~ s~(.*?)alt=(.+?)(\s\S+=|\Z)~ altconv($1,$2,$3)~eisg; 
-	foreach (split(/ +/, $attribut)) {
+		foreach (split(/ +/, $attribut)) {
 		my ($key, $value) = split(/=/, $_);
 		$value =~ s/["']//g; #" make my text editor happy;
 		$parameter{$key} = $value;
@@ -474,11 +474,11 @@ s/\[s\](.*?)\[\/s\]/<span style="text-decoration: line-through">$1<\/span>/isgm;
 }
 
 sub DoUBBCTo {
-	# Does UBBC to $_[0] using &DoUBBC and keeps $message the same
+	# Does UBBC to $_[0] using enable_yabbc(); and keeps $message the same
 	my($messagecopy, $returnthis);
 	$messagecopy = $message;
 	$message = $_[0];
-	&DoUBBC;
+	DoUBBC();
 	$returnthis = $message;
 	$message = $messagecopy;
 	$returnthis;
