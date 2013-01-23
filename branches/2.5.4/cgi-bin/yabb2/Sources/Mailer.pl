@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$mailerplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$mailerplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub sendmail {
@@ -25,15 +25,16 @@ sub sendmail {
 
 	# Change commas to HTML entity - ToHTML doesn't catch this
 	# It's only a problem when sending emails, so no change to ToHTML.
-	$mbname =~ s/,/&#44;/ig;
+    # Changed to dash - &#144; misread in mail clients that use semi-colons as a delimiter
+	$mbname =~ s/,/-/ig;
 
 	$charsetheader = $mailcharset ? $mailcharset : $yycharset;
 
 	if (!$from) {
 		$from = $webmaster_email;
-		$fromheader = "$mbname <$from>";
+		$fromheader = qq~"$mbname" <$from>~;
 	} else {
-		$fromheader = $from;
+		$fromheader = "$from";
 	}
 
 	if (!$to) {
