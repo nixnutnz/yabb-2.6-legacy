@@ -12,15 +12,15 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$searchplver = 'YaBB 2.5.4 $Revision: 1.4 $';
+$searchplver = 'YaBB 2.5.4 $Revision: 1.6 $';
 if ($action eq 'detailedversion') { return 1; }
 
-&LoadLanguage('Search');
+LoadLanguage('Search');
 
 if($FORM{'searchboards'} =~ /\A\!/) {
 	my($checklist, $catid, $curboard);
 	$checklist = '';
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
+	get_forum_master();
 	foreach $catid (@categoryorder) {
 		my($boardlist, @bdlist, $curboard);
 #		if ($catselect ne $catid && $catselect) { next; }
@@ -44,16 +44,16 @@ if($FORM{'searchboards'} =~ /\A\!/) {
 
 sub plushSearch1 {
 	# generate error if admin has disabled search options
-	if ($maxsearchdisplay < 0) { &fatal_error("search_disabled"); }
+	if ($maxsearchdisplay < 0) { fatal_error("search_disabled"); }
 	my (@categories, $curcat, %catname, %cataccess, %catboards, $openmemgr, @membergroups, $tmpa, %openmemgr, $curboard, @threads, @boardinfo, $counter);
 
 	&LoadCensorList;
 	if (!$iamguest) {
-		&Collapse_Load;
+		Collapse_Load();
 	}
 	$yymain .= qq~
-<script language="JavaScript1.2" src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
-<script language="JavaScript1.2" type="text/javascript">
+<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
+<script type="text/javascript">
 <!--
 function removeUser() {
 	if (document.getElementById('userspec').value && confirm("$searchselector_txt{'removeconfirm'}")) {
@@ -155,7 +155,7 @@ function searchMe(chelem) {
 	$allselected = 0;
 	$isselected  = 0;
 	$boardscheck = "";
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
+	get_forum_master();
 
 	foreach $catid (@categoryorder) {
 		$boardlist = $cat{$catid};
@@ -167,19 +167,19 @@ function searchMe(chelem) {
 		foreach $curboard (@bdlist) {
 			($boardname, $boardperms, $boardview) = split(/\|/, $board{"$curboard"});
 			&ToChars($boardname);
-			my $access = &AccessCheck($curboard, '', $boardperms);
+			my $access = AccessCheck($curboard, q{}, $boardperms);
 			if (!$iamadmin && $access ne "granted") { next; }
 
 			# Checks to see if category is expanded or collapsed
-			if ($username ne "Guest") {
+			if ($username ne 'Guest') {
 				if ($catcol{$catid}) {
-					$selected = qq~selected="selected"~;
+					$selected = q~selected="selected"~;
 					$isselected++;
 				} else {
-					$selected = "";
+					$selected = q{};
 				}
 			} else {
-				$selected = qq~selected="selected"~;
+				$selected = q~selected="selected"~;
 				$isselected++;
 			}
 			$allselected++;
@@ -257,7 +257,7 @@ function searchMe(chelem) {
 
 	$yytitle = $search_txt{'183'};
 	$yynavigation = qq~&rsaquo; $search_txt{'182'}~;
-	&template;
+	template();
 }
 
 sub plushSearch2 {
@@ -323,7 +323,7 @@ sub plushSearch2 {
 	my $maxtime = $date + (3600 * ${$uid.$username}{'timeoffset'}) - ($maxage * 86400);
 	my $oldestfound = 9999999999;
 
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
+	get_forum_master();
 	foreach $catid (@categoryorder) {
 		$boardlist = $cat{$catid};
 		(@bdlist) = split(/\,/, $boardlist);
@@ -384,10 +384,10 @@ sub plushSearch2 {
 				&ToChars($savedmessage);
 				$message = $savedmessage;
 				if ($FORM{'searchyabbtags'} && $message =~ /\[\w[^\[]*?\]/) {
-					&wrap;
+					wrap();
 					($message, undef) = &Split_Splice_Move($message,$tnum);
-					if ($enable_ubbc) { &DoUBBC; }
-					&wrap2;
+					if ($enable_ubbc) { DoUBBC(); }
+					wrap2();
 					$savedmessage = $message;
 					$message =~ s/<.+?>//g;
 				} elsif (!$FORM{'searchyabbtags'}) {
@@ -491,25 +491,25 @@ sub plushSearch2 {
 	for ($i = 0; $i < @messages; $i++) {
 		($board, $tnum, $msgnum, $tusername, $tname, $msub, $mname, $memail, $mdate, $musername, $micon, $mattach, $mip, $message, $ns, $tstate) = @{ $data{ $messages[$i] } };
 
-		$tname = &addMemberLink($tusername,$tname,$tnum);
-		$mname = &addMemberLink($musername,$mname,$mdate);
+		$tname = addMemberLink($tusername,$tname,$tnum);
+		$mname = addMemberLink($musername,$mname,$mdate);
 
-		$mdate = &timeformat($mdate);
+		$mdate = timeformat($mdate);
 
 		if (!$FORM{'searchyabbtags'}) {
-			&wrap;
+			wrap();
 			($message, undef) = &Split_Splice_Move($message,$tnum);
-			if ($enable_ubbc) { &DoUBBC; }
-			&wrap2;
+			if ($enable_ubbc) { DoUBBC(); }
+			wrap2();
 		}
 
-		$message = &Censor($message);
-		$msub    = &Censor($msub);
+		$message = Censor($message);
+		$msub    = Censor($msub);
 
-		&Highlight(\$msub,\$message,\@search,$case);
+		Highlight(\$msub,\$message,\@search,$case);
 
-		&ToChars($catname{$board});
-		&ToChars($boardname{$board});
+		ToChars($catname{$board});
+		ToChars($boardname{$board});
 
 		++$counter;
 
@@ -664,9 +664,9 @@ sub pmsearch {
 			&ToChars($savedmessage);
 			$message = $savedmessage;
 			if ($message =~ /\[\w[^\[]*?\]/) {
-				&wrap;
-				if ($enable_ubbc) { &DoUBBC; }
-				&wrap2;
+				wrap();
+				if ($enable_ubbc) { DoUBBC(); }
+				wrap2();
 				$savedmessage = $message;
 				$message =~ s/<.+?>//g;
 			}
@@ -787,11 +787,11 @@ sub pmsearch {
 
 		$mdate = &timeformat($mdate);
 
-		&Highlight(\$msub,\$message,\@search,0);
-		&MakeSmileys if $enable_ubbc && $message !~ /#nosmileys/isg;
+		Highlight(\$msub,\$message,\@search,0);
+		MakeSmileys() if $enable_ubbc && $message !~ /#nosmileys/isg;
 
-		$message = &Censor($message);
-		$msub = &Censor($msub);
+		$message = Censor($message);
+		$msub = Censor($msub);
 
 		++$counter;
 
@@ -812,7 +812,10 @@ sub pmsearch {
 						$toTitleCC
 						$toTitleBCC
 					</td>
-					<td class="right">&nbsp;<a href="$scripturl?action=imsend;caller=$thispmbox;reply=1;to=;id=$messageid">$img{'reply'}</a>$menusep<a href="$scripturl?action=imsend;caller=$thispmbox;num=;quote=1;to=;id=$messageid">$img{'recentquote'}</a>&nbsp;</td>
+                    <td class="right">&nbsp;<a href="$scripturl?action=imsend;caller=$thispmbox;reply=1;to=;id=$messageid">$img{'reply'}</a>
+                        $menusep<a href="$scripturl?action=imsend;caller=$thispmbox;num=;quote=1;to=;id=$messageid">$img{'recentquote'}</a>
+                        $menusep<a href="$scripturl?action=imprint;caller=$thispmbox;id=$messageid" target="_blank">$img{'print'}</a>&nbsp;
+                    </td> 
 				</tr>
 			</table>
 		</td>
@@ -840,7 +843,7 @@ sub addMemberLink {
 	} elsif ($user !~ m~Guest~ && $mdate < (${$uid.$user}{'regtime'} || $date)) {
 		$mname = qq~$displayname - $maintxt{'470a'}~;
 	} else {
-		$mname = $user . " ($maintxt{'28'})";
+		$mname = $displayname . " ($maintxt{'28'})";
 	}
 	$mname;
 }
