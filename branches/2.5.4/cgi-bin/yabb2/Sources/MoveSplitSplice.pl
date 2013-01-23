@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$movesplitspliceplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+$movesplitspliceplver = 'YaBB 2.5.4 $Revision: 1.4 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('MoveSplitSplice');
@@ -26,7 +26,7 @@ sub Split_Splice {
 <head>
 <title>$sstxt{'1'}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
-<link rel="stylesheet" href="$forumstylesurl/$usestyle.css" type="text/css" />
+<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
 
 </head>
 <body>
@@ -63,7 +63,7 @@ sub Split_Splice {
 	for ($counter = 0; $counter < @messages; $counter++) {
 		$message = (split(/\|/, $messages[$counter], 10))[8];
 		($message, undef) = &Split_Splice_Move($message,1);
-		&DoUBBC;
+		DoUBBC();
 
 		$convertstr = $message;
 		$convertcut = 50;
@@ -121,7 +121,7 @@ sub Split_Splice {
 			$threadids .= "$threadid,";
 
 			($message, undef) = &Split_Splice_Move($message,$threadid);
-			&DoUBBC;
+			DoUBBC();
 
 			$convertstr = $message;
 			$convertcut = 50;
@@ -148,8 +148,8 @@ sub Split_Splice {
 
 			for ($counter = 0; $counter < @messages; $counter++) {
 				$message = (split(/[\|]/, $messages[$counter], 10))[8];
-				($message, undef) = &Split_Splice_Move($message,1);
-				&DoUBBC;
+				($message, undef) = Split_Splice_Move($message,1);
+				DoUBBC();
 
 				$convertstr = $message;
 				$convertcut = 50;
