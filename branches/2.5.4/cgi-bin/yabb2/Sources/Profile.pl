@@ -12,8 +12,8 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$profileplver = 'YaBB 2.5.4 $Revision: 1.5 $';
-if ($action eq 'detailedversion') { return 1; }
+$profileplver = 'YaBB 2.5.4 $Revision: 1.61 $';
+if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Profile');
 
@@ -23,20 +23,20 @@ if ( $iamgmod && -e "$vardir/gmodsettings.txt" ) {
 
 # make sure this person has access to this profile
 sub PrepareProfile {
-        if ($iamguest) { fatal_error('no_access'); }
+    if ($iamguest) { fatal_error('no_access'); }
 
-        # If someone registers with a '+' in their name It causes problems.
-        # Get's turned into a <space> in the query string Change it back here.
-        # Users who register with spaces get them replaced with _
-        # So no problem there.
-        $INFO{'username'} =~ tr/ /+/;
+    # If someone registers with a '+' in their name It causes problems.
+    # Get's turned into a <space> in the query string Change it back here.
+    # Users who register with spaces get them replaced with _
+    # So no problem there.
+    $INFO{'username'} =~ tr/ /+/;
 
-        $user = $INFO{'username'};
-        if ($do_scramble_id) { decloak($user); }
-        if ($user =~ m{/}sm)  { fatal_error('no_user_slash'); }
-        if ($user =~ m{\\}sm) { fatal_error('no_user_backslash'); }
+    $user = $INFO{'username'};
+    if ($do_scramble_id) { decloak($user); }
+    if ( $user =~ m{/}sm )  { fatal_error('no_user_slash'); }
+    if ( $user =~ m{\\}sm ) { fatal_error('no_user_backslash'); }
 
-        if (!LoadUser($user)) { fatal_error('no_profile_exists'); }
+    if ( !LoadUser($user) ) { fatal_error('no_profile_exists'); }
 
     if (
         (
@@ -51,39 +51,39 @@ sub PrepareProfile {
         fatal_error('not_allowed_profile_change');
     }
 
-        @menucolors = qw(catbg catbg catbg catbg catbg catbg);
-        return;
+    @menucolors = qw(catbg catbg catbg catbg catbg catbg);
+    return;
 }
 
 # Check that profile-editing session is still valid
 sub SidCheck {
-        my $cur_sid = decloak($INFO{'sid'});
-        my $sid_check = substr $date, 5, 5;
-        if ($sid_check <= 600 && $cur_sid >= 99_400) { $sid_check += 100_000; }
+    my $cur_sid = decloak( $INFO{'sid'} );
+    my $sid_check = substr $date, 5, 5;
+    if ( $sid_check <= 600 && $cur_sid >= 99_400 ) { $sid_check += 100_000; }
 
-        $sid_expires = $cur_sid + 600 - $sid_check;
+    $sid_expires = $cur_sid + 600 - $sid_check;
 
-        if ($sid_expires < 0 || $cur_sid > $sid_check) { ProfileCheck($_[0]); }
-        return;
+    if ( $sid_expires < 0 || $cur_sid > $sid_check ) { ProfileCheck( $_[0] ); }
+    return;
 }
 
 sub ProfileCheck {
     my @x = @_;
-        PrepareProfile();
+    PrepareProfile();
 
-        my $sid_descript = $mycenter_profile_txt{siddescript};
-        if ($x[0]) {
-                $sid_descript = $mycenter_profile_txt{timeoutdescript};
-                $redirsid = $x[0];
+    my $sid_descript = $mycenter_profile_txt{siddescript};
+    if ( $x[0] ) {
+        $sid_descript = $mycenter_profile_txt{timeoutdescript};
+        $redirsid     = $x[0];
         if ( $redirsid =~ s/2$//xsm ) {
             $yyjavascript .= qq~\nalert("$profile_txt{'897'}");~;
         }
     }
     else {
-                $redirsid = $INFO{'page'} || 'profile';
-        }
+        $redirsid = $INFO{'page'} || 'profile';
+    }
 
-        $yymain .= qq~
+    $yymain .= qq~
 <div class="bordercolor" style="width: 500px; margin-bottom: 8px; margin-left: auto; margin-right: auto;">
 <table class="cs_thin pad_4px">
     <tr>
@@ -116,53 +116,53 @@ sub ProfileCheck {
 </script>
 ~;
 
-        $yynavigation = qq~&rsaquo; $profile_txt{'900'}~;
-        $yytitle = $profile_txt{'900'};
-        template();
-        return;
+    $yynavigation = qq~&rsaquo; $profile_txt{'900'}~;
+    $yytitle      = $profile_txt{'900'};
+    template();
+    return;
 }
 
 sub ProfileCheck2 {
-        PrepareProfile();
+    PrepareProfile();
 
-        my $password = encode_password($FORM{'passwrd'} || $INFO{'passwrd'});
+    my $password = encode_password( $FORM{'passwrd'} || $INFO{'passwrd'} );
     if ( $user eq $username && $password ne ${ $uid . $username }{'password'} )
     {
-                fatal_error('current_password_wrong');
-        }
+        fatal_error('current_password_wrong');
+    }
     if ( ( $iamadmin || ( $iamgmod && $allow_gmod_profile ) )
         && $password ne ${ $uid . $username }{'password'} )
     {
-                fatal_error('no_admin_password');
-        }
+        fatal_error('no_admin_password');
+    }
 
-        # Update the sessionID too
-        ${$uid.$username}{'session'} = encode_password($user_ip);
-        UserAccount($username, 'update');
+    # Update the sessionID too
+    ${ $uid . $username }{'session'} = encode_password($user_ip);
+    UserAccount( $username, 'update' );
 
-        # update only this cookie since we don't know when the others will expire
-        $yySetCookies3 = &write_cookie(
-                        -name    => "$cookiesession_name",
-                        -value   => "${$uid.$username}{'session'}",
-                        -path    => q{/},
+    # update only this cookie since we don't know when the others will expire
+    $yySetCookies3 = &write_cookie(
+        -name    => "$cookiesession_name",
+        -value   => "${$uid.$username}{'session'}",
+        -path    => q{/},
         -expires => 'Sunday, 17-Jan-2038 00:00:00 GMT'
     );
 
-        # Get a semi-secure SID - only for profile changes
-        # cloak the sid -> no point giving anyone the means.
+    # Get a semi-secure SID - only for profile changes
+    # cloak the sid -> no point giving anyone the means.
     $yySetLocation =
         "$scripturl?action="
       . ( $FORM{'redir'} || $INFO{'redir'} || 'profile' )
       . ";username=$useraccount{$user};sid="
       . cloak( reverse( substr( $date, 5, 5 ) ) )
       . ( $INFO{'newpassword'} ? ";newpassword=1" : q{} );
-        redirectexit();
+    redirectexit();
 }
 
 sub ProfileMenu {
-        return if $view;
+    return if $view;
 
-        $yymain .= qq~
+    $yymain .= qq~
 <table class="bordercolor cs_thin pad_4px">
     <col span="3" style="width:16%" />
     <tr>
@@ -170,18 +170,18 @@ sub ProfileMenu {
         <td class="$menucolors[1] center bottom"><span class="small"><b><a href="$scripturl?action=profileContacts;username=$useraccount{$user};sid=$INFO{'sid'}">$profile_txt{819}</a></b></span></td>
         <td class="$menucolors[2] center bottom"><span class="small"><b><a href="$scripturl?action=profileOptions;username=$useraccount{$user};sid=$INFO{'sid'}">$profile_txt{818}</a></b></span></td>~;
 
-        if ($buddyListEnabled){
-                $yymain .= qq~
+    if ($buddyListEnabled) {
+        $yymain .= qq~
         <td class="$menucolors[3] center bottom"><span class="small"><b><a href="$scripturl?action=profileBuddy;username=$useraccount{$user};sid=$INFO{'sid'}">$profile_buddy_list{'buddylist'}</a></b></span></td>~;
-        }
+    }
 
     if (   $PM_level == 1
         || ( $PM_level == 2 && ( $iamadmin || $iamgmod || $iammod ) )
         || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
     {
-                $yymain .= qq~
+        $yymain .= qq~
         <td class="$menucolors[4] center bottom"><span class="small"><b><a href="$scripturl?action=profileIM;username=$useraccount{$user};sid=$INFO{'sid'}">$profile_imtxt{56} $profile_txt{323}</a></b></span></td>~;
-        }
+    }
 
     if (
         $iamadmin
@@ -190,10 +190,10 @@ sub ProfileMenu {
             && $gmod_access2{'profileAdmin'} eq 'on' )
       )
     {
-                $yymain .= qq~
+        $yymain .= qq~
         <td class="$menucolors[5] center bottom"><span class="small"><b><a href="$scripturl?action=profileAdmin;username=$useraccount{$user};sid=$INFO{'sid'}">$profile_txt{820}</a></b></span></td>~;
-        }
-        $yymain .= q~
+    }
+    $yymain .= q~
     </tr>
 </table>
 <br />
@@ -202,44 +202,44 @@ sub ProfileMenu {
 }
 
 sub ModifyProfile {
-        SidCheck($action);
-        PrepareProfile();
+    SidCheck($action);
+    PrepareProfile();
 
-        $menucolors[0] = 'titlebg';
-        ProfileMenu();
+    $menucolors[0] = 'titlebg';
+    ProfileMenu();
 
-        if ($iamadmin) {
+    if ($iamadmin) {
         $confdel_text =
           qq~$profile_txt{'775'} $profile_txt{'777'} $user $profile_txt{'778'}~;
-                if ($user eq $username) {
-                        $passtext = $profile_txt{'821'};
+        if ( $user eq $username ) {
+            $passtext = $profile_txt{'821'};
         }
         else {
-                        $passtext = qq~$profile_txt{'2'} $profile_txt{'36'}~;
-                }
+            $passtext = qq~$profile_txt{'2'} $profile_txt{'36'}~;
+        }
     }
     else {
         $confdel_text =
           qq~$profile_txt{'775'} $profile_txt{'776'} $profile_txt{'778'}~;
-                $passtext = $profile_txt{'821'};
-        }
+        $passtext = $profile_txt{'821'};
+    }
 
     $passtext .=
 qq~<br /><span class="small" style="font-weight: normal;">$profile_txt{'895'}</span>~;
 
-        my $scriptAction = q~profile2~;
-        if ($view) {
-                $scriptAction = q~myprofile2~;
-                $yytitle = $profile_txt{'editmyprofile'};
-                $profiletitle = qq~$profile_txt{'editmyprofile'} ($user)~;
+    my $scriptAction = q~profile2~;
+    if ($view) {
+        $scriptAction = q~myprofile2~;
+        $yytitle      = $profile_txt{'editmyprofile'};
+        $profiletitle = qq~$profile_txt{'editmyprofile'} ($user)~;
         $yynavigation =
 qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'}</a> &rsaquo; $profiletitle~;
     }
     else {
-                $yytitle = $profile_txt{'79'};
-                $profiletitle = qq~$profile_txt{'79'} ($user)~;
-                $yynavigation = qq~&rsaquo; $profiletitle~;
-        }
+        $yytitle      = $profile_txt{'79'};
+        $profiletitle = qq~$profile_txt{'79'} ($user)~;
+        $yynavigation = qq~&rsaquo; $profiletitle~;
+    }
 
     if ( ${ $uid . $user }{'gender'} eq 'Male' ) {
         $GenderMale = ' selected="selected" ';
@@ -248,64 +248,64 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         $GenderFemale = ' selected="selected" ';
     }
 
-        my $timeorder;
-        if(${$uid.$user}{'timeselect'}) {
-                if    (${$uid.$user}{'timeselect'} == 6) { $timeorder = 1; }
-                elsif (${$uid.$user}{'timeselect'} == 3) { $timeorder = 1; }
-                elsif (${$uid.$user}{'timeselect'} == 2) { $timeorder = 1; }
-        }
-        else {
-                if ($timeselected == 6) { $timeorder = 1; }
-                elsif ($timeselected == 3) { $timeorder = 1; }
-                elsif ($timeselected == 2) { $timeorder = 1; }
-        }
+    my $timeorder;
+    if ( ${ $uid . $user }{'timeselect'} ) {
+        if    ( ${ $uid . $user }{'timeselect'} == 6 ) { $timeorder = 1; }
+        elsif ( ${ $uid . $user }{'timeselect'} == 3 ) { $timeorder = 1; }
+        elsif ( ${ $uid . $user }{'timeselect'} == 2 ) { $timeorder = 1; }
+    }
+    else {
+        if    ( $timeselected == 6 ) { $timeorder = 1; }
+        elsif ( $timeselected == 3 ) { $timeorder = 1; }
+        elsif ( $timeselected == 2 ) { $timeorder = 1; }
+    }
 
-        CalcAge($user, 'parse');
+    CalcAge( $user, 'parse' );
 
-        # EventCal Begin
-        $selectyear = q{};
+    # EventCal Begin
+    $selectyear = q{};
     $seluyear =
 qq~$profile_txt{'566'}<select name="bday3" style="font-size:10pt;"><option value="">  </option>\n~;
-        for ($e = 1905; $e < ($year-4); $e++) {
+    for ( $e = 1905 ; $e < ( $year - 4 ) ; $e++ ) {
         if   ( $uyear == $e ) { $selectyear = 'selected'; }
         else                  { $selectyear = ''; }
-                $seluyear .= qq~<option value="$e" $selectyear>$e</option>\n~;
-        }
-        $seluyear .= q~</select> ~;
+        $seluyear .= qq~<option value="$e" $selectyear>$e</option>\n~;
+    }
+    $seluyear .= q~</select> ~;
 
-        $selectmnth = q{};
+    $selectmnth = q{};
     $dayormonthm =
 qq~<label for="bday1">$profile_txt{'564'}</label><select name="bday1" id="bday1" style="font-size:10pt;"><option value="">  </option>\n~;
-        for my $bb ( 1 .. 12 ) {
+    for my $bb ( 1 .. 12 ) {
         if   ( $umonth == $bb ) { $selectmnth = 'selected'; }
         else                    { $selectmnth = ''; }
         if   ( $bb < 10 ) { $c = "0$bb"; }
         else              { $c = $bb; }
-                $dayormonthm .= qq~<option value="$c" $selectmnth>$c</option>\n~;
-        }
-        $dayormonthm .= q~</select> ~;
+        $dayormonthm .= qq~<option value="$c" $selectmnth>$c</option>\n~;
+    }
+    $dayormonthm .= q~</select> ~;
 
-        $selectday = q{};
+    $selectday = q{};
     $dayormonthd =
 qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2" style="font-size=10pt;"><option value="">  </option>\n~;
-        for my $aa ( 1 .. 31 ) {
+    for my $aa ( 1 .. 31 ) {
         if   ( $uday == $aa ) { $selectday = 'selected'; }
         else                  { $selectday = ''; }
         if   ( $aa < 10 ) { $d = "0$aa"; }
         else              { $d = $aa; }
-                $dayormonthd .= qq~<option value="$d" $selectday>$d</option>\n~;
-        }
-        $dayormonthd .= q~</select> ~;
+        $dayormonthd .= qq~<option value="$d" $selectday>$d</option>\n~;
+    }
+    $dayormonthd .= q~</select> ~;
 
-        # EventCal End
+    # EventCal End
 
-        if ($timeorder) { $dayormonth = $dayormonthd . $dayormonthm; }
-        else { $dayormonth = $dayormonthm . $dayormonthd; }
-        $dayormonth =~ s/for="bday\d"/for="birthday"/oxsm;
-        $dayormonth =~ s/id="bday\d"/id="birthday"/oxsm;
+    if   ($timeorder) { $dayormonth = $dayormonthd . $dayormonthm; }
+    else              { $dayormonth = $dayormonthm . $dayormonthd; }
+    $dayormonth =~ s/for="bday\d"/for="birthday"/oxsm;
+    $dayormonth =~ s/id="bday\d"/id="birthday"/oxsm;
 
-        LoadLanguage('Register');
-        $showProfile   .= qq~
+    LoadLanguage('Register');
+    $showProfile .= qq~
 <form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" accept-charset="$yycharset">
 <table class="bordercolor cs_thin pad_4px">
     <col style="width:220px" />
@@ -337,11 +337,11 @@ qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"
         </td>
     </tr><tr class="windowbg">
          <td><label for="name"><b>$profile_txt{68}: </b><br />~;
-        if ($name_cannot_be_userid) {
-                $showProfile .= qq~
-                        <span class="small">$profile_txt{'8'}</span></label>~;
-        }
+    if ($name_cannot_be_userid) {
         $showProfile .= qq~
+                        <span class="small">$profile_txt{'8'}</span></label>~;
+    }
+    $showProfile .= qq~
         </td>
         <td><input type="text" maxlength="30" onchange="checkAvail('$scripturl',this.value,'display')" name="name" id="name" size="30" value="${$uid.$user}{'realname'}" /><div id="displayavailability"></div></td>
     </tr><tr class="windowbg">
@@ -367,56 +367,56 @@ qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"
         <td><input type="text" maxlength="30" name="location" id="location" size="30" value="${$uid.$user}{'location'}" /></td>
     </tr>~;
 
-        if ($extendedprofiles) {
-                require "$sourcedir/ExtendedProfiles.pl";
+    if ($extendedprofiles) {
+        require "$sourcedir/ExtendedProfiles.pl";
         $showProfile .= ext_editprofile( $user, 'edit' );
-        }
+    }
 
     if (   $sessions == 1
         && $sessionvalid == 1
         && ( $iamadmin || $iamgmod || $iammod )
         && $username eq $user )
     {
-                &LoadLanguage('Sessions');
-                require "$sourcedir/Decoder.pl";
-                my $decanswer = &descramble(${$uid.$user}{'sesanswer'}, $user);
-                $questsel = qq~<select name="sesquest" id="sesquest" size="1">\n~;
-                while (($key, $val) = each %sesquest_txt) {
+        &LoadLanguage('Sessions');
+        require "$sourcedir/Decoder.pl";
+        my $decanswer = &descramble( ${ $uid . $user }{'sesanswer'}, $user );
+        $questsel = qq~<select name="sesquest" id="sesquest" size="1">\n~;
+        while ( ( $key, $val ) = each %sesquest_txt ) {
             if (   ${ $uid . $user }{'sesquest'} eq $key
                 && ${ $uid . $user }{'sesquest'} ne "" )
             {
-                                $sessel = q~ selected="selected"~;
+                $sessel = q~ selected="selected"~;
             }
             elsif ( $key eq "password" && ${ $uid . $user }{'sesquest'} eq "" )
             {
-                                $sessel = q~ selected="selected"~;
+                $sessel = q~ selected="selected"~;
             }
             else {
-                                $sessel = q{};
-                        }
-                        $questsel .= qq~<option value="$key"$sessel>$val</option>\n~;
-                }
-                $questsel .= qq~</select>\n~;
+                $sessel = q{};
+            }
+            $questsel .= qq~<option value="$key"$sessel>$val</option>\n~;
+        }
+        $questsel .= qq~</select>\n~;
         $showProfile .= qq~<tr>
         <td class="catbg" colspan="2"><img src="$imagesdir/session.gif" alt="" /> <label for="sesquest"><b>$img_txt{'34a'}</b><br /><span class="small">$session_txt{'9'}<br />$session_txt{'9a'}</span></label></td>
     </tr><tr class="windowbg">
         <td>$questsel</td>
         <td><input type="text" maxlength="30" name="sesanswer" size="20" value="$decanswer" /></td>
     </tr>~;
-        }
+    }
     $showProfile .= qq~<tr class="catbg">
         <td class="center" style="height:50px" colspan="2"><input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />~;
-    if ($self_del_user == 1) {
+    if ( $self_del_user == 1 ) {
         if (   ( $iamadmin && ( $username ne $user ) )
             || ( $username ne 'admin' ) )
         {
-        $showProfile .=
+            $showProfile .=
 qq~ &nbsp; &nbsp; &nbsp; <input type="submit" name="moda" value="$profile_txt{'89'}" onclick="return confirm('$confdel_text')" class="button" />~;
         }
     }
-    else  {
-        if ( $iamadmin &&  $username ne $user ) {
-        $showProfile .=
+    else {
+        if ( $iamadmin && $username ne $user ) {
+            $showProfile .=
 qq~ &nbsp; &nbsp; &nbsp; <input type="submit" name="moda" value="$profile_txt{'89'}" onclick="return confirm('$confdel_text')" class="button" />~;
         }
     }
@@ -527,23 +527,23 @@ qq~<br /><span class="small">$profile_txt{'sid_expires_1'} $sid_expires $profile
 </script>
 ~;
 
-        if (!$view) {
-                $yymain .= $showProfile;
-                template();
-        }
-        return;
+    if ( !$view ) {
+        $yymain .= $showProfile;
+        template();
+    }
+    return;
 }
 
 sub ModifyProfileContacts {
-        SidCheck($action);
-        PrepareProfile();
+    SidCheck($action);
+    PrepareProfile();
 
-        $menucolors[1] = 'titlebg';
-        ProfileMenu();
+    $menucolors[1] = 'titlebg';
+    ProfileMenu();
 
-        my $scriptAction = qq~profileContacts2~;
-        if ($view) {
-                $scriptAction = qq~myprofileContacts2~;
+    my $scriptAction = qq~profileContacts2~;
+    if ($view) {
+        $scriptAction = qq~myprofileContacts2~;
         $yytitle =
           qq~$profile_txt{'editmyprofile'} &rsaquo; $profile_txt{'819'}~;
         $profiletitle =
@@ -552,16 +552,16 @@ qq~$profile_txt{'editmyprofile'} ($user) &rsaquo; $profile_txt{'819'}~;
 qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'}</a> &rsaquo; $profiletitle~;
     }
     else {
-                $yytitle = qq~$profile_txt{'79'} &rsaquo; $profile_txt{'819'}~;
+        $yytitle = qq~$profile_txt{'79'} &rsaquo; $profile_txt{'819'}~;
         $profiletitle =
           qq~$profile_txt{'79'} ($user) &rsaquo; $profile_txt{'819'}~;
-                $yynavigation = qq~&rsaquo; $profiletitle~;
-        }
+        $yynavigation = qq~&rsaquo; $profiletitle~;
+    }
 
-        ${$uid.$user}{'aim'} =~ tr/+/ /;
-        ${$uid.$user}{'yim'} =~ tr/+/ /;
+    ${ $uid . $user }{'aim'} =~ tr/+/ /;
+    ${ $uid . $user }{'yim'} =~ tr/+/ /;
 
-        $showProfile .= qq~
+    $showProfile .= qq~
 <form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" accept-charset="$yycharset">
 <table class="bordercolor cs_thin pad_4px">
     <col style="width:320px" />
@@ -573,17 +573,17 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
             <div id="emailavailability"></div>
         </td>
     </tr>~;
-        if ($allow_hide_email) {
-                my $checked = q{};
+    if ($allow_hide_email) {
+        my $checked = q{};
         if ( ${ $uid . $user }{'hidemail'} ) {
             $checked = ' checked="checked"';
         }
-                $showProfile .= qq~<tr class="windowbg">
+        $showProfile .= qq~<tr class="windowbg">
         <td ><label for="hideemail"><b>$profile_txt{'721'}</b></label></td>
         <td><input type="checkbox" name="hideemail" id="hideemail" value="1"$checked /></td>
     </tr>~;
-        }
-        $showProfile .= qq~<tr class="windowbg">
+    }
+    $showProfile .= qq~<tr class="windowbg">
         <td><label for="icq"><b>$profile_txt{'513'}: </b><br /><span class="small">$profile_txt{'600'}</span></label></td>
         <td><input type="text" maxlength="10" name="icq" id="icq" size="40" value="${$uid.$user}{'icq'}" /></td>
     </tr><tr class="windowbg">
@@ -592,9 +592,6 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
     </tr><tr class="windowbg">
         <td><label for="yim"><b>$profile_txt{'604'}: </b><br /><span class="small">$profile_txt{'602'}</span></label></td>
         <td><input type="text" maxlength="30" name="yim" id="yim" size="40" value="${$uid.$user}{'yim'}" /></td>
-    </tr><tr class="windowbg">
-        <td><label for="msn"><b>$profile_txt{'823'}: </b><br /><span class="small">$profile_txt{'824'}</span></label></td>
-        <td><input type="text" maxlength="50" name="msn" id="msn" size="40" value="${$uid.$user}{'msn'}" /></td>
     </tr><tr class="windowbg">
         <td><label for="gtalk"><b>$profile_txt{'825'}: </b><br /><span class="small">$profile_txt{'826'}</span></label></td>
         <td><input type="text" maxlength="50" name="gtalk" id="gtalk" size="40" value="${$uid.$user}{'gtalk'}" /></td>
@@ -608,19 +605,19 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         <td><label for="facebook"><b>$profile_txt{'573'}:</b><br /><span class="small">$profile_txt{'574'}</span></label></td>
         <td><label for="facebook"><span class="small">$profile_txt{'575'}</span></label><br /><input type="text" maxlength="50" name="facebook" id="facebook" size="40" value="${$uid.$user}{'facebook'}" /></td>
     </tr>~;
-        if (!$minlinkweb) { $minlinkweb = 0; }
+    if ( !$minlinkweb ) { $minlinkweb = 0; }
     if (   ${ $uid . $user }{'postcount'} >= $minlinkweb
         || ${ $uid . $user }{'position'} eq 'Administrator'
         || ${ $uid . $user }{'position'} eq 'Global Moderator' )
     {
-            $showProfile .= qq~<tr class="windowbg">
+        $showProfile .= qq~<tr class="windowbg">
         <td><label for="webtitle"><b>$profile_txt{'83'}: </b><br /><span class="small">$profile_txt{'598'}</span></label></td>
         <td><input type="text" maxlength="30" name="webtitle" id="webtitle" size="40" value="${$uid.$user}{'webtitle'}" /></td>
     </tr><tr class="windowbg">
         <td><label for="weburl"><b>$profile_txt{'84'}: </b><br /><span class="small">$profile_txt{'599'}</span></label></td>
         <td><input type="text" name="weburl" id="weburl" size="40" value="${$uid.$user}{'weburl'}" /></td>
     </tr>~;
-        }
+    }
 
     if (
         (
@@ -639,17 +636,17 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         )
       )
     {
-                my $offChecked = q~ selected="selected"~;
-                my $awayChecked = q{};
+        my $offChecked  = q~ selected="selected"~;
+        my $awayChecked = q{};
 
-                if (${$uid.$user}{'offlinestatus'} eq 'away') {
-                        $offChecked = q{};
-                        $awayChecked = q~ selected="selected"~;
-                }
+        if ( ${ $uid . $user }{'offlinestatus'} eq 'away' ) {
+            $offChecked  = q{};
+            $awayChecked = q~ selected="selected"~;
+        }
 
-                my $awayreply = ${$uid.$user}{'awayreply'};
-                $awayreply =~ s/<br \/>/\n/gsm;
-                $showProfile .= qq~<tr class="windowbg">
+        my $awayreply = ${ $uid . $user }{'awayreply'};
+        $awayreply =~ s/<br \/>/\n/gsm;
+        $showProfile .= qq~<tr class="windowbg">
         <td><label for="offlinestatus"><b>$profile_txt{'showstatus'}: </b><br /><span class="small">$profile_txt{'statusexplain'}<br />$profile_txt{'awaydescription'}</span></label></td>
         <td>
            <select name="offlinestatus" id="offlinestatus">
@@ -687,7 +684,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
              </script>
          </td>
     </tr>~;
-        }
+    }
 
     if (
         (
@@ -697,44 +694,44 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         && $enable_MCstatusStealth
       )
     {
-                my $stealthChecked = '';
+        my $stealthChecked = '';
         if ( ${ $uid . $user }{'stealth'} ) {
             $stealthChecked = ' checked="checked"';
         }
-                $showProfile .= qq~<tr class="windowbg">
+        $showProfile .= qq~<tr class="windowbg">
         <td><label for="stealth"><b>$profile_txt{'stealth'}: </b><br /><span class="small">$profile_txt{'stealthexplain'}</span></label></td>
         <td><input type="checkbox" name="stealth" id="stealth" value="1"$stealthChecked /></td>
     </tr>~;
-        }
+    }
 
-        if ($extendedprofiles) {
-                require "$sourcedir/ExtendedProfiles.pl";
-                $showProfile .= ext_editprofile($user,'contact');
-        }
+    if ($extendedprofiles) {
+        require "$sourcedir/ExtendedProfiles.pl";
+        $showProfile .= ext_editprofile( $user, 'contact' );
+    }
 
-        $showProfile .= qq~<tr class="catbg">
+    $showProfile .= qq~<tr class="catbg">
         <td class="center" style="height:50px" colspan="2"><input type="submit" name="moda" value="$profile_txt{'88'}" class="button" /><br /><span class="small">$profile_txt{'sid_expires_1'} $sid_expires $profile_txt{'sid_expires_2'}</span></td>
     </tr>
 </table>
 </form>~;
 
-        if (!$view) {
-                $yymain .= $showProfile;
-                template();
-        }
-        return;
+    if ( !$view ) {
+        $yymain .= $showProfile;
+        template();
+    }
+    return;
 }
 
 sub ModifyProfileOptions {
-        SidCheck($action);
-        PrepareProfile();
+    SidCheck($action);
+    PrepareProfile();
 
-        $menucolors[2] = 'titlebg';
-        ProfileMenu();
+    $menucolors[2] = 'titlebg';
+    ProfileMenu();
 
-        my $scriptAction = q~profileOptions2~;
-        if ($view) {
-                $scriptAction = q~myprofileOptions2~;
+    my $scriptAction = q~profileOptions2~;
+    if ($view) {
+        $scriptAction = q~myprofileOptions2~;
         $yytitle =
           qq~$profile_txt{'editmyprofile'} &rsaquo; $profile_txt{'818'}~;
         $profiletitle =
@@ -743,26 +740,26 @@ qq~$profile_txt{'editmyprofile'} ($user) &rsaquo; $profile_txt{'818'}~;
 qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'}</a> &rsaquo; $profiletitle~;
     }
     else {
-                $yytitle = qq~$profile_txt{'79'} &rsaquo; $profile_txt{'818'}~;
+        $yytitle = qq~$profile_txt{'79'} &rsaquo; $profile_txt{'818'}~;
         $profiletitle =
           qq~$profile_txt{'79'} ($user) &rsaquo; $profile_txt{'818'}~;
-                $yynavigation = qq~&rsaquo; $profiletitle~;
-        }
+        $yynavigation = qq~&rsaquo; $profiletitle~;
+    }
 
-        if ($allowpics && $upload_useravatar && $upload_avatargroup) {
-                $upload_useravatar = 0;
-                foreach my $av_gr (split /, /sm, $upload_avatargroup) {
+    if ( $allowpics && $upload_useravatar && $upload_avatargroup ) {
+        $upload_useravatar = 0;
+        foreach my $av_gr ( split /, /sm, $upload_avatargroup ) {
             if ( $av_gr eq ${ $uid . $user }{'position'} ) {
                 $upload_useravatar = 1;
                 last;
             }
-                        foreach (split /,/xsm, ${$uid.$user}{'addgroups'}) {
-                                if ($av_gr eq $_) { $upload_useravatar = 1; last; }
-                        }
-                }
+            foreach ( split /,/xsm, ${ $uid . $user }{'addgroups'} ) {
+                if ( $av_gr eq $_ ) { $upload_useravatar = 1; last; }
+            }
         }
+    }
 
-        $showProfile .= qq~
+    $showProfile .= qq~
 <form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator"~
       . (
         ( $allowpics && $upload_useravatar )
@@ -775,16 +772,16 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         <td class="catbg" colspan="2"><img src="$imagesdir/profile.gif" alt="" /> <b>$profiletitle</b></td>
     </tr><tr class="windowbg">~;
 
-        if ($allowpics) {
+    if ($allowpics) {
         opendir( DIR, $facesdir )
           || fatal_error( "cannot_open_dir",
             "($facesdir)!<br />$profile_txt{'681'}", 1 );
-                @contents = readdir DIR;
-                closedir DIR;
-                $images = q{};
-                foreach my $line (sort @contents) {
-                        ($name, $extension) = split /\./xsm, $line;
-                        $checked = q{};
+        @contents = readdir DIR;
+        closedir DIR;
+        $images = q{};
+        foreach my $line ( sort @contents ) {
+            ( $name, $extension ) = split /\./xsm, $line;
+            $checked = q{};
             if ( $line eq ${ $uid . $user }{'userpic'} ) {
                 $checked = ' selected="selected"';
             }
@@ -798,31 +795,31 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
                 || $extension =~ /jpeg/ism
                 || $extension =~ /png/ism )
             {
-                                if ($line eq 'blank.gif') {
+                if ( $line eq 'blank.gif' ) {
                     $images =
 qq~                <option value="$line"$checked>$profile_txt{'422'}</option>\n$images~;
                 }
                 else {
                     $images .=
 qq~                <option value="$line"$checked>$name</option>\n~;
-                                }
-                        }
                 }
-                my ($pic,$tmp,$s,$alt);
-                $tmp = $facesurl;
-                $tmp =~ /^(http(s?):\/\/)/xsm;
-                ($tmp,$s) = ($1,$2);
-                if (${$uid.$user}{'userpic'} =~ m{\Ahttps?://}sm) {
-                        $pic = ${$uid.$user}{'userpic'};
-                        $checked = ' checked="checked" ';
-                        $tmp = ${$uid.$user}{'userpic'};
-                        if ($upload_useravatar) { $alt = $profile_txt{'473'} ;}
+            }
+        }
+        my ( $pic, $tmp, $s, $alt );
+        $tmp = $facesurl;
+        $tmp =~ /^(http(s?):\/\/)/xsm;
+        ( $tmp, $s ) = ( $1, $2 );
+        if ( ${ $uid . $user }{'userpic'} =~ m{\Ahttps?://}sm ) {
+            $pic     = ${ $uid . $user }{'userpic'};
+            $checked = ' checked="checked" ';
+            $tmp     = ${ $uid . $user }{'userpic'};
+            if ($upload_useravatar) { $alt = $profile_txt{'473'}; }
         }
         else {
-                        $pic = "$facesurl/${$uid.$user}{'userpic'}";
-                }
+            $pic = "$facesurl/${$uid.$user}{'userpic'}";
+        }
 
-                $showProfile .= qq~
+        $showProfile .= qq~
         <td><label for="userpic"><b>$profile_txt{'229'}:</b></label><br /><span class="small"><label for="userpic">$profile_txt{'474'}</label><label for="userpicpersonalcheck">$profile_txt{'475'}</label>~
           . (
             $upload_useravatar
@@ -875,12 +872,12 @@ qq~                <option value="$line"$checked>$name</option>\n~;
           . qq~
         </td>
     </tr>~;
-        }
+    }
 
-        $signature = ${$uid.$user}{'signature'};
-        $signature =~ s/<br.*?>/\n/gsm;
+    $signature = ${ $uid . $user }{'signature'};
+    $signature =~ s/<br.*?>/\n/gsm;
 
-        $showProfile .= qq~<tr class="windowbg">
+    $showProfile .= qq~<tr class="windowbg">
         <td><label for="usertext"><b>$profile_txt{'228'}: </b></label></td>
         <td><input type="text" name="usertext" id="usertext" size="40" value="${$uid.$user}{'usertext'}" maxlength="50" /></td>
     </tr><tr class="windowbg">
@@ -914,7 +911,7 @@ qq~                <option value="$line"$checked>$name</option>\n~;
         </td>
     </tr>~;
 
-        if ($addmemgroup_enabled > 1 && %NoPost) {
+    if ( $addmemgroup_enabled > 1 && %NoPost ) {
         my ( $addmemgroup, $selsize ) =
           &DrawGroups( ${ $uid . $user }{'addgroups'},
             ${ $uid . $user }{'position'}, 0 );
@@ -929,7 +926,7 @@ qq~                <option value="$line"$checked>$name</option>\n~;
         </td>
     </tr>~;
         }
-        }
+    }
 
     if ( ${ $uid . $user }{'numberformat'} == 1 ) {
         $unfsl1 = ' selected="selected" ';
@@ -946,11 +943,11 @@ qq~                <option value="$line"$checked>$name</option>\n~;
     elsif ( ${ $uid . $user }{'numberformat'} == 5 ) {
         $unfsl5 = ' selected="selected" ';
     }
-        elsif ($forumnumberformat == 1) { $unfsl1 = ' selected="selected" '; }
-        elsif ($forumnumberformat == 2) { $unfsl2 = ' selected="selected" '; }
-        elsif ($forumnumberformat == 3) { $unfsl3 = ' selected="selected" '; }
-        elsif ($forumnumberformat == 4) { $unfsl4 = ' selected="selected" '; }
-        elsif ($forumnumberformat == 5) { $unfsl5 = ' selected="selected" '; }
+    elsif ( $forumnumberformat == 1 ) { $unfsl1 = ' selected="selected" '; }
+    elsif ( $forumnumberformat == 2 ) { $unfsl2 = ' selected="selected" '; }
+    elsif ( $forumnumberformat == 3 ) { $unfsl3 = ' selected="selected" '; }
+    elsif ( $forumnumberformat == 4 ) { $unfsl4 = ' selected="selected" '; }
+    elsif ( $forumnumberformat == 5 ) { $unfsl5 = ' selected="selected" '; }
     if ( ${ $uid . $user }{'timeselect'} == 7 ) {
         $tsl7 = ' selected="selected" ';
     }
@@ -975,18 +972,18 @@ qq~                <option value="$line"$checked>$name</option>\n~;
     elsif ( ${ $uid . $user }{'timeselect'} == 8 ) {
         $tsl8 = ' selected="selected" ';
     }
-        elsif ($timeselected == 8) { $tsl8 = ' selected="selected" '; }
-        elsif ($timeselected == 7) { $tsl7 = ' selected="selected" '; }
-        elsif ($timeselected == 6) { $tsl6 = ' selected="selected" '; }
-        elsif ($timeselected == 5) { $tsl5 = ' selected="selected" '; }
-        elsif ($timeselected == 4) { $tsl4 = ' selected="selected" '; }
-        elsif ($timeselected == 3) { $tsl3 = ' selected="selected" '; }
-        elsif ($timeselected == 2) { $tsl2 = ' selected="selected" '; }
-        elsif ($timeselected == 1) { $tsl1 = ' selected="selected" '; }
+    elsif ( $timeselected == 8 ) { $tsl8 = ' selected="selected" '; }
+    elsif ( $timeselected == 7 ) { $tsl7 = ' selected="selected" '; }
+    elsif ( $timeselected == 6 ) { $tsl6 = ' selected="selected" '; }
+    elsif ( $timeselected == 5 ) { $tsl5 = ' selected="selected" '; }
+    elsif ( $timeselected == 4 ) { $tsl4 = ' selected="selected" '; }
+    elsif ( $timeselected == 3 ) { $tsl3 = ' selected="selected" '; }
+    elsif ( $timeselected == 2 ) { $tsl2 = ' selected="selected" '; }
+    elsif ( $timeselected == 1 ) { $tsl1 = ' selected="selected" '; }
 
-        my @usertimeoffset = split/\./xsm, ${$uid.$user}{'timeoffset'};
+    my @usertimeoffset = split /\./xsm, ${ $uid . $user }{'timeoffset'};
 
-        $showProfile .= qq~<tr class="windowbg">
+    $showProfile .= qq~<tr class="windowbg">
         <td><label for="usernumberformat"><b>$profile_txt{'usernumbformat'}:</b></label></td>
         <td>
             <select name="usernumberformat" id="usernumberformat" size="1">
@@ -1018,33 +1015,33 @@ qq~                <option value="$line"$checked>$name</option>\n~;
     </tr><tr class="windowbg">
         <td><label for="usertimesign"><b>$profile_txt{'371'}:</b><br /><span class="small">$profile_txt{'372'}</span></label></td>
         <td><span class="small">$profile_txt{'373'}:
-            <br /><b>~ . timeformat($date,1) . qq~</b>
+            <br /><b>~ . timeformat( $date, 1 ) . qq~</b>
             <br /><br /></span>
             <select name="usertimesign" id="usertimesign"><option value="">+</option><option value="-"~
       . ( $usertimeoffset[0] < 0 ? ' selected="selected"' : q{} )
       . qq~>-</option></select>
             <select name="usertimehour" id="usertimehour">~;
-        for my $i ( 0 .. 12 ) {
-                $i = sprintf('%02d', $i);
+    for my $i ( 0 .. 12 ) {
+        $i = sprintf( '%02d', $i );
         $showProfile .= qq~\n                        <option value="$i"~
           . (
             ( $usertimeoffset[0] == $i || $usertimeoffset[0] == -$i )
             ? ' selected="selected"'
             : q{}
           ) . qq~>$i</option>~;
-        }
-        $showProfile .= qq~
+    }
+    $showProfile .= qq~
                         </select> : <select name="usertimemin">~;
-        for my $i ( 0 .. 59) {
-                my $j = $i / 60;
-                $j = (split /\./xsm, $j)[1] || 0;
+    for my $i ( 0 .. 59 ) {
+        my $j = $i / 60;
+        $j = ( split /\./xsm, $j )[1] || 0;
         $showProfile .=
             qq~\n                        <option value="$j"~
           . ( $usertimeoffset[1] eq $j ? ' selected="selected"' : q{} ) . q~>~
           . sprintf( '%02d', $i )
           . q~</option>~;
-        }
-        $showProfile .= qq~
+    }
+    $showProfile .= qq~
             </select>
         </td>
     </tr><tr class="windowbg">
@@ -1059,18 +1056,18 @@ qq~                <option value="$line"$checked>$name</option>\n~;
       . q~ /></td>
     </tr>~;
 
-        # This is only for update, when comming from YaBB lower or equal version 2.2.3
-        # I think it can be deleted around version 2.4.0 without causing mayor issues (deti).
+# This is only for update, when comming from YaBB lower or equal version 2.2.3
+# I think it can be deleted around version 2.4.0 without causing mayor issues (deti).
     if ( $enable_notifications eq q{} ) {
         $enable_notifications = $enable_notification ? 3 : 0;
     }
 
-        # End update workaround
+    # End update workaround
     if (   $NewNotificationAlert
         || $enable_notifications == 1
         || $enable_notifications == 3 )
     {
-                $showProfile .= qq~<tr class="windowbg">
+        $showProfile .= qq~<tr class="windowbg">
         <td class="vtop"><label for="onlinealert"><b>$profile_txt{'onlinealert'}:</b></label></td>
         <td>~;
 
@@ -1082,13 +1079,13 @@ qq~                <option value="$line"$checked>$name</option>\n~;
               . qq~ /> <label for="onlinealert">$profile_txt{'onlinealertexplain'}</label>~;
         }
 
-                if ($enable_notifications == 1 || $enable_notifications == 3) {
+        if ( $enable_notifications == 1 || $enable_notifications == 3 ) {
             if ($NewNotificationAlert) {
                 $showProfile .= q~<br />
                         <br />~;
             }
 
-                        $showProfile .= qq~
+            $showProfile .= qq~
                         <label for="notify_N">$profile_txt{'326'}</label>?&nbsp;<select name="notify_N" id="notify_N">
                         <option value="0"~
               . (
@@ -1107,91 +1104,91 @@ qq~                <option value="$line"$checked>$name</option>\n~;
               )
               . qq~>$profile_txt{'163'}</option>
                         </select>~;
-                }
-
-                $showProfile .= qq~
-        </td>
-    </tr>~;
         }
 
-        if ($ttsureverse) {
+        $showProfile .= qq~
+        </td>
+    </tr>~;
+    }
+
+    if ($ttsureverse) {
         ${ $uid . $user }{'reversetopic'} = $ttsreverse
           unless exists( ${ $uid . $user }{'reversetopic'} );
-                $showProfile .= qq~<tr class="windowbg">
+        $showProfile .= qq~<tr class="windowbg">
         <td><label for="reversetopic"><b>$profile_txt{'810'}</b><br /><span class="small">$profile_txt{'811'}</span></label></td>
         <td class="vtop"><input type="checkbox" name="reversetopic" id="reversetopic"~
           . ( ${ $uid . $user }{'reversetopic'} ? qq~ checked="checked"~ : q{} )
           . q~ /></td>
     </tr>~;
-        }
+    }
 
     foreach my $curtemplate (
         sort { $templateset{$a} cmp $templateset{$b} }
         keys %templateset
       )
     {
-                $selected = q{};
+        $selected = q{};
         if ( $curtemplate eq ${ $uid . $user }{'template'} ) {
             $selected    = q~ selected="selected"~;
             $akttemplate = $curtemplate;
         }
         $drawndirs .=
           qq~<option value="$curtemplate"$selected>$curtemplate</option>\n~;
-        }
+    }
 
-        $showProfile .= qq~<tr class="windowbg">
+    $showProfile .= qq~<tr class="windowbg">
         <td><label for="usertemplate"><b>$profile_txt{'814'}</b><br /><span class="small">$profile_txt{'815'}</span></label></td>
         <td><select name="usertemplate" id="usertemplate">$drawndirs</select></td>
     </tr>~;
 
-        opendir DIR, $langdir;
-        my @lfilesanddirs = readdir DIR;
-        close DIR;
-        foreach my $fld (sort {lc($a) cmp lc($b)} @lfilesanddirs) {
-                if (-e "$langdir/$fld/Main.lng") {
-                my $displang = $fld;
-                $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
+    opendir DIR, $langdir;
+    my @lfilesanddirs = readdir DIR;
+    close DIR;
+    foreach my $fld ( sort { lc($a) cmp lc($b) } @lfilesanddirs ) {
+        if ( -e "$langdir/$fld/Main.lng" ) {
+            my $displang = $fld;
+            $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
             if ( ${ $uid . $user }{'language'} eq $fld ) {
                 $drawnldirs .=
 qq~<option value="$fld" selected="selected">$displang</option>~;
             }
-                else { $drawnldirs .= qq~<option value="$fld">$displang</option>~; }
-                }
+            else { $drawnldirs .= qq~<option value="$fld">$displang</option>~; }
         }
+    }
 
-        $showProfile .= qq~<tr class="windowbg">
+    $showProfile .= qq~<tr class="windowbg">
         <td><label for="userlanguage"><b>$profile_txt{'817'}</b><br /><span class="small">$profile_txt{'815'}</span></label></td>
         <td><select name="userlanguage" id="userlanguage">$drawnldirs</select></td>
     </tr>~;
 
-        if ($extendedprofiles) {
-                require "$sourcedir/ExtendedProfiles.pl";
-                $showProfile .= ext_editprofile($user,'options');
-        }
+    if ($extendedprofiles) {
+        require "$sourcedir/ExtendedProfiles.pl";
+        $showProfile .= ext_editprofile( $user, 'options' );
+    }
 
-        $showProfile .= qq~<tr class="catbg">
+    $showProfile .= qq~<tr class="catbg">
                 <td class="center" style="height:50px" colspan="2"><input type="submit" name="moda" value="$profile_txt{'88'}" class="button" /><br /><span class="small">$profile_txt{'sid_expires_1'} $sid_expires $profile_txt{'sid_expires_2'}</span></td>
     </tr>
 </table>
 </form>~;
 
-        if (!$view) {
-                $yymain .= $showProfile;
-                template();
-        }
-        return;
+    if ( !$view ) {
+        $yymain .= $showProfile;
+        template();
+    }
+    return;
 }
 
 sub ModifyProfileBuddy {
-        SidCheck($action);
-        PrepareProfile();
+    SidCheck($action);
+    PrepareProfile();
 
-        $menucolors[3] = 'titlebg';
-        ProfileMenu();
+    $menucolors[3] = 'titlebg';
+    ProfileMenu();
 
-        my $scriptAction = q~profileBuddy2~;
-        if ($view) {
-                $scriptAction = q~myprofileBuddy2~;
+    my $scriptAction = q~profileBuddy2~;
+    if ($view) {
+        $scriptAction = q~myprofileBuddy2~;
         $yytitle =
 qq~$profile_txt{'editmyprofile'} &rsaquo; $profile_buddy_list{'buddylist'}~;
         $profiletitle =
@@ -1204,11 +1201,11 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
           qq~$profile_txt{'79'} &rsaquo; $profile_buddy_list{'buddylist'}~;
         $profiletitle =
 qq~$profile_txt{'79'} ($user) &rsaquo; $profile_buddy_list{'buddylist'}~;
-                $yynavigation = qq~&rsaquo; $profiletitle~;
-        }
+        $yynavigation = qq~&rsaquo; $profiletitle~;
+    }
 
-        if (!$yyjavascript) { $yyjavascript = q{}; }
-        $yyjavascript .= qq~
+    if ( !$yyjavascript ) { $yyjavascript = q{}; }
+    $yyjavascript .= qq~
         function imWin() {
                 window.open('$scripturl?action=imlist;sort=mlletter;toid=buddylist','Blist','status=no,height=345,width=464,menubar=no,toolbar=no,top=50,left=50,scrollbars=no');
         }
@@ -1231,7 +1228,7 @@ qq~$profile_txt{'79'} ($user) &rsaquo; $profile_buddy_list{'buddylist'}~;
         }
         ~;
 
-        $showProfile .= qq~
+    $showProfile .= qq~
 <form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" onsubmit="javascript: selectblNames();">
 <table class="bordercolor cs_thin pad_4px">
     <col style="width:320px" />
@@ -1239,20 +1236,20 @@ qq~$profile_txt{'79'} ($user) &rsaquo; $profile_buddy_list{'buddylist'}~;
         <td colspan="2" class="catbg"><img src="$imagesdir/profile.gif" alt="" /> <b>$profiletitle</b></td>
     </tr>~;
 
-        my $buildBuddyList = q{};
-        if(${$uid.$user}{'buddylist'}) {
-                my @buddies = split /\|/xsm, ${$uid.$user}{'buddylist'};
-                chomp @buddies;
-                foreach my $buddy (@buddies) {
-                        LoadUser($buddy);
+    my $buildBuddyList = q{};
+    if ( ${ $uid . $user }{'buddylist'} ) {
+        my @buddies = split /\|/xsm, ${ $uid . $user }{'buddylist'};
+        chomp @buddies;
+        foreach my $buddy (@buddies) {
+            LoadUser($buddy);
             if ( ${ $uid . $buddy }{'realname'} ) {
                 $buildBuddyList .=
 qq~<option value="$buddy">${$uid.$buddy}{'realname'}</option>~;
             }
-                }
         }
+    }
 
-        $showProfile .= qq~
+    $showProfile .= qq~
     <tr class="windowbg">
         <td><b>$profile_buddy_list{'buddylist'}</b><br /><span class="small">$profile_buddy_list{'explain'}</span></td>
         <td>
@@ -1263,27 +1260,27 @@ qq~<option value="$buddy">${$uid.$buddy}{'realname'}</option>~;
         </td>
     </tr>~;
 
-        $showProfile .= qq~<tr class="catbg">
+    $showProfile .= qq~<tr class="catbg">
         <td class="center" style="height:50px" colspan="2"><input type="submit" name="moda" value="$profile_txt{'88'}" class="button" /><br /><span class="small">$profile_txt{'sid_expires_1'} $sid_expires $profile_txt{'sid_expires_2'}</span></td>
     </tr>
 </table>
 </form>~;
 
-        if (!$view) {
-                $yymain .= $showProfile;
-                template();
-        }
-        return;
+    if ( !$view ) {
+        $yymain .= $showProfile;
+        template();
+    }
+    return;
 }
 
 sub ModifyProfileIM {
-        SidCheck($action);
-        PrepareProfile();
+    SidCheck($action);
+    PrepareProfile();
 
-        $menucolors[4] = 'titlebg';
-        ProfileMenu();
+    $menucolors[4] = 'titlebg';
+    ProfileMenu();
 
-        $yyjavascript .= qq~
+    $yyjavascript .= qq~
         function imWin() {
                 window.open('$scripturl?action=imlist;sort=mlletter;toid=ignore','Ilist','status=no,height=345,width=464,menubar=no,toolbar=no,top=50,left=50,scrollbars=no');
         }
@@ -1306,9 +1303,9 @@ sub ModifyProfileIM {
                 }
         ~;
 
-        my $scriptAction = q~profileIM2~;
-        if ($view) {
-                $scriptAction = q~myprofileIM2~;
+    my $scriptAction = q~profileIM2~;
+    if ($view) {
+        $scriptAction = q~myprofileIM2~;
         $yytitle =
           qq~$profile_txt{'editmyprofile'} &rsaquo; $profile_imtxt{'38'}~;
         $profiletitle =
@@ -1317,13 +1314,13 @@ qq~$profile_txt{'editmyprofile'} ($user) &rsaquo; $profile_imtxt{'38'}~;
 qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'}</a> &rsaquo; $profiletitle~;
     }
     else {
-                $yytitle = qq~$profile_txt{79} &rsaquo; $profile_imtxt{'38'}~;
+        $yytitle = qq~$profile_txt{79} &rsaquo; $profile_imtxt{'38'}~;
         $profiletitle =
           qq~$profile_txt{79} ($user) &rsaquo; $profile_imtxt{'38'}~;
-                $yynavigation = qq~&rsaquo; $profiletitle~;
-        }
+        $yynavigation = qq~&rsaquo; $profiletitle~;
+    }
 
-        $showProfile .= qq~
+    $showProfile .= qq~
 <form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" onsubmit="javascript:selectINames();" >
 <table class="bordercolor cs_thin pad_4px">
     <col style="width:320px" />
@@ -1334,28 +1331,28 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         <td>
             <select name="ignore" id="ignore" size="4" multiple="multiple" style="width:250px;" ondblclick="removeUser(this);" >~;
 
-        my $ignoreallChecked = q{};
+    my $ignoreallChecked = q{};
     if ( ${ $uid . $user }{'im_ignorelist'} eq q{*} ) {
         $ignoreallChecked = ' checked="checked"';
     }
     if (   ${ $uid . $user }{'im_ignorelist'}
         && ${ $uid . $user }{'im_ignorelist'} ne q{*} )
     {
-                my @ignoreList = split /\|/xsm, ${$uid.$user}{'im_ignorelist'};
-                chomp @ignoreList;
-                foreach my $ignoreName (@ignoreList) {
-                        LoadUser($ignoreName);
-                        my $ignoreUser;
+        my @ignoreList = split /\|/xsm, ${ $uid . $user }{'im_ignorelist'};
+        chomp @ignoreList;
+        foreach my $ignoreName (@ignoreList) {
+            LoadUser($ignoreName);
+            my $ignoreUser;
             if ( ${ $uid . $ignoreName }{'realname'} ) {
                 $ignoreUser = ${ $uid . $ignoreName }{'realname'};
             }
-                        else {$ignoreUser = $ignoreName;}
-                        $ignoreName = &cloak($ignoreName);
+            else { $ignoreUser = $ignoreName; }
+            $ignoreName = &cloak($ignoreName);
             $showProfile .=
 qq~\n                        <option value="$ignoreName">$ignoreUser</option>~;
-                }
         }
-        $showProfile .= qq~
+    }
+    $showProfile .= qq~
             </select>
             <br />
             <input type="checkbox" name="ignoreall" id="ignoreall" $ignoreallChecked /> <label for="ignoreall">$profile_txt{'ignoreall'}</label><br />
@@ -1363,16 +1360,16 @@ qq~\n                        <option value="$ignoreName">$ignoreUser</option>~;
         </td>
     </tr>~;
 
-        # This is only for update, when coming from YaBB lower or equal version 2.2.3
-        # I think it can be deleted around version 2.4.0 without causing mayor issues (deti).
+# This is only for update, when coming from YaBB lower or equal version 2.2.3
+# I think it can be deleted around version 2.4.0 without causing mayor issues (deti).
     if ( $enable_notifications eq q{} ) {
         $enable_notifications = $enable_notification ? 3 : 0;
     }
 
-        # End update workaround
+    # End update workaround
 
-        if ($enable_notifications > 1) {
-                $showProfile .= qq~<tr class="windowbg">
+    if ( $enable_notifications > 1 ) {
+        $showProfile .= qq~<tr class="windowbg">
         <td class="vtop"><label for="notify_PM"><b>$profile_txt{'327'}:</b></label></td>
         <td>
             <select name="notify_PM" id="notify_PM">
@@ -1387,7 +1384,7 @@ qq~\n                        <option value="$ignoreName">$ignoreUser</option>~;
             </select>
         </td>
     </tr>~;
-        }
+    }
 
     if ( ${ $uid . $user }{'im_popup'} ) {
         $enable_userimpopup = ' checked="checked"';
@@ -1395,50 +1392,50 @@ qq~\n                        <option value="$ignoreName">$ignoreUser</option>~;
     if ( ${ $uid . $user }{'im_imspop'} ) {
         $popup_userim = 'checked="checked"';
     }
-        $showProfile .= qq~<tr class="windowbg">
+    $showProfile .= qq~<tr class="windowbg">
         <td><label for="userpopup"><b>$profile_imtxt{'05'}</b></label></td>
         <td><input type="checkbox" name="userpopup" id="userpopup" value="1"$enable_userimpopup /></td>
     </tr><tr class="windowbg">
         <td><label for="popupims"><b>$profile_imtxt{'53'}</b></label></td>
         <td><input type="checkbox" name="popupims" id="popupims" value="1"$popup_userim /></td>
     </tr>~;
-        if($enable_PMcontrols || $enable_PMprev) {
-                my $pmmessprevChecked;
+    if ( $enable_PMcontrols || $enable_PMprev ) {
+        my $pmmessprevChecked;
         if ( ${ $uid . $user }{'pmmessprev'} ) {
             $pmmessprevChecked = ' checked="checked"';
         }
-                $showProfile .= qq~<tr class="windowbg">
+        $showProfile .= qq~<tr class="windowbg">
         <td><label for="pmmessprev"><b>$profile_txt{'enabprev'}: </b><br /><span class="small">$profile_txt{'prevexplain'}</span></label></td>
         <td><input type="checkbox" name="pmmessprev" id="pmmessprev" value="1"$pmmessprevChecked /></td>
     </tr>~;
-        }
-        if($enable_PMcontrols || $enable_PMviewMess) {
-                my $pmviewMessChecked;
+    }
+    if ( $enable_PMcontrols || $enable_PMviewMess ) {
+        my $pmviewMessChecked;
         if ( ${ $uid . $user }{'pmviewMess'} ) {
             $pmviewMessChecked = ' checked="checked"';
         }
-                $showProfile .= qq~<tr class="windowbg">
+        $showProfile .= qq~<tr class="windowbg">
         <td><label for="pmviewMess"><b>$profile_txt{'viewmess'}: </b><br /><span class="small">$profile_txt{'viewmessexplain'}</span></label></td>
         <td><input type="checkbox" name="pmviewMess" id="pmviewMess" value="1"$pmviewMessChecked /></td>
     </tr>~;
-        }
-        if ($enable_PMcontrols || $enable_PMActprev) {
-                my $pmactprevChecked;
+    }
+    if ( $enable_PMcontrols || $enable_PMActprev ) {
+        my $pmactprevChecked;
         if ( ${ $uid . $user }{'pmactprev'} ) {
             $pmactprevChecked = ' checked="checked"';
         }
-                $showProfile .= qq~<tr class="windowbg">
+        $showProfile .= qq~<tr class="windowbg">
         <td><label for="pmactprev"><b>$profile_txt{'actprev'}: </b><br /><span class="small">$profile_txt{'actprevexplain'}</span></label></td>
         <td><input type="checkbox" name="pmactprev" id="pmactprev" value="1"$pmactprevChecked /></td>
     </tr>~;
-        }
+    }
 
-        if ($extendedprofiles) {
-                require "$sourcedir/ExtendedProfiles.pl";
-                $showProfile .= ext_editprofile($user,'im');
-        }
+    if ($extendedprofiles) {
+        require "$sourcedir/ExtendedProfiles.pl";
+        $showProfile .= ext_editprofile( $user, 'im' );
+    }
 
-        $showProfile .= qq~<tr class="catbg">
+    $showProfile .= qq~<tr class="catbg">
         <td class="center" style="height:50px" colspan="2">
             <input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />
             <br /><span class="small">$profile_txt{'sid_expires_1'} $sid_expires $profile_txt{'sid_expires_2'}</span>
@@ -1447,20 +1444,20 @@ qq~\n                        <option value="$ignoreName">$ignoreUser</option>~;
 </table>
 </form>~;
 
-        if (!$view) {
-                $yymain .= $showProfile;
-                template();
-        }
-        return;
+    if ( !$view ) {
+        $yymain .= $showProfile;
+        template();
+    }
+    return;
 }
 
 sub ModifyProfileAdmin {
-        is_admin_or_gmod();
-        SidCheck($action);
-        PrepareProfile();
+    is_admin_or_gmod();
+    SidCheck($action);
+    PrepareProfile();
 
-        $menucolors[5] = 'titlebg';
-        ProfileMenu();
+    $menucolors[5] = 'titlebg';
+    ProfileMenu();
 
     ( $MemStatAdmin, $MemStarNumAdmin, $MemStarPicAdmin, $MemTypeColAdmin ) =
       split /\|/xsm, $Group{'Administrator'};
@@ -1479,27 +1476,27 @@ sub ModifyProfileAdmin {
         $ttgrp = ${ $uid . $user }{'position'};
         ( $tt, undef ) = split /\|/xsm, $NoPost{$ttgrp}, 2;
     }
-        else { $tt = ${$uid.$user}{'position'}; }
+    else { $tt = ${ $uid . $user }{'position'}; }
 
-        $regreason = ${$uid.$user}{'regreason'};
-        $regreason =~ s/<br \/>/\n/gsm;
+    $regreason = ${ $uid . $user }{'regreason'};
+    $regreason =~ s/<br \/>/\n/gsm;
 
-        my ($tta, $selsize);
-        if (%NoPost) {
+    my ( $tta, $selsize );
+    if (%NoPost) {
         ( $tta, $selsize ) =
           DrawGroups( ${ $uid . $user }{'addgroups'}, q{}, 1 );
-        }
+    }
 
-        $userlastlogin = timeformat(${$uid.$user}{'lastonline'});
-        $userlastpost  = timeformat(${$uid.$user}{'lastpost'});
-        $userlastim    = timeformat(${$uid.$user}{'lastim'});
-        if ($userlastlogin eq q{}) { $userlastlogin = $profile_txt{'470'}; }
-        if ($userlastpost eq q{}) { $userlastpost = $profile_txt{'470'}; }
-        if ($userlastim eq q{}) { $userlastim = $profile_txt{'470'}; }
+    $userlastlogin = timeformat( ${ $uid . $user }{'lastonline'} );
+    $userlastpost  = timeformat( ${ $uid . $user }{'lastpost'} );
+    $userlastim    = timeformat( ${ $uid . $user }{'lastim'} );
+    if ( $userlastlogin eq q{} ) { $userlastlogin = $profile_txt{'470'}; }
+    if ( $userlastpost  eq q{} ) { $userlastpost  = $profile_txt{'470'}; }
+    if ( $userlastim    eq q{} ) { $userlastim    = $profile_txt{'470'}; }
 
-        my $scriptAction = q~profileAdmin2~;
-        if ($view) {
-                $scriptAction = q~myprofileAdmin2~;
+    my $scriptAction = q~profileAdmin2~;
+    if ($view) {
+        $scriptAction = q~myprofileAdmin2~;
         $yytitle =
           qq~$profile_txt{'editmyprofile'} &rsaquo; $profile_txt{'820'}~;
         $profiletitle =
@@ -1508,13 +1505,13 @@ qq~$profile_txt{'editmyprofile'} ($user) &rsaquo; $profile_txt{'820'}~;
 qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'}</a> &rsaquo; $profiletitle~;
     }
     else {
-                $yytitle = qq~$profile_txt{'79'} &rsaquo; $profile_txt{'820'}~;
+        $yytitle = qq~$profile_txt{'79'} &rsaquo; $profile_txt{'820'}~;
         $profiletitle =
           qq~$profile_txt{'79'} ($user) &rsaquo; $profile_txt{'820'}~;
-                $yynavigation = qq~&rsaquo; $profiletitle~;
-        }
+        $yynavigation = qq~&rsaquo; $profiletitle~;
+    }
 
-        $showProfile .= qq~
+    $showProfile .= qq~
 <form action="$scripturl?action=$scriptAction;username=$useraccount{$user};sid=$INFO{'sid'}" method="post" name="creator">
 <table class="bordercolor cs_thin pad_4px">
     <col style="width:320px" />
@@ -1531,7 +1528,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
                 <option value="${$uid.$user}{'position'}">---------------</option>
                 <option value=""></option>~;
 
-        if (!$iamgmod) {
+    if ( !$iamgmod ) {
         ( $title, $stars, $starpic, $color ) = split /\|/xsm,
           $Group{'Administrator'};
         $showProfile .=
@@ -1540,23 +1537,23 @@ qq~\n                        <option value="Administrator">$title</option>~;
           $Group{'Global Moderator'};
         $showProfile .=
 qq~\n                        <option value="Global Moderator">$title</option>~;
-        }
+    }
 
-        my $z = 0;
-        foreach (@nopostorder) {
+    my $z = 0;
+    foreach (@nopostorder) {
         ( $title, $stars, $starpic, $color, undef ) = split /\|/xsm,
           $NoPost{$_}, 5;
-                $showProfile .= qq~<option value="$_">$title</option>~;
-                $z++;
-        }
+        $showProfile .= qq~<option value="$_">$title</option>~;
+        $z++;
+    }
 
-        $showProfile .= q~
+    $showProfile .= q~
             </select>
         </td>
     </tr>~;
 
-        if ($tta ne q{}) {
-                $showProfile .= qq~<tr class="windowbg">
+    if ( $tta ne q{} ) {
+        $showProfile .= qq~<tr class="windowbg">
         <td class="vtop"><label for="addgroup"><b>$profile_txt{'87a'}: </b><br /><span class="small">$profile_txt{'87b'}</span></label></td>
         <td>
             <select name="addgroup" id="addgroup" size="$selsize" multiple="multiple">
@@ -1564,7 +1561,7 @@ qq~\n                        <option value="Global Moderator">$title</option>~;
             </select>
         </td>
     </tr>~;
-        }
+    }
 
     (
         $dr_secund, $dr_minute, $dr_hour, $dr_day, $dr_month,
@@ -1575,12 +1572,12 @@ qq~\n                        <option value="Global Moderator">$title</option>~;
         ? ${ $uid . $user }{'regtime'}
         : $forumstart
       );
-        $dr_month++;
+    $dr_month++;
 
-        if ($dr_month > 12) { $dr_month = 12; } ## month cannot be above 12!
-        if ($dr_month < 1) { $dr_month = 1; } ## neither can it be less than 1
-        if ($dr_day > 31) { $dr_day = 31; }  ## day of month over 31
-        if ($dr_day < 1) { $dr_day = 1; }
+    if ( $dr_month > 12 ) { $dr_month = 12; }   ## month cannot be above 12!
+    if ( $dr_month < 1 )  { $dr_month = 1; }    ## neither can it be less than 1
+    if ( $dr_day > 31 )   { $dr_day   = 31; }   ## day of month over 31
+    if ( $dr_day < 1 )    { $dr_day   = 1; }
     if ( length($dr_year) > 2 ) {
         $dr_year = substr( $dr_year, length($dr_year) - 2, 2 );
     }
@@ -1590,94 +1587,94 @@ qq~\n                        <option value="Global Moderator">$title</option>~;
     if ( $dr_year > 20 && $dr_year < 51 ) {
         $dr_year = 20;
     }    ## a year 50 or lower is taken to be 2020
-        if ($dr_hour > 23) { $dr_hour = 23; }
-        if ($dr_minute > 59) { $dr_minute = 59; }
-        if ($dr_secund > 59) { $dr_secund = 59; }
+    if ( $dr_hour > 23 )   { $dr_hour   = 23; }
+    if ( $dr_minute > 59 ) { $dr_minute = 59; }
+    if ( $dr_secund > 59 ) { $dr_secund = 59; }
 
-        $sel_day = qq~
+    $sel_day = qq~
             <select name="dr_day">\n~;
-        for my $i ( 1 .. 31 ) {
-                $day_val = sprintf('%02d', $i);
-                if($dr_day == $i) {
+    for my $i ( 1 .. 31 ) {
+        $day_val = sprintf( '%02d', $i );
+        if ( $dr_day == $i ) {
             $sel_day .=
 qq~                <option value="$day_val" selected="selected">$i</option>\n~;
         }
         else {
             $sel_day .=
               qq~                <option value="$day_val">$i</option>\n~;
-                }
         }
-        $sel_day .= qq~            </select>\n~;
+    }
+    $sel_day .= qq~            </select>\n~;
 
-        $sel_month = qq~
+    $sel_month = qq~
             <select name="dr_month">\n~;
-        for my $i ( 0 .. 11 ) {
-                $z = $i+1;
-                $month_val = sprintf('%02d', $z);
-                if ($dr_month == $z) {
+    for my $i ( 0 .. 11 ) {
+        $z = $i + 1;
+        $month_val = sprintf( '%02d', $z );
+        if ( $dr_month == $z ) {
             $sel_month .=
 qq~                <option value="$month_val" selected="selected">$months[$i]</option>\n~;
         }
         else {
             $sel_month .=
 qq~                <option value="$month_val">$months[$i]</option>\n~;
-                }
         }
-        $sel_month .= qq~            </select>\n~;
+    }
+    $sel_month .= qq~            </select>\n~;
 
-        $sel_year = qq~
+    $sel_year = qq~
             <select name="dr_year">\n~;
-        for my $i ( 1990 .. $year ) {
-                my $year_val = substr $i,2,2;
-                if ($dr_year == $year_val) {
+    for my $i ( 1990 .. $year ) {
+        my $year_val = substr $i, 2, 2;
+        if ( $dr_year == $year_val ) {
             $sel_year .=
 qq~                <option value="$year_val" selected="selected">$i</option>\n~;
         }
         else {
             $sel_year .=
               qq~                <option value="$year_val">$i</option>\n~;
-                }
         }
-        $sel_year .= qq~            </select>~;
+    }
+    $sel_year .= qq~            </select>~;
 
-        $time_sel = ${$uid.$username}{'timeselect'};
+    $time_sel = ${ $uid . $username }{'timeselect'};
     if ( $time_sel == 1 || $time_sel == 4 || $time_sel == 5 ) {
         $all_date = qq~$sel_month $sel_day $sel_year~;
     }
-        else { $all_date = qq~$sel_day $sel_month $sel_year~; }
-        $all_date =~ s/<select name/<select id="dr_day_month" name/osm;
+    else { $all_date = qq~$sel_day $sel_month $sel_year~; }
+    $all_date =~ s/<select name/<select id="dr_day_month" name/osm;
 
-        $sel_hour = qq~
+    $sel_hour = qq~
             <select name="dr_hour">\n~;
-        for my $i ( 0 .. 23 ) {
-                my $hour_val = sprintf('%02d', $i);
-                if($dr_hour == $i) {
+    for my $i ( 0 .. 23 ) {
+        my $hour_val = sprintf( '%02d', $i );
+        if ( $dr_hour == $i ) {
             $sel_hour .=
 qq~                        <option value="$hour_val" selected="selected">$hour_val</option>\n~;
         }
         else {
             $sel_hour .=
 qq~                        <option value="$hour_val">$hour_val</option>\n~;
-                }
         }
-        $sel_hour .= qq~                        </select>\n~;
+    }
+    $sel_hour .= qq~                        </select>\n~;
 
-        $sel_minute = qq~
+    $sel_minute = qq~
                         <select name="dr_minute">\n~;
-        for($i = 0; $i <= 59; $i++) {
-                $minute_val = sprintf("%02d", $i);
-                if($dr_minute == $i) {
+    for my $i ( 0 .. 59 ) {
+        $minute_val = sprintf '%02d', $i;
+        if ( $dr_minute == $i ) {
             $sel_minute .=
 qq~                        <option value="$minute_val" selected="selected">$minute_val</option>\n~;
         }
         else {
             $sel_minute .=
 qq~                        <option value="$minute_val">$minute_val</option>\n~;
-                }
         }
-        $sel_minute .= qq~                        </select>~;
+    }
+    $sel_minute .= qq~                        </select>~;
 
-        $showProfile .= qq~<tr class="windowbg">
+    $showProfile .= qq~<tr class="windowbg">
         <td><label for="dr_day_month"><b>$profile_txt{'233'}:</b></label></td>
         <td>
             $all_date $maintxt{'107'} $sel_hour $sel_minute <small>(server <b>localtime</b>)</small>
@@ -1697,12 +1694,12 @@ qq~                        <option value="$minute_val">$minute_val</option>\n~;
         <td>$userlastim<br /><br /></td>
     </tr>~;
 
-        if ($extendedprofiles) {
-                require "$sourcedir/ExtendedProfiles.pl";
-                $showProfile .= &ext_editprofile($user,"admin");
-        }
+    if ($extendedprofiles) {
+        require "$sourcedir/ExtendedProfiles.pl";
+        $showProfile .= ext_editprofile( $user, 'admin' );
+    }
 
-        $showProfile .= qq~<tr class="catbg">
+    $showProfile .= qq~<tr class="catbg">
         <td class="center" style="height:50px" colspan="2">
             <input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />
             <br /><span class="small">$profile_txt{'sid_expires_1'} $sid_expires $profile_txt{'sid_expires_2'}</span>
@@ -1711,27 +1708,27 @@ qq~                        <option value="$minute_val">$minute_val</option>\n~;
 </table>
 </form>~;
 
-        if (!$view) {
-                $yymain .= $showProfile;
-                template();
-        }
-        return;
+    if ( !$view ) {
+        $yymain .= $showProfile;
+        template();
+    }
+    return;
 }
 
 sub ModifyProfile2 {
-        SidCheck($action);
-        PrepareProfile();
+    SidCheck($action);
+    PrepareProfile();
 
-        my (%member, $key, $value);
-        while (($key, $value) = each %FORM) {
-                $value =~ s/\A\s+//xsm;
-                $value =~ s/\s+\Z//xsm;
-                $value =~ s/[\n\r]//gxsm;
-                $member{$key} = $value;
-        }
-        $member{'username'} = $user;
+    my ( %member, $key, $value );
+    while ( ( $key, $value ) = each %FORM ) {
+        $value =~ s/\A\s+//xsm;
+        $value =~ s/\s+\Z//xsm;
+        $value =~ s/[\n\r]//gxsm;
+        $member{$key} = $value;
+    }
+    $member{'username'} = $user;
 
-        if ($member{'moda'} eq $profile_txt{'88'}) {
+    if ( $member{'moda'} eq $profile_txt{'88'} ) {
         if (   $sessions == 1
             && $sessionvalid == 1
             && ( $iamadmin || $iamgmod )
@@ -1743,9 +1740,9 @@ sub ModifyProfile2 {
             elsif ( $member{'sesanswer'} eq q{} ) {
                 &fatal_error('no_secret_answer');
             }
-                }
+        }
 
-                if ($member{'passwrd1'} || $member{'passwrd2'}) {
+        if ( $member{'passwrd1'} || $member{'passwrd2'} ) {
             if ( $member{'passwrd1'} ne $member{'passwrd2'} ) {
                 fatal_error( 'password_mismatch', "$member{'username'}" );
             }
@@ -1761,7 +1758,7 @@ sub ModifyProfile2 {
             if ( $member{'username'} eq $member{'passwrd1'} ) {
                 fatal_error('password_is_userid');
             }
-                }
+        }
 
         if (   $member{'bday1'} ne q{}
             || $member{'bday2'} ne q{}
@@ -1785,42 +1782,42 @@ sub ModifyProfile2 {
                 fatal_error( 'invalid_birthdate',
                     "($member{'bday1'}/$member{'bday2'}/$member{'bday3'})" );
             }
-                }
-                $member{'bday1'} =~ s/[^0-9]//gxsm;
-                $member{'bday2'} =~ s/[^0-9]//gxsm;
-                $member{'bday3'} =~ s/[^0-9]//gxsm;
+        }
+        $member{'bday1'} =~ s/[^0-9]//gxsm;
+        $member{'bday2'} =~ s/[^0-9]//gxsm;
+        $member{'bday3'} =~ s/[^0-9]//gxsm;
         if ( $member{'bday1'} ) {
             $member{'bday'} =
               "$member{'bday1'}/$member{'bday2'}/$member{'bday3'}";
         }
-                else { $member{'bday'} = q{}; }
+        else { $member{'bday'} = q{}; }
 
-                # EventCal Begin
+        # EventCal Begin
         if ( ${ $uid . $user }{'bday'} ne "$member{'bday'}" ) {
             $Update_EventCal = 1;
         }
 
-                # EventCal End
+        # EventCal End
 
-                if ($extendedprofiles) { # run this before you start to save something!
-                        require "$sourcedir/ExtendedProfiles.pl";
-                        my $error = ext_validate_submition($username,$user);
+        if ($extendedprofiles) {  # run this before you start to save something!
+            require "$sourcedir/ExtendedProfiles.pl";
+            my $error = ext_validate_submition( $username, $user );
             if ( $error ne q{} ) {
                 fatal_error( 'extended_profiles_validation', $error );
             }
-                        ext_saveprofile($user);
-                }
+            ext_saveprofile($user);
+        }
 
-                if (${$uid.$user}{'realname'} ne $member{'name'}) {
-                        $member{'name'} =~ s/\t+/\ /gsm;
-                        if ($member{'name'} eq q{}) { fatal_error('no_name'); }
+        if ( ${ $uid . $user }{'realname'} ne $member{'name'} ) {
+            $member{'name'} =~ s/\t+/\ /gsm;
+            if ( $member{'name'} eq q{} ) { fatal_error('no_name'); }
             if ( $name_cannot_be_userid
                 && lc $member{'name'} eq lc $member{'username'} )
             {
                 fatal_error('name_is_userid');
             }
 
-                        &LoadCensorList;
+            &LoadCensorList;
             if ( Censor( $member{'name'} ) ne $member{'name'} ) {
                 fatal_error( 'name_censored', CheckCensor("$member{'name'}") );
             }
@@ -1831,12 +1828,12 @@ sub ModifyProfile2 {
                 fatal_error('password_is_userid');
             }
 
-                        FromChars($member{'name'});
-                        $convertstr = $member{'name'};
-                        $convertcut = 30;
-                        CountChars();
-                        $member{'name'} = $convertstr;
-                        if ($cliped) { fatal_error('name_too_long') ;}
+            FromChars( $member{'name'} );
+            $convertstr = $member{'name'};
+            $convertcut = 30;
+            CountChars();
+            $member{'name'} = $convertstr;
+            if ($cliped) { fatal_error('name_too_long'); }
             if ( $member{'name'} =~
                 /[^ \w\x80-\xFF\[\]\(\)#\%\+,\-\|\.:=\?\@\^]/ )
             {
@@ -1844,17 +1841,17 @@ sub ModifyProfile2 {
                     "$profile_txt{'68'} $profile_txt{'241re'}" );
             }
 
-                        ToHTML($member{'name'});
-                        if ($user ne 'admin') {
-                                # Check to see if name is reserved
+            ToHTML( $member{'name'} );
+            if ( $user ne 'admin' ) {
+                # Check to see if name is reserved
                 fopen( FILE, "$vardir/reservecfg.txt" )
                   || fatal_error( 'cannot_open', "$vardir/reservecfg.txt", 1 );
-                                my @reservecfg = <FILE>;
-                                fclose(FILE);
-                                chomp(@reservecfg);
-                                my $matchword = $reservecfg[0] eq 'checked';
-                                my $matchcase = $reservecfg[1] eq 'checked';
-                                my $matchname = $reservecfg[3] eq 'checked';
+                my @reservecfg = <FILE>;
+                fclose(FILE);
+                chomp(@reservecfg);
+                my $matchword = $reservecfg[0] eq 'checked';
+                my $matchcase = $reservecfg[1] eq 'checked';
+                my $matchname = $reservecfg[3] eq 'checked';
                 my $namecheck =
                     $matchcase eq 'checked'
                   ? $member{'name'}
@@ -1862,13 +1859,13 @@ sub ModifyProfile2 {
 
                 fopen( FILE, "$vardir/reserve.txt" )
                   || fatal_error( 'cannot_open', "$vardir/reserve.txt", 1 );
-                                my @reserve = <FILE>;
-                                fclose(FILE);
-                                foreach my $reserved (@reserve) {
-                                        chomp $reserved;
-                                        my $reservecheck = $matchcase ? $reserved : lc $reserved;
-                                        if ($matchname) {
-                                                if ($matchword) {
+                my @reserve = <FILE>;
+                fclose(FILE);
+                foreach my $reserved (@reserve) {
+                    chomp $reserved;
+                    my $reservecheck = $matchcase ? $reserved : lc $reserved;
+                    if ($matchname) {
+                        if ($matchword) {
                             if ( $namecheck eq $reservecheck ) {
                                 fatal_error( 'id_reserved', "$reserved" );
                             }
@@ -1877,10 +1874,10 @@ sub ModifyProfile2 {
                             if ( $namecheck =~ $reservecheck ) {
                                 fatal_error( 'id_reserved', "$reserved" );
                             }
-                                                }
-                                        }
-                                }
                         }
+                    }
+                }
+            }
 
             if (
                 (
@@ -1894,61 +1891,61 @@ sub ModifyProfile2 {
                 fatal_error( 'name_taken', "($member{'name'})" );
             }
 
-                        # rewrite attachments.txt with new username
+            # rewrite attachments.txt with new username
             fopen( ATM, "+<$vardir/attachments.txt", 1 )
               || fatal_error( 'cannot_open', "$vardir/attachments.txt" );
-                        seek ATM, 0, 0;
-                        my @attachments = <ATM>;
-                        truncate ATM, 0;
-                        seek ATM, 0, 0;
-                        for my $i ( 0 .. ( @attachments - 1 ) ) {
+            seek ATM, 0, 0;
+            my @attachments = <ATM>;
+            truncate ATM, 0;
+            seek ATM, 0, 0;
+            for my $i ( 0 .. ( @attachments - 1 ) ) {
                 $attachments[$i] =~
 s/^(\d+\|\d+\|.*?)\|(.*?)\|/ ($2 eq ${$uid.$user}{'realname'} ? "$1|$member{'name'}|" : "$1|$2|") /e;
-                        }
-                        print {ATM} @attachments;
-                        fclose(ATM);
+            }
+            print {ATM} @attachments;
+            fclose(ATM);
 
-                        #Since we have not encountered a fatal error, time to rewrite our memberlist.
-                        ManageMemberinfo('update', $user, $member{'name'});
-                }
+   #Since we have not encountered a fatal error, time to rewrite our memberlist.
+            ManageMemberinfo( 'update', $user, $member{'name'} );
+        }
 
-                ToHTML($member{'gender'});
-                FromChars($member{'location'});
-                ToHTML($member{'location'});
-                ToChars($member{'location'});
-                ToHTML($member{'bday'});
-                FromChars($member{'sesquest'});
-                ToHTML($member{'sesquest'});
-                ToChars($member{'sesquest'});
+        ToHTML( $member{'gender'} );
+        FromChars( $member{'location'} );
+        ToHTML( $member{'location'} );
+        ToChars( $member{'location'} );
+        ToHTML( $member{'bday'} );
+        FromChars( $member{'sesquest'} );
+        ToHTML( $member{'sesquest'} );
+        ToChars( $member{'sesquest'} );
 
-                # Time to print the changes to the username.vars file
+        # Time to print the changes to the username.vars file
         if ( $member{'passwrd1'} ) {
             ${ $uid . $user }{'password'} =
               encode_password( $member{'passwrd1'} );
         }
-                ${$uid.$user}{'realname'} = $member{'name'};
-                ${$uid.$user}{'gender'} = $member{'gender'};
-                ${$uid.$user}{'location'} = $member{'location'};
-                ${$uid.$user}{'bday'} = $member{'bday'};
-        		${ $uid . $user }{'hideage'}  = $member{'hideage'};
-                ${$uid.$user}{'sesquest'} = $member{'sesquest'};
+        ${ $uid . $user }{'realname'} = $member{'name'};
+        ${ $uid . $user }{'gender'}   = $member{'gender'};
+        ${ $uid . $user }{'location'} = $member{'location'};
+        ${ $uid . $user }{'bday'}     = $member{'bday'};
+        ${ $uid . $user }{'hideage'}  = $member{'hideage'};
+        ${ $uid . $user }{'sesquest'} = $member{'sesquest'};
 
-                require "$sourcedir/Decoder.pl";
+        require "$sourcedir/Decoder.pl";
         ${ $uid . $user }{'sesanswer'} =
           scramble( $member{'sesanswer'}, $user );
-                ${$uid.$username}{'session'} = encode_password($user_ip);
+        ${ $uid . $username }{'session'} = encode_password($user_ip);
 
-                # EventCal Begin
-                if ($Update_EventCal == 1) {
-                        fopen(FILE, "$memberdir/memberlist.txt");
-                        my @birthmembers = <FILE>;
-                        fclose(FILE);
-                        fopen(FILE,">$vardir/eventcalbday.db");
-                        foreach my $user_name (@birthmembers) {
+        # EventCal Begin
+        if ( $Update_EventCal == 1 ) {
+            fopen( FILE, "$memberdir/memberlist.txt" );
+            my @birthmembers = <FILE>;
+            fclose(FILE);
+            fopen( FILE, ">$vardir/eventcalbday.db" );
+            foreach my $user_name (@birthmembers) {
                 my ( $user_xy, $dummy ) = split( /\t/, $user_name );
-                                LoadUser($user_xy);
-                                my $user_xy_bd = ${$uid.$user_xy}{'bday'};
-                                if ($user_xy_bd) {
+                LoadUser($user_xy);
+                my $user_xy_bd = ${ $uid . $user_xy }{'bday'};
+                if ($user_xy_bd) {
                     my ( $user_month, $user_day, $user_year ) = split /\//xsm,
                       $user_xy_bd;
                     if ( $user_month < 10 && length($user_month) == 1 ) {
@@ -1959,13 +1956,13 @@ s/^(\d+\|\d+\|.*?)\|(.*?)\|/ ($2 eq ${$uid.$user}{'realname'} ? "$1|$member{'nam
                     }
                     print {FILE}
                       qq~$user_year|$user_month|$user_day|$user_xy\n~;
-                                }
-                        }
-                        fclose(FILE);
                 }
-                # EventCal End
+            }
+            fclose(FILE);
+        }
+        # EventCal End
 
-                UserAccount($user, 'update');
+        UserAccount( $user, 'update' );
 
         if ( $member{'passwrd1'} && $username eq $user ) {
             UpdateCookie(
@@ -1976,7 +1973,7 @@ s/^(\d+\|\d+\|.*?)\|(.*?)\|/ ($2 eq ${$uid.$user}{'realname'} ? "$1|$member{'nam
             );
         }
 
-                my $scriptAction = $view ? 'myprofileContacts' : 'profileContacts';
+        my $scriptAction = $view ? 'myprofileContacts' : 'profileContacts';
         $yySetLocation =
 qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};sid=$INFO{'sid'}~;
 
@@ -1986,20 +1983,20 @@ qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};si
             fatal_error('cannot_kill_admin');
         }
 
-                # For security, remove username from mod position
-                KillModerator($member{'username'});
+        # For security, remove username from mod position
+        KillModerator( $member{'username'} );
 
-                $noteuser = $iamadmin ? $member{'username'} : $user;
+        $noteuser = $iamadmin ? $member{'username'} : $user;
 
-                unlink("$memberdir/$noteuser.dat");
-                unlink("$memberdir/$noteuser.vars");
-                unlink("$memberdir/$noteuser.ims");
-                unlink("$memberdir/$noteuser.msg");
-                unlink("$memberdir/$noteuser.log");
-                unlink("$memberdir/$noteuser.rlog");
-                unlink("$memberdir/$noteuser.outbox");
-                unlink("$memberdir/$noteuser.imstore");
-                unlink("$memberdir/$noteuser.imdraft");
+        unlink("$memberdir/$noteuser.dat");
+        unlink("$memberdir/$noteuser.vars");
+        unlink("$memberdir/$noteuser.ims");
+        unlink("$memberdir/$noteuser.msg");
+        unlink("$memberdir/$noteuser.log");
+        unlink("$memberdir/$noteuser.rlog");
+        unlink("$memberdir/$noteuser.outbox");
+        unlink("$memberdir/$noteuser.imstore");
+        unlink("$memberdir/$noteuser.imdraft");
 
         if (   ${ $uid . $user }{'userpic'}
             && ${ $uid . $user }{'userpic'} =~ /$facesurl\/UserAvatars\/(.+)/ )
@@ -2007,18 +2004,18 @@ qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};si
             unlink("$facesdir/UserAvatars/$1");
         }
 
-                MemberIndex('remove', $noteuser);
+        MemberIndex( 'remove', $noteuser );
 
-                # EventCal Begin
-                fopen(FILE, "$memberdir/memberlist.txt");
-                my @birthmembers = <FILE>;
-                fclose(FILE);
-                fopen(FILE,">$vardir/eventcalbday.db");
-                foreach my $user_name (@birthmembers) {
+        # EventCal Begin
+        fopen( FILE, "$memberdir/memberlist.txt" );
+        my @birthmembers = <FILE>;
+        fclose(FILE);
+        fopen( FILE, ">$vardir/eventcalbday.db" );
+        foreach my $user_name (@birthmembers) {
             my ( $user_xy, $dummy ) = split( /\t/, $user_name );
-                        LoadUser($user_xy);
-                        my $user_xy_bd = ${$uid.$user_xy}{'bday'};
-                        if ($user_xy_bd) {
+            LoadUser($user_xy);
+            my $user_xy_bd = ${ $uid . $user_xy }{'bday'};
+            if ($user_xy_bd) {
                 my ( $user_month, $user_day, $user_year ) = split /\//xsm,
                   $user_xy_bd;
                 if ( $user_month < 10 && length($user_month) == 1 ) {
@@ -2027,74 +2024,74 @@ qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};si
                 if ( $user_day < 10 && length($user_day) == 1 ) {
                     $user_day = "0$user_day";
                 }
-                                print {FILE} qq~$user_year|$user_month|$user_day|$user_xy\n~;
-                        }
-                }
-                fclose(FILE);
+                print {FILE} qq~$user_year|$user_month|$user_day|$user_xy\n~;
+            }
+        }
+        fclose(FILE);
 
-                # EventCal End
+        # EventCal End
 
-                if (!$iamadmin) {
-                        UpdateCookie('delete');
-                        $username = 'Guest';
-                        $iamguest = 1;
-                        $iamadmin = q{};
-                        $iamgmod = q{};
-                        $password = q{};
-                        $yyim = q{};
-                        $ENV{'HTTP_COOKIE'} = q{};
-                        $yyuname = q{};
-                }
-                $yySetLocation = $scripturl;
+        if ( !$iamadmin ) {
+            UpdateCookie('delete');
+            $username           = 'Guest';
+            $iamguest           = 1;
+            $iamadmin           = q{};
+            $iamgmod            = q{};
+            $password           = q{};
+            $yyim               = q{};
+            $ENV{'HTTP_COOKIE'} = q{};
+            $yyuname            = q{};
+        }
+        $yySetLocation = $scripturl;
 
     }
     else {
-                fatal_error('not_allowed');
-        }
-        redirectexit();
-        return;
+        fatal_error('not_allowed');
+    }
+    redirectexit();
+    return;
 }
 
 sub ModifyProfileContacts2 {
-        SidCheck($action);
-        PrepareProfile();
+    SidCheck($action);
+    PrepareProfile();
 
-        my (%member, $key, $value, $newpassemail, $tempname, $stealth);
-        while (($key, $value) = each %FORM) {
-                $value =~ s/\A\s+//xsm;
-                $value =~ s/\s+\Z//xsm;
-                $value =~ s/\r//gxsm;
-                if ($key ne 'awayreply') { $value =~ s/\n//gxsm ;}
-                $member{$key} = $value;
-        }
-        $member{'username'} = $user;
+    my ( %member, $key, $value, $newpassemail, $tempname, $stealth );
+    while ( ( $key, $value ) = each %FORM ) {
+        $value =~ s/\A\s+//xsm;
+        $value =~ s/\s+\Z//xsm;
+        $value =~ s/\r//gxsm;
+        if ( $key ne 'awayreply' ) { $value =~ s/\n//gxsm; }
+        $member{$key} = $value;
+    }
+    $member{'username'} = $user;
 
-        if ( $member{'moda'} ne $profile_txt{'88'}) { fatal_error('not_allowed') ;}
+    if ( $member{'moda'} ne $profile_txt{'88'} ) { fatal_error('not_allowed'); }
 
     if (   $emailnewpass
         && lc $member{'email'} ne lc ${ $uid . $user }{'email'}
         && !$iamadmin )
     {
-                srand();
-                $member{'passwrd1'} = int(rand(100));
-                $member{'passwrd1'} =~ tr/0123456789/ymifxupbck/;
-                $_ = int(rand(77));
-                $_ =~ tr/0123456789/q8dv7w4jm3/;
-                $member{'passwrd1'} .= $_;
-                $_ = int(rand(89));
-                $_ =~ tr/0123456789/y6uivpkcxw/;
-                $member{'passwrd1'} .= $_;
-                $_ = int(rand(188));
-                $_ =~ tr/0123456789/poiuytrewq/;
-                $member{'passwrd1'} .= $_;
-                $_ = int(rand(65));
-                $_ =~ tr/0123456789/lkjhgfdaut/;
-                $member{'passwrd1'} .= $_;
-                ${$uid.$user}{'password'} = encode_password($member{'passwrd1'});
-                $newpassemail = 1;
-        }
+        srand();
+        $member{'passwrd1'} = int( rand(100) );
+        $member{'passwrd1'} =~ tr/0123456789/ymifxupbck/;
+        $_ = int( rand(77) );
+        $_ =~ tr/0123456789/q8dv7w4jm3/;
+        $member{'passwrd1'} .= $_;
+        $_ = int( rand(89) );
+        $_ =~ tr/0123456789/y6uivpkcxw/;
+        $member{'passwrd1'} .= $_;
+        $_ = int( rand(188) );
+        $_ =~ tr/0123456789/poiuytrewq/;
+        $member{'passwrd1'} .= $_;
+        $_ = int( rand(65) );
+        $_ =~ tr/0123456789/lkjhgfdaut/;
+        $member{'passwrd1'} .= $_;
+        ${ $uid . $user }{'password'} = encode_password( $member{'passwrd1'} );
+        $newpassemail = 1;
+    }
 
-        if ($member{'email'} eq q{}) { fatal_error('no_email') ;}
+    if ( $member{'email'} eq q{} ) { fatal_error('no_email'); }
     if ( $member{'email'} !~ /^[\w\-\.\+]+\@[\w\-\.\+]+\.\w{2,4}$/ ) {
         fatal_error( 'invalid_character',
             "$profile_txt{'69'} $profile_txt{'241e'}" );
@@ -2107,156 +2104,154 @@ sub ModifyProfileContacts2 {
     {
         fatal_error('invalid_email');
     }
-        LoadCensorList();
+    LoadCensorList();
     if ( Censor( $member{'email'} ) ne $member{'email'} ) {
         fatal_error( 'censor2', CheckCensor("$member{'email'}") );
     }
 
-        $member{'icq'} =~ s/[^0-9]//gxsm;
-        $member{'aim'} =~ s/ /\+/gsm;
-        $member{'yim'} =~ s/ /\+/gsm;
-        $member{'msn'} =~ s/ /\+/gsm;
+    $member{'icq'} =~ s/[^0-9]//gxsm;
+    $member{'aim'} =~ s/ /\+/gsm;
+    $member{'yim'} =~ s/ /\+/gsm;
 
-        ToHTML($member{'email'});
-        ToHTML($member{'icq'});
-        ToHTML($member{'aim'});
-        ToHTML($member{'yim'});
-        ToHTML($member{'msn'});
-        ToHTML($member{'gtalk'});
-        ToHTML($member{'skype'});
-        ToHTML($member{'myspace'});
-        ToHTML($member{'facebook'});
-        ToHTML($member{'weburl'});
-        FromChars($member{'webtitle'});
-        ToHTML($member{'webtitle'});
-        ToChars($member{'webtitle'});
-        ToHTML($member{'offlinestatus'});
-        FromChars($member{'awaysubj'});
-        ToHTML($member{'awaysubj'});
-        ToChars($member{'awaysubj'});
+    ToHTML( $member{'email'} );
+    ToHTML( $member{'icq'} );
+    ToHTML( $member{'aim'} );
+    ToHTML( $member{'yim'} );
+    ToHTML( $member{'gtalk'} );
+    ToHTML( $member{'skype'} );
+    ToHTML( $member{'myspace'} );
+    ToHTML( $member{'facebook'} );
+    ToHTML( $member{'weburl'} );
+    FromChars( $member{'webtitle'} );
+    ToHTML( $member{'webtitle'} );
+    ToChars( $member{'webtitle'} );
+    ToHTML( $member{'offlinestatus'} );
+    FromChars( $member{'awaysubj'} );
+    ToHTML( $member{'awaysubj'} );
+    ToChars( $member{'awaysubj'} );
 
-        FromChars($member{'awayreply'});
-        ToHTML($member{'awayreply'});
-        $member{'awayreply'} =~ s/\n/<br \/>/gsm;
-        $convertstr = $member{'awayreply'};
-        $convertcut = $MaxAwayLen;
-        CountChars();
-        $member{'awayreply'} = $convertstr;
-        ToChars($member{'awayreply'});
+    FromChars( $member{'awayreply'} );
+    ToHTML( $member{'awayreply'} );
+    $member{'awayreply'} =~ s/\n/<br \/>/gsm;
+    $convertstr = $member{'awayreply'};
+    $convertcut = $MaxAwayLen;
+    CountChars();
+    $member{'awayreply'} = $convertstr;
+    ToChars( $member{'awayreply'} );
 
-        if ($extendedprofiles) { # run this before you start to save something!
-                require "$sourcedir/ExtendedProfiles.pl";
-                my $error = ext_validate_submition($username,$user);
+    if ($extendedprofiles) {    # run this before you start to save something!
+        require "$sourcedir/ExtendedProfiles.pl";
+        my $error = ext_validate_submition( $username, $user );
         if ( $error ne q{} ) {
             fatal_error( 'extended_profiles_validation', $error );
         }
-                ext_saveprofile($user);
-        }
+        ext_saveprofile($user);
+    }
 
-        # Check to see if email is already taken
-        if (lc ${$uid.$user}{'email'} ne lc $member{'email'}) {
-                $testemail = lc $member{'email'};
-                my $is_existing = MemberIndex('check_exist', "$testemail");
+    # Check to see if email is already taken
+    if ( lc ${ $uid . $user }{'email'} ne lc $member{'email'} ) {
+        $testemail = lc $member{'email'};
+        my $is_existing = MemberIndex( 'check_exist', "$testemail" );
         if ( lc $is_existing eq $testemail ) {
             fatal_error( 'email_taken', "($member{'email'})" );
         }
 
-                # Since we haven't encountered a fatal error, time to rewrite our memberlist a little.
-                ManageMemberinfo('update', $user, q{}, $member{'email'});
-        }
-        ## if enabled but not set, default offline status to 'offline'
+# Since we haven't encountered a fatal error, time to rewrite our memberlist a little.
+        ManageMemberinfo( 'update', $user, q{}, $member{'email'} );
+    }
+    ## if enabled but not set, default offline status to 'offline'
     if ( $enable_MCaway && $member{'offlinestatus'} eq q{} ) {
         $member{'offlinestatus'} = 'offline';
     }
 
-        # if user is switching 'away' to 'off/on', clean out the away-sent list
+    # if user is switching 'away' to 'off/on', clean out the away-sent list
     if ( $FORM{'offlinestatus'} eq 'offline' ) {
         ${ $uid . $user }{'awayreplysent'} = q{};
     }
 
-        # Time to print the changes to the username.vars file
-        ${$uid.$user}{'email'} = $member{'email'};
-        ${$uid.$user}{'hidemail'} = $member{'hideemail'} ? 1 : 0;
-        ${$uid.$user}{'icq'} = $member{'icq'};
-        ${$uid.$user}{'aim'} = $member{'aim'};
-        ${$uid.$user}{'yim'} = $member{'yim'};
-        ${$uid.$user}{'msn'} = $member{'msn'};
-        ${$uid.$user}{'gtalk'} = $member{'gtalk'};
-        ${$uid.$user}{'skype'} = $member{'skype'};
-        ${$uid.$user}{'myspace'} = $member{'myspace'};
-        ${$uid.$user}{'facebook'} = $member{'facebook'};
-        ${$uid.$user}{'webtitle'} = $member{'webtitle'};
+    # Time to print the changes to the username.vars file
+    ${ $uid . $user }{'email'}    = $member{'email'};
+    ${ $uid . $user }{'hidemail'} = $member{'hideemail'} ? 1 : 0;
+    ${ $uid . $user }{'icq'}      = $member{'icq'};
+    ${ $uid . $user }{'aim'}      = $member{'aim'};
+    ${ $uid . $user }{'yim'}      = $member{'yim'};
+    ${ $uid . $user }{'msn'}      = q{};
+    ${ $uid . $user }{'gtalk'}    = $member{'gtalk'};
+    ${ $uid . $user }{'skype'}    = $member{'skype'};
+    ${ $uid . $user }{'myspace'}  = $member{'myspace'};
+    ${ $uid . $user }{'facebook'} = $member{'facebook'};
+    ${ $uid . $user }{'webtitle'} = $member{'webtitle'};
     ${ $uid . $user }{'weburl'}   = (
         ( $member{'weburl'} && $member{'weburl'} !~ m{\Ahttps?://}sm )
         ? 'http://'
         : q{}
     ) . $member{'weburl'};
-        ${$uid.$user}{'offlinestatus'} = $member{'offlinestatus'};
-        ${$uid.$user}{'awaysubj'} = $member{'awaysubj'};
-        ${$uid.$user}{'awayreply'} = $member{'awayreply'};
+    ${ $uid . $user }{'offlinestatus'} = $member{'offlinestatus'};
+    ${ $uid . $user }{'awaysubj'}      = $member{'awaysubj'};
+    ${ $uid . $user }{'awayreply'}     = $member{'awayreply'};
     ${ $uid . $user }{'stealth'} =
       (      ${ $uid . $user }{'position'} eq 'Administrator'
           || ${ $uid . $user }{'position'} eq 'Global Moderator' )
       ? $member{'stealth'}
       : q{};
 
-        UserAccount($user, 'update');
+    UserAccount( $user, 'update' );
 
-        if ($emailnewpass && $newpassemail == 1) {
-                RemoveUserOnline($user); # Remove user from online log
+    if ( $emailnewpass && $newpassemail == 1 ) {
+        RemoveUserOnline($user);    # Remove user from online log
 
-                if ($username eq $user) {
-                        UpdateCookie('delete');
-                        $username = 'Guest';
-                        $iamguest = 1;
-                        $iamadmin = q{};
-                        $iamgmod = q{};
-                        $password = q{};
-                        $yyim = q{};
-                        $ENV{'HTTP_COOKIE'} = q{};
-                        $yyuname = q{};
-                }
-                FormatUserName($member{'username'});
-                require "$sourcedir/Mailer.pl";
-                my $scriptAction = $view ? 'myprofile' : 'profile';
+        if ( $username eq $user ) {
+            UpdateCookie('delete');
+            $username           = 'Guest';
+            $iamguest           = 1;
+            $iamadmin           = q{};
+            $iamgmod            = q{};
+            $password           = q{};
+            $yyim               = q{};
+            $ENV{'HTTP_COOKIE'} = q{};
+            $yyuname            = q{};
+        }
+        FormatUserName( $member{'username'} );
+        require "$sourcedir/Mailer.pl";
+        my $scriptAction = $view ? 'myprofile' : 'profile';
         sendmail(
             $member{'email'},
             qq~$profile_txt{'700'} $mbname~,
 "$profile_txt{'733'} $member{'passwrd1'} $profile_txt{'734'} $member{'username'}.\n\n$profile_txt{'701'} $scripturl?action=$scriptAction;username=$useraccount{$member{'username'}}\n\n$profile_txt{'130'}"
         );
-                require "$sourcedir/LogInOut.pl";
-                $sharedLogin_title = "$profile_txt{'34'}: $user";
-                $sharedLogin_text = $profile_txt{'638'};
-                $shared_login = sharedLogin();
-                $yymain .= $shared_login;
-                $yytitle = $profile_txt{'245'};
-                template();
-        }
+        require "$sourcedir/LogInOut.pl";
+        $sharedLogin_title = "$profile_txt{'34'}: $user";
+        $sharedLogin_text  = $profile_txt{'638'};
+        $shared_login      = sharedLogin();
+        $yymain .= $shared_login;
+        $yytitle = $profile_txt{'245'};
+        template();
+    }
 
-        my $scriptAction = $view ? 'myprofileOptions' : 'profileOptions';
+    my $scriptAction = $view ? 'myprofileOptions' : 'profileOptions';
     $yySetLocation =
 qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};sid=$INFO{'sid'}~;
-        redirectexit();
-        return;
+    redirectexit();
+    return;
 }
 
 sub ModifyProfileOptions2 {
-        SidCheck($action);
-        PrepareProfile();
+    SidCheck($action);
+    PrepareProfile();
 
-        my (%member, $key, $value, $tempname);
-        while (($key, $value) = each(%FORM)) {
-                $value =~ s/\A\s+//xsm;
-                $value =~ s/\s+\Z//xsm;
-                $value =~ s/\r//gxsm;
-                if ($key ne 'signature') { $value =~ s/\n//gxsm ;}
-                $member{$key} = $value;
-        }
-        $member{'username'} = $user;
+    my ( %member, $key, $value, $tempname );
+    while ( ( $key, $value ) = each(%FORM) ) {
+        $value =~ s/\A\s+//xsm;
+        $value =~ s/\s+\Z//xsm;
+        $value =~ s/\r//gxsm;
+        if ( $key ne 'signature' ) { $value =~ s/\n//gxsm; }
+        $member{$key} = $value;
+    }
+    $member{'username'} = $user;
 
-        if ($member{'moda'} ne $profile_txt{'88'}) { fatal_error('not_allowed') ;}
+    if ( $member{'moda'} ne $profile_txt{'88'} ) { fatal_error('not_allowed'); }
 
-        if (!$minlinksig){ $minlinksig = 0 ;}
+    if ( !$minlinksig ) { $minlinksig = 0; }
     if (   ${ $uid . $user }{'postcount'} < $minlinksig
         && !$iamadmin
         && !$iamgmod )
@@ -2270,49 +2265,49 @@ sub ModifyProfileOptions2 {
             || $member{'signature'} =~ m~\[img~
             || $member{'signature'} =~ m~\[ftp~ )
         {
-                        fatal_error('no_siglinks_allowed');
-                }
+            fatal_error('no_siglinks_allowed');
         }
-        FromChars($member{'usertext'});
-        $convertstr = $member{'usertext'};
-        $convertcut = 51;
-        CountChars();
-        $member{'usertext'} = $convertstr;
-        ToHTML($member{'usertext'});
-        ToChars($member{'usertext'});
+    }
+    FromChars( $member{'usertext'} );
+    $convertstr = $member{'usertext'};
+    $convertcut = 51;
+    CountChars();
+    $member{'usertext'} = $convertstr;
+    ToHTML( $member{'usertext'} );
+    ToChars( $member{'usertext'} );
 
-        if ($allowpics) {
+    if ($allowpics) {
         opendir DIR, $facesdir
           || fatal_error( 'cannot_open_dir',
             "($facesdir)!<br \/>$profile_txt{'681'}", 1 );
-                closedir DIR;
-        }
+        closedir DIR;
+    }
 
-        if ($allowpics && $upload_useravatar && $upload_avatargroup) {
-                $upload_useravatar = 0;
-                foreach my $av_gr (split /, /sm, $upload_avatargroup) {
+    if ( $allowpics && $upload_useravatar && $upload_avatargroup ) {
+        $upload_useravatar = 0;
+        foreach my $av_gr ( split /, /sm, $upload_avatargroup ) {
             if ( $av_gr eq ${ $uid . $user }{'position'} ) {
                 $upload_useravatar = 1;
                 last;
             }
-                        foreach (split /,/xsm, ${$uid.$user}{'addgroups'}) {
-                                if ($av_gr eq $_) { $upload_useravatar = 1; last; }
-                        }
-                }
-        }
-
-        if ($CGI_query) { $file = $CGI_query->upload('file_avatar') ;}
-        if ($allowpics && $upload_useravatar && $file) {
-            if ($file !~ /\.(gif|png|jpe?g)$/i) {
-                LoadLanguage('FA');
-                fatal_error( 'file_not_uploaded',
-                    "$file $fatxt{'20'} gif png jpeg jpg" );
+            foreach ( split /,/xsm, ${ $uid . $user }{'addgroups'} ) {
+                if ( $av_gr eq $_ ) { $upload_useravatar = 1; last; }
             }
-                my $ext = $1;
-                my $fixfile = ${$uid.$user}{'realname'};
+        }
+    }
+
+    if ($CGI_query) { $file = $CGI_query->upload('file_avatar'); }
+    if ( $allowpics && $upload_useravatar && $file ) {
+        if ( $file !~ /\.(gif|png|jpe?g)$/i ) {
+            LoadLanguage('FA');
+            fatal_error( 'file_not_uploaded',
+                "$file $fatxt{'20'} gif png jpeg jpg" );
+        }
+        my $ext     = $1;
+        my $fixfile = ${ $uid . $user }{'realname'};
         if ( $fixfile =~ /[^0-9A-Za-z\+\-\.:_]/ )
         {    # replace all inappropriate characters
-                        # Transliteration
+                # Transliteration
             my @ISO_8859_1 =
               qw(A B V G D E JO ZH Z I J K L M N O P R S T U F H C CH SH SHH _ Y _ JE JU JA a b v g d e jo zh z i j k l m n o p r s t u f h c ch sh shh _ y _ je ju ja);
             my $x = 0;
@@ -2320,44 +2315,44 @@ sub ModifyProfileOptions2 {
                 qw(À Á Â Ã Ä Å ¨ Æ Ç È É Ê Ë Ì Í Î Ï Ð Ñ Ò Ó Ô Õ Ö × Ø Ù Ú Û Ü Ý Þ ß à á â ã ä å ¸ æ ç è é ê ë ì í î ï ð ñ ò ó ô õ ö ÷ ø ù ú û ü ý þ ÿ)
               )
             {
-                                 $fixfile =~ s/$_/$ISO_8859_1[$x]/ig;
-                                 $x++;
-                        }
-                        # END Transliteration. Thanks to "Velocity" for this contribution.
-                        $fixfile =~ s/[^0-9A-Za-z\+\-\.:_]/_/g;
-                }
-                $fixfile .= ".$ext";
+                $fixfile =~ s/$_/$ISO_8859_1[$x]/ig;
+                $x++;
+            }
+            # END Transliteration. Thanks to "Velocity" for this contribution.
+            $fixfile =~ s/[^0-9A-Za-z\+\-\.:_]/_/g;
+        }
+        $fixfile .= ".$ext";
 
-                require "$sourcedir/SpamCheck.pl";
-                my $spamdetected = spamcheck("$fixfile");
-                if (!$iamadmin && !$iamgmod && !$iammod){
-                        if ($spamdetected == 1) {
-                                ${$uid.$username}{'spamcount'}++;
-                                ${$uid.$username}{'spamtime'} = $date;
-                                UserAccount($username,'update');
+        require "$sourcedir/SpamCheck.pl";
+        my $spamdetected = spamcheck("$fixfile");
+        if ( !$iamadmin && !$iamgmod && !$iammod ) {
+            if ( $spamdetected == 1 ) {
+                ${ $uid . $username }{'spamcount'}++;
+                ${ $uid . $username }{'spamtime'} = $date;
+                UserAccount( $username, 'update' );
                 $spam_hits_left_count =
                   $post_speed_count - ${ $uid . $username }{'spamcount'};
-                                fatal_error('tsc_alert');
-                        }
-                }
+                fatal_error('tsc_alert');
+            }
+        }
 
-                my ($size,$buffer,$filesize,$file_buffer);
+        my ( $size, $buffer, $filesize, $file_buffer );
         while ( $size = read( $file, $buffer, 512 ) ) {
             $filesize += $size;
             $file_buffer .= $buffer;
         }
-                if ($avatar_limit && $filesize > (1024 * $avatar_limit)) {
-                        LoadLanguage('FA');
+        if ( $avatar_limit && $filesize > ( 1024 * $avatar_limit ) ) {
+            LoadLanguage('FA');
             fatal_error( 'file_not_uploaded',
                     "$fatxt{'21'} $file ("
                   . int( $filesize / 1024 )
                   . " KB) $fatxt{'21b'} "
                   . $avatar_limit );
-                }
-                if ($avatar_dirlimit) {
-                        my $dirsize = dirsize("$facesdir/UserAvatars");
-                        if ($filesize > ((1024 * $avatar_dirlimit) - $dirsize)) {
-                                LoadLanguage('FA');
+        }
+        if ($avatar_dirlimit) {
+            my $dirsize = dirsize("$facesdir/UserAvatars");
+            if ( $filesize > ( ( 1024 * $avatar_dirlimit ) - $dirsize ) ) {
+                LoadLanguage('FA');
                 fatal_error(
                     'file_not_uploaded',
                     "$fatxt{'22'} $file ("
@@ -2368,55 +2363,55 @@ sub ModifyProfileOptions2 {
                       )
                       . " KB) $fatxt{'22b'}"
                 );
-                        }
-                }
+            }
+        }
 
         if ( ${ $uid . $user }{'userpic'} =~ /$facesurl\/UserAvatars\/(.+)/ ) {
             unlink("$facesdir/UserAvatars/$1");
         }
-                $fixfile = check_existence("$facesdir/UserAvatars", $fixfile);
+        $fixfile = check_existence( "$facesdir/UserAvatars", $fixfile );
 
-                # create a new file on the server using the formatted ( new instance ) filename
-                if (fopen(NEWFILE, ">$facesdir/UserAvatars/$fixfile")) {
+ # create a new file on the server using the formatted ( new instance ) filename
+        if ( fopen( NEWFILE, ">$facesdir/UserAvatars/$fixfile" ) ) {
             binmode NEWFILE;
  # needed for operating systems (OS) Windows, ignored by Linux
-                        print {NEWFILE} $file_buffer; # write new file on HD
-                        fclose(NEWFILE);
+            print {NEWFILE} $file_buffer;    # write new file on HD
+            fclose(NEWFILE);
 
         }
         else
         { # return the server's error message if the new file could not be created
-                        fatal_error('file_not_open',"$facesdir/UserAvatars");
-                }
+            fatal_error( 'file_not_open', "$facesdir/UserAvatars" );
+        }
 
-                # check if file has actually been uploaded, by checking the file has a size
-                unless (-s "$facesdir/UserAvatars/$fixfile") {
-                        fatal_error('file_not_uploaded',$fixfile);
-                }
+     # check if file has actually been uploaded, by checking the file has a size
+        unless ( -s "$facesdir/UserAvatars/$fixfile" ) {
+            fatal_error( 'file_not_uploaded', $fixfile );
+        }
 
-                my $illegal;
-                if ($fixfile =~ /gif$/i) {
-                        my $header;
-                        fopen(ATTFILE, "$facesdir/UserAvatars/$fixfile");
-                        read(ATTFILE, $header, 10);
+        my $illegal;
+        if ( $fixfile =~ /gif$/i ) {
+            my $header;
+            fopen( ATTFILE, "$facesdir/UserAvatars/$fixfile" );
+            read( ATTFILE, $header, 10 );
             my ( $giftest, undef, undef, undef, undef, undef ) =
               unpack( 'a3a3C4', $header );
-                        fclose(ATTFILE);
-                        if ($giftest ne 'GIF') { $illegal = $giftest; }
-                }
-                fopen(ATTFILE, "$facesdir/UserAvatars/$fixfile");
-                while ( read(ATTFILE, $buffer, 1024) ) {
-                        if ($buffer =~ /<(html|script|body)/ig) { $illegal = $1; last; }
-                }
-                fclose(ATTFILE);
-                if ($illegal) { # delete the file as it contains illegal code
-                        unlink("$facesdir/UserAvatars/$fixfile");
-                        ToHTML($illegal);
+            fclose(ATTFILE);
+            if ( $giftest ne 'GIF' ) { $illegal = $giftest; }
+        }
+        fopen( ATTFILE, "$facesdir/UserAvatars/$fixfile" );
+        while ( read( ATTFILE, $buffer, 1024 ) ) {
+            if ( $buffer =~ /<(html|script|body)/ig ) { $illegal = $1; last; }
+        }
+        fclose(ATTFILE);
+        if ($illegal) {    # delete the file as it contains illegal code
+            unlink("$facesdir/UserAvatars/$fixfile");
+            ToHTML($illegal);
             fatal_error( 'file_not_uploaded',
                 "$fixfile <= illegal code ($illegal) inside image file!" );
-                }
+        }
 
-                $member{'userpic'} = "$facesurl/UserAvatars/$fixfile";
+        $member{'userpic'} = "$facesurl/UserAvatars/$fixfile";
 
     }
     elsif (
@@ -2426,8 +2421,8 @@ sub ModifyProfileOptions2 {
             || $member{'userpicpersonal'} =~ /\.png\Z/i )
       )
     {
-                $member{'userpic'} = $member{'userpicpersonal'};
-        }
+        $member{'userpic'} = $member{'userpicpersonal'};
+    }
     if ( $member{'userpic'} eq q{} || !$allowpics ) {
         $member{'userpic'} = 'blank.gif';
     }
@@ -2454,14 +2449,14 @@ sub ModifyProfileOptions2 {
         $member{'userlanguage'} = $language;
     }
 
-        if ($extendedprofiles) { # run this before you start to save something!
-                require "$sourcedir/ExtendedProfiles.pl";
-                my $error = &ext_validate_submition($username,$user);
+    if ($extendedprofiles) {    # run this before you start to save something!
+        require "$sourcedir/ExtendedProfiles.pl";
+        my $error = &ext_validate_submition( $username, $user );
         if ( $error ne q{} ) {
             fatal_error( 'extended_profiles_validation', $error );
         }
-                ext_saveprofile($user);
-        }
+        ext_saveprofile($user);
+    }
 
     if (   $member{'usertimesign'} !~ /^-?$/
         || $member{'usertimehour'} !~ /^\d+$/
@@ -2472,61 +2467,61 @@ sub ModifyProfileOptions2 {
         );
     }
 
-        # update notifications if users language is changed
-        if (${$uid.$user}{'language'} ne "$member{'userlanguage'}") {
-                require "$sourcedir/Notify.pl";
-                updateLanguage($user, $member{'userlanguage'});
-        }
+    # update notifications if users language is changed
+    if ( ${ $uid . $user }{'language'} ne "$member{'userlanguage'}" ) {
+        require "$sourcedir/Notify.pl";
+        updateLanguage( $user, $member{'userlanguage'} );
+    }
 
-        if ($addmemgroup_enabled > 1) {
-                my %groups;
-                map { $groups{$_} = 2; } split /,/xsm, ${$uid.$user}{'addgroups'};
-                map { $groups{$_} = 1; } split /, /sm, $member{'joinmemgroup'};
-                my @nopostmember;
-                foreach (keys %NoPost) {
-                        next if ${$uid.$user}{'position'} eq $_;
+    if ( $addmemgroup_enabled > 1 ) {
+        my %groups;
+        map { $groups{$_} = 2; } split /,/xsm, ${ $uid . $user }{'addgroups'};
+        map { $groups{$_} = 1; } split /, /sm, $member{'joinmemgroup'};
+        my @nopostmember;
+        foreach ( keys %NoPost ) {
+            next if ${ $uid . $user }{'position'} eq $_;
             if ( $groups{$_} == 1 && ( split /\|/, $NoPost{$_} )[10] ) {
                 push( @nopostmember, $_ );
             }
             elsif ( $groups{$_} == 2 && !( split /\|/, $NoPost{$_} )[10] ) {
                 push( @nopostmember, $_ );
             }
-                }
-                $member{'joinmemgroup'} = join(q{,}, @nopostmember);
+        }
+        $member{'joinmemgroup'} = join( q{,}, @nopostmember );
         if ( $member{'joinmemgroup'} eq q{} ) {
             $member{'joinmemgroup'} = '###blank###';
         }
-                if ($member{'joinmemgroup'} ne ${$uid.$user}{'addgroups'}) {
+        if ( $member{'joinmemgroup'} ne ${ $uid . $user }{'addgroups'} ) {
             ManageMemberinfo( 'update', $user, q{}, q{}, q{}, q{},
                 $member{'joinmemgroup'} );
         }
         if ( $member{'joinmemgroup'} eq '###blank###' ) {
             $member{'joinmemgroup'} = q{};
-                }
-                ${$uid.$user}{'addgroups'} = $member{'joinmemgroup'};
         }
+        ${ $uid . $user }{'addgroups'} = $member{'joinmemgroup'};
+    }
 
-        FromChars($member{'signature'});
-        ToHTML($member{'signature'});
-        $member{'signature'} =~ s/\n/<br \/>/gsm;
-        $convertstr = $member{'signature'};
-        $convertcut = $MaxSigLen;
-        CountChars();
-        $member{'signature'} = $convertstr;
-        ToChars($member{'signature'});
+    FromChars( $member{'signature'} );
+    ToHTML( $member{'signature'} );
+    $member{'signature'} =~ s/\n/<br \/>/gsm;
+    $convertstr = $member{'signature'};
+    $convertcut = $MaxSigLen;
+    CountChars();
+    $member{'signature'} = $convertstr;
+    ToChars( $member{'signature'} );
 
-        ToHTML($member{'userpic'});
-        ToHTML($member{'usertemplate'});
-        ToHTML($member{'userlanguage'});
-        ToHTML($member{'timeformat'});
+    ToHTML( $member{'userpic'} );
+    ToHTML( $member{'usertemplate'} );
+    ToHTML( $member{'userlanguage'} );
+    ToHTML( $member{'timeformat'} );
 
-        # Time to print the changes to the username.vars file
-        ${$uid.$user}{'usertext'} = $member{'usertext'};
-        ${$uid.$user}{'userpic'} = $member{'userpic'};
-        ${$uid.$user}{'signature'} = $member{'signature'};
+    # Time to print the changes to the username.vars file
+    ${ $uid . $user }{'usertext'}  = $member{'usertext'};
+    ${ $uid . $user }{'userpic'}   = $member{'userpic'};
+    ${ $uid . $user }{'signature'} = $member{'signature'};
     ${ $uid . $user }{'timeoffset'} =
       "$member{'usertimesign'}$member{'usertimehour'}.$member{'usertimemin'}";
-        ${$uid.$user}{'onlinealert'} = $member{'onlinealert'} ? 1 : 0;
+    ${ $uid . $user }{'onlinealert'} = $member{'onlinealert'} ? 1 : 0;
     ${ $uid . $user }{'notify_me'} =
       $member{'notify_N'}
       ? (
@@ -2541,18 +2536,18 @@ sub ModifyProfileOptions2 {
               || ${ $uid . $user }{'notify_me'} == 3
         ) ? 2 : 0
       );
-        ${$uid.$user}{'reversetopic'} = $member{'reversetopic'} ? 1 : 0;
-        ${$uid.$user}{'dsttimeoffset'} = $member{'dsttimeoffset'} ? 1 : 0;
-        ${$uid.$user}{'dynamic_clock'} = $member{'dynamic_clock'} ? 1 : 0;
-        ${$uid.$user}{'timeselect'} = int($member{'usertimeselect'});
-        ${$uid.$user}{'template'} = $member{'usertemplate'};
-        ${$uid.$user}{'language'} = $member{'userlanguage'};
-        ${$uid.$user}{'timeformat'} = $member{'timeformat'};
-        ${$uid.$user}{'numberformat'} = int($member{'usernumberformat'});
+    ${ $uid . $user }{'reversetopic'}  = $member{'reversetopic'}  ? 1 : 0;
+    ${ $uid . $user }{'dsttimeoffset'} = $member{'dsttimeoffset'} ? 1 : 0;
+    ${ $uid . $user }{'dynamic_clock'} = $member{'dynamic_clock'} ? 1 : 0;
+    ${ $uid . $user }{'timeselect'}   = int( $member{'usertimeselect'} );
+    ${ $uid . $user }{'template'}     = $member{'usertemplate'};
+    ${ $uid . $user }{'language'}     = $member{'userlanguage'};
+    ${ $uid . $user }{'timeformat'}   = $member{'timeformat'};
+    ${ $uid . $user }{'numberformat'} = int( $member{'usernumberformat'} );
 
-        UserAccount($user, 'update');
+    UserAccount( $user, 'update' );
 
-        my $scriptAction;
+    my $scriptAction;
     if (
         $iamadmin
         || (   $iamgmod
@@ -2560,58 +2555,58 @@ sub ModifyProfileOptions2 {
             && $gmod_access2{'profileAdmin'} eq 'on' )
       )
     {
-                $scriptAction = q~profileAdmin~;
+        $scriptAction = q~profileAdmin~;
     }
     else {
-                $scriptAction = q~viewprofile~;
-        }
+        $scriptAction = q~viewprofile~;
+    }
     if (   $PM_level == 1
         || ( $PM_level == 2 && ( $iamadmin || $iamgmod || $iammod ) )
         || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
     {
-                $scriptAction = q~profileIM~;
-        }
-        if ($buddyListEnabled) {
-                $scriptAction = q~profileBuddy~;
-        }
-        if ($view) { $scriptAction = qq~my$scriptAction~; }
+        $scriptAction = q~profileIM~;
+    }
+    if ($buddyListEnabled) {
+        $scriptAction = q~profileBuddy~;
+    }
+    if ($view) { $scriptAction = qq~my$scriptAction~; }
     $yySetLocation =
 qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};sid=$INFO{'sid'}~;
-        redirectexit();
-        return;
+    redirectexit();
+    return;
 }
 
 sub ModifyProfileBuddy2 {
-        SidCheck($action);
-        PrepareProfile();
+    SidCheck($action);
+    PrepareProfile();
 
-        my (%member, $key, $value, $tempname);
-        while (($key, $value) = each %FORM ) {
-                $value =~ s/\A\s+//xsm;
-                $value =~ s/\s+\Z//xsm;
-                $value =~ s/[\n\r]//gxsm;
-                $member{$key} = $value;
+    my ( %member, $key, $value, $tempname );
+    while ( ( $key, $value ) = each %FORM ) {
+        $value =~ s/\A\s+//xsm;
+        $value =~ s/\s+\Z//xsm;
+        $value =~ s/[\n\r]//gxsm;
+        $member{$key} = $value;
+    }
+    $member{'username'} = $user;
+
+    if ( $member{'moda'} ne $profile_txt{'88'} ) { fatal_error('not_allowed'); }
+
+    if ( $member{'buddylist'} ) {
+        my @buddies = split /\,/xsm, $member{'buddylist'};
+        chomp(@buddies);
+        $member{'buddylist'} = q{};
+        foreach my $cloakedBuddy (@buddies) {
+            $cloakedBuddy =~ s/^ //sm;
+            $cloakedBuddy = decloak($cloakedBuddy);
+            ToHTML($cloakedBuddy);
+            $member{'buddylist'} = qq~$member{'buddylist'}\|$cloakedBuddy~;
         }
-        $member{'username'} = $user;
+        $member{'buddylist'} =~ s/^\|//sm;
+    }
+    ${ $uid . $user }{'buddylist'} = $member{'buddylist'};
+    UserAccount( $user, 'update' );
 
-        if ($member{'moda'} ne $profile_txt{'88'}) { fatal_error('not_allowed') ;}
-
-        if ($member{'buddylist'}) {
-                my @buddies = split /\,/xsm, $member{'buddylist'};
-                chomp(@buddies);
-                $member{'buddylist'} = q{};
-                foreach my $cloakedBuddy (@buddies) {
-                        $cloakedBuddy =~ s/^ //sm;
-                        $cloakedBuddy = decloak($cloakedBuddy);
-                        ToHTML($cloakedBuddy);
-                        $member{'buddylist'} = qq~$member{'buddylist'}\|$cloakedBuddy~;
-                }
-                $member{'buddylist'} =~ s/^\|//sm;
-        }
-        ${$uid.$user}{'buddylist'} = $member{'buddylist'};
-        UserAccount($user, 'update');
-
-        my $scriptAction;
+    my $scriptAction;
     if (
         $iamadmin
         || (   $iamgmod
@@ -2619,57 +2614,57 @@ sub ModifyProfileBuddy2 {
             && $gmod_access2{'profileAdmin'} eq 'on' )
       )
     {
-                $scriptAction = q~profileAdmin~;
+        $scriptAction = q~profileAdmin~;
     }
     else {
-                $scriptAction = q~viewprofile~;
-        }
+        $scriptAction = q~viewprofile~;
+    }
     if (   $PM_level == 1
         || ( $PM_level == 2 && ( $iamadmin || $iamgmod || $iammod ) )
         || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
     {
-                $scriptAction = q~profileIM~;
-        }
-        if ($view) { $scriptAction = qq~my$scriptAction~; }
+        $scriptAction = q~profileIM~;
+    }
+    if ($view) { $scriptAction = qq~my$scriptAction~; }
     $yySetLocation =
 qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};sid=$INFO{'sid'}~;
-        redirectexit();
-        return;
+    redirectexit();
+    return;
 }
 
 sub ModifyProfileIM2 {
-        SidCheck($action);
-        PrepareProfile();
+    SidCheck($action);
+    PrepareProfile();
 
-        my (%member, $key, $value, $ignorelist);
-        while (($key, $value) = each(%FORM)) {
-                $value =~ s/\A\s+//xsm;
-                $value =~ s/\s+\Z//xsm;
-                if ($key ne 'ignore') { $value =~ s/[\n\r]//gxsm ;}
-                $member{$key} = $value;
+    my ( %member, $key, $value, $ignorelist );
+    while ( ( $key, $value ) = each(%FORM) ) {
+        $value =~ s/\A\s+//xsm;
+        $value =~ s/\s+\Z//xsm;
+        if ( $key ne 'ignore' ) { $value =~ s/[\n\r]//gxsm; }
+        $member{$key} = $value;
+    }
+    $member{'username'} = $user;
+
+    if ( $member{'moda'} ne $profile_txt{'88'} ) { fatal_error('not_allowed'); }
+
+    if ( !$member{'ignoreall'} ) {
+        my @ignoreList = split /\,/xsm, $member{'ignore'};
+        chomp(@ignoreList);
+        foreach my $cloakedIgnore (@ignoreList) {
+            $cloakedIgnore =~ s/\A //sm;
+            $cloakedIgnore =~ s/ \Z//sm;
+            $cloakedIgnore = decloak($cloakedIgnore);
+            ToHTML($cloakedIgnore);
+            $ignorelist .= qq~\|$cloakedIgnore~;
         }
-        $member{'username'} = $user;
-
-        if ($member{'moda'} ne $profile_txt{'88'}) { fatal_error('not_allowed');}
-
-        if (!$member{'ignoreall'}) {
-                my @ignoreList = split /\,/xsm, $member{'ignore'};
-                chomp (@ignoreList);
-                foreach my $cloakedIgnore (@ignoreList)        {
-                        $cloakedIgnore =~s/\A //sm;
-                        $cloakedIgnore =~s/ \Z//sm;
-                        $cloakedIgnore = decloak($cloakedIgnore);
-                        ToHTML ($cloakedIgnore);
-                        $ignorelist .= qq~\|$cloakedIgnore~;
-                }
-                $ignorelist =~ s/\A\|//xsm;
+        $ignorelist =~ s/\A\|//xsm;
     }
     else {
-                $ignorelist = q{*};
-        }
+        $ignorelist = q{*};
+    }
 
-        # Time to print the changes to the username.vars file
-        ${$uid.$user}{'im_ignorelist'} = $ignorelist;
+    # Time to print the changes to the username.vars file
+    ${ $uid . $user }{'im_ignorelist'} = $ignorelist;
     ${ $uid . $user }{'notify_me'} =
       $member{'notify_PM'}
       ? (
@@ -2684,23 +2679,23 @@ sub ModifyProfileIM2 {
               || ${ $uid . $user }{'notify_me'} == 3
         ) ? 1 : 0
       );
-        ${$uid.$user}{'im_popup'} = $member{'userpopup'} ? 1 : 0;
-        ${$uid.$user}{'im_imspop'} = $member{'popupims'} ? 1 : 0;
-        ${$uid.$user}{'pmactprev'} = $member{'pmactprev'} ? 1 : 0;
-        ${$uid.$user}{'pmmessprev'} = $member{'pmmessprev'} ? 1 : 0;
-        ${$uid.$user}{'pmviewMess'} = $member{'pmviewMess'} ? 1 : 0;
+    ${ $uid . $user }{'im_popup'}   = $member{'userpopup'}  ? 1 : 0;
+    ${ $uid . $user }{'im_imspop'}  = $member{'popupims'}   ? 1 : 0;
+    ${ $uid . $user }{'pmactprev'}  = $member{'pmactprev'}  ? 1 : 0;
+    ${ $uid . $user }{'pmmessprev'} = $member{'pmmessprev'} ? 1 : 0;
+    ${ $uid . $user }{'pmviewMess'} = $member{'pmviewMess'} ? 1 : 0;
 
-        if ($extendedprofiles) { # run this before you start to save something!
-                require "$sourcedir/ExtendedProfiles.pl";
-                my $error = ext_validate_submition($username,$user);
+    if ($extendedprofiles) {    # run this before you start to save something!
+        require "$sourcedir/ExtendedProfiles.pl";
+        my $error = ext_validate_submition( $username, $user );
         if ( $error ne q{} ) {
             fatal_error( 'extended_profiles_validation', $error );
         }
-                ext_saveprofile($user);
-        }
-        UserAccount($user, 'update');
+        ext_saveprofile($user);
+    }
+    UserAccount( $user, 'update' );
 
-        my $scriptAction = q~viewprofile~;
+    my $scriptAction = q~viewprofile~;
     if (
         $iamadmin
         || (   $iamgmod
@@ -2708,29 +2703,29 @@ sub ModifyProfileIM2 {
             && $gmod_access2{'profileAdmin'} eq 'on' )
       )
     {
-                $scriptAction = q~profileAdmin~;
-        }
-        if ($view) { $scriptAction = qq~my$scriptAction~; }
+        $scriptAction = q~profileAdmin~;
+    }
+    if ($view) { $scriptAction = qq~my$scriptAction~; }
     $yySetLocation =
 qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};sid=$INFO{'sid'}~;
-        redirectexit();
-        return;
+    redirectexit();
+    return;
 }
 
 sub ModifyProfileAdmin2 {
-        is_admin_or_gmod();
+    is_admin_or_gmod();
 
-        SidCheck($action);
-        PrepareProfile();
+    SidCheck($action);
+    PrepareProfile();
 
-        my (%member, $key, $value);
-        while (($key, $value) = each %FORM) {
-                $value =~ s/\A\s+//xsm;
-                $value =~ s/\s+\Z//xsm;
-                 if ($key ne 'regreason') { $value =~ s/[\n\r]//gxsm;}
-                $member{$key} = $value;
-        }
-        $member{'username'} = $user;
+    my ( %member, $key, $value );
+    while ( ( $key, $value ) = each %FORM ) {
+        $value =~ s/\A\s+//xsm;
+        $value =~ s/\s+\Z//xsm;
+        if ( $key ne 'regreason' ) { $value =~ s/[\n\r]//gxsm; }
+        $member{$key} = $value;
+    }
+    $member{'username'} = $user;
 
     if ( $member{'moda'} ne $profile_txt{'88'} ) {
         fatal_error('cannot_kill_admin');
@@ -2742,10 +2737,10 @@ sub ModifyProfileAdmin2 {
             || $member{'settings7'} eq 'Global Moderator' )
       )
     {
-                $member{'settings7'} = ${$uid.$user}{'position'};
-        }
+        $member{'settings7'} = ${ $uid . $user }{'position'};
+    }
 
-        if ($member{'settings6'} eq '') { $member{'settings6'} = 0; }
+    if ( $member{'settings6'} eq '' ) { $member{'settings6'} = 0; }
     if ( $member{'settings6'} !~ /\A[0-9]+\Z/ ) {
         fatal_error('invalid_postcount');
     }
@@ -2755,27 +2750,27 @@ sub ModifyProfileAdmin2 {
         fatal_error('cannot_regroup_admin');
     }
 
-        $dr_month  = $member{'dr_month'};
-        $dr_day    = $member{'dr_day'};
-        $dr_year   = $member{'dr_year'};
-        $dr_hour   = $member{'dr_hour'};
-        $dr_minute = $member{'dr_minute'};
-        $dr_secund = $member{'dr_secund'};
+    $dr_month  = $member{'dr_month'};
+    $dr_day    = $member{'dr_day'};
+    $dr_year   = $member{'dr_year'};
+    $dr_hour   = $member{'dr_hour'};
+    $dr_minute = $member{'dr_minute'};
+    $dr_secund = $member{'dr_secund'};
 
     if ( $dr_month == 4 || $dr_month == 6 || $dr_month == 9 || $dr_month == 11 )
     {
-                $max_days = 30;
+        $max_days = 30;
     }
     elsif ( $dr_month == 2 && $dr_year % 4 == 0 ) {
-                $max_days = 29;
+        $max_days = 29;
     }
     elsif ( $dr_month == 2 && $dr_year % 4 != 0 ) {
-                $max_days = 28;
+        $max_days = 28;
     }
     else {
-                $max_days = 31;
-        }
-        if ($dr_day > $max_days) { $dr_day = $max_days; }
+        $max_days = 31;
+    }
+    if ( $dr_day > $max_days ) { $dr_day = $max_days; }
 
     $member{'dr'} =
 qq~$dr_month/$dr_day/$dr_year $maintxt{'107'} $dr_hour:$dr_minute:$dr_secund~;
@@ -2783,95 +2778,95 @@ qq~$dr_month/$dr_day/$dr_year $maintxt{'107'} $dr_hour:$dr_minute:$dr_secund~;
     if (   $member{'settings6'} != ${ $uid . $user }{'postcount'}
         || $member{'settings7'} ne ${ $uid . $user }{'position'} )
     {
-                if ($member{'settings7'}) {
-                        $grp_after = qq~$member{'settings7'}~;
+        if ( $member{'settings7'} ) {
+            $grp_after = qq~$member{'settings7'}~;
         }
         else {
-                        foreach my $postamount (reverse sort { $a <=> $b } keys %Post) {
-                                if ($member{'settings6'} >= $postamount) {
-                                        ($title, undef) = split /\|/xsm, $Post{$postamount}, 2;
-                                        $grp_after = $title;
-                                        last;
-                                }
-                        }
+            foreach my $postamount ( reverse sort { $a <=> $b } keys %Post ) {
+                if ( $member{'settings6'} >= $postamount ) {
+                    ( $title, undef ) = split /\|/xsm, $Post{$postamount}, 2;
+                    $grp_after = $title;
+                    last;
                 }
+            }
+        }
         ManageMemberinfo( 'update', $user, q{}, q{}, $grp_after,
             $member{'settings6'} );
-        }
+    }
 
-        my %groups;
-        map { $groups{$_} = 1; } split /, /sm, $member{'addgroup'};
-        my @nopostmember;
-        foreach (keys %NoPost) {
-                next if $member{'settings7'} eq $_;
-                push(@nopostmember, $_) if $groups{$_};
-        }
-        $member{'addgroup'} = join(q{,}, @nopostmember);
-        if ($member{'addgroup'} eq q{}) { $member{'addgroup'} = '###blank###'; }
-        if ($member{'addgroup'} ne ${$uid.$user}{'addgroups'}) {
+    my %groups;
+    map { $groups{$_} = 1; } split /, /sm, $member{'addgroup'};
+    my @nopostmember;
+    foreach ( keys %NoPost ) {
+        next if $member{'settings7'} eq $_;
+        push( @nopostmember, $_ ) if $groups{$_};
+    }
+    $member{'addgroup'} = join( q{,}, @nopostmember );
+    if ( $member{'addgroup'} eq q{} ) { $member{'addgroup'} = '###blank###'; }
+    if ( $member{'addgroup'} ne ${ $uid . $user }{'addgroups'} ) {
         ManageMemberinfo( 'update', $user, q{}, q{}, q{}, q{},
             $member{'addgroup'} );
-        }
-        if ($member{'addgroup'} eq '###blank###') { $member{'addgroup'} = q{}; }
-        ${$uid.$user}{'addgroups'} = $member{'addgroup'};
+    }
+    if ( $member{'addgroup'} eq '###blank###' ) { $member{'addgroup'} = q{}; }
+    ${ $uid . $user }{'addgroups'} = $member{'addgroup'};
 
-        if ($member{'dr'} ne ${$uid.$user}{'regdate'}) {
-                $newreg = &stringtotime($member{'dr'});
-                $newreg = sprintf('%010d', $newreg);
-                ManageMemberlist('update', $user, $newreg);
-                ${$uid.$user}{'regtime'} = $newreg;
-        }
+    if ( $member{'dr'} ne ${ $uid . $user }{'regdate'} ) {
+        $newreg = &stringtotime( $member{'dr'} );
+        $newreg = sprintf( '%010d', $newreg );
+        ManageMemberlist( 'update', $user, $newreg );
+        ${ $uid . $user }{'regtime'} = $newreg;
+    }
 
-        if (!$iamadmin) { $member{'dr'} = ${$uid.$user}{'regdate'}; }
-        FromChars($member{'regreason'});
-        ToHTML($member{'regreason'});
-        ToChars($member{'regreason'});
-        $member{'regreason'} =~ s/[\n\r]{1,2}/<br \/>/gsm;
-        ${$uid.$user}{'regreason'} = $member{'regreason'};
-        ${$uid.$user}{'postcount'} = $member{'settings6'};
-        ${$uid.$user}{'position'}  = $member{'settings7'};
-        ${$uid.$user}{'regdate'}   = $member{'dr'};
+    if ( !$iamadmin ) { $member{'dr'} = ${ $uid . $user }{'regdate'}; }
+    FromChars( $member{'regreason'} );
+    ToHTML( $member{'regreason'} );
+    ToChars( $member{'regreason'} );
+    $member{'regreason'} =~ s/[\n\r]{1,2}/<br \/>/gsm;
+    ${ $uid . $user }{'regreason'} = $member{'regreason'};
+    ${ $uid . $user }{'postcount'} = $member{'settings6'};
+    ${ $uid . $user }{'position'}  = $member{'settings7'};
+    ${ $uid . $user }{'regdate'}   = $member{'dr'};
     if (   ${ $uid . $user }{'position'} ne 'Administrator'
         && ${ $uid . $user }{'position'} ne 'Global Moderator' )
     {
         ${ $uid . $user }{'stealth'} = q{};
     }
 
-        if ($extendedprofiles) { # run this before you start to save something!
-                require "$sourcedir/ExtendedProfiles.pl";
-                my $error = &ext_validate_submition($username,$user);
+    if ($extendedprofiles) {    # run this before you start to save something!
+        require "$sourcedir/ExtendedProfiles.pl";
+        my $error = ext_validate_submition( $username, $user );
         if ( $error ne q{} ) {
             fatal_error( 'extended_profiles_validation', $error );
         }
-                ext_saveprofile($user);
-        }
-        UserAccount($user, 'update');
+        ext_saveprofile($user);
+    }
+    UserAccount( $user, 'update' );
 
-        my $scriptAction = $view ? 'myviewprofile' : 'viewprofile';
+    my $scriptAction = $view ? 'myviewprofile' : 'viewprofile';
     $yySetLocation =
       qq~$scripturl?action=$scriptAction;username=$useraccount{$user}~;
-        redirectexit();
-        return;
+    redirectexit();
+    return;
 }
 
 sub ViewProfile {
-        if ($iamguest) { fatal_error('members_only'); }
+    if ($iamguest) { fatal_error('members_only'); }
 
-        # If someone registers with a '+' in their name It causes problems.
-        # Get's turned into a <space> in the query string Change it back here.
-        # Users who register with spaces get them replaced with _
-        # So no problem there.
-        $INFO{'username'} =~ tr/ /+/;
+    # If someone registers with a '+' in their name It causes problems.
+    # Get's turned into a <space> in the query string Change it back here.
+    # Users who register with spaces get them replaced with _
+    # So no problem there.
+    $INFO{'username'} =~ tr/ /+/;
 
-        $user = $INFO{'username'};
-        if ($do_scramble_id) { &decloak($user); }
-        if ($user =~ m{/})  { fatal_error('no_user_slash'); }
-        if ($user =~ m{\\}) { fatal_error('no_user_backslash'); }
+    $user = $INFO{'username'};
+    if ($do_scramble_id) { decloak($user); }
+    if ( $user =~ m{/} )  { fatal_error('no_user_slash'); }
+    if ( $user =~ m{\\} ) { fatal_error('no_user_backslash'); }
 
-       if (!LoadUser($user)) { fatal_error('no_profile_exists'); }
-       if ($user eq $username) { LoadMiniUser($user) ;}
+    if ( !LoadUser($user) ) { fatal_error('no_profile_exists'); }
+    if ( $user eq $username ) { LoadMiniUser($user); }
 
-        my ($memberinfo, $modify, $email, $gender, $avstyle, $pic);
+    my ( $memberinfo, $modify, $email, $gender, $avstyle, $pic );
     my (
         $pic_row,       $buddybutton,  $row_addgrp, $row_gender,
         $row_age,       $row_location, $row_icq,    $row_aim,
@@ -2880,33 +2875,33 @@ sub ViewProfile {
         $row_signature, $showusertext
     );
 
-        # Convert forum start date to string, if there is no date set,
-        # Defaults to 1st Jan, 2005
-        $forumstart = $forumstart ? stringtotime($forumstart) : '1104537600';
+    # Convert forum start date to string, if there is no date set,
+    # Defaults to 1st Jan, 2005
+    $forumstart = $forumstart ? stringtotime($forumstart) : '1104537600';
 
-        $memsettingsd[9] = ${$uid.$user}{'aim'};
-        $memsettingsd[9] =~ tr/+/ /;
-        $memsettingsd[10] = ${$uid.$user}{'yim'};
-        $memsettingsd[10] =~ tr/+/ /;
+    $memsettingsd[9] = ${ $uid . $user }{'aim'};
+    $memsettingsd[9] =~ tr/+/ /;
+    $memsettingsd[10] = ${ $uid . $user }{'yim'};
+    $memsettingsd[10] =~ tr/+/ /;
 
-        if (${$uid.$user}{'regtime'}) {
-                $dr = &timeformat(${$uid.$user}{'regtime'});
+    if ( ${ $uid . $user }{'regtime'} ) {
+        $dr = &timeformat( ${ $uid . $user }{'regtime'} );
     }
     else {
-                $dr = $profile_txt{'470'};
-        }
+        $dr = $profile_txt{'470'};
+    }
 
-        CalcAge($user, 'calc');   # How old is he/she?
-        CalcAge($user, 'isbday'); # is it the bday?
+    CalcAge( $user, 'calc' );      # How old is he/she?
+    CalcAge( $user, 'isbday' );    # is it the bday?
     if ($isbday) {
         $isbday = qq~<img src="$imagesdir/bdaycake.gif" width="40" />~;
     }
 
-        ## only show the 'modify' button if not using 'my center' or admin/gmod viewing
+    ## only show the 'modify' button if not using 'my center' or admin/gmod viewing
     $modify =
       (
              !$view 
-          && ( $user ne "admin" || $username eq "admin" )
+          && ( $user ne 'admin' || $username eq 'admin' )
           && (
             $iamadmin
             || (   $iamgmod
@@ -2917,8 +2912,8 @@ sub ViewProfile {
       ? qq~<a href="$scripturl?action=profileCheck;username=$useraccount{$user}">$img{'modify'}</a>~
       : '&nbsp;';
 
-        if ($allowpics) {
-                if (${$uid.$user}{'userpic'} eq 'blank.gif') {
+    if ($allowpics) {
+        if ( ${ $uid . $user }{'userpic'} eq 'blank.gif' ) {
             $pic =
 qq~<img src="$imagesdir/nn.gif" name="avatar_img_resize" alt="" style="display:none" />~;
         }
@@ -2929,68 +2924,68 @@ qq~<img src="${$uid.$user}{'userpic'}" name="avatar_img_resize" alt="" style="di
         else {
             $pic =
 qq~<img src="$facesurl/${$uid.$user}{'userpic'}" name="avatar_img_resize" alt="" style="display:none" />~;
-                }
+        }
         $pic_row =
 qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px 0px;">
                         $pic
                         </div>~;
-        }
+    }
 
-        if ($buddyListEnabled && $user ne $username) {
-                loadMyBuddy();
+    if ( $buddyListEnabled && $user ne $username ) {
+        loadMyBuddy();
         $buddybutton = '<br />'
           . (
             $mybuddie{$user}
             ? qq~<img src="$imagesdir/buddylist.gif" alt="$display_txt{'isbuddy'}" /> $display_txt{'isbuddy'}~
             : qq~<a href="$scripturl?action=addbuddy;name=$useraccount{$user}">$img{'addbuddy'}</a>~
           );
-        }
+    }
 
-        # Hide empty profile fields from display
-        if ($addmembergroup{$user}) {
-                $showaddgr = $addmembergroup{$user};
-                $showaddgr =~ s/<br \/>/\, /gsm;
-                $showaddgr =~ s/\A, //sm;
-                $showaddgr =~ s/, \Z//sm;
-                $row_addgrp .= qq~<br /><span class="small">$showaddgr</span>~;
-        }
-        if (${$uid.$user}{'gender'}) {
+    # Hide empty profile fields from display
+    if ( $addmembergroup{$user} ) {
+        $showaddgr = $addmembergroup{$user};
+        $showaddgr =~ s/<br \/>/\, /gsm;
+        $showaddgr =~ s/\A, //sm;
+        $showaddgr =~ s/, \Z//sm;
+        $row_addgrp .= qq~<br /><span class="small">$showaddgr</span>~;
+    }
+    if ( ${ $uid . $user }{'gender'} ) {
         if ( ${ $uid . $user }{'gender'} eq 'Male' ) {
             $gender = $profile_txt{'238'};
         }
         elsif ( ${ $uid . $user }{'gender'} eq 'Female' ) {
             $gender = $profile_txt{'239'};
         }
-                $row_gender = qq~
+        $row_gender = qq~
                         <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
                         <b>$profile_txt{'231'}: </b>
                         </div>
                         <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
                         $gender
                         </div>~;
-        }
-        if ($age) {
+    }
+    if ($age) {
         if ( $showage == 1 && ${ $uid . $user }{'hideage'} && !$iamadmin ) { $age = qq~$profile_txt{'722'} &nbsp;~; }
         else {$age = qq~$age &nbsp; ~; }
-                $row_age = qq~
+        $row_age = qq~
                         <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
                         <b>$profile_txt{'420'}:</b>
                         </div>
                         <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
                         $age$isbday
                         </div>~;
-        }
-        if (${$uid.$user}{'location'}) {
-                $row_location = qq~
+    }
+    if ( ${ $uid . $user }{'location'} ) {
+        $row_location = qq~
                         <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
                         <b>$profile_txt{'227'}: </b>
                         </div>
                         <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
                         ${$uid.$user}{'location'}
                         </div>~;
-        }
-        if (${$uid.$user}{'icq'} && ${$uid.$user}{'icq'} !~ m/\D/) {
-                $row_icq .= qq~
+    }
+    if ( ${ $uid . $user }{'icq'} && ${ $uid . $user }{'icq'} !~ m/\D/ ) {
+        $row_icq .= qq~
                         <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
                         <b>$profile_txt{'513'}:</b>
                         </div>
@@ -2998,9 +2993,9 @@ qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px
                         <a href="http://web.icq.com/${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" onclick="target='_blank';">
                         <img src="http://web.icq.com/whitepages/online?icq=${$uid.$user}{'icq'}&#38;img=5" alt="${$uid.$user}{'icq'}" /> ${$uid.$user}{'icq'}</a>
                         </div>~;
-        }
-        if (${$uid.$user}{'aim'}) {
-                $row_aim = qq~
+    }
+    if ( ${ $uid . $user }{'aim'} ) {
+        $row_aim = qq~
                         <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
                         <b>$profile_txt{'603'}: </b>
                         </div>
@@ -3008,9 +3003,9 @@ qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px
                         <a href="aim:goim?screenname=${$uid.$user}{'aim'}&#38;message=Hi,+are+you+there?">
                         <img src="$imagesdir/aim.gif" alt="${$uid.$user}{'aim'}" /> $memsettingsd[9]</a>
                         </div>~;
-        }
-        if (${$uid.$user}{'yim'}) {
-                $row_yim = qq~
+    }
+    if ( ${ $uid . $user }{'yim'} ) {
+        $row_yim = qq~
                         <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
                         <b>$profile_txt{'604'}: </b>
                         </div>
@@ -3018,19 +3013,9 @@ qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px
                         <img src="http://opi.yahoo.com/online?u=${$uid.$user}{'yim'}&#38;m=g&#38;t=0" alt="${$uid.$user}{'yim'}" />
                         <a href="http://edit.yahoo.com/config/send_webmesg?.target=${$uid.$user}{'yim'}" onclick="target='_blank';"> $memsettingsd[10]</a>
                         </div>~;
-        }
-        if (${$uid.$user}{'msn'}) {
-                $row_msn = qq~
-                        <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
-                        <b>$profile_txt{'823'}: </b>
-                        </div>
-                        <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
-                        <img src="$imagesdir/msn.gif" alt="" />
-                        <a href="#" onclick="window.open('$scripturl?action=setmsn;msnname=$user','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false">$profile_txt{'823'} ${$uid.$user}{'realname'}</a>
-                        </div>~;
-        }
-        if (${$uid.$user}{'gtalk'}) {
-                $row_gtalk = qq~
+    }
+    if ( ${ $uid . $user }{'gtalk'} ) {
+        $row_gtalk = qq~
                         <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
                         <b>$profile_txt{'825'}: </b>
                         </div>
@@ -3038,9 +3023,9 @@ qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px
                         <img src="$imagesdir/gtalk2.gif" alt="" />
                         <a href="#" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$user','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false">$profile_txt{'825'} ${$uid.$user}{'realname'}</a>
                         </div>~;
-        }
-        if (${$uid.$user}{'skype'}) {
-                $row_skype = qq~
+    }
+    if ( ${ $uid . $user }{'skype'} ) {
+        $row_skype = qq~
                         <div style="float: left; clear: left; width: 30%; padding-top: 5px;  padding-bottom: 5px;">
                         <b>$profile_txt{'827'}: </b>
                         </div>
@@ -3048,9 +3033,9 @@ qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px
                         <img src="$imagesdir/skype.gif" alt="" />
                         <a href="javascript:void(window.open('callto://${$uid.$user}{'skype'}','skype','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'))">$profile_txt{'827'} ${$uid.$user}{'realname'}</a>
                         </div>~;
-        }
-        if (${$uid.$user}{'myspace'}) {
-                $row_myspace = qq~
+    }
+    if ( ${ $uid . $user }{'myspace'} ) {
+        $row_myspace = qq~
                         <div style="float: left; clear: left; width: 30%; padding-top: 5px;  padding-bottom: 5px;">
                         <b>$profile_txt{'570'}: </b>
                         </div>
@@ -3058,9 +3043,9 @@ qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px
                         <img src="$imagesdir/myspace.gif" alt="" />
                         <a href="http://www.myspace.com/${$uid.$user}{'myspace'}" onclick="target='_blank';">$profile_txt{'570'} ${$uid.$user}{'realname'}</a>
                         </div>~;
-        }
-        if (${$uid.$user}{'facebook'}) {
-                $row_facebook = qq~
+    }
+    if ( ${ $uid . $user }{'facebook'} ) {
+        $row_facebook = qq~
                         <div style="float: left; clear: left; width: 30%; padding-top: 5px;  padding-bottom: 5px;">
                         <b>$profile_txt{'573'}: </b>
                         </div>
@@ -3070,41 +3055,41 @@ qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px
           . ( ${ $uid . $user }{'facebook'} !~ /\D/ ? "profile.php?id=" : q{} )
           . qq~${$uid.$user}{'facebook'}" onclick="target='_blank';"> ${$uid.$user}{'facebook'}</a>
                         </div>~;
-        }
+    }
     if (   !${ $uid . $user }{'hidemail'}
         || $iamadmin
         || !$allow_hide_email
         || $view )
     {
-                my $rowEmail = '';
-                if ($view) {
-                        if (!${$uid.$user}{'hidemail'}) {
-                                $rowEmail = $profile_txt{'showingemail'};
-                        }
+        my $rowEmail = '';
+        if ($view) {
+            if ( !${ $uid . $user }{'hidemail'} ) {
+                $rowEmail = $profile_txt{'showingemail'};
+            }
             else {
                 my ( $admtitle, undef ) =
-                  split( /\|/, $Group{'Administrator'}, 2 );
+                  split /\|/xsm, $Group{'Administrator'}, 2;
                 $rowEmail =
 qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
             }
         }
         else {
-            $rowEmail = &enc_eMail(
+            $rowEmail = enc_eMail(
                 "$profile_txt{'889'} ${$uid.$user}{'realname'}",
                 ${ $uid . $user }{'email'},
-                '', ''
+                q{}, q{}
             );
-                }
+        }
 
-                $row_email = qq~
+        $row_email = qq~
                         <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
                         <b>$profile_txt{'69'}: </b>
                         </div>
                         <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
                         $rowEmail
                         </div>~;
-        }
-        if (!$minlinkweb) { $minlinkweb = 0; }
+    }
+    if ( !$minlinkweb ) { $minlinkweb = 0; }
     if (
            ${ $uid . $user }{'weburl'}
         && ${ $uid . $user }{'webtitle'}
@@ -3113,31 +3098,31 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
             || ${ $uid . $user }{'position'} eq 'Global Moderator' )
       )
     {
-                $row_website = qq~
+        $row_website = qq~
                         <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
                         <b>$profile_txt{'96'}: </b>
                         </div>
                         <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
                         <a href="${$uid.$user}{'weburl'}" onclick="target='_blank';">${$uid.$user}{'webtitle'}</a>
                         </div>~;
+    }
+    if ( ${ $uid . $user }{'signature'} ) {
+        # do some ubbc on the signature to display in the view profile area
+        $message     = ${ $uid . $user }{'signature'};
+        $displayname = ${ $uid . $user }{'realname'};
+
+        if ($enable_ubbc) {
+            enable_yabbc();
+            DoUBBC(1);
         }
-        if (${$uid.$user}{'signature'}) {
-                # do some ubbc on the signature to display in the view profile area
-                $message     = ${$uid.$user}{'signature'};
-                $displayname = ${$uid.$user}{'realname'};
 
-                if ($enable_ubbc) {
-                        if (!$yyYaBBCloaded) { require "$sourcedir/YaBBC.pl"; }
-                        DoUBBC(1);
-                }
+        ToChars($message);
 
-                ToChars($message);
+        # Censor the signature.
+        LoadCensorList();
+        $message = &Censor($message);
 
-                # Censor the signature.
-                LoadCensorList();
-                $message = &Censor($message);
-
-                $row_signature = qq~<tr>
+        $row_signature = qq~<tr>
         <td class="catbg">
             <img src="$imagesdir/profile.gif" alt="" />&nbsp;
             <span class="text1"><b>$profile_txt{'85'}</b></span>
@@ -3150,10 +3135,10 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
         </td>
     </tr>~;
 
-                if ($img_greybox) {
+        if ($img_greybox) {
             $yyinlinestyle .=
 qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/css" />\n~;
-                        $yyjavascript .= qq~
+            $yyjavascript .= qq~
 var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 // -->
 </script>
@@ -3162,64 +3147,82 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 <script type="text/javascript" src="$yyhtml_root/greybox/gb_scripts.js"></script>
 <script type="text/javascript">
 <!--~;
-                }
         }
+    }
 
-        # End empty field checking
+    # End empty field checking
 
-        # Just maths below...
-        $post_count = ${$uid.$user}{'postcount'};
-        if (!$post_count) { $post_count = 0 }
+    # Just maths below...
+    $post_count = ${ $uid . $user }{'postcount'};
+    if ( !$post_count ) { $post_count = 0 }
 
-        $string_regdate = &stringtotime(${$uid.$user}{'regdate'});
-        $string_curdate = $date;
+    $string_regdate = &stringtotime( ${ $uid . $user }{'regdate'} );
+    $string_curdate = $date;
 
-        #if ($string_regdate < $forumstart) { $string_regdate = $forumstart }
-        if ($string_curdate < $forumstart) { $string_curdate = $forumstart }
+    #if ($string_regdate < $forumstart) { $string_regdate = $forumstart }
+    if ( $string_curdate < $forumstart ) { $string_curdate = $forumstart }
 
-        $member_for_days = int(($string_curdate - $string_regdate) / 86400);
+    $member_for_days = int( ( $string_curdate - $string_regdate ) / 86_400 );
 
-        if ($member_for_days < 1) { $tmpmember_for_days = 1; }
-        else { $tmpmember_for_days = $member_for_days; }
-        $post_per_day = sprintf('%.2f', ($post_count / $tmpmember_for_days));
-        $member_for_days = NumberFormat($member_for_days);
-        $post_per_day = NumberFormat($post_per_day);
-        $post_count = NumberFormat($post_count);
+    if   ( $member_for_days < 1 ) { $tmpmember_for_days = 1; }
+    else                          { $tmpmember_for_days = $member_for_days; }
+    $post_per_day    = sprintf( '%.2f', ( $post_count / $tmpmember_for_days ) );
+    $member_for_days = NumberFormat($member_for_days);
+    $post_per_day    = NumberFormat($post_per_day);
+    $post_count      = NumberFormat($post_count);
 
-        # End statistics.
-        if (${$uid.$user}{'usertext'}) {
-                # Censor the usertext and wrap it
-                LoadCensorList();
+    # End statistics.
+    if ( ${ $uid . $user }{'usertext'} ) {
+        # Censor the usertext and wrap it
+        LoadCensorList();
         $showusertext =
-          WrapChars( &Censor( ${ $uid . $user }{'usertext'} ), 20 );
-        }
+          WrapChars( Censor( ${ $uid . $user }{'usertext'} ), 20 );
+    }
 
-        $showProfile .= qq~
+    $showProfile .= qq~
 <table class="bordercolor cs_thin pad_8px">~;
-        if (!$view) {
-                $yynavigation = qq~&rsaquo; $profile_txt{'92'}~;
-                $showProfile .= qq~
+    if ( !$view ) {
+        $yynavigation = qq~&rsaquo; $profile_txt{'92'}~;
+        $showProfile .= qq~
     <tr>
         <td class="titlebg">
             <div class="text1" style="float: left; width: 100%;">~;
-                        if ($iamadmin || $iamgmod) {
-                                $showProfile .= qq~
+        if ( $iamadmin || $iamgmod ) {
+            $showProfile .= qq~
                 <img src="$imagesdir/profile.gif" alt="" />&nbsp; <b>$profile_txt{'35'}: $INFO{'username'}</b>~;
         }
         else {
-                                $showProfile .= qq~
+            $showProfile .= qq~
                 <img src="$imagesdir/profile.gif" alt="" />&nbsp; <b>$profile_txt{'68'}: ${$uid.$INFO{'username'}}{'realname'}</b>~;
-                        }
-                        $showProfile .= q~
+        }
+        $showProfile .= q~
             </div>
         </td>
     </tr>~;
-        }
-        $showProfile .= qq~<tr>
+    }
+    if ( is_moderator_b($user) == 1 && ${$uid.$user}{'position'} ne 'Administrator' && ${$uid.$user}{'position'} ne 'Global Moderator') { 
+    	($title, $stars, $starpic, $color, $noshow, $viewperms, $topicperms, $replyperms, $pollperms, $attachperms) = split /\|/xsm, $Group{'Moderator'};
+		$temptitle         = $title;
+		$col_title_mod     = qq~<span style="color: $color;"><b>$title</b></span><br />~;
+		$memberunfo{$user} = $tempgroupcheck;
+	    my $starnum = $stars;
+	    my $memberstartemp = q{};
+	    if ($starpic !~ /\//) { $starpic = "$imagesdir/$starpic"; }
+	    while ($starnum-- > 0) {
+		$memberstartemp .= qq~<img src="$starpic" alt="*" />~;
+	   }
+	   $modstar{$user} = $memberstartemp ? "$memberstartemp<br />" : q{};
+	   $mybrds = $mybrds;
+    }
+    else {$mybrds = q{};}
+    $showProfile .= qq~<tr>
         <td class="windowbg">
             $pic_row
             <div style="float: left; width: 60%; padding-top: 5px;  padding-bottom: 5px;">
             <span style="font-size: 18px;">${$uid.$user}{'realname'}</span><br />
+            $col_title_mod
+            $mybrds
+            $modstar{$user}
             $col_title{$user}
             $row_addgrp<br />
             $memberstar{$user}
@@ -3248,22 +3251,22 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
         </td>
     </tr>~;
 
-        if ($row_gender || $row_age || $row_location) {
-                $showProfile .= qq~<tr>
+    if ( $row_gender || $row_age || $row_location ) {
+        $showProfile .= qq~<tr>
         <td class="windowbg2 vtop">
             $row_gender
             $row_age
             $row_location
         </td>
     </tr>~;
-        }
+    }
 
-        if ($extendedprofiles) {
-                require "$sourcedir/ExtendedProfiles.pl";
-                $showProfile .= ext_viewprofile($user);
-        }
+    if ($extendedprofiles) {
+        require "$sourcedir/ExtendedProfiles.pl";
+        $showProfile .= ext_viewprofile($user);
+    }
 
-        $showProfile .= qq~<tr>
+    $showProfile .= qq~<tr>
         <td class="catbg">
              <img src="$imagesdir/profile.gif" alt="" />&nbsp;
              <span class="text1"><b>$profile_txt{'819'}</b></span>
@@ -3271,7 +3274,7 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
     </tr><tr>
         <td class="windowbg2">~;
 
-        CheckUserPM_Level($user);
+    CheckUserPM_Level($user);
     if (
           !$view
         && $user ne $username
@@ -3286,20 +3289,19 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
         )
       )
     {
-                $showProfile .= qq~
+        $showProfile .= qq~
             <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
                 <b>$profile_txt{'144'}: </b>
             </div>
             <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
                 <a href="$scripturl?action=imsend;to=$useraccount{$user}">$profile_txt{'688'} ${$uid.$user}{'realname'}</a>
             </div>~;
-        }
+    }
 
-        $showProfile .= qq~
+    $showProfile .= qq~
                         $row_email
                         $row_website
                         $row_aim
-                        $row_msn
                         $row_skype
                         $row_yim
                         $row_gtalk
@@ -3309,31 +3311,31 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
         </td>
     </tr>~;
 
-        $userlastlogin = &timeformat(${$uid.$user}{'lastonline'});
-        $userlastpost = &timeformat(${$uid.$user}{'lastpost'});
-        $userlastim = &timeformat(${$uid.$user}{'lastim'});
-        if ($userlastlogin eq q{}) { $userlastlogin = "$profile_txt{'470'}"; }
-        if ($userlastpost  eq q{}) { $userlastpost  = "$profile_txt{'470'}"; }
-        if ($userlastim    eq q{}) { $userlastim    = "$profile_txt{'470'}"; }
-        my ($lastonline, $lastpost, $lastPM);
-        ## MF-B code fix for lpd
-        if (${$uid.$user}{'postcount'} > 0) {
-                $userlastpost = &usersrecentposts(1);
-        }
-        ####
-        if (!$view) {
-                $lastonline = qq~$profile_amv_txt{'9'}~;
-                $lastpost = qq~$profile_amv_txt{'10'}~;
-                $lastPM = qq~$profile_amv_txt{'11'}~;
+    $userlastlogin = &timeformat( ${ $uid . $user }{'lastonline'} );
+    $userlastpost  = &timeformat( ${ $uid . $user }{'lastpost'} );
+    $userlastim    = &timeformat( ${ $uid . $user }{'lastim'} );
+    if ( $userlastlogin eq q{} ) { $userlastlogin = "$profile_txt{'470'}"; }
+    if ( $userlastpost  eq q{} ) { $userlastpost  = "$profile_txt{'470'}"; }
+    if ( $userlastim    eq q{} ) { $userlastim    = "$profile_txt{'470'}"; }
+    my ( $lastonline, $lastpost, $lastPM );
+    ## MF-B code fix for lpd
+    if ( ${ $uid . $user }{'postcount'} > 0 ) {
+        $userlastpost = usersrecentposts(1);
+    }
+    ####
+    if ( !$view ) {
+        $lastonline = qq~$profile_amv_txt{'9'}~;
+        $lastpost   = qq~$profile_amv_txt{'10'}~;
+        $lastPM     = qq~$profile_amv_txt{'11'}~;
 
     }
     else {
-                $lastonline = qq~$profile_amv_txt{'mylastonline'}~;
-                $lastpost = qq~$profile_amv_txt{'mylastpost'}~;
-                $lastPM = qq~$profile_amv_txt{'mylastpm'}~;
-        }
+        $lastonline = qq~$profile_amv_txt{'mylastonline'}~;
+        $lastpost   = qq~$profile_amv_txt{'mylastpost'}~;
+        $lastPM     = qq~$profile_amv_txt{'mylastpm'}~;
+    }
 
-        $showProfile .= qq~
+    $showProfile .= qq~
         $row_signature
     <tr>
         <td class="catbg">
@@ -3351,12 +3353,12 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
         || ( $PM_level == 2 && ( $iamadmin || $iamgmod || $iammod ) )
         || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
     {
-                $showProfile .= qq~
+        $showProfile .= qq~
             <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;"><b>$lastPM: </b></div>
             <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">$userlastim</div>~;
-        }
+    }
 
-        $showProfile .= qq~
+    $showProfile .= qq~
         </td>
     </tr>~;
 
@@ -3365,23 +3367,23 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
         && $user ne $username
         && ${ $uid . $user }{'position'} ne 'Administrator' )
     {
-                @banlev = qw( d w m p );
-                $is_banned = check_banlist("${$uid.$user}{'email'}",q{},"$user");
-                $ban_user_email = ${$uid.$user}{'email'};
-                $ban_user_email =~ s/([^A-Za-z0-9])/sprintf('%%%02X', ord($1))/seg;
+        @banlev = qw( d w m p );
+        $is_banned = check_banlist( "${$uid.$user}{'email'}", q{}, "$user" );
+        $ban_user_email = ${ $uid . $user }{'email'};
+        $ban_user_email =~ s/([^A-Za-z0-9])/sprintf('%%%02X', ord($1))/seg;
         if ( $is_banned =~ /E/ ) {
             $ban_email_link =
 qq~<a href="$adminurl?action=ipban3;ban_email=$ban_user_email;username=$useraccount{$user};unban=1"><span class="small">[$profile_txt{'904'}]</span></a>~;
         }
         else {
             $ban_email_link = qq~<span class="small">[$profile_txt{'907'}: ~;
-                    for my $i (@banlev) {
+            for my $i (@banlev) {
                 $ban_email_link .=
 qq~<a href="$adminurl?action=ipban3;ban_email=$ban_user_email;username=$useraccount{$user};lev=$i">$profile_txt{$i}</a> |~;
-                    }
-                    $ban_email_link .= q~</span>~;
-                }
-                $ban_user_name = $useraccount{$user};
+            }
+            $ban_email_link .= q~</span>~;
+        }
+        $ban_user_name = $useraccount{$user};
 #        $ban_user_name =~ s/([^A-Za-z0-9])/sprintf('%%%02X', ord($1))/seg;
         if ( $is_banned =~ /U/ ) {
             $ban_user_link =
@@ -3389,18 +3391,18 @@ qq~<a href="$adminurl?action=ipban3;ban_memname=$ban_user_name;username=$useracc
         }
         else {
             $ban_user_link = qq~<span class="small">[$profile_txt{'906'}: ~;
-                    for my $i (@banlev) {
+            for my $i (@banlev) {
                 $ban_user_link .=
 qq~<a href="$adminurl?action=ipban3;ban_memname=$ban_user_name;username=$useraccount{$user};lev=$i">$profile_txt{$i}</a> |~;
-                    }
-                    $ban_user_link .= q~</span>~;
-                }
-                # Shows the banning stuff for IP's
-                @banlink=();
-                $ip_ban_options = q{};
-                if (${$uid.$user}{'lastips'}) {
-                    @ip_ban = split /\|/xsm, ${$uid.$user}{'lastips'};
-                    for my $ip ( 0 .. ( @ip_ban - 1 ) )  {
+            }
+            $ban_user_link .= q~</span>~;
+        }
+        # Shows the banning stuff for IP's
+        @banlink        = ();
+        $ip_ban_options = q{};
+        if ( ${ $uid . $user }{'lastips'} ) {
+            @ip_ban = split /\|/xsm, ${ $uid . $user }{'lastips'};
+            for my $ip ( 0 .. ( @ip_ban - 1 ) ) {
                 if ( check_banlist( q{}, "$ip_ban[$ip]", q{} ) ) {
                     $banlink[$ip] =
 qq~<a href="$adminurl?action=ipban3;ban=$ip_ban[$ip];username=$useraccount{$user};unban=1"><span class="small">[$profile_txt{'905'}]</span></a>~;
@@ -3408,21 +3410,21 @@ qq~<a href="$adminurl?action=ipban3;ban=$ip_ban[$ip];username=$useraccount{$user
                 else {
                     $banlink[$ip] =
                       qq~<span class="small">[$profile_txt{'908'}: ~;
-                            for my $i (@banlev) {
+                    for my $i (@banlev) {
                         $banlink[$ip] .=
 qq~<a href="$adminurl?action=ipban3;ban=$ip_ban[$ip];username=$useraccount{$user};lev=$i">$profile_txt{$i}</a> |~;
-                            }
-                            $banlink[$ip] .= q~</span>~;
-                        }
                     }
-                    for my $i ( 0 .. (@ip_ban - 1 ) )  {
+                    $banlink[$ip] .= q~</span>~;
+                }
+            }
+            for my $i ( 0 .. ( @ip_ban - 1 ) ) {
                 if ( $ip_ban[$i] ) {
                     $ip_ban_options .= qq~$ip_ban[$i]<br />$banlink[$i]<br />~;
                 }
-                    }
-                 }
-                
-                $showProfile .= qq~<tr>
+            }
+        }
+
+        $showProfile .= qq~<tr>
         <td class="windowbg2">
             <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;"><b>$profile_txt{'902'}:</b></div>
             <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">$user<br />$ban_user_link</div>
@@ -3432,64 +3434,64 @@ qq~<a href="$adminurl?action=ipban3;ban=$ip_ban[$ip];username=$useraccount{$user
             <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">$ip_ban_options</div>
         </td>
     </tr>~;
-        }
+    }
 
     if ( ${ $uid . $user }{'postcount'} > 0 && $maxrecentdisplay > 0 && !$view )
     {
-                $showProfile .= qq~<tr>
+        $showProfile .= qq~<tr>
         <td class="windowbg2">
             <form action="$scripturl?action=usersrecentposts;username=$useraccount{$user}" method="post">
                         $profile_txt{'460'} <select name="viewscount" size="1">~;
 
-                my ($x,$y) = (int($maxrecentdisplay/5),0);
-                if ($x) {
-                        for my $i ( 1 .. 5 ) {
-                                $y = $i * $x;
-                                $showProfile .= qq~
+        my ( $x, $y ) = ( int( $maxrecentdisplay / 5 ), 0 );
+        if ($x) {
+            for my $i ( 1 .. 5 ) {
+                $y = $i * $x;
+                $showProfile .= qq~
                         <option value="$y">$y</option>~;
-                        }
-                }
+            }
+        }
         if ( $maxrecentdisplay > $y ) {
             $showProfile .= qq~
                         <option value="$maxrecentdisplay">$maxrecentdisplay</option>~;
         }
 
-                $showProfile .= qq~
+        $showProfile .= qq~
                         </select> $profile_txt{'461'} ${$uid.$user}{'realname'}.
                         <input type="submit" value="$profile_txt{'462'}" class="button" />
                         </form>
         </td>
     </tr>~;
-        }
+    }
 
-        $showProfile .= q~
+    $showProfile .= q~
 </table>
 ~;
 
-        $yytitle = "$profile_txt{'92'} ${$uid.$user}{'realname'}";
-        if (!$view) {
-                $yymain .= $showProfile;
-                template();
-        }
-        return;
+    $yytitle = "$profile_txt{'92'} ${$uid.$user}{'realname'}";
+    if ( !$view ) {
+        $yymain .= $showProfile;
+        template();
+    }
+    return;
 }
 
 sub usersrecentposts {
-        if ($iamguest) { fatal_error('members_only'); }
-        if ($INFO{'username'} =~ /\//) { fatal_error('no_user_slash'); }
-        if ($INFO{'username'} =~ /\\/) { fatal_error('no_user_backslash'); }
+    if ($iamguest) { fatal_error('members_only'); }
+    if ( $INFO{'username'} =~ /\// ) { fatal_error('no_user_slash'); }
+    if ( $INFO{'username'} =~ /\\/ ) { fatal_error('no_user_backslash'); }
     if ( !-e ("$memberdir/$INFO{'username'}.vars") ) {
         fatal_error('no_profile_exists');
     }
-        if ($action =~ /^(?:my)?usersrecentposts$/) { spam_protection();}
+    if ( $action =~ /^(?:my)?usersrecentposts$/ ) { spam_protection(); }
 
-        my $curuser = $INFO{'username'};
-        LoadUser($curuser);
+    my $curuser = $INFO{'username'};
+    LoadUser($curuser);
 
-        my $display = $FORM{'viewscount'} ? $FORM{'viewscount'} : $_[0];
-        if (!$display) { $display = 5; }
-        elsif ($display =~ /\D/) { fatal_error('only_numbers_allowed'); }
-        if ($display > $maxrecentdisplay) { $display = $maxrecentdisplay; }
+    my $display = $FORM{'viewscount'} ? $FORM{'viewscount'} : $_[0];
+    if ( !$display ) { $display = 5; }
+    elsif ( $display =~ /\D/ ) { fatal_error('only_numbers_allowed'); }
+    if ( $display > $maxrecentdisplay ) { $display = $maxrecentdisplay; }
 
     my (
         %data,              $numfound,     %threadfound, %boardtxt,
@@ -3505,34 +3507,34 @@ sub usersrecentposts {
         $board,             $notify,       $catid
     );
 
-        Recent_Load($curuser);
+    Recent_Load($curuser);
     my @recent =
       sort { ${ $recent{$b} }[1] <=> ${ $recent{$a} }[1] }
       grep { ${ $recent{$_} }[1] > 0 } keys %recent;
-        my $recentcount = keys %recent;
-        my @data;
-        $#data = $display - 1;
-        @data = map(0, @data);
+    my $recentcount = keys %recent;
+    my @data;
+    $#data = $display - 1;
+    @data = map( 0, @data );
 
-        if (!$mloaded) { require "$boardsdir/forum.master"; }
-        foreach my $catid (@categoryorder) {
-                foreach (split /\,/xsm, $cat{$catid}) {
-                        $boardcat{$_} = $catid;
-                        @{$catinfos{$_}} = split /\|xsm/, $catinfo{$catid}, 3;
-                }
+    get_forum_master();
+    foreach my $catid (@categoryorder) {
+        foreach ( split /\,/xsm, $cat{$catid} ) {
+            $boardcat{$_} = $catid;
+            @{ $catinfos{$_} } = split /\|xsm/, $catinfo{$catid}, 3;
         }
+    }
 
-        RECENTCHECK: foreach my $thread (@recent) {
-                MessageTotals('load',$thread);
-                if (${$thread}{'board'} eq q{}) {
-                        $save_recent = 1;
-                        delete $recent{$thread};
-                        $recentcount--;
-                        next RECENTCHECK;
-                }
-                $curboard = ${$thread}{'board'};
+  RECENTCHECK: foreach my $thread (@recent) {
+        MessageTotals( 'load', $thread );
+        if ( ${$thread}{'board'} eq q{} ) {
+            $save_recent = 1;
+            delete $recent{$thread};
+            $recentcount--;
+            next RECENTCHECK;
+        }
+        $curboard = ${$thread}{'board'};
 
-                if (!$boardtxt{$curboard}) {
+        if ( !$boardtxt{$curboard} ) {
             ( $boardname{$curboard}, $boardperms, undef ) = split /\|/xsm,
               $board{$curboard};
 
@@ -3546,16 +3548,16 @@ sub usersrecentposts {
                 next RECENTCHECK;
             }
 
-                        fopen(FILE, "$boardsdir/$curboard.txt");
-                        @{$boardtxt{$curboard}} = <FILE>;
-                        fclose(FILE);
+            fopen( FILE, "$boardsdir/$curboard.txt" );
+            @{ $boardtxt{$curboard} } = <FILE>;
+            fclose(FILE);
 
-                        if (!@{$boardtxt{$curboard}}) {
-                                $save_recent = 1;
-                                delete $recent{$thread};
-                                $recentcount--;
-                                next RECENTCHECK;
-                        }
+            if ( !@{ $boardtxt{$curboard} } ) {
+                $save_recent = 1;
+                delete $recent{$thread};
+                $recentcount--;
+                next RECENTCHECK;
+            }
         }
         elsif ($numfound) {
             $recentfound += $recentthreadfound{$thread}
@@ -3563,10 +3565,10 @@ sub usersrecentposts {
             last
               if $recentfound >= $display
                   && $data[$#data] > ${ $recent{$thread} }[1];
-                        next;
-                }
+            next;
+        }
 
-                for my $i ( 0 .. ( @{$boardtxt{$curboard}} - 1 ) ) {
+        for my $i ( 0 .. ( @{ $boardtxt{$curboard} } - 1 ) ) {
             (
                 $tnum,     $tsub,      $tname, $temail, $tdate,
                 $treplies, $tusername, $ticon, $tstate
@@ -3575,51 +3577,51 @@ sub usersrecentposts {
             if (   ( $display == 1 && $thread == $tnum )
                 || ( $display > 1 && exists $recent{$tnum} ) )
             {
-                                if ($tstate =~ /h/sm && !$iamadmin && !$iamgmod) {
-                                        $recentcount--;
+                if ( $tstate =~ /h/sm && !$iamadmin && !$iamgmod ) {
+                    $recentcount--;
                 }
                 else {
-                                        fopen(FILE, "$datadir/$tnum.txt");
-                                        @messages = <FILE>;
-                                        fclose(FILE);
+                    fopen( FILE, "$datadir/$tnum.txt" );
+                    @messages = <FILE>;
+                    fclose(FILE);
 
-                                        my $usercheck = 0;
+                    my $usercheck = 0;
 
-                                        for ($c = $#messages; $c >= 0 ; $c--) {
+                    for ( $c = $#messages ; $c >= 0 ; $c-- ) {
                         (
                             $msub,      $mname, $memail,  $mdate,
                             $musername, $micon, $mattach, $mip,
                             $message,   $mns
                         ) = split /\|/xsm, $messages[$c];
 
-                                                if ($curuser eq $musername) {
-                                                        my @i = (@data, $mdate);
-                                                        @data = reverse sort { $a <=> $b } @i;
-                                                        if (pop(@data) < $mdate) {
-                                                                chomp $mns;
+                        if ( $curuser eq $musername ) {
+                            my @i = ( @data, $mdate );
+                            @data = reverse sort { $a <=> $b } @i;
+                            if ( pop(@data) < $mdate ) {
+                                chomp $mns;
                                 $data{$mdate} = [
                                     $curboard,  $tnum,  $c,       $tname,
                                     $msub,      $mname, $memail,  $mdate,
                                     $musername, $micon, $mattach, $mip,
                                     $message,   $mns,   $tstate
                                 ];
-                                if (!$usercheck) {
+                                if ( !$usercheck ) {
                                     $numfound++;
                                     $threadfound{$tnum} = 1;
                                 }
-                                if (exists $recent{$tnum}) {
+                                if ( exists $recent{$tnum} ) {
                                     $recentthreadfound{$tnum}++;
                                     $recentfound++ if $thread == $tnum;
                                 }
-                                if (${$recent{$tnum}}[1] < $mdate) {
+                                if ( ${ $recent{$tnum} }[1] < $mdate ) {
                                     $save_recent = 1;
-                                    ${$recent{$tnum}}[1] = $mdate;
+                                    ${ $recent{$tnum} }[1] = $mdate;
                                 }
                             }
                             $usercheck = 1;
                         }
                     }
-                    if (!$usercheck) {
+                    if ( !$usercheck ) {
                         $save_recent = 1;
                         delete $recent{$tnum};
                         $recentcount--;
@@ -3629,14 +3631,14 @@ sub usersrecentposts {
         }
     }
 
-        if ($recentfound < $display && $numfound < $recentcount) {
-                CATEGORYCHECK: foreach my $catid (@categoryorder) {
+    if ( $recentfound < $display && $numfound < $recentcount ) {
+      CATEGORYCHECK: foreach my $catid (@categoryorder) {
             if ( !&CatAccess( ( split /\|/xsm, $catinfo{$catid}, 3 )[1] ) ) {
                 next CATEGORYCHECK;
             }
 
-                        BOARDCHECK: foreach my $curboard (split /\,/xsm, $cat{$catid}) {
-                                if (!$boardtxt{$curboard}) {
+          BOARDCHECK: foreach my $curboard ( split /\,/xsm, $cat{$catid} ) {
+                if ( !$boardtxt{$curboard} ) {
                     ( $boardname{$curboard}, $boardperms, undef ) =
                       split /\|/xsm, $board{$curboard};
 
@@ -3649,11 +3651,11 @@ sub usersrecentposts {
 
                     fopen( FILE, "$boardsdir/$curboard.txt" )
                       || next boardcheck;
-                                        @{$boardtxt{$curboard}} = <FILE>;
-                                        fclose(FILE);
-                                }
+                    @{ $boardtxt{$curboard} } = <FILE>;
+                    fclose(FILE);
+                }
 
-                                for my $i ( 0 .. ( @{$boardtxt{$curboard}} - 1 ) ) {
+                for my $i ( 0 .. ( @{ $boardtxt{$curboard} } - 1 ) ) {
                     (
                         $tnum,      $tsub,  $tname,
                         $temail,    $tdate, $treplies,
@@ -3663,26 +3665,26 @@ sub usersrecentposts {
                     if ( exists( $recent{$tnum} )
                         && !exists $threadfound{$tnum} )
                     {
-                                                unless ($tstate =~ /h/ && !$iamadmin && !$iamgmod) {
-                                                        fopen(FILE, "$datadir/$tnum.txt");
-                                                        @messages = <FILE>;
-                                                        fclose(FILE);
+                        unless ( $tstate =~ /h/ && !$iamadmin && !$iamgmod ) {
+                            fopen( FILE, "$datadir/$tnum.txt" );
+                            @messages = <FILE>;
+                            fclose(FILE);
 
-                                                        my $usercheck = 0;
+                            my $usercheck = 0;
 
-                                                        for my $c ( reverse 0 .. $#messages ) {
+                            for my $c ( reverse 0 .. $#messages ) {
                                 (
                                     $msub,      $mname, $memail,  $mdate,
                                     $musername, $micon, $mattach, $mip,
                                     $message,   $mns
                                 ) = split /\|/xsm, $messages[$c];
 
-                                                                if ($curuser eq $musername) {
-                                                                        my @i = @data;
-                                                                        push @i, $mdate;
-                                                                        @data = reverse sort { $a <=> $b } @i;
-                                                                        if (pop(@data) != $mdate) {
-                                                                                chomp $mns;
+                                if ( $curuser eq $musername ) {
+                                    my @i = @data;
+                                    push @i, $mdate;
+                                    @data = reverse sort { $a <=> $b } @i;
+                                    if ( pop(@data) != $mdate ) {
+                                        chomp $mns;
                                         $data{$mdate} = [
                                             $curboard, $tnum,    $c,
                                             $tname,    $msub,    $mname,
@@ -3690,76 +3692,76 @@ sub usersrecentposts {
                                             $micon,    $mattach, $mip,
                                             $message,  $mns,     $tstate
                                         ];
-                                                                                if (${$recent{$tnum}}[1] < $mdate) {
-                                                                                        $save_recent = 1;
-                                                                                        ${$recent{$tnum}}[1] = $mdate;
-                                                                                }
-                                                                        }
-                                                                        $usercheck = 1;
-                                                                }
-                                                        }
-
-                                                        if (!$usercheck) {
-                                                                $save_recent = 1;
-                                                                delete $recent{$tnum};
-                                                        }
-                                                }
+                                        if ( ${ $recent{$tnum} }[1] < $mdate ) {
+                                            $save_recent = 1;
+                                            ${ $recent{$tnum} }[1] = $mdate;
                                         }
+                                    }
+                                    $usercheck = 1;
                                 }
+                            }
+
+                            if ( !$usercheck ) {
+                                $save_recent = 1;
+                                delete $recent{$tnum};
+                            }
                         }
+                    }
                 }
+            }
         }
+    }
 
-        undef %boardtxt;
+    undef %boardtxt;
 
-        if ($save_recent) { Recent_Save($curuser);}
+    if ($save_recent) { Recent_Save($curuser); }
 
-        if ($display == 1) {
-                return if !$data[0];
+    if ( $display == 1 ) {
+        return if !$data[0];
         (
             $board,   $tnum,   $c,       $tname,     $msub,
             $mname,   $memail, $mdate,   $musername, $micon,
             $mattach, $mip,    $message, $mns,       $tstate
         ) = @{ $data{ $data[0] } };
-                ToChars($msub);
-                ($msub, undef) = Split_Splice_Move($msub,0);
+        ToChars($msub);
+        ( $msub, undef ) = Split_Splice_Move( $msub, 0 );
         return ( timeformat($mdate)
               . qq~<br />$profile_txt{'view'} &rsaquo; <a href="$scripturl?num=$tnum/$c#$c">$msub</a>~
         );
-        }
+    }
 
-        LoadCensorList();
+    LoadCensorList();
 
-        for my $i ( 0 .. ( @data - 1 ) ) {
-                next if !$data[$i];
+    for my $i ( 0 .. ( @data - 1 ) ) {
+        next if !$data[$i];
 
         (
             $board,   $tnum,   $c,       $tname,     $msub,
             $mname,   $memail, $mdate,   $musername, $micon,
             $mattach, $mip,    $message, $mns,       $tstate
         ) = @{ $data{ $data[$i] } };
-                ($msub, undef) = Split_Splice_Move($msub,0);
-                wrap();
-                $displayname = $mname;
-                ($message, undef) = Split_Splice_Move($message,$tnum);
-                if ($enable_ubbc) {
-                        $ns = $mns;
-                        if (!$yyYaBBCloaded) { require "$sourcedir/YaBBC.pl"; }
-                        DoUBBC();
-                }
-                wrap2();
-                ToChars($msub);
-                ToChars($message);
-                $msub = Censor($msub);
-                $message = Censor($message);
-                ToChars(${$catinfos{$board}}[0]);
-                ToChars($boardname{$board});
+        ( $msub, undef ) = Split_Splice_Move( $msub, 0 );
+        wrap();
+        $displayname = $mname;
+        ( $message, undef ) = Split_Splice_Move( $message, $tnum );
+        if ($enable_ubbc) {
+            $ns = $mns;
+            enable_yabbc();
+            DoUBBC();
+        }
+        wrap2();
+        ToChars($msub);
+        ToChars($message);
+        $msub    = Censor($msub);
+        $message = Censor($message);
+        ToChars( ${ $catinfos{$board} }[0] );
+        ToChars( $boardname{$board} );
 
-                $mdate = timeformat($mdate);
+        $mdate = timeformat($mdate);
 
-                $counter++;
+        $counter++;
 
-                $showProfile .= qq~
+        $showProfile .= qq~
 <table class="bordercolor cs_thin" style="table-layout: fixed;">
     <col style="width:5%" />
     <tr>
@@ -3773,7 +3775,7 @@ sub usersrecentposts {
                     <td>$maintxt{'109'} $tname | $maintxt{'197'} ${$uid.$curuser}{'realname'}</td>
                     <td class="right">&nbsp;~;
 
-                if ($tstate != 1) {
+        if ( $tstate != 1 ) {
             if ( ${ $uid . $username }{'thread_notifications'} =~ /\b$tnum\b/ )
             {
                 $notify =
@@ -3782,12 +3784,12 @@ qq~$menusep<a href="$scripturl?action=notify3;num=$tnum/$c;oldnotify=1">$img{'de
             else {
                 $notify =
 qq~$menusep<a href="$scripturl?action=notify2;num=$tnum/$c;oldnotify=1">$img{'add_notify'}</a>~;
-                        }
+            }
             $showProfile .=
 qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$c#$c;title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num=$tnum;quote=$c;title=PostReply">$img{'recentquote'}</a>$notify &nbsp;~;
-                }
+        }
 
-                $showProfile .= qq~
+        $showProfile .= qq~
                     </td>
                 </tr>
             </table>
@@ -3796,21 +3798,21 @@ qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$c#$c;title=PostReply"
         <td class="windowbg2 vtop" style="height:80px" colspan="2"><div style="float: left; width: 99%; overflow: auto;">$message</div></td>
     </tr>
 </table><br />~;
-        }
+    }
 
-        if (!$counter) {
+    if ( !$counter ) {
         $showProfile .=
           qq~<span class="text1"><b>$profile_txt{'755'}</b></span>~;
     }
     elsif ( !$view ) {
         $showProfile .=
 qq~<p><a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}"><b>$profile_txt{'92'} ${$uid.$curuser}{'realname'}</b></a></p>~;
-        }
+    }
 
-        if ($img_greybox) {
+    if ($img_greybox) {
         $yyinlinestyle .=
 qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/css" />\n~;
-                $yyjavascript .= qq~
+        $yyjavascript .= qq~
 var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 // -->
 </script>
@@ -3819,37 +3821,37 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 <script type="text/javascript" src="$yyhtml_root/greybox/gb_scripts.js"></script>
 <script type="text/javascript">
 <!--~;
-        }
+    }
 
-        $yytitle = "$profile_txt{'458'} ${$uid.$curuser}{'realname'}";
-        if (!$view) {
-                $yynavigation = qq~&rsaquo; $maintxt{'213'}~;
-                $yymain .= $showProfile;
-                template();
-        }
-        return;
+    $yytitle = "$profile_txt{'458'} ${$uid.$curuser}{'realname'}";
+    if ( !$view ) {
+        $yynavigation = qq~&rsaquo; $maintxt{'213'}~;
+        $yymain .= $showProfile;
+        template();
+    }
+    return;
 }
 
 sub DrawGroups {
-        my ($availgroups,$position,$show_additional) = @_;
-        my (%groups, $groupsel, $name, $additional);
-        map { $groups{$_} = 1; } split /,/xsm, $availgroups;
+    my ( $availgroups, $position, $show_additional ) = @_;
+    my ( %groups, $groupsel, $name, $additional );
+    map { $groups{$_} = 1; } split /,/xsm, $availgroups;
 
-        foreach my $key (@nopostorder) {
+    foreach my $key (@nopostorder) {
         (
             $name, undef, undef, undef, undef, undef,
             undef, undef, undef, undef, $additional
         ) = split /\|/xsm, $NoPost{$key};
-                next if (!$show_additional && !$additional) || $position eq $key;
+        next if ( !$show_additional && !$additional ) || $position eq $key;
 
         $groupsel .=
             qq~<option value="$key"~
           . ( $groups{$key} ? ' selected="selected"' : q{} )
           . qq~>$name</option>~;
-                $selsize++;
-        }
+        $selsize++;
+    }
 
-        ($groupsel,($selsize > 6 ? 6 : $selsize));
+    ( $groupsel, ( $selsize > 6 ? 6 : $selsize ) );
 }
 
 1;
