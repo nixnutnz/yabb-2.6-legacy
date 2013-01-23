@@ -8,7 +8,7 @@
 /*--------------------------------------------------------*/
 /*   This is the css file for YaBB 2.5.4 default Template */
 /*--------------------------------------------------------*/
-/* $Revision: 1.7 $ */
+/* $Revision: 1.9 $ */
 
 body {
 background-color:#F2F6F9;
@@ -657,7 +657,7 @@ float: left;
 }
 
 textarea#message {
-position: absolute;
+/*position: absolute;*/
 top: 0px;
 left: 0px;
 z-index: 2;
@@ -1005,4 +1005,19 @@ text-decoration:underline;
 
 .pointer {
 cursor:pointer;
+}
+.pass_box {
+float:left; width: 150px; height: 20px; text-align:left;
+}
+
+.pstrength-bar {
+border: 1px solid #FFFFFF; height: 4px;
+}
+
+#cappasswrd1, #cappasswrd2, #cappasswrd1_char, #cappasswrd2_char {
+clear:left; color: red; font-weight: bold; display: none;
+}
+
+#password-strength-meter {
+background: transparent url(./default/empty_bar.gif) repeat-x center left; height: 4px;
 }
