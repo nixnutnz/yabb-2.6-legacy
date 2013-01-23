@@ -25,13 +25,13 @@ if ($action eq 'detailedversion') { return 1; }
 use LWP::UserAgent;
 use HTTP::Request::Common;
 
-my $ua = LWP::UserAgent->new(agent => 'GoogieSpell Client');
-my $reqXML = "";
+$ua = LWP::UserAgent->new(agent => 'GoogieSpell Client');
+$reqXML = "";
 
 read (STDIN, $reqXML, $ENV{'CONTENT_LENGTH'});
 
-my $url = "https://www.google.com/tbproxy/spell?$ENV{QUERY_STRING}";
-my $res = $ua->request(POST $url, Content_Type => 'text/xml', Content => $reqXML);
+$url = "https://www.google.com/tbproxy/spell?$ENV{QUERY_STRING}";
+$res = $ua->request(POST $url, Content_Type => 'text/xml', Content => $reqXML);
 
 die "$res->{_content}" if $res->{_content} =~ /LWP.+https.+Crypt::SSLeay/;
 
