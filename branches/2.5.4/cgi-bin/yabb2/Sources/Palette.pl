@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$paletteplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$paletteplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub ColorPicker {
@@ -39,7 +39,7 @@ sub ColorPicker {
 <head>
 <title>Palette</title>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<link rel="stylesheet" href="$forumstylesurl/$usestyle.css" type="text/css" />
+<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
 
 <script language="JavaScript1.2" type="text/javascript">
 <!--
