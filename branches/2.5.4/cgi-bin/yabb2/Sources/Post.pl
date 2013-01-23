@@ -14,9 +14,9 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.91;
+our $VERSION = 1.93;
 
-$postplver = 'YaBB 2.5.4 $Revision: 1.91 $';
+$postplver = 'YaBB 2.5.4 $Revision: 1.93 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Post');
@@ -126,10 +126,10 @@ sub Post {
     if ( $iamguest && $gpvalid_en ) {
         validation_code();
         $verification_field = $verification eq q{}
-          ? qq~<tr class="windowbg>
+          ? qq~<tr class="windowbg">
                 <td class="vtop"><label for="verification"><b>$floodtxt{'1'}:</b></label></td>
                 <td>$showcheck<br /><label for="verification"><span class="small">$flood_text</span></label></td>
-            </tr><tr class="windowbg>
+            </tr><tr class="windowbg">
                 <td class="vtop"><label for="verification"><b>$floodtxt{'3'}:</b></label></td>
                 <td>
                 <input type="text" maxlength="30" name="verification" id="verification" size="30" />
@@ -536,7 +536,7 @@ qq~             document.write('<img src="$tmpurl" class="bottom pointer" alt="$
     }
 
     if ( $showsmdir == 1 ) {
-        opendir  DIR, "$smiliesdir";
+        opendir  DIR, "$htmldir/Smilies";
         @contents = readdir DIR;
         closedir DIR;
         foreach my $line ( sort { uc($a) cmp uc $b } @contents ) {
@@ -548,7 +548,7 @@ qq~             document.write('<img src="$tmpurl" class="bottom pointer" alt="$
             {
                 if ( $line !~ /banner/ism ) {
                     $moresmilieslist .=
-qq~             document.write('<img src="$smiliesurl/$line" class="bottom" alt="$name" title="$name" onclick="javascript: MoreSmilies($i);" style="cursor: hand;" />$SmilieLinebreak[$i] ');\n~;
+qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bottom" alt="$name" title="$name" onclick="javascript: MoreSmilies($i);" style="cursor: hand;" />$SmilieLinebreak[$i] ');\n~;
                     $more_smilie_array .= qq~" [smiley=$line]", ~;
                     $i++;
                 }
@@ -1025,7 +1025,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                 }
             }
             if ( $showsmdir == 2 ) {
-                opendir DIR, "$smiliesdir";
+                opendir DIR, "$htmldir/Smilies";
                 @contents = readdir DIR;
                 closedir DIR;
                 foreach my $line ( sort { uc($a) cmp uc $b } @contents ) {
@@ -1043,7 +1043,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                                 ? ' selected="selected"'
                                 : q{}
                               ) . qq~>$name</option>');\n~;
-                            $smilie_url_array  .= qq~"$smiliesurl/$line", ~;
+                            $smilie_url_array  .= qq~"$yyhtml_root/Smilies/$line", ~;
                             $smilie_code_array .= qq~" [smiley=$line]", ~;
                             $i++;
                         }
@@ -1460,7 +1460,7 @@ var edittxt = '$edittext';
 var dispname = '$displayname';
 var scrpurl = '$scripturl';
 var imgdir = '$defaultimagesdir';
-var ubsmilieurl = '$smiliesurl';
+var ubsmilieurl = '$yyhtml_root/Smilies';
 var parseflash = '$parseflash';
 var autolinkurl = '$autolinkurls';
 var Month = new Array($jsmonths);
@@ -1762,7 +1762,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     wrap();
     ( $message, undef ) = Split_Splice_Move( $message, $threadid );
     if ($enable_ubbc) {
-        if ( !$yyYaBBCloaded ) { require "$sourcedir/YaBBC.pl"; }
+        enable_yabbc();
         DoUBBC();
     }
     wrap2();
@@ -3331,6 +3331,24 @@ sub modAlert {
                   </tr>~
           : q{};
     }
+    if ($iamguest && $spam_questions_gp && -e "$langdir/$language/spam.questions") {
+        SpamQuestion();
+        my $verification_question_desc;
+        if ($spam_questions_case) { $verification_question_desc = qq~<br />$post_txt{'verification_question_case'}~; }
+        $verification_question_field = $verification_question eq q{} 
+        ? qq~<tr>
+				<td class="windowbg vtop">
+				    <label for="verification_question"><b>$spam_question</b><br />
+				    <span class="small">$post_txt{'verification_question_desc'}$verification_question_desc</span></label>
+				</td>
+				<td class="windowbg vtop">
+				    <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" />
+				    <input type="hidden" name="verification_question_id" value="$spam_question_id" />
+				    <input type="hidden" name="spam_question" value="$spam_question" />
+				</td>
+			</tr>~
+		 : q{};
+    }
 
     $sub        = q{};
     $settofield = 'subject';
@@ -3417,6 +3435,7 @@ sub modAlert2 {
 
     # Get the form values
     $name     = $FORM{'name'};
+    $gname    = $FORM{'name'};
     $email    = $FORM{'email'};
     $subject  = $FORM{'subject'};
     $message  = $FORM{'message'};
@@ -3445,7 +3464,7 @@ sub modAlert2 {
             Preview( $post_txt{'500'} );
         }
 
-        ## clean name and email - remove | from name and turn any _ to spaces fro amil
+        ## clean name and email - remove | from name and turn any _ to spaces for email
         ToHTML($name);
         $tempname = $name;
         $name  =~ s/_/ /gsm;
@@ -3555,8 +3574,8 @@ sub modAlert2 {
     my $x;
     my $mods    = ${ $uid . $currentboard }{'mods'};
     my $modgrps = ${ $uid . $currentboard }{'modgroups'};
-    $modgrps =~ s/, /,/gsm
-      ; # because modgroups are saved with ' ' and this MyCenter.pl does not understand ;-)
+    $modgrps =~ s/, /,/gsm;
+        # because modgroups are saved with ' ' and this MyCenter.pl does not understand ;-)
         # If no BM is allowed and no mods is assigned => send the "AlertMod" to admin
     if ( !$PMenableBm_level && !$mods ) {
         $mods = $mods ? $mods : 'admin';
@@ -3613,8 +3632,10 @@ sub modAlert2 {
                         'message' => $chmessage
                     }
                 );
+                if ($iamguest) {$fromname = $gname;}
+                else {$fromname = ${ $uid . $username }{'realname'};}
                 sendmail( ${ $uid . $toBoardMod }{'email'},
-                    $notify_txt{'145'}, $chmessage, q{}, $emailcharset );
+                    qq~$notify_txt{'145'} $fromname ($msubject)~, $chmessage, q{}, $emailcharset );
 
             }
             elsif ( $PMenableBm_level && $x ) {
@@ -3625,17 +3646,20 @@ sub modAlert2 {
                     if ( $_ && $modgrps =~ /\b$_\b/xsm ) { next MANAGEMODS; }
                 }
             }
-
+            if ( $iamguest ) { $mstatus = q~ga~; }
+            else { $mstatus = q~a~; } 
             # Send message to user
             fopen( INBOX, "$memberdir/$toBoardMod.msg" );
             my @inmessages = <INBOX>;
             fclose(INBOX);
             fopen( INBOX, ">$memberdir/$toBoardMod.msg" );
             print {INBOX}
-"$newthreadid|$name|$toBoardMod|||$subject|$date|$message|$newthreadid|0|$ENV{'REMOTE_ADDR'}|a|u||\n"
+"$newthreadid|$name|$toBoardMod|||$subject|$date|$message|$newthreadid|0|$user_ip|$mstatus|u||\n"
               or croak 'cannot print INBOX';
             print {INBOX} @inmessages or croak 'cannot print INBOX';
             fclose(INBOX);
+            require "$sourcedir/MyCenter.pl";
+            updateIMS( $toBoardMod, $newthreadid, 'messagein' );
         }
     }
 
