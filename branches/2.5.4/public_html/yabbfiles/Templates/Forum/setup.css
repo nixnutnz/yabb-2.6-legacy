@@ -1,0 +1,70 @@
+/*------------------------------------------------------------------*/
+/*                       YaBB 2012                                  */
+/*------------------------------------------------------------------*/
+/*       Created by: YaBB http://www.yabbforum.com                  */
+/*------------------------------------------------------------------*/
+/*     You may adapt elements of this CSS in your own               */
+/*    projects, but please give credit to yabbforum.com.            */
+/*------------------------------------------------------------------*/
+/*    This is the css file for YaBB 2.5.4 Setup/Converter Utility   */
+/*------------------------------------------------------------------*/
+/* $Revision: 1.1 $ */
+
+.borderbox {
+padding: 0px; width: 100%; margin-left: 0px; margin-right: 0px;
+}
+
+/*setup */
+.div45 {
+float: left; width: 45%; text-align: left; font-size: 12px; padding-top: 2px; padding-bottom: 2px;
+}
+
+.div55 {
+float: left; width: 55%; text-align: left; font-size: 12px; padding-top: 2px; padding-bottom: 2px;
+}
+
+.div98 {
+float: left; width: 98%; color: #900000; font-size: 11px; padding: 2px;
+}
+
+/*converter */
+
+.fontbigger {
+font-size: 11px;
+}
+
+.convdone {
+float: left; width: 250px; height: 14px; color: #FF3333;
+}
+
+.convnotdone {
+float: left; width: 250px; height: 14px; color: #bbbbbb;
+}
+
+.divouter {
+float: left; width: 102px; height: 10px; margin: 1px; background-color: #dddddd; border: 1px black solid; font-size: 5px;
+}
+
+.divouter_center {
+float: left; width: 102px; height: 10px; margin: 1px; background-color: #dddddd; border: 1px black solid; font-size: 10px; text-align :center;
+}
+
+.divvary {
+position: relative; top: 0px; left: 0px; height: 10px; margin: 0px; background-color: #6699cc; border: 0px; font-size: 5px;
+}
+
+.divvary2 {
+float: left; width: 50px; height: 14px; text-align: right; color: #FF3333;
+}
+.divvary3 {
+float: left; width: 50px; height: 14px; text-align: right; color: #bbbbbb;
+}
+
+.totals {
+float: left; width: 350px; height: 14px;
+}
+
+.divvary_m {
+float: left; width: 102px; height: 10px; margin: 1px; background-color: #6699cc; border: 1px black solid; font-size: 5px;
+}
+
