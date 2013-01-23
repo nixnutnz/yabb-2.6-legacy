@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$downloadsplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$downloadsplver = 'YaBB 2.5.4 $Revision: 1.4 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub DownloadView {
@@ -25,9 +25,9 @@ sub DownloadView {
 <head>
 <title>$fatxt{'39'}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
-<link rel="stylesheet" href="$forumstylesurl/$usestyle.css" type="text/css" />
+<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
 
-<script language="JavaScript1.2" type="text/javascript">
+<script type="text/javascript">
 <!--
 	function download_file(amfn) {
 		window.open('$scripturl?action=downloadfile;file=' + encodeURIComponent(amfn),'_blank');
@@ -87,10 +87,10 @@ sub DownloadView {
 
 	} else {
 		if ($iamadmin || $iamgmod) {
-			&LoadLanguage('Admin');
+			LoadLanguage('Admin');
 
 			$output .= qq~
-		<script language="JavaScript1.2" type="text/javascript">
+		<script type="text/javascript">
 		<!--
 			function checkAll() {
   				for (var i = 0; i < document.del_attachments.elements.length; i++) {
@@ -175,7 +175,7 @@ sub DownloadView {
 			$amfn =~ /\.(.+?)$/;
 			$ext = $1;
 			unless (exists $attach_gif{$ext}) {
-				$attach_gif{$ext} = ($ext && -e "$forumstylesdir/$useimages/$ext.gif") ? "$ext.gif" : "paperclip.gif";
+				$attach_gif{$ext} = ($ext && -e "$htmldir/Templates/Forum/$useimages/$ext.gif") ? "$ext.gif" : "paperclip.gif";
 			}
 
 			$amdate = &timeformat($amdate);
