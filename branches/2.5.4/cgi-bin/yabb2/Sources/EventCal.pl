@@ -15,10 +15,10 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.8;
+our $VERSION = 1.9;
 use Time::Local 'timelocal';
 
-$eventcalplver = 'YaBB 2.5.4 $Revision: 1.8 $';
+$eventcalplver = 'YaBB 2.5.4 $Revision: 1.9 $';
 if ($action eq 'detailedversion') { return 1; }
 
 LoadLanguage('EventCal');
@@ -846,7 +846,7 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_event|$cal_icon|$cal_noname|$cal
 				$icon_text = $var_cal{$cico};
                 if ( !$var_cal{$cico} ) { $icon_text = calicontext($cico); }
 				$message = $ceve;
-                if ( !$yyYaBBCloaded ) { require "$sourcedir/YaBBC.pl"; }
+                enable_yabbc();
                 DoUBBC();
 				$event_message = $message;
 
@@ -1016,7 +1016,7 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_event|$cal_icon|$cal_noname|$cal
 				$icon_text = $var_cal{$cico};
                 if ( !$var_cal{$cico} ) { $icon_text = calicontext($cico); }
 				$message = $ceve;
-                if ( !$yyYaBBCloaded ) { require "$sourcedir/YaBBC.pl"; }
+                enable_yabbc();
                 DoUBBC();
 				$event_message = $message;
 
@@ -1297,7 +1297,7 @@ qq~<br /><br /><a  href="$scripturl?action=get_cal;calshow=1;eventdate=$cyear$cm
 		}
 		if ($enable_ubbc) {
 			$message = $cevent;
-			if (!$yyYaBBCloaded) { require "$sourcedir/YaBBC.pl"; }
+			enable_yabbc();
             DoUBBC();
 			$cevent = $message;
 		}
@@ -1702,7 +1702,7 @@ sub add_cal {
     if ( !$Show_EventCal || ( $iamguest && $Show_EventCal != 2 ) ) {
         fatal_error('not_allowed');
     }
-	if ($iamguest && $gpvalid_en) {
+	if ( $iamguest && $gpvalid_en ) {
 		require "$sourcedir/Decoder.pl";
         validation_check( $FORM{'verification'} );
 	}
