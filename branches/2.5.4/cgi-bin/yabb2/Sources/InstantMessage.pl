@@ -16,9 +16,9 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.9;
+our $VERSION = 1.92;
 
-$instantmessageplver = 'YaBB 2.5.4 $Revision: 1.9 $';
+$instantmessageplver = 'YaBB 2.5.4 $Revision: 1.92 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 require "$sourcedir/Postbox.pl";
 
@@ -591,7 +591,7 @@ qq~				document.write('<img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="
         }
 
         if ( $showsmdir == 1 ) {
-            opendir DIR, "$smiliesdir";
+            opendir DIR, "$htmldir/Smilies";
             @contents = readdir DIR;
             closedir DIR;
             foreach my $line ( sort { uc($a) cmp uc $b } @contents ) {
@@ -603,7 +603,7 @@ qq~				document.write('<img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="
                 {
                     if ( $line !~ /banner/ism ) {
                         $moresmilieslist .=
-qq~				document.write('<img src="$smiliesurl/$line" alt="$name" onclick="javascript: MoreSmilies($i);" style="cursor: hand; vertical-align:bottom" />$SmilieLinebreak[$i] ');\n~;
+qq~				document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javascript: MoreSmilies($i);" style="cursor: hand; vertical-align:bottom" />$SmilieLinebreak[$i] ');\n~;
                         $more_smilie_array .= qq~" [smiley=$line]", ~;
                         $i++;
                     }
@@ -743,7 +743,7 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="
         }
     }
     if ( $showsmdir == 2 ) {
-        opendir DIR, "$smiliesdir";
+        opendir DIR, "$htmldir/Smilies";
         @contents = readdir DIR;
         closedir DIR;
         foreach my $line ( sort { uc($a) cmp uc $b } @contents ) {
@@ -754,7 +754,7 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="
                 || $extension =~ /png/ism )
             {
                 if ( $line !~ /banner/ism ) {
-                    $smilie_url_array  .= qq~"$smiliesurl/$line", ~;
+                    $smilie_url_array  .= qq~"$yyhtml_root/Smilies/$line", ~;
                     $smilie_code_array .= qq~" [smiley=$line]", ~;
                     $i++;
                 }
@@ -860,7 +860,7 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="
 			var dispname = '$displayname';
 			var scrpurl = '$scripturl';
 			var imgdir = '$defaultimagesdir';
-			var ubsmilieurl = '$smiliesurl';
+			var ubsmilieurl = '$yyhtml_root/Smilies';
 			var parseflash = '$parseflash';
 			var autolinkurl = '$autolinkurls';
 			var Month = new Array($jsmonths);
@@ -1135,7 +1135,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                     }
                 }
             }
-            ## check and see if 1) username is marked 'away' 2) they left a message 3) you haven't already had an auto-reply
+            ## check and see if 1) username is marked 'away' 2) they left a message 3) you have not already had an auto-reply
             my $sendAutoReply = 1;
             if (   ${ $uid . $UserTo }{'offlinestatus'} eq 'away'
                 && ${ $uid . $UserTo }{'awayreply'} ne q{}
@@ -1221,7 +1221,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                         $chmessage = regex_4($chmessage);
                         sendmail(
                             $useremail,
-                            $notify_txt{'145'},
+                            qq~$notify_txt{'145'} $fromname ($msubject)~,
                             template_email(
                                 $privatemessagenotificationemail,
                                 {
@@ -1769,7 +1769,7 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
             }
         }
 
-        if ( $mstatus eq 'g' ) {
+        if ( $mstatus eq 'g' || $mstatus eq 'ga' ) {
             my ( $guestName, $guestEmail ) = split / /sm, $musername;
             $guestName =~ s/%20/ /gsm;
             $usernamelinkfrom =
@@ -1919,7 +1919,7 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
         }
         $usernamelinkto =~ s/, $//sm;
 
-        if ( $mstatus eq 'g' ) {
+        if ( $mstatus eq 'g' || $mstatus eq 'ga' ) {
             my ( $guestName, $guestEmail ) = split / /sm, $musername;
             $guestName =~ s/%20/ /gsm;
             $usernamelinkfrom =
@@ -1938,7 +1938,7 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
         $fromTitle = qq~$inmes_txt{'318'}:~;
 
     }
-    elsif ( $INFO{'caller'} == 5 && $mstatus eq 'g' ) {
+    elsif ( $INFO{'caller'} == 5 && ( $mstatus eq 'ga' || $mstatus eq 'ga' ) ) {
         my ( $guestName, $guestEmail ) = split / /sm, $musername;
         $guestName =~ s/%20/ /gsm;
         $usernamelinkfrom =
@@ -1974,7 +1974,7 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
     $message = $immessage;
     wrap();
     if ($enable_ubbc) {
-        if ( !$yyYaBBCloaded ) { require "$sourcedir/YaBBC.pl"; }
+        enable_yabbc();
         DoUBBC();
     }
     wrap2();
@@ -2028,18 +2028,18 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
 </tr><tr>
 	<td class="windowbg2 vtop" colspan="2">
 		<div style="width: 99%; padding: 2px; margin: 2px;">
-		<span class="small" style="width: 99%;">
-		<b>$inmes_txt{'70'}: $msub</b><br />
-		<b>$inmes_txt{'317'}:</b> $mydate
-		</span>
+			<span class="small" style="width: 99%;">
+				<b>$inmes_txt{'70'}: $msub</b><br />
+				<b>$inmes_txt{'317'}:</b> $mydate
+			</span>
 		</div>
 	</td>
 </tr><tr>
 	<td class="windowbg2 vtop" colspan="2">
 		<div style="width: 99%; padding: 2px; margin: 2px;">
-		<span class="message" style="float: left; width: 99%; overflow: auto; padding-bottom: 10px; margin-bottom: 10px;">
-		$message
-		</span>
+			<span class="message" style="float: left; width: 99%; overflow: auto; padding-bottom: 10px; margin-bottom: 10px;">
+			$message
+			</span>
 		</div>
 	</td>
 </tr>~;
@@ -2047,9 +2047,9 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
     if ($signature) {
         $showIM .= qq~<tr>
 	<td class="windowbg2 right" colspan="2">
-	<div style="float: left; width: 99%; padding-top: 2px; margin-top: 2px; text-align: left;">
-		<span class="small">$signature</span>
-	</div>
+		<div style="float: left; width: 99%; padding-top: 2px; margin-top: 2px; text-align: left;">
+			<span class="small">$signature</span>
+		</div>
 	</td>
 </tr>~;
     }
@@ -2064,24 +2064,24 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
 
     $showIM .= qq~<tr>
 	<td class="windowbg right" colspan="2">
-	<div style="float: left; width: 99%; padding-top: 5px; margin-top: 2px; text-align: right;">
-		<span class="small"><img src="$imagesdir/ip.gif" alt="" /> $imip</span>
-	</div>
+		<div style="float: left; width: 99%; padding-top: 5px; margin-top: 2px; text-align: right;">
+			<span class="small"><img src="$imagesdir/ip.gif" alt="" /> $imip</span>
+		</div>
 	</td>
 </tr><tr>
 	<td class="windowbg2" colspan="2">
-	<div style="float: left; text-align: left; width: 55%; padding: 2px; margin: 2px;">
-		<span class="small">$postMenuTemp</span>
-	</div>
-	<div style="float: right; text-align: right; width: 40%; padding: 2px; margin: 2px;">
-	<span class="small">~;
+		<div style="float: left; text-align: left; width: 55%; padding: 2px; margin: 2px;">
+			<span class="small">$postMenuTemp</span>
+		</div>
+		<div style="float: right; text-align: right; width: 40%; padding: 2px; margin: 2px;">
+			<span class="small">~;
 
     $mreplyno++;
     if (   $INFO{'caller'} == 1
         || ( $INFO{'caller'} == 3 && $musername ne q{} )
         || ( $INFO{'caller'} == 5 && $musername ne q{} ) )
     {    ## inbox / stored inbox can reply/quote
-        if ( $mstatus eq 'g' ) {
+        if ( $mstatus eq 'g' || $mstatus eq 'ga' ) {
             $showIM .=
 qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;replyguest=1;id=$messageid">$img{'reply_ims'}</a>~;
         }
@@ -2105,15 +2105,18 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;repl
 			<a href="$scripturl?action=deletemultimessages;caller=$INFO{'caller'};deleteid=$messageid" onclick="return confirm('$inmes_txt{'770'}');">$img{'im_remove'}</a>
 		~;
     }
+    $showIM .= qq~
+            <a href="$scripturl?action=imprint;caller=$INFO{'caller'};id=$messageid" target="_blank">$img{'print'}</a>
+        ~; 
 
     my $notme = $musername eq $username ? $mtousers : $musername;
     $notme = ${ $uid . $notme }{'realname'};
     $showIM .= q~</span>
-	</div>
-	</td>
-</tr><tr>
-<td class="windowbg2 right" colspan="2">
-	<div style="float: left; text-align: left; padding: 2px; margin: 2px;"><span class="small">~
+			</div>
+		</td>
+	</tr><tr>
+		<td class="windowbg2 right" colspan="2">
+			<div style="float: left; text-align: left; padding: 2px; margin: 2px;"><span class="small">~
       . (
         $notme
         ? qq~<a href="$scripturl?action=pmsearch;searchtype=user;search=$notme">$inmes_imtxt{'42'} <i>$notme</i></a>~
@@ -2121,9 +2124,9 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;repl
       )
       . qq~</span>
      		</div>
-	<div style="float: right; text-align: right; padding: 2px; margin: 2px;"><span class="small">$PMnav</span></div>
-</td>
-</tr>
+			<div style="float: right; text-align: right; padding: 2px; margin: 2px;"><span class="small">$PMnav</span></div>
+		</td>
+	</tr>
 </table>
 ~;
 
@@ -2168,7 +2171,7 @@ sub doshowims {
 
     wrap();
     if ($enable_ubbc) {
-        if ( !$yyYaBBCloaded ) { require "$sourcedir/YaBBC.pl"; }
+        enable_yabbc();
         DoUBBC();
     }
     wrap2();
@@ -2270,13 +2273,13 @@ sub links_to {
             my $opt1 = $opts2[1]->[$i];
 
             if ( $uname eq $opt0 ) {
-                $usernamelinkto .= $opt1 . q{, };
+                $usernamelinkto = $opt1 . q{, };
             }
         }
     }
     else {
         my ( $title, undef ) = split /\|/xsm, $NoPost{$uname}, 2;
-        $usernamelinkto .= qq~<b>$title</b>~ . q{, };
+        $usernamelinkto = qq~<b>$title</b>~ . q{, };
     }
     return $usernamelinkto;
 }
