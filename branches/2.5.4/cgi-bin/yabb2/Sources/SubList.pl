@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$sublistplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$sublistplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 %director=( # in alphabetical Order!
@@ -146,7 +146,6 @@ if ($action eq 'detailedversion') { return 1; }
 'sendtopic',"SendTopic.pl&SendTopic",
 'sendtopic2',"SendTopic.pl&SendTopic2",
 'setgtalk',"Display.pl&SetGtalk",
-'setmsn',"Display.pl&SetMsn",
 'shownotify',"MyCenter.pl&mycenter",
 'showvoters',"Poll.pl&votedetails",
 'smilieindex',"DoSmilies.pl&SmilieIndex",
