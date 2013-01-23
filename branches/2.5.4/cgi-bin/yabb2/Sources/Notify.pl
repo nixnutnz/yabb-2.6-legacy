@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$notifyplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+$notifyplver = 'YaBB 2.5.4 $Revision: 1.31 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Notify');
@@ -471,7 +471,7 @@ sub NotificationAlert {
 	&LoadCensorList if $action eq 'shownotify';
 
 	## load board names
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; } # for $board{...}
+	get_forum_master(); # for $board{...}
 
 	foreach $mythread (@tmaildir) { # number of next thread
 		# see if thread exists and search for it if moved
