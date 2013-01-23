@@ -734,7 +734,7 @@ sub Register2 {
 #	      $regpass = $member{'passwrd1'};
           if ($emailpassword) { $regpass = $member{'passwrd1'}; }
         else { $regpass = encode_password($member{'passwrd1'}); } 
-	    fopen(INACT, ">>$memberdir/memberlist.inactive", 1);
+        fopen(INACT, ">>$memberdir/memberlist.inactive", 1);
 		print INACT "$date|$activationcode|$reguser|$regpass|$member{'email'}|$user_ip\n";
 		fclose(INACT);
 		fopen(REGLOG, ">>$vardir/registration.log", 1);
