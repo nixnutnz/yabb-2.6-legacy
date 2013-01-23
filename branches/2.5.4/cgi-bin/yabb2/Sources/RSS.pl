@@ -152,7 +152,7 @@ sub RSS_board {
 			if ($enable_ubbc) {
 					&LoadUser($musername);
 					$displayname = ${$uid.$musername}{'realname'};
-					&DoUBBC;
+					DoUBBC();
 			}
 			&FromHTML($message);
 			&ToChars($message);
@@ -302,10 +302,10 @@ sub RSS_recent {
 			if (-e "$memberdir/$musername.vars") {
 				&LoadUser($musername);
 				if (!${$uid.$musername}{'hidemail'}){
-					$yymain .= qq~			<author>~ . &RSSDescriptionTrim("${$uid.$musername}{'email'} (${$uid.$musername}{'realname'})") . qq~</author>\n~;
+					$yymain .= qq~			<author>~ . RSSDescriptionTrim("${$uid.$musername}{'email'} (${$uid.$musername}{'realname'})") . qq~</author>\n~;
 				}
 				else {
-					$yymain .= qq~			<author><name>~ . &RSSDescriptionTrim("${$uid.$musername}{'realname'}") . qq~</name></author>\n~;
+					$yymain .= qq~			<author><name>~ . RSSDescriptionTrim("${$uid.$musername}{'realname'}") . qq~</name></author>\n~;
 				}
 			}
 		}
@@ -313,16 +313,16 @@ sub RSS_recent {
 		if ($showdate) {
 			$mdate = $curnum if $rss_message == 2; # Sort by topic creation if requested.
 			# Get the date how the user wants it.
-			my $realdate = &RFC822Date($mdate);
+			my $realdate = RFC822Date($mdate);
 			$yymain .= qq~			<pubDate>$realdate</pubDate>\n~;
 		}
 
 		if ($message ne '') {
-			($message, undef) = &Split_Splice_Move($message,$curnum);
+			($message, undef) = Split_Splice_Move($message,$curnum);
 			if ($enable_ubbc) {
-					&LoadUser($musername);
+					LoadUser($musername);
 					$displayname = ${$uid.$musername}{'realname'};
-					&DoUBBC;
+					DoUBBC();
 			}
 			&FromHTML($message);
 			&ToChars($message);
@@ -333,11 +333,11 @@ sub RSS_recent {
 		$yymain .= qq~		</item>\n~;
 	}
 
-	&ToChars($boardname);
+	ToChars($boardname);
 	$yytitle = "$topics $maintxt{'214b'}";
 	$yydesc = ${$uid.$curboard}{'description'};
 
-	&RSS_template();
+	RSS_template();
 }
 
 sub RSS_template { # print RSS output
