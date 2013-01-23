@@ -35,7 +35,7 @@ sub RecentTopics {
     if ( $display < 0 ) { $display = 5; }
     elsif ( $display > $maxrecentdisplay ) { $display = $maxrecentdisplay; }
     $numfound = 0;
-    if ( $mloaded != 1 ) { require "$boardsdir/forum.master"; }
+    get_forum_master();
 
     *recursive_check = sub {
         my @x = @_;
@@ -174,7 +174,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}" rel
         ( $message, undef ) = Split_Splice_Move( $message, $tnum );
         if ($enable_ubbc) {
             $ns = $mns;
-            if ( !$yyYaBBCloaded ) { require "$sourcedir/YaBBC.pl"; }
+            enable_yabbc();
             DoUBBC();
         }
         wrap2();
@@ -270,7 +270,7 @@ sub RecentPosts {
 
     $numfound = 0;
 
-    if ( $mloaded != 1 ) { require "$boardsdir/forum.master"; }
+    get_forum_master();
 
     *recursive_check2 = sub {
         foreach my $curboard (@_) {
@@ -415,7 +415,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}" rel
         ( $message, undef ) = Split_Splice_Move( $message, $tnum );
         if ($enable_ubbc) {
             $ns = $mns;
-            if ( !$yyYaBBCloaded ) { require "$sourcedir/YaBBC.pl"; }
+            enable_yabbc();
             DoUBBC();
         }
         wrap2();
