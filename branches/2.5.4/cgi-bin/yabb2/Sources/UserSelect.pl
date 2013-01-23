@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$userselectplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+$userselectplver = 'YaBB 2.5.4 $Revision: 1.41 $';
 if ($action eq 'detailedversion') { return 1; }
 
 if ($iamguest && $INFO{'toid'} ne "userspec" && $action ne "checkavail") { &fatal_error("members_only"); }
@@ -564,7 +564,7 @@ sub userselectTemplate {
 <head>
 <title>$yytitle</title>
 <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
-<link rel="stylesheet" href="$forumstylesurl/$usestyle.css" type="text/css" />
+<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
 <script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
 <script type="text/javascript">
 <!--
@@ -707,17 +707,17 @@ sub loadRecentPMs {
 	@recentUsers = ();
 	foreach my $usermessage (@usermessages) {
 		## split down to all strings of names
-		my ($messid, $fromName, $toNames, $toCCNames, $toBCCNames, undef, undef, undef, undef, undef, undef, $messStatus, undef) = split(/\|/, $usermessage); # pull name from PM
-		if ($messStatus =~ /b/ || $messStatus =~ /g/) { next; }
+		my ($messid, $fromName, $toNames, $toCCNames, $toBCCNames, undef, undef, undef, undef, undef, undef, $messStatus, undef) = split /\|/xsm, $usermessage; # pull name from PM
+		if ($messStatus =~ m/b/sm || $messStatus =~ m/g/sm) { next; }
 		## push all name strings
 		if ($fromName && $fromName ne $username) { push(@recentUsers, $fromName); }
 		if ($toNames) {
-			foreach my $listItem (split(/\,/, $toNames)) {
-				if ($listItem ne $username) { push(@recentUsers, $listItem); }
+			foreach my $listItem (split /\,/xsm, $toNames) {
+				if ($listItem ne $username) { push @recentUsers, $listItem; }
 			}
 		}
 		if ($toCCNames) {
-			foreach $listItem (split(/\,/, $toCCNames)) {
+			foreach my $listItem (split /\,/xsm, $toCCNames) {
 				if ($listItem ne $username) { push(@recentUsers, $listItem); }
 			}
 		}
