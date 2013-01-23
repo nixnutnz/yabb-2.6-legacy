@@ -6,7 +6,7 @@
 /*--------------------------------------------------------*/
 /*   This is the css file for YaBB 2.5.4 Admin Center    */
 /*--------------------------------------------------------*/
-/* $Revision: 1.3 $ */
+/* $Revision: 1.4 $ */
 
 
 /* General layout */
@@ -518,8 +518,12 @@ width:44em;
 float:left; width: 150px; height: 20px;
 }
 
+.pstrength-bar {
+border: 1px solid #FFFFFF; height: 4px;
+}
+
 #password-strength-meter {
-background: transparent url("default/empty_bar.gif") repeat-x center left; height: 4px;
+background: transparent url(./default/empty_bar.gif) repeat-x center left; height: 4px;
 }
 
 #passwrd1_bar {
@@ -563,3 +567,4 @@ margin-bottom:1px;
 margin-right:1px;
 width:10px;
 }
+
