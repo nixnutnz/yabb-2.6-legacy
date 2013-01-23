@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$subsplver = 'YaBB 2.5.4 $Revision: 1.4 $';
+$subsplver = 'YaBB 2.5.4 $Revision: 1.51 $';
 
 if ($debug) { &LoadLanguage('Debug'); }
 
@@ -176,7 +176,7 @@ sub redirectinternal {
 }
 
 sub ImgLoc {
-	return (!-e "$forumstylesdir/$useimages/$_[0]" ? qq~$forumstylesurl/default/$_[0]~ : qq~$imagesdir/$_[0]~);
+	return (!-e "$htmldir/Templates/Forum/$useimages/$_[0]" ? qq~$yyhtml_root/Templates/Forum/default/$_[0]~ : qq~$imagesdir/$_[0]~);
 }
 
 sub template {
@@ -191,7 +191,7 @@ sub template {
 	$yyimages        = $imagesdir;
 	$yydefaultimages = $defaultimagesdir;
 
-	$yystyle  = qq~<link rel="stylesheet" href="$forumstylesurl/$usestyle.css" type="text/css" />\n~;
+	$yystyle  = qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />\n~;
 	$yystyle  =~ s~$usestyle\/~~g;
 	$yystyle  .= qq~<link rel="stylesheet" href="$yyhtml_root/shjs/styles/sh_style.css" type="text/css" />\n~;
 	$yystyle .= $yyinlinestyle; # This is for the Help Center and anywhere else that wants to add inline CSS.
@@ -398,9 +398,9 @@ $yysyntax_js = qq~<script type="text/javascript" src="$yyhtml_root/shjs/sh_main.
 
 	# This next line fixes problems created when a fatal_error is called before Security.pl is loaded
 	# We don't want to require since it's an error and trying to do anything extra for an error could be bad
-	if ($output =~ m~<yabb copyright>~ || $output =~ m~{yabb copyright}~) { $yycopyin = 1; } ## new template style in also
-	$yysearchbox = '';
-	unless ($iamguest && $guestaccess == 0) {
+	if ($output =~ m/<yabb\ copyright>/xsm || $output =~ m/{yabb\ copyright}/xsm) { $yycopyin = 1; } ## new template style in also
+	$yysearchbox = q{};
+	if ((!$iamguest || $guestaccess != 0) && $showsearchbox ) {
 		if ($maxsearchdisplay > -1) {
 			$yysearchbox = qq~
 					<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
@@ -409,12 +409,12 @@ $yysyntax_js = qq~<script type="text/javascript" src="$yyhtml_root/shjs/sh_main.
 						<input type="hidden" name="userkind" value="any" />
 						<input type="hidden" name="subfield" value="on" />
 						<input type="hidden" name="msgfield" value="on" />
-						<input type="hidden" name="age" value="31" />
+						<input type="hidden" name="age" value="$showearchboxnum" />
 						<input type="hidden" name="numberreturned" value="$maxsearchdisplay" />
 						<input type="hidden" name="oneperthread" value="1" />
 						<input type="hidden" name="searchboards" value="!all" />
 						<input type="text" name="search" size="16" id="search1" value="$img_txt{'182'}" style="font-size: 11px;" onfocus="txtInFields(this, '$img_txt{'182'}');" onblur="txtInFields(this, '$img_txt{'182'}')" />
-						<input type="image" src="$imagesdir/search.gif" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />
+						<input type="image" src="$imagesdir/search.gif" title="$maintxt{'searchimg'} $showearchboxnum $maintxt{'searchimg2'}" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />
 					</form>
 ~;
 		}
@@ -512,11 +512,11 @@ $yysyntax_js = qq~<script type="text/javascript" src="$yyhtml_root/shjs/sh_main.
 			$img_greybox = 0;
 			for (my $j = 0; $j < @newsmessages; $j++) {
 				$message = $newsmessages[$j];
-				&wrap;
+				wrap();
 				if ($enable_ubbc) {
-					if (!$yyYaBBCloaded) { require "$sourcedir/YaBBC.pl"; }
+					enable_yabbc();
 					$ns = "";
-					&DoUBBC;
+					DoUBBC();
 					$message =~ s/ style="display:none"/ style="display:block"/g;
 				}
 				&wrap2;
@@ -539,10 +539,10 @@ $yysyntax_js = qq~<script type="text/javascript" src="$yyhtml_root/shjs/sh_main.
 		~;
 		} else {
 			$message = $newsmessages[$startnews];
-			&wrap;
+			wrap();
 			if ($enable_ubbc) {
-				if (!$yyYaBBCloaded) { require "$sourcedir/YaBBC.pl"; }
-				&DoUBBC;
+				enable_yabbc();
+				DoUBBC();
 				$message =~ s/ style="display:none"/ style="display:block"/g;
 			}
 			&wrap2;
@@ -935,9 +935,8 @@ sub getlog {
 	fclose(GETLOG);
 	chomp(@logentries);
 
-	my ($name,$thistime);
 	foreach (@logentries) {
-		($name,$thistime) = split(/\|/, $_);
+		my ($name,$thistime) = split /\|/xsm, $_;
 		if ($name && $thistime) { $yyuserlog{$name} = $thistime; }
 	}
 }
@@ -946,15 +945,15 @@ sub dumplog {
 	return if $iamguest || !$max_log_days_old;
 
 	if ($_[0]) {
-		&getlog;
+		getlog();
 		$yyuserlog{$_[0]} = $_[1] || $date;
 	}
 	if (%yyuserlog) {
 		my $name;
 		$date2 = $date;
 		fopen(DUMPLOG, ">$memberdir/$username.log");
-		while (($name,$date1) = each(%yyuserlog)) {
-			&calcdifference; # output => $result
+		while (($name,$date1) = each %yyuserlog ) {
+			$result = calcdifference($date1, $date2); # output => $result
 			if ($result <= $max_log_days_old) {
 				print DUMPLOG qq~$name|$date1\n~;
 			}
@@ -993,7 +992,7 @@ sub jumpto {
 					<option value="action=recent;display=10">$recent_txt{'recentposts'}</option>
 					<option value="action=recenttopics;display=10">$recent_txt{'recenttopic'}</option>~;
 
-	unless ($mloaded == 1) { require "$boardsdir/forum.master"; }
+	get_forum_master();
 	foreach $catid (@categoryorder) {
 		@bdlist = split(/,/, $cat{$catid});
 		($catname, $catperms) = split(/\|/, $catinfo{"$catid"});
@@ -1060,7 +1059,7 @@ sub spam_protection {
 	}
 	if ($flood && !$iamadmin && $action eq 'post2') { &Preview("$maintxt{'409'} $timeout $maintxt{'410'}"); }
 	if ($flood && !$iamadmin) {
-		&fatal_error("post_flooding","$timeout $maintxt{'410'}");
+		fatal_error("post_flooding","$timeout $maintxt{'410'}");
 	}
 	fopen(FLOOD, ">$vardir/flood.txt", 1);
 	print FLOOD @floodcontrol;
@@ -1069,7 +1068,7 @@ sub spam_protection {
 
 sub SpamQuestion {
     srand;
-    fopen(SPAMQUESTIONS, "<$langdir/$language/spam.questions") || &fatal_error("cannot_open","$langdir/$language/spam.questions", 1);
+    fopen(SPAMQUESTIONS, "<$langdir/$language/spam.questions") || fatal_error("cannot_open","$langdir/$language/spam.questions", 1);
     rand($.) < 1 && ($spam_question_rand = $_) while <SPAMQUESTIONS>;
     fclose(SPAMQUESTIONS);
     ($spam_question_id, $spam_question, undef) = split(/\|/, $spam_question_rand);
@@ -1078,7 +1077,7 @@ sub SpamQuestion {
 sub SpamQuestionCheck { 
     my $verification_question = $_[0];
     my $verification_question_id = $_[1];
-    fopen(SPAMQUESTIONS, "<$langdir/$language/spam.questions") || &fatal_error("cannot_open","$langdir/$language/spam.questions", 1);
+    fopen(SPAMQUESTIONS, "<$langdir/$language/spam.questions") || fatal_error("cannot_open","$langdir/$language/spam.questions", 1);
     @spam_questions = <SPAMQUESTIONS>;
     fclose(SPAMQUESTIONS);
     foreach my $verification_question (@spam_questions) {
@@ -2290,6 +2289,13 @@ sub CheckUserPM_Level {
 sub get_forum_master {
     if ( $mloaded != 1 ) {
         require "$boardsdir/forum.master";
+    }
+    return;
+}
+
+sub enable_yabbc {
+    if ( $yyYaBBCloaded != 1 ) { 
+        require "$sourcedir/YaBBC.pl";
     }
     return;
 }
