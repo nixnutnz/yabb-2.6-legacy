@@ -15,9 +15,9 @@
 # use warnings;
 no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.4;
+our $VERSION = 1.5;
 
-$messageindexplver = 'YaBB 2.5.4 $Revision: 1.4 $';
+$messageindexplver = 'YaBB 2.5.4 $Revision: 1.5 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('MessageIndex');
@@ -1458,7 +1458,7 @@ qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
 <title>$messageindex_txt{'139'} $messageindex_txt{'18'}</title>
-<link rel="stylesheet" href="$forumstylesurl/$usestyle.css" type="text/css" />
+<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
 </head>
 <body style="min-width: 350px;">
 	<script type="text/javascript">
