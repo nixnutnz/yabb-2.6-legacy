@@ -153,15 +153,15 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
         $user_bdhide = $ {$uid.$user_bdname}{'hideage'};
         ( $user_bdmon, $user_bdday, $user_bdyear ) = split /\//xsm, $user_bday;
         if ($user_bdmon) { 
-        if (
-            ( $user_bdmon < $actualmon )
-            || (   ( $user_bdmon == $actualmon )
-                && ( $user_bdday <= $actualday ) )
-          )
-        {
+        	if (
+            	( $user_bdmon < $actualmon )
+            	|| (   ( $user_bdmon == $actualmon )
+                	&& ( $user_bdday <= $actualday ) )
+          	)
+        	{
             $age = $year - $user_bdyear;
-        }
-        else { $age = $year - $user_bdyear; $age-- }
+        	}
+        	else { $age = $year - $user_bdyear; $age-- }
         }
         else {$age = q{}; next}
         my @stars =
@@ -302,16 +302,16 @@ qq~<tr><td class="windowbg2 center" colspan="4"><b><i>$var_cal{'calbirthday1'}</
                             $cdate = "$user_bdmon/$user_bdday";
                         }
                         else {
-                        $cdate = "$user_bdmon/$user_bdday/$user_bdyear";
-                    }
+                            $cdate = "$user_bdmon/$user_bdday/$user_bdyear";
+                        }
                     }
                     elsif ( $mytimeselected == 2 || $mytimeselected == 3 ) {
                         if ($showage && $user_bdhide){
                             $cdate = "$user_bdday.$user_bdmon";
                         }
                         else {
-                        $cdate = "$user_bdday.$user_bdmon.$user_bdyear";
-                    }
+                            $cdate = "$user_bdday.$user_bdmon.$user_bdyear";
+                        }
                     }
                     elsif ( $mytimeselected == 4 ) {
                         my $sup;
@@ -335,9 +335,9 @@ qq~<tr><td class="windowbg2 center" colspan="4"><b><i>$var_cal{'calbirthday1'}</
 qq~$var_cal{"calmon_$user_bdmon"} $user_bdday$sup~;
                         }
                         else {
-                        $cdate =
+                            $cdate =
 qq~$var_cal{"calmon_$user_bdmon"} $user_bdday$sup, $user_bdyear~;
-                    }
+                        }
                     }
                     elsif ( $mytimeselected == 6 ) {
                         if ($showage && $user_bdhide) {
@@ -347,15 +347,15 @@ qq~$user_bdday. $var_cal{"calmon_$user_bdmon"}~;
                         else {
                         $cdate =
 qq~$user_bdday. $var_cal{"calmon_$user_bdmon"} $user_bdyear~;
-                    }
+                        }
                     }
                     else {
                         if ($showage && $user_bdhide) {
                         	$cdate = "$user_bdday-$user_bdmon";
                         }
-                    else {
-                        $cdate = "$user_bdday-$user_bdmon-$user_bdyear";
-                    }
+                        else {
+                        	$cdate = "$user_bdday-$user_bdmon-$user_bdyear";
+                        }
                     }
                     ## User date display end ##
                 }
@@ -408,7 +408,7 @@ qq~	<tr><td class="windowbg2 center">$user_linkprofile</td>
 
     $cal_info_header = qq~<tr>
 		<td$class_sortuser><a href="$scripturl?action=cal_birthdaylist;sort=sortuser" style="text-decoration:none;"><b>$var_cal{'calname'}</b></a></td>
-		<td$class_sortage><a href="$scripturl?action=cal_birthdaylist;sort=sortage" style="text-decoration:none;"><b>$var_cal{'calage'}</b></a></td>
+        <td$class_sortage><a href="$scripturl?action=cal_birthdaylist;sort=sortage" style="text-decoration:none;"><b>$var_cal{'calage'}</b></a></td>
 		<td$class_sortstarsign><a href="$scripturl?action=cal_birthdaylist;sort=sortstarsign" style="text-decoration:none;"><b>$var_cal{'calstarsign'}</b></a></td>
 		<td$class_sortdate><a href="$scripturl?action=cal_birthdaylist;sort=sortdate" style="text-decoration:none;"><b>$var_cal{'calbddate'}</b></a></td>
 	</tr>~;
@@ -416,7 +416,7 @@ qq~	<tr><td class="windowbg2 center">$user_linkprofile</td>
     $yymain .= qq~
 <div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
 <table class="bordercolor pad_3px cs_thin">
-	<col style="width:30%" />
+    <col style="width:30%" />
 	<col style="width:20%" />
 	<col style="width:30%" />
 	<col style="width:20%" />
@@ -445,7 +445,7 @@ $bd_today
 		<td class="titlebg center" colspan="4"><b>$var_cal{'calbirthdays'}</b></td>
 	</tr><tr>
 		<td$class_sortuser><a href="$scripturl?action=cal_birthdaylist;sort=sortuser" style="text-decoration:none;"><b>$var_cal{'calname'}</b></a></td>
-		<td$class_sortage><a href="$scripturl?action=cal_birthdaylist;sort=sortage" style="text-decoration:none;"><b>$var_cal{'calage'}</b></a></td>
+        <td$class_sortage><a href="$scripturl?action=cal_birthdaylist;sort=sortage" style="text-decoration:none;"><b>$var_cal{'calage'}</b></a></td>
 		<td$class_sortstarsign><a href="$scripturl?action=cal_birthdaylist;sort=sortstarsign" style="text-decoration:none;"><b>$var_cal{'calstarsign'}</b></a></td>
 		<td$class_sortdate><a href="$scripturl?action=cal_birthdaylist;sort=sortdate" style="text-decoration:none;"><b>$var_cal{'calbddate'}</b></a></td>
 	</tr><tr>
@@ -477,7 +477,7 @@ $viewbirthdays
             $yymain .= qq~
 <div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
 <table class="pad_4px cs_thin">
-	<col style="width:30%" />
+    <col style="width:30%" />
 	<col style="width:20%" />
 	<col style="width:30%" />
 	<col style="width:20%" />
