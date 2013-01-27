@@ -13,9 +13,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.5;
+our $VERSION = 1.51;
 
-$loadplver = 'YaBB 2.5.4 $Revision: 1.5 $';
+$loadplver = 'YaBB 2.5.4 $Revision: 1.51 $';
 
 sub LoadBoardControl {
     my ($dummy);
@@ -37,7 +37,7 @@ sub LoadBoardControl {
             $cntzero,        $cntmembergroups, $cntann,
             $cntrbin,        $cntattperms,     $cntminageperms,
             $cntmaxageperms, $cntgenderperms,  $cntcanpost,
-            $cntparent
+            $cntparent,$rules, $rulestitle, $rulesdesc, $rulescollapse
         ) = split /\|/xsm, $boardline;
         ## create a global boards array
         push @allboards, $cntboard;
@@ -63,6 +63,10 @@ sub LoadBoardControl {
             'genderperms'  => $cntgenderperms,
             'canpost'      => $cntcanpost,
             'parent'       => $cntparent,
+			'rules'        => $rules,
+			'rulestitle'   => $rulestitle,
+			'rulesdesc'    => $rulesdesc,
+            'rulescollapse' => $rulescollapse,
         );
         if ( $cntann == 1 )  { $annboard = $cntboard; }
         if ( $cntrbin == 1 ) { $binboard = $cntboard; }
@@ -336,14 +340,14 @@ sub KillModerator {
                 $cnttopicperms,  $cntreplyperms, $cntpollperms,
                 $cntzero,        $cntpassword,   $cnttotals,
                 $cntattperms,    $spare,         $cntminageperms,
-                $cntmaxageperms, $cntgenderperms
+                $cntmaxageperms, $cntgenderperms, $rules, $rulestitle, $rulesdesc, $rulescollapse
             ) = split /\|/xsm, $boardline;
             foreach ( split /, /sm, $cntmods ) {
                 if ( $killmod ne $_ ) { push @newmods, $_; }
             }
             $cntmods = join q{, }, @newmods;
             push @boardcontrol,
-"$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$cntmodgroups|$cnttopicperms|$cntreplyperms|$cntpollperms|$cntzero|$cntpassword|$cnttotals|$cntattperms|$spare|$cntminageperms|$cntmaxageperms|$cntgenderperms\n";
+"$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$cntmodgroups|$cnttopicperms|$cntreplyperms|$cntpollperms|$cntzero|$cntpassword|$cnttotals|$cntattperms|$spare|$cntminageperms|$cntmaxageperms|$cntgenderperms|$rules|$rulestitle|$rulesdesc|$rulescollapse\n";
         }
     }
     seek FORUMCONTROL, 0, 0;
@@ -377,14 +381,14 @@ sub KillModeratorGroup {
                 $cnttopicperms,  $cntreplyperms, $cntpollperms,
                 $cntzero,        $cntpassword,   $cnttotals,
                 $cntattperms,    $spare,         $cntminageperms,
-                $cntmaxageperms, $cntgenderperms
+                $cntmaxageperms, $cntgenderperms, $rules, $rulestitle, $rulesdesc, $rulescollapse
             ) = split /\|/xsm, $boardline;
             foreach ( split /, /sm, $cntmodgroups ) {
                 if ( $killmod ne $_ ) { push @newmods, $_; }
             }
             $cntmodgroups = join q{, }, @newmods;
             push @boardcontrol,
-"$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$cntmodgroups|$cnttopicperms|$cntreplyperms|$cntpollperms|$cntzero|$cntpassword|$cnttotals|$cntattperms|$spare|$cntminageperms|$cntmaxageperms|$cntgenderperms\n";
+"$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$cntmodgroups|$cnttopicperms|$cntreplyperms|$cntpollperms|$cntzero|$cntpassword|$cnttotals|$cntattperms|$spare|$cntminageperms|$cntmaxageperms|$cntgenderperms|$rules|$rulestitle|$rulesdesc|$rulescollapse\n";
         }
     }
     seek FORUMCONTROL, 0, 0;
@@ -806,6 +810,10 @@ sub QuickLinks {
     my $quicklinks;
     if ($usertools) {
         $qlcount++;
+            my $modcol = is_moderator_b($user);
+            if ($modcol == 1) {
+            ($title, $stars, $starpic, $color, $noshow, $viewperms, $topicperms, $replyperms, $pollperms, $attachperms) = split /\|/xsm, $Group{'Moderator'};
+            }
         my $display = 'display:inline';
         if ( $ENV{'HTTP_USER_AGENT'} =~ /opera/ism ) {
             $display = 'display:inline-block';
@@ -849,6 +857,7 @@ qq~             <li><a href="$scripturl?action=addbuddy;name=$useraccount{$user}
 
         }
         else {
+           
             $quicklinks .=
 qq~             <li><a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$maintxt{'6'}</a></li>\n~;
         }
@@ -858,7 +867,8 @@ qq~         </ul><a href="javascript:quickLinks('$useraccount{$user}$qlcount')"$
         $quicklinks .= q~</a></div>~;
     }
     else {
-        $quicklinks = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}"$lastonline>~
+        $quicklinks =
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}"$lastonline>~
           . ( $online ? $format_unbold{$user} : $format{$user} ) . q~</a>~;
     }
 
@@ -1069,37 +1079,6 @@ sub WhatLanguage {
     return;
 }
 
-# build the .ims file from scratch
-# here because its needed by admin and user
-#messageid|[blank]|touser(s)|(ccuser(s))|(bccuser(s))|
-#   subject|date|message|(parentmid)|(reply#)|ip|
-#       messagestatus|flags|storefolder|attachment
-# messagestatus = c(confidential)/h(igh importance)/s(tandard)
-# parentmid stays same, reply# increments for replies, so we can build conversation threads
-# storefolder = name of storage folder. Start with in & out for everyone.
-# flags - u(nread)/f(orward)/q(oute)/r(eply)/c(alled back)
-#
-# old file
-#1  $mnum = 3;
-#2  $imnewcount = 0;
-#3  $moutnum = 17;
-#4  $storenum = 0;
-#5  $draftnum = 0;
-#6  @folders  (name1|name2|name3);
-
-# new .ims file format
-#   ### UserIMS YaBB 2.2 Version ###
-#   '${$username}{'PMmnum'}',"value"
-#   '${$username}{'PMimnewcount'}',"value"
-#   '${$username}{'PMmoutnum'}',"value"
-#   '${$username}{'PMstorenum'}',"value"
-#   '${$username}{'PMdraftnum'}',"value"
-#   '${$username}{'PMfolders'}',"value"
-#   '${$username}{'PMfoldersCount'}',"value"
-#   '${$username}{'PMbcRead'}',"value"
-
-# usage: &buildIMS(<user>, 'tasks');
-# tasks: load, update, '' [= rebuild]
 sub buildIMS {
     my ( $builduser, $job ) = @_;
     my ( $incurr, $inunr, $outcurr, $draftcount, @imstore, $storetotal,
@@ -1125,19 +1104,13 @@ sub buildIMS {
         fclose(USERMSG);
 
   # test the data for version. 16 elements in new format, no more than 8 in old.
-        if ( ( split /\|/xsm, $messages[0] ) > 8 )
-        {    # new format, so just need to check the flags
-            foreach my $message (@messages) {
+        foreach my $message (@messages) {
 
-                # If the message is flagged as u(nopened), add to the new count
-                if ( ( split /\|/xsm, $message )[12] =~ /u/sm ) { $inunr++; }
-            }
-            $incurr = @messages;
+            # If the message is flagged as u(nopened), add to the new count
+            if ( ( split /\|/xsm, $message )[12] =~ /u/sm ) { $inunr++; }
+        }
+        $incurr = @messages;
 
-        }
-        else {    # old format, needs rearranging
-            ( $inunr, $incurr ) = convert_MSG($builduser);
-        }
     }
 
     ## do the outbox
@@ -1146,16 +1119,9 @@ sub buildIMS {
           || fatal_error( 'cannot_open', "$memberdir/$builduser.outbox", 1 );
         my @outmessages = <OUTMESS>;
         fclose(OUTMESS);
-        if ( ( split /\|/xsm, $outmessages[0] ) > 8 )
-        {         # > 10 elements in new format, no more than 8 in old
-            $outcurr = @outmessages;
-        }
-        else {
-            $outcurr = convert_OUTBOX($builduser);
-        }
+        $outcurr = @outmessages;
     }
 
-    ## do the draft store - slightly easier - only exists in y22
     if ( -e "$memberdir/$builduser.imdraft" ) {
         fopen( DRAFTMESS, "$memberdir/$builduser.imdraft" )
           || fatal_error( 'cannot_open', "$memberdir/$builduser.imdraft", 1 );
@@ -1174,14 +1140,6 @@ sub buildIMS {
         @imstore = <STOREMESS>;
         fclose(STOREMESS);
         if (@imstore) {
-
-# > 10 elements in new format, no more than 8 in old
-#messageid0|[blank]1|touser(s)2|(ccuser(s))3|(bccuser(s))4|
-#        subject5|date6|message7|(parentmid)8|(reply#)9|ip10|messagestatus11|flags12|storefolder13|attachment14
-            if ( ( split /\|/xsm, $imstore[0] ) <= 8 ) {
-                @imstore = convert_IMSTORE($builduser);
-            }
-
             my ( $storeUpdated, $storeMessLine ) = ( 0, 0 );
             foreach my $message (@imstore) {
                 my @messLine = split /\|/xsm, $message;
@@ -1322,115 +1280,6 @@ sub LoadBroadcastMessages {    #check broadcast messages
         ${$builduser}{'PMbcRead'} = q{};
     }
     return;
-}
-
-sub convert_MSG {
-    my $builduser = shift;
-    my $inunr;
-
-# clean out msg file and rebuild in new format
-# new format:
-# messageid(0)|from(1)|touser(2)|ccuser(3)|bccuser(4)|subject(5)|date(6)|message(7)|parentmid(8)|reply#(9)|ip(10)|messagestatus(11)|flags(12)|storefolder(13)|attachment(14)
-# old format:
-# from(0)|subject(1)|date(2)|message(3)|messageid(4)|ip(5)|read/replied(6)
-    fopen( OLDMESS, "+<$memberdir/$builduser.msg" )
-      || fatal_error( 'cannot_open', "$memberdir/$builduser.msg", 1 );
-    my @oldmessages = <OLDMESS>;
-    chomp @oldmessages;
-    seek OLDMESS, 0, 0;
-    truncate OLDMESS, 0;
-    foreach my $oldmessage (@oldmessages) {    # parse messages for flags
-        my @oldformat = split /\|/xsm, $oldmessage;
-
-# under old format, unread,and replied are exclusive, so no need to go mixing them
-        if ( $oldformat[6] == 1 ) {
-            $oldformat[6] = 'u';
-            $inunr++;
-        }    # if 6 (status) is 1 then change to u(nread) flag
-        elsif ( $oldformat[6] == 2 ) {
-            $oldformat[6] = 'r';
-        }    # if 6 (status) is 2 then change to r(eplied) flag
-         # if any old style message ids still there, or odd blank ones, correct them to = date value
-        if ( $oldformat[4] < 101 ) { $oldformat[4] = $oldformat[2]; }
-
-        # reassemble to new format and print back to file
-        print {OLDMESS}
-"$oldformat[4]|$oldformat[0]|$builduser|||$oldformat[1]|$oldformat[2]|$oldformat[3]|$oldformat[4]|0|$oldformat[5]|s|$oldformat[6]||\n"
-          or croak 'cannot convert OLDMESS';
-    }
-    fclose(OLDMESS);
-    return ( $inunr, scalar @oldmessages );
-}
-
-sub convert_OUTBOX {
-    my $builduser = shift;
-    ## clean out msg file and rebuild in new format
-    fopen( OLDOUTBOX, "+<$memberdir/$builduser.outbox" )
-      || fatal_error( 'cannot_open', "$memberdir/$builduser.outbox", 1 );
-    my @oldoutmessages = <OLDOUTBOX>;
-    chomp @oldoutmessages;
-    seek OLDOUTBOX, 0, 0;
-    truncate OLDOUTBOX, 0;
-
-# clean out msg file and rebuild in new format
-# new format:
-# messageid(0)|from(1)|touser(2)|ccuser(3)|bccuser(4)|subject(5)|date(6)|message(7)|parentmid(8)|reply#(9)|ip(10)|messagestatus(11)|flags(12)|storefolder(13)|attachment(14)
-# old format:
-# from(0)|subject(1)|date(2)|message(3)|messageid(4)|ip(5)|read/replied(6)
-    foreach my $oldmessage (@oldoutmessages) {
-        my @oldformat = split /\|/xsm, $oldmessage;
-        ## if any old style message ids still there, or odd blank ones, correct them to = date value
-        if ( $oldformat[4] < 101 || $oldformat[4] eq q{} ) {
-            $oldformat[4] = $oldformat[2];
-        }
-        ## outbox can't be replied to ;) and forwarding doesn't exist in old format
-        if    ( !$oldformat[6] )     { $oldformat[6] = 'u'; }
-        elsif ( $oldformat[6] == 1 ) { $oldformat[6] = q{}; }
-        print {OLDOUTBOX}
-"$oldformat[4]|$builduser|$oldformat[0]|||$oldformat[1]|$oldformat[2]|$oldformat[3]|$oldformat[4]|0|$oldformat[5]|s|$oldformat[6]||\n"
-          or croak 'cannot convert OLDOUTBOX';
-    }
-    fclose(OLDOUTBOX);
-    return scalar @oldoutmessages;
-}
-
-sub convert_IMSTORE {
-    my $builduser = shift;
-    my @imstore;
-    fopen( OLDIMSTORE, "+<$memberdir/$builduser.imstore" )
-      || fatal_error( 'cannot_open', "$memberdir/$builduser.imstore", 1 );
-    my @oldstoremessages = <OLDIMSTORE>;
-    chomp @oldstoremessages;
-    seek OLDIMSTORE, 0, 0;
-    truncate OLDIMSTORE, 0;
-
-# new format:
-# messageid(0)|from(1)|touser(2)|ccuser(3)|bccuser(4)|subject(5)|date(6)|message(7)|parentmid(8)|reply#(9)|ip(10)|messagestatus(11)|flags(12)|storefolder(13)|attachment(14)
-# old format:
-# from(0)|subject(1)|date(2)|message(3)|messageid(4)|ip(5)|read/replied(6)|folder/imwhere(7)
-    foreach my $oldmessage (@oldstoremessages) {
-        my @oldformat = split /\|/xsm, $oldmessage;
-        my ( $touser, $fromuser );
-        if ( $oldformat[7] eq 'outbox' ) {
-            $oldformat[7] = 'out';
-            $touser       = $oldformat[0];
-            $fromuser     = $builduser;
-            if    ( !$oldformat[6] )     { $oldformat[6] = 'u'; }
-            elsif ( $oldformat[6] == 1 ) { $oldformat[6] = 'r'; }
-        }
-        elsif ( $oldformat[7] eq 'inbox' ) {
-            $oldformat[7] = 'in';
-            $touser       = $builduser;
-            $fromuser     = $oldformat[0];
-            if    ( $oldformat[6] == 1 ) { $oldformat[6] = 'u'; }
-            elsif ( $oldformat[6] == 2 ) { $oldformat[6] = 'r'; }
-        }
-        push @imstore,
-"$oldformat[4]|$fromuser|$touser|||$oldformat[1]|$oldformat[2]|$oldformat[3]|$oldformat[4]|0|$oldformat[5]|s|$oldformat[6]|$oldformat[7]|\n";
-    }
-    print {OLDIMSTORE} @imstore or croak 'cannot print to OLDIMSTORE';
-    fclose(OLDIMSTORE);
-    return @imstore;
 }
 
 1;
