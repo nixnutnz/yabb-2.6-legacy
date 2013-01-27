@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$debugplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$debugplver = 'YaBB 2.5.4 $Revision: 1.1 $';
 
 sub Debug {
 	if ($debug == 1 or ($debug == 2 && $iamadmin)) {
@@ -35,6 +35,9 @@ sub Debug {
 		foreach (sort(keys(%INC))) {$yydebug .= qq~<br />$_ => $INC{$_}~;}
 
 		$yydebug .= qq~<br /><br /><br /></div>~;
+		if ($debug_l == 1) {
+		    $yydebug = qq~<br /><div class="small" style="float: left; padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">$yytimeclock</div>~;
+		}
 	}
 }
 
