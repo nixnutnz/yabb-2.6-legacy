@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$messageindexlngver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$messageindexlngver = 'YaBB 2.5.4 $Revision: 1.2 $';
 
 %messageindex_txt = (
 '2' => 'Admin',
@@ -78,6 +78,7 @@ $messageindexlngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 '843' => 'RSS feed for this board',
 '844' => 'Hide',
 '845' => 'Moved Topic',
+'collruletext' => 'Board Rules Collapsed',
 );
 
 %messageindex_stickygrp = (
