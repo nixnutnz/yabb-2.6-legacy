@@ -13,9 +13,9 @@
 ###############################################################################
 # use strict;
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.4;
+our $VERSION = 1.5;
 
-our $settings_mainplver = 'YaBB 2.5.4 $Revision: 1.4 $';
+our $settings_mainplver = 'YaBB 2.5.4 $Revision: 1.5 $';
 if ($action eq 'detailedversion') { return 1; }
 
 # Language requirements
@@ -305,6 +305,18 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 			input_html => qq~<input type="checkbox" name="showlatestmember" id="showlatestmember" value="1"${ischecked($showlatestmember)} />~,
 			name => 'showlatestmember',
 			validate => 'boolean',
+		},
+		{
+			description => qq~<label for="showsearchbox">$admin_txt{'showsearchbox'}</label>~,
+			input_html => qq~<input type="checkbox" name="showsearchbox" id="showsearchbox" value="1"${ischecked($showsearchbox)} />~,
+			name => 'showsearchbox',
+			validate => 'boolean',
+		},
+		{
+			description => qq~<label for="showsearchboxnum">$admin_txt{'showsearchboxnum'}</label>~,
+			input_html => qq~<input type="text" size="4" name="showsearchboxnum" id="showsearchboxnum" value="$showsearchboxnum" />~,
+			name => 'showsearchboxnum',
+			validate => 'number',
 		},
 		{
 			description => qq~<label for="Show_RecentBar">$admin_txt{'509'}</label>~,
