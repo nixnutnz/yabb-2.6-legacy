@@ -1,0 +1,28 @@
+###############################################################################
+# IPLookup.lng (IPLookup text definitions)                                    #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.5.4                                                  #
+# Packaged:       January 1, 2013                                             #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$iplookuplngver = 'YaBB 2.5.4 $Revision: 1.0 $';
+
+%lookup_txt = (
+'01' => 'Lookup',
+'02' => 'on a regional Whois server:',
+'iplookup' => 'IP Lookup',
+'afrinic' => 'AfriNIC',
+'apnic' => 'APNIC',
+'arin' => 'ARIN',
+'lacnic' => 'LACNIC',
+'ripencc' => 'RIPE NCC',
+);
+
+1;
