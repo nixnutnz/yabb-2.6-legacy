@@ -26,7 +26,7 @@ if ( -w $uploaddir && -d $uploaddir ) {
 
 # Setting for gzip, if it is available
 my $compressgzip =
-  ( -e '/bin/gzip' && open GZIP, '| gzip -f' )
+  ( -e "$backupprogbin/gzip" && open GZIP, '| gzip -f' )
   ? qq~\n  <option value="1" ${isselected($gzcomp == 1)}>$gztxt{'4'}</option>~
   : q{};
 
@@ -44,7 +44,7 @@ if ( $rss_limit    eq q{} ) { $rss_limit    = 10; }
 if ( $rss_message  eq q{} ) { $rss_message  = 1; }
 
 # Free Disk Space Checking
-if ( $OSNAME =~ /Win/ ) {
+if ( $OSNAME =~ /Win/sm ) {
     @x = qx{DIR /-C};
     my $lastline =
       pop @x;    # should look like: 17 Directory(s), 21305790464 Bytes free
@@ -622,6 +622,14 @@ qq~<label for="debug">$admin_txt{'999'}<br /><span class="small">$admin_txt{'999
   <option value="2" ${isselected($debug == 2)}>$admin_txt{'admindebug'}</option>
 </select>~,
                 name     => 'debug',
+                validate => 'number',
+            },
+            {
+                description =>
+                  qq~<label for="debug_l">$admin_txt{'999b'}</label>~,
+                input_html =>
+qq~<input type="checkbox" name="debug_l" id="debug_l" value="1"${ischecked($debug_l)} />~,
+                name     => 'debug_l',
                 validate => 'number',
             },
             { header => $settings_txt{'files'}, },
