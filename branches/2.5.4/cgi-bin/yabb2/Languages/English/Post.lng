@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$postlngver = 'YaBB 2.5.4 $Revision: 1.4 $';
+$postlngver = 'YaBB 2.5.4 $Revision: 1.5 $';
 
 %post_txt = (
 '10' => 'Save',
@@ -164,7 +164,7 @@ $postlngver = 'YaBB 2.5.4 $Revision: 1.4 $';
 'delay' => 'Wait...',
 'iecopytext' => 'Enable auto-copy Message',
 'iecopycheck' => 'Check this if you want the message auto-copied to your clipboard before Post or Preview.',
-'sendmessguest' => 'Send Broadcast Message to Forum Administrator(s)',
+'sendmessguest' => 'Send Alert Message to Forum Administrator(s)',
 'nojs' => 'browser not compatible with these buttons',
 'addsmilies' => 'Add Smilies',
 'yabbc' => 'Add YaBBC tags',
