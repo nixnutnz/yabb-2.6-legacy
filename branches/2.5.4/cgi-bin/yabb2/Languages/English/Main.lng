@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$mainlngver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$mainlngver = 'YaBB 2.5.4 $Revision: 1.2 $';
 
 $abbr_lang = 'en-us';
 
@@ -131,10 +131,12 @@ $abbr_lang = 'en-us';
 'freeuserspace' => 'Free Host space available:',
 'freediskspace' => 'Free Disk space available:',
 'redirect' => 'Redirect',
-'redirecttext' => 'If you see this message, it means that the redirection didn\'t work.',
+'redirecttext' => 'If you see this message, it means that the redirection didn&#39;t work.',
 'redirectlink' => 'Click here',
 'noscript' => 'You must enable JavaScript to get full functionality for this forum!',
-'go_to_board' => 'Go to the Board Index', 
+'go_to_board' => 'Go to the Board Index',
+'searchimg' => 'Posts no more than',
+'searchimg2' => 'days old', 
 );
 
 %load_txt = (
