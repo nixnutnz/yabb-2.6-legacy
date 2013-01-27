@@ -13,9 +13,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.8;
+our $VERSION = 1.84;
 
-$displayplver = 'YaBB 2.5.4 $Revision: 1.83 $';
+$displayplver = 'YaBB 2.5.4 $Revision: 1.84 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Display');
@@ -828,8 +828,26 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$mlmb}">$format_
         }
 
         $messdate = timeformat($mdate);
+        if ($ipLookup) {
+            ( $mip_one, $mip_two, $mip_three ) = split / /sm, $mip;
+            if ($mip_one) {
+                $lookupIP =
+qq~<a href="$scripturl?action=iplookup;ip=$mip_one">$mip_one</a> ~;
+            }
+            if ($mip_two) {
+                $lookupIP .=
+qq~<a href="$scripturl?action=iplookup;ip=$mip_two">$mip_two</a> ~;
+            }
+            if ($mip_three) {
+                $lookupIP .=
+qq~<a href="$scripturl?action=iplookup;ip=$mip_three">$mip_three</a>~;
+            }
+        }
+        else {
+            $lookupIP = $mip;
+        }
         if ( $iamadmin || $iamgmod && $gmod_access2{'ipban2'} eq 'on' ) {
-            $mip = $mip;
+            $mip = $lookupIP;
         }
         else { $mip = $display_txt{'511'}; }
 
