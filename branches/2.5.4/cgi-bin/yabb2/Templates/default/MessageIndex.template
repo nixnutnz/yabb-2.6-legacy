@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision: 1.2 $
+# $Revision: 1.51 $
 
 LoadLanguage("BoardIndex");
 
@@ -46,7 +46,7 @@ if (!$messagelist) {
 	}
 	else {
     	$messageindex_template .= qq~<!-- Board Description start -->
-			<table class="bordercolor pad_4px cs_1px">
+			<table class="bordercolor pad_4px cs_thin">
     			<col style="width:6%" />
     			<col style="width:78%" />
     			<col style="width:16%" />
@@ -65,6 +65,21 @@ if (!$messagelist) {
 			</table>
 			<br />
 <!-- Board Description end -->
+~;
+	}
+	if (${$uid.$currentboard}{'rules'} == 1) {
+		$messageindex_template .= qq~
+
+<!-- Board Rules start -->
+			<table class="bordercolor cs_thin pad_3px">
+				<tr>
+    				<td class="titlebg" style="height18px">{yabb rulestitle}</td>
+				</tr><tr>
+    				<td class="windowbg">{yabb rulesdescription}</td>
+				</tr>
+			</table>
+			<br />
+<!-- Board Rules end -->
 ~;
 	}
 }
@@ -104,16 +119,14 @@ if ($action ne 'favorites') {
 <!-- Button Bar end -->~;
 }
 $messageindex_template .= qq~
-			<table class="bordercolor pad_3px cs_1px">
+			<table class="bordercolor pad_3px cs_thin">
     			<col span="2" style="width:4%" />
-    			<col style="width:32%" />
-    			<col style="width:14%" />
-    			<col span="2" style="width:8%" />
+    			<col style="width:42%" />
+    			<col span="2" style="width:10%" />
     			<col style="width:22%" />
 				<tr>
 					<td class="titlebg center" colspan="2">&nbsp;</td>
-					<td class="titlebg">$messageindex_txt{'70'}	</td>
-					<td class="titlebg center">$messageindex_txt{'109'}</td>
+					<td class="titlebg">$messageindex_txt{'70'} / $messageindex_txt{'109'}</td>
 					<td class="titlebg center">$messageindex_txt{'110'}</td>
 					<td class="titlebg center">$messageindex_txt{'301'}</td>
 					<td class="titlebg center">$messageindex_txt{'22'}</td>
@@ -127,9 +140,9 @@ $messageindex_template .= qq~
 
 if ($action ne 'favorites') {
 	$messageindex_template .= qq~<!-- Button Bar start -->
-			<table class="bordercolor pad_4px">
+			<table class="bordercolor">
 				<tr class="catbg">
-					<td>
+					<td style="padding:4px 4px 4px 7px;">
 	  					{yabb pageindex bottom}
         			</td>
         			<td class="post_tools_a right" style="padding:4px 10px 4px 4px">
@@ -212,14 +225,11 @@ $nonstickyheader = qq~<tr>
 # Thread bar                               #
 
 $threadbar = qq~<tr>
-					<td class="windowbg2 center">{yabb threadpic}</td>
-					<td class="windowbg2 center">{yabb icon}</td>
-					<td class="windowbg">
-						<div style="float: left; width: 95%;">{yabb favorite} {yabb new} {yabb poll}<b>{yabb subjectlink}</b>{yabb pages}<br /><span class="small">{yabb permalink}</span></div>
+					<td class="windowbg center">{yabb threadpic}</td>
+					<td class="windowbg center">{yabb icon}</td>
+					<td class="windowbg2">
+						<div style="float: left; width: 95%;">{yabb favorite} {yabb new} {yabb poll}<b>{yabb subjectlink}</b><br /><span class="small">$messageindex_txt{'527'} {yabb starttime} $messageindex_txt{'526'} {yabb starter}{yabb pages}<br />{yabb permalink}</span></div>
 						<div style="float: left; width: 5%; text-align: center;">{yabb attachmenticon}</div>
-					</td>
-					<td class="windowbg2 center">
-						<span class="small">{yabb starter}</span>
 					</td>
 					<td class="windowbg center">{yabb replies}</td>
 					<td class="windowbg center">{yabb views}</td>
@@ -233,7 +243,7 @@ $threadbar = qq~<tr>
 $threadbarMoved = qq~<tr>
 					<td class="windowbg2 center">{yabb threadpic}</td>
 					<td class="windowbg2 center">{yabb icon}</td>
-					<td class="windowbg" colspan="5">
+					<td class="windowbg" colspan="4">
 						<div style="float: left; width: 99%;">{yabb subjectlink}</div>
 					</td>
 					{yabb admin column}
@@ -242,7 +252,7 @@ $threadbarMoved = qq~<tr>
 # Admin dependent subfooter                #
 
 $subfooterbar = qq~<tr>
-					<td class="titlebg right" colspan="7">
+					<td class="titlebg right" colspan="6">
 						<span class="small">{yabb admin selector} <label for="checkall">$messageindex_txt{'737'}</label></span>
 					</td>
 					<td class="titlebg center" style="white-space: nowrap">
