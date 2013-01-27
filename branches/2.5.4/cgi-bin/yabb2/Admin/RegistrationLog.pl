@@ -13,9 +13,9 @@
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
-our $VERSION = 1.2;
+our $VERSION = 1.3;
 
-$registrationlogplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$registrationlogplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Register');
@@ -169,9 +169,13 @@ qq~<br /><a href="$adminurl?action=apr_regentry;username=$userid">$prereg_txt{'a
         else {
             $delrecord = '---';
         }
+        my $lookupIP =
+          ($ipLookup)
+          ? qq~<a href="$scripturl?action=iplookup;ip=$ipadd">$ipadd</a>~
+          : qq~$ipadd~;
         $loglist .= qq~<tr>
             <td class="windowbg center">$reclogtime</td>
-            <td class="windowbg2 center">$prereg_txt{$status}$actadminlink<br />IP: $ipadd - <a href="$adminurl?action=ipban_err;ban=$ipadd;lev=p">$admin_txt{'725f'}</a></td>
+            <td class="windowbg2 center">$prereg_txt{$status}$actadminlink<br />IP: $lookupIP - <a href="$adminurl?action=ipban_err;ban=$ipadd;lev=p">$admin_txt{'725f'}</a></td>
             <td class="windowbg center">$linkuserid</td>
             <td class="windowbg2 center">$delrecord</td>
         </tr>~;
@@ -361,12 +365,16 @@ sub view_registration {
  </tr>~;
     }
 
+    my $lookupIP =
+      ($ipLookup)
+      ? qq~<a href="$scripturl?action=iplookup;ip=${$uid.$readuser}{'lastips'}">${$uid.$readuser}{'lastips'}</a>~
+      : qq~${$uid.$readuser}{'lastips'}~;
     $yymain .= qq~<tr class="windowbg">
    <td><b>$prereg_txt{'apr_language'}: </b></td>
    <td>${$uid.$readuser}{'language'}</td>
  </tr><tr class="windowbg">
    <td><b>$prereg_txt{'apr_ip'}: </b></td>
-   <td>${$uid.$readuser}{'lastips'} (<a href="$adminurl?action=ipban_err;ban=${$uid.$readuser}{'lastips'};lev=p">$admin_txt{'725f'}</a>)</td>
+   <td>$lookupIP (<a href="$adminurl?action=ipban_err;ban=${$uid.$readuser}{'lastips'};lev=p">$admin_txt{'725f'}</a>)</td>
  </tr>~;
 
     if ( $regtype == 1 ) {
@@ -446,7 +454,8 @@ sub reject_registration {
     is_admin_or_gmod();
     my $deluser = $inp || $INFO{'username'};
     if ( !$admin_reason ) { $admin_reason = $FORM{'admin_reason'}; }
-#    if ($do_scramble_id)  { $deluser      = decloak($deluser); }
+
+    #    if ($do_scramble_id)  { $deluser      = decloak($deluser); }
 
     if ( -e "$memberdir/memberlist.approve" && $regtype == 1 ) {
         fopen( APR, "$memberdir/memberlist.approve" );
@@ -526,7 +535,8 @@ sub approve_registration {
     is_admin_or_gmod();
     my $apruser = $inp || $INFO{'username'};
     if ( !$admin_reason ) { $admin_reason = $FORM{'admin_reason'}; }
-#    if ($do_scramble_id)  { $apruser      = decloak($apruser); }
+
+    #    if ($do_scramble_id)  { $apruser      = decloak($apruser); }
 
     ## load the list with waiting approvals ##
     fopen( APR, "$memberdir/memberlist.approve" );
@@ -561,7 +571,6 @@ qq~<span class="red"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'email'}<
         ## user is approved, so let him/her in ##
         rename "$memberdir/$apruser.wait", "$memberdir/$apruser.vars";
         MemberIndex( 'add', $apruser );
-
 
         # update approval user list
         fopen( APR, ">$memberdir/memberlist.approve" );
