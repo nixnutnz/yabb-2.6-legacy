@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$instantmessagelngver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$instantmessagelngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 
 %inmes_txt = (
 '21' => 'Posts',
@@ -98,6 +98,7 @@ $instantmessagelngver = 'YaBB 2.5.4 $Revision: 1.0 $';
 'clickto2' => '', # used for other languages
 'torecepients' => 'recipient(s)',
 'togroups' => 'group(s)',
+'usercp' => 'User CP', 
 );
 
 %inmes_imtxt = (
