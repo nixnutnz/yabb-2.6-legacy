@@ -16,7 +16,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use Time::Local 'timelocal';
 
-$banpmver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$banpmver = 'YaBB 2.5.4 $Revision: 1.21 $';
 
 sub ipban {
     is_admin_or_gmod();
@@ -78,8 +78,9 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
             $eban .= qq~<option value="$i"> $e_show - $timebana</option>\n~;
         }
         if ( $banned[0] eq 'U' ) {
+            $ban_u = $banned[1];
             $timebana = time_ban();
-            $uban .= qq~<option value="i"> $banned[1] - $timebana</option>\n~;
+            $uban .= qq~<option value="$i"> $ban_u - $timebana</option>\n~;
         }
     }
 
@@ -93,11 +94,11 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
                 </td>
             </tr><tr>
                 <td class="catbg">
-                    <label for="ban"><span class="small">$admin_txt{'724a'}</span></label>
+                    <label for="iban"><span class="small">$admin_txt{'724a'}</span></label>
                 </td>
             </tr><tr>
                 <td class="windowbg2">
-                    <select name="iban" size="20" multiple="multiple">
+                    <select id="iban" name="iban" size="20" multiple="multiple">
                         $iban
                     </select>
                 </td>
@@ -112,11 +113,11 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
         <table class="cs_thin pad_4px">
             <tr>
                 <td class="catbg">
-                    <label for="ban_email"><span class="small">$admin_txt{'725b'}</span></label>
+                    <label for="eban"><span class="small">$admin_txt{'725b'}</span></label>
                 </td>
             </tr><tr>
                 <td class="windowbg2">
-                    <select name="eban" size="20" multiple="multiple">
+                    <select id="eban" name="eban" size="20" multiple="multiple">
                         $eban
                     </select>
                 </td>
@@ -131,11 +132,11 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
         <table class="cs_thin pad_4px">
             <tr>
                 <td class="catbg">
-                    <label for="ban_memname"><span class="small">$admin_txt{'725c'}</span></label>
+                    <label for="uban"><span class="small">$admin_txt{'725c'}</span></label>
                 </td>
             </tr><tr>
                 <td class="windowbg2">
-                    <select name="uban" size="20" multiple="multiple">
+                    <select id="uban" name="uban" size="20" multiple="multiple">
                         $uban
                     </select>
                 </td>
@@ -148,7 +149,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
         </form>
         <form action="$adminurl?action=ipban_add" method="post">
         <table class="cs_thin pad_4px">
-            <col class="w_50px" />
+            <col class="w_50pc" />
             <tr>
                 <td class="titlebg">
                     <img src="$imagesdir/ban.gif" alt="" /><b>Add $admin_txt{'340'}</b>
@@ -158,7 +159,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
                 </td>
             </tr><tr>
                 <td class="catbg">
-                    <label for="ban"><span class="small">$admin_txt{'724'}<br />$admin_txt{'725'}<br />$admin_txt{'725a'}</span></label>
+                    <span class="small">$admin_txt{'724'}<br />$admin_txt{'725'}<br />$admin_txt{'725a'}</span>
                 </td>
                 <td class="windowbg2 vtop" rowspan="2">
                     <div style="height:10em; overflow:auto">
@@ -170,7 +171,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
             </tr><tr>
                 <td class="windowbg2">
                 Are these: <input type='radio' name='type' value='U' />User <input type='radio' name='type' value='I' checked="checked" />IP or <input type='radio' name='type' value='E' />E-mail?<br />
-                <textarea rows="10" cols="100" name="banned" /></textarea>
+                <textarea rows="10" cols="100" name="banned"></textarea>
                 <input type="hidden" name="unban" value="1" />
                 </td>
             </tr><tr>
@@ -450,7 +451,7 @@ sub ipban_err {
     my @bandays = ( 36500, 1, 7, 30, );
     my $tmb     = 0;
 
-    my $time = time;
+    my $time  = time;
     my $ihave = 0;
     $ban =~ tr/\r//d;
     $ban =~ s/\A[\s\n]+| |[\s\n]+\Z//gsm;
@@ -476,8 +477,8 @@ sub ipban_err {
             if ( ( $banned[4] ne 'p' && $tmb > $today ) || $banned[4] eq 'p' ) {
                 $ihave = 1;
             }
+        }
     }
-}
 
     fopen( BAN2, ">>$vardir/banlist.txt" )
       or croak 'cannot open BAN2 to write';
