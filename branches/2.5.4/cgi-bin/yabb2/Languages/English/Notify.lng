@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$notifylngver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$notifylngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 
 %notify_txt = (
 '118' => 'Topic Notification',
@@ -35,7 +35,7 @@ $notifylngver = 'YaBB 2.5.4 $Revision: 1.0 $';
 '139' => 'There are no boards with Notification marked!',
 '140' => 'Topic',
 '144' => 'Check all',
-'145' => 'New personal message',
+'145' => 'New personal message from',
 '200' => 'You have',
 '201' => 'new',
 '202' => 'and',
