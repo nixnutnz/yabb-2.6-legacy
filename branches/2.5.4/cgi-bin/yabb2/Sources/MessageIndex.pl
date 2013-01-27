@@ -15,9 +15,9 @@
 # use warnings;
 no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.5;
+our $VERSION = 1.51;
 
-$messageindexplver = 'YaBB 2.5.4 $Revision: 1.5 $';
+$messageindexplver = 'YaBB 2.5.4 $Revision: 1.51 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('MessageIndex');
@@ -1177,7 +1177,70 @@ qq~ <img src="$imagesdir/$bdpic" alt="$curboardname" title="$curboardname" /> ~;
         $messageindex_template =~
           s/({|<)yabb messagecount(}|>)/$tmpmessagecount/gsm;
     }
-    $messageindex_template =~ s/({|<)yabb_colspan(}|>)/$colspan/gxsm;
+    $messageindex_template =~ s/({|<)yabb colspan(}|>)/$colspan/gsm;
+	### Board Rules Start ###
+	if (${$uid.$currentboard}{'rules'} == 1) {
+		ToChars(${$uid.$currentboard}{'rulestitle'});
+		ToChars(${$uid.$currentboard}{'rulesdesc'});
+		$tmpruletxt = qq~${$uid.$currentboard}{'rulesdesc'}~;
+
+		if (!$iamguest && ${$uid.$currentboard}{'rulescollapse'} == 1) {
+			$tmprulelgt = length(${$uid.$currentboard}{'rulesdesc'});
+			$rulestitle = qq~<img src="$imagesdir/cat_collapse.gif" id="bdrulecollapse" alt="$boardindex_exptxt{'2'}" title="$boardindex_exptxt{'2'}" style="cursor: pointer;" onclick="collapseBDrule($tmprulelgt);" />~;
+			my @collbdrules = split(/\|/, ${$uid.$username}{'collapsebdrules'});
+			for my $i ( 0 .. ( @collbdrules - 1 ) ) {
+				($rulebd, $rulelgt) = split /,/xsm, $collbdrules[$i];
+				if($rulebd eq $currentboard && $rulelgt == $tmprulelgt) {
+					$tmpruletxt = qq~$messageindex_txt{'collruletext'}~;
+					$rulestitle = qq~<img src="$imagesdir/cat_expand.gif" id="bdrulecollapse" alt="$boardindex_exptxt{'1'}" title="$boardindex_exptxt{'1'}" style="cursor: pointer;" onclick="collapseBDrule($tmprulelgt);" />~;
+				}
+			}
+		}
+
+		$rulestitle .= qq~&nbsp;${$uid.$currentboard}{'rulestitle'}~;
+		$rulesdesc = qq~<div id="bdruledesc">$tmpruletxt</div>~;
+
+		if (!$iamguest && ${$uid.$currentboard}{'rulescollapse'} == 1) {
+			$rulesdesc .= qq~
+			<textarea id="actruletxt" name="actruletxt" rows="1" cols="1" style="display: none;">${$uid.$currentboard}{'rulesdesc'}</textarea>
+			<input type="hidden" id="tmpruletxt" value="$messageindex_txt{'collruletext'}" />
+			<script language="JavaScript1.2" type="text/javascript">
+			<!--
+			function collapseBDrule(rulelgt) {
+				var tmpruletxt = document.getElementById('tmpruletxt').value;
+				var actruletxt = document.getElementById('actruletxt').value;
+				if (document.getElementById("bdruledesc").innerHTML == tmpruletxt) linkdesclg = 1;
+				else linkdesclg = rulelgt;
+				var thisboard = "$currentboard";
+				var doexpand = "$boardindex_exptxt{'1'}";
+				var docollaps = "$boardindex_exptxt{'2'}";
+				if (document.getElementById("bdruledesc").innerHTML == tmpruletxt) {
+					document.getElementById("bdruledesc").innerHTML = actruletxt;
+					document.getElementById('bdrulecollapse').src = "$imagesdir/cat_collapse.gif";
+					document.getElementById('bdrulecollapse').alt = docollaps;
+					document.getElementById('bdrulecollapse').title = docollaps;
+				}
+				else {
+					document.getElementById("bdruledesc").innerHTML = tmpruletxt;
+					document.getElementById('bdrulecollapse').src="$imagesdir/cat_expand.gif";
+					document.getElementById('bdrulecollapse').alt = doexpand;
+					document.getElementById('bdrulecollapse').title = doexpand;
+				}
+				var url = '$scripturl?action=bdrulecoll&rulebd=' + thisboard + '&rulelg=' + linkdesclg;
+				GetXmlHttpObject();
+				if (xmlHttp == null) return;
+				xmlHttp.open("GET",url,true);
+				xmlHttp.send(null);
+			}
+			-->
+			</script>
+			~;
+		}
+
+		$messageindex_template =~ s/({|<)yabb rulestitle(}|>)/$rulestitle/g;
+		$messageindex_template =~ s/({|<)yabb rulesdescription(}|>)/$rulesdesc/g;
+	}
+	### Board Rules End ###
 
     $tool_sep = $threadtools ? q{|||} : q{};
 
@@ -1396,6 +1459,22 @@ s/(<!-- Icon and access info end -->)/$1\n<div style="text-align: right; padding
         CORE::exit;    # This is here only to avoid server error log entries!
     }
     return;
+}
+
+sub collapse_bdrule {
+	$tmpboardrules = q{};
+	my @tmpbdrule = split /\|/xsm, ${$uid.$username}{'collapsebdrules'};
+	for my $i ( 0 .. ( @tmpbdrule - 1 ) ) {
+		my ($tmrulebd, $tmrulelgt) = split /,/xsm, $tmpbdrule[$i];
+		if($tmrulebd ne $INFO{'rulebd'}) {
+			$tmpboardrules .= qq~$tmpbdrule[$i]|~;
+		}
+	}
+	if($INFO{'rulelg'} > 1) { $tmpboardrules .= qq~$INFO{'rulebd'},$INFO{'rulelg'}~; }
+	$tmpboardrules =~ s/\|\Z//xsm;
+	${$uid.$username}{'collapsebdrules'} = $tmpboardrules;
+	UserAccount($username, 'update');
+	return;
 }
 
 sub MarkRead {         # Mark all threads in this board as read.
