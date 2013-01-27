@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.4;
+our $VERSION = 1.41;
 
-$managetemplatesplver = 'YaBB 2.5.4 $Revision: 1.4 $';
+$managetemplatesplver = 'YaBB 2.5.4 $Revision: 1.41 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Templates');
@@ -186,15 +186,15 @@ sub ModifyStyle {
     $admincs = 0;
     if ( $FORM{'cssfile'} ) {
         $cssfile = $FORM{'cssfile'};
-        $csstype = qq~$forumstylesdir/$cssfile~;
+        $csstype = qq~$htmldir/Templates/Forum/$cssfile~;
     }
     elsif ( $FORM{'admcssfile'} ) {
         $cssfile = $FORM{'admcssfile'};
-        $csstype = qq~$adminstylesdir/$cssfile~;
+        $csstype = qq~$htmldir/Templates/Admin/$cssfile~;
         $admincs = 1;
     }
-    else { $cssfile = 'default.css'; $csstype = qq~$forumstylesdir/$cssfile~; }
-    opendir TMPLDIR, "$forumstylesdir";
+    else { $cssfile = 'default.css'; $csstype = qq~$htmldir/Templates/Forum/$cssfile~; }
+    opendir TMPLDIR, "$htmldir/Templates/Forum";
     @styles = readdir TMPLDIR;
     closedir TMPLDIR;
     $forumcss = q{};
@@ -211,7 +211,7 @@ sub ModifyStyle {
         }
     }
 
-    opendir TMPLDIR, "$adminstylesdir";
+    opendir TMPLDIR, "$htmldir/Templates/Admin";
     @astyles = readdir TMPLDIR;
     closedir TMPLDIR;
     $admincss = q{};
@@ -305,12 +305,12 @@ sub ModifyStyle2 {
     if   ( $FORM{'filename'} ) { $cssfile = $FORM{'filename'}; }
     else                       { $cssfile = 'default.css'; }
     if ( $FORM{'type'} ) {
-        fopen( CSS, ">$adminstylesdir/$cssfile" )
-          || admin_fatal_error( 'cannot_open', "$adminstylesdir/$cssfile", 1 );
+        fopen( CSS, ">$htmldir/Templates/Admin/$cssfile" )
+          || admin_fatal_error( 'cannot_open', "$htmldir/Templates/Admin/$cssfile", 1 );
     }
     else {
-        fopen( CSS, ">$forumstylesdir/$cssfile" )
-          || admin_fatal_error( 'cannot_open', "$forumstylesdir/$cssfile", 1 );
+        fopen( CSS, ">$htmldir/Templates/Forum/$cssfile" )
+          || admin_fatal_error( 'cannot_open', "$htmldir/Templates/Forum/$cssfile", 1 );
     }
     print {CSS} "$FORM{'css'}\n" or croak 'cannot print CSS';
     fclose(CSS);
@@ -336,12 +336,12 @@ sub ModifyCSS {
     if   ( $INFO{'cssfile'} ) { $cssfile = $INFO{'cssfile'}; }
     else                      { $cssfile = "$aktstyle.css"; }
 
-    $tempimages = qq~$forumstylesurl/$aktimages~;
+    $tempimages = qq~$yyhtml_root/Templates/Forum/$aktimages~;
     my $istabbed = 0;
 
     $stylestr = q{};
 
-    opendir TMPLDIR, "$forumstylesdir";
+    opendir TMPLDIR, "$htmldir/Templates/Forum";
     @styles = readdir TMPLDIR;
     closedir TMPLDIR;
     $forumcss = q{};
@@ -358,8 +358,8 @@ sub ModifyCSS {
         }
     }
 
-    fopen( CSS, "$forumstylesdir/$cssfile" )
-      or admin_fatal_error( 'cannot_open', "$forumstylesdir/$cssfile" );
+    fopen( CSS, "$htmldir/Templates/Forum/$cssfile" )
+      or admin_fatal_error( 'cannot_open', "$htmldir/Templates/Forum/$cssfile" );
     @thecss = <CSS>;
     fclose(CSS);
     foreach my $style_sgl (@thecss) {
@@ -367,8 +367,8 @@ sub ModifyCSS {
         $style_sgl =~ s/\A\s*//xsm;
         $style_sgl =~ s/\s*\Z//xsm;
         $style_sgl =~ s/\t//gsm;
-        $style_sgl =~ s/\.\/default/$forumstylesurl\/default/gsm;
-        $style_sgl =~ s/\.\/$viewcss/$forumstylesurl\/$viewcss/gsm;
+        $style_sgl =~ s/\.\/default/$yyhtml_root\/Templates\/Forum\/default/gsm;
+        $style_sgl =~ s/\.\/$viewcss/$yyhtml_root\/Templates\/Forum\/$viewcss/gsm;
         $stylestr .= qq~$style_sgl ~;
     }
     $stylestr =~ s/\s{2,}/ /gsm;
@@ -898,7 +898,7 @@ qq~<img src="$imagesdir/tabfill.gif" alt="" style="vertical-align: middle;" />~;
 <!--
 var cssbold;
 var cssitalic;
-var stylesurl = '$forumstylesurl';
+var stylesurl = '$yyhtml_root/Templates/Forum';
 
 function initStyles() {
         var thestylestart = document.allstyles.stylestart.value;
@@ -1401,13 +1401,13 @@ sub ModifyCSS2 {
         $style_cnt =~ s/(\;)/$1\n/gsm;
         @style_arr = split /\n/xsm, $style_cnt;
 
-        fopen( TMPCSS, ">$forumstylesdir/$style_name.css" )
+        fopen( TMPCSS, ">$htmldir/Templates/Forum/$style_name.css" )
           || admin_fatal_error( 'cannot_open',
-            "$forumstylesdir/$style_name.css", 1 );
+            "$htmldir/Templates/Forum/$style_name.css", 1 );
         foreach my $style_sgl (@style_arr) {
             $style_sgl =~ s/\A\s+?//gxsm;
             if ( $style_sgl =~ m{\;+\Z}sm ) { $style_sgl = qq~\t$style_sgl~; }
-            $style_sgl =~ s/$forumstylesurl/\./gsm;
+            $style_sgl =~ s/$yyhtml_root\/Templates\/Forum/\./gsm;
             print {TMPCSS} "$style_sgl\n" or croak 'cannot print TMPCSS';
         }
         fclose(TMPCSS);
@@ -1421,7 +1421,7 @@ sub ModifyCSS2 {
         if ( $style_name eq 'default.css' ) {
             admin_fatal_error('no_delete_default');
         }
-        unlink "$forumstylesdir/$style_name";
+        unlink "$htmldir/Templates/Forum/$style_name";
         $yySetLocation = qq~$adminurl?action=modcss;cssfile=default.css~;
         redirectexit();
     }
@@ -1452,7 +1452,7 @@ sub ModifySkin {
         $aktstyle,   $aktimages,  $akthead,     $aktboard,
         $aktmessage, $aktdisplay, $aktmycenter, $aktmenutype
     ) = split /\|/xsm, $templateset{$akttemplate};
-    $thisimagesdir = "$forumstylesurl/$aktimages";
+    $thisimagesdir = "$yyhtml_root/Templates/Forum/$aktimages";
 
     my ( $fullcss, $line );
     if   ( $INFO{'cssfile'} ) { $cssfile = $INFO{'cssfile'}; }
@@ -1489,7 +1489,7 @@ sub ModifySkin {
     }
     else { $mycentersel = q~ checked="checked"~; }
 
-    opendir TMPLDIR, "$forumstylesdir";
+    opendir TMPLDIR, "$htmldir/Templates/Forum";
     @styles = readdir TMPLDIR;
     closedir TMPLDIR;
     $forumcss = q{};
@@ -1504,7 +1504,7 @@ sub ModifySkin {
             }
             $forumcss .= qq~<option value="$file"$selected>$name</option>\n~;
         }
-        if ( -d "$forumstylesdir/$file"
+        if ( -d "$htmldir/Templates/Forum/$file"
             && $file =~ m{\A[0-9a-zA-Z_\#\%\-\:\+\?\$\&\~\,\@/]+\Z}xsm )
         {
             if ( $imgfolder eq $file ) {
@@ -1516,8 +1516,8 @@ sub ModifySkin {
         }
     }
 
-    fopen( CSS, "$forumstylesdir/$cssfile" )
-      or admin_fatal_error( 'cannot_open', "$forumstylesdir/$cssfile" );
+    fopen( CSS, "$htmldir/Templates/Forum/$cssfile" )
+      or admin_fatal_error( 'cannot_open', "$htmldir/Templates/Forum/$cssfile" );
     while ( $line = <CSS> ) {
         $line =~ s/[\r\n]//gxsm;
         FromHTML($line);
@@ -1621,9 +1621,9 @@ sub ModifySkin {
     $tempnewstitle = qq~<b>$templ_txt{'68'}:</b> ~;
     $tempnews      = qq~$templ_txt{'84'}~;
     $tempstyles =
-qq~<link rel="stylesheet" href="$forumstylesurl/$viewcss.css" type="text/css" />~;
-    $tempimages    = qq~$forumstylesurl/$viewimg~;
-    $tempimagesdir = qq~$forumstylesdir/$viewimg~;
+qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$viewcss.css" type="text/css" />~;
+    $tempimages    = qq~$yyhtml_root/Templates/Forum/$viewimg~;
+    $tempimagesdir = qq~$htmldir/Templates/Forum/$viewimg~;
     $tempmenu =
 qq~<span title="$img_txt{'103'}" class="selected">$tabfill$img_txt{'103'}$tabfill</span>~;
     $tempmenu .=
@@ -1907,7 +1907,7 @@ sub formatTempname {
 sub TmpImgLoc {
     my @x = @_;
     if ( !-e "$x[2]/$x[0]" ) {
-        $thisimgloc = qq~img src="$forumstylesurl/default/$x[0]"~;
+        $thisimgloc = qq~img src="$yyhtml_root/Templates/Forum/default/$x[0]"~;
     }
     else { $thisimgloc = qq~img src="$x[1]/$x[0]"~; }
     return $thisimgloc;
