@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.2;
+our $VERSION = 1.3;
 
-$attachmentsplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$attachmentsplver = 'YaBB 2.5.4 $Revision: 1.3 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub Attachments {
@@ -447,7 +447,7 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
             }
             if ( !exists $attach_gif{$ext} ) {
                 $attach_gif{$ext} =
-                  ( $ext && -e "$forumstylesdir/$useimages/$ext.gif" )
+                  ( $ext && -e "$htmldir/Templates/Forum/$useimages/$ext.gif" )
                   ? "$ext.gif"
                   : 'paperclip.gif';
             }
