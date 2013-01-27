@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision: 1.3 $
+# $Revision: 1.5 $
 
 $threadhandellist = qq~
 	{yabb reply}{yabb poll}{yabb notify}{yabb favorite}{yabb sendtopic}{yabb print}{yabb markunread}
@@ -104,7 +104,7 @@ $display_template = qq~
 <!-- Navigation Bar end -->
 <!-- Threads Admin Button Bar start -->
 <div style="margin: 4px;">
-	<table class="pad_4px cs_1px">
+	<table class="pad_4px cs_thin">
 		<tr>
 			<td class="vtop small">{yabb adminhandellist}
 			</td>
@@ -121,7 +121,7 @@ $posthandellist = qq~
 ~;
 
 $contactlist = qq~
-	{yabb profile}{yabb email}{yabb pm}{yabb www}{yabb msn}{yabb gtalk}{yabb skype}{yabb myspace}{yabb facebook}{yabb icq}{yabb yim}{yabb aim}{yabb addbuddy}
+	{yabb profile}{yabb email}{yabb pm}{yabb www}{yabb gtalk}{yabb skype}{yabb myspace}{yabb facebook}{yabb icq}{yabb yim}{yabb aim}{yabb addbuddy}
 ~;
 
 $messageclass = "message";
@@ -152,7 +152,7 @@ $messageblock = qq~
 						<br />
 						<span class="small"><b>{yabb replycount}</b>{yabb msgdate}</span>
 					</span>
-					<span class="small" style="float: left; text-align: right; width: 50%;">{yabb posthandellist}				</span>
+					<span class="small" style="float: left; text-align: right; width: 50%;">{yabb posthandellist}</span>
 				</div>
 				<div class="$messageclass" style="float: left; width: 99%; overflow: auto;">{yabb message}
 				</div>
