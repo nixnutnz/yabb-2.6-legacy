@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$systemplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$systemplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 
 sub BoardTotals {
 	my ($testboard, $line, @lines, $updateboard, @boardvars, $tag, $cnt);
@@ -262,8 +262,10 @@ sub UserAccount {
 	my @tags = qw(realname password position addgroups email hidemail regdate regtime regreason location bday hideage gender userpic usertext signature template language stealth webtitle weburl icq aim yim skype myspace facebook msn gtalk timeselect timeformat timeoffset dsttimeoffset dynamic_clock postcount lastonline lastpost lastim im_ignorelist im_popup im_imspop pmmessprev pmviewMess pmactprev notify_me board_notifications thread_notifications favorites buddylist cathide pageindex reversetopic postlayout sesquest sesanswer session lastips onlinealert offlinestatus awaysubj awayreply awayreplysent spamcount spamtime numberformat);
 	if ($extendedprofiles) {
 		require "$sourcedir/ExtendedProfiles.pl";
-		push(@tags, &ext_get_fields_array());
+		push(@tags, ext_get_fields_array());
 	}
+	push(@tags, 'collapsebdrules');
+
 	fopen(UPDATEUSER, ">$memberdir/$user.$userext",1) || &fatal_error('cannot_open', "$memberdir/$user.$userext", 1);
 	print UPDATEUSER "### User variables for ID: $user ###\n\n";
 	for (my $cnt = 0; $cnt < @tags; $cnt++) {
