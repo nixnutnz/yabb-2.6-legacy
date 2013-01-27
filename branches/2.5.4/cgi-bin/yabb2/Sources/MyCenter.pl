@@ -15,9 +15,9 @@
 # use warnings;
 no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.91;
+our $VERSION = 1.92;
 
-$mycenterplver = 'YaBB 2.5.4 $Revision: 1.91 $';
+$mycenterplver = 'YaBB 2.5.4 $Revision: 1.92 $';
 if ($action eq 'detailedversion') { return 1; }
 
 LoadLanguage('InstantMessage');
@@ -1922,7 +1922,7 @@ qq~<span class="NewLinks">, <a href="$scripturl?action=imshow;caller=1;id=-1">${
 			$MCPmMenu .= qq~<tr>
 				<td colspan="3"><hr class="hr" /></td>
 			</tr><tr>
-				<td class="nav bold" colspan="3"><a href="javascript:MarkAllAsRead('$scripturl?action=markims','$imagesdir')">$inmes_txt{'764'}</a></span></td>
+				<td class="nav bold" colspan="3"><a href="javascript:MarkAllAsRead('$scripturl?action=markims','$imagesdir')">$inmes_txt{'764'}</a></td>
 			</tr>~;
 			$yyjavascript .=
 qq~\nvar markallreadlang = '$inmes_txt{'500'}';\nvar markfinishedlang = '$inmes_txt{'500a'}';~;
