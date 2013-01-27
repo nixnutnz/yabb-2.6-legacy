@@ -168,9 +168,9 @@ sub MainHelp {
 
 		$message = ${ SectionBody . $i };
 		$displayname = ${$uid.$username}{'realname'};
-		if (!$yyYaBBCloaded) { require "$sourcedir/YaBBC.pl"; }
-		$message =~ s~\[yabbc\](.*?)\[/yabbc\]~my($text) = $1; &ToHTML($text); &DoUBBCTo($text);~sge;
-		&wrap2;
+		enable_yabbc();
+		$message =~ s~\[yabbc\](.*?)\[/yabbc\]~my($text) = $1; ToHTML($text); DoUBBCTo($text);~sge;
+		wrap2();
 
 		if($SectionAnchor eq 'YaBBC_Reference') {
 			$yyinlinestyle .= qq~<style type="text/css">
