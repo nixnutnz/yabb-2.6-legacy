@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-our $VERSION = 1.3;
+our $VERSION = 1.31;
 
-our $smiliesplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+our $smiliesplver = 'YaBB 2.5.4 $Revision: 1.31 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub SmiliePanel {
@@ -35,7 +35,7 @@ sub SmiliePanel {
     }
     if ( $detachblock == 1 )  { $dblock   = q{ checked="checked"}; }
     if ($removenormalsmilies) { $remnosmi = q{ checked="checked"}; }
-    opendir DIR, "$smiliesdir";
+    opendir DIR, "$htmldir/Smilies";
     @contents = readdir DIR;
     closedir DIR;
     $smilieslist = q{};
@@ -56,7 +56,7 @@ sub SmiliePanel {
     <td class="windowbg2 center">[smiley=$line]</td>
     <td class="windowbg2 center">$line</td>
     <td class="windowbg2 center">$name</td>
-    <td class="windowbg2 center" colspan="4"><img src="$smiliesurl/$line" alt="$name" title="$name" /></td>
+    <td class="windowbg2 center" colspan="4"><img src="$yyhtml_root/Smilies/$line" alt="$name" title="$name" /></td>
   </tr>~;
             }
         }
@@ -192,7 +192,7 @@ qq~<a href="$adminurl?action=smiliemove;index=$i;movedown=1"><img src="$imagesdi
               . ( !$showinbox ? ' checked="checked"' : q{} ) . qq~ /></td>
   </tr><tr>
     <td class="windowbg2" colspan="4"><b>$smiltxt{'18'}</b></td>
-    <td class="windowbg2" colspan="4">$smiliesurl</td>
+    <td class="windowbg2" colspan="4">$yyhtml_root/Smilies</td>
   </tr><tr>
     <td class="windowbg2" colspan="4"><label for="popback"><b>$smiltxt{'20'}</b></label></td>
     <td class="windowbg2" colspan="4">#<input type="text" size="10" name="popback" id="popback" value="$popback" /></td>
