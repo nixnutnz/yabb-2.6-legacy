@@ -16,9 +16,9 @@ use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use English qw(-no_match_vars);
 use Time::Local 'timelocal';
-our $VERSION = 1.7;
+our $VERSION = 1.81;
 
-$adminplver = 'YaBB 2.5.4 $Revision: 1.7 $';
+$adminplver = 'YaBB 2.5.4 $Revision: 1.81 $';
 
 sub Admin {
     is_admin_or_gmod();
@@ -63,6 +63,14 @@ Ron Hartendorp, Andrew Aitken, Carsten Dalgaard, Ryan Farrington, Zoltan Kovacs,
                 <td class="windowbg2 padd_8_12px">
 Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, D.A. Rorabaugh.<br />Included Mods in YaBB 2.5.2 written by Derek Barnstorm, Carsten Dalgaard, and D.A. Rorabaugh.<br /><br />
 Dedicated to the memory of Ron Hartendorp, AKA Spikecity. He left us too soon.
+                </td>
+            </tr><tr>
+                <td class="catbg center">
+                    <span class="small">YaBB 2.5.4</span>
+                </td>
+            </tr><tr>
+                <td class="windowbg2 padd_8_12px">
+Jon Baker, Derek Barnstorm, Carsten Dalgaard, ggn, John G.D. McCabe, D.A. Rorabaugh.<br />Included Mods in YaBB 2.5.4 written by Derek Barnstorm and D.A. Rorabaugh with additional code and Mods from the YaBB 3.0 Development Team.
                 </td>
             </tr><tr>
                 <td class="catbg center">
@@ -214,8 +222,12 @@ sub GetLastLogins {
             LoadUser( $element[0] );
         }    # If user is not in memory, s/he must be loaded.
         $element[2] = timeformat( $element[2] );
+        my $lookupIP =
+          ($ipLookup)
+          ? qq~<a href="$scripturl?action=iplookup;ip=$element[1]">$element[1]</a>~
+          : qq~$element[1]~;
         $yymain .= qq~
-                <a href="$scripturl?action=viewprofile;username=$useraccount{$element[0]}">${$uid.$element[0]}{'realname'}</a> <span class="small">($element[1]) - $element[2]</span><br />
+                <a href="$scripturl?action=viewprofile;username=$useraccount{$element[0]}">${$uid.$element[0]}{'realname'}</a> <span class="small">($lookupIP) - $element[2]</span><br />
                 ~;
     }
     return;
@@ -495,12 +507,15 @@ sub ShowClickLog {
     $totalclick = @iplist;
     $totalip    = @newiplist;
     for my $i ( 0 .. ( @newiplist - 1 ) ) {
-
+        my $lookupIP =
+          ($ipLookup)
+          ? qq~<a href="$scripturl?action=iplookup;ip=$newiplist[$i]->[0]">$newiplist[$i]->[0]</a>~
+          : qq~$newiplist[$i]->[0]~;
         if (   $newiplist[$i]->[0] =~ /\S+/sm
             && $newiplist[$i]->[0] =~ /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/sm )
         {
             $guestiplist .=
-qq~$newiplist[$i]->[0]&nbsp;<span class="red">(<i>$newiplist[$i]->[1]</i>)</span><br />~;
+qq~$lookupIP&nbsp;<span class="red">(<i>$newiplist[$i]->[1]</i>)</span><br />~;
         }
         else {
             LoadUser( $newiplist[$i]->[0] );
@@ -1128,25 +1143,25 @@ sub AddMember {
         </td>
     </tr><tr>
         <td class="windowbg"><label for="regusername"><b>$register_txt{'98'}:</b></label></td>
-        <td class="windowbg"><input type="text" name="regusername" id="regusername" onchange="checkAvail('$scripturl',this.value,'user')" size="30" maxlength="18" /><input type="hidden" name="_session_id_" id="_session_id_" value="$sessionid" /><input type="hidden" name="regdate" id="regdate" value="$regdate" /><div id="useravailability"></div></td>
+        <td class="windowbg2"><input type="text" name="regusername" id="regusername" onchange="checkAvail('$scripturl',this.value,'user')" size="30" maxlength="18" /><input type="hidden" name="_session_id_" id="_session_id_" value="$sessionid" /><input type="hidden" name="regdate" id="regdate" value="$regdate" /><div id="useravailability"></div></td>
     </tr><tr>
         <td class="windowbg"><label for="regrealname"><b>$register_txt{'98a'}:</b></label></td>
-        <td class="windowbg"><input type="text" name="regrealname" id="regrealname" onchange="checkAvail('$scripturl',this.value,'display')" size="30" maxlength="30" /><div id="displayavailability"></div></td>
+        <td class="windowbg2"><input type="text" name="regrealname" id="regrealname" onchange="checkAvail('$scripturl',this.value,'display')" size="30" maxlength="30" /><div id="displayavailability"></div></td>
     </tr><tr>
         <td class="windowbg"><label for="email"><b>$register_txt{'69'}:</b></label></td>
-        <td class="windowbg"><input type="text" maxlength="100" name="email" id="email" onchange="checkAvail('$scripturl',this.value,'email')" size="50" /><div id="emailavailability"></div></td>
+        <td class="windowbg2"><input type="text" maxlength="100" name="email" id="email" onchange="checkAvail('$scripturl',this.value,'email')" size="50" /><div id="emailavailability"></div></td>
     </tr>~;
     if ( $allow_hide_email == 1 ) {
         $yymain .= qq~<tr>
         <td class="windowbg"><label for="hideemail"><b>$register_txt{'721'}</b></label></td>
-        <td class="windowbg"><input type="checkbox" name="hideemail" id="hideemail" value="1" checked="checked" /></td>
+        <td class="windowbg2"><input type="checkbox" name="hideemail" id="hideemail" value="1" checked="checked" /></td>
     </tr>~;
     }
 
     # Language selector
     $yymain .= qq~<tr>
         <td class="windowbg"><label for="userlang"><b>$register_txt{'101'}</b></label></td>
-        <td class="windowbg"><select name="userlang" id="userlang">~;
+        <td class="windowbg2"><select name="userlang" id="userlang">~;
     opendir LNGDIR, $langdir;
     foreach ( sort { lc($a) cmp lc $b } readdir LNGDIR ) {
         if ( -e "$langdir/$_/Main.lng" ) {
