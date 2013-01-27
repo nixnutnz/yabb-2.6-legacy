@@ -16,9 +16,9 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.92;
+our $VERSION = 1.93;
 
-$instantmessageplver = 'YaBB 2.5.4 $Revision: 1.92 $';
+$instantmessageplver = 'YaBB 2.5.4 $Revision: 1.93 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 require "$sourcedir/Postbox.pl";
 
@@ -37,12 +37,13 @@ sub buildIMsend {
         else           { Preview($error); }
         FromHTML($message);
         FromHTML($subject);
+        $is_preview = 1;
     }
     $mctitle = $inmes_txt{'775'};
     ## check for a draft being opened
     if ( $INFO{'caller'} == 4 && $INFO{'id'} ) {
         if ( !-e "$memberdir/$username.imdraft" ) {
-            &fatal_error( 'cannot_open', "$username.imdraft" );
+            fatal_error( 'cannot_open', "$username.imdraft" );
         }
         fopen( DRAFT, "$memberdir/$username.imdraft" );
         my @draftPM = <DRAFT>;
@@ -50,7 +51,7 @@ sub buildIMsend {
         chomp @draftPM;
         my $flagfound;
         foreach my $draftMess (@draftPM) {
-            my ( $checkId, undef ) = split( /\|/, $draftMess, 2 );
+            my ( $checkId, undef ) = split /\|/xsm, $draftMess, 2;
             if ( $checkId eq $INFO{'id'} ) {
                 (
                     $dmessageid,    $dmusername,   $userto,
@@ -58,14 +59,14 @@ sub buildIMsend {
                     $dmdate,        $message,      $dmpmessageid,
                     $dmreplyno,     $dmips,        $dmessageStatus,
                     $dmessageFlags, $dstoreFolder, $dmessageAttachment
-                ) = split( /\|/, $draftMess );
+                ) = split /\|/xsm, $draftMess;
                 $flagfound = 1;
                 last;
             }
         }
-        if ( !$flagfound ) { &fatal_error('cannot_find_draftmess'); }
-        &FromHTML($message);
-        &FromHTML($subject);
+        if ( !$flagfound ) { fatal_error('cannot_find_draftmess'); }
+        FromHTML($message);
+        FromHTML($subject);
     }
 
     my $pmicon = 'standard';
@@ -88,9 +89,9 @@ sub buildIMsend {
     foreach my $i ( 0 .. 2 ) {
         if ( $thestatus eq $ststt[$i] ) {
             $s_select[$i] = q~ selected="selected"~;
-        $sendBMess = 1;
+            $sendBMess = 1;
+        }
     }
-}
     if (
         $sendBMess != 1
         || (
@@ -127,55 +128,53 @@ sub buildIMsend {
         # this defines what the top area of the post box will look like:
         ## if this is a reply , load the 'from' name off the message
         if ( $INFO{'reply'} || $INFO{'quote'} ) { $INFO{'to'} = $mfrom; }
-        if ( !$INFO{'to'} && $FORM{'to'} ne '' ) { $INFO{'to'} = $FORM{'to'}; }
+        if ( !$INFO{'to'} && $FORM{'to'} ne q{} ) { $INFO{'to'} = $FORM{'to'}; }
 
         ## if cloaking is enabled, and 'to' is not a blank
-        if ( $do_scramble_id && $INFO{'to'} ne '' ) {
+        if ( $do_scramble_id && $INFO{'to'} ne q{} ) {
             decloak( $INFO{'to'} );
         }
 
         if ( !$sendBMess ) { LoadUser( $INFO{'to'} ); }
     }
 
-    $message =~ s~<br.*?>~\n~gi;
-    $message =~ s/&nbsp;/ /g;
+    $message =~ s/<br.*?>/\n/gism;
+    $message =~ s/&nbsp;/ /gsm;
     ToChars($message);
     $message = Censor($message);
     ToHTML($message);
-    $message =~ s/ &nbsp; &nbsp; &nbsp;/\t/ig;
+    $message =~ s/ &nbsp; &nbsp; &nbsp;/\t/igsm;
 
     if ($msubject) { $subject = $msubject; }
     ToChars($subject);
     $subject = Censor($subject);
     ToHTML($subject);
 
-    if ( $action eq "modify" || $action eq "modify2" ) {
+    if ( $action eq 'modify' || $action eq 'modify2' ) {
         $displayname = qq~$mename~;
     }
     else {
         $displayname = ${ $uid . $username }{'realname'};
     }
     require "$sourcedir/ContextHelp.pl";
-    ContextScript("post");
+    ContextScript('post');
 
     $MCGlobalFormStart .= qq~
-	$ctmain
-	<script src="$yyhtml_root/yabbc.js" type="text/javascript"></script>
-	<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
-	<script type="text/javascript">
-	var displayNames = new Object();
-	$template_names
-	</script>
-	~;
+    $ctmain
+    <script src="$yyhtml_root/yabbc.js" type="text/javascript"></script>
+    <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    var displayNames = new Object();
+    $template_names
+    </script>
+    ~;
 
     if ( $prevmain && !$replyguest ) {
-        $imsend .= qq~
-	<tr>
-		<td class="windowbg">
-		$prevmain
-		</td>
-	</tr>
-	~;
+        $imsend .= qq~<tr>
+        <td class="windowbg">
+        $prevmain
+        </td>
+    </tr>~;
     }
 
     if (
@@ -187,91 +186,91 @@ sub buildIMsend {
       )
     {
         $imsend .= qq~<tr>
-		<td class="windowbg vtop">
-			<table class="pad_2px" style="width:95%; margin-left:0">
-			 <tr>
-			  <td>
-			   <img name="prevwin" id="prevwin" src="$defaultimagesdir/cat_expand.gif" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor:pointer; cursor:hand;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
-			  </td>
-			 </tr>
-			</table>
-		</td>
-	</tr><tr>
-		<td class="windowbg">
-			<div id="savetable" class="bordercolor" style="height:0px; padding:1px; width:100%; margin:auto; visibility:hidden;">
-			<table class="pad_3px" style="table-layout:fixed;">
-			  <tr>
-			    <td class="titlebg">
-			     <div id="savetopic" style="height:0px; text-align:left; vertical-align:middle; font-weight:bold; overflow:auto;">&nbsp;</div>
-			    </td>
-			  </tr><tr>
-			    <td class="windowbg2">
-			     <div id="saveframe" class="message" style="height:0px; text-align:left; vertical-align:top; overflow:auto;">&nbsp;</div>
-			    </td>
-			  </tr>
-			</table>
-			</div>
-		</td>
-	</tr>~;
+        <td class="windowbg vtop">
+            <table class="pad_2px" style="width:95%; margin-left:0">
+             <tr>
+              <td>
+               <img name="prevwin" id="prevwin" src="$defaultimagesdir/cat_expand.gif" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor:pointer; cursor:hand;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
+              </td>
+             </tr>
+            </table>
+        </td>
+    </tr><tr>
+        <td class="windowbg">
+            <div id="savetable" class="bordercolor" style="height:0px; padding:1px; width:100%; margin:auto; visibility:hidden;">
+            <table class="pad_3px" style="table-layout:fixed;">
+              <tr>
+                <td class="titlebg">
+                 <div id="savetopic" style="height:0px; text-align:left; vertical-align:middle; font-weight:bold; overflow:auto;">&nbsp;</div>
+                </td>
+              </tr><tr>
+                <td class="windowbg2">
+                 <div id="saveframe" class="message" style="height:0px; text-align:left; vertical-align:top; overflow:auto;">&nbsp;</div>
+                </td>
+              </tr>
+            </table>
+            </div>
+        </td>
+    </tr>~;
     }
 
     if ($replyguest) {
         $imsend .= qq~<tr>
-		<td class="windowbg2">
-		$guest_reply{'guesttext'}
-		</td>
-	</tr>~;
+        <td class="windowbg2">
+        $guest_reply{'guesttext'}
+        </td>
+    </tr>~;
     }
 
-    $imsend .= qq~<tr>
-		<td class="windowbg" style="width:50%">
-			<table class="pad_2px" style="width:95%; margin-left:0">~;
+    $imsend .= q~<tr>
+        <td class="windowbg" style="width:50%">
+            <table class="pad_2px" style="width:95%; margin-left:0">~;
 
     if ( !$replyguest && !$sendBMess && ( $PMenable_cc || $PMenable_bcc ) ) {
         $yyjavascripttoform = q~
-			<script type="text/javascript">
-			<!--
-			function changeRecepientTab(tabto) {
-				document.getElementById('usersto').style.display = 'none';
-				document.getElementById('bnttoto').className = 'windowbg';
-		~;
+            <script type="text/javascript">
+            <!--
+            function changeRecepientTab(tabto) {
+                document.getElementById('usersto').style.display = 'none';
+                document.getElementById('bnttoto').className = 'windowbg';
+        ~;
 
         $imsend .= qq~<tr>
-					<td>
-					<div id="bnttoto" style="float: left; padding: 5px;" class="windowbg2"><a href="javascript:void(0);" onclick="changeRecepientTab('to'); return false;">$inmes_txt{'324'}:</a></div>
-		~;
+                    <td>
+                    <div id="bnttoto" style="float: left; padding: 5px;" class="windowbg2"><a href="javascript:void(0);" onclick="changeRecepientTab('to'); return false;">$inmes_txt{'324'}:</a></div>
+        ~;
         if ($PMenable_cc) {
-            $yyjavascripttoform .= qq~
-				document.getElementById('userscc').style.display = 'none';
-				document.getElementById('bnttocc').className = 'windowbg';
-			~;
+            $yyjavascripttoform .= q~
+                document.getElementById('userscc').style.display = 'none';
+                document.getElementById('bnttocc').className = 'windowbg';
+            ~;
             $imsend .= qq~
-					<div id="bnttocc" style="float: left; padding: 5px;" class="windowbg"><a href="javascript:void(0);" onclick="changeRecepientTab('cc'); return false;">$inmes_txt{'325'}:</a></div>
-			~;
+                    <div id="bnttocc" style="float: left; padding: 5px;" class="windowbg"><a href="javascript:void(0);" onclick="changeRecepientTab('cc'); return false;">$inmes_txt{'325'}:</a></div>
+            ~;
         }
         if ($PMenable_bcc) {
             $yyjavascripttoform .= q~
-				document.getElementById('usersbcc').style.display = 'none';
-				document.getElementById('bnttobcc').className = 'windowbg';
-			~;
+                document.getElementById('usersbcc').style.display = 'none';
+                document.getElementById('bnttobcc').className = 'windowbg';
+            ~;
             $imsend .= qq~
-					<div id="bnttobcc" style="float: left; padding: 5px;" class="windowbg"><a href="javascript:void(0);" onclick="changeRecepientTab('bcc'); return false;">$inmes_txt{'326'}:</a></div>
-			~;
+                    <div id="bnttobcc" style="float: left; padding: 5px;" class="windowbg"><a href="javascript:void(0);" onclick="changeRecepientTab('bcc'); return false;">$inmes_txt{'326'}:</a></div>
+            ~;
         }
         $yyjavascripttoform .= q~
-				document.getElementById('users' + tabto).style.display = 'inline';
-				document.getElementById('bntto' + tabto).className = 'windowbg2';
-			}
-		//-->
-		</script>
-		~;
+                document.getElementById('users' + tabto).style.display = 'inline';
+                document.getElementById('bntto' + tabto).className = 'windowbg2';
+            }
+        //-->
+        </script>
+        ~;
         $imsend .= qq~$yyjavascripttoform
-					</td>
-				</tr>~;
+                    </td>
+                </tr>~;
     }
 
     $imsend .= qq~<tr>
-					<td width="60%" class="vtop">\n~;
+                    <td width="60%" class="vtop">\n~;
 
     # now uses a multi-line select
     ProcIMrecs();
@@ -305,28 +304,27 @@ sub buildIMsend {
         my $toIdtext = $sendBMess ? 'groups' : 'toshow';
 
         $imsend .= qq~
-		<script type="text/javascript">
-		<!--
-		function imWin() {
-			window.open('$scripturl?action=imlist;sort=recentpm;toid=$toIdtext','imWin','status=no,height=$us_winhight,width=500,menubar=no,toolbar=no,top=50,left=50,scrollbars=no');
-		}
-		function imWinCC() {
-			window.open('$scripturl?action=imlist;sort=recentpm;toid=toshowcc','imWin','status=no,height=$us_winhight,width=464,menubar=no,toolbar=no,top=50,left=50,scrollbars=no');
-		}
-		function imWinBCC() {
-			window.open('$scripturl?action=imlist;sort=recentpm;toid=toshowbcc','imWin','status=no,height=$us_winhight,width=464,menubar=no,toolbar=no,top=50,left=50,scrollbars=no');
-		}
-		function removeUser(oElement) {
-			var indexToRemove = oElement.options.selectedIndex;
-			if (confirm("$post_txt{'768'}")) { oElement.remove(indexToRemove); }
-		}
-		//-->
-		</script>
-		<div id="usersto" style="width: 98%; display: inline; float: left;">
-		<b>$inmes_txt{'324'} $toUsersTitle:</b>&nbsp;<a href="javascript: void(0);" onclick="imWin();" tabindex="1"><span class="small">$inmes_txt{'clickto1'} <i>$inmes_txt{'324'}</i> $toUsersTitle $inmes_txt{'clickto2'}</span></a><br />
-		<select name="toshow" id="toshow" multiple="multiple" size="6" style="width: 100%;" ondblclick="removeUser(this);">\n~;
+        <script type="text/javascript">
+        <!--
+        function imWin() {
+            window.open('$scripturl?action=imlist;sort=recentpm;toid=$toIdtext','imWin','status=no,height=$us_winhight,width=500,menubar=no,toolbar=no,top=50,left=50,scrollbars=no');
+        }
+        function imWinCC() {
+            window.open('$scripturl?action=imlist;sort=recentpm;toid=toshowcc','imWin','status=no,height=$us_winhight,width=464,menubar=no,toolbar=no,top=50,left=50,scrollbars=no');
+        }
+        function imWinBCC() {
+            window.open('$scripturl?action=imlist;sort=recentpm;toid=toshowbcc','imWin','status=no,height=$us_winhight,width=464,menubar=no,toolbar=no,top=50,left=50,scrollbars=no');
+        }
+        function removeUser(oElement) {
+            var indexToRemove = oElement.options.selectedIndex;
+            if (confirm("$post_txt{'768'}")) { oElement.remove(indexToRemove); }
+        }
+        //-->
+        </script>
+        <div id="usersto" style="width: 98%; display: inline; float: left;">
+        <b>$inmes_txt{'324'} $toUsersTitle:</b>&nbsp;<a href="javascript: void(0);" onclick="imWin();" tabindex="1"><span class="small">$inmes_txt{'clickto1'} <i>$inmes_txt{'324'}</i> $toUsersTitle $inmes_txt{'clickto2'}</span></a><br />
+        <select name="toshow" id="toshow" multiple="multiple" size="6" style="width: 100%;" ondblclick="removeUser(this);">\n~;
 
-        my $usefields;
         if ( !$sendBMess ) {
             if ($toname) {
                 LoadUser($toname);
@@ -336,15 +334,15 @@ qq~<option selected="selected" value="$useraccount{$toname}">${$uid.$toname}{'re
                 }
             }
             if ( $FORM{'toshow'} ) {
-                foreach my $touser ( split( /,/, $FORM{'toshow'} ) ) {
+                foreach my $touser ( split /,/xsm, $FORM{'toshow'} ) {
                     LoadUser($touser);
                     $imsend .=
 qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'realname'}</option>\n~;
                 }
             }
             if ($userto) {
-                foreach my $touser ( split( /,/, $userto ) ) {
-                    &LoadUser($touser);
+                foreach my $touser ( split /,/xsm, $userto ) {
+                    LoadUser($touser);
                     $imsend .=
 qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'realname'}</option>\n~;
                 }
@@ -360,117 +358,117 @@ qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'re
         }
 
         $imsend .=
-          q~			</select><input type="hidden" name="immulti" value="yes" />
-			</div>
-		~;
+q~            </select><input type="hidden" name="immulti" value="yes" />
+            </div>
+        ~;
 
         $JSandInput = q~
-		<script type="text/javascript">
-		<!--
-		// this function forces all users listed on IM mult to be selected for processing
-		function selectNames() {
-			var oList = document.getElementById('toshow')
-			for (var i = 0; i < oList.options.length; i++) { oList.options[i].selected = true; }
-		~;
+        <script type="text/javascript">
+        <!--
+        // this function forces all users listed on IM mult to be selected for processing
+        function selectNames() {
+            var oList = document.getElementById('toshow')
+            for (var i = 0; i < oList.options.length; i++) { oList.options[i].selected = true; }
+        ~;
 
         if ( !$sendBMess ) {
             if ($PMenable_cc) {
                 $JSandInput .= q~
-					var oList = document.getElementById('toshowcc')
-					for (var i = 0; i < oList.options.length; i++){ oList.options[i].selected = true; }
-				~;
+                    var oList = document.getElementById('toshowcc')
+                    for (var i = 0; i < oList.options.length; i++){ oList.options[i].selected = true; }
+                ~;
                 $imsend .= qq~
-				<div id="userscc" style="width: 98%; display: none; float: left;">
-				<b>$inmes_txt{'325'} $toUsersTitle:</b>&nbsp;<a href="javascript: void(0);" onclick="imWinCC();"><span class="small">$inmes_txt{'clickto1'} <i>$inmes_txt{'325'}</i> $toUsersTitle $inmes_txt{'clickto2'}</span></a><br />
-				<select name="toshowcc" id="toshowcc" multiple="multiple" size="6" style="width: 100%;" ondblclick="removeUser(this);">\n~;
+                <div id="userscc" style="width: 98%; display: none; float: left;">
+                <b>$inmes_txt{'325'} $toUsersTitle:</b>&nbsp;<a href="javascript: void(0);" onclick="imWinCC();"><span class="small">$inmes_txt{'clickto1'} <i>$inmes_txt{'325'}</i> $toUsersTitle $inmes_txt{'clickto2'}</span></a><br />
+                <select name="toshowcc" id="toshowcc" multiple="multiple" size="6" style="width: 100%;" ondblclick="removeUser(this);">\n~;
                 if ( $FORM{'toshowcc'} ) {
-                    foreach my $touser ( split( /\,/, $FORM{'toshowcc'} ) ) {
-                        &LoadUser($touser);
-                        $imsend .=
-qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'realname'}</option>\n~;
-                    }
-                }
-                if ($usernamecc) {
-                    foreach my $touser ( split( /\,/, $usernamecc ) ) {
+                    foreach my $touser ( split /\,/xsm, $FORM{'toshowcc'} ) {
                         LoadUser($touser);
                         $imsend .=
 qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'realname'}</option>\n~;
                     }
                 }
-                $imsend .= q~				</select>
-				</div>
-				~;
+                if ($usernamecc) {
+                    foreach my $touser ( split /\,/xsm, $usernamecc ) {
+                        LoadUser($touser);
+                        $imsend .=
+qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'realname'}</option>\n~;
+                    }
+                }
+                $imsend .= q~               </select>
+                </div>
+                ~;
             }
 
             if ($PMenable_bcc) {
                 $JSandInput .= q~
-					var oList = document.getElementById('toshowbcc')
-					for (var i = 0; i < oList.options.length; i++) { oList.options[i].selected = true; }
-				~;
+                    var oList = document.getElementById('toshowbcc')
+                    for (var i = 0; i < oList.options.length; i++) { oList.options[i].selected = true; }
+                ~;
                 $imsend .= qq~
-				<div id="usersbcc" style="width: 98%; display: none; float: left;">
-				<b>$inmes_txt{'326'} $toUsersTitle:</b>&nbsp;<a href="javascript: void(0);" onclick="imWinBCC();"><span class="small">$inmes_txt{'clickto1'} <i>$inmes_txt{'326'}</i> $toUsersTitle $inmes_txt{'clickto2'}</span></a><br />
-				<select name="toshowbcc" id="toshowbcc" multiple="multiple" size="6" style="width: 100%;" ondblclick="removeUser(this);">\n~;
+                <div id="usersbcc" style="width: 98%; display: none; float: left;">
+                <b>$inmes_txt{'326'} $toUsersTitle:</b>&nbsp;<a href="javascript: void(0);" onclick="imWinBCC();"><span class="small">$inmes_txt{'clickto1'} <i>$inmes_txt{'326'}</i> $toUsersTitle $inmes_txt{'clickto2'}</span></a><br />
+                <select name="toshowbcc" id="toshowbcc" multiple="multiple" size="6" style="width: 100%;" ondblclick="removeUser(this);">\n~;
                 if ( $FORM{'toshowbcc'} ) {
-                    foreach my $touser ( split( /\,/, $FORM{'toshowbcc'} ) ) {
+                    foreach my $touser ( split /\,/xsm, $FORM{'toshowbcc'} ) {
                         LoadUser($touser);
                         $imsend .=
 qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'realname'}</option>\n~;
                     }
                 }
                 if ($usernamebcc) {
-                    foreach my $touser ( split( /\,/, $usernamebcc ) ) {
+                    foreach my $touser ( split /\,/xsm, $usernamebcc ) {
                         LoadUser($touser);
                         $imsend .=
 qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'realname'}</option>\n~;
                     }
                 }
-                $imsend .= q~				</select>
-				</div>
-				~;
+                $imsend .= q~               </select>
+                </div>
+                ~;
             }
         }
 
         $JSandInput .= q~
-			}
-		//-->
-		</script>
-		~;
+            }
+        //-->
+        </script>
+        ~;
 
         $imsend .= qq~
-					</td>
-					<td class="vtop" width="40%">
-						<label for="status"><b>$inmes_txt{'status'}:</b></label><br />
+                    </td>
+                    <td class="vtop" width="40%">
+                        <label for="status"><b>$inmes_txt{'status'}:</b></label><br />
                                   <select name="status" id="status" tabindex="2" size="3" onchange="showtpstatus();$onchange_text2">
                                       <option value="s"$s_select[0]>$im_message_status{'standard'}</option>
                                       <option value="c"$s_select[2]>$im_message_status{'confidential'}</option>
                                       <option value="u"$s_select[1]>$im_message_status{'urgent'}</option>
-						</select><img src="$imagesdir/$pmicon.gif" name="icons" style="margin:1em 10px 0 10px; vertical-align:top" alt="$im_message_status{'$pmicon'}" title="$im_message_status{'$pmicon'}" />
-					</td>
-					</tr>
-				</table>
-			</td>
-		</tr>~;
+                        </select><img src="$imagesdir/$pmicon.gif" name="icons" style="margin:1em 10px 0 10px; vertical-align:top" alt="$im_message_status{'$pmicon'}" title="$im_message_status{'$pmicon'}" />
+                    </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>~;
 
     }
     else {
 
         $imsend .=
-qq~						<b>$inmes_txt{'324'} $toUsersTitle:</b> <input type="text" name="toguest" id="toguest" value="$guestName" size="50" maxlength="25" style="width: 95%;" /><input type="hidden" name="toshow" id="toshow" value="$guestName" />
-					</td>
-					<td class="vtop" width="40%">
-						&nbsp;
-					</td>
-				</tr><tr>
-					<td class="vtop">
-						<b>$post_txt{'69'}:</b> <input type="text" name="guestemail" id="guestemail" value="$guestEmail" size="50" maxlength="40" style="width: 95%;" />
-						<input type="hidden" name="replyguest" id="replyguest" value="1" />
-					</td>
-					<td class="vtop">&nbsp;</td>
-				</tr>
-				</table>
-			</td>
-		</tr>~;
+qq~                     <b>$inmes_txt{'324'} $toUsersTitle:</b> <input type="text" name="toguest" id="toguest" value="$guest_name" size="50" maxlength="25" style="width: 95%;" /><input type="hidden" name="toshow" id="toshow" value="$guest_name" />
+                    </td>
+                    <td class="vtop">
+                        &nbsp;
+                    </td>
+                </tr><tr>
+                    <td class="vtop">
+                        <b>$post_txt{'69'}:</b> <input type="text" name="guestemail" id="guestemail" value="$guest_email" size="50" maxlength="40" style="width: 95%;" />
+                        <input type="hidden" name="replyguest" id="replyguest" value="1" />
+                    </td>
+                    <td class="vtop">&nbsp;</td>
+                </tr>
+                </table>
+            </td>
+        </tr>~;
     }
 
     $subtitle = "<i>$subject</i>";
@@ -478,47 +476,47 @@ qq~						<b>$inmes_txt{'324'} $toUsersTitle:</b> <input type="text" name="togues
     #this is the end of the upper area of the post page.
 
     # this declares the beginning of the UBBC section
-    $JSandInput .= qq~
-	<script type="text/javascript">
-	<!--
-	function showimage() {
-		document.images.status.src=document.postmodify.status.options[document.postmodify.images.status.selectedIndex].value;
-	}
-	//-->
-	</script>
-	~;
+    $JSandInput .= q~
+    <script type="text/javascript">
+    <!--
+    function showimage() {
+        document.images.status.src=document.postmodify.status.options[document.postmodify.images.status.selectedIndex].value;
+    }
+    //-->
+    </script>
+    ~;
 
     $JSandInput .= qq~
-	<input type="hidden" name="threadid" id="threadid" value="$threadid" />
-	<input type="hidden" name="postid" id="postid" value="$postid" />
-	<input type="hidden" name="info" id="info" value="$INFO{'id'}$FORM{'info'}" />
-	<input type="hidden" name="mename" id="mename" value="$mename" />
-	<input type="hidden" name="post_entry_time" id="post_entry_time" value="$date" />
-	~;
+    <input type="hidden" name="threadid" id="threadid" value="$threadid" />
+    <input type="hidden" name="postid" id="postid" value="$postid" />
+    <input type="hidden" name="info" id="info" value="$INFO{'id'}$FORM{'info'}" />
+    <input type="hidden" name="mename" id="mename" value="$mename" />
+    <input type="hidden" name="post_entry_time" id="post_entry_time" value="$date" />
+    ~;
 
     if ( $FORM{'draftid'} || $INFO{'caller'} == 4 ) {
         $JSandInput .=
-            q~<input type="hidden" name="draftid" id="draftid" value="~
-          . ( $FORM{'draftid'} || $INFO{'id'} )
-          . q~" />~;
+          q~<input type="hidden" name="draftid" id="draftid" value="~
+          . ( $FORM{'draftid'} || $INFO{'id'} ) . q~" />~;
     }
 
     $imsend .= qq~<tr>
-		<td class="windowbg2">
-			$JSandInput
-			<label for="subject"><b>$inmes_txt{'70'}:</b></label><br /><input type="text" name="subject" id="subject" value="$subject" size="50" maxlength="~
-      . ( $set_subjectMaxLength + ( $subject =~ /^Re: / ? 4 : 0 ) )
+        <td class="windowbg2">
+            $JSandInput
+            <label for="subject"><b>$inmes_txt{'70'}:</b></label><br /><input type="text" name="subject" id="subject" value="$subject" size="50" maxlength="~
+      . ( $set_subjectMaxLength + ( $subject =~ /^Re: /sm ? 4 : 0 ) )
       . qq~" tabindex="3" style="width: 460px;"$onchangeText />
-		</td>
-	</tr><tr>
-		<td class="windowbg2">
-	~;
+        </td>
+    </tr><tr>
+        <td class="windowbg2">
+    ~;
 
     # this is for the ubbc buttons
     if ( !$replyguest ) {
         if ( $enable_ubbc && $showyabbcbutt ) {
             $imsend .= qq~<b>$post_txt{'252'}:</b><br />
-			<div style="float: left; width: 463px;">~;
+            <div style="float: left; width: 463px;">~;
+
             # ubbc set separated out into Postbox.pl DAR 11/13/2012 #
             $imsend .= postbox();
             $imsend .= q~</div>~;
@@ -530,15 +528,15 @@ qq~						<b>$inmes_txt{'324'} $toUsersTitle:</b> <input type="text" name="togues
     }
 
     # set size of messagebox and text
-#    if ( !${ $uid . $username }{'postlayout'} ) {
-#        $pheight  = 130;
-#        $pwidth   = 425;
-#        $textsize = 10;
-#    }
-#    else {
-#        ( $pheight, $pwidth, $textsize, $col_row ) =
-#          split( /\|/, ${ $uid . $username }{'postlayout'} );
-#    }
+    #    if ( !${ $uid . $username }{'postlayout'} ) {
+    #        $pheight  = 130;
+    #        $pwidth   = 425;
+    #        $textsize = 10;
+    #    }
+    #    else {
+    #        ( $pheight, $pwidth, $textsize, $col_row ) =
+    #          split( /\|/, ${ $uid . $username }{'postlayout'} );
+    #    }
     $imsend .= postbox2();
 
     $imsend .= q~</div>
@@ -547,8 +545,8 @@ qq~						<b>$inmes_txt{'324'} $toUsersTitle:</b> <input type="text" name="togues
     $imsend .= postbox3();
 
     $imsend .= q~</td>
-	</tr>
-	~;
+    </tr>
+    ~;
 
     if ($img_greybox) {
         $yyinlinestyle .=
@@ -566,9 +564,9 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 
     if ( !$replyguest ) {
         $imsend .= q~<tr>
-		<td class="windowbg2">
-			<script type="text/javascript">
-		~;
+        <td class="windowbg2">
+            <script type="text/javascript">
+        ~;
 
         $moresmilieslist   = q{};
         $more_smilie_array = q{};
@@ -578,7 +576,7 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
                 if ( $SmilieURL[$i] =~ /\//ism ) { $tmpurl = $SmilieURL[$i]; }
                 else { $tmpurl = qq~$imagesdir/$SmilieURL[$i]~; }
                 $moresmilieslist .=
-qq~				document.write('<img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="javascript: MoreSmilies($i);" class="pointer bottom" />$SmilieLinebreak[$i] ');\n~;
+qq~             document.write('<img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="javascript: MoreSmilies($i);" class="pointer bottom" />$SmilieLinebreak[$i] ');\n~;
                 $tmpcode = $SmilieCode[$i];
                 $tmpcode =~ s/\&quot;/"+'"'+"/gsm
                   ;   #" Adding that because if not it screws up my syntax view'
@@ -603,7 +601,7 @@ qq~				document.write('<img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="
                 {
                     if ( $line !~ /banner/ism ) {
                         $moresmilieslist .=
-qq~				document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javascript: MoreSmilies($i);" style="cursor: hand; vertical-align:bottom" />$SmilieLinebreak[$i] ');\n~;
+qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javascript: MoreSmilies($i);" style="cursor: hand; vertical-align:bottom" />$SmilieLinebreak[$i] ');\n~;
                         $more_smilie_array .= qq~" [smiley=$line]", ~;
                         $i++;
                     }
@@ -614,20 +612,20 @@ qq~				document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name" onclick
         $more_smilie_array .= q~""~;
 
         $imsend .= qq~
-				moresmiliecode = new Array($more_smilie_array)
-				function MoreSmilies(i) {
-					AddTxt=moresmiliecode[i];
-					AddText(AddTxt);
-				}~;
-         $imsend .= smilies_list();
-         $imsend .= qq~
-			</script><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span>\n~;
+                moresmiliecode = new Array($more_smilie_array)
+                function MoreSmilies(i) {
+                    AddTxt=moresmiliecode[i];
+                    AddText(AddTxt);
+                }~;
+        $imsend .= smilies_list();
+        $imsend .= qq~
+            </script><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span>\n~;
 
         if (   ( $showadded == 3 && $showsmdir != 2 )
             || ( $showsmdir == 3 && $showadded != 2 ) )
         {
             $imsend .= qq~
-			<a href="javascript: smiliewin();">$post_smiltxt{'1'}</a>~;
+            <a href="javascript: smiliewin();">$post_smiltxt{'1'}</a>~;
         }
 
         # SpellChecker start
@@ -641,70 +639,70 @@ qq~				document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name" onclick
         # SpellChecker end
 
         $imsend .= qq~
-			<noscript>
-				<span class="small">$maintxt{'noscript'}</span>
-			</noscript>
-		</td>
-	</tr>~;
+            <noscript>
+                <span class="small">$maintxt{'noscript'}</span>
+            </noscript>
+        </td>
+    </tr>~;
     }
 
     $imsend .= q~<tr>
-		<td class="windowbg">~;
+        <td class="windowbg">~;
 
     if ( $INFO{'quote'} || $INFO{'reply'} || $FORM{'reply'} )
     {    # if this is a reply, need to pass the reply # forward
         $imsend .= qq~
-			<input type="hidden" name="reply" id="reply" value="$INFO{'quote'}$INFO{'reply'}$FORM{'reply'}" />~;
+            <input type="hidden" name="reply" id="reply" value="$INFO{'quote'}$INFO{'reply'}$FORM{'reply'}" />~;
     }
 
     if ( !$replyguest ) {
         $imsend .= qq~
-			<input type="checkbox" name="ns" id="ns" value="NS"$nscheck /> <label for="ns"><span class="small">$post_txt{'277'}</span></label><br />~;
+            <input type="checkbox" name="ns" id="ns" value="NS"$nscheck /> <label for="ns"><span class="small">$post_txt{'277'}</span></label><br />~;
         if ( $FORM{'draftid'} || $INFO{'caller'} == 4 ) {
             $imsend .= qq~
-			<input type="checkbox" name="draftleave" id="draftleave" value="1" /> <span class="small"> $post_txt{'draftleave'}</span><br />~;
+            <input type="checkbox" name="draftleave" id="draftleave" value="1" /> <span class="small"> $post_txt{'draftleave'}</span><br />~;
         }
         $imsend .= q~
-			<input type="checkbox" name="dontstoreinoutbox" id="dontstoreinoutbox" value="1"~
+            <input type="checkbox" name="dontstoreinoutbox" id="dontstoreinoutbox" value="1"~
           . ( $FORM{'dontstoreinoutbox'} ? ' checked="checked"' : q{} )
           . qq~ /> <label for="dontstoreinoutbox"><span class="small">$inmes_txt{'320'}</span></label><br />~;
     }
 
     $imsend .= qq~
-			<div id="enable_iecopy" style="display: none;">
-			<input type="checkbox" name="iecopy" id="iecopy"$iecopycheck /> <span class="small"> $post_txt{'iecopycheck'}</span>
-			</div>
-			<script type="text/javascript">
-			<!--
-			if (navigator.appName == "Microsoft Internet Explorer") {
-				document.getElementById('enable_iecopy').style.display = 'inline';
-			}
-			//-->
-			</script>
-		</td>
-	</tr>
-	~;
+            <div id="enable_iecopy" style="display: none;">
+            <input type="checkbox" name="iecopy" id="iecopy"$iecopycheck /> <span class="small"> $post_txt{'iecopycheck'}</span>
+            </div>
+            <script type="text/javascript">
+            <!--
+            if (navigator.appName == "Microsoft Internet Explorer") {
+                document.getElementById('enable_iecopy').style.display = 'inline';
+            }
+            //-->
+            </script>
+        </td>
+    </tr>
+    ~;
 
     #these are the buttons to submit
     my $sendBMessFlag;
     if ( $sendBMess || $isBMess ) {
         $sendBMessFlag =
-          qq~<input type="hidden" name="isBMess" id="isBMess" value="yes" />~;
+          q~<input type="hidden" name="isBMess" id="isBMess" value="yes" />~;
     }
 
     $imsend .= qq~<tr>
-		<td class="titlebg center">
-			$hidestatus
-			$sendBMessFlag
-			<br />
-			<input type="submit" name="$post" value="$submittxt" accesskey="s" tabindex="5" class="button" />~;
+        <td class="titlebg center">
+            $hidestatus
+            $sendBMessFlag
+            <br />
+            <input type="submit" name="$post" value="$submittxt" accesskey="s" tabindex="5" class="button" />~;
 
     if ($speedpostdetection) {
-        $imsend .= qq~
-			<script type="text/javascript">~;
+        $imsend .= q~
+            <script type="text/javascript">~;
         $imsend .= speedpost();
-		$imsend .= q~	//-->
-			</script>~;
+        $imsend .= q~   //-->
+            </script>~;
     }
 
     my %accesskey;
@@ -718,7 +716,7 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
             || ( $enable_PMcontrols && ${ $uid . $username }{'pmmessprev'} ) )
         {
             $imsend .=
-qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="$preview" value="$inmes_txt{'507'}" accesskey="p" tabindex="6" class="button" />~;
+qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="$preview" value="$post_txt{'507'}" accesskey="p" tabindex="6" class="button" />~;
             $accesskey{'MSIE_Safari'}     = $post_txt{'329c'};
             $accesskey{'FireFox'}         = $post_txt{'330c'};
             $accesskey{'Browsers_on_Mac'} = $post_txt{'331c'};
@@ -763,29 +761,29 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="
     }
 
     $imsend .= qq~
-		<script type="text/javascript">
-		<!--
-			if (/Opera/.test(navigator.userAgent) === false) {
-				if (/mac/i.test(navigator.platform)) {
-					document.write("<br /><span class='small'>$accesskey{'Browsers_on_Mac'}</span>");
-				} else if (/MSIE [7-9]/.test(navigator.userAgent) || (/\\/[3-9]\\.\\d+\\.\\d+ Safari/.test(navigator.userAgent))) {
-					document.write("<br /><span class='small'>$accesskey{'MSIE_Safari'}</span>");
-				} else if (/Firefox\\/[2-9]/.test(navigator.userAgent) || (/Chrome/.test(navigator.userAgent))) {
-					document.write("<br /><span class='small'>$accesskey{'FireFox'}</span>");
-				}
-			}
+        <script type="text/javascript">
+        <!--
+            if (/Opera/.test(navigator.userAgent) === false) {
+                if (/mac/i.test(navigator.platform)) {
+                    document.write("<br /><span class='small'>$accesskey{'Browsers_on_Mac'}</span>");
+                } else if (/MSIE [7-9]/.test(navigator.userAgent) || (/\\/[3-9]\\.\\d+\\.\\d+ Safari/.test(navigator.userAgent))) {
+                    document.write("<br /><span class='small'>$accesskey{'MSIE_Safari'}</span>");
+                } else if (/Firefox\\/[2-9]/.test(navigator.userAgent) || (/Chrome/.test(navigator.userAgent))) {
+                    document.write("<br /><span class='small'>$accesskey{'FireFox'}</span>");
+                }
+            }
 
-			var noalert = true, gralert = false, rdalert = false, clalert = false;
-			var prevsec = 5;
-			var prevtxt;
-			var cntsec = 0;
-			function tick() {
-				cntsec++;
-				calcCharLeft();
-				timerID = setTimeout("tick()",1000);
-			}
-			var autoprev = false;
-			var topicfirst = true;\n~;
+            var noalert = true, gralert = false, rdalert = false, clalert = false;
+            var prevsec = 5;
+            var prevtxt;
+            var cntsec = 0;
+            function tick() {
+                cntsec++;
+                calcCharLeft();
+                timerID = setTimeout("tick()",1000);
+            }
+            var autoprev = false;
+            var topicfirst = true;\n~;
 
     if (
         (
@@ -796,126 +794,126 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="
       )
     {
         $imsend .= qq~
-			post_txt_807 = "$post_txt{'807'}";
+            post_txt_807 = "$post_txt{'807'}";
 
-			function enabPrev() {
-				if ( autoprev == false ) {
-					autoprev = true
-					topicfirst = true
-					document.getElementById("savetable").style.visibility = "visible";
-					document.getElementById("savetable").style.height = "auto";
-					document.getElementById("savetopic").style.height = "auto";
-					document.getElementById("saveframe").style.height = "auto";
-					document.images.prevwin.alt = "$npf_txt{'02'}";
-					document.images.prevwin.title = "$npf_txt{'02'}";
-					document.images.prevwin.src="$defaultimagesdir/cat_collapse.gif";
-					autoPreview();
-				} else {
-					autoprev = false;
-					ubbstr = '';
-					document.getElementById("savetable").style.visibility = "hidden";
-					document.getElementById("savetable").style.height = "0px";
-					document.getElementById("savetopic").style.height = "0px";
-					document.getElementById("saveframe").style.height = "0px";
-					document.postmodify.message.focus();
-					document.images.prevwin.alt = "$npf_txt{'01'}";
-					document.images.prevwin.title = "$npf_txt{'01'}";
-					document.images.prevwin.src="$defaultimagesdir/cat_expand.gif";
-				}
-				calcCharLeft();
-			}\n~;
+            function enabPrev() {
+                if ( autoprev == false ) {
+                    autoprev = true
+                    topicfirst = true
+                    document.getElementById("savetable").style.visibility = "visible";
+                    document.getElementById("savetable").style.height = "auto";
+                    document.getElementById("savetopic").style.height = "auto";
+                    document.getElementById("saveframe").style.height = "auto";
+                    document.images.prevwin.alt = "$npf_txt{'02'}";
+                    document.images.prevwin.title = "$npf_txt{'02'}";
+                    document.images.prevwin.src="$defaultimagesdir/cat_collapse.gif";
+                    autoPreview();
+                } else {
+                    autoprev = false;
+                    ubbstr = '';
+                    document.getElementById("savetable").style.visibility = "hidden";
+                    document.getElementById("savetable").style.height = "0px";
+                    document.getElementById("savetopic").style.height = "0px";
+                    document.getElementById("saveframe").style.height = "0px";
+                    document.postmodify.message.focus();
+                    document.images.prevwin.alt = "$npf_txt{'01'}";
+                    document.images.prevwin.title = "$npf_txt{'01'}";
+                    document.images.prevwin.src="$defaultimagesdir/cat_expand.gif";
+                }
+                calcCharLeft();
+            }\n~;
     }
 
     $imsend .= qq~
-			function calcCharLeft() {
+            function calcCharLeft() {
 // bad code    if (document.postmodify.message.value.length > 0) document.getElementById("saveframe").style.height = "auto"; 
-				clipped = false;
-				maxLength = $MaxMessLen;
-				if (document.postmodify.message.value.length > maxLength) {
-					document.postmodify.message.value = document.postmodify.message.value.substring(0,maxLength);
-					charleft = 0;
-					clipped = true;
-				} else {
-					charleft = maxLength - document.postmodify.message.value.length;
-				}
-				prevsec++
-				if(autoprev && prevsec > 5 && prevtxt != document.postmodify.message.value) {
-					autoPreview();
-					prevtxt = document.postmodify.message.value;
-				}
-				document.postmodify.msgCL.value = charleft;
-				if (charleft >= 100 && noalert) { noalert = false; gralert = true; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/green1.gif"; }
-				if (charleft < 100 && charleft >= 50 && gralert) { noalert = true; gralert = false; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/green0.gif"; }
-				if (charleft < 50 && charleft > 0 && rdalert) { noalert = true; gralert = true; rdalert = false; clalert = true; document.images.chrwarn.src="$defaultimagesdir/red0.gif" }
-				if (charleft === 0 && clalert) { noalert = true; gralert = true; rdalert = true; clalert = false; document.images.chrwarn.src="$defaultimagesdir/red1.gif"; }
-				return clipped;
-			}
+                clipped = false;
+                maxLength = $MaxMessLen;
+                if (document.postmodify.message.value.length > maxLength) {
+                    document.postmodify.message.value = document.postmodify.message.value.substring(0,maxLength);
+                    charleft = 0;
+                    clipped = true;
+                } else {
+                    charleft = maxLength - document.postmodify.message.value.length;
+                }
+                prevsec++
+                if(autoprev && prevsec > 5 && prevtxt != document.postmodify.message.value) {
+                    autoPreview();
+                    prevtxt = document.postmodify.message.value;
+                }
+                document.postmodify.msgCL.value = charleft;
+                if (charleft >= 100 && noalert) { noalert = false; gralert = true; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/green1.gif"; }
+                if (charleft < 100 && charleft >= 50 && gralert) { noalert = true; gralert = false; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/green0.gif"; }
+                if (charleft < 50 && charleft > 0 && rdalert) { noalert = true; gralert = true; rdalert = false; clalert = true; document.images.chrwarn.src="$defaultimagesdir/red0.gif" }
+                if (charleft === 0 && clalert) { noalert = true; gralert = true; rdalert = true; clalert = false; document.images.chrwarn.src="$defaultimagesdir/red1.gif"; }
+                return clipped;
+            }
 
-			var codestr = '$simpelcode';
-			var quotstr = '$normalquot';
-			var squotstr = '$simpelquot';
-			var fontsizemax = '$fontsizemax';
-			var fontsizemin = '$fontsizemin';
-			var edittxt = '$edittext';
-			var dispname = '$displayname';
-			var scrpurl = '$scripturl';
-			var imgdir = '$defaultimagesdir';
-			var ubsmilieurl = '$yyhtml_root/Smilies';
-			var parseflash = '$parseflash';
-			var autolinkurl = '$autolinkurls';
-			var Month = new Array($jsmonths);
-			var timeselected = '$jstimeselected';
-			var splittext = "$maintxt{'107'}";
-			var dontusetoday = '';
-			var todaytext = "$maintxt{'769'}";
-			var yesterdaytext = "$maintxt{'769a'}";
-			var timetext1 = "$timetxt{'1'}";
-			var timetext2 = "$timetxt{'2'}";
-			var timetext3 = "$timetxt{'3'}";
-			var timetext4 = "$timetxt{'4'}";
-			var jsmilieurl = new Array($smilie_url_array"");
-			var jsmiliecode = new Array($smilie_code_array"");
+            var codestr = '$simpelcode';
+            var quotstr = '$normalquot';
+            var squotstr = '$simpelquot';
+            var fontsizemax = '$fontsizemax';
+            var fontsizemin = '$fontsizemin';
+            var edittxt = '$edittext';
+            var dispname = '$displayname';
+            var scrpurl = '$scripturl';
+            var imgdir = '$defaultimagesdir';
+            var ubsmilieurl = '$yyhtml_root/Smilies';
+            var parseflash = '$parseflash';
+            var autolinkurl = '$autolinkurls';
+            var Month = new Array($jsmonths);
+            var timeselected = '$jstimeselected';
+            var splittext = "$maintxt{'107'}";
+            var dontusetoday = '';
+            var todaytext = "$maintxt{'769'}";
+            var yesterdaytext = "$maintxt{'769a'}";
+            var timetext1 = "$timetxt{'1'}";
+            var timetext2 = "$timetxt{'2'}";
+            var timetext3 = "$timetxt{'3'}";
+            var timetext4 = "$timetxt{'4'}";
+            var jsmilieurl = new Array($smilie_url_array"");
+            var jsmiliecode = new Array($smilie_code_array"");
 
-			function autoPreview() {
-				if (topicfirst)  { updatTopic(); }
-				var scrlto = parseInt(180) + 5;
-				vismessage = document.postmodify.message.value;
-				while ( c=vismessage.match(/date=(\\d+?)\\]/i) ) {
-					var qudate=c[1];
-					qudate=qudate * 1000;
-					qdate=new Date();
-					qdate.setTime(qudate);
-					qdate=qdate.toLocaleString();
-					vismessage=vismessage.replace(/(date=)\\d+?(\\])/i, "\$1"+qdate+"\$2");
-				}
-				if($enable_ubbc) {
-					var ubbstr = jsDoUbbc(vismessage,codestr,quotstr,squotstr,edittxt,dispname,scrpurl,imgdir,ubsmilieurl,parseflash,fontsizemax,fontsizemin,autolinkurl,Month,timeselected,splittext,dontusetoday,todaytext,yesterdaytext,timetext1,timetext2,timetext3,timetext4,jsmilieurl,jsmiliecode);
-				} else {
-					ubbstr = vismessage;
-				}
-				document.getElementById("saveframe").innerHTML=ubbstr;
-				sh_highlightDocument();
-				LivePrevImgResize();
-				scrlto += parseInt(document.getElementById("saveframe").scrollTop) + parseInt(document.getElementById("saveframe").offsetHeight);
-				document.getElementById("saveframe").scrollTop = scrlto;
-				prevsec = 0;
-			}
+            function autoPreview() {
+                if (topicfirst)  { updatTopic(); }
+                var scrlto = parseInt(180) + 5;
+                vismessage = document.postmodify.message.value;
+                while ( c=vismessage.match(/date=(\\d+?)\\]/i) ) {
+                    var qudate=c[1];
+                    qudate=qudate * 1000;
+                    qdate=new Date();
+                    qdate.setTime(qudate);
+                    qdate=qdate.toLocaleString();
+                    vismessage=vismessage.replace(/(date=)\\d+?(\\])/i, "\$1"+qdate+"\$2");
+                }
+                if($enable_ubbc) {
+                    var ubbstr = jsDoUbbc(vismessage,codestr,quotstr,squotstr,edittxt,dispname,scrpurl,imgdir,ubsmilieurl,parseflash,fontsizemax,fontsizemin,autolinkurl,Month,timeselected,splittext,dontusetoday,todaytext,yesterdaytext,timetext1,timetext2,timetext3,timetext4,jsmilieurl,jsmiliecode);
+                } else {
+                    ubbstr = vismessage;
+                }
+                document.getElementById("saveframe").innerHTML=ubbstr;
+                sh_highlightDocument();
+                LivePrevImgResize();
+                scrlto += parseInt(document.getElementById("saveframe").scrollTop) + parseInt(document.getElementById("saveframe").offsetHeight);
+                document.getElementById("saveframe").scrollTop = scrlto;
+                prevsec = 0;
+            }
 
-			function LivePrevImgResize() {
-				var max_w = $max_post_img_width;
-				var max_h = $max_post_img_height;
-				var images = document.getElementById("saveframe").getElementsByTagName("img");
-				for (var i = 0; i < images.length; i++) {
-					if (max_w !== 0 && images[i].width > max_w) {
-						images[i].height = images[i].height * max_w / images[i].width;
-						images[i].width = max_w;
-					}
-					if (max_h !== 0 && images[i].height > max_h) {
-						images[i].width  = images[i].width * max_h / images[i].height;
-						images[i].height = max_h;
-					}
-				}
-			}\n~;
+            function LivePrevImgResize() {
+                var max_w = $max_post_img_width;
+                var max_h = $max_post_img_height;
+                var images = document.getElementById("saveframe").getElementsByTagName("img");
+                for (var i = 0; i < images.length; i++) {
+                    if (max_w !== 0 && images[i].width > max_w) {
+                        images[i].height = images[i].height * max_w / images[i].width;
+                        images[i].width = max_w;
+                    }
+                    if (max_h !== 0 && images[i].height > max_h) {
+                        images[i].width  = images[i].width * max_h / images[i].height;
+                        images[i].height = max_h;
+                    }
+                }
+            }\n~;
 
     if (
         (
@@ -926,49 +924,49 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="
       )
     {
         $imsend .= qq~
-			var visikon = '';
-			function updatTopic() {
-				topicfirst = false;
+            var visikon = '';
+            function updatTopic() {
+                topicfirst = false;
 
-				var visicon = document.images.icons.src;
-				visicon=visicon.replace(/http\\:\\/\\/.*\\/(.*?)\\.gif/g, "\$1");
-				visicon=visicon.replace(/[^A-Za-z]/g, "");
-				visicon=visicon.replace(/\\\\/g, "");
-				visicon=visicon.replace(/\\//g, "");
-				if (visicon != "standard" && visicon != "confidential" && visicon != "urgent") {
-					visicon = "xx";
-				}
-				visikon = "<img src='$defaultimagesdir/"+visicon+".gif' alt='"+visicon+"' /> ";
+                var visicon = document.images.icons.src;
+                visicon=visicon.replace(/http\\:\\/\\/.*\\/(.*?)\\.gif/g, "\$1");
+                visicon=visicon.replace(/[^A-Za-z]/g, "");
+                visicon=visicon.replace(/\\\\/g, "");
+                visicon=visicon.replace(/\\//g, "");
+                if (visicon != "standard" && visicon != "confidential" && visicon != "urgent") {
+                    visicon = "xx";
+                }
+                visikon = "<img src='$defaultimagesdir/"+visicon+".gif' alt='"+visicon+"' /> ";
 
-				var vistopic = document.postmodify.subject.value;
-				var htmltopic = jsDoTohtml(vistopic);
-				document.getElementById("savetopic").innerHTML=visikon+htmltopic;
-				//document.postmodify.message.focus();
-			}\n~;
+                var vistopic = document.postmodify.subject.value;
+                var htmltopic = jsDoTohtml(vistopic);
+                document.getElementById("savetopic").innerHTML=visikon+htmltopic;
+                //document.postmodify.message.focus();
+            }\n~;
     }
 
     if ( !$replyguest ) {
         $imsend .= qq~
-			function showtpstatus() {
-				var theimg = '$pmicon';
-				var objIconSelected = document.postmodify.status[document.postmodify.status.selectedIndex].value;
-				if (objIconSelected == 's') { theimg = 'standard'; }
-				if (objIconSelected == 'c') { theimg = 'confidential'; }
-				if (objIconSelected == 'u') { theimg = 'urgent'; }
-				document.images.icons.src='$imagesdir/'+theimg+'.gif';
-				if (autoprev == true) updatTopic();
-			}
-			showtpstatus();\n~;
+            function showtpstatus() {
+                var theimg = '$pmicon';
+                var objIconSelected = document.postmodify.status[document.postmodify.status.selectedIndex].value;
+                if (objIconSelected == 's') { theimg = 'standard'; }
+                if (objIconSelected == 'c') { theimg = 'confidential'; }
+                if (objIconSelected == 'u') { theimg = 'urgent'; }
+                document.images.icons.src='$imagesdir/'+theimg+'.gif';
+                if (autoprev == true) updatTopic();
+            }
+            showtpstatus();\n~;
     }
 
     $imsend .= qq~
-			tick();
+            tick();
 
-			// -->
-			</script>
-			<br /><br />
-		</td>
-	</tr>\n~;
+            // -->
+            </script>
+            <br /><br />
+        </td>
+    </tr>\n~;
 
     if ( $action eq 'modify' || $action eq 'modify2' ) {
         $displayname = $mename;
@@ -992,7 +990,7 @@ sub IMsendMessage {
 
 # This is only for update, when comming from YaBB lower or equal version 2.2.3
 # I think it can be deleted around version 2.4.0 without causing mayor issues (deti).
-    if ( $enable_notifications eq '' ) {
+    if ( $enable_notifications eq q{} ) {
         $enable_notifications = $enable_notification ? 3 : 0;
     }
 
@@ -1005,10 +1003,7 @@ sub IMsendMessage {
     ##  sorry - no guests
     if ($iamguest) { fatal_error('im_members_only'); }
 
-    my (
-        @ignore,  $igname,    $messageid, $subject,
-        $message, @recipient, $ignored,   $memnums
-    );
+    my ( @ignore, $igname, $messageid, $subject, $message, $ignored, $memnums );
     $isBMess = $FORM{'isBMess'};
 
     # set size of messagebox and text
@@ -1039,7 +1034,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     FromChars($message);
 
     ToHTML($subject);
-    &ToHTML($message);
+    ToHTML($message);
 
     # manage line returns and tabs
     $subject =~ s/\s+/ /gsm;
@@ -1087,7 +1082,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
         $checkspam = 100 / $allmems * $memnums;
         if ( $memnums == 1 ) { $checkspam = 0; }
         if ( $checkspam > $imspam && !$iamadmin ) {
-            &fatal_error('im_spam_alert');
+            fatal_error('im_spam_alert');
         }
     }
 
@@ -1101,7 +1096,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
             $addnr++;
             chomp $UserTo;
             my ( $status, $UserTo ) = split /:/xsm, $UserTo;
-            my $ignored = 0;
+            $ignored = 0;
             $UserTo =~ s/\A\s+//xsm;
             $UserTo =~ s/\s+\Z//xsm;
             $UserTo =~ s/[^0-9A-Za-z#%+,-\.@^_]//gsm;
@@ -1129,7 +1124,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                         }
                         if ( $igname eq q{*} ) {
                             push @nouser,
-                                "$inmes_txt{'761'} $UserTo $inmes_txt{'762'};";
+                              "$inmes_txt{'761'} $UserTo $inmes_txt{'762'};";
                             $ignored = 1;
                         }
                     }
@@ -1146,8 +1141,8 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                     UserAccount( $UserTo, 'update' );
                 }
                 else {
-                    foreach my $replyListName (
-                        split /,/xsm, ${ $uid . $UserTo }{'awayreplysent'} )
+                    foreach my $replyListName ( split /,/xsm,
+                        ${ $uid . $UserTo }{'awayreplysent'} )
                     {
                         if ( $replyListName eq $username ) {
                             $sendAutoReply = 0;
@@ -1177,8 +1172,9 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                 fclose(INBOX);
                 fopen( INBOX, ">$memberdir/$UserTo.msg" );
                 print {INBOX}
-"$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|0|$ENV{'REMOTE_ADDR'}|$FORM{'status'}|u||\n";
-                print {INBOX} @inmessages;
+"$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|0|$ENV{'REMOTE_ADDR'}|$FORM{'status'}|u||\n"
+                  or croak 'cannot print INBOX';
+                print {INBOX} @inmessages or croak 'cannot print INBOX';
                 fclose(INBOX);
 
                 # we've added the msg to the inbox, now update the ims file
@@ -1191,8 +1187,9 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                     fclose(INBOX);
                     fopen( INBOX, ">$memberdir/$username.msg" );
                     print {INBOX}
-"$rmessageid|$UserTo|$username|||${$uid.$UserTo}{'awaysubj'}|$date|${$uid.$UserTo}{'awayreply'}|$messageid|1|$ENV{'REMOTE_ADDR'}|s|u||\n";
-                    print {INBOX} @myinmessages;
+"$rmessageid|$UserTo|$username|||${$uid.$UserTo}{'awaysubj'}|$date|${$uid.$UserTo}{'awayreply'}|$messageid|1|$ENV{'REMOTE_ADDR'}|s|u||\n"
+                      or croak 'cannot print INBOX';
+                    print {INBOX} @myinmessages or croak 'cannot print INBOX';
                     fclose(INBOX);
                 }
                 ## relocated sender msg out of the loop
@@ -1256,8 +1253,9 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
         fclose(INBOX);
         fopen( INBOX, ">$memberdir/broadcast.messages" );
         print {INBOX}
-"$messageid|$username|$FORM{'toshow'}|||$subject|$date|$message|$messageid|0|$ENV{'REMOTE_ADDR'}|$FORM{'status'}b|u||\n";
-        print {INBOX} @inmessages;
+"$messageid|$username|$FORM{'toshow'}|||$subject|$date|$message|$messageid|0|$ENV{'REMOTE_ADDR'}|$FORM{'status'}b|u||\n"
+          or croak 'cannot print INBOX';
+        print {INBOX} @inmessages or croak 'cannot print INBOX';
         fclose(INBOX);
     }
 
@@ -1311,8 +1309,9 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
         ## all but drafts being resaved just get added to their file
         if ( !$FORM{'draft'} || ( $FORM{'draft'} && !$FORM{'draftid'} ) ) {
             print {OUTBOX}
-"$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|$FORM{'reply'}|$ENV{'REMOTE_ADDR'}|$FORM{'status'}$messFlag|||\n";
-            print {OUTBOX} @outmessages;
+"$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|$FORM{'reply'}|$ENV{'REMOTE_ADDR'}|$FORM{'status'}$messFlag|||\n"
+              or croak 'cannot print OUTBOX';
+            print {OUTBOX} @outmessages or croak 'cannot print OUTBOX';
 
         }
         elsif ( $FORM{'draft'} && $FORM{'draftid'} ) {
@@ -1320,11 +1319,13 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
             foreach my $outmessage (@outmessages) {
                 chomp $outmessage;
                 if ( ( split /\|/xsm, $outmessage )[0] != $FORM{'draftid'} ) {
-                    print {OUTBOX} "$outmessage\n";
+                    print {OUTBOX} "$outmessage\n"
+                      or croak 'cannot print OUTBOX';
                 }
                 else {
                     print {OUTBOX}
-"$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|$FORM{'reply'}|$ENV{'REMOTE_ADDR'}|$FORM{'status'}$messFlag|||\n";
+"$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|$FORM{'reply'}|$ENV{'REMOTE_ADDR'}|$FORM{'status'}$messFlag|||\n"
+                      or croak 'cannot print OUTBOX';
                 }
             }
         }
@@ -1350,11 +1351,13 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
         foreach my $draftmess (@draftPM) {
             chomp $draftmess;
             if ( ( split /\|/xsm, $draftmess )[0] != $FORM{'draftid'} ) {
-                print {DRAFTFILE} "$draftmess\n";
+                print {DRAFTFILE} "$draftmess\n"
+                  or croak 'cannot print DRAFTFILE';
             }
             elsif ( $FORM{'draftleave'} ) {
                 print {DRAFTFILE}
-"$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|$FORM{'reply'}|$ENV{'REMOTE_ADDR'}|$FORM{'status'}$messFlag|||\n";
+"$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|$FORM{'reply'}|$ENV{'REMOTE_ADDR'}|$FORM{'status'}$messFlag|||\n"
+                  or croak 'cannot print DRAFTFILE';
             }
         }
         fclose(DRAFTFILE);
@@ -1404,7 +1407,7 @@ sub ProcIMrecs {
         $toshowList = join q{,}, @multiple;
         $toshowList = qq~to:$toshowList~;
         $toshowList =~ s/,/,to:/gsm;
-        push @allto, (split /\,/xsm, $toshowList ) ;
+        push @allto, ( split /\,/xsm, $toshowList );
         $FORM{'toshow'} = join q{,}, @multiple;
         $FORM{'toshowcc'}  =~ s/ //gsm;
         $FORM{'toshowbcc'} =~ s/ //gsm;
@@ -1466,7 +1469,7 @@ sub pageLinksList {
     if ( $action eq 'imstorage' ) {
         my $i = 0;
         foreach (@dimmessages) {
-            if ( ( split /\|/xsm, $_  )[13] ne $INFO{'viewfolder'} ) {
+            if ( ( split /\|/xsm, $_ )[13] ne $INFO{'viewfolder'} ) {
                 splice @tempim, $i, 1;
                 next;
             }
@@ -1499,8 +1502,7 @@ sub pageLinksList {
 qq~<span class="small pgindex"><img src="$imagesdir/index_togl.gif" alt="$display_txt{'19'}" title="$display_txt{'19'}" /> $display_txt{'139'}: $pagenumb</span>~;
     if ( $pagenumb > 1 || $all ) {
         if ( $userthreadpage == 1 ) {
-            $pagetxtindexst =
-qq~<span class="small pgindex">~;
+            $pagetxtindexst = q~<span class="small pgindex">~;
             $pagetxtindexst .=
 qq~<a href="$scripturl?pmaction=$action$bmesslink;start=$start;action=pmpagetext$viewfolderinfo"><img src="$imagesdir/index_togl.gif" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a> $display_txt{'139'}: ~;
             if ( $startpage > 0 ) {
@@ -1513,11 +1515,11 @@ qq~<a href="$scripturl?action=$action$bmesslink;start=0$viewfolderinfo" style="f
             }
             foreach my $counter ( $startpage .. ( $endpage - 1 ) ) {
                 if ( $counter % $maxmessagedisplay == 0 ) {
-                $pagetxtindex .=
-                  $start == $counter
-                  ? qq~<b>$tmpa</b>&nbsp;~
-                  : qq~<a href="$scripturl?action=$action$bmesslink;start=$counter$viewfolderinfo" style="font-weight: normal;">$tmpa</a>&nbsp;~;
-                $tmpa++;
+                    $pagetxtindex .=
+                      $start == $counter
+                      ? qq~<b>$tmpa</b>&nbsp;~
+                      : qq~<a href="$scripturl?action=$action$bmesslink;start=$counter$viewfolderinfo" style="font-weight: normal;">$tmpa</a>&nbsp;~;
+                    $tmpa++;
                 }
             }
             if ( $endpage < $max - ($maxmessagedisplay) ) {
@@ -1533,7 +1535,7 @@ qq~<a href="$scripturl?action=$action$bmesslink;start=$lastptn$viewfolderinfo" s
         }
         else {
             $pagedropindex1 =
-qq~<span style="float: left; width: 350px; margin: 0px; margin-top: 2px; border: 0px;">~;
+q~<span style="float: left; width: 350px; margin: 0px; margin-top: 2px; border: 0px;">~;
             $pagedropindex1 .=
 qq~<span style="float: left; height: 21px; margin: 0; margin-right: 4px;"><a href="$scripturl?pmaction=$action$bmesslink;start=$start;action=pmpagedrop$viewfolderinfo"><img src="$imagesdir/index_togl.gif" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a></span>~;
             $pagedropindex2 = $pagedropindex1;
@@ -1555,7 +1557,7 @@ qq~<span style="float: left; height: 21px; margin: 0;"><select size="1" name="de
                 $pagedropindex2 .=
 qq~<span style="float: left; height: 21px; margin: 0;"><select size="1" name="decselector2" id="decselector2" style="font-size: 9px; border: 2px inset;" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
             }
-            for ( $i = 0 ; $i < $indexpages ; $i++ ) {
+            for my $i ( 0 .. ( $indexpages - 1 ) ) {
                 $indexpage  = ( $i * $dropdisplaynum ) * $maxmessagedisplay;
                 $indexstart = ( $i * $dropdisplaynum ) + 1;
                 $indexend   = $indexstart + ( $dropdisplaynum - 1 );
@@ -1582,9 +1584,9 @@ qq~<option value="$indexstart|$indexend|$maxmessagedisplay|$indexpage"$selected>
                 $pagedropindex2 .= qq~</select>\n</span>~;
             }
             $pagedropindex1 .=
-qq~<span id="ViewIndex1" class="droppageindex" style="height: 14px; visibility: hidden;">&nbsp;</span>~;
+q~<span id="ViewIndex1" class="droppageindex" style="height: 14px; visibility: hidden;">&nbsp;</span>~;
             $pagedropindex2 .=
-qq~<span id="ViewIndex2" class="droppageindex" style="height: 14px; visibility: hidden;">&nbsp;</span>~;
+q~<span id="ViewIndex2" class="droppageindex" style="height: 14px; visibility: hidden;">&nbsp;</span>~;
             $tmpmaxmessagedisplay = $maxmessagedisplay;
             if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' ) {
                 $maxmessagedisplay = $maxmessagedisplay * $dropdisplaynum;
@@ -1613,49 +1615,49 @@ qq~<img src="$imagesdir/index_right.gif" height="14" width="13" alt="$pidtxt{'03
             }
             $pageindex1  = qq~$pagedropindex1</span>~;
             $pageindexjs = qq~
-			<script type="text/javascript">
-			<!--
-			function SelDec(decparam, visel) {
-				splitparam = decparam.split("|");
-				var vistart = parseInt(splitparam[0]);
-				var viend = parseInt(splitparam[1]);
-				var maxpag = parseInt(splitparam[2]);
-				var pagstart = parseInt(splitparam[3]);
-				var allpagstart = parseInt(splitparam[3]);
-				if (visel == 'xx' && decparam == '$pagejsindex') visel = '$tstart';
-				var pagedropindex = '<table><tr>';
-				for (i=vistart; i<=viend; i++) {
-					if (visel == pagstart) pagedropindex += '<td class="titlebg" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: bold;">' + i + '</td>';
-					else pagedropindex += '<td class="droppages"><a href="$scripturl?action=$action$bmesslink;start=' + pagstart + '">' + i + '</a></td>';
-					pagstart += maxpag;
-				}
-				~;
+            <script type="text/javascript">
+            <!--
+            function SelDec(decparam, visel) {
+                splitparam = decparam.split("|");
+                var vistart = parseInt(splitparam[0]);
+                var viend = parseInt(splitparam[1]);
+                var maxpag = parseInt(splitparam[2]);
+                var pagstart = parseInt(splitparam[3]);
+                var allpagstart = parseInt(splitparam[3]);
+                if (visel == 'xx' && decparam == '$pagejsindex') visel = '$tstart';
+                var pagedropindex = '<table><tr>';
+                for (i=vistart; i<=viend; i++) {
+                    if (visel == pagstart) pagedropindex += '<td class="titlebg" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: bold;">' + i + '</td>';
+                    else pagedropindex += '<td class="droppages"><a href="$scripturl?action=$action$bmesslink;start=' + pagstart + '">' + i + '</a></td>';
+                    pagstart += maxpag;
+                }
+                ~;
             if ($showpageall) {
                 $pageindexjs .= qq~
-					if (vistart != viend) {
-						if(visel == 'all') pagedropindex += '<td class="titlebg" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: normal;"><b>$pidtxt{"01"}</b></td>';
-						else pagedropindex += '<td class="droppages"><a href="$scripturl?action=$action$bmesslink;start=all-' + allpagstart + '">$pidtxt{"01"}</a></td>';
-					}
-					~;
+                    if (vistart != viend) {
+                        if(visel == 'all') pagedropindex += '<td class="titlebg" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: normal;"><b>$pidtxt{"01"}</b></td>';
+                        else pagedropindex += '<td class="droppages"><a href="$scripturl?action=$action$bmesslink;start=all-' + allpagstart + '">$pidtxt{"01"}</a></td>';
+                    }
+                    ~;
             }
             $pageindexjs .= qq~
-				if (visel != 'xx') pagedropindex += '<td class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpv$pagedropindexnx</td>';
-				else pagedropindex += '<td class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpvbl$pagedropindexnxbl</td>';
-				pagedropindex += '</tr></table>';
-				document.getElementById('ViewIndex1').innerHTML=pagedropindex;
-				document.getElementById('ViewIndex1').style.visibility = 'visible';
-				~;
+                if (visel != 'xx') pagedropindex += '<td class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpv$pagedropindexnx</td>';
+                else pagedropindex += '<td class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpvbl$pagedropindexnxbl</td>';
+                pagedropindex += '</tr></table>';
+                document.getElementById('ViewIndex1').innerHTML=pagedropindex;
+                document.getElementById('ViewIndex1').style.visibility = 'visible';
+                ~;
             if ( $pagenumb > $dropdisplaynum ) {
                 $pageindexjs .= q~
-				document.getElementById('decselector1').value = decparam;
-				~;
+                document.getElementById('decselector1').value = decparam;
+                ~;
             }
             $pageindexjs .= qq~
-		}
-		SelDec('$pagejsindex', '$tstart');
-		//-->
-		</script>
-		~;
+        }
+        SelDec('$pagejsindex', '$tstart');
+        //-->
+        </script>
+        ~;
         }
     }
     return;
@@ -1671,8 +1673,7 @@ sub DoShowIM {
         $showIM,         $fromTitle,      $toTitle,
         $toTitleCC,      $toTitleBCC,     $usernamelinkfrom,
         $usernamelinkto, $usernamelinkcc, $usernamelinkbcc,
-        $userOnline,     $prevMessId,     $nextMessid,
-        $PMnav
+        $prevMessId,     $nextMessid,     $PMnav
     );
     $messcount = 0;
     foreach my $messagesim (@dimmessages) {
@@ -1770,10 +1771,10 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
         }
 
         if ( $mstatus eq 'g' || $mstatus eq 'ga' ) {
-            my ( $guestName, $guestEmail ) = split / /sm, $musername;
-            $guestName =~ s/%20/ /gsm;
+            my ( $guest_name, $guest_email ) = split / /sm, $musername;
+            $guest_name =~ s/%20/ /gsm;
             $usernamelinkfrom =
-              qq~$guestName (<a href="mailto:$guestEmail">$guestEmail</a>)~;
+              qq~$guest_name (<a href="mailto:$guest_email">$guest_email</a>)~;
         }
         else {
             LoadValidUserDisplay($musername);
@@ -1813,10 +1814,10 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
                 }
             }
             else {
-                my ( $guestName, $guestEmail ) = split / /sm, $mtousers;
-                $guestName =~ s/%20/ /g;
+                my ( $guest_name, $guest_email ) = split / /sm, $mtousers;
+                $guest_name =~ s/%20/ /gsm;
                 $usernamelinkto =
-                  qq~$guestName (<a href="mailto:$guestEmail">$guestEmail</a>)~;
+qq~$guest_name (<a href="mailto:$guest_email">$guest_email</a>)~;
             }
             $toTitle = qq~$inmes_txt{'324'}:~;
         }
@@ -1826,7 +1827,7 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
             }
             $toTitle = qq~$inmes_txt{'324'} $inmes_txt{'327'}:~;
         }
-        $usernamelinkto =~ s/, $//s,;
+        $usernamelinkto =~ s/, $//sm;
         if ($mccusers) {
             foreach my $uname ( split /,/xsm, $mccusers ) {
                 LoadValidUserDisplay($uname);
@@ -1874,10 +1875,10 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
                 }
             }
             else {
-                my ( $guestName, $guestEmail ) = split / /sm, $mtousers;
-                $guestName =~ s/%20/ /gsm;
+                my ( $guest_name, $guest_email ) = split / /sm, $mtousers;
+                $guest_name =~ s/%20/ /gsm;
                 $usernamelinkto =
-                  qq~$guestName (<a href="mailto:$guestEmail">$guestEmail</a>)~;
+qq~$guest_name (<a href="mailto:$guest_email">$guest_email</a>)~;
             }
             $toTitle = qq~$inmes_txt{'324'}:~;
             if ( $mccusers && $musername eq $username ) {
@@ -1920,10 +1921,10 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
         $usernamelinkto =~ s/, $//sm;
 
         if ( $mstatus eq 'g' || $mstatus eq 'ga' ) {
-            my ( $guestName, $guestEmail ) = split / /sm, $musername;
-            $guestName =~ s/%20/ /gsm;
+            my ( $guest_name, $guest_email ) = split / /sm, $musername;
+            $guest_name =~ s/%20/ /gsm;
             $usernamelinkfrom =
-              qq~$guestName (<a href="mailto:$guestEmail">$guestEmail</a>)~;
+              qq~$guest_name (<a href="mailto:$guest_email">$guest_email</a>)~;
         }
         else {
             LoadValidUserDisplay($musername);
@@ -1938,11 +1939,11 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
         $fromTitle = qq~$inmes_txt{'318'}:~;
 
     }
-    elsif ( $INFO{'caller'} == 5 && ( $mstatus eq 'ga' || $mstatus eq 'ga' ) ) {
-        my ( $guestName, $guestEmail ) = split / /sm, $musername;
-        $guestName =~ s/%20/ /gsm;
+    elsif ( $INFO{'caller'} == 5 && ( $mstatus eq 'g' || $mstatus eq 'ga' ) ) {
+        my ( $guest_name, $guest_email ) = split / /sm, $musername;
+        $guest_name =~ s/%20/ /gsm;
         $usernamelinkfrom =
-          qq~$guestName (<a href="mailto:$guestEmail">$guestEmail</a>)~;
+          qq~$guest_name (<a href="mailto:$guest_email">$guest_email</a>)~;
         $fromTitle = qq~$inmes_txt{'318'}:~;
 
     }
@@ -1983,79 +1984,83 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
 
     $avstyle = q{};
 
-    $showIM = qq~
+    $showIM = q~
 <table class="bordercolor cs_thin pad_1px" style="table-layout: fixed">
-<tr>
-	<td class="windowbg vtop" colspan="2">
-		<div style="width: 99%; padding: 2px; margin: 2px;">
-	~;
+    <tr>
+        <td class="windowbg vtop" colspan="2">
+            <div style="width: 99%; padding: 2px; margin: 2px;">
+    ~;
 
     if ($fromTitle) {
         $showIM .= qq~
-		<span class="small" style="width: 99%;">
-		<b>$fromTitle</b> $usernamelinkfrom
-		</span><br />
-		~;
+        <span class="small" style="width: 99%;">
+        <b>$fromTitle</b> $usernamelinkfrom
+        </span><br />
+        ~;
     }
 
     if ($toTitle) {
         $showIM .= qq~
-		<span class="small" style="width: 99%;">
-		<b>$toTitle</b> $usernamelinkto
-		</span><br />
-		~;
+        <span class="small" style="width: 99%;">
+        <b>$toTitle</b> $usernamelinkto
+        </span><br />
+        ~;
     }
 
     if ($toTitleCC) {
         $showIM .= qq~
-		<span class="small" style="width: 99%;">
-		<b>$toTitleCC</b> $usernamelinkcc
-		</span><br />
-		~;
+        <span class="small" style="width: 99%;">
+        <b>$toTitleCC</b> $usernamelinkcc
+        </span><br />
+        ~;
     }
 
     if ($toTitleBCC) {
         $showIM .= qq~
-		<span class="small" style="width: 99%;">
-		<b>$toTitleBCC</b> $usernamelinkbcc
-		</span><br />
-		~;
+        <span class="small" style="width: 99%;">
+        <b>$toTitleBCC</b> $usernamelinkbcc
+        </span><br />
+        ~;
     }
 
     $showIM .= qq~
-		</div>
-	</td>
+        </div>
+    </td>
 </tr><tr>
-	<td class="windowbg2 vtop" colspan="2">
-		<div style="width: 99%; padding: 2px; margin: 2px;">
-			<span class="small" style="width: 99%;">
-				<b>$inmes_txt{'70'}: $msub</b><br />
-				<b>$inmes_txt{'317'}:</b> $mydate
-			</span>
-		</div>
-	</td>
+    <td class="windowbg2 vtop" colspan="2">
+        <div style="width: 99%; padding: 2px; margin: 2px;">
+            <span class="small" style="width: 99%;">
+                <b>$inmes_txt{'70'}: $msub</b><br />
+                <b>$inmes_txt{'317'}:</b> $mydate
+            </span>
+        </div>
+    </td>
 </tr><tr>
-	<td class="windowbg2 vtop" colspan="2">
-		<div style="width: 99%; padding: 2px; margin: 2px;">
-			<span class="message" style="float: left; width: 99%; overflow: auto; padding-bottom: 10px; margin-bottom: 10px;">
-			$message
-			</span>
-		</div>
-	</td>
+    <td class="windowbg2 vtop" colspan="2">
+        <div style="width: 99%; padding: 2px; margin: 2px;">
+            <span class="message" style="float: left; width: 99%; overflow: auto; padding-bottom: 10px; margin-bottom: 10px;">
+            $message
+            </span>
+        </div>
+    </td>
 </tr>~;
 
     if ($signature) {
         $showIM .= qq~<tr>
-	<td class="windowbg2 right" colspan="2">
-		<div style="float: left; width: 99%; padding-top: 2px; margin-top: 2px; text-align: left;">
-			<span class="small">$signature</span>
-		</div>
-	</td>
+    <td class="windowbg2 right" colspan="2">
+        <div style="float: left; width: 99%; padding-top: 2px; margin-top: 2px; text-align: left;">
+            <span class="small">$signature</span>
+        </div>
+    </td>
 </tr>~;
     }
 
+    my $lookupIP =
+      ($ipLookup)
+      ? qq~<a href="$scripturl?action=iplookup;ip=$imip">$imip</a>~
+      : qq~$imip~;
     if ( $iamadmin || $iamgmod && $gmod_access2{'ipban2'} eq 'on' ) {
-        $imip = $imip;
+        $imip = $lookupIP;
     }
     else { $imip = $inmes_txt{'511'}; }
 
@@ -2063,18 +2068,18 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
     $postMenuTemp =~ s/\Q$menusep//ism;
 
     $showIM .= qq~<tr>
-	<td class="windowbg right" colspan="2">
-		<div style="float: left; width: 99%; padding-top: 5px; margin-top: 2px; text-align: right;">
-			<span class="small"><img src="$imagesdir/ip.gif" alt="" /> $imip</span>
-		</div>
-	</td>
+    <td class="windowbg right" colspan="2">
+        <div style="float: left; width: 99%; padding-top: 5px; margin-top: 2px; text-align: right;">
+            <span class="small"><img src="$imagesdir/ip.gif" alt="" /> $imip</span>
+        </div>
+    </td>
 </tr><tr>
-	<td class="windowbg2" colspan="2">
-		<div style="float: left; text-align: left; width: 55%; padding: 2px; margin: 2px;">
-			<span class="small">$postMenuTemp</span>
-		</div>
-		<div style="float: right; text-align: right; width: 40%; padding: 2px; margin: 2px;">
-			<span class="small">~;
+    <td class="windowbg2" colspan="2">
+        <div style="float: left; text-align: left; width: 55%; padding: 2px; margin: 2px;">
+            <span class="small">$postMenuTemp</span>
+        </div>
+        <div style="float: right; text-align: right; width: 40%; padding: 2px; margin: 2px;">
+            <span class="small">~;
 
     $mreplyno++;
     if (   $INFO{'caller'} == 1
@@ -2087,14 +2092,14 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;repl
         }
         else {
             $showIM .= qq~
-			<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;to=$useraccount{$musername};id=$messageid">$img{'quote'}</a>$menusep
-			<a href="$scripturl?action=imsend;caller=$INFO{'caller'};reply=$mreplyno;to=$useraccount{$musername};id=$messageid">$img{'reply_ims'}</a>$menusep~;
+            <a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;to=$useraccount{$musername};id=$messageid">$img{'quote'}</a>$menusep
+            <a href="$scripturl?action=imsend;caller=$INFO{'caller'};reply=$mreplyno;to=$useraccount{$musername};id=$messageid">$img{'reply_ims'}</a>$menusep~;
         }
     }
 
     if ( $INFO{'caller'} != 5 ) {
         $showIM .= qq~
-			<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;forward=1;id=$messageid">$img{'forward'}</a>$menusep~;
+            <a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;forward=1;id=$messageid">$img{'forward'}</a>$menusep~;
     }
 
     if ( $INFO{'caller'} != 5
@@ -2102,31 +2107,31 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;repl
       )
     {
         $showIM .= qq~
-			<a href="$scripturl?action=deletemultimessages;caller=$INFO{'caller'};deleteid=$messageid" onclick="return confirm('$inmes_txt{'770'}');">$img{'im_remove'}</a>
-		~;
+            <a href="$scripturl?action=deletemultimessages;caller=$INFO{'caller'};deleteid=$messageid" onclick="return confirm('$inmes_txt{'770'}');">$img{'im_remove'}</a>
+        ~;
     }
     $showIM .= qq~
             <a href="$scripturl?action=imprint;caller=$INFO{'caller'};id=$messageid" target="_blank">$img{'print'}</a>
-        ~; 
+        ~;
 
     my $notme = $musername eq $username ? $mtousers : $musername;
     $notme = ${ $uid . $notme }{'realname'};
     $showIM .= q~</span>
-			</div>
-		</td>
-	</tr><tr>
-		<td class="windowbg2 right" colspan="2">
-			<div style="float: left; text-align: left; padding: 2px; margin: 2px;"><span class="small">~
+            </div>
+        </td>
+    </tr><tr>
+        <td class="windowbg2 right" colspan="2">
+            <div style="float: left; text-align: left; padding: 2px; margin: 2px;"><span class="small">~
       . (
         $notme
         ? qq~<a href="$scripturl?action=pmsearch;searchtype=user;search=$notme">$inmes_imtxt{'42'} <i>$notme</i></a>~
         : '&nbsp;'
       )
       . qq~</span>
-     		</div>
-			<div style="float: right; text-align: right; padding: 2px; margin: 2px;"><span class="small">$PMnav</span></div>
-		</td>
-	</tr>
+            </div>
+            <div style="float: right; text-align: right; padding: 2px; margin: 2px;"><span class="small">$PMnav</span></div>
+        </td>
+    </tr>
 </table>
 ~;
 
@@ -2183,10 +2188,10 @@ sub doshowims {
     if ( !$musernameRealName ) { $musernameRealName = $musername; }
 
     $imsend .= qq~<tr>
-	  <td class="windowbg">
-		<table class="bordercolor cs_thin"><tr><td>
-			<table class="windowbg pad_2px" style="table-layout:fixed">
-				<tr>
+      <td class="windowbg">
+        <table class="bordercolor cs_thin"><tr><td>
+            <table class="windowbg pad_2px" style="table-layout:fixed">
+                <tr>
                     <td class="titlebg" colspan="2"><b>$inmes_txt{'70'}: $msub</b></td>
                 </tr><tr>
                     <td class="catbg"><span class="small">$inmes_txt{'318'}: $musernameRealName</span></td>
@@ -2202,13 +2207,13 @@ sub doshowims {
                             <div class="message" style="float:left; width:100%;">$message</div>
                         </td>
                     </tr>
-			    </table>
+                </table>
             </td>
           </tr>
-		</table>
-	  </td>
-	</tr>\n
-	~;
+        </table>
+      </td>
+    </tr>\n
+    ~;
     return;
 }
 
