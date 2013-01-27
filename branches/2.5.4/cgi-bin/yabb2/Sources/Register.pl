@@ -12,13 +12,13 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$registerplver = 'YaBB 2.5.4 $Revision: 1.5 $';
+$registerplver = 'YaBB 2.5.4 $Revision: 1.6 $';
 if ($action eq 'detailedversion') { return 1; }
-if (!$iamguest && (!$admin && $action ne 'activate' && $action ne 'admin_descision') ) { &fatal_error("no_registration_logged_in"); }
+if (!$iamguest && (!$admin && $action ne 'activate' && $action ne 'admin_descision') ) { fatal_error('no_registration_logged_in'); }
 
 require "$sourcedir/Mailer.pl";
-&LoadLanguage('Register');
-&LoadCensorList;
+LoadLanguage('Register');
+LoadCensorList;
 
 if ($^O =~ /Win/) {
 	my $regstyle = qq~ style="text-transform: lowercase"~;
@@ -177,7 +177,7 @@ sub Register {
 		</tr>~;
 	}
 	if (!$emailpassword) {
-		$yymain .= passcheck_2();
+		$yymain .= password_check();
 	}
 
 	if ($addmemgroup_enabled == 1 || $addmemgroup_enabled == 3) {
