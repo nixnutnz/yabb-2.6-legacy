@@ -13,18 +13,18 @@
 ###############################################################################
 # use strict;
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.6;
+our $VERSION = 1.61;
 
-$newsettingsplver = 'YaBB 2.5.4 $Revision: 1.6 $';
-if ($action eq 'detailedversion') { return 1; }
+$newsettingsplver = 'YaBB 2.5.4 $Revision: 1.61 $';
+if ( $action eq 'detailedversion' ) { return 1; }
 
 # Figure out what tabset to use, depending on the page= parameter.
 my %settings_dispatch = (
-    news => "$admindir/Settings_News.pl",
-    main => "$admindir/Settings_Main.pl",
-    advanced => "$admindir/Settings_Advanced.pl",
-    security => "$admindir/Settings_Security.pl",
-    antispam => "$admindir/Settings_Antispam.pl",
+    news        => "$admindir/Settings_News.pl",
+    main        => "$admindir/Settings_Main.pl",
+    advanced    => "$admindir/Settings_Advanced.pl",
+    security    => "$admindir/Settings_Security.pl",
+    antispam    => "$admindir/Settings_Antispam.pl",
     maintenance => "$admindir/Settings_Maintenance.pl",
 
     ### BOARDMOD SETTINGS ANCHOR ###
@@ -32,8 +32,9 @@ my %settings_dispatch = (
 );
 
 my $page = $INFO{'page'};
+
 # 'eval' because NewSettings.pl can be called by Sources/TabMenu.pl
-eval{ require $settings_dispatch{$page}; };
+eval { require $settings_dispatch{$page}; };
 
 sub settings {
     is_admin_or_gmod();
@@ -54,7 +55,7 @@ sub settings {
         )
       );
 
-    my @requireorder; # an array for the correct order of the requirements
+    my @requireorder;    # an array for the correct order of the requirements
     my %requirements;    # a hash that says "Y is required by X"
 
     $yymain .= qq~
@@ -98,15 +99,15 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
        </td>
      </tr>~;
 
-        foreach my $item (@{$tab->{'items'}}) {
-            if($item->{'header'}) {
+        foreach my $item ( @{ $tab->{'items'} } ) {
+            if ( $item->{'header'} ) {
                 $yymain .= qq~<tr>
                 <td class="catbg padd_4px" colspan="2">
          <span class="small">$item->{'header'}</span>
        </td>
      </tr>~;
             }
-            elsif($item->{'two_rows'} && $item->{'input_html'}) {
+            elsif ( $item->{'two_rows'} && $item->{'input_html'} ) {
                 $yymain .= qq~<tr>
                 <td class="windowbg2 padd_4px" colspan="2">
          $item->{'description'}
@@ -117,7 +118,7 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
        </td>
      </tr>~;
             }
-            elsif($item->{'input_html'}) {
+            elsif ( $item->{'input_html'} ) {
                 $yymain .= qq~<tr>
                 <td class="windowbg2 vtop padd_4px">
          $item->{'description'}
@@ -129,14 +130,14 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
             }
 
             # Handle settings that require other settings
-            if ($item->{'depends_on'} && $item->{'name'}) {
-                foreach my $require (@{$item->{'depends_on'}}) {
+            if ( $item->{'depends_on'} && $item->{'name'} ) {
+                foreach my $require ( @{ $item->{'depends_on'} } ) {
 
-                    # This is somewhat messy, but it works well.
-                    # We strip off the possible options: inverse, equal, and not equal
-                    # Then we attach those to this current option in the detailed string for requirements
-                    # While this data does not really belong with the value, it transfers nicely.
-                    # We then remove it and reuse it later.
+# This is somewhat messy, but it works well.
+# We strip off the possible options: inverse, equal, and not equal
+# Then we attach those to this current option in the detailed string for requirements
+# While this data does not really belong with the value, it transfers nicely.
+# We then remove it and reuse it later.
                     my ( $inverse, $realname, $remainder ) =
                       $require =~ m{(\(?\!?)(\w+)(.*)}xsm;
                     if ( !$requirements{$realname} ) {
@@ -154,9 +155,9 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
   </div>~;
     }
 
-    # The old method isn't quite good enough.
-    # So we build a hash with the Javascript logic needed to determine if this item should be enabled.
-    # When in doubt, generate some code :)
+# The old method isn't quite good enough.
+# So we build a hash with the Javascript logic needed to determine if this item should be enabled.
+# When in doubt, generate some code :)
     my %requirejs;
 
     my $dependicies = q{};
@@ -167,31 +168,35 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
         var isChecked = document.getElementsByName("$ritem")[0].checked;
         var itemValue = document.getElementsByName("$ritem")[0].value;\n~;
 
-        foreach my $require (@{$requirements{$ritem}}) {
+        foreach my $require ( @{ $requirements{$ritem} } ) {
 
             # && or ||, ( and )
             my $AndOr = $require =~ s/\)//xsm ? ')' : q{};
-            $AndOr   .= $require =~ s/\|\|//xsm ? ' ||' : ' &&';
-            my $C     = $require =~ s/\(//xsm ? '(' : q{};
+            $AndOr .= $require =~ s/\|\|//xsm ? ' ||' : ' &&';
+            my $C = $require =~ s/\(//xsm ? '(' : q{};
+
             # Is false
-            if ($require =~ s/^\!//xsm) {
+            if ( $require =~ s/^\!//xsm ) {
                 $requirejs{$require} .=
 qq~$C\!document.getElementsByName("$ritem")[0].checked$AndOr ~;
             }
+
             # Is equal to
-            elsif ($require =~ s/\=\=(.*)$//xsm) {
+            elsif ( $require =~ s/\=\=(.*)$//xsm ) {
                 $requirejs{$require} .=
 qq~$C\document.getElementsByName("$ritem")[0].value == '$1'$AndOr ~;
             }
+
             # Is not equal to
-            elsif ($require =~ s/\!\=(.*)$//xsm) {
+            elsif ( $require =~ s/\!\=(.*)$//xsm ) {
                 $requirejs{$require} .=
 qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
             }
+
             # Is true
             else {
                 $requirejs{$require} .=
-qq~$C\document.getElementsByName("$ritem")[0].checked$AndOr ~;
+                  qq~$C\document.getElementsByName("$ritem")[0].checked$AndOr ~;
             }
             $dependicies .= qq~     checkDependent("$require");\n~;
         }
@@ -264,19 +269,19 @@ qq~$C\document.getElementsByName("$ritem")[0].checked$AndOr ~;
     function checkDependent(eid) {
         var elm = document.getElementsByName(eid)[0];\n~;
 
-        # Loop through each item that depends on something else
+    # Loop through each item that depends on something else
     foreach my $name ( keys %requirejs ) {
-            my $logic = $requirejs{$name};
+        my $logic = $requirejs{$name};
         $logic =~ s/ (&&|\|\|) $//sm;
-            $yymain .= qq~
+        $yymain .= qq~
         if (eid == "$name" && ($logic)) {
             elm.disabled = false;
         } else if (eid == "$name") {
             elm.disabled = true;
         }\n~;
-        }
+    }
 
-    $yymain.= qq~
+    $yymain .= qq~
     }
 $dependicies
     window.onload = function(){ $onloadevents};
@@ -322,14 +327,16 @@ sub isselected {
 my %regexes = (
     boolean =>
       q{.*},    # anything. True is not 0 and defined, false is 0/undefined
-    number      => '\d+', # just numbers
-    fullnumber  => '(?:\+|\-|)[\d\.]+', # optional sign, plus numbers and decimal
+    number     => '\d+',               # just numbers
+    fullnumber => '(?:\+|\-|)[\d\.]+', # optional sign, plus numbers and decimal
     hexadecimal => '#?[0-9a-fA-F]+',
-# optional "#" (for hex color codes), plus hex characters
-    alpha       => '[a-zA-Z]+', # Letters
-    text        => '[^\n\r]+', # Anything but newlines
-    fulltext    => '(?s).+', # Anything, including newlines
+
+    # optional "#" (for hex color codes), plus hex characters
+    alpha    => '[a-zA-Z]+',           # Letters
+    text     => '[^\n\r]+',            # Anything but newlines
+    fulltext => '(?s).+',              # Anything, including newlines
     null     => q{},
+
 # Use this if something can be false, in addition to the normal valid characters (not needed for boolean)
 );
 
@@ -339,9 +346,10 @@ sub settings2 {
 
     # Load/Verify the settings
     foreach my $tab (@settings) {
-        foreach my $item (@{$tab->{'items'}}) {
+        foreach my $item ( @{ $tab->{'items'} } ) {
+
             # Get the value
-            my $name = $item->{'name'} || next; # Skip non-items
+            my $name = $item->{'name'} || next;    # Skip non-items
             $settings{$name} = $FORM{$name};
             if ( !defined $settings{$name} ) { $settings{$name} = q{}; }
 
@@ -349,22 +357,23 @@ sub settings2 {
             $settings{$name} =~ s/\s+$//xsm;
 
             # Validate it
-            if ($item->{'validate'}) {
+            if ( $item->{'validate'} ) {
+
                 # Handle numbers/nulls better (empty string is 0)
-                if (   $item->{'validate'} =~ /null/sm
-                    && $item->{'validate'} =~ /number/sm )
+                if (   $item->{'validate'} =~ /null/
+                    && $item->{'validate'} =~ /number/ )
                 {
                     $settings{$name} ||= 0;
                 }
 
                 # Handle text/nulls better (empty string is empty string :)
-                if (   $item->{'validate'} =~ /null/sm
-                    && $item->{'validate'} =~ /text/sm )
+                if (   $item->{'validate'} =~ /null/
+                    && $item->{'validate'} =~ /text/ )
                 {
                     $settings{$name} ||= q{};
                 }
 
-                # Piece together the patterns. It only needs to validate 1 pattern, but the pattern must be the whole string.
+# Piece together the patterns. It only needs to validate 1 pattern, but the pattern must be the whole string.
                 my $pattern = '^(?:'
                   . join( q{|}, @regexes{ split /,/xsm, $item->{'validate'} } )
                   . ')$';
@@ -374,15 +383,15 @@ sub settings2 {
                 }
 
                 # Set numeric options to 0 if they are null
-                if ($item->{'validate'} eq 'boolean') {
+                if ( $item->{'validate'} eq 'boolean' ) {
                     $settings{$name} = $settings{$name} ? 1 : 0;
                 }
             }
         }
     }
 
-    # Save them, as according to this type of settings
-    # This subroutine resides in the file that is loaded in the hash at the top of the file.
+# Save them, as according to this type of settings
+# This subroutine resides in the file that is loaded in the hash at the top of the file.
     SaveSettings(%settings);
     $yySetLocation = "$adminurl?action=newsettings;page=$page";
     redirectexit();
@@ -393,16 +402,17 @@ sub settings2 {
 sub SaveSettingsTo {
     my $file     = shift;
     my %settings = @_;
-# these cannot be reversed per Perl Critic.
+
+    # these cannot be reversed per Perl Critic.
 
     # This is why we should use hashes for options to begin with.
     foreach my $key ( keys %settings ) {
-        ${$key} = delete $settings{$key} ;
+        ${$key} = delete $settings{$key};
     }
 
-    if ($codemaxchars > 15) { $codemaxchars = 15; }
+    if ( $codemaxchars > 15 ) { $codemaxchars = 15; }
     my $setfile;
-    if ($file eq 'Settings.pl') {
+    if ( $file eq 'Settings.pl' ) {
         $fadertext       ||= $color{'fadertext'};
         $faderbackground ||= $color{'faderbg'};
 
@@ -411,16 +421,16 @@ sub SaveSettingsTo {
 
         if (@ext_prof_order) {
             $ext_prof_order = q{"} . join( q{","}, @ext_prof_order ) . q{"};
-            }
+        }
         if (@ext_prof_fields) {
             $ext_prof_fields =
               q{"} . join( qq~",\n"~, @ext_prof_fields ) . q{"};
-            }
+        }
 
         my $member_groups = "# Static Member Groups\n";
         foreach ( keys %Group ) {
             $member_groups .= qq~\$Group{'$_'} = '$Group{$_}';\n~;
-                }
+        }
         $member_groups .= "\n# Post independent Member Groups\n";
         foreach ( keys %NoPost ) {
             $member_groups .= qq~\$NoPost{'$_'} = '$NoPost{$_}';\n~;
@@ -428,7 +438,7 @@ sub SaveSettingsTo {
         $member_groups .= "\n# Post dependent Member Groups\n";
         foreach ( keys %Post ) {
             $member_groups .= qq~\$Post{'$_'} = '$Post{$_}';\n~;
-            }
+        }
 
         if (@pallist) { $pallist = q{"} . join( q{","}, @pallist ) . q{"}; }
 
@@ -436,26 +446,26 @@ sub SaveSettingsTo {
             if ( !$enable_notifications_N ) {
                 if ( !$enable_notifications_PM ) {
                     $enable_notifications = 0;
-            }
+                }
                 elsif ($enable_notifications_PM) {
                     $enable_notifications = 2;
-            }
+                }
             }
             elsif ($enable_notifications_N) {
                 if ( !$enable_notifications_PM ) {
                     $enable_notifications = 1;
-                        }
+                }
                 elsif ($enable_notifications_PM) {
                     $enable_notifications = 3;
-                    }
                 }
             }
+        }
 
         my $AdvancedTabs = q{"} . join( q{","}, @AdvancedTabs ) . q{"};
 
         if (@SmilieURL) {
             $SmilieURL = q{"} . join( q{","}, @SmilieURL ) . q{"};
-            }
+        }
         if (@SmilieCode) {
             $SmilieCode = q{"} . join( q{","}, @SmilieCode ) . q{"};
         }
@@ -566,6 +576,8 @@ $member_groups
 \$showtopicrepliers = $showtopicrepliers;	# Set to 1 to display members replying to a topic
 \$showgenderimage = $showgenderimage;		# Set to 1 to display each member's gender in the message view (by the ICQ.. etc.)
 \$showage = $showage;						# Set to 1 to allow member to hide their age and birthyear (Except from the Administrator.)
+\$showsearchbox = $showsearchbox;           # Show the Search Box on all pages
+\$showsearchboxnum = $showsearchboxnum;     # Maximum post age for Search Box
 \$showyabbcbutt = $showyabbcbutt;			# Set to 1 to display the yabbc buttons on Posting and IM Send Pages
 \$nestedquotes = $nestedquotes;				# Set to 1 to allow quotes within quotes (0 will filter out quotes within a quoted message)
 \$parseflash = $parseflash;					# Set to 1 to parse the flash tag
@@ -699,6 +711,7 @@ $ext_prof_fields
 							# 0 to disable, 1 to enable.
 
 \$debug = $debug;				# If set to 1 debug info is added to the template. Tag in template is {yabb debug}
+\$debug_l = $debug_l;           # If set to 1, Page load time only;
 ########## Anti-spam Question Settings ##########
 
 \$en_spam_questions = $en_spam_questions;        # Set to 1 to enable Anti-spam Questions on registration
@@ -890,6 +903,7 @@ $ext_prof_fields
 \$sessions = $sessions;				# Set to 1 to activate session id protection.
 \$show_online_ip_admin = $show_online_ip_admin;	# Set to 1 to show online IP's to admins.
 \$show_online_ip_gmod = $show_online_ip_gmod;	# Set to 1 to show online IP's to global moderators.
+\$ipLookup = $ipLookup;                        # Set to 1 to enable IP Lookup.
 \$masterkey = "\Q$masterkey\E";			# Seed for encryption of captcha's
 
 
@@ -961,50 +975,52 @@ $ext_prof_fields
 EOF
     }
     else {
-		# This should only be seen by developers.
+
+        # This should only be seen by developers.
         # If you get this, you messed up.
-        die 'I do not know how to write to this file.';
+        croak 'I do not know how to write to this file.';
     }
 
-    WriteSettingsTo("$vardir/$file", $setfile);
+    WriteSettingsTo( "$vardir/$file", $setfile );
     return;
 }
 
 # Subroutine for writing the common format of settings file
 sub WriteSettingsTo {
-    my ($file, $setfile) = @_;
+    my ( $file, $setfile ) = @_;
 
     # Fix a certain type of syntax error
     $setfile =~ s/=\s+;/= 0;/gsm;
 
     # Make it look nicely aligned. The comment starts after 50 Col
-  
-	*cut_comment = sub { 
-	    my ($comment,$length) = (q{},120); # 120 Col is the max width of page
-		my $var_length = length($_[0]);
-		while ($length < $var_length) { $length += 120; }
-		foreach (split / +/sm, $_[1]) {
-			if (($var_length + length($comment) + length($_)) > $length) {
-				$comment =~ s/ $//;
-				$comment .= "\n$filler#  $_ ";
-				$length += 120;
-			} else { $comment .= "$_ "; }
-		}
-		$comment =~ s/ $//;
-		return $comment;
-	};
+
+    *cut_comment = sub {
+        my ( $comment, $length ) =
+          ( q{}, 150 );    # 120 Col is the max width of page
+        my $var_length = length $_[0];
+        while ( $length < $var_length ) { $length += 150; }
+        foreach ( split / +/sm, $_[1] ) {
+            if ( ( $var_length + length($comment) + length $_ ) > $length ) {
+                $comment =~ s/ $//sm;
+                $comment .= "\n$filler#  $_ ";
+                $length += 150;
+            }
+            else { $comment .= "$_ "; }
+        }
+        $comment =~ s/ $//sm;
+        return $comment;
+    };
     my $filler = q{ } x 50;
-    $setfile =~ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2 /gem;
+    $setfile =~
+s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2 /gem;
     $setfile =~ s/\t+(#.+$)/$filler$1/gm;
     $setfile =~ s/(.+)(#.+$)/ $1 . cut_comment($1,$2) /gem;
 
-
     # Write it out
-    fopen(SETTINGS, ">$file") || admin_fatal_error('cannot_open', $file, 1);
+    fopen( SETTINGS, ">$file" ) || admin_fatal_error( 'cannot_open', $file, 1 );
     print {SETTINGS} $setfile or croak 'cannot print SETTINGS';
     fclose(SETTINGS);
     return;
 }
-
 
 1;
