@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.5;
+our $VERSION = 1.61;
 
-$manageboardsplver = 'YaBB 2.5.4 $Revision: 1.5 $';
+$manageboardsplver = 'YaBB 2.5.4 $Revision: 1.61 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ManageBoards {
@@ -67,7 +67,7 @@ qq~<img src="$imagesdir/cat.gif" alt="" /> &nbsp;<b>$admin_txt{'51'}</b>~;
                 return false;
             }
         }
-
+        
         function editSingle(board) {
             var where = document.getElementById("whattodo");
             for (i=0; i<where.elements.length; i++){
@@ -82,7 +82,7 @@ qq~<img src="$imagesdir/cat.gif" alt="" /> &nbsp;<b>$admin_txt{'51'}</b>~;
             document.getElementById("baction").checked = true;
             where.submit();
         }
-
+        
         function delSingle(board) {
             var where = document.getElementById("whattodo");
             for (i=0; i<where.elements.length; i++){
@@ -106,14 +106,14 @@ qq~<img src="$imagesdir/cat.gif" alt="" /> &nbsp;<b>$admin_txt{'51'}</b>~;
     <table class="bordercolor cs_thin pad_4px">
         <tr>
             <td class="titlebg" $colspan>
-                $manage
-            </td>
+         $manage
+       </td>
         </tr><tr>
             <td class="windowbg2 padd_8_12px" $colspan>
-		        $managedescr
-            </td>
-        </tr>
-    </table>
+          $managedescr
+       </td>
+     </tr>
+   </table>
 ~;
     foreach my $catid (@categoryorder) {
         @bdlist = split /,/xsm, $cat{$catid};
@@ -136,7 +136,7 @@ qq~<img src="$imagesdir/cat.gif" alt="" /> &nbsp;<b>$admin_txt{'51'}</b>~;
         <tr>
         <td class="$tempclass h_25px" $tempcolspan>
             <a href="$adminurl?action=reorderboards;item=$catid" $temphrefclass><img src="$imagesdir/reorder.gif" alt="$admin_txt{'832'}" title="$admin_txt{'832'}" /></a> &nbsp;<b>$curcatname</b>
-        </td>
+       </td>
 ~;
         if ( $INFO{'action'} eq 'managecats' ) {
             $yymain .= qq~
@@ -144,12 +144,12 @@ qq~<img src="$imagesdir/cat.gif" alt="" /> &nbsp;<b>$admin_txt{'51'}</b>~;
         }
 
         $yymain .= q~       </tr>
-    </table>~;
+   </table>~;
         if ( $INFO{'action'} ne 'managecats' ) {
 
             # recursive loop to display all sub boards
             my $indent = -3;
-			show_boards(@bdlist);
+            show_boards(@bdlist);
 
             sub show_boards {
                 my @brdlist = @_;
@@ -215,54 +215,54 @@ qq~ <img src="$imagesdir/recycle.gif" alt="$admin_txt{'64i'}" title="$admin_txt{
                       . $indent . q~%; width:~ . $tmpwidth . q~%">
         <col style="width:~ . $tmpwidth2 . qq~%" />
         <col span="2" class="w_5pc" />
-        <tr>
+  <tr>
             <td class="windowbg2">
-                $boardname
-                <div style="position:relative; display:inline; float:right;">
+        $boardname
+        <div style="position:relative; display:inline; float:right;">
                     <a href="$adminurl?action=addboard;parent=$curboard;category=$catid"><img src="$imagesdir/add_sub.gif" alt="$admin_txt{'250'}" title="$admin_txt{'250'}" /></a>
                     <a href="javascript:editSingle('yitem_$curboard')"><img src="$imagesdir/edit_sub.gif" alt="$edit_txt" title="$edit_txt" /></a>
                     <a href="javascript:delSingle('yitem_$curboard')"><img src="$imagesdir/delete_sub.gif" alt="$del_txt" title="$del_txt" /></a>
         ~ . $reorder_subs . qq~
-                </div>
-            </td>
+        </div>
+    </td>
             <td class="windowbg2 center">$bicon</td>
             <td class="titlebg center"><input type="checkbox" name="yitem_$curboard" value="1" /></td>
         </tr><tr>
             <td class="windowbg" colspan="3">$descr</td>
-        </tr>
-    </table>
+  </tr>
+</table>
 ~;
                     if ( $subboard{$curboard} ) { show_boards(@children); }
                 }
                 $indent -= 3;
                 return;
-              }
+            }
         }
     }
 
     $yymain .= qq~
     <table class="bordercolor cs_thin pad_4px" style="margin-top: 3px">
-        <tr>
+    <tr>
             <td class="catbg center" $colspan> <label for="baction">$admin_txt{'52'}</label>
-                <input type="radio" name="baction" id="baction" value="edit" checked="checked" /> $admin_txt{'53'}
-                <input type="radio" name="baction" id="delme" value="delme" /> $admin_txt{'54'}
-                <input type="submit" value="$admin_txt{'32'}" class="button" /></td>
-            </tr>
-        </table>
+        <input type="radio" name="baction" id="baction" value="edit" checked="checked" /> $admin_txt{'53'}
+        <input type="radio" name="baction" id="delme" value="delme" /> $admin_txt{'54'}
+        <input type="submit" value="$admin_txt{'32'}" class="button" /></td>
+     </tr>
+</table>
 </div>
 </form>
 <br />
 <form name="diff" id="diff" action="$adminurl?action=$act2" method="post" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px">
-        <tr>
+  <tr>
             <td class="catbg center"><label for="amount"><b>$add: </b></label>
-                <input type="text" name="amount" id="amount" value="3" size="2" maxlength="2" />
-                <input type="submit" value="$admintxt{'45'}" class="button" />
-            </td>
-        </tr>
-    </table>
-</div>
+    <input type="text" name="amount" id="amount" value="3" size="2" maxlength="2" />
+    <input type="submit" value="$admintxt{'45'}" class="button" />
+    </td>
+  </tr>
+   </table>
+ </div>
 </form>
 ~;
     $yytitle = "$admintxt{'a4_title'}";
@@ -285,8 +285,9 @@ sub BoardScreen {
         my @catboards = split /,/xsm, $cat{$thiscat};
 
         # make an array of all sub boards recursively
-		recursive_boards(@catboards);
-		sub recursive_boards {
+        recursive_boards(@catboards);
+
+        sub recursive_boards {
             my @x = @_;
             push @theboards, @x;
             foreach my $childbd (@x) {
@@ -294,7 +295,7 @@ sub BoardScreen {
                     recursive_boards( split /\|/xsm, $subboard{$childbd} );
                 }
             }
-		}
+        }
 
         for my $z ( 0 .. ( @theboards - 1 ) ) {
             my $found = 0;
@@ -314,6 +315,7 @@ sub BoardScreen {
         shift @editbrd;
         get_forum_master();
         foreach my $bd (@editbrd) {
+
 # Remove Board form category it belongs to unless it's a sub board, then it's not in the cat list
             if ( !${ $uid . $bd }{'parent'} ) {
                 $category = ${ $uid . $bd }{'cat'};
@@ -450,13 +452,14 @@ sub DeleteBoards {
                 $zero,         $membergroups, $ann,
                 $rbin,         $att,          $minage,
                 $maxage,       $gender,       $canpost,
-                $parent
+                $parent,       $rules,        $brulestitle,
+                $brulesdesc,   $rulescollapse
             ) = split /\|/xsm, $oldcontrols[$cnt];
 
             foreach my $changedboard (@del_updateparent) {
                 if ( $changedboard eq $oldboard ) {
                     $oldcontrols[$cnt] =
-qq~$oldcat|$oldboard|$pic|$bdescription|$moderators|$moderatorgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$att|$minage|$maxage|$gender|$canpost|${$uid.$changedboard}{'parent'}\n~;
+qq~$oldcat|$oldboard|$pic|$bdescription|$moderators|$moderatorgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$att|$minage|$maxage|$gender|$canpost|${$uid.$changedboard}{'parent'}|$rules|$brulestitle|$brulesdesc|$rulescollapse\n~;
                     last;
                 }
             }
@@ -489,20 +492,21 @@ sub AddBoards {
     }
     get_forum_master();
     LoadBoardControl();
-	# build recursive drop down of boards in each category for selecting parent board
-	foreach $thiscat (@categoryorder) {
-		my @catboards = split /\,/xsm, $cat{$thiscat};
-		my $indent = -2;
-		$catboardlist{$thiscat} = qq~||~;
 
-		get_subboards(@catboards);
+# build recursive drop down of boards in each category for selecting parent board
+    foreach $thiscat (@categoryorder) {
+        my @catboards = split /\,/xsm, $cat{$thiscat};
+        my $indent = -2;
+        $catboardlist{$thiscat} = q~||~;
 
-		$catboardlist_js .= qq~
-			catboardlist['$thiscat'] = "$catboardlist{$thiscat}";
-		~;
-	}
+        get_subboards(@catboards);
 
-	sub get_subboards {
+        $catboardlist_js .= qq~
+            catboardlist['$thiscat'] = "$catboardlist{$thiscat}";
+        ~;
+    }
+
+    sub get_subboards {
         my @x = @_;
         $indent += 2;
         foreach my $childbd (@x) {
@@ -675,6 +679,7 @@ function checkParent(id, board) {
 </div>
 <div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px">
+        <col span="4" class="w_25pc" />
 ~;
 
     # Check if and which board are set for announcements or recycle bin
@@ -683,7 +688,9 @@ function checkParent(id, board) {
     $annexist  = q{};
     $rbinexist = q{};
 
-    for ( $i = 1 ; $i != $FORM{'amount'} + 1 ; $i++ ) {
+    #    for ( $i = 1 ; $i != $FORM{'amount'} + 1 ; $i++ ) {
+    for my $i ( 1 .. $FORM{'amount'} ) {
+
         # differentiate between edit or add boards
         if ( $editboards[$i] eq q{} && $INFO{'action'} eq 'boardscreen' ) {
             next;
@@ -804,6 +811,21 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
             $rbinch    = q~ disabled="disabled"~;
             $rbinexist = 1;
         }
+        ### Board Rules Mod Start ###
+        $en_rules = q{};
+        if ( ${ $uid . $id }{'rules'} == 1 ) {
+            $en_rules = q~ checked="checked"~;
+        }
+        $en_rulescoll = q{};
+        if ( ${ $uid . $id }{'rulescollapse'} == 1 ) {
+            $en_rulescoll = q~ checked="checked"~;
+        }
+        $rulestitle = ${ $uid . $editboards[$i] }{'rulestitle'};
+        ToChars($rulestitle);
+        $rulesdesc = ${ $uid . $editboards[$i] }{'rulesdesc'};
+        $rulesdesc =~ s/<br \/>/\n/gsm;
+        ToChars($rulesdesc);
+        ### Board Rules Mod End ###
 
         #Get Board permissions here
         my $startperms = DrawPerms( ${ $uid . $id }{'topicperms'}, 0 );
@@ -923,6 +945,20 @@ qq~<select multiple="multiple" name="moderatorgroups$i" id="moderatorgroups$i" s
     <td class="windowbg"><label for="rbin$i"><b>$admin_txt{'64i'}</b></label></td>
     <td class="windowbg2" colspan="3"><input type="checkbox" id="rbin$i" name="rbin$i" value="1" $rbinch onclick="javascript: if (this.checked) checkbin(true, '$i'); else checkbin(false, '$i');" /> <label for="rbin$i">$admin_txt{'64j'}</label></td>
   </tr><tr>
+    <td class="catbg"  colspan="4"><b>$admin_txt{'rules'}:</b></td>
+  </tr><tr>
+    <td class="windowbg"><label for="rules$i"><b>$admin_txt{'rules1'}:</b></label></td>
+    <td class="windowbg2" colspan="3"><input type="checkbox" name="rules$i" id="rules$i" value="1"$en_rules /></td>
+  </tr><tr>
+    <td class="windowbg"><label for="rulescollapse$i"><b>$exptxt{'6'}</b></label></td>
+    <td class="windowbg2" colspan="3"><input type="checkbox" name="rulescollapse$i" id="rulescollapse$i" value="1"$en_rulescoll /></td>
+  </tr><tr>
+    <td class="windowbg"><label for="rulestitle$i"><b>$admin_txt{'rules2'}:</b></label></td>
+    <td class="windowbg2" colspan="3"><input type="text" name="rulestitle$i" id="rulestitle$i" value="$rulestitle" size="50" maxlength="100" /></td>
+  </tr><tr>
+    <td class="windowbg"><label for="rulesdesc$i"><b>$admin_txt{'rules3'}:</b><br /><span class="small">$admin_txt{'rules4'}</span></label></td>
+    <td class="windowbg2" colspan="3"><textarea name="rulesdesc$i" id="rulesdesc$i" rows="5" cols="30" style="width:98%; height:60px">$rulesdesc</textarea></td>
+  </tr><tr>
     <td class="catbg" colspan="4"><b>$admin_txt{'100'}:</b> $admin_txt{'100a'}</td>
   </tr><tr>
     <td class="windowbg"><label for="minage$i"><b>$admin_txt{'95'}:</b></label></td>
@@ -936,10 +972,10 @@ qq~<select multiple="multiple" name="moderatorgroups$i" id="moderatorgroups$i" s
   </tr><tr>
     <td class="catbg"  colspan="4"><b>$admin_txt{'65'}:</b> $admin_txt{'65a'} <span class="small">$admin_txt{'14'}</span></td>
   </tr><tr>
-    <td class="titlebg center w_25pc"><label for="topicperms$i"><b>$admin_txt{'65b'}:</b></label></td>
-    <td class="titlebg center w_25pc"><label for="replyperms$i"><b>$admin_txt{'65c'}:</b></label></td>
-    <td class="titlebg center w_25pc"><label for="viewperms$i"><b>$admin_txt{'65d'}:</b></label></td>
-    <td class="titlebg center w_25pc"><label for="pollperms$i"><b>$admin_txt{'65e'}:</b></label></td>
+    <td class="titlebg center"><label for="topicperms$i"><b>$admin_txt{'65b'}:</b></label></td>
+    <td class="titlebg center"><label for="replyperms$i"><b>$admin_txt{'65c'}:</b></label></td>
+    <td class="titlebg center"><label for="viewperms$i"><b>$admin_txt{'65d'}:</b></label></td>
+    <td class="titlebg center"><label for="pollperms$i"><b>$admin_txt{'65e'}:</b></label></td>
   </tr><tr>
     <td class="windowbg2 center"><select multiple="multiple" name="topicperms$i" id="topicperms$i" size="8">$startperms</select></td>
     <td class="windowbg2 center"><select multiple="multiple" name="replyperms$i" id="replyperms$i" size="8">$replyperms</select></td>
@@ -1116,7 +1152,8 @@ sub AddBoards2 {
     my ( @boardcontrol, @changes, @updatecats );
     LoadBoardControl();
 
-    for ( my $i = 1 ; $i != $FORM{'amount'} + 1 ; $i++ ) {
+    #    for ( my $i = 1 ; $i != $FORM{'amount'} + 1 ; $i++ ) {
+    for my $i ( 1 .. $FORM{'amount'} ) {
         if (   $FORM{"pic$i"} ne q{}
             && $FORM{"pic$i"} !~
             m{^[0-9a-zA-Z_\.\#\%\-\:\+\?\$\&\~\.\,\@/]+\.(gif|png|bmp|jpg)$}xsm
@@ -1173,8 +1210,9 @@ sub AddBoards2 {
 
                 # recursively change the category of child boards.
                 if ( $subboard{$id} ) {
-					cat_change(split /\|/xsm, $subboard{$id});
-					sub cat_change {
+                    cat_change( split /\|/xsm, $subboard{$id} );
+
+                    sub cat_change {
                         my @x = @_;
                         foreach my $childbd (@x) {
                             ${ $uid . $childbd }{'cat'} = qq~$FORM{"cat$i"}~;
@@ -1184,7 +1222,7 @@ sub AddBoards2 {
                                     $subboard{$childbd} );
                             }
                         }
-					}
+                    }
                 }
 
                 # if it's not a sub board, remove from the old category
@@ -1277,13 +1315,13 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
                     }
                 }
                 elsif ( !$FORM{"ann$i"}
-                    && ( split /\|/xsm, $boardtomodify[0])[8] =~ /a/ism )
+                    && ( split /\|/xsm, $boardtomodify[0] )[8] =~ /a/ism )
                 {
                     for my $x ( 0 .. ( @boardtomodify - 1 ) ) {
                         $boardtomodify[$x] =~
                           s/(.*\|)(.*)/ $1 . take_a_off($2) /exsm;
                     }
-					sub take_a_off { my $y = shift; $y =~ s/a//gsm; return $y; }
+                    sub take_a_off { my $y = shift; $y =~ s/a//gsm; return $y; }
                 }
                 if ($x) {
                     fopen( BOARDINFO, ">$boardsdir/$id.txt" )
@@ -1326,9 +1364,19 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         if ( $FORM{"maxage$i"} && $FORM{"maxage$i"} < $FORM{"minage$i"} ) {
             $FORM{"maxage$i"} = $FORM{"minage$i"};
         }
+        ### Board Rules Start ###
+        if ( $FORM{"rules$i"}         eq q{} ) { $FORM{"rules$i"}         = 0; }
+        if ( $FORM{"rulescollapse$i"} eq q{} ) { $FORM{"rulescollapse$i"} = 0; }
+        $brulestitle = $FORM{"rulestitle$i"};
+        FromChars($brulestitle);
+        $brulesdesc = $FORM{"rulesdesc$i"};
+        FromChars($brulesdesc);
+        $brulesdesc =~ s/\r//gxsm;
+        $brulesdesc =~ s/\n/<br \/>/gsm;
+        ### Board Rules End ###
 
         push @boardcontrol,
-"$FORM{\"cat$i\"}|$id|$FORM{\"pic$i\"}|$bdescription|$FORM{\"moderators$i\"}|$FORM{\"moderatorgroups$i\"}|$FORM{\"topicperms$i\"}|$FORM{\"replyperms$i\"}|$FORM{\"pollperms$i\"}|$FORM{\"zero$i\"}|$FORM{\"membergroups$i\"}|$FORM{\"ann$i\"}|$FORM{\"rbin$i\"}|$FORM{\"att$i\"}|$FORM{\"minage$i\"}|$FORM{\"maxage$i\"}|$FORM{\"gender$i\"}|$FORM{\"canpost$i\"}|$FORM{\"parent$i\"}\n";
+"$FORM{\"cat$i\"}|$id|$FORM{\"pic$i\"}|$bdescription|$FORM{\"moderators$i\"}|$FORM{\"moderatorgroups$i\"}|$FORM{\"topicperms$i\"}|$FORM{\"replyperms$i\"}|$FORM{\"pollperms$i\"}|$FORM{\"zero$i\"}|$FORM{\"membergroups$i\"}|$FORM{\"ann$i\"}|$FORM{\"rbin$i\"}|$FORM{\"att$i\"}|$FORM{\"minage$i\"}|$FORM{\"maxage$i\"}|$FORM{\"gender$i\"}|$FORM{\"canpost$i\"}|$FORM{\"parent$i\"}|$FORM{\"rules$i\"}|$brulestitle|$brulesdesc|$FORM{\"rulescollapse$i\"}\n";
         push @changes, $id;
         $yymain .= qq~<i>'$FORM{"name$i"}'</i> $admin_txt{'48'} <br />~;
     }
@@ -1338,7 +1386,7 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         BoardTotals( 'add', @changes );
     }
 
-	Write_ForumMaster();
+    Write_ForumMaster();
     fopen( FORUMCONTROL, "+<$boardsdir/forum.control" );
     seek FORUMCONTROL, 0, 0;
     my @oldcontrols = <FORUMCONTROL>;
@@ -1406,8 +1454,9 @@ qq~<option value="$category" selected="selected">$categoryname</option>~;
             my $indent = -2;
             $catboardlist{$category} = q~<option value=''>&nbsp;</option>~;
 
-			get_subboards2(@catboards);
-			sub get_subboards2 {
+            get_subboards2(@catboards);
+
+            sub get_subboards2 {
                 my @x = @_;
                 $indent += 2;
                 foreach my $childbd (@x) {
@@ -1426,7 +1475,7 @@ qq~<option value="$category" selected="selected">$categoryname</option>~;
                     }
                 }
                 $indent -= 2;
-			}
+            }
 
             $catboardlist_js .= qq~
                 catboardlist['$category'] = "$catboardlist{$category}";
@@ -1487,7 +1536,7 @@ qq~<option value="$board" selected="selected">$boardname</option>~;
 <br /><br />
 <form action="$adminurl?action=reorderboards2;item=$INFO{'item'}$INFO{'subboards'}" method="post" id="bdform" accept-charset="$yycharset">
     <table class="bordercolor cs_thin pad_4px" style="width:535px">
-        <tr>
+  <tr>
             <td class="titlebg"><img src="$imagesdir/board.gif" alt="" /> <b>$cur_txt ($curname)</b></td>
         </tr><tr>
             <td class="windowbg">
@@ -1532,9 +1581,9 @@ qq~<option value="$board" selected="selected">$boardname</option>~;
 ~;
     }
     $yymain .= q~
-            </td>
-        </tr>
-    </table>
+    </td>
+  </tr>
+</table>
 </form>
 ~;
     $yymain .= qq~
@@ -1648,8 +1697,9 @@ sub ReorderBoards2 {
 
                 # recursively change the category of child boards.
                 if ( $subboard{$moveitem} ) {
-					cat_change2(split /\|/xsm, $subboard{$moveitem});
-					sub cat_change2 {
+                    cat_change2( split /\|/xsm, $subboard{$moveitem} );
+
+                    sub cat_change2 {
                         my @x = @_;
                         foreach my $childbd (@x) {
                             ${ $uid . $childbd }{'cat'} =
@@ -1660,7 +1710,7 @@ sub ReorderBoards2 {
                                     $subboard{$childbd} );
                             }
                         }
-					}
+                    }
                 }
 
                 # remove from the category list only if it was not a subboard
@@ -1675,6 +1725,7 @@ sub ReorderBoards2 {
 
                 # add to new category if there's no parent selected
                 if ( !$FORM{'selectboard'} ) {
+
                     # add to new cat list
                     my $ncat = $FORM{'selectcategory'};
                     if ( $cat{$ncat} ne q{} ) { $cat{$ncat} .= ",$moveitem"; }
@@ -1684,6 +1735,7 @@ sub ReorderBoards2 {
 
             # if parent has changed
             if ( ${ $uid . $moveitem }{'parent'} ne $FORM{'selectboard'} ) {
+
 # if it had a parent, remove it from that list, otherwise it didnt have a parent so remove it from cat list
                 if ( ${ $uid . $moveitem }{'parent'} ) {
                     my @bdlist = split /\|/xsm,
@@ -1698,6 +1750,7 @@ sub ReorderBoards2 {
                     $subboard{ ${ $uid . $moveitem }{'parent'} } = join q{|},
                       @bdlist;
                 }
+
 # only remove from old category if it now has a parent and its in the same cat as before, otherwise
 # cat had to have been changed to get a parent in a different cat, and the cat change takes care of
 # removing it from the previous category
@@ -1753,12 +1806,12 @@ sub ReorderBoards2 {
             ) = split /\|/xsm, $oldcontrols[$cnt];
             if ( $moveitem eq $oldboard ) {
                 $oldcontrols[$cnt] =
-qq~${$uid.$moveitem}{'cat'}|$moveitem|$pic|$bdescription|$moderators|$moderatorgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$att|$minage|$maxage|$gender|$canpost|${$uid.$moveitem}{'parent'}\n~;
+qq~${$uid.$moveitem}{'cat'}|$moveitem|$pic|$bdescription|$moderators|$moderatorgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$att|$minage|$maxage|$gender|$canpost|${$uid.$moveitem}{'parent'}|$rules|$rulestitle|$rulesdesc|$rulescollapse\n~;
             }
             foreach my $changedboard (@updatecats) {
                 if ( $changedboard eq $oldboard ) {
                     $oldcontrols[$cnt] =
-qq~${$uid.$changedboard}{'cat'}|$changedboard|$pic|$bdescription|$moderators|$moderatorgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$att|$minage|$maxage|$gender|$canpost|${$uid.$changedboard}{'parent'}\n~;
+qq~${$uid.$changedboard}{'cat'}|$changedboard|$pic|$bdescription|$moderators|$moderatorgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$att|$minage|$maxage|$gender|$canpost|${$uid.$changedboard}{'parent'}|$rules|$rulestitle|$rulesdesc|$rulescollapse\n~;
                 }
             }
         }
@@ -1788,15 +1841,15 @@ qq~$adminurl?action=reorderboards;item=$catorbd;theboard=$moveitem;subboards=1~;
 sub ConfRemBoard {
     $yymain .= qq~
     <table class="bordercolor cs_thin">
-        <tr>
-            <td class="titlebg"><b>$admin_txt{'31'} - '$FORM{'boardname'}'?</b></td>
+<tr>
+    <td class="titlebg"><b>$admin_txt{'31'} - '$FORM{'boardname'}'?</b></td>
         </tr><tr>
-            <td class="windowbg" >
-                $admin_txt{'617'}<br />
-                <b><a href="$adminurl?action=modifyboard;cat=$FORM{'cat'};id=$FORM{'id'};moda=$admin_txt{'31'}2">$admin_txt{'163'}</a> - <a href="$adminurl?action=manageboards">$admin_txt{'164'}</a></b>
-            </td>
-        </tr>
-    </table>
+    <td class="windowbg" >
+$admin_txt{'617'}<br />
+<b><a href="$adminurl?action=modifyboard;cat=$FORM{'cat'};id=$FORM{'id'};moda=$admin_txt{'31'}2">$admin_txt{'163'}</a> - <a href="$adminurl?action=manageboards">$admin_txt{'164'}</a></b>
+</td>
+</tr>
+</table>
 ~;
     $yytitle     = "$admin_txt{'31'} - '$FORM{'boardname'}'?";
     $action_area = 'manageboards';
