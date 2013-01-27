@@ -276,7 +276,7 @@ sub EventCalSet {
 		$yymain .= qq~<tr>
        <td class="windowbg center"><input type="text" name="caliimg[$i]" value="$CalIconURL[$i]" /></td>
        <td class="windowbg center"><input type="text" name="calidescr[$i]" value="$CalIDescription[$i]" /></td>
-            <td class="windowbg center"><img src="$yyhtml_root/ModImages/EventCal/EventIcons/$CalIconURL[$i].gif" alt="" /></td>
+       <td class="windowbg center"><img src="$yyhtml_root/ModImages/EventCal/EventIcons/$CalIconURL[$i].gif" alt="" /></td>
        <td class="windowbg center"><input type="checkbox" name="calidelbox[$i]" value="1" /></td>
      </tr>~;
 		$i++
@@ -321,47 +321,47 @@ sub EventCalSet {
 sub EventCalSet2 {
     is_admin_or_gmod();
 
-		# Set 1 or 0 if box was checked or not
-        map { ${$_} = $FORM{$_} ? 1 : 0; }
-          qw{Show_MiniCalIcons CalEventPrivate DisplayCalEvents ShowSunday Show_ColorLinks No_ShortUbbc Show_BdColorLinks};
+	# Set 1 or 0 if box was checked or not
+    map { ${$_} = $FORM{$_} ? 1 : 0; }
+         qw{Show_MiniCalIcons CalEventPrivate DisplayCalEvents ShowSunday Show_ColorLinks No_ShortUbbc Show_BdColorLinks};
 
-		# If empty fields are submitted, set them to default-values to save yabb from crashing
-		$DisplayEvents       = $FORM{'DisplayEvents'};
-        $DisplayEvents =~ s/[^\d]//gxsm;
-		$DisplayEvents       = $DisplayEvents || 0;
-		$Scroll_Events       = $FORM{'Scroll_Events'} || 0;
-		$Show_EventCal       = $FORM{'Show_EventCal'} || 0;
-		$Show_EventButton    = $FORM{'Show_EventButton'} || 0;
-        if ( $Show_EventButton > $Show_EventCal ) {
-            $Show_EventButton = $Show_EventCal;
-        }
-		$Show_EventBirthdays = $FORM{'Show_EventBirthdays'} || 0;
-        if ( $Show_EventBirthdays > $Show_EventCal ) {
-            $Show_EventBirthdays = $Show_EventCal;
-        }
-		$Show_BirthdaysList  = $FORM{'Show_BirthdaysList'} || 0;
-		$Show_BirthdayButton = $FORM{'Show_BirthdayButton'} || 0;
-        if ( $Show_BirthdayButton > $Show_BirthdaysList ) {
-            $Show_BirthdayButton = $Show_BirthdaysList;
-        }
-		$Show_BirthdayDate   = $FORM{'Show_BirthdayDate'} || 0;
-		$CalEventNoName      = $FORM{'CalEventNoName'} || 0;
-        $Event_TodayColor =
-          uc( $FORM{'Event_TodayColor'} || '#FF0000' ) . '000000';
-        $Event_TodayColor =~ s/[^a-fA-F0-9#]//gxsm;
-        $Event_TodayColor = substr $Event_TodayColor, 0, 7;
-		$Delete_EventsUntil  = $FORM{'Delete_EventsUntil'} || 0;
-		$CalShortEvent       = $FORM{'CalShortEvent'};
-        $CalShortEvent =~ s/[^\d]//gxsm;
-		$CalShortEvent       = $CalShortEvent || 0;
-        $CalEventPerms = $FORM{'CalEventPerms'} || q{};
-        $CalEventPerms =~ s/^\s*,\s*|\s*,\s*$//gxsm;
-        $CalEventPerms =~ s/\s*,\s*/,/gxsm;
-        $CalEventMods = $FORM{'CalEventMods'} || q{};
-        $CalEventMods =~ s/^\s*,\s*|\s*,\s*$//gxsm;
-        $CalEventMods =~ s/\s*,\s*/,/gxsm;
+	# If empty fields are submitted, set them to default-values to save yabb from crashing
+	$DisplayEvents       = $FORM{'DisplayEvents'};
+    $DisplayEvents =~ s/[^\d]//gxsm;
+	$DisplayEvents       = $DisplayEvents || 0;
+	$Scroll_Events       = $FORM{'Scroll_Events'} || 0;
+	$Show_EventCal       = $FORM{'Show_EventCal'} || 0;
+	$Show_EventButton    = $FORM{'Show_EventButton'} || 0;
+    if ( $Show_EventButton > $Show_EventCal ) {
+        $Show_EventButton = $Show_EventCal;
+    }
+	$Show_EventBirthdays = $FORM{'Show_EventBirthdays'} || 0;
+    if ( $Show_EventBirthdays > $Show_EventCal ) {
+        $Show_EventBirthdays = $Show_EventCal;
+    }
+	$Show_BirthdaysList  = $FORM{'Show_BirthdaysList'} || 0;
+	$Show_BirthdayButton = $FORM{'Show_BirthdayButton'} || 0;
+    if ( $Show_BirthdayButton > $Show_BirthdaysList ) {
+        $Show_BirthdayButton = $Show_BirthdaysList;
+    }
+	$Show_BirthdayDate   = $FORM{'Show_BirthdayDate'} || 0;
+	$CalEventNoName      = $FORM{'CalEventNoName'} || 0;
+    $Event_TodayColor =
+      uc( $FORM{'Event_TodayColor'} || '#FF0000' ) . '000000';
+    $Event_TodayColor =~ s/[^a-fA-F0-9#]//gxsm;
+    $Event_TodayColor = substr $Event_TodayColor, 0, 7;
+	$Delete_EventsUntil  = $FORM{'Delete_EventsUntil'} || 0;
+	$CalShortEvent       = $FORM{'CalShortEvent'};
+    $CalShortEvent =~ s/[^\d]//gxsm;
+	$CalShortEvent       = $CalShortEvent || 0;
+    $CalEventPerms = $FORM{'CalEventPerms'} || q{};
+    $CalEventPerms =~ s/^\s*,\s*|\s*,\s*$//gxsm;
+    $CalEventPerms =~ s/\s*,\s*/,/gxsm;
+    $CalEventMods = $FORM{'CalEventMods'} || q{};
+    $CalEventMods =~ s/^\s*,\s*|\s*,\s*$//gxsm;
+    $CalEventMods =~ s/\s*,\s*/,/gxsm;
 
-        my $filler =
+    my $filler =
 q~                                                                               ~;
 		my $setfile = << "EOF";
 ###############################################################################
