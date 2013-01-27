@@ -238,7 +238,7 @@ sub SetCensor {
         $yymain .= "$i\n";
     }
     $yymain .= qq~</textarea>
-      </td>
+         </td>
      </tr><tr>
        <td class="catbg center">
 <input type="submit" value="$admin_txt{'10'} $censorlanguage" class="button" />
@@ -847,42 +847,14 @@ sub EditPaths {
                   <input type="text" name="boardurl" id="boardurl" size="50" value="$boardurl" />
             </div>
             <div>&nbsp;</div>
-      <!--  <div class="setting_cell">
-                  <label for="forumstylesurl">$edit_paths_txt{'22'}</label>
-            </div>
-            <div class="setting_cell2">
-                  <input type="text" name="forumstylesurl" id="forumstylesurl" size="50" value="$forumstylesurl" />
-            </div>
-            <br />
             <div class="setting_cell">
-                  <label for="adminstylesurl">$edit_paths_txt{'23'}</label>
-            </div>
-            <div class="setting_cell2">
-                  <input type="text" name="adminstylesurl" id="adminstylesurl" size="50" value="$adminstylesurl" />
-            </div>
-            <br />
-      -->   <div class="setting_cell">
                   <label for="yyhtml_root">$edit_paths_txt{'28'}</label>
             </div>
             <div class="setting_cell2">
                   <input type="text" name="yyhtml_root" id="yyhtml_root" size="50" value="$yyhtml_root" />
             </div>
             <br />
-      <!--  <div class="setting_cell">
-                  <label for="smiliesurl">$edit_paths_txt{'30'}</label>
-            </div>
-            <div class="setting_cell2">
-                  <input type="text" name="smiliesurl" id="smiliesurl" size="50" value="$smiliesurl" />
-            </div>
-            <br />
             <div class="setting_cell">
-                  <label for="modimgurl">$edit_paths_txt{'31'}</label>
-            </div>
-            <div class="setting_cell2">
-                  <input type="text" name="modimgurl" id="modimgurl" size="50" value="$modimgurl" />
-            </div>
-            <br />
-      -->   <div class="setting_cell">
                   <label for="uploadurl">$edit_paths_txt{'32'}</label>
             </div>
             <div class="setting_cell2">
@@ -975,41 +947,52 @@ q~                                                                              
 \$facesdir = "$facesdir";                       # Base Path for all avatar files
 \$uploaddir = "$uploaddir";                     # Base Path for all attachment files
 
-########## URL's ##########
+########## URLs ##########
 
 \$yyhtml_root = "$yyhtml_root";                       # Base URL for all html/css files and folders
 \$facesurl = "$facesurl";                       # Base URL for all avatar files
 \$uploadurl = "$uploadurl";                     # Base URL for all attachment files
 
-########## Old Path Settings ##########
-########## The following variables are deprecated! ##########
-########## Don't use them for new code! ##########
-
-\$forumstylesdir = \$htmldir . "/Templates/Forum";    # Directory with forum style files and folders
-\$adminstylesdir = \$htmldir . "/Templates/Admin";    # Directory with admin style files and folders
-\$smiliesdir = \$htmldir . "/Smilies";                # Base Path for all smilie files
-\$modimgdir = \$htmldir . "/ModImages";               # Base Path for all mod images
-
-\$forumstylesurl = \$yyhtml_root . "/Templates/Forum";      # Default Forum Style Directory
-\$adminstylesurl = \$yyhtml_root . "/Templates/Admin";      # Default Admin Style Directory
-\$smiliesurl = \$yyhtml_root . "/Smilies";            # Base URL for all smilie files
-\$modimgurl = \$yyhtml_root . "/ModImages";           # Base URL for all mod images
-
 1;
 EOF
 
-    $setfile =~
-      s/(.+\;)\s+(\#.+$)/$1 . substr( $filler, 0, (70-(length $1)) ) . $2 /gesm;
-    $setfile =~ s/(.{64,}\;)\s+(\#.+$)/$1 . "\n   " . $2/gesm;
-    $setfile =~ s/^\s\s\s+(\#.+$)/substr( $filler, 0, 70 ) . $1/gesm;
-
     fopen( FILE, '>Paths.pl' );
-    print {FILE} $setfile or croak 'cannot print FILE';
+    print {FILE} nicely_aligned_file($setfile) or croak 'cannot print FILE';
     fclose(FILE);
 
     $yySetLocation = qq~$adminurl~;
     redirectexit();
     return;
 }
+
+sub nicely_aligned_file {
+    my $filler = q{ } x 70;
+        # Make files look nicely aligned. The comment starts after 70 Col
+
+    my $setfile = shift;
+    $setfile =~ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 70 ? length $1 : 69)) . $2 /gem;
+    $setfile =~ s/\t+(#.+$)/$filler$1/gsm;
+    *cut_comment = sub {    # line break of too long comments
+        my @x = @_;
+        my ( $comment, $length ) =
+          ( q{}, 140 );    # 120 Col is the max width of page
+        my $var_length = length $x[0];
+        while ( $length < $var_length ) { $length += 140; }
+        foreach ( split / +/sm, $x[1] ) {
+            if ( ( $var_length + length($comment) + length $_ ) > $length ) {
+                $comment =~ s/ $//sm;
+                $comment .= "\n$filler#  $_ ";
+                $length += 140;
+            }
+            else { $comment .= "$_ "; }
+        }
+        $comment =~ s/ $//sm;
+        return $comment;
+    };
+    $setfile =~ s/(.+)(#.+$)/ $1 . cut_comment($1,$2) /gem;
+    return $setfile;
+
+}
+
 
 1;
