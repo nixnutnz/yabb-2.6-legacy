@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$sublistplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$sublistplver = 'YaBB 2.5.4 $Revision: 1.2 $';
 if ($action eq 'detailedversion') { return 1; }
 
 %director=( # in alphabetical Order!
@@ -20,6 +20,7 @@ if ($action eq 'detailedversion') { return 1; }
 'addbuddy',"Subs.pl&addBuddy",
 'addfav',"Favorites.pl&AddFav",
 'addtab2',"AdvancedTabs.pl&AddNewTab2",
+'bdrulecoll',"MessageIndex.pl&collapse_bdrule",
 'boardnotify',"Notify.pl&BoardNotify",
 'boardnotify2',"MyCenter.pl&mycenter",
 'boardnotify3',"Notify.pl&BoardNotify2",
@@ -57,6 +58,7 @@ if ($action eq 'detailedversion') { return 1; }
 'imshow',"MyCenter.pl&mycenter",
 'imstorage',"MyCenter.pl&mycenter",
 'imtostore',"MyCenter.pl&IMToStore",
+'iplookup',"IPLookup.pm&IPLookup",
 'jump',"Subs.pl&dojump",
 'lock',"SetStatus.pl&SetStatus",
 'lockpoll',"Poll.pl&LockPoll",
