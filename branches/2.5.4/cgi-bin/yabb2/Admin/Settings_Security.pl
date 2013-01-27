@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-our $VERSION = 1.3;
+our $VERSION = 1.4;
 
-our $settings_securityplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+$settings_securityplver = 'YaBB 2.5.4 $Revision: 1.4 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Sessions');
@@ -78,6 +78,14 @@ qq~<input type="checkbox" name="show_online_ip_gmod" id="show_online_ip_gmod" va
                 name     => 'show_online_ip_gmod',
                 validate => 'boolean',
             },
+            {
+                description =>
+                  qq~<label for="ip_lookup">$admin_txt{'iplookup'}</label>~,
+                input_html =>
+qq~<input type="checkbox" name="ipLookup" id="ip_lookup" value="1"${ischecked($ipLookup)} />~,
+                name     => 'ipLookup',
+                validate => 'boolean',
+            },
         ],
     },
     {
@@ -132,7 +140,7 @@ qq~<input type="text" name="codemaxchars" id="codemaxchars" size="5" value="$cod
             },
             {
                 description =>
-                  qq~<label for="captchaStartChars">$floodtxt{'extra_chars_start'}<br /><span class="small">$floodtxt{'extra_chars_desc'}</span></label>~,
+qq~<label for="captchaStartChars">$floodtxt{'extra_chars_start'}<br /><span class="small">$floodtxt{'extra_chars_desc'}</span></label>~,
                 input_html =>
 qq~<input type="text" name="captchaStartChars" id="captchaStartChars" size="5" value="$captchaStartChars" />~,
                 name       => 'captchaStartChars',
@@ -141,7 +149,7 @@ qq~<input type="text" name="captchaStartChars" id="captchaStartChars" size="5" v
             },
             {
                 description =>
-                  qq~<label for="captchaEndChars">$floodtxt{'extra_chars_end'}<br /><span class="small">$floodtxt{'extra_chars_desc'}</span></label>~,
+qq~<label for="captchaEndChars">$floodtxt{'extra_chars_end'}<br /><span class="small">$floodtxt{'extra_chars_desc'}</span></label>~,
                 input_html =>
 qq~<input type="text" name="captchaEndChars" id="captchaEndChars" size="5" value="$captchaEndChars" />~,
                 name       => 'captchaEndChars',
@@ -240,7 +248,7 @@ qq~<select name="randomizer" id="randomizer" size="1"> <option value="0"${issele
             {
                 description => $floodtxt{'vpreview'},
                 input_html =>
-qq~<div class="windowbg padd_5px">$showcheck</div>~,
+                  qq~<div class="windowbg padd_5px">$showcheck</div>~,
             },
         ],
     },
