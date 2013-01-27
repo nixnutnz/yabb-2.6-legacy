@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$subsplver = 'YaBB 2.5.4 $Revision: 1.51 $';
+$subsplver = 'YaBB 2.5.4 $Revision: 1.52 $';
 
-if ($debug) { &LoadLanguage('Debug'); }
+if ($debug) { LoadLanguage('Debug'); }
 
 use subs 'exit';
 
@@ -2338,135 +2338,29 @@ sub regex_4 {
 }
 
 sub password_check {
+        if ($action eq 'myprofile') {$class = 'windowbg';}
+        else {$class = 'windowbg2';}
         $check = qq~<tr>
-        <td class="windowbg"><label for="passwrd1"><b>$register_txt{'81'}:</b></label></td>
-        <td class="windowbg">
-           <script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
-           <div style="float:left;"><input type="password" maxlength="30" name="passwrd1" id="passwrd1" size="30" onkeyup="runPassword(this.value);" onkeypress="capsLock(event,'cappasswrd1')" /> &nbsp; </div>
-           <div class="pass_box">
-               <div id="password-strength-meter"></div>
-               <div class="pstrength-bar" id="passwrd1_bar"></div>
-               <div class="pstrength-info" id="passwrd1_text">&nbsp;</div>
-           </div>
-           <div id="cappasswrd1">$register_txt{'capslock'}</div>
-           <div id="cappasswrd1_char">$register_txt{'wrong_char'}: <span id="cappasswrd1_character">&nbsp;</span></div>
-       </td>
-    </tr><tr>
-       <td class="windowbg"><label for="passwrd2"><b>$register_txt{'82'}:</b></label></td>
-       <td class="windowbg">
-           <input type="password" maxlength="30" name="passwrd2" id="passwrd2" size="30" onkeypress="capsLock(event,'cappasswrd2')" />
-           <div id="cappasswrd2">$register_txt{'capslock'}</div>
-           <div id="cappasswrd1_char">$register_txt{'wrong_char'}: <span id="cappasswrd1_character">&nbsp;</span></div>
-       </td>
-    </tr>
-    <script type="text/javascript">
-<!--
-        // Password_strength_meter start
-        var verdects = new Array("$pwstrengthmeter_txt{'1'}","$pwstrengthmeter_txt{'2'}","$pwstrengthmeter_txt{'3'}","$pwstrengthmeter_txt{'4'}","$pwstrengthmeter_txt{'5'}","$pwstrengthmeter_txt{'6'}","$pwstrengthmeter_txt{'7'}","$pwstrengthmeter_txt{'8'}");
-        var colors = new Array("#8F8F8F","#BF0000","#FF0000","#00A0FF","#33EE00","#339900");
-        var scores = new Array($pwstrengthmeter_scores);
-        var common = new Array($pwstrengthmeter_common);
-        var minchar = $pwstrengthmeter_minchar;
-
-        function runPassword(D) {
-                var nPerc = checkPassword(D);
-                if (nPerc > -199 && nPerc < 0) {
-                        strColor = colors[0];
-                        strText = verdects[1];
-                        strWidth = "5%";
-                } else if (nPerc == -200) {
-                        strColor = colors[1];
-                        strText = verdects[0];
-                        strWidth = "0%";
-                } else if (scores[0] == -1 && scores[1] == -1 && scores[2] == -1 && scores[3] == -1) {
-                        strColor = colors[4];
-                        strText = verdects[7];
-                        strWidth = "100%";
-                } else if (nPerc <= scores[0]) {
-                        strColor = colors[1];
-                        strText = verdects[2];
-                        strWidth = "10%";
-                } else if (nPerc > scores[0] && nPerc <= scores[1]) {
-                        strColor = colors[2];
-                        strText = verdects[3];
-                        strWidth = "25%";
-                } else if (nPerc > scores[1] && nPerc <= scores[2]) {
-                        strColor = colors[3];
-                        strText = verdects[4];
-                        strWidth = "50%";
-                } else if (nPerc > scores[2] && nPerc <= scores[3]) {
-                        strColor = colors[4];
-                        strText = verdects[5];
-                        strWidth = "75%";
-                } else {
-                        strColor = colors[5];
-                        strText = verdects[6];
-                        strWidth = "100%";
-                }
-                document.getElementById("passwrd1_bar").style.width = strWidth;
-                document.getElementById("passwrd1_bar").style.backgroundColor = strColor;
-                document.getElementById("passwrd1_text").style.color = strColor;
-                document.getElementById("passwrd1_text").childNodes[0].nodeValue = strText;
-        }
-
-        function checkPassword(C) {
-                if (C.length == 0 || C.length < minchar) return -100;
-
-                for (var D = 0; D < common.length; D++) {
-                        if (C.toLowerCase() == common[D]) return -200;
-                }
-
-                var F = 0;
-                if (C.length >= minchar && C.length <= (minchar+2)) {
-                        F = (F + 6)
-                } else if (C.length >= (minchar + 3) && C.length <= (minchar + 4)) {
-                        F = (F + 12)
-                } else if (C.length >= (minchar + 5)) {
-                        F = (F + 18)
-                }
-
-                if (C.match(/[a-z]/)) {
-                        F = (F + 1)
-                }
-                if (C.match(/[A-Z]/)) {
-                        F = (F + 5)
-                }
-                if (C.match(/d+/)) {
-                        F = (F + 5)
-                }
-                if (C.match(/(.*[0-9].*[0-9].*[0-9])/)) {
-                        F = (F + 7)
-                }
-                if (C.match(/.[!,\@,#,\$,\%,^,&,*,?,_,\~]/)) {
-                        F = (F + 5)
-                }
-                if (C.match(/(.*[!,\@,#,\$,\%,^,&,*,?,_,\~].*[!,\@,#,\$,\%,^,&,*,?,_,\~])/)) {
-                        F = (F + 7)
-                }
-                if (C.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)){
-                        F = (F + 2)
-                }
-                if (C.match(/([a-zA-Z])/) && C.match(/([0-9])/)) {
-                        F = (F + 3)
-                }
-                if (C.match(/([a-zA-Z0-9].*[!,\@,#,\$,\%,^,&,*,?,_,\~])|([!,\@,#,\$,\%,^,&,*,?,_,\~].*[a-zA-Z0-9])/)) {
-                        F = (F + 3)
-                }
-                return F;
-        }
-        // Password_strength_meter end
-// -->
-</script>
-~;
-    return $check;
-}
-
-sub passcheck_2 {
-        $check = qq~<tr>
-		<td class="windowbg right vtop">
-			<label for="passwrd1"><b>$register_txt{'81'}:</b></label>
+        <td class="windowbg right vtop"><label for="passwrd1"><b>$register_txt{'81'}:</b></label></td>
+        <td class="$class">
+			<div style="float:left;">
+                <input autocomplete="off" type="password" maxlength="30" name="passwrd1" id="passwrd1" value="$tmpregpasswrd1" size="30" onkeypress="capsLock(event,'cappasswrd1')" onkeyup="runPassword(this.value);" /> *&nbsp;</div>
+			<div class="pass_box">
+				<div id="password-strength-meter"></div>
+				<div class="pstrength-bar" id="passwrd1_bar"></div>
+				<div class="pstrength-info" id="passwrd1_text">&nbsp;</div>
+			</div>
+			<div id="cappasswrd1">$register_txt{'capslock'}</div>
+			<div id="cappasswrd1_char">$register_txt{'wrong_char'}: <span id="cappasswrd1_character">&nbsp;</span></div>
 		</td>
-		<td class="windowbg2 vtop">
+	</tr><tr>
+		<td class="windowbg right vtop">
+			<label for="passwrd2"><b>$register_txt{'82'}:</b></label>
+		</td>
+		<td class="$class vtop">
+			<input autocomplete="off" type="password" maxlength="30" name="passwrd2" id="passwrd2" value="$tmpregpasswrd2" size="30" onkeypress="capsLock(event,'cappasswrd2')" /> *
+			<div id="cappasswrd2">$register_txt{'capslock'}</div>
+			<div id="cappasswrd2_char">$register_txt{'wrong_char'}: <span id="cappasswrd2_character">&nbsp;</span></div>
 			<script type="text/javascript">
 			<!--
 				// Password_strength_meter start
@@ -2565,25 +2459,9 @@ sub passcheck_2 {
 				// Password_strength_meter end
 			// -->
 			</script>
-			<div style="float:left;"><input type="password" maxlength="30" name="passwrd1" id="passwrd1" value="$tmpregpasswrd1" size="30" onkeypress="capsLock(event,'cappasswrd1')" onkeyup="runPassword(this.value);" /> *&nbsp;</div>
-			<div style="float:left; width: 150px; height: 20px; text-align:left;">
-				<div id="password-strength-meter" style="background: transparent url($imagesdir/empty_bar.gif) repeat-x center left; height: 4px"></div>
-				<div class="pstrength-bar" id="passwrd1_bar" style="border: 1px solid #FFFFFF; height: 4px"></div>
-				<div class="pstrength-info" id="passwrd1_text">&nbsp;</div>
-			</div>
-			<div style="clear:left; color: red; font-weight: bold; display: none" id="cappasswrd1">$register_txt{'capslock'}</div>
-			<div style="clear:left; color: red; font-weight: bold; display: none" id="cappasswrd1_char">$register_txt{'wrong_char'}: <span id="cappasswrd1_character">&nbsp;</span></div>
-		</td>
-	</tr><tr>
-		<td class="windowbg right vtop">
-			<label for="passwrd2"><b>$register_txt{'82'}:</b></label>
-		</td>
-		<td class="windowbg2 vtop">
-			<input type="password" maxlength="30" name="passwrd2" id="passwrd2" value="$tmpregpasswrd2" size="30" onkeypress="capsLock(event,'cappasswrd2')" /> *
-			<div style="color: red; font-weight: bold; display: none" id="cappasswrd2">$register_txt{'capslock'}</div>
-			<div style="color: red; font-weight: bold; display: none" id="cappasswrd2_char">$register_txt{'wrong_char'}: <span id="cappasswrd2_character">&nbsp;</span></div>
 		</td>
 	</tr>~;
 	return $check;
 }
+
 1;
