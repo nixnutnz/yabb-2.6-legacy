@@ -20,9 +20,9 @@
 # no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
-our $VERSION = 1.6;
+our $VERSION = 1.61;
 
-$backupplver = 'YaBB 2.5.4 $Revision: 1.6 $';
+$backupplver = 'YaBB 2.5.4 $Revision: 1.61 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Add in support for Archive::Tar in the Modules directory and binaries in different places
@@ -317,7 +317,7 @@ qq~name="backupmethod" id="backupmethod1" value="$backupprogusr/tar" onclick="do
         $disabledtext = $backup_txt{41};
     }
     $yymain .= qq~<tr>
-       <td class="windowbg2"><label for="backupprogusr">$backup_txt{'path1'}<label> <input id="backupprogusr" type="text" value="$backupprogusr" size="20" name="backupprogusr" />
+       <td class="windowbg2"><label for="backupprogusr">$backup_txt{'path1'}</label> <input id="backupprogusr" type="text" value="$backupprogusr" size="20" name="backupprogusr" />
        <br /><label for="backupprogbin">$backup_txt{'path2'}</label> <input id="backupprogbin" type="text" value="$backupprogbin" size="20" name="backupprogbin" />
        <br />$backup_txt{'path3'}
        </tr><tr>
@@ -739,7 +739,7 @@ sub runbackup {
         'mes',
         $datadir,
         'temp',
-        "$templatesdir|$forumstylesdir|$adminstylesdir",
+        "$templatesdir|$htmldir/Templates/Forum|$htmldir/Templates/Admin",
         'var',
         $vardir,
         'html',
