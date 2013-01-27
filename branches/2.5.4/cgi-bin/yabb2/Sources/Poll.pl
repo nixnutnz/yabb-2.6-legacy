@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$pollplver = 'YaBB 2.5.4 $Revision: 1.4 $';
+$pollplver = 'YaBB 2.5.4 $Revision: 1.41 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Poll');
@@ -308,11 +308,12 @@ sub votedetails {
                         $voted .= qq~$options[$oldvote]<br />~;
                 }
 
+                my $lookupIP = ($ipLookup) ? qq~<a href="$scripturl?action=iplookup;ip=$voters_ip">$voters_ip</a>~ : qq~$voters_ip~;
                 $vote_date = &timeformat($vote_date);
                 $yymain .= qq~
         <td class="windowbg2 center"><input type="checkbox" name="$id" value="1" /></td>
         <td class="windowbg2">$voters_name</td>
-        <td class="windowbg2 center">$voters_ip</td>
+        <td class="windowbg2 center">$lookupIP</td>
         <td class="windowbg2 center">$vote_date</td>
         <td class="windowbg2">$voted</td>
     </tr><tr>~;
