@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$adminlngver = 'YaBB 2.5.4 $Revision: 1.6 $';
+$adminlngver = 'YaBB 2.5.4 $Revision: 1.72 $';
 
 @days = ('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
 @months = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
@@ -300,7 +300,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision: 1.6 $';
 '523' => 'Show "View Profile" button under each post?',
 '524' => 'Auto-link URLs?',
 '525' => 'Check for ALL CAPS?<br /><span class="small">If set to 0, no checking is done. Otherwise, the number determines how many characters in all caps are required to open a JavaScript alert on submission of the post.</span>',
-'526' => 'Show User Tools for username links?',
+'526' => 'Show User Tools (QuickLinks) for username links?',
 '527' => 'Enable Post Tools?',
 '528' => 'Enable Topic Tools?',
 '529' => 'User Info style:<br /><span class="small">When checked, User Info will display to the left of posts as in previous versions. When unchecked User Info will be displayed above each post in the new format.</span>',
@@ -453,6 +453,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision: 1.6 $';
 '914' => 'Username',
 '999' => 'Run Board in Debug Mode?',
 '999a' => 'This will show all useful File Actions below each page if the appropriate tags are in the template',
+'999b' => 'Show pageload time only?',
 'nodebug' => 'Do not use Debug Mode',
 'alldebug' => 'Use Debug Mode - everyone sees output',
 'admindebug' => 'Use Debug Mode - only Admin sees output',
@@ -487,6 +488,14 @@ $adminlngver = 'YaBB 2.5.4 $Revision: 1.6 $';
 'eventcal_set' => 'Event Calendar Settings',
 'eventcal_set1' => 'Edit your Event Calendar Settings',
 'addtab_on' => 'Show Add and Edit Tabs on Forum?',
+'showsearchbox' => qq~Show Search box on all pages? (To turn off <b>all</b> search functions go to <a href="$adminurl?action=newsettings;page=advanced">Advanced Settings - Advanced</a>)~,
+'showsearchboxnum' => 'Maximum age of Posts (in Days) to be searched from Search Box - 0 allows all permitted posts to be searched.',
+'rules' => 'Board Rules',
+'rules1' => 'Enable Board Rules',
+'rules2' => 'Rules Title',
+'rules3' => 'Rules',
+'rules4' => 'You can use HTML here.',
+'iplookup' => 'Enable IP Lookup?<br /><span class="small">Checking this option will turn IP Addresses into active links allowing you to look them up on a regional Whois server.</span>',
 );
 
 %floodtxt = (
