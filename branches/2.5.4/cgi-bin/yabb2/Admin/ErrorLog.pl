@@ -12,67 +12,67 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.3;
+our $VERSION = 1.31;
 
-$errorlogplver = 'YaBB 2.5.4 $Revision: 1.3 $';
-if ($action eq 'detailedversion') { return 1; }
+$errorlogplver = 'YaBB 2.5.4 $Revision: 1.31 $';
+if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ErrorLog {
     is_admin_or_gmod();
-	$yytitle    = "$errorlog{'1'}";
-	$errorcount = 0;
-	fopen(ERRORFILE, "$vardir/errorlog.txt");
-	@errors = <ERRORFILE>;
-	fclose(ERRORFILE);
-	$errorcount = @errors;
-	$date2      = $date;
+    $yytitle    = "$errorlog{'1'}";
+    $errorcount = 0;
+    fopen( ERRORFILE, "$vardir/errorlog.txt" );
+    @errors = <ERRORFILE>;
+    fclose(ERRORFILE);
+    $errorcount = @errors;
+    $date2      = $date;
     for my $i ( 0 .. ( $errorcount - 1 ) ) {
         my @tmpArray = split /\|/xsm, $errors[$i];
-		$date1 = $tmpArray[1];
+        $date1 = $tmpArray[1];
         calcdifference();
-		$date_ref = $result;
-		$tmplist[$i] = qq~$date_ref\|$errors[$i]~;
-	}
+        $date_ref = $result;
+        $tmplist[$i] = qq~$date_ref\|$errors[$i]~;
+    }
 
-	$sortmode  = $INFO{'sort'};
-	$sortorder = $INFO{'order'};
+    $sortmode  = $INFO{'sort'};
+    $sortorder = $INFO{'order'};
     if ( $sortmode eq q{} ) {
         $sortmode = 'time';
-	}
+    }
     if ( $sortorder eq q{} ) {
         $sortorder = 'reverse';
-	}
-	my @sortlist = ();
-	my $field    = '0';    # 0-based field defaults to the datecmp value
-	my $type     = '0';    # 0=numeric; 1=text
-	my $case     = '1';    # 0=case sensitive; 1=ignore case
-	my $dir      = '0';    # 0=increasing; 1=decreasing
+    }
+    my @sortlist = ();
+    my $field    = '0';    # 0-based field defaults to the datecmp value
+    my $type     = '0';    # 0=numeric; 1=text
+    my $case     = '1';    # 0=case sensitive; 1=ignore case
+    my $dir      = '0';    # 0=increasing; 1=decreasing
 
     if ( $sortmode eq 'time' ) {
-		$field = '1';
-		$type  = '0';
-		$case  = '1';
-		$dir   = '0';
+        $field = '1';
+        $type  = '0';
+        $case  = '1';
+        $dir   = '0';
     }
     elsif ( $sortmode eq 'users' ) {
-		$field = '8';
-		$type  = '1';
-		$case  = '1';
-		$dir   = '0';
+        $field = '8';
+        $type  = '1';
+        $case  = '1';
+        $dir   = '0';
     }
     elsif ( $sortmode eq 'ip' ) {
-		$field = '3';
-		$type  = '0';
-		$case  = '0';
-		$dir   = '0';
-	}
+        $field = '3';
+        $type  = '0';
+        $case  = '0';
+        $dir   = '0';
+    }
     @sortlist =
       map { $_->[0] }
       sort { YaBBsort( $field, $type, $case, $dir ) }
       map { [ $_, split /\|/xsm ] } @tmplist;
 
     if ( $INFO{'order'} eq 'reverse' ) {
-		@sortlist = reverse @sortlist;
+        @sortlist = reverse @sortlist;
     }
     else {
         if ( $sortmode eq 'time' ) {
@@ -83,16 +83,16 @@ sub ErrorLog {
         }
         elsif ( $sortmode eq 'ip' ) {
             $order_ip = ';order=reverse';
-		}
-	}
+        }
+    }
 
     if ( $sortmode ne q{} ) {
         $sortmode = ';sort=' . $INFO{'sort'};
-	}
+    }
     if ( $sortorder ne q{} ) {
         $sortorder = ';order=' . $INFO{'order'};
-	}
-	$yymain .= qq~\
+    }
+    $yymain .= qq~\
 <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
 <script type="text/javascript">
 <!-- Begin
@@ -102,16 +102,16 @@ function changeBox(cbox) {
 }
 function checkAll() {
   for (var i = 0; i < document.errorlog_form.elements.length; i++) {
-  	if(document.errorlog_form.elements[i].name != "subfield" && document.errorlog_form.elements[i].name != "msgfield") {
-    		document.errorlog_form.elements[i].checked = true;
-    	}
+    if(document.errorlog_form.elements[i].name != "subfield" && document.errorlog_form.elements[i].name != "msgfield") {
+            document.errorlog_form.elements[i].checked = true;
+        }
   }
 }
 function uncheckAll() {
   for (var i = 0; i < document.errorlog_form.elements.length; i++) {
-  	if(document.errorlog_form.elements[i].name != "subfield" && document.errorlog_form.elements[i].name != "msgfield") {
-    		document.errorlog_form.elements[i].checked = false;
-    	}
+    if(document.errorlog_form.elements[i].name != "subfield" && document.errorlog_form.elements[i].name != "msgfield") {
+            document.errorlog_form.elements[i].checked = false;
+        }
   }
 }
 //-->
@@ -128,124 +128,128 @@ function uncheckAll() {
             <tr>
                 <td class="titlebg" colspan="5">
                     <img src="$imagesdir/xx.gif" alt="" /><b>$yytitle</b>
-	   </td>
+       </td>
             </tr><tr>
                 <td class="windowbg2 padd_8_12px" colspan="5">
-		 $errorlog{'18'}
-	   </td>
+         $errorlog{'18'}
+                </td>
             </tr><tr>
                 <td class="catbg center">
-		 <b>$errorlog{'21'}</b>
-	   </td>
+         <b>$errorlog{'21'}</b>
+       </td>
                 <td class="catbg center">
-		 <a href="$adminurl?action=errorlog$startmode;sort=time$order_time"><b>$errorlog{'5'}</b></a>
-	   </td>
+         <a href="$adminurl?action=errorlog$startmode;sort=time$order_time"><b>$errorlog{'5'}</b></a>
+       </td>
                 <td class="catbg center">
-		 <a href="$adminurl?action=errorlog$startmode;sort=users$order_users"><b>$errorlog{'11'}</b></a> ( <a href="$adminurl?action=errorlog$startmode;sort=ip$order_ip"><b>$errorlog{'6'}</b></a> )
-	   </td>
+         <a href="$adminurl?action=errorlog$startmode;sort=users$order_users"><b>$errorlog{'11'}</b></a> ( <a href="$adminurl?action=errorlog$startmode;sort=ip$order_ip"><b>$errorlog{'6'}</b></a> )
+       </td>
                 <td class="catbg center">
-		 <b>$errorlog{'7'} / $errorlog{'8'}</b>
-	   </td>
+         <b>$errorlog{'7'} / $errorlog{'8'}</b>
+       </td>
                 <td class="catbg center">
-		 <b>$errorlog{'13'}</b>
-	   </td>
+         <b>$errorlog{'13'}</b>
+       </td>
             </tr>~;
-	$numshown  = 0;
-	$actualnum = 0;
-	while ($numshown <= $errorcount) {
+    $numshown  = 0;
+    $actualnum = 0;
+    while ( $numshown <= $errorcount ) {
         my ( $tmp_user, $username, $numb, $ids, $all ) = q{};
-		$numshown++;
+        $numshown++;
         my (
             $tmp_datecmp,      $tmp_id,    $tmp_date,
             $tmp_userip,       $tmp_error, $tmp_action,
             $tmp_topic_number, $tmp_board, $tmp_username,
             $tmp_password
         ) = split /\|/xsm, $sortlist[$b];
-		if (!$tmp_id) { next; }
+        if ( !$tmp_id ) { next; }
         FormatUserName($tmp_username);
-		if (!$tmp_username) {
+        if ( !$tmp_username ) {
             $tmp_user = 'Guest';
         }
         else {
-			$tmp_user = $tmp_username;
-		}
-		$userlist{$tmp_user} = $userlist{$tmp_user} + 1;
+            $tmp_user = $tmp_username;
+        }
+        $userlist{$tmp_user} = $userlist{$tmp_user} + 1;
         $tmp_date = timeformat($tmp_date);
         LoadUser($tmp_user);
-		if ($tmp_user eq "$useraccount{$tmp_user}") {
-			if ($userprofile{$tmp_user}->[1]) {
+        my $lookupIP =
+          ($ipLookup)
+          ? qq~<a href="$scripturl?action=iplookup;ip=$tmp_userip">$tmp_userip</a>~
+          : qq~$tmp_userip~;
+        if ( $tmp_user eq "$useraccount{$tmp_user}" ) {
+            if ( $userprofile{$tmp_user}->[1] ) {
                 $username =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tmp_user}" onclick="target='_blank';">$userprofile{$tmp_user}->[1]</a>~;
             }
             else {
-				$username .= qq~$useraccount{$tmp_user}~;
-			}
+                $username .= qq~$useraccount{$tmp_user}~;
+            }
             $username .=
-qq~<br />$tmp_userip - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p">$admin_txt{'725f'}</a>~;
-		}
+qq~<br />$lookupIP - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p">$admin_txt{'725f'}</a>~;
+        }
         else {
             $username =
-qq~$tmp_user<br />$tmp_userip - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p">$admin_txt{'725f'}</a>~;
+qq~$tmp_user<br />$lookupIP - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p">$admin_txt{'725f'}</a>~;
         }
         if ( $tmp_topic_number eq q{} ) {
-			$numb = "&action=$tmp_action";
+            $numb = "&action=$tmp_action";
         }
         else {
-			$numb = "&action=$tmp_action&num=$tmp_topic_number";
-		}
+            $numb = "&action=$tmp_action&num=$tmp_topic_number";
+        }
         if ( $tmp_board eq q{} ) {
             $ids = '?board=';
         }
         else {
-			$ids = "?board=$tmp_board";
-		}
+            $ids = "?board=$tmp_board";
+        }
         if ( $tmp_action eq q{} && $tmp_board eq q{} ) {
-			$all = "$boardurl/$yyexec.$yyext";
+            $all = "$boardurl/$yyexec.$yyext";
         }
         else {
-			$all = "$boardurl/$yyexec.$yyext$ids$numb";
-		}
+            $all = "$boardurl/$yyexec.$yyext$ids$numb";
+        }
         if ( $tmp_error eq $admin_txt{'39'} || $tmp_error eq $admin_txt{'40'} )
         {
             $tmp_error =
               $tmp_error . qq~ - (<span class="red">$tmp_password</span>)~;
-		}
+        }
 
-		$b++;
+        $b++;
         $addel =
 qq~             <td class="windowbg center"><input type="checkbox" name="error$tmp_id" value="$tmp_id" class="windowbg" style="border: 0px;" /></td>~;
-		$actualnum++;
-		$print_errorlog .= qq~<tr>
+        $actualnum++;
+        $print_errorlog .= qq~<tr>
                 <td class="windowbg center">$actualnum</td>
-	        <td class="windowbg">$tmp_date</td>
+                <td class="windowbg">$tmp_date</td>
                 <td class="windowbg2 center">$username</td>
                 <td class="windowbg center">
-              <span class="small">$tmp_error<br /><br /><a href="$all">$all</a></span>
-            </td>
-          	$addel
+                    <span class="small">$tmp_error<br /><br /><a href="$all">$all</a></span>
+                </td>
+            $addel
         </tr>~;
-	}
-	if (!($actualnum)) {
-        $print_errorlog = qq~           <tr>
+    }
+    if ( !($actualnum) ) {
+        $print_errorlog = qq~<tr>
                 <td class="windowbg2 center" colspan="5">
-			$errorlog{'19'}
-		</td>
-	</tr>~;
-	}
-	$yymain .= qq~
+            $errorlog{'19'}
+        </td>
+    </tr>~;
+    }
+    $yymain .= qq~
 $print_errorlog
-	~;
+    ~;
 
     @userlist = reverse sort { $userlist{$a} <=> $userlist{$b} } keys %userlist;
     foreach my $member (@userlist) {
-		$errmember .= qq~$member ($userlist{$member}), ~;
-	}
+        $errmember .= qq~$member ($userlist{$member}), ~;
+    }
     $errmember =~ s/, \Z//sm;
 
     $yymain .= qq~          <tr>
                 <td class="windowbg2 padd_8_12px" colspan="5">
        <strong>$errorlog{'26'}</strong> $errmember
-	   </td>
+                </td>
             </tr><tr>
                 <td class="windowbg right" colspan="4">&nbsp;~;
     if ( $errorcount > 0 ) {
@@ -253,33 +257,33 @@ $print_errorlog
           qq~<label for="checkall"><b>$admin_txt{'737'}</label>&nbsp;</b>~;
     }
     $yymain .= q~
-	   </td>
+       </td>
                 <td class="windowbg center">&nbsp;~;
     if ( $errorcount > 0 ) {
         $yymain .=
 q~<input type="checkbox" name="checkall" id="checkall" class="windowbg" style="border: 0px;" onclick="if (this.checked) checkAll(); else uncheckAll();" />~;
     }
     $yymain .= q~
-	   </td>
+       </td>
      </tr>
    </table>
  </div>
-	~;
+    ~;
 
-if ($errorcount > 0) {
+    if ( $errorcount > 0 ) {
 
-	$yymain .= qq~
+        $yymain .= qq~
     <div class="bordercolor rightboxdiv">
         <table class="cs_thin pad_4px">
             <tr>
                 <td class="catbg center">
-		 <input type="submit" value="$errorlog{'14'}" onclick="return confirm('$errorlog{'15'}')" class="button" />
-	   </td>
+         <input type="submit" value="$errorlog{'14'}" onclick="return confirm('$errorlog{'15'}')" class="button" />
+       </td>
      </tr>
    </table>
  </div>
-	~;
-}
+    ~;
+    }
 
     $yymain .= q~
 </form>
@@ -294,7 +298,7 @@ sub CleanErrorLog {
     if ( -e ("$vardir/errorlog.txt") ) {
         unlink "$vardir/errorlog.txt" or croak qq~$!~;
     }
-	$yySetLocation = qq~$adminurl?action=errorlog~;
+    $yySetLocation = qq~$adminurl?action=errorlog~;
     redirectexit();
     return;
 }
@@ -304,61 +308,62 @@ sub DeleteError {
     my ( $sortmode, $sortorder );
     chomp $FORM{'button'};
     if ( $FORM{'button'} ne '4' ) { admin_fatal_error('no_access'); }
-	fopen(FILE, "$vardir/errorlog.txt");
-	@errors = <FILE>;
-	fclose(FILE);
+    fopen( FILE, "$vardir/errorlog.txt" );
+    @errors = <FILE>;
+    fclose(FILE);
     unlink "$vardir/errorlog.txt";
-	fopen(FILE, ">>$vardir/errorlog.txt");
+    fopen( FILE, ">>$vardir/errorlog.txt" );
 
-	foreach my $line (@errors) {
-		chomp $line;
+    foreach my $line (@errors) {
+        chomp $line;
         my (
             $tmp_id,    $tmp_date,  $tmp_username,
             $tmp_error, $tmp_board, $tmp_action
         ) = split /\|/xsm, $line;
         if ( !exists $FORM{"error$tmp_id"} ) {
             print {FILE} $line . "\n" or croak 'cannot print FILE';
-		}
-	}
-	fclose(FILE);
-	$yySetLocation = qq~$adminurl?action=errorlog~;
+        }
+    }
+    fclose(FILE);
+    $yySetLocation = qq~$adminurl?action=errorlog~;
     redirectexit();
     return;
 }
 
 # Moved here from Subs.pl since it was only used here
 sub YaBBsort {
-	my $field = (shift || 0) + 1;    # 0-based field
-	my $type = shift || 0;           # 0=numeric; 1=text
-	my $case = shift || 0;           # 0=case sensitive; 1=ignore case
-	my $dir  = shift || 0;           # 0=increasing; 1=decreasing
+    my $field = ( shift || 0 ) + 1;    # 0-based field
+    my $type = shift || 0;             # 0=numeric; 1=text
+    my $case = shift || 0;             # 0=case sensitive; 1=ignore case
+    my $dir  = shift || 0;             # 0=increasing; 1=decreasing
 
-	if ($type == 0) {
-		if ($dir == 0) {
-			$a->[$field] <=> $b->[$field];
+    if ( $type == 0 ) {
+        if ( $dir == 0 ) {
+            $a->[$field] <=> $b->[$field];
         }
         else {
-			$b->[$field] <=> $a->[$field];
-		}
+            $b->[$field] <=> $a->[$field];
+        }
     }
     else {
-		if ($case == 0) {
-			if ($dir == 0) {
-				$a->[$field] cmp $b->[$field];
+        if ( $case == 0 ) {
+            if ( $dir == 0 ) {
+                $a->[$field] cmp $b->[$field];
             }
             else {
-				$b->[$field] cmp $a->[$field];
-			}
+                $b->[$field] cmp $a->[$field];
+            }
         }
         else {
-			if ($dir == 0) {
-				uc $a->[$field] cmp uc $b->[$field];
+            if ( $dir == 0 ) {
+                uc $a->[$field] cmp uc $b->[$field];
             }
             else {
-				uc $b->[$field] cmp uc $a->[$field];
-			}
-		}
-	}
+                uc $b->[$field] cmp uc $a->[$field];
+            }
+        }
+    }
+    return;
 }
 
 1;
