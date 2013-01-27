@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$printpageplver = 'YaBB 2.5.4 $Revision: 1.6 $';
+$printpageplver = 'YaBB 2.5.4 $Revision: 1.7 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub Print_IM {
@@ -61,6 +61,7 @@ sub Print_IM {
 <head>
 <title>$mbname - $maintxt{'668'}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
+<meta name="robots" content="noindex,noarchive" />
 <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
 <style type="text/css" media="print">
     .no-print { display: none; }
@@ -468,10 +469,13 @@ sub Print {
 <head>
 <title>$mbname - $maintxt{'668'}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
+<meta name="robots" content="noindex,noarchive" />
+<link rel="canonical" href="$scripturl?num=$num" /> 
 <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
 <style type="text/css" media="print">
     .no-print { display: none; }
-</style> <script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
+</style>
+<script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
 <script type="text/javascript">
 <!--
 function printPage() {
