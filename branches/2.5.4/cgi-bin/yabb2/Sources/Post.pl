@@ -14,9 +14,9 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.93;
+our $VERSION = 1.95;
 
-$postplver = 'YaBB 2.5.4 $Revision: 1.93 $';
+$postplver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Post');
@@ -277,7 +277,7 @@ sub Postpage {
     else {
         $displayname = ${ $uid . $username }{'realname'};
     }
-    require "$sourcedir/ContextHelp.pl";
+    require "$sourcedir/ContextHelp.pm";
     ContextScript('post');
     $yymain .= $ctmain;
 
@@ -3007,8 +3007,8 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tempname}" clas
             $message = Censor($message);
 
             if ( $message ne q{} ) {
-                $yymain .= qq~
-<tr><td class="catbg" style="padding:3px">
+                $yymain .= qq~<tr>
+<td class="catbg" style="padding:3px">
 <span class="small">$post_txt{'279'}: $displaynamelink~
                   . (
                     $enable_markquote
@@ -3024,14 +3024,17 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tempname}" clas
                     : q{}
                   )
                   . qq~</span></td>
-<td class="catbg right" style="padding:3px">
-<span class="small">$post_txt{'280'}: $tempdate</span></td>
-</tr>
-<tr><td class="windowbg2" style="padding:3px" colspan="2">
-<div onmouseup="get_selection($quote_msg_id);" style="max-height: 150px; overflow: auto;">
+        <td class="catbg right" style="padding:3px">
+            <span class="small">$post_txt{'280'}: $tempdate</span>
+        </td>
+    </tr><tr>
+        <td class="windowbg2" style="padding:3px" colspan="2">
+            <div class="message" onmouseup="get_selection($quote_msg_id);" style="max-height: 150px; overflow: auto;">
 $message
-</div>
-</td></tr>~;
+           </div>
+        </td>
+    </tr>
+~;
             }
         }
         $yymain .= "</table>\n";

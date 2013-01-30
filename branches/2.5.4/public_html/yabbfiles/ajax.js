@@ -12,7 +12,7 @@
 //#               with assistance from the YaBB community.                     #
 //##############################################################################
 
-//YaBB 2.5.4 Alpha $Revision: 1.1 $
+//YaBB 2.5.4 Alpha $Revision$
 
 var xmlHttp = null;
 var browser = '';

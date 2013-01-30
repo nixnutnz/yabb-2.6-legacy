@@ -14,7 +14,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = 1.3;
 
-$membergroupsplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+$membergroupsplver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub EditMemberGroups {

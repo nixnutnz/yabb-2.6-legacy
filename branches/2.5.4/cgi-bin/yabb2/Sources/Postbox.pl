@@ -17,7 +17,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = 1.5;
 
-$postboxplver = 'YaBB 2.5.4 $Revision: 1.5 $';
+$postboxplver = 'YaBB 2.5.4 $Revision$';
 if ( defined $actions && $action eq 'detailedversion' ) { return 1; }
 
 #InstantMessage.pl and Post.pl use the same code for the posting box - why have two copies? #

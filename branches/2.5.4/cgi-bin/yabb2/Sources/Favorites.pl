@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$favoritesplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+$favoritesplver = 'YaBB 2.5.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 sub Favorites {

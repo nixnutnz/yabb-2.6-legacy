@@ -15,7 +15,7 @@
 # Added to the YaBB default code on 07. September 2008                        #
 ###############################################################################
 
-$extendedprofilesplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+$extendedprofilesplver = 'YaBB 2.5.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage("ExtendedProfiles");
@@ -282,7 +282,7 @@ sub ext_parse_ubbc {
 	($source, $displayname, $temp) = ($_[0], $_[1], $message);
 	$message = $source;
 	require "$sourcedir/YaBBC.pl";
-	&DoUBBC;
+	DoUBBC();
 	&ToChars($message);
 	$source = $message;
 	$message = $temp;

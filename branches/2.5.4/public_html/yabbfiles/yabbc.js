@@ -13,7 +13,7 @@
 //##############################################################################
 
 
-//YaBB 2.5.4 Beta $Revision: 1.2 $
+//YaBB 2.5.4 Beta $Revision$
 
 var LivePrevDisplayNames = new Object();
 

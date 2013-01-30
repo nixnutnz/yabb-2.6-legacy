@@ -22,7 +22,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = 1.61;
 
-$backupplver = 'YaBB 2.5.4 $Revision: 1.61 $';
+$backupplver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Add in support for Archive::Tar in the Modules directory and binaries in different places

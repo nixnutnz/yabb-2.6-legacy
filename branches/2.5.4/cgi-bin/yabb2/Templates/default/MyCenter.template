@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision: 1.1 $
+# $Revision$
 
 $mycenter_template = qq~
 <!-- My Center Title Bar start -->

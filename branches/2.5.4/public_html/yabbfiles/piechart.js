@@ -12,7 +12,7 @@
 //#               with assistance from the YaBB community.                     #
 //##############################################################################
 
-//YaBB 3.0 Beta $Revision: 328 $
+//YaBB 3.0 Beta $Revision$
 
 function pieChart() {
 	this.pie_array = new Array();

@@ -13,9 +13,9 @@
 ###############################################################################
 # use strict;
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.3;
+our $VERSION = 1.2;
 
-our $modlistplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+our $modlistplver = 'YaBB 2.5.4 $Revision$';
 my ($action);
 if ( $action eq 'detailedversion' ) { return 1; }
 

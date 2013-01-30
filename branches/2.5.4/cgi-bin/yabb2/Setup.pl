@@ -14,7 +14,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$setupplver = 'YaBB 2.5.2 $Revision: 1.6 $';
+$setupplver = 'YaBB 2.5.2 $Revision$';
 
 # use CGI::Carp qw(fatalsToBrowser); # used only for tests
 

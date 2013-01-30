@@ -13,9 +13,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.84;
+our $VERSION = 1.85;
 
-$displayplver = 'YaBB 2.5.4 $Revision: 1.84 $';
+$displayplver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Display');
@@ -690,14 +690,15 @@ qq~$menusep<a href="$scripturl?action=print;num=$viewnum" onclick="target='_blan
     my ( %attach_gif, %attach_count, $movedflag );
     foreach (@messages) {
         my (
-            $userlocation,     $aimad,             $yimad,
-            $gtalkad,          $skypead,           $myspacead,
-            $facebookad,       $icqad,             $buddyad,
-            $addbuddy,         $isbuddy,           $addbuddylink,
-            $userOnline,       $signature_hr,      $lastmodified,
-            $memberinfo,       $template_postinfo, $template_ext_prof,
-            $template_profile, $template_quote,    $template_email,
-            $template_www,     $template_pm
+            $userlocation,      $aimad,             $yimad,
+            $gtalkad,           $skypead,           $myspacead,
+            $facebookad,        $twitterad,         $youtubead,
+            $icqad,             $buddyad,           $addbuddy,
+            $isbuddy,           $addbuddylink,      $userOnline,
+            $signature_hr,      $lastmodified,      $memberinfo,
+            $template_postinfo, $template_ext_prof, $template_profile,
+            $template_quote,    $template_email,    $template_www,
+            $template_pm
         );
 
         $css = $cssvalues[ ( $counter % $cssnum ) ];
@@ -959,6 +960,14 @@ q~<hr class="hr" style="margin: 0; margin-top: 5px; margin-bottom: 5px; padding:
               ${ $uid . $musername }{'facebook'}
               ? qq~$menusep${$uid.$musername}{'facebook'}~
               : q{};
+            $twitterad =
+              ${ $uid . $musername }{'twitter'}
+              ? qq~$menusep${$uid.$musername}{'twitter'}~
+              : q{};
+            $youtubead =
+              ${ $uid . $musername }{'youtube'}
+              ? qq~$menusep${$uid.$musername}{'youtube'}~
+              : q{};
 
             $usernamelink = QuickLinks($musername);
             if ($extendedprofiles) {
@@ -1200,6 +1209,8 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter"><img src="$imagesdir/$mic
         $contactblock =~ s/({|<)yabb skype(}|>)/$skypead/gsm;
         $contactblock =~ s/({|<)yabb myspace(}|>)/$myspacead/gsm;
         $contactblock =~ s/({|<)yabb facebook(}|>)/$facebookad/gsm;
+        $contactblock =~ s/({|<)yabb twitter(}|>)/$twitterad/gsm;
+        $contactblock =~ s/({|<)yabb youtube(}|>)/$youtubead/gsm;
         $contactblock =~ s/({|<)yabb addbuddy(}|>)/$addbuddy/gsm;
         $contactblock =~ s/\Q$menusep//ixsm;
 

@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$memberlistplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+$memberlistplver = 'YaBB 2.5.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 if ($iamguest && $ML_Allowed) { &fatal_error('no_access'); }

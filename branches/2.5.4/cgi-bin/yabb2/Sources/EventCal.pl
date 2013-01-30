@@ -15,10 +15,10 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.9;
+our $VERSION = 1.91;
 use Time::Local 'timelocal';
 
-$eventcalplver = 'YaBB 2.5.4 $Revision: 1.9 $';
+$eventcalplver = 'YaBB 2.5.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 LoadLanguage('EventCal');
@@ -438,7 +438,7 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
         <td class="windowbg2"><br />~;
       
 		if ($enable_ubbc && $showyabbcbutt) {
-            require "$sourcedir/ContextHelp.pl";
+            require "$sourcedir/ContextHelp.pm";
             ContextScript('post');
             $YaBBC_calout .= $ctmain;
             $YaBBC_calout .= q~

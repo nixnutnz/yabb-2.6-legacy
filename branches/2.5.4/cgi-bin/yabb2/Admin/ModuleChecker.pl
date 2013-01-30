@@ -1,7 +1,7 @@
 #!/usr/bin/perl --
 # $Id: yabb module checkere $
 # $HeadURL: testbed $
-# $Revision: 2012 $
+# $Revision$
 # $Source: /ModuleChecker.pl $
 ###############################################################################
 # ModuleChecker.pl                                                            #
@@ -21,7 +21,7 @@ use strict;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = 1.3;
 
-our $modulecheckerplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+our $modulecheckerplver = 'YaBB 2.5.4 $Revision$';
 my ( $dont_continue_setup );
 our ( $action, $yymain, %modulecheck );
 if ( $action eq 'detailedversion' ) { return 1; }

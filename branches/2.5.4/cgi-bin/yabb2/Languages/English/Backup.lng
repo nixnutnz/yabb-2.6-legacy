@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$backuplngver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$backuplngver = 'YaBB 2.5.4 $Revision$';
 
 $script_root = $ENV{'SCRIPT_FILENAME'};
 if( ! $script_root ) {

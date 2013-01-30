@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$sendtopiclngver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$sendtopiclngver = 'YaBB 2.5.4 $Revision$';
 
 %sendtopic_txt = (
 '118' => 'Topic',

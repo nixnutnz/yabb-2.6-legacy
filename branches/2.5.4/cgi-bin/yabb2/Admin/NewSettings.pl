@@ -13,9 +13,9 @@
 ###############################################################################
 # use strict;
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.61;
+our $VERSION = 1.62;
 
-$newsettingsplver = 'YaBB 2.5.4 $Revision: 1.61 $';
+$newsettingsplver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Figure out what tabset to use, depending on the page= parameter.
@@ -521,7 +521,7 @@ sub SaveSettingsTo {
 
 \$regtype = $regtype;						# 0 = registration closed (only admin can register), 1 = pre registration with admin approval,
 									# 2 = pre registration and email activation, 3 = open registration
-\$RegAgree = $RegAgree;						# Set to 1 to display the registration agreement when registering
+\$RegAgree = $RegAgree;					    # 0 = Don't show registration agreement, 1 = Show registration agreement before registration form, 2 = Show registration agreement on registration form
 \$RegReasonSymbols = $RegReasonSymbols;			# Maximum allowed symbols in User reason(s) for registering
 \$preregspan = $preregspan;					# Time span in hours for users to account activation before cleanup
 \$pwstrengthmeter_scores = "\Q$pwstrengthmeter_scores\E";   # Password-Strength-Meter Scores
@@ -693,6 +693,7 @@ $ext_prof_fields
 
 ########## File Settings ##########
 
+\$checkspace = $checkspace;			# Set to 1 to enable any freespace checking (should remain disabled on Windows/IIS servers)
 \$enable_quota = $enable_quota;			# Set to 1 to enable free HOST size check with command 'quota' on every pageview
 \$hostusername = "\Q$hostusername\E";		# Username on the above host HDD
 \$findfile_time = $findfile_time;		# Used HOST size check with 'find' every ... minutes
@@ -711,7 +712,6 @@ $ext_prof_fields
 							# 0 to disable, 1 to enable.
 
 \$debug = $debug;				# If set to 1 debug info is added to the template. Tag in template is {yabb debug}
-\$debug_l = $debug_l;           # If set to 1, Page load time only;
 ########## Anti-spam Question Settings ##########
 
 \$en_spam_questions = $en_spam_questions;        # Set to 1 to enable Anti-spam Questions on registration

@@ -17,7 +17,7 @@ use English qw(-no_match_vars);
 our $VERSION = 1.2;
 
 my ($action);
-our $settings_antispamplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+our $settings_antispamplver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 our (

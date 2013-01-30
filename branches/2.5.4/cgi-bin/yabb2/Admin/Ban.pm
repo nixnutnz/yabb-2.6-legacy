@@ -16,7 +16,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use Time::Local 'timelocal';
 
-$banpmver = 'YaBB 2.5.4 $Revision: 1.21 $';
+$banpmver = 'YaBB 2.5.4 $Revision$';
 
 sub ipban {
     is_admin_or_gmod();

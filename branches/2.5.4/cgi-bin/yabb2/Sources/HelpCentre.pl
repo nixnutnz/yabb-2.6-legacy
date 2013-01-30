@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$helpcentreplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$helpcentreplver = 'YaBB 2.5.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('HelpCentre');

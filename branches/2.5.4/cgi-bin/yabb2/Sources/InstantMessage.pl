@@ -16,9 +16,9 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.93;
+our $VERSION = 1.94;
 
-$instantmessageplver = 'YaBB 2.5.4 $Revision: 1.93 $';
+$instantmessageplver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 require "$sourcedir/Postbox.pl";
 
@@ -156,7 +156,7 @@ sub buildIMsend {
     else {
         $displayname = ${ $uid . $username }{'realname'};
     }
-    require "$sourcedir/ContextHelp.pl";
+    require "$sourcedir/ContextHelp.pm";
     ContextScript('post');
 
     $MCGlobalFormStart .= qq~

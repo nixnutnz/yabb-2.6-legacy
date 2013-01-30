@@ -17,9 +17,9 @@
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
-our $VERSION = 1.5;
+our $VERSION = 1.6;
 
-$boardindexplver = 'YaBB 2.5.4 $Revision: 1.5 $';
+$boardindexplver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('BoardIndex');
@@ -60,9 +60,9 @@ sub BoardIndex {
 qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="small"><i>~;
             }
             my $lookupIP =
-              ($ipLookup)
+              ($ipLookup && $last_ip )
               ? qq~<a href="$scripturl?action=iplookup;ip=$last_ip">$last_ip</a>~
-              : qq~$last_ip~;
+              : q~~;
             my $is_a_bot = Is_Bot($last_host);
             if ($is_a_bot) {
                 $numbots++;
@@ -230,8 +230,8 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
 
                         # make recursive call if this board has more children
                         if ( $subboard{$childbd} ) {
-                            recursive_boards(
-                                split /\|/xsm, $subboard{$childbd} );
+                            recursive_boards( split /\|/xsm,
+                                $subboard{$childbd} );
                         }
                     }
                 };
@@ -601,7 +601,7 @@ qq~$collapse_link $hash{$catname} <a href="$scripturl?catselect=$catid" title="$
         my $alternateboardcolor = 0;
 
         # Moved this out of for loop. Gets the latest data for sub boards
-        sub find_latest_data {
+        *find_latest_data = sub {
             my ( $parentbd, @children ) = @_;
             $childcnt{$parentbd}    = 0;
             $sub_new_cnt{$parentbd} = 0;
@@ -609,8 +609,8 @@ qq~$collapse_link $hash{$catname} <a href="$scripturl?catselect=$catid" title="$
 
 # make recursive call first so we can get latest post data working from bottom up.
                 if ( $subboard{$childbd} ) {
-                    find_latest_data( $childbd,
-                        split /\|/xsm, $subboard{$childbd} );
+                    find_latest_data( $childbd, split /\|/xsm,
+                        $subboard{$childbd} );
                 }
 
                 # don't check sub board if its lastposttime is N/A
@@ -666,8 +666,7 @@ qq~$collapse_link $hash{$catname} <a href="$scripturl?catselect=$catid" title="$
 
                 $childcnt{$parentbd}++;
             }
-            return;
-        }
+        };
         if (  !$INFO{'oldcollapse'}
             || $catcol{$catid}
             || $INFO{'catselect'} ne q{}
@@ -1230,10 +1229,14 @@ qq~<span class="small">$boardindex_txt{'143'}: <b>$numbots</b></span>~;
 
         if ( !-e ("$vardir/mostlog.txt") ) {
             fopen( MOSTUSERS, ">$vardir/mostlog.txt" );
-            print {MOSTUSERS} "$numusers|$date\n";
-            print {MOSTUSERS} "$guests|$date\n";
-            print {MOSTUSERS} "$totalusers|$date\n";
-            print {MOSTUSERS} "$numbots|$date\n";
+            print {MOSTUSERS} "$numusers|$date\n"
+              or croak 'cannot print MOSTUSERS';
+            print {MOSTUSERS} "$guests|$date\n"
+              or croak 'cannot print MOSTUSERS';
+            print {MOSTUSERS} "$totalusers|$date\n"
+              or croak 'cannot print MOSTUSERS';
+            print {MOSTUSERS} "$numbots|$date\n"
+              or croak 'cannot print MOSTUSERS';
             fclose(MOSTUSERS);
         }
         fopen( MOSTUSERS, "$vardir/mostlog.txt" );
@@ -1279,10 +1282,14 @@ qq~<span class="small">$boardindex_txt{'143'}: <b>$numbots</b></span>~;
                 $mostbots = $numbots;
                 $datebots = $date;
             }
-            print {MOSTUSERS} "$mostmemb|$datememb\n";
-            print {MOSTUSERS} "$mostguest|$dateguest\n";
-            print {MOSTUSERS} "$mostusers|$dateusers\n";
-            print {MOSTUSERS} "$mostbots|$datebots\n";
+            print {MOSTUSERS} "$mostmemb|$datememb\n"
+              or croak 'cannot print MOSTUSERS';
+            print {MOSTUSERS} "$mostguest|$dateguest\n"
+              or croak 'cannot print MOSTUSERS';
+            print {MOSTUSERS} "$mostusers|$dateusers\n"
+              or croak 'cannot print MOSTUSERS';
+            print {MOSTUSERS} "$mostbots|$datebots\n"
+              or croak 'cannot print MOSTUSERS';
             fclose(MOSTUSERS);
         }
         $themostmembdate  = timeformat($datememb);
@@ -1616,7 +1623,7 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1" class="a"><b>$pboar
         CORE::exit;    # This is here only to avoid server error log entries!
     }
 
-    # cannot have return here;
+    return;
 }
 
 sub GetBotlist {
@@ -1627,9 +1634,10 @@ sub GetBotlist {
         fclose(BOTS);
         chomp @botlist;
         foreach (@botlist) {
-            $_ =~ /(.*?)\|(.*)/xsm;
-            push @all_bots, $1;
-            $bot_name{$1} = $2;
+            if ( $_ =~ /(.*?)\|(.*)/xsm ) {
+                push @all_bots, $1;
+                $bot_name{$1} = $2;
+            }
         }
     }
     return;
@@ -1719,21 +1727,7 @@ sub MarkAllRead {    # Mark all boards as read.
     # Load the whole log
     getlog();
 
-    foreach my $catid (@cats) {
-
-        # Security check
-        if ( !CatAccess( ( split /\|/xsm, $catinfo{$catid} )[1] ) ) {
-            foreach my $board ( split /\,/xsm, $cat{$catid} ) {
-                delete $yyuserlog{"$board--mark"};
-                delete $yyuserlog{$board};
-            }
-            next;
-        }
-
-        recursive_mark( split /\,/xsm, $cat{$catid} );
-    }
-
-    sub recursive_mark {
+    *recursive_mark = sub {
         my @x = @_;
         foreach my $board (@x) {
 
@@ -1759,6 +1753,20 @@ sub MarkAllRead {    # Mark all boards as read.
                 recursive_mark( split /\|/xsm, $subboard{$board} );
             }
         }
+    };
+
+    foreach my $catid (@cats) {
+
+        # Security check
+        if ( !CatAccess( ( split /\|/xsm, $catinfo{$catid} )[1] ) ) {
+            foreach my $board ( split /\,/xsm, $cat{$catid} ) {
+                delete $yyuserlog{"$board--mark"};
+                delete $yyuserlog{$board};
+            }
+            next;
+        }
+
+        recursive_mark( split /\,/xsm, $cat{$catid} );
     }
 
     # Write it out
@@ -1769,7 +1777,6 @@ sub MarkAllRead {    # Mark all boards as read.
     }
     $elenable = 0;
     croak q{};    # This is here only to avoid server error log entries!
-    return;
 }
 
 sub gostRemove {
@@ -1797,7 +1804,7 @@ sub Del_Max_IM {
     truncate DELMAXIM, 0;
     splice @IMmessages, $max;
 
-    print DELMAXIM @IMmessages;
+    print {DELMAXIM} @IMmessages or croak 'cannot print DELMAXIM';
     fclose(DELMAXIM);
     return;
 }

@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$searchplver = 'YaBB 2.5.4 $Revision: 1.6 $';
+$searchplver = 'YaBB 2.5.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 LoadLanguage('Search');

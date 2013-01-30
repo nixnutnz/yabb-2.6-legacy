@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.31;
+our $VERSION = 1.32;
 
-$errorlogplver = 'YaBB 2.5.4 $Revision: 1.31 $';
+$errorlogplver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ErrorLog {
@@ -185,11 +185,11 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tmp_user}" oncl
                 $username .= qq~$useraccount{$tmp_user}~;
             }
             $username .=
-qq~<br />$lookupIP - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p">$admin_txt{'725f'}</a>~;
+qq~<br />$lookupIP - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p;return=errorlog">$admin_txt{'725f'}</a>~;
         }
         else {
             $username =
-qq~$tmp_user<br />$lookupIP - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p">$admin_txt{'725f'}</a>~;
+qq~$tmp_user<br />$lookupIP - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p;return=errorlog">$admin_txt{'725f'}</a>~;
         }
         if ( $tmp_topic_number eq q{} ) {
             $numb = "&action=$tmp_action";
@@ -363,7 +363,6 @@ sub YaBBsort {
             }
         }
     }
-    return;
 }
 
 1;

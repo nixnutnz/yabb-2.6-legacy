@@ -14,7 +14,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$rssplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$rssplver = 'YaBB 2.5.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 # Change the error routine for here.
@@ -476,7 +476,7 @@ sub shellaccess {
 
 	require "$vardir/Settings.pl";
 	require "$sourcedir/Subs.pl";
-	require "$sourcedir/DateTime.pl";
+	require "$sourcedir/DateTime.pm";
 	require "$sourcedir/Load.pl";
 
 	&LoadCookie;          # Load the user's cookie (or set to guest)

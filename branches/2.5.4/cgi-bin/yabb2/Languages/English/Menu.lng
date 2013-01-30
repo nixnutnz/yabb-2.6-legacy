@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$menulngver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$menulngver = 'YaBB 2.5.4 $Revision$';
 
 if (!$language){$language = $lang;}
 

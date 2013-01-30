@@ -12,7 +12,7 @@
 #              with assistance from the YaBB community.                       #
 ###############################################################################
 
-$refcontrollngver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$refcontrollngver = 'YaBB 2.5.4 $Revision$';
 
 %refexpl_txt = (
 'activate' => 'Allow user account activation after pre-registration',

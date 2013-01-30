@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$loginoutplver = 'YaBB 2.5.4 $Revision: 1.5 $';
+$loginoutplver = 'YaBB 2.5.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 if ($regcheck) { require "$sourcedir/Decoder.pl"; }
@@ -103,6 +103,7 @@ sub Login2 {
 	&UserAccount($username, "update", "-"); # "-" to not update 'lastonline' here
 	&buildIMS($username,'load'); # isn't loaded because was Guest before
 	&buildIMS($username,''); # rebuild the Members/$username.ims file on login
+	WriteLog();
 
 	if($FORM{'sredir'}) {
 		$FORM{'sredir'} =~ s/\~/\=/g;

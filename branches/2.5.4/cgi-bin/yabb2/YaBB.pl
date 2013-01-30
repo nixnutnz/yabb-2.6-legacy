@@ -16,7 +16,7 @@
 
 ### Version Info ###
 $YaBBversion = 'YaBB 2.5.4';
-$YaBBplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$YaBBplver = 'YaBB 2.5.4 $Revision$';
 
 if ($action eq 'detailedversion') { return 1; }
 

@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$messageindexlngver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$messageindexlngver = 'YaBB 2.5.4 $Revision$';
 
 %messageindex_txt = (
 '2' => 'Admin',
@@ -79,6 +79,7 @@ $messageindexlngver = 'YaBB 2.5.4 $Revision: 1.2 $';
 '844' => 'Hide',
 '845' => 'Moved Topic',
 'collruletext' => 'Board Rules Collapsed',
+'addmoderator' => 'Add/delete Moderators',
 );
 
 %messageindex_stickygrp = (

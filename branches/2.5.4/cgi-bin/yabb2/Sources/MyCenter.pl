@@ -15,9 +15,9 @@
 # use warnings;
 no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.92;
+our $VERSION = 1.93;
 
-$mycenterplver = 'YaBB 2.5.4 $Revision: 1.92 $';
+$mycenterplver = 'YaBB 2.5.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 LoadLanguage('InstantMessage');
@@ -763,6 +763,14 @@ qq~$menusep<a href="mailto:${$uid.$usrname}{'email'}">$img{'email_sm'}</a>~;
             $membAdInfo .=
               ${ $uid . $usrname }{'facebook'}
               ? $menusep . ${ $uid . $usrname }{'facebook'}
+              : q{};
+            $membAdInfo .=
+              ${ $uid . $usrname }{'twitter'}
+              ? $menusep . ${ $uid . $usrname }{'twitter'}
+              : q{};
+            $membAdInfo .=
+              ${ $uid . $usrname }{'youtube'}
+              ? $menusep . ${ $uid . $usrname }{'youtube'}
               : q{};
             $membAdInfo .=
               ${ $uid . $usrname }{'icq'}

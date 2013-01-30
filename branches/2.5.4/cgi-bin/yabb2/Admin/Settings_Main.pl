@@ -13,9 +13,9 @@
 ###############################################################################
 # use strict;
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.5;
+our $VERSION = 1.6;
 
-our $settings_mainplver = 'YaBB 2.5.4 $Revision: 1.5 $';
+our $settings_mainplver = 'YaBB 2.5.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 # Language requirements
@@ -912,8 +912,8 @@ qq~<input type="checkbox" name="self_del_user" id="self_del_user" value="1" ${is
             	input_html => qq~
             	<select name="gender_on_reg" id="gender_on_reg" size="1">
             	  <option value="0">$register_txt{'771'}</option>
-			  <option value="1"${isselected($gender_on_reg == 1)}>$register_txt{'gender_reg_opt'}</option>
-			  <option value="2"${isselected($gender_on_reg == 2)}>$register_txt{'gender_reg_req'}</option>
+			  <option value="1"${isselected($gender_on_reg == 1)}>$register_txt{'772'}</option>
+			  <option value="2"${isselected($gender_on_reg == 2)}>$register_txt{'773'}</option>
 			</select>~,
 			name => 'gender_on_reg',
 			validate => 'number,null',
@@ -945,9 +945,14 @@ qq~<input type="checkbox" name="self_del_user" id="self_del_user" value="1" ${is
 		},
 		{
 			description => qq~<label for="RegAgree">$admin_txt{'584'}</label>~,
-			input_html => qq~<input type="checkbox" name="RegAgree" id="RegAgree" value="1"${ischecked($RegAgree)} />~,
+			input_html => qq~
+			<select name="RegAgree" id="RegAgree" size="1">
+    			<option value="0" ${isselected($RegAgree == 0)}>$admin_txt{'584a'}</option>
+    			<option value="1" ${isselected($RegAgree == 1)}>$admin_txt{'584b'}</option>
+    			<option value="2" ${isselected($RegAgree == 2)}>$admin_txt{'584c'}</option>
+			</select>~,			
 			name => 'RegAgree',
-			validate => 'boolean',
+			validate => 'number',
 			depends_on => ['regtype!=0'],
 		},
             {

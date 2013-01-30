@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$profilelngver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$profilelngver = 'YaBB 2.5.4 $Revision$';
 
 %profile_txt = (
 '2' => 'Admin',
@@ -114,6 +114,12 @@ $profilelngver = 'YaBB 2.5.4 $Revision: 1.2 $';
 '573' => 'Facebook',
 '574' => 'This is your Facebook profile ID number or your username.',
 '575' => 'http://facebook.com/',
+'576' => 'Twitter',
+'577' => 'This is your Twitter username.',
+'578' => 'http://twitter.com/',
+'579' => 'YouTube',
+'580' => 'This is your YouTube username.',
+'581' => 'http://www.youtube.com/',
 '592' => 'your personal userpic url or picture name.',
 '598' => 'This must be included if you specify a URL below.',
 '599' => 'This must be a complete URL.',

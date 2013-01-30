@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$sendtopicplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$sendtopicplver = 'YaBB 2.5.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 if (!$sendtopicmail || $sendtopicmail == 2) { &fatal_error("not_allowed"); }

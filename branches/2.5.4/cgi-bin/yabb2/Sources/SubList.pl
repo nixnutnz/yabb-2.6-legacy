@@ -12,14 +12,14 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$sublistplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$sublistplver = 'YaBB 2.5.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 %director=( # in alphabetical Order!
 'activate',"Register.pl&user_activation",
 'addbuddy',"Subs.pl&addBuddy",
 'addfav',"Favorites.pl&AddFav",
-'addtab2',"AdvancedTabs.pl&AddNewTab2",
+'addtab2',"AdvancedTabs.pm&AddNewTab2",
 'bdrulecoll',"MessageIndex.pl&collapse_bdrule",
 'boardnotify',"Notify.pl&BoardNotify",
 'boardnotify2',"MyCenter.pl&mycenter",
@@ -28,12 +28,12 @@ if ($action eq 'detailedversion') { return 1; }
 'collapse_all',"BoardIndex.pl&Collapse_All",
 'collapse_cat',"BoardIndex.pl&Collapse_Cat",
 'deletemultimessages',"MyCenter.pl&Del_Some_IM",
-'deletetab',"AdvancedTabs.pl&DeleteTab",
+'deletetab',"AdvancedTabs.pm&DeleteTab",
 'delpmfolder',"MyCenter.pl&AddFolder",
 'dereferer',"Subs.pl&Dereferer",
 'display',"Display.pl&Display",
 'downloadfile',"Downloads.pl&DownloadFileCouter",
-'edittab2',"AdvancedTabs.pl&EditTab2",
+'edittab2',"AdvancedTabs.pm&EditTab2",
 'get_cal',"EventCal.pl&get_cal",
 'add_cal',"EventCal.pl&add_cal",
 'del_cal',"EventCal.pl&del_cal",
@@ -79,6 +79,8 @@ if ($action eq 'detailedversion') { return 1; }
 'modalert2',"Post.pl&modAlert2",
 'modify',"ModifyMessage.pl&ModifyMessage",
 'modify2',"ModifyMessage.pl&ModifyMessage2",
+'modsearch',"AddModerators.pm&ModSearch",
+'modsearch2',"AddModerators.pm&ModSearch2",
 'multiadmin',"RemoveTopic.pl&Multi",
 'multidel',"ModifyMessage.pl&MultiDel",
 'multiremfav',"Favorites.pl&MultiRemFav",
@@ -135,7 +137,7 @@ if ($action eq 'detailedversion') { return 1; }
 'reminder',"LogInOut.pl&Reminder",
 'reminder2',"LogInOut.pl&Reminder2",
 'removethread',"RemoveTopic.pl&DeleteThread",
-'reordertab',"AdvancedTabs.pl&ReorderTab",
+'reordertab',"AdvancedTabs.pm&ReorderTab",
 'resetpass',"LogInOut.pl&Reminder3",
 'revalidatesession',"Sessions.pl&SessionReval",
 'revalidatesession2',"Sessions.pl&SessionReval2",

@@ -14,7 +14,7 @@
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
 
-$eventcalssiplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$eventcalssiplver = 'YaBB 2.5.4 $Revision$';
 
 &LoadLanguage('EventCal');
 

@@ -15,10 +15,9 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = 1.0;
 
-$iplookuppmver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$iplookuppmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
-#unless ($ipLookup && $INFO{'ip'} && ($iamadmin || $iamgmod)) { fatal_error('not_allowed'); }
 if ( !$ipLookup || !$INFO{'ip'} || ( !$iamadmin && !$iamgmod ) ) {
     fatal_error('not_allowed');
 }

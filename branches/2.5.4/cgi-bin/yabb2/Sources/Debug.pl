@@ -12,10 +12,10 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$debugplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$debugplver = 'YaBB 2.5.4 $Revision$';
 
 sub Debug {
-	if ($debug == 1 or ($debug == 2 && $iamadmin)) {
+	if ($debug == 1 || ($debug == 2 && $iamadmin) || $debug == 3 ) {
 		$yyfileactions = "$debug_txt{'opened'} $file_open $debug_txt{'closed'} $file_close $debug_txt{'equal'}";
 
 		my $yytimeclock;
@@ -27,7 +27,7 @@ sub Debug {
 		}
 		$yytimeclock .= "$debug_txt{'pagespeed'} $time_running $debug_txt{'loaded'}.";
 
-		&ToHTML($openfiles);
+		ToHTML($openfiles);
 		$openfiles =~ s/\n/<br \/>/g;
 
 		$yydebug = qq~<br /><div class="small" style="float: left; padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;"><u>$debug_txt{'debugging'}</u><br /><br /><u>$debug_txt{'benchmarking'}:</u><br />$yytimeclock<br /><br /><u>$debug_txt{'ipaddress'}:</u><br />$user_ip<br /><br /><u>$debug_txt{'browser'}:</u><br />$ENV{'HTTP_USER_AGENT'}<br />$getpairs<br /><u>$debug_txt{'trace'}:</u>$yytrace<br /><br /><u>$debug_txt{'check'}:</u><br />$yyfileactions<br /><br /><u>$debug_txt{'filehandles'}:</u><br />$debug_txt{'filehandleslegend'}<br /><br />$openfiles<br /><u>$debug_txt{'filesloaded'}:<tt>require</tt></u>~;
@@ -35,7 +35,7 @@ sub Debug {
 		foreach (sort(keys(%INC))) {$yydebug .= qq~<br />$_ => $INC{$_}~;}
 
 		$yydebug .= qq~<br /><br /><br /></div>~;
-		if ($debug_l == 1) {
+		if ($debug == 3) {
 		    $yydebug = qq~<br /><div class="small" style="float: left; padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">$yytimeclock</div>~;
 		}
 	}

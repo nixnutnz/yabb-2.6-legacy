@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$adminlngver = 'YaBB 2.5.4 $Revision: 1.72 $';
+$adminlngver = 'YaBB 2.5.4 $Revision$';
 
 @days = ('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
 @months = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
@@ -315,6 +315,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision: 1.72 $';
 '538' => 'lost or empty threads were deleted',
 '539' => 'Threads have been loaded and processed.',
 '540' => 'Boards have been rewritten.',
+'540a' => 'Removing dead files.',
 '541' => 'Counting the threads in each board and finishing.',
 '542' => 'If nothing happens in 5 seconds',
 '543' => 'click here to continue',
@@ -322,6 +323,9 @@ $adminlngver = 'YaBB 2.5.4 $Revision: 1.72 $';
 '545' => 'Rebuilding Messages Index - please wait!<br />If you want to stop, click (STOP) before red message appears again on the next page.',
 '579' => 'days',
 '584' => 'Show and require Registration Agreement when users register?',
+'584a' => 'Don&#39;t show',
+'584b' => 'Show before registration form',
+'584c' => 'Show on registration form',
 '585' => 'Disable user self-registration (only admin can register)?',
 '586' => 'Allow users to delete their accounts?<br /><span class="small">If checked, a "Submit" button will be added to the user profile to allow him/her to remove himself/herself from the forum.</span>',
 '587' => 'Select default time format:',
@@ -390,6 +394,9 @@ $adminlngver = 'YaBB 2.5.4 $Revision: 1.72 $';
 '728' => 'Check username.',
 '729' => 'Check display name.',
 '732' => 'Show Board Descriptions in the Message Index?',
+'733' => 'Parent board cannot be the same as the selected board to move!',
+'734' => 'You must select a board to update first!',
+'735' => 'Parent board cannot be the same as the board being edited!',
 '737' => 'Check all',
 '738' => 'This is a list of your forum categories. Select the category you wish to move.',
 '738a' => 'Move the selected category up or down.',
@@ -457,10 +464,14 @@ $adminlngver = 'YaBB 2.5.4 $Revision: 1.72 $';
 'nodebug' => 'Do not use Debug Mode',
 'alldebug' => 'Use Debug Mode - everyone sees output',
 'admindebug' => 'Use Debug Mode - only Admin sees output',
+'loadtime' => 'Show pageload time only - everyone sees output',
 'show_ip_admin' => 'Show IP in Board Index Online List for all online Members/Guests to Administrators?',
 'show_ip_gmod' => 'Show IP in Board Index Online List for all online Members/Guests to Global Moderators?',
 'guestmedia' => 'Prevent Guest from seeing media files or having clickable auto-linked urls in messages?',
 'guestlang' => 'Enable Guest language selection?',
+'checkspace' => q~Enabling this will allow you to set the various free disk space checks. Checking the free disk space is primarily a Linux function and may not work properly on Windows/IIS servers. The free disk space functions may return incorrect values when used on shared hosting services.~,
+'checkspace2' => q~ (If the Free Disk Space Functions Utility page fails to load your server <b>does not support those functions</b>.)~,
+'checkspclabel' => q~Advanced Settings - Free Disk Space Functions~,
 'quota' => '<i>quota</i>: Enabling this uses the Linux shell command &#39;quota&#39; to check for free disk space. This is the preferred method to use. The checkbox will be disabled if this command is not available on your server.<br /><span class="small">If your available disk space drops below 100&thinsp;000 Bytes (100 KB), the forum will automatically go into Maintenance Mode to prevent running out of space and losing data.<br />Reminder: Only Admins can access the forum when in Maintenance Mode.</span>',
 'quota_value' => '<i>quota</i>: Select the Filesystem your Forum is on:<br /><span class="small">The right Filesystem should be preselected if &#39;quota&#39; was saved <i>disabled</i> before.</span>',
 'quotahostuser' => '<i>quota</i>: Your username on your host server:<br /><span class="small">Should be prewritten. Available if the above is checked.</span>',
@@ -1297,7 +1308,8 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'attachments' => 'File Attachments',
 'changeinpaths' => '<span class="small">Change this setting in Path Settings</span>',
 'uploaddircorrect' => 'Attachments directory exists and has correct permissions?',
-'freedisk' => 'Free Disk Space Checking<br /><span class="small">You can enable <u>one</u> of these three options.</span>',
+'freedisk' => '<span class="small">You can enable <span class="under">one</span> of these options. <b>Note</b> that not all options are available on all servers.</span>',
+'checkspace' => 'Free Disk Space',
 
 # Security Settings
 'generalsec' => 'General',

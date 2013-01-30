@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$yabbcplver = 'YaBB 2.5.4 $Revision: 1.41 $';
+$yabbcplver = 'YaBB 2.5.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 LoadLanguage('Post');

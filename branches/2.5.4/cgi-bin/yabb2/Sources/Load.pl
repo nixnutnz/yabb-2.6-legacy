@@ -13,9 +13,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.51;
+our $VERSION = 1.52;
 
-$loadplver = 'YaBB 2.5.4 $Revision: 1.51 $';
+$loadplver = 'YaBB 2.5.4 $Revision$';
 
 sub LoadBoardControl {
     my ($dummy);
@@ -37,7 +37,8 @@ sub LoadBoardControl {
             $cntzero,        $cntmembergroups, $cntann,
             $cntrbin,        $cntattperms,     $cntminageperms,
             $cntmaxageperms, $cntgenderperms,  $cntcanpost,
-            $cntparent,$rules, $rulestitle, $rulesdesc, $rulescollapse
+            $cntparent,      $rules,           $rulestitle,
+            $rulesdesc,      $rulescollapse
         ) = split /\|/xsm, $boardline;
         ## create a global boards array
         push @allboards, $cntboard;
@@ -45,27 +46,27 @@ sub LoadBoardControl {
         $cntdescription =~ s/\&/\&amp;/gxsm;
 
         %{ $uid . $cntboard } = (
-            'cat'          => $cntcat,
-            'description'  => $cntdescription,
-            'pic'          => $cntpic,
-            'mods'         => $cntmods,
-            'modgroups'    => $cntmodgroups,
-            'topicperms'   => $cnttopicperms,
-            'replyperms'   => $cntreplyperms,
-            'pollperms'    => $cntpollperms,
-            'zero'         => $cntzero,
-            'membergroups' => $cntmembergroups,
-            'ann'          => $cntann,
-            'rbin'         => $cntrbin,
-            'attperms'     => $cntattperms,
-            'minageperms'  => $cntminageperms,
-            'maxageperms'  => $cntmaxageperms,
-            'genderperms'  => $cntgenderperms,
-            'canpost'      => $cntcanpost,
-            'parent'       => $cntparent,
-			'rules'        => $rules,
-			'rulestitle'   => $rulestitle,
-			'rulesdesc'    => $rulesdesc,
+            'cat'           => $cntcat,
+            'description'   => $cntdescription,
+            'pic'           => $cntpic,
+            'mods'          => $cntmods,
+            'modgroups'     => $cntmodgroups,
+            'topicperms'    => $cnttopicperms,
+            'replyperms'    => $cntreplyperms,
+            'pollperms'     => $cntpollperms,
+            'zero'          => $cntzero,
+            'membergroups'  => $cntmembergroups,
+            'ann'           => $cntann,
+            'rbin'          => $cntrbin,
+            'attperms'      => $cntattperms,
+            'minageperms'   => $cntminageperms,
+            'maxageperms'   => $cntmaxageperms,
+            'genderperms'   => $cntgenderperms,
+            'canpost'       => $cntcanpost,
+            'parent'        => $cntparent,
+            'rules'         => $rules,
+            'rulestitle'    => $rulestitle,
+            'rulesdesc'     => $rulesdesc,
             'rulescollapse' => $rulescollapse,
         );
         if ( $cntann == 1 )  { $annboard = $cntboard; }
@@ -335,12 +336,13 @@ sub KillModerator {
         if ( $boardline ne q{} ) {
             @newmods = ();
             (
-                $cntcat,         $cntboard,      $cntpic,
-                $cntdescription, $cntmods,       $cntmodgroups,
-                $cnttopicperms,  $cntreplyperms, $cntpollperms,
-                $cntzero,        $cntpassword,   $cnttotals,
-                $cntattperms,    $spare,         $cntminageperms,
-                $cntmaxageperms, $cntgenderperms, $rules, $rulestitle, $rulesdesc, $rulescollapse
+                $cntcat,         $cntboard,       $cntpic,
+                $cntdescription, $cntmods,        $cntmodgroups,
+                $cnttopicperms,  $cntreplyperms,  $cntpollperms,
+                $cntzero,        $cntpassword,    $cnttotals,
+                $cntattperms,    $spare,          $cntminageperms,
+                $cntmaxageperms, $cntgenderperms, $rules,
+                $rulestitle,     $rulesdesc,      $rulescollapse
             ) = split /\|/xsm, $boardline;
             foreach ( split /, /sm, $cntmods ) {
                 if ( $killmod ne $_ ) { push @newmods, $_; }
@@ -376,12 +378,13 @@ sub KillModeratorGroup {
         if ( $boardline ne q{} ) {
             @newmods = ();
             (
-                $cntcat,         $cntboard,      $cntpic,
-                $cntdescription, $cntmods,       $cntmodgroups,
-                $cnttopicperms,  $cntreplyperms, $cntpollperms,
-                $cntzero,        $cntpassword,   $cnttotals,
-                $cntattperms,    $spare,         $cntminageperms,
-                $cntmaxageperms, $cntgenderperms, $rules, $rulestitle, $rulesdesc, $rulescollapse
+                $cntcat,         $cntboard,       $cntpic,
+                $cntdescription, $cntmods,        $cntmodgroups,
+                $cnttopicperms,  $cntreplyperms,  $cntpollperms,
+                $cntzero,        $cntpassword,    $cnttotals,
+                $cntattperms,    $spare,          $cntminageperms,
+                $cntmaxageperms, $cntgenderperms, $rules,
+                $rulestitle,     $rulesdesc,      $rulescollapse
             ) = split /\|/xsm, $boardline;
             foreach ( split /, /sm, $cntmodgroups ) {
                 if ( $killmod ne $_ ) { push @newmods, $_; }
@@ -459,6 +462,10 @@ qq~<img src="$imagesdir/skype.gif" alt="${$uid.$user}{'skype'}" title="${$uid.$u
 qq~<img src="$imagesdir/myspace.gif" alt="${$uid.$user}{'myspace'}" title="${$uid.$user}{'myspace'}" />~;
         $facebookimg =
 qq~<img src="$imagesdir/facebook.gif" alt="${$uid.$user}{'facebook'}" title="${$uid.$user}{'facebook'}" />~;
+        $twitterimg =
+qq~<img src="$imagesdir/twitter.gif" alt="${$uid.$user}{'twitter'}" title="${$uid.$user}{'twitter'}" />~;
+        $youtubeimg =
+qq~<img src="$imagesdir/youtube.gif" alt="${$uid.$user}{'youtube'}" title="${$uid.$user}{'youtube'}" />~;
         $gtalkimg =
 qq~<img src="$imagesdir/gtalk2.gif" style="cursor: pointer" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false" alt="$thegtalkname" title="$thegtalkname" />~;
         $icqimg =
@@ -470,6 +477,8 @@ qq~<img src="http://web.icq.com/whitepages/online?icq=${$uid.$user}{'icq'}&#38;i
         $skypeimg    = q~<span class="imgwindowbg">Skype/VoIP</span>~;
         $myspaceimg  = q~<span class="imgwindowbg">MySpace</span>~;
         $facebookimg = q~<span class="imgwindowbg">Facebook</span>~;
+        $twitterimg  = q~<span class="imgwindowbg">Twitter</span>~;
+        $youtubeimg  = q~<span class="imgwindowbg">YouTube</span>~;
         $gtalkimg =
 qq~<span class="imgwindowbg" style="cursor: pointer" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false">GTalk</span>~;
         $icqimg = q~<span class="imgwindowbg">ICQ</span>~;
@@ -485,6 +494,10 @@ qq~<img src="$yyhtml_root/Buttons/$language/skype.png" alt="${$uid.$user}{'skype
 qq~<img src="$yyhtml_root/Buttons/$language/myspace.png" alt="${$uid.$user}{'myspace'}" title="${$uid.$user}{'myspace'}" />~;
         $facebookimg =
 qq~<img src="$yyhtml_root/Buttons/$language/facebook.png" alt="${$uid.$user}{'facebook'}" title="${$uid.$user}{'facebook'}" />~;
+        $twitterimg =
+qq~<img src="$yyhtml_root/Buttons/$language/twitter.png" alt="${$uid.$user}{'twitter'}" title="${$uid.$user}{'twitter'}" />~;
+        $youtubeimg =
+qq~<img src="$yyhtml_root/Buttons/$language/youtube.png" alt="${$uid.$user}{'youtube'}" title="${$uid.$user}{'youtube'}" />~;
         $gtalkimg =
 qq~<img src="$yyhtml_root/Buttons/$language/gtalk.png" style="cursor: pointer" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false" alt="$thegtalkname" title="$thegtalkname" />~;
         $icqimg =
@@ -516,6 +529,14 @@ qq~<img src="$yyhtml_root/Buttons/$language/icq.png" alt="${$uid.$user}{'icq'}" 
       ? q~<a href="http://www.facebook.com/~
       . ( ${ $uid . $user }{'facebook'} !~ /\D/xsm ? 'profile.php?id=' : q{} )
       . qq~${$uid.$user}{'facebook'}" onclick="target='_blank';">$facebookimg</a>~
+      : q{};
+    ${ $uid . $user }{'twitter'} =
+      ${ $uid . $user }{'twitter'}
+      ? qq~<a href="http://twitter.com/${$uid.$user}{'twitter'}" target="_blank">$twitterimg</a>~
+      : q{};
+    ${ $uid . $user }{'youtube'} =
+      ${ $uid . $user }{'youtube'}
+      ? qq~<a href="http://www.youtube.com/${$uid.$user}{'youtube'}" target="_blank">$youtubeimg</a>~
       : q{};
     ${ $uid . $user }{'gtalk'} = ${ $uid . $user }{'gtalk'} ? $gtalkimg : q{};
     $yimon{$user} =
@@ -810,10 +831,14 @@ sub QuickLinks {
     my $quicklinks;
     if ($usertools) {
         $qlcount++;
-            my $modcol = is_moderator_b($user);
-            if ($modcol == 1) {
-            ($title, $stars, $starpic, $color, $noshow, $viewperms, $topicperms, $replyperms, $pollperms, $attachperms) = split /\|/xsm, $Group{'Moderator'};
-            }
+        my $modcol = is_moderator_b($user);
+        if ( $modcol == 1 ) {
+            (
+                $title,     $stars,     $starpic,    $color,
+                $noshow,    $viewperms, $topicperms, $replyperms,
+                $pollperms, $attachperms
+            ) = split /\|/xsm, $Group{'Moderator'};
+        }
         my $display = 'display:inline';
         if ( $ENV{'HTTP_USER_AGENT'} =~ /opera/ism ) {
             $display = 'display:inline-block';
@@ -857,7 +882,7 @@ qq~             <li><a href="$scripturl?action=addbuddy;name=$useraccount{$user}
 
         }
         else {
-           
+
             $quicklinks .=
 qq~             <li><a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$maintxt{'6'}</a></li>\n~;
         }

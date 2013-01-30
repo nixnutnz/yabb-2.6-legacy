@@ -12,7 +12,7 @@
 //#               with assistance from the YaBB community.                     #
 //##############################################################################
 
-//YaBB 2.5.4 Beta $Revision: 1.1 $
+//YaBB 2.5.4 Beta $Revision$
 
 // DocClick object for registering multiple document.onclick events
 DocClick = new Array();

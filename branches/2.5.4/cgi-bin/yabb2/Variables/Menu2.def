@@ -13,7 +13,7 @@
 # Sponsored by: Xnull Internet Media, Inc. - http://www.ximinc.com            #
 #               Your source for web hosting, web design, and domains.         #
 ###############################################################################
-# $Revision: 1.14 $
+# $Revision$
 
 if (-d "$htmldir/Buttons/$language") { $button_language = qq~$language~; }
 elsif (-d "$htmldir/Buttons/$lang") { $button_language = qq~$lang~; }

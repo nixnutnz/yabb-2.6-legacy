@@ -15,7 +15,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = 1.3;
 
-$editemailtemplatesplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+$editemailtemplatesplver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub editemailtemplates {

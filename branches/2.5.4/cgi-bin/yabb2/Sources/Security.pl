@@ -18,7 +18,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = 1.3;
 
-$securityplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+$securityplver = 'YaBB 2.5.4 $Revision$';
 
 # Updates profile with current IP, if changed from last IP.
 # Will only actually update the file when .vars is being updated anyway to save extra load on server.

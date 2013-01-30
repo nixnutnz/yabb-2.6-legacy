@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$adminsublistplver = 'YaBB 2.5.4 $Revision: 1.4 $';
+$adminsublistplver = 'YaBB 2.5.4 $Revision$';
 
 %director=( # in alphabetical Order!
 'addboard',"ManageBoards.pl&AddBoards",
@@ -33,6 +33,7 @@ $adminsublistplver = 'YaBB 2.5.4 $Revision: 1.4 $';
 'boardrecount',"Maintenance.pl&AdminBoardRecount",
 'boardscreen',"ManageBoards.pl&BoardScreen",
 'catscreen',"ManageCats.pl&DoCats",
+'checkspace',"Checkspace.pm&checkspace",
 'clean_log',"Maintenance.pl&clean_log",
 'clean_reglog',"RegistrationLog.pl&clean_reglog",
 'cleanerrorlog',"ErrorLog.pl&CleanErrorLog",
@@ -76,6 +77,11 @@ $adminsublistplver = 'YaBB 2.5.4 $Revision: 1.4 $';
 'helpediting2',"EditHelpCentre.pl&HelpEdit2",
 'helporder',"EditHelpCentre.pl&SetOrderFile",
 'helpsettings2',"EditHelpCentre.pl&HelpSet2",
+'honeypot',"HoneyPot.pm&honeypot",
+'honeypot_add',"HoneyPot.pm&honeypot_add",
+'honeypot_edit',"HoneyPot.pm&honeypot_edit",
+'honeypot_edit2',"HoneyPot.pm&honeypot_edit2",
+'honeypot_delete',"HoneyPot.pm&honeypot_delete",
 'ipban',"Ban.pm&ipban",
 'ipban_add',"Ban.pm&ipban_add",
 'ipban_err',"Ban.pm&ipban_err",
@@ -142,11 +148,6 @@ $adminsublistplver = 'YaBB 2.5.4 $Revision: 1.4 $';
 'smiliemove',"Smilies.pl&SmilieMove",
 'smilieput',"Smilies.pl&SmiliePut",
 'smilies',"Smilies.pl&SmiliePanel",
-'honeypot',"HoneyPot.pm&honeypot",
-'honeypot_add',"HoneyPot.pm&honeypot_add",
-'honeypot_edit',"HoneyPot.pm&honeypot_edit",
-'honeypot_edit2',"HoneyPot.pm&honeypot_edit2",
-'honeypot_delete',"HoneyPot.pm&honeypot_delete",
 'spam_questions',"AntispamQuestions.pl&SpamQuestions",
 'spam_questions2',"AntispamQuestions.pl&SpamQuestions2",
 'spam_questions_add',"AntispamQuestions.pl&SpamQuestionsAdd",

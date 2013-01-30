@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$modifymessageplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$modifymessageplver = 'YaBB 2.5.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 if (!$post_txt_loaded) {
@@ -23,8 +23,8 @@ if (!$post_txt_loaded) {
 require "$sourcedir/SpamCheck.pl";
 
 sub ModifyMessage {
-	if ($iamguest) { &fatal_error("members_only"); }
-	if ($currentboard eq '') { &fatal_error("no_access"); }
+	if ($iamguest) { fatal_error("members_only"); }
+	if ($currentboard eq '') { fatal_error("no_access"); }
 
 	my ($mnum, $msub, $mname, $memail, $mdate, $mreplies, $musername, $micon, $mstate, $msubject, $mattach, $mip, $mmessage, $mns, $mlm, $mlmb);
 	$threadid = $INFO{'thread'};

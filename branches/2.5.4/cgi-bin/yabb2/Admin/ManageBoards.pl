@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.61;
+our $VERSION = 1.62;
 
-$manageboardsplver = 'YaBB 2.5.4 $Revision: 1.61 $';
+$manageboardsplver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ManageBoards {
@@ -67,7 +67,7 @@ qq~<img src="$imagesdir/cat.gif" alt="" /> &nbsp;<b>$admin_txt{'51'}</b>~;
                 return false;
             }
         }
-        
+
         function editSingle(board) {
             var where = document.getElementById("whattodo");
             for (i=0; i<where.elements.length; i++){
@@ -82,7 +82,7 @@ qq~<img src="$imagesdir/cat.gif" alt="" /> &nbsp;<b>$admin_txt{'51'}</b>~;
             document.getElementById("baction").checked = true;
             where.submit();
         }
-        
+
         function delSingle(board) {
             var where = document.getElementById("whattodo");
             for (i=0; i<where.elements.length; i++){
@@ -146,12 +146,11 @@ qq~<img src="$imagesdir/cat.gif" alt="" /> &nbsp;<b>$admin_txt{'51'}</b>~;
         $yymain .= q~       </tr>
    </table>~;
         if ( $INFO{'action'} ne 'managecats' ) {
+            my $indent = -3;
 
             # recursive loop to display all sub boards
-            my $indent = -3;
-            show_boards(@bdlist);
 
-            sub show_boards {
+            *show_boards = sub {
                 my @brdlist = @_;
                 $indent += 3;
                 foreach my $curboard (@brdlist) {
@@ -215,54 +214,55 @@ qq~ <img src="$imagesdir/recycle.gif" alt="$admin_txt{'64i'}" title="$admin_txt{
                       . $indent . q~%; width:~ . $tmpwidth . q~%">
         <col style="width:~ . $tmpwidth2 . qq~%" />
         <col span="2" class="w_5pc" />
-  <tr>
+        <tr>
             <td class="windowbg2">
-        $boardname
-        <div style="position:relative; display:inline; float:right;">
+                $boardname
+                <div style="position:relative; display:inline; float:right;">
                     <a href="$adminurl?action=addboard;parent=$curboard;category=$catid"><img src="$imagesdir/add_sub.gif" alt="$admin_txt{'250'}" title="$admin_txt{'250'}" /></a>
                     <a href="javascript:editSingle('yitem_$curboard')"><img src="$imagesdir/edit_sub.gif" alt="$edit_txt" title="$edit_txt" /></a>
                     <a href="javascript:delSingle('yitem_$curboard')"><img src="$imagesdir/delete_sub.gif" alt="$del_txt" title="$del_txt" /></a>
         ~ . $reorder_subs . qq~
-        </div>
-    </td>
+               </div>
+            </td>
             <td class="windowbg2 center">$bicon</td>
             <td class="titlebg center"><input type="checkbox" name="yitem_$curboard" value="1" /></td>
         </tr><tr>
             <td class="windowbg" colspan="3">$descr</td>
-  </tr>
-</table>
+        </tr>
+    </table>
 ~;
                     if ( $subboard{$curboard} ) { show_boards(@children); }
                 }
                 $indent -= 3;
-                return;
-            }
+            };
+            show_boards(@bdlist);
         }
     }
 
     $yymain .= qq~
     <table class="bordercolor cs_thin pad_4px" style="margin-top: 3px">
-    <tr>
+        <tr>
             <td class="catbg center" $colspan> <label for="baction">$admin_txt{'52'}</label>
-        <input type="radio" name="baction" id="baction" value="edit" checked="checked" /> $admin_txt{'53'}
-        <input type="radio" name="baction" id="delme" value="delme" /> $admin_txt{'54'}
-        <input type="submit" value="$admin_txt{'32'}" class="button" /></td>
-     </tr>
-</table>
+                <input type="radio" name="baction" id="baction" value="edit" checked="checked" /> $admin_txt{'53'}
+                <input type="radio" name="baction" id="delme" value="delme" /> $admin_txt{'54'}
+                <input type="submit" value="$admin_txt{'32'}" class="button" />
+            </td>
+        </tr>
+    </table>
 </div>
 </form>
 <br />
 <form name="diff" id="diff" action="$adminurl?action=$act2" method="post" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px">
-  <tr>
+        <tr>
             <td class="catbg center"><label for="amount"><b>$add: </b></label>
-    <input type="text" name="amount" id="amount" value="3" size="2" maxlength="2" />
-    <input type="submit" value="$admintxt{'45'}" class="button" />
-    </td>
-  </tr>
-   </table>
- </div>
+                <input type="text" name="amount" id="amount" value="3" size="2" maxlength="2" />
+                <input type="submit" value="$admintxt{'45'}" class="button" />
+            </td>
+        </tr>
+    </table>
+</div>
 </form>
 ~;
     $yytitle = "$admintxt{'a4_title'}";
@@ -285,9 +285,7 @@ sub BoardScreen {
         my @catboards = split /,/xsm, $cat{$thiscat};
 
         # make an array of all sub boards recursively
-        recursive_boards(@catboards);
-
-        sub recursive_boards {
+        *recursive_boards = sub {
             my @x = @_;
             push @theboards, @x;
             foreach my $childbd (@x) {
@@ -295,7 +293,8 @@ sub BoardScreen {
                     recursive_boards( split /\|/xsm, $subboard{$childbd} );
                 }
             }
-        }
+        };
+        recursive_boards(@catboards);
 
         for my $z ( 0 .. ( @theboards - 1 ) ) {
             my $found = 0;
@@ -494,19 +493,7 @@ sub AddBoards {
     LoadBoardControl();
 
 # build recursive drop down of boards in each category for selecting parent board
-    foreach $thiscat (@categoryorder) {
-        my @catboards = split /\,/xsm, $cat{$thiscat};
-        my $indent = -2;
-        $catboardlist{$thiscat} = q~||~;
-
-        get_subboards(@catboards);
-
-        $catboardlist_js .= qq~
-            catboardlist['$thiscat'] = "$catboardlist{$thiscat}";
-        ~;
-    }
-
-    sub get_subboards {
+    *get_subboards = sub {
         my @x = @_;
         $indent += 2;
         foreach my $childbd (@x) {
@@ -525,6 +512,19 @@ sub AddBoards {
             }
         }
         $indent -= 2;
+    };
+    foreach $thiscat (@categoryorder) {
+
+        # $thiscat cannot be localized
+        my @catboards = split /\,/xsm, $cat{$thiscat};
+        my $indent = -2;
+        $catboardlist{$thiscat} = q~||~;
+
+        get_subboards(@catboards);
+
+        $catboardlist_js .= qq~
+            catboardlist['$thiscat'] = "$catboardlist{$thiscat}";
+        ~;
     }
 
     $yymain .= qq~
@@ -688,7 +688,7 @@ function checkParent(id, board) {
     $annexist  = q{};
     $rbinexist = q{};
 
-    #    for ( $i = 1 ; $i != $FORM{'amount'} + 1 ; $i++ ) {
+    #     for ( $i = 1 ; $i != $FORM{'amount'} + 1 ; $i++ ) {
     for my $i ( 1 .. $FORM{'amount'} ) {
 
         # differentiate between edit or add boards
@@ -759,6 +759,7 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
             }
         }
         $genselect .= q~</select>~;
+        my $canpostch;
         if ( ${ $uid . $id }{'canpost'} == 1
             || $INFO{'action'} ne 'boardscreen' )
         {
@@ -1210,9 +1211,8 @@ sub AddBoards2 {
 
                 # recursively change the category of child boards.
                 if ( $subboard{$id} ) {
-                    cat_change( split /\|/xsm, $subboard{$id} );
 
-                    sub cat_change {
+                    *cat_change = sub {
                         my @x = @_;
                         foreach my $childbd (@x) {
                             ${ $uid . $childbd }{'cat'} = qq~$FORM{"cat$i"}~;
@@ -1222,7 +1222,8 @@ sub AddBoards2 {
                                     $subboard{$childbd} );
                             }
                         }
-                    }
+                    };
+                    cat_change( split /\|/xsm, $subboard{$id} );
                 }
 
                 # if it's not a sub board, remove from the old category
@@ -1317,11 +1318,12 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
                 elsif ( !$FORM{"ann$i"}
                     && ( split /\|/xsm, $boardtomodify[0] )[8] =~ /a/ism )
                 {
+                    *take_a_off =
+                      sub { my $y = shift; $y =~ s/a//gsm; return $y; };
                     for my $x ( 0 .. ( @boardtomodify - 1 ) ) {
                         $boardtomodify[$x] =~
                           s/(.*\|)(.*)/ $1 . take_a_off($2) /exsm;
                     }
-                    sub take_a_off { my $y = shift; $y =~ s/a//gsm; return $y; }
                 }
                 if ($x) {
                     fopen( BOARDINFO, ">$boardsdir/$id.txt" )
@@ -1454,9 +1456,7 @@ qq~<option value="$category" selected="selected">$categoryname</option>~;
             my $indent = -2;
             $catboardlist{$category} = q~<option value=''>&nbsp;</option>~;
 
-            get_subboards2(@catboards);
-
-            sub get_subboards2 {
+            *get_subboards2 = sub {
                 my @x = @_;
                 $indent += 2;
                 foreach my $childbd (@x) {
@@ -1475,7 +1475,8 @@ qq~<option value="$category" selected="selected">$categoryname</option>~;
                     }
                 }
                 $indent -= 2;
-            }
+            };
+            get_subboards2(@catboards);
 
             $catboardlist_js .= qq~
                 catboardlist['$category'] = "$catboardlist{$category}";
@@ -1697,9 +1698,8 @@ sub ReorderBoards2 {
 
                 # recursively change the category of child boards.
                 if ( $subboard{$moveitem} ) {
-                    cat_change2( split /\|/xsm, $subboard{$moveitem} );
 
-                    sub cat_change2 {
+                    *cat_change2 = sub {
                         my @x = @_;
                         foreach my $childbd (@x) {
                             ${ $uid . $childbd }{'cat'} =
@@ -1710,7 +1710,8 @@ sub ReorderBoards2 {
                                     $subboard{$childbd} );
                             }
                         }
-                    }
+                    };
+                    cat_change2( split /\|/xsm, $subboard{$moveitem} );
                 }
 
                 # remove from the category list only if it was not a subboard
@@ -1802,7 +1803,8 @@ sub ReorderBoards2 {
                 $zero,         $membergroups, $ann,
                 $rbin,         $att,          $minage,
                 $maxage,       $gender,       $canpost,
-                $parent
+                $parent,       $rules,        $brulestitle,
+                $brulesdesc,   $rulescollapse
             ) = split /\|/xsm, $oldcontrols[$cnt];
             if ( $moveitem eq $oldboard ) {
                 $oldcontrols[$cnt] =
@@ -1841,15 +1843,15 @@ qq~$adminurl?action=reorderboards;item=$catorbd;theboard=$moveitem;subboards=1~;
 sub ConfRemBoard {
     $yymain .= qq~
     <table class="bordercolor cs_thin">
-<tr>
-    <td class="titlebg"><b>$admin_txt{'31'} - '$FORM{'boardname'}'?</b></td>
+        <tr>
+            <td class="titlebg"><b>$admin_txt{'31'} - '$FORM{'boardname'}'?</b></td>
         </tr><tr>
-    <td class="windowbg" >
-$admin_txt{'617'}<br />
-<b><a href="$adminurl?action=modifyboard;cat=$FORM{'cat'};id=$FORM{'id'};moda=$admin_txt{'31'}2">$admin_txt{'163'}</a> - <a href="$adminurl?action=manageboards">$admin_txt{'164'}</a></b>
-</td>
-</tr>
-</table>
+            <td class="windowbg">
+                $admin_txt{'617'}<br />
+                <b><a href="$adminurl?action=modifyboard;cat=$FORM{'cat'};id=$FORM{'id'};moda=$admin_txt{'31'}2">$admin_txt{'163'}</a> - <a href="$adminurl?action=manageboards">$admin_txt{'164'}</a></b>
+            </td>
+        </tr>
+    </table>
 ~;
     $yytitle     = "$admin_txt{'31'} - '$FORM{'boardname'}'?";
     $action_area = 'manageboards';

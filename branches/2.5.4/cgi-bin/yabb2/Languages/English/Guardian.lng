@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$guardianlngver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$guardianlngver = 'YaBB 2.5.4 $Revision$';
 
 %guardian_txt = (
 'main' => 'The Guardian&trade;',

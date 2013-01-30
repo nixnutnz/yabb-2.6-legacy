@@ -12,7 +12,7 @@
 //#               with assistance from the YaBB community.                     #
 //##############################################################################
 
-//YaBB 3.0 Beta $Revision: 328 $
+//YaBB 3.0 Beta $Revision$
 
 var op = ( navigator.userAgent.indexOf( 'Opera' ) != -1 );
 var konq = ( navigator.userAgent.indexOf( 'Konqueror' ) != -1 );

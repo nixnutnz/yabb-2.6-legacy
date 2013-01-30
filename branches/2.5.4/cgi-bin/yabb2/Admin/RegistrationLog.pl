@@ -13,9 +13,9 @@
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
-our $VERSION = 1.3;
+our $VERSION = 1.4;
 
-$registrationlogplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+$registrationlogplver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Register');
@@ -175,7 +175,7 @@ qq~<br /><a href="$adminurl?action=apr_regentry;username=$userid">$prereg_txt{'a
           : qq~$ipadd~;
         $loglist .= qq~<tr>
             <td class="windowbg center">$reclogtime</td>
-            <td class="windowbg2 center">$prereg_txt{$status}$actadminlink<br />IP: $lookupIP - <a href="$adminurl?action=ipban_err;ban=$ipadd;lev=p">$admin_txt{'725f'}</a></td>
+            <td class="windowbg2 center">$prereg_txt{$status}$actadminlink<br />IP: $lookupIP - <a href="$adminurl?action=ipban_err;ban=$ipadd;lev=p;return=view_reglog">$admin_txt{'725f'}</a></td>
             <td class="windowbg center">$linkuserid</td>
             <td class="windowbg2 center">$delrecord</td>
         </tr>~;
@@ -374,7 +374,7 @@ sub view_registration {
    <td>${$uid.$readuser}{'language'}</td>
  </tr><tr class="windowbg">
    <td><b>$prereg_txt{'apr_ip'}: </b></td>
-   <td>$lookupIP (<a href="$adminurl?action=ipban_err;ban=${$uid.$readuser}{'lastips'};lev=p">$admin_txt{'725f'}</a>)</td>
+   <td>$lookupIP (<a href="$adminurl?action=ipban_err;ban=${$uid.$readuser}{'lastips'};lev=p;return=view_reglogs">$admin_txt{'725f'}</a>)</td>
  </tr>~;
 
     if ( $regtype == 1 ) {

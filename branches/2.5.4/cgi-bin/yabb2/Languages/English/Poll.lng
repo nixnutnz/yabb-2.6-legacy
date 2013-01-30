@@ -12,7 +12,7 @@
 #              with assistance from the YaBB community.                       #
 ###############################################################################
 
-$polllngver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$polllngver = 'YaBB 2.5.4 $Revision$';
 
 %polltxt = (
 '4' => 'Poll Question',

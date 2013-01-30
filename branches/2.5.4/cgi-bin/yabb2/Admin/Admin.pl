@@ -18,7 +18,7 @@ use English qw(-no_match_vars);
 use Time::Local 'timelocal';
 our $VERSION = 1.81;
 
-$adminplver = 'YaBB 2.5.4 $Revision: 1.81 $';
+$adminplver = 'YaBB 2.5.4 $Revision$';
 
 sub Admin {
     is_admin_or_gmod();

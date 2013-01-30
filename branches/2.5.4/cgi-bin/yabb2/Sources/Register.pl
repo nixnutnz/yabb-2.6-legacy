@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$registerplver = 'YaBB 2.5.4 $Revision: 1.6 $';
+$registerplver = 'YaBB 2.5.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 if (!$iamguest && (!$admin && $action ne 'activate' && $action ne 'admin_descision') ) { fatal_error('no_registration_logged_in'); }
 
@@ -27,13 +27,48 @@ if ($^O =~ /Win/) {
 }
 
 sub Register {
-	if ($regtype == 0 && $iamguest) { &fatal_error("registration_disabled"); }
+	if ($regtype == 0 && $iamguest) { fatal_error('registration_disabled'); }
+	if ($RegAgree == 1 && $FORM{'regnoagree'}) { 
+	    $yySetLocation = qq~$scripturl~;
+	    redirectexit();
+	}
+    if ($RegAgree == 1 && !$FORM{'regagree'}) {
+        $yytitle = qq~$register_txt{'97'}~;
+        $yynavigation = qq~&rsaquo; $register_txt{'97'}~;
+        if ($language) {
+            fopen(AGREE, "$langdir/$language/agreement.txt");
+        } else {
+            fopen(AGREE, "$langdir/$lang/agreement.txt");
+        }
+        @agreement = <AGREE>;
+        fclose(AGREE);
+        $fullagree = join("", @agreement);
+        $fullagree =~ s/\n/<br \/>/gsm;
+        $yymain .= qq~
+<form action="$scripturl?action=register" method="post">
+<table class="bordercolor pad_4px cs_thin">
+    <tr>
+      <td class="titlebg"><img src="$imagesdir/xx.gif" alt="" /> $register_txt{'764a'}</td>
+    </tr><tr>
+        <td class="windowbg">
+          $fullagree
+        </td>
+    </tr><tr>
+        <td class="windowbg2 center">
+            <input type="submit" value="$register_txt{'585'}" name="regagree" class="button" />&nbsp;&nbsp;<input type="submit" value="$register_txt{'586'}" name="regnoagree" class="button" />
+        </td>
+    </tr>
+</table>
+</form>~;
+    template();
+    exit;
+    }
 	my ($tmpregname, $tmprealname, $tmpregemail, $tmpregpasswrd1, $tmpregpasswrd2, $hidechecked, @birthdate);
 	$yytitle = $register_txt{'97'};
 	$yynavigation = qq~&rsaquo; $register_txt{'97'}~;
 	if ($FORM{'reglanguage'}) {
 		$language = $FORM{'reglanguage'};
-		&LoadLanguage('Register');
+		LoadLanguage('Register');
 	}
 	if ($FORM{'regusername'}) { $tmpregname     = $FORM{'regusername'}; }
 	if ($FORM{'regrealname'}) { $tmprealname    = $FORM{'regrealname'}; }
@@ -63,14 +98,18 @@ sub Register {
 
 	$yymain .= qq~
 <script type="text/javascript" src="$yyhtml_root/ajax.js"></script>
-<form action="$scripturl?action=register2" method="post" name="creator" onsubmit="return CheckRegFields();" autocomplete="off"  accept-charset="$yycharset">
+<form action="$scripturl?action=register2" method="post" name="creator" onsubmit="return CheckRegFields();" accept-charset="$yycharset">~;
+    if ($RegAgree == 1 && $FORM{'regagree'}) {
+        $yymain .= qq~
+<input type="hidden" name="regagree" value="yes" />~;
+    }
+        $yymain .= qq~
 <table class="bordercolor pad_4px cs_thin">
 	<col width="45%" />
 	<col width="55%" />
 	<tr>
 		<td class="titlebg" colspan="2">
-			<img src="$imagesdir/register.gif" alt="$register_txt{'97'}" title="$register_txt{'97'}" />
-			<span class="text1"><b>$register_txt{'97'}</b> $register_txt{'517'}</span>
+			<img src="$imagesdir/register.gif" alt="$register_txt{'97'}" title="$register_txt{'97'}" /> $register_txt{'517'}
 		</td>
 	</tr><tr>
 		<td class="windowbg center" colspan="2">
@@ -298,7 +337,7 @@ sub Register {
 				<label for="add_field0" class="green"><b>$newfieldb</b>
 			</td>
 			<td class="green vtop">
-				<input type="text" name="add_field0" id="add_field0" size="30" value="$newfield" maxlength="18" class="green" /> *
+				<input type="text" name="add_field0" id="add_field0" size="30" value="$newfield" maxlength="18" autocomplete="off" class="green" /> *
 			</td>
 		</tr>~;	}
 		
@@ -352,7 +391,7 @@ sub Register {
 		</tr>~;
 	}
 
-	if ($RegAgree) {
+	if ($RegAgree == 2) {
 		if ($language) {
 			fopen(AGREE, "$langdir/$language/agreement.txt");
 		} else {
@@ -360,8 +399,8 @@ sub Register {
 		}
 		@agreement = <AGREE>;
 		fclose(AGREE);
-		$fullagree = join("", @agreement);
-		$fullagree =~ s/\n/<br \/>/g;
+		$fullagree = join q{}, @agreement;
+		$fullagree =~ s/\n/<br \/>/gsm;
 		$yymain .= qq~<tr>
 		<td class="titlebg" colspan="2">
 			<img src="$imagesdir/xx.gif" alt="$register_txt{'764a'}" title="$register_txt{'764a'}" /> <b>$register_txt{'764a'}</b>
@@ -476,7 +515,7 @@ sub Register {
 			document.creator.reason.focus();
 			return false;
 		}
-		if ($RegAgree > 0 && document.creator.regagree[0].checked != true) {
+		if ($RegAgree == 2 && document.creator.regagree[0].checked != true) {
 			alert("$register_txt{'error_agree'}");
 			return false;
 		}
@@ -495,14 +534,14 @@ sub Register {
 //-->
 </script>
 	~;
-	&template;
+	template();
 }
 
 sub Register2 {
-	if (!$regtype) { &fatal_error("registration_disabled"); }
-	if ($RegAgree && $FORM{'regagree'} ne 'yes') { &fatal_error('no_regagree'); }
+	if (!$regtype) { fatal_error('registration_disabled'); }
+	if ($RegAgree > 0 && $FORM{'regagree'} ne 'yes') { fatal_error('no_regagree'); }
 	my %member;
-	while (($key, $value) = each(%FORM)) {
+	while (($key, $value) = each %FORM ) {
 		$value =~ s~\A\s+~~;
 		$value =~ s~\s+\Z~~;
 		unless ($key eq "reason") {$value =~ s~[\n\r]~~g;}

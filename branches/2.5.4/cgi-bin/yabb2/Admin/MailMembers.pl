@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.3;
+our $VERSION = 1.31;
 
-$mailmembersplver = 'YaBB 2.5.4 $Revision: 1.3 $';
+$mailmembersplver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ($iamguest) { admin_fatal_error('no_access'); }
@@ -213,7 +213,6 @@ function showMail(thesubject, thetext, thetime) {
     document.adv_membermail.emailtext.value = thetext;
     document.adv_membermail.reused.value = thetime;
 }
-// there should be a function for checkIfChecked(this) here.
 </script>
 </div>
     ~;

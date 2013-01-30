@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$tabmenuplver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$tabmenuplver = 'YaBB 2.5.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('TabMenu');
@@ -21,8 +21,8 @@ $tabsep = qq~<img src="$imagesdir/tabsep211.png" alt="" style="float: left; marg
 $tabfill = qq~<img src="$imagesdir/tabfill.gif" alt="" />~;
 
 sub mainMenu {
-	if ($action eq "addtab" && $iamadmin) { require "$sourcedir/AdvancedTabs.pl"; &AddNewTab; }
-	elsif ($action eq "edittab" && $iamadmin) { require "$sourcedir/AdvancedTabs.pl"; &EditTab; }
+	if ($action eq "addtab" && $iamadmin) { require "$sourcedir/AdvancedTabs.pm"; AddNewTab(); }
+	elsif ($action eq "edittab" && $iamadmin) { require "$sourcedir/AdvancedTabs.pm"; EditTab(); }
 	elsif ($action ne "") {
 		if ($action eq "search2") {
 			$tmpaction = "search";

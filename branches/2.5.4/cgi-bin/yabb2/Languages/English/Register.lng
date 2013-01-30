@@ -12,10 +12,10 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$registerlngver = 'YaBB 2.5.4 $Revision: 1.1 $';
+$registerlngver = 'YaBB 2.5.4 $Revision$';
 
 %register_txt = (
-'4' => 'For security reasons, it\'s advisable to have your displayed name not the same as your login ID.',
+'4' => 'For security reasons, it&#39;s advisable to have your displayed name not the same as your login ID.',
 '23' => 'Unable to open',
 '34' => 'Login',
 '35' => 'User ID',
@@ -38,8 +38,8 @@ $registerlngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 '114' => ' is available!',
 '115' => ' is reserved.',
 '209' => 'I love YaBB 2.5.4!',
-'213' => 'Passwords aren\'t the same!',
-'241' => 'field. Valid Characters are Letters(A-Z,a-z), Numbers (0-9), Spaces and ( _ ! @ # $ % ^ & * ( ) + | ` ~ - = \ : ; \' " , . / ? [ ] { } )',
+'213' => 'Passwords aren&#39;t the same!',
+'241' => 'field. Valid Characters are Letters(A-Z,a-z), Numbers (0-9), Spaces and ( _ ! @ # $ % ^ & * ( ) + | ` ~ - = \ : ; &#39; " , . / ? [ ] { } )',
 '241r' => 'field. Valid Characters are Letters(A-Z,a-z), Numbers (0-9), Spaces and ( + - . @ _ )',
 '241re' => 'field. Valid Characters are Letters, Numbers, Spaces and ( [ ] # % + , - | . : = ? @ ^ _ )',
 '241e' => 'field. Valid Characters are Letters (A-Z,a-z), Numbers (0-9), and ( + - . @ _ )',
@@ -50,7 +50,7 @@ $registerlngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 '431' => 'Success! You are now a member of the Forum.',
 '517' => 'Required Information',
 '520' => 'Used only for identification and login purposes.<br />You can use special characters below or after logging in<br />by changing your displayed name in your profile.',
-'521' => 'For security reasons it is not allowed to use the same name here as your User ID<br />It\'s advisable not to choose a name that looks like your ID too.',
+'521' => 'For security reasons it is not allowed to use the same name here as your User ID<br />It&#39;s advisable not to choose a name that looks like your ID too.',
 '585' => 'I Agree',
 '586' => 'I Do Not Agree',
 '678' => 'Sorry',
@@ -67,9 +67,9 @@ $registerlngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 '767a' => ' Hold down Ctrl or Shift key (Apple key on Mac) and click to select more groups.',
 '768' => 'Require Members to use a different Displayed Name than their User (login) Name?',
 '770' => 'Ask for Members birth date on Registration?',
-'771' => 'don\'t ask',
-'772' => 'ask for birthday but input isn\'t required',
-'773' => 'ask for birthday and input is required',
+'771' => 'Don&#39;t ask',
+'772' => 'Optional',
+'773' => 'Required',
 'birthday' => 'Birthday',
 'birthday_a' => '(<label for="birth_month">MM</label>/<label for="birth_day">DD</label>/<label for="birth_year">YYYY</label>)',
 'birthday_b' => '(<label for="birth_day">DD</label>/<label for="birth_month">MM</label>/<label for="birth_year">YYYY</label>)',
@@ -77,8 +77,6 @@ $registerlngver = 'YaBB 2.5.4 $Revision: 1.1 $';
 'gender_male' => 'Male',
 'gender_female' => 'Female',
 'gender_reg' => 'Ask for Members gender on Registration?',
-'gender_reg_opt' => 'Optional',
-'gender_reg_req' => 'Required',
 'capslock' => 'Caps lock is activated.',
 'wrong_char' => 'This character in the Password is invalid',
 'verification_question_desc' => 'Please answer the above verification question.',

@@ -14,7 +14,7 @@
 # use strict;
 our $VERSION = 1.31;
 
-our $smiliesplver = 'YaBB 2.5.4 $Revision: 1.31 $';
+our $smiliesplver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub SmiliePanel {

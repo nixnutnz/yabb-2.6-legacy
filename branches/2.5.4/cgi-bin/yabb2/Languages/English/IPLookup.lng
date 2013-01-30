@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$iplookuplngver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$iplookuplngver = 'YaBB 2.5.4 $Revision$';
 
 %lookup_txt = (
 '01' => 'Lookup',

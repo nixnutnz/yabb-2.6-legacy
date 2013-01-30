@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$guardianplver = 'YaBB 2.5.4 $Revision: 1.0 $';
+$guardianplver = 'YaBB 2.5.4 $Revision$';
 
 $not_from   = qq~$webmaster_email~;
 $not_to     = qq~$webmaster_email~;

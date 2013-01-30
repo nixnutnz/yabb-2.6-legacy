@@ -15,9 +15,9 @@
 # use warnings;
 no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.51;
+our $VERSION = 1.52;
 
-$messageindexplver = 'YaBB 2.5.4 $Revision: 1.51 $';
+$messageindexplver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('MessageIndex');
@@ -1113,6 +1113,11 @@ qq~<img src="$imagesdir/hidestickylock.gif" alt="$messageindex_txt{'461'}" title
     #template it
     $messageindex_template =~ s/({|<)yabb board(}|>)/$boardlink/gsm;
     $template_mods = qq~$modslink$showmodgroups~;
+	if($iamadmin) {
+		require "$sourcedir/AddModerators.pm";
+		ModSearch();
+		$template_mods .= qq~<br /><a href="javascript:void(0);" onclick="ModSettings()">$messageindex_txt{'addmoderator'}</a>~;
+	}
 
     my ( $rss_link, $rss_text );
     if ( !$rss_disabled ) {

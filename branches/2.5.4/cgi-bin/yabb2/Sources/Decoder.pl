@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$decoderplver = 'YaBB 2.5.4 $Revision: 1.2 $';
+$decoderplver = 'YaBB 2.5.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 sub scramble {
@@ -120,7 +120,7 @@ sub testcaptcha {
 }
 
 sub convert {
-	require "$sourcedir/Captcha.pl";
+	require "$sourcedir/Captcha.pm";
 	my ($startChars, $endChars);
 	if ($captchaStartChars) { $startChars = $captchaStartChars; }
 	if ($captchaEndChars)   { $endChars   = $captchaEndChars; }

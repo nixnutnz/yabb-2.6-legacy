@@ -12,9 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.41;
+our $VERSION = 1.42;
 
-$managetemplatesplver = 'YaBB 2.5.4 $Revision: 1.41 $';
+$managetemplatesplver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Templates');
@@ -2086,6 +2086,7 @@ qq~$boardindex_txt{'236'} <a href="javascript:;"><b>$templ_txt{'80'}</b></a>~;
     $boardindex_template =~ s/({|<)yabb groupcolors(}|>)/$grpcolors/gsm;
 
     $boardindex_template =~ s/({|<)yabb membercount(}|>)/$tempmembercount/gsm;
+    $boardindex_template =~ s/({|<)yabb expandmessages(}|>)/$temp_expandmessages/gsm;
     $boardindex_template =~ s/({|<)yabb latestmember(}|>)/$latestmemberlink/gsm;
     $boardindex_template =~ s/({|<)yabb ims(}|>)/$tempims/gsm;
     $boardindex_template =~ s/({|<)yabb users(}|>)/$tempuserson/gsm;
@@ -2097,6 +2098,10 @@ qq~$boardindex_txt{'236'} <a href="javascript:;"><b>$templ_txt{'80'}</b></a>~;
     $boardindex_template =~ s/({|<)yabb caldisplay(}|>)/$cal_display/gsm;
     $boardindex_template =~ s/({|<)yabb sharedlogin(}|>)//gsm;
     $boardindex_template =~ s/({|<)yabb selecthtml(}|>)//gsm;
+    $boardindex_template =~
+                  s/({|<)yabb subboardlist(}|>)//gsm;
+    $boardindex_template =~
+                  s/({|<)yabb messagedropdown(}|>)//gsm;
     $boardindex_template =~
       s/img src\=\"$x[1]\/(.+?)\"/TmpImgLoc($1, $x[1], $x[2])/eisgm;
     $imagesdir = $tmpimagesdir;
@@ -2176,11 +2181,14 @@ qq~<span class="small" style="vertical-align: middle;"> <b>$messageindex_txt{'13
     $topichandellist =~ s/\Q$menusep//ism;
     $messageindex_template =~
       s/({|<)yabb topichandellist(}|>)/$topichandellist/gsm;
+    $messageindex_template =~
+      s/({|<)yabb topichandellist2(}|>)/$topichandellist/gsm;
 
     $messageindex_template =~ s/({|<)yabb pageindex(}|>)/$temppageindex/gsm;
     $messageindex_template =~
       s/({|<)yabb pageindex toggle(}|>)/$temppageindextgl/gsm;
     $messageindex_template =~ s/({|<)yabb admin column(}|>)//gsm;
+    $messageindex_template =~ s/({|<)yabb outsidethreadtools(}|>)//gsm;
 
     my $tempbar = $threadbar;
     $tempbar =~ s/({|<)yabb admin column(}|>)//gsm;
@@ -2193,6 +2201,7 @@ qq~<span class="small" style="vertical-align: middle;"> <b>$messageindex_txt{'13
     $tempbar =~ s/({|<)yabb pages(}|>)//gsm;
     $tempbar =~ s/({|<)yabb attachmenticon(}|>)/$temp_attachment/gsm;
     $tempbar =~ s/({|<)yabb starter(}|>)/$tempmname/gsm;
+    $tempbar =~ s/({|<)yabb starttime(}|>)/ timeformat($date)/egsm;
     $tempbar =~ s/({|<)yabb replies(}|>)/2/gsm;
     $tempbar =~ s/({|<)yabb views(}|>)/12/gsm;
     $tempbar =~ s/({|<)yabb lastpostlink(}|>)/$templastpostlink/gsm;
@@ -2329,14 +2338,15 @@ qq~<img src="$facesurl/elmerfudd.gif" name="avatar" alt="" style="max-width: $us
         $contactblock =~ s/({|<)yabb profile(}|>)//gsm;
         $contactblock =~ s/({|<)yabb pm(}|>)/$template_pm/gsm;
         $contactblock =~ s/({|<)yabb www(}|>)//gsm;
-        $contactblock =~ s/({|<)yabb aim(}|>)/$aimimg/gsm;
-        $contactblock =~ s/({|<)yabb yim(}|>)/$yimimg/gsm;
+        $contactblock =~ s/({|<)yabb aim(}|>)//gsm;
+        $contactblock =~ s/({|<)yabb yim(}|>)//gsm;
         $contactblock =~ s/({|<)yabb icq(}|>)//gsm;
-        $contactblock =~ s/({|<)yabb msn(}|>)/$msnimg/gsm;
         $contactblock =~ s/({|<)yabb gtalk(}|>)//gsm;
         $contactblock =~ s/({|<)yabb skype(}|>)//gsm;
-        $contactblock =~ s/({|<)yabb myspace(}|>)/$myspacead/gsm;
-        $contactblock =~ s/({|<)yabb facebook(}|>)/$facebookad/gsm;
+        $contactblock =~ s/({|<)yabb myspace(}|>)//gsm;
+        $contactblock =~ s/({|<)yabb facebook(}|>)//gsm;
+        $contactblock =~ s/({|<)yabb twitter(}|>)//gsm;
+        $contactblock =~ s/({|<)yabb youtube(}|>)//gsm;
         $contactblock =~ s/({|<)yabb addbuddy(}|>)//gsm;
         $contactblock =~ s/\Q$menusep//ism;
 

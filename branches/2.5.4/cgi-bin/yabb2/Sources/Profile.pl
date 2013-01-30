@@ -15,12 +15,13 @@
 # use warnings;
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.62;
+our $VERSION = 1.63;
 
-$profileplver = 'YaBB 2.5.4 $Revision: 1.62 $';
+$profileplver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Profile');
+require "$sourcedir/AddModerators.pm";
 
 if ( $iamgmod && -e "$vardir/gmodsettings.txt" ) {
     require "$vardir/gmodsettings.txt";
@@ -63,7 +64,7 @@ sub PrepareProfile {
 # Check that profile-editing session is still valid
 sub SidCheck {
     my @x         = @_;
-    my $cur_sid   = decloak( $INFO{'sid'} );
+    my $cur_sid = decloak( $INFO{'sid'} );
     my $sid_check = substr $date, 5, 5;
     if ( $sid_check <= 600 && $cur_sid >= 99_400 ) { $sid_check += 100_000; }
 
@@ -90,7 +91,7 @@ sub ProfileCheck {
     }
 
     $yymain .= qq~
-<div class="bordercolor" style="width: 500px; margin-bottom: 8px; margin-left: auto; margin-right: auto;">
+<div class="bordercolor borderbox">
 <table class="cs_thin pad_4px">
     <tr>
         <td class="titlebg" colspan="2"><b>$profile_txt{'901'}</b></td>
@@ -341,7 +342,7 @@ qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"
        <td><span class="small">$dayormonth$seluyear</span></td>
 <!-- ## XTC Cal ## -->
     </tr>~;
-    if ( $showage == 1 ) {
+    if ($showage == 1) {
         my $checked = q{};
         if ( ${ $uid . $user }{'hideage'} ) { $checked = ' checked="checked"'; }
         $showProfile .= qq~<tr class="windowbg">
@@ -472,26 +473,45 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
     </tr>~;
     }
     $showProfile .= qq~<tr class="windowbg">
-        <td><label for="icq"><b>$profile_txt{'513'}: </b><br /><span class="small">$profile_txt{'600'}</span></label></td>
+        <td><label for="icq"><b>$profile_txt{'513'}: </b>
+            <br /><span class="small">$profile_txt{'600'}</span></label></td>
         <td><input type="text" maxlength="10" name="icq" id="icq" size="40" value="${$uid.$user}{'icq'}" /></td>
     </tr><tr class="windowbg">
-        <td><label for="aim"><b>$profile_txt{'603'}: </b><br /><span class="small">$profile_txt{'601'}</span></label></td>
+        <td><label for="aim"><b>$profile_txt{'603'}: </b>
+            <br /><span class="small">$profile_txt{'601'}</span></label></td>
         <td><input type="text" maxlength="30" name="aim" id="aim" size="40" value="${$uid.$user}{'aim'}" /></td>
     </tr><tr class="windowbg">
-        <td><label for="yim"><b>$profile_txt{'604'}: </b><br /><span class="small">$profile_txt{'602'}</span></label></td>
+        <td><label for="yim"><b>$profile_txt{'604'}: </b>
+            <br /><span class="small">$profile_txt{'602'}</span></label></td>
         <td><input type="text" maxlength="30" name="yim" id="yim" size="40" value="${$uid.$user}{'yim'}" /></td>
     </tr><tr class="windowbg">
-        <td><label for="gtalk"><b>$profile_txt{'825'}: </b><br /><span class="small">$profile_txt{'826'}</span></label></td>
+        <td><label for="gtalk"><b>$profile_txt{'825'}: </b>
+            <br /><span class="small">$profile_txt{'826'}</span></label></td>
         <td><input type="text" maxlength="50" name="gtalk" id="gtalk" size="40" value="${$uid.$user}{'gtalk'}" /></td>
     </tr><tr class="windowbg">
-        <td><label for="skype"><b>$profile_txt{'827'}: </b><br /><span class="small">$profile_txt{'828'}</span></label></td>
+        <td><label for="skype"><b>$profile_txt{'827'}: </b>
+            <br /><span class="small">$profile_txt{'828'}</span></label></td>
         <td><input type="text" maxlength="50" name="skype" id="skype" size="40" value="${$uid.$user}{'skype'}" /></td>
     </tr><tr class="windowbg">
-        <td><label for="myspace"><b>$profile_txt{'570'}:</b><br /><span class="small">$profile_txt{'571'}</span></label></td>
-        <td><label for="myspace"><span class="small">$profile_txt{'572'}</span></label><br /><input type="text" maxlength="50" name="myspace" id="myspace" size="40" value="${$uid.$user}{'myspace'}" /></td>
+        <td><label for="myspace"><b>$profile_txt{'570'}:</b>
+            <br /><span class="small">$profile_txt{'571'}</span></label></td>
+        <td><label for="myspace"><span class="small">$profile_txt{'572'}</span></label>
+            <br /><input type="text" maxlength="50" name="myspace" id="myspace" size="40" value="${$uid.$user}{'myspace'}" /></td>
     </tr><tr class="windowbg">
-        <td><label for="facebook"><b>$profile_txt{'573'}:</b><br /><span class="small">$profile_txt{'574'}</span></label></td>
-        <td><label for="facebook"><span class="small">$profile_txt{'575'}</span></label><br /><input type="text" maxlength="50" name="facebook" id="facebook" size="40" value="${$uid.$user}{'facebook'}" /></td>
+        <td><label for="facebook"><b>$profile_txt{'573'}:</b>
+            <br /><span class="small">$profile_txt{'574'}</span></label></td>
+        <td><label for="facebook"><span class="small">$profile_txt{'575'}</span></label>
+            <br /><input type="text" maxlength="50" name="facebook" id="facebook" size="40" value="${$uid.$user}{'facebook'}" /></td>
+    </tr><tr class="windowbg">
+        <td><label for="twitter"><b>$profile_txt{'576'}:</b>
+            <br /><span class="small">$profile_txt{'577'}</span></label></td>
+        <td><label for="twitter"><span class="small">$profile_txt{'578'}</span></label>
+            <br /><input type="text" maxlength="50" name="twitter" id="twitter" size="40" value="${$uid.$user}{'twitter'}" /></td>
+    </tr><tr class="windowbg">
+        <td><label for="youtube"><b>$profile_txt{'579'}:</b>
+            <br /><span class="small">$profile_txt{'580'}</span></label></td>
+        <td><label for="youtube"><span class="small">$profile_txt{'581'}</span></label>
+            <br /><input type="text" maxlength="50" name="youtube" id="youtube" size="40" value="${$uid.$user}{'youtube'}" /></td>
     </tr>~;
     if ( !$minlinkweb ) { $minlinkweb = 0; }
     if (   ${ $uid . $user }{'postcount'} >= $minlinkweb
@@ -499,10 +519,12 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         || ${ $uid . $user }{'position'} eq 'Global Moderator' )
     {
         $showProfile .= qq~<tr class="windowbg">
-        <td><label for="webtitle"><b>$profile_txt{'83'}: </b><br /><span class="small">$profile_txt{'598'}</span></label></td>
+        <td><label for="webtitle"><b>$profile_txt{'83'}: </b>
+            <br /><span class="small">$profile_txt{'598'}</span></label></td>
         <td><input type="text" maxlength="30" name="webtitle" id="webtitle" size="40" value="${$uid.$user}{'webtitle'}" /></td>
     </tr><tr class="windowbg">
-        <td><label for="weburl"><b>$profile_txt{'84'}: </b><br /><span class="small">$profile_txt{'599'}</span></label></td>
+        <td><label for="weburl"><b>$profile_txt{'84'}: </b>
+            <br /><span class="small">$profile_txt{'599'}</span></label></td>
         <td><input type="text" name="weburl" id="weburl" size="40" value="${$uid.$user}{'weburl'}" /></td>
     </tr>~;
     }
@@ -535,7 +557,8 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         my $awayreply = ${ $uid . $user }{'awayreply'};
         $awayreply =~ s/<br \/>/\n/gsm;
         $showProfile .= qq~<tr class="windowbg">
-        <td><label for="offlinestatus"><b>$profile_txt{'showstatus'}: </b><br /><span class="small">$profile_txt{'statusexplain'}<br />$profile_txt{'awaydescription'}</span></label></td>
+        <td><label for="offlinestatus"><b>$profile_txt{'showstatus'}: </b>
+            <br /><span class="small">$profile_txt{'statusexplain'}<br />$profile_txt{'awaydescription'}</span></label></td>
         <td>
            <select name="offlinestatus" id="offlinestatus">
                <option value="offline"$offChecked>$maintxt{'61'}</option>
@@ -1410,7 +1433,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         <td><label for="settings6"><b>$profile_txt{'21'}: </b></label></td>
         <td><input type="text" name="settings6" id="settings6" size="4" value="${$uid.$user}{'postcount'}" /></td>
     </tr><tr class="windowbg">
-        <td><label for="settings7"><b>$profile_txt{'87'}: </b><br /><span class="small">$profile_txt{'87c'}</span></label></td>
+        <td><label for="settings7"><b>$profile_txt{'87'}: </b></label></td>
         <td>
             <select name="settings7" id="settings7">
                 <option value="${$uid.$user}{'position'}">$tt</option>
@@ -1452,6 +1475,7 @@ qq~\n                        <option value="Global Moderator">$title</option>~;
     </tr>~;
     }
 
+    AddModerators();
     (
         $dr_secund, $dr_minute, $dr_hour, $dr_day, $dr_month,
         $dr_year,   undef,      undef,    undef
@@ -1926,14 +1950,14 @@ qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};si
 
         if ( !$iamadmin ) {
             UpdateCookie('delete');
-            $username = 'Guest';
-            $iamguest = 1;
-            $iamadmin = q{};
-            $iamgmod  = q{};
-            $password = q{};
-            $yyim     = q{};
+            $username           = 'Guest';
+            $iamguest           = 1;
+            $iamadmin           = q{};
+            $iamgmod            = q{};
+            $password           = q{};
+            $yyim               = q{};
             local $ENV{'HTTP_COOKIE'} = q{};
-            $yyuname = q{};
+            $yyuname            = q{};
         }
         $yySetLocation = $scripturl;
 
@@ -2014,6 +2038,8 @@ sub ModifyProfileContacts2 {
     ToHTML( $member{'skype'} );
     ToHTML( $member{'myspace'} );
     ToHTML( $member{'facebook'} );
+    ToHTML( $member{'twitter'} );
+    ToHTML( $member{'youtube'} );
     ToHTML( $member{'weburl'} );
     FromChars( $member{'webtitle'} );
     ToHTML( $member{'webtitle'} );
@@ -2073,6 +2099,8 @@ sub ModifyProfileContacts2 {
     ${ $uid . $user }{'skype'}    = $member{'skype'};
     ${ $uid . $user }{'myspace'}  = $member{'myspace'};
     ${ $uid . $user }{'facebook'} = $member{'facebook'};
+    ${ $uid . $user }{'twitter'} = $member{'twitter'};
+    ${ $uid . $user }{'youtube'} = $member{'youtube'};
     ${ $uid . $user }{'webtitle'} = $member{'webtitle'};
     ${ $uid . $user }{'weburl'}   = (
         ( $member{'weburl'} && $member{'weburl'} !~ m{\Ahttps?://}sm )
@@ -2095,14 +2123,14 @@ sub ModifyProfileContacts2 {
 
         if ( $username eq $user ) {
             UpdateCookie('delete');
-            $username = 'Guest';
-            $iamguest = 1;
-            $iamadmin = q{};
-            $iamgmod  = q{};
-            $password = q{};
-            $yyim     = q{};
+            $username           = 'Guest';
+            $iamguest           = 1;
+            $iamadmin           = q{};
+            $iamgmod            = q{};
+            $password           = q{};
+            $yyim               = q{};
             local $ENV{'HTTP_COOKIE'} = q{};
-            $yyuname = q{};
+            $yyuname            = q{};
         }
         FormatUserName( $member{'username'} );
         require "$sourcedir/Mailer.pl";
@@ -2231,7 +2259,7 @@ sub ModifyProfileOptions2 {
         }
 
         my ( $size, $buffer, $filesize, $file_buffer );
-        while ( $size = read $file, $buffer, 512 ) {
+        while ( $size = read( $file, $buffer, 512 ) ) {
             $filesize += $size;
             $file_buffer .= $buffer;
         }
@@ -2270,7 +2298,7 @@ sub ModifyProfileOptions2 {
         if ( fopen( NEWFILE, ">$facesdir/UserAvatars/$fixfile" ) ) {
             binmode NEWFILE;
 
-            # needed for operating systems (OS) Windows, ignored by Linux
+ # needed for operating systems (OS) Windows, ignored by Linux
             print {NEWFILE} $file_buffer
               or croak 'cannot write NEWFILE';    # write new file on HD
             fclose(NEWFILE);
@@ -2297,7 +2325,7 @@ sub ModifyProfileOptions2 {
             if ( $giftest ne 'GIF' ) { $illegal = $giftest; }
         }
         fopen( ATTFILE, "$facesdir/UserAvatars/$fixfile" );
-        while ( read ATTFILE, $buffer, 1024 ) {
+        while ( read( ATTFILE, $buffer, 1024 ) ) {
             if ( $buffer =~ /<(html|script|body)/igsm ) { $illegal = $1; last; }
         }
         fclose(ATTFILE);
@@ -2442,9 +2470,9 @@ sub ModifyProfileOptions2 {
     ${ $uid . $user }{'dsttimeoffset'} = $member{'dsttimeoffset'} ? 1 : 0;
     ${ $uid . $user }{'dynamic_clock'} = $member{'dynamic_clock'} ? 1 : 0;
     ${ $uid . $user }{'timeselect'}    = int $member{'usertimeselect'};
-    ${ $uid . $user }{'template'}      = $member{'usertemplate'};
-    ${ $uid . $user }{'language'}      = $member{'userlanguage'};
-    ${ $uid . $user }{'timeformat'}    = $member{'timeformat'};
+    ${ $uid . $user }{'template'}     = $member{'usertemplate'};
+    ${ $uid . $user }{'language'}     = $member{'userlanguage'};
+    ${ $uid . $user }{'timeformat'}   = $member{'timeformat'};
     ${ $uid . $user }{'numberformat'} = int $member{'usernumberformat'};
 
     UserAccount( $user, 'update' );
@@ -2744,6 +2772,7 @@ qq~$dr_month/$dr_day/$dr_year $maintxt{'107'} $dr_hour:$dr_minute:$dr_secund~;
     }
     UserAccount( $user, 'update' );
 
+    AddModerators2( $user, $member{'addmod'} );
     my $scriptAction = $view ? 'myviewprofile' : 'viewprofile';
     $yySetLocation =
       qq~$scripturl?action=$scriptAction;username=$useraccount{$user}~;
@@ -2770,11 +2799,11 @@ sub ViewProfile {
 
     my ( $modify, $gender );
     my (
-        $pic_row,      $buddybutton,  $row_addgrp,  $row_gender,
-        $row_age,      $row_location, $row_icq,     $row_aim,
-        $row_yim,      $row_gtalk,    $row_skype,   $row_myspace,
-        $row_facebook, $row_email,    $row_website, $row_signature,
-        $showusertext
+        $pic_row,       $buddybutton,  $row_addgrp, $row_gender,
+        $row_age,       $row_location, $row_icq,    $row_aim,
+        $row_yim,       $row_msn,      $row_gtalk,  $row_skype,
+        $row_myspace, $row_facebook, $row_twitter,   $row_youtube, 
+        $row_email,   $row_website,  $row_signature, $showusertext
     );
 
     # Convert forum start date to string, if there is no date set,
@@ -2802,7 +2831,7 @@ sub ViewProfile {
     ## only show the 'modify' button if not using 'my center' or admin/gmod viewing
     $modify =
       (
-             !$view
+             !$view 
           && ( $user ne 'admin' || $username eq 'admin' )
           && (
             $iamadmin
@@ -2859,10 +2888,10 @@ qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px
             $gender = $profile_txt{'239'};
         }
         $row_gender = qq~
-                        <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactleft">
                         <b>$profile_txt{'231'}: </b>
                         </div>
-                        <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactright">
                         $gender
                         </div>~;
     }
@@ -2870,95 +2899,115 @@ qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px
         if ( $showage == 1 && ${ $uid . $user }{'hideage'} && !$iamadmin ) {
             $age = qq~$profile_txt{'722'} &nbsp;~;
         }
-        else { $age = qq~$age &nbsp; ~; }
+        else {$age = qq~$age &nbsp; ~; }
         $row_age = qq~
-                        <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactleft">
                         <b>$profile_txt{'420'}:</b>
                         </div>
-                        <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactright">
                         $age$isbday
                         </div>~;
     }
     if ( ${ $uid . $user }{'location'} ) {
         $row_location = qq~
-                        <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactleft">
                         <b>$profile_txt{'227'}: </b>
                         </div>
-                        <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactright">
                         ${$uid.$user}{'location'}
                         </div>~;
     }
     if ( ${ $uid . $user }{'icq'} && ${ $uid . $user }{'icq'} !~ m{\D}xsm ) {
         $row_icq .= qq~
-                        <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactleft">
                         <b>$profile_txt{'513'}:</b>
                         </div>
-                        <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactright">
                         <a href="http://web.icq.com/${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" onclick="target='_blank';">
                         <img src="http://web.icq.com/whitepages/online?icq=${$uid.$user}{'icq'}&#38;img=5" alt="${$uid.$user}{'icq'}" /> ${$uid.$user}{'icq'}</a>
                         </div>~;
     }
     if ( ${ $uid . $user }{'aim'} ) {
         $row_aim = qq~
-                        <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactleft">
                         <b>$profile_txt{'603'}: </b>
                         </div>
-                        <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactright">
                         <a href="aim:goim?screenname=${$uid.$user}{'aim'}&#38;message=Hi,+are+you+there?">
                         <img src="$imagesdir/aim.gif" alt="${$uid.$user}{'aim'}" /> $memsettingsd[9]</a>
                         </div>~;
     }
     if ( ${ $uid . $user }{'yim'} ) {
         $row_yim = qq~
-                        <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactleft">
                         <b>$profile_txt{'604'}: </b>
                         </div>
-                        <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactright">
                         <img src="http://opi.yahoo.com/online?u=${$uid.$user}{'yim'}&#38;m=g&#38;t=0" alt="${$uid.$user}{'yim'}" />
                         <a href="http://edit.yahoo.com/config/send_webmesg?.target=${$uid.$user}{'yim'}" onclick="target='_blank';"> $memsettingsd[10]</a>
                         </div>~;
     }
     if ( ${ $uid . $user }{'gtalk'} ) {
         $row_gtalk = qq~
-                        <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactleft">
                         <b>$profile_txt{'825'}: </b>
                         </div>
-                        <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactright">
                         <img src="$imagesdir/gtalk2.gif" alt="" />
                         <a href="#" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$user','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false">$profile_txt{'825'} ${$uid.$user}{'realname'}</a>
                         </div>~;
     }
     if ( ${ $uid . $user }{'skype'} ) {
         $row_skype = qq~
-                        <div style="float: left; clear: left; width: 30%; padding-top: 5px;  padding-bottom: 5px;">
+                        <div class="contactleft">
                         <b>$profile_txt{'827'}: </b>
                         </div>
-                        <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactright">
                         <img src="$imagesdir/skype.gif" alt="" />
                         <a href="javascript:void(window.open('callto://${$uid.$user}{'skype'}','skype','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'))">$profile_txt{'827'} ${$uid.$user}{'realname'}</a>
                         </div>~;
     }
     if ( ${ $uid . $user }{'myspace'} ) {
         $row_myspace = qq~
-                        <div style="float: left; clear: left; width: 30%; padding-top: 5px;  padding-bottom: 5px;">
+                        <div class="contactleft">
                         <b>$profile_txt{'570'}: </b>
                         </div>
-                        <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactright">
                         <img src="$imagesdir/myspace.gif" alt="" />
                         <a href="http://www.myspace.com/${$uid.$user}{'myspace'}" onclick="target='_blank';">$profile_txt{'570'} ${$uid.$user}{'realname'}</a>
                         </div>~;
     }
     if ( ${ $uid . $user }{'facebook'} ) {
         $row_facebook = qq~
-                        <div style="float: left; clear: left; width: 30%; padding-top: 5px;  padding-bottom: 5px;">
+                        <div class="contactleft">
                         <b>$profile_txt{'573'}: </b>
                         </div>
-                        <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactright">
                         <img src="$imagesdir/facebook.gif" alt="" />
                         <a href="http://www.facebook.com/~
           . (
             ${ $uid . $user }{'facebook'} !~ /\D/xsm ? 'profile.php?id=' : q{} )
           . qq~${$uid.$user}{'facebook'}" onclick="target='_blank';"> ${$uid.$user}{'facebook'}</a>
+                        </div>~;
+    }
+    if ( ${ $uid . $user }{'twitter'} ) {
+        $row_twitter = qq~
+                        <div class="contactleft">
+                        <b>$profile_txt{'576'}: </b>
+                        </div>
+                        <div class="contactright">
+                        <img src="$imagesdir/twitter.gif" alt="" />
+                        <a href="http://twitter.com/${$uid.$user}{'twitter'}" target="_blank">$profile_txt{'576'} ${$uid.$user}{'realname'}</a>
+                        </div>~;
+    }
+    if ( ${ $uid . $user }{'youtube'} ) {
+        $row_youtube = qq~
+                        <div class="contactleft">
+                        <b>$profile_txt{'579'}: </b>
+                        </div>
+                        <div class="contactright">
+                        <img src="$imagesdir/youtube.gif" alt="" />
+                        <a href="http://www.youtube.com/${$uid.$user}{'youtube'}" target="_blank">$profile_txt{'579'} ${$uid.$user}{'realname'}</a>
                         </div>~;
     }
     if (   !${ $uid . $user }{'hidemail'}
@@ -2987,10 +3036,10 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
         }
 
         $row_email = qq~
-                        <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactleft">
                         <b>$profile_txt{'69'}: </b>
                         </div>
-                        <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactright">
                         $rowEmail
                         </div>~;
     }
@@ -3004,10 +3053,10 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
       )
     {
         $row_website = qq~
-                        <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactleft">
                         <b>$profile_txt{'96'}: </b>
                         </div>
-                        <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
+                        <div class="contactright">
                         <a href="${$uid.$user}{'weburl'}" onclick="target='_blank';">${$uid.$user}{'webtitle'}</a>
                         </div>~;
     }
@@ -3086,11 +3135,11 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
           WrapChars( Censor( ${ $uid . $user }{'usertext'} ), 20 );
     }
 
-    $showProfile .= q~
+    $showProfile .= qq~
 <table class="bordercolor cs_thin pad_8px">~;
     if ( !$view ) {
         $yynavigation = qq~&rsaquo; $profile_txt{'92'}~;
-        $showProfile .= q~
+        $showProfile .= qq~
     <tr>
         <td class="titlebg">
             <div class="text1" style="float: left; width: 100%;">~;
@@ -3107,37 +3156,11 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
         </td>
     </tr>~;
     }
-    if (   is_moderator_b($user) == 1
-        && ${ $uid . $user }{'position'} ne 'Administrator'
-        && ${ $uid . $user }{'position'} ne 'Global Moderator' )
-    {
-        (
-            $title,     $stars,     $starpic,    $color,
-            $noshow,    $viewperms, $topicperms, $replyperms,
-            $pollperms, $attachperms
-        ) = split /\|/xsm, $Group{'Moderator'};
-        $temptitle = $title;
-        $col_title_mod =
-          qq~<span style="color: $color;"><b>$title</b></span><br />~;
-        $memberunfo{$user} = $tempgroupcheck;
-        my $starnum        = $stars;
-        my $memberstartemp = q{};
-        if ( $starpic !~ /\//xsm ) { $starpic = "$imagesdir/$starpic"; }
-        while ( $starnum-- > 0 ) {
-            $memberstartemp .= qq~<img src="$starpic" alt="*" />~;
-        }
-        $modstar{$user} = $memberstartemp ? "$memberstartemp<br />" : q{};
-        $mybrds = $mybrds;
-    }
-    else { $mybrds = q{}; }
     $showProfile .= qq~<tr>
         <td class="windowbg">
             $pic_row
             <div style="float: left; width: 60%; padding-top: 5px;  padding-bottom: 5px;">
             <span style="font-size: 18px;">${$uid.$user}{'realname'}</span><br />
-            $col_title_mod
-            $mybrds
-            $modstar{$user}
             $col_title{$user}
             $row_addgrp<br />
             $memberstar{$user}
@@ -3149,18 +3172,74 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
             $modify
             </div>
        </td>
-    </tr><tr>
+    </tr>~;
+    my $userismod;
+    if (   ${ $uid . $user }{'position'} ne 'Administrator'
+        && ${ $uid . $user }{'position'} ne 'Global Moderator' )
+    {
+        $userismod = is_moderator($user);
+    }
+    if ($userismod) {
+        (
+            $title,     $stars,     $starpic,    $color,
+            $noshow,    $viewperms, $topicperms, $replyperms,
+            $pollperms, $attachperms
+        ) = split /\|/xsm, $Group{'Moderator'};
+        my $starnum        = $stars;
+        my $memberstartemp = q{};
+        if ( $starpic !~ /\//xsm ) { $starpic = "$imagesdir/$starpic"; }
+        while ( $starnum-- > 0 ) {
+            $memberstartemp .= qq~<img src="$starpic" alt="*" />~;
+        }
+        $memberstar = $memberstartemp ? "$memberstartemp<br />" : q{};
+
+        $showProfile .= qq~<tr>
+            <td class="windowbg2">
+            <div style="float: left; width: 30%; text-align: left; padding: 5px 0px;">
+                <b>$title</b><br />
+                $memberstar
+            </div>
+            <div style="float: left; width: 70%; padding: 5px 0px;">
+            ~;
+        foreach my $catid (@categoryorder) {
+            @bdlist = split /,/xsm, $cat{$catid};
+            foreach my $board (@bdlist) {
+                if (   ${ $uid . $board }{'ann'} == 1
+                    || ${ $uid . $board }{'rbin'} == 1 )
+                {
+                    next;
+                }
+                $moderators = ${ $uid . $board }{'mods'};
+                my @BoardModerators = split /, ?/sm, $moderators;
+                foreach my $thisMod (@BoardModerators) {
+                    if ( $thisMod eq $user ) {
+                        ( $boardname, $boardperms, $boardview ) =
+                          split /\|/xsm, $board{"$board"};
+                        ToChars($boardname);
+                        $showProfile .=
+qq~<a href="$scripturl?board=$board" class="a">$boardname</a><br />~;
+                    }
+                }
+            }
+        }
+        $showProfile .= q~
+            </div>
+            </td>
+        </tr>
+        ~;
+    }
+    $showProfile .= qq~<tr>
         <td class="windowbg2 vtop">
-            <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
+            <div class="contactleft">
                 <b>$profile_txt{'21'}: </b>
             </div>
-            <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
+            <div class="contactright">
                 <b>$post_count<br />$post_per_day</b> $profile_txt{'893'}
             </div>
-            <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
+            <div class="contactleft">
                 <b>$profile_txt{'233'}: </b>
             </div>
-            <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
+            <div class="contactright">
                 $dr<br /><b>$member_for_days</b> $profile_txt{'894'}
             </div>
         </td>
@@ -3205,10 +3284,10 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
       )
     {
         $showProfile .= qq~
-            <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;">
+            <div class="contactleft">
                 <b>$profile_txt{'144'}: </b>
             </div>
-            <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">
+            <div class="contactright">
                 <a href="$scripturl?action=imsend;to=$useraccount{$user}">$profile_txt{'688'} ${$uid.$user}{'realname'}</a>
             </div>~;
     }
@@ -3222,6 +3301,8 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
                         $row_gtalk
                         $row_myspace
                         $row_facebook
+                        $row_twitter
+                        $row_youtube
                         $row_icq
         </td>
     </tr>~;
@@ -3259,18 +3340,18 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
         </td>
     </tr><tr>
         <td class="windowbg2">
-            <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;"><b>$lastonline: </b></div>
-            <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">$userlastlogin</div>
-            <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;"><b>$lastpost:</b></div>
-            <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">$userlastpost</div>\n~;
+            <div class="contactleft"><b>$lastonline: </b></div>
+            <div class="contactright">$userlastlogin</div>
+            <div class="contactleft"><b>$lastpost:</b></div>
+            <div class="contactright">$userlastpost</div>\n~;
 
     if (   $PM_level == 1
         || ( $PM_level == 2 && ( $iamadmin || $iamgmod || $iammod ) )
         || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
     {
         $showProfile .= qq~
-            <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;"><b>$lastPM: </b></div>
-            <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">$userlastim</div>~;
+            <div class="contactleft"><b>$lastPM: </b></div>
+            <div class="contactright">$userlastim</div>~;
     }
 
     $showProfile .= q~
@@ -3300,7 +3381,6 @@ qq~<a href="$adminurl?action=ipban3;ban_email=$ban_user_email;username=$useracco
         }
         $ban_user_name = $useraccount{$user};
 
-     #        $ban_user_name =~ s/([^A-Za-z0-9])/sprintf('%%%02X', ord($1))/seg;
         if ( $is_banned =~ /U/sm ) {
             $ban_user_link =
 qq~<a href="$adminurl?action=ipban3;ban_memname=$ban_user_name;username=$useraccount{$user};unban=1"><span class="small">[$profile_txt{'903'}]</span></a>~;
@@ -3347,17 +3427,19 @@ qq~<a href="$adminurl?action=ipban3;ban=$ip_ban[$ip];username=$useraccount{$user
 
         $showProfile .= qq~<tr>
         <td class="windowbg2">
-            <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;"><b>$profile_txt{'902'}:</b></div>
-            <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">$user<br />$ban_user_link</div>
-            <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;"><b>$profile_txt{'69'}:</b></div>
-            <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">${$uid.$user}{'email'}<br />$ban_email_link</div>
-            <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;"><b>$profile_txt{'909'}:</b></div>
-            <div style="float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;">$ip_ban_options</div>
+            <div class="contactleft"><b>$profile_txt{'902'}:</b></div>
+            <div class="contactright">$user<br />$ban_user_link</div>
+            <div class="contactleft"><b>$profile_txt{'69'}:</b></div>
+            <div class="contactright">${$uid.$user}{'email'}<br />$ban_email_link</div>
+            <div class="contactleft"><b>$profile_txt{'909'}:</b></div>
+            <div class="contactright">$ip_ban_options</div>
         </td>
     </tr>~;
     }
 
-    if ( ${ $uid . $user }{'postcount'} > 0 && $maxrecentdisplay > 0 && !$view )
+    if (   ${ $uid . $user }{'postcount'} > 0
+        && $maxrecentdisplay > 0
+        && !$view )
     {
         $showProfile .= qq~<tr>
         <td class="windowbg2">
@@ -3401,7 +3483,9 @@ sub usersrecentposts {
     my @x = @_;
     if ($iamguest) { fatal_error('members_only'); }
     if ( $INFO{'username'} =~ /\//xsm ) { fatal_error('no_user_slash'); }
-    if ( $INFO{'username'} =~ /\\/xsm ) { fatal_error('no_user_backslash'); }
+    if ( $INFO{'username'} =~ /\\/xsm ) {
+        fatal_error('no_user_backslash');
+    }
     if ( !-e ("$memberdir/$INFO{'username'}.vars") ) {
         fatal_error('no_profile_exists');
     }
@@ -3416,8 +3500,8 @@ sub usersrecentposts {
     if ( $display > $maxrecentdisplay ) { $display = $maxrecentdisplay; }
 
     my (
-        %data,              $numfound,    %threadfound, %boardtxt,
-        %recentthreadfound, $recentfound, $save_recent, $boardperms,
+        %data,              $numfound,     %threadfound, %boardtxt,
+        %recentthreadfound, $recentfound,  $save_recent, $boardperms,
         %boardcat,          %catinfos,    $curboard,    $c,
         @messages,          $tnum,        $tsub,        $tname,
         $temail,            $tdate,       $treplies,    $tusername,
@@ -3430,7 +3514,7 @@ sub usersrecentposts {
     Recent_Load($curuser);
     my @recent =
       reverse sort { ${ $recent{$a} }[1] <=> ${ $recent{$b} }[1] }
-      grep         { ${ $recent{$_} }[1] > 0 } keys %recent;
+      grep { ${ $recent{$_} }[1] > 0 } keys %recent;
     my $recentcount = keys %recent;
     my @data;
     $#data = $display - 1;
@@ -3532,7 +3616,9 @@ sub usersrecentposts {
                                 }
                                 if ( exists $recent{$tnum} ) {
                                     $recentthreadfound{$tnum}++;
-                                    if ( $thread == $tnum ) { $recentfound++; }
+                                    if ( $thread == $tnum ) {
+                                        $recentfound++;
+                                    }
                                 }
                                 if ( ${ $recent{$tnum} }[1] < $mdate ) {
                                     $save_recent = 1;
@@ -3558,7 +3644,8 @@ sub usersrecentposts {
                 next CATEGORYCHECK;
             }
 
-          BOARDCHECK: foreach my $curboard ( split /\,/xsm, $cat{$catid} ) {
+          BOARDCHECK:
+            foreach my $curboard ( split /\,/xsm, $cat{$catid} ) {
                 if ( !$boardtxt{$curboard} ) {
                     ( $boardname{$curboard}, $boardperms, undef ) =
                       split /\|/xsm, $board{$curboard};
