@@ -4,7 +4,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       October 5, 2012                                             #
+# Packaged:       October 21, 2012                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -80,7 +80,7 @@ sub embed {
 			$controlheight = 42;
 
 		} elsif ($media_url =~ m/youtube\.com/i) {
-		      ($media_url, undef) = split /\&/g, $media_url;
+		($media_url, undef) = split /\&/g, $media_url;
             	$media_url =~ s~watch\?v=~v\/~g;
             	$video = $embed_youtube;
 			$controlheight = 36;
