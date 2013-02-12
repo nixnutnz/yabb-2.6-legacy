@@ -102,7 +102,7 @@ sub backupsettings {
 			}
 		}
 
-		if(module == "/usr/bin/tar") {
+		if(module == "/tar") {
 			for(i = 0; document.getElementsByName("bintarcompress")[i]; i++) {
 				document.getElementsByName("bintarcompress")[i].disabled = false;
 			}
@@ -256,7 +256,7 @@ sub backupsettings {
        </td>
      </tr>~;
 
-	foreach $command (qw(/bin/gzip /bin/bzip2)) {
+	foreach $command (qw( gzip bzip2)) {
 		$label_id++;
 		$input = qq~name="bintarcompress" id="label_$label_id" value="$command" $methodchecklist{$command}~;
 		$newcommand = &CheckPath($command);
@@ -285,8 +285,8 @@ sub backupsettings {
 
 	# Display the commands we can use for compression
 	# Non-translated here, as I doubt there are words to describe "tar" in another language
-	$input = qq~name="backupmethod" id="backupmethod1" value="/usr/bin/tar" onclick="domodulecheck('/usr/bin/tar')" $methodchecklist{'/usr/bin/tar'}~;
-	$newcommand = &CheckPath('/usr/bin/tar');
+	$input = qq~name="backupmethod" id="backupmethod1" value="/tar" onclick="domodulecheck('/tar')" $methodchecklist{'/tar'}~;
+	$newcommand = &CheckPath('/tar');
 	if ($newcommand) {
 		if (&ak_system("tar -cf $vardir/backuptest.$curtime.tar ./$yyexec.$yyext")) {
 			($style,$disabledtext) = ('','');
@@ -308,8 +308,8 @@ sub backupsettings {
        </td>
      </tr>$tarcompress2~;
 
-	$input = qq~name="backupmethod" id="backupmethod2" value="/usr/bin/zip" onclick="domodulecheck('/usr/bin/zip')" $methodchecklist{'/usr/bin/zip'}~;
-	$newcommand = &CheckPath('/usr/bin/zip');
+	$input = qq~name="backupmethod" id="backupmethod2" value="/zip" onclick="domodulecheck('/zip')" $methodchecklist{'/zip'}~;
+	$newcommand = &CheckPath('/zip');
 	if ($newcommand) {
 		if (&ak_system("zip -gq $vardir/backuptest.$curtime.zip ./$yyexec.$yyext")) {
 			($style,$disabledtext) = ('','');
@@ -459,7 +459,7 @@ $presetjavascriptcode
 		if ($lastbackupfiletime && $lastbackup == $lastbackupfiletime) {
 			$lastbackupfiletime = &timeformat($lastbackup,1);
 			$lastbackupfiletime =~ s/<.*?>//g;
-			if ($backupmethod eq '/usr/bin/zip') {
+			if ($backupmethod eq '/zip') {
 #                            $lastbackupfiletime =~ s/ .+//;
                         @lbt = split / /, $lastbackupfiletime;
                         $lastbackupfiletime = join q{ }, $lbt[0],$lbt[1],$lbt[2];
@@ -566,7 +566,7 @@ sub check_backup_settings {
 	}
 
 	# If we're using /usr/bin/tar, check for the compression method.
-	if ($backupmethod eq '/usr/bin/tar' && $compressmethod ne 'none') {
+	if ($backupmethod eq '/tar' && $compressmethod ne 'none') {
 		my $newcommand = &CheckPath($compressmethod);
 		if (!$newcommand) { &admin_fatal_error("","$backup_txt{40} $compressmethod $backup_txt{41}"); }
 	}
@@ -607,8 +607,8 @@ sub runbackup {
 			$backupmethod = $again[4] eq 'tar' ? 'Archive::Tar' : 'Archive::Zip';
 			$compressmethod = $again[5] ? ($again[5] eq 'gz' ? 'Compress::Zlib' : 'Compress::Bzip2') : 'none';
 		} else {
-			$backupmethod = $again[3] eq 'tar' ? '/usr/bin/tar' : '/usr/bin/zip';
-			$compressmethod = $again[4] ? ($again[4] eq 'gz' ? '/bin/gzip' : '/bin/bzip2') : 'none';
+			$backupmethod = $again[3] eq 'tar' ? '/tar' : '/zip';
+			$compressmethod = $again[4] ? ($again[4] eq 'gz' ? '/gzip' : '/bzip2') : 'none';
 		}
 		&check_backup_settings;
 	}
@@ -620,7 +620,7 @@ sub runbackup {
 	$curtime = $INFO{'curtime'} || $curtime;
 	$FORM{'backupnewest'} ||= $INFO{'backupnewest'};
 	$backuptype = 'n' if $FORM{'backupnewest'};
-	if ($FORM{'backupnewest'} && $backupmethod eq '/usr/bin/zip') {
+	if ($FORM{'backupnewest'} && $backupmethod eq '/zip') {
 		my ($day, $mon, $year);
 		(undef, undef, undef, $day, $mon, $year, undef, undef, undef) = gmtime($FORM{'backupnewest'});
 		$FORM{'backupnewest'} = sprintf("%02d", ($mon+1)) . sprintf("%02d", $day) . (1900 + $year);
@@ -747,7 +747,7 @@ sub BackupDirectory {
 	$recursemode = 1;
 	if ($dir =~ s/^!//) { $recursemode = 0; }
 
-	if ($backupmethod eq '/usr/bin/tar') {
+	if ($backupmethod eq '/tar') {
 		$cr = ($tarcreated || $INFO{'curtime'}) ? '-r' : '-c';
 		$tarcreated = 1;
 		if (!$recursemode) { $dir .= '/*.*'; }
@@ -755,7 +755,7 @@ sub BackupDirectory {
 		$dir =~ s|^/||; # needet not to get server log messages like "Removing leading `/' from ..."
 		&ak_system("tar $cr -C / -f $backupdir/backup$backuptype.$curtime.$filedirs.tar $Nt $dir") || &admin_fatal_error("","'tar $cr -C / -f $backupdir/backup$backuptype.$curtime.$filedirs.tar $Nt $dir' $backup_txt{31}: $!. $backup_txt{32} " . ($? >> 8));
 
-	} elsif ($backupmethod eq '/usr/bin/zip') {
+	} elsif ($backupmethod eq '/zip') {
 		my $recurseoption;
 		if (!$recursemode) { $dir .= '/*.*'; }
 		else { $recurseoption = 'r'; }
@@ -791,11 +791,11 @@ sub RecurseDirectory {
 # Compresses the tar
 sub BackupMethodFinalize {
 	my ($filedirs,$loop) = @_;
-	if (!$loop && $backupmethod eq '/usr/bin/tar') {
-		if ($compressmethod eq '/bin/bzip2') {
+	if (!$loop && $backupmethod eq '/tar') {
+		if ($compressmethod eq '/bzip2') {
 			&ak_system("bzip2 -z $backupdir/backup$backuptype.$curtime.$filedirs.tar") || &admin_fatal_error("","'bzip2 -z $backupdir/backup$backuptype.$curtime.$filedirs.tar.bz2' $backup_txt{31}: $!. $backup_txt{32} " . ($? >> 8));
 
-		} elsif ($compressmethod eq '/bin/gzip') {
+		} elsif ($compressmethod eq '/gzip') {
 			&ak_system("gzip $backupdir/backup$backuptype.$curtime.$filedirs.tar") || &admin_fatal_error("","'gzip $backupdir/backup$backuptype.$curtime.$filedirs.tar.gz' $backup_txt{31}: $!. $backup_txt{32} " . ($? >> 8));
 		}
 
