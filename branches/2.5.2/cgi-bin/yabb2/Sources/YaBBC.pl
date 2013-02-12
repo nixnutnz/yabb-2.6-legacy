@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$yabbcplver = 'YaBB 2.5.2 $Revision: 1.0 $';
+$yabbcplver = 'YaBB 2.5.2 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Post');
@@ -88,7 +88,7 @@ sub quotemsg {
 			&LoadUser($qauthor); # it was an old style user id which could be loaded and screen name set to final author
 			$fqauthor = ${$uid.$qauthor}{'realname'};
 		}
-		$qmessage =~ s~\/me\s+(.*?)(\n|\Z)(.*?)~<i><span style="color: #FF0000;"><b>$fqauthor says:</b><\/span> $1<\/i>$2$3~ig;
+		$qmessage =~ s~\/me\s+(.*?)(\n|\Z)(.*?)~<i><span style="color: #FF0000;"><b>$fqauthor</b><\/span> $1<\/i>$2$3~ig;
 	}
 	# next 2 lines: for display names in Quotes in LivePreview
 	$usernames_life_quote{$usernames_life_quote{'temp_quote_autor'}} = $fqauthor;
@@ -382,7 +382,7 @@ s/\[s\](.*?)\[\/s\]/<span style="text-decoration: line-through">$1<\/span>/isgm;
 	$message =~ s~\[edit\](.*?)\[/edit\]~<b>$post_txt{'603'}: </b><br /><div class="editbg" style="overflow: auto;">$1</div>~isg;
 
 #	$message =~ s~/me ~<i>$displayname</i> ~ig;
-	$message =~ s~/me\s+(.*)~<i><span style="color: #FF0000;"><b>$displayname  says:</b></span> '$1'</i>~ig;
+	$message =~ s~/me\s+(.*)~<i><span style="color: #FF0000;"><b>$displayname</b></span> $1</i>~ig;
 
 	if($message =~ /\[media/ || $message =~ /\[flash/) {
 		require "$sourcedir/MediaCenter.pl";
