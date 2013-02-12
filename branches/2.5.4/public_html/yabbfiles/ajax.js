@@ -16,6 +16,7 @@
 
 var xmlHttp = null;
 var browser = '';
+var imagedir = '';
 var cachedPostPage;
 var cachedIMPage;
 var iframeloaded = 0;
@@ -137,8 +138,8 @@ function MarkFinished() {
 		var images = document.getElementsByTagName("img");
 		for (var i=0; i<images.length; i++) {
 			var src = images[i].getAttribute("src");
-			if (src.match("/on.gif") && !images[i].id.match("no_edit")) {
-				images[i].setAttribute("src",src.replace("/on.gif","/off.gif"));
+			if (src.match("/on.png") && !images[i].id.match("no_edit")) {
+				images[i].setAttribute("src",src.replace("/on.png","/off.png"));
 			}
 			else if (src.match("/sub_on.png")) {
 				images[i].setAttribute("src",src.replace("/sub_on.png","/sub_off.png"));
@@ -213,16 +214,16 @@ function AddRemFavFinished() {
 			links.setAttribute("href",href.replace("remfav","addfav"));
 			links.innerHTML = addlink;
 		}
-//		var links = document.getElementById("favlink2");
-//		var href = links.href;
-//		if (href.match("addfav")) {
-//			links.setAttribute("href",href.replace("addfav","remfav"));
-//			links.innerHTML = remlink;
-//		}
-//		if (href.match("remfav")) {
-//			links.setAttribute("href",href.replace("remfav","addfav"));
-//			links.innerHTML = addlink;
-//		}
+		var links = document.getElementById("favlink2");
+		var href = links.href;
+		if (href.match("addfav")) {
+			links.setAttribute("href",href.replace("addfav","remfav"));
+			links.innerHTML = remlink;
+		}
+		if (href.match("remfav")) {
+			links.setAttribute("href",href.replace("remfav","addfav"));
+			links.innerHTML = addlink;
+		}
  	}
 }
 

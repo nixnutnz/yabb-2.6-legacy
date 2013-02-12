@@ -94,13 +94,12 @@ function SpamInator(title,v1,v2,adr,subbody) {
 }
 
 
-// for QuickLinks display
 var hideTimer = null;
 var lastOpen = null;
 function quickLinks(num) {
 	closeLinks(lastOpen);
-	document.getElementById("ql"+num).style.display = "inline-block";
-	document.getElementById("ql"+num).parentNode.style.zIndex = "1000";
+	document.getElementById(num).style.display = "inline-block";
+	document.getElementById(num).parentNode.style.zIndex = "1000";
 	lastOpen = num;
 }
 function TimeClose(num) {
@@ -112,8 +111,8 @@ function keepLinks(num) {
 }
 function closeLinks(num) {
 	if(lastOpen != null) {
-		document.getElementById("ql"+num).style.display = "none";
-		document.getElementById("ql"+num).parentNode.style.zIndex = "0";
+		document.getElementById(num).style.display = "none";
+		document.getElementById(num).parentNode.style.zIndex = "0";
 	}
 	lastOpen = null;
 	clearTimeout(hideTimer);
@@ -259,8 +258,9 @@ function resize_images() {
 
 	// To prevent window from jumping to other place because
 	// of image resize after window is set to the ancor this is needed:
-	} else if (location.hash) {
-		location.href = location.hash;
+//	} else if (location.hash) {
+//		location.href = location.hash;
+// removed per Carsten's recommendation - code does not prevent jump
 	}
 }
 

@@ -126,30 +126,30 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 		ubbcstr=ubbcstr.replace(/\[code\s*([a-z|\+]{0,})\]\n*(.+?)\n*\[\/code\]/i, cmessage);
 	}
 
-	ubbcstr=ubbcstr.replace(/\[smilie=(\S+\.)(gif|jpg|png|bmp)\]/g, "<img src='"+smilieurl+"/$1$2' border='0' alt='$1' />");
-	ubbcstr=ubbcstr.replace(/\[smiley=(\S+\.)(gif|jpg|png|bmp)\]/g, "<img src='"+smilieurl+"/$1$2' border='0' alt='$1' />");
-	ubbcstr=ubbcstr.replace(/(\W|^)\;\)/g, "$1<img border='0' src='"+imagesdir+"/wink.gif' alt='Wink' />");
-	ubbcstr=ubbcstr.replace(/(\W|^)\;\-\)/g, "$1<img border='0' src='"+imagesdir+"/wink.gif' alt='Wink' />");
-	ubbcstr=ubbcstr.replace(/(\W|^)\;D/g, "$1<img border='0' src='"+imagesdir+"/grin.gif' alt='Grin' />");
-	ubbcstr=ubbcstr.replace(/\:\'\(/g, "<img border='0' src='"+imagesdir+"/cry.gif' alt='Cry' />");
-	ubbcstr=ubbcstr.replace(/\:\-\//g, "<img border='0' src='"+imagesdir+"/undecided.gif' alt='Undecided' />");
-	ubbcstr=ubbcstr.replace(/\:\-X/g, "<img border='0' src='"+imagesdir+"/lipsrsealed.gif' alt='Lips Sealed' />");
-	ubbcstr=ubbcstr.replace(/\:\-\[/g, "<img border='0' src='"+imagesdir+"/embarassed.gif' alt='Embarassed' />");
-	ubbcstr=ubbcstr.replace(/\:\-\*/g, "<img border='0' src='"+imagesdir+"/kiss.gif' alt='Kiss' />");
-	ubbcstr=ubbcstr.replace(/\&gt\;\:\(/g, "<img border='0' src='"+imagesdir+"/angry.gif' alt='Angry' />");
-	ubbcstr=ubbcstr.replace(/\:\:\)/g, "<img border='0' src='"+imagesdir+"/rolleyes.gif' alt='Roll Eyes' />");
-	ubbcstr=ubbcstr.replace(/\:P/g, "<img border='0' src='"+imagesdir+"/tongue.gif' alt='Tongue' />");
-	ubbcstr=ubbcstr.replace(/\:\)/g, "<img border='0' src='"+imagesdir+"/smiley.gif' alt='Smiley' />");
-	ubbcstr=ubbcstr.replace(/\:\-\)/g, "<img border='0' src='"+imagesdir+"/smiley.gif' alt='Smiley' />");
-	ubbcstr=ubbcstr.replace(/\:D/g, "<img border='0' src='"+imagesdir+"/cheesy.gif' alt='Cheesy' />");
-	ubbcstr=ubbcstr.replace(/\:\-\(/g, "<img border='0' src='"+imagesdir+"/sad.gif' alt='Sad' />");
-	ubbcstr=ubbcstr.replace(/\:\(/g, "<img border='0' src='"+imagesdir+"/sad.gif' alt='Sad' />");
-	ubbcstr=ubbcstr.replace(/\:o/g, "<img border='0' src='"+imagesdir+"/shocked.gif' alt='Shocked' />");
-	ubbcstr=ubbcstr.replace(/8\-\)/g, "<img border='0' src='"+imagesdir+"/cool.gif' alt='Cool' />");
-	ubbcstr=ubbcstr.replace(/\:\-\?/g, "<img border='0' src='"+imagesdir+"/huh.gif' alt='Huh' />");
-	ubbcstr=ubbcstr.replace(/\^_\^/g, "<img border='0' src='"+imagesdir+"/happy.gif' alt='Happy' />");
-	ubbcstr=ubbcstr.replace(/\:thumb\:/g, "<img border='0' src='"+imagesdir+"/thumbsup.gif' alt='Thumbsup' />");
-	ubbcstr=ubbcstr.replace(/\&gt\;\:\-D/g, "<img border='0' src='"+imagesdir+"/evil.gif' alt='Evil' />");
+	ubbcstr=ubbcstr.replace(/\[smilie=(\S+\.)(gif|jpg|png|bmp)\]/g, "<img src='"+smilieurl+"/$1$2' alt='$1' />");
+	ubbcstr=ubbcstr.replace(/\[smiley=(\S+\.)(gif|jpg|png|bmp)\]/g, "<img src='"+smilieurl+"/$1$2' alt='$1' />");
+	ubbcstr=ubbcstr.replace(/(\W|^)\;\)/g, "$1<img src='"+imagesdir+"/wink.gif' alt='Wink' />");
+	ubbcstr=ubbcstr.replace(/(\W|^)\;\-\)/g, "$1<img src='"+imagesdir+"/wink.gif' alt='Wink' />");
+	ubbcstr=ubbcstr.replace(/(\W|^)\;D/g, "$1<img src='"+imagesdir+"/grin.gif' alt='Grin' />");
+	ubbcstr=ubbcstr.replace(/\:\'\(/g, "<img src='"+imagesdir+"/cry.gif' alt='Cry' />");
+	ubbcstr=ubbcstr.replace(/\:\-\//g, "<img src='"+imagesdir+"/undecided.gif' alt='Undecided' />");
+	ubbcstr=ubbcstr.replace(/\:\-X/g, "<img src='"+imagesdir+"/lipsrsealed.gif' alt='Lips Sealed' />");
+	ubbcstr=ubbcstr.replace(/\:\-\[/g, "<img src='"+imagesdir+"/embarassed.gif' alt='Embarassed' />");
+	ubbcstr=ubbcstr.replace(/\:\-\*/g, "<img src='"+imagesdir+"/kiss.gif' alt='Kiss' />");
+	ubbcstr=ubbcstr.replace(/\&gt\;\:\(/g, "<img src='"+imagesdir+"/angry.gif' alt='Angry' />");
+	ubbcstr=ubbcstr.replace(/\:\:\)/g, "<img src='"+imagesdir+"/rolleyes.gif' alt='Roll Eyes' />");
+	ubbcstr=ubbcstr.replace(/\:P/g, "<img src='"+imagesdir+"/tongue.gif' alt='Tongue' />");
+	ubbcstr=ubbcstr.replace(/\:\)/g, "<img src='"+imagesdir+"/smiley.gif' alt='Smiley' />");
+	ubbcstr=ubbcstr.replace(/\:\-\)/g, "<img src='"+imagesdir+"/smiley.gif' alt='Smiley' />");
+	ubbcstr=ubbcstr.replace(/\:D/g, "<img src='"+imagesdir+"/cheesy.gif' alt='Cheesy' />");
+	ubbcstr=ubbcstr.replace(/\:\-\(/g, "<img src='"+imagesdir+"/sad.gif' alt='Sad' />");
+	ubbcstr=ubbcstr.replace(/\:\(/g, "<img src='"+imagesdir+"/sad.gif' alt='Sad' />");
+	ubbcstr=ubbcstr.replace(/\:o/g, "<img src='"+imagesdir+"/shocked.gif' alt='Shocked' />");
+	ubbcstr=ubbcstr.replace(/8\-\)/g, "<img src='"+imagesdir+"/cool.gif' alt='Cool' />");
+	ubbcstr=ubbcstr.replace(/\:\-\?/g, "<img src='"+imagesdir+"/huh.gif' alt='Huh' />");
+	ubbcstr=ubbcstr.replace(/\^_\^/g, "<img src='"+imagesdir+"/happy.gif' alt='Happy' />");
+	ubbcstr=ubbcstr.replace(/\:thumb\:/g, "<img src='"+imagesdir+"/thumbsup.gif' alt='Thumbsup' />");
+	ubbcstr=ubbcstr.replace(/\&gt\;\:\-D/g, "<img src='"+imagesdir+"/evil.gif' alt='Evil' />");
 
 	for(var i=0; i<jssmiliecode.length-1; i++) {
 		if (jssmilieurl[i].match(/\//)) tmpurl = jssmilieurl[i];
@@ -160,7 +160,7 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 		tmpcode=tmpcode.replace(/ /g, "");
 		tmpcode=tmpcode.replace(/([\\\^\$\@*+[\]?{}.=!:(|)])/g,"\\$1");
 		retmpcode = new RegExp(tmpcode, 'g');
-		ubbcstr=ubbcstr.replace(retmpcode, "<img border='0' src='"+tmpurl+"' alt='' />");
+		ubbcstr=ubbcstr.replace(retmpcode, "<img src='"+tmpurl+"' alt='' />");
 	}
 
 	ubbcstr=ubbcstr.replace(/\[([^\]]{0,30})\n([^\]]{0,30})\]/g, '[$1$2]');

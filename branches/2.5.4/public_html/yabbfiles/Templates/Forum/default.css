@@ -193,8 +193,16 @@ height:24px;
 text-align:left;
 }
 
+.tabmenuright_b {
+background-color:transparent;
+background-image:url(./default/tabright211b.png);
+background-repeat:no-repeat;
+height:24px;
+text-align:left;
+}
+
 .tabmenuright {
-background-color:#9CB9F3;
+background-color:transparent;
 background-image:url(./default/tabright211.png);
 background-repeat:no-repeat;
 height:24px;
@@ -468,6 +476,13 @@ text-decoration:none;
 background-color:transparent;
 color:#000;
 text-decoration:underline;
+}
+.message table {
+width:auto;
+margin-left:1em;
+}
+.message table td {
+border: #000 solid thin;
 }
 
 .droppageindex {
@@ -1020,4 +1035,174 @@ clear:left; color: red; font-weight: bold; display: none;
 
 #password-strength-meter {
 background: transparent url(./default/empty_bar.gif) repeat-x center left; height: 4px;
+}
+
+.borderbox {width: 500px; margin-bottom: 8px; margin-left: auto; margin-right: auto;}
+
+.contactleft {
+float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;}
+
+.contactright {
+float: left; width: 70%; padding-top: 5px; padding-bottom: 5px;}
+
+
+/* Soft coded css buttons */
+.buttonleft {
+	padding: 0px 0px 0px 6px;
+	background-image: url(../../Buttons/Button22big_left.png);
+}
+.buttonright {
+	padding: 0px 6px 0px 0px;
+	background-image: url(../../Buttons/Button22big_right.png);
+}
+.buttonimage {
+	padding: 0px 0px 0px 25px;
+	background-position: 0px 0px;
+}
+.buttontext {
+	position: relative;
+	top: 5px;
+	left: 0px;
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 10px;
+	color: #000000;
+	font-weight: normal;
+	font-style: normal;
+}
+/* Soft coded css buttons end */
+
+.cssbutton1 {
+height: 20px; width: 1px; margin: 0px; padding: 0px; vertical-align: top; display: inline-block;
+}
+.cssbutton2 {
+height: 20px; border: 0px; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;
+}
+.cssbutton3 {
+height: 20px; border: 0px; margin: 0px; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;
+}
+.cssbutton4 {
+height: 20px; border: 0px; margin: 0px; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;
+}
+.cssbutton5 {
+height: 20px; border: 0px; margin: 0px; padding: 0 5px 0 0; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block;
+}
+
+.tt {
+font-family: Courier, monospace;
+}
+
+.littlebody {
+width:800px
+}
+/* Post and Thread Tools */
+.post_tools {
+	background-color: #2f7dce;
+	background-image: url(./default/reverse_grad.png);
+	background-position: bottom left;
+	background-repeat: repeat-x;
+	height: 100%;
+	padding: 3px;
+	border-top: 0;
+	border-bottom: 0;
+	border-left: 1px;
+	border-right: 1px;
+	border-style: solid;
+	border-color: #ddd;
+}
+.post_tools_menu {
+	background-color: #eee;
+	position: absolute;
+	display: none;
+	margin:0px;
+	padding:1px;
+	border: 1px;
+	border-color: #000000;
+	border-style: solid;
+	list-style: none;
+	text-indent: 0px;
+	top: 11px;
+	right: 0px;
+}
+.post_tools_menu li {
+	background-color: #6f88ac;
+	white-space: nowrap;
+	font-size: 10px;
+	margin-left: 0px;
+	padding: 3px;
+	list-style: none;
+	text-indent: 0px;
+	text-align: left;
+	font-style: normal;
+	font-size: 11px;
+	color: #FFFFFF;
+	font-weight: bold;
+}
+.post_tools_a a{
+	font-weight: bold;
+	font-style: normal;
+	font-size: 11px;
+	font-family: Verdana, Arial, Sans-Serif;
+	color: #FFFFFF;
+}
+.post_tools_a a:hover {
+	color: #FFFFFF;
+	text-decoration:none;
+}
+.post_tools_menu li:hover {
+	background-color:#FFFFFF;
+	color: #000;
+}
+.post_tools_menu li a {
+	color: #FFFFFF;
+	text-decoration:none;
+}
+.post_tools_menu li:hover a{
+	color: #000;
+}
+.post_tools_menu li:hover a:visited{
+	color: #000;
+}
+.post_tools_menu li a:hover {
+	color: #000;
+	text-decoration:none;
+}
+.post_tools_menu li a:visited {
+	color: #FFFFFF;
+	text-decoration:none;
+}
+/* End Post and Thread Tools */
+
+.showcolor {
+float: left; width: 15px; height: 15px; margin-right: 1px; margin-bottom: 1px; border: 0px; font-size: 5px; cursor: pointer;}
+}
+.defpal  {
+border:0;
+float:left;
+font-size:5px;
+height:15px;
+margin-bottom:1px;
+margin-right:1px;
+text-align:center;
+width:15px;
+}
+
+.defpal_b  {
+border:0;
+font-size:5px;
+height:13px;
+margin:0;
+padding:0;
+vertical-align:middle;
+width:13px;
+}
+
+.deftrows {
+float: left; 
+width: 15px; 
+height: 15px; 
+margin-right: 1px; 
+margin-bottom: 1px; 
+border: 0px; 
+font-size: 5px; 
+cursor: hand;
 }

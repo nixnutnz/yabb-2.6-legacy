@@ -104,6 +104,9 @@ font-weight:bold;
 font-weight:normal;
 }
 
+.tt { font-family: Courier, monospace;
+}
+
 .bordercolor {
 	background-color: #A7B8CC;
 }
@@ -568,3 +571,10 @@ margin-right:1px;
 width:10px;
 }
 
+.under, .u {
+text-decoration:underline;
+}
+
+.showcolor {
+float: left; width: 15px; height: 15px; margin-right: 1px; margin-bottom: 1px; border: 0px; font-size: 5px; cursor: pointer;}
+}
