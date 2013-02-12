@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$subsplver = 'YaBB 2.5.2 $Revision: 1.4 $';
+$subsplver = 'YaBB 2.5.2 $Revision: 1.5 $';
 if ($debug) { &LoadLanguage('Debug'); }
 
 use subs 'exit';
@@ -2027,16 +2027,26 @@ sub userOnLineStatus {
 
 ## moved from Register.pl so we can use for guest browsing
 sub guestLangSel {
-	opendir(DIR, $langdir);
+    opendir DIR, $langdir;
 	$morelang = 0;
-	my @langDir = readdir(DIR);
-	close(DIR);
-	foreach my $filesanddirs (sort {lc($a) cmp lc($b)} @langDir) {
-		chomp $filesanddirs;
-		if (($filesanddirs ne '.') && ($filesanddirs ne '..') && (-e "$langdir/$filesanddirs/Register.lng")) {
-			$lngsel = "";
-			if ($filesanddirs eq $language) { $lngsel = qq~ selected="selected"~; }
-			$langopt .= qq~<option value="$filesanddirs"$lngsel>$filesanddirs</option>~;
+    my @langDir = readdir DIR;
+    closedir DIR;
+    foreach my $langitems ( sort { lc($a) cmp lc $b } @langDir ) {
+        chomp $langitems;
+        if (   ( $langitems ne q{.} )
+            && ( $langitems ne q{..} )
+            && ( $langitems ne q{.htaccess} )
+            && ( $langitems ne q{index.html} )
+           )
+        {
+            $lngsel = q{};
+            if ( $langitems eq $language ) {
+                $lngsel = q~ selected="selected"~;
+            }
+            my $displang = $langitems;
+            $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
+            $langopt .=
+              qq~<option value="$langitems"$lngsel>$displang</option>~;
 			$morelang++;
 		}
 	}
