@@ -11,7 +11,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$extendedprofilesplver = 'YaBB 2.5.2 $Revision: 1.1 $';
+$extendedprofilesplver = 'YaBB 2.5.2 $Revision: 1.2 $';
 if ($action eq 'detailedversion') { return 1; }
 
 ###############################################################################
@@ -221,7 +221,7 @@ sub ext_timeformat {
 		} elsif ($mytimeselected == 3) {
 			qq~$newday.$newmonth.$newyear~;
 
-		} elsif ($mytimeselected == 4) {
+		} elsif ($mytimeselected == 4 || $mytimeselected == 8 ) {
 			$newmonth--;
 			$newmonth2 = $months[$newmonth];
 			if( $newday > 10 && $newday < 20 ) { $newday2 = "<sup>$timetxt{'4'}</sup>"; }
@@ -603,32 +603,44 @@ sub ext_gen_editfield {
 
 	} elsif ($field{'type'} eq "text_multi") {
 		@options = split(/\^/,$field{'options'});
-		if ($options[0]) {
-			$field{'options'} = qq~
-	<br /><span class="small">$lang_ext{'max_chars1'}$options[0]$lang_ext{'max_chars2'} <input value="$options[0]" size="~ . length($options[0]) . qq~" name="ext_$id\_msgCL" id="ext_$id\_msgCL" class="windowbg" style="border: 0px; padding: 1px; font-size: 11px;" readonly="readonly" /></span>
+        if ( $options[0] ) {
+            $field{'options'} = qq~
+	<br /><span class="small">$lang_ext{'max_chars1'}$options[0]$lang_ext{'max_chars2'} <input value="$options[0]" size="~
+              . length( $options[0] )
+              . qq~" name="ext_~
+              . $id
+              . qq~_msgCL" disabled="disabled" /></span>
 	<script language="JavaScript" type="text/javascript">
 	<!--
-	var ext_$id\_supportsKeys = false;
-	function ext_$id\_tick() {
-		ext_$id\_calcCharLeft(document.forms[0]);
-		if (!ext_$id\_supportsKeys) timerID = setTimeout("ext_$id\_tick()",$options[0]);
+	var ext_~ . $id . qq~_supportsKeys = false
+	function ext_~ . $id . qq~_tick() {
+	  ext_~ . $id . qq~_calcCharLeft(document.forms[0])
+	  if (!ext_~ 
+              . $id
+              . qq~_supportsKeys) timerID = setTimeout("ext_~
+              . $id
+              . qq~_tick()",$options[0])
 	}
 
-	function ext_$id\_calcCharLeft(sig) {
-		clipped = false;
-		maxLength = $options[0];
-		if (document.creator.ext_$id.value.length > maxLength) {
-			document.creator.ext_$id.value = document.creator.ext_$id.value.substring(0,maxLength);
-			charleft = 0;
-			clipped = true;
+	function ext_~ . $id . qq~_calcCharLeft(sig) {
+	  clipped = false
+	  maxLength = $options[0]
+	  if (document.creator.ext_~ . $id . qq~.value.length > maxLength) {
+		document.creator.ext_~ 
+              . $id
+              . qq~.value = document.creator.ext_~
+              . $id
+              . qq~.value.substring(0,maxLength)
+		charleft = 0
+		clipped = true
 		} else {
-			charleft = maxLength - document.creator.ext_$id.value.length;
+		charleft = maxLength - document.creator.ext_~ . $id . qq~.value.length
 		}
-		document.creator.ext_$id\_msgCL.value = charleft;
-		return clipped;
+	  document.creator.ext_~ . $id . qq~_msgCL.value = charleft
+	  return clipped
 	}
 
-	ext_$id\_tick();
+	ext_~ . $id . qq~_tick();
 	//-->
 	</script>~;
 		} else { $field{'options'} = ""; }
