@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$postplver = 'YaBB 2.5.2 $Revision: 1.1 $';
+$postplver = 'YaBB 2.5.2 $Revision: 1.2 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Post');
@@ -1643,7 +1643,7 @@ function enabPrev() {
 		document.getElementById("savetable").style.visibility = "visible";
 		document.getElementById("SaveInfo").style.height = "auto";
 		document.getElementById("savetopic").style.height = "auto";
-		document.getElementById("saveframe").style.height = "auto";
+		document.getElementById("saveframe").style.height = "0px";
 		document.images.prevwin.alt = "$npf_txt{'02'}";
 		document.images.prevwin.title = "$npf_txt{'02'}";
 		document.images.prevwin.src="$defaultimagesdir/cat_collapse.gif";
@@ -1665,6 +1665,7 @@ function enabPrev() {
 }
 
 function calcCharLeft() {
+  if (document.postmodify.message.value.length > 0) document.getElementById("saveframe").style.height = "auto"; 
   var clipped = false
   var maxLength = $MaxMessLen
   if (document.postmodify.message.value.length > maxLength) {
