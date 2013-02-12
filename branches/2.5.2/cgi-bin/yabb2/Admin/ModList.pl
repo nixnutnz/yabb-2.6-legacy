@@ -30,8 +30,6 @@ sub ListMods {
 	# You could use "$SuperMod_CoolThings"
 
 ### BOARDMOD ANCHOR ###
-	$IISbugfix_01a = "BugFix_IIS|YaBB Team &amp; Gomez Addams|This mod fixes/corrects some reported issues Windows IIS servers in the YaBB 2.5.2 release.|0.1 alpha|01/02/2013";
-	push (@installed_mods, "$IISbugfix_01a");
 ### END BOARDMOD ANCHOR ###
 
 	if (!@installed_mods) {
