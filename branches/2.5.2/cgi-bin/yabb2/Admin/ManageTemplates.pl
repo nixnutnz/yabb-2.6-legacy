@@ -4,7 +4,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       October 5, 2012                                             #
+# Packaged:       October 21, 2012                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$managetemplatesplver = 'YaBB 2.5.2 $Revision: 1.0 $';
+$managetemplatesplver = 'YaBB 2.5.2 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Templates');
@@ -1503,6 +1503,7 @@ sub ModifySkin {
 	$fulltemplate =~ s/({|<)yabb charset(}|>)/$yycharset/g;
 	$fulltemplate =~ s/({|<)yabb title(}|>)/$temptitle/g;
 	$fulltemplate =~ s/({|<)yabb style(}|>)/$tempstyles/g;
+	$fulltemplate =~ s/({|<)yabb html_root(}|>)/$yyhtml_root/g;
 	$fulltemplate =~ s/({|<)yabb images(}|>)/$tempimages/g;
 	$fulltemplate =~ s/({|<)yabb uname(}|>)/$tempuname/g;
 	$fulltemplate =~ s/({|<)yabb boardlink(}|>)/$tempforumurl/g;
