@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang='en-US'>
 <head>
-<!-- YaBB 2.5.2 $Revision: 1.1 $ -->
+<!-- YaBB 2.5.2 $Revision: 1.2 $ -->
 <title>YaBB Quick Start Guide - Installation: Step 3 - File Permissions (Alternative Settings)</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" href="../../style.css" type="text/css" />
@@ -126,7 +126,8 @@
 			<br />
 			<ul class="st3">
 				<li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> cgi-bin/yabb2/Admin</li>
-				<li><span class="chmod">-rw-r--r-- (CHMOD 644)</span> cgi-bin/yabb2/Admin/* (all files)</li>
+				<li><span class="chmod">-rwxr-xr-x (CHMOD 755)</span> cgi-bin/yabb2/Admin/ModuleChecker.pl</li>
+				<li><span class="chmod">-rw-r--r-- (CHMOD 666)</span> cgi-bin/yabb2/Admin/* (all other files)</li>
 			</ul>
 			<br />
 			<ul class="st3">
@@ -214,6 +215,7 @@
 			<br />
 			<ul class="st3">
 				<li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> cgi-bin/yabb2/Sources</li>
+				<li><span class="chmod">-rwxr-xr-x (CHMOD 755)</span> cgi-bin/yabb2/Sources/RSS.pl</li>
 				<li><span class="chmod">-rwxr-xr-x (CHMOD 755)</span> cgi-bin/yabb2/Sources/SpellChecker.pl</li>
 				<li><span class="chmod">-rw-r--r-- (CHMOD 644)</span> cgi-bin/yabb2/Sources/* (all other files)</li>
 			</ul>
