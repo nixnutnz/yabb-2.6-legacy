@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$instantmessageplver = 'YaBB 2.5.2 $Revision: 1.1 $';
+$instantmessageplver = 'YaBB 2.5.2 $Revision: 1.2 $';
 if ($action eq 'detailedversion') { return 1; }
 $set_subjectMaxLength ||= 50;
 
@@ -1193,7 +1193,7 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 					document.getElementById("savetable").style.visibility = "visible";
 					document.getElementById("savetable").style.height = "auto";
 					document.getElementById("savetopic").style.height = "auto";
-					document.getElementById("saveframe").style.height = "auto";
+					document.getElementById("saveframe").style.height = "0px";
 					document.images.prevwin.alt = "$npf_txt{'02'}";
 					document.images.prevwin.title = "$npf_txt{'02'}";
 					document.images.prevwin.src="$defaultimagesdir/cat_collapse.gif";
@@ -1216,6 +1216,7 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 
 	$imsend .= qq~
 			function calcCharLeft() {
+                if (document.postmodify.message.value.length > 0) document.getElementById("saveframe").style.height = "auto"; 
 				clipped = false;
 				maxLength = $MaxMessLen;
 				if (document.postmodify.message.value.length > maxLength) {
