@@ -827,7 +827,7 @@ sub ModifyProfileOptions {
 		<td align="left"><label for="usertimesign"><b>$profile_txt{'371'}:</b><br /><span class="small">$profile_txt{'372'}</span></label></td>
 		<td align="left"><span class="small">$profile_txt{'373'}:<br /><b>~ . &timeformat($date,1) . qq~</b><br /><br /></span><select name="usertimesign" id="usertimesign"><option value="">+</option><option value="-"~ . ($usertimeoffset[0] < 0 ? ' selected="selected"' : '') . qq~>-</option></select>
 			<select name="usertimehour" id="usertimehour">~;
-	for (my $i = 0; 15 > $i; $i++) {
+	for (my $i = 0; 24 > $i; $i++) {
 		$i = sprintf("%02d", $i);
 		$showProfile .= qq~\n			<option value="$i"~ . (($usertimeoffset[0] == $i || $usertimeoffset[0] == -$i) ? ' selected="selected"' : '') . qq~>$i</option>~;
 	}
