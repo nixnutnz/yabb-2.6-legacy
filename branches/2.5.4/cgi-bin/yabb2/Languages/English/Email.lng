@@ -327,6 +327,7 @@ $privatemessagenotificationemail = qq~{yabb sender} has sent you a personal mess
 
 Subject: {yabb subject}
 Message: {yabb message}
+{yabb attachments}
 
 This message is also in your personal message inbox at {yabb mbname}\: {yabb scripturl}~;
 

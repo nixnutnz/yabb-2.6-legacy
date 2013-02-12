@@ -75,6 +75,8 @@ $myprofileblock = qq~
 		<br />
 		{yabb postinfo}
 		{yabb location}
+		{yabb age}
+		{yabb regdate}
 		{yabb gender}
 	</div>
 </div>

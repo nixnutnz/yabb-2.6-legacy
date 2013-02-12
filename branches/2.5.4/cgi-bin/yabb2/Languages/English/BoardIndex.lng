@@ -62,6 +62,7 @@ $boardindexlngver = 'YaBB 2.5.4 $Revision$';
 '685' => 'Info Center',
 '791' => 'View the',
 '792' => 'most recent posts',
+'792a' => 'most recent topics',
 '793' => 'on the forum.',
 '795' => 'You have',
 '796' => 'Personal Messages',

@@ -13,12 +13,12 @@
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
-our $VERSION = 1.0;
+our $VERSION = '2.5.4';
 
 $checkspacepmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
-require "$admindir/NewSettings.pl";
+require Admin::NewSettings;
 
 sub checkspace {
     is_admin_or_gmod();

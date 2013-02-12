@@ -1,0 +1,685 @@
+###############################################################################
+# PostBox.pm                                                                  #
+# $Date: 02.17.12 $                                                           #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.5.4                                                  #
+# Packaged:       January 1, 2013                                             #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+#use warnings;
+#no warnings qw(uninitialized once redefine);
+use CGI::Carp qw(fatalsToBrowser);
+our $VERSION = '2.5.4';
+
+$postboxpmver = 'YaBB 2.5.4 $Revision$';
+if ( defined $actions && $action eq 'detailedversion' ) { return 1; }
+
+#InstantMessage.pm and Post.pl use the same code for the posting box - why have two copies? #
+
+sub postbox {
+    $box = qq~<script type="text/javascript">
+            HAND = 'class="vtop pointer"';
+            HAND += " onmouseover='contextTip(event, this.alt)' onmouseout='contextTip(event, this.alt)' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'";
+            document.write('<div class="left437">');
+            document.write("<img src='$imagesdir/url.gif' onclick='hyperlink();' "+HAND+" width='23' height='22' alt='$post_txt{'257'}' title='$post_txt{'257'}' />");
+            document.write("<img src='$imagesdir/ftp.gif' onclick='ftp();' "+HAND+" width='23' height='22' alt='$post_txt{'434'}' title='$post_txt{'434'}' />");
+            document.write("<img src='$imagesdir/img.gif' onclick='image();' "+HAND+" width='23' height='22' alt='$post_txt{'435'}' title='$post_txt{'435'}' />");
+            document.write("<img src='$imagesdir/email2.gif' onclick='emai1();' "+HAND+" width='23' height='22' alt='$post_txt{'258'}' title='$post_txt{'258'}' />");
+            document.write("<img src='$imagesdir/media.gif' onclick='flash();' "+HAND+" width='23' height='22' alt='$post_txt{'433'}' title='$post_txt{'433'}' />");
+            document.write("<img src='$imagesdir/table.gif' onclick='table();' "+HAND+" width='23' height='22' alt='$post_txt{'436'}' title='$post_txt{'436'}' />");
+            document.write("<img src='$imagesdir/tr.gif' onclick='trow();' "+HAND+" width='23' height='22' alt='$post_txt{'449'}' title='$post_txt{'449'}' />");
+            document.write("<img src='$imagesdir/td.gif' onclick='tcol();' "+HAND+" width='23' height='22' alt='$post_txt{'437'}' title='$post_txt{'437'}' />");
+            document.write("<img src='$imagesdir/hr.gif' onclick='hr();' "+HAND+" width='23' height='22' alt='$post_txt{'531'}' title='$post_txt{'531'}' />");
+            document.write("<img src='$imagesdir/tele.gif' onclick='teletype();' "+HAND+" width='23' height='22' alt='$post_txt{'440'}' title='$post_txt{'440'}' />");
+            document.write("<img src='$imagesdir/code.gif' onclick='selcodelang();' "+HAND+" width='23' height='22' alt='$post_txt{'259'}' title='$post_txt{'259'}' />");
+            document.write("<img src='$imagesdir/quote2.gif' onclick='quote();' "+HAND+" width='23' height='22' alt='$post_txt{'260'}' title='$post_txt{'260'}' />");
+            document.write("<img src='$imagesdir/edit.gif' onclick='edit();' "+HAND+" width='23' height='22' alt='$post_txt{'603'}' title='$post_txt{'603'}' />");
+            document.write("<img src='$imagesdir/sup.gif' onclick='superscript();' "+HAND+" width='23' height='22' alt='$post_txt{'447'}' title='$post_txt{'447'}' />");
+            document.write("<img src='$imagesdir/sub.gif' onclick='subscript();' "+HAND+" width='23' height='22' alt='$post_txt{'448'}' title='$post_txt{'448'}' />");
+
+            document.write("<img src='$imagesdir/list.gif' onclick='bulletset();' "+HAND+" width='23' height='22' alt='$post_txt{'261'}' title='$post_txt{'261'}' />");
+            document.write("<img src='$imagesdir/me.gif' onclick='me();' "+HAND+" width='23' height='22' alt='$post_txt{'604'}' title='$post_txt{'604'}' />");
+            document.write("<img src='$imagesdir/move.gif' onclick='move();' "+HAND+" width='23' height='22' alt='$post_txt{'439'}' title='$post_txt{'439'}' />");
+            document.write("<img src='$imagesdir/timestamp.gif' onclick='timestamp($date);' "+HAND+" width='23' height='22' alt='$post_txt{'245'}' title='$post_txt{'245'}' />");
+            document.write("<img src='$imagesdir/noparse.gif' onclick='noparse();' "+HAND+" width='23' height='22' alt='$post_txt{'noparse'}' title='$post_txt{'noparse'}' />");
+            document.write('<br /></div>');
+            document.write('<div class="textdecor">');
+            document.write("<img src='$imagesdir/bold.gif' onclick='bold();' "+HAND+" width='23' height='22' alt='$post_txt{'253'}' title='$post_txt{'253'}' />");
+            document.write("<img src='$imagesdir/italicize.gif' onclick='italicize();' "+HAND+" width='23' height='22' alt='$post_txt{'254'}' title='$post_txt{'254'}' />");
+            document.write("<img src='$imagesdir/underline.gif' onclick='underline();' "+HAND+" width='23' height='22' alt='$post_txt{'255'}' title='$post_txt{'255'}' />");
+            document.write("<img src='$imagesdir/strike.gif' onclick='strike();' "+HAND+" width='23' height='22' alt='$post_txt{'441'}' title='$post_txt{'441'}' />");
+            document.write("<img src='$imagesdir/highlight.gif' onclick='highlight();' "+HAND+" width='23' height='22' alt='$post_txt{'246'}' title='$post_txt{'246'}' />");
+            document.write('</div>');
+            document.write('<div class="fontface">');
+            document.write('<select name="fontface" id="fontface" onchange="if(this.options[this.selectedIndex].value) fontfce(this.options[this.selectedIndex].value);">');
+            document.write('<option value="">Verdana</option>');
+            document.write('<option value="">-\\-\\-\\-\\-\\-\\-\\-\\-</option>');
+            document.write('<option value="Arial" style="font-family: Arial">Arial</option>');
+            document.write('<option value="Bitstream Vera Sans Mono" style="font-family: Bitstream Vera Sans Mono">Bitstream</option>');
+            document.write('<option value="Bradley Hand ITC" style="font-family: Bradley Hand ITC">Bradley Hand ITC</option>');
+            document.write('<option value="Comic Sans MS" style="font-family: Comic Sans MS">Comic Sans MS</option>');
+            document.write('<option value="Courier" style="font-family: Courier">Courier</option>');
+            document.write('<option value="Courier New" style="font-family: Courier New">Courier New</option>');
+            document.write('<option value="Georgia" style="font-family: Georgia">Georgia</option>');
+            document.write('<option value="Impact" style="font-family: Impact">Impact</option>');
+            document.write('<option value="Lucida Sans" style="font-family: Lucida Sans">Lucida Sans</option>');
+            document.write('<option value="Microsoft Sans Serif" style="font-family: Microsoft Sans Serif">MS Sans Serif</option>');
+            document.write('<option value="Papyrus" style="font-family: Papyrus">Papyrus</option>');
+            document.write('<option value="Tahoma" style="font-family: Tahoma">Tahoma</option>');
+            document.write('<option value="Tempus Sans ITC" style="font-family: Tempus Sans ITC">Tempus Sans ITC</option>');
+            document.write('<option value="Times New Roman" style="font-family: Times New Roman">Times New Roman</option>');
+            document.write('<option value="Verdana" style="font-family: Verdana" selected="selected">Verdana</option>');
+            document.write('</select>');
+            var fntoptions = ["6", "7", "8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "36", "48", "56", "72"]
+            document.write('<select name="fontsize" id="fontsize" onchange="if(this.options[this.selectedIndex].value) fntsize(this.options[this.selectedIndex].value);">');
+            document.write('<option value="">11</option>');
+            document.write('<option value="">-\\-</option>');
+            for(var i = 0; i < fntoptions.length; i++) {
+                if(fntoptions[i] >= $fontsizemin && fntoptions[i] <= $fontsizemax) {
+                    if(fntoptions[i] == 11) document.write('<option value="11" selected="selected">11</option>');
+                    else document.write('<option value=' + fntoptions[i] + '>' + fntoptions[i] + '</option>');
+                }
+            }
+            document.write('</select>');
+            document.write('</div>');
+
+            function selcodelang() {
+                if (document.getElementById("codelang").style.display == "none")
+                document.getElementById("codelang").style.display = "inline-block";
+                else
+                document.getElementById("codelang").style.display = "none";
+                document.getElementById("codelang").style.zIndex = "100";
+
+                var openbox = document.getElementsByTagName("div");
+                for (var i = 0; i < openbox.length; i++) {
+                    if (openbox[i].className == "ubboptions" && openbox[i].id != "codelang") {
+                        openbox[i].style.display = "none";
+                    }
+                }
+            }
+
+            function syntaxlang(lang, optnum) {
+                AddSelText("[code"+lang+"]","[/code]");
+                document.getElementById("codesyntax").options[optnum].selected = false;
+                document.getElementById("codelang").style.display = "none";
+            }
+
+            function bulletset() {
+                if (document.getElementById("bullets").style.display == "none")
+                document.getElementById("bullets").style.display = "block";
+                else
+                document.getElementById("bullets").style.display = "none";
+                document.getElementById("bullets").style.zIndex = "100";
+
+                var openbox = document.getElementsByTagName("div");
+                for (var i = 0; i < openbox.length; i++) {
+                    if (openbox[i].className == "ubboptions" && openbox[i].id != "bullets") {
+                        openbox[i].style.display = "none";
+                    }
+                }
+            }
+
+            function showbullets(bullet) {
+                AddSelText("[list "+bullet+"][*]", "\\n[/list]");
+            }
+
+            function olist() {
+                AddSelText("[olist][*]", "\\n[/olist]");
+            }
+            function ulist() {
+                AddSelText("[list][*]", "\\n[/list]");
+            }
+
+            // Palette
+            var thistask = 'post';
+            function tohex(i) {
+                a2 = ''
+                ihex = hexQuot(i);
+                idiff = eval(i + '-(' + ihex + '*16)')
+                a2 = itohex(idiff) + a2;
+                while( ihex >= 16) {
+                    itmp = hexQuot(ihex);
+                    idiff = eval(ihex + '-(' + itmp + '*16)');
+                    a2 = itohex(idiff) + a2;
+                    ihex = itmp;
+                }
+                a1 = itohex(ihex);
+                return a1 + a2 ;
+            }
+
+            function hexQuot(i) {
+                return Math.floor(eval(i +'/16'));
+            }
+
+            function itohex(i) {
+                if( i === 0) { aa = '0' }
+                else { if( i == 1 ) { aa = '1' }
+                else { if( i == 2 ) { aa = '2' }
+                else { if( i == 3 ) { aa = '3' }
+                else { if( i == 4 ) { aa = '4' }
+                else { if( i == 5 ) { aa = '5' }
+                else { if( i == 6 ) { aa = '6' }
+                else { if( i == 7 ) { aa = '7' }
+                else { if( i == 8 ) { aa = '8' }
+                else { if( i == 9 ) { aa = '9' }
+                else { if( i == 10) { aa = 'a' }
+                else { if( i == 11) { aa = 'b' }
+                else { if( i == 12) { aa = 'c' }
+                else { if( i == 13) { aa = 'd' }
+                else { if( i == 14) { aa = 'e' }
+                else { if( i == 15) { aa = 'f' }
+                }}}}}}}}}}}}}}}
+                return aa;
+            }
+
+            function ConvShowcolor(color) {
+                if ( c=color.match(/rgb\\((\\d+?)\\, (\\d+?)\\, (\\d+?)\\)/i) ) {
+                    var rhex = tohex(c[1]);
+                    var ghex = tohex(c[2]);
+                    var bhex = tohex(c[3]);
+                    var newcolor = '#'+rhex+ghex+bhex;
+                }
+                else {
+                    newcolor = color;
+                }
+                if(thistask == "post") showcolor(newcolor);
+                if(thistask == "templ") previewColor(newcolor);
+            }
+
+            </script>
+            <div class="palbox_left">
+                <div class="palettebox">
+                    <span class="deftpal" style="background-color: #000000;" onclick="ConvShowcolor('#000000')">&nbsp;</span>
+                    <span class="deftpal" style="background-color: #333333;" onclick="ConvShowcolor('#333333')">&nbsp;</span>
+                    <span class="deftpal" style="background-color: #666666;" onclick="ConvShowcolor('#666666')">&nbsp;</span>
+                    <span class="deftpal" style="background-color: #999999;" onclick="ConvShowcolor('#999999')">&nbsp;</span>
+                    <span class="deftpal" style="background-color: #cccccc;" onclick="ConvShowcolor('#cccccc')">&nbsp;</span>
+                    <span class="deftpal" style="background-color: #ffffff;" onclick="ConvShowcolor('#ffffff')">&nbsp;</span>
+                    <span id="defaultpal1" class="deftpal" style="background-color: $pallist[0];" onclick="ConvShowcolor(this.style.backgroundColor)">&nbsp;</span>
+                    <span id="defaultpal2" class="deftpal" style="background-color: $pallist[1];" onclick="ConvShowcolor(this.style.backgroundColor)">&nbsp;</span>
+                    <span id="defaultpal3" class="deftpal" style="background-color: $pallist[2];" onclick="ConvShowcolor(this.style.backgroundColor)">&nbsp;</span>
+                    <span id="defaultpal4" class="deftpal" style="background-color: $pallist[3];" onclick="ConvShowcolor(this.style.backgroundColor)">&nbsp;</span>
+                    <span id="defaultpal5" class="deftpal" style="background-color: $pallist[4];" onclick="ConvShowcolor(this.style.backgroundColor)">&nbsp;</span>
+                    <span id="defaultpal6" class="deftpal" style="background-color: $pallist[5];" onclick="ConvShowcolor(this.style.backgroundColor)">&nbsp;</span>
+                 </div>
+                 <div class="palbox_right">
+                     <img src="$imagesdir/palette1.gif" class="pointer" onclick="window.open('$scripturl?action=palette;task=post', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+                  </div>
+            </div>
+            <script type="text/javascript">
+
+            HAND = 'class="vtop pointer"';
+            HAND += " onmouseover='contextTip(event, this.alt)' onmouseout='contextTip(event, this.alt)' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'";
+            document.write('<div class="txtalgn">');
+            document.write("<img src='$imagesdir/pre.gif' onclick='pre();' "+HAND+" width='23' height='22' alt='$post_txt{'444'}' title='$post_txt{'444'}' />");
+            document.write("<img src='$imagesdir/left.gif' onclick='left();' "+HAND+" width='23' height='22' alt='$post_txt{'445'}' title='$post_txt{'445'}' />");
+            document.write("<img src='$imagesdir/center.gif' onclick='center();' "+HAND+" width='23' height='22' alt='$post_txt{'256'}' title='$post_txt{'256'}' />");
+            document.write("<img src='$imagesdir/right.gif' onclick='right();' "+HAND+" width='23' height='22' alt='$post_txt{'446'}' title='$post_txt{'446'}' />");
+            document.write('</div>');
+
+            </script>
+            <noscript>
+            <span class="small">$maintxt{'noscript'}</span>
+            </noscript>
+            ~;
+
+    return $box;
+}
+
+sub postbox2 {
+    if ( !${ $uid . $username }{'postlayout'} ) {
+        $pheight  = 130;
+        $pwidth   = 448;
+        $textsize = 10;
+    }
+    else {
+        ( $pheight, $pwidth, $textsize, $col_row ) =
+          split /\|/xsm, ${ $uid . $username }{'postlayout'};
+    }
+    $col_row ||= 0;
+    if ( !$textsize || $textsize < 6 ) { $textsize = 6; }
+    if ( $textsize > 16 ) { $textsize = 16; }
+    if ( $pheight > 400 ) { $pheight  = 400; }
+    if ( $pheight < 130 ) { $pheight  = 130; }
+    if ( $pwidth > 600 )  { $pwidth   = 600; }
+    if ( $pwidth < 448 )  { $pwidth   = 448; }
+    $mtextsize  = $textsize . 'pt';
+    $mheight    = $pheight . 'px';
+    $mwidth     = $pwidth . 'px';
+    $dheight    = ( $pheight + 12 ) . 'px';
+    $dwidth     = ( $pwidth + 12 ) . 'px';
+    $jsdragwpos = $pwidth - 448;
+    $dragwpos   = ( $pwidth - 448 ) . 'px';
+    $jsdraghpos = $pheight - 130;
+    $draghpos   = ( $pheight - 130 ) . 'px';
+
+    $box = qq~
+            <div id="spell_container"></div>
+            <div class="left99">
+                <div class="leftleft">
+                    <input type="hidden" name="col_row" value="$col_row" />
+                    <input type="hidden" name="messagewidth" id="messagewidth" value="$pwidth" />
+                    <input type="hidden" name="messageheight" id="messageheight" value="$pheight" />
+                    <div id="dragcanvas" style="height: $dheight; width: $dwidth;">
+                        <textarea name="message" id="message" rows="8" cols="68" style="height: $mheight; width: $mwidth; font-size: $mtextsize;" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onchange="storeCaret(this);" tabindex="4">$message</textarea>
+                        <div id="dragbgw" style="height: $dheight;">
+                            <img src="$defaultimagesdir/resize_wb.gif" id="dragImg1" class="drag" style="left: $dragwpos; height: $dheight" alt="resize_wb" />
+                        </div>
+                        <div id="dragbgh" style="width: $dwidth">
+                            <img src="$defaultimagesdir/resize_hb.gif" id="dragImg2" class="drag" style="top: $draghpos; width: $dwidth" alt="resize_hb" />
+                        </div>
+                        <div class="ubboptions" id="bullets">
+                            <input type="button" value="$npf_txt{'default'}" class="npf_txt" onclick="ulist(), bulletset()" /><br />
+                            <input type="button" value="$npf_txt{'ordered'}" class="npf_txt" onclick="olist(), bulletset()" /><br />
+                            <img src="$defaultimagesdir/bull-redball.gif" onclick="showbullets('bull-redball'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-greenball.gif" onclick="showbullets('bull-greenball'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-blueball.gif" onclick="showbullets('bull-blueball'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-blackball.gif" onclick="showbullets('bull-blackball'), bulletset()" alt="" /><br />
+                            <img src="$defaultimagesdir/bull-redsq.gif" onclick="showbullets('bull-redsq'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-greensq.gif" onclick="showbullets('bull-greensq'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-bluesq.gif" onclick="showbullets('bull-bluesq'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-blacksq.gif" onclick="showbullets('bull-blacksq'), bulletset()" alt="" /><br />
+                            <img src="$defaultimagesdir/bull-redpin.gif" onclick="showbullets('bull-redpin'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-greenpin.gif" onclick="showbullets('bull-greenpin'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-bluepin.gif" onclick="showbullets('bull-bluepin'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-blackpin.gif" onclick="showbullets('bull-blackpin'), bulletset()" alt="" /><br />
+                            <img src="$defaultimagesdir/bull-redcheck.gif" onclick="showbullets('bull-redcheck'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-greencheck.gif" onclick="showbullets('bull-greencheck'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-bluecheck.gif" onclick="showbullets('bull-bluecheck'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-blackcheck.gif" onclick="showbullets('bull-blackcheck'), bulletset()" alt="" /><br />
+                            <img src="$defaultimagesdir/bull-redarrow.gif" onclick="showbullets('bull-redarrow'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-greenarrow.gif" onclick="showbullets('bull-greenarrow'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-bluearrow.gif" onclick="showbullets('bull-bluearrow'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-blackarrow.gif" onclick="showbullets('bull-blackarrow'), bulletset()" alt="" /><br />
+                        </div>
+                        <div class="ubboptions" id="codelang">
+                            <select size="10" name="codesyntax" id="codesyntax" onchange="syntaxlang(this.options[this.selectedIndex].value, this.selectedIndex);">
+                                <option value="" title="$npf_txt{'default'}">$npf_txt{'default'}</option>
+                                <option value=" c++" title="C++">C++</option>
+                                <option value=" css" title="CSS">CSS</option>
+                                <option value=" html" title="HTML">HTML</option>
+                                <option value=" java" title="Java">Java</option>
+                                <option value=" javascript" title="Javascript">Javascript</option>
+                                <option value=" pascal" title="Pascal">Pascal</option>
+                                <option value=" perl" title="Perl">Perl</option>
+                                <option value=" php" title="PHP">PHP</option>
+                                <option value=" sql" title="SQL">SQL</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chrwarn">
+                        <img src="$imagesdir/green1.gif" id="chrwarn" height="8" width="8" alt="" />
+                        <span class="small">$npf_txt{'03'} $MaxMessLen $npf_txt{'03a'}<input value="$MaxMessLen" size="3" name="msgCL" class="chrwarn" readonly="readonly" /></span>
+                    </div>
+                    <div class="chrsize">
+                        <span class="small">$post_txt{'textsize'} <input value="$textsize" size="2" name="txtsize" id="txtsize" class="chrsize" readonly="readonly" />pt <img src="$imagesdir/smaller.gif" height="11" width="11" alt="" onclick="sizetext(-1);" /><img src="$imagesdir/larger.gif" height="11" width="11" alt="" onclick="sizetext(1);" /></span>
+                    </div>~;
+    return $box;
+}
+
+sub postbox3 {
+    $box = qq~
+<script type="text/javascript">
+var oldwidth = parseInt(document.getElementById('message').style.width) - $jsdragwpos;
+var olddragwidth = parseInt(document.getElementById('dragbgh').style.width) - $jsdragwpos;
+var oldheight = parseInt(document.getElementById('message').style.height) - $jsdraghpos;
+var olddragheight = parseInt(document.getElementById('dragbgw').style.height) - $jsdraghpos;
+
+var skydobject={
+x: 0, y: 0, temp2 : null, temp3 : null, targetobj : null, skydNu : 0, delEnh : 0,
+
+initialize:function() {
+    document.onmousedown = this.skydeKnap
+    document.onmouseup=function(){
+        this.skydNu = 0;
+        document.getElementById('messagewidth').value = parseInt(document.getElementById('message').style.width);
+        document.getElementById('messageheight').value = parseInt(document.getElementById('message').style.height);
+    }
+},
+changeSize:function(deleEnh, knapId) {
+    if (knapId == "dragImg1") {
+        newwidth = oldwidth+parseInt(deleEnh);
+        newdragwidth = olddragwidth+parseInt(deleEnh);
+        document.getElementById('message').style.width = newwidth+'px';
+        document.getElementById('dragbgh').style.width = newdragwidth+'px';
+        document.getElementById('dragImg2').style.width = newdragwidth+'px';
+    }
+    if (knapId == "dragImg2") {
+        newheight = oldheight+parseInt(deleEnh);
+        newdragheight = olddragheight+parseInt(deleEnh);
+        document.getElementById('message').style.height = newheight+'px';
+        document.getElementById('dragbgw').style.height = newdragheight+'px';
+        document.getElementById('dragImg1').style.height = newdragheight+'px';
+        document.getElementById('dragcanvas').style.height = newdragheight+'px';
+
+    }
+},
+flytKnap:function(e) {
+    var evtobj = window.event ? window.event : e
+    if (this.skydNu == 1) {
+        sizestop = f_clientWidth()
+        maxstop = parseInt(((sizestop*66)/100)-450)
+        if(maxstop > 413) maxstop = 413
+        if(maxstop < 60) maxstop = 60
+
+        glX = parseInt(this.targetobj.style.left)
+        this.targetobj.style.left = this.temp2 + evtobj.clientX - this.x + "px"
+        nyX = parseInt(this.temp2 + evtobj.clientX - this.x)
+        if (nyX > glX) retning = "vn"; else retning = "hj";
+        if (nyX < 1 && retning == "hj") { this.targetobj.style.left = 0 + "px"; nyX = 0; retning = "vn"; }
+        if (nyX > maxstop && retning == "vn") { this.targetobj.style.left = maxstop + "px"; nyX = maxstop; retning = "hj"; }
+        delEnh = parseInt(nyX)
+        var knapObj = this.targetobj.id
+        skydobject.changeSize(delEnh, knapObj)
+        return false
+    }
+    if (this.skydNu == 2) {
+        glY = parseInt(this.targetobj.style.top)
+        this.targetobj.style.top = this.temp3 + evtobj.clientY - this.y + "px"
+        nyY = parseInt(this.temp3 + evtobj.clientY - this.y)
+        if (nyY > glY) retning = "vn"; else retning = "hj";
+        if (nyY < 1 && retning == "hj") { this.targetobj.style.top = 0 + "px"; nyY = 0; retning = "vn"; }
+        if (nyY > 270 && retning == "vn") { this.targetobj.style.top = 270 + "px"; nyY = 270; retning = "hj"; }
+        delEnh = parseInt(nyY)
+        knapObj = this.targetobj.id
+        skydobject.changeSize(delEnh, knapObj)
+        return false
+    }
+},
+skydeKnap:function(e) {
+    var evtobj = window.event ? window.event : e
+    this.targetobj = window.event ? event.srcElement : e.target
+    if (this.targetobj.className == "drag") {
+        if(this.targetobj.id == "dragImg1") this.skydNu = 1
+        if(this.targetobj.id == "dragImg2") this.skydNu = 2
+        this.knapObj = this.targetobj
+        if (isNaN(parseInt(this.targetobj.style.left))) this.targetobj.style.left = 0
+        if (isNaN(parseInt(this.targetobj.style.top))) this.targetobj.style.top = 0
+        this.temp2 = parseInt(this.targetobj.style.left)
+        this.temp3 = parseInt(this.targetobj.style.top)
+        this.x = evtobj.clientX
+        this.y = evtobj.clientY
+        if (evtobj.preventDefault) evtobj.preventDefault()
+        document.onmousemove = skydobject.flytKnap
+    }
+}
+}
+
+function f_clientWidth() {
+    return f_filterResults (
+        window.innerWidth ? window.innerWidth : 0,
+        document.documentElement ? document.documentElement.clientWidth : 0,
+        document.body ? document.body.clientWidth : 0 );
+}
+
+function f_filterResults(n_win, n_docel, n_body) {
+    var n_result = n_win ? n_win : 0;
+    if (n_docel && (!n_result || (n_result > n_docel))) n_result = n_docel;
+    return n_body && (!n_result || (n_result > n_body)) ? n_body : n_result;
+}
+
+var orgsize = $textsize;
+
+function sizetext(sizefact) {
+    orgsize = orgsize + sizefact;
+    if(orgsize < 6) orgsize = 6;
+    if(orgsize > 16) orgsize = 16;
+    document.getElementById('message').style.fontSize = orgsize+'pt';
+    document.getElementById('txtsize').value = orgsize;
+}
+
+skydobject.initialize()~;
+
+    #// Collapse/Expand additional features
+    #//var col_row = $col_row;
+    if ( $action ne 'imsend' && $action ne 'get_cal' ) {
+        $box .= qq~
+var col_row = 0;
+
+function show_features() {
+    document.getElementById('col_row').value = col_row;
+    if (col_row == 1) {
+        for (i = 1; 14 > i; i++) {
+            try {
+                if (typeof(document.getElementById("feature_status_" + i).style)) throw "1";
+            } catch (e) {
+                if (e == "1") {
+                    document.getElementById("feature_status_" + i).style.display = "none";
+                }
+            }
+        }
+        document.images.feature_col.alt = "$npf_txt{'expand_features'}";
+        document.images.feature_col.title = "$npf_txt{'expand_features'}";
+        document.images.feature_col.src="$defaultimagesdir/cat_expand.gif";
+        col_row = 0;
+    } else {
+        for (var i = 1; 14 > i; i++) {
+            try {
+                if (typeof(document.getElementById("feature_status_" + i).style)) throw "1";
+            } catch (e) {
+                if (e == "1") {
+                    document.getElementById("feature_status_" + i).style.display = "";
+                }
+            }
+        }
+        document.images.feature_col.alt = "$npf_txt{'collapse_features'}";
+        document.images.feature_col.title = "$npf_txt{'collapse_features'}";
+        document.images.feature_col.src="$defaultimagesdir/cat_collapse.gif";
+        col_row = 1;
+    }
+}
+show_features()~;
+    }
+
+    $box .= q~</script>~;
+    return $box;
+}
+
+sub msicons {
+    @ic = @_;
+    $extra = qq~
+    <tr id="feature_status_1">
+        <td class="windowbg"><label for="icon"><b>$post_txt{'71'}:</b></label></td>
+        <td class="windowbg">
+            <select name="icon" id="icon" onchange="showimage(); updatTopic();">
+            <option value="xx"$ic[1]>$post_txt{'281'}</option>
+            <option value="thumbup"$ic[2]>$post_txt{'282'}</option>
+            <option value="thumbdown"$ic[3]>$post_txt{'283'}</option>
+            <option value="exclamation"$ic[4]>$post_txt{'284'}</option>
+            <option value="question"$ic[5]>$post_txt{'285'}</option>
+            <option value="lamp"$ic[6]>$post_txt{'286'}</option>
+            <option value="smiley"$ic[7]>$post_txt{'287'}</option>
+            <option value="angry"$ic[8]>$post_txt{'288'}</option>
+            <option value="cheesy"$ic[9]>$post_txt{'289'}</option>
+            <option value="grin"$ic[10]>$post_txt{'290'}</option>
+            <option value="sad"$ic[11]>$post_txt{'291'}</option>
+            <option value="wink"$ic[12]>$post_txt{'292'}</option>
+            </select>
+            <img src="$imagesdir/$icon.gif" name="icons" alt="" />
+        </td>
+    </tr>
+        ~;
+    return $extra;
+}
+
+sub googiea {
+    $googiea =
+qq~<link href="$yyhtml_root/googiespell/googiespell.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>
+<script type="text/javascript" src="$yyhtml_root/googiespell/googiespell.js"></script>
+<script type="text/javascript" src="$yyhtml_root/googiespell/cookiesupport.js"></script>~;
+    return $googiea;
+}
+
+sub googie {
+    $googie = qq~
+            <script type="text/javascript">
+            <!--
+            GOOGIE_DEFAULT_LANG = '$userdefaultlang';
+            var googie1 = new GoogieSpell("$yyhtml_root/googiespell/", "$boardurl/Sources/SpellChecker.pl?lang=");
+            googie1.lang_chck_spell = '$spell_check{'chck_spell'}';
+            googie1.lang_revert = '$spell_check{'revert'}';
+            googie1.lang_close = '$spell_check{'close'}';
+            googie1.lang_rsm_edt = '$spell_check{'rsm_edt'}';
+            googie1.lang_no_error_found = '$spell_check{'no_error_found'}';
+            googie1.lang_no_suggestions = '$spell_check{'no_suggestions'}';
+            googie1.setSpellContainer("spell_container");
+            googie1.decorateTextarea("message");
+            //-->
+            </script>~;
+
+    return $googie;
+}
+
+sub smilies_list {
+    $smilies_list = qq~
+                HAND = 'class="bottom pointer"';
+                document.write("<img src='$imagesdir/smiley.gif' onclick='smiley();' "+HAND+" alt='$post_txt{'287'}' title='$post_txt{'287'}'> ");
+                document.write("<img src='$imagesdir/wink.gif' onclick='wink();' "+HAND+" alt='$post_txt{'292'}' title='$post_txt{'292'}'> ");
+                document.write("<img src='$imagesdir/cheesy.gif' onclick='cheesy();' "+HAND+" alt='$post_txt{'289'}' title='$post_txt{'289'}'> ");
+                document.write("<img src='$imagesdir/grin.gif' onclick='grin();' "+HAND+" alt='$post_txt{'293'}' title='$post_txt{'293'}'> ");
+                document.write("<img src='$imagesdir/angry.gif' onclick='angry();' "+HAND+" alt='$post_txt{'288'}' title='$post_txt{'288'}'> ");
+                document.write("<img src='$imagesdir/sad.gif' onclick='sad();' "+HAND+" alt='$post_txt{'291'}' title='$post_txt{'291'}'> ");
+                document.write("<img src='$imagesdir/shocked.gif' onclick='shocked();' "+HAND+" alt='$post_txt{'294'}' title='$post_txt{'294'}'> ");
+                document.write("<img src='$imagesdir/cool.gif' onclick='cool();' "+HAND+" alt='$post_txt{'295'}' title='$post_txt{'295'}'> ");
+                document.write("<img src='$imagesdir/huh.gif' onclick='huh();' "+HAND+" alt='$post_txt{'296'}' title='$post_txt{'296'}'> ");
+                document.write("<img src='$imagesdir/rolleyes.gif' onclick='rolleyes();' "+HAND+" alt='$post_txt{'450'}' title='$post_txt{'450'}'> ");
+                document.write("<img src='$imagesdir/tongue.gif' onclick='tongue();' "+HAND+" alt='$post_txt{'451'}' title='$post_txt{'451'}'> ");
+                document.write("<img src='$imagesdir/embarassed.gif' onclick='embarassed();' "+HAND+" alt='$post_txt{'526'}' title='$post_txt{'526'}'> ");
+                document.write("<img src='$imagesdir/lipsrsealed.gif' onclick='lipsrsealed();' "+HAND+" alt='$post_txt{'527'}' title='$post_txt{'527'}'> ");
+                document.write("<img src='$imagesdir/undecided.gif' onclick='undecided();' "+HAND+" alt='$post_txt{'528'}' title='$post_txt{'528'}'> ");
+                document.write("<img src='$imagesdir/kiss.gif' onclick='kiss();' "+HAND+" alt='$post_txt{'529'}' title='$post_txt{'529'}'> ");
+                document.write("<img src='$imagesdir/cry.gif' onclick='cry();' "+HAND+" alt='$post_txt{'530'}' title='$post_txt{'530'}'> ");
+                ~;
+
+    return $smilies_list;
+}
+
+sub attach {
+    # File Attachment's Browse Box Code
+        $mfn = $mfn || $FORM{'oldattach'};
+        my @files = split /,/xsm, $mfn;
+
+        $yymain .= qq~
+    <tr id="feature_status_5">
+        <td width="23%">
+            <b>$fatxt{'80'}</b>
+            <input type="hidden" name="oldattach" id="oldattach" value="$mfn" />~;
+
+        if ($allowattach > 1) { $yymain .= qq~
+            <img name="attform_add" id="attform_add" src="$defaultimagesdir/cat_expand.gif" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" class="pointer" onclick="enabPrev2(1);" />
+            <img name="attform_sub" id="attform_sub" src="$defaultimagesdir/cat_collapse.gif" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" class="pointer" style="visibility:hidden;" onclick="enabPrev2(-1);" />~;
+        }
+
+        $yymain .= qq~
+        </td>
+        <td width="77%"><span class="small">$filetype_info<br />$filesize_info</span></td>
+    </tr>
+    <tr id="feature_status_6">
+        <td colspan="2">~;
+
+        my $startcount;
+        for  my $y ( 1 ..  $allowattach ) {
+            if (   ( $action eq 'modify' || $action eq 'modify2' )
+                && $files[ $y - 1 ] ne q{}
+                && -e "$uploaddir/$files[$y-1]" )
+            {
+                $startcount++;
+                $yymain .= qq~
+            <div id="attform_a_$y" style="float:left; width:23%;~
+                  . ( $y > 1 ? q~ padding-top:5px~ : q{} )
+                  . qq~"><b>$fatxt{'6'} $y:</b></div>
+            <div id="attform_b_$y" style="float:left; width:76%;~
+                  . ( $y > 1 ? q~ padding-top:5px~ : q{} ) . qq~">
+                <input type="file" name="file$y" id="file$y" size="50" onchange="selectNewattach($y);" /><br />
+                <span style="font-size:xx-small">
+                <input type="hidden" id="w_filename$y" name="w_filename$y" value="$files[$y-1]" />
+                <select id="w_file$y" name="w_file$y" size="1">
+                <option value="attachdel">$fatxt{'6c'}</option>
+                <option value="attachnew">$fatxt{'6b'}</option>
+                <option value="attachold" selected="selected">$fatxt{'6a'}</option>
+                </select>&nbsp;$fatxt{'40'}: <a href="$uploadurl/$files[$y-1]" onclick="target='_blank';">$files[$y-1]</a>
+                </span>~;
+            }
+            else {
+                $yymain .= qq~
+            <div id="attform_a_$y" style="float:left; width:23%;~
+                  . ( $y > 1 ? q~ visibility:hidden; height:0px~ : q{} )
+                  . qq~"><b>$fatxt{'6'} $y:</b></div>
+            <div id="attform_b_$y" style="float:left; width:76%;~
+                  . ( $y > 1 ? q~ visibility:hidden; height:0px~ : q{} )
+                  . qq~">\n             <input type="file" name="file$y" id="file$y" size="50" />~;
+            }
+            $yymain .= qq~\n            </div>\n~;
+
+            if ($is_preview == 1 && $CGI_query->upload("file$y")) { $is_preview = 2 ;}
+        }
+        if (!$startcount) { $startcount = 1 ;}
+
+        if ($allowattach > 1) { $yymain .= qq~
+            <script type="text/javascript">
+            <!--
+            var countattach = $startcount;~
+          . (
+            $startcount > 1
+            ? qq~\n         document.getElementById("attform_sub").style.visibility = "visible";~
+            : q{}
+          )
+          . qq~
+            function enabPrev2(add_sub) {
+                if (add_sub == 1) {
+                    countattach = countattach + add_sub;
+                    document.getElementById("attform_a_" + countattach).style.visibility = "visible";
+                    document.getElementById("attform_a_" + countattach).style.height = "auto";
+                    document.getElementById("attform_a_" + countattach).style.paddingTop = "5px";
+                    document.getElementById("attform_b_" + countattach).style.visibility = "visible";
+                    document.getElementById("attform_b_" + countattach).style.height = "auto";
+                    document.getElementById("attform_b_" + countattach).style.paddingTop = "5px";
+                } else {
+                    document.getElementById("attform_a_" + countattach).style.visibility = "hidden";
+                    document.getElementById("attform_a_" + countattach).style.height = "0px";
+                    document.getElementById("attform_a_" + countattach).style.paddingTop = "0px";
+                    document.getElementById("attform_b_" + countattach).style.visibility = "hidden";
+                    document.getElementById("attform_b_" + countattach).style.height = "0px";
+                    document.getElementById("attform_b_" + countattach).style.paddingTop = "0px";
+                    countattach = countattach + add_sub;
+                }
+                if (countattach > 1) {
+                    document.getElementById("attform_sub").style.visibility = "visible";
+                } else {
+                    document.getElementById("attform_sub").style.visibility = "hidden";
+                }
+                if ($allowattach <= countattach) {
+                    document.getElementById("attform_add").style.visibility = "hidden";
+                } else {
+                    document.getElementById("attform_add").style.visibility = "visible";
+                }
+            }
+            //-->
+            </script>~;
+            }
+
+        $yymain .= q~
+        </td>
+    </tr>~;
+
+        if ( $is_preview == 2 ) {
+            $is_preview = 1;
+            $yymain .= qq~<tr>
+        <td colspan="2" style="color:red;"><br /><b>$fatxt{'7'}</b><br /><br /></td>
+    </tr>~;
+        }
+
+    return;
+}
+
+sub speedpost {
+        $speedpost = qq~
+            var postdelay = $min_post_speed*1000;
+            document.postmodify.$post.value = '$post_txt{"delay"}';
+            document.postmodify.$post.disabled = true;
+            document.postmodify.$post.style.cursor = 'default';
+            var delay = window.setInterval('releasepost()',postdelay);
+            function releasepost() {
+                document.postmodify.$post.value = '$submittxt';
+                document.postmodify.$post.disabled = false;
+                document.postmodify.$post.style.cursor = 'pointer';
+                window.clearInterval(delay);
+           }
+            ~;
+
+    return $speedpost;
+}
+1;

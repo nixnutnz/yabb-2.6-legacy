@@ -15,6 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use Time::Local 'timelocal';
+our $VERSION = '2.5.4';
 
 $banpmver = 'YaBB 2.5.4 $Revision$';
 
@@ -203,7 +204,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
 }
 
 sub ipban2 {
-    is_admin_or_gmod();
+    is_admin_or_gmod_or_ymod();
     my $ban_u = $FORM{'uban'};
     my $ban_e = $FORM{'eban'};
     my $ban_i = $FORM{'iban'};
@@ -298,7 +299,7 @@ sub ipban_add {
 sub ipban_update {
 
     # This is for quick updating for banning + unbanning
-    is_admin_or_gmod();
+    if ( $iamadmin || $iamgmod || $iamymod ) {
     my $ban       = $INFO{'ban'};
     my $lev       = $INFO{'lev'};
     my $ban_email = $INFO{'ban_email'};
@@ -377,6 +378,7 @@ qq~U|$ban_mem|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
     }
     $yySetLocation = qq~$scripturl?action=viewprofile;username=$user~;
     redirectexit();
+    }
     return;
 }
 

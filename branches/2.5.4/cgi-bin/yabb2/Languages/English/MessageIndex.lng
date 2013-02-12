@@ -79,7 +79,6 @@ $messageindexlngver = 'YaBB 2.5.4 $Revision$';
 '844' => 'Hide',
 '845' => 'Moved Topic',
 'collruletext' => 'Board Rules Collapsed',
-'addmoderator' => 'Add/delete Moderators',
 );
 
 %messageindex_stickygrp = (

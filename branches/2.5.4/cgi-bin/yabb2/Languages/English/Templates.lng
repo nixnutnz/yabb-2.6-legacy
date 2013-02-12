@@ -99,6 +99,13 @@ $templateslngver = 'YaBB 2.5.4 $Revision$';
 'tabtitlea' => 'Board Index Title link (.tabtitle a)',
 'forum' => 'Forum',
 'admincenter' => 'Admin Center',
+'buttontext' => 'CSS Buttons',
+'buttondescription' => 'Here you can change the position of the icon and text inside the buttons and the background graphics for the buttons.',
+'moveicon1' => 'Icon Position (vertical)',
+'moveicon2' => 'Icon Position (horizontal)',
+'iconspace' => 'Icon-Text space',
+'movetext' => 'Text Position (vertical)',
+'noedit' => qq~For security reasons you are not allowed to edit the default template or default stylesheet except by directly editing the source.<br />To make changes from this screen: save your work to a new filename then choose that new file as your default stylesheet in <a href="$adminurl?action=modskin">Template Configuration</a>~,
 );
 
 1;

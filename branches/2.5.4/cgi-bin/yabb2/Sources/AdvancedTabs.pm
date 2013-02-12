@@ -16,7 +16,7 @@
 # use warnings;
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.3;
+our $VERSION = '2.5.4';
 
 $advancedtabspmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
@@ -178,7 +178,7 @@ qq~$tabaction|$taburl|$tmpisaction|$tmpusernamereq|$tabview|$tabwin|$exttaburl~;
         }
         @AdvancedTabs = @new_tabs_order;
 
-        require "$admindir/NewSettings.pl";
+        require Admin::NewSettings;
         SaveSettingsTo('Settings.pl');
     }
 
@@ -379,7 +379,7 @@ sub ReorderTab {
             }
         }
 
-        require "$admindir/NewSettings.pl";
+        require Admin::NewSettings;
         SaveSettingsTo('Settings.pl');
     }
 
@@ -425,7 +425,7 @@ sub DeleteTab {
             if ( $_ !~ /^$todelete\|?/xsm ) { push @new_tabs_order, $_; }
         }
         @AdvancedTabs = @new_tabs_order;
-        require "$admindir/NewSettings.pl";
+        require Admin::NewSettings;
         SaveSettingsTo('Settings.pl');
     }
 

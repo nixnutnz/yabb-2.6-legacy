@@ -33,13 +33,19 @@
 	<div id="container">
 		<table class="menutop">
 		    <col style="width:2%" />
-		    <col span="2" style="width:48%" />
-		    <col style="width:2%" />
+		    <col span="2" style="width:auto" />
+		    <col style="width:30px" />
+		    <col style="width:45px" />
+		    <col style="width:160px" />
 			<tr>
 				<td class="small h_23px">&nbsp;</td>
 				<td class="small"><div id="yabbclock">{yabb time}</div></td>
-				<td class="small right">{yabb langChooser}</td>
-				<td class="small">&nbsp;</td>
+				<td class="small">{yabb langChooser}</td>
+				<td class="small vtop"><div class="yabb_rss">{yabb rss}</div></td>
+				<td class="tabmenuright_b">&nbsp;</td>
+				<td class="rightbox vtop">
+					<div class="yabb_searchbox">{yabb searchbox}</div>
+				</td>
 			</tr>
 		</table>
 		<table class="windowbg2 pad_4px">
@@ -65,19 +71,12 @@
 		</table>
 		<table>
 		    <col style="width:40px" />
-		    <col span="2" style="width:auto" />
-		    <col style="width:40px" />
-		    <col style="width:45px" />
+		    <col style="width:auto" />
 		    <col style="width:160px" />
 			<tr>
 				<td class="tabmenuleft">&nbsp;</td>
 				<td class="tabmenu">{yabb tabmenu}</td>
 				<td class="tabmenu vtop">{yabb tabadd}</td>
-				<td class="tabmenu vtop"><div class="yabb_rss">{yabb rss}</div></td>
-				<td class="tabmenuright">&nbsp;</td>
-				<td class="rightbox vtop">
-					<div class="yabb_searchbox">{yabb searchbox}</div>
-				</td>
 			</tr>
 		</table>
 		{yabb addtab}

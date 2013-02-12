@@ -16,7 +16,7 @@
 # use warnings;
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.01;
+our $VERSION = '2.5.4';
 
 $freespacepmver = 'YaBB 2.5.4 $Revision$';
 sub freespace {
@@ -25,12 +25,12 @@ sub freespace {
         if ($enable_freespace_check) {
             my @x =
               qx{DIR /-C};  # Do an ordinary DOS dir command and grab the output
-            my $lastline = pop(@x)
-              ;    # should look like: 17 Directory(s), 21305790464 Bytes free
+            my $lastline = pop @x;
+                  # should look like: 17 Directory(s), 21305790464 Bytes free
             return -1
-              if $lastline !~ m/byte/i
-            ; # error trapping if output fails. The word byte should be in the line
-            $lastline =~ /^\s+(\d+)\s+(.+?)\s+(\d+)\s+(.+?)\n$/;
+              if $lastline !~ m/byte/ism;
+             # error trapping if output fails. The word byte should be in the line
+            $lastline =~ /^\s+(\d+)\s+(.+?)\s+(\d+)\s+(.+?)\n$/sm;
             $FreeBytes = $3 - 100_000;    # 100000 bytes reserve
 
         }
@@ -60,7 +60,7 @@ sub freespace {
             if ( $FreeBytes < 1 || $hostchecked < $date ) {
 
                 # fork the process since the *nix find command can take a while
-                $child_pid = fork();
+                $child_pid = fork;
                 if ( !$child_pid ) {    # child process runs here and exits then
                     $findfile_space = 0;
                     map { $findfile_space += $_ }
@@ -73,9 +73,9 @@ sub freespace {
 
                     # actual free host space <> time for next check
 
-                    require "$admindir/NewSettings.pl";
+                    require Admin::NewSettings;
                     SaveSettingsTo('Settings.pl');
-                    exit(0);
+                    exit 0;
                 }
             }
             $hostchecked = 1;
@@ -84,7 +84,7 @@ sub freespace {
         elsif ($enable_freespace_check) {
             my @x = qx{df -k .}
               ;    # Do an ordinary *nix df -k . command and grab the output
-            my $lastline = pop(@x);
+            my $lastline = pop @x;
 
             # should look like: /dev/path 151694892 5495660 134063644 4% /
             if ( $lastline !~ m/\%/xsm ) { return -1; }
@@ -117,3 +117,5 @@ sub freespace {
     }
     return $hostchecked;
 }
+
+1;

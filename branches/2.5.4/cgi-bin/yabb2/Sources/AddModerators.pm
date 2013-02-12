@@ -21,7 +21,7 @@
 # use warnings;
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 0.2;
+our $VERSION = '2.5.4';
 
 $addmoderatorspmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
@@ -96,7 +96,9 @@ sub AddModerators2 {
             $admdtopicperms,  $admdreplyperms,   $admdpollperms,
             $admdzero,        $admdmembergroups, $admdann,
             $admdrbin,        $admdattperms,     $admdminageperms,
-            $admdmaxageperms, $admdgenderperms
+            $admdmaxageperms, $admdgenderperms,  $adcanpost,
+            $adparent,        $adrules,          $adbrulestitle,
+            $adbrulesdesc,    $adrulescollapse        
         ) = split /\|/xsm, $boardline;
         @bdmodlist = split /, /sm, $admdmods;
         $admdmods  = q{};
@@ -110,7 +112,7 @@ sub AddModerators2 {
         }
         $admdmods = join q{, }, @bdmodlist;
         print {FORUMCNT}
-"$admdcat|$admdboard|$admdpic|$admddescription|$admdmods|$admdmodgroups|$admdtopicperms|$admdreplyperms|$admdpollperms|$admdzero|$admdmembergroups|$admdann|$admdrbin|$admdattperms|$admdminageperms|$admdmaxageperms|$admdgenderperms\n"
+"$admdcat|$admdboard|$admdpic|$admddescription|$admdmods|$admdmodgroups|$admdtopicperms|$admdreplyperms|$admdpollperms|$admdzero|$admdmembergroups|$admdann|$admdrbin|$admdattperms|$admdminageperms|$admdmaxageperms|$admdgenderperms|$adcanpost|$adparent|$adrules|$adbrulestitle|$adbrulesdesc|$adrulescollapse\n"
           or croak 'cannot print FORUMCNT';
     }
     fclose(FORUMCNT);
@@ -122,7 +124,7 @@ sub ModSearch {
     $to_board   = $currentboard;
     $moderators = ${ $uid . $currentboard }{'mods'};
 
-    $yymain = qq~
+    $yymain .= qq~
 <script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
 <script type="text/javascript">
 <!--
@@ -278,16 +280,18 @@ sub ModSearch2 {
             $admdtopicperms,  $admdreplyperms,   $admdpollperms,
             $admdzero,        $admdmembergroups, $admdann,
             $admdrbin,        $admdattperms,     $admdminageperms,
-            $admdmaxageperms, $admdgenderperms
+            $admdmaxageperms, $admdgenderperms,  $adcanpost,
+            $adparent,        $adrules,          $adbrulestitle,
+            $adbrulesdesc,    $adrulescollapse        
         ) = split /\|/xsm, $boardline;
         if ( $admdboard eq $modboard ) {
             print {FORUMCNT}
-"$admdcat|$admdboard|$admdpic|$admddescription|$FORM{'moderators'}|$admdmodgroups|$admdtopicperms|$admdreplyperms|$admdpollperms|$admdzero|$admdmembergroups|$admdann|$admdrbin|$admdattperms|$admdminageperms|$admdmaxageperms|$admdgenderperms\n"
+"$admdcat|$admdboard|$admdpic|$admddescription|$FORM{'moderators'}|$admdmodgroups|$admdtopicperms|$admdreplyperms|$admdpollperms|$admdzero|$admdmembergroups|$admdann|$admdrbin|$admdattperms|$admdminageperms|$admdmaxageperms|$admdgenderperms|$adcanpost|$adparent|$adrules|$adbrulestitle|$adbrulesdesc|$adrulescollapse\n"
               or croak 'cannot print FORUMCNT';
         }
         else {
             print {FORUMCNT}
-"$admdcat|$admdboard|$admdpic|$admddescription|$admdmods|$admdmodgroups|$admdtopicperms|$admdreplyperms|$admdpollperms|$admdzero|$admdmembergroups|$admdann|$admdrbin|$admdattperms|$admdminageperms|$admdmaxageperms|$admdgenderperms\n"
+"$admdcat|$admdboard|$admdpic|$admddescription|$admdmods|$admdmodgroups|$admdtopicperms|$admdreplyperms|$admdpollperms|$admdzero|$admdmembergroups|$admdann|$admdrbin|$admdattperms|$admdminageperms|$admdmaxageperms|$admdgenderperms|$adcanpost|$adparent|$adrules|$adbrulestitle|$adbrulesdesc|$adrulescollapse\n"
               or croak 'cannot print FORUMCNT';
         }
     }

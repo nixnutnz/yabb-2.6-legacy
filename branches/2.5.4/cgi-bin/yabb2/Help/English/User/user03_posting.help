@@ -215,12 +215,6 @@ alert("Hello YaBB 2!");
 </td><td>[timestamp=1121602762]
 <br />[yabbc][timestamp=1121602762][/yabbc]</td></tr>
 <tr><td colspan="2"><hr /></td></tr>
-<tr><th colspan="2"><img src="$imagesdir/noparse.gif" alt="No Parse Button" /> No Parse</th></tr>
-<tr><td>Syntax:
-<br />Result:
-</td><td>[noparse][table][tr][td]This table will not be parsed[/td][/tr][/table][/noparse]
-<br />[yabbc][noparse][table][tr][td]This table will not be parsed[/td][/tr][/table][/noparse][/yabbc]</td></tr>
-<tr><td colspan="2"><hr /></td></tr>
 <tr><th colspan="2"><img src="$imagesdir/bold.gif" alt="Bold Button" /> Insert Bold Text</th></tr>
 <tr><td>Syntax:
 <br />Result:

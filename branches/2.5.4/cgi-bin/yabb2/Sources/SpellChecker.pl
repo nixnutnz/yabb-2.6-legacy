@@ -13,6 +13,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+our $VERSION = '2.5.4';
 
 $spellcheckerplver = 'YaBB 2.5.4 $Revision$';
 

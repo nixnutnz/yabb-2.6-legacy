@@ -11,9 +11,8 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.0;
+our $VERSION = '2.5.4';
 
 $iplookuppmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }

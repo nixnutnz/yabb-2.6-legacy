@@ -17,9 +17,9 @@
 ###############################################################################
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.1;
+our $VERSION = '2.5.4';
 
-$contexthelpplver = 'YaBB 2.5.4 $Revision$';
+$contexthelppmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ContextScript {
@@ -64,9 +64,9 @@ sub ContextScript {
             var wsize = parseInt(window.innerWidth / 2);
         }
         else {
-            var wtop = document.documentElement.scrollTop;
-            var wleft = document.documentElement.scrollLeft;
-            var wsize = parseInt(document.documentElement.clientWidth / 2);
+            wtop = document.documentElement.scrollTop;
+            wleft = document.documentElement.scrollLeft;
+            wsize = parseInt(document.documentElement.clientWidth / 2);
         }
         document.getElementById("contexthlp").style.width = wsize + 'px';
         document.getElementById("contexthlp").style.left = wleft + (wsize / 2) + 'px';
@@ -131,9 +131,9 @@ sub ContextScript {
 
         var dsize = document.getElementById('ctxtip').offsetWidth;
         if (!document.all) {
-            var wsize = window.innerWidth;
-            var wleft = e.pageX - parseInt(dsize/4);
-            var wtop = e.pageY + 20;
+            wsize = window.innerWidth;
+            wleft = e.pageX - parseInt(dsize/4);
+            wtop = e.pageY + 20;
         }
         else {
             var wsize = document.documentElement.clientWidth;

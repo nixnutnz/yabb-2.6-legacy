@@ -148,7 +148,7 @@ $postlngver = 'YaBB 2.5.4 $Revision$';
 '600_d' => '<a class="message" href="QUOTELINK">AUTHOR wrote</a> DATE:<br /><div class="quote" style="width: 90%; overflow: auto;">QUOTE</div>',
 '600a' => '<a class="message" href="AUTHOR2">AUTHOR</a> wrote on DATE:<br /><div class="quote" style="width: 90%; overflow: auto;">QUOTE</div>',
 '600a_d' => '<a class="message" href="AUTHOR2">AUTHOR</a> wrote DATE:<br /><div class="quote" style="width: 90%; overflow: auto;">QUOTE</div>',
-'601' => "<b>Quote:</b><br /><div class=&#34;quote&#34; style=&#34;width: 90%; overflow: auto;&#34;>QUOTE</div>",
+'601' => q~<b>Quote:</b><br /><div class="quote" style="width: 90%; overflow: auto">QUOTE</div>~,
 '602' => '<b>CodeXLANGX:</b>CODE',
 '603' => 'Edited',
 '604' => '/me - my name',

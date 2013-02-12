@@ -64,6 +64,8 @@ $displaylngver = 'YaBB 2.5.4 $Revision$';
 'reverse' => 'Click here if you want to change the order topics are shown in.',
 'sendtopicemail' => 'Click [OK] if you want to send the e-mail through your e-mail program, otherwise the forums e-mail program will be used.',
 'location' => 'Location', 
+'age' => 'Age',
+'regdate' => 'Joined: ', 
 );
 
 1;

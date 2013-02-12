@@ -36,6 +36,7 @@ $instantmessagelngver = 'YaBB 2.5.4 $Revision$';
 '317' => 'Date',
 '318' => 'Sender',
 '320' => 'Do not store a copy of this Message in the Sent box after sending.',
+'321' => 'Note that attachments are deleted along with messages in your Sent box, so if you are attaching files the above option does not apply.',
 'datesave' => 'Date saved',
 'forward' => 'Forward message',
 'replymess' => 'Reply to message',
@@ -70,6 +71,8 @@ $instantmessagelngver = 'YaBB 2.5.4 $Revision$';
 '766' => 'User does not exist',
 '767' => '(No Subject)',
 '770' => 'Are you sure you want to delete this PM?',
+'770a' => '\n\nNote that any files you have attached to this message will also be deleted.',
+'770b' => '\n\nNote that any files you have attached to the selected messages will also be deleted.',
 'delmultipms' => 'Are you sure you want to delete these PMs?',
 '773' => 'Sent',
 '774' => 'Store',
@@ -99,6 +102,9 @@ $instantmessagelngver = 'YaBB 2.5.4 $Revision$';
 'torecepients' => 'recipient(s)',
 'togroups' => 'group(s)',
 'usercp' => 'User CP', 
+'attach_1' => 'This message contains',
+'attach_2' => 'attachments',
+'attach_3' => 'attachment',
 );
 
 %inmes_imtxt = (

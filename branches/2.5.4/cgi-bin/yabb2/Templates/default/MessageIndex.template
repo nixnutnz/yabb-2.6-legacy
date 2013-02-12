@@ -24,7 +24,7 @@ $outside_ttsep = q~~;
 
 $topichandellist = qq~{yabb notify button} {yabb markall button}~;
 if($threadtools) {
-    $threadhandelstyle = qq~ class="post_tools center"~;
+    $threadhandelstyle = qq~ class="post_tools center" style="width:10em"~;
 }
 else {
     $threadhandelstyle = qq~ class="right"~;

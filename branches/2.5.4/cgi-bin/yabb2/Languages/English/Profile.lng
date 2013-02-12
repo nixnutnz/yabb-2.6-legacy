@@ -96,7 +96,7 @@ $profilelngver = 'YaBB 2.5.4 $Revision$';
 '483' => "Jan 12th, 2001 at 1:15pm",
 '483a' => "12th Jan, 2001 at 1:15pm",
 '484' => "01/31/01 at 1:15pm",
-'485' => "31. Jan at 13:15",
+'485' => "31. Jan 2001 at 13:15",
 '486' => 'Preset Time Format',
 '486a' => 'Or Custom Time Format',
 '513' => 'ICQ',
@@ -225,6 +225,17 @@ $profilelngver = 'YaBB 2.5.4 $Revision$';
 'w' => 'Week',
 'm' => 'Month',
 'p' => 'Permanent',
+'regdate' => 'Member since:', 
+'gender_edit_1' => 'Note that you cannot edit your gender after it has been entered.',
+'gender_edit_2' => 'Note that you can only edit your gender',
+'gender_edit_3' => 'Your gender cannot be edited.',
+'dob_edit_1' => 'Note that you cannot change your birthdate after it has been entered.',
+'dob_edit_2' => 'Note that you can only edit your birthdate',
+'dob_edit_3' => 'more time.',
+'dob_edit_4' => 'more times.',
+'dob_edit_5' => 'time.',
+'dob_edit_6' => 'times.',
+'dob_edit_7' => 'Your birthdate cannot be edited.',
 );
 
 %mycenter_profile_txt = (

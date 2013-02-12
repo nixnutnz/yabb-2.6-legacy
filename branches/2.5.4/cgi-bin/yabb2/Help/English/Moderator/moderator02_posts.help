@@ -7,7 +7,7 @@ $SectionBody1 = qq~You now have the ability to edit, modify, or delete any post 
 <p><u><b>Modifying a Post</b></u></p>
 <ul>
 <li>Identify the post you wish to edit.</li>
-<li>In that post, you will see a small menu with &quot;Quote&quot;, &quot;Modify&quot; and &quot;Delete&quot;. Click on the one titled &quot;Modify&quot;.</li>
+<li>In that post, you will see a small menu with &quot;Quote&quot;, &quot;Modify&quot; and &quot;Delete&quot;. Click on the one &nbsp;titled &quot;Modifty&quot;.</li>
 <li>You will then be given access to the edit page where you may make your changes. When you're done, press the button titled &quot;Save&quot;.
 <p><font color="#0099CC"><b><u>MODERATOR TIP:</u></b> It's useful to be able to identify any text changed or added by a Moderator when modifying a post. A good way to do this is to use a different color text for the Moderator's text.  To do this, use your mouse to highlight your text then click on a color button, or click on the color palette and select a text color.</font></p></li>
 </ul>

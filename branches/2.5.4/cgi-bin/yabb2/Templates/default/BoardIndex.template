@@ -29,16 +29,14 @@ $boardindex_template = qq~
 if(!$iamguest && !$subboard_sel) {
 $boardindex_template .= qq~
 <!-- Board Index Button Bar start -->
-		<table class="bordercolor pad_4px cs_thin">
-			<tr>
-				<td class="windowbg center">
-					<div class="small" style="float: left; width: 49%; text-align: left;">
-						<img src="$imagesdir/on.png" id="on" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" /> $boardindex_txt{'333'}&nbsp;&nbsp;
-						<img src="$imagesdir/off.png" id="off" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" /> $boardindex_txt{'334'}
-					</div>
-					<div class="small" style="float: right; width: 49%; text-align: right;">
+		<table class="bordercolor pad_4px">
+		    <col style="width:50%" />
+			<tr class="windowbg">
+				<td class="small">
+						<span class="small"><img src="$imagesdir/on.png" id="on" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" /> $boardindex_txt{'333'}&nbsp;&nbsp;
+						<img src="$imagesdir/off.png" id="off" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" /> $boardindex_txt{'334'}</span>
+				</td><td class="right small">
 						{yabb boardhandellist}
-					</div>
 				</td>
 			</tr>
 		</table>

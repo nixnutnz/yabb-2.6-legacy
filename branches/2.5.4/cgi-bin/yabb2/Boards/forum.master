@@ -8,5 +8,6 @@ $board{'general'} = "General Board||1";
 $board{'test'} = "Test Zone||";
 $board{'announcements'} = "Global Announcements||";
 $board{'recycle'} = "Recycle Bin||";
+$subboard{'files'} = qq~~;
 
 1;
