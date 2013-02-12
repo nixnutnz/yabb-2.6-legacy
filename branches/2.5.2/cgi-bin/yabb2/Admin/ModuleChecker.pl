@@ -6,7 +6,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       October 5, 2012                                             #
+# Packaged:       October 21, 2012                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -17,7 +17,12 @@
 $modulecheckerplver = 'YaBB 2.5.2 $Revision: 1.0 $';
 if ($action eq 'detailedversion') { return 1; }
 
-if ($ENV{'SCRIPT_FILENAME'} =~ /ModuleChecker\.\w+$/) {
+my $script_root = $ENV{'SCRIPT_FILENAME'};
+if( ! $script_root ) {
+	$script_root = $ENV{'PATH_TRANSLATED'};
+}
+
+if ( $script_root =~ /ModuleChecker\.\w+$/xsm ) {
 	# This part is only needed if you call ModuleChecker.pl directly
 	# as stand allone script (only the language "English" is supported).
 
@@ -96,7 +101,7 @@ foreach $module (qw(Digest::MD5 Time::HiRes Time::Local File::Find CGI Net::SMTP
 	}
 }
 
-if ($ENV{'SCRIPT_FILENAME'} !~ /ModuleChecker\.\w+$/) {
+if ( $script_root !~ /ModuleChecker\.\w+$/xsm ) {
 	$yymain .= qq~
 <div style="float: left; padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">&nbsp;</div>
 <div class="bordercolor" style="float: left; padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">

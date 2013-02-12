@@ -4,7 +4,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       October 5, 2012                                             #
+# Packaged:       October 21, 2012                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -229,6 +229,7 @@ $border_bottom
 }
 
 sub Reminder {
+#	if (!$iamguest) { &fatal_error("logged_in_already",$username); }
 	if (!$iamguest && $sessionvalid == 1) { &fatal_error("logged_in_already",$username); }
 	$yymain .= qq~<br /><br />
 <form action="$scripturl?action=reminder2" method="post" name="reminder" onsubmit="return CheckReminderField();">

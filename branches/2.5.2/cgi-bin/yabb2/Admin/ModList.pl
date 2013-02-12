@@ -4,7 +4,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       October 5, 2012                                             #
+# Packaged:       October 21, 2012                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -30,6 +30,8 @@ sub ListMods {
 	# You could use "$SuperMod_CoolThings"
 
 ### BOARDMOD ANCHOR ###
+	$IISbugfix_01a = "BugFix_IIS|YaBB Team &amp; Gomez Addams|This mod fixes/corrects some reported issues Windows IIS servers in the YaBB 2.5.2 release.|0.1 alpha|01/02/2013";
+	push (@installed_mods, "$IISbugfix_01a");
 ### END BOARDMOD ANCHOR ###
 
 	if (!@installed_mods) {

@@ -4,7 +4,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       October 5, 2012                                             #
+# Packaged:       October 21, 2012                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -617,14 +617,18 @@ sub Display {
 			$memberinfo = $display_txt{'28'};
 			$usernamelink = qq~<b>$mname</b>~;
 			$displayname = $mname;
-			$cryptmail = &scramble($memailad, $musername);
+			$cryptmail = &scramble($memail, $musername);
 		}
 		$usernames_life_quote{$useraccount{$musername}} = $displayname; # for display names in Quotes in LivePreview
 
 		# Insert 2
 		if ((!${$uid.$musername}{'hidemail'} || $iamadmin || $allow_hide_email != 1 || $musername eq 'Guest') && !$exmem) {
-			$template_email = $menusep . &enc_eMail($img{'email_sm'},$memailad,'','');
-			if ($iamadmin) { $template_email =~ s~title=\\"$img_txt{'69'}\\"~title=\\"$memailad\\"~; }
+			if ($musername ne 'Guest') {$template_email = $menusep . enc_eMail($img{'email_sm'},$memailad,q{},q{});}
+			else {$template_email = $menusep . enc_eMail($img{'email_sm'},$memail,q{},q{});}
+			if ( $iamadmin) {
+				if ($musername ne 'Guest') { $template_email =~ s~title=\\"$img_txt{'69'}\\"~title=\\"$memailad\\"~; }
+		    	else { $template_email =~ s~title=\\"$img_txt{'69'}\\"~title=\\"$memail\\"~;}
+		    }
 		}
 		if ($iamguest) { $template_email = ''; }
 

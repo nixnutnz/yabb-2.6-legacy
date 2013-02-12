@@ -6,7 +6,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       October 5, 2012                                             #
+# Packaged:       October 21, 2012                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -36,6 +36,10 @@ $adminscreen = 1;
 
 $yyexec = "YaBB";
 $script_root = $ENV{'SCRIPT_FILENAME'};
+if( ! $script_root ) {
+	$script_root = $ENV{'PATH_TRANSLATED'};
+    $script_root =~ s/\\/\//gxsm;
+}
 $script_root =~ s/\/AdminIndex\.(pl|cgi)//ig;
 
 require "Paths.pl";

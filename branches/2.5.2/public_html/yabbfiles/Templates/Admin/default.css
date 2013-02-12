@@ -304,6 +304,10 @@ select {
 	height: 29px;
 }
 
+.u, .under {
+text-decoration: underline;
+}
+
 
 /* Disabled Pseudo class -- to make it easier to tell what's disabled */
 textarea:disabled, input:disabled {

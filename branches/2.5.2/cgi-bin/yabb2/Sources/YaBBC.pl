@@ -4,7 +4,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       October 5, 2012                                             #
+# Packaged:       October 21, 2012                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$yabbcplver = 'YaBB 2.5.2 $Revision: 1.1 $';
+$yabbcplver = 'YaBB 2.5.2 $Revision: 1.0 $';
 if ($action eq 'detailedversion') { return 1; }
 
 &LoadLanguage('Post');
@@ -239,9 +239,6 @@ sub imagemsg {
 sub DoUBBC {
 	my $image_type = $_[0];
 	if ( $ns eq 'NS' || $message =~ s/#nosmileys//isgm ) { return $message; }
-
-#	if ($message =~ /\#nosmileys/isg || $ns eq "NS") { $message =~ s/\#nosmileys//isg; }
-#	else { &MakeSmileys; }
 
     $message =~ s/\[noparse\](.*?)(\[\/noparse\]|$)/noparse($1)/eisgm;
     $message =~ s/\[code\]/ \[code\]/igsm;

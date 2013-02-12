@@ -11,7 +11,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       October 05, 2012                                            #
+# Packaged:       October 21, 2012                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -22,9 +22,9 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = 1.9;
+our $VERSION = 1.7;
 
-$setupplver = 'YaBB 2.5.2 $Revision: 1.9 $';
+$setupplver = 'YaBB 2.5.2 $Revision: 1.8 $';
 
 # conversion will stop after $max_process_time
 # in seconds, than the browser will call the script
@@ -44,6 +44,10 @@ if ($ENV{'SERVER_SOFTWARE'} =~ /IIS/) {
 
 ### Requirements and Errors ###
 $script_root = $ENV{'SCRIPT_FILENAME'};
+if( ! $script_root ) {
+	$script_root = $ENV{'PATH_TRANSLATED'};
+    $script_root =~ s/\\/\//gxsm;
+}
 $script_root =~ s/\/Setup\.(pl|cgi)//ig;
 
 if (-e "./Paths.pl") { require "./Paths.pl"; }

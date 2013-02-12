@@ -4,7 +4,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       October 5, 2012                                             #
+# Packaged:       October 21, 2012                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -202,7 +202,7 @@ $yycharset = 'ISO-8859-1';
 '374' => 'Maximum Topics displayed per page in the Message Index',
 '375' => 'Maximum number of messages displayed per page of a Topic',
 '376' => 'Number of days after a post is made that it will no longer show as "new" in either the Board view or Message view.',
-'377' => 'Enable Spell Checking?<br /><span class="small">This spell checker relies on external websites belonging to Google (googiespell). You must take into consideration firewall settings and content blockers in using this feature.</span><br /><b><u>License:</u></b><br />The scripts in /yabbfiles/googiespell are dual licensed. One is for free software ("open source") the other is for proprietary software.<br />The free license is <a href="http://www.gnu.org/copyleft/gpl.html" onclick="target=&#39;_blank&#39;;">the GPL</a>. Under this license you can only use GoogieSpell with/in free software (i.e. software where the source isn\'t released). You can\'t use GoogieSpell with proprietary software even if you don\'t distribute your software.<br />For more details see <a href="http://orangoo.com/labs/GoogieSpell/License/" onclick="target=&#39;_blank&#39;;">http://orangoo.com/labs/GoogieSpell/License/</a>.',
+'377' => 'Enable Spell Checking?<br /><span class="small">This spell checker relies on external websites belonging to Google (googiespell). You must take into consideration firewall settings and content blockers in using this feature.</span><br /><b><u>License:</u></b><br />The scripts in /yabbfiles/googiespell are dual licensed. One is for free software ("open source") the other is for proprietary software.<br />The free license is <a href="http://www.gnu.org/copyleft/gpl.html" onclick="target=&#39;_blank&#39;;">the GPL</a>. Under this license you can only use GoogieSpell with/in free software (i.e. non-commercial software or where the source is released). You can\'t use GoogieSpell with proprietary software even if you don\'t distribute your software.<br />For more details see <a href="http://orangoo.com/labs/GoogieSpell" onclick="target=&#39;_blank&#39;;">http://orangoo.com/labs/GoogieSpell</a>.',
 '377a' => 'If you see this message, some required Perl modules were not found.<br />If an error message like "Can\'t locate ..." is shown, then this module is not installed on your server.<br /><br />',
 '377b' => 'Installed',
 '377c' => '<br />To use SpellChecker, you must have installed all of these modules on your server. Ask your server host to install them for you.<br />Please install:<br />- Bundle::LWP (for LWP::UserAgent and HTTP::Request::Common)<br />- Crypt::SSLeay',

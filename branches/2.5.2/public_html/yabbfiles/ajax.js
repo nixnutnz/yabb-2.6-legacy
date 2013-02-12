@@ -14,7 +14,7 @@
 //#               Your source for web hosting, web design, and domains.        #
 //##############################################################################
 
-//YaBB 2.5 AE $Revision: 1.3 $
+//YaBB 2.5 AE $Revision: 1.4 $
 
 var xmlHttp = null;
 var browser = '';
@@ -175,17 +175,25 @@ function AddRemFavFinished() {
 		document.getElementById("ImageAlertText").innerHTML = markfinishedlang;
 		document.getElementById("ImageAlertPic").innerHTML = '<img src="' + imagedir + '/RotateStop.gif">';
 		setTimeout("HideAlert()",1500);
-		var links = document.getElementsByName("favlink");
-		for (var i = 0; i < links.length; i++) {
-			var href = links[i].href;
-			if (href.match("addfav")) {
-				links[i].setAttribute("href",href.replace("addfav","remfav"));
-				links[i].innerHTML = remlink;
-			}
-			if (href.match("remfav")) {
-				links[i].setAttribute("href",href.replace("remfav","addfav"));
-				links[i].innerHTML = addlink;
-			}
+		var links = document.getElementById("favlink");
+		var href = links.href;
+		if (href.match("addfav")) {
+			links.setAttribute("href",href.replace("addfav","remfav"));
+			links.innerHTML = remlink;
+		}
+		if (href.match("remfav")) {
+			links.setAttribute("href",href.replace("remfav","addfav"));
+			links.innerHTML = addlink;
+		}
+		var links = document.getElementById("favlink2");
+		var href = links.href;
+		if (href.match("addfav")) {
+			links.setAttribute("href",href.replace("addfav","remfav"));
+			links.innerHTML = remlink;
+		}
+		if (href.match("remfav")) {
+			links.setAttribute("href",href.replace("remfav","addfav"));
+			links.innerHTML = addlink;
 		}
  	}
 }
@@ -217,17 +225,25 @@ function NotifyFinished() {
 		document.getElementById("ImageAlertText").innerHTML = markfinishedlang;
 		document.getElementById("ImageAlertPic").innerHTML = '<img src="' + imagedir + '/RotateStop.gif">';
 		setTimeout("HideAlert()",1500);
-		var links = document.getElementsByName("notifylink");
-		for (var i = 0; i < links.length; i++) {
-			var href = links[i].href;
-			if (href.match("notify2")) {
-				links[i].setAttribute("href",href.replace("notify2","notify3"));
-				links[i].innerHTML = remnotlink;
-			}
-			if (href.match("notify3")) {
-				links[i].setAttribute("href",href.replace("notify3","notify2"));
-				links[i].innerHTML = addnotlink;
-			}
+		var links = document.getElementById("notifylink");
+		var href = links.href;
+		if (href.match("notify2")) {
+			links.setAttribute("href",href.replace("notify2","notify3"));
+			links.innerHTML = remnotlink;
+		}
+		if (href.match("notify3")) {
+			links.setAttribute("href",href.replace("notify3","notify2"));
+			links.innerHTML = addnotlink;
+		}
+		var links = document.getElementById("notifylink2");
+		var href = links.href;
+		if (href.match("notify2")) {
+			links.setAttribute("href",href.replace("notify2","notify3"));
+			links.innerHTML = remnotlink;
+		}
+		if (href.match("notify3")) {
+			links.setAttribute("href",href.replace("notify3","notify2"));
+			links.innerHTML = addnotlink;
 		}
  	} 
 }

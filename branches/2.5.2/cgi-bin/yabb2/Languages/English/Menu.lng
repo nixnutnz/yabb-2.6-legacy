@@ -4,7 +4,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       October 5, 2012                                             #
+# Packaged:       October 21, 2012                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$menulngver = 'YaBB 2.5.2 $Revision: 1.2 $';
+$menulngver = 'YaBB 2.5.2 $Revision: 1.1 $';
 
 if (!$language){$language = $lang;}
 
@@ -74,7 +74,7 @@ if (!$language){$language = $lang;}
 '627' => 'Mark as Unread',
 'mycenter' => "User CP",
 'addbuddy' => 'Add to My Buddy List',
-'pmadmin' => 'Send message to Admin(s)',
+'pmadmin' => 'Broadcast Message to Admin(s)',
 'alertmod' => 'Alert Board Moderator about this Post!',
 'alertmodtext' => 'Alert Moderator',
 'forward' => 'Forward',

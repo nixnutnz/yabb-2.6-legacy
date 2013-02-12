@@ -4,7 +4,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       October 5, 2012                                             #
+# Packaged:       October 21, 2012                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$settings_advancedplver = 'YaBB 2.5.2 $Revision: 1.0 $';
+$settings_advancedplver = 'YaBB 2.5.2 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 my $uploaddiriscorrect = qq~<span style="color: red;">$admin_txt{'164'}</span>~;
@@ -32,27 +32,10 @@ if ($rss_limit eq '') { $rss_limit = 10; }
 if ($rss_message eq '') { $rss_message = 1; }
 
 # Free Disk Space Checking
-if( $^O eq 'MSWin32' ) {
-      @x = qx{DIR /-C};
-	my $lastline = pop(@x); # should look like: 17 Directory(s), 21305790464 Bytes free
-	return -1 if $lastline !~ m/byte/i; # error trapping if output fails. The word byte should be in the line
-	$lastline =~ /^\s+(\d+)\s+(.+?)\s+(\d+)\s+(.+?)\n$/;
-	$FreeBytes = $3 - 100000; # 100000 bytes reserve
-	if ($FreeBytes >= 1073741824) {
-		$yyfreespace = sprintf("%.2f", $FreeBytes / (1024 * 1024 * 1024)) . " GB";
-	} elsif ($FreeBytes >= 1048576) {
-		$yyfreespace = sprintf("%.2f", $FreeBytes / (1024 * 1024)) . " MB";
-	} else {
-		$yyfreespace = sprintf("%.2f", $FreeBytes / 1024) . " KB";
-	}
-		@disk_space = $yyfreespace;
-#		@quota = ();			
-}
-else {
+if( $^O !~ /Win/ ) {
 	@disk_space = qx{df -k .};
 
 	map { $_ =~ s/ +/  /g } @disk_space;
-}
 	my @find = qx(find . -noleaf -type f -printf "%s-");
 
 	$hostusername = $hostusername || (split(/ +/, qx{ls -l YaBB.$yyext}))[2];
@@ -71,7 +54,7 @@ else {
 			$quota_select .= qq~<option value="$i" ~ . ${isselected($i == $enable_quota || ($ds && $quota[$i] =~ /^$ds/))} . qq~>$quota[$i]</option>~;
 		}
 		$quota_select .= '</select>';
-#	}
+	}
 }
 
 # List of settings

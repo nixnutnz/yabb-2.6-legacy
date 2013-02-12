@@ -693,3 +693,6 @@ select optgroup {
 .green {
 display:none;
 }
+.under, .u {
+text-decoration:underline;
+}

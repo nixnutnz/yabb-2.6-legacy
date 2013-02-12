@@ -4,7 +4,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       October 5, 2012                                             #
+# Packaged:       October 21, 2012                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$mailmembersplver = 'YaBB 2.5.2 $Revision: 1.0 $';
+$mailmembersplver = 'YaBB 2.5.2 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 if ($iamguest) { &admin_fatal_error("no_access"); }
@@ -41,7 +41,7 @@ sub Mailing {
 	</tr>
 	</table>
 	<script language="JavaScript1.2" src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
-	<form name="adv_membermail" action="$adminurl?action=mailing2" method="post" style="display: inline;" onsubmit="return checkIfChecked(this); return submitproc();">
+	<form name="adv_membermail" action="$adminurl?action=mailing2" method="post" style="display: inline;" onsubmit="return checkIfSelected(); return submitproc();">
 
 	<div class="windowbg2" style="width: 100%; border: 1px #cccccc solid;">
 	<div class="windowbg2" style="float: left; width: 44%; height: 260px; margin: 1%; border: 1px #cccccc solid;">
@@ -217,8 +217,11 @@ sub Mailing {
 
 </form>
 
-<script language="JavaScript1.2" type="text/javascript">
-<!--
+<script type="text/javascript">
+function checkIfSelected() {
+	for(var x = 0; x < document.adv_membermail.field1.options.length; x++) if(document.adv_membermail.field1.options[x].selected) return true;
+	alert("$amv_txt{'48a'}"); return false;
+} 
 function selectCheckAll(tchecked) {
 	for(var x = 0; x < document.adv_membermail.field1.options.length; x++) document.adv_membermail.field1.options[x].selected = tchecked;
 }

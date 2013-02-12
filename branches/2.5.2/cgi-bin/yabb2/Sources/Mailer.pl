@@ -4,7 +4,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.2                                                  #
-# Packaged:       October 5, 2012                                             #
+# Packaged:       October 21, 2012                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$mailerplver = 'YaBB 2.5.2 $Revision: 1.0 $';
+$mailerplver = 'YaBB 2.5.2 $Revision: 1.1 $';
 if ($action eq 'detailedversion') { return 1; }
 
 sub sendmail {
@@ -25,13 +25,14 @@ sub sendmail {
 
 	# Change commas to HTML entity - ToHTML doesn't catch this
 	# It's only a problem when sending emails, so no change to ToHTML.
-	$mbname =~ s/,/&#44;/ig;
+	# The html character conversion does not work properly for many email clients - DAR.
+	$mbname =~ s/,/-/ig;
 
 	$charsetheader = $mailcharset ? $mailcharset : $yycharset;
 
 	if (!$from) {
 		$from = $webmaster_email;
-		$fromheader = "$mbname <$from>";
+		$fromheader = qq~"$mbname" <$from>~;
 	} else {
 		$fromheader = $from;
 	}
