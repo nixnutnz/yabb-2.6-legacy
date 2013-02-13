@@ -585,7 +585,7 @@ sub Del_Some_IM {
 			if ( $INFO{'caller'} != 1 && $m[14] ne q{} ) {
 			    foreach ( split /,/xsm, $m[14] ) {
 		            my ( $pmAttachFile, $pmAttachUser ) = split /~/xsm, $_;
-		            if ( $username eq $pmAttachUser ) { unlink "$pmUploadDir/$pmAttachFile"; }
+		            if ( $username eq $pmAttachUser ) { unlink "$pmuploaddir/$pmAttachFile"; }
 		        }
 		    }
             if ( !exists $FORM{ 'message' . $m[0] } ) {
@@ -2195,7 +2195,7 @@ sub drawPMView {
             if ( $messageAttachment ne q{} ) {
 	            foreach ( split /,/xsm, $messageAttachment ) {
 		            my ( $pmAttachFile, $pmAttachUser ) = split /~/xsm, $_;
-		            if ( $username eq $pmAttachUser && -e "$pmUploadDir/$pmAttachFile" ) { $mAttachDeleteSet = 1; }   
+		            if ( $username eq $pmAttachUser && -e "$pmuploaddir/$pmAttachFile" ) { $mAttachDeleteSet = 1; }   
 	            }
             }
             ## set the status icon
@@ -2874,7 +2874,7 @@ qq~$guestName<br />(<a href="mailto:$guestEmail">$guestEmail</a>)~;
             if ( ( $action eq 'imdraft' || $action eq 'imoutbox' || $action eq 'imstorage' ) && $messageAttachment ne q{} ) {
 	            foreach ( split /,/xsm, $messageAttachment ) {
 		            my ( $pmAttachFile, $pmAttachUser ) = split /~/xsm, $_;
-		            if ( $username eq $pmAttachUser && -e "$pmUploadDir/$pmAttachFile" ) { $attachDeleteWarn = $inmes_txt{'770a'}; }   
+		            if ( $username eq $pmAttachUser && -e "$pmuploaddir/$pmAttachFile" ) { $attachDeleteWarn = $inmes_txt{'770a'}; }   
 	            }
             }
 
@@ -2932,7 +2932,7 @@ qq~$callBack<a href="$scripturl?action=imsend;caller=$callerid;quote=$mreplyno;t
                 || ( $viewBMess && ( $iamadmin || $username eq $musername ) ) )
             {
                 $actionsMenuselect =
-qq~<input type="checkbox" name="message$messageid" id="message$messageid" class="$class_PM_list" value="1" style="cursor: hand;" /> <label for="message$messageid">$inmes_txt{'delete'}</label>~;
+qq~<input type="checkbox" name="message$messageid" id="message$messageid" class="$class_PM_list" value="1" style="cursor: pointer;" /> <label for="message$messageid">$inmes_txt{'delete'}</label>~;
                 if ( $action ne 'imdraft' && !$viewBMess ) {
                     $actionsMenuselect .=
 qq~/<label for="message$messageid">$inmes_imtxt{'store'}</label>~;

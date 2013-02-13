@@ -628,7 +628,7 @@ qq~             document.write('<img src="$tmpurl" alt="$SmilieDescription[$i]" 
                 {
                     if ( $line !~ /banner/ism ) {
                         $moresmilieslist .=
-qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javascript: MoreSmilies($i);" style="cursor: hand; vertical-align:bottom" />$SmilieLinebreak[$i] ');\n~;
+qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javascript: MoreSmilies($i);" style="cursor: pointer; vertical-align:bottom" />$SmilieLinebreak[$i] ');\n~;
                         $more_smilie_array .= qq~" [smiley=$line]", ~;
                         $i++;
                     }
@@ -676,7 +676,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
 	# PM File Attachments Browse Box Code
     GroupPerms($allowAttachIM,$pmAttachGroups);
     my ( $pmFileTypeInfo, $pmFileSizeInfo, $pmFileExtensions, @files, @fileUsers );
-	if ( !$replyguest && $allowAttachIM && $allowGroups && -d "$pmUploadDir") {
+	if ( !$replyguest && $allowAttachIM && $allowGroups && -d "$pmuploaddir") {
         $pmFileExtensions = join q{ }, @pmAttachExt;
         $pmFileTypeInfo = $pmCheckExt == 1 ? qq~$fatxt{'2'} $pmFileExtensions~ : qq~$fatxt{'2'} $fatxt{'4'}~;
         $pmFileSizeInfo = $pmFileLimit != 0 ? qq~$fatxt{'3'} $pmFileLimit KB~ : qq~$fatxt{'3'} $fatxt{'5'}~;
@@ -707,7 +707,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
         <td class="windowbg">~;
         my $startcount;
         for my $y ( 1 .. $allowAttachIM ) {
-            if ( ( ( $action eq 'imsend2' || $INFO{'forward'} || $FORM{'draftid'} || $INFO{'caller'} == 4 ) && !$FORM{'reply'} ) && $files[ $y - 1 ] ne q{} && -e "$pmUploadDir/$files[$y-1]" ) {
+            if ( ( ( $action eq 'imsend2' || $INFO{'forward'} || $FORM{'draftid'} || $INFO{'caller'} == 4 ) && !$FORM{'reply'} ) && $files[ $y - 1 ] ne q{} && -e "$pmuploaddir/$files[$y-1]" ) {
                 if ( $FORM{'draftid'} || $INFO{'caller'} == 4 ) {
                     $fatxt{'6d'} = $fatxt{'6f'};
                     $fatxt{'6e'} = $fatxt{'6c'};
@@ -728,7 +728,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
                 <option value="attachold" selected="selected">$fatxt{'6d'}</option>
                 <option value="attachdel">$fatxt{'6e'}</option>
                 <option value="attachnew">$fatxt{'6b'}</option>
-                </select>&nbsp;$fatxt{'40'}: <a href="$pmUploadUrl/$files[$y-1]" target="_blank">$files[$y-1]</a>
+                </select>&nbsp;$fatxt{'40'}: <a href="$pmuploadurl/$files[$y-1]" target="_blank">$files[$y-1]</a>
                         </span>~;
             }
             else {
@@ -1279,7 +1279,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                         UserAccount( $username, 'update' );
                         $spam_hits_left_count =
                         $post_speed_count - ${ $uid . $username }{'spamcount'};
-                        foreach (@filelist) { unlink "$pmUploadDir/$_"; }
+                        foreach (@filelist) { unlink "$pmuploaddir/$_"; }
                         fatal_error('tsc_alert');
                     }   
                 }
@@ -1297,10 +1297,10 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                 $fixfile = qq~$fixname$fixext~;
 
                 if ( !$pmFileOverwrite ) {
-                    $fixfile = check_existence( $pmUploadDir, $fixfile );
+                    $fixfile = check_existence( $pmuploaddir, $fixfile );
                 }
-                elsif ( $pmFileOverwrite == 2 && -e "$pmUploadDir/$fixfile" ) {
-                    foreach (@filelist) { unlink "$pmUploadDir/$_"; }
+                elsif ( $pmFileOverwrite == 2 && -e "$pmuploaddir/$fixfile" ) {
+                    foreach (@filelist) { unlink "$pmuploaddir/$_"; }
                     fatal_error('file_overwrite');
                 }
 
@@ -1317,12 +1317,12 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                 if ($match) {
                     if ( !$allowAttachIM )
                     {
-                        foreach (@filelist) { unlink "$pmUploadDir/$_"; }
+                        foreach (@filelist) { unlink "$pmuploaddir/$_"; }
                         fatal_error('no_perm_att');
                     }
                 }
                 else {
-                    foreach (@filelist) { unlink "$pmUploadDir/$_"; }
+                    foreach (@filelist) { unlink "$pmuploaddir/$_"; }
                     fatal_error("", "$fixfile $fatxt{'20'} @pmAttachExt");
                 }
 
@@ -1332,16 +1332,16 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                     $file_buffer .= $buffer;
                 }
                 if ( $pmFileLimit && $filesize > ( 1024 * $pmFileLimit ) ) {
-                    foreach (@filelist) { unlink "$pmUploadDir/$_"; }
+                    foreach (@filelist) { unlink "$pmuploaddir/$_"; }
                     fatal_error("", "$fatxt{'21'} $fixfile ("
                             . int( $filesize / 1024 )
                             . " KB) $fatxt{'21b'} "
                             . $pmFileLimit );
                 }
                 if ($pmDirLimit) {
-                    my $dirsize = dirsize($pmUploadDir);
+                    my $dirsize = dirsize($pmuploaddir);
                     if ( $filesize > ( ( 1024 * $pmDirLimit ) - $dirsize ) ) {
-                        foreach (@filelist) { unlink "$pmUploadDir/$_"; }
+                        foreach (@filelist) { unlink "$pmuploaddir/$_"; }
                         fatal_error(
                             "",
                             "$fatxt{'22'} $fixfile ("
@@ -1356,7 +1356,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                 }
 
                 # create a new file on the server using the formatted ( new instance ) filename
-                if ( fopen( NEWFILE, ">$pmUploadDir/$fixfile" ) ) {
+                if ( fopen( NEWFILE, ">$pmuploaddir/$fixfile" ) ) {
                     binmode NEWFILE
                         ; # needed for operating systems (OS) Windows, ignored by Linux
                     print {NEWFILE} $file_buffer
@@ -1365,15 +1365,15 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                 }
                 else
                 { # return the server's error message if the new file could not be created
-                    foreach (@filelist) { unlink "$pmUploadDir/$_"; }
-                    fatal_error( 'file_not_open', "$pmUploadDir" );
+                    foreach (@filelist) { unlink "$pmuploaddir/$_"; }
+                    fatal_error( 'file_not_open', "$pmuploaddir" );
                 }
 
                 # check if file has actually been uploaded, by checking the file has a size
-                $filesizekb{$fixfile} = -s "$pmUploadDir/$fixfile";
+                $filesizekb{$fixfile} = -s "$pmuploaddir/$fixfile";
                 if ( !$filesizekb{$fixfile} ) {
                     foreach (qw("@filelist" $fixfile)) {
-                        unlink "$pmUploadDir/$_";
+                        unlink "$pmuploaddir/$_";
                     }
                     fatal_error( 'file_not_uploaded', $fixfile );
                 }
@@ -1383,7 +1383,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                     my $okatt = 1;
                     if ( $fixfile =~ /gif$/ism ) {
                         my $header;
-                        fopen( ATTFILE, "$pmUploadDir/$fixfile" );
+                        fopen( ATTFILE, "$pmuploaddir/$fixfile" );
                         read ATTFILE, $header, 10;
                         my $giftest;
                         ( $giftest, undef, undef, undef, undef, undef ) =
@@ -1391,7 +1391,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                         fclose(ATTFILE);
                         if ( $giftest ne 'GIF' ) { $okatt = 0; }
                     }
-                    fopen( ATTFILE, "$pmUploadDir/$fixfile" );
+                    fopen( ATTFILE, "$pmuploaddir/$fixfile" );
                     while ( read ATTFILE, $buffer, 1024 ) {
                         if ( $buffer =~ /<(html|script|body)/igxsm ) {
                             $okatt = 0;
@@ -1401,7 +1401,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                     fclose(ATTFILE);
                     if ( !$okatt ) {   # delete the file as it contains illegal code
                         foreach (qw("@filelist" $fixfile)) {
-                            unlink "$pmUploadDir/$_";
+                            unlink "$pmuploaddir/$_";
                         }
                         fatal_error( 'file_not_uploaded',
                             "$fixfile $fatxt{'20a'}" );
@@ -1556,7 +1556,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                         if ( $fixfile ne q{} ) { 
                            	foreach ( split /,/xsm, $fixfile ) {
 		                        my ( $pmAttachFile, undef ) = split /~/xsm, $_;
-		                        $pmAttachUrl .= "$pmUploadUrl/$pmAttachFile\n"; 
+		                        $pmAttachUrl .= "$pmuploadurl/$pmAttachFile\n"; 
 		                    }
                             $pmAttachTxt = qq~\n$fatxt{'80'}:\n~;
 		                }
@@ -2411,12 +2411,12 @@ qq~$guest_name (<a href="mailto:$guest_email">$guest_email</a>)~;
 			if (!exists $attach_gif{$ext}) {
 				$attach_gif{$ext} = ($ext && -e "$htmldir/Templates/Forum/$useimages/$ext.gif") ? "$ext.gif" : 'paperclip.gif';
 			}
-			my $filesize = -s "$pmUploadDir/$pmAttachFile";
+			my $filesize = -s "$pmuploaddir/$pmAttachFile";
 			if ($filesize) {
 				if ($pmAttachFile =~ /\.(bmp|jpe|jpg|jpeg|gif|png)$/i && $pmDisplayPics == 1) {
-					$pmShowAttach .= qq~<div class="small" style="float:left; margin:8px;"><a href="$pmUploadUrl/$pmAttachFile" target="_blank"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile</a> (~ . int($filesize / 1024) . qq~ KB)<br />~ . ($img_greybox ? ($img_greybox == 2 ? qq~<a href="$pmUploadUrl/$pmAttachFile" rel="gb_imageset[nice_pics]" title="$pmAttachFile">~ : qq~<a href="$pmUploadUrl/$pmAttachFile" rel="gb_image[nice_pics]" title="$pmAttachFile">~) : qq~<a href="$pmUploadUrl/$pmAttachFile" target="_blank">~) . qq~<img src="$pmUploadUrl/$pmAttachFile" name="attach_img_resize" alt="$pmAttachFile" title="$pmAttachFile" style="display:none" /></a></div>\n~;
+					$pmShowAttach .= qq~<div class="small" style="float:left; margin:8px;"><a href="$pmuploadurl/$pmAttachFile" target="_blank"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile</a> (~ . int($filesize / 1024) . qq~ KB)<br />~ . ($img_greybox ? ($img_greybox == 2 ? qq~<a href="$pmuploadurl/$pmAttachFile" rel="gb_imageset[nice_pics]" title="$pmAttachFile">~ : qq~<a href="$pmuploadurl/$pmAttachFile" rel="gb_image[nice_pics]" title="$pmAttachFile">~) : qq~<a href="$pmuploadurl/$pmAttachFile" target="_blank">~) . qq~<img src="$pmuploadurl/$pmAttachFile" name="attach_img_resize" alt="$pmAttachFile" title="$pmAttachFile" style="display:none" /></a></div>\n~;
 				} else {
-					$pmAttachment .= qq~<div class="small"><a href="$pmUploadUrl/$pmAttachFile"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile</a> (~ . int($filesize / 1024) . qq~ KB)</div>~;
+					$pmAttachment .= qq~<div class="small"><a href="$pmuploadurl/$pmAttachFile"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile</a> (~ . int($filesize / 1024) . qq~ KB)</div>~;
 				}
 			} else {
 				$pmAttachment .= qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" />  $pmAttachFile ($fatxt{'1'})</div>~;
@@ -2490,7 +2490,7 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;repl
         if ( $INFO{'caller'} == 2 || $INFO{'caller'} == 3 || $INFO{'caller'} == 5 && $mattach ne q{} ) {
 	        foreach ( split /,/xsm, $mattach ) {
 		        my ( $pmAttachFile, $pmAttachUser ) = split /~/xsm, $_;
-		        if ( $username eq $pmAttachUser && -e "$pmUploadDir/$pmAttachFile" ) { $attachDeleteWarn = $inmes_txt{'770a'}; }   
+		        if ( $username eq $pmAttachUser && -e "$pmuploaddir/$pmAttachFile" ) { $attachDeleteWarn = $inmes_txt{'770a'}; }   
 	        }
         }
         $showIM .= qq~

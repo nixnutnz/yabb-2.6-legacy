@@ -1213,7 +1213,7 @@ qq~$menusep<a href="$scripturl?action=split_splice;board=$currentboard;thread=$v
               )
             {
                 $template_delete =
-qq~$menusep<span style="cursor: pointer; cursor: hand;" onclick="if(confirm('$display_txt{'rempost'}')) {uncheckAllBut($counter);}">$img{'delete'}</span>~;
+qq~$menusep<span style="cursor: pointer;" onclick="if(confirm('$display_txt{'rempost'}')) {uncheckAllBut($counter);}">$img{'delete'}</span>~;
                 if (
                     (
                            ( $iammod && $mdmod == 1 )

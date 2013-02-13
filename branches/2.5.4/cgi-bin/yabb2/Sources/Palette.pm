@@ -151,7 +151,7 @@ function Pickshowcolor(color) {
     <input type="submit" class="green" /></form>
 </div>
 <div style="position: relative; top: 9px; left: 5px; width: 289px; height: 17px; border: 1px black solid;">
-    <span id="viewcolor" style="float: left; width: 192px; height: 17px; border-right: 1px black solid; font-size: 5px; cursor: hand;" onclick="Pickshowcolor(this.style.backgroundColor)">&nbsp;</span>
+    <span id="viewcolor" style="float: left; width: 192px; height: 17px; border-right: 1px black solid; font-size: 5px; cursor: pointer;" onclick="Pickshowcolor(this.style.backgroundColor)">&nbsp;</span>
     <span style="float: right; width: 72px; height: 15px;">
     <input class="windowbg" name="viewcode" id="viewcode" type="text" style="width: 70px; font-size: 11px; border: 0px; display: inline;" readonly="readonly" />
     </span>

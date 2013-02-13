@@ -212,11 +212,11 @@ qq~<span style="font-weight: bold;">$guestName ($guestEmail)</span><br />~;
 			if (!exists $attach_gif{$ext}) {
 				$attach_gif{$ext} = ($ext && -e "$htmldir/Templates/Forum/$useimages/$ext.gif") ? "$ext.gif" : "paperclip.gif";
 			}
-			my $filesize = -s "$pmUploadDir/$pmAttachFile";
+			my $filesize = -s "$pmuploaddir/$pmAttachFile";
 			if ($filesize) {
 				if ($pmAttachFile =~ /\.(bmp|jpe|jpg|jpeg|gif|png)$/ism && $pmDisplayPics == 1) {
 					$imagecount++;
-					$pmShowAttach .= qq~<div class="small" style="float:left; margin:8px;"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile (~ . int($filesize / 1024) . qq~ KB)<br /><img src="$pmUploadUrl/$pmAttachFile" name="attach_img_resize" alt="$pmAttachFile" title="$pmAttachFile" style="display:none;" /></div>\n~;
+					$pmShowAttach .= qq~<div class="small" style="float:left; margin:8px;"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile (~ . int($filesize / 1024) . qq~ KB)<br /><img src="$pmuploadurl/$pmAttachFile" name="attach_img_resize" alt="$pmAttachFile" title="$pmAttachFile" style="display:none;" /></div>\n~;
 				} else {
 					$pmAttachment .= qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile (~ . int($filesize / 1024) . qq~ KB)</div>~;
 				}

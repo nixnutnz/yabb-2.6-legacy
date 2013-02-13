@@ -556,7 +556,7 @@ qq~             document.write('<img src="$tmpurl" class="bottom pointer" alt="$
             {
                 if ( $line !~ /banner/ism ) {
                     $moresmilieslist .=
-qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bottom" alt="$name" title="$name" onclick="javascript: MoreSmilies($i);" style="cursor: hand;" />$SmilieLinebreak[$i] ');\n~;
+qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bottom" alt="$name" title="$name" onclick="javascript: MoreSmilies($i);" style="cursor: pointer;" />$SmilieLinebreak[$i] ');\n~;
                     $more_smilie_array .= qq~" [smiley=$line]", ~;
                     $i++;
                 }

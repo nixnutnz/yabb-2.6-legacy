@@ -905,7 +905,7 @@ sub MakeTools {
         <a href="javascript:quickLinks('threadtools$counter')">$text</a>
     </div>
     </td>
-    <td style="padding:0px; text-align:center; vertical-align:top; width:1px">
+    <td style="padding:0px; text-align:center; vertical-align:bottom; width:1px">
     <div style="cursor: pointer; position:relative; float:right; display:inline-block; height:10px; text-align:right">
         <ul class="post_tools_menu" id="threadtools$counter" onmouseover="keepLinks('threadtools$counter')" onmouseout="TimeClose('threadtools$counter')">
             $template
