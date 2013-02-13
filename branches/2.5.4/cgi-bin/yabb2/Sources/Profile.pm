@@ -258,7 +258,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
     CalcAge( $user, 'parse' );
 
     my ( $editAgeTxt, $editAgeCount, $disableBdayFields, $editGenderTxt,
-        $editGenderCount, $disableGenderField, $genderField );
+        $editGenderCount, $disableGenderField, $genderField, $bdayFields );
     if (   $editGenderLimit
         && !$iamadmin
         && ( !$iamgmod || !$allow_gmod_profile ) )
@@ -306,7 +306,11 @@ qq~ $profile_txt{'gender_edit_2'} $editGenderCount $profile_txt{'dob_edit_4'}~;
         elsif ( ${ $uid . $user }{'disableage'} >= $editAgeLimit ) {
             $editAgeTxt        = qq~$profile_txt{'dob_edit_7'}~;
             $disableBdayFields = q~ disabled="disabled"~;
-        }
+            $bdayFields = qq~
+<input type="hidden" name="bday1" value="$umonth" />
+<input type="hidden" name="bday2" value="$uday" />
+<input type="hidden" name="bday3" value="$uyear" />~;
+         }
         elsif (${ $uid . $user }{'disableage'} eq q{}
             && ${ $uid . $user }{'bday'} eq q{} )
         {
@@ -416,7 +420,7 @@ qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"
                 <td><label for="birthday"><b>$profile_txt{'563'}: </b>$editAgeTxt</label></td>
 
 <!-- ## XTC Cal ## -->
-       <td><span class="small">$dayormonth$seluyear</span></td>
+       <td><span class="small">$dayormonth$seluyear$bdayFields</span></td>
 <!-- ## XTC Cal ## -->
     </tr>~;
     if ( $showage == 1 ) {
