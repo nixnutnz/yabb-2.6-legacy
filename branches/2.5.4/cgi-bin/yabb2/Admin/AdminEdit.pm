@@ -933,7 +933,7 @@ q~                                                                              
 \$facesdir = "$facesdir";                       # Base Path for all avatar files
 \$uploaddir = "$uploaddir";                     # Base Path for all attachment files
 \$uploaddir = "$uploaddir";                     # Base Path for post attachment files
-\$pmUploadDir = "$pmUploadDir";                 # Base Path for pm attachment files
+\$pmuploaddir = "$pmuploaddir";                 # Base Path for pm attachment files
 
 ########## URLs ##########
 
@@ -941,7 +941,7 @@ q~                                                                              
 \$facesurl = "$facesurl";                       # Base URL for all avatar files
 \$uploadurl = "$uploadurl";                     # Base URL for all attachment files
 \$uploadurl = "$uploadurl";                     # Base URL for post attachment files
-\$pmUploadUrl = "$pmUploadUrl";                 # Base URL for pm attachment files
+\$pmuploadurl = "$pmuploadurl";                 # Base URL for pm attachment files
 
 1;
 EOF
