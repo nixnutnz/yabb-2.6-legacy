@@ -304,19 +304,23 @@ sub DoContents {
 }
 
 sub CreateOrderFile {
-	opendir(HELPDIR, "$helpfile/$language/$help_area");
-	@contents = readdir(HELPDIR);
-	closedir(HELPDIR);
+    opendir HELPDIR, "$helpfile/$language/$help_area";
+    @contents = readdir HELPDIR;
+    closedir HELPDIR;
 
-	foreach (sort { uc($a) cmp uc($b) } @contents) {
-		($name, $extension) = split(/\./, $_);
-		next if $extension !~ /help/i;
-		$order_list .= "$name\n";
-	}
+    foreach ( sort { uc($a) cmp uc $b } @contents ) {
+        ( $name, $extension ) = split /\./xsm, $_;
+        next if $extension !~ /help/ism;
+        $order_list .= "$name\n";
+    }
 
-	fopen(HELPORDER, ">$vardir/$help_area.helporder") || die("couldn't write order file - check permissions on $vardir and $vardir/$help_area.helporder");
-	print HELPORDER qq~$order_list~;
-	fclose(HELPORDER);
+    fopen( HELPORDER, ">$vardir/$help_area.helporder" )
+      or croak(
+"couldn't write order file - check permissions on $vardir and $vardir/$help_area.helporder"
+      );
+    print {HELPORDER} qq~$order_list~ or croak 'cannot print HELPORDER';
+    fclose(HELPORDER);
+    return;
 }
 
 1;
