@@ -50,13 +50,13 @@ if( ! $script_root ) {
 $script_root =~ s/\\/\//gxsm;
 $script_root =~ s/\/Setup\.(pl|cgi)//igxsm;
 
-if    ( -e './Paths.pl' )            { require './Paths.pl'; }
-elsif ( -e "$script_root/Paths.pl" ) { require "$script_root/Paths.pl"; }
-elsif ( -e "$script_root/Variables/Paths.pl" ) {
-    require "$script_root/Variables/Paths.pl";
+if    ( -e './Paths.pm' )            { require Paths; }
+elsif ( -e "$script_root/Paths.pm" ) { require "$script_root/Paths.pm"; }
+elsif ( -e "$script_root/Variables/Paths.pm" ) {
+    require "$script_root/Variables/Paths.pm";
 }
 
-# Check if it's blank Paths.pl or filled in one
+# Check if it's blank Paths.pm or filled in one
 if ( !$lastsaved ) {
     $boardsdir = './Boards';
     $sourcedir = './Sources';
@@ -692,7 +692,7 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
 
     my $setfile = << "EOF";
 ###############################################################################
-# Paths.pl                                                                    #
+# Paths.pm                                                                    #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -736,13 +736,13 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
 1;
 EOF
 
-    fopen( FILE, '>./Paths.pl' )
-      || setup_fatal_error( "$maintext_23 ./Paths.pl: ", 1 );
+    fopen( FILE, '>./Paths.pm' )
+      || setup_fatal_error( "$maintext_23 ./Paths.pm: ", 1 );
     print {FILE} nicely_aligned_file($setfile)
-      or croak 'cannot print nicely aligned Paths.pl';
+      or croak 'cannot print nicely aligned Paths.pm';
     fclose(FILE);
 
-    if ( -e "$vardir/Paths.pl" ) { unlink "$vardir/Paths.pl"; }
+    if ( -e "$vardir/Paths.pm" ) { unlink "$vardir/Paths.pm"; }
 
     $yySetLocation = qq~$set_cgi?action=checkmodules~;
     redirectexit();
@@ -785,10 +785,10 @@ sub VarInstall {
         print {ALLOWFILE} "display\n"      or croak 'cannot print ALLOWFILE';
         print {ALLOWFILE} "messageindex\n" or croak 'cannot print ALLOWFILE';
         print {ALLOWFILE} "pages\n"        or croak 'cannot print ALLOWFILE';
-#        print {ALLOWFILE} "profile\n"      or croak 'cannot print ALLOWFILE';
-#        print {ALLOWFILE} "register\n"     or croak 'cannot print ALLOWFILE';
+        print {ALLOWFILE} "profile\n"      or croak 'cannot print ALLOWFILE';
+        print {ALLOWFILE} "register\n"     or croak 'cannot print ALLOWFILE';
         print {ALLOWFILE} "resetpass\n"    or croak 'cannot print ALLOWFILE';
-#        print {ALLOWFILE} 'viewprofile'    or croak 'cannot print ALLOWFILE';
+        print {ALLOWFILE} 'viewprofile'    or croak 'cannot print ALLOWFILE';
         fclose(ALLOWFILE);
     }
 
@@ -1393,7 +1393,7 @@ sub SetInstall2 {
 
     my $setfile = << "EOF";
 ###############################################################################
-# Settings.pl                                                                 #
+# Settings.pm                                                                 #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -1778,7 +1778,7 @@ sub SetInstall2 {
 \$randomizer = 0;                           # Set 0 to 3 to create background random noise
                                             # based on foreground or shade color or both
 \$stealthurl = 0;                           # Set to 1 to mask referer url to hosts if a hyperlink is clicked.
-\$referersecurity = 1;                      # Set to 1 to activate referer security checking.
+\$referersecurity = 0;                      # Set to 1 to activate referer security checking.
 \$do_scramble_id = 1;                       # Set to 1 scambles all visible links containing user ID's
 \$sessions = 1;                             # Set to 1 to activate session id protection.
 \$show_online_ip_admin = 1;                 # Set to 1 to show online IP's to admins.
@@ -1840,10 +1840,10 @@ sub SetInstall2 {
 1;
 EOF
 
-    fopen( SETTING, ">$vardir/Settings.pl" )
-      || setup_fatal_error( "$maintext_23 $vardir/Settings.pl: ", 1 );
+    fopen( SETTING, ">$vardir/Settings.pm" )
+      || setup_fatal_error( "$maintext_23 $vardir/Settings.pm: ", 1 );
     print {SETTING} nicely_aligned_file($setfile)
-      or croak 'cannot print Settings.pl';
+      or croak 'cannot print Settings.pm';
     fclose(SETTING);
     if ( $action eq 'setinstall2' ) {
         LoadUser('admin');
@@ -1863,7 +1863,7 @@ EOF
 }
 
 sub tempstarter {
-    return if !-e "$vardir/Settings.pl";
+    return if !-e "$vardir/Settings.pm";
 
     $YaBBversion = 'YaBB 2.5.4';
 
@@ -1880,7 +1880,7 @@ sub tempstarter {
     }
 
     # Requirements and Errors
-    require "$vardir/Settings.pl";
+    require Variables::Settings;
     LoadCookie();    # Load the user's cookie (or set to guest)
     LoadUserSettings();
     WhatTemplate();
@@ -1899,8 +1899,8 @@ sub CheckInstall {
 
     $set_missing = q{};
     $set_created = q{};
-    if   ( !-e "$vardir/Settings.pl" ) { $set_missing = q~Settings.pl~; }
-    else                               { $set_created = q~Settings.pl~; }
+    if   ( !-e "$vardir/Settings.pm" ) { $set_missing = q~Settings.pm~; }
+    else                               { $set_created = q~Settings.pm~; }
 
     $brd_missing = q{};
     $brd_created = q{};
@@ -2217,13 +2217,13 @@ sub CheckInstall {
     if ($set_missing) {
         $install_error = 1;
         $yymain .= q~
-      A problem has occurred while creating Settings.pl!
+      A problem has occurred while creating Settings.pm!
             </td>
         </tr>~;
     }
     if ($set_created) {
         $yymain .= qq~
-      Successfully checked Settings.pl!
+      Successfully checked Settings.pm!
             </td>
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/a_off.gif" alt="" /></td>
@@ -2330,7 +2330,7 @@ sub setup_fatal_error {
       $yyim    = "YaBB 2.5.4 Setup Error.";
       $yytitle = "YaBB 2.5.4 Setup Error.";
 
-      SimpleOutput if !-e "$vardir/Settings.pl";
+      SimpleOutput if !-e "$vardir/Settings.pm";
 
       tempstarter();
       SetupTemplate();

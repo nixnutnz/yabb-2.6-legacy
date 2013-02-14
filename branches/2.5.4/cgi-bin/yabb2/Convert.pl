@@ -49,10 +49,10 @@ if ( !$script_root ) {
     $script_root =~ s/\\/\//gxsm;
 }
 $script_root =~ s/\/Convert\.(pl|cgi)//igxsm;
-if    ( -e './Paths.pl' )            { require './Paths.pl'; }
-elsif ( -e "$script_root/Paths.pl" ) { require "$script_root/Paths.pl"; }
-elsif ( -e "$script_root/Variables/Paths.pl" ) {
-    require "$script_root/Variables/Paths.pl";
+if    ( -e './Paths.pm' )            { require Paths; }
+elsif ( -e "$script_root/Paths.pm" ) { require "$script_root/Paths.pm"; }
+elsif ( -e "$script_root/Variables/Paths.pm" ) {
+    require "$script_root/Variables/Paths.pm";
 }
 
 if   ( -e 'YaBB.cgi' ) { $yyext = 'cgi'; }
@@ -1672,7 +1672,7 @@ qq~$MemStat[$i]|$MemStarNum[$i]|$MemStarPic[$i]|$MemTypeCol[$i]|0|0|0|0|0|0~;
         $Post{$key} = $value;
     }
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pl');    # save %Group, %NoPost and %Post
+    SaveSettingsTo('Settings.pm');    # save %Group, %NoPost and %Post
     return;
 }
 
@@ -2840,7 +2840,7 @@ sub conv_stringtotime {
 #End Conversion#
 
 sub tempstarter {
-    return if !-e "$vardir/Settings.pl";
+    return if !-e "$vardir/Settings.pm";
 
     $YaBBversion = 'YaBB 2.5.4';
 
@@ -2858,7 +2858,7 @@ sub tempstarter {
     }
 
     # Requirements and Errors
-    require "$vardir/Settings.pl";
+    require Variables::Settings;
     if ( -e "$vardir/convSettings.txt" ) { require "$vardir/convSettings.txt"; }
     else                                 { $convertdir = './Convert'; }
 
@@ -3000,7 +3000,7 @@ sub setup_fatal_error {
     $yyim    = 'YaBB 2.5.4 Convertor Error.';
     $yytitle = 'YaBB 2.5.4 Convertor Error.';
 
-    if ( !-e "$vardir/Settings.pl" ) { SimpleOutput(); }
+    if ( !-e "$vardir/Settings.pm" ) { SimpleOutput(); }
 
     tempstarter();
     SetupTemplate();
@@ -3331,7 +3331,7 @@ sub SetInstall2 {
 
     my $setfile = << "EOF";
 ###############################################################################
-# Settings.pl                                                                 #
+# Settings.pm                                                                 #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -3768,10 +3768,10 @@ spider|kenjin.spider|keyword.density|larbin|leechftp|lexibot|libweb/clshttp|link
 1;
 EOF
 
-    fopen( SETTING, ">$vardir/Settings.pl" )
-      || setup_fatal_error( "$maintext_23 $vardir/Settings.pl: ", 1 );
+    fopen( SETTING, ">$vardir/Settings.pm" )
+      || setup_fatal_error( "$maintext_23 $vardir/Settings.pm: ", 1 );
     print {SETTING} nicely_aligned_file($setfile)
-      or croak 'cannot print Settings.pl';
+      or croak 'cannot print Settings.pm';
     fclose(SETTING);
     if ( $action eq 'setinstall2' ) {
         LoadUser('admin');

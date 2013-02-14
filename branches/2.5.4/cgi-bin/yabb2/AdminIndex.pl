@@ -48,8 +48,8 @@ if ( !$script_root ) {
 }
 $script_root =~ s/\/AdminIndex\.(pl|cgi)//igxsm;
 
-require 'Paths.pl';
-require "$vardir/Settings.pl";
+require Paths;
+require Variables::Settings;
 
 # Check always for Time::HiRes
 eval { require Time::HiRes; import Time::HiRes qw(time); };

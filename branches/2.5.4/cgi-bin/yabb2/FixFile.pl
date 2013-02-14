@@ -40,8 +40,8 @@ if ( !$script_root ) {
 }
 $script_root =~ s/\/FixFile\.(pl|cgi)//igxsm;
 
-if    ( -e './Paths.pl' )           { require './Paths.pl'; }
-elsif ( -e './Variables/Paths.pl' ) { require './Variables/Paths.pl'; }
+if    ( -e './Paths.pm' )           { require Paths; }
+elsif ( -e './Variables/Paths.pm' ) { require './Variables/Paths.pm'; }
 else {
     $boardsdir = './Boards';
     $sourcedir = './Sources';
@@ -219,7 +219,7 @@ qq~$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$newmodgroups|$newtopicper
     }
 
     require Admin::NewSettings;
-        SaveSettingsTo('Settings.pl');
+        SaveSettingsTo('Settings.pm');
 
         # save %Group, %NoPost, %Post and unlink $vardir/membergroups.txt
 
@@ -337,10 +337,10 @@ qq~${$uid.$member}{'realname'}|${$uid.$member}{'email'}|$actposition|${$uid.$mem
 
 sub Ban_List {
     $ret = 0;
-    if (-e "$vardir/old_Settings.pl") {
+    if (-e "$vardir/old_Settings.pm") {
         use Time::localtime;
         $time = time;
-        require "$vardir/old_Settings.pl";
+        require "$vardir/old_Settings.pm";
         if ( $ip_banlist ) {
             @i_ban = ( split /,/xsm, $ip_banlist );
             chomp @i_ban;
@@ -378,7 +378,7 @@ sub Ban_List {
 }
 
 sub tempstarter {
-    require 'Paths.pl';
+    require Paths;
 
     $YaBBversion = 'YaBB 2.5.4';
 
@@ -397,7 +397,7 @@ sub tempstarter {
         push @INC, $yypath;
     }
 
-    require "$vardir/Settings.pl";
+    require "Variables::Settings;
     if ( -e "$vardir/membergroups.txt" ) {
     require "$vardir/membergroups.txt";
     }

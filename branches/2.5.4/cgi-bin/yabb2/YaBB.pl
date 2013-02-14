@@ -51,8 +51,8 @@ BEGIN {
     }
     $script_root =~ s/\/$yyexec\.(pl|cgi)//igxsm;
 
-    eval (require 'Paths.pl');
-    eval (require "$vardir/Settings.pl");
+    require Paths;
+    require Variables::Settings;
 
     # Check for Time::HiRes if debugmodus is on
     if ($debug) {
