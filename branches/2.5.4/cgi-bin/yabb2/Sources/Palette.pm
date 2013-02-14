@@ -31,7 +31,7 @@ sub ColorPicker {
         @pallist = @new_pal;
 
         require Admin::NewSettings;
-        SaveSettingsTo('Settings.pl');
+        SaveSettingsTo('Settings.pm');
     }
 
     $gzcomp = 0;

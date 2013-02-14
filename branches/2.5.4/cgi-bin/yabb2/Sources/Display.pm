@@ -1117,8 +1117,7 @@ qq~$menusep<a href="$scripturl?board=$currentboard;action=modify;message=$counte
                     && $enable_quoteuser
                     && ( !$iamguest || $enable_guestposting ) )
                 {
-                    $usernamelink =
-qq~<a href="javascript://" onclick="AddText('[color=$quoteuser_color]@[/color] [b]$quote_mname\[/b]\\r\\n\\r\\n'))"><img src="$imagesdir/qquname.gif" alt="$display_txt{'146n'}" title="$display_txt{'146n'}" /></a> $usernamelink~;
+				$usernamelink = qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote_mname\[/b]\\r\\n\\r\\n'))"><img src="$imagesdir/qquname.gif" alt="$display_txt{'146n'}" title="$display_txt{'146n'}" /></a> $usernamelink~;
                 }
 
                 if (  !$movedflag

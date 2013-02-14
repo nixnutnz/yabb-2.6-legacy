@@ -179,7 +179,7 @@ qq~$tabaction|$taburl|$tmpisaction|$tmpusernamereq|$tabview|$tabwin|$exttaburl~;
         @AdvancedTabs = @new_tabs_order;
 
         require Admin::NewSettings;
-        SaveSettingsTo('Settings.pl');
+        SaveSettingsTo('Settings.pm');
     }
 
     $yySetLocation = $scripturl;
@@ -380,7 +380,7 @@ sub ReorderTab {
         }
 
         require Admin::NewSettings;
-        SaveSettingsTo('Settings.pl');
+        SaveSettingsTo('Settings.pm');
     }
 
     $yySetLocation = qq~$scripturl?action=edittab;thetab=$moveitem~;
@@ -426,7 +426,7 @@ sub DeleteTab {
         }
         @AdvancedTabs = @new_tabs_order;
         require Admin::NewSettings;
-        SaveSettingsTo('Settings.pl');
+        SaveSettingsTo('Settings.pm');
     }
 
     $yySetLocation = $scripturl;

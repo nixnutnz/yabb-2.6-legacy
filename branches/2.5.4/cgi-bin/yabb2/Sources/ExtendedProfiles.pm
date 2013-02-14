@@ -1589,7 +1589,7 @@ sub ext_admin_reorder {
     @ext_prof_order = split /\n/xsm, $FORM{'reorder'};
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pl');
+    SaveSettingsTo('Settings.pm');
 
     $yySetLocation = qq~$adminurl?action=ext_admin~;
     redirectexit();
@@ -1607,7 +1607,7 @@ sub ext_admin_create {
       "$FORM{'name'}|$FORM{'type'}||1||0|1|||0|||0|0|||1|0|||0|0";
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pl');
+    SaveSettingsTo('Settings.pm');
 
     $yySetLocation = qq~$adminurl?action=ext_admin~;
     redirectexit();
@@ -1702,7 +1702,7 @@ sub ext_admin_edit {
         @ext_prof_order = @order;
 
         require Admin::NewSettings;
-        SaveSettingsTo('Settings.pl');
+        SaveSettingsTo('Settings.pm');
 
         $yySetLocation = qq~$adminurl?action=ext_admin~;
         redirectexit();
@@ -2026,7 +2026,7 @@ $ext_template_blockstop
         }
 
         require Admin::NewSettings;
-        SaveSettingsTo('Settings.pl');
+        SaveSettingsTo('Settings.pm');
 
         opendir EXT_DIR, "$memberdir";
         @contents = grep { /\.vars$/sm } readdir EXT_DIR;
@@ -2154,7 +2154,7 @@ sub ext_admin_edit2 {
     @ext_prof_fields = @fields;
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pl');
+    SaveSettingsTo('Settings.pm');
 
     $yySetLocation = qq~$adminurl?action=ext_admin~;
     redirectexit();
@@ -2315,7 +2315,7 @@ sub ext_admin_convert {
     }
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pl');
+    SaveSettingsTo('Settings.pm');
 
     opendir EXT_DIR, "$old_membersdir";
     @contents = grep { /\.ext$/xsm } readdir EXT_DIR;

@@ -74,7 +74,7 @@ sub freespace {
                     # actual free host space <> time for next check
 
                     require Admin::NewSettings;
-                    SaveSettingsTo('Settings.pl');
+                    SaveSettingsTo('Settings.pm');
                     exit 0;
                 }
             }

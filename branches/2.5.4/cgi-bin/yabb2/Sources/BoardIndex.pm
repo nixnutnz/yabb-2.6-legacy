@@ -1624,8 +1624,7 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1" class="a"><b>$pboar
         ~ or croak 'cannot print table';
         CORE::exit;    # This is here only to avoid server error log entries!
     }
-
-    return;
+# cannot have return here;
 }
 
 sub GetBotlist {

@@ -474,10 +474,10 @@ sub shellaccess {
 	### Requirements and Errors ###
 	$script_root = $arguments{'script-root'};
 
-	if (-e "Paths.pl") { require "Paths.pl"; }
-	elsif (-e "$script_root/Paths.pl") { require "$script_root/Paths.pl"; }
+	if (-e 'Paths.pm') { require Paths; }
+	elsif (-e "$script_root/Paths.pm") { require "$script_root/Paths.pm"; }
 
-	require "$vardir/Settings.pl";
+	require Variables::Settings;
 	require Sources::Subs;
 	require Sources::DateTime;
 	require Sources::Load;
