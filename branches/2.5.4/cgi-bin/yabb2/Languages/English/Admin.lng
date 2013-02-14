@@ -490,7 +490,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 'minlinksig_exp' => 'This avoids spambots from creating spam-signatures directly after registering',
 'minlinkweb' => 'Number of posts a member must have before they can link to a website in their profile',
 'minlinkweb_exp' => 'This prevents spammers from linking to a website directly after registering',
-'stealth' => 'Enable &#39;Stealth&#39; mode for Admins and Global Mods?<br /><span class="small">If checked, Admins and Global Mods will not appear "online" to any other Member Groups or Guests.</span>',
+'stealth' => 'Enable &#39;Stealth&#39; mode for Admins and Global Mods?<br /><span class="small">If checked, Admins and Global Mods will have the option not to appear "online" to any other Member Groups or Guests.<br />This will need to be enabled in User CP - Profile - Contact Information.</span>', 
 'mlview' => 'Select the Member Groups allowed to view the Member List?',
 'buddylist' => 'Enable Buddy List?',
 'regreason' => 'Maximum allowed characters in user&#39;s "Reason(s) for Registering"',
