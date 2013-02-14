@@ -830,7 +830,7 @@ sub editAddGroup2 {
     }
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pl');
+    SaveSettingsTo('Settings.pm');
 
     # save @nopostorder, %Group, %NoPost and %Post
 
@@ -885,7 +885,7 @@ sub deleteGroup {
     @nopostorder = @new_nopostorder;
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pl');
+    SaveSettingsTo('Settings.pm');
 
     # save @nopostorder, %Group, %NoPost and %Post
 
@@ -989,7 +989,7 @@ sub reorderGroups2 {
     }
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pl');
+    SaveSettingsTo('Settings.pm');
 
     # save @nopostorder
 

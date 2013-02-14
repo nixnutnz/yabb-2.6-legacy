@@ -1,5 +1,5 @@
 ###############################################################################
-# Menu_def.pm                                                                     #
+# Menu_def.pm                                                                 #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #

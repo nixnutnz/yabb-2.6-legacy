@@ -122,8 +122,8 @@ sub SaveSettings {
     fclose(NEWS);
     delete $settings{'news'};
 
-    # Settings.pl stuff
-    SaveSettingsTo( 'Settings.pl', %settings );
+    # Settings.pm stuff
+    SaveSettingsTo( 'Settings.pm', %settings );
     return;
 }
 

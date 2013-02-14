@@ -578,10 +578,10 @@ sub backupsettings2 {
     $lastbackup = 0;    # reset when saving settings new
     print_BackupSettings();
 
-    # Set $rememberbackup for alert into Settings.pl
+    # Set $rememberbackup for alert into Settings.pm
     if ( $rememberbackup != $FORM{'rememberbackup'} ) {
         $rememberbackup = $FORM{'rememberbackup'};
-        fopen( SETTINGS, "$vardir/Settings.pl" );
+        fopen( SETTINGS, "$vardir/Settings.pm" );
         @settings = <SETTINGS>;
         fclose(SETTINGS);
         for my $i ( 0 .. ( @settings - 1 ) ) {
@@ -593,12 +593,12 @@ s/\$rememberbackup = \d+;/\$rememberbackup = $rememberbackup;/sm;
             }
         }
 
-        # if \$rememberbackup = is not allready in Settings.pl
+        # if \$rememberbackup = is not allready in Settings.pm
         if ( $rememberbackup && $rememberbackup == $FORM{'rememberbackup'} ) {
             $rememberbackup *= 86_400;        # days in seconds
             unshift @settings, "\$rememberbackup = $rememberbackup;\n";
         }
-        fopen( SETTINGS, ">$vardir/Settings.pl" );
+        fopen( SETTINGS, ">$vardir/Settings.pm" );
         print {SETTINGS} @settings or croak 'cannot print SETTINGS';
         fclose(SETTINGS);
     }
@@ -662,7 +662,7 @@ sub print_BackupSettings {
     $backupsettingsloaded = 1;
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pl');
+    SaveSettingsTo('Settings.pm');
     return;
 }
 

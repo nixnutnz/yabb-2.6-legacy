@@ -273,7 +273,7 @@ sub SaveSettings {
         admin_fatal_error('invalid_key');
     }
 
-    SaveSettingsTo( 'Settings.pl', %settings );
+    SaveSettingsTo( 'Settings.pm', %settings );
     return;
 }
 

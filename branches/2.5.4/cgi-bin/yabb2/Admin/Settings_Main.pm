@@ -1440,8 +1440,8 @@ sub SaveSettings {
 	# Convert unwanted tags in Board Name
 	ToHTML($settings{'mbname'});
 
-	# Settings.pl stuff
-	SaveSettingsTo('Settings.pl', %settings);
+	# Settings.pm stuff
+	SaveSettingsTo('Settings.pm', %settings);
 }
 
 1;

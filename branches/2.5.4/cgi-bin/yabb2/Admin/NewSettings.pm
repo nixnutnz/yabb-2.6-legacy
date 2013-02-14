@@ -398,7 +398,7 @@ sub settings2 {
     return;
 }
 
-# Subroutine for saving to Settings.pl
+# Subroutine for saving to Settings.pm
 sub SaveSettingsTo {
     my $file     = shift;
     my %settings = @_;
@@ -412,7 +412,7 @@ sub SaveSettingsTo {
 
     if ( $codemaxchars > 15 ) { $codemaxchars = 15; }
     my $setfile;
-    if ( $file eq 'Settings.pl' ) {
+    if ( $file eq 'Settings.pm' ) {
         $fadertext       ||= $color{'fadertext'};
         $faderbackground ||= $color{'faderbg'};
 
@@ -483,7 +483,7 @@ sub SaveSettingsTo {
 
         $setfile = << "EOF";
 ###############################################################################
-# Settings.pl                                                                 #
+# Settings.pm                                                                 #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #

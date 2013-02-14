@@ -145,7 +145,7 @@ sub HelpSet2 {
     $UseHelp_Perms = $FORM{'UseHelp_Perms'} ? 1 : 0;
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pl');
+    SaveSettingsTo('Settings.pm');
 
     $yymain .= "$helptxt{'8'}";
     $yytitle       = "$helptxt{'7'}";

@@ -2814,7 +2814,7 @@ sub UpdateTemplates {
     }
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pl');
+    SaveSettingsTo('Settings.pm');
     return;
 }
 

@@ -55,7 +55,7 @@ sub SaveSettings {
           || admin_fatal_error( 'cannot_open_dir', "$vardir/maintenance.lock" );
     }
 
-    SaveSettingsTo( 'Settings.pl', %settings );
+    SaveSettingsTo( 'Settings.pm', %settings );
     return;
 }
 

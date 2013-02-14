@@ -411,7 +411,7 @@ sub setup_guardian2 {
     $banned_requests =~ s/\|+/\|/igsm;    # Clean up extra pipes
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pl');
+    SaveSettingsTo('Settings.pm');
 
     @access_denied = split /\,/xsm, $access_denied;
     update_htaccess( 'save', @access_denied );

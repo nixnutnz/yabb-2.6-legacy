@@ -156,7 +156,7 @@ $show_questions
 	</tr><tr class="windowbg2 vtop bold">
     	<td><label for="spam_question">$spam_question_txt{'question'}:</label></td>
     	<td><input type="text" name="spam_question" id="spam_question" size="60" maxlength="50" /></td>
-	</tr><tr class="windowbg2 vtop bold;">
+	</tr><tr class="windowbg2 vtop bold">
     	<td><label for="spam_answer">$spam_question_txt{'answer'}:<br /><span class="small" style="font-weight: normal;">$spam_question_txt{'answer_desc'}</span></label></td>
     	<td><input type="text" name="spam_answer" id="spam_answer" size="60" maxlength="50" /></td>
 	</tr>
@@ -193,7 +193,7 @@ sub SpamQuestions2 {
     $spam_questions_case = $FORM{'spam_questions_case'} || '0';
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pl');
+    SaveSettingsTo('Settings.pm');
 
     if ( $action eq 'spam_questions2' ) {
         $yySetLocation = qq~$adminurl?action=spam_questions;questions_language=$FORM{'questions_language'}~;
@@ -261,10 +261,10 @@ sub SpamQuestionsEdit {
     <col class="w_75pc" />
 	<tr>
     	<th class="titlebg" colspan="2"><img src="$imagesdir/preferences.gif" alt="" /> $spam_question_txt{'edit_question'}</th>
-	</tr><tr class="windowbg2 vtop bold;">
+	</tr><tr class="windowbg2 vtop bold">
     	<td><label for="spam_question">$spam_question_txt{'question'}:</label></td>
     	<td><input type="text" name="spam_question" id="spam_question" size="60" maxlength="50" value="$spam_question" /></td>
-	</tr><tr class="windowbg2 vtop bold;">
+	</tr><tr class="windowbg2 vtop bold">
     	<td><label for="spam_answer">$spam_question_txt{'answer'}:<br /><span class="small" style="font-weight: normal;">$spam_question_txt{'answer_desc'}</span></label></td>
     	<td><input type="text" name="spam_answer" id="spam_answer" size="60" maxlength="50" value="$spam_answer" /><input type="hidden" name="spam_question_id" id="spam_question_id" value="$spam_question_id" /></td>
 	</tr>

@@ -217,8 +217,8 @@ sub SaveSettings {
     fclose(FILE);
     use strict;
 
-    # Settings.pl
-    SaveSettingsTo( 'Settings.pl', %settings );
+    # Settings.pm
+    SaveSettingsTo( 'Settings.pm', %settings );
     return;
 }
 

@@ -900,7 +900,7 @@ sub EditPaths2 {
 q~                                                                               ~;
     my $setfile = << "EOF";
 ###############################################################################
-# Paths.pl                                                                    #
+# Paths.pm                                                                    #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -946,7 +946,7 @@ q~                                                                              
 1;
 EOF
 
-    fopen( FILE, '>Paths.pl' );
+    fopen( FILE, '>Paths.pm' );
     print {FILE} nicely_aligned_file($setfile) or croak 'cannot print FILE';
     fclose(FILE);
 

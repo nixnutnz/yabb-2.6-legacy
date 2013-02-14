@@ -472,7 +472,7 @@ sub SaveSettings {
         $settings{'findfile_time'}          = 0;
     }
 
-    SaveSettingsTo( 'Settings.pl', %settings );
+    SaveSettingsTo( 'Settings.pm', %settings );
     return;
 }
 

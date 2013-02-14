@@ -256,7 +256,7 @@ sub AddSmilies {
     }
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pl');
+    SaveSettingsTo('Settings.pm');
 
     $yySetLocation = qq~$adminurl?action=smilies~;
     redirectexit();
@@ -297,7 +297,7 @@ sub SmilieMove {
     }
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pl');
+    SaveSettingsTo('Settings.pm');
 
     $yySetLocation = qq~$adminurl?action=smilies~;
     redirectexit();
