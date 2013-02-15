@@ -1591,9 +1591,12 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                         if ( $fixfile ne q{} ) {
                             foreach ( split /,/xsm, $fixfile ) {
                                 my ( $pmAttachFile, undef ) = split /~/xsm, $_;
-                                $pmAttachUrl .= "$pmuploadurl/$pmAttachFile\n";
+                                $pmAttachUrl .= qq~$pmuploadurl/$pmAttachFile
+                                ~;
                             }
-                            $pmAttachTxt = qq~\n$fatxt{'80'}:\n~;
+                            $pmAttachTxt = qq~
+                            $fatxt{'80'}:
+                            ~;
                         }
                         sendmail(
                             $useremail,
@@ -1605,7 +1608,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                                     'subject' => $msubject,
                                     'message' => $chmessage,
                                     'attachments' =>
-                                      qq~$pmAttachTxt:\n$pmAttachUrl~
+                                      qq~$pmAttachTxt . $pmAttachUrl~
                                 }
                             ),
                             q{},
