@@ -103,8 +103,8 @@ function Pickshowcolor(color) {
 </head>
 
 <body>
-<div class="windowbg" style="position: absolute; top: 0px; left: 0px; width: 302px; height: 308px; border: 1px black outset;">
-<div style="position: relative; top: 4px; left: 5px; width: 289px; height: 209px; padding-left: 1px; padding-top: 1px; border: 0px; background-color: black;">~
+<div class="windowbg" style="position: absolute; top: 0px; left: 0px; width: 300px; height: 308px; border: 1px black outset;">
+<div style="position: relative; top: 4px; left: 5px; width: 288px; height: 209px; padding-left: 1px; padding-top: 1px; border: 0px; background-color: black;">~
       or croak 'cannot print colorpicker';
 
     foreach my $z ( 0 .. 255 ) {
@@ -128,12 +128,12 @@ function Pickshowcolor(color) {
 
     if ( $iamadmin && $picktask eq 'post' ) {
         print qq~
-    <span id="defpal_1" style="background-color:$pallist[0]" class="defpal" ><input type="radio" name="defpal" id="defpal1" value="defcolor1" style="background-color:$pallist[0];" class="defpal_b" title="Default palette" /></span>
-    <span id="defpal_2" style="background-color:$pallist[1]" class="defpal" ><input type="radio" name="defpal" id="defpal2" value="defcolor2" style="background-color:$pallist[1];" class="defpal_b" title="Default palette" /></span>
-    <span id="defpal_3" style="background-color:$pallist[2]" class="defpal" ><input type="radio" name="defpal" id="defpal3" value="defcolor3" style="background-color:$pallist[2];" class="defpal_b" title="Default palette" /></span>
-    <span id="defpal_4" style="background-color:$pallist[3]" class="defpal" ><input type="radio" name="defpal" id="defpal4" value="defcolor4" style="background-color:$pallist[3];" class="defpal_b" title="Default palette" /></span>
-    <span id="defpal_5" style="background-color:$pallist[4]" class="defpal" ><input type="radio" name="defpal" id="defpal5" value="defcolor5" style="background-color:$pallist[4];" class="defpal_b" title="Default palette" /></span>
-    <span id="defpal_6" style="background-color:$pallist[5]" class="defpal" ><input type="radio" name="defpal" id="defpal6" value="defcolor6" style="background-color:$pallist[5];" class="defpal_b" title="Default palette" /></span>~
+	<span id="defpal_1" class="defpalx" style="background-color: $pallist[0]"><input type="radio" name="defpal" id="defpal1" value="defcolor1" class="defpal_b" style="background-color: $pallist[0];" title="Default palette" /></span>
+    <span id="defpal_2" class="defpalx" style="background-color:$pallist[1]"><input type="radio" name="defpal" id="defpal2" value="defcolor2" style="background-color:$pallist[1];" class="defpal_b" title="Default palette" /></span>
+    <span id="defpal_3" style="background-color:$pallist[2]" class="defpalx"><input type="radio" name="defpal" id="defpal3" value="defcolor3" style="background-color:$pallist[2];" class="defpal_b" title="Default palette" /></span>
+    <span id="defpal_4" style="background-color:$pallist[3]" class="defpalx"><input type="radio" name="defpal" id="defpal4" value="defcolor4" style="background-color:$pallist[3];" class="defpal_b" title="Default palette" /></span>
+    <span id="defpal_5" style="background-color:$pallist[4]" class="defpalx"><input type="radio" name="defpal" id="defpal5" value="defcolor5" style="background-color:$pallist[4];" class="defpal_b" title="Default palette" /></span>
+    <span id="defpal_6" style="background-color:$pallist[5]" class="defpalx"><input type="radio" name="defpal" id="defpal6" value="defcolor6" style="background-color:$pallist[5];" class="defpal_b" title="Default palette" /></span>~
           or croak 'cannot print input';
     }
     else {
