@@ -2267,6 +2267,12 @@ qq~<div class="small" style="float: left; width: 49%;"><span style="color: $colo
         $grpcolors .=
 qq~<div class="small" style="float: left; width: 49%;"><span style="color: $color;"><b>lllll</b></span> $title</div>~;
     }
+    ( $title, undef, undef, $color, $noshow ) =
+      split /\|/xsm, $Group{'Mid Moderator'}, 5;
+    if ( $color && $noshow != 1 ) {
+        $grpcolors .=
+qq~<div class="small" style="float: left; width: 49%;"><span style="color: $color;"><b>lllll</b></span> $title</div>~;
+    }
     foreach my $nopostamount ( sort { $a <=> $b } keys %NoPost ) {
         ( $title, undef, undef, $color, $noshow ) = split /\|/xsm,
           $NoPost{$nopostamount}, 5;

@@ -753,6 +753,12 @@ sub editAddGroup2 {
         {
             admin_fatal_error( 'double_group', $lcname );
         }
+        if (
+            $lcname eq lc( ( split /\|/xsm, $Group{'Mid Moderator'}, 2 )[0] )
+          )
+        {
+            admin_fatal_error( 'double_group', $lcname );
+        }
         if ( $lcname eq lc( ( split /\|/xsm, $Group{'Moderator'}, 2 )[0] ) ) {
             admin_fatal_error( 'double_group', $lcname );
         }

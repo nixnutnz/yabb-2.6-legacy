@@ -375,6 +375,9 @@ sub MailingMembers {
                         elsif ( $key eq 'Global Moderator' ) {
                             $sortgroups = "bbb.$pstsort.$memberrealname";
                         }
+                        elsif ( $key eq 'Mid Moderator' ) {
+                            $sortgroups = "bcc.$pstsort.$memberrealname";
+                        }
                     }
                 }
                 if ( !$sortgroups ) {
@@ -427,6 +430,10 @@ qq~<input type="checkbox" name="member$actualnum" value="$user" class="windowbg"
                 ( $memberinfo, undef ) = split /\|/xsm,
                   $Group{'Global Moderator'}, 2;
             }
+            elsif ( $memberinfo eq 'Mid Moderator' ) {
+                ( $memberinfo, undef ) = split /\|/xsm,
+                  $Group{'Mid Moderator'}, 2;
+            }
             else {
                 foreach my $key ( sort { $a <=> $b } keys %NoPost ) {
                     if ( $key eq $memberinfo ) {
@@ -478,7 +485,14 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
         $groupinfo[$i] = $title;
         $i++;
         $grp_data = qq~"'$title'", ~;
+
         ( $title, $dummy ) = split /\|/xsm, $Group{'Global Moderator'}, 2;
+        ToJS($title);
+        $groupinfo[$i] = $title;
+        $i++;
+        $grp_data .= qq~"'$title'", ~;
+
+        ( $title, $dummy ) = split /\|/xsm, $Group{'Mid Moderator'}, 2;
         ToJS($title);
         $groupinfo[$i] = $title;
         $i++;
