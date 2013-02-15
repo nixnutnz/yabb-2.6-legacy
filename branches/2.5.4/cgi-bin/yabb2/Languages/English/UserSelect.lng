@@ -48,6 +48,7 @@ $userselectlngver = 'YaBB 2.5.4 $Revision$';
 'bmallmembers' => 'All forum members',
 'bmadmins' => 'Administrators',
 'bmgmods' => 'Global moderators',
+'bmymods' => 'Mid moderators',
 'bmmods' => 'All board moderators / mod groups',
 'pages' => 'Pages',
 'of' => 'of',
