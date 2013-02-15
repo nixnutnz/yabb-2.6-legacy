@@ -422,6 +422,7 @@ sub LoadUserDisplay {
         ${ $uid . $user }{'weburl'}
           && ( ${ $uid . $user }{'postcount'} >= $minlinkweb
             || ${ $uid . $user }{'position'} eq 'Administrator'
+            || ${ $uid . $user }{'position'} eq 'Mid Moderator'
             || ${ $uid . $user }{'position'} eq 'Global Moderator' )
       )
       ? qq~<a href="${$uid.$user}{'weburl'}" onclick="target='_blank';">~

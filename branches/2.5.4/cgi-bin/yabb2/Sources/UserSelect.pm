@@ -246,8 +246,9 @@ qq~<div style="float: left; text-align: center; padding-left: 2px; padding-right
         $ToShow[1] = q{};
         $ToShow[2] = 'bmadmins';
         $ToShow[3] = 'bmgmods';
-        $ToShow[4] = 'bmmods';
-        $ToShow[5] = q{};
+        $ToShow[4] = 'bmymods';
+        $ToShow[5] = 'bmmods';
+        $ToShow[6] = q{};
         my $x = 6;
         foreach (@nopostorder) {
             $ToShow[$x] = $_;
@@ -402,7 +403,10 @@ qq~<option value="$cloakedUserName"$colorstyle>${$uid.$user}{'realname'}</option
                         $user eq 'bmadmins' ? 'admins'
                         : (
                             $user eq 'bmgmods' ? 'gmods'
-                            : ( $user eq 'bmmods' ? 'mods' : $user )
+                            : (
+                                $user eq 'bmymods' ? 'ymods'
+                                : ( $user eq 'bmmods' ? 'mods' : $user )
+                        )
                         )
                       );
                     $yymain .= qq~<option value="$user">$groupName</option>\n~;

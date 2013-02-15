@@ -283,8 +283,8 @@ sub postbox2 {
                             <img src="$defaultimagesdir/bull-redcheck.gif" onclick="showbullets('bull-redcheck'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-greencheck.gif" onclick="showbullets('bull-greencheck'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-bluecheck.gif" onclick="showbullets('bull-bluecheck'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-blackcheck.gif" onclick="showbullets('bull-blackcheck'), bulletset()" alt="" /><br />
                             <img src="$defaultimagesdir/bull-redarrow.gif" onclick="showbullets('bull-redarrow'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-greenarrow.gif" onclick="showbullets('bull-greenarrow'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-bluearrow.gif" onclick="showbullets('bull-bluearrow'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-blackarrow.gif" onclick="showbullets('bull-blackarrow'), bulletset()" alt="" /><br />
                         </div>
-                        <div class="ubboptions" id="codelang">
-                            <select size="10" name="codesyntax" id="codesyntax" onchange="syntaxlang(this.options[this.selectedIndex].value, this.selectedIndex);">
+			<div class="ubboptions" id="codelang" style="position: absolute; top: -22px; left: 230px; width: 92px; padding: 0px; background-color: #CCCCCC; display: none;">
+				<select size="10" name="codesyntax" id="codesyntax" onchange="syntaxlang(this.options[this.selectedIndex].value, this.selectedIndex);" style="margin:0px; font-size: 9px; width: 92px;">
                                 <option value="" title="$npf_txt{'default'}">$npf_txt{'default'}</option>
                                 <option value=" c++" title="C++">C++</option>
                                 <option value=" css" title="CSS">CSS</option>

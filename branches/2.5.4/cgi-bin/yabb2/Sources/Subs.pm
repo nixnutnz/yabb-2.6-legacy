@@ -2836,7 +2836,10 @@ sub BroadMessageView {
     if ($imp) {
         foreach my $checkgroup ( split /\,/xsm, $imp ) {
             if ( $checkgroup eq 'all' ) { return 1; }
-            if ( $checkgroup eq ( 'gmods' || 'mods' ) && $iamgmod ) {
+            if ( $checkgroup eq ( 'gmods' || 'ymods' || 'mods' ) && $iamgmod ) {
+                return 1;
+            }
+            if ( $checkgroup eq ( 'ymods' || 'mods' ) && $iamymod ) {
                 return 1;
             }
             if ( $checkgroup eq 'mods' && $iammod ) { return 1; }

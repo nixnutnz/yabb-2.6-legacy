@@ -42,6 +42,7 @@ sub buildIMsend {
         $is_preview = 1;
     }
     $mctitle = $inmes_txt{'775'};
+    if ($sendBMess) { $mctitle = $inmes_txt{'775a'}; }
     ## check for a draft being opened
     if ( $INFO{'caller'} == 4 && $INFO{'id'} ) {
         if ( !-e "$memberdir/$username.imdraft" ) {
@@ -365,6 +366,10 @@ qq~<option selected="selected" value="admins">$inmes_txt{'bmadmins'}</option>\n~
                     elsif ( $touser eq 'gmods' ) {
                         $imsend .=
 qq~<option selected="selected" value="gmods">$inmes_txt{'bmgmods'}</option>\n~;
+                    }
+                    elsif ( $touser eq 'ymods' ) {
+                        $imsend .=
+qq~<option selected="selected" value="ymods">$inmes_txt{'bmymods'}</option>\n~;
                     }
                     elsif ( $touser eq 'mods' ) {
                         $imsend .=
@@ -2696,11 +2701,12 @@ sub doshowims {
 sub links_to {
     my ($uname) = @_;
     my @opts2 = (
-        [ 'all', 'admins', 'gmods', 'mods', ],
+        [ 'all', 'admins', 'gmods', 'ymods', 'mods', ],
         [
             qq~<b>$inmes_txt{'bmallmembers'}</b>~,
             qq~<b>$inmes_txt{'bmadmins'}</b>~,
             qq~<b>$inmes_txt{'bmgmods'}</b>~,
+            qq~<b>$inmes_txt{'bmymods'}</b>~,
             qq~<b>$inmes_txt{'bmmods'}</b>~,
         ],
     );
@@ -2708,9 +2714,10 @@ sub links_to {
     if (   $uname eq 'all'
         || $uname eq 'admins'
         || $uname eq 'gmods'
+        || $uname eq 'ymods'
         || $uname eq 'mods' )
     {
-        foreach my $i ( 0 .. 3 ) {
+        foreach my $i ( 0 .. 4 ) {
             my $opt0 = $opts2[0]->[$i];
             my $opt1 = $opts2[1]->[$i];
 

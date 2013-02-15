@@ -959,8 +959,8 @@ qq~[quote author=$cloakedAuthor link=impost date=$mdate\]$message\[/quote\]\n~;
     $preview     = 'previewim';
     $icon        = 'xx';
     $draft       = 'draft';
-    $mctitle     = $inmes_txt{'sendmess'};
-    if ($sendBMess) { $mctitle = $inmes_txt{'sendbroadmess'}; }
+    $mctitle     = qq~$inmes_txt{'sendmess'}x~;
+    if ($sendBMess) { $mctitle = qq~$inmes_txt{'sendbroadmess'}y~; }
     return;
 }
 
@@ -2292,6 +2292,9 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$muser}" rel="no
                             elsif ( $muser eq 'gmods' ) {
                                 $usernameto = $inmes_txt{'bmgmods'};
                             }
+                            elsif ( $muser eq 'ymods' ) {
+                                $usernameto = $inmes_txt{'bmymods'};
+                            }
                             elsif ( $muser eq 'admins' ) {
                                 $usernameto = $inmes_txt{'bmadmins'};
                             }
@@ -2327,6 +2330,9 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musernameto}" r
                         }
                         elsif ( $musernameto eq 'gmods' ) {
                             $usernameto = $inmes_txt{'bmgmods'};
+                        }
+                        elsif ( $musernameto eq 'ymods' ) {
+                            $usernameto = $inmes_txt{'bmymods'};
                         }
                         elsif ( $musernameto eq 'admins' ) {
                             $usernameto = $inmes_txt{'bmadmins'};
@@ -2629,6 +2635,9 @@ qq~$guestName<br />(<a href="mailto:$guestEmail">$guestEmail</a>)~;
                         elsif ( $uname eq 'mods' ) {
                             push @usernameto, $inmes_txt{'bmmods'};
                         }
+                        elsif ( $uname eq 'ymods' ) {
+                            push @usernameto, $inmes_txt{'bmymods'};
+                        }
                         elsif ( $uname eq 'gmods' ) {
                             push @usernameto, $inmes_txt{'bmgmods'};
                         }
@@ -2684,6 +2693,9 @@ qq~$guestName<br />(<a href="mailto:$guestEmail">$guestEmail</a>)~;
                         }
                         elsif ( $uname eq 'mods' ) {
                             push @usernameto, $inmes_txt{'bmmods'};
+                        }
+                        elsif ( $uname eq 'ymods' ) {
+                            push @usernameto, $inmes_txt{'bmymods'};
                         }
                         elsif ( $uname eq 'gmods' ) {
                             push @usernameto, $inmes_txt{'bmgmods'};
@@ -2793,6 +2805,9 @@ qq~$guestName<br />(<a href="mailto:$guestEmail">$guestEmail</a>)~;
                         }
                         elsif ( $uname eq 'mods' ) {
                             push @usernameto, $inmes_txt{'bmmods'};
+                        }
+                        elsif ( $uname eq 'ymods' ) {
+                            push @usernameto, $inmes_txt{'bmymods'};
                         }
                         elsif ( $uname eq 'gmods' ) {
                             push @usernameto, $inmes_txt{'bmgmods'};
