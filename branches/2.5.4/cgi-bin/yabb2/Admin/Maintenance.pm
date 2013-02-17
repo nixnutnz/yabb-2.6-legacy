@@ -242,10 +242,10 @@ qq~$lastpostdate|$thread|$firstinfo[0]|$firstinfo[1]|$firstinfo[2]|$lastinfo[3]|
 
     foreach ( keys %board ) { BoardCountTotals($_); }
 
-    # remove from movedthreads.cgi only if it's the final thread
+    # remove from Movedthreads.pm only if it's the final thread
     # then look backwards to delete the other entries in
     # the Moved-Info-row if their files were deleted
-    eval { require "$datadir/movedthreads.cgi" };
+    eval { require Messages::Movedthreads };
     my $save_moved;
     *moved_loop = sub {
         my $th = shift;
