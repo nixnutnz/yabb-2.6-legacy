@@ -51,7 +51,7 @@ if ( $curnum ne q{} ) {
         fatal_error( 'only_numbers_allowed', "Thread ID: '$curnum'" );
     }
     if ( !-e "$datadir/$curnum.txt" ) {
-        eval { require "$datadir/movedthreads.cgi" };
+        eval { require Messages::Movedthreads };
         if (!$moved_file{$curnum}) { fatal_error( 'not_found', "$datadir/$curnum.txt" );}
         while ( exists $moved_file{$curnum} ) {
             $curnum = $moved_file{$curnum};

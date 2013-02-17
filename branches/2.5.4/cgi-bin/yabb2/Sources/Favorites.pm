@@ -34,7 +34,7 @@ sub Favorites {
 # grab all relevant info on the favorite thread for this user and check access to them
     if ( !$maxfavs ) { $maxfavs = 10; }
     my @favboards;
-    eval { require "$datadir/movedthreads.cgi" };
+    eval { require Messages::Movedthreads };
     foreach my $myfav ( split /,/xsm, ${ $uid . $username }{'favorites'} ) {
 
         # see if thread exists and search for it if moved

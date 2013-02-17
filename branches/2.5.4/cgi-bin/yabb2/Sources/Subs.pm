@@ -2319,8 +2319,8 @@ sub Recent_Save {
 sub save_moved_file {
 
    # This sub saves the hash for the moved files: key == old id, value == new id
-    fopen( MOVEDFILE, ">$datadir/movedthreads.cgi" )
-      || fatal_error( 'cannot_open', ">$datadir/movedthreads.cgi", 1 );
+    fopen( MOVEDFILE, ">$datadir/Movedthreads.pm" )
+      || fatal_error( 'cannot_open', ">$datadir/Movedthreads.pm", 1 );
     print {MOVEDFILE} '%moved_file = ('
       . join( q{,},
         map { qq~"$_","$moved_file{$_}"~ }

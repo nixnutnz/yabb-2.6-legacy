@@ -76,7 +76,7 @@ sub RemoveThread {
         RemoveAttachments( \%remattach );
     }
 
-    # remove from movedthreads.cgi only if it's the final thread
+    # remove from Movedthreads.pm only if it's the final thread
     # then look backwards to delete the other entries in
     # the Moved-Info-row if their files were deleted
 
@@ -93,7 +93,7 @@ sub RemoveThread {
             }
         }
     };
-    eval { require "$datadir/movedthreads.cgi" };
+    eval { require Messages::Movedthreads };
     if ( !$moved_file{$thread} ) {
         my $save_moved;
         moved_loop($thread);

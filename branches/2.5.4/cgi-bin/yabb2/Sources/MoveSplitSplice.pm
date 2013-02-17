@@ -481,7 +481,7 @@ qq~[m by=$hidename destboard=$newboard dest=$newthreadid]: '$tmpsub'~;
             $utdcurthread[0] =
 qq~$tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$username|no_postcount||$user_ip|$tmpmessage||||\n~;
 
-            eval { require "$datadir/movedthreads.cgi" };
+            eval { require Messages::Movedthreads };
             $moved_file{$curthreadid} = $newthreadid;
             delete $moved_file{$newthreadid};
             save_moved_file();

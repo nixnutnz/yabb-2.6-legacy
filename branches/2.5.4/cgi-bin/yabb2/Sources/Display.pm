@@ -133,7 +133,7 @@ sub Display {
             $yySetLocation = "$scripturl?num=$newnum";
             redirectexit();
         }
-        eval { require "$datadir/movedthreads.cgi" };
+        eval { require Messages::Movedthreads };
         while ( exists $moved_file{$newnum} ) {
             $newnum = $moved_file{$newnum};
             next if exists $moved_file{$newnum};

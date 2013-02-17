@@ -541,7 +541,7 @@ sub NotificationAlert {
             # see if thread exists and search for it if moved
         if ( !-e "$datadir/$mythread.txt" ) {
             ManageThreadNotify( 'delete', $mythread, $username );
-            eval { require "$datadir/movedthreads.cgi" };
+            eval { require Messages::Movedthreads };
             next if !exists $moved_file{$mythread} || !$moved_file{$mythread};
             my $newthread;
             while ( exists $moved_file{$mythread} ) {
