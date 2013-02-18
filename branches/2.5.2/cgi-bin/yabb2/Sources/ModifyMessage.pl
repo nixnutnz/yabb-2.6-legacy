@@ -21,6 +21,7 @@ if (!$post_txt_loaded) {
 }
 &LoadLanguage('FA');
 require "$sourcedir/SpamCheck.pl";
+$set_subjectMaxLength ||= 50;
 
 sub ModifyMessage {
 	if ($iamguest) { &fatal_error("members_only"); }
