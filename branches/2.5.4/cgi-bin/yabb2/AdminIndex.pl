@@ -133,12 +133,12 @@ sub yymain {
             require "$admindir/AdminSubList.pm";
             if ( $director{$action} ) {
                 my @act = split /&/xsm, $director{$action};
-                if ( $action =~ /^ext_/xsm ) {
-                    require "$sourcedir/$act[0]";
-                }
-                else {
+#                if ( $action =~ /^ext_/xsm ) {
+#                    require "$sourcedir/$act[0]";
+#                }
+#                else {
                     require "$admindir/$act[0]";
-                }
+#                }
                 &{ $act[1] };
             }
             else {
