@@ -385,7 +385,7 @@ sub view_registration {
  </tr>~;
     }
     if ($extendedprofiles) {
-        require Sources::ExtendedProfiles;
+        require Admin::Settings_ExtendedProfiles;
         $yymain .= ext_viewprofile_r($readuser);
     }
 

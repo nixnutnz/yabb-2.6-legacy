@@ -64,12 +64,12 @@ $adminsublistpmver = 'YaBB 2.5.4 $Revision$';
 'eventcal_set3',"EventCalSet.pm&EventCalSet3",
 'emailbackup',"Backup.pm&emailbackup",
 'errorlog',"ErrorLog.pm&ErrorLog",
-'ext_admin',"ExtendedProfiles.pm&ext_admin", # all beginning with ext_
-'ext_convert',"ExtendedProfiles.pm&ext_admin_convert", # $admindir !
-'ext_create',"ExtendedProfiles.pm&ext_admin_create", # and not
-'ext_edit',"ExtendedProfiles.pm&ext_admin_edit", # will be called by
-'ext_edit2',"ExtendedProfiles.pm&ext_admin_edit2", # $sourcedir
-'ext_reorder',"ExtendedProfiles.pm&ext_admin_reorder", # by
+'ext_admin',"Settings_ExtendedProfiles.pm&ext_admin",
+'ext_convert',"Settings_ExtendedProfiles.pm&ext_admin_convert",
+'ext_create',"Settings_ExtendedProfiles.pm&ext_admin_create",
+'ext_edit',"Settings_ExtendedProfiles.pm&ext_admin_edit",
+'ext_edit2',"Settings_ExtendedProfiles.pm&ext_admin_edit2",
+'ext_reorder',"Settings_ExtendedProfiles.pm&ext_admin_reorder",
 'gmodaccess',"AdminEdit.pm&GmodSettings",
 'gmodsettings2',"AdminEdit.pm&GmodSettings2",
 'helpadmin',"EditHelpCentre.pm&MainAdmin",
