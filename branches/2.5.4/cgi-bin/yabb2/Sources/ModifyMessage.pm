@@ -23,6 +23,7 @@ if ( !$post_txt_loaded ) {
 LoadLanguage('FA');
 require Sources::SpamCheck;
 if ( $iamadmin || $iamgmod ) { $MaxMessLen = $AdMaxMessLen; }
+$set_subjectMaxLength ||= 50;
 
 sub ModifyMessage {
     if ($iamguest) { fatal_error('members_only'); }
