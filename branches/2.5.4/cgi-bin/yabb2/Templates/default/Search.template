@@ -1,0 +1,136 @@
+###############################################################################
+# default.Search.template                                                     #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.5.4                                                  #
+# Packaged:       January 1, 2013                                             #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+# $Revision$
+
+$mysearch_template = qq~
+<table class="bordercolor pad_4px cs_thin" >
+	<col style="width:45%" />
+	<col style="width:55%" />
+	<tr>
+		<td class="catbg" colspan="2">
+			<img src="$imagesdir/search.png" alt="" /> <span class="text1"><b>$search_txt{'183'}</b></span>
+		</td>
+	</tr><tr>
+		<td class="windowbg right vtop"><label for="search"><b>$search_txt{'582'}:</b></label></td>
+		<td class="windowbg2 padd_2px">
+			<input type="text" size="30" name="search" id="search" /> <label for="searchtype">$search_txt{'582'}</label>
+			<select name="searchtype" id="searchtype">
+				<option value="allwords" selected="selected">$search_txt{'343'}</option>
+				<option value="anywords">$search_txt{'344'}</option>
+				<option value="asphrase">$search_txt{'345'}</option>
+				<option value="aspartial">$search_txt{'345a'}</option>
+			</select>
+			<br />
+			<input type="checkbox" name="casesensitiv" id="casesensitiv" value="1" /><label for="casesensitiv">$search_txt{'casesensitiv'}</label>~
+  . (
+    $enable_ubbc
+    ? qq~<br />
+			<input type="checkbox" name="searchyabbtags" id="searchyabbtags" value="1" /><label for="searchyabbtags">$search_txt{'searchyabbtags'}</label>~
+    : q{}
+  );
+
+$mysearch_template2 = qq~
+		</td>
+	</tr><tr>
+		<td class="windowbg right vtop">
+			<b>$search_txt{'583'}:</b>
+		</td>
+		<td class="windowbg2">
+			<div style="padding: 4px 0px 4px 0px;">
+			<input type="text" size="30" style="width: 220px; padding-left: 3px;" name="userspectext" id="userspectext" value="" readonly="readonly" /><input type="button" class="button" id="usrsel" style="border-left: 0px; display: inline;" value="$searchselector_txt{'select'}" onclick="javascript:addUser();" /><input type="button" class="button" id="usrrem" style="border-left: 0px; display: none;" value="$searchselector_txt{'remove'}" onclick="javascript:removeUser();" />
+			~;
+$mysearch_template3 = qq~
+			<input type="hidden" size="30" name="userspec" id="userspec" value="" />
+			</div>
+			<div style="padding: 4px 0px 4px 0px;">
+			<select name="userkind" id="userkind">
+				<option value="any">$search_txt{'577'}</option>
+				<option value="starter">$search_txt{'186'}</option>
+				<option id="poster" value="poster">$search_txt{'187'}</option>
+				<option id="noguests" value="noguests" selected="selected">$search_txt{'346'}</option>
+				<option value="onlyguests">$search_txt{'572'}</option>
+			</select>
+			</div> ~;
+
+$mysearch_template4 = qq~
+		</td>
+	</tr><tr>
+		<td class="windowbg right vtop"><b>$search_txt{'189'}: zz</b><br /><span class="small">$search_txt{'190'}</span></td>
+		<td class="windowbg2" >~;
+
+$mysearch_template5 = qq~
+				</td>
+    </tr><tr>
+		<td class="windowbg right"><b>$search_txt{'573'}:</b></td>
+		<td class="windowbg2">
+			<input type="checkbox" name="subfield" id="subfield" value="on" checked="checked" /><label for="subfield"> $search_txt{'70'}</label> &nbsp;
+			<input type="checkbox" name="msgfield" id="msgfield" value="on" checked="checked" /><label for="msgfield"> $search_txt{'72'}</label>
+		</td>
+	</tr><tr>
+		<td class="windowbg right"><label for="age"><b>$search_txt{'1'}</b></label></td>
+		<td class="windowbg2">
+			<select name="age" id="age">
+				<option value="7" selected="selected">$search_txt{'2'}</option>
+				<option value="31">$search_txt{'3'}</option>
+				<option value="92">$search_txt{'4'}</option>
+				<option value="365">$search_txt{'5'}</option>
+				<option value="0">$search_txt{'6'}</option>
+			</select>
+		</td>
+	</tr><tr>
+		<td class="windowbg right"><label for="numberreturned"><b>$search_txt{'191'}</b><br /><span class="small">$search_txt{'191b'}</span></label></td>
+		<td class="windowbg2"><input type="text" size="5" name="numberreturned" id="numberreturned" maxlength="5" value="$maxsearchdisplay" /></td>
+	</tr><tr>
+		<td class="windowbg right"><label for="oneperthread"><b>$search_txt{'191a'}</b></label></td>
+		<td class="windowbg2"><input type="checkbox" name="oneperthread" id="oneperthread" value="1"/></td>
+	</tr><tr>
+		<td class="catbg center h_50px" colspan="2">
+			<input type="submit" name="submit" value="$search_txt{'182'}" class="button" />
+		</td>
+	</tr>
+</table>~;
+
+$mysearch_template6 =
+  qq~<table class="bordercolor cs_thin" style="table-layout: fixed;">
+    <col style="width:5%" />
+	<tr>
+		<td class="titlebg center">~;
+$mysearch_template6a = qq~		</td>
+		<td class="titlebg">&nbsp;~;
+
+$mysearch_template7 = qq~</td>
+	</tr><tr>
+		<td colspan="2">
+			<table class="catbg">
+				<tr>
+					<td>~;
+
+$mysearch_template8 = qq~
+					</td>
+					<td class="right">&nbsp;~;
+
+$mysearch_template9 = qq~
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr><tr>
+		<td class="windowbg2 vtop h_80px" colspan="2"><div class="message" style="float: left; width: 99%; overflow: auto;">~;
+
+$mysearch_template10 = qq~
+</div></td>
+	</tr>
+</table><br />~;
+
+1;

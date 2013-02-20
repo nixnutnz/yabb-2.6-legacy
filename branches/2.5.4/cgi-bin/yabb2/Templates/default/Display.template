@@ -58,7 +58,7 @@ $display_template = qq~
 <!-- Poll end -->
 <!-- Threads Button Bar start -->
 <div class="displaycontainer">
-    <table class="pad_4px">
+    <table class="pad_4px" style="table-layout:fixed">
         <tr class="catbg">
             <td>
                     {yabb pageindex top}
@@ -91,7 +91,7 @@ $display_template = qq~
 <!-- Threads Button Bar start -->
 <div class="displaycontainer">
 <div style="clear: both;"></div>
-    <table class="pad_4px">
+    <table class="pad_4px" style="table-layout:fixed">
         <tr class="catbg">
             <td>
                     {yabb pageindex bottom}
@@ -163,7 +163,7 @@ $messageblock = qq~
     <table class="bordercolor pad_4px" style="table-layout: fixed;">
         <col style="width:12em" />
         <col style="width:auto" />
-        <tr class="{yabb css}" style="border-bottom: solid thin #A7B8cc">
+        <tr class="{yabb css}">
             <td class="vtop" rowspan="4">
                 <a id="{yabb count}"></a>
                 {yabb userlink}
@@ -177,7 +177,7 @@ $messageblock = qq~
                     {yabb postinfo}{yabb location}{yabb age}{yabb regdate}{yabb gender}{yabb ext_prof}{yabb isbuddy}
                 </div>
             </td>
-            <td style="height:22px">
+            <td style="height:22px; border-bottom: solid thin #A7B8cc">
                 <div style="padding: 2px; float:left">{yabb msgimg}</div>
                 <div class="small" style="float:left">
                     <b>{yabb subject}</b>
@@ -200,12 +200,12 @@ $messageblock = qq~
                     {yabb modified} &nbsp;
                 </div>
             </td>
-        </tr><tr>
+        </tr><tr style="border-top: solid thin #A7B8cc;">
             <td class="{yabb css} bottom" style="padding-right:0" colspan="$postcol">
                 <div class="small" style="float: left; width: 99%; text-align: left;">
                     {yabb att}{yabb showatt}
                 </div>
-                <div class="small" style="float: left; width: 100%; text-align: left; border-top: solid thin #A7B8cc;">
+                <div class="small" style="float: left; width: 100%; text-align: left;">
                     {yabb signature}
                 </div>
             </td>
