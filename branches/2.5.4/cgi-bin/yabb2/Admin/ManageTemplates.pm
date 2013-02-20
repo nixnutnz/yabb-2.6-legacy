@@ -2702,6 +2702,8 @@ qq~<img src="$facesurl/elmerfudd.gif" name="avatar" alt="" style="max-width: $us
         $outblock =~ s/({|<)yabb ip(}|>)//gsm;
         $outblock =~ s/({|<)yabb permalink(}|>)//gsm;
         $outblock =~ s/({|<)yabb posthandellist(}|>)/$posthandelblock/gsm;
+        $outblock =~ s/({|<)yabb outsideposttools(}|>)//gsm;
+        $outblock =~ s/({|<)yabb admin(}|>)//gsm;
         $outblock =~ s/({|<)yabb contactlist(}|>)/$contactblock/gsm;
         $tempoutblock .= $outblock;
     }
@@ -2738,6 +2740,9 @@ qq~<img src="$facesurl/elmerfudd.gif" name="avatar" alt="" style="max-width: $us
     $display_template =~ s/({|<)yabb pageindex bottom(}|>)/$temppageindex1/gsm;
     $display_template =~
       s/({|<)yabb threadhandellist(}|>)/$threadhandellist/gsm;
+    $display_template =~
+      s/({|<)yabb threadhandellist2(}|>)/$threadhandellist/gsm;
+    $display_template =~ s/({|<)yabb outsidethreadtools(}|>)//gsm;
     $display_template =~ s/({|<)yabb threadimage(}|>)/$template_threadimage/gsm;
     $display_template =~ s/({|<)yabb threadurl(}|>)/$threadurl/gsm;
     $display_template =~ s/({|<)yabb views(}|>)/12/gsm;
