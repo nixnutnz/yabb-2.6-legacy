@@ -34,7 +34,7 @@ sub get_cal {
     ## SSI Variables ##
 
     # select class depending on template style
-    my ( $seperator, $title_class ) = ( q{}, 'tabtitle' );
+    my ( $seperator, $title_class ) = ( q{}, 'tabtitle_b' );
     if ( $usehead =~ /21$/xsm ) {
         $seperator   = 'seperator';
         $title_class = 'catbg';
@@ -807,21 +807,21 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_event|$cal_icon|$cal_noname|$cal
             }
             else {
                 $yymain .= qq~
-        <table>
+        <table class="tabtitle">
         <col style="width:1%" />
         <col style="width:29%" />
         <col style="width:69%" />
         <tr>
-            <td class="tabtitle h_25px">
+            <td class="h_25px">
                 &nbsp;
             </td>
-            <td class="tabtitle">
+            <td>
                 <img src="$yyhtml_root/Templates/Forum/default/eventcal.gif" alt="" /> $var_cal{'caltitle'}
             </td>
-            <td class="tabtitle right">
+            <td class="right">
                 $calgotobox
             </td>
-            <td class="tabtitle">
+            <td>
                 &nbsp;
             </td>
         </tr>
@@ -977,21 +977,21 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cnam}" rel="nof
             }
             else {
                 $yymain = qq~
-        <table>
+        <table class="tabtitle">
         <col style="width:1%" />
         <col style="width:29%" />
         <col style="width:69%" />
         <tr>
-            <td class="tabtitle h_25px">
+            <td class="h_25px">
                 &nbsp;
             </td>
-            <td class="tabtitle">
+            <td>
                 <img src="$yyhtml_root/Templates/Forum/default/eventcal.gif" alt="" /> $var_cal{'caltitle'}
             </td>
-            <td class="tabtitle right">
+            <td class="right">
                 $calgotobox
             </td>
-            <td class="tabtitle">
+            <td>
                 &nbsp;
             </td>
         </tr>
@@ -1551,16 +1551,16 @@ qq~<table><tr><td class="vtop"><span class="small"><img src="$yyhtml_root/EventI
     else {
         $cal_display = qq~
 <tr>
-    <td class="tabtitle h_25px" width="1%">
+    <td class="h_25px">
         &nbsp;
     </td>
-    <td class="tabtitle" width="29%">
+    <td>
         $var_cal{'caltitle'}
     </td>
-    <td class="tabtitle right" width="69%">
+    <td class="right">
         $calgotobox
     </td>
-    <td class="tabtitle" width="1%">
+    <td width="1%">
         &nbsp;
     </td>
 </tr>
@@ -1664,11 +1664,14 @@ qq~<table><tr><td class="vtop"><span class="small"><img src="$yyhtml_root/EventI
     }
     else {
         qq~
-<table class="bordercolor">
+<table class="tabtitle">
+    <col style="width:1%" />
+    <col style="width:29%" />
+    <col style="width:69%" />
         $cal_display
 </table>~;
     }
-    return;
+    #return; #no return;
 }
 
 #<--------------------------------------------->#

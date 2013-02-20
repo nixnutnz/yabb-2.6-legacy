@@ -231,7 +231,7 @@ sub ImgLoc {
     else {
         $img_locs{ $img[0] } = qq~$defaultimagesdir/$img[0]~;
     }
-    return;
+    return $img_locs{ $img[0] };
 }
 
 sub template {

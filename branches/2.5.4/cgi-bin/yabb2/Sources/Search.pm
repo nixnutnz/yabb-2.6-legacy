@@ -18,6 +18,13 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Search');
 
+if ( -e ("$templatesdir/$usestyle/Search.template") ) {
+    require "$templatesdir/$usestyle/Search.template";
+}
+else {
+    require "$templatesdir/default/Search.template";
+}
+
 if ( $FORM{'searchboards'} =~ /\A\!/xsm ) {
     my $checklist = q{};
     get_forum_master();
@@ -97,48 +104,15 @@ function searchMe(chelem) {
 //-->
 </script>
 
-<form action="$scripturl?action=search2" method="post" name="searchform" onsubmit="return CheckSearchFields();" accept-charset="$yycharset">
-<table class="bordercolor pad_4px cs_thin" >
-	<col style="width:45%" />
-	<col style="width:55%" />
-	<tr>
-		<td class="catbg" colspan="2">
-			<img src="$imagesdir/search.png" alt="" /> <span class="text1"><b>$search_txt{'183'}</b></span>
-		</td>
-	</tr><tr>
-		<td class="windowbg right vtop"><label for="search"><b>$search_txt{'582'}:</b></label></td>
-		<td class="windowbg2 padd_2px">
-			<input type="text" size="30" name="search" id="search" /> <label for="searchtype">$search_txt{'582'}</label>
-			<select name="searchtype" id="searchtype">
-				<option value="allwords" selected="selected">$search_txt{'343'}</option>
-				<option value="anywords">$search_txt{'344'}</option>
-				<option value="asphrase">$search_txt{'345'}</option>
-				<option value="aspartial">$search_txt{'345a'}</option>
-			</select>
-			<br />
-			<input type="checkbox" name="casesensitiv" id="casesensitiv" value="1" /><label for="casesensitiv">$search_txt{'casesensitiv'}</label>~
-      . (
-        $enable_ubbc
-        ? qq~<br />
-			<input type="checkbox" name="searchyabbtags" id="searchyabbtags" value="1" /><label for="searchyabbtags">$search_txt{'searchyabbtags'}</label>~
-        : q{}
-      );
+<form action="$scripturl?action=search2" method="post" name="searchform" onsubmit="return CheckSearchFields();" accept-charset="$yycharset">~;
+    $yymain .= $mysearch_template;
 
     if (   !$ML_Allowed
         || ( $ML_Allowed == 1 && !$iamguest )
         || ( $ML_Allowed == 2 && $staff )
         || ( $ML_Allowed == 3 && ( $iamadmin || $iamgmod ) ) )
     {
-        $yymain .= qq~
-		</td>
-	</tr><tr>
-		<td class="windowbg right vtop">
-			<b>$search_txt{'583'}:</b>
-		</td>
-		<td class="windowbg2">
-			<div style="padding: 4px 0px 4px 0px;">
-			<input type="text" size="30" style="width: 220px; padding-left: 3px;" name="userspectext" id="userspectext" value="" readonly="readonly" /><input type="button" class="button" id="usrsel" style="border-left: 0px; display: inline;" value="$searchselector_txt{'select'}" onclick="javascript:addUser();" /><input type="button" class="button" id="usrrem" style="border-left: 0px; display: none;" value="$searchselector_txt{'remove'}" onclick="javascript:removeUser();" />
-			~;
+        $yymain .= $mysearch_template2;
         if ( !$iamguest ) {
             $yymain .=
 qq~<input type="checkbox" name="searchme" id="searchme" style="margin: 0px; border: 0px; padding: 0px; vertical-align: middle;" onclick="searchMe(this);" /> <label for="searchme" class="lille">$search_txt{'searchme'}</label><br />~;
@@ -147,29 +121,14 @@ qq~<input type="checkbox" name="searchme" id="searchme" style="margin: 0px; bord
             $yymain .=
 q~<input type="checkbox" name="searchme" id="searchme" style="visibility: hidden;" /><br />~;
         }
-        $yymain .= qq~
-			<input type="hidden" size="30" name="userspec" id="userspec" value="" />
-			</div>
-			<div style="padding: 4px 0px 4px 0px;">
-			<select name="userkind" id="userkind">
-				<option value="any">$search_txt{'577'}</option>
-				<option value="starter">$search_txt{'186'}</option>
-				<option id="poster" value="poster">$search_txt{'187'}</option>
-				<option id="noguests" value="noguests" selected="selected">$search_txt{'346'}</option>
-				<option value="onlyguests">$search_txt{'572'}</option>
-			</select>
-			</div> ~;
-
+        $yymain .= $mysearch_template3;
     }
     else {
         $yymain .= q~<input type="hidden" name="userkind" value="any" />~;
     }
 
-    $yymain .= qq~
-		</td>
-	</tr><tr>
-		<td class="windowbg right vtop"><b>$search_txt{'189'}:</b><br /><span class="small">$search_txt{'190'}</span></td>
-		<td class="windowbg2" >~;
+    $yymain .= $mysearch_template4;
+
     $allselected = 0;
     $isselected  = 0;
     $boardscheck = q{};
@@ -230,38 +189,10 @@ qq~<option value="$curboard" $selected>$boardname</option>\n          ~;
 				}
 			}
 			// -->
-			</script>
-		</td>
-    </tr><tr>
-		<td class="windowbg right"><b>$search_txt{'573'}:</b></td>
-		<td class="windowbg2">
-			<input type="checkbox" name="subfield" id="subfield" value="on" checked="checked" /><label for="subfield"> $search_txt{'70'}</label> &nbsp;
-			<input type="checkbox" name="msgfield" id="msgfield" value="on" checked="checked" /><label for="msgfield"> $search_txt{'72'}</label>
-		</td>
-	</tr><tr>
-		<td class="windowbg right"><label for="age"><b>$search_txt{'1'}</b></label></td>
-		<td class="windowbg2">
-			<select name="age" id="age">
-				<option value="7" selected="selected">$search_txt{'2'}</option>
-				<option value="31">$search_txt{'3'}</option>
-				<option value="92">$search_txt{'4'}</option>
-				<option value="365">$search_txt{'5'}</option>
-				<option value="0">$search_txt{'6'}</option>
-			</select>
-		</td>
-	</tr><tr>
-		<td class="windowbg right"><label for="numberreturned"><b>$search_txt{'191'}</b><br /><span class="small">$search_txt{'191b'}</span></label></td>
-		<td class="windowbg2"><input type="text" size="5" name="numberreturned" id="numberreturned" maxlength="5" value="$maxsearchdisplay" /></td>
-	</tr><tr>
-		<td class="windowbg right"><label for="oneperthread"><b>$search_txt{'191a'}</b></label></td>
-		<td class="windowbg2"><input type="checkbox" name="oneperthread" id="oneperthread" value="1"/></td>
-	</tr><tr>
-		<td class="catbg center h_50px" colspan="2">
-			<input type="submit" name="submit" value="$search_txt{'182'}" class="button" />
-		</td>
-	</tr>
-</table>
-</form>
+			</script>~;
+    $yymain .= $mysearch_template5;
+
+    $yymain .= qq~</form>
 <script type="text/javascript">
 <!--
 	document.searchform.search.focus();
@@ -303,17 +234,12 @@ sub plushSearch2 {
     my $userkind = $FORM{'userkind'};
     my $userspec = $FORM{'userspec'};
 
-    my @userknd = qw( starter poster noguests onlyguests );
-    foreach my $i ( 0 .. 3 ) {
-        my $dr0 = $userknd[0]->[$i];
-        if ( $userkind eq $dr0 ) {
-            $userkind = $i + 1;
-        }
-        else {
-            $userkind = 0;
-            $userspec = q{};
-        }
-    }
+    if    ( $userkind eq 'starter' )    { $userkind = 1; }
+    elsif ( $userkind eq 'poster' )     { $userkind = 2; }
+    elsif ( $userkind eq 'noguests' )   { $userkind = 3; }
+    elsif ( $userkind eq 'onlyguests' ) { $userkind = 4; }
+    else                                { $userkind = 0; $userspec = q{}; }
+
     if ( $userspec =~ m{/}xsm )  { fatal_error('no_user_slash'); }
     if ( $userspec =~ m{\\}xsm ) { fatal_error('no_user_backslash'); }
     $userspec =~ s/\A\s+//xsm;
@@ -563,22 +489,19 @@ qq~<hr class="hr" /><b>$search_txt{'170'}<br /><a href="javascript:history.go(-1
 
         ToChars( $catname{$board} );
         ToChars( $boardname{$board} );
+        $yymain =~ s/{yabb counter}/$counter/gsm;
 
         ++$counter;
 
-        $yymain .= qq~
-<table class="bordercolor cs_thin" style="table-layout: fixed;">
-    <col style="width:5%" />
-	<tr>
-		<td class="titlebg center">$counter</td>
-        <td class="titlebg">&nbsp;<a href="$scripturl?catselect=$catid{$board}"><span class="under">$catname{$board}</span></a> / <a href="$scripturl?board=$board"><span class="under">$boardname{$board}</span></a> / <a href="$scripturl?num=$tnum/$msgnum#$msgnum"><span class="under">$msub</span></a><br />
-		&nbsp;<span class="small">$search_txt{'30'}: $mdate</span>&nbsp;</td>
-	</tr><tr>
-		<td colspan="2">
-			<table class="catbg">
-				<tr>
-					<td>$search_txt{'109'} $tname | $search_txt{'105'} $search_txt{'525'} $mname</td>
-					<td class="right">&nbsp;~;
+        $yymain .= $mysearch_template6;
+        $yymain .= $counter;
+        $yymain .= $mysearch_template6a;
+        $yymain .=
+qq~<a href="$scripturl?catselect=$catid{$board}"><span class="under">$catname{$board}</span></a> / <a href="$scripturl?board=$board"><span class="under">$boardname{$board}</span></a> / <a href="$scripturl?num=$tnum/$msgnum#$msgnum"><span class="under">$msub</span></a>&nbsp;<br /><span class="small">$search_txt{'30'}: $mdate</span>~;
+        $yymain .= $mysearch_template7;
+        $yymain .=
+qq~$search_txt{'109'} $tname | $search_txt{'105'} $search_txt{'525'} $mname~;
+        $yymain .= $mysearch_template8;
 
         if ( $tstate != 1
             && ( !$iamguest || ( $iamguest && $enable_guestposting ) ) )
@@ -600,15 +523,9 @@ qq~$menusep<a href="$scripturl?action=notify2;oldnotify=1;num=$tnum/$msgnum#$msg
 qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$msgnum#$msgnum;title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num=$tnum;quote=$msgnum;title=PostReply">$img{'recentquote'}</a>$notify &nbsp;~;
         }
 
-        $yymain .= qq~
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr><tr>
-		<td class="windowbg2 vtop h_80px" colspan="2"><div class="message" style="float: left; width: 99%; overflow: auto;">$message</div></td>
-	</tr>
-</table><br />~;
+        $yymain .= $mysearch_template9;
+        $yymain .= $message;
+        $yymain .= $mysearch_template10;
     }
 
     if (@messages) {
@@ -1089,7 +1006,7 @@ sub msgfnd {
 }
 
 sub msgfnd2 {
-    my ( $message ) = @_;
+    my ($message) = @_;
     $msgfound = 1;
     foreach (@search) {
         if ( $message !~ m{(^|\W|_)\Q$_\E(?=$|\W|_)}ixsm ) {

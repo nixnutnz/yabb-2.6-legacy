@@ -517,7 +517,6 @@ qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctyp
     # this declares the beginning of the UBBC section
     $yymain .= qq~
 
-    <div class="bordercolor" style="padding: 1px; width: 100%; margin-left: auto; margin-right: auto;">
     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
     <script type="text/javascript">
     ~;
@@ -601,11 +600,13 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
 <input type="hidden" name="post_entry_time" value="$date" />
 <input type="hidden" name="virboard" value="$INFO{'virboard'}$FORM{'virboard'}" />
 
-<table class="pad_3px" style="table-layout: fixed;">
+<table class="tabtitle pad_3px" style="table-layout: fixed;">
     <tr>
-        <td class="titlebg h_18px">
+        <td style="width:1%">&nbsp;</td>
+        <td class="h_18px">
             <img src="$imagesdir/$icon.gif" alt="" /> $yytitle
         </td>
+        <td style="width:1%">&nbsp;</td>
     </tr>
 ~;
 
@@ -673,6 +674,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
 
     $yymain .= q~
 </table>
+    <div class="bordercolor">
     ~;
 
     if ($pollthread) {
