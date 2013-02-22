@@ -527,11 +527,11 @@ qq~ $maintxt{'377'} <a href="$scripturl?action=register">$maintxt{'97'}</a>~;
         }
         my ( $bo_num, $th_num );
         foreach ( keys %{$board_notify} ) {   # boardname, boardnotifytype , new
-            if ( ${ ${ $board_notify{$_} } }[2] ) { $bo_num++; }
+            if ( ${ $$board_notify{$_} }[2] ) { $bo_num++; }
         }
         foreach ( keys %{$thread_notify} )
         { # mythread, msub, new, username_link, catname_link, boardname_link, lastpostdate
-            if ( ${ ${ $thread_notify{$_} } }[2] ) { $th_num++; }
+            if ( ${ $$thread_notify{$_} }[2] ) { $th_num++; }
         }
         if ( $bo_num || $th_num ) {
             my $noti_text = (
@@ -2455,6 +2455,7 @@ sub ManageMemberlist {
         || $todo eq 'add' )
     {
         fopen( MEMBLIST, "$memberdir/memberlist.txt" );
+        @memblist = <MEMBLIST>;
         %memberlist = map { /(.*)\t(.*)/m } <MEMBLIST>;
         fclose(MEMBLIST);
     }
@@ -2471,7 +2472,6 @@ sub ManageMemberlist {
             my @oldusers = split /,/xsm, $user;
             foreach my $user (@oldusers) {
                 delete $memberlist{$user};
-                unlink "$vardir/eventcalbday.db";    # EventCal Mod
             }
         }
         else { delete $memberlist{$user}; }
@@ -2493,8 +2493,7 @@ sub ManageMemberlist {
 
 ## deal with basic member data in memberinfo.txt
 sub ManageMemberinfo {
-    my ( $todo, $user, $userreg, $userdisp, $usermail, $usergrp, $usercnt,
-        $useraddgrp )
+    my ( $todo, $user, $userdisp, $usermail, $usergrp, $usercnt, $useraddgrp )
       = @_;
     ## pull hash of member name + other data
     if (   $todo eq 'load'
@@ -2503,7 +2502,9 @@ sub ManageMemberinfo {
         || $todo eq 'add' )
     {
         fopen( MEMBINFO, "$memberdir/memberinfo.txt" );
-        %memberinf = map { /(.*)\t(.*)/sm } <MEMBINFO>;
+        @membinfo = <MEMBINFO>;
+        chomp @membinfo;
+        %memberinf = map { /(.*)\t(.*)/xsm } @membinfo;
         fclose(MEMBINFO);
     }
     if ( $todo eq 'add' ) {
