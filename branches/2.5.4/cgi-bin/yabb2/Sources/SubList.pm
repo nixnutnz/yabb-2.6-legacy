@@ -131,6 +131,7 @@ if ($action eq 'detailedversion') { return 1; }
 'profileOptions2',"Profile.pm&ModifyProfileOptions2",
 'qsearch',"UserSelect.pm&quickSearch",
 'qsearch2',"UserSelect.pm&doquicksearch",
+'rearrsticky',"System.pm&Rearrange_Sticky",
 'recent',"Recent.pm&RecentPosts",
 'recenttopics',"Recent.pm&RecentTopics",
 'register',"Register.pm&Register",
