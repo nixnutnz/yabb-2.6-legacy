@@ -527,7 +527,11 @@ qq~<img src="$imagesdir/locked.gif" alt="$messageindex_txt{'104'}" title="$messa
                ( $iamadmin && $adminview != 0 )
             || ( $iamgmod && $gmodview != 0 )
             || ( $iamymod && $ymodview != 0 )
-            || ( $iammod && $modview != 0 && !$iamadmin && !$iamgmod && !$iamymod )
+            || (   $iammod
+                && $modview != 0
+                && !$iamadmin
+                && !$iamgmod
+                && !$iamymod )
         )
         && $sessionvalid == 1
       )
@@ -618,6 +622,22 @@ qq~<a href="http://$perm_domain/$symlink$permdate/$permlinkboard/$mnum">$message
             $threadclass =
               $threadclass eq 'locked' ? 'announcementlock' : 'announcement';
         }
+        ### Start Sticky Shimmy Shuffle mod
+        my $stickdir;
+        if ( $iammod || $iamadmin || $iamgmod || $iamymod ) {
+            if ( $threadclass eq 'sticky' || $threadclass eq 'stickylock' ) {
+                $stickdir =
+qq~&nbsp;&nbsp;<a href="$scripturl?action=rearrsticky;board=$currentboard;num=$mnum;direction=up"><span style="font-size:medium"><b>&uarr;</b></span></a><a href="$scripturl?action=rearrsticky;board=$currentboard;num=$mnum;direction=down"><span style="font-size:medium"><b>&darr;</b></span> </a>~;
+            }
+            elsif (( $threadclass eq 'announcement' )
+                && ( $iamadmin || $iamgmod ) )
+            {
+                $stickdir =
+qq~&nbsp;&nbsp;<a href="$scripturl?action=rearrsticky;board=$annboard;num=$mnum;direction=up;oldboard=$currentboard;"><span style="font-size:medium"><b>&uarr;</b></span></a><a href="$scripturl?action=rearrsticky;board=$annboard;num=$mnum;direction=down;oldboard=$currentboard;"><span style="font-size:medium"><b>&darr;</b></span> </a>~;
+            }
+        }
+        ### End Sticky Shimmy Shuffle Mod
+
         if ($movedFlag) { $threadclass = 'locked_moved'; }
 
         if ( !$iamguest && $max_log_days_old ) {
@@ -851,7 +871,11 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">$f
                    ( $iamadmin && $adminview == 3 )
                 || ( $iamgmod && $gmodview == 3 )
                 || ( $iamymod && $ymodview == 3 )
-               || ( $iammod && $modview == 3 && !$iamadmin && !$iamgmod && !$iamymod )
+                || (   $iammod
+                    && $modview == 3
+                    && !$iamadmin
+                    && !$iamgmod
+                    && !$iamymod )
             )
             && $sessionvalid == 1
           )
@@ -884,7 +908,11 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">$f
                    ( $iamadmin && $adminview == 2 )
                 || ( $iamgmod && $gmodview == 2 )
                 || ( $iamymod && $ymodview == 2 )
-                || ( $iammod && $modview == 2 && !$iamadmin && !$iamgmod && !$iamymod )
+                || (   $iammod
+                    && $modview == 2
+                    && !$iamadmin
+                    && !$iamgmod
+                    && !$iamymod )
             )
             && $sessionvalid == 1
           )
@@ -904,7 +932,11 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" style="border: 0p
                    ( $iamadmin && $adminview == 1 )
                 || ( $iamgmod && $gmodview == 1 )
                 || ( $iamymod && $ymodview == 1 )
-                || ( $iammod && $modview == 1 && !$iamadmin && !$iamgmod && !$iamymod )
+                || (   $iammod
+                    && $modview == 1
+                    && !$iamadmin
+                    && !$iamgmod
+                    && !$iamymod )
             )
             && $sessionvalid == 1
           )
@@ -938,10 +970,13 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" style="border: 0p
         if ( !$movedFlag ) {
             if ( ${$mnum}{'board'} eq $annboard ) {
                 $msublink =
-qq~<a href="$scripturl?virboard=$currentboard;num=$mnum">$msub</a>~;
+
+#qq~<b><a href="$scripturl?virboard=$currentboard;num=$mnum">$msub</a></b><div style="float:right"><span style="font-size:xx-small">$stickdir</span></div>~;
+qq~<b><a href="$scripturl?virboard=$currentboard;num=$mnum">$msub</a></b>~;
             }
             else {
-                $msublink = qq~<a href="$scripturl?num=$mnum">$msub</a>~;
+                $msublink =
+qq~<b><a href="$scripturl?num=$mnum">$msub</a></b><div style="float:right"><span style="font-size:xx-small">$stickdir</span></div>~;
             }
         }
         elsif ( $movedFlag < 100 ) {
@@ -965,7 +1000,7 @@ s/({|<)yabb threadpic(}|>)/<img src="$imagesdir\/$threadclass.gif" alt="" \/>/gs
         $tempbar =~ s/({|<)yabb new(}|>)/$new/gsm;
         $tempbar =~ s/({|<)yabb poll(}|>)/$mpoll/gsm;
         $tempbar =~
-s/({|<)yabb favorite(}|>)/ ($favicon{$mnum} ? qq~<img src="$imagesdir\/addfav.gif" alt="$img_txt{'70'}" title="$img_txt{'70'}" \/>~ : '') /egsm;
+s/({|<)yabb favorite(}|>)/ ($favicon{$mnum} ? qq~<img src="$imagesdir\/addfav.gif" alt="$img_txt{'70'}" title="$img_txt{'70'}" \/>~ : q{}) /egsm;
         $tempbar =~ s/({|<)yabb subjectlink(}|>)/$msublink/gsm;
         $tempbar =~ s/({|<)yabb attachmenticon(}|>)/$temp_attachment/gsm;
         $tempbar =~ s/({|<)yabb pages(}|>)/$pages/gsm;
@@ -1002,7 +1037,11 @@ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies
                ( $iamadmin && $adminview == 3 )
             || ( $iamgmod && $gmodview == 3 )
             || ( $iamymod && $ymodview == 3 )
-            || ( $iammod && $modview == 3 && !$iamadmin && !$iamgmod && !$iamymod )
+            || (   $iammod
+                && $modview == 3
+                && !$iamadmin
+                && !$iamgmod
+                && !$iamymod )
         )
         && $sessionvalid == 1
       )
@@ -1014,7 +1053,11 @@ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies
                ( $iamadmin && $adminview == 2 )
             || ( $iamgmod && $gmodview == 2 )
             || ( $iamymod && $ymodview == 2 )
-            || ( $iammod && $modview == 2 && !$iamadmin && !$iamgmod && !$iamymod )
+            || (   $iammod
+                && $modview == 2
+                && !$iamadmin
+                && !$iamgmod
+                && !$iamymod )
         )
         && $sessionvalid == 1
       )
@@ -1098,7 +1141,9 @@ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies
     <img src="$imagesdir/stickylock.gif" alt="$messageindex_txt{'456'}" title="$messageindex_txt{'780'}" /> $messageindex_txt{'780'}<br />
     <img src="$imagesdir/locked_moved.gif" alt="$messageindex_txt{'845'}" title="$messageindex_txt{'845'}" /> $messageindex_txt{'845'}<br />
 ~;
-        if ( ( $iamadmin || $iamgmod || $iammod || $iamymod ) && $sessionvalid == 1 ) {
+        if ( ( $iamadmin || $iamgmod || $iammod || $iamymod )
+            && $sessionvalid == 1 )
+        {
             $yabbadminicons =
 qq~<img src="$imagesdir/hide.gif" alt="$messageindex_txt{'458'}" title="$messageindex_txt{'458'}" /> $messageindex_txt{'458'}<br />~;
             $yabbadminicons .=
@@ -1312,7 +1357,11 @@ qq~<img src="$imagesdir/cat_expand.gif" id="bdrulecollapse" alt="$boardindex_exp
                ( $iamadmin && $adminview == 3 )
             || ( $iamgmod && $gmodview == 3 )
             || ( $iamymod && $ymodview == 3 )
-            || ( $iammod && $modview == 3 && !$iamadmin && !$iamgmod && !$iamymod )
+            || (   $iammod
+                && $modview == 3
+                && !$iamadmin
+                && !$iamgmod
+                && !$iamymod )
         )
         && $sessionvalid == 1
       )
@@ -1325,7 +1374,11 @@ qq~<img src="$imagesdir/cat_expand.gif" id="bdrulecollapse" alt="$boardindex_exp
                ( $iamadmin && $adminview != 0 )
             || ( $iamgmod && $gmodview != 0 )
             || ( $iamymod && $ymodview != 0 )
-            || ( $iammod && $modview != 0 && !$iamadmin && !$iamgmod && !$iamymod )
+            || (   $iammod
+                && $modview != 0
+                && !$iamadmin
+                && !$iamgmod
+                && !$iamymod )
         )
         && $sessionvalid == 1
       )
@@ -1342,7 +1395,11 @@ qq~<img src="$imagesdir/cat_expand.gif" id="bdrulecollapse" alt="$boardindex_exp
                ( $iamadmin && $adminview >= 2 )
             || ( $iamgmod && $gmodview >= 2 )
             || ( $iamymod && $ymodview >= 2 )
-            || ( $iammod && $modview >= 2 && !$iamadmin && !$iamgmod && !$iamymod )
+            || (   $iammod
+                && $modview >= 2
+                && !$iamadmin
+                && !$iamgmod
+                && !$iamymod )
         )
         && $sessionvalid == 1
       )
@@ -1405,7 +1462,11 @@ qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
                ( $iamadmin && $adminview >= 2 )
             || ( $iamgmod && $gmodview >= 2 )
             || ( $iamymod && $ymodview >= 2 )
-            || ( $iammod && $modview >= 2 && !$iamadmin && !$iamgmod && !$iamymod )
+            || (   $iammod
+                && $modview >= 2
+                && !$iamadmin
+                && !$iamgmod
+                && !$iamymod )
         )
         && $sessionvalid == 1
       )

@@ -641,4 +641,65 @@ sub keygen {
     else                   { return $randid; }
 }
 
+### Sticky Shimmy Shuffle mod by astro-pilot ##
+#added to core on February 22, 2013 ##
+sub Rearrange_Sticky {
+    my ( $i, $upstky, $downstky, $stkynum, $stky, @stickies, $oldboard );
+    $board     = $INFO{'board'};
+    $stkynum   = $INFO{'num'};
+    $direction = $INFO{'direction'};
+    $oldboard  = $INFO{'oldboard'};
+    fopen( FILE, "$boardsdir/$board.txt" )
+      || fatal_error(
+        "300 $messageindex_txt{'106'}: $messageindex_txt{'23'} $board.txt");
+    @threads = <FILE>;
+    fclose(FILE);
+    my $n = 0;
+
+    foreach (@threads) {
+        my (
+            $mnum,     $msub,      $mname, $memail, $mdate,
+            $mreplies, $musername, $micon, $mstate
+        ) = split /\|/xsm, $_;
+        if ( $mstate =~ /(s|a)/ism && $mnum eq $stkynum ) { $stky = $n; }
+        if ( $mstate =~ /(s|a)/ism ) { push @stickies, $_; $n++; }
+        if ( $mstate =~ /s/ism ) { $_ = q{}; }
+    }
+    if ( $direction eq 'down' && $stky != $#stickies ) {
+        $i = $stky;
+        $i++;
+        $downstky        = $stickies[$stky];
+        $upstky          = $stickies[$i];
+        $stickies[$stky] = $upstky;
+        $stickies[$i]    = $downstky;
+    }
+    if ( $direction eq 'up' && $stky != 0 ) {
+        $i = $stky;
+        $i--;
+        $downstky        = $stickies[$i];
+        $upstky          = $stickies[$stky];
+        $stickies[$i]    = $upstky;
+        $stickies[$stky] = $downstky;
+    }
+    if ($oldboard) { @threads = @stickies; $currentboard = $oldboard; }
+    else           { push @threads, @stickies; }
+    if ( ( $direction ne 'up' || $stky != 0 )
+        && ( $direction ne 'down' || $stky != $#stickies ) )
+    {
+        fopen( FILE, ">$boardsdir/$board.txt" )
+          || fatal_error(
+            "300 $messageindex_txt{'106'}: $messageindex_txt{'23'} $board.txt");
+        foreach (@threads) {
+            chomp $_;
+            next if /^(\s)*$/xsm;
+            print {FILE} "$_\n" or croak 'cannot print FILE';
+        }
+        fclose(FILE);
+    }
+    $yySetLocation = qq~$scripturl?board=$currentboard;~;
+    redirectexit();
+    return;
+}
+###End Sticky Shimmy Shuffle mod
+
 1;
