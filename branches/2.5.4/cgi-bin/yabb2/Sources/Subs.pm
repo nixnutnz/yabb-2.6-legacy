@@ -2455,7 +2455,6 @@ sub ManageMemberlist {
         || $todo eq 'add' )
     {
         fopen( MEMBLIST, "$memberdir/memberlist.txt" );
-        @memblist = <MEMBLIST>;
         %memberlist = map { /(.*)\t(.*)/m } <MEMBLIST>;
         fclose(MEMBLIST);
     }
@@ -2838,9 +2837,6 @@ sub BroadMessageView {
         foreach my $checkgroup ( split /\,/xsm, $imp ) {
             if ( $checkgroup eq 'all' ) { return 1; }
             if ( $checkgroup eq ( 'gmods' || 'ymods' || 'mods' ) && $iamgmod ) {
-                return 1;
-            }
-            if ( $checkgroup eq ( 'ymods' || 'mods' ) && $iamymod ) {
                 return 1;
             }
             if ( $checkgroup eq 'mods' && $iammod ) { return 1; }
