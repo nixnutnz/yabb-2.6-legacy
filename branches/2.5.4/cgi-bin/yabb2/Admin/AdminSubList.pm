@@ -72,6 +72,7 @@ $adminsublistpmver = 'YaBB 2.5.4 $Revision$';
 'ext_reorder',"Settings_ExtendedProfiles.pm&ext_admin_reorder",
 'gmodaccess',"AdminEdit.pm&GmodSettings",
 'gmodsettings2',"AdminEdit.pm&GmodSettings2",
+'guardian_block',"GuardianAdmin.pm&guardian_block", 
 'helpadmin',"EditHelpCentre.pm&MainAdmin",
 'helpediting',"EditHelpCentre.pm&HelpEdit",
 'helpediting2',"EditHelpCentre.pm&HelpEdit2",

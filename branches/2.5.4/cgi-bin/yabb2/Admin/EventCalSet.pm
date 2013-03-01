@@ -15,29 +15,29 @@ use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.5.4';
 
 $eventcalsetpmver = 'YaBB 2.5.4 $Revision$';
-if ($action eq 'detailedversion') { return 1; }
+if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');
 
 eval { require "$vardir/eventcalset.txt"; };
-if ($Show_EventCal eq q{}) { EventCalSet2(); }
+if ( $Show_EventCal eq q{} ) { EventCalSet2(); }
 
 ## Calendar Setting ##
 
 sub EventCalSet {
-	is_admin_or_gmod();
-	my ($caleventprivatechecked);
+    is_admin_or_gmod();
+    my ($caleventprivatechecked);
 
-	# figure out what to print
-	my $status_calendar = 'red1.gif';
-	my $status_bdlist = 'red1.gif';
+    # figure out what to print
+    my $status_calendar = 'red1.gif';
+    my $status_bdlist   = 'red1.gif';
 
-	if    (!$Scroll_Events)           { $aevt1  = ' selected="selected"'; }
-	elsif ($Scroll_Events == 1)       { $aevt2  = ' selected="selected"'; }
-	elsif ($Scroll_Events == 2)       { $aevt3  = ' selected="selected"'; }
-	elsif ($Scroll_Events == 3)       { $aevt4  = ' selected="selected"'; }
+    if    ( !$Scroll_Events )     { $aevt1 = ' selected="selected"'; }
+    elsif ( $Scroll_Events == 1 ) { $aevt2 = ' selected="selected"'; }
+    elsif ( $Scroll_Events == 2 ) { $aevt3 = ' selected="selected"'; }
+    elsif ( $Scroll_Events == 3 ) { $aevt4 = ' selected="selected"'; }
 
-	if    (!$Show_EventCal)           { $bevt1  = ' selected="selected"'; }
+    if ( !$Show_EventCal ) { $bevt1 = ' selected="selected"'; }
     elsif ( $Show_EventCal == 1 ) {
         $bevt2           = ' selected="selected"';
         $status_calendar = 'green1.gif';
@@ -47,11 +47,11 @@ sub EventCalSet {
         $status_calendar = 'green1.gif';
     }
 
-	if    (!$Show_EventButton)        { $cevt1  = ' selected="selected"'; }
-	elsif ($Show_EventButton == 1)    { $cevt2  = ' selected="selected"'; }
-	elsif ($Show_EventButton == 2)    { $cevt3  = ' selected="selected"'; }
+    if    ( !$Show_EventButton )     { $cevt1 = ' selected="selected"'; }
+    elsif ( $Show_EventButton == 1 ) { $cevt2 = ' selected="selected"'; }
+    elsif ( $Show_EventButton == 2 ) { $cevt3 = ' selected="selected"'; }
 
-	if    (!$Show_BirthdaysList)      { $devt1  = ' selected="selected"'; }
+    if ( !$Show_BirthdaysList ) { $devt1 = ' selected="selected"'; }
     elsif ( $Show_BirthdaysList == 1 ) {
         $devt2         = ' selected="selected"';
         $status_bdlist = 'green1.gif';
@@ -61,39 +61,39 @@ sub EventCalSet {
         $status_bdlist = 'green1.gif';
     }
 
-	if    (!$Show_BirthdayButton)     { $eevt1  = ' selected="selected"'; }
-	elsif ($Show_BirthdayButton == 1) { $eevt2  = ' selected="selected"'; }
-	elsif ($Show_BirthdayButton == 2) { $eevt3  = ' selected="selected"'; }
+    if    ( !$Show_BirthdayButton )     { $eevt1 = ' selected="selected"'; }
+    elsif ( $Show_BirthdayButton == 1 ) { $eevt2 = ' selected="selected"'; }
+    elsif ( $Show_BirthdayButton == 2 ) { $eevt3 = ' selected="selected"'; }
 
-	if    (!$Show_BirthdayDate)       { $fevt1  = ' selected="selected"'; }
-	elsif ($Show_BirthdayDate == 1)   { $fevt2  = ' selected="selected"'; }
-	elsif ($Show_BirthdayDate == 2)   { $fevt3  = ' selected="selected"'; }
+    if    ( !$Show_BirthdayDate )     { $fevt1 = ' selected="selected"'; }
+    elsif ( $Show_BirthdayDate == 1 ) { $fevt2 = ' selected="selected"'; }
+    elsif ( $Show_BirthdayDate == 2 ) { $fevt3 = ' selected="selected"'; }
 
-	if    (!$Show_EventBirthdays)     { $gevt1  = ' selected="selected"'; }
-	elsif ($Show_EventBirthdays == 1) { $gevt2  = ' selected="selected"'; }
-	elsif ($Show_EventBirthdays == 2) { $gevt3  = ' selected="selected"'; }
+    if    ( !$Show_EventBirthdays )     { $gevt1 = ' selected="selected"'; }
+    elsif ( $Show_EventBirthdays == 1 ) { $gevt2 = ' selected="selected"'; }
+    elsif ( $Show_EventBirthdays == 2 ) { $gevt3 = ' selected="selected"'; }
 
-	if    ($Show_BirthdaysList)       { $onbirthlistchecked = 'checked="checked"' }
-	if    ($Show_MiniCalIcons)        { $onminiiconchecked = 'checked="checked"' }
-	if    ($ShowSunday)               { $onsundaychecked = 'checked="checked"' }
-	if    ($CalEventPrivate)          { $caleventprivatechecked = 'checked="checked"' }
-	if    ($DisplayCalEvents)         { $dcaleventschecked = 'checked="checked"' }
-	if    ($Show_ColorLinks)          { $oncolorlinkschecked = 'checked="checked"' }
-	if    ($No_ShortUbbc)             { $onnosubbcchecked = 'checked="checked"' }
-	if    ($Show_BdColorLinks)        { $onbdcolorlinkschecked = 'checked="checked"' }
-	if    (!$Event_TodayColor)        { $Event_TodayColor = '#ff0000'; }
+    if ($Show_BirthdaysList)  { $onbirthlistchecked     = 'checked="checked"' }
+    if ($Show_MiniCalIcons)   { $onminiiconchecked      = 'checked="checked"' }
+    if ($ShowSunday)          { $onsundaychecked        = 'checked="checked"' }
+    if ($CalEventPrivate)     { $caleventprivatechecked = 'checked="checked"' }
+    if ($DisplayCalEvents)    { $dcaleventschecked      = 'checked="checked"' }
+    if ($Show_ColorLinks)     { $oncolorlinkschecked    = 'checked="checked"' }
+    if ($No_ShortUbbc)        { $onnosubbcchecked       = 'checked="checked"' }
+    if ($Show_BdColorLinks)   { $onbdcolorlinkschecked  = 'checked="checked"' }
+    if ( !$Event_TodayColor ) { $Event_TodayColor       = '#ff0000'; }
     else                      { $Event_TodayColor = lc $Event_TodayColor; }
     if ( !$Delete_EventsUntil ) { $Delete_EventsUntil = '0'; }
 
-	if    (!$CalEventNoName)          { $noname1 = ' selected="selected"'; }
-	elsif ($CalEventNoName == 1)      { $noname2 = ' selected="selected"'; }
-	elsif ($CalEventNoName == 2)      { $noname3 = ' selected="selected"'; }
+    if    ( !$CalEventNoName )     { $noname1 = ' selected="selected"'; }
+    elsif ( $CalEventNoName == 1 ) { $noname2 = ' selected="selected"'; }
+    elsif ( $CalEventNoName == 2 ) { $noname3 = ' selected="selected"'; }
 
-	require Admin::ManageBoards;
-	$CalEventPerms =~ s/,/, /gsm;
-	$CalEventPerms = DrawPerms($CalEventPerms);
+    require Admin::ManageBoards;
+    $CalEventPerms =~ s/,/, /gsm;
+    $CalEventPerms = DrawPerms($CalEventPerms);
 
-	$yymain .= qq~
+    $yymain .= qq~
 <form action="$adminurl?action=eventcal_set2" method="post" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
    <table class="cs_thin pad_4px">
@@ -241,7 +241,7 @@ sub EventCalSet {
    <table class="cs_thin pad_4px">
      <tr>
        <td class="catbg center">
-		 <input type="submit" name="savesetting" value="$event_cal{'31'}" />
+		 <input type="submit" name="savesetting" value="$event_cal{'31'}" /> <input type="submit" name="rebuiltbd" value="$event_cal{'54'}" />
 	   </td>
      </tr>
    </table>
@@ -249,11 +249,11 @@ sub EventCalSet {
 </form>
 ~;
 
-	## Calendar Event-Icon Setting ##
+    ## Calendar Event-Icon Setting ##
 
-	eval{ require "$vardir/eventcalIcon.txt"; };
+    eval { require "$vardir/eventcalIcon.txt"; };
 
-	$yymain .= qq~
+    $yymain .= qq~
 <form action="$adminurl?action=eventcal_set3" method="post" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
    <table class="cs_thin pad_4px">
@@ -271,33 +271,33 @@ sub EventCalSet {
        <td class="catbg center"><b>$var_cal{'caldel'}</b></td>
      </tr>~;
 
-	$i=0;
-	while($CalIconURL[$i]) {
-		$yymain .= qq~<tr>
+    $i = 0;
+    while ( $CalIconURL[$i] ) {
+        $yymain .= qq~<tr>
        <td class="windowbg center"><input type="text" name="caliimg[$i]" value="$CalIconURL[$i]" /></td>
        <td class="windowbg center"><input type="text" name="calidescr[$i]" value="$CalIDescription[$i]" /></td>
        <td class="windowbg center"><img src="$yyhtml_root/ModImages/EventCal/EventIcons/$CalIconURL[$i].gif" alt="" /></td>
        <td class="windowbg center"><input type="checkbox" name="calidelbox[$i]" value="1" /></td>
      </tr>~;
-		$i++
-	}
+        $i++;
+    }
 
-	$yymain .= qq~<tr>
+    $yymain .= qq~<tr>
        <td class="titlebg" colspan="4"><img src="$imagesdir/preferences.gif" alt="" /><b>$event_cal{'30'}</b></td>
      </tr>~;
 
-	$inew = 0;
+    $inew = 0;
     while ( $inew <= 3 ) {
-		$yymain .= qq~<tr>
+        $yymain .= qq~<tr>
        <td class="windowbg center"><input type="text" name="caliimg[$i]" /></td>
        <td class="windowbg center"><input type="text" name="calidescr[$i]" /></td>
        <td class="windowbg center" colspan="2">&nbsp;</td>
      </tr>~;
-		$i++;
-		$inew++;
-	}
+        $i++;
+        $inew++;
+    }
 
-	$yymain .= qq~
+    $yymain .= qq~
    </table>
  </div>
  <div class="bordercolor rightboxdiv">
@@ -310,10 +310,10 @@ sub EventCalSet {
 </form>
 ~;
 
-	$yytitle     = $event_cal{'1'};
+    $yytitle     = $event_cal{'1'};
     $action_area = 'eventcal_set';
     AdminTemplate();
-	exit;
+    exit;
 }
 
 ## Save Calendar Setting ##
@@ -321,49 +321,83 @@ sub EventCalSet {
 sub EventCalSet2 {
     is_admin_or_gmod();
 
-	# Set 1 or 0 if box was checked or not
-    map { ${$_} = $FORM{$_} ? 1 : 0; }
-         qw{Show_MiniCalIcons CalEventPrivate DisplayCalEvents ShowSunday Show_ColorLinks No_ShortUbbc Show_BdColorLinks};
+    if ( $FORM{'rebuiltbd'} eq "$event_cal{'54'}" ) {
+        unlink("$vardir/eventcalbday.db");
 
-	# If empty fields are submitted, set them to default-values to save yabb from crashing
-	$DisplayEvents       = $FORM{'DisplayEvents'};
-    $DisplayEvents =~ s/[^\d]//gxsm;
-	$DisplayEvents       = $DisplayEvents || 0;
-	$Scroll_Events       = $FORM{'Scroll_Events'} || 0;
-	$Show_EventCal       = $FORM{'Show_EventCal'} || 0;
-	$Show_EventButton    = $FORM{'Show_EventButton'} || 0;
-    if ( $Show_EventButton > $Show_EventCal ) {
-        $Show_EventButton = $Show_EventCal;
-    }
-	$Show_EventBirthdays = $FORM{'Show_EventBirthdays'} || 0;
-    if ( $Show_EventBirthdays > $Show_EventCal ) {
-        $Show_EventBirthdays = $Show_EventCal;
-    }
-	$Show_BirthdaysList  = $FORM{'Show_BirthdaysList'} || 0;
-	$Show_BirthdayButton = $FORM{'Show_BirthdayButton'} || 0;
-    if ( $Show_BirthdayButton > $Show_BirthdaysList ) {
-        $Show_BirthdayButton = $Show_BirthdaysList;
-    }
-	$Show_BirthdayDate   = $FORM{'Show_BirthdayDate'} || 0;
-	$CalEventNoName      = $FORM{'CalEventNoName'} || 0;
-    $Event_TodayColor =
-      uc( $FORM{'Event_TodayColor'} || '#FF0000' ) . '000000';
-    $Event_TodayColor =~ s/[^a-fA-F0-9#]//gxsm;
-    $Event_TodayColor = substr $Event_TodayColor, 0, 7;
-	$Delete_EventsUntil  = $FORM{'Delete_EventsUntil'} || 0;
-	$CalShortEvent       = $FORM{'CalShortEvent'};
-    $CalShortEvent =~ s/[^\d]//gxsm;
-	$CalShortEvent       = $CalShortEvent || 0;
-    $CalEventPerms = $FORM{'CalEventPerms'} || q{};
-    $CalEventPerms =~ s/^\s*,\s*|\s*,\s*$//gxsm;
-    $CalEventPerms =~ s/\s*,\s*/,/gxsm;
-    $CalEventMods = $FORM{'CalEventMods'} || q{};
-    $CalEventMods =~ s/^\s*,\s*|\s*,\s*$//gxsm;
-    $CalEventMods =~ s/\s*,\s*/,/gxsm;
+        fopen( FILE, "$memberdir/memberlist.txt" );
+        @birthmembers = <FILE>;
+        fclose(FILE);
+        fopen( FILE, ">$vardir/eventcalbday.db" );
+        foreach $user_name (@birthmembers) {
+            ( $user_xy, $dummy ) = split( /	/, $user_name );
+            chomp $user_xy;
+            LoadUser($user_xy);
+            $user_xy_bd = ${ $uid . $user_xy }{'bday'};
+            if ($user_xy_bd) {
+                ( $user_month, $user_day, $user_year ) =
+                  split( /\//, $user_xy_bd );
+                if ( $user_month < 10 && length($user_month) == 1 ) {
+                    $user_month = "0$user_month";
+                }
+                if ( $user_day < 10 && length($user_day) == 1 ) {
+                    $user_day = "0$user_day";
+                }
+                if (${ $uid . $user_xy }{'hideage'}){$user_hide = 1;}
+                print FILE qq~$user_year|$user_month|$user_day|$user_xy|$user_hide\n~;
 
-    my $filler =
+            }
+        }
+        fclose(FILE);
+
+        $yySetLocation = qq~$adminurl?action=eventcal_set;rebok=1~;
+        redirectexit();
+
+    }
+    else {
+
+        # Set 1 or 0 if box was checked or not
+        map { ${$_} = $FORM{$_} ? 1 : 0; }
+          qw{Show_MiniCalIcons CalEventPrivate DisplayCalEvents ShowSunday Show_ColorLinks No_ShortUbbc Show_BdColorLinks};
+
+# If empty fields are submitted, set them to default-values to save yabb from crashing
+        $DisplayEvents = $FORM{'DisplayEvents'};
+        $DisplayEvents =~ s/[^\d]//gxsm;
+        $DisplayEvents    = $DisplayEvents            || 0;
+        $Scroll_Events    = $FORM{'Scroll_Events'}    || 0;
+        $Show_EventCal    = $FORM{'Show_EventCal'}    || 0;
+        $Show_EventButton = $FORM{'Show_EventButton'} || 0;
+        if ( $Show_EventButton > $Show_EventCal ) {
+            $Show_EventButton = $Show_EventCal;
+        }
+        $Show_EventBirthdays = $FORM{'Show_EventBirthdays'} || 0;
+        if ( $Show_EventBirthdays > $Show_EventCal ) {
+            $Show_EventBirthdays = $Show_EventCal;
+        }
+        $Show_BirthdaysList  = $FORM{'Show_BirthdaysList'}  || 0;
+        $Show_BirthdayButton = $FORM{'Show_BirthdayButton'} || 0;
+        if ( $Show_BirthdayButton > $Show_BirthdaysList ) {
+            $Show_BirthdayButton = $Show_BirthdaysList;
+        }
+        $Show_BirthdayDate = $FORM{'Show_BirthdayDate'} || 0;
+        $CalEventNoName    = $FORM{'CalEventNoName'}    || 0;
+        $Event_TodayColor =
+          uc( $FORM{'Event_TodayColor'} || '#FF0000' ) . '000000';
+        $Event_TodayColor =~ s/[^a-fA-F0-9#]//gxsm;
+        $Event_TodayColor = substr $Event_TodayColor, 0, 7;
+        $Delete_EventsUntil = $FORM{'Delete_EventsUntil'} || 0;
+        $CalShortEvent = $FORM{'CalShortEvent'};
+        $CalShortEvent =~ s/[^\d]//gxsm;
+        $CalShortEvent = $CalShortEvent         || 0;
+        $CalEventPerms = $FORM{'CalEventPerms'} || q{};
+        $CalEventPerms =~ s/^\s*,\s*|\s*,\s*$//gxsm;
+        $CalEventPerms =~ s/\s*,\s*/,/gxsm;
+        $CalEventMods = $FORM{'CalEventMods'} || q{};
+        $CalEventMods =~ s/^\s*,\s*|\s*,\s*$//gxsm;
+        $CalEventMods =~ s/\s*,\s*/,/gxsm;
+
+        my $filler =
 q~                                                                               ~;
-		my $setfile = << "EOF";
+        my $setfile = << "EOF";
 ###############################################################################
 # CalEventSet.txt                                                             #
 ###############################################################################
@@ -396,10 +430,10 @@ q~                                                                              
 1;
 EOF
 
-		# Fix a certain type of syntax error
+        # Fix a certain type of syntax error
         $setfile =~ s/=\s+;/= 0;/gxsm;
 
-		# Make it look nicely aligned. The comment starts after 50 Col
+        # Make it look nicely aligned. The comment starts after 50 Col
         $filler = q{ } x 50;
         $setfile =~
 s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2 /gem;
@@ -412,27 +446,28 @@ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2
             my ( $comment, $length ) =
               ( q{}, 120 );    # 120 Col is the max width of page
             my $var_length = length $x[0];
-			while ($length < $var_length) { $length += 120; }
+            while ( $length < $var_length ) { $length += 120; }
             foreach ( split / +/sm, $x[1] ) {
                 if ( ( $var_length + length($comment) + length $_ ) > $length )
                 {
                     $comment =~ s/ $//sm;
-					$comment .= "\n$filler#  $_ ";
-					$length += 120;
-			}
+                    $comment .= "\n$filler#  $_ ";
+                    $length += 120;
+                }
                 else { $comment .= "$_ "; }
-		}
+            }
             $comment =~ s/ $//sm;
             return $comment;
         };
         $setfile =~ s/(.+)(#.+$)/ $1 . cut_comment($1,$2) /gem;
 
-		fopen(FILE, ">$vardir/eventcalset.txt");
+        fopen( FILE, ">$vardir/eventcalset.txt" );
         print {FILE} $setfile or croak 'cannot print FILE';
-		fclose(FILE);
+        fclose(FILE);
 
-		$yySetLocation = qq~$adminurl?action=eventcal_set~;
+        $yySetLocation = qq~$adminurl?action=eventcal_set~;
         redirectexit();
+    }
     return;
 }
 
@@ -441,23 +476,23 @@ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2
 sub EventCalSet3 {
     is_admin_or_gmod();
 
-	my $count = 0;
-	my $tempA = 0;
-	my @eventcalIcon;
-	while ($FORM{"caliimg[$tempA]"}) {
-		if ($FORM{"calidelbox[$tempA]"} != 1) {
+    my $count = 0;
+    my $tempA = 0;
+    my @eventcalIcon;
+    while ( $FORM{"caliimg[$tempA]"} ) {
+        if ( $FORM{"calidelbox[$tempA]"} != 1 ) {
             push @eventcalIcon,
 qq~\$CalIconURL[$count] = "$FORM{"caliimg[$tempA]"}";\n\$CalIDescription[$count] = "$FORM{"calidescr[$tempA]"}";\n\n~;
-			$count++;
-		}
-		$tempA++;
-	}
+            $count++;
+        }
+        $tempA++;
+    }
     push @eventcalIcon, '1;';
-	fopen(FILE, ">$vardir/eventcalIcon.txt");
+    fopen( FILE, ">$vardir/eventcalIcon.txt" );
     print {FILE} @eventcalIcon or croak 'cannot print FILE';
-	fclose(FILE);
+    fclose(FILE);
 
-	$yySetLocation = qq~$adminurl?action=eventcal_set~;
+    $yySetLocation = qq~$adminurl?action=eventcal_set~;
     redirectexit();
     return;
 }

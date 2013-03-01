@@ -467,4 +467,17 @@ sub update_htaccess {
     return;
 }
 
+sub guardian_block {
+    is_admin_or_gmod();
+   
+    if ( $use_guardian && $use_htaccess ) {
+        require Sources::Guardian;
+        my $blockIP = $INFO{'ip'};
+        update_htaccess( 'add', $blockIP );
+        $yySetLocation = qq~$adminurl?action=$INFO{'return'}~;
+        redirectexit();
+    }
+    return;
+} 
+
 1;
