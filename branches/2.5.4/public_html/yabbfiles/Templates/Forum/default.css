@@ -217,7 +217,37 @@ height:24px;
 text-align:left;
 }
 
-.tabmenu span {
+.tabmenu ul {
+list-style:none;
+display:block;
+margin:0 0 0 -41px;
+}
+
+.tabmenu li, .mctabmenu li  {
+float:left;
+font-size:100%;
+font-weight:500;
+list-style:none;
+margin-left:-1px;
+padding:0;
+}
+
+.tabmenu a, .mctabmenu a {
+color:#003;
+font-size:11px;
+font-weight:400;
+display:block;
+float:left;
+font-family:Verdana, Helvetica, Arial, sans-serif;
+margin:0 1px 0 0;
+min-width:5em;
+padding:4px 8px;
+text-align:center;
+text-decoration:none;
+border-right: 1px solid #9CB9F3;
+}
+
+.tabmenu span, .mctabmenu span {
 background-color:#9CB9F3;
 background-image:url(./default/tab211.png);
 background-repeat:repeat-x;
@@ -232,7 +262,7 @@ text-align:center;
 vertical-align:middle;
 }
 
-.tabmenu span a {
+.tabmenu span a, .mctabmenu span a {
 color:#003;
 font-size:11px;
 font-weight:400;
@@ -240,15 +270,20 @@ text-decoration:none;
 white-space:nowrap;
 }
 
-.tabmenu span.selected {
+.tabmenu span.selected, .mctabmenu span.selected {
 background-color:#9CB9F3;
 background-image:url(./default/tab_selected211.png);
 background-repeat:repeat-x;
-font-weight:400;
+margin:-2px 0;
+font-weight:700;
 font-size:11px;
 }
 
-.tabmenu span a:hover,.QuickLinks a:hover {
+.tabmenu span a:hover {
+text-decoration:none;
+}
+
+.QuickLinks a:hover {
 text-decoration:none;
 }
 
@@ -353,6 +388,8 @@ margin-top:15px;
 padding:0;
 position:absolute;
 text-indent:0;
+min-width:12em;
+font-style:normal;
 }
 
 .QuickLinks li {
@@ -785,7 +822,7 @@ margin:3px;
 width:8px;
 }
 
-div#codelang {
+/*div#codelang {
 background-color:#CCC;
 display:none;
 left:230px;
@@ -798,8 +835,7 @@ width:92px;
 div#codesyntax {
 font-size:9px;
 margin:0;
-width:92px;
-}
+}*/
 
 #fontface {
 font-size:9px;
@@ -1096,7 +1132,7 @@ width:800px
 }
 /* Post and Thread Tools */
 .post_tools {
-	background-color: #2f7dce;
+	background-color: #5488C1;
 	background-image: url(./default/reverse_grad.png);
 	background-position: bottom left;
 	background-repeat: repeat-x;
@@ -1122,6 +1158,7 @@ width:800px
 	text-indent: 0px;
 	top: 11px;
 	right: 0px;
+	min-width:104px;
 }
 .post_tools_menu li {
 	background-color: #6f88ac;
@@ -1176,7 +1213,7 @@ width:800px
 float: left; width: 15px; height: 15px; margin-right: 1px; margin-bottom: 1px; border: 0px; font-size: 5px; cursor: pointer;}
 }
 .defpal  {
-border:0;
+border:0px;
 float:left;
 font-size:5px;
 height:15px;
@@ -1184,6 +1221,17 @@ margin-bottom:1px;
 margin-right:1px;
 text-align:center;
 width:15px;
+}
+
+.defpalx {
+float: left;
+text-align: center; 
+width: 15px;
+height: 15px; 
+margin-right: 1px;
+margin-bottom: 1px;
+border: 0px;
+font-size: 5px;
 }
 
 .defpal_b  {
@@ -1204,5 +1252,48 @@ margin-right: 1px;
 margin-bottom: 1px; 
 border: 0px; 
 font-size: 5px; 
-cursor: hand;
+cursor: pointer;
+}
+
+#feature_status_1, #feature_status_4, #feature_status_7, #feature_status_7  {
+background-color:#DEE4EC;
+color:#304B58;
+font-size:12px;
+font-style:normal;
+font-weight:400;
+}
+
+.calout_left {float: left; width: 30%; padding-top: 1px; padding-bottom: 1px; text-align: left;}
+.calout_right {float: left; width: 70%; padding-top: 1px; padding-bottom: 1px; text-align: right;}
+
+.memberlist_td {
+border: 1px; border-style: outset; cursor: pointer; text-align:center;
+}
+.norm {
+font-style:normal;}
+
+.pages {height: 14px;
+padding-left: 2px !important;
+padding-right: 2px !important;
+font-size: 9px;}
+
+.imcontact {
+float: left; width: 99%; padding-top: 5px; margin-top: 2px; text-align: right;}
+
+.imcontact_left {
+float: left; text-align: left; padding: 2px; margin: 2px;
+}
+.imcontact_right {
+float: right; text-align: right; padding: 2px; margin: 2px;
+}
+
+.minical_border {
+border:1px solid #B1BDC9;
+}
+.cal_row1 {
+height:23px;
+}
+
+.cal_row2 {
+height:26px;
 }
