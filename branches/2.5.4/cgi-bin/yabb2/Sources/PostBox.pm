@@ -423,7 +423,7 @@ skydobject.initialize()~;
 
     #// Collapse/Expand additional features
     #//var col_row = $col_row;
-    if ( $action ne 'imsend' && $action ne 'get_cal' ) {
+    if ( $action ne 'imsend' && $action ne 'eventcal' ) {
         $box .= qq~
 var col_row = 0;
 

@@ -29,6 +29,13 @@ require Sources::Notify;
 require Sources::SpamCheck;
 require Sources::PostBox;
 
+if ( -e ("$templatesdir/$usestyle/Post.template") ) {
+    require "$templatesdir/$usestyle/Post.template";
+}
+else {
+    require "$templatesdir/default/Post.template";
+}
+
 if (   $iamguest
     && $gpvalid_en
     && ( $enable_guestposting || $PMenableGuestButton || $PMAlertButtonGuests )
@@ -111,32 +118,20 @@ sub Post {
     if ( $pollthread == 2 && $useraddpoll == 0 ) { fatal_error('no_access'); }
 
     $name_field = $iamguest
-      ? qq~<tr>
-    <td class="windowbg"><label for="name"><b>$post_txt{'68'}:</b></label></td>
-    <td class="windowbg"><input type="text" name="name" id="name" size="25" value="$FORM{'name'}" maxlength="25" tabindex="2" /></td>
-      </tr>~
+      ? $mypost_templatea
       : q{};
 
     $email_field = $iamguest
-      ? qq~<tr>
-    <td class="windowbg"><label for="email"><b>$post_txt{'69'}:</b></label></td>
-    <td class="windowbg"><input type="text" name="email" id="email" size="25" value="$FORM{'email'}" maxlength="40" tabindex="3" /></td>
-      </tr>~
+      ? $mypost_templateb
       : q{};
 
     if ( $iamguest && $gpvalid_en ) {
         validation_code();
         $verification_field = $verification eq q{}
-          ? qq~<tr class="windowbg">
-                <td class="vtop"><label for="verification"><b>$floodtxt{'1'}:</b></label></td>
-                <td>$showcheck<br /><label for="verification"><span class="small">$flood_text</span></label></td>
-            </tr><tr class="windowbg">
-                <td class="vtop"><label for="verification"><b>$floodtxt{'3'}:</b></label></td>
-                <td>
-                <input type="text" maxlength="30" name="verification" id="verification" size="30" />
-                </td>
-            </tr>~
+          ? $mypost_templatec
           : q{};
+        $verification_field =~ s/{yabb showcheck}/$showcheck/sm;
+        $verification_field =~ s/{yabb flood_text}/$flood_text/sm;
     }
     if (   $iamguest
         && $spam_questions_gp
@@ -149,18 +144,12 @@ sub Post {
               qq~<br />$post_txt{'verification_question_case'}~;
         }
         $verification_question_field = $verification_question eq q{}
-          ? qq~<tr>
-                <td class="windowbg vtop">
-                    <label for="verification_question"><b>$spam_question</b><br />
-                    <span class="small">$post_txt{'verification_question_desc'}$verification_question_desc</span></label>
-                </td>
-                <td class="windowbg vtop">
-                    <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" />
-                    <input type="hidden" name="verification_question_id" value="$spam_question_id" />
-                    <input type="hidden" name="spam_question" value="$spam_question" />
-                </td>
-            </tr>~
+          ? $mypost_templatee
           : q{};
+          $verification_question_field =~ s/{yabb spam_question}/$spam_question/sm;
+          $verification_question_field =~ s/{yabb spam_question_b}/$spam_question/sm;
+          $verification_question_field =~ s/{yabb verification_question_desc}/$verification_question_desc/sm;
+          $verification_question_field =~ s/{yabb spam_question_id}/$spam_question_id/sm;
     }
 
     $sub        = q{};
@@ -296,7 +285,7 @@ sub Postpage {
         && $destination ne 'guestpm2' )
     {
         $extra = qq~
-    <tr id="feature_status_1" class="windowbg">
+    <tr id="feature_status_1">
         <td><label for="icon"><b>$post_txt{'71'}:</b></label></td>
         <td>
             <select name="icon" id="icon" onchange="showimage(); updatTopic();">
@@ -515,11 +504,7 @@ qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctyp
     }
 
     # this declares the beginning of the UBBC section
-    $yymain .= qq~
-
-    <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
-    <script type="text/javascript">
-    ~;
+    $yymain .= $mypost_ubbc;
 
     $moresmilieslist   = q{};
     $more_smilie_array = q{};
@@ -600,13 +585,11 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
 <input type="hidden" name="post_entry_time" value="$date" />
 <input type="hidden" name="virboard" value="$INFO{'virboard'}$FORM{'virboard'}" />
 
-<table class="tabtitle pad_3px" style="table-layout: fixed;">
+<table class="pad_3px" style="table-layout: fixed;">
     <tr>
-        <td style="width:1%">&nbsp;</td>
-        <td class="h_18px">
+        <td class="titlebg h_18px">
             <img src="$imagesdir/$icon.gif" alt="" /> $yytitle
         </td>
-        <td style="width:1%">&nbsp;</td>
     </tr>
 ~;
 
@@ -674,7 +657,6 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
 
     $yymain .= q~
 </table>
-    <div class="bordercolor">
     ~;
 
     if ($pollthread) {
@@ -695,36 +677,10 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
         if ($multi_choice) { $mcchecked  = ' checked="checked"'; }
         if ($pie_legends)  { $legchecked = ' checked="checked"'; }
 
-        $yymain .= qq~
-<table class="windowbg pad_3px" style="table-layout: fixed;">
-    <col style="width:250px" />
-    <col style="width:240px" />
-    <col span="2" style="width:60px" />
-    <tr>
-        <td class="catbg"><label for="question"><b>$post_polltxt{'6'}:</b></label></td>
-        <td class="catbg">&nbsp;</td>
-        <td class="catbg">&nbsp;</td>
-        <td class="catbg">&nbsp;</td>
-        <td class="catbg">&nbsp;</td>
-    </tr><tr>
-        <td class="windowbg2" colspan="5" style="font-size: 3px;">&nbsp;</td>
-    </tr><tr>
-    <td class="windowbg2">&nbsp;</td>
-    <td colspan="4" class="windowbg2">
-        <input type="text" size="60" name="question" id="question" value="$poll_question" maxlength="$maxpq" />
-        <input type="hidden" name="pollthread" value="$pollthread" />
-    </td>
-    </tr><tr>
-        <td class="windowbg2" colspan="5" style="font-size: 3px;">&nbsp;</td>
-    </tr><tr>
-        <td class="catbg"><b>$post_polltxt{'polloptions'}</b></td>
-        <td class="catbg"><b>$post_polltxt{'polloptionstext'}</b></td>
-        <td class="catbg center"><b>$post_polltxt{'pieslicecolor'}</b></td>
-        <td class="catbg center"><b>$post_polltxt{'pieslicesplit'}</b></td>
-        <td class="catbg">&nbsp;</td>
-    </tr><tr>
-        <td class="windowbg2" colspan="5" style="font-size: 3px;">&nbsp;</td>
-    </tr>~;
+        $yymain .= $mypost_polla;
+        $yymain =~ s/{yabb poll_question}/$poll_question/sm;
+        $yymain =~ s/{yabb maxpq}/$maxpq/sm;
+        $yymain =~ s/{yabb pollthread}/$pollthread/sm;;
 
         $piecolarray = q~["",~;
         for my $i ( 1 .. $numpolloptions ) {
@@ -772,8 +728,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
             }
         }
 
-        $yymain .= qq~
-    <tr>
+        $yymain .= qq~<tr>
         <td class="windowbg2" colspan="5" style="font-size: 3px;">
             <script type="text/javascript">
             var tmpslicecolor;
@@ -856,10 +811,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
 </table>~;
     }
 
-    $yymain .= q~
-<table class="windowbg pad_3px" style="table-layout: fixed;">
-    <col style="width:23%" />
-~;
+    $yymain .= $mypost_pollc;
 
     if ( $postid ne 'Poll' ) {
         if ($prevmain) {
@@ -869,28 +821,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
         </tr>~;
         }
 
-        $yymain .= qq~<tr>
-        <td class="windowbg vtop">
-            <div id="SaveInfo" style="height:16px;">
-            <img src="$defaultimagesdir/cat_expand.gif" id="prevwin" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
-            </div>
-        </td>
-        <td class="windowbg">
-            <div id="savetable" class="bordercolor" style="padding:1px; width:100%; margin:auto; visibility:hidden;">
-            <table class="pad_3px" style="table-layout:fixed;">
-              <tr>
-                <td class="titlebg">
-                 <div id="savetopic" style="height:0px; text-align:left; vertical-align:middle; font-weight:bold; overflow:auto;">&nbsp;</div>
-                </td>
-              </tr><tr>
-                <td class="windowbg2">
-                 <div id="saveframe" class="message" style="height:0px; text-align:left; vertical-align:top; overflow:auto;">&nbsp;</div>
-                </td>
-              </tr>
-            </table>
-            </div>
-        </td>
-    </tr>~;
+        $yymain .= $mypost_polld;
 
         $topicstatus_row = q{};
         $stselect        = q{};
@@ -922,8 +853,8 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
             if ( ( $iamadmin || $iamgmod || $iammod ) && $sessionvalid == 1 ) {
                 $yymain .= qq~
     <tr id="feature_status_4">
-        <td class="windowbg vtop"><label for="topicstatus"><b>$post_txt{'34'}:</b></label></td>
-        <td class="windowbg">
+        <td class="vtop"><label for="topicstatus"><b>$post_txt{'34'}:</b></label></td>
+        <td>
             <select multiple="multiple" name="topicstatus" id="topicstatus" size="~
                   . ( $currentboard ne $annboard ? 3 : 2 )
                   . q~" style="vertical-align: middle;" onchange="showtpstatus()">
@@ -987,12 +918,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         }
 
         $yymain .= postbox2();
-        $yymain .= q~</div>
-            </div>
-        </td>
-    </tr><tr>
-        <td class="windowbg2 vtop">
-        ~;
+        $yymain .= $mypost_polle;
 
         # SpellChecker start
         if ($enable_spell_check) {
@@ -1071,20 +997,9 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             $yymain .= qq~
             smilieurl = new Array($smilie_url_array)
             smiliecode = new Array($smilie_code_array)
-            document.write('<table class="bordercolor pad_2px border" style="height:90px; width:120px"><tr>');
-            document.write('<td class="titlebg center h_15px"><span class="small"><b>$post_smiltxt{'1'}</b></span></td>');
-            document.write('</tr><tr>');
-            document.write('<td class="windowbg2 center vtop h_20px"><select name="smiliextra_list" onchange="document.images.smiliextra_image.src= smilieurl[document.postmodify.smiliextra_list.value]" style="width:114px; font-size:7pt;">');
+            $mypost_smiley1
             $smilieslist
-            document.write('</select></td>');
-            document.write('</tr><tr>');
-            document.write('<td class="windowbg2 center h_70px"><img name="smiliextra_image" src="'+smilieurl[0]+'" alt="" onclick="javascript: Smiliextra();" class="pointer"></td>');
-            document.write('</tr><tr>');
-            document.write('<td class="windowbg2 center h_15px"><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span></td>');
-            document.write('</tr></table>');
-            document.images.smiliextra_image.src = smilieurl[document.postmodify.smiliextra_list.value];
-            //-->
-            </script>
+            $mypost_smiley2
             ~;
         }
         else {
@@ -1093,10 +1008,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             ~;
         }
 
-        $yymain .= qq~
-        </td>
-    </tr><tr>
-        <td class="windowbg2 bottom">
+        $yymain .= $mypost_feata . qq~
             <span class="small"><img src="$defaultimagesdir/cat_collapse.gif" id="feature_col" alt="$npf_txt{'collapse_features'}" title="$npf_txt{'collapse_features'}" class="pointer" onclick="show_features(0);" /> $npf_txt{'features_text'}</span>
             <input type="hidden" name="col_rowb" id="col_row" value="$col_row" />~;
 
@@ -1264,21 +1176,21 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
 $notification
 $favoriteadd
     <tr id="feature_status_7">
-        <td class="windowbg">
+        <td>
             <label for="ns"><b>$post_txt{'276'}:</b></label>
         </td>
-        <td class="windowbg">
+        <td>
             <input type="checkbox" name="ns" id="ns" value="NS"$nscheck /> <span class="small"> <label for="ns">$post_txt{'277'}</label></span>
         </td>
     </tr>
 
     <tr id="feature_status_8">
-        <td class="windowbg">
+        <td>
             <div id="enable_iecopytext" style="display: none;">
                 <label for="iecopy"><b>$post_txt{'iecopytext'}:</b></label><br /><br />
             </div>
         </td>
-        <td class="windowbg">
+        <td>
             <div id="enable_iecopy" style="display: none;">
                 <input type="checkbox" name="iecopy" id="iecopy"$iecopycheck /> <span class="small"> <label for="iecopy">$post_txt{'iecopycheck'}</label></span><br /><br />
             </div>
@@ -1291,8 +1203,7 @@ $lastmod
 
     #these are the buttons to submit
     if ($is_preview) { $post_txt{'507'} = $post_txt{'771'}; }
-    $yymain .= qq~<tr>
-        <td class="titlebg center" colspan="2">
+    $yymain .= qq~$mypost_ispreview
             $hidestatus
             <br />
             <input type="submit" name="$post" id="$post" value="$submittxt" accesskey="s" tabindex="5" class="button" />~
@@ -1740,7 +1651,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
         $verification_field = $verification ne q{}
           ? qq~<tr>
                 <td class="windowbg vtop"><label for="verification"><b>$floodtxt{'3'}:</b></label></td>
-                <td class="windowbg">$verification
+                <td class="windowbg vtop">$showcheck<br /><span class="small">$flood_text</span></td>
                 <input type="hidden" name="verification" id="verification" value="$verification" />
                 <input type="hidden" name="sessionid" id="sessionid" value="$sessionid" />
                 </td>
@@ -1831,44 +1742,15 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
 
     ToChars($message);
     $message = Censor($message);
-    $prevmain .= qq~
-        <script type="text/javascript" src="$yyhtml_root/ubbc.js"></script>
-        <div class="bordercolor" style="padding: 1px; width: 100%; margin-left: auto; margin-right: auto;">
-        <table class="windowbg pad_3px" style="table-layout: fixed;">
-         <tr>
-          <td class="titlebg">
-           <img src="$imagesdir/$icon.gif" alt="" /> $csubject
-          </td>
-         </tr>
-        </table>
-        <table class="windowbg pad_3px" style="table-layout: fixed;">
-         <tr>
-          <td class="windowbg2">
-           <div class="message" style="overflow:auto;">$message</div>
-          </td>
-         </tr>
-        </table>
-        </div>\n~;
+    $prevmain .= $mypost_prevmain;
+    $prevmain =~ s/{yabb csubject}/$csubject/sm;
+    $prevmain =~ s/{yabb cmessage}/$message/sm;
+    $prevmain =~ s/{yabb d_icon}/$icon/sm;
 
     if ($error) {
         LoadLanguage('Error');
-        $prevmain .= qq~
-        <div class="bordercolor" style="padding: 1px; width: 100%; margin-left: auto; margin-right: auto;">
-        <table class="windowbg pad_3px" style="table-layout: fixed;">
-         <tr>
-          <td class="titlebg">
-           <img src="$imagesdir/exclamation.gif" alt="" /> $error_txt{'error_occurred'}
-          </td>
-         </tr>
-        </table>
-        <table class="windowbg pad_3px" style="table-layout: fixed;">
-         <tr>
-          <td class="windowbg2">
-           <div class="message" style="overflow:auto; color: red"><br />$error<br /><br /></div>
-          </td>
-         </tr>
-        </table>
-        </div>\n~;
+        $prevmain .= $mypost_prevmain_error;
+        $prevmain =~ s/{yabb preverror}/$error/sm;
     }
 
     $message = $mess;
@@ -1880,7 +1762,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
 qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/css" />\n~;
         $yyjavascript .= qq~
 var GB_ROOT_DIR = "$yyhtml_root/greybox/";
-
+//-->
 </script>
 <script type="text/javascript" src="$yyhtml_root/AJS.js"></script>
 <script type="text/javascript" src="$yyhtml_root/AJS_fx.js"></script>
@@ -3029,8 +2911,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tempname}" clas
             $message = Censor($message);
 
             if ( $message ne q{} ) {
-                $yymain .= qq~<tr>
-<td class="catbg" style="padding:3px">
+                $yymain .= qq~$mypost_showpreva
 <span class="small">$post_txt{'279'}: $displaynamelink~
                   . (
                     $enable_markquote
@@ -3045,12 +2926,9 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tempname}" clas
                     ? qq~$menusep<a href="javascript:void(quoteSelection('$quote_mname',$threadid,$quote_msg_id,$messagedate,'$quickmessage'))">$img{'quote'}</a>~
                     : q{}
                   )
-                  . qq~</span></td>
-        <td class="catbg right" style="padding:3px">
+                  . qq~</span>$mypost_showprevb
             <span class="small">$post_txt{'280'}: $tempdate</span>
-        </td>
-    </tr><tr>
-        <td class="windowbg2" style="padding:3px" colspan="2">
+            $mypost_showprevc
             <div class="message" onmouseup="get_selection($quote_msg_id);" style="max-height: 150px; overflow: auto;">
 $message
            </div>
@@ -3079,23 +2957,23 @@ sub sendGuestPM {
     $postthread = 2;
 
     $name_field = qq~      <tr>
-    <td class="windowbg" style="padding:3px"><label for="name"><b>$post_txt{'68'}:</b></label></td>
-    <td class="windowbg" style="padding:3px"><input type="text" name="name" id="name" size="25" value="$FORM{'name'}" maxlength="25" tabindex="2" /></td>
+    <td class="windowbg padd_3px"><label for="name"><b>$post_txt{'68'}:</b></label></td>
+    <td class="windowbg padd_3px"><input type="text" name="name" id="name" size="25" value="$FORM{'name'}" maxlength="25" tabindex="2" /></td>
       </tr>~;
     $email_field = qq~      <tr>
-    <td class="windowbg" style="padding:3px"><label for="email"><b>$post_txt{'69'}:</b></label></td>
-    <td class="windowbg" style="padding:3px"><input type="text" name="email" id="email" size="25" value="$FORM{'email'}" maxlength="40" tabindex="3" /></td>
+    <td class="windowbg padd_3px"><label for="email"><b>$post_txt{'69'}:</b></label></td>
+    <td class="windowbg padd_3px"><input type="text" name="email" id="email" size="25" value="$FORM{'email'}" maxlength="40" tabindex="3" /></td>
       </tr>~;
 
     if ($gpvalid_en) {
         validation_code();
         $verification_field = $verification eq q{}
           ? qq~<tr class="windowbg">
-                        <td class="vtop" style="padding:3px"><label for="verification"><b>$floodtxt{'1'}:</b></label></td>
-                        <td style="padding:3px">$showcheck<br /><label for="verification"><span class="small">$flood_text</span></label></td>
+                        <td class="vtop padd_3px"><label for="verification"><b>$floodtxt{'1'}:</b></label></td>
+                        <td class="padd_3px">$showcheck<br /><label for="verification"><span class="small">$flood_text</span></label></td>
                   </tr><tr class="windowbg">
-                        <td class="vtop" style="padding:3px"><label for="verification"><b>$floodtxt{'3'}:</b></label></td>
-                        <td style="padding:3px">
+                        <td class="vtop padd_3px"><label for="verification"><b>$floodtxt{'3'}:</b></label></td>
+                        <td class="padd_3px">
                         <input type="text" maxlength="30" name="verification" id="verification" size="30" />
                         </td>
                   </tr>~

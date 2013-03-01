@@ -260,9 +260,9 @@ s/({|<)yabb mcglobformend(}|>)/ ($MCGlobalFormStart ? "<\/form>" : q{}) /esm;
     ## end new style box
     $yymain .= $mycenter_template;
     if (%usernames_life_quote) {    # for display names in Quotes in LivePreview
-        $yymain .= q~
-<script type="text/javascript">
-<!-- //
+        $yymain .= qq~
+    <script src="$yyhtml_root/yabbc.js" type="text/javascript"></script>
+    <script type="text/javascript">
     ~
           . join(
             q{;},
@@ -270,7 +270,6 @@ s/({|<)yabb mcglobformend(}|>)/ ($MCGlobalFormStart ? "<\/form>" : q{}) /esm;
               keys %usernames_life_quote
           )
           . qq~;
-// -->
 </script>\n~;
     }
     template();
@@ -959,8 +958,8 @@ qq~[quote author=$cloakedAuthor link=impost date=$mdate\]$message\[/quote\]\n~;
     $preview     = 'previewim';
     $icon        = 'xx';
     $draft       = 'draft';
-    $mctitle     = qq~$inmes_txt{'sendmess'}x~;
-    if ($sendBMess) { $mctitle = qq~$inmes_txt{'sendbroadmess'}y~; }
+    $mctitle     = $inmes_txt{'sendmess'};
+    if ($sendBMess) { $mctitle = $inmes_txt{'sendbroadmess'}; }
     return;
 }
 
@@ -1648,9 +1647,9 @@ qq~<form action="$scripturl?action=$destination" method="post" name="postmodify"
         my $memberinfo = "$memberinfo{$username}$addmembergroup{$username}";
         my $userOnline = userOnLineStatus($username) . q~<br />~;
         my $template_postinfo =
-            qq~$mycenter_txt{'posts'}: ~
+            qq~$mycenter_txt{'posts'}: <a href="$scripturl?action=myusersrecentposts;username=$useraccount{$username}" title="$mycenter_txt{'mylastposts'}">~
           . NumberFormat( ${ $uid . $username }{'postcount'} )
-          . q~<br />~;
+          . q~</a><br />~; 
         my $template_age;
         if (   ${ $uid . $username }{'bday'}
             && $showuserage
@@ -2051,11 +2050,7 @@ sub drawPMView {
     if ( $action eq 'imdraft' ) { $dateColhead = $inmes_txt{'datesave'}; }
 
     $mctitle = $IM_box;
-    $MCContent .= q~
-    <table class="bordercolor cs_thin">
-        <col style="width:65%" />
-        <col style="width:15%" />
-    ~;
+    $MCContent .= $myimblock;
 
     if ( ( $#dimmessages >= $maxmessagedisplay || $INFO{'start'} =~ /all/sm )
         && $action ne 'imstorage' )
@@ -3264,21 +3259,21 @@ qq~<img src="$imagesdir/tabsep211.png" alt="" style="float: left; vertical-align
         || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
     {
         $yymcmenu .=
-qq~<span onclick="changeToTab('pm'); return false;"$pmclass id="menu_pm"><a href="$scripturl?action=mycenter" onclick="changeToTab('pm'); return false;" style="padding: 3px 0 4px 0; ">$tabfill$mc_menus{'messages'}$tabfill</a></span>$tabsep
+qq~<li><span onclick="changeToTab('pm'); return false;"$pmclass id="menu_pm"><a href="$scripturl?action=mycenter" onclick="changeToTab('pm'); return false;">$mc_menus{'messages'}</a></span></li>
         ~;
     }
 
     # profile link
     $yymcmenu .=
-qq~<span onclick="changeToTab('prof'); return false;"$profclass id="menu_prof"><a href="$scripturl?action=myviewprofile;username=$useraccount{$username}" onclick="changeToTab('prof'); return false;" style="padding: 3px 0 4px 0; ">$tabfill$mc_menus{'profile'}$tabfill</a></span>
+qq~<li><span onclick="changeToTab('prof'); return false;"$profclass id="menu_prof"><a href="$scripturl?action=myviewprofile;username=$useraccount{$username}" onclick="changeToTab('prof'); return false;">$mc_menus{'profile'}</a></span></li>
     ~;
 
     # posts link
     $yymcmenu .=
-qq~$tabsep<span onclick="changeToTab('posts'); return false;"$postclass  id="menu_posts"><a href="$scripturl?action=favorites" onclick="changeToTab('posts'); return false;" style="padding: 3px 0 4px 0; ">$tabfill$mc_menus{'posts'}$tabfill</a></span>
+qq~<li><span onclick="changeToTab('posts'); return false;"$postclass  id="menu_posts"><a href="$scripturl?action=favorites" onclick="changeToTab('posts'); return false;">$mc_menus{'posts'}</a></span></li>
     ~;
 
-    $yymcmenu .= qq~$tabsep~;
+    $yymcmenu .= q{};
     return;
 }
 

@@ -188,7 +188,7 @@ q~<div class="bordercolor" style="width: 700px; margin-bottom: 8px; margin-left:
     if ( $sharedLogin_title ne q{} ) {
         $sharedlog .= qq~
 $border_with_title
-<table class="pad_4px cs_thin">
+<table class="pad_4px cs_thin" style="margin-top:10px">
     <tr>
         <td class="titlebg" colspan="2"><b>$sharedLogin_title</b></td></tr>~;
         if ( $sharedLogin_text ne q{} ) {
@@ -202,10 +202,10 @@ $border_with_title
     else {
         $sharedlog .= qq~
 $border
-<table class="bordercolor cs_thin">
+<table class="bordercolor cs_thin" style="margin-top:10px">
     <col style="width:5%" />
     <tr>
-        <td class="tabtitle center" style="height:25px" colspan="2">$loginout_txt{'34'}</td>
+        <td class="tabtitle" style="height:25px; padding-left:1%" colspan="2">$loginout_txt{'34'}</td>
     </tr><tr>
         <td class="windowbg center"><img src="$imagesdir/login.gif" alt="" /></td>
         <td class="windowbg2 center padd_10px">~;

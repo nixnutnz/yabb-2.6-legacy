@@ -24,7 +24,7 @@ LoadLanguage('EventCal');
 
 eval { require "$vardir/eventcalset.txt"; };
 
-sub cal_birthdaylist {
+sub birthdaylist {
     if ( !$Show_BirthdaysList || ( $iamguest && $Show_BirthdaysList != 2 ) ) {
         fatal_error('not_allowed');
     }
@@ -119,7 +119,7 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
     $boxyears .= '  </select>';
 
     my $calgotobox = qq~
-    <form action="$scripturl?action=get_cal;calshow=1;calgotobox=1" method="post">
+    <form action="$scripturl?action=eventcal;calshow=1;calgotobox=1" method="post">
     <span class="small"><b>$var_cal{'calsubmit'}</b></span>~;
 
     if ( $mytimeselected == 6 || $mytimeselected == 3 || $mytimeselected == 2 )
@@ -143,27 +143,21 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
     # Add Star sign and age begin
 
     ManageMemberinfo('load');
+	fopen(EVENTBIRTH, "$vardir/eventcalbday.db");
+	my @birthmembers = <EVENTBIRTH>;
+	fclose(EVENTBIRTH);
 
     my @birthmembers1 = ();
-    foreach my $user_bdname ( keys %memberinf ) {
+	foreach $user_name (@birthmembers) {
+		chomp $user_name;
+		($user_bdyear, $user_bdmon, $user_bdday, $user_bdname, $user_bdhide) = split /\|/xsm,$user_name;
 
-        $memrealname = ( split /\|/xsm, $memberinf{$user_bdname}, 2 )[0];
-        LoadUser($user_bdname);
-        $user_bday   = ${ $uid . $user_bdname }{'bday'};
-        $user_bdhide = ${ $uid . $user_bdname }{'hideage'};
-        ( $user_bdmon, $user_bdday, $user_bdyear ) = split /\//xsm, $user_bday;
-        if ($user_bdmon) {
-            if (
-                ( $user_bdmon < $actualmon )
-                || (   ( $user_bdmon == $actualmon )
-                    && ( $user_bdday <= $actualday ) )
-              )
-            {
+		$memrealname = (split(/\|/, $memberinf{$user_bdname}, 2))[0];
+
+ 		if (($user_bdmon < $actualmon) || (($user_bdmon == $actualmon) && ($user_bdday <= $actualday))) {
                 $age = $year - $user_bdyear;
-            }
-            else { $age = $year - $user_bdyear; $age-- }
-        }
-        else { $age = q{}; next }
+		} else { $age = $year-$user_bdyear; $age-- }
+
         my @stars =
           qw(Capricorn Aquarius Aquarius Pisces Pisces Aries Aries Taurus Taurus Gemini Gemini Cancerian Cancerian Leo Leo Virgo Virgo Libra Libra Scorpio Scorpio Sagittarius Sagittarius Capricorn);
         my @bd_1 = (
@@ -410,10 +404,10 @@ qq~ <tr><td class="windowbg2 center">$user_linkprofile</td>
     #<--------------------------------------------->#
 
     $cal_info_header = qq~<tr>
-        <td$class_sortuser><a href="$scripturl?action=cal_birthdaylist;sort=sortuser" style="text-decoration:none;"><b>$var_cal{'calname'}</b></a></td>
-        <td$class_sortage><a href="$scripturl?action=cal_birthdaylist;sort=sortage" style="text-decoration:none;"><b>$var_cal{'calage'}</b></a></td>
-        <td$class_sortstarsign><a href="$scripturl?action=cal_birthdaylist;sort=sortstarsign" style="text-decoration:none;"><b>$var_cal{'calstarsign'}</b></a></td>
-        <td$class_sortdate><a href="$scripturl?action=cal_birthdaylist;sort=sortdate" style="text-decoration:none;"><b>$var_cal{'calbddate'}</b></a></td>
+        <td$class_sortuser><a href="$scripturl?action=birthdaylist;sort=sortuser" style="text-decoration:none;"><b>$var_cal{'calname'}</b></a></td>
+        <td$class_sortage><a href="$scripturl?action=birthdaylist;sort=sortage" style="text-decoration:none;"><b>$var_cal{'calage'}</b></a></td>
+        <td$class_sortstarsign><a href="$scripturl?action=birthdaylist;sort=sortstarsign" style="text-decoration:none;"><b>$var_cal{'calstarsign'}</b></a></td>
+        <td$class_sortdate><a href="$scripturl?action=birthdaylist;sort=sortdate" style="text-decoration:none;"><b>$var_cal{'calbddate'}</b></a></td>
     </tr>~;
 
     $yymain .= qq~
@@ -447,18 +441,18 @@ $bd_today
     </tr><tr>
         <td class="titlebg center" colspan="4"><b>$var_cal{'calbirthdays'}</b></td>
     </tr><tr>
-        <td$class_sortuser><a href="$scripturl?action=cal_birthdaylist;sort=sortuser" style="text-decoration:none;"><b>$var_cal{'calname'}</b></a></td>
-        <td$class_sortage><a href="$scripturl?action=cal_birthdaylist;sort=sortage" style="text-decoration:none;"><b>$var_cal{'calage'}</b></a></td>
-        <td$class_sortstarsign><a href="$scripturl?action=cal_birthdaylist;sort=sortstarsign" style="text-decoration:none;"><b>$var_cal{'calstarsign'}</b></a></td>
-        <td$class_sortdate><a href="$scripturl?action=cal_birthdaylist;sort=sortdate" style="text-decoration:none;"><b>$var_cal{'calbddate'}</b></a></td>
+        <td$class_sortuser><a href="$scripturl?action=birthdaylist;sort=sortuser" style="text-decoration:none;"><b>$var_cal{'calname'}</b></a></td>
+        <td$class_sortage><a href="$scripturl?action=birthdaylist;sort=sortage" style="text-decoration:none;"><b>$var_cal{'calage'}</b></a></td>
+        <td$class_sortstarsign><a href="$scripturl?action=birthdaylist;sort=sortstarsign" style="text-decoration:none;"><b>$var_cal{'calstarsign'}</b></a></td>
+        <td$class_sortdate><a href="$scripturl?action=birthdaylist;sort=sortdate" style="text-decoration:none;"><b>$var_cal{'calbddate'}</b></a></td>
     </tr><tr>
         <td class="windowbg center" colspan="4">
             <table class="pad_4px cs_thin">
                 <tr>
-                    <td><span class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=other" style="text-decoration:none;">123 (Other) </a></span></td>~;
+                    <td><span class="text"><a href="$scripturl?action=birthdaylist;sort=$sortiert;letter=other" style="text-decoration:none;">123 (Other) </a></span></td>~;
     for my $i ( a .. z ) {
         $yymain .=
-qq~                 <td><span class="text"><a href="$scripturl?action=cal_birthdaylist;sort=$sortiert;letter=~
+qq~                 <td><span class="text"><a href="$scripturl?action=birthdaylist;sort=$sortiert;letter=~
           . $i
           . q~" style="text-decoration:none;">~
           . uc($i)

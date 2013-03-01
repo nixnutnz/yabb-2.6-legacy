@@ -484,13 +484,14 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
 qq~$messageindex_txt{'75'}<br />$messageindex_txt{'76'} $curfav $messageindex_txt{'77'} $maxfavs $messageindex_txt{'78'}~;
     $curfav   = NumberFormat($curfav);
     $treplies = NumberFormat($treplies);
+    $bdpicExt ||= 'gif';
 
     ToChars($bdescrip);
     $boarddescription =~ s/({|<)yabb boarddescription(}|>)/$bdescrip/gsm;
     $messageindex_template =~
       s/({|<)yabb description(}|>)/$boarddescription/gsm;
     $bdpic =
-qq~ <img src="$imagesdir/favboards.gif" alt="$img_txt{'70'}" title="$img_txt{'70'}" /> ~;
+qq~ <img src="$imagesdir/favboards.$bdpicExt" alt="$img_txt{'70'}" title="$img_txt{'70'}" /> ~;
     $messageindex_template =~ s/({|<)yabb bdpicture(}|>)/$bdpic/gsm;
     $messageindex_template =~ s/({|<)yabb threadcount(}|>)/$curfav/gsm;
     $messageindex_template =~ s/({|<)yabb messagecount(}|>)/$treplies/gsm;

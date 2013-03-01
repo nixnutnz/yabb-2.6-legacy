@@ -477,6 +477,7 @@ qq~<span style="font-weight: bold;">$guestName ($guestEmail)</span><br />~;
 
 sub Print {
     $num = $INFO{'num'};
+    $post = $INFO{'post'};
 
     # Determine category
     $curcat = ${ $uid . $currentboard }{'cat'};
@@ -515,13 +516,14 @@ sub Print {
     $startedon = timeformat( $date, 1 );
     ToChars($messagetitle);
     ( $messagetitle, undef ) = Split_Splice_Move( $messagetitle, 0 );
+    my $pageTitle = $post ? $maintxt{'668a'} : $maintxt{'668'};
 
     ### Lets output all that info. ###
     $output =
 qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>$mbname - $maintxt{'668'}</title>
+<title>$mbname - $pageTitle</title>
 <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
 <meta name="robots" content="noindex,noarchive" />
 <link rel="canonical" href="$scripturl?num=$num" /> 
@@ -591,14 +593,25 @@ function do_images() {
     LoadLanguage('FA');
 
     # Split the threads up so we can print them.
+    $postnum = 0;
     foreach my $thread ( @{ $thread_arrayref{$num} } ) {
+        $postnum++;
         (
             $threadtitle, $threadposter, undef, $threaddate,
             undef,        undef,         undef, undef,
             $threadpost,  undef,         undef, undef,
             $attachments
         ) = split /\|/xsm, $thread;
-
+        if ( $post && ( $post ne $postnum ) ) {
+            next;
+        (
+            $threadtitle, $threadposter, undef, $threaddate,
+            undef,        undef,         undef, undef,
+            $threadpost,  undef,         undef, undef,
+            $attachments
+        ) = split /\|/xsm, @{$thread_arrayref{$num}}[$post];
+            last;
+       } 
         ( $threadtitle, undef ) = Split_Splice_Move( $threadtitle, 0 );
         ( $threadpost,  undef ) = Split_Splice_Move( $threadpost,  $num );
         do_print();

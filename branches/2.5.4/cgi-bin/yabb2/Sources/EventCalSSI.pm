@@ -30,7 +30,7 @@ sub get_cal_ssi {
     if ($Show_EventCal) {
         if ( !$iamguest || $Show_EventCal == 2 ) {
             require Sources::EventCal;
-            $curcaldisplay = get_cal( $calssimode, $calssidays );
+            $curcaldisplay = eventcal( $calssimode, $calssidays );
         }
     }
     ## EventCal SSI Check END ##

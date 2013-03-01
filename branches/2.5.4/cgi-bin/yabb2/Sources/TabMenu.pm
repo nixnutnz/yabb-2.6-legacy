@@ -23,6 +23,35 @@ qq~<img src="$imagesdir/tabsep211.png" alt="" style="float: left; margin:-1px 0"
 $tabfill = qq~<img src="$imagesdir/tabfill.gif" alt="" />~;
 
 sub mainMenu {
+    my @acting = (
+        [
+            'search2',            'favorites',
+            'shownotify',         'im',
+            'imdraft',            'imoutbox',
+            'imstorage',          'imsend',
+            'imsend2',            'imshow',
+            'profileCheck',       'myviewprofile',
+            'myprofile',          'myprofileContacts',
+            'myprofileOptions',   'myprofileBuddy',
+            'myprofileIM',        'myprofileAdmin',
+            'myusersrecentposts', 'messagepagetext',
+            'messagepagedrop',    'threadpagetext',
+            'threadpagedrop',     'post',
+            'notify',             'boardnotify',
+            'sendtopic',          'modify',
+            'guestpm2'
+        ],
+        [
+            'search',   'mycenter', 'mycenter', 'mycenter',
+            'mycenter', 'mycenter', 'mycenter', 'mycenter',
+            'mycenter', 'mycenter', 'mycenter', 'mycenter',
+            'mycenter', 'mycenter', 'mycenter', 'mycenter',
+            'mycenter', 'mycenter', 'mycenter', 'home',
+            'home',     'home',     'home',     'home',
+            'home',     'home',     'home',     'home',
+            'guestpm'
+        ],
+    );
     if ( $action eq 'addtab' && $iamadmin ) {
         require Sources::AdvancedTabs;
         AddNewTab();
@@ -31,73 +60,41 @@ sub mainMenu {
         require Sources::AdvancedTabs;
         EditTab();
     }
+    elsif ( $INFO{'board'} || $INFO{'num'} ) { $tmpaction = q{}; }
     elsif ( $action ne q{} ) {
-        if ( $action eq 'search2' ) {
-            $tmpaction = 'search';
-        }
-        elsif ($action eq 'favorites'
-            || $action eq 'shownotify'
-            || $action eq 'im'
-            || $action eq 'imdraft'
-            || $action eq 'imoutbox'
-            || $action eq 'imstorage'
-            || $action eq 'imsend'
-            || $action eq 'imsend2'
-            || $action eq 'imshow'
-            || $action eq 'profileCheck'
-            || $action eq 'myviewprofile'
-            || $action eq 'myprofile'
-            || $action eq 'myprofileContacts'
-            || $action eq 'myprofileOptions'
-            || $action eq 'myprofileBuddy'
-            || $action eq 'myprofileIM'
-            || $action eq 'myprofileAdmin'
-            || $action eq 'myusersrecentposts' )
-        {
-            $tmpaction = 'mycenter';
-        }
-        elsif ($action eq 'messagepagetext'
-            || $action eq 'messagepagedrop'
-            || $action eq 'threadpagetext'
-            || $action eq 'threadpagedrop'
-            || $action eq 'post'
-            || $action eq 'notify'
-            || $action eq 'boardnotify'
-            || $action eq 'sendtopic'
-            || $action eq 'modify' )
-        {
-            $tmpaction = 'home';
-        }
-        elsif ( $action eq 'guestpm2' ) {
-            $tmpaction = 'guestpm';
+        foreach my $i ( 0 .. 28 ) {
+            my $img0 = $acting[0]->[$i];
+            my $img1 = $acting[1]->[$i];
+            if ( $action eq $img0 ) {
+                $tmpaction = $img1;
         }
         else { $tmpaction = $action; }
-
+        }
     }
     else {
         $tmpaction = 'home';
     }
 
     $tab{'home'} =
-qq~<span |><a href="$scripturl" title = "$img_txt{'103'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'103'}$tabfill</a></span>~;
+qq~<li><span |><a href="$scripturl" title = "$img_txt{'103'}">$img_txt{'103'}</a></span></li>~;
     $tab{'help'} =
-qq~<span |><a href="$scripturl?action=help" title = "$img_txt{'119'}" style="padding: 3px 0 4px 0; cursor:help;">$tabfill$img_txt{'119'}$tabfill</a></span>~;
+qq~<li><span |><a href="$scripturl?action=help" title = "$img_txt{'119'}" class="help">$img_txt{'119'}</a></span></li>~;
     if ( $maxsearchdisplay > -1 ) {
         $tab{'search'} =
-qq~<span |><a href="$scripturl?action=search" title = "$img_txt{'182'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'182'}$tabfill</a></span>~;
+qq~<li><span |><a href="$scripturl?action=search" title = "$img_txt{'182'}">$img_txt{'182'}</a></span></li>~;
     }
 
     # EventCal START
     if ( -e "$vardir/eventcalset.txt" ) { require "$vardir/eventcalset.txt"; }
     if ( $Show_EventButton == 2 || ( !$iamguest && $Show_EventButton == 1 ) ) {
         $tab{'eventcal'} =
-qq~<span |><a href="$scripturl?action=get_cal;calshow=1" title = "$img_txt{'eventcal'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'eventcal'}$tabfill</a></span>~;
+qq~<li><span |><a href="$scripturl?action=eventcal;calshow=1" title = "$img_txt{'eventcal'}">$img_txt{'eventcal'}</a></span></li>~;
     }
     if ( $Show_BirthdayButton == 2
         || ( !$iamguest && $Show_BirthdayButton == 1 ) )
     {
         $tab{'birthdaylist'} =
-qq~<span |><a href="$scripturl?action=cal_birthdaylist" title = "$img_txt{'birthdaylist'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'birthdaylist'}$tabfill</a></span>~;
+qq~<li><span |><a href="$scripturl?action=birthdaylist" title = "$img_txt{'birthdaylist'}">$img_txt{'birthdaylist'}</a></span></li>~;
     }
 
     # EventCal END
@@ -108,11 +105,11 @@ qq~<span |><a href="$scripturl?action=cal_birthdaylist" title = "$img_txt{'birth
         || ( $ML_Allowed == 3 && ( $iamadmin || $iamgmod ) ) )
     {
         $tab{'ml'} =
-qq~<span |><a href="$scripturl?action=ml" title = "$img_txt{'331'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'331'}$tabfill</a></span>~;
+qq~<li><span |><a href="$scripturl?action=ml" title = "$img_txt{'331'}">$img_txt{'331'}</a></span></li>~;
     }
     if ($iamadmin) {
         $tab{'admin'} =
-qq~<span |><a href="$boardurl/AdminIndex.$yyaext" title = "$img_txt{'2'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'2'}$tabfill</a></span>~;
+qq~<li><span |><a href="$boardurl/AdminIndex.$yyaext" title = "$img_txt{'2'}">$img_txt{'2'}</a></span></li>~;
     }
     if ($iamgmod) {
         if ( -e "$vardir/gmodsettings.txt" ) {
@@ -120,7 +117,7 @@ qq~<span |><a href="$boardurl/AdminIndex.$yyaext" title = "$img_txt{'2'}" style=
         }
         if ($allow_gmod_admin) {
             $tab{'admin'} =
-qq~<span |><a href="$boardurl/AdminIndex.$yyaext" title = "$img_txt{'2'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'2'}$tabfill</a></span>~;
+qq~<li><span |><a href="$boardurl/AdminIndex.$yyaext" title = "$img_txt{'2'}">$img_txt{'2'}</a></span></li>~;
         }
     }
     if ( $sessionvalid == 0 && !$iamguest ) {
@@ -135,7 +132,7 @@ qq~<span |><a href="$boardurl/AdminIndex.$yyaext" title = "$img_txt{'2'}" style=
             $sesredir = qq~;sesredir=$sesredir~;
         }
         $tab{'revalidatesession'} =
-qq~<span |><a href="$scripturl?action=revalidatesession$sesredir" title = "$img_txt{'34a'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'34a'}$tabfill</a></span>~;
+qq~<li><span |><a href="$scripturl?action=revalidatesession$sesredir" title = "$img_txt{'34a'}">$img_txt{'34a'}</a></span></li>~;
     }
     if ($iamguest) {
         my $sesredir;
@@ -145,27 +142,27 @@ qq~<span |><a href="$scripturl?action=revalidatesession$sesredir" title = "$img_
             $sesredir =~ s/;/x3B/gxsm;
             $sesredir = qq~;sesredir=$sesredir~;
         }
-        $tab{'login'} = q~<span |><a href="~
+        $tab{'login'} = q~<li><span |><a href="~
           . (
             $loginform
             ? "javascript:if(jumptologin>1)alert('$maintxt{'35'}');jumptologin++;window.scrollTo(0,10000);document.loginform.username.focus();"
             : "$scripturl?action=login$sesredir"
           )
-          . qq~" title = "$img_txt{'34'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'34'}$tabfill</a></span>~;
+          . qq~" title = "$img_txt{'34'}">$img_txt{'34'}</a></span></li>~;
         if ($regtype) {
             $tab{'register'} =
-qq~<span |><a href="$scripturl?action=register" title = "$img_txt{'97'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'97'}$tabfill</a></span>~;
+qq~<li><span |><a href="$scripturl?action=register" title = "$img_txt{'97'}">$img_txt{'97'}</a></span></li>~;
         }
         if ( $PMenableGuestButton && $PM_level > 0 && $PMenableBm_level > 0 ) {
             $tab{'guestpm'} =
-qq~<span |><a href="$scripturl?action=guestpm" title = "$img_txt{'pmadmin'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'pmadmin'}$tabfill</a></span>~;
+qq~<li><span |><a href="$scripturl?action=guestpm" title = "$img_txt{'pmadmin'}">$img_txt{'pmadmin'}</a></span></li>~;
         }
     }
     else {
         $tab{'mycenter'} =
-qq~<span |><a href="$scripturl?action=mycenter" title = "$img_txt{'mycenter'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'mycenter'}$tabfill</a></span>~;
+qq~<li><span |><a href="$scripturl?action=mycenter" title = "$img_txt{'mycenter'}">$img_txt{'mycenter'}</a></span></li>~;
         $tab{'logout'} =
-qq~<span |><a href="$scripturl?action=logout" title = "$img_txt{'108'}" style="padding: 3px 0 4px 0;">$tabfill$img_txt{'108'}$tabfill</a></span>~;
+qq~<li><span |><a href="$scripturl?action=logout" title = "$img_txt{'108'}">$img_txt{'108'}</a></span></li>~;
     }
 
     # Advanced Tabs starts here
@@ -194,13 +191,13 @@ qq~<span |><a href="$scripturl?action=logout" title = "$img_txt{'108'}" style="p
                   $tab_newwin ? q~ onclick="target='_blank';"~ : q{};
                 if ( !$tab_lang ) { GetTabtxt(); }
 
-                $yytabmenu .= q~<span ~
+                $yytabmenu .= q~<li><span ~
                   . (
                     $AdvancedTabs[$i] eq $tmpaction
                     ? q~class="selected"~
                     : q{}
                   )
-                  . qq~><a href="$tab_url"$newwin title = "$tabtxt{$tab_key}" style="padding: 3px 0 4px 0;">$tabfill $tabtxt{$tab_key} $tabfill</a></span>$tabsep~;
+                  . qq~><a href="$tab_url"$newwin title = "$tabtxt{$tab_key}">$tabtxt{$tab_key}</a></span></li>~;
             }
         }
         elsif ( $tab{ $AdvancedTabs[$i] } ) {
@@ -211,8 +208,7 @@ qq~<span |><a href="$scripturl?action=logout" title = "$img_txt{'108'}" style="p
                 ? q~class="selected"~
                 : q{}
               )
-              . $last
-              . $tabsep;
+              . $last;
         }
     }
 
@@ -221,12 +217,9 @@ qq~<span |><a href="$scripturl?action=logout" title = "$img_txt{'108'}" style="p
         if    ( $action eq 'addtab' )  { $seladdtab  = q~class="selected"~; }
         elsif ( $action eq 'edittab' ) { $seledittab = q~class="selected"~; }
         $yytabadd =
-q~<div style="float: right; width: 100px; height: 21px; text-align: right;">~;
+qq~<li id="addtab"><span $seladdtab><a href="$scripturl?action=addtab" title = "$tabmenu_txt{'newtab'}"><img src="$imagesdir/tabadd.gif" alt="$tabmenu_txt{'newtab'}" title="$tabmenu_txt{'newtab'}" /></a></span></li>~;
         $yytabadd .=
-qq~$tabsep<span style="padding-top: 1px;"$seladdtab><a href="$scripturl?action=addtab" title = "$tabmenu_txt{'newtab'}" style="float: left;">$tabfill<img src="$imagesdir/tabadd.gif" height="23" width="20" alt="$tabmenu_txt{'newtab'}" title="$tabmenu_txt{'newtab'}" style="display: inline;" />$tabfill</a></span>$tabsep~;
-        $yytabadd .=
-qq~<span style="padding-top: 1px;"$seledittab><a href="$scripturl?action=edittab" title = "$tabmenu_txt{'edittab'}" style="float: left;">$tabfill<img src="$imagesdir/tabedit.gif" height="23" width="20" alt="$tabmenu_txt{'edittab'}" title="$tabmenu_txt{'edittab'}" />$tabfill</a></span>$tabsep~;
-        $yytabadd .= q~</div>~;
+qq~<li id="edittab"><span $seledittab><a href="$scripturl?action=edittab" title = "$tabmenu_txt{'edittab'}"><img src="$imagesdir/tabedit.gif" alt="$tabmenu_txt{'edittab'}" title="$tabmenu_txt{'edittab'}" /></a></span></li>~;
     }
     else {
         $yytabadd = q~&nbsp;~;

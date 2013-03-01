@@ -338,6 +338,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
 
     <form action="$scripturl?action=boardnotify2" method="post" name="boardnotify">
     <table class="bordercolor pad_4px cs_thin">
+        <col style="width:65%" />
         <tr>
             <td class="titlebg" colspan="2">
                 <img src="$imagesdir/notify.gif" alt="$notify_txt{'136'}" title="$notify_txt{'136'}" /> <span class="text1"><b>$notify_txt{'136'}</b></span>
@@ -352,14 +353,14 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         $num++;
 
         my ( $selected1, $selected2 );
-        if ( ${ ${ $board_notify{$_} } }[1] == 1 ) {    # new topics
+        if ( ${ $$board_notify{$_} }[1] == 1 ) {    # new topics
             $selected1 = q~ selected="selected"~;
         }
         else {                                          # all new posts
             $selected2 = q~ selected="selected"~;
         }
 
-        if ( ${ ${ $board_notify{$_} } }[2] ) {
+        if ( ${ $$board_notify{$_} }[2] ) {
             $new =
 qq~<img src="$imagesdir/on.gif" alt="$notify_txt{'333'}" title="$notify_txt{'333'}" />~;
         }
@@ -370,7 +371,7 @@ qq~<img src="$imagesdir/off.gif" alt="$notify_txt{'334'}" title="$notify_txt{'33
 
         ## output notify detail - option 3 = remove notify
         $boardblock .= qq~<tr>
-        <td class="windowbg" style="width:65%">
+        <td class="windowbg">
             $new <a href="$scripturl?board=$_">${$$board_notify{$_}}[0]</a>
         </td>
         <td class="windowbg center">
@@ -408,10 +409,11 @@ qq~<img src="$imagesdir/off.gif" alt="$notify_txt{'334'}" title="$notify_txt{'33
     $showNotifications .= qq~
     </table>
     </form>
-    <br /><br />
+    <br />
 
     <form action="$scripturl?action=notify4" method="post" name="threadnotify">
-    <table class="bordercolor pad_4pc cs_thin">
+    <table class="bordercolor pad_4px cs_thin">
+        <col style="85%" />
         <tr>
             <td class="titlebg" colspan="2">
                 <img src="$imagesdir/notify.gif" alt="$notify_txt{'118'}" title="$notify_txt{'118'}" /> <span class="text1"><b>$notify_txt{'118'}</b></span>
@@ -425,7 +427,7 @@ qq~<img src="$imagesdir/off.gif" alt="$notify_txt{'334'}" title="$notify_txt{'33
 
         ## build block for display
         $threadblock .= qq~<tr>
-        <td class="windowbg2" style="width:85%">
+        <td class="windowbg2">
             <b><a href="$scripturl?num=${$$thread_notify{$_}}[0]/new">${$$thread_notify{$_}}[2] ${$$thread_notify{$_}}[1]</a></b> $notify_txt{'120'} ${$$thread_notify{$_}}[3]
             <br /><span class="small">${$$thread_notify{$_}}[4] &raquo; ${$$thread_notify{$_}}[5] - $notify_txt{'lastpost'} ${$$thread_notify{$_}}[6]</span>
         </td>
@@ -596,8 +598,8 @@ sub NotificationAlert {
                 ## run through the categories until we hit the match for category name
                 my ( $catname, $thiscatid, $catid );
                 my $boardname =
-                  ( split /\|/xsm, $board{$boardid} )[0]
-                  ;                       # grab boardname from list
+                  ( split /\|/xsm, $board{$boardid} )[0];
+                                         # grab boardname from list
               CHECKBOARDNAME: foreach my $catid (@categoryorder) {
                     foreach ( split /\,/xsm, $cat{$catid} ) {
                         ## find the match, grab data and jump out

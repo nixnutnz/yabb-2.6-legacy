@@ -405,7 +405,7 @@ qq~<option value="$cloakedUserName"$colorstyle>${$uid.$user}{'realname'}</option
                             $user eq 'bmgmods' ? 'gmods'
                             : (
                                 $user eq 'bmymods' ? 'ymods'
-                                : ( $user eq 'bmmods' ? 'mods' : $user )
+                            : ( $user eq 'bmmods' ? 'mods' : $user )
                         )
                         )
                       );
@@ -421,7 +421,7 @@ qq~<option value="$cloakedUserName"$colorstyle>${$uid.$user}{'realname'}</option
         }
         $yymain .= qq~
         </select>\n
-        <input type="button" class="button" onclick="copy_option('$to_id')" value="$usersel_txt{'addselected'}" style="width: 228px;" /><input type="button" class="button" onclick="window.close()" value="$usersel_txt{'pageclose'}" style="width: 228px;" />
+        <input type="button" class="button" onclick="copy_option('$to_id')" value="$usersel_txt{'addselected'}" style="width: 226px;" /><input type="button" class="button" onclick="window.close()" value="$usersel_txt{'pageclose'}" style="width: 226px;" />
         ~;
     }
     else {
@@ -496,18 +496,18 @@ qq~<span class="small pgindex">$usersel_txt{'pages'}: $pagenumb</span>~;
                 $pagetxtindexst .= qq~ $usersel_txt{'pages'}: ~;
                 if ( $startpage > 0 ) {
                     $pagetxtindex =
-qq~<a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter" style="font-weight: normal;">1</a>&nbsp;...&nbsp;~;
+qq~<a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter"><span class="small">1</span></a>&nbsp;...&nbsp;~;
                 }
                 if ( $startpage == $MembersPerPage ) {
                     $pagetxtindex =
-qq~<a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter" style="font-weight: normal;">1</a>&nbsp;~;
+qq~<a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter"><span class="small">1</span></a>&nbsp;~;
                 }
                 for my $counter ( $startpage .. ( $endpage - 1 ) ) {
                     if ( $counter % $MembersPerPage == 0 ) {
                         $pagetxtindex .=
                           $start == $counter
-                          ? qq~<b>$tmpa</b>&nbsp;~
-                          : qq~<a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$counter" style="font-weight: normal;">$tmpa</a>&nbsp;~;
+                          ? qq~<b>[$tmpa]</b>&nbsp;~
+                          : qq~<a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$counter"><span class="small">$tmpa</span></a>&nbsp;~;
                         $tmpa++;
                     }
                 }
@@ -516,7 +516,7 @@ qq~<a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$lett
                 }
                 if ( $endpage != $memcount ) {
                     $pageindexadd .=
-qq~<a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$lastptn" style="font-weight: normal;">$lastpn</a>~;
+qq~<a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$lastptn"><span class="small">$lastpn</span></a>~;
                 }
                 $pagetxtindex .= qq~$pageindexadd~;
                 $pageindex = qq~$pagetxtindexst$pagetxtindex</span>~;
@@ -562,10 +562,10 @@ qq~<option value="$indexstart|$indexend|$MembersPerPage|$indexpage"$selected>$in
                     }
                 }
                 if ( $pagenumb > $dropdisplaynum ) {
-                    $pagedropindex .= qq~</select>\n</div>~;
+                    $pagedropindex .= qq~</select>\n~;
                 }
                 $pagedropindex .=
-q~<div id="ViewIndex" class="droppageindex" style="height: 14px; visibility: hidden">&nbsp;</div>~;
+q~<div id="ViewIndex" class="droppageindex pages" style="visibility: hidden">&nbsp;</div>~;
                 $tmpMembersPerPage = $MembersPerPage;
                 if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' ) {
                     $MembersPerPage = $MembersPerPage * $dropdisplaynum;
@@ -605,17 +605,17 @@ qq~<img src="$imagesdir/index_right.gif" height="14" width="13" alt="$pidtxt{'03
         var pagstart = parseInt(splitparam[3]);
         var allpagstart = parseInt(splitparam[3]);
         if(visel == 'xx' && decparam == '$pagejsindex') visel = '$tstart';
-        var pagedropindex = '<table><tr>';
+        var pagedropindex = '<table class="pad_0"><tr>';
         for(i=vistart; i<=viend; i++) {
-            if(visel == pagstart) pagedropindex += '<td class="titlebg" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: bold;">' + i + '<\/td>';
-            else pagedropindex += '<td class="droppages" style="height: 14px;"><a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=' + pagstart + '">' + i + '<\/a><\/td>';
+            if(visel == pagstart) pagedropindex += '<td class="titlebg pages"><b>' + i + '<\/b><\/td>';
+            else pagedropindex += '<td class="droppages"><a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=' + pagstart + '">' + i + '<\/a><\/td>';
             pagstart += maxpag;
         }
         ~;
                 if ($showpageall) {
                     $pageindexjs .= qq~
             if (vistart != viend) {
-                if(visel == 'all') pagedropindex += '<td class="titlebg" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: normal;"><b>$pidtxt{"01"}<\/b><\/td>';
+                if(visel == 'all') pagedropindex += '<td class="titlebg pages"><b>$pidtxt{"01"}<\/b><\/td>';
                 else pagedropindex += '<td class="droppages" style="height: 14px;"><a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=all-' + allpagstart + '">$pidtxt{"01"}<\/a><\/td>';
             }
             ~;
@@ -677,8 +677,8 @@ sub buildPages {
     ~;
     if ( $recent_exist && $to_id =~ /toshow/sm ) {
         $TableHeader .= qq~
-            <div $selRecent onclick="location.href='$scripturl?action=imlist;sort=recentpm;toid=$to_id';" style="float: left; width: 226px; text-align: center; padding-top: 2px; padding-bottom: 2px; border: 1px; border-style: outset; cursor: pointer;"><b>$usersel_txt{'recentlist'}</b></div>
-            <div $selUser onclick="location.href='$scripturl?action=imlist;sort=username;toid=$to_id';" style="float: left; width: 226px; text-align: center; padding-top: 2px; padding-bottom: 2px; border: 1px; border-style: outset; cursor: pointer;"><b>$usersel_txt{'alllist'}</b></div>
+            <div $selRecent onclick="location.href='$scripturl?action=imlist;sort=recentpm;toid=$to_id';" style="float: left; width: 224px; text-align: center; padding-top: 2px; padding-bottom: 2px; border: 1px; border-style: outset; cursor: pointer;"><b>$usersel_txt{'recentlist'}</b></div>
+            <div $selUser onclick="location.href='$scripturl?action=imlist;sort=username;toid=$to_id';" style="float: left; width: 224px; text-align: center; padding-top: 2px; padding-bottom: 2px; border: 1px; border-style: outset; cursor: pointer;"><b>$usersel_txt{'alllist'}</b></div>
         ~;
     }
     elsif ( $to_id ne 'groups' ) {
@@ -854,7 +854,7 @@ $yymain
 </html>~;
 
     $addsession =
-qq~<input type="hidden" name="formsession" value="$formsession" /></form>~;
+qq~<input type="hidden" name="formsession" value="$formsession" /><input class="green" type="submit" /></form>~;
     $output =~ s/<\/form>/$addsession/gxsm;
 
     print_HTML_output_and_finish();

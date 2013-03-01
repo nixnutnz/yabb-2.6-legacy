@@ -71,7 +71,7 @@ sub Display {
         );
     }
     if ($posttools) {
-        LoadTools( 1, 'delete', 'admin_split', 'mquote', 'quote', 'modify',
+        LoadTools( 1, 'delete', 'admin_split', 'mquote', 'quote', 'modify', 'printp',
             'alertmod' );
     }
 
@@ -310,7 +310,7 @@ qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboar
     $lastpn  = int( $mreplies / $maxmessagedisplay ) + 1;
     $lastptn = ( $lastpn - 1 ) * $maxmessagedisplay;
     $pageindex1 =
-qq~<span class="small pgindex"><img src="$imagesdir/index_togl.gif" alt="$display_txt{'19'}" title="$display_txt{'19'}" /> $display_txt{'139'}: $pagenumb</span>~;
+qq~<span class="small pgindex"><img src="$imagesdir/$disp_index_togl" alt="$display_txt{'19'}" title="$display_txt{'19'}" /> $display_txt{'139'}: $pagenumb</span>~;
     $pageindex2 = $pageindex1;
     if ( $pagenumb > 1 || $all ) {
         if ( $userthreadpage == 1 || $iamguest ) {
@@ -319,32 +319,32 @@ qq~<span class="small pgindex"><img src="$imagesdir/index_togl.gif" alt="$displa
                 $pagetxtindexst .=
                     qq~<a href="$scripturl?num=$viewnum;start=~
                   . ( !$ttsreverse ? $start : $mreplies - $start )
-                  . qq~;action=threadpagedrop"><img src="$imagesdir/index_togl.gif" alt="$display_txt{'19'}" /></a> $display_txt{'139'}: ~;
+                  . qq~;action=threadpagedrop"><img src="$imagesdir/$disp_index_togl" alt="$display_txt{'19'}" /></a> $display_txt{'139'}: ~;
             }
             else {
                 $pagetxtindexst .=
-qq~<img src="$imagesdir/index_togl.gif" alt="" /> $display_txt{'139'}: ~;
+qq~<img src="$imagesdir/$disp_index_togl" alt="" /> $display_txt{'139'}: ~;
             }
             if ( $startpage > 0 ) {
                 $pagetxtindex =
                     qq~<a href="$scripturl?num=$viewnum/~
                   . ( !$ttsreverse ? 0 : $mreplies )
-                  . qq~" class="norm">1</a>&nbsp;<a href="javascript:void(0);" onclick="ListPages($mnum);">...</a>&nbsp;~;
+                  . qq~"><span class="small">1</span></a>&nbsp;<a href="javascript:void(0);" onclick="ListPages($mnum);">...</a>&nbsp;~;
             }
             if ( $startpage == $maxmessagedisplay ) {
                 $pagetxtindex =
                     qq~<a href="$scripturl?num=$viewnum/~
                   . ( !$ttsreverse ? 0 : $mreplies )
-                  . q~" class="norm">1</a>&nbsp;~;
+                  . q~"><span class="small">1</span></a>&nbsp;~;
             }
             foreach my $counter ( $startpage .. ( $endpage - 1 ) ) {
                 if ( $counter % $maxmessagedisplay == 0 ) {
                     $pagetxtindex .=
                       $start == $counter
-                      ? qq~<b>$tmpa</b>&nbsp;~
+                      ? qq~<b>[$tmpa]</b>&nbsp;~
                       : qq~<a href="$scripturl?num=$viewnum/~
                       . ( !$ttsreverse ? $counter : ( $mreplies - $counter ) )
-                      . qq~" class="norm">$tmpa</a>&nbsp;~;
+                      . qq~"><span class="small">$tmpa</span></a>&nbsp;~;
                     $tmpa++;
                 }
             }
@@ -356,7 +356,7 @@ qq~<a href="javascript:void(0);" onclick="ListPages($mnum);">...</a>&nbsp;~;
                 $pageindexadd .=
                     qq~<a href="$scripturl?num=$viewnum/~
                   . ( !$ttsreverse ? $lastptn : $mreplies - $lastptn )
-                  . qq~" class="norm">$lastpn</a>~;
+                  . qq~"><span class="small">$lastpn</span></a>~;
             }
             $pagetxtindex .= qq~$pageindexadd~;
             $pageindex1 = qq~$pagetxtindexst$pagetxtindex</span>~;
@@ -369,7 +369,7 @@ q~<span style="float: left; width: 350px; margin: 0px; margin-top: 2px; border: 
             $pagedropindex1 .=
 qq~<span style="float: left; height: 21px; margin: 0; margin-right: 4px;"><a href="$scripturl?num=$viewnum;start=~
               . ( !$ttsreverse ? $start : $mreplies - $start )
-              . qq~;action=threadpagetext"><img src="$imagesdir/index_togl.gif" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a></span>~;
+              . qq~;action=threadpagetext"><img src="$imagesdir/$disp_index_togl" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a></span>~;
             $pagedropindex2 = $pagedropindex1;
             $tstart         = $start;
 
@@ -434,19 +434,19 @@ q~<span id="ViewIndex2" class="droppageindex" style="height: 14px; visibility: h
               ? $start + $maxmessagedisplay
               : $mreplies - $start - $maxmessagedisplay;
             $pagedropindexpvbl =
-qq~<img src="$imagesdir/index_left0.gif" height="14" width="13" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$disp_index_left0" height="14" width="13" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
             $pagedropindexnxbl =
-qq~<img src="$imagesdir/index_right0.gif" height="14" width="13" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$disp_index_right0" height="14" width="13" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
 
             if (   ( !$ttsreverse && $start < $maxmessagedisplay )
                 or ( $ttsreverse && $prevpage > $mreplies ) )
             {
                 $pagedropindexpv .=
-qq~<img src="$imagesdir/index_left0.gif" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$disp_index_left0" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~;
             }
             else {
                 $pagedropindexpv .=
-qq~<img src="$imagesdir/index_left.gif" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?num=$viewnum/$prevpage\\'" ondblclick="location.href=\\'$scripturl?num=$viewnum/~
+qq~<img src="$imagesdir/$disp_index_left" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?num=$viewnum/$prevpage\\'" ondblclick="location.href=\\'$scripturl?num=$viewnum/~
                   . ( !$ttsreverse ? 0 : $mreplies )
                   . q~\\'" />~;
             }
@@ -454,11 +454,11 @@ qq~<img src="$imagesdir/index_left.gif" height="14" width="13" alt="$pidtxt{'02'
                 or ( $ttsreverse && $nextpage < $mreplies - $lastptn ) )
             {
                 $pagedropindexnx .=
-qq~<img src="$imagesdir/index_right0.gif" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$disp_index_right0" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~;
             }
             else {
                 $pagedropindexnx .=
-qq~<img src="$imagesdir/index_right.gif" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?num=$viewnum/$nextpage\\'" ondblclick="location.href=\\'$scripturl?num=$viewnum/~
+qq~<img src="$imagesdir/$disp_index_right" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?num=$viewnum/$nextpage\\'" ondblclick="location.href=\\'$scripturl?num=$viewnum/~
                   . ( !$ttsreverse ? $lastptn : $mreplies - $lastptn )
                   . q~\\'" />~;
             }
@@ -474,9 +474,9 @@ qq~<img src="$imagesdir/index_right.gif" height="14" width="13" alt="$pidtxt{'03
         var pagstart = parseInt(splitparam[3]);
         //var allpagstart = parseInt(splitparam[3]);
         if(visel == 'xx' && decparam == '$pagejsindex') visel = '$tstart';
-        var pagedropindex = '<table><tr>';
+        var pagedropindex = '<table class="pad_0"><tr>';
         for(i=vistart; i<=viend; i++) {
-            if(visel == pagstart) pagedropindex += '<td class="titlebg" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: bold;">' + i + '</td>';
+            if(visel == pagstart) pagedropindex += '<td class="titlebg pages"><b>' + i + '</b></td>';
             else pagedropindex += '<td class="droppages"><a href="$scripturl?num=$viewnum/' + pagstart + '">' + i + '</a></td>';
             pagstart ~ . ( !$ttsreverse ? q{+} : q{-} ) . q~= maxpag;
         }
@@ -484,7 +484,7 @@ qq~<img src="$imagesdir/index_right.gif" height="14" width="13" alt="$pidtxt{'03
             if ($showpageall) {
                 $pageindexjs .= qq~
             if (vistart != viend) {
-                if(visel == 'all') pagedropindex += '<td class="titlebg" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: normal;"><b>$pidtxt{'01'}</b></td>';
+                if(visel == 'all') pagedropindex += '<td class="titlebg pages"><b>$pidtxt{'01'}</b></td>';
                 else pagedropindex += '<td class="droppages"><a href="$scripturl?num=$viewnum/all">$pidtxt{'01'}</a></td>';
             }
             ~;
@@ -524,10 +524,6 @@ qq~<img src="$imagesdir/index_right.gif" height="14" width="13" alt="$pidtxt{'03
         var remnotlink = '$remnotlink';
         ~;
 
-        #        $yyjavascript .= qq~
-        #        var addnotlink = '$img{'add_notify'}';
-        #        var remnotlink = '$img{'del_notify'}';
-        #        ~;
         if (
             ${ $uid . $username }{'thread_notifications'} =~ /\b$viewnum\b/xsm )
         {
@@ -792,7 +788,7 @@ qq~$menusep<a href="$scripturl?action=print;num=$viewnum" onclick="target='_blan
                       ( $ext
                           && -e "$htmldir/Templates/Forum/$useimages/$ext.gif" )
                       ? "$ext.gif"
-                      : 'paperclip.gif';
+                      : "$disp_paperclip";
                 }
                 my $filesize = -s "$uploaddir/$_";
                 $urlname = $_;
@@ -869,15 +865,15 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$mlmb}">$format_
             ( $mip_one, $mip_two, $mip_three ) = split / /sm, $mip;
             if ($mip_one) {
                 $lookupIP =
-qq~<a href="$scripturl?action=iplookup;ip=$mip_one">$mip_one</a>~;
+qq~<a href="$scripturl?action=iplookup;ip=$mip_one"><span class="small">$mip_one</span></a>~;
             }
             if ($mip_two) {
                 $lookupIP .=
-qq~<a href="$scripturl?action=iplookup;ip=$mip_two">$mip_two</a>~;
+qq~<a href="$scripturl?action=iplookup;ip=$mip_two"><span class="small">$mip_two</span></a>~;
             }
             if ($mip_three) {
                 $lookupIP .=
-qq~<a href="$scripturl?action=iplookup;ip=$mip_three">$mip_three</a>~;
+qq~<a href="$scripturl?action=iplookup;ip=$mip_three"><span class="small">$mip_three</span></a>~;
             }
         }
         else {
@@ -906,7 +902,7 @@ qq~                 $menusep<a href="$scripturl?action=modalert;num=$viewnum;tit
         ## is member a buddy of mine?
         if ( $buddyListEnabled && !$iamguest && $musername ne $username ) {
             $isbuddy =
-qq~<br /><img src="$imagesdir/buddylist.gif" alt="$display_txt{'isbuddy'}" title="$display_txt{'isbuddy'}" /> <br />$display_txt{'isbuddy'}~;
+qq~<br /><img src="$imagesdir/$disp_buddylist" alt="$display_txt{'isbuddy'}" title="$display_txt{'isbuddy'}" /> <br />$display_txt{'isbuddy'}~;
             $addbuddylink =
 qq~$menusep<a href="$scripturl?num=$viewnum;action=addbuddy;name=$useraccount{$musername};vpost=$counter">$img{'addbuddy'}</a>~;
         }
@@ -944,7 +940,13 @@ qq~$menusep<a href="$scripturl?action=imsend;to=$useraccount{$musername}">$img{'
             }
 
             $tmppostcount = NumberFormat( ${ $uid . $musername }{'postcount'} );
-            $template_postinfo = qq~$display_txt{'21'}: $tmppostcount<br />~;
+            if ( $iamguest ) { $template_postinfo = qq~$display_txt{'21'}: $tmppostcount<br />~; }
+            else {
+                my $lastPostsTxt;
+                if ( $username eq $musername ) { $lastPostsTxt = $display_txt{'mylastposts'}; }
+                else { $lastPostsTxt = $display_txt{'lastposts'} . ${ $uid . $musername }{'realname'}; }
+                $template_postinfo = qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$useraccount{$musername}" title="$lastPostsTxt"><span class="small">$tmppostcount</span></a><br />~;
+            } 
             if (   ${ $uid . $musername }{'bday'}
                 && $showuserage
                 && ( !$showage || !${ $uid . $musername }{'hideage'} ) )
@@ -1117,7 +1119,7 @@ qq~$menusep<a href="$scripturl?board=$currentboard;action=modify;message=$counte
                     && $enable_quoteuser
                     && ( !$iamguest || $enable_guestposting ) )
                 {
-				$usernamelink = qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote_mname\[/b]\\r\\n\\r\\n'))"><img src="$imagesdir/qquname.gif" alt="$display_txt{'146n'}" title="$display_txt{'146n'}" /></a> $usernamelink~;
+				$usernamelink = qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote_mname\[/b]\\r\\n\\r\\n'))"><img src="$imagesdir/$disp_qquname" alt="$display_txt{'146n'}" title="$display_txt{'146n'}" /></a> $usernamelink~;
                 }
 
                 if (  !$movedflag
@@ -1187,6 +1189,10 @@ qq~$menusep<a href="$scripturl?board=$currentboard;action=modify;message=$counte
             else {
                 $template_modify = q{};
             }
+            $postnum = $counter + 1;
+            $template_print_post =
+qq~$menusep<a href="$scripturl?action=print;num=$viewnum;post=$postnum" onclick="target='_blank';">$img{'printp'}</a>~;
+
             if (   $counter > 0
                 && ( $iamadmin || $iamgmod || $iamymod || $iammod )
                 && $sessionvalid == 1 )
@@ -1242,7 +1248,9 @@ qq~<input type="checkbox" class="$css" style="border: 0px; visibility: hidden; d
 
         $msgimg =
 qq~<a href="$scripturl?num=$viewnum/$counter#$counter"><img src="$imagesdir/$micon.gif" alt="" /></a>~;
-        $ipimg = qq~<img src="$imagesdir/ip.gif" alt="" />~;
+        $ipimg = qq~<img src="$imagesdir/$disp_ip" alt="" />~;
+
+
         if ($extendedprofiles) {
             require Sources::ExtendedProfiles;
             $template_ext_prof = ext_viewinposts($musername);
@@ -1265,6 +1273,7 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter"><img src="$imagesdir/$mic
           s/({|<)yabb delete(}|>)/$template_delete$tool_sep/gsm;
         $posthandelblock =~
           s/({|<)yabb modalert(}|>)/$PMAlertButton$tool_sep/gsm;
+        $posthandelblock =~ s/({|<)yabb print_post(}|>)/$template_print_post$tool_sep/gsm;
         $posthandelblock =~ s/({|<)yabb admin(}|>)/$template_admin/gsm;
         $posthandelblock =~ s/\Q$menusep//ixsm;
 
@@ -1282,6 +1291,8 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter"><img src="$imagesdir/$mic
           s/({|<)yabb delete(}|>)/$template_delete$outside_ptsep/gsm;
         $outside_posttools_tmp =~
           s/({|<)yabb modalert(}|>)/$PMAlertButton$outside_ptsep/gsm;
+        $outside_posttools =~ 
+          s/({|<)yabb print_post(}|>)/$template_print_post$outside_ptsep/gsm;
 
         if ( !$posttools ) {
             $posthandelblock       = $outside_posttools_tmp . $posthandelblock;
@@ -1421,9 +1432,8 @@ qq~$menusep<a href="$scripturl?action=markunread;thread=$viewnum;board=$currentb
 
     # Template it
 
-    $tabsep = qq~<img src="$imagesdir/tabsep211.png" alt="" />~;
     $yynavback =
-qq~$tabsep <a href="$scripturl">&#171; $img_txt{'103'}</a> $tabsep $navback $tabsep~;
+qq~<span style="padding: 0 2px; border-left:solid 1px #DEE4EC; border-right:solid 1px #DEE4EC;"> <a href="$scripturl">&#171; $img_txt{'103'}</a> </span><span style="padding: 0 2px; margin-right:4px; border-right:solid 1px #DEE4EC;"> $navback </span> ~;
     $yynavigation =
       qq~&rsaquo; $template_cat &rsaquo; $template_board &rsaquo; $msubthread~;
 
@@ -1434,9 +1444,9 @@ qq~$tabsep <a href="$scripturl">&#171; $img_txt{'103'}</a> $tabsep $navback $tab
       . ( !$ttsreverse ? $mreplies : 0 )
       . q~;action=~
       . ( $userthreadpage == 1 ? 'threadpagetext' : 'threadpagedrop' )
-      . qq~;reversetopic=$ttsreverse"><img src="$imagesdir/arrow_~
-      . ( $ttsreverse ? 'up' : 'down' )
-      . qq~.gif" alt="" /> $msubthread</a>~
+      . qq~;reversetopic=$ttsreverse"><img src="$imagesdir/~
+      . ( $ttsreverse ? "$disp_arrow_up" : "$disp_arrow_dn" )
+      . qq~" alt="" /> $msubthread</a>~
       : $msubthread;
 
     $tool_sep = $threadtools ? '|||' : q{};
@@ -1714,11 +1724,11 @@ $gtalkstyle
 <table class="bordercolor pad_4px cs_thin">
     <tr>
         <td class="titlebg h_22px">
-            <img src="$defaultimagesdir/gtalk2.gif" width="16" height="14" alt="" title="" />Google Talk
+            <img src="$defaultimagesdir/$disp_gtalk2" width="16" height="14" alt="" title="" />Google Talk
         </td>
     </tr><tr>
         <td class="windowbg" style="height:58px">
-            <img src="$defaultimagesdir/gtalk2.gif" width="16" height="14" alt="${$uid.$gtalkname}{'realname'}" title="${$uid.$gtalkname}{'realname'}" /> $gtalkuser<br /><br />
+            <img src="$defaultimagesdir/$disp_gtalk2" width="16" height="14" alt="${$uid.$gtalkname}{'realname'}" title="${$uid.$gtalkname}{'realname'}" /> $gtalkuser<br /><br />
         </td>
     </tr>
 </table>

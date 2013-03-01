@@ -23,6 +23,13 @@ if ( $action eq 'detailedversion' ) { return 1; }
 LoadLanguage('Profile');
 require Sources::AddModerators;
 
+if ( -e ("$templatesdir/$usestyle/Profile.template") ) {
+    require "$templatesdir/$usestyle/Profile.template";
+}
+else {
+    require "$templatesdir/default/Profile.template";
+}
+
 if ( $iamgmod && -e "$vardir/gmodsettings.txt" ) {
     require "$vardir/gmodsettings.txt";
 }
@@ -90,38 +97,10 @@ sub ProfileCheck {
         $redirsid = $INFO{'page'} || 'profile';
     }
 
-    $yymain .= qq~
-<div class="bordercolor borderbox">
-<table class="cs_thin pad_4px">
-    <tr>
-        <td class="titlebg" colspan="2"><b>$profile_txt{'901'}</b></td>
-    </tr><tr>
-        <td class="windowbg2 center">
-            <label for="passwrd"><span class="small"><br />$sid_descript<br /><br /></span></label>
-        </td>
-    </tr><tr>
-        <td class="windowbg2 center">
-            <form action="$scripturl?action=profileCheck2;username=$useraccount{$user}" method="post" name="confirmform">
-                <input type="hidden" name="redir" value="$redirsid" />
-                <div style="padding-top: 4px;">
-                    <div><input type="password" name="passwrd" id="passwrd" size="15" style="width: 150px;" onkeypress="capsLock(event,'cappasswrd')" /></div>
-                    <div style="color: red; font-weight: bold; display: none" id="cappasswrd">$profile_txt{'capslock'}</div>
-                    <div style="color: red; font-weight: bold; display: none" id="cappasswrd_char">$profile_txt{'wrong_char'}: <span id="cappasswrd_character">&nbsp;</span></div>
-                </div>
-                <div style="padding-top: 8px;">
-                    <input type="submit" value="$profile_txt{'900'}" class="button" />
-                </div>
-            </form>
-        </td>
-    </tr>
-</table>
-</div>
-<script type="text/javascript">
-<!--
-        document.confirmform.passwrd.focus();
-// -->
-</script>
-~;
+    $yymain .= $myprofile_a;
+    $yymain =~ s/{yabb sid_descript}/$sid_descript/sm;
+    $yymain =~ s/{yabb prof_act}/$scripturl?action=profileCheck2;username=$useraccount{$user}/sm;
+    $yymain =~ s/{yabb redirsid}/$redirsid/sm;
 
     $yynavigation = qq~&rsaquo; $profile_txt{'900'}~;
     $yytitle      = $profile_txt{'900'};
@@ -171,9 +150,7 @@ sub ProfileMenu {
     return if $view;
 
     $yymain .= qq~
-<table class="bordercolor cs_thin pad_4px">
-    <col span="3" style="width:16%" />
-    <tr>
+        $myprofile_menu
         <td class="$menucolors[0] center bottom"><span class="small"><b><a href="$scripturl?action=profile;username=$useraccount{$user};sid=$INFO{'sid'}">$profile_txt{79}</a></b></span></td>
         <td class="$menucolors[1] center bottom"><span class="small"><b><a href="$scripturl?action=profileContacts;username=$useraccount{$user};sid=$INFO{'sid'}">$profile_txt{819}</a></b></span></td>
         <td class="$menucolors[2] center bottom"><span class="small"><b><a href="$scripturl?action=profileOptions;username=$useraccount{$user};sid=$INFO{'sid'}">$profile_txt{818}</a></b></span></td>~;
@@ -396,10 +373,8 @@ qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"
     LoadLanguage('Register');
     $showProfile .= qq~
 <form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" accept-charset="$yycharset">
-<table class="bordercolor cs_thin pad_4px">
-    <col style="width:220px" />
-    <tr>
-        <td class="catbg" colspan="2"><img src="$imagesdir/profile.gif" alt="" /> <b>$profiletitle</b><br /><span class="small">$profile_txt{'698'}</span>~
+$myprofile_edit
+<img src="$imagesdir/profile.gif" alt="" /> <b>$profiletitle</b><br /><span class="small">$profile_txt{'698'}</span>~
       . ( $INFO{'newpassword'} ? $profile_txt{'80'} : q{} ) . q~</td>
     </tr>~;
     $showProfile .= password_check();
@@ -466,36 +441,27 @@ qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"
             $questsel .= qq~<option value="$key"$sessel>$val</option>\n~;
         }
         $questsel .= qq~</select>\n~;
-        $showProfile .= qq~<tr>
-        <td class="catbg" colspan="2"><img src="$imagesdir/session.gif" alt="" /> <label for="sesquest"><b>$img_txt{'34a'}</b><br /><span class="small">$session_txt{'9'}<br />$session_txt{'9a'}</span></label></td>
-    </tr><tr class="windowbg">
-        <td>$questsel</td>
-        <td><input type="text" maxlength="30" name="sesanswer" size="20" value="$decanswer" /></td>
-    </tr>~;
+        $showProfile .= $myprofile_session;
+        $showProfile =~ s/{yabb questsel}/$questsel/sm;
+        $showProfile =~ s/{yabb decanswer}/$decanswer/sm;
     }
-    $showProfile .= qq~<tr class="catbg">
-        <td class="center" style="height:50px" colspan="2"><input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />~;
     if ( $self_del_user == 1 ) {
         if (   ( $iamadmin && ( $username ne $user ) )
             || ( $username ne 'admin' ) )
         {
-            $showProfile .=
+            $show_confdel=
 qq~ &nbsp; &nbsp; &nbsp; <input type="submit" name="moda" value="$profile_txt{'89'}" onclick="return confirm('$confdel_text')" class="button" />~;
         }
     }
     else {
         if ( $iamadmin && $username ne $user ) {
-            $showProfile .=
+            $show_confdel =
 qq~ &nbsp; &nbsp; &nbsp; <input type="submit" name="moda" value="$profile_txt{'89'}" onclick="return confirm('$confdel_text')" class="button" />~;
         }
     }
-    $showProfile .=
-qq~<br /><span class="small">$profile_txt{'sid_expires_1'} $sid_expires $profile_txt{'sid_expires_2'}</span>
-        </td>
-    </tr>
-</table>
-</form>
-~;
+    $showProfile .= $myprofile_bottom;
+    $showProfile =~ s/{yabb show_confdel}/$show_confdel/sm;
+    $showProfile =~ s/{yabb sid_expires}/$sid_expires/sm;    
 
     if ( !$view ) {
         $yymain .= $showProfile;
@@ -533,16 +499,10 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
 
     $showProfile .= qq~
 <form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" accept-charset="$yycharset">
-<table class="bordercolor cs_thin pad_4px">
-    <col style="width:320px" />
-    <tr>
-        <td class="catbg" colspan="2"><img src="$imagesdir/profile.gif" alt="" /> <b>$profiletitle</b></td>
-    </tr><tr class="windowbg">
-        <td><label for="email"><b>$profile_txt{'69'}: </b><br /><span class="small">$profile_txt{'679'} </span></label></td>
-        <td><input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.value,'email')" name="email" id="email" size="40" value="${$uid.$user}{'email'}" />
-            <div id="emailavailability"></div>
-        </td>
-    </tr>~;
+$myprofile_email~;
+    $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
+    $showProfile =~ s/{yabb user_email}/${$uid.$user}{'email'}/sm;
+
     if ($allow_hide_email) {
         my $checked = q{};
         if ( ${ $uid . $user }{'hidemail'} ) {
@@ -701,11 +661,8 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         $showProfile .= ext_editprofile( $user, 'contact' );
     }
 
-    $showProfile .= qq~<tr class="catbg">
-        <td class="center" style="height:50px" colspan="2"><input type="submit" name="moda" value="$profile_txt{'88'}" class="button" /><br /><span class="small">$profile_txt{'sid_expires_1'} $sid_expires $profile_txt{'sid_expires_2'}</span></td>
-    </tr>
-</table>
-</form>~;
+    $showProfile .= $myprofile_bottom;
+    $showProfile =~ s/{yabb sid_expires}/$sid_expires/sm;
 
     if ( !$view ) {
         $yymain .= $showProfile;
@@ -758,11 +715,8 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         ? q~ enctype="multipart/form-data"~
         : q{}
       )
-      . qq~>
-<table class="bordercolor cs_thin pad_4px">
-    <tr>
-        <td class="catbg" colspan="2"><img src="$imagesdir/profile.gif" alt="" /> <b>$profiletitle</b></td>
-    </tr><tr class="windowbg">~;
+      . qq~>$myprofile_title~;
+      $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
 
     if ($allowpics) {
         opendir( DIR, $facesdir )
@@ -823,31 +777,31 @@ qq~                <option value="$line"$checked>$name</option>\n~;
             $profile_txt{'477'}</span></td>
         <td>
             <script type="text/javascript">
-                        <!--
-                                function showimage(x) {
-                                        if (!document.images) return;
-                                        var source;
-                                        if (x == 1 && document.getElementsByName('userpicpersonalcheck')[0].checked == true) {
-                                                UserPicUrl = document.getElementsByName('userpicpersonal')[0].value;
-                                                document.getElementsByName('userpicpersonal')[0].value = 'http$s://';
-                                                document.getElementsByName('userpicpersonalcheck')[0].checked = false;
-                                        }
-                                        if (x == 1) {
-                                                source = "$facesurl/"+document.creator.userpic.options[document.creator.userpic.selectedIndex].value;
-                                        } else {
-                                                document.creator.userpic.options[0].selected = true;
-                                                source = document.getElementsByName('userpicpersonal')[0].value;
-                                                if (!source || source == 'http$s://') source = "$facesurl/blank.gif";
-                                        }
-                                        document.images.icons.style.display = 'none';
-                                        document.images.icons.width = '';
-                                        document.images.icons.height = '';
-                                        document.images.icons.src = source;
-                                        resize_time = 2;
-                                        img_resize_names = new Array ('avatar_img_resize_1');
-                                        resize_images();
-                                }
-                        // -->
+            <!--
+                function showimage(x) {
+                    if (!document.images) return;
+                    var source;
+                    if (x == 1 && document.getElementsByName('userpicpersonalcheck')[0].checked == true) {
+                        UserPicUrl = document.getElementsByName('userpicpersonal')[0].value;
+                        document.getElementsByName('userpicpersonal')[0].value = 'http$s://';
+                        document.getElementsByName('userpicpersonalcheck')[0].checked = false;
+                    }
+                    if (x == 1) {
+                        source = "$facesurl/"+document.creator.userpic.options[document.creator.userpic.selectedIndex].value;
+                    } else {
+                        document.creator.userpic.options[0].selected = true;
+                        source = document.getElementsByName('userpicpersonal')[0].value;
+                        if (!source || source == 'http$s://') source = "$facesurl/blank.gif";
+                    }
+                    document.images.icons.style.display = 'none';
+                    document.images.icons.width = '';
+                    document.images.icons.height = '';
+                    document.images.icons.src = source;
+                    resize_time = 2;
+                    img_resize_names = new Array ('avatar_img_resize_1');
+                    resize_images();
+                }
+            // -->
             </script>
             <select name="userpic" id="userpic" size="6" onchange="showimage(1);">
             $images
@@ -877,29 +831,28 @@ qq~                <option value="$line"$checked>$name</option>\n~;
          <td><textarea name="signature" id="signature" rows="4" cols="30" style="width: 100%">$signature</textarea><br />
              <span class="small">$profile_txt{'664'} <input value="$MaxSigLen" size="3" name="msgCL" class="windowbg" style="border: 0px; width: 40px; padding: 1px; font-size: 11px;" readonly="readonly" /></span><br /><br />
              <script type="text/javascript">
-                        <!--
-                                var supportsKeys = false;
-                                function tick() {
-                                        calcCharLeft(document.forms[0]);
-                                        if (!supportsKeys) { timerID = setTimeout("tick()", 1500); }
-                                }
-
-                                function calcCharLeft(sig) {
-                                        clipped = false;
-                                        maxLength = $MaxSigLen;
-                                        if (document.creator.signature.value.length > maxLength) {
-                                                document.creator.signature.value = document.creator.signature.value.substring(0,maxLength);
-                                                charleft = 0;
-                                                clipped = true;
-                                        } else {
-                                                charleft = maxLength - document.creator.signature.value.length;
-                                        }
-                                        document.creator.msgCL.value = charleft;
-                                        return clipped;
-                                }
-                                tick();
-                        // -->
-                        </script>
+             <!--
+                 var supportsKeys = false;
+                 function tick() {
+                     calcCharLeft(document.forms[0]);
+                     if (!supportsKeys) { timerID = setTimeout("tick()", 1500); }
+                 }
+                 function calcCharLeft(sig) {
+                     clipped = false;
+                     maxLength = $MaxSigLen;
+                     if (document.creator.signature.value.length > maxLength) {
+                         document.creator.signature.value = document.creator.signature.value.substring(0,maxLength);
+                         charleft = 0;
+                         clipped = true;
+                     } else {
+                         charleft = maxLength - document.creator.signature.value.length;
+                     }
+                     document.creator.msgCL.value = charleft;
+                     return clipped;
+                 }
+                 tick();
+             // -->
+             </script>
         </td>
     </tr>~;
 
@@ -1159,11 +1112,8 @@ qq~<option value="$fld" selected="selected">$displang</option>~;
         $showProfile .= ext_editprofile( $user, 'options' );
     }
 
-    $showProfile .= qq~<tr class="catbg">
-                <td class="center" style="height:50px" colspan="2"><input type="submit" name="moda" value="$profile_txt{'88'}" class="button" /><br /><span class="small">$profile_txt{'sid_expires_1'} $sid_expires $profile_txt{'sid_expires_2'}</span></td>
-    </tr>
-</table>
-</form>~;
+    $showProfile .= $myprofile_bottom;
+    $showProfile =~ s/{yabb sid_expires}/$sid_expires/sm;
 
     if ( !$view ) {
         $yymain .= $showProfile;
@@ -1223,11 +1173,8 @@ qq~$profile_txt{'79'} ($user) &rsaquo; $profile_buddy_list{'buddylist'}~;
 
     $showProfile .= qq~
 <form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" onsubmit="javascript: selectblNames();">
-<table class="bordercolor cs_thin pad_4px">
-    <col style="width:320px" />
-    <tr>
-        <td colspan="2" class="catbg"><img src="$imagesdir/profile.gif" alt="" /> <b>$profiletitle</b></td>
-    </tr>~;
+$myprofile_title~;
+    $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
 
     my $buildBuddyList = q{};
     if ( ${ $uid . $user }{'buddylist'} ) {
@@ -1253,11 +1200,8 @@ qq~<option value="$buddy">${$uid.$buddy}{'realname'}</option>~;
         </td>
     </tr>~;
 
-    $showProfile .= qq~<tr class="catbg">
-        <td class="center" style="height:50px" colspan="2"><input type="submit" name="moda" value="$profile_txt{'88'}" class="button" /><br /><span class="small">$profile_txt{'sid_expires_1'} $sid_expires $profile_txt{'sid_expires_2'}</span></td>
-    </tr>
-</table>
-</form>~;
+    $showProfile .= $myprofile_bottom;
+    $showProfile =~ s/{yabb sid_expires}/$sid_expires/sm;
 
     if ( !$view ) {
         $yymain .= $showProfile;
@@ -1315,14 +1259,11 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
 
     $showProfile .= qq~
 <form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" onsubmit="javascript:selectINames();" >
-<table class="bordercolor cs_thin pad_4px">
-    <col style="width:320px" />
-    <tr>
-        <td class="catbg" colspan="2"><img src="$imagesdir/profile.gif" alt="" /> <b>$profiletitle</b></td>
-    </tr><tr class="windowbg">
+$myprofile_title
         <td class="vtop"><b>$profile_txt{'325'}:</b><br /><span class="small">$profile_txt{'ignoreexplain'}</span></td>
         <td>
             <select name="ignore" id="ignore" size="4" multiple="multiple" style="width:250px;" ondblclick="removeUser(this);" >~;
+    $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
 
     my $ignoreallChecked = q{};
     if ( ${ $uid . $user }{'im_ignorelist'} eq q{*} ) {
@@ -1428,14 +1369,8 @@ qq~\n                        <option value="$ignoreName">$ignoreUser</option>~;
         $showProfile .= ext_editprofile( $user, 'im' );
     }
 
-    $showProfile .= qq~<tr class="catbg">
-        <td class="center" style="height:50px" colspan="2">
-            <input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />
-            <br /><span class="small">$profile_txt{'sid_expires_1'} $sid_expires $profile_txt{'sid_expires_2'}</span>
-        </td>
-    </tr>
-</table>
-</form>~;
+    $showProfile .= $myprofile_bottom;
+    $showProfile =~ s/{yabb sid_expires}/$sid_expires/sm;
 
     if ( !$view ) {
         $yymain .= $showProfile;
@@ -1509,13 +1444,10 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         $yynavigation = qq~&rsaquo; $profiletitle~;
     }
 
+$myprofile_userinfo = qq~<input type="hidden" name="username" value="$INFO{'username'}" />~;
     $showProfile .= qq~
 <form action="$scripturl?action=$scriptAction;username=$useraccount{$user};sid=$INFO{'sid'}" method="post" name="creator">
-<table class="bordercolor cs_thin pad_4px">
-    <col style="width:320px" />
-    <tr>
-        <td class="catbg" colspan="2"><img src="$imagesdir/profile.gif" alt="" /> <b>$profiletitle</b><input type="hidden" name="username" value="$INFO{'username'}" /></td>
-    </tr><tr class="windowbg">
+$myprofile_title
         <td><label for="settings6"><b>$profile_txt{'21'}: </b></label></td>
         <td><input type="text" name="settings6" id="settings6" size="4" value="${$uid.$user}{'postcount'}" /></td>
     </tr><tr class="windowbg">
@@ -1525,6 +1457,8 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
                 <option value="${$uid.$user}{'position'}">$tt</option>
                 <option value="${$uid.$user}{'position'}">---------------</option>
                 <option value=""></option>~;
+    $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
+    $showProfile =~ s/{yabb myprofile_userinfo}/$myprofile_userinfo/sm;
 
     if ( !$iamgmod ) {
         ( $title, $stars, $starpic, $color ) = split /\|/xsm,
@@ -1702,14 +1636,8 @@ qq~                        <option value="$minute_val">$minute_val</option>\n~;
         $showProfile .= ext_editprofile( $user, 'admin' );
     }
 
-    $showProfile .= qq~<tr class="catbg">
-        <td class="center" style="height:50px" colspan="2">
-            <input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />
-            <br /><span class="small">$profile_txt{'sid_expires_1'} $sid_expires $profile_txt{'sid_expires_2'}</span>
-        </td>
-    </tr>
-</table>
-</form>~;
+    $showProfile .= $myprofile_bottom;
+    $showProfile =~ s/{yabb sid_expires}/$sid_expires/sm;
 
     if ( !$view ) {
         $yymain .= $showProfile;
@@ -1844,7 +1772,7 @@ sub ModifyProfile2 {
         }
 
         # EventCal Begin
-        if ( ${ $uid . $user }{'bday'} ne "$member{'bday'}" ) {
+        if ( ${ $uid . $user }{'bday'} ne "$member{'bday'}" || ${ $uid . $user }{'hideage'} ne "$member{'hideage'}" ) {
             $Update_EventCal = 1;
         }
 
@@ -1987,34 +1915,29 @@ s/^(\d+\|\d+\|.*?)\|(.*?)\|/ ($2 eq ${$uid.$user}{'realname'} ? "$1|$member{'nam
           scramble( $member{'sesanswer'}, $user );
         ${ $uid . $username }{'session'} = encode_password($user_ip);
 
-        # EventCal Begin
-        if ( $Update_EventCal == 1 ) {
-            fopen( FILE, "$memberdir/memberlist.txt" );
-            my @birthmembers = <FILE>;
-            fclose(FILE);
-            fopen( FILE, ">$vardir/eventcalbday.db" );
-            foreach my $user_name (@birthmembers) {
-                my ( $user_xy, $dummy ) = split /\t/xsm, $user_name;
-                LoadUser($user_xy);
-                my $user_xy_bd = ${ $uid . $user_xy }{'bday'};
-                if ($user_xy_bd) {
-                    my ( $user_month, $user_day, $user_year ) = split /\//xsm,
-                      $user_xy_bd;
-                    if ( $user_month < 10 && length($user_month) == 1 ) {
-                        $user_month = "0$user_month";
-                    }
-                    if ( $user_day < 10 && length($user_day) == 1 ) {
-                        $user_day = "0$user_day";
-                    }
-                    print {FILE} qq~$user_year|$user_month|$user_day|$user_xy\n~
-                      or croak 'cannot print FILE';
-                }
-            }
-            fclose(FILE);
-        }
-
-        # EventCal End
-
+		# EventCal Begin
+		if ($Update_EventCal == 1) {
+			fopen(FILE,"$vardir/eventcalbday.db");
+			my @birthmembers = <FILE>;
+			fclose(FILE);
+			fopen(FILE,">$vardir/eventcalbday.db");
+			foreach my $x(@birthmembers) {
+			    chomp $x;
+				my ($user_year, $user_month, $user_day, $user_xy, $user_hide) = split /\|/xsm, $x;
+				if ($user_xy ne $user ) {
+					print FILE qq~$x\n~;
+				}
+				else {
+					my ($user_montha, $user_daya, $user_yeara) = split /\//xsm, $member{'bday'};
+					if ($user_montha < 10 && length($user_montha) == 1) { $user_montha = "0$user_montha"; }
+					if ($user_daya < 10 && length($user_daya) == 1) { $user_daya = "0$user_daya"; }
+					if ($member{'hideage'}) {$nuser_hide = 1 ;}
+					print FILE qq~$user_yeara|$user_montha|$user_daya|$user_xy|$nuser_hide\n~;
+				}
+			}
+			fclose(FILE);
+		}
+		# EventCal End
         UserAccount( $user, 'update' );
 
         if ( $member{'passwrd1'} && $username eq $user ) {
@@ -2060,31 +1983,23 @@ qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};si
 
         MemberIndex( 'remove', $noteuser );
 
-        # EventCal Begin
-        fopen( FILE, "$memberdir/memberlist.txt" );
-        my @birthmembers = <FILE>;
-        fclose(FILE);
-        fopen( FILE, ">$vardir/eventcalbday.db" );
-        foreach my $user_name (@birthmembers) {
-            my ( $user_xy, $dummy ) = split /\t/xsm, $user_name;
-            LoadUser($user_xy);
-            my $user_xy_bd = ${ $uid . $user_xy }{'bday'};
-            if ($user_xy_bd) {
-                my ( $user_month, $user_day, $user_year ) = split /\//xsm,
-                  $user_xy_bd;
-                if ( $user_month < 10 && length($user_month) == 1 ) {
-                    $user_month = "0$user_month";
-                }
-                if ( $user_day < 10 && length($user_day) == 1 ) {
-                    $user_day = "0$user_day";
-                }
-                print {FILE} qq~$user_year|$user_month|$user_day|$user_xy\n~
-                  or croak 'cannot print FILE';
-            }
-        }
-        fclose(FILE);
-
-        # EventCal End
+        # EventCalbday Begin
+			fopen(FILE,"$vardir/eventcalbday.db");
+			my @birthmembers = <FILE>;
+			fclose(FILE);
+			fopen(FILE,">$vardir/eventcalbday.db");
+			foreach my $x(@birthmembers) {
+			    chomp $x;
+				my ($user_year, $user_month, $user_day, $user_xy, $user_hide) = split /\|/xsm, $x;
+				if ($user_xy ne $user ) {
+					print FILE qq~$x\n~;
+				}
+				else {
+					print FILE q{};
+				}
+			}
+			fclose(FILE);
+        # EventCalbday End
 
         if ( !$iamadmin ) {
             UpdateCookie('delete');
@@ -3217,8 +3132,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
         LoadCensorList();
         $message = Censor($message);
 
-        $row_signature = qq~<tr>
-        <td class="catbg">
+        $row_signature = qq~$myrow_sig
             <img src="$imagesdir/profile.gif" alt="" />&nbsp;
             <span class="text1"><b>$profile_txt{'85'}</b></span>
         </td>
@@ -3275,14 +3189,10 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
           WrapChars( Censor( ${ $uid . $user }{'usertext'} ), 20 );
     }
 
-    $showProfile .= q~
-<table class="bordercolor cs_thin pad_8px">~;
+    $showProfile .= $myshow_a;
     if ( !$view ) {
         $yynavigation = qq~&rsaquo; $profile_txt{'92'}~;
-        $showProfile .= q~
-    <tr>
-        <td class="titlebg">
-            <div class="text1" style="float: left; width: 100%;">~;
+        $showProfile .= $myshow_b;
         if ( $iamadmin || $iamgmod ) {
             $showProfile .= qq~
                 <img src="$imagesdir/profile.gif" alt="" />&nbsp; <b>$profile_txt{'35'}: $INFO{'username'}</b>~;
@@ -3511,29 +3421,35 @@ qq~<a href="$scripturl?board=$board" class="a">$boardname</a><br />~;
         require Sources::Security;
         if ( $is_banned =~ /E/sm ) {
             $ban_email_link =
-qq~<a href="$scripturl?action=ipban_update;ban_email=$ban_user_email;username=$useraccount{$user};unban=1"><span class="small">[$profile_txt{'904'}]</span></a>~;
+qq~<span class="small">[ <a href="$scripturl?action=ipban_update;ban_email=$ban_user_email;username=$useraccount{$user};unban=1" onclick="return confirm('$profile_txt{'904a'}${$uid.$user}{'email'}');">$profile_txt{'904'}</a> ]</span>~; 
         }
         else {
-            $ban_email_link = qq~<span class="small">[$profile_txt{'907'}: ~;
+            $ban_email_link = qq~<span class="small">[ $profile_txt{'907'}: ~;
+            my $bansep = $#banlev;
+            my $levsep = q~ | ~;
             for my $i (@banlev) {
+                if (!$bansep--) { $levsep = q{}; }
                 $ban_email_link .=
-qq~<a href="$scripturl?action=ipban_update;ban_email=$ban_user_email;username=$useraccount{$user};lev=$i">$profile_txt{$i}</a> |~;
+qq~<a href="$scripturl?action=ipban_update;ban_email=$ban_user_email;username=$useraccount{$user};lev=$i" onclick="return confirm('$profile_txt{'907a'}${$uid.$user}{'email'}');">$profile_txt{$i}</a>$levsep~; 
             }
-            $ban_email_link .= q~</span>~;
+            $ban_email_link .= q~ ]</span>~;
         }
         $ban_user_name = $useraccount{$user};
 
         if ( $is_banned =~ /U/sm ) {
             $ban_user_link =
-qq~<a href="$scripturl?action=ipban_update;ban_memname=$ban_user_name;username=$useraccount{$user};unban=1"><span class="small">[$profile_txt{'903'}]</span></a>~;
+qq~<span class="small">[ <a href="$scripturl?action=ipban_update;ban_memname=$ban_user_name;username=$useraccount{$user};unban=1" onclick="return confirm('$profile_txt{'903a'}$user');">$profile_txt{'903'}</a> ]</span>~; 
         }
         else {
-            $ban_user_link = qq~<span class="small">[$profile_txt{'906'}: ~;
+            $ban_user_link = qq~<span class="small">[ $profile_txt{'906'}: ~;
+            my $bansep = $#banlev;
+            my $levsep = q~ | ~;
             for my $i (@banlev) {
+                if (!$bansep--) { $levsep = q{}; }
                 $ban_user_link .=
-qq~<a href="$scripturl?action=ipban_update;ban_memname=$ban_user_name;username=$useraccount{$user};lev=$i">$profile_txt{$i}</a> |~;
+qq~<a href="$scripturl?action=ipban_update;ban_memname=$ban_user_name;username=$useraccount{$user};lev=$i" onclick="return confirm('$profile_txt{'906a'}$user');">$profile_txt{$i}</a>$levsep~; 
             }
-            $ban_user_link .= q~</span>~;
+            $ban_user_link .= q~ ]</span>~;
         }
 
         # Shows the banning stuff for IP's
@@ -3544,16 +3460,19 @@ qq~<a href="$scripturl?action=ipban_update;ban_memname=$ban_user_name;username=$
             for my $ip ( 0 .. ( @ip_ban - 1 ) ) {
                 if ( check_banlist( q{}, "$ip_ban[$ip]", q{} ) ) {
                     $banlink[$ip] =
-qq~<a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccount{$user};unban=1"><span class="small">[$profile_txt{'905'}]</span></a>~;
+qq~<span class="small">[ <a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccount{$user};unban=1" onclick="return confirm('$profile_txt{'905a'}$ip_ban[$ip]');">$profile_txt{'905'}</a> ]</span>~; 
                 }
                 else {
                     $banlink[$ip] =
-                      qq~<span class="small">[$profile_txt{'908'}: ~;
+                      qq~<span class="small">[ $profile_txt{'908'}: ~;
+                    my $bansep = $#banlev;
+                    my $levsep = q~ | ~;
                     for my $i (@banlev) {
+                        if (!$bansep--) { $levsep = q{}; }
                         $banlink[$ip] .=
-qq~<a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccount{$user};lev=$i">$profile_txt{$i}</a> |~;
+qq~<a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccount{$user};lev=$i" onclick="return confirm('$profile_txt{'908a'}$ip_ban[$ip]');">$profile_txt{$i}</a>$levsep~; 
                     }
-                    $banlink[$ip] .= q~</span>~;
+                    $banlink[$ip] .= q~ ]</span>~;
                 }
             }
             for my $i ( 0 .. ( @ip_ban - 1 ) ) {
@@ -3911,17 +3830,11 @@ sub usersrecentposts {
 
         $counter++;
 
-        $showProfile .= qq~
-<table class="bordercolor cs_thin" style="table-layout: fixed;">
-    <col style="width:5%" />
-    <tr>
-        <td class="titlebg">$counter</td>
-        <td class="titlebg">&nbsp;<a href="$scripturl?catselect=$boardcat{$board}"><u>${$catinfos{$board}}[0]</u></a> / <a href="$scripturl?board=$board"><u>$boardname{$board}</u></a> / <a href="$scripturl?num=$tnum/$c#$c"><u>$msub</u></a><br />
+        $showProfile .= qq~$myshow_c
+        <td class="$myshow_row center">$counter</td>
+        <td class="$myshow_row">&nbsp;<a href="$scripturl?catselect=$boardcat{$board}"><u>${$catinfos{$board}}[0]</u></a> / <a href="$scripturl?board=$board"><u>$boardname{$board}</u></a> / <a href="$scripturl?num=$tnum/$c#$c"><u>$msub</u></a><br />
                 &nbsp;<span class="small">$profile_txt{'30'}: $mdate</span>&nbsp;</td>
-    </tr><tr>
-        <td colspan="2">
-            <table class="catbg">
-                <tr>
+$myshow_d
                     <td>$maintxt{'109'} $tname | $maintxt{'197'} ${$uid.$curuser}{'realname'}</td>
                     <td class="right">&nbsp;~;
 
@@ -3948,7 +3861,7 @@ qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$c#$c;title=PostReply"
     </tr><tr>
         <td class="windowbg2 vtop" style="height:80px" colspan="2"><div style="float: left; width: 99%; overflow: auto;">$message</div></td>
     </tr>
-</table><br />~;
+</table>~;
     }
 
     if ( !$counter ) {

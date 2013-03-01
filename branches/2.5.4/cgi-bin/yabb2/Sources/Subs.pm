@@ -379,13 +379,13 @@ qq~<a href="$scripturl">$img{'home'}</a>$menusep<a href="$scripturl?action=help"
             || ( !$iamguest && $Show_EventButton == 1 ) )
         {
             $yymenu .=
-qq~$menusep<a href="$scripturl?action=get_cal;calshow=1">$img{'eventcal'}</a>~;
+qq~$menusep<a href="$scripturl?action=eventcal;calshow=1">$img{'eventcal'}</a>~;
         }
         if ( $Show_BirthdayButton == 2
             || ( !$iamguest && $Show_BirthdayButton == 1 ) )
         {
             $yymenu .=
-qq~$menusep<a href="$scripturl?action=cal_birthdaylist">$img{'birthdaylist'}</a>~;
+qq~$menusep<a href="$scripturl?action=birthdaylist">$img{'birthdaylist'}</a>~;
         }
 
         # EventCal END
@@ -2837,6 +2837,9 @@ sub BroadMessageView {
         foreach my $checkgroup ( split /\,/xsm, $imp ) {
             if ( $checkgroup eq 'all' ) { return 1; }
             if ( $checkgroup eq ( 'gmods' || 'ymods' || 'mods' ) && $iamgmod ) {
+                return 1;
+            }
+            if ( $checkgroup eq ( 'ymods' || 'mods' ) && $iamymod ) {
                 return 1;
             }
             if ( $checkgroup eq 'mods' && $iammod ) { return 1; }

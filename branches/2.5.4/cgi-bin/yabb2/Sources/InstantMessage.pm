@@ -193,7 +193,7 @@ sub buildIMsend {
             <table class="pad_2px" style="width:95%; margin-left:0">
              <tr>
               <td>
-               <img name="prevwin" id="prevwin" src="$defaultimagesdir/cat_expand.gif" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor:pointer; cursor:hand;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
+               <img name="prevwin" id="prevwin" src="$defaultimagesdir/cat_expand.gif" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor:pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
               </td>
              </tr>
             </table>
@@ -1216,7 +1216,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     $subject =~ s/^\s+|\s+$//gsm;
 
     $message = $FORM{'message'};
-    $message =~ s/^\s+|\s+$//gsm;
+    $message =~ s/^\s+|\s+$//g;
 
     # no subject/no message are bad!
     if ( !$subject ) { $error = $error_txt{'no_subject'}; }
@@ -1599,9 +1599,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                                 $pmAttachUrl .= qq~$pmuploadurl/$pmAttachFile
                                 ~;
                             }
-                            $pmAttachTxt = qq~
-                            $fatxt{'80'}:
-                            ~;
+                            $pmAttachTxt = qq~\n$fatxt{'80'}: ~;
                         }
                         sendmail(
                             $useremail,
@@ -1612,8 +1610,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                                     'sender'  => $fromname,
                                     'subject' => $msubject,
                                     'message' => $chmessage,
-                                    'attachments' =>
-                                      qq~$pmAttachTxt . $pmAttachUrl~
+                                    'attachments' => $pmAttachTxt . $pmAttachUrl
                                 }
                             ),
                             q{},
@@ -1899,18 +1896,18 @@ qq~<span class="small pgindex"><img src="$imagesdir/index_togl.gif" alt="$displa
 qq~<a href="$scripturl?pmaction=$action$bmesslink;start=$start;action=pmpagetext$viewfolderinfo"><img src="$imagesdir/index_togl.gif" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a> $display_txt{'139'}: ~;
             if ( $startpage > 0 ) {
                 $pagetxtindex =
-qq~<a href="$scripturl?action=$action$bmesslink/0$viewfolderinfo" style="font-weight: normal;">1</a>&nbsp;...&nbsp;~;
+qq~<a href="$scripturl?action=$action$bmesslink/0$viewfolderinfo"><span class="small">1</span></a>&nbsp;...&nbsp;~;
             }
             if ( $startpage == $maxmessagedisplay ) {
                 $pagetxtindex =
-qq~<a href="$scripturl?action=$action$bmesslink;start=0$viewfolderinfo" style="font-weight: normal;">1</a>&nbsp;~;
+qq~<a href="$scripturl?action=$action$bmesslink;start=0$viewfolderinfo"><span class="small">1</span></a>&nbsp;~;
             }
             foreach my $counter ( $startpage .. ( $endpage - 1 ) ) {
                 if ( $counter % $maxmessagedisplay == 0 ) {
                     $pagetxtindex .=
                       $start == $counter
-                      ? qq~<b>$tmpa</b>&nbsp;~
-                      : qq~<a href="$scripturl?action=$action$bmesslink;start=$counter$viewfolderinfo" style="font-weight: normal;">$tmpa</a>&nbsp;~;
+                      ? qq~<b>[$tmpa]</b>&nbsp;~
+                      : qq~<a href="$scripturl?action=$action$bmesslink;start=$counter$viewfolderinfo"><span class="small">$tmpa</span></a>&nbsp;~;
                     $tmpa++;
                 }
             }
@@ -1919,7 +1916,7 @@ qq~<a href="$scripturl?action=$action$bmesslink;start=0$viewfolderinfo" style="f
             }
             if ( $endpage != $max ) {
                 $pageindexadd .=
-qq~<a href="$scripturl?action=$action$bmesslink;start=$lastptn$viewfolderinfo" style="font-weight: normal;">$lastpn</a>~;
+qq~<a href="$scripturl?action=$action$bmesslink;start=$lastptn$viewfolderinfo"><span class="small">$lastpn</span></a>~;
             }
             $pagetxtindex .= qq~$pageindexadd~;
             $pageindex1 = qq~$pagetxtindexst$pagetxtindex</span>~;
@@ -2017,18 +2014,18 @@ qq~<img src="$imagesdir/index_right.gif" height="14" width="13" alt="$pidtxt{'03
                 var pagstart = parseInt(splitparam[3]);
                 var allpagstart = parseInt(splitparam[3]);
                 if (visel == 'xx' && decparam == '$pagejsindex') visel = '$tstart';
-                var pagedropindex = '<table><tr>';
+                var pagedropindex = '<table class="pad_0"><tr>';
                 for (i=vistart; i<=viend; i++) {
-                    if (visel == pagstart) pagedropindex += '<td class="titlebg" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: bold;">' + i + '</td>';
-                    else pagedropindex += '<td class="droppages"><a href="$scripturl?action=$action$bmesslink;start=' + pagstart + '">' + i + '</a></td>';
+                    if (visel == pagstart) pagedropindex += '<td class="titlebg pages"><b>' + i + '</b></td>';
+                    else pagedropindex += '<td class="droppages pages"><a href="$scripturl?action=$action$bmesslink;start=' + pagstart + '">' + i + '</a></td>';
                     pagstart += maxpag;
                 }
                 ~;
             if ($showpageall) {
                 $pageindexjs .= qq~
                     if (vistart != viend) {
-                        if(visel == 'all') pagedropindex += '<td class="titlebg" style="height: 14px; padding-left: 1px; padding-right: 1px; font-size: 9px; font-weight: normal;"><b>$pidtxt{"01"}</b></td>';
-                        else pagedropindex += '<td class="droppages"><a href="$scripturl?action=$action$bmesslink;start=all-' + allpagstart + '">$pidtxt{"01"}</a></td>';
+                        if(visel == 'all') pagedropindex += '<td class="titlebg pages"><b>$pidtxt{"01"}</b></td>';
+                        else pagedropindex += '<td class="droppages pages"><a href="$scripturl?action=$action$bmesslink;start=all-' + allpagstart + '">$pidtxt{"01"}</a></td>';
                     }
                     ~;
             }
@@ -2522,16 +2519,16 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
 
     $showIM .= qq~<tr>
     <td class="windowbg right" colspan="2">
-        <div style="float: left; width: 99%; padding-top: 5px; margin-top: 2px; text-align: right;">
+        <div class="imcontact">
             <span class="small"><img src="$imagesdir/ip.gif" alt="" /> $imip</span>
         </div>
     </td>
 </tr><tr>
     <td class="windowbg2" colspan="2">
-        <div style="float: left; text-align: left; width: 55%; padding: 2px; margin: 2px;">
+        <div class="imcontact_left">
             <span class="small">$postMenuTemp</span>
         </div>
-        <div style="float: right; text-align: right; width: 40%; padding: 2px; margin: 2px;">
+        <div class="imcontact_right">
             <span class="small">~;
 
     $mreplyno++;

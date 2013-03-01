@@ -534,21 +534,21 @@ qq~<tr><td colspan="5" class="$new_msg_bg h_18px"><span class="$new_msg_class">~
                     }
                     if ($newmsg) {
                         $newrowicon{$catname} =
-qq~<img src="$imagesdir/on.png" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" class="ongif" />~;
+qq~<img src="$imagesdir/$brdimg_new" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" class="ongif" />~;
                         $newms{$catname} = $boardindex_exptxt{'5'};
                     }
                     else {
                         $newrowicon{$catname} =
-qq~<img src="$imagesdir/off.png" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" class="ongif" />~;
+qq~<img src="$imagesdir/$brdimg_old" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" class="ongif" />~;
                         $newms{$catname} = $boardindex_exptxt{'6'};
                     }
                     if ( $catcol{$catid} ) {
                         $hash{$catname} =
-qq~<img src="$imagesdir/cat_collapse.gif" id="img$catid" alt="$boardindex_exptxt{'2'}" title="$boardindex_exptxt{'2'}" /></a>~;
+qq~<img src="$imagesdir/$brd_cat_col" id="img$catid" alt="$boardindex_exptxt{'2'}" title="$boardindex_exptxt{'2'}" /></a>~;
                     }
                     else {
                         $hash{$catname} =
-qq~ <img src="$imagesdir/cat_expand.gif" id="img$catid" alt="$boardindex_exptxt{'1'}" title="$boardindex_exptxt{'1'}" /></a>~;
+qq~ <img src="$imagesdir/$brd_cat_exp" id="img$catid" alt="$boardindex_exptxt{'1'}" title="$boardindex_exptxt{'1'}" /></a>~;
                     }
                 }
                 else {
@@ -701,10 +701,10 @@ qq~$collapse_link $hash{$catname} <a href="$scripturl?catselect=$catid" title="$
                 }
 
                 if ( ${ $uid . $curboard }{'ann'} == 1 ) {
-                    ${ $uid . $curboard }{'pic'} = 'ann.gif';
+                    ${ $uid . $curboard }{'pic'} = qq~ann.$bdpicExt~;
                 }
                 if ( ${ $uid . $curboard }{'rbin'} == 1 ) {
-                    ${ $uid . $curboard }{'pic'} = 'recycle.gif';
+                    ${ $uid . $curboard }{'pic'} = qq~recycle.$bdpicExt~;
                 }
                 ( $boardname, $boardperms, $boardview ) =
                   split /\|/xsm, $board{$curboard};
@@ -783,23 +783,24 @@ qq~$collapse_link $hash{$catname} <a href="$scripturl?catselect=$catid" title="$
                         'granted' )
                     {
                         $new =
-qq~<img src="$imagesdir/on.png" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" />~;
+qq~<img src="$imagesdir/$brdimg_new" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" />~;
                     }
                     else {
                         $new =
-qq~<img src="$imagesdir/off.png" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" />~;
+qq~<img src="$imagesdir/$brdimg_old" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" />~;
                     }
                 }
                 else {
                     $new =
-qq~<img src="$imagesdir/off.png" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" />~;
+qq~<img src="$imagesdir/$brdimg_old" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" />~;
                 }
                 if ( !$bdpic ) {
+                    $bdpicExt ||= 'gif';
                     if ($subboard_sel) {
-                        $bdpic = 'subboards.gif';
+                        $bdpic = qq~subboards.$bdpicExt~;
                     }
                     else {
-                        $bdpic = 'boards.gif';
+                        $bdpic = qq~boards.$bdpicExt~; 
                     }
                 }
 
@@ -914,11 +915,11 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
                         }
                         elsif ( $new_icon{$childbd} ) {
                             $sub_new =
-qq~<img src="$imagesdir/sub_on.png" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" />~;
+qq~<img src="$imagesdir/$sub_brdimg_new" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" />~;
                         }
                         else {
                             $sub_new =
-qq~<img src="$imagesdir/sub_off.png" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" />~;
+qq~<img src="$imagesdir/$sub_brdimg_old" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" />~;
                         }
 
                         my $boardinfotxt =
@@ -972,7 +973,7 @@ s/({|<)yabb boardurl(}|>)/$scripturl\?board\=$childbd/gsm;
                         }
                         else {
                             $subdropdown =
-qq~<a href="javascript://" id="subdropa_$curboard" style="font-weight:bold" onclick="SubBoardList('$scripturl?board=$curboard','$curboard','$catid',$sub_count,$alternateboardcolor)"><img src="$imagesdir/sub_arrow.png" id="subdropbutton_$curboard" style="position: relative; top: 2px; cursor: pointer;" alt="" />&nbsp;$sub_txt</a>~;
+qq~<a href="javascript://" id="subdropa_$curboard" style="font-weight:bold" onclick="SubBoardList('$scripturl?board=$curboard','$curboard','$catid',$sub_count,$alternateboardcolor)"><img src="$imagesdir/$sub_arrow_dn" id="subdropbutton_$curboard" style="position: relative; top: 2px; cursor: pointer;" alt="" />&nbsp;$sub_txt</a>~;
                         }
                     }
                     $tmp_sublist =~
@@ -1025,12 +1026,12 @@ qq~           <tr id="dropsubrow_$curboard" style="display: none">
                             <col style="width:auto" />
                             <col style="width:20px" />
                             <tr>
-                                <td class="bottom" style="background-image:url($imagesdir/fadeleftdropdown.gif)">
-                                    <img onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$yyhtml_root','$curboard', 0)" style="position: absolute; cursor: pointer; bottom: -12px; left: -12px" src="$imagesdir/closebutton.png" alt="" />
+                                <td class="bottom" style="background-image:url($imagesdir/$brd_fadeleftdropdown)">
+                                    <img onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$yyhtml_root','$curboard', 0)" style="position: absolute; cursor: pointer; bottom: -12px; left: -12px" src="$imagesdir/$brd_closebutton" alt="" />
                                 </td>
                                 <td id="drop_$curboard" style="padding: 0px; padding-bottom: 8px"></td>
-                                <td class="vtop" style="background-image:url($imagesdir/faderightdropdown.gif)">
-                                    <img onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$yyhtml_root','$curboard', 0)" style="position: absolute; cursor: pointer; top: -12px; right: -12px" src="$imagesdir/closebutton.png" alt="" />
+                                <td class="vtop" style="background-image:url($imagesdir/$brd_faderightdropdown)">
+                                    <img onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$yyhtml_root','$curboard', 0)" style="position: absolute; cursor: pointer; top: -12px; right: -12px" src="$imagesdir/$brd_closebutton" alt="" />
                                 </td>
                             </tr>
                         </table>
@@ -1045,7 +1046,7 @@ qq~           <tr id="dropsubrow_$curboard" style="display: none">
                     || ( !$iamguest && $access eq 'granted' ) )
                 {
                     $messagedropdown = qq~
-                <img onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$yyhtml_root','$curboard', 0)" id="dropbutton_$curboard" style="cursor: pointer" src="$imagesdir/dropdown.png" alt="" />
+                <img onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$yyhtml_root','$curboard', 0)" id="dropbutton_$curboard" style="cursor: pointer" src="$imagesdir/$brd_dropdown" alt="" />
                         ~;
                 }
                 else { $messagedropdown = q{}; }
@@ -1206,12 +1207,12 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
     var boardNames = [$template_boardnames];
     var boardOpen = "";
     var subboardOpen = "";
-    var arrowup = '<img style="margin: 2px" src="$imagesdir/arrowup.gif" />';
-    var openbutton = "$imagesdir/dropdown.png";
-    var closebutton = "$imagesdir/dropup.png";
-    var opensubbutton = "$imagesdir/sub_arrow.png";
-    var closesubbutton = "$imagesdir/sub_arrow_up.png";
-    var loadimg = "$imagesdir/loadbar.gif";
+    var arrowup = '<img style="margin: 2px" src="$imagesdir/$brd_arrowup" />';
+    var openbutton = "$imagesdir/$brd_dropdown";
+    var closebutton = "$imagesdir/$brd_dropup";
+    var opensubbutton = "$imagesdir/$sub_arrow_dn";
+    var closesubbutton = "$imagesdir/$sub_arrow_up";
+    var loadimg = "$imagesdir/$brd_loadbar";
     var cachedBoards = new Object();
     var cachedSubBoards = new Object();
     var curboard = "";
@@ -1358,10 +1359,10 @@ qq~<div class="grpcolors"><span style="color: $color;"><b>lllll</b></span> $titl
         my ( $rss_link, $rss_text );
         if ( !$rss_disabled ) {
             $rss_link =
-qq~<a href="$scripturl?action=RSSrecent" onclick="target='_blank';"><img src="$imagesdir/rss.png" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
+qq~<a href="$scripturl?action=RSSrecent" onclick="target='_blank';"><img src="$imagesdir/$brd_rss" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
             if ( $INFO{'catselect'} ) {
                 $rss_link =
-qq~<a href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" onclick="target='_blank';"><img src="$imagesdir/rss.png" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
+qq~<a href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" onclick="target='_blank';"><img src="$imagesdir/$brd_rss" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
             }
             $rss_text =
 qq~<a href="$scripturl?action=RSSrecent" onclick="target='_blank';">$boardindex_txt{'792'}</a>~;
@@ -1480,7 +1481,7 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt $boa
         my $cal_display;
         if ( $Show_EventCal == 2 || ( !$iamguest && $Show_EventCal == 1 ) ) {
             require Sources::EventCal;
-            $cal_display = get_cal();
+            $cal_display = eventcal();
         }
         $boardindex_template =~ s/({|<)yabb caldisplay(}|>)/$cal_display/gsm;
 
@@ -1597,10 +1598,10 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1" class="a"><b>$pboar
                         var boardNames = [$template_boardnames];
                         var boardOpen = "";
                         var subboardOpen = "";
-                        var arrowup = '<img style="margin: 2px" src="$imagesdir/arrowup.gif" />';
-                        var openbutton = "$imagesdir/dropdown.png";
-                        var closebutton = "$imagesdir/dropup.png";
-                        var loadimg = "$imagesdir/loadbar.gif";
+                        var arrowup = '<img style="margin: 2px" src="$imagesdir/$brd_arrowup" />';
+                        var openbutton = "$imagesdir/$brd_dropdown";
+                        var closebutton = "$imagesdir/$brd_dropup";
+                        var loadimg = "$imagesdir/$brd_loadbar";
                         var cachedBoards = new Object();
                         var cachedSubBoards = new Object();
                         var curboard = "";

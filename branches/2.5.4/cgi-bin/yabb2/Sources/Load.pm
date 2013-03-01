@@ -519,9 +519,10 @@ qq~<div style="float: left; font-size: 10px; font-family: verdana, sans-serif; o
     if ( $showgenderimage && ${ $uid . $user }{'gender'} ) {
         ${ $uid . $user }{'gender'} =
           ${ $uid . $user }{'gender'} =~ m/Female/ixsm ? 'female' : 'male';
+        $genderTitle = ${ $uid . $user }{'gender'};
         ${ $uid . $user }{'gender'} =
           ${ $uid . $user }{'gender'}
-          ? qq~$load_txt{'231'}: <img src="$imagesdir/${$uid.$user}{'gender'}.png" alt="${$uid.$user}{'gender'}" title="${$uid.$user}{'gender'}" /><br />~
+          ? qq~$load_txt{'231'}: <img src="$imagesdir/${$uid.$user}{'gender'}.png" alt="$load_txt{$genderTitle}" title="$load_txt{$genderTitle}" /><br />~ 
           : q{};
     }
     else {
@@ -546,10 +547,12 @@ qq~<div style="float: left; font-size: 10px; font-family: verdana, sans-serif; o
             ? ${ $uid . $user }{'userpic'}
             : "$facesurl/${$uid.$user}{'userpic'}"
           )
-          . q~" name="avatar_img_resize" alt="" style="display:none" /><br />~;
+          . q~" name="avatar_img_resize" alt="" style="display:none" />~;
+          if ( !$iamguest ) { ${ $uid . $user }{'userpic'} = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">${ $uid . $user }{'userpic'}</a>~; }
+          ${ $uid . $user }{'userpic'} .= q~<br />~; 
     }
     else {
-        ${ $uid . $user }{'userpic'} = '<br />';
+        ${ $uid . $user }{'userpic'} = q~<br />~;
     }
 
     LoadMiniUser($user);
@@ -855,14 +858,14 @@ qq~             <li><a href="$scripturl?action=addbuddy;name=$useraccount{$user}
 qq~             <li><a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$maintxt{'6'}</a></li>\n~;
         }
         $quicklinks .=
-qq~         </ul><a href="javascript:quickLinks('$useraccount{$user}$qlcount')"$lastonline>~;
+qq~         </ul><a href="javascript:quickLinks('$useraccount{$user}$qlcount')"$lastonline><span class="small">~;
         $quicklinks .= $online ? $format_unbold{$user} : $format{$user};
-        $quicklinks .= q~</a></div>~;
+        $quicklinks .= q~</span></a></div>~;
     }
     else {
         $quicklinks =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}"$lastonline>~
-          . ( $online ? $format_unbold{$user} : $format{$user} ) . q~</a>~;
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}"$lastonline><span class="small">~
+          . ( $online ? $format_unbold{$user} : $format{$user} ) . q~</span></a>~;
     }
 
     return $quicklinks;

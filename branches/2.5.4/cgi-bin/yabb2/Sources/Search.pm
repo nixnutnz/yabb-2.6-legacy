@@ -105,7 +105,12 @@ function searchMe(chelem) {
 </script>
 
 <form action="$scripturl?action=search2" method="post" name="searchform" onsubmit="return CheckSearchFields();" accept-charset="$yycharset">~;
-    $yymain .= $mysearch_template;
+    $yymain .= $mysearch_template  . (
+    $enable_ubbc
+    ? qq~<br />
+            <input type="checkbox" name="searchyabbtags" id="searchyabbtags" value="1" /><label for="searchyabbtags">$search_txt{'searchyabbtags'}</label>~
+    : q{}
+  );
 
     if (   !$ML_Allowed
         || ( $ML_Allowed == 1 && !$iamguest )
@@ -191,8 +196,9 @@ qq~<option value="$curboard" $selected>$boardname</option>\n          ~;
 			// -->
 			</script>~;
     $yymain .= $mysearch_template5;
+    $yymain =~ s/{yabb maxsearchdisplay}/$maxsearchdisplay/sm;
 
-    $yymain .= qq~</form>
+    $yymain .= qq~
 <script type="text/javascript">
 <!--
 	document.searchform.search.focus();
@@ -494,14 +500,12 @@ qq~<hr class="hr" /><b>$search_txt{'170'}<br /><a href="javascript:history.go(-1
         ++$counter;
 
         $yymain .= $mysearch_template6;
-        $yymain .= $counter;
-        $yymain .= $mysearch_template6a;
+        $yymain =~ s/{yabb counter}/$counter/sm;
         $yymain .=
 qq~<a href="$scripturl?catselect=$catid{$board}"><span class="under">$catname{$board}</span></a> / <a href="$scripturl?board=$board"><span class="under">$boardname{$board}</span></a> / <a href="$scripturl?num=$tnum/$msgnum#$msgnum"><span class="under">$msub</span></a>&nbsp;<br /><span class="small">$search_txt{'30'}: $mdate</span>~;
         $yymain .= $mysearch_template7;
-        $yymain .=
-qq~$search_txt{'109'} $tname | $search_txt{'105'} $search_txt{'525'} $mname~;
-        $yymain .= $mysearch_template8;
+        $yymain =~ s/{yabb tname}/$tname/sm;
+        $yymain =~ s/{yabb mname}/$mname/sm;
 
         if ( $tstate != 1
             && ( !$iamguest || ( $iamguest && $enable_guestposting ) ) )
@@ -524,8 +528,7 @@ qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$msgnum#$msgnum;title=
         }
 
         $yymain .= $mysearch_template9;
-        $yymain .= $message;
-        $yymain .= $mysearch_template10;
+        $yymain =~ s/{yabb message}/$message/sm;
     }
 
     if (@messages) {
@@ -1006,7 +1009,7 @@ sub msgfnd {
 }
 
 sub msgfnd2 {
-    my ($message) = @_;
+    my ( $message ) = @_;
     $msgfound = 1;
     foreach (@search) {
         if ( $message !~ m{(^|\W|_)\Q$_\E(?=$|\W|_)}ixsm ) {
