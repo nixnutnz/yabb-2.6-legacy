@@ -1,0 +1,130 @@
+###############################################################################
+# default.Calendar.template                                                   #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.5.4                                                  #
+# Packaged:       January 1, 2013                                             #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+# $Revision$
+
+$seperator = q{};
+$title_class = 'tabtitle';
+$titleclass_inset = 'tabtitle';
+
+$cal_grn1 = 'green1.gif';
+$cal_grn0 = 'green0.gif';
+$cal_red0 ='red0.gif';
+$cal_red1 ='red1.gif';
+$cal_eventbd = 'eventbd.gif';
+$cal_eventprivate = 'eventprivate.gif';
+$cal_modify = 'modify.gif';
+$cal_delete = 'delete.gif';
+$cal_eventmore = 'eventmore.gif';
+$cal_eventinfo = 'eventinfo.gif';
+$cal_eventinfobd = 'eventinfobd.gif';
+$cal_eventcal = 'eventcal.gif';
+
+
+$mycalout_add_cal = qq~<table class="bordercolor">
+    <col style="width:160px" />
+    <tr>
+        <td class="windowbg2" colspan="2">
+            <b>$var_cal{'calevent'}</b><br />
+        </td>
+    </tr><tr> 
+        <td class="windowbg2 cal_row1">
+            <label for="calday"><span class="small"><b>$var_cal{'date'}:</b></span></label>
+        </td>
+        <td class="windowbg2">
+            <span class="small">{yabb addevdate}</span>
+        </td>
+    </tr>~;
+
+$mycalout_add_cal_end = qq~
+            </select>
+            <img src="$yyhtml_root/EventIcons/{yabb calicon}.gif" name="calicons" style="margin:0 26px" alt="" />
+        </td>
+    </tr><tr>
+        <td class="windowbg2" colspan="2">~;
+
+$mycalout_b = qq~
+    <table class="tabtitle">
+        <col style="width:30%" />
+        <col style="width:70%" />
+        <tr>
+            <td style="height:25px; padding-left:1%">
+                <img src="$yyhtml_root/Templates/Forum/default/$cal_eventcal" alt="" /> $var_cal{'caltitle'}
+            </td>
+            <td class="right" style="padding-right:1%">
+                {yabb calgotobox}
+            </td>
+        </tr>
+    </table>~;
+
+$mycalout_mini = qq~
+        <div class="$seperator">
+        <table class="cs_thin pad_4px">
+            <tr>
+                <td class="$title_class" colspan="2">
+                    <div class="calout_left"><img src="$yyhtml_root/Templates/Forum/default/$cal_eventcal" alt="" /> $var_cal{'caltitle'}</div>
+                    <div class="calout_right">{yabb calgotobox}</div>
+                </td>
+            </tr>
+        </table>
+        </div>~;
+
+$mycalout_noevent = qq~<tr>
+        			<td class="windowbg padd_3px" colspan="2">
+                        <hr class="hr" />
+                        <img src="$yyhtml_root/EventIcons/$cal_eventinfo" alt="Event" /> $var_cal{'calnoevent'}
+                        <hr class="hr" />
+        			</td>
+                </tr>
+    			~;
+
+$mycalout_c = q~
+<table class="bordercolor">
+    ~;
+
+$mycalout_d = qq~
+<div class="$seperator">
+<table class="bordercolor cs_thin pad_3px">~;
+
+$mycalout_e = qq~
+<div class="$seperator">
+<table class="cs_thin pad_4px">
+    <tr>
+        <td class="catbg">~;
+
+
+$mycalout_f = qq~<tr>
+    <td style="padding-left:1%; height:25px">$var_cal{'caltitle'}
+    </td>
+    <td class="right" style="padding-right:1%">{yabb calgotobox}</td>
+</tr>
+</table>
+<table class="bordercolor pad_3px">
+    <col style="width:5%" />
+    <col style="width:30%" />~;
+
+$mycalout_h =         qq~
+<table class="tabtitle">
+    <col style="width:30%" />
+    <col style="width:70%" />
+                {yabb cal_display}
+    </table>~;
+
+$mycalout_j = qq~
+        <div class="$seperator">
+        <table class="cs_thin pad_4px">
+            {yabb cal_display}
+        </table>
+        </div>~;
+
+1;

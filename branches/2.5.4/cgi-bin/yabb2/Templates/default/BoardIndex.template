@@ -1,5 +1,5 @@
 ###############################################################################
-# BoardIndex.template                                                         #
+# default.BoardIndex.template                                                 #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -16,6 +16,26 @@
 $boardhandellist = qq~
 	{yabb expand}{yabb collapse}{yabb markallread}
 ~;
+$bdpicExt = 'gif'; 
+## for the default annoucnement, recycle, subboard and regular board markers ## 
+$brdimg_new = 'on.png';
+$brdimg_old = 'off.png';
+$sub_brdimg_new = 'sub_on.png';
+$sub_brdimg_old = 'sub_off.png';
+$brd_dropdown = 'dropdown.png';
+$brd_dropup = 'dropup.png';
+$brd_arrowup = 'arrowup.gif';
+$brd_loadbar = 'loadbar.gif';
+$brd_info = 'info.gif';
+$brd_online = 'online.gif';
+$brd_cat_col = 'cat_collapse.gif';
+$brd_cat_exp = 'cat_expand.gif';
+$brd_fadeleftdropdown = 'fadeleftdropdown.gif';
+$brd_faderightdropdown = 'faderightdropdown.gif';
+$brd_closebutton = 'closebutton.png';
+$brd_rss = 'rss.png';
+$sub_arrow_dn = 'sub_arrow.png';
+$sub_arrow_up = 'sub_arrow_up.png';
 
 $boardindex_template = qq~
 <!-- Board Index Showcase Poll start -->
@@ -33,8 +53,8 @@ $boardindex_template .= qq~
 		    <col style="width:50%" />
 			<tr class="windowbg">
 				<td class="small">
-						<span class="small"><img src="$imagesdir/on.png" id="on" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" /> $boardindex_txt{'333'}&nbsp;&nbsp;
-						<img src="$imagesdir/off.png" id="off" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" /> $boardindex_txt{'334'}</span>
+						<span class="small"><img src="$imagesdir/$brdimg_new" id="on" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" /> $boardindex_txt{'333'}&nbsp;&nbsp;
+						<img src="$imagesdir/$brdimg_old" id="off" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" /> $boardindex_txt{'334'}</span>
 				</td><td class="right small">
 						{yabb boardhandellist}
 				</td>
@@ -47,9 +67,7 @@ $boardindex_template .= qq~
 if(!$subboard_sel) {
 $boardindex_template .= qq~
 <!-- Info Center block start -->
-		<br />
-		<br />
-		<table class="bordercolor">
+		<table class="bordercolor" style="margin-top:10px">
 			<col style="width:1%" />
 			<tr>
 				<td class="tabtitle h_25px">&nbsp;</td>
@@ -60,7 +78,7 @@ $boardindex_template .= qq~
     		<col style="width:5%" />
 			<tr>
 				<td class="windowbg center">
-					<img src="$imagesdir/info.gif" alt="" />
+					<img src="$imagesdir/$brd_info" alt="" />
 				</td>
 				<td class="windowbg2 center vtop">
 					<div class="small" style="float: left; width: 59%; text-align: left;">
@@ -76,7 +94,7 @@ $boardindex_template .= qq~
 				</td>
 			</tr><tr>
 				<td class="windowbg center">
-					<img src="$imagesdir/online.gif" alt="" />
+					<img src="$imagesdir/$brd_online" alt="" />
 				</td>
 				<td class="windowbg2 center vtop">
 					<div class="small" style="float: left; width: 90%; text-align: left;">
@@ -88,8 +106,7 @@ $boardindex_template .= qq~
 				</td>
 			</tr>
 		</table>
-		<br />
-		<table class="bordercolor">
+		<table class="bordercolor" style="margin-top:10px">
     		<col style="width:1%" />
 			<tr>
 				<td class="tabtitle h_25px">&nbsp;</td>
@@ -100,7 +117,7 @@ $boardindex_template .= qq~
     		<col style="width:5%" />
 			<tr>
 				<td class="windowbg center">
-					<img src="$imagesdir/online.gif" alt="" />
+					<img src="$imagesdir/$brd_online" alt="" />
 				</td>
 				<td class="windowbg2">
 					<div class="small" style="float: left; width: 59%; text-align: left;">
@@ -117,13 +134,11 @@ $boardindex_template .= qq~
 				</td>
 			</tr>
 		</table>
-		<br />
 <!-- ## XTC Cal Mod ## -->
-		<table class="bordercolor pad_4px cs_thin">
+		<table class="bordercolor pad_4px cs_thin" style="margin-top:10px">
 			<col style="width:1%" />
 			<col style="width:29%" />
 			<col style="width:69%" />{yabb caldisplay}			</table>
-			<br />
 <!-- ## XTC Cal Mod ## -->
 	{yabb sharedlogin}
 <!-- Info Center block end -->
@@ -143,13 +158,12 @@ $catheader = qq~
 			<tr>
 				<td class="h_25px">&nbsp;</td>
 				<td>{yabb catimage} {yabb catlink}</td>
-      			<td class="tabtitle center">&nbsp;</td>
-      			<td class="tabtitle center">$boardindex_txt{'22'}</td>
+      			<td class="center">&nbsp;</td>
+      			<td class="center">$boardindex_txt{'22'}</td>
 			</tr>
 		</table>
 		<table {yabb colboardtable} class="bordercolor pad_4px cs_thin">
 		{yabb newmsg start}{yabb newmsg icon}{yabb newmsg}{yabb newmsg end}
-			<tr class="green"><td class="green" colspan="5">&nbsp;</td></tr>
 		</table>
 		<table {yabb boardtable} class="bordercolor pad_4px cs_thin">
     		<col style="width:6%" />

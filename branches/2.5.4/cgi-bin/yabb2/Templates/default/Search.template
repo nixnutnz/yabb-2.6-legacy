@@ -32,13 +32,7 @@ $mysearch_template = qq~
 				<option value="aspartial">$search_txt{'345a'}</option>
 			</select>
 			<br />
-			<input type="checkbox" name="casesensitiv" id="casesensitiv" value="1" /><label for="casesensitiv">$search_txt{'casesensitiv'}</label>~
-  . (
-    $enable_ubbc
-    ? qq~<br />
-			<input type="checkbox" name="searchyabbtags" id="searchyabbtags" value="1" /><label for="searchyabbtags">$search_txt{'searchyabbtags'}</label>~
-    : q{}
-  );
+			<input type="checkbox" name="casesensitiv" id="casesensitiv" value="1" /><label for="casesensitiv">$search_txt{'casesensitiv'}</label>~;
 
 $mysearch_template2 = qq~
 		</td>
@@ -48,8 +42,11 @@ $mysearch_template2 = qq~
 		</td>
 		<td class="windowbg2">
 			<div style="padding: 4px 0px 4px 0px;">
-			<input type="text" size="30" style="width: 220px; padding-left: 3px;" name="userspectext" id="userspectext" value="" readonly="readonly" /><input type="button" class="button" id="usrsel" style="border-left: 0px; display: inline;" value="$searchselector_txt{'select'}" onclick="javascript:addUser();" /><input type="button" class="button" id="usrrem" style="border-left: 0px; display: none;" value="$searchselector_txt{'remove'}" onclick="javascript:removeUser();" />
+			<input type="text" size="30" style="width: 220px; padding-left: 3px;" name="userspectext" id="userspectext" value="" readonly="readonly" />
+			<input type="button" class="button" id="usrsel" style="border-left: 0px; display: inline;" value="$searchselector_txt{'select'}" onclick="javascript:addUser();" />
+			<input type="button" class="button" id="usrrem" style="border-left: 0px; display: none;" value="$searchselector_txt{'remove'}" onclick="javascript:removeUser();" />
 			~;
+
 $mysearch_template3 = qq~
 			<input type="hidden" size="30" name="userspec" id="userspec" value="" />
 			</div>
@@ -66,11 +63,11 @@ $mysearch_template3 = qq~
 $mysearch_template4 = qq~
 		</td>
 	</tr><tr>
-		<td class="windowbg right vtop"><b>$search_txt{'189'}: zz</b><br /><span class="small">$search_txt{'190'}</span></td>
+		<td class="windowbg right vtop"><b>$search_txt{'189'}:</b><br /><span class="small">$search_txt{'190'}</span></td>
 		<td class="windowbg2" >~;
 
 $mysearch_template5 = qq~
-				</td>
+		</td>
     </tr><tr>
 		<td class="windowbg right"><b>$search_txt{'573'}:</b></td>
 		<td class="windowbg2">
@@ -90,7 +87,7 @@ $mysearch_template5 = qq~
 		</td>
 	</tr><tr>
 		<td class="windowbg right"><label for="numberreturned"><b>$search_txt{'191'}</b><br /><span class="small">$search_txt{'191b'}</span></label></td>
-		<td class="windowbg2"><input type="text" size="5" name="numberreturned" id="numberreturned" maxlength="5" value="$maxsearchdisplay" /></td>
+		<td class="windowbg2"><input type="text" size="5" name="numberreturned" id="numberreturned" maxlength="5" value="{yabb maxsearchdisplay}" /></td>
 	</tr><tr>
 		<td class="windowbg right"><label for="oneperthread"><b>$search_txt{'191a'}</b></label></td>
 		<td class="windowbg2"><input type="checkbox" name="oneperthread" id="oneperthread" value="1"/></td>
@@ -99,14 +96,13 @@ $mysearch_template5 = qq~
 			<input type="submit" name="submit" value="$search_txt{'182'}" class="button" />
 		</td>
 	</tr>
-</table>~;
+</table></form>~;
 
 $mysearch_template6 =
   qq~<table class="bordercolor cs_thin" style="table-layout: fixed;">
     <col style="width:5%" />
 	<tr>
-		<td class="titlebg center">~;
-$mysearch_template6a = qq~		</td>
+		<td class="titlebg center">{yabb counter}</td>
 		<td class="titlebg">&nbsp;~;
 
 $mysearch_template7 = qq~</td>
@@ -114,22 +110,18 @@ $mysearch_template7 = qq~</td>
 		<td colspan="2">
 			<table class="catbg">
 				<tr>
-					<td>~;
-
-$mysearch_template8 = qq~
-					</td>
+                    <td>$search_txt{'109'} {yabb tname} | $search_txt{'105'} $search_txt{'525'} {yabb mname}</td>
 					<td class="right">&nbsp;~;
 
-$mysearch_template9 = qq~
+$mysearch_template9 = q~
 					</td>
 				</tr>
 			</table>
 		</td>
 	</tr><tr>
-		<td class="windowbg2 vtop h_80px" colspan="2"><div class="message" style="float: left; width: 99%; overflow: auto;">~;
-
-$mysearch_template10 = qq~
-</div></td>
+		<td class="windowbg2 vtop h_80px" colspan="2">
+		    <div class="message" style="float: left; width: 99%; overflow: auto;">{yabb message}</div>
+		</td>
 	</tr>
 </table><br />~;
 

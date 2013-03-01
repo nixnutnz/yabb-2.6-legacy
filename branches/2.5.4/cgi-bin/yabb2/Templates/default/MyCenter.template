@@ -1,5 +1,5 @@
 ###############################################################################
-# MyCenter.template                                                           #
+# default.MyCenter.template                                                   #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -23,7 +23,7 @@ $mycenter_template = qq~
 		<col style="width:440px" />
 		<tr>
 			<td class="tabmenuleft">&nbsp;</td>
-			<td class="tabmenu">{yabb mcmenu}</td>
+			<td class="tabmenu"><ul>{yabb mcmenu}</ul></td>
 			<td class="tabmenuright">&nbsp;</td>
 			<td class="rightbox vtop">
 				<div class="mctitle">
@@ -81,5 +81,9 @@ $myprofileblock = qq~
 	</div>
 </div>
 ~;
+
+$myimblock = q~    <table class="bordercolor cs_thin"  style="border-top:0; margin-top:-2px">
+        <col style="width:65%" />
+        <col style="width:15%" />~;
 
 1;

@@ -1,0 +1,106 @@
+###############################################################################
+# default.Profile.template                                                    #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.5.4                                                  #
+# Packaged:       January 1, 2013                                             #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+# $Revision$
+
+
+$myprofile_a = qq~
+<table class="tabtitle cs_thin pad_4px" style="width:500px">
+    <tr>
+        <td class="center"><b>$profile_txt{'901'}</b></td>
+    </tr>
+</table>
+<table class="bordercolor cs_thin pad_4px" style="width:500px; margin-bottom:10px">
+    <tr>
+        <td class="windowbg2 center">
+            <label for="passwrd"><span class="small"><br />{yabb sid_descript}<br /><br /></span></label>
+        </td>
+    </tr><tr>
+        <td class="windowbg2 center">
+            <form action="{yabb prof_act}" method="post" name="confirmform">
+                <input type="hidden" name="redir" value="{yabb redirsid}" />
+                <div style="padding-top: 4px;">
+                    <div><input type="password" name="passwrd" id="passwrd" size="15" style="width: 150px;" onkeypress="capsLock(event,'cappasswrd')" /></div>
+                    <div style="color: red; font-weight: bold; display: none" id="cappasswrd">$profile_txt{'capslock'}</div>
+                    <div style="color: red; font-weight: bold; display: none" id="cappasswrd_char">$profile_txt{'wrong_char'}: <span id="cappasswrd_character">&nbsp;</span></div>
+                </div>
+                <div style="padding-top: 8px;">
+                    <input type="submit" value="$profile_txt{'900'}" class="button" />
+                </div>
+            </form>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+<!--
+        document.confirmform.passwrd.focus();
+// -->
+</script>~;
+
+$myprofile_menu = q~<table class="bordercolor cs_thin pad_4px">
+    <col span="3" style="width:16%" />
+    <tr>~;
+
+$myprofile_edit = q~<table class="bordercolor cs_thin pad_4px">
+    <col style="width:220px" />
+    <tr>
+        <td class="catbg" colspan="2">~;
+
+$myprofile_session = qq~<tr>
+        <td class="catbg" colspan="2">
+            <img src="$imagesdir/session.gif" alt="" /> <label for="sesquest"><b>$img_txt{'34a'}</b><br /><span class="small">$session_txt{'9'}<br />$session_txt{'9a'}</span></label></td>
+    </tr><tr class="windowbg">
+        <td>{yabb questsel}</td>
+        <td><input type="text" maxlength="30" name="sesanswer" size="20" value="{yabb decanswer}" /></td>
+    </tr>~;
+
+$myprofile_bottom = qq~<tr class="catbg">
+        <td class="center" style="height:50px" colspan="2">
+            {yabb show_confdel}
+            <input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />
+            <br /><span class="small">$profile_txt{'sid_expires_1'} {yabb sid_expires} $profile_txt{'sid_expires_2'}</span>
+        </td>
+    </tr>
+</table>
+</form>~;
+
+$myprofile_email = qq~<table class="bordercolor cs_thin pad_4px">
+    <col style="width:320px" />
+    <tr>
+        <td class="catbg" colspan="2">
+        <img src="$imagesdir/profile.gif" alt="" /> <b>{yabb profiletitle}</b></td>
+    </tr><tr class="windowbg">
+        <td><label for="email"><b>$profile_txt{'69'}: </b><br /><span class="small">$profile_txt{'679'} </span></label></td>
+        <td><input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.value,'email')" name="email" id="email" size="40" value="{yabb user_email}" />
+            <div id="emailavailability"></div>
+        </td>
+    </tr>~;
+
+$myprofile_title = qq~<table class="bordercolor cs_thin pad_4px">
+    <tr>
+        <td class="catbg" colspan="2">
+        <img src="$imagesdir/profile.gif" alt="" /> <b>{yabb profiletitle}</b> {yabb myprofile_userinfo}</td>
+    </tr><tr class="windowbg">~;
+
+$myrow_sig = q~<tr>
+        <td class="catbg">~;
+
+$myshow_a = q~
+<table class="bordercolor cs_thin pad_8px">~;
+
+$myshow_b = q~
+    <tr>
+        <td class="titlebg">
+            <div class="text1" style="float: left; width: 100%;">~;
+
+1;

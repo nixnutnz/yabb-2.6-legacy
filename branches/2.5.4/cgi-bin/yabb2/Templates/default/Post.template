@@ -1,0 +1,199 @@
+###############################################################################
+# default.Post.template                                                       #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.5.4                                                  #
+# Packaged:       January 1, 2013                                             #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+# $Revision$
+
+
+$mypost_templatea = qq~<tr>
+    <td class="windowbg"><label for="name"><b>$post_txt{'68'}:</b></label></td>
+    <td class="windowbg"><input type="text" name="name" id="name" size="25" value="$FORM{'name'}" maxlength="25" tabindex="2" /></td>
+      </tr>~;
+
+$mypost_templateb= qq~<tr>
+    <td class="windowbg"><label for="email"><b>$post_txt{'69'}:</b></label></td>
+    <td class="windowbg"><input type="text" name="email" id="email" size="25" value="$FORM{'email'}" maxlength="40" tabindex="3" /></td>
+      </tr>~;
+
+$mypost_templatec = qq~<tr class="windowbg">
+                <td class="vtop"><label for="verification"><b>$floodtxt{'1'}:</b></label></td>
+                <td>{yabb showcheck}<br /><label for="verification"><span class="small">{yabb flood_text}</span></label></td>
+            </tr><tr class="windowbg">
+                <td class="vtop"><label for="verification"><b>$floodtxt{'3'}:</b></label></td>
+                <td>
+                <input type="text" maxlength="30" name="verification" id="verification" size="30" />
+                </td>
+            </tr>~;
+      
+$mypost_templatee = qq~<tr>
+                <td class="windowbg vtop">
+                   <label for="verification_question"><b>{yabb spam_question}</b>
+                   <br /><span class="small">$post_txt{'verification_question_desc'} {yabb verification_question_desc}</span></label>
+                   <input type="hidden" name="verification_question_id" value="{yabb spam_question_id}" />
+                   <input type="hidden" name="spam_question" value="{yabb spam_question_b}" />
+                </td>
+                <td class="windowbg vtop">
+                    <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" />
+                </td>
+            </tr>~;
+
+$mypost_ubbc = qq~
+    <div class="bordercolor" style="padding: 1px; width: 100%; margin-left: auto; margin-right: auto;">
+    <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    ~;
+
+$mypost_polla = qq~
+<table class="windowbg pad_3px" style="table-layout: fixed;">
+    <col style="width:250px" />
+    <col style="width:240px" />
+    <col span="2" style="width:60px" />
+    <tr>
+        <td class="catbg"><label for="question"><b>$post_polltxt{'6'}:</b></label></td>
+        <td class="catbg">&nbsp;</td>
+        <td class="catbg">&nbsp;</td>
+        <td class="catbg">&nbsp;</td>
+        <td class="catbg">&nbsp;</td>
+    </tr><tr>
+        <td class="windowbg2" colspan="5" style="font-size: 3px;">&nbsp;</td>
+    </tr><tr>
+    <td class="windowbg2">&nbsp;</td>
+    <td colspan="4" class="windowbg2">
+        <input type="text" size="60" name="question" id="question" value="{yabb poll_question}" maxlength="{yabb maxpq}" />
+        <input type="hidden" name="pollthread" value="{yabb pollthread}" />
+    </td>
+    </tr><tr>
+        <td class="windowbg2" colspan="5" style="font-size: 3px;">&nbsp;</td>
+    </tr><tr>
+        <td class="catbg"><b>$post_polltxt{'polloptions'}</b></td>
+        <td class="catbg"><b>$post_polltxt{'polloptionstext'}</b></td>
+        <td class="catbg center"><b>$post_polltxt{'pieslicecolor'}</b></td>
+        <td class="catbg center"><b>$post_polltxt{'pieslicesplit'}</b></td>
+        <td class="catbg">&nbsp;</td>
+    </tr><tr>
+        <td class="windowbg2" colspan="5" style="font-size: 3px;">&nbsp;</td>
+    </tr>~;
+    
+
+$mypost_pollc = q~
+<table class="windowbg pad_3px" style="table-layout: fixed;">
+    <col style="width:23%" />
+~;
+
+$mypost_polld = qq~<tr>
+        <td class="windowbg vtop">
+            <div id="SaveInfo" style="height:16px;">
+            <img src="$defaultimagesdir/cat_expand.gif" id="prevwin" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
+            </div>
+        </td>
+        <td class="windowbg">
+            <div id="savetable" class="bordercolor" style="padding:1px; width:100%; margin:auto; visibility:hidden;">
+            <table class="pad_3px" style="table-layout:fixed;">
+              <tr>
+                <td class="titlebg">
+                 <div id="savetopic" style="height:0px; text-align:left; vertical-align:middle; font-weight:bold; overflow:auto;">&nbsp;</div>
+                </td>
+              </tr><tr>
+                <td class="windowbg2">
+                 <div id="saveframe" class="message" style="height:0px; text-align:left; vertical-align:top; overflow:auto;">&nbsp;</div>
+                </td>
+              </tr>
+            </table>
+            </div>
+        </td>
+    </tr>~;
+
+$mypost_polle = q~</div>
+            </div>
+        </td>
+    </tr><tr>
+        <td class="windowbg2 vtop">
+        ~;
+
+$mypost_smiley1 = qq~
+            document.write('<table class="bordercolor pad_2px border" style="height:90px; width:120px"><tr>');
+            document.write('<td class="titlebg center h_15px"><span class="small"><b>$post_smiltxt{'1'}</b></span></td>');
+            document.write('</tr><tr><td class="windowbg2 center vtop h_20px">');
+            document.write('<select name="smiliextra_list" onchange="document.images.smiliextra_image.src= smilieurl[document.postmodify.smiliextra_list.value]" style="width:114px; font-size:7pt;">');
+            ~;
+
+$mypost_smiley2 = qq~
+            document.write('</select></td>');
+            document.write('</tr><tr>');
+            document.write('<td class="windowbg2 center h_70px"><img name="smiliextra_image" src="'+smilieurl[0]+'" alt="" onclick="javascript: Smiliextra();" class="pointer"></td>');
+            document.write('</tr><tr>');
+            document.write('<td class="windowbg2 center h_15px"><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span></td>');
+            document.write('</tr></table>');
+            document.images.smiliextra_image.src = smilieurl[document.postmodify.smiliextra_list.value];
+            //-->
+            </script>
+            ~;
+
+$mypost_feata = q~
+        </td>
+    </tr><tr>
+        <td class="windowbg2 bottom">~;
+
+$mypost_ispreview = qq~<tr>
+        <td class="titlebg center" colspan="2">~;
+
+$mypost_prevmain = qq~
+    <script type="text/javascript" src="$yyhtml_root/ubbc.js"></script>
+    <div class="bordercolor" style="padding: 1px; width: 100%; margin-left: auto; margin-right: auto;">
+        <table class="windowbg pad_3px" style="table-layout: fixed;">
+            <tr>
+                <td class="titlebg">
+                    <img src="$imagesdir/{yabb d_icon}.gif" alt="" /> {yabb csubject}
+                </td>
+            </tr>
+        </table>
+        <table class="windowbg pad_3px" style="table-layout: fixed;">
+            <tr>
+                <td class="windowbg2">
+                    <div class="message" style="overflow:auto;">{yabb cmessage}</div>
+                </td>
+            </tr>
+        </table>
+    </div>\n~;
+
+$mypost_prevmain_error = qq~
+        <div class="bordercolor" style="padding: 1px; width: 100%; margin-left: auto; margin-right: auto;">
+            <table class="windowbg pad_3px" style="table-layout: fixed;">
+                <tr>
+                    <td class="titlebg">
+                        <img src="$imagesdir/exclamation.gif" alt="" /> $error_txt{'error_occurred'}
+                    </td>
+                </tr>
+            </table>
+            <table class="windowbg pad_3px" style="table-layout: fixed;">
+                <tr>
+                    <td class="windowbg2">
+                        <div class="message" style="overflow:auto; color: red"><br />
+                        {yabb preverror}
+                        <br /><br />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>~;
+
+$mypost_showpreva = q~<tr>
+<td class="catbg" style="padding:3px">~;
+
+$mypost_showprevb = q~</td>
+        <td class="catbg right" style="padding:3px">~;
+
+$mypost_showprevc = q~</td>
+    </tr><tr>
+        <td class="windowbg2" style="padding:3px" colspan="2">~;
+
+1;
