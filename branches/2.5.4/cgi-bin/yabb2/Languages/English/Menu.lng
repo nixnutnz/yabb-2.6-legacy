@@ -59,6 +59,7 @@ if (!$language){$language = $lang;}
 '418' => 'Notification',
 '452' => 'Mark ALL Posts As Read',
 '465' => 'Print',
+'465a' => 'Print Post',
 '467' => 'Profile',
 '515' => 'WWW',
 '707' => 'Send Topic',

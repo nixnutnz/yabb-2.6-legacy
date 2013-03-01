@@ -42,7 +42,7 @@ $eventcallngver = 'YaBB 2.5.4 $Revision$';
 'calday' => 'Day',
 'calmonth' => 'Month',
 'calyear' => 'Year',
-'caltitle' => qq~<a href="$scripturl?action=get_cal;calshow=1">Event-Calendar</a>~,
+'caltitle' => qq~<a href="$scripturl?action=eventcal;calshow=1">Event-Calendar</a>~,
 'yytitle' => 'Event-Calendar',
 'calsubtitle' => 'Event(s)',
 'calevent' => 'New event:',
@@ -106,6 +106,7 @@ $eventcallngver = 'YaBB 2.5.4 $Revision$';
 'hidden' => '<i>Hidden</i>',
 'verification_question_desc' => 'Please answer the above verification question.',
 'verification_question_case' => 'Answers are case-sensitive.',
+'bdayhide' => 'has a birthday today.',
 );
 
 ### Event Calendar YaBBC ###

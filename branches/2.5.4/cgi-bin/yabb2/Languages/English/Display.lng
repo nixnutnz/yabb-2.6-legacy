@@ -66,6 +66,8 @@ $displaylngver = 'YaBB 2.5.4 $Revision$';
 'location' => 'Location', 
 'age' => 'Age',
 'regdate' => 'Joined: ', 
+'mylastposts' => 'View my last 5 posts',
+'lastposts' => 'View the last 5 posts by ',
 );
 
 1;

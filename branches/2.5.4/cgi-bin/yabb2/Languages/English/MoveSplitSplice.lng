@@ -56,7 +56,7 @@ $movesplitsplicelngver = 'YaBB 2.5.4 $Revision$';
 '41' => 'Topic Start',
 
 '50' => 'Please go back an reload that page first, or you will not be able to Submit.',
-'51' => 'It\'s not allowed to splice two Polls.',
+'51' => 'It&#39;s not allowed to splice two Polls.',
 );
 
 1;

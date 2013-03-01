@@ -15,7 +15,7 @@
 $sessionslngver = 'YaBB 2.5.4 $Revision$';
 
 %session_txt = (
-'1' => 'Activate Session ID\'s?',
+'1' => 'Activate Session ID&#39;s?',
 '2' => 'This protects the Administrative Functions using a three part Session Key based on IP address',
 '3' => "Your Session has expired, as you entered the forum from a different IP address ($user_ip)",
 '4' => 'To check your credentials answer the following question you entered in your profile',
@@ -33,7 +33,7 @@ $sessionslngver = 'YaBB 2.5.4 $Revision$';
 '3' => 'My phone number is',
 '4' => 'My birthdate is',
 '5' => 'My best friend is',
-'6' => 'I\'m in love with',
+'6' => 'I&#39;m in love with',
 '7' => 'The person I hate most is',
 '8' => 'My Zip code is',
 '9' => 'My favorite sport is',

@@ -231,7 +231,7 @@ $errorlngver = 'YaBB 2.5.4 $Revision$';
 'tabext'                => 'A tab for the same action or with the same name already exists!!',
 
 ## MemberGroups ##
-'newpostdep_gmod'       => 'Sorry, Global Mods can\'t modify Postdependent users because the Maintenance->"Rebuild Memberlist" must be run after and that function is only available in Maintenance Mode, so it would deny your login!',
+'newpostdep_gmod'       => 'Sorry, Global Mods can&#39;t modify Postdependent users because the Maintenance->"Rebuild Memberlist" must be run after and that function is only available in Maintenance Mode, so it would deny your login!',
 );
 
 1;
