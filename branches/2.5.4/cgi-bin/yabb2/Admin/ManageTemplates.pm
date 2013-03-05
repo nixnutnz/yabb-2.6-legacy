@@ -61,56 +61,19 @@ qq~<option value="$cmp_templatefile"$selected>$cmp_templatefile</option>\n~;
             $selected = q{};
         }
 
-        $cmp_boardfile    = "$name/BoardIndex.template";
-        $cmp_messagefile  = "$name/MessageIndex.template";
-        $cmp_displayfile  = "$name/Display.template";
-        $cmp_helpfile     = "$name/HelpCentre.template";
-        $cmp_mycenterfile = "$name/MyCenter.template";
-
-        if ( -e "$templatesdir/$name/BoardIndex.template" ) {
-            $ext = 'BoardIndex';
-            if ( $cmp_boardfile eq $templatefile ) {
-                $selected = q~ selected="selected"~;
-            }
+        my @tempnames = qw (BoardIndex Calendar Display HelpCentre Memberlist MessageIndex MyCenter Post Profile Search );
+        for my $tmp (@tempnames) {
+            $tmpnm = lc $tmp;
+            ${ 'cmp_' . $tmpnm } = "$name/$tmp.template";
+            if ( -e "$templatesdir/$name/$tmp.template" ) {
+                $ext = $tmp;
+                if ( ${ 'cmp_' . $tmpnm } eq $templatefile ) {
+                    $selected = q~ selected="selected"~;
+                }
             $templs .=
 qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
             $selected = q{};
-        }
-        if ( -e "$templatesdir/$name/MessageIndex.template" ) {
-            $ext = 'MessageIndex';
-            if ( $cmp_messagefile eq $templatefile ) {
-                $selected = q~ selected="selected"~;
             }
-            $templs .=
-qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
-            $selected = q{};
-        }
-        if ( -e "$templatesdir/$name/Display.template" ) {
-            $ext = 'Display';
-            if ( $cmp_displayfile eq $templatefile ) {
-                $selected = q~ selected="selected"~;
-            }
-            $templs .=
-qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
-            $selected = q{};
-        }
-        if ( -e "$templatesdir/$name/HelpCentre.template" ) {
-            $ext = 'HelpCentre';
-            if ( $cmp_helpfile eq $templatefile ) {
-                $selected = q~ selected="selected"~;
-            }
-            $templs .=
-qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
-            $selected = q{};
-        }
-        if ( -e "$templatesdir/$name/MyCenter.template" ) {
-            $ext = 'MyCenter';
-            if ( $cmp_mycenterfile eq $templatefile ) {
-                $selected = q~ selected="selected"~;
-            }
-            $templs .=
-qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
-            $selected = q{};
         }
     }
 
@@ -134,7 +97,7 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
 		</tr><tr>
         	<td class="windowbg2 center">
             	<form action="$adminurl?action=modtemp2" method="post" style="display: inline;" accept-charset="$yycharset">
-                <textarea rows="20" cols="95" name="template" style="width:99%; height: 350px;">$fulltemplate</textarea>
+                <textarea rows="20" cols="95" name="template" style="width:99%; height: 350px; font-family:Courier">$fulltemplate</textarea>
                 <input type="hidden" name="filename" value="$templatefile" />
             </td>
 		</tr><tr>
@@ -2056,7 +2019,7 @@ qq~                        <input type="submit" value="$templ_txt{'14'}" onclick
                                 <option value="2"$menutype2>$admin_txt{'521c'}</option>
                             </select>
                         </div>
-                        <br />
+                        	<br />
                         <div style="float: left; width: 32%; text-align: left;">
                         	<label for="cssfile"><span class="small">$templ_txt{'1'}</span></label><br />
                             <select name="cssfile" id="cssfile" size="1" style="width: 90%;">
@@ -2100,7 +2063,7 @@ qq~                        <input type="submit" value="$templ_txt{'14'}" onclick
                             </select>
                         </div>
                 	</div>
-				</td>
+                </td>
         	</tr><tr>
                 <td class="windowbg2">
             	    <div style="float: left; width: 30%; padding: 3px;"><label for="saveas"><b>$templ_txt{'12'}</b></label></div>

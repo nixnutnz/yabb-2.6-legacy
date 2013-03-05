@@ -19,156 +19,33 @@ use Time::Local 'timelocal';
 our $VERSION = '2.5.4';
 
 $adminpmver = 'YaBB 2.5.4 $Revision$';
+LoadLanguage('Credits');
+
+if ( -e ("$templatesdir/$usestyle/AdminCentre.template") ) {
+    require "$templatesdir/$usestyle/AdminCentre.template";
+}
+else {
+    require "$templatesdir/default/AdminCentre.template";
+}
 
 sub Admin {
     is_admin_or_gmod();
 
-    $yymain .= qq~
-<div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
-        <tr>
-            <td class="titlebg" colspan="2">
-                <b>$admintxt{'1'}</b>
-            </td>
-        </tr><tr>
-            <td class="windowbg2">
-                <img alt="Admin Centre Logo" src="$defaultimagesdir/aarea.jpg" />
-            </td>
-            <td class="windowbg2">
-                $admintxt{'2'}
-            </td>
-        </tr>
-    </table>
-</div>
-<div class="left_49div">
-    <div class="bordercolor rightboxdiva">
-        <table class="cs_thin pad_4px">
-            <tr>
-                <td class="titlebg">
-                    <b>$admintxt{'6'}</b>
-                </td>
-            </tr><tr>
-                <td class="catbg center">
-                    <span class="small">YaBB 2</span>
-                </td>
-            </tr><tr>
-                <td class="windowbg2 padd_8_12px">
-Ron Hartendorp, Andrew Aitken, Carsten Dalgaard, Ryan Farrington, Zoltan Kovacs, Tim Ceuppens, Shoeb Omar, Torsten Mrotz, Brian Schaefer, Juvenall Wilson, Corey Chapman, Christer Jenson, Adrian Kreher, Steve Brereton, Jeffrey Man, Boris Tjuvanov, Detlef Pilzecker, Calvin Goodman
-                </td>
-            </tr><tr>
-                <td class="catbg center">
-                    <span class="small">YaBB 2.5.2</span>
-                </td>
-            </tr><tr>
-                <td class="windowbg2 padd_8_12px">
-Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, D.A. Rorabaugh.<br />Included Mods in YaBB 2.5.2 written by Derek Barnstorm, Carsten Dalgaard, and D.A. Rorabaugh.<br /><br />
-Dedicated to the memory of Ron Hartendorp, AKA Spikecity. He left us too soon.
-                </td>
-            </tr><tr>
-                <td class="catbg center">
-                    <span class="small">YaBB 2.5.4</span>
-                </td>
-            </tr><tr>
-                <td class="windowbg2 padd_8_12px">
-Jon Baker, Derek Barnstorm, Carsten Dalgaard, ggn, John G.D. McCabe, D.A. Rorabaugh.<br />Included Mods in YaBB 2.5.4 written by Derek Barnstorm, Carsten Dalgaard, and D.A. Rorabaugh with additional code and Mods from the YaBB 3.0 Development Team.
-                </td>
-            </tr><tr>
-                <td class="catbg center">
-                    <span class="small">$yabbThanks</span>
-                </td>
-            </tr><tr>
-                <td class="windowbg2 padd_8_12px">
-Dave Baughman, Bjoern Berg, Corey Chapman, Peter Crouch, ejdmoo, Dave G, Christian Land, Jeff Lewis, Gunther Meyer, Darya Misse, Parham Mofidi, AstroPilot, Torsten Mrotz, Carey P, Popeye, Michael Prager, Matt Siegman, Jay Silverman, StarSaber, Marco van Veelen, Myhailo Danylenko, $yabb2Credits<br /><br />
-$noBytesHarmed
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class="bordercolor rightboxdiva">
-        <script src="http://www.yabbforum.com/update/versioncheck.js" type="text/javascript"></script>
-        <script type="text/javascript">
-        document.write('<table class="cs_thin pad_4px">');
-        document.write('<tr><td class="titlebg" colspan="2"><b>$admintxt{'3'}</b></td></tr>');
-        document.write('<tr><td class="windowbg2">$versiontxt{'4'}</td><td class="windowbg2"><b>$YaBBversion</b></td></tr>');
-        if (!STABLE) {
-                document.write('<tr><td class="titlebg" colspan="2">$rna</b></td></tr>');
-        } else {
-                document.write('<tr><td class="windowbg2">$versiontxt{'5'}</td><td class="windowbg2"><b>'+STABLE+'</b></td></tr>');
-                document.write('<tr><td class="windowbg2">$versiontxt{'7'}</td><td class="windowbg2"><b>'+BETA+'</b></td></tr>');
-                document.write('<tr><td class="windowbg2">$versiontxt{'8'}</td><td class="windowbg2"><b>'+ALPHA+'</b></td></tr>');
-                if (STABLE == "$YaBBversion") {
-                        document.write('<tr><td class="windowbg2 padd_8_12px" colspan="2">$versiontxt{'6'}</td></tr>');
-                } else {
-                        document.write('<tr><td class="windowbg2 padd_8_12px" colspan="2">$versiontxt{'2'}'+STABLE+'$versiontxt{'3'}</td></tr>');
-                }
-        }
-        document.write('</table>');
-        </script>
-        <noscript>$versiontxt{'1'}</noscript>
-    </div>
-</div>
-<div class="right_50div">
-    <div class="bordercolor leftboxdiv">
-        <table class="cs_thin pad_4px">
-            <tr>
-                <td class="titlebg">
-                    <b>$admintxt{'4'}</b>
-                </td>
-            </tr><tr>
-                <td class="windowbg2">
-                    <iframe src="http://www.yabbforum.com/update/" frameborder="0" width="100%" height="293">$iFrameSupport</iframe>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class="bordercolor leftboxdiv">
-        <table class="cs_thin pad_4px">
-            <tr>
-                <td class="titlebg">
-                    <b>$admintxt{'5'}</b>
-                </td>
-            </tr><tr>
-                <td class="windowbg2">~;
+    $my_lastlogin = GetLastLogins();
 
-    GetLastLogins();
-
-    $yymain .= q~
-                </td>
-            </tr>
-        </table>
-    </div>~;
+    $yymain .= $front_page;
+    $yymain =~ s/{yabb iFrameSupport}/$iFrameSupport/sm;
+    $yymain =~ s/{yabb YaBBversion}/$YaBBversion/gsm;
+    $yymain =~ s/{yabb lastlogins}/$my_lastlogin/sm;
 
     if ( -d './Convert' ) {
-        $yymain .= qq~
-    <div class="bordercolor leftboxdiv" style="margin-top:.5em">
-        <form name="backdelete" action="$adminurl?action=convdelete" method="post">
-            <table class="cs_thin pad_4px">
-                <tr>
-                    <td class="titlebg">
-                        <b>$admintxt{'7'}</b>
-                    </td>
-                </tr><tr>
-                    <td class="windowbg2 padd_8_12px">
-                        $admintxt{'8'}
-                    </td>
-                </tr><tr>
-                    <td class="catbg center">
-                        <input type="submit" value="$admintxt{'9'}" class="button" />
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </div>~;
+        $yymain .= $convert_box;
     }
 
-    $yymain .= q~
-</div>~;
+    $yymain .= $last_div;
 
     require Admin::ModuleChecker;
 
-    $yymain .= q~
-<div class="rightboxdiv h_100px">&nbsp;</div>
-~;
     $yytitle = "$admin_txt{'208'}";
     AdminTemplate();
     return;
@@ -203,6 +80,8 @@ sub DeleteConverterFiles {
         rmdir "$convdir";
     }
     if ( -e './Setup.pl' ) { unlink './Setup.pl'; }
+    if ( -e './Convert.pl' ) { unlink './Convert.pl'; }
+    if ( -e './FixFile.pl' ) { unlink './Fixfile.pl'; }
 
     $yymain .= qq~<b>$admintxt{'10'}</b>~;
     $yytitle = "$admintxt{'10'}";
@@ -226,11 +105,11 @@ sub GetLastLogins {
           ($ipLookup)
           ? qq~<a href="$scripturl?action=iplookup;ip=$element[1]">$element[1]</a>~
           : qq~$element[1]~;
-        $yymain .= qq~
+        $loginadmin .= qq~
                 <a href="$scripturl?action=viewprofile;username=$useraccount{$element[0]}">${$uid.$element[0]}{'realname'}</a> <span class="small">($lookupIP) - $element[2]</span><br />
                 ~;
     }
-    return;
+    return $loginadmin;
 }
 
 sub FullStats {
