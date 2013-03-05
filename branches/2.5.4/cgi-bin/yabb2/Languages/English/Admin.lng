@@ -598,7 +598,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 '5' => 'Last Logins:',
 '6' => 'Credits',
 '7' => 'Converter Back-up files',
-'8' => 'When you have tested your forum and made sure everything was converted correctly, you may delete the YaBB 1 Gold SP 1.x back-up files.',
+'8' => 'When you have tested your forum and made sure everything was been converted correctly, you may delete your old YaBB back-up files in the Converter folders. (This will also delete the conversion programs so they cannot be run again.)',
 '9' => 'Delete old Back-up files',
 '10' => 'Old Back-up files deleted',
 '11' => 'Detailed Version Check',
@@ -1411,17 +1411,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 
 timetostring($date);
 $yycopyright = qq~<a href="$boardurl/$yyexec.$yyext"><span style="font-size: 10px">$mbname</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">$YaBBversion</span></a><span style="font-size: 10px">!<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.</span>~;
-
-$yabbThanks = 'Special thanks to';
-
-$yabbBeta = 'and all of our beta testers.';
-
-$yabb2Credits = 'the support team, our fearless founder: Zef Hemel and everyone who contributed to YaBB in the course of these last 12 years!';
-
-$noBytesHarmed = 'No bits or bytes were harmed during the creation of YaBB!';
-
 $iFrameSupport = 'Sorry, to see the latest news, you must use a browser that supports iframes';
-
 $rna = 'Remote Server not available!';
 
 1;
