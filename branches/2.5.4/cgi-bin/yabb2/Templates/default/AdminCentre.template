@@ -109,12 +109,145 @@ $topnav = qq~
 $mainbody = qq~
 	<div id="content">
 		{yabb main}
-		<br />
-		<br />
-		<div class="center">{yabb_admin debug}</div>
-		<br />
-		<br />
+        <div class="rightboxdiv h_100px" style="float:left">
+		    <div style="float:left; width:99%; text-align:center;">{yabb_admin debug}</div>
+	    </div>
 	</div>
 </body>
 </html>
 ~;
+
+$front_page = qq~<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px">
+        <tr>
+            <td class="titlebg" colspan="2">
+                <b>$admintxt{'1'}</b>
+            </td>
+        </tr><tr>
+            <td class="windowbg2">
+                <img alt="Admin Centre Logo" src="$defaultimagesdir/aarea.jpg" />
+            </td>
+            <td class="windowbg2">
+                $admintxt{'2'}
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="left_49div">
+    <div class="bordercolor rightboxdiva">
+        <table class="cs_thin pad_4px">
+            <tr>
+                <td class="titlebg">
+                    <b>$admintxt{'6'}</b>
+                </td>
+            </tr><tr>
+                <td class="catbg center">
+                    <span class="small">YaBB 2</span>
+                </td>
+            </tr><tr>
+                <td class="windowbg2 padd_8_12px">
+                    $credits_txt{'yabb2'}
+                </td>
+            </tr><tr>
+                <td class="catbg center">
+                    <span class="small">YaBB 2.5.2</span>
+                </td>
+            </tr><tr>
+                <td class="windowbg2 padd_8_12px">
+                    $credits_txt{'yabb252'}
+                </td>
+            </tr><tr>
+                <td class="catbg center">
+                    <span class="small">YaBB 2.5.4</span>
+                </td>
+            </tr><tr>
+                <td class="windowbg2 padd_8_12px">
+                    $credits_txt{'yabb254'}
+                </td>
+            </tr><tr>
+                <td class="catbg center">
+                    <span class="small">$credits_txt{'Thanks'}</span>
+                </td>
+            </tr><tr>
+                <td class="windowbg2 padd_8_12px">
+                    $credits_txt{'yabb'}, $credits_txt{'yabb2Credits'}<br /><br />$credits_txt{'noBytesHarmed'}
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="bordercolor rightboxdiva">
+        <script src="http://testbed.dandello.net/update/versioncheck.js" type="text/javascript"></script>
+        <script type="text/javascript">
+        document.write('<table class="cs_thin pad_4px">');
+        document.write('<tr><td class="titlebg" colspan="2"><b>$admintxt{'3'}</b></td></tr>');
+        document.write('<tr><td class="windowbg2">$versiontxt{'4'}</td><td class="windowbg2"><b>{yabb YaBBversion}</b></td></tr>');
+        if (!STABLE) {
+                document.write('<tr><td class="titlebg" colspan="2">$rna</b></td></tr>');
+        } else {
+                document.write('<tr><td class="windowbg2">$versiontxt{'5'}</td><td class="windowbg2"><b>'+STABLE+'</b></td></tr>');
+                document.write('<tr><td class="windowbg2">$versiontxt{'7'}</td><td class="windowbg2"><b>'+BETA+'</b></td></tr>');
+                document.write('<tr><td class="windowbg2">$versiontxt{'8'}</td><td class="windowbg2"><b>'+ALPHA+'</b></td></tr>');
+                if (STABLE == "{yabb YaBBversion}") {
+                        document.write('<tr><td class="windowbg2 padd_8_12px" colspan="2">$versiontxt{'6'}</td></tr>');
+                } else {
+                        document.write('<tr><td class="windowbg2 padd_8_12px" colspan="2">$versiontxt{'2'}'+STABLE+'$versiontxt{'3'}</td></tr>');
+                }
+        }
+        document.write('</table>');
+        </script>
+        <noscript>$versiontxt{'1'}</noscript>
+    </div>
+</div>
+<div class="right_50div">
+    <div class="bordercolor leftboxdiv">
+        <table class="cs_thin pad_4px">
+            <tr>
+                <td class="titlebg">
+                    <b>$admintxt{'4'}</b>
+                </td>
+            </tr><tr>
+                <td class="windowbg2">
+                    <iframe src="http://www.yabbforum.com/update/" frameborder="0" width="100%" height="293">{yabb iFrameSupport}</iframe>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="bordercolor leftboxdiv">
+        <table class="cs_thin pad_4px">
+            <tr>
+                <td class="titlebg">
+                    <b>$admintxt{'5'}</b>
+                </td>
+            </tr><tr>
+                <td class="windowbg2">
+                    {yabb lastlogins}
+                </td>
+            </tr>
+        </table>
+    </div>~;
+
+$last_div = q~</div>~;
+
+$convert_box = qq~    <div class="bordercolor leftboxdiv" style="margin-top:.5em">
+        <form name="backdelete" action="$adminurl?action=convdelete" method="post">
+            <table class="cs_thin pad_4px">
+                <tr>
+                    <td class="titlebg">
+                        <b>$admintxt{'7'}</b>
+                    </td>
+                </tr><tr>
+                    <td class="windowbg2 padd_8_12px">
+                        $admintxt{'8'}
+                    </td>
+                </tr><tr>
+                    <td class="catbg center">
+                        <input type="submit" value="$admintxt{'9'}" class="button" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>~;
+
+$spacer = q~<div class="rightboxdiv h_100px" style="float:left">&nbsp;~;
+
+1;

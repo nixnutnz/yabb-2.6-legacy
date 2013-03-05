@@ -36,6 +36,7 @@ $brd_closebutton = 'closebutton.png';
 $brd_rss = 'rss.png';
 $sub_arrow_dn = 'sub_arrow.png';
 $sub_arrow_up = 'sub_arrow_up.png';
+$tabsep = qq~<span style="border-left: 1px solid #DEE4EC; height:22px; padding:0 2px"> </span>~;
 
 $boardindex_template = qq~
 <!-- Board Index Showcase Poll start -->

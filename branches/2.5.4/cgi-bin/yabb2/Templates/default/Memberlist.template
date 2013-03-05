@@ -13,6 +13,27 @@
 ###############################################################################
 # $Revision$
 
+$letterclass = 'catbg a';
+$header_class_selected = 'windowbg memberlist_td';
+$header_class = 'windowbg2 memberlist_td';
+$pgindex_class = 'small pgindex';
+$ml_index_togl = 'index_togl.gif';
+$ml_index_left = 'index_left.gif';
+$ml_index_left0 = 'index_left0.gif';
+$ml_index_right = 'index_right.gif';
+$ml_index_right0 ='index_right0.gif';
+$ml_trans ='trans.gif';
+$ml_www ='www.gif';
+$ml_bar ='bar.gif';
+$ml_lockmail = 'lockmail.gif';
+$ml_email = 'email.gif';
+$ml_xx ='xx.gif';
+
+$my_findform = qq~<form action="$scripturl?action=ml;sort=memsearch" method="post" id="form1" name="form1" enctype="application/x-www-form-urlencoded" style="display: inline;">
+            <input type="text" name="member" id="member" value="$ml_txt{'801'}" style="font-size: 11px; width: 180px;" onfocus="txtInFields(this, '$ml_txt{'801'}');" onblur="txtInFields(this, '$ml_txt{'801'}')" />
+            <input name="submit" type="submit" class="button" style="font-size: 10px;" value="$ml_txt{'2'}" />
+            </form> ~;
+
 $my_memberlist_main = qq~
         <table class="tabtitle pad_3px">
             <tr>
@@ -30,7 +51,37 @@ $my_memberlist_main = qq~
             <col style="width:18%" />
             <col style="width:auto" />
 ~;
-$my_memberlist_else = qq~<tr>
+
+
+$my_header = qq~<tr>
+                <td {yabb selUser} onclick="location.href='$scripturl?action=ml;sort=username';"><a href="$scripturl?action=ml;sort=username"><b>$ml_txt{'35'}</b></a></td>
+                <td class="catbg center"><img src="$imagesdir/email.gif" alt="$ml_txt{'307'}" title="$ml_txt{'307'}" /></td>
+                <td class="catbg center"><img src="$imagesdir/www.gif" alt="$ml_txt{'96'}" title="$ml_txt{'96'}" /></td>
+                <td {yabb selPos} onclick="location.href='$scripturl?action=ml;sort=position';">
+                    <a href="$scripturl?action=ml;sort=position"><b>$ml_txt{'87'}</b></a>
+                </td>
+                <td {yabb selPost} onclick="location.href='$scripturl?action=ml;sort=posts';" colspan="2"><a href="$scripturl?action=ml;sort=posts"><b>$ml_txt{'21'}</b></a></td>
+                <td {yabb selReg} onclick="location.href='$scripturl?action=ml;sort=regdate';"><a href="$scripturl?action=ml;sort=regdate"><b>$ml_txt{'234'}</b></a></td>
+                {yabb add_headers}
+            </tr>~;
+
+$my_memrow = qq~<tr>
+        <td class="windowbg">{yabb userlink}</td>
+        <td class="windowbg2 center">{yabb lock}</td>
+        <td class="windowbg2 center">{yabb wwwshow}</td>
+        <td class="windowbg">{yabb meminfo} &nbsp;</td>
+        <td class="windowbg2 center"> {yabb postcount} &nbsp;</td>
+        <td class="windowbg">{yabb bar}</td>
+        <td class="windowbg">{yabb dr_regdate} &nbsp;</td>
+        {yabb add_tds}
+    </tr>~;
+    
+$my_letterlinks = qq~<tr>
+                <td class="catbg" colspan="{yabb headercount}"><span class="small">{yabb letterlinks}</span></td>
+            </tr>~;
+
+
+$my_memberlist_bottom = qq~<tr>
                 <td class="catbg" colspan="{yabb headercount}">
                     <div style="float: left; width: 50%; text-align: left;">{yabb pageindex2}</div>
                     <div style="float: left; width: 49%; color: #AA0000; font-weight: normal; vertical-align: middle; text-align: right;">{yabb dr_warning}</div>

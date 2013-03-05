@@ -57,6 +57,8 @@ $msgbrd_admin_move = 'admin_move.gif';
 $msgbrd_admin_rem = 'admin_rem.gif';
 $msgbrd_rss = 'rss.png';
 
+$tabsep = qq~<span style="border-left: 1px solid #DEE4EC; height:22px; padding:0 2px"> </span>~;
+
 if (!$messagelist) {
     if (!$ShowBDescrip && $action ne 'favorites') {
 		$messageindex_template .= qq~

@@ -39,7 +39,7 @@ $mypost_templatee = qq~<tr>
                    <label for="verification_question"><b>{yabb spam_question}</b>
                    <br /><span class="small">$post_txt{'verification_question_desc'} {yabb verification_question_desc}</span></label>
                    <input type="hidden" name="verification_question_id" value="{yabb spam_question_id}" />
-                   <input type="hidden" name="spam_question" value="{yabb spam_question_b}" />
+                   <input type="hidden" name="spam_question" value="{yabb spam_question}" />
                 </td>
                 <td class="windowbg vtop">
                     <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" />

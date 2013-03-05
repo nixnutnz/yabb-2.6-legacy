@@ -25,6 +25,7 @@ $disp_ip = 'ip.gif';
 $disp_arrow_dn = 'arrow_down.gif';
 $disp_arrow_up = 'arrow_up.gif';
 $disp_gtalk2 ='gtalk2.gif';
+$tabsep = qq~<span style="border-left: 1px solid #DEE4EC; height:22px; padding:0 2px"> </span>~;
 
 $outside_threadtools = qq~{yabb reply}~;
 $outside_ttsep = qq~~;
