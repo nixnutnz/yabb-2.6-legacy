@@ -275,7 +275,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/shjs/styles/sh_style.css" type="tex
 #    $yynavback .=
 #qq~ <span onclick="toTop(0)" style="cursor: pointer;">$img_txt{'102'}</span> <img src="$imagesdir/tabsep211.png" alt="" />~;
     if ( !$yynavback ) { $yynavback .= q~ ~; }
-    $yynavback .= qq~ <a href="#">$img_txt{'102'}</a> ~;
+    $yynavback .= qq~$tabsep <a href="#">$img_txt{'102'}</a> &nbsp; $tabsep~;
 
     if ( !$usehead ) { $usehead = q~default~; }
     $yytemplate = "$templatesdir/$usehead/$usehead.html";

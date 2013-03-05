@@ -146,8 +146,7 @@ sub Post {
         $verification_question_field = $verification_question eq q{}
           ? $mypost_templatee
           : q{};
-          $verification_question_field =~ s/{yabb spam_question}/$spam_question/sm;
-          $verification_question_field =~ s/{yabb spam_question_b}/$spam_question/sm;
+          $verification_question_field =~ s/{yabb spam_question}/$spam_question/gsm;
           $verification_question_field =~ s/{yabb verification_question_desc}/$verification_question_desc/sm;
           $verification_question_field =~ s/{yabb spam_question_id}/$spam_question_id/sm;
     }

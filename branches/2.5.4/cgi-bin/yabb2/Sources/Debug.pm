@@ -43,7 +43,7 @@ qq~<br /><div class="small" style="float: left; padding: 0px; width: 99%; margin
         $yydebug .= q~<br /><br /><br /></div>~;
         if ( $debug == 3 ) {
             $yydebug =
-qq~<br /><div class="small" style="float: left; padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">$yytimeclock</div>~;
+qq~<br /><div class="small center" style="float: left; padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">$yytimeclock</div>~;
         }
     }
     return $yydebug;

@@ -670,8 +670,7 @@ qq~<a href="$scripturl?num=$mnum/new#new"><img src="$imagesdir/$msgbrd_new" alt=
                 $new = q{};
             }
         }
-        $bdpicExt ||= 'gif';
-        $micon = qq~<img src="$imagesdir/$micon.$bdpicExt" alt="" />~;
+        $micon = qq~<img src="$imagesdir/$micon.gif" alt="" />~;
         $mpoll = q{};
         if ( -e "$datadir/$mnum.poll" ) {
             $mpoll = qq~<b>$messageindex_txt{'15'}: </b>~;
@@ -993,9 +992,8 @@ qq~$maintxt{'758'}: '<a href="$scripturl?num=$movedFlag">$2</a>'<br /><span clas
         my $mydate = timeformat($mdate);
         my $tempbar = $movedFlag ? $threadbarMoved : $threadbar;
         $tempbar =~ s/({|<)yabb admin column(}|>)/$admincol/gsm;
-        $bdpicExt ||= 'gif';
         $tempbar =~
-s/({|<)yabb threadpic(}|>)/<img src="$imagesdir\/$threadclass.$bdpicExt" alt="" \/>/gsm;
+s/({|<)yabb threadpic(}|>)/<img src="$imagesdir\/$threadclass.gif" alt="" \/>/gsm;
         $tempbar =~ s/({|<)yabb icon(}|>)/$micon/gsm;
         $tempbar =~ s/({|<)yabb new(}|>)/$new/gsm;
         $tempbar =~ s/({|<)yabb poll(}|>)/$mpoll/gsm;
@@ -1514,11 +1512,8 @@ qq~<link rel="alternate" type="application/rss+xml" title="$messageindex_txt{'84
     }
 
     if ( !$messagelist ) {
-
-        #        $tabsep = qq~<img src="$imagesdir/tabsep211.png" alt="" />~;
-        $tabsep = q{};
         $yynavback =
-          qq~$tabsep <a href="$scripturl">&lsaquo; $img_txt{'103'}</a> $tabsep~;
+          qq~$tabsep <a href="$scripturl">&lsaquo; $img_txt{'103'}</a> &nbsp; ~;
         $yynavigation = qq~&rsaquo; $catlink$boardtree~;
         $yytitle      = $curboardname;
 

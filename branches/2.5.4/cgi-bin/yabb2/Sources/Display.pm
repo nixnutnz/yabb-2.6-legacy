@@ -1433,7 +1433,7 @@ qq~$menusep<a href="$scripturl?action=markunread;thread=$viewnum;board=$currentb
     # Template it
 
     $yynavback =
-qq~<span style="padding: 0 2px; border-left:solid 1px #DEE4EC; border-right:solid 1px #DEE4EC;"> <a href="$scripturl">&#171; $img_txt{'103'}</a> </span><span style="padding: 0 2px; margin-right:4px; border-right:solid 1px #DEE4EC;"> $navback </span> ~;
+qq~$tabsep<a href="$scripturl">&#171; $img_txt{'103'}</a> &nbsp; $tabsep$navback &nbsp; ~;
     $yynavigation =
       qq~&rsaquo; $template_cat &rsaquo; $template_board &rsaquo; $msubthread~;
 
