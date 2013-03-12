@@ -45,7 +45,7 @@ foreach my $module (
         # $e =~ s/\//\\/g;
         $checker_output .= qq~<tr>
         <td class="windowbg2">
-            <span class="red">$module</span>
+            <span style="color:#f00">$module</span>
         </td>
         <td class="windowbg2">
             $modulecheck{'5'}<br />
