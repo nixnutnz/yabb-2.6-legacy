@@ -1592,14 +1592,15 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                         ToChars($chmessage);
                         $chmessage = Censor($chmessage);
                         $chmessage = regex_4($chmessage);
-
+                        
+                        $pmAttachUrl = q{};
                         if ( $fixfile ne q{} ) {
                             foreach ( split /,/xsm, $fixfile ) {
                                 my ( $pmAttachFile, undef ) = split /~/xsm, $_;
-                                $pmAttachUrl .= qq~$pmuploadurl/$pmAttachFile
-                                ~;
+                                $pmAttachUrl .= qq~$pmuploadurl/$pmAttachFile\n~;
                             }
-                            $pmAttachTxt = qq~\n$fatxt{'80'}: ~;
+                            $pmAttachTxt = qq~\n$fatxt{'80'}:\n~;
+                            $mailattach = $pmAttachTxt . $pmAttachUrl;
                         }
                         sendmail(
                             $useremail,
@@ -1610,7 +1611,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                                     'sender'  => $fromname,
                                     'subject' => $msubject,
                                     'message' => $chmessage,
-                                    'attachments' => $pmAttachTxt . $pmAttachUrl
+                                    'attachments' => $mailattach
                                 }
                             ),
                             q{},

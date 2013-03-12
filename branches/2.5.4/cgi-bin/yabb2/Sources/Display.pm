@@ -71,8 +71,8 @@ sub Display {
         );
     }
     if ($posttools) {
-        LoadTools( 1, 'delete', 'admin_split', 'mquote', 'quote', 'modify', 'printp',
-            'alertmod' );
+        LoadTools( 1, 'delete', 'admin_split', 'mquote', 'quote', 'modify',
+            'printp', 'alertmod' );
     }
 
     if ($buddyListEnabled) { loadMyBuddy(); }
@@ -226,35 +226,38 @@ qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboar
         $threadclass = 'locked';                   ## same icon regardless
         $pollbutton  = q{};
         if   ($icanbypass) { $replybutton = $bypassReplyButton; }
-        else               { $replybutton = q{}; }                  # squish
+        else               { $replybutton = q{}; }
     }
     elsif ( $mreplies >= $VeryHotTopic ) { $threadclass = 'veryhotthread'; }
     elsif ( $mreplies >= $HotTopic )     { $threadclass = 'hotthread'; }
     elsif ( $mstate eq q{} ) { $threadclass = 'thread'; }
 
-    if ( $threadclass eq 'hide' ) {                                 ##  hidden
-        if ( $mstate =~ /s/ism && $mstate !~ /l/ism ) {
-            $threadclass = 'hidesticky';
+    ## stickies
+    if ( $mstate =~ /s/ism ) {
+        if ( $threadclass eq 'hide' ) {
+            if ( $mstate =~ /l/ism ) {
+                $threadclass = 'hidestickylock';
+                $pollbutton  = q{};
+                if   ($icanbypass) { $replybutton = $bypassReplyButton; }
+                else               { $replybutton = q{}; }
+            }
+            else {
+                $threadclass = 'hidesticky';
+            }
         }
-        elsif ( $mstate =~ /l/ism && $mstate !~ /s/ism ) {
-            $threadclass = 'hidelock';
-            $pollbutton  = q{};
+        elsif ( $threadclass eq 'thread' ) { $threadclass = 'sticky'; }
+        elsif ( $threadclass eq 'locked' ) {
+            $threadclass = 'stickylock';
             if   ($icanbypass) { $replybutton = $bypassReplyButton; }
-            else               { $replybutton = q{}; }                  # squish
-        }
-        elsif ( $mstate =~ /s/ism && $mstate =~ /l/ism ) {
-            $threadclass = 'hidestickylock';
-            $pollbutton  = q{};
-            if   ($icanbypass) { $replybutton = $bypassReplyButton; }
-            else               { $replybutton = q{}; }                  # squish
+            else               { $replybutton = q{}; }
         }
     }
-    elsif ( $threadclass eq 'locked' && $mstate =~ /s/ism ) {
-        $threadclass = 'stickylock';
+    elsif ( $threadclass eq 'hide' && $mstate =~ /l/ism ) {
+        $threadclass = 'hidelock';
+        $pollbutton  = q{};
         if   ($icanbypass) { $replybutton = $bypassReplyButton; }
-        else               { $replybutton = q{}; }                      # squish
+        else               { $replybutton = q{}; }
     }
-    elsif ( $mstate =~ /s/ism ) { $threadclass = 'sticky'; }
     elsif ( ${$mnum}{'board'} eq $annboard ) {
         $threadclass =
           $threadclass eq 'locked' ? 'announcementlock' : 'announcement';
@@ -940,13 +943,23 @@ qq~$menusep<a href="$scripturl?action=imsend;to=$useraccount{$musername}">$img{'
             }
 
             $tmppostcount = NumberFormat( ${ $uid . $musername }{'postcount'} );
-            if ( $iamguest ) { $template_postinfo = qq~$display_txt{'21'}: $tmppostcount<br />~; }
+            if ($iamguest) {
+                $template_postinfo =
+                  qq~$display_txt{'21'}: $tmppostcount<br />~;
+            }
             else {
                 my $lastPostsTxt;
-                if ( $username eq $musername ) { $lastPostsTxt = $display_txt{'mylastposts'}; }
-                else { $lastPostsTxt = $display_txt{'lastposts'} . ${ $uid . $musername }{'realname'}; }
-                $template_postinfo = qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$useraccount{$musername}" title="$lastPostsTxt"><span class="small">$tmppostcount</span></a><br />~;
-            } 
+                if ( $username eq $musername ) {
+                    $lastPostsTxt = $display_txt{'mylastposts'};
+                }
+                else {
+                    $lastPostsTxt =
+                      $display_txt{'lastposts'}
+                      . ${ $uid . $musername }{'realname'};
+                }
+                $template_postinfo =
+qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$useraccount{$musername}" title="$lastPostsTxt"><span class="small">$tmppostcount</span></a><br />~;
+            }
             if (   ${ $uid . $musername }{'bday'}
                 && $showuserage
                 && ( !$showage || !${ $uid . $musername }{'hideage'} ) )
@@ -1119,7 +1132,8 @@ qq~$menusep<a href="$scripturl?board=$currentboard;action=modify;message=$counte
                     && $enable_quoteuser
                     && ( !$iamguest || $enable_guestposting ) )
                 {
-				$usernamelink = qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote_mname\[/b]\\r\\n\\r\\n'))"><img src="$imagesdir/$disp_qquname" alt="$display_txt{'146n'}" title="$display_txt{'146n'}" /></a> $usernamelink~;
+                    $usernamelink =
+qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote_mname\[/b]\\r\\n\\r\\n'))"><img src="$imagesdir/$disp_qquname" alt="$display_txt{'146n'}" title="$display_txt{'146n'}" /></a> $usernamelink~;
                 }
 
                 if (  !$movedflag
@@ -1250,7 +1264,6 @@ qq~<input type="checkbox" class="$css" style="border: 0px; visibility: hidden; d
 qq~<a href="$scripturl?num=$viewnum/$counter#$counter"><img src="$imagesdir/$micon.gif" alt="" /></a>~;
         $ipimg = qq~<img src="$imagesdir/$disp_ip" alt="" />~;
 
-
         if ($extendedprofiles) {
             require Sources::ExtendedProfiles;
             $template_ext_prof = ext_viewinposts($musername);
@@ -1273,7 +1286,8 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter"><img src="$imagesdir/$mic
           s/({|<)yabb delete(}|>)/$template_delete$tool_sep/gsm;
         $posthandelblock =~
           s/({|<)yabb modalert(}|>)/$PMAlertButton$tool_sep/gsm;
-        $posthandelblock =~ s/({|<)yabb print_post(}|>)/$template_print_post$tool_sep/gsm;
+        $posthandelblock =~
+          s/({|<)yabb print_post(}|>)/$template_print_post$tool_sep/gsm;
         $posthandelblock =~ s/({|<)yabb admin(}|>)/$template_admin/gsm;
         $posthandelblock =~ s/\Q$menusep//ixsm;
 
@@ -1291,7 +1305,7 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter"><img src="$imagesdir/$mic
           s/({|<)yabb delete(}|>)/$template_delete$outside_ptsep/gsm;
         $outside_posttools_tmp =~
           s/({|<)yabb modalert(}|>)/$PMAlertButton$outside_ptsep/gsm;
-        $outside_posttools =~ 
+        $outside_posttools =~
           s/({|<)yabb print_post(}|>)/$template_print_post$outside_ptsep/gsm;
 
         if ( !$posttools ) {

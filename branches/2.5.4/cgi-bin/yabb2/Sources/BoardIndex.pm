@@ -359,9 +359,9 @@ qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>~
                     undef,      undef, undef, $messagestate
                 ) = split /\|/xsm, $_;
                 if ( $messagestate !~ /h/ism ) {
-                    next
-                      if !( @lastthreadmessages =
-                        read_DBorFILE( 0, q{}, $datadir, $messageid, 'txt' ) );
+                    fopen( FILE, "$datadir/$messageid.txt" ) || next;
+                    my @lastthreadmessages = <FILE>;
+                    fclose(FILE);
                     my @lastmessage = split /\|/xsm, $lastthreadmessages[-1], 6;
                     ${ $uid . $curboard }{'lastpostid'}  = $messageid;
                     ${ $uid . $curboard }{'lastsubject'} = $lastmessage[0];

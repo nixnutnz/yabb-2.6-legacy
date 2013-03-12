@@ -226,7 +226,7 @@ function selectAllMods() {
         </tr><tr>
             <td class="titlebg"><label for="letter">$addmod_txt{'addmod_list'}</label></td>
         </tr><tr>
-            <td class="windowbg2" style="width:75%" colspan="3">
+            <td class="windowbg2">
                     <select name="moderators" id="moderators" multiple="multiple" size="4" style="width: 290px;" ondblclick="removeUser(this);">~;
     my @thisBoardModerators = split /, ?/sm, $moderators;
     foreach my $thisMod (@thisBoardModerators) {
@@ -239,7 +239,7 @@ function selectAllMods() {
     }
 
     $yymain .= qq~
-                </select>
+                <option></option></select>
                 <br /><span class="small">$addmod_txt{instructions}</span>
             </td>
         </tr><tr>
