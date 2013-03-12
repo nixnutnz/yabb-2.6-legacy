@@ -59,6 +59,7 @@ polliconclosed,poll_lock|img_polltxt|46||||tmp
 polliconnew,poll_new|img_polltxt|45||||tmp
 print,print|img_txt|465|||imgcatbg|tmp
 print_im,print|img_txt|465|||imgwindowbg|tmp
+printpost,print|img_txt|465a|||imgcatbg|tmp
 profile,profile|img_txt|467|||imgmenu|tmp
 quote,quote|img_txt|145|||imgwindowbg|tmp
 rating,Ratings/rate|img_txt|ratings|||imgmenu|mod
