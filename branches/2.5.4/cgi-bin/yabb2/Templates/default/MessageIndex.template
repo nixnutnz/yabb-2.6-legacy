@@ -102,7 +102,7 @@ if (!$messagelist) {
 <!-- Board Rules start -->
 			<table class="bordercolor cs_thin pad_3px">
 				<tr>
-    				<td class="titlebg" style="height18px">{yabb rulestitle}</td>
+    				<td class="titlebg" style="height:18px">{yabb rulestitle}</td>
 				</tr><tr>
     				<td class="windowbg">{yabb rulesdescription}</td>
 				</tr>
