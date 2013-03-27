@@ -359,13 +359,13 @@ qq~<input type="text" name="allowAttachIM" id="allow_attach_im" size="5" value="
                 name     => 'allowAttachIM',
                 validate => 'number',
             },
-		    {
-			    description => qq~<label for="pm_attach_groups">$fatxt{'17b'}</label>~,
-			    input_html => qq~<select multiple="multiple" name="pmAttachGroups" id="pm_attach_groups" size="8">~ . DrawPerms($pmAttachGroups, 0) . qq~</select>~,
-			    name => 'pmAttachGroups',
-			    validate => 'text,null',
-			    depends_on => ['allowAttachIM!=0'],
-		    },
+	    {
+		description => qq~<label for="pm_attach_groups">$fatxt{'17b'}</label>~,
+		input_html => qq~<select multiple="multiple" name="pmAttachGroups" id="pm_attach_groups" size="8">~ . DrawPerms($pmAttachGroups, 0) . qq~</select>~,
+		name => 'pmAttachGroups',
+		validate => 'text,null',
+		depends_on => ['allowAttachIM!=0'],
+	    },
             {
                 description =>
                   qq~<label for="pmdisplaypics">$fatxt{'16a'}</label>~,
@@ -685,7 +685,7 @@ qq~<input type="checkbox" name="faketruncation" id="faketruncation" value="1" ${
                 name     => 'faketruncation',
                 validate => 'boolean',
             },
-            { header => $settings_txt{'freedisk'}, },
+            { header => $settings_txt{'freedisk2'}, },
             {
                 description =>
                   qq~<label for="checkspace">$checklabel</label>~,
@@ -705,8 +705,8 @@ sub SaveSettings {
     @ext = split /\s+/xsm, $settings{'extensions'};
     $settings{'pmAttachExt'} =~ s/[^\ A-Za-z0-9_]//gsm;
     @pmAttachExt = split /\s+/xsm, $settings{'pmAttachExt'};
-    
-    SaveSettingsTo( 'Settings.pm', %settings );
+
+   SaveSettingsTo('Settings.pm', %settings);
     return;
 }
 

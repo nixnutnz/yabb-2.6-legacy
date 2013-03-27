@@ -21,6 +21,7 @@ LoadLanguage('Templates');
 
 sub ModifyTemplate {
     is_admin_or_gmod();
+    my @tempnames = qw ( Bdaylist BoardIndex Calendar Display Downloads HelpCentre Loginout Memberlist MessageIndex MyCenter MyMessage MyPosts MyProfile Post Register Search );
     my ( $fulltemplate, $line );
     if    ( $FORM{'templatefile'} ) { $templatefile = $FORM{'templatefile'} }
     elsif ( $INFO{'templatefile'} ) { $templatefile = $INFO{'templatefile'} }
@@ -61,7 +62,6 @@ qq~<option value="$cmp_templatefile"$selected>$cmp_templatefile</option>\n~;
             $selected = q{};
         }
 
-        my @tempnames = qw (BoardIndex Calendar Display HelpCentre Memberlist MessageIndex MyCenter Post Profile Search );
         for my $tmp (@tempnames) {
             $tmpnm = lc $tmp;
             ${ 'cmp_' . $tmpnm } = "$name/$tmp.template";

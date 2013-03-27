@@ -18,185 +18,197 @@ our $VERSION = '2.5.4';
 $checkspacepmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
-require Admin::NewSettings;
-
 sub checkspace {
     is_admin_or_gmod();
 
-    if ($checkspace) {
+    # Free Disk Space Checking
+    if ( $OSNAME =~ /Win/sm ) {
+        open my $fh, q{-|}, 'DIR /-C' or croak "Can't open pipe: $!";
+        my @x = <$fh>;
+        close $fh or croak "Can't close pipe: $!";
+        my $lastline = pop @x;
 
-        # Free Disk Space Checking
-        if ( $OSNAME =~ /Win/sm ) {
-            @x = qx{DIR /-C};
-            my $lastline = pop
-              @x;    # should look like: 17 Directory(s), 21305790464 Bytes free
-            return -1
-              if $lastline !~ m/byte/ism
-            ; # error trapping if output fails. The word byte should be in the line
-            if ( $lastline =~ /^\s+(\d+)\s+(.+?)\s+(\d+)\s+(.+?)\n$/xsm ) {
-                $FreeBytes = $3 - 100_000;
-            }    # 100000 bytes reserve
-            if ( $FreeBytes >= 1_073_741_824 ) {
-                $yyfreespace =
-                  sprintf( '%.2f', $FreeBytes / ( 1024 * 1024 * 1024 ) )
-                  . ' GB';
-            }
-            elsif ( $FreeBytes >= 1_048_576 ) {
-                $yyfreespace =
-                  sprintf( '%.2f', $FreeBytes / ( 1024 * 1024 ) ) . ' MB';
-            }
-            else {
-                $yyfreespace = sprintf( '%.2f', $FreeBytes / 1024 ) . ' KB';
-            }
-            @disk_space = $yyfreespace;
+        # should look like: 17 Directory(s), 21305790464 Bytes free
+        return -1
+          if $lastline !~ m/byte/ism;
 
+        # error trapping if output fails. The word byte should be in the line
+        if ( $lastline =~ /^\s+(\d+)\s+(.+?)\s+(\d+)\s+(.+?)\n$/xsm ) {
+            $FreeBytes = $3 - 100_000;
+        }    # 100000 bytes reserve
+        if ( $FreeBytes >= 1_073_741_824 ) {
+            $yyfreespace =
+              sprintf( '%.2f', $FreeBytes / ( 1024 * 1024 * 1024 ) ) . ' GB';
+        }
+        elsif ( $FreeBytes >= 1_048_576 ) {
+            $yyfreespace =
+              sprintf( '%.2f', $FreeBytes / ( 1024 * 1024 ) ) . ' MB';
         }
         else {
-            @disk_space = qx{df -k .};
-
-            map { $_ =~ s/ +/  /gsm } @disk_space;
+            $yyfreespace = sprintf( '%.2f', $FreeBytes / 1024 ) . ' KB';
         }
-        my @find = qx(find . -noleaf -type f -printf '%s-');
-
-        $hostusername = $hostusername
-          || ( split / +/sm, qx{ls -l YaBB.$yyext} )[2];
-        my @quota = qx{quota -u $hostusername -v};
-        $quota[0] =~ s/^ +//sm;
-        $quota[0] =~ s/ /&nbsp;/gsm;
-        $quota[1] =~ s/^ +//sm;
-        $quota[1] =~ s/ /&nbsp;/gsm;
-        my $quota_select = qq~$quota[0]<br />$quota[1]~;
-        if ( $quota[2] ) {
-
-            if ( !$enable_quota ) {
-                $ds = ( split / +/sm, $disk_space[1], 2 )[0];
-            }
-            $quota_select .= q~<br /><select name="enable_quota_value">~;
-            for my $i ( 2 .. ( @quota - 1 ) ) {
-                $quota[$i] =~ s/^ +//sm;
-                $quota[$i] =~ s/ +/&nbsp;&nbsp;/gsm;
-                $quota_select .= qq~<option value="$i" ~
-                  . ${
-                    isselected(
-                        $i == $enable_quota
-                          || ( $ds && $quota[$i] =~ /^$ds/xsm )
-                    )
-                  }
-                  . qq~>$quota[$i]</option>~;
-            }
-            $quota_select .= '</select>';
-        }
+        @disk_space = $yyfreespace;
     }
+    else {
+        open my $dsh, q{-|}, 'df -k .' or croak "Can't open pipe: $!";
+        @disk_space = <$dsh>;
+        close $dsh or croak "Can't close pipe: $!";
+
+        map { $_ =~ s/ +/  /gsm } @disk_space;
+
+        open my $ffh, q{-|}, 'find . -noleaf -type f -printf "%s-"'
+          or croak "Can't open pipe: $!";
+        my @find = <$ffh>;
+        close $ffh or croak "Can't close pipe: $!";
+    }
+    $hostusername = $hostusername
+      || ( split / +/sm, qx{ls -l YaBB.$yyext} )[2];
+    my @quota = qx{quota -u $hostusername -v};
+    $quota[0] =~ s/^ +//sm;
+    $quota[0] =~ s/ /&nbsp;/gsm;
+    $quota[1] =~ s/^ +//sm;
+    $quota[1] =~ s/ /&nbsp;/gsm;
+    my $quota_select = qq~$quota[0]<br />$quota[1]~;
+
+    if ( $quota[2] ) {
+        if ( !$enable_quota ) { $ds = ( split / +/sm, $disk_space[1], 2 )[0]; }
+        $my_q_select =
+          isselected( $i == $enable_quota
+              || ( $ds && $quota[$i] =~ /^$ds/sm ) );
+        $quota_select .= q~<br /><select name="enable_quota_value">~;
+        for my $i ( 2 .. ( @quota - 1 ) ) {
+            $quota[$i] =~ s/^ +//sm;
+            $quota[$i] =~ s/ +/&nbsp;&nbsp;/gsm;
+            $quota_select .=
+              qq~<option value="$i" ~ . $my_q_select . qq~>$quota[$i]</option>~;
+        }
+        $quota_select .= '</select>';
+    }
+
+    #    }
+
+    $ch_spc      = ischecked($enable_freespace_check);
+    $ch_enable_q = ischecked($enable_quota);
+
     @settings = (
-    {
-        name  => $settings_txt{'checkspace'},
-        id    => 'checkspace',
-        items => [
-        { header => $settings_txt{'freedisk'}, },
         {
-            description =>
-              qq~<label for="enable_quota">$admin_txt{'quota'}</label>~,
-            input_html =>
+            name  => $settings_txt{'checkspace'},
+            id    => 'checkspace',
+            items => [
+                { header => $settings_txt{'freedisk'}, },
+                {
+                    description =>
+                      qq~<label for="enable_quota">$admin_txt{'quota'}</label>~,
+                    input_html =>
 q~<input type="checkbox" name="enable_quota" id="enable_quota" value="1" ~
-              . (
-                !$quota[2] ? 'disabled="disabled" '
-                : ${ ischecked($enable_quota) }
-              )
-              . q~/>~,
-            name       => 'enable_quota',
-            validate   => 'boolean',
-            depends_on => (
-                !$quota[2] ? []
-                : [
-                    '!enable_freespace_check', '(findfile_time==0||',
-                    'findfile_time==||',       'findfile_maxsize==0||',
-                    'findfile_maxsize==)'
-                ]
-            ),
-        },
-        {
-            description =>
+                      . (
+                         !$quota[2] ? 'disabled="disabled" '
+                        : $ch_enable_q
+                      )
+                      . q~/>~,
+                    name       => 'enable_quota',
+                    validate   => 'boolean',
+                    depends_on => (
+                        !$quota[2] ? []
+                        : [
+                            '!enable_freespace_check',
+                            '(findfile_time==0||',
+                            'findfile_time==||',
+                            'findfile_maxsize==0||',
+                            'findfile_maxsize==)'
+                        ]
+                    ),
+                },
+                {
+                    description =>
 qq~<label for="enable_quota_value">$admin_txt{'quota_value'}</label>~,
-            input_html => (
-                $quota[2] ? $quota_select
-                : q~<input type="hidden" name="enable_quota_value" id="enable_quota_value" value="0" />~
-            ),
-            name       => 'enable_quota_value',
-            validate   => 'number,null',
-            depends_on => ['enable_quota'],
-        },
-        {
-            description =>
-              qq~<label for="hostusername">$admin_txt{'quotahostuser'}</label>~,
-            input_html =>
+                    input_html => (
+                        $quota[2] ? $quota_select
+                        : q~<input type="hidden" name="enable_quota_value" id="enable_quota_value" value="0" />~
+                    ),
+                    name       => 'enable_quota_value',
+                    validate   => 'number,null',
+                    depends_on => ['enable_quota'],
+                },
+                {
+                    description =>
+qq~<label for="hostusername">$admin_txt{'quotahostuser'}</label>~,
+                    input_html =>
 qq~<input type="text" name="hostusername" id="hostusername" size="20" value="$hostusername" />~,
-            name       => 'hostusername',
-            validate   => 'text,null',
-            depends_on => ['enable_quota'],
-        },
-        {
-            description =>
-              qq~<label for="findfile_time">$admin_txt{'findtime'}</label>~,
-            input_html =>
+                    name       => 'hostusername',
+                    validate   => 'text,null',
+                    depends_on => ['enable_quota'],
+                },
+                {
+                    description =>
+qq~<label for="findfile_time">$admin_txt{'findtime'}</label>~,
+                    input_html =>
 q~<input type="text" name="findfile_time" id="findfile_time" size="4" value="~
-              . ( @find ? qq~$findfile_time"~ : '0" disabled="disabled"' )
-              . qq~ /> $admin_txt{'537'}~,
-            name     => 'findfile_time',
-            validate => 'number,null',
-            depends_on =>
-              ( @find ? [ '!enable_quota', '!enable_freespace_check' ] : [] ),
-        },
-        {
-            description =>
-              qq~<label for="findfile_root">$admin_txt{'findroot'}</label>~,
-            input_html =>
+                      . (
+                        @find ? qq~$findfile_time"~ : '0" disabled="disabled"'
+                      )
+                      . qq~ /> $admin_txt{'537'}~,
+                    name       => 'findfile_time',
+                    validate   => 'number,null',
+                    depends_on => (
+                        @find ? [ '!enable_quota', '!enable_freespace_check' ]
+                        : []
+                    ),
+                },
+                {
+                    description =>
+qq~<label for="findfile_root">$admin_txt{'findroot'}</label>~,
+                    input_html =>
 qq~<input type="text" name="findfile_root" id="findfile_root" size="40" value="$findfile_root" ~
-              . ( @find ? q{} : 'disabled="disabled" ' ) . q~/>~,
-            name     => 'findfile_root',
-            validate => 'text,null',
-            depends_on =>
-              ( @find ? [ '!enable_quota', '!enable_freespace_check' ] : [] ),
-        },
-        {
-            description =>
-              qq~<label for="findfile_maxsize">$admin_txt{'findmax'}</label>~,
-            input_html =>
+                      . ( @find ? q{} : 'disabled="disabled" ' ) . q~/>~,
+                    name       => 'findfile_root',
+                    validate   => 'text,null',
+                    depends_on => (
+                        @find ? [ '!enable_quota', '!enable_freespace_check' ]
+                        : []
+                    ),
+                },
+                {
+                    description =>
+qq~<label for="findfile_maxsize">$admin_txt{'findmax'}</label>~,
+                    input_html =>
 qq~<input type="text" name="findfile_maxsize" id="findfile_maxsize" size="10" value="$findfile_maxsize" ~
-              . ( @find ? q{} : 'disabled="disabled" ' )
-              . q~/> MB~,
-            name     => 'findfile_maxsize',
-            validate => 'number,null',
-            depends_on =>
-              ( @find ? [ '!enable_quota', '!enable_freespace_check' ] : [] ),
-        },
-        {
-            description =>
+                      . ( @find ? q{} : 'disabled="disabled" ' )
+                      . q~/> MB~,
+                    name       => 'findfile_maxsize',
+                    validate   => 'number,null',
+                    depends_on => (
+                        @find ? [ '!enable_quota', '!enable_freespace_check' ]
+                        : []
+                    ),
+                },
+                {
+                    description =>
 qq~<label for="enable_freespace_check">$admin_txt{'diskspacecheck'}</label>~,
-            input_html =>
-qq~<input type="checkbox" name="enable_freespace_check" id="enable_freespace_check" value="1" ${ischecked($enable_freespace_check)}/><pre>@disk_space</pre>~,
-            name       => 'enable_freespace_check',
-            validate   => 'boolean',
-            depends_on => [
-                '!enable_quota',     '(findfile_time==0||',
-                'findfile_time==||', 'findfile_maxsize==0||',
-                'findfile_maxsize==)'
+                    input_html =>
+qq~<input type="checkbox" name="enable_freespace_check" id="enable_freespace_check" value="1" $ch_spc /><pre>@disk_space</pre>~,
+                    name       => 'enable_freespace_check',
+                    validate   => 'boolean',
+                    depends_on => [
+                        '!enable_quota',     '(findfile_time==0||',
+                        'findfile_time==||', 'findfile_maxsize==0||',
+                        'findfile_maxsize==)'
+                    ],
+                },
             ],
         },
-        ],
-        },
     );
-chsettings();
-    $yytitle     = 'checkspace';
+    chsettings();
     $action_area = 'checkspace';
+    AdminTemplate();
     exit;
 }
-
 
 sub chsettings {
     is_admin_or_gmod();
 
     $yytitle = $admin_txt{'checkspclabel'};
-    $page = 'checkspace';
+    $page    = 'checkspace';
 
     my @requireorder;    # an array for the correct order of the requirements
     my %requirements;    # a hash that says "Y is required by X"
@@ -216,7 +228,7 @@ sub chsettings {
      </tr>
   </table>
   </div>
-  <form action="$adminurl?action=newsettings2;page=$page" onsubmit="undisableAll(this);" method="post" accept-charset="$yycharset">
+  <form action="$adminurl?action=checkspace_save" method="post" accept-charset="$yycharset">
 ~;
     foreach my $tab (@settings) {
         $yymain .= qq~
@@ -429,50 +441,65 @@ $dependicies
   // -->
   </script>~;
 
-    $action_area = "newsettings;page=$page";
-    AdminTemplate();
     return;
 }
 
-sub SaveSettings {
-    my %settings = @_;
+sub ischecked {
+    my ($inp) = @_;
 
-    if ($checkspace) {
-        if (   $settings{'enable_quota'}
-            && $settings{'enable_quota_value'} > 1
-            && $settings{'hostusername'} )
-        {
-            $settings{'enable_quota'}     = $settings{'enable_quota_value'};
-            $settings{'findfile_maxsize'} = 0;
-            $settings{'enable_freespace_check'} = 0;
-        }
-        elsif (-d "$settings{'findfile_root'}"
-            && $settings{'findfile_maxsize'} > 0
-            && !$settings{'enable_freespace_check'} )
-        {
-            $findfile_space = '1<>0';
-            $settings{'enable_quota'} = 0;
-        }
-        elsif ( $settings{'enable_freespace_check'} ) {
-            $settings{'findfile_maxsize'} = 0;
-            $settings{'enable_quota'}     = 0;
-        }
-        elsif (!-d "$settings{'findfile_root'}"
-            || !$settings{'findfile_maxsize'} )
-        {
-            $settings{'findfile_time'}    = 0;
-            $settings{'findfile_maxsize'} = 0;
-        }
+    # Return a ref so we can be used like ${ischecked($var)} inside a string
+    if ( $inp == 1 ) { return 'checked="checked"'; }
+    return;
+}
+
+sub isselected {
+    my ($inp) = @_;
+
+    # Return a ref so we can be used like ${ischecked($var)} inside a string
+    if ( $inp == 1 ) { return 'selected="selected"'; }
+    return;
+}
+
+sub checkspace_save {
+    is_admin_or_gmod();
+
+    $enable_quota           = $FORM{'enable_quota'}           || '0';
+    $enable_quota_value     = $FORM{'enable_quota_value'}     || '0';
+    $hostusername           = $FORM{'hostusername'}           || q{};
+    $findfile_time          = $FORM{'findfile_time'}          || 0;
+    $findfile_root          = $FORM{'findfile_root'}          || q{};
+    $findfile_maxsize       = $FORM{'findfile_maxsize'}       || 0;
+    $findfile_space         = $FORM{'findfile_space'}         || '1<>0';
+    $enable_freespace_check = $FORM{'enable_freespace_check'} || 0;
+
+    if ( $enable_quota && $enable_quota_value > 1 && $hostusername ) {
+        $enable_quota           = $enable_quota_value;
+        $findfile_maxsize       = 0;
+        $enable_freespace_check = 0;
     }
-    else {
-        $settings{'findfile_maxsize'}       = 0;
-        $settings{'enable_freespace_check'} = 0;
-        $findfile_space                     = '1<>0';
-        $settings{'enable_quota'}           = 0;
-        $settings{'findfile_time'}          = 0;
+    elsif (-d "$findfile_root"
+        && $findfile_maxsize > 0
+        && !$enable_freespace_check )
+    {
+        $findfile_space = '1<>0';
+        $enable_quota   = 0;
+    }
+    elsif ($enable_freespace_check) {
+        $findfile_maxsize = 0;
+        $enable_quota     = 0;
+    }
+    elsif ( !-d "$findfile_root" || !$findfile_maxsize ) {
+        $findfile_time    = 0;
+        $findfile_maxsize = 0;
     }
 
-    SaveSettingsTo( 'Settings.pm', %settings );
+    require Admin::NewSettings;
+    SaveSettingsTo('Settings.pm');
+
+    if ( $action eq 'checkspace_save' ) {
+        $yySetLocation = qq~$adminurl?action=newsettings;page=advanced~;
+        redirectexit();
+    }
     return;
 }
 

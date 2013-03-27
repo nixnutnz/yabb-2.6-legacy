@@ -811,10 +811,6 @@ $ext_prof_fields
 							# 0=no > 1 = number, max 25
 
 \$enable_YaBBBut = $enable_YaBBBut;		# enable YABBC Buttons on post page? 1=yes, 0=no
-\$enable_PMcontrols = $enable_PMcontrols;	# enable extended controls for members? 1=yes, 0=no. If off, use the following instead
-\$enable_PMprev = $enable_PMprev;		# enable preview button
-\$enable_PMActprev = $enable_PMActprev;		# enable active preview
-\$enable_PMviewMess = $enable_PMviewMess;	# enable message body suppress in list view
 
 \$enable_PMautoAway = $enable_PMautoAway;	# enable PM 'away' auto reply for inbox.
 \$enable_MCaway = $enable_MCaway;		# enable 'away' indicator 0=Off 1=Staff to Staff 2=Staff to all 3=Members

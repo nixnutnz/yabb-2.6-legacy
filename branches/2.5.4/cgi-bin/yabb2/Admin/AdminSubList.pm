@@ -34,6 +34,7 @@ $adminsublistpmver = 'YaBB 2.5.4 $Revision$';
 'boardscreen',"ManageBoards.pm&BoardScreen",
 'catscreen',"ManageCats.pm&DoCats",
 'checkspace',"Checkspace.pm&checkspace",
+'checkspace_save',"Checkspace.pm&checkspace_save",
 'clean_log',"Maintenance.pm&clean_log",
 'clean_reglog',"RegistrationLog.pm&clean_reglog",
 'cleanerrorlog',"ErrorLog.pm&CleanErrorLog",

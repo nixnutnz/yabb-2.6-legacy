@@ -1336,35 +1336,6 @@ qq~<input type="checkbox" name="nomailspammer" id="nomailspammer" value="1" ${is
 			validate => 'number,null',
 			depends_on => ['PM_level!=0'],
 		},
-		{
-			description => qq~<label for="enable_PMcontrols">$imtxt{'enablecontrols'}</label>~,
-			input_html => qq~<input type="checkbox" name="enable_PMcontrols" id="enable_PMcontrols" value="1"${ischecked($enable_PMcontrols)} />~,
-			name => 'enable_PMcontrols',
-			validate => 'boolean',
-			depends_on => ['PM_level!=0'],
-		},
-		{
-			description => qq~<label for="enable_PMprev">$imtxt{'enable_PMprev'}</label>~,
-			input_html => qq~<input type="checkbox" name="enable_PMprev" id="enable_PMprev" value="1"${ischecked($enable_PMprev)} />~,
-			name => 'enable_PMprev',
-			validate => 'boolean',
-			depends_on => ['!enable_PMcontrols', 'PM_level!=0'],
-		},
-		{
-			description => qq~<label for="enable_PMActprev">$imtxt{'enable_PMActprev'}</label>~,
-			input_html => qq~<input type="checkbox" name="enable_PMActprev" id="enable_PMActprev" value="1"${ischecked($enable_PMActprev)} />~,
-			name => 'enable_PMActprev',
-			validate => 'boolean',
-			depends_on => ['!enable_PMcontrols', 'PM_level!=0'],
-		},
-		{
-			description => qq~<label for="enable_PMviewMess">$imtxt{'enable_PMviewMess'}</label>~,
-			input_html => qq~<input type="checkbox" name="enable_PMviewMess" id="enable_PMviewMess" value="1"${ischecked($enable_PMviewMess)} />~,
-			name => 'enable_PMviewMess',
-			validate => 'boolean',
-			depends_on => ['!enable_PMcontrols', 'PM_level!=0'],
-		},
-
 
 		{
 			header => $settings_txt{'mycenter'},
