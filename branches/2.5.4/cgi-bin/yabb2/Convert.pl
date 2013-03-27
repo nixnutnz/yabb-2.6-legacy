@@ -17,7 +17,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-#use warnings;
+# use warnings;
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
@@ -1007,6 +1007,7 @@ qq~The Forum Start date was set to $setforumstart but the first member was regis
           . $NavLink3
           . $NavLink4
           . $NavLink5
+          . $NavLink7a
           . $NavLink6a;
 
         $formsession = cloak("$mbname$username");
@@ -1069,7 +1070,7 @@ qq~<br /><br />There were some illegal usernames. Their names were changed. Plea
                 - Attachment Functions => Rebuild Attachments<br /></span>
                 <br />
                 <br />
-                You may now login to your forum. Enjoy using YaBB 2.5.4!
+                You may now log in to your forum or you can run the Extended Profiles converter by clicking on the button above. Enjoy using YaBB 2.5.4!
             </td>
         </tr><tr>
             <td class="catbg center" colspan="2">
@@ -1081,7 +1082,63 @@ qq~<br /><br />There were some illegal usernames. Their names were changed. Plea
         </tr>
     </table>
     </div>~;
+#        CreateConvLock();
+    }
+    elsif ( $action eq 'extended' ) {
+        ext_admin_convert();
+        $yytabmenu =
+            $NavLink1
+          . $NavLink2
+          . $NavLink3
+          . $NavLink4
+          . $NavLink5
+          . $NavLink7a
+          . $NavLink6a;
 
+        $yymain = qq~
+    <div class="bordercolor borderbox">
+    <table class="cs_thin pad_4px">
+        <tr>
+            <td class="titlebg" colspan="2">
+                YaBB 2.5.4 Converter
+            </td>
+        </tr><tr>
+            <td class="windowbg center">
+                <img src="$imagesdir/thread.gif" alt="" />
+            </td>
+            <td class="windowbg2">
+                <div class="convdone">Member Conversion.</div>
+                $ConvDone
+                <div class="convdone">Board and Category Conversion.</div>
+                $ConvDone
+                <div class="convdone">Message Conversion.</div>
+                $ConvDone
+                <div class="convdone">Date &amp; Time Conversion.</div>
+                $ConvDone
+                <div class="convdone">Final Cleanup.</div>
+                $ConvDone
+            </td>
+        </tr><tr>
+            <td class="windowbg center">
+                <img src="$imagesdir/info.gif" alt="" />
+            </td>
+            <td class="windowbg2 fontbigger">
+                The Extended Profiles conversion took <i>~
+          . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minutes</i>.<br />
+                <br />
+                <br />
+                You may now login to your forum . Enjoy using YaBB 2.5.4!
+            </td>
+        </tr><tr>
+            <td class="catbg center" colspan="2">
+                <form action="YaBB.$yyext" method="post" style="display: inline;">
+                    <input type="submit" value="Start" />
+                    <input type="hidden" name="formsession" value="$formsession" />
+                </form>
+            </td>
+        </tr>
+    </table>
+    </div>~;
         CreateConvLock();
     }
     elsif ( $action eq 'cleanup2' ) {
@@ -2905,6 +2962,7 @@ sub tabmenushow {    # used by the converter
     $NavLink3 = qq~$tabsep<span>$tabfill Messages $tabfill</span>~;
     $NavLink4 = qq~$tabsep<span>$tabfill Date &amp; Time $tabfill</span>~;
     $NavLink5 = qq~$tabsep<span>$tabfill Clean Up $tabfill</span>~;
+    $NavLink5 = qq~$tabsep<span>$tabfill Extended Profiles $tabfill</span>~;
     $NavLink6 = qq~$tabsep<span>$tabfill Login $tabfill</span>$tabsep&nbsp;~;
 
     $NavLink1a =
@@ -2919,6 +2977,8 @@ qq~$tabsep<span class="selected"><a href="$set_cgi?action=dates;st=$INFO{'st'}" 
 qq~$tabsep<span class="selected"><a href="$set_cgi?action=cleanup;st=$INFO{'st'}" style="color: #FF3333;" class="selected" onClick="PleaseWait();">$tabfill Clean Up $tabfill</a></span>~;
     $NavLink6a =
 qq~$tabsep<span class="selected"><a href="$boardurl/YaBB.$yyext?action=login" style="color: #FF3333;" class="selected">$tabfill Login $tabfill</a></span>$tabsep&nbsp;~;
+    $NavLink7a =
+qq~$tabsep<span class="selected"><a href="$set_cgi?action=extended;st=$INFO{'st'}" style="color: #FF3333;" class="selected" onClick="PleaseWait();">$tabfill Extended Profiles $tabfill</a></span>~;
 
     $ConvDone = q~
             <div class="divvary_m">&nbsp;</div>
@@ -3171,6 +3231,172 @@ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2
     };
     $setfile =~ s/(.+)(#.+$)/ $1 . cut_comment($1,$2) /gem;
     return $setfile;
+}
+
+# from Extended Profiles
+# converts ALL old .ext files into the the YaBB 2 file format
+sub ext_admin_convert {
+    my ( @contents, $filename, $old_membersdir, $old_vardir, $i );
+
+    $old_membersdir = $convmembersdir;
+    $old_vardir     = $convvardir;
+
+    if ( !-e $old_vardir ) {
+        admin_fatal_error( 'extended_profiles_convert',
+            $lang_ext{'converter_missing_vars'} );
+    }
+    if ( !-e "$old_vardir/extended_profiles_order.txt" ) {
+        admin_fatal_error( 'extended_profiles_convert',
+            $lang_ext{'converter_missing_order'} );
+    }
+    if ( !-e "$old_vardir/extended_profiles_fields.txt" ) {
+        admin_fatal_error( 'extended_profiles_convert',
+            $lang_ext{'converter_missing_fields'} );
+    }
+
+    fopen( CONVERTER, "$old_vardir/extended_profiles_order.txt" )
+      || admin_fatal_error( 'cannot_open',
+        "$old_vardir/extended_profiles_order.txt" );
+    @ext_prof_order = <CONVERTER>;
+    fclose(CONVERTER);
+    chomp @ext_prof_order;
+
+    # copy old extended_profiles_fields and extended_profiles_order files
+    fopen( CONVERTER, "$old_vardir/extended_profiles_fields.txt" )
+      || admin_fatal_error( 'cannot_open',
+        "$old_vardir/extended_profiles_fields.txt" );
+    @ext_prof_fields = <CONVERTER>;
+    fclose(CONVERTER);
+    chomp @ext_prof_fields;
+
+    #check if used membergroups still exist + convert to YaBB new format
+    for my $i ( 0 .. ( @ext_prof_fields - 1 ) ) {
+        my @field = split /\|/xsm, $ext_prof_fields[$i];
+        $field[8]  = ext_admin_convert_fixgroupnames( $field[8] );
+        $field[11] = ext_admin_convert_fixgroupnames( $field[11] );
+        $field[15] = ext_admin_convert_fixgroupnames( $field[15] );
+        $field[19] = ext_admin_convert_fixgroupnames( $field[19] );
+        $ext_prof_fields[$i] = join q{|}, @field;
+    }
+
+    require Admin::NewSettings;
+    SaveSettingsTo('Settings.pm');
+
+    opendir EXT_DIR, "$old_membersdir";
+    @contents = grep { /\.ext$/xsm } readdir EXT_DIR;
+    closedir EXT_DIR;
+
+    foreach my $filename (@contents) {
+        $filename =~ s/.ext$//xsm;
+        ext_user_convert( $filename, $old_membersdir );
+    }
+    return;
+}
+
+sub ext_user_convert {
+    my ( $pusername, $old_membersdir, @ext_profile, $id ) = ( shift, shift );
+
+    if ( -e "$convmembersdir/$pusername.ext" ) {
+        if ( -e "$memberdir/$pusername.vars" ) {
+            ext_get_profile($pusername);
+
+            fopen( EXT_FILE, "$convmembersdir/$pusername.ext" )
+              || admin_fatal_error( 'cannot_open',
+                "$convmembersdir/$pusername.ext" );
+            @ext_profile = <EXT_FILE>;
+            fclose(EXT_FILE);
+            chomp @ext_profile;
+
+            $id = 0;
+            foreach (@ext_prof_fields) {
+                ${ $uid . $pusername }{ 'ext_' . $id } = $ext_profile[$id];
+                $id++;
+            }
+            UserAccount( $pusername, 'update' );
+
+            # don't delete old .ext files anymore, user can do that himself now.
+            #unlink "$old_membersdir/$pusername.ext";
+        }
+    }
+    return;
+}
+
+#'ext_convert',"Settings_ExtendedProfiles.pm&ext_admin_convert",
+
+# convert a string of usergroup names from the old YaBB format into Y2's new format
+sub ext_admin_convert_fixgroupnames {
+    my ( $input, $done, $j, @groups, $group, $groupid, %checkdoubles ) =
+      ( shift, 0 );
+
+    @groups = split /\s*\,\s*/xsm, $input;
+    for my $j ( 0 .. ( @groups - 1 ) ) {
+
+        # if groupname is in old format
+        if (   $groups[$j] ne 'Administrator'
+            && $groups[$j] ne 'Global Moderator'
+            && $groups[$j] ne 'Moderator'
+            && $groups[$j] !~ m/^(?:No)?Post{\d+}$/sm )
+        {
+
+            # find best matching usergroup
+            foreach my $groupid ( sort { $a <=> $b } keys %NoPost ) {
+                if ( $groups[$j] eq
+                    ( split /\|/xsm, ( split /\|/xsm, $NoPost{$groupid} )[0] )
+                    [0] )
+                {
+                    $groups[$j] = "NoPost{$groupid}";
+
+                    # check for doubles
+                    if ( $checkdoubles{ $groups[$j] } == 1 ) {
+                        splice @groups, $j, 1;
+                        $j--;
+                        $done = 1;
+                        last;
+                    }
+                    else {
+                        $checkdoubles{ $groups[$j] } = 1;
+                    }
+                }
+            }
+            if ( $done == 1 ) { $done = 0; next; }
+            foreach my $groupid ( reverse sort { $a <=> $b } keys %Post ) {
+                if ( $groups[$j] eq
+                    ( split /\|/xsm, ( split /\|/xsm, $Post{$groupid} )[0] )[0]
+                  )
+                {
+                    $groups[$j] = "Post{$groupid}";
+
+                    # check for doubles
+                    if ( $checkdoubles{ $groups[$j] } == 1 ) {
+                        splice @groups, $j, 1;
+                        $done = 1;
+                        $j--;
+                        last;
+                    }
+                    else {
+                        $checkdoubles{ $groups[$j] } = 1;
+                    }
+                }
+            }
+            if ( $done == 1 ) { $done = 0; next; }
+        }
+        else {
+            $checkdoubles{ $groups[$j] } = 1;
+        }
+
+        # if still not matching, get rid of it!
+        if (   $groups[$j] ne 'Administrator'
+            && $groups[$j] ne 'Global Moderator'
+            && $groups[$j] ne 'Moderator'
+            && $groups[$j] !~ m/^(?:No)?Post{\d+}$/sm )
+        {
+
+            #delete $groups[$j];
+            splice @groups, $j, 1;
+            $j--;
+        }
+    }
+    return join q{,}, @groups;
 }
 
 
