@@ -12,12 +12,13 @@
 # Packaged:       January 1, 2013                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
 # use warnings;
+no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.5.4';
@@ -26,13 +27,15 @@ $fixfileplver = 'YaBB 2.5.4 $Revision$';
 
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     $yyIIS = 1;
-    $PROGRAM_NAME =~ m{(.*)(\\|/)}xsm;
-    $yypath = $1;
+    if ( $PROGRAM_NAME =~ m{(.*)(\\|/)}xsm ) {
+        $yypath = $1;
+    }
     $yypath =~ s/\\/\//gxsm;
     chdir $yypath;
     push @INC, $yypath;
 }
 
+### Requirements and Errors ###
 $script_root = $ENV{'SCRIPT_FILENAME'};
 if ( !$script_root ) {
     $script_root = $ENV{'PATH_TRANSLATED'};
@@ -397,7 +400,7 @@ sub tempstarter {
         push @INC, $yypath;
     }
 
-    require "Variables::Settings;
+    require Variables::Settings;
     if ( -e "$vardir/membergroups.txt" ) {
     require "$vardir/membergroups.txt";
     }
@@ -405,7 +408,7 @@ sub tempstarter {
     require Sources::DateTime;
     require Sources::Load;
     require Sources::System;
-    require Sources::Admin;
+    require Admin::Admin;
     eval (require "$boardsdir/forum.master");
 
     LoadCookie();        # Load the user's cookie (or set to guest)
