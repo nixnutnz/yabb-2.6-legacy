@@ -25,6 +25,7 @@ $helpcentrelngver = 'YaBB 2.5.4 $Revision$';
 '8' => "Done!",
 '9' => "Use Permissions",
 '10' => "This is where you edit, add, remove or re-order the help sections shown to the users in the help system. In the lefthand fields you see the available help sections. You can mark and edit them or add them to the righthand fields by marking and clicking the arrow to make them visible in the help system.",
+'643' => 'Back to top',
 '769' => "Flash location",
 );
 

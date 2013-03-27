@@ -46,6 +46,12 @@ $notifylngver = 'YaBB 2.5.4 $Revision$';
 '334' => 'No New Posts',
 '335' => 'New',
 'lastpost' => 'last post',
+'lft' => "&lsaquo;",
+'rgt' => "&rsaquo;",
+'75' => 'This is your Notification Board selection.',
+'76' => 'It now holds',
+'77' => 'of',
+'78' => 'maximum allowed Notification Boards.',
 );
 
 1;

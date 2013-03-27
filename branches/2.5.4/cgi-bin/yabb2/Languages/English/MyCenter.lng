@@ -56,4 +56,18 @@ $mycenterlngver = 'YaBB 2.5.4 $Revision$';
 'foldername' => 'Folder Name',
 );
 
+%my_favs = (
+'70' => 'Subject',
+'109' => 'Started By',
+'110' => 'Replies',
+'301' => 'Views',
+'330' => 'Topics',
+'21' => 'Posts',
+'22' => 'Last Post',
+'525' => 'By',
+'526' => 'by',
+'527' => 'Started',
+'737' => 'Check all',
+);
+
 1;

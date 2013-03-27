@@ -972,6 +972,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 '36' => 'Equal To',
 '37' => 'Greater Than',
 '38' => 'Check All:',
+'38a' => '&lt;= Check All:',
 '39' => 'Use tags [name] and [username] to include personalized details in the message.',
 '40' => 'Mail Groups',
 '41' => 'Send E-mail',
@@ -1010,11 +1011,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 'allowbcc' => 'Allow &#39;Bcc&#39; list for PMs?<br /><span class="small">(&#39;Bcc&#39; - member is &#39;copied&#39; but doesn&#39;t see other recipients.)</span>',
 'away' => 'Enable &#39;Away&#39; indicator for members, works alongside &#39;Online/Offline&#39;<br /><span class="small">Staff to Staff - Only forum Staff can use and see<br />Staff to All - Only forum Staff can use, All members can see<br />Members - All members can use and see</span>',
 'extrastore' => 'Enable additional Store Folders<br /><span class="small">(In/Out are default for All, set to 0 to disable, max 25)</span>',
-'enablecontrols' => 'Enable extended PM controls for members?<br /><span class="small">(If unchecked, the following can be enabled individually)</span>',
-'enable_PMprev' => '&nbsp;&nbsp;&nbsp; - Enable the &#39;Preview&#39; button when sending PMs?',
-'enable_PMActprev' => '&nbsp;&nbsp;&nbsp; - Enable active (Live) Preview on PM sending screen?',
 'NewNotificationAlert' => 'Allow member&#39;s new board and post notifications to appear at the top of each page, and permit popups for these new notifications on the Board Index (based on the member&#39;s individual settings)?',
-'enable_PMviewMess' => '&nbsp;&nbsp;&nbsp; - Enable members to suppress the PM Message body in list view?',
 'enable_PMsearch' => 'Allow members to be able to search their PMs<br /><span class="small">(Set to 0 to disable; maximum 50 results returned)</span>',
 'enablePM' => 'Enable Personal Messaging for',
 '87' => 'Enable Broadcast Messaging for',
@@ -1328,6 +1325,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'uploaddircorrect' => 'Attachments directory exists and has correct permissions?',
 'pmuploaddircorrect' => 'PM Attachments directory exists and has correct permissions?',
 'freedisk' => '<span class="small">You can enable <span class="under">one</span> of these options. <b>Note</b> that not all options are available on all servers.</span>',
+'freedisk2' => 'Free Disk Space Options <span class="small"><b>Note</b>: not all options are available on all servers.</span>',
 'checkspace' => 'Free Disk Space',
 
 # Security Settings
