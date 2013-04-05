@@ -31,7 +31,7 @@ $reqXML = "";
 
 read (STDIN, $reqXML, $ENV{'CONTENT_LENGTH'});
 
-$url = "https://www.google.com/tbproxy/spell?$ENV{QUERY_STRING}";
+$url = "http://orangoo.com/newnox?lang=?$ENV{QUERY_STRING}";
 $res = $ua->request(POST $url, Content_Type => 'text/xml', Content => $reqXML);
 
 die "$res->{_content}" if $res->{_content} =~ /LWP.+https.+Crypt::SSLeay/;
