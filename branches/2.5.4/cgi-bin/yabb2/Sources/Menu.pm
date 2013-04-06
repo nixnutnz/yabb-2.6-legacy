@@ -47,6 +47,7 @@ sub SetMenu {
         if ( $mod_or_not eq 'mod' ) {
             $button_imgurl = qq~$yyhtml_root/ModImages~;
         }
+#FIX
         else {
             $button_imgurl = qq~$yyhtml_root/Templates/Forum/$usestyle~;
             if ( !-e ("$htmldir/Templates/Forum/$usestyle/$button_icon.$imgext")

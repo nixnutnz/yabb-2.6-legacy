@@ -35,15 +35,19 @@ sub ManageBoardNotify {
         }
     }
     if ( $todo eq 'add' ) {
+        if ( !$maxtnote ) { $maxtnote = 10; }
         $theboard{$user} = "$userlang|$notetype|$noteview";
         LoadUser($user);
         my %bb;
-        foreach ( split /,/xsm, ${ $uid . $user }{'board_notifications'} ) {
-            $bb{$_} = 1;
+        my @oldnote = split /,/xsm, ${ $uid . $username }{'board_notifications'};
+        if ( @oldnote < ( $maxtnote || 10 ) ) {
+            foreach ( split /,/xsm, ${ $uid . $user }{'board_notifications'} ) {
+                $bb{$_} = 1;
+            }
+            $bb{$theboard} = 1;
+            ${ $uid . $user }{'board_notifications'} = join q{,}, keys %bb;
+            UserAccount($user);
         }
-        $bb{$theboard} = 1;
-        ${ $uid . $user }{'board_notifications'} = join q{,}, keys %bb;
-        UserAccount($user);
     }
     elsif ( $todo eq 'update' ) {
         if ( exists $theboard{$user} ) {
@@ -99,17 +103,14 @@ sub BoardNotify {
     my ( $boardname, undef ) = split /\|/xsm, $board{$currentboard}, 2;
     ToChars($boardname);
     ManageBoardNotify( 'load', $currentboard );
-    $yymain .= qq~
-    <form action="$scripturl?action=boardnotify3;board=$currentboard" method="post">
-    <table class="bordercolor pad_4px cs_thin" style="width:600px">
-       <col style="width:70%" />
-        <tr>
-            <td class="titlebg" colspan="2">
-                <img src="$imagesdir/notify.gif" alt="$notify_txt{'136'} - $boardname" title="$notify_txt{'136'} - $boardname" /> <span class="text1"><b>$notify_txt{'136'} - $boardname</b></span>
-            </td>
-        </tr><tr>
-            <td class="windowbg"><br />
-    ~;
+
+##  popup from MessageIndex
+
+    LoadLanguage('Notify');
+    require "$templatesdir/$usemessage/MessageIndex.template";
+    $yymain .= $brd_notify_top;
+    $yymain =~ s/{yabb boardname}/$boardname/gsm;
+    $yymain =~ s/{yabb currentboard}/$currentboard/gsm;
 
     if ( exists $theboard{$username} ) {
         ( $memlang, $memtype, $memview ) = split /\|/xsm, $theboard{$username};
@@ -120,23 +121,12 @@ sub BoardNotify {
     else {
         $yymain .= qq~$notify_txt{'126'} &nbsp;~;
     }
-    $yymain .= qq~
-        <br /><br /></td>
-        <td class="windowbg">
-            <select name="$currentboard">
-                <option value="1"$selected1>$notify_txt{'132'}</option>
-                <option value="2"$selected2>$notify_txt{'133'}</option>
-                $deloption
-            </select>
-            </td>
-        </tr><tr>
-            <td class="catbg center" colspan="2">
-                <input type="submit" value="$notify_txt{'124'}" class="button" />
-            </td>
-        </tr>
-    </table>
-    </form>
-    ~;
+    $yymain .= $brd_notify_bot;
+    $yymain =~ s/{yabb currentboard}/$currentboard/gsm;
+    $yymain =~ s/{yabb selected1}/$selected1/gsm;
+    $yymain =~ s/{yabb selected2}/$selected2/gsm;
+    $yymain =~ s/{yabb deloption}/$deloption/gsm;
+    
     undef %theboard;
     $yytitle = "$notify_txt{'125'}";
     template();
@@ -237,7 +227,7 @@ sub ManageThreadNotify {
     return;
 }
 
-# sub Notify { delted because not needed since YaBB 2.3 (deti)
+# sub Notify { deleted because not needed since YaBB 2.3 (deti)
 
 sub Notify2 {
     if ($iamguest) { fatal_error('members_only'); }
@@ -319,31 +309,28 @@ sub ShowNotifications {
     if ($iamguest) { fatal_error('members_only'); }
 
     $yynavigation =
-qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'}</a> &rsaquo; $img_txt{'418'}~;
+qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'}</a> &rsaquo; $img_txt{'418'} zz~;
+
+LoadLanguage('Notify');
+if ( -e ("$templatesdir/$usestyle/MyPosts.template") ) {
+    require "$templatesdir/$usestyle/MyPosts.template";
+}
+else {
+    require "$templatesdir/default/MyPosts.template";
+}
+ 
+    my @oldnote = split /,/xsm, ${ $uid . $username }{'board_notifications'};
+    $curbrd = @oldnote;
+   if ( !$maxtnote ) { $maxtnote = 10; }
+
+   $note_brd =
+qq~<br />$notify_txt{'75'}<br />$notify_txt{'76'} $curbrd $notify_txt{'77'} $maxtnote $notify_txt{'78'}~;
+    $curbrd   = NumberFormat($curbrd);
 
     # Show Javascript for 'check all' notifications
-    $showNotifications .= qq~
-<script type="text/javascript">
-        function checkAll(j) {
-                for (var i = 0; i < document.threadnotify.elements.length; i++) {
-                    if (j == 0 ) {document.threadnotify.elements[i].checked = true;}
-                }
-        }
-        function uncheckAll(j) {
-                for (var i = 0; i < document.threadnotify.elements.length; i++) {
-                    if (j == 0 ) {document.threadnotify.elements[i].checked = false;}
-                }
-        }
-</script>
-
-    <form action="$scripturl?action=boardnotify2" method="post" name="boardnotify">
-    <table class="bordercolor pad_4px cs_thin">
-        <col style="width:65%" />
-        <tr>
-            <td class="titlebg" colspan="2">
-                <img src="$imagesdir/notify.gif" alt="$notify_txt{'136'}" title="$notify_txt{'136'}" /> <span class="text1"><b>$notify_txt{'136'}</b></span>
-            </td>
-        </tr>~;
+    $showNotifications .= $my_boardnote;
+#    $showNotifications =~ s/{yabb note_brd}/$note_brd/sm;
+    $showNotifications =~ s/{yabb note_brd}//sm;
 
     ( $board_notify, $thread_notify ) = NotificationAlert();
     my ( $num, $new );
@@ -362,63 +349,31 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
 
         if ( ${ $$board_notify{$_} }[2] ) {
             $new =
-qq~<img src="$imagesdir/on.gif" alt="$notify_txt{'333'}" title="$notify_txt{'333'}" />~;
+qq~<img src="$imagesdir/$brdimg_new" alt="$notify_txt{'333'}" title="$notify_txt{'333'}" />~;
         }
         else {
             $new =
-qq~<img src="$imagesdir/off.gif" alt="$notify_txt{'334'}" title="$notify_txt{'334'}" />~;
+qq~<img src="$imagesdir/$brdimg_old" alt="$notify_txt{'334'}" title="$notify_txt{'334'}" />~;
         }
 
         ## output notify detail - option 3 = remove notify
-        $boardblock .= qq~<tr>
-        <td class="windowbg">
-            $new <a href="$scripturl?board=$_">${$$board_notify{$_}}[0]</a>
-        </td>
-        <td class="windowbg center">
-            <select name="$_">
-                <option value="1"$selected1>$notify_txt{'132'}</option>
-                <option value="2"$selected2>$notify_txt{'133'}</option>
-                <option value="3">$notify_txt{'134'}</option>
-            </select>
-        </td>
-    </tr>
-        ~;
+        $boardblock .= $my_boardblock;
+        $boardblock =~ s/{yabb brd}/$_/gsm;
+        $boardblock =~ s/{yabb new}/$new/gsm;
+        $boardblock =~ s/{yabb brdnote0}/${$$board_notify{$_}}[0]/gsm;
+        $boardblock =~ s/{yabb selected1}/$selected1/gsm;
+        $boardblock =~ s/{yabb selected2}/$selected2/gsm;
     }
 
     if ( !$num ) {    # no board notifies up
-        $showNotifications .= qq~<tr>
-        <td class="windowbg2" colspan="2">
-            <br />
-            $notify_txt{'139'}<br /><br />
-            </td>
-        </tr>~;
+        $showNotifications .= $my_nonotes;
     }
     else {            # list boards
-        $showNotifications .= qq~<tr>
-        <td class="catbg"><b>$notify_txt{'135'}</b></td>
-        <td class="catbg center"><b>$notify_txt{'138'}</b></td>
-    </tr>
-    $boardblock
-    <tr>
-        <td class="windowbg center" colspan="2">
-            <input type="submit" value="$notify_txt{'124'}" class="button" />&nbsp; <input type="reset" value="$notify_txt{'121'}" class="button" />
-        </td>
-    </tr>~;
+        $showNotifications .= $my_notebrdlist;
+        $showNotifications =~ s/{yabb boardblock}/$boardblock/gsm;
     }
 
-    $showNotifications .= qq~
-    </table>
-    </form>
-    <br />
-
-    <form action="$scripturl?action=notify4" method="post" name="threadnotify">
-    <table class="bordercolor pad_4px cs_thin">
-        <col style="85%" />
-        <tr>
-            <td class="titlebg" colspan="2">
-                <img src="$imagesdir/notify.gif" alt="$notify_txt{'118'}" title="$notify_txt{'118'}" /> <span class="text1"><b>$notify_txt{'118'}</b></span>
-            </td>
-        </tr>~;
+    $showNotifications .= $my_threadnote;
 
     $num = 0;
     foreach ( keys %{$thread_notify} )
@@ -426,48 +381,24 @@ qq~<img src="$imagesdir/off.gif" alt="$notify_txt{'334'}" title="$notify_txt{'33
         $num++;
 
         ## build block for display
-        $threadblock .= qq~<tr>
-        <td class="windowbg2">
-            <b><a href="$scripturl?num=${$$thread_notify{$_}}[0]/new">${$$thread_notify{$_}}[2] ${$$thread_notify{$_}}[1]</a></b> $notify_txt{'120'} ${$$thread_notify{$_}}[3]
-            <br /><span class="small">${$$thread_notify{$_}}[4] &raquo; ${$$thread_notify{$_}}[5] - $notify_txt{'lastpost'} ${$$thread_notify{$_}}[6]</span>
-        </td>
-        <td class="windowbg2 center">
-            <input type="checkbox" name="thread-${$$thread_notify{$_}}[0]" value="1" />
-        </td>
-    </tr>~;
+        $threadblock .= $my_threadblock;
+        $threadblock =~ s/{yabb tnote0}/${$$thread_notify{$_}}[0]/gm;
+        $threadblock =~ s/{yabb tnote1}/${$$thread_notify{$_}}[1]/gm;
+        $threadblock =~ s/{yabb tnote2}/${$$thread_notify{$_}}[2]/gm;
+        $threadblock =~ s/{yabb tnote3}/${$$thread_notify{$_}}[3]/gm;
+        $threadblock =~ s/{yabb tnote4}/${$$thread_notify{$_}}[4]/gm;
+        $threadblock =~ s/{yabb tnote5}/${$$thread_notify{$_}}[5]/gm;
+        $threadblock =~ s/{yabb tnote6}/${$$thread_notify{$_}}[6]/gm;
     }
 
     if ( !$num ) {    ## no threads listed
-        $showNotifications .= qq~<tr>
-        <td class="windowbg2" colspan="2">
-            <br />
-            $notify_txt{'119'}<br /><br />
-        </td>
-    </tr>~;
+        $showNotifications .= $my_nothreads;
     }
     else {            ## output details
-        $showNotifications .= qq~<tr>
-        <td class="catbg">
-            <b>$notify_txt{'140'}</b>
-        </td>
-        <td class="catbg center">
-            <b>$notify_txt{'134'}</b>
-        </td>
-    </tr>
-    $threadblock
-    <tr>
-        <td class="catbg right"><span class="small"><label for="checkall">$notify_txt{'144'}</label></span></td>
-        <td class="catbg center"><input type="checkbox" name="checkall" id="checkall" value="" onclick="if (this.checked) checkAll(0); else uncheckAll(0);" /></td>
-    </tr><tr>
-        <td class="windowbg center" colspan="2">
-            <input type="submit" value="$notify_txt{'124'}" class="button" />&nbsp; <input type="reset" value="$notify_txt{'121'}" class="button" />
-        </td>
-    </tr>~;
+        $showNotifications .= $my_threadnote_b;
+        $showNotifications =~ s/{yabb threadblock}/$threadblock/gsm;
     }
-    $showNotifications .= q~
-    </table>
-    </form>
-    ~;
+    $showNotifications .= $my_threadnote_end;
 
     $yytitle = "$notify_txt{'124'}";
 

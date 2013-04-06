@@ -322,11 +322,11 @@ qq~<span class="small pgindex"><img src="$imagesdir/$disp_index_togl" alt="$disp
                 $pagetxtindexst .=
                     qq~<a href="$scripturl?num=$viewnum;start=~
                   . ( !$ttsreverse ? $start : $mreplies - $start )
-                  . qq~;action=threadpagedrop"><img src="$imagesdir/$disp_index_togl" alt="$display_txt{'19'}" /></a> $display_txt{'139'}: ~;
+                  . qq~;action=threadpagedrop"><img src="$imagesdir/$disp_index_togl" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a> $display_txt{'139'}: ~;
             }
             else {
                 $pagetxtindexst .=
-qq~<img src="$imagesdir/$disp_index_togl" alt="" /> $display_txt{'139'}: ~;
+qq~<img src="$imagesdir/$disp_index_togl" alt="$display_txt{'19'}" title="$display_txt{'19'}" /> $display_txt{'139'}: ~;
             }
             if ( $startpage > 0 ) {
                 $pagetxtindex =
@@ -872,11 +872,11 @@ qq~<a href="$scripturl?action=iplookup;ip=$mip_one"><span class="small">$mip_one
             }
             if ($mip_two) {
                 $lookupIP .=
-qq~<a href="$scripturl?action=iplookup;ip=$mip_two"><span class="small">$mip_two</span></a>~;
+qq~ <a href="$scripturl?action=iplookup;ip=$mip_two"><span class="small">$mip_two</span></a>~;
             }
             if ($mip_three) {
                 $lookupIP .=
-qq~<a href="$scripturl?action=iplookup;ip=$mip_three"><span class="small">$mip_three</span></a>~;
+qq~ <a href="$scripturl?action=iplookup;ip=$mip_three"><span class="small">$mip_three</span></a>~;
             }
         }
         else {
@@ -902,6 +902,7 @@ qq~<a href="$scripturl?action=iplookup;ip=$mip_three"><span class="small">$mip_t
             $PMAlertButton =
 qq~                 $menusep<a href="$scripturl?action=modalert;num=$viewnum;title=PostReply;quote=$counter" onclick="return confirm('$display_txt{'alertmod_confirm'}');">$img{'alertmod'}</a>~;
         }
+
         ## is member a buddy of mine?
         if ( $buddyListEnabled && !$iamguest && $musername ne $username ) {
             $isbuddy =
@@ -969,8 +970,8 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
             }
             if ( $showregdate && ${ $uid . $musername }{'regtime'} ) {
                 $dr_regdate =
-                  timeformat( ${ $uid . $musername }{'regtime'}, 1 );
-                $dr_regdate = $dateonly;
+                  timeformat( ${ $uid . $musername }{'regtime'} );
+                $dr_regdate = dtonly($dr_regdate);
                 $dr_regdate =~ s/(.*)(, 1?[0-9]):[0-9][0-9].*/$1/xsm;
                 $template_regdate =
                   qq~$display_txt{'regdate'} $dr_regdate<br />~;
@@ -1431,11 +1432,9 @@ qq~$menusep<a href="javascript:document.multidel.submit();" onclick="return conf
     }
 
     if ($template_viewers) {
-        $topic_viewers = qq~    <tr>
-            <td class="windowbg">
-                $display_txt{'644'} ($topviewers): $template_viewers
-            </td>
-        </tr>~;
+        $topic_viewers = $mydisp_topicview;
+        $topic_viewers =~ s/{yabb topviewers}/$topviewers/sm;
+        $topic_viewers =~ s/{yabb template_viewers}/$template_viewers/sm;
     }
 
     # Mark as read button has no use in global announcements or for guests
@@ -1446,10 +1445,23 @@ qq~$menusep<a href="$scripturl?action=markunread;thread=$viewnum;board=$currentb
 
     # Template it
 
-    $yynavback =
-qq~$tabsep<a href="$scripturl">&#171; $img_txt{'103'}</a> &nbsp; $tabsep$navback &nbsp; ~;
-    $yynavigation =
-      qq~&rsaquo; $template_cat &rsaquo; $template_board &rsaquo; $msubthread~;
+	$yynavback = qq~$tabsep <a href="$scripturl">&#171; $img_txt{'103'}</a> $tabsep $navback $tabsep~;
+	
+	$boardtree = '';
+	$parentboard = $currentboard;
+	while($parentboard) {
+		my ($pboardname, undef, undef) = split /\|/xsm, $board{"$parentboard"};
+		ToChars($pboardname);
+		if(${$uid.$parentboard}{'canpost'}) {
+			$pboardname = qq~<a href="$scripturl?board=$parentboard" class="a"><b>$pboardname</b></a>~;
+		} else {
+			$pboardname = qq~<a href="$scripturl?board=$parentboard&subboards=1" class="a"><b>$pboardname</b></a>~;
+		}
+		$boardtree = qq~ &rsaquo; $pboardname$boardtree~;
+		$parentboard = ${$uid.$parentboard}{'parent'};
+	}
+	
+	$yynavigation = qq~&rsaquo; $template_cat$boardtree &rsaquo; $msubthread~;
 
     # Create link to modify displayed post order if allowed
     my $curthreadurl =

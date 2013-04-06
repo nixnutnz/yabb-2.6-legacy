@@ -21,6 +21,7 @@ if ( !$sendtopicmail || $sendtopicmail == 2 ) { fatal_error('not_allowed'); }
 if ($regcheck) { require Sources::Decoder; }
 
 LoadLanguage('SendTopic');
+require "$templatesdir/$usedisplay/Display.template";
 
 sub SendTopic {
     $topic = $INFO{'topic'};
@@ -42,46 +43,10 @@ sub SendTopic {
     }
     $subject = ( split /\|/xsm, ${ $thread_arrayref{$topic} }[0], 2 )[0];
 
-    $yymain .= qq~
-<form action="$scripturl?action=sendtopic2" method="post" name="sendtopic" onsubmit="return CheckSendTopicFields();">
-<table class="pad_3px" style="width:70%">
-    <col style="width:30%" />
-    <tr>
-        <td class="titlebg" colspan="2">
-            <img src="$imagesdir/email.gif" alt="" />
-            <span class="text1"><b>$sendtopic_txt{'707'}&nbsp; &#171; $subject &#187; &nbsp;$sendtopic_txt{'708'}</b></span>
-        </td>
-    </tr><tr>
-        <td class="windowbg"><label for="y_name"><b>$sendtopic_txt{'335'}:</b></label></td>
-        <td class="windowbg"><input type="text" name="y_name" id="y_name" size="50" maxlength="50" value="${$uid.$username}{'realname'}" /></td>
-    </tr><tr>
-        <td class="windowbg"><label for="y_email"><b>$sendtopic_txt{'336'}:</b></label></td>
-        <td class="windowbg"><input type="text" name="y_email" id="y_email" size="50" maxlength="50" value="${$uid.$username}{'email'}" /></td>
-    </tr><tr>
-        <td class="windowbg center vtop" colspan="2">
-            <hr class="hr" />
-        </td>
-    </tr><tr>
-        <td class="windowbg"><label for="r_name"><b>$sendtopic_txt{'717'}:</b></label></td>
-        <td class="windowbg"><input type="text" name="r_name" id="r_name" size="50" maxlength="50" /></td>
-    </tr><tr>
-        <td class="windowbg"><label for="r_email"><b>$sendtopic_txt{'718'}:</b></label></td>
-        <td class="windowbg"><input type="text" name="r_email" id="r_email" size="50" maxlength="50" /></td>
-    </tr>~;
-
     if ($regcheck) {
         validation_code();
-        $yymain .= qq~<tr>
-        <td class="windowbg center vtop" colspan="2">
-            <hr class="hr" />
-        </td>
-    </tr><tr>
-        <td class="windowbg"><label for="verification"><b>$floodtxt{'1'}:</b></label></td>
-        <td class="windowbg">$showcheck<br /><label for="verification"><span class="small">$flood_text</span></label></td>
-    </tr><tr>
-        <td class="windowbg"><label for="verification"><b>$floodtxt{'3'}:</b></label></td>
-        <td class="windowbg"><input type="text" maxlength="30" name="verification" id="verification" size="50" /></td>
-    </tr>~;
+        $my_valcode = $mysend_valcode;
+        $my_valcode =~ s/{yabb showcheck}/$showcheck/sm;
     }
     if ( $spam_questions_send && -e "$langdir/$language/spam.questions" ) {
         SpamQuestion();
@@ -90,34 +55,13 @@ sub SendTopic {
             $verification_question_desc =
               qq~<br />$sendtopic_txt{'verification_question_case'}~;
         }
-        $yymain .= qq~<tr>
-        <td class="windowbg center vtop" colspan="2">
-            <hr class="hr" />
-        </td>
-    </tr><tr>
-        <td class="windowbg"><label for="verification_question"><b>$spam_question</b><br />
-            <span class="small">$sendtopic_txt{'verification_question_desc'}$verification_question_desc</span></label>
-        </td>
-        <td class="windowbg vtop">
-            <input type="text" name="verification_question" id="verification_question" size="50" maxlength="50" />
-            <input type="hidden" name="verification_question_id" value="$spam_question_id" />
-        </td>
-    </tr>~;
+        $my_spam = $mysend_spam;
+        $my_spam =~ s/{yabb spam_question}/$spam_question/sm;
+        $my_spam =~ s/{yabb verification_question_desc}/$verification_question_desc/sm;
+        $my_spam =~ s/{yabb spam_question_id}/$spam_question_id/sm;
     }
-    $yymain .= qq~<tr>
-        <td class="windowbg center vtop" colspan="2">
-            <hr class="hr" />
-        </td>
-    </tr><tr>
-        <td class="windowbg center" colspan="2">
-            <input type="hidden" name="board" value="$board" />
-            <input type="hidden" name="topic" value="$topic" />
-            <input type="submit" name="Send" value="$sendtopic_txt{'339'}" class="button" />
-        </td>
-    </tr>
-</table>
-</form>
-<script type="text/javascript">
+
+$my_jschecks = qq~<script type="text/javascript">
 <!--
     $focus_y_name
 
@@ -167,6 +111,15 @@ sub SendTopic {
     }
 //-->
 </script>~;
+
+    $yymain .= $mysend_top;
+    $yymain =~ s/{yabb subject}/$subject/sm;
+    $yymain =~ s/{yabb realname}/${$uid.$username}{'realname'}/sm;
+    $yymain =~ s/{yabb email}/${$uid.$username}{'email'}/sm;
+    $yymain =~ s/{yabb my_valcode}/$my_valcode/sm;
+    $yymain =~ s/{yabb my_spam}/$my_spam/sm;
+    $yymain =~ s/{yabb my_jschecks}/$my_jschecks/sm;
+
     $yytitle =
 "$sendtopic_txt{'707'}&nbsp; &#171; $subject &#187; &nbsp;$sendtopic_txt{'708'}";
     $yynavigation = qq~&rsaquo; $sendtopic_txt{'707'}~;

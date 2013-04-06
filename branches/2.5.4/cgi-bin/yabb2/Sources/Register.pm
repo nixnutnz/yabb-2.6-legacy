@@ -30,6 +30,13 @@ require Sources::Mailer;
 LoadLanguage('Register');
 LoadCensorList();
 
+if ( -e ("$templatesdir/$usestyle/Register.template") ) {
+    require "$templatesdir/$usestyle/Register.template";
+}
+else {
+    require "$templatesdir/default/Register.template";
+}
+
 if ( $OSNAME =~ /Win/sm ) {
     my $regstyle = q~ style="text-transform: lowercase"~;
 }
@@ -56,22 +63,8 @@ sub Register {
         fclose(AGREE);
         $fullagree = join q{}, @agreement;
         $fullagree =~ s/\n/<br \/>/gsm;
-        $yymain .= qq~
-<form action="$scripturl?action=register" method="post">
-<table class="bordercolor pad_4px cs_thin">
-    <tr>
-      <td class="titlebg"><img src="$imagesdir/xx.gif" alt="" /> $register_txt{'764a'}</td>
-    </tr><tr>
-        <td class="windowbg">
-          $fullagree
-        </td>
-    </tr><tr>
-        <td class="windowbg2 center">
-            <input type="submit" value="$register_txt{'585'}" name="regagree" class="button" />&nbsp;&nbsp;<input type="submit" value="$register_txt{'586'}" name="regnoagree" class="button" />
-        </td>
-    </tr>
-</table>
-</form>~;
+        $yymain .= $myregister_fullagree;
+        $yymain =~ s/{yabb fullagree}/$fullagree/sm;
         template();
         exit;
     }
@@ -111,18 +104,15 @@ sub Register {
     }
     if ($adomains) {
         @domains = split /\,/xsm, $adomains;
-        $aedomains =
-qq~<table><tr><td><input type="text" maxlength="100" name="email" id="email" value="$tmpregemail" size="15" /></td><td><select name="domain" id="domain">~;
+        $aedomains = $myaedomains_a;
+        $aedomains =~ s/{yabb tmpregemail}/$tmpregemail/sm;
         foreach (@domains) {
             $aedomains .=
               ( $_ =~ m/\@/xsm )
               ? qq~<option value="$_">$_</option>~
               : qq~<option value="\@$_">&#64;$_</option>~;
         }
-        $aedomains .= q~</select>
-        </td>
-    </tr>
-</table>~;
+        $aedomains .= $myaedomains_b;
 
     }
     else {
@@ -138,75 +128,33 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
         $yymain .= q~
 <input type="hidden" name="regagree" value="yes" />~;
     }
-    $yymain .= qq~
-<table class="bordercolor pad_4px cs_thin">
-    <col style="width="45%" />
-    <col sty;e="width="55%" />
-    <tr>
-        <td class="titlebg" colspan="2">
-            <img src="$imagesdir/register.gif" alt="$register_txt{'97'}" title="$register_txt{'97'}" /> $register_txt{'517'}
-        </td>
-    </tr><tr>
-        <td class="windowbg center" colspan="2">
-            $register_txt{'97a'}
-        </td>
-    </tr>~;
+    $yymain .= $myregister_regfill_a;
 
     if ( $morelang > 1 ) {
-        $yymain .= qq~<tr>
-        <td class="windowbg right vtop">
-            <label for="reglanguage"><b>$register_txt{'101'}</b></label>
-        </td>
-        <td class="windowbg2 vtop">
-            <select name="reglanguage" id="reglanguage" onchange="document.creator.action='$scripturl?action=register'; document.creator.submit();">
-            $langopt
-            </select>
-            <noscript><input type="submit" value="$maintxt{'32'}" class="button" /></noscript>
-        </td>
-    </tr>~;
+        $yymain .= $myregister_morelang;
+        $yymain =~ s/{yabb langopt}/$langopt/sm;
     }
     $newfield = q{};
-    $yymain .= qq~
-<!--user name section-->
-    <tr>
-        <td class="windowbg right vtop">
-            <label for="regusername"><b>$register_txt{'98'}:</b><br />
-            <span class="small">$register_txt{'520'}$register_txt{'241ea'}</span></label>
-        </td>
-        <td class="windowbg2 vtop">
-            <input type="text" name="regusername" id="regusername" onchange="checkAvail('$scripturl',this.value,'user')" size="30" value="$tmpregname" maxlength="18"$regstyle /> *
-            <div id="useravailability"></div>
-            <input type="hidden" name="language" id="language" value="$language" />
-        </td>
-    </tr><tr>
-        <td class="windowbg right vtop">
-            <label for="regrealname"><b>$register_txt{'98a'}:</b>~;
+## user name section
+    $yymain .= $myregister_regfill_b;
+    $yymain =~ s/{yabb tmpregname}/$tmpregname/sm;
+    $yymain =~ s/{yabb regstyle}/$regstyle/sm;
+    $yymain =~ s/{yabb language}/$language/sm;
+
     if ($name_cannot_be_userid) {
         $yymain .= qq~
             <br /><span class="small">$register_txt{'521'}</span>~;
     }
-    $yymain .= qq~</label>
-        </td>
-        <td class="windowbg2 vtop">
-            <input type="text" name="regrealname" id="regrealname" onchange="checkAvail('$scripturl',this.value,'display')" size="30" value="$tmprealname" maxlength="30" /> *
-            <div id="displayavailability"></div>
-        </td>
-    </tr><tr>
-        <td class="windowbg right vtop"><label for="email"><b>$register_txt{'69'}:</b>
-            <br /><span class="small">$register_txt{'679'}</span></label>
-        </td>
-        <td class="windowbg2 vtop">
-            $aedomains *
-            <div id="emailavailability"></div>
-    ~;
+    $yymain .= $myregister_avail;
+    $yymain =~ s/{yabb tmprealname}/$tmprealname/sm;
+    $yymain =~ s/{yabb aedomains}/$aedomains/sm;
+
     if ( $allow_hide_email == 1 ) {
         $yymain .= qq~
             <br /><input type="checkbox" name="hideemail" id="hideemail" value="1"$hidechecked /> <label for="hideemail">$register_txt{'721'}</label>
         ~;
     }
-    $yymain .= q~
-        </td>
-    </tr>~;
+    $yymain .= $myregister_endrow;
 
     if ($birthday_on_reg) {
         my $editAgeTxt;
@@ -216,56 +164,37 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
         }
         timetostring($date);
         if ( $timeselected =~ /[145]/xsm ) {
-            $yymain .= qq~<tr>
-        <td class="windowbg right vtop">
-            <label for="birth_month"><b>$register_txt{'birthday'}:</b>$editAgeTxt</label>
-        </td>
-        <td class="windowbg2 vtop"><input type="text" name="birth_month" id="birth_month" size="2" value="$birthdate[1]" maxlength="2" onkeypress="jumpatnext('document.creator.birth_month','document.creator.birth_day',2)" /> <input type="text" name="birth_day" id="birth_day" size="2" value="$birthdate[0]" maxlength="2" onkeypress="jumpatnext('document.creator.birth_day','document.creator.birth_year',2)" /> <input type="text" name="birth_year" id="birth_year" size="4" value="$birthdate[2]" maxlength="4" />~
-              . ( $birthday_on_reg == 2 ? q{ *} : q{} )
+            $yymain .= $myregister_bdonreg
+              . ( $birthday_on_reg == 2 ? $myreg_req : q{} )
               . qq~ <span class="small">$register_txt{'birthday_a'}</span>~;
-
         }
         else {
-            $yymain .= qq~<tr>
-        <td class="windowbg right vtop">
-            <label for="birth_day"><b>$register_txt{'birthday'}:</b>$editAgeTxt</label>
-        </td>
-        <td class="windowbg2 vtop"><input type="text" name="birth_day" id="birth_day" size="2" value="$birthdate[0]" maxlength="2" onkeypress="jumpatnext('document.creator.birth_day','document.creator.birth_month',2)" /> <input type="text" name="birth_month" id="birth_month" size="2" value="$birthdate[1]" maxlength="2" onkeypress="jumpatnext('document.creator.birth_month','document.creator.birth_year',2)" /> <input type="text" name="birth_year" id="birth_year" size="4" value="$birthdate[2]" maxlength="4" />~
-              . ( $birthday_on_reg == 2 ? q{ *} : q{} )
+            $yymain .= $myregister_bdonreg_2
+              . ( $birthday_on_reg == 2 ? $myreg_req : q{} )
               . qq~ <span class="small">$register_txt{'birthday_b'}</span>~;
         }
+        $yymain =~ s/{yabb editAgeTxt}/$editAgeTxt/sm;
+        $yymain =~ s/{yabb birthdate0}/$birthdate[0]/sm;
+        $yymain =~ s/{yabb birthdate1}/$birthdate[1]/sm;
+        $yymain =~ s/{yabb birthdate2}/$birthdate[2]/sm;
 
-        $yymain .= q~
-        </td>
-    </tr>~;
+        $yymain .= $myregister_endrow;
     }
 
     if ($gender_on_reg) {
         my $editGenderTxt;
+        my $nongen_opt = q{};
         if ( $editGenderLimit == 1 ) {
             $editGenderTxt =
               qq~<br /><span class="small">$register_txt{'gender_edit'}</span>~;
         }
-        if ( $gender_on_reg == 1 ) {
-            $gender_req =
-qq~<label for="gender"><b>$register_txt{'gender'}: </b>$editGenderTxt</label>~;
+        if ( $gender_on_reg == 2 ) {
+        $nongen_opt = $myreg_req;
         }
-        else {
-            $gender_req =
-qq~* <label for="gender"><b>$register_txt{'gender'}: </b>$editGenderTxt</label>~;
-        }
-        $yymain .= qq~<tr>
-            <td class="windowbg right vtop">
-                $gender_req
-            </td>
-            <td class="windowbg2 vtop">
-                <select name="gender" id="gender" size="1">
-                    <option value=""></option>
-                    <option value="Male">$register_txt{'gender_male'}</option>
-                    <option value="Female">$register_txt{'gender_female'}</option>
-                </select>
-            </td>
-        </tr>~;
+
+        $yymain .= $myregister_gender;
+        $yymain =~ s/{yabb editGenderTxt}/$editGenderTxt/sm;
+        $yymain =~ s/{yabb nongen_opt}/$nongen_opt/sm;
     }
     if ( !$emailpassword ) {
         $yymain .= password_check();
@@ -291,85 +220,35 @@ qq~* <label for="gender"><b>$register_txt{'gender'}: </b>$editGenderTxt</label>~
         if ( $selsize > 1 ) { $additional_explain .= $register_txt{'767a'}; }
 
         if ($addmemgroup) {
-            $yymain .= qq~<tr>
-        <td class="windowbg right vtop">
-            <label for="joinmemgroup"><b>$register_txt{'765'}:</b>
-            <br /><span class="small">$additional_explain</span></label>
-        </td>
-        <td class="windowbg2 vtop">
-            <select name="joinmemgroup" id="joinmemgroup" size="$selsize" multiple="multiple">
-            $addmemgroup
-            </select>
-        </td>
-    </tr>~;
+            $yymain .= $myregister_addmem;
+            $yymain =~ s/{yabb additional_explain}/$additional_explain/sm;
+            $yymain =~ s/{yabb selsize}/$selsize/sm;
+            $yymain =~ s/{yabb addmemgroup}/$addmemgroup/sm;
         }
     }
 
     if ( $regtype == 1 ) {
-        $yymain .= qq~<tr>
-        <td class="windowbg right vtop">
-            <label for="reason"><b>$prereg_txt{'regreason'}:</b><br />
-            <span class="small">$prereg_txt{'reason_exp'}</span></label><br /><br />
-        </td>
-        <td class="windowbg2 vtop">
-            <textarea cols="60" rows="7" name="reason" id="reason">$reason</textarea> *<br />
-            <span class="small">$prereg_txt{'16'} <input value="$RegReasonSymbols" size="~
+        $yymain .= $myregister_regreason_a
+          . qq~            <textarea cols="60" rows="7" name="reason" id="reason">$reason</textarea>~
+          . $myregister_regreason_c
           . length($RegReasonSymbols)
-          . qq~" name="msgCL" class="windowbg" style="border: 0px; padding: 1px; font-size: 11px;" readonly="readonly" /></span>
-            <script type="text/javascript">
-            <!--
-            var supportsKeys = false;
-            function tick() {
-                calcCharLeft(document.forms[0]);
-                if (!supportsKeys) { timerID = setTimeout("tick()",$RegReasonSymbols); }
-            }
-            function calcCharLeft(sig) {
-                clipped = false;
-                maxLength = $RegReasonSymbols;
-                if (document.creator.reason.value.length > maxLength) {
-                    document.creator.reason.value = document.creator.reason.value.substring(0,maxLength);
-                    charleft = 0;
-                    clipped = true;
-                } else {
-                    charleft = maxLength - document.creator.reason.value.length;
-                }
-                document.creator.msgCL.value = charleft;
-                return clipped;
-            }
-            tick();
-            //-->
-            </script>
-        </td>
-    </tr>~;
+          . $myregister_regreason_b;
+        $yymain =~ s/{yabb reason}/$reason/sm;
+        $yymain =~ s/{yabb RegReasonSymbols}/$RegReasonSymbols/gsm;
     }
 
     if ($extendedprofiles) {
         require Sources::ExtendedProfiles;
         my $reg_ext_prof = ext_register();
-        $reg_ext_prof =~ s/class="vtop"/class="right vtop"/gsm;
-        $reg_ext_prof =~ s/<\/td><td>/<\/td><td class="windowbg2">/gsm;
         $yymain .= $reg_ext_prof;
     }
 
     if ($regcheck) {
         require Sources::Decoder;
         validation_code();
-        $yymain .= qq~<tr>
-        <td class="windowbg right vtop">
-            <label for="verification"><b>$floodtxt{'1'}:</b><br />
-            <span class="small">$flood_text</span></label>
-        </td>
-        <td class="windowbg2">
-            $showcheck
-        </td>
-    </tr><tr>
-        <td class="windowbg right vtop">
-            <label for="verification"><b>$floodtxt{'3'}:</b></label>
-        </td>
-        <td class="windowbg2 vtop">
-            <input type="text" maxlength="30" name="verification" id="verification" size="30" maxlength="50" /> *
-        </td>
-    </tr>~;
+        $yymain .= $myregister_regcheck;
+        $yymain =~ s/{yabb flood_text}/$flood_text/sm;
+        $yymain =~ s/{yabb showcheck}/$showcheck/sm;
     }
     if ( $en_spam_questions && -e "$langdir/$language/spam.questions" ) {
         SpamQuestion();
@@ -378,16 +257,11 @@ qq~* <label for="gender"><b>$register_txt{'gender'}: </b>$editGenderTxt</label>~
             $verification_question_desc =
               qq~<br />$register_txt{'verification_question_case'}~;
         }
-        $yymain .= qq~<tr>
-        <td class="windowbg right vtop">
-            <label for="verification_question"><b>$spam_question</b><br />
-            <span class="small">$register_txt{'verification_question_desc'}$verification_question_desc</span></label>
-        </td>
-        <td class="windowbg2 vtop">
-            <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" /> *
-            <input type="hidden" name="verification_question_id" value="$spam_question_id" />
-        </td>
-    </tr>~;
+        $yymain .= $myregister_spamquest;
+        
+        $yymain =~ s/{yabb spam_question}/$spam_question/sm;
+        $yymain =~ s/{yabb verification_question_desc}/$verification_question_desc/sm;
+        $yymain =~ s/{yabb spam_question_id}/$spam_question_id/sm;
     }
     if ( $honeypot == 1 ) {
         fopen( HONEY, "<$langdir/$language/honey.txt" )
@@ -398,14 +272,9 @@ qq~* <label for="gender"><b>$register_txt{'gender'}: </b>$editGenderTxt</label>~
         $hony      = int rand $#honey;
         $newfieldb = $honey[$hony];
 
-        $yymain .= qq~<tr class="green">
-            <td class="green right vtop">
-                <label for="add_field0" class="green"><b>$newfieldb</b>
-            </td>
-            <td class="green vtop">
-                <input type="text" name="add_field0" id="add_field0" size="30" value="$newfield" maxlength="18" autocomplete="off" class="green" /> *
-            </td>
-        </tr>~;
+        $yymain .= $myregister_honey;
+        $yymain =~ s/{yabb newfieldb}/$newfieldb/sm;
+        $yymain =~ s/{yabb newfield}/$newfield/sm;
     }
 
     # SpamFruits courtesy of Carsten Dalgaard #
@@ -414,22 +283,16 @@ qq~* <label for="gender"><b>$register_txt{'gender'}: </b>$editGenderTxt</label>~
           ( $fruittxt{'2'}, $fruittxt{'3'}, $fruittxt{'4'}, $fruittxt{'5'} );
         my $rdn = int rand 4;
         $fruit = $fruits[$rdn];
-        $yymain .= qq~<tr>
-            <td class="windowbg right vtop">
-                <b>$fruittxt{'1'} $fruit:</b>
-            </td>
-            <td class="windowbg2 vtop">
-                <input type="hidden" name="xcord" id="xcord" value="0" />
-                <input type="hidden" name="ycord" id="ycord" value="0" />
-                <input type="hidden" name="thefruit" id="thefruit" value="$fruit" />
-                <iframe id="fruits" name="fruits" width="290" height="87" marginwidth="0" marginheight="0" frameborder="0" scrolling="no"></iframe>
+        $yymain .= $myregister_fruits;
+        $yymain =~ s/{yabb fruit}/$fruit/gsm;
+        $yymain .= qq~
                 <script type="text/javascript">
                 <!--
                     function ShowFruits() {
                         var visfruits = "<html><head><link rel='stylesheet' href='$extpagstyle' type='text/css' /></head><body class='windowbg2'> ";
                         visfruits += "<img src='$defaultimagesdir/fruits.png' width='290' height='75' name='fruitsview' id='fruitsview' style='position: absolute; top: 0px; left: 0px; cursor: pointer;' alt='' onclick='FruitClick(event)' /> ";
                         visfruits += "<img src='$defaultimagesdir/fruitcheck.png' id='frmarker' style='z-index: 2; display: none;'> ";
-                        visfruits += "<script language='JavaScript1.2' type='text/javascript'> "
+                        visfruits += "<script type='text/javascript'> "
                         visfruits += "var xcor = 0; "
                         visfruits += "var ycor = 0; "
                         visfruits += "var mrkpos = 30; "
@@ -454,9 +317,8 @@ qq~* <label for="gender"><b>$register_txt{'gender'}: </b>$editGenderTxt</label>~
                     }
                     ShowFruits()
                 //-->
-                </script>
-            </td>
-        </tr>~;
+                </script>~;
+        $yymain .= $myregister_endrow;
     }
 
     if ( $RegAgree == 2 ) {
@@ -470,31 +332,12 @@ qq~* <label for="gender"><b>$register_txt{'gender'}: </b>$editGenderTxt</label>~
         fclose(AGREE);
         $fullagree = join q{}, @agreement;
         $fullagree =~ s/\n/<br \/>/gsm;
-        $yymain .= qq~<tr>
-        <td class="titlebg" colspan="2">
-            <img src="$imagesdir/xx.gif" alt="$register_txt{'764a'}" title="$register_txt{'764a'}" /> <b>$register_txt{'764a'}</b>
-        </td>
-    </tr><tr>
-        <td class="windowbg" colspan="2">
-            <label for="regagree"><span style="float: left; padding: 5px;">$fullagree</span></label>
-        </td>
-    </tr><tr>
-        <td class="windowbg2 center" colspan="2">
-            <label for="regagree"><b>$register_txt{'585'}</b></label> <input type="radio" name="regagree" id="regagree" value="yes" /> * &nbsp;&nbsp; <label for="regnoagree"><b>$register_txt{'586'}</b></label> <input type="radio" name="regagree" id="regnoagree" value="no" />
-        </td>
-    </tr>~;
+        $yymain .= $myregister_regagree;
+        $yymain =~ s/{yabb fullagree}/$fullagree/gsm;
+        
     }
-    $yymain .= qq~<tr>
-        <td class="titlebg center" colspan="2">
-            <br />
-            <label for="submitbutton">$register_txt{'95'}</label><br />
-            <br />
-            <input type="submit" id="submitbutton" value="$register_txt{'97'}" class="button" /><br /><br />
-        </td>
-    </tr>
-</table>
-</form>
-
+    $yymain .= $myregister_endform;
+    $yymain .= qq~
 <script type="text/javascript">
 <!--
     document.creator.regusername.focus();
@@ -1125,16 +968,7 @@ sub Register2 {
             $emailcharset
         );
         $language = $templanguage;
-        $yymain .= qq~
-            <div class="bordercolor" style="width: 650px; margin-bottom: 8px; margin-left: auto; margin-right: auto;">
-                <table class="pad_4px cs_thin">
-                    <tr>
-                        <td class="titlebg"><img src="$imagesdir/register.gif" alt="$prereg_txt{'1a'}" title="$prereg_txt{'1a'}" /><b>$prereg_txt{'1a'}</b></td>
-                    </tr><tr>
-                        <td class="windowbg">$prereg_txt{'1'}</td>
-                    </tr>
-                </table>
-            </div>~;
+        $yymain .= $myregister_pending;
         $yytitle = "$prereg_txt{'1a'}";
 
     }
@@ -1203,18 +1037,7 @@ sub Register2 {
                 $emailcharset
             );
             $language = $templanguage;
-            $yymain .= qq~
-    <div class="bordercolor" style="width: 650px; margin-bottom: 8px; margin-left: auto; margin-right: auto;">
-        <table class="pad_4px cs_thin">
-            <tr>
-                <td class="titlebg"><b>$register_txt{'97'}</b></td>
-            </tr><tr>
-                <td class="windowbg">$register_txt{'703'}</td>
-            </tr><tr>
-                <td class="windowbg2">$register_txt{'704'}</td>
-            </tr>
-        </table>
-    </div>~;
+            $yymain .= $myregister_password;
         }
         else {
             if ($emailwelcome) {
@@ -1237,27 +1060,10 @@ sub Register2 {
                 );
                 $language = $templanguage;
             }
-            $yymain .= qq~
-            <br /><br />
-            <form action="$scripturl?action=login2" method="post">
-            <table class="bordercolor cs_thin" style="width:300px">
-                <tr>
-                    <td class="titlebg">
-                        <img src="$imagesdir/register.gif" alt="$register_txt{'97'}" title="$register_txt{'97'}" /> <span class="text1"><b>$register_txt{'97'}</b></span>
-                    </td>
-                </tr><tr>
-                    <td class="windowbg center">
-                        <br />$register_txt{'431'}<br /><br />
-                        <input type="hidden" name="username" value="$member{'regusername'}" />
-                        <input type="hidden" name="passwrd" value="$member{'passwrd1'}" />
-                        <input type="hidden" name="cookielength" value="$Cookie_Length" />
-                        <input type="submit" value="$register_txt{'34'}" class="button" />
-                    </td>
-                </tr>
-            </table>
-            </form>
-            <br /><br />
-            ~;
+            $yymain .= $myregister_welcome;
+            $yymain =~ s/{yabb regusername}/$member{'regusername'}/sm;
+            $yymain =~ s/{yabb passwrd1}/$member{'passwrd1'}/sm;
+            $yymain =~ s/{yabb Cookie_Length}/$Cookie_Length/sm;
         }
         $yytitle = "$register_txt{'245'}";
     }
@@ -1395,10 +1201,10 @@ sub user_activation {
                         q{},
                         $emailcharset
                     );
-                    $yymain .= q~<br /><table class="bordercolor cs_thin">~;
+                    $yymain .= $myregister_table_a;
                     $sharedLogin_title = $register_txt{'97'};
                     $sharedLogin_text  = $register_txt{'703'};
-                    $yymain .= q~</table>~;
+                    $yymain .= $myregister_table_b;
 
                 }
                 elsif ($emailwelcome) {
@@ -1483,48 +1289,25 @@ sub user_activation {
     }
 
     if ( $regtype == 1 ) {
-        $yymain .= qq~
-                <div class="bordercolor" style="width: 650px; margin-bottom: 8px; margin-left: auto; margin-right: auto;">
-                    <table class="pad_4px cs_thin">
-                        <tr>
-                            <td class="titlebg"><img src="$imagesdir/register.gif" alt="$prereg_txt{'1a'}" title="$prereg_txt{'1a'}" /><b>$prereg_txt{'1a'}</b></td>
-                        </tr><tr>
-                            <td class="windowbg">$prereg_txt{'13'}</td>
-                        </tr>
-                    </table>
-                </div>~;
+        $yymain .= $myregister_prereg1;
         $yytitle = "$prereg_txt{'1b'}";
 
     }
     elsif ( $regtype == 2 ) {
-        $yymain .= qq~
-        <br /><br />
-        <table class="bordercolor cs_thin" style="width:650px">
-            <tr>
-                <td class="titlebg" colspan="2">
-                    <img src="$imagesdir/register.gif" alt="$prereg_txt{'1a'}" title="$prereg_txt{'1a'}" /> <span class="text1"><b>$prereg_txt{'1a'}</b></span>
-                </td>
-            </tr><tr>
-                <td class="windowbg center" colspan="2">
-                    <br />$prereg_txt{'5'}~;
+        $yymain .= $myregister_prereg2;
         if ( !$emailpassword ) { $yymain .= $prereg_txt{'5a'}; }
         $yymain .= qq~$prereg_txt{'5b'}<br /><br />~;
         if ($emailpassword) {
             $yymain .= qq~$register_txt{'703'}<br /> <br />~;
         }
-        $yymain .= q~
-                </td>
-            </tr>
-        </table>
-        ~;
+        $yymain .= $myregister_endtable;
 
         if ( !$iamadmin && !$iamgmod ) {
             if ( !$emailpassword ) {
-                $yymain .=
-q~<div class="bordercolor" style="width: 650px; margin-bottom: 8px; margin-left: auto; margin-right: auto;">~;
+                $yymain .= $myregister_div_a;
                 require Sources::LogInOut;
                 $yymain .= sharedLogin();
-                $yymain .= q~</div>~;
+                $yymain .= $myregister_div_b;
             }
             else {
                 $yymain .= q~<br /><br />~;

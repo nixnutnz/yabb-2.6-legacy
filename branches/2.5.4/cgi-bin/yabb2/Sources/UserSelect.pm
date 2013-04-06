@@ -854,7 +854,7 @@ $yymain
 </html>~;
 
     $addsession =
-qq~<input type="hidden" name="formsession" value="$formsession" /><input class="green" type="submit" /></form>~;
+qq~<input type="hidden" name="formsession" value="$formsession" /></form>~;
     $output =~ s/<\/form>/$addsession/gxsm;
 
     print_HTML_output_and_finish();

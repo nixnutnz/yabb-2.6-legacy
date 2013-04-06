@@ -193,7 +193,13 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
             }
 
 # hide the actual global announcement board for all normal users but admins and gmods
-            if ( $annboard eq $curboard && !$iamadmin && !$iamgmod && !$iamymod ) { next; }
+            if (   $annboard eq $curboard
+                && !$iamadmin
+                && !$iamgmod
+                && !$iamymod )
+            {
+                next;
+            }
             my ( $boardname, $boardperms, $boardview ) =
               split /\|/xsm, $board{"$curboard"};
             my $access = AccessCheck( $curboard, q{}, $boardperms );
@@ -215,7 +221,10 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                         }
 
 # hide the actual global announcement board for all normal users but admins and gmods
-                        if ( $annboard eq $childbd && !$iamadmin && !$iamgmod  && !$iamymod)
+                        if (   $annboard eq $childbd
+                            && !$iamadmin
+                            && !$iamgmod
+                            && !$iamymod )
                         {
                             next;
                         }
@@ -256,59 +265,59 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
     getlog();
     my $dmax = $date - ( $max_log_days_old * 86_400 );
 
-    # if loading subboard list by ajax we don't need this
+    # if loading subboard list by ajax we don't need this (Ajax showcasepoll load does not work, assume this is mistake.)
 
-    if ( !$INFO{'a'} ) {
+    #   if ( !$INFO{'a'} ) {
 
-        # showcase poll start
-        my $polltemp;
-        if ( -e "$datadir/showcase.poll" ) {
-            fopen( SCPOLLFILE, "$datadir/showcase.poll" );
-            my $scthreadnum = <SCPOLLFILE>;
-            fclose(SCPOLLFILE);
+    # showcase poll start
+    my $polltemp;
+    if ( -e "$datadir/showcase.poll" ) {
+        fopen( SCPOLLFILE, "$datadir/showcase.poll" );
+        my $scthreadnum = <SCPOLLFILE>;
+        fclose(SCPOLLFILE);
 
-            # Look for a valid poll file.
-            my $pollthread;
-            if ( -e "$datadir/$scthreadnum.poll" ) {
-                MessageTotals( 'load', $scthreadnum );
-                if ( $iamadmin || $iamgmod || $iamymod ) {
-                    $pollthread = 1;
-                }
-                else {
-                    my $curcat = ${ $uid . ${$scthreadnum}{'board'} }{'cat'};
-                    my $catperms = ( split /\|/xsm, $catinfo{$curcat} )[1];
-                    if ( CatAccess($catperms) ) { $pollthread = 1; }
-                    my $boardperms =
-                      ( split /\|/xsm, $board{ ${$scthreadnum}{'board'} } )[1];
-                    $pollthread =
+        # Look for a valid poll file.
+        my $pollthread;
+        if ( -e "$datadir/$scthreadnum.poll" ) {
+            MessageTotals( 'load', $scthreadnum );
+            if ( $iamadmin || $iamgmod || $iamymod ) {
+                $pollthread = 1;
+            }
+            else {
+                my $curcat = ${ $uid . ${$scthreadnum}{'board'} }{'cat'};
+                my $catperms = ( split /\|/xsm, $catinfo{$curcat} )[1];
+                if ( CatAccess($catperms) ) { $pollthread = 1; }
+                my $boardperms =
+                  ( split /\|/xsm, $board{ ${$scthreadnum}{'board'} } )[1];
+                $pollthread =
                       AccessCheck( ${$scthreadnum}{'board'}, q{}, $boardperms )
                       eq 'granted' ? $pollthread : 0;
-                }
-            }
-
-            if ($pollthread) {
-                my $tempcurrentboard = $currentboard;
-                $currentboard = ${$scthreadnum}{'board'};
-                my $tempstaff = $staff;
-                if ( !$iamadmin && !$iamgmod && !$iamymod ) { $staff = 0; }
-                require Sources::Poll;
-                display_poll( $scthreadnum, 1 );
-                $staff = $tempstaff;
-                $polltemp =
-qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>~
-                  . $pollmain
-                  . '<br />';
-                $currentboard = $tempcurrentboard;
             }
         }
 
-        # showcase poll end
+        if ($pollthread) {
+            my $tempcurrentboard = $currentboard;
+            $currentboard = ${$scthreadnum}{'board'};
+            my $tempstaff = $staff;
+            if ( !$iamadmin && !$iamgmod && !$iamymod ) { $staff = 0; }
+            require Sources::Poll;
+            display_poll( $scthreadnum, 1 );
+            $staff = $tempstaff;
+            $polltemp =
+qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>~
+              . $pollmain
+              . '<br />';
+            $currentboard = $tempcurrentboard;
+        }
     }
-    else {
 
-        # get rid of the tag in the template
-        $boardindex_template =~ s/({|<)yabb pollshowcase(}|>)//gsm;
-    }
+    #}
+    #    else {
+    #
+    #        # get rid of the tag in the template
+    #        $boardindex_template =~ s/({|<)yabb pollshowcase(}|>)//gsm;
+    #}
+    # showcase poll end
 
     foreach my $curboard (@loadboards) {
         chomp $curboard;
@@ -517,17 +526,21 @@ qq~<a href="javascript:SendRequest('$scripturl?action=collapse_cat;cat=$catid','
 
                 if ($catallowcol) {
                     $template_catnames .= qq~"$catid",~;
-                    $newrowend{$catname} = q~</span></td></tr>~;
+                    $newrowend{$catname} = $brd_newrowend;
                     if ( $catcol{$catid} ) {
-                        $newrowstart{$catname} =
-qq~<tr><td class="$new_msg_bg h_18px" colspan="5"><span class="$new_msg_class">~;
+                        $my_brdrow = $brd_newrow;
+                        $my_brdrow =~ s/{yabb new_msg_bg}/$new_msg_bg/sm;
+                        $my_brdrow =~ s/{yabb new_msg_class}/$new_msg_class/sm;
+                        $newrowstart{$catname} = $my_brdrow;
                         $template_boardtable = qq~id="$catid"~;
                         $template_colboardtable =
-                          qq~id="col$catid" style="display:none;"~;
+                          qq~id="col$catid" style="display:none"~;
                     }
                     else {
-                        $newrowstart{$catname} =
-qq~<tr><td colspan="5" class="$new_msg_bg h_18px"><span class="$new_msg_class">~;
+                        $my_brdrow = $brd_newrow;
+                        $my_brdrow =~ s/{yabb new_msg_bg}/$new_msg_bg/sm;
+                        $my_brdrow =~ s/{yabb new_msg_class}/$new_msg_class/sm;
+                        $newrowstart{$catname} = $my_brdrow;
                         $template_boardtable =
                           qq~id="$catid" style="display:none;"~;
                         $template_colboardtable = qq~id="col$catid"~;
@@ -548,7 +561,7 @@ qq~<img src="$imagesdir/$brd_cat_col" id="img$catid" alt="$boardindex_exptxt{'2'
                     }
                     else {
                         $hash{$catname} =
-qq~ <img src="$imagesdir/$brd_cat_exp" id="img$catid" alt="$boardindex_exptxt{'1'}" title="$boardindex_exptxt{'1'}" /></a>~;
+qq~<img src="$imagesdir/$brd_cat_exp" id="img$catid" alt="$boardindex_exptxt{'1'}" title="$boardindex_exptxt{'1'}" /></a>~;
                     }
                 }
                 else {
@@ -565,8 +578,10 @@ qq~ <img src="$imagesdir/$brd_cat_exp" id="img$catid" alt="$boardindex_exptxt{'1
                   qq~id="col$catid" style="display:none;"~;
             }
 
+            if ( $cat{$catid}) {$my_cat = 'catselect';}
+            else { $my_cat = 'boardselect';}
             $catlink =
-qq~$collapse_link $hash{$catname} <a href="$scripturl?catselect=$catid" title="$boardindex_txt{'797'} $catname">$catname</a>~;
+qq~$collapse_link $hash{$catname} <a href="$scripturl?$my_cat=$catid" title="$boardindex_txt{'797'} $catname">$catname</a>~;
         }
         else {
             $template_boardtable    = qq~id="$catid"~;
@@ -800,7 +815,7 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$boardindex_txt{'334'}" title="$boardi
                         $bdpic = qq~subboards.$bdpicExt~;
                     }
                     else {
-                        $bdpic = qq~boards.$bdpicExt~; 
+                        $bdpic = qq~boards.$bdpicExt~;
                     }
                 }
 
@@ -1015,29 +1030,8 @@ s/({|<)yabb boardurl(}|>)/$scripturl\?board\=$curboard/gsm;
                 }
 
                 # Make hidden table rows for drop down message list
-                $expandmessages =
-qq~           <tr id="dropsubrow_$curboard" style="display: none">
-                <td id="dropsub_$curboard" class="center" colspan="5"></td>
-            </tr><tr id="droprow_$curboard" style="display: none">
-                <td class="center" style="padding:0" colspan="5">
-                    <div style="width: 100%; position: relative">
-                        <table>
-                            <col style="width:20px" />
-                            <col style="width:auto" />
-                            <col style="width:20px" />
-                            <tr>
-                                <td class="bottom" style="background-image:url($imagesdir/$brd_fadeleftdropdown)">
-                                    <img onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$yyhtml_root','$curboard', 0)" style="position: absolute; cursor: pointer; bottom: -12px; left: -12px" src="$imagesdir/$brd_closebutton" alt="" />
-                                </td>
-                                <td id="drop_$curboard" style="padding: 0px; padding-bottom: 8px"></td>
-                                <td class="vtop" style="background-image:url($imagesdir/$brd_faderightdropdown)">
-                                    <img onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$yyhtml_root','$curboard', 0)" style="position: absolute; cursor: pointer; top: -12px; right: -12px" src="$imagesdir/$brd_closebutton" alt="" />
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </td>
-            </tr>~;
+                $expandmessages = $brd_expandmessages;
+                $expandmessages =~ s/{yabb curboard}/$curboard/gsm;                
                 $messagedropdown;
                 ( $boardname, $boardperms, $boardview ) =
                   split /\|/xsm, $board{"$curboard"};
@@ -1046,7 +1040,7 @@ qq~           <tr id="dropsubrow_$curboard" style="display: none">
                     || ( !$iamguest && $access eq 'granted' ) )
                 {
                     $messagedropdown = qq~
-                <img onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$yyhtml_root','$curboard', 0)" id="dropbutton_$curboard" style="cursor: pointer" src="$imagesdir/$brd_dropdown" alt="" />
+                <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$yyhtml_root','$curboard', 0)" id="dropbutton_$curboard" style="cursor: pointer" alt="" />
                         ~;
                 }
                 else { $messagedropdown = q{}; }
@@ -1089,18 +1083,18 @@ s/({|<)yabb messagecount(}|>)/${$uid.$curboard}{'messagecount'}/gsm;
         if ( ${ $uid . $username }{'im_imspop'} ) {
             $yymain .= qq~\n\n<script type="text/javascript">
 <!--
-    function viewIM() { window.open("$scripturl?action=im"); }
-    function viewIMOUT() { window.open("$scripturl?action=imoutbox"); }
-    function viewIMSTORE() { window.open("$scripturl?action=imstorage"); }
+	function viewIM() { window.open("$scripturl?action=im"); }
+	function viewIMOUT() { window.open("$scripturl?action=imoutbox"); }
+	function viewIMSTORE() { window.open("$scripturl?action=imstorage"); }
 // -->
 </script>~;
         }
         else {
             $yymain .= qq~\n\n<script type="text/javascript">
 <!--
-    function viewIM() { location.href = ("$scripturl?action=im"); }
-    function viewIMOUT() { location.href = ("$scripturl?action=imoutbox"); }
-    function viewIMSTORE() { location.href = ("$scripturl?action=imstorage"); }
+	function viewIM() { location.href = ("$scripturl?action=im"); }
+	function viewIMOUT() { location.href = ("$scripturl?action=imoutbox"); }
+	function viewIMSTORE() { location.href = ("$scripturl?action=imstorage"); }
 // -->
 </script>~;
         }
@@ -1111,7 +1105,7 @@ s/({|<)yabb messagecount(}|>)/${$uid.$curboard}{'messagecount'}/gsm;
             $imsweredeleted = ${$username}{'PMmnum'} - $numibox;
             $yymain .= qq~\n<script type="text/javascript">
 <!--
-    if (confirm('$boardindex_imtxt{'11'} ${$username}{'PMmnum'} $boardindex_imtxt{'12'} $boardindex_txt{'316'}, $boardindex_imtxt{'16'} $numibox $boardindex_imtxt{'18'}. $boardindex_imtxt{'19'} $imsweredeleted $boardindex_imtxt{'20'} $boardindex_txt{'316'} $boardindex_imtxt{'21'}')) viewIM();
+	if (confirm('$boardindex_imtxt{'11'} ${$username}{'PMmnum'} $boardindex_imtxt{'12'} $boardindex_txt{'316'}, $boardindex_imtxt{'16'} $numibox $boardindex_imtxt{'18'}. $boardindex_imtxt{'19'} $imsweredeleted $boardindex_imtxt{'20'} $boardindex_txt{'316'} $boardindex_imtxt{'21'}')) viewIM();
 // -->
 </script>~;
             ${$username}{'PMmnum'} = $numibox;
@@ -1124,7 +1118,7 @@ s/({|<)yabb messagecount(}|>)/${$uid.$curboard}{'messagecount'}/gsm;
             $imsweredeleted = ${$username}{'PMmoutnum'} - $numobox;
             $yymain .= qq~\n<script type="text/javascript">
 <!--
-    if (confirm('$boardindex_imtxt{'11'} ${$username}{'PMmoutnum'} $boardindex_imtxt{'12'} $boardindex_txt{'320'}, $boardindex_imtxt{'16'} $numobox $boardindex_imtxt{'18'}. $boardindex_imtxt{'19'} $imsweredeleted $boardindex_imtxt{'20'} $boardindex_txt{'320'} $boardindex_imtxt{'21'}')) viewIMOUT();
+	if (confirm('$boardindex_imtxt{'11'} ${$username}{'PMmoutnum'} $boardindex_imtxt{'12'} $boardindex_txt{'320'}, $boardindex_imtxt{'16'} $numobox $boardindex_imtxt{'18'}. $boardindex_imtxt{'19'} $imsweredeleted $boardindex_imtxt{'20'} $boardindex_txt{'320'} $boardindex_imtxt{'21'}')) viewIMOUT();
 // -->
 </script>~;
             ${$username}{'PMmoutnum'} = $numobox;
@@ -1207,7 +1201,7 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
     var boardNames = [$template_boardnames];
     var boardOpen = "";
     var subboardOpen = "";
-    var arrowup = '<img style="margin: 2px" src="$imagesdir/$brd_arrowup" />';
+    var arrowup = '<img src="$imagesdir/$brd_arrowup" style="margin: 2px" />';
     var openbutton = "$imagesdir/$brd_dropdown";
     var closebutton = "$imagesdir/$brd_dropup";
     var opensubbutton = "$imagesdir/$sub_arrow_dn";
@@ -1317,7 +1311,7 @@ qq~<span class="small">$boardindex_txt{'143'}: <b>$numbots</b></span>~;
         my %tmpcolors;
         $tmpcnt    = 0;
         $grpcolors = q{};
-        
+
         foreach my $stafgrp ( sort keys %Group ) {
             ( $title, undef, undef, $color, $noshow, undef ) =
               split /\|/xsm, $Group{$stafgrp}, 6;
@@ -1494,10 +1488,18 @@ qq~\nvar markallreadlang = '$boardindex_txt{'500'}';\nvar markfinishedlang = '$b
         $yymain .= qq~
 <script type="text/javascript">
 <!--
-    var catNames = [$template_catnames];
+	var catNames = [$template_catnames];
 //-->
 </script>
 $boardindex_template~;
+
+    $yymain .= qq~
+<script type="text/javascript">
+<!--
+    function ListPages(tid) { window.open('$scripturl?action=pages;num='+tid, '', 'menubar=no,toolbar=no,top=50,left=50,scrollbars=yes,resizable=no,width=400,height=300'); }
+    function ListPages2(bid,cid) { window.open('$scripturl?action=pages;board='+bid+';count='+cid, '', 'menubar=no,toolbar=no,top=50,left=50,scrollbars=yes,resizable=no,width=400,height=300'); }
+//-->
+</script>~;
 
         if ( ${$username}{'PMimnewcount'} > 0 ) {
             if ( ${$username}{'PMimnewcount'} > 1 ) {
@@ -1511,7 +1513,7 @@ $boardindex_template~;
                     $yymain .= qq~
 <script type="text/javascript">
 <!--
-    if (confirm("$boardindex_imtxt{'14'} ${$username}{'PMimnewcount'}$boardindex_imtxt{'15'}?")) window.open("$scripturl?action=im","_blank");
+	if (confirm("$boardindex_imtxt{'14'} ${$username}{'PMimnewcount'}$boardindex_imtxt{'15'}?")) window.open("$scripturl?action=im","_blank");
 // -->
 </script>~;
                 }
@@ -1519,7 +1521,7 @@ $boardindex_template~;
                     $yymain .= qq~
 <script type="text/javascript">
 <!--
-    if (confirm("$boardindex_imtxt{'14'} ${$username}{'PMimnewcount'}$boardindex_imtxt{'15'}?")) location.href = ("$scripturl?action=im");
+	if (confirm("$boardindex_imtxt{'14'} ${$username}{'PMimnewcount'}$boardindex_imtxt{'15'}?")) location.href = ("$scripturl?action=im");
 // -->
 </script>~;
                 }
@@ -1532,7 +1534,7 @@ $boardindex_template~;
                 $yymain .= qq~
 <script type="text/javascript">
 <!--
-    if (confirm("$boardindex_imtxt{'50'}$boardindex_imtxt{'51'}?")) window.open("$scripturl?action=im;focus=bmess","_blank");
+	if (confirm("$boardindex_imtxt{'50'}$boardindex_imtxt{'51'}?")) window.open("$scripturl?action=im;focus=bmess","_blank");
 // -->
 </script>~;
             }
@@ -1540,7 +1542,7 @@ $boardindex_template~;
                 $yymain .= qq~
 <script type="text/javascript">
 <!--
-    if (confirm("$boardindex_imtxt{'50'}$boardindex_imtxt{'51'}?")) location.href = ("$scripturl?action=im;focus=bmess");
+	if (confirm("$boardindex_imtxt{'50'}$boardindex_imtxt{'51'}?")) location.href = ("$scripturl?action=im;focus=bmess");
 // -->
 </script>~;
             }
@@ -1568,7 +1570,12 @@ qq~<link rel="alternate" type="application/rss+xml" title="$boardindex_txt{'792'
             $yymain .= $boardindex_template;
 
             my $boardtree   = q{};
+            $mycat = ${ $uid . $subboard_sel }{'cat'};
+            ( $mynamecat, undef ) = split /\|/xsm, $catinfo{$mycat};
+            ToChars($mynamecat);
+            my $catlinkb = qq~<a href="$scripturl?catselect=$mycat">$mynamecat</a>~;                
             my $parentboard = $subboard_sel;
+            
             while ($parentboard) {
                 my ( $pboardname, undef, undef ) =
                   split /\|/xsm, $board{"$parentboard"};
@@ -1582,7 +1589,7 @@ qq~<a href="$scripturl?board=$parentboard" class="a"><b>$pboardname</b></a>~;
                     $pboardname =
 qq~<a href="$scripturl?boardselect=$parentboard&subboards=1" class="a"><b>$pboardname</b></a>~;
                 }
-                $boardtree   = qq~ &rsaquo; $pboardname$boardtree~;
+                $boardtree   = qq~ &rsaquo; $catlinkb &rsaquo; $pboardname$boardtree~;
                 $parentboard = ${ $uid . $parentboard }{'parent'};
             }
 
@@ -1598,7 +1605,7 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1" class="a"><b>$pboar
                         var boardNames = [$template_boardnames];
                         var boardOpen = "";
                         var subboardOpen = "";
-                        var arrowup = '<img style="margin: 2px" src="$imagesdir/$brd_arrowup" />';
+                        var arrowup = '<img src="$imagesdir/$brd_arrowup" style="margin: 2px" />';
                         var openbutton = "$imagesdir/$brd_dropdown";
                         var closebutton = "$imagesdir/$brd_dropup";
                         var loadimg = "$imagesdir/$brd_loadbar";
@@ -1625,7 +1632,7 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1" class="a"><b>$pboar
         ~ or croak 'cannot print table';
         CORE::exit;    # This is here only to avoid server error log entries!
     }
-# cannot have return here;
+    # cannot have return here - what are we returning?;
 }
 
 sub GetBotlist {

@@ -27,11 +27,8 @@ sub SmiliePut {
     while ( $SmilieURL[$i] ) {
         if ( $SmilieURL[$i] =~ /\//ixsm ) { $tmpurl = $SmilieURL[$i]; }
         else { $tmpurl = qq~$defaultimagesdir/$SmilieURL[$i]~; }
-        if ( $i && ( $i / 10 ) == int( $i / 10 ) ) {
-            $moresmilieslist .= qq~</tr>\n<tr>~;
-        }
-        $moresmilieslist .=
-qq~<td><img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="javascript:MoreSmilies($i)" class="moresmiles" />$SmilieLinebreak[$i]</td>\n~;
+		$moresmilieslist .= qq~<br />~ if $i && ($i / 10) == int($i / 10);
+		$moresmilieslist .= qq~<img src="$tmpurl" class="moresmiles" alt="$SmilieDescription[$i]" onclick="javascript:MoreSmilies($i)" />$SmilieLinebreak[$i]\n~;
         $smilie_url_array .= qq~"$tmpurl", ~;
         $tmpcode = $SmilieCode[$i];
         $tmpcode =~ s/\&quot;/"+'"'+"/gxsm;    #'; to keep my text editor happy;
@@ -54,11 +51,11 @@ qq~<td><img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="javascript:MoreS
                 || $extension =~ /png/ism )
             {
                 if ( $line !~ /banner/ism ) {
-                    if ( $i && ( $i / 4 ) == int( $i / 4 ) ) {
-                        $evenmoresmilies .= qq~</tr>\n<tr>~;
+                    if ( $i && ( $i / 10 ) == int( $i / 10 ) ) {
+                        $evenmoresmilies .= q~<br />~;
                     }
                     $evenmoresmilies .=
-qq~<td><img src="$yyhtml_root/Smilies/$line" id="$name" onclick="javascript:MoreSmilies($i)" class="moresmiles" alt="moresmilies" /></td>\n~;
+qq~<img src="$yyhtml_root/Smilies/$line" id="$name" onclick="javascript:MoreSmilies($i)" class="moresmiles" alt="moresmilies" />\n~;
                     $more_smilie_array .= qq~" [smiley=$line]", ~;
                     $i++;
                 }
@@ -75,7 +72,7 @@ qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3
 <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
 <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
 <style type="text/css">
-td {border: #ccc solid thin; text-align:center; height:40px; width:60px;}
+.moresmiles {vertical-align:bottom; cursor:pointer;}
 </style>
 <script type="text/javascript">
 <!--
@@ -108,8 +105,7 @@ function MoreSmilies(i) {
 </head>
 <body style="background: #$popback; min-width:400px;">
 <p style="color:#$poptext; text-align:center">$smiltxt{'21'}</p>
-<table>
-    <tr>~;
+~;
 
     if ( $showadded == 3 || ( $showadded == 2 && $detachblock == 1 ) ) {
 		$output .= qq~ $moresmilieslist ~;
@@ -117,7 +113,6 @@ function MoreSmilies(i) {
 
 	$output .= qq~
 	$evenmoresmilies
-</tr></table>
 </body>
 </html>~;
 

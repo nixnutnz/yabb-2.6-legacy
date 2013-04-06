@@ -1095,9 +1095,9 @@ sub WhatTemplate {
     if ( -d "$htmldir/Templates/Forum/$useimages" ) {
         $imagesdir = "$yyhtml_root/Templates/Forum/$useimages";
     }
-    else { $imagesdir = "$yyhtml_root/Templates/Forum/default"; }
-    $defaultimagesdir = "$yyhtml_root/Templates/Forum/default";
-    $extpagstyle      = qq~$yyhtml_root/Templates/Forum/$usestyle.css~;
+	else { $imagesdir = "$yyhtml_root/Templates/Forum/default"; }
+	$defaultimagesdir = "$yyhtml_root/Templates/Forum/default";
+	$extpagstyle = qq~$yyhtml_root/Templates/Forum/$usestyle.css~;
     $extpagstyle =~ s/$usestyle\///gxsm;
     $cssbuttons = 1;
     return;

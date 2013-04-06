@@ -59,7 +59,7 @@ sub sendmail {
         @mailout =
           ( $fromheader, $toheader, $subject, $message, $charsetheader );
         tomail( $MAIL, \@mailout );
-        close $MAIL or croak 'cannot close mail';
+        close $MAIL;# or croak 'cannot close mail';
 
         return 1;
     }

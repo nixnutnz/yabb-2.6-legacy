@@ -23,6 +23,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 LoadLanguage('InstantMessage');
 LoadLanguage('MyCenter');
 require "$templatesdir/$usemycenter/MyCenter.template";
+
 if ( -e "$vardir/gmodsettings.txt" && $iamgmod ) {
     require "$vardir/gmodsettings.txt";
 }
@@ -584,7 +585,9 @@ sub Del_Some_IM {
 			if ( $INFO{'caller'} != 1 && $m[14] ne q{} ) {
 			    foreach ( split /,/xsm, $m[14] ) {
 		            my ( $pmAttachFile, $pmAttachUser ) = split /~/xsm, $_;
-		            if ( $username eq $pmAttachUser ) { unlink "$pmuploaddir/$pmAttachFile"; }
+                    if ( $username eq $pmAttachUser ) {
+                        unlink "$pmuploaddir/$pmAttachFile";
+                    }
 		        }
 		    }
             if ( !exists $FORM{ 'message' . $m[0] } ) {
@@ -833,26 +836,34 @@ sub IMPost {
     if ($iamguest) { fatal_error('im_members_only'); }
     my ( $mdate, $mip, $mmessage );
     ##  if the IM has a number assigned already, open the right IM file
-    if ( $INFO{'id'} ne q{} && !$replyguest ) {
+    if ( $INFO{'id'} ne q{} ) {
         if ( $INFO{'caller'} < 5 ) {
             updateIMS( $username, $INFO{'id'}, 'inread' );
         }
 
         my $pmFileType = "$username.msg";
         if    ( $INFO{'caller'} == 2 ) { $pmFileType = "$username.outbox"; }
-        elsif ( $INFO{'caller'} == 3 ) { $pmFileType = "$username.imstore"; }
-        elsif ( $INFO{'caller'} == 4 ) { $pmFileType = "$username.imdraft"; }
-        elsif ( $INFO{'caller'} == 5 ) { $pmFileType = 'broadcast.messages'; }
+            elsif ( $INFO{'caller'} == 3 ) {
+                $pmFileType = "$username.imstore";
+            }
+            elsif ( $INFO{'caller'} == 4 ) {
+                $pmFileType = "$username.imdraft";
+            }
+            elsif ( $INFO{'caller'} == 5 ) {
+                $pmFileType = 'broadcast.messages';
+            }
 
+        if ( !$replyguest ) {
         fopen( FILE, "$memberdir/$pmFileType" );
         @messages = <FILE>;
         fclose(FILE);
         ## split content of IM file up
         foreach my $checkTheMessage (@messages) {
             (
-                $qmessageid, $mfrom,   $mto,     $mtocc,  $mtobcc,
-                $msubject,   $mdate,   $message, $mparid, $mreplyno,
-                $mip,        $mstatus, $mflags,  $mstore, $mattach
+                    $qmessageid, $mfrom,    $mto,   $mtocc,
+                    $mtobcc,     $msubject, $mdate, $message,
+                    $mparid,     $mreplyno, $mip,   $mstatus,
+                    $mflags,     $mstore,   $mattach
             ) = split /\|/xsm, $checkTheMessage;
             if ( $qmessageid == $INFO{'id'} ) { last; }
         }
@@ -905,44 +916,46 @@ qq~[quote author=$cloakedAuthor link=impost date=$mdate\]$message\[/quote\]\n~;
         }
     }
     elsif ($replyguest) {
-        fopen( FILE, "$memberdir/broadcast.messages" );
-        my @messages = <FILE>;
-        fclose(FILE);
-        ## split content of IM file up
-        foreach my $checkTheMessage (@messages) {
-            (
-                $qmessageid, $mfrom,   $mto,     $mtocc,  $mtobcc,
-                $msubject,   $mdate,   $message, $mparid, $mreplyno,
-                $mip,        $mstatus, $mflags,  $mstore, $mattach
-            ) = split /\|/xsm, $checkTheMessage;
-            if ( $qmessageid == $INFO{'id'} ) { last; }
-        }
-        ( $guestName, $guestEmail ) = split /\ /sm, $mfrom;
-        $guestName =~ s/%20/ /gsm;
-        $message   =~ s/<br.*?>/\n/gism;
-        $message   =~ s/ \&nbsp; \&nbsp; \&nbsp;/\t/igsm;
-        $message   =~ s/\[b\](.*?)\[\/b\]/*$1*/isgm;
-        $message   =~ s/\[i\](.*?)\[\/i\]/\/$1\//isgm;
-        $message   =~ s/\[u\](.*?)\[\/u\]/_$1_/isgm;
-        $message   =~ s/\[.*?\]//gsm;
-        my $sendtouser = ${ $uid . $username }{'realname'};
-        $mdate = timeformat( $mdate, 1 );
-        require Sources::Mailer;
-        LoadLanguage('Email');
+                fopen( FILE, "$memberdir/$pmFileType" );
+                @messages = <FILE>;
+                fclose(FILE);
+                ## split content of IM file up
+                foreach my $checkTheMessage (@messages) {
+                    (
+                        $qmessageid, $mfrom,    $mto,   $mtocc,
+                        $mtobcc,     $msubject, $mdate, $message,
+                        $mparid,     $mreplyno, $mip,   $mstatus,
+                        $mflags,     $mstore,   $mattach
+                    ) = split /\|/xsm, $checkTheMessage;
+                    if ( $qmessageid == $INFO{'id'} ) { last; }
+                }
+                ( $guestName, $guestEmail ) = split /\ /sm, $mfrom;
+                $guestName =~ s/%20/ /gsm;
+                $message   =~ s/<br.*?>/\n/gism;
+                $message   =~ s/ \&nbsp; \&nbsp; \&nbsp;/\t/igsm;
+                $message   =~ s/\[b\](.*?)\[\/b\]/*$1*/isgm;
+                $message   =~ s/\[i\](.*?)\[\/i\]/\/$1\//isgm;
+                $message   =~ s/\[u\](.*?)\[\/u\]/_$1_/isgm;
+                $message   =~ s/\[.*?\]//gsm;
+                my $sendtouser = ${ $uid . $username }{'realname'};
+                $mdate = timeformat( $mdate, 1 );
+                require Sources::Mailer;
+                LoadLanguage('Email');
 
-        #sender email date subject message
-        $message = template_email(
-            $replyguestmail,
-            {
-                'sender'  => $guestName,
-                'email'   => $guestEmail,
-                'sendto'  => $sendtouser,
-                'date'    => $mdate,
-                'subject' => $msubject,
-                'message' => $message
+                #sender email date subject message
+                $message = template_email(
+                    $replyguestmail,
+                    {
+                        'sender'  => $guestName,
+                        'email'   => $guestEmail,
+                        'sendto'  => $sendtouser,
+                        'date'    => $mdate,
+                        'subject' => $msubject,
+                        'message' => $message
+                    }
+                );
+                $msubject = qq~Re: $msubject~;
             }
-        );
-        $msubject = qq~Re: $msubject~;
     }
 
     if ( $INFO{'forward'} || $INFO{'quote'} ) { FromHTML($message); }
@@ -1496,7 +1509,8 @@ function insert_user (oElement,username,userid) {
 	        if ( $allowAttachIM && $allowGroups) {
 			    $MCGlobalFormStart .=
 qq~<form action="$scripturl?action=$destination" method="post" name="postmodify" id="postmodify" enctype="multipart/form-data" onsubmit="~;
-            } else { 
+            }
+            else {
                 $MCGlobalFormStart .=
 qq~<form action="$scripturl?action=$destination" method="post" name="postmodify" id="postmodify" enctype="application/x-www-form-urlencoded" onsubmit="~;
             }
@@ -1614,7 +1628,6 @@ q~if(!checkForm(this)) { return false; } else { return submitproc(); }">~; #" ex
                 ~;
             }
         }
-
     }
     else {
         $MCGlobalFormStart .=
@@ -1661,7 +1674,7 @@ qq~<form action="$scripturl?action=$destination" method="post" name="postmodify"
         my $template_regdate;
         if ( $showregdate && ${ $uid . $username }{'regtime'} ) {
             $dr_regdate = timeformat( ${ $uid . $username }{'regtime'}, 1 );
-            $dr_regdate = $dateonly;
+            $dr_regdate = dtonly($dr_regdate);
             $dr_regdate =~ s/(.*)(, 1?[0-9]):[0-9][0-9].*/$1/xsm;
             $template_regdate = qq~$profile_txt{'regdate'} $dr_regdate<br />~;
         }
@@ -2006,21 +2019,20 @@ qq~\nvar markallreadlang = '$inmes_txt{'500'}';\nvar markfinishedlang = '$inmes_
                 <td colspan="3">
                 <hr class="hr" />
                 <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
-                <label for="search">$pm_search{'desc'}</label><br />
-                <form action="$scripturl?action=pmsearch" method="post" onsubmit="return submitproc()" style="display: inline" accept-charset="$yycharset">~;
-
-            if ( $view eq 'pm' && $action ne 'pmsearch' ) {
-                $MCPmMenu .= qq~
+               <form action="$scripturl?action=pmsearch" method="post" onsubmit="return submitproc()" style="display: inline" accept-charset="$yycharset">
+                <div class="yabb_searchbox">
+                    <input type="text" name="search" id="search" size="16" value="$pm_search{'desc'}" onfocus="txtInFields(this, '$pm_search{'desc'}');" onblur="txtInFields(this, '$pm_search{'desc'}')" style="font-size: 11px; vertical-align: middle;" />
+                    <input type="image" src="$imagesdir/search.png" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />
+                </div>
+                <br style="clear: left;" />
+                - <input type="checkbox" name="searchtype" id="searchtype" value="user" /> <label for="searchtype">$pm_search{'byuser'}</label><br />~;
+                if ( $view eq 'pm' && $action ne 'pmsearch' ) {
+                    $MCPmMenu .= qq~
                 - <input type="radio" name="pmbox" id="pmboxall" value="" checked="checked" /> <label for="pmboxall">$pm_search{'all'}</label>
                 <input type="radio" name="pmbox" id="pmboxthis" value="$callerid" /> <label for="pmboxthis">$pm_search{'justthis'}</label><br />~;
-            }
-
-            $MCPmMenu .= qq~
-                - <input type="checkbox" name="searchtype" id="searchtype" value="user" /> <label for="searchtype">$pm_search{'byuser'}</label><br />
-                <input type="text" name="search" id="search" size="16" style="font-size: 11px; vertical-align: middle;" />
-
-                <input type="image" src="$imagesdir/search.gif" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />
-                </form>
+                }
+                $MCPmMenu .= qq~
+                                </form>
                 </td>
             </tr>~;
         }
@@ -2038,8 +2050,7 @@ sub drawPMView {
     ## column headers
     ## note - if broadcast messages not enabled but guest pm is, admin/gmod still
     ##  see the broadcast split
-    if (   ( $enable_PMcontrols && ${ $uid . $username }{'pmviewMess'} )
-        || ( !$enable_PMcontrols && !$enable_PMviewMess ) )
+    if ( ${ $uid . $username }{'pmviewMess'} )
     {
         enable_yabbc();
     }
@@ -2190,7 +2201,11 @@ sub drawPMView {
             if ( $messageAttachment ne q{} ) {
 	            foreach ( split /,/xsm, $messageAttachment ) {
 		            my ( $pmAttachFile, $pmAttachUser ) = split /~/xsm, $_;
-		            if ( $username eq $pmAttachUser && -e "$pmuploaddir/$pmAttachFile" ) { $mAttachDeleteSet = 1; }   
+                    if ( $username eq $pmAttachUser
+                        && -e "$pmuploaddir/$pmAttachFile" )
+                    {
+                        $mAttachDeleteSet = 1;
+                    }
 	            }
             }
             ## set the status icon
@@ -2582,8 +2597,12 @@ qq~<span class="small"><a href="$scripturl?action=imshow;id=$messageid;caller=2"
 			if ( $messageAttachment ne q{} ) {
 			    @im_attach_count = split /\,/xsm, $messageAttachment;
 			    $imAttachCount = @im_attach_count;
-			    my $alt = $imAttachCount == 1 ? $inmes_txt{'attach_3'} : $inmes_txt{'attach_2'};
-			    $attachIcon = qq~<img src="$imagesdir/paperclip.gif" alt="$inmes_txt{'attach_1'} $imAttachCount $alt" title="$inmes_txt{'attach_1'} $imAttachCount $alt" style="float: right; padding-right: 0.3em;" />~;
+                my $alt =
+                    $imAttachCount == 1
+                  ? $inmes_txt{'attach_3'}
+                  : $inmes_txt{'attach_2'};
+                $attachIcon =
+qq~<img src="$imagesdir/paperclip.gif" alt="$inmes_txt{'attach_1'} $imAttachCount $alt" title="$inmes_txt{'attach_1'} $imAttachCount $alt" style="float: right; padding-right: 0.3em;" />~;
 			}
 
             $MCContent .= qq~<tr>
@@ -2881,10 +2900,23 @@ qq~$guestName<br />(<a href="mailto:$guestEmail">$guestEmail</a>)~;
 
             my $attachDeleteWarn;     
             chomp $messageAttachment;
-            if ( ( $action eq 'imdraft' || $action eq 'imoutbox' || $action eq 'imstorage' ) && $messageAttachment ne q{} ) {
+            if (
+                (
+                       $action eq 'imdraft'
+                    || $action eq 'imoutbox'
+                    || $action eq 'imstorage'
+                )
+                && $messageAttachment ne q{}
+              )
+            {
+
 	            foreach ( split /,/xsm, $messageAttachment ) {
 		            my ( $pmAttachFile, $pmAttachUser ) = split /~/xsm, $_;
-		            if ( $username eq $pmAttachUser && -e "$pmuploaddir/$pmAttachFile" ) { $attachDeleteWarn = $inmes_txt{'770a'}; }   
+                    if ( $username eq $pmAttachUser
+                        && -e "$pmuploaddir/$pmAttachFile" )
+                    {
+                        $attachDeleteWarn = $inmes_txt{'770a'};
+                    }
 	            }
             }
 
@@ -2895,13 +2927,21 @@ qq~$guestName<br />(<a href="mailto:$guestEmail">$guestEmail</a>)~;
             $mreplyno++;
             ## build actionsMenu for output
             if ( $action eq 'im' && !$viewBMess ) {
+                if ( $messStatus eq 'g' || $messStatus eq 'ga' ) {
+                    $actionsMenu =
+qq~<a href="$scripturl?action=imsend;caller=$callerid;reply=$mreplyno;replyguest=1;id=$messageid">$inmes_txt{'146'}</a>
+$sepa<a href="$scripturl?action=imsend;caller=$callerid;forward=1;quote=$mreplyno;id=$messageid">$inmes_txt{'147'}</a>
+$sepa<a href="$scripturl?action=deletemultimessages;caller=$callerid;deleteid=$messageid" onclick="return confirm('$inmes_txt{'770'}')">$inmes_txt{'remove'}</a>~;
+                }
+                else {
                 $actionsMenu =
 qq~<a href="$scripturl?action=imsend;caller=$callerid;quote=$mreplyno;to=$useraccount{$musername};id=$messageid">$inmes_txt{'145'}</a>$sepa<a href="$scripturl?action=imsend;caller=$callerid;reply=$mreplyno;to=$useraccount{$musername};id=$messageid">$inmes_txt{'146'}</a>$sepa<a href="$scripturl?action=imsend;caller=$callerid;forward=1;quote=$mreplyno;id=$messageid">$inmes_txt{'147'}</a>$sepa<a href="$scripturl?action=deletemultimessages;caller=$callerid;deleteid=$messageid" onclick="return confirm('$inmes_txt{'770'}')">$inmes_txt{'remove'}</a>~;
 
                 ## broadcast messages can only be quoted on!
             }
+            }
             elsif ( $action eq 'im' && $viewBMess ) {
-                if ( $messStatus eq 'g' ) {
+                if ( $messStatus eq 'g' || $messStatus eq 'ga' ) {
                     $actionsMenu =
 qq~<a href="$scripturl?action=imsend;caller=$callerid;quote=$mreplyno;replyguest=1;id=$messageid">$inmes_txt{'146'}</a>~;
                 }
@@ -2933,6 +2973,10 @@ qq~$callBack<a href="$scripturl?action=deletemultimessages;caller=$callerid;dele
                     $actionsMenu =
 qq~<a href="$scripturl?action=deletemultimessages;caller=$callerid;deleteid=$messageid$storefolderView" onclick="return confirm('$inmes_txt{'770'}')">$inmes_txt{'remove'}</a>~;
                 }
+                elsif ( $messStatus eq 'g' || $messStatus eq 'ga' ) {
+                    $actionsMenu =
+qq~<a href="$scripturl?action=imsend;caller=$callerid;quote=$mreplyno;replyguest=1;id=$messageid">$inmes_txt{'146'}</a>~;
+                }
                 else {
                     $actionsMenu =
 qq~$callBack<a href="$scripturl?action=imsend;caller=$callerid;quote=$mreplyno;to=$useraccount{$musername};id=$messageid">$inmes_txt{'145'}</a>$sepa<a href="$scripturl?action=imsend;caller=$callerid;reply=$mreplyno;to=$useraccount{$musername};id=$messageid">$inmes_txt{'146'}</a>$sepa<a href="$scripturl?action=imsend;caller=$callerid;forward=1;id=$messageid">$inmes_txt{'147'}</a>$sepa<a href="$scripturl?action=deletemultimessages;caller=$callerid;deleteid=$messageid$storefolderView" onclick="return confirm('$inmes_txt{'770'}$attachDeleteWarn')">$inmes_txt{'remove'}</a>~;
@@ -2950,15 +2994,9 @@ qq~/<label for="message$messageid">$inmes_imtxt{'store'}</label>~;
             }
             $MCContent .= qq~
       </tr><tr>
-        <td colspan="3" class="$class_PM_list" style="height:21px">
-            ~;
+        <td class="$class_PM_list" style="height:21px" colspan="3">~;
 
-            if (
-                ( $enable_PMcontrols && ${ $uid . $username }{'pmviewMess'} )
-                || (  !$enable_PMcontrols
-                    && $enable_PMviewMess
-                    && ${ $uid . $username }{'pmviewMess'} )
-              )
+            if ( ${ $uid . $username }{'pmviewMess'} )
             {
                 if ( $immessage =~ /\[quote(.*?)\]/isgm ) {
                     $quoteimg =
@@ -3061,7 +3099,9 @@ qq~$inmes_imtxt{'67'}:&nbsp;<img src="$imagesdir/usage.gif" alt="" /><img src="$
             $imbargfx = q~&nbsp;~;
         }
         if ( $action ne 'imstorage' || $INFO{'viewfolder'} ne q{} ) {
-            if ( $mAttachDeleteSet == 1 && $action ne 'im' ) { $mAttachDeleteWarn = $inmes_txt{'770b'}; }
+            if ( $mAttachDeleteSet == 1 && $action ne 'im' ) {
+                $mAttachDeleteWarn = $inmes_txt{'770b'};
+            }
             $removeButton =
 qq~<input type="submit" name="imaction" value="$inmes_txt{'remove'}" class="button" onclick="return confirm('$inmes_txt{'delmultipms'}$mAttachDeleteWarn');" />~;
             $inmes_txt{'777'} =~ s/REMOVE/$removeButton/sm;

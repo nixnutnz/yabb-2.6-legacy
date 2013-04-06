@@ -17,54 +17,20 @@ our $VERSION = '2.5.4';
 $downloadspmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
+if ( -e ("$templatesdir/$usestyle/Downloads.template") ) {
+    require "$templatesdir/$usestyle/Downloads.template";
+}
+else {
+    require "$templatesdir/default/Downloads.template";
+}
+
 sub DownloadView {
     if ( $guest_media_disallowed && $iamguest ) { fatal_error('members_only'); }
     LoadLanguage('FA');
     print_output_header();
 
-    $output =
-qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<title>$fatxt{'39'}</title>
-<meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
-<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
-
-<script type="text/javascript">
-<!--
-    function download_file(amfn) {
-        window.open('$scripturl?action=downloadfile;file=' + encodeURIComponent(amfn),'_blank');
-        self.setTimeout('location.reload()', 3000);
-    }
-    function load_thread(amthreadid,amreplies) {
-        try{
-            if (typeof(opener.document) == 'object') throw '1';
-            else throw '0';
-        } catch (e) {
-            if (amreplies > 0 || ~
-      . (
-        (
-            ( $ttsureverse && ${ $uid . $username }{'reversetopic'} )
-              || $ttsreverse
-        ) ? 1 : 0
-      )
-      . qq~ == 1) amreplies = '/' + amreplies + '#' + amreplies;
-            else amreplies = '';
-            if (e == 1) {
-                opener.location.href='$scripturl?num=' + amthreadid + amreplies;
-                self.close();
-            } else {
-                location.href='$scripturl?num=' + amthreadid + amreplies;
-            }
-        }
-    }
-// -->
-</script>
-</head>
-<body class="littlebody">
-<a id="pagetop">&nbsp;</a><br />
-    <div id="container">
-    <br />~;
+    $output = $downloads_top;
+    $output =~ s/{yabb fatxt39}/$fatxt{'39'}/sm;
 
     my $thread = $INFO{'thread'};
     if ( !ref $thread_arrayref{$thread} ) {
@@ -102,10 +68,13 @@ qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3
 
     my $colspan = ( $iamadmin || $iamgmod ) ? 8 : 7;
     if ( !$max ) {
-        $viewattachments .=
-qq~<tr><td class="windowbg2 center" colspan="$colspan"><b><i>$fatxt{'48'}</i></b></td></tr>
-    <tr><td class="catbg center" colspan="$colspan"><a href="javascript:try{if(typeof(opener.document)=='object'){throw '1';}else{throw '0';}}catch (e){if(e==1) {opener.location.href='$scripturl?num=$thread';self.close();}else{location.href='$scripturl?num=$thread';}}">$fatxt{'70'} "<i>$threadname</i>"</a> &nbsp; | &nbsp; <a href="javascript:window.close();">$fatxt{'71'}</a></td></tr>~;
-
+        $viewattachments .= $downloads_att;
+        $viewattachments =~ s/{yabb colspan}/$colspan/gsm;
+        $viewattachments =~ s/{yabb colspan}/$colspan/gsm;
+        $viewattachments =~ s/{yabb threadname}/$threadname/gsm;
+        $viewattachments =~ s/{yabb fatxt48}/$fatxt{'38'}/gsm;
+        $viewattachments =~ s/{yabb fatxt70}/$fatxt{'70'}/gsm;
+        $viewattachments =~ s/{yabb fatxt71}/$fatxt{'71'}/gsm;
     }
     else {
         if ( $iamadmin || $iamgmod ) {
@@ -136,7 +105,6 @@ qq~<tr><td class="windowbg2 center" colspan="$colspan"><b><i>$fatxt{'48'}</i></b
         //-->
         </script>
         <form name="del_attachments" action="$scripturl?action=viewdownloads;thread=$thread" method="post" style="display: inline;" onsubmit="verify_delete();">~;
-
         }
         else {
             $output .= qq~
@@ -226,7 +194,7 @@ qq~<a href="$scripturl?action=downloadfile;newstart=$lastptn;sort=$sort">$lastpn
         $pageindex .= $pageindexadd;
 
         $pageindex =
-          qq~<div class="small right;">$fatxt{'64'}: $pageindex</div>~;
+          qq~$fatxt{'64'}: $pageindex~;
 
         $numbegin = ( $newstart + 1 );
         $numend   = ( $newstart + 25 );
@@ -258,53 +226,44 @@ qq~<a href="$scripturl?action=downloadfile;newstart=$lastptn;sort=$sort">$lastpn
                 $amthreadsub = substr( $amthreadsub, 0, 20 ) . q{...};
             }
 
-            $viewattachments .= q~<tr>~ . (
-                ( $iamadmin || $iamgmod )
-                ? qq~
-        <td class="windowbg2 center"><input type="checkbox" name="del_$thread" value="$amfn" /></td>~
-                : q{}
-              )
-              . qq~
-        <td class="windowbg2"><a href="javascript:void(download_file('$amfn'));"> $amfn</a></td>
-        <td class="windowbg2 center"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /></td>
-        <td class="windowbg2 right">$amkb KB</td>
-        <td class="windowbg2 center">$amdate</td>
-        <td class="windowbg2 right">$amcount</td>
-        <td class="windowbg2"><a href="javascript:load_thread('$thread','$amreplies');">$amthreadsub</a></td>
-        <td class="windowbg2 center">$amposter</td>
-        </tr>
-        ~;
+            if ( $iamadmin || $iamgmod ) {
+                 $att_admin = $my_att_admin;
+            }
+            else {
+               $att_admin = q{};
+            }
+        $viewattachments .= $downloads_att_b;
+        $viewattachments =~ s/{yabb att_admin}/$att_admin/gsm;
+        $viewattachments =~ s/{yabb amfn}/$amfn/gsm;
+        $viewattachments =~ s/{yabb attach_gif}/$attach_gif{$ext}/gsm;
+        $viewattachments =~ s/{yabb thread}/$thread/gsm;
+        $viewattachments =~ s/{yabb amkb}/$amkb/gsm;
+        $viewattachments =~ s/{yabb amdate}/$amdate/gsm;
+        $viewattachments =~ s/{yabb amcount}/$amcount/gsm;
+        $viewattachments =~ s/{yabb amreplies}/$amreplies/gsm;
+        $viewattachments =~ s/{yabb amthreadsub}/$amthreadsub/gsm;
+        $viewattachments =~ s/{yabb amposter}/$amposter/gsm;
         }
 
-        $viewattachments .= q~<tr>~ . (
-            ( $iamadmin || $iamgmod )
-            ? q~
-        <td class="catbg center">
-            <input type="checkbox" name="checkall" value="" onclick="if(this.checked){checkAll();}else{uncheckAll();}" />
-        </td>~
-            : q{}
-          )
-          . q~
-        <td class="catbg" colspan="7">
-            <table>
-                <col style="width:33%" />
-                <col style="width:34%" />
-                <col style="width:33%" />
-                <tr>
-                    <td class="small">~
-          . (
-            ( $iamadmin || $iamgmod )
-            ? qq~&lt;= $amv_txt{'38'} &nbsp; <input type="submit" value="$admin_txt{'32'}" class="button" />~
-            : '&nbsp;'
-          )
-          . qq~</td>
-                    <td class="center" style="white-space:nowrap"> &nbsp; <a href="javascript:load_thread('$thread',0);">$fatxt{'70'} "<i>$threadname</i>"</a> &nbsp; | &nbsp; <a href="javascript:window.close();">$fatxt{'71'}</a> &nbsp; </td>
-                    <td class="small right">$pageindex</td>
-                </tr>
-            </table>
-        </td>
-        </tr>~;
-
+        if ( $iamadmin || $iamgmod ) {
+             $att_admin_b = $my_att_admin_b;
+             $att_admin_c = $my_att_admin_c;
+        }
+        else {
+           $att_admin_b = q{};
+           $att_admin_c = '&nbsp;';
+        }
+        $viewattachments .= $downloads_att_c;
+        $viewattachments =~ s/{yabb att_admin_b}/$att_admin_b/gsm;
+        $viewattachments =~ s/{yabb att_admin_c}/$att_admin_c/gsm;
+        $viewattachments =~ s/{yabb amv_txt38a}/$amv_txt{'38a'}/gsm;
+        $viewattachments =~ s/{yabb admin_txt32}/$admin_txt{'32'}/gsm;
+        $viewattachments =~ s/{yabb thread}/$thread/gsm;
+        $viewattachments =~ s/{yabb threadname}/$threadname/gsm;
+        $viewattachments =~ s/{yabb fatxt70}/$fatxt{'70'}/gsm;
+        $viewattachments =~ s/{yabb fatxt71}/$fatxt{'71'}/gsm;
+        $viewattachments =~ s/{yabb pageindex}/$pageindex/gsm;
+        
         $output .= qq~
         <input type="hidden" name="newstart" value="$newstart" />~;
     }
@@ -317,79 +276,76 @@ qq~<a href="$scripturl?action=downloadfile;newstart=$lastptn;sort=$sort">$lastpn
     my $class_sortsubj   = $sort =~ /1$/sm  ? 'windowbg2' : 'windowbg';
     my $class_sortuser   = $sort =~ /3/sm   ? 'windowbg2' : 'windowbg';
 
-    $output .= qq~
-<table class="bordercolor pad_8px" style="width:90%">
-    <tr>
-        <td class="titlebg" colspan="$colspan">
-            <img src="$imagesdir/xx.gif" alt="" />&nbsp;<b>$fatxt{'39'}</b>
-        </td>
-    </tr><tr>
-        <td class="windowbg center" colspan="$colspan">
-            <br />
-            $fatxt{'75'}:<br />
-            "<i>$threadname</i>"<br />
-            <br />
-            <span class="small">$fatxt{'76'}</span>
-            <br />
-        </td>
-    </tr><tr>
-        <td class="titlebg" colspan="$colspan">
-            <div class="small" style="float: left; text-align: left;">$fatxt{'28'} $max $numshow</div>
-        $pageindex
-        </td>
-    </tr><tr>~ . (
-        ( $iamadmin || $iamgmod )
-        ? qq~
-        <td class="windowbg center"><b>$fatxt{'45'}</b></td>~
-        : q{}
-      )
-      . qq~
-        <td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~
+   if ( $iamadmin || $iamgmod ) {
+         $att_out_admin_a = $my_out_att_admin_a;
+        }
+        else {
+           $att_out_admin_a = q{};
+        }
+
+    $output .= $downloads_att_out_a;
+    $output =~ s/{yabb colspan}/$colspan/gsm;
+    $output =~ s/{yabb threadname}/$threadname/gsm;
+    $output =~ s/{yabb pageindex}/$pageindex/gsm;
+    $output =~ s/{yabb max}/$max/gsm;
+    $output =~ s/{yabb numshow}/$numshow/gsm;
+    $output =~ s/{yabb fatxt39}/$fatxt{'39'}/gsm;
+    $output =~ s/{yabb fatxt76}/$fatxt{'76'}/gsm;
+    $output =~ s/{yabb fatxt75}/$fatxt{'75'}/gsm;
+    $output =~ s/{yabb fatxt28}/$fatxt{'28'}/gsm;
+    
+    $output .= $att_out_admin_a;
+    $output =~ s/{yabb fatxt45}/$fatxt{'45'}/gsm;
+    $output .= $my_att_sort_a
       . ( $sort == 7 ? -7 : 7 )
-      . qq~';" class="$class_sortattach" style="border: 0px; border-style: outset; cursor: pointer; text-align:center"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~
+      . qq~';" class="$class_sortattach" ~
+      . $my_att_sort_c
       . ( $sort == 7 ? -7 : 7 )
-      . qq~"><b>$fatxt{'40'}</b></a></td>
-        <td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~
+      . qq~"><b>$fatxt{'40'}</b></a>~
+      . $my_att_sort_b
       . ( $sort == 100 ? -100 : 100 )
-      . qq~';" class="$class_sorttype" style="border: 0px; border-style: outset; cursor: pointer;; text-align:center"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~
+      . qq~';" class="$class_sorttype" ~
+      . $my_att_sort_c
       . ( $sort == 100 ? -100 : 100 )
-      . qq~"><b>$fatxt{'40a'}</b></a></td>
-        <td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~
+      . qq~"><b>$fatxt{'40a'}</b></a>~
+      . $my_att_sort_b
       . ( $sort == -5 ? 5 : -5 )
-      . qq~';" class="$class_sortsize" style="border: 0px; border-style: outset; cursor: pointer; text-align:center;"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~
+      . qq~';" class="$class_sortsize" ~
+      . $my_att_sort_c
       . ( $sort == -5 ? 5 : -5 )
-      . qq~"><b>$fatxt{'41'}</b></a></td>
-        <td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~
+      . qq~"><b>$fatxt{'41'}</b></a>~
+      . $my_att_sort_b
       . ( $sort == -6 ? 6 : -6 )
-      . qq~';" class="$class_sortdate" style="border: 0px; border-style: outset; cursor: pointer; text-align:center;"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~
+      . qq~';" class="$class_sortdate" ~
+      . $my_att_sort_c
       . ( $sort == -6 ? 6 : -6 )
-      . qq~"><b>$fatxt{'43'}</b></a></td>
-        <td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~
+      . qq~"><b>$fatxt{'43'}</b></a>~
+      . $my_att_sort_b
       . ( $sort == -8 ? 8 : -8 )
-      . qq~';" class="$class_sorcount" style="border: 0px; border-style: outset; cursor: pointer; text-align:center;"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~
+      . qq~';" class="$class_sorcount" ~
+      . $my_att_sort_c
       . ( $sort == -8 ? 8 : -8 )
-      . qq~"><b>$fatxt{'41a'}</b></a></td>
-        <td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~
+      . qq~"><b>$fatxt{'41a'}</b></a>~
+      . $my_att_sort_b
       . ( $sort == 1 ? -1 : 1 )
-      . qq~';" class="$class_sortsubj" style="border: 0px; border-style: outset; cursor: pointer; text-align:center;"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~
+      . qq~';" class="$class_sortsubj" ~
+      . $my_att_sort_c
       . ( $sort == 1 ? -1 : 1 )
-      . qq~"><b>$fatxt{'44'}</b></a></td>
-        <td onclick="location.href='$scripturl?action=viewdownloads;thread=$thread;sort=~
+      . qq~"><b>$fatxt{'44'}</b></a>~
+      . $my_att_sort_b
       . ( $sort == 3 ? -3 : 3 )
-      . qq~';" class="$class_sortuser" style="border: 0px; border-style: outset; cursor: pointer; text-align:center;"><a href="$scripturl?action=viewdownloads;thread=$thread;sort=~
+      . qq~';" class="$class_sortuser" ~
+      . $my_att_sort_c
       . ( $sort == 3 ? -3 : 3 )
-      . qq~"><b>$fatxt{'42'}</b></a></td>
-    </tr>
-    $viewattachments
-</table>~;
+      . qq~"><b>$fatxt{'42'}</b></a>~
+      . $downloads_tbl_end;
+#"';
+    $output =~ s/{yabb thread}/$thread/gsm;
+    $output =~ s/{yabb viewattachments}/$viewattachments/gsm;
 
     if ( $max && ( $iamadmin || $iamgmod ) ) { $output .= '</form>'; }
 
-    $output .= q~
-<br />
-</div>
-</body>
-</html>~;
+    $output .= $downloads_bottom;
 
     print_HTML_output_and_finish();
     return;

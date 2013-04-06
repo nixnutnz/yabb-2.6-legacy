@@ -255,8 +255,8 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
     $yystyle =~ s/$usestyle\///gxsm;
     $yystyle .=
 qq~<link rel="stylesheet" href="$yyhtml_root/shjs/styles/sh_style.css" type="text/css" />\n~;
-    $yystyle .= $yyinlinestyle
-      ; # This is for the Help Center and anywhere else that wants to add inline CSS.
+    $yystyle .= $yyinlinestyle;
+      # This is for the Help Center and anywhere else that wants to add inline CSS.
     $yysyntax_js = qq~
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_main.js"></script>
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_cpp.js"></script>
@@ -741,16 +741,16 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
     while ( $output =~ s/(<|{)yabb\s+(\w+)(}|>)/${"yy$2"}/gxsm ) { }
 
     # check if image exists, otherwise use the default template image
-    if ( $imagesdir ne $defaultimagesdir ) {
+	if ($imagesdir ne $defaultimagesdir) {
         my %img_locs;
 
         $output =~
 s/(src|value|url)(=|\()("|'| )$imagesdir\/([^'" ]+)./ "$1$2$3" . ImgLoc($4) . $3 /eisgm;
-    }
+	}
 
     # add formsession to each <form ..>-tag
     $output =~
-s/<\/form>/ <input type="hidden" name="formsession" value="$formsession" \/><input class="green" type="submit" \/>\n                    <\/form>/gsm;
+s/<\/form>/ <input type="hidden" name="formsession" value="$formsession" \/>\n                    <\/form>/gsm;
 
     image_resize();
 
@@ -904,13 +904,13 @@ sub fatal_error {
 <table class="tabtitle pad_4px" style="width:80%">
     <tr>
         <td class="round_top_left" style="width:1%">&nbsp;</td>
-        <td class="center"><span class="text1"><b>$maintxt{'error_description'}</b></span></td>
+        <td class="center"><b>$maintxt{'error_description'}</b></td>
         <td class="round_top_right" style="width:1%">&nbsp;</td>
     </tr>
 </table>
 <table class="bordercolor pad_4px cs_thin" style="width:80%">
     <tr>
-        <td class="windowbg"><br /><span class="text1">$errormessage</span><br /><br /></td>
+        <td class="windowbg"><br />$errormessage<br /><br /></td>
     </tr>
 </table>
 <br /><div style="width: 100%; text-align: center;"><a href="javascript:history.go(-1)">$maintxt{'193'}</a></div>
@@ -962,9 +962,9 @@ sub admin_fatal_error {
     $yymain .= qq~
 <table class="bordercolor pad_4px cs_thin" style="width:80%">
     <tr>
-        <td class="titlebg"><span class="text1"><b>$maintxt{'error_description'}</b></span></td>
+        <td class="titlebg"><b>$maintxt{'error_description'}</b></td>
     </tr><tr>
-        <td class="windowbg"><br /><span class="text1">$errormessage</span><br /><br /></td>
+        <td class="windowbg"><br />$errormessage<br /><br /></td>
     </tr>
 </table>
 <p class="center"><a href="javascript:history.go(-1)">$admin_txt{'193'}</a></p>

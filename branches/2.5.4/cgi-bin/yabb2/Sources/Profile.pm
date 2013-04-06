@@ -23,11 +23,11 @@ if ( $action eq 'detailedversion' ) { return 1; }
 LoadLanguage('Profile');
 require Sources::AddModerators;
 
-if ( -e ("$templatesdir/$usestyle/Profile.template") ) {
-    require "$templatesdir/$usestyle/Profile.template";
+if ( -e ("$templatesdir/$usestyle/MyProfile.template") ) {
+    require "$templatesdir/$usestyle/MyProfile.template";
 }
 else {
-    require "$templatesdir/default/Profile.template";
+    require "$templatesdir/default/MyProfile.template";
 }
 
 if ( $iamgmod && -e "$vardir/gmodsettings.txt" ) {
@@ -149,25 +149,20 @@ sub ProfileCheck2 {
 sub ProfileMenu {
     return if $view;
 
-    $yymain .= qq~
-        $myprofile_menu
-        <td class="$menucolors[0] center bottom"><span class="small"><b><a href="$scripturl?action=profile;username=$useraccount{$user};sid=$INFO{'sid'}">$profile_txt{79}</a></b></span></td>
-        <td class="$menucolors[1] center bottom"><span class="small"><b><a href="$scripturl?action=profileContacts;username=$useraccount{$user};sid=$INFO{'sid'}">$profile_txt{819}</a></b></span></td>
-        <td class="$menucolors[2] center bottom"><span class="small"><b><a href="$scripturl?action=profileOptions;username=$useraccount{$user};sid=$INFO{'sid'}">$profile_txt{818}</a></b></span></td>~;
-
     if ($buddyListEnabled) {
-        $yymain .= qq~
-        <td class="$menucolors[3] center bottom"><span class="small"><b><a href="$scripturl?action=profileBuddy;username=$useraccount{$user};sid=$INFO{'sid'}">$profile_buddy_list{'buddylist'}</a></b></span></td>~;
+        $bdlist= $myprofie_bdlist;
+        $bdlist =~ s/{yabb menucolor3}/$menucolors[3]/sm;
+        $bdlist =~ s/{yabb bduser}/$useraccount{$user}/sm;
     }
 
     if (   $PM_level == 1
         || ( $PM_level == 2 && ( $iamadmin || $iamgmod || $iamymod || $iammod ) )
         || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
     {
-        $yymain .= qq~
-        <td class="$menucolors[4] center bottom"><span class="small"><b><a href="$scripturl?action=profileIM;username=$useraccount{$user};sid=$INFO{'sid'}">$profile_imtxt{56} $profile_txt{323}</a></b></span></td>~;
+        $pmlevel = $myprofile_pmlevel;
+        $pmlevel =~ s/{yabb menucolor4}/$menucolors[4]/sm;
+        $pmlevel =~ s/{yabb pmuser}/$useraccount{$user}/sm;
     }
-
     if (
         $iamadmin
         || (   $iamgmod
@@ -175,15 +170,20 @@ sub ProfileMenu {
             && $gmod_access2{'profileAdmin'} eq 'on' )
       )
     {
-        $yymain .= qq~
-        <td class="$menucolors[5] center bottom"><span class="small"><b><a href="$scripturl?action=profileAdmin;username=$useraccount{$user};sid=$INFO{'sid'}">$profile_txt{820}</a></b></span></td>~;
+        $showadmin= $myprofile_showadmin;
+        $showadmin =~ s/{yabb menucolor5}/$menucolors[5]/sm;
+        $showadmin =~ s/{yabb aduser}/$useraccount{$user}/sm;
     }
-    $yymain .= q~
-    </tr>
-</table>
-<br />
-~;
-    return;
+    $yymain .= $myprofile_menu;
+    $yymain =~ s/{yabb menu_user}/$useraccount{$user}/gsm;
+    $yymain =~ s/{yabb sid}/$INFO{'sid'}/gsm;
+    $yymain =~ s/{yabb menucolor0}/$menucolors[0]/sm;
+    $yymain =~ s/{yabb menucolor1}/$menucolors[1]/sm;
+    $yymain =~ s/{yabb menucolor2}/$menucolors[2]/sm;
+    $yymain =~ s/{yabb bdlist}/$bdlist/sm;
+    $yymain =~ s/{yabb pmlevel}/$pmlevel/sm;
+    $yymain =~ s/{yabb showadmin}/$showadmin/sm;
+    return $yymain;
 }
 
 sub ModifyProfile {
@@ -310,7 +310,6 @@ qq~ $profile_txt{'dob_edit_2'} $editAgeCount $profile_txt{'dob_edit_3'}~;
                 $editAgeTxt .=
 qq~ $profile_txt{'dob_edit_2'} $editAgeCount $profile_txt{'dob_edit_4'}~;
             }
-
         }
         $editAgeTxt = qq~<br /><span class="small">$editAgeTxt</span>~;
     }
@@ -331,7 +330,7 @@ qq~ $profile_txt{'dob_edit_2'} $editAgeCount $profile_txt{'dob_edit_4'}~;
     # EventCal Begin
     $selectyear = q{};
     $seluyear =
-qq~$profile_txt{'566'}<select name="bday3" style="font-size:10pt;"$disableBdayFields><option value="">  </option>\n~;
+qq~$profile_txt{'566'}<select name="bday3"$disableBdayFields><option value="">  </option>\n~;
     for my $e ( 1905 .. ( $year - 3 ) ) {
         if   ( $uyear == $e ) { $selectyear = 'selected="selected"'; }
         else                  { $selectyear = q{}; }
@@ -341,7 +340,7 @@ qq~$profile_txt{'566'}<select name="bday3" style="font-size:10pt;"$disableBdayFi
 
     $selectmnth = q{};
     $dayormonthm =
-qq~<label for="bday1">$profile_txt{'564'}</label><select name="bday1" id="bday1" style="font-size:10pt;"$disableBdayFields><option value="">  </option>\n~;
+qq~<label for="bday1">$profile_txt{'564'}</label><select name="bday1" id="bday1"$disableBdayFields><option value="">  </option>\n~;
     for my $bb ( 1 .. 12 ) {
         if   ( $umonth == $bb ) { $selectmnth = 'selected="selected"'; }
         else                    { $selectmnth = q{}; }
@@ -353,7 +352,7 @@ qq~<label for="bday1">$profile_txt{'564'}</label><select name="bday1" id="bday1"
 
     $selectday = q{};
     $dayormonthd =
-qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2" style="font-size:10pt;"$disableBdayFields><option value="">  </option>\n~;
+qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"$disableBdayFields><option value="">  </option>\n~;
     for my $aa ( 1 .. 31 ) {
         if   ( $uday == $aa ) { $selectday = 'selected="selected"'; }
         else                  { $selectday = q{}; }
@@ -371,50 +370,44 @@ qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"
     $dayormonth =~ s/id="bday\d"/id="birthday"/oxsm;
 
     LoadLanguage('Register');
-    $showProfile .= qq~
-<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" accept-charset="$yycharset">
-$myprofile_edit
-<img src="$imagesdir/profile.gif" alt="" /> <b>$profiletitle</b><br /><span class="small">$profile_txt{'698'}</span>~
-      . ( $INFO{'newpassword'} ? $profile_txt{'80'} : q{} ) . q~</td>
-    </tr>~;
-    $showProfile .= password_check();
-
-    $showProfile .= qq~<tr class="windowbg">
-         <td><label for="name"><b>$profile_txt{68}: </b><br />~;
+    $my_newpass = ( $INFO{'newpassword'} ? $profile_txt{'80'} : q{} );
+    $my_passchk = password_check();
+    $my_name_not = q{};
     if ($name_cannot_be_userid) {
-        $showProfile .= qq~
+        $my_name_not = qq~
                         <span class="small">$profile_txt{'8'}</span></label>~;
     }
-    $showProfile .= qq~
-        </td>
-        <td><input type="text" maxlength="30" onchange="checkAvail('$scripturl',this.value,'display')" name="name" id="name" size="30" value="${$uid.$user}{'realname'}" /><div id="displayavailability"></div></td>
-    </tr><tr class="windowbg">
-         <td><label for="gender"><b>$profile_txt{231}: </b>$editGenderTxt</label></td>
-         <td><select name="gender" id="gender" size="1"$disableGenderField><option value=""></option><option value="Male"$GenderMale>$profile_txt{'238'}</option><option value="Female"$GenderFemale>$profile_txt{'239'}</option></select>$genderField</td>
-    </tr><tr class="windowbg">
-                <td><label for="birthday"><b>$profile_txt{'563'}: </b>$editAgeTxt</label></td>
-
-<!-- ## XTC Cal ## -->
-       <td><span class="small">$dayormonth$seluyear$bdayFields</span></td>
-<!-- ## XTC Cal ## -->
-    </tr>~;
     if ( $showage == 1 ) {
         my $checked = q{};
         if ( ${ $uid . $user }{'hideage'} ) { $checked = ' checked="checked"'; }
-        $showProfile .= qq~<tr class="windowbg">
-        <td><label for="hideage"><b>$profile_txt{'563a'}</b></label></td>
-        <td><input type="checkbox" name="hideage" id="hideage" value="1"$checked /></td>
-    </tr>~;
+        $my_showageshow = $myprofile_showage;
+        $my_showageshow =~ s/{yabb agechecked}/$checked/sm;
     }
-    $showProfile .= qq~<tr class="windowbg">
-        <td><label for="location"><b>$profile_txt{'227'}: </b></label></td>
-        <td><input type="text" maxlength="30" name="location" id="location" size="30" value="${$uid.$user}{'location'}" /></td>
-    </tr>~;
 
     if ($extendedprofiles) {
         require Sources::ExtendedProfiles;
-        $showProfile .= ext_editprofile( $user, 'edit' );
+        my $show_ext_prof = ext_editprofile( $user, 'edit' );
+        $my_show_ext_prof = $show_ext_prof;
     }
+
+    $showProfile .= qq~
+<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" accept-charset="$yycharset">
+$myprofile_edit~;
+    $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
+    $showProfile =~ s/{yabb my_newpass}/$my_newpass/sm;
+    $showProfile =~ s/{yabb my_passchk}/$my_passchk/sm;
+    $showProfile =~ s/{yabb my_name_not}/$my_name_not/sm;
+    $showProfile =~ s/{yabb user}/${$uid.$user}{'realname'}/sm;
+    $showProfile =~ s/{yabb editGenderTxt}/$editGenderTxt/sm;
+    $showProfile =~ s/{yabb disableGenderField}/$disableGenderField/sm;
+    $showProfile =~ s/{yabb GenderMale}/$GenderMale/sm;
+    $showProfile =~ s/{yabb GenderFemale}/$GenderFemale/sm;
+    $showProfile =~ s/{yabb genderField}/$genderField/sm;
+    $showProfile =~ s/{yabb editAgeTxt}/$editAgeTxt/sm;
+    $showProfile =~ s/{yabb bdaysel}/$dayormonth$seluyear$bdayFields/sm;
+    $showProfile =~ s/{yabb showageshow}/$my_showageshow/sm;
+    $showProfile =~ s/{yabb user_location}/${$uid.$user}{'location'}/sm;
+    $showProfile =~ s/{yabb my_show_ext_prof}/$my_show_ext_prof/sm;
 
     if (   $sessions == 1
         && $sessionvalid == 1
@@ -496,80 +489,24 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
 
     ${ $uid . $user }{'aim'} =~ tr/+/ /;
     ${ $uid . $user }{'yim'} =~ tr/+/ /;
-
-    $showProfile .= qq~
-<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" accept-charset="$yycharset">
-$myprofile_email~;
-    $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
-    $showProfile =~ s/{yabb user_email}/${$uid.$user}{'email'}/sm;
-
     if ($allow_hide_email) {
         my $checked = q{};
         if ( ${ $uid . $user }{'hidemail'} ) {
             $checked = ' checked="checked"';
         }
-        $showProfile .= qq~<tr class="windowbg">
-        <td ><label for="hideemail"><b>$profile_txt{'721'}</b></label></td>
-        <td><input type="checkbox" name="hideemail" id="hideemail" value="1"$checked /></td>
-    </tr>~;
+        $my_hidemail = $myprofile_hidemail;
+        $my_hidemail =~ s/{yabb checked}/$checked/sm;
     }
-    $showProfile .= qq~<tr class="windowbg">
-        <td><label for="icq"><b>$profile_txt{'513'}: </b>
-            <br /><span class="small">$profile_txt{'600'}</span></label></td>
-        <td><input type="text" maxlength="10" name="icq" id="icq" size="40" value="${$uid.$user}{'icq'}" /></td>
-    </tr><tr class="windowbg">
-        <td><label for="aim"><b>$profile_txt{'603'}: </b>
-            <br /><span class="small">$profile_txt{'601'}</span></label></td>
-        <td><input type="text" maxlength="30" name="aim" id="aim" size="40" value="${$uid.$user}{'aim'}" /></td>
-    </tr><tr class="windowbg">
-        <td><label for="yim"><b>$profile_txt{'604'}: </b>
-            <br /><span class="small">$profile_txt{'602'}</span></label></td>
-        <td><input type="text" maxlength="30" name="yim" id="yim" size="40" value="${$uid.$user}{'yim'}" /></td>
-    </tr><tr class="windowbg">
-        <td><label for="gtalk"><b>$profile_txt{'825'}: </b>
-            <br /><span class="small">$profile_txt{'826'}</span></label></td>
-        <td><input type="text" maxlength="50" name="gtalk" id="gtalk" size="40" value="${$uid.$user}{'gtalk'}" /></td>
-    </tr><tr class="windowbg">
-        <td><label for="skype"><b>$profile_txt{'827'}: </b>
-            <br /><span class="small">$profile_txt{'828'}</span></label></td>
-        <td><input type="text" maxlength="50" name="skype" id="skype" size="40" value="${$uid.$user}{'skype'}" /></td>
-    </tr><tr class="windowbg">
-        <td><label for="myspace"><b>$profile_txt{'570'}:</b>
-            <br /><span class="small">$profile_txt{'571'}</span></label></td>
-        <td><label for="myspace"><span class="small">$profile_txt{'572'}</span></label>
-            <br /><input type="text" maxlength="50" name="myspace" id="myspace" size="40" value="${$uid.$user}{'myspace'}" /></td>
-    </tr><tr class="windowbg">
-        <td><label for="facebook"><b>$profile_txt{'573'}:</b>
-            <br /><span class="small">$profile_txt{'574'}</span></label></td>
-        <td><label for="facebook"><span class="small">$profile_txt{'575'}</span></label>
-            <br /><input type="text" maxlength="50" name="facebook" id="facebook" size="40" value="${$uid.$user}{'facebook'}" /></td>
-    </tr><tr class="windowbg">
-        <td><label for="twitter"><b>$profile_txt{'576'}:</b>
-            <br /><span class="small">$profile_txt{'577'}</span></label></td>
-        <td><label for="twitter"><span class="small">$profile_txt{'578'}</span></label>
-            <br /><input type="text" maxlength="50" name="twitter" id="twitter" size="40" value="${$uid.$user}{'twitter'}" /></td>
-    </tr><tr class="windowbg">
-        <td><label for="youtube"><b>$profile_txt{'579'}:</b>
-            <br /><span class="small">$profile_txt{'580'}</span></label></td>
-        <td><label for="youtube"><span class="small">$profile_txt{'581'}</span></label>
-            <br /><input type="text" maxlength="50" name="youtube" id="youtube" size="40" value="${$uid.$user}{'youtube'}" /></td>
-    </tr>~;
+
     if ( !$minlinkweb ) { $minlinkweb = 0; }
     if (   ${ $uid . $user }{'postcount'} >= $minlinkweb
         || ${ $uid . $user }{'position'} eq 'Administrator'
         || ${ $uid . $user }{'position'} eq 'Global Moderator' )
     {
-        $showProfile .= qq~<tr class="windowbg">
-        <td><label for="webtitle"><b>$profile_txt{'83'}: </b>
-            <br /><span class="small">$profile_txt{'598'}</span></label></td>
-        <td><input type="text" maxlength="30" name="webtitle" id="webtitle" size="40" value="${$uid.$user}{'webtitle'}" /></td>
-    </tr><tr class="windowbg">
-        <td><label for="weburl"><b>$profile_txt{'84'}: </b>
-            <br /><span class="small">$profile_txt{'599'}</span></label></td>
-        <td><input type="text" name="weburl" id="weburl" size="40" value="${$uid.$user}{'weburl'}" /></td>
-    </tr>~;
+        $my_minlinkweb = $myprofile_minlinkweb;
+        $my_minlinkweb =~ s/{yabb my_webtitle}/${$uid.$user}{'webtitle'}/sm;
+        $my_minlinkweb =~ s/{yabb my_weburl}/${$uid.$user}{'weburl'}/sm;
     }
-
     if (
         (
                $PM_level == 1
@@ -597,47 +534,12 @@ $myprofile_email~;
 
         my $awayreply = ${ $uid . $user }{'awayreply'};
         $awayreply =~ s/<br \/>/\n/gsm;
-        $showProfile .= qq~<tr class="windowbg">
-        <td><label for="offlinestatus"><b>$profile_txt{'showstatus'}: </b>
-            <br /><span class="small">$profile_txt{'statusexplain'}<br />$profile_txt{'awaydescription'}</span></label></td>
-        <td>
-           <select name="offlinestatus" id="offlinestatus">
-               <option value="offline"$offChecked>$maintxt{'61'}</option>
-               <option value="away"$awayChecked>$maintxt{'away'}</option>
-             </select><br /><br />
-             <label for="awaysubj"><span class="small">$profile_txt{'asubj'}</span></label><br />
-             <input type="text" name="awaysubj" id="awaysubj" size="50" maxlength="50" value="${$uid.$user}{'awaysubj'}" /><br /><br />
-             <label for="awayreply"><span class="small">$profile_txt{'amess'}</span></label><br />
-             <textarea name="awayreply" id="awayreply" rows="4" cols="50">$awayreply</textarea><br />
-
-             <span class="small">$profile_txt{'664a'} <input value="$MaxAwayLen" size="3" name="msgCL" class="windowbg" style="border: 0px; width: 40px; padding: 1px; font-size: 11px;" readonly="readonly" /></span><br />
-             <script type="text/javascript">
-                        <!--
-                                var supportsKeys = false;
-                                function tick() {
-                                        calcCharLeft(document.forms[0]);
-                                        if (!supportsKeys) { timerID = setTimeout("tick()",200); }
+        $my_away = $myprofile_away;
+        $my_away =~ s/{yabb offChecked}/$offChecked/sm;
+        $my_away =~ s/{yabb awayChecked}/$awayChecked/sm;
+        $my_away =~ s/{yabb awayreply}/$awayreply/sm;
+        $my_away =~ s/{yabb MaxAwayLen}/$MaxAwayLen/gsm;
                                 }
-                                function calcCharLeft(sig) {
-                                        clipped = false;
-                                        maxLength = $MaxAwayLen;
-                                        if (document.creator.awayreply.value.length > maxLength) {
-                                                document.creator.awayreply.value = document.creator.awayreply.value.substring(0,maxLength);
-                                                charleft = 0;
-                                                clipped = true;
-                                        } else {
-                                                charleft = maxLength - document.creator.awayreply.value.length;
-                                        }
-                                        document.creator.msgCL.value = charleft;
-                                        return clipped;
-                                }
-                                tick();
-                        // -->
-             </script>
-         </td>
-    </tr>~;
-    }
-
     if (
         (
                ${ $uid . $user }{'position'} eq 'Administrator'
@@ -650,18 +552,35 @@ $myprofile_email~;
         if ( ${ $uid . $user }{'stealth'} ) {
             $stealthChecked = ' checked="checked"';
         }
-        $showProfile .= qq~<tr class="windowbg">
-        <td><label for="stealth"><b>$profile_txt{'stealth'}: </b><br /><span class="small">$profile_txt{'stealthexplain'}</span></label></td>
-        <td><input type="checkbox" name="stealth" id="stealth" value="1"$stealthChecked /></td>
-    </tr>~;
+        $my_stealth = $myprofile_stealth;
+        $my_stealth =~ s/{yabb stealthChecked}/$stealthChecked/sm;
     }
 
     if ($extendedprofiles) {
         require Sources::ExtendedProfiles;
-        $showProfile .= ext_editprofile( $user, 'contact' );
+        $my_extended .= ext_editprofile( $user, 'contact' );
     }
 
-    $showProfile .= $myprofile_bottom;
+    $showProfile .= qq~
+<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" accept-charset="$yycharset">
+$myprofile_contact
+~;
+    $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
+    $showProfile =~ s/{yabb user_email}/${$uid.$user}{'email'}/sm;
+    $showProfile =~ s/{yabb my_hidemail}/$my_hidemail/sm;
+    $showProfile =~ s/{yabb my_icq}/${$uid.$user}{'icq'}/sm;
+    $showProfile =~ s/{yabb my_aim}/${$uid.$user}{'aim'}/sm;
+    $showProfile =~ s/{yabb my_yim}/${$uid.$user}{'yim'}/sm;
+    $showProfile =~ s/{yabb my_gtalk}/${$uid.$user}{'gtalk'}/sm;
+    $showProfile =~ s/{yabb my_skype}/${$uid.$user}{'skype'}/sm;
+    $showProfile =~ s/{yabb my_myspace}/${$uid.$user}{'myspace'}/sm;
+    $showProfile =~ s/{yabb my_facebook}/${$uid.$user}{'facebook'}/sm;
+    $showProfile =~ s/{yabb my_twitter}/${$uid.$user}{'twitter'}/sm;
+    $showProfile =~ s/{yabb my_youtube}/${$uid.$user}{'youtube'}/sm;
+    $showProfile =~ s/{yabb my_minlinkweb}/$my_minlinkweb/sm;
+    $showProfile =~ s/{yabb my_away}/$my_away/sm;
+    $showProfile =~ s/{yabb my_stealth}/$my_stealth/sm;
+    $showProfile =~ s/{yabb my_extended}/$my_extended/sm;
     $showProfile =~ s/{yabb sid_expires}/$sid_expires/sm;
 
     if ( !$view ) {
@@ -708,15 +627,11 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         }
     }
 
-    $showProfile .= qq~
-<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator"~
-      . (
+    $my_allow_avatars = (
         ( $allowpics && $upload_useravatar )
         ? q~ enctype="multipart/form-data"~
         : q{}
-      )
-      . qq~>$myprofile_title~;
-      $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
+      );
 
     if ($allowpics) {
         opendir( DIR, $facesdir )
@@ -765,57 +680,33 @@ qq~                <option value="$line"$checked>$name</option>\n~;
             $pic = "$facesurl/${$uid.$user}{'userpic'}";
         }
 
-        $showProfile .= qq~
-        <td><label for="userpic"><b>$profile_txt{'229'}:</b></label><br /><span class="small"><label for="userpic">$profile_txt{'474'}</label><label for="userpicpersonalcheck">$profile_txt{'475'}</label>~
-          . (
+        $my_up_avatar_a = (
             $upload_useravatar
             ? qq~<br />
             $profile_txt{'476'} $avatar_limit KB~
             : q{}
-          )
-          . qq~<br />
-            $profile_txt{'477'}</span></td>
-        <td>
-            <script type="text/javascript">
-            <!--
-                function showimage(x) {
-                    if (!document.images) return;
-                    var source;
-                    if (x == 1 && document.getElementsByName('userpicpersonalcheck')[0].checked == true) {
-                        UserPicUrl = document.getElementsByName('userpicpersonal')[0].value;
-                        document.getElementsByName('userpicpersonal')[0].value = 'http$s://';
-                        document.getElementsByName('userpicpersonalcheck')[0].checked = false;
-                    }
-                    if (x == 1) {
-                        source = "$facesurl/"+document.creator.userpic.options[document.creator.userpic.selectedIndex].value;
-                    } else {
-                        document.creator.userpic.options[0].selected = true;
-                        source = document.getElementsByName('userpicpersonal')[0].value;
-                        if (!source || source == 'http$s://') source = "$facesurl/blank.gif";
-                    }
-                    document.images.icons.style.display = 'none';
-                    document.images.icons.width = '';
-                    document.images.icons.height = '';
-                    document.images.icons.src = source;
-                    resize_time = 2;
-                    img_resize_names = new Array ('avatar_img_resize_1');
-                    resize_images();
-                }
-            // -->
-            </script>
-            <select name="userpic" id="userpic" size="6" onchange="showimage(1);">
-            $images
-            </select>&nbsp;&nbsp;<img src="$pic" id="icons" name="avatar_img_resize" alt="$alt" style="display:none; margin:0 15px" /><br />
-            <br />
-            <input type="checkbox" name="userpicpersonalcheck" id="userpicpersonalcheck" $checked onclick="if(this.checked==false){UserPicUrl=document.getElementsByName('userpicpersonal')[0].value;document.getElementsByName('userpicpersonal')[0].value='http$s://';}else{document.getElementsByName('userpicpersonal')[0].value=UserPicUrl;}showimage(2);" />&nbsp;<input type="text" name="userpicpersonal" size="40" value="$tmp" onkeyup="document.getElementsByName('userpicpersonalcheck')[0].checked=true;showimage(2);" />~
-          . (
+          );
+          $my_up_avatar_b = (
             $upload_useravatar
             ? q~<br />
             <br />
             <input type="file" name="file_avatar" size="50" />~
             : q{}
-          )
-          . q~
+          );
+
+        $my_show_avatar = $myprofle_show_avatar_a;
+        $my_show_avatar =~ s/{yabb my_up_avatar_a}/$my_up_avatar_a/sm;
+        $my_show_avatar =~ s/{yabb av_pic}/$pic/sm;
+        $my_show_avatar =~ s/{yabb av_pic}/$pic/sm;
+        $my_show_avatar =~ s/{yabb av_alt}/$alt/sm;
+        $my_show_avatar =~ s/{yabb av_s}/$s/gsm;
+        $my_show_avatar =~ s/{yabb av_tmp}/$tmp/sm;
+        $my_show_avatar =~ s/{yabb images}/$images/sm;
+            $x = qq~<select name="userpic" id="userpic" size="6" onchange="showimage(1);">
+            $images
+            </select>&nbsp;&nbsp;<img src="$pic" id="icons" name="avatar_img_resize" alt="$alt" style="display:none; margin:0 15px; vertical-align:bottom" /><br />
+            <br />
+            <input type="checkbox" name="userpicpersonalcheck" id="userpicpersonalcheck" $checked onclick="if(this.checked==false){UserPicUrl=document.getElementsByName('userpicpersonal')[0].value;document.getElementsByName('userpicpersonal')[0].value='http$s://';}else{document.getElementsByName('userpicpersonal')[0].value=UserPicUrl;}showimage(2);" />&nbsp;<input type="text" name="userpicpersonal" size="40" value="$tmp" onkeyup="document.getElementsByName('userpicpersonalcheck')[0].checked=true;showimage(2);" /> $my_up_avatar_b
         </td>
     </tr>~;
     }
@@ -823,54 +714,107 @@ qq~                <option value="$line"$checked>$name</option>\n~;
     $signature = ${ $uid . $user }{'signature'};
     $signature =~ s/<br.*?>/\n/gsm;
 
-    $showProfile .= qq~<tr class="windowbg">
-        <td><label for="usertext"><b>$profile_txt{'228'}: </b></label></td>
-        <td><input type="text" name="usertext" id="usertext" size="40" value="${$uid.$user}{'usertext'}" maxlength="50" /></td>
-    </tr><tr class="windowbg">
-         <td><label for="signature"><b>$profile_txt{'85'}:</b><br /><span class="small">$profile_txt{'606'}</span></label></td>
-         <td><textarea name="signature" id="signature" rows="4" cols="30" style="width: 100%">$signature</textarea><br />
-             <span class="small">$profile_txt{'664'} <input value="$MaxSigLen" size="3" name="msgCL" class="windowbg" style="border: 0px; width: 40px; padding: 1px; font-size: 11px;" readonly="readonly" /></span><br /><br />
-             <script type="text/javascript">
-             <!--
-                 var supportsKeys = false;
-                 function tick() {
-                     calcCharLeft(document.forms[0]);
-                     if (!supportsKeys) { timerID = setTimeout("tick()", 1500); }
-                 }
-                 function calcCharLeft(sig) {
-                     clipped = false;
-                     maxLength = $MaxSigLen;
-                     if (document.creator.signature.value.length > maxLength) {
-                         document.creator.signature.value = document.creator.signature.value.substring(0,maxLength);
-                         charleft = 0;
-                         clipped = true;
-                     } else {
-                         charleft = maxLength - document.creator.signature.value.length;
-                     }
-                     document.creator.msgCL.value = charleft;
-                     return clipped;
-                 }
-                 tick();
-             // -->
-             </script>
-        </td>
-    </tr>~;
-
     if ( $addmemgroup_enabled > 1 && %NoPost ) {
         my ( $addmemgroup, $selsize ) =
           DrawGroups( ${ $uid . $user }{'addgroups'},
             ${ $uid . $user }{'position'}, 0 );
 
         if ($addmemgroup) {
-            $showProfile .= qq~<tr class="windowbg">
-        <td><label for="joinmemgroup"><b>$profile_txt{'910'}:</b><br /><span class="small">$profile_txt{'910a'}</span></label></td>
-        <td>
-            <select name="joinmemgroup" id="joinmemgroup" size="$selsize" multiple="multiple">
-            $addmemgroup
-            </select>
-        </td>
-    </tr>~;
+            $my_addmemgroup = $myprofile_addmemgroup;
+            $my_addmemgroup =~ s/{yabb selsize}/$selsize/sm;
+            $my_addmemgroup =~ s/{yabb addmemgroup}/$addmemgroup/sm;
         }
+    }
+
+    if (   $NewNotificationAlert
+        || $enable_notifications == 1
+        || $enable_notifications == 3 )
+    {
+        if ($NewNotificationAlert) {
+            $my_notify_a = q~
+                        <input type="checkbox" value="1" name="onlinealert" id="onlinealert"~
+              . (
+                ${ $uid . $user }{'onlinealert'} ? ' checked="checked"' : q{} )
+              . qq~ /> <label for="onlinealert">$profile_txt{'onlinealertexplain'}</label>~;
+        }
+        if ( $enable_notifications == 1 || $enable_notifications == 3 ) {
+            if ($NewNotificationAlert) {
+                $my_notify_b = q~<br />
+                        <br />~;
+            }
+
+            $my_notify_b .= qq~
+                        <label for="notify_N">$profile_txt{'326'}</label>?&nbsp;<select name="notify_N" id="notify_N">
+                        <option value="0"~
+              . (
+                (
+                        !${ $uid . $user }{'notify_me'}
+                      || ${ $uid . $user }{'notify_me'} == 2
+                ) ? q{} : ' selected="selected"'
+              )
+              . qq~>$profile_txt{'164'}</option>
+                        <option value="1"~
+              . (
+                (
+                         ${ $uid . $user }{'notify_me'} == 1
+                      || ${ $uid . $user }{'notify_me'} == 3
+                ) ? ' selected="selected"' : q{}
+              )
+              . qq~>$profile_txt{'163'}</option>
+                        </select>~;
+        }
+        $my_notify = $myprofile_notify;
+        $my_notify =~ s/{yabb my_notify_a}/$my_notify_a/sm;
+        $my_notify =~ s/{yabb my_notify_b}/$my_notify_b/sm;
+    }
+
+    if ($ttsureverse) {
+        if ( !exists( ${ $uid . $user }{'reversetopic'} ) ) {
+            ${ $uid . $user }{'reversetopic'} = $ttsreverse;
+        }
+        $my_reversi =  ${ $uid . $user }{'reversetopic'} ? q~ checked="checked"~ : q{};
+        $my_reverse = $myprofile_reverse;
+        $my_reverse =~ s/{yabb my_reversi}/$my_reversi/sm;
+    }
+
+    foreach my $curtemplate (
+        sort { $templateset{$a} cmp $templateset{$b} }
+        keys %templateset
+      )
+    {
+        $selected = q{};
+        if ( $curtemplate eq ${ $uid . $user }{'template'} ) {
+            $selected    = q~ selected="selected"~;
+            $akttemplate = $curtemplate;
+        }
+        $drawndirs .=
+          qq~<option value="$curtemplate"$selected>$curtemplate</option>\n~;
+    }
+
+    $my_template = $myprofile_template;
+    $my_template =~ s/{yabb drawndirs}/$drawndirs/sm;
+
+    opendir DIR, $langdir;
+    my @lfilesanddirs = readdir DIR;
+    closedir DIR;
+    foreach my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
+        if ( -e "$langdir/$fld/Main.lng" ) {
+            my $displang = $fld;
+            $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
+            if ( ${ $uid . $user }{'language'} eq $fld ) {
+                $drawnldirs .=
+qq~<option value="$fld" selected="selected">$displang</option>~;
+            }
+            else { $drawnldirs .= qq~<option value="$fld">$displang</option>~; }
+        }
+    }
+
+    $my_show_lang = $myprofile_show_lang;
+    $my_show_lang =~ s/{yabb drawnldirs}/$drawnldirs/sm;
+
+    if ($extendedprofiles) {
+        require Sources::ExtendedProfiles;
+        $my_extprofile = ext_editprofile( $user, 'options' );
     }
 
     if ( ${ $uid . $user }{'numberformat'} == 1 ) {
@@ -893,6 +837,7 @@ qq~                <option value="$line"$checked>$name</option>\n~;
     elsif ( $forumnumberformat == 3 ) { $unfsl3 = ' selected="selected" '; }
     elsif ( $forumnumberformat == 4 ) { $unfsl4 = ' selected="selected" '; }
     elsif ( $forumnumberformat == 5 ) { $unfsl5 = ' selected="selected" '; }
+
     if ( ${ $uid . $user }{'timeselect'} == 7 ) {
         $tsl7 = ' selected="selected" ';
     }
@@ -928,191 +873,70 @@ qq~                <option value="$line"$checked>$name</option>\n~;
 
     my @usertimeoffset = split /\./xsm, ${ $uid . $user }{'timeoffset'};
 
-    $showProfile .= qq~<tr class="windowbg">
-        <td><label for="usernumberformat"><b>$profile_txt{'usernumbformat'}:</b></label></td>
-        <td>
-            <select name="usernumberformat" id="usernumberformat" size="1">
-                <option value="1"$unfsl1>10987.65</option>
+    $my_num_option = qq~<option value="1"$unfsl1>10987.65</option>
                 <option value="2"$unfsl2>10987,65</option>
                 <option value="3"$unfsl3>10,987.65</option>
                 <option value="4"$unfsl4>10.987,65</option>
-                <option value="5"$unfsl5>10 987,65</option>
-            </select>
-        </td>
-    </tr><tr class="windowbg">
-        <td><label for="usertimeselect"><b>$profile_txt{'486'}:</b><br />
-            <span class="small">$profile_txt{'479'}</span></label></td>
-        <td>
-            <select name="usertimeselect" id="usertimeselect" size="1">
-                <option value="1"$tsl1>$profile_txt{'480'}</option>
+                <option value="5"$unfsl5>10 987,65</option>~;
+                
+    $my_time_option = qq~<option value="1"$tsl1>$profile_txt{'480'}</option>
                 <option value="5"$tsl5>$profile_txt{'484'}</option>
                 <option value="4"$tsl4>$profile_txt{'483'}</option>
                 <option value="8"$tsl8>$profile_txt{'483a'}</option>
                 <option value="2"$tsl2>$profile_txt{'481'}</option>
                 <option value="3"$tsl3>$profile_txt{'482'}</option>
                 <option value="6"$tsl6>$profile_txt{'485'}</option>
-                <option value="7"$tsl7>$profile_txt{'480a'}</option>
-            </select>
-        </td>
-    </tr><tr class="windowbg">
-        <td><label for="timeformat"><b>$profile_txt{'486a'}:</b></label></td>
-        <td><input type="text" name="timeformat" id="timeformat" size="40" value="${$uid.$user}{'timeformat'}" /></td>
-    </tr><tr class="windowbg">
-        <td><label for="usertimesign"><b>$profile_txt{'371'}:</b><br /><span class="small">$profile_txt{'372'}</span></label></td>
-        <td><span class="small">$profile_txt{'373'}:
-            <br /><b>~ . timeformat( $date, 1 ) . q~</b>
-            <br /><br /></span>
-            <select name="usertimesign" id="usertimesign"><option value="">+</option><option value="-"~
-      . ( $usertimeoffset[0] < 0 ? ' selected="selected"' : q{} )
-      . q~>-</option></select>
-            <select name="usertimehour" id="usertimehour">~;
+                <option value="7"$tsl7>$profile_txt{'480a'}</option>~;
+            $my_timeformat = timeformat( $date, 1 );
+            $my_offset = $usertimeoffset[0] < 0 ? ' selected="selected"' : q{};
     for my $i ( 0 .. 12 ) {
         $i = sprintf '%02d', $i;
-        $showProfile .= qq~\n                        <option value="$i"~
+        $my_offset_hr .= qq~\n                        <option value="$i"~
           . (
             ( $usertimeoffset[0] == $i || $usertimeoffset[0] == -$i )
             ? ' selected="selected"'
             : q{}
           ) . qq~>$i</option>~;
     }
-    $showProfile .= q~
-                        </select> : <select name="usertimemin">~;
     for my $i ( 0 .. 59 ) {
         my $j = $i / 60;
         $j = ( split /\./xsm, $j )[1] || 0;
-        $showProfile .=
+        $my_offset_min .=
             qq~\n                        <option value="$j"~
           . ( $usertimeoffset[1] eq $j ? ' selected="selected"' : q{} ) . q~>~
           . sprintf( '%02d', $i )
           . q~</option>~;
     }
-    $showProfile .= qq~
-            </select>
-        </td>
-    </tr><tr class="windowbg">
-        <td><label for="dsttimeoffset"><b>$profile_txt{'519'}</b></label></td>
-        <td><input type="checkbox" name="dsttimeoffset" id="dsttimeoffset" value="1"~
-      . ( ${ $uid . $user }{'dsttimeoffset'} ? ' checked="checked"' : q{} )
-      . qq~ /></td>
-    </tr><tr class="windowbg">
-       <td><label for="dynamic_clock"><b>$profile_txt{'520'}</b><br /><span class="small">$profile_txt{'521'}</span></label></td>
-       <td><input type="checkbox" name="dynamic_clock" id="dynamic_clock" value="1"~
-      . ( ${ $uid . $user }{'dynamic_clock'} ? ' checked="checked"' : q{} )
-      . q~ /></td>
-    </tr>~;
+    $my_dst = ${ $uid . $user }{'dsttimeoffset'} ? ' checked="checked"' : q{};
+    $my_dynamic =  ${ $uid . $user }{'dynamic_clock'} ? ' checked="checked"' : q{};
 
-# This is only for update, when comming from YaBB lower or equal version 2.2.3
-# I think it can be deleted around version 2.4.0 without causing mayor issues (deti).
-    if ( $enable_notifications eq q{} ) {
-        $enable_notifications = $enable_notification ? 3 : 0;
-    }
-
-    # End update workaround
-    if (   $NewNotificationAlert
-        || $enable_notifications == 1
-        || $enable_notifications == 3 )
-    {
-        $showProfile .= qq~<tr class="windowbg">
-        <td class="vtop"><label for="onlinealert"><b>$profile_txt{'onlinealert'}:</b></label></td>
-        <td>~;
-
-        if ($NewNotificationAlert) {
-            $showProfile .= q~
-                        <input type="checkbox" value="1" name="onlinealert" id="onlinealert"~
-              . (
-                ${ $uid . $user }{'onlinealert'} ? ' checked="checked"' : q{} )
-              . qq~ /> <label for="onlinealert">$profile_txt{'onlinealertexplain'}</label>~;
-        }
-
-        if ( $enable_notifications == 1 || $enable_notifications == 3 ) {
-            if ($NewNotificationAlert) {
-                $showProfile .= q~<br />
-                        <br />~;
-            }
+    $my_time = $myprofile_time;
+    $my_time =~ s/{yabb my_num_option}/$my_num_option/sm;
+    $my_time =~ s/{yabb my_time_option}/$my_time_option/sm;
+    $my_time =~ s/{yabb timeformat}/${$uid.$user}{'timeformat'}/sm;
+    $my_time =~ s/{yabb my_timeformat}/$my_timeformat/sm;
+    $my_time =~ s/{yabb my_offset}/$my_offset/sm;
+    $my_time =~ s/{yabb my_offset_hr}/$my_offset_hr/sm;
+    $my_time =~ s/{yabb my_offset_min}/$my_offset_min/sm;
+    $my_time =~ s/{yabb my_dst}/$my_dst/sm;
+    $my_time =~ s/{yabb my_dynamic}/$my_dynamic/sm;
 
             $showProfile .= qq~
-                        <label for="notify_N">$profile_txt{'326'}</label>?&nbsp;<select name="notify_N" id="notify_N">
-                        <option value="0"~
-              . (
-                (
-                        !${ $uid . $user }{'notify_me'}
-                      || ${ $uid . $user }{'notify_me'} == 2
-                ) ? q{} : ' selected="selected"'
-              )
-              . qq~>$profile_txt{'164'}</option>
-                        <option value="1"~
-              . (
-                (
-                         ${ $uid . $user }{'notify_me'} == 1
-                      || ${ $uid . $user }{'notify_me'} == 3
-                ) ? ' selected="selected"' : q{}
-              )
-              . qq~>$profile_txt{'163'}</option>
-                        </select>~;
-        }
+<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator"$my_allow_avatars>~;
+    $showProfile .= $myprofile_options;
 
-        $showProfile .= q~
-        </td>
-    </tr>~;
-    }
-
-    if ($ttsureverse) {
-        if ( !exists( ${ $uid . $user }{'reversetopic'} ) ) {
-            ${ $uid . $user }{'reversetopic'} = $ttsreverse;
-        }
-        $showProfile .= qq~<tr class="windowbg">
-        <td><label for="reversetopic"><b>$profile_txt{'810'}</b><br /><span class="small">$profile_txt{'811'}</span></label></td>
-        <td class="vtop"><input type="checkbox" name="reversetopic" id="reversetopic"~
-          . ( ${ $uid . $user }{'reversetopic'} ? q~ checked="checked"~ : q{} )
-          . q~ /></td>
-    </tr>~;
-    }
-
-    foreach my $curtemplate (
-        sort { $templateset{$a} cmp $templateset{$b} }
-        keys %templateset
-      )
-    {
-        $selected = q{};
-        if ( $curtemplate eq ${ $uid . $user }{'template'} ) {
-            $selected    = q~ selected="selected"~;
-            $akttemplate = $curtemplate;
-        }
-        $drawndirs .=
-          qq~<option value="$curtemplate"$selected>$curtemplate</option>\n~;
-    }
-
-    $showProfile .= qq~<tr class="windowbg">
-        <td><label for="usertemplate"><b>$profile_txt{'814'}</b><br /><span class="small">$profile_txt{'815'}</span></label></td>
-        <td><select name="usertemplate" id="usertemplate">$drawndirs</select></td>
-    </tr>~;
-
-    opendir DIR, $langdir;
-    my @lfilesanddirs = readdir DIR;
-    closedir DIR;
-    foreach my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
-        if ( -e "$langdir/$fld/Main.lng" ) {
-            my $displang = $fld;
-            $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
-            if ( ${ $uid . $user }{'language'} eq $fld ) {
-                $drawnldirs .=
-qq~<option value="$fld" selected="selected">$displang</option>~;
-            }
-            else { $drawnldirs .= qq~<option value="$fld">$displang</option>~; }
-        }
-    }
-
-    $showProfile .= qq~<tr class="windowbg">
-        <td><label for="userlanguage"><b>$profile_txt{'817'}</b><br /><span class="small">$profile_txt{'815'}</span></label></td>
-        <td><select name="userlanguage" id="userlanguage">$drawnldirs</select></td>
-    </tr>~;
-
-    if ($extendedprofiles) {
-        require Sources::ExtendedProfiles;
-        $showProfile .= ext_editprofile( $user, 'options' );
-    }
-
-    $showProfile .= $myprofile_bottom;
+    $showProfile =~ s/{yabb usertext}/${$uid.$user}{'usertext'}/sm;
+    $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
+    $showProfile =~ s/{yabb my_show_avatar}/$my_show_avatar/sm;
+    $showProfile =~ s/{yabb signature}/$signature/sm;
+    $showProfile =~ s/{yabb MaxSigLen}/$MaxSigLen/gsm;
+    $showProfile =~ s/{yabb my_addmemgroup}/$my_addmemgroup/sm;
+    $showProfile =~ s/{yabb my_time}/$my_time/sm;
+    $showProfile =~ s/{yabb my_notify}/$my_notify/sm;
+    $showProfile =~ s/{yabb my_reverse}/$my_reverse/sm;
+    $showProfile =~ s/{yabb my_template}/$my_template/sm;
+    $showProfile =~ s/{yabb my_show_lang}/$my_show_lang/sm;
+    $showProfile =~ s/{yabb my_extprofile}/$my_extprofile/sm;
     $showProfile =~ s/{yabb sid_expires}/$sid_expires/sm;
 
     if ( !$view ) {
@@ -1171,11 +995,6 @@ qq~$profile_txt{'79'} ($user) &rsaquo; $profile_buddy_list{'buddylist'}~;
         }
         ~;
 
-    $showProfile .= qq~
-<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" onsubmit="javascript: selectblNames();">
-$myprofile_title~;
-    $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
-
     my $buildBuddyList = q{};
     if ( ${ $uid . $user }{'buddylist'} ) {
         my @buddies = split /\|/xsm, ${ $uid . $user }{'buddylist'};
@@ -1190,17 +1009,11 @@ qq~<option value="$buddy">${$uid.$buddy}{'realname'}</option>~;
     }
 
     $showProfile .= qq~
-    <tr class="windowbg">
-        <td><b>$profile_buddy_list{'buddylist'}</b><br /><span class="small">$profile_buddy_list{'explain'}</span></td>
-        <td>
-            <select name="buddylist" id="buddylist" multiple="multiple" size="3" style="width: 250px; height: 150px;" ondblclick="removeUser(this);">
-            $buildBuddyList
-            </select>
-            <br /><span class="small"><a href="javascript: void(0);" onclick="imWin();">$profile_buddy_list{'add'}</a></span>
-        </td>
-    </tr>~;
+<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" onsubmit="javascript: selectblNames();">~;
+    $showProfile .= $myprofile_buddy;
 
-    $showProfile .= $myprofile_bottom;
+    $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
+    $showProfile =~ s/{yabb buildBuddyList}/$buildBuddyList/sm;
     $showProfile =~ s/{yabb sid_expires}/$sid_expires/sm;
 
     if ( !$view ) {
@@ -1256,15 +1069,6 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
           qq~$profile_txt{79} ($user) &rsaquo; $profile_imtxt{'38'}~;
         $yynavigation = qq~&rsaquo; $profiletitle~;
     }
-
-    $showProfile .= qq~
-<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" onsubmit="javascript:selectINames();" >
-$myprofile_title
-        <td class="vtop"><b>$profile_txt{'325'}:</b><br /><span class="small">$profile_txt{'ignoreexplain'}</span></td>
-        <td>
-            <select name="ignore" id="ignore" size="4" multiple="multiple" style="width:250px;" ondblclick="removeUser(this);" >~;
-    $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
-
     my $ignoreallChecked = q{};
     if ( ${ $uid . $user }{'im_ignorelist'} eq q{*} ) {
         $ignoreallChecked = ' checked="checked"';
@@ -1282,42 +1086,18 @@ $myprofile_title
             }
             else { $ignoreUser = $ignoreName; }
             $ignoreName = cloak($ignoreName);
-            $showProfile .=
+            $my_ignore .=
 qq~\n                        <option value="$ignoreName">$ignoreUser</option>~;
         }
     }
-    $showProfile .= qq~
-            </select>
-            <br />
-            <input type="checkbox" name="ignoreall" id="ignoreall" $ignoreallChecked /> <label for="ignoreall">$profile_txt{'ignoreall'}</label><br />
-            <span class="small"><a href="javascript:void(0);" onclick="imWin();">$profile_txt{'ignorelistadd'}</a></span>
-        </td>
-    </tr>~;
-
-# This is only for update, when coming from YaBB lower or equal version 2.2.3
-# I think it can be deleted around version 2.4.0 without causing mayor issues (deti).
-    if ( $enable_notifications eq q{} ) {
-        $enable_notifications = $enable_notification ? 3 : 0;
-    }
-
-    # End update workaround
 
     if ( $enable_notifications > 1 ) {
-        $showProfile .= qq~<tr class="windowbg">
-        <td class="vtop"><label for="notify_PM"><b>$profile_txt{'327'}:</b></label></td>
-        <td>
-            <select name="notify_PM" id="notify_PM">
-                <option value="0"~
-          . (
-            ${ $uid . $user }{'notify_me'} < 2 ? q{} : ' selected="selected"' )
-          . qq~>$profile_txt{'164'}</option>
-                <option value="1"~
-          . (
-            ${ $uid . $user }{'notify_me'} > 1 ? ' selected="selected"' : q{} )
-          . qq~>$profile_txt{'163'}</option>
-            </select>
-        </td>
-    </tr>~;
+        $my_PM_notifyme =  ${ $uid . $user }{'notify_me'} < 2 ? q{} : ' selected="selected"';
+        $my_PM_notifyme_2 = ${ $uid . $user }{'notify_me'} > 1 ? ' selected="selected"' : q{};
+
+        $my_PMnotify = $myprofile_PMnotify;
+        $my_PMnotify =~ s/{yabb my_PM_notifyme}/$my_PM_notifyme/sm;
+        $my_PMnotify =~ s/{yabb my_PM_notifyme_2}/$my_PM_notifyme_2/sm;
     }
 
     if ( ${ $uid . $user }{'im_popup'} ) {
@@ -1326,50 +1106,25 @@ qq~\n                        <option value="$ignoreName">$ignoreUser</option>~;
     if ( ${ $uid . $user }{'im_imspop'} ) {
         $popup_userim = 'checked="checked"';
     }
-    $showProfile .= qq~<tr class="windowbg">
-        <td><label for="userpopup"><b>$profile_imtxt{'05'}</b></label></td>
-        <td><input type="checkbox" name="userpopup" id="userpopup" value="1"$enable_userimpopup /></td>
-    </tr><tr class="windowbg">
-        <td><label for="popupims"><b>$profile_imtxt{'53'}</b></label></td>
-        <td><input type="checkbox" name="popupims" id="popupims" value="1"$popup_userim /></td>
-    </tr>~;
-    if ( $enable_PMcontrols || $enable_PMprev ) {
-        my $pmmessprevChecked;
-        if ( ${ $uid . $user }{'pmmessprev'} ) {
-            $pmmessprevChecked = ' checked="checked"';
-        }
-        $showProfile .= qq~<tr class="windowbg">
-        <td><label for="pmmessprev"><b>$profile_txt{'enabprev'}: </b><br /><span class="small">$profile_txt{'prevexplain'}</span></label></td>
-        <td><input type="checkbox" name="pmmessprev" id="pmmessprev" value="1"$pmmessprevChecked /></td>
-    </tr>~;
-    }
-    if ( $enable_PMcontrols || $enable_PMviewMess ) {
         my $pmviewMessChecked;
         if ( ${ $uid . $user }{'pmviewMess'} ) {
             $pmviewMessChecked = ' checked="checked"';
         }
-        $showProfile .= qq~<tr class="windowbg">
-        <td><label for="pmviewMess"><b>$profile_txt{'viewmess'}: </b><br /><span class="small">$profile_txt{'viewmessexplain'}</span></label></td>
-        <td><input type="checkbox" name="pmviewMess" id="pmviewMess" value="1"$pmviewMessChecked /></td>
-    </tr>~;
-    }
-    if ( $enable_PMcontrols || $enable_PMActprev ) {
-        my $pmactprevChecked;
-        if ( ${ $uid . $user }{'pmactprev'} ) {
-            $pmactprevChecked = ' checked="checked"';
-        }
-        $showProfile .= qq~<tr class="windowbg">
-        <td><label for="pmactprev"><b>$profile_txt{'actprev'}: </b><br /><span class="small">$profile_txt{'actprevexplain'}</span></label></td>
-        <td><input type="checkbox" name="pmactprev" id="pmactprev" value="1"$pmactprevChecked /></td>
-    </tr>~;
-    }
-
     if ($extendedprofiles) {
         require Sources::ExtendedProfiles;
-        $showProfile .= ext_editprofile( $user, 'im' );
+        $my_extprofile .= ext_editprofile( $user, 'im' );
     }
 
-    $showProfile .= $myprofile_bottom;
+    $showProfile .= qq~
+<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" onsubmit="javascript:selectINames();" >~;
+    $showProfile .= $myprofile_PMpref;
+
+    $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
+    $showProfile =~ s/{yabb my_ignore}/$my_ignore/sm;
+    $showProfile =~ s/{yabb enable_userimpopup}/$enable_userimpopup/sm;
+    $showProfile =~ s/{yabb popup_userim}/$popup_userim/sm;
+    $showProfile =~ s/{yabb pmviewMessChecked}/$pmviewMessChecked/sm;
+    $showProfile =~ s/{yabb my_extprofile}/$my_extprofile/sm;
     $showProfile =~ s/{yabb sid_expires}/$sid_expires/sm;
 
     if ( !$view ) {
@@ -1443,35 +1198,18 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
           qq~$profile_txt{'79'} ($user) &rsaquo; $profile_txt{'820'}~;
         $yynavigation = qq~&rsaquo; $profiletitle~;
     }
-
-$myprofile_userinfo = qq~<input type="hidden" name="username" value="$INFO{'username'}" />~;
-    $showProfile .= qq~
-<form action="$scripturl?action=$scriptAction;username=$useraccount{$user};sid=$INFO{'sid'}" method="post" name="creator">
-$myprofile_title
-        <td><label for="settings6"><b>$profile_txt{'21'}: </b></label></td>
-        <td><input type="text" name="settings6" id="settings6" size="4" value="${$uid.$user}{'postcount'}" /></td>
-    </tr><tr class="windowbg">
-        <td><label for="settings7"><b>$profile_txt{'87'}: </b></label></td>
-        <td>
-            <select name="settings7" id="settings7">
-                <option value="${$uid.$user}{'position'}">$tt</option>
-                <option value="${$uid.$user}{'position'}">---------------</option>
-                <option value=""></option>~;
-    $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
-    $showProfile =~ s/{yabb myprofile_userinfo}/$myprofile_userinfo/sm;
-
     if ( !$iamgmod ) {
         ( $title, $stars, $starpic, $color ) = split /\|/xsm,
           $Group{'Administrator'};
-        $showProfile .=
+        $my_group .=
 qq~\n                        <option value="Administrator">$title</option>~;
         ( $title, $stars, $starpic, $color ) = split /\|/xsm,
           $Group{'Global Moderator'};
-        $showProfile .=
+        $my_group .=
 qq~\n                        <option value="Global Moderator">$title</option>~;
         ( $title, $stars, $starpic, $color ) = split /\|/xsm,
           $Group{'Mid Moderator'};
-        $showProfile .=
+        $my_group .=
 qq~\n                        <option value="Mid Moderator">$title</option>~;
     }
 
@@ -1479,27 +1217,16 @@ qq~\n                        <option value="Mid Moderator">$title</option>~;
     foreach (@nopostorder) {
         ( $title, $stars, $starpic, $color, undef ) = split /\|/xsm,
           $NoPost{$_}, 5;
-        $showProfile .= qq~<option value="$_">$title</option>~;
+        $my_group .= qq~<option value="$_">$title</option>~;
         $z++;
     }
 
-    $showProfile .= q~
-            </select>
-        </td>
-    </tr>~;
-
     if ( $tta ne q{} ) {
-        $showProfile .= qq~<tr class="windowbg">
-        <td class="vtop"><label for="addgroup"><b>$profile_txt{'87a'}: </b><br /><span class="small">$profile_txt{'87b'}</span></label></td>
-        <td>
-            <select name="addgroup" id="addgroup" size="$selsize" multiple="multiple">
-                $tta
-            </select>
-        </td>
-    </tr>~;
+        $my_tta = $myprofile_tta;
+        $my_tta =~ s/{yabb selsize}/$selsize/sm;
+        $my_tta =~ s/{yabb tta}/$tta/sm;
     }
 
-    AddModerators();
     (
         $dr_secund, $dr_minute, $dr_hour, $dr_day, $dr_month,
         $dr_year,   undef,      undef,    undef
@@ -1611,32 +1338,34 @@ qq~                        <option value="$minute_val">$minute_val</option>\n~;
     }
     $sel_minute .= q~                        </select>~;
 
-    $showProfile .= qq~<tr class="windowbg">
-        <td><label for="dr_day_month"><b>$profile_txt{'233'}:</b></label></td>
-        <td>
-            $all_date $maintxt{'107'} $sel_hour $sel_minute <small>(server <b>localtime</b>)</small>
-            <input type="hidden" value="$dr_secund" name="dr_secund" />
-        </td>
-    </tr><tr class="windowbg">
-        <td><label for="regreason"><b>$profile_txt{'234'}:</b></label></td>
-        <td><textarea rows="4" cols="50" name="regreason" id="regreason">$regreason</textarea></td>
-    </tr><tr class="windowbg">
-        <td><b>$profile_amv_txt{'9'}: </b></td>
-        <td>$userlastlogin</td>
-    </tr><tr class="windowbg">
-        <td><b>$profile_amv_txt{'10'}: </b></td>
-        <td>$userlastpost</td>
-    </tr><tr class="windowbg">
-        <td><b>$profile_amv_txt{'11'}: </b><br /><br /></td>
-        <td>$userlastim<br /><br /></td>
-    </tr>~;
-
     if ($extendedprofiles) {
         require Sources::ExtendedProfiles;
-        $showProfile .= ext_editprofile( $user, 'admin' );
+        $my_extprofile .= ext_editprofile( $user, 'admin' );
     }
 
-    $showProfile .= $myprofile_bottom;
+$myprofile_userinfo = qq~<input type="hidden" name="username" value="$INFO{'username'}" />~;
+    $showProfile .= qq~
+<form action="$scripturl?action=$scriptAction;username=$useraccount{$user};sid=$INFO{'sid'}" method="post" name="creator">~;
+    $showProfile .= $myprofile_admin_a;
+    AddModerators();
+    $showProfile .= $myprofile_admin_b;
+
+    $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
+    $showProfile =~ s/{yabb myprofile_userinfo}/$myprofile_userinfo/sm;
+    $showProfile =~ s/{yabb postcount}/${$uid.$user}{'postcount'}/sm;
+    $showProfile =~ s/{yabb position}/${$uid.$user}{'position'}/gsm;
+    $showProfile =~ s/{yabb tt}/$tt/sm;
+    $showProfile =~ s/{yabb my_tta}/$my_tta/sm;
+    $showProfile =~ s/{yabb my_group}/$my_group/sm;
+    $showProfile =~ s/{yabb all_date}/$all_date/sm;
+    $showProfile =~ s/{yabb sel_hour}/$sel_hour/sm;
+    $showProfile =~ s/{yabb sel_minute}/$sel_minute/sm;
+    $showProfile =~ s/{yabb dr_secund}/$dr_secund/sm;
+    $showProfile =~ s/{yabb regreason}/$regreason/sm;
+    $showProfile =~ s/{yabb userlastlogin}/$userlastlogin/sm;
+    $showProfile =~ s/{yabb userlastpost}/$userlastpost/sm;
+    $showProfile =~ s/{yabb userlastim}/$userlastim/sm;
+    $showProfile =~ s/{yabb my_extprofile}/$my_extprofile/sm;
     $showProfile =~ s/{yabb sid_expires}/$sid_expires/sm;
 
     if ( !$view ) {
@@ -1748,6 +1477,9 @@ sub ModifyProfile2 {
               "$member{'bday1'}/$member{'bday2'}/$member{'bday3'}";
         }
         else { $member{'bday'} = q{}; }
+        
+		if (${$uid.$user}{'bday'} ne "$member{'bday'}") { $Update_EventCal = 1; }
+
         if (
             $editGenderLimit
             && (   ${ $uid . $user }{'gender'} ne $member{'gender'}
@@ -1921,21 +1653,34 @@ s/^(\d+\|\d+\|.*?)\|(.*?)\|/ ($2 eq ${$uid.$user}{'realname'} ? "$1|$member{'nam
 			my @birthmembers = <FILE>;
 			fclose(FILE);
 			fopen(FILE,">$vardir/eventcalbday.db");
+			my $cn = 0;
 			foreach my $x(@birthmembers) {
 			    chomp $x;
 				my ($user_year, $user_month, $user_day, $user_xy, $user_hide) = split /\|/xsm, $x;
-				if ($user_xy ne $user ) {
-					print FILE qq~$x\n~;
-				}
-				else {
+				if ($user_xy eq $user ) {
 					my ($user_montha, $user_daya, $user_yeara) = split /\//xsm, $member{'bday'};
 					if ($user_montha < 10 && length($user_montha) == 1) { $user_montha = "0$user_montha"; }
 					if ($user_daya < 10 && length($user_daya) == 1) { $user_daya = "0$user_daya"; }
 					if ($member{'hideage'}) {$nuser_hide = 1 ;}
+					else {$nuser_hide = q{};}
 					print FILE qq~$user_yeara|$user_montha|$user_daya|$user_xy|$nuser_hide\n~;
+					$cn++;
+				}
+				else {
+					print FILE qq~$x\n~;
 				}
 			}
 			fclose(FILE);
+			if ($cn == 0) {
+			    fopen(FILE,">>$vardir/eventcalbday.db");
+				($user_montha, $user_daya, $user_yeara) = split /\//xsm, $member{'bday'};
+				if ($user_montha < 10 && length($user_montha) == 1) { $user_montha = "0$user_montha"; }
+				if ($user_daya < 10 && length($user_daya) == 1) { $user_daya = "0$user_daya"; }
+				if ($member{'hideage'}) {$nuser_hide = 1 ;}
+				else {$user_hide = q{};}
+				print FILE qq~$user_yeara|$user_montha|$user_daya|$user|$nuser_hide\n~;
+				fclose(FILE);
+			}
 		}
 		# EventCal End
         UserAccount( $user, 'update' );
@@ -2666,8 +2411,6 @@ sub ModifyProfileIM2 {
       );
     ${ $uid . $user }{'im_popup'}   = $member{'userpopup'}  ? 1 : 0;
     ${ $uid . $user }{'im_imspop'}  = $member{'popupims'}   ? 1 : 0;
-    ${ $uid . $user }{'pmactprev'}  = $member{'pmactprev'}  ? 1 : 0;
-    ${ $uid . $user }{'pmmessprev'} = $member{'pmmessprev'} ? 1 : 0;
     ${ $uid . $user }{'pmviewMess'} = $member{'pmviewMess'} ? 1 : 0;
 
     if ($extendedprofiles) {    # run this before you start to save something!
@@ -3132,17 +2875,8 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
         LoadCensorList();
         $message = Censor($message);
 
-        $row_signature = qq~$myrow_sig
-            <img src="$imagesdir/profile.gif" alt="" />&nbsp;
-            <span class="text1"><b>$profile_txt{'85'}</b></span>
-        </td>
-    </tr><tr>
-        <td class="windowbg2">
-            <div style="float: left; width: 100%; padding-top: 8px; padding-bottom: 8px; overflow: auto;">
-            $message
-            </div>
-        </td>
-    </tr>~;
+        $row_signature = $myrow_sig;
+        $row_signature =~ s/{yabb message}/$message/sm;
 
         if ($img_greybox) {
             $yyinlinestyle .=
@@ -3189,40 +2923,21 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
           WrapChars( Censor( ${ $uid . $user }{'usertext'} ), 20 );
     }
 
-    $showProfile .= $myshow_a;
     if ( !$view ) {
         $yynavigation = qq~&rsaquo; $profile_txt{'92'}~;
-        $showProfile .= $myshow_b;
         if ( $iamadmin || $iamgmod ) {
-            $showProfile .= qq~
+            $my_not_view_b .= qq~
                 <img src="$imagesdir/profile.gif" alt="" />&nbsp; <b>$profile_txt{'35'}: $INFO{'username'}</b>~;
         }
         else {
-            $showProfile .= qq~
+            $my_not_view_b .= qq~
                 <img src="$imagesdir/profile.gif" alt="" />&nbsp; <b>$profile_txt{'68'}: ${$uid.$INFO{'username'}}{'realname'}</b>~;
         }
-        $showProfile .= q~
-            </div>
-        </td>
-    </tr>~;
+        $my_not_view = $myshow_b;
+        $my_not_view =~ s/{yabb my_not_view_b}/$my_not_view_b/sm;
     }
-    $showProfile .= qq~<tr>
-        <td class="windowbg">
-            $pic_row
-            <div style="float: left; width: 60%; padding-top: 5px;  padding-bottom: 5px;">
-            <span style="font-size: 18px;">${$uid.$user}{'realname'}</span><br />
-            $col_title{$user}
-            $row_addgrp<br />
-            $memberstar{$user}
-            ~ . userOnLineStatus($user) . qq~<br />
-            <span class="small">$showusertext</span>
-            <span class="small">$buddybutton</span>
-            </div>
-            <div style="float: right; width: 19%; text-align: right;">
-            $modify
-            </div>
-       </td>
-    </tr>~;
+    $my_online = userOnLineStatus($user); 
+
     my $userismod;
     if (   ${ $uid . $user }{'position'} ne 'Administrator'
         && ${ $uid . $user }{'position'} ne 'Global Moderator'
@@ -3244,14 +2959,6 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
         }
         $memberstar = $memberstartemp ? "$memberstartemp<br />" : q{};
 
-        $showProfile .= qq~<tr>
-            <td class="windowbg2">
-            <div style="float: left; width: 30%; text-align: left; padding: 5px 0px;">
-                <b>$title</b><br />
-                $memberstar
-            </div>
-            <div style="float: left; width: 70%; padding: 5px 0px;">
-            ~;
         foreach my $catid (@categoryorder) {
             @bdlist = split /,/xsm, $cat{$catid};
             foreach my $board (@bdlist) {
@@ -3267,57 +2974,27 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
                         ( $boardname, $boardperms, $boardview ) =
                           split /\|/xsm, $board{"$board"};
                         ToChars($boardname);
-                        $showProfile .=
+                        $my_mod_star .=
 qq~<a href="$scripturl?board=$board" class="a">$boardname</a><br />~;
                     }
                 }
             }
         }
-        $showProfile .= q~
-            </div>
-            </td>
-        </tr>
-        ~;
+        $my_star = $myshow_star;
+        $my_star =~ s/{yabb title}/$title/sm;
+        $my_star =~ s/{yabb memberstar}/$memberstar/sm;
+        $my_star =~ s/{yabb my_mod_star}/$my_mod_star/sm;
     }
-    $showProfile .= qq~<tr>
-        <td class="windowbg2 vtop">
-            <div class="contactleft">
-                <b>$profile_txt{'21'}: </b>
-            </div>
-            <div class="contactright">
-                <b>$post_count<br />$post_per_day</b> $profile_txt{'893'}
-            </div>
-            <div class="contactleft">
-                <b>$profile_txt{'233'}: </b>
-            </div>
-            <div class="contactright">
-                $dr<br /><b>$member_for_days</b> $profile_txt{'894'}
-            </div>
-        </td>
-    </tr>~;
-
     if ( $row_gender || $row_age || $row_location ) {
-        $showProfile .= qq~<tr>
-        <td class="windowbg2 vtop">
-            $row_gender
-            $row_age
-            $row_location
-        </td>
-    </tr>~;
+        $my_gender = $myshow_gender;
+        $my_gender =~ s/{yabb row_gender}/$row_gender/sm;
+        $my_gender =~ s/{yabb row_age}/$row_age/sm;
+        $my_gender =~ s/{yabb row_location}/$row_location/sm;
     }
-
     if ($extendedprofiles) {
         require Sources::ExtendedProfiles;
-        $showProfile .= ext_viewprofile($user);
+        $my_extprofile .= ext_viewprofile($user);
     }
-
-    $showProfile .= qq~<tr>
-        <td class="catbg">
-             <img src="$imagesdir/profile.gif" alt="" />&nbsp;
-             <span class="text1"><b>$profile_txt{'819'}</b></span>
-        </td>
-    </tr><tr>
-        <td class="windowbg2">~;
 
     CheckUserPM_Level($user);
     if (
@@ -3334,7 +3011,7 @@ qq~<a href="$scripturl?board=$board" class="a">$boardname</a><br />~;
         )
       )
     {
-        $showProfile .= qq~
+        $my_userlevel = qq~
             <div class="contactleft">
                 <b>$profile_txt{'144'}: </b>
             </div>
@@ -3342,22 +3019,6 @@ qq~<a href="$scripturl?board=$board" class="a">$boardname</a><br />~;
                 <a href="$scripturl?action=imsend;to=$useraccount{$user}">$profile_txt{'688'} ${$uid.$user}{'realname'}</a>
             </div>~;
     }
-
-    $showProfile .= qq~
-                        $row_email
-                        $row_website
-                        $row_aim
-                        $row_skype
-                        $row_yim
-                        $row_gtalk
-                        $row_myspace
-                        $row_facebook
-                        $row_twitter
-                        $row_youtube
-                        $row_icq
-        </td>
-    </tr>~;
-
     $userlastlogin = timeformat( ${ $uid . $user }{'lastonline'} );
     $userlastpost  = timeformat( ${ $uid . $user }{'lastpost'} );
     $userlastim    = timeformat( ${ $uid . $user }{'lastim'} );
@@ -3381,34 +3042,14 @@ qq~<a href="$scripturl?board=$board" class="a">$boardname</a><br />~;
         $lastpost   = qq~$profile_amv_txt{'mylastpost'}~;
         $lastPM     = qq~$profile_amv_txt{'mylastpm'}~;
     }
-
-    $showProfile .= qq~
-        $row_signature
-    <tr>
-        <td class="catbg">
-            <img src="$imagesdir/profile.gif" alt="" />&nbsp;
-            <span class="text1"><b>$profile_txt{'459'}</b></span>
-        </td>
-    </tr><tr>
-        <td class="windowbg2">
-            <div class="contactleft"><b>$lastonline: </b></div>
-            <div class="contactright">$userlastlogin</div>
-            <div class="contactleft"><b>$lastpost:</b></div>
-            <div class="contactright">$userlastpost</div>\n~;
-
     if (   $PM_level == 1
         || ( $PM_level == 2 && ( $iamadmin || $iamgmod || $iamymod|| $iammod ) )
         || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
     {
-        $showProfile .= qq~
+        $my_lastPM = qq~
             <div class="contactleft"><b>$lastPM: </b></div>
             <div class="contactright">$userlastim</div>~;
     }
-
-    $showProfile .= q~
-        </td>
-    </tr>~;
-
     if (   ( $iamadmin || ($iamgmod && $gmod_access2{'ipban3'}) || $iamymod )
         && !$view
         && $user ne $username
@@ -3486,51 +3127,73 @@ qq~<a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccoun
             }
         }
 
-        $showProfile .= qq~<tr>
-        <td class="windowbg2">
-            <div class="contactleft"><b>$profile_txt{'902'}:</b></div>
-            <div class="contactright">$user<br />$ban_user_link</div>
-            <div class="contactleft"><b>$profile_txt{'69'}:</b></div>
-            <div class="contactright">${$uid.$user}{'email'}<br />$ban_email_link</div>
-            <div class="contactleft"><b>$profile_txt{'909'}:</b></div>
-            <div class="contactright">$ip_ban_options</div>
-        </td>
-    </tr>~;
+        $my_banning = $myshow_banning;
+        $my_banning =~ s/{yabb ban_user}/$user/sm;
+        $my_banning =~ s/{yabb ban_user_link}/$ban_user_link/sm;
+        $my_banning =~ s/{yabb ban_email}/${$uid.$user}{'email'}/sm;
+        $my_banning =~ s/{yabb ban_email_link}/$ban_email_link/sm;
+        $my_banning =~ s/{yabb ip_ban_options}/$ip_ban_options/sm;
     }
 
     if (   ${ $uid . $user }{'postcount'} > 0
         && $maxrecentdisplay > 0
         && !$view )
     {
-        $showProfile .= qq~<tr>
-        <td class="windowbg2">
-            <form action="$scripturl?action=usersrecentposts;username=$useraccount{$user}" method="post">
-                        $profile_txt{'460'} <select name="viewscount" size="1">~;
-
         my ( $x, $y ) = ( int( $maxrecentdisplay / 5 ), 0 );
         if ($x) {
             for my $i ( 1 .. 5 ) {
                 $y = $i * $x;
-                $showProfile .= qq~
+                $my_recent_display .= qq~
                         <option value="$y">$y</option>~;
             }
         }
         if ( $maxrecentdisplay > $y ) {
-            $showProfile .= qq~
+            $my_recent_display .= qq~
                         <option value="$maxrecentdisplay">$maxrecentdisplay</option>~;
         }
 
-        $showProfile .= qq~
-                        </select> $profile_txt{'461'} ${$uid.$user}{'realname'}.
-                        <input type="submit" value="$profile_txt{'462'}" class="button" />
-                        </form>
-        </td>
-    </tr>~;
+        $my_recent = $myshow_recent;
+        $my_recent =~ s/{yabb user}/$useraccount{$user}/sm;
+        $my_recent =~ s/{yabb my_recent_display}/$my_recent_display/sm;
+        $my_recent =~ s/{yabb my_realname}/${$uid.$user}{'realname'}/sm;
     }
 
-    $showProfile .= q~
-</table>
-~;
+    $showProfile .= $myshow_profile;
+    $showProfile =~ s/{yabb pic_row}/$pic_row/sm;
+    $showProfile =~ s/{yabb realname}/${$uid.$user}{'realname'}/sm;
+    $showProfile =~ s/{yabb col_title_user}/$col_title{$user}/sm;
+    $showProfile =~ s/{yabb row_addgrp}/$row_addgrp/sm;
+    $showProfile =~ s/{yabb memberstar_user}/$memberstar{$user}/sm;
+    $showProfile =~ s/{yabb my_online}/$my_online/sm;
+    $showProfile =~ s/{yabb showusertext}/$showusertext/sm;
+    $showProfile =~ s/{yabb buddybutton}/$buddybutton/sm;
+    $showProfile =~ s/{yabb modify}/$modify/sm;
+    $showProfile =~ s/{yabb my_star}/$my_star/sm;
+    $showProfile =~ s/{yabb post_count}/$post_count/sm;
+    $showProfile =~ s/{yabb post_per_day}/$post_per_day/sm;
+    $showProfile =~ s/{yabb member_for_days}/$member_for_days/sm;
+    $showProfile =~ s/{yabb my_gender}/$my_gender/sm;
+    $showProfile =~ s/{yabb my_extprofile}/$my_extprofile/sm;
+    $showProfile =~ s/{yabb my_userlevel}/$my_userlevel/sm;
+    $showProfile =~ s/{yabb row_email}/$row_email/sm;
+    $showProfile =~ s/{yabb row_website}/$row_website/sm;
+    $showProfile =~ s/{yabb row_aim}/$row_aim/sm;
+    $showProfile =~ s/{yabb row_skype}/$row_skype/sm;
+    $showProfile =~ s/{yabb row_yim}/$row_yim/sm;
+    $showProfile =~ s/{yabb row_gtalk}/$row_gtalk/sm;
+    $showProfile =~ s/{yabb row_myspace}/$row_myspace/sm;
+    $showProfile =~ s/{yabb row_facebook}/$row_facebook/sm;
+    $showProfile =~ s/{yabb row_twitter}/$row_twitter/sm;
+    $showProfile =~ s/{yabb row_youtube}/$row_youtube/sm;
+    $showProfile =~ s/{yabb row_icq}/$row_icq/sm;
+    $showProfile =~ s/{yabb row_signature}/$row_signature/sm;
+    $showProfile =~ s/{yabb lastonline}/$lastonline/sm;
+    $showProfile =~ s/{yabb userlastlogin}/$userlastlogin/sm;
+    $showProfile =~ s/{yabb lastpost}/$lastpost/sm;
+    $showProfile =~ s/{yabb userlastpost}/$userlastpost/sm;
+    $showProfile =~ s/{yabb my_lastPM}/$my_lastPM/sm;
+    $showProfile =~ s/{yabb my_banning}/$my_banning/sm;
+    $showProfile =~ s/{yabb my_recent}/$my_recent/sm;
 
     $yytitle = "$profile_txt{'92'} ${$uid.$user}{'realname'}";
     if ( !$view ) {
@@ -3826,17 +3489,31 @@ sub usersrecentposts {
         ToChars( ${ $catinfos{$board} }[0] );
         ToChars( $boardname{$board} );
 
-        $mdate = timeformat($mdate);
-
         $counter++;
 
-        $showProfile .= qq~$myshow_c
-        <td class="$myshow_row center">$counter</td>
-        <td class="$myshow_row">&nbsp;<a href="$scripturl?catselect=$boardcat{$board}"><u>${$catinfos{$board}}[0]</u></a> / <a href="$scripturl?board=$board"><u>$boardname{$board}</u></a> / <a href="$scripturl?num=$tnum/$c#$c"><u>$msub</u></a><br />
-                &nbsp;<span class="small">$profile_txt{'30'}: $mdate</span>&nbsp;</td>
-$myshow_d
-                    <td>$maintxt{'109'} $tname | $maintxt{'197'} ${$uid.$curuser}{'realname'}</td>
-                    <td class="right">&nbsp;~;
+        $mname = qq~${$uid.$curuser}{'realname'}~;
+
+        $mdate = timeformat($mdate);
+
+if ( -e ("$templatesdir/$usestyle/MyPosts.template") ) {
+    require "$templatesdir/$usestyle/MyPosts.template";
+}
+else {
+    require "$templatesdir/default/MyPosts.template";
+}
+
+        $showProfile .= $myshow_recent_a;
+
+        $showProfile =~ s/{yabb counter}/$counter/sm;
+        $showProfile =~ s/{yabb brdcat}/$boardcat{$board}/sm;
+        $showProfile =~ s/{yabb brd}/$boardcat{$board}/sm;
+        $showProfile =~ s/{yabb catinfobrd}/${$catinfos{$board}}[0]/sm;
+        $showProfile =~ s/{yabb brdbrd}/$boardname{$board}/sm;
+        $showProfile =~ s/{yabb tnum}/$tnum\/$c#$c/sm;
+        $showProfile =~ s/{yabb msub}/$msub/sm;
+        $showProfile =~ s/{yabb mdate}/$mdate/sm;
+        $showProfile =~ s/{yabb tname}/$tname/sm;
+        $showProfile =~ s/{yabb poster}/$mname/sm;
 
         if ( $tstate != 1 ) {
             if ( ${ $uid . $username }{'thread_notifications'} =~
@@ -3853,20 +3530,13 @@ qq~$menusep<a href="$scripturl?action=notify2;num=$tnum/$c;oldnotify=1">$img{'ad
 qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$c#$c;title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num=$tnum;quote=$c;title=PostReply">$img{'recentquote'}</a>$notify &nbsp;~;
         }
 
-        $showProfile .= qq~
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr><tr>
-        <td class="windowbg2 vtop" style="height:80px" colspan="2"><div style="float: left; width: 99%; overflow: auto;">$message</div></td>
-    </tr>
-</table>~;
+        $showProfile .= $myshow_recent_b;
+        $showProfile =~ s/{yabb recentmsg}/$message/sm;
     }
 
     if ( !$counter ) {
         $showProfile .=
-          qq~<span class="text1"><b>$profile_txt{'755'}</b></span>~;
+          qq~<b>$profile_txt{'755'}</b>~;
     }
     elsif ( !$view ) {
         $showProfile .=

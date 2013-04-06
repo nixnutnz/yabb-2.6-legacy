@@ -157,9 +157,9 @@ sub MLByLetter {
     $memcount = @ToShow;
     if ( !$memcount && $letter ) {
         $pageindex1 =
-qq~<span class="$pgindex_class"><img src="$imagesdir/$ml_index_togl" alt="" /></span>~;
+q~<span ~ . $pgindex_class . qq~><img src="$imagesdir/$ml_index_togl" alt="" /></span>~;
         $pageindex2 =
-qq~<span class="$pgindex_class"><img src="$imagesdir/$ml_index_togl" alt="" /></span>~;
+q~<span ~. $pgindex_class . qq~><img src="$imagesdir/$ml_index_togl" alt="" /></span>~;
     }
     else {
         buildIndex();
@@ -176,8 +176,8 @@ qq~<span class="$pgindex_class"><img src="$imagesdir/$ml_index_togl" alt="" /></
     }
     else {
         if ($letter) {
-            $yymain .=
-qq~<tr><td class="windowbg center" colspan="$headercount"><br /><b>$ml_txt{'760'}</b><br /><br /></td></tr>~;
+            $yymain .= $my_letter;
+            $yymain =~ s/{yabb headercount}/$headercount/sm;
         }
     }
     undef @ToShow;
@@ -385,7 +385,7 @@ qq~<img src="$imagesdir/$ml_email" alt="$img_txt{'69'}" title="~
         $yymain =~ s/{yabb postcount}/$yypostcount/sm;
         $yymain =~ s/{yabb dr_regdate}/$dr_regdate/sm;
     }
-    return;
+    return $yymain;
 }
 
 sub buildIndex {
@@ -429,13 +429,13 @@ sub buildIndex {
         $lastpn = int( ( $memcount - 1 ) / $MembersPerPage ) + 1;
         $lastptn = ( $lastpn - 1 ) * $MembersPerPage;
         $pageindex1 =
-qq~<span class="$pgindex_class"><img src="$imagesdir/$ml_index_togl" alt="" /> $ml_txt{'139'}: $pagenumb</span>~;
+qq~<span ~ . $pgindex_class . qq~><img src="$imagesdir/$ml_index_togl" alt="" /> $ml_txt{'139'}: $pagenumb</span>~;
         $pageindex2 =
-qq~<span class="$pgindex_class"><img src="$imagesdir/$ml_index_togl" alt="" /> $ml_txt{'139'}: $pagenumb</span>~;
+qq~<span ~ . $pgindex_class . qq~><img src="$imagesdir/$ml_index_togl" alt="" /> $ml_txt{'139'}: $pagenumb</span>~;
         if ( $pagenumb > 1 || $all ) {
 
             if ( $usermemberpage == 1 || $iamguest ) {
-                $pagetxtindexst = q~<span class="$pgindex_class">~;
+                $pagetxtindexst = q~<span ~. $pgindex_class . q~>~;
                 if ( !$iamguest ) {
                     $pagetxtindexst .=
 qq~<a href="$scripturl?sort=$FORM{'sortform'};letter=$letter;start=$start;action=memberpagedrop$findmember"><img src="$imagesdir/$ml_index_togl" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a> $ml_txt{'139'}: ~;
@@ -644,6 +644,7 @@ sub buildPages {
     if ( $LetterLinks ne q{} ) {
         $TableHeader .= $my_letterlinks;
         $TableHeader =~ s/{yabb letterlinks}/$LetterLinks/sm;
+        $TableHeader =~ s/{yabb headercount}/$headercount/sm;
     }
 
     $numbegin = ( $start + 1 );
@@ -707,9 +708,8 @@ sub FindMembers {
         }
     }
     else {
-        $yymain .= qq~<tr>
-                  <td class="windowbg2 center" colspan="7"><br />$ml_txt{'802'} <i>$FORM{'member'}</i><br /><br /></td>
-            </tr>~;
+        $yymain .= $my_findmember;
+        $yymain =~ s/{yabb formmember}/$FORM{'member'}/sm;
     }
     undef @findmemlist;
     undef %memberinf;

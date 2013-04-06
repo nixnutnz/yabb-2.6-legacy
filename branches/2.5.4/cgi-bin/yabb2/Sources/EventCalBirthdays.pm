@@ -22,6 +22,13 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');
 
+if ( -e ("$templatesdir/$usestyle/Bdaylist.template") ) {
+    require "$templatesdir/$usestyle/Bdaylist.template";
+}
+else {
+    require "$templatesdir/default/Bdaylist.template";
+}
+
 eval { require "$vardir/eventcalset.txt"; };
 
 sub birthdaylist {
@@ -56,9 +63,7 @@ sub birthdaylist {
 
     timeformat();    # get only correct $mytimeselected
 
-    #<--------------------------------------------->#
     # GoTo begin
-    #<--------------------------------------------->#
 
     my $boxdays =
 qq~ <label for="selday"><span class="small">$var_cal{'calday'}</span></label>
@@ -152,7 +157,7 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
 		chomp $user_name;
 		($user_bdyear, $user_bdmon, $user_bdday, $user_bdname, $user_bdhide) = split /\|/xsm,$user_name;
 
-		$memrealname = (split(/\|/, $memberinf{$user_bdname}, 2))[0];
+		$memrealname = (split /\|/xsm, $memberinf{$user_bdname}, 2)[0];
 
  		if (($user_bdmon < $actualmon) || (($user_bdmon == $actualmon) && ($user_bdday <= $actualday))) {
                 $age = $year - $user_bdyear;
@@ -240,8 +245,7 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
     $no_bd[0]             = 0;
 
     if ( !@birthmembers1 ) {
-        $viewbirthdays .=
-qq~<tr><td class="windowbg2 center" colspan="4"><b><i>$var_cal{'calbirthday1'}</i></b></td></tr>~;
+        $viewbirthdays .= $mybdlist_notbmember;
     }
     else {
         foreach
@@ -266,6 +270,13 @@ qq~<tr><td class="windowbg2 center" colspan="4"><b><i>$var_cal{'calbirthday1'}</
                     $user_linkprofile =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" rel="nofollow">$format_unbold{$user_bdname}</a>~;
                 }
+                if ( $showage && $user_bdhide ) {
+                   $myage = $var_cal{'hidden'};
+                }
+                else {
+                      $myage = $age;
+                }
+
                 $bd_today .=
                   qq~$user_linkprofile <span class="small">($myage)</span>, ~;
             }
@@ -375,11 +386,12 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
                             $myage = $age;
                         }
 
-                        $viewmont[$i] .=
-qq~ <tr><td class="windowbg2 center">$user_linkprofile</td>
-                        <td class="windowbg2 center">$myage</td>
-                        <td class="windowbg2 center">$sternzeichen</td>
-                        <td class="windowbg2 center">$cdate</td></tr>\n~;
+                        $viewmont[$i] .= $mybdlist_viewmont;
+                        $viewmont[$i] =~ s/{yabb user_linkprofile}/$user_linkprofile/sm;
+                        $viewmont[$i] =~ s/{yabb myage}/$myage/sm;
+                        $viewmont[$i] =~ s/{yabb sternzeichen}/$sternzeichen/sm;
+                        $viewmont[$i] =~ s/{yabb cdate}/$cdate/sm;
+
                         $countmont[$i]++;
                         $no_bd[$i] = 1;
                     }
@@ -389,7 +401,7 @@ qq~ <tr><td class="windowbg2 center">$user_linkprofile</td>
     }
     for my $i ( 1 .. 12 ) {
         if ( $no_bd[$i] == 0 ) {
-            $no_birthday_found[$i] .= qq~• $var_cal{"$calmont[$i]"}~;
+            $no_birthday_found[$i] .= qq~&#149; $var_cal{"$calmont[$i]"} ~;
             $no_bd_found = 1;
         }
         else {
@@ -399,109 +411,53 @@ qq~ <tr><td class="windowbg2 center">$user_linkprofile</td>
 
     # handle with the months end
 
-    #<--------------------------------------------->#
     # Birthdaylist output begin
-    #<--------------------------------------------->#
 
-    $cal_info_header = qq~<tr>
-        <td$class_sortuser><a href="$scripturl?action=birthdaylist;sort=sortuser" style="text-decoration:none;"><b>$var_cal{'calname'}</b></a></td>
-        <td$class_sortage><a href="$scripturl?action=birthdaylist;sort=sortage" style="text-decoration:none;"><b>$var_cal{'calage'}</b></a></td>
-        <td$class_sortstarsign><a href="$scripturl?action=birthdaylist;sort=sortstarsign" style="text-decoration:none;"><b>$var_cal{'calstarsign'}</b></a></td>
-        <td$class_sortdate><a href="$scripturl?action=birthdaylist;sort=sortdate" style="text-decoration:none;"><b>$var_cal{'calbddate'}</b></a></td>
-    </tr>~;
+    $cal_info_header = $mybdlist_calinfoheader;
+    $cal_info_header =~ s/{yabb class_sortuser}/$class_sortuser/sm;
+    $cal_info_header =~ s/{yabb class_sortage}/$class_sortage/sm;
+    $cal_info_header =~ s/{yabb class_sortstarsign}/$class_sortstarsign/sm;
+    $cal_info_header =~ s/{yabb class_sortdate}/$class_sortdate/sm;
 
-    $yymain .= qq~
-<div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
-<table class="bordercolor pad_3px cs_thin">
-    <col style="width:30%" />
-    <col style="width:20%" />
-    <col style="width:30%" />
-    <col style="width:20%" />
-    <tr>
-        <td class="titlebg" colspan="4">
-            <div style="float: left; width: 30%; padding-top: 1px; padding-bottom: 1px; text-align: left;"><img class="bottom" src="$imagesdir/eventcal.gif" alt="" /> $var_cal{'caltitle'}</div>
-            <div style="float: left; width: 70%; padding-top: 1px; padding-bottom: 1px; text-align: right;">$calgotobox</div>
-        </td>
-    </tr><tr>
-        <td class="windowbg" colspan="4">
-            <br />
-            <span class="small">$var_cal{'calbirthdayinfo'}<br /><br />
-~;
+    $yymain .= $mybdlist_calgoto;
+    $yymain =~ s/{yabb calgotobox}/$calgotobox/sm;
 
     if ($bd_today) {
         $yymain .= qq~
-<span class="u">$var_cal{calbirthdaytoday}:</span><br /><br />
+<span class="u">$var_cal{'calbirthdaytoday'}:</span><br /><br />
 $bd_today
 <br /><br />
 ~;
     }
-    $yymain .= qq~
-            </span>
-        </td>
-    </tr><tr>
-        <td class="titlebg center" colspan="4"><b>$var_cal{'calbirthdays'}</b></td>
-    </tr><tr>
-        <td$class_sortuser><a href="$scripturl?action=birthdaylist;sort=sortuser" style="text-decoration:none;"><b>$var_cal{'calname'}</b></a></td>
-        <td$class_sortage><a href="$scripturl?action=birthdaylist;sort=sortage" style="text-decoration:none;"><b>$var_cal{'calage'}</b></a></td>
-        <td$class_sortstarsign><a href="$scripturl?action=birthdaylist;sort=sortstarsign" style="text-decoration:none;"><b>$var_cal{'calstarsign'}</b></a></td>
-        <td$class_sortdate><a href="$scripturl?action=birthdaylist;sort=sortdate" style="text-decoration:none;"><b>$var_cal{'calbddate'}</b></a></td>
-    </tr><tr>
-        <td class="windowbg center" colspan="4">
-            <table class="pad_4px cs_thin">
-                <tr>
-                    <td><span class="text"><a href="$scripturl?action=birthdaylist;sort=$sortiert;letter=other" style="text-decoration:none;">123 (Other) </a></span></td>~;
+    $yymain .= $mybdlist_sort;
+    $yymain =~ s/{yabb class_sortuser}/$class_sortuser/sm;
+    $yymain =~ s/{yabb class_sortage}/$class_sortage/sm;
+    $yymain =~ s/{yabb class_sortstarsign}/$class_sortstarsign/sm;
+    $yymain =~ s/{yabb class_sortdate}/$class_sortdate/sm;
+
     for my $i ( a .. z ) {
-        $yymain .=
-qq~                 <td><span class="text"><a href="$scripturl?action=birthdaylist;sort=$sortiert;letter=~
+        $yymain .= $mybdlist_alpha_a
           . $i
           . q~" style="text-decoration:none;">~
           . uc($i)
-          . q~</a></span></td>~;
+          . $mybdlist_alpha_b;
+          $yabbmain =~ s/{yabb sortiert}/$sortiert/sm; #";
     }
-    $yymain .= qq~
-                </tr>
-            </table>
-        </td>
-    </tr>
-$viewbirthdays
-</table>
-</div>
-<br /><br />
-~;
+    $yymain .= $mybdlist_alpha_c;
+    $yabbmain =~ s/{yabb viewbirthdays}/$viewbirthdays/sm;
 
     for my $i ( 1 .. 12 ) {
         if ( $viewmont[$i] ) {
-            $yymain .= qq~
-<div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
-<table class="pad_4px cs_thin">
-    <col style="width:30%" />
-    <col style="width:20%" />
-    <col style="width:30%" />
-    <col style="width:20%" />
-    <tr>
-        <td class="titlebg" colspan="4">
-            <img class="bottom" src="$imagesdir/eventbd.gif" alt="$var_cal{calbirthday}" /> <b>$var_cal{$calmont[$i]}</b> ($countmont[$i])
-        </td>
-    </tr>
-$cal_info_header
-$viewmont[$i]
-</table>
-</div>
-<br /><br />
-~;
+            $yymain .= $mybdlist_viewmont2;
+            $yymain =~ s/{yabb calmont}/$var_cal{$calmont[$i]}/sm;
+            $yymain =~ s/{yabb countmont}/$countmont[$i]/sm;
+            $yymain =~ s/{yabb cal_info_header}/$cal_info_header/sm;
+            $yymain =~ s/{yabb viewmont}/$viewmont[$i]/sm;
         }
     }
 
     if ( $no_bd_found == 1 ) {
-        $yymain .= qq~
-<div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
-<table class="pad_4px cs_thin">
-    <tr>
-        <td  class="titlebg" colspan="4">
-            <img src="$imagesdir/info.gif" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calbirthday1'}</b>
-        </td>
-    </tr><tr>
-        <td class="windowbg2" colspan="4">~;
+        $yymain .= $mybdlist_nobd;
         for my $i ( 1 .. 12 ) {
             $yymain .= qq~$no_birthday_found[$i]~;
         }

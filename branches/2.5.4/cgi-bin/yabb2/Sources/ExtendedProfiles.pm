@@ -398,8 +398,7 @@ sub ext_viewprofile {
             && ext_has_access( $field{'v_users'}, $field{'v_groups'} ) )
         {
             if ( $output eq q{} && $previous != 1 ) {
-                $pre_output = q~<tr>
-        <td class="windowbg2 vtop">~;
+                $pre_output = $ext_pre_output;
                 $previous = 1;
             }
 
@@ -435,21 +434,12 @@ sub ext_viewprofile {
                         $previous = 0;
                     }
                     else {
-                        $output .= q~
-        </td>
-    </tr><tr>~;
+                        $output .= $ext_output_a;
                         if ( $field{'comment'} ne q{} ) {
-                            $output .= qq~
-        <td class="catbg">
-            <img src="$imagesdir/profile.gif" alt="" />&nbsp;
-            <span class="text1"><b>$field{'comment'}</b></span>
-        </td>
-    </tr><tr>
-        <td class="windowbg2 vtop">~;
+                            $output .= $ext_output_c;
                         }
                         else {
-                            $output .= q~
-        <td class="windowbg2 vtop">~;
+                            $output .= $ext_output_b;
                         }
                         $previous = 1;
                     }
@@ -624,7 +614,8 @@ sub ext_memberlist_tableheader {
             && $field{'active'} == 1
             && ext_has_access( $field{'m_users'}, $field{'m_groups'} ) )
         {
-            $output .= qq~<td class="catbg center">$field{'name'}</td>\n~;
+            $output .= $ext_memberlist_tableheader;
+            $output =~ s/{yabb ext_fieldname}/$field{'name'}/sm;
         }
     }
 
@@ -632,10 +623,10 @@ sub ext_memberlist_tableheader {
 }
 
 # returns the number of additional fields showed in memberlist
-sub ext_memberlist_get_headercount
-{ # count the linebreaks to get the number of additional <td>s for the memberlist table
+sub ext_memberlist_get_headercount {
+# count the linebreaks to get the number of additional <td>s for the memberlist table
     my ( $headers, $headercount ) = ( shift, 0 );
-    $headers =~ s/(\n)/ $headercount++ /egsm;
+    $headers =~ s/(\n)/ $headercount++ /egm;
     return $headercount;
 }
 
@@ -676,11 +667,12 @@ qq~<a href="$value" onclick="target='_blank';">$value</a>~;
                 }
             }
             if ( $value eq q{} ) { $value .= '&nbsp;'; }
-            $output .= qq~<td $td_attributs>$value</td>\n~;
+            $output .= $ext_memberlist_td; 
+            $output =~ s/{yabb ext_td_attributs}/$td_attributs/sm;
+            $output =~ s/{yabb ext_value}/$value/sm;
             $count++;
         }
     }
-
     return $output;
 }
 
@@ -694,6 +686,21 @@ sub ext_gen_editfield {
     ) = ( shift, shift );
 
     LoadLanguage('Profile');
+    if ($action eq 'register') {
+        if ( -e ("$templatesdir/$usestyle/Register.template") ) {
+            require "$templatesdir/$usestyle/Register.template";
+        }
+        else {
+            require "$templatesdir/default/Register.template";
+        }
+    }
+    else {if ( -e ("$templatesdir/$usestyle/MyProfile.template") ) {
+    require "$templatesdir/$usestyle/MyProfile.template";
+}
+else {
+    require "$templatesdir/default/MyProfile.template";
+}
+}
 
     $field = ext_get_field($id);
 
@@ -704,12 +711,14 @@ sub ext_gen_editfield {
 
     FromHTML( $field{'comment'} );
 
-    $template1 =
-qq~<tr class="windowbg"><td class="vtop"><label for=""><b>$field{'name'}: </b><br /><span class="small">$field{'comment'}</span></label></td><td>~;
-    if ( $field{'required_on_reg'} == 1 ) { $template2 = q{ * }; }
-    $template2 .= qq~</td></tr>\n~;
+    $template1 = $ext_template1;
+    $template1 =~ s/{yabb fieldname}/$field{'name'}/sm;
+    $template1 =~ s/{yabb fieldcomment}/$field{'comment'}/sm;
 
-    # format the output dependend on field type
+    if ( $field{'required_on_reg'} == 1 ) { $template2 = $myreg_req; }
+    $template2 .= $ext_endrow;
+
+    # format the output depending on field type
     my $name_id = "ext_$id";
     if ( $field{'type'} eq 'text' ) {
         @options = split /\^/xsm, $field{'options'};
@@ -729,13 +738,14 @@ qq~<tr class="windowbg"><td class="vtop"><label for=""><b>$field{'name'}: </b><b
     }
     elsif ( $field{'type'} eq 'text_multi' ) {
         @options = split /\^/xsm, $field{'options'};
-        if ( $options[0] ne q{} && $options[0] != 0 ) {
+        if ( $options[0] ) {
             $field{'options'} = qq~
     <br /><span class="small">$lang_ext{'max_chars1'}$options[0]$lang_ext{'max_chars2'} <input value="$options[0]" size="~
               . length( $options[0] )
               . q~" name="ext_~
               . $id
-              . q~_msgCL" disabled="disabled" /></span>
+#              . qq~_msgCL" readonly="readonly"$ext_msgCL /></span>
+              . qq~_msgCL" readonly="readonly" disabled="disabled"$ext_msgCL /></span>
     <script type="text/javascript">
     <!--
     var ext_~ . $id . q~_supportsKeys = false
@@ -774,7 +784,7 @@ qq~<tr class="windowbg"><td class="vtop"><label for=""><b>$field{'name'}: </b><b
         else                        { $options[1] = q~ rows="4"~; }
         if   ( $options[2] ne q{} ) { $options[2] = qq~ cols="$options[2]"~; }
         else                        { $options[2] = q~ cols="50"~; }
-        $value =~ s/<br(?: ?\/)?>/\n/gsm;
+        $value =~ s/<br(?: ?\/)?>/\n/gm;
         $output .=
             $template1
           . qq~<textarea name="ext_$id" id="ext_$id"$options[1]$options[2]>$value</textarea>$field{'options'}~
@@ -860,8 +870,8 @@ qq~ $profile_txt{'565'} <input type="text" name="ext_$id\_day" id="ext_$id\_day"
         @options = split /\^/xsm, $field{'options'};
         if ( $options[1] == 1 ) {
 
-            $output .=
-qq~<tr><td class="catbg" colspan="2">$field{'comment'}&nbsp;</td></tr>\n~;
+            $output .= $ext_spacer;
+            $output =~ s/{yabb fieldcomment}/$field{'comment'}/sm;
         }
 
     }

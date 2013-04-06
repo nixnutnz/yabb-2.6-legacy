@@ -721,7 +721,7 @@ sub pmsearch {
                 $pmboxName,    $msgnum,    $msub,        $mname,
                 $memail,       $mdate,     $mfromuser,   $mtouser,
                 $mccuser,      $mbccuser,  $mattachment, $mip,
-                $savedmessage, $messageid, $mstorefolder
+                $savedmessage, $messageid, $mstorefolder, $mmessagestatus
             ];
             if ( $mdate < $oldestfound ) { $oldestfound = $mdate; }
             $numfound++;
@@ -760,7 +760,7 @@ sub pmsearch {
             $thispmbox, $msgnum,    $msub,        $mname,
             $memail,    $mdate,     $mfromuser,   $mtouser,
             $mccuser,   $mbccuser,  $mattachment, $mip,
-            $message,   $messageid, $mstorefolder
+            $message,   $messageid, $mstorefolder,$mstatus
         ) = @{ $data{ $messages[$i] } };
         my ( $MemberFromLink, $MemberToLink, $MemberCCLink, $MemberBCCLink );
         my ( $fromTitle, $toTitle, $toTitleCC, $toTitleBCC, $FolderName );
@@ -778,12 +778,22 @@ sub pmsearch {
         }
 
         if ($mtouser) {
+            if ( $mstatus ne 'sb') {
             foreach my $uname ( split /\,/xsm, $mtouser ) {
                 $MemberToLink .=
                   addMemberLink( $uname, $uname, $mdate ) . q{, };
             }
             $MemberToLink =~ s/, \Z//sm;
             $toTitle = qq~$search_txt{'pmto'}: $MemberToLink<br />~;
+        }
+            else {
+                require Sources::InstantMessage;
+                foreach my $uname ( split /\,/xsm, $mtouser ) {
+                   $MemberToLink .= links_to($uname);
+                }
+                $MemberToLink =~ s/, \Z//sm;
+                $toTitle = qq~$search_txt{'pmto'}: $MemberToLink<br />~;
+            }
         }
 
         if ( $mccuser && $mfromuser eq $username ) {
@@ -829,35 +839,19 @@ sub pmsearch {
 
         ++$counter;
 
-        $yysearchmain .= qq~
-<table class="bordercolor cs_thin" style="table-layout: fixed;">
-    <col style="width:5%" />
-    <tr>
-        <td class="titlebg center">&nbsp;$counter&nbsp;</td>
-        <td class="titlebg">&nbsp;$FolderName &raquo; <a href="$scripturl?action=imshow;caller=$thispmbox;id=$messageid"><span class="under">$msub</span></a><br />
-        &nbsp;<span class="small">$search_txt{'30'}: $mdate</span>&nbsp;</td>
-    </tr><tr>
-        <td colspan="2">
-            <table class="catbg">
-                <tr>
-                    <td>
-                        $fromTitle
-                        $toTitle
-                        $toTitleCC
-                        $toTitleBCC
-                    </td>
-                    <td class="right">&nbsp;<a href="$scripturl?action=imsend;caller=$thispmbox;reply=1;to=;id=$messageid">$img{'reply'}</a>
-                        $menusep<a href="$scripturl?action=imsend;caller=$thispmbox;num=;quote=1;to=;id=$messageid">$img{'recentquote'}</a>
-                        $menusep<a href="$scripturl?action=imprint;caller=$thispmbox;id=$messageid" target="_blank">$img{'print'}</a>&nbsp;
-                    </td> 
-                </tr>
-            </table>
-        </td>
-    </tr><tr>
-        <td class="windowbg2 vtop h_80px" colspan="2"><div class="message" style="float: left; width: 99%; overflow: auto;">$message</div></td>
-    </tr>
-</table><br />
-~;
+        $yysearchmain .= $mysearch_PM;
+        $yysearchmain =~ s/{yabb counter}/$counter/sm;
+        $yysearchmain =~ s/{yabb FolderName}/$FolderName/sm;
+        $yysearchmain =~ s/{yabb msub}/$msub/sm;
+        $yysearchmain =~ s/{yabb mdate}/$mdate/sm;
+        $yysearchmain =~ s/{yabb thispmbox}/$thispmbox/gsm;
+        $yysearchmain =~ s/{yabb messageid}/$messageid/gsm;
+        $yysearchmain =~ s/{yabb message}/$message/sm;
+        $yysearchmain =~ s/{yabb fromTitle}/$fromTitle/sm;
+        $yysearchmain =~ s/{yabb toTitle}/$toTitle/sm;
+        $yysearchmain =~ s/{yabb toTitleCC}/$toTitleCC/sm;
+        $yysearchmain =~ s/{yabb toTitleBCC}/$toTitleBCC/sm;
+        
     }
 
     if (@messages) {

@@ -21,6 +21,13 @@ if ( !$post_txt_loaded ) {
     $post_txt_loaded = 1;
 }
 LoadLanguage('FA');
+LoadLanguage('Display');
+if ( -e ("$templatesdir/$usestyle/Post.template") ) {
+    require "$templatesdir/$usestyle/Post.template";
+}
+else {
+    require "$templatesdir/default/Post.template";
+}
 require Sources::SpamCheck;
 if ( $iamadmin || $iamgmod ) { $MaxMessLen = $AdMaxMessLen; }
 $set_subjectMaxLength ||= 50;
@@ -121,13 +128,12 @@ sub ModifyMessage {
             fatal_error('change_not_allowed');
         }
 
-        $lastmod = $mlm ? timeformat($mlm) : q{-};
+        $lastmod_a = $mlm ? timeformat($mlm) : q{-};
         $nscheck = $mns ? ' checked'       : q{};
 
-        $lastmod = qq~<tr>
-        <td class="vtop" style="width:23%"><span class="text1"><b>$post_txt{'211'}:</b></span></td>
-        <td><span class="text1">$lastmod</span></td>
-    </tr>~;
+        $lastmod = $mypost_lastmod;
+        $lastmod =~ s/{yabb lastmod_a}/$lastmod_a/sm;
+
 		$icon = $micon;
 		if    ($icon eq 'xx')          { $ic1  = ' selected="selected" '; }
 		elsif ($icon eq 'thumbup')     { $ic2  = ' selected="selected" '; }

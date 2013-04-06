@@ -217,9 +217,9 @@ qq~<li><span |><a href="$scripturl?action=logout" title = "$img_txt{'108'}">$img
         if    ( $action eq 'addtab' )  { $seladdtab  = q~class="selected"~; }
         elsif ( $action eq 'edittab' ) { $seledittab = q~class="selected"~; }
         $yytabadd =
-qq~<li id="addtab"><span $seladdtab><a href="$scripturl?action=addtab" title = "$tabmenu_txt{'newtab'}"><img src="$imagesdir/tabadd.gif" alt="$tabmenu_txt{'newtab'}" title="$tabmenu_txt{'newtab'}" /></a></span></li>~;
+qq~<ul><li id="addtab"><span $seladdtab><a href="$scripturl?action=addtab" title = "$tabmenu_txt{'newtab'}"><img src="$imagesdir/tabadd.gif" alt="$tabmenu_txt{'newtab'}" title="$tabmenu_txt{'newtab'}" /></a></span></li>~;
         $yytabadd .=
-qq~<li id="edittab"><span $seledittab><a href="$scripturl?action=edittab" title = "$tabmenu_txt{'edittab'}"><img src="$imagesdir/tabedit.gif" alt="$tabmenu_txt{'edittab'}" title="$tabmenu_txt{'edittab'}" /></a></span></li>~;
+qq~<li id="edittab"><span $seledittab><a href="$scripturl?action=edittab" title = "$tabmenu_txt{'edittab'}"><img src="$imagesdir/tabedit.gif" alt="$tabmenu_txt{'edittab'}" title="$tabmenu_txt{'edittab'}" /></a></span></li></ul>~;
     }
     else {
         $yytabadd = q~&nbsp;~;

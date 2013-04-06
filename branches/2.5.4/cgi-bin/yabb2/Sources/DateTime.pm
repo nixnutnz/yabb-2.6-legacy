@@ -218,7 +218,7 @@ sub timeformat {
         time_3( $newday, $newmonth, $newyear ),
         time_4( $newday, $newmonth, $newyear, $newhour, $newminute ),
         time_5( $newday, $newmonth, $newyear, $newhour, $newminute ),
-        time_6( $newday, $newmonth, $newyear,$newhour, $newminute ),
+        time_6( $newday, $newmonth, $newyear, $newhour, $newminute ),
         time_7( ${ $uid . $username }{'timeformat'} ),
         time_4( $newday, $newmonth, $newyear, $newhour, $newminute ),
     );
@@ -308,7 +308,6 @@ sub time_1 {
       ? qq~$daytxt $maintxt{'107'} $newtime~
       : qq~$newmonth/$newday/$newshortyear $maintxt{'107'} $newtime~;
     
-    dtonly($newformat);
     return $newformat;
 }
 
@@ -319,7 +318,6 @@ sub time_2 {
       ? qq~$daytxt $maintxt{'107'} $newtime~
       : qq~$newday.$newmonth.$newshortyear $maintxt{'107'} $newtime~;
     
-    dtonly($newformat);
     return $newformat;
 }
 
@@ -329,8 +327,6 @@ sub time_3 {
       $daytxt
       ? qq~$daytxt $maintxt{'107'} $newtime~
       : qq~$newday.$newmonth.$newyear $maintxt{'107'} $newtime~;
-
-    dtonly($newformat);
 
     return $newformat;
 }
@@ -353,10 +349,10 @@ sub time_4 {
         }
     }
     if ( $mytimeselected == 4 ) {
-        $newformat =
-          $daytxt
-          ? qq~$daytxt $maintxt{'107'} $newhour2:$newminute$ampm~
-          : qq~$newmonth2 $newday$newday2, $newyear $maintxt{'107'} $newhour2:$newminute$ampm~;
+    $newformat =
+      $daytxt
+      ? qq~$daytxt $maintxt{'107'} $newhour2:$newminute$ampm~
+      : qq~$newmonth2 $newday$newday2, $newyear $maintxt{'107'} $newhour2:$newminute$ampm~;
     }
     else {
         $newformat =
@@ -365,7 +361,6 @@ sub time_4 {
           : qq~$newday$newday2 $newmonth2, $newyear $maintxt{'107'} $newhour2:$newminute$ampm~;
     }
     
-    dtonly($newformat);
     return $newformat;
 }
 
@@ -378,8 +373,7 @@ sub time_5 {
       ? qq~$daytxt $maintxt{'107'} $newhour2:$newminute$ampm~
       : qq~$newmonth/$newday/$newshortyear $maintxt{'107'} $newhour2:$newminute$ampm~;
 
-    dtonly($newformat);
-    return $newformat;
+    return ($newformat);
 }
 
 sub time_6 {
@@ -391,7 +385,6 @@ sub time_6 {
       ? qq~$daytxt $maintxt{'107'} $newhour:$newminute~
       : qq~$newday. $newmonth2 $newyear $maintxt{'107'} $newhour:$newminute~;
     
-    dtonly($newformat);
     return $newformat;
 }
 
@@ -473,7 +466,31 @@ sub time_7 {
 
     $newformat = $mytimeformat;
     
-    dtonly($newformat);
+    return $newformat;
+}
+
+sub time_8 {
+    my ( $newday, $newmonth, $newyear, $newhour, $newminute ) = @_;
+    $ampm = $newhour > 11 ? 'pm' : 'am';
+    $newhour2 = $newhour % 12 || 12;
+    if   ($use_rfc) { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
+    else            { $newmonth2 = $months[ $newmonth - 1 ]; }
+    $newday2 = "<sup>$timetxt{'4'}</sup>";
+    if ( $newday > 10 && $newday < 20 ) {
+        $newday2 = "<sup>$timetxt{'4'}</sup>";
+    }
+    else {
+        foreach my $i ( 1 .. 3 ) {
+            if ( $newday % 10 == $i ) {
+                $newday2 = qq~<sup>$timetxt{"$i"}</sup>~;
+            }
+        }
+    }
+    $newformat =
+      $daytxt
+      ? qq~$daytxt $maintxt{'107'} $newhour2:$newminute$ampm~
+      : qq~$newday$newday2 $newmonth2, $newyear $maintxt{'107'} $newhour2:$newminute$ampm~;
+    
     return $newformat;
 }
 
@@ -481,10 +498,18 @@ sub dtonly {
     my ($newformat) = @_;
     if( $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ism) {
 	$dateonly = $1;
+	}
+	
+	return ($dateonly);
+} 
+
+sub tmonly {
+    my ($newformat) = @_;
+    if( $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ism) {
 	$timeonly = $2;
 	}
 	
-	return ($newformat, $dateonly, $timeonly);
+	return ($timeonly);
 } 
 
 1;

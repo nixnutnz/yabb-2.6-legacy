@@ -18,26 +18,11 @@ $movesplitsplicepmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('MoveSplitSplice');
+require "$templatesdir/$usedisplay/Display.template";
 
 sub Split_Splice {
     if ( !$staff ) { fatal_error('split_splice_not_allowed'); }
     if ( $FORM{'ss_submit'} || $INFO{'ss_submit'} ) { Split_Splice_2(); }
-
-    $output =
-qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<title>$sstxt{'1'}</title>
-<meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
-<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
-
-</head>
-<body>
-<a name="pagetop">&nbsp;</a><br />
-<div id="maincontainer">
-<div id="container">
-<br />
-<br />~;
 
     my $curboard  = $INFO{'board'};
     my $curthread = $INFO{'thread'};
@@ -220,103 +205,33 @@ qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3
         }
     }
 
-    $output .= qq~
-<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
-<form action="$scripturl?action=split_splice;board=$currentboard;thread=$INFO{'thread'}" method="post" name="split_splice" onsubmit="return submitproc()" accept-charset="$yycharset">
-<input type="hidden" name="formsession" value="$formsession" />
-<table class="bordercolor pad_8px cs_thin" style="width:90%">
-    <tr>
-        <td class="titlebg"><img src="$defaultimagesdir/admin_move_split_splice.gif" alt="$sstxt{'1'}" /> <b>$sstxt{'1'}</b></td>
-    </tr><tr>
-        <td class="catbg"><b>$sstxt{'2'}:</b></td>
-    </tr><tr>
-        <td class="windowbg"><b>$sstxt{'3'}</b></td>
-    </tr><tr>
-        <td class="windowbg2">
-            <label for="oldposts">$sstxt{'14'}<br />
-            <select name="oldposts" id="oldposts" size="$size1" multiple="multiple">$postlist</select><br />
-            <span class="small">$sstxt{'14a'}</span></label>
-        </td>
-    </tr><tr>
-        <td class="windowbg"><b>$sstxt{'4'}</b></td>
-    </tr><tr>
-        <td class="windowbg2">
-            <label for="leave">$sstxt{'15'}</label><br />
-            <select name="leave" id="leave">$leavelist</select>
-        </td>
-    </tr><tr>
-        <td class="catbg"><b>$sstxt{'5'}:</b></td>
-    </tr><tr>
-        <td class="windowbg"><b>$sstxt{'6'}</b></td>
-    </tr><tr>
-        <td class="windowbg2">
-            <label for="newcat">$sstxt{'16'}</label><br />
-            <select name="newcat" id="newcat" onchange="document.split_splice.submit();">$catlist</select>
-        </td>
-    </tr><tr>
-        <td class="windowbg"><b>$sstxt{'7'}</b></td>
-    </tr><tr>
-        <td class="windowbg2">
-            <label for="newboard">$sstxt{'17'}</label><br />
-            <select name="newboard" id="newboard" onchange="document.split_splice.submit();">$boardlist</select>
-        </td>
-    </tr><tr>
-        <td class="windowbg"><b>$sstxt{'8'}</b></td>
-    </tr><tr>
-        <td class="windowbg2">
-            <label for="newthread">$sstxt{'18'}</label><br />
-            <select name="newthread" id="newthread" onchange="document.split_splice.submit();">$threadlist</select>
-        </td>
-    </tr>~;
-
     if (   $newthread eq 'new'
         || !$threadlist
         || $threadids !~ /\b$newthread\b/xsm )
     {
-        $output .= qq~<tr>
-        <td class="windowbg"><b>$sstxt{'9'}</b></td>
-    </tr><tr>
-        <td class="windowbg2">
-            <label for="newthread_subject">$sstxt{'20'}</label><br />
-            <input type="text" name="newthread_subject" id="newthread_subject" size="50" value="$FORM{'newthread_subject'}" />
-            <input type="hidden" name="position" value="$FORM{'position'}" />
-            <input type="hidden" name="old_position_thread" value="$FORM{'old_position_thread'}" />
-        </td>
-    </tr>~;
-
+        $my_output = $mymove_output_a;
+        $my_output =~ s/{yabb newthread_subject}/$FORM{'newthread_subject'}/sm;
+        $my_output =~ s/{yabb position}/$FORM{'position'}/sm;
+        $my_output =~ s/{yabb old_position_thread}/$FORM{'old_position_thread'}/sm;
     }
     else {
-        $output .= qq~<tr>
-        <td class="windowbg"><b>$sstxt{'10'}</b></td>
-    </tr><tr>
-        <td class="windowbg2">
-            <label for="position">$sstxt{'19'}</label><br />
-            <select name="position" id="position">$positionlist</select>
-            <input type="hidden" name="newthread_subject" value="$FORM{'newthread_subject'}" />
-            <input type="hidden" name="old_position_thread" value="$newthread" />
-        </td>
-    </tr>~;
+        $my_output = $mymove_output_b;
+        $my_output =~ s/{yabb positionlist}/$positionlist/sm;
+        $my_output =~ s/{yabb newthread_subject}/$FORM{'newthread_subject'}/sm;
+        $my_output =~ s/{yabb newthread}/$newthread/sm;
     }
 
-    $output .= qq~<tr>
-        <td class="windowbg"><b>$sstxt{'4'}</b></td>
-    </tr><tr>
-        <td class="windowbg2">
-            <input type="checkbox" name="newinfo" id="newinfo" value="1"~
-      . ( $FORM{'newinfo'} ? ' checked="checked"' : q{} )
-      . qq~ /> <label for="newinfo">$sstxt{'15a'}</label>
-        </td>
-    </tr><tr>
-        <td class="catbg center"><input type="submit" name="ss_submit" value="$sstxt{'24'}" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="$sstxt{'25'}" /></td>
-    </tr>
-</table>
-</form>
-<br />
-<br />
-</div>
-</div>
-</body>
-</html>~;
+    $my_checked = $FORM{'newinfo'} ? ' checked="checked"' : q{};
+
+    $output = $mymove_top;
+    $output =~ s/{yabb formsession}/$formsession/sm;
+    $output =~ s/{yabb postlist}/$postlist/sm;
+    $output =~ s/{yabb leavelist}/$leavelist/sm;
+    $output =~ s/{yabb catlist}/$catlist/sm;
+    $output =~ s/{yabb boardlist}/$boardlist/sm;
+    $output =~ s/{yabb threadlist}/$threadlist/sm;
+    $output =~ s/{yabb my_output}/$my_output/sm;
+    $output =~ s/{yabb my_checked}/$my_checked/sm;
 
     print_output_header();
     print_HTML_output_and_finish();

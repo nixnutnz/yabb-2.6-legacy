@@ -19,6 +19,13 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Poll');
 
+if ( -e ("$templatesdir/$usestyle/Poll.template") ) {
+    require "$templatesdir/$usestyle/Poll.template";
+}
+else {
+    require "$templatesdir/default/Poll.template";
+}
+
 sub DoVote {
     $pollnum = $INFO{'num'};
     $start   = $INFO{'start'};
@@ -344,23 +351,6 @@ qq~<a href="$scripturl?num=$pollnum" class="nav">$psub</a> &rsaquo; $polltxt{'42
     $yynavigation =
 qq~&rsaquo; $template_cat &rsaquo; $template_board &rsaquo; $curthreadurl~;
 
-    $yymain .= qq~
-<br />
-<form action="$scripturl?action=undovote;num=$pollnum$start" method="post" style="display: inline;">
-<input type="hidden" name="multidel" value="1" />
-    <table class="bordercolor pad_4px cs_thin" style="width:90%">
-        <tr>
-            <td class="titlebg" colspan="5">$img{'pollicon'} <span class="text1"><b>$polltxt{'42'}</b></span></td>
-        </tr><tr>
-            <td class="windowbg2" colspan="5"><br /><b>$polltxt{'16'}:</b> $poll_question<br /><br /></td>
-        </tr><tr>
-            <td class="catbg center"><b>&nbsp;</b></td>
-            <td class="catbg center"><b>$polltxt{'35'}</b></td>
-            <td class="catbg center"><b>$polltxt{'30'}</b></td>
-            <td class="catbg center"><b>$polltxt{'31'}</b></td>
-            <td class="catbg center"><b>$polltxt{'24'}</b></td>
-        </tr><tr>~;
-
     foreach my $entry (@polled) {
         chomp $entry;
         $voted = q{};
@@ -387,20 +377,19 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$voters_name}">$
           ? qq~<a href="$scripturl?action=iplookup;ip=$voters_ip">$voters_ip</a>~
           : qq~$voters_ip~;
         $vote_date = timeformat($vote_date);
-        $yymain .= qq~
-            <td class="windowbg2 center"><input type="checkbox" name="$id" value="1" /></td>
-            <td class="windowbg2">$voters_name</td>
-            <td class="windowbg2 center">$lookupIP</td>
-            <td class="windowbg2 center">$vote_date</td>
-            <td class="windowbg2">$voted</td>
-        </tr><tr>~;
+        $my_IP .= $mypoll_IP;
+        $my_IP =~ s/{yabb id}/$id/sm;
+        $my_IP =~ s/{yabb voters_name}/$voters_name/sm;
+        $my_IP =~ s/{yabb lookupIP}/$lookupIP/sm;
+        $my_IP =~ s/{yabb vote_date}/$vote_date/sm;
+        $my_IP =~ s/{yabb voted}/$voted/sm;
     }
 
-    $yymain .= qq~
-            <td class="titlebg center" colspan="5"><input type="submit" value="$polltxt{'49'}" class="button" /></td>
-        </tr>
-    </table>
-</form>~;
+    $yymain .= $mypoll_details;
+    $yymain =~ s/{yabb pollnum}/$pollnum/sm;
+    $yymain =~ s/{yabb start}/$start/sm;
+    $yymain =~ s/{yabb poll_question}/$poll_question/sm;
+    $yymain =~ s/{yabb my_IP}/$my_IP/sm;
 
     $display_template =~ s/({|<)yabb home(}|>)/$template_home/gsm;
     $display_template =~ s/({|<)yabb category(}|>)/$template_cat/gsm;
@@ -569,12 +558,8 @@ qq~$menusep<a href="javascript:document.removepoll.submit();" class="altlink" on
 qq~<a href="$scripturl?action=showvoters;num=$pollnum">$img{'viewvotes'}</a>~;
         }
         if ($hide_results) {
-            $endedtext =
-              qq~<span style="color: #FF0000;"><b>$polltxt{'53'}</b></span></td>
-                </tr><tr>
-                  <td class="windowbg2 center" colspan="2"><br />~;
+            $endedtext = $mypoll_ended;
             $hide_results = 0;
-            $bgclass      = 'windowbg2';
         }
     }
 
@@ -604,16 +589,11 @@ qq~<span class="small">&#171; $polltxt{'45'}: $poll_name $polltxt{'46'}: $poll_d
     }
 
     if ($poll_locked) {
-        $bgclass = 'windowbg2';
-        $endedtext =
-          qq~<span style="color: #FF0000;"><b>$polltxt{'22'}</b></span></td>
-        </tr><tr>
-            <td class="windowbg2 center" colspan="2"><br />~;
+        $endedtext = $mypoll_locked;
         $poll_icon = $img{'polliconclosed'};
         $has_voted = 5;
     }
     else {
-        $bgclass   = 'windowbg2';
         $poll_icon = $img{'pollicon'};
     }
 
@@ -661,39 +641,25 @@ qq~<a href="$scripturl?action=undovote;num=$pollnum$scp">$img{'deletevote'}</a>~
         $footer =
           qq~<input type="submit" value="$polltxt{'18'}" class="button" />~;
         $width   = q~ width="80%"~;
-        $bgclass = 'windowbg2';
     }
     check_deletepoll();
     if ( $iamguest || $poll_locked || $poll_nodelete{$username} ) {
         $deletevote = q{};
     }
 
-    $pollmain = qq~
-<form name="removepoll" action="$scripturl?action=modify2;d=1" method="post" style="display: inline">
-        <input type="hidden" name="thread" value="$pollnum" />
-        <input type="hidden" name="id" value="Poll" />
-</form>
-
-<form name="poll" method="post" action="$scripturl?action=vote;num=$pollnum$scp" style="display: inline;">
-    <table class="bordercolor pad_4px cs_thin">
-        <tr>
-            <td class="titlebg">
-                <div style="float: left; width: 50%; text-align: left;">
-                    <span class="text1">$poll_icon <b>$polltxt{'15'}</b>$boardpoll</span>
-                </div>
-                <div style="float: left; width: 50%; text-align: right;">
-                    <span class="small">$lockpoll$modifypoll$deletepoll</span>
-                </div>
-            </td>
-        </tr><tr>
-            <td class="catbg vtop">
-                <div style="float: left; width: 80%;">
-                    <b>$polltxt{'16'}:</b> $poll_question
-                </div>
-        ~;
+    $pollmain = $mypoll_display;
+    $pollmain =~ s/{yabb pollnum}/$pollnum/gsm;
+    $pollmain =~ s/{yabb scp}/$scp/sm;
+    $pollmain =~ s/{yabb poll_icon}/$poll_icon/gsm;
+    $pollmain =~ s/{yabb boardpoll}/$boardpoll/gsm;
+    $pollmain =~ s/{yabb lockpoll}/$lockpoll/gsm;
+    $pollmain =~ s/{yabb modifypoll}/$modifypoll/gsm;
+    $pollmain =~ s/{yabb deletepoll}/$deletepoll/gsm;
+    $pollmain =~ s/{yabb poll_question}/$poll_question/gsm;
+    
     if ($has_voted) {
         if ( !$hide_results || $poll_locked ) {
-            $pollmain .= qq~
+            $poll_notlocked = qq~
         <div style="float: left; width: 20%; text-align: right;">
             <script type="text/javascript">
                 <!--
@@ -705,24 +671,18 @@ qq~<a href="$scripturl?action=undovote;num=$pollnum$scp">$img{'deletevote'}</a>~
         ~;
         }
     }
-    $pollmain .= qq~
-            </td>
-        </tr><tr>
-            <td class="$bgclass center" colspan="2">
-        $endedtext
-                <div class="$bgclass" id="piestyle" style="width: 100%;"><br />~;
 
     if ( $has_voted && $hide_results && !$poll_locked ) {
 
         # Display Poll Hidden Message
-        $pollmain .=
+        $poll_hidden .=
 qq~$polltxt{'47'}<br /><span class="small">($polltxt{'48'})</span><br />~;
 
     }
     else {
         if ($has_voted) {
             if ( $INFO{'view'} eq 'pie' ) {
-                $pollmain .= qq~
+                $poll_hasvoted = qq~
                 <script src="$yyhtml_root/piechart.js" type="text/javascript"></script>
                 <script type="text/javascript">
                 <!--
@@ -756,7 +716,7 @@ qq~$polltxt{'47'}<br /><span class="small">($polltxt{'48'})</span><br />~;
                         $pollbar     = int( 150 * $votes[$i] / $maxvote );
                     }
                     $pollbar  .= 'px';
-                    $pollmain .= qq~
+                    $poll_hasvoted .= qq~
                 <div style="clear: both; height: 18px; vertical-align: middle;">
                 <div style="float: left; width: 50%; text-align: right;">$options[$i]&nbsp;&nbsp;&nbsp;&nbsp;</div>
                 <div style="float: left; text-align: left; width: $pollbar; height: 10px; background-color: $slicecolor[$i]; border: 1px outset $slicecolor[$i];"></div>
@@ -778,19 +738,14 @@ qq~<input type="checkbox" name="option$i" id="option$i" value="$i" style="margin
                     $input =
 qq~<input type="radio" name="option" id="option$i" value="$i" style="margin: 0; padding: 0; vertical-align: middle;" />~;
                 }
-                $pollmain .= qq~
+                $poll_hasvoted .= qq~
         <div style="clear: both;">
             <div style="float: left; height: 22px; text-align: right;">$input <label for="option$i"><b>$options[$i]</b></label></div>
         </div>~;
             }
         }
     }
-    $pollmain .= qq~
-            <br />
-        </div>
-        <div style="width: 100%;">
-            <br />$footer
-        </div>~;
+
     if ( $poll_comment ne q{} ) {
         $poll_comment = Censor($poll_comment);
         $message      = $poll_comment;
@@ -800,7 +755,7 @@ qq~<input type="radio" name="option" id="option$i" value="$i" style="margin: 0; 
         }
         $poll_comment = $message;
         ToChars($poll_comment);
-        $pollmain .= qq~
+        $my_pollcomment = qq~
         <div style="width: 100%;"><br />$poll_comment</div>~;
     }
     if ( !$poll_locked && $poll_end ) {
@@ -821,18 +776,29 @@ qq~<input type="radio" name="option" id="option$i" value="$i" style="margin: 0; 
     else {
         $poll_end = q{};
     }
-    $pollmain .= qq~
-                <div style="float: left; width: 49%; text-align: left;">
-                    <span class="small">$poll_end$displaydate</span>
-                </div>
-                <div style="float: left; width: 50%; text-align: right;">
-                    <span class="small">$viewthread$deletevote$displayvoters</span>
-                </div>
-            </td>
-        </tr>
-    </table>
-</form>~;
-    return;
+
+    $pollmain = $mypoll_display;
+    $pollmain =~ s/{yabb pollnum}/$pollnum/gsm;
+    $pollmain =~ s/{yabb scp}/$scp/sm;
+    $pollmain =~ s/{yabb poll_icon}/$poll_icon/sm;
+    $pollmain =~ s/{yabb boardpoll}/$boardpoll/sm;
+    $pollmain =~ s/{yabb lockpoll}/$lockpoll/sm;
+    $pollmain =~ s/{yabb modifypoll}/$modifypoll/sm;
+    $pollmain =~ s/{yabb deletepoll}/$deletepoll/sm;
+    $pollmain =~ s/{yabb poll_question}/$poll_question/sm;
+    $pollmain =~ s/{yabb poll_notlocked}/$poll_notlocked/sm;
+    $pollmain =~ s/{yabb poll_notlocked}/$poll_notlocked/sm;
+    $pollmain =~ s/{yabb endedtext}/$endedtext/sm;
+    $pollmain =~ s/{yabb pollhidden}/$pollhidden/sm;
+    $pollmain =~ s/{yabb poll_hasvoted}/$poll_hasvoted/sm;
+    $pollmain =~ s/{yabb footer}/$footer/sm;
+    $pollmain =~ s/{yabb my_pollcomment}/$my_pollcomment/sm;
+    $pollmain =~ s/{yabb poll_end}/$poll_end/sm;
+    $pollmain =~ s/{yabb displaydate}/$displaydate/sm;
+    $pollmain =~ s/{yabb viewthread}/$viewthread/sm;
+    $pollmain =~ s/{yabb deletevote}/$deletevote/sm;
+    $pollmain =~ s/{yabb displayvoters}/$displayvoters/sm;
+    return $pollmain;
 }
 
 sub check_deletepoll {

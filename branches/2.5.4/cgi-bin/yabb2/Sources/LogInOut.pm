@@ -167,13 +167,14 @@ sub Logout {
 }
 
 sub sharedLogin {
+if ( -e ("$templatesdir/$usestyle/Loginout.template") ) {
+    require "$templatesdir/$usestyle/Loginout.template";
+}
+else {
+    require "$templatesdir/default/Loginout.template";
+}
     if ( $action eq 'login' || $maintenance ) {
         $yynavigation = qq~&rsaquo; $loginout_txt{'34'}~;
-        $border =
-q~<div class="bordercolor" style="width: 100%; margin-bottom: 8px; margin-left: auto; margin-right: auto;">~;
-        $border_with_title =
-q~<div class="bordercolor" style="width: 700px; margin-bottom: 8px; margin-left: auto; margin-right: auto;">~;
-        $border_bottom = q~</div>~;
     }
 
     if    ( $Cookie_Length == 1 )    { $clsel1    = ' selected="selected"'; }
@@ -185,30 +186,18 @@ q~<div class="bordercolor" style="width: 700px; margin-bottom: 8px; margin-left:
     elsif ( $Cookie_Length == 600 )  { $clsel600  = ' selected="selected"'; }
     elsif ( $Cookie_Length == 720 )  { $clsel720  = ' selected="selected"'; }
     elsif ( $Cookie_Length == 1440 ) { $clsel1440 = ' selected="selected"'; }
+
     if ( $sharedLogin_title ne q{} ) {
-        $sharedlog .= qq~
-$border_with_title
-<table class="pad_4px cs_thin" style="margin-top:10px">
-    <tr>
-        <td class="titlebg" colspan="2"><b>$sharedLogin_title</b></td></tr>~;
+        $sharedlog = $mysharedloga;
+        $sharedlog =~ s/{yabb sharedLogin_title}/$sharedLogin_title/sm;
         if ( $sharedLogin_text ne q{} ) {
-            $sharedlog .= qq~<tr>
-        <td class="windowbg" colspan="2">$sharedLogin_text</td>
-    </tr>~;
+            $sharedlog .= $mysharedlogb;
+            $sharedlog =~ s/{yabb sharedLogin_text}/$sharedLogin_text/sm;
         }
-        $sharedlog .= q~<tr>
-        <td class="windowbg2 center padd_10px" colspan="2">~;
+        $sharedlog .= $mysharedlogc;
     }
     else {
-        $sharedlog .= qq~
-$border
-<table class="bordercolor cs_thin" style="margin-top:10px">
-    <col style="width:5%" />
-    <tr>
-        <td class="tabtitle" style="height:25px; padding-left:1%" colspan="2">$loginout_txt{'34'}</td>
-    </tr><tr>
-        <td class="windowbg center"><img src="$imagesdir/login.gif" alt="" /></td>
-        <td class="windowbg2 center padd_10px">~;
+        $sharedlog = $mysharedlog_top;
     }
     if ($maintenance) { $hide_passbutton = ' visibility: hidden;'; }
     if ( $maintenance || !$regtype ) {
@@ -217,27 +206,7 @@ $border
     $sharedlog .= qq~
             <form name="loginform" action="$scripturl?action=login2" method="post" accept-charset="$yycharset">
                 <input type="hidden" name="sredir" value="$INFO{'sesredir'}" />
-                <div style="width: 600px;">
-                    <span style="float: left; width: 50%; text-align: left; margin-bottom: 5px;">
-                        <label for="username">$loginout_txt{'35'}</label>:<br />
-                        <input type="text" name="username" id="username" size="30" maxlength="100" style="width: 285px;" tabindex="1"$regstyle />
-                    </span>
-                    <span style="float: left; width: 23%; text-align: center; margin-bottom: 5px;">
-                        &nbsp;
-                    </span>
-                    <span style="float: left; width: 27%; text-align: right; margin-bottom: 5px;">
-                        &nbsp;<br />
-                        <input type="button" value="$maintxt{'97'}" style="width: 160px;$hide_regbutton" onclick="location.href='$scripturl?action=register'" tabindex="6" class="button" />
-                    </span>
-                </div>
-                <div style="width: 600px;">
-                    <span style="float: left; width: 29%; text-align: left; margin-bottom: 5px;">
-                        <label for="passwrd">$loginout_txt{'36'}</label>:<br />
-                        <input type="password" name="passwrd" id="passwrd" size="15" maxlength="30" style="width: 110px;" tabindex="2" onkeypress="capsLock(event,'shared_login')" />
-                    </span>
-                    <span style="float: left; width: 21%; text-align: left; margin-bottom: 5px;">
-                        <label for="cookielength">$loginout_txt{'497'}</label>:<br />
-                        <select name="cookielength" id="cookielength" style="width: 117px;" tabindex="3">
+    $mysharedlog_bodya
                         <option value="2"$clsel2>$loginout_txt{'497d'}</option>
                         <option value="1"$clsel1>$loginout_txt{'497c'}</option>
                         <option value="60"$clsel60>1 $loginout_txt{'497a'}</option>
@@ -246,27 +215,12 @@ $border
                         <option value="480"$clsel480>8 $loginout_txt{'497b'}</option>
                         <option value="600"$clsel600>10 $loginout_txt{'497b'}</option>
                         <option value="720"$clsel720>12 $loginout_txt{'497b'}</option>
-                        <option value="1440"$clsel1440>24 $loginout_txt{'497b'}</option>
-                        </select>
-                    </span>
-                    <span style="float: left; width: 23%; text-align: center; margin-bottom: 5px;">
-                        &nbsp;<br />
-                        <input type="submit" value="$loginout_txt{'34'}" tabindex="4" accesskey="l" style="width: 100px;" class="button" />
-                    </span>
-                    <span style="float: left; width: 27%; text-align: right; margin-bottom: 5px;">
-                        &nbsp;<br />
-                        <input type="button" value="$loginout_txt{'315'}" style="width: 160px;$hide_passbutton" onclick="location.href='$scripturl?action=reminder'" tabindex="5" class="button" />
-                    </span>
-                    <br /><br />
-                </div>
-                <div style="width: 600px; text-align: left; color: red; font-weight: bold; display: none" id="shared_login">$loginout_txt{'capslock'}</div>
-                <div style="width: 600px; text-align: left; color: red; font-weight: bold; display: none" id="shared_login_char">$loginout_txt{'wrong_char'}: <span id="shared_login_character">&nbsp;</span></div>
-            </form>
-        </td>
-    </tr>
-</table>
-$border_bottom
-~;
+                        <option value="1440"$clsel1440>24 $loginout_txt{'497b'}</option>~ .
+    $mysharedlog_bodyb;                        
+    $sharedlog =~ s/{yabb regstyle}/$regstyle/sm;
+    $sharedlog =~ s/{yabb hide_regbutton}/$hide_regbutton/sm;
+    $sharedlog =~ s/{yabb hide_regbutton}/$hide_regbutton/sm;
+    $sharedlog =~ s/{yabb hide_passbutton}/$hide_passbutton/sm;
 
     $loginform         = 1;
     $sharedLogin_title = q{};
@@ -278,34 +232,23 @@ sub Reminder {
     if ( !$iamguest && $sessionvalid == 1 ) {
         fatal_error( 'logged_in_already', $username );
     }
+if ( -e ("$templatesdir/$usestyle/Loginout.template") ) {
+    require "$templatesdir/$usestyle/Loginout.template";
+}
+else {
+    require "$templatesdir/default/Loginout.template";
+}
     $yymain .= qq~<br /><br />
 <form action="$scripturl?action=reminder2" method="post" name="reminder" onsubmit="return CheckReminderField();" accept-charset="$yycharset">
-<table class="bordercolor pad_3px cs_thin" style="width:400px">
-    <tr>
-        <td class="titlebg">
-            <span class="text1"><b>$mbname $loginout_txt{'36'} $loginout_txt{'194'}</b></span>
-        </td>
-    </tr><tr>
-        <td class="windowbg">
-            <label for="user"><span class="text1"><b>$loginout_txt{'35'}:</b></span></label>
-            <input type="text" name="user" id="user" maxlength="100" $regstyle size="50" />
-        </td>
-    </tr>~;
+$myremindera~;
+    $yymain =~ s/{yabb mbname}/$mbname/sm;
+    $yymain =~ s/{yabb regstyle}/$regstyle/sm;
 
     if ($regcheck) {
         validation_code();
-        $yymain .= qq~<tr>
-        <td class="windowbg">
-            <label for="verification"><span class="text1"><b>$floodtxt{'1'}: </b></span>
-            $showcheck
-            <br /><span class="small">$flood_text</span></label>
-        </td>
-    </tr><tr>
-        <td class="windowbg">
-            <label for="verification"><span class="text1"><b>$floodtxt{'3'}: </b></span></label>
-            <span class="text1"><input type="text" maxlength="30" name="verification" id="verification" size="20" /></span>
-        </td>
-    </tr>~;
+        $yymain .= $myreminder_regcheck;
+        $yymain =~ s/{yabb flood_text}/$flood_text/sm;
+        $yymain =~ s/{yabb showcheck}/$showcheck/sm;
     }
     if ( $spam_questions_send && -e "$langdir/$language/spam.questions" ) {
         SpamQuestion();
@@ -314,23 +257,14 @@ sub Reminder {
             $verification_question_desc =
               qq~<br />$loginout_txt{'verification_question_case'}~;
         }
-        $yymain .= qq~<tr>
-    <td class="windowbg">
-        <label for="verification_question"><b>$spam_question</b><br />
-        <input type="text" name="verification_question" id="verification_question" size="50" maxlength="50" />
-        <input type="hidden" name="verification_question_id" value="$spam_question_id" /><br />
-        <span class="small">$loginout_txt{'verification_question_desc'}$verification_question_desc</span></label>
-        </td>
-    </tr>~;
+        $yymain .= $myreminder_vericheck;
+        $yymain =~ s/{yabb spam_question}/$spam_question/sm;
+        $yymain =~ s/{yabb spam_question_id}/$spam_question_id/sm;
+        $yymain =~ s/{yabb verification_question_desc}/$verification_question_desc/sm;
     }
 
-    $yymain .= qq~<tr>
-        <td class="windowbg center">
-            <input type="submit" value="$loginout_txt{'339'}" class="button" />
-        </td>
-    </tr>
-</table>
-</form>
+    $yymain .= $myreminder_endform;
+    $yymain .= qq~
 <script type="text/javascript">
 <!--
     document.reminder.user.focus();
@@ -449,22 +383,17 @@ sub Reminder2 {
     );
     sendmail( ${ $uid . $user }{'email'}, $subject, $message );
 
-    $yymain .= qq~<br /><br />
-<table class="bordercolor pad_3px cs_thin" style="width:400px">
-    <tr>
-        <td class="titlebg">
-            <span class="text1"><b>$mbname $loginout_txt{'36'} $loginout_txt{'194'}</b></span>
-        </td>
-    </tr><tr>
-        <td class="windowbg center">
-            <b>$loginout_txt{'192'} $FORM{'user'}</b>
-        </td>
-    </tr>
-</table>
-<br />
-<p class="center"><a href="$scripturl">$maintxt{'go_to_board'}</a></p><br />
+    if ( -e ("$templatesdir/$usestyle/Loginout.template") ) {
+        require "$templatesdir/$usestyle/Loginout.template";
+    }
+    else {
+        require "$templatesdir/default/Loginout.template";
+    }
 
-~;
+    $yymain .= $myreminder2;
+    $yymain =~ s/{yabb mbname}/$mbname/sm;
+    $yymain =~ s/{yabb forum_user}/$FORM{'user'}/sm;
+
     $yytitle = "$loginout_txt{'669'}";
     template();
     return;

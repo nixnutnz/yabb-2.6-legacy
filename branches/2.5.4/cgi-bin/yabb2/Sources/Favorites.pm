@@ -22,7 +22,12 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 sub Favorites {
     LoadLanguage('MessageIndex');
-    require "$templatesdir/$usemessage/MessageIndex.template";
+if ( -e ("$templatesdir/$usestyle/MyPosts.template") ) {
+    require "$templatesdir/$usestyle/MyPosts.template";
+}
+else {
+    require "$templatesdir/default/MyPosts.template";
+}
     my $start = int( $INFO{'start'} ) || 0;
     my (
         @threads, $counter, $pages, $mnum,     $msub,
@@ -195,7 +200,6 @@ qq~<a href="$scripturl?virboard=$currentboard;num=$mnum/new"><img src="$imagesdi
                     $new =
 qq~<a href="$scripturl?num=$mnum/new"><img src="$imagesdir/new.gif" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'302'}"/></a>~;
                 }
-
             }
             else {
                 $new = q{};
@@ -358,7 +362,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$lastposter">$format_unbold{$
 # Check if the thread contains attachments and create a paper-clip icon if it does
         $temp_attachment =
           $attachments{$mnum}
-          ? qq~<a href="javascript:void(window.open('$scripturl?action=viewdownloads;thread=$mnum','_blank','width=800,height=650,scrollbars=yes'))"><img src="$imagesdir/paperclip.gif" alt="$messageindex_txt{'3'} $attachments{$mnum} ~
+          ? qq~<a href="javascript:void(window.open('$scripturl?action=viewdownloads;thread=$mnum','_blank','width=800,height=650,scrollbars=yes'))"><img src="$imagesdir/$my_fav_paperclip" alt="$messageindex_txt{'3'} $attachments{$mnum} ~
           . (
               $attachments{$mnum} == 1
             ? $messageindex_txt{'5'}
@@ -459,7 +463,7 @@ qq~<form name="multiremfav" action="$scripturl?board=$currentboard;action=multir
     LoadAccess();
 
     $adminselector = qq~
-    <input type="submit" value="$messageindex_txt{'842'}" class="button" />
+    <input type="submit" value="$messageindex_txt{'842'}" class="button small" />
     ~;
 
     $admincheckboxes = q~
@@ -471,15 +475,14 @@ qq~<form name="multiremfav" action="$scripturl?board=$currentboard;action=multir
     # Template it
     $adminheader =~ s/({|<)yabb admin(}|>)/$messageindex_txt{'2'}/gsm;
 
-    $messageindex_template =~ s/({|<)yabb home(}|>)//gsm;
-    $messageindex_template =~ s/({|<)yabb category(}|>)//gsm;
+    $favorites_template =~ s/({|<)yabb home(}|>)//gsm;
+    $favorites_template =~ s/({|<)yabb category(}|>)//gsm;
 
     $yynavigation =
 qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'}</a> &rsaquo; $img_txt{'70'}~;
 
     $favboard = qq~<span class="nav">$img_txt{'70'}</span>~;
-    $messageindex_template =~ s/({|<)yabb board(}|>)/$favboard/gsm;
-    $messageindex_template =~ s/({|<)yabb moderators(}|>)//gsm;
+    $favorites_template =~ s/({|<)yabb board(}|>)/$favboard/gsm;
     $bdescrip =
 qq~$messageindex_txt{'75'}<br />$messageindex_txt{'76'} $curfav $messageindex_txt{'77'} $maxfavs $messageindex_txt{'78'}~;
     $curfav   = NumberFormat($curfav);
@@ -488,36 +491,25 @@ qq~$messageindex_txt{'75'}<br />$messageindex_txt{'76'} $curfav $messageindex_tx
 
     ToChars($bdescrip);
     $boarddescription =~ s/({|<)yabb boarddescription(}|>)/$bdescrip/gsm;
-    $messageindex_template =~
+    $favorites_template =~
       s/({|<)yabb description(}|>)/$boarddescription/gsm;
     $bdpic =
-qq~ <img src="$imagesdir/favboards.$bdpicExt" alt="$img_txt{'70'}" title="$img_txt{'70'}" /> ~;
-    $messageindex_template =~ s/({|<)yabb bdpicture(}|>)/$bdpic/gsm;
-    $messageindex_template =~ s/({|<)yabb threadcount(}|>)/$curfav/gsm;
-    $messageindex_template =~ s/({|<)yabb messagecount(}|>)/$treplies/gsm;
+qq~ <img src="$imagesdir/$my_favbrds" alt="$img_txt{'70'}" title="$img_txt{'70'}" /> ~;
+    $favorites_template =~ s/({|<)yabb bdpicture(}|>)/$bdpic/gsm;
+    $favorites_template =~ s/({|<)yabb threadcount(}|>)/$curfav/gsm;
+    $favorites_template =~ s/({|<)yabb messagecount(}|>)/$treplies/gsm;
 
-    $messageindex_template =~ s/({|<)yabb colspan(}|>)/$colspan/gsm;
-    $messageindex_template =~ s/({|<)yabb notify button(}|>)//gsm;
-    $messageindex_template =~ s/({|<)yabb markall button(}|>)//gsm;
-    $messageindex_template =~ s/({|<)yabb new post button(}|>)//gsm;
-    $messageindex_template =~ s/({|<)yabb new poll button(}|>)//gsm;
-    $messageindex_template =~ s/({|<)yabb pageindex top(}|>)//gsm;
-    $messageindex_template =~ s/({|<)yabb pageindex bottom(}|>)//gsm;
-    $messageindex_template =~ s/({|<)yabb topichandellist(}|>)//gsm;
-    $messageindex_template =~ s/({|<)yabb pageindex toggle(}|>)//gsm;
+    $favorites_template =~ s/({|<)yabb colspan(}|>)/$colspan/gsm;
 
-    $messageindex_template =~ s/({|<)yabb admin column(}|>)/$adminheader/gsm;
-    $messageindex_template =~ s/({|<)yabb modupdate(}|>)/$formstart/gsm;
-    $messageindex_template =~ s/({|<)yabb modupdateend(}|>)/$formend/gsm;
+    $favorites_template =~ s/({|<)yabb admin column(}|>)/$adminheader/gsm;
+    $favorites_template =~ s/({|<)yabb modupdate(}|>)/$formstart/gsm;
+    $favorites_template =~ s/({|<)yabb modupdateend(}|>)/$formend/gsm;
 
-    $messageindex_template =~ s/({|<)yabb stickyblock(}|>)//gsm;
-    $messageindex_template =~ s/({|<)yabb threadblock(}|>)/$tmptempbar/gsm;
-    $messageindex_template =~ s/({|<)yabb adminfooter(}|>)/$subfooterbar/gsm;
-    $messageindex_template =~ s/({|<)yabb icons(}|>)/$yabbicons/gsm;
-    $messageindex_template =~ s/({|<)yabb admin icons(}|>)/$yabbadminicons/gsm;
-    $messageindex_template =~ s/({|<)yabb rss(}|>)//gsm;
-    $messageindex_template =~ s/({|<)yabb rssfeed(}|>)//gsm;
-    $showFavorites .= qq~$messageindex_template~;
+    $favorites_template =~ s/({|<)yabb threadblock(}|>)/$tmptempbar/gsm;
+    $favorites_template =~ s/({|<)yabb adminfooter(}|>)/$subfooterbar/gsm;
+    $favorites_template =~ s/({|<)yabb icons(}|>)/$yabbicons/gsm;
+    $favorites_template =~ s/({|<)yabb admin icons(}|>)/$yabbadminicons/gsm;
+    $showFavorites .= qq~$favorites_template~;
 
     $showFavorites .= qq~
 <script type="text/javascript">

@@ -90,7 +90,7 @@ sub MessageIndex {
 
     # Load announcements, if they exist.
     if ( $annboard && $annboard ne $currentboard
-        || ${ $uid . $currentboard }{'rbin'} != 1 )
+        && ${ $uid . $currentboard }{'rbin'} != 1 )
     {
         chomp $annboard;
         fopen( ANN, "$boardsdir/$annboard.txt" );
@@ -450,14 +450,14 @@ qq~<a href="$scripturl?board=$currentboard" class="a"><b>$curboardname</b></a>~;
         my ( $pboardname, undef, undef ) =
           split /\|/xsm, $board{"$parentboard"};
         ToChars($pboardname);
-        if ( ${ $uid . $parentboard }{'canpost'} ) {
+
+        if ( ${ $uid . $parentboard }{'canpost'} || !$subboard{$parentboard} ) {
             $pboardname =
 qq~<a href="$scripturl?board=$parentboard" class="a"><b>$pboardname</b></a>~;
         }
         else {
             $pboardname =
-qq~<a href="$scripturl?boardselect=$parentboard&subboards=1" class="a"><b>$pboardname</b></a>~;
-        }
+qq~<a href="$scripturl?boardselect=$parentboard&subboards=1" class="a"><b>$pboardname</b></a>~;        }
         $boardtree   = qq~ &rsaquo; $pboardname$boardtree~;
         $parentboard = ${ $uid . $parentboard }{'parent'};
     }
@@ -856,10 +856,11 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">$f
           ? (
             ( $guest_media_disallowed && $iamguest )
             ? qq~<img src="$imagesdir/$msgbrd_paperclip" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" />~
-            : qq~<a href="javascript:void(window.open('$scripturl?action=viewdownloads;thread=$mnum','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">~
+            : $msg_attach_win
               . qq~<img src="$imagesdir/$msgbrd_paperclip" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" style="border-style:none;" /></a>~
           )
           : q{};
+          $temp_attachment =~ s/{yabb mnum}/$mnum/sm;
 
         $mcount++;
 
@@ -1023,9 +1024,8 @@ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies
 
 # Put a "no messages" message if no threads exist - just a  bit more friendly...
     if ( !$tmptempbar ) {
-        $tmptempbar = qq~<tr>
-            <td class="windowbg2 center" colspan="$colspan"><br />$messageindex_txt{'841'}<br /><br /></td>
-        </tr>~;
+        $tmptempbar = $brd_tmptempbar;
+        $tmptempbar =~ s/{yabb colspan}/$colspan/sm;
     }
 
     my $multiview = 0;
@@ -1611,39 +1611,11 @@ sub ListPages {
     $pages =~ s/\n\Z//xsm;
 
     print_output_header();
+    require "$templatesdir/$usemessage/MessageIndex.template";
 
-    $output =
-qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
-<title>$messageindex_txt{'139'} $messageindex_txt{'18'}</title>
-<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
-</head>
-<body style="min-width: 350px;">
-    <script type="text/javascript">
-    <!--
-    function opp_page(tid,pid) {
-        opener.location= "$scripturl?$jcode" + tid + "/" + pid;
-        self.close();
-    }
-    //-->
-    </script>
-    <table class="bordercolor pad_4px cs_thin">
-    <tr>
-        <td class="titlebg center">$messageindex_txt{'139'} $messageindex_txt{'18'}</td>
-    </tr><tr>
-        <td class="catbg center">
-            <br /><br /><br /><br />
-            <p>&laquo; $messageindex_txt{'139'} $pages &raquo;</p>
-            <br /><br /><br /><br />
-        </td>
-    </tr><tr>
-        <td class="windowbg center"><a href="javascript: window.close();">$messageindex_txt{'903'}</a></td>
-    </tr>
-    </table>
-</body>
-</html>~;
+    $output = $msg_listpages;
+    $output =~ s/{yabb jcode}/$jcode/sm;
+    $output =~ s/{yabb pages}/$pages/sm;
 
     print_HTML_output_and_finish();
     return;

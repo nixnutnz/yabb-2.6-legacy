@@ -27,6 +27,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 # Sub RecentPosts will show the X last POSTS
 # Even if they are all from the same thread
+require "$templatesdir/$usedisplay/Display.template";
 
 sub RecentPosts {
     spam_protection();
@@ -120,11 +121,10 @@ sub RecentPosts {
 
     if ( $numfound > 0 ) {
         if ( $numfound > $display ) { $numfound = $display; }
-        $counter = 1;
         LoadCensorList();
     }
     else {
-        $yymain .= qq~<hr class="hr"><b>$maintxt{'170'}</b><hr>~;
+        $yymain .= qq~<hr class="hr"><b>$maintxt{'170'}</b><hr />~;
     }
 
     for my $i ( 0 .. ( $numfound - 1 ) ) {
@@ -227,39 +227,26 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under"
             $boardtree   = qq~ / $pboardname$boardtree~;
             $parentboard = ${ $uid . $parentboard }{'parent'};
         }
-
-        $yymain .= qq~
-<table class="tabtitle">
-    <col style="width:5%" />
-    <tr>
-        <td class="center h_30px">$counter</td>
-        <td>&nbsp;<a href="$scripturl?catselect=$catid{$board}"><span class="under">$catname{$board}</span></a>$boardtree / <a href="$scripturl?num=$tnum/$c#$c"><span class="under">$msub</span></a><br />
-        &nbsp;<span class="small">$maintxt{'30'}: $mdate</span>&nbsp;</td>
-    </tr>
-</table>
-<table style="table-layout: fixed">
-    <tr>
-        <td>
-            <table class="titlebg">
-                <tr>
-                    <td style="padding-left:5px">$maintxt{'109'} $tname | $maintxt{'197'} $mname</td>~;
+        $counter = $i + 1;
 
         if ( $tstate != 1 && ( !$iamguest || $enable_guestposting ) ) {
-            $yymain .= qq~
-            <td class="right">&nbsp;
-                <a href="$scripturl?board=$board;action=post;num=$tnum/$c#$c;title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num=$tnum;quote=$c;title=PostReply">$img{'recentquote'}</a>$notify &nbsp;
-            </td>~;
+            $my_tstate = $myrecent_mess;
+            $my_tstate =~ s/{yabb tnum}/$tnum/gsm;
+            $my_tstate =~ s/{yabb c}/$c/gsm;
         }
 
-        $yymain .= qq~</tr>
-            </table>
-        </td>
-    </tr><tr>
-        <td class="windowbg2 vtop h_80px" style="padding:5px"><div class="message" style="float: left; width: 99%; overflow: auto;">$message</div></td>
-    </tr>
-</table><br />
-~;
-        ++$counter;
+        $yymain .= $myrecent;
+        $yymain =~ s/{yabb counter}/$counter/sm;
+        $yymain =~ s/{yabb catbrd}/$catid{$board}/sm;
+        $yymain =~ s/{yabb catname}/$catname{$board}/sm;
+        $yymain =~ s/{yabb boardtree}/$boardtree/sm;
+        $yymain =~ s/{yabb tnum}/$tnum\/$c#$c/sm;
+        $yymain =~ s/{yabb msub}/$msub/sm;
+        $yymain =~ s/{yabb mdate}/$mdate/sm;
+        $yymain =~ s/{yabb tname}/$tname/sm;
+        $yymain =~ s/{yabb mname}/$mname/sm;
+        $yymain =~ s/{yabb my_tstate}/$my_tstate/sm;
+        $yymain =~ s/{yabb message}/$message/sm;
     }
 
     if ($img_greybox) {
@@ -441,38 +428,26 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under"
             $boardtree   = qq~ / $pboardname$boardtree~;
             $parentboard = ${ $uid . $parentboard }{'parent'};
         }
-
-        $yymain .= q~
-<table class="tabtitle">
-    <col style="width:5%" />
-    <tr>
-        <td class="center h_30px">~ . ( $i + 1 ) . qq~</td>
-        <td>&nbsp;<a href="$scripturl?catselect=$catid{$board}"><span class="under">$catname{$board}</span></a>$boardtree / <a href="$scripturl?num=$tnum/$c#$c"><span class="under">$msub</span></a><br />
-        &nbsp;<span class="small">$maintxt{'30'}: $mdate</span>&nbsp;</td>
-    </tr>
-</table>
-<table style="table-layout: fixed">
-    <tr>
-        <td>
-            <table class="titlebg">
-                <tr>
-                    <td style="padding-left:5px">$maintxt{'109'} $tname | $maintxt{'197'} $mname</td>~;
+        $counter = $i + 1;
 
         if ( $tstate != 1 && ( !$iamguest || $enable_guestposting ) ) {
-            $yymain .= qq~
-            <td class="right">&nbsp;
-                <a href="$scripturl?board=$board;action=post;num=$tnum/$c#$c;title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num=$tnum;quote=$c;title=PostReply">$img{'recentquote'}</a>$notify &nbsp;
-            </td>~;
+            $my_tstate = $myrecent_mess;
+            $my_tstate =~ s/{yabb tnum}/$tnum/gsm;
+            $my_tstate =~ s/{yabb c}/$c/gsm;
         }
 
-        $yymain .= qq~</tr>
-            </table>
-        </td>
-    </tr><tr>
-        <td class="windowbg2 vtop h_80px" style="padding:5px"><div class="message" style="float: left; width: 99%; overflow: auto;">$message</div></td>
-    </tr>
-</table><br />
-~;
+        $yymain .= $myrecent;
+        $yymain =~ s/{yabb counter}/$counter/sm;
+        $yymain =~ s/{yabb catbrd}/$catid{$board}/sm;
+        $yymain =~ s/{yabb catname}/$catname{$board}/sm;
+        $yymain =~ s/{yabb boardtree}/$boardtree/sm;
+        $yymain =~ s/{yabb tnum}/$tnum\/$c#$c/sm;
+        $yymain =~ s/{yabb msub}/$msub/sm;
+        $yymain =~ s/{yabb mdate}/$mdate/sm;
+        $yymain =~ s/{yabb tname}/$tname/sm;
+        $yymain =~ s/{yabb mname}/$mname/sm;
+        $yymain =~ s/{yabb my_tstate}/$my_tstate/sm;
+        $yymain =~ s/{yabb message}/$message/sm;
     }
 
     if ($img_greybox) {

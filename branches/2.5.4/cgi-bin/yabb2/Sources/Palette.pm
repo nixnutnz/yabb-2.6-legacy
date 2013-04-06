@@ -148,7 +148,7 @@ function Pickshowcolor(color) {
     }
 
     print qq~
-    <input type="submit" class="green" /></form>
+    <input type="submit" class="none" /></form>
 </div>
 <div style="position: relative; top: 9px; left: 5px; width: 289px; height: 17px; border: 1px black solid;">
     <span id="viewcolor" style="float: left; width: 192px; height: 17px; border-right: 1px black solid; font-size: 5px; cursor: pointer;" onclick="Pickshowcolor(this.style.backgroundColor)">&nbsp;</span>

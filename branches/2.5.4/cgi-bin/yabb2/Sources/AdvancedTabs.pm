@@ -58,37 +58,21 @@ sub AddNewTab {
         return true
     }
     //-->
-    </script>
+    </script>~
+    . $brd_advanced_tabs;
+    $yyaddtab =~ s/{yabb tabtext}/$tabmenu_txt{'tabtext'}/sm;
+    $yyaddtab =~ s/{yabb taburl}/$tabmenu_txt{'taburl'}/sm;
+    $yyaddtab =~ s/{yabb tabwin}/$tabmenu_txt{'tabwin'}/sm;
+    $yyaddtab =~ s/{yabb tabview}/$tabmenu_txt{'tabview'}/sm;
+    $yyaddtab =~ s/{yabb viewall}/$tabmenu_txt{'viewall'}/sm;
+    $yyaddtab =~ s/{yabb viewmem}/$tabmenu_txt{'viewmem'}/sm;
+    $yyaddtab =~ s/{yabb viewgm}/$tabmenu_txt{'viewgm'}/sm;
+    $yyaddtab =~ s/{yabb viewadm}/$tabmenu_txt{'viewadm'}/sm;
+    $yyaddtab =~ s/{yabb tabinsert}/$tabmenu_txt{'tabinsert'}/sm;
+    $yyaddtab =~ s/{yabb addtab}/$tabmenu_txt{'addtab'}/sm;
+    $yyaddtab =~ s/{yabb edittabs}/$edittabs/sm;
 
-    <form action="$scripturl?action=addtab2" method="post" name="addtabtext" style="font-size: 11px; display: inline;" onsubmit="if(!checkTab(this)) {return false} else {return submittab()}">
-    <table>
-        <col style="width:40px" />
-        <tr>
-            <td class="tabmenuleft">&nbsp;</td>
-            <td class="tabmenu">
-                <span class="selected" style="cursor: auto; vertical-align: middle; padding-top: 1px; white-space: nowrap;"><label for="tabtext">$tabfill$tabmenu_txt{'tabtext'}</label> <input type="text" name="tabtext" id="tabtext" value="" size="10" class="small" style="vertical-align: middle;" /></span>
-                <span class="selected" style="cursor: auto; vertical-align: middle; padding-top: 1px; white-space: nowrap;"><label for="taburl">$tabfill$tabmenu_txt{'taburl'}</label> <input type="text" name="taburl" id="taburl" value="" size="25" class="small" style="vertical-align: middle;" /></span>
-                <span class="selected" style="cursor: auto; vertical-align: middle; padding-top: 1px; white-space: nowrap;"><label for="tabwin">$tabfill$tabmenu_txt{'tabwin'}</label> <input type="checkbox" name="tabwin" id="tabwin" style="border: 0; padding: 0; margin: 0; background-color: transparent; vertical-align: middle;" /></span>
-                <span class="selected" style="cursor: auto; vertical-align: middle; padding-top: 1px; white-space: nowrap;"><label for="showto">$tabfill$tabmenu_txt{'tabview'}</label>
-                    <select name="showto" id="showto" class="small" style="vertical-align: middle;">
-                        <option value="0" selected="selected">$tabmenu_txt{'viewall'}</option>
-                        <option value="1">$tabmenu_txt{'viewmem'}</option>
-                        <option value="2">$tabmenu_txt{'viewgm'}</option>
-                        <option value="3">$tabmenu_txt{'viewadm'}</option>
-                    </select>
-                </span>
-                <span class="selected" style="cursor: auto; vertical-align: middle; padding-top: 1px; white-space: nowrap;"><label for="addafter">$tabfill$tabmenu_txt{'tabinsert'}</label>
-                    <select name="addafter" id="addafter" class="small" style="vertical-align: middle;">
-                        $edittabs
-                    </select>
-                </span>
-                <span class="selected" style="cursor: auto; vertical-align: middle; padding-top: 1px; white-space: nowrap;">$tabfill<input type="submit" value="$tabmenu_txt{'addtab'}" class="small" />$tabfill</span>$tabsep
-            </td>
-        </tr>
-    </table>
-    </form>
-~;
-    return;
+    return $yyaddtab;
 }
 
 sub AddNewTab2 {
@@ -280,47 +264,21 @@ qq~ <a href="$scripturl?action=deletetab;deltab=$enc_key">$tabdel</a>~;
     }
     if ( $selsize > 11 ) { $selsize = 11; }
 
-    $yyaddtab = qq~
-    <br />
-    <table>
-        <col style="width:40px" />
-        <col style="width:auto" />
-        <col style="width:45px" />
-        <col style="width:160px" />
-        <tr>
-            <td class="tabmenuleft">&nbsp;</td>
-            <td class="tabmenu">
-                $edittabmenu
-            </td>
-            <td class="tabmenuright vtop">&nbsp;</td>
-            <td class="rightbox center">
-                <b>$tabmenu_txt{'reordertab'}</b>
-            </td>
-        </tr><tr>
-            <td colspan="3">&nbsp;</td>
-            <td class="center vtop" rowspan="3">
-                <form action="$scripturl?action=reordertab" method="post" name="tabsorder" style="display: inline; white-space: nowrap;">
-                    <select name="ordertabs" class="small" size="$selsize" style="width: 130px;">
-                        $edittabs
-                    </select><br />
-                    <input type="submit" value="$tabmenu_txt{'tableft'}" name="moveleft" style="font-size: 11px; width: 65px;" />
-                    <input type="submit" value="$tabmenu_txt{'tabright'}" name="moveright" style="font-size: 11px; width: 65px;" />
-                </form>
-            </td>
-        </tr><tr>
-            <td>&nbsp;</td>
-            <td class="windowbg">
-                <div class="small" style="float: left; width: 98%; padding: 4px;">
-                    $tabmenu_txt{'edittext1'} $tabsave$tabmenu_txt{'edittext2'}$tabdel$tabmenu_txt{'edittext3'}<br />
-                    $tabmenu_txt{'reordertext'}
-                </div>
-            </td>
-            <td>&nbsp;</td>
-        </tr><tr>
-            <td colspan="3" style="font-size: 50px; text-align: left; vertical-align: top;">&nbsp;</td>
-        </tr>
-    </table>
-~;
+    $yyaddtab = $brd_advanced_tabs_edit;
+    $yyaddtab =~ s/{yabb edittabmenu}/$edittabmenu/sm;
+    $yyaddtab =~ s/{yabb reordertab}/$tabmenu_txt{'reordertab'}/sm;
+    $yyaddtab =~ s/{yabb selsize}/$selsize/sm;
+    $yyaddtab =~ s/{yabb edittabs}/$edittabs/sm;
+    $yyaddtab =~ s/{yabb edittabs}/$edittabs/sm;
+    $yyaddtab =~ s/{yabb tableft}/$tabmenu_txt{'tableft'}/sm;
+    $yyaddtab =~ s/{yabb tabright}/$tabmenu_txt{'tabright'}/sm;
+    $yyaddtab =~ s/{yabb edittext1}/$tabmenu_txt{'edittext1'}/sm;
+    $yyaddtab =~ s/{yabb tabsave}/$tabsave/sm;
+    $yyaddtab =~ s/{yabb edittext2}/$tabmenu_txt{'edittext2'}/sm;
+    $yyaddtab =~ s/{yabb tabdel}/$tabdel/sm;
+    $yyaddtab =~ s/{yabb edittext3}/$tabmenu_txt{'edittext3'}/sm;
+    $yyaddtab =~ s/{yabb reordertext}/$tabmenu_txt{'reordertext'}/sm;
+
     undef %edittab;
     return;
 }
