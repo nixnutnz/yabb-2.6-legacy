@@ -153,10 +153,10 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
             <col class="w_50pc" />
             <tr>
                 <td class="titlebg">
-                    <img src="$imagesdir/ban.gif" alt="" /><b>Add $admin_txt{'340'}</b>
+                    <img src="$imagesdir/ban.gif" alt="" /><b>$admin_txt{'340a'}</b>
                 </td>
                 <td class="titlebg">
-                    <b>Banlog</b>
+                    <b>$admin_txt{'340b'}</b>
                 </td>
             </tr><tr>
                 <td class="catbg">
@@ -171,7 +171,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
                 </td>
             </tr><tr>
                 <td class="windowbg2">
-                Are these: <input type='radio' name='type' value='U' />User <input type='radio' name='type' value='I' checked="checked" />IP or <input type='radio' name='type' value='E' />E-mail?<br />
+               $admin_txt{'340c'}<br /><input type='radio' name='type' value='U' />$admin_txt{'340d'}<br /><input type='radio' name='type' value='I' checked="checked" />$admin_txt{'340e'}<br /><input type='radio' name='type' value='E' />$admin_txt{'307'}<br />
                 <textarea rows="10" cols="100" name="banned"></textarea>
                 <input type="hidden" name="unban" value="1" />
                 </td>
