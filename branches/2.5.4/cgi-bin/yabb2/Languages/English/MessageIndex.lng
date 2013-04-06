@@ -78,6 +78,7 @@ $messageindexlngver = 'YaBB 2.5.4 $Revision$';
 '843' => 'RSS feed for this board',
 '844' => 'Hide',
 '845' => 'Moved Topic',
+'903' => 'Close Window',
 'collruletext' => 'Board Rules Collapsed',
 );
 

@@ -94,6 +94,7 @@ $boardindexlngver = 'YaBB 2.5.4 $Revision$';
 '48' => 'the message',
 '50' => 'New Broadcast Personal Messages!',
 '51' => '\nWould you like to view the Broadcast PM box',
+'50a' => 'New Alert Messages:',
 );
 
 %boardindex_exptxt = (

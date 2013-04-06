@@ -98,6 +98,7 @@ $instantmessagelngver = 'YaBB 2.5.4 $Revision$';
 'viewrecentposts2' => 'Posts',
 'goviewrecent' => 'GO!',
 'broadcast' => 'Broadcast messages',
+'alert' => 'Alert messages',
 'new' => 'new',
 'delete' => 'Delete',
 'clickto1' => 'Click here to select',

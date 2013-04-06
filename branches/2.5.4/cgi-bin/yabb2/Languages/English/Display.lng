@@ -68,6 +68,9 @@ $displaylngver = 'YaBB 2.5.4 $Revision$';
 'regdate' => 'Joined: ', 
 'mylastposts' => 'View my last 5 posts',
 'lastposts' => 'View the last 5 posts by ',
+'lft' => "&lsaquo;",
+'rgt' => "&rsaquo;",
+'upt' => '&#710;',
 );
 
 1;
