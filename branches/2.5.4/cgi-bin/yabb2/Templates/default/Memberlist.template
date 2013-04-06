@@ -16,8 +16,8 @@
 $letterclass = 'catbg a';
 $header_class_selected = 'windowbg memberlist_td';
 $header_class = 'windowbg2 memberlist_td';
-$pgindex_class = 'small pgindex';
-$ml_index_togl = 'index_togl.gif';
+$pgindex_class = 'class="small pgindex"';
+$ml_index_togl = 'index_togl.png';
 $ml_index_left = 'index_left.gif';
 $ml_index_left0 = 'index_left0.gif';
 $ml_index_right = 'index_right.gif';
@@ -80,15 +80,28 @@ $my_letterlinks = qq~<tr>
                 <td class="catbg" colspan="{yabb headercount}"><span class="small">{yabb letterlinks}</span></td>
             </tr>~;
 
+$my_letter = 
+qq~<tr><td class="windowbg center"  colspan="{yabb headercount}"><br /><b>$ml_txt{'760'}</b><br /><br /></td></tr>~;
 
-$my_memberlist_bottom = qq~<tr>
-                <td class="catbg" colspan="{yabb headercount}">
-                    <div style="float: left; width: 50%; text-align: left;">{yabb pageindex2}</div>
-                    <div style="float: left; width: 49%; color: #AA0000; font-weight: normal; vertical-align: middle; text-align: right;">{yabb dr_warning}</div>
+$my_findmember = qq~<tr>
+                  <td class="windowbg2 center" colspan="7"><br />$ml_txt{'802'} <i>{yabb formmember}</i><br /><br /></td>
+            </tr>~;
+
+$my_memberlist_bottom = qq~
+        <table class="tabtitle-bottom pad_3px">
+            <tr>
+                <td>
+                    <div style="float: left; width: 24%; text-align: left; padding-left: 1%;">{yabb pageindex2}</div>
+                    <div style="float: left; width: 73%; color: #AA0000; font-weight: normal; vertical-align: middle; text-align: right;">{yabb dr_warning}</div>
                     {yabb pageindexjs}
                 </td>
             </tr>
         </table>
         ~;
+
+$ext_memberlist_tableheader = qq~<td class="catbg center">{yabb ext_fieldname}</td>\n~;
+
+$ext_memberlist_td = qq~<td {yabb ext_td_attributs}>{yabb ext_value}</td>\n~;
+
 
 1;

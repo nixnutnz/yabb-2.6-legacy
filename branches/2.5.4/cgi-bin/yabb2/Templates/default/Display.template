@@ -13,7 +13,7 @@
 ###############################################################################
 # $Revision$
 
-$disp_index_togl = 'index_togl.gif';
+$disp_index_togl = 'index_togl.png';
 $disp_index_left = 'index_left.gif';
 $disp_index_left0 = 'index_left0.gif';
 $disp_index_right = 'index_right.gif';
@@ -25,7 +25,6 @@ $disp_ip = 'ip.gif';
 $disp_arrow_dn = 'arrow_down.gif';
 $disp_arrow_up = 'arrow_up.gif';
 $disp_gtalk2 ='gtalk2.gif';
-$tabsep = qq~<span style="border-left: 1px solid #DEE4EC; height:22px; padding:0 2px"> </span>~;
 
 $outside_threadtools = qq~{yabb reply}~;
 $outside_ttsep = qq~~;
@@ -47,8 +46,6 @@ $adminhandellist = qq~
     {yabb remove}{yabb splice}{yabb lock}{yabb hide}{yabb sticky}{yabb multidelete}
 ~;
 
-$disp_index_togl = 'index_togl.gif';
-
 $display_template = qq~
 <!-- Navigation Bar start -->
 <div class="navbarcontainer">
@@ -61,7 +58,7 @@ $display_template = qq~
             </td>
             <td class="bottom right">
                 <span class="small">
-                    &lsaquo; {yabb prev} | {yabb next} &rsaquo;
+                    $display_txt{'lft'} {yabb prev} | {yabb next} $display_txt{'rgt'}
                 </span>
             </td>
         </tr>
@@ -73,8 +70,8 @@ $display_template = qq~
 <!-- Poll end -->
 <!-- Threads Button Bar start -->
 <div class="displaycontainer">
-    <table class="pad_4px">
-        <tr class="tabtitle">
+    <table class="tabtitle pad_4px">
+        <tr>
             <td>
                     {yabb pageindex top}
             </td>
@@ -82,6 +79,7 @@ $display_template = qq~
         {yabb outsidethreadtools}
             </td>
     <td $threadhandelstyle>{yabb threadhandellist}</td>
+    <td style="width: 1%;"> </td>
         </tr>
     </table>
 </div>
@@ -106,8 +104,8 @@ $display_template = qq~
 <!-- Threads Button Bar start -->
 <div class="displaycontainer">
 <div style="clear: both;"></div>
-    <table class="pad_4px">
-        <tr class="tabtitle">
+    <table class="tabtitle-bottom pad_4px">
+        <tr>
             <td>
                     {yabb pageindex bottom}
             </td>
@@ -115,6 +113,7 @@ $display_template = qq~
         <div style="float:right">{yabb outsidethreadtools}</div>
     </td>
     <td $threadhandelstyle>{yabb threadhandellist2}</td>
+    <td style="width:1%"> </td>
         </tr>
     </table>
 </div>
@@ -124,7 +123,7 @@ $display_template = qq~
     <table>
         <tr>
             <td class="right vtop small">
-                &lsaquo; {yabb prev} | {yabb next} &rsaquo;
+                $display_txt{'lft'} {yabb prev} | {yabb next} $display_txt{'rgt'}
             </td>
         </tr>
     </table>
@@ -155,7 +154,7 @@ $posthandellist = qq~
 ~;
 
 if($posttools) {
-    $posthandelstyle = qq~ class="post_tools center" style="width:100px; height:20px; padding-top:7px"~;
+    $posthandelstyle = qq~ class="post_tools center dividerbot" style="width:100px; height:22px;"~;
     $posthandeladmin = qq~<div style="padding:0;float:right">{yabb admin}</div>~;
     $postcol= 2;
     $padd_right = '; padding-right:0; padding-bottom:0; padding-top:0; vertical-align:middle';
@@ -175,11 +174,12 @@ $messageclass = 'message';
 
 $messageblock = qq~
 <div class="displaycontainer">
+    <div class="postcontainer">
     <table class="bordercolor pad_4px" style="table-layout: fixed;">
-        <col style="width:12em" />
+        <col style="width:13em" />
         <col style="width:auto" />
-        <tr class="{yabb css}" style="border-bottom: solid thin #A7B8cc">
-            <td class="vtop" rowspan="4">
+        <tr class="{yabb css}">
+            <td class="vtop post-userinfo" rowspan="4">
                 <a id="{yabb count}"></a>
                 {yabb userlink}
                 <div class="small">
@@ -192,15 +192,15 @@ $messageblock = qq~
                     {yabb postinfo}{yabb location}{yabb age}{yabb regdate}{yabb gender}{yabb ext_prof}{yabb isbuddy}
                 </div>
             </td>
-            <td style="height:22px">
+            <td style="height:22px;" class="dividerbot">
                 <div style="padding: 2px; float:left">{yabb msgimg}</div>
                 <div class="small" style="float:left">
                     <b>{yabb subject}</b>
-                    <b>{yabb replycount}</b>{yabb msgdate}
+                    <br /><b>{yabb replycount}</b>{yabb msgdate}
                 </div>
                 <div class="post_tools_a" style="text-align:right; float:right">
                 $posthandeladmin
-                <div style="float:right">{yabb outsideposttools}</div>
+                <div style="float:right;">{yabb outsideposttools}</div>
             </td>
             <td $posthandelstyle>{yabb posthandellist}</td>
         </tr><tr>
@@ -216,19 +216,19 @@ $messageblock = qq~
                 </div>
             </td>
         </tr><tr>
-            <td class="{yabb css} bottom" style="padding-right:0" colspan="$postcol">
+            <td class="{yabb css} bottom" colspan="$postcol">
                 <div class="small" style="float: left; width: 99%; text-align: left;">
-                    {yabb att}{yabb showatt}
+                    {yabb showatthr}{yabb att}{yabb showatt}
                 </div>
-                <div class="small" style="float: left; width: 100%; text-align: left; border-top: solid thin #A7B8cc;">
-                    {yabb signature}
+                <div class="small" style="float: left; width: 100%; text-align: left;">
+                    {yabb signaturehr}{yabb signature}
                 </div>
             </td>
         </tr><tr>
-             <td class="{yabb css} bottom">
-                &#710;<a href="#top" class="small">$display_txt{'643'}</a>
+             <td class="{yabb css} bottom" style="background-color: #D7DBEA;">
+                <a href="#top"><img src="{yabb images}/back_to_top.png" alt="$display_txt{'643'}" title="$display_txt{'643'}" /></a>
             </td>
-            <td class="{yabb css} bottom" colspan="$postcol">
+            <td class="{yabb css} bottom dividertop" colspan="$postcol">
                     <div class="small" style="float: left; width: 74%;">
                         {yabb contactlist} &nbsp;
                     </div>
@@ -238,7 +238,223 @@ $messageblock = qq~
             </td>
         </tr>
     </table>
+    </div>
 </div>
 ~;
+
+#Recent Posts/Topics
+$myrecent = qq~
+<table class="tabtitle">
+    <col style="width:5%" />
+    <tr>
+        <td class="center h_30px">{yabb counter}</td>
+        <td>&nbsp;<a href="$scripturl?catselect={yabb catbrd}"><span class="under">{yabb catname}</span></a>{yabb boardtree} / <a href="$scripturl?num={yabb tnum}"><span class="under">{yabb msub}</span></a><br />
+        &nbsp;<span class="small">$maintxt{'30'}: {yabb mdate}</span>&nbsp;</td>
+    </tr>
+</table>
+<table style="table-layout: fixed">
+    <tr>
+        <td>
+            <table class="titlebg">
+                <tr>
+                    <td style="padding-left:5px">$maintxt{'109'} {yabb tname} | $maintxt{'197'} {yabb mname}</td>
+                    {yabb my_tstate}
+                </tr>
+            </table>
+        </td>
+    </tr><tr>
+        <td class="windowbg2 vtop h_80px" style="padding:5px">
+            <div class="message" style="float: left; width: 99%; overflow: auto;">{yabb message}</div>
+        </td>
+    </tr>
+</table><br />~;
+
+$myrecent_mess = qq~
+            <td class="right">&nbsp;
+                <a href="$scripturl?board=$board;action=post;num={yabb tnum}/{yabb c}#{yabb c};title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num={yabb tnum};quote={yabb c};title=PostReply">$img{'recentquote'}</a>$notify &nbsp;
+            </td>~;
+
+$mydisp_topicview =  qq~    <tr>
+            <td class="windowbg">
+                $display_txt{'644'} ({yabb topviewers}): {yabb template_viewers}
+            </td>
+        </tr>~;
+
+$mydisp_modify_message = qq~
+~;
+
+$mymove_top = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>$sstxt{'1'}</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
+</head>
+<body>
+    <a name="pagetop">&nbsp;</a><br />
+    <div id="maincontainer">
+        <div id="container">
+            <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
+            <form action="$scripturl?action=split_splice;board=$currentboard;thread=$INFO{'thread'}" method="post" name="split_splice" onsubmit="return submitproc()" accept-charset="$yycharset">
+            <input type="hidden" name="formsession" value="{yabb formsession}" />
+            <table class="tabtitle" style="width:90%">
+                <tr>
+                    <td style="padding-left:20px"><img src="$defaultimagesdir/admin_move_split_splice.png" alt="$sstxt{'1'}" /> <b>$sstxt{'1'}</b></td>
+                </tr>
+            </table>
+            <table class="pad_8px cs_thin" style="width:90%">
+                <tr>
+                    <td class="catbg"><b>$sstxt{'2'}:</b></td>
+                </tr><tr>
+                    <td class="windowbg"><b>$sstxt{'3'}</b></td>
+                </tr><tr>
+                    <td class="windowbg2">
+                        <label for="oldposts">$sstxt{'14'}<br />
+                        <select name="oldposts" id="oldposts" size="$size1" multiple="multiple">{yabb postlist}</select><br />
+                        <span class="small">$sstxt{'14a'}</span></label>
+                    </td>
+                </tr><tr>
+                    <td class="windowbg"><b>$sstxt{'4'}</b></td>
+                </tr><tr>
+                    <td class="windowbg2">
+                        <label for="leave">$sstxt{'15'}</label><br />
+                        <select name="leave" id="leave">{yabb leavelist}</select>
+                    </td>
+                </tr><tr>
+                    <td class="catbg"><b>$sstxt{'5'}:</b></td>
+                </tr><tr>
+                    <td class="windowbg"><b>$sstxt{'6'}</b></td>
+                </tr><tr>
+                    <td class="windowbg2">
+                        <label for="newcat">$sstxt{'16'}</label><br />
+                        <select name="newcat" id="newcat" onchange="document.split_splice.submit();">{yabb catlist}</select>
+                    </td>
+                </tr><tr>
+                    <td class="windowbg"><b>$sstxt{'7'}</b></td>
+                </tr><tr>
+                    <td class="windowbg2">
+                        <label for="newboard">$sstxt{'17'}</label><br />
+                        <select name="newboard" id="newboard" onchange="document.split_splice.submit();">{yabb boardlist}</select>
+                    </td>
+                </tr><tr>
+                    <td class="windowbg"><b>$sstxt{'8'}</b></td>
+                </tr><tr>
+                    <td class="windowbg2">
+                        <label for="newthread">$sstxt{'18'}</label><br />
+                        <select name="newthread" id="newthread" onchange="document.split_splice.submit();">{yabb threadlist}</select>
+                    </td>
+                </tr>
+                    {yabb my_output}
+                <tr>
+                    <td class="windowbg"><b>$sstxt{'4'}</b></td>
+                </tr><tr>
+                    <td class="windowbg2">
+                        <input type="checkbox" name="newinfo" id="newinfo" value="1"{yabb my_checked} /> <label for="newinfo">$sstxt{'15a'}</label>
+                    </td>
+                </tr><tr>
+                    <td class="catbg center">
+                        <input type="submit" name="ss_submit" value="$sstxt{'24'}" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="$sstxt{'25'}" />
+                    </td>
+                </tr>
+            </table>
+            </form>
+            <br />
+            <br />
+            </div>
+        </div>
+    </body>
+</html>~;
+
+    
+$mymove_output_a = qq~<tr>
+        <td class="windowbg"><b>$sstxt{'9'}</b></td>
+    </tr><tr>
+        <td class="windowbg2">
+            <label for="newthread_subject">$sstxt{'20'}</label><br />
+            <input type="text" name="newthread_subject" id="newthread_subject" size="50" value="{yabb newthread_subject}" />
+            <input type="hidden" name="position" value="{yabb position}" />
+            <input type="hidden" name="old_position_thread" value="{yabb old_position_thread}" />
+        </td>
+    </tr>~;
+
+$mymove_output_b = qq~<tr>
+        <td class="windowbg"><b>$sstxt{'10'}</b></td>
+    </tr><tr>
+        <td class="windowbg2">
+            <label for="position">$sstxt{'19'}</label><br />
+            <select name="position" id="position">{yabb positionlist}</select>
+            <input type="hidden" name="newthread_subject" value="{yabb newthread_subject}" />
+            <input type="hidden" name="old_position_thread" value="{yabb newthread}" />
+        </td>
+    </tr>~;
+
+$mysend_top = qq~
+<form action="$scripturl?action=sendtopic2" method="post" name="sendtopic" onsubmit="return CheckSendTopicFields();">
+<table class="tabtitle" style="width:70%">
+    <tr>
+        <td style="padding-left:20px">
+            <img src="$imagesdir/email.gif" alt="" />
+            <b>$sendtopic_txt{'707'}&nbsp; &#171; {yabb subject} &#187; &nbsp;$sendtopic_txt{'708'}</b>
+        </td>
+    </tr>
+</table>
+<table class="pad_3px" style="width:70%">
+    <col style="width:30%" />
+    <tr>
+        <td class="windowbg"><label for="y_name"><b>$sendtopic_txt{'335'}:</b></label></td>
+        <td class="windowbg"><input type="text" name="y_name" id="y_name" size="50" maxlength="50" value="{yabb realname}" /></td>
+    </tr><tr>
+        <td class="windowbg"><label for="y_email"><b>$sendtopic_txt{'336'}:</b></label></td>
+        <td class="windowbg"><input type="text" name="y_email" id="y_email" size="50" maxlength="50" value="{yabb email}" /></td>
+    </tr><tr>
+        <td class="windowbg center vtop" colspan="2">
+            <hr class="hr" />
+        </td>
+    </tr><tr>
+        <td class="windowbg"><label for="r_name"><b>$sendtopic_txt{'717'}:</b></label></td>
+        <td class="windowbg"><input type="text" name="r_name" id="r_name" size="50" maxlength="50" /></td>
+    </tr><tr>
+        <td class="windowbg"><label for="r_email"><b>$sendtopic_txt{'718'}:</b></label></td>
+        <td class="windowbg"><input type="text" name="r_email" id="r_email" size="50" maxlength="50" /></td>
+    </tr> {yabb my_valcode} {yabb my_spam} 
+    <tr>
+        <td class="windowbg center vtop" colspan="2">
+            <hr class="hr" />
+        </td>
+    </tr><tr>
+        <td class="windowbg center" colspan="2">
+            <input type="hidden" name="board" value="$board" />
+            <input type="hidden" name="topic" value="$topic" />
+            <input type="submit" name="Send" value="$sendtopic_txt{'339'}" class="button" />
+        </td>
+    </tr>
+</table>
+</form>{yabb my_jschecks}~;
+
+$mysend_valcode = qq~<tr>
+        <td class="windowbg center vtop" colspan="2">
+            <hr class="hr" />
+        </td>
+    </tr><tr>
+        <td class="windowbg"><label for="verification"><b>$floodtxt{'1'}:</b></label></td>
+        <td class="windowbg">{yabb showcheck}<br /><label for="verification"><span class="small">$flood_text</span></label></td>
+    </tr><tr>
+        <td class="windowbg"><label for="verification"><b>$floodtxt{'3'}:</b></label></td>
+        <td class="windowbg"><input type="text" maxlength="30" name="verification" id="verification" size="50" /></td>
+    </tr>~;
+
+$mysend_spam = qq~<tr>
+        <td class="windowbg center vtop" colspan="2">
+            <hr class="hr" />
+        </td>
+    </tr><tr>
+        <td class="windowbg"><label for="verification_question"><b>{yabb spam_question}</b><br />
+            <span class="small">$sendtopic_txt{'verification_question_desc'} {yabb verification_question_desc}</span></label>
+        </td>
+        <td class="windowbg vtop">
+            <input type="text" name="verification_question" id="verification_question" size="50" maxlength="50" />
+            <input type="hidden" name="verification_question_id" value="{yabb spam_question_id}" />
+        </td>
+    </tr>~;
 
 1;

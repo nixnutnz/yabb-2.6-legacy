@@ -16,6 +16,8 @@
 $seperator = q{};
 $title_class = 'tabtitle';
 $titleclass_inset = 'tabtitle';
+$cal_day = 'class="titlebg center minical_border"';
+$cal_days = 'class="windowbg2 center minical_border"';
 
 $cal_grn1 = 'green1.gif';
 $cal_grn0 = 'green0.gif';
@@ -23,19 +25,18 @@ $cal_red0 ='red0.gif';
 $cal_red1 ='red1.gif';
 $cal_eventbd = 'eventbd.gif';
 $cal_eventprivate = 'eventprivate.gif';
-$cal_modify = 'modify.gif';
+$cal_modify = 'modify.png';
 $cal_delete = 'delete.gif';
 $cal_eventmore = 'eventmore.gif';
 $cal_eventinfo = 'eventinfo.gif';
 $cal_eventinfobd = 'eventinfobd.gif';
-$cal_eventcal = 'eventcal.gif';
-
+$cal_eventcal = 'eventcal.png';
 
 $mycalout_add_cal = qq~<table class="bordercolor">
     <col style="width:160px" />
     <tr>
         <td class="windowbg2" colspan="2">
-            <b>$var_cal{'calevent'}</b><br />
+            <b>{yabb calevent}</b><br />
         </td>
     </tr><tr> 
         <td class="windowbg2 cal_row1">
@@ -53,7 +54,7 @@ $mycalout_add_cal_end = qq~
     </tr><tr>
         <td class="windowbg2" colspan="2">~;
 
-$mycalout_b = qq~
+$mycalout_gottobox = qq~
     <table class="tabtitle">
         <col style="width:30%" />
         <col style="width:70%" />
@@ -88,33 +89,59 @@ $mycalout_noevent = qq~<tr>
                 </tr>
     			~;
 
-$mycalout_c = q~
+$mycalout_table_top = q~
 <table class="bordercolor">
     ~;
 
-$mycalout_d = qq~
+$mycalout_edit = qq~
 <div class="$seperator">
 <table class="bordercolor cs_thin pad_3px">~;
 
-$mycalout_e = qq~
+$mycalout_even = qq~
 <div class="$seperator">
 <table class="cs_thin pad_4px">
     <tr>
-        <td class="catbg">~;
+        <td class="catbg">
+            <img src="$imagesdir/$cal_modify" alt="$var_cal{'caledit'}" title="$var_cal{'caledit'}" /> $var_cal{'caledit'}
+        </td>
+    </tr><tr>
+        <td class="windowbg2">
+{yabb YaBBC_calout}
+            <br /><br />
+            <input type="hidden" name="editid" value="{yabb event_id}" />
+            <input class="button" type="submit" name="calsubmit" value="$var_cal{'calsave'}" accesskey="s" />
+            <br />
+        </td>
+    </tr>
+</table>
+</form>
+        </td>
+    </tr>
+</table>
+</div>~;
 
 
-$mycalout_f = qq~<tr>
+$mycalout_disp = qq~<tr>
     <td style="padding-left:1%; height:25px">$var_cal{'caltitle'}
     </td>
     <td class="right" style="padding-right:1%">{yabb calgotobox}</td>
 </tr>
 </table>
 <table class="bordercolor pad_3px">
-    <col style="width:5%" />
+    <col style="width:6%" />
     <col style="width:30%" />~;
+    
+$mycalout_disp_sep = qq~<tr>
+    <td class="{yabb title_class}" colspan="2">
+        <div class="calout_left"><img src="$yyhtml_root/Templates/Forum/default/$cal_eventcal" alt="" /> $var_cal{'caltitle'}</div>
+        <div class="calout_right">{yabb calgotobox}</div>
+    </td>
+</tr>
+~;
+
 
 $mycalout_h =         qq~
-<table class="tabtitle">
+<table class="tabtitle tabtitle-text">
     <col style="width:30%" />
     <col style="width:70%" />
                 {yabb cal_display}
@@ -126,5 +153,166 @@ $mycalout_j = qq~
             {yabb cal_display}
         </table>
         </div>~;
+
+$mycalout_k = qq~<table class="tabtitle">
+            {yabb cal_display}
+        </table>~;
+        
+$mycal_displayssi = qq~<table class="tabtitle pad_3px h_25px">
+    <tr>
+        <td class="center small">{yabb last_link}</span></td>
+        <td class="center small bold">{yabb mon_name} {yabb year}</td>
+        <td class="center small">{yabb next_link}</td>
+    </tr>
+</table>
+<table class="bordercolor pad_3px minical_border">
+    <col style="width:14%" />
+        <tr>
+           {yabb weekdays}
+        </tr>
+          {yabb cal_out}
+</table>~;
+
+$myleft_calbox = qq~<tr>
+    <td class="windowbg center" style="border-right:1px solid #B1BDC9">
+        <img src="$yyhtml_root/Templates/Forum/default/$cal_eventcal" alt="" />
+    </td>
+    <td class="windowbg2">
+~;
+
+$myadd_new = qq~<table class="bordercolor pad_3px" style="border-top:1px solid #B1BDC9">
+<col style="width:6%" />
+<tr>
+    <td class="windowbg center" style="border-right:1px solid #B1BDC9">
+        <img src="$imagesdir/$cal_modify" alt="" />
+    </td>
+    <td class="windowbg2">{yabb YaBBC_calout}</td>
+</tr>~;
+
+$mycal_noname = qq~<tr>
+        <td class="windowbg2 cal_row1">
+            <span class="small"><label for="calnoname"><b>$var_cal{'calnoname'}:</b></label></span>
+        </td>
+        <td class="windowbg2">
+            <input type="checkbox" value="1" name="calnoname" id="calnoname" {yabb cecknonam} />
+        </td>
+    </tr>~;
+
+$mycal_opts_a = qq~<tr> 
+        <td class="windowbg2 cal_row1">
+            <span class="small"><label for="caltype"><b>$var_cal{'calview'}:</b></label></span>
+        </td>
+        <td class="windowbg2">~;
+
+$mycal_opts_b =qq~
+        </td>
+    </tr><tr> 
+        <td class="windowbg2 cal_row2">
+            <span class="small"><label for="calicon"><b>$var_cal{'event_icon'}:</b></label></span>
+        </td>
+        <td class="windowbg2">~;
+
+$mycal_postbox_b = q~
+            </div>
+            </div>
+        </td>
+    </tr><tr>
+        <td class="windowbg2" colspan="2">~;
+
+$mycal_validation = qq~
+            <br /><br />
+            <table>
+            <col style="width:160px" />
+            <tr>
+                <td class="windowbg2 vtop"><span class="small"><label for="verification"><b>$floodtxt{'1'}:</b></label></span></td>
+                <td class="windowbg2 vtop">{yabb showcheck}<br /><span class="small">{yabb flood_text}</span></td>
+            </tr><tr>
+                <td class="windowbg2"><span class="small"><label for="verification"><b>$floodtxt{'3'}:</b></label></span></td>
+                <td class="windowbg2">
+                <input type="text" maxlength="30" name="verification" id="verification" size="30" />
+                </td>
+            </tr>
+            </table>
+~;
+
+$mycal_spamquest= qq~
+            <br /><br />
+            <table>
+            <col style="width:160px" />
+            <tr>
+                <td class="windowbg2 vtop">
+                    <span class="small"><label for="verification_question"><b>{yabb spam_question}</b><br />
+                    $var_cal{'verification_question_desc'} {yabb verification_question_desc}</label></span>
+                </td>
+                <td class="windowbg2 vtop">
+                    <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" />
+                    <input type="hidden" name="verification_question_id" value="{yabb spam_question_id}" />               
+                </td>
+            </tr>
+            </table>
+~;
+
+$mycal_endaddform = q~</td>
+    </tr>
+</table>
+</form>~;
+
+$mycal_greet = qq~<tr>
+        <td class="windowbg2 padd_3px" colspan="2">
+            <img src="$imagesdir/$cal_eventbd" alt="$var_cal{'calbirthday'}" /> {yabb cdate} <b>$var_cal{'calbirthday'}</b>
+        </td>
+    </tr><tr>
+        <td class="windowbg2 padd_3px" colspan="2">
+            <b>$var_cal{'calsubtitle'}:</b><br /> <br />
+            {yabb eventbduserlink} {yabb greet}<br/><br/>
+        </td>
+    </tr>~;
+
+$mycal_greet_b = q~<tr>
+        <td class="windowbg2 padd_3px" colspan="2">~;
+
+$mycal_greet_c = qq~
+        			</td>
+    			</tr><tr>
+        			<td class="windowbg2 padd_3px" colspan="2">
+        			    <hr class="hr" />
+            			<b>$var_cal{'calsubtitle'}:</b><br /> <br />
+            			{yabb event_message}<br/><br/>
+            			<hr class="hr" />
+        			</td>
+        		</tr>~;
+
+$mycal_greet_rowend = q~</td>
+        		</tr>~;
+
+$mycal_tableend = q~
+</table>
+</div>~;
+
+
+$mycal_outstring_bday = qq~<tr>
+        <td class="vtop">
+            <span class="small"><img src="$imagesdir/$cal_eventbd" alt="$var_cal{'calbirthday'}" /> {yabb cdate} <b>$var_cal{'calbirthday'}</b>
+            <br /> {yabb eventbduserlink} {yabb greet}</span>
+            <hr class="hr" />
+        </td>
+    </tr>~;
+
+$mycal_outstring_private = qq~<tr>
+        <td class="vtop">
+            <span class="small"><img src="$imagesdir/$cal_eventprivate" alt="$var_cal{'calprivate'} Event" /> <img src="$yyhtml_root/EventIcons/{yabb cicon}.gif" alt="{yabb icon_text}" /> {yabb cdate} <b>{yabb icon_text}</b> {yabb eventuserlink}
+            <br />{yabb cevent}</span>
+            <hr class="hr" />
+        </td>~;
+
+$mycal_outstring = qq~<tr>
+        <td class="vtop">
+            <span class="small"><img src="$yyhtml_root/EventIcons/{yabb cicon}.gif" alt="{yabb icon_text}" /> {yabb cdate} <b>{yabb icon_text}</b> {yabb eventuserlink}
+                <br />{yabb cevent}</span>
+            <hr class="hr" />
+        </td>
+    </tr>~;
+
+$mycal_min_blnk = q~<td class="windowbg">&nbsp;</td>~;
 
 1;

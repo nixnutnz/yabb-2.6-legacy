@@ -29,13 +29,13 @@ if($threadtools) {
 else {
     $threadhandelstyle = qq~ class="right"~;
 }
-$bdpicExt = 'gif';
+$bdpicExt = 'png';
 $msgbrd_cat_col = 'cat_collapse.gif';
 $msgbrd_cal_exp = 'cat_expand.gif';
 $msgbrd_new = 'new.gif';
 $msgbrd_paperclip = 'paperclip.gif';
-$msgbrd_addfav ='addfav.gif';
-$msgbrd_index_togl = 'index_togl.gif';
+$msgbrd_addfav ='addfav.png';
+$msgbrd_index_togl = 'index_togl.png';
 $msgbrd_index_left = 'index_left.gif';
 $msgbrd_index_left0 = 'index_left0.gif';
 $msgbrd_index_right = 'index_right.gif';
@@ -56,8 +56,6 @@ $msgbrd_veryhotthread = 'veryhotthread.gif';
 $msgbrd_admin_move = 'admin_move.gif';
 $msgbrd_admin_rem = 'admin_rem.gif';
 $msgbrd_rss = 'rss.png';
-
-$tabsep = qq~<span style="border-left: 1px solid #DEE4EC; height:22px; padding:0 2px"> </span>~;
 
 if (!$messagelist) {
     if (!$ShowBDescrip && $action ne 'favorites') {
@@ -86,9 +84,9 @@ if (!$messagelist) {
 						<div class="small" style="font-style:italic;">{yabb moderators}</div>
 					</td>
 					<td class="windowbg center small">
-						$boardindex_txt{'330'}: {yabb threadcount}
+						<span class="bold">$boardindex_txt{'330'}:</span> {yabb threadcount}
 						<br />
-						$boardindex_txt{'21'}: {yabb messagecount}
+						<span class="bold">$boardindex_txt{'21'}:</span> {yabb messagecount}
 					</td>
 				</tr>
 			</table>
@@ -102,7 +100,7 @@ if (!$messagelist) {
 <!-- Board Rules start -->
 			<table class="bordercolor cs_thin pad_3px">
 				<tr>
-    				<td class="titlebg" style="height:18px">{yabb rulestitle}</td>
+    				<td class="titlebg" style="height18px">{yabb rulestitle}</td>
 				</tr><tr>
     				<td class="windowbg">{yabb rulesdescription}</td>
 				</tr>
@@ -140,6 +138,7 @@ if ($action ne 'favorites') {
             <div style="float:right">{yabb outsidethreadtools}</div>
         </td>
         <td $threadhandelstyle>{yabb topichandellist}</td>
+        <td style="width:1%">&nbsp;</td>
 ~;
 	}
 
@@ -170,8 +169,8 @@ $messageindex_template .= qq~
 
 if ($action ne 'favorites') {
 	$messageindex_template .= qq~<!-- Button Bar start -->
-			<table class="bordercolor">
-				<tr class="catbg">
+			<table class="tabtitle-bottom">
+				<tr>
 					<td style="padding:4px 4px 4px 7px;">
 	  					{yabb pageindex bottom}
         			</td>
@@ -181,6 +180,7 @@ if ($action ne 'favorites') {
         			<td $threadhandelstyle>
             			{yabb topichandellist2}
             		</td>
+            		<td style="width:1%">&nbsp;</td>
 				</tr>
 			</table>
 {yabb modupdateend}
@@ -189,7 +189,7 @@ if ($action ne 'favorites') {
 ~;
 	$messageindex_template .= $messagelist ? q{} : qq~
 <!-- Icon and access info start -->
-			<table class="pad_8px">
+			<table class="pad_8px board-perms">
 				<col style="width:28%" />
 				<col style="width:38%" />
 				<col style="width:33%" />
@@ -289,5 +289,80 @@ $subfooterbar = qq~<tr>
 					{yabb admin checkboxes}
 					</td>
 				</tr>~;
+
+$brd_tmptempbar = qq~<tr>
+            <td class="windowbg2 center" colspan="{yabb colspan}"><br />$messageindex_txt{'841'}<br /><br /></td>
+        </tr>~;
+
+$msg_attach_win = qq~<a href="javascript:void(window.open('$scripturl?action=viewdownloads;thread={yabb mnum}','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">~;
+
+# Board Notification                     #
+$brd_notify_img = 'notify.gif';
+$brd_notify_top = qq~
+    <form action="$scripturl?action=boardnotify3;board={yabb currentboard}" method="post">
+    <table class="tabtitle" style="width:600px">
+       <col style="width:70%" />
+        <tr>
+            <td style="padding-left:10px">
+                <img src="$imagesdir/$brd_notify_img" alt="$notify_txt{'136'} - {yabb boardname}" title="$notify_txt{'136'} - {yabb boardname}" /> <b>$notify_txt{'136'} - {yabb boardname}</b>
+            </td>
+        </tr>
+    </table>
+    <table class="pad_4px cs_thin" style="width:600px">
+        <col style="width:70%" />
+        <tr>
+            <td class="windowbg"><br />
+    ~;
+
+$brd_notify_bot = qq~
+        <br /><br /></td>
+        <td class="windowbg">
+            <select name="{yabb currentboard}">
+                <option value="1"{yabb selected1}>$notify_txt{'132'}</option>
+                <option value="2"{yabb selected2}>$notify_txt{'133'}</option>
+                {yabb deloption}
+            </select>
+            </td>
+        </tr><tr>
+            <td class="catbg center" colspan="2">
+                <input type="submit" value="$notify_txt{'124'}" class="button" />
+            </td>
+        </tr>
+    </table>
+    </form>~;
+
+#list pages popup
+
+$msg_listpages =
+qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
+<title>$messageindex_txt{'139'} $messageindex_txt{'18'}</title>
+<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
+</head>
+<body style="min-width: 350px;">
+    <script type="text/javascript">
+    function opp_page(tid,pid) {
+        opener.location= "$scripturl?{yabb jcode}" + tid + "/" + pid;
+        self.close();
+    }
+    </script>
+    <table class="tabtitle">
+        <tr>
+            <td class="center">$messageindex_txt{'139'} $messageindex_txt{'18'}</td>
+        </tr>
+    </table>
+    <table class="pad_4px cs_thin">
+        <tr>
+            <td class="catbg center" style="padding:4px 10px">
+                <p>&laquo; $messageindex_txt{'139'} {yabb pages} &raquo;</p>
+            </td>
+        </tr><tr>
+            <td class="windowbg center"><a href="javascript: window.close();">$messageindex_txt{'903'}</a></td>
+        </tr>
+    </table>
+</body>
+</html>~;
 
 1;

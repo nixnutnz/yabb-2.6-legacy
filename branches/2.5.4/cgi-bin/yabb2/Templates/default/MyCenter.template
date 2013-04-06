@@ -13,6 +13,8 @@
 ###############################################################################
 # $Revision$
 
+$IM_index_togl = 'index_togl.png';
+
 $mycenter_template = qq~
 <!-- My Center Title Bar start -->
 <div class="seperator">
@@ -85,5 +87,6 @@ $myprofileblock = qq~
 $myimblock = q~    <table class="bordercolor cs_thin"  style="border-top:0; margin-top:-2px">
         <col style="width:65%" />
         <col style="width:15%" />~;
+
 
 1;
