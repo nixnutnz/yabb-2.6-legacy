@@ -40,6 +40,8 @@ sub ext_get {
         $width,     $height,    @allowed_extensions, $extension,
         $match
     ) = ( shift, shift, shift );
+    
+    require Sources::ExtendedProfiles;
     ext_get_profile($pusername);
     $id    = ext_get_field_id($fieldname);
     $value = ${ $uid . $pusername }{ 'ext_' . $id };
