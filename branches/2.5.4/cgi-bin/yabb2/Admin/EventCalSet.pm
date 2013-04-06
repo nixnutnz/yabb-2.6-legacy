@@ -343,6 +343,7 @@ sub EventCalSet2 {
                     $user_day = "0$user_day";
                 }
                 if (${ $uid . $user_xy }{'hideage'}){$user_hide = 1;}
+                else {$user_hide = q{};}
                 print FILE qq~$user_year|$user_month|$user_day|$user_xy|$user_hide\n~;
 
             }
