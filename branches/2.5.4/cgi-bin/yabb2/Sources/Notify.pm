@@ -108,24 +108,25 @@ sub BoardNotify {
 
     LoadLanguage('Notify');
     require "$templatesdir/$usemessage/MessageIndex.template";
-    $yymain .= $brd_notify_top;
-    $yymain =~ s/{yabb boardname}/$boardname/gsm;
-    $yymain =~ s/{yabb currentboard}/$currentboard/gsm;
 
     if ( exists $theboard{$username} ) {
         ( $memlang, $memtype, $memview ) = split /\|/xsm, $theboard{$username};
         ${ 'selected' . $memtype } = q~ selected="selected"~;
         $deloption = qq~<option value="3">$notify_txt{'134'}</option>~;
-        $yymain .= qq~$notify_txt{'137'} &nbsp;~;
+        $my_delopt = qq~$notify_txt{'137'} &nbsp;~;
     }
     else {
-        $yymain .= qq~$notify_txt{'126'} &nbsp;~;
+        $my_delopt = qq~$notify_txt{'126'} &nbsp;~;
     }
-    $yymain .= $brd_notify_bot;
+
+    $yymain .= $brd_notify;
+    $yymain =~ s/{yabb boardname}/$boardname/gsm;
+    $yymain =~ s/{yabb currentboard}/$currentboard/gsm;
     $yymain =~ s/{yabb currentboard}/$currentboard/gsm;
     $yymain =~ s/{yabb selected1}/$selected1/gsm;
     $yymain =~ s/{yabb selected2}/$selected2/gsm;
     $yymain =~ s/{yabb deloption}/$deloption/gsm;
+    $yymain =~ s/{yabb my_delopt}/$my_delopt/gsm;
     
     undef %theboard;
     $yytitle = "$notify_txt{'125'}";
@@ -309,7 +310,7 @@ sub ShowNotifications {
     if ($iamguest) { fatal_error('members_only'); }
 
     $yynavigation =
-qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'}</a> &rsaquo; $img_txt{'418'} zz~;
+qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'}</a> &rsaquo; $img_txt{'418'}~;
 
 LoadLanguage('Notify');
 if ( -e ("$templatesdir/$usestyle/MyPosts.template") ) {
@@ -321,16 +322,13 @@ else {
  
     my @oldnote = split /,/xsm, ${ $uid . $username }{'board_notifications'};
     $curbrd = @oldnote;
-   if ( !$maxtnote ) { $maxtnote = 10; }
+    if ( !$maxtnote ) { $maxtnote = 10; }
 
    $note_brd =
 qq~<br />$notify_txt{'75'}<br />$notify_txt{'76'} $curbrd $notify_txt{'77'} $maxtnote $notify_txt{'78'}~;
     $curbrd   = NumberFormat($curbrd);
 
     # Show Javascript for 'check all' notifications
-    $showNotifications .= $my_boardnote;
-#    $showNotifications =~ s/{yabb note_brd}/$note_brd/sm;
-    $showNotifications =~ s/{yabb note_brd}//sm;
 
     ( $board_notify, $thread_notify ) = NotificationAlert();
     my ( $num, $new );
@@ -357,7 +355,7 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$notify_txt{'334'}" title="$notify_txt
         }
 
         ## output notify detail - option 3 = remove notify
-        $boardblock .= $my_boardblock;
+        $boardblock = $my_boardblock;
         $boardblock =~ s/{yabb brd}/$_/gsm;
         $boardblock =~ s/{yabb new}/$new/gsm;
         $boardblock =~ s/{yabb brdnote0}/${$$board_notify{$_}}[0]/gsm;
@@ -366,14 +364,13 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$notify_txt{'334'}" title="$notify_txt
     }
 
     if ( !$num ) {    # no board notifies up
-        $showNotifications .= $my_nonotes;
+        $my_showNotifications_b = $my_nonotes;
     }
     else {            # list boards
-        $showNotifications .= $my_notebrdlist;
-        $showNotifications =~ s/{yabb boardblock}/$boardblock/gsm;
+        $my_showNotifications_b = $my_notebrdlist;
+        $my_showNotifications_b =~ s/{yabb boardblock}/$boardblock/gsm;
     }
 
-    $showNotifications .= $my_threadnote;
 
     $num = 0;
     foreach ( keys %{$thread_notify} )
@@ -392,12 +389,17 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$notify_txt{'334'}" title="$notify_txt
     }
 
     if ( !$num ) {    ## no threads listed
-        $showNotifications .= $my_nothreads;
+        $my_showNotifications_t = $my_nothreads;
     }
     else {            ## output details
-        $showNotifications .= $my_threadnote_b;
-        $showNotifications =~ s/{yabb threadblock}/$threadblock/gsm;
+        $my_showNotifications_t = $my_threadnote_b;
+        $my_showNotifications_t =~ s/{yabb threadblock}/$threadblock/gsm;
     }
+    $showNotifications = $my_boardnote;
+#    $showNotifications =~ s/{yabb note_brd}/$note_brd/sm;
+    $showNotifications =~ s/{yabb note_brd}//sm;
+    $showNotifications =~ s/{yabb my_showNotifications_b}/$my_showNotifications_b/sm;
+    $showNotifications =~ s/{yabb my_showNotifications_t}/$my_showNotifications_t/sm;
     $showNotifications .= $my_threadnote_end;
 
     $yytitle = "$notify_txt{'124'}";
@@ -576,7 +578,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$fo
                     || ( $dlp > $dmax && $dlp < ${$mythread}{'lastpostdate'} ) )
                 {
                     $new =
-qq~<img src="$imagesdir/new.gif" alt="$notify_txt{'335'}" title="$notify_txt{'335'}"/>~;
+qq~<img src="$imagesdir/$brdimg_new" alt="$notify_txt{'335'}" title="$notify_txt{'335'}"/>~;
                 }
             }
 
