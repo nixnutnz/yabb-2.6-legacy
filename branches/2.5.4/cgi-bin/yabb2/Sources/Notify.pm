@@ -355,7 +355,7 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$notify_txt{'334'}" title="$notify_txt
         }
 
         ## output notify detail - option 3 = remove notify
-        $boardblock = $my_boardblock;
+        $boardblock .= $my_boardblock;
         $boardblock =~ s/{yabb brd}/$_/gsm;
         $boardblock =~ s/{yabb new}/$new/gsm;
         $boardblock =~ s/{yabb brdnote0}/${$$board_notify{$_}}[0]/gsm;
