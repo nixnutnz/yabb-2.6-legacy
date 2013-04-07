@@ -297,8 +297,10 @@ $brd_tmptempbar = qq~<tr>
 $msg_attach_win = qq~<a href="javascript:void(window.open('$scripturl?action=viewdownloads;thread={yabb mnum}','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">~;
 
 # Board Notification                     #
+
 $brd_notify_img = 'notify.gif';
-$brd_notify_top = qq~
+
+$brd_notify = qq~
     <form action="$scripturl?action=boardnotify3;board={yabb currentboard}" method="post">
     <table class="tabtitle" style="width:600px">
        <col style="width:70%" />
@@ -311,11 +313,8 @@ $brd_notify_top = qq~
     <table class="pad_4px cs_thin" style="width:600px">
         <col style="width:70%" />
         <tr>
-            <td class="windowbg"><br />
-    ~;
-
-$brd_notify_bot = qq~
-        <br /><br /></td>
+            <td class="windowbg">
+                <br />{yabb my_delopt}<br /><br /></td>
         <td class="windowbg">
             <select name="{yabb currentboard}">
                 <option value="1"{yabb selected1}>$notify_txt{'132'}</option>

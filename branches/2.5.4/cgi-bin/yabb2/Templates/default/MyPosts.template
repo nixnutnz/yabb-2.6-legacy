@@ -26,8 +26,7 @@ $favorites_template .= qq~<!-- Board Description start -->
 	<tr>
 		<td class="center">{yabb bdpicture}</td>
 		<td><b>{yabb board}</b></td>
-		<td>{yabb description}
-		</td>
+		<td>{yabb description} </td>
 		<td class="center small">
 			<span class="bold">$my_favs{'330'}:</span> {yabb threadcount}
 			<br />
@@ -141,16 +140,16 @@ $brdimg_old = 'off.png';
 
 $my_boardnote = qq~
 <script type="text/javascript">
-        function checkAll(j) {
-                for (var i = 0; i < document.threadnotify.elements.length; i++) {
-                    if (j == 0 ) {document.threadnotify.elements[i].checked = true;}
-                }
+    function checkAll(j) {
+        for (var i = 0; i < document.threadnotify.elements.length; i++) {
+            if (j == 0 ) {document.threadnotify.elements[i].checked = true;}
         }
-        function uncheckAll(j) {
-                for (var i = 0; i < document.threadnotify.elements.length; i++) {
-                    if (j == 0 ) {document.threadnotify.elements[i].checked = false;}
-                }
+    }
+    function uncheckAll(j) {
+        for (var i = 0; i < document.threadnotify.elements.length; i++) {
+            if (j == 0 ) {document.threadnotify.elements[i].checked = false;}
         }
+    }
 </script>
     <form action="$scripturl?action=boardnotify2" method="post" name="boardnotify">
     <table class="tabtitle-profile">
@@ -163,8 +162,23 @@ $my_boardnote = qq~
     </table>
     <table class="pad_4px cs_thin">
         <col style="width:65%" />
+        {yabb my_showNotifications_b}
+    </table>
+    </form>
+    <br />
+    <form action="$scripturl?action=notify4" method="post" name="threadnotify">
+    <table class="tabtitle-profile">
         <tr>
-~;
+            <td style="padding-left:10px">
+                <img src="$imagesdir/$brd_notify_img" alt="$notify_txt{'118'}" title="$notify_txt{'118'}" /> <b>$notify_txt{'118'}</b>
+            </td>
+        </tr>
+    </table>
+    <table class="pad_4px cs_thin">
+        <col style="85%" />
+        {yabb my_showNotifications_t}
+    </table>
+    </form>~;
 
 $my_boardblock = qq~<tr>
         <td class="windowbg">
@@ -177,8 +191,7 @@ $my_boardblock = qq~<tr>
                 <option value="3">$notify_txt{'134'}</option>
             </select>
         </td>
-    </tr>
-        ~;
+    </tr>~;
 
 $my_nonotes = qq~<tr>
         <td class="windowbg2" colspan="2">
@@ -189,7 +202,7 @@ $my_nonotes = qq~<tr>
 
 $my_notebrdlist = qq~<tr>
         <td class="catbg"><b>$notify_txt{'135'}</b></td>
-        <td class="catbg center"><b>$notify{'138'}</b></td>
+        <td class="catbg center"><b>$notify_txt{'138'}</b></td>
     </tr>
     {yabb boardblock}
     <tr>
@@ -198,25 +211,7 @@ $my_notebrdlist = qq~<tr>
         </td>
     </tr>~;
 
-$my_threadnote = qq~
-    </table>
-    </form>
-    <br />
-
-    <form action="$scripturl?action=notify4" method="post" name="threadnotify">
-    <table class="tabtitle-profile">
-        <tr>
-            <td style="padding-left:10px">
-                <img src="$imagesdir/$brd_notify_img" alt="$notify_txt{'118'}" title="$notify_txt{'118'}" /> <b>$notify_txt{'118'}</b>
-            </td>
-        </tr>
-    </table>
-    <table class="pad_4px cs_thin">
-        <col style="85%" />
-        <tr>
-    ~;
-
-$my_threadblock =  qq~<tr>
+$my_threadblock = qq~<tr>
         <td class="windowbg">
             <b><a href="$scripturl?num={yabb tnote0}/new">{yabb tnote2} {yabb tnote1}</a></b> $notify_txt{'120'} {yabb tnote3}
             <br /><span class="small">{yabb tnote4} &raquo; {yabb tnote5} - $notify_txt{'lastpost'} {yabb tnote6}</span>
@@ -250,10 +245,6 @@ $my_threadnote_b = qq~<tr>
             <input type="submit" value="$notify_txt{'124'}" class="button" />&nbsp; <input type="reset" value="$notify_txt{'121'}" class="button" />
         </td>
     </tr>~;
-
-$my_threadnote_end = q~
-    </table>
-    </form>~;
 
 ##Recent Posts
 $myshow_recent_a = qq~
