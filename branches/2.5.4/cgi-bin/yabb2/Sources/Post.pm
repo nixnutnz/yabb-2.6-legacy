@@ -117,18 +117,23 @@ sub Post {
     if ( $FORM{'title'} eq 'PostReply' ) { $postthread = 2; }
     if ( $pollthread == 2 && $useraddpoll == 0 ) { fatal_error('no_access'); }
 
-    $name_field = $iamguest
-      ? $mypost_templatea
+    $name_field =
+        $iamguest
+      ? $mypost_guest_a
       : q{};
+    $name_field =~ s/{yabb name}/$FORM{'name'}/sm;
 
-    $email_field = $iamguest
-      ? $mypost_templateb
+    $email_field =
+        $iamguest
+      ? $mypost_guest_b
       : q{};
+    $email_field =~ s/{yabb email}/$FORM{'email'}/sm;
 
     if ( $iamguest && $gpvalid_en ) {
         validation_code();
-        $verification_field = $verification eq q{}
-          ? $mypost_templatec
+        $verification_field =
+            $verification eq q{}
+          ? $mypost_guest_c
           : q{};
         $verification_field =~ s/{yabb showcheck}/$showcheck/sm;
         $verification_field =~ s/{yabb flood_text}/$flood_text/sm;
@@ -143,12 +148,16 @@ sub Post {
             $verification_question_desc =
               qq~<br />$post_txt{'verification_question_case'}~;
         }
-        $verification_question_field = $verification_question eq q{}
-          ? $mypost_templatee
+        $verification_question_field =
+            $verification_question eq q{}
+          ? $mypost_guest_e
           : q{};
-          $verification_question_field =~ s/{yabb spam_question}/$spam_question/gsm;
-          $verification_question_field =~ s/{yabb verification_question_desc}/$verification_question_desc/sm;
-          $verification_question_field =~ s/{yabb spam_question_id}/$spam_question_id/sm;
+        $verification_question_field =~
+          s/{yabb spam_question}/$spam_question/gsm;
+        $verification_question_field =~
+          s/{yabb verification_question_desc}/$verification_question_desc/sm;
+        $verification_question_field =~
+          s/{yabb spam_question_id}/$spam_question_id/sm;
     }
 
     $sub        = q{};
@@ -274,7 +283,6 @@ sub Postpage {
     }
     require Sources::ContextHelp;
     ContextScript('post');
-    $yymain .= $ctmain;
 
 # this defines what the top area of the post box will look like: option 1 ) IM area
 # option 2) all other post areas
@@ -283,27 +291,21 @@ sub Postpage {
         && $destination ne 'modalert2'
         && $destination ne 'guestpm2' )
     {
-        $extra = qq~
-    <tr id="feature_status_1">
-        <td><label for="icon"><b>$post_txt{'71'}:</b></label></td>
-        <td>
-            <select name="icon" id="icon" onchange="showimage(); updatTopic();">
-            <option value="xx"$ic1>$post_txt{'281'}</option>
-            <option value="thumbup"$ic2>$post_txt{'282'}</option>
-            <option value="thumbdown"$ic3>$post_txt{'283'}</option>
-            <option value="exclamation"$ic4>$post_txt{'284'}</option>
-            <option value="question"$ic5>$post_txt{'285'}</option>
-            <option value="lamp"$ic6>$post_txt{'286'}</option>
-            <option value="smiley"$ic7>$post_txt{'287'}</option>
-            <option value="angry"$ic8>$post_txt{'288'}</option>
-            <option value="cheesy"$ic9>$post_txt{'289'}</option>
-            <option value="grin"$ic10>$post_txt{'290'}</option>
-            <option value="sad"$ic11>$post_txt{'291'}</option>
-            <option value="wink"$ic12>$post_txt{'292'}</option>
-            </select>
-            <img src="$imagesdir/$icon.gif" id="icons" style="margin:0 15px" alt="" />
-        </td>
-    </tr>~;
+        $extra = $mypost_extra;
+        $extra =~ s/{yabb ic1}/$ic1/sm;
+        $extra =~ s/{yabb ic2}/$ic2/sm;
+        $extra =~ s/{yabb ic3}/$ic3/sm;
+        $extra =~ s/{yabb ic4}/$ic4/sm;
+        $extra =~ s/{yabb ic5}/$ic5/sm;
+        $extra =~ s/{yabb ic6}/$ic6/sm;
+        $extra =~ s/{yabb ic7}/$ic7/sm;
+        $extra =~ s/{yabb ic8}/$ic8/sm;
+        $extra =~ s/{yabb ic9}/$ic9/sm;
+        $extra =~ s/{yabb ic10}/$ic10/sm;
+        $extra =~ s/{yabb ic11}/$ic11/sm;
+        $extra =~ s/{yabb ic12}/$ic12/sm;
+        $extra =~ s/{yabb icon}/$icon/sm;
+
         if ( $iamguest && $threadid ne q{} ) { $settofield = 'name'; }
     }
 
@@ -353,11 +355,10 @@ sub Postpage {
         }
 
         if ( $postid ne 'Poll' ) {
-            $notification = qq~
-    <tr id="feature_status_2">
-        <td><label for="notify"><b>$post_txt{'131'}:</b></label></td>
-        <td><input type="hidden" name="hasnotify" value="$hasnotify" /><input type="checkbox" name="notify" id="notify" value="x"$notify /> <span class="small"><label for="notify">$notifytext</label></span></td>
-    </tr>~;
+            $notification = $mypost_notification;
+            $notification =~ s/{yabb hasnotify}/$hasnotify/sm;
+            $notification =~ s/{yabb notify}/$notify/sm;
+            $notification =~ s/{yabb notifytext}/$notifytext/sm;
         }
     }
 
@@ -382,11 +383,9 @@ sub Postpage {
             $favorite     = q~ disabled="disabled"~;
             $favoritetext = $post_txt{'maximumfav'};
         }
-        $favoriteadd = qq~
-    <tr id="feature_status_3">
-        <td><label for="favorite"><b>$post_txt{'favorite'}:</b></label></td>
-        <td><input type="checkbox" name="favorite" id="favorite" value="x"$favorite /> <span class="small"><label for="favorite">$favoritetext</label></span></td>
-    </tr>~;
+        $favoriteadd = $mypost_favoriteadd;
+        $favoriteadd =~ s/{yabb favorite}/$favorite/sm;
+        $favoriteadd =~ s/{yabb favoritetext}/$favoritetext/sm;
     }
 
     if   ( !$sub ) { $subtitle = "<i>$post_txt{'33'}</i>"; }
@@ -414,7 +413,7 @@ qq~&rsaquo; <a href="$scripturl?catselect=$catid" class="nav">$cat</a> &rsaquo; 
     }
 
     #this is the end of the upper area of the post page.
-    $yymain .= qq~
+    $my_q_quote = qq~
 
 <script type="text/javascript">
 function alertqq() {
@@ -476,7 +475,7 @@ function checkForm(theForm) {
 
     # if this is an IM from the admin or to groups declare where it goes.
     if ( $INFO{'adminim'} || $INFO{'action'} eq 'imgroups' ) {
-        $yymain .=
+        $my_adminim =
 qq~<form action="$scripturl?action=imgroups" method="post" name="postmodify" onsubmit="return submitproc()" accept-charset="$yycharset">~;
     }
     else {
@@ -489,21 +488,20 @@ qq~<form action="$scripturl?action=imgroups" method="post" name="postmodify" ons
             && $allowattach
             && ${ $uid . $currentboard }{'attperms'} == 1 )
         {
-            $yymain .=
+            $my_adminim =
 qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctype="multipart/form-data" onsubmit="if(!checkForm(this)) {return false} else {return submitproc()}" accept-charset="$yycharset">~;
         }
         else {
-            $yymain .=
+            $my_adminim =
 qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctype="application/x-www-form-urlencoded" onsubmit="if(!checkForm(this)) {return false} else {return submitproc()}" accept-charset="$yycharset">~;
         }
     }
     if ( $postthread == 2 ) {
-        $yymain .=
+        $my_adminim .=
           q~<input type="hidden" id="title" name="PostReply" value="title" />~;
     }
 
     # this declares the beginning of the UBBC section
-    $yymain .= $mypost_ubbc;
 
     $moresmilieslist   = q{};
     $more_smilie_array = q{};
@@ -549,7 +547,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
 
     $more_smilie_array .= q~""~;
 
-    $yymain .= qq~
+    $my_smilie_code = qq~
     moresmiliecode = new Array($more_smilie_array)
     function MoreSmilies(i) {
         AddTxt=moresmiliecode[i];
@@ -562,35 +560,27 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
     }
     else { $smiliewinlink = qq~$scripturl?action=smilieindex~; }
 
-    $yymain .= qq~
+    $my_smiliewin .= qq~
     function smiliewin() {
         window.open("$smiliewinlink", 'list', 'width=$winwidth, height=$winheight, scrollbars=yes');
     }
     ~;
 
     if ( $destination ne 'modalert2' && $destination ne 'guestpm2' ) {
-        $yymain .= qq~
+        $my_modalert = qq~
     function showimage() {
         document.images.icons.src="$imagesdir/"+document.postmodify.icon.options[document.postmodify.icon.selectedIndex].value+".gif";
     }~;
     }
 
-    $yymain .= qq~
+    $my_topper = qq~
 </script>
 <input type="hidden" name="threadid" value="$threadid" />
 <input type="hidden" name="postid" value="$postid" />
 <input type="hidden" name="info" value="$idinfo" />
 <input type="hidden" name="mename" value="$mename" />
 <input type="hidden" name="post_entry_time" value="$date" />
-<input type="hidden" name="virboard" value="$INFO{'virboard'}$FORM{'virboard'}" />
-
-<table class="pad_3px" style="table-layout: fixed;">
-    <tr>
-        <td class="titlebg h_18px">
-            <img src="$imagesdir/$icon.gif" alt="" /> $yytitle
-        </td>
-    </tr>
-~;
+<input type="hidden" name="virboard" value="$INFO{'virboard'}$FORM{'virboard'}" />~;
 
     $iammod = 0;
     if ( keys(%moderators) > 0 ) {
@@ -646,17 +636,11 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
             && ( ( $iamadmin || $iamgmod || $iammod ) && $sessionvalid == 1 ) )
         {
             $template_viewers =~ s/\, \Z/\./sm;
-            $yymain .= qq~<tr>
-        <td class="windowbg">
-            $display_txt{'646'} ($topviewers): $template_viewers
-        </td>
-    </tr>~;
+            $my_tview = $mypost_topview;
+            $my_tview =~ s/{yabb topviewers}/$topviewers/sm;
+            $my_tview =~ s/{yabb template_viewers}/$template_viewers/sm;
         }
     }
-
-    $yymain .= q~
-</table>
-    ~;
 
     if ($pollthread) {
         $maxpq          ||= 60;
@@ -676,43 +660,27 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
         if ($multi_choice) { $mcchecked  = ' checked="checked"'; }
         if ($pie_legends)  { $legchecked = ' checked="checked"'; }
 
-        $yymain .= $mypost_polla;
-        $yymain =~ s/{yabb poll_question}/$poll_question/sm;
-        $yymain =~ s/{yabb maxpq}/$maxpq/sm;
-        $yymain =~ s/{yabb pollthread}/$pollthread/sm;;
-
         $piecolarray = q~["",~;
         for my $i ( 1 .. $numpolloptions ) {
             if ( $split[$i] ) { $splitchecked[$i] = ' checked="checked"'; }
             if ( $FORM{"slicecol$i"} ) {
                 $slicecolor[$i] = $FORM{"slicecol$i"};
             }
-            $yymain .= qq~<tr>
-        <td class="windowbg2 right"><label for="option$i"> &nbsp; $post_polltxt{'7'} $i: &nbsp;</label></td>
-        <td class="windowbg2">
-            <input type="text" size="35" maxlength="$maxpo" name="option$i" id="option$i" value="$options[$i]" />
-        </td>
-        <td class="windowbg2 center">
-            <input type="text" size="3" name="slicecolor$i" id="slicecolor$i" value="" style="background-color: $slicecolor[$i]; border: 1px outset $slicecolor[$i]; cursor: pointer;" readonly="readonly" onclick="getSlicecolor($i)" />
-            <input type="hidden" name="slicecol$i" id="slicecol$i" value="$slicecolor[$i]" />
-        </td>
-        <td class="windowbg2 center">
-            <input type="checkbox" name="split$i" value="1"$splitchecked[$i] /> <span  class="small">$post_polltxt{'splitslice'}</span>
-        </td>
-        <td class="windowbg2">
-            &nbsp;
-        </td>
-    </tr>~;
+            $mypoll_opt .= $my_poll_options;
+            $mypoll_opt =~ s/{yabb i}/$i/gsm;
+            $mypoll_opt =~ s/{yabb maxpo}/$maxpo/gsm;
+            $mypoll_opt =~ s/{yabb options_i}/$options[$i]/gsm;
+            $mypoll_opt =~ s/{yabb slicecolor_i}/$slicecolor[$i]/gsm;
+            $mypoll_opt =~ s/{yabb splitchecked_i}/$splitchecked[$i]/sm;
             $piecolarray .= qq~"$slicecolor[$i]", ~;
         }
         $piecolarray =~ s/\, $//ism;
         $piecolarray .= q~]~;
 
         if ( $maxpc > 0 ) {
-            $yymain .= qq~<tr>
-        <td class="windowbg2 vtop"><b>$post_polltxt{'59'}:</b></td>
-        <td class="windowbg2" colspan="4"><textarea name="poll_comment" rows="3" cols="60" wrap="soft" onkeyup="if (document.postmodify.poll_comment.value.length > $maxpc) {document.postmodify.poll_comment.value = document.postmodify.poll_comment.value.substring(0,$maxpc)}">$poll_comment</textarea></td>
-    </tr>~;
+            $my_maxpc = $my_poll_comment;
+            $my_maxpc =~ s/{yabb maxpc}/$maxpc/gsm;
+            $my_maxpc =~ s/{yabb poll_comment}/$poll_comment/gsm;
         }
 
         if ($poll_end) {
@@ -727,100 +695,42 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
             }
         }
 
-        $yymain .= qq~<tr>
-        <td class="windowbg2" colspan="5" style="font-size: 3px;">
-            <script type="text/javascript">
-            var tmpslicecolor;
-            var itohex = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
-            var slice_col = $piecolarray;
-            var defslice_col = new Array();
-            function tohex(i) {
-                a2 = ''
-                ihex = Math.floor(eval(i +'/16'));
-                idiff = eval(i + '-(' + ihex + '*16)')
-                a2 = itohex[idiff] + a2;
-                while( ihex >= 16) {
-                    itmp = Math.floor(eval(ihex +'/16'));
-                    idiff = eval(ihex + '-(' + itmp + '*16)');
-                    a2 = itohex[idiff] + a2;
-                    ihex = itmp;
-                }
-                a1 = itohex[ihex];
-                return a1 + a2;
-            }
+        $my_pie = $mypost_poll_pie;
+        $my_pie .=
+          $poll_locked
+          ? q{}
+          : $my_poll_end;
+        $my_pie .=
+          ( $iamadmin || $iamgmod )
+          ? $my_poll_sc
+          : q{};
+        $my_pie .= $my_poll_hide;
 
-            for (var tz = 0; tz < 256; tz += 63)
-                for (var ty = 0; ty < 256; ty += 85)
-                    for (var tx = 0; tx < 256; tx += 127) defslice_col.push('#' + tohex(tx) + tohex(ty) + tohex(tz));
+        $my_pie =~ s/{yabb piecolarray}/$piecolarray/sm;
+        $my_pie =~ s/{yabb poll_end_days}/$poll_end_days/sm;
+        $my_pie =~ s/{yabb poll_end_min}/$poll_end_min/sm;
+        $my_pie =~ s/{yabb scchecked}/$scchecked/sm;
+        $my_pie =~ s/{yabb gvchecked}/$gvchecked/sm;
+        $my_pie =~ s/{yabb hrchecked}/$hrchecked/sm;
+        $my_pie =~ s/{yabb mcchecked}/$mcchecked/sm;
+        $my_pie =~ s/{yabb vote_limit}/$vote_limit/sm;
+        $my_pie =~ s/{yabb legchecked}/$legchecked/sm;
+        $my_pie =~ s/{yabb pie_radius}/$pie_radius/sm;
 
-            for(var i = 1; i <= $numpolloptions; i++) {
-                if(!slice_col[i]) slice_col[i] = defslice_col[i]
-                document.getElementById('slicecolor' + i).style.backgroundColor = slice_col[i];
-                document.getElementById('slicecolor' + i).style.borderColor = slice_col[i];
-                document.getElementById('slicecol' + i).value = slice_col[i];
-            }
-
-            function getSlicecolor(slicenum) {
-                tmpslicecolor = slicenum;
-                window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no');
-            }
-
-            function previewColor(newsilcecolor) {
-                document.getElementById('slicecolor' + tmpslicecolor).style.backgroundColor = newsilcecolor;
-                document.getElementById('slicecolor' + tmpslicecolor).style.borderColor = newsilcecolor;
-                document.getElementById('slicecol' + tmpslicecolor).value = newsilcecolor;
-            }
-            </script>
-        </td>
-    </tr>~ . (
-            $poll_locked
-            ? q{}
-            : qq~<tr>
-        <td class="vtop"><label for="poll_end_days"><b>$post_polltxt{'31'}</b></label></td>
-        <td class="vtop" colspan="4"><span  class="small"><input type="text" name="poll_end_days" id="poll_end_days" value="$poll_end_days" size="4" /> $post_polltxt{'31a'} <input type="text" name="poll_end_min" value="$poll_end_min" size="4" /> $post_polltxt{'31b'} $post_polltxt{'31c'}</span></td>
-    </tr>~
-          )
-          . (
-            ( $iamadmin || $iamgmod )
-            ? qq~<tr>
-        <td class="vtop"><label for="scpoll"><b>$post_polltxt{'30'}</b></label></td>
-        <td class="vtop" colspan="4"><input type="checkbox" name="scpoll" id="scpoll" value="1"$scchecked /> <span  class="small"><label for="scpoll">$post_polltxt{'30a'}</label></span></td>
-    </tr>~
-            : q{}
-          )
-          . qq~<tr>
-        <td class="vtop"><label for="guest_vote"><b>$post_polltxt{'32'}</b></label></td>
-        <td class="vtop" colspan="4"><input type="checkbox" name="guest_vote" id="guest_vote" value="1"$gvchecked /> <span  class="small"><label for="guest_vote">$post_polltxt{'54'}</label></span></td>
-    </tr><tr>
-        <td class="vtop"><label for="hide_results"><b>$post_polltxt{'26'}</b></label></td>
-        <td class="vtop" colspan="4"><input type="checkbox" name="hide_results" id="hide_results" value="1"$hrchecked /> <span  class="small"><label for="hide_results">$post_polltxt{'55'}</label></span></td>
-    </tr><tr>
-        <td class="vtop"><label for="multi_choice"><b>$post_polltxt{'58'}</b></label></td>
-        <td class="vtop" colspan="4"><input type="checkbox" name="multi_choice" id="multi_choice" value="1"$mcchecked /> <span  class="small"><label for="multi_choice">$post_polltxt{'56'}</label></span></td>
-    </tr><tr>
-        <td class="vtop"><label for="vote_limit"><b>$post_polltxt{'60'}</b></label></td>
-        <td class="vtop" colspan="4"><input type="text" size="6" name="vote_limit" id="vote_limit" value="$vote_limit" /> <span  class="small"><label for="vote_limit">$post_polltxt{'61'}</label></span></td>
-    </tr><tr>
-        <td class="vtop"><label for="pie_legends"><b>$post_polltxt{'pielegends'}</b></label></td>
-        <td class="vtop" colspan="4"><input type="checkbox" name="pie_legends" id="pie_legends" value="1"$legchecked /> <span  class="small"><label for="pie_legends">$post_polltxt{'pielegends_descr'}</label></span></td>
-    </tr><tr>
-        <td class="vtop"><label for="pie_radius"><b>$post_polltxt{'pieradius'}</b></label></td>
-        <td class="vtop" colspan="4"><input type="text" size="4" name="pie_radius" id="pie_radius" value="$pie_radius" /> <span  class="small"><label for="pie_radius">$post_polltxt{'pieradius_descr'}</label></span></td>
-    </tr>
-</table>~;
+        $my_pollsection = $mypost_poll_top;
+        $my_pollsection =~ s/{yabb poll_question}/$poll_question/sm;
+        $my_pollsection =~ s/{yabb maxpq}/$maxpq/sm;
+        $my_pollsection =~ s/{yabb pollthread}/$pollthread/sm;
+        $my_pollsection =~ s/{yabb mypoll_opt}/$mypoll_opt/sm;
+        $my_pollsection =~ s/{yabb my_maxpc}/$my_maxpc/sm;
+        $my_pollsection =~ s/{yabb my_pie}/$my_pie/sm;
     }
-
-    $yymain .= $mypost_pollc;
 
     if ( $postid ne 'Poll' ) {
         if ($prevmain) {
-            $yymain .= qq~<tr>
-            <td class="windowbg vtop"><b>$post_txt{'507'}</b></td>
-            <td class="windowbg">$prevmain</td>
-        </tr>~;
+            $my_prevmain = $mypost_preview_main;
+            $my_prevmain =~ s/{yabb prevmain}/$prevmain/sm;
         }
-
-        $yymain .= $mypost_polld;
 
         $topicstatus_row = q{};
         $stselect        = q{};
@@ -850,87 +760,48 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
             $hidestatus = q{};
 
             if ( ( $iamadmin || $iamgmod || $iammod ) && $sessionvalid == 1 ) {
-                $yymain .= qq~
-    <tr id="feature_status_4">
-        <td class="vtop"><label for="topicstatus"><b>$post_txt{'34'}:</b></label></td>
-        <td>
-            <select multiple="multiple" name="topicstatus" id="topicstatus" size="~
-                  . ( $currentboard ne $annboard ? 3 : 2 )
-                  . q~" style="vertical-align: middle;" onchange="showtpstatus()">
-            ~
-                  . (
-                    $currentboard ne $annboard
-                    ? qq~<option value="s" $stselect>$post_txt{'35'}</option>~
-                    : q{}
-                  )
-                  . qq~
-            <option value="l" $lcselect>$post_txt{'36'}</option>
-            <option value="h" $hdselect>$post_txt{'37'}</option>
-            </select>
-            <img src="$imagesdir/$threadclass.gif" id="thrstat" style="margin:0 15px" alt="" />
-        </td>
-    </tr>~;
-
+                $my_curbrd = $currentboard ne $annboard ? 3 : 2;
+                $my_stselect =
+                  $currentboard ne $annboard
+                  ? qq~<option value="s" $stselect>$post_txt{'35'}</option>~
+                  : q{};
+                $my_t_status = $mypost_topicstatus;
+                $my_t_status =~ s/{yabb my_curbrd}/$my_curbrd/sm;
+                $my_t_status =~ s/{yabb my_stselect}/$my_stselect/sm;
+                $my_t_status =~ s/{yabb lcselect}/$lcselect/sm;
+                $my_t_status =~ s/{yabb hdselect}/$hdselect/sm;
+                $my_t_status =~ s/{yabb threadclass}/$threadclass/sm;
             }
             else {
                 $hidestatus =
 qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             }
         }
-        $yymain .= qq~
-    $extra
-    $name_field
-    $email_field
-    $verification_field
-    $verification_question_field
-    <tr>
-        <td class="windowbg2">
-            <label for="subject"><b>$post_txt{'70'}:</b></label>
-        </td>
-        <td class="windowbg2">
-            <input type="text" name="subject" id="subject" value="$sub" size="50" maxlength="~
-          . ( $set_subjectMaxLength + ( $sub =~ /^Re: /sm ? 4 : 0 ) )
-          . qq~" tabindex="1" style="width: 460px;" onkeyup="updatTopic()" />
-        </td>
-    </tr><tr>
-        <td class="windowbg2 vtop">
-            <label for="message"><b>$post_txt{'72'}:</b></label><br /><span class="small">$post_txt{'resizedescript'}</span>
-        </td>
-        <td rowspan="~
-          . (
-            (
-                     !$removenormalsmilies
-                  || ( $showadded == 3 && $showsmdir != 2 )
-                  || ( $showsmdir == 3 && $showadded != 2 )
-            ) ? 2 : 3
-          )
-          . q~" class="windowbg2">
-        ~;
+        $my_submax = $set_subjectMaxLength + ( $sub =~ /^Re: /sm ? 4 : 0 );
+        $my_rem_smilies =
+          (      !$removenormalsmilies
+              || ( $showadded == 3 && $showsmdir != 2 )
+              || ( $showsmdir == 3 && $showadded != 2 ) ) ? 2 : 3;
+
         if ( $enable_ubbc && $showyabbcbutt ) {
-            $yymain .= q~
-            <div style="float: left; width: 463px;">~;
-
-            # ubbc set separated out into PostBox.pm DAR #
-            $yymain .= postbox();
-
-            $yymain .= q~</div>~;
+            $my_ubbc = qq~
+            <div style="$style_ubbc_box">~;
+            $my_ubbc .= postbox();
+            $my_ubbc .= q~</div>~;
         }
-
-        $yymain .= postbox2();
-        $yymain .= $mypost_polle;
 
         # SpellChecker start
         if ($enable_spell_check) {
             $yyinlinestyle .= googiea();
             my $userdefaultlang = ( split /-/xsm, $abbr_lang )[0];
             $userdefaultlang ||= 'en';
-            $yymain .= googie();
+            $my_googie = googie();
         }
 
         # SpellChecker end
 
         if ( $showadded == 2 || $showsmdir == 2 ) {
-            $yymain .= q~
+            $mypost_smilie_array_top = q~
             <script type="text/javascript">
             function Smiliextra() {
                 AddTxt=smiliecode[document.postmodify.smiliextra_list.value];
@@ -993,53 +864,45 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             $smilie_url_array  .= q~""~;
             $smilie_code_array .= q~""~;
 
-            $yymain .= qq~
+            $mypost_smilie_array = qq~
+            $mypost_smilie_array_top
             smilieurl = new Array($smilie_url_array)
             smiliecode = new Array($smilie_code_array)
             $mypost_smiley1
-            $smilieslist
-            $mypost_smiley2
             ~;
+            $mypost_smilie_array =~ s/{yabb smilieslist}/$smilieslist/sm;
         }
         else {
-            $yymain .= q~
+            $mypost_smilie_array .= q~
             &nbsp;
             ~;
         }
 
-        $yymain .= $mypost_feata . qq~
+        $my_post_feata = $mypost_feata;
+        $my_post_feata .= qq~
             <span class="small"><img src="$defaultimagesdir/cat_collapse.gif" id="feature_col" alt="$npf_txt{'collapse_features'}" title="$npf_txt{'collapse_features'}" class="pointer" onclick="show_features(0);" /> $npf_txt{'features_text'}</span>
             <input type="hidden" name="col_rowb" id="col_row" value="$col_row" />~;
 
         if ( !$removenormalsmilies ) {
-            $yymain .= q~
-        </td>
-        <td class="windowbg2">
-            <script type="text/javascript">~;
-            $yymain .= smilies_list();
-            $yymain .= qq~document.write("</div>");
-            //-->
-            </script>\n~;
+            $my_smilies = $mypost_smilies;
+            $my_smilies .= q~<script type="text/javascript">~;
+            $my_smilies .= smilies_list();
+            $my_smilies .= q~            document.write("</div>");
+            </script>~;
         }
 
         if (   ( $showadded == 3 && $showsmdir != 2 )
             || ( $showsmdir == 3 && $showadded != 2 ) )
         {
             if ($removenormalsmilies) {
-                $yymain .= q~
-        </td>
-        <td class="windowbg2">~;
+                $my_smilies = $mypost_smilies_b;
             }
-            $yymain .=
+            $my_smilies .=
               qq~<a href="javascript: smiliewin();">$post_smiltxt{'1'}</a>\n~;
         }
 
-        $yymain .= qq~
-            <noscript>
-            <span class="small">$maintxt{'noscript'}</span>
-            </noscript>
-        </td>
-    </tr>~;
+        $my_post_smilies .= $mypost_smilies_c;
+        $my_post_smilies =~ s/{yabb my_smilies}/$my_smilies/sm;
 
         # File Attachment's Browse Box Code
         if (
@@ -1058,22 +921,11 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             $mfn = $mfn || $FORM{'oldattach'};
             my @files = split /,/xsm, $mfn;
 
-            $yymain .= qq~<tr id="feature_status_5">
-        <td>
-            <b>$fatxt{'80'}</b>
-            <input type="hidden" name="oldattach" id="oldattach" value="$mfn" />~;
-
             if ( $allowattach > 1 ) {
-                $yymain .= qq~
+                $my_att_allow = qq~
             <img src="$defaultimagesdir/cat_expand.gif" id="attform_add" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" class="pointer" onclick="enabPrev2(1);" />
             <img src="$defaultimagesdir/cat_collapse.gif" id="attform_sub" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" class="pointer" style="visibility:hidden;" onclick="enabPrev2(-1);" />~;
             }
-
-            $yymain .= qq~
-        </td>
-        <td><span class="small">$filetype_info<br />$filesize_info</span></td>
-    </tr><tr id="feature_status_6">
-        <td colspan="2">~;
 
             my $startcount;
             for my $y ( 1 .. $allowattach ) {
@@ -1082,7 +934,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                     && -e "$uploaddir/$files[$y-1]" )
                 {
                     $startcount++;
-                    $yymain .= qq~
+                    $my_att_a = qq~
             <div id="attform_a_$y" style="float:left; width:23%;~
                       . ( $y > 1 ? q~ padding-top:5px~ : q{} )
                       . qq~"><b>$fatxt{'6'} $y:</b></div>
@@ -1099,7 +951,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                         </span>~;
                 }
                 else {
-                    $yymain .= qq~
+                    $my_att_a = qq~
             <div id="attform_a_$y" style="float:left; width:23%;~
                       . ( $y > 1 ? q~ visibility:hidden; height:0px~ : q{} )
                       . qq~"><b>$fatxt{'6'} $y:</b></div>
@@ -1107,7 +959,8 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                       . ( $y > 1 ? q~ visibility:hidden; height:0px~ : q{} )
                       . qq~">\n             <input type="file" name="file$y" id="file$y" size="50" />~;
                 }
-                $yymain .= qq~\n            </div>\n~;
+                $my_att_a   .= qq~\n            </div>\n~;
+                $mypoll_att .= $my_att_a;
 
                 if ( $is_preview == 1 && $CGI_query->upload("file$y") ) {
                     $is_preview = 2;
@@ -1116,7 +969,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             if ( !$startcount ) { $startcount = 1; }
 
             if ( $allowattach > 1 ) {
-                $yymain .= qq~
+                $my_att_b = qq~
             <script type="text/javascript">
             var countattach = $startcount;~
                   . (
@@ -1156,53 +1009,54 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             }
             </script>~;
             }
-
-            $yymain .= q~
-        </td>
-    </tr>~;
+            $my_feat5 = $mypost_feat5;
+            $my_feat5 =~ s/{yabb mfn}/$mfn/sm;
+            $my_feat5 =~ s/{yabb my_att_mfn}/$my_att_mfn/sm;
+            $my_feat5 =~ s/{yabb my_att_allow}/$my_att_allow/sm;
+            $my_feat5 =~ s/{yabb filetype_info}/$filetype_info/sm;
+            $my_feat5 =~ s/{yabb filesize_info}/$filesize_info/sm;
+            $my_feat5 =~ s/{yabb mypoll_att}/$mypoll_att/sm;
+            $my_feat5 =~ s/{yabb my_att_b}/$my_att_b/sm;
 
             if ( $is_preview == 2 ) {
                 $is_preview = 1;
-                $yymain .= qq~<tr>
-        <td style="color:red" colspan="2"><br /><b>$fatxt{'7'}</b><br /><br /></td>
-    </tr>~;
+                $my_is_prev = $mypost_is_prev;
             }
         }
 
         # /File Attachment's Browse Box Code
 
-        $yymain .= qq~
-$notification
-$favoriteadd
-    <tr id="feature_status_7">
-        <td>
-            <label for="ns"><b>$post_txt{'276'}:</b></label>
-        </td>
-        <td>
-            <input type="checkbox" name="ns" id="ns" value="NS"$nscheck /> <span class="small"> <label for="ns">$post_txt{'277'}</label></span>
-        </td>
-    </tr>
-
-    <tr id="feature_status_8">
-        <td>
-            <div id="enable_iecopytext" style="display: none;">
-                <label for="iecopy"><b>$post_txt{'iecopytext'}:</b></label><br /><br />
-            </div>
-        </td>
-        <td>
-            <div id="enable_iecopy" style="display: none;">
-                <input type="checkbox" name="iecopy" id="iecopy"$iecopycheck /> <span class="small"> <label for="iecopy">$post_txt{'iecopycheck'}</label></span><br /><br />
-            </div>
-        </td>
-    </tr>
-
-$lastmod
-~;
+        $my_postsec_b   = postbox2();
+        $my_postsection = $mypost_postblock;
+        $my_postsection =~ s/{yabb my_prevmain}/$my_prevmain/sm;
+        $my_postsection =~ s/{yabb my_t_status}/$my_t_status/sm;
+        $my_postsection =~ s/{yabb extra}/$extra/sm;
+        $my_postsection =~ s/{yabb name_field}/$name_field/sm;
+        $my_postsection =~ s/{yabb email_field}/$email_field/sm;
+        $my_postsection =~ s/{yabb verification_field}/$verification_field/sm;
+        $my_postsection =~
+          s/{yabb verification_question_field}/$verification_question_field/sm;
+        $my_postsection =~ s/{yabb sub}/$sub/sm;
+        $my_postsection =~ s/{yabb my_submax}/$my_submax/sm;
+        $my_postsection =~ s/{yabb my_rem_smilies}/$my_rem_smilies/sm;
+        $my_postsection =~ s/{yabb my_ubbc}/$my_ubbc/sm;
+        $my_postsection =~ s/{yabb my_postsec_b}/$my_postsec_b/sm;
+        $my_postsection =~ s/{yabb my_googie}/$my_googie/sm;
+        $my_postsection =~ s/{yabb mypost_smilie_array}/$mypost_smilie_array/sm;
+        $my_postsection =~ s/{yabb my_post_feata}/$my_post_feata/sm;
+        $my_postsection =~ s/{yabb my_post_smilies}/$my_post_smilies/sm;
+        $my_postsection =~ s/{yabb my_feat5}/$my_feat5/sm;
+        $my_postsection =~ s/{yabb my_is_prev}/$my_is_prev/sm;
+        $my_postsection =~ s/{yabb notification}/$notification/sm;
+        $my_postsection =~ s/{yabb favoriteadd}/$favoriteadd/sm;
+        $my_postsection =~ s/{yabb lastmod}/$lastmod/sm;
+        $my_postsection =~ s/{yabb nscheck}/$nscheck/sm;
+        $my_postsection =~ s/{yabb iecopycheck}/$iecopycheck/sm;
     }
 
     #these are the buttons to submit
     if ($is_preview) { $post_txt{'507'} = $post_txt{'771'}; }
-    $yymain .= qq~$mypost_ispreview
+    $my_post_isprev = qq~$mypost_ispreview
             $hidestatus
             <br />
             <input type="submit" name="$post" id="$post" value="$submittxt" accesskey="s" tabindex="5" class="button" />~
@@ -1230,25 +1084,12 @@ $lastmod
             }\n~;
 
     if ($speedpostdetection) {
-        $yymain .= speedpost();
+        $my_spdpost = speedpost();
     }
 
     if ( !$yyinlinestyle =~ /cookiesupport\.js/xsm ) {
         $yyinlinestyle .=
 qq~<script type="text/javascript" src="$yyhtml_root/googiespell/cookiesupport.js"></script>~;
-    }
-    $yymain .= q~
-            </script>
-            <br /><br />
-        </td>
-    </tr>
-</table>
-</div>
-</form>
-~;
-
-    if ( $postid ne 'Poll' ) {
-        $yymain .= postbox3();
     }
 
     if (   $postid ne 'Poll'
@@ -1256,7 +1097,7 @@ qq~<script type="text/javascript" src="$yyhtml_root/googiespell/cookiesupport.js
         && ( $iamadmin || $iamgmod || $iammod )
         && $sessionvalid == 1 )
     {
-        $yymain .= qq~
+        $my_tclass = qq~
 <script type="text/javascript">
 function showtpstatus() {
     var z = 0;
@@ -1266,7 +1107,7 @@ function showtpstatus() {
         if (document.postmodify.topicstatus[i].selected) { z++; x += i; }
     }~;
         if ( $currentboard ne $annboard ) {
-            $yymain .= q~
+            $my_tclass .= q~
     if(z == 1 && x === 0)  theimg = 'sticky';
     if(z == 1 && x == 1)  theimg = 'locked';
     if(z == 2 && x == 1)  theimg = 'stickylock';
@@ -1276,12 +1117,12 @@ function showtpstatus() {
     if(z == 3 && x == 3)  theimg = 'hidestickylock';~;
         }
         else {
-            $yymain .= q~
+            $my_tclass .= q~
     if(z == 1 && x === 0)  theimg = 'announcementlock';
     if(z == 1 && x == 1)  theimg = 'hide';
     if(z == 2 && x == 1)  theimg = 'hidelock';~;
         }
-        $yymain .= qq~
+        $my_tclass .= qq~
     document.images.thrstat.src='$imagesdir/'+theimg+'.gif';
 }
 showtpstatus();
@@ -1302,8 +1143,8 @@ showtpstatus();
     $jstimeselected = ${ $uid . $username }{'timeselect'} || $timeselected;
 
     if ( $postid ne 'Poll' ) {
-        $yymain .= postbox3();
-        $yymain .= qq~
+        $my_postbox_3 = postbox3();
+        $my_postbox_3 .= qq~
 <script src="$yyhtml_root/yabbc.js" type="text/javascript"></script>
 <script type="text/javascript">
 var noalert = true, gralert = false, rdalert = false, clalert = false;
@@ -1450,9 +1291,8 @@ function LivePrevImgResize() {
 function updatTopic() {
     var topicfirst = false;
     ~;
-
         if ( $destination ne 'modalert2' && $destination ne 'guestpm2' ) {
-            $yymain .= qq~
+            $my_post_visicon .= qq~
     var visicon = document.postmodify.icon.value;
     visicon=visicon.replace(/http\\:\\/\\/.*\\/(.*?)\\.gif/g, "\$1");
     visicon=visicon.replace(/[^A-Za-z]/g, "");
@@ -1468,7 +1308,7 @@ function updatTopic() {
     visikon = "<img src='$imagesdir/"+visicon+".gif' alt='"+visicon+"' /> ";~;
         }
 
-        $yymain .= q~
+        $my_post_visicon .= q~
     var vistopic = document.postmodify.subject.value;
     var htmltopic = jsDoTohtml(vistopic);
     document.getElementById("savetopic").innerHTML=visikon+htmltopic;
@@ -1480,12 +1320,12 @@ function updatTopic() {
           . qq~\n\n~;
 
         if ( $post eq 'imsend' ) {
-            $yymain .= q~
+            $my_showCC = q~
 if(document.getElementById('toshowcc').length > 0) document.getElementById('toshowcc').style.display = 'inline';
 if(document.getElementById('toshowbcc').length > 0) document.getElementById('toshowbcc').style.display = 'inline';
 ~;
         }
-        $yymain .= q~
+        $my_iecopy = q~
 if (navigator.appName == "Microsoft Internet Explorer") {
     document.getElementById('enable_iecopytext').style.display = 'inline';
     document.getElementById('enable_iecopy').style.display = 'inline';
@@ -1494,6 +1334,30 @@ tick();
 </script>
 ~;
     }
+    $yymain .= $ctmain;
+    $yymain .= $my_q_quote;
+    $yymain .= $my_adminim;
+    $yymain .= $mypost_ubbc;
+    $yymain .= $my_smilie_code;
+    $yymain .= $my_smiliewin;
+    $yymain .= $my_modalert;
+    $yymain .= $mypost_title;
+
+    $yymain .= $my_pollsection;
+    $yymain .= $my_postsection;
+
+    $yymain .= $my_post_isprev;
+    $yymain .= $my_spdpost;
+    $yymain .= $mypost_formend;
+    $yymain .= $my_tclass;
+    $yymain .= $my_postbox_3;
+    $yymain .= $my_post_visicon;
+    $yymain .= $my_showCC;
+    $yymain .= $my_iecopy;
+    $yymain =~ s/{yabb my_topper}/$my_topper/sm;
+    $yymain =~ s/{yabb icon}/$icon/sm;
+    $yymain =~ s/{yabb yytitle}/$yytitle/sm;
+    $yymain =~ s/{yabb my_topview}/$my_tview/sm;
     return;
 }
 
@@ -1629,51 +1493,47 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     elsif ( $FORM{'status'} eq 'u' ) { $icon = 'urgent'; }
     elsif ( $FORM{'status'} eq 's' ) { $icon = 'standard'; }
 
-    $name_field = $iamguest
-      ? qq~      <tr>
-    <td class="windowbg"><label for="name"><b>$post_txt{'68'}:</b></label></td>
-    <td class="windowbg"><input type="text" name="name" id="name" size="25" value="$FORM{'name'}" maxlength="25" tabindex="2" /></td>
-      </tr>~
+    $name_field =
+        $iamguest
+      ? $mypost_guest_a
       : q~~;
+    $name_field =~ s/{yabb name}/$FORM{'name'}/sm;
 
-    $email_field = $iamguest
-      ? qq~      <tr>
-    <td class="windowbg"><label for="email"><b>$post_txt{'69'}:</b></label></td>
-    <td class="windowbg"><input type="text" name="email" id="email" size="25" value="$FORM{'email'}" maxlength="40" tabindex="3" /></td>
-      </tr>~
+    $email_field =
+        $iamguest
+      ? $mypost_guest_b
       : q~~;
+    $email_field =~ s/{yabb email}/$FORM{'email'}/sm;
+
     if ( $iamguest && $gpvalid_en ) {
         $usename = substr $date, 1, length($date) - 4;
         $sesname = substr $date, 0, length($date) - 4;
-        $verification       = $FORM{'verification'};
-        $sessionid          = $FORM{'sessionid'};
-        $verification_field = $verification ne q{}
-          ? qq~<tr>
-                <td class="windowbg vtop"><label for="verification"><b>$floodtxt{'3'}:</b></label></td>
-                <td class="windowbg vtop">$showcheck<br /><span class="small">$flood_text</span></td>
-                <input type="hidden" name="verification" id="verification" value="$verification" />
-                <input type="hidden" name="sessionid" id="sessionid" value="$sessionid" />
-                </td>
-            </tr>~
+        $verification = $FORM{'verification'};
+        $sessionid    = $FORM{'sessionid'};
+        $verification_field =
+            $verification ne q{}
+          ? $mypost_veri_a
           : q{};
+        $verification_field =~ s/{yabb showcheck}/$showcheck/sm;
+        $verification_field =~ s/{yabb flood_text}/$flood_text/sm;
+        $verification_field =~ s/{yabb verification}/$verification/sm;
+        $verification_field =~ s/{yabb sessionid}/$sessionid/sm;
     }
     if (   $iamguest
         && $en_spam_questions
         && -e "$langdir/$language/spam.questions" )
     {
-        $verification_question       = $FORM{'verification_question'};
-        $verification_question_id    = $FORM{'verification_question_id'};
-        $spam_question               = $FORM{'spam_question'};
-        $verification_question_field = $verification_question ne q{}
-          ? qq~<tr>
-                <td class="windowbg vtop"><label for="verification_question"><b>$spam_question</b></label></td>
-                <td class="windowbg">$verification_question
-                <input type="hidden" name="verification_question" value="$verification_question" />
-                <input type="hidden" name="verification_question_id" value="$verification_question_id" />
-                <input type="hidden" name="spam_question" value="$spam_question" />
-                </td>
-            </tr>~
+        $verification_question    = $FORM{'verification_question'};
+        $verification_question_id = $FORM{'verification_question_id'};
+        $spam_question            = $FORM{'spam_question'};
+        $verification_question_field =
+            $verification_question ne q{}
+          ? $mypost_veri_b
           : q{};
+        $verification_question_field =~
+          s/{yabb spam_question}/$spam_question/gsm;
+        $verification_question_field =~
+          s/{yabb verification_question}/$verification_question/gsm;
     }
     if ( $FORM{'ns'} eq 'NS' ) { $nscheck = q~ checked="checked"~; }
     if ( $FORM{'iecopy'} ) { $iecopycheck = q~ checked="checked"~; }
@@ -2315,9 +2175,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
                         "$fixfile $fatxt{'20a'}" );
                 }
             }
-
             push @filelist, $fixfile;
-
         }
     }
 
@@ -2332,14 +2190,6 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
     else {
         $newthreadid = q{};
     }
-
-# This is only for update, when coming from YaBB lower or equal version 2.2.3
-# I think it can be deleted around version 2.4.0 without causing major issues (deti).
-    if ( $enable_notifications eq q{} ) {
-        $enable_notifications = $enable_notification ? 3 : 0;
-    }
-
-    # End update workaround
 
     # set announcement flag according to status of current board
     if ($newthreadid) {
@@ -2825,10 +2675,6 @@ sub doshowthread {
 
     if (@messages) {
         if ( @messages < $cutamount ) { $cutamount = @messages; }
-        $yymain .= q~
-<table class="bordercolor cs_thin pad_4px" style="table-layout: fixed">
-      <tr><td class="titlebg" colspan="2">
-~;
         $showall = $post_cutts{'3'};
 
         if ( @messages => $cutamount && $showpageall ) {
@@ -2842,9 +2688,8 @@ qq~ $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threadid;title=PostRe
             $showall =
 qq~$post_cutts{'3'} $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threadid;title=PostReply/$INFO{'start'}" style="text-decoration: underline;"> $post_cutts{'4'}</a> $post_cutts{'6'} ~;
         }
-        $yymain .= qq~
-            <b>$post_txt{'468'} - $post_cutts{'2'} $cutamount $showall</b>
-            </td></tr>~;
+        $my_showmess_disnum = qq~
+            <b>$post_txt{'468'} - $post_cutts{'2'} $cutamount $showall</b>~;
         if ( $tsreverse == 1 ) { @messages = reverse @messages; }
         if ( $INFO{'showall'} ne q{} || $cutamount eq 'all' ) {
             $cutamount = 1000;
@@ -2910,37 +2755,37 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tempname}" clas
             $message = Censor($message);
 
             if ( $message ne q{} ) {
-                $yymain .= qq~$mypost_showpreva
-<span class="small">$post_txt{'279'}: $displaynamelink~
-                  . (
-                    $enable_markquote
-                    ? qq~&nbsp;&nbsp;<a href="javascript:void(quoteSelection('$quote_mname',$threadid,$quote_msg_id,$messagedate,''))">$img{'mquote'}</a>~
-                    : q{}
-                  )
-                  . (
-                    (
-                        $enable_quickjump
-                          && length($quickmessage) <= $quick_quotelength
-                    )
-                    ? qq~$menusep<a href="javascript:void(quoteSelection('$quote_mname',$threadid,$quote_msg_id,$messagedate,'$quickmessage'))">$img{'quote'}</a>~
-                    : q{}
-                  )
-                  . qq~</span>$mypost_showprevb
-            <span class="small">$post_txt{'280'}: $tempdate</span>
-            $mypost_showprevc
-            <div class="message" onmouseup="get_selection($quote_msg_id);" style="max-height: 150px; overflow: auto;">
-$message
-           </div>
-        </td>
-    </tr>
-~;
+                $my_enable_markquote =
+                  $enable_markquote
+                  ? qq~&nbsp;&nbsp;<a href="javascript:void(quoteSelection('$quote_mname',$threadid,$quote_msg_id,$messagedate,''))">$img{'mquote'}</a>~
+                  : q{};
+                $my_enable_quickjump =
+                  ( $enable_quickjump
+                      && length($quickmessage) <= $quick_quotelength )
+                  ? qq~$menusep<a href="javascript:void(quoteSelection('$quote_mname',$threadid,$quote_msg_id,$messagedate,'$quickmessage'))">$img{'quote'}</a>~
+                  : q{};
+
+                $my_showmess_mess .= $mypost_showmessages_a;
+                $my_showmess_mess =~
+                  s/{yabb displaynamelink}/$displaynamelink/sm;
+                $my_showmess_mess =~
+                  s/{yabb my_enable_markquote}/$my_enable_markquote/sm;
+                $my_showmess_mess =~
+                  s/{yabb my_enable_quickjump}/$my_enable_quickjump/sm;
+                $my_showmess_mess =~ s/{yabb tempdate}/$tempdate/sm;
+                $my_showmess_mess =~ s/{yabb quote_msg_id}/$quote_msg_id/sm;
+                $my_showmess_mess =~ s/{yabb message}/$message/sm;
+
             }
         }
-        $yymain .= "</table>\n";
+        $my_showmess = $mypost_showmessages;
+        $my_showmess =~ s/{yabb my_showmess_disnum}/$my_showmess_disnum/sm;
+        $my_showmess =~ s/{yabb my_showmess_mess}/$my_showmess_mess/sm;
     }
     else {
-        $yymain .= '<!--no summary-->';
+        $my_showmess .= '<!--no summary-->';
     }
+    $yymain .= $my_showmess;
     return;
 }
 
@@ -2955,28 +2800,20 @@ sub sendGuestPM {
     $INFO{'title'} = 'PostReply';
     $postthread = 2;
 
-    $name_field = qq~      <tr>
-    <td class="windowbg padd_3px"><label for="name"><b>$post_txt{'68'}:</b></label></td>
-    <td class="windowbg padd_3px"><input type="text" name="name" id="name" size="25" value="$FORM{'name'}" maxlength="25" tabindex="2" /></td>
-      </tr>~;
-    $email_field = qq~      <tr>
-    <td class="windowbg padd_3px"><label for="email"><b>$post_txt{'69'}:</b></label></td>
-    <td class="windowbg padd_3px"><input type="text" name="email" id="email" size="25" value="$FORM{'email'}" maxlength="40" tabindex="3" /></td>
-      </tr>~;
+    $name_field = $mypost_guest_a;
+    $name_field =~ s/{yabb name}/$FORM{'name'}/sm;
+    $email_field = $mypost_guest_b;
+    $email_field =~ s/{yabb email}/$FORM{'email'}/sm;
 
     if ($gpvalid_en) {
         validation_code();
-        $verification_field = $verification eq q{}
-          ? qq~<tr class="windowbg">
-                        <td class="vtop padd_3px"><label for="verification"><b>$floodtxt{'1'}:</b></label></td>
-                        <td class="padd_3px">$showcheck<br /><label for="verification"><span class="small">$flood_text</span></label></td>
-                  </tr><tr class="windowbg">
-                        <td class="vtop padd_3px"><label for="verification"><b>$floodtxt{'3'}:</b></label></td>
-                        <td class="padd_3px">
-                        <input type="text" maxlength="30" name="verification" id="verification" size="30" />
-                        </td>
-                  </tr>~
+        $verification_field =
+            $verification eq q{}
+          ? $mypost_guest_c
           : q{};
+        $verification_field =~ s/{yabb showcheck}/$showcheck/sm;
+        $verification_field =~ s/{yabb flood_text}/$flood_text/sm;
+
     }
     if (   $iamguest
         && $spam_questions_gp
@@ -2988,19 +2825,16 @@ sub sendGuestPM {
             $verification_question_desc =
               qq~<br />$post_txt{'verification_question_case'}~;
         }
-        $verification_question_field = $verification_question eq q{}
-          ? qq~<tr>
-                <td class="windowbg vtop">
-                    <label for="verification_question"><b>$spam_question</b><br />
-                    <span class="small">$post_txt{'verification_question_desc'}$verification_question_desc</span></label>
-                </td>
-                <td class="windowbg vtop">
-                    <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" />
-                    <input type="hidden" name="verification_question_id" value="$spam_question_id" />
-                    <input type="hidden" name="spam_question" value="$spam_question" />
-                </td>
-            </tr>~
+        $verification_question_field =
+            $verification_question eq q{}
+          ? $mypost_veri_c
           : q{};
+        $verification_question_field =~
+          s/{yabb spam_question}/$spam_question/gsm;
+        $verification_question_field =~
+          s/{yabb verification_question_desc}/$verification_question_desc/gsm;
+        $verification_question_field =~
+          s/{yabb spam_question_id}/$spam_question_id/gsm;
     }
     $sub        = q{};
     $settofield = 'subject';
@@ -3217,33 +3051,26 @@ sub modAlert {
     $INFO{'title'} =~ tr/+/ /;
     $postthread = 2;
 
-    $name_field = $iamguest
-      ? qq~<tr class="windowbg">
-    <td style="padding:3px"><label for="name"><b>$post_txt{'68'}:</b></label></td>
-    <td style="padding:3px"><input type="text" name="name" id="name" size="25" value="$FORM{'name'}" maxlength="25" tabindex="2" /></td>
-      </tr>~
+    $name_field =
+        $iamguest
+      ? $mypost_guest_a
       : q{};
+    $name_field =~ s/{yabb email}/$FORM{'name'}/sm;
 
-    $email_field = $iamguest
-      ? qq~<tr class="windowbg">
-    <td style="padding:3px"><label for="email"><b>$post_txt{'69'}:</b></label></td>
-    <td dtyle="padding:3px"><input type="text" name="email" id="email" size="25" value="$FORM{'email'}" maxlength="40" tabindex="3" /></td>
-      </tr>~
+    $email_field =
+        $iamguest
+      ? $myposte_templateb
       : q{};
+    $email_field =~ s/{yabb email}/$FORM{'email'}/sm;
 
     if ( $iamguest && $gpvalid_en ) {
         validation_code();
-        $verification_field = $verification eq q{}
-          ? qq~<tr class="windowbg">
-                        <td class="vtop" style="padding:3px"><label for="verification"><b>$floodtxt{'1'}:</b></label></td>
-                        <td style="padding:3px">$showcheck<br /><label for="verification"><span class="small">$flood_text</span></label></td>
-                  </tr><tr class="windowbg">
-                        <td class="vtop" style="padding:3px"><label for="verification"><b>$floodtxt{'3'}:</b></label></td>
-                        <td style="padding:3px">
-                        <input type="text" maxlength="30" name="verification" id="verification" size="30" />
-                        </td>
-                  </tr>~
+        $verification_field =
+            $verification eq q{}
+          ? $myposte_templatec
           : q{};
+        $verification_field =~ s/{yabb showcheck}/$showcheck/sm;
+        $verification_field =~ s/{yabb flood_text}/$flood_text/sm;
     }
     if (   $iamguest
         && $spam_questions_gp
@@ -3255,19 +3082,16 @@ sub modAlert {
             $verification_question_desc =
               qq~<br />$post_txt{'verification_question_case'}~;
         }
-        $verification_question_field = $verification_question eq q{}
-          ? qq~<tr>
-                <td class="windowbg vtop">
-                    <label for="verification_question"><b>$spam_question</b><br />
-                    <span class="small">$post_txt{'verification_question_desc'}$verification_question_desc</span></label>
-                </td>
-                <td class="windowbg vtop">
-                    <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" />
-                    <input type="hidden" name="verification_question_id" value="$spam_question_id" />
-                    <input type="hidden" name="spam_question" value="$spam_question" />
-                </td>
-            </tr>~
+        $verification_question_field =
+            $verification_question eq q{}
+          ? $mypost_veri_c
           : q{};
+        $verification_question_field =~
+          s/{yabb spam_question}/$spam_question/gsm;
+        $verification_question_field =~
+          s/{yabb verification_question_desc}/$verification_question_desc/gsm;
+        $verification_question_field =~
+          s/{yabb spam_question_id}/$spam_question_id/gsm;
     }
 
     $sub        = q{};
