@@ -171,20 +171,20 @@ sub AddCats2 {
             if (
                 $FORM{"catimage$i"} =~ /[^0-9a-zA-Z_\.#\%\-:\+\?\$&~,\@\/]/xsm )
             {
-                admin_fatal_error( 'invalid_character', $FORM{"catimage$i"} );
+                fatal_error( 'invalid_character', $FORM{"catimage$i"} );
             }
             if ( $FORM{"catimage$i"} !~ /\.(gif|png|jpe?g)$/xsm ) {
-                admin_fatal_error( q{}, $admintxt{'44'} );
+                fatal_error( q{}, $admintxt{'44'} );
             }
         }
         if ( $FORM{"theid$i"} eq q{} ) { next; }
         $id = $FORM{"theid$i"};
         if ( $id !~ /^[0-9A-Za-z#%+-\.@^_]+$/xsm ) {
-            admin_fatal_error( 'invalid_character',
+            fatal_error( 'invalid_character',
                 "$admin_txt{'44'} $admin_txt{'241'}" );
         }
         if ( $FORM{'screenornot'} ne 'catscreen' ) {
-            if   ( $catinfo{"$id"} ) { admin_fatal_error('cat_defined'); }
+            if   ( $catinfo{"$id"} ) { fatal_error('cat_defined'); }
             else                     { $cat{"$id"} = q{}; }
             push @categoryorder, $id;
         }

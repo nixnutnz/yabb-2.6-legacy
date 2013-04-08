@@ -116,7 +116,7 @@ sub RemoveOldAttachments {
 
     my $maxdaysattach = $FORM{'maxdaysattach'} || $INFO{'maxdaysattach'};
     if ( $maxdaysattach !~ /^[0-9]+$/xsm ) {
-        admin_fatal_error('only_numbers_allowed');
+        fatal_error('only_numbers_allowed');
     }
 
     # Set up the multi-step action
@@ -125,7 +125,7 @@ sub RemoveOldAttachments {
     automaintenance('on');
 
     opendir ATT, $uploaddir
-      || admin_fatal_error( 'cannot_open', "$uploaddir", 1 );
+      || fatal_error( 'cannot_open', "$uploaddir", 1 );
     my @attachments = sort( grep { /\w+$/xsm } readdir ATT );
     closedir ATT;
 
@@ -142,7 +142,7 @@ sub RemoveOldAttachments {
     my $info;
     if ( !@attachments ) {
         fopen( ATT, ">$vardir/attachments.txt" )
-          || admin_fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
+          || fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
         print {ATT} q{} or croak 'cannot print ATT';
         fclose(ATT);
 
@@ -175,7 +175,7 @@ qq~<br /><i>$attachments[$aa]</i> $fatxt{'1'} = $age $admin_txt{'122'}.~;
 
             # save the $info of this run until the end of 'RemoveOldAttachments'
                 fopen( FILE, ">>$vardir/rem_old_attach.tmp" )
-                  || admin_fatal_error( 'cannot_open',
+                  || fatal_error( 'cannot_open',
                     "$vardir/rem_old_attach.tmp", 1 );
                 print $info or croak 'cannot print info';
                 fclose(FILE);
@@ -216,7 +216,7 @@ sub RemoveBigAttachments {
 
     my $maxsizeattach = $FORM{'maxsizeattach'} || $INFO{'maxsizeattach'};
     if ( $maxsizeattach !~ /^[0-9]+$/xsm ) {
-        admin_fatal_error('only_numbers_allowed');
+        fatal_error('only_numbers_allowed');
     }
 
     # Set up the multi-step action
@@ -225,7 +225,7 @@ sub RemoveBigAttachments {
     automaintenance('on');
 
     opendir ATT, $uploaddir
-      || admin_fatal_error( 'cannot_open', "$uploaddir", 1 );
+      || fatal_error( 'cannot_open', "$uploaddir", 1 );
     my @attachments = sort( grep { /\w+$/xsm } readdir ATT );
     closedir ATT;
 
@@ -242,7 +242,7 @@ sub RemoveBigAttachments {
     my $info;
     if ( !@attachments ) {
         fopen( ATT, ">$vardir/attachments.txt" )
-          || admin_fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
+          || fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
         print {ATT} q{} or croak 'cannot print ATT';
         fclose(ATT);
 
@@ -273,7 +273,7 @@ sub RemoveBigAttachments {
 
             # save the $info of this run until the end of 'RemoveBigAttachments'
                 fopen( FILE, ">>$vardir/rem_big_attach.tmp" )
-                  || admin_fatal_error( 'cannot_open',
+                  || fatal_error( 'cannot_open',
                     "$vardir/rem_big_attach.tmp", 1 );
                 print $info or croak 'cannot print info';
                 fclose(FILE);
@@ -665,7 +665,7 @@ qq~$topicnum|$mreplies|$msub|$mname|$curboard|$asize|$mdate|$_|~
 
     if (@newattachments) {
         fopen( NEWATM, ">>$vardir/newattachments.tmp" )
-          || admin_fatal_error( 'cannot_open', "$vardir/newattachments.tmp",
+          || fatal_error( 'cannot_open', "$vardir/newattachments.tmp",
             1 );
         print {NEWATM} @newattachments or croak 'cannot print NEWATM';
         fclose(NEWATM);
@@ -771,7 +771,7 @@ sub RemoveAttachments
     if ( !%{$ThreadHashref} ) { return $count; }
 
     fopen( ATM, "+<$vardir/attachments.txt", 1 )
-      || admin_fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
+      || fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
     seek ATM, 0, 0;
     my @attachments = <ATM>;
     truncate ATM, 0;

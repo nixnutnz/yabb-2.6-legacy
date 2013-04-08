@@ -58,12 +58,12 @@ sub DeleteConverterFiles {
         $convdir = "./Convert/$cnvdir";
         if ( -d "$convdir" ) {
             opendir 'CNVDIR', $convdir
-              || admin_fatal_error( 'cannot_open_dir', "$convdir" );
+              || fatal_error( 'cannot_open_dir', "$convdir" );
             @convlist = readdir 'CNVDIR';
             closedir 'CNVDIR';
             foreach my $file (@convlist) {
                 unlink "$convdir/$file"
-                  || admin_fatal_error( 'cannot_open_dir', "$convdir/$file" );
+                  || fatal_error( 'cannot_open_dir', "$convdir/$file" );
             }
             rmdir "$convdir";
         }
@@ -71,7 +71,7 @@ sub DeleteConverterFiles {
     $convdir = './Convert';
     if ( -d "$convdir" ) {
         opendir 'CNVDIR', $convdir
-          || admin_fatal_error( 'cannot_open_dir', "$convdir" );
+          || fatal_error( 'cannot_open_dir', "$convdir" );
         @convlist = readdir 'CNVDIR';
         closedir 'CNVDIR';
         foreach my $file (@convlist) {
@@ -667,7 +667,7 @@ sub DeleteMultiMembers {
     $tmpemailsubject = $FORM{'emailsubject'};
     $tmpemailtext    = $FORM{'emailtext'};
     if ( $FORM{'button'} != 1 && $FORM{'button'} != 2 ) {
-        admin_fatal_error('no_access');
+        fatal_error('no_access');
     }
 
     if ( $FORM{'del_mail'} || $FORM{'emailtext'} ne q{} ) {
@@ -1093,35 +1093,35 @@ sub AddMember2 {
 
 # check if there is a system hash named like this by checking existence through size
     my $hsize = keys %{ $member{'regusername'} };
-    if ( $hsize > 0 ) { admin_fatal_error('system_prohibited_id'); }
+    if ( $hsize > 0 ) { fatal_error('system_prohibited_id'); }
     if ( length( $member{'regusername'} ) > 25 ) {
         $member{'regusername'} = substr $member{'regusername'}, 0, 25;
     }
     if ( $member{'regusername'} eq q{} ) {
-        admin_fatal_error( 'no_username', "($member{'regusername'})" );
+        fatal_error( 'no_username', "($member{'regusername'})" );
     }
     if ( $member{'regusername'} eq q{_} || $member{'regusername'} eq q{|} ) {
-        admin_fatal_error( 'id_alfa_only', "($member{'regusername'})" );
+        fatal_error( 'id_alfa_only', "($member{'regusername'})" );
     }
     if ( $member{'regusername'} =~ /guest/ism ) {
-        admin_fatal_error( 'id_reserved', "($member{'regusername'})" );
+        fatal_error( 'id_reserved', "($member{'regusername'})" );
     }
     if ( $member{'regusername'} =~ /[^\w\+\-\.\@]/sm ) {
-        admin_fatal_error( 'invalid_character',
+        fatal_error( 'invalid_character',
             "$register_txt{'35'} $register_txt{'241re'}" );
     }
     if ( $member{'regusername'} =~ /^[0-9]+$/sm ) {
-        admin_fatal_error( 'all_numbers',
+        fatal_error( 'all_numbers',
             "$register_txt{'35'} $register_txt{'241n'}" );
     }
     if ( $member{'email'} eq q{} ) {
-        admin_fatal_error( 'no_email', "($member{'regusername'})" );
+        fatal_error( 'no_email', "($member{'regusername'})" );
     }
     if ( -e "$memberdir/$member{'regusername'}.vars" ) {
-        admin_fatal_error( 'id_taken', "($member{'regusername'})" );
+        fatal_error( 'id_taken', "($member{'regusername'})" );
     }
     if ( $member{'regusername'} eq $member{'passwrd1'} ) {
-        admin_fatal_error('password_is_userid');
+        fatal_error('password_is_userid');
     }
 
     FromChars( $member{'regrealname'} );
@@ -1130,13 +1130,13 @@ sub AddMember2 {
     CountChars();
     $member{'regrealname'} = $convertstr;
     if ($cliped) {
-        admin_fatal_error( 'realname_to_long',
+        fatal_error( 'realname_to_long',
             "($member{'regrealname'} => $convertstr)" );
     }
     if ( $member{'regrealname'} =~
         /[^ \w\x80-\xFF\[\]\(\)#\%\+,\-\|\.:=\?\@\^]/sm )
     {
-        admin_fatal_error( 'invalid_character',
+        fatal_error( 'invalid_character',
             "$register_txt{'38'} $register_txt{'241re'}" );
     }
 
@@ -1160,22 +1160,22 @@ sub AddMember2 {
     }
     else {
         if ( $member{'passwrd1'} ne $member{'passwrd2'} ) {
-            admin_fatal_error( 'password_mismatch',
+            fatal_error( 'password_mismatch',
                 "($member{'regusername'})" );
         }
         if ( $member{'passwrd1'} eq q{} ) {
-            admin_fatal_error( 'no_password', "($member{'regusername'})" );
+            fatal_error( 'no_password', "($member{'regusername'})" );
         }
         if ( $member{'passwrd1'} =~
             /[^\s\w!\@#\$\%\^&\*\(\)\+\|`~\-=\\:;'",\.\/\?\[\]\{\}]/sm )
         {
-            admin_fatal_error( 'invalid_character',
+            fatal_error( 'invalid_character',
                 "$register_txt{'36'} $register_txt{'241'}" );
         }
     }
 
     if ( $member{'email'} !~ /^[\w\-\.\+]+\@[\w\-\.\+]+\.\w{2,4}$/sm ) {
-        admin_fatal_error( 'invalid_character',
+        fatal_error( 'invalid_character',
             "$register_txt{'69'} $register_txt{'241e'}" );
     }
     if (
@@ -1184,40 +1184,40 @@ sub AddMember2 {
             /\A.+@\[?(\w|[-.])+\.[a-zA-Z]{2,4}|[0-9]{1,4}\]?\Z/sm )
       )
     {
-        admin_fatal_error('invalid_email');
+        fatal_error('invalid_email');
     }
 
     if (
         lc $member{'regusername'} eq
         lc MemberIndex( 'check_exist', $member{'regusername'} ) )
     {
-        admin_fatal_error( 'id_taken', "($member{'regusername'})" );
+        fatal_error( 'id_taken', "($member{'regusername'})" );
     }
     if (
         lc $member{'email'} eq lc MemberIndex( 'check_exist', $member{'email'} )
       )
     {
-        admin_fatal_error( 'email_taken', "($member{'email'})" );
+        fatal_error( 'email_taken', "($member{'email'})" );
     }
     if (
         lc $member{'regrealname'} eq
         lc MemberIndex( 'check_exist', $member{'regrealname'} ) )
     {
-        admin_fatal_error( 'name_taken', "($member{'regrealname'})" );
+        fatal_error( 'name_taken', "($member{'regrealname'})" );
     }
 
     if ( $name_cannot_be_userid
         && lc $member{'regusername'} eq lc $member{'regrealname'} )
     {
-        admin_fatal_error('name_is_userid');
+        fatal_error('name_is_userid');
     }
 
     fopen( RESERVE, "$vardir/reserve.txt" )
-      || admin_fatal_error( 'cannot_open', "$vardir/reserve.txt", 1 );
+      || fatal_error( 'cannot_open', "$vardir/reserve.txt", 1 );
     @reserve = <RESERVE>;
     fclose(RESERVE);
     fopen( RESERVECFG, "$vardir/reservecfg.txt" )
-      || admin_fatal_error( 'cannot_open', "$vardir/reservecfg.txt", 1 );
+      || fatal_error( 'cannot_open', "$vardir/reservecfg.txt", 1 );
     @reservecfg = <RESERVECFG>;
     fclose(RESERVECFG);
     for my $aa ( 0 .. ( @reservecfg - 1 ) ) {
@@ -1242,31 +1242,31 @@ sub AddMember2 {
         if ($matchuser) {
             if ($matchword) {
                 if ( $namecheck eq $reservecheck ) {
-                    admin_fatal_error( 'id_reserved', "$reserved" );
+                    fatal_error( 'id_reserved', "$reserved" );
                 }
             }
             else {
                 if ( $namecheck =~ $reservecheck ) {
-                    admin_fatal_error( 'id_reserved', "$reserved" );
+                    fatal_error( 'id_reserved', "$reserved" );
                 }
             }
         }
         if ($matchname) {
             if ($matchword) {
                 if ( $realnamecheck eq $reservecheck ) {
-                    admin_fatal_error( 'name_reserved', "$reserved" );
+                    fatal_error( 'name_reserved', "$reserved" );
                 }
             }
             else {
                 if ( $realnamecheck =~ $reservecheck ) {
-                    admin_fatal_error( 'name_reserved', "$reserved" );
+                    fatal_error( 'name_reserved', "$reserved" );
                 }
             }
         }
     }
 
     if ( -e ("$memberdir/$member{'username'}.vars") ) {
-        admin_fatal_error('id_taken');
+        fatal_error('id_taken');
     }
 
     if ( $send_welcomeim == 1 ) {

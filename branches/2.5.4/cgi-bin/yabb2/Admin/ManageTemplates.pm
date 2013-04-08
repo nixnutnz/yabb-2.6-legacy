@@ -21,7 +21,7 @@ LoadLanguage('Templates');
 
 sub ModifyTemplate {
     is_admin_or_gmod();
-    my @tempnames = qw ( Bdaylist BoardIndex Calendar Display Downloads HelpCentre Loginout Memberlist MessageIndex MyCenter MyMessage MyPosts MyProfile Poll Post Register Search );
+    my @tempnames = qw ( Bdaylist BoardIndex Calendar Display Downloads HelpCentre Loginout Memberlist MessageIndex MyCenter MyMessage MyPosts MyProfile Poll Post Other Register Search );
     my ( $fulltemplate, $line );
     if    ( $FORM{'templatefile'} ) { $templatefile = $FORM{'templatefile'} }
     elsif ( $INFO{'templatefile'} ) { $templatefile = $INFO{'templatefile'} }
@@ -190,7 +190,7 @@ sub ModifyStyle {
         }
     }
 
-    fopen( CSS, "$csstype" ) or admin_fatal_error( 'cannot_open', "$csstype" );
+    fopen( CSS, "$csstype" ) or fatal_error( 'cannot_open', "$csstype" );
     while ( $line = <CSS> ) {
         $line =~ s/[\r\n]//gxsm;
         $line =~ s/&nbsp;/&#38;nbsp;/gsm;
@@ -269,11 +269,11 @@ sub ModifyStyle2 {
     else                       { $cssfile = 'default.css'; }
     if ( $FORM{'type'} ) {
         fopen( CSS, ">$htmldir/Templates/Admin/$cssfile" )
-          || admin_fatal_error( 'cannot_open', "$htmldir/Templates/Admin/$cssfile", 1 );
+          || fatal_error( 'cannot_open', "$htmldir/Templates/Admin/$cssfile", 1 );
     }
     else {
         fopen( CSS, ">$htmldir/Templates/Forum/$cssfile" )
-          || admin_fatal_error( 'cannot_open', "$htmldir/Templates/Forum/$cssfile", 1 );
+          || fatal_error( 'cannot_open', "$htmldir/Templates/Forum/$cssfile", 1 );
     }
     print {CSS} "$FORM{'css'}\n" or croak 'cannot print CSS';
     fclose(CSS);
@@ -323,7 +323,7 @@ sub ModifyCSS {
     }
 
     fopen( CSS, "$htmldir/Templates/Forum/$cssfile" )
-      or admin_fatal_error( 'cannot_open', "$htmldir/Templates/Forum/$cssfile" );
+      or fatal_error( 'cannot_open', "$htmldir/Templates/Forum/$cssfile" );
     @thecss = <CSS>;
     fclose(CSS);
     foreach my $style_sgl (@thecss) {
@@ -1639,12 +1639,12 @@ sub ModifyCSS2 {
     elsif ( $FORM{'button'} == 2 ) {
         $style_name = $FORM{'savecssas'};
         if ( $style_name eq 'default' ) {
-            admin_fatal_error('no_delete_default');
+            fatal_error('no_delete_default');
         }
         if (   $style_name !~ m{\A[0-9a-zA-Z_\.\#\%\-\:\+\?\$\&\~\.\,\@/]+\Z}sm
             || $style_name eq q{} )
         {
-            admin_fatal_error('invalid_template');
+            fatal_error('invalid_template');
         }
         $style_cnt = $FORM{'stylelink'};
         FromHTML($style_cnt);
@@ -1656,7 +1656,7 @@ sub ModifyCSS2 {
         @style_arr = split /\n/xsm, $style_cnt;
 
         fopen( TMPCSS, ">$htmldir/Templates/Forum/$style_name.css" )
-          || admin_fatal_error( 'cannot_open',
+          || fatal_error( 'cannot_open',
             "$htmldir/Templates/Forum/$style_name.css", 1 );
         foreach my $style_sgl (@style_arr) {
             $style_sgl =~ s/\A\s+?//gxsm;
@@ -1674,7 +1674,7 @@ sub ModifyCSS2 {
     elsif ( $FORM{'button'} == 3 ) {
         $style_name = $FORM{'cssfile'};
         if ( $style_name eq 'default.css' ) {
-            admin_fatal_error('no_delete_default');
+            fatal_error('no_delete_default');
         }
         unlink "$htmldir/Templates/Forum/$style_name";
         $yySetLocation = qq~$adminurl?action=modcss;cssfile=default.css~;
@@ -1772,7 +1772,7 @@ sub ModifySkin {
     }
 
     fopen( CSS, "$htmldir/Templates/Forum/$cssfile" )
-      or admin_fatal_error( 'cannot_open', "$htmldir/Templates/Forum/$cssfile" );
+      or fatal_error( 'cannot_open', "$htmldir/Templates/Forum/$cssfile" );
     while ( $line = <CSS> ) {
         $line =~ s/[\r\n]//gxsm;
         FromHTML($line);
@@ -2114,13 +2114,13 @@ qq~$adminurl?action=modskin;templateset=$formattemp;cssfile=$FORM{'cssfile'};img
     elsif ( $FORM{'button'} == 2 ) {
         $template_name = $FORM{'saveas'};
         if ( $template_name eq 'default' ) {
-            admin_fatal_error('no_delete_default');
+            fatal_error('no_delete_default');
         }
         if ( $template_name !~
             m{\A[0-9a-zA-Z_\ \.\#\%\-\:\+\?\$\&\~\.\,\@/]+\Z}sm
             || $template_name eq q{} )
         {
-            admin_fatal_error('invalid_template');
+            fatal_error('invalid_template');
         }
         ( $template_css, undef, undef ) = split /\./xsm, $FORM{'cssfile'};
         $template_images = $FORM{'imgfolder'};
@@ -2140,10 +2140,10 @@ qq~$adminurl?action=modskin;templateset=$formattemp;cssfile=$FORM{'cssfile'};img
     elsif ( $FORM{'button'} == 3 ) {
         $template_name = $FORM{'templateset'};
         if ( $template_name eq 'default' ) {
-            admin_fatal_error('no_delete_default');
+            fatal_error('no_delete_default');
         }
         if ( $template_name eq 'Forum default' ) {
-            admin_fatal_error('no_delete_default');
+            fatal_error('no_delete_default');
         }
         UpdateTemplates( $template_name, 'delete' );
         $yySetLocation = qq~$adminurl?action=modskin~;

@@ -1406,7 +1406,7 @@ sub SaveSettings {
 
 	# Fix $pwstrengthmeter_common
 	$settings{'pwstrengthmeter_common'} =~ s/'//g; #' make my syntax checker happy;
-	if (($settings{'set_subjectMaxLength'} < 10 && $settings{'set_subjectMaxLength'} != 0) || $settings{'set_subjectMaxLength'} > 255) { &admin_fatal_error("invalid_value", "set_subjectMaxLength ($admin_txt{'498a'})"); }
+	if (($settings{'set_subjectMaxLength'} < 10 && $settings{'set_subjectMaxLength'} != 0) || $settings{'set_subjectMaxLength'} > 255) { &fatal_error("invalid_value", "set_subjectMaxLength ($admin_txt{'498a'})"); }
 
 	# Convert unwanted tags in Board Name
 	ToHTML($settings{'mbname'});

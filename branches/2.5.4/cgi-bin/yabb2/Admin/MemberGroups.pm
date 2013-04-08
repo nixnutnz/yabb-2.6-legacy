@@ -679,7 +679,7 @@ sub editAddGroup2 {
 # If post dependent -> NEW post dependent, then need to kill off OLD post dependent.
     $newpostdep = 0;
 
-    if ( !$FORM{'title'} ) { admin_fatal_error('no_group_name'); }
+    if ( !$FORM{'title'} ) { fatal_error('no_group_name'); }
     $name = $FORM{'title'};
 
     $name =~ s/&amp;/&/gsm;
@@ -695,7 +695,7 @@ sub editAddGroup2 {
     $color = $FORM{'color2'} ne q{} ? "#$FORM{'color2'}" : q{};
     $postdepend = $FORM{'postdepend'};
     if ( $FORM{'posts'} !~ /\d+/xsm && $postdepend eq 'Yes' ) {
-        admin_fatal_error('no_post_number');
+        fatal_error('no_post_number');
     }
     else { $posts = $FORM{'posts'} }
     if ( $postdepend eq 'No' ) { $noposts = $FORM{'noposts'}; }
@@ -718,7 +718,7 @@ sub editAddGroup2 {
         if ( $element ne q{} ) {
             if ( $type eq 'P' ) {
                 if ( $element != $posts || $postdepend eq 'No' ) {
-                    if ($iamgmod) { admin_fatal_error('newpostdep_gmod'); }
+                    if ($iamgmod) { fatal_error('newpostdep_gmod'); }
 
                     delete $Post{$element};
                     $newpostdep = 1;
@@ -745,22 +745,22 @@ sub editAddGroup2 {
     if ( ( split /\|/xsm, $Group{$original}, 2 )[0] ne $name ) {
         if ( $lcname eq lc( ( split /\|/xsm, $Group{'Administrator'}, 2 )[0] ) )
         {
-            admin_fatal_error( 'double_group', $lcname );
+            fatal_error( 'double_group', $lcname );
         }
         if (
             $lcname eq lc( ( split /\|/xsm, $Group{'Global Moderator'}, 2 )[0] )
           )
         {
-            admin_fatal_error( 'double_group', $lcname );
+            fatal_error( 'double_group', $lcname );
         }
         if (
             $lcname eq lc( ( split /\|/xsm, $Group{'Mid Moderator'}, 2 )[0] )
           )
         {
-            admin_fatal_error( 'double_group', $lcname );
+            fatal_error( 'double_group', $lcname );
         }
         if ( $lcname eq lc( ( split /\|/xsm, $Group{'Moderator'}, 2 )[0] ) ) {
-            admin_fatal_error( 'double_group', $lcname );
+            fatal_error( 'double_group', $lcname );
         }
     }
 
@@ -770,7 +770,7 @@ sub editAddGroup2 {
         ( $value, undef ) = split /\|/xsm, $NoPost{$key}, 2;
         $lcvalue = lc $value;
         if ( $lcname eq $lcvalue ) {
-            admin_fatal_error( 'double_group', $lcname );
+            fatal_error( 'double_group', $lcname );
         }
     }
 
@@ -780,7 +780,7 @@ sub editAddGroup2 {
         ( $value, undef ) = split /\|/xsm, $Post{$key}, 2;
         $lcvalue = lc $value;
         if ( $lcname eq $lcvalue ) {
-            admin_fatal_error( 'double_group', $lcname );
+            fatal_error( 'double_group', $lcname );
         }
     }
 
@@ -807,11 +807,11 @@ sub editAddGroup2 {
                         || $original ne "P|$posts" )
                   )
                 {
-                    admin_fatal_error( 'double_count', "($posts)" );
+                    fatal_error( 'double_count', "($posts)" );
                 }
             }
 
-            if ($iamgmod) { admin_fatal_error('newpostdep_gmod'); }
+            if ($iamgmod) { fatal_error('newpostdep_gmod'); }
 
             $Post{$posts} =
 "$name|$FORM{'numstars'}|$star|$color|0|$view|$topics|$reply|$polls|$attach|$additional";
@@ -881,7 +881,7 @@ sub deleteGroup {
         }
     }
     else {
-        admin_fatal_error('no_info');
+        fatal_error('no_info');
     }
 
     my @new_nopostorder;

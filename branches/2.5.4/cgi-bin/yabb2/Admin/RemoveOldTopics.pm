@@ -21,7 +21,7 @@ sub RemoveOldThreads {
     is_admin_or_gmod();
     my $maxdays = $FORM{'maxdays'} || $INFO{'maxdays'};
     if ( $maxdays !~ /\A[0-9]+\Z/xsm ) {
-        admin_fatal_error('only_numbers_allowed');
+        fatal_error('only_numbers_allowed');
     }
 
     automaintenance('on');
@@ -119,7 +119,7 @@ qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'
                         push @temparray_1, "$date1|$threads[$x]";
                     }
                     fopen( BOARDFILE, ">$boardsdir/$boards[$j].txt", 1 )
-                      || admin_fatal_error( 'cannot_open',
+                      || fatal_error( 'cannot_open',
                         "$boardsdir/$boards[$j].txt", 1 );
                     print {BOARDFILE} map( {
                         s/^.*?\|//xsm;
@@ -138,7 +138,7 @@ qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'
             }
 
             fopen( BOARDFILE, ">$boardsdir/$boards[$j].txt", 1 )
-              || admin_fatal_error( 'cannot_open', "$boardsdir/$boards[$j].txt",
+              || fatal_error( 'cannot_open', "$boardsdir/$boards[$j].txt",
                 1 );
             print {BOARDFILE} map( {
                 s/^.*?\|//xsm;

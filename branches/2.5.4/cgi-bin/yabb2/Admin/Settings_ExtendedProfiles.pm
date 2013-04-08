@@ -16,7 +16,7 @@
 ###############################################################################
 our $VERSION = '2.5.4';
 
-$settings_extendedprofilespmver = 'YaBB 2.5.4 $Revision: 985 $';
+$settings_extendedprofilespmver = 'YaBB 2.5.4 $Revision: 1175 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('ExtendedProfiles');
@@ -996,7 +996,7 @@ $ext_template_blockstop
 
         foreach (@contents) {
             fopen( EXT_FILE, "+<$memberdir/$_" )
-              || admin_fatal_error( 'cannot_open', "$memberdir/$_" );
+              || fatal_error( 'cannot_open', "$memberdir/$_" );
             seek EXT_FILE, 0, 0;
             @old_content = <EXT_FILE>;
             $new_content = join q{}, @old_content;

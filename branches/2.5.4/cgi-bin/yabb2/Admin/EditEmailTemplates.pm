@@ -177,18 +177,18 @@ sub editemailtemplates2 {
     $message =~ s/(\~|\\)/\\$1/gxsm;
     $message =~ s/\r(?=\n*)//gxsm;
 
-    if ( !$message || !$string ) { admin_fatal_error('no_info'); }
+    if ( !$message || !$string ) { fatal_error('no_info'); }
 
     # Read the current file
     fopen( LANG, "$langdir/$editlang/Email.lng" )
-      || admin_fatal_error( 'cannot_open_language',
+      || fatal_error( 'cannot_open_language',
         "$langdir/$editlang/Email.lng", 1 );
     my $langfile = do { local $INPUT_RECORD_SEPARATOR = undef; <LANG> };
     fclose(LANG);
 
     # Vague hardcoded error since it was tampered with
     if ( $string !~ /\Q$string\E/xsm ) {
-        admin_fatal_error( 'error_occurred', 'Language Error' );
+        fatal_error( 'error_occurred', 'Language Error' );
     }
 
     # Make the change
@@ -196,7 +196,7 @@ sub editemailtemplates2 {
 
     # Write it out
     fopen( LANG, ">$langdir/$editlang/Email.lng" )
-      || admin_fatal_error( 'cannot_open_language',
+      || fatal_error( 'cannot_open_language',
         "$langdir/$editlang/Email.lng", 1 );
     print {LANG} $langfile or croak 'cannot print LANG';
     fclose(LANG);

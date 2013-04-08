@@ -378,7 +378,7 @@ sub settings2 {
                   . join( q{|}, @regexes{ split /,/xsm, $item->{'validate'} } )
                   . ')$';
                 if ( $settings{$name} !~ /$pattern/sm ) {
-                    admin_fatal_error( 'invalid_value',
+                    fatal_error( 'invalid_value',
                         qq~$name ($item->{'description'})~ );
                 }
 
@@ -551,6 +551,8 @@ sub SaveSettingsTo {
 \$mailtype = $mailtype;						# Mail program to use: 0 = sendmail, 1 = SMTP, 2 = Net::SMTP, 3 = Net::SMTP::TLS
 
 \$UseHelp_Perms = $UseHelp_Perms;			# Help Center: 1 == use permissions, 0 == don't use permissions
+\@ipurl = ( ["www.afrinic.net/cgi-bin/whois?searchtext=$ip","wq.apnic.net/apnic-bin/whois.pl?searchtext=$ip","whois.arin.net/rest/nets;q=$ip?showDetails=true&showARIN=false&ext=netref2","lacnic.net/cgi-bin/lacnic/whois?query=$ip","www.db.ripe.net/whois?searchtext=$ip",],
+     ['afrinic','apnic','arin','lacnic','ripencc'] );
 
 ########## MemberGroups ##########
 
@@ -1031,7 +1033,7 @@ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2
     $setfile =~ s/(.+)(#.+$)/ $1 . cut_comment($1,$2) /gem;
 
     # Write it out
-    fopen( SETTINGS, ">$file" ) || admin_fatal_error( 'cannot_open', $file, 1 );
+    fopen( SETTINGS, ">$file" ) || fatal_error( 'cannot_open', $file, 1 );
     print {SETTINGS} $setfile or croak 'cannot print SETTINGS';
     fclose(SETTINGS);
     return;

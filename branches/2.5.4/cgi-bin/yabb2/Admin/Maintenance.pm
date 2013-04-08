@@ -40,7 +40,7 @@ sub RebuildMessageIndex {
         || ( !$INFO{'next'} && $INFO{'rebuild'} == 1 ) )
     {
         opendir( BOARDSDIR, $boardsdir )
-          || admin_fatal_error( 'cannot_open', "$boardsdir", 1 );
+          || fatal_error( 'cannot_open', "$boardsdir", 1 );
         my @blist = grep { /\.tmp$/xsm } readdir BOARDSDIR;
         closedir BOARDSDIR;
 
@@ -58,7 +58,7 @@ sub RebuildMessageIndex {
         # storing the 'board' and the 'status' of all threads
         foreach my $oldboard ( keys %board ) {
             fopen( OLDBOARD, "$boardsdir/$oldboard.txt" )
-              || admin_fatal_error( 'cannot_open', "$boardsdir/$oldboard.txt",
+              || fatal_error( 'cannot_open', "$boardsdir/$oldboard.txt",
                 1 );
             my @temparray = <OLDBOARD>;
             fclose(OLDBOARD);
@@ -75,7 +75,7 @@ sub RebuildMessageIndex {
         }
 
         opendir( TXT, $datadir )
-          || admin_fatal_error( 'cannot_open', "$datadir", 1 );
+          || fatal_error( 'cannot_open', "$datadir", 1 );
         my @threadlist = sort grep { /\d+\.txt$/xsm } readdir TXT;
         closedir TXT;
 
@@ -152,7 +152,7 @@ sub RebuildMessageIndex {
             }
 
             fopen( FILETXT, "$datadir/$thread.txt" )
-              || admin_fatal_error( 'cannot_open', "$datadir/$thread.txt", 1 );
+              || fatal_error( 'cannot_open', "$datadir/$thread.txt", 1 );
             my @threaddata = <FILETXT>;
             fclose(FILETXT);
 
@@ -177,7 +177,7 @@ qq~$lastpostdate|$thread|$firstinfo[0]|$firstinfo[1]|$firstinfo[2]|$lastinfo[3]|
             if ( time() > $time_to_jump && ( $j + 1 ) < $totalthreads ) {
                 foreach ( keys %rebuildboards ) {
                     fopen( REBBOARD, ">>$boardsdir/$_.tmp" )
-                      || admin_fatal_error( 'cannot_open', "$boardsdir/$_.tmp",
+                      || fatal_error( 'cannot_open', "$boardsdir/$_.tmp",
                         1 );
                     print {REBBOARD} @{ $rebuildboards{$_} }
                       or croak 'cannot print REBBOARD';
@@ -192,7 +192,7 @@ qq~$lastpostdate|$thread|$firstinfo[0]|$firstinfo[1]|$firstinfo[2]|$lastinfo[3]|
 
         foreach ( keys %rebuildboards ) {
             fopen( REBBOARD, ">>$boardsdir/$_.tmp" )
-              || admin_fatal_error( 'cannot_open', "$boardsdir/$_.tmp", 1 );
+              || fatal_error( 'cannot_open', "$boardsdir/$_.tmp", 1 );
             print {REBBOARD} @{ $rebuildboards{$_} }
               or croak 'cannot print REBBOARD';
             fclose(REBBOARD);
@@ -215,13 +215,13 @@ qq~$lastpostdate|$thread|$firstinfo[0]|$firstinfo[1]|$firstinfo[2]|$lastinfo[3]|
             $boardname =~ s/\.tmp$//xsm;
 
             fopen( FILETXT, "$boardsdir/$boardname.tmp" )
-              || admin_fatal_error( 'cannot_open', "$boardsdir/$boardname.tmp",
+              || fatal_error( 'cannot_open', "$boardsdir/$boardname.tmp",
                 1 );
             my @tempboard = <FILETXT>;
             fclose(FILETXT);
 
             fopen( NEWBOARD, ">$boardsdir/$boardname.txt" )
-              || admin_fatal_error( 'cannot_open', "$boardsdir/$boardname.txt",
+              || fatal_error( 'cannot_open', "$boardsdir/$boardname.txt",
                 1 );
             print {NEWBOARD} map {
                     s/^.*?\|//xsm;

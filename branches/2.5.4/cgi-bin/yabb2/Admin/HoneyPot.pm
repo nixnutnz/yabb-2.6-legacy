@@ -37,7 +37,7 @@ sub honeypot {
     }
 
     if (-e "$langdir/$honey_language/honey.txt") {
-        fopen(HONEYPOT, "<$langdir/$honey_language/honey.txt") || admin_fatal_error('cannot_open',"$langdir/$honey_language/honey.txt", 1);
+        fopen(HONEYPOT, "<$langdir/$honey_language/honey.txt") || fatal_error('cannot_open',"$langdir/$honey_language/honey.txt", 1);
     @honey_label = <HONEYPOT>;
     fclose(HONEYPOT);
     }
@@ -139,11 +139,11 @@ sub honeypot_add {
     $h_label = $FORM{'honey_add'};
 
     if ( $h_label eq q{} ) {
-        admin_fatal_error( 'invalid_value', "$honeypot{'label'}" );
+        fatal_error( 'invalid_value', "$honeypot{'label'}" );
     }
 
     fopen( HONEYPOT, ">>$langdir/$honey_language/honey.txt" )
-      || admin_fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt",
+      || fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt",
         1 );
     print {HONEYPOT} "$h_label\n"
       or croak 'cannot print HONEYPOT';
@@ -162,7 +162,7 @@ sub honeypot_edit {
     $h_label = $FORM{'hon_label'};
 
     fopen( HONEYPOT, "<$langdir/$honey_language/honey.txt" )
-      || admin_fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt",
+      || fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt",
         1 );
     @h_labels = <HONEYPOT>;
     fclose(HONEYPOT);
@@ -216,17 +216,17 @@ sub honeypot_edit2 {
     $line = $FORM{'hon_line'};
 
     if ( $h_label eq q{} ) {
-        admin_fatal_error( 'invalid_value', "$honeypot{'label'}" );
+        fatal_error( 'invalid_value', "$honeypot{'label'}" );
     }
 
     fopen( HONEYPOT, "<$langdir/$honey_language/honey.txt" )
-      || admin_fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt",
+      || fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt",
         1 );
     @h_labels = <HONEYPOT>;
     fclose(HONEYPOT);
 
     fopen( HONEYPOT, ">$langdir/$honey_language/honey.txt" )
-      || admin_fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt",
+      || fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt",
         1 );
     $aa = 0;    
     foreach my $i ( @h_labels) {
@@ -251,13 +251,13 @@ sub honeypot_delete {
     $h_label = $FORM{'hon_label'};
 
     fopen( HONEYPOT, "<$langdir/$honey_language/honey.txt" )
-      || admin_fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt",
+      || fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt",
         1 );
     @h_labels = <HONEYPOT>;
     fclose(HONEYPOT);
 
     fopen( HONEYPOT, ">$langdir/$honey_language/honey.txt" )
-      || admin_fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt",
+      || fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt",
         1 );
     foreach my $i ( @h_labels) {
         chomp $i;

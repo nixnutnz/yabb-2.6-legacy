@@ -52,7 +52,7 @@ sub SaveSettings {
 
     if ( $settings{'maintenance'} != 1 ) {
         unlink "$vardir/maintenance.lock"
-          || admin_fatal_error( 'cannot_open_dir', "$vardir/maintenance.lock" );
+          || fatal_error( 'cannot_open_dir', "$vardir/maintenance.lock" );
     }
 
     SaveSettingsTo( 'Settings.pm', %settings );

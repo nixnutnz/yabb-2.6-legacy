@@ -17,7 +17,7 @@ our $VERSION = '2.5.4';
 $mailmemberspmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
-if ($iamguest) { admin_fatal_error('no_access'); }
+if ($iamguest) { fatal_error('no_access'); }
 
 LoadLanguage('Main');
 LoadLanguage('MemberList');
@@ -25,7 +25,7 @@ LoadLanguage('MemberList');
 $reused = 0;
 
 sub Mailing {
-    if ($iamguest) { admin_fatal_error('no_access'); }
+    if ($iamguest) { fatal_error('no_access'); }
     $yymain .= qq~
     <table class="bordercolor cs_thin pad_3px">
         <tr>
@@ -318,7 +318,7 @@ sub MailingMembers {
         $sortmode = ';sort=' . $FORM{'sortform'};
     }
 
-    if ($iamguest) { admin_fatal_error('no_access'); }
+    if ($iamguest) { fatal_error('no_access'); }
     $yymain .= qq~
 <div class="rightboxdiv">
     <table class="bordercolor cs_thin pad_3px">

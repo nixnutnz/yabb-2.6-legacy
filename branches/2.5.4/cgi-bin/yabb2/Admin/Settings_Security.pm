@@ -270,7 +270,7 @@ sub SaveSettings {
         || length $settings{'masterkey'} > 24 )
     {
         LoadLanguage('Error');
-        admin_fatal_error('invalid_key');
+        fatal_error('invalid_key');
     }
 
     SaveSettingsTo( 'Settings.pm', %settings );

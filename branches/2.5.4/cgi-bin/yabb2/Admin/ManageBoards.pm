@@ -373,7 +373,7 @@ sub BoardScreen {
         Write_ForumMaster();
     }
     else {
-        admin_fatal_error( 'no_action', "$FORM{'baction'}" );
+        fatal_error( 'no_action', "$FORM{'baction'}" );
     }
 
     $action_area = 'manageboards';
@@ -1177,10 +1177,10 @@ sub AddBoards2 {
         $id = $FORM{"id$i"};
         if ( $FORM{"ann$i"} )  { $anncount++; }
         if ( $FORM{"rbin$i"} ) { $rbincount++; }
-        if ( $anncount > 1 )   { admin_fatal_error('announcement_defined'); }
-        if ( $rbincount > 1 )  { admin_fatal_error('recycle_bin_defined'); }
+        if ( $anncount > 1 )   { fatal_error('announcement_defined'); }
+        if ( $rbincount > 1 )  { fatal_error('recycle_bin_defined'); }
         if ( $id !~ /\A[0-9A-Za-z#%+-\.@^_]+\Z/xsm ) {
-            admin_fatal_error( 'invalid_character',
+            fatal_error( 'invalid_character',
                 "$admin_txt{'61'} $admin_txt{'241'}" );
         }
 
@@ -1189,7 +1189,7 @@ sub AddBoards2 {
             # adding a board
             # make sure no board already exists with that id
             if ( exists $board{"$id"} ) {
-                admin_fatal_error( 'board_defined', "$id" );
+                fatal_error( 'board_defined', "$id" );
             }
 
 # add to category if it's not a sub board, otherwise add it to subboard list for its parent

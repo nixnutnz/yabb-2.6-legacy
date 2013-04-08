@@ -872,7 +872,7 @@ sub EditPaths {
 sub EditPaths2 {
     LoadCookie();    # Load the user's cookie (or set to guest)
     LoadUserSettings();
-    if ( !$iamadmin ) { admin_fatal_error('no_access'); }
+    if ( !$iamadmin ) { fatal_error('no_access'); }
 
     $lastsaved    = $FORM{'lastsaved'};
     $lastdate     = $FORM{'lastdate'};

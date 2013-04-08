@@ -43,7 +43,7 @@ sub SpamQuestions {
     }
 
     if (-e "$langdir/$questions_language/spam.questions") {
-        fopen(SPAMQUESTIONS, "<$langdir/$questions_language/spam.questions") || admin_fatal_error('cannot_open',"$langdir/$questions_language/spam.questions", 1);
+        fopen(SPAMQUESTIONS, "<$langdir/$questions_language/spam.questions") || fatal_error('cannot_open',"$langdir/$questions_language/spam.questions", 1);
     @spam_questions = <SPAMQUESTIONS>;
     fclose(SPAMQUESTIONS);
     }
@@ -210,14 +210,14 @@ sub SpamQuestionsAdd {
     $spam_answer   = $FORM{'spam_answer'};
 
     if ( $spam_question eq q{} ) {
-        admin_fatal_error( 'invalid_value', "$spam_question_txt{'question'}" );
+        fatal_error( 'invalid_value', "$spam_question_txt{'question'}" );
     }
     if ( $spam_answer eq q{} ) {
-        admin_fatal_error( 'invalid_value', "$spam_question_txt{'answer'}" );
+        fatal_error( 'invalid_value', "$spam_question_txt{'answer'}" );
     }
 
     fopen( SPAMQUESTIONS, ">>$langdir/$questions_language/spam.questions" )
-      || admin_fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
+      || fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
         1 );
     print {SPAMQUESTIONS} "$date|$spam_question|$spam_answer\n"
       or croak 'cannot print SPAMQUESTIONS';
@@ -238,7 +238,7 @@ sub SpamQuestionsEdit {
     my $question_edit = q{};
 
     fopen( SPAMQUESTIONS, "<$langdir/$questions_language/spam.questions" )
-      || admin_fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
+      || fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
         1 );
     @spam_questions = <SPAMQUESTIONS>;
     fclose(SPAMQUESTIONS);
@@ -298,14 +298,14 @@ sub SpamQuestionsEdit2 {
     $spam_answer      = $FORM{'spam_answer'};
 
     if ( $spam_question eq q{} ) {
-        admin_fatal_error( 'invalid_value', "$spam_question_txt{'question'}" );
+        fatal_error( 'invalid_value', "$spam_question_txt{'question'}" );
     }
     if ( $spam_answer eq q{} ) {
-        admin_fatal_error( 'invalid_value', "$spam_question_txt{'answer'}" );
+        fatal_error( 'invalid_value', "$spam_question_txt{'answer'}" );
     }
 
     fopen( SPAMQUESTIONS, "<$langdir/$questions_language/spam.questions" )
-      || admin_fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
+      || fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
         1 );
     @spam_questions = <SPAMQUESTIONS>;
     fclose(SPAMQUESTIONS);
@@ -315,7 +315,7 @@ sub SpamQuestionsEdit2 {
     $question = join q{}, @question;
 
     fopen( SPAMQUESTIONS, ">$langdir/$questions_language/spam.questions" )
-      || admin_fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
+      || fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
         1 );
     print {SPAMQUESTIONS} "$question\n" or croak 'cannot print SPAMQUESTIONS';
     fclose(SPAMQUESTIONS);
@@ -332,13 +332,13 @@ sub SpamQuestionsDelete {
     is_admin_or_gmod();
 
     fopen( SPAMQUESTIONS, "<$langdir/$questions_language/spam.questions" )
-      || admin_fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
+      || fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
         1 );
     @spam_questions = <SPAMQUESTIONS>;
     fclose(SPAMQUESTIONS);
 
     fopen( SPAMQUESTIONS, ">$langdir/$questions_language/spam.questions" )
-      || admin_fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
+      || fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
         1 );
     print {SPAMQUESTIONS}
       grep { !/$FORM{'spam_question_id'}/xsm } @spam_questions

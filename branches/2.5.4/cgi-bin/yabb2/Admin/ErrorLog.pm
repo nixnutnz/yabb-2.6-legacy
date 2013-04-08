@@ -308,7 +308,7 @@ sub DeleteError {
     is_admin_or_gmod();
     my ( $sortmode, $sortorder );
     chomp $FORM{'button'};
-    if ( $FORM{'button'} ne '4' ) { admin_fatal_error('no_access'); }
+    if ( $FORM{'button'} ne '4' ) { fatal_error('no_access'); }
     fopen( FILE, "$vardir/errorlog.txt" );
     @errors = <FILE>;
     fclose(FILE);
