@@ -364,4 +364,13 @@ qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3
 </body>
 </html>~;
 
+#pagedrop (in javascript)
+
+$visel_0 = q~<table class="pad_0"><tr>~;
+$visel_1a = q~<td class="titlebg pages">~;
+$visel_1b = q~</td>~;
+$visel_2a = q~<td class="droppages pages">~;
+$visel_3a = q~<td class="small" style="height: 14px; padding-left: 4px;">~;
+$visel_4 = q~</tr></table>~;
+
 1;

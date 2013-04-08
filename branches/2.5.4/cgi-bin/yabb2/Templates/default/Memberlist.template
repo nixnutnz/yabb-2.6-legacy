@@ -103,5 +103,87 @@ $ext_memberlist_tableheader = qq~<td class="catbg center">{yabb ext_fieldname}</
 
 $ext_memberlist_td = qq~<td {yabb ext_td_attributs}>{yabb ext_value}</td>\n~;
 
+#pagedrop (MemberList and UserSelect)
+
+$visel_0 = q~<table class="pad_0"><tr>~;
+$visel_1a = q~<td class="titlebg pages">~;
+$visel_1b = q~</td>~;
+$visel_2a = q~<td class="droppages pages">~;
+$visel_3a = q~<td class="small" style="height: 14px; padding-left: 4px;">~;
+$visel_4 = q~</tr></table>~;
+
+#UserSelect buildPages
+
+$my_usersel = qq~
+    <table class="bordercolor pad_3px cs_thin" style="table-layout: fixed; width:464px; margin-left:0">
+        {yabb TableHeader}
+        <tr>
+            <td class="catbg" style="height:26px">
+                {yabb pageindex}
+            </td>
+        </tr>~;
+
+$my_sel_box = q~<tr>
+    <td class="windowbg" style="height:156px">{yabb yymain_inner}
+    </td>
+</tr>~;
+
+$my_usersel_inst = qq~<tr>
+            <td class="windowbg2" style="height:62px">
+                <span class="small">{yabb instruct_start} {yabb instruct_end} </span><br />
+            </td>
+        </tr>
+    </table>
+    </form>
+    {yabb pageindexjs}
+        ~;
+
+$my_tableHeader = qq~<tr>
+            <td class="titlebg">
+            <div class="small" style="float: left; width: 258px; padding-top: 3px;">
+                {yabb instructtext}
+            </div>
+            <div class="small" style="float: left; width: 198px; text-align: right;">{yabb not_groups} </div>
+            </td>
+        </tr>
+    </table>
+    <form method="post" action="" name="selectuser">
+    <table class="bordercolor pad_3px cs_thin" style="width:464px; height: 275px; table-layout: fixed; margin-left:0">
+        <tr>
+            <td class="catbg center">{yabb not_groups_b}
+            </td>
+        </tr>{yabb TableHeader_lt}~;
+
+$my_tableHeader_lt = qq~<tr>
+            <td class="titlebg">{yabb LetterLinks}</td>
+        </tr>~;
+
+$my_quickSearch = qq~
+    <div class="bordercolor" style="width:300px">
+    <table class="pad_3px cs_thin" style="width:300px">
+        <tr>
+            <td class="titlebg"><label for="letter">$usersel_txt{'qsearch'}</label></td>
+        </tr><tr>
+            <td class="windowbg2">
+                <div style="float:left"><input type="text" name="letter" id="letter" onkeyup="LetterChange(this.value)" style="width:270px" /></div>
+                <div style="float:right"><img src="$imagesdir/mozilla_gray.gif" id="load" alt="" /></div>
+            </td>
+        </tr><tr>
+            <td class="windowbg">
+                <select name="rec_list" multiple="multiple" id="rec_list" size="10" style="width: 290px; font-size: 11px;" ondblclick="copy_option('{yabb to_id}')"><option></option></select>
+            </td>
+        </tr><tr>
+            <td class="windowbg">
+                <input type="button" class="button" onclick="copy_option('{yabb to_id}')" value="$usersel_txt{'addselected'}" style="width: 145px;" /><input type="button" class="button" onclick="window.close()" value="$usersel_txt{'pageclose'}" style="width: 145px;" />
+            </td>
+        </tr><tr>
+            <td class="windowbg2">
+                <br /><span class="small">$usersel_txt{'instruct0'} $usersel_txt{'moderatorlist'}</span><br /><br />
+            </td>
+        </tr>
+    </table>
+    </div>
+    <div id="response" style="display:none"> </div>
+    ~;
 
 1;

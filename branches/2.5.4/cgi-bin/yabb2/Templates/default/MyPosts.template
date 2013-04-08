@@ -67,6 +67,11 @@ $favorites_template .= qq~<!-- Icon and access info start -->
 <!-- Icon and access info end -->
 ~;
 
+$no_favs = qq~<tr>
+        <td class="windowbg2 center" style="padding-bottom:1em;" colspan="8"><br />$messageindex_txt{'840'}</td>
+    </tr>~;
+
+
 # Board description                        #
 
 $boarddescription = qq~

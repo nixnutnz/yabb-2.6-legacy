@@ -457,4 +457,12 @@ $mysend_spam = qq~<tr>
         </td>
     </tr>~;
 
+#pagedrop (in javascript)
+
+$visel_0 = q~<table class="pad_0"><tr>~;
+$visel_1a = q~<td class="titlebg pages">~;
+$visel_1b = q~</td>~;
+$visel_2a = q~<td class="droppages pages">~;
+$visel_3a = q~<td class="small" style="height: 14px; padding-left: 4px;">~;
+$visel_4 = q~</tr></table>~;
 1;

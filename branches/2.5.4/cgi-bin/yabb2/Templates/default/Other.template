@@ -1,0 +1,159 @@
+###############################################################################
+# default.Other.template                                                      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.5.4                                                  #
+# Packaged:       January 1, 2013                                             #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+# $Revision$
+
+
+## IPlookup ##
+$my_ipdiv = qq~
+<table class="bordercolor pad_4px cs_thin">
+    <tr>
+        <td class="catbg"><img src="$imagesdir/ip.gif" alt="" /> $lookup_txt{'iplookup'} - {yabb ip}</td>
+    </tr><tr>
+        <td class="windowbg2">
+            <div style="font-weight: bold; margin-bottom: 10px;">$lookup_txt{'01'} {yabb ip} $lookup_txt{'02'}</div>
+            <div>{yabb lookuplink} </div>
+            <div style="width: 100%; text-align: center;"><a href="javascript:history.go(-1);">$maintxt{'193'}</a></div>
+        </td>
+    </tr>
+</table>~;
+
+## AddModerators
+$myshowProfile = qq~<tr class="windowbg">
+        <td><label for="addmod"><b>$addmod_txt{'addmod_title'}: </b><br /><span class="small">$addmod_txt{'addmod_text'}</span></label></td>
+        <td>
+            <select name="addmod" id="addmod" multiple="multiple" onchange="selectnum();">
+            {yabb addbdmod}
+            </select>
+            <input type="checkbox" name="selAll" id="selAll" onclick="if (this.checked) selectAll(true); else selectAll(false);" /> <label for="selAll"><span class="small">$addmod_txt{'addmod_all'}</span></label>
+            <script type="text/javascript">
+            <!-- //
+            function selectAll(_v) {
+                for(var i=0; i < document.creator.addmod.length; i++)
+                document.creator.addmod[i].selected = _v;
+            }
+
+            function selectnum() {
+                document.creator.selAll.checked = true;
+                for(var i=0; i < document.creator.addmod.length; i++) {
+                    if (! document.creator.addmod[i].selected) { document.creator.selAll.checked = false; }
+                }
+            }
+            // -->
+            </script>
+        </td>
+    </tr>~;
+
+$myselectmods = qq~<div style="position: relative; top: 0px; left: 0px; height: 1px; width: 320px; border: 0; z-index: 100002;">
+    <div id="modsettings" style="position: absolute; top: 0px; left: 0px; width: 320px; padding: 1px; color: #000000; background-color: gray; display: none;">
+    <form action="$scripturl?action=modsearch2;toboard={yabb to_board}" method="post" name="moderatoradd" id="moderatoradd" onsubmit="selectAllMods();">
+    <div class="bordercolor" style="width:320px">
+    <table class="cs_thin pad_3px" style="width:320px">
+        <tr>
+            <td class="titlebg"><label for="letter">$addmod_txt{'modsearch'}</label></td>
+        </tr><tr>
+            <td class="windowbg2">
+                <div style="float:left"><input type="text" name="letter" id="letter" onkeyup="LetterChange(this.value)" style="width:270px" /></div>
+                <div style="float:right"><img src="$imagesdir/mozilla_gray.gif" id="load" alt="" /></div>
+            </td>
+        </tr><tr>
+            <td class="windowbg">
+                <select name="rec_list" multiple="multiple" id="rec_list" size="6" style="width: 310px; font-size: 11px;" ondblclick="copy_option('moderators')"><option></option></select>
+            </td>
+        </tr><tr>
+            <td class="windowbg">
+                <input type="button" class="button" onclick="copy_option('moderators')" value="$addmod_txt{'addselected'}" style="width: 310px;" />
+            </td>
+        </tr><tr>
+            <td class="windowbg2">
+                <span class="small">$addmod_txt{'instruct'}</span>
+            </td>
+        </tr><tr>
+            <td class="titlebg"><label for="letter">$addmod_txt{'addmod_list'}</label></td>
+        </tr><tr>
+            <td class="windowbg2">
+                <select name="moderators" id="moderators" multiple="multiple" size="4" style="width: 310px;" ondblclick="removeUser(this);">
+                    {yabb mythismod} 
+                </select>
+                <br /><span class="small">$addmod_txt{instructions}</span>
+            </td>
+        </tr><tr>
+            <td class="windowbg">
+                <input type="submit" class="button" value="$addmod_txt{'addmod_save'}" style="width: 155px;" /><input type="button" class="button" onclick="ModSettings()" value="$addmod_txt{'pageclose'}" style="width: 155px;" />
+            </td>
+        </tr>
+    </table>
+    </div>
+    </form>
+    <div id="response" style="display:none"> </div>
+</div>
+</div>
+    ~;
+
+## Sessions
+
+$my_sessions = qq~
+<br /><br />
+<form action="$scripturl?action=revalidatesession2" method="post" name="sesform" accept-charset="$yycharset">
+<div class="bordercolor" style="padding: 1px; width: 50%; margin-left: auto; margin-right: auto;">
+<table>
+    <tr>
+        <td class="titlebg" colspan="3">
+            <img src="$imagesdir/session.gif" alt="" /><b>$img_txt{'34a'}</b>
+        </td>
+    </tr><tr>
+        <td class="windowbg" colspan="3">
+            $session_txt{'3'}<br /><br />$session_txt{'4'} {yabb sesremark}
+        </td>
+    </tr><tr>
+        <td class="windowbg right">
+            <label for="sesanswer"><b>$sesquest_txt{$sesquestion}:</b></label>
+        </td>
+        <td class="windowbg">
+            <input type="{yabb sestype}" name="sesanswer" id="sesanswer" size="20" tabindex="1" />
+            <input type="hidden" name="sredir" value="{yabb sesredir}" />
+        </td>
+    </tr><tr>
+        <td class="windowbg center" colspan="2">
+            <br />
+            <input type="submit" value="$img_txt{'34a'}" tabindex="2" class="button" />
+        </td>
+    </tr>
+</table>
+</div>
+</form>
+<script type="text/javascript">
+<!--
+    document.sesform.sesanswer.focus();
+//-->
+</script>
+~;
+
+## Error
+
+$my_show_error = qq~
+<table class="tabtitle" style="width:80%">
+    <tr>
+        <td class="center" style="padding-left:1%"><b>$maintxt{'error_description'}</b></td>
+    </tr>
+</table>
+<table class="bordercolor pad_4px cs_thin" style="width:80%;">
+    <tr>
+        <td class="windowbg" style="padding-bottom:1em"><br />{yabb errormessage}</td>
+    </tr>
+</table>
+<br /><div style="width: 100%; text-align: center;"><a href="javascript:history.go(-1)">$maintxt{'193'}</a></div>
+~;
+
+
+1;
