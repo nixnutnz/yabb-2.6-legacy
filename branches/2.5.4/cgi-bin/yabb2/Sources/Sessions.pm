@@ -18,6 +18,13 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Sessions');
 
+if ( -e ("$templatesdir/$usestyle/Other.template") ) {
+    require "$templatesdir/$usestyle/Other.template";
+}
+else {
+    require "$templatesdir/default/Other.template";
+}
+
 sub SessionReval {
     if (   ${ $uid . $username }{'sesquest'} eq q{}
         || ${ $uid . $username }{'sesquest'} eq 'password' )
@@ -33,42 +40,11 @@ sub SessionReval {
         $sestype     = 'text';
     }
 
-    $yymain .= qq~
-<br /><br />
-<form action="$scripturl?action=revalidatesession2" method="post" name="sesform" accept-charset="$yycharset">
-<div class="bordercolor" style="padding: 1px; width: 50%; margin-left: auto; margin-right: auto;">
-<table>
-    <tr>
-        <td class="titlebg" colspan="3">
-            <img src="$imagesdir/session.gif" alt="" /><b>$img_txt{'34a'}</b>
-        </td>
-    </tr><tr>
-        <td class="windowbg" colspan="3">
-            $session_txt{'3'}<br /><br />$session_txt{'4'}$sesremark
-        </td>
-    </tr><tr>
-        <td class="windowbg right">
-            <label for="sesanswer"><b>$sesquest_txt{$sesquestion}:</b></label>
-        </td>
-        <td class="windowbg">
-            <input type="$sestype" name="sesanswer" id="sesanswer" size="20" tabindex="1" />
-            <input type="hidden" name="sredir" value="$INFO{'sesredir'}" />
-        </td>
-    </tr><tr>
-        <td class="windowbg center" colspan="2">
-            <br />
-            <input type="submit" value="$img_txt{'34a'}" tabindex="2" class="button" />
-        </td>
-    </tr>
-</table>
-</div>
-</form>
-<script type="text/javascript">
-<!--
-    document.sesform.sesanswer.focus();
-//-->
-</script>
-~;
+    $yymain .= $my_sessions;
+    $yymain =~ s/{yabb sesremark}/$sesremark/sm;
+    $yymain =~ s/{yabb sestype}/$sestype/sm;
+    $yymain =~ s/{yabb sesredir}/$INFO{'sesredir'}/sm;
+    
     $yytitle = "$img_txt{'34a'}";
     template();
     return;

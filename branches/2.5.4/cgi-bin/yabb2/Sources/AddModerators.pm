@@ -28,6 +28,13 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('AddModerators');
 
+if ( -e ("$templatesdir/$usestyle/Other.template") ) {
+    require "$templatesdir/$usestyle/Other.template";
+}
+else {
+    require "$templatesdir/default/Other.template";
+}
+
 sub AddModerators {
     $addbdmod = q{};
     foreach my $catid (@categoryorder) {
@@ -51,30 +58,8 @@ sub AddModerators {
               qq~<option value="$board"$modsel>$boardname</option>\n~;
         }
     }
-    $showProfile .= qq~<tr class="windowbg">
-        <td><label for="addmod"><b>$addmod_txt{'addmod_title'}: </b><br /><span class="small">$addmod_txt{'addmod_text'}</span></label></td>
-        <td>
-            <select name="addmod" id="addmod" multiple="multiple" onchange="selectnum();">
-            $addbdmod
-            </select>
-            <input type="checkbox" name="selAll" id="selAll" onclick="if (this.checked) selectAll(true); else selectAll(false);" /> <label for="selAll"><span class="small">$addmod_txt{'addmod_all'}</span></label>
-            <script type="text/javascript">
-            <!-- //
-            function selectAll(_v) {
-                for(var i=0; i < document.creator.addmod.length; i++)
-                document.creator.addmod[i].selected = _v;
-            }
-
-            function selectnum() {
-                document.creator.selAll.checked = true;
-                for(var i=0; i < document.creator.addmod.length; i++) {
-                    if (! document.creator.addmod[i].selected) { document.creator.selAll.checked = false; }
-                }
-            }
-            // -->
-            </script>
-        </td>
-    </tr>~;
+    $showProfile .= $myshowProfile;
+    $showProfile =~ s/{yabb addbdmod}/$addbdmod/sm;
     return;
 }
 
@@ -123,6 +108,16 @@ sub ModSearch {
     if ( !$iamadmin && !$iamgmod ) { fatal_error('no_access'); }
     $to_board   = $currentboard;
     $moderators = ${ $uid . $currentboard }{'mods'};
+
+    my @thisBoardModerators = split /, ?/sm, $moderators;
+    foreach my $thisMod (@thisBoardModerators) {
+        LoadUser($thisMod);
+        my $thisModname = ${ $uid . $thisMod }{'realname'};
+        if ( !$thisModname ) { $thisModname = $thisMod; }
+        if ($do_scramble_id) { $thisMod     = cloak($thisMod); }
+        $mythismod .= qq~
+                        <option value="$thisMod">$thisModname</option>~;
+    }
 
     $yymain .= qq~
 <script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
@@ -197,63 +192,10 @@ function selectAllMods() {
 }
 
 // -->
-</script>
-
-<div style="position: relative; top: 0px; left: 0px; height: 1px; width: 300px; border: 0; z-index: 100002;">
-    <div id="modsettings" style="position: absolute; top: 0px; left: 0px; width: 300px; padding: 1px; color: #000000; background-color: gray; display: none;">
-    <form action="$scripturl?action=modsearch2;toboard=$to_board" method="post" name="moderatoradd" id="moderatoradd" onsubmit="selectAllMods();">
-    <div class="bordercolor" style="width:300px">
-    <table class="cs_thin pad_3px" style="width:300px">
-        <tr>
-            <td class="titlebg"><label for="letter">$addmod_txt{'modsearch'}</label></td>
-        </tr><tr>
-            <td class="windowbg2">
-                <div style="float:left"><input type="text" name="letter" id="letter" onkeyup="LetterChange(this.value)" style="width:270px" /></div>
-                <div style="float:right"><img src="$imagesdir/mozilla_gray.gif" id="load" alt="" /></div>
-            </td>
-        </tr><tr>
-            <td class="windowbg">
-                <select name="rec_list" multiple="multiple" id="rec_list" size="6" style="width: 290px; font-size: 11px;" ondblclick="copy_option('moderators')"><option></option></select>
-            </td>
-        </tr><tr>
-            <td class="windowbg">
-                <input type="button" class="button" onclick="copy_option('moderators')" value="$addmod_txt{'addselected'}" style="width: 290px;" />
-            </td>
-        </tr><tr>
-            <td class="windowbg2">
-                <span class="small">$addmod_txt{'instruct'}</span>
-            </td>
-        </tr><tr>
-            <td class="titlebg"><label for="letter">$addmod_txt{'addmod_list'}</label></td>
-        </tr><tr>
-            <td class="windowbg2">
-                    <select name="moderators" id="moderators" multiple="multiple" size="4" style="width: 290px;" ondblclick="removeUser(this);">~;
-    my @thisBoardModerators = split /, ?/sm, $moderators;
-    foreach my $thisMod (@thisBoardModerators) {
-        LoadUser($thisMod);
-        my $thisModname = ${ $uid . $thisMod }{'realname'};
-        if ( !$thisModname ) { $thisModname = $thisMod; }
-        if ($do_scramble_id) { $thisMod     = cloak($thisMod); }
-        $yymain .= qq~
-                        <option value="$thisMod">$thisModname</option>~;
-    }
-
-    $yymain .= qq~
-                <option></option></select>
-                <br /><span class="small">$addmod_txt{instructions}</span>
-            </td>
-        </tr><tr>
-            <td class="windowbg">
-                <input type="submit" class="button" value="$addmod_txt{'addmod_save'}" style="width: 145px;" /><input type="button" class="button" onclick="ModSettings()" value="$addmod_txt{'pageclose'}" style="width: 145px;" />
-            </td>
-        </tr>
-    </table>
-    </div>
-    </form>
-    <div id="response" style="display:none"> </div>
-</div>
-</div>
-    ~;
+</script>~;
+    $yymain .= $myselectmods;
+    $yymain =~ s/{yabb to_board}/$to_board/sm;
+    $yymain =~ s/{yabb mythismod}/$mythismod/sm.
     return;
 }
 

@@ -425,9 +425,7 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" style="border: 0p
 
     # Put a "no messages" message if no threads exisit:
     if ( !$tmptempbar ) {
-        $tmptempbar = qq~<tr>
-            <td class="windowbg2 center" colspan="8"><br />$messageindex_txt{'840'}<br /><br /></td>
-        </tr>~;
+        $tmptempbar = $no_favs;
     }
 
     $yabbicons = qq~

@@ -21,6 +21,13 @@ if ( $iamguest && $INFO{'toid'} ne 'userspec' && $action ne 'checkavail' ) {
 }
 LoadLanguage('UserSelect');
 
+if ( -e ("$templatesdir/$usestyle/Memberlist.template") ) {
+    require "$templatesdir/$usestyle/Memberlist.template";
+}
+else {
+    require "$templatesdir/default/Memberlist.template";
+}
+
 $MembersPerPage = 10;
 
 sub FindMem {
@@ -350,21 +357,17 @@ qq~<div style="float: left; text-align: center; padding-left: 2px; padding-right
     buildPages(1);
     $bb       = $start;
     $numshown = 0;
-    $yymain .= q~<tr>
-    <td class="windowbg" style="height:156px">
-    ~;
-
     if ($memcount) {
-        $yymain .= qq~
+        $yymain_inner .= qq~
             $radiobuttons
         ~;
         if ( $to_id =~ /userspec/sm ) {
-            $yymain .= qq~
+            $yymain_inner .= qq~
             <select name="rec_list" id="rec_list" size="10" style="width: 456px; font-size: 11px; font-weight: bold;" ondblclick="copy_option('$to_id')">\n
         ~;
         }
         else {
-            $yymain .= qq~
+            $yymain_inner .= qq~
             <select name="rec_list" id="rec_list" multiple="multiple" size="10" style="width: 456px; font-size: 11px; font-weight: bold;" ondblclick="copy_option('$to_id')">\n
         ~;
         }
@@ -385,7 +388,7 @@ qq~<div style="float: left; text-align: center; padding-left: 2px; padding-right
                     }
                     if   ($do_scramble_id) { $cloakedUserName = cloak($user); }
                     else                   { $cloakedUserName = $user; }
-                    $yymain .=
+                    $yymain_inner .=
 qq~<option value="$cloakedUserName"$colorstyle>${$uid.$user}{'realname'}</option>\n~;
                 }
             }
@@ -409,41 +412,39 @@ qq~<option value="$cloakedUserName"$colorstyle>${$uid.$user}{'realname'}</option
                         )
                         )
                       );
-                    $yymain .= qq~<option value="$user">$groupName</option>\n~;
+                    $yymain_inner .= qq~<option value="$user">$groupName</option>\n~;
                 }
                 else {
                     $groupName = q~-------~;
-                    $yymain .= qq~<optgroup label="$groupName"></optgroup>\n~;
+                    $yymain_inner .= qq~<optgroup label="$groupName"></optgroup>\n~;
                 }
             }
             $numshown++;
             $bb++;
         }
-        $yymain .= qq~
+        $yymain_inner .= qq~
         </select>\n
         <input type="button" class="button" onclick="copy_option('$to_id')" value="$usersel_txt{'addselected'}" style="width: 226px;" /><input type="button" class="button" onclick="window.close()" value="$usersel_txt{'pageclose'}" style="width: 226px;" />
         ~;
     }
     else {
-        $yymain .= q~
+        $yymain_inner .= q~
         <div style="float: left; width: 456px; height: 139px; text-align:center">
         <br /><br />
         ~;
         if ($letter) {
-            $yymain .= qq~<b>$usersel_txt{'noentries'}</b><br />~;
+            $yymain_inner .= qq~<b>$usersel_txt{'noentries'}</b><br />~;
         }
         elsif ( $INFO{'sort'} eq 'pmsearch' ) {
-            $yymain .= qq~<b>$usersel_txt{'nofound'} <i>$SearchStr</i></b>~;
+            $yymain_inner .= qq~<b>$usersel_txt{'nofound'} <i>$SearchStr</i></b>~;
         }
-        $yymain .= qq~
+        $yymain_inner .= qq~
         </div>
         <input type="button" class="button" onclick="window.close()" value="$usersel_txt{'pageclose'}" style="width: 456px;" />
         ~;
     }
-
-    $yymain .= q~
-    </td>
-</tr>~;
+    $yymain .= $my_sel_box;
+    $yymain =~ s/{yabb yymain_inner}/$yymain_inner/sm;
 
     undef @ToShow;
     buildPages(0);
@@ -573,24 +574,24 @@ q~<div id="ViewIndex" class="droppageindex pages" style="visibility: hidden">&nb
                 $prevpage = $start - $tmpMembersPerPage;
                 $nextpage = $start + $MembersPerPage;
                 $pagedropindexpvbl =
-qq~<img src="$imagesdir/index_left0.gif" height="14" width="13" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$ml_index_left0" height="14" width="13" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
                 $pagedropindexnxbl =
-qq~<img src="$imagesdir/index_right0.gif" height="14" width="13" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$ml_index_right0" height="14" width="13" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
                 if ( $start < $MembersPerPage ) {
                     $pagedropindexpv .=
-qq~<img src="$imagesdir/index_left0.gif" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$ml_index_left0" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~;
                 }
                 else {
                     $pagedropindexpv .=
-qq~<img src="$imagesdir/index_left.gif" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$prevpage\\'" ondblclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=0\\'" />~;
+qq~<img src="$imagesdir/$ml_index_left" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$prevpage\\'" ondblclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=0\\'" />~;
                 }
                 if ( $nextpage > $lastptn ) {
                     $pagedropindexnx .=
-qq~<img src="$imagesdir/index_right0.gif" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$ml_index_right0" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~;
                 }
                 else {
                     $pagedropindexnx .=
-qq~<img src="$imagesdir/index_right.gif" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$nextpage\\'" ondblclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$lastptn\\'" />~;
+qq~<img src="$imagesdir/$ml_index_right" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$nextpage\\'" ondblclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$lastptn\\'" />~;
                 }
                 $pageindex = qq~$pagedropindex</div>~;
 
@@ -605,25 +606,25 @@ qq~<img src="$imagesdir/index_right.gif" height="14" width="13" alt="$pidtxt{'03
         var pagstart = parseInt(splitparam[3]);
         var allpagstart = parseInt(splitparam[3]);
         if(visel == 'xx' && decparam == '$pagejsindex') visel = '$tstart';
-        var pagedropindex = '<table class="pad_0"><tr>';
+        var pagedropindex = '$visel_0';
         for(i=vistart; i<=viend; i++) {
-            if(visel == pagstart) pagedropindex += '<td class="titlebg pages"><b>' + i + '<\/b><\/td>';
-            else pagedropindex += '<td class="droppages"><a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=' + pagstart + '">' + i + '<\/a><\/td>';
+            if(visel == pagstart) pagedropindex += '$visel_1a<b>' + i + '<\/b>$visel_1b';
+            else pagedropindex += '$visel_2a<a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=' + pagstart + '">' + i + '<\/a>$visel_1b';
             pagstart += maxpag;
         }
         ~;
                 if ($showpageall) {
                     $pageindexjs .= qq~
             if (vistart != viend) {
-                if(visel == 'all') pagedropindex += '<td class="titlebg pages"><b>$pidtxt{"01"}<\/b><\/td>';
-                else pagedropindex += '<td class="droppages" style="height: 14px;"><a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=all-' + allpagstart + '">$pidtxt{"01"}<\/a><\/td>';
+                if(visel == 'all') pagedropindex += '$visel_1a<b>$pidtxt{"01"}<\/b>$visel_1b';
+                else pagedropindex += '$visel_2a<a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=all-' + allpagstart + '">$pidtxt{"01"}<\/a>$visel_1b';
             }
             ~;
                 }
                 $pageindexjs .= qq~
-        if(visel != 'xx') pagedropindex += '<td class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpv$pagedropindexnx<\/td>';
-        else pagedropindex += '<td class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpvbl$pagedropindexnxbl<\/td>';
-        pagedropindex += '<\/tr><\/table>';
+        if(visel != 'xx') pagedropindex += '$visel_3a$pagedropindexpv$pagedropindexnx$visel_1b';
+        else pagedropindex += '$visel_3a$pagedropindexpvbl$pagedropindexnxbl$visel_1b';
+        pagedropindex += '$visel_4';
         document.getElementById("ViewIndex").innerHTML=pagedropindex;
         document.getElementById("ViewIndex").style.visibility = "visible";
         ~;
@@ -651,54 +652,40 @@ sub buildPages {
         $instructtext =
           qq~<label for="member">$usersel_txt{'instruct2'}</label>~;
     }
-    $TableHeader .= qq~<tr>
-            <td class="titlebg">
-            <div class="small" style="float: left; width: 258px; padding-top: 3px;">
-                $instructtext
-            </div>
-            <div class="small" style="float: left; width: 198px; text-align: right;">
-            ~;
     if ( $to_id ne 'groups' ) {
-        $TableHeader .= qq~
+        $not_groups = qq~
             <form action="$scripturl?action=findmember;sort=pmsearch;toid=$to_id" method="post" id="form1" name="form1" enctype="application/x-www-form-urlencoded" style="display:inline; vertical-align:middle;" accept-charset="$yycharset">
                 <input type="text" name="member" id="member" value="$usersel_txt{'wildcardinfo'}" onfocus="this.value=''" style="font-size: 11px; width: 140px" />
                 <input name="submit" type="submit" class="button" style="font-size: 10px;" value="$usersel_txt{'gobutton'}" />
             </form>~;
     }
-    $TableHeader .= q~
-            </div>
-            </td>
-        </tr>
-    </table>
-    <form method="post" action="" name="selectuser">
-    <table class="bordercolor pad_3px cs_thin" style="width:464px; height: 275px; table-layout: fixed; margin-left:0">
-        <tr>
-            <td class="catbg center">
-    ~;
     if ( $recent_exist && $to_id =~ /toshow/sm ) {
-        $TableHeader .= qq~
+        $not_groups_b = qq~
             <div $selRecent onclick="location.href='$scripturl?action=imlist;sort=recentpm;toid=$to_id';" style="float: left; width: 224px; text-align: center; padding-top: 2px; padding-bottom: 2px; border: 1px; border-style: outset; cursor: pointer;"><b>$usersel_txt{'recentlist'}</b></div>
             <div $selUser onclick="location.href='$scripturl?action=imlist;sort=username;toid=$to_id';" style="float: left; width: 224px; text-align: center; padding-top: 2px; padding-bottom: 2px; border: 1px; border-style: outset; cursor: pointer;"><b>$usersel_txt{'alllist'}</b></div>
         ~;
     }
     elsif ( $to_id ne 'groups' ) {
-        $TableHeader .= qq~
+        $not_groups_b = qq~
             <div $selUser onclick="location.href='$scripturl?action=imlist;sort=username;toid=$to_id';" style="float: left; width: 454px; text-align: center; padding-top: 2px; padding-bottom: 2px; border: 1px; border-style: outset; cursor: pointer;"><b>$usersel_txt{'alllist'}</b></div>
         ~;
     }
     elsif ( $to_id eq 'groups' ) {
-        $TableHeader .= qq~
+        $not_groups_b = qq~
             <div $selUser onclick="location.href='$scripturl?action=imlist;sort=username;toid=$to_id';" style="float: left; width: 454px; text-align: center; padding-top: 2px; padding-bottom: 2px; border: 1px; border-style: outset; cursor: pointer;"><b>$usersel_txt{'groups'}</b></div>
         ~;
     }
-    $TableHeader .= q~
-            </td>
-        </tr>~;
     if ( $LetterLinks ne q{} ) {
-        $TableHeader .= qq~<tr>
-            <td class="titlebg">$LetterLinks</td>
-        </tr>~;
+        $TableHeader_lt .= $my_tableHeader_lt;
+        $TableHeader_lt =~ s/{yabb LetterLinks}/$LetterLinks/sm;
     }
+
+    $TableHeader .= $my_tableHeader;
+    $TableHeader =~ s/{yabb instructtext}/$instructtext/sm;
+    $TableHeader =~ s/{yabb not_groups}/$not_groups/sm;
+    $TableHeader =~ s/{yabb not_groups_b}/$not_groups_b/sm;
+    $TableHeader =~ s/{yabb TableHeader_lt}/$TableHeader_lt/sm;
+
     $numbegin = ( $start + 1 );
     $numend   = ( $start + $MembersPerPage );
     if ( $numend > $memcount ) { $numend  = $memcount; }
@@ -706,33 +693,18 @@ sub buildPages {
     else { $numshow = qq~($numbegin - $numend $usersel_txt{'of'} $memcount)~; }
 
     if ( $x[0] ) {
-        $yymain .= qq~
-    <table class="bordercolor pad_3px cs_thin" style="table-layout: fixed; width:464px; margin-left:0">
-        $TableHeader
-        <tr>
-            <td class="catbg" style="height:26px">
-                $pageindex
-            </td>
-        </tr>~;
+        $yymain .= $my_usersel;
+        $yymain =~ s/{yabb TableHeader}/$TableHeader/sm;
+        $yymain =~ s/{yabb pageindex}/$pageindex/sm;
     }
     else {
-        $yymain .= qq~<tr>
-            <td class="windowbg2" style="height:62px">
-                <span class="small">$instruct_start $instruct_end
-            <br />
-~;
-
         if ( $to_id ne 'groups' ) {
-            $usersel_txt{'instruct3'};
+            $my_inst3 = $usersel_txt{'instruct3'};
         }
-
-        $yymain .= qq~</span>
-            </td>
-        </tr>
-    </table>
-    </form>
-    $pageindexjs
-        ~;
+        $yymain .= $my_usersel_inst;
+        $yymain =~ s/{yabb instruct_start}/$instruct_start/sm;
+        $yymain =~ s/{yabb instruct_end}/$instruct_end/sm;
+        $yymain =~ s/{yabb pageindexjs}/$pageindexjs/sm;
     }
     return;
 }
@@ -933,33 +905,8 @@ sub quickSearch {
     if ( !$iamadmin && !$iamgmod ) { fatal_error('no_access'); }
 
     $to_id  = $INFO{'toid'};
-    $yymain = qq~
-    <div class="bordercolor" style="width:300px">
-    <table class="pad_3px cs_thin" style="width:300px">
-        <tr>
-            <td class="titlebg"><label for="letter">$usersel_txt{'qsearch'}</label></td>
-        </tr><tr>
-            <td class="windowbg2">
-                <div style="float:left"><input type="text" name="letter" id="letter" onkeyup="LetterChange(this.value)" style="width:270px" /></div>
-                <div style="float:right"><img src="$imagesdir/mozilla_gray.gif" id="load" alt="" /></div>
-            </td>
-        </tr><tr>
-            <td class="windowbg">
-                <select name="rec_list" multiple="multiple" id="rec_list" size="10" style="width: 290px; font-size: 11px;" ondblclick="copy_option('$to_id')"><option></option></select>
-            </td>
-        </tr><tr>
-            <td class="windowbg">
-                <input type="button" class="button" onclick="copy_option('$to_id')" value="$usersel_txt{'addselected'}" style="width: 145px;" /><input type="button" class="button" onclick="window.close()" value="$usersel_txt{'pageclose'}" style="width: 145px;" />
-            </td>
-        </tr><tr>
-            <td class="windowbg2">
-                <br /><span class="small">$usersel_txt{'instruct0'} $usersel_txt{'moderatorlist'}</span><br /><br />
-            </td>
-        </tr>
-    </table>
-    </div>
-    <div id="response" style="display:none"> </div>
-    ~;
+    $yymain = $my_quickSearch;
+    $yymain =~ s/{yabb to_id}/$to_id/sm;
 
     $yytitle = $usersel_txt{'modpagetitle'};
     userselectTemplate();

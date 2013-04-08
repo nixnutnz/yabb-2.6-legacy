@@ -199,7 +199,7 @@ sub banning {
 
     *write_banlog = sub{
         my ($bantry) = @_;
-        if ($admincheck) { admin_fatal_error( 'banned',
+        if ($admincheck) { fatal_error( 'banned',
             "$register_txt{'678'}$register_txt{'430'}!" ) ;}
         fopen( LOG, ">>$vardir/ban_log.txt" );
         print {LOG} "$date|$bantry\n" or croak 'cannot print LOG';

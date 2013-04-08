@@ -83,7 +83,7 @@ sub automaintenance {
     }
     elsif ( lc($maction) eq 'off' ) {
         unlink "$vardir/maintenance.lock"
-          || admin_fatal_error( 'cannot_open_dir', "$vardir/maintenance.lock" );
+          || fatal_error( 'cannot_open_dir', "$vardir/maintenance.lock" );
         if ( $maintenance == 2 ) { $maintenance = 0; }
     }
     return;
@@ -877,6 +877,12 @@ sub fatal_error {
     my $verbose = $!;
 
     LoadLanguage('Error');
+    if ( -e ("$templatesdir/$usestyle/Other.template") ) {
+        require "$templatesdir/$usestyle/Other.template";
+    }
+    else {
+       require "$templatesdir/default/Other.template";
+    }
     my $errormessage = "$error_txt{$x[0]} $x[1]";
 
     my ( $filename, $line, $subroutine ) = get_caller();
@@ -900,22 +906,8 @@ sub fatal_error {
         CORE::exit;    # This is here only to avoid server error log entries!
     }
 
-    $yymain .= qq~
-<table class="tabtitle pad_4px" style="width:80%">
-    <tr>
-        <td class="round_top_left" style="width:1%">&nbsp;</td>
-        <td class="center"><b>$maintxt{'error_description'}</b></td>
-        <td class="round_top_right" style="width:1%">&nbsp;</td>
-    </tr>
-</table>
-<table class="bordercolor pad_4px cs_thin" style="width:80%">
-    <tr>
-        <td class="windowbg"><br />$errormessage<br /><br /></td>
-    </tr>
-</table>
-<br /><div style="width: 100%; text-align: center;"><a href="javascript:history.go(-1)">$maintxt{'193'}</a></div>
-~;
-
+    $yymain .= $my_show_error;
+    $yymain =~ s/{yabb errormessage}/$errormessage/sm;
     $yytitle = "$maintxt{'error_description'}";
 
     if ($adminscreen) {
@@ -930,48 +922,6 @@ sub fatal_error {
         }
         template();
     }
-    return;
-}
-
-sub admin_fatal_error {
-    my @imp     = @_;
-    my $verbose = $!;
-
-    LoadLanguage('Error');
-    my $errormessage = "$error_txt{$imp[0]} $imp[1]";
-
-    # Gets filename and line where fatal_error was called.
-    # Need to go further back to get correct subroutine name,
-    # otherwise will print fatal_error as current subroutine!
-    ( undef, $e_filename, $e_line ) = caller 0;
-    ( undef, undef, undef, $e_subroutine ) = caller 1;
-    ( undef, $e_subroutine ) = split /::/xsm, $e_subroutine;
-    if (   ( $debug == 1 || ( $debug == 2 && $iamadmin ) )
-        && ( $e_filename || $e_line || $e_subroutine ) )
-    {
-        $errormessage .=
-"<br />$maintxt{'error_location'}: $e_filename<br />$maintxt{'error_line'}: $e_line<br />$maintxt{'error_subroutine'}: $e_subroutine";
-    }
-
-    if ( $imp[2] ) {
-        $errormessage .= "<br />$maintxt{'error_verbose'}: $verbose";
-    }
-
-    if ($elenable) { fatal_error_logging($errormessage); }
-
-    $yymain .= qq~
-<table class="bordercolor pad_4px cs_thin" style="width:80%">
-    <tr>
-        <td class="titlebg"><b>$maintxt{'error_description'}</b></td>
-    </tr><tr>
-        <td class="windowbg"><br />$errormessage<br /><br /></td>
-    </tr>
-</table>
-<p class="center"><a href="javascript:history.go(-1)">$admin_txt{'193'}</a></p>
-~;
-
-    $yytitle = "$maintxt{'error_description'}";
-    AdminTemplate();
     return;
 }
 
@@ -2999,31 +2949,18 @@ sub regex_4 {
 }
 
 sub password_check {
-    if   ( $action eq 'myprofile' ) { $class = 'windowbg'; }
-    else                            { $class = 'windowbg2'; }
-    $check = qq~<tr>
-        <td class="windowbg right vtop"><label for="passwrd1"><b>$register_txt{'81'}:</b></label></td>
-        <td class="$class">
-            <div style="float:left;">
-                <input autocomplete="off" type="password" maxlength="30" name="passwrd1" id="passwrd1" value="$tmpregpasswrd1" size="30" onkeypress="capsLock(event,'cappasswrd1')" onkeyup="runPassword(this.value);" /> *&nbsp;</div>
-           <div class="pass_box">
-               <div id="password-strength-meter"></div>
-               <div class="pstrength-bar" id="passwrd1_bar"></div>
-               <div class="pstrength-info" id="passwrd1_text">&nbsp;</div>
-           </div>
-           <div id="cappasswrd1">$register_txt{'capslock'}</div>
-           <div id="cappasswrd1_char">$register_txt{'wrong_char'}: <span id="cappasswrd1_character">&nbsp;</span></div>
-       </td>
-    </tr><tr>
-        <td class="windowbg right vtop">
-            <label for="passwrd2"><b>$register_txt{'82'}:</b></label>
-        </td>
-        <td class="$class vtop">
-            <input autocomplete="off" type="password" maxlength="30" name="passwrd2" id="passwrd2" value="$tmpregpasswrd2" size="30" onkeypress="capsLock(event,'cappasswrd2')" /> *
-            <div id="cappasswrd2">$register_txt{'capslock'}</div>
-            <div id="cappasswrd2_char">$register_txt{'wrong_char'}: <span id="cappasswrd2_character">&nbsp;</span></div>
-            <script type="text/javascript">
-            <!--
+    LoadLanguage('Register');
+
+    if   ( $action eq 'myprofile' ) { 
+        if ( -e ("$templatesdir/$usestyle/MyProfile.template") ) {
+            require "$templatesdir/$usestyle/MyProfile.template";
+        }
+        else {
+            require "$templatesdir/default/MyProfile.template";
+        }
+    }
+    else  { $class = 'windowbg2'; }
+    $check_js = qq~    <script type="text/javascript">
                 // Password_strength_meter start
                 var verdects = new Array("$pwstrengthmeter_txt{'1'}","$pwstrengthmeter_txt{'2'}","$pwstrengthmeter_txt{'3'}","$pwstrengthmeter_txt{'4'}","$pwstrengthmeter_txt{'5'}","$pwstrengthmeter_txt{'6'}","$pwstrengthmeter_txt{'7'}","$pwstrengthmeter_txt{'8'}");
                 var colors = new Array("#8F8F8F","#BF0000","#FF0000","#00A0FF","#33EE00","#339900");
@@ -3118,10 +3055,14 @@ sub password_check {
                     return F;
                 }
                 // Password_strength_meter end
-            // -->
-            </script>
-        </td>
-    </tr>~;
+                        </script>~;
+    $check = $show_check;
+    $check .= $show_check_bot;
+    $check =~ s/{yabb check_js}/$check_js/sm;
+    $check =~ s/{yabb tmpregpasswrd1}/$tmpregpasswrd1/sm;
+    $check =~ s/{yabb cappasswrd1_character}/$cappasswrd1_character/sm;
+    $check =~ s/{yabb tmpregpasswrd2}/$tmpregpasswrd2/sm;
+    
     return $check;
 }
 

@@ -21,6 +21,7 @@ $profilepmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Profile');
+LoadLanguage('Register');
 require Sources::AddModerators;
 
 if ( -e ("$templatesdir/$usestyle/MyProfile.template") ) {
@@ -369,7 +370,6 @@ qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"
     $dayormonth =~ s/for="bday\d"/for="birthday"/oxsm;
     $dayormonth =~ s/id="bday\d"/id="birthday"/oxsm;
 
-    LoadLanguage('Register');
     $my_newpass = ( $INFO{'newpassword'} ? $profile_txt{'80'} : q{} );
     $my_passchk = password_check();
     $my_name_not = q{};

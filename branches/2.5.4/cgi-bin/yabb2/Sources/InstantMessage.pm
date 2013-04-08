@@ -24,6 +24,13 @@ require Sources::PostBox;
 require Sources::SpamCheck;
 LoadLanguage('FA');
 
+if ( -e ("$templatesdir/$usestyle/MyMessage.template") ) {
+    require "$templatesdir/$usestyle/MyMessage.template";
+}
+else {
+    require "$templatesdir/default/MyMessage.template";
+}
+
 $set_subjectMaxLength ||= 50;
 
 ## create the send IM section of the screen
@@ -161,8 +168,6 @@ sub buildIMsend {
     }
     require Sources::ContextHelp;
     ContextScript('post');
-
-    require "$templatesdir/$usedisplay/MyMessage.template";
 
     $MCGlobalFormStart .= qq~
     $ctmain
@@ -1882,25 +1887,25 @@ qq~<img src="$imagesdir/$IM_index_right" height="14" width="13" alt="$pidtxt{'03
                 var pagstart = parseInt(splitparam[3]);
                 var allpagstart = parseInt(splitparam[3]);
                 if (visel == 'xx' && decparam == '$pagejsindex') visel = '$tstart';
-                var pagedropindex = '<table class="tableselect"><tr>';
+                var pagedropindex = '$visel_0';
                 for (i=vistart; i<=viend; i++) {
-                    if (visel == pagstart) pagedropindex += '<td class="pages"><b>' + i + '</b></td>';
-                    else pagedropindex += '<td class="pages"><a href="$scripturl?action=$action$bmesslink;start=' + pagstart + '">' + i + '</a></td>';
+                    if (visel == pagstart) pagedropindex += '$visel_1a<b>' + i + '</b>$visel_1b';
+                    else pagedropindex += '$visel_2a<a href="$scripturl?action=$action$bmesslink;start=' + pagstart + '">' + i + '</a>$visel_1b';
                     pagstart += maxpag;
                 }
                 ~;
             if ($showpageall) {
                 $pageindexjs .= qq~
                     if (vistart != viend) {
-                        if(visel == 'all') pagedropindex += '<td class="pages"><b>$pidtxt{"01"}</b></td>';
-                        else pagedropindex += '<td class="pages"><a href="$scripturl?action=$action$bmesslink;start=all-' + allpagstart + '">$pidtxt{"01"}</a></td>';
+                        if(visel == 'all') pagedropindex += '$visel_1a<b>$pidtxt{"01"}</b></td>';
+                        else pagedropindex += '$visel_2a<a href="$scripturl?action=$action$bmesslink;start=all-' + allpagstart + '">$pidtxt{"01"}</a>$visel_1b';
                     }
                     ~;
             }
             $pageindexjs .= qq~
-                if (visel != 'xx') pagedropindex += '<td class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpv$pagedropindexnx</td>';
-                else pagedropindex += '<td class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpvbl$pagedropindexnxbl</td>';
-                pagedropindex += '</tr></table>';
+                if (visel != 'xx') pagedropindex += '$visel_3a$pagedropindexpv$pagedropindexnx$visel_1b';
+                else pagedropindex += '$visel_3a$pagedropindexpvbl$pagedropindexnxbl$visel_1b';
+                pagedropindex += '$visel_4';
                 document.getElementById('ViewIndex1').innerHTML=pagedropindex;
                 document.getElementById('ViewIndex1').style.visibility = 'visible';
                 ~;
@@ -2240,8 +2245,6 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
     wrap2();
     ToChars($message);
     $message = Censor($message);
-
-    require "$templatesdir/$usedisplay/MyMessage.template";
 
     $avstyle = q{};
     $my_title = q{};

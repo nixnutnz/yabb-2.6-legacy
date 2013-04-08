@@ -340,25 +340,25 @@ qq~javascript:MessageList(\\'$scripturl?board=$currentboard/' + pagstart + ';mes
         var pagstart = parseInt(splitparam[3]);
         //var allpagstart = parseInt(splitparam[3]);
         if (visel == 'xx' && decparam == '$pagejsindex') visel = '$tstart';
-        var pagedropindex = '<table class="pad_0"><tr>';
+        var pagedropindex = '$visel_0';
         for(i=vistart; i<=viend; i++) {
-            if (visel == pagstart) pagedropindex += '<td class="titlebg pages"><b>' + i + '</b></td>';
-            else pagedropindex += '<td class="droppages pages"><a href="$scripturl?board=$currentboard/' + pagstart + '">' + i + '</a></td>';
+            if (visel == pagstart) pagedropindex += '$visel_1a<b>' + i + '</b>$visel_1b';
+            else pagedropindex += '$visel_2a<a href="$scripturl?board=$currentboard/' + pagstart + '">' + i + '</a>$visel_1b';
             pagstart += maxpag;
         }
         ~;
             if ($showpageall) {
                 $pageindexjs .= qq~
             if (vistart != viend) {
-                if(visel == 'all') pagedropindex += '<td class="titlebg pages"><b>$pidtxt{'01'}</b></td>';
-                else pagedropindex += '<td class="droppages pages"><a href="$scripturl?board=$currentboard/all">$pidtxt{'01'}</a></td>';
+                if(visel == 'all') pagedropindex += '$visel_1a<b>$pidtxt{'01'}</b></td>';
+                else pagedropindex += '$visel_2a<a href="$scripturl?board=$currentboard/all">$pidtxt{'01'}</a>$visel_1b';
             }
             ~;
             }
             $pageindexjs .= qq~
-        if(visel != 'xx') pagedropindex += '<td class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpv$pagedropindexnx</td>';
-        else pagedropindex += '<td class="small" style="height: 14px; padding-left: 4px;">$pagedropindexpvbl$pagedropindexnxbl</td>';
-        pagedropindex += '</tr></table>';
+        if(visel != 'xx') pagedropindex += '$visel_3a$pagedropindexpv$pagedropindexnx$visel_1b';
+        else pagedropindex += '$visel_3a$pagedropindexpvbl$pagedropindexnxbl$visel_1b';
+        pagedropindex += '$visel_4';
         document.getElementById("ViewIndex1").innerHTML=pagedropindex;
         document.getElementById("ViewIndex1").style.visibility = "visible";
         document.getElementById("ViewIndex2").innerHTML=pagedropindex;
