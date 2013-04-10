@@ -258,6 +258,7 @@ sub postbox2 {
     $dragwpos   = ( $pwidth - 448 ) . 'px';
     $jsdraghpos = $pheight - 130;
     $draghpos   = ( $pheight - 130 ) . 'px';
+if ($INFO{'edit_cal_even'} ) {$message = q~{yabb calevent}~;}
 
     $box = qq~
             <div id="spell_container"></div>
