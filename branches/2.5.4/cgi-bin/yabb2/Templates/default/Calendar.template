@@ -13,12 +13,12 @@
 ###############################################################################
 # $Revision$
 
-$seperator = q{};
-$title_class = 'tabtitle';
-$titleclass_inset = 'tabtitle';
-$cal_day = 'class="titlebg center minical_border"';
-$cal_days = 'class="windowbg2 center minical_border"';
+$cal_day = q~ class="titlebg center minical_border"~;
+$cal_days = q~ class="windowbg2 center minical_border"~;
+$style_ubbc_box = q~float:left; width:463px~;
 
+$cal_cat_col = 'cat_collapse.gif';
+$cal_cat_exp = 'cat_expand.gif';
 $cal_grn1 = 'green1.gif';
 $cal_grn0 = 'green0.gif';
 $cal_red0 ='red0.gif';
@@ -32,7 +32,34 @@ $cal_eventinfo = 'eventinfo.gif';
 $cal_eventinfobd = 'eventinfobd.gif';
 $cal_eventcal = 'eventcal.png';
 
-$mycalout_add_cal = qq~<table class="bordercolor">
+# Calendar go to date form ##
+$mycalout_gottobox = qq~
+    <table class="tabtitle tabtitle-text">
+        <col style="width:30%" />
+        <col style="width:70%" />
+        <tr>
+            <td style="padding-left:1%">
+                <!--<img src="$yyhtml_root/Templates/Forum/default/$cal_eventcal" alt="" /> --> $var_cal{'caltitle'}
+            </td>
+            <td class="right" style="padding-right:1%">
+                {yabb calgotobox}
+            </td>
+        </tr>
+    </table>~;
+
+$mycalout_mini_top = qq~
+        <table class="tabtitle tabtitle-text">
+            <tr>
+                <td class="tabtitle">
+                    <div class="calout_left"><img src="$yyhtml_root/Templates/Forum/default/$cal_eventcal" alt="" /> $var_cal{'caltitle'}</div>
+                    <div class="calout_right"> dd {yabb calgotobox}</div>
+                </td>
+            </tr>
+        </table>~;
+
+## Event post Section ##
+$mycalout_addevent = qq~
+<table class="bordercolor">
     <col style="width:160px" />
     <tr>
         <td class="windowbg2" colspan="2">
@@ -45,40 +72,66 @@ $mycalout_add_cal = qq~<table class="bordercolor">
         <td class="windowbg2">
             <span class="small">{yabb addevdate}</span>
         </td>
-    </tr>~;
-
-$mycalout_add_cal_end = qq~
-            </select>
+    </tr>{yabb option_noname}
+    <tr> 
+        <td class="windowbg2 cal_row1">
+            <span class="small"><label for="caltype"><b>$var_cal{'calview'}:</b></label></span>
+        </td>
+        <td class="windowbg2">
+            {yabb mycalout_caltype}
+        </td>
+     </tr><tr> 
+        <td class="windowbg2 cal_row2">
+            <span class="small"><label for="calicon"><b>$var_cal{'event_icon'}:</b></label></span>
+        </td>
+        <td class="windowbg2">
+            {yabb mycalout_calicon}
             <img src="$yyhtml_root/EventIcons/{yabb calicon}.gif" name="calicons" style="margin:0 26px" alt="" />
         </td>
+    </tr><tr><!-- live preview -->
+        <td class="windowbg2 vtop">
+            <table class="pad_2px" style="width:95%; margin-left:0">
+                <tr>
+                    <td class="small">
+                        <img src="$imagesdir/$cal_cat_exp" name="prevwin" id="prevwin"  alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor:pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="windowbg2">
+            <div id="savetable" class="bordercolor" style="height:0px; padding:1px; width:100%; margin:auto; visibility:hidden;">
+            <table class="pad_3px" style="table-layout:fixed;">
+                <tr>
+                    <td class="windowbg2">
+                        <div id="saveframe" class="message" style="height:0px; text-align:left; vertical-align:top; overflow:auto;">&nbsp;</div>
+                    </td>
+                </tr>
+            </table>
+            </div>
+        </td>
     </tr><tr>
-        <td class="windowbg2" colspan="2">~;
-
-$mycalout_gottobox = qq~
-    <table class="tabtitle">
-        <col style="width:30%" />
-        <col style="width:70%" />
-        <tr>
-            <td style="height:25px; padding-left:1%">
-                <img src="$yyhtml_root/Templates/Forum/default/$cal_eventcal" alt="" /> $var_cal{'caltitle'}
+        <td class="windowbg2" colspan="2">
+            {yabb mycalout_cthelp}
+            {yabb mycalout_post2}
+        </td>
+    </tr><tr>
+        <td class="windowbg2" colspan="2">{yabb mycalout_googie}{yabb mycalout_smilies}
+            <noscript><span class="small">$maintxt{'noscript'}</span></noscript>
+            {yabb mycalout_post3}
+            {yabb mycalout_chars}
+            {yabb mycalout_validation}
+            {yabb mycalout_spamquestion}
             </td>
-            <td class="right" style="padding-right:1%">
-                {yabb calgotobox}
-            </td>
-        </tr>
-    </table>~;
+     </tr><tr>
+        <td class="windowbg2 small">
+            <label for="ns"><b>$post_txt{'276'}:</b></label>
+        </td>
+        <td class="windowbg2">
+            <input type="checkbox" name="ns" id="ns" value="NS"{yabb nscheck} /> <span class="small"> $post_txt{'277'}</span>
+        </td>
+    </tr><tr>
+        <td class="windowbg2 center" style="padding: 1em 0; border-top:1px solid #B1BDC9"" colspan="2">{yabb mycalout_send}~;
 
-$mycalout_mini = qq~
-        <div class="$seperator">
-        <table class="cs_thin pad_4px">
-            <tr>
-                <td class="$title_class" colspan="2">
-                    <div class="calout_left"><img src="$yyhtml_root/Templates/Forum/default/$cal_eventcal" alt="" /> $var_cal{'caltitle'}</div>
-                    <div class="calout_right">{yabb calgotobox}</div>
-                </td>
-            </tr>
-        </table>
-        </div>~;
 
 $mycalout_noevent = qq~<tr>
         			<td class="windowbg padd_3px" colspan="2">
@@ -89,17 +142,20 @@ $mycalout_noevent = qq~<tr>
                 </tr>
     			~;
 
-$mycalout_table_top = q~
-<table class="bordercolor">
+$mycalout_showevent = q~
+{yabb mycalout_top}
+<table class="bordercolor pad_3px">{yabb mycalout_greet}{yabb mycalout_no}
+</table>
     ~;
 
-$mycalout_edit = qq~
-<div class="$seperator">
-<table class="bordercolor cs_thin pad_3px">~;
+$mycalout_edit_show = qq~
+{yabb mycalout_top}
+<table class="bordercolor pad_3px">{yabb mycalout_greet}
+</table>
+    ~;
 
 $mycalout_even = qq~
-<div class="$seperator">
-<table class="cs_thin pad_4px">
+                <table class="pad_4px">
     <tr>
         <td class="catbg">
             <img src="$imagesdir/$cal_modify" alt="$var_cal{'caledit'}" title="$var_cal{'caledit'}" /> $var_cal{'caledit'}
@@ -118,11 +174,10 @@ $mycalout_even = qq~
         </td>
     </tr>
 </table>
-</div>~;
-
+~;
 
 $mycalout_disp = qq~<tr>
-    <td style="padding-left:1%; height:25px">$var_cal{'caltitle'}
+    <td style="padding-left:1%">$var_cal{'caltitle'}
     </td>
     <td class="right" style="padding-right:1%">{yabb calgotobox}</td>
 </tr>
@@ -132,12 +187,11 @@ $mycalout_disp = qq~<tr>
     <col style="width:30%" />~;
     
 $mycalout_disp_sep = qq~<tr>
-    <td class="{yabb title_class}" colspan="2">
+    <td class="tabtitle" colspan="2">
         <div class="calout_left"><img src="$yyhtml_root/Templates/Forum/default/$cal_eventcal" alt="" /> $var_cal{'caltitle'}</div>
         <div class="calout_right">{yabb calgotobox}</div>
     </td>
-</tr>
-~;
+</tr>~;
 
 
 $mycalout_h =         qq~
@@ -148,13 +202,12 @@ $mycalout_h =         qq~
     </table>~;
 
 $mycalout_j = qq~
-        <div class="$seperator">
         <table class="cs_thin pad_4px">
             {yabb cal_display}
-        </table>
-        </div>~;
+</table>~;
 
-$mycalout_k = qq~<table class="tabtitle">
+$mycalout_k = qq~
+<table class="tabtitle tabtitle-text">
             {yabb cal_display}
         </table>~;
         
@@ -173,12 +226,15 @@ $mycal_displayssi = qq~<table class="tabtitle pad_3px h_25px">
           {yabb cal_out}
 </table>~;
 
-$myleft_calbox = qq~<tr>
+$myleft_calbox = qq~{yabb cal_display_show}<tr>
     <td class="windowbg center" style="border-right:1px solid #B1BDC9">
         <img src="$yyhtml_root/Templates/Forum/default/$cal_eventcal" alt="" />
     </td>
-    <td class="windowbg2">
-~;
+            <td class="windowbg2">{yabb cal_displayssi}{yabb ShowBirthdaysLink}{yabb ShowEventAddLink}</td>
+            <td class="windowbg2 vtop">{yabb cal_display_calevent}
+            &nbsp;</td>
+        </tr>
+    </table>{yabb cal_allow}~;
 
 $myadd_new = qq~<table class="bordercolor pad_3px" style="border-top:1px solid #B1BDC9">
 <col style="width:6%" />
@@ -197,27 +253,6 @@ $mycal_noname = qq~<tr>
             <input type="checkbox" value="1" name="calnoname" id="calnoname" {yabb cecknonam} />
         </td>
     </tr>~;
-
-$mycal_opts_a = qq~<tr> 
-        <td class="windowbg2 cal_row1">
-            <span class="small"><label for="caltype"><b>$var_cal{'calview'}:</b></label></span>
-        </td>
-        <td class="windowbg2">~;
-
-$mycal_opts_b =qq~
-        </td>
-    </tr><tr> 
-        <td class="windowbg2 cal_row2">
-            <span class="small"><label for="calicon"><b>$var_cal{'event_icon'}:</b></label></span>
-        </td>
-        <td class="windowbg2">~;
-
-$mycal_postbox_b = q~
-            </div>
-            </div>
-        </td>
-    </tr><tr>
-        <td class="windowbg2" colspan="2">~;
 
 $mycal_validation = qq~
             <br /><br />
@@ -258,12 +293,12 @@ $mycal_endaddform = q~</td>
 </form>~;
 
 $mycal_greet = qq~<tr>
-        <td class="windowbg2 padd_3px" colspan="2">
+        <td class="windowbg2 padd_3px" style="border-top:1px solid #B1BDC9" colspan="2">
             <img src="$imagesdir/$cal_eventbd" alt="$var_cal{'calbirthday'}" /> {yabb cdate} <b>$var_cal{'calbirthday'}</b>
         </td>
     </tr><tr>
         <td class="windowbg2 padd_3px" colspan="2">
-            <b>$var_cal{'calsubtitle'}:</b><br /> <br />
+            {yabb myevent_ann}
             {yabb eventbduserlink} {yabb greet}<br/><br/>
         </td>
     </tr>~;
@@ -275,7 +310,7 @@ $mycal_greet_c = qq~
         			</td>
     			</tr><tr>
         			<td class="windowbg2 padd_3px" colspan="2">
-        			    <hr class="hr" />
+        			    
             			<b>$var_cal{'calsubtitle'}:</b><br /> <br />
             			{yabb event_message}<br/><br/>
             			<hr class="hr" />
@@ -284,10 +319,6 @@ $mycal_greet_c = qq~
 
 $mycal_greet_rowend = q~</td>
         		</tr>~;
-
-$mycal_tableend = q~
-</table>
-</div>~;
 
 
 $mycal_outstring_bday = qq~<tr>
@@ -314,5 +345,50 @@ $mycal_outstring = qq~<tr>
     </tr>~;
 
 $mycal_min_blnk = q~<td class="windowbg">&nbsp;</td>~;
+$mycal_dstr = qq~<td {yabb cal_day}><span class="small"><b>{yabb var_cal_st}</b></span></td>~;
+$mycal_tr = '<tr>';
+$mycal_tr_b = q~</tr>~;
+$mycal_showday =
+qq~<td {yabb cal_days} style="background-image:URL('{yabb cal_pic}'); background-repeat:no-repeat"><a href="$scripturl?action=eventcal;calshow=1;eventdate={yabb year}{yabb view_mon}{yabb dddd};showmini=1" title='$var_cal{'calshowmini'}'><span class="under">{yabb sel}</span></a></td>\n~;
+$mycal_showday_b = qq~<td {yabb cal_days}>{yabb sel}</td>\n~;
+$mycal_trtr = q~</tr><tr>
+~;
+$my_out_a = qq~<table><tr><td class="vtop"><span class="small"><img src="$yyhtml_root/EventIcons/{yabb cal_eventinfo}" alt="Event" /> $var_cal{'calnoevent'}</span><hr class="hr" /></td></tr></table>~;
+
+$mycal_td_tr = q~
+    </td>
+</tr>~;
+
+$mycal_tableend = q~</table>~;
+
+$my_outstring = q~<table style="width:90%; margin-left:0">~;
+
+$mycal_liveprev = qq~<tr>
+        <td class="windowbg vtop">
+            <table class="pad_2px" style="width:95%; margin-left:0">
+                <tr>
+                    <td>
+                        <img src="$imagesdir/$cal_cat_exp" name="prevwin" id="prevwin"  alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor:pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr><tr>
+        <td class="windowbg">
+            <div id="savetable" class="bordercolor" style="height:0px; padding:1px; width:100%; margin:auto; visibility:hidden;">
+            <table class="pad_3px" style="table-layout:fixed;">
+                <tr>
+                    <td class="titlebg">
+                        <div id="savetopic" style="height:0px; text-align:left; vertical-align:middle; font-weight:bold; overflow:auto;">&nbsp;</div>
+                    </td>
+                </tr><tr>
+                    <td class="windowbg2">
+                        <div id="saveframe" class="message" style="height:0px; text-align:left; vertical-align:top; overflow:auto;">&nbsp;</div>
+                    </td>
+                </tr>
+            </table>
+            </div>
+        </td>
+    </tr>~;
 
 1;
