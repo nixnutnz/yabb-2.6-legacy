@@ -17,57 +17,70 @@ $cal_eventcal = 'eventcal.png';
 $cal_info     = 'info.png';
 $cal_eventbd  = 'eventbd.gif';
 
+$cal_col_no_ss = q~
+    <col style="width:30%" />
+    <col style="width:35%" />
+    <col style="width:35%" />
+~;
+
+$cal_col_ss = q~
+    <col style="width:30%" />
+    <col style="width:20%" />
+    <col style="width:30%" />
+    <col style="width:20%" />
+~;
+
+$cal_col_ss_sort = qq~
+         <td{yabb class_sortstarsign}><a href="$scripturl?action=birthdaylist;sort=sortstarsign" style="text-decoration:none;"><b>$var_cal{'calstarsign'}</b></a></td>~;
+
+$cal_col_ss_top = q~
+        <td class="windowbg2 center">{yabb sternzeichen}</td>~;
+
 $mybdlist_calgoto = qq~
-<div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
-<table class="bordercolor pad_3px cs_thin" style="margin-bottom:2em;">
+<table class="tabtitle tabtitle-text">
     <col style="width:30%" />
-    <col style="width:20%" />
-    <col style="width:30%" />
-    <col style="width:20%" />
     <tr>
-        <td class="titlebg" colspan="4">
-            <div style="float: left; width: 30%; padding: 1px 0; text-align: left;"><img src="$imagesdir/$cal_eventcal" alt="" /> $var_cal{'caltitle'}</div>
-            <div style="float: left; width: 70%; padding: 6px 0 1px 0; text-align: right;">{yabb calgotobox}</div>
-        </td>
-    </tr><tr>
-        <td class="windowbg" colspan="4">
+        <td style="padding-left:1%">$var_cal{'caltitle'}</td>
+        <td class="right" style="padding-right:1%">{yabb calgotobox}</td>
+    </tr>
+</table>
+<table class="bordercolor pad_3px cs_thin" style="margin-bottom:2em;">
+    {yabb cal_col}
+    <tr>
+        <td class="windowbg" colspan="{yabb cal_colspan}">
             <br />
             <span class="small">$var_cal{'calbirthdayinfo'}<br /><br />
 ~;
 
 $mybdlist_viewmont2 = qq~
-<div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
 <table class="pad_4px cs_thin" style="margin-bottom:2em">
-    <col style="width:30%" />
-    <col style="width:20%" />
-    <col style="width:30%" />
-    <col style="width:20%" />
+    {yabb cal_col}
     <tr>
-        <td class="titlebg" colspan="4">
+        <td class="titlebg" colspan="{yabb cal_colspan}">
             <img class="bottom" src="$imagesdir/$cal_eventbd" alt="$var_cal{calbirthday}" /> <b>{yabb calmont}</b> ({yabb countmont})
         </td>
     </tr>
 {yabb cal_info_header}
 {yabb viewmont}
 </table>
-</div>
 ~;
 
 $mybdlist_nobd = qq~
-<div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: auto;">
 <table class="pad_4px cs_thin">
     <tr>
-        <td  class="titlebg" colspan="4">
+        <td class="titlebg" colspan="{yabb cal_colspan}">
             <img src="$imagesdir/$cal_info" alt="$var_cal{calbirthday}" /> <b>$var_cal{'calbirthday1'}</b>
         </td>
     </tr><tr>
-        <td class="windowbg2" colspan="4">~;
+        <td class="windowbg2" colspan="{yabb cal_colspan}">{yabb nobdays}</td>
+    </tr>
+</table>~;
 
 $mybdlist_calinfoheader = 
 qq~<tr>
         <td{yabb class_sortuser}><a href="$scripturl?action=birthdaylist;sort=sortuser" style="text-decoration:none;"><b>$var_cal{'calname'}</b></a></td>
         <td{yabb class_sortage}><a href="$scripturl?action=birthdaylist;sort=sortage" style="text-decoration:none;"><b>$var_cal{'calage'}</b></a></td>
-        <td{yabb class_sortstarsign}><a href="$scripturl?action=birthdaylist;sort=sortstarsign" style="text-decoration:none;"><b>$var_cal{'calstarsign'}</b></a></td>
+        {yabb cal_col_star_sort}
         <td{yabb class_sortdate}><a href="$scripturl?action=birthdaylist;sort=sortdate" style="text-decoration:none;"><b>$var_cal{'calbddate'}</b></a></td>
     </tr>~;
 
@@ -75,7 +88,7 @@ $mybdlist_viewmont =
 qq~<tr>
         <td class="windowbg2 center">{yabb user_linkprofile}</td>
         <td class="windowbg2 center">{yabb myage}</td>
-        <td class="windowbg2 center">{yabb sternzeichen}</td>
+        {yabb cal_col_star}
         <td class="windowbg2 center">{yabb cdate}</td>
     </tr>~;
 
@@ -83,21 +96,22 @@ $mybdlist_sort = qq~
             </span>
         </td>
     </tr><tr>
-        <td class="titlebg center" colspan="4"><b>$var_cal{'calbirthdays'}</b></td>
+        <td class="titlebg center" colspan="{yabb cal_colspan}"><b>$var_cal{'calbirthdays'}</b></td>
     </tr><tr>
         <td{yabb class_sortuser}><a href="$scripturl?action=birthdaylist;sort=sortuser" style="text-decoration:none;"><b>$var_cal{'calname'}</b></a></td>
         <td{yabb class_sortage}><a href="$scripturl?action=birthdaylist;sort=sortage" style="text-decoration:none;"><b>$var_cal{'calage'}</b></a></td>
-        <td{yabb class_sortstarsign}><a href="$scripturl?action=birthdaylist;sort=sortstarsign" style="text-decoration:none;"><b>$var_cal{'calstarsign'}</b></a></td>
+        {yabb cal_col_star_sort}
         <td{yabb class_sortdate}><a href="$scripturl?action=birthdaylist;sort=sortdate" style="text-decoration:none;"><b>$var_cal{'calbddate'}</b></a></td>
     </tr><tr>
-        <td class="windowbg center" colspan="4">
+        <td class="windowbg center" colspan="{yabb cal_colspan}">
             <table class="pad_4px cs_thin">
                 <tr>
                     <td><span class="text"><a href="$scripturl?action=birthdaylist;sort=$sortiert;letter=other" style="text-decoration:none;">$var_cal{'other'}</a></span></td>~;
 
-$mybdlist_notbmember = qq~<tr><td class="windowbg2 center" colspan="4"><b><i>$var_cal{'calbirthday1'}</i></b></td></tr>~;
+$mybdlist_notbmember = qq~<tr><td class="windowbg2 center" colspan="{yabb cal_colspan}"><b><i>$var_cal{'calbirthday1'}</i></b></td></tr>~;
 
-$mybdlist_alpha_a = qq~                 <td><span class="text"><a href="$scripturl?action=birthdaylist;sort={yabb sortiert};letter=~; #";
+$mybdlist_alpha_a = qq~
+                 <td><span class="text"><a href="$scripturl?action=birthdaylist;sort={yabb sortiert};letter=~; #";
 $mybdlist_alpha_b = q~</a></span></td>~;
 $mybdlist_alpha_c = qq~
                 </tr>
@@ -106,6 +120,6 @@ $mybdlist_alpha_c = qq~
     </tr>
 {yabb viewbirthdays}
 </table>
-</div>~;
+~;
 
 1;
