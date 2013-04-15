@@ -85,7 +85,6 @@ qq~<li><span |><a href="$scripturl?action=search" title = "$img_txt{'182'}">$img
     }
 
     # EventCal START
-    if ( -e "$vardir/eventcalset.txt" ) { require "$vardir/eventcalset.txt"; }
     if ( $Show_EventButton == 2 || ( !$iamguest && $Show_EventButton == 1 ) ) {
         $tab{'eventcal'} =
 qq~<li><span |><a href="$scripturl?action=eventcal;calshow=1" title = "$img_txt{'eventcal'}">$img_txt{'eventcal'}</a></span></li>~;

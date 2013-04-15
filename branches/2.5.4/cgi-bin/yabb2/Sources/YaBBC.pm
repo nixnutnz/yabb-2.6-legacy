@@ -277,7 +277,7 @@ qq~<pre class="$insclass" id="code$codecnt" style="margin: 0px; width: 90%; $hei
 
 	sub noparse {
         my ($noubbc) = @_;
-        $noubbc =~ s/([;!\(\)\-\.\/:\?\[\\\]\^D])/$killhash{$1}/gxsm;
+        $noubbc =~ s/([!\(\)\-\.\/:\?\[\\\]\^D])/$killhash{$1}/gxsm;
 		return $noubbc;
 	}
 }

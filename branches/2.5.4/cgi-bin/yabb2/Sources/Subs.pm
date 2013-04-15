@@ -372,9 +372,6 @@ qq~<a href="$scripturl">$img{'home'}</a>$menusep<a href="$scripturl?action=help"
         }
 
         # EventCal START
-        if ( -e "$vardir/eventcalset.txt" ) {
-            require "$vardir/eventcalset.txt";
-        }
         if ( $Show_EventButton == 2
             || ( !$iamguest && $Show_EventButton == 1 ) )
         {
@@ -573,6 +570,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
     if ( ( !$iamguest || $guestaccess != 0 ) && $showsearchbox ) {
         if ( $maxsearchdisplay > -1 ) {
             $yysearchbox = qq~
+                    <div class="yabb_searchbox">
                     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
                     <form action="$scripturl?action=search2" method="post" accept-charset="$yycharset">
                         <input type="hidden" name="searchtype" value="allwords" />
@@ -585,7 +583,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
                         <input type="hidden" name="searchboards" value="!all" />
                         <input type="text" name="search" size="16" id="search1" value="$img_txt{'182'}" style="font-size: 11px;" onfocus="txtInFields(this, '$img_txt{'182'}');" onblur="txtInFields(this, '$img_txt{'182'}')" />
                         <input type="image" src="$imagesdir/search.png" title="$maintxt{'searchimg'} $showsearchboxnum $maintxt{'searchimg2'}" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />
-                    </form>
+                    </form></div>
 ~;
         }
     }

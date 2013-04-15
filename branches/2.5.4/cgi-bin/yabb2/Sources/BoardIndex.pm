@@ -1469,9 +1469,6 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt $boa
         $boardindex_template =~ s/({|<)yabb sharedlogin(}|>)/$shared_login/gsm;
 
         # EventCal START
-        if ( -e "$vardir/eventcalset.txt" ) {
-            require "$vardir/eventcalset.txt";
-        }
         my $cal_display;
         if ( $Show_EventCal == 2 || ( !$iamguest && $Show_EventCal == 1 ) ) {
             require Sources::EventCal;

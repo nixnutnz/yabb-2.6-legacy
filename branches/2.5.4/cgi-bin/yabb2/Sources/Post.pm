@@ -2789,8 +2789,8 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tempname}" clas
     return;
 }
 
-## Guest can send a PM to FA
-## this is a hybrid broadcast message, with fixed audience of FA
+## Guest can send a PM to Admin
+## this is a hybrid broadcast message, with fixed audience of Admin
 ## and some guest posting elements in, where id/email are required.
 sub sendGuestPM {
     if ( !$iamguest ) { $yySetLocation = $scripturl; redirectexit(); }
@@ -3306,12 +3306,6 @@ sub modAlert2 {
 
     # Find a valid random ID for it
     $newthreadid = getnewid();
-
-# This is only for update, when comming from YaBB lower or equal version 2.2.3
-# I think it can be deleted around version 2.4.0 without causing mayor issues (deti).
-    if ( $enable_notifications eq q{} ) {
-        $enable_notifications = $enable_notification ? 3 : 0;
-    }
 
     # End update workaround
 

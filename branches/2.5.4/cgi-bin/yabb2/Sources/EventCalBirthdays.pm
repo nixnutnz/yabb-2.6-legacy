@@ -29,8 +29,6 @@ else {
     require "$templatesdir/default/Bdaylist.template";
 }
 
-eval { require "$vardir/eventcalset.txt"; };
-
 sub birthdaylist {
     if ( !$Show_BirthdaysList || ( $iamguest && $Show_BirthdaysList != 2 ) ) {
         fatal_error('not_allowed');
@@ -151,6 +149,17 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
 	fopen(EVENTBIRTH, "$vardir/eventcalbday.db");
 	my @birthmembers = <EVENTBIRTH>;
 	fclose(EVENTBIRTH);
+    # Birthdaylist output begin
+    if ( $Show_BdStarsign ) { $cal_colspan = '4';
+        $cal_col = $cal_col_ss;
+        $cal_col_star_sort = $cal_col_ss_sort;
+        $cal_col_star = $cal_col_ss_top;
+    }
+    else { $cal_colspan = '3';
+        $cal_col = $cal_col_no_ss;
+        $cal_col_star_sort = q{};
+        $cal_col_star = q{};
+    }
 
     my @birthmembers1 = ();
 	foreach $user_name (@birthmembers) {
@@ -163,7 +172,7 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
                 $age = $year - $user_bdyear;
 		} else { $age = $year-$user_bdyear; $age-- }
 
-        my @stars =
+        my @stars =        
           qw(Capricorn Aquarius Aquarius Pisces Pisces Aries Aries Taurus Taurus Gemini Gemini Cancerian Cancerian Leo Leo Virgo Virgo Libra Libra Scorpio Scorpio Sagittarius Sagittarius Capricorn);
         my @bd_1 = (
             1, 21, 1, 20, 1, 21, 1, 21, 1, 21, 1, 22,
@@ -387,6 +396,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
                         }
 
                         $viewmont[$i] .= $mybdlist_viewmont;
+                        $viewmont[$i] =~ s/{yabb cal_col_star}/$cal_col_star/sm;
                         $viewmont[$i] =~ s/{yabb user_linkprofile}/$user_linkprofile/sm;
                         $viewmont[$i] =~ s/{yabb myage}/$myage/sm;
                         $viewmont[$i] =~ s/{yabb sternzeichen}/$sternzeichen/sm;
@@ -401,7 +411,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
     }
     for my $i ( 1 .. 12 ) {
         if ( $no_bd[$i] == 0 ) {
-            $no_birthday_found[$i] .= qq~&#149; $var_cal{"$calmont[$i]"} ~;
+            $no_birthday_found[$i] .= qq~&#8226; $var_cal{"$calmont[$i]"} ~;
             $no_bd_found = 1;
         }
         else {
@@ -411,9 +421,10 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
 
     # handle with the months end
 
-    # Birthdaylist output begin
-
     $cal_info_header = $mybdlist_calinfoheader;
+    $cal_info_header =~ s/{yabb cal_colspan}/$cal_colspan/gsm;
+    $cal_info_header =~ s/{yabb cal_col}/$cal_col/gsm;
+    $cal_info_header =~ s/{yabb cal_col_star_sort}/$cal_col_star_sort/gsm;
     $cal_info_header =~ s/{yabb class_sortuser}/$class_sortuser/sm;
     $cal_info_header =~ s/{yabb class_sortage}/$class_sortage/sm;
     $cal_info_header =~ s/{yabb class_sortstarsign}/$class_sortstarsign/sm;
@@ -430,6 +441,9 @@ $bd_today
 ~;
     }
     $yymain .= $mybdlist_sort;
+    $yymain =~ s/{yabb cal_colspan}/$cal_colspan/gsm;
+    $yymain =~ s/{yabb cal_col}/$cal_col/gsm;
+    $yymain =~ s/{yabb cal_col_star_sort}/$cal_col_star_sort/gsm;
     $yymain =~ s/{yabb class_sortuser}/$class_sortuser/sm;
     $yymain =~ s/{yabb class_sortage}/$class_sortage/sm;
     $yymain =~ s/{yabb class_sortstarsign}/$class_sortstarsign/sm;
@@ -449,6 +463,9 @@ $bd_today
     for my $i ( 1 .. 12 ) {
         if ( $viewmont[$i] ) {
             $yymain .= $mybdlist_viewmont2;
+            $yymain =~ s/{yabb cal_colspan}/$cal_colspan/gsm;
+            $yymain =~ s/{yabb cal_col}/$cal_col/gsm;
+            $yymain =~ s/{yabb cal_col_star_sort}/$cal_col_star_sort/gsm;
             $yymain =~ s/{yabb calmont}/$var_cal{$calmont[$i]}/sm;
             $yymain =~ s/{yabb countmont}/$countmont[$i]/sm;
             $yymain =~ s/{yabb cal_info_header}/$cal_info_header/sm;
@@ -459,14 +476,10 @@ $bd_today
     if ( $no_bd_found == 1 ) {
         $yymain .= $mybdlist_nobd;
         for my $i ( 1 .. 12 ) {
-            $yymain .= qq~$no_birthday_found[$i]~;
+            $nobdays .= qq~$no_birthday_found[$i]~;
         }
-        $yymain .= q~           
-        </td>
-    </tr>
-</table>
-</div>
-~;
+        $yymain =~ s/{yabb cal_colspan}/$cal_colspan/gsm;
+        $yymain =~ s/{yabb nobdays}/$nobdays/sm;
     }
 
     # Birthdaylist output end
