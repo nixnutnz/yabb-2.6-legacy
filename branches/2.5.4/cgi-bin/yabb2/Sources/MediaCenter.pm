@@ -111,12 +111,15 @@ qq~http://mediaservices.myspace.com/services/media/embed.aspx/m=$1,t=1,mt=video~
 
         }
         elsif ( $media_url =~ m/youtube\.com/ixsm ) {
-            ( $media_url, undef ) = split /\&/gxsm, $media_url;
-            $media_url =~ s/watch\?v=/v\//gxsm;
+            ( undef, $media_in) = split /\?/xsm, $media_url;
+            @media_in = split /\&/gxsm, $media_in;
+            foreach my $i (@media_in) {
+               if ( $i =~ m/v=/) { $i=~ s/amp;//gsm; $i=~ s/v=//gsm; $media_url = qq~http://www.youtube.com/v/$i~;}
+            }
             $video         = $embed_youtube;
             $controlheight = 36;
-
         }
+
         elsif ( $media_url =~ m/youtu\.be/ixsm ) {
             $media_url =~ s/youtu\.be\//www\.youtube\.com\/v\//gxsm;
             $video         = $embed_youtube;
@@ -377,5 +380,23 @@ $embed_flv = qq~
 $iframe_thenutz = q~
     <script type="text/javascript">var host=document.location;document.write("<iframe src=\"http://www.thenutz.tv/embed.php?video_id=_media_&host=" + host + "\" frameborder=\"0\" height=\"326\" width=\"400\" scrolling=\"No\"></iframe>");</script>
 ~;
+
+sub mediaframe {
+    my ($media_url) = @_;
+    $mediaframe = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Media</title>
+<meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
+</head>
+<body>$media_url</body></html>~;
+
+    $video = qq~
+    <script type="text/javascript"> {
+    function mediaframe {
+        window.open("$mediaframe", 'list', 'width=$winwidth, height=$winheight, scrollbars=yes');
+    }
+    </script><a href="javascript: mediaframe();">Media</a> xx~;
+}
 
 1;
