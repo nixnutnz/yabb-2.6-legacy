@@ -114,7 +114,7 @@ $boardindex_template .= qq~
 				<td>$boardindex_txt{'158'}</td>
 			</tr>
 		</table>
-		<table class="bordercolor pad_4px cs_thin">
+		<table class="bordercolor pad_4px cs_thin" style="margin-bottom:10px">
     		<col style="width:6%" />
 			<tr>
 				<td class="windowbg info-center center">
@@ -136,10 +136,7 @@ $boardindex_template .= qq~
 			</tr>
 		</table>
 <!-- ## Cal Mod ## -->
-		<table class="bordercolor pad_4px cs_thin" style="margin-top:10px">
-			<col style="width:1%" />
-			<col style="width:29%" />
-			<col style="width:69%" />{yabb caldisplay}			</table>
+	{yabb caldisplay}
 <!-- ## Cal Mod ## -->
 	{yabb sharedlogin}
 <!-- Info Center block end -->
@@ -157,16 +154,17 @@ $catheader = qq~
     		<col style="width:59%" />
     		<col style="width:8%" />
     		<col style="width:8%" />
-			<tr>
-			<td>&nbsp;</td>
-			<td>{yabb catimage} {yabb catlink}</td>
+    		<tr>
+				<td>&nbsp;</td>
+				<td>{yabb catimage} {yabb catlink}</td>
       			<td class="center">$boardindex_txt{'330'}</td>
       			<td class="center">$boardindex_txt{'21'}</td>
       			<td class="center">$boardindex_txt{'22'}</td>
 			</tr>
 		</table>
 		<table {yabb colboardtable} class="bordercolor pad_4px cs_thin">
-		{yabb newmsg start}{yabb newmsg icon}{yabb newmsg}{yabb newmsg end}
+		    <tr><td style="display:none" colspan="5">&nbsp;</td></tr>
+		    {yabb newmsg start}{yabb newmsg icon}{yabb newmsg}{yabb newmsg end}
 		</table>
 		<table {yabb boardtable} class="bordercolor pad_4px cs_thin">
     		<col style="width:6%" />
@@ -261,21 +259,19 @@ $brd_advanced_tabs = qq~    <form action="$scripturl?action=addtab2" method="pos
 $brd_advanced_tabs_edit = qq~
     <br />
     <table>
-        <col style="width:40px" />
         <col style="width:auto" />
         <col style="width:45px" />
         <col style="width:160px" />
         <tr>
-            <td class="tabmenuleft">&nbsp;</td>
             <td class="tabmenu">
-                {yabb edittabmenu}
+                <ul>{yabb edittabmenu}</ul>
             </td>
             <td class="tabmenuright vtop">&nbsp;</td>
             <td class="rightbox center">
                 <b>{yabb reordertab}</b>
             </td>
         </tr><tr>
-            <td colspan="3">&nbsp;</td>
+            <td colspan="2">&nbsp;</td>
             <td class="center vtop" rowspan="3">
                 <form action="$scripturl?action=reordertab" method="post" name="tabsorder" style="display: inline; white-space: nowrap;">
                     <select name="ordertabs" class="small" size="{yabb selsize}" style="width: 130px;">
@@ -287,7 +283,6 @@ $brd_advanced_tabs_edit = qq~
                 </form>
             </td>
         </tr><tr>
-            <td>&nbsp;</td>
             <td class="vtop">
                 <div class="small" style="float: left; width: 98%; padding: 4px;">
                     {yabb edittext1} {yabb tabsave} {yabb edittext2} {yabb tabdel} {yabb edittext3}<br />
@@ -296,7 +291,7 @@ $brd_advanced_tabs_edit = qq~
             </td>
             <td>&nbsp;</td>
         </tr><tr>
-            <td colspan="3" style="font-size: 50px; text-align: left; vertical-align: top;">&nbsp;</td>
+            <td colspan="2" style="font-size: 50px; text-align: left; vertical-align: top;">&nbsp;</td>
         </tr>
     </table>
 ~;

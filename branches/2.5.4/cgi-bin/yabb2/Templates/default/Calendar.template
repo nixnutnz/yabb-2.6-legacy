@@ -39,7 +39,7 @@ $mycalout_goto_main = qq~<tr>
         <td class="right" style="padding-right:1%">{yabb calgotobox} </td>
     </tr>
 </table>
-<table class="bordercolor pad_3px">
+<table class="pad_3px">
     <col style="width:6%" />
     <col style="width:30%" />~;
 
@@ -74,7 +74,7 @@ $mycalout_notboard = qq~
 $mycal_displayssi = qq~
 <table class="tabtitle pad_3px h_25px">
     <tr>
-        <td class="center small">{yabb last_link}</span></td>
+        <td class="center small">{yabb last_link}</td>
         <td class="center small bold">{yabb mon_name} {yabb year}</td>
         <td class="center small">{yabb next_link}</td>
     </tr>
@@ -88,13 +88,13 @@ $mycal_displayssi = qq~
 </table>~;
 
 $mycal_show_ssi = qq~{yabb cal_display_show}<tr>
-        <td class="windowbg center" style="border-right:1px solid #B1BDC9">
+        <td class="windowbg center" style="border-right:1px solid #fff">
             <img src="$yyhtml_root/Templates/Forum/default/$cal_eventcal" alt="" />
         </td>
         <td class="windowbg2">{yabb cal_displayssi}{yabb ShowBirthdaysLink}{yabb ShowEventAddLink}</td>
         <td class="windowbg2 vtop">{yabb cal_display_calevent} &nbsp;</td>
     </tr>
-</table>{yabb cal_allow}~;
+{yabb cal_allow}~;
 
 $mycal_dy_top = qq~<tr>
     {yabb cal_out_d}
@@ -194,7 +194,7 @@ $mycalout_addevent = qq~
     </tr><tr>
         <td class="windowbg2" colspan="2">
             {yabb mycalout_cthelp}
-            {yabb mycalout_post2}
+            {yabb mycalout_post2}</div></div>
         </td>
     </tr><tr>
         <td class="windowbg2" colspan="2">{yabb mycalout_googie}{yabb mycalout_smilies}
@@ -212,7 +212,7 @@ $mycalout_addevent = qq~
             <input type="checkbox" name="ns" id="ns" value="NS"{yabb nscheck} /> <span class="small"> $post_txt{'277'}</span>
         </td>
     </tr><tr>
-        <td class="windowbg2 center" style="padding: 1em 0; border-top:1px solid #B1BDC9" colspan="2">{yabb mycalout_send}~;
+        <td class="windowbg2 center" style="padding: 1em 0; border-top:1px solid #fff" colspan="2">{yabb mycalout_send}~;
 
 $mycal_validation = qq~
             <br /><br />
@@ -254,11 +254,11 @@ $mycal_endaddform = q~</td>
 </table>
 </form>~;
 
-$mycal_addnew_left = qq~
-<table class="bordercolor pad_3px" style="border-top:1px solid #B1BDC9">
+$mycal_addnew_left = qq~</table>
+<table class="bordercolor pad_3px" style="border-top:1px solid #fff">
     <col style="width:6%" />
     <tr>
-        <td class="windowbg center" style="border-right:1px solid #B1BDC9">
+        <td class="windowbg center" style="border-right:1px solid #fff">
             <img src="$imagesdir/$cal_modify" alt="" />
         </td>
         <td class="windowbg2">{yabb mycalout_post}</td>
@@ -305,7 +305,7 @@ $mycalout_edit_box = qq~
 
 ## event data ##
 $mycal_greet = qq~<tr>
-        <td class="windowbg2 padd_3px" style="border-top:1px solid #B1BDC9" colspan="2">
+        <td class="windowbg2 padd_3px" style="border-top:1px solid #fff" colspan="2">
             <img src="$imagesdir/$cal_eventbd" alt="$var_cal{'calbirthday'}" /> {yabb cdate} <b>$var_cal{'calbirthday'}</b>
         </td>
     </tr><tr>
@@ -316,7 +316,7 @@ $mycal_greet = qq~<tr>
     </tr>~;
 
 $mycal_greet_b = q~<tr>
-        <td class="windowbg2 padd_3px" style="border-bottom:1px solid #B1BDC9" colspan="2">~;
+        <td class="windowbg2 padd_3px" style="border-bottom:1px solid #fff" colspan="2">~;
 
 $mycal_greet_c = qq~
         </td>
