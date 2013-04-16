@@ -175,8 +175,8 @@ sub EditTab {
     $tabsave =
 qq~<img src="$imagesdir/tabsave.gif" alt="$tabmenu_txt{'savetab'}" title="$tabmenu_txt{'savetab'}" />~;
     $tabdel =
-qq~<img src="$imagesdir/tabdelete.gif" alt="$tabmenu_txt{'tabdel'}" title="$tabmenu_txt{'tabdel'}" />~;
-    $tabstyle = q~style="font-size: 11px; white-space: nowrap; cursor: auto;"~;
+qq~<img src="$imagesdir/tabdelete.gif" alt="$tabmenu_txt{'tabdel'}" title="$tabmenu_txt{'tabdel'}" style="padding:0; margin:0" />~;
+    $tabstyle = q~ class="tabstyle"~;
 
     $edittab{'home'} =
       qq~<span $tabstyle>$tabfill$img_txt{'103'}$tabfill</span>~;
@@ -233,21 +233,19 @@ qq~<img src="$imagesdir/tabdelete.gif" alt="$tabmenu_txt{'tabdel'}" title="$tabm
                 $inputlength = length $tabtxt{$tab_key};
                 $edittab{$tab_key} =
 qq~<form action="$scripturl?action=edittab2;savetab=$enc_key" method="post" name="$tab_key$isexttabs" style="display: inline; white-space: nowrap;" accept-charset="$yycharset">~;
-                $edittab{$tab_key} .= qq~<span $tabstyle>$tabfill~;
                 $edittab{$tab_key} .=
-qq~<input type="text" name="$tab_key" id="$tab_key" value="$tabtxt{$tab_key}" size="$inputlength" class="small" style="font-size: 11px; border: 0; margin: 0; padding: 0; background-color: transparent; vertical-align: middle;" />$tabfill~;
+qq~<input type="text" name="$tab_key" id="$tab_key" value="$tabtxt{$tab_key}" size="$inputlength" class="edittab" />~;
                 $edittab{$tab_key} .=
-qq~<input type="image" src="$imagesdir/tabsave.gif" alt="$tabmenu_txt{'savetab'}" title="$tabmenu_txt{'savetab'}" style="background-color: transparent; border:0; vertical-align: middle;" />~;
+qq~<input type="image" src="$imagesdir/tabsave.gif" alt="$tabmenu_txt{'savetab'}" title="$tabmenu_txt{'savetab'}" class="editttab_img" />~;
                 $edittab{$tab_key} .=
-qq~ <a href="$scripturl?action=deletetab;deltab=$enc_key">$tabdel</a>~;
-                $edittab{$tab_key} .= qq~$tabfill</span>~;
+qq~ <a href="$scripturl?action=deletetab;deltab=$enc_key" style="padding:0; margin:0">$tabdel</a>~;
                 $edittab{$tab_key} .= q~</form>~;
                 $edittabs .=
                   qq~<option value="$tab_key"~
                   . (
                     $tab_key eq $INFO{'thetab'} ? ' selected="selected"' : q{} )
                   . qq~>$texttab{$tab_key}</option>~;
-                $edittabmenu .= $edittab{$tab_key} . $tabsep;
+                $edittabmenu .= qq~<li>$edittab{$tab_key}</li>~;
                 $selsize++;
             }
         }
@@ -258,7 +256,7 @@ qq~ <a href="$scripturl?action=deletetab;deltab=$enc_key">$tabdel</a>~;
                 ? ' selected="selected"'
                 : q{}
               ) . qq~>$texttab{$AdvancedTabs[$i]}</option>~;
-            $edittabmenu .= $edittab{ $AdvancedTabs[$i] } . $tabsep;
+            $edittabmenu .= qq~<li>$edittab{ $AdvancedTabs[$i] }</li>~;
             $selsize++;
         }
     }

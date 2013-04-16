@@ -18,9 +18,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('TabMenu');
 
-$tabsep =
-qq~<img src="$imagesdir/tabsep211.png" alt="" style="float: left; margin:-1px 0" />~;
-$tabfill = qq~<img src="$imagesdir/tabfill.gif" alt="" />~;
+$tabsep = qq~~;
+$tabfill = qq~~;
 
 sub mainMenu {
     my @acting = (

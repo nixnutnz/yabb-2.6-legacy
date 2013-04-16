@@ -1278,7 +1278,7 @@ qq~<a href="$scripturl?action=eventcal;calshow=1;eventdate=$cyear$cmon$cday;cali
             else {
                 LoadUser($cname);
                 $eventuserlink =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cname}" rel="nofollow">$format_unbold{$cname} ee</a>~;
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cname}" rel="nofollow">$format_unbold{$cname}</a>~;
             }
             $eventbduserlink = $eventuserlink;
             if (   $CalEventNoName == 1
@@ -1502,7 +1502,8 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
     }
 
     if ($Allow_Event_Imput) {
-        $cal_allow = $mycal_td_tr;
+#        $cal_allow = $mycal_td_tr;
+        $cal_allow = q~~;
 
         if ( $INFO{'addnew'} == 1 ) {
             $cal_allow .= $mycal_addnew_left;
