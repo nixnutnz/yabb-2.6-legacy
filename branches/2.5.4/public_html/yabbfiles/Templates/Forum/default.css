@@ -347,6 +347,20 @@ text-align:center;
 text-decoration:none;
 }
 
+.tabedit_a {
+font-size:12px;
+font-family:Arial, Sans-Serif;
+color: #BBB;
+white-space:nowrap;
+font-weight:bold;  
+display:block;
+float:left;
+margin:0 1px 0 0;
+padding:4px 8px;
+text-align:center;
+text-decoration:none;
+}
+
 .tabmenu span, .mctabmenu span {
 float:left;
 height:25px;
@@ -1458,3 +1472,7 @@ padding:0 !important;
 }
 
 .zodiac {font-size: 18px; text-align: center; margin-bottom: 3px; cursor: pointer;}
+
+.tabmenu span.tabstyle {font-size: 12px; white-space: nowrap; cursor: auto; margin:0 1px 0 0; padding:4px 8px; text-align:center;}
+.tabmenu input.edittab {font-family:Arial,Sans-Serif; float:left;vertical-align: top; border-radius:0; background-color: transparent; border:0; font-size: 12px; white-space: nowrap; cursor: auto; margin:0 1px 0 0; padding:4px 8px; text-align:center; color:#bbb;}
+.tabmenu input.editttab_img {float:left; background-color: transparent; border:0; border-radius:0; vertical-align: middle; padding:0;}
