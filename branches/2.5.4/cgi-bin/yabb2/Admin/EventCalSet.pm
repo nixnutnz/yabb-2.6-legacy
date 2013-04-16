@@ -19,7 +19,6 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');
 
-eval { require "$vardir/eventcalset.txt"; };
 if ( $Show_EventCal eq q{} ) { EventCalSet2(); }
 
 ## Calendar Setting ##
@@ -81,6 +80,7 @@ sub EventCalSet {
     if ($Show_ColorLinks)     { $oncolorlinkschecked    = 'checked="checked"' }
     if ($No_ShortUbbc)        { $onnosubbcchecked       = 'checked="checked"' }
     if ($Show_BdColorLinks)   { $onbdcolorlinkschecked  = 'checked="checked"' }
+    if ($Show_BdStarsign)     { $onbdstarchecked  = 'checked="checked"' }
     if ( !$Event_TodayColor ) { $Event_TodayColor       = '#ff0000'; }
     else                      { $Event_TodayColor = lc $Event_TodayColor; }
     if ( !$Delete_EventsUntil ) { $Delete_EventsUntil = '0'; }
@@ -235,6 +235,10 @@ sub EventCalSet {
        <td class="windowbg2"><label for="Show_BdColorLinks">$event_cal{'44'}<br /><span class="small">$event_cal{'45'}</span></label></td>
        <td class="windowbg2"><input type="checkbox" name="Show_BdColorLinks" id="Show_BdColorLinks" $onbdcolorlinkschecked /></td>
      </tr>
+     </tr><tr>
+       <td class="windowbg2"><label for="$Show_BdStarsign">$event_cal{'42a'}</label></td>
+       <td class="windowbg2"><input type="checkbox" name="Show_BdStarsign" id="Show_BdStarsign" $onbdstarchecked /></td>
+     </tr>
    </table>
  </div>
  <div class="bordercolor rightboxdiv">
@@ -352,13 +356,42 @@ sub EventCalSet2 {
 
         $yySetLocation = qq~$adminurl?action=eventcal_set;rebok=1~;
         redirectexit();
-
     }
-    else {
+    else { eventcal_save();}
+    return;
+}
 
+## Save Calendar Event-Icon Setting ##
+
+sub EventCalSet3 {
+    is_admin_or_gmod();
+
+    my $count = 0;
+    my $tempA = 0;
+    my @eventcalIcon;
+    while ( $FORM{"caliimg[$tempA]"} ) {
+        if ( $FORM{"calidelbox[$tempA]"} != 1 ) {
+            push @eventcalIcon,
+qq~\$CalIconURL[$count] = "$FORM{"caliimg[$tempA]"}";\n\$CalIDescription[$count] = "$FORM{"calidescr[$tempA]"}";\n\n~;
+            $count++;
+        }
+        $tempA++;
+    }
+    push @eventcalIcon, '1;';
+    fopen( FILE, ">$vardir/eventcalIcon.txt" );
+    print {FILE} @eventcalIcon or croak 'cannot print FILE';
+    fclose(FILE);
+
+    $yySetLocation = qq~$adminurl?action=eventcal_set~;
+    redirectexit();
+    return;
+}
+
+sub eventcal_save {
+    is_admin_or_gmod();
         # Set 1 or 0 if box was checked or not
         map { ${$_} = $FORM{$_} ? 1 : 0; }
-          qw{Show_MiniCalIcons CalEventPrivate DisplayCalEvents ShowSunday Show_ColorLinks No_ShortUbbc Show_BdColorLinks};
+          qw{Show_MiniCalIcons CalEventPrivate DisplayCalEvents ShowSunday Show_ColorLinks No_ShortUbbc Show_BdColorLinks Show_BdStarsign};
 
 # If empty fields are submitted, set them to default-values to save yabb from crashing
         $DisplayEvents = $FORM{'DisplayEvents'};
@@ -390,108 +423,16 @@ sub EventCalSet2 {
         $CalShortEvent =~ s/[^\d]//gxsm;
         $CalShortEvent = $CalShortEvent         || 0;
         $CalEventPerms = $FORM{'CalEventPerms'} || q{};
-        $CalEventPerms =~ s/^\s*,\s*|\s*,\s*$//gxsm;
-        $CalEventPerms =~ s/\s*,\s*/,/gxsm;
+        $CalEventPerms =~ s/^\s*,\s*|\s*,\s*$//gsm;
+        $CalEventPerms =~ s/\s*,\s*/,/gsm;
+        $CalEventPerms = $CalEventPerms;
         $CalEventMods = $FORM{'CalEventMods'} || q{};
-        $CalEventMods =~ s/^\s*,\s*|\s*,\s*$//gxsm;
-        $CalEventMods =~ s/\s*,\s*/,/gxsm;
+        $CalEventMods =~ s/^\s*,\s*|\s*,\s*$//gsm;
+        $CalEventMods =~ s/\s*,\s*/,/gsm;
+        $CalEventMods = $CalEventMods;
 
-        my $filler =
-q~                                                                               ~;
-        my $setfile = << "EOF";
-###############################################################################
-# CalEventSet.txt                                                             #
-###############################################################################
-
-# Standard Calendar Setting
-\$Show_EventCal = $Show_EventCal;
-\$Show_EventButton = $Show_EventButton;
-\$Show_EventBirthdays = $Show_EventBirthdays;
-\$Show_MiniCalIcons = $Show_MiniCalIcons;
-\$ShowSunday = $ShowSunday;
-\$Show_ColorLinks = $Show_ColorLinks;
-\$No_ShortUbbc = $No_ShortUbbc;
-\$Event_TodayColor = "$Event_TodayColor";
-\$Delete_EventsUntil = $Delete_EventsUntil;
-\$CalShortEvent = $CalShortEvent;
-\$CalEventPerms = qq~$CalEventPerms~;
-\$CalEventMods = qq~$CalEventMods~;
-\$CalEventPrivate = $CalEventPrivate;
-\$CalEventNoName = $CalEventNoName;
-\$Scroll_Events = $Scroll_Events;
-\$DisplayCalEvents = $DisplayCalEvents;
-\$DisplayEvents = $DisplayEvents;
-
-# Birthdaylist Setting
-\$Show_BirthdaysList = $Show_BirthdaysList;
-\$Show_BirthdayButton = $Show_BirthdayButton;
-\$Show_BirthdayDate = $Show_BirthdayDate;
-\$Show_BdColorLinks = $Show_BdColorLinks;
-
-1;
-EOF
-
-        # Fix a certain type of syntax error
-        $setfile =~ s/=\s+;/= 0;/gxsm;
-
-        # Make it look nicely aligned. The comment starts after 50 Col
-        $filler = q{ } x 50;
-        $setfile =~
-s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2 /gem;
-        $setfile =~ s/\t+(#.+$)/$filler$1/gsm;
-
-        *cut_comment = sub {
-
-            # line break of too long comments
-            my @x = @_;
-            my ( $comment, $length ) =
-              ( q{}, 120 );    # 120 Col is the max width of page
-            my $var_length = length $x[0];
-            while ( $length < $var_length ) { $length += 120; }
-            foreach ( split / +/sm, $x[1] ) {
-                if ( ( $var_length + length($comment) + length $_ ) > $length )
-                {
-                    $comment =~ s/ $//sm;
-                    $comment .= "\n$filler#  $_ ";
-                    $length += 120;
-                }
-                else { $comment .= "$_ "; }
-            }
-            $comment =~ s/ $//sm;
-            return $comment;
-        };
-        $setfile =~ s/(.+)(#.+$)/ $1 . cut_comment($1,$2) /gem;
-
-        fopen( FILE, ">$vardir/eventcalset.txt" );
-        print {FILE} $setfile or croak 'cannot print FILE';
-        fclose(FILE);
-
-        $yySetLocation = qq~$adminurl?action=eventcal_set~;
-        redirectexit();
-    }
-    return;
-}
-
-## Save Calendar Event-Icon Setting ##
-
-sub EventCalSet3 {
-    is_admin_or_gmod();
-
-    my $count = 0;
-    my $tempA = 0;
-    my @eventcalIcon;
-    while ( $FORM{"caliimg[$tempA]"} ) {
-        if ( $FORM{"calidelbox[$tempA]"} != 1 ) {
-            push @eventcalIcon,
-qq~\$CalIconURL[$count] = "$FORM{"caliimg[$tempA]"}";\n\$CalIDescription[$count] = "$FORM{"calidescr[$tempA]"}";\n\n~;
-            $count++;
-        }
-        $tempA++;
-    }
-    push @eventcalIcon, '1;';
-    fopen( FILE, ">$vardir/eventcalIcon.txt" );
-    print {FILE} @eventcalIcon or croak 'cannot print FILE';
-    fclose(FILE);
+    require Admin::NewSettings;
+    SaveSettingsTo('Settings.pm');
 
     $yySetLocation = qq~$adminurl?action=eventcal_set~;
     redirectexit();

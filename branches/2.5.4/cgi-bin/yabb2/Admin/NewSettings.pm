@@ -219,9 +219,9 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
        </td>
         </tr><tr>
             <td class="catbg center pad_4px" colspan="2">
-         <input class="button" type="submit" value="$admin_txt{'10'}" />
-       </td>
-     </tr>
+                <input class="button" type="submit" value="$admin_txt{'10'}" />
+            </td>
+        </tr>
    </table>
   </div>
   </form>
@@ -699,6 +699,34 @@ $member_groups
 \@ext_prof_fields = (
 $ext_prof_fields
 );						# Settings of the extended profiles fields.
+
+########## Event Calendar ##########
+
+# Standard Calendar Setting
+\$Show_EventCal = $Show_EventCal;
+\$Show_EventButton = $Show_EventButton;
+\$Show_EventBirthdays = $Show_EventBirthdays;
+\$Show_MiniCalIcons = $Show_MiniCalIcons;
+\$ShowSunday = $ShowSunday;
+\$Show_ColorLinks = $Show_ColorLinks;
+\$No_ShortUbbc = $No_ShortUbbc;
+\$Event_TodayColor = "$Event_TodayColor";
+\$Delete_EventsUntil = $Delete_EventsUntil;
+\$CalShortEvent = $CalShortEvent;
+\$CalEventPerms = qq~$CalEventPerms~;
+\$CalEventMods = qq~$CalEventMods~;
+\$CalEventPrivate = $CalEventPrivate;
+\$CalEventNoName = $CalEventNoName;
+\$Scroll_Events = $Scroll_Events;
+\$DisplayCalEvents = $DisplayCalEvents;
+\$DisplayEvents = $DisplayEvents;
+
+# Birthdaylist Setting
+\$Show_BirthdaysList = $Show_BirthdaysList;
+\$Show_BirthdayButton = $Show_BirthdayButton;
+\$Show_BirthdayDate = $Show_BirthdayDate;
+\$Show_BdColorLinks = $Show_BdColorLinks;
+\$Show_BdStarsign = $Show_BdStarsign;
 
 ########## File Settings ##########
 

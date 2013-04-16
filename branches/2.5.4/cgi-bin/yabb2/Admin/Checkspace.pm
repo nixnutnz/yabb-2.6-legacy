@@ -217,16 +217,12 @@ sub chsettings {
     <a id="top"></a>
     <div class="bordercolor rightboxdiv">
         <table class="cs_thin pad_4px">
-                <tr>
-                    <td class="titlebg">
-         <b>$yytitle</b>
-       </td>
-               </tr><tr>
-                <td class="windowbg2 padd_8_12px">
-        $admin_txt{'347'}
-       </td>
-     </tr>
-  </table>
+            <tr>
+                <td class="titlebg"><b>$yytitle</b></td>
+            </tr><tr>
+                <td class="windowbg2 padd_8_12px">$admin_txt{'347'} </td>
+            </tr>
+        </table>
   </div>
   <form action="$adminurl?action=checkspace_save" method="post" accept-charset="$yycharset">
 ~;
@@ -235,19 +231,19 @@ sub chsettings {
     <div class="bordercolor rightboxdiv">
         <table class="section" style="border-collapse:separate; border-spacing: 1px;" id="tab_$tab->{'id'}">
             <col class=" w_50pc" />
-     <tr>
+            <tr>
                 <td class="titlebg padd_4px" colspan="2">
                     <a id="tab_$tab->{'id'}"></a><img src="$imagesdir/preferences.gif" alt="" /> <b>$tab->{'name'}</b>
-       </td>
-     </tr>~;
+                </td>
+           </tr>~;
 
         foreach my $item ( @{ $tab->{'items'} } ) {
             if ( $item->{'header'} ) {
                 $yymain .= qq~<tr>
                 <td class="catbg padd_4px" colspan="2">
-         <span class="small">$item->{'header'}</span>
-       </td>
-     </tr>~;
+                    <span class="small">$item->{'header'}</span>
+                </td>
+            </tr>~;
             }
             elsif ( $item->{'two_rows'} && $item->{'input_html'} ) {
                 $yymain .= qq~<tr>
