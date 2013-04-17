@@ -91,9 +91,9 @@ if ( !$maintenance && -e "$vardir/maintenance.lock" ) { $maintenance = 2; }
 $max_process_time = 20;
 
 $action = $INFO{'action'};
-local $SIG{__WARN__} = sub { admin_fatal_error( 'error_occurred', "@_" ); };
+local $SIG{__WARN__} = sub { fatal_error( 'error_occurred', "@_" ); };
 eval { yymain(); };
-if ($@) { admin_fatal_error( 'untrapped', ":<br />$@" ); }
+if ($@) { fatal_error( 'untrapped', ":<br />$@" ); }
 
 sub yymain {
 
