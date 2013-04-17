@@ -31,16 +31,17 @@ else {
 }
 
 sub IPLookup {
-
     $ip = $INFO{'ip'};
     my $lookuplink = q{};    
-    foreach my $i (0 .. 4){
-        $lookuplink .= qq~<a href="http://$ipurl[0][$i]" target="_blank">$lookup_txt{$ipurl[1][$i]}</a><br />~;
+    foreach my $i (@ipurl){
+        my ($ipurl_name, $ipurl_url ) = split /\|/sm, $i;
+        $ipurl_url =~ s/{ip}/$ip/gsm;
+
+        $lookuplink .= qq~<a href="http://$ipurl_url" target="_blank">$ipurl_name</a><br />~;
     }
 
     $yymain .= $my_ipdiv;
     $yymain =~ s/{yabb lookuplink}/$lookuplink/gsm;
-    $yymain =~ s/{yabb ip}/$ip/gsm;
 
     $yytitle      = qq~$lookup_txt{'iplookup'}~;
     $yynavigation = qq~&rsaquo; $lookup_txt{'iplookup'}~;

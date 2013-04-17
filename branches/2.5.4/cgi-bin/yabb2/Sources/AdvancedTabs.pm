@@ -84,15 +84,9 @@ sub AddNewTab2 {
         my $tabview        = $FORM{'showto'};
         my $tabafter       = $FORM{'addafter'};
         my $tmpusernamereq = 0;
-
-        if (   $taburl !~ /^http:\/\//xsm
-            && $taburl !~ /^https:\/\//xsm
-            && $taburl !~ /^ftp:\/\//xsm )
-        {
-            $taburl = qq~http://$taburl~;
-        }
-        else { $taburl = $taburl; }
-
+        
+        #Carsten's fix - nice and neat#
+        if ($taburl !~ /[ht|f]tp[s]{0,1}:\/\//) { $taburl = qq~http://$taburl~; } 
         if (   $taburl =~ /$boardurl\/$yyexec\.$yyaext/ixsm
             && $taburl =~ /action\=(.*?)(\;|\Z)/ixsm )
         {

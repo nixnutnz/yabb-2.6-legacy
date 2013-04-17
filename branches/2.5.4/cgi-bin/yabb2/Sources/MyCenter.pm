@@ -2020,7 +2020,7 @@ qq~\nvar markallreadlang = '$inmes_txt{'500'}';\nvar markfinishedlang = '$inmes_
                 <hr class="hr" />
                 <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
                <form action="$scripturl?action=pmsearch" method="post" onsubmit="return submitproc()" style="display: inline" accept-charset="$yycharset">
-                <div class="yabb_searchbox">
+                <div class="yabb_searchbox" style="float:left">
                     <input type="text" name="search" id="search" size="16" value="$pm_search{'desc'}" onfocus="txtInFields(this, '$pm_search{'desc'}');" onblur="txtInFields(this, '$pm_search{'desc'}')" style="font-size: 11px; vertical-align: middle;" />
                     <input type="image" src="$imagesdir/search.png" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />
                 </div>
