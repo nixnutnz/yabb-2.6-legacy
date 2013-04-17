@@ -21,8 +21,11 @@ $myregister_fullagree = qq~
 <table class="tabtitle">
     <tr>
       <td style="padding-left:1%; height:30px"><img src="$imagesdir/xx.gif" alt="" /> <b>$register_txt{'764a'}</b></td>
-    </tr><tr>
-        <td class="windowbg">
+    </tr>
+</table>
+<table>
+    <tr>
+        <td class="windowbg" style="padding:8px">
           {yabb fullagree}
         </td>
     </tr><tr>
