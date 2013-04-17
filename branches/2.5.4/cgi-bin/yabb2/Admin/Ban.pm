@@ -163,7 +163,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
                     <span class="small">$admin_txt{'724'}<br />$admin_txt{'725'}<br />$admin_txt{'725a'}</span>
                 </td>
                 <td class="windowbg2 vtop" rowspan="2">
-                    <div style="height:10em; overflow:auto">
+                    <div style="height:20em; overflow:auto">
                     <ul>~;
     $yymain .= banlog();
     $yymain .= qq~            </ul>
@@ -440,7 +440,22 @@ sub banlog {
         $year   = $tm->year + 1900;
         $mon    = $tm->mon + 1;
         $day    = $tm->mday;
-        $banlog .= qq~<li>$banned[1] on $mon/$day/$year</li>\n~;
+        if ( $use_guardian && $use_htaccess ) {
+            @banned_ip = ();
+            if ( $banned[1] =~ m/\(/ ) {
+                @banned_ip = split /\(/xsm,$banned[1];
+                $banned_ip[1] =~ s/\)//xsm;
+                if ($banned_ip[0]) {
+                    $banned_ip[0] = qq~ ( $banned_ip[0] )~;
+                }
+                else {$banned_ip[0] = q~~;} 
+            }
+            else {$banned_ip[1] = $banned[1];}
+            $banlog .=  qq~<li>$banned_ip[1]$banned_ip[0] - on $mon/$day/$year (<a href="$adminurl?action=guardian_block;ip=$banned_ip[1];return=ipban" onclick="return confirm('$admin_txt{'ipblock_confirm'}$banned_ip[1]');">$admin_txt{'ipblock'}</a>)</li>\n~;
+        }
+        else {
+        $banlog .=  qq~<li>$banned[1] on $mon/$day/$year</li>\n~;
+        } 
     }
     return $banlog;
 }

@@ -551,8 +551,7 @@ sub SaveSettingsTo {
 \$mailtype = $mailtype;						# Mail program to use: 0 = sendmail, 1 = SMTP, 2 = Net::SMTP, 3 = Net::SMTP::TLS
 
 \$UseHelp_Perms = $UseHelp_Perms;			# Help Center: 1 == use permissions, 0 == don't use permissions
-\@ipurl = ( ["www.afrinic.net/cgi-bin/whois?searchtext=$ip","wq.apnic.net/apnic-bin/whois.pl?searchtext=$ip","whois.arin.net/rest/nets;q=$ip?showDetails=true&showARIN=false&ext=netref2","lacnic.net/cgi-bin/lacnic/whois?query=$ip","www.db.ripe.net/whois?searchtext=$ip",],
-     ['afrinic','apnic','arin','lacnic','ripencc'] );
+\@ipurl = ( "afrinic|www.afrinic.net/cgi-bin/whois?searchtext={ip}","apnic|wq.apnic.net/apnic-bin/whois.pl?searchtext={ip}","arin|whois.arin.net/rest/nets;q={ip}?showDetails=true&showARIN=false&ext=netref2","lacnic|lacnic.net/cgi-bin/lacnic/whois?query={ip}","ripencc|www.db.ripe.net/whois?searchtext={ip}",);
 
 ########## MemberGroups ##########
 

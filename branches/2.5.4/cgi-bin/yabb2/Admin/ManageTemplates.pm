@@ -891,10 +891,10 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
 ~;
     }
     if ($istabbed) {
-        $tabsep =
-qq~<img src="$imagesdir/tabsep211.png" alt="" style="float: left; vertical-align: middle;" />~;
-        $tabfill =
-qq~<img src="$imagesdir/tabfill.gif" alt="" style="vertical-align: middle;" />~;
+        $tabsep = q{};
+#qq~<img src="$imagesdir/tabsep211.png" alt="" style="float: left; vertical-align: middle;" />~;
+        $tabfill = q{};
+#qq~<img src="$imagesdir/tabfill.gif" alt="" style="vertical-align: middle;" />~;
         $tabtime = timeformat( $date, 1 );
 
         $viewstyle .= qq~
@@ -1876,9 +1876,10 @@ sub ModifySkin {
     }
     fclose(TMPL);
 
-    $tabsep =
-      qq~<img src="$imagesdir/tabsep211.png" alt="" style="float: left" />~;
-    $tabfill = qq~<img src="$imagesdir/tabfill.gif" alt="" />~;
+    $tabsep = q{};
+     # qq~<img src="$imagesdir/tabsep211.png" alt="" style="float: left" />~;
+    $tabfill = q{};
+    # qq~<img src="$imagesdir/tabfill.gif" alt="" />~;
 
     $tempforumurl  = $mbname;
     $temptitle     = q~Template Config~;
@@ -1889,30 +1890,27 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$viewcss.css" type=
     $tempimages    = qq~$yyhtml_root/Templates/Forum/$viewimg~;
     $tempimagesdir = qq~$htmldir/Templates/Forum/$viewimg~;
     $tempmenu =
-qq~<span title="$img_txt{'103'}" class="selected">$tabfill$img_txt{'103'}$tabfill</span>~;
+qq~<ul><li><span class="tabstyle" title="$img_txt{'103'}" class="selected">$tabfill$img_txt{'103'}$tabfill</span></li>~;
     $tempmenu .=
-qq~$tabsep<span title="$img_txt{'119'}" style="cursor:help;">$tabfill$img_txt{'119'}$tabfill</span>~;
+qq~<li><span class="tabstyle" title="$img_txt{'119'}" style="cursor:help;">$tabfill$img_txt{'119'}$tabfill</span></li>~;
     $tempmenu .=
-qq~$tabsep<span title="$img_txt{'331'}">$tabfill$img_txt{'331'}$tabfill</span>~;
+qq~<li><span class="tabstyle" title="$img_txt{'331'}">$tabfill$img_txt{'331'}$tabfill</span></li>~;
     $tempmenu .=
-qq~$tabsep<span title="$img_txt{'mycenter'}">$tabfill$img_txt{'mycenter'}$tabfill</span>~;
+qq~<li><span class="tabstyle" title="$img_txt{'mycenter'}">$tabfill$img_txt{'mycenter'}$tabfill</span></li>~;
     $tempmenu .=
-qq~$tabsep<span title="$img_txt{'108'}">$tabfill$img_txt{'108'}$tabfill</span>$tabsep~;
+qq~<li><span class="tabstyle" title="$img_txt{'108'}">$tabfill$img_txt{'108'}$tabfill</span>$tabsep</li></ul>~;
     $tempmenu =~
-s/img src\=\"$imagesdir\/(.+?)\"/TmpImgLoc($1, $tempimages, $tempimagesdir)/eisgm;
-    $temp21menu =
-qq~$img{'home'}$menusep$img{'help'}$menusep$img{'search'}$menusep$img{'memberlist'}$menusep$img{'profile'}$menusep$img{'notification'}$menusep$img{'logout'}~;
-    $temp21menu =~
 s/img src\=\"$imagesdir\/(.+?)\"/TmpImgLoc($1, $tempimages, $tempimagesdir)/eisgm;
     $rssbutton = qq~<img src="$imagesdir/rss.png" alt="" />~;
     $tempuname = qq~$templ_txt{'69'} ${$uid.$username}{'realname'}, ~;
     $tempuim   = qq~$templ_txt{'70'} <a name="ims">0 $templ_txt{'71'}</a>.~;
     $temptime  = timeformat( $date, 1 );
     my $tempsearchbox =
-q~<input type="text" name="search" size="16" style="font-size: 11px; vertical-align: middle;" />~;
-    $tempsearchbox .=
-qq~<img src="$imagesdir/search.gif" alt="" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />~;
-
+qq~<div class="yabb_searchbox" style="width:auto"><form><input type="text" name="search" size="16" id="search1" value="$img_txt{'182'}" style="font-size: 11px;" onfocus="txtInFields(this, '$img_txt{'182'}');" onblur="txtInFields(this, '$img_txt{'182'}')" />
+   <input type="image" src="$imagesdir/search.png" title="$maintxt{'searchimg'} $showsearchboxnum $maintxt{'searchimg2'}" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" /></form></div>
+~;
+    $altbrdcolor = q~windowbg2~;
+    $boardtable = q~id="General"~;
     $templatejump  = 1;
     $tempforumjump = jumpto();
 
@@ -1946,6 +1944,9 @@ qq~<img src="$imagesdir/search.gif" alt="" style="border: 0; background-color: t
     if ( $selectedsection eq 'vboard' ) {
         $boardtempl = BoardTempl( $viewboard, $tempimages, $tempimagesdir );
         $fulltemplate =~ s/({|<)yabb main(}|>)/$boardtempl/gsm;
+        $fulltemplate =~ s/({|<)yabb colboardtable(}|>)//gsm;
+        $fulltemplate =~ s/({|<)yabb boardtable(}|>)/$boardtable/gsm;
+        $fulltemplate =~ s/({|<)yabb altbrdcolor(}|>)/$altbrdcolor/gsm;
     }
     elsif ( $selectedsection eq 'vmessage' ) {
         $messagetempl =
