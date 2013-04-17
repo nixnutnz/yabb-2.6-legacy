@@ -20,7 +20,7 @@ $myregister_fullagree = qq~
 <form action="$scripturl?action=register" method="post">
 <table class="tabtitle">
     <tr>
-      <td style="padding-left:1%; height:30px"><img src="$imagesdir/xx.gif" alt="" /> <b>$register_txt{'764a'}</b></td>
+      <td style="padding-left:1%"><img src="$imagesdir/xx.gif" alt="" /> $register_txt{'764a'}</td>
     </tr>
 </table>
 <table>
