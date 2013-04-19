@@ -1525,7 +1525,8 @@ $boardindex_template~;
             }
         }
 
-        LoadBroadcastMessages($username);    # look for new BM
+        LoadBroadcastMessages($username);
+        # look for new BM
         if ($BCnewMessage) {
             if ( ${ $uid . $username }{'im_imspop'} ) {
                 $yymain .= qq~

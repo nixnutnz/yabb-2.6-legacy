@@ -158,7 +158,7 @@ sub ProfileMenu {
 
     if (   $PM_level == 1
         || ( $PM_level == 2 && ( $iamadmin || $iamgmod || $iamymod || $iammod ) )
-        || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
+        || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod ) ) )
     {
         $pmlevel = $myprofile_pmlevel;
         $pmlevel =~ s/{yabb menucolor4}/$menucolors[4]/sm;
@@ -511,7 +511,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         (
                $PM_level == 1
             || ( $PM_level == 2 && ( $iamadmin || $iamgmod || $iamymod || $iammod ) )
-            || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
+            || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod ) )
         )
         && (
             $enable_MCaway > 2
@@ -2292,7 +2292,7 @@ sub ModifyProfileOptions2 {
     }
     if (   $PM_level == 1
         || ( $PM_level == 2 && ( $iamadmin || $iamgmod || $iamymod || $iammod ) )
-        || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
+        || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod) ) )
     {
         $scriptAction = q~profileIM~;
     }
@@ -2351,7 +2351,7 @@ sub ModifyProfileBuddy2 {
     }
     if (   $PM_level == 1
         || ( $PM_level == 2 && ( $iamadmin || $iamgmod || $iamymod || $iammod ) )
-        || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
+        || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod ) ) )
     {
         $scriptAction = q~profileIM~;
     }
@@ -3007,7 +3007,7 @@ qq~<a href="$scripturl?board=$board" class="a">$boardname</a><br />~;
                 && ( $iamadmin || $iamgmod || $iamymod || $iammod ) )
             || (   $PM_level == 3
                 && $UserPM_Level{$user} == 3
-                && ( $iamadmin || $iamgmod ) )
+                && ( $iamadmin || $iamgmod || $iamymod ) )
         )
       )
     {
@@ -3044,7 +3044,7 @@ qq~<a href="$scripturl?board=$board" class="a">$boardname</a><br />~;
     }
     if (   $PM_level == 1
         || ( $PM_level == 2 && ( $iamadmin || $iamgmod || $iamymod|| $iammod ) )
-        || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
+        || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod ) ) )
     {
         $my_lastPM = qq~
             <div class="contactleft"><b>$lastPM: </b></div>

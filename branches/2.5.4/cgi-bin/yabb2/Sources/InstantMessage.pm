@@ -23,6 +23,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 require Sources::PostBox;
 require Sources::SpamCheck;
 LoadLanguage('FA');
+LoadLanguage('Post');
 
 if ( -e ("$templatesdir/$usestyle/MyMessage.template") ) {
     require "$templatesdir/$usestyle/MyMessage.template";
@@ -37,7 +38,6 @@ $set_subjectMaxLength ||= 50;
 
 sub buildIMsend {
     LoadLanguage('InstantMessage');
-    LoadLanguage('Post');
     LoadCensorList();
 
     if ( $FORM{'previewim'} ) {
@@ -1056,7 +1056,6 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="
 ##  process and send the IM to whomever
 sub IMsendMessage {
 
-    LoadLanguage('Post');
     LoadLanguage('InstantMessage');
     LoadLanguage('Error');
 

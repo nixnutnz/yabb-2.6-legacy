@@ -538,7 +538,7 @@ qq~<br /><span style="font-weight: bold;">$polltxt{'64'}:</span> $users_votedate
 
     my ( $endedtext, $displayvoters );
     if ( !$iamguest
-        && ( $username eq $poll_uname || $iamadmin || $iamgmod || $iammod ) )
+        && ( $username eq $poll_uname || $iamadmin || $iamgmod || $iamymod || $iammod ) )
     {
         if ($poll_locked) {
             $lockpoll =

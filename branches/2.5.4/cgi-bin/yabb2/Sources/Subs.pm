@@ -2784,10 +2784,10 @@ sub BroadMessageView {
     if ($imp) {
         foreach my $checkgroup ( split /\,/xsm, $imp ) {
             if ( $checkgroup eq 'all' ) { return 1; }
-            if ( $checkgroup eq ( 'gmods' || 'ymods' || 'mods' ) && $iamgmod ) {
+            if ( ($checkgroup eq 'gmods' || $checkgroup eq 'ymods' || $checkgroup eq 'mods' ) && $iamgmod ) {
                 return 1;
             }
-            if ( $checkgroup eq ( 'ymods' || 'mods' ) && $iamymod ) {
+            if ( ($checkgroup eq 'ymods' || $checkgroup eq 'mods' ) && $iamymod ) {
                 return 1;
             }
             if ( $checkgroup eq 'mods' && $iammod ) { return 1; }
@@ -2808,7 +2808,8 @@ sub CheckUserPM_Level {
     $UserPM_Level{$checkuser} = 1;
     if ( !${ $uid . $checkuser }{'password'} ) { LoadUser($checkuser); }
     if (   ${ $uid . $checkuser }{'position'} eq 'Administrator'
-        || ${ $uid . $checkuser }{'position'} eq 'Global Moderator' )
+        || ${ $uid . $checkuser }{'position'} eq 'Global Moderator'
+        || ${ $uid . $checkuser }{'position'} eq 'Mid Moderator' )
     {
         $UserPM_Level{$checkuser} = 3;
     }

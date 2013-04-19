@@ -501,7 +501,7 @@ sub updateIMS {
     # update .ims file for user: &updateIMS(<user>,<PM msgid>,[target/action])
     my ( $user, $id, $target ) = @_;
 
-    # load the user who is processed here, if not allready loaded
+    # load the user who is processed here, if not already loaded
     if ( !exists ${$user}{'PMmnum'} ) { buildIMS( $user, 'load' ); }
 
     # new msg received - add to the inbox lists and increment the counts
@@ -1048,7 +1048,7 @@ sub drawPMbox {
         && $view eq 'pm'
         && (   $PM_level == 1
             || ( $PM_level == 2 && $staff )
-            || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
+            || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod) ) )
       )
     {
 
@@ -1188,7 +1188,7 @@ function insert_user (oElement,username,userid) {
         && ( !@dimmessages && $INFO{'focus'} ne 'bmess' )
         && (   $PM_level == 1
             || ( $PM_level == 2 && $staff )
-            || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
+            || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod ) ) )
       )
     {
         if ( !@dimmessages ) {
@@ -1230,7 +1230,7 @@ function insert_user (oElement,username,userid) {
             $view eq 'mycenter'
             && (   $PM_level == 0
                 || ( $PM_level == 2 && !$staff )
-                || ( $PM_level == 3 && !$iamadmin && !$iamgmod ) )
+                || ( $PM_level == 3 && !$iamadmin && !$iamgmod && !$iamymod ) )
         )
       )
     {
@@ -1257,7 +1257,7 @@ function insert_user (oElement,username,userid) {
             $view eq 'mycenter'
             && (   $PM_level == 1
                 || ( $PM_level == 2 && $staff )
-                || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
+                || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod ) ) )
         )
       )
     {
@@ -1273,7 +1273,7 @@ function insert_user (oElement,username,userid) {
     my $tabWidth = '33%';
     if (   $PM_level == 0
         || ( $PM_level == 2 && !$staff )
-        || ( $PM_level == 3 && !$iamadmin && !$iamgmod ) )
+        || ( $PM_level == 3 && !$iamadmin && !$iamgmod && !$iamymod ) )
     {
         $tabWidth = '50%';
     }
@@ -1291,7 +1291,7 @@ function insert_user (oElement,username,userid) {
         function changeToTab(tab) {~;
         if (   $PM_level == 1
             || ( $PM_level == 2 && $staff )
-            || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
+            || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod ) ) )
         {
             $MCViewMenu .= q~
             document.getElementById('cont_pm').style.display = 'none';
@@ -1315,7 +1315,7 @@ function insert_user (oElement,username,userid) {
         function changeToTab(tab) {~;
         if (   $PM_level == 1
             || ( $PM_level == 2 && $staff )
-            || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
+            || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod ) ) )
         {
             $MCViewMenu .= q~
             document.getElementById('cont_pm').style.display = 'none';
@@ -1336,14 +1336,14 @@ function insert_user (oElement,username,userid) {
         <tr>~;
         if (   $PM_level == 0
             || ( $PM_level == 2 && !$staff )
-            || ( $PM_level == 3 && !$iamadmin && !$iamgmod ) )
+            || ( $PM_level == 3 && !$iamadmin && !$iamgmod && !$iamymod ) )
         {
             $display_prof       = 'inline';
             $tabProfHighlighted = 'windowbg2';
         }
         if (   $PM_level == 1
             || ( $PM_level == 2 && $staff )
-            || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
+            || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod ) ) )
         {
             $MCViewMenu .= qq~
             <td style="width:$tabWidth" class="$tabPMHighlighted center vtop" id="menu_pm"><a href="javascript:void(0);" onclick="changeToTab('pm'); return false;">$mc_menus{'messages'}</a></td>~;
@@ -1413,7 +1413,7 @@ function insert_user (oElement,username,userid) {
 
     if (   $PM_level == 1
         || ( $PM_level == 2 && $staff )
-        || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
+        || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod) ) )
     {
         $thisLink =
             $profileLink
@@ -1779,12 +1779,12 @@ qq~$mycenter_txt{'buddylisttitle'}:<br />$buddiesCurrentStatus~;
                 if ( $INFO{'caller'} == 5
                     && !${$username}{ 'PMbcRead' . $showmessid } )
                 {
-                    ${$username}{'PMbcRead'} .=
+                        ${$username}{'PMbcRead'} .=
                       ${$username}{'PMbcRead'} ? ",$showmessid" : $showmessid;
                     $BCnewMessage--;
                     $BC = 1;
+                    }
                 }
-            }
             if ($BC) { buildIMS( $username, 'update' ); }
         }
         else {
@@ -1792,12 +1792,12 @@ qq~$mycenter_txt{'buddylisttitle'}:<br />$buddiesCurrentStatus~;
             if ( $INFO{'caller'} == 5
                 && !${$username}{ 'PMbcRead' . $INFO{'id'} } )
             {
-                ${$username}{'PMbcRead'} .=
-                  ${$username}{'PMbcRead'} ? ",$INFO{'id'}" : $INFO{'id'};
-                buildIMS( $username, 'update' );
-                $BCnewMessage--;
+                    ${$username}{'PMbcRead'} .=
+                      ${$username}{'PMbcRead'} ? ",$INFO{'id'}" : $INFO{'id'};
+                    buildIMS( $username, 'update' );
+                    $BCnewMessage--;
+                }
             }
-        }
 
         $MCContent .= $showIM;
 
@@ -1858,7 +1858,7 @@ qq~$mycenter_txt{'buddylisttitle'}:<br />$buddiesCurrentStatus~;
     ## start PM div
     if (   $PM_level == 1
         || ( $PM_level == 2 && $staff )
-        || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
+        || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod) ) )
     {
         $MCPmMenu .= qq~
     <div id="cont_pm" style="display: $display_pm">
@@ -1878,30 +1878,24 @@ qq~$mycenter_txt{'buddylisttitle'}:<br />$buddiesCurrentStatus~;
             </tr>~;
         }
 
-        my $inboxNewCount =
-qq~<span class="NewLinks">, <a href="$scripturl?action=imshow;caller=1;id=-1">${$username}{'PMimnewcount'} $inmes_txt{'new'}</a></span>~;
-        if ( ${$username}{'PMimnewcount'} == 0 ) { $inboxNewCount = q{}; }
+        my $inboxNewCount = ${$username}{'PMimnewcount'}
+        ? qq~<span class="NewLinks">, <a href="$scripturl?action=imshow;caller=1;id=-1">${$username}{'PMimnewcount'} $inmes_txt{'new'}</a></span>~
+        : q{};
 
-        $MCPmMenu .= qq~<tr>
-                <td colspan="3"><span class="nav bold"><a href="$scripturl?action=imsend">$img{'im_send'}</a></span></td>
-            </tr><tr>
-                <td class="windowbg2"><img src="$imagesdir/im_inbox.gif" alt="$inmes_txt{'inbox'}" title="$inmes_txt{'inbox'}" /></td>
-                <td class="windowbg2"><span class="nav bold"><a href="$scripturl?action=im">$inmes_txt{'inbox'}</a></span></td>
-                <td class="windowbg2"><span class="nav">${$username}{'PMmnum'}$inboxNewCount</span></td>
-            </tr>~;
+        $MCPmMenu .= $mypmmenu_inbox;
+        $MCPmMenu =~ s/{yabb username_PMmnum}/${$username}{'PMmnum'}/sm;
+        $MCPmMenu =~ s/{yabb inboxNewCount}/$inboxNewCount/sm;
 
         if ( $PMenableBm_level > 0
             || ( $PMenableGuestButton == 1 && ( $iamadmin || $iamgmod ) ) )
         {
             $inboxNewCount =
               $BCnewMessage
-              ? " <span class='NewLinks'>($inmes_txt{'new'})</span>"
+              ? qq~ <span class='NewLinks'>, <a href="$scripturl?action=im;focus=bmess">$BCnewMessage $inmes_txt{'new'}</a></span>~
               : q{};
-            $MCPmMenu .= qq~<tr>
-                <td class="windowbg2"><img src="$imagesdir/im_inbox.gif" alt="$inmes_txt{'broadcast'}" title="$inmes_txt{'broadcast'}" /></td>
-                <td class="windowbg2"><span class="nav bold"><a href="$scripturl?action=im;focus=bmess">$inmes_txt{'broadcast'}</a></span></td>
-                <td class="windowbg2"><span class="nav">$BCCount$inboxNewCount</span></td>
-            </tr>~;
+        $MCPmMenu .= $mypmmenu_bmbox;
+        $MCPmMenu =~ s/{yabb BCCount}/$BCCount/sm;
+        $MCPmMenu =~ s/{yabb inboxNewCount}/$inboxNewCount/sm;
         }
 
         my @folderCount = split /\|/xsm, ${$username}{'PMfoldersCount'};
@@ -2032,7 +2026,7 @@ qq~\nvar markallreadlang = '$inmes_txt{'500'}';\nvar markfinishedlang = '$inmes_
                 <input type="radio" name="pmbox" id="pmboxthis" value="$callerid" /> <label for="pmboxthis">$pm_search{'justthis'}</label><br />~;
                 }
                 $MCPmMenu .= qq~
-                                </form>
+                   </form>
                 </td>
             </tr>~;
         }
@@ -2591,8 +2585,8 @@ qq~<span class="small"><a href="$scripturl?action=imshow;id=$messageid;caller=2"
                 && $viewBMess
                 && !${$username}{ 'PMbcRead' . $messageid } )
             {
-                $BCnew = qq~&nbsp;<img src="$imagesdir/new.gif" alt="" />~;
-            }
+                    $BCnew = qq~&nbsp;<img src="$imagesdir/new.gif" alt="" />~;
+                }
 			my $attachIcon;
 			if ( $messageAttachment ne q{} ) {
 			    @im_attach_count = split /\,/xsm, $messageAttachment;
@@ -3266,7 +3260,7 @@ sub mcMenu {
         $pmclass = q~ class="selected"~;
         if (   $PM_level == 0
             || ( $PM_level == 2 && !$staff )
-            || ( $PM_level == 3 && !$iamadmin && !$iamgmod ) )
+            || ( $PM_level == 3 && !$iamadmin && !$iamgmod && !$iamymod ) )
         {
             $profclass = q~ class="selected"~;
         }
@@ -3296,7 +3290,7 @@ qq~<img src="$imagesdir/tabsep211.png" alt="" style="float: left; vertical-align
     my $tabfill = qq~<img src="$imagesdir/tabfill.gif" alt="" />~;
     if (   $PM_level == 1
         || ( $PM_level == 2 && $staff )
-        || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) ) )
+        || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod) ) )
     {
         $yymcmenu .=
 qq~<li><span onclick="changeToTab('pm'); return false;"$pmclass id="menu_pm"><a href="$scripturl?action=mycenter" onclick="changeToTab('pm'); return false;">$mc_menus{'messages'}</a></span></li>
