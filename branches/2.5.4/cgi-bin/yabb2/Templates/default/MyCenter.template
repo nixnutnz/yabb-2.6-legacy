@@ -88,5 +88,18 @@ $myimblock = q~    <table class="bordercolor cs_thin"  style="border-top:0; marg
         <col style="width:65%" />
         <col style="width:15%" />~;
 
+$mypmmenu_inbox = qq~<tr>
+                <td colspan="3"><span class="nav bold"><a href="$scripturl?action=imsend">$img{'im_send'}</a></span></td>
+            </tr><tr>
+                <td class="windowbg2"><img src="$imagesdir/im_inbox.gif" alt="$inmes_txt{'inbox'}" title="$inmes_txt{'inbox'}" /></td>
+                <td class="windowbg2"><span class="nav bold"><a href="$scripturl?action=im">$inmes_txt{'inbox'}</a></span></td>
+                <td class="windowbg2"><span class="nav">{yabb username_PMmnum}{yabb inboxNewCount}</span></td>
+            </tr>~;
+$mypmmenu_bmbox = qq~<tr>
+                <td class="windowbg2"><img src="$imagesdir/im_inbox.gif" alt="$inmes_txt{'broadcast'}" title="$inmes_txt{'broadcast'}" /></td>
+                <td class="windowbg2"><span class="nav bold"><a href="$scripturl?action=im;focus=bmess">$inmes_txt{'broadcast'}</a></span></td>
+                <td class="windowbg2"><span class="nav">{yabb BCCount}{yabb inboxNewCount}</span></td>
+            </tr>~;
+
 
 1;
