@@ -325,6 +325,7 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
   <option value="0" ${isselected($Show_RecentBar == 0)}>$admin_txt{'509a'}</option>
   <option value="1" ${isselected($Show_RecentBar == 1)}>$admin_txt{'509b'}</option>
   <option value="2" ${isselected($Show_RecentBar == 2)}>$admin_txt{'509c'}</option>
+  <option value="3" ${isselected($Show_RecentBar == 3)}>$admin_txt{'509d'}</option>
 </select>~,
 			name => 'Show_RecentBar',
 			validate => 'number',
@@ -377,12 +378,6 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 			name => 'showuserage',
 			validate => 'boolean',
 		}, 
-		{
-			description => qq~<label for="showage">$admin_txt{'386a'}</label>~,
-			input_html => qq~<input type="checkbox" name="showage" id="showage" value="1"${ischecked($showage)} />~,
-			name => 'showage',
-			validate => 'boolean',
-		},
 		{
 			description => qq~<label for="showregdate">$admin_txt{'show_reg_date'}</label>~,
 			input_html => qq~<input type="checkbox" name="showregdate" id="showregdate" value="1"${ischecked($showregdate)} />~,
@@ -809,6 +804,12 @@ qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdM
 			validate => 'number,null',
 		},
 		{
+			description => qq~<label for="showage">$admin_txt{'386a'}</label>~,
+			input_html => qq~<input type="checkbox" name="showage" id="showage" value="1"${ischecked($showage)} />~,
+			name => 'showage',
+			validate => 'boolean',
+		},
+		{
 			description => qq~<label for="emailnewpass">$admin_txt{'639'}</label>~,
 			input_html => qq~<input type="checkbox" name="emailnewpass" id="emailnewpass" value="1"${ischecked($emailnewpass)} />~,
 			name => 'emailnewpass',
@@ -1048,6 +1049,12 @@ qq~<input type="checkbox" name="nomailspammer" id="nomailspammer" value="1" ${is
 			description => qq~<label for="barmaxnumb">$admin_txt{'902'} $admin_txt{'107'}</label>~,
 			input_html => qq~<input type="text" name="barmaxnumb" id="barmaxnumb" size="5" value="$barmaxnumb" /> $admin_txt{'904'} <input type="radio" name="barmaxdepend" value="0"${ischecked(!$barmaxdepend)}/> $admin_txt{'905'} <input type="radio" name="barmaxdepend" value="1"${ischecked($barmaxdepend)}/> $admin_txt{'903'}~,
 			name => 'barmaxdepend',
+			validate => 'boolean',
+		},
+		{
+			description => qq~<label for="showuserpicml">$admin_txt{'userpicml'}</label>~,
+			input_html => qq~<input type="checkbox" name="showuserpicml" id="showuserpicml" value="1"${ischecked($showuserpicml)} />~,
+			name => 'showuserpicml',
 			validate => 'boolean',
 		},
 	]

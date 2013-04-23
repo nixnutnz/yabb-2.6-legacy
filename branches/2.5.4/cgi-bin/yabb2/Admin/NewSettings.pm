@@ -662,6 +662,7 @@ $member_groups
 \$defaultml = "\Q$defaultml\E";
 
 \$ML_Allowed = $ML_Allowed;					# allow browse MemberList
+\$showuserpicml = $showuserpicml;	        # Set to 1 to display each member's picture in the member list
 
 ########## Quick Reply configuration ##########
 
@@ -678,6 +679,9 @@ $member_groups
 \$max_avatar_width = $max_avatar_width;		# Set maximum pixel width to which the selfselected userpics are resized, 0 disables this limit
 \$max_avatar_height = $max_avatar_height;	# Set maximum pixel height to which the selfselected userpics are resized, 0 disables this limit
 \$fix_avatar_img_size = $fix_avatar_img_size;	# Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in his proportions to the other value. If both are 0 the image is shown at his original size.
+\$max_avatarml_width = $max_avatarml_width;			# Set maximum pixel width to which the selfselected userpics in member list are resized, 0 disables this limit
+\$max_avatarml_height = $max_avatarml_height;		# Set maximum pixel height to which the selfselected userpics in member list are resized, 0 disables this limit
+\$fix_avatarml_img_size = $fix_avatarml_img_size;	# Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in his proportions to the other value. If both are 0 the image is shown at his original size. 
 \$max_post_img_width = $max_post_img_width;	# Set maximum pixel width for images, 0 disables this limit
 \$max_post_img_height = $max_post_img_height;	# Set maximum pixel height for images, 0 disables this limit
 \$fix_post_img_size = $fix_post_img_size;	# Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in his proportions to the other value. If both are 0 the image is shown at his original size.

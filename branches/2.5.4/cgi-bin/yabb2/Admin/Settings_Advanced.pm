@@ -452,6 +452,24 @@ qq~<input type="checkbox" name="fix_avatar_img_size" id="fix_avatar_img_size" va
                 validate => 'boolean',
             },
             {
+			description => qq~<label for="max_avatarml_width">$admin_txt{'473a'}</label>~,
+			input_html => qq~<input type="text" name="max_avatarml_width" id="max_avatarml_width" size="5" value="$max_avatarml_width" /> pixel~,
+			name => 'max_avatarml_width',
+			validate => 'number',
+		},
+		{
+			description => qq~<label for="max_avatarml_height">$admin_txt{'473b'}</label>~,
+			input_html => qq~<input type="text" name="max_avatarml_height" id="max_avatarml_height" size="5" value="$max_avatarml_height" /> pixel~,
+			name => 'max_avatarml_height',
+			validate => 'number',
+		},
+		{
+			description => qq~<label for="fix_avatarml_img_size">$admin_txt{'473c'}~,
+			input_html => qq~<input type="checkbox" name="fix_avatarml_img_size" id="fix_avatarml_img_size" value="1"${ischecked($fix_avatarml_img_size)} />~,
+			name => 'fix_avatarml_img_size',
+			validate => 'boolean',
+		},
+            {
                 description =>
                   qq~<label for="max_post_img_width">$admin_txt{'474'}</label>~,
                 input_html =>
