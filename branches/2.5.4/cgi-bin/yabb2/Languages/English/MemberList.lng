@@ -21,6 +21,7 @@ $memberlistlngver = 'YaBB 2.5.4 $Revision$';
 '4' => 'Members By',
 '19' => 'Page Index toggle',
 '21' => 'Posts',
+'34' => 'Avatar',
 '35' => 'Name',
 '87' => 'Position',
 '96' => 'Website',
