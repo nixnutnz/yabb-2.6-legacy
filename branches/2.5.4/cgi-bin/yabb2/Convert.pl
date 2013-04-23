@@ -3445,6 +3445,7 @@ sub SetInstall2 {
         $showtopicrepliers      = 1;
         $showgenderimage        = 1;
         $showyabbcbutt          = 1;
+		$showsearchbox          = 1;
         $nestedquotes           = 1;
         $parseflash             = 0;
         $enableclicklog         = 0;
@@ -3655,6 +3656,8 @@ sub SetInstall2 {
 \$showtopicviewers = $showtopicviewers;             # Set to 1 to display members viewing a topic
 \$showtopicrepliers = $showtopicrepliers;           # Set to 1 to display members replying to a topic
 \$showgenderimage = $showgenderimage;               # Set to 1 to display each member's gender in the
+\$showsearchbox = $showsearchbox;                   # Show the Search Box on all pages
+\$showsearchboxnum = $showsearchboxnum;             # Maximum post age for Search Box
                                                     # message view (by the ICQ.. etc.)
 \$showyabbcbutt = $showyabbcbutt;                   # Set to 1 to display the yabbc buttons on Posting and IM Send Pages
 \$nestedquotes = $nestedquotes;                     # Set to 1 to allow quotes within quotes
