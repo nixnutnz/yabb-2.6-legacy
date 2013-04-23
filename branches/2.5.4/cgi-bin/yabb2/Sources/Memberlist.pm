@@ -349,6 +349,20 @@ qq~$ml_txt{'dr_warning'} <a href="$boardurl/AdminIndex.$yyaext?action=newsetting
             }
         }
 
+		if ($showuserpicml && $allowpics && $iamguest) {
+            $my_userpic = qq~<img src="~ . (${$uid.$user}{'userpic'} =~ m~\A[\s\n]*https?://~i ? ${$uid.$user}{'userpic'} : "$facesurl/${$uid.$user}{'userpic'}") . qq~" name="avatarml_img_resize" alt="" style="display:none" />~;
+            $userpic = $my_userpic_td;
+            $userpic =~ s/{yabb my_userpic}/$my_userpic/sm;
+        }
+        elsif ($showuserpicml && $allowpics) {
+            $my_userpic = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}"><img src="~ .(${$uid.$user}{'userpic'} =~ m~\A[\s\n]*https?://~i ? ${$uid.$user}{'userpic'} : "$facesurl/${$uid.$user}{'userpic'}") . qq~" name="avatarml_img_resize" alt="" style="display:none" /></a>~;
+            $userpic = $my_userpic_td;
+            $userpic =~ s/{yabb my_userpic}/$my_userpic/sm;
+        }
+        else {
+		    $userpic = q{};
+	    }
+
         if (   ${ $uid . $user }{'hidemail'}
             && !$iamadmin
             && $allow_hide_email == 1 )
@@ -377,6 +391,7 @@ qq~<img src="$imagesdir/$ml_email" alt="$img_txt{'69'}" title="~
 
         $yymain .= $my_memrow;
         $yymain =~ s/{yabb add_tds}/$additional_tds/sm;
+        $yymain =~ s/{yabb userpic}/$userpic/sm;
         $yymain =~ s/{yabb userlink}/$link{$user}/sm;
         $yymain =~ s/{yabb lock}/$lock/sm;
         $yymain =~ s/{yabb wwwshow}/$wwwshow/sm;
@@ -625,16 +640,29 @@ sub buildPages {
             <noscript><input type="submit" /></noscript>
            </form>
         );
+    if ($showuserpicml && $allowpics) {
+        $headertop = 8;
+    } else {
+        $headertop = 7;
+    }
 
     my $additional_headers;
-    $headercount = 7;
+    $headercount = $headertop;
     if ($extendedprofiles) {
         require Sources::ExtendedProfiles;
         $additional_headers = ext_memberlist_tableheader();
         $headercount += ext_memberlist_get_headercount($additional_headers);
     }
+		if ($showuserpicml && $allowpics) {
+            $row_userpic = $my_row_userpic;
+            $col_userpic = q~<col style="width:auto" />~;
+        } else {
+		    $row_userpic = q{};
+		    $col_userpic = q{};
+	    }
 
     $TableHeader .= $my_header;
+    $TableHeader =~ s/{yabb row_userpic}/$row_userpic/sm;
     $TableHeader =~ s/{yabb selUser}/$selUser/sm;
     $TableHeader =~ s/{yabb selPos}/$selPos/sm;
     $TableHeader =~ s/{yabb selPost}/$selPost/sm;
@@ -657,6 +685,7 @@ sub buildPages {
         $yymain .= qq~$my_memberlist_main
             $TableHeader
         ~;
+        $yymain =~ s/{yabb col_userpic}/$col_userpic/sm;
         $yymain =~ s/{yabb pageindex1}/$pageindex1/sm;
         $yymain =~ s/{yabb findform}/$FindForm/sm;
         $yymain =~ s/{yabb sortjump}/$SortJump/sm;

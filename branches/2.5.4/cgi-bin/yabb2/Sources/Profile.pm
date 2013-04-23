@@ -535,9 +535,10 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         my $awayreply = ${ $uid . $user }{'awayreply'};
         $awayreply =~ s/<br \/>/\n/gsm;
         $my_away = $myprofile_away;
+        $my_away .= qq~             <textarea name="awayreply" id="awayreply" rows="4" cols="50">$awayreply</textarea><br />~;
+        $my_away .= $myprofile_away_b;
         $my_away =~ s/{yabb offChecked}/$offChecked/sm;
         $my_away =~ s/{yabb awayChecked}/$awayChecked/sm;
-        $my_away =~ s/{yabb awayreply}/$awayreply/sm;
         $my_away =~ s/{yabb MaxAwayLen}/$MaxAwayLen/gsm;
                                 }
     if (
@@ -924,11 +925,12 @@ qq~<option value="$fld" selected="selected">$displang</option>~;
             $showProfile .= qq~
 <form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator"$my_allow_avatars>~;
     $showProfile .= $myprofile_options;
+    $showProfile .= qq~         <textarea name="signature" id="signature" rows="4" cols="30" style="width: 100%">$signature</textarea><br />~;
+    $showProfile .= $myprofile_options_b;
 
     $showProfile =~ s/{yabb usertext}/${$uid.$user}{'usertext'}/sm;
     $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
     $showProfile =~ s/{yabb my_show_avatar}/$my_show_avatar/sm;
-    $showProfile =~ s/{yabb signature}/$signature/sm;
     $showProfile =~ s/{yabb MaxSigLen}/$MaxSigLen/gsm;
     $showProfile =~ s/{yabb my_addmemgroup}/$my_addmemgroup/sm;
     $showProfile =~ s/{yabb my_time}/$my_time/sm;
@@ -1349,6 +1351,8 @@ $myprofile_userinfo = qq~<input type="hidden" name="username" value="$INFO{'user
     $showProfile .= $myprofile_admin_a;
     AddModerators();
     $showProfile .= $myprofile_admin_b;
+    $showProfile .= qq~<textarea rows="4" cols="50" name="regreason" id="regreason">$regreason</textarea>~;
+    $showProfile .= $myprofile_admin_bb;
 
     $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
     $showProfile =~ s/{yabb myprofile_userinfo}/$myprofile_userinfo/sm;

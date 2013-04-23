@@ -839,8 +839,12 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$boardindex_txt{'334'}" title="$boardi
                         'Global Moderator'
                       )
                     {
-                        $lastposter =
+#                        if(!$iamguest) {
+                            $lastposter =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}" rel="nofollow">$format_unbold{$lastposter}</a>~;
+#                        }
+#                        else { $lastposter =  $format_unbold{$lastposter};
+#                        }                     
                     }
                     else {
 
@@ -1391,42 +1395,64 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" onclick="t
             $tmlsdatetime = qq~($lsdatetime).<br />~;
             $lastpostlink =
 qq~$boardindex_txt{'236'} <b><a href="$scripturl?num=$lspostid/$lsreply#$lsreply"><b>$lssub</b></a></b>~;
-            if ( $Show_RecentBar == 1 ) {
+            if ( $Show_RecentBar == 1 || $Show_RecentBar == 3 ) {
                 $recentl   = 'recent';
                 $recenttxt = "$boardindex_txt{'792'}";
-            }
-            elsif ( $Show_RecentBar == 2 ) {
-                $recentl   = 'recenttopics';
-                $recenttxt = "$boardindex_txt{'792a'}";
-            }
-            if ( $maxrecentdisplay > 0 ) {
-                $recentpostslink =
+                if ( $maxrecentdisplay > 0 ) {
+                    $recentpostslink =
 qq~$boardindex_txt{'791'} <form method="post" action="$scripturl?action=$recentl" name="$recentl" style="display: inline"><select size="1" name="display" onchange="submit()"><option value="">&nbsp;</option>~;
-                my ( $x, $y ) = ( int( $maxrecentdisplay / 5 ), 0 );
-                if ($x) {
-                    foreach my $i ( 1 .. 5 ) {
-                        $y = $i * $x;
-                        $recentpostslink .= qq~<option value="$y">$y</option>~;
+                    my ( $x, $y ) = ( int( $maxrecentdisplay / 5 ), 0 );
+                    if ($x) {
+                        foreach my $i ( 1 .. 5 ) {
+                            $y = $i * $x;
+                            $recentpostslink .= qq~<option value="$y">$y</option>~;
+                        }
                     }
-                }
-                if ( $maxrecentdisplay > $y ) {
-                    $recentpostslink .=
+                    if ( $maxrecentdisplay > $y ) {
+                        $recentpostslink .=
 qq~<option value="$maxrecentdisplay">$maxrecentdisplay</option>~;
-                }
-                $recentpostslink .=
+                    }
+                    $recentpostslink .=
 qq~</select> <input type="submit" style="display:none" /></form> $recenttxt $boardindex_txt{'793'}~;
+                }
             }
-
+            if ( $Show_RecentBar == 2 || $Show_RecentBar == 3 ) {
+                $recentl_t   = 'recenttopics';
+                $recenttxt_t = "$boardindex_txt{'792a'}";
+                if ( $maxrecentdisplay > 0 ) {
+                    $recenttopicslink =
+qq~$boardindex_txt{'791'} <form method="post" action="$scripturl?action=$recentl_t" name="$recentl_t" style="display: inline"><select size="1" name="display" onchange="submit()"><option value="">&nbsp;</option>~;
+                    my ( $x, $y ) = ( int( $maxrecentdisplay / 5 ), 0 );
+                    if ($x) {
+                        foreach my $i ( 1 .. 5 ) {
+                            $y = $i * $x;
+                            $recenttopicslink .= qq~<option value="$y">$y</option>~;
+                        }
+                    }
+                    if ( $maxrecentdisplay > $y ) {
+                        qq~<option value="$maxrecentdisplay">$maxrecentdisplay</option>~;
+                    }
+                    $recenttopicslink .=
+qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $boardindex_txt{'793'}~;
+                }
+            }
+            if ( $Show_RecentBar == 3 ) {$spc = q~<br />~;}
             $boardindex_template =~
               s/({|<)yabb lastpostlink(}|>)/$lastpostlink/gsm;
             $boardindex_template =~
               s/({|<)yabb recentposts(}|>)/$recentpostslink/gsm;
+            $boardindex_template =~
+              s/({|<)yabb spc(}|>)/$spc/sm;
+            $boardindex_template =~
+              s/({|<)yabb recenttopics(}|>)/$recenttopicslink/gsm;
             $boardindex_template =~
               s/({|<)yabb lastpostdate(}|>)/$tmlsdatetime/gsm;
         }
         else {
             $boardindex_template =~ s/({|<)yabb lastpostlink(}|>)//gsm;
             $boardindex_template =~ s/({|<)yabb recentposts(}|>)//gsm;
+            $boardindex_template =~
+              s/({|<)yabb recenttopics(}|>)//gsm;
             $boardindex_template =~ s/({|<)yabb lastpostdate(}|>)//gsm;
         }
         $memcount = NumberFormat($memcount);

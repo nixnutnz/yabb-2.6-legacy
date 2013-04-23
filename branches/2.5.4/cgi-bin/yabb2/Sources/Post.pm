@@ -679,8 +679,9 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
 
         if ( $maxpc > 0 ) {
             $my_maxpc = $my_poll_comment;
-            $my_maxpc =~ s/{yabb maxpc}/$maxpc/gsm;
-            $my_maxpc =~ s/{yabb poll_comment}/$poll_comment/gsm;
+            $my_maxpc .= qq~            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onkeyup="if (document.postmodify.poll_comment.value.length > {yabb maxpc}) {document.postmodify.poll_comment.value = document.postmodify.poll_comment.value.substring(0,$maxpc)}">$poll_comment</textarea>
+~;
+            $my_maxpc .= $my_poll_comment_b;
         }
 
         if ($poll_end) {

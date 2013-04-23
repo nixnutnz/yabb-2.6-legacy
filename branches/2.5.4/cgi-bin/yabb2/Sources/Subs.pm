@@ -787,6 +787,15 @@ sub image_resize {
             }
             $x[2] =~ s/display:none/display:inline/sm;
         }
+		 elsif ($fix_avatarml_img_size && $perl_do_it == 1 && $x[1] eq 'avatarml') {
+			if ($max_avatarml_width  && $x[2] !~ / width=./)  {
+			    $x[2] =~ s/( style=.)/$1width:$max_avatarml_width\px;/;
+			}
+			if ($max_avatarml_height && $x[2] !~ / height=./) {
+			    $x[2] =~ s/( style=.)/$1height:$max_avatarml_height\px;/;
+			}
+			$x[2] =~ s/display:none/display:inline/;
+	    }
         elsif ( $fix_post_img_size && $perl_do_it == 1 && $x[1] eq 'post' ) {
             if ( $max_post_width && $x[2] !~ / width=./sm ) {
                 $x[2] =~ s/( style=.)/$1width:$max_post_width$px;/sm;
@@ -824,7 +833,7 @@ sub image_resize {
         return qq~"$x[0]"$x[2]~;
     };
     $output =~
-s/"((avatar|post|attach|signat)_img_resize)"([^>]*>)/ check_image_resize($1,$2,$3) /gesm;
+s/"((avatar|avatarml|post|attach|signat)_img_resize)"([^>]*>)/ check_image_resize($1,$2,$3) /gesm;
 
     if ($resize_num) {
         $resize_js =~ s/,$//xsm;
@@ -837,6 +846,9 @@ s/"((avatar|post|attach|signat)_img_resize)"([^>]*>)/ check_image_resize($1,$2,$
     var avatar_img_w    = $max_avatar_width;
     var avatar_img_h    = $max_avatar_height;
     var fix_avatar_size = $fix_avatar_img_size;
+	var avatarml_img_w    = $max_avatarml_width;
+	var avatarml_img_h    = $max_avatarml_height;
+	var fix_avatarml_size = $fix_avatarml_img_size;
     var post_img_w      = $max_post_img_width;
     var post_img_h      = $max_post_img_height;
     var fix_post_size   = $fix_post_img_size;
