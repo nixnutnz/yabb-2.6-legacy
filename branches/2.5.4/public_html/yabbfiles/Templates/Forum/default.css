@@ -75,8 +75,11 @@ border-radius:5px;
 padding:5px;
 }
 
-sup {font-size:6px !important;}
-
+sup {
+vertical-align: baseline;
+position: relative;
+top: -0.4em;
+}
 .button, [type=submit], [type=reset], [type=button] {
 background-color:#F8G8F8;
 border:1px solid #C6C6C6;
@@ -518,8 +521,8 @@ color:#2D2D2D;
 }
 
 .dividerbot {
-border-bottom:1px #FFF solid;
-}
+border-bottom:1px #FFF solid !important;
+} 
 
 .dividertop {
 border-top:1px #FFF solid;
@@ -1140,7 +1143,7 @@ font-size:13px !important;
 margin-left:0px;
 }
 
-.yabb_searchbox input:hover {
+.yabb_searchbox input:hover, .yabb_searchbox input:focus {
 color:#000;
 }
 
@@ -1279,7 +1282,6 @@ width:800px
 
 /* Post and Thread Tools */
 .post_tools {
-background-color: #4378AE;
 background-image: url(./default/tabtitle.png);
 /*background-position: bottom left;*/
 background-repeat: repeat-x;
