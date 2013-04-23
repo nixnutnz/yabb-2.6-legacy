@@ -74,7 +74,7 @@ $myprofile_showadmin= qq~
 #Profile edit 
 $myprofile_edit = qq~<table class="cs_thin pad_4px">
     <col style="width:320px" />
-    <tr class="tabtitle-profile">
+    <tr class="catbg">
         <td colspan="2">
             <img src="$imagesdir/profile.gif" alt="" /> <b>{yabb profiletitle}</b><br /><span class="small">$profile_txt{'698'}</span>{yabb my_newpass}
         </td>
@@ -212,8 +212,9 @@ $myprofile_away = qq~<tr class="windowbg">
              </select><br /><br />
              <label for="awaysubj"><span class="small">$profile_txt{'asubj'}</span></label><br />
              <input type="text" name="awaysubj" id="awaysubj" size="50" maxlength="50" value="{yabb awaysubj}" /><br /><br />
-             <label for="awayreply"><span class="small">$profile_txt{'amess'}</span></label><br />
-             <textarea name="awayreply" id="awayreply" rows="4" cols="50">{yabb awayreply}</textarea><br />
+             <label for="awayreply"><span class="small">$profile_txt{'amess'}</span></label><br />~;
+             
+$myprofile_away_b =qq~
              <span class="small">$profile_txt{'664a'} <input value="{yabb MaxAwayLen}" size="3" name="msgCL" class="windowbg" style="border: 0px; width: 40px; padding: 1px; font-size: 11px;" readonly="readonly" /></span><br />
              <script type="text/javascript">
              <!--
@@ -259,8 +260,8 @@ $myprofile_options = qq~<table class="bordercolor cs_thin pad_4px">
         <td><input type="text" name="usertext" id="usertext" size="40" value="{yabb usertext}" maxlength="50" /></td>
     </tr><tr class="windowbg">
          <td><label for="signature"><b>$profile_txt{'85'}:</b><br /><span class="small">$profile_txt{'606'}</span></label></td>
-         <td><textarea name="signature" id="signature" rows="4" cols="30" style="width: 100%">{yabb signature}</textarea><br />
-             <span class="small">$profile_txt{'664'} <input value="{yabb MaxSigLen}" size="3" name="msgCL" class="windowbg" style="border: 0px; width: 40px; padding: 1px; font-size: 11px;" readonly="readonly" /></span><br /><br />
+         <td>~;
+$myprofile_options_b = qq~             <span class="small">$profile_txt{'664'} <input value="{yabb MaxSigLen}" size="3" name="msgCL" class="windowbg" style="border: 0px; width: 40px; padding: 1px; font-size: 11px;" readonly="readonly" /></span><br /><br />
              <script type="text/javascript">
              <!--
                  var supportsKeys = false;
@@ -513,7 +514,9 @@ $myprofile_admin_b = qq~<tr class="windowbg">
         </td>
     </tr><tr class="windowbg">
         <td><label for="regreason"><b>$profile_txt{'234'}:</b></label></td>
-        <td><textarea rows="4" cols="50" name="regreason" id="regreason">{yabb regreason}</textarea></td>
+        <td>~;
+        
+$myprofile_admin_bb = qq~</td>
     </tr><tr class="windowbg">
         <td><b>$profile_amv_txt{'9'}: </b></td>
         <td>{yabb userlastlogin}</td>

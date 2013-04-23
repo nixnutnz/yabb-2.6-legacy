@@ -85,7 +85,7 @@ $boardindex_template .= qq~
 					<div class="small" style="float: left; width: 59%; text-align: left;">
 						$boardindex_txt{'489'} <b>{yabb totalmessages} $boardindex_txt{'21l'}</b> $boardindex_txt{'490'} <b>{yabb totaltopics} $boardindex_txt{'330l'}</b>.<br />
 						{yabb lastpostlink} {yabb lastpostdate}
-						{yabb recentposts}
+						{yabb recenttopics}{yabb spc}{yabb recentposts}
 					</div>
 					<div class="small" style="float: left; width: 40%; text-align: left;">
 						$boardindex_txt{'487'} {yabb membercount} $boardindex_txt{'488'}.<br />

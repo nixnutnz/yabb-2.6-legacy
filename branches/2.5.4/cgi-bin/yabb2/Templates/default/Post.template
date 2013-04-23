@@ -337,9 +337,9 @@ $my_poll_options = qq~<tr>
 
 $my_poll_comment = qq~<tr>
         <td class="windowbg2 vtop"><b>$post_polltxt{'59'}:</b> </td>
-        <td class="windowbg2" colspan="4">
-            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onkeyup="if (document.postmodify.poll_comment.value.length > {yabb maxpc}) {document.postmodify.poll_comment.value = document.postmodify.poll_comment.value.substring(0,{yabb maxpc})}">{yabb poll_comment}</textarea>
-        </td>
+        <td class="windowbg2" colspan="4">~;
+        ## textarea cannot be in template##
+$my_poll_comment_b = q~</td>
     </tr>~;
     
 $mypost_poll_pie = qq~<tr>

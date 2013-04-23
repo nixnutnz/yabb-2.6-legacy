@@ -44,6 +44,7 @@ $my_memberlist_main = qq~
             </tr>
         </table>
         <table class="bordercolor pad_3px cs_thin" style="margin-top:-3px; padding-top:0">
+            {yabb col_userpic}
             <col style="width:auto" />
             <col span="2" style="width:4%" />
             <col style="width:auto" />
@@ -54,6 +55,7 @@ $my_memberlist_main = qq~
 
 
 $my_header = qq~<tr>
+                {yabb row_userpic}
                 <td {yabb selUser} onclick="location.href='$scripturl?action=ml;sort=username';"><a href="$scripturl?action=ml;sort=username"><b>$ml_txt{'35'}</b></a></td>
                 <td class="catbg center"><img src="$imagesdir/email.gif" alt="$ml_txt{'307'}" title="$ml_txt{'307'}" /></td>
                 <td class="catbg center"><img src="$imagesdir/www.gif" alt="$ml_txt{'96'}" title="$ml_txt{'96'}" /></td>
@@ -66,6 +68,7 @@ $my_header = qq~<tr>
             </tr>~;
 
 $my_memrow = qq~<tr>
+        {yabb userpic}
         <td class="windowbg">{yabb userlink}</td>
         <td class="windowbg2 center">{yabb lock}</td>
         <td class="windowbg2 center">{yabb wwwshow}</td>
@@ -75,6 +78,12 @@ $my_memrow = qq~<tr>
         <td class="windowbg">{yabb dr_regdate} &nbsp;</td>
         {yabb add_tds}
     </tr>~;
+
+$my_userpic_td = qq~
+            <td class="windowbg2 center">{yabb my_userpic}</td>~;
+
+$my_row_userpic = qq~<td class="catbg center"><b>$ml_txt{'34'}</b></td>~;
+
     
 $my_letterlinks = qq~<tr>
                 <td class="catbg" colspan="{yabb headercount}"><span class="small">{yabb letterlinks}</span></td>
