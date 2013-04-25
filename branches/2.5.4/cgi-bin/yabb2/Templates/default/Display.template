@@ -437,7 +437,7 @@ $mysend_valcode = qq~<tr>
         </td>
     </tr><tr>
         <td class="windowbg"><label for="verification"><b>$floodtxt{'1'}:</b></label></td>
-        <td class="windowbg">{yabb showcheck}<br /><label for="verification"><span class="small">$flood_text</span></label></td>
+        <td class="windowbg">{yabb showcheck}<br /><label for="verification"> <span class="small">{yabb flood_text}</span></label></td>
     </tr><tr>
         <td class="windowbg"><label for="verification"><b>$floodtxt{'3'}:</b></label></td>
         <td class="windowbg"><input type="text" maxlength="30" name="verification" id="verification" size="50" /></td>

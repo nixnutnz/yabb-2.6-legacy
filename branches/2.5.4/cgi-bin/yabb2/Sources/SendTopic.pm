@@ -47,6 +47,7 @@ sub SendTopic {
         validation_code();
         $my_valcode = $mysend_valcode;
         $my_valcode =~ s/{yabb showcheck}/$showcheck/sm;
+        $my_valcode =~ s/{yabb flood_text}/$flood_text/sm;
     }
     if ( $spam_questions_send && -e "$langdir/$language/spam.questions" ) {
         SpamQuestion();
