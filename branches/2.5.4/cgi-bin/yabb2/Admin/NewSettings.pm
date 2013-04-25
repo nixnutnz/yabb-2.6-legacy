@@ -61,7 +61,7 @@ sub settings {
     $yymain .= qq~
     <a id="top"></a>
     <div class="bordercolor rightboxdiv">
-        <table class="cs_thin pad_4px">
+        <table class="cs_thin pad_4px" style="margin-bottom:.5em">
                 <tr>
                     <td class="titlebg">
          <b>$yytitle</b>
@@ -92,7 +92,7 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
     <div class="bordercolor rightboxdiv">
         <table class="section" style="border-collapse:separate; border-spacing: 1px;" id="tab_$tab->{'id'}">
             <col class=" w_50pc" />
-     <tr>
+            <tr>
                 <td class="titlebg padd_4px" colspan="2">
                     <a id="tab_$tab->{'id'}"></a><img src="$imagesdir/preferences.gif" alt="" /> <b>$tab->{'name'}</b>
          <span style="float: right;" class="js_remove_me"><a href="#top"><b>$settings_txt{'top'}</b></a></span>
@@ -583,8 +583,6 @@ $member_groups
 \$showuserage = $showuserage;               # Set to 1 to display each member's age in the message view 
 \$showage = $showage;						# Set to 1 to allow member to hide their age and birthyear (Except from the Administrator.)
 \$showregdate = $showregdate;				# Set to 1 to show date of registration.
-\$showsearchbox = $showsearchbox;           # Show the Search Box on all pages
-\$showsearchboxnum = $showsearchboxnum;     # Maximum post age for Search Box
 \$showyabbcbutt = $showyabbcbutt;			# Set to 1 to display the yabbc buttons on Posting and IM Send Pages
 \$nestedquotes = $nestedquotes;				# Set to 1 to allow quotes within quotes (0 will filter out quotes within a quoted message)
 \$parseflash = $parseflash;					# Set to 1 to parse the flash tag
@@ -624,7 +622,8 @@ $member_groups
 \$TopAmmount = $TopAmmount;					# No. of top posters to display on the top members list
 \$maxdisplay = $maxdisplay;					# Maximum of topics to display
 \$maxfavs = $maxfavs;						# Maximum of favorite topics to save in a profile
-\$maxrecentdisplay = $maxrecentdisplay;		# Maximum of topics to display on recent posts by a user (-1 to disable)
+\$maxrecentdisplay = $maxrecentdisplay;		# Maximum of posts to display on recent posts by a user (-1 to disable)
+\$maxrecentdisplay_t = $maxrecentdisplay_t;		# Maximum of topics to display on recent topics (-1 to disable)
 \$maxsearchdisplay = $maxsearchdisplay;		# Maximum of messages to display in a search query (-1 to disable search)
 \$maxmessagedisplay = $maxmessagedisplay;	# Maximum of messages to display
 \$showpageall = $showpageall;				# Disable or Enable show All on page selectors
@@ -752,6 +751,15 @@ $ext_prof_fields
 							# 0 to disable, 1 to enable.
 
 \$debug = $debug;				# If set to 1 debug info is added to the template. Tag in template is {yabb debug}
+
+########## Search Settings ##########
+\$enableguestsearch = $enableguestsearch;		# Set to 1 to enable guests access to advanced search.
+\$enableguestquicksearch = $enableguestquicksearch;	# Set to 1 to enable guests access to quick search.
+\$mgqcksearch = "\Q$mgqcksearch\E";
+\$mgadvsearch = "\Q$mgadvsearch\E";
+\$qcksearchtype = "\Q$qcksearchtype\E";
+\$qckage = "\Q$qckage\E";
+
 ########## Anti-spam Question Settings ##########
 
 \$en_spam_questions = $en_spam_questions;        # Set to 1 to enable Anti-spam Questions on registration

@@ -620,6 +620,14 @@ qq~<input type="text" name="maxrecentdisplay" id="maxrecentdisplay" size="5" val
             },
             {
                 description =>
+                  qq~<label for="maxrecentdisplay_t">$floodtxt{'5a'}</label>~,
+                input_html =>
+qq~<input type="text" name="maxrecentdisplay_t" id="maxrecentdisplay_t" size="5" value="$maxrecentdisplay_t" />~,
+                name     => 'maxrecentdisplay_t',
+                validate => 'fullnumber',
+            },
+            {
+                description =>
                   qq~<label for="maxsearchdisplay">$floodtxt{'6'}</label>~,
                 input_html =>
 qq~<input type="text" name="maxsearchdisplay" id="maxsearchdisplay" size="5" value="$maxsearchdisplay" />~,

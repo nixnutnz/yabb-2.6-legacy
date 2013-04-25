@@ -186,6 +186,9 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 # googiespell end
 
 # List of settings
+$qcksearchtype ||= 'allwords';
+$qckage ||= 31;
+
 @settings = (
 {
 	name  => $settings_txt{'generalforum'},
@@ -305,18 +308,6 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 			input_html => qq~<input type="checkbox" name="showlatestmember" id="showlatestmember" value="1"${ischecked($showlatestmember)} />~,
 			name => 'showlatestmember',
 			validate => 'boolean',
-		},
-		{
-			description => qq~<label for="showsearchbox">$admin_txt{'showsearchbox'}</label>~,
-			input_html => qq~<input type="checkbox" name="showsearchbox" id="showsearchbox" value="1"${ischecked($showsearchbox)} />~,
-			name => 'showsearchbox',
-			validate => 'boolean',
-		},
-		{
-			description => qq~<label for="showsearchboxnum">$admin_txt{'showsearchboxnum'}</label>~,
-			input_html => qq~<input type="text" size="4" name="showsearchboxnum" id="showsearchboxnum" value="$showsearchboxnum" />~,
-			name => 'showsearchboxnum',
-			validate => 'number',
 		},
 		{
 			description => qq~<label for="Show_RecentBar">$admin_txt{'509'}</label>~,
@@ -698,6 +689,79 @@ qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdM
 			name => 'quick_quotelength',
 			validate => 'number',
 			depends_on => ['enable_quickjump', 'enable_quickreply'],
+		},
+	],
+},
+{
+	name  => $settings_txt{'search'},
+	id    => 'search',
+	items => [
+		{
+			header => $settings_txt{'search'},
+		},
+		{
+			description => qq~<label for="maxsearchdisplay">$settings_txt{'6'}</label>~,
+			input_html => qq~<input type="text" name="maxsearchdisplay" id="maxsearchdisplay" size="5" value="$maxsearchdisplay" />~,
+			name => 'maxsearchdisplay',
+			validate => 'fullnumber',
+		},
+		{
+			header => $settings_txt{'advsearch'},
+		},
+		{
+			description => qq~<label for="mgadvsearch">$settings_txt{'mgadvsearch'}</label>~,
+			input_html => qq~<select multiple="multiple" name="mgadvsearch" id="mgadvsearch" size="8">~ . &DrawPerms($mgadvsearch, 0) . qq~</select>~,
+			name => 'mgadvsearch',
+			validate => 'text,null',
+		},
+		{
+			description => qq~<label for="enableguestsearch">$settings_txt{'guestsearch'}</label>~,
+			input_html => qq~<input type="checkbox" name="enableguestsearch" id="enableguestsearch" value="1" ${ischecked($enableguestsearch)}/>~,
+			name => 'enableguestsearch',
+			validate => 'boolean',
+		},
+		{
+			header => $settings_txt{'qcksearch'},
+		},
+		{
+			description => qq~<label for="mgqcksearch">$settings_txt{'mgqcksearch'}</label>~,
+			input_html => qq~<select multiple="multiple" name="mgqcksearch" id="mgqcksearch" size="8">~ . &DrawPerms($mgqcksearch, 0) . qq~</select>~,
+			name => 'mgqcksearch',
+			validate => 'text,null',
+		},
+		{
+			description => qq~<label for="enableguestquicksearch">$settings_txt{'guestquicksearch'}</label>~,
+			input_html => qq~<input type="checkbox" name="enableguestquicksearch" id="enableguestquicksearch" value="1" ${ischecked($enableguestquicksearch)}/>~,
+			name => 'enableguestquicksearch',
+			validate => 'boolean',
+		},
+		{
+			header => $settings_txt{'qcksearchparam'},
+		},
+		{
+			description => qq~<label for="qcksearchtype">$settings_txt{'qcksearchtype'}</label>~,
+			input_html => qq~
+				<select name="qcksearchtype" id="qcksearchtype">
+				<option value="allwords"${isselected($qcksearchtype eq 'allwords')}>$settings_txt{'qckallwords'}</option>
+				<option value="anywords"${isselected($qcksearchtype eq 'anywords')}>$settings_txt{'qckanywords'}</option>
+				<option value="asphrase"${isselected($qcksearchtype eq 'asphrase')}>$settings_txt{'qckasphrase'}</option>
+				<option value="aspartial"${isselected($qcksearchtype eq 'aspartial')}>$settings_txt{'qckaspartial'}</option>
+				</select>~,
+			name => 'qcksearchtype',
+			validate => 'text',
+		},
+		{
+			description => qq~<label for="qckage">$settings_txt{'qckage'}</label>~,
+			input_html => qq~
+				<select name="qckage" id="qckage">
+				<option value="7"${isselected($qckage == 7)}>$settings_txt{'qckweek'}</option>
+				<option value="31"${isselected($qckage == 31)}>$settings_txt{'qckmonth'}</option>
+				<option value="92"${isselected($qckage == 92)}>$settings_txt{'qckthreemonths'}</option>
+				<option value="365"${isselected($qckage == 365)}>$settings_txt{'qckyear'}</option>
+				<option value="0"${isselected($qckage == 0)}>$settings_txt{'qckallposts'}</option>
+				</select>~,
+			name => 'qckage',
+			validate => 'number',
 		},
 	],
 },
