@@ -118,7 +118,7 @@ $mainbody = qq~
 ~;
 
 $front_page = qq~<div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="cs_thin pad_4px" style="margin-bottom:.5em">
         <tr>
             <td class="titlebg" colspan="2">
                 <b>$admintxt{'1'}</b>
@@ -199,7 +199,7 @@ $front_page = qq~<div class="bordercolor rightboxdiv">
     </div>
 </div>
 <div class="right_50div">
-    <div class="bordercolor leftboxdiv">
+    <div class="bordercolor leftboxdiv" style="margin-bottom:.5em">
         <table class="cs_thin pad_4px">
             <tr>
                 <td class="titlebg">

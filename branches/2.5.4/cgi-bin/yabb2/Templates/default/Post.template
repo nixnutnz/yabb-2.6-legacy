@@ -41,7 +41,7 @@ $mypost_postblock = qq~
     <tr>
         <td class="vtop">
             <div id="SaveInfo" style="height:16px;">
-            <img src="$defaultimagesdir/cat_expand.gif" id="prevwin" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
+            <img src="$defaultimagesdir/cat_expand.gif" id="prevwin" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" onclick="enabPrev();" style="cursor:pointer" /> <b>$npf_txt{'04'}</b>
             </div>
         </td>
         <td>
@@ -273,7 +273,7 @@ $mypost_showmessages = q~
     </tr>
 </table>{yabb my_showmess_mess}~;
 
-$mypost_showmessages_a = qq~<table class="pad_3px">
+$mypost_showmessages_a = qq~<table class="pad_3px" style="table-layout: fixed;">
     <tr class="catbg">
         <td>
             <span class="small">$post_txt{'279'}: {yabb displaynamelink}<br />$post_txt{'280'}: {yabb tempdate}</span>
