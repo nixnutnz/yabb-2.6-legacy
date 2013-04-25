@@ -165,6 +165,7 @@ eval (require "$sourcedir/Security.pm");
 banning();     # Check for banned people
 LoadIMs();     # Load IM's
 WriteLog();    # write into the logfile
+SearchAccess();
 
 local $SIG{__WARN__} = sub { fatal_error( 'error_occurred', "@_" ); };
 eval { yymain(); };
