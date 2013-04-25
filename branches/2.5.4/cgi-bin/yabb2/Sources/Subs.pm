@@ -358,7 +358,9 @@ qq~&nbsp;<script  type="text/javascript">\n<!--\nWriteClock('yabbclock','$aa','$
 qq~<a href="$scripturl">$img{'home'}</a>$menusep<a href="$scripturl?action=help" style="cursor:help;">$img{'help'}</a>~;
 
         # remove search from menu if disabled by the admin
-        if ( $maxsearchdisplay > -1 ) {
+		if ($maxsearchdisplay > -1 && $qcksearchaccess eq 'granted') {
+			$qcksearchtype ||= 'allwords';
+			$qckage ||= '31';
             $yymenu .=
               qq~$menusep<a href="$scripturl?action=search">$img{'search'}</a>~;
         }
@@ -567,18 +569,17 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
         $yycopyin = 1;
     }    ## new template style in also
     $yysearchbox = q{};
-    if ( ( !$iamguest || $guestaccess != 0 ) && $showsearchbox ) {
-        if ( $maxsearchdisplay > -1 ) {
+    if ( !$iamguest || $guestaccess != 0 ) {
+		if ($maxsearchdisplay > -1 && $qcksearchaccess eq 'granted') {
             $yysearchbox = qq~
                     <div class="yabb_searchbox">
                     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
                     <form action="$scripturl?action=search2" method="post" accept-charset="$yycharset">
-                        <input type="hidden" name="searchtype" value="allwords" />
-                        <input type="hidden" name="userkind" value="any" />
-                        <input type="hidden" name="subfield" value="on" />
-                        <input type="hidden" name="msgfield" value="on" />
-                        <input type="hidden" name="age" value="$showsearchboxnum" />
-                        <input type="hidden" name="numberreturned" value="$maxsearchdisplay" />
+		                <input type="hidden" name="searchtype" value="$qcksearchtype" />
+		                <input type="hidden" name="userkind" value="any" />
+		                <input type="hidden" name="subfield" value="on" />
+		                <input type="hidden" name="msgfield" value="on" />
+		                <input type="hidden" name="age" value="$qckage" />
                         <input type="hidden" name="oneperthread" value="1" />
                         <input type="hidden" name="searchboards" value="!all" />
                         <input type="text" name="search" size="16" id="search1" value="$img_txt{'182'}" style="font-size: 11px;" onfocus="txtInFields(this, '$img_txt{'182'}');" onblur="txtInFields(this, '$img_txt{'182'}')" />

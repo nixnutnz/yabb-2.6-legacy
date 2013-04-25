@@ -780,40 +780,9 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_n
         $d_mon      = substr $event_date, 4, 2;
         $d_day      = substr $event_date, 6, 2;
 
-        if ( $mytimeselected == 1 || $mytimeselected == 5 ) {
-            $cdate = "$d_mon/$d_day/$d_year";
-        }
-        elsif ( $mytimeselected == 2 || $mytimeselected == 3 ) {
-            $cdate = "$d_day.$d_mon.$d_year";
-        }
-        elsif ( $mytimeselected == 4 || $mytimeselected == 8 ) {
-            my $sup;
-            if ( $d_day > 10 && $d_day < 20 ) {
-                $sup = "<sup>$timetxt{'4'}</sup>";
-            }
-            elsif ( $d_day % 10 == 1 ) {
-                $sup = "<sup>$timetxt{'1'}</sup>";
-            }
-            elsif ( $d_day % 10 == 2 ) {
-                $sup = "<sup>$timetxt{'2'}</sup>";
-            }
-            elsif ( $d_day % 10 == 3 ) {
-                $sup = "<sup>$timetxt{'3'}</sup>";
-            }
-            else {
-                $sup = "<sup>$timetxt{'4'}</sup>";
-            }
-            $cdate =
-              $mytimeselected == 4
-              ? qq~$var_cal{"calmon_$d_mon"} $d_day$sup, $d_year~
-              : qq~$d_day$sup $var_cal{"calmon_$d_mon"}, $d_year~;
-        }
-        elsif ( $mytimeselected == 6 ) {
-            $cdate = qq~$d_day. $var_cal{"calmon_$d_mon"} $d_year~;
-        }
-        else {
-            $cdate = "$d_day-$d_mon-$d_year";
-        }
+        $mybtime = stringtotime(qq~$d_mon/$d_day/$d_year~);
+        $mybtimein = timeformat($mybtime);
+        $cdate = dtonly($mybtimein);
 
         if ( $INFO{'showmini'} ) {
             $mycalout_top = $mycalout_gottobox;
@@ -875,6 +844,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cnam}" rel="nof
                     if ( $cico eq 'birthday' ) {
                         if ( $showage && $chide == 1 ) {
                             $greet = $var_cal{'bdayhide'};
+                            $cdate = bdayno_year($mybtimein);
                         }
                         else {
                             $greet =
@@ -1227,39 +1197,11 @@ qq~<br /><br /><a  href="$scripturl?action=eventcal;calshow=1;eventdate=$cyear$c
         }
 
         if ( $event_found == 1 ) {
-            if ( $mytimeselected == 1 || $mytimeselected == 5 ) {
-                $cdate = "$cmon/$cday/$cyear";
-            }
-            elsif ( $mytimeselected == 2 || $mytimeselected == 3 ) {
-                $cdate = "$cday.$cmon.$cyear";
-            }
-            elsif ( $mytimeselected == 4 || $mytimeselected == 8 ) {
-                my $sup;
-                if ( $cday > 10 && $cday < 20 ) {
-                    $sup = "<sup>$timetxt{'4'}</sup>";
-                }
-                elsif ( $cday % 10 == 1 ) {
-                    $sup = "<sup>$timetxt{'1'}</sup>";
-                }
-                elsif ( $cday % 10 == 2 ) {
-                    $sup = "<sup>$timetxt{'2'}</sup>";
-                }
-                elsif ( $cday % 10 == 3 ) {
-                    $sup = "<sup>$timetxt{'3'}</sup>";
-                }
-                else {
-                    $sup = "<sup>$timetxt{'4'}</sup>";
-                }
-                $cdate =
-                  $mytimeselected == 4
-                  ? qq~$var_cal{"calmon_$cmon"} $cday$sup, $cyear~
-                  : qq~$cday$sup $var_cal{"calmon_$cmon"}, $cyear~;
-            }
-            elsif ( $mytimeselected == 6 ) {
-                $cdate = qq~$cday. $var_cal{"calmon_$cmon"} $cyear~;
-            }
-            else {
-                $cdate = "$cday-$cmon-$cyear";
+            $mybtime = stringtotime(qq~$cmon/$cday/$cyear~);
+            $mybtimein = timeformat($mybtime);
+            $cdate = dtonly($mybtimein);
+            if ( $showage && $chide ) {
+                $cdate = bdayno_year($mybtimein);
             }
             $cdate =
 qq~<a href="$scripturl?action=eventcal;calshow=1;eventdate=$cyear$cmon$cday;calid=~
@@ -1292,7 +1234,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cname}" rel="no
             else                   { $eventuserlink = "($eventuserlink)"; }
             if ( $Scroll_Events == 3 ) {
                 if ( $cicon eq 'birthday' ) {
-                    if ( $showage && $chide == 1 ) {
+                    if ( $showage && $chide ) {
                         $greet = $var_cal{'bdayhide'};
                     }
                     else {

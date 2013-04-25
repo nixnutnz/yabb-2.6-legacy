@@ -345,6 +345,43 @@ sub CheckIcon {
     return;
 }
 
+sub SearchAccess {
+	$advsearchaccess = q{};
+	$qcksearchaccess = q{};
+	if (!exists $memberunfo{$username}) { LoadUser($username); }
+	if($iamguest) {
+		if($enableguestsearch) { $advsearchaccess = 'granted'; }
+		if($enableguestquicksearch) { $qcksearchaccess = 'granted'; }
+		return;
+	}
+	if ($iamadmin) {
+		$advsearchaccess = 'granted';
+		$qcksearchaccess = 'granted';
+		return;
+	}
+	@advsearch_groups = split /, /sm, $mgadvsearch;
+	if(!$mgadvsearch) { $advsearchaccess = "granted"; }
+	@qcksearch_groups = split /, /sm, $mgqcksearch;
+	if(!$mgqcksearch) { $qcksearchaccess = 'granted'; }
+	$memberinform = $memberunfo{$username};
+	foreach my $advelement (@advsearch_groups) {
+		chomp $advelement;
+		if ($advelement eq $memberinform) { $advsearchaccess = 'granted'; }
+		foreach (split /,/, $memberaddgroup{$username}) {
+			if ($advelement eq $_) { $advsearchaccess = 'granted'; last; }
+		}
+		if ($advsearchaccess eq 'granted') { last; }
+	}
+	foreach my $qckelement (@qcksearch_groups) {
+		chomp $qckelement;
+		if ($qckelement eq $memberinform) { $qcksearchaccess = 'granted'; }
+		foreach (split /,/xsm, $memberaddgroup{$username}) {
+			if ($qckelement eq $_) { $qcksearchaccess = 'granted'; last; }
+		}
+		if ($qcksearchaccess eq 'granted') { last; }
+	}
+}
+
 sub AccessCheck {
     my ( $curboard, $checktype, $boardperms ) = @_;
 

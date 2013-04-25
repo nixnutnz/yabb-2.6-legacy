@@ -78,7 +78,7 @@ sub mainMenu {
 qq~<li><span |><a href="$scripturl" title = "$img_txt{'103'}">$img_txt{'103'}</a></span></li>~;
     $tab{'help'} =
 qq~<li><span |><a href="$scripturl?action=help" title = "$img_txt{'119'}" class="help">$img_txt{'119'}</a></span></li>~;
-    if ( $maxsearchdisplay > -1 ) {
+	if ($maxsearchdisplay > -1 && $advsearchaccess eq 'granted') {
         $tab{'search'} =
 qq~<li><span |><a href="$scripturl?action=search" title = "$img_txt{'182'}">$img_txt{'182'}</a></span></li>~;
     }

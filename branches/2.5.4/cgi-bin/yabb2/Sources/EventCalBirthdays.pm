@@ -310,67 +310,15 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
                 if ( $Show_BirthdayDate == 2
                     || ( $Show_BirthdayDate == 1 && !$iamguest ) )
                 {
+
                     ## User date display begin ##
-                    if ( $mytimeselected == 1 || $mytimeselected == 5 ) {
-                        if ( $showage && $user_bdhide ) {
-                            $cdate = "$user_bdmon/$user_bdday";
-                        }
-                        else {
-                            $cdate = "$user_bdmon/$user_bdday/$user_bdyear";
-                        }
+                    $mybtime = stringtotime(qq~$user_bdmon/$user_bdday/$user_bdyear~);
+                    $mybtimein = timeformat($mybtime);
+                    $cdate = dtonly($mybtimein);
+                    if ( $showage && $user_bdhide ) {
+                        $cdate = bdayno_year($mybtimein);
                     }
-                    elsif ( $mytimeselected == 2 || $mytimeselected == 3 ) {
-                        if ( $showage && $user_bdhide ) {
-                            $cdate = "$user_bdday.$user_bdmon";
-                        }
-                        else {
-                            $cdate = "$user_bdday.$user_bdmon.$user_bdyear";
-                        }
-                    }
-                    elsif ( $mytimeselected == 4 ) {
-                        my $sup;
-                        if ( $user_bdday > 10 && $user_bdday < 20 ) {
-                            $sup = "<sup>$timetxt{'4'}</sup>";
-                        }
-                        elsif ( $user_bdday % 10 == 1 ) {
-                            $sup = "<sup>$timetxt{'1'}</sup>";
-                        }
-                        elsif ( $user_bdday % 10 == 2 ) {
-                            $sup = "<sup>$timetxt{'2'}</sup>";
-                        }
-                        elsif ( $user_bdday % 10 == 3 ) {
-                            $sup = "<sup>$timetxt{'3'}</sup>";
-                        }
-                        else {
-                            $sup = "<sup>$timetxt{'4'}</sup>";
-                        }
-                        if ( $showage && $user_bdhide ) {
-                            $cdate =
-qq~$var_cal{"calmon_$user_bdmon"} $user_bdday$sup~;
-                        }
-                        else {
-                            $cdate =
-qq~$var_cal{"calmon_$user_bdmon"} $user_bdday$sup, $user_bdyear~;
-                        }
-                    }
-                    elsif ( $mytimeselected == 6 ) {
-                        if ( $showage && $user_bdhide ) {
-                            $cdate =
-                              qq~$user_bdday. $var_cal{"calmon_$user_bdmon"}~;
-                        }
-                        else {
-                            $cdate =
-qq~$user_bdday. $var_cal{"calmon_$user_bdmon"} $user_bdyear~;
-                        }
-                    }
-                    else {
-                        if ( $showage && $user_bdhide ) {
-                            $cdate = "$user_bdday-$user_bdmon";
-                        }
-                        else {
-                            $cdate = "$user_bdday-$user_bdmon-$user_bdyear";
-                        }
-                    }
+
                     ## User date display end ##
                 }
 

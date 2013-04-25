@@ -77,6 +77,16 @@ sub stringtotime {
         $amin   = int($5);
         $asec   = int($6);
     }
+    elsif ( $splitvar =~
+        m/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/sm )
+    {
+        $amonth = int($1);
+        $aday   = int($2);
+        $ayear  = int($3);
+        $ahour  = 0;
+        $amin   = 0;
+        $asec   = 0;
+    }
     else {        
         $amonth = 1;
         $aday   = 1;
@@ -497,7 +507,7 @@ sub time_8 {
 sub dtonly {
     my ($newformat) = @_;
     if( $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ism) {
-	$dateonly = $1;
+	    $dateonly = $1;
 	}
 	
 	return ($dateonly);
@@ -506,10 +516,32 @@ sub dtonly {
 sub tmonly {
     my ($newformat) = @_;
     if( $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ism) {
-	$timeonly = $2;
+	    $timeonly = $2;
 	}
 	
 	return ($timeonly);
+}
+
+sub bdayno_year {
+    my ($newformat) = @_;
+	$date_noyear = $newformat;
+	if ($mytimeselected == 4 || $mytimeselected == 8 ) {
+	    ($date_noyear, undef) = split /\,/xsm, $newformat;   
+	}
+	elsif ($mytimeselected == 1 || $mytimeselected == 5 ) {
+	    @date_noyear = split /\//xsm, $newformat;
+	    $date_noyear = qq~$date_noyear[0]~ . '/' . qq~$date_noyear[1]~;   
+	}
+	elsif ($mytimeselected == 2 || $mytimeselected == 2 ) {
+	    @date_noyear = split /\./xsm, $newformat;
+	    $date_noyear = qq~$date_noyear[0]~ . '/' . qq~$date_noyear[1]~;   
+	}
+	elsif ($mytimeselected == 6 ) {
+	    @date_noyear = split /\ /xsm, $newformat;
+	    $date_noyear = qq~$date_noyear[0] $date_noyear[1]~;   
+	}
+	
+	return ($date_noyear);
 } 
 
 1;

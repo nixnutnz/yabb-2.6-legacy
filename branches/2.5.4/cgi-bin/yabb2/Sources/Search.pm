@@ -54,6 +54,7 @@ sub plushSearch1 {
 
     # generate error if admin has disabled search options
     if ( $maxsearchdisplay < 0 ) { fatal_error('search_disabled'); }
+	if ( $advsearchaccess ne 'granted' ) { fatal_error('no_access'); }
     my (
         @categories, $curcat,   %catname, %cataccess, @membergroups,
         %openmemgr,  $curboard, @threads, @boardinfo, $counter
@@ -225,6 +226,7 @@ sub plushSearch2 {
 
     # generate error if admin has disabled search options
     if ( $maxsearchdisplay < 0 ) { fatal_error('search_disabled'); }
+	if ($advsearchaccess ne 'granted' && $qcksearchaccess ne 'granted') { fatal_error( 'no_access' ); }
     spam_protection();
 
     my $maxage = $FORM{'age'}

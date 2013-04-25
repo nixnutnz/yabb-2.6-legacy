@@ -1419,10 +1419,10 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt $boa
             if ( $Show_RecentBar == 2 || $Show_RecentBar == 3 ) {
                 $recentl_t   = 'recenttopics';
                 $recenttxt_t = "$boardindex_txt{'792a'}";
-                if ( $maxrecentdisplay > 0 ) {
+                if ( $maxrecentdisplay_t > 0 ) {
                     $recenttopicslink =
 qq~$boardindex_txt{'791'} <form method="post" action="$scripturl?action=$recentl_t" name="$recentl_t" style="display: inline"><select size="1" name="display" onchange="submit()"><option value="">&nbsp;</option>~;
-                    my ( $x, $y ) = ( int( $maxrecentdisplay / 5 ), 0 );
+                    my ( $x, $y ) = ( int( $maxrecentdisplay_t / 5 ), 0 );
                     if ($x) {
                         foreach my $i ( 1 .. 5 ) {
                             $y = $i * $x;
@@ -1430,13 +1430,13 @@ qq~$boardindex_txt{'791'} <form method="post" action="$scripturl?action=$recentl
                         }
                     }
                     if ( $maxrecentdisplay > $y ) {
-                        qq~<option value="$maxrecentdisplay">$maxrecentdisplay</option>~;
+                        qq~<option value="$maxrecentdisplay_t">$maxrecentdisplay_t</option>~;
                     }
                     $recenttopicslink .=
 qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $boardindex_txt{'793'}~;
                 }
             }
-            if ( $Show_RecentBar == 3 ) {$spc = q~<br />~;}
+            if ( $Show_RecentBar == 3 && $maxrecentdisplay_t > 0 ) {$spc = q~<br />~;}
             $boardindex_template =~
               s/({|<)yabb lastpostlink(}|>)/$lastpostlink/gsm;
             $boardindex_template =~

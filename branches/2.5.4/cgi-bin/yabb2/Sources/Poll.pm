@@ -683,7 +683,7 @@ qq~$polltxt{'47'}<br /><span class="small">($polltxt{'48'})</span><br />~;
         if ($has_voted) {
             if ( $INFO{'view'} eq 'pie' ) {
                 $poll_hasvoted = qq~
-                <script src="$yyhtml_root/piechart.js" type="text/javascript"></script>
+                <div align="center" style="margin-right:auto; margin-left:auto"><script src="$yyhtml_root/piechart.js" type="text/javascript"></script>
                 <script type="text/javascript">
                 <!--
                         if (document.getElementById('piestyle').currentStyle) {
@@ -701,7 +701,7 @@ qq~$polltxt{'47'}<br /><span class="small">($polltxt{'48'})</span><br />~;
                         pie.color_style = pie_colorstyle;
                         pie.sliceAdd();
                         //-->
-                </script>~;
+                </script></div>~;
             }
             else {
                 for my $i ( 0 .. ( @options - 1 ) ) {

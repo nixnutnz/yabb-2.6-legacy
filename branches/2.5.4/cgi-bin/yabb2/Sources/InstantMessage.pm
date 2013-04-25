@@ -513,7 +513,7 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
                 if ( $SmilieURL[$i] =~ /\//ism ) { $tmpurl = $SmilieURL[$i]; }
                 else { $tmpurl = qq~$imagesdir/$SmilieURL[$i]~; }
                 $moresmilieslist .=
-qq~             document.write('<img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="javascript: MoreSmilies($i);" class="pointer bottom" />$SmilieLinebreak[$i] ');\n~;
+qq~             document.write('<img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="javascript: MoreSmilies($i);" class="bottom" style="cursor: pointer" />$SmilieLinebreak[$i] ');\n~;
                 $tmpcode = $SmilieCode[$i];
                 $tmpcode =~ s/\&quot;/"+'"'+"/gsm;
                    #" Adding that because if not it screws up my syntax view'

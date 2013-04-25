@@ -2906,7 +2906,6 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
     $string_regdate = stringtotime( ${ $uid . $user }{'regdate'} );
     $string_curdate = $date;
 
-    #if ($string_regdate < $forumstart) { $string_regdate = $forumstart }
     if ( $string_curdate < $forumstart ) { $string_curdate = $forumstart }
 
     $member_for_days = int( ( $string_curdate - $string_regdate ) / 86_400 );
