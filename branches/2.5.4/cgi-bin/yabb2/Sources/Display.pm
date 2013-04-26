@@ -637,7 +637,7 @@ qq~<a href="$scripturl?board=$currentboard">&lsaquo; $maintxt{'board'}</a>~;
         $template_mods = qq~$showmods$showmodgroups~;
     }
     if (   $showtopicviewers
-        && ( $iamadmin || $iamgmod || $iammod || $iamymod )
+        && ( $staff )
         && $sessionvalid == 1 )
     {
         foreach (@repliers) {
@@ -893,10 +893,7 @@ qq~ <a href="$scripturl?action=iplookup;ip=$mip_three"><span class="small">$mip_
         ## moderator alert button!
         if (   $PMenableAlertButton
             && $PM_level
-            && !$iamadmin
-            && !$iamgmod
-            && !$iamymod
-            && !$iammod
+            && !$staff
             && ( !$iamguest || ( $iamguest && $PMAlertButtonGuests ) ) )
         {
             $PMAlertButton =
@@ -932,7 +929,7 @@ qq~$menusep<a href="$scripturl?num=$viewnum;action=addbuddy;name=$useraccount{$m
                     $PM_level == 1
                     || (   $PM_level == 2
                         && $UserPM_Level{$musername} > 1
-                        && ( $iamadmin || $iamgmod || $iamymod || $iammod ) )
+                        && $staff )
                     || (   $PM_level == 3
                         && $UserPM_Level{$musername} == 3
                         && ( $iamadmin || $iamgmod || $iamymod ) )
@@ -1138,10 +1135,7 @@ qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote
                 }
 
                 if (  !$movedflag
-                    || $iamadmin
-                    || $iamgmod
-                    || $iamymod
-                    || $iammod )
+                    || $staff )
                 {
                     if ($enable_quickreply) {
                         $quote_mname = $useraccount{$musername};
@@ -1186,10 +1180,7 @@ qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboar
             if (
                 $sessionvalid == 1
                 && (
-                       $iamadmin
-                    || $iamgmod
-                    || $iamymod
-                    || $iammod
+                       $staff
                     || (
                         $username eq $musername
                         && (  !$tlnomodflag
@@ -1209,7 +1200,7 @@ qq~$menusep<a href="$scripturl?board=$currentboard;action=modify;message=$counte
 qq~$menusep<a href="$scripturl?action=print;num=$viewnum;post=$postnum" onclick="target='_blank';">$img{'printp'}</a>~;
 
             if (   $counter > 0
-                && ( $iamadmin || $iamgmod || $iamymod || $iammod )
+                && ( $staff )
                 && $sessionvalid == 1 )
             {
                 $template_split =
@@ -1220,10 +1211,7 @@ qq~$menusep<a href="$scripturl?action=split_splice;board=$currentboard;thread=$v
             if (
                 $sessionvalid == 1
                 && (
-                       $iamadmin
-                    || $iamgmod
-                    || $iamymod
-                    || $iammod
+                       $staff
                     || (
                         $username eq $musername
                         && (  !$tlnodelflag
@@ -1398,7 +1386,7 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter"><img src="$imagesdir/$mic
         $template_remove, $template_splice, $template_lock,
         $template_hide,   $template_sticky, $template_multidelete
     );
-    if ( ( $iammod || $iamadmin || $iamymod || $iamgmod )
+    if ( ( $staff )
         && $sessionvalid == 1 )
     {
         $template_remove =
@@ -1550,7 +1538,7 @@ qq~$menusep<a href="$scripturl?action=markunread;thread=$viewnum;board=$currentb
     $tmpviews = NumberFormat($tmpviews);
     $display_template =~ s/({|<)yabb views(}|>)/ $tmpviews /egsm;
 
-    if ( ( $iamadmin || $iamgmod || $iamymod || $iammod )
+    if ( ( $staff )
         && $sessionvalid == 1 )
     {
 
@@ -1680,7 +1668,7 @@ sub NextPrev {
     for my $i ( 0 .. ( @threadlist - 1 ) ) {
         my $threadstatus = ( split /\|/xsm, $threadlist[$i] )[8];
         if ( $threadstatus =~ /h/ism
-            && ( !$iamadmin && !$iamgmod && !$iamymod && !$iammod ) )
+            && !$staff )
         {
             next;
         }

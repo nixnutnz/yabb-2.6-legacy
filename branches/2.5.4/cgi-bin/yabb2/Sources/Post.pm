@@ -52,9 +52,7 @@ sub Post {
     if ( $iamguest && $enable_guestposting == 0 ) {
         fatal_error('not_logged_in');
     }
-    if (   !$iamadmin
-        && !$iamgmod
-        && !$iammod
+    if (   !$staff
         && $speedpostdetection
         && ${ $uid . $username }{'spamcount'} >= $post_speed_count )
     {
@@ -633,7 +631,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
 
         if (   $showtopicrepliers
             && $template_viewers
-            && ( ( $iamadmin || $iamgmod || $iammod ) && $sessionvalid == 1 ) )
+            && ( $staff && $sessionvalid == 1 ) )
         {
             $template_viewers =~ s/\, \Z/\./sm;
             $my_tview = $mypost_topview;
@@ -760,7 +758,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
             if ( $thestatus =~ /h/sm ) { $hdselect = q~selected="selected"~; }
             $hidestatus = q{};
 
-            if ( ( $iamadmin || $iamgmod || $iamymod || $iammod ) && $sessionvalid == 1 ) {
+            if ( $staff && $sessionvalid == 1 ) {
                 $my_curbrd = $currentboard ne $annboard ? 3 : 2;
                 $my_stselect =
                   $currentboard ne $annboard
@@ -1095,7 +1093,7 @@ qq~<script type="text/javascript" src="$yyhtml_root/googiespell/cookiesupport.js
 
     if (   $postid ne 'Poll'
         && $post ne 'imsend'
-        && ( $iamadmin || $iamgmod || $iamymod || $iammod )
+        && $staff
         && $sessionvalid == 1 )
     {
         $my_tclass = qq~
@@ -1664,10 +1662,7 @@ sub Post2 {
         fatal_error('not_logged_in');
     }
 
-    if (   !$iamadmin
-        && !$iamgmod
-        && !$iamymod
-        && !$iammod
+    if (   !$staff
         && $speedpostdetection
         && ${ $uid . $username }{'spamcount'} >= $post_speed_count )
     {
@@ -1753,7 +1748,7 @@ sub Post2 {
         ${ $uid . $FORM{$username} }{'spamcount'} = 0;
     }
     $postspeed = $date - $posttime;
-    if ( !$iamadmin && !$iamgmod && !$iamymod && !$iammod ) {
+    if ( !$staff ) {
         if ( ( $speedpostdetection && $postspeed < $min_post_speed )
             || $spamdetected == 1 )
         {
@@ -1852,10 +1847,7 @@ sub Post2 {
 
     if ( !$minlinkpost ) { $minlinkpost = 0; }
     if (   ${ $uid . $username }{'postcount'} < $minlinkpost
-        && !$iamadmin
-        && !$iamgmod
-        && !&iamymod
-        && !$iammod )
+        && !$staff )
     {
         if (   $message =~ m{http:\/\/}xsm
             || $message =~ m{https:\/\/}xsm
@@ -2038,7 +2030,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
             my $fixext = $2;
 
             $spamdetected = spamcheck("$fixname");
-            if ( !$iamadmin && !$iamgmod && !$iamymod && !$iammod ) {
+            if ( !$staff ) {
                 if ( $spamdetected == 1 ) {
                     ${ $uid . $username }{'spamcount'}++;
                     ${ $uid . $username }{'spamtime'} = $date;
@@ -2196,7 +2188,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
     # set announcement flag according to status of current board
     if ($newthreadid) {
         $mreplies = 0;
-        if ( $iammod || $iamymod || $iamgmod || $iamadmin ) {
+        if ( $staff ) {
             $mstate =
               $currentboard eq $annboard ? "0a$thestatus" : "0$thestatus";
         }
@@ -2274,7 +2266,7 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
             }                         # only if bypass switched on
             if ( !$icanbypass ) { fatal_error('topic_locked'); }
         }
-        if ( $iammod || $iamymod || $iamgmod || $iamadmin ) {
+        if ( $staff ) {
             $mstate =
               $currentboard eq $annboard ? "0a$thestatus" : "0$thestatus";
         }    # Leave the status as is if the user isn't allowed to change it
@@ -3243,7 +3235,7 @@ sub modAlert2 {
         ${ $uid . $FORM{$username} }{'spamcount'} = 0;
     }
     $postspeed = $date - $posttime;
-    if ( !$iamadmin && !$iamgmod && !$iamymod && !$iammod ) {
+    if ( !$staff ) {
         if ( ( $speedpostdetection && $postspeed < $min_post_speed )
             || $spamdetected == 1 )
         {

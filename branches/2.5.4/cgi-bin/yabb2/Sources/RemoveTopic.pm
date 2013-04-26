@@ -146,7 +146,7 @@ sub DeleteThread {
 }
 
 sub Multi {
-    if ( !$iamadmin && !$iamgmod && !$iamymod && !$iammod ) { fatal_error('not_allowed'); }
+    if ( !$staff ) { fatal_error('not_allowed'); }
 
     require Sources::SetStatus;
     require Sources::MoveSplitSplice;

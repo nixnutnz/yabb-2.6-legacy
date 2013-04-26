@@ -157,7 +157,7 @@ sub ProfileMenu {
     }
 
     if (   $PM_level == 1
-        || ( $PM_level == 2 && ( $iamadmin || $iamgmod || $iamymod || $iammod ) )
+        || ( $PM_level == 2 && ( $staff ) )
         || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod ) ) )
     {
         $pmlevel = $myprofile_pmlevel;
@@ -411,7 +411,7 @@ $myprofile_edit~;
 
     if (   $sessions == 1
         && $sessionvalid == 1
-        && ( $iamadmin || $iamgmod || $iamymod || $iammod )
+        && ( $staff )
         && $username eq $user )
     {
         LoadLanguage('Sessions');
@@ -510,7 +510,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
     if (
         (
                $PM_level == 1
-            || ( $PM_level == 2 && ( $iamadmin || $iamgmod || $iamymod || $iammod ) )
+            || ( $PM_level == 2 && ( $staff ) )
             || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod ) )
         )
         && (
@@ -2051,7 +2051,7 @@ sub ModifyProfileOptions2 {
 
         require Sources::SpamCheck;
         my $spamdetected = spamcheck("$fixfile");
-        if ( !$iamadmin && !$iamgmod && !$iamymod && !$iammod ) {
+        if ( !$staff ) {
             if ( $spamdetected == 1 ) {
                 ${ $uid . $username }{'spamcount'}++;
                 ${ $uid . $username }{'spamtime'} = $date;
@@ -2295,7 +2295,7 @@ sub ModifyProfileOptions2 {
         $scriptAction = q~viewprofile~;
     }
     if (   $PM_level == 1
-        || ( $PM_level == 2 && ( $iamadmin || $iamgmod || $iamymod || $iammod ) )
+        || ( $PM_level == 2 && ( $staff ) )
         || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod) ) )
     {
         $scriptAction = q~profileIM~;
@@ -2354,7 +2354,7 @@ sub ModifyProfileBuddy2 {
         $scriptAction = q~viewprofile~;
     }
     if (   $PM_level == 1
-        || ( $PM_level == 2 && ( $iamadmin || $iamgmod || $iamymod || $iammod ) )
+        || ( $PM_level == 2 && ( $staff ) )
         || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod ) ) )
     {
         $scriptAction = q~profileIM~;
@@ -3007,7 +3007,7 @@ qq~<a href="$scripturl?board=$board" class="a">$boardname</a><br />~;
             $PM_level == 1
             || (   $PM_level == 2
                 && $UserPM_Level{$user} > 1
-                && ( $iamadmin || $iamgmod || $iamymod || $iammod ) )
+                && ( $staff ) )
             || (   $PM_level == 3
                 && $UserPM_Level{$user} == 3
                 && ( $iamadmin || $iamgmod || $iamymod ) )
@@ -3046,7 +3046,7 @@ qq~<a href="$scripturl?board=$board" class="a">$boardname</a><br />~;
         $lastPM     = qq~$profile_amv_txt{'mylastpm'}~;
     }
     if (   $PM_level == 1
-        || ( $PM_level == 2 && ( $iamadmin || $iamgmod || $iamymod|| $iammod ) )
+        || ( $PM_level == 2 && $staff )
         || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod ) ) )
     {
         $my_lastPM = qq~

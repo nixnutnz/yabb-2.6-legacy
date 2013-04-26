@@ -60,10 +60,7 @@ sub ModifyMessage {
         if ($bypass_lock_perm) { $icanbypass = checkUserLockBypass(); }
         if ( !$icanbypass ) { fatal_error('topic_locked'); }
     }
-    elsif (!$iamadmin
-        && !$iamgmod
-        && !$iammod
-        && !$iamymod
+    elsif (!$staff
         && $tlnomodflag
         && $date > $mdate + ( $tlnomodtime * 3600 * 24 ) )
     {
@@ -223,10 +220,7 @@ sub ModifyMessage2 {
                 chomp $mfn;
                 if (
                     ${ $uid . $username }{'regdate'} > $mdate
-                    || (   !$iamadmin
-                        && !$iamgmod
-                        && !$iamymod
-                        && !$iammod
+                    || (   !$staff
                         && $musername ne $username )
                     || !$sessionvalid
                   )
@@ -473,7 +467,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
         ${ $uid . $FORM{$username} }{'spamcount'} = 0;
     }
     $postspeed = $date - $posttime;
-    if ( !$iamadmin && !$iamgmod && !$iamymod && !$iammod ) {
+    if ( !$staff ) {
         if ( ( $speedpostdetection && $postspeed < $min_post_speed )
             || $spamdetected == 1 )
         {
@@ -521,10 +515,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
 
     if ( !$minlinkpost ) { $minlinkpost = 0; }
     if (   ${ $uid . $username }{'postcount'} < $minlinkpost
-        && !$iamadmin
-        && !$iamgmod
-        && !$iamymod
-        && !$iammod
+        && !$staff
         && !$iamguest )
     {
         if (   $message =~ m{http:\/\/}xsm
@@ -553,7 +544,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
         if ($bypass_lock_perm) { $icanbypass = checkUserLockBypass(); }
         if ( !$icanbypass ) { fatal_error('topic_locked'); }
     }
-    if ( $iammod || $iamgmod || $iamymod || $iamadmin ) {
+    if ( $staff ) {
         $thestatus =~ s/0//gxsm;
         $tstate = $tstate =~ /a/ism ? "0a$thestatus" : "0$thestatus";
         MessageTotals( 'load', $tnum );
@@ -866,10 +857,7 @@ sub MultiDel {    # deletes singel- or multi-Posts
             # Checks that the user is actually allowed to access multidel
             if (
                 ${ $uid . $username }{'regdate'} > $message[3]
-                || (   !$iamadmin
-                    && !$iamgmod
-                    && !$iamymod
-                    && !$iammod
+                || (   !$staff
                     && $musername ne $username )
                 || !$sessionvalid
               )

@@ -107,7 +107,7 @@ sub buildIMsend {
         || (
             (
                 $PMenableBm_level != 1
-                || ( !$iamadmin && !$iamgmod && !$iammod )
+                || ( !$staff )
             )
             && ( $PMenableBm_level != 2 || ( !$iamadmin && !$iamgmod ) )
             && ( $PMenableBm_level != 3 || !$iamadmin )
@@ -1179,7 +1179,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                 my $fixext = $2;
 
                 $spamdetected = spamcheck("$fixname");
-                if ( !$iamadmin && !$iamgmod && !$iammod ) {
+                if ( !$staff ) {
                     if ( $spamdetected == 1 ) {
                         ${ $uid . $username }{'spamcount'}++;
                         ${ $uid . $username }{'spamtime'} = $date;

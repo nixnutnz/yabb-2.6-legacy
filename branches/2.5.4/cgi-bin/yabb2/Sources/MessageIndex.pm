@@ -624,7 +624,7 @@ qq~<a href="http://$perm_domain/$symlink$permdate/$permlinkboard/$mnum">$message
         }
         ### Start Sticky Shimmy Shuffle mod
         my $stickdir;
-        if ( $iammod || $iamadmin || $iamgmod || $iamymod ) {
+        if ( $staff ) {
             if ( $threadclass eq 'sticky' || $threadclass eq 'stickylock' ) {
                 $stickdir =
 qq~&nbsp;&nbsp;<a href="$scripturl?action=rearrsticky;board=$currentboard;num=$mnum;direction=up"><span style="font-size:medium"><b>&uarr;</b></span></a><a href="$scripturl?action=rearrsticky;board=$currentboard;num=$mnum;direction=down"><span style="font-size:medium"><b>&darr;</b></span> </a>~;
@@ -1139,7 +1139,7 @@ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies
     <img src="$imagesdir/$msgbrd_stickylock" alt="$messageindex_txt{'456'}" title="$messageindex_txt{'780'}" /> $messageindex_txt{'780'}<br />
     <img src="$imagesdir/$msgbrd_locked_moved" alt="$messageindex_txt{'845'}" title="$messageindex_txt{'845'}" /> $messageindex_txt{'845'}<br />
 ~;
-        if ( ( $iamadmin || $iamgmod || $iammod || $iamymod )
+        if ( ( $staff )
             && $sessionvalid == 1 )
         {
             $yabbadminicons =

@@ -21,10 +21,10 @@ $memberlistpmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( $iamguest && $ML_Allowed ) { fatal_error('no_access'); }
-if ( $ML_Allowed == 2 && !$iamadmin && !$iamgmod && !$iammod ) {
+if ( $ML_Allowed == 2 && !$staff ) {
     fatal_error('no_access');
 }
-if ( $ML_Allowed == 3 && !$iamadmin && !$iamgmod ) {
+if ( $ML_Allowed == 3 && !$iamadmin && !$iamgmod && !$iamymod ) {
     fatal_error('no_access');
 }
 

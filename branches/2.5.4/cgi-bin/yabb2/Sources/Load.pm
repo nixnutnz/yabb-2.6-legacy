@@ -79,7 +79,7 @@ sub LoadIMs {
       if ( $iamguest
         || $PM_level == 0
         || ( $maintenance && !$iamadmin )
-        || ( $PM_level == 2 && ( !$iamadmin && !$iamgmod && !$iamymod && !$iammod ) )
+        || ( $PM_level == 2 && ( !$staff ) )
         || ( $PM_level == 3 && ( !$iamadmin && !$iamgmod && !$iamymod ) ) );
 
     if ( !exists ${$username}{'PMmnum'} ) { buildIMS( $username, 'load' ); }
@@ -1292,7 +1292,7 @@ sub LoadBroadcastMessages { #check broadcast messages
       if ( $iamguest
         || $PM_level == 0
         || ( $maintenance && !$iamadmin )
-        || ( $PM_level == 2 && ( !$iamadmin && !$iamgmod && !$iamymod && !$iammod  ) )
+        || ( $PM_level == 2 && ( !$staff  ) )
         || ( $PM_level == 3 && ( !$iamadmin && !$iamgmod && !$iamymod ) ) );
 
 	my $builduser = shift;
