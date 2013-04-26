@@ -100,7 +100,9 @@ qq~<li><span |><a href="$scripturl?action=birthdaylist" title = "$img_txt{'birth
     if (   !$ML_Allowed
         || ( $ML_Allowed == 1 && !$iamguest )
         || ( $ML_Allowed == 2 && $staff )
-        || ( $ML_Allowed == 3 && ( $iamadmin || $iamgmod ) ) )
+        || ( $ML_Allowed == 3 && ( $iamadmin || $iamgmod ) )
+        || ( $ML_Allowed == 4 && ( $iamadmin || $iamgmod || $iamymod ) )
+         )
     {
         $tab{'ml'} =
 qq~<li><span |><a href="$scripturl?action=ml" title = "$img_txt{'331'}">$img_txt{'331'}</a></span></li>~;

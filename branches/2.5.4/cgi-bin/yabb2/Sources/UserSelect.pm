@@ -279,13 +279,17 @@ qq~<div style="float: left; text-align: center; padding-left: 2px; padding-right
         (
             $to_id !~ /toshow/sm || ( $PM_level
                 && ( $PM_level != 2 || $staff )
-                && ( $PM_level != 3 || $iamadmin || $iamgmod ) )
+                && ( $PM_level != 3 || $iamadmin || $iamgmod )
+                && ( $PM_level != 4 || $iamadmin || $iamgmod || $iamymod )
+                 )
         )
         or (
             $to_id !~ /userspec/sm
             || (   ( $ML_Allowed != 1 || !$iamguest )
                 && ( $ML_Allowed != 2 || $staff )
-                && ( $ML_Allowed != 3 || $iamadmin || $iamgmod ) )
+                && ( $ML_Allowed != 3 || $iamadmin || $iamgmod )
+                && ( $ML_Allowed != 4 || $iamadmin || $iamgmod || $iamymod )
+                 )
         )
       )
     {
@@ -302,6 +306,10 @@ qq~<div style="float: left; text-align: center; padding-left: 2px; padding-right
                 elsif ( $PM_level == 3 ) {
                     CheckUserPM_Level($membername);
                     next if $UserPM_Level{$membername} != 3;
+                }
+                elsif ( $PM_level == 4 ) {
+                    CheckUserPM_Level($membername);
+                    next if $UserPM_Level{$membername} != 4;
                 }
             }
             ( $memrealname, $mememail, undef ) =

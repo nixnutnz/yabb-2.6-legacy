@@ -3301,8 +3301,6 @@ sub modAlert2 {
     # Find a valid random ID for it
     $newthreadid = getnewid();
 
-    # End update workaround
-
     my $x;
     my $mods    = ${ $uid . $currentboard }{'mods'};
     my $modgrps = ${ $uid . $currentboard }{'modgroups'};
@@ -3316,13 +3314,13 @@ sub modAlert2 {
 # If BM is allowed and no mods and no moderator group is assigned => send the "AlertMod" to admin and gmods via BM
     }
     elsif ( $PMenableBm_level && !$mods && !$modgrps ) {
-        $modgrps = $PMenableBm_level == 3 ? 'admins' : 'admins,gmods';
+        $modgrps = $PMenableBm_level == 3 ? 'admins' : 'admins,gmods,ymods';
     }
 
     # Check if there is at least one user in the moderator group
     # if not and no mod is assigned too => send the "AlertMod" to admin via PM
     if ( $PMenableBm_level && $modgrps ) {
-        if ( $modgrps =~ /admins|gmods|mods/xsm ) { $x = 1; }
+        if ( $modgrps =~ /admins|gmods|ymods|mods/xsm ) { $x = 1; }
         else {
             if ( !%memberinf ) { ManageMemberinfo('load'); }
           MANAGEINFO: foreach ( keys %memberinf ) {

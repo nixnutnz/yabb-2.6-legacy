@@ -367,7 +367,9 @@ qq~<a href="$scripturl">$img{'home'}</a>$menusep<a href="$scripturl?action=help"
         if (   !$ML_Allowed
             || ( $ML_Allowed == 1 && !$iamguest )
             || ( $ML_Allowed == 2 && $staff )
-            || ( $ML_Allowed == 3 && ( $iamadmin || $iamgmod ) ) )
+            || ( $ML_Allowed == 3 && ( $iamadmin || $iamgmod ) )
+            || ( $ML_Allowed == 4 && ( $iamadmin || $iamgmod || $iamymod ) )
+             )
         {
             $yymenu .=
               qq~$menusep<a href="$scripturl?action=ml">$img{'memberlist'}</a>~;
@@ -513,7 +515,9 @@ qq~ $maintxt{'377'} <a href="$scripturl?action=register">$maintxt{'97'}</a>~;
         $yyuname =
           (      $PM_level == 0
               || ( $PM_level == 2 && !$staff )
-              || ( $PM_level == 3 && !$iamadmin && !$iamgmod && !$iamymod ) )
+              || ( $PM_level == 3 && !$iamadmin && !$iamgmod )
+              || ( $PM_level == 4 && !$iamadmin && !$iamgmod && !$iamymod )
+               )
           ? "$wmessage ${$uid.$username}{'realname'}"
           : "$wmessage ${$uid.$username}{'realname'}, ";
     }
@@ -1253,7 +1257,9 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
     if ( !$iamguest ) {
         if (   $PM_level == 1
             || ( $PM_level == 2 && ($staff) )
-            || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod) ) )
+            || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
+            || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod) )
+             )
         {
             $selecthtml .=
 qq~<option value="action=im" class="forumjumpcatm">$jumpto_txt{'mess'}</option>~;
@@ -2723,7 +2729,8 @@ sub checkUserLockBypass {
     if (
         $staff
         && (   ( $bypass_lock_perm eq 'fa' && $iamadmin )
-            || ( $bypass_lock_perm eq 'gmod' && ( $iamadmin || $iamgmod || $iamymod ) )
+            || ( $bypass_lock_perm eq 'gmod' && ( $iamadmin || $iamgmod ) )
+            || ( $bypass_lock_perm eq 'fmod' && ( $iamadmin || $iamgmod || $iamymod ) )
             || $bypass_lock_perm eq 'mod' )
       )
     {
@@ -2820,9 +2827,12 @@ sub CheckUserPM_Level {
     return if $PM_level <= 1 || $UserPM_Level{$checkuser};
     $UserPM_Level{$checkuser} = 1;
     if ( !${ $uid . $checkuser }{'password'} ) { LoadUser($checkuser); }
-    if (   ${ $uid . $checkuser }{'position'} eq 'Administrator'
-        || ${ $uid . $checkuser }{'position'} eq 'Global Moderator'
-        || ${ $uid . $checkuser }{'position'} eq 'Mid Moderator' )
+    if (  ${ $uid . $checkuser }{'position'} eq 'Mid Moderator' )
+    {
+        $UserPM_Level{$checkuser} = 4;
+    }
+    elsif (   ${ $uid . $checkuser }{'position'} eq 'Administrator'
+        || ${ $uid . $checkuser }{'position'} eq 'Global Moderator' )
     {
         $UserPM_Level{$checkuser} = 3;
     }

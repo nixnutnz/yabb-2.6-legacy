@@ -116,7 +116,9 @@ function searchMe(chelem) {
     if (   !$ML_Allowed
         || ( $ML_Allowed == 1 && !$iamguest )
         || ( $ML_Allowed == 2 && $staff )
-        || ( $ML_Allowed == 3 && ( $iamadmin || $iamgmod ) ) )
+        || ( $ML_Allowed == 3 && ( $iamadmin || $iamgmod ) )
+        || ( $ML_Allowed == 4 && ( $iamadmin || $iamgmod || $iamymod ) )
+         )
     {
         $yymain .= $mysearch_template2;
         if ( !$iamguest ) {

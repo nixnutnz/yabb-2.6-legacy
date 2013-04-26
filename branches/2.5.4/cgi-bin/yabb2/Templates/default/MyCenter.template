@@ -24,6 +24,9 @@ $IM_imopen3 = 'imopen3.gif';
 $IM_usageempty = 'usageempty.gif';
 $IM_usage = 'usage.gif';
 $IM_usagebar ='usagebar.gif';
+$tabsep =
+qq~<img src="$imagesdir/tabsep211.png" alt="" style="float: left; vertical-align: middle;" />~;
+$tabfill = qq~<img src="$imagesdir/tabfill.gif" alt="" />~;
 
 $mycenter_template = qq~
 <!-- My Center Title Bar start -->

@@ -24,7 +24,7 @@ if ( $iamguest && $ML_Allowed ) { fatal_error('no_access'); }
 if ( $ML_Allowed == 2 && !$staff ) {
     fatal_error('no_access');
 }
-if ( $ML_Allowed == 3 && !$iamadmin && !$iamgmod && !$iamymod ) {
+if ( ( $ML_Allowed == 3 && !$iamadmin && !$iamgmod ) || ( $ML_Allowed == 4 && !$iamadmin && !$iamgmod && !$iamymod ) ) {
     fatal_error('no_access');
 }
 

@@ -80,7 +80,9 @@ sub LoadIMs {
         || $PM_level == 0
         || ( $maintenance && !$iamadmin )
         || ( $PM_level == 2 && ( !$staff ) )
-        || ( $PM_level == 3 && ( !$iamadmin && !$iamgmod && !$iamymod ) ) );
+        || ( $PM_level == 4 && ( !$iamadmin && !$iamgmod && !$iamymod ) )
+        || ( $PM_level == 3 && ( !$iamadmin && !$iamgmod ) )
+         );
 
     if ( !exists ${$username}{'PMmnum'} ) { buildIMS( $username, 'load' ); }
 
@@ -830,8 +832,11 @@ qq~             <li><a href="$scripturl?action=viewprofile;username=$useraccount
                    $PM_level == 1
                 || ( $PM_level == 2 && $UserPM_Level{$user} > 1 && $staff )
                 || (   $PM_level == 3
-                    && $UserPM_Level{$user} == 3
+                    && $UserPM_Level{$user} == 4
                     && ( $iamadmin || $iamgmod || $iamymod ) )
+                || (   $PM_level == 4
+                    && $UserPM_Level{$user} == 3
+                    && ( $iamadmin || $iamgmod ) )
               )
             {
                 $quicklinks .=
@@ -1293,7 +1298,9 @@ sub LoadBroadcastMessages { #check broadcast messages
         || $PM_level == 0
         || ( $maintenance && !$iamadmin )
         || ( $PM_level == 2 && ( !$staff  ) )
-        || ( $PM_level == 3 && ( !$iamadmin && !$iamgmod && !$iamymod ) ) );
+        || ( $PM_level == 3 && ( !$iamadmin && !$iamgmod ) )
+        || ( $PM_level == 4 && ( !$iamadmin && !$iamgmod && !$iamymod ) )
+         );
 
 	my $builduser = shift;
 	$BCnewMessage = 0;

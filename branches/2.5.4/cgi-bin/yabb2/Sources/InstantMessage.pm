@@ -110,6 +110,7 @@ sub buildIMsend {
                 || ( !$staff )
             )
             && ( $PMenableBm_level != 2 || ( !$iamadmin && !$iamgmod ) )
+            && ( $PMenableBm_level != 4 || ( !$iamadmin && !$iamgmod && !$iamymod ) )
             && ( $PMenableBm_level != 3 || !$iamadmin )
         )
       )

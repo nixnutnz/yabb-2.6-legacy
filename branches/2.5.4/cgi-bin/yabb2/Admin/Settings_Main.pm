@@ -1086,6 +1086,7 @@ qq~<input type="checkbox" name="nomailspammer" id="nomailspammer" value="1" ${is
   <option value="0" ${isselected($ML_Allowed == 0)}>$userlevel_txt{'all'}</option>
   <option value="1" ${isselected($ML_Allowed == 1)}>$userlevel_txt{'members'}</option>
   <option value="2" ${isselected($ML_Allowed == 2)}>$userlevel_txt{'modgmodadmin'}</option>
+  <option value="4" ${isselected($ML_Allowed == 4)}>$userlevel_txt{'fmodgmodadmin'}</option>
   <option value="3" ${isselected($ML_Allowed == 3)}>$userlevel_txt{'gmodadmin'}</option>
 </select>~,
 			name => 'ML_Allowed',
@@ -1221,6 +1222,7 @@ qq~<input type="checkbox" name="nomailspammer" id="nomailspammer" value="1" ${is
 <select name="bypass_lock_perm" id="bypass_lock_perm" size="1">
   <option value="0" ${isselected($bypass_lock_perm eq '0')}>$userlevel_txt{'none'}</option>
   <option value="mod" ${isselected($bypass_lock_perm eq 'mod')}>$userlevel_txt{'modgmodadmin'}</option>
+  <option value="fmod" ${isselected($bypass_lock_perm eq 'fmod')}>$userlevel_txt{'fmodgmodadmin'}</option>
   <option value="gmod" ${isselected($bypass_lock_perm eq 'gmod')}>$userlevel_txt{'gmodadmin'}</option>
   <option value="fa" ${isselected($bypass_lock_perm eq 'fa')}>$userlevel_txt{'admin'}</option>
 </select>~,
@@ -1243,6 +1245,7 @@ qq~<input type="checkbox" name="nomailspammer" id="nomailspammer" value="1" ${is
   <option value="0" ${isselected($PM_level == 0)}>$userlevel_txt{'none'}</option>
   <option value="1" ${isselected($PM_level == 1)}>$userlevel_txt{'members'}</option>
   <option value="2" ${isselected($PM_level == 2)}>$userlevel_txt{'modgmodadmin'}</option>
+  <option value="4" ${isselected($PM_level == 4)}>$userlevel_txt{'fmodgmodadmin'}</option>
   <option value="3" ${isselected($PM_level == 3)}>$userlevel_txt{'gmodadmin'}</option>
 </select>~,
 			name => 'PM_level',
@@ -1306,6 +1309,7 @@ qq~<input type="checkbox" name="nomailspammer" id="nomailspammer" value="1" ${is
 <select name="PMenableBm_level" id="PMenableBm_level">
   <option value="0" ${isselected($PMenableBm_level == 0)}>$userlevel_txt{'none'}</option>
   <option value="1" ${isselected($PMenableBm_level == 1)}>$userlevel_txt{'modgmodadmin'}</option>
+  <option value="4" ${isselected($PMenableBm_level == 4)}>$userlevel_txt{'fmodgmodadmin'}</option>
   <option value="2" ${isselected($PMenableBm_level == 2)}>$userlevel_txt{'gmodadmin'}</option>
   <option value="3" ${isselected($PMenableBm_level == 3)}>$userlevel_txt{'admin'}</option>
 </select>~,

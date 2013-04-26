@@ -932,6 +932,9 @@ qq~$menusep<a href="$scripturl?num=$viewnum;action=addbuddy;name=$useraccount{$m
                         && $staff )
                     || (   $PM_level == 3
                         && $UserPM_Level{$musername} == 3
+                        && ( $iamadmin || $iamgmod ) )
+                    || (   $PM_level == 3
+                        && $UserPM_Level{$musername} == 4
                         && ( $iamadmin || $iamgmod || $iamymod ) )
                   )
                 {

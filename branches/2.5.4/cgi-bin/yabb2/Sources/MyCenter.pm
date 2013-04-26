@@ -1046,7 +1046,8 @@ sub drawPMbox {
         && $view eq 'pm'
         && (   $PM_level == 1
             || ( $PM_level == 2 && $staff )
-            || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod) ) )
+            || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
+            || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) ) )
       )
     {
         if ( !$INFO{'focus'} ) {
@@ -1181,7 +1182,8 @@ function insert_user (oElement,username,userid) {
         && ( !@dimmessages && $INFO{'focus'} ne 'bmess' )
         && (   $PM_level == 1
             || ( $PM_level == 2 && $staff )
-            || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod ) ) )
+            || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
+            || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) ) )
       )
     {
         if ( !@dimmessages ) {
@@ -1223,7 +1225,8 @@ function insert_user (oElement,username,userid) {
             $view eq 'mycenter'
             && (   $PM_level == 0
                 || ( $PM_level == 2 && !$staff )
-                || ( $PM_level == 3 && !$iamadmin && !$iamgmod && !$iamymod ) )
+                || ( $PM_level == 3 && !$iamadmin && !$iamgmod )
+                || ( $PM_level == 4 && !$iamadmin && !$iamgmod && !$iamymod ) )
         )
       )
     {
@@ -1250,7 +1253,8 @@ function insert_user (oElement,username,userid) {
             $view eq 'mycenter'
             && (   $PM_level == 1
                 || ( $PM_level == 2 && $staff )
-                || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod ) ) )
+                || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
+                || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) ) )
         )
       )
     {
@@ -1265,7 +1269,9 @@ function insert_user (oElement,username,userid) {
     my $tabWidth = '33%';
     if (   $PM_level == 0
         || ( $PM_level == 2 && !$staff )
-        || ( $PM_level == 3 && !$iamadmin && !$iamgmod && !$iamymod ) )
+        || ( $PM_level == 3 && !$iamadmin && !$iamgmod )
+        || ( $PM_level == 4 && !$iamadmin && !$iamgmod && !$iamymod )
+         )
     {
         $tabWidth = '50%';
     }
@@ -1282,7 +1288,9 @@ function insert_user (oElement,username,userid) {
         function changeToTab(tab) {~;
         if (   $PM_level == 1
             || ( $PM_level == 2 && $staff )
-            || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod ) ) )
+            || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
+            || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) )
+             )
         {
             $MCView_tab .= q~
             document.getElementById('cont_pm').style.display = 'none';
@@ -1304,7 +1312,9 @@ function insert_user (oElement,username,userid) {
         function changeToTab(tab) {~;
         if (   $PM_level == 1
             || ( $PM_level == 2 && $staff )
-            || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod ) ) )
+            || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
+            || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) )
+             )
         {
             $MCView_tab .= q~
             document.getElementById('cont_pm').style.display = 'none';
@@ -1321,14 +1331,18 @@ function insert_user (oElement,username,userid) {
         </script>\n~;
         if (   $PM_level == 0
             || ( $PM_level == 2 && !$staff )
-            || ( $PM_level == 3 && !$iamadmin && !$iamgmod && !$iamymod ) )
+            || ( $PM_level == 3 && !$iamadmin && !$iamgmod )
+            || ( $PM_level == 4 && !$iamadmin && !$iamgmod && !$iamymod )
+             )
         {
             $display_prof       = 'inline';
             $tabProfHighlighted = 'windowbg2';
         }
         if (   $PM_level == 1
             || ( $PM_level == 2 && $staff )
-            || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod ) ) )
+            || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
+            || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) )
+             )
         {
             $MCViewMenu_mess = $my_MCViewMenu_mess;
             $MCViewMenu_mess =~ s/{yabb tabPMHighlighted}/$tabPMHighlighted/sm;
@@ -1390,7 +1404,9 @@ function insert_user (oElement,username,userid) {
 
     if (   $PM_level == 1
         || ( $PM_level == 2 && $staff )
-        || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod) ) )
+        || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
+        || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) )
+         )
     {
         $thisLink_f =
             $profileLink
@@ -1685,10 +1701,13 @@ qq~$mycenter_txt{'buddylisttitle'}:<br />$buddiesCurrentStatus~;
     ## start PM div
     if (   $PM_level == 1
         || ( $PM_level == 2 && $staff )
-        || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod) ) )
+        || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
+        || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) )
+         )
     {
         if (   ( $PMenableBm_level == 1 && $staff )
             || ( $PMenableBm_level == 2 && ( $iamadmin || $iamgmod ) )
+            || ( $PMenableBm_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) )
             || ( $PMenableBm_level == 3 && $iamadmin ) )
         {
             $MCPmMenu_bm = $my_MCPmMenu_bm;
@@ -2905,6 +2924,9 @@ qq~<a href="mailto:${$uid.$buddyname}{'email'}"><img src="$imagesdir/email.gif" 
                 || (   $PM_level == 3
                     && $UserPM_Level{$buddyname} == 3
                     && ( $iamadmin || $iamgmod ) )
+                || (   $PM_level == 4
+                    && $UserPM_Level{$buddyname} == 4
+                    && ( $iamadmin || $iamgmod || $iamymod ) )
               )
             {
                 $buddypm =
@@ -2957,7 +2979,9 @@ sub mcMenu {
         $pmclass = q~ class="selected"~;
         if (   $PM_level == 0
             || ( $PM_level == 2 && !$staff )
-            || ( $PM_level == 3 && !$iamadmin && !$iamgmod && !$iamymod ) )
+            || ( $PM_level == 3 && !$iamadmin && !$iamgmod )
+            || ( $PM_level == 4 && !$iamadmin && !$iamgmod && !$iamymod )
+             )
         {
             $profclass = q~ class="selected"~;
         }
@@ -2982,12 +3006,11 @@ sub mcMenu {
         $postclass = q~ class="selected"~;
     }
 
-    my $tabsep =
-qq~<img src="$imagesdir/tabsep211.png" alt="" style="float: left; vertical-align: middle;" />~;
-    my $tabfill = qq~<img src="$imagesdir/tabfill.gif" alt="" />~;
     if (   $PM_level == 1
         || ( $PM_level == 2 && $staff )
-        || ( $PM_level == 3 && ( $iamadmin || $iamgmod || $iamymod) ) )
+        || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
+        || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod) )
+         )
     {
         $yymcmenu .=
 qq~<li><span onclick="changeToTab('pm'); return false;"$pmclass id="menu_pm"><a href="$scripturl?action=mycenter" onclick="changeToTab('pm'); return false;">$mc_menus{'messages'}</a></span></li>
