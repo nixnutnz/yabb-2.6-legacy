@@ -67,6 +67,20 @@ sub stringtotime {
 
 # receive standard format yabb date/time string.
 # allow for oddities thrown up from y1 , with full year / single digit day/month
+# Timeoffset reverse for day/month year only.
+    if ($iamguest) {
+        $toffs = $timeoffset;
+        $toffs +=
+          ( localtime( $thedate + ( 3600 * $toffs ) ) )[8] ? $dstoffset : 0;
+    }
+    else {
+        $toffs = ${ $uid . $username }{'timeoffset'};
+        $toffs +=
+          ( localtime( $thedate + ( 3600 * $toffs ) ) )[8]
+          ? ${ $uid . $username }{'dsttimeoffset'}
+          : 0;
+    }
+
     if ( $splitvar =~
         m/(\d{1,2})\/(\d{1,2})\/(\d{2,4}).*?(\d{1,2})\:(\d{1,2})\:(\d{1,2})/sm )
     {
@@ -83,7 +97,7 @@ sub stringtotime {
         $amonth = int($1);
         $aday   = int($2);
         $ayear  = int($3);
-        $ahour  = 0;
+        $ahour  = -$toffs;
         $amin   = 0;
         $asec   = 0;
     }
