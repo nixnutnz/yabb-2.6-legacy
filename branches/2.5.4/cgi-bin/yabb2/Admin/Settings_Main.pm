@@ -1122,6 +1122,12 @@ qq~<input type="checkbox" name="nomailspammer" id="nomailspammer" value="1" ${is
 			name => 'showuserpicml',
 			validate => 'boolean',
 		},
+		{
+			description => qq~<label for="group_stars_ml">$admin_txt{'group_stars_ml'}</label>~,
+			input_html => qq~<input type="checkbox" name="group_stars_ml" id="group_stars_ml" value="1"${ischecked($group_stars_ml)} />~,
+			name => 'group_stars_ml',
+			validate => 'boolean',
+		},
 	]
 },
 {

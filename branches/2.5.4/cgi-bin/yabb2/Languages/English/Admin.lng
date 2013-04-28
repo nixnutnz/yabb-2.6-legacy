@@ -528,6 +528,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 'ipblock_confirm' => 'Are you sure you want to block this IP?\n\n',
 'ipban_confirm' => 'Are you sure you want to ban this IP?\n\n', 
 'userpicml' => 'Show User Avatar in Member List?',
+'group_stars_ml' => 'Show Group Stars in Member List?',
 );
 
 %floodtxt = (

@@ -662,6 +662,7 @@ $member_groups
 
 \$ML_Allowed = $ML_Allowed;					# allow browse MemberList
 \$showuserpicml = $showuserpicml;	        # Set to 1 to display each member's picture in the member list
+\$group_stars_ml = $group_stars_ml;	        # Set to 1 to display group stars in the member list
 
 ########## Quick Reply configuration ##########
 

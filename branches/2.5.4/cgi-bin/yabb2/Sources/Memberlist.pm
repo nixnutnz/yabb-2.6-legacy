@@ -308,6 +308,12 @@ sub showRows {
     my $wwwshow = qq~<img src="$imagesdir/$ml_trans" width="15" alt="" />~;
     if ( $user ne q{} ) {
         LoadUser($user);
+        my $group_stars = q{};
+        if ( $group_stars_ml ) {
+		    LoadMiniUser($user) if $user eq $username;
+		    $memberstar{$user} =~ s/<br \/>//g;
+		    $group_stars = qq~<br />$memberstar{$user}~;
+		}
         if ( ${ $uid . $user }{'realname'} eq q{} ) {
             ${ $uid . $user }{'realname'} = $user;
         }
@@ -391,18 +397,13 @@ qq~<img src="$imagesdir/$ml_email" alt="$img_txt{'69'}" title="~
         
         $yypostcount = NumberFormat( ${ $uid . $user }{'postcount'} );
         
-        $memberstar = $memberstar{$user};
-        if ( $memberstar =~ m/"\// ) {
-            $memberstar =~ s/"\//"$imagesdir\//gxsm;
-       }
         $yymain .= $my_memrow;
         $yymain =~ s/{yabb add_tds}/$additional_tds/sm;
         $yymain =~ s/{yabb userpic}/$userpic/sm;
         $yymain =~ s/{yabb userlink}/$link{$user}/sm;
         $yymain =~ s/{yabb lock}/$lock/sm;
         $yymain =~ s/{yabb wwwshow}/$wwwshow/sm;
-        $yymain =~ s/{yabb meminfo}/$memberinfo{$user}/sm;
-        $yymain =~ s/{yabb stars}/$memberstar/sm;
+        $yymain =~ s/{yabb meminfo}/$memberinfo{$user}$group_stars/sm;
         $yymain =~ s/{yabb bar}/$Bar/sm;
         $yymain =~ s/{yabb postcount}/$yypostcount/sm;
         $yymain =~ s/{yabb dr_regdate}/$dr_regdate/sm;
