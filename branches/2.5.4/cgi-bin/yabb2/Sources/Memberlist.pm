@@ -304,6 +304,7 @@ sub MLDate {
 
 sub showRows {
     my ($user) = @_;
+
     my $wwwshow = qq~<img src="$imagesdir/$ml_trans" width="15" alt="" />~;
     if ( $user ne q{} ) {
         LoadUser($user);
@@ -387,8 +388,13 @@ qq~<img src="$imagesdir/$ml_email" alt="$img_txt{'69'}" title="~
                 <img src="$imagesdir/$ml_lockmail" alt="$ml_txt{'308'}" title="$ml_txt{'308'}" />~;
             }
         }
+        
         $yypostcount = NumberFormat( ${ $uid . $user }{'postcount'} );
-
+        
+        $memberstar = $memberstar{$user};
+        if ( $memberstar =~ m/"\// ) {
+            $memberstar =~ s/"\//"$imagesdir\//gxsm;
+       }
         $yymain .= $my_memrow;
         $yymain =~ s/{yabb add_tds}/$additional_tds/sm;
         $yymain =~ s/{yabb userpic}/$userpic/sm;
@@ -396,6 +402,7 @@ qq~<img src="$imagesdir/$ml_email" alt="$img_txt{'69'}" title="~
         $yymain =~ s/{yabb lock}/$lock/sm;
         $yymain =~ s/{yabb wwwshow}/$wwwshow/sm;
         $yymain =~ s/{yabb meminfo}/$memberinfo{$user}/sm;
+        $yymain =~ s/{yabb stars}/$memberstar/sm;
         $yymain =~ s/{yabb bar}/$Bar/sm;
         $yymain =~ s/{yabb postcount}/$yypostcount/sm;
         $yymain =~ s/{yabb dr_regdate}/$dr_regdate/sm;
