@@ -513,8 +513,6 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 'eventcal_set' => 'Event Calendar Settings',
 'eventcal_set1' => 'Edit your Event Calendar Settings',
 'addtab_on' => 'Show Add and Edit Tabs on Forum?',
-'showsearchbox' => qq~Show Search box on all pages? (To turn off <b>all</b> search functions go to <a href="$adminurl?action=newsettings;page=advanced">Advanced Settings - Advanced</a>)~,
-'showsearchboxnum' => 'Maximum age of Posts (in Days) to be searched from Search Box - 0 allows all permitted posts to be searched.',
 'rules' => 'Board Rules',
 'rules1' => 'Enable Board Rules',
 'rules2' => 'Rules Title',
