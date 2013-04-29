@@ -52,6 +52,10 @@ background-color:#4378AE;
 color:#2D2D2D;
 }
 
+#header .highlight a {
+color: #3B5998;
+} 
+
 form {
 display:inline;
 margin:0;
