@@ -59,25 +59,25 @@ sub SectionDecide {
         if ( $UseHelp_Perms && !$iamadmin ) {
             fatal_error( 'no_access', 'HelpCentre->SectionDecide' );
         }
-        ${ $INFO{'section'} . _class } = 'titlebg';
+        ${ $INFO{'section'} . _class } = 'selected-bg';
         $help_area = 'Admin';
     }
     elsif ( $INFO{'section'} eq 'moderator' ) {
         if ( $UseHelp_Perms && !$ismod && !$iamgmod && !$iamadmin ) {
             fatal_error( 'no_access', 'HelpCentre->SectionDecide' );
         }
-        ${ $INFO{'section'} . _class } = 'titlebg';
+        ${ $INFO{'section'} . _class } = 'selected-bg';
         $help_area = 'Moderator';
     }
     elsif ( $INFO{'section'} eq 'global_mod' ) {
         if ( $UseHelp_Perms && !$iamgmod && !$iamadmin ) {
             fatal_error( 'no_access', 'HelpCentre->SectionDecide' );
         }
-        ${ $INFO{'section'} . _class } = 'titlebg';
+        ${ $INFO{'section'} . _class } = 'selected-bg';
         $help_area = 'Gmod';
     }
     else {
-        $UserClass = 'titlebg';
+        $UserClass = 'selected-bg';
         $help_area = 'User';
     }
     return;

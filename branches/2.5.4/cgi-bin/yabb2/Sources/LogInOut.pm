@@ -49,9 +49,6 @@ sub Login2 {
         fatal_error( 'invalid_character',
             "$loginout_txt{'35'} $loginout_txt{'241'}" );
     }
-    if ( $FORM{'cookielength'} !~ /^[0-9]+$/xsm ) {
-        fatal_error('only_numbers_allowed');
-    }
 
     ## Check if login ID is not and email address or screenname ##
     if ( !-e "$memberdir/$username.vars" ) {
@@ -116,11 +113,12 @@ sub Login2 {
     }
     banning();
 
-    if ( $FORM{'cookielength'} == 1 ) {
+    if ( $FORM{'cookielength'} ) {
         $ck{'len'} = 'Sunday, 17-Jan-2038 00:00:00 GMT';
     }
-    elsif ( $FORM{'cookielength'} == 2 ) { $ck{'len'} = q{}; }
-    else { $ck{'len'} = "+$FORM{'cookielength'}m"; }
+    else { $ck{'len'} = q{}; }
+    #elsif ( $FORM{'cookielength'} == 2 ) { $ck{'len'} = q{}; }
+    #else { $ck{'len'} = "+$FORM{'cookielength'}m"; }
     ${ $uid . $username }{'session'} = encode_password($user_ip);
     UpdateCookie(
         'write', $username,
@@ -133,8 +131,8 @@ sub Login2 {
 
     # "-" to not update 'lastonline' here
     buildIMS( $username, 'load' );    # isn't loaded because was Guest before
-    buildIMS( $username, q{} )
-      ;    # rebuild the Members/$username.ims file on login
+    buildIMS( $username, q{} );
+      # rebuild the Members/$username.ims file on login
     WriteLog();
 
     if ( $FORM{'sredir'} ) {
@@ -177,16 +175,7 @@ else {
         $yynavigation = qq~&rsaquo; $loginout_txt{'34'}~;
     }
 
-    if    ( $Cookie_Length == 1 )    { $clsel1    = ' selected="selected"'; }
-    elsif ( $Cookie_Length == 2 )    { $clsel2    = ' selected="selected"'; }
-    elsif ( $Cookie_Length == 60 )   { $clsel60   = ' selected="selected"'; }
-    elsif ( $Cookie_Length == 180 )  { $clsel180  = ' selected="selected"'; }
-    elsif ( $Cookie_Length == 360 )  { $clsel360  = ' selected="selected"'; }
-    elsif ( $Cookie_Length == 480 )  { $clsel480  = ' selected="selected"'; }
-    elsif ( $Cookie_Length == 600 )  { $clsel600  = ' selected="selected"'; }
-    elsif ( $Cookie_Length == 720 )  { $clsel720  = ' selected="selected"'; }
-    elsif ( $Cookie_Length == 1440 ) { $clsel1440 = ' selected="selected"'; }
-
+#cookie length is now all or nothing.
     if ( $sharedLogin_title ne q{} ) {
         $sharedlog = $mysharedloga;
         $sharedlog =~ s/{yabb sharedLogin_title}/$sharedLogin_title/sm;
@@ -206,17 +195,7 @@ else {
     $sharedlog .= qq~
             <form name="loginform" action="$scripturl?action=login2" method="post" accept-charset="$yycharset">
                 <input type="hidden" name="sredir" value="$INFO{'sesredir'}" />
-    $mysharedlog_bodya
-                        <option value="2"$clsel2>$loginout_txt{'497d'}</option>
-                        <option value="1"$clsel1>$loginout_txt{'497c'}</option>
-                        <option value="60"$clsel60>1 $loginout_txt{'497a'}</option>
-                        <option value="180"$clsel180>3 $loginout_txt{'497b'}</option>
-                        <option value="360"$clsel360>6 $loginout_txt{'497b'}</option>
-                        <option value="480"$clsel480>8 $loginout_txt{'497b'}</option>
-                        <option value="600"$clsel600>10 $loginout_txt{'497b'}</option>
-                        <option value="720"$clsel720>12 $loginout_txt{'497b'}</option>
-                        <option value="1440"$clsel1440>24 $loginout_txt{'497b'}</option>~ .
-    $mysharedlog_bodyb;                        
+    $mysharedlog_bodya~;
     $sharedlog =~ s/{yabb regstyle}/$regstyle/sm;
     $sharedlog =~ s/{yabb hide_regbutton}/$hide_regbutton/sm;
     $sharedlog =~ s/{yabb hide_regbutton}/$hide_regbutton/sm;
