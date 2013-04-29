@@ -236,7 +236,7 @@ sub EventCalSet {
        <td class="windowbg2"><input type="checkbox" name="Show_BdColorLinks" id="Show_BdColorLinks" $onbdcolorlinkschecked /></td>
      </tr>
      </tr><tr>
-       <td class="windowbg2"><label for="$Show_BdStarsign">$event_cal{'42a'}</label></td>
+       <td class="windowbg2"><label for="Show_BdStarsign">$event_cal{'42a'}</label></td>
        <td class="windowbg2"><input type="checkbox" name="Show_BdStarsign" id="Show_BdStarsign" $onbdstarchecked /></td>
      </tr>
    </table>
