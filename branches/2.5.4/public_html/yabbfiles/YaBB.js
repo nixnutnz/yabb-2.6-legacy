@@ -102,6 +102,12 @@ function quickLinks(num) {
 	document.getElementById(num).parentNode.style.zIndex = "1000";
 	lastOpen = num;
 }
+function quickLinks2(num) {
+	closeLinks(lastOpen);
+	document.getElementById("ql"+num).style.display = "inline-block";
+	document.getElementById("ql"+num).parentNode.style.zIndex = "1000";
+	lastOpen = num;
+}
 function TimeClose(num) {
 	hideTimer = setTimeout("closeLinks('"+num+"')", 1000);
 }
@@ -189,6 +195,9 @@ function resize_images() {
 		if (type == 'avatar') {
 			maxwidth  = avatar_img_w;
 			maxheight = avatar_img_h;
+		} else if (type == 'avatarml') {
+			maxwidth  = avatarml_img_w;
+			maxheight = avatarml_img_h;
 		} else if (type == 'post') {
 			maxwidth  = post_img_w;
 			maxheight = post_img_h;
@@ -200,7 +209,7 @@ function resize_images() {
 			maxheight = signat_img_h;
 		}
 
-		if ((fix_avatar_size && type == 'avatar') || (fix_post_size && type == 'post') || (fix_attach_size && type == 'attach') || (fix_signat_size && type == 'signat')) {
+		if ((fix_avatar_size && type == 'avatar') || (fix_avatarml_size && type == 'avatarml') || (fix_post_size && type == 'post') || (fix_attach_size && type == 'attach') || (fix_signat_size && type == 'signat')) {
 			if (maxwidth)  document.images[tmp_image_name].width  = maxwidth;
 			if (maxheight) document.images[tmp_image_name].height = maxheight;
 			document.images[tmp_image_name].style.display = 'inline';
