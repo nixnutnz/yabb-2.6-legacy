@@ -332,7 +332,23 @@ qq~&nbsp;<script  type="text/javascript">\n<!--\nWriteClock('yabbclock','$aa','$
         if (thefield.value == defaulttxt) thefield.value = "";
         else { if (thefield.value === "") thefield.value = defaulttxt; }
     }
-    function selectAllCode(thefield) {
+	function selectAllCode(thefield) {
+		var elem = document.getElementById('code' + thefield);
+		if (document.selection) {
+			document.selection.empty();
+			var txt = document.body.createTextRange();
+			txt.moveToElementText(elem);
+			txt.select();
+		}
+		else {
+			window.getSelection().removeAllRanges();
+			var txt = document.createRange();
+			txt.setStartBefore(elem);
+			txt.setEndAfter(elem);
+			window.getSelection().addRange(txt);
+		}
+	}
+	function selectAllCode(thefield) {
         var elem = document.getElementById('code' + thefield);
         if (document.selection) {
             document.selection.empty();

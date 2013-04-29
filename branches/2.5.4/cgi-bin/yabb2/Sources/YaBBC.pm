@@ -315,7 +315,13 @@ sub imagemsg {
 		$parameter{$key} = $value;
 	}
 
-	$parameter{'name'} = $type ? 'signat_img_resize' : 'post_img_resize';
+	if($action eq 'ajxmessage' || $action eq 'ajximmessage') {
+		$parameter{'name'} = qq~class="liveimg" name="post_liveimg_resize"~;
+	}
+	else {
+		$parameter{'name'} = $type ? qq~name="signat_img_resize"~ : qq~name="post_img_resize"~;
+	}
+
     $parameter{'alt'} =~ s/[<>"]/*/gxsm;    #" make my text editor happy;
     $parameter{'alt'} =~ s/_/ /gxsm;
     if ( $url =~ /([^\/]+?)$/xsm ) {
@@ -341,7 +347,7 @@ sub imagemsg {
         ? qq~<a href="$url" rel="gb_image[nice_pics]" title="$parameter{'alt'}">~
         : q{}
       )
-      . qq~<img src="$url" name="$parameter{'name'}" alt="$parameter{'alt'}" title="$parameter{'alt'}"$parameter{'align'}$parameter{'width'}$parameter{'height'} style="display:none" />~
+      . qq~<img src="$url" $parameter{'name'} alt="$parameter{'alt'}" title="$parameter{'alt'}"$parameter{'align'}$parameter{'width'}$parameter{'height'} style="display:none" />~
       . ( ( !$linkedimg && $img_greybox ) ? '</a>' : q{} );
 }
 

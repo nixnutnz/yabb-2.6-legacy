@@ -111,7 +111,7 @@ sub RecentPosts {
                 ) = split /\|/xsm, $mess[$c];
                 $mtime = $mdate;
                 $messages[$numfound] =
-"$mtime|$curboard|$tnum|$ii|$tusername|$tname|$msub|$mname|$memail|$mdate|$musername|$micon|$mattach|$mip|$message|$mns|$tstate|$tstart";
+"$mtime|$curboard|$tnum|$c|$tusername|$tname|$msub|$mname|$memail|$mdate|$musername|$micon|$mattach|$mip|$message|$mns|$tstate|$tstart";
                 $numfound++;
             }
         }
