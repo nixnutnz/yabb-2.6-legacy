@@ -50,35 +50,32 @@ $myborder
 
 $mysharedlog_bodya = qq~
                 <div style="width: 600px;">
-                    <span style="float: left; width: 55%; text-align: left; margin-bottom: 5px;">
+                    <span style="float: left; text-align: left; margin-right:15px;">
                         <label for="username">$loginout_txt{'35'}</label>:<br />
                         <input type="text" name="username" id="username" size="30" maxlength="100" style="width: 285px;" tabindex="1"{yabb regstyle} />
                     </span>
-                    <span style="float: left; width: 18%; text-align: center; margin-bottom: 5px;">&nbsp;</span>
-                    <span style="float: left; width: 27%; text-align: right; margin-bottom: 5px;">
-                        &nbsp;<br />
-                        <input type="button" value="$maintxt{'97'}" style="width: 160px;{yabb hide_regbutton}" onclick="location.href='$scripturl?action=register'" tabindex="6" class="button" />
-                    </span>
-                </div>
-                <div class="clear"></div>
-                <div style="width: 600px;">
-                    <span style="float: left; width: 30%; text-align: left; margin-bottom: 5px;">
+                    <span style="float: left; text-align: left; margin-right:15px;">
                         <label for="passwrd">$loginout_txt{'36'}</label>:<br />
                         <input type="password" name="passwrd" id="passwrd" size="15" maxlength="30" style="width: 110px;" tabindex="2" onkeypress="capsLock(event,'shared_login')" />
                     </span>
-                    <span style="float: left; width: 25%; text-align: left; margin-bottom: 5px;">
-                        <label for="cookielength">$loginout_txt{'497'}</label>:<br />
-                        <select name="cookielength" id="cookielength" style="width: 117px;" tabindex="3">~;
-
-$mysharedlog_bodyb = qq~                        </select>
-                    </span>
-                    <span style="float: left; width: 18%; text-align: center; margin-bottom: 5px;">
+                    <span style="float: left; text-align: center;" class="small">
                         &nbsp;<br />
                         <input type="submit" value="$loginout_txt{'34'}" tabindex="4" accesskey="l" style="width: 100px;" class="button" />
                     </span>
-                    <span style="float: left; width: 27%; text-align: right; margin-bottom: 5px;">
-                        &nbsp;<br />
-                        <input type="button" value="$loginout_txt{'315'}" style="width: 160px;{yabb hide_passbutton}" onclick="location.href='$scripturl?action=reminder'" tabindex="5" class="button" />
+                </div>
+                <div class="clear"></div>
+                <div style="width: 550px; line-height:16px">
+                    <span style="float: left; text-align: left;">
+                        <input type="checkbox" name="cookielength" id="cookielength" tabindex="3" />
+                    </span>
+                    <span style="float: left; text-align: left">
+                        <label for="cookielength">$loginout_txt{'keeps'}</label>
+                    </span>
+                    <span style="float: right; text-align: right; margin-left: 35px;">
+                        <a href="$scripturl?action=reminder" style="{yabb hide_passbutton}">$loginout_txt{'315'}</a>
+                    </span>
+                    <span style="float: right; text-align: right; margin-left: 15px;">
+                        <a href="$scripturl?action=register" style="{yabb hide_regbutton}">$maintxt{'97'}
                     </span>
                     <br /><br />
                 </div>
