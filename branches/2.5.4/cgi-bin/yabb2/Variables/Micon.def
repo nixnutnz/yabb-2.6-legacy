@@ -1,0 +1,52 @@
+###############################################################################
+# Micon.def (Image text/images definitions)                                   #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 3.0 Beta                                               #
+# Packaged:       October 05, 2010                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2010 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+%micon = (
+'pollicon' => qq~<img src="$imagesdir/poll_open.gif" alt="$img_polltxt{'44'}" />~,
+'polliconclosed' => qq~<img src="$imagesdir/poll_lock.gif" alt="$img_polltxt{'46'}" />~,
+'polliconnew' => qq~<img src="$imagesdir/poll_new.gif" alt="$img_polltxt{'45'}" />~,
+'xx' => qq~<img src="$imagesdir/xx.gif" alt="" />~,
+'exclamation' => qq~<img src="$imagesdir/exclamation.png" alt="" />~,
+'thumbup' => qq~<img src="$imagesdir/thumbup.gif" alt="" />~,
+'thumbdown' => qq~<img src="$imagesdir/thumbdown.gif" alt="" />~,
+'question' => qq~<img src="$imagesdir/question.gif" alt="" />~,
+'lamp' => qq~<img src="$imagesdir/lamp.gif" alt="" />~,
+'smiley' => qq~<img src="$imagesdir/smiley.gif" alt="" />~,
+'angry' => qq~<img src="$imagesdir/angry.gif" alt="" />~,
+'cheesy' => qq~<img src="$imagesdir/cheesy.gif" alt="" />~,
+'grin' => qq~<img src="$imagesdir/grin.gif" alt="" />~,
+'sad' => qq~<img src="$imagesdir/sad.gif" alt="" />~,
+'wink' => qq~<img src="$imagesdir/wink.gif" alt="" />~,
+'thread' => qq~<img src="$imagesdir/thread.gif" alt="$messageindex_txt{'457'}" title="$messageindex_txt{'457'}" />~,
+'hide' => qq~<img src="$imagesdir/hide.gif" alt="$messageindex_txt{'458'}" title="$messageindex_txt{'458'}" />~,
+'locked' => qq~<img src="$imagesdir/locked.gif" alt="$messageindex_txt{'456'}" title="$messageindex_txt{'456'}" />~,
+'veryhotthread' => qq~<img src="$imagesdir/veryhotthread.gif" alt="$messageindex_txt{'455'} $VeryHotTopic $messageindex_txt{'454a'}" title="$messageindex_txt{'455'} $VeryHotTopic $messageindex_txt{'454a'}" />~,
+'hotthread' => qq~<img src="$imagesdir/hotthread.gif" alt="$messageindex_txt{'454'} $HotTopic $messageindex_txt{'454a'}" title="$messageindex_txt{'454'} $HotTopic $messageindex_txt{'454a'}" />~,
+'hidesticky' => qq~<img src="$imagesdir/hidesticky.gif" alt="$messageindex_txt{'459'}" title="$messageindex_txt{'459'}" />~,
+'hidelock' => qq~<img src="$imagesdir/hidelock.gif" alt="$messageindex_txt{'460'}" title="$messageindex_txt{'460'}" />~,
+'hidestickylock' => qq~<img src="$imagesdir/hidestickylock.gif" alt="$messageindex_txt{'461'}" title="$messageindex_txt{'461'}" />~,
+'stickylock' => qq~<img src="$imagesdir/stickylock.gif" alt="$messageindex_txt{'456'}" title="$messageindex_txt{'780'}" />~,
+'sticky' => qq~<img src="$imagesdir/sticky.gif" alt="$messageindex_txt{'779'}" title="$messageindex_txt{'779'}" />~,
+'announcementlock' => qq~<img src="$imagesdir/announcementlock.gif" alt="$messageindex_txt{'779b'}" title="$messageindex_txt{'779b'}" />~,
+'announcement' => qq~<img src="$imagesdir/announcement.gif" alt="$messageindex_txt{'779a'}" title="$messageindex_txt{'779a'}" />~,
+'locked_moved' => qq~<img src="$imagesdir/locked_moved.gif" alt="$messageindex_txt{'845'}" title="$messageindex_txt{'845'}" />~,
+'guestreply' => qq~<img src="$imagesdir/guestreply.gif" alt="$im_message_status{'guestreply'}" title="$im_message_status{'guestreply'}" style="margin:0 15px;" />~,
+'standard' => qq~<img src="$imagesdir/standard.gif" alt="$im_message_status{'standard'}" title="$im_message_status{'standard'}" style="margin:0 15px;" />~,
+'confidential' => qq~<img src="$imagesdir/confidential.gif" alt="$im_message_status{'confidential'}" title="$im_message_status{'confidential'}" style="margin:0 15px;" />~,
+'urgent' => qq~<img src="$imagesdir/urgent.gif" alt="$im_message_status{'urgent'}" title="$im_message_status{'urgent'}" style="margin:0 15px;" />~,
+'guestpm' => qq~<img src="$imagesdir/guestpm.gif" alt="$im_message_status{'guestpm'}" title="$im_message_status{'guestpm'}" style="margin:0 15px;" />~,
+'alertmod' => qq~<img src="$imagesdir/alertmod.gif" alt="$im_message_status{'alertmod'}" title="$im_message_status{'alertmod'}" style="margin:0 15px;" />~,
+);
+
+1;
