@@ -14,6 +14,8 @@
 # $Revision$
 
 $style_ubbc_box = q~float: left; width: 463px;~;
+$post_cat_col = 'cat_collapse.gif';
+$post_cat_exp = 'cat_expand.gif';
 
 ## Post Top
 $mypost_title = qq~{yabb my_topper}<table class="tabtitle">
@@ -38,10 +40,10 @@ $mypost_topview = qq~<table class="pad_3px">
 $mypost_postblock = qq~
 <table class="windowbg2 pad_3px" style="table-layout: fixed;">
     <col style="width:23%" />
-    <tr>
-        <td class="vtop">
+	<tr>
+		<td class="vtop">
             <div id="SaveInfo" style="height:16px;">
-            <img src="$defaultimagesdir/cat_expand.gif" id="prevwin" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" onclick="enabPrev();" style="cursor:pointer" /> <b>$npf_txt{'04'}</b>
+            <img src="$imagesdir/$post_cat_exp" id="prevwin" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
             </div>
         </td>
         <td>
