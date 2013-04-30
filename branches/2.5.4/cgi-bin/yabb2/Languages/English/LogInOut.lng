@@ -26,12 +26,6 @@ $loginoutlngver = 'YaBB 2.5.4 $Revision$';
 '241' => 'field!',
 '315' => 'Forgot Password?',
 '339' => 'Send',
-'497' => 'Logged in for',
-'497a' => 'hour',
-'497b' => 'hours',
-'497c' => 'Keeps',
-'497d' => 'Until I exit the browser',
-'508' => 'Always stay logged in',
 '669' => 'Forgot Password',
 '711' => 'Dear',
 '753' => 'Need to register?',
@@ -44,6 +38,7 @@ $loginoutlngver = 'YaBB 2.5.4 $Revision$';
 'verification_question_case' => 'Answers are case-sensitive.',
 'error_verification' => 'The verification code is missing.',
 'error_verification_question' => 'You must answer the verification question.',
+'keeps' => 'Keep me logged in',
 );
 
 %floodtxt=(

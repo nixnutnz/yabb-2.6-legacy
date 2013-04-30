@@ -529,6 +529,8 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 'ipban_confirm' => 'Are you sure you want to ban this IP?\n\n', 
 'userpicml' => 'Show User Avatar in Member List?',
 'group_stars_ml' => 'Show Group Stars in Member List?',
+'default_avatar' => 'Show a default avatar if the member hasn\'t added a picture?',
+'default_userpic' => 'File name of the default avatar:<br /><span class="small">Files must be uploaded the images directory.<br />e.g. myfile.jpg</span>',
 );
 
 %floodtxt = (
