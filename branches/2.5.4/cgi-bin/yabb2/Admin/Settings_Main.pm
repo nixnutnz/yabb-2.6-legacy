@@ -151,6 +151,8 @@ $enable_PMsearch = 5 if $enable_PMsearch < 5;
 $set_subjectMaxLength = 50 if $set_subjectMaxLength eq '';
 $RegReasonSymbols = 200 if $RegReasonSymbols eq '';
 $ML_Allowed = 1 if $ML_Allowed eq '';
+$default_userpic = 'nn.gif' if $default_userpic eq '';
+
 
 # This is only for update, when comming from YaBB lower or equal version 2.2.3
 # I think it can be deleted around version 2.4.0 without causing mayor issues (deti).
@@ -836,6 +838,20 @@ qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdM
 			name => 'avatar_dirlimit',
 			validate => 'number',
 			depends_on => ['allowpics','upload_useravatar'],
+		},
+		{
+			description => qq~<label for="default_avatar">$admin_txt{'default_avatar'}</label>~,
+			input_html => qq~<input type="checkbox" name="default_avatar" id="default_avatar" value="1"${ischecked($default_avatar)} />~,
+			name => 'default_avatar',
+			validate => 'boolean',
+			depends_on => ['allowpics'],
+		},
+		{
+			description => qq~<label for="default_userpic">$admin_txt{'default_userpic'}</label>~,
+			input_html => qq~<input type="text" name="default_userpic" id="default_userpic" size="5" value="$default_userpic" />~,
+			name => 'default_userpic',
+			validate => 'text',
+			depends_on => ['allowpics','default_avatar'],
 		},
 		{
 			description => qq~<label for="enable_notifications_N">$admin_txt{'381'}</label>~,

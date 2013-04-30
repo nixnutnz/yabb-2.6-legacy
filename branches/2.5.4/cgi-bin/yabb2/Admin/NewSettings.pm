@@ -601,6 +601,8 @@ $member_groups
 \$upload_avatargroup = "\Q$upload_avatargroup\E";   # membergroups allowed to upload avatars for their profile, '' == all members
 \$avatar_limit = $avatar_limit;				# set to the maximum size of the uploaded avatar, 0 == no limit
 \$avatar_dirlimit = $avatar_dirlimit;		# set to the maximum size of the upload avatar directory, 0 == no limit
+\$default_avatar = $default_avatar;		    # Set to 1 to show a default avatar if the member hasn't added a picture
+\$default_userpic = "\Q$default_userpic\E"; # Set the file name for the default avatar
 
 \$enable_guestposting = $enable_guestposting;	# Set to 0 if do not allow 1 is allow.
 \$guest_media_disallowed = $guest_media_disallowed; # disallow browsing guests to see media files or have clickable auto linked urls in messages.
