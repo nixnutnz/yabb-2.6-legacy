@@ -361,12 +361,12 @@ function jsDoUbbc(ubbcstr,codestrg,quotstrg,squotstrg,editxt,dspname,scriptul,im
 	ubbcstr=ubbcstr.replace(/\[hr\]/ig, "<hr width=40% align=left size=1 class='hr'>");
 	ubbcstr=ubbcstr.replace(/\[br\]/ig, "\n");
 
-	if(autolinkurls != 0) ubbcstr=ubbcstr.replace(/([^\w(?:\'|\")\=\[\]\/]|[\n\b]|\&quot\;|\]|^)((http\:\/\/|www\.){1,}\S+?\.(\w|\.|\/)+)/ig, "$1[url]$2[/url]");
+//	if(autolinkurls != 0) ubbcstr=ubbcstr.replace(/([^\w(?:\'|\")\=\[\]\/]|[\n\b]|\&quot\;|\]|^)((http\:\/\/|www\.){1,}\S+?\.(\w|\.|\/)+)/ig, "$1[url]$2[/url]");
 	ubbcstr=ubbcstr.replace(/\[url\]\s*www\.(\S+?)\s*\[\/url\]/ig, "<a href='http://www.$1' target='_blank'>www.$1</a>");
 	ubbcstr=ubbcstr.replace(/\[url=\s*(\S\w+\:\/\/\S+?)\s*\](.+?)\[\/url\]/ig, "<a href='$1' target='_blank'>$2</a>");
 	ubbcstr=ubbcstr.replace(/\[url=\s*(\S+?)\](.+?)\s*\[\/url\]/ig, "<a href='http://$1' target='_blank'>$2</a>");
 	ubbcstr=ubbcstr.replace(/\[url\]\s*(\S+?)\s*\[\/url\]/ig, "<a href='$1' target='_blank'>$1</a>");
-	ubbcstr=ubbcstr.replace(/\[url\]|\[\/url\]/ig, ""); 
+	ubbcstr=ubbcstr.replace(/\[url\]|\[\/url\]/ig, "" ); 
 
 	ubbcstr=ubbcstr.replace(/\[link\]\s*www\.(\S+?)\s*\[\/link\]/ig, "<a href='http://www.$1'>www.$1</a>");
 	ubbcstr=ubbcstr.replace(/\[link=\s*(\S\w+\:\/\/\S+?)\s*\](.+?)\[\/link\]/ig, "<a href='$1'>$2</a>");
