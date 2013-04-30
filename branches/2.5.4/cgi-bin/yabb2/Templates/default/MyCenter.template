@@ -24,9 +24,17 @@ $IM_imopen3 = 'imopen3.gif';
 $IM_usageempty = 'usageempty.gif';
 $IM_usage = 'usage.gif';
 $IM_usagebar ='usagebar.gif';
-$tabsep =
-qq~<img src="$imagesdir/tabsep211.png" alt="" style="float: left; vertical-align: middle;" />~;
-$tabfill = qq~<img src="$imagesdir/tabfill.gif" alt="" />~;
+$IM_new = 'new.gif';
+$IM_paperclip = 'paperclip.gif';
+$IM_quote = 'quote.gif';
+$IM_code1 = 'code1.gif';
+$IM_lockmail = 'lockmail.gif';
+$IM_email = 'email.gif';
+$IM_www = 'www.gif';
+#$IMmiconExt = 'png';
+
+$tabsep = q{};
+$tabfill = q{};
 
 $mycenter_template = qq~
 <!-- My Center Title Bar start -->

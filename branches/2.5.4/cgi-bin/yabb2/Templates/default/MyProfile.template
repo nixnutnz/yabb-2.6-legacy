@@ -49,8 +49,7 @@ $myprofile_a = qq~
 ## End UserProfile login
 
 ## admin edit menu ##
-$myprofile_menu = qq~<table class="bordercolor cs_thin pad_4px">
-    <col span="3" style="width:16%" />
+$myprofile_menu = qq~<table class="bordercolor cs_thin pad_4px" style="table-layout:fixed">
     <tr>
         <td class="{yabb menucolor0} center bottom"><span class="small"><b><a href="$scripturl?action=profile;username={yabb menu_user};sid=$INFO{'sid'}">$profile_txt{79}</a></b></span></td>
         <td class="{yabb menucolor1} center bottom"><span class="small"><b><a href="$scripturl?action=profileContacts;username={yabb menu_user};sid=$INFO{'sid'}">$profile_txt{819}</a></b></span></td>
@@ -104,9 +103,9 @@ $myprofile_showage = qq~<tr class="windowbg">
 
 $myprofile_session = qq~<tr>
         <td class="catbg" colspan="2">
-            <img src="$imagesdir/session.gif" alt="" /> <label for="sesquest"><b>$img_txt{'34a'}</b><br /><span class="small">$session_txt{'9'}<br />$session_txt{'9a'}</span></label></td>
+            <img src="$imagesdir/session.gif" alt="" /> <label for="sesquest"><b>$img_txt{'34a'}</b><br /><span class="small">{yabb sesstext9}<br />{yabb sesstext9a}</span></label></td>
     </tr><tr class="windowbg">
-        <td class="right">{yabb questsel}</td>
+        <td>{yabb questsel}</td>
         <td><input type="text" maxlength="30" name="sesanswer" size="20" value="{yabb decanswer}" /></td>
     </tr>~;
 

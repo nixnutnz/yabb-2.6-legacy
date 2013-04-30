@@ -1,5 +1,5 @@
 ###############################################################################
-# next.Bdaylist.template                                                      #
+# default.Bdaylist.template                                                   #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -44,16 +44,15 @@ $mybdlist_calgoto = qq~
         <td class="right" style="padding-right:1%">{yabb calgotobox}</td>
     </tr>
 </table>
-<table class="bordercolor pad_3px cs_thin" style="margin-bottom:2em;">
-    {yabb cal_col}
+<table class="bordercolor pad_4px cs_thin">
     <tr>
-        <td class="windowbg" colspan="{yabb cal_colspan}">
+        <td class="windowbg">
             <br />
             <span class="small">$var_cal{'calbirthdayinfo'}<br /><br />
 ~;
 
 $mybdlist_viewmont2 = qq~
-<table class="pad_4px cs_thin" style="margin-bottom:2em">
+<table class="pad_4px cs_thin" style="margin-bottom:1em">
     {yabb cal_col}
     <tr>
         <td class="titlebg" colspan="{yabb cal_colspan}">
@@ -96,27 +95,14 @@ $mybdlist_sort = qq~
             </span>
         </td>
     </tr><tr>
-        <td class="titlebg center" colspan="{yabb cal_colspan}"><b>$var_cal{'calbirthdays'}</b></td>
-    </tr><tr>
-        <td{yabb class_sortuser}><a href="$scripturl?action=birthdaylist;sort=sortuser" style="text-decoration:none;"><b>$var_cal{'calname'}</b></a></td>
-        <td{yabb class_sortage}><a href="$scripturl?action=birthdaylist;sort=sortage" style="text-decoration:none;"><b>$var_cal{'calage'}</b></a></td>
-        {yabb cal_col_star_sort}
-        <td{yabb class_sortdate}><a href="$scripturl?action=birthdaylist;sort=sortdate" style="text-decoration:none;"><b>$var_cal{'calbddate'}</b></a></td>
-    </tr><tr>
-        <td class="windowbg center" colspan="{yabb cal_colspan}">
-            <table class="pad_4px cs_thin">
-                <tr>
-                    <td><span class="text"><a href="$scripturl?action=birthdaylist;sort=$sortiert;letter=other" style="text-decoration:none;">$var_cal{'other'}</a></span></td>~;
+        <td class="catbg center" style="font-size:110%"><b>$var_cal{'calbirthdays'}</b></td>
+~;
 
-$mybdlist_notbmember = qq~<tr><td class="windowbg2 center" colspan="{yabb cal_colspan}"><b><i>$var_cal{'calbirthday1'}</i></b></td></tr>~;
+$mybdlist_notbmember = qq~<tr>
+        <td class="windowbg2 center" colspan="{yabb cal_colspan}"><b><i>$var_cal{'calbirthday1'}</i></b></td>
+    </tr>~;
 
-$mybdlist_alpha_a = qq~
-                 <td><span class="text"><a href="$scripturl?action=birthdaylist;sort={yabb sortiert};letter=~; #";
-$mybdlist_alpha_b = q~</a></span></td>~;
 $mybdlist_alpha_c = qq~
-                </tr>
-            </table>
-        </td>
     </tr>
 {yabb viewbirthdays}
 </table>

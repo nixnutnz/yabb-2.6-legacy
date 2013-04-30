@@ -54,51 +54,64 @@ $myshowProfile = qq~<tr class="windowbg">
         </td>
     </tr>~;
 
-$myselectmods = qq~<div style="position: relative; top: 0px; left: 0px; height: 1px; width: 320px; border: 0; z-index: 100002;">
-    <div id="modsettings" style="position: absolute; top: 0px; left: 0px; width: 320px; padding: 1px; color: #000000; background-color: gray; display: none;">
-    <form action="$scripturl?action=modsearch2;toboard={yabb to_board}" method="post" name="moderatoradd" id="moderatoradd" onsubmit="selectAllMods();">
-    <div class="bordercolor" style="width:320px">
-    <table class="cs_thin pad_3px" style="width:320px">
+$myselectmods = qq~<div style="position: relative; top: 0px; left: 0px; height: 1px; width: 350px; border: 0; z-index: 100002;">
+    <div id="modsettings" style="position: absolute; top: 0px; left: 0px; width: 350px; padding: 1px; color: #000000; background-color: gray; display: none;">
+    <form action="$scripturl?action=modsearch2;toboard={yabb to_board}" method="post" name="moderatoradd" id="moderatoradd"  accept-charset="$yycharset">
+    <div class="bordercolor" style="width:350px">
+    <table class="cs_thin pad_3px" style="width:350px">
         <tr>
             <td class="titlebg"><label for="letter">$addmod_txt{'modsearch'}</label></td>
+		</tr><tr>
+			<td class="windowbg2">
+				<span class="small">$addmod_txt{'instruct'}</span>
+			</td>
         </tr><tr>
             <td class="windowbg2">
-                <div style="float:left"><input type="text" name="letter" id="letter" onkeyup="LetterChange(this.value)" style="width:270px" /></div>
+                <div style="float:left"><input type="text" name="letter" id="letter" onkeyup="LetterChange(this.value)" style="width:300px" /></div>
                 <div style="float:right"><img src="$imagesdir/mozilla_gray.gif" id="load" alt="" /></div>
             </td>
         </tr><tr>
             <td class="windowbg">
-                <select name="rec_list" multiple="multiple" id="rec_list" size="6" style="width: 310px; font-size: 11px;" ondblclick="copy_option('moderators')"><option></option></select>
+                <select name="rec_list" multiple="multiple" id="rec_list" size="6" style="width: 340px; font-size: 11px;" ondblclick="copy_option('moderators')"><option></option></select>
             </td>
         </tr><tr>
             <td class="windowbg">
-                <input type="button" class="button" onclick="copy_option('moderators')" value="$addmod_txt{'addselected'}" style="width: 310px;" />
+                <input type="button" class="button" onclick="copy_option('moderators')" value="$addmod_txt{'addselected'}" style="width: 340px;" />
             </td>
-        </tr><tr>
-            <td class="windowbg2">
-                <span class="small">$addmod_txt{'instruct'}</span>
-            </td>
-        </tr><tr>
-            <td class="titlebg"><label for="letter">$addmod_txt{'addmod_list'}</label></td>
-        </tr><tr>
-            <td class="windowbg2">
-                <select name="moderators" id="moderators" multiple="multiple" size="4" style="width: 310px;" ondblclick="removeUser(this);">
-                    {yabb mythismod} 
-                </select>
-                <br /><span class="small">$addmod_txt{instructions}</span>
-            </td>
-        </tr><tr>
-            <td class="windowbg">
-                <input type="submit" class="button" value="$addmod_txt{'addmod_save'}" style="width: 155px;" /><input type="button" class="button" onclick="ModSettings()" value="$addmod_txt{'pageclose'}" style="width: 155px;" />
-            </td>
-        </tr>
-    </table>
-    </div>
-    </form>
-    <div id="response" style="display:none"> </div>
-</div>
-</div>
-    ~;
+        </tr>~;
+
+$myselectmods_b  =qq~<tr>
+			<td class="windowbg2"><span class="small"><b>{yabb addmod_list}</b></span></td>
+		</tr><tr>
+			<td class="windowbg" colspan="3">
+			    	<select name="moderators" id="moderators" multiple="multiple" size="4" style="width: 340px;">
+				{yabb modmbr}
+				</select>
+			</td>
+		</tr>
+		~;
+
+$myselectmods_c = qq~<tr>
+			<td class="windowbg2"><span class="small"><b>{yabb addgrp_list}</b></span></td>
+		</tr><tr>
+			<td class="windowbg" colspan="3">
+				<select multiple="multiple" name="moderatorgroups" id="moderatorgroups" size="4" style="width: 340px;">
+				{yabb modgrp}
+				</select>
+			</td>
+		</tr>~;
+
+$myselectmods_d = qq~<tr>
+			<td class="windowbg">
+				<input type="submit" class="button" value="$addmod_txt{'addmod_save'}" style="width: 170px;" /><input type="button" class="button" onclick="ModSettings()" value="$addmod_txt{'pageclose'}" style="width: 170px;" />
+			</td>
+		</tr>
+	</table>
+	</div>
+	</form>
+	<div id="response" style="display:none"> </div>
+	</div>
+</div>~;
 
 ## Sessions
 
@@ -113,11 +126,11 @@ $my_sessions = qq~
         </td>
     </tr><tr>
         <td class="windowbg" colspan="3">
-            $session_txt{'3'}<br /><br />$session_txt{'4'} {yabb sesremark}
+            {yabb sesstext3}<br /><br />{yabb sesstext4} {yabb sesremark}
         </td>
     </tr><tr>
         <td class="windowbg right">
-            <label for="sesanswer"><b>$sesquest_txt{$sesquestion}:</b></label>
+            <label for="sesanswer"><b>{yabb sesquestion}:</b></label>
         </td>
         <td class="windowbg">
             <input type="{yabb sestype}" name="sesanswer" id="sesanswer" size="20" tabindex="1" />

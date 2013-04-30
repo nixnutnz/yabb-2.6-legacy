@@ -126,16 +126,16 @@ $myIM_liveprev = qq~<tr>
                 <tr>
                     <td class="titlebg">
                         <div id="savetopic" style="height:0px; text-align:left; vertical-align:middle; font-weight:bold; overflow:auto;">&nbsp;</div>
-                    </td>
-                </tr><tr>
+		</td>
+	</tr><tr>
                     <td class="windowbg2">
                         <div id="saveframe" class="message" style="height:0px; text-align:left; vertical-align:top; overflow:auto;">&nbsp;</div>
                     </td>
                 </tr>
             </table>
-            </div>
-        </td>
-    </tr>~;
+		    </div>
+		</td>
+	</tr>~;
 
 $myIM_replyguest = qq~<tr>
         <td class="windowbg2">

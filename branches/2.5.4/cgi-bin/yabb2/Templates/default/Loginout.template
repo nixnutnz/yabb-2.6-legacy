@@ -71,11 +71,11 @@ $mysharedlog_bodya = qq~
                     <span style="float: left; text-align: left">
                         <label for="cookielength">$loginout_txt{'keeps'}</label>
                     </span>
-                    <span style="float: right; text-align: right; margin-left: 35px;">
-                        <a href="$scripturl?action=reminder" style="{yabb hide_passbutton}">$loginout_txt{'315'}</a>
+                    <span style="float: right; text-align: right; margin: 0 25px;">
+                        <a href="$scripturl?action=register" style="{yabb hide_regbutton}">$maintxt{'97'}</a>
                     </span>
-                    <span style="float: right; text-align: right; margin-left: 15px;">
-                        <a href="$scripturl?action=register" style="{yabb hide_regbutton}">$maintxt{'97'}
+                    <span style="float: right; text-align: right; margin: 0 20px;">
+                        <a href="$scripturl?action=reminder" style="{yabb hide_passbutton}">$loginout_txt{'315'}</a>
                     </span>
                     <br /><br />
                 </div>
