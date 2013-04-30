@@ -599,11 +599,27 @@ font-weight:700;
 text-decoration:none;
 }
 
-.titlebg a:hover,.catbg a:hover {
-text-decoration:underline;
+.selected-bg {
+font-size:11px;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Verdana, Helvetica, Arial, Sans-Serif;
+color: #EEE;
+background-color: #4378AE;
 }
 
-.message, #message{
+.selected-bg a {
+color:#FFF;
+font-style:normal;
+font-weight:700;
+text-decoration:none;
+}
+
+.titlebg a:hover,.catbg a:hover,.selected-bg a:hover {
+text-decoration:underline;
+} 
+.message, #message, .prevwin {
 color:#2D2D2D;
 font-family:Verdana, Helvetica, Arial, Sans-Serif;
 font-size:8pt;
@@ -612,7 +628,7 @@ font-weight:400;
 text-decoration:none;
 }
 
-.message a  {
+.message a, .prevwin a {
 background-color:transparent;
 color:#900000;
 font-style:normal;
@@ -620,7 +636,7 @@ font-weight:400;
 text-decoration:none;
 }
 
-.message a:hover {
+.message a:hover, .prevwin a:hover {
 background-color:transparent;
 color:#3B5998;
 text-decoration:underline;
@@ -629,6 +645,10 @@ text-decoration:underline;
 .message table {
 width:auto;
 margin-left:1em;
+}
+
+.prevwin table {
+border: #fff solid thin;
 }
 
 .message table td {
@@ -1482,3 +1502,19 @@ padding:0 !important;
 .tabmenu span.tabstyle {font-size: 12px; white-space: nowrap; cursor: auto; margin:0 1px 0 0; padding:4px 8px; text-align:center;}
 .tabmenu input.edittab {font-family:Arial,Sans-Serif; float:left;vertical-align: top; border-radius:0; background-color: transparent; border:0; font-size: 12px; white-space: nowrap; cursor: auto; margin:0 1px 0 0; padding:4px 8px; text-align:center; color:#bbb;}
 .tabmenu input.editttab_img {float:left; background-color: transparent; border:0; border-radius:0; vertical-align: middle; padding:0;}
+
+.codebox {
+width:90%;
+background-color:#4378AE;
+padding:2px 6px 2px 2px;
+border:1px #34689A solid;
+border-bottom:0px;
+color:#eee;
+font-weight: bold;
+height:20px;
+line-height:20px;
+}
+
+.codebox div {
+float:right;
+} 
