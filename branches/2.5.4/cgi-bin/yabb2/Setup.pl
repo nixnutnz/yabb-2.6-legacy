@@ -1337,6 +1337,9 @@ sub SetInstall2 {
         $max_avatar_width       = 65;
         $max_avatar_height      = 65;
         $fix_avatar_img_size    = 0;
+        $max_avatarml_width     = 65;
+        $max_avatarml_height    = 65;
+        $fix_avatarml_img_size  = 0;
         $max_post_img_width     = 0;
         $max_post_img_height    = 0;
         $fix_post_img_size      = 0;
@@ -1512,6 +1515,8 @@ sub SetInstall2 {
 \$upload_avatargroup = '$upload_avatargroup';       # membergroups allowed to upload avatars for their profile, '' == all members
 \$avatar_limit = $avatar_limit;                     # set to the maximum size of the uploaded avatar, 0 == no limit
 \$avatar_dirlimit = $avatar_dirlimit;               # set to the maximum size of the upload avatar directory, 0 == no limit
+\$default_avatar = $default_avatar;		            # Set to 1 to show a default avatar if the member hasn't added a picture
+\$default_userpic = "\Q$default_userpic\E";         # Set the file name for the default avatar
 
 \$enable_guestposting = $enable_guestposting;       # Set to 0 if do not allow 1 is allow.
 \$guest_media_disallowed = $guest_media_disallowed; # disallow browsing guests to see media files or
