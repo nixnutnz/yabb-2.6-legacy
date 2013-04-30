@@ -82,6 +82,15 @@ $messageindexlngver = 'YaBB 2.5.4 $Revision$';
 'collruletext' => 'Board Rules Collapsed',
 );
 
+%messageindex_sort = (
+'sort_az' => "Sort (A-Z)",
+'sort_za' => "Sort (Z-A)",
+'sort_min' => "Sort (min answer)",
+'sort_max' => "Sort (max answer)",
+'sort_last' => "Sort (new answer)",
+'sort_first' => "Sort (old answer)",
+);
+
 %messageindex_stickygrp = (
 '1' => 'Important Topics',
 '2' => 'Board Topics',

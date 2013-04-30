@@ -22,6 +22,21 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('MessageIndex');
 
+if ($INFO{'tsort'} eq q{}) {
+	$tsortcookie = "tsort$currentboard$username";
+	$tsort = $yyCookies{$tsortcookie};
+}
+else {
+	$tsort = $INFO{'tsort'};
+	my $cookiename = "tsort$currentboard$username";
+	my $expiration = 'Sunday, 17-Jan-2038 00:00:00 GMT';
+	push @otherCookies, write_cookie(
+		-name    =>   "$cookiename",
+		-value   =>   "$tsort",
+		-path    =>   q{/},
+		-expires =>   "$expiration");
+}
+
 sub MessageIndex {
 
     # Check if board was 'shown to all' - and whether they can view the board
@@ -114,6 +129,50 @@ sub MessageIndex {
       || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     @threadlist = <BRDTXT>;
     fclose(BRDTXT);
+	$sort_subject    = qq~<a href="$scripturl?board=$currentboard;tsort=3" rel="nofollow">$messageindex_txt{'70'}</a>~;
+	$sort_starter    = qq~<a href="$scripturl?board=$currentboard;tsort=5" rel="nofollow">$messageindex_txt{'109'}</a>~;
+	$sort_answer     = qq~<a href="$scripturl?board=$currentboard;tsort=7" rel="nofollow">$messageindex_txt{'110'}</a>~;
+	$sort_lastpostim = qq~<a href="$scripturl?board=$currentboard;tsort=0" rel="nofollow">$messageindex_txt{'22'}</a>~;
+
+	my %starter;
+	@temp_list = @threadlist;
+	if ($tsort == 1) {
+		$sort_lastpostim = qq~<a href="$scripturl?board=$currentboard;tsort=0" rel="nofollow">$messageindex_txt{'22'}</a> <img src="$imagesdir/sort_down.gif" alt="$messageindex_sort{'sort_first'}" title="$messageindex_sort{'sort_first'}" />~;
+		@threadlist = reverse (@temp_list);
+	} elsif ($tsort == 2) {
+		$sort_subject = qq~<a href="$scripturl?board=$currentboard;tsort=3" rel="nofollow">$messageindex_txt{'70'}</a> <img src="$imagesdir/sort_up.gif" alt="$messageindex_sort{'sort_za'}" title="$messageindex_sort{'sort_za'}" />~;
+		@threadlist = sort {lc((split /\|/,$b,3)[1]) cmp lc((split /\|/,$a,3)[1])} @temp_list;
+	} elsif ($tsort == 3) {
+		$sort_subject = qq~<a href="$scripturl?board=$currentboard;tsort=2" rel="nofollow">$messageindex_txt{'70'}</a> <img src="$imagesdir/sort_down.gif" alt="$messageindex_sort{'sort_az'}" title="$messageindex_sort{'sort_az'}" />~;
+		@threadlist = sort {lc((split /\|/,$a,3)[1]) cmp lc((split /\|/,$b,3)[1])} @temp_list;
+	} elsif ($tsort == 4) {
+		ManageMemberinfo('load');
+		$sort_starter = qq~<a href="$scripturl?board=$currentboard;tsort=5" rel="nofollow">$messageindex_txt{'109'}</a> <img src="$imagesdir/sort_up.gif" alt="$messageindex_sort{'sort_za'}" title="$messageindex_sort{'sort_za'}" />~;
+		@threadlist = sort { starter((split /\|/, $b, 8)[6], $b) cmp starter((split /\|/, $a, 8)[6], $a) } @temp_list;
+		undef %memberinf;
+	} elsif ($tsort == 5) {
+		&ManageMemberinfo("load");
+		$sort_starter = qq~<a href="$scripturl?board=$currentboard;tsort=4" rel="nofollow">$messageindex_txt{'109'}</a> <img src="$imagesdir/sort_down.gif" alt="$messageindex_sort{'sort_az'}" title="$messageindex_sort{'sort_az'}" />~;
+		@threadlist = sort { starter((split /\|/, $a, 8)[6], $a) cmp starter((split /\|/, $b, 8)[6], $b) } @temp_list;
+		undef %memberinf;
+	} elsif ($tsort == 6) {
+		$sort_answer = qq~<a href="$scripturl?board=$currentboard;tsort=7" rel="nofollow">$messageindex_txt{'110'}</a> <img src="$imagesdir/sort_up.gif" alt="$messageindex_sort{'sort_max'}" title="$messageindex_sort{'sort_max'}" />~;
+		@threadlist = sort {(split /\|/,$b,7)[5] <=> (split /\|/,$a,7)[5]} @temp_list;
+	} elsif ($tsort == 7) {
+		$sort_answer = qq~<a href="$scripturl?board=$currentboard;tsort=6" rel="nofollow">$messageindex_txt{'110'}</a> <img src="$imagesdir/sort_down.gif" alt="$messageindex_sort{'sort_min'}" title="$messageindex_sort{'sort_min'}" />~;
+		@threadlist = sort {(split /\|/,$a,7)[5] <=> (split /\|/,$b,7)[5]} @temp_list;
+	} else {
+		$sort_lastpostim = qq~<a href="$scripturl?board=$currentboard;tsort=1" rel="nofollow">$messageindex_txt{'22'}</a> <img src="$imagesdir/sort_up.gif" alt="$messageindex_sort{'sort_last'}" title="$messageindex_sort{'sort_last'}" />~;
+	}
+
+	sub starter {
+		return $user_info{$_[0]} if exists $user_info{$_[0]};
+		return lc((split /\|/, $_[1], 4)[2]) unless exists $memberinf{$_[0]};
+ 		$user_info{$_[0]} = lc((split /\|/, $memberinf{$_[0]}, 2)[0]);
+	}
+	undef @temp_list;
+	undef %starter;
+
     foreach my $threadlist (@threadlist) {
         my $threadstatus = ( split /\|/xsm, $threadlist )[8];
         if ( $threadstatus =~ /h/ism && !$staff ) {
@@ -464,10 +523,10 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1" class="a"><b>$pboar
 
     # check how many col's must be spanned
     if ( $multiview > 0 ) {
-        $colspan = 7;
+        $colspan = 8;
     }
     else {
-        $colspan = 6;
+        $colspan = 7;
     }
 
     if ( !$iamguest ) {
@@ -670,7 +729,9 @@ qq~<a href="$scripturl?num=$mnum/new#new"><img src="$imagesdir/$msgbrd_new" alt=
                 $new = q{};
             }
         }
-        $micon = qq~<img src="$imagesdir/$micon.gif" alt="" />~;
+        require "$vardir/Micon.def";
+
+        $micon = qq~$micon{$micon}~;
         $mpoll = q{};
         if ( -e "$datadir/$mnum.poll" ) {
             $mpoll = qq~<b>$messageindex_txt{'15'}: </b>~;
@@ -693,14 +754,16 @@ qq~<a href="$scripturl?num=$mnum/new#new"><img src="$imagesdir/$msgbrd_new" alt=
                 print {POLL} @poll or croak 'cannot print POLL';
                 fclose(POLL);
             }
-            $micon = qq~$img{'pollicon'}~;
-            if ($poll_locked) { $micon = $img{'polliconclosed'}; }
+            require "$vardir/Micon.def";
+
+            $micon = qq~$micon{'pollicon'}~;
+            if ($poll_locked) { $micon = $micon{'polliconclosed'}; }
             elsif ( !$iamguest
                 && $max_log_days_old
                 && $mdate > $date - ( $max_log_days_old * 86_400 ) )
             {
                 if ( $dlp < $createpoll_date ) {
-                    $micon = qq~$img{'polliconnew'}~;
+                    $micon = qq~$micon{'polliconnew'}~;
                 }
                 else {
                     fopen( POLLED, "$datadir/$mnum.polled" );
@@ -709,7 +772,7 @@ qq~<a href="$scripturl?num=$mnum/new#new"><img src="$imagesdir/$msgbrd_new" alt=
                     ( undef, undef, undef, $vote_date, undef ) =
                       split /\|/xsm, $polled;
                     if ( $dlp < $vote_date ) {
-                        $micon = qq~$img{'polliconnew'}~;
+                        $micon = qq~$micon{'polliconnew'}~;
                     }
                 }
             }
@@ -991,10 +1054,10 @@ qq~$maintxt{'758'}: '<a href="$scripturl?num=$movedFlag">$2</a>'<br /><span clas
         }
 
         my $mydate = timeformat($mdate);
+        my $thicon = $micon{$threadclass};
         my $tempbar = $movedFlag ? $threadbarMoved : $threadbar;
         $tempbar =~ s/({|<)yabb admin column(}|>)/$admincol/gsm;
-        $tempbar =~
-s/({|<)yabb threadpic(}|>)/<img src="$imagesdir\/$threadclass.gif" alt="" \/>/gsm;
+        $tempbar =~ s/({|<)yabb threadpic(}|>)/$thicon/gsm;
         $tempbar =~ s/({|<)yabb icon(}|>)/$micon/gsm;
         $tempbar =~ s/({|<)yabb new(}|>)/$new/gsm;
         $tempbar =~ s/({|<)yabb poll(}|>)/$mpoll/gsm;
@@ -1133,29 +1196,26 @@ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies
 
     if ( !$messagelist ) {
         $yabbicons = qq~
-    <img src="$imagesdir/$msgbrd_thread" alt="$messageindex_txt{'457'}" title="$messageindex_txt{'457'}" /> $messageindex_txt{'457'}<br />
-    <img src="$imagesdir/$msgbrd_sticky" alt="$messageindex_txt{'779'}" title="$messageindex_txt{'779'}" /> $messageindex_txt{'779'}<br />
-    <img src="$imagesdir/$msgbrd_locked" alt="$messageindex_txt{'456'}" title="$messageindex_txt{'456'}" /> $messageindex_txt{'456'}<br />
-    <img src="$imagesdir/$msgbrd_stickylock" alt="$messageindex_txt{'456'}" title="$messageindex_txt{'780'}" /> $messageindex_txt{'780'}<br />
-    <img src="$imagesdir/$msgbrd_locked_moved" alt="$messageindex_txt{'845'}" title="$messageindex_txt{'845'}" /> $messageindex_txt{'845'}<br />
+    $micon{'thread'} $messageindex_txt{'457'}<br />
+    $micon{'sticky'} $messageindex_txt{'779'}<br />
+    $micon{'locked'} $messageindex_txt{'456'}<br />
+    $micon{'stickylock'} $messageindex_txt{'780'}<br />
+    $micon{'locked_moved'} $messageindex_txt{'845'}<br />
 ~;
         if ( ( $staff )
             && $sessionvalid == 1 )
         {
-            $yabbadminicons =
-qq~<img src="$imagesdir/$msgbrd_hide" alt="$messageindex_txt{'458'}" title="$messageindex_txt{'458'}" /> $messageindex_txt{'458'}<br />~;
-            $yabbadminicons .=
-qq~<img src="$imagesdir/$msgbrd_hidesticky" alt="$messageindex_txt{'459'}" title="$messageindex_txt{'459'}" /> $messageindex_txt{'459'}<br />~;
-            $yabbadminicons .=
-qq~<img src="$imagesdir/$msgbrd_hidelock" alt="$messageindex_txt{'460'}" title="$messageindex_txt{'460'}" /> $messageindex_txt{'460'}<br />~;
-            $yabbadminicons .=
-qq~<img src="$imagesdir/$msgbrd_hidestickylock" alt="$messageindex_txt{'461'}" title="$messageindex_txt{'461'}" /> $messageindex_txt{'461'}<br />~;
+            $yabbadminicons = qq~
+    $micon{'hide'} $messageindex_txt{'458'}<br />
+    $micon{'hidesticky'} $messageindex_txt{'459'}<br />
+    $micon{'hidelock'} $messageindex_txt{'460'}<br />
+    $micon{'hidestickylock'} $messageindex_txt{'461'}<br />~;
         }
         $yabbadminicons .= qq~
-    <img src="$imagesdir/$msgbrd_announcement" alt="$messageindex_txt{'779a'}" title="$messageindex_txt{'779a'}" /> $messageindex_txt{'779a'}<br />
-    <img src="$imagesdir/$msgbrd_announcementlock" alt="$messageindex_txt{'779b'}" title="$messageindex_txt{'779b'}" /> $messageindex_txt{'779b'}<br />
-    <img src="$imagesdir/$msgbrd_hotthread" alt="$messageindex_txt{'454'} $HotTopic $messageindex_txt{'454a'}" title="$messageindex_txt{'454'} $HotTopic $messageindex_txt{'454a'}" /> $messageindex_txt{'454'} $HotTopic $messageindex_txt{'454a'}<br />
-    <img src="$imagesdir/$msgbrd_veryhotthread" alt="$messageindex_txt{'455'} $VeryHotTopic $messageindex_txt{'454a'}" title="$messageindex_txt{'455'} $VeryHotTopic $messageindex_txt{'454a'}" /> $messageindex_txt{'455'} $VeryHotTopic $messageindex_txt{'454a'}<br />
+    $micon{'announcement'} $messageindex_txt{'779a'}<br />
+    $micon{'announcementlock'} $messageindex_txt{'779b'}<br />
+    $micon{'hotthread'} $messageindex_txt{'454'} $HotTopic $messageindex_txt{'454a'}<br />
+    $micon{'veryhotthread'} $messageindex_txt{'455'} $VeryHotTopic $messageindex_txt{'454a'}<br />
 ~;
 
         LoadAccess();
@@ -1187,11 +1247,10 @@ qq~<a href="$scripturl?action=RSSboard;board=$INFO{'board'}" onclick="target='_b
     $messageindex_template =~ s/({|<)yabb category(}|>)/$catlink/gsm;
     $messageindex_template =~ s/({|<)yabb board(}|>)/$boardlink/gsm;
     $messageindex_template =~ s/({|<)yabb moderators(}|>)/$template_mods/gsm;
-    $messageindex_template =~ s/({|<)yabb sortsubject(}|>)/$sort_subject/gsm;
-    $messageindex_template =~ s/({|<)yabb sortstarter(}|>)/$sort_starter/gsm;
-    $messageindex_template =~ s/({|<)yabb sortanswer(}|>)/$sort_answer/gsm;
-    $messageindex_template =~
-      s/({|<)yabb sortlastpostim(}|>)/$sort_lastpostim/gsm;
+	$messageindex_template =~ s/({|<)yabb sortsubject(}|>)/$sort_subject/g;
+	$messageindex_template =~ s/({|<)yabb sortstarter(}|>)/$sort_starter/g;
+	$messageindex_template =~ s/({|<)yabb sortanswer(}|>)/$sort_answer/g;
+	$messageindex_template =~ s/({|<)yabb sortlastpostim(}|>)/$sort_lastpostim/g;
 
     if ($ShowBDescrip) {
         if ( $bdescrip ne q{} ) {

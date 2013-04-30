@@ -2433,6 +2433,10 @@ qq~<span class="small" style="vertical-align: middle;"> <b>$messageindex_txt{'13
     $messageindex_template =~ s/({|<)yabb category(}|>)/$tempcatnm/gsm;
     $messageindex_template =~ s/({|<)yabb board(}|>)/$tempboardnm/gsm;
     $messageindex_template =~ s/({|<)yabb moderators(}|>)/$tempmodslink/gsm;
+	$messageindex_template =~ s/({|<)yabb sortsubject(}|>)/$sort_subject/gsm;
+	$messageindex_template =~ s/({|<)yabb sortstarter(}|>)/$sort_starter/gsm;
+	$messageindex_template =~ s/({|<)yabb sortanswer(}|>)/$sort_answer/gsm;
+	$messageindex_template =~ s/({|<)yabb sortlastpostim(}|>)/$sort_lastpostim/gsm;
     $messageindex_template =~ s/({|<)yabb bdpicture(}|>)/$bdpic/gsm;
     $messageindex_template =~ s/({|<)yabb threadcount(}|>)/1/gsm;
     $messageindex_template =~ s/({|<)yabb messagecount(}|>)/2/gsm;

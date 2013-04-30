@@ -139,15 +139,17 @@ if ($action ne 'favorites') {
 $messageindex_template .= qq~
 			<table class="bordercolor pad_3px cs_thin">
     			<col span="2" style="width:4%" />
-    			<col style="width:42%" />
-    			<col span="2" style="width:10%" />
+    			<col style="width:32%" />
+    			<col style="width:24%" />
+    			<col span="2" style="width:8%" />
     			<col style="width:22%" />
 				<tr>
 					<td class="titlebg center" colspan="2">&nbsp;</td>
-					<td class="titlebg">$messageindex_txt{'70'} / $messageindex_txt{'109'}</td>
-					<td class="titlebg center">$messageindex_txt{'110'}</td>
-					<td class="titlebg center">$messageindex_txt{'301'}</td>
-					<td class="titlebg center">$messageindex_txt{'22'}</td>
+	                <td class="titlebg"><span style="white-space: nowrap;">{yabb sortsubject}</span></td>
+	                <td class="titlebg center"><span style="white-space: nowrap;">{yabb sortstarter}</span></td>
+	                <td class="titlebg center"><span style="white-space: nowrap;">{yabb sortanswer}</span></td>
+	                <td class="titlebg center">$messageindex_txt{'301'}</td>
+	                <td class="titlebg center"><span style="white-space: nowrap;">{yabb sortlastpostim}</span></td>
 					{yabb admin column}
 				</tr>
 				{yabb stickyblock}
@@ -247,9 +249,10 @@ $threadbar = qq~<tr class="{yabb altthdcolor}">
 					<td class="center">{yabb threadpic}</td>
 					<td class="center">{yabb icon}</td>
 					<td>
-						<div style="float: left; width: 95%;">{yabb favorite} {yabb new} {yabb poll}{yabb subjectlink}<br /><span class="small">$messageindex_txt{'527'} {yabb starttime} $messageindex_txt{'526'} {yabb starter}{yabb pages}<br />{yabb permalink}</span></div>
+						<div style="float: left; width: 95%;">{yabb favorite} {yabb new} {yabb poll}{yabb subjectlink}</div>
 						<div style="float: left; width: 5%; text-align: center;">{yabb attachmenticon}</div>
 					</td>
+					<td><span class="small">$messageindex_txt{'527'} {yabb starttime} $messageindex_txt{'526'} {yabb starter}{yabb pages}<br />{yabb permalink}</span></td>
 					<td class="center">{yabb replies}</td>
 					<td class="center">{yabb views}</td>
 					<td>
@@ -262,7 +265,7 @@ $threadbar = qq~<tr class="{yabb altthdcolor}">
 $threadbarMoved = qq~<tr class="{yabb altthdcolor}">
 					<td class="center">{yabb threadpic}</td>
 					<td class="center">{yabb icon}</td>
-					<td colspan="4">
+					<td colspan="5">
 						<div style="float: left; width: 99%;">{yabb subjectlink}</div>
 					</td>
 					{yabb admin column}
@@ -271,7 +274,7 @@ $threadbarMoved = qq~<tr class="{yabb altthdcolor}">
 # Admin dependent subfooter                #
 
 $subfooterbar = qq~<tr>
-					<td class="titlebg right" colspan="6">
+					<td class="titlebg right" colspan="7">
 						<span class="small">{yabb admin selector} <label for="checkall">$messageindex_txt{'737'}</label></span>
 					</td>
 					<td class="titlebg center" style="white-space: nowrap">

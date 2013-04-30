@@ -126,9 +126,9 @@ sub print_output_header {
 
     my $ret = $yyIIS ? "HTTP/1.0 $headerstatus\n" : "Status: $headerstatus\n";
 
-    foreach ( $yySetCookies1, $yySetCookies2, $yySetCookies3 ) {
-        if ($_) { $ret .= "Set-Cookie: $_\n"; }
-    }
+	foreach ($yySetCookies1,$yySetCookies2,$yySetCookies3,@otherCookies) {
+	    $ret .= "Set-Cookie: $_\n" if $_;
+	}
 
     if ( !$no_error_page ) {
         if ($yySetLocation) {

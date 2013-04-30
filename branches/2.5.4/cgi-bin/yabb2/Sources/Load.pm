@@ -547,6 +547,8 @@ qq~<div style="float: left; font-size: 10px; font-family: verdana, sans-serif; o
           . (
               ${ $uid . $user }{'userpic'} =~ m/\A[\s\n]*https?:\/\//ism
             ? ${ $uid . $user }{'userpic'}
+            : ( $default_avatar && ${$uid.$user}{'userpic'} eq 'blank.gif' )
+            ? "$imagesdir/$default_userpic"
             : "$facesurl/${$uid.$user}{'userpic'}"
           )
           . q~" name="avatar_img_resize" alt="" style="display:none" />~;
@@ -996,6 +998,24 @@ sub UpdateCookie {
 			-path    => "$pathval",
             -expires => "$expiration"
         );
+
+		foreach my $catid (@categoryorder) {
+		    if( !$catid ) { next; }
+		    my $boardlist = $cat{$catid};
+		    my @bdlist = split /\,/xsm, $boardlist;
+			foreach my $curboard (@bdlist) {
+				chomp $curboard;
+				my $tsortcookie = "tsort$curboard$username";
+				if ($yyCookies{$tsortcookie}) {
+					push @otherCookies, write_cookie(
+						-name    =>   "$tsortcookie",
+						-value   =>   q{},
+						-path    =>   q{/},
+						-expires =>   'Thursday, 01-Jan-1970 00:00:00 GMT');
+					$yyCookies{$tsortcookie} = q{};
+				}
+			}
+		}
 	}
     return;
 }
