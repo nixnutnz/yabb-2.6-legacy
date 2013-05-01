@@ -43,7 +43,8 @@ function AddSelText(bbopen, bbclose) {
 		document.postmodify.message.scrollTop = currentTop;
 	}
 	else document.postmodify.message.value += bbopen + bbclose;
-	document.postmodify.message.focus();
+		autoPreview();
+		document.postmodify.message.focus();
 }
 
 function AddText(text) {
@@ -88,7 +89,8 @@ function AddSelTextUrl(bbopen, bbclose) {
 		document.postmodify.message.scrollTop = currentTop;
 	}
 	else document.postmodify.message.value += bbopen + bbclose;
-	document.postmodify.message.focus();
+		autoPreview();
+	    document.postmodify.message.focus();
 }
 
 function emai1() {
