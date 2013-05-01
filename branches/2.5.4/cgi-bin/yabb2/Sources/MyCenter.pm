@@ -1975,6 +1975,7 @@ sub drawPMView {
 	            }
             }
             ## set the status icon
+
             my $messIconName = 'standard';
             if    ( $messStatus =~ m/c/sm ) { $messIconName = 'confidential'; }
             elsif ( $messStatus =~ m/u/sm ) { $messIconName = 'urgent'; }
@@ -1985,8 +1986,8 @@ sub drawPMView {
                 $messIconName = 'guestpmreply';
             }
             elsif ( $messStatus =~ m/g/sm ) { $messIconName = 'guestpm'; }
-            my $messIcon =
-qq~<img src="$imagesdir/$messIconName.gif"  alt="$im_message_status{$messIconName}" title="$im_message_status{$messIconName}" style="margin:0 15px;" />~;
+            require "$vardir/Micon.def";
+            my $messIcon = $micon{$messIconName};
 
             my ($hasMultiRecs);
             if ( $musernameto =~ /,/xsm || $musernamecc || $musernamebcc ) {
@@ -2145,27 +2146,27 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musernameto}" r
                     ## not opened
                     if ( !$imOpened && !$hasMultiRecs ) {
                         $messageIcon =
-qq~<img src="$imagesdir/imclose.gif" alt="$inmes_imtxt{'innotread'}" title="$inmes_imtxt{'innotread'}" />~;
+qq~<img src="$imagesdir/$IM_imclose" alt="$inmes_imtxt{'innotread'}" title="$inmes_imtxt{'innotread'}" />~;
                     }
                     ## replied to
                     elsif ( $imRepliedTo && !$hasMultiRecs ) {
                         $messageIcon =
-qq~<img src="$imagesdir/answered.gif" alt="$inmes_imtxt{'08'}" title="$inmes_imtxt{'08'}" />~;
+qq~<img src="$imagesdir/$IM_answered" alt="$inmes_imtxt{'08'}" title="$inmes_imtxt{'08'}" />~;
                     }
                     ## opened
                     elsif ( $imOpened && !$hasMultiRecs ) {
                         $messageIcon =
-qq~<img src="$imagesdir/imopen.gif" alt="$inmes_imtxt{'inread'}" title="$inmes_imtxt{'inread'}" />~;
+qq~<img src="$imagesdir/$IM_imopen" alt="$inmes_imtxt{'inread'}" title="$inmes_imtxt{'inread'}" />~;
                     }
                     ## not opened multi
                     elsif ( !$imOpened && $hasMultiRecs ) {
                         $messageIcon =
-qq~<img src="$imagesdir/imclose2.gif" alt="$inmes_imtxt{'inread'}" title="$inmes_imtxt{'inread'}" />~;
+qq~<img src="$imagesdir/$IM_imclose2" alt="$inmes_imtxt{'inread'}" title="$inmes_imtxt{'inread'}" />~;
                     }
                     ## opened multi
                     elsif ( $imOpened && $hasMultiRecs ) {
                         $messageIcon =
-qq~<img src="$imagesdir/imopen2.gif" alt="$inmes_imtxt{'inread'}" title="$inmes_imtxt{'inread'}" />~;
+qq~<img src="$imagesdir/$IM_imopen2" alt="$inmes_imtxt{'inread'}" title="$inmes_imtxt{'inread'}" />~;
                     }
                 }
 
@@ -2178,13 +2179,13 @@ qq~<img src="$imagesdir/imopen2.gif" alt="$inmes_imtxt{'inread'}" title="$inmes_
                             || $enable_notifications < 2 )
                         {
                             $messageIcon =
-qq~<img src="$imagesdir/imclose.gif" alt="$inmes_imtxt{'outnotread'}" title="$inmes_imtxt{'outnotread'}" />~;
+qq~<img src="$imagesdir/$IM_imclose" alt="$inmes_imtxt{'outnotread'}" title="$inmes_imtxt{'outnotread'}" />~;
                             $callBack =
 qq~<span class="small"><a href="$scripturl?action=imcb;rid=$messageid;receiver=$useraccount{$musernameto}" onclick="return confirm('$inmes_imtxt{'73'}')">$inmes_imtxt{'83'}</a> | </span>~;
                         }
                         else {
                             $messageIcon =
-qq~<img src="$imagesdir/imclose.gif" alt="$inmes_imtxt{'outnotread'}" title="$inmes_imtxt{'outnotread'}" />~;
+qq~<img src="$imagesdir/$IM_imclose" alt="$inmes_imtxt{'outnotread'}" title="$inmes_imtxt{'outnotread'}" />~;
                         }
                     }
                     ## opened
@@ -2339,7 +2340,7 @@ qq~<span class="small"><a href="$scripturl?action=imshow;id=$messageid;caller=2"
                 && $viewBMess
                 && !${$username}{ 'PMbcRead' . $messageid } )
             {
-                $BCnew = qq~&nbsp;<img src="$imagesdir/new.gif" alt="" />~;
+                $BCnew = qq~&nbsp;<img src="$imagesdir/$IM_new" alt="" />~;
             }
 			my $attachIcon;
 			if ( $messageAttachment ne q{} ) {
@@ -2350,7 +2351,7 @@ qq~<span class="small"><a href="$scripturl?action=imshow;id=$messageid;caller=2"
                   ? $inmes_txt{'attach_3'}
                   : $inmes_txt{'attach_2'};
                 $attachIcon =
-qq~<img src="$imagesdir/paperclip.gif" alt="$inmes_txt{'attach_1'} $imAttachCount $alt" title="$inmes_txt{'attach_1'} $imAttachCount $alt" style="float: right; padding-right: 0.3em;" />~;
+qq~<img src="$imagesdir/$IM_paperclip" alt="$inmes_txt{'attach_1'} $imAttachCount $alt" title="$inmes_txt{'attach_1'} $imAttachCount $alt" style="float: right; padding-right: 0.3em;" />~;
 			}
 
             $MCContent_BM = $my_BM_mess;
@@ -2727,12 +2728,12 @@ qq~/<label for="message$messageid">$inmes_imtxt{'store'}</label>~;
             {
                 if ( $immessage =~ /\[quote(.*?)\]/isgm ) {
                     $quoteimg =
-qq~<img src="$imagesdir\/quote.gif" alt="$inmes_imtxt{'69'}" title="$inmes_imtxt{'69'}" \/>&nbsp;~;
+qq~<img src="$imagesdir/$IM_quote" alt="$inmes_imtxt{'69'}" title="$inmes_imtxt{'69'}" />&nbsp;~;
                     $immessage =~ s/\[quote(.*?)\](.+?)\[\/quote\]//igsm;
                 }
                 if ( $immessage =~ /\[code\s*(.*?)\]/isgm ) {
                     $codeimg =
-qq~<img src="$imagesdir\/code1.gif" alt="$inmes_imtxt{'84'}" title="$inmes_imtxt{'84'}" \/>&nbsp;~;
+qq~<img src="$imagesdir/$IM_code1" alt="$inmes_imtxt{'84'}" title="$inmes_imtxt{'84'}" />&nbsp;~;
                     $immessage =~ s/\[code\s*(.*?)\](.+?)\[\/code\]//igsm;
                 }
                 $immessage =~ s/<br.*?>/&nbsp;/gism;
@@ -2910,11 +2911,11 @@ sub LoadBuddyList {
                 && $allow_hide_email == 1 )
             {
                 $buddyemail =
-qq~<img src="$imagesdir/lockmail.gif" alt="$mycenter_txt{'hiddenemail'}" title="$mycenter_txt{'hiddenemail'}" />~;
+qq~<img src="$imagesdir/$IM_lockmail" alt="$mycenter_txt{'hiddenemail'}" title="$mycenter_txt{'hiddenemail'}" />~;
             }
             else {
                 $buddyemail =
-qq~<a href="mailto:${$uid.$buddyname}{'email'}"><img src="$imagesdir/email.gif" alt="$profile_txt{'889'} ${$uid.$buddyname}{'email'}" title="$profile_txt{'889'} ${$uid.$buddyname}{'email'}" /></a>~;
+qq~<a href="mailto:${$uid.$buddyname}{'email'}"><img src="$imagesdir/$IM_email" alt="$profile_txt{'889'} ${$uid.$buddyname}{'email'}" title="$profile_txt{'889'} ${$uid.$buddyname}{'email'}" /></a>~;
             }
 
             CheckUserPM_Level($buddyname);
@@ -2930,7 +2931,7 @@ qq~<a href="mailto:${$uid.$buddyname}{'email'}"><img src="$imagesdir/email.gif" 
               )
             {
                 $buddypm =
-qq~<a href="$scripturl?action=imsend;to=$useraccount{$buddyname}"><img src="$imagesdir/imclose.gif"  alt="$profile_txt{'688'} $buddyrealname" title="$profile_txt{'688'} $buddyrealname" /></a>~;
+qq~<a href="$scripturl?action=imsend;to=$useraccount{$buddyname}"><img src="$imagesdir/$IM_imclose"  alt="$profile_txt{'688'} $buddyrealname" title="$profile_txt{'688'} $buddyrealname" /></a>~;
             }
 
             if ( !$minlinkweb ) { $minlinkweb = 0; }
@@ -2943,7 +2944,7 @@ qq~<a href="$scripturl?action=imsend;to=$useraccount{$buddyname}"><img src="$ima
               )
             {
                 $buddywww =
-qq~<a href="${$uid.$buddyname}{'weburl'}" onclick="target='_blank';"><img src="$imagesdir/www.gif" alt="${$uid.$buddyname}{'webtitle'}" title="${$uid.$buddyname}{'webtitle'}" /></a>~;
+qq~<a href="${$uid.$buddyname}{'weburl'}" onclick="target='_blank';"><img src="$imagesdir/$IM_www" alt="${$uid.$buddyname}{'webtitle'}" title="${$uid.$buddyname}{'webtitle'}" /></a>~;
             }
         }
         else {

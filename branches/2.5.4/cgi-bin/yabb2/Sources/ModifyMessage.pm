@@ -12,6 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 our $VERSION = '2.5.4';
+use CGI::Carp qw(fatalsToBrowser);
 
 $modifymessagepmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
@@ -131,19 +132,19 @@ sub ModifyMessage {
         $lastmod = $mypost_lastmod;
         $lastmod =~ s/{yabb lastmod_a}/$lastmod_a/sm;
 
-		$icon = $micon;
-		if    ($icon eq 'xx')          { $ic1  = ' selected="selected" '; }
-		elsif ($icon eq 'thumbup')     { $ic2  = ' selected="selected" '; }
-		elsif ($icon eq 'thumbdown')   { $ic3  = ' selected="selected" '; }
-		elsif ($icon eq 'exclamation') { $ic4  = ' selected="selected" '; }
-		elsif ($icon eq 'question')    { $ic5  = ' selected="selected" '; }
-		elsif ($icon eq 'lamp')        { $ic6  = ' selected="selected" '; }
-		elsif ($icon eq 'smiley')      { $ic7  = ' selected="selected" '; }
-		elsif ($icon eq 'angry')       { $ic8  = ' selected="selected" '; }
-		elsif ($icon eq 'cheesy')      { $ic9  = ' selected="selected" '; }
-		elsif ($icon eq 'grin')        { $ic10 = ' selected="selected" '; }
-		elsif ($icon eq 'sad')         { $ic11 = ' selected="selected" '; }
-		elsif ($icon eq 'wink')        { $ic12 = ' selected="selected" '; }
+                $icon = $micon;
+                if    ($icon eq 'xx')          { $ic1  = ' selected="selected" '; }
+                elsif ($icon eq 'thumbup')     { $ic2  = ' selected="selected" '; }
+                elsif ($icon eq 'thumbdown')   { $ic3  = ' selected="selected" '; }
+                elsif ($icon eq 'exclamation') { $ic4  = ' selected="selected" '; }
+                elsif ($icon eq 'question')    { $ic5  = ' selected="selected" '; }
+                elsif ($icon eq 'lamp')        { $ic6  = ' selected="selected" '; }
+                elsif ($icon eq 'smiley')      { $ic7  = ' selected="selected" '; }
+                elsif ($icon eq 'angry')       { $ic8  = ' selected="selected" '; }
+                elsif ($icon eq 'cheesy')      { $ic9  = ' selected="selected" '; }
+                elsif ($icon eq 'grin')        { $ic10 = ' selected="selected" '; }
+                elsif ($icon eq 'sad')         { $ic11 = ' selected="selected" '; }
+                elsif ($icon eq 'wink')        { $ic12 = ' selected="selected" '; }
         $message =~ s/<br \/>/\n/igsm;
         $message =~ s/<br>/\n/igxsm;
         $message =~ s/ \&nbsp; \&nbsp; \&nbsp;/\t/igsm;
@@ -199,7 +200,7 @@ sub ModifyMessage2 {
             unlink "$datadir/$threadid.poll";
             unlink "$datadir/$threadid.polled";
             $yySetLocation = qq~$scripturl?num=$threadid~;
-            redirectexit;
+            redirectexit();
         }
         else {
             if ( !ref $thread_arrayref{$threadid} ) {
@@ -250,7 +251,7 @@ sub ModifyMessage2 {
         $mattach,    $mip,     $mmessage,        $mns,
         $mlm,        $mlmb,    $tnum,            $tsub,
         $tname,      $temail,  $tdate,           $treplies,
-        $tusername,  $ticon,   $tstate,          
+        $tusername,  $ticon,   $tstate,
         $name,       $email,
         $subject,    $message, $ns,
     );
@@ -279,7 +280,7 @@ sub ModifyMessage2 {
             $vote_limit,    $pie_radius,  $pie_legends,  $poll_end
         ) = split /\|/xsm, $poll_data[0];
 
-        if ( $poll_uname ne $username && !staff ) {
+        if ( $poll_uname ne $username && !$staff ) {
             fatal_error('not_allowed');
         }
 

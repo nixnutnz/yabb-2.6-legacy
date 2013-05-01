@@ -43,8 +43,10 @@ sub SessionReval {
     $yymain .= $my_sessions;
     $yymain =~ s/{yabb sesremark}/$sesremark/sm;
     $yymain =~ s/{yabb sestype}/$sestype/sm;
+    $yymain =~ s/{yabb sesstext3}/$session_txt{'3'}/sm;
+    $yymain =~ s/{yabb sesstext4}/$session_txt{'4'}/sm;
+    $yymain =~ s/{yabb sesquestion}/$sesquest_txt{$sesquestion}/sm;
     $yymain =~ s/{yabb sesredir}/$INFO{'sesredir'}/sm;
-    
     $yytitle = "$img_txt{'34a'}";
     template();
     return;

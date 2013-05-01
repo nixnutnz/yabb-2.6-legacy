@@ -356,20 +356,16 @@ qq~$ml_txt{'dr_warning'} <a href="$boardurl/AdminIndex.$yyaext?action=newsetting
             }
         }
 
-		if ($showuserpicml && $allowpics && $iamguest) {
-            $my_userpic = qq~<img src="~ . (${$uid.$user}{'userpic'} =~ m~\A[\s\n]*https?://~i ? ${$uid.$user}{'userpic'} : "$facesurl/${$uid.$user}{'userpic'}") . qq~" name="avatarml_img_resize" alt="" style="display:none" />~;
+		if ( $showuserpicml && $allowpics ) {
+		    ${$uid.$user}{'userpic'} ||= 'blank.gif';
+            $my_userpic = qq~<img src="~ . (${$uid.$user}{'userpic'} =~ m~\A[\s\n]*https?://~i ? ${$uid.$user}{'userpic'} : ( $default_avatar && ${$uid.$user}{'userpic'} eq 'blank.gif' ) ? "$imagesdir/$default_userpic" : "$facesurl/${$uid.$user}{'userpic'}") . qq~" name="avatarml_img_resize" alt="" style="display:none" />~;
+            if ( !$iamguest ) { $my_userpic = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$my_userpic</a>~; }
             $userpic = $my_userpic_td;
             $userpic =~ s/{yabb my_userpic}/$my_userpic/sm;
-        }
-        elsif ($showuserpicml && $allowpics) {
-            $my_userpic = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}"><img src="~ .(${$uid.$user}{'userpic'} =~ m~\A[\s\n]*https?://~i ? ${$uid.$user}{'userpic'} : "$facesurl/${$uid.$user}{'userpic'}") . qq~" name="avatarml_img_resize" alt="" style="display:none" /></a>~;
-            $userpic = $my_userpic_td;
-            $userpic =~ s/{yabb my_userpic}/$my_userpic/sm;
-        }
+        }        
         else {
 		    $userpic = q{};
 	    }
-
         if (   ${ $uid . $user }{'hidemail'}
             && !$iamadmin
             && $allow_hide_email == 1 )

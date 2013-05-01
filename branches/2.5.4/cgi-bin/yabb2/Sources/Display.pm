@@ -1251,9 +1251,10 @@ qq~<input type="checkbox" class="$css" style="border: 0px; visibility: hidden; d
 qq~<input type="checkbox" class="$css" style="border: 0px; visibility: hidden; display: none;" name="del$counter" value="$counter" />~;
             }
         }
+        require "$vardir/Micon.def";
 
         $msgimg =
-qq~<a href="$scripturl?num=$viewnum/$counter#$counter"><img src="$imagesdir/$micon.gif" alt="" /></a>~;
+qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         $ipimg = qq~<img src="$imagesdir/$disp_ip" alt="" />~;
 
         if ($extendedprofiles) {

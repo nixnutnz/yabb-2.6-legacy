@@ -323,25 +323,15 @@ sub CheckIcon {
     $icon =~ s/[^A-Za-z]//gxsm;
     $icon =~ s/\\//gxsm;
     $icon =~ s/\///gxsm;
-    if (   $icon ne 'xx'
-        && $icon ne 'thumbup'
-        && $icon ne 'thumbdown'
-        && $icon ne 'exclamation' )
-    {
-        if (   $icon ne 'question'
-            && $icon ne 'lamp'
-            && $icon ne 'smiley'
-            && $icon ne 'angry' )
-        {
-            if (   $icon ne 'cheesy'
-                && $icon ne 'grin'
-                && $icon ne 'sad'
-                && $icon ne 'wink' )
-            {
-                $icon = 'xx';
-            }
+    my @iconlist = qw( xx thumbup thumbdown exclamation question lamp smiley angry cheesy grin sad wink standard confidential urgent );
+    my $isicon = 0;
+    for my $x ( @iconlist) {
+        if ($icon eq $x) {
+        $isicon = 1; last;
         }
     }
+    if ( $isicon == 0 ) { $icon = 'xx'; }
+    else {$icon = $icon;}
     return;
 }
 
@@ -652,7 +642,7 @@ qq~U|$ban_mem|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
                 $un_ban =
                   qq~$banned[0]|$banned[1]|$banned[2]|$banned[3]|$banned[4]|\n~;
             }
-            print {BAN2} $un_ban or 'croak cannot print UNBAN';
+            print {BAN2} $un_ban;
         }
         fclose(BAN2) or croak 'cannot close BAN2';
     }

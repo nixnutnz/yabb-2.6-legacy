@@ -442,7 +442,7 @@ function show_features() {
         }
         document.images.feature_col.alt = "$npf_txt{'expand_features'}";
         document.images.feature_col.title = "$npf_txt{'expand_features'}";
-        document.images.feature_col.src="$defaultimagesdir/cat_expand.gif";
+        document.images.feature_col.src="$defaultimagesdir/$post_cat_exp";
         col_row = 0;
     } else {
         for (var i = 1; 14 > i; i++) {
@@ -456,7 +456,7 @@ function show_features() {
         }
         document.images.feature_col.alt = "$npf_txt{'collapse_features'}";
         document.images.feature_col.title = "$npf_txt{'collapse_features'}";
-        document.images.feature_col.src="$defaultimagesdir/cat_collapse.gif";
+        document.images.feature_col.src="$defaultimagesdir/$post_cat_col";
         col_row = 1;
     }
 }

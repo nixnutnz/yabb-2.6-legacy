@@ -14,7 +14,7 @@
 #  AddModerators.pm                                                           #
 #  Copyright (c) 2013 'Carsten Dalgaard' - All Rights Reserved                #
 #  Released: January 20, 2013                                                 #
-#  e-mail: post@carsten-dalgaard.dk                                           #  
+#  e-mail: post@carsten-dalgaard.dk                                           #
 #  Added to YaBB core with the writer's permission, January 22, 2013          #
 ###############################################################################
 # use strict;
@@ -46,8 +46,8 @@ sub AddModerators {
             foreach my $thisMod (@BoardModerators) {
                 if ( $thisMod eq $user ) { $modsel = q~selected="selected"~; }
             }
-            ( $boardname, $boardperms, $boardview ) = split /\|/xsm,
-              $board{"$board"};
+            ( $boardname, $boardperms, $boardview ) =
+              split /\|/xsm, $board{"$board"};
             ToChars($boardname);
             if (   ${ $uid . $board }{'ann'} == 1
                 || ${ $uid . $board }{'rbin'} == 1 )
@@ -74,7 +74,7 @@ sub AddModerators2 {
     fopen( FORUMCNT, ">$boardsdir/forum.control" )
       || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     foreach my $boardline (@boardcntr) {
-        $boardline =~ s/[\r\n]//gxsm;
+        $boardline =~ s/[\r\n]//gsm;
         (
             $admdcat,         $admdboard,        $admdpic,
             $admddescription, $admdmods,         $admdmodgroups,
@@ -83,7 +83,7 @@ sub AddModerators2 {
             $admdrbin,        $admdattperms,     $admdminageperms,
             $admdmaxageperms, $admdgenderperms,  $adcanpost,
             $adparent,        $adrules,          $adbrulestitle,
-            $adbrulesdesc,    $adrulescollapse        
+            $adbrulesdesc,    $adrulescollapse
         ) = split /\|/xsm, $boardline;
         @bdmodlist = split /, /sm, $admdmods;
         $admdmods  = q{};
@@ -106,18 +106,9 @@ sub AddModerators2 {
 
 sub ModSearch {
     if ( !$iamadmin && !$iamgmod ) { fatal_error('no_access'); }
-    $to_board   = $currentboard;
-    $moderators = ${ $uid . $currentboard }{'mods'};
-
-    my @thisBoardModerators = split /, ?/sm, $moderators;
-    foreach my $thisMod (@thisBoardModerators) {
-        LoadUser($thisMod);
-        my $thisModname = ${ $uid . $thisMod }{'realname'};
-        if ( !$thisModname ) { $thisModname = $thisMod; }
-        if ($do_scramble_id) { $thisMod     = cloak($thisMod); }
-        $mythismod .= qq~
-                        <option value="$thisMod">$thisModname</option>~;
-    }
+    $to_board        = $currentboard;
+    $moderators      = ${ $uid . $currentboard }{'mods'};
+    $moderatorgroups = ${ $uid . $currentboard }{'modgroups'};
 
     $yymain .= qq~
 <script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
@@ -148,7 +139,7 @@ function copy_option(to_select) {
         for(j = 0; j < document.getElementById(from_select).options.length; j++) {
         if(document.getElementById(from_select).options[j].selected) {
             if(document.getElementById(from_select).options[j].text == document.getElementById(to_select).options[i].text) keep_this = false;
-        }
+            }
         }
         if(keep_this) {
             tmp_array[document.getElementById(to_select).options[i].text] = document.getElementById(to_select).options[i].value;
@@ -172,30 +163,55 @@ function copy_option(to_select) {
         document.getElementById(to_select).appendChild(tmp_option);
         tmp_option.value = tmp_array[to_array[i]];
         tmp_option.text = to_array[i];
+        tmp_option.selected = true;
     }
-}
-
-function removeUser(oElement) {
-    var oList = oElement.options;
-    var noneSelected = 1;
-    for (var i = 0; i < oList.length; i++) {
-        if(oList[i].selected) noneSelected = 0;
-    }
-    if(noneSelected) return false;
-    var indexToRemove = oList.selectedIndex;
-    if (confirm("$addmod_txt{'remove'}"))
-        {oElement.remove(indexToRemove);}
-}
-
-function selectAllMods() {
-    for (var i = 0; i < document.getElementById('moderators').options.length; i++) document.getElementById('moderators').options[i].selected = true;
 }
 
 // -->
 </script>~;
     $yymain .= $myselectmods;
     $yymain =~ s/{yabb to_board}/$to_board/sm;
-    $yymain =~ s/{yabb mythismod}/$mythismod/sm.
+
+    $modmbrcnt = 0;
+    my $modmbr = q{};
+    my @thisBoardModerators = split /, ?/sm, $moderators;
+    foreach my $thisMod (@thisBoardModerators) {
+        LoadUser($thisMod);
+        my $thisModname = ${ $uid . $thisMod }{'realname'};
+        if ( !$thisModname ) { $thisModname = $thisMod; }
+        if ($do_scramble_id) { $thisMod     = cloak($thisMod); }
+        $modmbr .=
+qq~<option value="$thisMod" selected="selected">$thisModname</option>~;
+        $modmbrcnt++;
+    }
+    if   ( $modmbrcnt == 1 ) { $addmod_list = $messageindex_txt{'298'}; }
+    else                     { $addmod_list = $messageindex_txt{'63'}; }
+    $yymain .= $myselectmods_b;
+    $yymain =~ s/{yabb addmod_list}/$addmod_list/gsm;
+    $yymain =~ s/{yabb modmbr}/$modmbr/gsm;
+
+    $modgrpcnt = 0;
+    my $modgrp = q{};
+    foreach (@nopostorder) {
+        @groupinfo = split /\|/xsm, $NoPost{$_};
+        $modgrp .= qq~<option value="$_"~;
+        foreach ( split /, /sm, $moderatorgroups ) {
+            ( $lineinfo, undef ) = split /\|/xsm, $NoPost{$_}, 2;
+            if ( $lineinfo eq $groupinfo[0] ) {
+                $modgrp .= q~ selected="selected" ~;
+            }
+        }
+        $modgrp .= qq~>$groupinfo[0]</option>~;
+        $modgrpcnt++;
+    }
+    if ( $modgrpcnt > 0 ) {
+        if   ( $modgrpcnt == 1 ) { $addgrp_list = $messageindex_txt{'298a'}; }
+        else                     { $addgrp_list = $messageindex_txt{'63a'}; }
+        $yymain .= $myselectmods_c;
+        $yymain =~ s/{yabb addgrp_list}/$addgrp_list/gsm;
+        $yymain =~ s/{yabb modgrp}/$modgrp/gsm;
+    }
+    $yymain .= $myselectmods_d;
     return;
 }
 
@@ -224,11 +240,11 @@ sub ModSearch2 {
             $admdrbin,        $admdattperms,     $admdminageperms,
             $admdmaxageperms, $admdgenderperms,  $adcanpost,
             $adparent,        $adrules,          $adbrulestitle,
-            $adbrulesdesc,    $adrulescollapse        
+            $adbrulesdesc,    $adrulescollapse
         ) = split /\|/xsm, $boardline;
         if ( $admdboard eq $modboard ) {
             print {FORUMCNT}
-"$admdcat|$admdboard|$admdpic|$admddescription|$FORM{'moderators'}|$admdmodgroups|$admdtopicperms|$admdreplyperms|$admdpollperms|$admdzero|$admdmembergroups|$admdann|$admdrbin|$admdattperms|$admdminageperms|$admdmaxageperms|$admdgenderperms|$adcanpost|$adparent|$adrules|$adbrulestitle|$adbrulesdesc|$adrulescollapse\n"
+"$admdcat|$admdboard|$admdpic|$admddescription|$FORM{'moderators'}|$FORM{'moderatorgroups'}|$admdtopicperms|$admdreplyperms|$admdpollperms|$admdzero|$admdmembergroups|$admdann|$admdrbin|$admdattperms|$admdminageperms|$admdmaxageperms|$admdgenderperms|$adcanpost|$adparent|$adrules|$adbrulestitle|$adbrulesdesc|$adrulescollapse\n"
               or croak 'cannot print FORUMCNT';
         }
         else {

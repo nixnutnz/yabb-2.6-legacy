@@ -193,7 +193,7 @@ sub ModifyProfile {
     SidCheck($action);
     PrepareProfile();
 
-    $menucolors[0] = 'titlebg';
+    $menucolors[0] = 'selected-bg';
     ProfileMenu();
 
     if ($iamadmin) {
@@ -439,6 +439,8 @@ $myprofile_edit~;
         $showProfile .= $myprofile_session;
         $showProfile =~ s/{yabb questsel}/$questsel/sm;
         $showProfile =~ s/{yabb decanswer}/$decanswer/sm;
+        $showProfile =~ s/{yabb sesstext9}/$session_txt{'9'}/sm;
+        $showProfile =~ s/{yabb sesstext9a}/$session_txt{'9a'}/sm;
     }
     if ( $self_del_user == 1 ) {
         if (   ( $iamadmin && ( $username ne $user ) )
@@ -469,7 +471,7 @@ sub ModifyProfileContacts {
     SidCheck($action);
     PrepareProfile();
 
-    $menucolors[1] = 'titlebg';
+    $menucolors[1] = 'selected-bg';
     ProfileMenu();
 
     my $scriptAction = q~profileContacts2~;
@@ -598,7 +600,7 @@ sub ModifyProfileOptions {
     SidCheck($action);
     PrepareProfile();
 
-    $menucolors[2] = 'titlebg';
+    $menucolors[2] = 'selected-bg';
     ProfileMenu();
 
     my $scriptAction = q~profileOptions2~;
@@ -955,7 +957,7 @@ sub ModifyProfileBuddy {
     SidCheck($action);
     PrepareProfile();
 
-    $menucolors[3] = 'titlebg';
+    $menucolors[3] = 'selected-bg';
     ProfileMenu();
 
     my $scriptAction = q~profileBuddy2~;
@@ -1032,7 +1034,7 @@ sub ModifyProfileIM {
     SidCheck($action);
     PrepareProfile();
 
-    $menucolors[4] = 'titlebg';
+    $menucolors[4] = 'selected-bg';
     ProfileMenu();
 
     $yyjavascript .= qq~
@@ -1144,7 +1146,7 @@ sub ModifyProfileAdmin {
     SidCheck($action);
     PrepareProfile();
 
-    $menucolors[5] = 'titlebg';
+    $menucolors[5] = 'selected-bg';
     ProfileMenu();
 
     ( $MemStatAdmin, $MemStarNumAdmin, $MemStarPicAdmin, $MemTypeColAdmin ) =
@@ -2653,9 +2655,11 @@ sub ViewProfile {
       : '&nbsp;';
 
     if ($allowpics) {
+        my $no_userpic;
         if ( ${ $uid . $user }{'userpic'} eq 'blank.gif' ) {
+            $no_userpic = $default_avatar ? $default_userpic : q~nn.gif~;
             $pic =
-qq~<img src="$imagesdir/nn.gif" name="avatar_img_resize" alt="" style="display:none" />~;
+qq~<img src="$imagesdir/$no_userpic" name="avatar_img_resize" alt="" style="display:none" />~;
         }
         elsif ( ${ $uid . $user }{'userpic'} =~ /^https?:\/\//xsm ) {
             $pic =

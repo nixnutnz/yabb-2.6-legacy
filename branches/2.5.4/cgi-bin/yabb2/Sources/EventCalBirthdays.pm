@@ -213,7 +213,7 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
 
     # sorting <dt> style begin
 
-    ${"class_$sortiert"}     = ' class="windowbg center"';
+    ${"class_$sortiert"}     = ' class="selected-bg center"';
     ${"styleletter_$letter"} = ' class="catbg center"';
 
     if ( !$class_sortuser ) { $class_sortuser = ' class="catbg center"'; }
@@ -294,10 +294,10 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
             if ($letter) {
                 $searchbdname = $user_bdrealname;
                 $searchbdname ||= $user_bdname;
-                if ( $letter ne 'other' ) {
+#                if ( $letter ne 'other' ) {
                     if ( $searchbdname =~ /^$letter/ism ) { $showviewbd = 1; }
-                }
-                elsif ( $searchbdname !~ /^[a-z]/ism ) { $showviewbd = 1; }
+#                }
+#                elsif ( $searchbdname !~ /^[a-z]/ism ) { $showviewbd = 1; }
             }
             else {
                 $showviewbd = 1;

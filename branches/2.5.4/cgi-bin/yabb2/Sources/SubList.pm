@@ -21,6 +21,8 @@ if ($action eq 'detailedversion') { return 1; }
 'addbuddy',"Subs.pm&addBuddy",
 'addfav',"Favorites.pm&AddFav",
 'addtab2',"AdvancedTabs.pm&AddNewTab2",
+'ajxmessage',"LivePreview.pm&DoLiveMessage",
+'ajximmessage',"LivePreview.pm&DoLiveIM",
 'bdrulecoll',"MessageIndex.pm&collapse_bdrule",
 'boardnotify',"Notify.pm&BoardNotify",
 'boardnotify2',"MyCenter.pm&mycenter",

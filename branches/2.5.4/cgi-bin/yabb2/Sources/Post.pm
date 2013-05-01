@@ -232,17 +232,6 @@ qq~[quote author=$hidename link=$threadid/$quotemsg#$quotemsg date=$mdate\]$mess
     Postpage();
     if ( !$Quick_Post ) { doshowthread(); }
 
-    if (%usernames_life_quote) {    # for display names in Quotes in LivePreview
-        $yymain .= q~
-    <script type="text/javascript">~
-          . join(
-            q{;},
-            map { qq~LivePrevDisplayNames['$_'] = "$usernames_life_quote{$_}"~ }
-              keys %usernames_life_quote
-          )
-          . qq~;
-    </script>\n~;
-    }
     template();
     return;
 }
@@ -273,12 +262,21 @@ sub Postpage {
     ToChars($sub);
     $sub = Censor($sub);
 
-    if ( $action eq 'modify' || $action eq 'modify2' ) {
-        $displayname = qq~$mename~;
+	if ($action eq 'modify' || $action eq 'modify2') {
+		$displayname = qq~$mename~;
+		$moddate = $tmpmdate;
+		if ($showmodify && (!$tllastmodflag || ($tmpmdate + ($tllastmodtime * 60)) < $date)) {
+			$tmplastmodified = qq~&#171; <i>$display_txt{'211'}: ~ . &timeformat($date) . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &#187;~;
     }
+		$tmpmusername = $thismusername;
+		}
     else {
-        $displayname = ${ $uid . $username }{'realname'};
-    }
+		$displayname = ${$uid.$username}{'realname'};
+		$moddate = $date;
+		$tmplastmodified = q{};
+		$tmpmusername = $username;
+	}
+	$moddate = timeformat($moddate);
     require Sources::ContextHelp;
     ContextScript('post');
 
@@ -576,7 +574,11 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
 <input type="hidden" name="threadid" value="$threadid" />
 <input type="hidden" name="postid" value="$postid" />
 <input type="hidden" name="info" value="$idinfo" />
-<input type="hidden" name="mename" value="$mename" />
+<input type="hidden" name="mename" id="mename" value="$mename" />
+<input type="hidden" name="tmpmdate" id="tmpmdate" value="$tmpmdate" />
+<input type="hidden" name="thismusername" value="$thismusername" />
+<input type="hidden" name="tmpmusername" id="tmpmusername" value="$tmpmusername" />
+<input type="hidden" name="tmpmoddate" id="tmpmoddate" value="$moddate" />
 <input type="hidden" name="post_entry_time" value="$date" />
 <input type="hidden" name="virboard" value="$INFO{'virboard'}$FORM{'virboard'}" />~;
 
@@ -1144,11 +1146,19 @@ showtpstatus();
     if ( $postid ne 'Poll' ) {
         $my_postbox_3 = postbox3();
         $my_postbox_3 .= qq~
-<script src="$yyhtml_root/yabbc.js" type="text/javascript"></script>
+<script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
 <script type="text/javascript">
+<!--
+function jsDoTohtml(tohtmlstr) {
+	tohtmlstr=tohtmlstr.replace(/\\&/g, "&amp;");
+	tohtmlstr=tohtmlstr.replace(/\\"/g, "&quot;"); //";
+	tohtmlstr=tohtmlstr.replace(/  /g, "&nbsp;");
+	tohtmlstr=tohtmlstr.replace(/\\|/g, "&#124;");
+	tohtmlstr=tohtmlstr.replace(/\\</g, "&lt;");
+	tohtmlstr=tohtmlstr.replace(/\\>/g, "&gt;");
+	return tohtmlstr
+}
 var noalert = true, gralert = false, rdalert = false, clalert = false;
-var prevsec = 5
-var prevtxt
 var cntsec = 0
 
 function tick() {
@@ -1158,40 +1168,30 @@ function tick() {
 }
 
 var autoprev = false
-var topicfirst = true;
 
 post_txt_807 = "$post_txt{'807'}";
 
 function enabPrev() {
     if ( autoprev === false ) {
-        autoprev = true
-        topicfirst = true
-        document.getElementById("savetable").style.visibility = "visible";
-        document.getElementById("SaveInfo").style.height = "auto";
-        document.getElementById("savetopic").style.height = "auto";
-        document.getElementById("saveframe").style.height = "0px";
-        document.getElementById("savetopic").style.visibility = "visible";
-        document.getElementById("saveframe").style.visibility = "visible";
-        document.images.prevwin.alt = "$npf_txt{'02'}";
-        document.images.prevwin.title = "$npf_txt{'02'}";
-        document.images.prevwin.src="$defaultimagesdir/cat_collapse.gif";
-        autoPreview();
-    }
-    else {
-        autoprev = false;
-        ubbstr = '';
-        document.getElementById("savetable").style.visibility = "hidden";
-        document.getElementById("SaveInfo").style.height = "16px";
-        document.getElementById("savetopic").style.height = "0px";
-        document.getElementById("saveframe").style.height = "0px";
-        document.getElementById("savetopic").style.visibility = "hidden";
-        document.getElementById("saveframe").style.visibility = "hidden";
-        document.postmodify.message.focus();
-        document.images.prevwin.alt = "$npf_txt{'01'}";
-        document.images.prevwin.title = "$npf_txt{'01'}";
-        document.images.prevwin.src="$defaultimagesdir/cat_expand.gif";
-    }
-    calcCharLeft();
+		autoprev = true
+		document.getElementById("savetable").style.display = "block";
+		document.getElementById("saveframe").style.display = "block";
+		document.images.prevwin.alt = "$npf_txt{'02'}";
+		document.images.prevwin.title = "$npf_txt{'02'}";
+		document.images.prevwin.src="$defaultimagesdir/cat_collapse.gif";
+		autoPreview();
+	}
+	else {
+		autoprev = false;
+		ubbstr = '';
+		document.getElementById("savetable").style.display = "none";
+		document.getElementById("saveframe").style.display = "none";
+		document.postmodify.message.focus();
+		document.images.prevwin.alt = "$npf_txt{'01'}";
+		document.images.prevwin.title = "$npf_txt{'01'}";
+		document.images.prevwin.src="$defaultimagesdir/cat_expand.gif";
+	}
+	calcCharLeft();
 }
 
 function calcCharLeft() {
@@ -1205,11 +1205,6 @@ function calcCharLeft() {
   } else {
     charleft = maxLength - document.postmodify.message.value.length
   }
-  prevsec++
-  if(autoprev && prevsec > 5 && prevtxt != document.postmodify.message.value) {
-    autoPreview()
-    prevtxt = document.postmodify.message.value
-  }
   document.postmodify.msgCL.value = charleft
   if (charleft >= 100 && noalert) { noalert = false; gralert = true; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/green1.gif"; }
   if (charleft < 100 && charleft >= 50 && gralert) { noalert = true; gralert = false; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/green0.gif"; }
@@ -1217,102 +1212,121 @@ function calcCharLeft() {
   if (charleft === 0 && clalert) { noalert = true; gralert = true; rdalert = true; clalert = false; document.images.chrwarn.src="$defaultimagesdir/red1.gif"; }
   return clipped
 }
-var codestr = '$simpelcode';
-var quotstr = '$normalquot';
-var squotstr = '$simpelquot';
-var fontsizemax = '$fontsizemax';
-var fontsizemin = '$fontsizemin';
-var edittxt = '$edittext';
-var dispname = '$displayname';
-var scrpurl = '$scripturl';
-var imgdir = '$defaultimagesdir';
-var ubsmilieurl = '$yyhtml_root/Smilies';
-var parseflash = '$parseflash';
-var autolinkurl = '$autolinkurls';
-var Month = new Array($jsmonths);
-var timeselected = '$jstimeselected';
-var splittext = "$maintxt{'107'}";
-var dontusetoday = '';
-var todaytext = "$maintxt{'769'}";
-var yesterdaytext = "$maintxt{'769a'}";
-var timetext1 = "$timetxt{'1'}";
-var timetext2 = "$timetxt{'2'}";
-var timetext3 = "$timetxt{'3'}";
-var timetext4 = "$timetxt{'4'}";
-var jsmilieurl = new Array($smilie_url_array);
-var jsmiliecode = new Array($smilie_code_array);
-var showimageinquote = $showimageinquote;
 
 function autoPreview() {
-    if (topicfirst)  { updatTopic(); }
-    var scrlto = parseInt(180) + 5;
-    var vismessage = document.postmodify.message.value;
-    while ( c=vismessage.match(/date=(\\d+?)\\]/i) ) {
-        var qudate=c[1];
-        qudate=qudate * 1000;
-        qdate=new Date()
-        qdate.setTime(qudate);
-        qdate=qdate.toLocaleString();
-        vismessage=vismessage.replace(/(date=)\\d+?(\\])/i, "\$1"+qdate+"\$2");
-    }
-    if($enable_ubbc) {
-        var ubbstr = jsDoUbbc(vismessage,codestr,quotstr,squotstr,edittxt,dispname,scrpurl,imgdir,ubsmilieurl,parseflash,fontsizemax,fontsizemin,autolinkurl,Month,timeselected,splittext,dontusetoday,todaytext,yesterdaytext,timetext1,timetext2,timetext3,timetext4,jsmilieurl,jsmiliecode,showimageinquote);
-    }
-    else {
-        ubbstr = vismessage;
-    }
-    document.getElementById("saveframe").innerHTML=ubbstr;
-    sh_highlightDocument();
-    LivePrevImgResize();
-    scrlto += parseInt(document.getElementById("saveframe").scrollTop) + parseInt(document.getElementById("saveframe").offsetHeight);
-    document.getElementById("saveframe").scrollTop = scrlto;
-    prevsec = 0;
-}
-
-var visikon = '';
+	if(autoprev) {
+	var url = '$scripturl?action=ajxmessage';
+	try {
+		if (typeof( new XMLHttpRequest() ) == 'object') {
+			pstHttp = new XMLHttpRequest();
+		} else if (typeof( new ActiveXObject("Msxml2.XMLHTTP") ) == 'object') {
+			pstHttp = new ActiveXObject("Msxml2.XMLHTTP");
+		} else if (typeof( new ActiveXObject("Microsoft.XMLHTTP") ) == 'object') {
+			pstHttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+	} catch (e) { }
+	if (pstHttp == null) return;
+	pstHttp.onreadystatechange = function() {
+		if(pstHttp.readyState == 4) {
+			if(pstHttp.status == 200 || window.location.href.indexOf("http") == -1) {
+				document.getElementById("saveframe").innerHTML = pstHttp.responseText;
+				sh_highlightDocument();
+				if (/post_liveimg_resize_1/i.test(pstHttp.responseText)) LivePrevImgResize();
+           }
+        }
+	};
+	var dispnamevalue = encodeURIComponent(document.getElementById("mename").value);
+	var iconvalue = encodeURIComponent(document.getElementById("icon").value);
+	var subjvalue = encodeURIComponent(document.getElementById("subject").value);
+	var tmpmessvalue = document.getElementById("message").value;
+	tmpmessvalue = jsDoTohtml(tmpmessvalue);
+	var messvalue = encodeURIComponent(tmpmessvalue);
+	var tmusername = encodeURIComponent(document.getElementById("tmpmusername").value);
+	var tmoddate = encodeURIComponent(document.getElementById("tmpmoddate").value);
+	var sessvalue = encodeURIComponent(document.postmodify.formsession.value);
+	var parameters = "icon="+iconvalue+"&displayname="+dispnamevalue+"&subject="+subjvalue+"&message="+messvalue+"&musername="+tmusername+"&moddate="+tmoddate+"&formsession="+sessvalue;
+	pstHttp.open("POST", url, true);
+	pstHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	pstHttp.send(parameters);
+			}
+		}
 
 function LivePrevImgResize() {
-    var max_w = $max_post_img_width;
-    var max_h = $max_post_img_height;
-    var images = document.getElementById("saveframe").getElementsByTagName("img");
-    for (var i = 0; i < images.length; i++) {
-        if (max_w !== 0 && images[i].width > max_w) {
-            images[i].height = images[i].height * max_w / images[i].width;
-            images[i].width = max_w;
-        }
-        if (max_h !== 0 && images[i].height > max_h) {
-            images[i].width  = images[i].width * max_h / images[i].height;
-            images[i].height = max_h;
-        }
-    }
+	var maxwidth = $max_post_img_width;
+	var maxheight = $max_post_img_height;
+	var fix_size = $fix_post_img_size;
+	noimgdir   = '$imagesdir';
+	noimgtitle = '$maintxt{'171'}';
+
+	var liveimg_resize_names = new Array ();
+	var zi = 0;
+
+	var imgsavail = document.getElementById("saveframe").getElementsByTagName("img");
+	for (i=0; i<imgsavail.length; i++) {
+		if (imgsavail[i].className == "liveimg") {
+			liveimg_resize_names[zi] = imgsavail[i].name;
+			zi++;
+	}
 }
 
-function updatTopic() {
-    var topicfirst = false;
-    ~;
-        if ( $destination ne 'modalert2' && $destination ne 'guestpm2' ) {
-            $my_post_visicon .= qq~
-    var visicon = document.postmodify.icon.value;
-    visicon=visicon.replace(/http\\:\\/\\/.*\\/(.*?)\\.gif/g, "\$1");
-    visicon=visicon.replace(/[^A-Za-z]/g, "");
-    visicon=visicon.replace(/\\\\/g, "");
-    visicon=visicon.replace(/\\//g, "");
-    if (visicon != "xx" && visicon != "thumbup" && visicon != "thumbdown" && visicon != "exclamation") {
-        if (visicon != "question" && visicon != "lamp" && visicon != "smiley" && visicon != "angry") {
-            if (visicon != "cheesy" && visicon != "grin" && visicon != "sad" && visicon != "wink") {
-                visicon = "xx";
+	var tmp_array = new Array ();
+	for (var i = 0; i < liveimg_resize_names.length; i++) {
+		var tmp_image_name = liveimg_resize_names[i];
+
+		if (fix_size) {
+			if (maxwidth)  document.images[tmp_image_name].width  = maxwidth;
+			if (maxheight) document.images[tmp_image_name].height = maxheight;
+			document.images[tmp_image_name].style.display = 'inline';
+			continue;
+        }
+
+		if (document.images[tmp_image_name].complete == false) {
+			tmp_array[tmp_array.length] = tmp_image_name;
+			if (/Opera/i.test(navigator.userAgent)) {
+				document.images[tmp_image_name].width  = document.images[tmp_image_name].width  || 0;
+				document.images[tmp_image_name].height = document.images[tmp_image_name].height || 0;
+				document.images[tmp_image_name].style.display = 'inline';
+        }
+			continue;
+        }
+
+		var tmp_image = new Image;
+		tmp_image.src = document.images[tmp_image_name].src;
+
+		var tmpwidth  = document.images[tmp_image_name].width  || tmp_image.width;
+		var tmpheight = document.images[tmp_image_name].height || tmp_image.height;
+
+		if (!tmpwidth && !tmpheight) {
+			tmp_array[tmp_array.length] = tmp_image_name;
+			continue;
+		}
+
+		if (maxwidth != 0 && tmpwidth > maxwidth) {
+			tmpheight = tmpheight * maxwidth / tmpwidth;
+			tmpwidth  = maxwidth;
+	}
+
+		if (maxheight != 0 && tmpheight > maxheight) {
+			tmpwidth  = tmpwidth * maxheight / tmpheight;
+			tmpheight = maxheight;
+		}
+
+		document.images[tmp_image_name].width  = tmpwidth;
+		document.images[tmp_image_name].height = tmpheight;
+		document.images[tmp_image_name].style.display = 'inline';
             }
-        }
+	if (tmp_array.length > 0 && resize_time < 350) {
+		liveimg_resize_names = tmp_array;
+		if (resize_time == 290) {
+			for (var i = 0; i < liveimg_resize_names.length; i++) {
+				var tmp_image_name = liveimg_resize_names[i];
+				document.images[tmp_image_name].src = noimgdir + "/noimg.gif";
+				document.images[tmp_image_name].title = noimgtitle;
+		}
+		}
+		setTimeout("resize_time++; resize_images();", 100);
     }
-    visikon = "<img src='$imagesdir/"+visicon+".gif' alt='"+visicon+"' /> ";~;
-        }
-
-        $my_post_visicon .= q~
-    var vistopic = document.postmodify.subject.value;
-    var htmltopic = jsDoTohtml(vistopic);
-    document.getElementById("savetopic").innerHTML=visikon+htmltopic;
-    //document.postmodify.message.focus();
-}
+		}
 
 ~
           . ( !$Quick_Post ? "document.postmodify.$settofield.focus();" : q{} )
@@ -1368,6 +1382,11 @@ sub Preview {
     # allows the following HTML-tags in error messages: <br /> <b>
     $error =~ s/&lt;br( \/)&gt;/<br \/>/igsm;
     $error =~ s/&lt;(\/?)b&gt;/<$1b>/igxsm;
+	if ($action eq 'modify2') {
+		$tmpmusername = $thismusername;
+	} else {
+		$tmpmusername = $username;
+	}
 
     $maxpq          ||= 60;
     $maxpo          ||= 50;
@@ -1596,13 +1615,15 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
         $yytitle     = $post_txt{'sendmessguest'};
     }
 
-    require "$templatesdir/$usedisplay/Display.template";
+ #   require "$templatesdir/$usedisplay/Display.template";
 
     ToChars($message);
     $message = Censor($message);
     $prevmain .= $mypost_prevmain;
-    $prevmain =~ s/{yabb csubject}/$csubject/sm;
-    $prevmain =~ s/{yabb cmessage}/$message/sm;
+    $prevmain =~ s/{yabb csubject}/$csubject/gsm;
+    $prevmain =~ s/{yabb cmessage}/$message/gsm;
+    $prevmain =~ s/{yabb replycount}/$replycount/gsm;
+    $prevmain =~ s/{yabb msgdate}/$moddate/gsm;
     $prevmain =~ s/{yabb d_icon}/$icon/sm;
 
     if ($error) {
@@ -1639,19 +1660,7 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
     if ( !$view ) {
         Postpage();
         if ( $threadid ne q{} && $post eq 'post' ) { doshowthread(); }
-        if (%usernames_life_quote)
-        {    # for display names in Quotes in LivePreview
-            $yymain .= q~
-        <script type="text/javascript">
-            ~ . join(
-                q{;},
-                map {
-                    qq~LivePrevDisplayNames['$_'] = "$usernames_life_quote{$_}"~
-                  } keys %usernames_life_quote
-              )
-              . qq~;
-        </script>\n~;
-        }
+
         template();
     }
     return;
@@ -2722,10 +2731,6 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tempname}" clas
             else {
                 $displaynamelink = $temprname;
             }
-
-            $usernames_life_quote{ $useraccount{$tempname} } =
-              ${ $uid . $tempname }
-              {'realname'};    # for display names in Quotes in LivePreview
 
             my $quickmessage = $message;
             $quickmessage =~ s/<(br|p).*?>/\\r\\n/igsm;

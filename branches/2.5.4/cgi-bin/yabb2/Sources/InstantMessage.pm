@@ -105,12 +105,10 @@ sub buildIMsend {
     if (
         $sendBMess != 1
         || (
-            (
-                $PMenableBm_level != 1
-                || ( !$staff )
-            )
+               ( $PMenableBm_level != 1 || ( !$staff ) )
             && ( $PMenableBm_level != 2 || ( !$iamadmin && !$iamgmod ) )
-            && ( $PMenableBm_level != 4 || ( !$iamadmin && !$iamgmod && !$iamymod ) )
+            && ( $PMenableBm_level != 4
+                || ( !$iamadmin && !$iamgmod && !$iamymod ) )
             && ( $PMenableBm_level != 3 || !$iamadmin )
         )
       )
@@ -179,13 +177,13 @@ sub buildIMsend {
     $template_names
     </script>
     ~;
-    $my_gimsend = q{};
+    $my_gimsend  = q{};
     $my_tosend_a = q{};
     if ( !$replyguest ) {
-        if ( $prevmain ) {
+        if ($prevmain) {
             $my_gimsend = $myIM_prevmain;
             $my_gimsend =~ s/{yabb prevmain}/$prevmain/sm;
-    }
+        }
         $my_gimsend .= $myIM_liveprev;
     }
     else {
@@ -202,7 +200,8 @@ sub buildIMsend {
                 document.getElementById('bnttoto').className = 'windowbg';
         ~;
 
-        $my_tosend_a = qq~<div id="bnttoto" style="float: left; padding: 5px;" class="windowbg2"><a href="javascript:void(0);" onclick="changeRecepientTab('to'); return false;">$inmes_txt{'324'}:</a></div>
+        $my_tosend_a =
+qq~<div id="bnttoto" style="float: left; padding: 5px;" class="windowbg2"><a href="javascript:void(0);" onclick="changeRecepientTab('to'); return false;">$inmes_txt{'324'}:</a></div>
         ~;
 
         if ($PMenable_cc) {
@@ -247,8 +246,7 @@ sub buildIMsend {
         !$replyguest
       )
     {
-        $onchangeText  = q~ onkeyup="updatTopic();"~;
-        $onchangeText2 = q~ updatTopic();~;
+        $onchangeText = qq~ onkeyup="autoPreview();"~;
     }
 
     if ( !$replyguest ) {
@@ -517,7 +515,8 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 qq~             document.write('<img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="javascript: MoreSmilies($i);" class="bottom" style="cursor: pointer" />$SmilieLinebreak[$i] ');\n~;
                 $tmpcode = $SmilieCode[$i];
                 $tmpcode =~ s/\&quot;/"+'"'+"/gsm;
-                   #" Adding that because if not it screws up my syntax view'
+
+                #" Adding that because if not it screws up my syntax view'
                 FromHTML($tmpcode);
                 $tmpcode =~ s/&#36;/\$/gxsm;
                 $tmpcode =~ s/&#64;/\@/gxsm;
@@ -605,7 +604,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
         }
         $cloakAttach = cloak($mattach);
         $my_show_FA .= $my_FA_show;
-        $my_show_FA =~ s/{yabb cloakAttach}/$cloakAttach/sm; 
+        $my_show_FA =~ s/{yabb cloakAttach}/$cloakAttach/sm;
 
         if ( $allowAttachIM > 1 ) {
             $my_allow_FA = qq~
@@ -613,10 +612,10 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
             <img src="$defaultimagesdir/$IM_cat_col" id="attform_sub" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" style="cursor:pointer; visibility:hidden;" onclick="enabPrev2(-1);" />~;
         }
         $my_imFA = $my_FA_attach;
-        $my_imFA =~ s/{yabb my_show_FA}/$my_show_FA/sm; 
-        $my_imFA =~ s/{yabb pmFileTypeInfo}/$pmFileTypeInfo/sm; 
-        $my_imFA =~ s/{yabb pmFileSizeInfo}/$pmFileSizeInfo/sm; 
-        $my_imFA =~ s/{yabb my_allow_FA}/$my_allow_FA/sm; 
+        $my_imFA =~ s/{yabb my_show_FA}/$my_show_FA/sm;
+        $my_imFA =~ s/{yabb pmFileTypeInfo}/$pmFileTypeInfo/sm;
+        $my_imFA =~ s/{yabb pmFileSizeInfo}/$pmFileSizeInfo/sm;
+        $my_imFA =~ s/{yabb my_allow_FA}/$my_allow_FA/sm;
 
         my $startcount;
         for my $y ( 1 .. $allowAttachIM ) {
@@ -719,7 +718,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
         $my_imFA =~ s/{yabb my_att_FA}/$my_att_FA/sm;
 
         if ( $is_preview == 2 ) {
-            $is_preview = 1;
+            $is_preview   = 1;
             $my_ispreview = $myshow_ispreview;
         }
     }
@@ -786,9 +785,9 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
         $accesskey{'Browsers_on_Mac'} = $post_txt{'331b'};
         $my_accesskey .=
 qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="$preview" value="$post_txt{'507'}" accesskey="p" tabindex="6" class="button" />~;
-            $accesskey{'MSIE_Safari'}     = $post_txt{'329c'};
-            $accesskey{'FireFox'}         = $post_txt{'330c'};
-            $accesskey{'Browsers_on_Mac'} = $post_txt{'331c'};
+        $accesskey{'MSIE_Safari'}     = $post_txt{'329c'};
+        $accesskey{'FireFox'}         = $post_txt{'330c'};
+        $accesskey{'Browsers_on_Mac'} = $post_txt{'331c'};
     }
 
     $smilie_url_array  = q{};
@@ -860,33 +859,97 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="
         $my_savetable .= qq~
             post_txt_807 = "$post_txt{'807'}";
 
-            function enabPrev() {
-                if ( autoprev == false ) {
-                    autoprev = true
-                    topicfirst = true
-                    document.getElementById("savetable").style.visibility = "visible";
-                    document.getElementById("savetable").style.height = "auto";
-                    document.getElementById("savetopic").style.height = "auto";
-                    document.getElementById("saveframe").style.height = "auto";
+                        function enabPrev() {
+                                if ( autoprev == false ) {
+                                        autoprev = true
+					document.getElementById("SaveInfo").style.display = "block";
+					document.getElementById("saveframe").style.display = "block";
+					document.getElementById("saveframe").style.width = "100%";
                     document.images.prevwin.alt = "$npf_txt{'02'}";
                     document.images.prevwin.title = "$npf_txt{'02'}";
                     document.images.prevwin.src="$defaultimagesdir/$IM_cat_col";
                     autoPreview();
-                } else {
-                    autoprev = false;
-                    ubbstr = '';
-                    document.getElementById("savetable").style.visibility = "hidden";
-                    document.getElementById("savetable").style.height = "0px";
-                    document.getElementById("savetopic").style.height = "0px";
-                    document.getElementById("saveframe").style.height = "0px";
-                    document.postmodify.message.focus();
-                    document.images.prevwin.alt = "$npf_txt{'01'}";
-                    document.images.prevwin.title = "$npf_txt{'01'}";
-                    document.images.prevwin.src="$defaultimagesdir/$IM_cat_exp";
-                }
-                calcCharLeft();
-            }\n~;
+				}
+				else {
+                                        autoprev = false;
+                                        ubbstr = '';
+					document.getElementById("SaveInfo").style.display = "none";
+					document.getElementById("saveframe").style.display = "none";
+                                        document.postmodify.message.focus();
+                                        document.images.prevwin.alt = "$npf_txt{'01'}";
+                                        document.images.prevwin.title = "$npf_txt{'01'}";
+                                        document.images.prevwin.src="$defaultimagesdir/$IM_cat_exp";
+                                }
+                    calcCharLeft();
+                        }\n~;
     }
+
+    $my_savetable .= qq~
+        function calcCharLeft() {
+            clipped = false;
+            maxLength = $MaxMessLen;
+            if (document.postmodify.message.value.length > maxLength) {
+                document.postmodify.message.value = document.postmodify.message.value.substring(0,maxLength);
+                charleft = 0;
+                clipped = true;
+                } else {
+                charleft = maxLength - document.postmodify.message.value.length;
+            }
+            document.postmodify.msgCL.value = charleft;
+                if (charleft >= 100 && noalert) { noalert = false; gralert = true; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$IM_chrwarn_g1"; }
+                if (charleft < 100 && charleft >= 50 && gralert) { noalert = true; gralert = false; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$IM_chrwarn_g0"; }
+                if (charleft < 50 && charleft > 0 && rdalert) { noalert = true; gralert = true; rdalert = false; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$IM_chrwarn_r0" }
+                if (charleft === 0 && clalert) { noalert = true; gralert = true; rdalert = true; clalert = false; document.images.chrwarn.src="$defaultimagesdir/$IM_chrwarn_r1"; }
+            return clipped;
+        }
+
+        function autoPreview() {
+				var url = '$scripturl?action=ajximmessage';
+				GetXmlHttpObject();
+				if (xmlHttp == null) {
+					return;
+                }
+				xmlHttp.onreadystatechange = function() {
+					if(xmlHttp.readyState == 4) {
+						if(xmlHttp.status == 200 || window.location.href.indexOf("http") == -1) {
+							document.getElementById("saveframe").innerHTML = xmlHttp.responseText;
+                        sh_highlightDocument();
+                        prevsec = 0;
+                    }
+                }
+				};
+				var tohtmlstr = document.getElementById("message").value;
+				tohtmlstr=tohtmlstr.replace(/\\&/g, "&amp;");
+				tohtmlstr=tohtmlstr.replace(/\\"/g, "&quot;");//";
+				tohtmlstr=tohtmlstr.replace(/  /g, "&nbsp;");
+				tohtmlstr=tohtmlstr.replace(/\\|/g, "&#124;");
+				tohtmlstr=tohtmlstr.replace(/\\</g, "&lt;");
+				tohtmlstr=tohtmlstr.replace(/\\>/g, "&gt;");
+				var messvalue = encodeURIComponent(tohtmlstr);
+				var iconvalue = encodeURIComponent(document.getElementById("iconholder").value);
+				var subjvalue = encodeURIComponent(document.getElementById("subject").value);
+				var sessvalue = encodeURIComponent(document.postmodify.formsession.value);
+				var parameters = "message="+messvalue+"&icon="+iconvalue+"&subject="+subjvalue+"&formsession="+sessvalue;
+				xmlHttp.open("POST", url, true);
+				xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xmlHttp.send(parameters);
+        }\n~;
+
+    if ( !$replyguest ) {
+        $my_savetable .= qq~
+            function showtpstatus() {
+            var theimg = '$pmicon';
+            var objIconSelected = document.postmodify.status[document.postmodify.status.selectedIndex].value;
+            if (objIconSelected == 's') { theimg = 'standard'; }
+            if (objIconSelected == 'c') { theimg = 'confidential'; }
+            if (objIconSelected == 'u') { theimg = 'urgent'; }
+            document.images.icons.src='$imagesdir/'+theimg+'.gif';
+ 				document.getElementById("iconholder").value = theimg;
+				if (autoprev == true) autoPreview();
+        }
+        showtpstatus();\n~;
+    }
+
     if ( $action eq 'modify' || $action eq 'modify2' ) {
         $displayname = $mename;
     }
@@ -894,135 +957,11 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="
         $displayname = ${ $uid . $username }{'realname'};
     }
 
+    require "$templatesdir/$usedisplay/Display.template";
+
     foreach (@months) { $jsmonths .= qq~'$_',~; }
     $jsmonths =~ s/\,\Z//xsm;
     $jstimeselected = ${ $uid . $username }{'timeselect'} || $timeselected;
-
-    $my_chars = qq~
-            function calcCharLeft() {
-                clipped = false;
-                maxLength = $MaxMessLen;
-                if (document.postmodify.message.value.length > maxLength) {
-                    document.postmodify.message.value = document.postmodify.message.value.substring(0,maxLength);
-                    charleft = 0;
-                    clipped = true;
-                } else {
-                    charleft = maxLength - document.postmodify.message.value.length;
-                }
-                prevsec++
-                if(autoprev && prevsec > 5 && prevtxt != document.postmodify.message.value) {
-                    autoPreview();
-                    prevtxt = document.postmodify.message.value;
-                }
-                document.postmodify.msgCL.value = charleft;
-                if (charleft >= 100 && noalert) { noalert = false; gralert = true; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$IM_chrwarn_g1"; }
-                if (charleft < 100 && charleft >= 50 && gralert) { noalert = true; gralert = false; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$IM_chrwarn_g0"; }
-                if (charleft < 50 && charleft > 0 && rdalert) { noalert = true; gralert = true; rdalert = false; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$IM_chrwarn_r0" }
-                if (charleft === 0 && clalert) { noalert = true; gralert = true; rdalert = true; clalert = false; document.images.chrwarn.src="$defaultimagesdir/$IM_chrwarn_r1"; }
-                return clipped;
-            }
-
-            var codestr = '$simpelcode';
-            var quotstr = '$normalquot';
-            var squotstr = '$simpelquot';
-            var fontsizemax = '$fontsizemax';
-            var fontsizemin = '$fontsizemin';
-            var edittxt = '$edittext';
-            var dispname = '$displayname';
-            var scrpurl = '$scripturl';
-            var imgdir = '$defaultimagesdir';
-            var ubsmilieurl = '$yyhtml_root/Smilies';
-            var parseflash = '$parseflash';
-            var autolinkurl = '$autolinkurls';
-            var Month = new Array($jsmonths);
-            var timeselected = '$jstimeselected';
-            var splittext = "$maintxt{'107'}";
-            var dontusetoday = '';
-            var todaytext = "$maintxt{'769'}";
-            var yesterdaytext = "$maintxt{'769a'}";
-            var timetext1 = "$timetxt{'1'}";
-            var timetext2 = "$timetxt{'2'}";
-            var timetext3 = "$timetxt{'3'}";
-            var timetext4 = "$timetxt{'4'}";
-            var jsmilieurl = new Array($smilie_url_array"");
-            var jsmiliecode = new Array($smilie_code_array"");
-
-            function autoPreview() {
-                if (topicfirst)  { updatTopic(); }
-                var scrlto = parseInt(180) + 5;
-                vismessage = document.postmodify.message.value;
-                while ( c=vismessage.match(/date=(\\d+?)\\]/i) ) {
-                    var qudate=c[1];
-                    qudate=qudate * 1000;
-                    qdate=new Date();
-                    qdate.setTime(qudate);
-                    qdate=qdate.toLocaleString();
-                    vismessage=vismessage.replace(/(date=)\\d+?(\\])/i, "\$1"+qdate+"\$2");
-                }
-                if($enable_ubbc) {
-                    var ubbstr = jsDoUbbc(vismessage,codestr,quotstr,squotstr,edittxt,dispname,scrpurl,imgdir,ubsmilieurl,parseflash,fontsizemax,fontsizemin,autolinkurl,Month,timeselected,splittext,dontusetoday,todaytext,yesterdaytext,timetext1,timetext2,timetext3,timetext4,jsmilieurl,jsmiliecode);
-                } else {
-                    ubbstr = vismessage;
-                }
-                document.getElementById("saveframe").innerHTML=ubbstr;
-                sh_highlightDocument();
-                LivePrevImgResize();
-                scrlto += parseInt(document.getElementById("saveframe").scrollTop) + parseInt(document.getElementById("saveframe").offsetHeight);
-                document.getElementById("saveframe").scrollTop = scrlto;
-                prevsec = 0;
-            }
-
-            function LivePrevImgResize() {
-                var max_w = $max_post_img_width;
-                var max_h = $max_post_img_height;
-                var images = document.getElementById("saveframe").getElementsByTagName("img");
-                for (var i = 0; i < images.length; i++) {
-                    if (max_w !== 0 && images[i].width > max_w) {
-                        images[i].height = images[i].height * max_w / images[i].width;
-                        images[i].width = max_w;
-                    }
-                    if (max_h !== 0 && images[i].height > max_h) {
-                        images[i].width  = images[i].width * max_h / images[i].height;
-                        images[i].height = max_h;
-                    }
-                }
-            }\n~;
-
-    if (
-        !$replyguest
-      )
-    {
-        $my_visicon = qq~
-            var visikon = '';
-            function updatTopic() {
-                topicfirst = false;
-
-                var visicon = document.images.icons.src;
-                visicon=visicon.replace(/http\\:\\/\\/.*\\/(.*?)\\.gif/g, "\$1");
-                visicon=visicon.replace(/[^A-Za-z]/g, "");
-                visicon=visicon.replace(/\\\\/g, "");
-                visicon=visicon.replace(/\\//g, "");
-                if (visicon != "standard" && visicon != "confidential" && visicon != "urgent") {
-                    visicon = "xx";
-                }
-                visikon = "<img src='$defaultimagesdir/"+visicon+".gif' alt='"+visicon+"' /> ";
-
-                var vistopic = document.postmodify.subject.value;
-                var htmltopic = jsDoTohtml(vistopic);
-                document.getElementById("savetopic").innerHTML=visikon+htmltopic;
-                //document.postmodify.message.focus();
-    }
-            function showtpstatus() {
-                var theimg = '$pmicon';
-                var objIconSelected = document.postmodify.status[document.postmodify.status.selectedIndex].value;
-                if (objIconSelected == 's') { theimg = 'standard'; }
-                if (objIconSelected == 'c') { theimg = 'confidential'; }
-                if (objIconSelected == 'u') { theimg = 'urgent'; }
-                document.images.icons.src='$imagesdir/'+theimg+'.gif';
-                if (autoprev == true) updatTopic();
-            }
-            showtpstatus();\n~;
-    }
 
     $imsend .= $imsend_send;
     $imsend .= $my_imsend_jsin;
@@ -1031,10 +970,10 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="
     $imsend .= $im_smilies;
     $imsend .= $my_imFA;
     $imsend .= $my_FA_browse;
-    $imsend =~ s/{yabb JSandInput}/$JSandInput/sm; 
-    $imsend =~ s/{yabb my_max}/$my_max/sm; 
-    $imsend =~ s/{yabb subject}/$subject/sm; 
-    $imsend =~ s/{yabb onchangeText}/$onchangeText/sm; 
+    $imsend =~ s/{yabb JSandInput}/$JSandInput/sm;
+    $imsend =~ s/{yabb my_max}/$my_max/sm;
+    $imsend =~ s/{yabb subject}/$subject/sm;
+    $imsend =~ s/{yabb onchangeText}/$onchangeText/sm;
     $imsend =~ s/{yabb postbox2}/$postbox2/sm;
     $imsend =~ s/{yabb postbox3}/$postbox3/sm;
     $imsend =~ s/{yabb my_ispreview}/$my_ispreview/sm;
@@ -1464,15 +1403,16 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                         ToChars($chmessage);
                         $chmessage = Censor($chmessage);
                         $chmessage = regex_4($chmessage);
-                        
+
                         $pmAttachUrl = q{};
                         if ( $fixfile ne q{} ) {
                             foreach ( split /,/xsm, $fixfile ) {
                                 my ( $pmAttachFile, undef ) = split /~/xsm, $_;
-                                $pmAttachUrl .= qq~$pmuploadurl/$pmAttachFile\n~;
+                                $pmAttachUrl .=
+                                  qq~$pmuploadurl/$pmAttachFile\n~;
                             }
                             $pmAttachTxt = qq~\n$fatxt{'80'}:\n~;
-                            $mailattach = $pmAttachTxt . $pmAttachUrl;
+                            $mailattach  = $pmAttachTxt . $pmAttachUrl;
                         }
                         sendmail(
                             $useremail,
@@ -1480,9 +1420,9 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                             template_email(
                                 $privatemessagenotificationemail,
                                 {
-                                    'sender'  => $fromname,
-                                    'subject' => $msubject,
-                                    'message' => $chmessage,
+                                    'sender'      => $fromname,
+                                    'subject'     => $msubject,
+                                    'message'     => $chmessage,
                                     'attachments' => $mailattach
                                 }
                             ),
@@ -2060,7 +2000,8 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
           ? CreateUserDisplayLine($musername)
           : (
             $musername ? qq~$musername ($maintxt{'470a'})~ : $maintxt{'470a'} );
-                     # 470a == Ex-Member
+
+        # 470a == Ex-Member
         $fromTitle = qq~$inmes_txt{'318'}:~;
 
         if ( $mstatus !~ /b/sm ) {
@@ -2226,7 +2167,8 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
           ? CreateUserDisplayLine($musername)
           : (
             $musername ? qq~$musername ($maintxt{'470a'})~ : $maintxt{'470a'} );
-                # 470a == Ex-Member
+
+        # 470a == Ex-Member
 
         $fromTitle = qq~$inmes_txt{'318'}:~;
     }
@@ -2246,9 +2188,9 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
     ToChars($message);
     $message = Censor($message);
 
-    $avstyle = q{};
+    $avstyle  = q{};
     $my_title = q{};
-    $my_sig = q{};
+    $my_sig   = q{};
     if ($fromTitle) {
         $my_title = qq~
         <span class="small" style="width: 99%;">
@@ -2280,11 +2222,10 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
         </span><br />
         ~;
     }
-    if ($mstatus ne 'ga' && $mstatus ne 'g' && $signature) {
+    if ( $mstatus ne 'ga' && $mstatus ne 'g' && $signature ) {
         $my_sig = $show_my_sig;
         $my_sig =~ s/{yabb signature}/$signature/sm;
     }
-
 
     # Do we have an attachment file?
     chomp $mattach;
@@ -2350,9 +2291,9 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
     else { $imip = $inmes_txt{'511'}; }
 
     my $postMenuTemp = q{};
-    if ( $mstatus ne 'ga' && $mstatus ne 'g' ){
+    if ( $mstatus ne 'ga' && $mstatus ne 'g' ) {
         $postMenuTemp = $sendEmail . $sendPM . $membAdInfo . '&nbsp;';
-    $postMenuTemp =~ s/\Q$menusep//ism;
+        $postMenuTemp =~ s/\Q$menusep//ism;
     }
 
     $mreplyno++;
@@ -2402,15 +2343,15 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;repl
             <a href="$scripturl?action=imprint;caller=$INFO{'caller'};id=$messageid" target="_blank">$img{'print'}</a>
         ~;
     $my_notme = q{};
-    if ( $mstatus ne 'ga' && $mstatus ne 'g') {
-        $notme = $musername eq $username ? $mtousers : $musername;
-    $notme = ${ $uid . $notme }{'realname'};
-        $my_notme =  (
-        $notme
-        ? qq~<a href="$scripturl?action=pmsearch;searchtype=user;search=$notme">$inmes_imtxt{'42'} <i>$notme</i></a>~
-        : '&nbsp;'
-      );
-      }
+    if ( $mstatus ne 'ga' && $mstatus ne 'g' ) {
+        $notme    = $musername eq $username ? $mtousers : $musername;
+        $notme    = ${ $uid . $notme }{'realname'};
+        $my_notme = (
+            $notme
+            ? qq~<a href="$scripturl?action=pmsearch;searchtype=user;search=$notme">$inmes_imtxt{'42'} <i>$notme</i></a>~
+            : '&nbsp;'
+        );
+    }
     if ($img_greybox) {
         $yyinlinestyle .=
 qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/css" />\n~;
@@ -2425,10 +2366,10 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 <!--~;
     }
     $showIM .= $myIM_show;
-    $showIM =~ s/{yabb my_title}/$my_title/sm;   
-    $showIM =~ s/{yabb msub}/$msub/sm;   
-    $showIM =~ s/{yabb mydate}/$mydate/sm;   
-    $showIM =~ s/{yabb message}/$message/sm;   
+    $showIM =~ s/{yabb my_title}/$my_title/sm;
+    $showIM =~ s/{yabb msub}/$msub/sm;
+    $showIM =~ s/{yabb mydate}/$mydate/sm;
+    $showIM =~ s/{yabb message}/$message/sm;
     $showIM =~ s/{yabb my_sig}/$my_sig/sm;
     $showIM =~ s/{yabb my_showIP}/$my_showIP/sm;
     $showIM =~ s/{yabb imip}/$imip/sm;
@@ -2493,7 +2434,7 @@ sub doshowims {
         ( $INFO{'id'} && $INFO{'caller'} != 4 )
         ? "$inmes_txt{'30'}: "
         : ( $INFO{'id'} ? "$inmes_txt{'savedraft'} $inmes_txt{'30'}: " : q{} )
-      );
+    );
 
     $imsend .= $my_savedraft;
     $imsend =~ s/{yabb msub}/$msub/sm;
