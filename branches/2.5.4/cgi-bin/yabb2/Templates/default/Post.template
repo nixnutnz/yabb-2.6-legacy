@@ -39,35 +39,25 @@ $mypost_topview = qq~<table class="pad_3px">
 ## main posting block (IMs and Posts) ##
 $mypost_postblock = qq~
 <table class="windowbg2 pad_3px" style="table-layout: fixed;">
-    <col style="width:23%" />
-	<tr>
-		<td class="vtop">
-            <div id="SaveInfo" style="height:16px;">
-            <img src="$imagesdir/$post_cat_exp" id="prevwin" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
+    <col style="width: 23%" />
+	<tr class="vtop">
+		<td>
+			<div style="height:16px;">
+			<img name="prevwin" id="prevwin" src="$defaultimagesdir/$post_cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor: pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
             </div>
-        </td>
-        <td>
-            <div id="savetable" class="bordercolor" style="padding:1px; width:100%; margin:auto; visibility:hidden;">
-            <table class="pad_3px" style="table-layout:fixed;">
-                <tr>
-                    <td class="titlebg">
-                        <div id="savetopic" style="height:0px; text-align:left; vertical-align:middle; font-weight:bold; overflow:auto;">&nbsp;</div>
-                    </td>
-                </tr><tr>
-                    <td class="windowbg2">
-                        <div id="saveframe" class="message" style="height:0px; text-align:left; vertical-align:top; overflow:auto;">&nbsp;</div>
-                    </td>
-                </tr>
-            </table>
-            </div>
-        </td>
-    </tr>{yabb my_prevmain}{yabb my_t_status}{yabb extra}{yabb name_field}{yabb email_field}{yabb verification_field}{yabb verification_question_field}
+        </td><td>
+            <div id="savetable" class="windowbg2" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
+                <div id="saveframe" class="prevwin" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;"></div>
+           </div>
+       </td>
+    </tr>
+    {yabb my_prevmain}{yabb my_t_status}{yabb extra}{yabb name_field}{yabb email_field}{yabb verification_field}{yabb verification_question_field}
     <tr>
         <td class="windowbg2">
             <label for="subject"><b>$post_txt{'70'}:</b></label>
         </td>
         <td class="windowbg2">
-            <input type="text" name="subject" id="subject" value="{yabb sub}" size="50" maxlength="{yabb my_submax}" tabindex="1" style="width: 460px;" onkeyup="updatTopic()" />
+            <input type="text" name="subject" id="subject" value="{yabb sub}" size="50" maxlength="{yabb my_submax}" tabindex="1" style="width: 460px;" onkeyup="autoPreview()" />
         </td>
     </tr><tr>
         <td class="windowbg2 vtop">
@@ -201,18 +191,22 @@ $mypost_prevmain = qq~
     <script type="text/javascript" src="$yyhtml_root/ubbc.js"></script>
     <div class="bordercolor" style="padding: 1px; width: 100%; margin-left: auto; margin-right: auto;">
         <table class="windowbg pad_3px" style="table-layout: fixed;">
-            <tr>
-                <td class="titlebg">
-                    <img src="$imagesdir/{yabb d_icon}.gif" alt="" /> {yabb csubject}
+            <col style="width:20px" />
+            <tr class="titlebg vtop">
+                <td><img src="$imagesdir/{yabb d_icon}.gif" alt="" /></td>
+                <td>{yabb csubject}
+                    <br /><span class="small"><b>{yabb replycount}</b>{yabb msgdate}</span>
                 </td>
-            </tr>
-        </table>
-        <table class="windowbg pad_3px" style="table-layout: fixed;">
-            <tr>
-                <td class="windowbg2">
+            </tr><tr>
+                <td class="windowbg2" colspan="2">
                     <div class="message" style="overflow:auto;">{yabb cmessage}</div>
                 </td>
-            </tr>
+            </tr><tr>
+                <td class="windowbg2 bottom" colspan="2">
+                    <div class="small" style="width: 99%; text-align: right;">
+                        {yabb modified}
+                    </div>
+                </td>
         </table>
     </div>\n~;
 
@@ -506,6 +500,30 @@ $mypost_veri_c = qq~<tr>
                     <input type="hidden" name="spam_question" value="{yabb spam_question}" />
                 </td>
             </tr>~;
+
+$mypost_liveprev = qq~
+     <table class="pad_4px" style="table-layout: fixed;">
+         <col style="width:20px" />
+         <tr class="titlebg vtop">
+             <td>{yabb msgimg}</td>
+             <td><b>{yabb subject}</b>
+                 <br /><span class="small"><b>{yabb replycount}</b>{yabb msgdate}</span>
+            </td>
+        </tr><tr>
+            <td class="windowbg2 vtop" colspan="2">
+               <div class="message" style="float: left; width: 99%; overflow: auto;">
+                 {yabb message}
+                </div>
+            </td>
+        </tr><tr>
+            <td class="windowbg2 bottom" colspan="2">
+                <div class="small" style="width: 99%; text-align: right;">
+                    {yabb modified}
+                </div>
+            </td>
+        </tr>
+    </table>
+~;
 
    
 ## ModifyPost insert    

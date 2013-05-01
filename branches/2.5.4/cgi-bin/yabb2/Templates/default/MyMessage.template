@@ -110,32 +110,18 @@ $myIM_prevmain = qq~<tr>
     </tr>~;
 
 $myIM_liveprev = qq~<tr>
-        <td class="windowbg vtop">
-            <table class="pad_2px" style="width:95%; margin-left:0">
-                <tr>
-                    <td>
-                        <img name="prevwin" id="prevwin" src="$defaultimagesdir/$IM_cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor:pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
-                    </td>
-                </tr>
-            </table>
+        <td class="vtop">
+            <div style="height:16px;">
+                <img name="prevwin" id="prevwin" src="$defaultimagesdir/cat_expand.gif" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor:pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
+            </div>
         </td>
     </tr><tr>
-        <td class="windowbg">
-            <div id="savetable" class="bordercolor" style="height:0px; padding:1px; width:100%; margin:auto; visibility:hidden;">
-            <table class="pad_3px" style="table-layout:fixed;">
-                <tr>
-                    <td class="titlebg">
-                        <div id="savetopic" style="height:0px; text-align:left; vertical-align:middle; font-weight:bold; overflow:auto;">&nbsp;</div>
-		</td>
-	</tr><tr>
-                    <td class="windowbg2">
-                        <div id="saveframe" class="message" style="height:0px; text-align:left; vertical-align:top; overflow:auto;">&nbsp;</div>
-                    </td>
-                </tr>
-            </table>
-		    </div>
-		</td>
-	</tr>~;
+        <td class="windowbg vtop">
+            <div id="SaveInfo" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
+                <div id="saveframe" class="prevwin" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;"></div>
+            </div>
+        </td>
+    </tr>~;
 
 $myIM_replyguest = qq~<tr>
         <td class="windowbg2">
@@ -162,6 +148,7 @@ $my_imsend_IM = qq~{yabb my_gimsend} {yabb my_send}<tr>
                             <option value="u"{yabb s_select1}>$im_message_status{'urgent'}</option>
                         </select>
                         <img src="$imagesdir/{yabb pmicon}.gif" name="icons" style="margin:1em 10px 0 10px; vertical-align:top" alt="$im_message_status{'{yabb pmicon}'}" title="$im_message_status{'{yabb pmicon}'}" />
+                        <input type="hidden" id="iconholder" value="{yabb pmicon}" />
                     </td>
                 </tr>
             </table>
@@ -279,6 +266,23 @@ $my_savedraft = qq~<tr>
             </table>
         </td>
     </tr>~;
+
+$myIM_liveprev_b = qq~
+<table class="pad_3px" style="table-layout: fixed">
+    <col style="width:20px" />
+    <tr class="titlebg vtop">
+        <td>
+            {yabb msgimg}
+        </td><td>
+            <b>{yabb csubject}</b><br />
+                <span class="small">{yabb subjdate}</span>
+        </td>
+    </tr><tr>
+        <td class="windowbg2" colspan="2">
+            <div class="message" style="overflow:auto">{yabb message}</div>
+        </td>
+    </tr>
+</table>~;
 
 #pagedrop (in javascript)
 $visel_0 = q~<table class="pad_0"><tr>~;
