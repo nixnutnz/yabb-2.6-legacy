@@ -1450,7 +1450,8 @@ font-weight:400;
 .calout_right {float: left; width: 70%; padding-top: 1px; padding-bottom: 1px; text-align: right;}
 
 .memberlist_td {
-border: 1px; border-style: outset; cursor: pointer; text-align:center;
+/*border: 1px; border-style: outset; */
+cursor: pointer; text-align:center;
 }
 .norm {
 font-style:normal;}
