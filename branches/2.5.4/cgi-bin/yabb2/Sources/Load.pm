@@ -542,12 +542,12 @@ qq~<div style="float: left; font-size: 10px; font-family: verdana, sans-serif; o
 
 	# Create the userpic / avatar html
 	if ($showuserpic && $allowpics) {
-		${$uid.$user}{'userpic'} ||= 'blank.gif';
+		${$uid.$user}{'userpic'} ||= $my_blank_avatar;
         ${ $uid . $user }{'userpic'} = q~<img src="~
           . (
               ${ $uid . $user }{'userpic'} =~ m/\A[\s\n]*https?:\/\//ism
             ? ${ $uid . $user }{'userpic'}
-            : ( $default_avatar && ${$uid.$user}{'userpic'} eq 'blank.gif' )
+            : ( $default_avatar && ${$uid.$user}{'userpic'} eq $my_blank_avatar )
             ? "$imagesdir/$default_userpic"
             : "$facesurl/${$uid.$user}{'userpic'}"
           )
@@ -947,10 +947,52 @@ sub LoadCookie {
     if (   $yyCookies{'guestlanguage'}
         && !$FORM{'guestlang'}
         && $enable_guestlanguage )
-    {
-		$language = $guestLang = $yyCookies{'guestlanguage'};
+    {   opendir DIR, $langdir;
+        my @langDir = readdir DIR;
+        closedir DIR;
+        @lang = ();
+        foreach my $langitems ( sort { lc($a) cmp lc $b } @langDir ) {
+            chomp $langitems;
+            if (   ( $langitems ne q{.} )
+                && ( $langitems ne q{..} )
+                && ( $langitems ne q{.htaccess} )
+                && ( $langitems ne q{index.html} ) )
+            {
+                push @lang, $langitems;
+            }
+        }
+
+        $ccheck = 0;
+        $clang = q{};
+        for my $lng (@lang) {
+           if ( $yyCookies{'guestlanguage'} eq $lng ) {
+               $clang = $lng;
+               $ccheck = 1; last;
+           }
+        }
+        if ($ccheck == 1) {
+		$language = $guestLang = $clang;
+        }
 	}
     return;
+}
+
+sub guestLangcc {
+    opendir DIR, $langdir;
+    my @langDir = readdir DIR;
+    closedir DIR;
+    @lang = ();
+    foreach my $langitems ( sort { lc($a) cmp lc $b } @langDir ) {
+        chomp $langitems;
+        if (   ( $langitems ne q{.} )
+            && ( $langitems ne q{..} )
+            && ( $langitems ne q{.htaccess} )
+            && ( $langitems ne q{index.html} ) )
+        {
+            push @lang, $langitems;
+        }
+    }
+    return \@lang;
 }
 
 sub UpdateCookie {
