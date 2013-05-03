@@ -591,9 +591,37 @@ sub LoadCookie {
 		$password = '';
 		$username = 'Guest';
 	}
-	if ($yyCookies{'guestlanguage'} && !$FORM{'guestlang'} && $enable_guestlanguage) {
-		$language = $guestLang = $yyCookies{'guestlanguage'};
+    if (   $yyCookies{'guestlanguage'}
+        && !$FORM{'guestlang'}
+        && $enable_guestlanguage )
+    {   opendir DIR, $langdir;
+        my @langDir = readdir DIR;
+        closedir DIR;
+        @lang = ();
+        foreach my $langitems ( sort { lc($a) cmp lc $b } @langDir ) {
+            chomp $langitems;
+            if (   ( $langitems ne q{.} )
+                && ( $langitems ne q{..} )
+                && ( $langitems ne q{.htaccess} )
+                && ( $langitems ne q{index.html} ) )
+            {
+                push @lang, $langitems;
+            }
+        }
+
+        $ccheck = 0;
+        $clang = q{};
+        for my $lng (@lang) {
+           if ( $yyCookies{'guestlanguage'} eq $lng ) {
+               $clang = $lng;
+               $ccheck = 1; last;
+           }
+        }
+        if ($ccheck == 1) {
+		$language = $guestLang = $clang;
+        }
 	}
+	return;
 }
 
 sub UpdateCookie {
