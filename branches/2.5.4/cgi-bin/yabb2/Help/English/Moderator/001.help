@@ -10,7 +10,7 @@ $SectionBody1 = qq~Congratulations on your promotion to Moderator status.  You a
 <p>The following image of the Moderator Menu is provided for reference.</p>
 <p><img src=\"$yyhtml_root/Buttons/$button_language/modmenu.png" alt="Moderator Menu" /></p>
 <p>You may use the menu on the left to quickly jump to any topic below.</p>
-<p>You may use this ^ button at the bottom right of each Help section to return to the top of the Moderator Help page</p>
+<p>You may use this <img src=\"$imagesdir/back_to_top.png" alt="Back to Top" title="Back to Top" /> button at the bottom right of each Help section to return to the top of the Moderator Help page</p>
 ~;
 #############################################
 
