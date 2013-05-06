@@ -660,6 +660,7 @@ qq~<a href="$scripturl?board=$currentboard">&lsaquo; $maintxt{'board'}</a>~;
         var addnotelang = '$display_txt{'529'}';
         var markfinishedlang = '$display_txt{'528'}';~;
 
+    require "$vardir/Micon.def";
     if ( !$iamguest && $currentboard ne $annboard ) {
         require Sources::Favorites;
         $template_favorite =
@@ -668,7 +669,7 @@ qq~<a href="$scripturl?board=$currentboard">&lsaquo; $maintxt{'board'}</a>~;
           IsFav1( $viewnum, ( !$ttsreverse ? $start : $mreplies - $start ) );
     }
     $template_threadimage =
-      qq~<a id="top"><img src="$imagesdir/$threadclass.gif" alt="" /></a>~;
+      qq~<a id="top">$micon{$threadclass}</a>~;
     $template_sendtopic =
       $sendtopicmail
       ? qq~$menusep<a href="javascript:sendtopicmail($sendtopicmail);">$img{'sendtopic'}</a>~
@@ -1447,7 +1448,7 @@ qq~$menusep<a href="$scripturl?action=markunread;thread=$viewnum;board=$currentb
 		if(${$uid.$parentboard}{'canpost'}) {
 			$pboardname = qq~<a href="$scripturl?board=$parentboard" class="a"><b>$pboardname</b></a>~;
 		} else {
-			$pboardname = qq~<a href="$scripturl?board=$parentboard&subboards=1" class="a"><b>$pboardname</b></a>~;
+			$pboardname = qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboardname</b></a>~;
 		}
 		$boardtree = qq~ &rsaquo; $pboardname$boardtree~;
 		$parentboard = ${$uid.$parentboard}{'parent'};
