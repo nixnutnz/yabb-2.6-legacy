@@ -14,6 +14,20 @@
 # $Revision$
 
 ## UserProfile login
+$my_blank_avatar = 'blank.gif';
+$nn_avatar = 'nn.gif';
+$my_bdaycake = 'bdaycake.gif';
+$my_buddylist = 'buddylist.gif';
+$my_aim = 'aim.gif';
+$my_gtalk = 'gtalk2.gif';
+$my_skype ='skype.gif';
+$my_myspace= 'myspace.gif';
+$my_facebook = 'facebook.gif';
+$my_twitter = 'twitter.gif';
+$my_youtube = 'youtube.gif';
+$my_profile = 'profile.gif';
+
+
 $myprofile_a = qq~
 <table class="tabtitle cs_thin pad_4px" style="width:500px">
     <tr>
