@@ -984,6 +984,12 @@ qq~<input type="checkbox" name="self_del_user" id="self_del_user" value="1" ${is
 			validate => 'text',
 		},
 		{
+			description => qq~<label for="cookietsort">$admin_txt{'353b'}</label>~,
+			input_html => qq~<input type="text" name="cookietsort" id="cookietsort" size="20" value="$cookietsort" />~,
+			name => 'cookietsort',
+			validate => 'text',
+		},
+		{
 			header => $settings_txt{'registration'},
 		},
 		{

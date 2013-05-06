@@ -23,12 +23,12 @@ if ( $action eq 'detailedversion' ) { return 1; }
 LoadLanguage('MessageIndex');
 
 if ($INFO{'tsort'} eq q{}) {
-	$tsortcookie = "tsort$currentboard$username";
+	$tsortcookie = "$cookietsort$currentboard$username";
 	$tsort = $yyCookies{$tsortcookie};
 }
 else {
 	$tsort = $INFO{'tsort'};
-	my $cookiename = "tsort$currentboard$username";
+	my $cookiename = "$cookietsort$currentboard$username";
 	my $expiration = 'Sunday, 17-Jan-2038 00:00:00 GMT';
 	push @otherCookies, write_cookie(
 		-name    =>   "$cookiename",
@@ -133,36 +133,36 @@ sub MessageIndex {
 	$sort_starter    = qq~<a href="$scripturl?board=$currentboard;tsort=5" rel="nofollow">$messageindex_txt{'109'}</a>~;
 	$sort_answer     = qq~<a href="$scripturl?board=$currentboard;tsort=7" rel="nofollow">$messageindex_txt{'110'}</a>~;
 	$sort_lastpostim = qq~<a href="$scripturl?board=$currentboard;tsort=0" rel="nofollow">$messageindex_txt{'22'}</a>~;
-
+    require "$vardir/Micon.def";
 	my %starter;
 	@temp_list = @threadlist;
 	if ($tsort == 1) {
-		$sort_lastpostim = qq~<a href="$scripturl?board=$currentboard;tsort=0" rel="nofollow">$messageindex_txt{'22'}</a> <img src="$imagesdir/sort_down.gif" alt="$messageindex_sort{'sort_first'}" title="$messageindex_sort{'sort_first'}" />~;
+		$sort_lastpostim = qq~<a href="$scripturl?board=$currentboard;tsort=0" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_first'}~;
 		@threadlist = reverse (@temp_list);
 	} elsif ($tsort == 2) {
-		$sort_subject = qq~<a href="$scripturl?board=$currentboard;tsort=3" rel="nofollow">$messageindex_txt{'70'}</a> <img src="$imagesdir/sort_up.gif" alt="$messageindex_sort{'sort_za'}" title="$messageindex_sort{'sort_za'}" />~;
-		@threadlist = sort {lc((split /\|/,$b,3)[1]) cmp lc((split /\|/,$a,3)[1])} @temp_list;
+		$sort_subject = qq~<a href="$scripturl?board=$currentboard;tsort=3" rel="nofollow">$messageindex_txt{'70'}</a> $micon{'sort_up'}~;
+		@threadlist = sort {lc((split /\|/xsm,$b,3)[1]) cmp lc((split /\|/,$a,3)[1])} @temp_list;
 	} elsif ($tsort == 3) {
-		$sort_subject = qq~<a href="$scripturl?board=$currentboard;tsort=2" rel="nofollow">$messageindex_txt{'70'}</a> <img src="$imagesdir/sort_down.gif" alt="$messageindex_sort{'sort_az'}" title="$messageindex_sort{'sort_az'}" />~;
-		@threadlist = sort {lc((split /\|/,$a,3)[1]) cmp lc((split /\|/,$b,3)[1])} @temp_list;
+		$sort_subject = qq~<a href="$scripturl?board=$currentboard;tsort=2" rel="nofollow">$messageindex_txt{'70'}</a> $micon{'sort_down'}~;
+		@threadlist = sort {lc((split /\|/xsm,$a,3)[1]) cmp lc((split /\|/,$b,3)[1])} @temp_list;
 	} elsif ($tsort == 4) {
 		ManageMemberinfo('load');
-		$sort_starter = qq~<a href="$scripturl?board=$currentboard;tsort=5" rel="nofollow">$messageindex_txt{'109'}</a> <img src="$imagesdir/sort_up.gif" alt="$messageindex_sort{'sort_za'}" title="$messageindex_sort{'sort_za'}" />~;
-		@threadlist = sort { starter((split /\|/, $b, 8)[6], $b) cmp starter((split /\|/, $a, 8)[6], $a) } @temp_list;
+		$sort_starter = qq~<a href="$scripturl?board=$currentboard;tsort=5" rel="nofollow">$messageindex_txt{'109'}</a> $micon{'sort_up'}~;
+		@threadlist = sort { starter((split /\|/xsm, $b, 8)[6], $b) cmp starter((split /\|/xsm, $a, 8)[6], $a) } @temp_list;
 		undef %memberinf;
 	} elsif ($tsort == 5) {
-		&ManageMemberinfo("load");
-		$sort_starter = qq~<a href="$scripturl?board=$currentboard;tsort=4" rel="nofollow">$messageindex_txt{'109'}</a> <img src="$imagesdir/sort_down.gif" alt="$messageindex_sort{'sort_az'}" title="$messageindex_sort{'sort_az'}" />~;
-		@threadlist = sort { starter((split /\|/, $a, 8)[6], $a) cmp starter((split /\|/, $b, 8)[6], $b) } @temp_list;
+		ManageMemberinfo("load");
+		$sort_starter = qq~<a href="$scripturl?board=$currentboard;tsort=4" rel="nofollow">$messageindex_txt{'109'}</a> $micon{'sort_down'}~;
+		@threadlist = sort { starter((split /\|/xsm, $a, 8)[6], $a) cmp starter((split /\|/xsm, $b, 8)[6], $b) } @temp_list;
 		undef %memberinf;
 	} elsif ($tsort == 6) {
-		$sort_answer = qq~<a href="$scripturl?board=$currentboard;tsort=7" rel="nofollow">$messageindex_txt{'110'}</a> <img src="$imagesdir/sort_up.gif" alt="$messageindex_sort{'sort_max'}" title="$messageindex_sort{'sort_max'}" />~;
-		@threadlist = sort {(split /\|/,$b,7)[5] <=> (split /\|/,$a,7)[5]} @temp_list;
+		$sort_answer = qq~<a href="$scripturl?board=$currentboard;tsort=7" rel="nofollow">$messageindex_txt{'110'}</a> $micon{'sort_up'}~;
+		@threadlist = sort {(split /\|/,$b,7)[5] <=> (split /\|/xsm,$a,7)[5]} @temp_list;
 	} elsif ($tsort == 7) {
-		$sort_answer = qq~<a href="$scripturl?board=$currentboard;tsort=6" rel="nofollow">$messageindex_txt{'110'}</a> <img src="$imagesdir/sort_down.gif" alt="$messageindex_sort{'sort_min'}" title="$messageindex_sort{'sort_min'}" />~;
-		@threadlist = sort {(split /\|/,$a,7)[5] <=> (split /\|/,$b,7)[5]} @temp_list;
+		$sort_answer = qq~<a href="$scripturl?board=$currentboard;tsort=6" rel="nofollow">$messageindex_txt{'110'}</a> $micon{'sort_down'}~;
+		@threadlist = sort {(split /\|/,$a,7)[5] <=> (split /\|/xsm,$b,7)[5]} @temp_list;
 	} else {
-		$sort_lastpostim = qq~<a href="$scripturl?board=$currentboard;tsort=1" rel="nofollow">$messageindex_txt{'22'}</a> <img src="$imagesdir/sort_up.gif" alt="$messageindex_sort{'sort_last'}" title="$messageindex_sort{'sort_last'}" />~;
+		$sort_lastpostim = qq~<a href="$scripturl?board=$currentboard;tsort=1" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_up'}~;
 	}
 
 	sub starter {

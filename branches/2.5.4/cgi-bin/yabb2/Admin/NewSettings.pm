@@ -518,6 +518,7 @@ sub SaveSettingsTo {
 \$cookieusername = "\Q$cookieusername\E";	# Name of the username cookie
 \$cookiepassword = "\Q$cookiepassword\E";	# Name of the password cookie
 \$cookiesession_name = "\Q$cookiesession_name\E";   # Name of the Session cookie
+\$cookietsort = "\Q$cookietsort\E";   # Name of the Session cookie
 
 \$regtype = $regtype;						# 0 = registration closed (only admin can register), 1 = pre registration with admin approval,
 									# 2 = pre registration and email activation, 3 = open registration

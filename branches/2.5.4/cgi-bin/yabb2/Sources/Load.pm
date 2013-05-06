@@ -463,6 +463,7 @@ qq~<div style="float: left; font-size: 10px; font-family: verdana, sans-serif; o
     }
 
     require "$vardir/Menu$UseMenuType.def";
+    require "$vardir/Micon.def";
 
     $yimimg      = $img{'yim'};
     $aimimg      = $img{'aim'};
@@ -524,8 +525,10 @@ qq~<div style="float: left; font-size: 10px; font-family: verdana, sans-serif; o
         $genderTitle = ${ $uid . $user }{'gender'};
         ${ $uid . $user }{'gender'} =
           ${ $uid . $user }{'gender'}
-          ? qq~$load_txt{'231'}: <img src="$imagesdir/${$uid.$user}{'gender'}.png" alt="$load_txt{$genderTitle}" title="$load_txt{$genderTitle}" /><br />~ 
+          ? qq~$load_txt{'231'}: $load_con{'gender'}<br />~ 
           : q{};
+         ${ $uid . $user }{'gender'} =~ s/{yabb gender}/$genderTitle/sm;
+         ${ $uid . $user }{'gender'} =~ s/{yabb genderTitle}/$load_txt{$genderTitle}/gsm;
     }
     else {
         ${ $uid . $user }{'gender'} = q{};
@@ -1047,7 +1050,7 @@ sub UpdateCookie {
 		    my @bdlist = split /\,/xsm, $boardlist;
 			foreach my $curboard (@bdlist) {
 				chomp $curboard;
-				my $tsortcookie = "tsort$curboard$username";
+				my $tsortcookie = "$cookietsort$curboard$username";
 				if ($yyCookies{$tsortcookie}) {
 					push @otherCookies, write_cookie(
 						-name    =>   "$tsortcookie",

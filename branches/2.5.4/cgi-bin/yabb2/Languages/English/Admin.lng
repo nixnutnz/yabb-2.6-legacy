@@ -182,6 +182,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 '352' => 'Cookie Name - Username',
 '353' => 'Cookie Name - Password',
 '353a' => 'Cookie Name - Session',
+'353b' => 'Cookie Prefix - MessageIndex sort',
 '354' => 'Location of Sendmail Program',
 '355' => 'Webmaster E-mail Address',
 '356' => 'YaBB Directory',
