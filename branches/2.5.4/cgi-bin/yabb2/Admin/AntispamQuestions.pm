@@ -93,7 +93,7 @@ sub SpamQuestions {
 
     $yymain = qq~
 <form action="$adminurl?action=spam_questions2" method="post">
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
 <table class="cs_thin pad_4px">
     <col class="w_50pc" />
     <col class="w_50pc" />
@@ -114,7 +114,7 @@ sub SpamQuestions {
 	</tr>
 </table>
 </div>
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
 <table class="cs_thin pad_4px">
 	<tr>
     	<th class="titlebg"><img src="$imagesdir/preferences.gif" alt="" /> $admin_txt{'10'}</th>
@@ -127,7 +127,7 @@ sub SpamQuestions {
 </table>
 </div>
 </form>
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
 <table class="cs_thin pad_4px">
 	<col span="2" class="w_43pc" />
 	<col span="2" class="w_7pc" />
@@ -147,7 +147,7 @@ $show_questions
 </table>
 </div>
 <form action="$adminurl?action=spam_questions_add" method="post" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
 <table class="cs_thin pad_4px">
     <col class="w_25pc" />
     <col class="w_75pc" />
@@ -162,7 +162,7 @@ $show_questions
 	</tr>
 </table>
 </div>
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
 <table class="cs_thin pad_4px">
 	<tr>
     	<th class="titlebg"><img src="$imagesdir/preferences.gif" alt="" /> $admin_txt{'10'}</th>
