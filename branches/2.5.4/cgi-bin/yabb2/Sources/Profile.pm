@@ -653,7 +653,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
                 $checked = ' selected="selected"';
             }
             if ( ${ $uid . $user }{'userpic'} =~ m{\Ahttps?://}sm
-                && $line eq 'blank.gif' )
+                && $line eq $my_blank_avatar )
             {
                 $checked = ' selected="selected" ';
             }
@@ -662,7 +662,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
                 || $extension =~ /jpeg/ism
                 || $extension =~ /png/ism )
             {
-                if ( $line eq 'blank.gif' ) {
+                if ( $line eq $my_blank_avatar ) {
                     $images =
 qq~                <option value="$line"$checked>$profile_txt{'422'}</option>\n$images~;
                 }
@@ -2158,7 +2158,7 @@ sub ModifyProfileOptions2 {
         $member{'userpic'} = $member{'userpicpersonal'};
     }
     if ( $member{'userpic'} eq q{} || !$allowpics ) {
-        $member{'userpic'} = 'blank.gif';
+        $member{'userpic'} = $my_blank_avatar;
     }
     if ( $member{'userpic'} !~
         m{\A[0-9a-zA-Z_\.\#\%\-\:\+\?\$\&\~\.\,\@/]+\Z}xsm )
@@ -2636,7 +2636,7 @@ sub ViewProfile {
     CalcAge( $user, 'calc' );      # How old is he/she?
     CalcAge( $user, 'isbday' );    # is it the bday?
     if ($isbday) {
-        $isbday = qq~<img src="$imagesdir/bdaycake.gif" width="40" />~;
+        $isbday = qq~<img src="$imagesdir/$my_bdaycake" />~;
     }
 
     ## only show the 'modify' button if not using 'my center' or admin/gmod viewing
@@ -2656,8 +2656,8 @@ sub ViewProfile {
 
     if ($allowpics) {
         my $no_userpic;
-        if ( ${ $uid . $user }{'userpic'} eq 'blank.gif' ) {
-            $no_userpic = $default_avatar ? $default_userpic : q~nn.gif~;
+        if ( ${ $uid . $user }{'userpic'} eq $my_blank_avatar ) {
+            $no_userpic = $default_avatar ? $default_userpic : $nn_avatar;
             $pic =
 qq~<img src="$imagesdir/$no_userpic" name="avatar_img_resize" alt="" style="display:none" />~;
         }
@@ -2680,7 +2680,7 @@ qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px
         $buddybutton = '<br />'
           . (
             $mybuddie{$user}
-            ? qq~<img src="$imagesdir/buddylist.gif" alt="$display_txt{'isbuddy'}" /> $display_txt{'isbuddy'}~
+            ? qq~<img src="$imagesdir/$my_buddylist" alt="$display_txt{'isbuddy'}" /> $display_txt{'isbuddy'}~
             : qq~<a href="$scripturl?action=addbuddy;name=$useraccount{$user}">$img{'addbuddy'}</a>~
           );
     }
@@ -2747,7 +2747,7 @@ qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px
                         </div>
                         <div class="contactright">
                         <a href="aim:goim?screenname=${$uid.$user}{'aim'}&#38;message=Hi,+are+you+there?">
-                        <img src="$imagesdir/aim.gif" alt="${$uid.$user}{'aim'}" /> $memsettingsd[9]</a>
+                        <img src="$imagesdir/$my_aim" alt="${$uid.$user}{'aim'}" /> $memsettingsd[9]</a>
                         </div>~;
     }
     if ( ${ $uid . $user }{'yim'} ) {
@@ -2766,7 +2766,7 @@ qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px
                         <b>$profile_txt{'825'}: </b>
                         </div>
                         <div class="contactright">
-                        <img src="$imagesdir/gtalk2.gif" alt="" />
+                        <img src="$imagesdir/$my_gtalk" alt="" />
                         <a href="#" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$user','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false">$profile_txt{'825'} ${$uid.$user}{'realname'}</a>
                         </div>~;
     }
@@ -2776,7 +2776,7 @@ qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px
                         <b>$profile_txt{'827'}: </b>
                         </div>
                         <div class="contactright">
-                        <img src="$imagesdir/skype.gif" alt="" />
+                        <img src="$imagesdir/$my_skype" alt="" />
                         <a href="javascript:void(window.open('callto://${$uid.$user}{'skype'}','skype','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'))">$profile_txt{'827'} ${$uid.$user}{'realname'}</a>
                         </div>~;
     }
@@ -2786,7 +2786,7 @@ qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px
                         <b>$profile_txt{'570'}: </b>
                         </div>
                         <div class="contactright">
-                        <img src="$imagesdir/myspace.gif" alt="" />
+                        <img src="$imagesdir/$my_myspace" alt="" />
                         <a href="http://www.myspace.com/${$uid.$user}{'myspace'}" onclick="target='_blank';">$profile_txt{'570'} ${$uid.$user}{'realname'}</a>
                         </div>~;
     }
@@ -2796,7 +2796,7 @@ qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px
                         <b>$profile_txt{'573'}: </b>
                         </div>
                         <div class="contactright">
-                        <img src="$imagesdir/facebook.gif" alt="" />
+                        <img src="$imagesdir/$my_facebook" alt="" />
                         <a href="http://www.facebook.com/~
           . (
             ${ $uid . $user }{'facebook'} !~ /\D/xsm ? 'profile.php?id=' : q{} )
@@ -2809,7 +2809,7 @@ qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px
                         <b>$profile_txt{'576'}: </b>
                         </div>
                         <div class="contactright">
-                        <img src="$imagesdir/twitter.gif" alt="" />
+                        <img src="$imagesdir/$my_twitter" alt="" />
                         <a href="http://twitter.com/${$uid.$user}{'twitter'}" target="_blank">$profile_txt{'576'} ${$uid.$user}{'realname'}</a>
                         </div>~;
     }
@@ -2819,7 +2819,7 @@ qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px
                         <b>$profile_txt{'579'}: </b>
                         </div>
                         <div class="contactright">
-                        <img src="$imagesdir/youtube.gif" alt="" />
+                        <img src="$imagesdir/$my_youtube" alt="" />
                         <a href="http://www.youtube.com/${$uid.$user}{'youtube'}" target="_blank">$profile_txt{'579'} ${$uid.$user}{'realname'}</a>
                         </div>~;
     }
@@ -2941,11 +2941,11 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
         $yynavigation = qq~&rsaquo; $profile_txt{'92'}~;
         if ( $iamadmin || $iamgmod ) {
             $my_not_view_b .= qq~
-                <img src="$imagesdir/profile.gif" alt="" />&nbsp; <b>$profile_txt{'35'}: $INFO{'username'}</b>~;
+                <img src="$imagesdir/$my_profile" alt="" />&nbsp; <b>$profile_txt{'35'}: $INFO{'username'}</b>~;
         }
         else {
             $my_not_view_b .= qq~
-                <img src="$imagesdir/profile.gif" alt="" />&nbsp; <b>$profile_txt{'68'}: ${$uid.$INFO{'username'}}{'realname'}</b>~;
+                <img src="$imagesdir/$my_profile" alt="" />&nbsp; <b>$profile_txt{'68'}: ${$uid.$INFO{'username'}}{'realname'}</b>~;
         }
         $my_not_view = $myshow_b;
         $my_not_view =~ s/{yabb my_not_view_b}/$my_not_view_b/sm;
