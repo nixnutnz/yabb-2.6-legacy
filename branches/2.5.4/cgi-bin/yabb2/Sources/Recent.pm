@@ -215,17 +215,18 @@ qq~$menusep<a href="$scripturl?action=notify2;num=$tnum/$c;oldnotify=1">$img{'ad
         my $parentboard = $board;
         while ($parentboard) {
             my ( $pboardname, undef, undef ) =
-              split /\|/xsm, $board{"$parentboard"};
-            if ( ${ $uid . $parentboard }{'canpost'} ) {
+              split /\|/xsm, $board{$parentboard};
+		    if( ${$uid.$parentboard}{'canpost'} || !$subboard{$parentboard} ) {
                 $pboardname =
-qq~<a href="$scripturl?board=$parentboard"><span class="under">$pboardname</span></a>~;
+qq~<a href="$scripturl?board=$parentboard"><span class="under">$pboardname</span></a> 0~;
             }
             else {
                 $pboardname =
-qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under">$pboardname</span></a>~;
+qq~<a href="$scripturl?boardselect=$parentboard;subboards=1"><span class="under">$pboardname</span></a> 1~;
             }
             $boardtree   = qq~ / $pboardname$boardtree~;
-            $parentboard = ${ $uid . $parentboard }{'parent'};
+            $my_cat = ${$uid.$parentboard }{'cat'};
+            $parentboard = ${$uid.$parentboard }{'parent'};
         }
         $counter = $i + 1;
 
@@ -237,7 +238,7 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under"
 
         $yymain .= $myrecent;
         $yymain =~ s/{yabb counter}/$counter/sm;
-        $yymain =~ s/{yabb catbrd}/$catid{$board}/sm;
+        $yymain =~ s/{yabb catbrd}/$my_cat/sm;
         $yymain =~ s/{yabb catname}/$catname{$board}/sm;
         $yymain =~ s/{yabb boardtree}/$boardtree/sm;
         $yymain =~ s/{yabb tnum}/$tnum\/$c#$c/sm;
@@ -417,7 +418,7 @@ qq~$menusep<a href="$scripturl?action=notify2;num=$tnum/$c;oldnotify=1">$img{'ad
         while ($parentboard) {
             my ( $pboardname, undef, undef ) =
               split /\|/xsm, $board{"$parentboard"};
-            if ( ${ $uid . $parentboard }{'canpost'} ) {
+            if ( ${ $uid . $parentboard }{'canpost'} || !$subboard{$parentboard}) {
                 $pboardname =
 qq~<a href="$scripturl?board=$parentboard"><span class="under">$pboardname</span></a>~;
             }
@@ -426,6 +427,8 @@ qq~<a href="$scripturl?board=$parentboard"><span class="under">$pboardname</span
 qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under">$pboardname</span></a>~;
             }
             $boardtree   = qq~ / $pboardname$boardtree~;
+            $my_cat = ${$uid.$parentboard }{'cat'};
+            ( $my_catname, undef ) = split /\|/xsm, $catinfo{$my_cat};
             $parentboard = ${ $uid . $parentboard }{'parent'};
         }
         $counter = $i + 1;
@@ -438,8 +441,8 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under"
 
         $yymain .= $myrecent;
         $yymain =~ s/{yabb counter}/$counter/sm;
-        $yymain =~ s/{yabb catbrd}/$catid{$board}/sm;
-        $yymain =~ s/{yabb catname}/$catname{$board}/sm;
+        $yymain =~ s/{yabb catbrd}/$my_cat/sm;
+        $yymain =~ s/{yabb catname}/$my_catname/sm;
         $yymain =~ s/{yabb boardtree}/$boardtree/sm;
         $yymain =~ s/{yabb tnum}/$tnum\/$c#$c/sm;
         $yymain =~ s/{yabb msub}/$msub/sm;
