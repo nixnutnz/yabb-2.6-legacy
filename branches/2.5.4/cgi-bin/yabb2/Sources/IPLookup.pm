@@ -22,6 +22,7 @@ if ( !$ipLookup || !$INFO{'ip'} || ( !$iamadmin && !$iamgmod && !$iamymod ) ) {
 }
 
 LoadLanguage('IPLookup');
+LoadCensorList();
 
 if ( -e ("$templatesdir/$usestyle/Other.template") ) {
     require "$templatesdir/$usestyle/Other.template";
@@ -33,11 +34,16 @@ else {
 sub IPLookup {
     $ip = $INFO{'ip'};
     my $lookuplink = q{};    
-    foreach my $i (@ipurl){
-        my ($ipurl_name, $ipurl_url ) = split /\|/sm, $i;
-        $ipurl_url =~ s/{ip}/$ip/gsm;
+    fopen(IPLOOKUP, "<$vardir/iplookup.urls") || fatal_error('cannot_open',"$vardir/iplookup.urls", 1);
+    @iplookup_urls = <IPLOOKUP>;
+    fclose(IPLOOKUP);   
+    
+    foreach my $i (@iplookup_urls) {
+        my ($iplookup_name, $iplookup_url ) = split /\|/sm, $i;
+        $iplookup_name = Censor($iplookup_name);
+        $iplookup_url =~ s/{ip}/$ip/gsm;
 
-        $lookuplink .= qq~<a href="http://$ipurl_url" target="_blank">$ipurl_name</a><br />~;
+        $lookuplink .= qq~<a href="http://$iplookup_url" target="_blank">$iplookup_name</a><br />~;
     }
 
     $yymain .= $my_ipdiv;

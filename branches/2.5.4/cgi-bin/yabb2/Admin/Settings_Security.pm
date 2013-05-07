@@ -19,6 +19,15 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Sessions');
 
+if ( -e "$vardir/iplookup.urls" ) {
+    fopen( IPLOOKUP, "$vardir/iplookup.urls" ) || fatal_error( 'cannot_open', 'iplookup.urls', 1 );
+    while (<IPLOOKUP>) {
+        chomp;
+        $iplookup_urls .= qq~$_\n~;
+    }
+    fclose(IPLOOKUP);
+}
+
 if ($regcheck) {
     require Sources::Decoder;
     validation_code();
@@ -56,7 +65,7 @@ qq~<input type="checkbox" name="do_scramble_id" id="do_scramble_id" value="1"${i
             },
             {
                 description =>
-                  qq~<label for="referersecurity">$reftxt{'8'}</label>~,
+qq~<label for="referersecurity">$reftxt{'8'}</label>~,
                 input_html =>
 qq~<input type="checkbox" name="referersecurity" id="referersecurity" value="1"${ischecked($referersecurity)} />~,
                 name     => 'referersecurity',
@@ -88,12 +97,21 @@ qq~<input type="checkbox" name="show_online_ip_ymod" id="show_online_ip_ymod" va
             },
             {
                 description =>
-                  qq~<label for="ip_lookup">$admin_txt{'iplookup'}</label>~,
+qq~<label for="ip_lookup">$admin_txt{'iplookup'}</label>~,
                 input_html =>
 qq~<input type="checkbox" name="ipLookup" id="ip_lookup" value="1"${ischecked($ipLookup)} />~,
                 name     => 'ipLookup',
                 validate => 'boolean',
             },
+     		{
+			    description => 
+qq~<label for="ip_lookup_urls">$admin_txt{'iplookup_urls'}</label>~,
+			    input_html => 
+qq~<textarea name="iplookup_urls" id="ip_lookup_urls" cols="55" rows="7">$iplookup_urls</textarea>~,
+			    name => 'iplookup_urls',
+			    validate => 'fulltext',
+			    depends_on => ['ipLookup'],
+		    },
         ],
     },
     {
@@ -265,6 +283,10 @@ qq~<select name="randomizer" id="randomizer" size="1"> <option value="0"${issele
 # Routine to save them
 sub SaveSettings {
     my %settings = @_;
+
+    fopen( IPLOOKUP, ">$vardir/iplookup.urls" );
+    print {IPLOOKUP} $settings{'iplookup_urls'} or croak 'cannot print IPLOOKUP';
+    fclose(IPLOOKUP);
 
     if (   length $settings{'masterkey'} < 8
         || length $settings{'masterkey'} > 24 )
