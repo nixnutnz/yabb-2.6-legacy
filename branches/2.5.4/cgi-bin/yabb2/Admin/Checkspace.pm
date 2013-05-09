@@ -215,7 +215,7 @@ sub chsettings {
 
     $yymain .= qq~
     <a id="top"></a>
-    <div class="bordercolor rightboxdiv">
+    <div class="bordercolor rightboxdiva">
         <table class="cs_thin pad_4px">
             <tr>
                 <td class="titlebg"><b>$yytitle</b></td>
@@ -228,7 +228,7 @@ sub chsettings {
 ~;
     foreach my $tab (@settings) {
         $yymain .= qq~
-    <div class="bordercolor rightboxdiv">
+    <div class="bordercolor rightboxdiva">
         <table class="section" style="border-collapse:separate; border-spacing: 1px;" id="tab_$tab->{'id'}">
             <col class=" w_50pc" />
             <tr>
@@ -346,7 +346,7 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
     $INFO{'tab'} =~ s/\W//gxsm;
     $default_tab = $INFO{'tab'} || $settings[0]->{'id'};
     $yymain .= qq~
-<div class="bordercolor rightboxdiv" style="margin: 1em auto 0 0">
+<div class="bordercolor rightboxdiva" style="margin: 1em auto 0 0">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg" colspan="2">

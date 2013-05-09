@@ -102,7 +102,7 @@ qq~<img src="$imagesdir/cat.gif" alt="" /> &nbsp;<b>$admin_txt{'51'}</b>~;
     //-->
 </script>
 <form name="whattodo" id="whattodo" action="$adminurl?action=$act" onSubmit="return checkSubmit(this);" method="post">
-<div class="rightboxdiv">
+<div class="rightboxdiva">
     <table class="bordercolor cs_thin pad_4px">
         <tr>
             <td class="titlebg" $colspan>
@@ -253,7 +253,7 @@ qq~ <img src="$imagesdir/recycle.gif" alt="$admin_txt{'64i'}" title="$admin_txt{
 </form>
 <br />
 <form name="diff" id="diff" action="$adminurl?action=$act2" method="post" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="catbg center"><label for="amount"><b>$add: </b></label>
@@ -666,7 +666,7 @@ function checkParent(id, board) {
 //-->
 </script>
 <form name="boardsadd" id="boardsadd" action="$adminurl?action=addboard2" method="post" onsubmit="selectNames($FORM{'amount'});" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg" colspan="5">
@@ -677,7 +677,7 @@ function checkParent(id, board) {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
     <table class="cs_thin pad_4px">
         <col span="4" class="w_25pc" />
 ~;
@@ -985,7 +985,7 @@ qq~<select multiple="multiple" name="moderatorgroups$i" id="moderatorgroups$i" s
   </tr>
 </table>
 </div>
- <div class="bordercolor rightboxdiv">
+ <div class="bordercolor rightboxdiva">
 <table class="cs_thin pad_4px">
 ~;
     }

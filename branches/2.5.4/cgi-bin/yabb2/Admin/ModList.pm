@@ -41,7 +41,7 @@ sub ListMods {
 
     if ( !@installed_mods ) {
         $yymain .= qq~
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg" colspan="3">
@@ -83,7 +83,7 @@ sub ListMods {
         </tr>~;
 
         $full_description .= qq~
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">

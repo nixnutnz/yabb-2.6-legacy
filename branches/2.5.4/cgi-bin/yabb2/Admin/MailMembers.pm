@@ -15,7 +15,7 @@ use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.5.4';
 
 $mailmemberspmver = 'YaBB 2.5.4 $Revision$';
-if ( $action eq 'detailedversion' ) { return 1; }
+if ($action eq 'detailedversion') { return 1; }
 
 if ($iamguest) { fatal_error('no_access'); }
 
@@ -26,19 +26,20 @@ $reused = 0;
 
 sub Mailing {
     if ($iamguest) { fatal_error('no_access'); }
-    $yymain .= qq~
-    <table class="bordercolor cs_thin pad_3px">
-        <tr>
+	$yymain .= qq~
+<div class="rightboxdiva">
+    <table class="bordercolor cs_thin pad_3px" style="margin-bottom:.5em">
+	<tr>
             <td class="titlebg">
                 <img src="$imagesdir/register.gif" alt="" /><b> $admintxt{'19'}</b>
                 <form action="$adminurl?action=mailinggrps" method="post" name="mailgrps" style="display: inline;" accept-charset="$yycharset">
-                <span style="float: right;">
-                    <input type="submit" value="$amv_txt{'53'}" class="button" />
-                </span>
-                </form>
-            </td>
-        </tr>
-    </table>
+		<span style="float: right;">
+			<input type="submit" value="$amv_txt{'53'}" class="button" />
+		</span>
+		</form>
+		</td>
+	</tr>
+	</table>
     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
     <form name="adv_membermail" action="$adminurl?action=mailing2" method="post" style="display: inline;" onsubmit="return checkIfSelected(); return submitproc();" accept-charset="$yycharset">
         <div class="windowbg2 border">
@@ -48,40 +49,40 @@ sub Mailing {
                         <td><label for="field1"><b>$amv_txt{'40'}:</b><br /><span class="small">$amv_txt{'46'}</span></label></td>
                     </tr><tr>
                         <td>
-    ~;
-    my $grpselect;
-    my $groupcnt = 0;
-    foreach ( sort { $a cmp $b } keys %Group ) {
+	~;
+	my $grpselect;
+	my $groupcnt = 0;
+	foreach (sort { $a cmp $b } keys %Group) {
         if ( $_ ne 'Moderator' ) {
             ( $title, $dummy ) = split /\|/xsm, $Group{$_}, 2;
-            $grpselect .= qq~\n<option value="$_"> $title</option>~;
-            $groupcnt++;
-        }
-    }
-    foreach (@nopostorder) {
+			$grpselect .= qq~\n<option value="$_"> $title</option>~;
+			$groupcnt++;
+		}
+	}
+	foreach (@nopostorder) {
         ( $title, $dummy ) = split /\|/xsm, $NoPost{$_}, 2;
-        $grpselect .= qq~\n<option value="$_"> $title</option>~;
-        $groupcnt++;
-    }
+		$grpselect .= qq~\n<option value="$_"> $title</option>~;
+		$groupcnt++;
+	}
     foreach ( reverse sort { $a <=> $b } keys %Post ) {
         ( $title, $dummy ) = split /\|/xsm, $Post{$_}, 2;
-        $grpselect .= qq~\n<option value="$title"> $title</option>~;
-        $groupcnt++;
-    }
-    if ( $groupcnt > 12 ) { $groupcnt = 12; }
-    $yymain .= qq~
-                <select name="field1" id="field1" size="$groupcnt" multiple="multiple" style="width: 100%; font-size: 11px;">
-                $grpselect
-                </select>
-                <label for="check_all"><b>$amv_txt{"42a"}: </b></label><input type="checkbox" name="check_all" id="check_all" value="1" class="windowbg2" style="border: 0; vertical-align: middle;" onclick="javascript: if (this.checked) selectCheckAll(true); else selectCheckAll(false);" />
-            </td>
-        </tr>
-    </table>
-</div>
-    ~;
+		$grpselect .= qq~\n<option value="$title"> $title</option>~;
+		$groupcnt++;
+	}
+	if ($groupcnt > 12) { $groupcnt = 12; }
+	$yymain .= qq~
+	<select name="field1" id="field1" size="$groupcnt" multiple="multiple" style="width: 100%; font-size: 11px;">
+	$grpselect
+	</select>
+	<label for="check_all"><b>$amv_txt{"42a"}: </b></label><input type="checkbox" name="check_all" id="check_all" value="1" class="windowbg2" style="border: 0; vertical-align: middle;" onclick="javascript: if (this.checked) selectCheckAll(true); else selectCheckAll(false);" />
+	</td>
+	</tr>
+	</table>
+	</div>
+	~;
 
     if ( $groupcnt != 0 ) {
-        $yymain .= qq~
+		$yymain .= qq~
 <div class="windowbg2 border h_260px" style="float: left; width: 50%; margin: 1%;">
     <table class="windowbg2 pad_3px w_98pc">
         <tr>
@@ -95,106 +96,106 @@ sub Mailing {
         </tr><tr>
             <td><span class="small">$amv_txt{'39'}</span></td>
         </tr>
-    </table>
-    <input type="hidden" name="reused" value="$reused" />
-</div>
+	</table>
+		<input type="hidden" name="reused" value="$reused" />
+	</div>
 <div class="windowbg2" style="float: left; width: 44%; margin: 0 1%; border: 0;">
     <table class="windowbg2 pad_3px w_98pc">
-        <tr>
+	<tr>
             <td class="windowbg2 vtop"><b>$amv_txt{'49'}:</b></td>
-        </tr>
-    </table>
-</div>
+	</tr>
+	</table>
+	</div>
 <div class="windowbg2" style="float: left; width: 50%; margin: 0 1%; border: 0;">
     <table class="windowbg2 pad_3px w_98pc">
-        <tr>
+	<tr>
             <td class="windowbg2 vtop"><b>$amv_txt{'47'}:</b></td>
-        </tr>
-    </table>
-</div>
+	</tr>
+	</table>
+	</div>
 <div class="windowbg2 border h_145px" style="float: left; width: 44%; margin: 1%; ">
     <table class="windowbg2 pad_3px w_98pc">
-        <tr>
+	<tr>
             <td class="windowbg2 vtop">
-                <span class="small">$amv_txt{'50'}</span>
-            </td>
+		<span class="small">$amv_txt{'50'}</span>
+	</td>
         </tr><tr>
             <td class="windowbg2 center vtop">
-                <input type="submit" name="convert" value="$amv_txt{'49'}" style="width: 100%;" class="button" />
-            </td>
-        </tr>~;
+		<input type="submit" name="convert" value="$amv_txt{'49'}" style="width: 100%;" class="button" />
+	</td>
+	</tr>~;
 
-        if ( -e "$vardir/yabbaddress.csv" ) {
+		if (-e "$vardir/yabbaddress.csv") {
             $yymain .= qq~<tr>
             <td class="windowbg2 center vtop">
-                <input type="button" value="$amv_txt{'51'}" class="button" onclick="MailListWin('$adminurl?action=mailing3');" />
-            </td>
-        </tr>~;
-        }
+		<input type="button" value="$amv_txt{'51'}" class="button" onclick="MailListWin('$adminurl?action=mailing3');" />
+	</td>
+	</tr>~;
+		}
 
         $yymain .= q~
-    </table>
-</div>
+	</table>
+	</div>
 <script type="text/javascript">
 <!--
-    function MailListWin(FileName,WindowName) {
-        WindowFeature="resizable=no,scrollbars=yes,menubar=yes,directories=no,toolbar=no,location=no,status=no,width=400,height=400,screenX=0,screenY=0,top=0,left=0"
-        newWindow=open(FileName,WindowName,WindowFeature);
-        if (newWindow.opener == null) { newWindow.opener = self; }
-        if (newWindow.focus) { newWindow.focus(); }
-    }
+	function MailListWin(FileName,WindowName) {
+		WindowFeature="resizable=no,scrollbars=yes,menubar=yes,directories=no,toolbar=no,location=no,status=no,width=400,height=400,screenX=0,screenY=0,top=0,left=0"
+		newWindow=open(FileName,WindowName,WindowFeature);
+		if (newWindow.opener == null) { newWindow.opener = self; }
+		if (newWindow.focus) { newWindow.focus(); }
+	}
 // -->
 </script>
 <div class="windowbg2 border h_145px" style="float: left; width: 50%; margin: 1%; overflow: auto;">
-    ~;
-        if ( -e ("$vardir/maillist.dat") ) {
-            fopen( FILE, "$vardir/maillist.dat" );
-            @maillist = <FILE>;
-            fclose(FILE);
+	~;
+		if (-e ("$vardir/maillist.dat")) {
+			fopen(FILE, "$vardir/maillist.dat");
+			@maillist = <FILE>;
+			fclose(FILE);
             $yymain .= q~
     <table class="windowbg2 pad_3px w_98pc">
-        ~;
+		~;
             foreach my $curmail (@maillist) {
-                chomp $curmail;
+				chomp $curmail;
                 ( $otime, $osubject, $otext, $osender ) = split /\|/xsm,
                   $curmail;
                 LoadUser($osender);
                 $thetime = timeformat($otime);
 
-                $jsubject = $osubject;
-                $jtext    = $otext;
-                ToJS($jsubject);
-                ToJS($jtext);
+				$jsubject = $osubject;
+				$jtext = $otext;
+				ToJS($jsubject);
+				ToJS($jtext);
 
                 $yymain .= qq~<tr>
                 <td class="windowbg2">
-                    <input type="radio" name="usemail" value="$otime" class="windowbg2" style="border: 0; vertical-align: middle;" onclick="showMail('$jsubject', '$jtext', '$otime');" />
-                </td>
+					<input type="radio" name="usemail" value="$otime" class="windowbg2" style="border: 0; vertical-align: middle;" onclick="showMail('$jsubject', '$jtext', '$otime');" />
+				</td>
                 <td class="windowbg2 vtop"><span class="small">$thetime<br />${$uid.$osender}{'realname'}</span></td>
                 <td class="windowbg2 vtop"><span class="small">$osubject</span></td>
                 <td class="windowbg2"><a href="$adminurl?action=deletemail;delmail=$otime"><img src="$imagesdir/admin_rem.gif" alt="del" /></a></td>
             </tr>~;
-            }
+			}
             $yymain .= q~
-        </table>
-        ~;
-        }
-        $yymain .= qq~
-    </div>
+		</table>
+		~;
+		}
+		$yymain .= qq~
+	</div>
 
-    <div class="windowbg2" style="float: left; width: 44%; margin: 1%; margin-top: 0; border: 0;">
-    &nbsp;
-    </div>
-    <div class="windowbg2" style="float: left; width: 50%; margin: 1%; margin-top: 0; border: 0;">
+	<div class="windowbg2" style="float: left; width: 44%; margin: 1%; margin-top: 0; border: 0;">
+	&nbsp;
+	</div>
+	<div class="windowbg2" style="float: left; width: 50%; margin: 1%; margin-top: 0; border: 0;">
         <table>
-            <tr>
+	<tr>
                 <td class="center">
-                    <input type="submit" name="mailsend" value="$amv_txt{'41'}" style="width: 100%;" class="button" />
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div style="clear: both;"></div>
+		<input type="submit" name="mailsend" value="$amv_txt{'41'}" style="width: 100%;" class="button" />
+	</td>
+	</tr>
+	</table>
+	</div>
+<div style="clear: both;"></div>
 </div>
 </form>
 
@@ -204,22 +205,22 @@ function checkIfSelected() {
 	alert("$amv_txt{'48a'}"); return false;
 } 
 function selectCheckAll(tchecked) {
-    for(var x = 0; x < document.adv_membermail.field1.options.length; x++) document.adv_membermail.field1.options[x].selected = tchecked;
+	for(var x = 0; x < document.adv_membermail.field1.options.length; x++) document.adv_membermail.field1.options[x].selected = tchecked;
 }
 
 function showMail(thesubject, thetext, thetime) {
-    thetext=thetext.replace(/\<br \\/\>/g, "\\n");
-    document.adv_membermail.emailsubject.value = thesubject;
-    document.adv_membermail.emailtext.value = thetext;
-    document.adv_membermail.reused.value = thetime;
+	thetext=thetext.replace(/\<br \\/\>/g, "\\n");
+	document.adv_membermail.emailsubject.value = thesubject;
+	document.adv_membermail.emailtext.value = thetext;
+	document.adv_membermail.reused.value = thetime;
 }
 </script>
 </div>
-    ~;
-    }
+	~;
+	}
 
-    $yytitle     = $admin_txt{'6'};
-    $action_area = 'mailing';
+	$yytitle = $admin_txt{'6'};
+	$action_area = 'mailing';
     AdminTemplate();
     return;
 }
@@ -227,7 +228,7 @@ function showMail(thesubject, thetext, thetime) {
 sub Mailing2 {
     if ($iamguest) { fatal_error('no_access'); }
     if ( !$FORM{'mailsend'} && !$FORM{'convert'} ) { fatal_error('no_access'); }
-    @convlist = ();
+	@convlist = ();
     if ( $FORM{'mailsend'} && $FORM{'emailtext'} ne q{} ) {
         $FORM{'emailsubject'} =~ s/\|/&#124;/gsm;
         $FORM{'emailtext'}    =~ s/\|/&#124;/gsm;
@@ -235,71 +236,71 @@ sub Mailing2 {
         $mailline =
           qq~$date|$FORM{'emailsubject'}|$FORM{'emailtext'}|$username~;
         MailList($mailline);
-    }
+	}
     (@mailgroups) = split /\, /sm, $FORM{'field1'};
     ManageMemberinfo('load');
-    $i = 0;
-    my ( $emailsubject, $emailtext );
-    foreach my $user ( keys %memberinf ) {
+	$i = 0;
+	my ($emailsubject,$emailtext);
+	foreach my $user (keys %memberinf) {
         ( $memrealname, $mememail, $memposition, $memposts, $memaddgrp ) =
           split /\|/xsm, $memberinf{$user};
         FromHTML($memrealname);
 
         if ( $FORM{'mailsend'} && $FORM{'emailtext'} ne q{} ) {
-            $emailsubject = $FORM{'emailsubject'};
+			$emailsubject = $FORM{'emailsubject'};
             $emailsubject =~ s/\[name\]/$memrealname/igxsm;
             $emailsubject =~ s/\[username\]/$user/igxsm;
-            $emailtext = $FORM{'emailtext'};
+			$emailtext = $FORM{'emailtext'};
             $emailtext =~ s/\[name\]/$memrealname/igxsm;
             $emailtext =~ s/\[username\]/$user/igxsm;
-        }
+		}
 
-        $mailit = 0;
+		$mailit = 0;
         foreach my $element (@mailgroups) {
-            chomp $element;
-            if ( $element eq $memposition ) { $mailit = 1; }
+			chomp $element;
+			if ($element eq $memposition) { $mailit = 1; }
             foreach my $memberaddgroups ( split /, /sm, $memaddgrp ) {
-                chomp $memberaddgroups;
-                if ( $element eq $memberaddgroups ) { $mailit = 1; last; }
-            }
-            if ($mailit) { last; }
-        }
-        if ( $mailit && $FORM{'mailsend'} ) {
-            require Sources::Mailer;
+				chomp $memberaddgroups;
+				if ($element eq $memberaddgroups) { $mailit = 1; last; }
+			}
+			if ($mailit) { last; }
+		}
+		if ($mailit && $FORM{'mailsend'}) {
+			require Sources::Mailer;
             sendmail( $mememail, $emailsubject, $emailtext );
         }
         elsif ( $mailit && $FORM{'convert'} ) {
             if ( $memrealname =~ /&#(\d{3,}?)\;/igxsm ) { $memrealname = $user; }
-            $convlist[$i] = qq~$memrealname\;$mememail\n~;
-            $i++;
-        }
-    }
-    undef %memberinf;
-    if (@convlist) {
-        fopen( ADDRESSLIST, ">$vardir/yabbaddress.csv", 1 );
+			$convlist[$i] = qq~$memrealname\;$mememail\n~;
+			$i++;
+		}
+	}
+	undef %memberinf;
+	if (@convlist) {
+		fopen(ADDRESSLIST, ">$vardir/yabbaddress.csv", 1);
         print {ADDRESSLIST} "Name\;E-mail Address\n"
           or croak 'cannot print ADDRESSLIST';
         print {ADDRESSLIST} @convlist or croak 'cannot print ADDRESSLIST';
-        fclose(ADDRESSLIST);
+		fclose(ADDRESSLIST);
     }
     elsif ( $FORM{'convert'} ) {
         unlink "$vardir/yabbaddress.csv";
-    }
+	}
 
-    $yySetLocation = qq~$adminurl?action=mailing~;
+	$yySetLocation = qq~$adminurl?action=mailing~;
     redirectexit();
     return;
 }
 
 sub Mailing3 {
-    fopen( FILE, "$vardir/yabbaddress.csv" );
-    @addlist = <FILE>;
-    fclose(FILE);
+	fopen(FILE, "$vardir/yabbaddress.csv");
+	@addlist = <FILE>;
+	fclose(FILE);
     print qq~Content-disposition: inline; filename=yabbaddress.csv\n\n~ or croak 'cannot print content';
     foreach my $curadd (@addlist) {
-        chomp $curadd;
+		chomp $curadd;
         print qq~$curadd\n~ or croak 'cannot print content';
-    }
+	}
     return;
 }
 
@@ -319,38 +320,38 @@ sub MailingMembers {
     }
 
     if ($iamguest) { fatal_error('no_access'); }
-    $yymain .= qq~
+	$yymain .= qq~
 <div class="rightboxdiv">
     <table class="bordercolor cs_thin pad_3px">
-        <tr>
+	<tr>
             <td class="titlebg">
-                <span style="float: left;">
+		<span style="float: left;">
                     <img src="$imagesdir/register.gif" alt="" /><b> $admintxt{'19'}</b>
-                </span>
+		</span>
                 <form action="$adminurl?action=mailinggrps" method="post" name="selsort" style="display: inline" accept-charset="$yycharset">
-                <span style="float: right;">
-                    <label for="sortform"><b>$ml_txt{'1'}</b></label>
-                    <select name="sortform" id="sortform" style="font-size: 9pt;" onchange="submit()">
-                        <option value="username"$selUser>$ml_txt{'35'}</option>
-                        <option value="position"$selPos>$ml_txt{'87'}</option>
-                    </select>
-                    &nbsp;
-                    <input type="button" value="$amv_txt{'54'}" class="button" onclick="window.location.href=\'$adminurl?action=mailing\'" />
-                </span>
-                </form>
-            </td>
-        </tr>
-    </table>
+		<span style="float: right;">
+		<label for="sortform"><b>$ml_txt{'1'}</b></label>
+		<select name="sortform" id="sortform" style="font-size: 9pt;" onchange="submit()">
+			<option value="username"$selUser>$ml_txt{'35'}</option>
+			<option value="position"$selPos>$ml_txt{'87'}</option>
+		</select>
+		&nbsp;
+		<input type="button" value="$amv_txt{'54'}" class="button" onclick="window.location.href=\'$adminurl?action=mailing\'" />
+		</span>
+		</form>
+		</td>
+	</tr>
+	</table>
     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
     <form name="adv_membermail" action="$adminurl?action=mailmultimembers;$sortmode" method="post" style="display: inline" onsubmit="return checkIfChecked(this); return submitproc()" accept-charset="$yycharset">
-    <input type="hidden" name="button" value="1" />
+	<input type="hidden" name="button" value="1" />
 
     <div class="windowbg2 border">
         <div class="windowbg h_260px border" style="float: left; width: 44%; margin: 1%; overflow: auto;">
             <table class="windowbg pad_3px w_98pc">
-    ~;
+	~;
 
-    %TopMembers = ();
+	%TopMembers = ();
 
     ManageMemberinfo('load');
     while ( ( $membername, $value ) = each %memberinf ) {
@@ -358,17 +359,17 @@ sub MailingMembers {
           $value;
         $pstsort    = 99_999_999 - $memposts;
         $sortgroups = q{};
-        $j          = 0;
+		$j          = 0;
 
-        if ( $membername eq $username ) {
+		if ($membername eq $username) {
             $sortgroups = '!!!';
         }
         else {
             if (   $FORM{'sortform'} eq 'position'
                 || $INFO{'sort'} eq 'position' )
             {
-                foreach my $key ( keys %Group ) {
-                    if ( $memposition eq $key ) {
+				foreach my $key (keys %Group) {
+					if ($memposition eq $key) {
                         if ( $key eq 'Administrator' ) {
                             $sortgroups = "aaa.$pstsort.$memberrealname";
                         }
@@ -378,37 +379,37 @@ sub MailingMembers {
                         elsif ( $key eq 'Mid Moderator' ) {
                             $sortgroups = "bcc.$pstsort.$memberrealname";
                         }
-                    }
-                }
-                if ( !$sortgroups ) {
-                    foreach ( sort { $a <=> $b } keys %NoPost ) {
-                        if ( $memposition eq $_ ) {
+					}
+				}
+				if (!$sortgroups) {
+					foreach (sort { $a <=> $b } keys %NoPost) {
+						if ($memposition eq $_) {
                             $sortgroups =
                               "ddd.$memposition.$pstsort.$memberrealname";
-                        }
-                    }
-                }
-                if ( !$sortgroups ) {
-                    $sortgroups = "eee.$pstsort.$memposition.$memberrealname";
-                }
+						}
+					}
+				}
+				if (!$sortgroups) {
+					$sortgroups = "eee.$pstsort.$memposition.$memberrealname";
+				}
 
             }
             else {
-                $sortgroups = $memberrealname;
-            }
-        }
-        $TopMembers{$membername} = $sortgroups;
-    }
+				$sortgroups = $memberrealname;
+			}
+		}
+		$TopMembers{$membername} = $sortgroups;
+	}
     my @toplist =
       sort { lc $TopMembers{$a} cmp lc $TopMembers{$b} } keys %TopMembers;
 
-    $memcount = @toplist;
+	$memcount = @toplist;
 
     $bb        = 0;
-    $numshown  = 0;
-    $actualnum = 0;
+	$numshown  = 0;
+	$actualnum = 0;
 
-    while ( ( $numshown < $memcount ) ) {
+	while (($numshown < $memcount)) {
         $user = $toplist[$bb];
 
         ( $memrealname, $mememail, $memposition, $memposts ) = split /\|/xsm,
@@ -419,9 +420,9 @@ sub MailingMembers {
         if ( $memrealname ne q{} ) {
             $addel =
 qq~<input type="checkbox" name="member$actualnum" value="$user" class="windowbg" style="border: 0;" />~;
-            $actualnum++;
+			$actualnum++;
 
-            my $memberinfo = "$memposition";
+			my $memberinfo = "$memposition";
             if ( $memberinfo eq 'Administrator' ) {
                 ( $memberinfo, undef ) = split /\|/xsm, $Group{'Administrator'},
                   2;
@@ -435,20 +436,20 @@ qq~<input type="checkbox" name="member$actualnum" value="$user" class="windowbg"
                   $Group{'Mid Moderator'}, 2;
             }
             else {
-                foreach my $key ( sort { $a <=> $b } keys %NoPost ) {
-                    if ( $key eq $memberinfo ) {
+				foreach my $key (sort { $a <=> $b } keys %NoPost) {
+					if ($key eq $memberinfo) {
                         ( $memberinfo, undef ) = split /\|/xsm, $NoPost{$key},
                           2;
-                    }
-                }
-            }
+					}
+				}
+			}
 
-            $viewmembinfo = $memberinfo;
+			$viewmembinfo = $memberinfo;
             ToJS($memberinfo);
-            $tmp_postcount = $memposts;
-            $checkinfo     = $memberinfo;
+			$tmp_postcount = $memposts;
+			$checkinfo     = $memberinfo;
             $checkinfo =~ s/\, /\'\|\'/gsm;
-            $CheckingAll .= qq~"'$checkinfo'", ~;
+			$CheckingAll .= qq~"'$checkinfo'", ~;
 
             if   ($do_scramble_id) { $cloakusername = cloak($user); }
             else                   { $cloakusername = $user; }
@@ -458,33 +459,33 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
             $yymain .= qq~<tr>
                 <td class="$bagcolor center">$addel</td>
                 <td class="$bagcolor">$linkuser - $viewmembinfo</td>
-            </tr>~;
-        }
+			</tr>~;
+		}
 
-        $numshown++;
+		$numshown++;
         $bb++;
-    }
-    undef @toplist;
-    undef %memberinf;
+	}
+	undef @toplist;
+	undef %memberinf;
 
     $yymain .= q~
-        </table>
-    </div>
-    ~;
+	</table>
+	</div>
+	~;
 
     if ( $memcount != 0 ) {
         if ( $FORM{'sortform'} eq q{} ) { $FORM{'sortform'} = $INFO{'sort'}; }
-        if ( !$FORM{'reversed'} ) { $FORM{'reversed'} = $INFO{'reversed'}; }
+		if (!$FORM{'reversed'}) { $FORM{'reversed'} = $INFO{'reversed'}; }
 
-        @groupinfo = ();
-        $i         = 0;
-        $z         = 0;
+		@groupinfo = ();
+		$i         = 0;
+		$z         = 0;
 
         ( $title, $dummy ) = split /\|/xsm, $Group{'Administrator'}, 2;
         ToJS($title);
-        $groupinfo[$i] = $title;
-        $i++;
-        $grp_data = qq~"'$title'", ~;
+		$groupinfo[$i] = $title;
+		$i++;
+		$grp_data = qq~"'$title'", ~;
 
         ( $title, $dummy ) = split /\|/xsm, $Group{'Global Moderator'}, 2;
         ToJS($title);
@@ -494,26 +495,26 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
 
         ( $title, $dummy ) = split /\|/xsm, $Group{'Mid Moderator'}, 2;
         ToJS($title);
-        $groupinfo[$i] = $title;
-        $i++;
-        $grp_data .= qq~"'$title'", ~;
+		$groupinfo[$i] = $title;
+		$i++;
+		$grp_data .= qq~"'$title'", ~;
 
-        foreach (@nopostorder) {
+		foreach (@nopostorder) {
             ( $title, $dummy ) = split /\|/xsm, $NoPost{$_}, 2;
             ToJS($title);
-            $groupinfo[$i] = $title;
-            $grp_data .= qq~"'$title'", ~;
-            $i++;
-            $z++;
-        }
+			$groupinfo[$i] = $title;
+			$grp_data .= qq~"'$title'", ~;
+			$i++;
+			$z++;
+		}
 
-        $groupcnt = $i;
+		$groupcnt = $i;
         $grp_data .= q~""~;
 
-        $yymain .= qq~
+		$yymain .= qq~
     <div class="windowbg2 h_260px border padd_4px" style="float: left; width: 50%; margin: 1%;">
         <table class="windowbg2 pad_2px">
-            <tr>
+        <tr>
                <td><label for="emailsubject"><b>$amv_txt{'1'}:</b></label></td>
             </tr><tr>
                 <td><input type="text" value="" size="40" name="emailsubject" id="emailsubject" style="width: 100%" /></td>
@@ -523,97 +524,97 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
                 <td><textarea cols="38" rows="9" name="emailtext" id="emailtext" style="width:100%"></textarea></td>
             </tr><tr>
                 <td><span class="small">$amv_txt{'39'}</span></td>
-            </tr>
-        </table>
-        <input type="hidden" name="reused" value="$reused" />
-    </div>
+        </tr>
+	</table>
+		<input type="hidden" name="reused" value="$reused" />
+	</div>
 
     <div class="windowbg2" style="float: left; width: 44%; margin: 0 1% 1% 1%; border: 0;">
         <table class="windowbg2 pad_3px">
-        <tr>
+	<tr>
             <td class="windowbg2 vtop" style="white-space: nowrap;"><label for="check_all"><b>$amv_txt{'42'}:</b></label></td>
             <td class="windowbg2 vtop"><input type="checkbox" name="check_all" id="check_all" value="1" class="windowbg2" style="border: 0;" onclick="javascript: if (this.checked) selectCheckAllmemb(true); else selectCheckAllmemb(false);" /></td>
         </tr><tr>
             <td class="windowbg2 vtop" style="white-space: nowrap;"><label for="field1"><b>$amv_txt{'40'}:</b></label></td>
             <td class="windowbg2 vtop">
-                <label for="field1"><span class="small">$amv_txt{'46'}</span></label><br />
-                <select name="field1" id="field1" size="$groupcnt" multiple="multiple" onchange="selectCheck()">~;
+		<label for="field1"><span class="small">$amv_txt{'46'}</span></label><br />
+		<select name="field1" id="field1" size="$groupcnt" multiple="multiple" onchange="selectCheck()">~;
 
-        $i = 0;
-        while ( $i < $groupcnt ) {
-            $yymain .= qq~
-            <option value="$i">$groupinfo[$i]</option>~;
-            $i++;
-        }
+		$i = 0;
+		while ($i < $groupcnt) {
+			$yymain .= qq~
+			<option value="$i">$groupinfo[$i]</option>~;
+			$i++;
+		}
 
-        $yymain .= qq~
-                </select>
-            </td>
-        </tr>
-    </table>
-    </div>
+		$yymain .= qq~
+		</select>
+	</td>
+	</tr>
+	</table>
+	</div>
     <div class="windowbg2" style="float: left; width: 50%; margin: 0 1%; border: 0;">
         <table class="windowbg2 pad_3px">
-            <tr>
+	<tr>
                 <td class="windowbg2 vtop"><b>$amv_txt{'47'}:</b></td>
-            </tr>
-        </table>
-    </div>
+	</tr>
+	</table>
+	</div>
     <div class="windowbg2 h_115px border" style="float: left; width: 50%; margin: 1%; overflow: auto;">
-    ~;
-        if ( -e ("$vardir/maillist.dat") ) {
-            fopen( FILE, "$vardir/maillist.dat" );
-            @maillist = <FILE>;
-            fclose(FILE);
+	~;
+		if (-e ("$vardir/maillist.dat")) {
+			fopen(FILE, "$vardir/maillist.dat");
+			@maillist = <FILE>;
+			fclose(FILE);
             $yymain .= q~
         <table class="windowbg2 pad_3px w_98pc">
-        ~;
+		~;
             foreach my $curmail (@maillist) {
-                chomp $curmail;
+				chomp $curmail;
                 ( $otime, $osubject, $otext, $osender ) = split /\|/xsm,
                   $curmail;
                 LoadUser($osender);
                 $thetime = timeformat($otime);
 
-                $jsubject = $osubject;
-                $jtext    = $otext;
+				$jsubject = $osubject;
+				$jtext    = $otext;
                 ToJS($jsubject);
                 ToJS($jtext);
 
                 $yymain .= qq~<tr>
                 <td class="windowbg2">
-                    <input type="radio" name="usemail" value="$otime" class="windowbg2" style="border: 0; vertical-align: middle;" onclick="showMailmemb('$jsubject', '$jtext', '$otime');" />
-                </td>
+					<input type="radio" name="usemail" value="$otime" class="windowbg2" style="border: 0; vertical-align: middle;" onclick="showMailmemb('$jsubject', '$jtext', '$otime');" />
+				</td>
                 <td class="windowbg2 vtop"><span class="small">$thetime<br />${$uid.$osender}{'realname'}</span></td>
                 <td class="windowbg2 vtop"><span class="small">$osubject</span></td>
                 <td class="windowbg2"><a href="$adminurl?action=deletemail;delmail=$otime"><img src="$imagesdir/admin_rem.gif" alt="del" /></a></td>
             </tr>~;
-            }
+			}
             $yymain .= q~
-        </table>
-        ~;
-        }
-        $yymain .= qq~
-    </div>
+		</table>
+		~;
+		}
+		$yymain .= qq~
+	</div>
     <div class="windowbg2" style="float: left; width: 44%; margin: 0 1% 1% 1%; border: 0;">
         <table>
-            <tr>
+	<tr>
                 <td class="center">
-                &nbsp;
-                </td>
-            </tr>
-        </table>
-    </div>
+		&nbsp;
+	</td>
+	</tr>
+	</table>
+	</div>
     <div class="windowbg2" style="float: left; width: 50%; margin: 0 1% 1% 1%; border: 0;">
         <table>
-            <tr>
+	<tr>
                 <td class="center">
-                    <input type="submit" name="mailsend" value="$amv_txt{'41'}" style="width: 100%;" class="button" />
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div style="clear: both;"></div>
+		<input type="submit" name="mailsend" value="$amv_txt{'41'}" style="width: 100%;" class="button" />
+	</td>
+	</tr>
+	</table>
+	</div>
+<div style="clear: both;"></div>
 </div>
 </form>
 <script  type="text/javascript">
@@ -621,62 +622,62 @@ mem_data = new Array ( $CheckingAll"" );
 group_data = new Array ( $grp_data );
 
 function selectCheckAllmemb(tchecked) {
-    for(var x = 0; x < document.adv_membermail.field1.options.length; x++) document.adv_membermail.field1.options[x].selected = tchecked;
-    for(var i = 1; i <= $actualnum; i++) document.adv_membermail.elements[i].checked = tchecked;
+	for(var x = 0; x < document.adv_membermail.field1.options.length; x++) document.adv_membermail.field1.options[x].selected = tchecked;
+	for(var i = 1; i <= $actualnum; i++) document.adv_membermail.elements[i].checked = tchecked;
 }
 
 function selectCheck() {
-	var z = 1;
-	var grpcnt = 0;
-	grp_data = new Array ();
+var z = 1;
+var grpcnt = 0;
+grp_data = new Array ();
 
-    for(x = 0; x < document.adv_membermail.field1.options.length; x++) {
-        if (document.adv_membermail.field1.options[x].selected) {
-            grp_data[grpcnt] = group_data[document.adv_membermail.field1.options[x].value];
-            grpcnt++;
-        }
-    }
+	for(x = 0; x < document.adv_membermail.field1.options.length; x++) {
+		if (document.adv_membermail.field1.options[x].selected) {
+			grp_data[grpcnt] = group_data[document.adv_membermail.field1.options[x].value];
+			grpcnt++;
+		}
+	}
 
-    if (grpcnt < document.adv_membermail.field1.options.length) { document.adv_membermail.check_all.checked = false; }
+	if (grpcnt < document.adv_membermail.field1.options.length) { document.adv_membermail.check_all.checked = false; }
 
-    for (var i = 0; i < $actualnum; i++) {
-        var check = 0;
-        for(x = 0; x < grpcnt; x++) {
-            var limit = grp_data[x];
-            var value = mem_data[i].split("|");
-            var j = 0;
-            while(value[j]) {
-                if (value[j] == limit) { check = 1; x = grpcnt; }
-                j++;
-            }
-        }
-        if (check == 1) {document.adv_membermail.elements[z].checked = true;}
-        else {document.adv_membermail.elements[z].checked = false;}
-        z++;
-    }
+	for (var i = 0; i < $actualnum; i++) {
+		var check = 0;
+		for(x = 0; x < grpcnt; x++) {
+			var limit = grp_data[x];
+			var value = mem_data[i].split("|");
+			var j = 0;
+			while(value[j]) {
+				if (value[j] == limit) { check = 1; x = grpcnt; }
+				j++;
+			}
+		}
+		if (check == 1) {document.adv_membermail.elements[z].checked = true;}
+		else {document.adv_membermail.elements[z].checked = false;}
+		z++;
+	}
 }
 
 function checkIfChecked(theForm) {
-    var nonechecked = true;
-    for(var i = 1; i <= $actualnum; i++) {
-        if (document.adv_membermail.elements[i].checked) nonechecked = false;
-    }
-    if (nonechecked) { alert("$amv_txt{'48'}"); return false }
-    return true
+	var nonechecked = true;
+	for(var i = 1; i <= $actualnum; i++) {
+		if (document.adv_membermail.elements[i].checked) nonechecked = false;
+	}
+	if (nonechecked) { alert("$amv_txt{'48'}"); return false }
+	return true
 }
 
 function showMailmemb(thesubject, thetext, thetime) {
-    thetext=thetext.replace(/\<br \\/\>/g, "\\n");
-    document.adv_membermail.emailsubject.value = thesubject;
-    document.adv_membermail.emailtext.value = thetext;
-    document.adv_membermail.reused.value = thetime;
+	thetext=thetext.replace(/\<br \\/\>/g, "\\n");
+	document.adv_membermail.emailsubject.value = thesubject;
+	document.adv_membermail.emailtext.value = thetext;
+	document.adv_membermail.reused.value = thetime;
 }
 </script>
 </div>
-    ~;
-    }
+	~;
+	}
 
-    $yytitle     = "$admin_txt{'6'}";
+	$yytitle     = "$admin_txt{'6'}";
     $action_area = 'mailing';
     AdminTemplate();
     return;
@@ -692,7 +693,7 @@ sub ToJS {
 	$_[0] =~ s/\:/&#58;/g;
 	$_[0] =~ s/\?/&#63;/g;
 	$_[0] =~ s/\[/&#91;/g;
-	$_[0] =~ s//\/\/&#92;&#92;/g;
+	$_[0] =~ s~\\~&#92;&#92;~g;
 	$_[0] =~ s/\]/&#93;/g;
 	$_[0] =~ s/\^/&#94;/g;
 	$_[0] =~ s/\"/&#34;/g;

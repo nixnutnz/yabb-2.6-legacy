@@ -80,7 +80,7 @@ sub honeypot {
     }
 
     $yymain = qq~
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
 <table class="cs_thin pad_4px">
 	<col class="width:w_50pc" />
 	<col span="2" class="w_25pc" />
@@ -100,7 +100,7 @@ $show_hon_labels
 </table>
 </div>
 <form action="$adminurl?action=honeypot_add" method="post" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
 <table class="cs_thin pad_4px">
     <col class="w_25pc" />
     <col class="w_75pc" />
@@ -112,7 +112,7 @@ $show_hon_labels
 	</tr>
 </table>
 </div>
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
 <table class="cs_thin pad_4px">
 	<tr>
     	<th class="titlebg"><img src="$imagesdir/preferences.gif" alt="" /> $admin_txt{'10'}</th>
@@ -178,7 +178,7 @@ sub honeypot_edit {
 
     $yymain = qq~
 <form action="$adminurl?action=honeypot_edit2" method="post" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
 <table class="cs_thin pad_4px">
     <col class="w_25pc" />
     <col class="w_75pc" />
@@ -190,7 +190,7 @@ sub honeypot_edit {
 	</tr>
 </table>
 </div>
-<div class="bordercolor rightboxdiv" style="margin-top: 1em;">
+<div class="bordercolor rightboxdiva" style="margin-top: 1em;">
 <table class="cs_thin pad_4px">
 	<tr>
     	<th class="titlebg"><img src="$imagesdir/preferences.gif" alt="" /> $admin_txt{'10'}</th>

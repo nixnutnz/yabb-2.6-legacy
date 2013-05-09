@@ -88,7 +88,7 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
     fclose(TMPL);
 
     $yymain .= qq~
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
 	<table class="cs_thin pad_4px" style="table-layout: fixed;">
     	<tr>
         	<td class="titlebg">
@@ -201,7 +201,7 @@ sub ModifyStyle {
     fclose(CSS);
 
     $yymain .= qq~
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
 	<table class="cs_thin pad_4px">
     	<form action="$adminurl?action=modcss;cssfile=$cssfile" name="modcss" method="post" style="display: inline;" accept-charset="$yycharset">
         <tr>
@@ -599,7 +599,7 @@ qq~					<option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</option>\n~;
     }
 
     $yymain .= qq~
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
 	<table class="cs_thin pad_4px">
     	<tr>
         	<td class="titlebg">
@@ -1973,7 +1973,7 @@ s/<a href="http:\/\/jigsaw.w3.org\/css\-validator\/validator\?uri\=<yabb url>">.
     ToHTML($fulltemplate);
 
     $yymain .= qq~
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
 	<table class="cs_thin pad_4px">
     	<tr>
         	<td class="titlebg">

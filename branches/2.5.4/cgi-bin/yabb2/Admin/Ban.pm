@@ -86,7 +86,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
     }
 
     $yymain .= qq~
-    <div class="bordercolor rightboxdiv">
+    <div class="bordercolor rightboxdiva">
     <form action="$adminurl?action=ipban2" method="post">
         <table class="cs_thin pad_4px">
             <tr>

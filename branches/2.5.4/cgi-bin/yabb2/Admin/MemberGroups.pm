@@ -66,7 +66,7 @@ sub EditMemberGroups {
     );
 
     $yymain .= qq~
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
 	<table class="cs_thin pad_4px">
     	<tr>
     		<td class="titlebg">
@@ -79,7 +79,7 @@ sub EditMemberGroups {
      	</tr>
 	</table>
 </div>
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
 	<table class="cs_thin pad_4px">
     	<col class="w_25pc" />
     	<col class="w_15pc" />
@@ -191,7 +191,7 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
     }
 
     $yymain .= qq~
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
 	<table class="cs_thin pad_4px">
 		<tr>
 			<td class="titlebg" colspan="$colspan">
@@ -260,7 +260,7 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
     $yymain .= qq~
 	</table>
 </div>
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
 	<table class="cs_thin pad_4px">
     	<col class="w_25pc" />
     	<col class="w_15pc" />
@@ -460,7 +460,7 @@ sub editAddGroup {
 <input type="hidden" name="original" value="$INFO{'group'}" />
 <input type="hidden" name="origin" value="$action" />
 
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
 <table class="cs_thin pad_4px">
     <col style="width:40%" />
 	<tr>
@@ -576,7 +576,7 @@ sub editAddGroup {
         $yymain .= qq~
 </table>
 </div>
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
 	<table class="cs_thin pad_4px">
 	    <col span="2" class="w_20pc" />
     	<col style="width:21%" />

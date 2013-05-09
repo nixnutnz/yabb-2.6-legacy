@@ -118,7 +118,7 @@ function uncheckAll() {
 </script>
 <form name="errorlog_form" action="$adminurl?action=deleteerror;$sortmode$sortorder" method="post" onsubmit="return submitproc()">
 <input type="hidden" name="button" value="4" />
-    <div class="bordercolor rightboxdiv">
+    <div class="bordercolor rightboxdiva">
         <table class="cs_thin pad_4px">
             <col style="width:5%" />
             <col style="width:10%" />
@@ -274,7 +274,7 @@ q~<input type="checkbox" name="checkall" id="checkall" class="windowbg" style="b
     if ( $errorcount > 0 ) {
 
         $yymain .= qq~
-    <div class="bordercolor rightboxdiv">
+    <div class="bordercolor rightboxdiva">
         <table class="cs_thin pad_4px">
             <tr>
                 <td class="catbg center">

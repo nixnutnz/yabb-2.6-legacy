@@ -69,7 +69,7 @@ sub AddCats {
 
     $yymain .= qq~
 <form action="$adminurl?action=addcat2" method="post" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg" colspan="5">
@@ -81,7 +81,7 @@ sub AddCats {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
     <table class="cs_thin pad_4px">~;
 
     require Admin::ManageBoards;

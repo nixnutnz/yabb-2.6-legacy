@@ -143,7 +143,7 @@ qq~<span class="red"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
  -->
  </script>
  <form action="$adminurl?action=backupsettings2" method="post" name="backupsettings" accept-charset="$yycharset">
- <div class="bordercolor rightboxdiv">
+ <div class="bordercolor rightboxdiva">
    <table class="cs_thin pad_4px">
      <tr>
        <td class="titlebg">
@@ -485,7 +485,7 @@ $presetjavascriptcode
  <br />
  <form action="$adminurl?action=runbackup" method="post" name="runbackup">
  <input type="hidden" name="backupnewest" value="0" />
- <div class="bordercolor rightboxdiv">
+ <div class="bordercolor rightboxdiva">
    <table class="cs_thin pad_4px">
      <tr>
        <td class="titlebg" colspan="2">
@@ -520,7 +520,7 @@ $presetjavascriptcode
    </table>
  </div>
  </form>
- <div class="bordercolor rightboxdiv">
+ <div class="bordercolor rightboxdiva">
    <table class="cs_thin pad_4px">
      <tr>
        <td class="titlebg" colspan="2">
@@ -1238,7 +1238,7 @@ sub recoverbackup1 {
     }
  -->
  </script>
- <div class="bordercolor rightboxdiv">
+ <div class="bordercolor rightboxdiva">
    <form action="$adminurl?action=recoverbackup2" method="post" name="recover">
    <table class="cs_thin pad_10px">
      <tr>
@@ -1359,7 +1359,7 @@ sub recoverbackup2 {
     qx($recovertype);    # must be done AFTER directory check!
 
     $yymain .= qq~
- <div class="bordercolor rightboxdiv">
+ <div class="bordercolor rightboxdiva">
    <table class="cs_thin pad_10px">
      <tr>
        <td class="titlebg" colspan="2">

@@ -803,7 +803,7 @@ sub buildPages {
     else { $numshow = qq~($numbegin - $numend $ml_txt{'309'} $memcount)~; }
     if ($inp) {
         $yymain .= qq~
-    <div class="rightboxdiv">
+    <div class="rightboxdiva">
     <table class="bordercolor cs_thin pad_3px">
         <tr>
             <td class="catbg" colspan="9">

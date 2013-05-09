@@ -200,7 +200,7 @@ sub SetCensor {
         $i =~ tr/\n//d;
     }
     $yymain .= qq~
- <div class="bordercolor rightboxdiv">
+ <div class="bordercolor rightboxdiva">
    <table class="cs_thin pad_4px">
      <tr>
        <td>
@@ -219,7 +219,7 @@ sub SetCensor {
      </tr>
    </table>
  </div>
- <div class="bordercolor rightboxdiv">
+ <div class="bordercolor rightboxdiva">
    <!-- Split for XHTML Validation purposes -->
    <form action="$adminurl?action=setcensor2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
    <table class="cs_thin pad_4px">
@@ -689,7 +689,7 @@ sub EditPaths {
     }
 
     $yymain .= qq~
- <div class="bordercolor rightboxdiv">
+ <div class="bordercolor rightboxdiva">
    <table class="cs_thin pad_4px">
      <tr>
        <td class="titlebg"><b>$edit_paths_txt{'33'}</b></td>
@@ -703,7 +703,7 @@ sub EditPaths {
    </table>
  </div>
 <form action="$adminurl?action=editpaths2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
- <div class="bordercolor rightboxdiv">
+ <div class="bordercolor rightboxdiva">
    <table class="cs_thin pad_4px">
      <tr>
        <td class="titlebg">

@@ -76,7 +76,7 @@ sub setup_guardian {
 
     $yymain .= qq~
 <form action="$adminurl?action=setup_guardian2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
@@ -89,7 +89,7 @@ sub setup_guardian {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
@@ -132,7 +132,7 @@ sub setup_guardian {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
@@ -162,7 +162,7 @@ sub setup_guardian {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
@@ -193,7 +193,7 @@ sub setup_guardian {
     </table>
 </div>
 <br />
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
@@ -223,7 +223,7 @@ sub setup_guardian {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
@@ -253,7 +253,7 @@ sub setup_guardian {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
@@ -283,7 +283,7 @@ sub setup_guardian {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
@@ -307,7 +307,7 @@ sub setup_guardian {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
@@ -331,7 +331,7 @@ sub setup_guardian {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
@@ -355,7 +355,7 @@ sub setup_guardian {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="catbg center">

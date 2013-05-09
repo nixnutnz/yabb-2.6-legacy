@@ -184,7 +184,7 @@ qq~<br /><a href="$adminurl?action=apr_regentry;username=$userid">$prereg_txt{'a
     $yymain .= qq~
     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
     <form name="reglog_form" action="$adminurl?action=clean_reglog" method="post" onsubmit="return submitproc();">
- <div class="bordercolor rightboxdiv">
+ <div class="bordercolor rightboxdiva">
     <table class="cs_thin pad_4px">
         <col class="w_20pc" />
         <col class="w_35pc" />
@@ -205,7 +205,7 @@ qq~<br /><a href="$adminurl?action=apr_regentry;username=$userid">$prereg_txt{'a
     $loglist
     </table>
  </div>
- <div class="bordercolor rightboxdiv">
+ <div class="bordercolor rightboxdiva">
    <table class="cs_thin pad_4px">
      <tr>
        <td class="catbg center">

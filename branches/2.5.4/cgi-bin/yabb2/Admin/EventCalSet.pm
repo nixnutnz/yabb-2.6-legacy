@@ -95,7 +95,7 @@ sub EventCalSet {
 
     $yymain .= qq~
 <form action="$adminurl?action=eventcal_set2" method="post" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
    <table class="cs_thin pad_4px">
      <col class="w_50pc" />
      <col class="w_50pc" />
@@ -241,7 +241,7 @@ sub EventCalSet {
      </tr>
    </table>
  </div>
- <div class="bordercolor rightboxdiv">
+ <div class="bordercolor rightboxdiva">
    <table class="cs_thin pad_4px">
      <tr>
        <td class="catbg center">
@@ -259,7 +259,7 @@ sub EventCalSet {
 
     $yymain .= qq~
 <form action="$adminurl?action=eventcal_set3" method="post" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiva">
    <table class="cs_thin pad_4px">
     <col span="2" style="width:24%" />
     <col style="width:10%" />
@@ -304,7 +304,7 @@ sub EventCalSet {
     $yymain .= qq~
    </table>
  </div>
- <div class="bordercolor rightboxdiv">
+ <div class="bordercolor rightboxdiva">
    <table class="cs_thin pad_4px">
      <tr>
        <td class="catbg center"><input type="submit" value="$event_cal{'32'}" /></td>

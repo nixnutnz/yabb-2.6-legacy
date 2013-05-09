@@ -62,7 +62,7 @@ qq~$adminurl?action=modagreement;agreementlanguage=$language;destination=helpadm
 <form name="help_update" action="$adminurl?action=helpediting2" method="post" accept-charset="$yycharset">
     <input type="hidden" name="area" value="$help_area" />
     <input type="hidden" name="page" value="$page" />
-    <div class="bordercolor rightboxdiv" style="margin-bottom: 10px; margin-left: auto;">
+    <div class="bordercolor rightboxdiva" style="margin-bottom: 10px; margin-left: auto;">
         <table class="cs_thin pad_4px">
             <tr>
                 <td class="titlebg">
@@ -71,7 +71,7 @@ qq~$adminurl?action=modagreement;agreementlanguage=$language;destination=helpadm
             </tr>
         </table>
     </div>
-    <div class="bordercolor rightboxdiv" style="margin-left: auto;">
+    <div class="bordercolor rightboxdiva" style="margin-left: auto;">
         <table class="cs_thin pad_4px">
             $admin_list
             <tr>
