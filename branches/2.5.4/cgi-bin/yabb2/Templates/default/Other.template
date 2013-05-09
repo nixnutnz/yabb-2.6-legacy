@@ -16,10 +16,13 @@
 
 ## IPlookup ##
 $my_ipdiv = qq~
-<table class="bordercolor pad_4px cs_thin">
+<table class="tabtitle">
     <tr>
-        <td class="catbg"><img src="$imagesdir/ip.gif" alt="" /> $lookup_txt{'iplookup'} - {yabb ip}</td>
-    </tr><tr>
+        <td style="padding-left:1%"><img src="$imagesdir/ip.gif" alt="" /> $lookup_txt{'iplookup'} - {yabb ip}</td>
+    </tr>
+</table>
+<table class="pad_4px cs_thin">
+    <tr>
         <td class="windowbg2">
             <div style="font-weight: bold; margin-bottom: 10px;">$lookup_txt{'01'} {yabb ip} $lookup_txt{'02'}</div>
             <div>{yabb lookuplink} </div>
@@ -61,10 +64,10 @@ $myselectmods = qq~<div style="position: relative; top: 0px; left: 0px; height: 
     <table class="cs_thin pad_3px" style="width:350px">
         <tr>
             <td class="titlebg"><label for="letter">$addmod_txt{'modsearch'}</label></td>
-		</tr><tr>
-			<td class="windowbg2">
-				<span class="small">$addmod_txt{'instruct'}</span>
-			</td>
+        </tr><tr>
+            <td class="windowbg2">
+                <span class="small">$addmod_txt{'instruct'}</span>
+            </td>
         </tr><tr>
             <td class="windowbg2">
                 <div style="float:left"><input type="text" name="letter" id="letter" onkeyup="LetterChange(this.value)" style="width:300px" /></div>
@@ -81,36 +84,37 @@ $myselectmods = qq~<div style="position: relative; top: 0px; left: 0px; height: 
         </tr>~;
 
 $myselectmods_b  =qq~<tr>
-			<td class="windowbg2"><span class="small"><b>{yabb addmod_list}</b></span></td>
-		</tr><tr>
-			<td class="windowbg" colspan="3">
-			    	<select name="moderators" id="moderators" multiple="multiple" size="4" style="width: 340px;">
-				{yabb modmbr}
-				</select>
-			</td>
-		</tr>
-		~;
+            <td class="windowbg2"><span class="small"><b>{yabb addmod_list}</b></span></td>
+        </tr><tr>
+            <td class="windowbg">
+                <select name="moderators" id="moderators" multiple="multiple" size="4" style="width: 340px;">
+                {yabb modmbr}
+                <option></option>
+                </select>
+            </td>
+        </tr>
+        ~;
 
 $myselectmods_c = qq~<tr>
-			<td class="windowbg2"><span class="small"><b>{yabb addgrp_list}</b></span></td>
-		</tr><tr>
-			<td class="windowbg" colspan="3">
-				<select multiple="multiple" name="moderatorgroups" id="moderatorgroups" size="4" style="width: 340px;">
-				{yabb modgrp}
-				</select>
-			</td>
-		</tr>~;
+            <td class="windowbg2"><span class="small"><b>{yabb addgrp_list}</b></span></td>
+        </tr><tr>
+            <td class="windowbg">
+                <select multiple="multiple" name="moderatorgroups" id="moderatorgroups" size="4" style="width: 340px;">
+                {yabb modgrp}
+                </select>
+            </td>
+        </tr>~;
 
 $myselectmods_d = qq~<tr>
-			<td class="windowbg">
-				<input type="submit" class="button" value="$addmod_txt{'addmod_save'}" style="width: 170px;" /><input type="button" class="button" onclick="ModSettings()" value="$addmod_txt{'pageclose'}" style="width: 170px;" />
-			</td>
-		</tr>
-	</table>
-	</div>
-	</form>
-	<div id="response" style="display:none"> </div>
-	</div>
+            <td class="windowbg">
+                <input type="submit" class="button" value="$addmod_txt{'addmod_save'}" style="width: 170px;" /><input type="button" class="button" onclick="ModSettings()" value="$addmod_txt{'pageclose'}" style="width: 170px;" />
+            </td>
+        </tr>
+    </table>
+    </div>
+    </form>
+    <div id="response" style="display:none"> </div>
+    </div>
 </div>~;
 
 ## Sessions
@@ -151,6 +155,131 @@ $my_sessions = qq~
 //-->
 </script>
 ~;
+
+## Smilies
+
+$my_smiliebg_a = q~windowbg2~;
+$my_smiliebg_b = q~windowbg~;
+#in the event you want a banner for the smilies header #
+$my_banner = 'banner.gif';
+
+
+$smilie_window_a =
+qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>$smiltxt{'1'}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
+<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
+<style type="text/css">
+.moresmiles {vertical-align:bottom; cursor:pointer;}
+</style>
+<script type="text/javascript">
+<!--
+function AddText(text) {
+    if (window.opener && !window.opener.closed) {
+        if (opener.document.postmodify.message.createTextRange && opener.document.postmodify.message.caretPos) {
+            var caretPos = opener.document.postmodify.message.caretPos;
+            caretPos.text = caretPos.text.charAt(caretPos.text.length - 1) == ' ' ?
+            text + ' ' : text;
+        } else if (opener.document.postmodify.message.setSelectionRange) {
+            var selectionStart = opener.document.postmodify.message.selectionStart;
+            var selectionEnd = opener.document.postmodify.message.selectionEnd;
+            var replaceString = text + opener.document.postmodify.message.value.substring(selectionStart, selectionEnd);
+            opener.document.postmodify.message.value = opener.document.postmodify.message.value.substring(0, selectionStart) + replaceString + opener.document.postmodify.message.value.substring(selectionEnd);
+            opener.document.postmodify.message.setSelectionRange(selectionStart + text.length, selectionEnd + text.length);
+        } else {
+            opener.document.postmodify.message.value += text;
+        }
+    }
+}
+
+moresmiliecode = new Array({yabb more_smilie_array})
+
+function MoreSmilies(i) {
+    AddTxt=moresmiliecode[i];
+    AddText(AddTxt);
+}
+// -->
+</script>
+</head>
+<body style="background: #{yabb popback}; min-width:400px;">
+<p style="color:#{yabb poptext}; text-align:center">$smiltxt{'21'}</p>
+{yabb my_output}
+{yabb evenmoresmilies}
+</body>
+</html>
+~;
+
+$smilie_window_advanced =
+qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>$smiltxt{'1'}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
+<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
+<script type="text/javascript">
+<!--
+function AddText(text) {
+    if (window.opener && !window.opener.closed) {
+        if (opener.document.postmodify.message.createTextRange && opener.document.postmodify.message.caretPos) {
+            var caretPos = opener.document.postmodify.message.caretPos;
+            caretPos.text = caretPos.text.charAt(caretPos.text.length - 1) == ' ' ?
+            text + ' ' : text;
+        } else if (opener.document.postmodify.message.setSelectionRange) {
+            var selectionStart = opener.document.postmodify.message.selectionStart;
+            var selectionEnd = opener.document.postmodify.message.selectionEnd;
+            var replaceString = text + opener.document.postmodify.message.value.substring(selectionStart, selectionEnd);
+            opener.document.postmodify.message.value = opener.document.postmodify.message.value.substring(0, selectionStart) + replaceString + opener.document.postmodify.message.value.substring(selectionEnd);
+            opener.document.postmodify.message.setSelectionRange(selectionStart + text.length, selectionEnd + text.length);
+        } else {
+            opener.document.postmodify.message.value += text;
+        }
+    }
+}
+
+moresmiliecode = new Array({yabb more_smilie_array})
+function MoreSmilies(i) {
+    AddTxt=moresmiliecode[i];
+    AddText(AddTxt);
+}
+//-->
+</script>
+</head>
+<body style="background: #{yabb popback}; min-width:400px;">
+    <table class="bordercolor pad_4px cs_thin">
+{yabb smiliesheader}
+      <tr>
+{yabb smilieslist}
+      </tr>
+    </table>
+</body>
+</html>~;
+
+$my_smilie_window_td = qq~
+        <td class="center h_60px {yabb smiliescolor}"><img src="{yabb tmpurl}" alt="" onclick='javascript:MoreSmilies({yabb i})' class='cursor' /><br /><span style="font-size:xx-small; color:#{yabb poptext}">{yabb SmilieDescription}</span></td>~;
+
+$my_smilie_window_td_line = qq~
+        <td class="center h_60px {yabb smiliescolor}"><img src="$yyhtml_root/Smilies/{yabb line}" alt="" onclick="javascript:MoreSmilies({yabb i})" style="cursor:pointer" />
+            <br /><span style="font-size: xx-small; color:#{yabb poptext}">{yabb line}</span>
+        </td>~;
+
+$my_smilie_window_blnk = qq~
+        <td class="center h_60px {yabb smiliescolor}">&nbsp;</td>\n~;
+
+$my_smilie_banner_header = qq~<tr>
+        <td class="center" style="background-color:#{yabb popback}" colspan="4">
+            <img src="$yyhtml_root/Smilies/$my_banner" alt="" />
+        </td>
+    </tr>~;
+
+$my_smilie_header = qq~<tr>
+        <td class="center" colspan="4"><b><span class="small">$smiltxt{'21'}</span></b></td>
+    </tr>~;
+
+$my_smilie_window_tr = qq~
+    </tr><tr>~;
+
 
 ## Error
 

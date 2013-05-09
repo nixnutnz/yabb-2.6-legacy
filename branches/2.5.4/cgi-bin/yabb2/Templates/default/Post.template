@@ -16,6 +16,10 @@
 $style_ubbc_box = q~float: left; width: 463px;~;
 $post_cat_col = 'cat_collapse.gif';
 $post_cat_exp = 'cat_expand.gif';
+$post_chrwarn_g0 = 'green0.gif';
+$post_chrwarn_g1 = 'green1.gif';
+$post_chrwarn_r0 = 'red0.gif';
+$post_chrwarn_r1 = 'red1.gif';
 
 ## Post Top
 $mypost_title = qq~{yabb my_topper}<table class="tabtitle">
@@ -38,20 +42,23 @@ $mypost_topview = qq~<table class="pad_3px">
 
 ## main posting block (IMs and Posts) ##
 $mypost_postblock = qq~
-<table class="windowbg2 pad_3px" style="table-layout: fixed;">
+<table class="pad_3px" style="table-layout: fixed;">
     <col style="width: 23%" />
 	<tr class="vtop">
-		<td>
+    {yabb my_prevmain}{yabb name_field}{yabb email_field}{yabb verification_field}{yabb verification_question_field}
+		<td colspan="2">
 			<div style="height:16px;">
 			<img name="prevwin" id="prevwin" src="$defaultimagesdir/$post_cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor: pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
             </div>
-        </td><td>
-            <div id="savetable" class="windowbg2" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
-                <div id="saveframe" class="prevwin" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;"></div>
+        </td>
+   </tr><tr>
+        <td colspan="2">
+            <div id="savetable" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
+                {yabb messageblock}
            </div>
        </td>
     </tr>
-    {yabb my_prevmain}{yabb my_t_status}{yabb extra}{yabb name_field}{yabb email_field}{yabb verification_field}{yabb verification_question_field}
+    {yabb my_t_status}{yabb extra}
     <tr>
         <td class="windowbg2">
             <label for="subject"><b>$post_txt{'70'}:</b></label>
@@ -65,8 +72,6 @@ $mypost_postblock = qq~
         </td>
         <td class="windowbg2" rowspan="{yabb my_rem_smilies}">{yabb my_ubbc}
             {yabb my_postsec_b}
-                </div>
-            </div>
         </td>
     </tr><tr>
         <td class="windowbg2 vtop">{yabb my_googie}{yabb mypost_smilie_array}{yabb my_post_feata}{yabb my_post_smilies}{yabb my_feat5}{yabb my_is_prev}{yabb notification}{yabb favoriteadd}
@@ -128,7 +133,7 @@ $mypost_extra = qq~
     <tr id="feature_status_1">
         <td><label for="icon"><b>$post_txt{'71'}:</b></label></td>
         <td>
-            <select name="icon" id="icon" onchange="showimage(); updatTopic();">
+            <select name="icon" id="icon" onchange="showimage(); autoPreview();">
             <option value="xx"{yabb ic1}>$post_txt{'281'}</option>
             <option value="thumbup"{yabb ic2}>$post_txt{'282'}</option>
             <option value="thumbdown"{yabb ic3}>$post_txt{'283'}</option>
@@ -173,7 +178,7 @@ $mypost_smiley1 = qq~
             {yabb smilieslist}
             document.write('</select></td>');
             document.write('</tr><tr>');
-            document.write('<td class="windowbg2 center h_70px"><img name="smiliextra_image" src="'+smilieurl[0]+'" alt="" onclick="javascript: Smiliextra();" class="pointer"></td>');
+            document.write('<td class="windowbg2 center h_70px"><img name="smiliextra_image" src="'+smilieurl[0]+'" alt="" onclick="javascript: Smiliextra();" class="cursor"></td>');
             document.write('</tr><tr>');
             document.write('<td class="windowbg2 center h_15px"><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span></td>');
             document.write('</tr></table>');
@@ -207,6 +212,7 @@ $mypost_prevmain = qq~
                         {yabb modified}
                     </div>
                 </td>
+            </tr>
         </table>
     </div>\n~;
 
@@ -502,6 +508,71 @@ $mypost_veri_c = qq~<tr>
             </tr>~;
 
 $mypost_liveprev = qq~
+<div class="displaycontainer">
+    <div class="postcontainer">
+    <table class="pad_4px" style="table-layout: fixed; border:none">
+        <col style="width:13em" />
+        <col style="width:auto" />
+        <tr class="{yabb css}">
+            <td class="vtop post-userinfo" rowspan="4">
+                <a id="{yabb count}"></a>
+                {yabb userlink}
+                <div class="small">
+                    {yabb memberinfo}
+                    <br />
+                    {yabb stars}{yabb useronline}
+                    <br />
+                    {yabb userpic}{yabb usertext}
+                    <br />
+                    {yabb postinfo}{yabb location}{yabb age}{yabb regdate}{yabb gender}{yabb ext_prof}{yabb isbuddy}
+                </div>
+            </td>
+            <td class="dividerbot" style="height:22px;" colspan="2">
+                <div style="padding: 2px; float:left">{yabb msgimg}</div>
+                <div class="small" style="float:left">
+                    <b>{yabb subject}</b>
+                    <br /><b>{yabb replycount}</b>{yabb msgdate}
+                </div>
+            </td>
+        </tr><tr>
+            <td class="{yabb css} vtop" style="height:10em" colspan="2">
+               <div class="$messageclass" style="float: left; width: 99%; overflow: auto;">
+                 {yabb message}
+                </div>
+            </td>
+        </tr><tr>
+            <td class="{yabb css} bottom" style="height:12px" colspan="2">
+                <div class="small" style="width: 99%; text-align: right;">
+                    {yabb modified} &nbsp;
+                </div>
+            </td>
+        </tr><tr>
+            <td class="{yabb css} bottom" colspan="2">
+                <div class="small" style="float: left; width: 99%; text-align: left;">
+                    {yabb showatthr}{yabb att}{yabb showatt}
+                </div>
+                <div class="small" style="float: left; width: 100%; text-align: left;">
+                    {yabb signaturehr}{yabb signature}
+                </div>
+            </td>
+        </tr><tr>
+             <td class="{yabb css} bottom" style="background-color: #D7DBEA;">
+                <a href="#top"><img src="$imagesdir/back_to_top.png" alt="$display_txt{'643'}" title="$display_txt{'643'}" /></a>
+            </td>
+            <td class="{yabb css} bottom dividertop" colspan="2">
+                    <div class="small" style="float: left; width: 74%;">
+                        {yabb contactlist} &nbsp;
+                    </div>
+                    <div class="small" style="float: left; text-align: right; width: 25%;">
+                        <span class="small">{yabb ipimg} {yabb ip}<br />{yabb permalink} &nbsp;</span>
+                </div>
+            </td>
+        </tr>
+    </table>
+    </div>
+    </div>~;
+$x = 
+qq~
      <table class="pad_4px" style="table-layout: fixed;">
          <col style="width:20px" />
          <tr class="titlebg vtop">

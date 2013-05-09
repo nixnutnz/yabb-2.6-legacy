@@ -40,7 +40,7 @@ $myIM_show = qq~
     </tr><tr>
         <td class="windowbg2 vtop" colspan="2">
             <div style="width: 99%; padding: 2px; margin: 2px;">
-                <span class="small" style="width: 99%;">
+                {yabb msimg}<span class="small" style="width: 99%;">
                     <b>$inmes_txt{'70'}: {yabb msub}</b><br />
                     <b>$inmes_txt{'317'}:</b> {yabb mydate}
                 </span>
@@ -112,7 +112,7 @@ $myIM_prevmain = qq~<tr>
 $myIM_liveprev = qq~<tr>
         <td class="vtop">
             <div style="height:16px;">
-                <img name="prevwin" id="prevwin" src="$defaultimagesdir/cat_expand.gif" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor:pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
+                <img name="prevwin" id="prevwin" src="$defaultimagesdir/$IM_cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" class="cursor" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
             </div>
         </td>
     </tr><tr>
@@ -267,22 +267,30 @@ $my_savedraft = qq~<tr>
         </td>
     </tr>~;
 
-$myIM_liveprev_b = qq~
-<table class="pad_3px" style="table-layout: fixed">
-    <col style="width:20px" />
-    <tr class="titlebg vtop">
-        <td>
-            {yabb msgimg}
-        </td><td>
-            <b>{yabb csubject}</b><br />
-                <span class="small">{yabb subjdate}</span>
+$myIM_liveprev_b = qq~<table class="bordercolor cs_thin pad_1px" style="table-layout: fixed">
+    <tr>
+        <td class="windowbg2 vtop" colspan="2">
+            <div style="width: 99%; padding: 2px; margin: 2px;">
+                {yabb msgimg}
+                <span class="small" style="width: 99%;">
+                    <b>$inmes_txt{'70'}: {yabb csubject}</b><br />
+                    <b>$inmes_txt{'317'}:</b> {yabb subjdate}
+                </span>
+            </div>
         </td>
     </tr><tr>
-        <td class="windowbg2" colspan="2">
-            <div class="message" style="overflow:auto">{yabb message}</div>
+        <td class="windowbg2 vtop" colspan="2">
+            <div style="width: 99%; padding: 2px; margin: 2px;">
+                <span class="message" style="float: left; width: 99%; overflow: auto; padding-bottom: 10px; margin-bottom: 10px;">
+                {yabb message}
+                </span>
+            </div>
         </td>
     </tr>
-</table>~;
+    {yabb my_sig} {yabb my_attach}
+    <tr><td class="windowbg right" colspan="2">{yabb my_showIP}</td></tr>
+</table>    
+~;
 
 #pagedrop (in javascript)
 $visel_0 = q~<table class="pad_0"><tr>~;

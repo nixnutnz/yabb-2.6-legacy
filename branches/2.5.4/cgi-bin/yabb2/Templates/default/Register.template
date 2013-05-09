@@ -14,6 +14,7 @@
 # $Revision$
 
 $myreg_req = q~ <span style="color:#ff0000; font-weight:700">*</span> ~;
+$my_blank_avatar = 'blank.gif';
 
 ##agreement before registration form
 $myregister_fullagree = qq~

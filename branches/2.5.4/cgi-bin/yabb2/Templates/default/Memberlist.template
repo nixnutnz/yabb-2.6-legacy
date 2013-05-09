@@ -14,8 +14,8 @@
 # $Revision$
 
 $letterclass = 'catbg a';
-$header_class_selected = 'windowbg memberlist_td';
-$header_class = 'windowbg2 memberlist_td';
+$header_class_selected = 'selected-bg memberlist_td';
+$header_class = 'catbg memberlist_td';
 $pgindex_class = 'class="small pgindex"';
 $ml_index_togl = 'index_togl.png';
 $ml_index_left = 'index_left.gif';
@@ -28,6 +28,7 @@ $ml_bar ='bar.gif';
 $ml_lockmail = 'lockmail.gif';
 $ml_email = 'email.gif';
 $ml_xx ='xx.gif';
+$my_blank_avatar = 'blank.gif';
 
 $my_findform = qq~<form action="$scripturl?action=ml;sort=memsearch" method="post" id="form1" name="form1" enctype="application/x-www-form-urlencoded" style="display: inline;">
             <input type="text" name="member" id="member" value="$ml_txt{'801'}" style="font-size: 11px; width: 180px;" onfocus="txtInFields(this, '$ml_txt{'801'}');" onblur="txtInFields(this, '$ml_txt{'801'}')" />

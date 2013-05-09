@@ -33,7 +33,8 @@ $IM_code1 = 'code1.gif';
 $IM_lockmail = 'lockmail.gif';
 $IM_email = 'email.gif';
 $IM_www = 'www.gif';
-#$IMmiconExt = 'png';
+$my_blank_avatar = 'blank.gif';
+
 
 $tabsep = q{};
 $tabfill = q{};

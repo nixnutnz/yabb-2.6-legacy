@@ -23,13 +23,6 @@ $cal_grn1 = 'green1.gif';
 $cal_grn0 = 'green0.gif';
 $cal_red0 ='red0.gif';
 $cal_red1 ='red1.gif';
-$cal_eventbd = 'eventbd.gif';
-$cal_eventprivate = 'eventprivate.gif';
-$cal_modify = 'modify.png';
-$cal_delete = 'delete.gif';
-$cal_eventmore = 'eventmore.gif';
-$cal_eventinfo = 'eventinfo.gif';
-$cal_eventinfobd = 'eventinfobd.gif';
 $cal_eventcal = 'eventcal.png';
 
 ## Calendar go to date forms ($mycalout_goto_main for BoardIndex, mini cal display, add and edit events. $mycalout_gottobox for day event display ##
@@ -121,6 +114,7 @@ $mycal_trtr = q~        </tr><tr>~;
 $mycal_td_tr = q~
             </td>
         </tr>~;
+$mycal_tr = "<tr>\n";
 
 ## Event display ##
 
@@ -133,7 +127,7 @@ $mycalout_showevent = q~
 $mycalout_noevent = qq~<tr>
         <td class="windowbg padd_3px" colspan="2">
             <hr class="hr" />
-            <img src="$yyhtml_root/EventIcons/$cal_eventinfo" alt="Event" /> $var_cal{'calnoevent'}
+            $cal_icon{'eventinfo'} $var_cal{'calnoevent'}
             <hr class="hr" />
         </td>
     </tr>~;
@@ -168,28 +162,17 @@ $mycalout_addevent = qq~
         </td>
         <td class="windowbg2">
             {yabb mycalout_calicon}
-            <img src="$yyhtml_root/EventIcons/{yabb calicon}.gif" name="calicons" style="margin:0 26px" alt="" />
+            <img src="{yabb caliconimg}" id="calicons" name="calicons" style="margin:0 26px" alt="" />
         </td>
     </tr><tr><!-- live preview -->
-        <td class="windowbg2 vtop">
-            <table class="pad_2px" style="width:95%; margin-left:0">
-                <tr>
-                    <td class="small">
-                        <img src="$imagesdir/$cal_cat_exp" name="prevwin" id="prevwin"  alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor:pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
-                    </td>
-                </tr>
-            </table>
+        <td class="windowbg2 vtop small" colspan="2">
+            <img src="$imagesdir/$cal_cat_exp" name="prevwin" id="prevwin"  alt="$npf_txt{'01'}" title="$npf_txt{'01'}" class="cursor" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
         </td>
-        <td class="windowbg2">
-            <div id="savetable" class="bordercolor" style="height:0px; padding:1px; width:100%; margin:auto; visibility:hidden;">
-            <table class="pad_3px" style="table-layout:fixed;">
-                <tr>
-                    <td class="windowbg2">
-                        <div id="saveframe" class="message" style="height:0px; text-align:left; vertical-align:top; overflow:auto;">&nbsp;</div>
-                    </td>
-                </tr>
-            </table>
-            </div>
+    </tr><tr>
+        <td class="windowbg2" colspan="2">
+            <div id="savetable" class="windowbg2" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
+                <div id="saveframe" class="prevwin" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;"></div>
+           </div>
         </td>
     </tr><tr>
         <td class="windowbg2" colspan="2">
@@ -286,7 +269,7 @@ $mycalout_edit_box = qq~
             <table class="pad_4px">
                 <tr>
                     <td class="catbg">
-                        <img src="$imagesdir/$cal_modify" alt="$var_cal{'caledit'}" title="$var_cal{'caledit'}" /> $var_cal{'caledit'}
+                        {yabb modify} $var_cal{'caledit'}
                     </td>
                 </tr><tr>
                     <td class="windowbg2">
@@ -306,7 +289,7 @@ $mycalout_edit_box = qq~
 ## event data ##
 $mycal_greet = qq~<tr>
         <td class="windowbg2 padd_3px" style="border-top:1px solid #fff" colspan="2">
-            <img src="$imagesdir/$cal_eventbd" alt="$var_cal{'calbirthday'}" /> {yabb cdate} <b>$var_cal{'calbirthday'}</b>
+            {yabb my_cal_icon} {yabb cdate} <b>$var_cal{'calbirthday'}</b>
         </td>
     </tr><tr>
         <td class="windowbg2 padd_3px" colspan="2">
@@ -336,7 +319,7 @@ $my_outstring = q~<table style="width:90%; margin-left:0">~;
 
 $mycal_outstring_bday = qq~<tr>
         <td class="vtop">
-            <span class="small"><img src="$imagesdir/$cal_eventbd" alt="$var_cal{'calbirthday'}" /> {yabb cdate} <b>$var_cal{'calbirthday'}</b>
+            <span class="small">{yabb my_cal_icon} {yabb cdate} <b>$var_cal{'calbirthday'}</b>
             <br /> {yabb eventbduserlink} {yabb greet}</span>
             <hr class="hr" />
         </td>
@@ -344,14 +327,15 @@ $mycal_outstring_bday = qq~<tr>
 
 $mycal_outstring_private = qq~<tr>
         <td class="vtop">
-            <span class="small"><img src="$imagesdir/$cal_eventprivate" alt="$var_cal{'calprivate'} Event" /> <img src="$yyhtml_root/EventIcons/{yabb cicon}.gif" alt="{yabb icon_text}" /> {yabb cdate} <b>{yabb icon_text}</b> {yabb eventuserlink}
+            <span class="small">{yabb my_cal_icon} {yabb my_cal_icon_ev} {yabb cdate} <b>{yabb icon_text}</b> {yabb eventuserlink}
             <br />{yabb cevent}</span>
             <hr class="hr" />
-        </td>~;
+        </td>
+    </tr>~;
 
 $mycal_outstring = qq~<tr>
         <td class="vtop">
-            <span class="small"><img src="$yyhtml_root/EventIcons/{yabb cicon}.gif" alt="{yabb icon_text}" /> {yabb cdate} <b>{yabb icon_text}</b> {yabb eventuserlink}
+            <span class="small">{yabb my_cal_icon_ev} {yabb cdate} <b>{yabb icon_text}</b> {yabb eventuserlink}
                 <br />{yabb cevent}</span>
             <hr class="hr" />
         </td>
@@ -360,11 +344,27 @@ $mycal_outstring = qq~<tr>
 $my_out_a = qq~<table>
     <tr>
         <td class="vtop">
-            <span class="small"><img src="$yyhtml_root/EventIcons/{yabb cal_eventinfo}" alt="Event" /> $var_cal{'calnoevent'}</span>
+            <span class="small">{yabb cal_eventinfo} $var_cal{'calnoevent'}</span>
             <hr class="hr" />
         </td>
     </tr>
 </table>~;
 
+$mycal_liveprev = qq~
+     <table class="boardborder pad_4px" style="table-layout: fixed;">
+         <col style="width:20px" />
+         <tr>
+            <td class="windowbg2 vtop" colspan="2">
+               <div style="border-bottom:thin white solid; width:100%">
+                <span class="small">{yabb my_cal_icon} {yabb my_cal_icon_ev} {yabb cdate} <b>{yabb icon_text}</b> {yabb eventuserlink}
+                </div>
+               <div class="message" style="width: 100%; overflow: auto;">
+                 <b>$var_cal{'calsubtitle'}:</b><br /> <br />
+                 {yabb message}
+                 <hr class="hr" />
+                </div>
+            </td>
+        </tr>
+    </table>~;
 
 1;

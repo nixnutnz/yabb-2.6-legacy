@@ -33,7 +33,7 @@ $MainLayout = qq~
 	<div style="float: left; width: 24%; margin-bottom:10px">
 		<table class="bordercolor pad_4px cs_thin">
 			<tr>
-				<td class="catbg small">$helptxt{'2'}<a id="helptop"></a></td>
+				<td class="catbg small">$helptxt{'2'}</td>
 			</tr><tr>
 				<td class="windowbg2">{yabb contents}</td>
 			</tr>
@@ -75,7 +75,7 @@ $BodySubHeader = qq~<tr>
 $BodyItem = qq~<tr>
 			<td class="windowbg2">
 				{yabb item}<br />
-				<span style="float:right;"><b><a href="#helptop"><img src="{yabb images}/back_to_top.png" alt="$helptxt{'643'}" title="$helptxt{'643'}" /></a></b>&nbsp;</span>
+				<span style="float:right;"><span onclick="toTop(0)" class="cursor"><img src="$imagesdir/back_to_top.png" alt="$helptxt{'643'}" title="$helptxt{'643'}" /></span>&nbsp;</span>
 			</td>
 		</tr>~;
 

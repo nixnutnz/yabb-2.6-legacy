@@ -13,6 +13,9 @@
 ###############################################################################
 # $Revision$
 
+$poll_bar = 'bars.gif';
+$poll_pie = 'pie.gif';
+
 $mypoll_details = qq~
 <br />
 <form action="$scripturl?action=undovote;num={yabb pollnum}{yabb start}" method="post" style="display: inline;">
