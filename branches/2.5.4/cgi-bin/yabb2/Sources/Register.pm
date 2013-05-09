@@ -867,7 +867,7 @@ sub Register2 {
     ${ $uid . $reguser }{'postcount'}  = 0;
     ${ $uid . $reguser }{'regreason'}  = $member{'reason'};
     ${ $uid . $reguser }{'usertext'}   = $defaultusertxt;
-    ${ $uid . $reguser }{'userpic'}    = 'blank.gif';
+    ${ $uid . $reguser }{'userpic'}    = $my_blank_avatar;
     ${ $uid . $reguser }{'regdate'}    = $registerdate;
     ${ $uid . $reguser }{'regtime'}    = $date;
     ${ $uid . $reguser }{'timeselect'} = $timeselected;

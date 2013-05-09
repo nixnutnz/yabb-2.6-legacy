@@ -462,58 +462,67 @@ qq~<div style="float: left; font-size: 10px; font-family: verdana, sans-serif; o
         $UseMenuType = $MenuType;
     }
 
-    require "$vardir/Menu$UseMenuType.def";
-    require "$vardir/Micon.def";
+    get_micon();
 
-    $yimimg      = $img{'yim'};
-    $aimimg      = $img{'aim'};
-    $skypeimg    = $img{'skype'};
-    $myspaceimg  = $img{'myspace'};
-    $facebookimg = $img{'facebook'};
-    $gtalkimg    = $img{'gtalk'};
-    $icqimg      = $img{'icq'};
-    $twitterimg  = $img{'twitter'};
-    $youtubeimg  = $img{'youtube'};
+    $yimimg      = SetImage('yim',$UseMenuType);
+    $aimimg      = SetImage('aim',$UseMenuType);
+    $skypeimg    = SetImage('skype',$UseMenuType);
+    $myspaceimg  = SetImage('myspace',$UseMenuType);
+    $facebookimg = SetImage('facebook',$UseMenuType);
+    $gtalkimg    = SetImage('gtalk',$UseMenuType);
+    $icqimg      = SetImage('icq',$UseMenuType);
+    $twitterimg  = SetImage('twitter',$UseMenuType);
+    $youtubeimg  = SetImage('youtube',$UseMenuType);
 
     $icqad{$user} =
       $icqad{$user}
-      ? qq~<a href="http://web.icq.com/${$uid.$user}{'icq'}" onclick="target='_blank';"><img src="$imagesdir/icqadd.gif" alt="${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" /></a>~
+      ? qq~<a href="http://web.icq.com/${$uid.$user}{'icq'}" onclick="target='_blank';">$load_con{'icqadd'}</a>~
       : q{};
+      $icqad{$user} =~ s/{yabb usericq}/${$uid.$user}{'icq'}/gsm;
+
     ${ $uid . $user }{'icq'} =
       ${ $uid . $user }{'icq'}
       ? qq~<a href="http://web.icq.com/${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" onclick="target='_blank';">$icqimg</a>~
       : q{};
+
     ${ $uid . $user }{'aim'} =
       ${ $uid . $user }{'aim'}
       ? qq~<a href="aim:goim?screenname=${$uid.$user}{'aim'}&#38;message=Hi.+Are+you+there?">$aimimg</a>~
       : q{};
+
     ${ $uid . $user }{'skype'} =
       ${ $uid . $user }{'skype'}
       ? qq~<a href="javascript:void(window.open('callto://${$uid.$user}{'skype'}','skype','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'))">$skypeimg</a>~
       : q{};
+
     ${ $uid . $user }{'myspace'} =
       ${ $uid . $user }{'myspace'}
       ? qq~<a href="http://www.myspace.com/${$uid.$user}{'myspace'}" onclick="target='_blank';">$myspaceimg</a>~
       : q{};
+
     ${ $uid . $user }{'facebook'} =
       ${ $uid . $user }{'facebook'}
       ? q~<a href="http://www.facebook.com/~
       . ( ${ $uid . $user }{'facebook'} !~ /\D/xsm ? 'profile.php?id=' : q{} )
       . qq~${$uid.$user}{'facebook'}" onclick="target='_blank';">$facebookimg</a>~
       : q{};
+
     ${ $uid . $user }{'twitter'} =
       ${ $uid . $user }{'twitter'}
       ? qq~<a href="http://twitter.com/${$uid.$user}{'twitter'}" target="_blank">$twitterimg</a>~
       : q{};
+
     ${ $uid . $user }{'youtube'} =
       ${ $uid . $user }{'youtube'}
       ? qq~<a href="http://www.youtube.com/${$uid.$user}{'youtube'}" target="_blank">$youtubeimg</a>~
       : q{};
+
     ${ $uid . $user }{'gtalk'} = ${ $uid . $user }{'gtalk'} ? $gtalkimg : q{};
     $yimon{$user} =
       $yimon{$user}
       ? qq~<img src="http://opi.yahoo.com/online?u=${$uid.$user}{'yim'}&#38;m=g&#38;t=0" alt="" />~
       : q{};
+
     ${ $uid . $user }{'yim'} =
       ${ $uid . $user }{'yim'}
       ? qq~<a href="http://edit.yahoo.com/config/send_webmesg?.target=${$uid.$user}{'yim'}" onclick="target='_blank';">$yimimg</a>~
@@ -888,10 +897,10 @@ sub LoadTools {
     my @tools;
 
     if ( !%tmpimg ) { %tmpimg = %img; }
-    require "$vardir/Menu3.def";
+    require Sources::Menu;
 
     foreach my $i ( 0 .. $#buttons ) {
-        $tools[$i] = $def_img{ $buttons[$i] };
+        $tools[$i] = SetImage( $buttons[$i], 3 );
 	}
 
     foreach my $i ( 0 .. $#tools ) {
@@ -1167,7 +1176,22 @@ sub WhatTemplate {
     }
 	else { $imagesdir = "$yyhtml_root/Templates/Forum/default"; }
 	$defaultimagesdir = "$yyhtml_root/Templates/Forum/default";
-	$extpagstyle = qq~$yyhtml_root/Templates/Forum/$usestyle.css~;
+
+	$cssbuttons = 0;
+	fopen(CSS, "$yyhtml_root/Templates/Forum/$usestyle.css");
+	@thecss = <CSS>;
+	fclose(CSS);
+	foreach $style_sgl (@thecss) {
+		$style_sgl =~ s/[\n\r]//g;
+		$style_sgl =~ s/\A\s*//;
+		$style_sgl =~ s/\s*\Z//;
+		$style_sgl =~ s/\t//g;
+		$stylestr .= qq~$style_sgl ~;
+	}
+	$stylestr =~ s/\s{2,}/ /g;
+	if ($stylestr =~ /\.buttonleft/ && $stylestr =~ /\.buttonright/ && $stylestr =~ /\.buttonimage/ && $stylestr =~ /\.buttontext/) {
+		$cssbuttons = 1;
+	}
     $extpagstyle =~ s/$usestyle\///gxsm;
     $cssbuttons = 1;
     return;

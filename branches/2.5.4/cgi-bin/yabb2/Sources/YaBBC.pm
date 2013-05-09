@@ -315,7 +315,7 @@ sub imagemsg {
 		$parameter{$key} = $value;
 	}
 
-	if($action eq 'ajxmessage' || $action eq 'ajximmessage') {
+	if($action eq 'ajxmessage' || $action eq 'ajximmessage' || $action eq 'ajxcal' ) {
 		$parameter{'name'} = qq~class="liveimg" name="post_liveimg_resize"~;
 	}
 	else {

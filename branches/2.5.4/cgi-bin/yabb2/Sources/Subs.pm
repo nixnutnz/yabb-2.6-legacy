@@ -275,7 +275,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/shjs/styles/sh_style.css" type="tex
 #    $yynavback .=
 #qq~ <span onclick="toTop(0)" style="cursor: pointer;">$img_txt{'102'}</span> <img src="$imagesdir/tabsep211.png" alt="" />~;
     if ( !$yynavback ) { $yynavback .= q~ ~; }
-    $yynavback .= qq~$tabsep <a href="#">$img_txt{'102'}</a> &nbsp; $tabsep~;
+    $yynavback .= qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</a> &nbsp; $tabsep~;
 
     if ( !$usehead ) { $usehead = q~default~; }
     $yytemplate = "$templatesdir/$usehead/$usehead.html";
@@ -342,28 +342,12 @@ qq~&nbsp;<script  type="text/javascript">\n<!--\nWriteClock('yabbclock','$aa','$
 		}
 		else {
 			window.getSelection().removeAllRanges();
-			var txt = document.createRange();
+			txt = document.createRange();
 			txt.setStartBefore(elem);
 			txt.setEndAfter(elem);
 			window.getSelection().addRange(txt);
 		}
 	}
-	function selectAllCode(thefield) {
-        var elem = document.getElementById('code' + thefield);
-        if (document.selection) {
-            document.selection.empty();
-            var txt = document.body.createTextRange();
-            txt.moveToElementText(elem);
-            txt.select();
-        }
-        else {
-            window.getSelection().removeAllRanges();
-            txt = document.createRange();
-            txt.setStartBefore(elem);
-            txt.setEndAfter(elem);
-            window.getSelection().addRange(txt);
-        }
-    }
     ~;
     if ( $output =~ /\{yabb tabmenu\}/sm ) {
         require Sources::TabMenu;
@@ -2891,6 +2875,18 @@ sub get_forum_master {
     }
     return;
 }
+
+sub get_micon {
+     if ( -e ("Templates/$usestyle/Micon.def") )
+            {
+            $Micon_def = qq~Templates/$usestyle/Micon.def~;
+            }
+     else { $Micon_def = qq~Templates/default/Micon.def~;}
+     require "$Micon_def";
+     return;
+}
+     
+    
 
 sub enable_yabbc {
     if ( $yyYaBBCloaded != 1 ) {

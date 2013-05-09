@@ -162,6 +162,8 @@ sub ModifyMessage {
     require Sources::Post;
     $yytitle = $post_txt{'66'};
     $mename  = $mname;
+	$thismusername = $musername;
+	$tmpmdate = $mdate;
     Postpage();
     template();
     return;
@@ -172,6 +174,8 @@ sub ModifyMessage2 {
 
     if ( $FORM{'previewmodify'} ) {
         $mename = qq~$FORM{'mename'}~;
+		$tmpmdate = qq~$FORM{'tmpmdate'}~;
+		$thismusername = qq~$FORM{'thismusername'}~;
         require Sources::Post;
         Preview();
     }

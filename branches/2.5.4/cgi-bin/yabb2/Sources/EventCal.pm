@@ -33,6 +33,8 @@ else {
     require "$templatesdir/default/Calendar.template";
 }
 
+get_micon();
+
 sub eventcal {
     my ( $ssicalmode, $ssicaldisplay ) = @_;
     my ( $i, $eventfound );
@@ -430,134 +432,192 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
         }
 
         $mycalout_chars = qq~
-            <script type="text/javascript">
-                function calshowimage() {
-                    document.images.calicons.src = "$yyhtml_root/EventIcons/" + document.postmodify.calicon.options[document.postmodify.calicon.selectedIndex].value + ".gif";
-                }
-                // count characters START
-                var noalert = true, gralert = false, rdalert = false, clalert = false;
-                var cntsec = 0
-                var prevtxt
-                var prevsec = 5
+<script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
+<script type="text/javascript">
+function calshowimage() {
+    var iconvar = document.postmodify.calicon.options[document.postmodify.calicon.selectedIndex].value;
+    document.images.calicons.src = "$yyhtml_root/EventIcons/" + iconvar + ".gif";
+}
 
-                function tick() {
-                    cntsec++;
-                    calcCharLeft();
-                    var timerID = setTimeout("tick()",1000);
-                }
-                var autoprev = false;
+function jsDoTohtml(tohtmlstr) {
+	tohtmlstr=tohtmlstr.replace(/\\&/g, "&amp;");
+	tohtmlstr=tohtmlstr.replace(/\\"/g, "&quot;"); //";
+	tohtmlstr=tohtmlstr.replace(/  /g, "&nbsp;");
+	tohtmlstr=tohtmlstr.replace(/\\|/g, "&#124;");
+	tohtmlstr=tohtmlstr.replace(/\\</g, "&lt;");
+	tohtmlstr=tohtmlstr.replace(/\\>/g, "&gt;");
+	return tohtmlstr
+}
 
-                function calcCharLeft() {
-                    if (document.postmodify.message.value.length > 0) document.getElementById("saveframe").style.height = "auto";
-                    var clipped = false;
-                    var maxLength = $MaxMessLen;
-                    if (document.postmodify.message.value.length > maxLength) {
-                        document.postmodify.message.value = document.postmodify.message.value.substring(0,maxLength);
-                        var charleft = 0;
-                        clipped = true;
-                    } else {
-                        charleft = maxLength - document.postmodify.message.value.length;
-                    }
-                    prevsec++
-                    if(autoprev && prevsec > 5 && prevtxt != document.postmodify.message.value) {
-                        autoPreview();
-                        prevtxt = document.postmodify.message.value;
-                    }
-                    document.postmodify.msgCL.value = charleft;
-                    if (charleft >= 100 && noalert) { noalert = false; gralert = true; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$cal_grn1"; }
-                    if (charleft < 100 && charleft >= 50 && gralert) { noalert = true; gralert = false; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$cal_grn0"; }
-                    if (charleft < 50 && charleft > 0 && rdalert) { noalert = true; gralert = true; rdalert = false; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$cal_red0"; }
-                    if (charleft == 0 && clalert) { noalert = true; gralert = true; rdalert = true; clalert = false; document.images.chrwarn.src="$defaultimagesdir/$cal_red1"; }
-                    return clipped;
-                }
-                tick();
-                // count characters END
-                var codestr = '$simpelcode';
-                var quotstr = '$normalquot';
-                var squotstr = '$simpelquot';
-                var fontsizemax = '$fontsizemax';
-                var fontsizemin = '$fontsizemin';
-                var edittxt = '$edittext';
-                var dispname = '$displayname';
-                var scrpurl = '$scripturl';
-                var imgdir = '$defaultimagesdir';
-                var ubsmilieurl = '$yyhtml_root/Smilies';
-                var parseflash = '$parseflash';
-                var autolinkurl = '$autolinkurls';
-                var Month = new Array($jsmonths);
-                var timeselected = '$jstimeselected';
-                var splittext = "$maintxt{'107'}";
-                var dontusetoday = '';
-                var todaytext = "$maintxt{'769'}";
-                var yesterdaytext = "$maintxt{'769a'}";
-                var timetext1 = "$timetxt{'1'}";
-                var timetext2 = "$timetxt{'2'}";
-                var timetext3 = "$timetxt{'3'}";
-                var timetext4 = "$timetxt{'4'}";
-                var jsmilieurl = new Array($smilie_url_array);
-                var jsmiliecode = new Array($smilie_code_array);
-                var showimageinquote = $showimageinquote;
-                function enabPrev() {
-                    if ( autoprev == false ) {
-                        autoprev = true
-                        topicfirst = true
-                        document.getElementById("savetable").style.visibility = "visible";
-                        document.getElementById("savetable").style.height = "auto";
-                        document.getElementById("saveframe").style.height = "auto";
-                        document.images.prevwin.alt = "$npf_txt{'02'}";
-                        document.images.prevwin.title = "$npf_txt{'02'}";
-                        document.images.prevwin.src="$imagesdir/$cal_cat_col";
-                        autoPreview();
-                    } else {
-                        autoprev = false;
-                        ubbstr = '';
-                        document.getElementById("savetable").style.visibility = "hidden";
-                        document.getElementById("savetable").style.height = "0px";
-                        document.getElementById("saveframe").style.height = "0px";
-                        document.postmodify.message.focus();
-                        document.images.prevwin.alt = "$npf_txt{'01'}";
-                        document.images.prevwin.title = "$npf_txt{'01'}";
-                        document.images.prevwin.src="$imagesdir/$cal_cat_exp";
-                    }
-                }
-                function autoPreview() {
-                    var scrlto = parseInt(180) + 5;
-                    var vismessage = document.postmodify.message.value;
-                    while ( c=vismessage.match(/date=(\\d+?)\\]/i) ) {
-                        var qudate=c[1];
-                        qudate=qudate * 1000;
-                        qdate=new Date()
-                        qdate.setTime(qudate);
-                        qdate=qdate.toLocaleString();
-                        vismessage=vismessage.replace(/(date=)\\d+?(\\])/i, "\$1"+qdate+"\$2");
-                    }
-                    if($enable_ubbc) {
-                        var ubbstr = jsDoUbbc(vismessage,codestr,quotstr,squotstr,edittxt,dispname,scrpurl,imgdir,ubsmilieurl,parseflash,fontsizemax,fontsizemin,autolinkurl,Month,timeselected,splittext,dontusetoday,todaytext,yesterdaytext,timetext1,timetext2,timetext3,timetext4,jsmilieurl,jsmiliecode,showimageinquote);
-                    } else {
-                      ubbstr = vismessage;
-                    }
-                    document.getElementById("saveframe").innerHTML=ubbstr;
-                    sh_highlightDocument();
-                    LivePrevImgResize();
-                    scrlto += parseInt(document.getElementById("saveframe").scrollTop) + parseInt(document.getElementById("saveframe").offsetHeight);
-                    document.getElementById("saveframe").scrollTop = scrlto;
-                    prevsec = 0;
-                }
-                function LivePrevImgResize() {
-                    var max_w = $max_post_img_width;
-                    var max_h = $max_post_img_height;
-                    var images = document.getElementById("saveframe").getElementsByTagName("img");
-                    for (var i = 0; i < images.length; i++) {
-                        if (max_w !== 0 && images[i].width > max_w) {
-                            images[i].height = images[i].height * max_w / images[i].width;
-                            images[i].width = max_w;
-                        }
-                        if (max_h !== 0 && images[i].height > max_h) {
-                            images[i].width  = images[i].width * max_h / images[i].height;
-                            images[i].height = max_h;
-                        }
-                    }
-                }
+var noalert = true, gralert = false, rdalert = false, clalert = false;
+var cntsec = 0
+
+function tick() {
+  cntsec++
+  calcCharLeft()
+  var timerID = setTimeout("tick()",1000)
+}
+
+var autoprev = false
+
+function enabPrev() {
+    if ( autoprev === false ) {
+		autoprev = true
+		document.getElementById("savetable").style.display = "block";
+		document.getElementById("saveframe").style.display = "block";
+		document.images.prevwin.alt = "$npf_txt{'02'}";
+		document.images.prevwin.title = "$npf_txt{'02'}";
+		document.images.prevwin.src="$defaultimagesdir/$cal_cat_col";
+		autoPreview();
+	}
+	else {
+		autoprev = false;
+		ubbstr = '';
+		document.getElementById("savetable").style.display = "none";
+		document.getElementById("saveframe").style.display = "none";
+		document.postmodify.message.focus();
+		document.images.prevwin.alt = "$npf_txt{'01'}";
+		document.images.prevwin.title = "$npf_txt{'01'}";
+		document.images.prevwin.src="$defaultimagesdir/$cal_cat_exp";
+	}
+	calcCharLeft();
+}
+
+function calcCharLeft() {
+  if (document.postmodify.message.value.length > 0) document.getElementById("saveframe").style.height = "auto";
+  var clipped = false
+  var maxLength = $MaxMessLen
+  if (document.postmodify.message.value.length > maxLength) {
+    document.postmodify.message.value = document.postmodify.message.value.substring(0,maxLength)
+    var charleft = 0
+    clipped = true
+  } else {
+    charleft = maxLength - document.postmodify.message.value.length
+  }
+  document.postmodify.msgCL.value = charleft
+  if (charleft >= 100 && noalert) { noalert = false; gralert = true; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$post_chrwarn_g1"; }
+  if (charleft < 100 && charleft >= 50 && gralert) { noalert = true; gralert = false; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$post_chrwarn_g0"; }
+  if (charleft < 50 && charleft > 0 && rdalert) { noalert = true; gralert = true; rdalert = false; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$post_chrwarn_r0" }
+  if (charleft === 0 && clalert) { noalert = true; gralert = true; rdalert = true; clalert = false; document.images.chrwarn.src="$defaultimagesdir/$post_chrwarn_r1"; }
+  return clipped
+}
+
+
+function autoPreview() {
+	if(autoprev) {
+	var url = '$scripturl?action=ajxcal';
+	try {
+		if (typeof( new XMLHttpRequest() ) == 'object') {
+			pstHttp = new XMLHttpRequest();
+		} else if (typeof( new ActiveXObject("Msxml2.XMLHTTP") ) == 'object') {
+			pstHttp = new ActiveXObject("Msxml2.XMLHTTP");
+		} else if (typeof( new ActiveXObject("Microsoft.XMLHTTP") ) == 'object') {
+			pstHttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+	} catch (e) { }
+	if (pstHttp == null) return;
+	pstHttp.onreadystatechange = function() {
+		if(pstHttp.readyState == 4) {
+			if(pstHttp.status == 200 || window.location.href.indexOf("http") == -1) {
+				document.getElementById("saveframe").innerHTML = pstHttp.responseText;
+				sh_highlightDocument();
+				if (/post_liveimg_resize_1/i.test(pstHttp.responseText)) LivePrevImgResize();
+           }
+        }
+	};
+	var dispnamevalue = encodeURIComponent(document.getElementById("mename").value);
+	var iconvalue = encodeURIComponent(document.getElementById("icon").value);
+	var subjvalue = encodeURIComponent(document.getElementById("subject").value);
+	var tmpmessvalue = document.getElementById("message").value;
+	tmpmessvalue = jsDoTohtml(tmpmessvalue);
+	var messvalue = encodeURIComponent(tmpmessvalue);
+	var tmusername = encodeURIComponent(document.getElementById("tmpmusername").value);
+	var tmoddate = encodeURIComponent(document.getElementById("tmpmoddate").value);
+	var sessvalue = encodeURIComponent(document.postmodify.formsession.value);
+	var parameters = "icon="+iconvalue+"&displayname="+dispnamevalue+"&subject="+subjvalue+"&message="+messvalue+"&musername="+tmusername+"&moddate="+tmoddate+"&formsession="+sessvalue;
+	pstHttp.open("POST", url, true);
+	pstHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	pstHttp.send(parameters);
+			}
+		}
+function LivePrevImgResize() {
+	var maxwidth = $max_post_img_width;
+	var maxheight = $max_post_img_height;
+	var fix_size = $fix_post_img_size;
+	noimgdir   = '$imagesdir';
+	noimgtitle = '$maintxt{'171'}';
+
+	var liveimg_resize_names = new Array ();
+	var zi = 0;
+
+	var imgsavail = document.getElementById("saveframe").getElementsByTagName("img");
+	for (i=0; i<imgsavail.length; i++) {
+		if (imgsavail[i].className == "liveimg") {
+			liveimg_resize_names[zi] = imgsavail[i].name;
+			zi++;
+	}
+}
+
+	var tmp_array = new Array ();
+	for (var i = 0; i < liveimg_resize_names.length; i++) {
+		var tmp_image_name = liveimg_resize_names[i];
+
+		if (fix_size) {
+			if (maxwidth)  document.images[tmp_image_name].width  = maxwidth;
+			if (maxheight) document.images[tmp_image_name].height = maxheight;
+			document.images[tmp_image_name].style.display = 'inline';
+			continue;
+        }
+
+		if (document.images[tmp_image_name].complete == false) {
+			tmp_array[tmp_array.length] = tmp_image_name;
+			if (/Opera/i.test(navigator.userAgent)) {
+				document.images[tmp_image_name].width  = document.images[tmp_image_name].width  || 0;
+				document.images[tmp_image_name].height = document.images[tmp_image_name].height || 0;
+				document.images[tmp_image_name].style.display = 'inline';
+        }
+			continue;
+        }
+
+		var tmp_image = new Image;
+		tmp_image.src = document.images[tmp_image_name].src;
+
+		var tmpwidth  = document.images[tmp_image_name].width  || tmp_image.width;
+		var tmpheight = document.images[tmp_image_name].height || tmp_image.height;
+
+		if (!tmpwidth && !tmpheight) {
+			tmp_array[tmp_array.length] = tmp_image_name;
+			continue;
+		}
+
+		if (maxwidth != 0 && tmpwidth > maxwidth) {
+			tmpheight = tmpheight * maxwidth / tmpwidth;
+			tmpwidth  = maxwidth;
+	}
+
+		if (maxheight != 0 && tmpheight > maxheight) {
+			tmpwidth  = tmpwidth * maxheight / tmpheight;
+			tmpheight = maxheight;
+		}
+
+		document.images[tmp_image_name].width  = tmpwidth;
+		document.images[tmp_image_name].height = tmpheight;
+		document.images[tmp_image_name].style.display = 'inline';
+            }
+	if (tmp_array.length > 0 && resize_time < 350) {
+		liveimg_resize_names = tmp_array;
+		if (resize_time == 290) {
+			for (var i = 0; i < liveimg_resize_names.length; i++) {
+				var tmp_image_name = liveimg_resize_names[i];
+				document.images[tmp_image_name].src = noimgdir + "/noimg.gif";
+				document.images[tmp_image_name].title = noimgtitle;
+		}
+		}
+		setTimeout("resize_time++; resize_images();", 100);
+    }
+		}
+
+tick();
             </script>~;
 
         if ( $iamguest && $gpvalid_en ) {
@@ -601,7 +661,7 @@ s/{yabb verification_question_desc}/$verification_question_desc/sm;
         $mycalout_post3 = postbox3();
 
         $mycalout_post = qq~
-<script src="$yyhtml_root/yabbc.js" type="text/javascript"></script>
+<script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
 <form action="$scripturl?action=add_cal" name="postmodify" method="post" accept-charset="$yycharset">
 $mycalout_addevent~;
 
@@ -610,7 +670,8 @@ $mycalout_addevent~;
         $mycalout_post =~ s/{yabb option_noname}/$option_noname/sm;
         $mycalout_post =~ s/{yabb mycalout_caltype}/$mycalout_caltype/sm;
         $mycalout_post =~ s/{yabb mycalout_calicon}/$mycalout_calicon/sm;
-        $mycalout_post =~ s/{yabb calicon}/$calicon/sm;
+        $mycalout_post =~ s/{yabb calicon}/$calicon/gsm;
+        $mycalout_post =~ s/{yabb caliconimg}/$cal_icon_bg{$calicon}/gsm;
         $mycalout_post =~ s/{yabb mycalout_cthelp}/$mycalout_cthelp/sm;
         $mycalout_post =~ s/{yabb mycalout_post2}/$mycalout_post2/sm;
         $mycalout_post =~ s/{yabb mycalout_googie}/$mycalout_googie/sm;
@@ -804,6 +865,7 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_n
                 $delete_event = q{};
                 $edit_event   = q{};
                 $icon_text    = $var_cal{$cico};
+                $cal_icon     = $cal_icon{$cico};
                 if ( !$var_cal{$cico} ) { $icon_text = calicontext($cico); }
 
                 if ( $ns eq 'NS' ) {
@@ -857,18 +919,17 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cnam}" rel="nof
                           s/{yabb eventbduserlink}/$eventbduserlink/sm;
                         $mycalout_greet =~ s/{yabb greet}/$greet/sm;
                         $mycalout_greet =~ s/{yabb myevent_ann}/$myevent_ann/sm;
+                        $mycalout_greet =~ s/{yabb my_cal_icon}/$cal_icon{'eventbd'}/sm
                     }
                     else {
                         $mycalout_greet .= $mycal_greet_b;
                         $myevent_ann = qq~<b>$var_cal{'calsubtitle'}:</b><br /><br />~;
 
                         if ( $ctyp == 2 ) {
-                            $mycalout_greet .= qq~
-            <img src="$imagesdir/$cal_eventprivate" alt="Event" /> <img src="$yyhtml_root/EventIcons/$cico.gif" alt="$icon_text" /> $cdate <b>$icon_text</b> $eventuserlink~;
+                            $mycalout_greet .= qq~$cal_icon{'eventprivate'} $cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
                         }
                         else {
-                            $mycalout_greet .= qq~
-            <img src="$yyhtml_root/EventIcons/$cico.gif" alt="$icon_text" /> $cdate <b>$icon_text</b> $eventuserlink~;
+                            $mycalout_greet .= qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
                         }
 
                         $mycalout_greet .= $mycal_greet_c;
@@ -881,9 +942,9 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cnam}" rel="nof
                             $mycalout_greet .= $mycal_greet_b;
                             $mycalout_greet .= qq~
             			<a href="$scripturl?action=eventcal;calshow=1;eventdate=$cdat;calid=$ctim;edit_cal_even=1;addnew=1;edit_typ=$ctyp;edit_icon=$cico;edit_nonam=$cnonam;edit_typ1=$ctyp2" title='$var_cal{'caledit'}'>
-            			<img src="$imagesdir/$cal_modify" alt="$var_cal{'caledit'}" title="$var_cal{'caledit'}" /> $var_cal{'caledit'}</a>&nbsp;&nbsp;&nbsp;
+            			$cal_icon{'modify'} $var_cal{'caledit'}</a>&nbsp;&nbsp;&nbsp;
             			<a href="javascript:if(confirm('$var_cal{'caldelalert'}')){ location.href='$scripturl?action=del_cal;caldel=1;calid=$ctim'; }" title='$var_cal{'caldel'}'>
-            			<img src="$imagesdir/$cal_delete" alt="$var_cal{'caldel'}" title="$var_cal{'caldel'}" /> $var_cal{'caldel'}</a>~;
+            			$cal_icon{'delete'} $var_cal{'caldel'}</a>~;
                             $mycalout_greet .= $mycal_greet_rowend;
                         }
                     }
@@ -984,12 +1045,10 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cnam}" rel="nof
                     else {
                         $mycalout_greet .= $mycal_greet_b;
                         if ( $ctyp == 2 ) {
-                            $mycalout_greet .= qq~
-            <img src="$imagesdir/$cal_eventprivate" alt="Event" /> <img src="$yyhtml_root/EventIcons/$cico.gif" alt="$icon_text" /> $cdate <b>$icon_text</b> $eventuserlink~;
+                            $mycalout_greet .= qq~$cal_icon{'eventprivate'} $cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
                         }
                         else {
-                            $mycalout_greet .= qq~
-            <img src="$yyhtml_root/EventIcons/$cico.gif" alt="$icon_text" /> $cdate <b>$icon_text</b> $eventuserlink~;
+                            $mycalout_greet .= qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
                         }
                         $mycalout_greet .= $mycal_greet_c;
                         $mycalout_greet =~
@@ -1000,7 +1059,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cnam}" rel="nof
                             && !$INFO{'edit_cal_even'} )
                         {
                             $mycalout_greet .= $mycal_greet_b . qq~
-            <a href="$scripturl?action=eventcal;calshow=1;eventdate=$cdat;calid=$ctim;edit_cal_even=1;addnew=1;edit_typ=$ctyp;edit_icon=$cico;edit_nonam=$cnonam;edit_typ1=$ctyp2" title='$var_cal{'caledit'}'><img src="$imagesdir/$cal_modify" alt="$var_cal{'caledit'}" title="$var_cal{'caledit'}" /> $var_cal{'caledit'}</a>&nbsp;&nbsp;&nbsp;<a href="javascript:if(confirm('$var_cal{'caldelalert'}')){ location.href='$scripturl?action=del_cal;caldel=1;calid=$ctim'; }" title="$var_cal{'caldel'}"><img src="$imagesdir/$cal_delete" alt="$var_cal{'caldel'}" title="$var_cal{'caldel'}" /> $var_cal{'caldel'}</a>~
+            <a href="$scripturl?action=eventcal;calshow=1;eventdate=$cdat;calid=$ctim;edit_cal_even=1;addnew=1;edit_typ=$ctyp;edit_icon=$cico;edit_nonam=$cnonam;edit_typ1=$ctyp2" title='$var_cal{'caledit'}'>$cal_icon{'modify'} $var_cal{'caledit'}</a>&nbsp;&nbsp;&nbsp;<a href="javascript:if(confirm('$var_cal{'caldelalert'}')){ location.href='$scripturl?action=del_cal;caldel=1;calid=$ctim'; }" title="$var_cal{'caldel'}">$cal_icon{'delete'} $var_cal{'caldel'}</a>~
                               . $mycal_greet_rowend;
                         }
                     }
@@ -1021,6 +1080,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cnam}" rel="nof
                           s/{yabb mycalout_post}/$mycalout_post/sm;
                         $mycalout_greet =~ s/{yabb calevent}/$editmessage/sm;
                         $mycalout_greet =~ s/{yabb nscheck}/$nsc/sm;
+                        $mycalout_greet =~ s/{yabb modify}/$cal_icon{'modify'}/sm;
                     }
                 }
             }
@@ -1044,7 +1104,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cnam}" rel="nof
     $outstring = q~ ~;
     if ( $Scroll_Events == 1 ) {
         $outstring .=
-q~<a name="scroller"></a><marquee behavior='scroll' direction='up' height='130' scrollamount='1' scrolldelay='1' onmouseover='this.stop()' onmouseout='this.start()'>~;
+q~<a name="scroller" id="scroller"></a><marquee behavior='scroll' direction='up' height='130' scrollamount='1' scrolldelay='1' onmouseover='this.stop()' onmouseout='this.start()'>~;
     }
     elsif ( $Scroll_Events == 2 ) {
         $outstring .= '<div style="overflow:auto;height:150px;">';
@@ -1184,7 +1244,7 @@ qq~$var_cal{'calcoming'} $var_cal{'calsubtitle'} ($DisplayEvents $var_cal{'calda
                 $cevent = $convertstr;
                 if ($cliped) { $cevent .= ' ...'; }
                 $cevent .=
-qq~<br /><br /><a  href="$scripturl?action=eventcal;calshow=1;eventdate=$cyear$cmon$cday;calid=$ctime;showthisdate=1" title="$var_cal{'calshowevent'}"><span style="color:#FF6600">$var_cal{'calmore'}</span> <img  src="$imagesdir/$cal_eventmore" alt="$var_cal{'calshowevent'}" /></a>~;
+qq~<br /><br /><a  href="$scripturl?action=eventcal;calshow=1;eventdate=$cyear$cmon$cday;calid=$ctime;showthisdate=1" title="$var_cal{'calshowevent'}"><span style="color:#FF6600">$var_cal{'calmore'}</span> $cal_icon{'eventmore'}</a>~;
 
 # There MUST be two spaces after "<a" and "<img" here or you will get this message here after going through &DoUBBC: "Multimedia File Viewing and Clickable Links are available for Registered Members only!! You need to Login or Register"
             }
@@ -1242,15 +1302,15 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cname}" rel="no
                           qq~$var_cal{'calis'} $cevent $var_cal{'calold'}~;
                     }
                     $outstring .=
-qq~<div><span class="small"><img src="$imagesdir/$cal_eventbd" alt="$var_cal{'calbirthday'}" /> $cdate <b>$var_cal{'calbirthday'}</b><br /> $eventbduserlink $greet</span><hr class="hr" /></div>~;
+qq~<div><span class="small">$cal_icon{'eventbd'} $cdate <b>$var_cal{'calbirthday'}</b><br /> $eventbduserlink $greet</span><hr class="hr" /></div>~;
                 }
                 elsif ( $ctype == 2 ) {
                     $outstring .=
-qq~<div><span class="small"><img src="$imagesdir/$cal_eventprivate" alt="$var_cal{'calprivate'} Event" /> <img src="$yyhtml_root/EventIcons/$cicon.gif" alt="$icon_text" /> $cdate <b>$icon_text</b> $eventuserlink<br />$cevent</span><hr class="hr" /></div>~;
+qq~<div><span class="small">$cal_icon{'eventprivate'} $cal_icon{$cicon} $cdate <b>$icon_text</b> $eventuserlink<br />$cevent</span><hr class="hr" /></div>~;
                 }
                 else {
                     $outstring .=
-qq~<div><span class="small"><img src="$yyhtml_root/EventIcons/$cicon.gif" alt="$icon_text" /> $cdate <b>$icon_text</b> $eventuserlink<br />$cevent</span><hr class="hr" size="1" /></div>~;
+qq~<div><span class="small">$cal_icon{$cicon} $cdate <b>$icon_text</b> $eventuserlink<br />$cevent</span><hr class="hr" size="1" /></div>~;
                 }
             }
             else {
@@ -1266,22 +1326,27 @@ qq~<div><span class="small"><img src="$yyhtml_root/EventIcons/$cicon.gif" alt="$
                     $outstring =~ s/{yabb cdate}/$cdate/sm;
                     $outstring =~ s/{yabb eventbduserlink}/$eventbduserlink/sm;
                     $outstring =~ s/{yabb greet}/$greet/sm;
+                    $outstring =~ s/{yabb my_cal_icon}/$cal_icon{'eventbd'}/sm;
                 }
                 elsif ( $ctype == 2 ) {
                     $outstring .= $mycal_outstring_private;
-                    $outstring =~ s/{yabb cicon}/$cicon/sm;
+                    $outstring =~ s/{yabb cicon}/$cal_icon{$cicon}/sm;
                     $outstring =~ s/{yabb cdate}/$cdate/sm;
                     $outstring =~ s/{yabb icon_text}/$icon_text/gsm;
                     $outstring =~ s/{yabb eventuserlink}/$eventuserlink/sm;
                     $outstring =~ s/{yabb cevent}/$cevent/sm;
+                    $outstring =~ s/{yabb my_cal_icon}/$cal_icon{'eventprivate'}/sm;
+                    $outstring =~ s/{yabb my_cal_icon_ev}/$cal_icon{$cicon}/sm;
+                    
                 }
                 else {
                     $outstring .= $mycal_outstring;
-                    $outstring =~ s/{yabb cicon}/$cicon/sm;
+                    $outstring =~ s/{yabb cicon}/$cal_icon{$cicon}/sm;
                     $outstring =~ s/{yabb cdate}/$cdate/sm;
                     $outstring =~ s/{yabb icon_text}/$icon_text/gsm;
                     $outstring =~ s/{yabb eventuserlink}/$eventuserlink/sm;
                     $outstring =~ s/{yabb cevent}/$cevent/sm;
+                    $outstring =~ s/{yabb my_cal_icon_ev}/$cal_icon{$cicon}/sm;
                 }
             }
         }
@@ -1295,16 +1360,17 @@ qq~<div><span class="small"><img src="$yyhtml_root/EventIcons/$cicon.gif" alt="$
     # Print Events end
 
     # Print Mini EventCal begin
+get_micon();
 
     if ($Show_BirthdaysList) {
         if ( !$iamguest || ( $Show_BirthdaysList != 1 ) ) {
             $ShowBirthdaysLink =
-qq~<span class="small"> <img src="$imagesdir/$cal_eventmore" alt="$var_cal{'calbirthdays'}" /> <a href="$scripturl?action=birthdaylist">$var_cal{'calbdaylist'}</a></span>~;
+qq~<span class="small"> $cal_icon{'eventmorebd'} <a href="$scripturl?action=birthdaylist">$var_cal{'calbdaylist'}</a></span>~;
         }
     }
     if ( $Allow_Event_Imput && !$INFO{'addnew'} == 1 ) {
         $ShowEventAddLink =
-qq~<br /><span class="small"> <img src="$imagesdir/$cal_eventmore" alt="$var_cal{'getaddevent'}" /> <a href="$scripturl?action=eventcal;calshow=1;addnew=1">$var_calpost{'getaddevent'}</a></span>~;
+qq~<br /><span class="small"> $cal_icon{'eventmoreadd'} <a href="$scripturl?action=eventcal;calshow=1;addnew=1">$var_calpost{'getaddevent'}</a></span>~;
     }
 
     $mon_name = $var_cal{$st};
@@ -1344,17 +1410,17 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
         if (  !exists( ${ event . $year . $view_mon . $dddd }{'calday'} )
             && exists( ${ bday . $year . $view_mon . $dddd }{'calday'} ) )
         {
-            $cal_pic = "$imagesdir/$cal_eventbd";
+            $cal_pic = "$cal_icon_bg{'eventbd'}";
         }
         if ( exists( ${ event . $year . $view_mon . $dddd }{'calday'} )
             && !exists( ${ bday . $year . $view_mon . $dddd }{'calday'} ) )
         {
-            $cal_pic = "$yyhtml_root/EventIcons/$cal_eventinfo";
+            $cal_pic = "$cal_icon_bg{'eventinfo'}";
         }
         if (   exists( ${ event . $year . $view_mon . $dddd }{'calday'} )
             && exists( ${ bday . $year . $view_mon . $dddd }{'calday'} ) )
         {
-            $cal_pic = "$imagesdir/$cal_eventinfobd";
+            $cal_pic = "$cal_icon_bg{'eventinfobd'}";
         }
         if (
             exists(
@@ -1363,7 +1429,7 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
             )
           )
         {
-            $cal_pic = "$imagesdir/$cal_eventprivate";
+            $cal_pic = "$cal_icon_bg{'eventprivate'}";
         }
         if ($Show_MiniCalIcons) { $cal_pic = q{}; }
 
@@ -1397,7 +1463,7 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
     if ( $e_day < 36 ) { $endrow = 35; }
     $endday = $endrow - $e_day + 2;
     if ( $endday < 8 ) {
-        if ( !$cal_out && $endday > 1 ) { $cal_out = "<tr>\n"; }
+        if ( !$cal_out && $endday > 1 ) { $cal_out = $mycal_tr; }
         for my $i ( 1 .. ( $endday - 1 ) ) {
             $cal_out_blnk .= $mycal_showday_blnk;
         }
@@ -1434,7 +1500,7 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
 
     if ( $outstring !~ /$yyhtml_root\//xsm ) {
         $outstring = $my_out_a;
-        $outstring =~ s/{yabb cal_eventinfo}/$cal_eventinfo/sm;
+        $outstring =~ s/{yabb cal_eventinfo}/$cal_icon{'eventinfo'}/sm;
     }
 
     if ( $DisplayCalEvents || $INFO{'calshow'} ) {

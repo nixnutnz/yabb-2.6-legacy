@@ -218,7 +218,7 @@ qq~<a href="$scripturl?action=downloadfile;newstart=$lastptn;sort=$sort">$lastpn
                 $attach_gif{$ext} =
                   ( $ext && -e "$htmldir/Templates/Forum/$useimages/$ext.gif" )
                   ? "$ext.gif"
-                  : 'paperclip.gif';
+                  : $msgbrd_paperclip;
             }
 
             $amdate = timeformat($amdate);

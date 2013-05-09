@@ -261,19 +261,6 @@ s/({|<)yabb mcglobformend(}|>)/ ($MCGlobalFormStart ? "<\/form>" : q{}) /esm;
 
     ## end new style box
     $yymain .= $mycenter_template;
-    if (%usernames_life_quote) {    # for display names in Quotes in LivePreview
-        $yymain .= qq~
-    <script src="$yyhtml_root/yabbc.js" type="text/javascript"></script>
-    <script type="text/javascript">
-    ~
-          . join(
-            q{;},
-            map { qq~LivePrevDisplayNames['$_'] = "$usernames_life_quote{$_}"~ }
-              keys %usernames_life_quote
-          )
-          . qq~;
-</script>\n~;
-    }
     template();
     return;
 }
@@ -1986,7 +1973,7 @@ sub drawPMView {
                 $messIconName = 'guestpmreply';
             }
             elsif ( $messStatus =~ m/g/sm ) { $messIconName = 'guestpm'; }
-            require "$vardir/Micon.def";
+            get_micon();
             my $messIcon = $micon{$messIconName};
 
             my ($hasMultiRecs);

@@ -48,6 +48,7 @@ sub IPLookup {
 
     $yymain .= $my_ipdiv;
     $yymain =~ s/{yabb lookuplink}/$lookuplink/gsm;
+    $yymain =~ s/{yabb ip}/$ip/gsm;
 
     $yytitle      = qq~$lookup_txt{'iplookup'}~;
     $yynavigation = qq~&rsaquo; $lookup_txt{'iplookup'}~;

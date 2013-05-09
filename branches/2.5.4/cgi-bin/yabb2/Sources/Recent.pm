@@ -218,11 +218,11 @@ qq~$menusep<a href="$scripturl?action=notify2;num=$tnum/$c;oldnotify=1">$img{'ad
               split /\|/xsm, $board{$parentboard};
 		    if( ${$uid.$parentboard}{'canpost'} || !$subboard{$parentboard} ) {
                 $pboardname =
-qq~<a href="$scripturl?board=$parentboard"><span class="under">$pboardname</span></a> 0~;
+qq~<a href="$scripturl?board=$parentboard"><span class="under">$pboardname</span></a>~;
             }
             else {
                 $pboardname =
-qq~<a href="$scripturl?boardselect=$parentboard;subboards=1"><span class="under">$pboardname</span></a> 1~;
+qq~<a href="$scripturl?boardselect=$parentboard;subboards=1"><span class="under">$pboardname</span></a>~;
             }
             $boardtree   = qq~ / $pboardname$boardtree~;
             $my_cat = ${$uid.$parentboard }{'cat'};

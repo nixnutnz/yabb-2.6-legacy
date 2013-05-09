@@ -11,10 +11,10 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 #-----------------------------------------------------------------------------#
-#  CSS Buttons 4 YaBB 2.5                                                     #
+# CSS Buttons 4 YaBB 2.5                                                      #
 #  Copyright (c) 2010 'Carsten Dalgaard' - All Rights Reserved                #
-#  Released: December 12, 2010                                                #
-#  e-mail: post@carsten-dalgaard.dk                                           #
+# Released: December 12, 2010                                                 #
+# e-mail: post@carsten-dalgaard.dk                                            #
 #  Added to YaBB core with the writer's permission, January 28, 2013          #
 ###############################################################################
 # use strict;
@@ -26,20 +26,23 @@ our $VERSION = '2.5.4';
 $menupmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
-$imgext = 'gif';
-
 sub SetMenu {
-
-    fopen( MENUFILE, "$vardir/Menu.def" );
+     if ( -e ("Templates/$usestyle/Menu.def") )
+            {
+            $Menu_def = qq~Templates/$usestyle/Menu.def~;
+            }
+     else { $Menu_def = qq~Templates/default/Menu.def~;}
+    
+    fopen( MENUFILE, "$Menu_def" );
     %img = map { /(.*),(.*)/xsm } <MENUFILE>;
     fclose(MENUFILE);
 
     while ( ( $key, $value ) = each %img ) {
+        chomp $value;
         (
             $button_icon, $button_text, $text_num, $alt_text,
-            $alt_num,     $span_class,  $mod_or_not
+            $alt_num,     $span_class, $imgext,  $mod_or_not
         ) = split /\|/xsm, $value;
-        chomp $mod_or_not;
         if ( !$alt_text ) {
             $alt_text = $button_text;
             $alt_num  = $text_num;
@@ -47,7 +50,6 @@ sub SetMenu {
         if ( $mod_or_not eq 'mod' ) {
             $button_imgurl = qq~$yyhtml_root/ModImages~;
         }
-#FIX
         else {
             $button_imgurl = qq~$yyhtml_root/Templates/Forum/$usestyle~;
             if ( !-e ("$htmldir/Templates/Forum/$usestyle/$button_icon.$imgext")
@@ -69,17 +71,15 @@ sub SetMenu {
 qq~<img src="$button_imgurl/$button_icon.$imgext" alt="${$alt_text}{$alt_num}" /> <span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}">${$button_text}{$text_num}</span>~;
             }
             elsif ( $UseMenuType == 1 ) {
-                $menusep = q{ | };
+                $menusep = q{ };
                 $img{$key} =
 qq~<span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}">${$button_text}{$text_num}</span>~;
             }
             else {
-                $menusep =
-qq~<img src='$yyhtml_root/Templates/Forum/default/buttonsep.png' class='cssbutton1' alt='' title='' />~;
+                $menusep = qq~<img src='$yyhtml_root/Templates/Forum/default/buttonsep.png' class='cssbutton1' alt='' title='' />~;
                 $img{$key} =
 qq~<span class="buttonleft cssbutton2" title="${$alt_text}{$alt_num}" style="$helpstyle">~;
-                $img{$key} .=
-q~<span class="buttonright cssbutton3">~;
+                $img{$key} .= q~<span class="buttonright cssbutton3">~;
                 $img{$key} .=
 qq~<span class="buttonimage cssbutton4" style="background-image: url($button_imgurl/$button_icon.$imgext);">~;
                 $img{$key} .=
@@ -92,6 +92,64 @@ qq~<img src="$button_imgurl/$button_icon.$imgext" alt="${$button_text}{$text_num
         }
     }
     return;
+}
+
+sub SetImage {
+    my ($img_name,$UseMenuT) = @_;
+
+     if ( -e ("Templates/$usestyle/Menu.def") )
+            {
+            $Menu_def = qq~Templates/$usestyle/Menu.def~;
+            }
+     else { $Menu_def = qq~Templates/default/Menu.def~;}
+    
+    fopen( MENUFILE, "$Menu_def" );
+    %img_set = map { /(.*),(.*)/xsm } <MENUFILE>;
+    fclose(MENUFILE);
+
+    my $imgname = $img_set{$img_name};
+
+    (
+            $button_icon, $button_text, $text_num, $alt_text,
+            $alt_num,     $span_class, $imgext,  $mod_or_not
+    ) = split /\|/xsm, $imgname;
+    chomp $mod_or_not;
+    if ( !$alt_text ) {
+        $alt_text = $button_text;
+        $alt_num  = $text_num;
+    }
+    $button_imgurl = qq~$yyhtml_root/Templates/Forum/$usestyle~;
+    if ( !-e ("$htmldir/Templates/Forum/$usestyle/$img_name.$imgext") ) {
+        $button_imgurl = qq~$yyhtml_root/Templates/Forum/default~;
+    }
+    if   ( $key eq 'help' ) { $helpstyle = q~ cursor: help;~; }
+    else                    { $helpstyle = q~ cursor: pointer;~; }
+    if ( $UseMenuT == 0 ) {
+        $menusep = q{ };
+        $img_out =
+qq~<img src="$button_imgurl/$button_icon.$imgext" alt="${$alt_text}{$alt_num}" /> <span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}">${$button_text}{$text_num}</span>~;
+    }
+    elsif ( $UseMenuT == 1 ) {
+        $menusep = q{ };
+        $img_out =
+qq~<span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}">${$button_text}{$text_num}</span>~;
+    }
+    elsif ( $UseMenuT == 3 ) {
+        $menusep = q{};
+        $img_out = qq~$button_imgurl/$button_icon.$imgext|${$button_text}{$alt_num}~;
+    }
+    else {
+        $menusep =
+qq~<img src='$yyhtml_root/Templates/Forum/default/buttonsep.png' class='cssbutton1' alt='' title='' />~;
+        $img_out =
+qq~<span class="buttonleft cssbutton2" title="${$alt_text}{$alt_num}" style="$helpstyle">~;
+        $img_out .= q~<span class="buttonright cssbutton3">~;
+        $img_out .=
+qq~<span class="buttonimage cssbutton4" style="background-image: url($button_imgurl/$button_icon.$imgext);">~;
+        $img_out .=
+qq~<span class="buttontext cssbutton5">${$button_text}{$text_num}</span></span></span></span>~;
+    }
+    return $img_out;
 }
 
 1;

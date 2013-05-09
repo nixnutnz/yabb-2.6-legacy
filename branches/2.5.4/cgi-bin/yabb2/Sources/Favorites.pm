@@ -178,6 +178,7 @@ qq~<a href="http://$perm_domain/$symlink$permdate/$permlinkboard/$mnum">$message
         my $movedFlag;
         ( undef, $movedFlag ) = Split_Splice_Move( $msub, $mnum );
 
+        get_micon();
         if ( !$iamguest && $max_log_days_old ) {
 
             # Decide if thread should have the "NEW" indicator next to it.
@@ -194,11 +195,11 @@ qq~<a href="http://$perm_domain/$symlink$permdate/$permlinkboard/$mnum">$message
             {
                 if ( ${$mnum}{'board'} eq $annboard ) {
                     $new =
-qq~<a href="$scripturl?virboard=$currentboard;num=$mnum/new"><img src="$imagesdir/new.gif" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'302'}"/></a>~;
+qq~<a href="$scripturl?virboard=$currentboard;num=$mnum/new">$micon{'new'}</a>~;
                 }
                 else {
                     $new =
-qq~<a href="$scripturl?num=$mnum/new"><img src="$imagesdir/new.gif" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'302'}"/></a>~;
+qq~<a href="$scripturl?num=$mnum/new">$micon{'new'}</a>~;
                 }
             }
             else {
@@ -207,7 +208,7 @@ qq~<a href="$scripturl?num=$mnum/new"><img src="$imagesdir/new.gif" alt="$messag
         }
         if ($movedFlag) { $new = q{}; }
 
-        $micon = qq~<img src="$imagesdir/$micon.gif" alt="" />~;
+        $micon = $micon{$micon};
         $mpoll = q{};
         if ( -e "$datadir/$mnum.poll" ) {
             $mpoll = qq~<b>$messageindex_txt{'15'}: </b>~;
@@ -379,7 +380,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$lastposter">$format_unbold{$
 
         $mydate = timeformat($mdate);
 
-        my $threadpic = qq~<img src="$imagesdir/$threadclass.gif" alt=""/>~;
+        my $threadpic = $micon{$threadclass};
         my $msublink  = qq~<a href="$scripturl?num=$mnum">$msub</a>~;
         if ( !$movedFlag && ${$mnum}{'board'} eq $annboard ) {
             $msublink =
@@ -428,29 +429,22 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" style="border: 0p
         $tmptempbar = $no_favs;
     }
 
-    $yabbicons = qq~
-        <img src="$imagesdir/thread.gif" alt="$messageindex_txt{'457'}" title="$messageindex_txt{'457'}" /> $messageindex_txt{'457'}<br />
-        <img src="$imagesdir/sticky.gif" alt="$messageindex_txt{'779'}" title="$messageindex_txt{'779'}" /> $messageindex_txt{'779'}<br />
-        <img src="$imagesdir/locked.gif" alt="$messageindex_txt{'456'}" title="$messageindex_txt{'456'}" /> $messageindex_txt{'456'}<br />
-        <img src="$imagesdir/stickylock.gif" alt="$messageindex_txt{'780'}" title="$messageindex_txt{'780'}" /> $messageindex_txt{'780'}<br />
-    ~;
+    $yabbicons = qq~$micon{'thread'} $messageindex_txt{'457'}
+    <br />$micon{'sticky'} $messageindex_txt{'779'}
+    <br />$micon{'locked'} $messageindex_txt{'456'}
+    <br />$micon{'stickylock'}$messageindex_txt{'780'}<br />~;
 
     if ( $staff && $sessionvalid == 1 ) {
-        $yabbadminicons =
-qq~<img src="$imagesdir/hide.gif" alt="$messageindex_txt{'458'}" title="$messageindex_txt{'458'}" /> $messageindex_txt{'458'}<br />~;
-        $yabbadminicons .=
-qq~<img src="$imagesdir/hidesticky.gif" alt="$messageindex_txt{'459'}" title="$messageindex_txt{'459'}" /> $messageindex_txt{'459'}<br />~;
-        $yabbadminicons .=
-qq~<img src="$imagesdir/hidelock.gif" alt="$messageindex_txt{'460'}" title="$messageindex_txt{'460'}" /> $messageindex_txt{'460'}<br />~;
-        $yabbadminicons .=
-qq~<img src="$imagesdir/hidestickylock.gif" alt="$messageindex_txt{'461'}" title="$messageindex_txt{'461'}" /> $messageindex_txt{'461'}<br />~;
+        $yabbadminicons = qq~$micon{'hide'} $messageindex_txt{'458'}
+        <br />$micon{'hidesticky'} $messageindex_txt{'459'}
+        <br />$micon{'hidelock'} $messageindex_txt{'460'}
+        <br />$micon{'hidestickylock'} $messageindex_txt{'461'}<br />~;
     }
 
-    $yabbadminicons .= qq~
-        <img src="$imagesdir/announcement.gif" alt="$messageindex_txt{'779a'}" title="$messageindex_txt{'779a'}" /> $messageindex_txt{'779a'}<br />
-    <img src="$imagesdir/announcementlock.gif" alt="$messageindex_txt{'779b'}" title="$messageindex_txt{'779b'}" /> $messageindex_txt{'779b'}<br />
-        <img src="$imagesdir/hotthread.gif" alt="$messageindex_txt{'454'} $HotTopic $messageindex_txt{'454a'}" title="$messageindex_txt{'454'} $HotTopic $messageindex_txt{'454a'}" /> $messageindex_txt{'454'} $HotTopic $messageindex_txt{'454a'}<br />
-        <img src="$imagesdir/veryhotthread.gif" alt="$messageindex_txt{'455'} $VeryHotTopic $messageindex_txt{'454a'}" title="$messageindex_txt{'455'} $VeryHotTopic $messageindex_txt{'454a'}" /> $messageindex_txt{'455'} $VeryHotTopic $messageindex_txt{'454a'}<br />
+    $yabbadminicons .= qq~$micon{'announcement'} $messageindex_txt{'779a'}
+    <br />$micon{'announcementlock'} $messageindex_txt{'779b'}
+    <br />$micon{'hotthread'} $messageindex_txt{'454'} $HotTopic $messageindex_txt{'454a'}
+    <br />$micon{'veryhotthread'} $messageindex_txt{'455'} $VeryHotTopic $messageindex_txt{'454a'}<br />
     ~;
 
     $formstart =

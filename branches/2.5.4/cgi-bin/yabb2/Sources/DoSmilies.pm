@@ -18,6 +18,13 @@ if ($action eq 'detailedversion') { return 1; }
 
 LoadLanguage('Main');
 
+if ( -e ("$templatesdir/$usestyle/Other.template") ) {
+    require "$templatesdir/$usestyle/Other.template";
+}
+else {
+    require "$templatesdir/default/Other.template";
+}
+
 sub SmiliePut {
     print_output_header();
     $moresmilieslist   = q{};
@@ -63,58 +70,16 @@ qq~<img src="$yyhtml_root/Smilies/$line" id="$name" onclick="javascript:MoreSmil
         }
     }
     $more_smilie_array .= q~''~;
-
-    $output =
-qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<title>$smiltxt{'1'}</title>
-<meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
-<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
-<style type="text/css">
-.moresmiles {vertical-align:bottom; cursor:pointer;}
-</style>
-<script type="text/javascript">
-<!--
-function AddText(text) {
-	if (window.opener && !window.opener.closed) {
-		if (opener.document.postmodify.message.createTextRange && opener.document.postmodify.message.caretPos) {
-			var caretPos = opener.document.postmodify.message.caretPos;
-			caretPos.text = caretPos.text.charAt(caretPos.text.length - 1) == ' ' ?
-			text + ' ' : text;
-		} else if (opener.document.postmodify.message.setSelectionRange) {
-			var selectionStart = opener.document.postmodify.message.selectionStart;
-			var selectionEnd = opener.document.postmodify.message.selectionEnd;
-			var replaceString = text + opener.document.postmodify.message.value.substring(selectionStart, selectionEnd);
-			opener.document.postmodify.message.value = opener.document.postmodify.message.value.substring(0, selectionStart) + replaceString + opener.document.postmodify.message.value.substring(selectionEnd);
-			opener.document.postmodify.message.setSelectionRange(selectionStart + text.length, selectionEnd + text.length);
-		} else {
-			opener.document.postmodify.message.value += text;
-		}
-	}
-}
-
-moresmiliecode = new Array($more_smilie_array)
-
-function MoreSmilies(i) {
-	AddTxt=moresmiliecode[i];
-	AddText(AddTxt);
-}
-// -->
-</script>
-</head>
-<body style="background: #$popback; min-width:400px;">
-<p style="color:#$poptext; text-align:center">$smiltxt{'21'}</p>
-~;
-
     if ( $showadded == 3 || ( $showadded == 2 && $detachblock == 1 ) ) {
-		$output .= qq~ $moresmilieslist ~;
+		$my_output .= qq~ $moresmilieslist ~;
 	}
 
-	$output .= qq~
-	$evenmoresmilies
-</body>
-</html>~;
+    $output = $smilie_window_a;
+    $output =~ s/{yabb popback}/$popback/sm;
+    $output =~ s/{yabb poptext}/$poptext/sm;
+    $output =~ s/{yabb my_output}/$my_output/sm;
+    $output =~ s/{yabb evenmoresmilies}/$evenmoresmilies/sm;
+    $output =~ s/{yabb more_smilie_array}/$more_smilie_array/sm;
 
     print_HTML_output_and_finish();
     return;
@@ -130,17 +95,23 @@ sub SmilieIndex {
     if ( $showadded == 3 || ( $showadded == 2 && $detachblock == 1 ) ) {
 		while ($SmilieURL[$i]) {
 			if ($i % 4 == 0 && $i != 0) {
-                $smilieslist .= qq~      </tr><tr>\n~;
+                $smilieslist .= $my_smilie_window_tr;
 				$offset++;
 			}
             if ( ( $i + $offset ) % 2 == 0 ) {
-                $smiliescolor = q~windowbg2~;
+                $smiliescolor = $my_smiliebg_a;
             }
-            else { $smiliescolor = q~windowbg~; }
+            else { $smiliescolor = $my_smiliebg_b; }
             if ( $SmilieURL[$i] =~ /\//ixsm ) { $tmpurl = $SmilieURL[$i]; }
 			else { $tmpurl = qq~$defaultimagesdir/$SmilieURL[$i]~; }
-            $smilieslist .=
-qq~          <td class="center h_60px $smiliescolor"><img src="$tmpurl" alt="" onclick='javascript:MoreSmilies($i)' style='cursor:hand' /><br /><span style="font-size:xx-small; color:#$poptext">$SmilieDescription[$i]</span></td>\n~;
+            
+            $smilieslist .= $my_smilie_window_td;
+            $smilieslist =~ s/{yabb smiliescolor}/$smiliescolor/gsm;
+            $smilieslist =~ s/{yabb tmpurl}/$tmpurl/gsm;
+            $smilieslist =~ s/{yabb i}/$i/gsm;
+            $smilieslist =~ s/{yabb poptext}/$poptext/gsm;
+            $smilieslist =~ s/{yabb SmilieDescription}/$SmilieDescription[$i]/gsm;
+            
 			$smilie_url_array .= qq~"$tmpurl", ~;
 			$tmpcode = $SmilieCode[$i];
             $tmpcode =~ s/\&quot;/"+'"'+"/gxsm;    #';
@@ -164,15 +135,19 @@ qq~          <td class="center h_60px $smiliescolor"><img src="$tmpurl" alt="" o
             {
                 if ( $line !~ /banner/ixsm ) {
 					if ($i % 4 == 0 && $i != 0) {
-                        $smilieslist .= qq~      </tr><tr>\n~;
+                        $smilieslist .= $my_smilie_window_tr;
 						$offset++;
 					}
                     if ( ( $i + $offset ) % 2 == 0 ) {
-                        $smiliescolor = q~windowbg2~;
+                        $smiliescolor = $my_smiliebg_a;
                     }
-                    else { $smiliescolor = q~windowbg~; }
-                    $smilieslist .=
-qq~          <td class="center h_60px $smiliescolor"><img src="$yyhtml_root/Smilies/$line" alt="" onclick="javascript:MoreSmilies($i)" style="cursor:hand" /><br /><span style="font-size: xx-small; color:#$poptext">$line</span></td>\n~;
+                    else { $smiliescolor = $my_smiliebg_b; }
+                    $smilieslist .= $my_smilie_window_td_line;
+                    $smilieslist =~ s/{yabb smiliescolor}/$smiliescolor/gsm;
+                    $smilieslist =~ s/{yabb line}/$line/gsm;
+                    $smilieslist =~ s/{yabb i}/$i/gsm;
+                    $smilieslist =~ s/{yabb poptext}/$poptext/gsm;
+
 					$more_smilie_array .= qq~" [smiley=$line]", ~;
 					$i++;
 				}
@@ -181,71 +156,27 @@ qq~          <td class="center h_60px $smiliescolor"><img src="$yyhtml_root/Smil
 	}
 	while ($i % 4 != 0) {
         if ( ( $i + $offset ) % 2 == 0 ) {
-            $smiliescolor = q~windowbg2~;
+            $smiliescolor = $my_smiliebg_a;
         }
-        else { $smiliescolor = q~windowbg~; }
-        $smilieslist .=
-          qq~          <td class="center h_60px $smiliescolor">&nbsp;</td>\n~;
+        else { $smiliescolor = $my_smiliebg_b }
+        $smilieslist .= $my_smilie_window_blnk;
+        $smilieslist =~ s/{yabb smiliescolor}/$smiliescolor/gsm;
 		$i++;
 	}
     $smilie_code_array .= q~""~;
     $more_smilie_array .= q~""~;
-	if (-e "$htmldir/Smilies/banner.gif") {
-        $smiliesheader = qq~<tr>
-    <td class="center" style="background-color:#$popback" colspan="4">
-        <img src="$yyhtml_root/Smilies/banner.gif" alt="" />
-    </td>
-</tr>~;
+	if (-e "$htmldir/Smilies/$my_banner") {
+        $smiliesheader = $my_smilie_banner_header;
     }
 	else {
-        $smiliesheader =
-qq~<tr><td class="center" colspan="4"><b><span style="font-size:small">$smiltxt{'21'}</span></b></td></tr>~;
+        $smiliesheader = $my_smilie_header;
     }
 
-    $output =
-qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<title>$smiltxt{'1'}</title>
-<meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
-<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
-<script type="text/javascript">
-<!--
-function AddText(text) {
-	if (window.opener && !window.opener.closed) {
-		if (opener.document.postmodify.message.createTextRange && opener.document.postmodify.message.caretPos) {
-			var caretPos = opener.document.postmodify.message.caretPos;
-			caretPos.text = caretPos.text.charAt(caretPos.text.length - 1) == ' ' ?
-			text + ' ' : text;
-		} else if (opener.document.postmodify.message.setSelectionRange) {
-			var selectionStart = opener.document.postmodify.message.selectionStart;
-			var selectionEnd = opener.document.postmodify.message.selectionEnd;
-			var replaceString = text + opener.document.postmodify.message.value.substring(selectionStart, selectionEnd);
-			opener.document.postmodify.message.value = opener.document.postmodify.message.value.substring(0, selectionStart) + replaceString + opener.document.postmodify.message.value.substring(selectionEnd);
-			opener.document.postmodify.message.setSelectionRange(selectionStart + text.length, selectionEnd + text.length);
-		} else {
-			opener.document.postmodify.message.value += text;
-		}
-	}
-}
-
-moresmiliecode = new Array($more_smilie_array)
-function MoreSmilies(i) {
-	AddTxt=moresmiliecode[i];
-	AddText(AddTxt);
-}
-//-->
-</script>
-</head>
-<body style="background: #$popback; min-width:400px;">
-    <table class="bordercolor pad_4px cs_thin">
-$smiliesheader
-      <tr>
-$smilieslist
-      </tr>
-    </table>
-</body>
-</html>~;
+    $output = $smilie_window_advanced;
+    $output =~ s/{yabb popback}/$popback/gsm;
+    $output =~ s/{yabb smiliesheader}/$smiliesheader/sm;
+    $output =~ s/{yabb smilieslist}/$smilieslist/sm;
+    $output =~ s/{yabb more_smilie_array}/$more_smilie_array/sm;
 
     print_HTML_output_and_finish();
     return;

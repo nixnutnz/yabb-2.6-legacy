@@ -60,7 +60,7 @@ sub MessageIndex {
     BoardTotals( 'load', $currentboard );
 
     # See if we just want a message list from ajax
-    if ( $INFO{'messagelist'} ) { $messagelist = $INFO{'messagelist'}; }
+    if ( $INFO{'messagelist'}) { $messagelist = $INFO{'messagelist'}; }
 
 # Load template here for conditionals based on whether we're ajax loading or not.
     require "$templatesdir/$usemessage/MessageIndex.template";
@@ -133,7 +133,7 @@ sub MessageIndex {
 	$sort_starter    = qq~<a href="$scripturl?board=$currentboard;tsort=5" rel="nofollow">$messageindex_txt{'109'}</a>~;
 	$sort_answer     = qq~<a href="$scripturl?board=$currentboard;tsort=7" rel="nofollow">$messageindex_txt{'110'}</a>~;
 	$sort_lastpostim = qq~<a href="$scripturl?board=$currentboard;tsort=0" rel="nofollow">$messageindex_txt{'22'}</a>~;
-    require "$vardir/Micon.def";
+    get_micon();
 	my %starter;
 	@temp_list = @threadlist;
 	if ($tsort == 1) {
@@ -516,17 +516,17 @@ qq~<a href="$scripturl?board=$parentboard" class="a"><b>$pboardname</b></a>~;
         }
         else {
             $pboardname =
-qq~<a href="$scripturl?boardselect=$parentboard&subboards=1" class="a"><b>$pboardname</b></a>~;        }
+qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboardname</b></a>~;        }
         $boardtree   = qq~ &rsaquo; $pboardname$boardtree~;
         $parentboard = ${ $uid . $parentboard }{'parent'};
     }
 
     # check how many col's must be spanned
     if ( $multiview > 0 ) {
-        $colspan = 8;
+        $colspan = 7;
     }
     else {
-        $colspan = 7;
+        $colspan = 6;
     }
 
     if ( !$iamguest ) {
@@ -718,18 +718,18 @@ qq~&nbsp;&nbsp;<a href="$scripturl?action=rearrsticky;board=$annboard;num=$mnum;
             {
                 if ( ${$mnum}{'board'} eq $annboard ) {
                     $new =
-qq~<a href="$scripturl?virboard=$currentboard;num=$mnum/new#new"><img src="$imagesdir/$msgbrd_new" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'302'}" /></a>~;
+qq~<a href="$scripturl?virboard=$currentboard;num=$mnum/new#new"><img src="$imagesdir/$msgbrd_new" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'303'}" /></a>~;
                 }
                 else {
                     $new =
-qq~<a href="$scripturl?num=$mnum/new#new"><img src="$imagesdir/$msgbrd_new" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'302'}" /></a>~;
+qq~<a href="$scripturl?num=$mnum/new#new"><img src="$imagesdir/$msgbrd_new" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'303'}" /></a>~;
                 }
             }
             else {
                 $new = q{};
             }
         }
-        require "$vardir/Micon.def";
+        get_micon();
 
         $micon = qq~$micon{$micon}~;
         $mpoll = q{};
@@ -754,7 +754,7 @@ qq~<a href="$scripturl?num=$mnum/new#new"><img src="$imagesdir/$msgbrd_new" alt=
                 print {POLL} @poll or croak 'cannot print POLL';
                 fclose(POLL);
             }
-            require "$vardir/Micon.def";
+            get_micon();
 
             $micon = qq~$micon{'pollicon'}~;
             if ($poll_locked) { $micon = $micon{'polliconclosed'}; }
@@ -1508,7 +1508,7 @@ qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
         require Sources::BoardIndex;
         $boardindex_template = BoardIndex();
     }
-
+    
     $yymain .= qq~
     $boardindex_template
     $messageindex_template

@@ -656,6 +656,7 @@ qq~<a href="$scripturl?action=undovote;num=$pollnum$scp">$img{'deletevote'}</a>~
     $pollmain =~ s/{yabb modifypoll}/$modifypoll/gsm;
     $pollmain =~ s/{yabb deletepoll}/$deletepoll/gsm;
     $pollmain =~ s/{yabb poll_question}/$poll_question/gsm;
+    get_micon();
     
     if ($has_voted) {
         if ( !$hide_results || $poll_locked ) {
@@ -663,8 +664,8 @@ qq~<a href="$scripturl?action=undovote;num=$pollnum$scp">$img{'deletevote'}</a>~
         <div style="float: left; width: 20%; text-align: right;">
             <script type="text/javascript">
                 <!--
-                document.write('<a href="$scripturl?num=$viewnum"><img src="$imagesdir/bars.gif" alt="" /></a>');
-                document.write('<a href="$scripturl?num=$viewnum;view=pie"><img src="$imagesdir/pie.gif" alt="" /></a>');
+                document.write('<a href="$scripturl?num=$viewnum"><img src="$imagesdir/$poll_bar" alt="" /></a>');
+                document.write('<a href="$scripturl?num=$viewnum;view=pie"><img src="$imagesdir/$poll_pie" alt="" /></a>');
                 //-->
             </script>
         </div>

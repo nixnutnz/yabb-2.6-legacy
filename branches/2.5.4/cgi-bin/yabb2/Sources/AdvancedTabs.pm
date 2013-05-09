@@ -85,7 +85,7 @@ sub AddNewTab2 {
         my $tabafter       = $FORM{'addafter'};
         my $tmpusernamereq = 0;
         
-        #Carsten's fix - nice and neat#
+        #Carsten's fix - nice and neat/';#
         if ($taburl !~ /[ht|f]tp[s]{0,1}:\/\//) { $taburl = qq~http://$taburl~; } 
         if (   $taburl =~ /$boardurl\/$yyexec\.$yyaext/ixsm
             && $taburl =~ /action\=(.*?)(\;|\Z)/ixsm )
@@ -166,10 +166,9 @@ qq~$tabaction|$taburl|$tmpisaction|$tmpusernamereq|$tabview|$tabwin|$exttaburl~;
 }
 
 sub EditTab {
-    $tabsave =
-qq~<img src="$imagesdir/tabsave.gif" alt="$tabmenu_txt{'savetab'}" title="$tabmenu_txt{'savetab'}" />~;
-    $tabdel =
-qq~<img src="$imagesdir/tabdelete.gif" alt="$tabmenu_txt{'tabdel'}" title="$tabmenu_txt{'tabdel'}" style="padding:0; margin:0" />~;
+    get_micon();
+    $tabsave = $micon{'tabsave'};
+    $tabdel = $micon{'tabdel'};
     $tabstyle = q~ class="tabstyle"~;
 
     $edittab{'home'} =

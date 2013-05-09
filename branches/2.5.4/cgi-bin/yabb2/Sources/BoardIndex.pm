@@ -1606,13 +1606,13 @@ qq~<link rel="alternate" type="application/rss+xml" title="$boardindex_txt{'792'
                   split /\|/xsm, $board{"$parentboard"};
                 ToChars($pboardname);
                 $yytitle = $pboardname;
-                if ( ${ $uid . $parentboard }{'canpost'} ) {
+                if ( ${ $uid . $parentboard }{'canpost'} || !$subboard{$parentboard} ) {
                     $pboardname =
 qq~<a href="$scripturl?board=$parentboard" class="a"><b>$pboardname</b></a>~;
                 }
                 else {
                     $pboardname =
-qq~<a href="$scripturl?boardselect=$parentboard&subboards=1" class="a"><b>$pboardname</b></a>~;
+qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboardname</b></a>~;
                 }
                 $boardtree   = qq~ &rsaquo; $catlinkb &rsaquo; $pboardname$boardtree~;
                 $parentboard = ${ $uid . $parentboard }{'parent'};

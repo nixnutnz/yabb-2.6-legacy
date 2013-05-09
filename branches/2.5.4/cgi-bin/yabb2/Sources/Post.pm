@@ -305,6 +305,7 @@ sub Postpage {
         if ( $iamguest && $threadid ne q{} ) { $settofield = 'name'; }
     }
 
+	else { $extra = qq~<input type="hidden" name="icon" id="icon" value="" />~; }
     if ( $pollthread && $iamguest ) { $guest_vote = 1; }
     if ( $pollthread == 2 ) { $settofield = 'question'; }
 
@@ -568,7 +569,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
         document.images.icons.src="$imagesdir/"+document.postmodify.icon.options[document.postmodify.icon.selectedIndex].value+".gif";
     }~;
     }
-
+    
     $my_topper = qq~
 </script>
 <input type="hidden" name="threadid" value="$threadid" />
@@ -728,6 +729,51 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
     }
 
     if ( $postid ne 'Poll' ) {
+		$css ||= "windowbg";
+		if($tmpmusername eq 'Guest') {
+			$liveusernamelink = "<b>$mename</b>";
+			$livememberinfo = "$maintxt{'28'}";
+			$livememberstar = "";
+			$livetemplate_postinfo = "";
+			$tmplastmodified = "";
+		}
+		else {
+			if (!${$uid.$tmpmusername}{'password'}) { &LoadUser($tmpmusername); }
+			if ($tmpmusername eq $username){ LoadMiniUser($tmpmusername);}
+			$liveusernamelink = $format{$tmpmusername};
+			$livememberinfo = "$memberinfo{$tmpmusername}$addmembergroup{$tmpmusername}";
+			$livememberstar = $memberstar{$tmpmusername};
+			$livepostcount = NumberFormat(${$uid.$tmpmusername}{'postcount'});
+			$livetemplate_postinfo = qq~$display_txt{'21'}: $livepostcount<br />~;
+			if($action eq 'modify') {
+				if ($showmodify && (!$tllastmodflag || ($tmpmdate + ($tllastmodtime * 60)) < $date)) {
+					$tmplastmodified = qq~<div class="small" style="float: right; width: 100%; text-align: right; margin-top: 5px;">&#171; <i>$display_txt{'211'}: ~ . timeformat($date) . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &#187; &nbsp;</div>~;
+				}
+			}
+			else {
+				$subjdate = timeformat($date);
+				$tmplastmodified = q{};
+			}
+
+		}
+		$liveipimg = qq~<img src="$imagesdir/ip.gif" alt="" border="0" style="vertical-align: middle;" />~;
+		$livemip = $display_txt{'511'};
+		$messageblock = $mypost_liveprev;
+		$messageblock =~ s/({|<)yabb images(}|>)/$imagesdir/g;
+		$messageblock =~ s/({|<)yabb css(}|>)/$css/g;
+		$messageblock =~ s/({|<)yabb userlink(}|>)/$liveusernamelink/g;
+		$messageblock =~ s/({|<)yabb memberinfo(}|>)/$livememberinfo/g;
+		$messageblock =~ s/({|<)yabb stars(}|>)/$livememberstar/g;
+		$messageblock =~ s/({|<)yabb postinfo(}|>)/$livetemplate_postinfo/g;
+		$messageblock =~ s/({|<)yabb msgimg(}|>)/<span id="saveicon"><\/span>/g;
+		$messageblock =~ s/({|<)yabb subject(}|>)/<span id="savesubj"><\/span>/g;
+		$messageblock =~ s/({|<)yabb msgdate(}|>)/<span id="savedate"><\/span>/g;
+		$messageblock =~ s/({|<)yabb message(}|>)/<span id="savemess"><\/span>/g;
+		$messageblock =~ s/({|<)yabb modified(}|>)/$tmplastmodified/g;
+		$messageblock =~ s/({|<)yabb ipimg(}|>)/$liveipimg/g;
+		$messageblock =~ s/({|<)yabb ip(}|>)/$livemip/g;
+		$messageblock =~ s/({|<)yabb (.+?)(}|>)//g;
+
         if ($prevmain) {
             $my_prevmain = $mypost_preview_main;
             $my_prevmain =~ s/{yabb prevmain}/$prevmain/sm;
@@ -881,15 +927,14 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
 
         $my_post_feata = $mypost_feata;
         $my_post_feata .= qq~
-            <span class="small"><img src="$defaultimagesdir/cat_collapse.gif" id="feature_col" alt="$npf_txt{'collapse_features'}" title="$npf_txt{'collapse_features'}" class="pointer" onclick="show_features(0);" /> $npf_txt{'features_text'}</span>
+            <span class="small"><img src="$imagesdir/$post_cat_col" id="feature_col" alt="$npf_txt{'collapse_features'}" title="$npf_txt{'collapse_features'}" class="cursor" onclick="show_features(0);" /> $npf_txt{'features_text'}</span>
             <input type="hidden" name="col_rowb" id="col_row" value="$col_row" />~;
 
         if ( !$removenormalsmilies ) {
             $my_smilies = $mypost_smilies;
             $my_smilies .= q~<script type="text/javascript">~;
             $my_smilies .= smilies_list();
-            $my_smilies .= q~            document.write("</div>");
-            </script>~;
+            $my_smilies .= q~</script>~;
         }
 
         if (   ( $showadded == 3 && $showsmdir != 2 )
@@ -924,8 +969,8 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
 
             if ( $allowattach > 1 ) {
                 $my_att_allow = qq~
-            <img src="$defaultimagesdir/cat_expand.gif" id="attform_add" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" class="pointer" onclick="enabPrev2(1);" />
-            <img src="$defaultimagesdir/cat_collapse.gif" id="attform_sub" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" class="pointer" style="visibility:hidden;" onclick="enabPrev2(-1);" />~;
+            <img src="$defaultimagesdir/$post_cat_exp" id="attform_add" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" class="cursor" onclick="enabPrev2(1);" />
+            <img src="$defaultimagesdir/$post_cat_col" id="attform_sub" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" class="cursor" style="visibility:hidden;" onclick="enabPrev2(-1);" />~;
             }
 
             my $startcount;
@@ -942,14 +987,14 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             <div id="attform_b_$y" style="float:left; width:76%;~
                       . ( $y > 1 ? q~ padding-top:5px~ : q{} ) . qq~">
                 <input type="file" name="file$y" id="file$y" size="50" onchange="selectNewattach($y);" /><br />
-                        <span style="font-size:x-small">
-                <input type="hidden" id="w_filename$y" name="w_filename$y" value="$files[$y-1]" />
-                <select id="w_file$y" name="w_file$y" size="1">
-                <option value="attachdel">$fatxt{'6c'}</option>
-                <option value="attachnew">$fatxt{'6b'}</option>
-                <option value="attachold" selected="selected">$fatxt{'6a'}</option>
+                    <span style="font-size:x-small">
+                        <input type="hidden" id="w_filename$y" name="w_filename$y" value="$files[$y-1]" />
+                        <select id="w_file$y" name="w_file$y" size="1">
+                        <option value="attachdel">$fatxt{'6c'}</option>
+                        <option value="attachnew">$fatxt{'6b'}</option>
+                        <option value="attachold" selected="selected">$fatxt{'6a'}</option>
                         </select>&nbsp;$fatxt{'40'}: <a href="$uploadurl/$files[$y-1]" onclick="target='_blank';">$files[$y-1]</a>
-                        </span>~;
+                    </span></div>~;
                 }
                 else {
                     $my_att_a = qq~
@@ -958,9 +1003,8 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                       . qq~"><b>$fatxt{'6'} $y:</b></div>
             <div id="attform_b_$y" style="float:left; width:76%;~
                       . ( $y > 1 ? q~ visibility:hidden; height:0px~ : q{} )
-                      . qq~">\n             <input type="file" name="file$y" id="file$y" size="50" />~;
+                      . qq~">\n             <input type="file" name="file$y" id="file$y" size="50" /></div>~;
                 }
-                $my_att_a   .= qq~\n            </div>\n~;
                 $mypoll_att .= $my_att_a;
 
                 if ( $is_preview == 1 && $CGI_query->upload("file$y") ) {
@@ -1053,6 +1097,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         $my_postsection =~ s/{yabb lastmod}/$lastmod/sm;
         $my_postsection =~ s/{yabb nscheck}/$nscheck/sm;
         $my_postsection =~ s/{yabb iecopycheck}/$iecopycheck/sm;
+        $my_postsection =~ s/{yabb messageblock}/$messageblock/sm;
     }
 
     #these are the buttons to submit
@@ -1131,11 +1176,19 @@ showtpstatus();
     }
 
     if ( $action eq 'modify' || $action eq 'modify2' ) {
-        $displayname = qq~$mename~;
-    }
-    else {
-        $displayname = ${ $uid . $username }{'realname'};
-    }
+		$displayname = qq~$mename~;
+		$moddate = $tmpmdate;
+		if ($showmodify && (!$tllastmodflag || ($tmpmdate + ($tllastmodtime * 60)) < $date)) {
+			$tmplastmodified = qq~&#171; <i>$display_txt{'211'}: ~ . &timeformat($date) . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &#187;~;
+		}
+		$tmpmusername = $thismusername;
+	} else {
+		$displayname = ${$uid.$username}{'realname'};
+		$moddate = $date;
+		$tmplastmodified = q{};
+		$tmpmusername = $username;
+	}
+	$moddate = &timeformat($moddate);
 
     require "$templatesdir/$usedisplay/Display.template";
 
@@ -1175,21 +1228,19 @@ function enabPrev() {
     if ( autoprev === false ) {
 		autoprev = true
 		document.getElementById("savetable").style.display = "block";
-		document.getElementById("saveframe").style.display = "block";
 		document.images.prevwin.alt = "$npf_txt{'02'}";
 		document.images.prevwin.title = "$npf_txt{'02'}";
-		document.images.prevwin.src="$defaultimagesdir/cat_collapse.gif";
+		document.images.prevwin.src="$defaultimagesdir/$post_cat_col";
 		autoPreview();
 	}
 	else {
 		autoprev = false;
 		ubbstr = '';
 		document.getElementById("savetable").style.display = "none";
-		document.getElementById("saveframe").style.display = "none";
 		document.postmodify.message.focus();
 		document.images.prevwin.alt = "$npf_txt{'01'}";
 		document.images.prevwin.title = "$npf_txt{'01'}";
-		document.images.prevwin.src="$defaultimagesdir/cat_expand.gif";
+		document.images.prevwin.src="$defaultimagesdir/$post_cat_exp";
 	}
 	calcCharLeft();
 }
@@ -1206,10 +1257,10 @@ function calcCharLeft() {
     charleft = maxLength - document.postmodify.message.value.length
   }
   document.postmodify.msgCL.value = charleft
-  if (charleft >= 100 && noalert) { noalert = false; gralert = true; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/green1.gif"; }
-  if (charleft < 100 && charleft >= 50 && gralert) { noalert = true; gralert = false; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/green0.gif"; }
-  if (charleft < 50 && charleft > 0 && rdalert) { noalert = true; gralert = true; rdalert = false; clalert = true; document.images.chrwarn.src="$defaultimagesdir/red0.gif" }
-  if (charleft === 0 && clalert) { noalert = true; gralert = true; rdalert = true; clalert = false; document.images.chrwarn.src="$defaultimagesdir/red1.gif"; }
+  if (charleft >= 100 && noalert) { noalert = false; gralert = true; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$post_chrwarn_g1"; }
+  if (charleft < 100 && charleft >= 50 && gralert) { noalert = true; gralert = false; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$post_chrwarn_g0"; }
+  if (charleft < 50 && charleft > 0 && rdalert) { noalert = true; gralert = true; rdalert = false; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$post_chrwarn_r0" }
+  if (charleft === 0 && clalert) { noalert = true; gralert = true; rdalert = true; clalert = false; document.images.chrwarn.src="$defaultimagesdir/$post_chrwarn_r1"; }
   return clipped
 }
 
@@ -1229,13 +1280,16 @@ function autoPreview() {
 	pstHttp.onreadystatechange = function() {
 		if(pstHttp.readyState == 4) {
 			if(pstHttp.status == 200 || window.location.href.indexOf("http") == -1) {
-				document.getElementById("saveframe").innerHTML = pstHttp.responseText;
+				tmpmess = pstHttp.responseText.split("|");
+				document.getElementById("saveicon").innerHTML = tmpmess[0];
+				document.getElementById("savesubj").innerHTML = tmpmess[1];
+				document.getElementById("savedate").innerHTML = tmpmess[2];
+				document.getElementById("savemess").innerHTML = tmpmess[3];
 				sh_highlightDocument();
 				if (/post_liveimg_resize_1/i.test(pstHttp.responseText)) LivePrevImgResize();
            }
         }
 	};
-	var dispnamevalue = encodeURIComponent(document.getElementById("mename").value);
 	var iconvalue = encodeURIComponent(document.getElementById("icon").value);
 	var subjvalue = encodeURIComponent(document.getElementById("subject").value);
 	var tmpmessvalue = document.getElementById("message").value;
@@ -1244,7 +1298,7 @@ function autoPreview() {
 	var tmusername = encodeURIComponent(document.getElementById("tmpmusername").value);
 	var tmoddate = encodeURIComponent(document.getElementById("tmpmoddate").value);
 	var sessvalue = encodeURIComponent(document.postmodify.formsession.value);
-	var parameters = "icon="+iconvalue+"&displayname="+dispnamevalue+"&subject="+subjvalue+"&message="+messvalue+"&musername="+tmusername+"&moddate="+tmoddate+"&formsession="+sessvalue;
+	var parameters = "icon="+iconvalue+"&subject="+subjvalue+"&message="+messvalue+"&musername="+tmusername+"&moddate="+tmoddate+"&formsession="+sessvalue;
 	pstHttp.open("POST", url, true);
 	pstHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	pstHttp.send(parameters);
@@ -1261,7 +1315,7 @@ function LivePrevImgResize() {
 	var liveimg_resize_names = new Array ();
 	var zi = 0;
 
-	var imgsavail = document.getElementById("saveframe").getElementsByTagName("img");
+	var imgsavail = document.getElementById("savemess").getElementsByTagName("img");
 	for (i=0; i<imgsavail.length; i++) {
 		if (imgsavail[i].className == "liveimg") {
 			liveimg_resize_names[zi] = imgsavail[i].name;
@@ -3054,11 +3108,11 @@ sub modAlert {
         $iamguest
       ? $mypost_guest_a
       : q{};
-    $name_field =~ s/{yabb email}/$FORM{'name'}/sm;
+    $name_field =~ s/{yabb name}/$FORM{'name'}/sm;
 
     $email_field =
         $iamguest
-      ? $myposte_templateb
+      ? $mypost_guest_b
       : q{};
     $email_field =~ s/{yabb email}/$FORM{'email'}/sm;
 
@@ -3066,11 +3120,12 @@ sub modAlert {
         validation_code();
         $verification_field =
             $verification eq q{}
-          ? $myposte_templatec
+          ? $mypost_guest_c
           : q{};
         $verification_field =~ s/{yabb showcheck}/$showcheck/sm;
         $verification_field =~ s/{yabb flood_text}/$flood_text/sm;
     }
+
     if (   $iamguest
         && $spam_questions_gp
         && -e "$langdir/$language/spam.questions" )

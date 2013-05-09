@@ -209,7 +209,7 @@ sub postbox {
                     <span id="defaultpal6" class="deftpal" style="background-color: $pallist[5];" onclick="ConvShowcolor(this.style.backgroundColor)">&nbsp;</span>
                  </div>
                  <div class="palbox_right">
-                     <img src="$imagesdir/palette1.gif" class="pointer" onclick="window.open('$scripturl?action=palette;task=post', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+                     <img src="$imagesdir/palette1.gif" class="cursor" onclick="window.open('$scripturl?action=palette;task=post', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
                   </div>
             </div>
             <script type="text/javascript">
@@ -222,7 +222,6 @@ sub postbox {
             document.write("<img src='$imagesdir/center.gif' onclick='center();' "+HAND+" width='23' height='22' alt='$post_txt{'256'}' title='$post_txt{'256'}' />");
             document.write("<img src='$imagesdir/right.gif' onclick='right();' "+HAND+" width='23' height='22' alt='$post_txt{'446'}' title='$post_txt{'446'}' />");
             document.write('</div>');
-
             </script>
             <noscript>
             <span class="small">$maintxt{'noscript'}</span>
@@ -268,7 +267,7 @@ if ($INFO{'edit_cal_even'} ) {$message = q~{yabb calevent}~;}
                     <input type="hidden" name="messagewidth" id="messagewidth" value="$pwidth" />
                     <input type="hidden" name="messageheight" id="messageheight" value="$pheight" />
                     <div id="dragcanvas" style="height: $dheight; width: $dwidth;">
-                        <textarea name="message" id="message" rows="8" cols="68" style="height: $mheight; width: $mwidth; font-size: $mtextsize;" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onchange="storeCaret(this);" tabindex="4">$message</textarea>
+                        <textarea name="message" id="message" rows="8" cols="68" style="height: $mheight; width: $mwidth; font-size: $mtextsize;" onclick="storeCaret(this);" onkeyup="storeCaret(this); autoPreview()" onchange="storeCaret(this);" tabindex="4">$message</textarea>
                         <div id="dragbgw" style="height: $dheight;">
                             <img src="$defaultimagesdir/resize_wb.gif" id="dragImg1" class="drag" style="left: $dragwpos; height: $dheight" alt="resize_wb" />
                         </div>
@@ -284,8 +283,8 @@ if ($INFO{'edit_cal_even'} ) {$message = q~{yabb calevent}~;}
                             <img src="$defaultimagesdir/bull-redcheck.gif" onclick="showbullets('bull-redcheck'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-greencheck.gif" onclick="showbullets('bull-greencheck'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-bluecheck.gif" onclick="showbullets('bull-bluecheck'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-blackcheck.gif" onclick="showbullets('bull-blackcheck'), bulletset()" alt="" /><br />
                             <img src="$defaultimagesdir/bull-redarrow.gif" onclick="showbullets('bull-redarrow'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-greenarrow.gif" onclick="showbullets('bull-greenarrow'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-bluearrow.gif" onclick="showbullets('bull-bluearrow'), bulletset()" alt="" /><img src="$defaultimagesdir/bull-blackarrow.gif" onclick="showbullets('bull-blackarrow'), bulletset()" alt="" /><br />
                         </div>
-			<div class="ubboptions" id="codelang" style="position: absolute; top: -22px; left: 230px; width: 92px; padding: 0px; background-color: #CCCCCC; display: none;">
-				<select size="10" name="codesyntax" id="codesyntax" onchange="syntaxlang(this.options[this.selectedIndex].value, this.selectedIndex);" style="margin:0px; font-size: 9px; width: 92px;">
+						<div class="ubboptions" id="codelang" style="position: absolute; top: -22px; left: 230px; width: 92px; padding: 0px; background-color: #CCCCCC; display: none;">
+							<select size="10" name="codesyntax" id="codesyntax" onchange="syntaxlang(this.options[this.selectedIndex].value, this.selectedIndex);" style="margin:0px; font-size: 9px; width: 92px;">
                                 <option value="" title="$npf_txt{'default'}">$npf_txt{'default'}</option>
                                 <option value=" c++" title="C++">C++</option>
                                 <option value=" css" title="CSS">CSS</option>
@@ -305,7 +304,9 @@ if ($INFO{'edit_cal_even'} ) {$message = q~{yabb calevent}~;}
                     </div>
                     <div class="chrsize">
                         <span class="small">$post_txt{'textsize'} <input value="$textsize" size="2" name="txtsize" id="txtsize" class="chrsize" readonly="readonly" />pt <img src="$imagesdir/smaller.gif" height="11" width="11" alt="" onclick="sizetext(-1);" /><img src="$imagesdir/larger.gif" height="11" width="11" alt="" onclick="sizetext(1);" /></span>
-                    </div>~;
+                    </div>
+                </div>
+            </div>~;
     return $box;
 }
 
@@ -473,7 +474,7 @@ sub msicons {
     <tr id="feature_status_1">
         <td class="windowbg"><label for="icon"><b>$post_txt{'71'}:</b></label></td>
         <td class="windowbg">
-            <select name="icon" id="icon" onchange="showimage(); updatTopic();">
+            <select name="icon" id="icon" onchange="showimage(); autoPreview();">
             <option value="xx"$ic[1]>$post_txt{'281'}</option>
             <option value="thumbup"$ic[2]>$post_txt{'282'}</option>
             <option value="thumbdown"$ic[3]>$post_txt{'283'}</option>
@@ -560,8 +561,8 @@ sub attach {
             <input type="hidden" name="oldattach" id="oldattach" value="$mfn" />~;
 
         if ($allowattach > 1) { $yymain .= qq~
-            <img name="attform_add" id="attform_add" src="$defaultimagesdir/cat_expand.gif" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" class="pointer" onclick="enabPrev2(1);" />
-            <img name="attform_sub" id="attform_sub" src="$defaultimagesdir/cat_collapse.gif" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" class="pointer" style="visibility:hidden;" onclick="enabPrev2(-1);" />~;
+            <img name="attform_add" id="attform_add" src="$defaultimagesdir/cat_expand.gif" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" class="cursor" onclick="enabPrev2(1);" />
+            <img name="attform_sub" id="attform_sub" src="$defaultimagesdir/cat_collapse.gif" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" class="cursor" style="visibility:hidden;" onclick="enabPrev2(-1);" />~;
         }
 
         $yymain .= qq~
@@ -592,7 +593,7 @@ sub attach {
                 <option value="attachnew">$fatxt{'6b'}</option>
                 <option value="attachold" selected="selected">$fatxt{'6a'}</option>
                 </select>&nbsp;$fatxt{'40'}: <a href="$uploadurl/$files[$y-1]" onclick="target='_blank';">$files[$y-1]</a>
-                </span>~;
+                </span></div>~;
             }
             else {
                 $yymain .= qq~
@@ -601,9 +602,8 @@ sub attach {
                   . qq~"><b>$fatxt{'6'} $y:</b></div>
             <div id="attform_b_$y" style="float:left; width:76%;~
                   . ( $y > 1 ? q~ visibility:hidden; height:0px~ : q{} )
-                  . qq~">\n             <input type="file" name="file$y" id="file$y" size="50" />~;
+                  . qq~">\n             <input type="file" name="file$y" id="file$y" size="50" /></div>~;
             }
-            $yymain .= qq~\n            </div>\n~;
 
             if ($is_preview == 1 && $CGI_query->upload("file$y")) { $is_preview = 2 ;}
         }

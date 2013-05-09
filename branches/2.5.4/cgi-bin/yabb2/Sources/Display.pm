@@ -660,7 +660,7 @@ qq~<a href="$scripturl?board=$currentboard">&lsaquo; $maintxt{'board'}</a>~;
         var addnotelang = '$display_txt{'529'}';
         var markfinishedlang = '$display_txt{'528'}';~;
 
-    require "$vardir/Micon.def";
+    get_micon();
     if ( !$iamguest && $currentboard ne $annboard ) {
         require Sources::Favorites;
         $template_favorite =
@@ -1225,7 +1225,7 @@ qq~$menusep<a href="$scripturl?action=split_splice;board=$currentboard;thread=$v
               )
             {
                 $template_delete =
-qq~$menusep<span style="cursor: pointer;" onclick="if(confirm('$display_txt{'rempost'}')) {uncheckAllBut($counter);}">$img{'delete'}</span>~;
+qq~$menusep<a style="cursor: pointer;" onclick="if(confirm('$display_txt{'rempost'}')) {uncheckAllBut($counter);}">$img{'delete'}</a>~;
                 if (
                     (
                            ( $iammod && $mdmod == 1 )
@@ -1252,7 +1252,7 @@ qq~<input type="checkbox" class="$css" style="border: 0px; visibility: hidden; d
 qq~<input type="checkbox" class="$css" style="border: 0px; visibility: hidden; display: none;" name="del$counter" value="$counter" />~;
             }
         }
-        require "$vardir/Micon.def";
+        get_micon();
 
         $msgimg =
 qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
@@ -1440,14 +1440,15 @@ qq~$menusep<a href="$scripturl?action=markunread;thread=$viewnum;board=$currentb
 
 	$yynavback = qq~$tabsep <a href="$scripturl">&#171; $img_txt{'103'}</a> $tabsep $navback $tabsep~;
 	
-	$boardtree = '';
+	$boardtree = q{};
 	$parentboard = $currentboard;
 	while($parentboard) {
 		my ($pboardname, undef, undef) = split /\|/xsm, $board{"$parentboard"};
 		ToChars($pboardname);
-		if(${$uid.$parentboard}{'canpost'}) {
+		if(${$uid.$parentboard}{'canpost'} || !$subboard{$parentboard} ) {
 			$pboardname = qq~<a href="$scripturl?board=$parentboard" class="a"><b>$pboardname</b></a>~;
-		} else {
+		}
+		else {
 			$pboardname = qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboardname</b></a>~;
 		}
 		$boardtree = qq~ &rsaquo; $pboardname$boardtree~;

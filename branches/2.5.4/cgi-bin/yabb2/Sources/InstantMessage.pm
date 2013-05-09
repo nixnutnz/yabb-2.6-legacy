@@ -170,7 +170,6 @@ sub buildIMsend {
 
     $MCGlobalFormStart .= qq~
     $ctmain
-    <script src="$yyhtml_root/yabbc.js" type="text/javascript"></script>
     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
     <script type="text/javascript">
     var displayNames = new Object();
@@ -2343,6 +2342,10 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;repl
             <a href="$scripturl?action=imprint;caller=$INFO{'caller'};id=$messageid" target="_blank">$img{'print'}</a>
         ~;
     $my_notme = q{};
+    my $messIconName = 'standard';
+    if    ( $mstatus =~ m/c/sm ) { $messIconName = 'confidential'; }
+    elsif ( $mstatus =~ m/u/sm ) { $messIconName = 'urgent'; }
+
     if ( $mstatus ne 'ga' && $mstatus ne 'g' ) {
         $notme    = $musername eq $username ? $mtousers : $musername;
         $notme    = ${ $uid . $notme }{'realname'};
@@ -2368,6 +2371,7 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
     $showIM .= $myIM_show;
     $showIM =~ s/{yabb my_title}/$my_title/sm;
     $showIM =~ s/{yabb msub}/$msub/sm;
+    $showIM =~ s/{yabb msimg}/$micon{$messIconName}/sm;
     $showIM =~ s/{yabb mydate}/$mydate/sm;
     $showIM =~ s/{yabb message}/$message/sm;
     $showIM =~ s/{yabb my_sig}/$my_sig/sm;
