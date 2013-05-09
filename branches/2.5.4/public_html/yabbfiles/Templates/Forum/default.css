@@ -84,6 +84,7 @@ vertical-align: baseline;
 position: relative;
 top: -0.4em;
 }
+
 .button, [type=submit], [type=reset], [type=button] {
 background-color:#F8G8F8;
 border:1px solid #C6C6C6;
@@ -299,13 +300,13 @@ vertical-align:middle;
 text-align:left;
 }
 
-.mainbottom a {
+.mainbottom a, .mainbottom span {
 font-weight:bold;
 font-size:10px;
 color:#FFF;
 }
 
-.mainbottom a:hover {
+.mainbottom a:hover, .mainbottom span:hover {
 color:#BBB;
 text-decoration:none;
 }
@@ -341,20 +342,6 @@ padding:0;
 }
 
 .tabmenu a, .mctabmenu a {
-font-size:12px;
-font-family:Arial, Sans-Serif;
-color: #BBB;
-white-space:nowrap;
-font-weight:bold;  
-display:block;
-float:left;
-margin:0 1px 0 0;
-padding:4px 8px;
-text-align:center;
-text-decoration:none;
-}
-
-.tabedit_a {
 font-size:12px;
 font-family:Arial, Sans-Serif;
 color: #BBB;
@@ -619,6 +606,15 @@ text-decoration:none;
 .titlebg a:hover,.catbg a:hover,.selected-bg a:hover {
 text-decoration:underline;
 } 
+
+.message-sort, .message-sort a:hover {
+color:#2D2D2D;
+}
+
+.message-sort a {
+color:#3B5998;
+} 
+
 .message, #message, .prevwin {
 color:#2D2D2D;
 font-family:Verdana, Helvetica, Arial, Sans-Serif;
@@ -648,7 +644,7 @@ margin-left:1em;
 }
 
 .prevwin table {
-border: #fff solid thin;
+/*border: #fff solid thin;*/
 }
 
 .message table td {
@@ -1226,7 +1222,7 @@ font-weight:bold;
 text-decoration:underline;
 }
 
-.pointer {
+.cursor {
 cursor:pointer;
 }
 
