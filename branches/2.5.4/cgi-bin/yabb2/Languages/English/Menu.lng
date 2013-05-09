@@ -116,6 +116,7 @@ if (!$language){$language = $lang;}
 '46' => 'Storage',
 );
 
-require "$vardir/Menu$UseMenuType.def";
+require Sources::Menu;
+SetMenu();
 
 1;

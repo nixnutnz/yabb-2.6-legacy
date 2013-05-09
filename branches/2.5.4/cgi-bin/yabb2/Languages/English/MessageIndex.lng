@@ -48,6 +48,7 @@ $messageindexlngver = 'YaBB 2.5.4 $Revision$';
 '298a' => 'Moderator Group',
 '301' => 'Views',
 '302' => 'New',
+'303' => 'Go to first unread post',
 '454' => 'Hot Topic (More than',
 '454a' => 'Replies)',
 '455' => 'Very Hot Topic (More than',
