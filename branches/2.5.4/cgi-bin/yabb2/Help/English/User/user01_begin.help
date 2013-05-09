@@ -4,7 +4,7 @@ $SectionName = "Getting_started";
 #############################################
 $SectionSub1 = "Register_an_Account";
 $SectionBody1 = qq~Since this forum is powered by YaBB, registering an account is so simple, you'll be chatting in no time!
-<p><b>Step 1:</b> In the menu above, you will see items titled &quot;Home&quot;, &quot;Help&quot;, &quot;Login&quot;, &quot;Register&quot;, etc. Click on &quot;Register&quot;.</p>
+<p><b>Step 1:</b> In the menu above, you will see items titled &quot;Board Index&quot;, &quot;Help&quot;, &quot;Login&quot;, &quot;Register&quot;, etc. Click on &quot;Register&quot;.</p>
 <p><b>Step 2:</b> On this new page, you will see a form where you can choose your username and displayed name, password &#40;if the administrator allows&#41;, and enter you email address.  Fill in the boxes with your information.</p>
 <p><b>Step 3:</b> If enabled by the Administrator, you may need to fill in the characters presented in the Verification Code &#40;CAPTCHA&#41; box.</p> 
 <p><b>Step 4:</b> Check the box to agree to the User Agreement if the Administrator has enabled one.</p>
@@ -20,7 +20,7 @@ $SectionBody1 = qq~Since this forum is powered by YaBB, registering an account i
 #############################################
 $SectionSub2 = "Log_Into_Your_Account";
 $SectionBody2 = qq~Now that you've registered an account, it's time to sign in.
-<p><b>Step 1:</b> In the menu above, you will see items titled &quot;Home, &quot;Help&quot;, &quot;Login&quot;, &quot;Register&quot;, etc. Click on &quot;Login&quot;.</p>
+<p><b>Step 1:</b> In the menu above, you will see items titled &quot;Board Index, &quot;Help&quot;, &quot;Login&quot;, &quot;Register&quot;, etc. Click on &quot;Login&quot;.</p>
 <p><b>Step 2:</b> On this new page, you will see several options.</p>
 <ul>
 <li><u>Username or email address</u> - Enter in the userID or the E-mail address you registered with.</li>
@@ -47,7 +47,7 @@ $SectionBody3 = qq~When you are done posting, it is a good idea to log out of yo
 #############################################
 $SectionSub4 = "Forgotten_Password";
 $SectionBody4 = qq~If you have forgotten your password, YaBB can resend it to the E-mail account you have given in your profile.
-<p><b>Step 1</b> In the menu above, you will see items titled &quot;Home&quot;, &quot;Login&quot;, &quot;Register&quot;, etc. Click on &quot;Login&quot;.</p>
+<p><b>Step 1</b> In the menu above, you will see items titled &quot;Board Index&quot;, &quot;Login&quot;, &quot;Register&quot;, etc. Click on &quot;Login&quot;.</p>
 <p><b>Step 2</b> On this new page, you will see a button titled &quot;Forgot Password&quot;. Click this button.</p>
 <p><b>Step 3</b> A new page will load with a single box. Enter your username or the E-mail address you registered with.</p>
 <p><b>Step 4</b> Click the button titled &quot;Send&quot;.</p>
