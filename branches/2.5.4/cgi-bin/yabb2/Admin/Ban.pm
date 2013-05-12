@@ -285,7 +285,7 @@ sub ipban_add {
           or croak 'cannot open BAN2 to write';
         if ( $j && $ihave == 0 && $j ne '127.0.0.1' ) {
             print {BAN2}
-              qq~$type|$j|$time|${$uid.$username}{'realname'} ($username)|h\n~
+              qq~$type|$j|$time|${$uid.$username}{'realname'} ($username)|p|\n~
               or croak 'cannot write to BAN2';
         }
         else { print {BAN2} q~~ or croak 'cannot write to BAN2'; }
