@@ -136,7 +136,7 @@ qq~<span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$a
     }
     elsif ( $UseMenuT == 3 ) {
         $menusep = q{};
-        $img_out = qq~$button_imgurl/$button_icon.$imgext|${$button_text}{$alt_num}~;
+        $img_out = qq~$button_imgurl/$button_icon.$imgext|${$button_text}{$text_num}~;
     }
     else {
         $menusep =
