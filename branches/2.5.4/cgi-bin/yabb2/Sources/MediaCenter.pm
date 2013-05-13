@@ -124,9 +124,18 @@ qq~http://mediaservices.myspace.com/services/media/embed.aspx/m=$1,t=1,mt=video~
             $media_url =~ s/youtu\.be\//www\.youtube\.com\/v\//gxsm;
             $video         = $embed_youtube;
             $controlheight = 36;
+        }
+        elsif ( $media_url =~ m/facebook\.com/ixsm ) {
+            ( undef, $media_in) = split /\?/xsm, $media_url;
+            @media_in = split /\&/gxsm, $media_in;
+            foreach my $i (@media_in) {
+               if ( $i =~ m/v=/) { $i=~ s/amp;//gsm; $i=~ s/v=//gsm; $media_url = $i;}
+            }
+            $video         = $iframe_facebook;
+            $controlheight = 36;
+        }
 
             # added Clipfish video url support
-        }
         elsif ( $media_url =~ m/clipfish\.de/ixsm ) {
             ( undef, $temp ) = split /video\//xsm, $media_url;
             ( $videoid, undef ) = split /\//xsm, $temp;
@@ -189,8 +198,8 @@ qq~http://www.clipfish.de/cfng/flash/clipfish_player_3.swf?as=0&vid=$videoid&r=1
 
             # GameTrailers.com END
 
-            # added Google video url support
         }
+            # added Google video url support
         elsif ( $media_url =~ m/video\.google/ixsm ) {
             ( undef, $docid ) = split /=/xsm, $media_url;
             $media_url =
@@ -198,20 +207,30 @@ qq~http://www.clipfish.de/cfng/flash/clipfish_player_3.swf?as=0&vid=$videoid&r=1
             $video         = $embed_flash;
             $controlheight = 36;
 
-            # added dailymotion video url support
         }
+            # added dailymotion video url support
         elsif ( $media_url =~ m/dailymotion\.com/ixsm ) {
-            $video         = $embed_flash;
+            $video         = $iframe_dailymotion;
             $controlheight = 36;
 
-            # added vimeo video url support
         }
+        elsif ( $media_url =~ m/xfacebook\.com/ixsm ) {
+            ( undef, $media_in) = split /\?/xsm, $media_url;
+            @media_in = split /\&/gxsm, $media_in;
+            foreach my $i (@media_in) {
+               if ( $i =~ m/v=/) { $i=~ s/amp;//gsm; $i=~ s/v=//gsm; $media_url = $i;}
+            }
+            $video         = $iframe_facebook;
+            $controlheight = 36;
+        }
+            # added vimeo video url support
         elsif ( $media_url =~ m/vimeo\.com/ixsm ) {
-            $video         = $embed_flash;
+            #$video         = $embed_flash;
+            $video         = $iframe_vimeo;
             $controlheight = 60;
 
-            # added hulu video url support
         }
+            # added hulu video url support
         elsif ( $media_url =~ m/hulu\.com/ixsm ) {
             $video         = $embed_flash;
             $controlheight = 0;
@@ -221,9 +240,8 @@ qq~http://www.clipfish.de/cfng/flash/clipfish_player_3.swf?as=0&vid=$videoid&r=1
         elsif ( $media_url =~ m/(\.qt|\.qtm|\.mov|\.mp4|\.3gp)$/ixsm ) {
             $video         = $embed_qt;
             $controlheight = 15;
-
-            # added thenutz videos
         }
+            # added thenutz videos
         elsif ( $media_url =~ m/thenutz\.tv.+?(\d+)/ixsm ) {
             $media_url = $1;
             $video     = $iframe_thenutz;
@@ -374,29 +392,23 @@ $embed_youtube = q~
         <embed src="_media_&hl=en_US&feature=player_embedded&version=3" type="application/x-shockwave-flash" allowfullscreen="true" allowScriptAccess="always" width="_width_" height="_height_" />
     </object>~;
 
+$iframe_facebook = q~
+    <iframe src="https://www.facebook.com/video/embed?video_id=_media_" frameborder="0" height="326" width="400" scrolling="No"></iframe>
+    ~;
+
+$iframe_vimeo = q~
+    <iframe src="_media_" frameborder="0" height="326" width="400" scrolling="No"></iframe>
+~;
+
+$iframe_dailymotion = q~
+   <iframe src="_media_" frameborder="0" height="326" width="400" scrolling="No"></iframe>
+~;
+
 $embed_flv = qq~
     <embed src="$yyhtml_root/mediaplayer.swf" allowfullscreen="true" allowscriptaccess="always" width="_width_" height="_height_" flashvars="&file=_media_&height=_height_&width=_width_&autostart=_autostart_" />~;
 
 $iframe_thenutz = q~
     <script type="text/javascript">var host=document.location;document.write("<iframe src=\"http://www.thenutz.tv/embed.php?video_id=_media_&host=" + host + "\" frameborder=\"0\" height=\"326\" width=\"400\" scrolling=\"No\"></iframe>");</script>
 ~;
-
-sub mediaframe {
-    my ($media_url) = @_;
-    $mediaframe = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<title>Media</title>
-<meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
-</head>
-<body>$media_url</body></html>~;
-
-    $video = qq~
-    <script type="text/javascript"> {
-    function mediaframe {
-        window.open("$mediaframe", 'list', 'width=$winwidth, height=$winheight, scrollbars=yes');
-    }
-    </script><a href="javascript: mediaframe();">Media</a> xx~;
-}
 
 1;
