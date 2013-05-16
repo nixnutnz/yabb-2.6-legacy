@@ -165,12 +165,7 @@ sub Logout {
 }
 
 sub sharedLogin {
-if ( -e ("$templatesdir/$usestyle/Loginout.template") ) {
-    require "$templatesdir/$usestyle/Loginout.template";
-}
-else {
-    require "$templatesdir/default/Loginout.template";
-}
+    get_template('Loginout');
     if ( $action eq 'login' || $maintenance ) {
         $yynavigation = qq~&rsaquo; $loginout_txt{'34'}~;
     }
@@ -211,12 +206,8 @@ sub Reminder {
     if ( !$iamguest && $sessionvalid == 1 ) {
         fatal_error( 'logged_in_already', $username );
     }
-if ( -e ("$templatesdir/$usestyle/Loginout.template") ) {
-    require "$templatesdir/$usestyle/Loginout.template";
-}
-else {
-    require "$templatesdir/default/Loginout.template";
-}
+    get_template('Loginout');
+
     $yymain .= qq~<br /><br />
 <form action="$scripturl?action=reminder2" method="post" name="reminder" onsubmit="return CheckReminderField();" accept-charset="$yycharset">
 $myremindera~;
@@ -361,13 +352,7 @@ sub Reminder2 {
         }
     );
     sendmail( ${ $uid . $user }{'email'}, $subject, $message );
-
-    if ( -e ("$templatesdir/$usestyle/Loginout.template") ) {
-        require "$templatesdir/$usestyle/Loginout.template";
-    }
-    else {
-        require "$templatesdir/default/Loginout.template";
-    }
+    get_template('Loginout');
 
     $yymain .= $myreminder2;
     $yymain =~ s/{yabb mbname}/$mbname/sm;

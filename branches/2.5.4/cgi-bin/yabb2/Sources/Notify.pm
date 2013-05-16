@@ -107,7 +107,7 @@ sub BoardNotify {
 ##  popup from MessageIndex
 
     LoadLanguage('Notify');
-    require "$templatesdir/$usemessage/MessageIndex.template";
+    get_template('MessageIndex');
 
     if ( exists $theboard{$username} ) {
         ( $memlang, $memtype, $memview ) = split /\|/xsm, $theboard{$username};
@@ -312,13 +312,8 @@ sub ShowNotifications {
     $yynavigation =
 qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'}</a> &rsaquo; $img_txt{'418'}~;
 
-LoadLanguage('Notify');
-if ( -e ("$templatesdir/$usestyle/MyPosts.template") ) {
-    require "$templatesdir/$usestyle/MyPosts.template";
-}
-else {
-    require "$templatesdir/default/MyPosts.template";
-}
+    LoadLanguage('Notify');
+    get_template('MyPosts');
  
     my @oldnote = split /,/xsm, ${ $uid . $username }{'board_notifications'};
     $curbrd = @oldnote;
@@ -476,7 +471,7 @@ sub NotificationAlert {
             # see if thread exists and search for it if moved
         if ( !-e "$datadir/$mythread.txt" ) {
             ManageThreadNotify( 'delete', $mythread, $username );
-            eval { require Messages::Movedthreads };
+            eval { require Variables::Movedthreads };
             next if !exists $moved_file{$mythread} || !$moved_file{$mythread};
             my $newthread;
             while ( exists $moved_file{$mythread} ) {

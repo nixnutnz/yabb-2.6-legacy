@@ -23,17 +23,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 LoadLanguage('Profile');
 LoadLanguage('Register');
 require Sources::AddModerators;
-
-if ( -e ("$templatesdir/$usestyle/MyProfile.template") ) {
-    require "$templatesdir/$usestyle/MyProfile.template";
-}
-else {
-    require "$templatesdir/default/MyProfile.template";
-}
-
-if ( $iamgmod && -e "$vardir/gmodsettings.txt" ) {
-    require "$vardir/gmodsettings.txt";
-}
+get_template('MyProfile');
+get_gmod();
 
 # make sure this person has access to this profile
 sub PrepareProfile {
@@ -3514,12 +3505,7 @@ sub usersrecentposts {
 
         $mdate = timeformat($mdate);
 
-if ( -e ("$templatesdir/$usestyle/MyPosts.template") ) {
-    require "$templatesdir/$usestyle/MyPosts.template";
-}
-else {
-    require "$templatesdir/default/MyPosts.template";
-}
+        get_template('MyPosts');
 
         $showProfile .= $myshow_recent_a;
 

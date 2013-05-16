@@ -132,7 +132,6 @@ qq~http://mediaservices.myspace.com/services/media/embed.aspx/m=$1,t=1,mt=video~
                if ( $i =~ m/v=/) { $i=~ s/amp;//gsm; $i=~ s/v=//gsm; $media_url = $i;}
             }
             $video         = $iframe_facebook;
-            $controlheight = 36;
         }
 
             # added Clipfish video url support
@@ -197,7 +196,6 @@ qq~http://www.clipfish.de/cfng/flash/clipfish_player_3.swf?as=0&vid=$videoid&r=1
             $controlheight = 36;
 
             # GameTrailers.com END
-
         }
             # added Google video url support
         elsif ( $media_url =~ m/video\.google/ixsm ) {
@@ -211,24 +209,10 @@ qq~http://www.clipfish.de/cfng/flash/clipfish_player_3.swf?as=0&vid=$videoid&r=1
             # added dailymotion video url support
         elsif ( $media_url =~ m/dailymotion\.com/ixsm ) {
             $video         = $iframe_dailymotion;
-            $controlheight = 36;
-
-        }
-        elsif ( $media_url =~ m/xfacebook\.com/ixsm ) {
-            ( undef, $media_in) = split /\?/xsm, $media_url;
-            @media_in = split /\&/gxsm, $media_in;
-            foreach my $i (@media_in) {
-               if ( $i =~ m/v=/) { $i=~ s/amp;//gsm; $i=~ s/v=//gsm; $media_url = $i;}
-            }
-            $video         = $iframe_facebook;
-            $controlheight = 36;
         }
             # added vimeo video url support
         elsif ( $media_url =~ m/vimeo\.com/ixsm ) {
-            #$video         = $embed_flash;
             $video         = $iframe_vimeo;
-            $controlheight = 60;
-
         }
             # added hulu video url support
         elsif ( $media_url =~ m/hulu\.com/ixsm ) {
@@ -393,15 +377,15 @@ $embed_youtube = q~
     </object>~;
 
 $iframe_facebook = q~
-    <iframe src="https://www.facebook.com/video/embed?video_id=_media_" frameborder="0" height="326" width="400" scrolling="No"></iframe>
+    <iframe src="https://www.facebook.com/video/embed?video_id=_media_" class="media_iframe" scrolling="no"></iframe>
     ~;
 
 $iframe_vimeo = q~
-    <iframe src="_media_" frameborder="0" height="326" width="400" scrolling="No"></iframe>
+    <iframe src="_media_" class="media_iframe" scrolling="no"></iframe>
 ~;
 
 $iframe_dailymotion = q~
-   <iframe src="_media_" frameborder="0" height="326" width="400" scrolling="No"></iframe>
+   <iframe src="_media_" class="media_iframe" scrolling="no"></iframe>
 ~;
 
 $embed_flv = qq~

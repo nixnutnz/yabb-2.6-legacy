@@ -135,12 +135,7 @@ qq~<a href="$scripturl?action=help;section=global_mod">$helptxt{'5'}</a>~;
 
 sub GetHelpFiles {
     if ( !$HelpTemplateLoaded ) {
-        if ( -e ("$templatesdir/$usestyle/HelpCentre.template") ) {
-            require "$templatesdir/$usestyle/HelpCentre.template";
-        }
-        else {
-            require "$templatesdir/default/HelpCentre.template";
-        }
+        get_template('HelpCentre');
     }
 
     SectionDecide();

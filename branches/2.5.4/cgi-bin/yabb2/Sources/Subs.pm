@@ -208,6 +208,9 @@ sub redirectexit {
     exit;
 }
 
+sub redirectmove {
+require Sources::MessageIndex; MessageIndex();
+}
 sub redirectinternal {
     if ($currentboard) {
         if ( $INFO{'num'} ) { require Sources::Display; Display(); }
@@ -395,14 +398,10 @@ qq~$menusep<a href="$scripturl?action=birthdaylist">$img{'birthdaylist'}</a>~;
             $yymenu .=
 qq~$menusep<a href="$boardurl/AdminIndex.$yyaext">$img{'admin'}</a>~;
         }
-        if ($iamgmod) {
-            if ( -e ("$vardir/gmodsettings.txt") ) {
-                require "$vardir/gmodsettings.txt";
-            }
-            if ($allow_gmod_admin) {
-                $yymenu .=
+        get_gmod();
+        if ( $iamgmod && $allow_gmod_admin ) {
+            $yymenu .=
 qq~$menusep<a href="$boardurl/AdminIndex.$yyaext">$img{'admin'}</a>~;
-            }
         }
         if ( $sessionvalid == 0 && !$iamguest ) {
             my $sesredir;
@@ -892,12 +891,8 @@ sub fatal_error {
     my $verbose = $!;
 
     LoadLanguage('Error');
-    if ( -e ("$templatesdir/$usestyle/Other.template") ) {
-        require "$templatesdir/$usestyle/Other.template";
-    }
-    else {
-       require "$templatesdir/default/Other.template";
-    }
+    get_template('Other');
+
     my $errormessage = "$error_txt{$x[0]} $x[1]";
 
     my ( $filename, $line, $subroutine ) = get_caller();
@@ -905,7 +900,7 @@ sub fatal_error {
         && ( $filename || $line || $subroutine ) )
     {
         $errormessage .=
-"<br />$maintxt{'error_location'}: $filename<br />$maintxt{'error_line'}: $line<br />$maintxt{'error_subroutine'}: $subroutine";
+qq~<br />$maintxt{'error_location'}: $filename<br />$maintxt{'error_line'}: $line<br />$maintxt{'error_subroutine'}: $subroutine~;
     }
 
     if ( $x[2] ) {
@@ -1314,6 +1309,13 @@ qq~<option value="action=im" class="forumjumpcatm">$jumpto_txt{'mess'}</option>~
                       . ( $dash x ( $indent / 2 ) )
                       . qq~ $boardname &#171;&#171;</option>\n~
                       : qq~    <option selected="selected" value="board=$board" class="forumcurrentboard">&raquo;&raquo; $boardname</option>\n~;
+                }
+                elsif ( !${ $uid . $board }{'canpost'} && $subboard{$board} ){
+                    $selecthtml .=
+                        qq~    <option value="boardselect=$board">&nbsp;~
+                      . ( '&nbsp;' x $indent )
+                      . ( $dash x ( $indent / 2 ) )
+                      . qq~ $boardname</option>\n~;
                 }
                 else {
                     $selecthtml .=
@@ -2286,8 +2288,8 @@ sub Recent_Save {
 sub save_moved_file {
 
    # This sub saves the hash for the moved files: key == old id, value == new id
-    fopen( MOVEDFILE, ">$datadir/Movedthreads.pm" )
-      || fatal_error( 'cannot_open', ">$datadir/Movedthreads.pm", 1 );
+    fopen( MOVEDFILE, ">$vardir/Movedthreads.pm" )
+      || fatal_error( 'cannot_open', ">$vardir/Movedthreads.pm", 1 );
     print {MOVEDFILE} '%moved_file = ('
       . join( q{,},
         map { qq~"$_","$moved_file{$_}"~ }
@@ -2877,15 +2879,43 @@ sub get_forum_master {
 }
 
 sub get_micon {
-     if ( -e ("Templates/$usestyle/Micon.def") )
-            {
-            $Micon_def = qq~Templates/$usestyle/Micon.def~;
-            }
-     else { $Micon_def = qq~Templates/default/Micon.def~;}
+     if ( -e ("$templatesdir/$usestyle/Micon.def") )
+     {
+        $Micon_def = qq~$templatesdir/$usestyle/Micon.def~;
+     }
+     else { $Micon_def = qq~$templatesdir/default/Micon.def~; }
      require "$Micon_def";
      return;
 }
-     
+
+sub get_template {
+    my ($templt) = @_;
+    my @templ_list = ( $useboard, $usemessage, $usedisplay, $usemycenter );
+    my @ld_list = qw(BoardIndex MessageIndex Display MyCenter);
+    my $ld_cn = 0;    
+    for my $x ( 0 .. (@ld_list - 1 )) {
+        if ($templt eq $ld_list[$x]){
+            require qq~$templatesdir/$templ_list[$x]/$ld_list[$x].template~;
+            $ld_cn = 1;
+        }
+    }
+    if ($ld_cn == 0 ) {
+        if ( -e ("$templatesdir/$usestyle/$templt.template") ) {
+            require "$templatesdir/$usestyle/$templt.template";
+        }
+        else {
+            require "$templatesdir/default/$templt.template";
+        }
+    }
+    return;
+}
+
+sub get_gmod {
+    if ( $iamgmod && -e "$vardir/gmodsettings.txt" ) {
+        require "$vardir/gmodsettings.txt";
+    }
+    return;
+}
     
 
 sub enable_yabbc {
@@ -2986,12 +3016,7 @@ sub password_check {
     LoadLanguage('Register');
 
     if   ( $action eq 'myprofile' ) { 
-        if ( -e ("$templatesdir/$usestyle/MyProfile.template") ) {
-            require "$templatesdir/$usestyle/MyProfile.template";
-        }
-        else {
-            require "$templatesdir/default/MyProfile.template";
-        }
+        get_template('MyProfile');
     }
     else  { $class = 'windowbg2'; }
     $check_js = qq~    <script type="text/javascript">

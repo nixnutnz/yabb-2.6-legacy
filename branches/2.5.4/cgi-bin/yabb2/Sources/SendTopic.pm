@@ -21,7 +21,7 @@ if ( !$sendtopicmail || $sendtopicmail == 2 ) { fatal_error('not_allowed'); }
 if ($regcheck) { require Sources::Decoder; }
 
 LoadLanguage('SendTopic');
-require "$templatesdir/$usedisplay/Display.template";
+get_template('Display');
 
 sub SendTopic {
     $topic = $INFO{'topic'};

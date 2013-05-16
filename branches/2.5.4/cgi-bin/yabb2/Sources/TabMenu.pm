@@ -112,10 +112,8 @@ qq~<li><span |><a href="$scripturl?action=ml" title = "$img_txt{'331'}">$img_txt
 qq~<li><span |><a href="$boardurl/AdminIndex.$yyaext" title = "$img_txt{'2'}">$img_txt{'2'}</a></span></li>~;
     }
     if ($iamgmod) {
-        if ( -e "$vardir/gmodsettings.txt" ) {
-            require "$vardir/gmodsettings.txt";
-        }
-        if ($allow_gmod_admin) {
+        get_gmod();
+        if( $allow_gmod_admin ) {
             $tab{'admin'} =
 qq~<li><span |><a href="$boardurl/AdminIndex.$yyaext" title = "$img_txt{'2'}">$img_txt{'2'}</a></span></li>~;
         }

@@ -23,12 +23,9 @@ if ( !$post_txt_loaded ) {
 }
 LoadLanguage('FA');
 LoadLanguage('Display');
-if ( -e ("$templatesdir/$usestyle/Post.template") ) {
-    require "$templatesdir/$usestyle/Post.template";
-}
-else {
-    require "$templatesdir/default/Post.template";
-}
+
+get_template('Post');
+get_micon();
 require Sources::SpamCheck;
 if ( $iamadmin || $iamgmod ) { $MaxMessLen = $AdMaxMessLen; }
 $set_subjectMaxLength ||= 50;

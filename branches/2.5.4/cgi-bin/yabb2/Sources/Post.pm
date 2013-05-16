@@ -28,13 +28,7 @@ LoadLanguage('UserSelect');
 require Sources::Notify;
 require Sources::SpamCheck;
 require Sources::PostBox;
-
-if ( -e ("$templatesdir/$usestyle/Post.template") ) {
-    require "$templatesdir/$usestyle/Post.template";
-}
-else {
-    require "$templatesdir/default/Post.template";
-}
+get_template('Post');
 
 if (   $iamguest
     && $gpvalid_en
@@ -301,11 +295,11 @@ sub Postpage {
         $extra =~ s/{yabb ic11}/$ic11/sm;
         $extra =~ s/{yabb ic12}/$ic12/sm;
         $extra =~ s/{yabb icon}/$icon/sm;
+        $extra =~ s/{yabb icon_img}/$micon_bg{$icon}/sm;
 
         if ( $iamguest && $threadid ne q{} ) { $settofield = 'name'; }
     }
 
-	else { $extra = qq~<input type="hidden" name="icon" id="icon" value="" />~; }
     if ( $pollthread && $iamguest ) { $guest_vote = 1; }
     if ( $pollthread == 2 ) { $settofield = 'question'; }
 
@@ -565,8 +559,25 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
 
     if ( $destination ne 'modalert2' && $destination ne 'guestpm2' ) {
         $my_modalert = qq~
+    function Hash() {
+        this.length = 0;
+        this.items = new Array();
+        for (var i = 0; i < arguments.length; i += 2) {
+            if (typeof(arguments[i + 1]) != 'undefined') {
+                this.items[arguments[i]] = arguments[i + 1];
+                this.length++;
+            }
+        }
+
+        this.getItem = function(in_key) {
+            return this.items[in_key];
+        }
+    }
     function showimage() {
-        document.images.icons.src="$imagesdir/"+document.postmodify.icon.options[document.postmodify.icon.selectedIndex].value+".gif";
+        $jsPost;
+        var icon_set = document.postmodify.icon.options[document.postmodify.icon.selectedIndex].value;
+        var icon_show = jsPost.getItem(icon_set);
+        document.images.icons.src = icon_show;
     }~;
     }
     
@@ -729,51 +740,6 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
     }
 
     if ( $postid ne 'Poll' ) {
-		$css ||= "windowbg";
-		if($tmpmusername eq 'Guest') {
-			$liveusernamelink = "<b>$mename</b>";
-			$livememberinfo = "$maintxt{'28'}";
-			$livememberstar = "";
-			$livetemplate_postinfo = "";
-			$tmplastmodified = "";
-		}
-		else {
-			if (!${$uid.$tmpmusername}{'password'}) { &LoadUser($tmpmusername); }
-			if ($tmpmusername eq $username){ LoadMiniUser($tmpmusername);}
-			$liveusernamelink = $format{$tmpmusername};
-			$livememberinfo = "$memberinfo{$tmpmusername}$addmembergroup{$tmpmusername}";
-			$livememberstar = $memberstar{$tmpmusername};
-			$livepostcount = NumberFormat(${$uid.$tmpmusername}{'postcount'});
-			$livetemplate_postinfo = qq~$display_txt{'21'}: $livepostcount<br />~;
-			if($action eq 'modify') {
-				if ($showmodify && (!$tllastmodflag || ($tmpmdate + ($tllastmodtime * 60)) < $date)) {
-					$tmplastmodified = qq~<div class="small" style="float: right; width: 100%; text-align: right; margin-top: 5px;">&#171; <i>$display_txt{'211'}: ~ . timeformat($date) . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &#187; &nbsp;</div>~;
-				}
-			}
-			else {
-				$subjdate = timeformat($date);
-				$tmplastmodified = q{};
-			}
-
-		}
-		$liveipimg = qq~<img src="$imagesdir/ip.gif" alt="" border="0" style="vertical-align: middle;" />~;
-		$livemip = $display_txt{'511'};
-		$messageblock = $mypost_liveprev;
-		$messageblock =~ s/({|<)yabb images(}|>)/$imagesdir/g;
-		$messageblock =~ s/({|<)yabb css(}|>)/$css/g;
-		$messageblock =~ s/({|<)yabb userlink(}|>)/$liveusernamelink/g;
-		$messageblock =~ s/({|<)yabb memberinfo(}|>)/$livememberinfo/g;
-		$messageblock =~ s/({|<)yabb stars(}|>)/$livememberstar/g;
-		$messageblock =~ s/({|<)yabb postinfo(}|>)/$livetemplate_postinfo/g;
-		$messageblock =~ s/({|<)yabb msgimg(}|>)/<span id="saveicon"><\/span>/g;
-		$messageblock =~ s/({|<)yabb subject(}|>)/<span id="savesubj"><\/span>/g;
-		$messageblock =~ s/({|<)yabb msgdate(}|>)/<span id="savedate"><\/span>/g;
-		$messageblock =~ s/({|<)yabb message(}|>)/<span id="savemess"><\/span>/g;
-		$messageblock =~ s/({|<)yabb modified(}|>)/$tmplastmodified/g;
-		$messageblock =~ s/({|<)yabb ipimg(}|>)/$liveipimg/g;
-		$messageblock =~ s/({|<)yabb ip(}|>)/$livemip/g;
-		$messageblock =~ s/({|<)yabb (.+?)(}|>)//g;
-
         if ($prevmain) {
             $my_prevmain = $mypost_preview_main;
             $my_prevmain =~ s/{yabb prevmain}/$prevmain/sm;
@@ -818,6 +784,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
                 $my_t_status =~ s/{yabb lcselect}/$lcselect/sm;
                 $my_t_status =~ s/{yabb hdselect}/$hdselect/sm;
                 $my_t_status =~ s/{yabb threadclass}/$threadclass/sm;
+                $my_t_status =~ s/{yabb threadclass_img}/$micon_bg{$threadclass}/sm;
             }
             else {
                 $hidestatus =
@@ -1097,7 +1064,6 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         $my_postsection =~ s/{yabb lastmod}/$lastmod/sm;
         $my_postsection =~ s/{yabb nscheck}/$nscheck/sm;
         $my_postsection =~ s/{yabb iecopycheck}/$iecopycheck/sm;
-        $my_postsection =~ s/{yabb messageblock}/$messageblock/sm;
     }
 
     #these are the buttons to submit
@@ -1146,6 +1112,7 @@ qq~<script type="text/javascript" src="$yyhtml_root/googiespell/cookiesupport.js
         $my_tclass = qq~
 <script type="text/javascript">
 function showtpstatus() {
+    $jsPstat;
     var z = 0;
     var x = 0;
     var theimg = '$threadclass';
@@ -1169,7 +1136,8 @@ function showtpstatus() {
     if(z == 2 && x == 1)  theimg = 'hidelock';~;
         }
         $my_tclass .= qq~
-    document.images.thrstat.src='$imagesdir/'+theimg+'.gif';
+    var picon_show = jsPstat.getItem(theimg);
+    document.images.thrstat.src = picon_show;
 }
 showtpstatus();
 </script>~;
@@ -1179,7 +1147,7 @@ showtpstatus();
 		$displayname = qq~$mename~;
 		$moddate = $tmpmdate;
 		if ($showmodify && (!$tllastmodflag || ($tmpmdate + ($tllastmodtime * 60)) < $date)) {
-			$tmplastmodified = qq~&#171; <i>$display_txt{'211'}: ~ . &timeformat($date) . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &#187;~;
+			$tmplastmodified = qq~&#171; <i>$display_txt{'211'}: ~ . timeformat($date) . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &#187;~;
 		}
 		$tmpmusername = $thismusername;
 	} else {
@@ -1188,9 +1156,9 @@ showtpstatus();
 		$tmplastmodified = q{};
 		$tmpmusername = $username;
 	}
-	$moddate = &timeformat($moddate);
+	$moddate = timeformat($moddate);
 
-    require "$templatesdir/$usedisplay/Display.template";
+    get_template('Display');
 
     foreach (@months) { $jsmonths .= qq~'$_',~; }
     $jsmonths =~ s/\,\Z//xsm;
@@ -1228,6 +1196,7 @@ function enabPrev() {
     if ( autoprev === false ) {
 		autoprev = true
 		document.getElementById("savetable").style.display = "block";
+		document.getElementById("saveframe").style.display = "block";
 		document.images.prevwin.alt = "$npf_txt{'02'}";
 		document.images.prevwin.title = "$npf_txt{'02'}";
 		document.images.prevwin.src="$defaultimagesdir/$post_cat_col";
@@ -1237,6 +1206,7 @@ function enabPrev() {
 		autoprev = false;
 		ubbstr = '';
 		document.getElementById("savetable").style.display = "none";
+		document.getElementById("saveframe").style.display = "none";
 		document.postmodify.message.focus();
 		document.images.prevwin.alt = "$npf_txt{'01'}";
 		document.images.prevwin.title = "$npf_txt{'01'}";
@@ -1280,16 +1250,13 @@ function autoPreview() {
 	pstHttp.onreadystatechange = function() {
 		if(pstHttp.readyState == 4) {
 			if(pstHttp.status == 200 || window.location.href.indexOf("http") == -1) {
-				tmpmess = pstHttp.responseText.split("|");
-				document.getElementById("saveicon").innerHTML = tmpmess[0];
-				document.getElementById("savesubj").innerHTML = tmpmess[1];
-				document.getElementById("savedate").innerHTML = tmpmess[2];
-				document.getElementById("savemess").innerHTML = tmpmess[3];
+				document.getElementById("saveframe").innerHTML = pstHttp.responseText;
 				sh_highlightDocument();
 				if (/post_liveimg_resize_1/i.test(pstHttp.responseText)) LivePrevImgResize();
            }
         }
 	};
+	var dispnamevalue = encodeURIComponent(document.getElementById("mename").value);
 	var iconvalue = encodeURIComponent(document.getElementById("icon").value);
 	var subjvalue = encodeURIComponent(document.getElementById("subject").value);
 	var tmpmessvalue = document.getElementById("message").value;
@@ -1298,7 +1265,7 @@ function autoPreview() {
 	var tmusername = encodeURIComponent(document.getElementById("tmpmusername").value);
 	var tmoddate = encodeURIComponent(document.getElementById("tmpmoddate").value);
 	var sessvalue = encodeURIComponent(document.postmodify.formsession.value);
-	var parameters = "icon="+iconvalue+"&subject="+subjvalue+"&message="+messvalue+"&musername="+tmusername+"&moddate="+tmoddate+"&formsession="+sessvalue;
+	var parameters = "icon="+iconvalue+"&displayname="+dispnamevalue+"&subject="+subjvalue+"&message="+messvalue+"&musername="+tmusername+"&moddate="+tmoddate+"&formsession="+sessvalue;
 	pstHttp.open("POST", url, true);
 	pstHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	pstHttp.send(parameters);
@@ -1315,7 +1282,7 @@ function LivePrevImgResize() {
 	var liveimg_resize_names = new Array ();
 	var zi = 0;
 
-	var imgsavail = document.getElementById("savemess").getElementsByTagName("img");
+	var imgsavail = document.getElementById("saveframe").getElementsByTagName("img");
 	for (i=0; i<imgsavail.length; i++) {
 		if (imgsavail[i].className == "liveimg") {
 			liveimg_resize_names[zi] = imgsavail[i].name;
@@ -1423,6 +1390,7 @@ tick();
     $yymain .= $my_iecopy;
     $yymain =~ s/{yabb my_topper}/$my_topper/sm;
     $yymain =~ s/{yabb icon}/$icon/sm;
+    $yymain =~ s/{yabb icon_img}/$micon_bg{$icon}/sm;
     $yymain =~ s/{yabb yytitle}/$yytitle/sm;
     $yymain =~ s/{yabb my_topview}/$my_tview/sm;
     return;
@@ -1668,8 +1636,6 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
         $preview     = 'preview';
         $yytitle     = $post_txt{'sendmessguest'};
     }
-
- #   require "$templatesdir/$usedisplay/Display.template";
 
     ToChars($message);
     $message = Censor($message);

@@ -17,13 +17,7 @@ $searchpmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Search');
-
-if ( -e ("$templatesdir/$usestyle/Search.template") ) {
-    require "$templatesdir/$usestyle/Search.template";
-}
-else {
-    require "$templatesdir/default/Search.template";
-}
+get_template('Search');
 
 if ( $FORM{'searchboards'} =~ /\A\!/xsm ) {
     my $checklist = q{};

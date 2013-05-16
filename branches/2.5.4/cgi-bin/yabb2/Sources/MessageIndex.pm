@@ -63,7 +63,7 @@ sub MessageIndex {
     if ( $INFO{'messagelist'}) { $messagelist = $INFO{'messagelist'}; }
 
 # Load template here for conditionals based on whether we're ajax loading or not.
-    require "$templatesdir/$usemessage/MessageIndex.template";
+    get_template('MessageIndex');
 
     # Build a list of the board's moderators. We don't need this if it's ajax.
     if ( !$messagelist ) {
@@ -488,13 +488,31 @@ qq~javascript:MessageList(\\'$scripturl?board=$currentboard/' + pagstart + ';mes
     ToChars($curboardname);
     if ( $multiview == 1 ) {
         $yymain .=
-qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>\n~;
+qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
+<script type="text/javascript">
+function NoPost(op) {
+    if (document.getElementById("toboard").options[op].className == "nopost") {
+        alert("$messageindex_txt{'nopost'}");
+        document.getElementById("toboard").selectedIndex = 0;
+    }
+} 
+</script>
+\n~;
     }
 
     if ( $multiview >= 2 ) {
         my $modul = $currentboard eq $annboard ? 4 : 5;
         $yymain .=
-qq~<script src="$yyhtml_root/MessageIndex.js" type="text/javascript"></script>\n~;
+qq~<script src="$yyhtml_root/MessageIndex.js" type="text/javascript"></script>
+<script type="text/javascript">
+function NoPost(op) {
+    if (document.getElementById("toboard").options[op].className == "nopost") {
+        alert("$messageindex_txt{'nopost'}");
+        document.getElementById("toboard").selectedIndex = 0;
+    }
+} 
+</script>
+\n~;
     }
 
     my $homelink = qq~<a href="$scripturl">$mbname</a>~;
@@ -1131,7 +1149,7 @@ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies
         if ( $multiview eq '3' ) {
             $tempfooter    = $subfooterbar;
             $adminselector = qq~
-                <label for="toboard">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" /> <select name="toboard" id="toboard">$boardlist</select><input type="submit" value="$messageindex_txt{'462'}" class="button" />
+                <label for="toboard">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" /> <select name="toboard" id="toboard" onchange="NoPost(this.selectedIndex)">$boardlist</select><input type="submit" value="$messageindex_txt{'462'}" class="button" />
             ~;
             if ( $currentboard eq $annboard ) {
                 $admincheckboxes = qq~
@@ -1164,7 +1182,7 @@ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies
                 <input type="radio" name="multiaction" id="multiactionhide" value="hide" class="titlebg" style="border: 0px;" /> <label for="multiactionhide">$messageindex_txt{'844'}</label>
                 <input type="radio" name="multiaction" id="multiactiondelete" value="delete" class="titlebg" style="border: 0px;" /> <label for="multiactiondelete">$messageindex_txt{'31'}</label>
                 <input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" style="border: 0px;" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" /> 
-                <select name="toboard" onchange="document.multiadmin.multiaction[3].checked=true;">$boardlist</select>
+                <select name="toboard" id="toboard" onchange="NoPost(this.selectedIndex); document.multiadmin.multiaction[3].checked=true;">$boardlist</select>
                 <input type="hidden" name="fromboard" value="$currentboard" />
                 <input type="submit" value="$messageindex_txt{'462'}" class="button" />
             ~;
@@ -1176,7 +1194,7 @@ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies
                 <input type="radio" name="multiaction" id="multiactionhide" value="hide" class="titlebg" style="border: 0px;" /> <label for="multiactionhide">$messageindex_txt{'844'}</label>
                 <input type="radio" name="multiaction" id="multiactiondelete" value="delete" class="titlebg" style="border: 0px;" /> <label for="multiactiondelete">$messageindex_txt{'31'}</label>
                 <input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" style="border: 0px;" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" /> 
-                <select name="toboard" onchange="document.multiadmin.multiaction[4].checked=true;">$boardlist</select>
+                <select name="toboard" id="toboard" onchange="NoPost(this.selectedIndex); document.multiadmin.multiaction[4].checked=true;">$boardlist</select>
                 <input type="hidden" name="fromboard" value="$currentboard" />
                 <input type="submit" value="$messageindex_txt{'462'}" class="button" />
             ~;
@@ -1670,7 +1688,7 @@ sub ListPages {
     $pages =~ s/\n\Z//xsm;
 
     print_output_header();
-    require "$templatesdir/$usemessage/MessageIndex.template";
+    get_template('MessageIndex');
 
     $output = $msg_listpages;
     $output =~ s/{yabb jcode}/$jcode/sm;
@@ -1714,13 +1732,16 @@ sub moveto {
             ToChars($boardname);
             $access = AccessCheck( $board, q{}, $boardperms );
             if ( !$iamadmin && $access ne 'granted' ) { next; }
+            my $bdnopost = q{};
             if ( $board ne $currentboard ) {
-                my $bdnopost =
-                  !${ $uid . $board }{'canpost'} && $subboard{$board}
-                  ? q~class="nopost" style="background-color: #ffbbbb"~
-                  : q{};
+                $my_board = $board;
+                if (!${ $uid . $board }{'canpost'} && $subboard{$board}){
+                    $alert = qq~$messageindex_txt{'nopost'}~;
+                    $bdnopost = qq~ class="nopost" style="background-color: #ffbbbb" onclick="alert('$alert')"~;
+                    $my_board = q{};
+                }
                 $boardlist .=
-                    qq~<option $bdnopost value="$board">~
+                    qq~<option$bdnopost value="$my_board">~
                   . ( '&nbsp;' x $indent )
                   . ( $dash x ( $indent / 2 ) )
                   . qq~$boardname</option>\n~;

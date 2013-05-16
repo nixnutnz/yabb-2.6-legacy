@@ -24,12 +24,7 @@ if ( !$ipLookup || !$INFO{'ip'} || ( !$iamadmin && !$iamgmod && !$iamymod ) ) {
 LoadLanguage('IPLookup');
 LoadCensorList();
 
-if ( -e ("$templatesdir/$usestyle/Other.template") ) {
-    require "$templatesdir/$usestyle/Other.template";
-}
-else {
-    require "$templatesdir/default/Other.template";
-}
+get_template('Other');
 
 sub IPLookup {
     $ip = $INFO{'ip'};

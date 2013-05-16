@@ -18,13 +18,7 @@ $pollpmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Poll');
-
-if ( -e ("$templatesdir/$usestyle/Poll.template") ) {
-    require "$templatesdir/$usestyle/Poll.template";
-}
-else {
-    require "$templatesdir/default/Poll.template";
-}
+get_template('Poll');
 
 sub DoVote {
     $pollnum = $INFO{'num'};

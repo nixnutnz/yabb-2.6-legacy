@@ -21,13 +21,7 @@ $eventcalbirthdayspmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');
-
-if ( -e ("$templatesdir/$usestyle/Bdaylist.template") ) {
-    require "$templatesdir/$usestyle/Bdaylist.template";
-}
-else {
-    require "$templatesdir/default/Bdaylist.template";
-}
+get_template('Bdaylist');
 
 sub birthdaylist {
     if ( !$Show_BirthdaysList || ( $iamguest && $Show_BirthdaysList != 2 ) ) {

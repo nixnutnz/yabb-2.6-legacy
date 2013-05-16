@@ -17,12 +17,7 @@ our $VERSION = '2.5.4';
 $downloadspmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
-if ( -e ("$templatesdir/$usestyle/Downloads.template") ) {
-    require "$templatesdir/$usestyle/Downloads.template";
-}
-else {
-    require "$templatesdir/default/Downloads.template";
-}
+get_template('Downloads');
 
 sub DownloadView {
     if ( $guest_media_disallowed && $iamguest ) { fatal_error('members_only'); }

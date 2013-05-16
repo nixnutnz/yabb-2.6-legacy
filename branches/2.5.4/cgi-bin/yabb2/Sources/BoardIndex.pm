@@ -43,7 +43,7 @@ sub BoardIndex {
         $subboard_sel = 0;
     }
 
-    require "$templatesdir/$useboard/BoardIndex.template";
+    get_template('BoardIndex');
 
     my ( $numusers, $guests, $numbots, $user_in_log, $guest_in_log ) =
       ( 0, 0, 0, 0, 0 );

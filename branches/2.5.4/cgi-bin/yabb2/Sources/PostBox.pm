@@ -24,7 +24,7 @@ if ( defined $actions && $action eq 'detailedversion' ) { return 1; }
 
 sub postbox {
     $box = qq~<script type="text/javascript">
-            HAND = 'class="vtop pointer"';
+            HAND = 'class="vtop cursor"';
             HAND += " onmouseover='contextTip(event, this.alt)' onmouseout='contextTip(event, this.alt)' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'";
             document.write('<div class="left437">');
             document.write("<img src='$imagesdir/url.gif' onclick='hyperlink();' "+HAND+" width='23' height='22' alt='$post_txt{'257'}' title='$post_txt{'257'}' />");
@@ -214,7 +214,7 @@ sub postbox {
             </div>
             <script type="text/javascript">
 
-            HAND = 'class="vtop pointer"';
+            HAND = 'class="vtop cursor"';
             HAND += " onmouseover='contextTip(event, this.alt)' onmouseout='contextTip(event, this.alt)' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'";
             document.write('<div class="txtalgn">');
             document.write("<img src='$imagesdir/pre.gif' onclick='pre();' "+HAND+" width='23' height='22' alt='$post_txt{'444'}' title='$post_txt{'444'}' />");
@@ -527,7 +527,7 @@ sub googie {
 
 sub smilies_list {
     $smilies_list = qq~
-                HAND = 'class="bottom pointer"';
+                HAND = 'class="bottom cursor"';
                 document.write("<img src='$imagesdir/smiley.gif' onclick='smiley();' "+HAND+" alt='$post_txt{'287'}' title='$post_txt{'287'}'> ");
                 document.write("<img src='$imagesdir/wink.gif' onclick='wink();' "+HAND+" alt='$post_txt{'292'}' title='$post_txt{'292'}'> ");
                 document.write("<img src='$imagesdir/cheesy.gif' onclick='cheesy();' "+HAND+" alt='$post_txt{'289'}' title='$post_txt{'289'}'> ");

@@ -25,12 +25,8 @@ require Sources::SpamCheck;
 LoadLanguage('FA');
 LoadLanguage('Post');
 
-if ( -e ("$templatesdir/$usestyle/MyMessage.template") ) {
-    require "$templatesdir/$usestyle/MyMessage.template";
-}
-else {
-    require "$templatesdir/default/MyMessage.template";
-}
+get_template('MyMessage');
+get_micon();
 
 $set_subjectMaxLength ||= 50;
 
@@ -429,6 +425,7 @@ qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'re
         $imsend_send =~ s/{yabb s_select1}/$s_select[1]/sm;
         $imsend_send =~ s/{yabb s_select2}/$s_select[2]/sm;
         $imsend_send =~ s/{yabb pmicon}/$pmicon/gsm;
+        $imsend_send =~ s/{yabb pmicon_img}/$micon_bg{$pmicon}/gsm;
     }
     else {
         $imsend_send = $my_imsend_Guest;
@@ -446,8 +443,26 @@ qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'re
     # this declares the beginning of the UBBC section
     $JSandInput .= q~
     <script type="text/javascript">
+    function Hash() {
+        this.length = 0;
+        this.items = new Array();
+        for (var i = 0; i < arguments.length; i += 2) {
+            if (typeof(arguments[i + 1]) != 'undefined') {
+                this.items[arguments[i]] = arguments[i + 1];
+                this.length++;
+            }
+        }
+
+        this.getItem = function(in_key) {
+            return this.items[in_key];
+        }
+    }
+   
     function showimage() {
-        document.images.status.src=document.postmodify.status.options[document.postmodify.images.status.selectedIndex].value;
+        $jsIM;
+        var icon_set = document.postmodify.status.options[document.postmodify.images.status.selectedIndex].value;
+        var icon_show = jsIM.getItem(icon_set);
+        document.images.status.src = icon_show;
     }
     </script>
     ~;
@@ -849,7 +864,21 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="
                 timerID = setTimeout("tick()",1000);
             }
             var autoprev = false;
-            var topicfirst = true;\n~;
+            var topicfirst = true;
+            
+            function Hash() {
+        		this.length = 0;
+        		this.items = new Array();
+        		for (var i = 0; i < arguments.length; i += 2) {
+            		if (typeof(arguments[i + 1]) != 'undefined') {
+                		this.items[arguments[i]] = arguments[i + 1];
+                		this.length++;
+            		}
+        		}
+		        this.getItem = function(in_key) {
+        	    	return this.items[in_key];
+	        	}
+    		}~;
 
     if (
         !$replyguest
@@ -933,16 +962,18 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="
 				xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 				xmlHttp.send(parameters);
         }\n~;
-
     if ( !$replyguest ) {
         $my_savetable .= qq~
+            $jsIM;
             function showtpstatus() {
             var theimg = '$pmicon';
             var objIconSelected = document.postmodify.status[document.postmodify.status.selectedIndex].value;
             if (objIconSelected == 's') { theimg = 'standard'; }
             if (objIconSelected == 'c') { theimg = 'confidential'; }
             if (objIconSelected == 'u') { theimg = 'urgent'; }
-            document.images.icons.src='$imagesdir/'+theimg+'.gif';
+            var picon_show = jsIM.getItem(theimg); 
+            //document.images.icons.src='$imagesdir/'+theimg+'.gif';
+            document.images.icons.src = picon_show;
  				document.getElementById("iconholder").value = theimg;
 				if (autoprev == true) autoPreview();
         }
@@ -956,7 +987,7 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="
         $displayname = ${ $uid . $username }{'realname'};
     }
 
-    require "$templatesdir/$usedisplay/Display.template";
+    get_template('Display');
 
     foreach (@months) { $jsmonths .= qq~'$_',~; }
     $jsmonths =~ s/\,\Z//xsm;

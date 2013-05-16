@@ -30,12 +30,7 @@ require Sources::Mailer;
 LoadLanguage('Register');
 LoadCensorList();
 
-if ( -e ("$templatesdir/$usestyle/Register.template") ) {
-    require "$templatesdir/$usestyle/Register.template";
-}
-else {
-    require "$templatesdir/default/Register.template";
-}
+get_template('Register');
 
 if ( $OSNAME =~ /Win/sm ) {
     my $regstyle = q~ style="text-transform: lowercase"~;

@@ -30,12 +30,7 @@ if ( ( $ML_Allowed == 3 && !$iamadmin && !$iamgmod ) || ( $ML_Allowed == 4 && !$
 
 LoadLanguage('MemberList');
 
-if ( -e ("$templatesdir/$usestyle/Memberlist.template") ) {
-    require "$templatesdir/$usestyle/Memberlist.template";
-}
-else {
-    require "$templatesdir/default/Memberlist.template";
-}
+get_template('Memberlist');
 
 $MembersPerPage = $TopAmmount;
 $maxbar         = 100;

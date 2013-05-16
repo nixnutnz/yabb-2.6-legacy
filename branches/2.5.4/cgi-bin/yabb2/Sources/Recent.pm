@@ -27,7 +27,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 # Sub RecentPosts will show the X last POSTS
 # Even if they are all from the same thread
-require "$templatesdir/$usedisplay/Display.template";
+get_template('Display');
 
 sub RecentPosts {
     spam_protection();

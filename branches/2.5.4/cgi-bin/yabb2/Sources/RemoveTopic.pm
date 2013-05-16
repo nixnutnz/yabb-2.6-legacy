@@ -93,7 +93,7 @@ sub RemoveThread {
             }
         }
     };
-    eval { require Messages::Movedthreads };
+    eval { require Variables::Movedthreads };
     if ( !$moved_file{$thread} ) {
         my $save_moved;
         moved_loop($thread);
@@ -217,7 +217,10 @@ sub Multi {
             $INFO{'newinfo'} ||= $FORM{'newinfo'};
             $INFO{'newboard'}  = $FORM{'toboard'};
             $INFO{'newthread'} = 'new';
+            if (!$INFO{'newboard'}){ redirectmove($currentboard); }
+            else {
             Split_Splice_2();
+            }
         }
         if ($hide) {
             $INFO{'moveit'} = 1;

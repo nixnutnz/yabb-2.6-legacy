@@ -27,13 +27,7 @@ $addmoderatorspmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('AddModerators');
-
-if ( -e ("$templatesdir/$usestyle/Other.template") ) {
-    require "$templatesdir/$usestyle/Other.template";
-}
-else {
-    require "$templatesdir/default/Other.template";
-}
+get_template('Other');
 
 sub AddModerators {
     $addbdmod = q{};

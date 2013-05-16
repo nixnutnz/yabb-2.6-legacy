@@ -687,20 +687,11 @@ sub ext_gen_editfield {
 
     LoadLanguage('Profile');
     if ($action eq 'register') {
-        if ( -e ("$templatesdir/$usestyle/Register.template") ) {
-            require "$templatesdir/$usestyle/Register.template";
-        }
-        else {
-            require "$templatesdir/default/Register.template";
-        }
+        get_template('Register');
     }
-    else {if ( -e ("$templatesdir/$usestyle/MyProfile.template") ) {
-    require "$templatesdir/$usestyle/MyProfile.template";
-}
-else {
-    require "$templatesdir/default/MyProfile.template";
-}
-}
+    else {
+        get_template('MyProfile');
+    }
 
     $field = ext_get_field($id);
 
@@ -744,7 +735,6 @@ else {
               . length( $options[0] )
               . q~" name="ext_~
               . $id
-#              . qq~_msgCL" readonly="readonly"$ext_msgCL /></span>
               . qq~_msgCL" readonly="readonly" disabled="disabled"$ext_msgCL /></span>
     <script type="text/javascript">
     <!--
@@ -909,10 +899,7 @@ sub ext_editprofile {
         $output,    $fieldname, @options,   $selected, $count
     ) = ( shift, shift, ${ $uid . $username }{'position'} );
 
-    if ( -e ("$vardir/gmodsettings.txt") ) {
-        require "$vardir/gmodsettings.txt";
-    }
-
+    get_gmod();
     foreach my $fieldname (@ext_prof_order) {
         $id = ext_get_field_id($fieldname);
         ext_get_field($id);
@@ -970,7 +957,7 @@ sub ext_validate_submition {
         $id,         $field,     @options
     ) = ( shift, shift, ${ $uid . $username }{'position'}, %FORM );
 
-    if ( -e "$vardir/gmodsettings.txt" ) { require "$vardir/gmodsettings.txt"; }
+    get_gmod();
 
     while ( ( $key, $value ) = each %newprofile ) {
 

@@ -20,8 +20,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Display');
 LoadLanguage('FA');
-require "$templatesdir/$usedisplay/Display.template";
-if ($iamgmod) { require "$vardir/gmodsettings.txt"; }
+get_template('Display');
+get_gmod();
 
 sub Display {
 
@@ -133,7 +133,7 @@ sub Display {
             $yySetLocation = "$scripturl?num=$newnum";
             redirectexit();
         }
-        eval { require Messages::Movedthreads };
+        eval { require Variables::Movedthreads };
         while ( exists $moved_file{$newnum} ) {
             $newnum = $moved_file{$newnum};
             next if exists $moved_file{$newnum};

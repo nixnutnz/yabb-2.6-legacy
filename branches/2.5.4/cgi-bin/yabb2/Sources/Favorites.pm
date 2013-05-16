@@ -22,12 +22,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 sub Favorites {
     LoadLanguage('MessageIndex');
-if ( -e ("$templatesdir/$usestyle/MyPosts.template") ) {
-    require "$templatesdir/$usestyle/MyPosts.template";
-}
-else {
-    require "$templatesdir/default/MyPosts.template";
-}
+    get_template('MyPosts');
+
     my $start = int( $INFO{'start'} ) || 0;
     my (
         @threads, $counter, $pages, $mnum,     $msub,
@@ -39,7 +35,7 @@ else {
 # grab all relevant info on the favorite thread for this user and check access to them
     if ( !$maxfavs ) { $maxfavs = 10; }
     my @favboards;
-    eval { require Messages::Movedthreads };
+    eval { require Variables::Movedthreads };
     foreach my $myfav ( split /,/xsm, ${ $uid . $username }{'favorites'} ) {
 
         # see if thread exists and search for it if moved

@@ -518,6 +518,7 @@ qq~<div style="float: left; font-size: 10px; font-family: verdana, sans-serif; o
       : q{};
 
     ${ $uid . $user }{'gtalk'} = ${ $uid . $user }{'gtalk'} ? $gtalkimg : q{};
+
     $yimon{$user} =
       $yimon{$user}
       ? qq~<img src="http://opi.yahoo.com/online?u=${$uid.$user}{'yim'}&#38;m=g&#38;t=0" alt="" />~
@@ -1144,8 +1145,8 @@ sub WhatTemplate {
         while ( ( $curtemplate, $value ) = each %templateset ) {
             if ( $curtemplate eq ${ $uid . $username }{'template'} ) {
                 $template = $curtemplate;
-		}
-	}
+		    }
+	    }
     }
     (
         $usestyle,   $useimages,  $usehead,     $useboard,

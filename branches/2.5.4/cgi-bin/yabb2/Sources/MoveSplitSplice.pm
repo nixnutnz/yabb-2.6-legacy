@@ -18,7 +18,8 @@ $movesplitsplicepmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('MoveSplitSplice');
-require "$templatesdir/$usedisplay/Display.template";
+
+get_template('Display');
 
 sub Split_Splice {
     if ( !$staff ) { fatal_error('split_splice_not_allowed'); }
@@ -112,30 +113,54 @@ sub Split_Splice {
     }
 
     # Get boards and make the current one the default selection
-    $boardlist = qq~<option value="boards" >$sstxt{'29'}</option>\n~;
-    foreach ( split /,/xsm, $cat{$newcat} ) {
-        my ( $boardname, $boardperms ) = split /\|/xsm, $board{$_}, 3;
-        my $access = AccessCheck( $_, q{}, $boardperms );
-        next if !$iamadmin && $access ne 'granted' && $boardview != 1;
-        $boardlist .=
-            qq~<option value="$_" ~
-          . ( $newboard eq $_ ? q~selected="selected"~ : q{} )
-          . qq~>$boardname</option>\n~;
-    }
+    $boardlist = qq~<option value="boards">$sstxt{'29'}</option>\n~;
+    my $indent = -2;
+
+    my $indent = -2;
+
+    local *get_subboards = sub {
+        my @x = @_;
+        $indent += 2;
+        foreach my $childbd (@x) {
+            my $dash;
+            if ( $indent > 0 ) { $dash = q{-}; }
+            my ( $boardname, $boardperms ) = split /\|/xsm, $board{$childbd}, 3;
+            ToChars($boardname);
+            my $access = AccessCheck( $_, q{}, $boardperms );
+            next if !$iamadmin && $access ne 'granted' && $boardview != 1;
+
+            my $bdnopost =
+              ( ${ $uid . $childbd }{'canpost'} || !$subboard{$childbd} )
+              ? q{}
+              : q~ class="nopost" style="background-color: #ffbbbb"~;
+            $boardlist .=
+                qq~<option$bdnopost value="$childbd" ~
+              . ( $newboard eq $childbd ? q~selected="selected"~ : q{} ) . q~>~
+              . ( '&nbsp;' x $indent )
+              . ( $dash x ( $indent / 2 ) )
+              . qq~&nbsp;$boardname</option>\n~;
+
+            if ( $subboard{$childbd} ) {
+                get_subboards( split /\|/xsm, $subboard{$childbd} );
+            }
+        }
+        $indent -= 2;
+        return;
+    };
+    get_subboards( split /,/xsm, $cat{$newcat} );
 
     # Get threads and make the current one the default selection
-    my ( $threadlist, $threadids, $positionlist );
-    if ( $cat{$newcat} =~ /\b$newboard\b/xsm ) {
+    my ( $positionlist );
         fopen( FILE, "$boardsdir/$newboard.txt" );
         my @threads = <FILE>;
         fclose(FILE);
 
-        $threadlist = qq~<option value="new">$sstxt{'30'}</option>\n~;
+        my $threadlist = qq~<option value="new">$sstxt{'30'}</option>\n~;
         my $threadid;
         foreach (@threads) {
             ( $threadid, $message, undef ) = split /\|/xsm, $_, 3;
             next if $curthread eq $threadid;
-            $threadids .= "$threadid,";
+            my $threadids .= "$threadid,";
 
             ( $message, undef ) = Split_Splice_Move( $message, $threadid );
             DoUBBC();
@@ -203,7 +228,7 @@ sub Split_Splice {
                   s/(value="$FORM{'position'}")/$1 selected="selected"/xsm;
             }
         }
-    }
+    #}
 
     if (   $newthread eq 'new'
         || !$threadlist
@@ -212,7 +237,8 @@ sub Split_Splice {
         $my_output = $mymove_output_a;
         $my_output =~ s/{yabb newthread_subject}/$FORM{'newthread_subject'}/sm;
         $my_output =~ s/{yabb position}/$FORM{'position'}/sm;
-        $my_output =~ s/{yabb old_position_thread}/$FORM{'old_position_thread'}/sm;
+        $my_output =~
+          s/{yabb old_position_thread}/$FORM{'old_position_thread'}/sm;
     }
     else {
         $my_output = $mymove_output_b;
@@ -396,6 +422,7 @@ qq~[m by=$hidename destboard=$newboard dest=$newthreadid]: '$tmpsub'~;
             $utdcurthread[0] =
 qq~$tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$username|no_postcount||$user_ip|$tmpmessage||||\n~;
 
+#            eval { require Variables::Movedthreads };
             eval { require Messages::Movedthreads };
             $moved_file{$curthreadid} = $newthreadid;
             delete $moved_file{$newthreadid};

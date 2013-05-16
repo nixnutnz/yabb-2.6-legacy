@@ -23,12 +23,9 @@ if ( $action eq 'detailedversion' ) { return 1; }
 LoadLanguage('InstantMessage');
 LoadLanguage('MyCenter');
 LoadLanguage('Profile');
+get_template('MyCenter');
+get_gmod();
 
-require "$templatesdir/$usemycenter/MyCenter.template";
-
-if ( -e "$vardir/gmodsettings.txt" && $iamgmod ) {
-    require "$vardir/gmodsettings.txt";
-}
 $mycenter_txt{'welcometxt'} =~ s/USERLABEL/${$uid.$username}{'realname'}/gxsm;
 
 $showIM            = q{};

@@ -74,11 +74,39 @@ sub DoLiveMessage {
     CheckIcon();
     get_micon();
     $msgimg = qq~$micon{$icon}~;
+    $css = q~windowbg~;
+    if($tmpmusername eq 'Guest') {
+        $liveusernamelink = "<b>$FORM{'displayname'}</b>";
+        $livememberinfo = "$maintxt{'28'}";
+        $livememberstar = q{};
+        $livetemplate_postinfo = q{};
+    }
+    else {
+        $liveusernamelink = $format{$tmpmusername};
+        $livememberinfo = "$memberinfo{$tmpmusername}$addmembergroup{$tmpmusername}";
+        $livememberstar = $memberstar{$tmpmusername};
+        $livepostcount = NumberFormat(${$uid.$tmpmusername}{'postcount'});
+        $livetemplate_postinfo = qq~$display_txt{'21'}: $livepostcount<br />~;
+    }
+    get_template('Post');
+
+    $messageblock = $mypost_liveprev;
+    $messageblock =~ s/({|<)yabb css(}|>)/$css/g;
+    $messageblock =~ s/({|<)yabb userlink(}|>)/$liveusernamelink/g;
+    $messageblock =~ s/({|<)yabb memberinfo(}|>)/$livememberinfo/g;
+    $messageblock =~ s/({|<)yabb stars(}|>)/$livememberstar/g;
+    $messageblock =~ s/({|<)yabb postinfo(}|>)/$livetemplate_postinfo/g;
+    $messageblock =~ s/({|<)yabb subject(}|>)/$csubject/g;
+    $messageblock =~ s/({|<)yabb msgimg(}|>)/$msgimg/g;
+    $messageblock =~ s/({|<)yabb msgdate(}|>)/$subjdate/g;
+    $messageblock =~ s/({|<)yabb message(}|>)/$message/g;
+    $messageblock =~ s/({|<)yabb (.+?)(}|>)//g;
 
     liveimage_resize();
 
     print "Content-type: application/x-www-form-urlencoded\n\n";
-	print qq~$msgimg|$csubject|$subjdate|$message~;
+    print qq~$messageblock\n~;
+
     $message = $mess;
 
     core::exit;
@@ -127,12 +155,8 @@ sub DoLiveIM {
     $css = q~windowbg~;
     LoadLanguage('InstantMessage');
 
-    if ( -e ("$templatesdir/$usestyle/MyMessage.template") ) {
-        require "$templatesdir/$usestyle/MyMessage.template";
-    }
-    else {
-        require "$templatesdir/default/MyMessage.template";
-    }
+    get_template('MyMessage');
+
     $messageblock = $myIM_liveprev_b;
     $messageblock =~ s/({|<)yabb css(}|>)/$css/gsm;
     $messageblock =~ s/({|<)yabb msgimg(}|>)/$msgimg/gsm;
@@ -177,21 +201,12 @@ sub DoLiveCal {
     wrap2();
     ToChars($message);
     $message = Censor($message);
-    $icon = $FORM{'calicon'};
-    $msgimg = qq~$cal_icon{$icon}~;
-
     CountChars();
     LoadLanguage('EventCal');
-    if ( -e ("$templatesdir/$usestyle/Calendar.template") ) {
-        require "$templatesdir/$usestyle/Calendar.template";
-    }
-    else {
-        require "$templatesdir/default/Calendar.template";
-    }
+    get_template('Calendar');
 
     $messageblock = $mycal_liveprev;
     $messageblock =~ s/({|<)yabb message(}|>)/$message/g;
-    $messageblock =~ s/({|<)yabb msgimg(}|>)/$msgimg/gsm;
     $messageblock =~ s/({|<)yabb (.+?)(}|>)//g;
 
     liveimage_resize();

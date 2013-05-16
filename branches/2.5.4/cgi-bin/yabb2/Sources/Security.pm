@@ -51,7 +51,7 @@ if ( $curnum ne q{} ) {
         fatal_error( 'only_numbers_allowed', "Thread ID: '$curnum'" );
     }
     if ( !-e "$datadir/$curnum.txt" ) {
-        eval { require Messages::Movedthreads };
+        eval { require Variables::Movedthreads };
         if (!$moved_file{$curnum}) { fatal_error( 'not_found', "$datadir/$curnum.txt" );}
         while ( exists $moved_file{$curnum} ) {
             $curnum = $moved_file{$curnum};
@@ -540,9 +540,12 @@ sub email_domain_check {
         }
         if ($bdomains) {
             foreach ( split /,/xsm, $bdomains ) {
+                $my_x = $_;
                 if    ( $_ !~ /\@/xsm )  { $_ = "\@$_"; }
                 elsif ( $_ !~ /^\./xsm ) { $_ = ".$_"; }
-                if ($checkdomain =~ m/$_/ism) { fatal_error( 'domain_not_allowed', "$_" ) ;}
+                @my_ch = split /\./xsm, $my_x;
+                @my_ch_e = split /\./xsm, $checkdomain;
+                if ($checkdomain =~ m/$_/ism || ($my_ch[0] eq q{} && $my_ch[-1] eq $my_ch_e[-1]) ) { fatal_error( 'domain_not_allowed', "$_" ) ;}
             }
         }
     }

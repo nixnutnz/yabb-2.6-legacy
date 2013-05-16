@@ -20,13 +20,7 @@ if ( $iamguest && $INFO{'toid'} ne 'userspec' && $action ne 'checkavail' ) {
     fatal_error('members_only');
 }
 LoadLanguage('UserSelect');
-
-if ( -e ("$templatesdir/$usestyle/Memberlist.template") ) {
-    require "$templatesdir/$usestyle/Memberlist.template";
-}
-else {
-    require "$templatesdir/default/Memberlist.template";
-}
+get_template('Memberlist');
 
 $MembersPerPage = 10;
 
