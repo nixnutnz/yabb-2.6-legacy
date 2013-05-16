@@ -1799,8 +1799,8 @@ sub ModifySkin {
 
 	$fullcss =~ s/\s{2,}/ /gsm;
 #	if ($fullcss =~ /\.buttontext/) {
-		require Admin::Menu_def;
-		SetMenu();
+#		require Admin::Menu_def;
+#		SetMenu();
 #	}
 #	else {
 #		$cssbuttons = 0;
