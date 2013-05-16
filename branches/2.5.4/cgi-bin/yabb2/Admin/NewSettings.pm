@@ -211,7 +211,7 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
     $INFO{'tab'} =~ s/\W//gxsm;
     $default_tab = $INFO{'tab'} || $settings[0]->{'id'};
     $yymain .= qq~
-<div class="bordercolor rightboxdiv" style="margin: 1em auto 0 0">
+<div class="bordercolor rightboxdiv" style="margin: .5em auto 0 0">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg" colspan="2">
