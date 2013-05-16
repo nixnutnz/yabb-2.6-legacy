@@ -59,6 +59,36 @@
 'sort_down' => qq~<img src="$imagesdir/sort_down.gif" alt="$messageindex_sort{'sort_az'}" title="$messageindex_sort{'sort_az'}" />~,
 );
 
+%micon_bg = (
+'xx' => qq~$imagesdir/xx.gif~,
+'exclamation' => qq~$imagesdir/exclamation.png~,
+'thumbup' => qq~$imagesdir/thumbup.gif~,
+'thumbdown' => qq~$imagesdir/thumbdown.gif~,
+'question' => qq~$imagesdir/question.gif~,
+'lamp' => qq~$imagesdir/lamp.gif~,
+'smiley' => qq~$imagesdir/smiley.gif~,
+'angry' => qq~$imagesdir/angry.gif~,
+'cheesy' => qq~$imagesdir/cheesy.gif~,
+'grin' => qq~$imagesdir/grin.gif~,
+'sad' => qq~$imagesdir/sad.gif~,
+'wink' => qq~$imagesdir/wink.gif~,
+'hide' => qq~$imagesdir/hide.gif~,
+'locked' => qq~$imagesdir/locked.gif~,
+'sticky' => qq~$imagesdir/sticky.gif~,
+'standard' => qq~$imagesdir/standard.gif~,
+'confidential' => qq~$imagesdir/confidential.gif~,
+'urgent' => qq~$imagesdir/urgent.gif~,
+'stickylock' => qq~$imagesdir/stickylock.gif~,
+'hidesticky' => qq~$imagesdir/hidesticky.gif~,
+'hidelock' => qq~$imagesdir/hidelock.gif~,
+'hidestickylock' => qq~$imagesdir/hidestickylock.gif~,
+'announcementlock' => qq~$imagesdir/announcementlock.gif~,
+'veryhotthread' => qq~$imagesdir/veryhotthread.gif~,
+'hotthread' => qq~$imagesdir/hotthread.gif~,
+'thread' => qq~$imagesdir/thread.gif~,
+'locked_moved' => qq~$imagesdir/locked_moved.gif~,
+);
+
 %cal_icon = (
 'eventbd' => qq~<img src="$imagesdir/eventbd.gif" alt="$var_cal{'calbirthday'}" />~,
 'eventprivate' => qq~<img src="$imagesdir/eventprivate.gif" alt="$var_cal{'calprivate'}" />~,
@@ -101,5 +131,71 @@
 'icqadd' => qq~<img src="$imagesdir/icqadd.gif" alt="{yabb usericq}" title="{yabb usericq}" />~,
 'gender' => qq~<img src="$imagesdir/{yabb gender}.png" alt="{yabb genderTitle}" title="{yabb genderTitle}" />~,
 );
+
+#####################################################################
+#                   JS Variables for EventCalendar, IMPost, Post    #
+#####################################################################
+
+### Variables for EventCalendar:
+
+$jsCal = qq~
+var jsCal = new Hash(
+'eventmore', '$cal_icon_bg{'eventmore'}',
+'eventmorebd', '$cal_icon_bg{'eventmore'}',
+'eventmoreadd', '$cal_icon_bg{'eventmore'}',
+'eventannounce', '$cal_icon_bg{'eventannounce'}',
+'eventholiday', '$cal_icon_bg{'eventholiday'}',
+'eventnote', '$cal_icon_bg{'eventnote'}',
+'eventparty', '$cal_icon_bg{'eventparty'}',
+'eventcelebration', '$cal_icon_bg{'eventcelebration'}',
+'eventsport', '$cal_icon_bg{'eventsport'}',
+'eventmedia', '$cal_icon_bg{'eventmedia'}',
+'eventmeeting', '$cal_icon_bg{'eventmeeting'}'
+);
+~;
+
+$jsPost = qq~
+var jsPost = new Hash(
+'xx', '$micon_bg{'xx'}',
+'exclamation', '$micon_bg{'exclamation'}',
+'thumbup', '$micon_bg{'thumbup'}',
+'thumbdown', '$micon_bg{'thumbdown'}',
+'question', '$micon_bg{'question'}',
+'lamp', '$micon_bg{'lamp'}',
+'smiley', '$micon_bg{'smiley'}',
+'angry', '$micon_bg{'angry'}',
+'cheesy', '$micon_bg{'cheesy'}',
+'grin', '$micon_bg{'grin'}',
+'sad', '$micon_bg{'sad'}',
+'wink', '$micon_bg{'wink'}'
+);
+~;
+
+$jsPstat = qq~
+var jsPstat = new Hash(
+'thread', '$micon_bg{'thread'}',
+'hide', '$micon_bg{'hide'}',
+'locked', '$micon_bg{'locked'}',
+'sticky', '$micon_bg{'sticky'}',
+'announcement', '$micon_bg{'announcement'}',
+'stickylock', '$micon_bg{'stickylock'}',
+'hidesticky', '$micon_bg{'hidesticky'}',
+'hidelock', '$micon_bg{'hidelock'}',
+'hidestickylock', '$micon_bg{'hidestickylock'}',
+'announcementlock', '$micon_bg{'announcementlock'}',
+'veryhotthread', '$micon_bg{'veryhotthread'}',
+'hotthread', '$micon_bg{'hotthread'}',
+'thread', '$micon_bg{'thread'}'
+);
+~;
+
+
+$jsIM = qq~
+var jsIM = new Hash(
+'standard', '$micon_bg{'standard'}',
+'confidential', '$micon_bg{'confidential'}',
+'urgent', '$micon_bg{'urgent'}'
+);
+~;
 
 1;

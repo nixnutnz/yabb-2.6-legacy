@@ -12,7 +12,7 @@ admin_splice,admin_splice|img_txt|621|img_txt|621a|imgwindowbg|gif|tmp
 admin_split,admin_split|img_txt|620|img_txt|620|imgwindowbg|png|tmp
 admin_sticky,sticky|img_txt|781|||imgwindowbg|gif|tmp
 aim,aim|img_txt|aim|||imgwindowbg|gif|tmp
-alertmod,alert|img_txt|alertmod|img_txt|alertmodtext|imgwindowbg|gif|tmp
+alertmod,alert|img_txt|alertmodtext|img_txt|alertmod|imgwindowbg|png|tmp
 birthdaylist,birthdaylist|img_text|birthdaylist|||imgwindowbg||tmp
 closepoll,poll_lock|img_polltxt|21|||imgcatbg|gif|tmp
 collapse,collapse|img_txt|623|||imgcatbg|gif|tmp
@@ -37,7 +37,7 @@ im_inbox,im_inbox|img_txt|316|||imgwindowbg|gif|tmp
 im_new,im_new|img_txt|321|||imgwindowbg|gif|tmp
 im_outbox,im_outbox|img_txt|320|||imgwindowbg|gif|tmp
 im_remove,remove|img_txt|31|||imgwindowbg|png|tmp
-im_send,im_new|img_txt|sendpm|||imgwindowbg|png|tmp
+im_send,im_send|img_txt|sendpm|||imgwindowbg|png|tmp
 lastpost,lastpost|img_txt|105||||gif|tmp
 lock,locked|img_txt|104|||imgwindowbg|gif|tmp
 login,login|img_txt|34|||imgmenu|gif|tmp
@@ -62,7 +62,7 @@ pmadmin,message|img_txt|pmadmin|||imgmenu|gif|tmp
 pollicon,poll_open|img_polltxt|44||||gif|tmp
 polliconclosed,poll_lock|img_polltxt|46||||gif|tmp
 polliconnew,poll_new|img_polltxt|45||||gif|tmp
-print,print|img_txt|465|||imgcatbg|gif|tmp
+print,print|img_txt|465|||imgcatbg|png|tmp
 print_im,print|img_txt|465|||imgwindowbg|png|tmp
 printp,print|img_txt|465a|||imgcatbg|png|tmp
 profile,profile|img_txt|467|||imgmenu|gif|tmp

@@ -147,7 +147,7 @@ $my_imsend_IM = qq~{yabb my_gimsend} {yabb my_send}<tr>
                             <option value="c"{yabb s_select2}>$im_message_status{'confidential'}</option>
                             <option value="u"{yabb s_select1}>$im_message_status{'urgent'}</option>
                         </select>
-                        <img src="$imagesdir/{yabb pmicon}.gif" name="icons" style="margin:1em 10px 0 10px; vertical-align:top" alt="$im_message_status{'{yabb pmicon}'}" title="$im_message_status{'{yabb pmicon}'}" />
+                        <img src="{yabb pmicon_img}" name="icons" style="margin:1em 10px 0 10px; vertical-align:top" alt="$im_message_status{'{yabb pmicon}'}" title="$im_message_status{'{yabb pmicon}'}" />
                         <input type="hidden" id="iconholder" value="{yabb pmicon}" />
                     </td>
                 </tr>

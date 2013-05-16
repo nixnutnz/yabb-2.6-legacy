@@ -20,6 +20,7 @@ $post_chrwarn_g0 = 'green0.gif';
 $post_chrwarn_g1 = 'green1.gif';
 $post_chrwarn_r0 = 'red0.gif';
 $post_chrwarn_r1 = 'red1.gif';
+$post_error = 'exclamation.png';
 
 ## Post Top
 $mypost_title = qq~{yabb my_topper}<table class="tabtitle">
@@ -45,7 +46,7 @@ $mypost_postblock = qq~
 <table class="pad_3px" style="table-layout: fixed;">
     <col style="width: 23%" />
 	<tr class="vtop">
-    {yabb my_prevmain}{yabb name_field}{yabb email_field}{yabb verification_field}{yabb verification_question_field}
+    {yabb my_prevmain}{yabb my_t_status}{yabb extra}{yabb name_field}{yabb email_field}{yabb verification_field}{yabb verification_question_field}
 		<td colspan="2">
 			<div style="height:16px;">
 			<img name="prevwin" id="prevwin" src="$defaultimagesdir/$post_cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor: pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
@@ -54,11 +55,10 @@ $mypost_postblock = qq~
    </tr><tr>
         <td colspan="2">
             <div id="savetable" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
-                {yabb messageblock}
+                <div id="saveframe" class="prevwin" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;"></div>
            </div>
        </td>
     </tr>
-    {yabb my_t_status}{yabb extra}
     <tr>
         <td class="windowbg2">
             <label for="subject"><b>$post_txt{'70'}:</b></label>
@@ -125,7 +125,7 @@ $mypost_topicstatus = qq~
                 <option value="l" {yabb lcselect}>$post_txt{'36'}</option>
                 <option value="h" {yabb hdselect}>$post_txt{'37'}</option>
             </select>
-            <img src="$imagesdir/{yabb threadclass}.gif" id="thrstat" style="margin:0 15px" alt="" />
+            <img src="{yabb threadclass_img}" id="thrstat" style="margin:0 15px" alt="" />
         </td>
     </tr>~;
 
@@ -147,7 +147,7 @@ $mypost_extra = qq~
             <option value="sad"{yabb ic11}>$post_txt{'291'}</option>
             <option value="wink"{yabb ic12}>$post_txt{'292'}</option>
             </select>
-            <img src="$imagesdir/{yabb icon}.gif" id="icons" style="margin:0 15px" alt="" />
+            <img src="{yabb icon_img}" id="icons" style="margin:0 15px" alt="" />
         </td>
     </tr>~;
 
@@ -226,7 +226,7 @@ $mypost_prevmain_error = qq~
             <table class="windowbg pad_3px" style="table-layout: fixed;">
                 <tr>
                     <td class="titlebg">
-                        <img src="$imagesdir/exclamation.gif" alt="" /> $error_txt{'error_occurred'}
+                        <img src="$imagesdir/$post_error" alt="" /> $error_txt{'error_occurred'}
                     </td>
                 </tr>
             </table>

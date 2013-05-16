@@ -25,6 +25,7 @@ $disp_ip = 'ip.gif';
 $disp_arrow_dn = 'arrow_down.gif';
 $disp_arrow_up = 'arrow_up.gif';
 $disp_gtalk2 ='gtalk2.gif';
+$admin_move = 'admin_move_split_splice.png';
 
 $outside_threadtools = qq~{yabb reply}~;
 $outside_ttsep = qq~~;
@@ -290,15 +291,23 @@ $mymove_top = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
 </head>
 <body>
-    <a name="pagetop">&nbsp;</a><br />
+    <a name="top" id="top">&nbsp;</a><br />
     <div id="maincontainer">
         <div id="container">
             <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
-            <form action="$scripturl?action=split_splice;board=$currentboard;thread=$INFO{'thread'}" method="post" name="split_splice" onsubmit="return submitproc()" accept-charset="$yycharset">
+<script type="text/javascript">
+function NoPost(op) {
+    if (document.getElementById("newboard").options[op].className == "nopost") {
+        alert("$sstxt{'27'}");
+        document.getElementById("newboard").selectedIndex = 0;
+    }
+} 
+</script>
+<form action="$scripturl?action=split_splice;board=$currentboard;thread=$INFO{'thread'}" method="post" name="split_splice" onsubmit="return submitproc()" accept-charset="$yycharset">
             <input type="hidden" name="formsession" value="{yabb formsession}" />
             <table class="tabtitle" style="width:90%">
                 <tr>
-                    <td style="padding-left:20px"><img src="$defaultimagesdir/admin_move_split_splice.png" alt="$sstxt{'1'}" /> <b>$sstxt{'1'}</b></td>
+                    <td style="padding-left:20px"><img src="$imagesdir/$admin_move" alt="$sstxt{'1'}" /> <b>$sstxt{'1'}</b></td>
                 </tr>
             </table>
             <table class="pad_8px cs_thin" style="width:90%">
@@ -333,7 +342,7 @@ $mymove_top = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
                 </tr><tr>
                     <td class="windowbg2">
                         <label for="newboard">$sstxt{'17'}</label><br />
-                        <select name="newboard" id="newboard" onchange="document.split_splice.submit();">{yabb boardlist}</select>
+                        <select name="newboard" id="newboard" onchange="NoPost(this.selectedIndex); document.split_splice.submit();">{yabb boardlist}</select>
                     </td>
                 </tr><tr>
                     <td class="windowbg"><b>$sstxt{'8'}</b></td>

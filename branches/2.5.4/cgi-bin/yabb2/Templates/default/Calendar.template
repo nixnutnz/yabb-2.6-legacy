@@ -164,7 +164,7 @@ $mycalout_addevent = qq~
             {yabb mycalout_calicon}
             <img src="{yabb caliconimg}" id="calicons" name="calicons" style="margin:0 26px" alt="" />
         </td>
-    </tr><tr><!-- live preview -->
+    <!--</tr><tr> live preview
         <td class="windowbg2 vtop small" colspan="2">
             <img src="$imagesdir/$cal_cat_exp" name="prevwin" id="prevwin"  alt="$npf_txt{'01'}" title="$npf_txt{'01'}" class="cursor" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
         </td>
@@ -173,7 +173,7 @@ $mycalout_addevent = qq~
             <div id="savetable" class="windowbg2" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
                 <div id="saveframe" class="prevwin" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;"></div>
            </div>
-        </td>
+        </td> -->
     </tr><tr>
         <td class="windowbg2" colspan="2">
             {yabb mycalout_cthelp}
@@ -242,7 +242,7 @@ $mycal_addnew_left = qq~</table>
     <col style="width:6%" />
     <tr>
         <td class="windowbg center" style="border-right:1px solid #fff">
-            <img src="$imagesdir/$cal_modify" alt="" />
+            {yabb cal_modify}
         </td>
         <td class="windowbg2">{yabb mycalout_post}</td>
     </tr>~;
