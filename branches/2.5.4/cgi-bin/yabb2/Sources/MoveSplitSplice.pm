@@ -116,8 +116,6 @@ sub Split_Splice {
     $boardlist = qq~<option value="boards">$sstxt{'29'}</option>\n~;
     my $indent = -2;
 
-    my $indent = -2;
-
     local *get_subboards = sub {
         my @x = @_;
         $indent += 2;

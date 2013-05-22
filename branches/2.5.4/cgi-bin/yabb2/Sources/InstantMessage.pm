@@ -747,7 +747,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
 
     if ( !$replyguest ) {
         $my_isreply .= qq~
-            <input type="checkbox" name="ns" id="ns" value="NS"$nscheck /> <label for="ns"><span class="small">$post_txt{'277'}</span></label><br />~;
+			<input type="checkbox" name="ns" id="ns" value="NS"$nscheck onchange="autoPreview();" /> <label for="ns"><span class="small">$post_txt{'277'}</span></label><br />~;
         if ( $FORM{'draftid'} || $INFO{'caller'} == 4 ) {
             $my_isreply .= qq~
             <input type="checkbox" name="draftleave" id="draftleave" value="1" /> <span class="small"> $post_txt{'draftleave'}</span><br />~;
@@ -886,10 +886,9 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="
     {
         $my_savetable .= qq~
             post_txt_807 = "$post_txt{'807'}";
-
-                        function enabPrev() {
-                                if ( autoprev == false ) {
-                                        autoprev = true
+            function enabPrev() {
+                if ( autoprev == false ) {
+                    autoprev = true
 					document.getElementById("SaveInfo").style.display = "block";
 					document.getElementById("saveframe").style.display = "block";
 					document.getElementById("saveframe").style.width = "100%";
@@ -899,18 +898,18 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="
                     autoPreview();
 				}
 				else {
-                                        autoprev = false;
-                                        ubbstr = '';
+                    autoprev = false;
+                    ubbstr = '';
 					document.getElementById("SaveInfo").style.display = "none";
 					document.getElementById("saveframe").style.display = "none";
-                                        document.postmodify.message.focus();
-                                        document.images.prevwin.alt = "$npf_txt{'01'}";
-                                        document.images.prevwin.title = "$npf_txt{'01'}";
-                                        document.images.prevwin.src="$defaultimagesdir/$IM_cat_exp";
-                                }
-                    calcCharLeft();
-                        }\n~;
-    }
+                    document.postmodify.message.focus();
+                    document.images.prevwin.alt = "$npf_txt{'01'}";
+                    document.images.prevwin.title = "$npf_txt{'01'}";
+                    document.images.prevwin.src="$defaultimagesdir/$IM_cat_exp";
+                }
+                calcCharLeft();
+            }\n~;
+        }
 
     $my_savetable .= qq~
         function calcCharLeft() {
@@ -942,27 +941,88 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="
 						if(xmlHttp.status == 200 || window.location.href.indexOf("http") == -1) {
 							document.getElementById("saveframe").innerHTML = xmlHttp.responseText;
                         sh_highlightDocument();
-                        prevsec = 0;
+                        if (/post_liveimg_resize_1/i.test(xmlHttp.responseText)) LivePrevImgResize();
                     }
                 }
 				};
-				var tohtmlstr = document.getElementById("message").value;
-				tohtmlstr=tohtmlstr.replace(/\\&/g, "&amp;");
-				tohtmlstr=tohtmlstr.replace(/\\"/g, "&quot;");//";
-				tohtmlstr=tohtmlstr.replace(/  /g, "&nbsp;");
-				tohtmlstr=tohtmlstr.replace(/\\|/g, "&#124;");
-				tohtmlstr=tohtmlstr.replace(/\\</g, "&lt;");
-				tohtmlstr=tohtmlstr.replace(/\\>/g, "&gt;");
-				var messvalue = encodeURIComponent(tohtmlstr);
+				var nscheck = 0;
+				if(document.getElementById("ns").checked) nscheck = 1;
+				var messvalue = encodeURIComponent(document.getElementById("message").value);
 				var iconvalue = encodeURIComponent(document.getElementById("iconholder").value);
 				var subjvalue = encodeURIComponent(document.getElementById("subject").value);
 				var sessvalue = encodeURIComponent(document.postmodify.formsession.value);
-				var parameters = "message="+messvalue+"&icon="+iconvalue+"&subject="+subjvalue+"&formsession="+sessvalue;
+				var parameters = "message="+messvalue+"&icon="+iconvalue+"&subject="+subjvalue+"&nschecked="+nscheck+"&formsession="+sessvalue;
 				xmlHttp.open("POST", url, true);
 				xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 				xmlHttp.send(parameters);
-        }\n~;
-    if ( !$replyguest ) {
+			}\n
+
+			function LivePrevImgResize() {
+				var maxwidth = $max_post_img_width;
+				var maxheight = $max_post_img_height;
+				var fix_size = $fix_post_img_size;
+				noimgdir   = '$imagesdir';
+				noimgtitle = '$maintxt{'171'}';
+				var liveimg_resize_names = new Array ();
+				var zi = 0;
+				var imgsavail = document.getElementById("saveframe").getElementsByTagName("img");
+				for (i=0; i<imgsavail.length; i++) {
+					if (imgsavail[i].className == "liveimg") {
+						liveimg_resize_names[zi] = imgsavail[i].name;
+						zi++;
+					}
+				}
+				var tmp_array = new Array ();
+				for (var i = 0; i < liveimg_resize_names.length; i++) {
+					var tmp_image_name = liveimg_resize_names[i];
+					if (fix_size) {
+						if (maxwidth)  document.images[tmp_image_name].width  = maxwidth;
+						if (maxheight) document.images[tmp_image_name].height = maxheight;
+						document.images[tmp_image_name].style.display = 'inline';
+						continue;
+					}
+					if (document.images[tmp_image_name].complete == false) {
+						tmp_array[tmp_array.length] = tmp_image_name;
+						if (/Opera/i.test(navigator.userAgent)) {
+							document.images[tmp_image_name].width  = document.images[tmp_image_name].width  || 0;
+							document.images[tmp_image_name].height = document.images[tmp_image_name].height || 0;
+							document.images[tmp_image_name].style.display = 'inline';
+						}
+						continue;
+					}
+					var tmp_image = new Image;
+					tmp_image.src = document.images[tmp_image_name].src;
+					var tmpwidth  = document.images[tmp_image_name].width  || tmp_image.width;
+					var tmpheight = document.images[tmp_image_name].height || tmp_image.height;
+					if (!tmpwidth && !tmpheight) {
+						tmp_array[tmp_array.length] = tmp_image_name;
+						continue;
+					}
+					if (maxwidth != 0 && tmpwidth > maxwidth) {
+						tmpheight = tmpheight * maxwidth / tmpwidth;
+						tmpwidth  = maxwidth;
+					}
+					if (maxheight != 0 && tmpheight > maxheight) {
+						tmpwidth  = tmpwidth * maxheight / tmpheight;
+						tmpheight = maxheight;
+					}
+					document.images[tmp_image_name].width  = tmpwidth;
+					document.images[tmp_image_name].height = tmpheight;
+					document.images[tmp_image_name].style.display = 'inline';
+				}
+				if (tmp_array.length > 0 && resize_time < 350) {
+					liveimg_resize_names = tmp_array;
+					if (resize_time == 290) {
+						for (var i = 0; i < liveimg_resize_names.length; i++) {
+							var tmp_image_name = liveimg_resize_names[i];
+							document.images[tmp_image_name].src = noimgdir + "/noimg.gif";
+							document.images[tmp_image_name].title = noimgtitle;
+						}
+					}
+					setTimeout("resize_time++; LivePrevImgResize();", 100);
+				}
+			}~;
+		if ( !$replyguest ) {
         $my_savetable .= qq~
             $jsIM;
             function showtpstatus() {

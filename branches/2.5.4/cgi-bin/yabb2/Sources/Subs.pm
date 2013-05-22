@@ -278,7 +278,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/shjs/styles/sh_style.css" type="tex
 #    $yynavback .=
 #qq~ <span onclick="toTop(0)" style="cursor: pointer;">$img_txt{'102'}</span> <img src="$imagesdir/tabsep211.png" alt="" />~;
     if ( !$yynavback ) { $yynavback .= q~ ~; }
-    $yynavback .= qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</a> &nbsp; $tabsep~;
+    $yynavback .= qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp; $tabsep~;
 
     if ( !$usehead ) { $usehead = q~default~; }
     $yytemplate = "$templatesdir/$usehead/$usehead.html";
@@ -2050,6 +2050,7 @@ qq~<br />$maintxt{'634'}<br />$maintxt{'635'} <a href="$scripturl?action=registe
 }
 
 sub WriteLog {
+	if($action eq 'ajxmessage' || $action eq 'ajximmessage') { return; }
 
     # comment out (#) the next line if you have problems with
     # 'Reverse DNS lookup timeout causes slow page loads'

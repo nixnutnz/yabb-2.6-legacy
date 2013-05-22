@@ -24,6 +24,7 @@ LoadLanguage('Post');
 LoadLanguage('Display');
 LoadLanguage('FA');
 LoadLanguage('UserSelect');
+LoadLanguage('LivePreview');
 
 require Sources::Notify;
 require Sources::SpamCheck;
@@ -46,7 +47,7 @@ sub Post {
     if ( $iamguest && $enable_guestposting == 0 ) {
         fatal_error('not_logged_in');
     }
-    if (   !$staff
+    if (  !$staff
         && $speedpostdetection
         && ${ $uid . $username }{'spamcount'} >= $post_speed_count )
     {
@@ -109,17 +110,12 @@ sub Post {
     if ( $FORM{'title'} eq 'PostReply' ) { $postthread = 2; }
     if ( $pollthread == 2 && $useraddpoll == 0 ) { fatal_error('no_access'); }
 
-    $name_field =
+    $guestpost_fields =
         $iamguest
-      ? $mypost_guest_a
+      ? $mypost_guest_fields
       : q{};
-    $name_field =~ s/{yabb name}/$FORM{'name'}/sm;
-
-    $email_field =
-        $iamguest
-      ? $mypost_guest_b
-      : q{};
-    $email_field =~ s/{yabb email}/$FORM{'email'}/sm;
+    $guestpost_fields =~ s/{yabb name}/$FORM{'name'}/sm;
+    $guestpost_fields =~ s/{yabb email}/$FORM{'email'}/sm;
 
     if ( $iamguest && $gpvalid_en ) {
         validation_code();
@@ -256,21 +252,29 @@ sub Postpage {
     ToChars($sub);
     $sub = Censor($sub);
 
-	if ($action eq 'modify' || $action eq 'modify2') {
-		$displayname = qq~$mename~;
-		$moddate = $tmpmdate;
-		if ($showmodify && (!$tllastmodflag || ($tmpmdate + ($tllastmodtime * 60)) < $date)) {
-			$tmplastmodified = qq~&#171; <i>$display_txt{'211'}: ~ . &timeformat($date) . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &#187;~;
+    if ( $action eq 'modify' || $action eq 'modify2' ) {
+        $displayname = qq~$mename~;
+        $moddate     = $tmpmdate;
+        if (
+            $showmodify
+            && ( !$tllastmodflag
+                || ( $tmpmdate + ( $tllastmodtime * 60 ) ) < $date )
+          )
+        {
+            $tmplastmodified =
+                qq~&#171; <i>$display_txt{'211'}: ~
+              . timeformat($date)
+              . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &#187;~;
+        }
+        $tmpmusername = $thismusername;
     }
-		$tmpmusername = $thismusername;
-		}
     else {
-		$displayname = ${$uid.$username}{'realname'};
-		$moddate = $date;
-		$tmplastmodified = q{};
-		$tmpmusername = $username;
-	}
-	$moddate = timeformat($moddate);
+        $displayname     = ${ $uid . $username }{'realname'};
+        $moddate         = $date;
+        $tmplastmodified = q{};
+        $tmpmusername    = $username;
+    }
+    $moddate = timeformat($moddate);
     require Sources::ContextHelp;
     ContextScript('post');
 
@@ -575,12 +579,15 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
     }
     function showimage() {
         $jsPost;
+        var l_icon_set = document.postmodify.icon.options[document.postmodify.icon.selectedIndex].value;
+        var l_icon_show = jsPost.getItem(l_icon_set);
+        document.images.liveicons.src = l_icon_show;
         var icon_set = document.postmodify.icon.options[document.postmodify.icon.selectedIndex].value;
         var icon_show = jsPost.getItem(icon_set);
         document.images.icons.src = icon_show;
     }~;
     }
-    
+
     $my_topper = qq~
 </script>
 <input type="hidden" name="threadid" value="$threadid" />
@@ -691,7 +698,8 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
 
         if ( $maxpc > 0 ) {
             $my_maxpc = $my_poll_comment;
-            $my_maxpc .= qq~            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onkeyup="if (document.postmodify.poll_comment.value.length > {yabb maxpc}) {document.postmodify.poll_comment.value = document.postmodify.poll_comment.value.substring(0,$maxpc)}">$poll_comment</textarea>
+            $my_maxpc .=
+qq~            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onkeyup="if (document.postmodify.poll_comment.value.length > {yabb maxpc}) {document.postmodify.poll_comment.value = document.postmodify.poll_comment.value.substring(0,$maxpc)}">$poll_comment</textarea>
 ~;
             $my_maxpc .= $my_poll_comment_b;
         }
@@ -740,10 +748,188 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
     }
 
     if ( $postid ne 'Poll' ) {
+        $css ||= 'windowbg';
+        if ( $tmpmusername eq 'Guest' ) {
+            $liveusernamelink      = qq~<b><span id="savename"></span></b>~;
+            $livememberinfo        = "$maintxt{'28'}";
+            $livememberstar        = q{};
+            $livetemplate_postinfo = q{};
+            $tmplastmodified       = q{};
+            $liveuserlocation      = q{};
+        }
+        else {
+            if ( !${ $uid . $tmpmusername }{'password'} ) {
+                LoadUser($tmpmusername);
+            }
+            if ($tmpmusername eq $username) { LoadMiniUser($tmpmusername) ;}
+            if ( !$yyUDLoaded{$tmpmusername}
+                && -e ("$memberdir/$tmpmusername.vars") )
+            {
+                my $tmpns = ${ $uid . $tmpmusername }{'signature'};
+                ${ $uid . $tmpmusername }{'signature'} = "";
+                LoadUserDisplay($tmpmusername);
+                ${ $uid . $tmpmusername }{'signature'} = $tmpns;
+            }
+            $liveusernamelink = $format{$tmpmusername};
+            $livememberinfo =
+              "$memberinfo{$tmpmusername}$addmembergroup{$tmpmusername}";
+            $livememberstar = $memberstar{$tmpmusername};
+
+            $livepostcount =
+              NumberFormat( ${ $uid . $tmpmusername }{'postcount'} );          
+            $livetemplate_postinfo =
+              qq~$display_txt{'21'}: $livepostcount<br />~;
+            if (   ${ $uid . $tmpmusername }{'bday'}
+                && $showuserage
+                && ( !$showage || !${ $uid . $tmpmusername }{'hideage'} ) )
+            {
+                CalcAge( $tmpmusername, 'calc' );
+                $liveuser_age = qq~$display_txt{'age'}: $age<br />~;
+            }
+            if ( $showregdate && ${ $uid . $tmpmusername }{'regtime'} ) {
+                $dr_regdate =
+                  timeformat( ${ $uid . $tmpmusername }{'regtime'} );
+                $dr_regdate = dtonly($dr_regdate);
+                $dr_regdate =~ s/(.*)(, 1?[0-9]):[0-9][0-9].*/$1/xsm;
+                $liveuser_regdate =
+                  qq~$display_txt{'regdate'} $dr_regdate<br />~;
+            }
+            if ( ${ $uid . $tmpmusername }{'location'} ) {
+                $liveuserlocation = qq~$display_txt{'location'}:~ .
+                  ${ $uid . $tmpmusername }{'location'} . '<br />';
+            }
+            if ( $action eq 'modify' ) {
+                if (
+                    $showmodify
+                    && ( !$tllastmodflag
+                        || ( $tmpmdate + ( $tllastmodtime * 60 ) ) < $date )
+                  )
+                {
+                    $tmplastmodified =
+qq~<div class="small" style="float: right; width: 100%; text-align: right; margin-top: 5px;">&#171; <i>$display_txt{'211'}: ~
+                      . timeformat($date)
+                      . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &#187; &nbsp;</div>~;
+                }
+            }
+            else {
+                $subjdate        = timeformat($date);
+                $tmplastmodified = q{};
+            }
+            if ( ${ $uid . $tmpmusername }{'signature'}) { $livesignature_hr =
+qq~<hr class="hr" style="margin: 0; margin-top: 5px; margin-bottom: 5px; padding: 0;" />~;}
+        }
+        $liveipimg =
+qq~<img src="$imagesdir/$post_ip" alt="" />~;
+        $livemip = $display_txt{'511'};
+        get_micon();
+        $livemsgimg =
+qq~<img src="$micon_bg{$icon}" name="liveicons" alt="" />~;
+        get_template('Post');
+
+        $messageblock = $mypost_liveprev;
+        $messageblock =~ s/({|<)yabb images(}|>)/$imagesdir/g;
+        $messageblock =~ s/({|<)yabb css(}|>)/$css/g;
+        $messageblock =~ s/({|<)yabb userlink(}|>)/$liveusernamelink/g;
+        $messageblock =~ s/({|<)yabb memberinfo(}|>)/$livememberinfo/g;
+        $messageblock =~ s/({|<)yabb stars(}|>)/$livememberstar/g;
+        $messageblock =~ s/({|<)yabb location(}|>)/$liveuserlocation/g;
+        $messageblock =~
+          s/({|<)yabb gender(}|>)/${$uid.$tmpmusername}{'gender'}/g;
+        $messageblock =~
+          s/({|<)yabb usertext(}|>)/${$uid.$tmpmusername}{'usertext'}/g;
+        $messageblock =~
+          s/({|<)yabb userpic(}|>)/${$uid.$tmpmusername}{'userpic'}/g;
+        $messageblock =~ s/({|<)yabb postinfo(}|>)/$livetemplate_postinfo/g;
+        $messageblock =~ s/({|<)yabb msgdate(}|>)/$moddate/g;
+        $messageblock =~ s/({|<)yabb msgimg(}|>)/$livemsgimg/g;
+        $messageblock =~ s/({|<)yabb age(}|>)/$liveuser_age/g;
+        $messageblock =~ s/({|<)yabb regdate(}|>)/$liveuser_regdate/g;
+        $messageblock =~
+          s/({|<)yabb subject(}|>)/<span id="savesubj"><\/span>/g;
+        $messageblock =~
+          s/({|<)yabb message(}|>)/<span id="savemess"><\/span>/g;
+        $messageblock =~ s/({|<)yabb modified(}|>)/$tmplastmodified/g;
+        $messageblock =~ s/({|<)yabb ipimg(}|>)/$liveipimg/g;
+        $messageblock =~ s/({|<)yabb ip(}|>)/$livemip/g;
+        $messageblock =~
+          s/({|<)yabb signature(}|>)/${$uid.$tmpmusername}{'signature'}/g;
+        $messageblock =~ s/({|<)yabb signaturehr(}|>)/$livesignature_hr/g;
+        $messageblock =~ s/({|<)yabb (.+?)(}|>)//g;
+        my $nolinkallow;
+        if ( !$minlinkpost ) { $minlinkpost = 0; }
+
+        if ( ( $iamguest && $minlinkpost > 0 )
+            || ${ $uid . $username }{'postcount'} < $minlinkpost
+            && !$iamadmin
+            && !$iamgmod
+            && !$iammod )
+        {
+            $nolinkallow = 1;
+        }
         if ($prevmain) {
             $my_prevmain = $mypost_preview_main;
             $my_prevmain =~ s/{yabb prevmain}/$prevmain/sm;
         }
+        $my_postsection_ajx = qq~
+		<script type="text/javascript">
+
+		var livepostas = '$post';
+		var nolinks = '$nolinkallow';
+
+		function checkLivepreview() {
+			var isError = 0;
+			var msgError = "";
+			var msgErrorTitle = "<b>$livepreview_txt{'info_missing'}<\/b>";
+			~ . (
+            $iamguest && $post ne "imsend" && $post ne "imsend2"
+            ? qq~if (document.postmodify.name.value == "" || document.postmodify.name.value == "_" || document.postmodify.name.value == " ") { msgError += "<li>$livepreview_txt{'name_empty'}<\/li>"; if (isError == 0) isError = 1; }
+			if (document.postmodify.name.value.length > 25)  { msgError += "<li>$livepreview_txt{'long_name'}<\/li>"; if (isError == 0) isError = 1; }
+			if (document.postmodify.email.value == "") { msgError += "<li>$livepreview_txt{'mail_empty'} $livepreview_txt{'valid_mail'}<\/li>"; if (isError == 0) isError = 1; }
+			else if (! checkMailaddr(document.postmodify.email.value)) { msgError += "<li>$livepreview_txt{'valid_mail'}<\/li>"; if (isError == 0) isError = 1; }~
+            : qq~if (livepostas == "imsend" || livepostas == "imsend2") {
+			if (document.postmodify.toshow.options.length == 0 ) { msgError += "<li>$livepreview_txt{'pm_recipient'}<\/li>"; isError = 1; }
+			}~
+          )
+          . (
+            $iamguest && $gpvalid_en && $post ne 'imsend' && $post ne 'imsend2'
+            ? qq~if (document.postmodify.verification.value == "") { msgError += "<li>$livepreview_txt{'veri_code'}<\/li>"; isError = 1; }~
+            : qq~~
+          )
+          . (
+            $iamguest && $spam_questions_gp && $post ne 'imsend' && $post ne 'imsend2'
+            ? qq~if (document.postmodify.verification_question.value == "") { msgError += "<li>$livepreview_txt{'veri_quest'}<\/li>"; isError = 1; }~
+            : qq~~
+          )
+          . qq~
+			if (document.postmodify.subject.value == "") { msgError += "<li>$livepreview_txt{'subj_empty'}<\/li>"; if (isError == 0) isError = 1; }
+			else if ($checkallcaps && document.postmodify.subject.value.search(/[A-Z]{$checkallcaps,}/g) != -1) {
+				if (isError == 0) { msgError = "<li>$livepreview_txt{'subj_allcaps'}<\/li>"; isError = 1; }
+				else { msgError += "<li>$livepreview_txt{'subj_allcaps'}<\/li>"; }
+			}
+			if (document.postmodify.message.value == "") { msgError += "<li>$livepreview_txt{'mess_empty'}<\/li>"; if (isError == 0) isError = 1; }
+			else if ($checkallcaps && document.postmodify.message.value.search(/[A-Z]{$checkallcaps,}/g) != -1) {
+				if (isError == 0) { msgError = "<li>$livepreview_txt{'mess_allcaps'}<\/li>"; isError = 1; }
+				else { msgError += "<li>$livepreview_txt{'mess_allcaps'}<\/li>"; }
+			}
+			if (nolinks && (livepostas == 'post' || livepostas == 'postmodify') && /(http:\\/\\/|https:\\/\\/|ftp:\\/\\/|www\\.){1,}\\S+?\\.\\S+/i.test(document.postmodify.message.value)) {
+				if (isError == 0) { msgError = "<li>$livepreview_txt{'no_links'}<\/li>"; isError = 1; }
+				else { msgError += "<li>$livepreview_txt{'no_links'}<\/li>"; }
+			}
+			if (isError > 0) {
+				document.getElementById("checktable").style.display = 'block';
+				var errorlist = msgErrorTitle + '<ul>' + msgError + '<\/ul>';
+				document.getElementById("checktable").innerHTML = errorlist;
+			}
+			else {
+				document.getElementById("checktable").style.display = 'none';
+			}
+		}
+		</script>
+        <div id="savetable" class="windowbg" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
+		$messageblock
+		<div id="checktable" class="small" style="float: right; text-align: left; width: 77%; padding: 6px; margin: 0px; display: none;"></div>
+		</div>
+		~;
 
         $topicstatus_row = q{};
         $stselect        = q{};
@@ -784,7 +970,8 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
                 $my_t_status =~ s/{yabb lcselect}/$lcselect/sm;
                 $my_t_status =~ s/{yabb hdselect}/$hdselect/sm;
                 $my_t_status =~ s/{yabb threadclass}/$threadclass/sm;
-                $my_t_status =~ s/{yabb threadclass_img}/$micon_bg{$threadclass}/sm;
+                $my_t_status =~
+                  s/{yabb threadclass_img}/$micon_bg{$threadclass}/sm;
             }
             else {
                 $hidestatus =
@@ -1040,10 +1227,11 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
 
         $my_postsec_b   = postbox2();
         $my_postsection = $mypost_postblock;
+        $my_postsection =~ s/{yabb my_postsection_ajx}/$my_postsection_ajx/sm;
         $my_postsection =~ s/{yabb my_prevmain}/$my_prevmain/sm;
         $my_postsection =~ s/{yabb my_t_status}/$my_t_status/sm;
         $my_postsection =~ s/{yabb extra}/$extra/sm;
-        $my_postsection =~ s/{yabb name_field}/$name_field/sm;
+        $my_postsection =~ s/{yabb name_field}/$guestpost_fields/sm;
         $my_postsection =~ s/{yabb email_field}/$email_field/sm;
         $my_postsection =~ s/{yabb verification_field}/$verification_field/sm;
         $my_postsection =~
@@ -1144,19 +1332,28 @@ showtpstatus();
     }
 
     if ( $action eq 'modify' || $action eq 'modify2' ) {
-		$displayname = qq~$mename~;
-		$moddate = $tmpmdate;
-		if ($showmodify && (!$tllastmodflag || ($tmpmdate + ($tllastmodtime * 60)) < $date)) {
-			$tmplastmodified = qq~&#171; <i>$display_txt{'211'}: ~ . timeformat($date) . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &#187;~;
-		}
-		$tmpmusername = $thismusername;
-	} else {
-		$displayname = ${$uid.$username}{'realname'};
-		$moddate = $date;
-		$tmplastmodified = q{};
-		$tmpmusername = $username;
-	}
-	$moddate = timeformat($moddate);
+        $displayname = qq~$mename~;
+        $moddate     = $tmpmdate;
+        if (
+            $showmodify
+            && ( !$tllastmodflag
+                || ( $tmpmdate + ( $tllastmodtime * 60 ) ) < $date )
+          )
+        {
+            $tmplastmodified =
+                qq~&#171; <i>$display_txt{'211'}: ~
+              . timeformat($date)
+              . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &#187;~;
+        }
+        $tmpmusername = $thismusername;
+    }
+    else {
+        $displayname     = ${ $uid . $username }{'realname'};
+        $moddate         = $date;
+        $tmplastmodified = q{};
+        $tmpmusername    = $username;
+    }
+    $moddate = timeformat($moddate);
 
     get_template('Display');
 
@@ -1169,16 +1366,6 @@ showtpstatus();
         $my_postbox_3 .= qq~
 <script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
 <script type="text/javascript">
-<!--
-function jsDoTohtml(tohtmlstr) {
-	tohtmlstr=tohtmlstr.replace(/\\&/g, "&amp;");
-	tohtmlstr=tohtmlstr.replace(/\\"/g, "&quot;"); //";
-	tohtmlstr=tohtmlstr.replace(/  /g, "&nbsp;");
-	tohtmlstr=tohtmlstr.replace(/\\|/g, "&#124;");
-	tohtmlstr=tohtmlstr.replace(/\\</g, "&lt;");
-	tohtmlstr=tohtmlstr.replace(/\\>/g, "&gt;");
-	return tohtmlstr
-}
 var noalert = true, gralert = false, rdalert = false, clalert = false;
 var cntsec = 0
 
@@ -1250,27 +1437,40 @@ function autoPreview() {
 	pstHttp.onreadystatechange = function() {
 		if(pstHttp.readyState == 4) {
 			if(pstHttp.status == 200 || window.location.href.indexOf("http") == -1) {
-				document.getElementById("saveframe").innerHTML = pstHttp.responseText;
+				tmpmess = pstHttp.responseText.split("|");
+				document.getElementById("savesubj").innerHTML = tmpmess[0];
+				document.getElementById("savemess").innerHTML = tmpmess[1];~;
+				if ($iamguest) {
+	                $my_postbox_3 .=qq~
+				document.getElementById("savename").innerHTML = tmpmess[2];~;
+				}
+	            $my_postbox_3 .= qq~
 				sh_highlightDocument();
 				if (/post_liveimg_resize_1/i.test(pstHttp.responseText)) LivePrevImgResize();
-           }
-        }
+				checkLivepreview();
+			}
+		}
 	};
-	var dispnamevalue = encodeURIComponent(document.getElementById("mename").value);
-	var iconvalue = encodeURIComponent(document.getElementById("icon").value);
+	var nscheck = 0;
+	if(document.getElementById("ns").checked) nscheck = 1;
 	var subjvalue = encodeURIComponent(document.getElementById("subject").value);
-	var tmpmessvalue = document.getElementById("message").value;
-	tmpmessvalue = jsDoTohtml(tmpmessvalue);
-	var messvalue = encodeURIComponent(tmpmessvalue);
-	var tmusername = encodeURIComponent(document.getElementById("tmpmusername").value);
-	var tmoddate = encodeURIComponent(document.getElementById("tmpmoddate").value);
+	var messvalue = encodeURIComponent(document.getElementById("message").value);~;
+	if ($iamguest) {
+	    $my_postbox_3 .=qq~
+	var namevalue = encodeURIComponent(document.getElementById("name").value);
+	~;	}
+	else { $my_postbox_3 .= qq~
+	var namevalue = "";
+	~;	}
+	$my_postbox_3 .= qq~
+	var tmusername = encodeURIComponent('$displayname');
 	var sessvalue = encodeURIComponent(document.postmodify.formsession.value);
-	var parameters = "icon="+iconvalue+"&displayname="+dispnamevalue+"&subject="+subjvalue+"&message="+messvalue+"&musername="+tmusername+"&moddate="+tmoddate+"&formsession="+sessvalue;
+	var parameters = "subject="+subjvalue+"&message="+messvalue+"&musername="+tmusername+"&nschecked="+nscheck+"&formsession="+sessvalue+"&guestname="+namevalue;
 	pstHttp.open("POST", url, true);
 	pstHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	pstHttp.send(parameters);
-			}
-		}
+	}
+}
 
 function LivePrevImgResize() {
 	var maxwidth = $max_post_img_width;
@@ -1282,13 +1482,13 @@ function LivePrevImgResize() {
 	var liveimg_resize_names = new Array ();
 	var zi = 0;
 
-	var imgsavail = document.getElementById("saveframe").getElementsByTagName("img");
+	var imgsavail = document.getElementById("savemess").getElementsByTagName("img");
 	for (i=0; i<imgsavail.length; i++) {
 		if (imgsavail[i].className == "liveimg") {
 			liveimg_resize_names[zi] = imgsavail[i].name;
 			zi++;
+		}
 	}
-}
 
 	var tmp_array = new Array ();
 	for (var i = 0; i < liveimg_resize_names.length; i++) {
@@ -1299,7 +1499,7 @@ function LivePrevImgResize() {
 			if (maxheight) document.images[tmp_image_name].height = maxheight;
 			document.images[tmp_image_name].style.display = 'inline';
 			continue;
-        }
+		}
 
 		if (document.images[tmp_image_name].complete == false) {
 			tmp_array[tmp_array.length] = tmp_image_name;
@@ -1307,9 +1507,9 @@ function LivePrevImgResize() {
 				document.images[tmp_image_name].width  = document.images[tmp_image_name].width  || 0;
 				document.images[tmp_image_name].height = document.images[tmp_image_name].height || 0;
 				document.images[tmp_image_name].style.display = 'inline';
-        }
+			}
 			continue;
-        }
+		}
 
 		var tmp_image = new Image;
 		tmp_image.src = document.images[tmp_image_name].src;
@@ -1325,7 +1525,7 @@ function LivePrevImgResize() {
 		if (maxwidth != 0 && tmpwidth > maxwidth) {
 			tmpheight = tmpheight * maxwidth / tmpwidth;
 			tmpwidth  = maxwidth;
-	}
+		}
 
 		if (maxheight != 0 && tmpheight > maxheight) {
 			tmpwidth  = tmpwidth * maxheight / tmpheight;
@@ -1335,7 +1535,7 @@ function LivePrevImgResize() {
 		document.images[tmp_image_name].width  = tmpwidth;
 		document.images[tmp_image_name].height = tmpheight;
 		document.images[tmp_image_name].style.display = 'inline';
-            }
+	}
 	if (tmp_array.length > 0 && resize_time < 350) {
 		liveimg_resize_names = tmp_array;
 		if (resize_time == 290) {
@@ -1343,12 +1543,11 @@ function LivePrevImgResize() {
 				var tmp_image_name = liveimg_resize_names[i];
 				document.images[tmp_image_name].src = noimgdir + "/noimg.gif";
 				document.images[tmp_image_name].title = noimgtitle;
-		}
+			}
 		}
 		setTimeout("resize_time++; resize_images();", 100);
-    }
-		}
-
+	}
+}
 ~
           . ( !$Quick_Post ? "document.postmodify.$settofield.focus();" : q{} )
           . qq~\n\n~;
@@ -1368,6 +1567,7 @@ tick();
 </script>
 ~;
     }
+    get_micon();
     $yymain .= $ctmain;
     $yymain .= $my_q_quote;
     $yymain .= $my_adminim;
@@ -1404,11 +1604,12 @@ sub Preview {
     # allows the following HTML-tags in error messages: <br /> <b>
     $error =~ s/&lt;br( \/)&gt;/<br \/>/igsm;
     $error =~ s/&lt;(\/?)b&gt;/<$1b>/igxsm;
-	if ($action eq 'modify2') {
-		$tmpmusername = $thismusername;
-	} else {
-		$tmpmusername = $username;
-	}
+    if ( $action eq 'modify2' ) {
+        $tmpmusername = $thismusername;
+    }
+    else {
+        $tmpmusername = $username;
+    }
 
     $maxpq          ||= 60;
     $maxpo          ||= 50;
@@ -1533,17 +1734,12 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     elsif ( $FORM{'status'} eq 'u' ) { $icon = 'urgent'; }
     elsif ( $FORM{'status'} eq 's' ) { $icon = 'standard'; }
 
-    $name_field =
+    $guestpost_fields =
         $iamguest
-      ? $mypost_guest_a
-      : q~~;
-    $name_field =~ s/{yabb name}/$FORM{'name'}/sm;
-
-    $email_field =
-        $iamguest
-      ? $mypost_guest_b
-      : q~~;
-    $email_field =~ s/{yabb email}/$FORM{'email'}/sm;
+      ? $mypost_guest_fields
+      : q{};
+    $guestpost_fields =~ s/{yabb name}/$FORM{'name'}/sm;
+    $guestpost_fields =~ s/{yabb email}/$FORM{'email'}/sm;
 
     if ( $iamguest && $gpvalid_en ) {
         $usename = substr $date, 1, length($date) - 4;
@@ -1691,7 +1887,7 @@ sub Post2 {
         fatal_error('not_logged_in');
     }
 
-    if (   !$staff
+    if (  !$staff
         && $speedpostdetection
         && ${ $uid . $username }{'spamcount'} >= $post_speed_count )
     {
@@ -1875,7 +2071,7 @@ sub Post2 {
     }
 
     if ( !$minlinkpost ) { $minlinkpost = 0; }
-    if (   ${ $uid . $username }{'postcount'} < $minlinkpost
+    if ( ${ $uid . $username }{'postcount'} < $minlinkpost
         && !$staff )
     {
         if (   $message =~ m{http:\/\/}xsm
@@ -2217,7 +2413,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
     # set announcement flag according to status of current board
     if ($newthreadid) {
         $mreplies = 0;
-        if ( $staff ) {
+        if ($staff) {
             $mstate =
               $currentboard eq $annboard ? "0a$thestatus" : "0$thestatus";
         }
@@ -2295,7 +2491,7 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
             }                         # only if bypass switched on
             if ( !$icanbypass ) { fatal_error('topic_locked'); }
         }
-        if ( $staff ) {
+        if ($staff) {
             $mstate =
               $currentboard eq $annboard ? "0a$thestatus" : "0$thestatus";
         }    # Leave the status as is if the user isn't allowed to change it
@@ -2819,10 +3015,9 @@ sub sendGuestPM {
     $INFO{'title'} = 'PostReply';
     $postthread = 2;
 
-    $name_field = $mypost_guest_a;
-    $name_field =~ s/{yabb name}/$FORM{'name'}/sm;
-    $email_field = $mypost_guest_b;
-    $email_field =~ s/{yabb email}/$FORM{'email'}/sm;
+    $guestpost_fields = $mypost_guest_fields;
+    $guestpost_fields =~ s/{yabb name}/$FORM{'name'}/sm;
+    $guestpost_fields =~ s/{yabb email}/$FORM{'email'}/sm;
 
     if ($gpvalid_en) {
         validation_code();
@@ -2938,7 +3133,7 @@ sub sendGuestPM2 {
         else                        { fatal_error('speed_alert'); }
     }
 
-    ## clean name and email - remove | from name and turn any _ to spaces in mail
+    ## clean name and email - remove | from email and turn any _ to spaces in name
     if ( $name && $email ) {
         ToHTML($name);
         $tempname = $name;

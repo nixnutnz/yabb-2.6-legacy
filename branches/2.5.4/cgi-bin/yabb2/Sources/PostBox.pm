@@ -474,7 +474,7 @@ sub msicons {
     <tr id="feature_status_1">
         <td class="windowbg"><label for="icon"><b>$post_txt{'71'}:</b></label></td>
         <td class="windowbg">
-            <select name="icon" id="icon" onchange="showimage(); autoPreview();">
+            <select name="icon" id="icon" onchange="showimage();">
             <option value="xx"$ic[1]>$post_txt{'281'}</option>
             <option value="thumbup"$ic[2]>$post_txt{'282'}</option>
             <option value="thumbdown"$ic[3]>$post_txt{'283'}</option>

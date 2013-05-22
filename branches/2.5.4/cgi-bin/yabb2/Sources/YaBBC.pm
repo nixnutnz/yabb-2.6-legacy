@@ -315,8 +315,10 @@ sub imagemsg {
 		$parameter{$key} = $value;
 	}
 
+    my $use_greybox = $img_greybox;
 	if($action eq 'ajxmessage' || $action eq 'ajximmessage' || $action eq 'ajxcal' ) {
 		$parameter{'name'} = qq~class="liveimg" name="post_liveimg_resize"~;
+		$use_greybox = 0;
 	}
 	else {
 		$parameter{'name'} = $type ? qq~name="signat_img_resize"~ : qq~name="post_img_resize"~;
@@ -343,7 +345,7 @@ sub imagemsg {
     my $linkedimg = $rest =~ /\[url[^\[]*\]\s*$/ism ? 1 : 0;
     return $rest
       . (
-        ( !$linkedimg && $img_greybox )
+        ( !$linkedimg && $use_greybox )
         ? qq~<a href="$url" rel="gb_image[nice_pics]" title="$parameter{'alt'}">~
         : q{}
       )

@@ -23,8 +23,10 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');
 LoadLanguage('Post');
+LoadLanguage('LivePreview');
 require Sources::SpamCheck;
 require Sources::PostBox;
+require Sources::Post;
 get_template('Calendar');
 
 get_micon();
@@ -67,9 +69,9 @@ sub eventcal {
     # GoTo Box begin
 
     if ( $INFO{'calgotobox'} == 1 ) {
-        $goyear = $FORM{'selyear'};
-        $gomon  = $FORM{'selmon'};
-        $goday  = $FORM{'selday'};
+        $goyear = $FORM{'calyear'};
+        $gomon  = $FORM{'calmon'};
+        $goday  = $FORM{'calday'};
 
         if ($goday) {
             $yySetLocation =
@@ -246,32 +248,32 @@ qq~<a href="$scripturl?action=eventcal;calshow=1;calmon=$last_mon;calyear=$last_
         $boxyears_inner .= qq~        <option value="$i"$sel>$i</option>\n~;
     }
 ## date selections  - formated ##
-    my $sdays = qq~ <label for="calday">$var_cal{'calday'}</label>
-    <select class="input" name="selday" id="calday">
+    my $sdays = qq~ <label for="selday">$var_cal{'calday'}</label>
+    <select class="input" name="selday" id="selday" onchange="autoPreview()">
         $sdays_inner
     </select>~;
     my $boxdays =
 qq~ <label for="selday"><span class="small">$var_cal{'calday'}</span></label>
-    <select class="input" name="selday" id="selday">
+    <select class="input" name="calday" id="calday">
     <option value="0">---</option>
         $boxdays_inner
         </select>~;
-    my $smonths = qq~ <label for="calmon">$var_cal{'calmonth'}</label>
-    <select class="input" name="selmon" id="calmon">
+    my $smonths = qq~ <label for="selmon">$var_cal{'calmonth'}</label>
+    <select class="input" name="selmon" id="selmon" onchange="autoPreview()">
         $smonths_inner
     </select>~;
     my $boxmonths =
-qq~ <label for="selmon"><span class="small">$var_cal{'calmonth'}</span></label>
-    <select class="input" name="selmon" id="selmon">
+qq~ <label for="calmon"><span class="small">$var_cal{'calmonth'}</span></label>
+    <select class="input" name="calmon" id="calmon">
         $boxmonths_inner
     </select>~;
-    my $syears = qq~ <label for="calyear">$var_cal{'calyear'}</label>
-    <select class="input" name="selyear" id="calyear">
+    my $syears = qq~ <label for="selyear">$var_cal{'calyear'}</label>
+    <select class="input" name="selyear" id="selyear" onchange="autoPreview()">
         $syears_inner
     </select>~;
     my $boxyears =
-qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></label>
-    <select class="input" name="selyear" id="selyear">
+qq~ <label for="calyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></label>
+    <select class="input" name="calyear" id="calyear">
         <option value="$gyears3">$gyears3</option>
         <option value="$gyears2">$gyears2</option>
         <option value="$gyears1">$gyears1</option>
@@ -345,7 +347,7 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
         }
 
         $mycalout_caltype = qq~
-            <select name="caltype" id="caltype" size="1">
+            <select name="caltype" id="caltype" size="1" onchange="autoPreview();">
                 <option value="0"$aevt1>$var_cal{'calpublic'}</option>
                 <option value="1"$aevt2>$var_cal{'calmembers'}</option>
                 $option_private
@@ -384,7 +386,8 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
             require Sources::ContextHelp;
             ContextScript('post');
             $mycalout_cthelp = $ctmain;
-            $mycalout_cthelp .= qq~<div style="$style_ubbc_box">~;
+            $mycalout_cthelp .= qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
+<div style="$style_ubbc_box">~;
             $mycalout_cthelp .= postbox();
             $mycalout_cthelp .= q~</div>~;
         }
@@ -430,7 +433,6 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
         $mycalout_chars = qq~
 <script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
 <script type="text/javascript">
-   <!--
     function Hash() {
         this.length = 0;
         this.items = new Array();
@@ -445,51 +447,217 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
             return this.items[in_key];
         }
     }
-   $jsCal;
+   $jsCal
+   $jsCal_txt
    function calshowimage() {
         var icon_set = document.postmodify.calicon.options[document.postmodify.calicon.selectedIndex].value;
         var icon_show = jsCal.getItem(icon_set);
+        document.images.liveicons.src = icon_show;
         document.images.calicons.src = icon_show;
    }
    // count left characters START
-   var noalert = true, gralert = false, rdalert = false, clalert = false;
-   var cntsec = 0
+var noalert = true, gralert = false, rdalert = false, clalert = false;
+var cntsec = 0
 
-   function tick() {
-       cntsec++;
-       calcCharLeft();
-       var timerID = setTimeout("tick()",1000);
-   }
+function tick() {
+  cntsec++;
+  calcCharLeft();
+  var timerID = setTimeout("tick()",1000);
+}
 
-   function calcCharLeft() {
+var autoprev = false
+
+post_txt_807 = "$post_txt{'807'}";
+
+function enabPrev() {
+    if ( autoprev === false ) {
+		autoprev = true
+		document.getElementById("savetable").style.display = "block";
+		document.getElementById("saveframe").style.display = "block";
+		document.images.prevwin.alt = "$npf_txt{'02'}";
+		document.images.prevwin.title = "$npf_txt{'02'}";
+		document.images.prevwin.src="$defaultimagesdir/$cal_cat_col";
+		autoPreview();
+	}
+	else {
+		autoprev = false;
+		ubbstr = '';
+		document.getElementById("savetable").style.display = "none";
+		document.getElementById("saveframe").style.display = "none";
+		document.postmodify.message.focus();
+		document.images.prevwin.alt = "$npf_txt{'01'}";
+		document.images.prevwin.title = "$npf_txt{'01'}";
+		document.images.prevwin.src="$defaultimagesdir/$cal_cat_exp";
+	}
+	calcCharLeft();
+}
+
+function calcCharLeft() {
        var clipped = false;
        var maxLength = $MaxMessLen;
-       if (document.postmodify.message.value.length > maxLength) {
+  if (document.postmodify.message.value.length > maxLength) {
            document.postmodify.message.value = document.postmodify.message.value.substring(0,maxLength);
            var charleft = 0;
            clipped = true;
-       } else {
+  } else {
            charleft = maxLength - document.postmodify.message.value.length;
-       }
+  }
        document.postmodify.msgCL.value = charleft;
        if (charleft >= 100 && noalert) { noalert = false; gralert = true; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$cal_grn1"; }
        if (charleft < 100 && charleft >= 50 && gralert) { noalert = true; gralert = false; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$cal_grn0"; }
        if (charleft < 50 && charleft > 0 && rdalert) { noalert = true; gralert = true; rdalert = false; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$cal_red0"; }
        if (charleft == 0 && clalert) { noalert = true; gralert = true; rdalert = true; clalert = false; document.images.chrwarn.src="$defaultimagesdir/$cal_red1"; }
        return clipped;
-   }
-
+}
    tick();
-   // count left characters END
-   //-->
+
+function autoPreview() {
+	if(autoprev) {
+	var url = '$scripturl?action=ajxcal';
+	try {
+		if (typeof( new XMLHttpRequest() ) == 'object') {
+			pstHttp = new XMLHttpRequest();
+		} else if (typeof( new ActiveXObject("Msxml2.XMLHTTP") ) == 'object') {
+			pstHttp = new ActiveXObject("Msxml2.XMLHTTP");
+		} else if (typeof( new ActiveXObject("Microsoft.XMLHTTP") ) == 'object') {
+			pstHttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+	} catch (e) { }
+	if (pstHttp == null) return;
+	pstHttp.onreadystatechange = function() {
+		if(pstHttp.readyState == 4) {
+			if(pstHttp.status == 200 || window.location.href.indexOf("http") == -1) {
+				tmpmess = pstHttp.responseText.split("|");
+				document.getElementById("savemess").innerHTML = tmpmess[0];~;
+				if ($iamguest) {
+                    $mycalout_chars.= qq~ 				
+                document.getElementById("savename").innerHTML = tmpmess[1];~;
+                }
+                $mycalout_chars.= qq~ 				
+                document.getElementById("cdate").innerHTML = tmpmess[2];
+                document.getElementById("ev_title").innerHTML = tmpmess[3];
+                document.getElementById("ev_private").innerHTML = tmpmess[4];
+				sh_highlightDocument();
+				if (/post_liveimg_resize_1/i.test(pstHttp.responseText)) LivePrevImgResize();
+				checkLivepreview();
+			}
+		}
+	};
+	var nscheck = 0;
+	if(document.getElementById("ns").checked) nscheck = 1;
+	var messvalue = encodeURIComponent(document.getElementById("message").value);~;
+	if ($iamguest) {
+	    $mycalout_chars .=qq~
+	var namevalue = encodeURIComponent(document.getElementById("name").value);~;
+	}
+	else { 
+	    $mycalout_chars .= qq~
+	var namevalue = "";~;
+	}
+    $mycalout_chars .= qq~
+    var calmonvalue = encodeURIComponent(document.postmodify.selmon.options[document.postmodify.selmon.selectedIndex].value);
+	var caldayvalue = encodeURIComponent(document.postmodify.selday.options[document.postmodify.selday.selectedIndex].value);
+	var calyearvalue = encodeURIComponent(document.postmodify.selyear.options[document.postmodify.selyear.selectedIndex].value);
+	var cal_icon_txt = encodeURIComponent(document.postmodify.calicon.options[document.postmodify.calicon.selectedIndex].value);
+	var cal_type = encodeURIComponent(document.postmodify.caltype.options[document.postmodify.caltype.selectedIndex].value);
+	var tmusername = encodeURIComponent('$displayname');
+	var sessvalue = encodeURIComponent(document.postmodify.formsession.value);
+	var parameters = "&message="+messvalue+"&musername="+tmusername+"&nschecked="+nscheck+"&formsession="+sessvalue+"&guestname="+namevalue+"&cal_mon="+calmonvalue+"&cal_day="+caldayvalue+"&cal_year="+calyearvalue+"&icon_txt="+cal_icon_txt+"&cal_type="+cal_type;
+	pstHttp.open("POST", url, true);
+	pstHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	pstHttp.send(parameters);
+	}
+}
+function LivePrevImgResize() {
+	var maxwidth = $max_post_img_width;
+	var maxheight = $max_post_img_height;
+	var fix_size = $fix_post_img_size;
+	noimgdir   = '$imagesdir';
+	noimgtitle = '$maintxt{'171'}';
+
+	var liveimg_resize_names = new Array ();
+	var zi = 0;
+
+	var imgsavail = document.getElementById("savemess").getElementsByTagName("img");
+	for (i=0; i<imgsavail.length; i++) {
+		if (imgsavail[i].className == "liveimg") {
+			liveimg_resize_names[zi] = imgsavail[i].name;
+			zi++;
+		}
+	}
+
+	var tmp_array = new Array ();
+	for (var i = 0; i < liveimg_resize_names.length; i++) {
+		var tmp_image_name = liveimg_resize_names[i];
+
+		if (fix_size) {
+			if (maxwidth)  document.images[tmp_image_name].width  = maxwidth;
+			if (maxheight) document.images[tmp_image_name].height = maxheight;
+			document.images[tmp_image_name].style.display = 'inline';
+			continue;
+		}
+
+		if (document.images[tmp_image_name].complete == false) {
+			tmp_array[tmp_array.length] = tmp_image_name;
+			if (/Opera/i.test(navigator.userAgent)) {
+				document.images[tmp_image_name].width  = document.images[tmp_image_name].width  || 0;
+				document.images[tmp_image_name].height = document.images[tmp_image_name].height || 0;
+				document.images[tmp_image_name].style.display = 'inline';
+			}
+			continue;
+		}
+
+		var tmp_image = new Image;
+		tmp_image.src = document.images[tmp_image_name].src;
+
+		var tmpwidth  = document.images[tmp_image_name].width  || tmp_image.width;
+		var tmpheight = document.images[tmp_image_name].height || tmp_image.height;
+
+		if (!tmpwidth && !tmpheight) {
+			tmp_array[tmp_array.length] = tmp_image_name;
+			continue;
+		}
+
+		if (maxwidth != 0 && tmpwidth > maxwidth) {
+			tmpheight = tmpheight * maxwidth / tmpwidth;
+			tmpwidth  = maxwidth;
+		}
+
+		if (maxheight != 0 && tmpheight > maxheight) {
+			tmpwidth  = tmpwidth * maxheight / tmpheight;
+			tmpheight = maxheight;
+		}
+
+		document.images[tmp_image_name].width  = tmpwidth;
+		document.images[tmp_image_name].height = tmpheight;
+		document.images[tmp_image_name].style.display = 'inline';
+	}
+	if (tmp_array.length > 0 && resize_time < 350) {
+		liveimg_resize_names = tmp_array;
+		if (resize_time == 290) {
+			for (var i = 0; i < liveimg_resize_names.length; i++) {
+				var tmp_image_name = liveimg_resize_names[i];
+				document.images[tmp_image_name].src = noimgdir + "/noimg.gif";
+				document.images[tmp_image_name].title = noimgtitle;
+			}
+		}
+		setTimeout("resize_time++; resize_images();", 100);
+	}
+}
 </script>~;
+        $guestpost_fields =
+            $iamguest
+          ? $mycal_guest_fields
+          : q{};
+        $guestpost_fields =~ s/{yabb name}/$FORM{'name'}/sm;
+        $guestpost_fields =~ s/{yabb email}/$FORM{'email'}/sm;
 
         if ( $iamguest && $gpvalid_en ) {
             require Sources::Decoder;
             validation_code();
-            $mycalout_validation = $mycal_validation;
-            $mycalout_validation =~ s/{yabb showcheck}/$showcheck/sm;
-            $mycalout_validation =~ s/{yabb flood_text}/$flood_text/sm;
+            $verification_field = $mycal_validation;
+            $verification_field =~ s/{yabb showcheck}/$showcheck/sm;
+            $verification_field =~ s/{yabb flood_text}/$flood_text/sm;
         }
         if (   $iamguest
             && $spam_questions_gp
@@ -508,6 +676,13 @@ s/{yabb verification_question_desc}/$verification_question_desc/sm;
             $mycalout_spamquestion =~
               s/{yabb spam_question_id}/$spam_question_id/sm;
         }
+        if ( $iamguest ) {
+            $liveusernamelink      = qq~<br /><b>$var_cal{'by'}</b> <span id="savename"></span> ($var_cal{'guest'})~;
+        }
+        else {
+             $liveusernamelink = qq~<br /><b>$var_cal{'by'}</b> $format{$username}~;
+        }
+
         if ( !$INFO{'edit_cal_even'} ) {
             $submittxt     = "$var_calpost{'event_send'}";
             $mycalout_send = qq~
@@ -524,6 +699,22 @@ s/{yabb verification_question_desc}/$verification_question_desc/sm;
         $col_row ||= 0;
         $mycalout_post2 = postbox2();
         $mycalout_post3 = postbox3();
+        get_micon();
+        $livemsgimg =
+qq~<img src="$cal_icon_bg{$calicon}" name="liveicons" alt="" />~;
+        $my_evtitle = qq~<span id="ev_title"></span>~;
+        $my_private = qq~<span id="ev_private"></span>~;
+
+        $messageblock = $mycal_liveprev;
+        $messageblock =~ s/({|<)yabb css(}|>)/$css/g;
+        $messageblock =~ s/({|<)yabb eventuserlink(}|>)/$liveusernamelink/g;
+        $messageblock =~ s/({|<)yabb cdate(}|>)/<span id="cdate"><\/span>/g;
+        $messageblock =~ s/({|<)yabb my_cal_icon(}|>)/$livemsgimg/g;
+        $messageblock =~ s/{yabb my_cal_private}/$my_private/sm;
+        $messageblock =~ s/{yabb icon_text}/$my_evtitle/sm;
+        $messageblock =~
+          s/({|<)yabb message(}|>)/<span id="savemess"><\/span>/g;
+        $messageblock =~ s/({|<)yabb (.+?)(}|>)//g;
 
         $mycalout_post = qq~
 <script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
@@ -543,12 +734,64 @@ $mycalout_addevent~;
         $mycalout_post =~ s/{yabb mycalout_smilies}/$mycalout_smilies/sm;
         $mycalout_post =~ s/{yabb mycalout_post3}/$mycalout_post3/sm;
         $mycalout_post =~ s/{yabb mycalout_chars}/$mycalout_chars/sm;
-        $mycalout_post =~ s/{yabb mycalout_validation}/$mycalout_validation/sm;
+        $mycalout_post =~ s/{yabb mycalout_validation}/$verification_field/sm;
+        $mycalout_post =~ s/{yabb guestpost_fields}/$guestpost_fields/sm;
         $mycalout_post =~
           s/{yabb mycalout_spamquestion}/$mycalout_spamquestion/sm;
         $mycalout_post =~ s/{yabb nscheck}/$nscheck/sm;
         $mycalout_post =~ s/{yabb mycalout_send}/$mycalout_send/sm;
-    }
+        $mycalout_post =~ s/{yabb messageblock}/$messageblock/sm;
+
+        $mycalout_post .= qq~
+		<script type="text/javascript">
+
+		var livepostas = '$post';
+		var nolinks = '$nolinkallow';
+
+		function checkLivepreview() {
+			var isError = 0;
+			var msgError = "";
+			var msgErrorTitle = "<b>$livepreview_txt{'info_missing'}<\/b>";
+			~ . (
+            $iamguest
+            ? qq~if (document.postmodify.name.value == "" || document.postmodify.name.value == "_" || document.postmodify.name.value == " ") { msgError += "<li>$livepreview_txt{'name_empty'}<\/li>"; if (isError == 0) isError = 1; }
+			if (document.postmodify.name.value.length > 25)  { msgError += "<li>$livepreview_txt{'long_name'}<\/li>"; if (isError == 0) isError = 1; }
+			if (document.postmodify.email.value == "") { msgError += "<li>$livepreview_txt{'mail_empty'} $livepreview_txt{'valid_mail'}<\/li>"; if (isError == 0) isError = 1; }
+			else if (! checkMailaddr(document.postmodify.email.value)) { msgError += "<li>$livepreview_txt{'valid_mail'}<\/li>"; if (isError == 0) isError = 1; }~
+            : qq~if (livepostas == "imsend" || livepostas == "imsend2") {}
+			}~
+          )
+          . (
+            $iamguest && $gpvalid_en
+            ? qq~if (document.postmodify.verification.value == "") { msgError += "<li>$livepreview_txt{'veri_code'}<\/li>"; isError = 1; }~
+            : qq~~
+          )
+          . (
+            $iamguest && $spam_questions_gp
+            ? qq~if (document.postmodify.verification_question.value == "") { msgError += "<li>$livepreview_txt{'veri_quest'}<\/li>"; isError = 1; }~
+            : qq~~
+          )
+          . qq~
+			if (document.postmodify.message.value == "") { msgError += "<li>$livepreview_txt{'mess_empty'}<\/li>"; if (isError == 0) isError = 1; }
+			else if ($checkallcaps && document.postmodify.message.value.search(/[A-Z]{$checkallcaps,}/g) != -1) {
+				if (isError == 0) { msgError = "<li>$livepreview_txt{'mess_allcaps'}<\/li>"; isError = 1; }
+				else { msgError += "<li>$livepreview_txt{'mess_allcaps'}<\/li>"; }
+			}
+			if (nolinks && (livepostas == 'post' || livepostas == 'postmodify') && /(http:\\/\\/|https:\\/\\/|ftp:\\/\\/|www\\.){1,}\\S+?\\.\\S+/i.test(document.postmodify.message.value)) {
+				if (isError == 0) { msgError = "<li>$livepreview_txt{'no_links'}<\/li>"; isError = 1; }
+				else { msgError += "<li>$livepreview_txt{'no_links'}<\/li>"; }
+			}
+			if (isError > 0) {
+				document.getElementById("checktable").style.display = 'block';
+				var errorlist = msgErrorTitle + '<ul>' + msgError + '<\/ul>';
+				document.getElementById("checktable").innerHTML = errorlist;
+			}
+			else {
+				document.getElementById("checktable").style.display = 'none';
+			}
+		}
+		</script>~;
+	}
 
     # YaBBC Section end
 
@@ -620,10 +863,10 @@ qq~$bday_date|0|$user_bdname|$user_bdname|$user_bdhide|<span class="small">$age<
         chomp $eventline;
         my (
             $cal_date,  $cal_type, $cal_name,   $cal_time,  $cal_hide,
-            $cal_event, $cal_icon, $cal_noname, $cal_type2, $ns
+            $cal_event, $cal_icon, $cal_noname, $cal_type2, $ns,$g
         ) = split /\|/xsm, $eventline;
 
-#$cal_date,$cal_type,$cal_name,$cal_time,$cal_hide, $cal_event,$cal_icon,$cal_noname,$cal_type2;
+#$cal_date,$cal_type,$cal_name,$cal_time,$cal_hide, $cal_event,$cal_icon,$cal_noname,$cal_type2,$ns,$g;
 #20130228  |0        |admin   |1362009097|          |database test|eventannounce||0
         $cal_date =~ /(\d{4})(\d{2})(\d{2})/xsm;
         my ( $c_year, $c_mon, $c_day ) = ( $1, $2, $3 );
@@ -685,10 +928,11 @@ qq~$bday_date|0|$user_bdname|$user_bdname|$user_bdhide|<span class="small">$age<
             'calnoname'    => $cal_noname,
             'caltype2'     => $cal_type2,
             'ns'           => $ns,
+            'g'            => $g,
         );
 
         push @caldata,
-qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_noname|$cal_type2|$ns~;
+qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_noname|$cal_type2|$ns|$g~;
 
     }
 
@@ -717,7 +961,7 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_n
             foreach my $cal_events ( sort @caldata ) {
                 my (
                     $cdat, $ctyp, $cnam,   $ctim,  $chide,
-                    $ceve, $cico, $cnonam, $ctyp2, $ns
+                    $ceve, $cico, $cnonam, $ctyp2, $ns, $g
                 ) = split /\|/xsm, $cal_events;
                 if ( !$Show_ColorLinks ) {
                     $memrealname = ( split /\|/xsm, $memberinf{$cnam}, 2 )[0];
@@ -746,8 +990,8 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_n
 
                     if ( $event_date == $cdat && !$INFO{'edit_cal_even'} ) {
                         $eventfound = 1;
-                        if ( $cnam eq 'Guest' ) {
-                            $eventuserlink = $maintxt{'28'};
+                        if ( $g eq 'g' ) {
+                            $eventuserlink = qq~$cnam ($var_cal{'guest'})~;
                         }
                         elsif ($Show_ColorLinks) {
                             LoadUser($cnam);
@@ -767,7 +1011,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cnam}" rel="nof
                         }
                         else { $cnonam = $cnonam; }
                         if ( $cnonam == 1 ) { $eventuserlink = q{}; }
-                        else { $eventuserlink = "($eventuserlink)"; }
+                        else { $eventuserlink = "<br /><b>$var_cal{'by'}</b> $eventuserlink"; }
 
                         if ( $cico eq 'birthday' ) {
                             if ( $showage && $chide == 1 ) {
@@ -799,7 +1043,7 @@ qq~$var_cal{'calis'} $ceve $var_cal{'calold'}~;
 qq~$cal_icon{'eventprivate'} $cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
                             }
                             else {
-                                $yymain .= qq~
+                                $mycalout_greet .= qq~
             <img src="$yyhtml_root/EventIcons/$cico.gif" alt="$icon_text" /> $cdate <b>$icon_text</b> $eventuserlink~;
                             }
 
@@ -854,7 +1098,7 @@ qq~$cal_icon{'eventprivate'} $cal_icon{$cico} $cdate <b>$icon_text</b> $eventuse
                 foreach my $cal_events ( sort @caldata ) {
                     my (
                         $cdat, $ctyp, $cnam,   $ctim,  $chide,
-                        $ceve, $cico, $cnonam, $ctyp2, $ns
+                        $ceve, $cico, $cnonam, $ctyp2, $ns,$g
                     ) = split /\|/xsm, $cal_events;
                     if ( !$Show_ColorLinks ) {
                         $memrealname =
@@ -882,8 +1126,8 @@ qq~$cal_icon{'eventprivate'} $cal_icon{$cico} $cdate <b>$icon_text</b> $eventuse
 
                     if ( $event_id eq $ctim && $cdat == $event_date ) {
                         $eventfound = 1;
-                        if ( $cnam eq 'Guest' ) {
-                            $eventuserlink = $maintxt{'28'};
+                        if ( $g eq 'g' ) {
+                            $eventuserlink = qq~$cnam ($var_cal{'guest'})~;
                         }
                         elsif ($Show_ColorLinks) {
                             LoadUser($cnam);
@@ -903,7 +1147,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cnam}" rel="nof
                         }
                         else { $cnonam = $cnonam; }
                         if ( $cnonam == 1 ) { $eventuserlink = q{}; }
-                        else { $eventuserlink = "($eventuserlink)"; }
+                        else { $eventuserlink = "<br /><b>$var_cal{'by'}</b>  $eventuserlink"; }
 
                         if ( $cico eq 'birthday' && $cdat == $event_date ) {
                             if ( $showage && $chide == 1 ) {
@@ -1078,7 +1322,7 @@ qq~\n<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/calscroller.css" 
         foreach my $cal_events ( sort @caldata ) {
             my (
                 $cdate,  $ctype, $cname,   $ctime,  $chide,
-                $cevent, $cicon, $cnoname, $ctype2, $ns
+                $cevent, $cicon, $cnoname, $ctype2, $ns,$g
             ) = split /\|/xsm, $cal_events;
             if ( !$Show_ColorLinks ) {
                 $memrealname = ( split /\|/xsm, $memberinf{$cname}, 2 )[0];
@@ -1158,8 +1402,8 @@ qq~<a href="$scripturl?action=eventcal;calshow=1;eventdate=$cyear$cmon$cday;cali
                 $cal_time  = stringtotime($ctime);
                 $icon_text = "$var_cal{$cicon}";
                 if ( !$var_cal{$cicon} ) { $icon_text = calicontext($cicon); }
-                if ( $cname eq 'Guest' ) {
-                    $eventuserlink = $maintxt{'28'};
+                if ( $g eq 'g' ) {
+                    $eventuserlink = qq~$cname ($var_cal{'guest'})~;
                 }
                 elsif ($Show_ColorLinks) {
                     LoadUser($cname);
@@ -1179,7 +1423,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cname}" rel="no
                 }
                 else { $cnoname = $cnoname; }
                 if   ( $cnoname == 1 ) { $eventuserlink = q{}; }
-                else                   { $eventuserlink = "($eventuserlink)"; }
+                else                   { $eventuserlink = qq~<br /><b>$var_cal{'by'}</b> $eventuserlink<hr class="hr" />~; }
                 if ( $Scroll_Events == 3 ) {
                     if ( $cicon eq 'birthday' ) {
                         if ( $showage && $chide ) {
@@ -1190,15 +1434,15 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cname}" rel="no
                               qq~$var_cal{'calis'} $cevent $var_cal{'calold'}~;
                         }
                         $outstring .=
-qq~<div><span class="small">$cal_icon{'eventbd'} $cdate <b>$var_cal{'calbirthday'}</b><br /> $eventbduserlink $greet</span><hr class="hr" /></div>~;
+qq~<div><span class="small">$cal_icon{'eventbd'} $cdate <b>$var_cal{'calbirthday'}</b><br /> $eventbduserlink $greet</span><hr class="hr2" /></div>~;
                     }
                     elsif ( $ctype == 2 ) {
                         $outstring .=
-qq~<div><span class="small">$cal_icon{'eventprivate'} $cal_icon{$cicon} $cdate <b>$icon_text</b> $eventuserlink<br />$cevent</span><hr class="hr" /></div>~;
+qq~<div><span class="small">$cal_icon{'eventprivate'} $cal_icon{$cicon} $cdate <b>$icon_text</b> $eventuserlink$cevent</span><hr class="hr2" /></div>~;
                     }
                     else {
                         $outstring .=
-qq~<div><span class="small">$cal_icon{$cicon} $cdate <b>$icon_text</b> $eventuserlink<br />$cevent</span><hr class="hr" size="1" /></div>~;
+qq~<div><span class="small">$cal_icon{$cicon} $cdate <b>$icon_text</b> $eventuserlink$cevent</span><hr class="hr2" /></div>~;
                     }
                 }
                 else {
@@ -1489,6 +1733,33 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
                 $FORM{'verification_question_id'}
             );
         }
+    if ( !${ $uid . $username }{'email'} ) {
+        $FORM{'name'} =~ s/\A\s+//xsm;
+        $FORM{'name'} =~ s/\s+\Z//xsm;
+        if (   $FORM{'name'} eq q{}
+            || $FORM{'name'} eq q{_}
+            || $FORM{'name'} eq q{ } )
+        {
+            Preview( $post_txt{'75'} );
+        }
+        if ( length( $FORM{'name'} ) > 25 ) {
+            Preview( $post_txt{'568'} );
+        }
+        if ( $FORM{'email'} eq {} ) { Preview("$post_txt{'76'}"); }
+        if ( $FORM{'email'} !~ /[\w\-\.\+]+\@[\w\-\.\+]+\.(\w{2,4}$)/xsm ) {
+            Preview("$post_txt{'240'} $post_txt{'69'} $post_txt{'241'}");
+        }
+        if (
+            ( $FORM{'email'} =~ /(@.*@)|(\.\.)|(@\.)|(\.@)|(^\.)|(\.$)/xsm )
+            || ( $FORM{'email'} !~
+                /^.+@\[?(\w|[-.])+\.([a-zA-Z]{2,4}|[0-9]{1,4})\]?$/xsm )
+          )
+        {
+            Preview("$post_txt{'500'}");
+        }
+    }
+        email_domain_check($email);
+
         if ( length( $FORM{'message'} ) > 0 ) {
             $calmessage = $FORM{'message'};
             $calmessage =~ s/\|//gxsm;
@@ -1505,7 +1776,10 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
             $calmessage =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gsm;
             $calmessage =~ s/\n/<br \/>/gsm;
             $calmessage =~ s/([\000-\x09\x0b\x0c\x0e-\x1f\x7f])/\x0d/gxsm;
-
+            if($iamguest) { $guestname = $FORM{'name'};
+                FromChars($guestname);
+                ToHTML($guestname);
+            }
             fopen( EVENTFILE, "$vardir/eventcal.db" );
             my @calinput = <EVENTFILE>;
             fclose(EVENTFILE);
@@ -1514,21 +1788,22 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
                     chomp $calinput[$i];
                     (
                         $c_date,  $c_type, $c_name,   $c_time,  $c_hide,
-                        $c_event, $c_icon, $c_noname, $c_type2, $ns
+                        $c_event, $c_icon, $c_noname, $c_type2, $ns,$g
                     ) = split /\|/xsm, $calinput[$i];
                     if ( $c_time == $FORM{'editid'} ) {
                         $calinput[$i] =
-"$FORM{'selyear'}$FORM{'selmon'}$FORM{'selday'}|$FORM{'caltype'}|$c_name|$c_time||$calmessage|$FORM{'calicon'}|$FORM{'calnoname'}|$FORM{'caltype2'}|$FORM{'ns'}\n";
+"$FORM{'selyear'}$FORM{'selmon'}$FORM{'selday'}|$FORM{'caltype'}|$c_name|$c_time||$calmessage|$FORM{'calicon'}|$FORM{'calnoname'}|$FORM{'caltype2'}|$FORM{'ns'}|$g\n";
                     }
                     else {
                         $calinput[$i] =
-"$c_date|$c_type|$c_name|$c_time|$c_hide|$c_event|$c_icon|$c_noname|$c_type2|$ns\n";
+"$c_date|$c_type|$c_name|$c_time|$c_hide|$c_event|$c_icon|$c_noname|$c_type2|$ns|$g\n";
                     }
                 }
             }
             else {
+                if($iamguest) { $username = $guestname;}
                 push @calinput,
-"$FORM{'selyear'}$FORM{'selmon'}$FORM{'selday'}|$FORM{'caltype'}|$username|$date||$calmessage|$FORM{'calicon'}|$FORM{'calnoname'}|$FORM{'caltype2'}|$FORM{'ns'}\n";
+"$FORM{'selyear'}$FORM{'selmon'}$FORM{'selday'}|$FORM{'caltype'}|$username|$date||$calmessage|$FORM{'calicon'}|$FORM{'calnoname'}|$FORM{'caltype2'}|$FORM{'ns'}|g\n";
             }
             fopen( EVENTFILE, ">$vardir/eventcal.db" );
             print {EVENTFILE} @calinput or croak 'cannot print EVENTFILE';

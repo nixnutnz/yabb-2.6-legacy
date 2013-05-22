@@ -23,24 +23,35 @@ if ( $FORM{'searchboards'} =~ /\A\!/xsm ) {
     my $checklist = q{};
     get_forum_master();
     foreach my $catid (@categoryorder) {
-
-        my $boardlist = $cat{$catid};
-        my @bdlist = split /\,/xsm, $boardlist;
+        (@bdlist) = split /\,/xsm, $cat{$catid};
         my ( $catname, $catperms, $catallowcol ) = split /\|/xsm,
           $catinfo{$catid};
         my $access = CatAccess($catperms);
         if ( !$access ) { next; }
-        foreach my $curboard (@bdlist) {
+
+        recursive_search(@bdlist);
+    }
+
+    sub recursive_search {
+        my @x = @_;
+        foreach my $curboard (@x) {
             chomp $curboard;
-            $cat_boardcnt{$catid}++;
+
+            # don't add to count if it's a sub board
+            if ( !${ $uid . $curboard }{'parent'} ) { $cat_boardcnt{$catid}++; }
             my ( $boardname, $boardperms, $boardview ) = split /\|/xsm,
               $board{$curboard};
-            $access = AccessCheck( $curboard, q{}, $boardperms );
+            my $access = AccessCheck( $curboard, q{}, $boardperms );
             if ( !$iamadmin && $access ne 'granted' ) { next; }
             $checklist .= qq~$curboard, ~;
+
+            if ( $subboard{$curboard} ) {
+                recursive_search( split /\|/xsm, $subboard{$curboard} );
+            }
         }
+        return;
     }
-    $checklist =~ s/, \Z//xsm;
+    $checklist =~ s/, \Z//sm;
     $FORM{'searchboards'} = $checklist;
 }
 
@@ -48,7 +59,7 @@ sub plushSearch1 {
 
     # generate error if admin has disabled search options
     if ( $maxsearchdisplay < 0 ) { fatal_error('search_disabled'); }
-	if ( $advsearchaccess ne 'granted' ) { fatal_error('no_access'); }
+    if ( $advsearchaccess ne 'granted' ) { fatal_error('no_access'); }
     my (
         @categories, $curcat,   %catname, %cataccess, @membergroups,
         %openmemgr,  $curboard, @threads, @boardinfo, $counter
@@ -63,56 +74,55 @@ sub plushSearch1 {
 <script type="text/javascript">
 <!--
 function removeUser() {
-	if (document.getElementById('userspec').value && confirm("$searchselector_txt{'removeconfirm'}")) {
-		document.getElementById('userspec').value = "";
-		document.getElementById('userspectext').value = "";
-		if(document.getElementById('searchme').checked) {
-			document.getElementById('searchme').checked = false;
-			document.getElementById('userkind').disabled=false;
-			document.getElementById('noguests').selected=true;
-		}
-		document.getElementById('usrsel').style.display = 'inline';
-		document.getElementById('usrrem').style.display = 'none';
-		document.getElementById('searchme').disabled = false;
-	}
+    if (document.getElementById('userspec').value && confirm("$searchselector_txt{'removeconfirm'}")) {
+        document.getElementById('userspec').value = "";
+        document.getElementById('userspectext').value = "";
+        if(document.getElementById('searchme').checked) {
+            document.getElementById('searchme').checked = false;
+            document.getElementById('userkind').disabled=false;
+            document.getElementById('noguests').selected=true;
+        }
+        document.getElementById('usrsel').style.display = 'inline';
+        document.getElementById('usrrem').style.display = 'none';
+        document.getElementById('searchme').disabled = false;
+    }
 }
 
 function addUser() {
-	window.open('$scripturl?action=imlist;sort=username;toid=userspec','','status=no,height=360,width=464,menubar=no,toolbar=no,top=50,left=50,scrollbars=no');
+    window.open('$scripturl?action=imlist;sort=username;toid=userspec','','status=no,height=360,width=464,menubar=no,toolbar=no,top=50,left=50,scrollbars=no');
 }
 
 function searchMe(chelem) {
-	if(chelem.checked) {
-		document.getElementById('userspectext').value='${$uid.$username}{'realname'}';
-		document.getElementById('userspec').value='$username';
-		document.getElementById('userkind').value='poster';
-		document.getElementById('poster').selected=true;
-		document.getElementById('userkind').disabled=true;
-	} else {
-		document.getElementById('userspectext').value='';
-		document.getElementById('userspec').value='';
-		document.getElementById('userkind').value='noguests';
-		document.getElementById('noguests').selected=true;
-		document.getElementById('userkind').disabled=false;
-	}
+    if(chelem.checked) {
+        document.getElementById('userspectext').value='${$uid.$username}{'realname'}';
+        document.getElementById('userspec').value='$username';
+        document.getElementById('userkind').value='poster';
+        document.getElementById('poster').selected=true;
+        document.getElementById('userkind').disabled=true;
+    } else {
+        document.getElementById('userspectext').value='';
+        document.getElementById('userspec').value='';
+        document.getElementById('userkind').value='noguests';
+        document.getElementById('noguests').selected=true;
+        document.getElementById('userkind').disabled=false;
+    }
 }
 //-->
 </script>
 
 <form action="$scripturl?action=search2" method="post" name="searchform" onsubmit="return CheckSearchFields();" accept-charset="$yycharset">~;
-    $yymain .= $mysearch_template  . (
-    $enable_ubbc
-    ? qq~<br />
+    $yymain .= $mysearch_template . (
+        $enable_ubbc
+        ? qq~<br />
             <input type="checkbox" name="searchyabbtags" id="searchyabbtags" value="1" /><label for="searchyabbtags">$search_txt{'searchyabbtags'}</label>~
-    : q{}
-  );
+        : q{}
+    );
 
     if (   !$ML_Allowed
         || ( $ML_Allowed == 1 && !$iamguest )
         || ( $ML_Allowed == 2 && $staff )
         || ( $ML_Allowed == 3 && ( $iamadmin || $iamgmod ) )
-        || ( $ML_Allowed == 4 && ( $iamadmin || $iamgmod || $iamymod ) )
-         )
+        || ( $ML_Allowed == 4 && ( $iamadmin || $iamgmod || $iamymod ) ) )
     {
         $yymain .= $mysearch_template2;
         if ( !$iamguest ) {
@@ -167,47 +177,73 @@ q~<input type="checkbox" name="searchme" id="searchme" style="visibility: hidden
             $allselected++;
             $checklist .=
 qq~<option value="$curboard" $selected>$boardname</option>\n          ~;
+            if ( !$subboard{$curboard} ) { next; }
+            my $indent;
+
+            get_subboards( split /\|/xsm, $subboard{$curboard} );
+
+            sub get_subboards {
+                my @x = @_;
+                $indent += 2;
+                foreach my $childbd (@x) {
+                    my $dash;
+                    if ( $indent > 0 ) { $dash = q{-}; }
+                    ( $chldboardname, undef, undef ) = split /\|/xsm,
+                      $board{"$childbd"};
+                    ToChars($chldboardname);
+                    $checklist .=
+                        qq~<option value="$childbd" $selected>~
+                      . ( '&nbsp;' x $indent )
+                      . ( $dash x ( $indent / 2 ) )
+                      . qq~ $chldboardname</option>\n          ~;
+                    if ( $subboard{$childbd} ) {
+                        get_subboards( split /\|/xsm, $subboard{$childbd} );
+                    }
+                }
+                $indent -= 2;
+                return;
+            }
         }
     }
     if ( $isselected == $allselected ) {
         $boardscheck = q~ checked="checked"~;
     }
     $yymain .= qq~
-			<select multiple="multiple" name="searchboards" size="5" onchange="selectnum();">
-			$checklist
-			</select>
-			<input type="checkbox" name="srchAll" id="srchAll"$boardscheck onclick="if (this.checked) searchAll(true); else searchAll(false);" /> <label for="srchAll">$search_txt{'737'}</label>
-			<script type="text/javascript">
-			<!-- //
-			function searchAll(_v) {
-				for(var i=0;i<document.searchform.searchboards.length;i++)
-				document.searchform.searchboards[i].selected=_v;
-			}
+            <select multiple="multiple" name="searchboards" size="5" onchange="selectnum();">
+            $checklist
+            </select>
+            <input type="checkbox" name="srchAll" id="srchAll"$boardscheck onclick="if (this.checked) searchAll(true); else searchAll(false);" /> <label for="srchAll">$search_txt{'737'}</label>
+            <script type="text/javascript">
+            <!-- //
+            function searchAll(_v) {
+                for(var i=0;i<document.searchform.searchboards.length;i++)
+                document.searchform.searchboards[i].selected=_v;
+            }
 
-			function selectnum() {
-				document.searchform.srchAll.checked = true;
-				for(var i=0;i<document.searchform.searchboards.length;i++) {
-					if (! document.searchform.searchboards[i].selected) { document.searchform.srchAll.checked = false; }
-				}
-			}
-			// -->
-			</script>~;
+            function selectnum() {
+                document.searchform.srchAll.checked = true;
+                for(var i=0;i<document.searchform.searchboards.length;i++) {
+                    if (! document.searchform.searchboards[i].selected) { document.searchform.srchAll.checked = false; }
+                }
+            }
+            // -->
+            </script>~;
     $yymain .= $mysearch_template5;
     $yymain =~ s/{yabb maxsearchdisplay}/$maxsearchdisplay/sm;
 
     $yymain .= qq~
 <script type="text/javascript">
 <!--
-	document.searchform.search.focus();
+    document.searchform.search.focus();
 
-	function CheckSearchFields() {
-		if (document.searchform.numberreturned.value > $maxsearchdisplay) {
-			alert("$search_txt{'191x'}");
-			document.searchform.numberreturned.focus();
-			return false;
-		}
-		return true;
-	}
+    function CheckSearchFields() {
+        if (document.searchform.numberreturned.value > $maxsearchdisplay) {
+            alert("$search_txt{'191x'}");
+            document.searchform.numberreturned.focus();
+            return false;
+        }
+        return true;
+    }
 //-->
 </script>
 ~;
@@ -222,7 +258,9 @@ sub plushSearch2 {
 
     # generate error if admin has disabled search options
     if ( $maxsearchdisplay < 0 ) { fatal_error('search_disabled'); }
-	if ($advsearchaccess ne 'granted' && $qcksearchaccess ne 'granted') { fatal_error( 'no_access' ); }
+    if ( $advsearchaccess ne 'granted' && $qcksearchaccess ne 'granted' ) {
+        fatal_error('no_access');
+    }
     spam_protection();
 
     my $maxage = $FORM{'age'}
@@ -284,9 +322,7 @@ sub plushSearch2 {
     my (
         $curboard, @threads,   $curthread, $tnum,      $tsub,
         $tname,    $temail,    $tdate,     $treplies,  $tusername,
-        $ticon,    $tstate,    @messages,  $curpost,   $mname,
-        $memail,   $mdate,     $musername, $micon,     $mattach,
-        $mip,      $ns,        $subfound,  $msgfound,  $numfound,
+        $ticon,    $tstate,    @messages,  $curpost,   $subfound,  $msgfound,  $numfound,
         %data,     $i,         $board,     $curcat,    @categories,
         %catid,    %catname,   %cataccess, %openmemgr, @membergroups,
         %cats,     @boardinfo, %boardinfo, @boards,    $counter,
@@ -313,6 +349,16 @@ sub plushSearch2 {
         }
     }
 
+    foreach my $cbdlist ( keys %subboard ) {
+        foreach my $cboard ( split /\|/xsm, $subboard{$cbdlist} ) {
+            my $catid = ${ $uid . $cboard }{'cat'};
+            ( $catname, $catperms ) = split /\|/xsm, $catinfo{$catid};
+            $cataccess = CatAccess($catperms);
+            if ( !$cataccess ) { next; }
+            $catid{$cboard}   = $catid;
+            $catname{$cboard} = $catname;
+        }
+    }
     if ($enable_ubbc) { require Sources::YaBBC; }
 
     @boards = split /\,\ /xsm, $FORM{'searchboards'};
@@ -466,7 +512,7 @@ qq~<hr class="hr" /><b>$search_txt{'170'}<br /><a href="javascript:history.go(-1
     push @tmpsearch, @search;
     undef %found;
     @search = grep { !$found{$_}++ } @tmpsearch;
-
+    my $icanbypass = checkUserLockBypass();
     for my $i ( 0 .. ( @messages - 1 ) ) {
         (
             $board, $tnum,    $msgnum, $tusername, $tname, $msub,
@@ -485,6 +531,7 @@ qq~<hr class="hr" /><b>$search_txt{'170'}<br /><a href="javascript:history.go(-1
             if ($enable_ubbc) { DoUBBC(); }
             wrap2();
         }
+        ToChars($message);
 
         $message = Censor($message);
         $msub    = Censor($msub);
@@ -493,7 +540,25 @@ qq~<hr class="hr" /><b>$search_txt{'170'}<br /><a href="javascript:history.go(-1
 
         ToChars( $catname{$board} );
         ToChars( $boardname{$board} );
-        $yymain =~ s/{yabb counter}/$counter/gsm;
+
+        # generate a sub board tree
+        my $boardtree   = q{};
+        my $parentboard = $board;
+        while ($parentboard) {
+            my ( $pboardname, undef, undef ) =
+              split /\|/xsm, $board{"$parentboard"};
+            ToChars($pboardname);
+            if ( ${ $uid . $parentboard }{'canpost'} ) {
+                $pboardname =
+qq~<a href="$scripturl?board=$parentboard"><span class="under">$pboardname</span></a>~;
+            }
+            else {
+                $pboardname =
+qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><u>$pboardname</u></a>~;
+            }
+            $boardtree   = qq~ / $pboardname$boardtree~;
+            $parentboard = ${ $uid . $parentboard }{'parent'};
+        }
 
         ++$counter;
 
@@ -524,7 +589,19 @@ qq~$menusep<a href="$scripturl?action=notify2;oldnotify=1;num=$tnum/$msgnum#$msg
             $yymain .=
 qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$msgnum#$msgnum;title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num=$tnum;quote=$msgnum;title=PostReply">$img{'recentquote'}</a>$notify &nbsp;~;
         }
-
+        if (   $staff
+            && ( $icanbypass || $tstate !~ /l/ism )
+            && ( !$iammod || is_moderator( $username, $board ) ) )
+        {
+            LoadLanguage('Display');
+            $yymain .=
+qq~<a href="$scripturl?action=multidel;recent=1;thread=$tnum;del$c=$c" onclick="return confirm('~
+              . (
+                ( $icanbypass && $tstate =~ /l/ism )
+                ? qq~$display_txt{'modifyinlocked'}\\n\\n~
+                : q{}
+              ) . qq~$display_txt{'rempost'}')">$img{'delete'}</a>~;
+        }
         $yymain .= $mysearch_template9;
         $yymain =~ s/{yabb message}/$message/sm;
     }
@@ -716,10 +793,12 @@ sub pmsearch {
             }
 
             $data{$mdate} = [
-                $pmboxName,    $msgnum,    $msub,        $mname,
-                $memail,       $mdate,     $mfromuser,   $mtouser,
-                $mccuser,      $mbccuser,  $mattachment, $mip,
-                $savedmessage, $messageid, $mstorefolder, $mmessagestatus
+                $pmboxName,    $msgnum,      $msub,
+                $mname,        $memail,      $mdate,
+                $mfromuser,    $mtouser,     $mccuser,
+                $mbccuser,     $mattachment, $mip,
+                $savedmessage, $messageid,   $mstorefolder,
+                $mmessagestatus
             ];
             if ( $mdate < $oldestfound ) { $oldestfound = $mdate; }
             $numfound++;
@@ -755,10 +834,10 @@ sub pmsearch {
     ## output results
     for my $i ( 0 .. ( @messages - 1 ) ) {
         my (
-            $thispmbox, $msgnum,    $msub,        $mname,
-            $memail,    $mdate,     $mfromuser,   $mtouser,
-            $mccuser,   $mbccuser,  $mattachment, $mip,
-            $message,   $messageid, $mstorefolder,$mstatus
+            $thispmbox, $msgnum,    $msub,         $mname,
+            $memail,    $mdate,     $mfromuser,    $mtouser,
+            $mccuser,   $mbccuser,  $mattachment,  $mip,
+            $message,   $messageid, $mstorefolder, $mstatus
         ) = @{ $data{ $messages[$i] } };
         my ( $MemberFromLink, $MemberToLink, $MemberCCLink, $MemberBCCLink );
         my ( $fromTitle, $toTitle, $toTitleCC, $toTitleBCC, $FolderName );
@@ -776,18 +855,18 @@ sub pmsearch {
         }
 
         if ($mtouser) {
-            if ( $mstatus ne 'sb') {
-            foreach my $uname ( split /\,/xsm, $mtouser ) {
-                $MemberToLink .=
-                  addMemberLink( $uname, $uname, $mdate ) . q{, };
+            if ( $mstatus ne 'sb' ) {
+                foreach my $uname ( split /\,/xsm, $mtouser ) {
+                    $MemberToLink .=
+                      addMemberLink( $uname, $uname, $mdate ) . q{, };
+                }
+                $MemberToLink =~ s/, \Z//sm;
+                $toTitle = qq~$search_txt{'pmto'}: $MemberToLink<br />~;
             }
-            $MemberToLink =~ s/, \Z//sm;
-            $toTitle = qq~$search_txt{'pmto'}: $MemberToLink<br />~;
-        }
             else {
                 require Sources::InstantMessage;
                 foreach my $uname ( split /\,/xsm, $mtouser ) {
-                   $MemberToLink .= links_to($uname);
+                    $MemberToLink .= links_to($uname);
                 }
                 $MemberToLink =~ s/, \Z//sm;
                 $toTitle = qq~$search_txt{'pmto'}: $MemberToLink<br />~;
@@ -849,7 +928,7 @@ sub pmsearch {
         $yysearchmain =~ s/{yabb toTitle}/$toTitle/sm;
         $yysearchmain =~ s/{yabb toTitleCC}/$toTitleCC/sm;
         $yysearchmain =~ s/{yabb toTitleBCC}/$toTitleBCC/sm;
-        
+
     }
 
     if (@messages) {
@@ -866,14 +945,14 @@ sub pmsearch {
 
 sub addMemberLink {
     my ( $user, $displayname, $mdate ) = @_;
-    if ( -e "$memberdir/$user.vars" ) { &LoadUser($user); }
+    if ( -e "$memberdir/$user.vars" ) { LoadUser($user); }
     if ( ${ $uid . $user }{'regdate'}
         && $mdate >= ( ${ $uid . $user }{'regtime'} || $date ) )
     {
         $mname =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$format_unbold{$user}</a>~;
     }
-    elsif ($user !~ m~Guest~
+    elsif ($user !~ m/Guest/sm
         && $mdate < ( ${ $uid . $user }{'regtime'} || $date ) )
     {
         $mname = qq~$displayname - $maintxt{'470a'}~;
@@ -1001,7 +1080,7 @@ sub msgfnd {
 }
 
 sub msgfnd2 {
-    my ( $message ) = @_;
+    my ($message) = @_;
     $msgfound = 1;
     foreach (@search) {
         if ( $message !~ m{(^|\W|_)\Q$_\E(?=$|\W|_)}ixsm ) {

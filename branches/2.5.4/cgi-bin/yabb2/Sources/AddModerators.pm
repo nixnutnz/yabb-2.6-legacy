@@ -31,8 +31,35 @@ get_template('Other');
 
 sub AddModerators {
     $addbdmod = q{};
+    *get_subboards = sub {
+        my @x = @_;
+        $indent += 2;
+        foreach my $board (@x) {
+            my $dash;
+            if ( $indent > 2 ) { $dash = q{-}; }
+
+            ( $boardname, $boardperms, $boardview ) =
+              split /\|/xsm, $board{"$board"};
+            if (   ${ $uid . $board }{'ann'} == 1
+                || ${ $uid . $board }{'rbin'} == 1 )
+            {
+                next;
+            }
+            ToChars($boardname);
+                $addbdmod .=
+                    qq~<option value="$board"$modsel>~
+                  . ( '&nbsp;' x $indent )
+                  . ( $dash x ( $indent / 2 ) )
+                  . qq~$boardname</option>\n~;
+            if ( $subboard{$board} ) {
+                get_subboards( split /\|/xsm, $subboard{$board} );
+            }
+        }
+        $indent -= 2;
+    };
+
     foreach my $catid (@categoryorder) {
-        @bdlist = split /,/xsm, $cat{$catid};
+        (@bdlist) = split /\,/xsm, $cat{$catid};
         foreach my $board (@bdlist) {
             $modsel     = q{};
             $moderators = ${ $uid . $board }{'mods'};
@@ -40,17 +67,9 @@ sub AddModerators {
             foreach my $thisMod (@BoardModerators) {
                 if ( $thisMod eq $user ) { $modsel = q~selected="selected"~; }
             }
-            ( $boardname, $boardperms, $boardview ) =
-              split /\|/xsm, $board{"$board"};
-            ToChars($boardname);
-            if (   ${ $uid . $board }{'ann'} == 1
-                || ${ $uid . $board }{'rbin'} == 1 )
-            {
-                next;
-            }
-            $addbdmod .=
-              qq~<option value="$board"$modsel>$boardname</option>\n~;
         }
+        my $indent = -2;
+        get_subboards(@bdlist);
     }
     $showProfile .= $myshowProfile;
     $showProfile =~ s/{yabb addbdmod}/$addbdmod/sm;
