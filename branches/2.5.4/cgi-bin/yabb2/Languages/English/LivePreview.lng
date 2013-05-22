@@ -1,0 +1,39 @@
+#-------------------------------------------------------------------#
+# LivePreview.lng						    #
+#-------------------------------------------------------------------#
+# Ajax Live Preview 4 YaBB252					    #
+# Version 0.3.7 beta						    #
+# by Carsten Dalgaard						    #
+#-------------------------------------------------------------------#
+# Copyright: 2013 'Carsten Dalgaard' - All Rights Reserved	    #
+# Released: May 11, 2013					    #
+# e-mail: post@carsten-dalgaard.dk				    #
+#-------------------------------------------------------------------#
+# Any redistribution of this script without the expressed written   #
+# consent of 'cd-profil as' is strictly prohibited. Copying any	    #
+# of the code contained within this script and claiming it as	    #
+# your own is also prohibited.					    #
+#-------------------------------------------------------------------#
+# By using this script you agree to indemnify 'Carsten Dalgaard'    #
+# from any liability that might arise from its use.		    #
+#-------------------------------------------------------------------#
+# You may not remove any of these header notices.		    #
+#-------------------------------------------------------------------#
+
+%livepreview_txt = (
+'info_missing' => 'Missing or Incorrect Information:',
+'name_empty' => 'The Name field is not filled out.',
+'long_name' => 'Please shorten your name. It is too long',
+'mail_empty' => 'The E-mail field is not filled out.',
+'valid_mail' => 'Please enter a valid E-mail address.',
+'veri_code' => 'The Verification field is not filled out.',
+'veri_quest' => 'The Verification Question field is not filled out.',
+'subj_empty' => 'The Subject field is not filled out.',
+'mess_empty' => 'The Message Body is not filled out.',
+'subj_allcaps' => 'It appears that you are trying to write using ALL CAPS in the Subject field. This is against forum rules.',
+'mess_allcaps' => 'It appears that you are trying to write using ALL CAPS in the Message field. This is against forum rules.',
+'pm_recipient' => 'You must fill in the recipient field!',
+'no_links'     => "You are not allowed to include links until you have posted $minlinkpost messages.",
+);
+
+1;
