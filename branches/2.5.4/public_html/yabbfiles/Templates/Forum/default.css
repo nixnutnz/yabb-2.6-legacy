@@ -526,6 +526,13 @@ border-top:0 solid #A7B8CC;
 color:#6078B0;
 height:1px;
 }
+.hr2 {
+background-color:#fff;
+border:0 solid #fff;
+border-top:0 solid #fff;
+color:#fff;
+height:1px;
+}
 
 .hr_s {
 background-color:#A7B8CC;
