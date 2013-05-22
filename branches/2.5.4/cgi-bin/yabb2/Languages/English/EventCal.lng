@@ -108,6 +108,8 @@ $eventcallngver = 'YaBB 2.5.4 $Revision$';
 'verification_question_case' => 'Answers are case-sensitive.',
 'bdayhide' => 'has a birthday today.',
 'other' => '123 (Other)',
+'guest' => 'Guest',
+'by' => 'By:',
 );
 
 ### Event Calendar YaBBC ###
