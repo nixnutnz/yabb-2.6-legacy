@@ -191,9 +191,10 @@ function AddText(text) {
         } else {
             opener.document.postmodify.message.value += text;
         }
+    opener.autoPreview();
     }
 }
-
+opener.autoPreview();
 moresmiliecode = new Array({yabb more_smilie_array})
 
 function MoreSmilies(i) {

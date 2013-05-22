@@ -21,12 +21,13 @@ $post_chrwarn_g1 = 'green1.gif';
 $post_chrwarn_r0 = 'red0.gif';
 $post_chrwarn_r1 = 'red1.gif';
 $post_error = 'exclamation.png';
+$post_ip = 'ip.gif';
 
 ## Post Top
 $mypost_title = qq~{yabb my_topper}<table class="tabtitle">
     <tr>
         <td style="padding-left:1%">
-            <img src="$imagesdir/{yabb icon}.gif" alt="" /> {yabb yytitle}
+            <img src="{yabb icon_img}" alt="" /> {yabb yytitle}
         </td>
     </tr>
 </table>
@@ -45,21 +46,27 @@ $mypost_topview = qq~<table class="pad_3px">
 $mypost_postblock = qq~
 <table class="pad_3px" style="table-layout: fixed;">
     <col style="width: 23%" />
-	<tr class="vtop">
-    {yabb my_prevmain}{yabb my_t_status}{yabb extra}{yabb name_field}{yabb email_field}{yabb verification_field}{yabb verification_question_field}
+    {yabb my_prevmain}{yabb name_field}{yabb email_field}{yabb verification_field}{yabb verification_question_field}
+   <tr>
+   </tr><tr>
 		<td colspan="2">
 			<div style="height:16px;">
-			<img name="prevwin" id="prevwin" src="$defaultimagesdir/$post_cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor: pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
+				<img name="prevwin" id="prevwin" src="$defaultimagesdir/$post_cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor: pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
             </div>
         </td>
-   </tr><tr>
+   </tr>
+</table>   
+   {yabb my_postsection_ajx}
+<table class="pad_3px" style="table-layout: fixed;">
+    <col style="width: 23%" />
+    {yabb my_t_status}{yabb extra}
+    <tr>
         <td colspan="2">
             <div id="savetable" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
                 <div id="saveframe" class="prevwin" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;"></div>
            </div>
        </td>
-    </tr>
-    <tr>
+    </tr><tr>
         <td class="windowbg2">
             <label for="subject"><b>$post_txt{'70'}:</b></label>
         </td>
@@ -424,16 +431,14 @@ $my_poll_hide = qq~<tr>
 ~;
 
 #guest posting
-$mypost_guest_a = qq~<tr>
+$mypost_guest_fields = qq~<tr>
                 <td class="windowbg">
                     <label for="name"><b>$post_txt{'68'}:</b></label>
                 </td>
                 <td class="windowbg">
                     <input type="text" name="name" id="name" size="25" value="{yabb name}" maxlength="25" tabindex="2" />
                 </td>
-            </tr>~;
-
-$mypost_guest_b= qq~<tr>
+            </tr><tr>
                 <td class="windowbg">
                     <label for="email"><b>$post_txt{'69'}:</b></label>
                 </td>
@@ -454,7 +459,7 @@ $mypost_guest_c = qq~<tr>
                     <label for="verification"><b>$floodtxt{'3'}:</b></label>
                 </td>
                 <td class="windowbg vtop">
-                    <input type="text" maxlength="30" name="verification" id="verification" size="30" />
+                    <input type="text" maxlength="30" name="verification" id="verification" size="30" onkeyup="checkLivepreview();" />
                 </td>
             </tr>~;
       
@@ -468,13 +473,13 @@ $mypost_guest_e = qq~<tr>
                    <input type="hidden" name="spam_question" value="{yabb spam_question}" />
                 </td>
                 <td class="windowbg vtop">
-                    <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" />
+                    <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" onkeyup="checkLivepreview();" />
                 </td>
             </tr>~;
 
 $mypost_veri_a = qq~<tr>
                 <td class="windowbg vtop">
-                    <label for="verification"><b>$floodtxt{'3'}:</b></label>ww
+                    <label for="verification"><b>$floodtxt{'3'}:</b></label>
                 </td>
                 <td class="windowbg vtop">{yabb showcheck}
                     <br /><span class="small">{yabb flood_text}</span>
@@ -485,7 +490,7 @@ $mypost_veri_a = qq~<tr>
 
 $mypost_veri_b = qq~<tr>
                 <td class="windowbg vtop">
-                    <label for="verification_question"><b>{yabb spam_question}</b></label>yy
+                    <label for="verification_question"><b>{yabb spam_question}</b></label>
                 </td>
                 <td class="windowbg">{yabb verification_question}
                     <input type="hidden" name="verification_question" value="{yabb verification_question}" />
@@ -571,30 +576,6 @@ $mypost_liveprev = qq~
     </table>
     </div>
     </div>~;
-$x = 
-qq~
-     <table class="pad_4px" style="table-layout: fixed;">
-         <col style="width:20px" />
-         <tr class="titlebg vtop">
-             <td>{yabb msgimg}</td>
-             <td><b>{yabb subject}</b>
-                 <br /><span class="small"><b>{yabb replycount}</b>{yabb msgdate}</span>
-            </td>
-        </tr><tr>
-            <td class="windowbg2 vtop" colspan="2">
-               <div class="message" style="float: left; width: 99%; overflow: auto;">
-                 {yabb message}
-                </div>
-            </td>
-        </tr><tr>
-            <td class="windowbg2 bottom" colspan="2">
-                <div class="small" style="width: 99%; text-align: right;">
-                    {yabb modified}
-                </div>
-            </td>
-        </tr>
-    </table>
-~;
 
    
 ## ModifyPost insert    

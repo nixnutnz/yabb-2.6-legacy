@@ -154,6 +154,19 @@ var jsCal = new Hash(
 );
 ~;
 
+$jsCal_txt = qq~
+var jsCaltxt = new Hash(
+'eventannounce', '$var_cal{'eventannounce'}',
+'eventholiday', '$var_cal{'eventholiday'}',
+'eventnote', '$var_cal{'eventnote'}',
+'eventparty', '$var_cal{'eventparty'}',
+'eventcelebration', '$var_cal{'eventcelebration'}',
+'eventsport', '$var_cal{'eventsport'}',
+'eventmedia', '$var_cal{'eventmedia'}',
+'eventmeeting', '$var_cal{'eventmeeting'}'
+);
+~;
+
 $jsPost = qq~
 var jsPost = new Hash(
 'xx', '$micon_bg{'xx'}',
@@ -188,7 +201,6 @@ var jsPstat = new Hash(
 'thread', '$micon_bg{'thread'}'
 );
 ~;
-
 
 $jsIM = qq~
 var jsIM = new Hash(
