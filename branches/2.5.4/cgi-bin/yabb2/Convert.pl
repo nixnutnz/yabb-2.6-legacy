@@ -3402,7 +3402,7 @@ sub ext_admin_convert_fixgroupnames {
 
 sub SetInstall2 {
     if ( $action eq 'setinstall2' ) {
-        $settings_file_version = 'YaBB 0.0.0';
+        $settings_file_version = 'YaBB 2.5.4';
         $yycharset             = 'UTF-8';
         $maintenance           = 1;
         $rememberbackup        = 0;
@@ -3411,6 +3411,8 @@ sub SetInstall2 {
         $mbname =~ s/\"/\'/gxsm;    #'" make my syntax checker happy;
         $forumstart            = timetostring( int time );
         $Cookie_Length         = 1;
+        ( undef,$rancook ) = split /\-/xsm, $cookieusername;
+        $cookietsort = qq~Y2tsort-$rancook~; 
         $regtype               = 3;
         $RegAgree              = 1;
         $RegReasonSymbols      = 500;
@@ -3594,6 +3596,7 @@ sub SetInstall2 {
 \$cookieusername = "$cookieusername";               # Name of the username cookie
 \$cookiepassword = "$cookiepassword";               # Name of the password cookie
 \$cookiesession_name = "$cookiesession_name";       # Name of the Session cookie
+\$cookietsort = "$cookietsort";                     # Name of the Topic Sort
 
 \$regtype = $regtype;                               # 0 = registration closed (only admin can register),
                                                     # 1 = pre registration with admin approval,

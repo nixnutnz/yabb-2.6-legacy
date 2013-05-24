@@ -1164,9 +1164,9 @@ sub MoveMessages {
         my @movedmessageline = <OLDMVFILE>;
         fclose(OLDMVFILE);
         
-        fopen( MVFILE, ">$datadir/Movedthreads.pm" );
+        fopen( MVFILE, ">$vardir/Movedthreads.pm" );
         print {MVFILE} @movedmessageline
-              or croak "cannot print $datadir/Movedthreads.pm";
+              or croak "cannot print $vardir/Movedthreads.pm";
         fclose(MVFILE);
     }
     return;
@@ -1237,7 +1237,9 @@ sub Convert_Settings {
    
     $settings_file_version = "YaBB 2.5.4";
 	if ($enable_notifications eq q{}) { $enable_notifications = $enable_notification ? 3 : 0; }
-
+	if ( !$cookietsort ) { ( undef,$rancook ) = split /\-/xsm, $cookieusername;
+        $cookietsort = qq~Y2tsort-$rancook~;
+    }
     require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');
     

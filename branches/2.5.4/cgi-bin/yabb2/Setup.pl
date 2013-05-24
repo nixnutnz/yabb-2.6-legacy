@@ -98,12 +98,14 @@ if ( !$action ) {
     $rand_cook_user = "Y2User-$rand_integer";
     $rand_cook_pass = "Y2Pass-$rand_integer";
     $rand_cook_sess = "Y2Sess-$rand_integer";
+    $rand_cook_sort = "Y2tsort-$rand_integer";
 
     fopen( COOKFILE, ">$vardir/cook.txt" )
       || setup_fatal_error( "$maintext_23 $vardir/cook.txt: ", 1 );
     print {COOKFILE} "$rand_cook_user\n" or croak 'cannot print cook.txt';
     print {COOKFILE} "$rand_cook_pass\n" or croak 'cannot print cook.txt';
     print {COOKFILE} "$rand_cook_sess\n" or croak 'cannot print cook.txt';
+    print {COOKFILE} "$rand_cook_sort\n" or croak 'cannot print cook.txt';
     fclose(COOKFILE);
 
     adminlogin();
@@ -118,7 +120,7 @@ chomp @cookinfo;
 $cookieusername     = "$cookinfo[0]";
 $cookiepassword     = "$cookinfo[1]";
 $cookiesession_name = "$cookinfo[2]";
-
+$cookietsort        = "$cookinfo[3]";
 if    ( $action eq 'adminlogin2' ) { adminlogin2(); }
 elsif ( $action eq 'setup1' )      { autoconfig(); }
 elsif ( $action eq 'setup2' ) {
@@ -1425,10 +1427,11 @@ sub SetInstall2 {
 
 \$mbname = q^$mbname^;                              # The name of your YaBB forum
 \$forumstart = "$forumstart";                       # The start date of your YaBB Forum
-\$Cookie_Length = $Cookie_Length;                   # Default minutes to set login cookies to stay for
+\$Cookie_Length = $Cookie_Length;                   # Default to set login cookies to stay for
 \$cookieusername = "$cookieusername";               # Name of the username cookie
 \$cookiepassword = "$cookiepassword";               # Name of the password cookie
 \$cookiesession_name = "$cookiesession_name";       # Name of the Session cookie
+\$cookietsort = "$cookietsort";                     # Name of the Topic Sort
 
 \$regtype = $regtype;                               # 0 = registration closed (only admin can register),
                                                     # 1 = pre registration with admin approval,
