@@ -211,6 +211,7 @@ sub redirectexit {
 sub redirectmove {
 require Sources::MessageIndex; MessageIndex();
 }
+
 sub redirectinternal {
     if ($currentboard) {
         if ( $INFO{'num'} ) { require Sources::Display; Display(); }
@@ -2050,7 +2051,7 @@ qq~<br />$maintxt{'634'}<br />$maintxt{'635'} <a href="$scripturl?action=registe
 }
 
 sub WriteLog {
-	if($action eq 'ajxmessage' || $action eq 'ajximmessage') { return; }
+	if($action eq 'ajxmessage' || $action eq 'ajximmessage' || $action eq 'ajxcal') { return; }
 
     # comment out (#) the next line if you have problems with
     # 'Reverse DNS lookup timeout causes slow page loads'

@@ -284,7 +284,7 @@ sub Postpage {
     if (   $postid ne 'Poll'
         && $destination ne 'modalert2'
         && $destination ne 'guestpm2' )
-    {
+    {   get_micon();
         $extra = $mypost_extra;
         $extra =~ s/{yabb ic1}/$ic1/sm;
         $extra =~ s/{yabb ic2}/$ic2/sm;
@@ -562,6 +562,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
     ~;
 
     if ( $destination ne 'modalert2' && $destination ne 'guestpm2' ) {
+        get_micon();
         $my_modalert = qq~
     function Hash() {
         this.length = 0;
@@ -578,12 +579,10 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
         }
     }
     function showimage() {
-        $jsPost;
-        var l_icon_set = document.postmodify.icon.options[document.postmodify.icon.selectedIndex].value;
-        var l_icon_show = jsPost.getItem(l_icon_set);
-        document.images.liveicons.src = l_icon_show;
+        $jsPost
         var icon_set = document.postmodify.icon.options[document.postmodify.icon.selectedIndex].value;
         var icon_show = jsPost.getItem(icon_set);
+        document.images.liveicons.src = icon_show;
         document.images.icons.src = icon_show;
     }~;
     }
@@ -750,7 +749,7 @@ qq~            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onke
     if ( $postid ne 'Poll' ) {
         $css ||= 'windowbg';
         if ( $tmpmusername eq 'Guest' ) {
-            $liveusernamelink      = qq~<b><span id="savename"></span></b>~;
+            $liveusernamelink      = qq~<b>$mename</b>~;
             $livememberinfo        = "$maintxt{'28'}";
             $livememberstar        = q{};
             $livetemplate_postinfo = q{};
@@ -765,11 +764,10 @@ qq~            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onke
             if ( !$yyUDLoaded{$tmpmusername}
                 && -e ("$memberdir/$tmpmusername.vars") )
             {
-                my $tmpns = ${ $uid . $tmpmusername }{'signature'};
-                ${ $uid . $tmpmusername }{'signature'} = "";
-                LoadUserDisplay($tmpmusername);
-                ${ $uid . $tmpmusername }{'signature'} = $tmpns;
-            }
+				my $tmpmess = $message;
+				LoadUserDisplay($tmpmusername);
+				$message = $tmpmess;
+			}
             $liveusernamelink = $format{$tmpmusername};
             $livememberinfo =
               "$memberinfo{$tmpmusername}$addmembergroup{$tmpmusername}";
@@ -829,7 +827,7 @@ qq~<img src="$micon_bg{$icon}" name="liveicons" alt="" />~;
         $messageblock = $mypost_liveprev;
         $messageblock =~ s/({|<)yabb images(}|>)/$imagesdir/g;
         $messageblock =~ s/({|<)yabb css(}|>)/$css/g;
-        $messageblock =~ s/({|<)yabb userlink(}|>)/$liveusernamelink/g;
+		$messageblock =~ s/({|<)yabb userlink(}|>)/<span id="savename" style="font-weight: bold">$liveusernamelink<\/span>/g;
         $messageblock =~ s/({|<)yabb memberinfo(}|>)/$livememberinfo/g;
         $messageblock =~ s/({|<)yabb stars(}|>)/$livememberstar/g;
         $messageblock =~ s/({|<)yabb location(}|>)/$liveuserlocation/g;

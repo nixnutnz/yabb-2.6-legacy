@@ -320,6 +320,9 @@ sub imagemsg {
 		$parameter{'name'} = qq~class="liveimg" name="post_liveimg_resize"~;
 		$use_greybox = 0;
 	}
+	elsif ($action eq 'eventcal') {
+		$parameter{'name'} = qq~name="post_img_resize"~;
+	}
 	else {
 		$parameter{'name'} = $type ? qq~name="signat_img_resize"~ : qq~name="post_img_resize"~;
 	}

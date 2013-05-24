@@ -174,6 +174,7 @@ sub DoLiveCal {
     wrap2();
     ToChars($message);
     $message = Censor($message);
+    liveimage_resize();
     CountChars();
     $myname = $FORM{'guestname'};
     uri_unescape($myname);
