@@ -85,9 +85,9 @@ sub SpamQuestions {
         }
     }
     else {
-        $header_row     = q{};
+        $header_row     = q~ colspan="4"~;
         $show_questions = qq~<tr class="windowbg2">
-    <td>$spam_question_txt{'no_questions'}</td>
+    <td colspan="4">$spam_question_txt{'no_questions'}</td>
 </tr>~;
     }
 
