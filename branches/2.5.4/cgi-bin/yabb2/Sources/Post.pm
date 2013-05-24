@@ -30,6 +30,7 @@ require Sources::Notify;
 require Sources::SpamCheck;
 require Sources::PostBox;
 get_template('Post');
+get_micon();
 
 if (   $iamguest
     && $gpvalid_en
@@ -284,7 +285,7 @@ sub Postpage {
     if (   $postid ne 'Poll'
         && $destination ne 'modalert2'
         && $destination ne 'guestpm2' )
-    {   get_micon();
+    {   
         $extra = $mypost_extra;
         $extra =~ s/{yabb ic1}/$ic1/sm;
         $extra =~ s/{yabb ic2}/$ic2/sm;
@@ -562,7 +563,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
     ~;
 
     if ( $destination ne 'modalert2' && $destination ne 'guestpm2' ) {
-        get_micon();
+        
         $my_modalert = qq~
     function Hash() {
         this.length = 0;
@@ -819,7 +820,7 @@ qq~<hr class="hr" style="margin: 0; margin-top: 5px; margin-bottom: 5px; padding
         $liveipimg =
 qq~<img src="$imagesdir/$post_ip" alt="" />~;
         $livemip = $display_txt{'511'};
-        get_micon();
+        
         $livemsgimg =
 qq~<img src="$micon_bg{$icon}" name="liveicons" alt="" />~;
         get_template('Post');
@@ -880,25 +881,21 @@ qq~<img src="$micon_bg{$icon}" name="liveicons" alt="" />~;
 			var msgErrorTitle = "<b>$livepreview_txt{'info_missing'}<\/b>";
 			~ . (
             $iamguest && $post ne "imsend" && $post ne "imsend2"
-            ? qq~if (document.postmodify.name.value == "" || document.postmodify.name.value == "_" || document.postmodify.name.value == " ") { msgError += "<li>$livepreview_txt{'name_empty'}<\/li>"; if (isError == 0) isError = 1; }
+            ? qq~document.getElementById("savename").innerHTML = jsDoTohtml(document.getElementById("name").value);
+			if (document.postmodify.name.value == "" || document.postmodify.name.value == "_" || document.postmodify.name.value == " ") { msgError += "<li>$livepreview_txt{'name_empty'}<\/li>"; if (isError == 0) isError = 1; }
 			if (document.postmodify.name.value.length > 25)  { msgError += "<li>$livepreview_txt{'long_name'}<\/li>"; if (isError == 0) isError = 1; }
 			if (document.postmodify.email.value == "") { msgError += "<li>$livepreview_txt{'mail_empty'} $livepreview_txt{'valid_mail'}<\/li>"; if (isError == 0) isError = 1; }
 			else if (! checkMailaddr(document.postmodify.email.value)) { msgError += "<li>$livepreview_txt{'valid_mail'}<\/li>"; if (isError == 0) isError = 1; }~
             : qq~if (livepostas == "imsend" || livepostas == "imsend2") {
 			if (document.postmodify.toshow.options.length == 0 ) { msgError += "<li>$livepreview_txt{'pm_recipient'}<\/li>"; isError = 1; }
-			}~
-          )
-          . (
-            $iamguest && $gpvalid_en && $post ne 'imsend' && $post ne 'imsend2'
-            ? qq~if (document.postmodify.verification.value == "") { msgError += "<li>$livepreview_txt{'veri_code'}<\/li>"; isError = 1; }~
-            : qq~~
-          )
-          . (
+			}~) .
+			($iamguest && $gpvalid_en && $post ne "imsend" && $post ne "imsend2" ? qq~if (document.postmodify.verification.value == "") { msgError += "<li>$livepreview_txt{'veri_code'}<\/li>"; isError = 1; }~ : qq~~) .
+(
             $iamguest && $spam_questions_gp && $post ne 'imsend' && $post ne 'imsend2'
             ? qq~if (document.postmodify.verification_question.value == "") { msgError += "<li>$livepreview_txt{'veri_quest'}<\/li>"; isError = 1; }~
             : qq~~
-          )
-          . qq~
+          ) .
+			qq~
 			if (document.postmodify.subject.value == "") { msgError += "<li>$livepreview_txt{'subj_empty'}<\/li>"; if (isError == 0) isError = 1; }
 			else if ($checkallcaps && document.postmodify.subject.value.search(/[A-Z]{$checkallcaps,}/g) != -1) {
 				if (isError == 0) { msgError = "<li>$livepreview_txt{'subj_allcaps'}<\/li>"; isError = 1; }
@@ -1565,7 +1562,6 @@ tick();
 </script>
 ~;
     }
-    get_micon();
     $yymain .= $ctmain;
     $yymain .= $my_q_quote;
     $yymain .= $my_adminim;
