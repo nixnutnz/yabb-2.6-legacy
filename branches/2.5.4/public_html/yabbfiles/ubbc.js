@@ -301,3 +301,13 @@ function kiss() {
 function cry() {
 	AddText(" :'(");
 }
+
+function jsDoTohtml(tohtmlstr) {
+	tohtmlstr=tohtmlstr.replace(/\&/g, "&amp;");
+	tohtmlstr=tohtmlstr.replace(/\"/g, "&quot;");
+	tohtmlstr=tohtmlstr.replace(/  /g, " &nbsp;");
+	tohtmlstr=tohtmlstr.replace(/\|/g, "&#124;");
+	tohtmlstr=tohtmlstr.replace(/\</g, "&lt;");
+	tohtmlstr=tohtmlstr.replace(/\>/g, "&gt;");
+	return tohtmlstr;
+}
