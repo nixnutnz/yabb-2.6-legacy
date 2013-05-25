@@ -738,14 +738,15 @@ qq~<br /><b>$var_cal{'by'}</b> <span id="savename"></span> ($var_cal{'guest'})~;
         var livepostas = '$post';
         var nolinks = '$nolinkallow';
 
-        function checkLivepreview() {
-            var isError = 0;
-            var msgError = "";
-            var msgErrorTitle = "<b>$livepreview_txt{'info_missing'}<\/b>";
-            ~ . (
+		function checkLivepreview() {
+			var isError = 0;
+			var msgError = "";
+			var msgErrorTitle = "<b>$livepreview_txt{'info_missing'}<\/b>";
+			~ . (
             $iamguest
-            ? qq~if (document.postmodify.name.value == "" || document.postmodify.name.value == "_" || document.postmodify.name.value == " ") { msgError += "<li>$livepreview_txt{'name_empty'}<\/li>"; if (isError == 0) isError = 1; }
-            if (document.postmodify.name.value.length > 25)  { msgError += "<li>$livepreview_txt{'long_name'}<\/li>"; if (isError == 0) isError = 1; }
+            ? qq~document.getElementById("savename").innerHTML = jsDoTohtml(document.getElementById("name").value);
+			if (document.postmodify.name.value == "" || document.postmodify.name.value == "_" || document.postmodify.name.value == " ") { msgError += "<li>$livepreview_txt{'name_empty'}<\/li>"; if (isError == 0) isError = 1; }
+			if (document.postmodify.name.value.length > 25)  { msgError += "<li>$livepreview_txt{'long_name'}<\/li>"; if (isError == 0) isError = 1; }
             if (document.postmodify.email.value == "") { msgError += "<li>$livepreview_txt{'mail_empty'} $livepreview_txt{'valid_mail'}<\/li>"; if (isError == 0) isError = 1; }
             else if (! checkMailaddr(document.postmodify.email.value)) { msgError += "<li>$livepreview_txt{'valid_mail'}<\/li>"; if (isError == 0) isError = 1; }~
             : q~if (livepostas == "imsend" || livepostas == "imsend2") {}~
