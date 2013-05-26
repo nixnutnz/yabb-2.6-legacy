@@ -217,14 +217,14 @@ $mycal_guest_fields = qq~<tr>
             <label for="name"><b>$post_txt{'68'}:</b></label>
         </td>
         <td class="windowbg">
-            <input type="text" name="name" id="name" size="25" value="{yabb name}" maxlength="25" tabindex="2" onkeyup="checkLivepreview();"/>
+            <input type="text" name="name" id="name" size="25" value="{yabb name}" maxlength="25" tabindex="2" onchange="autoPreview()" />
         </td>
     </tr><tr>
         <td class="windowbg">
             <label for="email"><b>$post_txt{'69'}:</b></label>
         </td>
         <td class="windowbg">
-            <input type="text" name="email" id="email" size="25" value="{yabb email}" maxlength="40" tabindex="3" onkeyup="checkLivepreview();" />
+            <input type="text" name="email" id="email" size="25" value="{yabb email}" maxlength="40" tabindex="3" onchange="autoPreview()" />
         </td>
     </tr>~;
 
@@ -235,7 +235,7 @@ $mycal_validation = qq~
     </tr><tr>
         <td class="windowbg2"><span class="small"><label for="verification"><b>$floodtxt{'3'}:</b></label></span></td>
         <td class="windowbg2">
-            <input type="text" maxlength="30" name="verification" id="verification" size="30" onkeyup="checkLivepreview();" />
+            <input type="text" maxlength="30" name="verification" id="verification" size="30" onchange="autoPreview()" />
         </td>
     </tr>~;
 
@@ -248,7 +248,7 @@ $mycal_spamquest= qq~
             </span>
         </td>
         <td class="windowbg2">
-            <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" onkeyup="checkLivepreview();" />
+            <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" onchange="autoPreview()" />
             <input type="hidden" name="verification_question_id" value="{yabb spam_question_id}" />               
         </td>
     </tr>~;

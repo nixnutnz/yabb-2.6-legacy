@@ -458,7 +458,7 @@ $mypost_guest_c = qq~<tr>
                     <label for="verification"><b>$floodtxt{'3'}:</b></label>
                 </td>
                 <td class="windowbg vtop">
-                    <input type="text" maxlength="30" name="verification" id="verification" size="30" onkeyup="checkLivepreview();" onchange="autoPreview()" />
+                    <input type="text" maxlength="30" name="verification" id="verification" size="30" onchange="autoPreview()" />
                 </td>
             </tr>~;
       
@@ -472,7 +472,7 @@ $mypost_guest_e = qq~<tr>
                    <input type="hidden" name="spam_question" value="{yabb spam_question}" />
                 </td>
                 <td class="windowbg vtop">
-                    <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" onkeyup="checkLivepreview();" onchange="autoPreview()"/>
+                    <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" onchange="autoPreview()"/>
                 </td>
             </tr>~;
 
