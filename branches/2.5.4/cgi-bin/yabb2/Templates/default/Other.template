@@ -123,12 +123,15 @@ $my_sessions = qq~
 <br /><br />
 <form action="$scripturl?action=revalidatesession2" method="post" name="sesform" accept-charset="$yycharset">
 <div class="bordercolor" style="padding: 1px; width: 50%; margin-left: auto; margin-right: auto;">
-<table>
+<table class="tabtitle">
     <tr>
-        <td class="titlebg" colspan="3">
+        <td colspan="3">
             <img src="$imagesdir/session.gif" alt="" /><b>$img_txt{'34a'}</b>
         </td>
-    </tr><tr>
+    </tr>
+</table>
+<table class="pad_3px">
+    <tr>
         <td class="windowbg" colspan="3">
             {yabb sesstext3}<br /><br />{yabb sesstext4} {yabb sesremark}
         </td>
