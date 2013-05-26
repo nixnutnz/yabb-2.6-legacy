@@ -2972,9 +2972,8 @@ sub sizefont {
     if    ( !$fontsizemin )         { $fontsizemin = 6; }
     if    ( $tsize < $fontsizemin ) { $tsize       = $fontsizemin; }
     elsif ( $tsize > $fontsizemax ) { $tsize       = $fontsizemax; }
-    $tsizen = $tsize / 10;
     return
-      qq~<span style="display:inline; font-size:$tsizen\em;">$ttext</span>~;
+      qq~<span style="display:inline; font-size:$tsize\px;">$ttext</span>~;
 }
 
 sub regex_1 {

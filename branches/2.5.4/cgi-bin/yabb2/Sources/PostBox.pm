@@ -468,32 +468,6 @@ show_features()~;
     return $box;
 }
 
-sub msicons {
-    @ic = @_;
-    $extra = qq~
-    <tr id="feature_status_1">
-        <td class="windowbg"><label for="icon"><b>$post_txt{'71'}:</b></label></td>
-        <td class="windowbg">
-            <select name="icon" id="icon" onchange="showimage();">
-            <option value="xx"$ic[1]>$post_txt{'281'}</option>
-            <option value="thumbup"$ic[2]>$post_txt{'282'}</option>
-            <option value="thumbdown"$ic[3]>$post_txt{'283'}</option>
-            <option value="exclamation"$ic[4]>$post_txt{'284'}</option>
-            <option value="question"$ic[5]>$post_txt{'285'}</option>
-            <option value="lamp"$ic[6]>$post_txt{'286'}</option>
-            <option value="smiley"$ic[7]>$post_txt{'287'}</option>
-            <option value="angry"$ic[8]>$post_txt{'288'}</option>
-            <option value="cheesy"$ic[9]>$post_txt{'289'}</option>
-            <option value="grin"$ic[10]>$post_txt{'290'}</option>
-            <option value="sad"$ic[11]>$post_txt{'291'}</option>
-            <option value="wink"$ic[12]>$post_txt{'292'}</option>
-            </select>
-            <img src="$imagesdir/$icon.gif" name="icons" alt="" />
-        </td>
-    </tr>
-        ~;
-    return $extra;
-}
 
 sub googiea {
     $googiea =

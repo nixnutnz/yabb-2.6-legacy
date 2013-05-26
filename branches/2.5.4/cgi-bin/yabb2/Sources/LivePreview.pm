@@ -24,6 +24,7 @@ our $VERSION = '2.5.4';
 $livepreviewpmver = 'YaBB 2.5.4 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 use URI::Escape;
+LoadCensorList();
 
 sub DoLiveMessage {
     $displayname = $FORM{'musername'};
@@ -32,8 +33,6 @@ sub DoLiveMessage {
     uri_unescape($message);
     $message =~ s/\[ch8203\]//ig;
     $message =~ s/\&#8203;//ig;
-    $message =~ s/{/\&#123;/ig;
-    $message =~ s/}/\&#125;/ig;
     FromChars($message);
     ToHTML($message);
     my $mess = $message;
@@ -85,8 +84,6 @@ sub DoLiveIM {
     uri_unescape($message);
     $message =~ s/\[ch8203\]//ig;
     $message =~ s/\&#8203;//ig;
-    $message =~ s/{/\&#123;/ig;
-    $message =~ s/}/\&#125;/ig;
     FromChars($message);
     ToHTML($message);
     my $mess = $message;
@@ -152,8 +149,6 @@ sub DoLiveCal {
     uri_unescape($message);
     $message =~ s/\[ch8203\]//ig;
     $message =~ s/\&#8203;//ig;
-    $message =~ s/{/\&#123;/ig;
-    $message =~ s/}/\&#125;/ig;
     FromChars($message);
     ToHTML($message);
     my $mess = $message;
