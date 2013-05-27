@@ -17,12 +17,12 @@ $cal_day = q~ class="titlebg center minical_border"~;
 $cal_days = q~ class="windowbg2 center minical_border"~;
 $style_ubbc_box = q~float:left; width:463px~;
 
-$cal_cat_col = 'cat_collapse.gif';
-$cal_cat_exp = 'cat_expand.gif';
-$cal_grn1 = 'green1.gif';
-$cal_grn0 = 'green0.gif';
-$cal_red0 ='red0.gif';
-$cal_red1 ='red1.gif';
+$cat_col = 'cat_collapse.gif';
+$cat_exp = 'cat_expand.gif';
+$chrwarn_g0 = 'green0.gif';
+$chrwarn_g1 = 'green1.gif';
+$chrwarn_r0 = 'red0.gif';
+$chrwarn_r1 = 'red1.gif';
 $cal_eventcal = 'eventcal.png';
 
 ## Calendar go to date forms ($mycalout_goto_main for BoardIndex, mini cal display, add and edit events. $mycalout_gottobox for day event display ##
@@ -143,7 +143,7 @@ $mycalout_addevent = qq~
     <tr>
     	<td class="windowbg2" colspan="2">
 			<div style="height:16px;">
-			<img name="prevwin" id="prevwin" src="$defaultimagesdir/$cal_cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor: pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
+			<img name="prevwin" id="prevwin" src="$defaultimagesdir/$cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor: pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
             </div>
         </td>
    </tr>

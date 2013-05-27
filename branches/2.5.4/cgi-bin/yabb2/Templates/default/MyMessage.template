@@ -14,12 +14,12 @@
 # $Revision$
 
 $IM_paperclip = 'paperclip.gif';
-$IM_cat_col = 'cat_collapse.gif';
-$IM_cat_exp = 'cat_expand.gif';
-$IM_chrwarn_g0 = 'green0.gif';
-$IM_chrwarn_g1 = 'green1.gif';
-$IM_chrwarn_r0 = 'red0.gif';
-$IM_chrwarn_r1 = 'red1.gif';
+$cat_col = 'cat_collapse.gif';
+$cat_exp = 'cat_expand.gif';
+$chrwarn_g0 = 'green0.gif';
+$chrwarn_g1 = 'green1.gif';
+$chrwarn_r0 = 'red0.gif';
+$chrwarn_r1 = 'red1.gif';
 $IM_index_togl = 'index_togl.png';
 $IM_index_left = 'index_left.gif';
 $IM_index_left0 = 'index_left0.gif';
@@ -98,8 +98,7 @@ $my_showIP = qq~<tr>
                 <span class="small"><img src="$imagesdir/$IM_ip" alt="" /> {yabb imip}</span>
             </div>
         </td>
-    </tr>
-~;
+    </tr>~;
 
 
 ## IM preview ##
@@ -112,7 +111,7 @@ $myIM_prevmain = qq~<tr>
 $myIM_liveprev = qq~<tr>
         <td class="vtop">
             <div style="height:16px;">
-                <img name="prevwin" id="prevwin" src="$defaultimagesdir/$IM_cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" class="cursor" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
+                <img name="prevwin" id="prevwin" src="$defaultimagesdir/$cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" class="cursor" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
             </div>
         </td>
     </tr><tr>
