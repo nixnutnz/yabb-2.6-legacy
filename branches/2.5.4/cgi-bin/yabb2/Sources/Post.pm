@@ -3018,17 +3018,9 @@ sub modAlert {
     $INFO{'title'} =~ tr/+/ /;
     $postthread = 2;
 
-    $name_field =
-        $iamguest
-      ? $mypost_guest_a
-      : q{};
-    $name_field =~ s/{yabb name}/$FORM{'name'}/sm;
-
-    $email_field =
-        $iamguest
-      ? $mypost_guest_b
-      : q{};
-    $email_field =~ s/{yabb email}/$FORM{'email'}/sm;
+    $guestpost_fields = $mypost_guest_fields;
+    $guestpost_fields =~ s/{yabb name}/$FORM{'name'}/sm;
+    $guestpost_fields =~ s/{yabb email}/$FORM{'email'}/sm;
 
     if ( $iamguest && $gpvalid_en ) {
         validation_code();
