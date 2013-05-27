@@ -236,12 +236,8 @@ qq~<div id="bnttoto" style="float: left; padding: 5px;" class="windowbg2"><a hre
 
     my $toUsersTitle = $inmes_txt{'torecepients'};
 
-    my ( $onchangeText, $onchangeText2 );
-    if (
-        !$replyguest
-      )
-    {
-        $onchangeText = qq~ onkeyup="autoPreview();"~;
+    if ( !$replyguest ) {
+        $onchangeText = q~ onkeyup="autoPreview();"~;
     }
 
     if ( !$replyguest ) {
@@ -561,13 +557,21 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
         }
 
         $more_smilie_array .= q~""~;
+        if ( $smiliestyle == 1 ) {
+            $smiliewinlink = qq~$scripturl?action=smilieput~;
+        }
+        else { $smiliewinlink = qq~$scripturl?action=smilieindex~; }
 
         $im_smilies .= $imsend_notguest . qq~
                 moresmiliecode = new Array($more_smilie_array)
                 function MoreSmilies(i) {
                     AddTxt=moresmiliecode[i];
                     AddText(AddTxt);
-                }~;
+                }
+                    function smiliewin() {
+        window.open("$smiliewinlink", 'list', 'width=$winwidth, height=$winheight, scrollbars=yes');
+    }
+~;
         $im_smilies .= smilies_list();
         $im_smilies .= qq~
             </script><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span>\n~;
@@ -622,8 +626,8 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
 
         if ( $allowAttachIM > 1 ) {
             $my_allow_FA = qq~
-            <img src="$defaultimagesdir/$IM_cat_exp" id="attform_add" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" style="cursor:pointer;" onclick="enabPrev2(1);" />
-            <img src="$defaultimagesdir/$IM_cat_col" id="attform_sub" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" style="cursor:pointer; visibility:hidden;" onclick="enabPrev2(-1);" />~;
+            <img src="$defaultimagesdir/$cat_exp" id="attform_add" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" style="cursor:pointer;" onclick="enabPrev2(1);" />
+            <img src="$defaultimagesdir/$cat_col" id="attform_sub" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" style="cursor:pointer; visibility:hidden;" onclick="enabPrev2(-1);" />~;
         }
         $my_imFA = $my_FA_attach;
         $my_imFA =~ s/{yabb my_show_FA}/$my_show_FA/sm;
@@ -747,7 +751,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
 
     if ( !$replyguest ) {
         $my_isreply .= qq~
-			<input type="checkbox" name="ns" id="ns" value="NS"$nscheck onchange="autoPreview();" /> <label for="ns"><span class="small">$post_txt{'277'}</span></label><br />~;
+            <input type="checkbox" name="ns" id="ns" value="NS"$nscheck onchange="autoPreview();" /> <label for="ns"><span class="small">$post_txt{'277'}</span></label><br />~;
         if ( $FORM{'draftid'} || $INFO{'caller'} == 4 ) {
             $my_isreply .= qq~
             <input type="checkbox" name="draftleave" id="draftleave" value="1" /> <span class="small"> $post_txt{'draftleave'}</span><br />~;
@@ -841,7 +845,8 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="
         }
     }
 
-    $my_browser = qq~
+    $my_browser =
+      qq~<script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
         <script type="text/javascript">
         <!--
             if (/Opera/.test(navigator.userAgent) === false) {
@@ -853,178 +858,25 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="
                     document.write("<br /><span class='small'>$accesskey{'FireFox'}</span>");
                 }
             }
-
-            var noalert = true, gralert = false, rdalert = false, clalert = false;
-            var prevsec = 5;
-            var prevtxt;
-            var cntsec = 0;
-            function tick() {
-                cntsec++;
-                calcCharLeft();
-                timerID = setTimeout("tick()",1000);
-            }
-            var autoprev = false;
-            var topicfirst = true;
-            
             function Hash() {
-        		this.length = 0;
-        		this.items = new Array();
-        		for (var i = 0; i < arguments.length; i += 2) {
-            		if (typeof(arguments[i + 1]) != 'undefined') {
-                		this.items[arguments[i]] = arguments[i + 1];
-                		this.length++;
-            		}
-        		}
-		        this.getItem = function(in_key) {
-        	    	return this.items[in_key];
-	        	}
-    		}~;
-
-    if (
-        !$replyguest
-      )
-    {
-        $my_savetable .= qq~
-            post_txt_807 = "$post_txt{'807'}";
-            function enabPrev() {
-                if ( autoprev == false ) {
-                    autoprev = true
-					document.getElementById("SaveInfo").style.display = "block";
-					document.getElementById("saveframe").style.display = "block";
-					document.getElementById("saveframe").style.width = "100%";
-                    document.images.prevwin.alt = "$npf_txt{'02'}";
-                    document.images.prevwin.title = "$npf_txt{'02'}";
-                    document.images.prevwin.src="$defaultimagesdir/$IM_cat_col";
-                    autoPreview();
-				}
-				else {
-                    autoprev = false;
-                    ubbstr = '';
-					document.getElementById("SaveInfo").style.display = "none";
-					document.getElementById("saveframe").style.display = "none";
-                    document.postmodify.message.focus();
-                    document.images.prevwin.alt = "$npf_txt{'01'}";
-                    document.images.prevwin.title = "$npf_txt{'01'}";
-                    document.images.prevwin.src="$defaultimagesdir/$IM_cat_exp";
-                }
-                calcCharLeft();
-            }\n~;
-        }
-
-    $my_savetable .= qq~
-        function calcCharLeft() {
-            clipped = false;
-            maxLength = $MaxMessLen;
-            if (document.postmodify.message.value.length > maxLength) {
-                document.postmodify.message.value = document.postmodify.message.value.substring(0,maxLength);
-                charleft = 0;
-                clipped = true;
-                } else {
-                charleft = maxLength - document.postmodify.message.value.length;
-            }
-            document.postmodify.msgCL.value = charleft;
-                if (charleft >= 100 && noalert) { noalert = false; gralert = true; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$IM_chrwarn_g1"; }
-                if (charleft < 100 && charleft >= 50 && gralert) { noalert = true; gralert = false; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$IM_chrwarn_g0"; }
-                if (charleft < 50 && charleft > 0 && rdalert) { noalert = true; gralert = true; rdalert = false; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$IM_chrwarn_r0" }
-                if (charleft === 0 && clalert) { noalert = true; gralert = true; rdalert = true; clalert = false; document.images.chrwarn.src="$defaultimagesdir/$IM_chrwarn_r1"; }
-            return clipped;
-        }
-
-        function autoPreview() {
-				var url = '$scripturl?action=ajximmessage';
-				GetXmlHttpObject();
-				if (xmlHttp == null) {
-					return;
-                }
-				xmlHttp.onreadystatechange = function() {
-					if(xmlHttp.readyState == 4) {
-						if(xmlHttp.status == 200 || window.location.href.indexOf("http") == -1) {
-							document.getElementById("saveframe").innerHTML = xmlHttp.responseText;
-                        sh_highlightDocument();
-                        if (/post_liveimg_resize_1/i.test(xmlHttp.responseText)) LivePrevImgResize();
+                this.length = 0;
+                this.items = new Array();
+                for (var i = 0; i < arguments.length; i += 2) {
+                    if (typeof(arguments[i + 1]) != 'undefined') {
+                        this.items[arguments[i]] = arguments[i + 1];
+                        this.length++;
                     }
                 }
-				};
-				var nscheck = 0;
-				if(document.getElementById("ns").checked) nscheck = 1;
-				var messvalue = encodeURIComponent(document.getElementById("message").value);
-				var iconvalue = encodeURIComponent(document.getElementById("iconholder").value);
-				var subjvalue = encodeURIComponent(document.getElementById("subject").value);
-				var sessvalue = encodeURIComponent(document.postmodify.formsession.value);
-				var parameters = "message="+messvalue+"&icon="+iconvalue+"&subject="+subjvalue+"&nschecked="+nscheck+"&formsession="+sessvalue;
-				xmlHttp.open("POST", url, true);
-				xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-				xmlHttp.send(parameters);
-			}\n
+                this.getItem = function(in_key) {
+                    return this.items[in_key];
+                }
+            }~;
 
-			function LivePrevImgResize() {
-				var maxwidth = $max_post_img_width;
-				var maxheight = $max_post_img_height;
-				var fix_size = $fix_post_img_size;
-				noimgdir   = '$imagesdir';
-				noimgtitle = '$maintxt{'171'}';
-				var liveimg_resize_names = new Array ();
-				var zi = 0;
-				var imgsavail = document.getElementById("saveframe").getElementsByTagName("img");
-				for (i=0; i<imgsavail.length; i++) {
-					if (imgsavail[i].className == "liveimg") {
-						liveimg_resize_names[zi] = imgsavail[i].name;
-						zi++;
-					}
-				}
-				var tmp_array = new Array ();
-				for (var i = 0; i < liveimg_resize_names.length; i++) {
-					var tmp_image_name = liveimg_resize_names[i];
-					if (fix_size) {
-						if (maxwidth)  document.images[tmp_image_name].width  = maxwidth;
-						if (maxheight) document.images[tmp_image_name].height = maxheight;
-						document.images[tmp_image_name].style.display = 'inline';
-						continue;
-					}
-					if (document.images[tmp_image_name].complete == false) {
-						tmp_array[tmp_array.length] = tmp_image_name;
-						if (/Opera/i.test(navigator.userAgent)) {
-							document.images[tmp_image_name].width  = document.images[tmp_image_name].width  || 0;
-							document.images[tmp_image_name].height = document.images[tmp_image_name].height || 0;
-							document.images[tmp_image_name].style.display = 'inline';
-						}
-						continue;
-					}
-					var tmp_image = new Image;
-					tmp_image.src = document.images[tmp_image_name].src;
-					var tmpwidth  = document.images[tmp_image_name].width  || tmp_image.width;
-					var tmpheight = document.images[tmp_image_name].height || tmp_image.height;
-					if (!tmpwidth && !tmpheight) {
-						tmp_array[tmp_array.length] = tmp_image_name;
-						continue;
-					}
-					if (maxwidth != 0 && tmpwidth > maxwidth) {
-						tmpheight = tmpheight * maxwidth / tmpwidth;
-						tmpwidth  = maxwidth;
-					}
-					if (maxheight != 0 && tmpheight > maxheight) {
-						tmpwidth  = tmpwidth * maxheight / tmpheight;
-						tmpheight = maxheight;
-					}
-					document.images[tmp_image_name].width  = tmpwidth;
-					document.images[tmp_image_name].height = tmpheight;
-					document.images[tmp_image_name].style.display = 'inline';
-				}
-				if (tmp_array.length > 0 && resize_time < 350) {
-					liveimg_resize_names = tmp_array;
-					if (resize_time == 290) {
-						for (var i = 0; i < liveimg_resize_names.length; i++) {
-							var tmp_image_name = liveimg_resize_names[i];
-							document.images[tmp_image_name].src = noimgdir + "/noimg.gif";
-							document.images[tmp_image_name].title = noimgtitle;
-						}
-					}
-					setTimeout("resize_time++; LivePrevImgResize();", 100);
-				}
-			}~;
-		if ( !$replyguest ) {
+    if ( !$replyguest ) {
+        $my_ajxcall = 'ajximmessage';
+        $my_savetable .= my_liveprev();
         $my_savetable .= qq~
-            $jsIM;
+            $jsIM
             function showtpstatus() {
             var theimg = '$pmicon';
             var objIconSelected = document.postmodify.status[document.postmodify.status.selectedIndex].value;
@@ -1032,12 +884,13 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="
             if (objIconSelected == 'c') { theimg = 'confidential'; }
             if (objIconSelected == 'u') { theimg = 'urgent'; }
             var picon_show = jsIM.getItem(theimg); 
-            //document.images.icons.src='$imagesdir/'+theimg+'.gif';
             document.images.icons.src = picon_show;
- 				document.getElementById("iconholder").value = theimg;
-				if (autoprev == true) autoPreview();
-        }
-        showtpstatus();\n~;
+            document.getElementById("iconholder").value = theimg;
+            if (autoprev == true) autoPreview();
+        }~;
+        $my_savetable .= q~        showtpstatus();
+        tick();
+~;
     }
 
     if ( $action eq 'modify' || $action eq 'modify2' ) {

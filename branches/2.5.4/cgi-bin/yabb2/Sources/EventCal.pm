@@ -470,195 +470,12 @@ qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
         document.images.calicons.src = icon_show;
    }
    // count left characters START
-var noalert = true, gralert = false, rdalert = false, clalert = false;
-var cntsec = 0
-
-function tick() {
-  cntsec++;
-  calcCharLeft();
-  var timerID = setTimeout("tick()",1000);
-}
-
-var autoprev = false
-
-post_txt_807 = "$post_txt{'807'}";
-
-function enabPrev() {
-    if ( autoprev === false ) {
-        autoprev = true
-        document.getElementById("savetable").style.display = "block";
-        document.getElementById("saveframe").style.display = "block";
-        document.images.prevwin.alt = "$npf_txt{'02'}";
-        document.images.prevwin.title = "$npf_txt{'02'}";
-        document.images.prevwin.src="$defaultimagesdir/$cal_cat_col";
-        autoPreview();
-    }
-    else {
-        autoprev = false;
-        ubbstr = '';
-        document.getElementById("savetable").style.display = "none";
-        document.getElementById("saveframe").style.display = "none";
-        document.postmodify.message.focus();
-        document.images.prevwin.alt = "$npf_txt{'01'}";
-        document.images.prevwin.title = "$npf_txt{'01'}";
-        document.images.prevwin.src="$defaultimagesdir/$cal_cat_exp";
-    }
-    calcCharLeft();
-}
-
-function calcCharLeft() {
-       var clipped = false;
-       var maxLength = $MaxMessLen;
-  if (document.postmodify.message.value.length > maxLength) {
-           document.postmodify.message.value = document.postmodify.message.value.substring(0,maxLength);
-           var charleft = 0;
-           clipped = true;
-  } else {
-           charleft = maxLength - document.postmodify.message.value.length;
-  }
-       document.postmodify.msgCL.value = charleft;
-       if (charleft >= 100 && noalert) { noalert = false; gralert = true; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$cal_grn1"; }
-       if (charleft < 100 && charleft >= 50 && gralert) { noalert = true; gralert = false; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$cal_grn0"; }
-       if (charleft < 50 && charleft > 0 && rdalert) { noalert = true; gralert = true; rdalert = false; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$cal_red0"; }
-       if (charleft == 0 && clalert) { noalert = true; gralert = true; rdalert = true; clalert = false; document.images.chrwarn.src="$defaultimagesdir/$cal_red1"; }
-       return clipped;
-}
-   tick();
-
-function autoPreview() {
-    if(autoprev) {
-    var url = '$scripturl?action=ajxcal';
-    try {
-        if (typeof( new XMLHttpRequest() ) == 'object') {
-            pstHttp = new XMLHttpRequest();
-        } else if (typeof( new ActiveXObject("Msxml2.XMLHTTP") ) == 'object') {
-            pstHttp = new ActiveXObject("Msxml2.XMLHTTP");
-        } else if (typeof( new ActiveXObject("Microsoft.XMLHTTP") ) == 'object') {
-            pstHttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-    } catch (e) { }
-    if (pstHttp == null) return;
-    pstHttp.onreadystatechange = function() {
-        if(pstHttp.readyState == 4) {
-            if(pstHttp.status == 200 || window.location.href.indexOf("http") == -1) {
-                tmpmess = pstHttp.responseText.split("|");
-                document.getElementById("savemess").innerHTML = tmpmess[0];~;
-        if ($iamguest) {
-            $mycalout_chars .= q~               
-                document.getElementById("savename").innerHTML = tmpmess[1];~;
-        }
-        $mycalout_chars .= q~               
-                document.getElementById("cdate").innerHTML = tmpmess[2];
-                document.getElementById("ev_title").innerHTML = tmpmess[3];
-                document.getElementById("ev_private").innerHTML = tmpmess[4];
-                sh_highlightDocument();
-                if (/post_liveimg_resize_1/i.test(pstHttp.responseText)) LivePrevImgResize();
-                checkLivepreview();
-            }
-        }
-    };
-    var nscheck = 0;
-    if(document.getElementById("ns").checked) nscheck = 1;
-    var messvalue = encodeURIComponent(document.getElementById("message").value);~;
-        if ($iamguest) {
-            $mycalout_chars .= q~
-    var namevalue = encodeURIComponent(document.getElementById("name").value);~;
-        }
-        else {
-            $mycalout_chars .= q~
-    var namevalue = "";~;
-        }
-        $mycalout_chars .= qq~
-    var calmonvalue = encodeURIComponent(document.postmodify.selmon.options[document.postmodify.selmon.selectedIndex].value);
-    var caldayvalue = encodeURIComponent(document.postmodify.selday.options[document.postmodify.selday.selectedIndex].value);
-    var calyearvalue = encodeURIComponent(document.postmodify.selyear.options[document.postmodify.selyear.selectedIndex].value);
-    var cal_icon_txt = encodeURIComponent(document.postmodify.calicon.options[document.postmodify.calicon.selectedIndex].value);
-    var cal_type = encodeURIComponent(document.postmodify.caltype.options[document.postmodify.caltype.selectedIndex].value);
-    var tmusername = encodeURIComponent('$displayname');
-    var sessvalue = encodeURIComponent(document.postmodify.formsession.value);
-    var parameters = "&message="+messvalue+"&musername="+tmusername+"&nschecked="+nscheck+"&formsession="+sessvalue+"&guestname="+namevalue+"&cal_mon="+calmonvalue+"&cal_day="+caldayvalue+"&cal_year="+calyearvalue+"&icon_txt="+cal_icon_txt+"&cal_type="+cal_type;
-    pstHttp.open("POST", url, true);
-    pstHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    pstHttp.send(parameters);
-    }
-}
-function LivePrevImgResize() {
-    var maxwidth = $max_post_img_width;
-    var maxheight = $max_post_img_height;
-    var fix_size = $fix_post_img_size;
-    noimgdir   = '$imagesdir';
-    noimgtitle = '$maintxt{'171'}';
-
-    var liveimg_resize_names = new Array ();
-    var zi = 0;
-
-    var imgsavail = document.getElementById("savemess").getElementsByTagName("img");
-    for (i=0; i<imgsavail.length; i++) {
-        if (imgsavail[i].className == "liveimg") {
-            liveimg_resize_names[zi] = imgsavail[i].name;
-            zi++;
-        }
-    }
-
-    var tmp_array = new Array ();
-    for (var i = 0; i < liveimg_resize_names.length; i++) {
-        var tmp_image_name = liveimg_resize_names[i];
-
-        if (fix_size) {
-            if (maxwidth)  document.images[tmp_image_name].width  = maxwidth;
-            if (maxheight) document.images[tmp_image_name].height = maxheight;
-            document.images[tmp_image_name].style.display = 'inline';
-            continue;
-        }
-
-        if (document.images[tmp_image_name].complete == false) {
-            tmp_array[tmp_array.length] = tmp_image_name;
-            if (/Opera/i.test(navigator.userAgent)) {
-                document.images[tmp_image_name].width  = document.images[tmp_image_name].width  || 0;
-                document.images[tmp_image_name].height = document.images[tmp_image_name].height || 0;
-                document.images[tmp_image_name].style.display = 'inline';
-            }
-            continue;
-        }
-
-        var tmp_image = new Image;
-        tmp_image.src = document.images[tmp_image_name].src;
-
-        var tmpwidth  = document.images[tmp_image_name].width  || tmp_image.width;
-        var tmpheight = document.images[tmp_image_name].height || tmp_image.height;
-
-        if (!tmpwidth && !tmpheight) {
-            tmp_array[tmp_array.length] = tmp_image_name;
-            continue;
-        }
-
-        if (maxwidth != 0 && tmpwidth > maxwidth) {
-            tmpheight = tmpheight * maxwidth / tmpwidth;
-            tmpwidth  = maxwidth;
-        }
-
-        if (maxheight != 0 && tmpheight > maxheight) {
-            tmpwidth  = tmpwidth * maxheight / tmpheight;
-            tmpheight = maxheight;
-        }
-
-        document.images[tmp_image_name].width  = tmpwidth;
-        document.images[tmp_image_name].height = tmpheight;
-        document.images[tmp_image_name].style.display = 'inline';
-    }
-    if (tmp_array.length > 0 && resize_time < 350) {
-        liveimg_resize_names = tmp_array;
-        if (resize_time == 290) {
-            for (var i = 0; i < liveimg_resize_names.length; i++) {
-                var tmp_image_name = liveimg_resize_names[i];
-                document.images[tmp_image_name].src = noimgdir + "/noimg.gif";
-                document.images[tmp_image_name].title = noimgtitle;
-            }
-        }
-        setTimeout("resize_time++; resize_images();", 100);
-    }
-}
-</script>~;
+   ~;
+        $my_ajxcall = 'ajxcal';
+        $mycalout_chars .= my_liveprev();
+        $mycalout_chars .= q~tick();
+</script>
+~;
         $guestpost_fields =
             $iamguest
           ? $mycal_guest_fields
@@ -732,82 +549,33 @@ qq~<br /><b>$var_cal{'by'}</b> <span id="savename"></span> ($var_cal{'guest'})~;
           s/({|<)yabb message(}|>)/<span id="savemess"><\/span>/gsm;
         $messageblock =~ s/({|<)yabb (.+?)(}|>)//gsm;
 
-        $my_postsection_ajx = qq~
-        <script type="text/javascript">
-
-        var livepostas = '$post';
-        var nolinks = '$nolinkallow';
-
-		function checkLivepreview() {
-			var isError = 0;
-			var msgError = "";
-			var msgErrorTitle = "<b>$livepreview_txt{'info_missing'}<\/b>";
-			~ . (
-            $iamguest
-            ? qq~document.getElementById("savename").innerHTML = jsDoTohtml(document.getElementById("name").value);
-			if (document.postmodify.name.value == "" || document.postmodify.name.value == "_" || document.postmodify.name.value == " ") { msgError += "<li>$livepreview_txt{'name_empty'}<\/li>"; if (isError == 0) isError = 1; }
-			if (document.postmodify.name.value.length > 25)  { msgError += "<li>$livepreview_txt{'long_name'}<\/li>"; if (isError == 0) isError = 1; }
-            if (document.postmodify.email.value == "") { msgError += "<li>$livepreview_txt{'mail_empty'} $livepreview_txt{'valid_mail'}<\/li>"; if (isError == 0) isError = 1; }
-            else if (! checkMailaddr(document.postmodify.email.value)) { msgError += "<li>$livepreview_txt{'valid_mail'}<\/li>"; if (isError == 0) isError = 1; }~
-            : q~if (livepostas == "imsend" || livepostas == "imsend2") {}~
-          )
-          . (
-            $iamguest && $gpvalid_en
-            ? qq~if (document.postmodify.verification.value == "") { msgError += "<li>$livepreview_txt{'veri_code'}<\/li>"; isError = 1; }~
-            : q{}
-          )
-          . (
-            $iamguest && $spam_questions_gp
-            ? qq~if (document.postmodify.verification_question.value == "") { msgError += "<li>$livepreview_txt{'veri_quest'}<\/li>"; isError = 1; }~
-            : q{}
-          )
-          . qq~
-            if (document.postmodify.message.value == "") { msgError += "<li>$livepreview_txt{'mess_empty'}<\/li>"; if (isError == 0) isError = 1; }
-            else if ($checkallcaps && document.postmodify.message.value.search(/[A-Z]{$checkallcaps,}/g) != -1) {
-                if (isError == 0) { msgError = "<li>$livepreview_txt{'mess_allcaps'}<\/li>"; isError = 1; }
-                else { msgError += "<li>$livepreview_txt{'mess_allcaps'}<\/li>"; }
-            }
-            if (nolinks && (livepostas == 'post' || livepostas == 'postmodify') && /(http:\\/\\/|https:\\/\\/|ftp:\\/\\/|www\\.){1,}\\S+?\\.\\S+/i.test(document.postmodify.message.value)) {
-                if (isError == 0) { msgError = "<li>$livepreview_txt{'no_links'}<\/li>"; isError = 1; }
-                else { msgError += "<li>$livepreview_txt{'no_links'}<\/li>"; }
-            }
-            if (isError > 0) {
-                document.getElementById("checktable").style.display = 'block';
-                var errorlist = msgErrorTitle + '<ul>' + msgError + '<\/ul>';
-                document.getElementById("checktable").innerHTML = errorlist;
-            }
-            else {
-                document.getElementById("checktable").style.display = 'none';
-            }
-        }
-        </script>~;
+        $my_postsection_ajx = my_check_prev();
     }
-        $mycalout_post = qq~
+    $mycalout_post = qq~
 <script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
 <form action="$scripturl?action=add_cal" name="postmodify" method="post" accept-charset="$yycharset">
 $mycalout_addevent~;
 
-        $mycalout_post =~ s/{yabb calevent}/$var_cal{'calevent'}/sm;
-        $mycalout_post =~ s/{yabb addevdate}/$addevdate/sm;
-        $mycalout_post =~ s/{yabb option_noname}/$option_noname/sm;
-        $mycalout_post =~ s/{yabb mycalout_caltype}/$mycalout_caltype/sm;
-        $mycalout_post =~ s/{yabb mycalout_calicon}/$mycalout_calicon/sm;
-        $mycalout_post =~ s/{yabb calicon}/$calicon/gsm;
-        $mycalout_post =~ s/{yabb caliconimg}/$cal_icon_bg{$calicon}/gsm;
-        $mycalout_post =~ s/{yabb mycalout_cthelp}/$mycalout_cthelp/sm;
-        $mycalout_post =~ s/{yabb mycalout_post2}/$mycalout_post2/sm;
-        $mycalout_post =~ s/{yabb mycalout_googie}/$mycalout_googie/sm;
-        $mycalout_post =~ s/{yabb mycalout_smilies}/$mycalout_smilies/sm;
-        $mycalout_post =~ s/{yabb mycalout_post3}/$mycalout_post3/sm;
-        $mycalout_post =~ s/{yabb mycalout_chars}/$mycalout_chars/sm;
-        $mycalout_post =~ s/{yabb mycalout_validation}/$verification_field/sm;
-        $mycalout_post =~ s/{yabb guestpost_fields}/$guestpost_fields/sm;
-        $mycalout_post =~
-          s/{yabb mycalout_spamquestion}/$mycalout_spamquestion/sm;
-        $mycalout_post =~ s/{yabb nscheck}/$nscheck/sm;
-        $mycalout_post =~ s/{yabb mycalout_send}/$mycalout_send/sm;
-        $mycalout_post =~ s/{yabb messageblock}/$messageblock/sm;
-        $mycalout_post =~ s/{yabb my_postsection_ajx}/$my_postsection_ajx/sm;
+    $mycalout_post =~ s/{yabb calevent}/$var_cal{'calevent'}/sm;
+    $mycalout_post =~ s/{yabb addevdate}/$addevdate/sm;
+    $mycalout_post =~ s/{yabb option_noname}/$option_noname/sm;
+    $mycalout_post =~ s/{yabb mycalout_caltype}/$mycalout_caltype/sm;
+    $mycalout_post =~ s/{yabb mycalout_calicon}/$mycalout_calicon/sm;
+    $mycalout_post =~ s/{yabb calicon}/$calicon/gsm;
+    $mycalout_post =~ s/{yabb caliconimg}/$cal_icon_bg{$calicon}/gsm;
+    $mycalout_post =~ s/{yabb mycalout_cthelp}/$mycalout_cthelp/sm;
+    $mycalout_post =~ s/{yabb mycalout_post2}/$mycalout_post2/sm;
+    $mycalout_post =~ s/{yabb mycalout_googie}/$mycalout_googie/sm;
+    $mycalout_post =~ s/{yabb mycalout_smilies}/$mycalout_smilies/sm;
+    $mycalout_post =~ s/{yabb mycalout_post3}/$mycalout_post3/sm;
+    $mycalout_post =~ s/{yabb mycalout_chars}/$mycalout_chars/sm;
+    $mycalout_post =~ s/{yabb mycalout_validation}/$verification_field/sm;
+    $mycalout_post =~ s/{yabb guestpost_fields}/$guestpost_fields/sm;
+    $mycalout_post =~ s/{yabb mycalout_spamquestion}/$mycalout_spamquestion/sm;
+    $mycalout_post =~ s/{yabb nscheck}/$nscheck/sm;
+    $mycalout_post =~ s/{yabb mycalout_send}/$mycalout_send/sm;
+    $mycalout_post =~ s/{yabb messageblock}/$messageblock/sm;
+    $mycalout_post =~ s/{yabb my_postsection_ajx}/$my_postsection_ajx/sm;
 
     # YaBBC Section end
 

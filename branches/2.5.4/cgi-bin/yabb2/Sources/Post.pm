@@ -287,18 +287,11 @@ sub Postpage {
         && $destination ne 'guestpm2' )
     {   
         $extra = $mypost_extra;
-        $extra =~ s/{yabb ic1}/$ic1/sm;
-        $extra =~ s/{yabb ic2}/$ic2/sm;
-        $extra =~ s/{yabb ic3}/$ic3/sm;
-        $extra =~ s/{yabb ic4}/$ic4/sm;
-        $extra =~ s/{yabb ic5}/$ic5/sm;
-        $extra =~ s/{yabb ic6}/$ic6/sm;
-        $extra =~ s/{yabb ic7}/$ic7/sm;
-        $extra =~ s/{yabb ic8}/$ic8/sm;
-        $extra =~ s/{yabb ic9}/$ic9/sm;
-        $extra =~ s/{yabb ic10}/$ic10/sm;
-        $extra =~ s/{yabb ic11}/$ic11/sm;
-        $extra =~ s/{yabb ic12}/$ic12/sm;
+        foreach my $x ( 0 .. ( @icon_list - 1 )) {
+            $myic = 'ic' . $x;
+            $extra =~ s/{yabb $myic}/$ic[$x]/sm;
+        }
+        
         $extra =~ s/{yabb icon}/$icon/sm;
         $extra =~ s/{yabb icon_img}/$micon_bg{$icon}/sm;
 
@@ -869,57 +862,8 @@ qq~<img src="$micon_bg{$icon}" name="liveicons" alt="" />~;
             $my_prevmain = $mypost_preview_main;
             $my_prevmain =~ s/{yabb prevmain}/$prevmain/sm;
         }
-        $my_postsection_ajx = qq~
-		<script type="text/javascript">
-
-		var livepostas = '$post';
-		var nolinks = '$nolinkallow';
-
-		function checkLivepreview() {
-			var isError = 0;
-			var msgError = "";
-			var msgErrorTitle = "<b>$livepreview_txt{'info_missing'}<\/b>";
-			~ . (
-            $iamguest && $post ne "imsend" && $post ne "imsend2"
-            ? qq~document.getElementById("savename").innerHTML = jsDoTohtml(document.getElementById("name").value);
-			if (document.postmodify.name.value == "" || document.postmodify.name.value == "_" || document.postmodify.name.value == " ") { msgError += "<li>$livepreview_txt{'name_empty'}<\/li>"; if (isError == 0) isError = 1; }
-			if (document.postmodify.name.value.length > 25)  { msgError += "<li>$livepreview_txt{'long_name'}<\/li>"; if (isError == 0) isError = 1; }
-			if (document.postmodify.email.value == "") { msgError += "<li>$livepreview_txt{'mail_empty'} $livepreview_txt{'valid_mail'}<\/li>"; if (isError == 0) isError = 1; }
-			else if (! checkMailaddr(document.postmodify.email.value)) { msgError += "<li>$livepreview_txt{'valid_mail'}<\/li>"; if (isError == 0) isError = 1; }~
-            : qq~if (livepostas == "imsend" || livepostas == "imsend2") {
-			if (document.postmodify.toshow.options.length == 0 ) { msgError += "<li>$livepreview_txt{'pm_recipient'}<\/li>"; isError = 1; }
-			}~) .
-			($iamguest && $gpvalid_en && $post ne "imsend" && $post ne "imsend2" ? qq~if (document.postmodify.verification.value == "") { msgError += "<li>$livepreview_txt{'veri_code'}<\/li>"; isError = 1; }~ : qq~~) .
-(
-            $iamguest && $spam_questions_gp && $post ne 'imsend' && $post ne 'imsend2'
-            ? qq~if (document.postmodify.verification_question.value == "") { msgError += "<li>$livepreview_txt{'veri_quest'}<\/li>"; isError = 1; }~
-            : qq~~
-          ) .
-			qq~
-			if (document.postmodify.subject.value == "") { msgError += "<li>$livepreview_txt{'subj_empty'}<\/li>"; if (isError == 0) isError = 1; }
-			else if ($checkallcaps && document.postmodify.subject.value.search(/[A-Z]{$checkallcaps,}/g) != -1) {
-				if (isError == 0) { msgError = "<li>$livepreview_txt{'subj_allcaps'}<\/li>"; isError = 1; }
-				else { msgError += "<li>$livepreview_txt{'subj_allcaps'}<\/li>"; }
-			}
-			if (document.postmodify.message.value == "") { msgError += "<li>$livepreview_txt{'mess_empty'}<\/li>"; if (isError == 0) isError = 1; }
-			else if ($checkallcaps && document.postmodify.message.value.search(/[A-Z]{$checkallcaps,}/g) != -1) {
-				if (isError == 0) { msgError = "<li>$livepreview_txt{'mess_allcaps'}<\/li>"; isError = 1; }
-				else { msgError += "<li>$livepreview_txt{'mess_allcaps'}<\/li>"; }
-			}
-			if (nolinks && (livepostas == 'post' || livepostas == 'postmodify') && /(http:\\/\\/|https:\\/\\/|ftp:\\/\\/|www\\.){1,}\\S+?\\.\\S+/i.test(document.postmodify.message.value)) {
-				if (isError == 0) { msgError = "<li>$livepreview_txt{'no_links'}<\/li>"; isError = 1; }
-				else { msgError += "<li>$livepreview_txt{'no_links'}<\/li>"; }
-			}
-			if (isError > 0) {
-				document.getElementById("checktable").style.display = 'block';
-				var errorlist = msgErrorTitle + '<ul>' + msgError + '<\/ul>';
-				document.getElementById("checktable").innerHTML = errorlist;
-			}
-			else {
-				document.getElementById("checktable").style.display = 'none';
-			}
-		}
-		</script>
+        $my_postsection_ajx = my_check_prev();
+        $my_postsection_ajx .= qq~
         <div id="savetable" class="windowbg" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
 		$messageblock
 		<div id="checktable" class="small" style="float: right; text-align: left; width: 77%; padding: 6px; margin: 0px; display: none;"></div>
@@ -1076,7 +1020,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
 
         $my_post_feata = $mypost_feata;
         $my_post_feata .= qq~
-            <span class="small"><img src="$imagesdir/$post_cat_col" id="feature_col" alt="$npf_txt{'collapse_features'}" title="$npf_txt{'collapse_features'}" class="cursor" onclick="show_features(0);" /> $npf_txt{'features_text'}</span>
+            <span class="small"><img src="$imagesdir/$cat_col" id="feature_col" alt="$npf_txt{'collapse_features'}" title="$npf_txt{'collapse_features'}" class="cursor" onclick="show_features(0);" /> $npf_txt{'features_text'}</span>
             <input type="hidden" name="col_rowb" id="col_row" value="$col_row" />~;
 
         if ( !$removenormalsmilies ) {
@@ -1118,8 +1062,8 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
 
             if ( $allowattach > 1 ) {
                 $my_att_allow = qq~
-            <img src="$defaultimagesdir/$post_cat_exp" id="attform_add" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" class="cursor" onclick="enabPrev2(1);" />
-            <img src="$defaultimagesdir/$post_cat_col" id="attform_sub" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" class="cursor" style="visibility:hidden;" onclick="enabPrev2(-1);" />~;
+            <img src="$defaultimagesdir/$cat_exp" id="attform_add" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" class="cursor" onclick="enabPrev2(1);" />
+            <img src="$defaultimagesdir/$cat_col" id="attform_sub" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" class="cursor" style="visibility:hidden;" onclick="enabPrev2(-1);" />~;
             }
 
             my $startcount;
@@ -1357,194 +1301,14 @@ showtpstatus();
     $jstimeselected = ${ $uid . $username }{'timeselect'} || $timeselected;
 
     if ( $postid ne 'Poll' ) {
+        $my_ajxcall = 'ajxmessage';
         $my_postbox_3 = postbox3();
         $my_postbox_3 .= qq~
 <script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
-<script type="text/javascript">
-var noalert = true, gralert = false, rdalert = false, clalert = false;
-var cntsec = 0
+<script type="text/javascript">~;
+        $my_postbox_3 .= my_liveprev();
 
-function tick() {
-  cntsec++
-  calcCharLeft()
-  var timerID = setTimeout("tick()",1000)
-}
-
-var autoprev = false
-
-post_txt_807 = "$post_txt{'807'}";
-
-function enabPrev() {
-    if ( autoprev === false ) {
-		autoprev = true
-		document.getElementById("savetable").style.display = "block";
-		document.getElementById("saveframe").style.display = "block";
-		document.images.prevwin.alt = "$npf_txt{'02'}";
-		document.images.prevwin.title = "$npf_txt{'02'}";
-		document.images.prevwin.src="$defaultimagesdir/$post_cat_col";
-		autoPreview();
-	}
-	else {
-		autoprev = false;
-		ubbstr = '';
-		document.getElementById("savetable").style.display = "none";
-		document.getElementById("saveframe").style.display = "none";
-		document.postmodify.message.focus();
-		document.images.prevwin.alt = "$npf_txt{'01'}";
-		document.images.prevwin.title = "$npf_txt{'01'}";
-		document.images.prevwin.src="$defaultimagesdir/$post_cat_exp";
-	}
-	calcCharLeft();
-}
-
-function calcCharLeft() {
-  if (document.postmodify.message.value.length > 0) document.getElementById("saveframe").style.height = "auto";
-  var clipped = false
-  var maxLength = $MaxMessLen
-  if (document.postmodify.message.value.length > maxLength) {
-    document.postmodify.message.value = document.postmodify.message.value.substring(0,maxLength)
-    var charleft = 0
-    clipped = true
-  } else {
-    charleft = maxLength - document.postmodify.message.value.length
-  }
-  document.postmodify.msgCL.value = charleft
-  if (charleft >= 100 && noalert) { noalert = false; gralert = true; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$post_chrwarn_g1"; }
-  if (charleft < 100 && charleft >= 50 && gralert) { noalert = true; gralert = false; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$post_chrwarn_g0"; }
-  if (charleft < 50 && charleft > 0 && rdalert) { noalert = true; gralert = true; rdalert = false; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$post_chrwarn_r0" }
-  if (charleft === 0 && clalert) { noalert = true; gralert = true; rdalert = true; clalert = false; document.images.chrwarn.src="$defaultimagesdir/$post_chrwarn_r1"; }
-  return clipped
-}
-
-function autoPreview() {
-	if(autoprev) {
-	var url = '$scripturl?action=ajxmessage';
-	try {
-		if (typeof( new XMLHttpRequest() ) == 'object') {
-			pstHttp = new XMLHttpRequest();
-		} else if (typeof( new ActiveXObject("Msxml2.XMLHTTP") ) == 'object') {
-			pstHttp = new ActiveXObject("Msxml2.XMLHTTP");
-		} else if (typeof( new ActiveXObject("Microsoft.XMLHTTP") ) == 'object') {
-			pstHttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-	} catch (e) { }
-	if (pstHttp == null) return;
-	pstHttp.onreadystatechange = function() {
-		if(pstHttp.readyState == 4) {
-			if(pstHttp.status == 200 || window.location.href.indexOf("http") == -1) {
-				tmpmess = pstHttp.responseText.split("|");
-				document.getElementById("savesubj").innerHTML = tmpmess[0];
-				document.getElementById("savemess").innerHTML = tmpmess[1];~;
-				if ($iamguest) {
-	                $my_postbox_3 .=qq~
-				document.getElementById("savename").innerHTML = tmpmess[2];~;
-				}
-	            $my_postbox_3 .= qq~
-				sh_highlightDocument();
-				if (/post_liveimg_resize_1/i.test(pstHttp.responseText)) LivePrevImgResize();
-				checkLivepreview();
-			}
-		}
-	};
-	var nscheck = 0;
-	if(document.getElementById("ns").checked) nscheck = 1;
-	var subjvalue = encodeURIComponent(document.getElementById("subject").value);
-	var messvalue = encodeURIComponent(document.getElementById("message").value);~;
-	if ($iamguest) {
-	    $my_postbox_3 .=qq~
-	var namevalue = encodeURIComponent(document.getElementById("name").value);
-	~;	}
-	else { $my_postbox_3 .= qq~
-	var namevalue = "";
-	~;	}
-	$my_postbox_3 .= qq~
-	var tmusername = encodeURIComponent('$displayname');
-	var sessvalue = encodeURIComponent(document.postmodify.formsession.value);
-	var parameters = "subject="+subjvalue+"&message="+messvalue+"&musername="+tmusername+"&nschecked="+nscheck+"&formsession="+sessvalue+"&guestname="+namevalue;
-	pstHttp.open("POST", url, true);
-	pstHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	pstHttp.send(parameters);
-	}
-}
-
-function LivePrevImgResize() {
-	var maxwidth = $max_post_img_width;
-	var maxheight = $max_post_img_height;
-	var fix_size = $fix_post_img_size;
-	noimgdir   = '$imagesdir';
-	noimgtitle = '$maintxt{'171'}';
-
-	var liveimg_resize_names = new Array ();
-	var zi = 0;
-
-	var imgsavail = document.getElementById("savemess").getElementsByTagName("img");
-	for (i=0; i<imgsavail.length; i++) {
-		if (imgsavail[i].className == "liveimg") {
-			liveimg_resize_names[zi] = imgsavail[i].name;
-			zi++;
-		}
-	}
-
-	var tmp_array = new Array ();
-	for (var i = 0; i < liveimg_resize_names.length; i++) {
-		var tmp_image_name = liveimg_resize_names[i];
-
-		if (fix_size) {
-			if (maxwidth)  document.images[tmp_image_name].width  = maxwidth;
-			if (maxheight) document.images[tmp_image_name].height = maxheight;
-			document.images[tmp_image_name].style.display = 'inline';
-			continue;
-		}
-
-		if (document.images[tmp_image_name].complete == false) {
-			tmp_array[tmp_array.length] = tmp_image_name;
-			if (/Opera/i.test(navigator.userAgent)) {
-				document.images[tmp_image_name].width  = document.images[tmp_image_name].width  || 0;
-				document.images[tmp_image_name].height = document.images[tmp_image_name].height || 0;
-				document.images[tmp_image_name].style.display = 'inline';
-			}
-			continue;
-		}
-
-		var tmp_image = new Image;
-		tmp_image.src = document.images[tmp_image_name].src;
-
-		var tmpwidth  = document.images[tmp_image_name].width  || tmp_image.width;
-		var tmpheight = document.images[tmp_image_name].height || tmp_image.height;
-
-		if (!tmpwidth && !tmpheight) {
-			tmp_array[tmp_array.length] = tmp_image_name;
-			continue;
-		}
-
-		if (maxwidth != 0 && tmpwidth > maxwidth) {
-			tmpheight = tmpheight * maxwidth / tmpwidth;
-			tmpwidth  = maxwidth;
-		}
-
-		if (maxheight != 0 && tmpheight > maxheight) {
-			tmpwidth  = tmpwidth * maxheight / tmpheight;
-			tmpheight = maxheight;
-		}
-
-		document.images[tmp_image_name].width  = tmpwidth;
-		document.images[tmp_image_name].height = tmpheight;
-		document.images[tmp_image_name].style.display = 'inline';
-	}
-	if (tmp_array.length > 0 && resize_time < 350) {
-		liveimg_resize_names = tmp_array;
-		if (resize_time == 290) {
-			for (var i = 0; i < liveimg_resize_names.length; i++) {
-				var tmp_image_name = liveimg_resize_names[i];
-				document.images[tmp_image_name].src = noimgdir + "/noimg.gif";
-				document.images[tmp_image_name].title = noimgtitle;
-			}
-		}
-		setTimeout("resize_time++; resize_images();", 100);
-	}
-}
-~
-          . ( !$Quick_Post ? "document.postmodify.$settofield.focus();" : q{} )
+		$my_postbox_3 .= ( !$Quick_Post ? "document.postmodify.$settofield.focus();" : q{} )
           . qq~\n\n~;
 
         if ( $post eq 'imsend' ) {
@@ -1711,19 +1475,14 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     $message = regex_3($message);
 
     CheckIcon();
-
-    if    ( $icon eq 'xx' )          { $ic1  = ' selected="selected" '; }
-    elsif ( $icon eq 'thumbup' )     { $ic2  = ' selected="selected" '; }
-    elsif ( $icon eq 'thumbdown' )   { $ic3  = ' selected="selected" '; }
-    elsif ( $icon eq 'exclamation' ) { $ic4  = ' selected="selected" '; }
-    elsif ( $icon eq 'question' )    { $ic5  = ' selected="selected" '; }
-    elsif ( $icon eq 'lamp' )        { $ic6  = ' selected="selected" '; }
-    elsif ( $icon eq 'smiley' )      { $ic7  = ' selected="selected" '; }
-    elsif ( $icon eq 'angry' )       { $ic8  = ' selected="selected" '; }
-    elsif ( $icon eq 'cheesy' )      { $ic9  = ' selected="selected" '; }
-    elsif ( $icon eq 'grin' )        { $ic10 = ' selected="selected" '; }
-    elsif ( $icon eq 'sad' )         { $ic11 = ' selected="selected" '; }
-    elsif ( $icon eq 'wink' )        { $ic12 = ' selected="selected" '; }
+    
+    foreach my $x ( 0 .. ( @icon_list - 1 ) ) {
+        if ( $icon eq $icon_list[$x] ) {
+            $ic[$x] = q~ selected="selected" ~;
+        }
+        else {$ic[$x] = q{};}
+    }
+            
     if    ( $FORM{'status'} eq 'c' ) { $icon = 'confidential'; }
     elsif ( $FORM{'status'} eq 'u' ) { $icon = 'urgent'; }
     elsif ( $FORM{'status'} eq 's' ) { $icon = 'standard'; }
