@@ -633,6 +633,10 @@ $member_groups
 \$set_subjectMaxLength = $set_subjectMaxLength; # Maximum Allowed Characters in a Posts Subject
 \$MaxMessLen = $MaxMessLen;					# Maximum Allowed Characters in a Posts
 \$AdMaxMessLen = $AdMaxMessLen;				# Maximum Allowed Characters in a Posts for Admins
+\$MaxIMMessLen = $MaxIMMessLen;             # Maximum Allowed Characters in a PM
+\$AdMaxIMMessLen = $AdMaxIMMessLen;                    # Maximum Allowed Characters in a PM for Admins
+\$MaxCalMessLen = $MaxCalMessLen;           # Maximum Allowed Characters in a Cal event
+\$AdMaxCalMessLen = $AdMaxCalMessLen;                   # Maximum Allowed Characters in a Cal Event for Admins
 \$honeypot = $honeypot;						# Set to 1 to activate Honeypot spam deterrent
 \$spamfruits = $spamfruits;					# Set to 1 to activate SpamFruits spam deterrent
 \$min_reg_time = $min_reg_time;             # Minimum amount of time to be spent filling out the registration form
@@ -658,7 +662,7 @@ $member_groups
 \$HotTopic = $HotTopic;						# Number of posts needed in a topic for it to be classed as "Hot"
 \$VeryHotTopic = $VeryHotTopic;				# Number of posts needed in a topic for it to be classed as "Very Hot"
 
-\$barmaxdepend = $barmaxdepend;				# Set to 1 to let bar-max-length depend on top poster or 0 to depend on a number of your choise
+\$barmaxdepend = $barmaxdepend;				# Set to 1 to let bar-max-length depend on top poster or 0 to depend on a number of your choice
 \$barmaxnumb = $barmaxnumb;					# Select number of post for max. bar-length in memberlist
 \$defaultml = "\Q$defaultml\E";
 

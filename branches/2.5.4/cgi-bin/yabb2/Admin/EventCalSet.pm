@@ -232,9 +232,14 @@ sub EventCalSet {
 		</select>
        </td>
      </tr><tr>
+       <td class="windowbg2"><label for="MaxCalMessLen">$admin_txt{'498e'}</label></td>
+       <td class="windowbg2"><input type="text" size="5" name="MaxCalMessLen" id="MaxCalMessLen" value="$MaxCalMessLen" /></td>
+     </tr><tr>
+       <td class="windowbg2"><label for="AdMaxCalMessLen">$admin_txt{'498f'}</label></td>
+       <td class="windowbg2"><input type="text" size="5" name="AdMaxCalMessLen" id="AdMaxCalMessLen" value="$AdMaxCalMessLen" /></td>
+     </tr><tr>
        <td class="windowbg2"><label for="Show_BdColorLinks">$event_cal{'44'}<br /><span class="small">$event_cal{'45'}</span></label></td>
        <td class="windowbg2"><input type="checkbox" name="Show_BdColorLinks" id="Show_BdColorLinks" $onbdcolorlinkschecked /></td>
-     </tr>
      </tr><tr>
        <td class="windowbg2"><label for="Show_BdStarsign">$event_cal{'42a'}</label></td>
        <td class="windowbg2"><input type="checkbox" name="Show_BdStarsign" id="Show_BdStarsign" $onbdstarchecked /></td>
@@ -430,6 +435,8 @@ sub eventcal_save {
         $CalEventMods =~ s/^\s*,\s*|\s*,\s*$//gsm;
         $CalEventMods =~ s/\s*,\s*/,/gsm;
         $CalEventMods = $CalEventMods;
+        $MaxCalMessLen = $FORM{'MaxCalMessLen'};
+        $AdMaxCalMessLen = $FORM{'AdMaxCalMessLen'};
 
     require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');

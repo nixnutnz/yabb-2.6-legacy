@@ -3488,6 +3488,10 @@ sub SetInstall2 {
         $maxmessagedisplay      = 15;
         $MaxMessLen             = 2000;
         $AdMaxMessLen           = 5000;
+        $MaxIMMessLen           = 2000;
+        $AdMaxIMMessLen         = 3000;
+        $MaxCalMessLen          = 2000;
+        $AdMaxCalMessLen        = 3000;
         $fontsizemin            = 6;
         $fontsizemax            = 32;
         $MaxSigLen              = 200;
@@ -3714,6 +3718,9 @@ sub SetInstall2 {
 \$maxmessagedisplay = $maxmessagedisplay;           # Maximum of messages to display
 \$MaxMessLen = $MaxMessLen;                         # Maximum Allowed Characters in a Posts
 \$AdMaxMessLen = $AdMaxMessLen;                     # Maximum Allowed Characters in a Posts for Admins
+\$AdMaxIMMessLen = $AdMaxIMMessLen;                    # Maximum Allowed Characters in a PM for Admins
+\$MaxCalMessLen = $MaxCalMessLen;           # Maximum Allowed Characters in a Cal event
+\$AdMaxCalMessLen = $AdMaxCalMessLen;                   # Maximum Allowed Characters in a Cal Event for Admins
 \$fontsizemin = $fontsizemin;                       # Minimum Allowed Font height in pixels
 \$fontsizemax = $fontsizemax;                       # Maximum Allowed Font height in pixels
 \$checkallcaps = $checkallcaps;                     # Set to 0 to allow ALL CAPS in posts (subject and message) or set to a value > 0 to open a JS-alert if more characters in ALL CAPS were there.

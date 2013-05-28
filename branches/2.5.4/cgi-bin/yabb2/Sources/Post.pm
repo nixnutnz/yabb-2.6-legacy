@@ -42,6 +42,15 @@ if (   $iamguest
 $set_subjectMaxLength ||= 50;
 
 LoadCensorList();
+if ( $action eq 'eventcal' && $MaxCalMessLen && $AdMaxCalMessLen ) {
+    $MaxMessLen = $MaxCalMessLen;
+    $AdMaxMessLen = $AdMaxCalMessLen;
+}
+if ( ( $action eq 'guestpm' || $action eq 'guestpm2' || $action eq 'modalert' || $action eq 'modalert2' ) && $MaxIMMessLen && $AdMaxIMMessLen ) {
+    $MaxMessLen = $MaxIMMessLen;
+    $AdMaxMessLen = $AdMaxIMMessLen;
+}
+
 if ( $iamadmin || $iamgmod ) { $MaxMessLen = $AdMaxMessLen; }
 
 sub Post {

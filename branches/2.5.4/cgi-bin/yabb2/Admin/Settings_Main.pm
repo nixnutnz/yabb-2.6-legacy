@@ -471,14 +471,14 @@ $qckage ||= 31;
 			name => 'MaxMessLen',
 			validate => 'number',
 		},
-            {
-                description =>
-                  qq~<label for="AdMaxMessLen">$admin_txt{'498b'}</label>~,
-                input_html =>
+        {
+            description =>
+              qq~<label for="AdMaxMessLen">$admin_txt{'498b'}</label>~,
+            input_html =>
 qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdMaxMessLen" />~,
-                name     => 'AdMaxMessLen',
-                validate => 'number',
-            },
+            name     => 'AdMaxMessLen',
+            validate => 'number',
+        },
 		{
 			description => qq~<label for="fontsizemin">$admin_txt{'499'}</label>~,
 			input_html => qq~<input type="text" size="5" name="fontsizemin" id="fontsizemin" value="$fontsizemin" />~,
@@ -1439,6 +1439,20 @@ qq~<input type="checkbox" name="nomailspammer" id="nomailspammer" value="1" ${is
 			validate => 'number,null',
 			depends_on => ['PM_level!=0'],
 		},
+		{
+			description => qq~<label for="MaxIMMessLen">$admin_txt{'498c'}</label>~,
+			input_html => qq~<input type="text" size="5" name="MaxIMMessLen" id="MaxIMMessLen" value="$MaxIMMessLen" />~,
+			name => 'MaxIMMessLen',
+			validate => 'number',
+		},
+        {
+            description =>
+              qq~<label for="AdMaxIMMessLen">$admin_txt{'498d'}</label>~,
+            input_html =>
+qq~<input type="text" size="5" name="AdMaxIMMessLen" id="AdMaxIMMessLen" value="$AdMaxIMMessLen" />~,
+            name     => 'AdMaxIMMessLen',
+            validate => 'number',
+        },
 
 		{
 			header => $settings_txt{'mycenter'},

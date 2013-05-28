@@ -30,6 +30,13 @@ get_micon();
 
 $set_subjectMaxLength ||= 50;
 
+if ( ($action eq 'imsend' || $action eq 'imsend2') && $MaxIMMessLen && $AdMaxIMMessLen ) {
+    $MaxMessLen = $MaxIMMessLen;
+    $AdMaxMessLen = $AdMaxIMMessLen;
+}
+
+if ( $iamadmin || $iamgmod ) { $MaxMessLen = $AdMaxMessLen; }
+
 ## create the send IM section of the screen
 
 sub buildIMsend {
