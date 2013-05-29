@@ -1090,7 +1090,7 @@ qq~\n                        <option value="$ignoreName">$ignoreUser</option>~;
 
     if ( $enable_notifications > 1 ) {
         $my_PM_notifyme =
-          ${ $uid . $user }{'notify_me'} < 2 ? q{} : ' selected="selected"';
+          ${ $uid . $user }{'notify_me'} < 2 ? ' selected="selected"' : q{};
         $my_PM_notifyme_2 =
           ${ $uid . $user }{'notify_me'} > 1 ? ' selected="selected"' : q{};
 
@@ -1125,6 +1125,7 @@ qq~\n                        <option value="$ignoreName">$ignoreUser</option>~;
     $showProfile =~ s/{yabb pmviewMessChecked}/$pmviewMessChecked/sm;
     $showProfile =~ s/{yabb my_extprofile}/$my_extprofile/sm;
     $showProfile =~ s/{yabb sid_expires}/$sid_expires/sm;
+    $showProfile =~ s/{yabb my_PMnotify}/$my_PMnotify/sm;
 
     if ( !$view ) {
         $yymain .= $showProfile;
