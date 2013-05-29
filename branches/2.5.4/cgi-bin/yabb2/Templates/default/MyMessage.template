@@ -40,7 +40,7 @@ $myIM_show = qq~
     </tr><tr>
         <td class="windowbg2 vtop" colspan="2">
             <div style="width: 99%; padding: 2px; margin: 2px;">
-                {yabb msimg}<span class="small" style="width: 99%;">
+                {yabb msimg} <span class="small" style="width: 99%;">
                     <b>$inmes_txt{'70'}: {yabb msub}</b><br />
                     <b>$inmes_txt{'317'}:</b> {yabb mydate}
                 </span>

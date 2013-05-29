@@ -175,7 +175,7 @@ $mypost_is_prev = qq~<tr>
         <td style="color:red" colspan="2"><br /><b>$fatxt{'7'}</b><br /><br /></td>
     </tr>~;
 
-$mypost_ispreview = qq~<tr>
+$mypost_submit = qq~<tr>
         <td class="titlebg center" colspan="2">~;
 
 $mypost_smiley1 = qq~
