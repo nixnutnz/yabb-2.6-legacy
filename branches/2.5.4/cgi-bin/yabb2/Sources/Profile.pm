@@ -743,7 +743,7 @@ qq~<select name="userpic" id="userpic" size="6" onchange="showimage(1);">
                 (
                         !${ $uid . $user }{'notify_me'}
                       || ${ $uid . $user }{'notify_me'} == 2
-                ) ? q{} : ' selected="selected"'
+                ) ? ' selected="selected"' : q{}
               )
               . qq~>$profile_txt{'164'}</option>
                         <option value="1"~
