@@ -808,11 +808,12 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
         $accesskey{'MSIE_Safari'}     = $post_txt{'329b'};
         $accesskey{'FireFox'}         = $post_txt{'330b'};
         $accesskey{'Browsers_on_Mac'} = $post_txt{'331b'};
-        $my_accesskey .=
-qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="$preview" value="$post_txt{'507'}" accesskey="p" tabindex="6" class="button" />~;
-        $accesskey{'MSIE_Safari'}     = $post_txt{'329c'};
-        $accesskey{'FireFox'}         = $post_txt{'330c'};
-        $accesskey{'Browsers_on_Mac'} = $post_txt{'331c'};
+# remove Preview
+#        $my_accesskey .=
+#qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="$preview" value="$post_txt{'507'}" accesskey="p" tabindex="6" class="button" />~;
+#        $accesskey{'MSIE_Safari'}     = $post_txt{'329c'};
+#        $accesskey{'FireFox'}         = $post_txt{'330c'};
+#        $accesskey{'Browsers_on_Mac'} = $post_txt{'331c'};
     }
 
     $smilie_url_array  = q{};
@@ -2293,9 +2294,16 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;repl
             <a href="$scripturl?action=imprint;caller=$INFO{'caller'};id=$messageid" target="_blank">$img{'print'}</a>
         ~;
     $my_notme = q{};
-    my $messIconName = 'standard';
     if    ( $mstatus =~ m/c/sm ) { $messIconName = 'confidential'; }
     elsif ( $mstatus =~ m/u/sm ) { $messIconName = 'urgent'; }
+    elsif ( $mstatus =~ m/a/sm || $messStatus =~ m/ga/sm ) {
+        $messIconName = 'alertmod';
+    }
+    elsif ( $mstatus =~ m/gr/sm ) {
+        $messIconName = 'guestpmreply';
+    }
+    elsif ( $mstatus =~ m/g/sm ) { $messIconName = 'guestpm'; }
+    else { $messIconName = 'standard';}
 
     if ( $mstatus ne 'ga' && $mstatus ne 'g' ) {
         $notme    = $musername eq $username ? $mtousers : $musername;

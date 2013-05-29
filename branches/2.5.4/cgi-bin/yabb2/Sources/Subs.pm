@@ -774,6 +774,16 @@ q~<h1 style="text-align:center"><b>Sorry, the copyright tag <yabb copyright> mus
     return;
 }
 
+sub PMlev {
+    my $pm_lev = 0;
+    if (   $PM_level == 1
+        || ( $PM_level == 2 && $staff )
+        || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
+        || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) ) ) 
+    { $pm_lev = 1; }
+    return $pm_lev;
+}
+
 sub image_resize {
     my ( $resize_js, $resize_num );
     my $perl_do_it = 0;
@@ -1251,11 +1261,8 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
 
     ## as guests do not have these, why show them?
     if ( !$iamguest ) {
-        if (   $PM_level == 1
-            || ( $PM_level == 2 && ($staff) )
-            || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
-            || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod) )
-             )
+        $pm_lev = PMlev();
+        if ( $pm_lev == 1 )
         {
             $selecthtml .=
 qq~<option value="action=im" class="forumjumpcatm">$jumpto_txt{'mess'}</option>~;

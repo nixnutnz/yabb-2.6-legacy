@@ -1146,10 +1146,8 @@ if (confirm('$boardindex_imtxt{'11'} ${$username}{'PMstorenum'} $boardindex_imtx
         }
 
         $ims = q{};
-        if (   $PM_level == 1
-            || ( $PM_level == 2 && $staff )
-            || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
-            || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) ) )
+        $pm_lev = PMlev();
+        if ( $pm_lev == 1 )
         {
             $ims =
 qq~$boardindex_txt{'795'} <a href="$scripturl?action=im"><b>${$username}{'PMmnum'}</b></a> $boardindex_txt{'796'}~;

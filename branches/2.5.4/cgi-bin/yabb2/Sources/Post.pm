@@ -1202,17 +1202,18 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         $my_postsection =~ s/{yabb iecopycheck}/$iecopycheck/sm;
     }
 
-    #these are the buttons to submit
-    if ($is_preview) { $post_txt{'507'} = $post_txt{'771'}; }
-    $my_post_isprev = qq~$mypost_ispreview
+#    these are the buttons to submit
+#    if ($is_preview) { $post_txt{'507'} = $post_txt{'771'}; }
+    $my_post_submit = qq~$mypost_submit
             $hidestatus
             <br />
             <input type="submit" name="$post" id="$post" value="$submittxt" accesskey="s" tabindex="5" class="button" />~
-      . (
-        $postid ne 'Poll'
-        ? qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" id="$preview" name="$preview" value="$post_txt{'507'}" accesskey="p" tabindex="6" class="button" />~
-        : q{}
-      )
+# remove Preview
+#      . (
+#        $postid ne 'Poll'
+#        ? qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" id="$preview" name="$preview" value="$post_txt{'507'}" accesskey="p" tabindex="6" class="button" />~
+#        : q{}
+#      )
       . q~
             <script type="text/javascript">
             if (/Opera/.test(navigator.userAgent) === false) {
@@ -1347,7 +1348,7 @@ tick();
     $yymain .= $my_pollsection;
     $yymain .= $my_postsection;
 
-    $yymain .= $my_post_isprev;
+    $yymain .= $my_post_submit;
     $yymain .= $my_spdpost;
     $yymain .= $mypost_formend;
     $yymain .= $my_tclass;

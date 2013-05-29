@@ -26,6 +26,8 @@ require Sources::AddModerators;
 get_template('MyProfile');
 get_gmod();
 
+$pm_lev = PMlev();
+
 # make sure this person has access to this profile
 sub PrepareProfile {
     if ($iamguest) { fatal_error('no_access'); }
@@ -148,10 +150,7 @@ sub ProfileMenu {
         $bdlist =~ s/{yabb bduser}/$useraccount{$user}/sm;
     }
 
-    if (   $PM_level == 1
-        || ( $PM_level == 2 && $staff )
-        || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
-        || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) ) )
+    if (   $pm_lev == 1 )
     {
         $pmlevel = $myprofile_pmlevel;
         $pmlevel =~ s/{yabb menucolor4}/$menucolors[4]/sm;
@@ -503,12 +502,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         $my_minlinkweb =~ s/{yabb my_weburl}/${$uid.$user}{'weburl'}/sm;
     }
     if (
-        (
-               $PM_level == 1
-            || ( $PM_level == 2 && ($staff) )
-            || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
-            || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) )
-        )
+        $pm_lev == 1
         && (
             $enable_MCaway > 2
             || (
@@ -2319,10 +2313,7 @@ sub ModifyProfileOptions2 {
     else {
         $scriptAction = q~viewprofile~;
     }
-    if (   $PM_level == 1
-        || ( $PM_level == 2 && ($staff) )
-        || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
-        || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) ) )
+    if (   $pm_lev == 1 )
     {
         $scriptAction = q~profileIM~;
     }
@@ -2379,10 +2370,7 @@ sub ModifyProfileBuddy2 {
     else {
         $scriptAction = q~viewprofile~;
     }
-    if (   $PM_level == 1
-        || ( $PM_level == 2 && $staff )
-        || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
-        || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) ) )
+    if (   $pm_lev == 1 )
     {
         $scriptAction = q~profileIM~;
     }
@@ -3101,10 +3089,7 @@ qq~<a href="$scripturl?$my_brd=$board" class="a">~
         $lastpost   = qq~$profile_amv_txt{'mylastpost'}~;
         $lastPM     = qq~$profile_amv_txt{'mylastpm'}~;
     }
-    if (   $PM_level == 1
-        || ( $PM_level == 2 && $staff )
-        || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
-        || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) ) )
+    if (   $pm_lev == 1 )
     {
         $my_lastPM = qq~
             <div class="contactleft"><b>$lastPM: </b></div>

@@ -25,6 +25,8 @@ LoadLanguage('MyCenter');
 LoadLanguage('Profile');
 get_template('MyCenter');
 get_gmod();
+get_micon();
+$pm_lev = PMlev();
 
 $mycenter_txt{'welcometxt'} =~ s/USERLABEL/${$uid.$username}{'realname'}/gxsm;
 
@@ -1024,14 +1026,10 @@ sub PmPageindex {
 sub drawPMbox {
     my ($PMfileToOpen) = @_;
     LoadLanguage('InstantMessage');
-
     if (
            ( $PMfileToOpen || $INFO{'focus'} )
         && $view eq 'pm'
-        && (   $PM_level == 1
-            || ( $PM_level == 2 && $staff )
-            || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
-            || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) ) )
+        && $pm_lev == 1
       )
     {
         if ( !$INFO{'focus'} ) {
@@ -1164,10 +1162,7 @@ function insert_user (oElement,username,userid) {
     if (
            $action =~ /^im/sm
         && ( !@dimmessages && $INFO{'focus'} ne 'bmess' )
-        && (   $PM_level == 1
-            || ( $PM_level == 2 && $staff )
-            || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
-            || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) ) )
+        && $pm_lev == 1
       )
     {
         if ( !@dimmessages ) {
@@ -1235,10 +1230,7 @@ function insert_user (oElement,username,userid) {
         $view eq 'pm'
         || (
             $view eq 'mycenter'
-            && (   $PM_level == 1
-                || ( $PM_level == 2 && $staff )
-                || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
-                || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) ) )
+            && $pm_lev == 1
         )
       )
     {
@@ -1270,11 +1262,7 @@ function insert_user (oElement,username,userid) {
         $MCView_tab = q~
         <script type="text/javascript">
         function changeToTab(tab) {~;
-        if (   $PM_level == 1
-            || ( $PM_level == 2 && $staff )
-            || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
-            || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) )
-             )
+        if (   $pm_lev == 1 )
         {
             $MCView_tab .= q~
             document.getElementById('cont_pm').style.display = 'none';
@@ -1294,11 +1282,7 @@ function insert_user (oElement,username,userid) {
         $MCView_tab = q~
         <script type="text/javascript">
         function changeToTab(tab) {~;
-        if (   $PM_level == 1
-            || ( $PM_level == 2 && $staff )
-            || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
-            || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) )
-             )
+        if (   $pm_lev == 1 )
         {
             $MCView_tab .= q~
             document.getElementById('cont_pm').style.display = 'none';
@@ -1322,11 +1306,7 @@ function insert_user (oElement,username,userid) {
             $display_prof       = 'inline';
             $tabProfHighlighted = 'windowbg2';
         }
-        if (   $PM_level == 1
-            || ( $PM_level == 2 && $staff )
-            || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
-            || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) )
-             )
+        if (   $pm_lev == 1  )
         {
             $MCViewMenu_mess = $my_MCViewMenu_mess;
             $MCViewMenu_mess =~ s/{yabb tabPMHighlighted}/$tabPMHighlighted/sm;
@@ -1386,11 +1366,7 @@ function insert_user (oElement,username,userid) {
         $my_buddylink =~ s/{yabb thisLink_e}/$thisLink_e/sm;
     }
 
-    if (   $PM_level == 1
-        || ( $PM_level == 2 && $staff )
-        || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
-        || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) )
-         )
+    if (   $pm_lev == 1 )
     {
         $thisLink_f =
             $profileLink
@@ -1408,7 +1384,7 @@ function insert_user (oElement,username,userid) {
             && $gmod_access2{'profileAdmin'} eq 'on' )
       )
     {
-        $thisLink =
+        $thisLink_g =
             $profileLink
           . 'myprofileAdmin;username='
           . $useraccount{$username}
@@ -1683,11 +1659,7 @@ qq~$mycenter_txt{'buddylisttitle'}:<br />$buddiesCurrentStatus~;
     }
 
     ## start PM div
-    if (   $PM_level == 1
-        || ( $PM_level == 2 && $staff )
-        || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
-        || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) )
-         )
+    if (   $pm_lev == 1 )
     {
         if (   ( $PMenableBm_level == 1 && $staff )
             || ( $PMenableBm_level == 2 && ( $iamadmin || $iamgmod ) )
@@ -1959,8 +1931,7 @@ sub drawPMView {
 	            }
             }
             ## set the status icon
-
-            my $messIconName = 'standard';
+            my @staticon = ();
             if    ( $messStatus =~ m/c/sm ) { $messIconName = 'confidential'; }
             elsif ( $messStatus =~ m/u/sm ) { $messIconName = 'urgent'; }
             elsif ( $messStatus =~ m/a/sm || $messStatus =~ m/ga/sm ) {
@@ -1970,7 +1941,7 @@ sub drawPMView {
                 $messIconName = 'guestpmreply';
             }
             elsif ( $messStatus =~ m/g/sm ) { $messIconName = 'guestpm'; }
-            get_micon();
+            else { $messIconName = 'standard';}
             my $messIcon = $micon{$messIconName};
 
             my ($hasMultiRecs);
@@ -2991,11 +2962,7 @@ sub mcMenu {
         $postclass = q~ class="selected"~;
     }
 
-    if (   $PM_level == 1
-        || ( $PM_level == 2 && $staff )
-        || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
-        || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod) )
-         )
+    if (   $pm_lev == 1 )
     {
         $yymcmenu .=
 qq~<li><span onclick="changeToTab('pm'); return false;"$pmclass id="menu_pm"><a href="$scripturl?action=mycenter" onclick="changeToTab('pm'); return false;">$mc_menus{'messages'}</a></span></li>
