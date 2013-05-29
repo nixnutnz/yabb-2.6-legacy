@@ -752,7 +752,6 @@ function enabPrev() {
             $x .= qq~document.getElementById("savetable").style.display = "none";~;
         }
         $x .= qq~
-        document.getElementById("saveframe").style.display = "none";
         document.postmodify.message.focus();
         document.images.prevwin.alt = "$npf_txt{'01'}";
         document.images.prevwin.title = "$npf_txt{'01'}";
