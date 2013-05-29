@@ -459,6 +459,7 @@ $myprofile_PMpref = qq~<table class="bordercolor cs_thin pad_4px">
             <span class="small"><a href="javascript:void(0);" onclick="imWin();">$profile_txt{'ignorelistadd'}</a></span>
         </td>
     </tr>
+    {yabb my_PMnotify}
     <tr class="windowbg">
         <td><label for="userpopup"><b>$profile_imtxt{'05'}</b></label></td>
         <td><input type="checkbox" name="userpopup" id="userpopup" value="1"{yabb enable_userimpopup} /></td>
