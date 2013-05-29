@@ -719,7 +719,6 @@ var cntsec = 0
 
 function tick() {
   cntsec++
-  calcCharLeft()
   var timerID = setTimeout("tick()",1000)
 }
 
@@ -730,13 +729,13 @@ function enabPrev() {
     if ( autoprev === false ) {
         autoprev = true;~;
         if ($my_ajxcall eq 'ajximmessage') {
-            $x .= qq~document.getElementById("SaveInfo").style.display = "block";~;
+            $x .= qq~document.getElementById("SaveInfo").style.display = "block";
+                    document.getElementById("saveframe").style.display = "block";~;
         }
         else {
             $x .= qq~document.getElementById("savetable").style.display = "block";~;
         }
         $x .= qq~
-        document.getElementById("saveframe").style.display = "block";
         document.images.prevwin.alt = "$npf_txt{'02'}";
         document.images.prevwin.title = "$npf_txt{'02'}";
         document.images.prevwin.src="$defaultimagesdir/$cat_col";
@@ -746,7 +745,8 @@ function enabPrev() {
         autoprev = false;
         ubbstr = '';~;
         if ($my_ajxcall eq 'ajximmessage') {
-            $x .= qq~document.getElementById("SaveInfo").style.display = "none";~;
+            $x .= qq~document.getElementById("SaveInfo").style.display = "none";
+                    document.getElementById("saveframe").style.display = "none";~;
         }
         else {
             $x .= qq~document.getElementById("savetable").style.display = "none";~;
@@ -758,7 +758,6 @@ function enabPrev() {
         document.images.prevwin.title = "$npf_txt{'01'}";
         document.images.prevwin.src="$defaultimagesdir/$cat_exp";
     }
-    calcCharLeft();
 }
 function calcCharLeft() {
   if (document.postmodify.message.value.length > 0) document.getElementById("saveframe").style.height = "auto";
@@ -779,6 +778,7 @@ function calcCharLeft() {
   return clipped
 }
 function autoPreview() {
+    calcCharLeft();
     if(autoprev) {
     var url = '$scripturl?action=$my_ajxcall';
     try {
@@ -959,6 +959,7 @@ function LivePrevImgResize() {
         setTimeout("resize_time++; resize_images();", 100);
     }
 }
+tick();
 ~;
     return $x;
 }

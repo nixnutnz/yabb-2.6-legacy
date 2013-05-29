@@ -1332,7 +1332,6 @@ if (navigator.appName == "Microsoft Internet Explorer") {
     document.getElementById('enable_iecopytext').style.display = 'inline';
     document.getElementById('enable_iecopy').style.display = 'inline';
 }
-tick();
 </script>
 ~;
     }

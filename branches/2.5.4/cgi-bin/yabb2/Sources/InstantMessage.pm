@@ -897,7 +897,6 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
             if (autoprev == true) autoPreview();
         }~;
         $my_savetable .= q~        showtpstatus();
-        tick();
 ~;
     }
 

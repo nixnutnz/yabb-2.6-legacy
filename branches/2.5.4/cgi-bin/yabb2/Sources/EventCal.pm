@@ -473,8 +473,7 @@ qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
    ~;
         $my_ajxcall = 'ajxcal';
         $mycalout_chars .= my_liveprev();
-        $mycalout_chars .= q~tick();
-</script>
+        $mycalout_chars .= q~</script>
 ~;
         $guestpost_fields =
             $iamguest
