@@ -60,14 +60,16 @@ $mypost_postblock = qq~
    {yabb my_postsection_ajx}
 <table class="pad_3px" style="table-layout: fixed;">
     <col style="width: 23%" />
-    {yabb my_t_status}{yabb extra}
     <tr>
         <td colspan="2">
-            <div id="savetable" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
-                <div id="saveframe" class="prevwin" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;"></div>
-           </div>
+            <div id="savetable" class="windowbg" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
+		{yabb messageblock}
+		    <div id="checktable" class="small" style="float: right; text-align: left; width: 77%; padding: 6px; margin: 0px; display: none;"></div>
+		</div>
        </td>
-    </tr><tr>
+    </tr>
+        {yabb my_t_status}{yabb extra}
+    <tr>
         <td class="windowbg2">
             <label for="subject"><b>$post_txt{'70'}:</b></label>
         </td>

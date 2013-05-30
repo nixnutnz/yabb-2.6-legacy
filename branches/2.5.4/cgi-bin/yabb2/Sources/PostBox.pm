@@ -730,7 +730,7 @@ function enabPrev() {
         autoprev = true;~;
         if ($my_ajxcall eq 'ajximmessage') {
             $x .= qq~document.getElementById("SaveInfo").style.display = "block";
-                    document.getElementById("saveframe").style.display = "block";~;
+document.getElementById("saveframe").style.display = "block";~;
         }
         else {
             $x .= qq~document.getElementById("savetable").style.display = "block";~;
@@ -746,7 +746,7 @@ function enabPrev() {
         ubbstr = '';~;
         if ($my_ajxcall eq 'ajximmessage') {
             $x .= qq~document.getElementById("SaveInfo").style.display = "none";
-                    document.getElementById("saveframe").style.display = "none";~;
+document.getElementById("saveframe").style.display = "none";~;
         }
         else {
             $x .= qq~document.getElementById("savetable").style.display = "none";~;
@@ -759,7 +759,6 @@ function enabPrev() {
     }
 }
 function calcCharLeft() {
-  if (document.postmodify.message.value.length > 0) document.getElementById("saveframe").style.height = "auto";
   var clipped = false
   var maxLength = $MaxMessLen
   if (document.postmodify.message.value.length > maxLength) {

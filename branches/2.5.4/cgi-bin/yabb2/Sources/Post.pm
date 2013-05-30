@@ -872,12 +872,6 @@ qq~<img src="$micon_bg{$icon}" name="liveicons" alt="" />~;
             $my_prevmain =~ s/{yabb prevmain}/$prevmain/sm;
         }
         $my_postsection_ajx = my_check_prev();
-        $my_postsection_ajx .= qq~
-        <div id="savetable" class="windowbg" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
-		$messageblock
-		<div id="checktable" class="small" style="float: right; text-align: left; width: 77%; padding: 6px; margin: 0px; display: none;"></div>
-		</div>
-		~;
 
         $topicstatus_row = q{};
         $stselect        = q{};
@@ -1176,6 +1170,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         $my_postsec_b   = postbox2();
         $my_postsection = $mypost_postblock;
         $my_postsection =~ s/{yabb my_postsection_ajx}/$my_postsection_ajx/sm;
+        $my_postsection =~ s/{yabb messageblock}/$messageblock/sm;
         $my_postsection =~ s/{yabb my_prevmain}/$my_prevmain/sm;
         $my_postsection =~ s/{yabb my_t_status}/$my_t_status/sm;
         $my_postsection =~ s/{yabb extra}/$extra/sm;
