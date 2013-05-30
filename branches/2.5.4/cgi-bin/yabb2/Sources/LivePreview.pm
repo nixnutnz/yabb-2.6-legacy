@@ -123,6 +123,9 @@ sub DoLiveIM {
     LoadLanguage('InstantMessage');
 
     get_template('MyMessage');
+    $liveipimg =
+qq~<img src="$imagesdir/$IM_ip" alt="" />~;
+    $livemip = $inmes_txt{'511'};
 
     $messageblock = $myIM_liveprev_b;
     $messageblock =~ s/({|<)yabb css(}|>)/$css/gsm;
@@ -132,7 +135,7 @@ sub DoLiveIM {
     $messageblock =~ s/({|<)yabb message(}|>)/$message/gsm;
     $messageblock =~ s/({|<)yabb my_sig(}|>)/$my_sig/gsm;
     $messageblock =~ s/({|<)yabb my_attach(}|>)/$my_attach/gsm;
-    $messageblock =~ s/({|<)yabb my_showIP(}|>)/<img src="$imagesdir\/$IM_ip" alt="IP" \/>/gsm;
+    $messageblock =~ s/({|<)yabb my_showIP(}|>)/$liveipimg $livemip/gsm;
     
     liveimage_resize();
 

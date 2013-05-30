@@ -18,6 +18,7 @@ $downloadspmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 get_template('Downloads');
+get_micon();
 
 sub DownloadView {
     if ( $guest_media_disallowed && $iamguest ) { fatal_error('members_only'); }
@@ -211,9 +212,9 @@ qq~<a href="$scripturl?action=downloadfile;newstart=$lastptn;sort=$sort">$lastpn
             }
             if ( !exists $attach_gif{$ext} ) {
                 $attach_gif{$ext} =
-                  ( $ext && -e "$htmldir/Templates/Forum/$useimages/$ext.gif" )
-                  ? "$ext.gif"
-                  : $msgbrd_paperclip;
+                  ( $ext && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}" )
+                  ? "$att_img{$ext}"
+                  : $paperclip;
             }
 
             $amdate = timeformat($amdate);

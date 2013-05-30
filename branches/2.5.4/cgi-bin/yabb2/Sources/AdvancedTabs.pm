@@ -229,7 +229,7 @@ qq~<form action="$scripturl?action=edittab2;savetab=$enc_key" method="post" name
                 $edittab{$tab_key} .=
 qq~<input type="text" name="$tab_key" id="$tab_key" value="$tabtxt{$tab_key}" size="$inputlength" class="edittab" />~;
                 $edittab{$tab_key} .=
-qq~<input type="image" src="$imagesdir/tabsave.gif" alt="$tabmenu_txt{'savetab'}" title="$tabmenu_txt{'savetab'}" class="editttab_img" />~;
+qq~<input type="image" src="$micon_bg{'tabsave'}" alt="$tabmenu_txt{'savetab'}" title="$tabmenu_txt{'savetab'}" class="editttab_img" />~;
                 $edittab{$tab_key} .=
 qq~ <a href="$scripturl?action=deletetab;deltab=$enc_key" style="padding:0; margin:0">$tabdel</a>~;
                 $edittab{$tab_key} .= q~</form>~;

@@ -936,9 +936,9 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">$f
           $attachments{$mnum}
           ? (
             ( $guest_media_disallowed && $iamguest )
-            ? qq~<img src="$imagesdir/$msgbrd_paperclip" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" />~
+            ? qq~<img src="$imagesdir/$paperclip" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" />~
             : $msg_attach_win
-              . qq~<img src="$imagesdir/$msgbrd_paperclip" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" style="border-style:none;" /></a>~
+              . qq~<img src="$imagesdir/$paperclip" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" style="border-style:none;" /></a>~
           )
           : q{};
           $temp_attachment =~ s/{yabb mnum}/$mnum/sm;

@@ -22,6 +22,7 @@ LoadLanguage('Display');
 LoadLanguage('FA');
 get_template('Display');
 get_gmod();
+get_micon();
 
 sub Display {
 
@@ -660,7 +661,6 @@ qq~<a href="$scripturl?board=$currentboard">&lsaquo; $maintxt{'board'}</a>~;
         var addnotelang = '$display_txt{'529'}';
         var markfinishedlang = '$display_txt{'528'}';~;
 
-    get_micon();
     if ( !$iamguest && $currentboard ne $annboard ) {
         require Sources::Favorites;
         $template_favorite =
@@ -790,9 +790,9 @@ qq~$menusep<a href="$scripturl?action=print;num=$viewnum" onclick="target='_blan
                 if ( !exists $attach_gif{$ext} ) {
                     $attach_gif{$ext} =
                       ( $ext
-                          && -e "$htmldir/Templates/Forum/$useimages/$ext.gif" )
-                      ? "$ext.gif"
-                      : "$disp_paperclip";
+                          && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}" )
+                      ? "$att_img{$ext}"
+                      : "$paperclip";
                 }
                 my $filesize = -s "$uploaddir/$_";
                 $urlname = $_;
@@ -1252,7 +1252,6 @@ qq~<input type="checkbox" class="$css" style="border: 0px; visibility: hidden; d
 qq~<input type="checkbox" class="$css" style="border: 0px; visibility: hidden; display: none;" name="del$counter" value="$counter" />~;
             }
         }
-        get_micon();
 
         $msgimg =
 qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;

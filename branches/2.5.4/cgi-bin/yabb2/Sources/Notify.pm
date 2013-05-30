@@ -414,7 +414,7 @@ sub NotificationAlert {
     @bmaildir = split /,/xsm, ${ $uid . $username }{'board_notifications'};
     @tmaildir = split /,/xsm, ${ $uid . $username }{'thread_notifications'};
 
-    # needed for $new - icon (on/off/new.gif)
+    # needed for $new - icon (on/off/new)
     my @noloadboard =
       grep { !exists ${ $uid . $_ }{'lastposttime'} } @allboards;
     if (@noloadboard) { BoardTotals( 'load', @noloadboard ); }

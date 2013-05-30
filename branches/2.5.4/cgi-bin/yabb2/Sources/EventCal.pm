@@ -829,8 +829,8 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cnam}" rel="nof
 qq~$cal_icon{'eventprivate'} $cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
                         }
                         else {
-                            $mycalout_greet .= qq~
-            <img src="$yyhtml_root/EventIcons/$cico.gif" alt="$icon_text" /> $cdate <b>$icon_text</b> $eventuserlink~;
+                            $mycalout_greet .= 
+qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
                         }
 
                         $mycalout_greet .= $mycal_greet_c;

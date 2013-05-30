@@ -16,6 +16,8 @@ our $VERSION = '2.5.4';
 
 $printpagepmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
+get_micon();
+$paperclip = 'paperclip.gif';
 
 sub Print_IM {
     if ($iamguest) { fatal_error('not_allowed'); }
@@ -210,7 +212,7 @@ qq~<span style="font-weight: bold;">$guestName ($guestEmail)</span><br />~;
 			$pmAttachFile =~ /\.(.+?)$/;
 			my $ext = lc($1);
 			if (!exists $attach_gif{$ext}) {
-				$attach_gif{$ext} = ($ext && -e "$htmldir/Templates/Forum/$useimages/$ext.gif") ? "$ext.gif" : "paperclip.gif";
+				$attach_gif{$ext} = ($ext && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}") ? "$att_img{$ext}" : "$paperclip";
 			}
 			my $filesize = -s "$pmuploaddir/$pmAttachFile";
 			if ($filesize) {
@@ -654,9 +656,9 @@ function do_images() {
                 if ( !exists $attach_gif{$ext} ) {
                     $attach_gif{$ext} =
                       ( $ext
-                          && -e "$htmldir/Templates/Forum/$useimages/$ext.gif" )
-                      ? "$ext.gif"
-                      : 'paperclip.gif';
+                          && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}" )
+                      ? "$att_img{$ext}"
+                      : "$paperclip";
                 }
                 my $filesize = -s "$uploaddir/$_";
                 if ($filesize) {
