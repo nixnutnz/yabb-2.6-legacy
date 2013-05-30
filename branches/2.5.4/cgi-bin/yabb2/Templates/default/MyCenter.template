@@ -354,7 +354,7 @@ $my_pmsearch_b = qq~
 ##IM right - main IM list ##
 
 $my_IMblock_top = q~
-<table class="bordercolor cs_thin pad_3px"  style="border-top:0; margin-top:-2px">
+<table class="bordercolor cs_thin pad_3px" style="border-top:0; margin-top:-2px">
     <col style="width:65%" />
     <col style="width:15%" />
     {yabb MCContent_page}

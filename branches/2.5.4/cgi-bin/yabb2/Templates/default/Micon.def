@@ -87,6 +87,30 @@
 'hotthread' => qq~$imagesdir/hotthread.gif~,
 'thread' => qq~$imagesdir/thread.gif~,
 'locked_moved' => qq~$imagesdir/locked_moved.gif~,
+'tabsave' => qq~$imagesdir/tabsave.gif~,
+'noimg' => qq~$imagesdir/noimg.gif~,
+);
+
+%att_img = (
+'7z' => qq~$imagesdir/7z.gif~,
+'doc' => qq~$imagesdir/doc.gif~,
+'docx' => qq~$imagesdir/docx.gif~,
+'gif' => qq~$imagesdir/gif.gif~,
+'img' => qq~$imagesdir/img.gif~,
+'jpe' => qq~$imagesdir/jpe.gif~,
+'jpeg' => qq~$imagesdir/jpeg.gif~,
+'jpg' => qq~$imagesdir/jpg.gif~,
+'pdf' => qq~$imagesdir/pdf.gif~,
+'png' => qq~$imagesdir/png.gif~,
+'ppt' => qq~$imagesdir/ppt.gif~,
+'psd' => qq~$imagesdir/psd.gif~,
+'rar' => qq~$imagesdir/rar.gif~,
+'swf' => qq~$imagesdir/swf.gif~,
+'tar' => qq~$imagesdir/tar.gif~,
+'tar.gz' => qq~$imagesdir/tar.gz.gif~,
+'txt' => qq~$imagesdir/txt.gif~,
+'xls' => qq~$imagesdir/xls.gif~,
+'zip' => qq~zip.gif~,
 );
 
 %cal_icon = (
