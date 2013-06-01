@@ -414,10 +414,15 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
         while ( ( $key, $secvalue ) = each %FORM ) {
             $secvalue = lc $secvalue;
             if (    $key eq 'message'
-                and $action =~ /^(post|modify|imsend)2$/xsm )
+                and $action =~ /^(post|modify|imsend|eventcal)2$/xsm )
             {
                 $secvalue =~ s/\[code.*?\/code\]//gsxm;
             }
+            if (    $key eq 'message'
+                and $action =~ /^(ajxmessage|ajximmessage|ajxcal)$/xsm )
+            {
+			    $secvalue =~ s/\[code.*?\/code\]//gsxm;
+			}
             str_replace( '%3c', '<', $secvalue );
             str_replace( '%3e', '>', $secvalue );
             if (   ( $secvalue =~ m/<[^>]script*\"?[^>]*>/xsm )

@@ -27,6 +27,7 @@ use URI::Escape;
 LoadCensorList();
 
 sub DoLiveMessage {
+    guard();
     $displayname = $FORM{'musername'};
     $FORM{'message'} =~ s/\r//gsm;
     $message = $FORM{'message'};
@@ -43,7 +44,7 @@ sub DoLiveMessage {
     $message =~ s/\n/<br \/>/g;
     $message =~ s/([\000-\x09\x0b\x0c\x0e-\x1f\x7f])/\x0d/g;
     wrap();
-    if($FORM{'nschecked'} == 1) { $ns = "NS"; }
+    if($FORM{'nschecked'} == 1) { $ns = 'NS'; }
     if ($enable_ubbc) {
         if (!$yyYaBBCloaded) { require Sources::YaBBC; }
         DoUBBC();
@@ -146,6 +147,7 @@ qq~<img src="$imagesdir/$IM_ip" alt="" />~;
 }
 
 sub DoLiveCal {
+    guard();
     LoadLanguage('EventCal');
     $FORM{'message'} =~ s/\r//gxsm;
     $message = $FORM{'message'};
@@ -162,7 +164,7 @@ sub DoLiveCal {
     $message =~ s/\n/<br \/>/g;
     $message =~ s/([\000-\x09\x0b\x0c\x0e-\x1f\x7f])/\x0d/g;
     wrap();
-    if($FORM{'nschecked'} == 1) { $ns = "NS"; }
+    if($FORM{'nschecked'} == 1) { $ns = 'NS'; }
     if ($enable_ubbc) {
         if (!$yyYaBBCloaded) { require Sources::YaBBC; }
         $displayname = ${$uid.$tmpmusername}{'realname'};
