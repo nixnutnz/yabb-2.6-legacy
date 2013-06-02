@@ -1053,6 +1053,10 @@ sub AddMember {
 
     if ( !$emailpassword ) {
         $yymain .= password_check();
+        $yymain =~ s/{yabb reg_1}/$register_txt{'81'}/sm;
+        $yymain =~ s/{yabb reg_2}/$register_txt{'82'}/sm;
+        $yymain =~ s/{yabb reg_caplock}/$register_txt{'capslock'}/gsm;
+        $yymain =~ s/{yabb reg_wrongchar}/$register_txt{'wrong_char'}/gsm;
     }
 
     $yymain .= qq~<tr>

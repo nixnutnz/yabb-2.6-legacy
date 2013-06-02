@@ -250,4 +250,31 @@ $convert_box = qq~    <div class="bordercolor leftboxdiv" style="margin-top:.5em
 
 $spacer = q~<div class="rightboxdiv h_100px" style="float:left">&nbsp;~;
 
+## Passwordcheck ##
+$show_check = qq~<tr>
+        <td class="windowbg vtop"><label for="passwrd1"><b>{yabb reg_1}:</b></label></td>
+        <td class="windowbg2">
+            <div style="float:left;">
+                <input autocomplete="off" type="password" maxlength="30" name="passwrd1" id="passwrd1" value="{yabb tmpregpasswrd1}" size="30" onkeypress="capsLock(event,'cappasswrd1')" onkeyup="runPassword(this.value);" /> *&nbsp;
+           </div>
+           <div class="pass_box">
+               <div id="password-strength-meter"></div>
+               <div class="pstrength-bar" id="passwrd1_bar"></div>
+               <div class="pstrength-info" id="passwrd1_text">&nbsp;</div>
+           </div>
+           <div id="cappasswrd1">{yabb reg_caplock}</div>
+           <div id="cappasswrd1_char">{yabb reg_wrongchar}: <span id="{yabb cappasswrd1_character}">&nbsp;</span></div>
+       </td>
+    </tr><tr>
+        <td class="windowbg vtop">
+            <label for="passwrd2"><b>{yabb reg_2}:</b></label>
+        </td>
+        <td class="windowbg2 vtop">
+            <input autocomplete="off" type="password" maxlength="30" name="passwrd2" id="passwrd2" value="{yabb tmpregpasswrd2}" size="30" onkeypress="capsLock(event,'cappasswrd2')" /> *
+            <div id="cappasswrd2">{yabb reg_caplock}</div>
+            <div id="cappasswrd2_char">{yabb reg_wrongchar}: <span id="cappasswrd2_character">&nbsp;</span></div>
+            {yabb check_js}
+        </td>
+    </tr>~;
+
 1;
