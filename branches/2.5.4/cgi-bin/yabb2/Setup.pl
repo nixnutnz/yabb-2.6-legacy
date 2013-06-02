@@ -2345,7 +2345,7 @@ sub setup_fatal_error {
       $yyim    = "YaBB 2.5.4 Setup Error.";
       $yytitle = "YaBB 2.5.4 Setup Error.";
 
-      SimpleOutput if !-e "$vardir/Settings.pm";
+      if (!-e "$vardir/Settings.pm") { SimpleOutput(); }
 
       tempstarter();
       SetupTemplate();

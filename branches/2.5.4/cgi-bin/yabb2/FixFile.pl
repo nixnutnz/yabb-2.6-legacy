@@ -1240,6 +1240,11 @@ sub Convert_Settings {
 	if ( !$cookietsort ) { ( undef,$rancook ) = split /\-/xsm, $cookieusername;
         $cookietsort = qq~Y2tsort-$rancook~;
     }
+
+    if (!$MaxIMMessLen) {$MaxIMMessLen = 2000;}
+    if (!$AdMaxIMMessLen) {$AdMaxIMMessLen = 3000;}
+    if (!$MaxCalMessLen){$MaxCalMessLen = 2000;}
+    if (!$AdMaxCalMessLen){$AdMaxCalMessLen = 3000;}
     require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');
     
