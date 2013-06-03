@@ -443,7 +443,7 @@ function show_features() {
         }
         document.images.feature_col.alt = "$npf_txt{'expand_features'}";
         document.images.feature_col.title = "$npf_txt{'expand_features'}";
-        document.images.feature_col.src="$defaultimagesdir/$post_cat_exp";
+        document.images.feature_col.src="$defaultimagesdir/$cat_exp";
         col_row = 0;
     } else {
         for (var i = 1; 14 > i; i++) {
