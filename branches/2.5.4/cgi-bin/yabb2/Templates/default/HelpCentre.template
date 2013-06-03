@@ -14,6 +14,7 @@
 # $Revision$
 
 $HelpTemplateLoaded = '1';
+$top_img = 'back_to_top.png';
 
 ### Creates the Navigation Bar at the top ###
 $HelpNavBar = qq~
@@ -74,8 +75,8 @@ $BodySubHeader = qq~<tr>
 ### Prints this for every item in the body text #
 $BodyItem = qq~<tr>
 			<td class="windowbg2">
-				{yabb item}<br />
-				<span style="float:right;"><span onclick="toTop(0)" class="cursor"><img src="$imagesdir/back_to_top.png" alt="$helptxt{'643'}" title="$helptxt{'643'}" /></span>&nbsp;</span>
+				{yabb item}
+				<span style="float:right;"><span onclick="toTop(0)" class="cursor"><img src="$imagesdir/$top_img" alt="$helptxt{'643'}" title="$helptxt{'643'}" /></span>&nbsp;</span>
 			</td>
 		</tr>~;
 
