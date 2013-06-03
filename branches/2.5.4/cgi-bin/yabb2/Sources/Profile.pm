@@ -688,20 +688,14 @@ qq~                <option value="$line"$checked>$name</option>\n~;
 
         $my_show_avatar = $myprofile_show_avatar_a;
         $my_show_avatar =~ s/{yabb my_up_avatar_a}/$my_up_avatar_a/sm;
+        $my_show_avatar =~ s/{yabb my_up_avatar_b}/$my_up_avatar_b/sm;
         $my_show_avatar =~ s/{yabb av_pic}/$pic/sm;
         $my_show_avatar =~ s/{yabb av_pic}/$pic/sm;
         $my_show_avatar =~ s/{yabb av_alt}/$alt/sm;
         $my_show_avatar =~ s/{yabb av_s}/$s/gsm;
         $my_show_avatar =~ s/{yabb av_tmp}/$tmp/sm;
         $my_show_avatar =~ s/{yabb images}/$images/sm;
-        $x =
-qq~<select name="userpic" id="userpic" size="6" onchange="showimage(1);">
-            $images
-            </select>&nbsp;&nbsp;<img src="$pic" id="icons" name="avatar_img_resize" alt="$alt" style="display:none; margin:0 15px; vertical-align:bottom" /><br />
-            <br />
-            <input type="checkbox" name="userpicpersonalcheck" id="userpicpersonalcheck" $checked onclick="if(this.checked==false){UserPicUrl=document.getElementsByName('userpicpersonal')[0].value;document.getElementsByName('userpicpersonal')[0].value='http$s://';}else{document.getElementsByName('userpicpersonal')[0].value=UserPicUrl;}showimage(2);" />&nbsp;<input type="text" name="userpicpersonal" size="40" value="$tmp" onkeyup="document.getElementsByName('userpicpersonalcheck')[0].checked=true;showimage(2);" /> $my_up_avatar_b
-        </td>
-    </tr>~;
+        $my_show_avatar =~ s/{yabb checked}/$checked/sm;
     }
 
     $signature = ${ $uid . $user }{'signature'};
