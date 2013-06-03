@@ -1,14 +1,14 @@
 /*--------------------------------------------------------*/
-/*                      YaBB 2012                         */
+/*           YaBB 2012                                    */
 /*--------------------------------------------------------*/
-/*      Created by: YaBB http://www.yabbforum.com         */
+/*   Created by: YaBB http://www.yabbforum.com            */
 /*--------------------------------------------------------*/
-/*    You may adapt elements of this CSS in your own      */
-/*   projects, but please give credit to yabbforum.com.   */
+/*  You may adapt elements of this CSS in your own        */
+/*  projects, but please give credit to yabbforum.com.    */
 /*--------------------------------------------------------*/
-/*   This is the css file for YaBB 2.5.4 default Template */
+/*  This is the css file for YaBB 2.5.4 default Template  */
 /*--------------------------------------------------------*/
-/* $Revision$ */
+/* $Revision$                                      */
 
 body {
 background-color:#EEE;
@@ -265,7 +265,7 @@ border-top:1px solid #195392;
 
 }
 
-.tabtitle a, .tabtitle-bottom a, .tabtitle-profile a  {
+.tabtitle a, .tabtitle-bottom a, .tabtitle-profile a {
 color:#FFF;
 font-size:12px;
 font-family:Verdana, Helvetica, Arial, Sans-Serif;
@@ -332,7 +332,7 @@ display:block;
 margin:0 0 0 -41px;
 }
 
-.tabmenu li, .mctabmenu li  {
+.tabmenu li, .mctabmenu li {
 float:left;
 font-size:100%;
 font-weight:bold;
@@ -346,7 +346,7 @@ font-size:12px;
 font-family:Arial, Sans-Serif;
 color: #BBB;
 white-space:nowrap;
-font-weight:bold;  
+font-weight:bold; 
 display:block;
 float:left;
 margin:0 1px 0 0;
@@ -1308,7 +1308,7 @@ width:800px
 }
 
 /* Post and Thread Tools */
-.post_tools {
+.windowbg td.post_tools {
 background-image: url(./default/tabtitle.png);
 /*background-position: bottom left;*/
 background-repeat: repeat-x;
@@ -1320,6 +1320,21 @@ border-left: 1px;
 border-right: 1px;
 border-style: solid;
 border-color: #DDD;
+padding-right: 10px;
+}
+
+.windowbg2 td.post_tools,.tabtitle td.post_tools,.tabtitle-bottom td.post_tools {
+background-image: url(./default/tabtitle.png);
+/*background-position: bottom left;*/
+background-repeat: repeat-x;
+height: 100%;
+padding: 3px;
+border-top: 0;
+border-bottom: 0;
+border-left: 1px;
+border-right: 1px;
+border-style: solid;
+border-color: #EDEFF4;
 padding-right: 10px;
 }
 
@@ -1398,7 +1413,7 @@ text-decoration:none;
 .showcolor {
 float: left; width: 15px; height: 15px; margin-right: 1px; margin-bottom: 1px; border: 0px; font-size: 5px; cursor: pointer;}
 }
-.defpal  {
+.defpal {
 border:0px;
 float:left;
 font-size:5px;
@@ -1420,7 +1435,7 @@ border: 0px;
 font-size: 5px;
 }
 
-.defpal_b  {
+.defpal_b {
 border:0;
 font-size:5px;
 height:13px;
@@ -1441,7 +1456,7 @@ font-size: 5px;
 cursor: pointer;
 }
 
-#feature_status_1, #feature_status_4, #feature_status_7  {
+#feature_status_1, #feature_status_4, #feature_status_7 {
 /*background-color:#DEE4EC;*/
 /*color:#304B58;*/
 font-size:12px;
@@ -1501,11 +1516,44 @@ select[name="fontface"],select[name="fontsize"] {
 padding:0 !important;
 }
 
-.zodiac {font-size: 18px; text-align: center; margin-bottom: 3px; cursor: pointer;}
+.zodiac {
+font-size: 18px;
+text-align: center;
+margin-bottom: 3px;
+cursor: pointer;
+}
 
-.tabmenu span.tabstyle {font-size: 12px; white-space: nowrap; cursor: auto; margin:0 1px 0 0; padding:4px 8px; text-align:center;}
-.tabmenu input.edittab {font-family:Arial,Sans-Serif; float:left;vertical-align: top; border-radius:0; background-color: transparent; border:0; font-size: 12px; white-space: nowrap; cursor: auto; margin:0 1px 0 0; padding:4px 8px; text-align:center; color:#bbb;}
-.tabmenu input.editttab_img {float:left; background-color: transparent; border:0; border-radius:0; vertical-align: middle; padding:0;}
+.tabmenu span.tabstyle {
+font-size: 12px;
+white-space: nowrap;
+cursor: auto;
+margin:0 1px 0 0;
+padding:4px 8px; text-align:center;
+}
+
+.tabmenu input.edittab {
+font-family:Arial,Sans-Serif;
+float:left;
+vertical-align: top;
+border-radius:0;
+background-color: transparent;
+border:0;
+font-size: 12px;
+white-space: nowrap;
+cursor: auto;
+margin:0 1px 0 0;
+padding:4px 8px;
+text-align:center;
+color:#bbb;
+}
+
+.tabmenu input.editttab_img {
+float:left;
+background-color: transparent;
+border:0; border-radius:0;
+vertical-align: middle;
+padding:0;
+}
 
 .codebox {
 width:90%;
@@ -1524,7 +1572,25 @@ float:right;
 } 
 
 .media_iframe {
- frameborder:0;
- height: 326px;
- width:400px;
+frameborder:0;
+height: 326px;
+width:400px;
  }
+ 
+.help_dd {
+color: #0099CC;
+padding-bottom:.5em;
+}
+
+.help_attn {
+color: #0099CC;
+}
+
+.help_attn_strong {
+color: #ff0000;
+}
+
+h4.help {
+text-decoration:underline;
+margin-bottom:0;
+}
