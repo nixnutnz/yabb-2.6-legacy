@@ -334,7 +334,7 @@ sub UserAccount {
 
     # using sequential tag writing as hashes do not sort the way we like them to
     my @tags =
-      qw(realname password position addgroups email hidemail regdate regtime regreason location bday hideage disableage gender disablegender userpic usertext signature template language stealth webtitle weburl icq aim yim skype myspace facebook twitter youtube msn gtalk timeselect timeformat timeoffset dsttimeoffset dynamic_clock postcount lastonline lastpost lastim im_ignorelist im_popup im_imspop pmviewMess notify_me board_notifications thread_notifications favorites buddylist cathide pageindex reversetopic postlayout sesquest sesanswer session lastips onlinealert offlinestatus awaysubj awayreply awayreplysent spamcount spamtime numberformat);
+      qw(realname password position addgroups email hidemail regdate regtime regreason location bday hideage disableage gender disablegender userpic usertext signature template language stealth webtitle weburl icq aim yim skype myspace facebook twitter youtube msn gtalk timeselect timeformat timeoffset dsttimeoffset dynamic_clock postcount lastonline lastpost lastim im_ignorelist im_popup im_imspop pmviewMess notify_me board_notifications thread_notifications favorites buddylist cathide pageindex reversetopic postlayout sesquest sesanswer session lastips onlinealert offlinestatus awaysubj awayreply awayreplysent spamcount spamtime hide_avatars hide_user_text hide_attach_img hide_signat hide_smilies_row numberformat);
     if ($extendedprofiles) {
         require Sources::ExtendedProfiles;
         push @tags, ext_get_fields_array();

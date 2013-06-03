@@ -299,7 +299,7 @@ $myprofile_options_b = qq~             <span class="small">$profile_txt{'664'} <
              // -->
              </script>
         </td>
-    </tr>{yabb my_addmemgroup} {yabb my_time} {yabb my_reverse} {yabb my_template} {yabb my_show_lang} {yabb my_extprofile}
+    </tr>{yabb my_addmemgroup} {yabb my_time} {yabb my_reverse} {yabb my_template} {yabb my_show_lang} {yabb my_show_avatar_opts} {yabb my_extprofile}
     <tr class="catbg">
         <td class="center" style="height:50px" colspan="2">
             {yabb show_confdel}
@@ -310,7 +310,7 @@ $myprofile_options_b = qq~             <span class="small">$profile_txt{'664'} <
 </table>
 </form>~;
 
-$myprofle_show_avatar_a = qq~
+$myprofile_show_avatar_a = qq~
         <td><label for="userpic"><b>$profile_txt{'229'}:</b></label>
             <br /><span class="small"><label for="userpic">$profile_txt{'474'}</label>
             <label for="userpicpersonalcheck">$profile_txt{'475'}</label> {yabb my_up_avatar_a}
@@ -415,6 +415,35 @@ $myprofile_show_lang = qq~<tr class="windowbg">
         <td><label for="userlanguage"><b>$profile_txt{'817'}</b><br /><span class="small">$profile_txt{'815'}</span></label></td>
         <td><select name="userlanguage" id="userlanguage">{yabb drawnldirs}</select></td>
     </tr>~;
+
+$myprofile_show_avatars = qq~<tr class="windowbg">
+		<td><label for="hide_avatars"><b>$profile_display_options{'hide_avatars'}</b></label></td>
+		<td><input type="checkbox" name="hide_avatars" id="hide_avatars" {yabb user_showavatar} /></td>
+	</tr>~;
+
+$myprofile_hide_user_text = qq~
+	<tr class="windowbg">
+		<td><label for="hide_user_text"><b>$profile_display_options{'hide_user_text'}</b></label></td>
+		<td><input type="checkbox" name="hide_user_text" id="hide_user_text" {yabb hide_user_text} /></td>
+	</tr>~;
+
+$myprofile_hide_attach_img = qq~
+	<tr class="windowbg">
+		<td><label for="hide_attach_img"><b>$profile_display_options{'hide_attach_img'}</b></label></td>
+		<td><input type="checkbox" name="hide_attach_img" id="hide_attach_img" {yabb hide_attach_img} /></td>
+	</tr>~;
+
+$myprofile_hide_signat = qq~
+	<tr class="windowbg">
+		<td><label for="hide_signat"><b>$profile_display_options{'hide_signat'}</b></label></td>
+		<td><input type="checkbox" name="hide_signat" id="hide_signat" {yabb hide_signat} /></td>
+	</tr>~;
+
+$myprofile_hide_smilies_row = qq~
+	<tr class="windowbg">
+		<td><label for="hide_smilies_row"><b>$profile_display_options{'hide_smilies_row'}</b></label></td>
+		<td><input type="checkbox" name="hide_smilies_row" id="hide_smilies_row" {yabb hide_smilies_row} /></td>
+	</tr>~;
     
 #Buddylist
 $myprofile_buddy = qq~<table class="bordercolor cs_thin pad_4px">

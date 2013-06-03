@@ -262,8 +262,8 @@ s/\&\#91\;highlight\&\#93\;(.*?)\&\#91\;\&\#47\;highlight\&\#93\;/<span class="h
         $code =~ s/ \&nbsp; \&nbsp; \&nbsp;/\t/igsm;
         $code =~ s/\&nbsp;/ /igxsm;
         $code =~ s/\s*?\n\s*?/\[code_br\]/igxsm;
-
         # we need to keep normal linebreaks inside <pre> tag
+        $code =~ s/&quot;&gt;/\[code_qgt\]/igxsm;
 		$codecnt++;
         $prselect =
 qq~<a href="javascript:selectAllCode($codecnt)"><img src="$imagesdir/codeselect.png" alt="$post_txt{'selectall'}" title="$post_txt{'selectall'}" /></a>~;
@@ -642,6 +642,7 @@ s/<\/tr>((?:(?!<tr>|<\/tr>|<td>|<\/td>|<table>|<\/table>).)*)<\/table>/<\/tr><\/
     $message =~ s/\[\/\&table\]/<\/table>/gsm;
     $message =~ s/\n/<br \/>/igsm;
     $message =~ s/\[code_br\]/\n/igsm;
+    $message =~ s/\[code_qgt\]/&quot;&gt;/igsm;
 
 	return $message;
 }

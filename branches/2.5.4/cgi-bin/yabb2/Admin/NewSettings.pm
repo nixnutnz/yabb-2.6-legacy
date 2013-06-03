@@ -566,6 +566,11 @@ $member_groups
 \$posttools = $posttools;				    # Enable dropdown for post actions
 \$usertools = $usertools;					# Allow admin to hide the list of tools that show when clicking a userlink
 \$allow_hide_email = $allow_hide_email;		# Allow users to hide their email from public. Set 0 to disable
+\$user_hide_avatars = $user_hide_avatars;		# Allow users to hide Avatars in threads. Set 0 to disable
+\$user_hide_user_text = $user_hide_user_text;		# Allow users to hide User Text in threads. Set 0 to disable
+\$user_hide_attach_img = $user_hide_attach_img;		# Allow users to hide Attached Images in threads. Set 0 to disable
+\$user_hide_signat = $user_hide_signat;			# Allow users to hide User Signatures in threads. Set 0 to disable
+\$user_hide_smilies_row = $user_hide_smilies_row;	# Allow users to hide Smilies row below the Post Message-inputarea. Set 0 to disable
 \$editGenderLimit = $editGenderLimit;		# Set a limit on the amount of times that member's can edit their gender
 \$editAgeLimit = $editAgeLimit;			    # Set a limit on the amount of times that member's can edit their birthdate
 \$buddyListEnabled = $buddyListEnabled;		# Enable Buddy List
@@ -579,6 +584,7 @@ $member_groups
 \$showusertext = $showusertext;				# Set to 1 to display each member's personal text in the message view (by the ICQ.. etc.)
 \$showtopicviewers = $showtopicviewers;		# Set to 1 to display members viewing a topic
 \$showtopicrepliers = $showtopicrepliers;	# Set to 1 to display members replying to a topic
+\$hide_signat_for_guests = $hide_signat_for_guests;	# Set to 1 to hide all signatures for Guests (only Members can see them).
 \$showgenderimage = $showgenderimage;		# Set to 1 to display each member's gender in the message view (by the ICQ.. etc.)
 \$showuserage = $showuserage;               # Set to 1 to display each member's age in the message view 
 \$showage = $showage;						# Set to 1 to allow member to hide their age and birthyear (Except from the Administrator.)

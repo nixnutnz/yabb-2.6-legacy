@@ -872,6 +872,38 @@ qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdM
 			validate => 'boolean',
 		},
 		{
+			description => qq~<label for="user_hide_avatars">$admin_txt{'751'}</label>~,
+			input_html => qq~<input type="checkbox" name="user_hide_avatars" id="user_hide_avatars" value="1"${ischecked((($user_hide_avatars && $showuserpic && $allowpics) ? 1 : 0))} />~,
+			name => 'user_hide_avatars',
+			validate => 'boolean',
+			depends_on => ['showuserpic','allowpics'],
+		},
+		{
+			description => qq~<label for="user_hide_user_text">$admin_txt{'752'}</label>~,
+			input_html => qq~<input type="checkbox" name="user_hide_user_text" id="user_hide_user_text" value="1"${ischecked((($user_hide_user_text && $showusertext) ? 1 : 0))} />~,
+			name => 'user_hide_user_text',
+			validate => 'boolean',
+			depends_on => ['showusertext'],
+		},
+		{
+			description => qq~<label for="user_hide_attach_img">$admin_txt{'753'}</label>~,
+			input_html => qq~<input type="checkbox" name="user_hide_attach_img" id="user_hide_attach_img" value="1"${ischecked($user_hide_attach_img)}~ . ($allowattach ? '' : ' disabled="disabled"') . qq~ />~,
+			name => 'user_hide_attach_img',
+			validate => 'boolean',
+		},
+		{
+			description => qq~<label for="user_hide_signat">$admin_txt{'754'}</label>~,
+			input_html => qq~<input type="checkbox" name="user_hide_signat" id="user_hide_signat" value="1"${ischecked($user_hide_signat)} />~,
+			name => 'user_hide_signat',
+			validate => 'boolean',
+		},
+		{
+			description => qq~<label for="user_hide_smilies_row">$admin_txt{'755'}</label>~,
+			input_html => qq~<input type="checkbox" name="user_hide_smilies_row" id="user_hide_smilies_row" value="1"${ischecked((($user_hide_smilies_row && !$removenormalsmilies) ? 1 : 0))}~ . ($removenormalsmilies ? ' disabled="disabled"' : '') . qq~ />~,
+			name => 'user_hide_smilies_row',
+			validate => 'boolean',
+		},
+		{
 			description => qq~<label for="edit_gender_limit">$admin_txt{'edit_gender_limit'}</label>~,
 			input_html => qq~<input type="text" size="2" name="editGenderLimit" id="edit_gender_limit" value="$editGenderLimit" />~,
 			name => 'editGenderLimit',

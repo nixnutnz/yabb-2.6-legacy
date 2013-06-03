@@ -245,6 +245,14 @@ $profilelngver = 'YaBB 2.5.4 $Revision$';
 'timeoutdescript' => 'Profile Session timed out. Please Re-Authenticate.',
 );
 
+%profile_display_options = (
+'hide_avatars'     => 'Hide User Avatars in Threads',
+'hide_user_text'   => 'Hide User Text in Threads',
+'hide_attach_img'  => 'Hide Attached Images in Threads',
+'hide_signat'      => 'Hide User Signatures in Threads',
+'hide_smilies_row' => 'Hide Smilies row below the Post-Message-inputarea',
+);
+
 %profile_imtxt = (
 '05' => 'Enable Personal Message Popup?',
 '38' => 'Personal Message Preferences',

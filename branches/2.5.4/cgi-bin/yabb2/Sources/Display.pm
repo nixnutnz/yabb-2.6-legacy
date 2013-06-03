@@ -535,7 +535,7 @@ qq~<img src="$imagesdir/$disp_index_right" height="14" width="13" alt="$pidtxt{'
 qq~$menusep<a href="javascript:Notify('$scripturl?action=notify3;num=$viewnum/~
               . ( !$ttsreverse ? $start : $mreplies - $start )
               . qq~','$imagesdir')" id="notifylink">$img{'del_notify'}</a>~;
-            $notify1 =
+            $notify2 =
 qq~$menusep<a href="javascript:Notify('$scripturl?action=notify3;num=$viewnum/~
               . ( !$ttsreverse ? $start : $mreplies - $start )
               . qq~','$imagesdir')" id="notifylink2">$img{'del_notify'}</a>~;
@@ -545,7 +545,7 @@ qq~$menusep<a href="javascript:Notify('$scripturl?action=notify3;num=$viewnum/~
 qq~$menusep<a href="javascript:Notify('$scripturl?action=notify2;num=$viewnum/~
               . ( !$ttsreverse ? $start : $mreplies - $start )
               . qq~','$imagesdir')" id="notifylink">$img{'add_notify'}</a>~;
-            $notify1 =
+            $notify2 =
 qq~$menusep<a href="javascript:Notify('$scripturl?action=notify2;num=$viewnum/~
               . ( !$ttsreverse ? $start : $mreplies - $start )
               . qq~','$imagesdir')" id="notifylink2">$img{'add_notify'}</a>~;
@@ -665,11 +665,11 @@ qq~<a href="$scripturl?board=$currentboard">&lsaquo; $maintxt{'board'}</a>~;
         require Sources::Favorites;
         $template_favorite =
           IsFav( $viewnum, ( !$ttsreverse ? $start : $mreplies - $start ) );
-        $template_favorite1 =
+        $template_favorite2 =
           IsFav1( $viewnum, ( !$ttsreverse ? $start : $mreplies - $start ) );
     }
     $template_threadimage =
-      qq~<a id="top">$micon{$threadclass}</a>~;
+      qq~$micon{$threadclass}~;
     $template_sendtopic =
       $sendtopicmail
       ? qq~$menusep<a href="javascript:sendtopicmail($sendtopicmail);">$img{'sendtopic'}</a>~
@@ -723,6 +723,11 @@ qq~$menusep<a href="$scripturl?action=print;num=$viewnum" onclick="target='_blan
         @messages = reverse @messages;
     }
 
+	if (!$allowpics || !$showuserpic || (${$uid.$username}{'hide_avatars'} && $user_hide_avatars)) { $hideavatar = 1 ;}
+	if (!$showusertext || (${$uid.$username}{'hide_user_text'} && $user_hide_user_text)) { $hideusertext = 1;}
+	if (${$uid.$username}{'hide_attach_img'} && $user_hide_attach_img) { $hideattachimg = 1 ;}
+	if ((${$uid.$username}{'hide_signat'} && $user_hide_signat) || ($hide_signat_for_guests && $iamguest)) { $hidesignat = 1;}
+
     # For each post in this thread:
     my ( %attach_gif, %attach_count, $movedflag );
     foreach (@messages) {
@@ -774,6 +779,7 @@ qq~$menusep<a href="$scripturl?action=print;num=$viewnum" onclick="target='_blan
             if ( !%attach_count ) {
                 fopen( ATM, "$vardir/attachments.txt" );
                 while (<ATM>) {
+                    chomp $_;
                     my (
                         undef, undef, undef,   undef, undef,
                         undef, undef, $atfile, $atcount
@@ -1343,23 +1349,29 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         $outblock =~ s/({|<)yabb msgdate(}|>)/$messdate/gsm;
         $outblock =~ s/({|<)yabb replycount(}|>)/$counterwords/gsm;
         $outblock =~ s/({|<)yabb count(}|>)/$counter/gsm;
-        $outblock =~ s/({|<)yabb att(}|>)/$attachment/gsm;
+		if ($showattach || $attachment) {
+			$outblock =~ s/({|<)yabb showatthr(}|>)/$showattachhr/gsm;
+			$outblock =~ s/({|<)yabb att(}|>)/$attachment/gsm;
+			$outblock =~ s/({|<)yabb showatt(}|>)/$showattach/gsm;
+		} else {
+			$outblock =~ s/({|<)yabb hideatt(}|>)/ display: none;/gsm;
+		}
         $outblock =~ s/({|<)yabb css(}|>)/$css/gsm;
         $outblock =~ s/({|<)yabb gender(}|>)/${$uid.$musername}{'gender'}/gsm;
         $outblock =~ s/({|<)yabb age(}|>)/$template_age/gsm;
         $outblock =~ s/({|<)yabb regdate(}|>)/$template_regdate/gsm;
         $outblock =~ s/({|<)yabb ext_prof(}|>)/$template_ext_prof/gsm;
         $outblock =~ s/({|<)yabb postinfo(}|>)/$template_postinfo/gsm;
-        $outblock =~
-          s/({|<)yabb usertext(}|>)/${$uid.$musername}{'usertext'}/gsm;
-        $outblock =~ s/({|<)yabb userpic(}|>)/${$uid.$musername}{'userpic'}/gsm;
+		if (!$hideusertext) { $outblock =~ s/({|<)yabb usertext(}|>)/${$uid.$musername}{'usertext'}/gsm;}
+		if (!$hideavatar) { $outblock =~ s/({|<)yabb userpic(}|>)/${$uid.$musername}{'userpic'}/gsm;}
         $outblock =~ s/({|<)yabb message(}|>)/$message/gsm;
-        $outblock =~ s/({|<)yabb showatt(}|>)/$showattach/gsm;
-        $outblock =~ s/({|<)yabb showatthr(}|>)/$showattachhr/gsm;
         $outblock =~ s/({|<)yabb modified(}|>)/$lastmodified/gsm;
-        $outblock =~
-          s/({|<)yabb signature(}|>)/${$uid.$musername}{'signature'}/gsm;
-        $outblock =~ s/({|<)yabb signaturehr(}|>)/$signature_hr/gsm;
+		if (!$hidesignat && ${$uid.$musername}{'signature'}) {
+			$outblock =~ s/({|<)yabb signature(}|>)/${$uid.$musername}{'signature'}/gsm;
+			$outblock =~ s/({|<)yabb signaturehr(}|>)/$signature_hr/g;
+		} else {
+			$outblock =~ s/({|<)yabb hidesignat(}|>)/ display: none;/;
+		}
         $outblock =~ s/({|<)yabb ipimg(}|>)/$ipimg/gsm;
         $outblock =~ s/({|<)yabb ip(}|>)/$mip/gsm;
         $outblock =~
@@ -1481,6 +1493,17 @@ qq~$menusep<a href="$scripturl?action=markunread;thread=$viewnum;board=$currentb
     $threadhandellist =~ s/({|<)yabb print(}|>)/$template_print$tool_sep/gsm;
     $threadhandellist =~ s/\Q$menusep//ixsm;
 
+    $threadhandellist2 =~ s/({|<)yabb markunread(}|>)/$mark_unread$tool_sep/gsm;
+    $threadhandellist2 =~ s/({|<)yabb reply(}|>)/$replybutton$tool_sep/gsm;
+    $threadhandellist2 =~ s/({|<)yabb poll(}|>)/$pollbutton$tool_sep/gsm;
+    $threadhandellist2 =~ s/({|<)yabb notify2(}|>)/$notify2$tool_sep/gsm;
+    $threadhandellist2 =~
+      s/({|<)yabb favorite2(}|>)/$template_favorite2$tool_sep/gsm;
+    $threadhandellist2 =~
+      s/({|<)yabb sendtopic(}|>)/$template_sendtopic$tool_sep/gsm;
+    $threadhandellist2 =~ s/({|<)yabb print(}|>)/$template_print$tool_sep/gsm;
+    $threadhandellist2 =~ s/\Q$menusep//ism;
+
     if ( !$threadtools ) { $outside_ttsep = q{}; }
     $outside_threadtools =~ s/({|<)yabb markunread(}|>)/$mark_unread/gsm;
     $outside_threadtools =~ s/({|<)yabb reply(}|>)/$replybutton/gsm;
@@ -1497,9 +1520,8 @@ qq~$menusep<a href="$scripturl?action=markunread;thread=$viewnum;board=$currentb
         $outside_threadtools =~
           s/\[tool=(.+?)\](.+?)\[\/tool\]/$tmpimg{$1}/gxsm;
         $threadhandellist =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gxsm;
+        $threadhandellist2   =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gsm;
     }
-
-    $threadhandellist2 = $threadhandellist;
 
     # Thread Tools #
     if ($threadtools) {

@@ -686,7 +686,7 @@ qq~                <option value="$line"$checked>$name</option>\n~;
             : q{}
         );
 
-        $my_show_avatar = $myprofle_show_avatar_a;
+        $my_show_avatar = $myprofile_show_avatar_a;
         $my_show_avatar =~ s/{yabb my_up_avatar_a}/$my_up_avatar_a/sm;
         $my_show_avatar =~ s/{yabb av_pic}/$pic/sm;
         $my_show_avatar =~ s/{yabb av_pic}/$pic/sm;
@@ -805,6 +805,37 @@ qq~<option value="$fld" selected="selected">$displang</option>~;
 
     $my_show_lang = $myprofile_show_lang;
     $my_show_lang =~ s/{yabb drawnldirs}/$drawnldirs/sm;
+    
+	if ($user_hide_avatars && $showuserpic && $allowpics) { # checkbox to hide avatars in threads
+		$my_show_avatar_opts = $myprofile_show_avatars;
+		$my_hide_avatar = ${$uid.$user}{'hide_avatars'} ? ' checked="checked"' : q{};
+		$my_show_avatar_opts =~ s/{yabb user_showavatar}/$my_hide_avatar/sm;
+	}
+	else {$my_show_avatar_opts = q{};}
+
+	if ($user_hide_user_text && $showusertext) { # checkbox to hide user-text in threads
+		$my_show_avatar_opts .= $myprofile_hide_user_text;
+		$my_hide_user_text = ${$uid.$user}{'hide_user_text'} ? ' checked="checked"' : q{};
+		$my_show_avatar_opts =~ s/{yabb hide_user_text}/$my_hide_user_text/sm;
+	}
+
+	if ($user_hide_attach_img && $allowattach) { # checkbox to hide attached images in threads
+		$my_show_avatar_opts .= $myprofile_hide_attach_img;
+		$my_hide_attach_img = ${$uid.$user}{'hide_attach_img'} ? ' checked="checked"' : q{};
+		$my_show_avatar_opts =~ s/{yabb hide_attach_img}/$my_hide_attach_img/sm;
+	}
+
+	if ($user_hide_signat) { # checkbox to hide signatures in threads
+		$my_show_avatar_opts .= $myprofile_hide_signat;
+		$my_hide_signat = ${$uid.$user}{'hide_signat'} ? ' checked="checked"' : q{};
+		$my_show_avatar_opts =~ s/{yabb hide_signat}/$my_hide_signat/sm;
+	}
+
+	if ($user_hide_smilies_row && !$removenormalsmilies) { # checkbox to hide the row of smilies below the the post-message-inputbox
+		$my_show_avatar_opts .= $myprofile_hide_smilies_row;
+		$my_hide_smilies_row = ${$uid.$user}{'hide_smilies_row'} ? ' checked="checked"' : q{};
+		$my_show_avatar_opts =~ s/{yabb hide_smilies_row}/$my_hide_smilies_row/sm;
+	}
 
     if ($extendedprofiles) {
         require Sources::ExtendedProfiles;
@@ -933,6 +964,7 @@ qq~         <textarea name="signature" id="signature" rows="4" cols="30" style="
     $showProfile =~ s/{yabb my_reverse}/$my_reverse/sm;
     $showProfile =~ s/{yabb my_template}/$my_template/sm;
     $showProfile =~ s/{yabb my_show_lang}/$my_show_lang/sm;
+    $showProfile =~ s/{yabb my_show_avatar_opts}/$my_show_avatar_opts/sm;
     $showProfile =~ s/{yabb my_extprofile}/$my_extprofile/sm;
     $showProfile =~ s/{yabb sid_expires}/$sid_expires/sm;
 
@@ -1917,7 +1949,6 @@ sub ModifyProfileContacts2 {
     ${ $uid . $user }{'icq'}      = $member{'icq'};
     ${ $uid . $user }{'aim'}      = $member{'aim'};
     ${ $uid . $user }{'yim'}      = $member{'yim'};
-    ${ $uid . $user }{'msn'}      = q{};
     ${ $uid . $user }{'gtalk'}    = $member{'gtalk'};
     ${ $uid . $user }{'skype'}    = $member{'skype'};
     ${ $uid . $user }{'myspace'}  = $member{'myspace'};
@@ -2296,6 +2327,11 @@ sub ModifyProfileOptions2 {
     ${ $uid . $user }{'timeselect'}    = int $member{'usertimeselect'};
     ${ $uid . $user }{'template'}      = $member{'usertemplate'};
     ${ $uid . $user }{'language'}      = $member{'userlanguage'};
+	${$uid.$user}{'hide_avatars'} = ($member{'hide_avatars'} && $user_hide_avatars) ? 1 : 0;
+	${$uid.$user}{'hide_user_text'} = ($member{'hide_user_text'} && $user_hide_user_text) ? 1 : 0;
+	${$uid.$user}{'hide_attach_img'} = ($member{'hide_attach_img'} && $user_hide_attach_img) ? 1 : 0;
+	${$uid.$user}{'hide_signat'} = ($member{'hide_signat'} && $user_hide_signat) ? 1 : 0;
+	${$uid.$user}{'hide_smilies_row'} = ($member{'hide_smilies_row'} && $user_hide_smilies_row) ? 1 : 0;
     ${ $uid . $user }{'timeformat'}    = $member{'timeformat'};
     ${ $uid . $user }{'numberformat'} = int $member{'usernumberformat'};
 

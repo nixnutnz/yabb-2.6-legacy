@@ -1026,11 +1026,14 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             <span class="small"><img src="$imagesdir/$cat_col" id="feature_col" alt="$npf_txt{'collapse_features'}" title="$npf_txt{'collapse_features'}" class="cursor" onclick="show_features(0);" /> $npf_txt{'features_text'}</span>
             <input type="hidden" name="col_rowb" id="col_row" value="$col_row" />~;
 
-        if ( !$removenormalsmilies ) {
+        if ( !$removenormalsmilies && (!${$uid.$username}{'hide_smilies_row'} || !$user_hide_smilies_row) ) {
             $my_smilies = $mypost_smilies;
             $my_smilies .= q~<script type="text/javascript">~;
             $my_smilies .= smilies_list();
             $my_smilies .= q~</script>~;
+        }
+        else {
+            $my_smilies = qq~$mypost_smilies &nbsp; ~;
         }
 
         if (   ( $showadded == 3 && $showsmdir != 2 )
