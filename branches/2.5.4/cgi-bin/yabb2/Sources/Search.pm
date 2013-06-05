@@ -208,6 +208,10 @@ qq~<option value="$curboard" $selected>$boardname</option>\n          ~;
     if ( $isselected == $allselected ) {
         $boardscheck = q~ checked="checked"~;
     }
+    if ( $iamadmin || $iamymod || $iamgmod && $gmod_access2{'ipban2'} eq 'on' ) {
+        $search_ip = qq~<input type="checkbox" name="search_ip" id="search_ip" value="on" /><label for="search_ip"> $search_txt{'73'}</label>~;
+    }
+
     $yymain .= qq~
             <select multiple="multiple" name="searchboards" size="5" onchange="selectnum();">
             $checklist
@@ -230,10 +234,10 @@ qq~<option value="$curboard" $selected>$boardname</option>\n          ~;
             </script>~;
     $yymain .= $mysearch_template5;
     $yymain =~ s/{yabb maxsearchdisplay}/$maxsearchdisplay/sm;
-
+    $yymain =~ s/{yabb search_ip}/$search_ip/sm;
+ 
     $yymain .= qq~
 <script type="text/javascript">
-<!--
     document.searchform.search.focus();
 
     function CheckSearchFields() {
@@ -244,7 +248,6 @@ qq~<option value="$curboard" $selected>$boardname</option>\n          ~;
         }
         return true;
     }
-//-->
 </script>
 ~;
 
@@ -311,6 +314,7 @@ sub plushSearch2 {
     if ( $search =~ m{\\}xsm ) { fatal_error('no_search_slashes'); }
     my $searchsubject = $FORM{'subfield'} eq 'on';
     my $searchmessage = $FORM{'msgfield'} eq 'on';
+	if ($FORM{'search_ip'} eq 'on') { $search_ip = $FORM{'search'}; }
     ToHTML($search);
     $search =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gxsm;
     $search =~ s/\cM//gxsm;
@@ -479,7 +483,15 @@ sub plushSearch2 {
                 }
 
                 ## blank? try next = else => build list from found mess/sub
-                if ( !$msgfound && !$subfound ) { next POSTCHECK; }
+				## Search for IP Address start
+				if ($search_ip && !$msgfound && !$subfound) {
+					$ipfound = 0;
+					if ($mip =~ /\b$search_ip/) {
+					    $ipfound = '1';
+					}
+				}
+				## Search for IP Address end
+                if ( !$msgfound && !$subfound && !$ipfound ) { next POSTCHECK; }
 
                 $data{$mdate} = [
                     $curboard, $tnum,         $msgnum, $tusername,
@@ -536,7 +548,7 @@ qq~<hr class="hr" /><b>$search_txt{'170'}<br /><a href="javascript:history.go(-1
         $message = Censor($message);
         $msub    = Censor($msub);
 
-        Highlight( \$msub, \$message, \@search, $case );
+		Highlight(\$msub,\$message,\$mip,\@search,$case);
 
         ToChars( $catname{$board} );
         ToChars( $boardname{$board} );
@@ -602,8 +614,15 @@ qq~<a href="$scripturl?action=multidel;recent=1;thread=$tnum;del$c=$c" onclick="
                 : q{}
               ) . qq~$display_txt{'rempost'}')">$img{'delete'}</a>~;
         }
+        if ( $iamadmin || $iamymod || $iamgmod && $gmod_access2{'ipban2'} eq 'on' ) {
+            $my_ipfind = $mysearch_template10;
+            $my_ipfind =~ s/{yabb mip}/$mip/sm;
+        }
+             
+
         $yymain .= $mysearch_template9;
         $yymain =~ s/{yabb message}/$message/sm;
+        $yymain =~ s/{yabb my_ipfind}/$my_ipfind/sm;
     }
 
     if (@messages) {
@@ -964,7 +983,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$format_
 }
 
 sub Highlight {
-    my ( $msub, $message, $search, $case ) = @_;
+    my ( $msub, $message, $mip, $search, $case ) = @_;
     my $i = 0;
     my @HTMLtags;
     my $HTMLtag = 'HTML';
@@ -980,12 +999,24 @@ sub Highlight {
                 ${$msub} =~ s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gsm;
                 ${$message} =~
                   s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gsm;
+                if ($ipLookup) {
+				    ${$mip} =~ s/(\Q$tmp\E)/<span class="highlight"><a href="$scripturl?action=iplookup;ip=$1"><span class="small">$1<\/span><\/a><\/span>/gsm;
+                }
+                else {
+				    ${$mip} =~ s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gsm;
+				}
             }
             else {
                 ${$msub} =~
 s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/gsm;
                 ${$message} =~
 s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/gsm;
+                if ($ipLookup) {
+				    ${$mip} =~ s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight"><a href="$scripturl?action=iplookup;ip=$2"><span class="small">$2<\/span><\/a><\/span>$3/gsm;
+                }
+                else {
+				    ${$mip} =~ s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/gsm;
+				}
             }
         }
         else {
@@ -994,13 +1025,25 @@ s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/gsm;
                   s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/igsm;
                 ${$message} =~
                   s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/igsm;
+                if ($ipLookup) {
+				    ${$mip} =~ s/(\Q$tmp\E)/<span class="highlight"><a href="$scripturl?action=iplookup;ip=$1"><span class="small">$1<\/span><\/a><\/span>/gsm;
+                }
+                else {
+				    ${$mip} =~ s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gsm;
+				}
             }
             else {
                 ${$msub} =~
 s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/igsm;
                 ${$message} =~
 s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/igsm;
-            }
+                if ($ipLookup) {
+				    ${$mip} =~ s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight"><a href="$scripturl?action=iplookup;ip=$2"><span class="small">$2<\/span><\/a><\/span>$3/igsm;
+                }
+                else {
+				    ${$mip} =~ s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/igsm;
+				}
+			}
         }
     }
 

@@ -13,6 +13,8 @@
 ###############################################################################
 # $Revision$
 
+$disp_ip = 'ip.gif';
+
 $mysearch_template = qq~
 <table class="tabtitle pad_3px">
     <tr>
@@ -74,6 +76,7 @@ $mysearch_template5 = qq~
 		<td class="windowbg2">
 			<input type="checkbox" name="subfield" id="subfield" value="on" checked="checked" /><label for="subfield"> $search_txt{'70'}</label> &nbsp;
 			<input type="checkbox" name="msgfield" id="msgfield" value="on" checked="checked" /><label for="msgfield"> $search_txt{'72'}</label>
+			{yabb search_ip}
 		</td>
 	</tr><tr>
 		<td class="windowbg right"><label for="age"><b>$search_txt{'1'}</b></label></td>
@@ -121,11 +124,17 @@ $mysearch_template9 = q~
 		</td>
 	</tr><tr>
 		<td class="windowbg2 vtop h_80px" colspan="2">
-		    <div class="message" style="float: left; width: 99%; overflow: auto;">{yabb message}</div>
+		    <div class="message" style="float: left; width: 99%; overflow: auto;">{yabb message} {yabb my_ipfind}</div>
 		</td>
 	</tr>
 </table><br />~;
 
+$mysearch_template10 = qq~ 
+		        <hr class="hr" />
+		        <div class="small" style="float: right; text-align: right;">
+		            <img src="$imagesdir/$disp_ip" alt="" />{yabb mip}
+		        </div>
+~;
 
 $mysearch_PM = qq~
 <table class="bordercolor cs_thin" style="table-layout: fixed;">

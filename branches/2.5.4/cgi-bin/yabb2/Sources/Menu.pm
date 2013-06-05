@@ -68,12 +68,12 @@ sub SetMenu {
             if ( $UseMenuType == 0 ) {
                 $menusep = q{ };
                 $img{$key} =
-qq~<img src="$button_imgurl/$button_icon.$imgext" alt="${$alt_text}{$alt_num}" /> <span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}">${$button_text}{$text_num}</span>~;
+qq~<img src="$button_imgurl/$button_icon.$imgext" alt="${$alt_text}{$alt_num}" /> <span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}">${$button_text}{$text_num}</span> ~;
             }
             elsif ( $UseMenuType == 1 ) {
                 $menusep = q{ };
                 $img{$key} =
-qq~<span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}">${$button_text}{$text_num}</span>~;
+qq~<span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}">${$button_text}{$text_num}</span> ~;
             }
             else {
                 $menusep = qq~<img src='$yyhtml_root/Templates/Forum/default/buttonsep.png' class='cssbutton1' alt='' title='' />~;

@@ -19,8 +19,16 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('HelpCentre');
 
+require Sources::Menu;
 $yytitle = $helptxt{'1'};
 undef $guest_media_disallowed;
+
+@my_modimglist = qw( admin_rem admin_move_split_splice admin_lock hide admin_sticky admin_del );
+$my_moding = q{};
+foreach $x (@my_modimglist) {
+    $modimg = SetImage($x,$MenuType);
+    $mymoding .= qq~$modimg~;
+}
 
 sub SectionDecide {
 
@@ -218,6 +226,7 @@ s/\[yabbc\](.*?)\[\/yabbc\]/my($text) = $1; ToHTML($text); DoUBBCTo($text);/sgem
 
         $TempParse = $BodyItem;
         $TempParse =~ s/{yabb item}/$message/gsm;
+        $TempParse =~ s/{yabb mymoding}/$mymoding/sm;
         $Body .= qq~$TempParse~;
         $i++;
     }

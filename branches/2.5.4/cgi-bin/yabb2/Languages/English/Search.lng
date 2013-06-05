@@ -24,6 +24,7 @@ $searchlngver = 'YaBB 2.5.4 $Revision$';
 '30' => 'on',
 '70' => 'Subject',
 '72' => 'Message',
+'73' => 'IP Address',
 '105' => 'Post',
 '107' => 'at',
 '109' => 'Started by',

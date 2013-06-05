@@ -557,11 +557,11 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$boardindex_txt{'334'}" title="$boardi
                     }
                     if ( $catcol{$catid} ) {
                         $hash{$catname} =
-qq~<img src="$imagesdir/$brd_cat_col" id="img$catid" alt="$boardindex_exptxt{'2'}" title="$boardindex_exptxt{'2'}" /></a>~;
+qq~<img src="$imagesdir/$cat_col" id="img$catid" alt="$boardindex_exptxt{'2'}" title="$boardindex_exptxt{'2'}" /></a>~;
                     }
                     else {
                         $hash{$catname} =
-qq~<img src="$imagesdir/$brd_cat_exp" id="img$catid" alt="$boardindex_exptxt{'1'}" title="$boardindex_exptxt{'1'}" /></a>~;
+qq~<img src="$imagesdir/$cat_exp" id="img$catid" alt="$boardindex_exptxt{'1'}" title="$boardindex_exptxt{'1'}" /></a>~;
                     }
                 }
                 else {
@@ -798,11 +798,11 @@ qq~$collapse_link $hash{$catname} <a href="$scripturl?$my_cat=$catid" title="$bo
                         'granted' )
                     {
                         $new =
-qq~<img src="$imagesdir/$brdimg_new" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" />~;
+qq~<img src="$imagesdir/$brdimg_new" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" class="img_new" />~;
                     }
                     else {
                         $new =
-qq~<img src="$imagesdir/$brdimg_old" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" />~;
+qq~<img src="$imagesdir/$brdimg_old" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" class="img_new" />~;
                     }
                 }
                 else {
@@ -839,12 +839,8 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$boardindex_txt{'334'}" title="$boardi
                         'Global Moderator'
                       )
                     {
-#                        if(!$iamguest) {
                             $lastposter =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}" rel="nofollow">$format_unbold{$lastposter}</a>~;
-#                        }
-#                        else { $lastposter =  $format_unbold{$lastposter};
-#                        }                     
                     }
                     else {
 
