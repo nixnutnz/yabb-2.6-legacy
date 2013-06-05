@@ -281,4 +281,13 @@ $postlngver = 'YaBB 2.5.4 $Revision$';
 'no_suggestions' => 'No suggestions found',
 );
 
+%return_to_txt = (
+'1' => 'Current Thread',
+'2' => 'Current Board',
+'3' => 'Forum Index',
+'01' => 'Return To',
+'02' => 'Select where you would like to return to after posting.',
+'03' => 'Select the default area you would like to return to after making a post.<br /><b>Note:</b> You can change this option at the time of posting.',
+);
+
 1;

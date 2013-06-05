@@ -1161,6 +1161,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             $my_feat5 =~ s/{yabb filesize_info}/$filesize_info/sm;
             $my_feat5 =~ s/{yabb mypoll_att}/$mypoll_att/sm;
             $my_feat5 =~ s/{yabb my_att_b}/$my_att_b/sm;
+            $my_feat5 =~ s/{yabb my_att_b}/$my_att_b/sm;
 
             if ( $is_preview == 2 ) {
                 $is_preview = 1;
@@ -1170,6 +1171,17 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
 
         # /File Attachment's Browse Box Code
 
+    ### Return To mod start ###
+    my ($return_to);
+    my $rts = $FORM{'return_to'} ? $FORM{'return_to'} : ${$uid.$username}{'return_to'};
+    for my $rt( 1 .. 3 ) {
+         $return_to_select .= $rts == $rt ? qq~<option value="$rt" selected="selected">$return_to_txt{$rt}</option>~ : qq~<option value="$rt">$return_to_txt{$rt}</option>~;
+    }
+    if ($destination ne 'modalert2' && $destination ne 'guestpm2') {
+        $return_to = $mypost_return_to;
+        $return_to =~ s/{yabb return_to_select}/$return_to_select/sm;     
+    }
+    ### Return To mod end ###
         $my_postsec_b   = postbox2();
         $my_postsection = $mypost_postblock;
         $my_postsection =~ s/{yabb my_postsection_ajx}/$my_postsection_ajx/sm;
@@ -1198,6 +1210,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         $my_postsection =~ s/{yabb lastmod}/$lastmod/sm;
         $my_postsection =~ s/{yabb nscheck}/$nscheck/sm;
         $my_postsection =~ s/{yabb iecopycheck}/$iecopycheck/sm;
+        $my_postsection =~ s/{yabb return_to}/$return_to/sm;
     }
 
 #    these are the buttons to submit
@@ -2449,14 +2462,26 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
         ManageThreadNotify( 'delete', $thread, $username );
     }
 
-    if ( $currentboard eq $annboard ) {
-        $yySetLocation =
-qq~$scripturl?virboard=$FORM{'virboard'};num=$thread/$start#$mreplies~;
+    my $rts = $FORM{'return_to'};		
+    if ($rts == 3) {
+        $yySetLocation = qq~$scripturl~; 
+        dumplog($currentboard, $date);
+        dumplog($thread, $date);
+        if (!$INFO{'num'}) { MessageTotals('incview', $thread); }
     }
-    else {
-        $yySetLocation = qq~$scripturl?num=$thread/$start#$mreplies~;
+    elsif ($rts == 2) {
+        $yySetLocation = qq~$scripturl?board=$currentboard~;
+        &dumplog($thread, $date);
+        if (!$INFO{'num'}) { MessageTotals('incview', $thread); }
     }
-
+    else { 
+        if ($currentboard eq $annboard) {
+            $yySetLocation = qq~$scripturl?virboard=$FORM{'virboard'};num=$thread/$start#$mreplies~;
+        }
+        else { 
+            $yySetLocation = qq~$scripturl?num=$thread/$start#$mreplies~;
+        }	
+    }
     redirectexit();
     return;
 }

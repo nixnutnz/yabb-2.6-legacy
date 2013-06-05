@@ -831,7 +831,16 @@ qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$
       (
         int( ( $treplies - $postid ) / $maxmessagedisplay ) *
           $maxmessagedisplay );
-    $yySetLocation = qq~$scripturl?num=$threadid/$start#$postid~;
+    my $rts = $FORM{'return_to'};		
+    if ($rts == 3) {
+        $yySetLocation = qq~$scripturl~;
+    }
+    elsif ($rts == 2) {
+        $yySetLocation = qq~$scripturl?board=$currentboard~;
+    }
+    else { 
+        $yySetLocation = qq~$scripturl?num=$threadid/$start#$postid~;
+    }	
     redirectexit();
     return;
 }

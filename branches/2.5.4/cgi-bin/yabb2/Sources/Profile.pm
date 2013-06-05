@@ -765,6 +765,13 @@ qq~                <option value="$line"$checked>$name</option>\n~;
         $my_reverse =~ s/{yabb my_reversi}/$my_reversi/sm;
     }
 
+    my $rts = ${$uid.$user}{'return_to'};
+    for my $rt ( 1 .. 3 ) {
+         $return_to_select .= $rts == $rt ? qq~<option value="$rt" selected="selected">$return_to_txt{$rt}</option>~ : qq~<option value="$rt">$return_to_txt{$rt}</option>~;
+    }
+    my $return_to = $myprofile_return_to;
+    $return_to =~ s/{yabb return_to_select}/$return_to_select/sm;     
+
     foreach my $curtemplate (
         sort { $templateset{$a} cmp $templateset{$b} }
         keys %templateset
@@ -956,6 +963,7 @@ qq~         <textarea name="signature" id="signature" rows="4" cols="30" style="
     $showProfile =~ s/{yabb my_time}/$my_time/sm;
     $showProfile =~ s/{yabb my_notify}/$my_notify/sm;
     $showProfile =~ s/{yabb my_reverse}/$my_reverse/sm;
+    $showProfile =~ s/{yabb my_return_to}/$return_to/sm;
     $showProfile =~ s/{yabb my_template}/$my_template/sm;
     $showProfile =~ s/{yabb my_show_lang}/$my_show_lang/sm;
     $showProfile =~ s/{yabb my_show_avatar_opts}/$my_show_avatar_opts/sm;
@@ -2321,13 +2329,14 @@ sub ModifyProfileOptions2 {
     ${ $uid . $user }{'timeselect'}    = int $member{'usertimeselect'};
     ${ $uid . $user }{'template'}      = $member{'usertemplate'};
     ${ $uid . $user }{'language'}      = $member{'userlanguage'};
-	${$uid.$user}{'hide_avatars'} = ($member{'hide_avatars'} && $user_hide_avatars) ? 1 : 0;
-	${$uid.$user}{'hide_user_text'} = ($member{'hide_user_text'} && $user_hide_user_text) ? 1 : 0;
-	${$uid.$user}{'hide_attach_img'} = ($member{'hide_attach_img'} && $user_hide_attach_img) ? 1 : 0;
-	${$uid.$user}{'hide_signat'} = ($member{'hide_signat'} && $user_hide_signat) ? 1 : 0;
-	${$uid.$user}{'hide_smilies_row'} = ($member{'hide_smilies_row'} && $user_hide_smilies_row) ? 1 : 0;
+	${ $uid . $user }{'hide_avatars'}  = ($member{'hide_avatars'} && $user_hide_avatars) ? 1 : 0;
+	${ $uid . $user }{'hide_user_text'} = ($member{'hide_user_text'} && $user_hide_user_text) ? 1 : 0;
+	${ $uid . $user }{'hide_attach_img'} = ($member{'hide_attach_img'} && $user_hide_attach_img) ? 1 : 0;
+	${ $uid . $user }{'hide_signat'} = ($member{'hide_signat'} && $user_hide_signat) ? 1 : 0;
+	${ $uid . $user }{'hide_smilies_row'} = ($member{'hide_smilies_row'} && $user_hide_smilies_row) ? 1 : 0;
     ${ $uid . $user }{'timeformat'}    = $member{'timeformat'};
     ${ $uid . $user }{'numberformat'} = int $member{'usernumberformat'};
+    ${ $uid . $user }{'return_to'} = $member{'return_to'};
 
     UserAccount( $user, 'update' );
 

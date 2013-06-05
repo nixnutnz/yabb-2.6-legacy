@@ -93,6 +93,7 @@ $mypost_postblock = qq~
             <input type="checkbox" name="ns" id="ns" value="NS"{yabb nscheck} onchange="autoPreview()" /> <span class="small"> <label for="ns">$post_txt{'277'}</label></span>
         </td>
     </tr>
+    {yabb return_to} 
     <tr id="feature_status_8">
         <td>
             <div id="enable_iecopytext" style="display: none;">
@@ -277,6 +278,12 @@ $mypost_feat5 = qq~<tr id="feature_status_5">
         <td colspan="2">{yabb mypoll_att}{yabb my_att_b}
         </td>
     </tr>~;
+
+$mypost_return_to = qq~<tr id="feature_status_9">
+        <td><label for="return_to"><b>$return_to_txt{'01'}:</b></label></td>
+        <td><select name="return_to" id="return_to" size="1">{yabb return_to_select}</select> <span class="small"><label for="return_to">$return_to_txt{'02'}</label></span></td>
+    </tr>~;
+
 
 $mypost_showmessages = q~
 <table class="tabtitle">

@@ -26,6 +26,7 @@ $my_facebook = 'facebook.gif';
 $my_twitter = 'twitter.gif';
 $my_youtube = 'youtube.gif';
 $my_profile = 'profile.gif';
+$my_session = 'session.gif';
 
 
 $myprofile_a = qq~
@@ -117,7 +118,7 @@ $myprofile_showage = qq~<tr class="windowbg">
 
 $myprofile_session = qq~<tr>
         <td class="catbg" colspan="2">
-            <img src="$imagesdir/session.gif" alt="" /> <label for="sesquest"><b>$img_txt{'34a'}</b><br /><span class="small">{yabb sesstext9}<br />{yabb sesstext9a}</span></label></td>
+            <img src="$imagesdir/$my_session" alt="" /> <label for="sesquest"><b>$img_txt{'34a'}</b><br /><span class="small">{yabb sesstext9}<br />{yabb sesstext9a}</span></label></td>
     </tr><tr class="windowbg">
         <td>{yabb questsel}</td>
         <td><input type="text" maxlength="30" name="sesanswer" size="20" value="{yabb decanswer}" /></td>
@@ -299,7 +300,7 @@ $myprofile_options_b = qq~             <span class="small">$profile_txt{'664'} <
              // -->
              </script>
         </td>
-    </tr>{yabb my_addmemgroup} {yabb my_time} {yabb my_reverse} {yabb my_template} {yabb my_show_lang} {yabb my_show_avatar_opts} {yabb my_extprofile}
+    </tr>{yabb my_addmemgroup} {yabb my_time} {yabb my_reverse} {yabb my_return_to} {yabb my_template} {yabb my_show_lang} {yabb my_show_avatar_opts} {yabb my_extprofile}
     <tr class="catbg">
         <td class="center" style="height:50px" colspan="2">
             {yabb show_confdel}
@@ -406,6 +407,11 @@ $myprofile_reverse = qq~<tr class="windowbg">
         <td class="vtop"><input type="checkbox" name="reversetopic" id="reversetopic" {yabb my_reversi} /></td>
     </tr>~;
 
+$myprofile_return_to = qq~<tr class="windowbg">
+        <td><label for="return_to"><b>$return_to_txt{'01'}:</b><br /><span class="small">$return_to_txt{'03'}</span></label></td>
+        <td><select name="return_to" id="return_to" size="1">{yabb return_to_select}</select></td>
+    </tr>~;	
+
 $myprofile_template = qq~<tr class="windowbg">
         <td><label for="usertemplate"><b>$profile_txt{'814'}</b><br /><span class="small">$profile_txt{'815'}</span></label></td>
         <td><select name="usertemplate" id="usertemplate">{yabb drawndirs}</select></td>
@@ -421,20 +427,17 @@ $myprofile_show_avatars = qq~<tr class="windowbg">
 		<td><input type="checkbox" name="hide_avatars" id="hide_avatars" {yabb user_showavatar} /></td>
 	</tr>~;
 
-$myprofile_hide_user_text = qq~
-	<tr class="windowbg">
+$myprofile_hide_user_text = qq~<tr class="windowbg">
 		<td><label for="hide_user_text"><b>$profile_display_options{'hide_user_text'}</b></label></td>
 		<td><input type="checkbox" name="hide_user_text" id="hide_user_text" {yabb hide_user_text} /></td>
 	</tr>~;
 
-$myprofile_hide_attach_img = qq~
-	<tr class="windowbg">
+$myprofile_hide_attach_img = qq~<tr class="windowbg">
 		<td><label for="hide_attach_img"><b>$profile_display_options{'hide_attach_img'}</b></label></td>
 		<td><input type="checkbox" name="hide_attach_img" id="hide_attach_img" {yabb hide_attach_img} /></td>
 	</tr>~;
 
-$myprofile_hide_signat = qq~
-	<tr class="windowbg">
+$myprofile_hide_signat = qq~<tr class="windowbg">
 		<td><label for="hide_signat"><b>$profile_display_options{'hide_signat'}</b></label></td>
 		<td><input type="checkbox" name="hide_signat" id="hide_signat" {yabb hide_signat} /></td>
 	</tr>~;

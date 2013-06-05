@@ -276,4 +276,13 @@ $profilelngver = 'YaBB 2.5.4 $Revision$';
 'removealert' => 'Are you sure you want to remove member from list?',
 );
 
+%return_to_txt = (
+'1' => 'Current Thread',
+'2' => 'Current Board',
+'3' => 'Forum Index',
+'01' => 'Return To',
+'02' => 'Select where you would like to return to after posting.',
+'03' => 'Select the default area you would like to return to after making a post.<br /><b>Note:</b> You can change this option at the time of posting.',
+);
+
 1;
