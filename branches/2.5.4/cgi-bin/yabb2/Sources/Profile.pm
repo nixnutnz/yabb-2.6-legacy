@@ -3220,6 +3220,11 @@ qq~<a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccoun
         $my_banning =~ s/{yabb ip_ban_options}/$ip_ban_options/sm;
     }
 
+	if ( $iamadmin && !$view && $user ne $username && ${$uid.$user}{'position'} ne 'Administrator' ) {
+	    $my_reminder = $myshow_reminder;
+        $my_reminder =~ s/{yabb my_realname}/${$uid.$user}{'realname'}/sm;
+	}
+
     if (   ${ $uid . $user }{'postcount'} > 0
         && $maxrecentdisplay > 0
         && !$view )
@@ -3278,6 +3283,7 @@ qq~<a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccoun
     $showProfile =~ s/{yabb userlastpost}/$userlastpost/sm;
     $showProfile =~ s/{yabb my_lastPM}/$my_lastPM/sm;
     $showProfile =~ s/{yabb my_banning}/$my_banning/sm;
+    $showProfile =~ s/{yabb my_reminder}/$my_reminder/sm;
     $showProfile =~ s/{yabb my_recent}/$my_recent/sm;
 
     $yytitle = "$profile_txt{'92'} ${$uid.$user}{'realname'}";

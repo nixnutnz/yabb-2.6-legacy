@@ -192,9 +192,8 @@ sub sharedLogin {
                 <input type="hidden" name="sredir" value="$INFO{'sesredir'}" />
     $mysharedlog_bodya~;
     $sharedlog =~ s/{yabb regstyle}/$regstyle/sm;
-    $sharedlog =~ s/{yabb hide_regbutton}/$hide_regbutton/sm;
-    $sharedlog =~ s/{yabb hide_regbutton}/$hide_regbutton/sm;
-    $sharedlog =~ s/{yabb hide_passbutton}/$hide_passbutton/sm;
+    $sharedlog =~ s/{yabb hide_regbutton}/$hide_regbutton/gsm;
+    $sharedlog =~ s/{yabb hide_passbutton}/$hide_passbutton/gsm;
 
     $loginform         = 1;
     $sharedLogin_title = q{};
@@ -294,7 +293,7 @@ sub Reminder2 {
     }
     my $randid = keygen( 8, 'A' );
 
-    if ($regcheck) {
+    if ($regcheck && !$iamadmin) {
         validation_check( $FORM{'verification'} );
     }
     if ( $spam_questions_send && -e "$langdir/$language/spam.questions" ) {

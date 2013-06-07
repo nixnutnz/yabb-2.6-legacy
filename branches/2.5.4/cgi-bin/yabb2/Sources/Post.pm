@@ -1161,7 +1161,6 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             $my_feat5 =~ s/{yabb filesize_info}/$filesize_info/sm;
             $my_feat5 =~ s/{yabb mypoll_att}/$mypoll_att/sm;
             $my_feat5 =~ s/{yabb my_att_b}/$my_att_b/sm;
-            $my_feat5 =~ s/{yabb my_att_b}/$my_att_b/sm;
 
             if ( $is_preview == 2 ) {
                 $is_preview = 1;

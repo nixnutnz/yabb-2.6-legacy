@@ -266,7 +266,7 @@ qq~<a href="$scripturl?action=eventcal;calshow=1;calmon=$last_mon;calyear=$last_
         $sdays_inner
     </select>~;
     my $boxdays =
-qq~ <label for="selday"><span class="small">$var_cal{'calday'}</span></label>
+qq~ <label for="calday"><span class="small">$var_cal{'calday'}</span></label>
     <select class="input" name="calday" id="calday">
     <option value="0">---</option>
         $boxdays_inner
