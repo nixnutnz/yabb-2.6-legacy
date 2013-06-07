@@ -48,6 +48,7 @@ if (!$language){$language = $lang;}
 '144a' => 'Personal Message',
 '145' => 'Quote',
 '145q' => 'Mark &amp; Quote',
+'145qt' => 'Mark &amp; Quote only copies the text, not formatting or smilies',
 '146' => 'Reply',
 '182' => 'Search',
 '300' => 'Mark Topics as Read',

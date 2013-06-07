@@ -1080,7 +1080,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 '01' => 'Time Lock',
 '03' => 'Enable a time limit for users to modify posts?<br /><span class="small">If disabled, a member can modify his post whenever he wants.</span>',
 '04' => 'Time limit for normal members to modify their posts (in days):',
-'05' => 'Disable &#39;Last Edit&#39; message for post edits?',
+'05' => 'Permit users to modify posts up to the specified time limit (below) without showing &#39;Last Edit&#39; message?',
 '06' => 'Time limit to modify posts without &#39;Last Edit&#39; message (in minutes):',
 '07' => 'Enable a time limit for users to delete posts?<br /><span class="small">If disabled, a member can delete his post whenever he wants.</span>',
 '08' => 'Time limit for normal members to delete their posts (in days):',
@@ -1232,7 +1232,8 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'allow' => 'Select which Staff Members to allow bypassing the lock on posts:',
 'fa' => 'FA only',
 'gmod' => 'FA/GMod only',
-'mod' => 'FA/GMod/Mod',
+'ymod' => 'FA/GMod/FMod'
+'mod' => 'FA/GMod/FMod/Mod',
 );
 
 %admin_updated_txt = (

@@ -238,6 +238,9 @@ $profilelngver = 'YaBB 2.5.4 $Revision$';
 'dob_edit_5' => 'time.',
 'dob_edit_6' => 'times.',
 'dob_edit_7' => 'Your birthdate cannot be edited.',
+'pass_reminder_1' => 'Password reminder',
+'pass_reminder_2' => 'Send',
+'pass_reminder_3' => 'Are you sure you want to send a password reminder to',
 );
 
 %mycenter_profile_txt = (
