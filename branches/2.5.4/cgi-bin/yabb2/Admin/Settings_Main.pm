@@ -154,9 +154,9 @@ $ML_Allowed = 1 if $ML_Allowed eq '';
 $default_userpic = 'nn.gif' if $default_userpic eq '';
 
 
-# This is only for update, when comming from YaBB lower or equal version 2.2.3
+# This is only for update, when coming from YaBB lower or equal version 2.2.3
 # I think it can be deleted around version 2.4.0 without causing mayor issues (deti).
-if ($enable_notifications eq '') { $enable_notifications = $enable_notification ? 3 : 0; }
+if ($enable_notifications eq q{}) { $enable_notifications = $enable_notification ? 3 : 0; }
 # End update workaround
 
 require Admin::ManageBoards; # needed for avatar upload settings
@@ -567,6 +567,7 @@ qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdM
 			input_html => qq~<input type="text" size="5" name="tllastmodtime" id="tllastmodtime" value="$tllastmodtime" />~,
 			name => 'tllastmodtime',
 			validate => 'number',
+			depends_on => ['tllastmodflag'],
 		},
 		{
 			header => $cutts{'8'},
