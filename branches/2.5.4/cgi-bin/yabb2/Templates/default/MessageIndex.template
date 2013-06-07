@@ -25,9 +25,11 @@ $outside_ttsep = q~~;
 $topichandellist = qq~{yabb notify button}{yabb markall button}~;
 if($threadtools) {
     $threadhandelstyle = qq~ class="post_tools center" style="width:10em"~;
+    $threadhandelstyle2 = qq~ class="post_tools_b center" style="width:10em"~;
 }
 else {
     $threadhandelstyle = qq~ class="right"~;
+    $threadhandelstyle2 = qq~ class="right"~;
 }
 $bdpicExt = 'png';
 $msgbrd_cat_col = 'cat_collapse.gif';
@@ -166,7 +168,7 @@ if ($action ne 'favorites') {
         			<td class="post_tools_a right" style="padding:4px 10px 4px 4px">
             			<div style="width: 100%; text-align: right">{yabb outsidethreadtools}</div>
 					</td>
-        			<td $threadhandelstyle>
+        			<td $threadhandelstyle2>
             			{yabb topichandellist2}
             		</td>
             		<td style="width:1%">&nbsp;</td>

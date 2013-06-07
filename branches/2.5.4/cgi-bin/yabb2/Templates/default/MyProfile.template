@@ -13,7 +13,6 @@
 ###############################################################################
 # $Revision$
 
-## UserProfile login
 $my_blank_avatar = 'blank.gif';
 $nn_avatar = 'nn.gif';
 $my_bdaycake = 'bdaycake.gif';
@@ -28,6 +27,7 @@ $my_youtube = 'youtube.gif';
 $my_profile = 'profile.gif';
 $my_session = 'session.gif';
 
+## UserProfile login
 
 $myprofile_a = qq~
 <table class="tabtitle cs_thin pad_4px" style="width:500px">
@@ -331,7 +331,7 @@ $myprofile_show_avatar_a = qq~
                     } else {
                         document.creator.userpic.options[0].selected = true;
                         source = document.getElementsByName('userpicpersonal')[0].value;
-                        if (!source || source == 'http{yabb av_s://') source = "$facesurl/blank.gif";
+                        if (!source || source == 'http{yabb av_s://') source = "$facesurl/$my_blank_avatar";
                     }
                     document.images.icons.style.display = 'none';
                     document.images.icons.width = '';
@@ -442,8 +442,7 @@ $myprofile_hide_signat = qq~<tr class="windowbg">
 		<td><input type="checkbox" name="hide_signat" id="hide_signat" {yabb hide_signat} /></td>
 	</tr>~;
 
-$myprofile_hide_smilies_row = qq~
-	<tr class="windowbg">
+$myprofile_hide_smilies_row = qq~<tr class="windowbg">
 		<td><label for="hide_smilies_row"><b>$profile_display_options{'hide_smilies_row'}</b></label></td>
 		<td><input type="checkbox" name="hide_smilies_row" id="hide_smilies_row" {yabb hide_smilies_row} /></td>
 	</tr>~;
@@ -453,7 +452,7 @@ $myprofile_buddy = qq~<table class="bordercolor cs_thin pad_4px">
     <col style="width:320px" />
     <tr>
         <td class="catbg" colspan="2">
-        <img src="$imagesdir/profile.gif" alt="" /> <b>{yabb profiletitle}</b></td>
+        <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b></td>
     </tr><tr class="windowbg">
     <tr class="windowbg">
         <td><b>$profile_buddy_list{'buddylist'}</b><br /><span class="small">$profile_buddy_list{'explain'}</span></td>
@@ -480,7 +479,7 @@ $myprofile_PMpref = qq~<table class="bordercolor cs_thin pad_4px">
     <col style="width:320px" />
     <tr>
         <td class="catbg" colspan="2">
-        <img src="$imagesdir/profile.gif" alt="" /> <b>{yabb profiletitle}</b></td>
+        <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b></td>
     </tr><tr class="windowbg">
         <td class="vtop"><b>$profile_txt{'325'}:</b><br /><span class="small">$profile_txt{'ignoreexplain'}</span></td>
         <td>
@@ -498,12 +497,10 @@ $myprofile_PMpref = qq~<table class="bordercolor cs_thin pad_4px">
     </tr><tr class="windowbg">
         <td><label for="popupims"><b>$profile_imtxt{'53'}</b></label></td>
         <td><input type="checkbox" name="popupims" id="popupims" value="1"{yabb popup_userim} /></td>
-    </tr>
-    <tr class="windowbg">
+    </tr><tr class="windowbg">
         <td><label for="pmviewMess"><b>$profile_txt{'viewmess'}</b><br /><span class="small">$profile_txt{'viewmessexplain'}</span></label></td>
         <td><input type="checkbox" name="pmviewMess" id="pmviewMess" value="1"{yabb pmviewMessChecked} /></td>
-    </tr>
-    <tr class="catbg">
+    </tr><tr class="catbg">
         <td class="center" style="height:50px" colspan="2">
             {yabb show_confdel}
             <input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />
@@ -587,12 +584,12 @@ $myprofile_title = qq~<table class="bordercolor cs_thin pad_4px">
     <col style="width:320px" />
     <tr>
         <td class="catbg" colspan="2">
-        <img src="$imagesdir/profile.gif" alt="" /> <b>{yabb profiletitle}</b> {yabb myprofile_userinfo}</td>
+        <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b> {yabb myprofile_userinfo}</td>
     </tr><tr class="windowbg">~;
 
 $myrow_sig = qq~<tr>
         <td class="catbg">
-            <img src="$imagesdir/profile.gif" alt="" />&nbsp;<b>$profile_txt{'85'}</b>
+            <img src="$imagesdir/$my_profile" alt="" />&nbsp;<b>$profile_txt{'85'}</b>
         </td>
     </tr><tr>
         <td class="windowbg2">
@@ -665,7 +662,7 @@ $myshow_profile = qq~
         {yabb row_signature}
     <tr>
         <td class="catbg">
-            <img src="$imagesdir/profile.gif" alt="" />&nbsp;
+            <img src="$imagesdir/$my_profile" alt="" />&nbsp;
             <b>$profile_txt{'459'}</b>
         </td>
     </tr><tr>
@@ -676,7 +673,7 @@ $myshow_profile = qq~
             <div class="contactright">{yabb userlastpost}</div>
             {yabb my_lastPM}
         </td>
-    </tr>{yabb my_banning} {yabb my_recent}
+    </tr>{yabb my_banning} {yabb my_reminder} {yabb my_recent}
 </table>
 ~;
 
@@ -716,6 +713,18 @@ $myshow_banning = qq~<tr>
             <div class="contactleft"><b>$profile_txt{'909'}:</b></div>
             <div class="contactright">{yabb ip_ban_options}</div>
         </td>
+    </tr>~;
+
+$myshow_reminder = qq~<tr>
+		<td class="windowbg2">
+			<div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;"><b>$profile_txt{'pass_reminder_1'}:</b></div>
+			<div style="float: left; width: 70%;">
+			<form action="$scripturl?action=reminder2" method="post">
+		    <input type="hidden" name="user" value="$INFO{'username'}" />
+            <input type="submit" value="$profile_txt{'pass_reminder_2'}" class="button" onclick="return confirm('$profile_txt{'pass_reminder_3'} {yabb my_realname}${$uid.$user}{'realname'}?');" />
+            </form>
+			</div>
+		</td>
     </tr>~;
 
 $myshow_recent = qq~<tr>
@@ -775,7 +784,7 @@ $ext_output_a = q~
 
 $ext_output_c = qq~
         <td class="catbg">
-            <img src="$imagesdir/profile.gif" alt="" />&nbsp;
+            <img src="$imagesdir/$my_profile" alt="" />&nbsp;
             <b>$field{'comment'}</b>
         </td>
     </tr><tr>
