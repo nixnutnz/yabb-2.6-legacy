@@ -13,6 +13,7 @@
 ###############################################################################
 # $Revision$
 
+$my_session = 'session.gif';
 
 ## IPlookup ##
 $my_ipdiv = qq~
@@ -126,7 +127,7 @@ $my_sessions = qq~
 <table class="tabtitle">
     <tr>
         <td colspan="3">
-            <img src="$imagesdir/session.gif" alt="" /><b>$img_txt{'34a'}</b>
+            <img src="$imagesdir/$my_session" alt="" /><b>$img_txt{'34a'}</b>
         </td>
     </tr>
 </table>
