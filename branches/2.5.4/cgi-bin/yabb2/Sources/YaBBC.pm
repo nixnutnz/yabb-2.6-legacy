@@ -317,14 +317,14 @@ sub imagemsg {
 
     my $use_greybox = $img_greybox;
 	if($action eq 'ajxmessage' || $action eq 'ajximmessage' || $action eq 'ajxcal' ) {
-		$parameter{'name'} = qq~class="liveimg" name="post_liveimg_resize"~;
+		$parameter{'name'} = qq~class="liveimg" id="post_liveimg_resize"~;
 		$use_greybox = 0;
 	}
 	elsif ($action eq 'eventcal') {
-		$parameter{'name'} = qq~name="post_img_resize"~;
+		$parameter{'name'} = qq~id="post_img_resize"~;
 	}
 	else {
-		$parameter{'name'} = $type ? qq~name="signat_img_resize"~ : qq~name="post_img_resize"~;
+		$parameter{'name'} = $type ? qq~id="signat_img_resize"~ : qq~id="post_img_resize"~;
 	}
 
     $parameter{'alt'} =~ s/[<>"]/*/gxsm;    #" make my text editor happy;

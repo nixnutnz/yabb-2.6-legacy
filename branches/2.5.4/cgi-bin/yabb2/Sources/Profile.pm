@@ -389,7 +389,7 @@ $myprofile_edit~;
     $showProfile =~ s/{yabb my_newpass}/$my_newpass/sm;
     $showProfile =~ s/{yabb my_passchk}/$my_passchk/sm;
     $showProfile =~ s/{yabb my_name_not}/$my_name_not/sm;
-    $showProfile =~ s/{yabb user}/${$uid.$user}{'realname'}/sm;
+    $showProfile =~ s/{yabb user}/${$uid.$user}{'realname'}/gsm;
     $showProfile =~ s/{yabb editGenderTxt}/$editGenderTxt/sm;
     $showProfile =~ s/{yabb disableGenderField}/$disableGenderField/sm;
     $showProfile =~ s/{yabb GenderMale}/$GenderMale/sm;
@@ -1457,6 +1457,7 @@ sub ModifyProfile2 {
                 fatal_error('password_is_userid');
             }
         }
+
         if (   ${ $uid . $user }{'gender'}
             && $editGenderLimit
             && ${ $uid . $user }{'disablegender'} >= $editGenderLimit
@@ -2705,15 +2706,15 @@ sub ViewProfile {
         if ( ${ $uid . $user }{'userpic'} eq $my_blank_avatar ) {
             $no_userpic = $default_avatar ? $default_userpic : $nn_avatar;
             $pic =
-qq~<img src="$imagesdir/$no_userpic" name="avatar_img_resize" alt="" style="display:none" />~;
+qq~<img src="$imagesdir/$no_userpic" id="avatar_img_resize" alt="" style="display:none" />~;
         }
         elsif ( ${ $uid . $user }{'userpic'} =~ /^https?:\/\//xsm ) {
             $pic =
-qq~<img src="${$uid.$user}{'userpic'}" name="avatar_img_resize" alt="" style="display:none" />~;
+qq~<img src="${$uid.$user}{'userpic'}" id="avatar_img_resize" alt="" style="display:none" />~;
         }
         else {
             $pic =
-qq~<img src="$facesurl/${$uid.$user}{'userpic'}" name="avatar_img_resize" alt="" style="display:none" />~;
+qq~<img src="$facesurl/${$uid.$user}{'userpic'}" id="avatar_img_resize" alt="" style="display:none" />~;
         }
         $pic_row =
 qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px 0px;">
@@ -3469,11 +3470,32 @@ sub usersrecentposts {
                         && AccessCheck( $curboard, q{}, $boardperms ) ne
                         'granted' )
                     {
-                        next boardcheck;
+                        next BOARDCHECK;
                     }
 
+					my $bdmods = ${$uid.$curboard}{'mods'};
+					$bdmods =~ s/\, /\,/gsm;
+					$bdmods =~ s/\ /\,/gsm;
+					my %moderators = ();
+					my $pswiammod = 0;
+					foreach my $curuser (split /\,/xsm, $bdmods) {
+						if ($username eq $curuser) { $pswiammod = 1; }
+					}
+					my $bdmodgroups = ${$uid.$curboard}{'modgroups'};
+					$bdmodgroups =~ s/\, /\,/gsm;
+					my %moderatorgroups = ();
+					foreach my $curgroup (split /\,/xsm, $bdmodgroups) {
+						if (${$uid.$username}{'position'} eq $curgroup) { $pswiammod = 1; }
+						foreach my $memberaddgroups (split /\, /sm, ${$uid.$username}{'addgroups'}) {
+							chomp $memberaddgroups;
+							if ($memberaddgroups eq $curgroup) { $pswiammod = 1; last; }
+						}
+					}
+					my $cookiename = "$cookiepassword$curboard$username";
+					my $crypass = ${$uid.$curboard}{'brdpassw'};
+					if (!$staff && !$pswiammod && $yyCookies{$cookiename} ne $crypass) { next; }
                     fopen( FILE, "$boardsdir/$curboard.txt" )
-                      || next boardcheck;
+                      || next BOARDCHECK;
                     @{ $boardtxt{$curboard} } = <FILE>;
                     fclose(FILE);
                 }

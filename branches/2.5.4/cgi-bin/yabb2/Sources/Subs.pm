@@ -1307,6 +1307,31 @@ qq~<option value="action=im" class="forumjumpcatm">$jumpto_txt{'mess'}</option>~
                 if ( !$iamadmin && $access ne 'granted' && $boardview != 1 ) {
                     next;
                 }
+				if (${$uid.$board}{'brdpasswr'}) {
+					my $bdmods = ${$uid.$board}{'mods'};
+					$bdmods =~ s/\, /\,/g;
+					$bdmods =~ s/\ /\,/g;
+					my %moderators = ();
+					my $pswiammod = 0;
+					foreach my $curuser (split(/\,/, $bdmods)) {
+						if ($username eq $curuser) { $pswiammod = 1; }
+					}
+					my $bdmodgroups = ${$uid.$board}{'modgroups'};
+					$bdmodgroups =~ s/\, /\,/g;
+					my %moderatorgroups = ();
+			
+					foreach my $curgroup (split(/\,/, $bdmodgroups)) {
+						if (${$uid.$username}{'position'} eq $curgroup) { $pswiammod = 1; }
+						foreach my $memberaddgroups (split(/\, /, ${$uid.$username}{'addgroups'})) {
+							chomp $memberaddgroups;
+							if ($memberaddgroups eq $curgroup) { $pswiammod = 1; last; }
+						}
+					}
+					my $cookiename = "$cookiepassword$board$username";
+					my $crypass = ${$uid.$board}{'brdpassw'};
+
+					if (!$iamadmin && !$iamgmod && !$pswiammod && $yyCookies{$cookiename} ne $crypass) { next; }
+				}
                 if ( $board eq $annboard && !$iamadmin && !$iamgmod && !$iamymod ) { next; }
 
                 if ( $board eq $currentboard ) {
@@ -3131,6 +3156,58 @@ sub password_check {
     $check =~ s/{yabb tmpregpasswrd2}/$tmpregpasswrd2/sm;
     
     return $check;
+}
+
+sub BoardPassw {
+	#my ($currentboard,$viewnum) = @_;
+	$yymain .= qq~
+<table class="bordercolor pad_4px cs_thin" style="width:80%">
+  <tr>
+    <td class="titlebg"><img src="$imagesdir/locking.gif" alt="" /> <b>$maintxt{'900pw'}: $boardname</b></td>
+  </tr><tr>
+    <td class="windowbg center">
+    <br />
+      <form action="$scripturl?action=checkboardpw" method="POST">
+        <input type="hidden" name="pswviewnum" value="$viewnum" />
+        <input type="hidden" name="pswcurboard" value="$currentboard" />
+        <input type="password" name="boardpw" value="" size="25"> <input type="submit" value="$maintxt{'900s'}">
+      </form>
+    <br />
+    <br />
+    </td>
+  </tr>
+</table>
+<br />
+<p class="center"><a href="javascript:history.go(-1)">$maintxt{'900b'}</a></p>
+~;
+	template();
+	exit;
+}
+
+sub BoardPasswCheck {
+
+	my $returnnum = $FORM{'pswviewnum'};
+	my $returnboard = $FORM{'pswcurboard'};
+	my $spass = ${$uid.$returnboard}{'brdpassw'};
+	my $cryptpass = encode_password("$FORM{'boardpw'}");
+
+	if ($spass ne $cryptpass) { &fatal_error('wrong_pass'); }
+	$ck{'len'} = 'Sunday, 17-Jan-2030 00:00:00 GMT';
+	my $cookiename = "$cookiepassword$returnboard$username";
+	push @otherCookies, write_cookie(
+				-name    =>   "$cookiename",
+				-value   =>   "$cryptpass",
+				-path    =>   "/",
+				-expires =>   "$ck{'len'}");
+	WriteLog();
+	undef $FORM{'boardpw'};
+	if ($returnnum ne '') { 
+		$yySetLocation = qq~$scripturl?num=$returnnum~;
+	} else {
+		$yySetLocation = qq~$scripturl?board=$returnboard~;
+	}
+	redirectexit();
+	return;
 }
 
 1;

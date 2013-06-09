@@ -17,7 +17,7 @@ $boardhandellist = qq~
 	{yabb expand}{yabb collapse}{yabb markallread}
 ~;
 $bdpicExt = 'png'; 
-## for the default annoucnement, recycle, subboard and regular board markers ## 
+## for the default announcement, recycle, subboard and regular board markers ## 
 $brdimg_new = 'on.png';
 $brdimg_old = 'off.png';
 $sub_brdimg_new = 'sub_on.png';
@@ -203,6 +203,26 @@ $boardblock = qq~
 			</tr>
 {yabb expandmessages}
 ~;
+$boardblockpw = qq~<tr>
+				<td class="boardborder center" style="background-image:url($imagesdir/spinsmal.gif);background-repeat:no-repeat; background-position:center">
+					<a href="{yabb boardurl}">{yabb new}</a>
+				</td>
+				<td class="boardborder">
+					<div style="position: relative; height: 100%; width: 100%">
+						<a id="{yabb boardanchor}" href="{yabb boardurl}"><b>{yabb boardname}</b></a><br />
+						{yabb boarddesc}
+						<div class="small" style="font-style:italic;">{yabb moderators}</div>
+					</div>
+				</td>
+                <td class="boardborder small"><b>$boardindex_txt{'330'}:</b> {yabb threadcount}<br />
+                    <b>$boardindex_txt{'21'}:</b> {yabb messagecount}
+                </td>
+				<td class="boardborder">
+					<span class="small" style="float: left; margin-left: 12px;">
+	 				{yabb lastpostlink}<br />
+	 				</span>
+	            </td>
+			</tr>~;
 
 $nopost_boardblock = qq~<tr>
 				<td class="{yabb altbrdcolor} center">
@@ -218,7 +238,7 @@ $nopost_boardblock = qq~<tr>
 {yabb expandmessages}
 ~;
 
-$subboard_links = qq~{yabb new} <a href="{yabb boardurl}">{yabb boardname}</a>~;
+$subboard_links = qq~{yabb new} <a href="{yabb boardurl}">{yabb boardname}</a> {yabb sub_lock}~;
 $subboard_list = qq~<b>{yabb subdropdown}:</b> {yabb subboardlinks}~;
 
 # Category footer                          #

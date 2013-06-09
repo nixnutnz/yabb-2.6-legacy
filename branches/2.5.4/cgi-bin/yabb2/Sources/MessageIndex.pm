@@ -96,6 +96,11 @@ sub MessageIndex {
         if ( $showmodgroups ne q{} && $showmods ne q{} ) {
             $showmods .= q~ - ~;
         }
+		if (${$uid.$currentboard}{'brdpasswr'}){
+			my $cookiename = "$cookiepassword$currentboard$username";
+			my $crypass = ${$uid.$currentboard}{'brdpassw'};
+			if (!$staff && $yyCookies{$cookiename} ne $crypass) { BoardPassw(); }
+		}
     }
 
     # Thread Tools

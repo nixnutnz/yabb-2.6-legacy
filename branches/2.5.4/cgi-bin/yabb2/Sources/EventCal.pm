@@ -1441,7 +1441,7 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
             $cal_allow =~ s/{yabb cal_modify}/$cal_icon{'modify'}/sm;
         }
     }
-    $cal_display .= $mycal_show_ssi;
+    $cal_display = $mycal_show_ssi;
     $cal_display =~ s/{yabb cal_display_show}/$cal_display_show/sm;
     $cal_display =~ s/{yabb calgotobox}/$calgotobox/sm;
     $cal_display =~ s/{yabb cal_displayssi}/$cal_displayssi/sm;

@@ -296,8 +296,10 @@ sub Postpage {
         && $destination ne 'guestpm2' )
     {   
         $extra = $mypost_extra;
-        foreach my $x ( 0 .. ( @icon_list - 1 )) {
-            $myic = 'ic' . $x;
+ 
+        foreach my $x ( 0 .. ( @iconlist - 1 )) {
+            $myic = qq~ic$x~;
+            if ($icon eq $iconlist[$x]) { $ic[$x] = ' selected="selected" '; }
             $extra =~ s/{yabb $myic}/$ic[$x]/sm;
         }
         
@@ -824,7 +826,7 @@ qq~<img src="$imagesdir/$post_ip" alt="" />~;
         $livemip = $display_txt{'511'};
         
         $livemsgimg =
-qq~<img src="$micon_bg{$icon}" name="liveicons" alt="" />~;
+qq~<img src="$micon_bg{$icon}" id="liveicons" alt="" />~;
         get_template('Post');
 
         $messageblock = $mypost_liveprev;
@@ -1495,8 +1497,8 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
 
     CheckIcon();
     
-    foreach my $x ( 0 .. ( @icon_list - 1 ) ) {
-        if ( $icon eq $icon_list[$x] ) {
+    foreach my $x ( 0 .. ( @iconlist - 1 ) ) {
+        if ( $icon eq $iconlist[$x] ) {
             $ic[$x] = q~ selected="selected" ~;
         }
         else {$ic[$x] = q{};}

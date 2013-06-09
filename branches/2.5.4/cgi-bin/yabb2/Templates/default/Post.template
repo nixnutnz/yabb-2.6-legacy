@@ -22,7 +22,7 @@ $chrwarn_r0 = 'red0.gif';
 $chrwarn_r1 = 'red1.gif';
 $post_error = 'exclamation.png';
 $post_ip = 'ip.gif';
-@icon_list = qw( xx thumbup thumbdown exclamation question lamp smiley angry cheesy grin sad wink );
+@iconlist = qw( xx thumbup thumbdown exclamation question lamp smiley angry cheesy grin sad wink standard confidential urgent );
 
 
 ## Post Top

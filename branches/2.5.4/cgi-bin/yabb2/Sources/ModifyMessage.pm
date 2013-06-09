@@ -129,19 +129,7 @@ sub ModifyMessage {
         $lastmod = $mypost_lastmod;
         $lastmod =~ s/{yabb lastmod_a}/$lastmod_a/sm;
 
-                $icon = $micon;
-                if    ($icon eq 'xx')          { $ic1  = ' selected="selected" '; }
-                elsif ($icon eq 'thumbup')     { $ic2  = ' selected="selected" '; }
-                elsif ($icon eq 'thumbdown')   { $ic3  = ' selected="selected" '; }
-                elsif ($icon eq 'exclamation') { $ic4  = ' selected="selected" '; }
-                elsif ($icon eq 'question')    { $ic5  = ' selected="selected" '; }
-                elsif ($icon eq 'lamp')        { $ic6  = ' selected="selected" '; }
-                elsif ($icon eq 'smiley')      { $ic7  = ' selected="selected" '; }
-                elsif ($icon eq 'angry')       { $ic8  = ' selected="selected" '; }
-                elsif ($icon eq 'cheesy')      { $ic9  = ' selected="selected" '; }
-                elsif ($icon eq 'grin')        { $ic10 = ' selected="selected" '; }
-                elsif ($icon eq 'sad')         { $ic11 = ' selected="selected" '; }
-                elsif ($icon eq 'wink')        { $ic12 = ' selected="selected" '; }
+        $icon = $micon;
         $message =~ s/<br \/>/\n/igsm;
         $message =~ s/<br>/\n/igxsm;
         $message =~ s/ \&nbsp; \&nbsp; \&nbsp;/\t/igsm;

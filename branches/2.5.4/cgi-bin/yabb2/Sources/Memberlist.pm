@@ -353,7 +353,7 @@ qq~$ml_txt{'dr_warning'} <a href="$boardurl/AdminIndex.$yyaext?action=newsetting
 
 		if ( $showuserpicml && $allowpics ) {
 		    ${$uid.$user}{'userpic'} ||= $my_blank_avatar;
-            $my_userpic = qq~<img src="~ . (${$uid.$user}{'userpic'} =~ m~\A[\s\n]*https?://~i ? ${$uid.$user}{'userpic'} : ( $default_avatar && ${$uid.$user}{'userpic'} eq $my_blank_avatar ) ? "$imagesdir/$default_userpic" : "$facesurl/${$uid.$user}{'userpic'}") . qq~" name="avatarml_img_resize" alt="" style="display:none" />~;
+            $my_userpic = qq~<img src="~ . (${$uid.$user}{'userpic'} =~ m~\A[\s\n]*https?://~i ? ${$uid.$user}{'userpic'} : ( $default_avatar && ${$uid.$user}{'userpic'} eq $my_blank_avatar ) ? "$imagesdir/$default_userpic" : "$facesurl/${$uid.$user}{'userpic'}") . qq~" id="avatarml_img_resize" alt="" style="display:none" />~;
             if ( !$iamguest ) { $my_userpic = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$my_userpic</a>~; }
             $userpic = $my_userpic_td;
             $userpic =~ s/{yabb my_userpic}/$my_userpic/sm;

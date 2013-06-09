@@ -57,6 +57,8 @@
 'sort_first' => qq~<img src="$imagesdir/sort_down.gif" alt="$messageindex_sort{'sort_first'}" title="$messageindex_sort{'sort_first'}" />~,
 'sort_up' => qq~<img src="$imagesdir/sort_up.gif" alt="$messageindex_sort{'sort_za'}" title="$messageindex_sort{'sort_za'}" />~,
 'sort_down' => qq~<img src="$imagesdir/sort_down.gif" alt="$messageindex_sort{'sort_az'}" title="$messageindex_sort{'sort_az'}" />~,
+'lockopen' => qq~<img src="$imagesdir/lockopen15x22.png" alt="$maintxt{'900pd'}" title="$maintxt{'900pd'}" />~,
+'lockimg' => qq~<img src="$imagesdir/lockclose15x22.png" alt="$maintxt{'900pd'}" title="$maintxt{'900pd'}"/>~,
 );
 
 %micon_bg = (

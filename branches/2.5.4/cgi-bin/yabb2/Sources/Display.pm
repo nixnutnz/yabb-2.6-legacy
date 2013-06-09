@@ -1654,7 +1654,7 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 <script type="text/javascript" src="$yyhtml_root/AJS_fx.js"></script>
 <script type="text/javascript" src="$yyhtml_root/greybox/gb_scripts.js"></script>
 <script type="text/javascript">
-<!--~;
+~;
     }
 
     $yytitle = $msubthread;

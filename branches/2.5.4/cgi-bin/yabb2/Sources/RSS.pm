@@ -51,6 +51,11 @@ sub RSS_board {
 	### Security check ###
 	if (AccessCheck($currentboard, q{}, $boardperms) ne 'granted') { RSS_error('no_access'); }
 	if ($annboard eq $board && !$iamadmin && !$iamgmod) { RSS_error('no_access'); }
+	if (${$uid.$currentboard}{'brdpasswr'}){ 
+			my $cookiename = "$cookiepassword$currentboard$username"; 
+			my $crypass = ${$uid.$currentboard}{'brdpassw'}; 
+			if (!$staff && $yyCookies{$cookiename} ne $crypass) { RSS_error('no_access'); } 
+	}
 
 	# Now, go into the board and look for the last X topics
 	fopen(BRDTXT, "$boardsdir/$board.txt") || RSS_error('cannot_open', "$boardsdir/$board.txt", 1);
@@ -208,6 +213,11 @@ sub RSS_recent {
 
 			my $access = AccessCheck($curboard, q{}, $boardperms);
 			if (!$iamadmin && $access ne 'granted') { next; }
+			if (${$uid.$curboard}{'brdpasswr'}){ 
+				my $cookiename = "$cookiepassword$curboard$username"; 
+				my $crypass = ${$uid.$curboard}{'brdpassw'}; 
+				if (!$staff && $yyCookies{$cookiename} ne $crypass) { next; } 
+			}
 
 			fopen(BOARD, "$boardsdir/$curboard.txt") || RSS_error('cannot_open', "$boardsdir/$curboard.txt", 1);
 			for my $i ( 0 .. ( $topics - 1 ) ) {

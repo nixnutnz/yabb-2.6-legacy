@@ -28,6 +28,7 @@ if ($action eq 'detailedversion') { return 1; }
 'boardnotify',"Notify.pm&BoardNotify",
 'boardnotify2',"MyCenter.pm&mycenter",
 'boardnotify3',"Notify.pm&BoardNotify2",
+'checkboardpw',"Subs.pm&BoardPasswCheck",
 'checkavail',"UserSelect.pm&checkUserAvail",
 'collapse_all',"BoardIndex.pm&Collapse_All",
 'collapse_cat',"BoardIndex.pm&Collapse_Cat",

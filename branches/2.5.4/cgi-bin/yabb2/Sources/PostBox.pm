@@ -851,7 +851,7 @@ function autoPreview() {
     if ( $my_ajxcall eq 'ajxmessage' ) {
         $x .= qq~
     var tmusername = encodeURIComponent('$displayname');
-    var sessvalue = encodeURIComponent(document.postmodify.formsession.value);
+    sessvalue = encodeURIComponent(document.postmodify.formsession.value);
     var parameters = "subject="+subjvalue+"&message="+messvalue+"&musername="+tmusername+"&nschecked="+nscheck+"&formsession="+sessvalue+"&guestname="+namevalue;
     pstHttp.open("POST", url, true);
     pstHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -900,8 +900,8 @@ function LivePrevImgResize() {
     }
 
     var tmp_array = new Array ();
-    for (var i = 0; i < liveimg_resize_names.length; i++) {
-        var tmp_image_name = liveimg_resize_names[i];
+    for ( i = 0; i < liveimg_resize_names.length; i++) {
+        tmp_image_name = liveimg_resize_names[i];
 
         if (fix_size) {
             if (maxwidth)  document.images[tmp_image_name].width  = maxwidth;

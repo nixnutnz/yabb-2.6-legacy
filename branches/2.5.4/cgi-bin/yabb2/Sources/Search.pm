@@ -160,6 +160,30 @@ q~<input type="checkbox" name="searchme" id="searchme" style="visibility: hidden
             my $access = AccessCheck( $curboard, q{}, $boardperms );
             if ( !$iamadmin && $access ne 'granted' ) { next; }
 
+			if (${$uid.$curboard}{'brdpasswr'}) {
+			my $bdmods = ${$uid.$curboard}{'mods'};
+			$bdmods =~ s/\, /\,/gsm;
+			$bdmods =~ s/\ /\,/gsm;
+			my %moderators = ();
+			my $pswiammod = 0;
+			foreach my $curuser (split /\,/xsm, $bdmods) {
+				if ($username eq $curuser) { $pswiammod = 1; }
+			}
+			my $bdmodgroups = ${$uid.$curboard}{'modgroups'};
+			$bdmodgroups =~ s/\, /\,/gsm;
+			my %moderatorgroups = ();
+			foreach my $curgroup (split /\,/xsm, $bdmodgroups) {
+				if (${$uid.$username}{'position'} eq $curgroup) { $pswiammod = 1; }
+				foreach my $memberaddgroups (split /\, /sm, ${$uid.$username}{'addgroups'}) {
+					chomp $memberaddgroups;
+					if ($memberaddgroups eq $curgroup) { $pswiammod = 1; last; }
+				}
+			}
+			my $cookiename = "$cookiepassword$curboard$username";
+			my $crypass = ${$uid.$curboard}{'brdpassw'};
+			if (!$iamadmin && !$iamgmod && !$pswiammod && $yyCookies{$cookiename} ne $crypass) { next; }
+			}
+
             # Checks to see if category is expanded or collapsed
             if ( $username ne 'Guest' ) {
                 if ( $catcol{$catid} ) {
@@ -372,6 +396,30 @@ sub plushSearch2 {
 
         my $access = AccessCheck( $curboard, q{}, $boardperms );
         if ( !$iamadmin && $access ne 'granted' ) { next; }
+
+			if (${$uid.$curboard}{'brdpasswr'}) {
+			my $bdmods = ${$uid.$curboard}{'mods'};
+			$bdmods =~ s/\, /\,/g;
+			$bdmods =~ s/\ /\,/g;
+			my %moderators = ();
+			my $pswiammod = 0;
+			foreach my $curuser (split(/\,/, $bdmods)) {
+				if ($username eq $curuser) { $pswiammod = 1; }
+			}
+			my $bdmodgroups = ${$uid.$curboard}{'modgroups'};
+			$bdmodgroups =~ s/\, /\,/g;
+			my %moderatorgroups = ();
+			foreach my $curgroup (split(/\,/, $bdmodgroups)) {
+				if (${$uid.$username}{'position'} eq $curgroup) { $pswiammod = 1; }
+				foreach my $memberaddgroups (split(/\, /, ${$uid.$username}{'addgroups'})) {
+					chomp $memberaddgroups;
+					if ($memberaddgroups eq $curgroup) { $pswiammod = 1; last; }
+				}
+			}
+			my $cookiename = "$cookiepassword$curboard$username";
+			my $crypass = ${$uid.$curboard}{'brdpassw'};
+			if (!$iamadmin && !$iamgmod && !$pswiammod && $yyCookies{$cookiename} ne $crypass) { next; }
+			}
 
         fopen( FILE, "$boardsdir/$curboard.txt" ) || next;
         @threads = <FILE>;
