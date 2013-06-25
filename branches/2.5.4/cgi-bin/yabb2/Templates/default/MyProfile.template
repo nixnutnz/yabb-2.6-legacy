@@ -609,9 +609,10 @@ $myshow_profile = qq~
             {yabb pic_row}
             <div style="float: left; width: 60%; padding-top: 5px;  padding-bottom: 5px;">
             <span style="font-size: 18px;">{yabb realname}</span><br />
-            {yabb col_title_user}
-            {yabb row_addgrp}<br />
-            {yabb memberstar_user} {yabb my_online}
+            {yabb col_title_user}<br />
+            {yabb memberstar_user}
+            {yabb row_addgrp}
+            {yabb my_online}
             <br />
             <span class="small">{yabb showusertext}</span>
             <span class="small">{yabb buddybutton}</span>

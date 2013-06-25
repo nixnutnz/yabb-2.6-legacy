@@ -15,6 +15,10 @@
 
 $HelpTemplateLoaded = '1';
 $top_img = 'back_to_top.png';
+$moderator_class  = 'catbg';
+$admin_class      = 'catbg';
+$global_mod_class = 'catbg';
+$UserClass        = 'catbg';
 
 ### Creates the Navigation Bar at the top ###
 $HelpNavBar = qq~

@@ -20,8 +20,8 @@ $bdpicExt = 'png';
 ## for the default announcement, recycle, subboard and regular board markers ## 
 $brdimg_new = 'on.png';
 $brdimg_old = 'off.png';
-$sub_brdimg_new = 'sub_on.png';
-$sub_brdimg_old = 'sub_off.png';
+$sub_brdimg_new = 'on_sub.png';
+$sub_brdimg_old = 'off_sub.png';
 $brd_dropdown = 'dropdown.png';
 $brd_dropup = 'dropup.png';
 $brd_arrowup = 'arrowup.gif';
@@ -36,7 +36,10 @@ $brd_closebutton = 'closebutton.png';
 $brd_rss = 'rss.png';
 $sub_arrow_dn = 'sub_arrow.png';
 $sub_arrow_up = 'sub_arrow_up.png';
+$extern = 'extern.png';
+$sub_extern = 'extern_sub.png';
 $tabfill = q~~;
+$topiccut = 25;
 
 $boardindex_template = qq~
 <!-- Board Index Showcase Poll start -->
@@ -174,9 +177,7 @@ $catheader = qq~
 
 # Looks of each board in category          #
 
-$topiccut = 25;
-$boardblock = qq~
-			<tr>
+$boardblock = qq~<tr>
 				<td class="{yabb altbrdcolor} center">
 					<a href="{yabb boardurl}">{yabb boardpic}</a>
 				</td>
@@ -191,8 +192,8 @@ $boardblock = qq~
 						</div>
 					</div>
 				</td>
-				<td class="{yabb altbrdcolor} center" width="8%">{yabb threadcount}</td>
-	            <td class="{yabb altbrdcolor} center" width="8%">{yabb messagecount}</td>
+				<td class="{yabb altbrdcolor} center">{yabb threadcount}</td>
+	            <td class="{yabb altbrdcolor} center">{yabb messagecount}</td>
 				<td class="{yabb altbrdcolor}">
 					<span class="small" style="float: left; margin-left: 12px;">
 						{yabb lastpostlink}<br />
@@ -204,25 +205,37 @@ $boardblock = qq~
 {yabb expandmessages}
 ~;
 $boardblockpw = qq~<tr>
-				<td class="boardborder center" style="background-image:url($imagesdir/spinsmal.gif);background-repeat:no-repeat; background-position:center">
-					<a href="{yabb boardurl}">{yabb new}</a>
+				<td class="{yabb altbrdcolor} center">
+					<a href="{yabb boardurl}">{yabb boardpic}</a>
 				</td>
-				<td class="boardborder">
+				<td class="{yabb altbrdcolor}" colspan="3">
 					<div style="position: relative; height: 100%; width: 100%">
-						<a id="{yabb boardanchor}" href="{yabb boardurl}"><b>{yabb boardname}</b></a><br />
+						{yabb new} <a id="{yabb boardanchor}" href="{yabb boardurl}"><b>{yabb boardname}</b></a><br />
 						{yabb boarddesc}
 						<div class="small" style="font-style:italic;">{yabb moderators}</div>
+						<div class="small" style="display: inline-block; margin-top:5px">{yabb subboardlist}</div>
+						<div style="position: absolute; bottom: 0px; right: 0px;">
+						{yabb messagedropdown}
+						</div>
 					</div>
 				</td>
-                <td class="boardborder small"><b>$boardindex_txt{'330'}:</b> {yabb threadcount}<br />
-                    <b>$boardindex_txt{'21'}:</b> {yabb messagecount}
-                </td>
-				<td class="boardborder">
+				<td class="{yabb altbrdcolor}">
 					<span class="small" style="float: left; margin-left: 12px;">
-	 				{yabb lastpostlink}<br />
-	 				</span>
-	            </td>
+						{yabb lastpostlink}<br />
+					</span>
+				</td>
 			</tr>~;
+
+$boardblockext = qq~<tr>
+      <td class="{yabb altbrdcolor} center"><img src="$imagesdir/$extern" alt="" /></td>
+      <td class="{yabb altbrdcolor}" colspan="3">
+            <a id="{yabb boardanchor}" href="{yabb boardurl}" target="_blank"><b>{yabb boardname}</b></a><br />
+            {yabb boarddesc}
+      </td>
+      <td class="{yabb altbrdcolor} center small">
+            <span style="float: left; margin-left: 12px;"><b>$boardindex_txt{'526'}</b>: {yabb lastpostlink}</span>
+      </td>
+</tr>~;
 
 $nopost_boardblock = qq~<tr>
 				<td class="{yabb altbrdcolor} center">
@@ -238,7 +251,8 @@ $nopost_boardblock = qq~<tr>
 {yabb expandmessages}
 ~;
 
-$subboard_links = qq~{yabb new} <a href="{yabb boardurl}">{yabb boardname}</a> {yabb sub_lock}~;
+$subboard_links = qq~{yabb new} <a href="{yabb boardurl}">{yabb boardname}</a>{yabb sub_lock}~;
+$subboard_links_ext = qq~<img src="$imagesdir/$sub_extern" alt="" /><a href="{yabb boardurl}" target="_blank">{yabb boardname}</a>~;
 $subboard_list = qq~<b>{yabb subdropdown}:</b> {yabb subboardlinks}~;
 
 # Category footer                          #
