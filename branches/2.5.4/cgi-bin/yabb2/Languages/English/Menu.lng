@@ -95,6 +95,7 @@ if (!$language){$language = $lang;}
 'youtube' => 'YouTube',
 'birthdaylist' => 'Birthday List',
 'eventcal' => 'Calendar',
+'to_top' => 'To Top of Page', 
 );
 
 %img_polltxt = (

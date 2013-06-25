@@ -65,18 +65,19 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 '61a' => 'Category ID:',
 '61b' => '<span class="small">enter any alphanumeric name you wish with no spaces</span>',
 '62' => 'Description',
+'62a' => 'If this is to be an external board link, the first line of the description should be the title of the Name link.',
 '63' => 'Moderators',
 '63a' => 'Copy',
 '63b' => 'Paste',
 '63c' => 'Paste to all',
 '64' => 'Optional/Advanced Settings:',
-'64a' => '(these do not need to be filled out completely)',
+'64a' => '(these do not need to be filled out completely and may have no affect if this is an External Link Board)',
 '64b' => 'Board Picture',
 '64b2' => 'Category Picture',
 '64c' => 'Zero Post-Count Board?',
 '64d' => 'If checked, posts in this board will not contribute to a user&#39;s post count.',
 '64e' => 'Show to all?',
-'64f' => 'If checked, the board is visible to anyone able to view the Board Index, even if they are not allowed to access the board itself.',
+'64f' => q~If checked, the board is visible to anyone able to view the Board Index, even if they are not allowed to access the board itself.<br />If this is an External Link Board, this will over-ride the 'Allowed to View Topics' Group Permissions set below.~,
 '64g' => 'Global Announcements?',
 '64h' => 'If checked, topics in this board are shown as "Important Topics" at the top of every other board&#39;s Message Index. Only Administrators and Global Moderators (if allowed) may post in this board; all permissions for other groups are ignored. The board itself will be visible in the Board Index only for Admins and Global Mods (if allowed).',
 '64i' => 'Recycle Bin?',
@@ -95,6 +96,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 '66' => 'Click here to view the relevant Help section',
 '67' => 'Maintenance Settings',
 '68' => 'Name',
+'68a' => q~If this is to be an external board link, the name should be in the format of 'http://boardlink'~,
 '70' => 'Subject',
 '72' => 'Message',
 '87' => 'Main Group',
@@ -394,7 +396,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 '698a' => '<br /><br />You currently have logging disabled.',
 '699' => 'Reserved names will keep members from registering certain usernames or using these words in their displayed names. Choose the options you wish to use from the bottom before submitting.',
 '702' => 'E-mail Random Password to New Member Upon Registration?',
-'710' => 'Password-Strength-Meter Scores<br /><span class ="small">Here you can define when the line jumps to the next higher level. Default is <i>10,15,30,40</i>. <font color="red">Insert only numbers and commas or you can get into trouble!!!</font><br />Set to <i>-1,-1,-1,-1</i> to disable the Password-Strength-Meter feature. Then it will show only if the Password is too short or if it is OK.</span>',
+'710' => 'Password-Strength-Meter Scores<br /><span class ="small">Here you can define when the line jumps to the next higher level. Default is <i>10,15,30,40</i>. <span style="color:red">Insert only numbers and commas or you can get into trouble!!!</span><br />Set to <i>-1,-1,-1,-1</i> to disable the Password-Strength-Meter feature. Then it will show only if the Password is too short or if it is OK.</span>',
 '711' => 'Password-Strength-Meter common words<br /><span class ="small">Enter all words that will be shown as "Unsafe Password!". The words must be between "" and separated by commas. Example:<br />"123456","abcdef","password"</span>',
 '712' => 'Password-Strength-Meter minimum characters<br /><span class ="small">Enter the minimum number of characters required for the password to be considered "not too short."</span>',
 '723' => 'Allow users to hide their e-mail from public view (except from Administrators)?',
@@ -1232,7 +1234,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'allow' => 'Select which Staff Members to allow bypassing the lock on posts:',
 'fa' => 'FA only',
 'gmod' => 'FA/GMod only',
-'ymod' => 'FA/GMod/FMod'
+'ymod' => 'FA/GMod/FMod',
 'mod' => 'FA/GMod/FMod/Mod',
 );
 
@@ -1445,6 +1447,14 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'linklabel' => 'Click here to select/add moderators(s)',
 'instructions' => 'double-click to remove a name from the list',
 'remove' => 'Are you sure you want to remove the member from the list?',
+);
+
+%boardpass_txt = (
+'900p' => 'There is an invalid character in the Board Password field. Valid Characters are Letters(a-z), Numbers (0-9), and ( # + - . @ ^ _ )',
+'900pw' => 'Enter Password to access this board',
+'900pwb' => '<b>Note</b>: Setting a password for an External Link Board has no affect.',
+'900pf' => 'Checking this option and enter password here for access this Board password required',
+'900pt' => 'Password for this Board was set successfully.',
 );
 
 timetostring($date);

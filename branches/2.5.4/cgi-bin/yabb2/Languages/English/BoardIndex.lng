@@ -59,6 +59,7 @@ $boardindexlngver = 'YaBB 2.5.4 $Revision$';
 '500a' => 'Complete', # inside JavaScript!
 '524' => 'In',
 '525' => 'By',
+'526' => 'Redirected Hits',
 '685' => 'Info Center',
 '791' => 'View the',
 '792' => 'most recent posts',

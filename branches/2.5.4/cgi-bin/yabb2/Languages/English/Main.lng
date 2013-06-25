@@ -129,6 +129,11 @@ $abbr_lang = 'en-us';
 '769' => 'Today',
 '769a'=> 'Yesterday',
 '773' => 'Would you like to print this page now?',
+'900b' => 'Back',
+'900s' => 'Submit',
+'900pw' => 'Enter Password for',
+'900pd' => 'Password Access Board',
+'900pr' => 'Private',
 'dst' => '<sup>*</sup>',
 'rssfeed' => 'RSS Feed',
 'freeuserspace' => 'Free Host space available:',
@@ -139,7 +144,7 @@ $abbr_lang = 'en-us';
 'noscript' => 'You must enable JavaScript to get full functionality for this forum!',
 'go_to_board' => 'Go to the Board Index',
 'searchimg' => 'Posts no more than',
-'searchimg2' => 'days old', 
+'searchimg2' => 'days old',
 );
 
 %load_txt = (

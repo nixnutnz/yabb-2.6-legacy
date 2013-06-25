@@ -64,6 +64,7 @@ $errorlngver = 'YaBB 2.5.4 $Revision$';
 'module_missing'       => "Module(s) or functionality needed not installed on this server !!",
 'low_diskspace'        => "The available disk/hostspace is low. The forum was put to maintenance to avoid file corruption. Please notify the administrator of this error !!",
 'invalid_key'          => "Masterkey is invalid!<br />This should be a text string between 8 and 24 characters long!",
+'wrong_pass' 			=> "Wrong password!",
 'corrupt_member_file'  => "The member data file is corrupt. Please notify the administrator of this error!",
 
 ## BoardIndex ##
