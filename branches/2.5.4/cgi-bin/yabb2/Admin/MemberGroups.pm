@@ -33,7 +33,7 @@ sub EditMemberGroups {
     my (
         $MemStatYMod,   $MemStarNumYMod,  $MemStarPicYMod, $MemTypeColYMod,
         $noshowYMod,    $viewpermsYMod,   $topicpermsYMod, $replypermsYMod,
-        $pollpermsMod, $attachpermsMod, undef
+        $pollpermsMod,  $attachpermsMod, undef
     ) = split /\|/xsm, $Group{'Mid Moderator'};
     my (
         $MemStatMod,   $MemStarNumMod,  $MemStarPicMod, $MemTypeColMod,
@@ -45,7 +45,7 @@ sub EditMemberGroups {
     $noshowGMod =
       ( $noshowGMod == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
     $noshowYMod =
-      ( $noshowMod == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
+      ( $noshowYMod == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
     $noshowMod =
       ( $noshowMod == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
     my $adminpi = permImage(
@@ -477,12 +477,12 @@ sub editAddGroup {
 		<td class="windowbg"><label for="starsadmin">$amgtxt{'38'}:</label></td>
 		<td class="windowbg2">
 			<select name="starsadmin" id="starsadmin" onchange="stars(this.value); showimage();">
-            	<option value="staradmin.gif" $stara[1]>$amgtxt{'20'}</option>
-                <option value="stargmod.gif" $stara[2]>$amgtxt{'21'}</option>
-                <option value="starmod.gif" $stara[3]>$amgtxt{'22'}</option>
-                <option value="starblue.gif" $stara[4]>$amgtxt{'23'}</option>
-                <option value="starsilver.gif" $stara[5]>$amgtxt{'24'}</option>
-                <option value="stargold.gif" $stara[6]>$amgtxt{'25'}</option>
+            	<option value="staradmin.png" $stara[1]>$amgtxt{'20'}</option>
+                <option value="stargmod.png" $stara[2]>$amgtxt{'21'}</option>
+                <option value="starmod.png" $stara[3]>$amgtxt{'22'}</option>
+                <option value="starblue.png" $stara[4]>$amgtxt{'23'}</option>
+                <option value="starsilver.png" $stara[5]>$amgtxt{'24'}</option>
+                <option value="stargold.png" $stara[6]>$amgtxt{'25'}</option>
                 <option value="other" $stara[7]>$amgtxt{'26'}</option>
 			</select>
 			&nbsp;
@@ -574,14 +574,11 @@ sub editAddGroup {
     }
     if ( $INFO{'group'} ne 'Administrator' ) {
         $yymain .= qq~
-</table>
+    </table>
 </div>
 <div class="bordercolor rightboxdiva">
 	<table class="cs_thin pad_4px">
-	    <col span="2" class="w_20pc" />
-    	<col style="width:21%" />
-    	<col style="width:19%" />
-    	<col class="w_20pc" />
+	    <col span="5" class="w_20pc" />
 		<tr>
 			<td class="titlebg" colspan="5">
 				<img src="$imagesdir/preferences.gif" alt="" /><b>$amgtxt{'44'}</b>
