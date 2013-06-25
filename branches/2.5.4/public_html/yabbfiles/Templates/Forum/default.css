@@ -1087,7 +1087,6 @@ table.pad_0 td, .padd_0 {
 padding:0;
 }
 
-
 .h_18px {
 height:18px;
 }
@@ -1593,4 +1592,9 @@ color: #ff0000;
 h4.help {
 text-decoration:underline;
 margin-bottom:0;
+}
+
+.navmenu {
+float:right;
+width:40px;
 }
