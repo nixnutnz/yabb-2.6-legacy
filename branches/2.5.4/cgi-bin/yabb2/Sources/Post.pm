@@ -1,19 +1,20 @@
 ###############################################################################
 # Post.pm                                                                     #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-#use warnings;
-#no warnings qw(uninitialized once redefine);
+# use warnings;
+# no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.5.4';
 
@@ -43,11 +44,21 @@ $set_subjectMaxLength ||= 50;
 
 LoadCensorList();
 if ( $action eq 'eventcal' && $MaxCalMessLen && $AdMaxCalMessLen ) {
-    $MaxMessLen = $MaxCalMessLen;
+    $MaxMessLen   = $MaxCalMessLen;
     $AdMaxMessLen = $AdMaxCalMessLen;
 }
-if ( ( $action eq 'guestpm' || $action eq 'guestpm2' || $action eq 'modalert' || $action eq 'modalert2' ) && $MaxIMMessLen && $AdMaxIMMessLen ) {
-    $MaxMessLen = $MaxIMMessLen;
+if (
+    (
+           $action eq 'guestpm'
+        || $action eq 'guestpm2'
+        || $action eq 'modalert'
+        || $action eq 'modalert2'
+    )
+    && $MaxIMMessLen
+    && $AdMaxIMMessLen
+  )
+{
+    $MaxMessLen   = $MaxIMMessLen;
     $AdMaxMessLen = $AdMaxIMMessLen;
 }
 
@@ -294,15 +305,15 @@ sub Postpage {
     if (   $postid ne 'Poll'
         && $destination ne 'modalert2'
         && $destination ne 'guestpm2' )
-    {   
+    {
         $extra = $mypost_extra;
- 
-        foreach my $x ( 0 .. ( @iconlist - 1 )) {
+
+        foreach my $x ( 0 .. ( @iconlist - 1 ) ) {
             $myic = qq~ic$x~;
-            if ($icon eq $iconlist[$x]) { $ic[$x] = ' selected="selected" '; }
+            if ( $icon eq $iconlist[$x] ) { $ic[$x] = ' selected="selected" '; }
             $extra =~ s/{yabb $myic}/$ic[$x]/sm;
         }
-        
+
         $extra =~ s/{yabb icon}/$icon/sm;
         $extra =~ s/{yabb icon_img}/$micon_bg{$icon}/sm;
 
@@ -567,7 +578,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
     ~;
 
     if ( $destination ne 'modalert2' && $destination ne 'guestpm2' ) {
-        
+
         $my_modalert = qq~
     function Hash() {
         this.length = 0;
@@ -765,21 +776,21 @@ qq~            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onke
             if ( !${ $uid . $tmpmusername }{'password'} ) {
                 LoadUser($tmpmusername);
             }
-            if ($tmpmusername eq $username) { LoadMiniUser($tmpmusername) ;}
+            if ( $tmpmusername eq $username ) { LoadMiniUser($tmpmusername); }
             if ( !$yyUDLoaded{$tmpmusername}
                 && -e ("$memberdir/$tmpmusername.vars") )
             {
-				my $tmpmess = $message;
-				LoadUserDisplay($tmpmusername);
-				$message = $tmpmess;
-			}
+                my $tmpmess = $message;
+                LoadUserDisplay($tmpmusername);
+                $message = $tmpmess;
+            }
             $liveusernamelink = $format{$tmpmusername};
             $livememberinfo =
               "$memberinfo{$tmpmusername}$addmembergroup{$tmpmusername}";
             $livememberstar = $memberstar{$tmpmusername};
 
             $livepostcount =
-              NumberFormat( ${ $uid . $tmpmusername }{'postcount'} );          
+              NumberFormat( ${ $uid . $tmpmusername }{'postcount'} );
             $livetemplate_postinfo =
               qq~$display_txt{'21'}: $livepostcount<br />~;
             if (   ${ $uid . $tmpmusername }{'bday'}
@@ -798,8 +809,10 @@ qq~            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onke
                   qq~$display_txt{'regdate'} $dr_regdate<br />~;
             }
             if ( ${ $uid . $tmpmusername }{'location'} ) {
-                $liveuserlocation = qq~$display_txt{'location'}:~ .
-                  ${ $uid . $tmpmusername }{'location'} . '<br />';
+                $liveuserlocation =
+                    qq~$display_txt{'location'}:~
+                  . ${ $uid . $tmpmusername }{'location'}
+                  . '<br />';
             }
             if ( $action eq 'modify' ) {
                 if (
@@ -818,46 +831,47 @@ qq~<div class="small" style="float: right; width: 100%; text-align: right; margi
                 $subjdate        = timeformat($date);
                 $tmplastmodified = q{};
             }
-            if ( ${ $uid . $tmpmusername }{'signature'}) { $livesignature_hr =
-qq~<hr class="hr" style="margin: 0; margin-top: 5px; margin-bottom: 5px; padding: 0;" />~;}
+            if ( ${ $uid . $tmpmusername }{'signature'} ) {
+                $livesignature_hr =
+q~<hr class="hr" style="margin: 0; margin-top: 5px; margin-bottom: 5px; padding: 0;" />~;
+            }
         }
-        $liveipimg =
-qq~<img src="$imagesdir/$post_ip" alt="" />~;
-        $livemip = $display_txt{'511'};
-        
-        $livemsgimg =
-qq~<img src="$micon_bg{$icon}" id="liveicons" alt="" />~;
+        $liveipimg = qq~<img src="$imagesdir/$post_ip" alt="" />~;
+        $livemip   = $display_txt{'511'};
+
+        $livemsgimg = qq~<img src="$micon_bg{$icon}" id="liveicons" alt="" />~;
         get_template('Post');
 
         $messageblock = $mypost_liveprev;
-        $messageblock =~ s/({|<)yabb images(}|>)/$imagesdir/g;
-        $messageblock =~ s/({|<)yabb css(}|>)/$css/g;
-		$messageblock =~ s/({|<)yabb userlink(}|>)/<span id="savename" style="font-weight: bold">$liveusernamelink<\/span>/g;
-        $messageblock =~ s/({|<)yabb memberinfo(}|>)/$livememberinfo/g;
-        $messageblock =~ s/({|<)yabb stars(}|>)/$livememberstar/g;
-        $messageblock =~ s/({|<)yabb location(}|>)/$liveuserlocation/g;
+        $messageblock =~ s/({|<)yabb images(}|>)/$imagesdir/gsm;
+        $messageblock =~ s/({|<)yabb css(}|>)/$css/gsm;
         $messageblock =~
-          s/({|<)yabb gender(}|>)/${$uid.$tmpmusername}{'gender'}/g;
+s/({|<)yabb userlink(}|>)/<span id="savename" style="font-weight: bold">$liveusernamelink<\/span>/gsm;
+        $messageblock =~ s/({|<)yabb memberinfo(}|>)/$livememberinfo/gsm;
+        $messageblock =~ s/({|<)yabb stars(}|>)/$livememberstar/gsm;
+        $messageblock =~ s/({|<)yabb location(}|>)/$liveuserlocation/gsm;
         $messageblock =~
-          s/({|<)yabb usertext(}|>)/${$uid.$tmpmusername}{'usertext'}/g;
+          s/({|<)yabb gender(}|>)/${$uid.$tmpmusername}{'gender'}/gsm;
         $messageblock =~
-          s/({|<)yabb userpic(}|>)/${$uid.$tmpmusername}{'userpic'}/g;
-        $messageblock =~ s/({|<)yabb postinfo(}|>)/$livetemplate_postinfo/g;
-        $messageblock =~ s/({|<)yabb msgdate(}|>)/$moddate/g;
-        $messageblock =~ s/({|<)yabb msgimg(}|>)/$livemsgimg/g;
-        $messageblock =~ s/({|<)yabb age(}|>)/$liveuser_age/g;
-        $messageblock =~ s/({|<)yabb regdate(}|>)/$liveuser_regdate/g;
+          s/({|<)yabb usertext(}|>)/${$uid.$tmpmusername}{'usertext'}/gsm;
         $messageblock =~
-          s/({|<)yabb subject(}|>)/<span id="savesubj"><\/span>/g;
+          s/({|<)yabb userpic(}|>)/${$uid.$tmpmusername}{'userpic'}/gsm;
+        $messageblock =~ s/({|<)yabb postinfo(}|>)/$livetemplate_postinfo/gsm;
+        $messageblock =~ s/({|<)yabb msgdate(}|>)/$moddate/gsm;
+        $messageblock =~ s/({|<)yabb msgimg(}|>)/$livemsgimg/gsm;
+        $messageblock =~ s/({|<)yabb age(}|>)/$liveuser_age/gsm;
+        $messageblock =~ s/({|<)yabb regdate(}|>)/$liveuser_regdate/gsm;
         $messageblock =~
-          s/({|<)yabb message(}|>)/<span id="savemess"><\/span>/g;
-        $messageblock =~ s/({|<)yabb modified(}|>)/$tmplastmodified/g;
-        $messageblock =~ s/({|<)yabb ipimg(}|>)/$liveipimg/g;
-        $messageblock =~ s/({|<)yabb ip(}|>)/$livemip/g;
+          s/({|<)yabb subject(}|>)/<span id="savesubj"><\/span>/gsm;
         $messageblock =~
-          s/({|<)yabb signature(}|>)/${$uid.$tmpmusername}{'signature'}/g;
-        $messageblock =~ s/({|<)yabb signaturehr(}|>)/$livesignature_hr/g;
-        $messageblock =~ s/({|<)yabb (.+?)(}|>)//g;
+          s/({|<)yabb message(}|>)/<span id="savemess"><\/span>/gsm;
+        $messageblock =~ s/({|<)yabb modified(}|>)/$tmplastmodified/gsm;
+        $messageblock =~ s/({|<)yabb ipimg(}|>)/$liveipimg/gsm;
+        $messageblock =~ s/({|<)yabb ip(}|>)/$livemip/gsm;
+        $messageblock =~
+          s/({|<)yabb signature(}|>)/${$uid.$tmpmusername}{'signature'}/gsm;
+        $messageblock =~ s/({|<)yabb signaturehr(}|>)/$livesignature_hr/gsm;
+        $messageblock =~ s/({|<)yabb (.+?)(}|>)//gsm;
         my $nolinkallow;
         if ( !$minlinkpost ) { $minlinkpost = 0; }
 
@@ -1028,7 +1042,12 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             <span class="small"><img src="$imagesdir/$cat_col" id="feature_col" alt="$npf_txt{'collapse_features'}" title="$npf_txt{'collapse_features'}" class="cursor" onclick="show_features(0);" /> $npf_txt{'features_text'}</span>
             <input type="hidden" name="col_rowb" id="col_row" value="$col_row" />~;
 
-        if ( !$removenormalsmilies && (!${$uid.$username}{'hide_smilies_row'} || !$user_hide_smilies_row) ) {
+        if (
+            !$removenormalsmilies
+            && (   !${ $uid . $username }{'hide_smilies_row'}
+                || !$user_hide_smilies_row )
+          )
+        {
             $my_smilies = $mypost_smilies;
             $my_smilies .= q~<script type="text/javascript">~;
             $my_smilies .= smilies_list();
@@ -1172,17 +1191,23 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
 
         # /File Attachment's Browse Box Code
 
-    ### Return To mod start ###
-    my ($return_to);
-    my $rts = $FORM{'return_to'} ? $FORM{'return_to'} : ${$uid.$username}{'return_to'};
-    for my $rt( 1 .. 3 ) {
-         $return_to_select .= $rts == $rt ? qq~<option value="$rt" selected="selected">$return_to_txt{$rt}</option>~ : qq~<option value="$rt">$return_to_txt{$rt}</option>~;
-    }
-    if ($destination ne 'modalert2' && $destination ne 'guestpm2') {
-        $return_to = $mypost_return_to;
-        $return_to =~ s/{yabb return_to_select}/$return_to_select/sm;     
-    }
-    ### Return To mod end ###
+        ### Return To mod start ###
+        my ($return_to);
+        my $rts =
+            $FORM{'return_to'}
+          ? $FORM{'return_to'}
+          : ${ $uid . $username }{'return_to'};
+        for my $rt ( 1 .. 3 ) {
+            $return_to_select .=
+              $rts == $rt
+              ? qq~<option value="$rt" selected="selected">$return_to_txt{$rt}</option>~
+              : qq~<option value="$rt">$return_to_txt{$rt}</option>~;
+        }
+        if ( $destination ne 'modalert2' && $destination ne 'guestpm2' ) {
+            $return_to = $mypost_return_to;
+            $return_to =~ s/{yabb return_to_select}/$return_to_select/sm;
+        }
+        ### Return To mod end ###
         $my_postsec_b   = postbox2();
         $my_postsection = $mypost_postblock;
         $my_postsection =~ s/{yabb my_postsection_ajx}/$my_postsection_ajx/sm;
@@ -1214,12 +1239,13 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         $my_postsection =~ s/{yabb return_to}/$return_to/sm;
     }
 
-#    these are the buttons to submit
-#    if ($is_preview) { $post_txt{'507'} = $post_txt{'771'}; }
+    #    these are the buttons to submit
+    #    if ($is_preview) { $post_txt{'507'} = $post_txt{'771'}; }
     $my_post_submit = qq~$mypost_submit
             $hidestatus
             <br />
             <input type="submit" name="$post" id="$post" value="$submittxt" accesskey="s" tabindex="5" class="button" />~
+
 # remove Preview
 #      . (
 #        $postid ne 'Poll'
@@ -1232,11 +1258,11 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                 if (/mac/i.test(navigator.platform)) {
                     document.write("<br /><span class='small'>~
       . ( $postid ne 'Poll' ? $post_txt{'331'} : $post_txt{'331a'} )
-      . q~</span>"); } 
+      . q~</span>"); }
         else if (/MSIE [7-9]/.test(navigator.userAgent) || (/\\/[3-9]\\.\\d+\\.\\d+ Safari/.test(navigator.userAgent))) {
                     document.write("<br /><span class='small'>~
       . ( $postid ne 'Poll' ? $post_txt{'329'} : $post_txt{'329a'} )
-      . q~</span>");} 
+      . q~</span>");}
          else if (/Firefox\\/[2-9]/.test(navigator.userAgent) || (/Chrome/.test(navigator.userAgent))) {
                     document.write("<br /><span class='small'>~
       . ( $postid ne 'Poll' ? $post_txt{'330'} : $post_txt{'330a'} )
@@ -1284,7 +1310,7 @@ function showtpstatus() {
     if(z == 1 && x == 1)  theimg = 'hide';
     if(z == 2 && x == 1)  theimg = 'hidelock';~;
         }
-        $my_tclass .= qq~
+        $my_tclass .= q~
     var picon_show = jsPstat.getItem(theimg);
     document.images.thrstat.src = picon_show;
 }
@@ -1323,14 +1349,15 @@ showtpstatus();
     $jstimeselected = ${ $uid . $username }{'timeselect'} || $timeselected;
 
     if ( $postid ne 'Poll' ) {
-        $my_ajxcall = 'ajxmessage';
+        $my_ajxcall   = 'ajxmessage';
         $my_postbox_3 = postbox3();
         $my_postbox_3 .= qq~
 <script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
 <script type="text/javascript">~;
         $my_postbox_3 .= my_liveprev();
 
-		$my_postbox_3 .= ( !$Quick_Post ? "document.postmodify.$settofield.focus();" : q{} )
+        $my_postbox_3 .=
+          ( !$Quick_Post ? "document.postmodify.$settofield.focus();" : q{} )
           . qq~\n\n~;
 
         if ( $post eq 'imsend' ) {
@@ -1496,14 +1523,14 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     $message = regex_3($message);
 
     CheckIcon();
-    
+
     foreach my $x ( 0 .. ( @iconlist - 1 ) ) {
         if ( $icon eq $iconlist[$x] ) {
             $ic[$x] = q~ selected="selected" ~;
         }
-        else {$ic[$x] = q{};}
+        else { $ic[$x] = q{}; }
     }
-            
+
     if    ( $FORM{'status'} eq 'c' ) { $icon = 'confidential'; }
     elsif ( $FORM{'status'} eq 'u' ) { $icon = 'urgent'; }
     elsif ( $FORM{'status'} eq 's' ) { $icon = 'standard'; }
@@ -1625,20 +1652,6 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     $message = $mess;
 
     if ($error) { $csubject = $error; }
-
-    if ($img_greybox) {
-        $yyinlinestyle .=
-qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/css" />\n~;
-        $yyjavascript .= qq~
-var GB_ROOT_DIR = "$yyhtml_root/greybox/";
-//-->
-</script>
-<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>
-<script type="text/javascript" src="$yyhtml_root/AJS_fx.js"></script>
-<script type="text/javascript" src="$yyhtml_root/greybox/gb_scripts.js"></script>
-<script type="text/javascript">
-~;
-    }
 
     $yytitle =
       $error
@@ -1999,7 +2012,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
         if ( $numcount < 2 ) { Preview("$post_polltxt{'38'}"); }
     }
 
-    my ( $file, $fixfile, @filelist, %filesizekb );
+    my ( $file, $fixfile, @filelist, %filesizekb, $fixext );
     for my $y ( 1 .. $allowattach ) {
         if ($CGI_query) { $file = $CGI_query->upload("file$y"); }
         if ($file) {
@@ -2025,9 +2038,9 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
 
             # replace . with _ in the filename except for the extension
             my $fixname = $fixfile;
-            $fixname =~ s/(.+)(\..+?)$/$1/xsm;
-            my $fixext = $2;
-
+            if ( $fixname =~ s/(.+)(\..+?)$/$1/xsm ) {
+                $fixext = $2;
+            }
             $spamdetected = spamcheck("$fixname");
             if ( !$staff ) {
                 if ( $spamdetected == 1 ) {
@@ -2117,8 +2130,8 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
 
  # create a new file on the server using the formatted ( new instance ) filename
             if ( fopen( NEWFILE, ">$uploaddir/$fixfile" ) ) {
-                binmode NEWFILE
-                  ; # needed for operating systems (OS) Windows, ignored by Linux
+                binmode NEWFILE;
+                    # needed for operating systems (OS) Windows, ignored by Linux
                 print {NEWFILE} $file_buffer
                   or croak 'cannot write NEWFILE';    # write new file on HD
                 fclose(NEWFILE);
@@ -2463,25 +2476,26 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
         ManageThreadNotify( 'delete', $thread, $username );
     }
 
-    my $rts = $FORM{'return_to'};		
-    if ($rts == 3) {
-        $yySetLocation = qq~$scripturl~; 
-        dumplog($currentboard, $date);
-        dumplog($thread, $date);
-        if (!$INFO{'num'}) { MessageTotals('incview', $thread); }
+    my $rts = $FORM{'return_to'};
+    if ( $rts == 3 ) {
+        $yySetLocation = qq~$scripturl~;
+        dumplog( $currentboard, $date );
+        dumplog( $thread,       $date );
+        if ( !$INFO{'num'} ) { MessageTotals( 'incview', $thread ); }
     }
-    elsif ($rts == 2) {
+    elsif ( $rts == 2 ) {
         $yySetLocation = qq~$scripturl?board=$currentboard~;
-        &dumplog($thread, $date);
-        if (!$INFO{'num'}) { MessageTotals('incview', $thread); }
+        dumplog( $thread, $date );
+        if ( !$INFO{'num'} ) { MessageTotals( 'incview', $thread ); }
     }
-    else { 
-        if ($currentboard eq $annboard) {
-            $yySetLocation = qq~$scripturl?virboard=$FORM{'virboard'};num=$thread/$start#$mreplies~;
+    else {
+        if ( $currentboard eq $annboard ) {
+            $yySetLocation =
+qq~$scripturl?virboard=$FORM{'virboard'};num=$thread/$start#$mreplies~;
         }
-        else { 
+        else {
             $yySetLocation = qq~$scripturl?num=$thread/$start#$mreplies~;
-        }	
+        }
     }
     redirectexit();
     return;

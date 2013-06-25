@@ -1,13 +1,14 @@
 ###############################################################################
 # Mailer.pm                                                                   #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -59,7 +60,7 @@ sub sendmail {
         @mailout =
           ( $fromheader, $toheader, $subject, $message, $charsetheader );
         tomail( $MAIL, \@mailout );
-        close $MAIL;# or croak 'cannot close mail';
+        close $MAIL;    # or croak 'cannot close mail';
 
         return 1;
     }
@@ -80,18 +81,18 @@ sub sendmail {
                 use Net::SMTP;
                 push @arg, Debug => 0;
                 $smtp = Net::SMTP->new(@arg) || croak "Unable to create Net::SMTP object. Server: '$smtp_server'\n\n" . $OS_ERROR;
-			^;
+            ^;
         }
         else {
             eval q^
                 use Net::SMTP::TLS;
-				my $port = 25;
+                my $port = 25;
                 if ($smtp_server =~ s/:(\d+)$//sm) { $port = $1; }
                 push @arg, Port => $port;
                 if ($authuser) { push @arg, User => "$authuser" ;}
                 if ($authpass) { push @arg, Password => "$authpass" ;}
                         $smtp = Net::SMTP::TLS->new(@arg) || croak "Unable to create Net::SMTP::TLS object. Server: '$smtp_server', port '$port'\n\n" . $OS_ERROR;
-			^;
+            ^;
         }
         if ($EVAL_ERROR) {
             fatal_error( 'net_fatal',
@@ -99,19 +100,19 @@ sub sendmail {
         }
 
         eval q^
-			$smtp->mail($from);
+            $smtp->mail($from);
                   foreach (split /, /sm, $to) { $smtp->to($_); }
-			$smtp->data();
-			$smtp->datasend("To: $toheader\r\n");
-			$smtp->datasend("From: $fromheader\r\n");
-			$smtp->datasend("X-Mailer: YaBB Net::SMTP\r\n");
-			$smtp->datasend("Subject: $subject\r\n");
-			$smtp->datasend("Content-Type: text/plain\; charset=$charsetheader\r\n");
-			$smtp->datasend("\r\n");
-			$smtp->datasend($message);
-			$smtp->dataend();
-			$smtp->quit();
-		^;
+            $smtp->data();
+            $smtp->datasend("To: $toheader\r\n");
+            $smtp->datasend("From: $fromheader\r\n");
+            $smtp->datasend("X-Mailer: YaBB Net::SMTP\r\n");
+            $smtp->datasend("Subject: $subject\r\n");
+            $smtp->datasend("Content-Type: text/plain\; charset=$charsetheader\r\n");
+            $smtp->datasend("\r\n");
+            $smtp->datasend($message);
+            $smtp->dataend();
+            $smtp->quit();
+        ^;
         if ($EVAL_ERROR) {
             fatal_error( 'net_fatal',
                 "$error_txt{'error_verbose'}: $EVAL_ERROR" );

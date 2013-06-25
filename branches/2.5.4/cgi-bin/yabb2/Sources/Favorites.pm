@@ -1,13 +1,14 @@
 ###############################################################################
 # Favorites.pm                                                                #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -35,39 +36,40 @@ sub Favorites {
 # grab all relevant info on the favorite thread for this user and check access to them
     if ( !$maxfavs ) { $maxfavs = 10; }
     my @favboards;
-    eval { require Variables::Movedthreads };
-    foreach my $myfav ( split /,/xsm, ${ $uid . $username }{'favorites'} ) {
+    if ( eval { require Variables::Movedthreads; 1 } ) {
+        foreach my $myfav ( split /,/xsm, ${ $uid . $username }{'favorites'} ) {
 
-        # see if thread exists and search for it if moved
-        if ( exists $moved_file{$myfav} ) {
-            my @moved = ($myfav);
-            while ( exists $moved_file{$myfav} ) {
-                $myfav = $moved_file{$myfav};
-                unshift @moved, $myfav;
-            }
-            foreach (@moved) {
-                $myfav = $_;
-                if ( $myfav ne $moved[-1] ) {
-                    if ( -e "$datadir/$myfav.ctb" ) {
-                        RemFav( $moved[-1], 'nonexist' );
-                        AddFav( $myfav, 0, 1 );
-                        last;
+            # see if thread exists and search for it if moved
+            if ( exists $moved_file{$myfav} ) {
+                my @moved = ($myfav);
+                while ( exists $moved_file{$myfav} ) {
+                    $myfav = $moved_file{$myfav};
+                    unshift @moved, $myfav;
+                }
+                foreach (@moved) {
+                    $myfav = $_;
+                    if ( $myfav ne $moved[-1] ) {
+                        if ( -e "$datadir/$myfav.ctb" ) {
+                            RemFav( $moved[-1], 'nonexist' );
+                            AddFav( $myfav, 0, 1 );
+                            last;
+                        }
+                    }
+                    elsif ( !-e "$datadir/$myfav.ctb" ) {
+                        RemFav( $myfav, 'nonexist' );
+                        $myfav = 0;
                     }
                 }
-                elsif ( !-e "$datadir/$myfav.ctb" ) {
-                    RemFav( $myfav, 'nonexist' );
-                    $myfav = 0;
-                }
+                next if !$myfav;
             }
-            next if !$myfav;
+            elsif ( !-e "$datadir/$myfav.ctb" ) {
+                RemFav( $myfav, 'nonexist' );
+                next;
+            }
+            MessageTotals( 'load', $myfav );
+            $favoboard = ${$myfav}{'board'};
+            push @favboards, "$favoboard|$myfav";
         }
-        elsif ( !-e "$datadir/$myfav.ctb" ) {
-            RemFav( $myfav, 'nonexist' );
-            next;
-        }
-        MessageTotals( 'load', $myfav );
-        $favoboard = ${$myfav}{'board'};
-        push @favboards, "$favoboard|$myfav";
     }
 
     foreach ( sort @favboards ) {
@@ -195,7 +197,7 @@ qq~<a href="$scripturl?virboard=$currentboard;num=$mnum/new">$micon{'new'}</a>~;
                 }
                 else {
                     $new =
-qq~<a href="$scripturl?num=$mnum/new">$micon{'new'}</a>~;
+                      qq~<a href="$scripturl?num=$mnum/new">$micon{'new'}</a>~;
                 }
             }
             else {
@@ -478,9 +480,8 @@ qq~$messageindex_txt{'75'}<br />$messageindex_txt{'76'} $curfav $messageindex_tx
     $bdpicExt ||= 'gif';
 
     ToChars($bdescrip);
-    $boarddescription =~ s/({|<)yabb boarddescription(}|>)/$bdescrip/gsm;
-    $favorites_template =~
-      s/({|<)yabb description(}|>)/$boarddescription/gsm;
+    $boarddescription   =~ s/({|<)yabb boarddescription(}|>)/$bdescrip/gsm;
+    $favorites_template =~ s/({|<)yabb description(}|>)/$boarddescription/gsm;
     $bdpic =
 qq~ <img src="$imagesdir/$my_favbrds" alt="$img_txt{'70'}" title="$img_txt{'70'}" /> ~;
     $favorites_template =~ s/({|<)yabb bdpicture(}|>)/$bdpic/gsm;

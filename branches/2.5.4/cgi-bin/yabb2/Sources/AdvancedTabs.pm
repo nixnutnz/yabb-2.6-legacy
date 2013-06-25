@@ -1,14 +1,14 @@
 ###############################################################################
 # AdvancedTabs.pm                                                             #
-# $Date: 01.22.13 $                                                           #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       October 21, 2012                                            #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -59,7 +59,7 @@ sub AddNewTab {
     }
     //-->
     </script>~
-    . $brd_advanced_tabs;
+      . $brd_advanced_tabs;
     $yyaddtab =~ s/{yabb tabtext}/$tabmenu_txt{'tabtext'}/sm;
     $yyaddtab =~ s/{yabb taburl}/$tabmenu_txt{'taburl'}/sm;
     $yyaddtab =~ s/{yabb tabwin}/$tabmenu_txt{'tabwin'}/sm;
@@ -84,9 +84,11 @@ sub AddNewTab2 {
         my $tabview        = $FORM{'showto'};
         my $tabafter       = $FORM{'addafter'};
         my $tmpusernamereq = 0;
-        
+
         #Carsten's fix - nice and neat/';#
-        if ($taburl !~ /[ht|f]tp[s]{0,1}:\/\//) { $taburl = qq~http://$taburl~; } 
+        if ( $taburl !~ /[ht|f]tp[s]{0,1}:\/\//xsm ) {
+            $taburl = qq~http://$taburl~;
+        }
         if (   $taburl =~ /$boardurl\/$yyexec\.$yyaext/ixsm
             && $taburl =~ /action\=(.*?)(\;|\Z)/ixsm )
         {
@@ -107,7 +109,12 @@ sub AddNewTab2 {
             $tmpisaction = 0;
         }
         $tabaction =~ s/\W/_/gxsm;
-		map { fatal_error('tabext',$tabaction) if $_ =~ /^$tabaction\|?/; } @AdvancedTabs;
+        map {
+            if ( $_ =~ /^$tabaction\|?/xsm )
+            {
+                fatal_error( 'tabext', $tabaction );
+            }
+        } @AdvancedTabs;
 
         if ( $taburl == 1 || $taburl == 2 ) {
             if ( $FORM{'taburl'} =~ m/username\=/ixsm ) { $tmpusernamereq = 1; }
@@ -167,8 +174,8 @@ qq~$tabaction|$taburl|$tmpisaction|$tmpusernamereq|$tabview|$tabwin|$exttaburl~;
 
 sub EditTab {
     get_micon();
-    $tabsave = $micon{'tabsave'};
-    $tabdel = $micon{'tabdel'};
+    $tabsave  = $micon{'tabsave'};
+    $tabdel   = $micon{'tabdel'};
     $tabstyle = q~ class="tabstyle"~;
 
     $edittab{'home'} =

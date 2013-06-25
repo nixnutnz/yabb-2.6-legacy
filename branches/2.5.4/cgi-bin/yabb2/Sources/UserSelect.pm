@@ -1,13 +1,14 @@
 ###############################################################################
 # UserSelect.pm                                                               #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -251,6 +252,7 @@ qq~<div style="float: left; text-align: center; padding-left: 2px; padding-right
         $ToShow[5] = 'bmmods';
         $ToShow[6] = q{};
         my $x = 6;
+
         foreach (@nopostorder) {
             $ToShow[$x] = $_;
             $x++;
@@ -274,16 +276,14 @@ qq~<div style="float: left; text-align: center; padding-left: 2px; padding-right
             $to_id !~ /toshow/sm || ( $PM_level
                 && ( $PM_level != 2 || $staff )
                 && ( $PM_level != 3 || $iamadmin || $iamgmod )
-                && ( $PM_level != 4 || $iamadmin || $iamgmod || $iamymod )
-                 )
+                && ( $PM_level != 4 || $iamadmin || $iamgmod || $iamymod ) )
         )
         or (
             $to_id !~ /userspec/sm
             || (   ( $ML_Allowed != 1 || !$iamguest )
                 && ( $ML_Allowed != 2 || $staff )
                 && ( $ML_Allowed != 3 || $iamadmin || $iamgmod )
-                && ( $ML_Allowed != 4 || $iamadmin || $iamgmod || $iamymod )
-                 )
+                && ( $ML_Allowed != 4 || $iamadmin || $iamgmod || $iamymod ) )
         )
       )
     {
@@ -410,15 +410,17 @@ qq~<option value="$cloakedUserName"$colorstyle>${$uid.$user}{'realname'}</option
                             $user eq 'bmgmods' ? 'gmods'
                             : (
                                 $user eq 'bmymods' ? 'ymods'
-                            : ( $user eq 'bmmods' ? 'mods' : $user )
-                        )
+                                : ( $user eq 'bmmods' ? 'mods' : $user )
+                            )
                         )
                       );
-                    $yymain_inner .= qq~<option value="$user">$groupName</option>\n~;
+                    $yymain_inner .=
+                      qq~<option value="$user">$groupName</option>\n~;
                 }
                 else {
                     $groupName = q~-------~;
-                    $yymain_inner .= qq~<optgroup label="$groupName"></optgroup>\n~;
+                    $yymain_inner .=
+                      qq~<optgroup label="$groupName"></optgroup>\n~;
                 }
             }
             $numshown++;
@@ -438,7 +440,8 @@ qq~<option value="$cloakedUserName"$colorstyle>${$uid.$user}{'realname'}</option
             $yymain_inner .= qq~<b>$usersel_txt{'noentries'}</b><br />~;
         }
         elsif ( $INFO{'sort'} eq 'pmsearch' ) {
-            $yymain_inner .= qq~<b>$usersel_txt{'nofound'} <i>$SearchStr</i></b>~;
+            $yymain_inner .=
+              qq~<b>$usersel_txt{'nofound'} <i>$SearchStr</i></b>~;
         }
         $yymain_inner .= qq~
         </div>
@@ -1045,7 +1048,8 @@ qq~<img src="$imagesdir/cross.png">&nbsp;&nbsp;<span style="color:#dd0000">$type
 qq~<img src="$imagesdir/cross.png">&nbsp;&nbsp;<span style="color:#dd0000">$type$register_txt{'115'}</span>~;
     }
 
-    print "Content-type: text/plain\n\n$INFO{'type'}|$avail" or croak 'cannot print avail';
+    print "Content-type: text/plain\n\n$INFO{'type'}|$avail"
+      or croak 'cannot print avail';
 
     CORE::exit;    # This is here only to avoid server error log entries!
     return;

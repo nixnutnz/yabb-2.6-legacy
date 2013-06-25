@@ -1,20 +1,20 @@
 ###############################################################################
 # Security.pm                                                                 #
-# $Date: 10/05/2012 $                                                         #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-#use warnings;
-#no warnings qw(uninitialized once redefine);
+# use warnings;
+# no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.5.4';
 
@@ -51,16 +51,19 @@ if ( $curnum ne q{} ) {
         fatal_error( 'only_numbers_allowed', "Thread ID: '$curnum'" );
     }
     if ( !-e "$datadir/$curnum.txt" ) {
-        eval { require Variables::Movedthreads };
-        if (!$moved_file{$curnum}) { fatal_error( 'not_found', "$datadir/$curnum.txt" );}
-        while ( exists $moved_file{$curnum} ) {
-            $curnum = $moved_file{$curnum};
-            next if exists $moved_file{$curnum};
-            if ( !-e "$datadir/$curnum.txt" ) {
+        if ( eval { require Variables::Movedthreads; 1 } ) {
+            if ( !$moved_file{$curnum} ) {
                 fatal_error( 'not_found', "$datadir/$curnum.txt" );
             }
+            while ( exists $moved_file{$curnum} ) {
+                $curnum = $moved_file{$curnum};
+                next if exists $moved_file{$curnum};
+                if ( !-e "$datadir/$curnum.txt" ) {
+                    fatal_error( 'not_found', "$datadir/$curnum.txt" );
+                }
+            }
+            $INFO{'num'} = $INFO{'thread'} = $FORM{'threadid'} = $curnum;
         }
-        $INFO{'num'} = $INFO{'thread'} = $FORM{'threadid'} = $curnum;
     }
 
     MessageTotals( 'load', $curnum );
@@ -105,10 +108,10 @@ if ( $currentboard ne q{} ) {
 
     if ($staff) {
         $iammod = is_moderator( $username, $currentboard );
-        if (!$iammod && !$iamadmin && !$iamgmod && !$iamymod ) { $staff = 0 ;}
+        if ( !$iammod && !$iamadmin && !$iamgmod && !$iamymod ) { $staff = 0; }
     }
 
-    if (!$iamadmin) {
+    if ( !$iamadmin ) {
         my $accesstype = q{};
         if ( $action eq 'post' ) {
             if ( $INFO{'title'} eq 'CreatePoll' || $INFO{'title'} eq 'AddPoll' )
@@ -197,10 +200,12 @@ sub banning {
 
     if ( !$admincheck && $username eq 'admin' && $iamadmin ) { return; }
 
-    *write_banlog = sub{
+    *write_banlog = sub {
         my ($bantry) = @_;
-        if ($admincheck) { fatal_error( 'banned',
-            "$register_txt{'678'}$register_txt{'430'}!" ) ;}
+        if ($admincheck) {
+            fatal_error( 'banned',
+                "$register_txt{'678'}$register_txt{'430'}!" );
+        }
         fopen( LOG, ">>$vardir/ban_log.txt" );
         print {LOG} "$date|$bantry\n" or croak 'cannot print LOG';
         fclose(LOG);
@@ -250,19 +255,19 @@ sub check_banlist {
     my $ban_rtn;
     if ( !-e "$vardir/banlist.txt" ) {
 
-    if ( $e_ban && $email_banlist ) {
-        foreach ( split /,/xsm, $email_banlist ) {
-            if ( $_ eq $e_ban ) { $ban_rtn .= 'E'; last; }
+        if ( $e_ban && $email_banlist ) {
+            foreach ( split /,/xsm, $email_banlist ) {
+                if ( $_ eq $e_ban ) { $ban_rtn .= 'E'; last; }
+            }
         }
-    }
-    if ( $ip_ban && $ip_banlist ) {
-        foreach ( split /,/xsm, $ip_banlist ) {
-            if ( $_ eq $ip_ban ) { $ban_rtn .= 'I'; last; }
+        if ( $ip_ban && $ip_banlist ) {
+            foreach ( split /,/xsm, $ip_banlist ) {
+                if ( $_ eq $ip_ban ) { $ban_rtn .= 'I'; last; }
+            }
         }
-    }
-    if ( $u_ban && $user_banlist ) {
-        foreach ( split /,/xsm, $user_banlist ) {
-            if ( $_ eq $u_ban ) { $ban_rtn .= 'U'; last; }
+        if ( $u_ban && $user_banlist ) {
+            foreach ( split /,/xsm, $user_banlist ) {
+                if ( $_ eq $u_ban ) { $ban_rtn .= 'U'; last; }
             }
         }
     }
@@ -271,33 +276,53 @@ sub check_banlist {
         @banlist = <BAN>;
         fclose(BAN);
         chomp @banlist;
-        my @timeban = ( 'p', 'd', 'w', 'm',);
-        my @bandays = ( 36500, 1, 7, 30, );
-        my $tmb = 0;
-        $today = time;
-        *time_ban = sub{
-            for my $i (0..3) {
+        my @timeban = qw(p d w m);
+        my @bandays = ( 36_500, 1, 7, 30, );
+        my $tmb     = 0;
+        $today    = time;
+        *time_ban = sub {
+
+            for my $i ( 0 .. 3 ) {
                 if ( $banned[4] eq $timeban[$i] ) {
-                    $tmb =  $banned[2] + ( $bandays[$i] * 84600 );
+                    $tmb = $banned[2] + ( $bandays[$i] * 84_600 );
                 }
             }
             return $tmb;
-       };
+        };
         for my $i (@banlist) {
             @banned = split /\|/xsm, $i;
             $tmb = time_ban();
             if ( $banned[0] eq 'E' ) {
-               $banned[1] =~ s/\\@/@/xsm;
-               if ( ($e_ban eq $banned[1] && $banned[4] ne 'p' && $tmb > $today) || ($e_ban eq $banned[1] && $banned[4] eq 'p')  ) {
-                   $ban_rtn .= $banned[0];
-                   last;
-               }
+                $banned[1] =~ s/\\@/@/xsm;
+                if (
+                    (
+                           $e_ban eq $banned[1]
+                        && $banned[4] ne 'p'
+                        && $tmb > $today
+                    )
+                    || ( $e_ban eq $banned[1] && $banned[4] eq 'p' )
+                  )
+                {
+                    $ban_rtn .= $banned[0];
+                    last;
+                }
             }
         }
         for my $i (@banlist) {
             @banned = split /\|/xsm, $i;
             $tmb = time_ban();
-            if ( ($banned[0] eq 'I' && $ip_ban eq $banned[1] && $banned[4] ne 'p' && $tmb > $today) || $banned[0] eq 'I' && $ip_ban eq $banned[1] && $banned[4] eq 'p' ) {
+            if (
+                (
+                       $banned[0] eq 'I'
+                    && $ip_ban eq $banned[1]
+                    && $banned[4] ne 'p'
+                    && $tmb > $today
+                )
+                || $banned[0] eq 'I'
+                && $ip_ban    eq $banned[1]
+                && $banned[4] eq 'p'
+              )
+            {
                 $ban_rtn .= $banned[0];
                 last;
             }
@@ -305,7 +330,18 @@ sub check_banlist {
         for my $i (@banlist) {
             @banned = split /\|/xsm, $i;
             $tmb = time_ban();
-            if ( ($banned[0] eq 'U' && $u_ban eq $banned[1] && $banned[4] ne 'p' && $tmb > $today) || $banned[0] eq 'U' && $u_ban eq $banned[1] && $banned[4] eq 'p' ) {
+            if (
+                (
+                       $banned[0] eq 'U'
+                    && $u_ban eq $banned[1]
+                    && $banned[4] ne 'p'
+                    && $tmb > $today
+                )
+                || $banned[0] eq 'U'
+                && $u_ban     eq $banned[1]
+                && $banned[4] eq 'p'
+              )
+            {
                 $ban_rtn .= $banned[0];
                 last;
             }
@@ -323,53 +359,57 @@ sub CheckIcon {
     $icon =~ s/[^A-Za-z]//gxsm;
     $icon =~ s/\\//gxsm;
     $icon =~ s/\///gxsm;
-    my @iconlist = qw( xx thumbup thumbdown exclamation question lamp smiley angry cheesy grin sad wink standard confidential urgent );
+    my @iconlist =
+      qw( xx thumbup thumbdown exclamation question lamp smiley angry cheesy grin sad wink standard confidential urgent );
     my $isicon = 0;
-    for my $x ( @iconlist) {
-        if ($icon eq $x) {
-        $isicon = 1; last;
+    for my $x (@iconlist) {
+
+        if ( $icon eq $x ) {
+            $isicon = 1;
+            last;
         }
     }
-    if ( $isicon == 0 ) { $icon = 'xx'; }
-    else {$icon = $icon;}
+    if   ( $isicon == 0 ) { $icon = 'xx'; }
+    else                  { $icon = $icon; }
     return;
 }
 
 sub SearchAccess {
-	$advsearchaccess = q{};
-	$qcksearchaccess = q{};
-	if (!exists $memberunfo{$username}) { LoadUser($username); }
-	if($iamguest) {
-		if($enableguestsearch) { $advsearchaccess = 'granted'; }
-		if($enableguestquicksearch) { $qcksearchaccess = 'granted'; }
-		return;
-	}
-	if ($iamadmin) {
-		$advsearchaccess = 'granted';
-		$qcksearchaccess = 'granted';
-		return;
-	}
-	@advsearch_groups = split /, /sm, $mgadvsearch;
-	if(!$mgadvsearch) { $advsearchaccess = "granted"; }
-	@qcksearch_groups = split /, /sm, $mgqcksearch;
-	if(!$mgqcksearch) { $qcksearchaccess = 'granted'; }
-	$memberinform = $memberunfo{$username};
-	foreach my $advelement (@advsearch_groups) {
-		chomp $advelement;
-		if ($advelement eq $memberinform) { $advsearchaccess = 'granted'; }
-		foreach (split /,/, $memberaddgroup{$username}) {
-			if ($advelement eq $_) { $advsearchaccess = 'granted'; last; }
-		}
-		if ($advsearchaccess eq 'granted') { last; }
-	}
-	foreach my $qckelement (@qcksearch_groups) {
-		chomp $qckelement;
-		if ($qckelement eq $memberinform) { $qcksearchaccess = 'granted'; }
-		foreach (split /,/xsm, $memberaddgroup{$username}) {
-			if ($qckelement eq $_) { $qcksearchaccess = 'granted'; last; }
-		}
-		if ($qcksearchaccess eq 'granted') { last; }
-	}
+    $advsearchaccess = q{};
+    $qcksearchaccess = q{};
+    if ( !exists $memberunfo{$username} ) { LoadUser($username); }
+    if ($iamguest) {
+        if ($enableguestsearch)      { $advsearchaccess = 'granted'; }
+        if ($enableguestquicksearch) { $qcksearchaccess = 'granted'; }
+        return;
+    }
+    if ($iamadmin) {
+        $advsearchaccess = 'granted';
+        $qcksearchaccess = 'granted';
+        return;
+    }
+    @advsearch_groups = split /, /sm, $mgadvsearch;
+    if ( !$mgadvsearch ) { $advsearchaccess = 'granted'; }
+    @qcksearch_groups = split /, /sm, $mgqcksearch;
+    if ( !$mgqcksearch ) { $qcksearchaccess = 'granted'; }
+    $memberinform = $memberunfo{$username};
+    foreach my $advelement (@advsearch_groups) {
+        chomp $advelement;
+        if ( $advelement eq $memberinform ) { $advsearchaccess = 'granted'; }
+        foreach ( split /,/xsm, $memberaddgroup{$username} ) {
+            if ( $advelement eq $_ ) { $advsearchaccess = 'granted'; last; }
+        }
+        if ( $advsearchaccess eq 'granted' ) { last; }
+    }
+    foreach my $qckelement (@qcksearch_groups) {
+        chomp $qckelement;
+        if ( $qckelement eq $memberinform ) { $qcksearchaccess = 'granted'; }
+        foreach ( split /,/xsm, $memberaddgroup{$username} ) {
+            if ( $qckelement eq $_ ) { $qcksearchaccess = 'granted'; last; }
+        }
+        if ( $qcksearchaccess eq 'granted' ) { last; }
+    }
+    return;
 }
 
 sub AccessCheck {
@@ -383,7 +423,7 @@ sub AccessCheck {
         if ( $username eq $curuser ) { $boardmod = 1; }
     }
     @board_modgrps = split /, /sm, ${ $uid . $curboard }{'modgroups'};
-    @user_addgrps  = split /,/xsm,  ${ $uid . $username }{'addgroups'};
+    @user_addgrps  = split /,/xsm, ${ $uid . $username }{'addgroups'};
     foreach my $curgroup (@board_modgrps) {
         if ( ${ $uid . $username }{'position'} eq $curgroup ) { $boardmod = 1; }
         foreach my $curaddgroup (@user_addgrps) {
@@ -427,7 +467,9 @@ sub AccessCheck {
     }
     elsif ( $checktype == 3 ) {    # Poll access check
         @allowed_groups = split /, /sm, ${ $uid . $curboard }{'pollperms'};
-        if ( ${ $uid . $curboard }{'pollperms'} eq q{} ) { $access = 'granted'; }
+        if ( ${ $uid . $curboard }{'pollperms'} eq q{} ) {
+            $access = 'granted';
+        }
         if ( $pollperms == 1 ) { $access = 'notgranted'; }
     }
     elsif ( $checktype == 4 ) {    # Attachment access check
@@ -490,7 +532,9 @@ sub AccessCheck {
             if ( $element eq 'Global Moderator' && ( $iamadmin || $iamgmod ) ) {
                 $access = 'granted';
             }
-            if ( $element eq 'Mid Moderator' && ( $iamadmin || $iamgmod || $iamymod) ) {
+            if ( $element eq 'Mid Moderator'
+                && ( $iamadmin || $iamgmod || $iamymod ) )
+            {
                 $access = 'granted';
             }
             if ( $element eq 'Moderator'
@@ -525,7 +569,7 @@ sub CatAccess {
             $access = 1;
         }
         if ( $element eq 'Global Moderator' && $iamgmod ) { $access = 1; }
-        if ( $element eq 'Mid Moderator' && $iamymod ) { $access = 1; }
+        if ( $element eq 'Mid Moderator'    && $iamymod ) { $access = 1; }
         if ( $access == 1 ) { last; }
     }
     return $access;
@@ -533,7 +577,7 @@ sub CatAccess {
 
 sub email_domain_check {
     ### Based upon Distilled Email Domains mod by AstroPilot ###
-    my ($checkdomain ) = @_;
+    my ($checkdomain) = @_;
     if ($checkdomain) {
         if ( -e "$vardir/email_domain_filter.txt" ) {
             require "$vardir/email_domain_filter.txt";
@@ -543,9 +587,13 @@ sub email_domain_check {
                 $my_x = $_;
                 if    ( $_ !~ /\@/xsm )  { $_ = "\@$_"; }
                 elsif ( $_ !~ /^\./xsm ) { $_ = ".$_"; }
-                @my_ch = split /\./xsm, $my_x;
+                @my_ch   = split /\./xsm, $my_x;
                 @my_ch_e = split /\./xsm, $checkdomain;
-                if ($checkdomain =~ m/$_/ism || ($my_ch[0] eq q{} && $my_ch[-1] eq $my_ch_e[-1]) ) { fatal_error( 'domain_not_allowed', "$_" ) ;}
+                if ( $checkdomain =~ m/$_/ism
+                    || ( $my_ch[0] eq q{} && $my_ch[-1] eq $my_ch_e[-1] ) )
+                {
+                    fatal_error( 'domain_not_allowed', "$_" );
+                }
             }
         }
     }
@@ -555,16 +603,22 @@ sub email_domain_check {
 
 sub GroupPerms {
     my ( $groupAll, $groupCheck ) = @_;
-    if ($groupAll && $groupCheck) {
-		$allowGroups = 0;
-		foreach my $selectGroup (split /,\ /xsm, $groupCheck) {
-			if (($selectGroup eq ${$uid.$username}{'position'}) || ($selectGroup eq $memberunfo{$username})) { $allowGroups = 1; last; }
-			foreach (split /,/xsm, ${$uid.$username}{'addgroups'}) {
-				if ($selectGroup eq $_) { $allowGroups = 1; last; }
-			}
-	    }
-	} else { 
-        $allowGroups = 1; 
+    if ( $groupAll && $groupCheck ) {
+        $allowGroups = 0;
+        foreach my $selectGroup ( split /,\ /xsm, $groupCheck ) {
+            if (   ( $selectGroup eq ${ $uid . $username }{'position'} )
+                || ( $selectGroup eq $memberunfo{$username} ) )
+            {
+                $allowGroups = 1;
+                last;
+            }
+            foreach ( split /,/xsm, ${ $uid . $username }{'addgroups'} ) {
+                if ( $selectGroup eq $_ ) { $allowGroups = 1; last; }
+            }
+        }
+    }
+    else {
+        $allowGroups = 1;
     }
     return;
 }
@@ -573,84 +627,84 @@ sub ipban_update {
 
     # This is for quick updating for banning + unbanning
     if ( $iamadmin || $iamgmod || $iamymod ) {
-    my $ban       = $INFO{'ban'};
-    my $lev       = $INFO{'lev'};
-    my $ban_email = $INFO{'ban_email'};
-    my $ban_mem   = $INFO{'ban_memname'};
-    my $unban     = $INFO{'unban'};
-    my $user      = $INFO{'username'};
-    $ban_mem = $do_scramble_id ? decloak($ban_mem) : $ban_mem;
-    $ban_email =~ s/@/\\@/xsm;
+        my $ban       = $INFO{'ban'};
+        my $lev       = $INFO{'lev'};
+        my $ban_email = $INFO{'ban_email'};
+        my $ban_mem   = $INFO{'ban_memname'};
+        my $unban     = $INFO{'unban'};
+        my $user      = $INFO{'username'};
+        $ban_mem = $do_scramble_id ? decloak($ban_mem) : $ban_mem;
+        $ban_email =~ s/@/\\@/xsm;
 
-    my $time = time;
-    $ihave = 0;
-    $ehave = 0;
-    $uhave = 0;
-    fopen( BAN, "<$vardir/banlist.txt" ) or croak 'cannot open BAN to read';
-    my @myban = <BAN>;
-    chomp @myban;
-    fclose(BAN) or croak 'cannot close BAN';
-    if ( $unban != 1 ) {
+        my $time = time;
+        $ihave = 0;
+        $ehave = 0;
+        $uhave = 0;
+        fopen( BAN, "<$vardir/banlist.txt" ) or croak 'cannot open BAN to read';
+        my @myban = <BAN>;
+        chomp @myban;
+        fclose(BAN) or croak 'cannot close BAN';
+        if ( $unban != 1 ) {
 
-        foreach my $i (@myban) {
-            @banned = split /\|/xsm, $i;
-            if ($ban) {
-                if ( $banned[1] eq $ban ) {
-                    $ihave = 1;
+            foreach my $i (@myban) {
+                @banned = split /\|/xsm, $i;
+                if ($ban) {
+                    if ( $banned[1] eq $ban ) {
+                        $ihave = 1;
+                    }
+                }
+                elsif ($ban_email) {
+                    if ( $banned[1] eq $ban_email ) {
+                        $ehave = 1;
+                    }
+                }
+                elsif ($ban_mem) {
+                    if ( $banned[1] eq $ban_mem ) {
+                        $uhave = 1;
+                    }
                 }
             }
-            elsif ($ban_email) {
-                if ( $banned[1] eq $ban_email ) {
-                    $ehave = 1;
-                }
-            }
-            elsif ($ban_mem) {
-                if ( $banned[1] eq $ban_mem ) {
-                    $uhave = 1;
-                }
-            }
-        }
 
-        fopen( BAN2, ">>$vardir/banlist.txt" )
-          or croak 'cannot open BAN2 to write';
-        if ( $ban && $ihave == 0 && $ban ne '127.0.0.1' ) {
-            print {BAN2}
-              qq~I|$ban|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
-              or croak 'cannot write to BAN2';
-        }
-        if ( $ban_email && $ehave == 0 ) {
-            print {BAN2}
+            fopen( BAN2, ">>$vardir/banlist.txt" )
+              or croak 'cannot open BAN2 to write';
+            if ( $ban && $ihave == 0 && $ban ne '127.0.0.1' ) {
+                print {BAN2}
+qq~I|$ban|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
+                  or croak 'cannot write to BAN2';
+            }
+            if ( $ban_email && $ehave == 0 ) {
+                print {BAN2}
 qq~E|$ban_email|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
-              or croak 'cannot write to BAN2';
-        }
-        if ( $ban_mem && $uhave == 0 ) {
-            print {BAN2}
+                  or croak 'cannot write to BAN2';
+            }
+            if ( $ban_mem && $uhave == 0 ) {
+                print {BAN2}
 qq~U|$ban_mem|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
-              or croak 'cannot write to BAN2';
-        }
-        fclose(BAN2) or croak 'cannot close BAN2';
-    }
-    elsif ( $unban == 1 ) {
-        fopen( BAN2, ">$vardir/banlist.txt" )
-          or croak 'cannot open BAN2 to write';
-        foreach my $i (@myban) {
-            @banned = split /\|/xsm, $i;
-            if (   $ban eq $banned[1]
-                || $ban_email eq $banned[1]
-                || $ban_mem   eq $banned[1] )
-            {
-                $un_ban = q~~;
+                  or croak 'cannot write to BAN2';
             }
-            else {
-                $un_ban =
-                  qq~$banned[0]|$banned[1]|$banned[2]|$banned[3]|$banned[4]|\n~;
-            }
-            print {BAN2} $un_ban;
+            fclose(BAN2) or croak 'cannot close BAN2';
         }
-        fclose(BAN2) or croak 'cannot close BAN2';
-    }
-    $yySetLocation = qq~$scripturl?action=viewprofile;username=$user~;
-    redirectexit();
+        elsif ( $unban == 1 ) {
+            fopen( BAN2, ">$vardir/banlist.txt" )
+              or croak 'cannot open BAN2 to write';
+            foreach my $i (@myban) {
+                @banned = split /\|/xsm, $i;
+                if (   $ban eq $banned[1]
+                    || $ban_email eq $banned[1]
+                    || $ban_mem   eq $banned[1] )
+                {
+                    $un_ban = q~~;
+                }
+                else {
+                    $un_ban =
+qq~$banned[0]|$banned[1]|$banned[2]|$banned[3]|$banned[4]|\n~;
+                }
+                print {BAN2} $un_ban;
+            }
+            fclose(BAN2) or croak 'cannot close BAN2';
+        }
+        $yySetLocation = qq~$scripturl?action=viewprofile;username=$user~;
+        redirectexit();
     }
     return;
 }

@@ -1,14 +1,14 @@
 ###############################################################################
 # Freespace.pm                                                                #
-# $Date: 01.26.13 $                                                           #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       October 15, 2012                                            #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -19,6 +19,7 @@ use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.5.4';
 
 $freespacepmver = 'YaBB 2.5.4 $Revision$';
+
 sub freespace {
     my ( $FreeBytes, $hostchecked );
     if ( $OSNAME =~ /Win/sm ) {
@@ -26,12 +27,15 @@ sub freespace {
             my @x =
               qx{DIR /-C};  # Do an ordinary DOS dir command and grab the output
             my $lastline = pop @x;
-                  # should look like: 17 Directory(s), 21305790464 Bytes free
+
+            # should look like: 17 Directory(s), 21305790464 Bytes free
             return -1
               if $lastline !~ m/byte/ism;
-             # error trapping if output fails. The word byte should be in the line
-            $lastline =~ /^\s+(\d+)\s+(.+?)\s+(\d+)\s+(.+?)\n$/sm;
-            $FreeBytes = $3 - 100_000;    # 100000 bytes reserve
+
+           # error trapping if output fails. The word byte should be in the line
+            if ( $lastline =~ /^\s+(\d+)\s+(.+?)\s+(\d+)\s+(.+?)\n$/sm ) {
+                $FreeBytes = $3 - 100_000;    # 100000 bytes reserve
+            }
 
         }
         else {
@@ -44,14 +48,16 @@ sub freespace {
     else {
         if ($enable_quota) {
             my @quota = qx{quota -u $hostusername -v};
-                # Do an ordinary *nix quota command and grab the output
+
+            # Do an ordinary *nix quota command and grab the output
             return -1 if !$quota[2];
-                # error trapping if output fails.
+
+            # error trapping if output fails.
             @quota = split / +/sm, $quota[$enable_quota], 5;
             $quota[2] =~ s/\*//xsm;
             $FreeBytes =
               ( ( $quota[3] - $quota[2] ) * 1024 ) -
-              100_000;                  # 100000 bytes reserve
+              100_000;    # 100000 bytes reserve
             $hostchecked = 1;
 
         }
@@ -82,8 +88,8 @@ sub freespace {
 
         }
         elsif ($enable_freespace_check) {
-            my @x = qx{df -k .}
-              ;    # Do an ordinary *nix df -k . command and grab the output
+            my @x = qx{df -k .};
+                # Do an ordinary *nix df -k . command and grab the output
             my $lastline = pop @x;
 
             # should look like: /dev/path 151694892 5495660 134063644 4% /

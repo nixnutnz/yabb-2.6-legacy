@@ -1,13 +1,14 @@
 ###############################################################################
 # EventCal.pm                                                                 #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2010 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -24,25 +25,13 @@ if ( $action eq 'detailedversion' ) { return 1; }
 LoadLanguage('EventCal');
 LoadLanguage('Post');
 LoadLanguage('LivePreview');
+
 require Sources::SpamCheck;
 require Sources::PostBox;
 require Sources::Post;
+
 get_template('Calendar');
-
 get_micon();
-
-if ($img_greybox) {
-    $yyinlinestyle =
-qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/css" />\n~;
-    $yyjavascript .= qq~
-var GB_ROOT_DIR = "$yyhtml_root/greybox/";
-</script>
-<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>
-<script type="text/javascript" src="$yyhtml_root/AJS_fx.js"></script>
-<script type="text/javascript" src="$yyhtml_root/greybox/gb_scripts.js"></script>
-<script type="text/javascript">
-~;
-}
 
 sub eventcal {
     my ( $ssicalmode, $ssicaldisplay ) = @_;
@@ -105,8 +94,9 @@ qq~$scripturl?action=eventcal;calshow=1;calmon=$gomon;calyear=$goyear~;
     my ( $sel_year, $sel_mon, $sel_day );
     my $event_date = $INFO{'eventdate'};
     if ($event_date) {
-        $event_date =~ /(\d{4})(\d{2})(\d{2})/xsm;
-        ( $sel_year, $sel_mon, $sel_day ) = ( $1, $2, $3 );
+        if ( $event_date =~ /(\d{4})(\d{2})(\d{2})/xsm ) {
+            ( $sel_year, $sel_mon, $sel_day ) = ( $1, $2, $3 );
+        }
     }
 
     my ($toffs);
@@ -364,7 +354,7 @@ qq~ <label for="calyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
                 <option value="0"$aevt1>$var_cal{'calpublic'}</option>
                 <option value="1"$aevt2>$var_cal{'calmembers'}</option>
                 $option_private
-            </select> / 
+            </select> /
             <select name="caltype2" size="1">
                 <option value="0"$a1evt1>$var_cal{'onlyone'}</option>
                 <option value="2"$a1evt2>$var_cal{'eventinfo'} ($var_cal{'monthly'})</option>
@@ -382,15 +372,16 @@ qq~ <label for="calyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
                 <option value="eventmedia"$calicon_eventmedia>$var_cal{'eventmedia'}</option>
                 <option value="eventmeeting"$calicon_eventmeeting>$var_cal{'eventmeeting'}</option>~;
 
-        eval { require "$vardir/eventcalIcon.txt"; };
-        $i = 0;
-        while ( $CalIconURL[$i] ) {
-            if ( $INFO{'edit_icon'} eq $CalIconURL[$i] ) {
-                $eveic[$i] = ' selected';
-            }
-            $mycalout_calicon .= qq~
+        if ( eval { require "$vardir/eventcalIcon.txt"; 1 } ) {
+            $i = 0;
+            while ( $CalIconURL[$i] ) {
+                if ( $INFO{'edit_icon'} eq $CalIconURL[$i] ) {
+                    $eveic[$i] = ' selected';
+                }
+                $mycalout_calicon .= qq~
                     <option value="$CalIconURL[$i]"$eveic[$i]>$CalIDescription[$i]</option>~;
-            $i++;
+                $i++;
+            }
         }
         $mycalout_calicon .= q~
             </select>~;
@@ -652,8 +643,9 @@ qq~$bday_date|0|$user_bdname|$user_bdname|$user_bdhide|<span class="small">$age<
 
 #$cal_date,$cal_type,$cal_name,$cal_time,$cal_hide, $cal_event,$cal_icon,$cal_noname,$cal_type2,$ns,$g;
 #20130228  |0        |admin   |1362009097|          |database test|eventannounce||0
-        $cal_date =~ /(\d{4})(\d{2})(\d{2})/xsm;
-        my ( $c_year, $c_mon, $c_day ) = ( $1, $2, $3 );
+        if ( $cal_date =~ /(\d{4})(\d{2})(\d{2})/xsm ) {
+            ( $c_year, $c_mon, $c_day ) = ( $1, $2, $3 );
+        }
 
         if ( $cal_type == 2 ) {
             next if $cal_name ne $username;
@@ -750,8 +742,9 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_n
                 if ( !$Show_ColorLinks ) {
                     $memrealname = ( split /\|/xsm, $memberinf{$cnam}, 2 )[0];
                 }
-                $cdat =~ /(\d{4})(\d{2})(\d{2})/xsm;
-                my ( $dd_year, $dd_mon, $dd_day ) = ( $1, $2, $3 );
+                if ( $cdat =~ /(\d{4})(\d{2})(\d{2})/xsm ) {
+                    ( $dd_year, $dd_mon, $dd_day ) = ( $1, $2, $3 );
+                }
                 if   ( $ctyp2 == 2 ) { $cdat = "$bd_year$d_mon$dd_day"; }
                 else                 { $cdat = "$cdat"; }
                 if   ( $ctyp2 == 3 ) { $cdat = "$bd_year$dd_mon$dd_day"; }
@@ -829,7 +822,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cnam}" rel="nof
 qq~$cal_icon{'eventprivate'} $cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
                         }
                         else {
-                            $mycalout_greet .= 
+                            $mycalout_greet .=
 qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
                         }
 
@@ -889,8 +882,9 @@ qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
                     $memrealname = ( split /\|/xsm, $memberinf{$cnam}, 2 )[0];
                 }
                 if ( $cico eq q{} ) { $cico = 'eventinfo'; }
-                $cdat =~ /(\d{4})(\d{2})(\d{2})/xsm;
-                my ( $dd_year, $dd_mon, $dd_day ) = ( $1, $2, $3 );
+                if ( $cdat =~ /(\d{4})(\d{2})(\d{2})/xsm ) {
+                    ( $dd_year, $dd_mon, $dd_day ) = ( $1, $2, $3 );
+                }
                 if   ( $ctyp2 == 2 ) { $cdat = "$d_year$d_mon$dd_day"; }
                 else                 { $cdat = "$cdat"; }
                 if   ( $ctyp2 == 3 ) { $cdat = "$d_year$dd_mon$dd_day"; }
@@ -1031,7 +1025,7 @@ qq~\n<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/calscroller.css" 
 <script type="text/javascript">
 <!--
     // initial position
-    var countdownmod=$countdownload; 
+    var countdownmod=$countdownload;
 
     window.onload = function() {
         initDOMnews();
@@ -1113,8 +1107,9 @@ qq~\n<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/calscroller.css" 
         if ( !$Show_ColorLinks ) {
             $memrealname = ( split /\|/xsm, $memberinf{$cname}, 2 )[0];
         }
-        $cdate =~ /(\d{4})(\d{2})(\d{2})/xsm;
-        my ( $cyear, $cmon, $cday ) = ( $1, $2, $3 );
+        if ( $cdate =~ /(\d{4})(\d{2})(\d{2})/xsm ) {
+            ( $cyear, $cmon, $cday ) = ( $1, $2, $3 );
+        }
         if ( $DisplayEvents > 0 && !$INFO{'calyear'} ) {
             if ( $cdate >= $caleventbegin && $cdate <= $caleventend ) {
                 $event_found = 1;
@@ -1650,13 +1645,14 @@ sub del_old_events {
 sub calicontext {
     my ($currenticon) = @_;
 
-    eval { require "$vardir/eventcalIcon.txt"; };
-    my $i = 0;
-    while ( $CalIconURL[$i] ) {
-        if ( $CalIconURL[$i] eq "$currenticon" ) {
-            $icon_out = "$CalIDescription[$i]";
+    if ( eval { require "$vardir/eventcalIcon.txt"; 1 } ) {
+        my $i = 0;
+        while ( $CalIconURL[$i] ) {
+            if ( $CalIconURL[$i] eq "$currenticon" ) {
+                $icon_out = "$CalIDescription[$i]";
+            }
+            $i++;
         }
-        $i++;
     }
     return $icon_out;
 }

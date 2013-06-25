@@ -1,13 +1,14 @@
 ###############################################################################
 # Register.pm                                                                 #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -159,12 +160,14 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
         }
         timetostring($date);
         if ( $timeselected =~ /[145]/xsm ) {
-            $yymain .= $myregister_bdonreg
+            $yymain .=
+                $myregister_bdonreg
               . ( $birthday_on_reg == 2 ? $myreg_req : q{} )
               . qq~ <span class="small">$register_txt{'birthday_a'}</span>~;
         }
         else {
-            $yymain .= $myregister_bdonreg_2
+            $yymain .=
+                $myregister_bdonreg_2
               . ( $birthday_on_reg == 2 ? $myreg_req : q{} )
               . qq~ <span class="small">$register_txt{'birthday_b'}</span>~;
         }
@@ -184,7 +187,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
               qq~<br /><span class="small">$register_txt{'gender_edit'}</span>~;
         }
         if ( $gender_on_reg == 2 ) {
-        $nongen_opt = $myreg_req;
+            $nongen_opt = $myreg_req;
         }
 
         $yymain .= $myregister_gender;
@@ -223,7 +226,8 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
     }
 
     if ( $regtype == 1 ) {
-        $yymain .= $myregister_regreason_a
+        $yymain .=
+            $myregister_regreason_a
           . qq~            <textarea cols="60" rows="7" name="reason" id="reason">$reason</textarea>~
           . $myregister_regreason_c
           . length($RegReasonSymbols)
@@ -253,9 +257,10 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
               qq~<br />$register_txt{'verification_question_case'}~;
         }
         $yymain .= $myregister_spamquest;
-        
+
         $yymain =~ s/{yabb spam_question}/$spam_question/sm;
-        $yymain =~ s/{yabb verification_question_desc}/$verification_question_desc/sm;
+        $yymain =~
+          s/{yabb verification_question_desc}/$verification_question_desc/sm;
         $yymain =~ s/{yabb spam_question_id}/$spam_question_id/sm;
     }
     if ( $honeypot == 1 ) {
@@ -329,7 +334,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
         $fullagree =~ s/\n/<br \/>/gsm;
         $yymain .= $myregister_regagree;
         $yymain =~ s/{yabb fullagree}/$fullagree/gsm;
-        
+
     }
     $yymain .= $myregister_endform;
     $yymain .= qq~
@@ -477,6 +482,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
 //-->
 </script>
     ~;
+    $yyjsstyle = 1;    
     template();
     return;
 }

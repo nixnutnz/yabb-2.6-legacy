@@ -1,13 +1,14 @@
 ###############################################################################
 # Profile.pm                                                                  #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -99,6 +100,7 @@ s/{yabb prof_act}/$scripturl?action=profileCheck2;username=$useraccount{$user}/s
 
     $yynavigation = qq~&rsaquo; $profile_txt{'900'}~;
     $yytitle      = $profile_txt{'900'};
+    $yyjsstyle = 1;    
     template();
     return;
 }
@@ -150,8 +152,7 @@ sub ProfileMenu {
         $bdlist =~ s/{yabb bduser}/$useraccount{$user}/sm;
     }
 
-    if (   $pm_lev == 1 )
-    {
+    if ( $pm_lev == 1 ) {
         $pmlevel = $myprofile_pmlevel;
         $pmlevel =~ s/{yabb menucolor4}/$menucolors[4]/sm;
         $pmlevel =~ s/{yabb pmuser}/$useraccount{$user}/sm;
@@ -452,6 +453,7 @@ qq~ &nbsp; &nbsp; &nbsp; <input type="submit" name="moda" value="$profile_txt{'8
 
     if ( !$view ) {
         $yymain .= $showProfile;
+        $yyjsstyle = 1;    
         template();
     }
     return;
@@ -577,6 +579,7 @@ $myprofile_contact
 
     if ( !$view ) {
         $yymain .= $showProfile;
+        $yyjsstyle = 1;    
         template();
     }
     return;
@@ -660,8 +663,9 @@ qq~                <option value="$line"$checked>$name</option>\n~;
         }
         my ( $pic, $tmp, $s, $alt );
         $tmp = $facesurl;
-        $tmp =~ /^(http(s?):\/\/)/xsm;
-        ( $tmp, $s ) = ( $1, $2 );
+        if ( $tmp =~ /^(http(s?):\/\/)/xsm ) {
+            ( $tmp, $s ) = ( $1, $2 );
+        }
         if ( ${ $uid . $user }{'userpic'} =~ m{\Ahttps?://}sm ) {
             $pic     = ${ $uid . $user }{'userpic'};
             $checked = ' checked="checked" ';
@@ -765,12 +769,15 @@ qq~                <option value="$line"$checked>$name</option>\n~;
         $my_reverse =~ s/{yabb my_reversi}/$my_reversi/sm;
     }
 
-    my $rts = ${$uid.$user}{'return_to'};
+    my $rts = ${ $uid . $user }{'return_to'};
     for my $rt ( 1 .. 3 ) {
-         $return_to_select .= $rts == $rt ? qq~<option value="$rt" selected="selected">$return_to_txt{$rt}</option>~ : qq~<option value="$rt">$return_to_txt{$rt}</option>~;
+        $return_to_select .=
+          $rts == $rt
+          ? qq~<option value="$rt" selected="selected">$return_to_txt{$rt}</option>~
+          : qq~<option value="$rt">$return_to_txt{$rt}</option>~;
     }
     my $return_to = $myprofile_return_to;
-    $return_to =~ s/{yabb return_to_select}/$return_to_select/sm;     
+    $return_to =~ s/{yabb return_to_select}/$return_to_select/sm;
 
     foreach my $curtemplate (
         sort { $templateset{$a} cmp $templateset{$b} }
@@ -806,37 +813,47 @@ qq~<option value="$fld" selected="selected">$displang</option>~;
 
     $my_show_lang = $myprofile_show_lang;
     $my_show_lang =~ s/{yabb drawnldirs}/$drawnldirs/sm;
-    
-	if ($user_hide_avatars && $showuserpic && $allowpics) { # checkbox to hide avatars in threads
-		$my_show_avatar_opts = $myprofile_show_avatars;
-		$my_hide_avatar = ${$uid.$user}{'hide_avatars'} ? ' checked="checked"' : q{};
-		$my_show_avatar_opts =~ s/{yabb user_showavatar}/$my_hide_avatar/sm;
-	}
-	else {$my_show_avatar_opts = q{};}
 
-	if ($user_hide_user_text && $showusertext) { # checkbox to hide user-text in threads
-		$my_show_avatar_opts .= $myprofile_hide_user_text;
-		$my_hide_user_text = ${$uid.$user}{'hide_user_text'} ? ' checked="checked"' : q{};
-		$my_show_avatar_opts =~ s/{yabb hide_user_text}/$my_hide_user_text/sm;
-	}
+    if ( $user_hide_avatars && $showuserpic && $allowpics )
+    {    # checkbox to hide avatars in threads
+        $my_show_avatar_opts = $myprofile_show_avatars;
+        $my_hide_avatar =
+          ${ $uid . $user }{'hide_avatars'} ? ' checked="checked"' : q{};
+        $my_show_avatar_opts =~ s/{yabb user_showavatar}/$my_hide_avatar/sm;
+    }
+    else { $my_show_avatar_opts = q{}; }
 
-	if ($user_hide_attach_img && $allowattach) { # checkbox to hide attached images in threads
-		$my_show_avatar_opts .= $myprofile_hide_attach_img;
-		$my_hide_attach_img = ${$uid.$user}{'hide_attach_img'} ? ' checked="checked"' : q{};
-		$my_show_avatar_opts =~ s/{yabb hide_attach_img}/$my_hide_attach_img/sm;
-	}
+    if ( $user_hide_user_text && $showusertext )
+    {    # checkbox to hide user-text in threads
+        $my_show_avatar_opts .= $myprofile_hide_user_text;
+        $my_hide_user_text =
+          ${ $uid . $user }{'hide_user_text'} ? ' checked="checked"' : q{};
+        $my_show_avatar_opts =~ s/{yabb hide_user_text}/$my_hide_user_text/sm;
+    }
 
-	if ($user_hide_signat) { # checkbox to hide signatures in threads
-		$my_show_avatar_opts .= $myprofile_hide_signat;
-		$my_hide_signat = ${$uid.$user}{'hide_signat'} ? ' checked="checked"' : q{};
-		$my_show_avatar_opts =~ s/{yabb hide_signat}/$my_hide_signat/sm;
-	}
+    if ( $user_hide_attach_img && $allowattach )
+    {    # checkbox to hide attached images in threads
+        $my_show_avatar_opts .= $myprofile_hide_attach_img;
+        $my_hide_attach_img =
+          ${ $uid . $user }{'hide_attach_img'} ? ' checked="checked"' : q{};
+        $my_show_avatar_opts =~ s/{yabb hide_attach_img}/$my_hide_attach_img/sm;
+    }
 
-	if ($user_hide_smilies_row && !$removenormalsmilies) { # checkbox to hide the row of smilies below the the post-message-inputbox
-		$my_show_avatar_opts .= $myprofile_hide_smilies_row;
-		$my_hide_smilies_row = ${$uid.$user}{'hide_smilies_row'} ? ' checked="checked"' : q{};
-		$my_show_avatar_opts =~ s/{yabb hide_smilies_row}/$my_hide_smilies_row/sm;
-	}
+    if ($user_hide_signat) {    # checkbox to hide signatures in threads
+        $my_show_avatar_opts .= $myprofile_hide_signat;
+        $my_hide_signat =
+          ${ $uid . $user }{'hide_signat'} ? ' checked="checked"' : q{};
+        $my_show_avatar_opts =~ s/{yabb hide_signat}/$my_hide_signat/sm;
+    }
+
+    if ( $user_hide_smilies_row && !$removenormalsmilies )
+    {  # checkbox to hide the row of smilies below the the post-message-inputbox
+        $my_show_avatar_opts .= $myprofile_hide_smilies_row;
+        $my_hide_smilies_row =
+          ${ $uid . $user }{'hide_smilies_row'} ? ' checked="checked"' : q{};
+        $my_show_avatar_opts =~
+          s/{yabb hide_smilies_row}/$my_hide_smilies_row/sm;
+    }
 
     if ($extendedprofiles) {
         require Sources::ExtendedProfiles;
@@ -972,6 +989,7 @@ qq~         <textarea name="signature" id="signature" rows="4" cols="30" style="
 
     if ( !$view ) {
         $yymain .= $showProfile;
+        $yyjsstyle = 1;    
         template();
     }
     return;
@@ -1049,6 +1067,7 @@ qq~<option value="$buddy">${$uid.$buddy}{'realname'}</option>~;
 
     if ( !$view ) {
         $yymain .= $showProfile;
+        $yyjsstyle = 1;    
         template();
     }
     return;
@@ -1163,6 +1182,7 @@ qq~\n                        <option value="$ignoreName">$ignoreUser</option>~;
 
     if ( !$view ) {
         $yymain .= $showProfile;
+        $yyjsstyle = 1;    
         template();
     }
     return;
@@ -1408,6 +1428,7 @@ qq~<textarea rows="4" cols="50" name="regreason" id="regreason">$regreason</text
 
     if ( !$view ) {
         $yymain .= $showProfile;
+        $yyjsstyle = 1;    
         template();
     }
     return;
@@ -1712,12 +1733,13 @@ s/^(\d+\|\d+\|.*?)\|(.*?)\|/ ($2 eq ${$uid.$user}{'realname'} ? "$1|$member{'nam
                     }
                     if   ( $member{'hideage'} ) { $nuser_hide = 1; }
                     else                        { $nuser_hide = q{}; }
-                    print FILE
-qq~$user_yeara|$user_montha|$user_daya|$user_xy|$nuser_hide\n~;
+                    print {FILE}
+qq~$user_yeara|$user_montha|$user_daya|$user_xy|$nuser_hide\n~
+                      or croak 'cannot print birthday';
                     $cn++;
                 }
                 else {
-                    print FILE qq~$x\n~;
+                    print {FILE} qq~$x\n~ or croak 'cannot print to birthday';
                 }
             }
             fclose(FILE);
@@ -1733,8 +1755,9 @@ qq~$user_yeara|$user_montha|$user_daya|$user_xy|$nuser_hide\n~;
                 }
                 if   ( $member{'hideage'} ) { $nuser_hide = 1; }
                 else                        { $user_hide  = q{}; }
-                print FILE
-                  qq~$user_yeara|$user_montha|$user_daya|$user|$nuser_hide\n~;
+                print {FILE}
+                  qq~$user_yeara|$user_montha|$user_daya|$user|$nuser_hide\n~
+                  or croak 'cannot print birthday';
                 fclose(FILE);
             }
         }
@@ -1795,10 +1818,10 @@ qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};si
             my ( $user_year, $user_month, $user_day, $user_xy, $user_hide ) =
               split /\|/xsm, $x;
             if ( $user_xy ne $user ) {
-                print FILE qq~$x\n~;
+                print {FILE} qq~$x\n~ or croak 'cannot print birthday';
             }
             else {
-                print FILE q{};
+                print {FILE} q{} or croak 'cannot print no-birthday';
             }
         }
         fclose(FILE);
@@ -2004,6 +2027,7 @@ sub ModifyProfileContacts2 {
         $shared_login      = sharedLogin();
         $yymain .= $shared_login;
         $yytitle = $profile_txt{'245'};
+        $yyjsstyle = 1;    
         template();
     }
 
@@ -2082,7 +2106,7 @@ sub ModifyProfileOptions2 {
             fatal_error( 'file_not_uploaded',
                 "$file $fatxt{'20'} gif png jpeg jpg" );
         }
-        my $ext     = $1;
+        else { $ext = $1; }
         my $fixfile = ${ $uid . $user }{'realname'};
         if ( $fixfile =~ /[^0-9A-Za-z\+\-\.:_]/xsm )
         {    # replace all inappropriate characters
@@ -2330,14 +2354,19 @@ sub ModifyProfileOptions2 {
     ${ $uid . $user }{'timeselect'}    = int $member{'usertimeselect'};
     ${ $uid . $user }{'template'}      = $member{'usertemplate'};
     ${ $uid . $user }{'language'}      = $member{'userlanguage'};
-	${ $uid . $user }{'hide_avatars'}  = ($member{'hide_avatars'} && $user_hide_avatars) ? 1 : 0;
-	${ $uid . $user }{'hide_user_text'} = ($member{'hide_user_text'} && $user_hide_user_text) ? 1 : 0;
-	${ $uid . $user }{'hide_attach_img'} = ($member{'hide_attach_img'} && $user_hide_attach_img) ? 1 : 0;
-	${ $uid . $user }{'hide_signat'} = ($member{'hide_signat'} && $user_hide_signat) ? 1 : 0;
-	${ $uid . $user }{'hide_smilies_row'} = ($member{'hide_smilies_row'} && $user_hide_smilies_row) ? 1 : 0;
-    ${ $uid . $user }{'timeformat'}    = $member{'timeformat'};
+    ${ $uid . $user }{'hide_avatars'} =
+      ( $member{'hide_avatars'} && $user_hide_avatars ) ? 1 : 0;
+    ${ $uid . $user }{'hide_user_text'} =
+      ( $member{'hide_user_text'} && $user_hide_user_text ) ? 1 : 0;
+    ${ $uid . $user }{'hide_attach_img'} =
+      ( $member{'hide_attach_img'} && $user_hide_attach_img ) ? 1 : 0;
+    ${ $uid . $user }{'hide_signat'} =
+      ( $member{'hide_signat'} && $user_hide_signat ) ? 1 : 0;
+    ${ $uid . $user }{'hide_smilies_row'} =
+      ( $member{'hide_smilies_row'} && $user_hide_smilies_row ) ? 1 : 0;
+    ${ $uid . $user }{'timeformat'}   = $member{'timeformat'};
     ${ $uid . $user }{'numberformat'} = int $member{'usernumberformat'};
-    ${ $uid . $user }{'return_to'} = $member{'return_to'};
+    ${ $uid . $user }{'return_to'}    = $member{'return_to'};
 
     UserAccount( $user, 'update' );
 
@@ -2354,8 +2383,7 @@ sub ModifyProfileOptions2 {
     else {
         $scriptAction = q~viewprofile~;
     }
-    if (   $pm_lev == 1 )
-    {
+    if ( $pm_lev == 1 ) {
         $scriptAction = q~profileIM~;
     }
     if ($buddyListEnabled) {
@@ -2411,8 +2439,7 @@ sub ModifyProfileBuddy2 {
     else {
         $scriptAction = q~viewprofile~;
     }
-    if (   $pm_lev == 1 )
-    {
+    if ( $pm_lev == 1 ) {
         $scriptAction = q~profileIM~;
     }
     if ($view) { $scriptAction = qq~my$scriptAction~; }
@@ -2738,7 +2765,7 @@ qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px
         $showaddgr =~ s/<br \/>/\, /gsm;
         $showaddgr =~ s/\A, //sm;
         $showaddgr =~ s/, \Z//sm;
-        $row_addgrp .= qq~<br /><span class="small">$showaddgr</span>~;
+        $row_addgrp .= qq~<span class="small">$showaddgr</span><br />~;
     }
     if ( ${ $uid . $user }{'gender'} ) {
         if ( ${ $uid . $user }{'gender'} eq 'Male' ) {
@@ -2939,20 +2966,6 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
 
         $row_signature = $myrow_sig;
         $row_signature =~ s/{yabb message}/$message/sm;
-
-        if ($img_greybox) {
-            $yyinlinestyle .=
-qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/css" />\n~;
-            $yyjavascript .= qq~
-var GB_ROOT_DIR = "$yyhtml_root/greybox/";
-// -->
-</script>
-<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>
-<script type="text/javascript" src="$yyhtml_root/AJS_fx.js"></script>
-<script type="text/javascript" src="$yyhtml_root/greybox/gb_scripts.js"></script>
-<script type="text/javascript">
-<!--~;
-        }
     }
 
     # End empty field checking
@@ -3041,15 +3054,17 @@ var GB_ROOT_DIR = "$yyhtml_root/greybox/";
                         ( $boardname, $boardperms, $boardview ) =
                           split /\|/xsm, $board{"$board"};
                         ToChars($boardname);
-                        if (!${ $uid . $board }{'canpost'} && $subboard{$board}){
+                        if ( !${ $uid . $board }{'canpost'}
+                            && $subboard{$board} )
+                        {
                             $my_brd = 'boardselect';
                         }
-                        else {$my_brd = 'board';}
+                        else { $my_brd = 'board'; }
                         $my_mod_star .=
-qq~<a href="$scripturl?$my_brd=$board" class="a">~
-                  . ( '&nbsp;' x $indent )
-                  . ( $dash x ( $indent / 2 ) )
-                  . qq~$boardname</a><br />\n~;
+                            qq~<a href="$scripturl?$my_brd=$board" class="a">~
+                          . ( '&nbsp;' x $indent )
+                          . ( $dash x ( $indent / 2 ) )
+                          . qq~$boardname</a><br />\n~;
                     }
                 }
                 if ( $subboard{$board} ) {
@@ -3130,8 +3145,7 @@ qq~<a href="$scripturl?$my_brd=$board" class="a">~
         $lastpost   = qq~$profile_amv_txt{'mylastpost'}~;
         $lastPM     = qq~$profile_amv_txt{'mylastpm'}~;
     }
-    if (   $pm_lev == 1 )
-    {
+    if ( $pm_lev == 1 ) {
         $my_lastPM = qq~
             <div class="contactleft"><b>$lastPM: </b></div>
             <div class="contactright">$userlastim</div>~;
@@ -3221,10 +3235,14 @@ qq~<a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccoun
         $my_banning =~ s/{yabb ip_ban_options}/$ip_ban_options/sm;
     }
 
-	if ( $iamadmin && !$view && $user ne $username && ${$uid.$user}{'position'} ne 'Administrator' ) {
-	    $my_reminder = $myshow_reminder;
+    if (   $iamadmin
+        && !$view
+        && $user ne $username
+        && ${ $uid . $user }{'position'} ne 'Administrator' )
+    {
+        $my_reminder = $myshow_reminder;
         $my_reminder =~ s/{yabb my_realname}/${$uid.$user}{'realname'}/sm;
-	}
+    }
 
     if (   ${ $uid . $user }{'postcount'} > 0
         && $maxrecentdisplay > 0
@@ -3473,27 +3491,39 @@ sub usersrecentposts {
                         next BOARDCHECK;
                     }
 
-					my $bdmods = ${$uid.$curboard}{'mods'};
-					$bdmods =~ s/\, /\,/gsm;
-					$bdmods =~ s/\ /\,/gsm;
-					my %moderators = ();
-					my $pswiammod = 0;
-					foreach my $curuser (split /\,/xsm, $bdmods) {
-						if ($username eq $curuser) { $pswiammod = 1; }
-					}
-					my $bdmodgroups = ${$uid.$curboard}{'modgroups'};
-					$bdmodgroups =~ s/\, /\,/gsm;
-					my %moderatorgroups = ();
-					foreach my $curgroup (split /\,/xsm, $bdmodgroups) {
-						if (${$uid.$username}{'position'} eq $curgroup) { $pswiammod = 1; }
-						foreach my $memberaddgroups (split /\, /sm, ${$uid.$username}{'addgroups'}) {
-							chomp $memberaddgroups;
-							if ($memberaddgroups eq $curgroup) { $pswiammod = 1; last; }
-						}
-					}
-					my $cookiename = "$cookiepassword$curboard$username";
-					my $crypass = ${$uid.$curboard}{'brdpassw'};
-					if (!$staff && !$pswiammod && $yyCookies{$cookiename} ne $crypass) { next; }
+                    my $bdmods = ${ $uid . $curboard }{'mods'};
+                    $bdmods =~ s/\, /\,/gsm;
+                    $bdmods =~ s/\ /\,/gsm;
+                    my %moderators = ();
+                    my $pswiammod  = 0;
+                    foreach my $curuser ( split /\,/xsm, $bdmods ) {
+                        if ( $username eq $curuser ) { $pswiammod = 1; }
+                    }
+                    my $bdmodgroups = ${ $uid . $curboard }{'modgroups'};
+                    $bdmodgroups =~ s/\, /\,/gsm;
+                    my %moderatorgroups = ();
+                    foreach my $curgroup ( split /\,/xsm, $bdmodgroups ) {
+                        if ( ${ $uid . $username }{'position'} eq $curgroup ) {
+                            $pswiammod = 1;
+                        }
+                        foreach my $memberaddgroups ( split /\, /sm,
+                            ${ $uid . $username }{'addgroups'} )
+                        {
+                            chomp $memberaddgroups;
+                            if ( $memberaddgroups eq $curgroup ) {
+                                $pswiammod = 1;
+                                last;
+                            }
+                        }
+                    }
+                    my $cookiename = "$cookiepassword$curboard$username";
+                    my $crypass    = ${ $uid . $curboard }{'brdpassw'};
+                    if (   !$staff
+                        && !$pswiammod
+                        && $yyCookies{$cookiename} ne $crypass )
+                    {
+                        next;
+                    }
                     fopen( FILE, "$boardsdir/$curboard.txt" )
                       || next BOARDCHECK;
                     @{ $boardtxt{$curboard} } = <FILE>;
@@ -3650,24 +3680,11 @@ qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$c#$c;title=PostReply"
 qq~<p><a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}"><b>$profile_txt{'92'} ${$uid.$curuser}{'realname'}</b></a></p>~;
     }
 
-    if ($img_greybox) {
-        $yyinlinestyle .=
-qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/css" />\n~;
-        $yyjavascript .= qq~
-var GB_ROOT_DIR = "$yyhtml_root/greybox/";
-// -->
-</script>
-<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>
-<script type="text/javascript" src="$yyhtml_root/AJS_fx.js"></script>
-<script type="text/javascript" src="$yyhtml_root/greybox/gb_scripts.js"></script>
-<script type="text/javascript">
-<!--~;
-    }
-
     $yytitle = "$profile_txt{'458'} ${$uid.$curuser}{'realname'}";
     if ( !$view ) {
         $yynavigation = qq~&rsaquo; $maintxt{'213'}~;
         $yymain .= $showProfile;
+        $yyjsstyle = 1;    
         template();
     }
     return;

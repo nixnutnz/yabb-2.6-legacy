@@ -1,13 +1,14 @@
 ###############################################################################
 # EventCalBirthdays.pm                                                        #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2010 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -140,33 +141,43 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
     # Add Star sign and age begin
 
     ManageMemberinfo('load');
-	fopen(EVENTBIRTH, "$vardir/eventcalbday.db");
-	my @birthmembers = <EVENTBIRTH>;
-	fclose(EVENTBIRTH);
+    fopen( EVENTBIRTH, "$vardir/eventcalbday.db" );
+    my @birthmembers = <EVENTBIRTH>;
+    fclose(EVENTBIRTH);
+
     # Birthdaylist output begin
-    if ( $Show_BdStarsign ) { $cal_colspan = '4';
-        $cal_col = $cal_col_ss;
+    if ($Show_BdStarsign) {
+        $cal_colspan       = '4';
+        $cal_col           = $cal_col_ss;
         $cal_col_star_sort = $cal_col_ss_sort;
-        $cal_col_star = $cal_col_ss_top;
+        $cal_col_star      = $cal_col_ss_top;
     }
-    else { $cal_colspan = '3';
-        $cal_col = $cal_col_no_ss;
+    else {
+        $cal_colspan       = '3';
+        $cal_col           = $cal_col_no_ss;
         $cal_col_star_sort = q{};
-        $cal_col_star = q{};
+        $cal_col_star      = q{};
     }
 
     my @birthmembers1 = ();
-	foreach $user_name (@birthmembers) {
-		chomp $user_name;
-		($user_bdyear, $user_bdmon, $user_bdday, $user_bdname, $user_bdhide) = split /\|/xsm,$user_name;
+    foreach my $user_name (@birthmembers) {
+        chomp $user_name;
+        ( $user_bdyear, $user_bdmon, $user_bdday, $user_bdname, $user_bdhide ) =
+          split /\|/xsm, $user_name;
 
-		$memrealname = (split /\|/xsm, $memberinf{$user_bdname}, 2)[0];
+        $memrealname = ( split /\|/xsm, $memberinf{$user_bdname}, 2 )[0];
 
- 		if (($user_bdmon < $actualmon) || (($user_bdmon == $actualmon) && ($user_bdday <= $actualday))) {
-                $age = $year - $user_bdyear;
-		} else { $age = $year-$user_bdyear; $age-- }
+        if (
+            ( $user_bdmon < $actualmon )
+            || (   ( $user_bdmon == $actualmon )
+                && ( $user_bdday <= $actualday ) )
+          )
+        {
+            $age = $year - $user_bdyear;
+        }
+        else { $age = $year - $user_bdyear; $age-- }
 
-        my @stars =        
+        my @stars =
           qw(Capricorn Aquarius Aquarius Pisces Pisces Aries Aries Taurus Taurus Gemini Gemini Cancerian Cancerian Leo Leo Virgo Virgo Libra Libra Scorpio Scorpio Sagittarius Sagittarius Capricorn);
         my @bd_1 = (
             1, 21, 1, 20, 1, 21, 1, 21, 1, 21, 1, 22,
@@ -274,10 +285,10 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" rel="nofollow">$format_unbold{$user_bdname}</a>~;
                 }
                 if ( $showage && $user_bdhide ) {
-                   $myage = $var_cal{'hidden'};
+                    $myage = $var_cal{'hidden'};
                 }
                 else {
-                      $myage = $age;
+                    $myage = $age;
                 }
 
                 $bd_today .=
@@ -288,10 +299,12 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
             if ($letter) {
                 $searchbdname = $user_bdrealname;
                 $searchbdname ||= $user_bdname;
-#                if ( $letter ne 'other' ) {
-                    if ( $searchbdname =~ /^$letter/ism ) { $showviewbd = 1; }
-#                }
-#                elsif ( $searchbdname !~ /^[a-z]/ism ) { $showviewbd = 1; }
+
+                #                if ( $letter ne 'other' ) {
+                if ( $searchbdname =~ /^$letter/ism ) { $showviewbd = 1; }
+
+    #                }
+    #                elsif ( $searchbdname !~ /^[a-z]/ism ) { $showviewbd = 1; }
             }
             else {
                 $showviewbd = 1;
@@ -306,9 +319,10 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
                 {
 
                     ## User date display begin ##
-                    $mybtime = stringtotime(qq~$user_bdmon/$user_bdday/$user_bdyear~);
+                    $mybtime =
+                      stringtotime(qq~$user_bdmon/$user_bdday/$user_bdyear~);
                     $mybtimein = timeformat($mybtime);
-                    $cdate = dtonly($mybtimein);
+                    $cdate     = dtonly($mybtimein);
                     if ( $showage && $user_bdhide ) {
                         $cdate = bdayno_year($mybtimein);
                     }
@@ -339,7 +353,8 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
 
                         $viewmont[$i] .= $mybdlist_viewmont;
                         $viewmont[$i] =~ s/{yabb cal_col_star}/$cal_col_star/sm;
-                        $viewmont[$i] =~ s/{yabb user_linkprofile}/$user_linkprofile/sm;
+                        $viewmont[$i] =~
+                          s/{yabb user_linkprofile}/$user_linkprofile/sm;
                         $viewmont[$i] =~ s/{yabb myage}/$myage/sm;
                         $viewmont[$i] =~ s/{yabb sternzeichen}/$sternzeichen/sm;
                         $viewmont[$i] =~ s/{yabb cdate}/$cdate/sm;
@@ -392,12 +407,13 @@ $bd_today
     $yymain =~ s/{yabb class_sortdate}/$class_sortdate/sm;
 
     for my $i ( a .. z ) {
-        $yymain .= $mybdlist_alpha_a
+        $yymain .=
+            $mybdlist_alpha_a
           . $i
           . q~" style="text-decoration:none;">~
           . uc($i)
           . $mybdlist_alpha_b;
-          $yabbmain =~ s/{yabb sortiert}/$sortiert/sm; #";
+        $yabbmain =~ s/{yabb sortiert}/$sortiert/sm;    #";
     }
     $yymain .= $mybdlist_alpha_c;
     $yabbmain =~ s/{yabb viewbirthdays}/$viewbirthdays/sm;
@@ -439,24 +455,32 @@ sub sortdate {
     my @zahl1 = split /\|/xsm, $a;
     my @zahl2 = split /\|/xsm, $b;
     $zahl1[2] . $zahl1[0] <=> $zahl2[2] . $zahl2[0];
+
+    #    return;
 }
 
 sub sortage {
     my @zahl1 = split /\|/xsm, $a;
     my @zahl2 = split /\|/xsm, $b;
     $zahl1[4] . $zahl1[2] . $zahl1[0] <=> $zahl2[4] . $zahl2[2] . $zahl2[0];
+
+    #    return;
 }
 
 sub sortstarsign {
     my @name1 = split /\|/xsm, $a;
     my @name2 = split /\|/xsm, $b;
     $name1[5] cmp $name2[5];
+
+    #    return;
 }
 
 sub sortuser {
     my @name1 = split /\|/xsm, $a;
     my @name2 = split /\|/xsm, $b;
     lc $name1[6] cmp lc $name2[6];
+
+    #    return;
 }
 
 1;

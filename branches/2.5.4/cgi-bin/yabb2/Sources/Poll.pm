@@ -1,13 +1,14 @@
 ###############################################################################
 # Poll.pm                                                                     #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -552,7 +553,7 @@ qq~$menusep<a href="javascript:document.removepoll.submit();" class="altlink" on
 qq~<a href="$scripturl?action=showvoters;num=$pollnum">$img{'viewvotes'}</a>~;
         }
         if ($hide_results) {
-            $endedtext = $mypoll_ended;
+            $endedtext    = $mypoll_ended;
             $hide_results = 0;
         }
     }
@@ -634,7 +635,7 @@ qq~<a href="$scripturl?action=undovote;num=$pollnum$scp">$img{'deletevote'}</a>~
     else {
         $footer =
           qq~<input type="submit" value="$polltxt{'18'}" class="button" />~;
-        $width   = q~ width="80%"~;
+        $width = q~ width="80%"~;
     }
     check_deletepoll();
     if ( $iamguest || $poll_locked || $poll_nodelete{$username} ) {
@@ -651,7 +652,7 @@ qq~<a href="$scripturl?action=undovote;num=$pollnum$scp">$img{'deletevote'}</a>~
     $pollmain =~ s/{yabb deletepoll}/$deletepoll/gsm;
     $pollmain =~ s/{yabb poll_question}/$poll_question/gsm;
     get_micon();
-    
+
     if ($has_voted) {
         if ( !$hide_results || $poll_locked ) {
             $poll_notlocked = qq~
@@ -710,7 +711,7 @@ qq~$polltxt{'47'}<br /><span class="small">($polltxt{'48'})</span><br />~;
                         $pollpercent = sprintf '%.1f', $pollpercent;
                         $pollbar     = int( 150 * $votes[$i] / $maxvote );
                     }
-                    $pollbar  .= 'px';
+                    $pollbar .= 'px';
                     $poll_hasvoted .= qq~
                 <div style="clear: both; height: 18px; vertical-align: middle;">
                 <div style="float: left; width: 50%; text-align: right;">$options[$i]&nbsp;&nbsp;&nbsp;&nbsp;</div>

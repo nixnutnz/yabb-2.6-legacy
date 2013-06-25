@@ -1,14 +1,14 @@
 ###############################################################################
 # Captcha.pm                                                                  #
-# $Date: 01.22.13 $                                                           #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -1307,70 +1307,70 @@ sub captcha {
 #   increase the expected code size to 9 bits.
 
     # GIF Signature
-    print 'Content-type: image/gif', "\x0A\x0A";
+    print 'Content-type: image/gif', "\n\n" or croak 'cannot print';
 
     # Screen Descriptor
-    print $TRANSPARENT_INDEX ? 'GIF89a' : 'GIF87a';
+    print $TRANSPARENT_INDEX ? 'GIF89a' : 'GIF87a' or croak 'cannot print';
 
     # width, height
-    print pack 'v2', $w, $h;
+    print pack 'v2', $w, $h or croak 'cannot print';
 
     # global colour map, 8 bits colour resolution, 7 bits per pixel
-    print pack 'C1', 0xF0 + $BITS_PER_PIXEL - 1;
+    print pack 'C1', 0xF0 + $BITS_PER_PIXEL - 1 or croak 'cannot print';
 
     # background colour = 0
-    print "\0";
+    print "\0" or croak 'cannot print';
 
     # reserved
-    print "\0";
+    print "\0" or croak 'cannot print';
 
     # Global Colour Map
-    print $palette;
-    print "\0" x ( ( 2**$BITS_PER_PIXEL * 3 ) - length $palette );
+    print $palette or croak 'cannot print';
+    print "\0" x ( ( 2**$BITS_PER_PIXEL * 3 ) - length $palette ) or croak 'cannot print';
 
     if ($TRANSPARENT_INDEX) {
 
         # Graphic Control Extension
         # extension introducer
-        print "\x21";
+        print "\x21" or croak 'cannot print';
 
         # graphic control label
-        print "\xF9";
+        print "\xF9" or croak 'cannot print';
 
         # block size
-        print "\x04";
+        print "\x04" or croak 'cannot print';
 
         # no disposal method, no user input, transparent colour present
-        print "\x01";
+        print "\x01" or croak 'cannot print';
 
         # delay time
-        print "\0\0";
+        print "\0\0" or croak 'cannot print';
 
         # transparent colour index
-        print $TRANSPARENT_INDEX;
+        print $TRANSPARENT_INDEX or croak 'cannot print';
 
         # block terminator
-        print "\0";
+        print "\0" or croak 'cannot print';
     }
 
     # Image Descriptor
 
     # image separator
-    print q{,};
+    print q{,} or croak 'cannot print';
 
     # left, top
-    print "\0\0\0\0";
+    print "\0\0\0\0" or croak 'cannot print';
 
     # width, height
-    print pack 'v2', $w, $h;
+    print pack 'v2', $w, $h or croak 'cannot print';
 
     # use global colour map (not local), sequential (not interlaced)
-    print "\0";
+    print "\0" or croak 'cannot print';
 
     # Raster Data
 
     # code size
-    print pack 'C', $BITS_PER_PIXEL;
+    print pack 'C', $BITS_PER_PIXEL or croak 'cannot print';
 
     # the data is output in blocks with a leading byte count
     my ( $img, $line, $random_number );
@@ -1389,8 +1389,8 @@ sub captcha {
               int( $x / $DOT_WIDTH / $CHAR_WIDTH );  # index into message string
             $line = $lines[ $y / $LINE_HEIGHT ];
             $c    = ( $i < length $line ) ? substr $line, $i, 1 : q{ };
-            $d    = substr $ci{$c}, $cy * ( $CHAR_WIDTH + $nl ) + $cx + $nl,
-              1;    # dot in character definition
+            $d    = substr $ci{$c}, $cy * ( $CHAR_WIDTH + $nl ) + $cx + $nl, 1;
+               # dot in character definition
             if ( $distortion > 0 ) {
                 $dis_level = 9 - $distortion;
                 if ( $random_number <= $dis_level ) {
@@ -1473,16 +1473,16 @@ sub captcha {
     while ( $i < length $pkdimg ) {
         $cnt = ( length $pkdimg ) - $i;
         if ( $cnt > 255 ) { $cnt = 255; }
-        print pack 'C', $cnt;
-        print substr $pkdimg, $i, $cnt;
+        print pack 'C', $cnt or croak 'cannot print';
+        print substr $pkdimg, $i, $cnt or croak 'cannot print';
         $i += $cnt;
     }
 
     # Finish up
-    print "\0";    # zero byte count (end of raster data)
+    print "\0" or croak 'cannot print';    # zero byte count (end of raster data)
 
     # GIF Terminator
-    print ';';
+    print ';' or croak 'cannot print';
 
     exit;
 }

@@ -1,10 +1,11 @@
 ###############################################################################
 # Menu.pm                                                                     #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -27,12 +28,11 @@ $menupmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub SetMenu {
-     if ( -e ("Templates/$usestyle/Menu.def") )
-            {
-            $Menu_def = qq~Templates/$usestyle/Menu.def~;
-            }
-     else { $Menu_def = qq~Templates/default/Menu.def~;}
-    
+    if ( -e ("Templates/$usestyle/Menu.def") ) {
+        $Menu_def = qq~Templates/$usestyle/Menu.def~;
+    }
+    else { $Menu_def = q~Templates/default/Menu.def~; }
+
     fopen( MENUFILE, "$Menu_def" );
     %img = map { /(.*),(.*)/xsm } <MENUFILE>;
     fclose(MENUFILE);
@@ -41,7 +41,7 @@ sub SetMenu {
         chomp $value;
         (
             $button_icon, $button_text, $text_num, $alt_text,
-            $alt_num,     $span_class, $imgext,  $mod_or_not
+            $alt_num,     $span_class,  $imgext,   $mod_or_not
         ) = split /\|/xsm, $value;
         if ( !$alt_text ) {
             $alt_text = $button_text;
@@ -76,7 +76,8 @@ qq~<img src="$button_imgurl/$button_icon.$imgext" alt="${$alt_text}{$alt_num}" /
 qq~<span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}">${$button_text}{$text_num}</span> ~;
             }
             else {
-                $menusep = qq~<img src='$yyhtml_root/Templates/Forum/default/buttonsep.png' class='cssbutton1' alt='' title='' />~;
+                $menusep =
+qq~<img src='$yyhtml_root/Templates/Forum/default/buttonsep.png' class='cssbutton1' alt='' title='' />~;
                 $img{$key} =
 qq~<span class="buttonleft cssbutton2" title="${$alt_text}{$alt_num}" style="$helpstyle">~;
                 $img{$key} .= q~<span class="buttonright cssbutton3">~;
@@ -95,14 +96,13 @@ qq~<img src="$button_imgurl/$button_icon.$imgext" alt="${$button_text}{$text_num
 }
 
 sub SetImage {
-    my ($img_name,$UseMenuT) = @_;
+    my ( $img_name, $UseMenuT ) = @_;
 
-     if ( -e ("Templates/$usestyle/Menu.def") )
-            {
-            $Menu_def = qq~Templates/$usestyle/Menu.def~;
-            }
-     else { $Menu_def = qq~Templates/default/Menu.def~;}
-    
+    if ( -e ("Templates/$usestyle/Menu.def") ) {
+        $Menu_def = qq~Templates/$usestyle/Menu.def~;
+    }
+    else { $Menu_def = q~Templates/default/Menu.def~; }
+
     fopen( MENUFILE, "$Menu_def" );
     %img_set = map { /(.*),(.*)/xsm } <MENUFILE>;
     fclose(MENUFILE);
@@ -110,8 +110,8 @@ sub SetImage {
     my $imgname = $img_set{$img_name};
 
     (
-            $button_icon, $button_text, $text_num, $alt_text,
-            $alt_num,     $span_class, $imgext,  $mod_or_not
+        $button_icon, $button_text, $text_num, $alt_text,
+        $alt_num,     $span_class,  $imgext,   $mod_or_not
     ) = split /\|/xsm, $imgname;
     chomp $mod_or_not;
     if ( !$alt_text ) {
@@ -126,8 +126,9 @@ sub SetImage {
     else                    { $helpstyle = q~ cursor: pointer;~; }
     if ( $UseMenuT == 0 ) {
         $menusep = q{ };
-        if ( $img_name eq 'gtalk') {
-		    $img_out = qq~<img src="$button_imgurl/$button_icon.$imgext" style="cursor: pointer" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false" alt="$thegtalkname" title="$thegtalkname" />~;
+        if ( $img_name eq 'gtalk' ) {
+            $img_out =
+qq~<img src="$button_imgurl/$button_icon.$imgext" style="cursor: pointer" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false" alt="$thegtalkname" title="$thegtalkname" />~;
         }
         else {
             $img_out =
@@ -136,7 +137,7 @@ qq~<img src="$button_imgurl/$button_icon.$imgext" alt="${$alt_text}{$alt_num}" /
     }
     elsif ( $UseMenuT == 1 ) {
         $menusep = q{ };
-        if ( $img_name eq 'gtalk') {
+        if ( $img_name eq 'gtalk' ) {
             $img_out =
 qq~<span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false">${$button_text}{$text_num}</span>~;
         }
@@ -147,14 +148,15 @@ qq~<span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$a
     }
     elsif ( $UseMenuT == 3 ) {
         $menusep = q{};
-        $img_out = qq~$button_imgurl/$button_icon.$imgext|${$button_text}{$text_num}~;
+        $img_out =
+          qq~$button_imgurl/$button_icon.$imgext|${$button_text}{$text_num}~;
     }
     else {
         $menusep =
 qq~<img src='$yyhtml_root/Templates/Forum/default/buttonsep.png' class='cssbutton1' alt='' title='' />~;
-        if ( $img_name eq 'gtalk') {
+        if ( $img_name eq 'gtalk' ) {
             $img_out =
-qq~<span class="buttonleft cssbutton2" style="$helpstyle">~;
+              qq~<span class="buttonleft cssbutton2" style="$helpstyle">~;
             $img_out .= q~<span class="buttonright cssbutton3">~;
             $img_out .=
 qq~<span class="buttonimage cssbutton4" style="background-image: url($button_imgurl/$button_icon.$imgext);" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false" title="${$button_text}{$alt_num}">~;

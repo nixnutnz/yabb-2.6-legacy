@@ -1,10 +1,11 @@
 ###############################################################################
 # AddModerators.pm                                                            #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -30,7 +31,7 @@ LoadLanguage('AddModerators');
 get_template('Other');
 
 sub AddModerators {
-    $addbdmod = q{};
+    $addbdmod      = q{};
     *get_subboards = sub {
         my @x = @_;
         $indent += 2;
@@ -46,11 +47,11 @@ sub AddModerators {
                 next;
             }
             ToChars($boardname);
-                $addbdmod .=
-                    qq~<option value="$board"$modsel>~
-                  . ( '&nbsp;' x $indent )
-                  . ( $dash x ( $indent / 2 ) )
-                  . qq~$boardname</option>\n~;
+            $addbdmod .=
+                qq~<option value="$board"$modsel>~
+              . ( '&nbsp;' x $indent )
+              . ( $dash x ( $indent / 2 ) )
+              . qq~$boardname</option>\n~;
             if ( $subboard{$board} ) {
                 get_subboards( split /\|/xsm, $subboard{$board} );
             }

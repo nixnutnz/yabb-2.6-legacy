@@ -1,13 +1,14 @@
 ###############################################################################
 # Search.pm                                                                   #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -160,29 +161,42 @@ q~<input type="checkbox" name="searchme" id="searchme" style="visibility: hidden
             my $access = AccessCheck( $curboard, q{}, $boardperms );
             if ( !$iamadmin && $access ne 'granted' ) { next; }
 
-			if (${$uid.$curboard}{'brdpasswr'}) {
-			my $bdmods = ${$uid.$curboard}{'mods'};
-			$bdmods =~ s/\, /\,/gsm;
-			$bdmods =~ s/\ /\,/gsm;
-			my %moderators = ();
-			my $pswiammod = 0;
-			foreach my $curuser (split /\,/xsm, $bdmods) {
-				if ($username eq $curuser) { $pswiammod = 1; }
-			}
-			my $bdmodgroups = ${$uid.$curboard}{'modgroups'};
-			$bdmodgroups =~ s/\, /\,/gsm;
-			my %moderatorgroups = ();
-			foreach my $curgroup (split /\,/xsm, $bdmodgroups) {
-				if (${$uid.$username}{'position'} eq $curgroup) { $pswiammod = 1; }
-				foreach my $memberaddgroups (split /\, /sm, ${$uid.$username}{'addgroups'}) {
-					chomp $memberaddgroups;
-					if ($memberaddgroups eq $curgroup) { $pswiammod = 1; last; }
-				}
-			}
-			my $cookiename = "$cookiepassword$curboard$username";
-			my $crypass = ${$uid.$curboard}{'brdpassw'};
-			if (!$iamadmin && !$iamgmod && !$pswiammod && $yyCookies{$cookiename} ne $crypass) { next; }
-			}
+            if ( ${ $uid . $curboard }{'brdpasswr'} ) {
+                my $bdmods = ${ $uid . $curboard }{'mods'};
+                $bdmods =~ s/\, /\,/gsm;
+                $bdmods =~ s/\ /\,/gsm;
+                my %moderators = ();
+                my $pswiammod  = 0;
+                foreach my $curuser ( split /\,/xsm, $bdmods ) {
+                    if ( $username eq $curuser ) { $pswiammod = 1; }
+                }
+                my $bdmodgroups = ${ $uid . $curboard }{'modgroups'};
+                $bdmodgroups =~ s/\, /\,/gsm;
+                my %moderatorgroups = ();
+                foreach my $curgroup ( split /\,/xsm, $bdmodgroups ) {
+                    if ( ${ $uid . $username }{'position'} eq $curgroup ) {
+                        $pswiammod = 1;
+                    }
+                    foreach my $memberaddgroups ( split /\, /sm,
+                        ${ $uid . $username }{'addgroups'} )
+                    {
+                        chomp $memberaddgroups;
+                        if ( $memberaddgroups eq $curgroup ) {
+                            $pswiammod = 1;
+                            last;
+                        }
+                    }
+                }
+                my $cookiename = "$cookiepassword$curboard$username";
+                my $crypass    = ${ $uid . $curboard }{'brdpassw'};
+                if (   !$iamadmin
+                    && !$iamgmod
+                    && !$pswiammod
+                    && $yyCookies{$cookiename} ne $crypass )
+                {
+                    next;
+                }
+            }
 
             # Checks to see if category is expanded or collapsed
             if ( $username ne 'Guest' ) {
@@ -204,9 +218,7 @@ qq~<option value="$curboard" $selected>$boardname</option>\n          ~;
             if ( !$subboard{$curboard} ) { next; }
             my $indent;
 
-            get_subboards( split /\|/xsm, $subboard{$curboard} );
-
-            sub get_subboards {
+            *get_subboards = sub {
                 my @x = @_;
                 $indent += 2;
                 foreach my $childbd (@x) {
@@ -226,14 +238,17 @@ qq~<option value="$curboard" $selected>$boardname</option>\n          ~;
                 }
                 $indent -= 2;
                 return;
-            }
+            };
+            get_subboards( split /\|/xsm, $subboard{$curboard} );
         }
     }
     if ( $isselected == $allselected ) {
         $boardscheck = q~ checked="checked"~;
     }
-    if ( $iamadmin || $iamymod || $iamgmod && $gmod_access2{'ipban2'} eq 'on' ) {
-        $search_ip = qq~<input type="checkbox" name="search_ip" id="search_ip" value="on" /><label for="search_ip"> $search_txt{'73'}</label>~;
+    if ( $iamadmin || $iamymod || $iamgmod && $gmod_access2{'ipban2'} eq 'on' )
+    {
+        $search_ip =
+qq~<input type="checkbox" name="search_ip" id="search_ip" value="on" /><label for="search_ip"> $search_txt{'73'}</label>~;
     }
 
     $yymain .= qq~
@@ -259,7 +274,7 @@ qq~<option value="$curboard" $selected>$boardname</option>\n          ~;
     $yymain .= $mysearch_template5;
     $yymain =~ s/{yabb maxsearchdisplay}/$maxsearchdisplay/sm;
     $yymain =~ s/{yabb search_ip}/$search_ip/sm;
- 
+
     $yymain .= qq~
 <script type="text/javascript">
     document.searchform.search.focus();
@@ -277,6 +292,7 @@ qq~<option value="$curboard" $selected>$boardname</option>\n          ~;
 
     $yytitle      = $search_txt{'183'};
     $yynavigation = qq~&rsaquo; $search_txt{'182'}~;
+    $yyjsstyle = 1;    
     template();
     return;
 }
@@ -338,7 +354,7 @@ sub plushSearch2 {
     if ( $search =~ m{\\}xsm ) { fatal_error('no_search_slashes'); }
     my $searchsubject = $FORM{'subfield'} eq 'on';
     my $searchmessage = $FORM{'msgfield'} eq 'on';
-	if ($FORM{'search_ip'} eq 'on') { $search_ip = $FORM{'search'}; }
+    if ( $FORM{'search_ip'} eq 'on' ) { $search_ip = $FORM{'search'}; }
     ToHTML($search);
     $search =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gxsm;
     $search =~ s/\cM//gxsm;
@@ -348,13 +364,13 @@ sub plushSearch2 {
     my $case = $FORM{'casesensitiv'};
 
     my (
-        $curboard, @threads,   $curthread, $tnum,      $tsub,
-        $tname,    $temail,    $tdate,     $treplies,  $tusername,
-        $ticon,    $tstate,    @messages,  $curpost,   $subfound,  $msgfound,  $numfound,
-        %data,     $i,         $board,     $curcat,    @categories,
-        %catid,    %catname,   %cataccess, %openmemgr, @membergroups,
-        %cats,     @boardinfo, %boardinfo, @boards,    $counter,
-        $msgnum
+        $curboard,  @threads,      $curthread, $tnum,      $tsub,
+        $tname,     $temail,       $tdate,     $treplies,  $tusername,
+        $ticon,     $tstate,       @messages,  $curpost,   $subfound,
+        $msgfound,  $numfound,     %data,      $i,         $board,
+        $curcat,    @categories,   %catid,     %catname,   %cataccess,
+        %openmemgr, @membergroups, %cats,      @boardinfo, %boardinfo,
+        @boards,    $counter,      $msgnum
     );
     my $maxtime =
       $date +
@@ -397,29 +413,42 @@ sub plushSearch2 {
         my $access = AccessCheck( $curboard, q{}, $boardperms );
         if ( !$iamadmin && $access ne 'granted' ) { next; }
 
-			if (${$uid.$curboard}{'brdpasswr'}) {
-			my $bdmods = ${$uid.$curboard}{'mods'};
-			$bdmods =~ s/\, /\,/g;
-			$bdmods =~ s/\ /\,/g;
-			my %moderators = ();
-			my $pswiammod = 0;
-			foreach my $curuser (split(/\,/, $bdmods)) {
-				if ($username eq $curuser) { $pswiammod = 1; }
-			}
-			my $bdmodgroups = ${$uid.$curboard}{'modgroups'};
-			$bdmodgroups =~ s/\, /\,/g;
-			my %moderatorgroups = ();
-			foreach my $curgroup (split(/\,/, $bdmodgroups)) {
-				if (${$uid.$username}{'position'} eq $curgroup) { $pswiammod = 1; }
-				foreach my $memberaddgroups (split(/\, /, ${$uid.$username}{'addgroups'})) {
-					chomp $memberaddgroups;
-					if ($memberaddgroups eq $curgroup) { $pswiammod = 1; last; }
-				}
-			}
-			my $cookiename = "$cookiepassword$curboard$username";
-			my $crypass = ${$uid.$curboard}{'brdpassw'};
-			if (!$iamadmin && !$iamgmod && !$pswiammod && $yyCookies{$cookiename} ne $crypass) { next; }
-			}
+        if ( ${ $uid . $curboard }{'brdpasswr'} ) {
+            my $bdmods = ${ $uid . $curboard }{'mods'};
+            $bdmods =~ s/\, /\,/gsm;
+            $bdmods =~ s/\ /\,/gsm;
+            my %moderators = ();
+            my $pswiammod  = 0;
+            foreach my $curuser ( split /\,/xsm, $bdmods ) {
+                if ( $username eq $curuser ) { $pswiammod = 1; }
+            }
+            my $bdmodgroups = ${ $uid . $curboard }{'modgroups'};
+            $bdmodgroups =~ s/\, /\,/gsm;
+            my %moderatorgroups = ();
+            foreach my $curgroup ( split /\,/xsm, $bdmodgroups ) {
+                if ( ${ $uid . $username }{'position'} eq $curgroup ) {
+                    $pswiammod = 1;
+                }
+                foreach my $memberaddgroups ( split /\, /sm,
+                    ${ $uid . $username }{'addgroups'} )
+                {
+                    chomp $memberaddgroups;
+                    if ( $memberaddgroups eq $curgroup ) {
+                        $pswiammod = 1;
+                        last;
+                    }
+                }
+            }
+            my $cookiename = "$cookiepassword$curboard$username";
+            my $crypass    = ${ $uid . $curboard }{'brdpassw'};
+            if (   !$iamadmin
+                && !$iamgmod
+                && !$pswiammod
+                && $yyCookies{$cookiename} ne $crypass )
+            {
+                next;
+            }
+        }
 
         fopen( FILE, "$boardsdir/$curboard.txt" ) || next;
         @threads = <FILE>;
@@ -531,14 +560,14 @@ sub plushSearch2 {
                 }
 
                 ## blank? try next = else => build list from found mess/sub
-				## Search for IP Address start
-				if ($search_ip && !$msgfound && !$subfound) {
-					$ipfound = 0;
-					if ($mip =~ /\b$search_ip/) {
-					    $ipfound = '1';
-					}
-				}
-				## Search for IP Address end
+                ## Search for IP Address start
+                if ( $search_ip && !$msgfound && !$subfound ) {
+                    $ipfound = 0;
+                    if ( $mip =~ /\b$search_ip/sm ) {
+                        $ipfound = '1';
+                    }
+                }
+                ## Search for IP Address end
                 if ( !$msgfound && !$subfound && !$ipfound ) { next POSTCHECK; }
 
                 $data{$mdate} = [
@@ -596,7 +625,7 @@ qq~<hr class="hr" /><b>$search_txt{'170'}<br /><a href="javascript:history.go(-1
         $message = Censor($message);
         $msub    = Censor($msub);
 
-		Highlight(\$msub,\$message,\$mip,\@search,$case);
+        Highlight( \$msub, \$message, \$mip, \@search, $case );
 
         ToChars( $catname{$board} );
         ToChars( $boardname{$board} );
@@ -662,11 +691,13 @@ qq~<a href="$scripturl?action=multidel;recent=1;thread=$tnum;del$c=$c" onclick="
                 : q{}
               ) . qq~$display_txt{'rempost'}')">$img{'delete'}</a>~;
         }
-        if ( $iamadmin || $iamymod || $iamgmod && $gmod_access2{'ipban2'} eq 'on' ) {
+        if (   $iamadmin
+            || $iamymod
+            || $iamgmod && $gmod_access2{'ipban2'} eq 'on' )
+        {
             $my_ipfind = $mysearch_template10;
             $my_ipfind =~ s/{yabb mip}/$mip/sm;
         }
-             
 
         $yymain .= $mysearch_template9;
         $yymain =~ s/{yabb message}/$message/sm;
@@ -1048,11 +1079,13 @@ sub Highlight {
                 ${$message} =~
                   s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gsm;
                 if ($ipLookup) {
-				    ${$mip} =~ s/(\Q$tmp\E)/<span class="highlight"><a href="$scripturl?action=iplookup;ip=$1"><span class="small">$1<\/span><\/a><\/span>/gsm;
+                    ${$mip} =~
+s/(\Q$tmp\E)/<span class="highlight"><a href="$scripturl?action=iplookup;ip=$1"><span class="small">$1<\/span><\/a><\/span>/gsm;
                 }
                 else {
-				    ${$mip} =~ s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gsm;
-				}
+                    ${$mip} =~
+                      s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gsm;
+                }
             }
             else {
                 ${$msub} =~
@@ -1060,11 +1093,13 @@ s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/gsm;
                 ${$message} =~
 s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/gsm;
                 if ($ipLookup) {
-				    ${$mip} =~ s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight"><a href="$scripturl?action=iplookup;ip=$2"><span class="small">$2<\/span><\/a><\/span>$3/gsm;
+                    ${$mip} =~
+s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight"><a href="$scripturl?action=iplookup;ip=$2"><span class="small">$2<\/span><\/a><\/span>$3/gsm;
                 }
                 else {
-				    ${$mip} =~ s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/gsm;
-				}
+                    ${$mip} =~
+s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/gsm;
+                }
             }
         }
         else {
@@ -1074,11 +1109,13 @@ s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/gsm;
                 ${$message} =~
                   s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/igsm;
                 if ($ipLookup) {
-				    ${$mip} =~ s/(\Q$tmp\E)/<span class="highlight"><a href="$scripturl?action=iplookup;ip=$1"><span class="small">$1<\/span><\/a><\/span>/gsm;
+                    ${$mip} =~
+s/(\Q$tmp\E)/<span class="highlight"><a href="$scripturl?action=iplookup;ip=$1"><span class="small">$1<\/span><\/a><\/span>/gsm;
                 }
                 else {
-				    ${$mip} =~ s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gsm;
-				}
+                    ${$mip} =~
+                      s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gsm;
+                }
             }
             else {
                 ${$msub} =~
@@ -1086,12 +1123,14 @@ s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/igsm;
                 ${$message} =~
 s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/igsm;
                 if ($ipLookup) {
-				    ${$mip} =~ s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight"><a href="$scripturl?action=iplookup;ip=$2"><span class="small">$2<\/span><\/a><\/span>$3/igsm;
+                    ${$mip} =~
+s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight"><a href="$scripturl?action=iplookup;ip=$2"><span class="small">$2<\/span><\/a><\/span>$3/igsm;
                 }
                 else {
-				    ${$mip} =~ s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/igsm;
-				}
-			}
+                    ${$mip} =~
+s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/igsm;
+                }
+            }
         }
     }
 

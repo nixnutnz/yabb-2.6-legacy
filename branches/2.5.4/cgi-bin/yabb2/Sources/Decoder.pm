@@ -1,32 +1,33 @@
 ###############################################################################
 # Decoder.pm                                                                  #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 our $VERSION = '2.5.4';
 
 $decoderpmver = 'YaBB 2.5.4 $Revision$';
-if ($action eq 'detailedversion') { return 1; }
+if ( $action eq 'detailedversion' ) { return 1; }
 
 sub scramble {
-	my ($input, $user) = @_;
+    my ( $input, $user ) = @_;
     if ( $user eq q{} ) { return; }
 
-	# creating a codekey based on userid
+    # creating a codekey based on userid
     my $carrier = q{};
     for my $n ( 0 .. length $user ) {
         my $ascii = substr $user, $n, 1;
         $ascii = ord $ascii;
-		$carrier .= $ascii;
-	}
+        $carrier .= $ascii;
+    }
     while ( length($carrier) < length $input ) { $carrier .= $carrier; }
     $carrier = substr $carrier, 0, length $input;
     my $scramble = encode_password( rand 100 );
@@ -38,46 +39,46 @@ sub scramble {
     $scramble =~ s/\-/Z/gxsm;
     $scramble =~ s/\:/Q/gxsm;
 
-	# making a mess of the input
-	my $lastvalue = 3;
+    # making a mess of the input
+    my $lastvalue = 3;
     for my $n ( 0 .. length $input ) {
         $value = ( substr $carrier, $n, 1 ) + $lastvalue + 1;
-		$lastvalue = $value;
+        $lastvalue = $value;
         substr( $scramble, $value, 1 ) = substr $input, $n, 1;
-	}
+    }
 
-	# adding code length to code
-	my $len = length($input) + 65;
+    # adding code length to code
+    my $len = length($input) + 65;
     $scramble .= chr $len;
-	return $scramble;
+    return $scramble;
 }
 
 sub descramble {
-	my ($input, $user) = @_;
+    my ( $input, $user ) = @_;
     if ( $user eq q{} ) { return; }
 
-	# creating a codekey based on userid
+    # creating a codekey based on userid
     my $carrier = q{};
-    for my $n ( 0 .. (length ($user) -1) ) {
+    for my $n ( 0 .. ( length($user) - 1 ) ) {
         my $ascii = substr $user, $n, 1;
         $ascii = ord $ascii;
-		$carrier .= $ascii;
-	}
+        $carrier .= $ascii;
+    }
     my $orgcode = substr $input, length($input) - 1, 1;
     my $orglength = ord $orgcode;
 
     while ( length($carrier) < ( $orglength - 65 ) ) { $carrier .= $carrier; }
-	$carrier = substr $carrier, 0, length $input;
+    $carrier = substr $carrier, 0, length $input;
 
-	my $lastvalue  = 3;
+    my $lastvalue  = 3;
     my $descramble = q{};
 
-	# getting code length from encrypted input
+    # getting code length from encrypted input
     for my $n ( 0 .. ( $orglength - 66 ) ) {
         my $value = ( substr $carrier, $n, 1 ) + $lastvalue + 1;
-		$lastvalue = $value;
+        $lastvalue = $value;
         $descramble .= substr $input, $value, 1;
-	}
+    }
     return $descramble;
 }
 
@@ -95,11 +96,11 @@ sub validation_check {
 
 sub validation_code {
 
-	# set the max length of the shown verification code
-    my ($firstCharsLen, $lastCharsLen);
+    # set the max length of the shown verification code
+    my ( $firstCharsLen, $lastCharsLen );
     if ($captchaStartChars) { $firstCharsLen = length $captchaStartChars; }
     if ($captchaEndChars)   { $lastCharsLen  = length $captchaEndChars; }
-    if ($captchaStartChars && $captchaEndChars) {
+    if ( $captchaStartChars && $captchaEndChars ) {
         $flood_text =
 qq~$floodtxt{'casewarning_1'}$floodtxt{'casewarning_2'} $firstCharsLen $floodtxt{'casewarning_4'} $lastCharsLen $floodtxt{'casewarning_5'}~;
     }
@@ -116,33 +117,33 @@ qq~$floodtxt{'casewarning_1'}$floodtxt{'casewarning_3'} $lastCharsLen $floodtxt{
     }
     if ( !$codemaxchars || $codemaxchars < 3 ) { $codemaxchars = 3; }
     $codemaxchars2 = $codemaxchars + int rand 2;
-	## Generate a random string
+    ## Generate a random string
     $captcha = keygen( $codemaxchars2, $captchastyle );
-	## now we are going to spice the captcha with the formsession
+    ## now we are going to spice the captcha with the formsession
     $sessionid = scramble( $captcha, $masterkey );
-	chomp $sessionid;
+    chomp $sessionid;
 
     $showcheck .=
 qq~<img src="$scripturl?action=$randaction;$randaction=$sessionid" alt="" /><input type="hidden" name="sessionid" value="$sessionid" />~;
-	return $sessionid;
+    return $sessionid;
 }
 
 sub testcaptcha {
     my ($testcode) = @_;
-	chomp $testcode;
-	## now it is time to decode the session and see if we have a valid code ##
+    chomp $testcode;
+    ## now it is time to decode the session and see if we have a valid code ##
     my $out = descramble( $testcode, $masterkey );
-	chomp $out;
-	return $out;
+    chomp $out;
+    return $out;
 }
 
 sub convert {
     require Sources::Captcha;
-	my ($startChars, $endChars);
-	if ($captchaStartChars) { $startChars = $captchaStartChars; }
-	if ($captchaEndChars)   { $endChars   = $captchaEndChars; }
+    my ( $startChars, $endChars );
+    if ($captchaStartChars) { $startChars = $captchaStartChars; }
+    if ($captchaEndChars)   { $endChars   = $captchaEndChars; }
     $captcha = testcaptcha( $INFO{$randaction} );
-	captcha($startChars . $captcha . $endChars);
+    captcha( $startChars . $captcha . $endChars );
     return;
 }
 

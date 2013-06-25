@@ -1,13 +1,14 @@
 ###############################################################################
 # HelpCentre.pm                                                               #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -23,10 +24,11 @@ require Sources::Menu;
 $yytitle = $helptxt{'1'};
 undef $guest_media_disallowed;
 
-@my_modimglist = qw( admin_rem admin_move_split_splice admin_lock hide admin_sticky admin_del );
+@my_modimglist =
+  qw( admin_rem admin_move_split_splice admin_lock hide admin_sticky admin_del );
 $my_moding = q{};
-foreach $x (@my_modimglist) {
-    $modimg = SetImage($x,$MenuType);
+foreach my $x (@my_modimglist) {
+    $modimg = SetImage( $x, $MenuType );
     $mymoding .= qq~$modimg~;
 }
 
@@ -34,10 +36,6 @@ sub SectionDecide {
 
    # This bit decides what section we are in and sets the background accordingly
    # Also sets the variables are used to open up the correct Help Directory
-    $moderator_class  = 'catbg';
-    $admin_class      = 'catbg';
-    $global_mod_class = 'catbg';
-    $UserClass        = 'catbg';
 
     if ($UseHelp_Perms) {
         $ismod = 0;
@@ -258,7 +256,7 @@ s/\[yabbc\](.*?)\[\/yabbc\]/my($text) = $1; ToHTML($text); DoUBBCTo($text);/sgem
         $hcode =~
           s/(&#91\;.+?&#93\;)/<span style="color: #ff0000;">$1<\/span>/isgm;
         $hcode =~
-          s/(&#91\;&#47\;.+?&#93\;)/<span style="color: #ff0000;">$1<\/span>/isgm;
+s/(&#91\;&#47\;.+?&#93\;)/<span style="color: #ff0000;">$1<\/span>/isgm;
         return $hcode;
     }
 }

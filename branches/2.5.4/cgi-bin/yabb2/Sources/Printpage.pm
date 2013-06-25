@@ -1,13 +1,14 @@
 ###############################################################################
 # Printpage.pm                                                                #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -24,9 +25,9 @@ sub Print_IM {
     LoadLanguage('InstantMessage');
 
     my (
-        $fromTitle,    $toTitle,    $toTitleCC,  $toTitleBCC,
-        $usernameFrom, $usernameTo, $usernameCC,     $usernameBCC,     $pmAttachment,
-        $pmShowAttach,   $pmAttachments,   %attach_gif
+        $fromTitle,    $toTitle,      $toTitleCC,     $toTitleBCC,
+        $usernameFrom, $usernameTo,   $usernameCC,    $usernameBCC,
+        $pmAttachment, $pmShowAttach, $pmAttachments, %attach_gif
     );
 
     if ( $INFO{'caller'} == 1 ) {
@@ -53,7 +54,13 @@ sub Print_IM {
     foreach my $thread (@threads) {
         chomp $thread;
         if ( $thread =~ /$threadid/xsm ) {
-	     ( undef, $threadposter, $threadtousers, $threadccusers, $threadbccusers, $threadtitle, $threaddate, $threadpost, undef, undef, undef, $threadstatus, undef, $fold, $threadAttach ) = split /\|/xsm, $thread;
+            (
+                undef,          $threadposter,   $threadtousers,
+                $threadccusers, $threadbccusers, $threadtitle,
+                $threaddate,    $threadpost,     undef,
+                undef,          undef,           $threadstatus,
+                undef,          $fold,           $threadAttach
+            ) = split /\|/xsm, $thread;
             if ( $INFO{'caller'} == 3 ) {
                 $folder = ucfirst $fold;
                 $boxtitle .= qq~ &gt;&gt; $folder~;
@@ -118,9 +125,9 @@ function do_images() {
             <!--<span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl</span><br />-->
             <!--<span style="font-family: arial, sans-serif; font-size: 16px; font-weight: bold;">$load_imtxt{'71'} $boxtitle $inmes_txt{'30'} $printDate</span>-->
             <!--<span style="font-family: arial, sans-serif; font-size: 16px; font-weight: bold;">$mbname &gt;&gt; $inmes_txt{'usercp'} &gt;&gt; $boxtitle $storetitle</span>-->
-            <span style="font-family: arial, sans-serif; font-size: 16px; font-weight: bold;">$load_imtxt{'71'} $inmes_txt{'usercp'} &gt;&gt; $boxtitle  $storetitle $inmes_txt{'30'} $printDate</span> 
+            <span style="font-family: arial, sans-serif; font-size: 16px; font-weight: bold;">$load_imtxt{'71'} $inmes_txt{'usercp'} &gt;&gt; $boxtitle  $storetitle $inmes_txt{'30'} $printDate</span>
             <br />
-            <span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl?action=imshow;caller=$INFO{'caller'};id=$INFO{'id'}</span> 
+            <span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl?action=imshow;caller=$INFO{'caller'};id=$INFO{'id'}</span>
         </td>
     </tr>
 </table>
@@ -206,34 +213,50 @@ qq~<span style="font-weight: bold;">$guestName ($guestEmail)</span><br />~;
     }
     chomp $threadAttach;
     if ( $threadAttach ne q{} ) {
-		LoadLanguage('FA');
-		foreach ( split /,/xsm, $threadAttach ) {
-		    my ( $pmAttachFile, undef ) = split /~/xsm, $_;
-			$pmAttachFile =~ /\.(.+?)$/;
-			my $ext = lc($1);
-			if (!exists $attach_gif{$ext}) {
-				$attach_gif{$ext} = ($ext && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}") ? "$att_img{$ext}" : "$paperclip";
-			}
-			my $filesize = -s "$pmuploaddir/$pmAttachFile";
-			if ($filesize) {
-				if ($pmAttachFile =~ /\.(bmp|jpe|jpg|jpeg|gif|png)$/ism && $pmDisplayPics == 1) {
-					$imagecount++;
-					$pmShowAttach .= qq~<div class="small" style="float:left; margin:8px;"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile (~ . int($filesize / 1024) . qq~ KB)<br /><img src="$pmuploadurl/$pmAttachFile" name="attach_img_resize" alt="$pmAttachFile" title="$pmAttachFile" style="display:none;" /></div>\n~;
-				} else {
-					$pmAttachment .= qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile (~ . int($filesize / 1024) . qq~ KB)</div>~;
-				}
-			} else {
-					$pmAttachment .= qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" />  $pmAttachFile ($fatxt{'1'})</div>~;
-				}
-			}
-		    if ( $pmShowAttach && $pmAttachment ) {
-			    $pmAttachment =~ s/<div class="small">/<div class="small" style="margin:8px;">/g;
-		    }
-			$pmAttachments .= qq~
-	        <hr />
-			$pmAttachment
-			$pmShowAttach~;
-		}
+        LoadLanguage('FA');
+        foreach ( split /,/xsm, $threadAttach ) {
+            my ( $pmAttachFile, undef ) = split /~/xsm, $_;
+            if ( $pmAttachFile =~ /\.(.+?)$/sm ) {
+                $ext = lc $1;
+            }
+            if ( !exists $attach_gif{$ext} ) {
+                $attach_gif{$ext} =
+                  ( $ext
+                      && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}"
+                  ) ? "$att_img{$ext}" : "$paperclip";
+            }
+            my $filesize = -s "$pmuploaddir/$pmAttachFile";
+            if ($filesize) {
+                if (   $pmAttachFile =~ /\.(bmp|jpe|jpg|jpeg|gif|png)$/ism
+                    && $pmDisplayPics == 1 )
+                {
+                    $imagecount++;
+                    $pmShowAttach .=
+qq~<div class="small" style="float:left; margin:8px;"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile (~
+                      . int( $filesize / 1024 )
+                      . qq~ KB)<br /><img src="$pmuploadurl/$pmAttachFile" name="attach_img_resize" alt="$pmAttachFile" title="$pmAttachFile" style="display:none;" /></div>\n~;
+                }
+                else {
+                    $pmAttachment .=
+qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile (~
+                      . int( $filesize / 1024 )
+                      . q~ KB)</div>~;
+                }
+            }
+            else {
+                $pmAttachment .=
+qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" />  $pmAttachFile ($fatxt{'1'})</div>~;
+            }
+        }
+        if ( $pmShowAttach && $pmAttachment ) {
+            $pmAttachment =~
+              s/<div class="small">/<div class="small" style="margin:8px;">/gsm;
+        }
+        $pmAttachments .= qq~
+            <hr />
+            $pmAttachment
+            $pmShowAttach~;
+    }
     elsif ( $INFO{'caller'} == 2 ) {
         LoadUser($threadposter);
         $usernameFrom =
@@ -412,8 +435,7 @@ qq~<span style="font-weight: bold;">$guestName ($guestEmail)</span><br />~;
     }
     elsif ( $INFO{'caller'} == 5 && $threadstatus =~ /b/sm ) {
         if ($threadtousers) {
-            require
-              Sources::InstantMessage;    # Needed for To Member Groups
+            require Sources::InstantMessage;    # Needed for To Member Groups
             foreach my $uname ( split /,/xsm, $threadtousers ) {
                 $usernameTo .= links_to($uname);
             }
@@ -451,7 +473,7 @@ qq~<span style="font-weight: bold;">$guestName ($guestEmail)</span><br />~;
             <span style="font-family: arial, sans-serif; font-size: 12px;">
             $threadpost
             </span>
-			$pmAttachments
+            $pmAttachments
         </td>
     </tr>
 </table>
@@ -478,7 +500,7 @@ qq~<span style="font-weight: bold;">$guestName ($guestEmail)</span><br />~;
 }
 
 sub Print {
-    $num = $INFO{'num'};
+    $num  = $INFO{'num'};
     $post = $INFO{'post'};
 
     # Determine category
@@ -528,7 +550,7 @@ qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3
 <title>$mbname - $pageTitle</title>
 <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
 <meta name="robots" content="noindex,noarchive" />
-<link rel="canonical" href="$scripturl?num=$num" /> 
+<link rel="canonical" href="$scripturl?num=$num" />
 <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
 <style type="text/css" media="print">
     .no-print { display: none; }
@@ -606,14 +628,14 @@ function do_images() {
         ) = split /\|/xsm, $thread;
         if ( $post && ( $post ne $postnum ) ) {
             next;
-        (
-            $threadtitle, $threadposter, undef, $threaddate,
-            undef,        undef,         undef, undef,
-            $threadpost,  undef,         undef, undef,
-            $attachments
-        ) = split /\|/xsm, @{$thread_arrayref{$num}}[$post];
+            (
+                $threadtitle, $threadposter, undef, $threaddate,
+                undef,        undef,         undef, undef,
+                $threadpost,  undef,         undef, undef,
+                $attachments
+            ) = split /\|/xsm, @{ $thread_arrayref{$num} }[$post];
             last;
-       } 
+        }
         ( $threadtitle, undef ) = Split_Splice_Move( $threadtitle, 0 );
         ( $threadpost,  undef ) = Split_Splice_Move( $threadpost,  $num );
         do_print();
@@ -656,7 +678,8 @@ function do_images() {
                 if ( !exists $attach_gif{$ext} ) {
                     $attach_gif{$ext} =
                       ( $ext
-                          && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}" )
+                          && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}"
+                      )
                       ? "$att_img{$ext}"
                       : "$paperclip";
                 }

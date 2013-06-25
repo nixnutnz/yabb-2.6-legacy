@@ -1,14 +1,14 @@
 ###############################################################################
 # DateTime.pm                                                                 #
-# $Date: 01.22.13 $                                                           #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -84,24 +84,22 @@ sub stringtotime {
     if ( $splitvar =~
         m/(\d{1,2})\/(\d{1,2})\/(\d{2,4}).*?(\d{1,2})\:(\d{1,2})\:(\d{1,2})/sm )
     {
-        $amonth = int($1);
-        $aday   = int($2);
-        $ayear  = int($3);
-        $ahour  = int($4);
-        $amin   = int($5);
-        $asec   = int($6);
+        $amonth = int $1;
+        $aday   = int $2;
+        $ayear  = int $3;
+        $ahour  = int $4;
+        $amin   = int $5;
+        $asec   = int $6;
     }
-    elsif ( $splitvar =~
-        m/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/sm )
-    {
-        $amonth = int($1);
-        $aday   = int($2);
-        $ayear  = int($3);
+    elsif ( $splitvar =~ m/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/sm ) {
+        $amonth = int $1;
+        $aday   = int $2;
+        $ayear  = int $3;
         $ahour  = -$toffs;
         $amin   = 0;
         $asec   = 0;
     }
-    else {        
+    else {
         $amonth = 1;
         $aday   = 1;
         $ayear  = 0;
@@ -331,7 +329,7 @@ sub time_1 {
       $daytxt
       ? qq~$daytxt $maintxt{'107'} $newtime~
       : qq~$newmonth/$newday/$newshortyear $maintxt{'107'} $newtime~;
-    
+
     return $newformat;
 }
 
@@ -341,7 +339,7 @@ sub time_2 {
       $daytxt
       ? qq~$daytxt $maintxt{'107'} $newtime~
       : qq~$newday.$newmonth.$newshortyear $maintxt{'107'} $newtime~;
-    
+
     return $newformat;
 }
 
@@ -373,10 +371,10 @@ sub time_4 {
         }
     }
     if ( $mytimeselected == 4 ) {
-    $newformat =
-      $daytxt
-      ? qq~$daytxt $maintxt{'107'} $newhour2:$newminute$ampm~
-      : qq~$newmonth2 $newday$newday2, $newyear $maintxt{'107'} $newhour2:$newminute$ampm~;
+        $newformat =
+          $daytxt
+          ? qq~$daytxt $maintxt{'107'} $newhour2:$newminute$ampm~
+          : qq~$newmonth2 $newday$newday2, $newyear $maintxt{'107'} $newhour2:$newminute$ampm~;
     }
     else {
         $newformat =
@@ -384,7 +382,7 @@ sub time_4 {
           ? qq~$daytxt $maintxt{'107'} $newhour2:$newminute$ampm~
           : qq~$newday$newday2 $newmonth2, $newyear $maintxt{'107'} $newhour2:$newminute$ampm~;
     }
-    
+
     return $newformat;
 }
 
@@ -408,7 +406,7 @@ sub time_6 {
       $daytxt
       ? qq~$daytxt $maintxt{'107'} $newhour:$newminute~
       : qq~$newday. $newmonth2 $newyear $maintxt{'107'} $newhour:$newminute~;
-    
+
     return $newformat;
 }
 
@@ -489,7 +487,7 @@ sub time_7 {
     $mytimeformat =~ s/[\n\r]//gsm;
 
     $newformat = $mytimeformat;
-    
+
     return $newformat;
 }
 
@@ -514,48 +512,48 @@ sub time_8 {
       $daytxt
       ? qq~$daytxt $maintxt{'107'} $newhour2:$newminute$ampm~
       : qq~$newday$newday2 $newmonth2, $newyear $maintxt{'107'} $newhour2:$newminute$ampm~;
-    
+
     return $newformat;
 }
 
 sub dtonly {
     my ($newformat) = @_;
-    if( $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ism) {
-	    $dateonly = $1;
-	}
-	
-	return ($dateonly);
-} 
+    if ( $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ism ) {
+        $dateonly = $1;
+    }
+
+    return ($dateonly);
+}
 
 sub tmonly {
     my ($newformat) = @_;
-    if( $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ism) {
-	    $timeonly = $2;
-	}
-	
-	return ($timeonly);
+    if ( $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ism ) {
+        $timeonly = $2;
+    }
+
+    return ($timeonly);
 }
 
 sub bdayno_year {
     my ($newformat) = @_;
-	$date_noyear = $newformat;
-	if ($mytimeselected == 4 || $mytimeselected == 8 ) {
-	    ($date_noyear, undef) = split /\,/xsm, $newformat;   
-	}
-	elsif ($mytimeselected == 1 || $mytimeselected == 5 ) {
-	    @date_noyear = split /\//xsm, $newformat;
-	    $date_noyear = qq~$date_noyear[0]~ . '/' . qq~$date_noyear[1]~;   
-	}
-	elsif ($mytimeselected == 2 || $mytimeselected == 2 ) {
-	    @date_noyear = split /\./xsm, $newformat;
-	    $date_noyear = qq~$date_noyear[0]~ . '/' . qq~$date_noyear[1]~;   
-	}
-	elsif ($mytimeselected == 6 ) {
-	    @date_noyear = split /\ /xsm, $newformat;
-	    $date_noyear = qq~$date_noyear[0] $date_noyear[1]~;   
-	}
-	
-	return ($date_noyear);
-} 
+    $date_noyear = $newformat;
+    if ( $mytimeselected == 4 || $mytimeselected == 8 ) {
+        ( $date_noyear, undef ) = split /\,/xsm, $newformat;
+    }
+    elsif ( $mytimeselected == 1 || $mytimeselected == 5 ) {
+        @date_noyear = split /\//xsm, $newformat;
+        $date_noyear = qq~$date_noyear[0]~ . q{/} . qq~$date_noyear[1]~;
+    }
+    elsif ( $mytimeselected == 2 || $mytimeselected == 2 ) {
+        @date_noyear = split /\./xsm, $newformat;
+        $date_noyear = qq~$date_noyear[0]~ . q{/} . qq~$date_noyear[1]~;
+    }
+    elsif ( $mytimeselected == 6 ) {
+        @date_noyear = split /\ /xsm, $newformat;
+        $date_noyear = qq~$date_noyear[0] $date_noyear[1]~;
+    }
+
+    return ($date_noyear);
+}
 
 1;

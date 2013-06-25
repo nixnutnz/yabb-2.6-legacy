@@ -1,13 +1,14 @@
 ###############################################################################
 # Notify.pm                                                                   #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -39,7 +40,8 @@ sub ManageBoardNotify {
         $theboard{$user} = "$userlang|$notetype|$noteview";
         LoadUser($user);
         my %bb;
-        my @oldnote = split /,/xsm, ${ $uid . $username }{'board_notifications'};
+        my @oldnote = split /,/xsm,
+          ${ $uid . $username }{'board_notifications'};
         if ( @oldnote < ( $maxtnote || 10 ) ) {
             foreach ( split /,/xsm, ${ $uid . $user }{'board_notifications'} ) {
                 $bb{$_} = 1;
@@ -127,7 +129,7 @@ sub BoardNotify {
     $yymain =~ s/{yabb selected2}/$selected2/gsm;
     $yymain =~ s/{yabb deloption}/$deloption/gsm;
     $yymain =~ s/{yabb my_delopt}/$my_delopt/gsm;
-    
+
     undef %theboard;
     $yytitle = "$notify_txt{'125'}";
     template();
@@ -314,14 +316,14 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
 
     LoadLanguage('Notify');
     get_template('MyPosts');
- 
+
     my @oldnote = split /,/xsm, ${ $uid . $username }{'board_notifications'};
     $curbrd = @oldnote;
     if ( !$maxtnote ) { $maxtnote = 10; }
 
-   $note_brd =
+    $note_brd =
 qq~<br />$notify_txt{'75'}<br />$notify_txt{'76'} $curbrd $notify_txt{'77'} $maxtnote $notify_txt{'78'}~;
-    $curbrd   = NumberFormat($curbrd);
+    $curbrd = NumberFormat($curbrd);
 
     # Show Javascript for 'check all' notifications
 
@@ -336,7 +338,7 @@ qq~<br />$notify_txt{'75'}<br />$notify_txt{'76'} $curbrd $notify_txt{'77'} $max
         if ( ${ $$board_notify{$_} }[1] == 1 ) {    # new topics
             $selected1 = q~ selected="selected"~;
         }
-        else {                                          # all new posts
+        else {                                      # all new posts
             $selected2 = q~ selected="selected"~;
         }
 
@@ -366,7 +368,6 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$notify_txt{'334'}" title="$notify_txt
         $my_showNotifications_b =~ s/{yabb boardblock}/$boardblock/gsm;
     }
 
-
     $num = 0;
     foreach ( keys %{$thread_notify} )
     { # mythread, msub, new, username_link, catname_link, boardname_link, lastpostdate
@@ -374,13 +375,13 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$notify_txt{'334'}" title="$notify_txt
 
         ## build block for display
         $threadblock .= $my_threadblock;
-        $threadblock =~ s/{yabb tnote0}/${$$thread_notify{$_}}[0]/gm;
-        $threadblock =~ s/{yabb tnote1}/${$$thread_notify{$_}}[1]/gm;
-        $threadblock =~ s/{yabb tnote2}/${$$thread_notify{$_}}[2]/gm;
-        $threadblock =~ s/{yabb tnote3}/${$$thread_notify{$_}}[3]/gm;
-        $threadblock =~ s/{yabb tnote4}/${$$thread_notify{$_}}[4]/gm;
-        $threadblock =~ s/{yabb tnote5}/${$$thread_notify{$_}}[5]/gm;
-        $threadblock =~ s/{yabb tnote6}/${$$thread_notify{$_}}[6]/gm;
+        $threadblock =~ s/{yabb tnote0}/${$$thread_notify{$_}}[0]/gsm;
+        $threadblock =~ s/{yabb tnote1}/${$$thread_notify{$_}}[1]/gsm;
+        $threadblock =~ s/{yabb tnote2}/${$$thread_notify{$_}}[2]/gsm;
+        $threadblock =~ s/{yabb tnote3}/${$$thread_notify{$_}}[3]/gsm;
+        $threadblock =~ s/{yabb tnote4}/${$$thread_notify{$_}}[4]/gsm;
+        $threadblock =~ s/{yabb tnote5}/${$$thread_notify{$_}}[5]/gsm;
+        $threadblock =~ s/{yabb tnote6}/${$$thread_notify{$_}}[6]/gsm;
     }
 
     if ( !$num ) {    ## no threads listed
@@ -391,10 +392,13 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$notify_txt{'334'}" title="$notify_txt
         $my_showNotifications_t =~ s/{yabb threadblock}/$threadblock/gsm;
     }
     $showNotifications = $my_boardnote;
-#    $showNotifications =~ s/{yabb note_brd}/$note_brd/sm;
+
+    #    $showNotifications =~ s/{yabb note_brd}/$note_brd/sm;
     $showNotifications =~ s/{yabb note_brd}//sm;
-    $showNotifications =~ s/{yabb my_showNotifications_b}/$my_showNotifications_b/sm;
-    $showNotifications =~ s/{yabb my_showNotifications_t}/$my_showNotifications_t/sm;
+    $showNotifications =~
+      s/{yabb my_showNotifications_b}/$my_showNotifications_b/sm;
+    $showNotifications =~
+      s/{yabb my_showNotifications_t}/$my_showNotifications_t/sm;
     $showNotifications .= $my_threadnote_end;
 
     $yytitle = "$notify_txt{'124'}";
@@ -471,21 +475,23 @@ sub NotificationAlert {
             # see if thread exists and search for it if moved
         if ( !-e "$datadir/$mythread.txt" ) {
             ManageThreadNotify( 'delete', $mythread, $username );
-            eval { require Variables::Movedthreads };
-            next if !exists $moved_file{$mythread} || !$moved_file{$mythread};
-            my $newthread;
-            while ( exists $moved_file{$mythread} ) {
-                $mythread = $moved_file{$mythread};
-                if ( !exists $moved_file{$mythread}
-                    && -e "$datadir/$mythread.txt" )
-                {
-                    $newthread = $mythread;
+            if ( eval { require Variables::Movedthreads; 1 } ) {
+                next
+                  if !exists $moved_file{$mythread} || !$moved_file{$mythread};
+                my $newthread;
+                while ( exists $moved_file{$mythread} ) {
+                    $mythread = $moved_file{$mythread};
+                    if ( !exists $moved_file{$mythread}
+                        && -e "$datadir/$mythread.txt" )
+                    {
+                        $newthread = $mythread;
+                    }
                 }
+                next if !$newthread;
+                ManageThreadNotify( 'add', $newthread, $username,
+                    ${ $uid . $username }{'language'},
+                    1, 1 );
             }
-            next if !$newthread;
-            ManageThreadNotify( 'add', $newthread, $username,
-                ${ $uid . $username }{'language'},
-                1, 1 );
         }
 
         ## load threads hash
@@ -525,9 +531,9 @@ sub NotificationAlert {
 
                 ## run through the categories until we hit the match for category name
                 my ( $catname, $thiscatid, $catid );
-                my $boardname =
-                  ( split /\|/xsm, $board{$boardid} )[0];
-                                         # grab boardname from list
+                my $boardname = ( split /\|/xsm, $board{$boardid} )[0];
+
+                # grab boardname from list
               CHECKBOARDNAME: foreach my $catid (@categoryorder) {
                     foreach ( split /\,/xsm, $cat{$catid} ) {
                         ## find the match, grab data and jump out

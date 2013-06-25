@@ -1,13 +1,14 @@
 ###############################################################################
 # Memberlist.pm                                                               #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -24,12 +25,13 @@ if ( $iamguest && $ML_Allowed ) { fatal_error('no_access'); }
 if ( $ML_Allowed == 2 && !$staff ) {
     fatal_error('no_access');
 }
-if ( ( $ML_Allowed == 3 && !$iamadmin && !$iamgmod ) || ( $ML_Allowed == 4 && !$iamadmin && !$iamgmod && !$iamymod ) ) {
+if (   ( $ML_Allowed == 3 && !$iamadmin && !$iamgmod )
+    || ( $ML_Allowed == 4 && !$iamadmin && !$iamgmod && !$iamymod ) )
+{
     fatal_error('no_access');
 }
 
 LoadLanguage('MemberList');
-
 get_template('Memberlist');
 
 $MembersPerPage = $TopAmmount;
@@ -123,7 +125,7 @@ qq(<a href="$scripturl?action=ml;sort=mlletter;letter=z" class="$letterclass"><b
 }
 
 sub MLByLetter {
-    $letter = lc( $INFO{'letter'} );
+    $letter = lc $INFO{'letter'};
     $i      = 0;
     ManageMemberinfo('load');
     foreach my $membername (
@@ -134,7 +136,7 @@ sub MLByLetter {
         ( $memrealname, $mememail, undef, undef ) =
           split /\|/xsm, $memberinf{$membername};
         if ($letter) {
-            $SearchName = lc( substr( $memrealname, 0, 1 ) );
+            $SearchName = lc( substr $memrealname, 0, 1 );
             if ( $SearchName eq $letter ) { $ToShow[$i] = $membername; $i++; }
             elsif ( $letter eq 'other'
                 && ( ( $SearchName lt 'a' ) || ( $SearchName gt 'z' ) ) )
@@ -152,9 +154,13 @@ sub MLByLetter {
     $memcount = @ToShow;
     if ( !$memcount && $letter ) {
         $pageindex1 =
-q~<span ~ . $pgindex_class . qq~><img src="$imagesdir/$ml_index_togl" alt="" /></span>~;
+            q~<span ~
+          . $pgindex_class
+          . qq~><img src="$imagesdir/$ml_index_togl" alt="" /></span>~;
         $pageindex2 =
-q~<span ~. $pgindex_class . qq~><img src="$imagesdir/$ml_index_togl" alt="" /></span>~;
+            q~<span ~
+          . $pgindex_class
+          . qq~><img src="$imagesdir/$ml_index_togl" alt="" /></span>~;
     }
     else {
         buildIndex();
@@ -178,6 +184,7 @@ q~<span ~. $pgindex_class . qq~><img src="$imagesdir/$ml_index_togl" alt="" /></
     undef @ToShow;
     buildPages(0);
     $yytitle = "$ml_txt{'312'} $numshow";
+    $yyjsstyle = 1;    
     template();
     return;
 }
@@ -206,6 +213,7 @@ sub MLTop {
     undef @toplist;
     buildPages(0);
     $yytitle = "$ml_txt{'313'} $ml_txt{'314'} $numshow";
+    $yyjsstyle = 1;    
     template();
     return;
 }
@@ -268,6 +276,7 @@ sub MLPosition {
     undef %memberinf;
     buildPages(0);
     $yytitle = "$ml_txt{'313'} $ml_txt{'4'} $ml_txt{'87'} $numshow";
+    $yyjsstyle = 1;    
     template();
     return;
 }
@@ -293,6 +302,7 @@ sub MLDate {
     fclose(MEMBERLISTREAD);
     buildPages(0);
     $yytitle = "$ml_txt{'313'} $ml_txt{'4'} $ml_txt{'233'} $numshow";
+    $yyjsstyle = 1;    
     template();
     return;
 }
@@ -304,11 +314,11 @@ sub showRows {
     if ( $user ne q{} ) {
         LoadUser($user);
         my $group_stars = q{};
-        if ( $group_stars_ml ) {
-		    LoadMiniUser($user) if $user eq $username;
-		    $memberstar{$user} =~ s/<br \/>//g;
-		    $group_stars = qq~<br />$memberstar{$user}~;
-		}
+        if ($group_stars_ml) {
+            if ( $user eq $username ) { LoadMiniUser($user); }
+            $memberstar{$user} =~ s/<br \/>//gsm;
+            $group_stars = qq~<br />$memberstar{$user}~;
+        }
         if ( ${ $uid . $user }{'realname'} eq q{} ) {
             ${ $uid . $user }{'realname'} = $user;
         }
@@ -351,16 +361,27 @@ qq~$ml_txt{'dr_warning'} <a href="$boardurl/AdminIndex.$yyaext?action=newsetting
             }
         }
 
-		if ( $showuserpicml && $allowpics ) {
-		    ${$uid.$user}{'userpic'} ||= $my_blank_avatar;
-            $my_userpic = qq~<img src="~ . (${$uid.$user}{'userpic'} =~ m~\A[\s\n]*https?://~i ? ${$uid.$user}{'userpic'} : ( $default_avatar && ${$uid.$user}{'userpic'} eq $my_blank_avatar ) ? "$imagesdir/$default_userpic" : "$facesurl/${$uid.$user}{'userpic'}") . qq~" id="avatarml_img_resize" alt="" style="display:none" />~;
-            if ( !$iamguest ) { $my_userpic = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$my_userpic</a>~; }
+        if ( $showuserpicml && $allowpics ) {
+            ${ $uid . $user }{'userpic'} ||= $my_blank_avatar;
+            $my_userpic = q~<img src="~
+              . (
+                  ${ $uid . $user }{'userpic'} =~ m/\A[\s\n]*https?:\/\//ism
+                ? ${ $uid . $user }{'userpic'}
+                : ( $default_avatar
+                      && ${ $uid . $user }{'userpic'} eq $my_blank_avatar )
+                ? "$imagesdir/$default_userpic"
+                : "$facesurl/${$uid.$user}{'userpic'}"
+              ) . q~" id="avatarml_img_resize" alt="" style="display:none" />~;
+            if ( !$iamguest ) {
+                $my_userpic =
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$my_userpic</a>~;
+            }
             $userpic = $my_userpic_td;
             $userpic =~ s/{yabb my_userpic}/$my_userpic/sm;
-        }        
+        }
         else {
-		    $userpic = q{};
-	    }
+            $userpic = q{};
+        }
         if (   ${ $uid . $user }{'hidemail'}
             && !$iamadmin
             && $allow_hide_email == 1 )
@@ -378,16 +399,16 @@ qq~<img src="$imagesdir/$ml_email" alt="$img_txt{'69'}" title="~
                       . q~" />~,
                     ${ $uid . $user }{'email'},
                     q{}, q{}
-                  )
+                );
             }
             else {
                 $lock = qq~
                 <img src="$imagesdir/$ml_lockmail" alt="$ml_txt{'308'}" title="$ml_txt{'308'}" />~;
             }
         }
-        
+
         $yypostcount = NumberFormat( ${ $uid . $user }{'postcount'} );
-        
+
         $yymain .= $my_memrow;
         $yymain =~ s/{yabb add_tds}/$additional_tds/sm;
         $yymain =~ s/{yabb userpic}/$userpic/sm;
@@ -443,13 +464,17 @@ sub buildIndex {
         $lastpn = int( ( $memcount - 1 ) / $MembersPerPage ) + 1;
         $lastptn = ( $lastpn - 1 ) * $MembersPerPage;
         $pageindex1 =
-qq~<span ~ . $pgindex_class . qq~><img src="$imagesdir/$ml_index_togl" alt="" /> $ml_txt{'139'}: $pagenumb</span>~;
+            q~<span ~
+          . $pgindex_class
+          . qq~><img src="$imagesdir/$ml_index_togl" alt="" /> $ml_txt{'139'}: $pagenumb</span>~;
         $pageindex2 =
-qq~<span ~ . $pgindex_class . qq~><img src="$imagesdir/$ml_index_togl" alt="" /> $ml_txt{'139'}: $pagenumb</span>~;
+            q~<span ~
+          . $pgindex_class
+          . qq~><img src="$imagesdir/$ml_index_togl" alt="" /> $ml_txt{'139'}: $pagenumb</span>~;
         if ( $pagenumb > 1 || $all ) {
 
             if ( $usermemberpage == 1 || $iamguest ) {
-                $pagetxtindexst = q~<span ~. $pgindex_class . q~>~;
+                $pagetxtindexst = q~<span ~ . $pgindex_class . q~>~;
                 if ( !$iamguest ) {
                     $pagetxtindexst .=
 qq~<a href="$scripturl?sort=$FORM{'sortform'};letter=$letter;start=$start;action=memberpagedrop$findmember"><img src="$imagesdir/$ml_index_togl" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a> $ml_txt{'139'}: ~;
@@ -538,9 +563,9 @@ qq~<option value="$indexstart|$indexend|$MembersPerPage|$indexpage"$selected>$in
                     $pagedropindex2 .= qq~</select>\n</span>~;
                 }
                 $pagedropindex1 .=
-qq~<span id="ViewIndex1" class="droppageindex" style="height: 14px; visibility: hidden">&nbsp;</span>~;
+q~<span id="ViewIndex1" class="droppageindex" style="height: 14px; visibility: hidden">&nbsp;</span>~;
                 $pagedropindex2 .=
-qq~<span id="ViewIndex2" class="droppageindex" style="height: 14px; visibility: hidden">&nbsp;</span>~;
+q~<span id="ViewIndex2" class="droppageindex" style="height: 14px; visibility: hidden">&nbsp;</span>~;
                 $tmpMembersPerPage = $MembersPerPage;
                 if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' ) {
                     $MembersPerPage = $MembersPerPage * $dropdisplaynum;
@@ -639,9 +664,10 @@ sub buildPages {
             <noscript><input type="submit" /></noscript>
            </form>
         );
-    if ($showuserpicml && $allowpics) {
+    if ( $showuserpicml && $allowpics ) {
         $headertop = 8;
-    } else {
+    }
+    else {
         $headertop = 7;
     }
 
@@ -652,13 +678,14 @@ sub buildPages {
         $additional_headers = ext_memberlist_tableheader();
         $headercount += ext_memberlist_get_headercount($additional_headers);
     }
-		if ($showuserpicml && $allowpics) {
-            $row_userpic = $my_row_userpic;
-            $col_userpic = q~<col style="width:auto" />~;
-        } else {
-		    $row_userpic = q{};
-		    $col_userpic = q{};
-	    }
+    if ( $showuserpicml && $allowpics ) {
+        $row_userpic = $my_row_userpic;
+        $col_userpic = q~<col style="width:auto" />~;
+    }
+    else {
+        $row_userpic = q{};
+        $col_userpic = q{};
+    }
 
     $TableHeader .= $my_header;
     $TableHeader =~ s/{yabb row_userpic}/$row_userpic/sm;
@@ -699,6 +726,7 @@ sub buildPages {
     }
     return;
 }
+
 sub FindMembers {
     $SearchStr = $FORM{'member'} || $INFO{'member'};
     $LookFor = qq~^$SearchStr\$~;
@@ -743,6 +771,7 @@ sub FindMembers {
     undef %memberinf;
     buildPages(0);
     $yytitle = "$ml_txt{'313'} $ml_txt{'4'} $ml_txt{'87'} $numshow";
+    $yyjsstyle = 1;    
     template();
     return;
 }

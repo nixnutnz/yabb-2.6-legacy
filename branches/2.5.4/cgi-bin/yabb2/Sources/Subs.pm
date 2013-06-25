@@ -1,14 +1,14 @@
 ###############################################################################
 # Subs.pm                                                                     #
-# $Date: 01.26.13 $                                                           #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       October 15, 2012                                            #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -126,9 +126,9 @@ sub print_output_header {
 
     my $ret = $yyIIS ? "HTTP/1.0 $headerstatus\n" : "Status: $headerstatus\n";
 
-	foreach ($yySetCookies1,$yySetCookies2,$yySetCookies3,@otherCookies) {
-	    $ret .= "Set-Cookie: $_\n" if $_;
-	}
+    foreach ( $yySetCookies1, $yySetCookies2, $yySetCookies3, @otherCookies ) {
+        if ($_) { $ret .= "Set-Cookie: $_\n"; }
+    }
 
     if ( !$no_error_page ) {
         if ($yySetLocation) {
@@ -209,13 +209,15 @@ sub redirectexit {
 }
 
 sub redirectmove {
-require Sources::MessageIndex; MessageIndex();
+    require Sources::MessageIndex;
+    MessageIndex();
+    return;
 }
 
 sub redirectinternal {
     if ($currentboard) {
-        if ( $INFO{'num'} ) { require Sources::Display; Display(); }
-        else { require Sources::MessageIndex; MessageIndex(); }
+        if   ( $INFO{'num'} ) { require Sources::Display;      Display(); }
+        else                  { require Sources::MessageIndex; MessageIndex(); }
     }
     else {
         require Sources::BoardIndex;
@@ -254,14 +256,16 @@ sub template {
     $yyimages        = $imagesdir;
     $yydefaultimages = $defaultimagesdir;
 
-    $yystyle =
-qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />\n~;
-    $yystyle =~ s/$usestyle\///gxsm;
-    $yystyle .=
-qq~<link rel="stylesheet" href="$yyhtml_root/shjs/styles/sh_style.css" type="text/css" />\n~;
-    $yystyle .= $yyinlinestyle;
-      # This is for the Help Center and anywhere else that wants to add inline CSS.
-    $yysyntax_js = qq~
+
+   # This is for the Help Center and anywhere else that wants to add inline CSS.
+    
+    if ( $yyjsstyle == 1) {
+        $yysyntax_js = q{}; 
+        $yyjsstyle = q{};
+        $yyhigh = q{};
+    }
+    else {
+        $yysyntax_js = qq~
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_main.js"></script>
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_cpp.js"></script>
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_css.js"></script>
@@ -271,15 +275,40 @@ qq~<link rel="stylesheet" href="$yyhtml_root/shjs/styles/sh_style.css" type="tex
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_pascal.js"></script>
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_perl.js"></script>
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_php.js"></script>
-<script type="text/javascript" src="$yyhtml_root/shjs/sh_sql.js"></script>~;
+<script type="text/javascript" src="$yyhtml_root/shjs/sh_sql.js"></script>
+<script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
+~;
+        $yyjsstyle = qq~<link rel="stylesheet" href="$yyhtml_root/shjs/styles/sh_style.css" type="text/css" />\n~;
+        $yyhigh = q~<script type="text/javascript">
+    sh_highlightDocument();
+</script>~;
 
-# add 'back to top' Button on the end of each page
-#    if (!$yynavback) {$yynavback .=
-#qq~<img src="$imagesdir/tabsep211.png" alt="" />~;}
-#    $yynavback .=
-#qq~ <span onclick="toTop(0)" style="cursor: pointer;">$img_txt{'102'}</span> <img src="$imagesdir/tabsep211.png" alt="" />~;
+        if ( $img_greybox ) {
+            $yygreyboxstyle =
+qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/css" />\n~;
+
+            $yygrayscript = qq~
+<script type="text/javascript">
+    var GB_ROOT_DIR = "$yyhtml_root/greybox/";
+</script>
+<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>
+<script type="text/javascript" src="$yyhtml_root/AJS_fx.js"></script>
+<script type="text/javascript" src="$yyhtml_root/greybox/gb_scripts.js"></script>
+~;
+        }
+    }
+
+    $yystyle =
+qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />\n~;
+    $yystyle =~ s/$usestyle\///gxsm;
+    $yystyle .= $yyjsstyle;
+    $yystyle .= $yygreyboxstyle;
+    $yystyle .= $yyinlinestyle;
+
+        # Carsten's 'backtotop';
     if ( !$yynavback ) { $yynavback .= q~ ~; }
-    $yynavback .= qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp; $tabsep~;
+    $yynavback .=
+qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp; $tabsep~;
 
     if ( !$usehead ) { $usehead = q~default~; }
     $yytemplate = "$templatesdir/$usehead/$usehead.html";
@@ -303,6 +332,9 @@ qq~<link rel="stylesheet" href="$yyhtml_root/shjs/styles/sh_style.css" type="tex
         }
     }
 
+    # to top button for fixed menu 
+    $yyfixtop = qq~$img_txt{'to_top'}~;
+
     $yyboardname = "$mbname";
     $yyboardlink = qq~<a href="$scripturl">$mbname</a>~;
 
@@ -321,37 +353,39 @@ qq~<link rel="stylesheet" href="$yyhtml_root/shjs/styles/sh_style.css" type="tex
         if ( $mytimeselected == 6 ) { $bb = q{ }; }
         $yytime =
 qq~&nbsp;<script  type="text/javascript">\n<!--\nWriteClock('yabbclock','$aa','$bb');\n//-->\n</script>~;
-        $yyjavascript .=
+        $yyjavascripta .=
             qq~\n\nvar OurTime = ~
           . sprintf( '%d', ( $date + ( 3600 * $toffs ) ) )
           . qq~000;\nvar YaBBTime = new Date();\nvar TimeDif = YaBBTime.getTime() - (YaBBTime.getTimezoneOffset() * 60000) - OurTime - 1000; // - 1000 compromise to transmission time~;
     }
 
-    $yyjavascript .= qq~
+    $yyjavascripta .= qq~
     var imagedir = "$imagesdir";
     function toTop(scrpoint) {
         window.scrollTo(0,scrpoint);
-    }
+    }~;
+
+    $yyjavascript .= qq~
     function txtInFields(thefield, defaulttxt) {
         if (thefield.value == defaulttxt) thefield.value = "";
         else { if (thefield.value === "") thefield.value = defaulttxt; }
     }
-	function selectAllCode(thefield) {
-		var elem = document.getElementById('code' + thefield);
-		if (document.selection) {
-			document.selection.empty();
-			var txt = document.body.createTextRange();
-			txt.moveToElementText(elem);
-			txt.select();
-		}
-		else {
-			window.getSelection().removeAllRanges();
-			txt = document.createRange();
-			txt.setStartBefore(elem);
-			txt.setEndAfter(elem);
-			window.getSelection().addRange(txt);
-		}
-	}
+    function selectAllCode(thefield) {
+        var elem = document.getElementById('code' + thefield);
+        if (document.selection) {
+            document.selection.empty();
+            var txt = document.body.createTextRange();
+            txt.moveToElementText(elem);
+            txt.select();
+        }
+        else {
+            window.getSelection().removeAllRanges();
+            txt = document.createRange();
+            txt.setStartBefore(elem);
+            txt.setEndAfter(elem);
+            window.getSelection().addRange(txt);
+        }
+    }
     ~;
     if ( $output =~ /\{yabb tabmenu\}/sm ) {
         require Sources::TabMenu;
@@ -362,9 +396,9 @@ qq~&nbsp;<script  type="text/javascript">\n<!--\nWriteClock('yabbclock','$aa','$
 qq~<a href="$scripturl">$img{'home'}</a>$menusep<a href="$scripturl?action=help" style="cursor:help;">$img{'help'}</a>~;
 
         # remove search from menu if disabled by the admin
-		if ($maxsearchdisplay > -1 && $qcksearchaccess eq 'granted') {
-			$qcksearchtype ||= 'allwords';
-			$qckage ||= '31';
+        if ( $maxsearchdisplay > -1 && $qcksearchaccess eq 'granted' ) {
+            $qcksearchtype ||= 'allwords';
+            $qckage        ||= '31';
             $yymenu .=
               qq~$menusep<a href="$scripturl?action=search">$img{'search'}</a>~;
         }
@@ -372,8 +406,7 @@ qq~<a href="$scripturl">$img{'home'}</a>$menusep<a href="$scripturl?action=help"
             || ( $ML_Allowed == 1 && !$iamguest )
             || ( $ML_Allowed == 2 && $staff )
             || ( $ML_Allowed == 3 && ( $iamadmin || $iamgmod ) )
-            || ( $ML_Allowed == 4 && ( $iamadmin || $iamgmod || $iamymod ) )
-             )
+            || ( $ML_Allowed == 4 && ( $iamadmin || $iamgmod || $iamymod ) ) )
         {
             $yymenu .=
               qq~$menusep<a href="$scripturl?action=ml">$img{'memberlist'}</a>~;
@@ -516,8 +549,7 @@ qq~ $maintxt{'377'} <a href="$scripturl?action=register">$maintxt{'97'}</a>~;
           (      $PM_level == 0
               || ( $PM_level == 2 && !$staff )
               || ( $PM_level == 3 && !$iamadmin && !$iamgmod )
-              || ( $PM_level == 4 && !$iamadmin && !$iamgmod && !$iamymod )
-               )
+              || ( $PM_level == 4 && !$iamadmin && !$iamgmod && !$iamymod ) )
           ? "$wmessage ${$uid.$username}{'realname'}"
           : "$wmessage ${$uid.$username}{'realname'}, ";
     }
@@ -574,16 +606,16 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
     }    ## new template style in also
     $yysearchbox = q{};
     if ( !$iamguest || $guestaccess != 0 ) {
-		if ($maxsearchdisplay > -1 && $qcksearchaccess eq 'granted') {
+        if ( $maxsearchdisplay > -1 && $qcksearchaccess eq 'granted' ) {
             $yysearchbox = qq~
                     <div class="yabb_searchbox">
                     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
                     <form action="$scripturl?action=search2" method="post" accept-charset="$yycharset">
-		                <input type="hidden" name="searchtype" value="$qcksearchtype" />
-		                <input type="hidden" name="userkind" value="any" />
-		                <input type="hidden" name="subfield" value="on" />
-		                <input type="hidden" name="msgfield" value="on" />
-		                <input type="hidden" name="age" value="$qckage" />
+                        <input type="hidden" name="searchtype" value="$qcksearchtype" />
+                        <input type="hidden" name="userkind" value="any" />
+                        <input type="hidden" name="subfield" value="on" />
+                        <input type="hidden" name="msgfield" value="on" />
+                        <input type="hidden" name="age" value="$qckage" />
                         <input type="hidden" name="oneperthread" value="1" />
                         <input type="hidden" name="searchboards" value="!all" />
                         <input type="text" name="search" size="16" id="search1" value="$img_txt{'182'}" style="font-size: 11px;" onfocus="txtInFields(this, '$img_txt{'182'}');" onblur="txtInFields(this, '$img_txt{'182'}')" />
@@ -744,12 +776,12 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
     while ( $output =~ s/(<|{)yabb\s+(\w+)(}|>)/${"yy$2"}/gxsm ) { }
 
     # check if image exists, otherwise use the default template image
-	if ($imagesdir ne $defaultimagesdir) {
+    if ( $imagesdir ne $defaultimagesdir ) {
         my %img_locs;
 
         $output =~
 s/(src|value|url)(=|\()("|'| )$imagesdir\/([^'" ]+)./ "$1$2$3" . ImgLoc($4) . $3 /eisgm;
-	}
+    }
 
     # add formsession to each <form ..>-tag
     $output =~
@@ -779,8 +811,10 @@ sub PMlev {
     if (   $PM_level == 1
         || ( $PM_level == 2 && $staff )
         || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
-        || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) ) ) 
-    { $pm_lev = 1; }
+        || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) ) )
+    {
+        $pm_lev = 1;
+    }
     return $pm_lev;
 }
 
@@ -802,15 +836,18 @@ sub image_resize {
             }
             $x[2] =~ s/display:none/display:inline/sm;
         }
-		 elsif ($fix_avatarml_img_size && $perl_do_it == 1 && $x[1] eq 'avatarml') {
-			if ($max_avatarml_width  && $x[2] !~ / width=./)  {
-			    $x[2] =~ s/( style=.)/$1width:$max_avatarml_width\px;/;
-			}
-			if ($max_avatarml_height && $x[2] !~ / height=./) {
-			    $x[2] =~ s/( style=.)/$1height:$max_avatarml_height\px;/;
-			}
-			$x[2] =~ s/display:none/display:inline/;
-	    }
+        elsif ($fix_avatarml_img_size
+            && $perl_do_it == 1
+            && $x[1] eq 'avatarml' )
+        {
+            if ( $max_avatarml_width && $x[2] !~ / width=./sm ) {
+                $x[2] =~ s/( style=.)/$1width:$max_avatarml_width\px;/sm;
+            }
+            if ( $max_avatarml_height && $x[2] !~ / height=./sm ) {
+                $x[2] =~ s/( style=.)/$1height:$max_avatarml_height\px;/sm;
+            }
+            $x[2] =~ s/display:none/display:inline/sm;
+        }
         elsif ( $fix_post_img_size && $perl_do_it == 1 && $x[1] eq 'post' ) {
             if ( $max_post_width && $x[2] !~ / width=./sm ) {
                 $x[2] =~ s/( style=.)/$1width:$max_post_width$px;/sm;
@@ -861,9 +898,9 @@ s/"((avatar|avatarml|post|attach|signat)_img_resize)"([^>]*>)/ check_image_resiz
     var avatar_img_w    = $max_avatar_width;
     var avatar_img_h    = $max_avatar_height;
     var fix_avatar_size = $fix_avatar_img_size;
-	var avatarml_img_w    = $max_avatarml_width;
-	var avatarml_img_h    = $max_avatarml_height;
-	var fix_avatarml_size = $fix_avatarml_img_size;
+    var avatarml_img_w    = $max_avatarml_width;
+    var avatarml_img_h    = $max_avatarml_height;
+    var fix_avatarml_size = $fix_avatarml_img_size;
     var post_img_w      = $max_post_img_width;
     var post_img_h      = $max_post_img_height;
     var fix_post_size   = $fix_post_img_size;
@@ -1100,10 +1137,10 @@ qq~<br /><span class="underline">$debug_txt{'postpairs'}:</span><br />~;
                 $CGI::POST_MAX = int( 1024 * $limit * $allowattach );
                 if ($CGI::POST_MAX) { $CGI::POST_MAX += 1_000_000; }    # *
             }
-            elsif (   $allowAttachIM
+            elsif ($allowAttachIM
                 && $ENV{'QUERY_STRING'} =~ /action=(imsend|imsend2)\b/xsm )
             {
-				$CGI::POST_MAX = int(1024 * $pmFileLimit * $allowAttachIM);
+                $CGI::POST_MAX = int( 1024 * $pmFileLimit * $allowAttachIM );
                 if ($CGI::POST_MAX) { $CGI::POST_MAX += 1_000_000; }    # *
             }
             elsif ($upload_useravatar
@@ -1262,8 +1299,7 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
     ## as guests do not have these, why show them?
     if ( !$iamguest ) {
         $pm_lev = PMlev();
-        if ( $pm_lev == 1 )
-        {
+        if ( $pm_lev == 1 ) {
             $selecthtml .=
 qq~<option value="action=im" class="forumjumpcatm">$jumpto_txt{'mess'}</option>~;
         }
@@ -1307,32 +1343,51 @@ qq~<option value="action=im" class="forumjumpcatm">$jumpto_txt{'mess'}</option>~
                 if ( !$iamadmin && $access ne 'granted' && $boardview != 1 ) {
                     next;
                 }
-				if (${$uid.$board}{'brdpasswr'}) {
-					my $bdmods = ${$uid.$board}{'mods'};
-					$bdmods =~ s/\, /\,/g;
-					$bdmods =~ s/\ /\,/g;
-					my %moderators = ();
-					my $pswiammod = 0;
-					foreach my $curuser (split(/\,/, $bdmods)) {
-						if ($username eq $curuser) { $pswiammod = 1; }
-					}
-					my $bdmodgroups = ${$uid.$board}{'modgroups'};
-					$bdmodgroups =~ s/\, /\,/g;
-					my %moderatorgroups = ();
-			
-					foreach my $curgroup (split(/\,/, $bdmodgroups)) {
-						if (${$uid.$username}{'position'} eq $curgroup) { $pswiammod = 1; }
-						foreach my $memberaddgroups (split(/\, /, ${$uid.$username}{'addgroups'})) {
-							chomp $memberaddgroups;
-							if ($memberaddgroups eq $curgroup) { $pswiammod = 1; last; }
-						}
-					}
-					my $cookiename = "$cookiepassword$board$username";
-					my $crypass = ${$uid.$board}{'brdpassw'};
+                if ( ${ $uid . $board }{'brdpasswr'} ) {
+                    my $bdmods = ${ $uid . $board }{'mods'};
+                    $bdmods =~ s/\, /\,/gsm;
+                    $bdmods =~ s/\ /\,/gsm;
+                    my %moderators = ();
+                    my $pswiammod  = 0;
+                    foreach my $curuser ( split /\,/xsm, $bdmods ) {
+                        if ( $username eq $curuser ) { $pswiammod = 1; }
+                    }
+                    my $bdmodgroups = ${ $uid . $board }{'modgroups'};
+                    $bdmodgroups =~ s/\, /\,/gsm;
+                    my %moderatorgroups = ();
 
-					if (!$iamadmin && !$iamgmod && !$pswiammod && $yyCookies{$cookiename} ne $crypass) { next; }
-				}
-                if ( $board eq $annboard && !$iamadmin && !$iamgmod && !$iamymod ) { next; }
+                    foreach my $curgroup ( split /\,/xsm, $bdmodgroups ) {
+                        if ( ${ $uid . $username }{'position'} eq $curgroup ) {
+                            $pswiammod = 1;
+                        }
+                        foreach my $memberaddgroups ( split /\, /sm,
+                            ${ $uid . $username }{'addgroups'} )
+                        {
+                            chomp $memberaddgroups;
+                            if ( $memberaddgroups eq $curgroup ) {
+                                $pswiammod = 1;
+                                last;
+                            }
+                        }
+                    }
+                    my $cookiename = "$cookiepassword$board$username";
+                    my $crypass    = ${ $uid . $board }{'brdpassw'};
+
+                    if (   !$iamadmin
+                        && !$iamgmod
+                        && !$pswiammod
+                        && $yyCookies{$cookiename} ne $crypass )
+                    {
+                        next;
+                    }
+                }
+                if (   $board eq $annboard
+                    && !$iamadmin
+                    && !$iamgmod
+                    && !$iamymod )
+                {
+                    next;
+                }
 
                 if ( $board eq $currentboard ) {
                     $selecthtml .=
@@ -1343,7 +1398,7 @@ qq~<option value="action=im" class="forumjumpcatm">$jumpto_txt{'mess'}</option>~
                       . qq~ $boardname &#171;&#171;</option>\n~
                       : qq~    <option selected="selected" value="board=$board" class="forumcurrentboard">&raquo;&raquo; $boardname</option>\n~;
                 }
-                elsif ( !${ $uid . $board }{'canpost'} && $subboard{$board} ){
+                elsif ( !${ $uid . $board }{'canpost'} && $subboard{$board} ) {
                     $selecthtml .=
                         qq~    <option value="boardselect=$board">&nbsp;~
                       . ( '&nbsp;' x $indent )
@@ -1703,8 +1758,8 @@ sub Split_Splice_Move {
     }
     elsif ( $s_s_m =~ /\[m by=(.+?) destboard=(.+?) dest=(.+?)\]/sm )
     {                   # 'This Topic has been moved to' a different board
-        my ( $mover, $destboard, $dest ) = ( $1, $2, $3 )
-          ;    # Who moved the topic; destination board; destination id number
+        my ( $mover, $destboard, $dest ) = ( $1, $2, $3 );
+            # Who moved the topic; destination board; destination id number
         $mover = decloak($mover);
         LoadUser($mover);
         $board{$destboard} =~ /^(.+?)\|/xsm;
@@ -2083,7 +2138,12 @@ qq~<br />$maintxt{'634'}<br />$maintxt{'635'} <a href="$scripturl?action=registe
 }
 
 sub WriteLog {
-	if($action eq 'ajxmessage' || $action eq 'ajximmessage' || $action eq 'ajxcal') { return; }
+    if (   $action eq 'ajxmessage'
+        || $action eq 'ajximmessage'
+        || $action eq 'ajxcal' )
+    {
+        return;
+    }
 
     # comment out (#) the next line if you have problems with
     # 'Reverse DNS lookup timeout causes slow page loads'
@@ -2458,7 +2518,7 @@ sub ManageMemberlist {
         || $todo eq 'add' )
     {
         fopen( MEMBLIST, "$memberdir/memberlist.txt" );
-        %memberlist = map { /(.*)\t(.*)/m } <MEMBLIST>;
+        %memberlist = map { /(.*)\t(.*)/sm } <MEMBLIST>;
         fclose(MEMBLIST);
     }
     if ( $todo eq 'add' ) {
@@ -2495,8 +2555,8 @@ sub ManageMemberlist {
 
 ## deal with basic member data in memberinfo.txt
 sub ManageMemberinfo {
-    my ( $todo, $user, $userdisp, $usermail, $usergrp, $usercnt, $useraddgrp )
-      = @_;
+    my ( $todo, $user, $userdisp, $usermail, $usergrp, $usercnt, $useraddgrp ) =
+      @_;
     ## pull hash of member name + other data
     if (   $todo eq 'load'
         || $todo eq 'update'
@@ -2764,10 +2824,13 @@ sub setGuestLang {
 sub checkUserLockBypass {
     if (
         $staff
-        && (   ( $bypass_lock_perm eq 'fa' && $iamadmin )
+        && (
+               ( $bypass_lock_perm eq 'fa' && $iamadmin )
             || ( $bypass_lock_perm eq 'gmod' && ( $iamadmin || $iamgmod ) )
-            || ( $bypass_lock_perm eq 'fmod' && ( $iamadmin || $iamgmod || $iamymod ) )
-            || $bypass_lock_perm eq 'mod' )
+            || ( $bypass_lock_perm eq 'fmod'
+                && ( $iamadmin || $iamgmod || $iamymod ) )
+            || $bypass_lock_perm eq 'mod'
+        )
       )
     {
         return 1;
@@ -2840,10 +2903,20 @@ sub BroadMessageView {
     if ($imp) {
         foreach my $checkgroup ( split /\,/xsm, $imp ) {
             if ( $checkgroup eq 'all' ) { return 1; }
-            if ( ($checkgroup eq 'gmods' || $checkgroup eq 'ymods' || $checkgroup eq 'mods' ) && $iamgmod ) {
+            if (
+                (
+                       $checkgroup eq 'gmods'
+                    || $checkgroup eq 'ymods'
+                    || $checkgroup eq 'mods'
+                )
+                && $iamgmod
+              )
+            {
                 return 1;
             }
-            if ( ($checkgroup eq 'ymods' || $checkgroup eq 'mods' ) && $iamymod ) {
+            if ( ( $checkgroup eq 'ymods' || $checkgroup eq 'mods' )
+                && $iamymod )
+            {
                 return 1;
             }
             if ( $checkgroup eq 'mods' && $iammod ) { return 1; }
@@ -2863,11 +2936,10 @@ sub CheckUserPM_Level {
     return if $PM_level <= 1 || $UserPM_Level{$checkuser};
     $UserPM_Level{$checkuser} = 1;
     if ( !${ $uid . $checkuser }{'password'} ) { LoadUser($checkuser); }
-    if (  ${ $uid . $checkuser }{'position'} eq 'Mid Moderator' )
-    {
+    if ( ${ $uid . $checkuser }{'position'} eq 'Mid Moderator' ) {
         $UserPM_Level{$checkuser} = 4;
     }
-    elsif (   ${ $uid . $checkuser }{'position'} eq 'Administrator'
+    elsif (${ $uid . $checkuser }{'position'} eq 'Administrator'
         || ${ $uid . $checkuser }{'position'} eq 'Global Moderator' )
     {
         $UserPM_Level{$checkuser} = 3;
@@ -2913,27 +2985,26 @@ sub get_forum_master {
 }
 
 sub get_micon {
-     if ( -e ("$templatesdir/$usestyle/Micon.def") )
-     {
+    if ( -e ("$templatesdir/$usestyle/Micon.def") ) {
         $Micon_def = qq~$templatesdir/$usestyle/Micon.def~;
-     }
-     else { $Micon_def = qq~$templatesdir/default/Micon.def~; }
-     require "$Micon_def";
-     return;
+    }
+    else { $Micon_def = qq~$templatesdir/default/Micon.def~; }
+    require "$Micon_def";
+    return;
 }
 
 sub get_template {
     my ($templt) = @_;
     my @templ_list = ( $useboard, $usemessage, $usedisplay, $usemycenter );
-    my @ld_list = qw(BoardIndex MessageIndex Display MyCenter);
-    my $ld_cn = 0;    
-    for my $x ( 0 .. (@ld_list - 1 )) {
-        if ($templt eq $ld_list[$x]){
+    my @ld_list    = qw(BoardIndex MessageIndex Display MyCenter);
+    my $ld_cn      = 0;
+    for my $x ( 0 .. ( @ld_list - 1 ) ) {
+        if ( $templt eq $ld_list[$x] ) {
             require qq~$templatesdir/$templ_list[$x]/$ld_list[$x].template~;
             $ld_cn = 1;
         }
     }
-    if ($ld_cn == 0 ) {
+    if ( $ld_cn == 0 ) {
         if ( -e ("$templatesdir/$usestyle/$templt.template") ) {
             require "$templatesdir/$usestyle/$templt.template";
         }
@@ -2950,7 +3021,6 @@ sub get_gmod {
     }
     return;
 }
-    
 
 sub enable_yabbc {
     if ( $yyYaBBCloaded != 1 ) {
@@ -3004,8 +3074,7 @@ sub sizefont {
     if    ( !$fontsizemin )         { $fontsizemin = 6; }
     if    ( $tsize < $fontsizemin ) { $tsize       = $fontsizemin; }
     elsif ( $tsize > $fontsizemax ) { $tsize       = $fontsizemax; }
-    return
-      qq~<span style="display:inline; font-size:$tsize\px;">$ttext</span>~;
+    return qq~<span style="font-size: $tsize\pt;">$ttext</span><!--size-->~;
 }
 
 sub regex_1 {
@@ -3048,10 +3117,10 @@ sub regex_4 {
 sub password_check {
     LoadLanguage('Register');
 
-    if   ( $action eq 'myprofile' ) { 
+    if ( $action eq 'myprofile' ) {
         get_template('MyProfile');
     }
-    else  { $class = 'windowbg2'; }
+    else { $class = 'windowbg2'; }
     $check_js = qq~    <script type="text/javascript">
                 // Password_strength_meter start
                 var verdects = new Array("$pwstrengthmeter_txt{'1'}","$pwstrengthmeter_txt{'2'}","$pwstrengthmeter_txt{'3'}","$pwstrengthmeter_txt{'4'}","$pwstrengthmeter_txt{'5'}","$pwstrengthmeter_txt{'6'}","$pwstrengthmeter_txt{'7'}","$pwstrengthmeter_txt{'8'}");
@@ -3154,13 +3223,14 @@ sub password_check {
     $check =~ s/{yabb tmpregpasswrd1}/$tmpregpasswrd1/sm;
     $check =~ s/{yabb cappasswrd1_character}/$cappasswrd1_character/sm;
     $check =~ s/{yabb tmpregpasswrd2}/$tmpregpasswrd2/sm;
-    
+
     return $check;
 }
 
 sub BoardPassw {
-	#my ($currentboard,$viewnum) = @_;
-	$yymain .= qq~
+
+    #my ($currentboard,$viewnum) = @_;
+    $yymain .= qq~
 <table class="bordercolor pad_4px cs_thin" style="width:80%">
   <tr>
     <td class="titlebg"><img src="$imagesdir/locking.gif" alt="" /> <b>$maintxt{'900pw'}: $boardname</b></td>
@@ -3180,34 +3250,38 @@ sub BoardPassw {
 <br />
 <p class="center"><a href="javascript:history.go(-1)">$maintxt{'900b'}</a></p>
 ~;
-	template();
-	exit;
+    template();
+    exit;
 }
 
 sub BoardPasswCheck {
 
-	my $returnnum = $FORM{'pswviewnum'};
-	my $returnboard = $FORM{'pswcurboard'};
-	my $spass = ${$uid.$returnboard}{'brdpassw'};
-	my $cryptpass = encode_password("$FORM{'boardpw'}");
+    my $returnnum   = $FORM{'pswviewnum'};
+    my $returnboard = $FORM{'pswcurboard'};
+    my $spass       = ${ $uid . $returnboard }{'brdpassw'};
+    my $cryptpass   = encode_password("$FORM{'boardpw'}");
 
-	if ($spass ne $cryptpass) { &fatal_error('wrong_pass'); }
-	$ck{'len'} = 'Sunday, 17-Jan-2030 00:00:00 GMT';
-	my $cookiename = "$cookiepassword$returnboard$username";
-	push @otherCookies, write_cookie(
-				-name    =>   "$cookiename",
-				-value   =>   "$cryptpass",
-				-path    =>   "/",
-				-expires =>   "$ck{'len'}");
-	WriteLog();
-	undef $FORM{'boardpw'};
-	if ($returnnum ne '') { 
-		$yySetLocation = qq~$scripturl?num=$returnnum~;
-	} else {
-		$yySetLocation = qq~$scripturl?board=$returnboard~;
-	}
-	redirectexit();
-	return;
+    if ( $spass ne $cryptpass ) { fatal_error('wrong_pass'); }
+    $ck{'len'} = 'Sunday, 17-Jan-2030 00:00:00 GMT';
+    my $cookiename = "$cookiepassword$returnboard$username";
+    push @otherCookies,
+      write_cookie(
+        -name    => "$cookiename",
+        -value   => "$cryptpass",
+        -path    => q{/},
+        -expires => "$ck{'len'}"
+      );
+    WriteLog();
+    undef $FORM{'boardpw'};
+
+    if ( $returnnum ne q{} ) {
+        $yySetLocation = qq~$scripturl?num=$returnnum~;
+    }
+    else {
+        $yySetLocation = qq~$scripturl?board=$returnboard~;
+    }
+    redirectexit();
+    return;
 }
 
 1;

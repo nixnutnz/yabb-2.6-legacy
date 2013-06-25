@@ -1,13 +1,14 @@
 ###############################################################################
 # Downloads.pm                                                                #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -189,8 +190,7 @@ qq~<a href="$scripturl?action=downloadfile;newstart=$lastptn;sort=$sort">$lastpn
         }
         $pageindex .= $pageindexadd;
 
-        $pageindex =
-          qq~$fatxt{'64'}: $pageindex~;
+        $pageindex = qq~$fatxt{'64'}: $pageindex~;
 
         $numbegin = ( $newstart + 1 );
         $numend   = ( $newstart + 25 );
@@ -212,7 +212,9 @@ qq~<a href="$scripturl?action=downloadfile;newstart=$lastptn;sort=$sort">$lastpn
             }
             if ( !exists $attach_gif{$ext} ) {
                 $attach_gif{$ext} =
-                  ( $ext && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}" )
+                  ( $ext
+                      && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}"
+                  )
                   ? "$att_img{$ext}"
                   : $paperclip;
             }
@@ -223,31 +225,31 @@ qq~<a href="$scripturl?action=downloadfile;newstart=$lastptn;sort=$sort">$lastpn
             }
 
             if ( $iamadmin || $iamgmod ) {
-                 $att_admin = $my_att_admin;
+                $att_admin = $my_att_admin;
             }
             else {
-               $att_admin = q{};
+                $att_admin = q{};
             }
-        $viewattachments .= $downloads_att_b;
-        $viewattachments =~ s/{yabb att_admin}/$att_admin/gsm;
-        $viewattachments =~ s/{yabb amfn}/$amfn/gsm;
-        $viewattachments =~ s/{yabb attach_gif}/$attach_gif{$ext}/gsm;
-        $viewattachments =~ s/{yabb thread}/$thread/gsm;
-        $viewattachments =~ s/{yabb amkb}/$amkb/gsm;
-        $viewattachments =~ s/{yabb amdate}/$amdate/gsm;
-        $viewattachments =~ s/{yabb amcount}/$amcount/gsm;
-        $viewattachments =~ s/{yabb amreplies}/$amreplies/gsm;
-        $viewattachments =~ s/{yabb amthreadsub}/$amthreadsub/gsm;
-        $viewattachments =~ s/{yabb amposter}/$amposter/gsm;
+            $viewattachments .= $downloads_att_b;
+            $viewattachments =~ s/{yabb att_admin}/$att_admin/gsm;
+            $viewattachments =~ s/{yabb amfn}/$amfn/gsm;
+            $viewattachments =~ s/{yabb attach_gif}/$attach_gif{$ext}/gsm;
+            $viewattachments =~ s/{yabb thread}/$thread/gsm;
+            $viewattachments =~ s/{yabb amkb}/$amkb/gsm;
+            $viewattachments =~ s/{yabb amdate}/$amdate/gsm;
+            $viewattachments =~ s/{yabb amcount}/$amcount/gsm;
+            $viewattachments =~ s/{yabb amreplies}/$amreplies/gsm;
+            $viewattachments =~ s/{yabb amthreadsub}/$amthreadsub/gsm;
+            $viewattachments =~ s/{yabb amposter}/$amposter/gsm;
         }
 
         if ( $iamadmin || $iamgmod ) {
-             $att_admin_b = $my_att_admin_b;
-             $att_admin_c = $my_att_admin_c;
+            $att_admin_b = $my_att_admin_b;
+            $att_admin_c = $my_att_admin_c;
         }
         else {
-           $att_admin_b = q{};
-           $att_admin_c = '&nbsp;';
+            $att_admin_b = q{};
+            $att_admin_c = '&nbsp;';
         }
         $viewattachments .= $downloads_att_c;
         $viewattachments =~ s/{yabb att_admin_b}/$att_admin_b/gsm;
@@ -259,7 +261,7 @@ qq~<a href="$scripturl?action=downloadfile;newstart=$lastptn;sort=$sort">$lastpn
         $viewattachments =~ s/{yabb fatxt70}/$fatxt{'70'}/gsm;
         $viewattachments =~ s/{yabb fatxt71}/$fatxt{'71'}/gsm;
         $viewattachments =~ s/{yabb pageindex}/$pageindex/gsm;
-        
+
         $output .= qq~
         <input type="hidden" name="newstart" value="$newstart" />~;
     }
@@ -272,12 +274,12 @@ qq~<a href="$scripturl?action=downloadfile;newstart=$lastptn;sort=$sort">$lastpn
     my $class_sortsubj   = $sort =~ /1$/sm  ? 'windowbg2' : 'windowbg';
     my $class_sortuser   = $sort =~ /3/sm   ? 'windowbg2' : 'windowbg';
 
-   if ( $iamadmin || $iamgmod ) {
-         $att_out_admin_a = $my_out_att_admin_a;
-        }
-        else {
-           $att_out_admin_a = q{};
-        }
+    if ( $iamadmin || $iamgmod ) {
+        $att_out_admin_a = $my_out_att_admin_a;
+    }
+    else {
+        $att_out_admin_a = q{};
+    }
 
     $output .= $downloads_att_out_a;
     $output =~ s/{yabb colspan}/$colspan/gsm;
@@ -289,10 +291,11 @@ qq~<a href="$scripturl?action=downloadfile;newstart=$lastptn;sort=$sort">$lastpn
     $output =~ s/{yabb fatxt76}/$fatxt{'76'}/gsm;
     $output =~ s/{yabb fatxt75}/$fatxt{'75'}/gsm;
     $output =~ s/{yabb fatxt28}/$fatxt{'28'}/gsm;
-    
+
     $output .= $att_out_admin_a;
     $output =~ s/{yabb fatxt45}/$fatxt{'45'}/gsm;
-    $output .= $my_att_sort_a
+    $output .=
+        $my_att_sort_a
       . ( $sort == 7 ? -7 : 7 )
       . qq~';" class="$class_sortattach" ~
       . $my_att_sort_c
@@ -335,7 +338,8 @@ qq~<a href="$scripturl?action=downloadfile;newstart=$lastptn;sort=$sort">$lastpn
       . ( $sort == 3 ? -3 : 3 )
       . qq~"><b>$fatxt{'42'}</b></a>~
       . $downloads_tbl_end;
-#"';
+
+    #"';
     $output =~ s/{yabb thread}/$thread/gsm;
     $output =~ s/{yabb viewattachments}/$viewattachments/gsm;
 

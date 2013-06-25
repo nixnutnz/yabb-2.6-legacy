@@ -2,22 +2,24 @@
 
 ###############################################################################
 # SpellChecker.pl                                                             #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.5.4';
 
 $spellcheckerplver = 'YaBB 2.5.4 $Revision$';
 
-if ($action eq 'detailedversion') { return 1; }
+if ( $action eq 'detailedversion' ) { return 1; }
 
 # Take the following comment out to see the error message if you
 # call the script directly from a new window of your browser
@@ -26,17 +28,18 @@ if ($action eq 'detailedversion') { return 1; }
 use LWP::UserAgent;
 use HTTP::Request::Common;
 
-$ua = LWP::UserAgent->new(agent => 'GoogieSpell Client');
-$reqXML = "";
+$ua = LWP::UserAgent->new( agent => 'GoogieSpell Client' );
+$reqXML = q{};
 
-read (STDIN, $reqXML, $ENV{'CONTENT_LENGTH'});
+read STDIN, $reqXML, $ENV{'CONTENT_LENGTH'};
 
 $url = "http://orangoo.com/newnox?lang=?$ENV{QUERY_STRING}";
-$res = $ua->request(POST $url, Content_Type => 'text/xml', Content => $reqXML);
+$res =
+  $ua->request( POST $url, Content_Type => 'text/xml', Content => $reqXML );
 
-die "$res->{_content}" if $res->{_content} =~ /LWP.+https.+Crypt::SSLeay/;
+croak "$res->{_content}" if $res->{_content} =~ /LWP.+https.+Crypt::SSLeay/sm;
 
-print "Content-Type: text/xml\n\n";
-print $res->{_content};
+print "Content-Type: text/xml\n\n" or croak 'cannot print header';
+print $res->{_content} or croak 'cannot print speller';
 
 1;

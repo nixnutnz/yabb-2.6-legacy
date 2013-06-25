@@ -1,13 +1,14 @@
 ###############################################################################
 # SendTopic.pm                                                                #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -58,11 +59,12 @@ sub SendTopic {
         }
         $my_spam = $mysend_spam;
         $my_spam =~ s/{yabb spam_question}/$spam_question/sm;
-        $my_spam =~ s/{yabb verification_question_desc}/$verification_question_desc/sm;
+        $my_spam =~
+          s/{yabb verification_question_desc}/$verification_question_desc/sm;
         $my_spam =~ s/{yabb spam_question_id}/$spam_question_id/sm;
     }
 
-$my_jschecks = qq~<script type="text/javascript">
+    $my_jschecks = qq~<script type="text/javascript">
 <!--
     $focus_y_name
 
@@ -160,12 +162,12 @@ sub SendTopic2 {
     if ( $yemail eq q{} ) {
         fatal_error( 'no_email', "$sendtopic_txt{'336'}" );
     }
-    if ( $yemail !~ /[\w\-\.\+]+\@[\w\-\.\+]+\.(\w{2,4}$)/ ) {
+    if ( $yemail !~ /[\w\-\.\+]+\@[\w\-\.\+]+\.(\w{2,4}$)/sm ) {
         fatal_error( 'invalid_character',
             "$sendtopic_txt{'336'} $sendtopic_txt{'241'}" );
     }
-    if (   ( $yemail =~ /(@.*@)|(\.\.)|(@\.)|(\.@)|(^\.)|(\.$)/ )
-        || ( $yemail !~ /^.+@\[?(\w|[-.])+\.[a-zA-Z]{2,4}|[0-9]{1,4}\]?$/ ) )
+    if (   ( $yemail =~ /(@.*@)|(\.\.)|(@\.)|(\.@)|(^\.)|(\.$)/sm )
+        || ( $yemail !~ /^.+@\[?(\w|[-.])+\.[a-zA-Z]{2,4}|[0-9]{1,4}\]?$/sm ) )
     {
         fatal_error( 'invalid_email', "$sendtopic_txt{'336'}" );
     }
@@ -178,12 +180,12 @@ sub SendTopic2 {
     if ( $remail eq q{} ) {
         fatal_error( 'no_email', "$sendtopic_txt{'718'}" );
     }
-    if ( $remail !~ /[\w\-\.\+]+\@[\w\-\.\+]+\.(\w{2,4}$)/ ) {
+    if ( $remail !~ /[\w\-\.\+]+\@[\w\-\.\+]+\.(\w{2,4}$)/sm ) {
         fatal_error( 'invalid_character',
             "$sendtopic_txt{'718'} $sendtopic_txt{'241'}" );
     }
-    if (   ( $remail =~ /(@.*@)|(\.\.)|(@\.)|(\.@)|(^\.)|(\.$)/ )
-        || ( $remail !~ /^.+@\[?(\w|[-.])+\.[a-zA-Z]{2,4}|[0-9]{1,4}\]?$/ ) )
+    if (   ( $remail =~ /(@.*@)|(\.\.)|(@\.)|(\.@)|(^\.)|(\.$)/sm )
+        || ( $remail !~ /^.+@\[?(\w|[-.])+\.[a-zA-Z]{2,4}|[0-9]{1,4}\]?$/sm ) )
     {
         fatal_error( 'invalid_email', "$sendtopic_txt{'718'}" );
     }

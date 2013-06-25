@@ -1,13 +1,14 @@
 ###############################################################################
 # Guardian.pm                                                                 #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -421,8 +422,8 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
             if (    $key eq 'message'
                 and $action =~ /^(ajxmessage|ajximmessage|ajxcal)$/xsm )
             {
-			    $secvalue =~ s/\[code.*?\/code\]//gsxm;
-			}
+                $secvalue =~ s/\[code.*?\/code\]//gsxm;
+            }
             str_replace( '%3c', '<', $secvalue );
             str_replace( '%3e', '>', $secvalue );
             if (   ( $secvalue =~ m/<[^>]script*\"?[^>]*>/xsm )

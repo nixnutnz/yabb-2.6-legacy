@@ -1,14 +1,14 @@
 ###############################################################################
 # PostBox.pm                                                                  #
-# $Date: 02.17.12 $                                                           #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -257,7 +257,7 @@ sub postbox2 {
     $dragwpos   = ( $pwidth - 448 ) . 'px';
     $jsdraghpos = $pheight - 130;
     $draghpos   = ( $pheight - 130 ) . 'px';
-if ($INFO{'edit_cal_even'} ) {$message = q~{yabb calevent}~;}
+    if ( $INFO{'edit_cal_even'} ) { $message = q~{yabb calevent}~; }
 
     $box = qq~
             <div id="spell_container"></div>
@@ -468,7 +468,6 @@ show_features()~;
     return $box;
 }
 
-
 sub googiea {
     $googiea =
 qq~<link href="$yyhtml_root/googiespell/googiespell.css" rel="stylesheet" type="text/css" />
@@ -524,41 +523,43 @@ sub smilies_list {
 }
 
 sub attach {
-    # File Attachment's Browse Box Code
-        $mfn = $mfn || $FORM{'oldattach'};
-        my @files = split /,/xsm, $mfn;
 
-        $yymain .= qq~
+    # File Attachment's Browse Box Code
+    $mfn = $mfn || $FORM{'oldattach'};
+    my @files = split /,/xsm, $mfn;
+
+    $yymain .= qq~
     <tr id="feature_status_5">
         <td width="23%">
             <b>$fatxt{'80'}</b>
             <input type="hidden" name="oldattach" id="oldattach" value="$mfn" />~;
 
-        if ($allowattach > 1) { $yymain .= qq~
+    if ( $allowattach > 1 ) {
+        $yymain .= qq~
             <img name="attform_add" id="attform_add" src="$defaultimagesdir/$cat_exp" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" class="cursor" onclick="enabPrev2(1);" />
             <img name="attform_sub" id="attform_sub" src="$defaultimagesdir/$cat_col" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" class="cursor" style="visibility:hidden;" onclick="enabPrev2(-1);" />~;
-        }
+    }
 
-        $yymain .= qq~
+    $yymain .= qq~
         </td>
         <td width="77%"><span class="small">$filetype_info<br />$filesize_info</span></td>
     </tr>
     <tr id="feature_status_6">
         <td colspan="2">~;
 
-        my $startcount;
-        for  my $y ( 1 ..  $allowattach ) {
-            if (   ( $action eq 'modify' || $action eq 'modify2' )
-                && $files[ $y - 1 ] ne q{}
-                && -e "$uploaddir/$files[$y-1]" )
-            {
-                $startcount++;
-                $yymain .= qq~
+    my $startcount;
+    for my $y ( 1 .. $allowattach ) {
+        if (   ( $action eq 'modify' || $action eq 'modify2' )
+            && $files[ $y - 1 ] ne q{}
+            && -e "$uploaddir/$files[$y-1]" )
+        {
+            $startcount++;
+            $yymain .= qq~
             <div id="attform_a_$y" style="float:left; width:23%;~
-                  . ( $y > 1 ? q~ padding-top:5px~ : q{} )
-                  . qq~"><b>$fatxt{'6'} $y:</b></div>
+              . ( $y > 1 ? q~ padding-top:5px~ : q{} )
+              . qq~"><b>$fatxt{'6'} $y:</b></div>
             <div id="attform_b_$y" style="float:left; width:76%;~
-                  . ( $y > 1 ? q~ padding-top:5px~ : q{} ) . qq~">
+              . ( $y > 1 ? q~ padding-top:5px~ : q{} ) . qq~">
                 <input type="file" name="file$y" id="file$y" size="50" onchange="selectNewattach($y);" /><br />
                 <span style="font-size:xx-small">
                 <input type="hidden" id="w_filename$y" name="w_filename$y" value="$files[$y-1]" />
@@ -568,22 +569,25 @@ sub attach {
                 <option value="attachold" selected="selected">$fatxt{'6a'}</option>
                 </select>&nbsp;$fatxt{'40'}: <a href="$uploadurl/$files[$y-1]" onclick="target='_blank';">$files[$y-1]</a>
                 </span></div>~;
-            }
-            else {
-                $yymain .= qq~
-            <div id="attform_a_$y" style="float:left; width:23%;~
-                  . ( $y > 1 ? q~ visibility:hidden; height:0px~ : q{} )
-                  . qq~"><b>$fatxt{'6'} $y:</b></div>
-            <div id="attform_b_$y" style="float:left; width:76%;~
-                  . ( $y > 1 ? q~ visibility:hidden; height:0px~ : q{} )
-                  . qq~">\n             <input type="file" name="file$y" id="file$y" size="50" /></div>~;
-            }
-
-            if ($is_preview == 1 && $CGI_query->upload("file$y")) { $is_preview = 2 ;}
         }
-        if (!$startcount) { $startcount = 1 ;}
+        else {
+            $yymain .= qq~
+            <div id="attform_a_$y" style="float:left; width:23%;~
+              . ( $y > 1 ? q~ visibility:hidden; height:0px~ : q{} )
+              . qq~"><b>$fatxt{'6'} $y:</b></div>
+            <div id="attform_b_$y" style="float:left; width:76%;~
+              . ( $y > 1 ? q~ visibility:hidden; height:0px~ : q{} )
+              . qq~">\n             <input type="file" name="file$y" id="file$y" size="50" /></div>~;
+        }
 
-        if ($allowattach > 1) { $yymain .= qq~
+        if ( $is_preview == 1 && $CGI_query->upload("file$y") ) {
+            $is_preview = 2;
+        }
+    }
+    if ( !$startcount ) { $startcount = 1; }
+
+    if ( $allowattach > 1 ) {
+        $yymain .= qq~
             <script type="text/javascript">
             <!--
             var countattach = $startcount;~
@@ -624,24 +628,24 @@ sub attach {
             }
             //-->
             </script>~;
-            }
+    }
 
-        $yymain .= q~
+    $yymain .= q~
         </td>
     </tr>~;
 
-        if ( $is_preview == 2 ) {
-            $is_preview = 1;
-            $yymain .= qq~<tr>
+    if ( $is_preview == 2 ) {
+        $is_preview = 1;
+        $yymain .= qq~<tr>
         <td colspan="2" style="color:red;"><br /><b>$fatxt{'7'}</b><br /><br /></td>
     </tr>~;
-        }
+    }
 
     return;
 }
 
 sub speedpost {
-        $speedpost = qq~
+    $speedpost = qq~
             var postdelay = $min_post_speed*1000;
             document.postmodify.$post.value = '$post_txt{"delay"}';
             document.postmodify.$post.disabled = true;
@@ -659,7 +663,7 @@ sub speedpost {
 }
 
 sub my_check_prev {
-        $x = qq~
+    $x = qq~
         <script type="text/javascript">
 
         var livepostas = '$post';
@@ -670,27 +674,38 @@ sub my_check_prev {
             var msgError = "";
             var msgErrorTitle = "<b>$livepreview_txt{'info_missing'}<\/b>";
             ~ . (
-            $iamguest && $post ne "imsend" && $post ne "imsend2"
-            ? qq~document.getElementById("savename").innerHTML = jsDoTohtml(document.getElementById("name").value);
+        $iamguest && $post ne 'imsend' && $post ne 'imsend2'
+        ? qq~document.getElementById("savename").innerHTML = jsDoTohtml(document.getElementById("name").value);
             if (document.postmodify.name.value == "" || document.postmodify.name.value == "_" || document.postmodify.name.value == " ") { msgError += "<li>$livepreview_txt{'name_empty'}<\/li>"; if (isError == 0) isError = 1; }
             if (document.postmodify.name.value.length > 25)  { msgError += "<li>$livepreview_txt{'long_name'}<\/li>"; if (isError == 0) isError = 1; }
             if (document.postmodify.email.value == "") { msgError += "<li>$livepreview_txt{'mail_empty'} $livepreview_txt{'valid_mail'}<\/li>"; if (isError == 0) isError = 1; }
             else if (! checkMailaddr(document.postmodify.email.value)) { msgError += "<li>$livepreview_txt{'valid_mail'}<\/li>"; if (isError == 0) isError = 1; }~
-            : qq~if (livepostas == "imsend" || livepostas == "imsend2") {
+        : qq~if (livepostas == "imsend" || livepostas == "imsend2") {
             if (document.postmodify.toshow.options.length == 0 ) { msgError += "<li>$livepreview_txt{'pm_recipient'}<\/li>"; isError = 1; }
-            }~) .
-            ($iamguest && $gpvalid_en && $post ne "imsend" && $post ne "imsend2" ? qq~if (document.postmodify.verification.value == "") { msgError += "<li>$livepreview_txt{'veri_code'}<\/li>"; isError = 1; }~ : q~~) .
-            ($iamguest && $spam_questions_gp && $post ne 'imsend' && $post ne 'imsend2'
-            ? qq~if (document.postmodify.verification_question.value == "") { msgError += "<li>$livepreview_txt{'veri_quest'}<\/li>"; isError = 1; }~
-            : q~~) .
-            ( $action ne 'eventcal'
-            ? qq~
+            }~
+      )
+      . (
+        $iamguest && $gpvalid_en && $post ne 'imsend' && $post ne 'imsend2'
+        ? qq~if (document.postmodify.verification.value == "") { msgError += "<li>$livepreview_txt{'veri_code'}<\/li>"; isError = 1; }~
+        : q~~
+      )
+      . (
+        $iamguest
+          && $spam_questions_gp && $post ne 'imsend' && $post ne 'imsend2'
+        ? qq~if (document.postmodify.verification_question.value == "") { msgError += "<li>$livepreview_txt{'veri_quest'}<\/li>"; isError = 1; }~
+        : q~~
+      )
+      . (
+        $action ne 'eventcal'
+        ? qq~
             if (document.postmodify.subject.value == "") { msgError += "<li>$livepreview_txt{'subj_empty'}<\/li>"; if (isError == 0) isError = 1; }
             else if ($checkallcaps && document.postmodify.subject.value.search(/[A-Z]{$checkallcaps,}/g) != -1) {
                 if (isError == 0) { msgError = "<li>$livepreview_txt{'subj_allcaps'}<\/li>"; isError = 1; }
                 else { msgError += "<li>$livepreview_txt{'subj_allcaps'}<\/li>"; }
-            }~: q~~) .
-            qq~if (document.postmodify.message.value == "") { msgError += "<li>$livepreview_txt{'mess_empty'}<\/li>"; if (isError == 0) isError = 1; }
+            }~
+        : q~~
+      )
+      . qq~if (document.postmodify.message.value == "") { msgError += "<li>$livepreview_txt{'mess_empty'}<\/li>"; if (isError == 0) isError = 1; }
             else if ($checkallcaps && document.postmodify.message.value.search(/[A-Z]{$checkallcaps,}/g) != -1) {
                 if (isError == 0) { msgError = "<li>$livepreview_txt{'mess_allcaps'}<\/li>"; isError = 1; }
                 else { msgError += "<li>$livepreview_txt{'mess_allcaps'}<\/li>"; }
@@ -714,7 +729,8 @@ sub my_check_prev {
 }
 
 sub my_liveprev {
-    $x = qq~var noalert = true, gralert = false, rdalert = false, clalert = false;
+    $x =
+      qq~var noalert = true, gralert = false, rdalert = false, clalert = false;
 var cntsec = 0
 
 function tick() {
@@ -728,14 +744,14 @@ post_txt_807 = "$post_txt{'807'}";
 function enabPrev() {
     if ( autoprev === false ) {
         autoprev = true;~;
-        if ($my_ajxcall eq 'ajximmessage') {
-            $x .= qq~document.getElementById("SaveInfo").style.display = "block";
+    if ( $my_ajxcall eq 'ajximmessage' ) {
+        $x .= q~document.getElementById("SaveInfo").style.display = "block";
 document.getElementById("saveframe").style.display = "block";~;
-        }
-        else {
-            $x .= qq~document.getElementById("savetable").style.display = "block";~;
-        }
-        $x .= qq~
+    }
+    else {
+        $x .= q~document.getElementById("savetable").style.display = "block";~;
+    }
+    $x .= qq~
         document.images.prevwin.alt = "$npf_txt{'02'}";
         document.images.prevwin.title = "$npf_txt{'02'}";
         document.images.prevwin.src="$defaultimagesdir/$cat_col";
@@ -744,14 +760,14 @@ document.getElementById("saveframe").style.display = "block";~;
     else {
         autoprev = false;
         ubbstr = '';~;
-        if ($my_ajxcall eq 'ajximmessage') {
-            $x .= qq~document.getElementById("SaveInfo").style.display = "none";
+    if ( $my_ajxcall eq 'ajximmessage' ) {
+        $x .= q~document.getElementById("SaveInfo").style.display = "none";
 document.getElementById("saveframe").style.display = "none";~;
-        }
-        else {
-            $x .= qq~document.getElementById("savetable").style.display = "none";~;
-        }
-        $x .= qq~
+    }
+    else {
+        $x .= q~document.getElementById("savetable").style.display = "none";~;
+    }
+    $x .= qq~
         document.postmodify.message.focus();
         document.images.prevwin.alt = "$npf_txt{'01'}";
         document.images.prevwin.title = "$npf_txt{'01'}";
@@ -792,62 +808,65 @@ function autoPreview() {
     pstHttp.onreadystatechange = function() {
         if(pstHttp.readyState == 4) {
             if(pstHttp.status == 200 || window.location.href.indexOf("http") == -1) {~;
-                if ( $my_ajxcall eq 'ajximmessage' ) {
-                    $x .= qq~
+    if ( $my_ajxcall eq 'ajximmessage' ) {
+        $x .= q~
                 document.getElementById("saveframe").innerHTML = pstHttp.responseText;
                 sh_highlightDocument();
                 if (/post_liveimg_resize_1/i.test(pstHttp.responseText)) LivePrevImgResize();~;
-                }
-                else {
-                    $x .= qq~ tmpmess = pstHttp.responseText.split("|");~;
-                    if ( $my_ajxcall eq 'ajxmessage' ) {
-                        $x .= qq~
+    }
+    else {
+        $x .= q~ tmpmess = pstHttp.responseText.split("|");~;
+        if ( $my_ajxcall eq 'ajxmessage' ) {
+            $x .= q~
                 document.getElementById("savesubj").innerHTML = tmpmess[0];
                 document.getElementById("savemess").innerHTML = tmpmess[1];~;
-                        if ($iamguest) {
-                            $x .=qq~
+            if ($iamguest) {
+                $x .= q~
                 document.getElementById("savename").innerHTML = tmpmess[2];~;
-                        }
-                    }
-                    elsif ( $my_ajxcall eq 'ajxcal' ) {
-                    $x .= q~
+            }
+        }
+        elsif ( $my_ajxcall eq 'ajxcal' ) {
+            $x .= q~
                 document.getElementById("savemess").innerHTML = tmpmess[0];~;
-                        if ($iamguest) {
-                            $x .= q~               
+            if ($iamguest) {
+                $x .= q~
                 document.getElementById("savename").innerHTML = tmpmess[1];~;
-                        }
-                    $x .= q~
+            }
+            $x .= q~
                 document.getElementById("cdate").innerHTML = tmpmess[2];
                 document.getElementById("ev_title").innerHTML = tmpmess[3];
                 document.getElementById("ev_private").innerHTML = tmpmess[4];~;
-                    }
-                $x .= qq~
+        }
+        $x .= q~
                 sh_highlightDocument();
                 if (/post_liveimg_resize_1/i.test(pstHttp.responseText)) LivePrevImgResize();
                 checkLivepreview();
                 ~;
-                }
-            $x .= qq~
+    }
+    $x .= q~
             }
         }
     }
     var nscheck = 0;
     if(document.getElementById("ns").checked) nscheck = 1;~;
     if ( $my_ajxcall ne 'ajxcal' ) {
-        $x .= qq~
+        $x .= q~
     var subjvalue = encodeURIComponent(document.getElementById("subject").value);~;
     }
-    $x .= qq~
+    $x .= q~
     var messvalue = encodeURIComponent(document.getElementById("message").value);
     var sessvalue = encodeURIComponent(document.postmodify.formsession.value);
     ~;
     if ($iamguest) {
-        $x .=qq~
+        $x .= q~
     var namevalue = encodeURIComponent(document.getElementById("name").value);
-    ~;  }
-    else { $x .= qq~
+    ~;
+    }
+    else {
+        $x .= q~
     var namevalue = "";
-    ~;  }
+    ~;
+    }
     if ( $my_ajxcall eq 'ajxmessage' ) {
         $x .= qq~
     var tmusername = encodeURIComponent('$displayname');
@@ -870,15 +889,15 @@ function autoPreview() {
     pstHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     pstHttp.send(parameters);~;
     }
-    elsif ($my_ajxcall eq 'ajximmessage') {
-        $x .= qq~
+    elsif ( $my_ajxcall eq 'ajximmessage' ) {
+        $x .= q~
                 var iconvalue = encodeURIComponent(document.getElementById("iconholder").value);
                 var parameters = "message="+messvalue+"&icon="+iconvalue+"&subject="+subjvalue+"&nschecked="+nscheck+"&formsession="+sessvalue;
                 pstHttp.open("POST", url, true);
                 pstHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 pstHttp.send(parameters);~;
     }
-    $x .=qq~
+    $x .= qq~
     }
 }
 function LivePrevImgResize() {

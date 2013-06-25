@@ -1,14 +1,14 @@
 ###############################################################################
 # Display.pm                                                                  #
-# $Date: 01.01.13 $                                                           #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -134,13 +134,14 @@ sub Display {
             $yySetLocation = "$scripturl?num=$newnum";
             redirectexit();
         }
-        eval { require Variables::Movedthreads };
-        while ( exists $moved_file{$newnum} ) {
-            $newnum = $moved_file{$newnum};
-            next if exists $moved_file{$newnum};
-            if ( -e "$datadir/$newnum.txt" ) {
-                $yySetLocation = "$scripturl?num=$newnum";
-                redirectexit();
+        if ( eval { require Variables::Movedthreads; 1 } ) {
+            while ( exists $moved_file{$newnum} ) {
+                $newnum = $moved_file{$newnum};
+                next if exists $moved_file{$newnum};
+                if ( -e "$datadir/$newnum.txt" ) {
+                    $yySetLocation = "$scripturl?num=$newnum";
+                    redirectexit();
+                }
             }
         }
     }
@@ -638,7 +639,7 @@ qq~<a href="$scripturl?board=$currentboard">&lsaquo; $maintxt{'board'}</a>~;
         $template_mods = qq~$showmods$showmodgroups~;
     }
     if (   $showtopicviewers
-        && ( $staff )
+        && ($staff)
         && $sessionvalid == 1 )
     {
         foreach (@repliers) {
@@ -668,8 +669,7 @@ qq~<a href="$scripturl?board=$currentboard">&lsaquo; $maintxt{'board'}</a>~;
         $template_favorite2 =
           IsFav1( $viewnum, ( !$ttsreverse ? $start : $mreplies - $start ) );
     }
-    $template_threadimage =
-      qq~$micon{$threadclass}~;
+    $template_threadimage = qq~$micon{$threadclass}~;
     $template_sendtopic =
       $sendtopicmail
       ? qq~$menusep<a href="javascript:sendtopicmail($sendtopicmail);">$img{'sendtopic'}</a>~
@@ -723,10 +723,25 @@ qq~$menusep<a href="$scripturl?action=print;num=$viewnum" onclick="target='_blan
         @messages = reverse @messages;
     }
 
-	if (!$allowpics || !$showuserpic || (${$uid.$username}{'hide_avatars'} && $user_hide_avatars)) { $hideavatar = 1 ;}
-	if (!$showusertext || (${$uid.$username}{'hide_user_text'} && $user_hide_user_text)) { $hideusertext = 1;}
-	if (${$uid.$username}{'hide_attach_img'} && $user_hide_attach_img) { $hideattachimg = 1 ;}
-	if ((${$uid.$username}{'hide_signat'} && $user_hide_signat) || ($hide_signat_for_guests && $iamguest)) { $hidesignat = 1;}
+    if (   !$allowpics
+        || !$showuserpic
+        || ( ${ $uid . $username }{'hide_avatars'} && $user_hide_avatars ) )
+    {
+        $hideavatar = 1;
+    }
+    if ( !$showusertext
+        || ( ${ $uid . $username }{'hide_user_text'} && $user_hide_user_text ) )
+    {
+        $hideusertext = 1;
+    }
+    if ( ${ $uid . $username }{'hide_attach_img'} && $user_hide_attach_img ) {
+        $hideattachimg = 1;
+    }
+    if (   ( ${ $uid . $username }{'hide_signat'} && $user_hide_signat )
+        || ( $hide_signat_for_guests && $iamguest ) )
+    {
+        $hidesignat = 1;
+    }
 
     # For each post in this thread:
     my ( %attach_gif, %attach_count, $movedflag );
@@ -791,12 +806,14 @@ qq~$menusep<a href="$scripturl?action=print;num=$viewnum" onclick="target='_blan
             }
 
             foreach ( split /,/xsm, $mfn ) {
-                $_ =~ /\.(.+?)$/xsm;
-                my $ext = lc $1;
+                if ( $_ =~ /\.(.+?)$/xsm ) {
+                    $ext = lc $1;
+                }
                 if ( !exists $attach_gif{$ext} ) {
                     $attach_gif{$ext} =
                       ( $ext
-                          && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}" )
+                          && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}"
+                      )
                       ? "$att_img{$ext}"
                       : "$paperclip";
                 }
@@ -976,8 +993,7 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
                 $template_age = qq~$display_txt{'age'}: $age<br />~;
             }
             if ( $showregdate && ${ $uid . $musername }{'regtime'} ) {
-                $dr_regdate =
-                  timeformat( ${ $uid . $musername }{'regtime'} );
+                $dr_regdate = timeformat( ${ $uid . $musername }{'regtime'} );
                 $dr_regdate = dtonly($dr_regdate);
                 $dr_regdate =~ s/(.*)(, 1?[0-9]):[0-9][0-9].*/$1/xsm;
                 $template_regdate =
@@ -1151,8 +1167,17 @@ qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote
                         $quote_mname = $useraccount{$musername};
                         $quote_mname =~ s/'/\\'/gxsm;
                         if ($enable_markquote) {
-                            $outblock =~
-s/(<div)( class="$messageclass" style="float: left; width: 99%; overflow: auto;">)/$1 onmouseup="get_selection($counter);"$2/ism;
+							my $quoteinfo;
+							my $quotesmess = $postmessage;
+							while ($quotesmess =~ s/\[quote (.*?)\]//sm) {
+								my($tmpqauth, $tmpqlink, $tmpqdate) = split / /sm, $1;
+								my (undef, $tmpqau) = split /=/xsm, $tmpqauth;
+								my (undef, $tmpqli) = split /=/xsm, $tmpqlink;
+								my (undef, $tmpqda) = split /=/xsm, $tmpqdate;
+
+								$quoteinfo .= qq~$tmpqau-$tmpqli-$tmpqda|~;
+							}
+							$outblock =~ s/(<div)( class="$messageclass" style="float: left; width: 99%; overflow: auto;">)/$1 id="mq$counter" onmouseup="get_selection($counter, '$quoteinfo');"$2/ism;
                             $template_quote =
 qq~$menusep<a href="javascript:void(quoteSelection('$quote_mname',$viewnum,$counter,$mdate,''))">$img{'mquote'}</a>~;
                         }
@@ -1190,7 +1215,7 @@ qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboar
             if (
                 $sessionvalid == 1
                 && (
-                       $staff
+                    $staff
                     || (
                         $username eq $musername
                         && (  !$tlnomodflag
@@ -1210,7 +1235,7 @@ qq~$menusep<a href="$scripturl?board=$currentboard;action=modify;message=$counte
 qq~$menusep<a href="$scripturl?action=print;num=$viewnum;post=$postnum" onclick="target='_blank';">$img{'printp'}</a>~;
 
             if (   $counter > 0
-                && ( $staff )
+                && ($staff)
                 && $sessionvalid == 1 )
             {
                 $template_split =
@@ -1221,7 +1246,7 @@ qq~$menusep<a href="$scripturl?action=split_splice;board=$currentboard;thread=$v
             if (
                 $sessionvalid == 1
                 && (
-                       $staff
+                    $staff
                     || (
                         $username eq $musername
                         && (  !$tlnodelflag
@@ -1349,29 +1374,38 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         $outblock =~ s/({|<)yabb msgdate(}|>)/$messdate/gsm;
         $outblock =~ s/({|<)yabb replycount(}|>)/$counterwords/gsm;
         $outblock =~ s/({|<)yabb count(}|>)/$counter/gsm;
-		if ($showattach || $attachment) {
-			$outblock =~ s/({|<)yabb showatthr(}|>)/$showattachhr/gsm;
-			$outblock =~ s/({|<)yabb att(}|>)/$attachment/gsm;
-			$outblock =~ s/({|<)yabb showatt(}|>)/$showattach/gsm;
-		} else {
-			$outblock =~ s/({|<)yabb hideatt(}|>)/ display: none;/gsm;
-		}
+        if ( $showattach || $attachment ) {
+            $outblock =~ s/({|<)yabb showatthr(}|>)/$showattachhr/gsm;
+            $outblock =~ s/({|<)yabb att(}|>)/$attachment/gsm;
+            $outblock =~ s/({|<)yabb showatt(}|>)/$showattach/gsm;
+        }
+        else {
+            $outblock =~ s/({|<)yabb hideatt(}|>)/ display: none;/gsm;
+        }
         $outblock =~ s/({|<)yabb css(}|>)/$css/gsm;
         $outblock =~ s/({|<)yabb gender(}|>)/${$uid.$musername}{'gender'}/gsm;
         $outblock =~ s/({|<)yabb age(}|>)/$template_age/gsm;
         $outblock =~ s/({|<)yabb regdate(}|>)/$template_regdate/gsm;
         $outblock =~ s/({|<)yabb ext_prof(}|>)/$template_ext_prof/gsm;
         $outblock =~ s/({|<)yabb postinfo(}|>)/$template_postinfo/gsm;
-		if (!$hideusertext) { $outblock =~ s/({|<)yabb usertext(}|>)/${$uid.$musername}{'usertext'}/gsm;}
-		if (!$hideavatar) { $outblock =~ s/({|<)yabb userpic(}|>)/${$uid.$musername}{'userpic'}/gsm;}
+        if ( !$hideusertext ) {
+            $outblock =~
+              s/({|<)yabb usertext(}|>)/${$uid.$musername}{'usertext'}/gsm;
+        }
+        if ( !$hideavatar ) {
+            $outblock =~
+              s/({|<)yabb userpic(}|>)/${$uid.$musername}{'userpic'}/gsm;
+        }
         $outblock =~ s/({|<)yabb message(}|>)/$message/gsm;
         $outblock =~ s/({|<)yabb modified(}|>)/$lastmodified/gsm;
-		if (!$hidesignat && ${$uid.$musername}{'signature'}) {
-			$outblock =~ s/({|<)yabb signature(}|>)/${$uid.$musername}{'signature'}/gsm;
-			$outblock =~ s/({|<)yabb signaturehr(}|>)/$signature_hr/g;
-		} else {
-			$outblock =~ s/({|<)yabb hidesignat(}|>)/ display: none;/;
-		}
+        if ( !$hidesignat && ${ $uid . $musername }{'signature'} ) {
+            $outblock =~
+              s/({|<)yabb signature(}|>)/${$uid.$musername}{'signature'}/gsm;
+            $outblock =~ s/({|<)yabb signaturehr(}|>)/$signature_hr/gsm;
+        }
+        else {
+            $outblock =~ s/({|<)yabb hidesignat(}|>)/ display: none;/gsm;
+        }
         $outblock =~ s/({|<)yabb ipimg(}|>)/$ipimg/gsm;
         $outblock =~ s/({|<)yabb ip(}|>)/$mip/gsm;
         $outblock =~
@@ -1402,7 +1436,7 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         $template_remove, $template_splice, $template_lock,
         $template_hide,   $template_sticky, $template_multidelete
     );
-    if ( ( $staff )
+    if ( ($staff)
         && $sessionvalid == 1 )
     {
         $template_remove =
@@ -1449,24 +1483,28 @@ qq~$menusep<a href="$scripturl?action=markunread;thread=$viewnum;board=$currentb
 
     # Template it
 
-	$yynavback = qq~$tabsep <a href="$scripturl">&#171; $img_txt{'103'}</a> $tabsep $navback $tabsep~;
-	
-	$boardtree = q{};
-	$parentboard = $currentboard;
-	while($parentboard) {
-		my ($pboardname, undef, undef) = split /\|/xsm, $board{"$parentboard"};
-		ToChars($pboardname);
-		if(${$uid.$parentboard}{'canpost'} || !$subboard{$parentboard} ) {
-			$pboardname = qq~<a href="$scripturl?board=$parentboard" class="a"><b>$pboardname</b></a>~;
-		}
-		else {
-			$pboardname = qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboardname</b></a>~;
-		}
-		$boardtree = qq~ &rsaquo; $pboardname$boardtree~;
-		$parentboard = ${$uid.$parentboard}{'parent'};
-	}
-	
-	$yynavigation = qq~&rsaquo; $template_cat$boardtree &rsaquo; $msubthread~;
+    $yynavback =
+qq~$tabsep <a href="$scripturl">&#171; $img_txt{'103'}</a> $tabsep $navback $tabsep~;
+
+    $boardtree   = q{};
+    $parentboard = $currentboard;
+    while ($parentboard) {
+        my ( $pboardname, undef, undef ) = split /\|/xsm,
+          $board{"$parentboard"};
+        ToChars($pboardname);
+        if ( ${ $uid . $parentboard }{'canpost'} || !$subboard{$parentboard} ) {
+            $pboardname =
+qq~<a href="$scripturl?board=$parentboard" class="a"><b>$pboardname</b></a>~;
+        }
+        else {
+            $pboardname =
+qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboardname</b></a>~;
+        }
+        $boardtree   = qq~ &rsaquo; $pboardname$boardtree~;
+        $parentboard = ${ $uid . $parentboard }{'parent'};
+    }
+
+    $yynavigation = qq~&rsaquo; $template_cat$boardtree &rsaquo; $msubthread~;
 
     # Create link to modify displayed post order if allowed
     my $curthreadurl =
@@ -1519,8 +1557,8 @@ qq~$menusep<a href="$scripturl?action=markunread;thread=$viewnum;board=$currentb
     else {
         $outside_threadtools =~
           s/\[tool=(.+?)\](.+?)\[\/tool\]/$tmpimg{$1}/gxsm;
-        $threadhandellist =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gxsm;
-        $threadhandellist2   =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gsm;
+        $threadhandellist  =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gxsm;
+        $threadhandellist2 =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gsm;
     }
 
     # Thread Tools #
@@ -1565,7 +1603,7 @@ qq~$menusep<a href="$scripturl?action=markunread;thread=$viewnum;board=$currentb
     $tmpviews = NumberFormat($tmpviews);
     $display_template =~ s/({|<)yabb views(}|>)/ $tmpviews /egsm;
 
-    if ( ( $staff )
+    if ( ($staff)
         && $sessionvalid == 1 )
     {
 
@@ -1643,19 +1681,7 @@ qq~<form name="multidel" action="$scripturl?board=$currentboard;action=multidel;
     </script>
     ~;
 
-    if ($img_greybox) {
-        $yyinlinestyle .=
-qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/css" />\n~;
-        $yyjavascript .= qq~
-var GB_ROOT_DIR = "$yyhtml_root/greybox/";
-// -->
-</script>
-<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>
-<script type="text/javascript" src="$yyhtml_root/AJS_fx.js"></script>
-<script type="text/javascript" src="$yyhtml_root/greybox/gb_scripts.js"></script>
-<script type="text/javascript">
-~;
-    }
+## gb_css spot
 
     $yytitle = $msubthread;
     if ( $replybutton and $enable_quickreply ) {

@@ -1,13 +1,14 @@
 ###############################################################################
 # TabMenu.pm                                                                  #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -18,8 +19,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('TabMenu');
 
-$tabsep = qq~~;
-$tabfill = qq~~;
+$tabsep  = q{};
+$tabfill = q{};
 
 sub mainMenu {
     my @acting = (
@@ -66,8 +67,8 @@ sub mainMenu {
             my $img1 = $acting[1]->[$i];
             if ( $action eq $img0 ) {
                 $tmpaction = $img1;
-        }
-        else { $tmpaction = $action; }
+            }
+            else { $tmpaction = $action; }
         }
     }
     else {
@@ -78,7 +79,7 @@ sub mainMenu {
 qq~<li><span |><a href="$scripturl" title = "$img_txt{'103'}">$img_txt{'103'}</a></span></li>~;
     $tab{'help'} =
 qq~<li><span |><a href="$scripturl?action=help" title = "$img_txt{'119'}" class="help">$img_txt{'119'}</a></span></li>~;
-	if ($maxsearchdisplay > -1 && $advsearchaccess eq 'granted') {
+    if ( $maxsearchdisplay > -1 && $advsearchaccess eq 'granted' ) {
         $tab{'search'} =
 qq~<li><span |><a href="$scripturl?action=search" title = "$img_txt{'182'}">$img_txt{'182'}</a></span></li>~;
     }
@@ -101,8 +102,7 @@ qq~<li><span |><a href="$scripturl?action=birthdaylist" title = "$img_txt{'birth
         || ( $ML_Allowed == 1 && !$iamguest )
         || ( $ML_Allowed == 2 && $staff )
         || ( $ML_Allowed == 3 && ( $iamadmin || $iamgmod ) )
-        || ( $ML_Allowed == 4 && ( $iamadmin || $iamgmod || $iamymod ) )
-         )
+        || ( $ML_Allowed == 4 && ( $iamadmin || $iamgmod || $iamymod ) ) )
     {
         $tab{'ml'} =
 qq~<li><span |><a href="$scripturl?action=ml" title = "$img_txt{'331'}">$img_txt{'331'}</a></span></li>~;
@@ -113,14 +113,14 @@ qq~<li><span |><a href="$boardurl/AdminIndex.$yyaext" title = "$img_txt{'2'}">$i
     }
     if ($iamgmod) {
         get_gmod();
-        if( $allow_gmod_admin ) {
+        if ($allow_gmod_admin) {
             $tab{'admin'} =
 qq~<li><span |><a href="$boardurl/AdminIndex.$yyaext" title = "$img_txt{'2'}">$img_txt{'2'}</a></span></li>~;
         }
     }
     if ( $sessionvalid == 0 && !$iamguest ) {
         my $sesredir;
-        if ( $testenv
+        if (   $testenv
             && $action ne 'revalidatesession'
             && $action ne 'revalidatesession2' )
         {
@@ -145,8 +145,7 @@ qq~<li><span |><a href="$scripturl?action=revalidatesession$sesredir" title = "$
             $loginform
             ? "javascript:if(jumptologin>1)alert('$maintxt{'35'}');jumptologin++;window.scrollTo(0,10000);document.loginform.username.focus();"
             : "$scripturl?action=login$sesredir"
-          )
-          . qq~" title = "$img_txt{'34'}">$img_txt{'34'}</a></span></li>~;
+          ) . qq~" title = "$img_txt{'34'}">$img_txt{'34'}</a></span></li>~;
         if ($regtype) {
             $tab{'register'} =
 qq~<li><span |><a href="$scripturl?action=register" title = "$img_txt{'97'}">$img_txt{'97'}</a></span></li>~;
@@ -185,8 +184,7 @@ qq~<li><span |><a href="$scripturl?action=logout" title = "$img_txt{'108'}">$img
                     $tab_url .= qq~;username=$useraccount{$username}~;
                 }
                 if ($exttab_url) { $tab_url .= qq~;$exttab_url~; }
-                my $newwin =
-                  $tab_newwin ? q~ onclick="target='_blank';"~ : q{};
+                my $newwin = $tab_newwin ? q~ onclick="target='_blank';"~ : q{};
                 if ( !$tab_lang ) { GetTabtxt(); }
 
                 $yytabmenu .= q~<li><span ~
@@ -205,8 +203,7 @@ qq~<li><span |><a href="$scripturl?action=logout" title = "$img_txt{'108'}">$img
                 ( $AdvancedTabs[$i] eq $tmpaction && $last )
                 ? q~class="selected"~
                 : q{}
-              )
-              . $last;
+              ) . $last;
         }
     }
 
@@ -216,7 +213,7 @@ qq~<li><span |><a href="$scripturl?action=logout" title = "$img_txt{'108'}">$img
         elsif ( $action eq 'edittab' ) { $seledittab = q~class="selected"~; }
         get_micon();
         $yytabadd =
-qq~<ul><li id="addtab"><span $seladdtab><a href="$scripturl?action=addtab" title = "$tabmenu_txt{'newtab'}">$micon{'tabadd'}</a></span></li>~;
+qq~<ul class="advtabs"><li id="addtab"><span $seladdtab><a href="$scripturl?action=addtab" title = "$tabmenu_txt{'newtab'}">$micon{'tabadd'}</a></span></li>~;
         $yytabadd .=
 qq~<li id="edittab"><span $seledittab><a href="$scripturl?action=edittab" title = "$tabmenu_txt{'edittab'}">$micon{'tabedit'}</a></span></li></ul>~;
     }
@@ -229,14 +226,14 @@ qq~<li id="edittab"><span $seledittab><a href="$scripturl?action=edittab" title 
 sub GetTabtxt {
     $tab_lang = $language ? $language : $lang;
     if ( fopen( TABTXT, "$langdir/$tab_lang/tabtext.txt" ) ) {
-        %tabtxt = map {/(.*)\t(.*)/xsm} <TABTXT>;
+        %tabtxt = map { /(.*)\t(.*)/xsm } <TABTXT>;
         fclose(TABTXT);
     }
     elsif ( fopen( TABTXT, "$langdir/English/tabtext.txt" ) ) {
-        %tabtxt = map {/(.*)\t(.*)/xsm} <TABTXT>;
+        %tabtxt = map { /(.*)\t(.*)/xsm } <TABTXT>;
         fclose(TABTXT);
         fopen( TABTXT, ">$langdir/$tab_lang/tabtext.txt" );
-        print {TABTXT} map {"$_\t$tabtxt{$_}\n"} keys %tabtxt
+        print {TABTXT} map { "$_\t$tabtxt{$_}\n" } keys %tabtxt
           or croak 'cannot print TABTXT';
         fclose(TABTXT);
     }

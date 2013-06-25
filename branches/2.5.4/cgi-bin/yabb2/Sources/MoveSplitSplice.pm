@@ -1,13 +1,14 @@
 ###############################################################################
 # MoveSplitSplice.pm                                                          #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -116,7 +117,7 @@ sub Split_Splice {
     $boardlist = qq~<option value="boards">$sstxt{'29'}</option>\n~;
     my $indent = -2;
 
-    local *get_subboards = sub {
+    *get_subboards = sub {
         my @x = @_;
         $indent += 2;
         foreach my $childbd (@x) {
@@ -148,19 +149,50 @@ sub Split_Splice {
     get_subboards( split /,/xsm, $cat{$newcat} );
 
     # Get threads and make the current one the default selection
-    my ( $positionlist );
-        fopen( FILE, "$boardsdir/$newboard.txt" );
-        my @threads = <FILE>;
-        fclose(FILE);
+    my ($positionlist);
+    fopen( FILE, "$boardsdir/$newboard.txt" );
+    my @threads = <FILE>;
+    fclose(FILE);
 
-        my $threadlist = qq~<option value="new">$sstxt{'30'}</option>\n~;
-        my $threadid;
-        foreach (@threads) {
-            ( $threadid, $message, undef ) = split /\|/xsm, $_, 3;
-            next if $curthread eq $threadid;
-            my $threadids .= "$threadid,";
+    my $threadlist = qq~<option value="new">$sstxt{'30'}</option>\n~;
+    my $threadid;
+    foreach (@threads) {
+        ( $threadid, $message, undef ) = split /\|/xsm, $_, 3;
+        next if $curthread eq $threadid;
+        my $threadids .= "$threadid,";
 
-            ( $message, undef ) = Split_Splice_Move( $message, $threadid );
+        ( $message, undef ) = Split_Splice_Move( $message, $threadid );
+        DoUBBC();
+
+        $convertstr = $message;
+        $convertcut = 50;
+        CountChars();
+        $message = $convertstr;
+        if ($cliped) { $message .= ' ...'; }
+
+        ToChars($message);
+        $message =~ s/<(p|br|div).*?>/ /gxsm;
+        $message =~ s/<.*?>//gxsm;              # remove HTML-tags
+        $message = Censor($message);
+
+        $threadlist .=
+            qq~<option value="$threadid" ~
+          . ( $newthread eq $threadid ? q~selected="selected"~ : q{} )
+          . qq~>$message</option>\n~;
+    }
+
+    # Get new thread posts to select splice site
+    if ( $FORM{'newthread'} ne 'new' ) {
+        if ( !ref $thread_arrayref{$newthread} ) {
+            fopen( FILE, "$datadir/$newthread.txt" );
+            @{ $thread_arrayref{$newthread} } = <FILE>;
+            fclose(FILE);
+        }
+        @messages = @{ $thread_arrayref{$newthread} };
+
+        for my $counter ( 0 .. ( @messages - 1 ) ) {
+            $message = ( split /[\|]/xsm, $messages[$counter], 10 )[8];
+            ( $message, undef ) = Split_Splice_Move( $message, 1 );
             DoUBBC();
 
             $convertstr = $message;
@@ -174,58 +206,28 @@ sub Split_Splice {
             $message =~ s/<.*?>//gxsm;              # remove HTML-tags
             $message = Censor($message);
 
-            $threadlist .=
-                qq~<option value="$threadid" ~
-              . ( $newthread eq $threadid ? q~selected="selected"~ : q{} )
-              . qq~>$message</option>\n~;
+            $messages[$counter] =
+                qq~<option value="$counter">~
+              . ( $counter ? "$sstxt{'40'} $counter" : $sstxt{'41'} )
+              . qq~: $message</option>\n~;
         }
-
-        # Get new thread posts to select splice site
-        if ( $FORM{'newthread'} ne 'new' ) {
-            if ( !ref $thread_arrayref{$newthread} ) {
-                fopen( FILE, "$datadir/$newthread.txt" );
-                @{ $thread_arrayref{$newthread} } = <FILE>;
-                fclose(FILE);
-            }
-            @messages = @{ $thread_arrayref{$newthread} };
-
-            for my $counter ( 0 .. ( @messages - 1 ) ) {
-                $message = ( split /[\|]/xsm, $messages[$counter], 10 )[8];
-                ( $message, undef ) = Split_Splice_Move( $message, 1 );
-                DoUBBC();
-
-                $convertstr = $message;
-                $convertcut = 50;
-                CountChars();
-                $message = $convertstr;
-                if ($cliped) { $message .= ' ...'; }
-
-                ToChars($message);
-                $message =~ s/<(p|br|div).*?>/ /gxsm;
-                $message =~ s/<.*?>//gxsm;              # remove HTML-tags
-                $message = Censor($message);
-
-                $messages[$counter] =
-                    qq~<option value="$counter">~
-                  . ( $counter ? "$sstxt{'40'} $counter" : $sstxt{'41'} )
-                  . qq~: $message</option>\n~;
-            }
-            if ( ( $ttsureverse && ${ $uid . $username }{'reversetopic'} )
-                || $ttsreverse )
-            {
-                @messages = reverse @messages;
-            }
-            $positionlist = qq~<option value="end">$sstxt{'31'}</option>\n~;
-            $positionlist .=
-              qq~<option value="begin">$sstxt{'32'}</option>\n~ . join q{},
-              @messages;
-            if (   $FORM{'position'}
-                && $newthread == $FORM{'old_position_thread'} )
-            {
-                $positionlist =~
-                  s/(value="$FORM{'position'}")/$1 selected="selected"/xsm;
-            }
+        if ( ( $ttsureverse && ${ $uid . $username }{'reversetopic'} )
+            || $ttsreverse )
+        {
+            @messages = reverse @messages;
         }
+        $positionlist = qq~<option value="end">$sstxt{'31'}</option>\n~;
+        $positionlist .=
+          qq~<option value="begin">$sstxt{'32'}</option>\n~ . join q{},
+          @messages;
+        if (   $FORM{'position'}
+            && $newthread == $FORM{'old_position_thread'} )
+        {
+            $positionlist =~
+              s/(value="$FORM{'position'}")/$1 selected="selected"/xsm;
+        }
+    }
+
     #}
 
     if (   $newthread eq 'new'
@@ -420,11 +422,12 @@ qq~[m by=$hidename destboard=$newboard dest=$newthreadid]: '$tmpsub'~;
             $utdcurthread[0] =
 qq~$tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$username|no_postcount||$user_ip|$tmpmessage||||\n~;
 
-            eval { require Variables::Movedthreads };
-            $moved_file{$curthreadid} = $newthreadid;
-            delete $moved_file{$newthreadid};
-            save_moved_file();
-            $leavemess = 0;
+            if ( eval { require Variables::Movedthreads; 1 } ) {
+                $moved_file{$curthreadid} = $newthreadid;
+                delete $moved_file{$newthreadid};
+                save_moved_file();
+                $leavemess = 0;
+            }
         }
         else {
             $leavemess    = 2;

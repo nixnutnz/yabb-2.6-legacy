@@ -1,13 +1,14 @@
 ###############################################################################
 # MediaCenter.pm                                                              #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -111,10 +112,14 @@ qq~http://mediaservices.myspace.com/services/media/embed.aspx/m=$1,t=1,mt=video~
 
         }
         elsif ( $media_url =~ m/youtube\.com/ixsm ) {
-            ( undef, $media_in) = split /\?/xsm, $media_url;
+            ( undef, $media_in ) = split /\?/xsm, $media_url;
             @media_in = split /\&/gxsm, $media_in;
             foreach my $i (@media_in) {
-               if ( $i =~ m/v=/) { $i=~ s/amp;//gsm; $i=~ s/v=//gsm; $media_url = qq~http://www.youtube.com/v/$i~;}
+                if ( $i =~ m/v=/sm ) {
+                    $i =~ s/amp;//gsm;
+                    $i =~ s/v=//gsm;
+                    $media_url = qq~http://www.youtube.com/v/$i~;
+                }
             }
             $video         = $embed_youtube;
             $controlheight = 36;
@@ -126,15 +131,19 @@ qq~http://mediaservices.myspace.com/services/media/embed.aspx/m=$1,t=1,mt=video~
             $controlheight = 36;
         }
         elsif ( $media_url =~ m/facebook\.com/ixsm ) {
-            ( undef, $media_in) = split /\?/xsm, $media_url;
+            ( undef, $media_in ) = split /\?/xsm, $media_url;
             @media_in = split /\&/gxsm, $media_in;
             foreach my $i (@media_in) {
-               if ( $i =~ m/v=/) { $i=~ s/amp;//gsm; $i=~ s/v=//gsm; $media_url = $i;}
+                if ( $i =~ m/v=/sm ) {
+                    $i =~ s/amp;//gsm;
+                    $i =~ s/v=//gsm;
+                    $media_url = $i;
+                }
             }
-            $video         = $iframe_facebook;
+            $video = $iframe_facebook;
         }
 
-            # added Clipfish video url support
+        # added Clipfish video url support
         elsif ( $media_url =~ m/clipfish\.de/ixsm ) {
             ( undef, $temp ) = split /video\//xsm, $media_url;
             ( $videoid, undef ) = split /\//xsm, $temp;
@@ -197,7 +206,8 @@ qq~http://www.clipfish.de/cfng/flash/clipfish_player_3.swf?as=0&vid=$videoid&r=1
 
             # GameTrailers.com END
         }
-            # added Google video url support
+
+        # added Google video url support
         elsif ( $media_url =~ m/video\.google/ixsm ) {
             ( undef, $docid ) = split /=/xsm, $media_url;
             $media_url =
@@ -206,15 +216,18 @@ qq~http://www.clipfish.de/cfng/flash/clipfish_player_3.swf?as=0&vid=$videoid&r=1
             $controlheight = 36;
 
         }
-            # added dailymotion video url support
+
+        # added dailymotion video url support
         elsif ( $media_url =~ m/dailymotion\.com/ixsm ) {
-            $video         = $iframe_dailymotion;
+            $video = $iframe_dailymotion;
         }
-            # added vimeo video url support
+
+        # added vimeo video url support
         elsif ( $media_url =~ m/vimeo\.com/ixsm ) {
-            $video         = $iframe_vimeo;
+            $video = $iframe_vimeo;
         }
-            # added hulu video url support
+
+        # added hulu video url support
         elsif ( $media_url =~ m/hulu\.com/ixsm ) {
             $video         = $embed_flash;
             $controlheight = 0;
@@ -225,7 +238,8 @@ qq~http://www.clipfish.de/cfng/flash/clipfish_player_3.swf?as=0&vid=$videoid&r=1
             $video         = $embed_qt;
             $controlheight = 15;
         }
-            # added thenutz videos
+
+        # added thenutz videos
         elsif ( $media_url =~ m/thenutz\.tv.+?(\d+)/ixsm ) {
             $media_url = $1;
             $video     = $iframe_thenutz;

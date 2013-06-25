@@ -1,14 +1,14 @@
 ###############################################################################
 # InstantMessage.pm                                                           #
-# $Date: 11/13/2012 $                                                         #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -30,8 +30,11 @@ get_micon();
 
 $set_subjectMaxLength ||= 50;
 
-if ( ($action eq 'imsend' || $action eq 'imsend2') && $MaxIMMessLen && $AdMaxIMMessLen ) {
-    $MaxMessLen = $MaxIMMessLen;
+if (   ( $action eq 'imsend' || $action eq 'imsend2' )
+    && $MaxIMMessLen
+    && $AdMaxIMMessLen )
+{
+    $MaxMessLen   = $MaxIMMessLen;
     $AdMaxMessLen = $AdMaxIMMessLen;
 }
 
@@ -444,7 +447,7 @@ qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'re
     #this is the end of the upper area of the post page.
 
     # this declares the beginning of the UBBC section
-    $JSandInput .= q~
+    $JSandInput .= qq~
     <script type="text/javascript">
     function Hash() {
         this.length = 0;
@@ -460,9 +463,9 @@ qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'re
             return this.items[in_key];
         }
     }
-   
+
     function showimage() {
-        $jsIM;
+        $jsIM
         var icon_set = document.postmodify.status.options[document.postmodify.images.status.selectedIndex].value;
         var icon_show = jsIM.getItem(icon_set);
         document.images.status.src = icon_show;
@@ -502,19 +505,6 @@ qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'re
         $tmpmtext = qq~<b>$post_txt{'72'}:</b> ~;
     }
 
-    if ($img_greybox) {
-        $yyinlinestyle .=
-qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/css" />\n~;
-        $yyjavascript .= qq~
-var GB_ROOT_DIR = "$yyhtml_root/greybox/";
-// -->
-</script>
-<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>
-<script type="text/javascript" src="$yyhtml_root/AJS_fx.js"></script>
-<script type="text/javascript" src="$yyhtml_root/greybox/gb_scripts.js"></script>
-<script type="text/javascript">
-<!--~;
-    }
     $postbox2 = postbox2();
     $postbox3 = postbox3();
 
@@ -808,6 +798,7 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
         $accesskey{'MSIE_Safari'}     = $post_txt{'329b'};
         $accesskey{'FireFox'}         = $post_txt{'330b'};
         $accesskey{'Browsers_on_Mac'} = $post_txt{'331b'};
+
 # remove Preview
 #        $my_accesskey .=
 #qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="$preview" value="$post_txt{'507'}" accesskey="p" tabindex="6" class="button" />~;
@@ -891,7 +882,7 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
             if (objIconSelected == 's') { theimg = 'standard'; }
             if (objIconSelected == 'c') { theimg = 'confidential'; }
             if (objIconSelected == 'u') { theimg = 'urgent'; }
-            var picon_show = jsIM.getItem(theimg); 
+            var picon_show = jsIM.getItem(theimg);
             document.images.icons.src = picon_show;
             document.getElementById("iconholder").value = theimg;
             if (autoprev == true) autoPreview();
@@ -977,7 +968,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     $subject =~ s/^\s+|\s+$//gsm;
 
     $message = $FORM{'message'};
-    $message =~ s/^\s+|\s+$//g;
+    $message =~ s/^\s+|\s+$//gsm;
 
     # no subject/no message are bad!
     if ( !$subject ) { $error = $error_txt{'no_subject'}; }
@@ -1065,8 +1056,9 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
 
                 # replace . with _ in the filename except for the extension
                 my $fixname = $fixfile;
-                $fixname =~ s/(.+)(\..+?)$/$1/xsm;
-                my $fixext = $2;
+                if ( $fixname =~ s/(.+)(\..+?)$/$1/xsm ) {
+                    $fixext = $2;
+                }
 
                 $spamdetected = spamcheck("$fixname");
                 if ( !$staff ) {
@@ -1970,7 +1962,7 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
             }
             else {
                 my ( $guestName, $guestEmail ) = split / /sm, $mtousers;
-                $guestName =~ s/%20/ /g;
+                $guestName =~ s/%20/ /gsm;
                 $usernamelinkto =
                   qq~$guestName (<a href="mailto:$guestEmail">$guestEmail</a>)~;
             }
@@ -2182,8 +2174,9 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
     if ( $mattach ne q{} ) {
         foreach ( split /,/xsm, $mattach ) {
             my ( $pmAttachFile, undef ) = split /~/xsm, $_;
-            $pmAttachFile =~ /\.(.+?)$/xsm;
-            my $ext = lc $1;
+            if ( $pmAttachFile =~ /\.(.+?)$/xsm ) {
+                $ext = lc $1;
+            }
             if ( !exists $attach_gif{$ext} ) {
                 $attach_gif{$ext} =
                   ( $ext && -e "$htmldir/Templates/Forum/$useimages/$ext.gif" )
@@ -2302,7 +2295,7 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;repl
         $messIconName = 'guestpmreply';
     }
     elsif ( $mstatus =~ m/g/sm ) { $messIconName = 'guestpm'; }
-    else { $messIconName = 'standard';}
+    else                         { $messIconName = 'standard'; }
 
     if ( $mstatus ne 'ga' && $mstatus ne 'g' ) {
         $notme    = $musername eq $username ? $mtousers : $musername;
@@ -2313,19 +2306,7 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;repl
             : '&nbsp;'
         );
     }
-    if ($img_greybox) {
-        $yyinlinestyle .=
-qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/css" />\n~;
-        $yyjavascript .= qq~
-var GB_ROOT_DIR = "$yyhtml_root/greybox/";
-// -->
-</script>
-<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>
-<script type="text/javascript" src="$yyhtml_root/AJS_fx.js"></script>
-<script type="text/javascript" src="$yyhtml_root/greybox/gb_scripts.js"></script>
-<script type="text/javascript">
-<!--~;
-    }
+
     $showIM .= $myIM_show;
     $showIM =~ s/{yabb my_title}/$my_title/sm;
     $showIM =~ s/{yabb msub}/$msub/sm;

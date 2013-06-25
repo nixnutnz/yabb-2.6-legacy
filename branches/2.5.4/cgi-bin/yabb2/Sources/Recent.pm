@@ -1,14 +1,14 @@
 ###############################################################################
 # Recent.pm                                                                   #
-# $Date: 11.13.12 $                                                           #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -48,29 +48,42 @@ sub RecentPosts {
             my $access = AccessCheck( $curboard, q{}, $boardperms );
             if ( !$iamadmin && $access ne 'granted' ) { next; }
 
-			if (${$uid.$curboard}{'brdpasswr'}) {
-			my $bdmods = ${$uid.$curboard}{'mods'};
-			$bdmods =~ s/\, /\,/g;
-			$bdmods =~ s/\ /\,/g;
-			my %moderators = ();
-			my $pswiammod = 0;
-			foreach my $curuser (split(/\,/, $bdmods)) {
-				if ($username eq $curuser) { $pswiammod = 1; }
-			}
-			my $bdmodgroups = ${$uid.$curboard}{'modgroups'};
-			$bdmodgroups =~ s/\, /\,/g;
-			my %moderatorgroups = ();
-			foreach my $curgroup (split(/\,/, $bdmodgroups)) {
-				if (${$uid.$username}{'position'} eq $curgroup) { $pswiammod = 1; }
-				foreach my $memberaddgroups (split(/\, /, ${$uid.$username}{'addgroups'})) {
-					chomp $memberaddgroups;
-					if ($memberaddgroups eq $curgroup) { $pswiammod = 1; last; }
-				}
-			}
-			my $cookiename = "$cookiepassword$curboard$username";
-			my $crypass = ${$uid.$curboard}{'brdpassw'};
-			if (!$iamadmin && !$iamgmod && !$pswiammod && $yyCookies{$cookiename} ne $crypass) { next; }
-			}
+            if ( ${ $uid . $curboard }{'brdpasswr'} ) {
+                my $bdmods = ${ $uid . $curboard }{'mods'};
+                $bdmods =~ s/\, /\,/gsm;
+                $bdmods =~ s/\ /\,/gsm;
+                my %moderators = ();
+                my $pswiammod  = 0;
+                foreach my $curuser ( split /\,/xsm, $bdmods ) {
+                    if ( $username eq $curuser ) { $pswiammod = 1; }
+                }
+                my $bdmodgroups = ${ $uid . $curboard }{'modgroups'};
+                $bdmodgroups =~ s/\, /\,/gsm;
+                my %moderatorgroups = ();
+                foreach my $curgroup ( split /\,/xsm, $bdmodgroups ) {
+                    if ( ${ $uid . $username }{'position'} eq $curgroup ) {
+                        $pswiammod = 1;
+                    }
+                    foreach my $memberaddgroups ( split /\, /sm,
+                        ${ $uid . $username }{'addgroups'} )
+                    {
+                        chomp $memberaddgroups;
+                        if ( $memberaddgroups eq $curgroup ) {
+                            $pswiammod = 1;
+                            last;
+                        }
+                    }
+                }
+                my $cookiename = "$cookiepassword$curboard$username";
+                my $crypass    = ${ $uid . $curboard }{'brdpassw'};
+                if (   !$iamadmin
+                    && !$iamgmod
+                    && !$pswiammod
+                    && $yyCookies{$cookiename} ne $crypass )
+                {
+                    next;
+                }
+            }
 
             $catid{$curboard}   = $catid;
             $catname{$curboard} = $catname;
@@ -240,7 +253,9 @@ qq~$menusep<a href="$scripturl?action=notify2;num=$tnum/$c;oldnotify=1">$img{'ad
         while ($parentboard) {
             my ( $pboardname, undef, undef ) =
               split /\|/xsm, $board{$parentboard};
-		    if( ${$uid.$parentboard}{'canpost'} || !$subboard{$parentboard} ) {
+            if ( ${ $uid . $parentboard }{'canpost'}
+                || !$subboard{$parentboard} )
+            {
                 $pboardname =
 qq~<a href="$scripturl?board=$parentboard"><span class="under">$pboardname</span></a>~;
             }
@@ -249,8 +264,8 @@ qq~<a href="$scripturl?board=$parentboard"><span class="under">$pboardname</span
 qq~<a href="$scripturl?boardselect=$parentboard;subboards=1"><span class="under">$pboardname</span></a>~;
             }
             $boardtree   = qq~ / $pboardname$boardtree~;
-            $my_cat = ${$uid.$parentboard }{'cat'};
-            $parentboard = ${$uid.$parentboard }{'parent'};
+            $my_cat      = ${ $uid . $parentboard }{'cat'};
+            $parentboard = ${ $uid . $parentboard }{'parent'};
         }
         $counter = $i + 1;
 
@@ -272,20 +287,6 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1"><span class="under"
         $yymain =~ s/{yabb mname}/$mname/sm;
         $yymain =~ s/{yabb my_tstate}/$my_tstate/sm;
         $yymain =~ s/{yabb message}/$message/sm;
-    }
-
-    if ($img_greybox) {
-        $yyinlinestyle .=
-qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/css" />\n~;
-        $yyjavascript .= qq~
-var GB_ROOT_DIR = "$yyhtml_root/greybox/";
-// -->
-</script>
-<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>
-<script type="text/javascript" src="$yyhtml_root/AJS_fx.js"></script>
-<script type="text/javascript" src="$yyhtml_root/greybox/gb_scripts.js"></script>
-<script type="text/javascript">
-<!--~;
     }
 
     $yynavigation = qq~&rsaquo; $maintxt{'214'}~;
@@ -442,7 +443,9 @@ qq~$menusep<a href="$scripturl?action=notify2;num=$tnum/$c;oldnotify=1">$img{'ad
         while ($parentboard) {
             my ( $pboardname, undef, undef ) =
               split /\|/xsm, $board{"$parentboard"};
-            if ( ${ $uid . $parentboard }{'canpost'} || !$subboard{$parentboard}) {
+            if ( ${ $uid . $parentboard }{'canpost'}
+                || !$subboard{$parentboard} )
+            {
                 $pboardname =
 qq~<a href="$scripturl?board=$parentboard"><span class="under">$pboardname</span></a>~;
             }
@@ -450,8 +453,8 @@ qq~<a href="$scripturl?board=$parentboard"><span class="under">$pboardname</span
                 $pboardname =
 qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under">$pboardname</span></a>~;
             }
-            $boardtree   = qq~ / $pboardname$boardtree~;
-            $my_cat = ${$uid.$parentboard }{'cat'};
+            $boardtree = qq~ / $pboardname$boardtree~;
+            $my_cat    = ${ $uid . $parentboard }{'cat'};
             ( $my_catname, undef ) = split /\|/xsm, $catinfo{$my_cat};
             $parentboard = ${ $uid . $parentboard }{'parent'};
         }
@@ -477,20 +480,6 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under"
         $yymain =~ s/{yabb message}/$message/sm;
     }
 
-    if ($img_greybox) {
-        $yyinlinestyle .=
-qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/css" />\n~;
-        $yyjavascript .= qq~
-var GB_ROOT_DIR = "$yyhtml_root/greybox/";
-// -->
-</script>
-<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>
-<script type="text/javascript" src="$yyhtml_root/AJS_fx.js"></script>
-<script type="text/javascript" src="$yyhtml_root/greybox/gb_scripts.js"></script>
-<script type="text/javascript">
-<!--~;
-    }
-
     $yynavigation = qq~&rsaquo; $maintxt{'214b'}~;
     $yytitle      = $maintxt{'214b'};
     template();
@@ -506,29 +495,42 @@ sub recursive_check {
         my $access = AccessCheck( $curboard, q{}, $boardperms );
         if ( !$iamadmin && $access ne 'granted' ) { next; }
 
-			if (${$uid.$curboard}{'brdpasswr'}) {
-			my $bdmods = ${$uid.$curboard}{'mods'};
-			$bdmods =~ s/\, /\,/g;
-			$bdmods =~ s/\ /\,/g;
-			my %moderators = ();
-			my $pswiammod = 0;
-			foreach my $curuser (split(/\,/, $bdmods)) {
-				if ($username eq $curuser) { $pswiammod = 1; }
-			}
-			my $bdmodgroups = ${$uid.$curboard}{'modgroups'};
-			$bdmodgroups =~ s/\, /\,/g;
-			my %moderatorgroups = ();
-			foreach my $curgroup (split(/\,/, $bdmodgroups)) {
-				if (${$uid.$username}{'position'} eq $curgroup) { $pswiammod = 1; }
-				foreach my $memberaddgroups (split(/\, /, ${$uid.$username}{'addgroups'})) {
-					chomp $memberaddgroups;
-					if ($memberaddgroups eq $curgroup) { $pswiammod = 1; last; }
-				}
-			}
-			my $cookiename = "$cookiepassword$curboard$username";
-			my $crypass = ${$uid.$curboard}{'brdpassw'};
-			if (!$iamadmin && !$iamgmod && !$pswiammod && $yyCookies{$cookiename} ne $crypass) { next; }
-			}
+        if ( ${ $uid . $curboard }{'brdpasswr'} ) {
+            my $bdmods = ${ $uid . $curboard }{'mods'};
+            $bdmods =~ s/\, /\,/gsm;
+            $bdmods =~ s/\ /\,/gsm;
+            my %moderators = ();
+            my $pswiammod  = 0;
+            foreach my $curuser ( split /\,/xsm, $bdmods ) {
+                if ( $username eq $curuser ) { $pswiammod = 1; }
+            }
+            my $bdmodgroups = ${ $uid . $curboard }{'modgroups'};
+            $bdmodgroups =~ s/\, /\,/gsm;
+            my %moderatorgroups = ();
+            foreach my $curgroup ( split /\,/xsm, $bdmodgroups ) {
+                if ( ${ $uid . $username }{'position'} eq $curgroup ) {
+                    $pswiammod = 1;
+                }
+                foreach my $memberaddgroups ( split /\, /sm,
+                    ${ $uid . $username }{'addgroups'} )
+                {
+                    chomp $memberaddgroups;
+                    if ( $memberaddgroups eq $curgroup ) {
+                        $pswiammod = 1;
+                        last;
+                    }
+                }
+            }
+            my $cookiename = "$cookiepassword$curboard$username";
+            my $crypass    = ${ $uid . $curboard }{'brdpassw'};
+            if (   !$iamadmin
+                && !$iamgmod
+                && !$pswiammod
+                && $yyCookies{$cookiename} ne $crypass )
+            {
+                next;
+            }
+        }
 
         $catid{$curboard}   = $catid;
         $catname{$curboard} = $catname;

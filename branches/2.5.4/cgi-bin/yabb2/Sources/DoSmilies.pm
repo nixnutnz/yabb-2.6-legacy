@@ -1,20 +1,21 @@
 ###############################################################################
 # DoSmilies.pm                                                                #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 our $VERSION = '2.5.4';
 
 $dosmiliespmver = 'YaBB 2.5.4 $Revision$';
-if ($action eq 'detailedversion') { return 1; }
+if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Main');
 get_template('Other');
@@ -28,8 +29,11 @@ sub SmiliePut {
     while ( $SmilieURL[$i] ) {
         if ( $SmilieURL[$i] =~ /\//ixsm ) { $tmpurl = $SmilieURL[$i]; }
         else { $tmpurl = qq~$defaultimagesdir/$SmilieURL[$i]~; }
-		$moresmilieslist .= qq~<br />~ if $i && ($i / 10) == int($i / 10);
-		$moresmilieslist .= qq~<img src="$tmpurl" class="moresmiles" alt="$SmilieDescription[$i]" onclick="javascript:MoreSmilies($i)" />$SmilieLinebreak[$i]\n~;
+        if ( $i && ( $i / 10 ) == int( $i / 10 ) ) {
+            $moresmilieslist .= q~<br />~;
+        }
+        $moresmilieslist .=
+qq~<img src="$tmpurl" class="moresmiles" alt="$SmilieDescription[$i]" onclick="javascript:MoreSmilies($i)" />$SmilieLinebreak[$i]\n~;
         $smilie_url_array .= qq~"$tmpurl", ~;
         $tmpcode = $SmilieCode[$i];
         $tmpcode =~ s/\&quot;/"+'"'+"/gxsm;    #'; to keep my text editor happy;
@@ -65,8 +69,8 @@ qq~<img src="$yyhtml_root/Smilies/$line" id="$name" onclick="javascript:MoreSmil
     }
     $more_smilie_array .= q~''~;
     if ( $showadded == 3 || ( $showadded == 2 && $detachblock == 1 ) ) {
-		$my_output .= qq~ $moresmilieslist ~;
-	}
+        $my_output .= qq~ $moresmilieslist ~;
+    }
 
     $output = $smilie_window_a;
     $output =~ s/{yabb popback}/$popback/sm;
@@ -82,41 +86,42 @@ qq~<img src="$yyhtml_root/Smilies/$line" id="$name" onclick="javascript:MoreSmil
 sub SmilieIndex {
     print_output_header();
 
-	$i = 0;
-	$offset = 0;
+    $i                 = 0;
+    $offset            = 0;
     $smilieslist       = q{};
     $smilie_code_array = q{};
     if ( $showadded == 3 || ( $showadded == 2 && $detachblock == 1 ) ) {
-		while ($SmilieURL[$i]) {
-			if ($i % 4 == 0 && $i != 0) {
+        while ( $SmilieURL[$i] ) {
+            if ( $i % 4 == 0 && $i != 0 ) {
                 $smilieslist .= $my_smilie_window_tr;
-				$offset++;
-			}
+                $offset++;
+            }
             if ( ( $i + $offset ) % 2 == 0 ) {
                 $smiliescolor = $my_smiliebg_a;
             }
             else { $smiliescolor = $my_smiliebg_b; }
             if ( $SmilieURL[$i] =~ /\//ixsm ) { $tmpurl = $SmilieURL[$i]; }
-			else { $tmpurl = qq~$defaultimagesdir/$SmilieURL[$i]~; }
-            
+            else { $tmpurl = qq~$defaultimagesdir/$SmilieURL[$i]~; }
+
             $smilieslist .= $my_smilie_window_td;
             $smilieslist =~ s/{yabb smiliescolor}/$smiliescolor/gsm;
             $smilieslist =~ s/{yabb tmpurl}/$tmpurl/gsm;
             $smilieslist =~ s/{yabb i}/$i/gsm;
             $smilieslist =~ s/{yabb poptext}/$poptext/gsm;
-            $smilieslist =~ s/{yabb SmilieDescription}/$SmilieDescription[$i]/gsm;
-            
-			$smilie_url_array .= qq~"$tmpurl", ~;
-			$tmpcode = $SmilieCode[$i];
+            $smilieslist =~
+              s/{yabb SmilieDescription}/$SmilieDescription[$i]/gsm;
+
+            $smilie_url_array .= qq~"$tmpurl", ~;
+            $tmpcode = $SmilieCode[$i];
             $tmpcode =~ s/\&quot;/"+'"'+"/gxsm;    #';
             FromHTML($tmpcode);
             $tmpcode =~ s/&#36;/\$/gxsm;
             $tmpcode =~ s/&#64;/\@/gxsm;
-			$more_smilie_array .= qq~" $tmpcode", ~;
-			$i++;
-		}
-	}
-	if ($showsmdir == 3 || ($showsmdir == 2 && $detachblock == 1)) {
+            $more_smilie_array .= qq~" $tmpcode", ~;
+            $i++;
+        }
+    }
+    if ( $showsmdir == 3 || ( $showsmdir == 2 && $detachblock == 1 ) ) {
         opendir DIR, "$htmldir/Smilies";
         @contents = readdir DIR;
         closedir DIR;
@@ -128,10 +133,10 @@ sub SmilieIndex {
                 || $extension =~ /png/ixsm )
             {
                 if ( $line !~ /banner/ixsm ) {
-					if ($i % 4 == 0 && $i != 0) {
+                    if ( $i % 4 == 0 && $i != 0 ) {
                         $smilieslist .= $my_smilie_window_tr;
-						$offset++;
-					}
+                        $offset++;
+                    }
                     if ( ( $i + $offset ) % 2 == 0 ) {
                         $smiliescolor = $my_smiliebg_a;
                     }
@@ -142,27 +147,27 @@ sub SmilieIndex {
                     $smilieslist =~ s/{yabb i}/$i/gsm;
                     $smilieslist =~ s/{yabb poptext}/$poptext/gsm;
 
-					$more_smilie_array .= qq~" [smiley=$line]", ~;
-					$i++;
-				}
-			}
-		}
-	}
-	while ($i % 4 != 0) {
+                    $more_smilie_array .= qq~" [smiley=$line]", ~;
+                    $i++;
+                }
+            }
+        }
+    }
+    while ( $i % 4 != 0 ) {
         if ( ( $i + $offset ) % 2 == 0 ) {
             $smiliescolor = $my_smiliebg_a;
         }
         else { $smiliescolor = $my_smiliebg_b }
         $smilieslist .= $my_smilie_window_blnk;
         $smilieslist =~ s/{yabb smiliescolor}/$smiliescolor/gsm;
-		$i++;
-	}
+        $i++;
+    }
     $smilie_code_array .= q~""~;
     $more_smilie_array .= q~""~;
-	if (-e "$htmldir/Smilies/$my_banner") {
+    if ( -e "$htmldir/Smilies/$my_banner" ) {
         $smiliesheader = $my_smilie_banner_header;
     }
-	else {
+    else {
         $smiliesheader = $my_smilie_header;
     }
 

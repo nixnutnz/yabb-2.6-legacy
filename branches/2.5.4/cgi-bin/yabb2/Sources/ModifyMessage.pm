@@ -1,13 +1,14 @@
 ###############################################################################
 # ModifyMessage.pm                                                            #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -58,7 +59,7 @@ sub ModifyMessage {
         if ($bypass_lock_perm) { $icanbypass = checkUserLockBypass(); }
         if ( !$icanbypass ) { fatal_error('topic_locked'); }
     }
-    elsif (!$staff
+    elsif ( !$staff
         && $tlnomodflag
         && $date > $mdate + ( $tlnomodtime * 3600 * 24 ) )
     {
@@ -86,8 +87,7 @@ sub ModifyMessage {
             ToChars( $options[$i] );
         }
 
-        if ( $poll_uname ne $username && !$staff )
-        {
+        if ( $poll_uname ne $username && !$staff ) {
             fatal_error('not_allowed');
         }
 
@@ -124,7 +124,7 @@ sub ModifyMessage {
         }
 
         $lastmod_a = $mlm ? timeformat($mlm) : q{-};
-        $nscheck = $mns ? ' checked'       : q{};
+        $nscheck   = $mns ? ' checked'       : q{};
 
         $lastmod = $mypost_lastmod;
         $lastmod =~ s/{yabb lastmod_a}/$lastmod_a/sm;
@@ -145,10 +145,10 @@ sub ModifyMessage {
     $post        = 'postmodify';
     $preview     = 'previewmodify';
     require Sources::Post;
-    $yytitle = $post_txt{'66'};
-    $mename  = $mname;
-	$thismusername = $musername;
-	$tmpmdate = $mdate;
+    $yytitle       = $post_txt{'66'};
+    $mename        = $mname;
+    $thismusername = $musername;
+    $tmpmdate      = $mdate;
     Postpage();
     template();
     return;
@@ -158,9 +158,9 @@ sub ModifyMessage2 {
     if ($iamguest) { fatal_error('members_only'); }
 
     if ( $FORM{'previewmodify'} ) {
-        $mename = qq~$FORM{'mename'}~;
-		$tmpmdate = qq~$FORM{'tmpmdate'}~;
-		$thismusername = qq~$FORM{'thismusername'}~;
+        $mename        = qq~$FORM{'mename'}~;
+        $tmpmdate      = qq~$FORM{'tmpmdate'}~;
+        $thismusername = qq~$FORM{'thismusername'}~;
         require Sources::Post;
         Preview();
     }
@@ -210,7 +210,7 @@ sub ModifyMessage2 {
                 chomp $mfn;
                 if (
                     ${ $uid . $username }{'regdate'} > $mdate
-                    || (   !$staff
+                    || (  !$staff
                         && $musername ne $username )
                     || !$sessionvalid
                   )
@@ -235,14 +235,11 @@ sub ModifyMessage2 {
     }
 
     my (
-        $threadid,   $postid,  $msub,            $mname,
-        $memail,     $mdate,   $musername,       $micon,
-        $mattach,    $mip,     $mmessage,        $mns,
-        $mlm,        $mlmb,    $tnum,            $tsub,
-        $tname,      $temail,  $tdate,           $treplies,
-        $tusername,  $ticon,   $tstate,
-        $name,       $email,
-        $subject,    $message, $ns,
+        $threadid,  $postid,   $msub,      $mname, $memail,   $mdate,
+        $musername, $micon,    $mattach,   $mip,   $mmessage, $mns,
+        $mlm,       $mlmb,     $tnum,      $tsub,  $tname,    $temail,
+        $tdate,     $treplies, $tusername, $ticon, $tstate,   $name,
+        $email,     $subject,  $message,   $ns,
     );
 
     $threadid   = $FORM{'threadid'};
@@ -534,7 +531,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
         if ($bypass_lock_perm) { $icanbypass = checkUserLockBypass(); }
         if ( !$icanbypass ) { fatal_error('topic_locked'); }
     }
-    if ( $staff ) {
+    if ($staff) {
         $thestatus =~ s/0//gxsm;
         $tstate = $tstate =~ /a/ism ? "0a$thestatus" : "0$thestatus";
         MessageTotals( 'load', $tnum );
@@ -552,17 +549,18 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
     fopen( ATM, "+<$vardir/attachments.txt" );
     seek ATM, 0, 0;
     while (<ATM>) {
-        $_ =~ /^(\d+)\|(\d+)\|.+\|(.+)\|\d+\s+/sm;
-        $del_filename{$3}++;
-        if ( $threadid == $1 && $postid == $2 ) {
-            $post_attach{$3} = $_;
-        }
-        else {
-            push @attachments, $_;
+        if ( $_ =~ /^(\d+)\|(\d+)\|.+\|(.+)\|\d+\s+/sm ) {
+            $del_filename{$3}++;
+            if ( $threadid == $1 && $postid == $2 ) {
+                $post_attach{$3} = $_;
+            }
+            else {
+                push @attachments, $_;
+            }
         }
     }
 
-    my ( $file, $fixfile, @filelist, @newfilelist );
+    my ( $file, $fixfile, @filelist, @newfilelist, $fixext );
     for my $y ( 1 .. $allowattach ) {
         if ($CGI_query) { $file = $CGI_query->upload("file$y"); }
         if ( $file
@@ -577,8 +575,9 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
 
             # replace . with _ in the filename except for the extension
             my $fixname = $fixfile;
-            $fixname =~ s/(.+)(\..+?)$/$1/sm;
-            my $fixext = $2;
+            if ( $fixname =~ s/(.+)(\..+?)$/$1/sm ) {
+                $fixext = $2;
+            }
 
             my $spamdetected = spamcheck("$fixname");
             if ( !$staff ) {
@@ -620,7 +619,10 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
             if ( !$checkext ) { $match = 1; }
             else {
                 foreach my $ext (@ext) {
-                    if ( grep /$ext$/ism, $fixfile ) { $match = 1; last; }
+                    if ( grep { /$ext$/ism } $fixfile ) {
+                        $match = 1;
+                        last;
+                    }
                 }
             }
             if ($match) {
@@ -819,16 +821,16 @@ qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$
       (
         int( ( $treplies - $postid ) / $maxmessagedisplay ) *
           $maxmessagedisplay );
-    my $rts = $FORM{'return_to'};		
-    if ($rts == 3) {
+    my $rts = $FORM{'return_to'};
+    if ( $rts == 3 ) {
         $yySetLocation = qq~$scripturl~;
     }
-    elsif ($rts == 2) {
+    elsif ( $rts == 2 ) {
         $yySetLocation = qq~$scripturl?board=$currentboard~;
     }
-    else { 
+    else {
         $yySetLocation = qq~$scripturl?num=$threadid/$start#$postid~;
-    }	
+    }
     redirectexit();
     return;
 }
@@ -856,7 +858,7 @@ sub MultiDel {    # deletes singel- or multi-Posts
             # Checks that the user is actually allowed to access multidel
             if (
                 ${ $uid . $username }{'regdate'} > $message[3]
-                || (   !$staff
+                || (  !$staff
                     && $musername ne $username )
                 || !$sessionvalid
               )
@@ -982,12 +984,12 @@ sub MultiDel {    # deletes singel- or multi-Posts
     my $inserted = 0;
     for my $c ( 0 .. ( @buffer - 1 ) ) {
         if ( ( split /\|/xsm, $buffer[$a], 6 )[4] < $newthreadline[4] ) {
-            splice( @buffer, $c, 0, join( q{|}, @newthreadline ) . "\n" );
+            splice @buffer, $c, 0, join( q{|}, @newthreadline ) . "\n";
             $inserted = 1;
             last;
         }
     }
-    if ( !$inserted ) { push( @buffer, join( q{|}, @newthreadline ) . "\n" ); }
+    if ( !$inserted ) { push @buffer, join( q{|}, @newthreadline ) . "\n"; }
 
     truncate BOARDFILE, 0;
     seek BOARDFILE, 0, 0;

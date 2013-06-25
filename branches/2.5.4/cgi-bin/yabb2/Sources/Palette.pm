@@ -1,13 +1,14 @@
 ###############################################################################
 # Palette.pm                                                                  #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -128,7 +129,7 @@ function Pickshowcolor(color) {
 
     if ( $iamadmin && $picktask eq 'post' ) {
         print qq~
-	<span id="defpal_1" class="defpalx" style="background-color: $pallist[0]"><input type="radio" name="defpal" id="defpal1" value="defcolor1" class="defpal_b" style="background-color: $pallist[0];" title="Default palette" /></span>
+    <span id="defpal_1" class="defpalx" style="background-color: $pallist[0]"><input type="radio" name="defpal" id="defpal1" value="defcolor1" class="defpal_b" style="background-color: $pallist[0];" title="Default palette" /></span>
     <span id="defpal_2" class="defpalx" style="background-color:$pallist[1]"><input type="radio" name="defpal" id="defpal2" value="defcolor2" style="background-color:$pallist[1];" class="defpal_b" title="Default palette" /></span>
     <span id="defpal_3" style="background-color:$pallist[2]" class="defpalx"><input type="radio" name="defpal" id="defpal3" value="defcolor3" style="background-color:$pallist[2];" class="defpal_b" title="Default palette" /></span>
     <span id="defpal_4" style="background-color:$pallist[3]" class="defpalx"><input type="radio" name="defpal" id="defpal4" value="defcolor4" style="background-color:$pallist[3];" class="defpal_b" title="Default palette" /></span>

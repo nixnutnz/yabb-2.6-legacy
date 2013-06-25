@@ -1,12 +1,13 @@
 ###############################################################################
 # ExtendedProfiles.pm                                                         #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -363,8 +364,8 @@ sub ext_has_access {
 
 # applies UBBC code to a string
 sub ext_parse_ubbc {
-    my ( $source, $temp );
-    ( $source, $displayname, $temp ) = ( $_[0], $_[1], $message );
+    my ( $source, $displayname ) = @_;
+    my $temp = $message;
     $message = $source;
     require Sources::YaBBC;
     $displayname = $pusername;    # must be set for /me tag
@@ -399,7 +400,7 @@ sub ext_viewprofile {
         {
             if ( $output eq q{} && $previous != 1 ) {
                 $pre_output = $ext_pre_output;
-                $previous = 1;
+                $previous   = 1;
             }
 
             # format the output dependend of the field type
@@ -624,6 +625,7 @@ sub ext_memberlist_tableheader {
 
 # returns the number of additional fields showed in memberlist
 sub ext_memberlist_get_headercount {
+
 # count the linebreaks to get the number of additional <td>s for the memberlist table
     my ( $headers, $headercount ) = ( shift, 0 );
     $headers =~ s/(\n)/ $headercount++ /egm;
@@ -667,7 +669,7 @@ qq~<a href="$value" onclick="target='_blank';">$value</a>~;
                 }
             }
             if ( $value eq q{} ) { $value .= '&nbsp;'; }
-            $output .= $ext_memberlist_td; 
+            $output .= $ext_memberlist_td;
             $output =~ s/{yabb ext_td_attributs}/$td_attributs/sm;
             $output =~ s/{yabb ext_value}/$value/sm;
             $count++;
@@ -686,7 +688,7 @@ sub ext_gen_editfield {
     ) = ( shift, shift );
 
     LoadLanguage('Profile');
-    if ($action eq 'register') {
+    if ( $action eq 'register' ) {
         get_template('Register');
     }
     else {
@@ -936,7 +938,7 @@ sub ext_editprofile {
 
 # returns the output for the registration page
 sub ext_register {
-    my ( $id, $output, $fieldname, @options, @selected );
+    my ( $id, $output, $fieldname, @options );
 
     foreach my $fieldname (@ext_prof_order) {
         $id = ext_get_field_id($fieldname);

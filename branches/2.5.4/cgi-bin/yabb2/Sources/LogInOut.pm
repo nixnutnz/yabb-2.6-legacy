@@ -1,13 +1,14 @@
 ###############################################################################
 # LogInOut.pm                                                                 #
+# $Date$
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.4                                                  #
-# Packaged:       January 1, 2013                                             #
+# Packaged:       July 1, 2013                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -33,6 +34,7 @@ sub Login {
 //-->
 </script>~;
     $yytitle = $loginout_txt{'34'};
+    $yyjsstyle = 1;    
     template();
     return;
 }
@@ -117,6 +119,7 @@ sub Login2 {
         $ck{'len'} = 'Sunday, 17-Jan-2038 00:00:00 GMT';
     }
     else { $ck{'len'} = q{}; }
+
     #elsif ( $FORM{'cookielength'} == 2 ) { $ck{'len'} = q{}; }
     #else { $ck{'len'} = "+$FORM{'cookielength'}m"; }
     ${ $uid . $username }{'session'} = encode_password($user_ip);
@@ -132,7 +135,8 @@ sub Login2 {
     # "-" to not update 'lastonline' here
     buildIMS( $username, 'load' );    # isn't loaded because was Guest before
     buildIMS( $username, q{} );
-      # rebuild the Members/$username.ims file on login
+
+    # rebuild the Members/$username.ims file on login
     WriteLog();
 
     if ( $FORM{'sredir'} ) {
@@ -170,7 +174,7 @@ sub sharedLogin {
         $yynavigation = qq~&rsaquo; $loginout_txt{'34'}~;
     }
 
-#cookie length is now all or nothing.
+    #cookie length is now all or nothing.
     if ( $sharedLogin_title ne q{} ) {
         $sharedlog = $mysharedloga;
         $sharedlog =~ s/{yabb sharedLogin_title}/$sharedLogin_title/sm;
@@ -229,7 +233,8 @@ $myremindera~;
         $yymain .= $myreminder_vericheck;
         $yymain =~ s/{yabb spam_question}/$spam_question/sm;
         $yymain =~ s/{yabb spam_question_id}/$spam_question_id/sm;
-        $yymain =~ s/{yabb verification_question_desc}/$verification_question_desc/sm;
+        $yymain =~
+          s/{yabb verification_question_desc}/$verification_question_desc/sm;
     }
 
     $yymain .= $myreminder_endform;
@@ -278,6 +283,7 @@ $myremindera~;
 
     $yytitle      = $loginout_txt{'669'};
     $yynavigation = qq~&rsaquo; $loginout_txt{'669'}~;
+    $yyjsstyle = 1;    
     template();
     return;
 }
@@ -293,7 +299,7 @@ sub Reminder2 {
     }
     my $randid = keygen( 8, 'A' );
 
-    if ($regcheck && !$iamadmin) {
+    if ( $regcheck && !$iamadmin ) {
         validation_check( $FORM{'verification'} );
     }
     if ( $spam_questions_send && -e "$langdir/$language/spam.questions" ) {
@@ -358,6 +364,7 @@ sub Reminder2 {
     $yymain =~ s/{yabb forum_user}/$FORM{'user'}/sm;
 
     $yytitle = "$loginout_txt{'669'}";
+    $yyjsstyle = 1;    
     template();
     return;
 }
@@ -417,6 +424,7 @@ sub InMaintenance {
     $sharedLogin_text  = "<b>$maintxt{'156'}</b><br />$maintxt{'157'}";
     $yymain .= sharedLogin();
     $yytitle = "$maintxt{'155'}";
+    $yyjsstyle = 1;    
     template();
     return;
 }
