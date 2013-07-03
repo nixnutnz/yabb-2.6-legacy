@@ -353,7 +353,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
 
     if ($maintenance) {
         $yyadmin_alert .=
-qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{'616'}</b></span><br /><br />~;
+qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{'616a'}</b></span><br /><br />~;
     }
     if ( $iamadmin && $rememberbackup ) {
         if ( $lastbackup && $date > $rememberbackup + $lastbackup ) {
