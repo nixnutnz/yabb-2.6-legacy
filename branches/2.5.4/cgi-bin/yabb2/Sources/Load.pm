@@ -1068,6 +1068,19 @@ sub UpdateCookie {
             -expires => "$expiration"
         );
 
+        my $adminpass = 'adminpass';
+        my $admincookie = "$cookieusername$adminpass";
+        if ( $yyCookies{$admincookie} ) {
+            push @otherCookies,
+              write_cookie(
+                -name    => "$admincookie",
+                -value   => q{},
+                -path    => q{/},
+                -expires => 'Thursday, 01-Jan-1970 00:00:00 GMT'
+              );
+            $yyCookies{$admincookie} = q{};
+        }
+
         foreach my $catid (@categoryorder) {
             if ( !$catid ) { next; }
             my $boardlist = $cat{$catid};

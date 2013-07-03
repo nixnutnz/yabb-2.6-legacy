@@ -1013,7 +1013,7 @@ qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
     $outstring = q~ ~;
     if ( $Scroll_Events == 1 ) {
         $outstring .=
-q~<a name="scroller" id="scroller"></a><marquee behavior='scroll' direction='up' height='130' scrollamount='1' scrolldelay='1' onmouseover='this.stop()' onmouseout='this.start()'>~;
+q~<marquee behavior='scroll' direction='up' height='130' scrollamount='1' scrolldelay='1' onmouseover='this.stop()' onmouseout='this.start()' id="scroller">~;
     }
     elsif ( $Scroll_Events == 2 ) {
         $outstring .= '<div style="overflow:auto;height:150px;">';

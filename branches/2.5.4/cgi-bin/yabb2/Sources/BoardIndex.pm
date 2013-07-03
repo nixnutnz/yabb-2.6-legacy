@@ -1069,7 +1069,8 @@ s/({|<)yabb boardurl(}|>)/$scripturl\?board\=$childbd/gsm;
                         }
                         else {
                             $subdropdown =
-qq~<a href="javascript://" id="subdropa_$curboard" style="font-weight:bold" onclick="SubBoardList('$scripturl?board=$curboard','$curboard','$catid',$sub_count,$alternateboardcolor)"><img src="$imagesdir/$sub_arrow_dn" id="subdropbutton_$curboard" style="position: relative; top: 2px; cursor: pointer;" alt="" />&nbsp;$sub_txt</a>~;
+#qq~<a href="javascript://" id="subdropa_$curboard" style="font-weight:bold" onclick="SubBoardList('$scripturl?board=$curboard','$curboard','$catid',$sub_count,$alternateboardcolor)"><img src="$imagesdir/$sub_arrow_dn" id="subdropbutton_$curboard" style="position: relative; top: 2px; cursor: pointer;" alt="" />&nbsp;$sub_txt</a>~;
+                qq~<img src="$imagesdir/$sub_arrow_dn" onclick="SubBoardList('$scripturl?board=$curboard','$curboard','$catid',$sub_count,$alternateboardcolor)" id="subdropbutton_$curboard" style="position: relative; top: 2px; cursor: pointer;" alt="" />&nbsp;$sub_txt~;
                         }
                     }
                     $tmp_sublist =~
@@ -1161,9 +1162,9 @@ s/({|<)yabb boardurl(}|>)/$scripturl\?board\=$curboard/gsm;
                     $templateblock =~
                       s/({|<)yabb moderators(}|>)/$showmods$showmodgroups/gsm;
                     $templateblock =~
-s/({|<)yabb threadcount(}|>)/${$uid.$curboard}{'threadcount'}/gsm;
+					  s/({|<)yabb threadcount(}|>)/${$uid.$curboard}{'threadcount'}/gsm;
                     $templateblock =~
-s/({|<)yabb messagecount(}|>)/${$uid.$curboard}{'messagecount'}/gsm;
+					  s/({|<)yabb messagecount(}|>)/${$uid.$curboard}{'messagecount'}/gsm;
                     $templateblock =~
                       s/({|<)yabb lastpostlink(}|>)/$lastpostlink/gsm;
                     $templateblock =~
@@ -1761,6 +1762,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
             }
 
             $yynavigation .= qq~$boardtree~;
+            $yyjsstyle = 1;
             template();
         }
         elsif ($subboard_sel) {

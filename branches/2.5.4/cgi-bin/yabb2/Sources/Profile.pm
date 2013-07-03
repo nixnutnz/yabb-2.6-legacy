@@ -511,6 +511,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
                 $enable_MCaway
                 && (   ${ $uid . $user }{'position'} eq 'Administrator'
                     || ${ $uid . $user }{'position'} eq 'Global Moderator'
+                    || ${ $uid . $user }{'position'} eq 'Mid Moderator'
                     || is_moderator($user) )
             )
         )
@@ -693,7 +694,6 @@ qq~                <option value="$line"$checked>$name</option>\n~;
         $my_show_avatar = $myprofile_show_avatar_a;
         $my_show_avatar =~ s/{yabb my_up_avatar_a}/$my_up_avatar_a/sm;
         $my_show_avatar =~ s/{yabb my_up_avatar_b}/$my_up_avatar_b/sm;
-        $my_show_avatar =~ s/{yabb av_pic}/$pic/sm;
         $my_show_avatar =~ s/{yabb av_pic}/$pic/sm;
         $my_show_avatar =~ s/{yabb av_alt}/$alt/sm;
         $my_show_avatar =~ s/{yabb av_s}/$s/gsm;

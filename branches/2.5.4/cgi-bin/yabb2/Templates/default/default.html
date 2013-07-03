@@ -6,29 +6,22 @@
 <title>{yabb title}</title>
 <meta http-equiv="Content-Type" content="text/html; charset={yabb charset}" />
 {yabb style}
-<script type="text/javascript">
-	//force no cache
-	if ((navigator.appVersion.substring(0,1) == "5" && navigator.userAgent.indexOf('Gecko') != -1) || navigator.userAgent.search(/Opera/) != -1) {
-	document.write('<meta http-equiv="pragma" CONTENT="no-cache" />');
-	}
-</script>
 <script type="text/javascript" src="{yabb html_root}/YaBB.js"></script>
 <script type="text/javascript" src="{yabb html_root}/ajax.js"></script>
+<script type="text/javascript" src="{yabb html_root}/cache.js"></script>
 <script type="text/javascript">
 	{yabb javascript}
 	{yabb javascripta}
-<!--
-if (top.location != self.location) {
-top.location = self.location.href
-}
-//-->
+    if (top.location != self.location) {
+        top.location = self.location.href
+    }
 </script>
 	{yabb syntax_js}
 	{yabb grayscript}
 </head>
 <body>
 <div id="ImageAlert" class="center">
-	<a href="javascript://" onclick="HideAlert()"><img style="position: absolute; top: -12px; right: -12px" src="{yabb images}/closebutton.png" alt="" /></a>
+	<img style="position: absolute; top: -12px; right: -12px" src="{yabb images}/closebutton.png" alt="" onclick="HideAlert()" />
 	<iframe id="ImageAlertIFrame" style="display: none; width: 100%; border: 0px">
 		<p>Your browser does not support iframes.</p>
 	</iframe>

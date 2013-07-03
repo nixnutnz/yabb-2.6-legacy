@@ -66,6 +66,7 @@ $errorlngver = 'YaBB 2.5.4 $Revision$';
 'invalid_key'          => "Masterkey is invalid!<br />This should be a text string between 8 and 24 characters long!",
 'wrong_pass' 			=> "Wrong password!",
 'corrupt_member_file'  => "The member data file is corrupt. Please notify the administrator of this error!",
+'no_admin_passwrd'    => "You need to fill in the correct admin password to enter the Admin Center.",
 
 ## BoardIndex ##
 'collapse_no_member'   => "You must be a member to use the collapsible/expandable categories!",

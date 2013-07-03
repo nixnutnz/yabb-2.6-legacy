@@ -22,6 +22,8 @@ $adminsublistpmver = 'YaBB 2.5.4 $Revision$';
 'addmember',"Admin.pm&AddMember",
 'addmember2',"Admin.pm&AddMember2",
 'addsmilies',"Smilies.pm&AddSmilies",
+'admincheck','Admin.pm&AdminCheck',
+'admincheck2','Admin.pm&AdminCheck2',
 'admin_descision',"RegistrationLog.pm&process_registration_review",
 'apr_regentry',"RegistrationLog.pm&approve_registration",
 'assigned',"MemberGroups.pm&Assigned_Members",

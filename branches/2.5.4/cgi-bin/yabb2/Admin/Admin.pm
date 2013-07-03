@@ -1357,4 +1357,72 @@ sub AddMember2 {
     return;
 }
 
+
+sub AdminCheck {
+    $yymain .= $my_admin_login;
+    $formsession = cloak("$mbname$username");
+    if ( $do_scramble_id ) { $user = cloak($username); }
+    else {$user = $username;}
+
+    my $adminpass = 'adminpass';
+    my $cookiename = "$cookieusername$adminpass";
+    if ($yyCookies{$cookiename} ) {
+        if ( $INFO{'action2'} ) {
+            $my_action = qq~action=$INFO{'action2'};~;
+        }
+        if ( $INFO{'page'} ) {
+            $my_page = qq~page=$INFO{'page'};~;
+        }
+        if ($my_action || $my_page ) { $my_query = q{?}; }
+        $yySetLocation = qq~$adminurl$my_query$my_action$my_page~;
+        redirectexit();
+    }
+    else {
+        $yymain =~
+s/{yabb adminchk}/$adminurl?action=admincheck2;username=$user/sm;
+        if ( $INFO{'action2'} ) {
+            $yymain =~ s/{yabb act}/$INFO{'action2'}/sm;
+        }
+        if ( $INFO{'page'} ) {
+            $yymain =~ s/{yabb page}/$INFO{'page'}/sm;
+        }
+
+        $yynavigation = qq~&rsaquo; $admin_txt{'900'}~;
+        $yytitle      = $admin_txt{'900'};
+        $yyuname = qq~${$uid.$username}{'realname'}~;
+        $yyjsstyle = 1;    
+        template();
+    }
+    return;
+}
+
+sub AdminCheck2 {
+
+    my $password = encode_password( $FORM{'passwrd'} || $INFO{'passwrd'} );
+
+    if ( $FORM{'action'} ) { $my_action = qq~action=$FORM{'action'};~; }
+    if ( $FORM{'page'} ) { $my_page = qq~page=$FORM{'page'};~; }
+    if ($my_action || $my_page ) { $my_query = q{?}; }
+    
+    if ( $do_scramble_id ) { $username = decloak($username); }
+    if ( ( $iamadmin || $iamgmod ) && $password ne ${ $uid . $username }{'password'} )
+    {
+        fatal_error('no_admin_passwrd');
+    }
+    
+    my $adminpass = 'adminpass';
+    my $cookiename = "$cookieusername$adminpass";
+    push @otherCookies,
+      write_cookie(
+        -name    => "$cookiename",
+        -value   => 'on',
+        -path    => q{/},
+        -expires => '0'
+      );
+    
+    $yySetLocation = qq~$adminurl$my_query$my_action$my_page~;
+    redirectexit();
+    return;
+}
+
 1;

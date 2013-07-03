@@ -108,14 +108,20 @@ qq~<li><span |><a href="$scripturl?action=birthdaylist" title = "$img_txt{'birth
 qq~<li><span |><a href="$scripturl?action=ml" title = "$img_txt{'331'}">$img_txt{'331'}</a></span></li>~;
     }
     if ($iamadmin) {
+        if ($do_scramble_id) { $user = cloak($username); }
+        else { $user = $username;}
+
         $tab{'admin'} =
-qq~<li><span |><a href="$boardurl/AdminIndex.$yyaext" title = "$img_txt{'2'}">$img_txt{'2'}</a></span></li>~;
+qq~<li><span |><a href="$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" title = "$img_txt{'2'}">$img_txt{'2'}</a></span></li>~;
+#qq~<li><span |><a href="$boardurl/AdminIndex.$yyaext" title = "$img_txt{'2'}">$img_txt{'2'}</a></span></li>~;
     }
     if ($iamgmod) {
         get_gmod();
         if ($allow_gmod_admin) {
+            if ($do_scramble_id) { $user = cloak($username); }
+            else { $user = $username;}
             $tab{'admin'} =
-qq~<li><span |><a href="$boardurl/AdminIndex.$yyaext" title = "$img_txt{'2'}">$img_txt{'2'}</a></span></li>~;
+qq~<li><span |><a href="$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" title = "$img_txt{'2'}">$img_txt{'2'}</a></span></li>~;
         }
     }
     if ( $sessionvalid == 0 && !$iamguest ) {

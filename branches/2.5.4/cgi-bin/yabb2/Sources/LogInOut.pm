@@ -115,13 +115,11 @@ sub Login2 {
     }
     banning();
 
-    if ( $FORM{'cookielength'} ) {
+    if ( $FORM{'cookielength'} == 1 ) {
         $ck{'len'} = 'Sunday, 17-Jan-2038 00:00:00 GMT';
     }
     else { $ck{'len'} = q{}; }
 
-    #elsif ( $FORM{'cookielength'} == 2 ) { $ck{'len'} = q{}; }
-    #else { $ck{'len'} = "+$FORM{'cookielength'}m"; }
     ${ $uid . $username }{'session'} = encode_password($user_ip);
     UpdateCookie(
         'write', $username,

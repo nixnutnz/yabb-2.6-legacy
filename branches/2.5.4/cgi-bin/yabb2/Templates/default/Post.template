@@ -530,7 +530,6 @@ $mypost_liveprev = qq~
         <col style="width:auto" />
         <tr class="{yabb css}">
             <td class="vtop post-userinfo" rowspan="4">
-                <a id="{yabb count}"></a>
                 {yabb userlink}
                 <div class="small">
                     {yabb memberinfo}

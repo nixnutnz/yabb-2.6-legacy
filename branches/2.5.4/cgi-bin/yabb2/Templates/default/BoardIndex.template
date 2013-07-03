@@ -251,8 +251,8 @@ $nopost_boardblock = qq~<tr>
 {yabb expandmessages}
 ~;
 
-$subboard_links = qq~{yabb new} <a href="{yabb boardurl}">{yabb boardname}</a>{yabb sub_lock}~;
-$subboard_links_ext = qq~<img src="$imagesdir/$sub_extern" alt="" /><a href="{yabb boardurl}" target="_blank">{yabb boardname}</a>~;
+$subboard_links = qq~<span style="white-space:nowrap">{yabb new} <a href="{yabb boardurl}">{yabb boardname}</a>{yabb sub_lock}</span>~;
+$subboard_links_ext = qq~<span style="white-space:nowrap"><img src="$imagesdir/$sub_extern" alt="" /><a href="{yabb boardurl}" target="_blank">{yabb boardname}</a></span>~;
 $subboard_list = qq~<b>{yabb subdropdown}:</b> {yabb subboardlinks}~;
 
 # Category footer                          #

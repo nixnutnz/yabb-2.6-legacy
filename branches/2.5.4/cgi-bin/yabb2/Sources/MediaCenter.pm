@@ -344,25 +344,21 @@ $embed_wma10 = q~
     </object>~;
 
 $embed_ra = q~
-    <object id='rvocx' classid='CLSID:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA' width="320" height="_height_">
+    <object id='rvocx' width="320" height="_height_">
+        <param name="classid" value="CLSID:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA" />
         <param name='src' value="_media_" />
         <param name='autostart' value="_autostart_" />
-        <param name='controls' value='imagewindow' />
-        <param name='console' value='video' />
-        <param name='loop' value="_loop_" />
-        <embed src="_media_" width="_width_" height="_height_" loop="true" type='audio/x-pn-realaudio-plugin' controls='imagewindow' console='video' autostart="_autostart_" />
+        <param name="controls" value="imagewindow" />
+        <param name="console" value="video" />
+        <param name="loop" value="_loop_" />
+        <embed src="_media_" width="_width_" height="_height_" loop="true" type="audio/x-pn-realaudio-plugin" controls="imagewindow" console="video" autostart="_autostart_" />
     </object>
-    <br />
-    <object id='rvocx' classid='CLSID:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA' width="320" height='30'>
-        <param name='src' value="_media_" />
-        <param name='autostart' value="_autostart_" />
-        <param name='controls' value='ControlPanel' />
-        <param name='console' value='video' />
-        <embed src="_media_" width="_width_" height='30' controls='ControlPanel' type='audio/x-pn-realaudio-plugin' console='video' autostart="_autostart_" />
-    </object>~;
+~;
 
 $embed_qt = q~
-    <object classid='CLSID:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B' width="_width_" height="_height_" codebase='http://www.apple.com/qtactivex/qtplugin.cab'>
+    <object width="_width_" height="_height_">
+        <param name="codebase" value="http://www.apple.com/qtactivex/qtplugin.cab" />
+        <param name="classid" value="CLSID:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" />
         <param name='src' value="_media_" />
         <param name='autoplay' value="_autostart_" />
         <param name='controller' value="_controls_" />
@@ -373,11 +369,13 @@ $embed_qt = q~
 ~;
 
 $embed_flash = q~
-    <object classid="CLSID:D27CDB6E-AE6D-11cf-96B8-444553540000" width="_width_" height="_height_" codebase="http://active.macromedia.com/flash7/cabs/swflash.cab#version=9,0,0,0">
+    <object width="_width_" height="_height_" type="video/flash">
+        <param name="codebase" value="http://active.macromedia.com/flash7/cabs/swflash.cab#version=9,0,0,0" />
+        <param name="classid" value="CLSID:D27CDB6E-AE6D-11cf-96B8-444553540000" />
         <param name="movie" value="_media_" />
         <param name="loop" value="_loop_" />
         <param name="quality" value="high" />
-        <param name='bgcolor' value="#FFFFFF" />
+        <param name="bgcolor" value="#FFFFFF" />
         <embed src="_media_" width="_width_" height="_height_" loop="_loop_" bgcolor="#FFFFFF" quality="high" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" />
     </object>
 ~;

@@ -31,7 +31,7 @@ sub MakeSmileys {
     $message =~
 s/(\W|^)\[smil(ie|ey)=(\S+?\.(gif|jpg|png|bmp))\]/$1<img class="smil" rel="\[smil$2=$3\]" src="$smiliesurl\/$3" alt="$post_txt{'287'}" title="$post_txt{'287'}" \/>/igsm;
     $message =~
-s/(\W|^);-?\)/$1<img class="smil" rel=";&#45;&#41;" src="$imagesdir\/wink.gif" rel=";&#45;&#41;" alt="$post_txt{'292'}" title="$post_txt{'292'}" \/>/gsm;
+s/(\W|^);-?\)/$1<img class="smil" src="$imagesdir\/wink.gif" rel=";&#45;&#41;" alt="$post_txt{'292'}" title="$post_txt{'292'}" \/>/gsm;
     $message =~
 s/(\W|^);D/$1<img class="smil" rel=";D" src="$imagesdir\/grin.gif" alt="$post_txt{'293'}" title="$post_txt{'293'}" \/>/gsm;
     $message =~
