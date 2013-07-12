@@ -1552,6 +1552,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
     $outside_threadtools =~ s/({|<)yabb print(}|>)/$template_print/gsm;
     if ( !$threadtools ) {
         $threadhandellist    = $outside_threadtools . $threadhandellist;
+        $threadhandellist2   = $outside_threadtools . $threadhandellist2;
         $outside_threadtools = q{};
     }
     else {
@@ -1782,12 +1783,12 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
     print qq~Content-type: text/html\n\n~ or croak 'cannot print page content';
     print
 qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" style="overflow-x:hidden;overflow-y:hidden">
 <head>
 <title>Google Talk</title>
 $gtalkstyle
 </head>
-<body class="windowbg2" style="margin: 0px; padding: 0px;">
+<body class="windowbg2" style="margin: 0px; padding: 0px; overflow-x:hidden;overflow-y:hidden">
 <table class="bordercolor pad_4px cs_thin">
     <tr>
         <td class="titlebg h_22px">

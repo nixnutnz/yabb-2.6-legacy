@@ -34,7 +34,7 @@ sub Login {
 //-->
 </script>~;
     $yytitle = $loginout_txt{'34'};
-    $yyjsstyle = 1;    
+    #$yyjsstyle = 1;    
     template();
     return;
 }
@@ -281,7 +281,7 @@ $myremindera~;
 
     $yytitle      = $loginout_txt{'669'};
     $yynavigation = qq~&rsaquo; $loginout_txt{'669'}~;
-    $yyjsstyle = 1;    
+    #$yyjsstyle = 1;    
     template();
     return;
 }
@@ -362,7 +362,7 @@ sub Reminder2 {
     $yymain =~ s/{yabb forum_user}/$FORM{'user'}/sm;
 
     $yytitle = "$loginout_txt{'669'}";
-    $yyjsstyle = 1;    
+    #$yyjsstyle = 1;    
     template();
     return;
 }
@@ -422,7 +422,7 @@ sub InMaintenance {
     $sharedLogin_text  = "<b>$maintxt{'156'}</b><br />$maintxt{'157'}";
     $yymain .= sharedLogin();
     $yytitle = "$maintxt{'155'}";
-    $yyjsstyle = 1;    
+    #$yyjsstyle = 1;    
     template();
     return;
 }

@@ -180,7 +180,7 @@ sub adminlogin2 {
 
     if ( -e "$memberdir/$username.vars" ) {
         $Group{'Administrator'} =
-          'YaBB Administrator|5|staradmin.png|red|0|0|0|0|0|0';
+          'Administrator|5|staradmin.png|red|0|0|0|0|0|0';
         LoadUser($username);
         my $spass = ${ $uid . $username }{'password'};
         $cryptpass = encode_password( $FORM{'password'} );
@@ -1471,7 +1471,7 @@ sub SetInstall2 {
 
 ########## MemberGroups ##########
 
-\$Group{'Administrator'} = "YaBB Administrator|5|staradmin.png|red|0|0|0|0|0|0";
+\$Group{'Administrator'} = "Administrator|5|staradmin.png|red|0|0|0|0|0|0";
 \$Group{'Global Moderator'} = "Global Moderator|5|stargmod.png|blue|0|0|0|0|0|0";
 \$Group{'Mid Moderator'} = "Forum Moderator|5|starymod.png|teal|0|0|0|0|0|0";
 \$Group{'Moderator'} = "Board Moderator|5|starmod.png|green|0|0|0|0|0|0";

@@ -210,7 +210,7 @@ $mycalout_addevent = qq~
             <input type="checkbox" name="ns" id="ns" value="NS"{yabb nscheck} onchange="autoPreview()" /> <span class="small"> $post_txt{'277'}</span>
         </td>
     </tr><tr>
-        <td class="windowbg2 center" style="padding: 1em 0; border-top:1px solid #fff" colspan="2">{yabb mycalout_send}~;
+        <td class="windowbg center" style="padding: 1em 0; border-top:1px solid #fff" colspan="2">{yabb mycalout_send}~;
 
 $mycal_guest_fields = qq~<tr>
         <td class="windowbg">
@@ -230,24 +230,24 @@ $mycal_guest_fields = qq~<tr>
 
 $mycal_validation = qq~
     <tr>
-        <td class="windowbg2 vtop"><span class="small"><label for="verification"><b>$floodtxt{'1'}:</b></label></span></td>
-        <td class="windowbg2 vtop">{yabb showcheck}<br /><span class="small">{yabb flood_text}</span></td>
+        <td class="windowbg vtop"><span class="small"><label for="verification"><b>$floodtxt{'1'}:</b></label></span></td>
+        <td class="windowbg vtop">{yabb showcheck}<br /><span class="small">{yabb flood_text}</span></td>
     </tr><tr>
-        <td class="windowbg2"><span class="small"><label for="verification"><b>$floodtxt{'3'}:</b></label></span></td>
-        <td class="windowbg2">
+        <td class="windowbg"><span class="small"><label for="verification"><b>$floodtxt{'3'}:</b></label></span></td>
+        <td class="windowbg">
             <input type="text" maxlength="30" name="verification" id="verification" size="30" onchange="autoPreview()" />
         </td>
     </tr>~;
 
 $mycal_spamquest= qq~
     <tr>
-        <td class="windowbg2 vtop">
+        <td class="windowbg vtop">
             <span class="small">
                 <label for="verification_question"><b>{yabb spam_question}</b>
                 <br />$var_cal{'verification_question_desc'} {yabb verification_question_desc}</label>
             </span>
         </td>
-        <td class="windowbg2">
+        <td class="windowbg">
             <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" onchange="autoPreview()" />
             <input type="hidden" name="verification_question_id" value="{yabb spam_question_id}" />               
         </td>
@@ -339,25 +339,25 @@ $mycal_greet_rowend = q~</td>
 $my_outstring = q~<table style="width:90%; margin-left:0">~;
 
 $mycal_outstring_bday = qq~<tr>
-        <td class="vtop">
-            <span class="small">{yabb my_cal_icon} {yabb cdate} <b>$var_cal{'calbirthday'}</b>
-            <br /> {yabb eventbduserlink} {yabb greet}</span>
+        <td class="vtop small">
+            {yabb my_cal_icon} {yabb cdate} <b>$var_cal{'calbirthday'}</b>
+            <br /> {yabb eventbduserlink} {yabb greet}
             <hr class="hr2" />
         </td>
     </tr>~;
 
 $mycal_outstring_private = qq~<tr>
-        <td class="vtop">
-            <span class="small">{yabb my_cal_icon} {yabb my_cal_icon_ev} {yabb cdate} <b>{yabb icon_text}</b> {yabb eventuserlink}
-            <br />{yabb cevent}</span>
+        <td class="vtop small">
+            {yabb my_cal_icon} {yabb my_cal_icon_ev} {yabb cdate} <b>{yabb icon_text}</b> {yabb eventuserlink}
+            <br />{yabb cevent}
             <hr class="hr2" />
         </td>
     </tr>~;
 
 $mycal_outstring = qq~<tr>
-        <td class="vtop">
-            <span class="small">{yabb my_cal_icon_ev} {yabb cdate} <b>{yabb icon_text}</b> {yabb eventuserlink}
-                <br />{yabb cevent}</span>
+        <td class="vtop small">
+            {yabb my_cal_icon_ev} {yabb cdate} <b>{yabb icon_text}</b> {yabb eventuserlink}
+                <br />{yabb cevent}
             <hr class="hr2" />
         </td>
     </tr>~;

@@ -131,6 +131,8 @@ sub Post {
     if ( $FORM{'title'} eq 'PostReply' ) { $postthread = 2; }
     if ( $pollthread == 2 && $useraddpoll == 0 ) { fatal_error('no_access'); }
 
+    if ($iamguest ) { $guestpost_col = q~ colspan="2"~; }
+
     $guestpost_fields =
         $iamguest
       ? $mypost_guest_fields
@@ -602,7 +604,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
         document.images.icons.src = icon_show;
     }~;
     }
-
+    ToHTML($moddate);
     $my_topper = qq~
 </script>
 <input type="hidden" name="threadid" value="$threadid" />
@@ -842,6 +844,7 @@ q~<hr class="hr" style="margin: 0; margin-top: 5px; margin-bottom: 5px; padding:
         $livemsgimg = qq~<img src="$micon_bg{$icon}" id="liveicons" alt="" />~;
         get_template('Post');
 
+        FromHTML($moddate);
         $messageblock = $mypost_liveprev;
         $messageblock =~ s/({|<)yabb images(}|>)/$imagesdir/gsm;
         $messageblock =~ s/({|<)yabb css(}|>)/$css/gsm;
@@ -1216,6 +1219,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         $my_postsection =~ s/{yabb my_t_status}/$my_t_status/sm;
         $my_postsection =~ s/{yabb extra}/$extra/sm;
         $my_postsection =~ s/{yabb name_field}/$guestpost_fields/sm;
+        $my_postsection =~ s/{yabb guestcol}/$guestpost_col/sm;
         $my_postsection =~ s/{yabb email_field}/$email_field/sm;
         $my_postsection =~ s/{yabb verification_field}/$verification_field/sm;
         $my_postsection =~

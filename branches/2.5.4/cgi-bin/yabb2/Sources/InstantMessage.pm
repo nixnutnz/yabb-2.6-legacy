@@ -153,7 +153,7 @@ sub buildIMsend {
         if ( !$sendBMess ) { LoadUser( $INFO{'to'} ); }
     }
 
-    $message =~ s/<br.*?>/\n/gism;
+    $message =~ s/<br.*?>/\n/igsm;
     $message =~ s/&nbsp;/ /gsm;
     ToChars($message);
     $message = Censor($message);
@@ -968,7 +968,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     $subject =~ s/^\s+|\s+$//gsm;
 
     $message = $FORM{'message'};
-    $message =~ s/^\s+|\s+$//gsm;
+    $message =~ s/^\s+|\s+$//g;
 
     # no subject/no message are bad!
     if ( !$subject ) { $error = $error_txt{'no_subject'}; }

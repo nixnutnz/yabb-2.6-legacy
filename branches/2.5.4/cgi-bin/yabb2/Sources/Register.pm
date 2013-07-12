@@ -482,7 +482,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
 //-->
 </script>
     ~;
-    $yyjsstyle = 1;    
+    #$yyjsstyle = 1;    
     template();
     return;
 }

@@ -657,6 +657,21 @@ sub update_htaccess {
         }
     }
     if ( $use_htaccess && ( $action eq 'add' || $action eq 'remove' ) ) {
+        my %seen   = ();
+        my @allban = ();
+    
+       *ban_dupcheck = sub {
+            my @in = @_;
+            foreach my $item (@in) { $seen{$item} = 1 }
+
+            foreach my $item (@denies) {
+                if ( !$seen{$item} ) {
+                    push @allban, $item;
+                }
+            }
+        };
+        ban_dupcheck(@denies);
+
         fopen( HTA, '>.htaccess' );
         print {HTA} '# Last modified by The Guardian: '
           . timeformat( $date, 1 )
@@ -665,7 +680,7 @@ sub update_htaccess {
         print {HTA} @htout or croak 'cannot print to HTA';
         if ($value) {
             print {HTA} "\n$htheader\n" or croak 'cannot print to HTA';
-            foreach (@denies) {
+            foreach (@allban) {
                 if ( $_ ne $value ) {
                     print {HTA} "Deny from $_\n"
                       or croak 'cannot print to HTA';

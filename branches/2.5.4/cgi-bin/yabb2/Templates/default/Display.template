@@ -27,6 +27,8 @@ $disp_arrow_up = 'arrow_up.gif';
 $disp_gtalk2 ='gtalk2.gif';
 $admin_move = 'admin_move_split_splice.png';
 $top_arrow = 'back_to_top.png';
+$my_blank_avatar = 'blank.gif';
+$nn_avatar = 'nn.gif';
 
 $outside_threadtools = qq~{yabb reply}~;
 $outside_ttsep = qq~~;

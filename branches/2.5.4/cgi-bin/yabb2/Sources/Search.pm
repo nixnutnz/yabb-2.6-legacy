@@ -292,7 +292,6 @@ qq~<input type="checkbox" name="search_ip" id="search_ip" value="on" /><label fo
 
     $yytitle      = $search_txt{'183'};
     $yynavigation = qq~&rsaquo; $search_txt{'182'}~;
-    $yyjsstyle = 1;    
     template();
     return;
 }
@@ -563,8 +562,23 @@ sub plushSearch2 {
                 ## Search for IP Address start
                 if ( $search_ip && !$msgfound && !$subfound ) {
                     $ipfound = 0;
-                    if ( $mip =~ /\b$search_ip/sm ) {
-                        $ipfound = '1';
+                    @mip = split / /sm, $mip;
+                    $mip = q~~;
+                    $mip_class = q~~;
+                    foreach (@mip) {
+                        if ( $_ =~ /\b$search_ip/sm ) {
+                            $ipfound = 1;
+                        }
+                        if ($ipLookup) {
+                            if ( $_ =~ /\b$search_ip/sm ) {
+                                $mip_class = ' highlight';
+                            }
+                            $mip .=
+qq~<a href="$scripturl?action=iplookup;ip=$_"><span class="small$mip_class">$_</span></a> ~;
+                        }
+          		else {
+                            $mip .= qq~<span class="small$mip_class">$_</span> ~;
+                        }
                     }
                 }
                 ## Search for IP Address end
@@ -625,7 +639,7 @@ qq~<hr class="hr" /><b>$search_txt{'170'}<br /><a href="javascript:history.go(-1
         $message = Censor($message);
         $msub    = Censor($msub);
 
-        Highlight( \$msub, \$message, \$mip, \@search, $case );
+        Highlight( \$msub, \$message, \@search, $case );
 
         ToChars( $catname{$board} );
         ToChars( $boardname{$board} );
@@ -1062,7 +1076,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$format_
 }
 
 sub Highlight {
-    my ( $msub, $message, $mip, $search, $case ) = @_;
+    my ( $msub, $message, $search, $case ) = @_;
     my $i = 0;
     my @HTMLtags;
     my $HTMLtag = 'HTML';
@@ -1075,61 +1089,22 @@ sub Highlight {
     foreach my $tmp ( @{$search} ) {
         if ($case) {
             if ( $searchtype == 4 ) {
-                ${$msub} =~ s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gsm;
-                ${$message} =~
-                  s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gsm;
-                if ($ipLookup) {
-                    ${$mip} =~
-s/(\Q$tmp\E)/<span class="highlight"><a href="$scripturl?action=iplookup;ip=$1"><span class="small">$1<\/span><\/a><\/span>/gsm;
-                }
-                else {
-                    ${$mip} =~
-                      s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gsm;
-                }
+                ${$msub}    =~ s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gsm;
+                ${$message} =~ s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gsm;
             }
             else {
-                ${$msub} =~
-s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/gsm;
-                ${$message} =~
-s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/gsm;
-                if ($ipLookup) {
-                    ${$mip} =~
-s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight"><a href="$scripturl?action=iplookup;ip=$2"><span class="small">$2<\/span><\/a><\/span>$3/gsm;
-                }
-                else {
-                    ${$mip} =~
-s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/gsm;
-                }
+                ${$msub}    =~ s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/gsm;
+                ${$message} =~ s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/gsm;
             }
         }
         else {
             if ( $searchtype == 4 ) {
-                ${$msub} =~
-                  s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/igsm;
-                ${$message} =~
-                  s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/igsm;
-                if ($ipLookup) {
-                    ${$mip} =~
-s/(\Q$tmp\E)/<span class="highlight"><a href="$scripturl?action=iplookup;ip=$1"><span class="small">$1<\/span><\/a><\/span>/gsm;
-                }
-                else {
-                    ${$mip} =~
-                      s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gsm;
-                }
+                ${$msub}    =~ s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/igsm;
+                ${$message} =~ s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/igsm;
             }
             else {
-                ${$msub} =~
-s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/igsm;
-                ${$message} =~
-s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/igsm;
-                if ($ipLookup) {
-                    ${$mip} =~
-s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight"><a href="$scripturl?action=iplookup;ip=$2"><span class="small">$2<\/span><\/a><\/span>$3/igsm;
-                }
-                else {
-                    ${$mip} =~
-s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/igsm;
-                }
+                ${$msub}    =~ s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/igsm;
+                ${$message} =~ s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/igsm;
             }
         }
     }

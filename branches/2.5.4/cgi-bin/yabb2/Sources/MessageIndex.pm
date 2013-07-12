@@ -140,16 +140,6 @@ sub MessageIndex {
       || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     @threadlist = <BRDTXT>;
     fclose(BRDTXT);
-    *starter = sub {
-        @x = @_;
-        if ( exists $user_info{ $x[0] } ) { return $user_info{ $x[0] }; }
-        if ( !exists $memberinf{ $x[0] } ) {
-            return lc( ( split /\|/xsm, $x[1], 4 )[2] );
-        }
-        $user_info{ $x[0] } =
-          lc( ( split /\|/xsm, $memberinf{ $x[0] }, 2 )[0] );
-        return;
-    };
     $sort_subject =
 qq~<a href="$scripturl?board=$currentboard;tsort=3" rel="nofollow">$messageindex_txt{'70'}</a>~;
     $sort_starter =
@@ -159,8 +149,15 @@ qq~<a href="$scripturl?board=$currentboard;tsort=7" rel="nofollow">$messageindex
     $sort_lastpostim =
 qq~<a href="$scripturl?board=$currentboard;tsort=0" rel="nofollow">$messageindex_txt{'22'}</a>~;
     get_micon();
+
     my %starter;
     @temp_list = @threadlist;
+
+	*starter = sub {
+		if ( exists $user_info{$_[0]} )  { return $user_info{$_[0]};}
+		if ( !exists $memberinf{$_[0]} ) { return lc((split /\|/xsm, $_[1], 4)[2]);}
+ 		$user_info{$_[0]} = lc((split /\|/xsm, $memberinf{$_[0]}, 2)[0]);
+	};
 
     if ( $tsort == 1 ) {
         $sort_lastpostim =
@@ -1642,7 +1639,7 @@ qq~\nvar markallreadlang = '$messageindex_txt{'500'}';\nvar markfinishedlang = '
     if ( !$rss_disabled && $INFO{'board'} )
     {    # Check to see if we're on a real board, not announcements
         $yyinlinestyle .=
-qq~<link rel="alternate" type="application/rss+xml" title="$messageindex_txt{'843'}" href="$scripturl?action=RSSboard;board=$INFO{'board'}" />\n~;
+qq~    <link rel="alternate" type="application/rss+xml" title="$messageindex_txt{'843'}" href="$scripturl?action=RSSboard;board=$INFO{'board'}" />~;
     }
 
     if ( !$messagelist ) {
@@ -1660,7 +1657,7 @@ s/(<!-- Icon and access info end -->)/$1\n<div style="text-align: right; padding
             $Quick_Post    = 1;
             Post();
         }
-        $yyjsstyle = 1;    
+        #$yyjsstyle = 1;    
         template();
     }
     else {

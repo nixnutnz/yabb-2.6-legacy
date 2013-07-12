@@ -123,12 +123,12 @@ sub SetImage {
         $button_imgurl = qq~$yyhtml_root/Templates/Forum/default~;
     }
     if   ( $key eq 'help' ) { $helpstyle = q~ cursor: help;~; }
-    else                    { $helpstyle = q~ cursor: pointer;~; }
+    else                    { $helpstyle = q~~; }
     if ( $UseMenuT == 0 ) {
         $menusep = q{ };
         if ( $img_name eq 'gtalk' ) {
             $img_out =
-qq~<img src="$button_imgurl/$button_icon.$imgext" style="cursor: pointer" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false" alt="$thegtalkname" title="$thegtalkname" />~;
+qq~<img src="$button_imgurl/$button_icon.$imgext" class="cursor" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=0,toolbar=0,scrollbars=0,resizable=1'); return false" alt="$thegtalkname" title="$thegtalkname" />~;
         }
         else {
             $img_out =
@@ -139,7 +139,7 @@ qq~<img src="$button_imgurl/$button_icon.$imgext" alt="${$alt_text}{$alt_num}" /
         $menusep = q{ };
         if ( $img_name eq 'gtalk' ) {
             $img_out =
-qq~<span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false">${$button_text}{$text_num}</span>~;
+qq~<span style="white-space: nowrap;" class="$span_class cursor" title="${$alt_text}{$alt_num}" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=0,toolbar=0,scrollbars=0,resizable=1'); return false">${$button_text}{$text_num}</span>~;
         }
         else {
             $img_out =
@@ -159,7 +159,7 @@ qq~<img src='$yyhtml_root/Templates/Forum/default/buttonsep.png' class='cssbutto
               qq~<span class="buttonleft cssbutton2" style="$helpstyle">~;
             $img_out .= q~<span class="buttonright cssbutton3">~;
             $img_out .=
-qq~<span class="buttonimage cssbutton4" style="background-image: url($button_imgurl/$button_icon.$imgext);" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false" title="${$button_text}{$alt_num}">~;
+qq~<span class="buttonimage cssbutton4 cursor" style="background-image: url($button_imgurl/$button_icon.$imgext);" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=0,toolbar=0,scrollbars=0,resizable=1'); return false" title="${$button_text}{$alt_num}">~;
             $img_out .=
 qq~<span class="buttontext cssbutton5">${$button_text}{$text_num}</span></span></span></span>~;
         }

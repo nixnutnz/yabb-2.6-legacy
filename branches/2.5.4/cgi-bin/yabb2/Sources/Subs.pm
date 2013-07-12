@@ -165,11 +165,11 @@ sub print_HTML_output_and_finish {
             require Compress::Zlib;
             binmode STDOUT;
             print Compress::Zlib::memGzip($output)
-              or croak 'cannot print output';
+              or croak 'cannot print ZLib';
         }
     }
     else {
-        print $output or croak 'cannot print output';
+        print $output; # or croak 'cannot print output';
     }
     exit;
 }
@@ -255,16 +255,9 @@ sub template {
     $yytitle         = "$mbname - $yytitle";
     $yyimages        = $imagesdir;
     $yydefaultimages = $defaultimagesdir;
-
-
-   # This is for the Help Center and anywhere else that wants to add inline CSS.
     
-    if ( $yyjsstyle == 1) {
-        $yysyntax_js = q{}; 
-        $yyjsstyle = q{};
-        $yyhigh = q{};
-    }
-    else {
+    if ( $INFO{'num'} || $action eq 'post' || $action eq 'modify' || $action eq 'preview' || $action eq 'search2' || $action eq 'imshow'|| $action eq 'imsend' || $action eq 'myviewprofile' || $action eq 'eventcal' || $action eq 'help' || $action eq 'recenttopics' || $action eq 'recent' )
+    { 
         $yysyntax_js = qq~
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_main.js"></script>
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_cpp.js"></script>
@@ -276,7 +269,6 @@ sub template {
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_perl.js"></script>
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_php.js"></script>
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_sql.js"></script>
-<script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
 ~;
         $yyjsstyle = qq~<link rel="stylesheet" href="$yyhtml_root/shjs/styles/sh_style.css" type="text/css" />\n~;
         $yyhigh = q~<script type="text/javascript">
@@ -319,8 +311,11 @@ qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp;
 
     if ( $iamadmin || $iamgmod ) {
         if ($maintenance) {
+            if ( $do_scramble_id ) { $user = cloak($username); }
+            else {$user = $username;}
             $yyadmin_alert .=
               qq~<br /><span class="highlight"><b>$load_txt{'616'}</b></span>~;
+            $yyadmin_alert =~ s/USER/$user/sm;
         }
         if ( $iamadmin && $rememberbackup ) {
             if ( $lastbackup && $date > $rememberbackup + $lastbackup ) {
@@ -968,7 +963,7 @@ qq~<br />$maintxt{'error_location'}: $filename<br />$maintxt{'error_line'}: $lin
     $yymain =~ s/{yabb errormessage}/$errormessage/sm;
     $yytitle = "$maintxt{'error_description'}";
 
-    if ($adminscreen) {
+    if ( $adminscreen && $action ne 'admincheck2' ) {
         AdminTemplate();
     }
     else {
@@ -2518,7 +2513,7 @@ sub ManageMemberlist {
         || $todo eq 'add' )
     {
         fopen( MEMBLIST, "$memberdir/memberlist.txt" );
-        %memberlist = map { /(.*)\t(.*)/sm } <MEMBLIST>;
+        %memberlist = map { /(.*)\t(.*)/m } <MEMBLIST>;
         fclose(MEMBLIST);
     }
     if ( $todo eq 'add' ) {

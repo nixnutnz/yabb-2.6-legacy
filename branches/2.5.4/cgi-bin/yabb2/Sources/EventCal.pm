@@ -1218,15 +1218,15 @@ qq~<br /><b>$var_cal{'by'}</b> $eventuserlink<hr class="hr" />~;
                           qq~$var_cal{'calis'} $cevent $var_cal{'calold'}~;
                     }
                     $outstring .=
-qq~<div><span class="small">$cal_icon{'eventbd'} $cdate <b>$var_cal{'calbirthday'}</b><br /> $eventbduserlink $greet</span><hr class="hr2" /></div>~;
+qq~<div class="small">$cal_icon{'eventbd'} $cdate <b>$var_cal{'calbirthday'}</b><br /> $eventbduserlink $greet<hr class="hr2" /></div>~;
                 }
                 elsif ( $ctype == 2 ) {
                     $outstring .=
-qq~<div><span class="small">$cal_icon{'eventprivate'} $cal_icon{$cicon} $cdate <b>$icon_text</b> $eventuserlink$cevent</span><hr class="hr2" /></div>~;
+qq~<div class="small">$cal_icon{'eventprivate'} $cal_icon{$cicon} $cdate <b>$icon_text</b> $eventuserlink$cevent<hr class="hr2" /></div>~;
                 }
                 else {
                     $outstring .=
-qq~<div><span class="small">$cal_icon{$cicon} $cdate <b>$icon_text</b> $eventuserlink$cevent</span><hr class="hr2" /></div>~;
+qq~<div class="small">$cal_icon{$cicon} $cdate <b>$icon_text</b> $eventuserlink$cevent<hr class="hr2" /></div>~;
                 }
             }
             else {

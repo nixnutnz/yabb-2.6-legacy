@@ -1,23 +1,23 @@
 #-------------------------------------------------------------------#
-# LivePreview.lng						    #
+# LivePreview.lng                                                   #
 #-------------------------------------------------------------------#
-# Ajax Live Preview 4 YaBB252					    #
-# Version 0.3.7 beta						    #
-# by Carsten Dalgaard						    #
+# Ajax Live Preview 4 YaBB252                                       #
+# Version 0.3.7 beta                                                #
+# by Carsten Dalgaard                                               #
 #-------------------------------------------------------------------#
-# Copyright: 2013 'Carsten Dalgaard' - All Rights Reserved	    #
-# Released: May 11, 2013					    #
-# e-mail: post@carsten-dalgaard.dk				    #
+# Copyright: 2013 'Carsten Dalgaard' - All Rights Reserved          #
+# Released: May 11, 2013                                            #
+# e-mail: post@carsten-dalgaard.dk                                  #
 #-------------------------------------------------------------------#
 # Any redistribution of this script without the expressed written   #
-# consent of 'cd-profil as' is strictly prohibited. Copying any	    #
-# of the code contained within this script and claiming it as	    #
-# your own is also prohibited.					    #
+# consent of 'cd-profil as' is strictly prohibited. Copying any     #
+# of the code contained within this script and claiming it as       #
+# your own is also prohibited.                                      #
 #-------------------------------------------------------------------#
 # By using this script you agree to indemnify 'Carsten Dalgaard'    #
-# from any liability that might arise from its use.		    #
+# from any liability that might arise from its use.                 #
 #-------------------------------------------------------------------#
-# You may not remove any of these header notices.		    #
+# You may not remove any of these header notices.                   #
 #-------------------------------------------------------------------#
 
 %livepreview_txt = (

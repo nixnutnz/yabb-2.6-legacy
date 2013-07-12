@@ -1069,8 +1069,7 @@ s/({|<)yabb boardurl(}|>)/$scripturl\?board\=$childbd/gsm;
                         }
                         else {
                             $subdropdown =
-#qq~<a href="javascript://" id="subdropa_$curboard" style="font-weight:bold" onclick="SubBoardList('$scripturl?board=$curboard','$curboard','$catid',$sub_count,$alternateboardcolor)"><img src="$imagesdir/$sub_arrow_dn" id="subdropbutton_$curboard" style="position: relative; top: 2px; cursor: pointer;" alt="" />&nbsp;$sub_txt</a>~;
-                qq~<img src="$imagesdir/$sub_arrow_dn" onclick="SubBoardList('$scripturl?board=$curboard','$curboard','$catid',$sub_count,$alternateboardcolor)" id="subdropbutton_$curboard" style="position: relative; top: 2px; cursor: pointer;" alt="" />&nbsp;$sub_txt~;
+qq~<a href="javascript:void(0)" id="subdropa_$curboard" style="font-weight:bold" onclick="SubBoardList('$scripturl?board=$curboard','$curboard','$catid',$sub_count,$alternateboardcolor)"><img src="$imagesdir/$sub_arrow_dn" id="subdropbutton_$curboard" style="position: relative; top: 2px; cursor: pointer;" alt="" />&nbsp;$sub_txt</a>~;
                         }
                     }
                     $tmp_sublist =~
@@ -1140,9 +1139,8 @@ s/({|<)yabb boardurl(}|>)/$scripturl\?board\=$curboard/gsm;
                 if (   ( $boardperms eq q{} && !$crypass )
                     || ( !$iamguest && $access eq 'granted' ) )
                 {
-                    $messagedropdown = qq~
-                <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$yyhtml_root','$curboard', 0)" id="dropbutton_$curboard" style="cursor: pointer" alt="" />
-                        ~;
+                    $messagedropdown = 
+qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$yyhtml_root','$curboard', 0)" id="dropbutton_$curboard" style="cursor: pointer" alt="" />~;
                 }
                 else { $messagedropdown = q{}; }
                 if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm ) {
@@ -1162,9 +1160,9 @@ s/({|<)yabb boardurl(}|>)/$scripturl\?board\=$curboard/gsm;
                     $templateblock =~
                       s/({|<)yabb moderators(}|>)/$showmods$showmodgroups/gsm;
                     $templateblock =~
-					  s/({|<)yabb threadcount(}|>)/${$uid.$curboard}{'threadcount'}/gsm;
+s/({|<)yabb threadcount(}|>)/${$uid.$curboard}{'threadcount'}/gsm;
                     $templateblock =~
-					  s/({|<)yabb messagecount(}|>)/${$uid.$curboard}{'messagecount'}/gsm;
+s/({|<)yabb messagecount(}|>)/${$uid.$curboard}{'messagecount'}/gsm;
                     $templateblock =~
                       s/({|<)yabb lastpostlink(}|>)/$lastpostlink/gsm;
                     $templateblock =~
@@ -1335,7 +1333,7 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
     $boardindex_template =~ s/({|<)yabb catsblock(}|>)/$tmptemplateblock/gsm;
 
 # no matter if this is ajax subboards, subboards at top of messageindex, or regular boardindex we need these vars now
-    $yymain .= qq~\n
+    $yymain .= qq~
 <script type="text/javascript">
       <!--
     var catNames = [$template_catnames];
@@ -1646,7 +1644,7 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
         chop $template_catnames;
         chop $template_boardnames;
         $yyjavascript .=
-qq~\nvar markallreadlang = '$boardindex_txt{'500'}';\nvar markfinishedlang = '$boardindex_txt{'500a'}';~;
+qq~    var markallreadlang = '$boardindex_txt{'500'}';\n        var markfinishedlang = '$boardindex_txt{'500a'}';~;
         $yymain .= qq~
 <script type="text/javascript">
 <!--
@@ -1661,7 +1659,8 @@ $boardindex_template~;
     function ListPages(tid) { window.open('$scripturl?action=pages;num='+tid, '', 'menubar=no,toolbar=no,top=50,left=50,scrollbars=yes,resizable=no,width=400,height=300'); }
     function ListPages2(bid,cid) { window.open('$scripturl?action=pages;board='+bid+';count='+cid, '', 'menubar=no,toolbar=no,top=50,left=50,scrollbars=yes,resizable=no,width=400,height=300'); }
 //-->
-</script>~;
+            </script>
+        ~;
 
         if ( ${$username}{'PMimnewcount'} > 0 ) {
             if ( ${$username}{'PMimnewcount'} > 1 ) {
@@ -1716,14 +1715,13 @@ $boardindex_template~;
         if ( !$rss_disabled ) {
             if ( $INFO{'catselect'} ) {    # Handle categories properly
                 $yyinlinestyle .=
-qq~<link rel="alternate" type="application/rss+xml" title="$boardindex_txt{'792'}" href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" />\n~;
+qq~    <link rel="alternate" type="application/rss+xml" title="$boardindex_txt{'792'}" href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" />~;
             }
             else {
                 $yyinlinestyle .=
-qq~<link rel="alternate" type="application/rss+xml" title="$boardindex_txt{'792'}" href="$scripturl?action=RSSrecent" />\n~;
+qq~    <link rel="alternate" type="application/rss+xml" title="$boardindex_txt{'792'}" href="$scripturl?action=RSSrecent" />~;
             }
         }
-        $yyjsstyle = 1;
         template();
     }
 
@@ -1762,7 +1760,6 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
             }
 
             $yynavigation .= qq~$boardtree~;
-            $yyjsstyle = 1;
             template();
         }
         elsif ($subboard_sel) {

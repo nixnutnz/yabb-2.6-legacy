@@ -100,7 +100,7 @@ s/{yabb prof_act}/$scripturl?action=profileCheck2;username=$useraccount{$user}/s
 
     $yynavigation = qq~&rsaquo; $profile_txt{'900'}~;
     $yytitle      = $profile_txt{'900'};
-    $yyjsstyle = 1;    
+    #$yyjsstyle = 1;    
     template();
     return;
 }
@@ -453,7 +453,7 @@ qq~ &nbsp; &nbsp; &nbsp; <input type="submit" name="moda" value="$profile_txt{'8
 
     if ( !$view ) {
         $yymain .= $showProfile;
-        $yyjsstyle = 1;    
+        #$yyjsstyle = 1;    
         template();
     }
     return;
@@ -580,7 +580,7 @@ $myprofile_contact
 
     if ( !$view ) {
         $yymain .= $showProfile;
-        $yyjsstyle = 1;    
+        #$yyjsstyle = 1;    
         template();
     }
     return;
@@ -694,7 +694,7 @@ qq~                <option value="$line"$checked>$name</option>\n~;
         $my_show_avatar = $myprofile_show_avatar_a;
         $my_show_avatar =~ s/{yabb my_up_avatar_a}/$my_up_avatar_a/sm;
         $my_show_avatar =~ s/{yabb my_up_avatar_b}/$my_up_avatar_b/sm;
-        $my_show_avatar =~ s/{yabb av_pic}/$pic/gsm;
+        $my_show_avatar =~ s/{yabb av_pic}/$pic/sm;
         $my_show_avatar =~ s/{yabb av_alt}/$alt/sm;
         $my_show_avatar =~ s/{yabb av_s}/$s/gsm;
         $my_show_avatar =~ s/{yabb av_tmp}/$tmp/sm;
@@ -989,7 +989,7 @@ qq~         <textarea name="signature" id="signature" rows="4" cols="30" style="
 
     if ( !$view ) {
         $yymain .= $showProfile;
-        $yyjsstyle = 1;    
+        #$yyjsstyle = 1;    
         template();
     }
     return;
@@ -1067,7 +1067,7 @@ qq~<option value="$buddy">${$uid.$buddy}{'realname'}</option>~;
 
     if ( !$view ) {
         $yymain .= $showProfile;
-        $yyjsstyle = 1;    
+        #$yyjsstyle = 1;    
         template();
     }
     return;
@@ -1182,7 +1182,7 @@ qq~\n                        <option value="$ignoreName">$ignoreUser</option>~;
 
     if ( !$view ) {
         $yymain .= $showProfile;
-        $yyjsstyle = 1;    
+        #$yyjsstyle = 1;    
         template();
     }
     return;
@@ -1428,7 +1428,7 @@ qq~<textarea rows="4" cols="50" name="regreason" id="regreason">$regreason</text
 
     if ( !$view ) {
         $yymain .= $showProfile;
-        $yyjsstyle = 1;    
+        #$yyjsstyle = 1;    
         template();
     }
     return;
@@ -2027,7 +2027,7 @@ sub ModifyProfileContacts2 {
         $shared_login      = sharedLogin();
         $yymain .= $shared_login;
         $yytitle = $profile_txt{'245'};
-        $yyjsstyle = 1;    
+        #$yyjsstyle = 1;    
         template();
     }
 
@@ -2841,7 +2841,7 @@ qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px
                         </div>
                         <div class="contactright">
                         <img src="$imagesdir/$my_gtalk" alt="" />
-                        <a href="#" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$user','','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'); return false">$profile_txt{'825'} ${$uid.$user}{'realname'}</a>
+                        <a href="#" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$user','','height=80,width=340,menubar=0,toolbar=0,scrollbars=0,resizable=1'); return false">$profile_txt{'825'} ${$uid.$user}{'realname'}</a>
                         </div>~;
     }
     if ( ${ $uid . $user }{'skype'} ) {
@@ -3684,7 +3684,7 @@ qq~<p><a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}"><b
     if ( !$view ) {
         $yynavigation = qq~&rsaquo; $maintxt{'213'}~;
         $yymain .= $showProfile;
-        $yyjsstyle = 1;    
+        #$yyjsstyle = 1;    
         template();
     }
     return;

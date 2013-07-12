@@ -49,8 +49,8 @@ $mypost_postblock = qq~
 <table class="pad_3px" style="table-layout: fixed;">
     <col style="width: 23%" />
     {yabb my_prevmain}{yabb name_field}{yabb email_field}{yabb verification_field}{yabb verification_question_field}
-    <tr>
-		<td colspan="2">
+    <tr class="windowbg">
+        <td{yabb guestcol}>
 			<div style="height:16px;">
 				<img name="prevwin" id="prevwin" src="$imagesdir/$cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor: pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
             </div>
@@ -60,7 +60,7 @@ $mypost_postblock = qq~
    {yabb my_postsection_ajx}
 <table class="pad_3px" style="table-layout: fixed;">
     <col style="width: 23%" />
-    <tr>
+    <tr class="windowbg">
         <td colspan="2">
             <div id="savetable" class="windowbg" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
 		{yabb messageblock}
@@ -85,7 +85,7 @@ $mypost_postblock = qq~
         </td>
     </tr><tr>
         <td class="windowbg2 vtop">{yabb my_googie}{yabb mypost_smilie_array}{yabb my_post_feata}{yabb my_post_smilies}{yabb my_feat5}{yabb my_is_prev}{yabb notification}{yabb favoriteadd}
-        <tr id="feature_status_7">
+        <tr id="feature_status_7" class="windowbg">
         <td>
             <label for="ns"><b>$post_txt{'276'}:</b></label>
         </td>
@@ -94,7 +94,7 @@ $mypost_postblock = qq~
         </td>
     </tr>
     {yabb return_to} 
-    <tr id="feature_status_8">
+    <tr id="feature_status_8" class="windowbg">
         <td>
             <div id="enable_iecopytext" style="display: none;">
                 <label for="iecopy"><b>$post_txt{'iecopytext'}:</b></label><br /><br />
@@ -122,13 +122,13 @@ $mypost_ubbc = qq~
     <script type="text/javascript">
     ~;
 
-$mypost_preview_main = qq~<tr>
+$mypost_preview_main = qq~<tr class="windowbg">
             <td class="vtop"><b>$post_txt{'507'}</b></td>
             <td>{yabb prevmain}</td>
         </tr>~;
 
 $mypost_topicstatus = qq~
-    <tr id="feature_status_4">
+    <tr id="feature_status_4" class="windowbg">
         <td class="vtop"><label for="topicstatus"><b>$post_txt{'34'}:</b></label></td>
         <td>
             <select multiple="multiple" name="topicstatus" id="topicstatus" size="{yabb my_curbrd}" style="vertical-align: middle;" onchange="showtpstatus()">
@@ -141,7 +141,7 @@ $mypost_topicstatus = qq~
     </tr>~;
 
 $mypost_extra = qq~
-    <tr id="feature_status_1">
+    <tr id="feature_status_1" class="windowbg">
         <td><label for="icon"><b>$post_txt{'71'}:</b></label></td>
         <td>
             <select name="icon" id="icon" onchange="showimage(); autoPreview();">
@@ -163,18 +163,18 @@ $mypost_extra = qq~
     </tr>~;
 
 $mypost_notification = qq~
-    <tr id="feature_status_2">
+    <tr id="feature_status_2" class="windowbg">
         <td><label for="notify"><b>$post_txt{'131'}:</b></label></td>
         <td><input type="hidden" name="hasnotify" value="{yabb hasnotify}" /><input type="checkbox" name="notify" id="notify" value="x"{yabb notify} /> <span class="small"><label for="notify">{yabb notifytext}</label></span></td>
     </tr>~;
 
 $mypost_favoriteadd = qq~
-    <tr id="feature_status_3">
+    <tr id="feature_status_3" class="windowbg">
         <td><label for="favorite"><b>$post_txt{'favorite'}:</b></label></td>
         <td><input type="checkbox" name="favorite" id="favorite" value="x"{yabb favorite} /> <span class="small"><label for="favorite">{yabb favoritetext}</label></span></td>
     </tr>~;
 
-$mypost_is_prev = qq~<tr>
+$mypost_is_prev = qq~<tr class="windowbg">
         <td style="color:red" colspan="2"><br /><b>$fatxt{'7'}</b><br /><br /></td>
     </tr>~;
 
@@ -227,7 +227,7 @@ $mypost_prevmain = qq~
         </table>
     </div>\n~;
 
-$mypost_lastmod = qq~<tr>
+$mypost_lastmod = qq~<tr class="windowbg">
         <td class="vtop"><b>$post_txt{'211'}:</b></td>
         <td>{yabb my_lastmod}</td>
     </tr>~;
@@ -268,18 +268,18 @@ $mypost_smilies_c = qq~{yabb my_smilies}
         </td>
     </tr>~;
 
-$mypost_feat5 = qq~<tr id="feature_status_5">
+$mypost_feat5 = qq~<tr id="feature_status_5" class="windowbg">
         <td>
             <b>$fatxt{'80'}</b>
-            <input type="hidden" name="oldattach" id="oldattach" value="{yabb mfn}" />{yabb my_att_allow}
+           <input type="hidden" name="oldattach" id="oldattach" value="{yabb mfn}" />{yabb my_att_allow}
         </td>
         <td><span class="small">{yabb filetype_info}<br />{yabb filesize_info}</span></td>
-    </tr><tr id="feature_status_6">
+    </tr><tr id="feature_status_6" class="windowbg">
         <td colspan="2">{yabb mypoll_att}{yabb my_att_b}
         </td>
     </tr>~;
 
-$mypost_return_to = qq~<tr id="feature_status_9">
+$mypost_return_to = qq~<tr id="feature_status_9" class="windowbg">
         <td><label for="return_to"><b>$return_to_txt{'01'}:</b></label></td>
         <td><select name="return_to" id="return_to" size="1">{yabb return_to_select}</select> <span class="small"><label for="return_to">$return_to_txt{'02'}</label></span></td>
     </tr>~;
@@ -571,7 +571,7 @@ $mypost_liveprev = qq~
             </td>
         </tr><tr>
              <td class="{yabb css} bottom" style="background-color: #D7DBEA;">
-                <a href="#top"><img src="$imagesdir/back_to_top.png" alt="$display_txt{'643'}" title="$display_txt{'643'}" /></a>
+                <span onclick="toTop(0)" class="cursor"><img src="$imagesdir/back_to_top.png" alt="$display_txt{'643'}" title="$display_txt{'643'}" /></span>
             </td>
             <td class="{yabb css} bottom dividertop" colspan="2">
                     <div class="small" style="float: left; width: 74%;">
@@ -588,7 +588,7 @@ $mypost_liveprev = qq~
 
    
 ## ModifyPost insert    
-$mypost_lastmod = qq~<tr>
+$mypost_lastmod = qq~<tr class="windowbg">
         <td class="vtop"><b>$post_txt{'211'}:</b></td>
         <td>{yabb lastmod_a}</td>
     </tr>~;

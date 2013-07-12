@@ -184,7 +184,7 @@ sub MLByLetter {
     undef @ToShow;
     buildPages(0);
     $yytitle = "$ml_txt{'312'} $numshow";
-    $yyjsstyle = 1;    
+    #$yyjsstyle = 1;    
     template();
     return;
 }
@@ -213,7 +213,7 @@ sub MLTop {
     undef @toplist;
     buildPages(0);
     $yytitle = "$ml_txt{'313'} $ml_txt{'314'} $numshow";
-    $yyjsstyle = 1;    
+    #$yyjsstyle = 1;    
     template();
     return;
 }
@@ -276,7 +276,7 @@ sub MLPosition {
     undef %memberinf;
     buildPages(0);
     $yytitle = "$ml_txt{'313'} $ml_txt{'4'} $ml_txt{'87'} $numshow";
-    $yyjsstyle = 1;    
+    #$yyjsstyle = 1;    
     template();
     return;
 }
@@ -302,7 +302,7 @@ sub MLDate {
     fclose(MEMBERLISTREAD);
     buildPages(0);
     $yytitle = "$ml_txt{'313'} $ml_txt{'4'} $ml_txt{'233'} $numshow";
-    $yyjsstyle = 1;    
+    #$yyjsstyle = 1;    
     template();
     return;
 }
@@ -771,7 +771,7 @@ sub FindMembers {
     undef %memberinf;
     buildPages(0);
     $yytitle = "$ml_txt{'313'} $ml_txt{'4'} $ml_txt{'87'} $numshow";
-    $yyjsstyle = 1;    
+    #$yyjsstyle = 1;    
     template();
     return;
 }
