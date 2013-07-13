@@ -611,7 +611,7 @@ qq~$menusep<a href="$scripturl?action=boardnotify;board=$INFO{'board'}">$img{'no
         if ($messagelist) {
             if ($mdrop_postpopup) {
                 $postlink =
-qq~$menusep<a href="javascript://" onclick="PostPage('$scripturl?board=$INFO{'board'};action=post;title=StartNewTopic','$INFO{'board'}')">$img{'newthread'}</a>~;
+qq~$menusep<a href="javascript:void(0)" onclick="PostPage('$scripturl?board=$INFO{'board'};action=post;title=StartNewTopic','$INFO{'board'}')">$img{'newthread'}</a>~;
             }
             else {
                 $postlink =
@@ -621,7 +621,7 @@ qq~$menusep<a href="$scripturl?board=$INFO{'board'};action=post;title=StartNewTo
         else {
             if ($mindex_postpopup) {
                 $postlink =
-qq~$menusep<a href="javascript://" onclick="PostPage('$scripturl?board=$INFO{'board'};action=post;title=StartNewTopic','$INFO{'board'}')">$img{'newthread'}</a>~;
+qq~$menusep<a href="javascript:void(0)" onclick="PostPage('$scripturl?board=$INFO{'board'};action=post;title=StartNewTopic','$INFO{'board'}')">$img{'newthread'}</a>~;
             }
             else {
                 $postlink = qq~$menusep<a href="~

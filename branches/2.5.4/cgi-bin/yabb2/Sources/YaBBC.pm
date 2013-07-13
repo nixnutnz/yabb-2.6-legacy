@@ -36,7 +36,7 @@ sub MakeSmileys {
     $message =~ s/(\W|^):-\//$1<img src="$imagesdir\/undecided.gif" class="smil" data-rel="&#58;&#45;\/" alt="$post_txt{'528'}" title="$post_txt{'528'}" \/>/gsm;
     $message =~ s/(\W|^):-X/$1<img src="$imagesdir\/lipsrsealed.gif" class="smil" data-rel="&#58;&#45;X" alt="$post_txt{'527'}" title="$post_txt{'527'}" \/>/gsm;
     $message =~ s/(\W|^):-\[/$1<img src="$imagesdir\/embarassed.gif" class="smil" data-rel="&#58;&#45;\[" alt="$post_txt{'526'}" title="$post_txt{'526'}" \/>/gsm;
-    $message =~ s/(\W|^):-\*/$1<img  src="$imagesdir\/kiss.gif"class="smil" data-rel="&#58;&#45;\*" alt="$post_txt{'529'}" title="$post_txt{'529'}" \/>/gsm;
+    $message =~ s/(\W|^):-\*/$1<img  src="$imagesdir\/kiss.gif" class="smil" data-rel="&#58;&#45;\*" alt="$post_txt{'529'}" title="$post_txt{'529'}" \/>/gsm;
     $message =~ s/(\W|^)&gt;:\(/$1<img src="$imagesdir\/angry.gif" class="smil" data-rel="&gt;:&#40;" alt="$post_txt{'288'}" title="$post_txt{'288'}" \/>/gsm;
     $message =~ s/(\W|^)::\)/$1<img src="$imagesdir\/rolleyes\.gif" class="smil" data-rel="&#58;&#58;&#41;" alt="$post_txt{'450'}" title="$post_txt{'450'}" \/>/gsm;
     $message =~ s/(\W|^):P/$1<img src="$imagesdir\/tongue\.gif" class="smil" data-rel=":P" alt="$post_txt{'451'}" title="$post_txt{'451'}" \/>/gsm;
