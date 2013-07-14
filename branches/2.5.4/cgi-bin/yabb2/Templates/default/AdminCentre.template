@@ -229,6 +229,17 @@ $front_page = qq~<div class="bordercolor rightboxdiv">
 $last_div = q~</div>~;
 
 $convert_box = qq~    <div class="bordercolor leftboxdiv" style="margin-top:.5em">
+		<table class="cs_thin pad_4px">
+            <tr>
+                <td class="titlebg">
+                        <b>$admintxt{'conv'}</b>
+                </td>
+            </tr><tr>
+                <td class="windowbg2 padd_8_12px">
+                    $admintxt{'conv2'}
+                </td>
+            </tr>
+		</table>
         <form name="backdelete" action="$adminurl?action=convdelete" method="post">
             <table class="cs_thin pad_4px">
                 <tr>

@@ -779,6 +779,8 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 
 'a9_title' => 'BoardMod Mods',
 'a9_label' => 'BoardMod Mods Section',
+'conv' => 'To convert 1x or 2x files to 2.5.4',
+'conv2' => '<b><a href="Setup.pl">Go to Setup/Convert</a></b>',
 );
 
 %cutts = (

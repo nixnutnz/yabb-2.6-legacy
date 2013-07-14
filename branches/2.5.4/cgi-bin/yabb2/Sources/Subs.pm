@@ -16,6 +16,7 @@
 # use warnings;
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
+use English qw(-no_match_vars);
 our $VERSION = '2.5.4';
 
 $subspmver = 'YaBB 2.5.4 $Revision$';
@@ -614,7 +615,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
                         <input type="hidden" name="oneperthread" value="1" />
                         <input type="hidden" name="searchboards" value="!all" />
                         <input type="text" name="search" size="16" id="search1" value="$img_txt{'182'}" style="font-size: 11px;" onfocus="txtInFields(this, '$img_txt{'182'}');" onblur="txtInFields(this, '$img_txt{'182'}')" />
-                        <input type="image" src="$imagesdir/search.png" title="$maintxt{'searchimg'} $qckage $maintxt{'searchimg2'}" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />
+                        <input type="image" src="$imagesdir/search.png" alt="$maintxt{'searchimg'}  $qckage $maintxt{'searchimg2'}" title="$maintxt{'searchimg'} $qckage $maintxt{'searchimg2'}" style="background-color: transparent; margin-right: 5px; vertical-align: middle;" />
                     </form></div>
 ~;
         }

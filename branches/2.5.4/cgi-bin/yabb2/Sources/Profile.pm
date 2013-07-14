@@ -100,7 +100,6 @@ s/{yabb prof_act}/$scripturl?action=profileCheck2;username=$useraccount{$user}/s
 
     $yynavigation = qq~&rsaquo; $profile_txt{'900'}~;
     $yytitle      = $profile_txt{'900'};
-    #$yyjsstyle = 1;    
     template();
     return;
 }
@@ -453,7 +452,6 @@ qq~ &nbsp; &nbsp; &nbsp; <input type="submit" name="moda" value="$profile_txt{'8
 
     if ( !$view ) {
         $yymain .= $showProfile;
-        #$yyjsstyle = 1;    
         template();
     }
     return;
@@ -580,7 +578,6 @@ $myprofile_contact
 
     if ( !$view ) {
         $yymain .= $showProfile;
-        #$yyjsstyle = 1;    
         template();
     }
     return;
@@ -989,7 +986,6 @@ qq~         <textarea name="signature" id="signature" rows="4" cols="30" style="
 
     if ( !$view ) {
         $yymain .= $showProfile;
-        #$yyjsstyle = 1;    
         template();
     }
     return;
@@ -1067,7 +1063,6 @@ qq~<option value="$buddy">${$uid.$buddy}{'realname'}</option>~;
 
     if ( !$view ) {
         $yymain .= $showProfile;
-        #$yyjsstyle = 1;    
         template();
     }
     return;
@@ -1182,7 +1177,6 @@ qq~\n                        <option value="$ignoreName">$ignoreUser</option>~;
 
     if ( !$view ) {
         $yymain .= $showProfile;
-        #$yyjsstyle = 1;    
         template();
     }
     return;
@@ -1428,7 +1422,6 @@ qq~<textarea rows="4" cols="50" name="regreason" id="regreason">$regreason</text
 
     if ( !$view ) {
         $yymain .= $showProfile;
-        #$yyjsstyle = 1;    
         template();
     }
     return;
@@ -2027,7 +2020,6 @@ sub ModifyProfileContacts2 {
         $shared_login      = sharedLogin();
         $yymain .= $shared_login;
         $yytitle = $profile_txt{'245'};
-        #$yyjsstyle = 1;    
         template();
     }
 
@@ -3684,7 +3676,6 @@ qq~<p><a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}"><b
     if ( !$view ) {
         $yynavigation = qq~&rsaquo; $maintxt{'213'}~;
         $yymain .= $showProfile;
-        #$yyjsstyle = 1;    
         template();
     }
     return;

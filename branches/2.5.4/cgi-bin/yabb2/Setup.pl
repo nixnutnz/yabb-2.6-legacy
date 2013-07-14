@@ -2244,7 +2244,7 @@ sub CheckInstall {
             <td class="windowbg center"><img src="$imagesdir/a_off.gif" alt="" /></td>
             <td class="windowbg2">
       Click on 'Continue' and go to your <i>Admin Center - Forum Settings</i> to set the options for your YaBB 2.5.4 forum.<br />
-                Click on 'Convert' to convert your YaBB 1 Gold - SP 1.x forum to YaBB 2.5.4. Click on 'Fix' to convert your YaBB 2.0 - 2.4 forum to 2.5.4
+                Click on 'Convert' to convert your YaBB 1 Gold - SP 1.x forum to YaBB 2.5.4. Click on 'Fix' to convert your YaBB 2x forum to 2.5.4
             </td>
         </tr>~;
     }
@@ -2256,14 +2256,7 @@ sub CheckInstall {
       <form action="$set_cgi?action=ready;nextstep=YaBB" method="post" style="display: inline;">
             <input type="submit" value="Continue" />
       </form>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <form action="Convert.pl" method="post" style="display: inline;">
-                    <input type="submit" value="Convert 1x files" />
-      </form>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <form action="FixFile.pl" method="post" style="display: inline;">
-                    <input type="submit" value="Fix 2.0-2.4 files or convert Ban List" />
-                </form>
+	        <p class="center">You can access the 1x and 2x Conversion Utilities through the Admin Center</p>
             </td>
         </tr>~;
     }
@@ -2547,14 +2540,14 @@ qq~The 1x to 2.5.4 Converter has already been run.<br />To run the Converter aga
     if ( -e "$vardir/FixFile.lock" ) {
         $fixa = q{};
         $fixa2 =
-qq~The 2.0-2.4 to 2.5.4 FixFile Utility has already been run.<br />To run Utility again, remove the file "$vardir/FixFile.lock," then re-visit this page.~;
+qq~The 2x FixFile Utility has already been run.<br />To run Utility again, remove the file "$vardir/FixFile.lock," then re-visit this page.~;
 
     }
     else {
         $fixa =
           q~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <form action="FixFile.pl" method="post" style="display: inline;">
-                    <input type="submit" value="Fix 2.0-2.4 files" />
+                    <input type="submit" value="Convert 2x files" />
                 </form>~;
 }
 

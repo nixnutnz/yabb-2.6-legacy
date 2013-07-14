@@ -1507,7 +1507,7 @@ border: 0 !important;
 padding: 0 !important;
 }
 
-input[name="msgCL"],input[name="txtsize"] {
+input[name*="msgCL"],input[name="txtsize"] {
 background-color: transparent !important;
 } 
 

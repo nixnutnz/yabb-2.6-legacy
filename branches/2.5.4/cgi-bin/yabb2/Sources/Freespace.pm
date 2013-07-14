@@ -16,6 +16,7 @@
 # use warnings;
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
+use English qw(-no_match_vars);
 our $VERSION = '2.5.4';
 
 $freespacepmver = 'YaBB 2.5.4 $Revision$';

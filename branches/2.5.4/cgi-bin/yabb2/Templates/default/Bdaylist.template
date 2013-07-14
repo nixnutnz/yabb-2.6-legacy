@@ -39,6 +39,7 @@ $cal_col_ss_top = q~
 $mybdlist_calgoto = qq~
 <table class="tabtitle tabtitle-text">
     <col style="width:30%" />
+    <col style="width:70%" />
     <tr>
         <td style="padding-left:1%">$var_cal{'caltitle'}</td>
         <td class="right" style="padding-right:1%">{yabb calgotobox}</td>

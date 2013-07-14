@@ -137,6 +137,7 @@ $mycalout_noevent = qq~<tr>
 $mycalout_addevent = qq~
 <table class="bordercolor">
     <col style="width:160px" />
+    <col style="width:auto" />
     {yabb guestpost_fields}
     {yabb mycalout_validation}
     {yabb mycalout_spamquestion}
@@ -151,6 +152,7 @@ $mycalout_addevent = qq~
    {yabb my_postsection_ajx}
 <table class="bordercolor" style="table-layout: fixed;">
     <col style="width:160px" />
+    <col style="width:auto" />
     <tr>
         <td class="windowbg2" colspan="2">
             <div id="savetable" class="windowbg" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
@@ -364,8 +366,8 @@ $mycal_outstring = qq~<tr>
 
 $my_out_a = qq~<table>
     <tr>
-        <td class="vtop">
-            <span class="small">{yabb cal_eventinfo} $var_cal{'calnoevent'}</span>
+        <td class="vtop small">
+            {yabb cal_eventinfo} $var_cal{'calnoevent'}
             <hr class="hr" />
         </td>
     </tr>

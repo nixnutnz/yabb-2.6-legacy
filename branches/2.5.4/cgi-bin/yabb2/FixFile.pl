@@ -215,7 +215,7 @@ EOF
     </div>
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Members\\' conversion, click here on STOP before this red message apears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Members\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
             }
       </script>
             ~;
@@ -250,7 +250,7 @@ EOF
                 $ConvNotDone
                 <div class="convnotdone">Message Import.</div>
                 $ConvNotDone
-                <div class="convnotdone">Variables</div>
+                <div class="convnotdone">Clean Up</div>
                 $ConvNotDone
             </td>
         </tr><tr>
@@ -272,7 +272,7 @@ EOF
     </div>
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Boards & Categories\\' conversion, click here on STOP before this red message apears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Boards & Categories\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
             }
 
             function membtick() {
@@ -313,7 +313,7 @@ EOF
                 $ConvDone
                 <div class="convnotdone">Message Import.</div>
                 $ConvNotDone
-                <div class="convnotdone">Variables.</div>
+                <div class="convnotdone">Clean Up.</div>
                 $ConvNotDone
             </td>
         </tr><tr>
@@ -377,7 +377,7 @@ EOF
                $ConvDone
                <div class="convdone">Message Import.</div>
                $ConvDone
-               <div class="convnotdone">Variables.</div>
+               <div class="convnotdone">Clean Up.</div>
                $ConvNotDone
            </td>
        </tr><tr>
@@ -400,7 +400,7 @@ EOF
 
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Clean Up\\', click here on STOP before this red message apears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Clean Up\\', click here on STOP before this red message appears again on next page.</b></span>';
             }
 
             function membtick() {
@@ -447,7 +447,7 @@ q~<br /><br />After you have tested your forum and made sure everything was conv
                 $ConvDone
                 <div class="convdone">Message Import.</div>
                 $ConvDone
-                <div class="convdone">Variables.</div>
+                <div class="convdone">Clean Up.</div>
                 $ConvDone
             </td>
         </tr><tr>
@@ -611,6 +611,16 @@ sub MyUpdateUser {
             }
         }
     }
+    fopen( MEMINFO, "$convmemberdir/memberinfo.txt" )
+      || setup_fatal_error( "$maintext_23 $convmemberdir/memberinfo.txt: ", 1 );
+    my @meminfo = <MEMINFO>;
+    fclose(MEMINFO);
+
+    fopen( NMEMINFO, ">$memberdir/memberinfo.txt" )
+      || setup_fatal_error( "$maintext_23 $memberdir/memberinfo.txt: ", 1 );
+    print {NMEMINFO} @meminfo or croak 'cannot print NBMEMINFO';
+    fclose(NMEMINFO);
+
     fopen( BMEMDIR, "$convmemberdir/broadcast.messages" )
       || setup_fatal_error( "$maintext_23 $convmemberdir/broadcast.messages: ", 1 );
     my @bmessages = <BMEMDIR>;
@@ -826,19 +836,19 @@ sub tabmenushow {    # used by the converter
     $NavLink1 = qq~<span>$tabfill Members $tabfill</span>~;
     $NavLink2 = qq~$tabsep<span>$tabfill Boards & Categories $tabfill</span>~;
     $NavLink3 = qq~$tabsep<span>$tabfill Messages $tabfill</span>~;
-    $NavLink5 = qq~$tabsep<span>$tabfill Variables $tabfill</span>~;
+    $NavLink5 = qq~$tabsep<span>$tabfill Clean Up $tabfill</span>~;
     $NavLink6 = qq~$tabsep<span>$tabfill Login $tabfill</span>$tabsep&nbsp;~;
 
     $NavLink1a =
-qq~<span class="selected"><a href="$set_cgi?action=members;st=$INFO{'st'}" style="color: #FF3333;" class="selected" onClick="PleaseWait();">$tabfill Members $tabfill</a></span>~;
+qq~<span class="selected"><a href="$set_cgi?action=members;st=$INFO{'st'}" style="color: #FF3333; padding:0" class="selected" onClick="PleaseWait();">$tabfill Members $tabfill</a></span>~;
     $NavLink2a =
-qq~$tabsep<span class="selected"><a href="$set_cgi?action=cats;st=$INFO{'st'}" style="color: #FF3333;" class="selected" onClick="PleaseWait();">$tabfill Boards & Categories $tabfill</a></span>~;
+qq~$tabsep<span class="selected"><a href="$set_cgi?action=cats;st=$INFO{'st'}" style="color: #FF3333; padding:0" class="selected" onClick="PleaseWait();">$tabfill Boards & Categories $tabfill</a></span>~;
     $NavLink3a =
-qq~$tabsep<span class="selected"><a href="$set_cgi?action=messages;st=$INFO{'st'}" style="color: #FF3333;" class="selected" onClick="PleaseWait();">$tabfill Messages $tabfill</a></span>~;
+qq~$tabsep<span class="selected"><a href="$set_cgi?action=messages;st=$INFO{'st'}" style="color: #FF3333; padding:0" class="selected" onClick="PleaseWait();">$tabfill Messages $tabfill</a></span>~;
     $NavLink5a =
-qq~$tabsep<span class="selected"><a href="$set_cgi?action=cleanup;st=$INFO{'st'}" style="color: #FF3333;" class="selected" onClick="PleaseWait();">$tabfill Variables $tabfill</a></span>~;
+qq~$tabsep<span class="selected"><a href="$set_cgi?action=cleanup;st=$INFO{'st'}" style="color: #FF3333; padding:0" class="selected" onClick="PleaseWait();">$tabfill Clean Up $tabfill</a></span>~;
     $NavLink6a =
-qq~$tabsep<span class="selected"><a href="$boardurl/YaBB.$yyext?action=login" style="color: #FF3333;" class="selected">$tabfill Login $tabfill</a></span>$tabsep&nbsp;~;
+qq~$tabsep<span class="selected"><a href="$boardurl/YaBB.$yyext?action=login" style="color: #FF3333; padding:0" class="selected">$tabfill Login $tabfill</a></span>$tabsep&nbsp;~;
 
     $ConvDone = q~
             <div class="divvary_m">&nbsp;</div>
@@ -1228,9 +1238,6 @@ sub Convert_Settings {
             }
         }
     }
-    if ( -e "$convvardir/Settings.pl" ) {
-        require "$convvardir/Settings.pl";
-    }
     if ( -e "$convvardir/eventcalset.txt" ) {
         require "$convvardir/eventcalset.txt";
     }
@@ -1245,6 +1252,9 @@ sub Convert_Settings {
     if (!$AdMaxIMMessLen) {$AdMaxIMMessLen = 3000;}
     if (!$MaxCalMessLen){$MaxCalMessLen = 2000;}
     if (!$AdMaxCalMessLen){$AdMaxCalMessLen = 3000;}
+	$ip_banlist = q{};
+	$email_banlist = q{};
+	$user_banlist = q{};
     require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');
     

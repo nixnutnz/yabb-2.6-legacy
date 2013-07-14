@@ -37,6 +37,7 @@ $mysharedlog_top = qq~
 $myborder
 <table class="tabtitle tabtitle-text" style="margin-top:10px">
     <col style="width:1%" />
+    <col style="width:99%" />
     <tr>
         <td>&nbsp;</td>
         <td>$loginout_txt{'34'}</td>
@@ -44,6 +45,7 @@ $myborder
 </table>
 <table class="bordercolor pad_4px cs_thin">
     <col style="width:6%" />
+    <col style="width:94%" />
     <tr>
         <td class="windowbg center"><img src="$imagesdir/login.png" alt="" /></td>
         <td class="windowbg2 center">~;

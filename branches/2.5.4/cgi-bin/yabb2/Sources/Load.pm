@@ -84,8 +84,7 @@ sub LoadIMs {
         || ( $maintenance   && !$iamadmin )
         || ( $PM_level == 2 && ( !$staff ) )
         || ( $PM_level == 4 && ( !$iamadmin && !$iamgmod && !$iamymod ) )
-        || ( $PM_level == 3 && ( !$iamadmin && !$iamgmod ) )
-         );
+        || ( $PM_level == 3 && ( !$iamadmin && !$iamgmod ) ) );
 
     if ( !exists ${$username}{'PMmnum'} ) { buildIMS( $username, 'load' ); }
 

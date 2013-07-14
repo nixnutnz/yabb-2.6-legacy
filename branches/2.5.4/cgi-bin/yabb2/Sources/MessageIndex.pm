@@ -1657,7 +1657,6 @@ s/(<!-- Icon and access info end -->)/$1\n<div style="text-align: right; padding
             $Quick_Post    = 1;
             Post();
         }
-        #$yyjsstyle = 1;    
         template();
     }
     else {

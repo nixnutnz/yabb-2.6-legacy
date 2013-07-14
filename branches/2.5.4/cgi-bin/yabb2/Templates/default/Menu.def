@@ -51,7 +51,7 @@ message_sm,message|img_txt|144|||imgwindowbg|gif|tmp
 modify,modify|img_txt|66|||imgwindowbg|png|tmp
 modify_profile,modify|img_txt|66|||imgmenu|png|tmp
 modifypoll,poll_modify|img_polltxt|39|||imgcatbg|gif|tmp
-mquote,maq1|img_txt|145q|img_txt|145qt|imgwindowbg|png|tmp
+mquote,maq4|img_txt|145q|img_txt|145qt|imgwindowbg|png|tmp
 mycenter,mycenter|img_txt|mycenter|||imgmenu|gif|tmp
 myspace,myspace|img_txt|myspace|||imgwindowbg|gif|tmp
 newthread,new_thread|img_txt|33|||imgcatbg|gif|tmp
@@ -66,8 +66,8 @@ print,print|img_txt|465|||imgcatbg|png|tmp
 print_im,print|img_txt|465|||imgwindowbg|png|tmp
 printp,print|img_txt|465a|||imgcatbg|png|tmp
 profile,profile|img_txt|467|||imgmenu|gif|tmp
-quote,maq4|img_txt|145|||imgwindowbg|png|tmp
-recentquote,quote|img_txt|145|||imgcatbg|gif|tmp
+quote,maq1|img_txt|145|||imgwindowbg|png|tmp
+recentquote,maq1|img_txt|145|||imgcatbg|png|tmp
 register,register|img_txt|97|||imgmenu|gif|tmp
 remfav,remfav|img_txt|72|||imgcatbg|png|tmp
 removetopic,remove|img_txt|63|||imgwindowbg|png|tmp

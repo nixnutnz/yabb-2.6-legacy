@@ -249,7 +249,7 @@ EOF
     </div>
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Members\\' conversion, click here on STOP before this red message apears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Members\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
             }
       </script>
             ~;
@@ -311,7 +311,7 @@ EOF
     </div>
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Boards & Categories\\' conversion, click here on STOP before this red message apears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Boards & Categories\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
             }
 
             function membtick() {
@@ -434,7 +434,7 @@ EOF
       </div>
       <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Members\\' conversion, click here on STOP before this red message apears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Members\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
             }
 
             function stoptick() { stop = 1; }
@@ -592,7 +592,7 @@ EOF
 
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Boards & Categories\\' conversion, click here on STOP before this red message apears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Boards & Categories\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
             }
 
             function stoptick() { stop = 1; }
@@ -666,7 +666,7 @@ EOF
 
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Date &amp; Time\\' conversion, click here on STOP before this red message apears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Date &amp; Time\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
             }
 
             function membtick() {
@@ -760,7 +760,7 @@ EOF
 
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Messages\\' conversion, click here on STOP before this red message apears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Messages\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
             }
 
             function stoptick() { stop = 1; }
@@ -832,7 +832,7 @@ EOF
 
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Clean Up\\', click here on STOP before this red message apears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Clean Up\\', click here on STOP before this red message appears again on next page.</b></span>';
             }
 
             function membtick() {
@@ -935,7 +935,7 @@ EOF
 
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Date &amp; Time\\' conversion, click here on STOP before this red message apears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Date &amp; Time\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
             }
 
             function stoptick() { stop = 1; }
