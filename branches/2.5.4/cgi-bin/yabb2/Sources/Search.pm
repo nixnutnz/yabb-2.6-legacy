@@ -690,7 +690,7 @@ qq~$menusep<a href="$scripturl?action=notify2;oldnotify=1;num=$tnum/$msgnum#$msg
                 }
             }
             $yymain .=
-qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$msgnum#$msgnum;title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num=$tnum;quote=$msgnum;title=PostReply">$img{'recentquote'}</a>$notify &nbsp;~;
+qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$msgnum#$msgnum;title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num=$tnum;quote=$msgnum;title=PostReply">$img{'recentquote'}</a>$notify~;
         }
         if (   $staff
             && ( $icanbypass || $tstate !~ /l/ism )
@@ -698,7 +698,7 @@ qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$msgnum#$msgnum;title=
         {
             LoadLanguage('Display');
             $yymain .=
-qq~<a href="$scripturl?action=multidel;recent=1;thread=$tnum;del$c=$c" onclick="return confirm('~
+qq~$menusep<a href="$scripturl?action=multidel;recent=1;thread=$tnum;del$c=$c" onclick="return confirm('~
               . (
                 ( $icanbypass && $tstate =~ /l/ism )
                 ? qq~$display_txt{'modifyinlocked'}\\n\\n~

@@ -14,11 +14,12 @@
 # $Revision$
 
 $disp_ip = 'ip.gif';
+$search_img = 'search.png';
 
 $mysearch_template = qq~
 <table class="tabtitle pad_3px">
     <tr>
-        <td><img src="$imagesdir/search.png" alt="" /> $search_txt{'183'}</td>
+        <td><img src="$imagesdir/$search_img" alt="" /> $search_txt{'183'}</td>
     </tr>
 </table>
 <table class="bordercolor pad_4px cs_thin" >

@@ -1390,8 +1390,7 @@ s/{yabb adminchk}/$adminurl?action=admincheck2;username=$user/sm;
         $yynavigation = qq~&rsaquo; $admin_txt{'900'}~;
         $yytitle      = $admin_txt{'900'};
         $yyuname = qq~${$uid.$username}{'realname'}~;
-        $yyjsstyle = 1;    
-        template();
+         template();
     }
     return;
 }
