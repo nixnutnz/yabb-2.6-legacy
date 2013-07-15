@@ -2011,7 +2011,7 @@ qq{general|general||This is the board for General Discussions.<br /><i>The board
                   || setup_fatal_error(
                     "$maintext_23 $convboardsdir/general.txt: ", 1 );
                 print {BOARDFILE}
-qq{1278201900|Welcome to your new YaBB 2.5.4 forum!|YaBB Administrator|webmaster\@yoursite.com|1278201900|0|admin|xx|0\n}
+qq{1278201900|Welcome to your new YaBB 2.5.4 forum!|Administrator|webmaster\@yoursite.com|1278201900|0|admin|xx|0\n}
                   or croak 'cannot print BOARDFILE';
                 fclose(BOARDFILE);
             }
@@ -3637,9 +3637,10 @@ sub SetInstall2 {
 
 ########## MemberGroups ##########
 
-\$Group{'Administrator'} = "YaBB Administrator|5|staradmin.gif|red|0|0|0|0|0|0";
+\$Group{'Administrator'} = "Administrator|5|staradmin.gif|red|0|0|0|0|0|0";
 \$Group{'Global Moderator'} = "Global Moderator|5|stargmod.gif|blue|0|0|0|0|0|0";
-\$Group{'Moderator'} = "YaBB Moderator|5|starmod.gif|green|0|0|0|0|0|0";
+\$Group{'Mid Moderator'} = "Forum Moderator|5|starymod.png|teal|0|0|0|0|0|0";
+\$Group{'Moderator'} = "Board Moderator|5|starmod.png|green|0|0|0|0|0|0";
 \$Post{'500'} = "God Member|5|starsilver.gif||0|0|0|0|0|0";
 \$Post{'250'} = "Senior Member|4|stargold.gif||0|0|0|0|0|0";
 \$Post{'100'} = "Full Member|3|starblue.gif||0|0|0|0|0|0";
