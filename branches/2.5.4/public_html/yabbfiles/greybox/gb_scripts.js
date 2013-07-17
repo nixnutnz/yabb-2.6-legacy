@@ -160,8 +160,8 @@ var GB_SETS={};
 function decoGreyboxLinks(){
 var as=AJS.$bytc("a");
 AJS.map(as,function(a){
-if(a.getAttribute("href")&&a.getAttribute("rel")){
-var rel=a.getAttribute("rel");
+if(a.getAttribute("href")&&a.getAttribute("data-rel")){
+var rel=a.getAttribute("data-rel");
 if(rel.indexOf("gb_")==0){
 var _17=rel.match(/\w+/)[0];
 var _18=rel.match(/\[(.*)\]/)[1];
