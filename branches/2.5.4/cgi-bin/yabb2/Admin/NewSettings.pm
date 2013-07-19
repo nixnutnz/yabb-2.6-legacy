@@ -519,6 +519,7 @@ sub SaveSettingsTo {
 \$cookiepassword = "\Q$cookiepassword\E";	# Name of the password cookie
 \$cookiesession_name = "\Q$cookiesession_name\E";   # Name of the Session cookie
 \$cookietsort = "\Q$cookietsort\E";   # Name of the message Index sort cookie
+\$cookieview = "\Q$cookieview\E";           # Name of the Guest Message Limit cookie
 
 \$regtype = $regtype;						# 0 = registration closed (only admin can register), 1 = pre registration with admin approval,
 									# 2 = pre registration and email activation, 3 = open registration
@@ -594,6 +595,8 @@ $member_groups
 \$parseflash = $parseflash;					# Set to 1 to parse the flash tag
 \$enableclicklog = $enableclicklog;			# Set to 1 to track stats in Clicklog (this may slow your board down)
 \$showimageinquote = $showimageinquote;		# Set to 1 to shows images in quotes, 0 displays a link to the image
+\$enabletopichover = $enabletopichover;     # Set to 1 to enable Topic Hover on Message Index
+\$staff_reason = $staff_reason;             # Set to 1 to enable Reason for Editing
 
 \@pallist = ($pallist);			# color settings of the palette
 
@@ -613,6 +616,9 @@ $member_groups
 \$enable_guestposting = $enable_guestposting;	# Set to 0 if do not allow 1 is allow.
 \$guest_media_disallowed = $guest_media_disallowed; # disallow browsing guests to see media files or have clickable auto linked urls in messages.
 \$enable_guestlanguage = $enable_guestlanguage;	# allow browsing guests to select their language - requires more than one language pack! - Set to 0 if do not allow 1 is allow.
+\$enable_guest_view_limit = $enable_guest_view_limit;    # Set to 1 to enable guest topic view limit.
+\$guest_view_limit = $guest_view_limit;    # Set the amount of topics guests are allowed to view before they are encouraged to register.
+\$guest_view_limit_block = $guest_view_limit_block ;    # Set to 1 to block guests viewing topics if they reach the topic view limit. Set to 0 to display a message at the top of the message view.
 
 \$enable_notifications = $enable_notifications;	# - Allow e-mail notification for boards/threads listed in "My Notifications" => value == 1
 			# - Allow e-mail notification when new PM comes in => value == 2

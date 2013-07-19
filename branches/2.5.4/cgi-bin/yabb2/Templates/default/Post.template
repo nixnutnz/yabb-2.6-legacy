@@ -76,7 +76,9 @@ $mypost_postblock = qq~
         <td class="windowbg2">
             <input type="text" name="subject" id="subject" value="{yabb sub}" size="50" maxlength="{yabb my_submax}" tabindex="1" style="width: 460px;" onkeyup="autoPreview()" />
         </td>
-    </tr><tr>
+    </tr>
+    {yabb myreason}
+    <tr>
         <td class="windowbg2 vtop">
             <label for="message"><b>$post_txt{'72'}:</b></label><br /><span class="small">$post_txt{'resizedescript'}</span>
         </td>
@@ -121,6 +123,11 @@ $mypost_ubbc = qq~
     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
     <script type="text/javascript">
     ~;
+
+$mypost_reason = qq~
+                  <td class="windowbg2"><label for="reason"><b>$post_txt{'70a'}:</b></label></td>
+                  <td class="windowbg2"><input type="text" name="reason" id="reason" value="{yabb reason}" size="70" maxlength="50" tabindex="6" style="width: 460px;" /></td>
+            </tr><tr>~;
 
 $mypost_preview_main = qq~<tr class="windowbg">
             <td class="vtop"><b>$post_txt{'507'}</b></td>

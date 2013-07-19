@@ -26,6 +26,7 @@ $postlngver = 'YaBB 2.5.4 $Revision$';
 '68' => 'Name',
 '69' => 'E-mail',
 '70' => 'Subject',
+'70a' => 'Reason for Editing',
 '71' => 'Message Icon',
 '72' => 'Message',
 '75' => 'The Name field was not filled out. It is required.',

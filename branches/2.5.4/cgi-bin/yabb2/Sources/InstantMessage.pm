@@ -1199,6 +1199,8 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                     }
                 }
 
+                $logFixfile = $fixfile;
+                push @logfilelist, $logFixfile;
                 $fixfile .= q{~} . $username;
                 push @filelist, $fixfile;
 
@@ -1213,6 +1215,17 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
 
         # Create the list of files
         $fixfile = join q{,}, @filelist;
+        $logFixfile = join q{,}, @logfilelist;
+        if ( @filelist ) {
+            fopen( PMATTACHLOG, ">>$vardir/pm.attachments" )
+                || fatal_error( 'cannot_open', "$vardir/pm.attachments" );
+            foreach my $logFixfile (@logfilelist) {
+                print {PMATTACHLOG}
+            qq~$date|$filesizekb{$logFixfile}|$logFixfile|${$uid.$username}{'realname'}\n~
+                or croak 'cannot print PMATTACHLOG';
+            }
+            fclose(PMATTACHLOG);
+        }
     }
 
     # go through each member in list

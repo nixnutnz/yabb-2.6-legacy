@@ -98,4 +98,8 @@ $messageindexlngver = 'YaBB 2.5.4 $Revision$';
 '2' => 'Board Topics',
 );
 
+%messageindex_tp = (
+'enabletp' => 'Enable Topic Preview',
+'disabletp' => 'Disable Topic Preview',
+);
 1;

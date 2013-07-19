@@ -786,6 +786,7 @@ sub donoopen {
 }
 
 sub do_print {
+    $threadpost =~ s/\[reason\](.+?)\[\/reason\]//isgxm;
     $threadpost =~ s/<br \/>/\n/igxsm;
     $threadpost =~ s/\[highlight(.*?)\](.*?)\[\/highlight\]/$2/isgxm;
     $threadpost =~

@@ -51,7 +51,7 @@ message_sm,message|img_txt|144|||imgwindowbg|gif|tmp
 modify,modify|img_txt|66|||imgwindowbg|png|tmp
 modify_profile,modify|img_txt|66|||imgmenu|png|tmp
 modifypoll,poll_modify|img_polltxt|39|||imgcatbg|gif|tmp
-mquote,maq4|img_txt|145q|img_txt|145qt|imgwindowbg|png|tmp
+mquote,maq4|img_txt|145q|img_txt|145q|imgwindowbg|png|tmp
 mycenter,mycenter|img_txt|mycenter|||imgmenu|gif|tmp
 myspace,myspace|img_txt|myspace|||imgwindowbg|gif|tmp
 newthread,new_thread|img_txt|33|||imgcatbg|gif|tmp

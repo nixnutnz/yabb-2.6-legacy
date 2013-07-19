@@ -31,6 +31,56 @@ sub Display {
         fatal_error('no_access');
     }
 
+    if ( $enable_guest_view_limit && $guestaccess ) {
+        my $iambot = 0;
+        my $user_host =
+          ( gethostbyaddr pack( 'C4', split /\./xsm, $user_ip ), 2 )[0];
+        if ( -e "$vardir/bots.hosts" ) {
+            fopen( BOTS, "$vardir/bots.hosts" )
+              || fatal_error( 'cannot_open', "$vardir/bots.hosts", 1 );
+            my @botlist = <BOTS>;
+            fclose(BOTS);
+            chomp @botlist;
+            foreach (@botlist) {
+                if ( $_         =~ /(.*?)\|(.*)/xsm ) { $bot_name = $1; }
+                if ( $user_host =~ /$bot_name/ixsm )  { $iambot   = 1; }
+            }
+        }
+        if (   $iamguest
+            && !$iambot
+            && $yyCookies{$cookieview} < $guest_view_limit )
+        {
+            if ( $yyCookies{$cookieview} ) {
+                $gtvlcount = $yyCookies{$cookieview};
+                $gtvlcount++;
+            }
+            else {
+                $gtvlcount = 1;
+            }
+            $yySetCookies1 = write_cookie(
+                -name    => $cookieview,
+                -value   => $gtvlcount,
+                -expires => '+525600m'
+            );
+        }
+        elsif ($iamguest
+            && !$iambot
+            && $yyCookies{'yabbviewlimit'} >= $guest_view_limit )
+        {
+            if ($guest_view_limit_block) {
+                $guest_view_limit_warn = q{};
+                $yytitle               = $display_txt{'guest_message'};
+                $yynavigation = qq~&rsaquo; $display_txt{'guest_message'}~;
+                $yymain .= $my_guest_limit;
+                template();
+                exit;
+            }
+            else {
+                $guest_view_limit_warn = $guest_view_limit_w;
+            }
+        }
+    }
+
     # Get the "NEW"est Post for this user.
     my $newestpost;
     if ( !$iamguest && $max_log_days_old && $INFO{'start'} eq 'new' ) {
@@ -1131,6 +1181,14 @@ q~<hr class="hr" style="margin: 0; margin-top: 5px; margin-bottom: 5px; padding:
         ( $msub, undef ) = Split_Splice_Move( $msub, 0 );
         $msub ||= $display_txt{'24'};
         ToChars($msub);
+        my $reason;
+        if (   $lastmodified && $staff_reason
+            && $postmessage =~ s/\[reason\](.+?)\[\/reason\]//isgm )
+        {
+            $reason = qq~<br /><i><b>$display_txt{'211a'}:</b> $1</i>~;
+            $reason = Censor($reason);
+            ToChars($reason);
+        }
         $msub = Censor($msub);
 
         $message = Censor($postmessage);
@@ -1169,11 +1227,12 @@ qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote
                         if ($enable_markquote) {
 							my $quoteinfo;
 							my $quotesmess = $postmessage;
-							while ($quotesmess =~ s/\[quote (.*?)\]//sm) {
-								my($tmpqauth, $tmpqlink, $tmpqdate) = split / /sm, $1;
-								my (undef, $tmpqau) = split /=/xsm, $tmpqauth;
-								my (undef, $tmpqli) = split /=/xsm, $tmpqlink;
-								my (undef, $tmpqda) = split /=/xsm, $tmpqdate;
+                            while ( $quotesmess =~ s/\[quote (.*?)\]//sm ) {
+                                my ( $tmpqauth, $tmpqlink, $tmpqdate ) =
+                                  split / /sm, $1;
+                                my ( undef, $tmpqau ) = split /=/xsm, $tmpqauth;
+                                my ( undef, $tmpqli ) = split /=/xsm, $tmpqlink;
+                                my ( undef, $tmpqda ) = split /=/xsm, $tmpqdate;
 
 								$quoteinfo .= qq~$tmpqau-$tmpqli-$tmpqda|~;
 							}
@@ -1398,6 +1457,7 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         }
         $outblock =~ s/({|<)yabb message(}|>)/$message/gsm;
         $outblock =~ s/({|<)yabb modified(}|>)/$lastmodified/gsm;
+        $outblock =~ s/({|<)yabb reason(}|>)/$reason/gsm;
         if ( !$hidesignat && ${ $uid . $musername }{'signature'} ) {
             $outblock =~
               s/({|<)yabb signature(}|>)/${$uid.$musername}{'signature'}/gsm;
@@ -1578,6 +1638,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
     $adminhandellist =~ s/({|<)yabb multidelete(}|>)/$template_multidelete/gsm;
     $adminhandellist =~ s/\Q$menusep//ixsm;
 
+    $display_template =~ s/({|<)yabb guestview(}|>)/$guest_view_limit_warn/gsm;
     $display_template =~ s/({|<)yabb home(}|>)/$template_home/gsm;
     $display_template =~ s/({|<)yabb category(}|>)/$template_cat/gsm;
     $display_template =~ s/({|<)yabb board(}|>)/$template_board/gsm;

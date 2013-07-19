@@ -134,6 +134,7 @@ sub ModifyMessage {
         $message =~ s/<br>/\n/igxsm;
         $message =~ s/ \&nbsp; \&nbsp; \&nbsp;/\t/igsm;
         $settofield = 'message';
+        if ( $message =~ s/\[reason\](.+?)\[\/reason\]//isgm ) { $reason = $1; }
     }
     if ( $ENV{'HTTP_USER_AGENT'} =~ /(MSIE) (\d)/sm ) {
         if   ( $2 >= 7.0 ) { $iecopycheck = q{}; }
@@ -446,6 +447,12 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
     $thestatus = $FORM{'topicstatus'};
     $thestatus =~ s/\, //gsm;
     CheckIcon();
+
+    if ( $FORM{'reason'} ) {
+        $reason  = $FORM{'reason'};
+        $reason  = qq~\[reason\]$reason\[\/reason\]~;
+        $message = qq~$message$reason~;
+    }
 
     if ( !$message ) { fatal_error('no_message'); }
 

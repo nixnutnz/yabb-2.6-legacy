@@ -181,7 +181,7 @@ $front_page = qq~<div class="bordercolor rightboxdiv">
         document.write('<table class="cs_thin pad_4px">');
         document.write('<tr><td class="titlebg" colspan="2"><b>$admintxt{'3'}</b></td></tr>');
         document.write('<tr><td class="windowbg2">$versiontxt{'4'}</td><td class="windowbg2"><b>{yabb YaBBversion}</b></td></tr>');
-        if (!STABLE) {
+        if (typeof STABLE == "undefined" || STABLE == null ) {
                 document.write('<tr><td class="titlebg" colspan="2">$rna</b></td></tr>');
         } else {
                 document.write('<tr><td class="windowbg2">$versiontxt{'5'}</td><td class="windowbg2"><b>'+STABLE+'</b></td></tr>');

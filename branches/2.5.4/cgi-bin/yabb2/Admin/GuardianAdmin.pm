@@ -412,7 +412,6 @@ sub setup_guardian2 {
 
     require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');
-
     @access_denied = split /\,/xsm, $access_denied;
     update_htaccess( 'save', @access_denied );
 

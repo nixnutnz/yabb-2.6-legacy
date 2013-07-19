@@ -51,6 +51,7 @@ $adminhandellist = qq~
 ~;
 
 $display_template = qq~
+{yabb guestview}
 <!-- Navigation Bar start -->
 <div class="navbarcontainer">
     <table>
@@ -215,7 +216,7 @@ $messageblock = qq~
             </tr><tr>
                 <td class="{yabb css} bottom" style="height:12px" colspan="$postcol">
                     <div class="small" style="width: 99%; text-align: right;">
-                        {yabb modified} &nbsp;
+                        {yabb modified}&nbsp;{yabb reason}&nbsp;
                     </div>
                 </td>
             </tr><tr>
@@ -467,6 +468,28 @@ $mysend_spam = qq~<tr>
             <input type="hidden" name="verification_question_id" value="{yabb spam_question_id}" />
         </td>
     </tr>~;
+
+$my_guest_limit = qq~
+<table class="pad_4px">
+	 <tr>
+		<td class="tabtitle" style="height:22px"><img src="$imagesdir/xx.gif" alt=""> $display_txt{'guest_message'}</td>
+	</tr><tr>
+    	<td class="windowbg">
+      		$display_txt{'guest_message_block'}
+    	</td>
+  	</tr>
+</table>~;
+
+$guest_view_limit_w = qq~
+<table class="pad_4px">
+	<tr>
+    	<td class="tabtitle" style="height:22px"><img src="$imagesdir/xx.gif" alt=""> $display_txt{'guest_message'}</td>
+  	</tr><tr>
+    	<td class="windowbg">
+      		$display_txt{'guest_message_warn'}
+    	</td>
+  	</tr>
+</table>~;
 
 #pagedrop (in javascript)
 

@@ -34,6 +34,10 @@ sub ListMods {
     # You could use "$SuperMod_CoolThings"
 
 ### BOARDMOD ANCHOR ###
+	$BoardPass = qq~BoardPassword|Boris Tjuvanov (<a href="http://www.mf-b.ru" target="_blank">MF-B</a>), Jeffrey Man and Detlef Pilzecker (deti)|This mod allow set password access to specific Boards|2.3|April 18th 2009|~;
+	push (@installed_mods, "$BoardPass");
+	$w3cvalid = "W3C_Validator_Link_YaBB254|Dandello|This mod adds a page specific link to the W3C Validator that is visible to the admin for checking page/template validity on publicly accessible pages.|0.1 alpha|07/02/13";
+	push (@installed_mods, "$w3cvalid");
 ### END BOARDMOD ANCHOR ###
     our ( $yymain, %mod_list, $imagesdir, $yytitle );
     my ( $action_area,  $mod_text_list, $full_description );

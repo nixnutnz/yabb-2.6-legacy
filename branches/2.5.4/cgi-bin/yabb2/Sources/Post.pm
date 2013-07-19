@@ -940,6 +940,16 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             }
         }
         $my_submax = $set_subjectMaxLength + ( $sub =~ /^Re: /sm ? 4 : 0 );
+
+        if (   $post ne 'imsend'
+            && $postid ne 'Poll'
+            && ( $action eq 'modify' || $action eq 'modify2' )
+            && $staff && $staff_reason )
+        {
+            $my_reason = $mypost_reason;
+            $my_reason =~ s/{yabb reason}/$reason/sm;
+        }
+
         $my_rem_smilies =
           (      !$removenormalsmilies
               || ( $showadded == 3 && $showsmdir != 2 )
@@ -1226,6 +1236,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
           s/{yabb verification_question_field}/$verification_question_field/sm;
         $my_postsection =~ s/{yabb sub}/$sub/sm;
         $my_postsection =~ s/{yabb my_submax}/$my_submax/sm;
+        $my_postsection =~ s/{yabb myreason}/$my_reason/sm;
         $my_postsection =~ s/{yabb my_rem_smilies}/$my_rem_smilies/sm;
         $my_postsection =~ s/{yabb my_ubbc}/$my_ubbc/sm;
         $my_postsection =~ s/{yabb my_postsec_b}/$my_postsec_b/sm;
@@ -2016,7 +2027,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
         if ( $numcount < 2 ) { Preview("$post_polltxt{'38'}"); }
     }
 
-    my ( $file, $fixfile, @filelist, %filesizekb, $fixext );
+    my ( $file, $fixfile, @filelist, %filesizekb );
     for my $y ( 1 .. $allowattach ) {
         if ($CGI_query) { $file = $CGI_query->upload("file$y"); }
         if ($file) {

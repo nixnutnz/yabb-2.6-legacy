@@ -167,6 +167,7 @@ if ($action eq 'detailedversion') { return 1; }
 'sticky','SetStatus.pm&SetStatus',
 'threadpagedrop','Display.pm&ThreadPageindex',
 'threadpagetext','Display.pm&ThreadPageindex',
+'topicpreview','MessageIndex.pm&SetTopicPreview',
 'undovote','Poll.pm&UndoVote',
 'usersrecentposts','Profile.pm&usersrecentposts',
 'viewdownloads','Downloads.pm&DownloadView',

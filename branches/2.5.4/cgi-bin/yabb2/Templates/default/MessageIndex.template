@@ -47,6 +47,8 @@ $msgbrd_veryhotthread = 'veryhotthread.gif';
 $msgbrd_admin_move = 'admin_move.gif';
 $msgbrd_admin_rem = 'admin_rem.gif';
 $msgbrd_rss = 'rss.png';
+$hoveron = 'tpon.gif';
+$hoveroff = 'tpoff.gif';
 
 if (!$messagelist) {
     if (!$ShowBDescrip && $action ne 'favorites') {
@@ -141,7 +143,7 @@ if ($action ne 'favorites') {
 $messageindex_template .= qq~
 			<table class="bordercolor pad_3px cs_thin">
 				<tr class="titlebg message-sort">
-					<td class="center" style="width:8%" colspan="2">&nbsp;</td>
+					<td class="center" style="width:8%" colspan="2">{yabb topicpreview}</td>
 	                <td style="width:42%"><span style="white-space: nowrap;">{yabb sortsubject} / {yabb sortstarter}</span></td>
 	                <td class="center" style="width:10%"><span style="white-space: nowrap;">{yabb sortanswer}</span></td>
 	                <td class="center" style="width:10%">$messageindex_txt{'301'}</td>

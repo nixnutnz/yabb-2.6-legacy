@@ -293,7 +293,11 @@ qq~<a href="$scripturl?num=$lspostid/$lsreply#$lsreply">$lssub</a> ($lsdatetime)
                 <div class="admin_total_65pc">
                     <script src="http://www.yabbforum.com/update/versioncheck.js" type="text/javascript"></script>
                     <script type="text/javascript">
-                        document.write("$versiontxt{'4'} <b>$YaBBversion</b> - $versiontxt{'5'} <b>"+STABLE+"</b> <p>");
+                        if (typeof STABLE == "undefined" || STABLE == null ) {
+                            document.write("$versiontxt{'4'} <b>$YaBBversion</b> - $versiontxt{'5'} <b>$rna</b> <p>");
+	                    } else {
+                           document.write("$versiontxt{'4'} <b>$YaBBversion</b> - $versiontxt{'5'} <b>"+STABLE+"</b> <p>");
+	                    }
                     </script>
                     <noscript>$versiontxt{'1'} <img src="http://www.yabbforum.com/images/version/versioncheck.gif" alt="" /></noscript>
                 </div>
@@ -781,9 +785,11 @@ sub ver_detail {
                     <script src="http://www.yabbforum.com/update/versioncheck.js" type="text/javascript"></script>
                     $versiontxt{'4'} <b>$YaBBversion</b><br />
                     <script type="text/javascript">
-                    <!-- //hide from dinosaurs
-                        document.write("$versiontxt{'5'} <b>"+STABLE+"</b><br />$versiontxt{'7'} <b>"+BETA+"</b>");
-                    // -->
+					    if (typeof STABLE == "undefined" || STABLE == null) {
+			                document.write("$versiontxt{'5'} <b>$rna</b><br />$versiontxt{'7'} <b>$rna</b>");
+		                } else {
+			                document.write("$versiontxt{'5'} <b>"+STABLE+"</b><br />$versiontxt{'7'} <b>"+BETA+"</b>");
+		                } 
                     </script>
                     <noscript>$versiontxt{'1'} <img src="http://www.yabbforum.com/images/version/versioncheck.gif" alt="" /></noscript>
                 </td>
@@ -1067,10 +1073,8 @@ sub AddMember {
 </table>
 </form>
 <script type="text/javascript">
- <!--
         document.creator.regusername.focus();
         //function
- //-->
 </script>~;
 
     $yytitle     = "$register_txt{'97'}";

@@ -140,6 +140,7 @@ foreach my $curtemplate (sort{ $templateset{$a} cmp $templateset{$b} } keys %tem
 
 # imspam conversion
 $imspam = 0 if $imspam eq 'off';
+$guest_view_limit ||= 15;
 
 $imtext =~ s~<br />~\n~g;
 
@@ -399,6 +400,12 @@ $qckage ||= 31;
 			description => qq~<label for="showimageinquote">$admin_txt{'imageinquote'}</label>~,
 			input_html => qq~<input type="checkbox" name="showimageinquote" id="showimageinquote" value="1"${ischecked($showimageinquote)} />~,
 			name => 'showimageinquote',
+			validate => 'boolean',
+		},
+		{
+			description => qq~<label for="enabletopichover">$admin_txt{'topichover'}</label>~,
+			input_html => qq~<input type="checkbox" name="enabletopichover" id="enabletopichover" value="1"${ischecked($enabletopichover)} />~,
+			name => 'enabletopichover',
 			validate => 'boolean',
 		},
 		{  
@@ -800,6 +807,27 @@ qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdM
 			validate => 'boolean',
 		},
 		{
+			description => qq~<label for="enable_guest_view_limit">$admin_txt{'enable_guest_view_limit'}</label>~,
+			input_html => qq~<input type="checkbox" name="enable_guest_view_limit" id="enable_guest_view_limit" value="1"${ischecked($enable_guest_view_limit)} />~,
+			name => 'enable_guest_view_limit',
+			validate => 'boolean',
+			depends_on => ['!guestaccess'],
+		},
+		{
+			description => qq~<label for="guest_view_limit">$admin_txt{'guest_view_limit'}</label>~,
+			input_html => qq~<input type="text" name="guest_view_limit" id="guest_view_limit" size="5" value="$guest_view_limit" />~,
+			name => 'guest_view_limit',
+			validate => 'number',
+			depends_on => ['enable_guest_view_limit', '!guestaccess'],
+		},
+		{
+			description => qq~<label for="guest_view_limit_block">$admin_txt{'guest_view_limit_block'}</label>~,
+			input_html => qq~<input type="checkbox" name="guest_view_limit_block" id="guest_view_limit_block" value="1"${ischecked($guest_view_limit_block)} />~,
+			name => 'guest_view_limit_block',
+			validate => 'boolean',
+			depends_on => ['enable_guest_view_limit', '!guestaccess'],
+		},
+		{
 			header => $settings_txt{'profile'},
 		},
 		{
@@ -1023,6 +1051,11 @@ qq~<input type="checkbox" name="self_del_user" id="self_del_user" value="1" ${is
 			validate => 'text',
 		},
 		{
+			description => qq~<label for="cookieview">$admin_txt{'353e'}</label>~,
+			input_html => qq~<input type="text" name="cookieview" id="cookieview" size="20" value="$cookieview" />~,
+			name => 'cookieview',
+			validate => 'text',
+		},		{
 			header => $settings_txt{'registration'},
 		},
 		{
@@ -1122,15 +1155,15 @@ qq~<input type="checkbox" name="self_del_user" id="self_del_user" value="1" ${is
 			validate => 'number',
 			depends_on => ['regtype!=0'],
 		},
-            {
-                description =>
-                  qq~<label for="nomailspammer">$admin_txt{'nospammer'}</label>~,
-                input_html =>
+        {
+            description =>
+                qq~<label for="nomailspammer">$admin_txt{'nospammer'}</label>~,
+            input_html =>
 qq~<input type="checkbox" name="nomailspammer" id="nomailspammer" value="1" ${ischecked($nomailspammer)} />~,
-                name       => 'nomailspammer',
-                validate   => 'boolean',
-                depends_on => ['regtype==1'],
-            },
+            name       => 'nomailspammer',
+            validate   => 'boolean',
+            depends_on => ['regtype==1'],
+        },
 		{
 			header => $settings_txt{'memberlist'},
 		},
@@ -1289,6 +1322,12 @@ qq~<input type="checkbox" name="nomailspammer" id="nomailspammer" value="1" ${is
 </select>~,
 			name => 'bypass_lock_perm',
 			validate => 'text',
+		},
+		{
+			description => qq~<label for="staff_reason">$admin_txt{'staff_reason'}</label>~,
+			input_html => qq~<input type="checkbox" name="staff_reason" id="staff_reason" value="1"${ischecked($staff_reason)} />~,
+			name => 'staff_reason',
+			validate => 'boolean',
 		},
 	],
 },

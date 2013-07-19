@@ -153,11 +153,11 @@ qq~<a href="$scripturl?board=$currentboard;tsort=0" rel="nofollow">$messageindex
     my %starter;
     @temp_list = @threadlist;
 
-	*starter = sub {
-		if ( exists $user_info{$_[0]} )  { return $user_info{$_[0]};}
-		if ( !exists $memberinf{$_[0]} ) { return lc((split /\|/xsm, $_[1], 4)[2]);}
- 		$user_info{$_[0]} = lc((split /\|/xsm, $memberinf{$_[0]}, 2)[0]);
-	};
+    *starter = sub {
+        if ( exists $user_info{$_[0]} )  { return $user_info{$_[0]};}
+        if ( !exists $memberinf{$_[0]} ) { return lc((split /\|/xsm, $_[1], 4)[2]);}
+        $user_info{$_[0]} = lc((split /\|/xsm, $memberinf{$_[0]}, 2)[0]);
+    };
 
     if ( $tsort == 1 ) {
         $sort_lastpostim =
@@ -1102,15 +1102,95 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" style="border: 0p
         $msub = Censor($msub);
         ToChars($msub);
         if ( !$movedFlag ) {
+            if ( ${ $uid . $username }{'topicpreview'} || $iamguest ) {
+                fopen( MNUM, "$datadir/$mnum.txt" );
+                my $thetopic = <MNUM>;
+                fclose(MNUM);
+                my $themessage = ( split /\|/xsm, $thetopic )[8];
+                $clip          = 0;
+                $msglength     = 200;
+                $testlength    = 0;
+                $pretextlength = 0;
+                FromHTML($themessage);
+                $themessage =~ s/\[img\].*?\[\/img\]/[b][IMAGE][\/b]/igsm;
+                $themessage =~ s/\[media].*?\[\/media]/[b][MEDIA][\/b]/igsm;
+                $themessage =~ s/<br>/<br \/>/igsm;
+                $themessage =~ s/(<br \/>){2,}/<br \/>/igsm;
+                $themessage =~ s/^<br \/>//igsm;
+
+                *fixtags = sub {
+                    ( $tmpmessage, $pretext, $pretag, $tagtext, $posttag ) = @_;
+                    $testmessage = $tmpmessage;
+                    $testmessage =~ s/\[.*?\]//gsm;
+                    $testmessage =~ s/\<.*?\>//gsm;
+                    $testlength    = length $testmessage;
+                    $pretextlength = length $pretext;
+                    $pretext =~ s/\[(.*?\])/|$1/gsm;
+                    $pretag  =~ s/\[/|/sm;
+                    $tagtext =~ s/\[(.*?\])/|$1/gsm;
+                    $posttag =~ s/\[/|/sm;
+
+                    if ( $pretextlength > $msglength ) {
+                        return $pretext;
+                    }
+                    if ( $testlength > $msglength ) {
+                        $clip        = 1;
+                        $lgtagtxtrem = ( $msglength - $pretextlength ) - 3;
+                        $tagtextrem  = substr $tagtext, 0, $lgtagtxtrem;
+                        $msglength += ( length($tmpmessage) - $testlength );
+                        return
+                            $pretext
+                          . $pretag
+                          . $tagtextrem . '...'
+                          . $posttag;
+                    }
+                    $msglength += ( length($tmpmessage) - $testlength );
+                    return $pretext . $pretag . $tagtext . $posttag;
+                };
+
+                while ($testlength < $msglength
+                    && $themessage =~
+s/^((.*?)(\[(\w+?)[\s|\=]*(.*?)\])(.*?)(\[\/\4\]))/ fixtags($1,$2,$3,$6,$7) /eisgm
+                  )
+                {
+                }
+                $themessage =~ s/\|(.*?\])/[$1/gsm;
+                $themessage = substr $themessage, 0, $msglength;
+                if ( length($themessage) > ( $msglength - 1 ) && !$clip ) {
+                    $themessage .= '...';
+                }
+                $message     = $themessage;
+                $displayname = ${ $uid . $musername }{'realname'};
+                wrap();
+                if ($enable_ubbc) {
+                    if ( !$yyYaBBCloaded ) { require Sources::YaBBC; }
+                    DoUBBC();
+                }
+                wrap2();
+                $themessage = $message;
+                $message    = q{};
+                ToChars($themessage);
+                $themessage =~ s/&/&amp;/igsm;
+                $themessage = Censor($themessage);
+                my $topicsum =
+qq~<div class="windowbg2" id="$mnum" style="position: absolute; top: 20px; left: 200px; width: 400px; border: 1px solid black; padding: 4px; z-index: 10000; overflow: hidden; display: none;">$themessage</div>~;
             if ( ${$mnum}{'board'} eq $annboard ) {
                 $msublink =
-
-#qq~<b><a href="$scripturl?virboard=$currentboard;num=$mnum">$msub</a></b><div style="float:right"><span style="font-size:xx-small">$stickdir</span></div>~;
-qq~<b><a href="$scripturl?virboard=$currentboard;num=$mnum">$msub</a></b>~;
+qq~<a href="$scripturl?virboard=$currentboard;num=$mnum" onmouseover="topicSum(event, '$mnum')" onmouseout="hidetopicSum('$mnum')" onclick="hidetopicSum('$mnum')">$msub</a>$topicsum~;
             }
             else {
                 $msublink =
-qq~<b><a href="$scripturl?num=$mnum">$msub</a></b><div style="float:right"><span style="font-size:xx-small">$stickdir</span></div>~;
+qq~<a href="$scripturl?num=$mnum" onmouseover="topicSum(event, '$mnum')" onmouseout="hidetopicSum('$mnum')" onclick="hidetopicSum('$mnum')">$msub</a>$topicsum<div style="float:right"><span style="font-size:xx-small">$stickdir</span></div>~;
+                }
+            }
+            else {
+                if ( ${$mnum}{'board'} eq $annboard ) {
+                    $msublink =
+qq~<a href="$scripturl?virboard=$currentboard;num=$mnum">$msub</a>~;
+                }
+                else {
+                    $msublink = qq~<a href="$scripturl?num=$mnum">$msub</a>~;
+                }
             }
         }
         elsif ( $movedFlag < 100 ) {
@@ -1318,6 +1398,22 @@ qq~<a href="$scripturl?action=RSSboard;board=$INFO{'board'}" onclick="target='_b
     $messageindex_template =~ s/({|<)yabb category(}|>)/$catlink/gsm;
     $messageindex_template =~ s/({|<)yabb board(}|>)/$boardlink/gsm;
     $messageindex_template =~ s/({|<)yabb moderators(}|>)/$template_mods/gsm;
+    if ( $enabletopichover ) {
+        if ( !$iamguest ) {
+            if ( ${ $uid . $username }{'topicpreview'} ) {
+                $enab_topicprev =
+qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;todo=disable"><img src="$imagesdir/$hoveroff" alt="$messageindex_tp{'disabletp'}" title="$messageindex_tp{'disabletp'}" /><br /></a>~;
+            }
+            else {
+                $enab_topicprev =
+qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;todo=enable"><img src="$imagesdir/$hoveron" alt="$messageindex_tp{'enabletp'}" title="$messageindex_tp{'enabletp'}" /><br /></a>~;
+            }
+        }
+    }
+    else {
+        $enab_topicprev = q{};
+    }
+    $messageindex_template =~ s/({|<)yabb topicpreview(}|>)/$enab_topicprev/gsm;
     $messageindex_template =~ s/({|<)yabb sortsubject(}|>)/$sort_subject/gsm;
     $messageindex_template =~ s/({|<)yabb sortstarter(}|>)/$sort_starter/gsm;
     $messageindex_template =~ s/({|<)yabb sortanswer(}|>)/$sort_answer/gsm;
@@ -1585,6 +1681,26 @@ qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
     $boardindex_template
     $messageindex_template
     $pageindexjs
+    <script type="text/javascript">
+
+    function topicSum(e, topicsumm) {
+        if (document.getElementById(topicsumm).style.display == 'inline') {
+            document.getElementById(topicsumm).style.height = '';
+            document.getElementById(topicsumm).style.display = 'none';
+        }
+        else {
+            document.getElementById(topicsumm).style.display = 'inline';
+            var dheight = document.getElementById(topicsumm).offsetHeight;
+            var dtop = document.all ? e.clientY + document.documentElement.scrollTop - (dheight + 30) : e.pageY - (dheight + 30);
+            document.getElementById(topicsumm).style.top = dtop + 'px';
+        }
+    }
+
+    function hidetopicSum(topicsumm) {
+        document.getElementById(topicsumm).style.display = 'none';
+    }
+
+    </script>
     ~;
 
     if (
@@ -1893,6 +2009,18 @@ sub LoadAccess {
     }
 
     return qq~$yesaccesses<br />$noaccesses~;
+}
+
+sub SetTopicPreview {
+    if ( $INFO{'todo'} eq 'disable' ) {
+        ${ $uid . $username }{'topicpreview'} = '0';
+    }
+    else {
+        ${ $uid . $username }{'topicpreview'} = '1';
+    }
+    UserAccount( $username, 'update' );
+    redirectinternal();
+    return;
 }
 
 1;

@@ -185,6 +185,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 '353' => 'Cookie Name - Password',
 '353a' => 'Cookie Name - Session',
 '353b' => 'Cookie Prefix - MessageIndex sort',
+'353e' => 'Cookie Name - Guest Message Limit',
 '354' => 'Location of Sendmail Program',
 '355' => 'Webmaster E-mail Address',
 '356' => 'YaBB Directory',
@@ -544,6 +545,11 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 'group_stars_ml' => 'Show Group Stars in Member List?',
 'default_avatar' => 'Show a default avatar if the member hasn\'t added a picture?',
 'default_userpic' => 'File name of the default avatar:<br /><span class="small">Files must be uploaded the images directory.<br />e.g. myfile.jpg</span>',
+'enable_guest_view_limit' => 'Enable Guest Topic View Limit?<br /><span class="small">Checking this option will set a cookie to limit the amount of topics that guests can view before they are encouraged to register. You can set the amount of topic views and how you want it to behave below.</span>',
+'guest_view_limit' => 'Guest Topic View Limit:<br /><span class="small">Set the amount of topics that guests can view before they are encouraged to register.</span>',
+'guest_view_limit_block' => 'Block Guests from viewing topics after they have reached the topic view limit?<br /><span class="small">Checking this option will block guests from viewing any more topics after the topic view limit has been reached.<br />Leaving unchecked will display a friendly message at the top of the message view.</span>',
+'topichover' => 'Enable Topic Hover on Message Index',
+'staff_reason' => q~Enable 'Reason for Editing' for staff members~,
 );
 
 %floodtxt = (
