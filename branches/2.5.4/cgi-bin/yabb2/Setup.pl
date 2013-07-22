@@ -99,6 +99,7 @@ if ( !$action ) {
     $rand_cook_pass = "Y2Pass-$rand_integer";
     $rand_cook_sess = "Y2Sess-$rand_integer";
     $rand_cook_sort = "Y2tsort-$rand_integer";
+    $rand_cook_view = "Y2view-$rand_integer";
 
     fopen( COOKFILE, ">$vardir/cook.txt" )
       || setup_fatal_error( "$maintext_23 $vardir/cook.txt: ", 1 );
@@ -106,6 +107,7 @@ if ( !$action ) {
     print {COOKFILE} "$rand_cook_pass\n" or croak 'cannot print cook.txt';
     print {COOKFILE} "$rand_cook_sess\n" or croak 'cannot print cook.txt';
     print {COOKFILE} "$rand_cook_sort\n" or croak 'cannot print cook.txt';
+    print {COOKFILE} "$rand_cook_view\n" or croak 'cannot print cook.txt';
     fclose(COOKFILE);
 
     adminlogin();
@@ -121,6 +123,7 @@ $cookieusername     = "$cookinfo[0]";
 $cookiepassword     = "$cookinfo[1]";
 $cookiesession_name = "$cookinfo[2]";
 $cookietsort        = "$cookinfo[3]";
+$cookieview         = "$cookinfo[4]";
 if    ( $action eq 'adminlogin2' ) { adminlogin2(); }
 elsif ( $action eq 'setup1' )      { autoconfig(); }
 elsif ( $action eq 'setup2' ) {
@@ -1435,6 +1438,7 @@ sub SetInstall2 {
 \$cookiepassword = "$cookiepassword";               # Name of the password cookie
 \$cookiesession_name = "$cookiesession_name";       # Name of the Session cookie
 \$cookietsort = "$cookietsort";                     # Name of the Topic Sort
+\$cookieview = "$cookieview";                       # Name of the Guest Message Limit cookie
 
 \$regtype = $regtype;                               # 0 = registration closed (only admin can register),
                                                     # 1 = pre registration with admin approval,

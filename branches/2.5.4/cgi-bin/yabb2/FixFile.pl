@@ -1247,7 +1247,9 @@ sub Convert_Settings {
 	if ( !$cookietsort ) { ( undef,$rancook ) = split /\-/xsm, $cookieusername;
         $cookietsort = qq~Y2tsort-$rancook~;
     }
-
+	if ( !$cookieview ) { ( undef,$rancook ) = split /\-/xsm, $cookieusername;
+        $cookieview = qq~Y2view-$rancook~;
+    }
     if (!$MaxIMMessLen) {$MaxIMMessLen = 2000;}
     if (!$AdMaxIMMessLen) {$AdMaxIMMessLen = 3000;}
     if (!$MaxCalMessLen){$MaxCalMessLen = 2000;}

@@ -3601,6 +3601,7 @@ sub SetInstall2 {
 \$cookiepassword = "$cookiepassword";               # Name of the password cookie
 \$cookiesession_name = "$cookiesession_name";       # Name of the Session cookie
 \$cookietsort = "$cookietsort";                     # Name of the Topic Sort
+\$cookieview = "$cookieview";                       # Name of the Guest Message Limit cookie
 
 \$regtype = $regtype;                               # 0 = registration closed (only admin can register),
                                                     # 1 = pre registration with admin approval,
