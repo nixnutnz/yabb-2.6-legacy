@@ -164,15 +164,176 @@ function quoteSelection(quote_name, quote_topic_id, quote_msg_id, quote_date, qu
 	}
 }
 
-function get_selection(msg_id) {
-	if (window.getSelection) {
-		quote_selection[msg_id] = window.getSelection();
-	} else {
-		quote_selection[msg_id] = document.selection.createRange().text;
+function contains(node, container) {
+	while (node) {
+		if (node === container) return true;
+		node = node.parentNode;
 	}
-	quote_selection[msg_id] = '' + quote_selection[msg_id] + '';
-	// quote_selection[msg_id] = quote_selection[msg_id].replace(/\\r\\n/g, "_caret_");
-	// quote_selection[msg_id] = quote_selection[msg_id].replace(/_caret_/g, "\\r\\n");
+	return false;
+}
+
+function inElement(el) {
+	if (typeof window.getSelection != "undefined") {
+		var sel = window.getSelection();
+		if (sel.rangeCount) {
+			for (var i = 0; i < sel.rangeCount; ++i) {
+				if (!contains(sel.getRangeAt(i).commonAncestorContainer, el)) return false;
+			}
+			return true;
+		}
+	}
+	else if (typeof document.selection != "undefined") return contains(sel.createRange().parentElement(), el);
+	return false;
+	}
+
+function get_selection(msg_id, qinfo) {
+	var srcObj = document.getElementById ('mq' + msg_id);
+	if (!inElement(srcObj)) return false;
+	var str = new Array();
+	var container = document.createElement("div");
+	if (typeof window.getSelection != "undefined") {
+		var sel = window.getSelection();
+		if (sel.rangeCount) {
+			for (var i = 0; i < sel.rangeCount; ++i) {
+				container.appendChild(sel.getRangeAt(i).cloneContents());
+			}
+		}
+	}
+	else if (typeof document.selection != "undefined") {
+		if (document.selection.type == "Text") {
+			container.appendChild(document.selection.createRange().htmlText);
+		}
+	}
+
+	str = container.innerHTML;
+
+	function rgbToHex(r, g, b) {
+		var rgb = b | (g << 8) | (r << 16);
+		trhex = (0x1000000 | rgb).toString(16).substring(1);
+		str = str.replace(/rgb\((\d+), (\d+), (\d+)\)/i, "#" + trhex);
+	}
+
+	while(iergb=str.match(/rgb\((\d+), (\d+), (\d+)\);/i)) { rgbToHex(iergb[1],iergb[2],iergb[3]) }
+
+	str = str.replace(/\r/g, "");
+	str = str.replace(/\n/g, "[codbr]");
+	str = str.replace(/on(load|click|dbclick|mouseover|mousedown|mouseup)="[^"]+"/ig, "");
+	str = str.replace(/<script[^>]*?>([\w\W]*?)<\/script>/ig, "");
+	str = str.replace(/<i><span style="color: #FF0000;"><b>(.+?)<\/b><\/span> (.*?)\s*<\/i>/ig, "\/me $2");
+
+	qstr = qinfo.split(/\|/);
+
+	function nstsquoteInfo(sqlink, sqmess) {
+		var allInfo = '';
+		for (var i=0; i < qstr.length; i++) {
+			eachinfo = qstr[i].split(/-/);
+			if (eachinfo[1] == sqlink) {
+				allInfo = ' author=' + eachinfo[0] + ' link=' + eachinfo[1] + ' date=' + eachinfo[2];
+				break;
+			}
+		}
+		str = str.replace(/<a class="message" href="http:\/\/(.+?)num=([0-9\/\#]+?)">(.*?)<\/a>\s*(.+?)<br[^>]*><div class="quote" id="(.+?)"[^>]*>(.*?)<\/div><\!--\5-->/i, "[quote" + allInfo + "]" + sqmess + "[/quote]");
+
+		str = str.replace(/<a class="message" href="http:\/\/(.+?)num=([0-9\/\#]+?)">(.*?)<\/a>\s*(.+?)<br[^>]*><div (.*?) id="(.+?)" class="quote"[^>]*>(.*?)<\/div><\!--\6-->/i, "[quote" + allInfo + "]" + sqmess + "[/quote]");
+
+	}
+	while ( b=str.match(/<a class="message" href="http:\/\/(.+?)num=([0-9\/\#]+?)">(.*?)<\/a>\s*(.+?)<br[^>]*><div class="quote" id="(.+?)"[^>]*>(.*?)<\/div><\!--\5-->/i) ) {
+		nstsquoteInfo(b[2], b[6]);
+	}
+	while ( b=str.match(/<a class="message" href="http:\/\/(.+?)num=([0-9\/\#]+?)">(.*?)<\/a>\s*(.+?)<br[^>]*><div (.*?) id="(.+?)" class="quote"[^>]*>(.*?)<\/div><\!--\6-->/i) ) {
+		nstsquoteInfo(b[2], b[7]);
+	}
+
+	function simplequoteInfo(ssqmess) {
+		str = str.replace(/<b>(.+?)<\/b><br[^>]*>(<div class="quote"[^>]*>)([^\2]*?)<\/div>/i, "[quote]" + ssqmess + "[/quote]");
+	}
+	while ( bs=str.match(/<b>(.+?)<\/b><br[^>]*>(<div class="quote"[^>]*>)([^\2]*?)<\/div>/i) ) {
+		simplequoteInfo(bs[3]);
+	}
+
+	str = str.replace(/<p align=(.*)>(.*?)<\/p>/ig, "[$1]$2[\/$1]");
+	str = str.replace(/<img class="smil"(.*?)data-rel="(\S.+?)"(.*?)>/ig, "$2");
+	function imagemsg(ul, s) {
+		var wid = '';
+		var hig = '';
+		var ali = '';
+		var alt = '';
+		var shd = '';
+		if (/width="([\d]+?)"/.test(s)) wid = s.replace(/^(.+?) width="([\d]+?)"(.*?)$/i, " width=$2");
+		if (/height="([\d]+?)"/.test(s)) hig = s.replace(/^(.+?) height="([\d]+?)"(.*?)$/i, " height=$2");
+		if (/align="([\w]+?)"/.test(s)) ali = s.replace(/^(.+?) align="([\w]+?)"(.*?)$/i, " align=$2");
+		if (/alt="(.+?)"/.test(s)) alt = s.replace(/^(.+?) alt="(.+?)"(.*?)$/i, " alt=$2");
+		if (/shadow:\s([\d]+?)px/.test(s)) shd = s.replace(/^(.+?)shadow:\s([\d]+?)px(.*?)$/i, " shadow=$2");
+		var imgubb = "[img" + wid + hig + ali + alt + shd + "]" + ul + "[/img]";
+		str = str.replace(/<img[^>]+src="([^"]+)" (.*?)>/i, imgubb);
+	}
+	while(pcr=str.match(/<img[^>]+src="([^"]+)" (.*?)>/i)) { imagemsg(pcr[1],pcr[2]) }
+
+	str = str.replace(/<b>(.+?)<\/b>(<pre(.*?)class=)/ig,"$2");
+	function codemsg(ct, cm) {
+		var ctype = ct;
+		var ctext = cm;
+		ctext = ctext.replace(/\[codbr\]/g,"\n");
+		ctext = ctext.replace(/\n*$/,"");
+		ctext = ctext.replace(/<span class="sh_(.+?)">(.+?)<\/span>/ig,"$2");
+		ctype = ctype.replace(/ sh_sourceCode/,"");
+		ctype = ctype.replace(/sh_(.+)/, " $1");
+		if(ctype == 'code') ctype = "";
+		var codeubb = "[code" + ctype + "]" + ctext + "[/code]";
+		str = str.replace(/<pre(.*?)class="(.+?)"[^>]*?>(.+?)<\/pre>/i, codeubb);
+	}
+	while(ccr=str.match(/<pre(.*?)class="(.+?)"[^>]*>(.+?)<\/pre>/i)) { codemsg(ccr[2],ccr[3]) }
+
+	str = str.replace(/<span class="sh_(.+?)">(.+?)<\/span>/ig, "$2");
+	str = str.replace(/<span style="(.*?)font-size:\s*(\d+)(px|pt);">(.+?)<\/span><\!--size-->/ig, "[size=$2]$4[/size]");
+	str = str.replace(/<span style="(.*?)font-family:\s*(.+?);">(.+?)<\/span><\!--font-->/ig, "[font=$2]$3[/font]");
+	str = str.replace(/<span style="(.*?)color:\s*(.+?);">(.+?)<\/span><\!--color-->/ig, "[color=$2]$3[/color]");
+	str = str.replace(/<div style="text-align: left;">(.+?)<\/div><\!--left-->/ig, "[left]$1[/left]");
+	str = str.replace(/<div style="text-align: right;">(.+?)<\/div><\!--right-->/ig, "[right]$1[/right]");
+	str = str.replace(/<div style="text-align: justify;">(.+?)<\/div><\!--justify-->/ig, "[justify]$1[/justify]");
+	str = str.replace(/<b>(.+?)<\/b><br[^>]*><div(.*?)class="editbg"[^>]*>(.+?)<\/div><\!--edit-->/ig, "[edit]$3[/edit]");
+	str = str.replace(/<span class="u">(.+?)<\/span><\!--underline-->/ig, "[u]$1[/u]");
+	str = str.replace(/<span style="text-decoration: line-through">(.+?)<\/span><\!--linethrough-->/ig, "[s]$1[/s]");
+	str = str.replace(/<span class="highlight">(.+?)<\/span><\!--highlight-->/ig, "[highlight]$1[/highlight]");
+	str = str.replace(/&nbsp;/ig, " ");
+	str = str.replace(/<\/p>/ig, "\n");
+	str = str.replace(/<hr(.*?)class="hr"[^>]*>/ig, "[hr]");
+	str = str.replace(/<br[^>]*>/ig, "\n");
+	str = str.replace(/<([\/]?)marquee>/ig, "[$1move]");
+	str = str.replace(/<ul style="(.+?)(bull-(.+?))\.gif\)">/ig, "[list $2]");
+	str = str.replace(/<([\/]?)ul>/ig, "[$1list]");
+	str = str.replace(/<([\/]?)ol>/ig, "[$1olist]");
+	str = str.replace(/<li>/ig, "[*]");
+	str = str.replace(/<\/li>/ig, "\n");
+	str = str.replace(/<([\/]?)table>/ig, "[$1table]");
+	str = str.replace(/<([\/]?)tr>/ig, "[$1tr]");
+	str = str.replace(/<([\/]?)td>/ig, "[$1td]");
+	str = str.replace(/<([\/]?)tt>/ig, "[$1tt]");
+	str = str.replace(/<([\/]?)sup>/ig, "[$1sup]");
+	str = str.replace(/<([\/]?)sub>/ig, "[$1sub]");
+	str = str.replace(/<([\/]?)b>/ig, "[$1b]");
+	str = str.replace(/<([\/]?)strong>/ig, "[$1b]");
+	str = str.replace(/<([\/]?)u>/ig, "[$1u]");
+	str = str.replace(/<([\/]?)i>/ig, "[$1i]");
+	str = str.replace(/<([\/]?)s>/ig, "[$1s]");
+	str = str.replace(/<([\/]?)em>/ig, "[$1i]");
+	str = str.replace(/<([\/]?)center>/ig, "[$1center]");
+	str = str.replace(/<a[^>]+href="mailto:(\S+?\@\S+?)">\1<\/a>/ig, "[email]$1[/email]");
+	str = str.replace(/<a[^>]+href="mailto:(\S+?\@\S+?)">([^\1]*?)<\/a>/ig, "[email=$1]$2[/email]");
+	str = str.replace(/<a[^>]+href="(http:\/\/)([^"]+)"[^>]*>\2<\/a>/ig, "[url]$2[/url]");
+	str = str.replace(/<a[^>]+href="(http:\/\/[^"]+)"[^>]*>\1<\/a>/ig, "[url]$1[/url]");
+	str = str.replace(/<a[^>]+href="(http:\/\/)([^"]+)"[^>]*>([^\2]*?)<\/a>/ig, "[url=$1$2]$3[/url]");
+	str = str.replace(/&amp;/g, "&");
+	str = str.replace(/\n /g, "\n");
+	str = str.replace(/ \n/g, "\n");
+	str = str.replace(/&quot;/g, "\"");
+	str = str.replace(/<[^>]*?>/g, "");
+	str = str.replace(/&lt;/g, "<");
+	str = str.replace(/&gt;/g, ">");
+	str = str.replace(/\[codbr\]/g, "\n");
+	str = str.replace(/; display: inline/g, "");
+	str = str.replace(/\[url=([^\]]+)\](\[img(.*?)\]\1\[\/img\])\[\/url\]/g, "$2");
+	quote_selection[msg_id] = str;
 }
 
 function InsertQuote() {
