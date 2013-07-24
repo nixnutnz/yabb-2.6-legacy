@@ -333,7 +333,6 @@ qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp;
 
     # to top button for fixed menu 
     $yyfixtop = qq~$img_txt{'to_top'}~;
-    $yyw3cload = w3c();
 
     $yyboardname = "$mbname";
     $yyboardlink = qq~<a href="$scripturl">$mbname</a>~;
@@ -3284,27 +3283,4 @@ sub BoardPasswCheck {
     return;
 }
 
-sub w3c {
-	if( $iamadmin ){
-		$myw3ccheck =  q~<script type="text/javascript">
-		var diva = document.getElementById("w3c");
-		var newpath = document.URL;
-		var re = /:/;
-		var rea = /\//g;
-		var reb = /\?/g;
-		var rec = /\=/g;
-		var red = /\;/g;
-		var mynewpath = newpath.replace(re, "%3A");
-		mynewpath = newpath.replace(rea, "%2F");
-		mynewpath = newpath.replace(reb, "%3F");
-		mynewpath = newpath.replace(rec, "%3D");
-		mynewpath = newpath.replace(red, "%3B");
-		diva.innerHTML = '<strong><a href="http://validator.w3.org/check?uri=' + mynewpath + '" target="_blank">W3C Validator</a></strong>';
-	</script>~;
-	}
-	else {
-		$myw3ccheck =  q{};
-	}
-	return $myw3ccheck;
-};
 1;
