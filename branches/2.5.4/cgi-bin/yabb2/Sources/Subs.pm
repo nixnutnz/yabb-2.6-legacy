@@ -256,8 +256,11 @@ sub template {
     $yytitle         = "$mbname - $yytitle";
     $yyimages        = $imagesdir;
     $yydefaultimages = $defaultimagesdir;
+    $yysyntax_js = q{};
+    $yygreyboxstyle = q{};
+    $yygrayscript =q{};
     
-    if ( $INFO{'num'} || $action eq 'post' || $action eq 'modify' || $action eq 'preview' || $action eq 'search2' || $action eq 'imshow'|| $action eq 'imsend' || $action eq 'myviewprofile' || $action eq 'eventcal' || $action eq 'help' || $action eq 'recenttopics' || $action eq 'recent' )
+    if ( $INFO{'num'} || $action eq 'post' || $action eq 'modify' || $action eq 'preview' || $action eq 'search2' || $action eq 'imshow'|| $action eq 'imsend' || $action eq 'myviewprofile' || $action eq 'eventcal' || $action eq 'help' || $action eq 'recenttopics' || $action eq 'recent' || $action eq 'usersrecentposts' )
     { 
         $yysyntax_js = qq~
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_main.js"></script>
@@ -1297,8 +1300,8 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
     if ( !$iamguest ) {
         $pm_lev = PMlev();
         if ( $pm_lev == 1 ) {
-            $selecthtml .=
-qq~<option value="action=im" class="forumjumpcatm">$jumpto_txt{'mess'}</option>~;
+            $selecthtml .=qq~
+                    <option value="action=im" class="forumjumpcatm">$jumpto_txt{'mess'}</option>~;
         }
         $selecthtml .= qq~
                     <option value="action=shownotify" class="forumjumpcatmf">$jumpto_txt{'note'}</option>
@@ -1308,7 +1311,7 @@ qq~<option value="action=im" class="forumjumpcatm">$jumpto_txt{'mess'}</option>~
     # drop in recent topics/posts lists. guests can see if browsing permitted
     $selecthtml .= qq~
                     <option value="action=recent;display=10">$recent_txt{'recentposts'}</option>
-                    <option value="action=recenttopics;display=10">$recent_txt{'recenttopic'}</option>~;
+                    <option value="action=recenttopics;display=10">$recent_txt{'recenttopic'}</option>\n~;
 
     get_forum_master();
     foreach my $catid (@categoryorder) {

@@ -56,8 +56,8 @@ sub SpamQuestions {
           qq~<tr class="catbg">
     <td><b>$spam_question_txt{'question'}</b></td>
     <td><b>$spam_question_txt{'answer'}</b></td>
-    <td><b>$spam_question_txt{'edit'}</b></td>
-    <td><b>$spam_question_txt{'delete'}</b></td>
+    <td><b>$admin_txt{'edit'}</b></td>
+    <td><b>$admin_txt{'delete'}</b></td>
 </tr>~;
 
         foreach my $question ( sort { $a <=> $b } @spam_questions ) {
@@ -70,14 +70,14 @@ sub SpamQuestions {
     <td>
     <form action="$adminurl?action=spam_questions_edit" method="post">
       <input type="hidden" name="spam_question_id" value="$spam_question_id" />
-      <input class="button" type="submit" value="$spam_question_txt{'edit'}" />
+      <input class="button" type="submit" value="$admin_txt{'edit'}" />
       <input type="hidden" name="questions_language" value="$questions_language" />
     </form>
     </td>
     <td>
     <form action="$adminurl?action=spam_questions_delete" method="post">
       <input type="hidden" name="spam_question_id" value="$spam_question_id" />
-      <input class="button" type="submit" value="$spam_question_txt{'delete'}" onclick="return confirm('$spam_question_txt{'confirm'}');"/>
+      <input class="button" type="submit" value="$admin_txt{'delete'}" onclick="return confirm('$admin_txt{'confirm'}');"/>
       <input type="hidden" name="questions_language" value="$questions_language" />
     </form>
     </td>
@@ -276,7 +276,7 @@ sub SpamQuestionsEdit {
     	<th class="titlebg"><img src="$imagesdir/preferences.gif" alt="" /> $admin_txt{'10'}</th>
 	</tr><tr>
     	<td class="catbg center">
-    		<input class="button" type="submit" value="$admin_txt{'10'} $spam_question_txt{'question'}" />&nbsp;<input type="button" class="button" value="$spam_question_txt{'cancel'}" onclick="location.href='$adminurl?action=spam_questions;questions_language=$FORM{'questions_language'}';" />
+    		<input class="button" type="submit" value="$admin_txt{'10'} $spam_question_txt{'question'}" />&nbsp;<input type="button" class="button" value="$admin_txt{'cancel'}" onclick="location.href='$adminurl?action=spam_questions;questions_language=$FORM{'questions_language'}';" />
         <input type="hidden" name="questions_language" value="$questions_language" />
 		</td>
 	</tr>

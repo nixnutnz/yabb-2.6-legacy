@@ -65,7 +65,7 @@ sub Display {
         }
         elsif ($iamguest
             && !$iambot
-            && $yyCookies{'yabbviewlimit'} >= $guest_view_limit )
+            && $yyCookies{$cookieview} >= $guest_view_limit )
         {
             if ($guest_view_limit_block) {
                 $guest_view_limit_warn = q{};
@@ -1182,7 +1182,7 @@ q~<hr class="hr" style="margin: 0; margin-top: 5px; margin-bottom: 5px; padding:
         $msub ||= $display_txt{'24'};
         ToChars($msub);
         my $reason;
-        if (   $lastmodified && $staff_reason
+        if (   $lastmodified && ( $staff_reason || $user_reason )
             && $postmessage =~ s/\[reason\](.+?)\[\/reason\]//isgm )
         {
             $reason = qq~<br /><i><b>$display_txt{'211a'}:</b> $1</i>~;
@@ -1236,7 +1236,8 @@ qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote
 
 								$quoteinfo .= qq~$tmpqau-$tmpqli-$tmpqda|~;
 							}
-							$outblock =~ s/(<div)( class="$messageclass" style="float: left; width: 99%; overflow: auto;">)/$1 id="mq$counter" onmouseup="get_selection($counter, '$quoteinfo');"$2/ism;
+							$outblock =~
+s/(<div)( class="$messageclass" style="float: left; width: 99%; overflow: auto;">)/$1 id="mq$counter" onmouseup="get_selection($counter, '$quoteinfo');"$2/ism;
                             $template_quote =
 qq~$menusep<a href="javascript:void(quoteSelection('$quote_mname',$viewnum,$counter,$mdate,''))">$img{'mquote'}</a>~;
                         }
@@ -1535,6 +1536,42 @@ qq~$menusep<a href="javascript:document.multidel.submit();" onclick="return conf
         $topic_viewers =~ s/{yabb template_viewers}/$template_viewers/sm;
     }
 
+    # Social Bookmarks Start
+    if ( $en_bookmarks && $bm_boards ) {
+        $board_bookmarks = 0;
+        foreach ( split /\, /sm, $bm_boards ) {
+            if ( $_ eq $currentboard ) { $board_bookmarks = 1; }
+        }
+    }
+    else {
+        $board_bookmarks = 1;
+    }
+    if ( $en_bookmarks && $board_bookmarks ) {
+        fopen( BMARKS, "<$vardir/Bookmarks.txt" )
+          || fatal_error( 'cannot_open', "$vardir/Bookmarks.txt", 1 );
+        @bookmarks = <BMARKS>;
+        fclose(BMARKS);
+        foreach my $bookmark ( sort { $a <=> $b } @bookmarks ) {
+            chomp $bookmark;
+            ( undef, $bm_title, $bm_image, $bm_url, undef ) = split /\|/xsm,
+              $bookmark;
+            $bm_subject = $msubthread;
+            $convertstr = $bm_subject;
+            $convertcut = $bm_subcut;
+            CountChars();
+            $bm_subject = $convertstr;
+            if ($cliped) { $bm_subject .= '...'; }
+            $bm_url =~ s/{url}/$scripturl?num=$mnum/gxsm;
+            $bm_url =~ s/{title}/$bm_subject/gxsm;
+            $show_bookmarks .=
+qq~<a href="$bm_url" rel="nofollow" target="_blank"><img src="$imagesdir/Bookmarks/$bm_image" alt="$bm_title" title="$bm_title" /></a>\n~;
+        }
+        $bookmarks = $my_bookmarks;
+		$bookmarks =~  s/{yabb bookmarks}/$show_bookmarks/sm;
+    }
+
+    # Social Bookmarks End
+
     # Mark as read button has no use in global announcements or for guests
     if ( $currentboard ne $annboard && !$iamguest ) {
         $mark_unread =
@@ -1648,6 +1685,8 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
     $display_template =~ s/({|<)yabb next(}|>)/$nextlink/gsm;
     $display_template =~ s/({|<)yabb pageindex top(}|>)/$pageindex1/gsm;
     $display_template =~ s/({|<)yabb pageindex bottom(}|>)/$pageindex2/gsm;
+    $display_template =~
+      s/({|<)yabb bookmarks(}|>)/$bookmarks/gsm;    # Social Bookmarks
 
     $display_template =~
       s/({|<)yabb outsidethreadtools(}|>)/$outside_threadtools/gsm;
@@ -1655,8 +1694,6 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
       s/({|<)yabb threadhandellist(}|>)/$threadhandellist/gsm;
     $display_template =~
       s/({|<)yabb threadhandellist2(}|>)/$threadhandellist2/gsm;
-    $display_template =~ s/({|<)yabb threadimage(}|>)/$template_threadimage/gsm;
-    $display_template =~ s/({|<)yabb threadurl(}|>)/$curthreadurl/gsm;
     $display_template =~
       s/({|<)yabb threadhandellist1(}|>)/$threadhandellist1/gsm;
     $display_template =~ s/({|<)yabb threadimage(}|>)/$template_threadimage/gsm;

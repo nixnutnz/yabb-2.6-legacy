@@ -342,6 +342,7 @@ sub UserAccount {
         push @tags, ext_get_fields_array();
     }
     push @tags, 'topicpreview';
+
     fopen( UPDATEUSER, ">$memberdir/$user.$userext", 1 )
       || fatal_error( 'cannot_open', "$memberdir/$user.$userext", 1 );
     print {UPDATEUSER} "### User variables for ID: $user ###\n\n"

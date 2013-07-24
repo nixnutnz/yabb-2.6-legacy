@@ -22,9 +22,7 @@ if ( !$ipLookup || !$INFO{'ip'} || ( !$iamadmin && !$iamgmod && !$iamymod ) ) {
     fatal_error('not_allowed');
 }
 
-LoadLanguage('IPLookup');
 LoadCensorList();
-
 get_template('Other');
 
 sub IPLookup {
@@ -39,9 +37,12 @@ sub IPLookup {
         my ( $iplookup_name, $iplookup_url ) = split /\|/sm, $i;
         $iplookup_name = Censor($iplookup_name);
         $iplookup_url =~ s/{ip}/$ip/gsm;
+        if ( $iplookup_url !~ /http(s|):\/\//xsm ) {
+            $iplookup_url = qq~http://$iplookup_url~;
+        } 
 
         $lookuplink .=
-qq~<a href="http://$iplookup_url" target="_blank">$iplookup_name</a><br />~;
+qq~<a href="$iplookup_url" target="_blank">$iplookup_name</a><br />~;
     }
 
     $yymain .= $my_ipdiv;

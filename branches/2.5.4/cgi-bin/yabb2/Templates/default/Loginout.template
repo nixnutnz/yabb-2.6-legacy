@@ -138,7 +138,7 @@ $myreminder_endform = qq~<tr>
 $myreminder2 = qq~<br /><br />
 <table class="bordercolor pad_3px cs_thin" style="width:400px">
     <tr>
-        <td class="titlebg">
+        <td class="tabtitle">
             <b>{yabb mbname} $loginout_txt{'36'} $loginout_txt{'194'}</b>
         </td>
     </tr><tr>

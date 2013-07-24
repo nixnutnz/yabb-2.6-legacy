@@ -99,7 +99,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
                 </td>
             </tr><tr>
                 <td class="windowbg2">
-                    <select id="iban" name="iban" size="20" multiple="multiple">
+                    <select id="iban" name="iban" size="20" multiple="multiple" style="min-width:45%">
                         $iban
                     </select>
                 </td>
@@ -118,7 +118,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
                 </td>
             </tr><tr>
                 <td class="windowbg2">
-                    <select id="eban" name="eban" size="20" multiple="multiple">
+                    <select id="eban" name="eban" size="20" multiple="multiple" style="min-width:45%">
                         $eban
                     </select>
                 </td>
@@ -137,7 +137,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
                 </td>
             </tr><tr>
                 <td class="windowbg2">
-                    <select id="uban" name="uban" size="20" multiple="multiple">
+                    <select id="uban" name="uban" size="20" multiple="multiple" style="min-width:45%">
                         $uban
                     </select>
                 </td>
@@ -159,7 +159,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
                     <b>$admin_txt{'340b'}</b>
                 </td>
             </tr><tr>
-                <td class="catbg">
+                <td class="catbg" style="background-repeat:repeat-x">
                     <span class="small">$admin_txt{'724'}<br />$admin_txt{'725'}<br />$admin_txt{'725a'}</span>
                 </td>
                 <td class="windowbg2 vtop" rowspan="2">
@@ -172,7 +172,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
             </tr><tr>
                 <td class="windowbg2">
                $admin_txt{'340c'}<br /><input type='radio' name='type' value='U' />$admin_txt{'340d'}<br /><input type='radio' name='type' value='I' checked="checked" />$admin_txt{'340e'}<br /><input type='radio' name='type' value='E' />$admin_txt{'307'}<br />
-                <textarea rows="10" cols="100" name="banned"></textarea>
+                <textarea rows="10" cols="100" name="banned" style="width:90%"></textarea>
                 <input type="hidden" name="unban" value="1" />
                 </td>
             </tr><tr>

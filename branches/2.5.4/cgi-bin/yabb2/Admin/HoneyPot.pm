@@ -59,14 +59,14 @@ sub honeypot {
     <td>
     <form action="$adminurl?action=honeypot_edit" method="post">
       <input type="hidden" name="hon_label" value="$hon_labels" />
-      <input class="button" type="submit" value="$honeypot{'edit'}" />
+      <input class="button" type="submit" value="$admin_txt{'edit'}" />
       <input type="hidden" name="honey_language" value="$honey_language" />
     </form>
     </td>
     <td>
     <form action="$adminurl?action=honeypot_delete" method="post">
       <input type="hidden" name="hon_label" value="$hon_labels" />
-      <input class="button" type="submit" value="$honeypot{'delete'}" onclick="return confirm('$honeypot{'confirm'}');"/>
+      <input class="button" type="submit" value="$admin_txt{'delete'}" onclick="return confirm('$honeypot{'confirm'}');"/>
       <input type="hidden" name="honey_language" value="$honey_language" />
     </form>
     </td>
@@ -196,7 +196,7 @@ sub honeypot_edit {
     	<th class="titlebg"><img src="$imagesdir/preferences.gif" alt="" /> $admin_txt{'10'}</th>
 	</tr><tr>
     	<td class="catbg center">
-    		<input class="button" type="submit" value="$admin_txt{'10'} $honeypot{'save'}" />&nbsp;<input type="button" class="button" value="$honeypot{'cancel'}" onclick="location.href='$adminurl?action=honeypot;honey_language=$FORM{'honey_language'}';" />
+    		<input class="button" type="submit" value="$admin_txt{'10'} $honeypot{'save'}" />&nbsp;<input type="button" class="button" value="$admin_txt{'cancel'}" onclick="location.href='$adminurl?action=honeypot;honey_language=$FORM{'honey_language'}';" />
         <input type="hidden" name="honey_language" value="$honey_language" />
 		</td>
 	</tr>

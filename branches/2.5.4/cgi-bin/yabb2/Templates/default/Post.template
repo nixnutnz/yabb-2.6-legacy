@@ -23,7 +23,7 @@ $chrwarn_r1 = 'red1.gif';
 $post_error = 'exclamation.png';
 $post_ip = 'ip.gif';
 @iconlist = qw( xx thumbup thumbdown exclamation question lamp smiley angry cheesy grin sad wink standard confidential urgent );
-
+$my_guestpost_col = q~ colspan="2"~;
 
 ## Post Top
 $mypost_title = qq~{yabb my_topper}<table class="tabtitle">
@@ -210,25 +210,14 @@ $mypost_feata = q~
     </tr><tr>
         <td class="windowbg2 bottom">~;
 
-$mypost_prevmain = qq~
+$mypost_prevmain = q{};		
+$x_mypost_prevmain = qq~
     <script type="text/javascript" src="$yyhtml_root/ubbc.js"></script>
     <div class="bordercolor" style="padding: 1px; width: 100%; margin-left: auto; margin-right: auto;">
         <table class="windowbg pad_3px" style="table-layout: fixed;">
-            <col style="width:20px" />
-            <tr class="titlebg vtop">
-                <td><img src="$imagesdir/{yabb d_icon}.gif" alt="" /></td>
-                <td>{yabb csubject}
-                    <br /><span class="small"><b>{yabb replycount}</b>{yabb msgdate}</span>
-                </td>
-            </tr><tr>
-                <td class="windowbg2" colspan="2">
+			<tr>
+                <td class="windowbg2">
                     <div class="message" style="overflow:auto;">{yabb cmessage}</div>
-                </td>
-            </tr><tr>
-                <td class="windowbg2 bottom" colspan="2">
-                    <div class="small" style="width: 99%; text-align: right;">
-                        {yabb modified}
-                    </div>
                 </td>
             </tr>
         </table>
@@ -240,11 +229,11 @@ $mypost_lastmod = qq~<tr class="windowbg">
     </tr>~;
 
 $mypost_prevmain_error = qq~
-        <div class="bordercolor" style="padding: 1px; width: 100%; margin-left: auto; margin-right: auto;">
-            <table class="windowbg pad_3px" style="table-layout: fixed;">
+        <div class="bordercolor" style="padding: 1px; width: 50%; margin-left:0; margin-right: auto;">
+            <table class="windowbg pad_3px" style="table-layout: fixed">
                 <tr>
                     <td class="titlebg">
-                        <img src="$imagesdir/$post_error" alt="" /> $error_txt{'error_occurred'}
+                        <img src="$imagesdir/$post_error" alt="" /> {yabb error_occurred}
                     </td>
                 </tr>
             </table>
@@ -290,7 +279,6 @@ $mypost_return_to = qq~<tr id="feature_status_9" class="windowbg">
         <td><label for="return_to"><b>$return_to_txt{'01'}:</b></label></td>
         <td><select name="return_to" id="return_to" size="1">{yabb return_to_select}</select> <span class="small"><label for="return_to">$return_to_txt{'02'}</label></span></td>
     </tr>~;
-
 
 $mypost_showmessages = q~
 <table class="tabtitle">

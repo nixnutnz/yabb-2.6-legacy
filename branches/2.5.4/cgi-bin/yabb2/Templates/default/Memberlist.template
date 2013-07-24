@@ -23,10 +23,10 @@ $ml_index_left0 = 'index_left0.gif';
 $ml_index_right = 'index_right.gif';
 $ml_index_right0 ='index_right0.gif';
 $ml_trans ='trans.gif';
-$ml_www ='www.gif';
+$ml_www ='www.png';
 $ml_bar ='bar.gif';
-$ml_lockmail = 'lockmail.gif';
-$ml_email = 'email.gif';
+$ml_lockmail = 'lockmail.png';
+$ml_email = 'email.png';
 $ml_xx ='xx.gif';
 $my_blank_avatar = 'blank.gif';
 
@@ -58,8 +58,8 @@ $my_memberlist_main = qq~
 $my_header = qq~<tr>
                 {yabb row_userpic}
                 <td {yabb selUser} onclick="location.href='$scripturl?action=ml;sort=username';"><a href="$scripturl?action=ml;sort=username"><b>$ml_txt{'35'}</b></a></td>
-                <td class="catbg center"><img src="$imagesdir/email.gif" alt="$ml_txt{'307'}" title="$ml_txt{'307'}" /></td>
-                <td class="catbg center"><img src="$imagesdir/www.gif" alt="$ml_txt{'96'}" title="$ml_txt{'96'}" /></td>
+                <td class="catbg center"><img src="$imagesdir/$ml_email" alt="$ml_txt{'307'}" title="$ml_txt{'307'}" /></td>
+                <td class="catbg center"><img src="$imagesdir/$ml_www" alt="$ml_txt{'96'}" title="$ml_txt{'96'}" /></td>
                 <td {yabb selPos} onclick="location.href='$scripturl?action=ml;sort=position';">
                     <a href="$scripturl?action=ml;sort=position"><b>$ml_txt{'87'}</b></a>
                 </td>

@@ -255,6 +255,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
         "modagreement|$admintxt{'a2_sub4'}|$admintxt{'a2_label4'}|",
         "gmodaccess|$admintxt{'a2_sub5'}|$admintxt{'a2_label5'}|",
         "eventcal_set|$admintxt{'a2_sub6'}|$admintxt{'a2_label6'}|",
+        "bookmarks|$admintxt{'bookmarks'}|$admintxt{'bookmarks1'}|"
     );
 
     @security_settings = (

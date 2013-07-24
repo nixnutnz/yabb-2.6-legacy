@@ -220,7 +220,7 @@ $errorlngver = 'YaBB 2.5.4 $Revision$';
 'double_group'           => "You can not have two membergroups with the same name:",
 'double_count'           => "You can not have two post dependent groups with the same post count.",
 'no_groupname_change'    => "You can not change the name of a post independent group.",
-'invalid_value'          => "You have entered an invalid value for this item: ", # NEW
+'invalid_value'          => "You have entered an invalid value for this item: ",
 
 ## Permalinking ##
 'no_board_found'        => "The board you referred to does not seem to exist (anymore).",

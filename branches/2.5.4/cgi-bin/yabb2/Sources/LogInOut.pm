@@ -29,9 +29,7 @@ sub Login {
     }
     $sharedLogin_title = $loginout_txt{'34'};
     $yymain .= sharedLogin() . q~<script type="text/javascript">
-<!--
     document.loginform.username.focus();
-//-->
 </script>~;
     $yytitle = $loginout_txt{'34'};
     template();
@@ -237,7 +235,6 @@ $myremindera~;
     $yymain .= $myreminder_endform;
     $yymain .= qq~
 <script type="text/javascript">
-<!--
     document.reminder.user.focus();
 
     function CheckReminderField() {
@@ -273,7 +270,6 @@ $myremindera~;
       . q~
         return true;
     }
-//-->
 </script>
 <br /><br />
 ~;
@@ -289,10 +285,10 @@ sub Reminder2 {
         fatal_error( q{}, "$loginout_txt{'error_user_info'}" );
     }
 
-    # generate random ID for password reset.
-    if ( !$iamguest && $sessionvalid == 1 ) {
+    if ( !$iamguest && $sessionvalid == 1 && !$iamadmin ) {
         fatal_error( 'logged_in_already', $username );
     }
+    # generate random ID for password reset.
     my $randid = keygen( 8, 'A' );
 
     if ( $regcheck && !$iamadmin ) {

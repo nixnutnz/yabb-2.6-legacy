@@ -2706,6 +2706,7 @@ qq~<img src="$facesurl/elmerfudd.gif" name="avatar" alt="" style="max-width: $us
       s/({|<)yabb pageindex toggle(}|>)/$temppageindextgl/gsm;
     $display_template =~ s/({|<)yabb pageindex top(}|>)/$temppageindex1/gsm;
     $display_template =~ s/({|<)yabb pageindex bottom(}|>)/$temppageindex1/gsm;
+ 	$display_template =~ s/({|<)yabb bookmarks(}|>)//gsm; # Social Bookmarks
     $display_template =~
       s/({|<)yabb threadhandellist(}|>)/$threadhandellist/gsm;
     $display_template =~

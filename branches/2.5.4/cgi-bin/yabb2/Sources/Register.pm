@@ -109,7 +109,6 @@ sub Register {
               : qq~<option value="\@$_">&#64;$_</option>~;
         }
         $aedomains .= $myaedomains_b;
-
     }
     else {
         $aedomains .=
@@ -339,7 +338,6 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
     $yymain .= $myregister_endform;
     $yymain .= qq~
 <script type="text/javascript">
-<!--
     document.creator.regusername.focus();
 
     function CheckRegFields() {
@@ -479,7 +477,6 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
     function jumpatnext(from,to,length) {
         window.setTimeout('if (' + from + '.value.length == ' + length + ') ' + to + '.focus();', 1);
     }
-//-->
 </script>
     ~;
     template();

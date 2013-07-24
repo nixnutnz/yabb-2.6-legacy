@@ -21,8 +21,8 @@ del_notify,del_notify|img_txt|131d|||imgcatbg|gif|tmp
 delete,delete|img_txt|121|||imgwindowbg|gif|tmp
 deletepoll,poll_del|img_polltxt|27|||imgcatbg|gif|tmp
 deletevote,poll_dvote|img_polltxt|43|||imgwindowbg|gif|tmp
-email,email|img_txt|69|||imgcatbg|gif|tmp
-email_sm,email|img_txt|69|||imgwindowbg|gif|tmp
+email,email|img_txt|69|||imgcatbg|png|tmp
+email_sm,email|img_txt|69|||imgwindowbg|png|tmp
 eventcal,eventcal|img_txt|eventcal|||imgwindowbg|gif|tmp
 expand,expand|img_txt|624|||imgcatbg|gif|tmp
 facebook,facebook|img_txt|facebook|||imgwindowbg|gif|tmp
@@ -40,7 +40,7 @@ im_remove,remove|img_txt|31|||imgwindowbg|png|tmp
 im_send,im_send|img_txt|sendpm|||imgwindowbg|png|tmp
 lastpost,lastpost|img_txt|105||||gif|tmp
 lock,locked|img_txt|104|||imgwindowbg|gif|tmp
-login,login|img_txt|34|||imgmenu|gif|tmp
+login,session|img_txt|34|||imgmenu|png|tmp
 logout,logout|img_txt|108|||imgmenu|gif|tmp
 markallread,markread|img_txt|452|||imgcatbg|png|tmp
 markboardread,markread|img_txt|300|||imgcatbg|png|tmp

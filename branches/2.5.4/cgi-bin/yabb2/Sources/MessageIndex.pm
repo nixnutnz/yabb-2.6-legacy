@@ -1170,10 +1170,10 @@ s/^((.*?)(\[(\w+?)[\s|\=]*(.*?)\])(.*?)(\[\/\4\]))/ fixtags($1,$2,$3,$6,$7) /eis
                 $themessage = $message;
                 $message    = q{};
                 ToChars($themessage);
-                $themessage =~ s/&/&amp;/igsm;
+#                $themessage =~ s/&/&amp;/igsm;
                 $themessage = Censor($themessage);
                 my $topicsum =
-qq~<div class="windowbg2" id="$mnum" style="position: absolute; top: 20px; left: 200px; width: 400px; border: 1px solid black; padding: 4px; z-index: 10000; overflow: hidden; display: none;">$themessage</div>~;
+qq~<div class="windowbg2 topic-hover" id="$mnum">$themessage</div>~;
             if ( ${$mnum}{'board'} eq $annboard ) {
                 $msublink =
 qq~<a href="$scripturl?virboard=$currentboard;num=$mnum" onmouseover="topicSum(event, '$mnum')" onmouseout="hidetopicSum('$mnum')" onclick="hidetopicSum('$mnum')">$msub</a>$topicsum~;
@@ -1399,7 +1399,7 @@ qq~<a href="$scripturl?action=RSSboard;board=$INFO{'board'}" onclick="target='_b
     $messageindex_template =~ s/({|<)yabb board(}|>)/$boardlink/gsm;
     $messageindex_template =~ s/({|<)yabb moderators(}|>)/$template_mods/gsm;
     if ( $enabletopichover ) {
-        if ( !$iamguest ) {
+        if ( !$iamguest && !$INFO{'messagelist'} ) {
             if ( ${ $uid . $username }{'topicpreview'} ) {
                 $enab_topicprev =
 qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;todo=disable"><img src="$imagesdir/$hoveroff" alt="$messageindex_tp{'disabletp'}" title="$messageindex_tp{'disabletp'}" /><br /></a>~;

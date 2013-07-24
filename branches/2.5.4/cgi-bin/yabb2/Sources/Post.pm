@@ -131,7 +131,7 @@ sub Post {
     if ( $FORM{'title'} eq 'PostReply' ) { $postthread = 2; }
     if ( $pollthread == 2 && $useraddpoll == 0 ) { fatal_error('no_access'); }
 
-    if ($iamguest ) { $guestpost_col = q~ colspan="2"~; }
+    if ($iamguest ) { $guestpost_col = $my_guestpost_col; }
 
     $guestpost_fields =
         $iamguest
@@ -944,7 +944,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         if (   $post ne 'imsend'
             && $postid ne 'Poll'
             && ( $action eq 'modify' || $action eq 'modify2' )
-            && $staff && $staff_reason )
+            && ( ( $staff && $staff_reason ) || $user_reason ) )
         {
             $my_reason = $mypost_reason;
             $my_reason =~ s/{yabb reason}/$reason/sm;
@@ -1221,6 +1221,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             $return_to =~ s/{yabb return_to_select}/$return_to_select/sm;
         }
         ### Return To mod end ###
+		if ( $iamguest || $is_preview ) { $guestpost_col = $my_guestpost_col; }
         $my_postsec_b   = postbox2();
         $my_postsection = $mypost_postblock;
         $my_postsection =~ s/{yabb my_postsection_ajx}/$my_postsection_ajx/sm;
@@ -1651,17 +1652,18 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
 
     ToChars($message);
     $message = Censor($message);
-    $prevmain .= $mypost_prevmain;
-    $prevmain =~ s/{yabb csubject}/$csubject/gsm;
-    $prevmain =~ s/{yabb cmessage}/$message/gsm;
-    $prevmain =~ s/{yabb replycount}/$replycount/gsm;
-    $prevmain =~ s/{yabb msgdate}/$moddate/gsm;
-    $prevmain =~ s/{yabb d_icon}/$icon/sm;
+#    $prevmain .= $mypost_prevmain;
+#    $prevmain =~ s/{yabb csubject}/$csubject/gsm;
+#    $prevmain =~ s/{yabb cmessage}/$message/gsm;
+#    $prevmain =~ s/{yabb replycount}/$replycount/gsm;
+#    $prevmain =~ s/{yabb msgdate}/$moddate/gsm;
+#    $prevmain =~ s/{yabb d_icon}/$icon/sm;
 
     if ($error) {
         LoadLanguage('Error');
         $prevmain .= $mypost_prevmain_error;
         $prevmain =~ s/{yabb preverror}/$error/sm;
+        $prevmain =~ s/{yabb error_occurred}/$error_txt{'error_occurred'}/sm;
     }
 
     $message = $mess;

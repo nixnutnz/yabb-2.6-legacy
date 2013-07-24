@@ -130,6 +130,9 @@ $display_template = qq~
     </table>
 </div>
 <!-- Navigation Bar end -->
+<!-- Social Bookmarks start -->
+{yabb bookmarks}
+<!-- Social Bookmarks end -->
 <!-- Threads Admin Button Bar start -->
 <div style="margin: 4px;">
     <table class="pad_4px cs_thin">
@@ -470,7 +473,7 @@ $mysend_spam = qq~<tr>
     </tr>~;
 
 $my_guest_limit = qq~
-<table class="pad_4px">
+<table class="pad_4px" style="margin-bottom:10px">
 	 <tr>
 		<td class="tabtitle" style="height:22px"><img src="$imagesdir/xx.gif" alt=""> $display_txt{'guest_message'}</td>
 	</tr><tr>
@@ -490,6 +493,9 @@ $guest_view_limit_w = qq~
     	</td>
   	</tr>
 </table>~;
+
+$my_bookmarks =
+qq~<div style="margin: 5px auto 5px;"><b>$display_txt{'bookmarks'}</b>: {yabb bookmarks}</div>~;
 
 #pagedrop (in javascript)
 

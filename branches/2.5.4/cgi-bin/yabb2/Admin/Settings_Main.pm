@@ -535,6 +535,12 @@ qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdM
 			validate => 'boolean',
 		},
 		{
+			description => qq~<label for="user_reason">$admin_txt{'user_reason'}</label>~,
+			input_html => qq~<input type="checkbox" name="user_reason" id="staff_reason" value="1"${ischecked($user_reason)} />~,
+			name => 'user_reason',
+			validate => 'boolean',
+		},
+		{
 			header => $timelocktxt{'01'},
 		},
 		{

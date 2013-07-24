@@ -596,7 +596,8 @@ $member_groups
 \$enableclicklog = $enableclicklog;			# Set to 1 to track stats in Clicklog (this may slow your board down)
 \$showimageinquote = $showimageinquote;		# Set to 1 to shows images in quotes, 0 displays a link to the image
 \$enabletopichover = $enabletopichover;     # Set to 1 to enable Topic Hover on Message Index
-\$staff_reason = $staff_reason;             # Set to 1 to enable Reason for Editing
+\$staff_reason = $staff_reason;             # Set to 1 to enable Reason for Editing for Staff
+\$user_reason = $user_reason;               # Set to 1 to enable Reason for Editing for users
 
 \@pallist = ($pallist);			# color settings of the palette
 
@@ -748,6 +749,11 @@ $ext_prof_fields
 \$Show_BirthdayDate = $Show_BirthdayDate;
 \$Show_BdColorLinks = $Show_BdColorLinks;
 \$Show_BdStarsign = $Show_BdStarsign;
+
+# Social Bookmarks settings
+\$en_bookmarks   = $en_bookmarks;  # Enable Social Bookmarks
+\$bm_subcut = $bm_subcut; # Maximum characters in subject
+\$bm_boards = "\Q$bm_boards\E"; # Select the boards which Social Bookmarks will be shown in
 
 ########## File Settings ##########
 

@@ -265,6 +265,11 @@ $forwardedpm = qq~This alert was forwarded as e-mail~;
 'no_masterkey'=> '<div class="editbg">No Masterkey was set in the Security Settings/Validation Image section of the Admin Center<br />Now using default value which is less safe!!</div>',
 );
 
+%lookup_txt = (
+'01' => 'Lookup',
+'02' => 'on a Whois server:',
+'iplookup' => 'IP Lookup',
+);
 
 timetostring($date);
 $yycopyright = qq~<span class="copyright"><a href="$boardurl/$yyexec.$yyext" class="copyright">$mbname</a> &#187; Powered by <a href="http://www.yabbforum.com" class="copyright">$YaBBversion</a>!<br />\n<a href="http://www.yabbforum.com" class="copyright">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.</span>~;
