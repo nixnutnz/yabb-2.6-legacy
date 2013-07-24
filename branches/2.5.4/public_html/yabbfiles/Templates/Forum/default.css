@@ -526,6 +526,7 @@ border-top:0 solid #A7B8CC;
 color:#6078B0;
 height:1px;
 }
+
 .hr2 {
 background-color:#fff;
 border:0 solid #fff;
@@ -1087,6 +1088,10 @@ table.pad_0 td, .padd_0 {
 padding:0;
 }
 
+table.pad_10px td, .padd_10px {
+padding:10px;
+}
+
 .h_18px {
 height:18px;
 }
@@ -1606,7 +1611,7 @@ left: 200px;
 width: 400px;
 border: 1px solid #195392;
 padding: 4px;
-z-index: 10;
+z-index: 100;
 overflow: hidden;
 display: none;
 }
