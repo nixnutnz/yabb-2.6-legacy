@@ -1598,3 +1598,15 @@ margin-bottom:0;
 float:right;
 width:40px;
 }
+
+.topic-hover {
+position: absolute;
+top: 20px;
+left: 200px;
+width: 400px;
+border: 1px solid #195392;
+padding: 4px;
+z-index: 10;
+overflow: hidden;
+display: none;
+}
