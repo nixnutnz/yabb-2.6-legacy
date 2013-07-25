@@ -1130,14 +1130,48 @@ height:70px;
 height:80px;
 }
 
+/*For the ajax rotating gif popup.  The width established below must match the width in ajax.js*/
 #ImageAlert {
 visibility:hidden;
 position:fixed;
-background-color:#FFF;
-width:200px;
-top:30%;
-left:41%;
+background-color:#eee;
+top:50%;
+left:50%;
+width:230px;
+height:100px;
+margin-left:-115px;
+margin-top:-50px;
 z-index: 1000;
+border: solid 5px rgb(119,119,119);
+border:solid 5px rgba(0,0,0,0.5);
+background-clip:padding-box;
+border-radius:5px;;
+-webkit-border-radius:5px;
+-moz-border-radius:5px;
+}
+
+#ImageAlert div.topper {
+vertical-align:middle;
+padding-left:0.5em;
+font-weight:bold;
+font-style:normal;
+font-size:12px;
+font-family:Verdana, Arial, Sans-Serif;
+color:#EEE;
+background:url(./default/tabtitle.png) repeat-x top #1F6EB6;
+height: 25%;
+line-height:24px;
+text-align: center;
+}
+
+#ImageAlert div.rotate {
+width: 100%;
+height: 75%;
+text-align: center;
+}
+
+#ImageAlert div.rotate  img {
+margin:4px;
 }
 
 .yabb_rss {

@@ -42,19 +42,46 @@ img#adminlogo {
 	top: 0px;
 	z-index: 2;
 }
-input, .button, textarea {
-	background-color: #F1F2F4;
-	border: 1px solid #C2C6CF;
-	color: #000000;
-	font-family: Verdana, Arial, Sans-Serif;
+
+input, textarea, select {
+    background-color:#EEE;
+    border:1px solid #B1BDC9;
+    color:#000;
+    font-family:Verdana, Helvetica, Sans-Serif;
 	font-size: 11px;
+    border-radius:5px;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    padding:5px;
 }
 select {
-	background-color: #F1F2F4;
-	color: #000000;
-	font-family: Verdana, Arial, Sans-Serif;
 	font-size: 10px;
 }
+.button, [type="submit"], [type="button"] {
+    background-color:#F8G8F8;
+    border:1px solid #C6C6C6;
+    color:#000;
+    font-family:Verdana, Helvetica, Sans-Serif;
+    font-size:12px;
+    font-weight:600;
+    border-radius:5px;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    cursor:pointer;
+}
+input:hover, input:focus, textarea:hover, textarea:focus, select:hover, select:focus {
+    background-color:#F5F5F5;
+}
+.button:hover, [type="submit"]:hover, [type="button"]:hover {
+    background-color:#FFF;
+}
+a:focus, input:focus, textarea:focus, select:focus {
+    outline:0;
+}
+label {
+    cursor:pointer;
+} 
+
 table {
 border-collapse:collapse;
 margin-left:auto;
@@ -312,7 +339,7 @@ font-weight:normal;
 	padding: 0px;
 }
 #navlist li {
-	background: #F1F2F4;
+    background-color: #F1F2F4;
 	border: 1px solid #A7B8CC;
 	cursor: pointer;
 	display: inline;
@@ -322,10 +349,15 @@ font-weight:normal;
 	margin: 0px 2px 0px 0px;
 	padding: 2px;
 	text-decoration: none;
+    border-radius: 3px 3px 0px 0px;
+    -webkit-border-radius: 3px 3px 0px 0px;
+    -moz-border-radius: 3px 3px 0px 0px;
 }
 #navlist li a:link {
-	color: #000000;
+    color: #2D2D2D;
+    font-weight: bold;
 }
+
 #navlist li.curtab {
 	background: #D2DBE6;
 	border-bottom: none;

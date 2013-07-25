@@ -117,14 +117,14 @@ function MarkAllAsRead(url,imgdir) {
 	document.getElementById("ImageAlertIFrame").style.display = "none";
 	imagebody.style.display = "block";
 	
-	var insert = '<div class="tabtitle" style="width: 100%; height: 25%; text-align: center">'+markallreadlang+'</div><div class="windowbg2" style="width: 100%; height: 75%; text-align: center"><img style="margin:4px" src="' + imagedir + '/Rotate.gif">';
+	var insert = '<div class="topper">'+markallreadlang+'</div><div class="rotate"><img src="' + imagedir + '/Rotate.gif">';
 	imagebody.innerHTML = insert;
-	imagebody.style.width = "200px";
+	imagebody.style.width = "230px";
 	imagebody.style.height = "100px";
 	imagealert.style.display = "block";
 	imagealert.style.visibility = "visible";
-	imagealert.style.marginLeft = "-60px";
-	imagealert.style.marginTop = "-60px";
+	imagealert.style.marginLeft = "-115px";
+	imagealert.style.marginTop = "-50px";
 	xmlHttp.onreadystatechange=MarkFinished;
 	xmlHttp.open("GET",url,true);
 	xmlHttp.send(null);
@@ -132,7 +132,7 @@ function MarkAllAsRead(url,imgdir) {
 
 function MarkFinished() {
 	if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete") { 
-		var insert = '<div class="tabtitle" style="width: 100%; height: 25%; text-align: center">'+markfinishedlang+'</div><div class="windowbg2" style="width: 100%; height: 75%; text-align: center"><img style="margin: 4px;" src="' + imagedir + '/Rotate.gif">';
+		var insert = '<div class="topper">'+markfinishedlang+'</div><div class="rotate"><img src="' + imagedir + '/Rotate.gif">';
 		document.getElementById("ImageAlertBody").innerHTML = insert;
 		setTimeout("HideAlert()",1500);
 		var images = document.getElementsByTagName("img");
@@ -185,14 +185,14 @@ function AddRemFav(url,imgdir) {
 		if(document.postmodify != null) { document.postmodify.favorite.checked = ''; }
 	}
 	
-	var insert = '<div class="tabtitle" style="width: 100%; height: 25%; text-align: center">'+text+'</div><div class="windowbg2" style="width: 100%; height: 75%; text-align: center"><img style="margin:4px" src="' + imagedir + '/Rotate.gif"></div>';
+	var insert = '<div class="topper">'+text+'</div><div class="rotate"><img src="' + imagedir + '/Rotate.gif"></div>';
 	imagebody.innerHTML = insert;
-	imagebody.style.width = "200px";
+	imagebody.style.width = "230px";
 	imagebody.style.height = "100px";
 	imagealert.style.display = "block";
 	imagealert.style.visibility = "visible";
-	imagealert.style.marginLeft = "-60px";
-	imagealert.style.marginTop = "-60px";
+	imagealert.style.marginLeft = "-115px";
+	imagealert.style.marginTop = "-50px";
 	
 	xmlHttp.onreadystatechange=AddRemFavFinished;
 	xmlHttp.open("GET",url,true);
@@ -202,7 +202,7 @@ function AddRemFav(url,imgdir) {
 
 function AddRemFavFinished() {
 	if (xmlHttp.readyState == 4 || xmlHttp.readyState == "complete") {
-		document.getElementById("ImageAlertBody").innerHTML = '<div class="tabtitle" style="width: 100%; height: 25%; text-align: center">'+markfinishedlang+'</div><div class="windowbg2" style="width: 100%; height: 75%; text-align: center">&nbsp;</div>';
+		document.getElementById("ImageAlertBody").innerHTML = '<div class="topper">'+markfinishedlang+'</div><div class="rotate">&nbsp;</div>';
 		setTimeout("HideAlert()",1500);
 		var links = document.getElementById("favlink");
 		var href = links.href;
@@ -249,14 +249,14 @@ function Notify(url,imgdir) {
 		if(document.postmodify != null) { document.postmodify.notify.checked = ''; }
 	}
 	
-	var insert = '<div class="tabtitle" style="width: 100%; height: 25%; text-align: center">'+text+'</div><div class="windowbg2" style="width: 100%; height: 75%; text-align: center"><img style="margin:4px" src="' + imagedir + '/Rotate.gif"></div>';
+	var insert = '<div class="topper">'+text+'</div><div class="rotate"><img src="' + imagedir + '/Rotate.gif"></div>';
 	imagebody.innerHTML = insert;
-	imagebody.style.width = "200px";
+	imagebody.style.width = "230px";
 	imagebody.style.height = "100px";
 	imagealert.style.display = "block";
 	imagealert.style.visibility = "visible";
-	imagealert.style.marginLeft = "-60px";
-	imagealert.style.marginTop = "-60px";
+	imagealert.style.marginLeft = "-115px";
+	imagealert.style.marginTop = "-50px";
 
 	xmlHttp.onreadystatechange=NotifyFinished;
 	xmlHttp.open("GET",url,true);
@@ -265,7 +265,7 @@ function Notify(url,imgdir) {
 
 function NotifyFinished() {
 	if (xmlHttp.readyState == 4 || xmlHttp.readyState == "complete") {
-		document.getElementById("ImageAlertBody").innerHTML = '<div class="tabtitle" style="width: 100%; height: 25%; text-align: center">'+markfinishedlang+'</div><div class="windowbg2" style="width: 100%; height: 75%; text-align: center">&nbsp;</div>';
+		document.getElementById("ImageAlertBody").innerHTML = '<div class="topper">'+markfinishedlang+'</div><div class="rotate">&nbsp;</div>';
 		setTimeout("HideAlert()",1500);
 		var links = document.getElementById("notifylink");
 		var href = links.href;
@@ -375,14 +375,14 @@ function sendIM(url,params) {
 	document.getElementById("ImageAlertIFrame").style.display = "none";
 	imagebody.style.display = "block";
 	
-	var insert = '<div class="tabtitle" style="width: 100%; height: 25%; text-align: center">Sending PM</div><div class="windowbg2" style="width: 100%; height: 75%; text-align: center"><img style="margin:4px" src="' + imagedir + '/Rotate.gif">';
+	var insert = '<div class="topper">Sending PM</div><div class="rotate"><img src="' + imagedir + '/Rotate.gif">';
 	imagebody.innerHTML = insert;
-	imagebody.style.width = "200px";
+	imagebody.style.width = "230px";
 	imagebody.style.height = "100px";
 	imagealert.style.display = "block";
 	imagealert.style.visibility = "visible";
-	imagealert.style.marginLeft = "-60px";
-	imagealert.style.marginTop = "-60px";
+	imagealert.style.marginLeft = "-115px";
+	imagealert.style.marginTop = "-50px";
 	
 	xmlHttp.onreadystatechange=IMComplete;
 	xmlHttp.open("POST",url + "&popup=1",true);
@@ -394,7 +394,7 @@ function sendIM(url,params) {
 
 function IMComplete() {
 	if (xmlHttp.readyState == 4 || xmlHttp.readyState == "complete") {
-		var insert = '<div class="tabtitle" style="width: 100%; height: 25%; text-align: center">Complete</div><div class="windowbg2" style="width: 100%; height: 75%; text-align: center"><img style="margin: 4px;" src="' + imagedir + '/Rotate.gif">';
+		var insert = '<div class="topper">Complete</div><div class="rotate"><img style="margin: 4px;" src="' + imagedir + '/Rotate.gif">';
 		document.getElementById("ImageAlertBody").innerHTML = insert;
 		setTimeout("HideAlert()",1500);
  	}
@@ -539,8 +539,8 @@ function InsertSubBoards(index, cat) {
 			var cell = row.insertCell(0);
 			cell.className = cells.item(j).className;
 			cell.style.cssText = cells.item(j).style.cssText;
-			cell.align = cells.item(j).align;
-			cell.width = cells.item(j).width;
+			//cell.align = cells.item(j).align;
+			//cell.width = cells.item(j).width;
 			cell.colSpan = cells.item(j).colSpan;
 			cell.innerHTML = cells.item(j).innerHTML;
 		}
@@ -556,8 +556,8 @@ function MakeCollapseBars(table, index) {
 	row.className = "subboards_of_" + subboardOpen;
 	var cell = row.insertCell(0);
 	cell.colSpan = "5";
-	cell.align = "center";
-	cell.className = "tabtitle";
+	//cell.align = "center";
+	cell.className = "tabtitle-sub";
 	cell.innerHTML = arrowup;
 	cell.style.cursor = "pointer";
 	cell.onclick = function () {
