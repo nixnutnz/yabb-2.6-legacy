@@ -1564,7 +1564,7 @@ qq~$menusep<a href="javascript:document.multidel.submit();" onclick="return conf
             $bm_url =~ s/{url}/$scripturl?num=$mnum/gxsm;
             $bm_url =~ s/{title}/$bm_subject/gxsm;
             $show_bookmarks .=
-qq~<a href="$bm_url" rel="nofollow" target="_blank"><img src="$imagesdir/Bookmarks/$bm_image" alt="$bm_title" title="$bm_title" /></a>\n~;
+qq~<a href="$bm_url" rel="nofollow" target="_blank"><img src="$yyhtml_root/Bookmarks/$bm_image" alt="$bm_title" title="$bm_title" /></a>\n~;
         }
         $bookmarks = $my_bookmarks;
 		$bookmarks =~  s/{yabb bookmarks}/$show_bookmarks/sm;

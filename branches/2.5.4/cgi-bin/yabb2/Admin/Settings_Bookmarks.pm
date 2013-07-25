@@ -103,7 +103,7 @@ sub Bookmarks {
             ( $bm_order, $bm_title, $bm_image, $bm_url, $bm_id ) =
               split /\|/xsm, $bookmark;
             $show_bookmarks .= qq~<tr class="windowbg2">
-		<td><img src="$imagesdir/Bookmarks/$bm_image" alt="$bm_title" title="$bm_title" /></td>
+		<td><img src="$yyhtml_root/Bookmarks/$bm_image" alt="$bm_title" title="$bm_title" /></td>
 		<td>$bm_title</td>
 		<td>$bm_order</td>
 		<td>
