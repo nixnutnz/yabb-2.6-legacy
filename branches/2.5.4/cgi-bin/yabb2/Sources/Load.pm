@@ -38,7 +38,7 @@ sub LoadBoardControl {
             $cntmaxageperms, $cntgenderperms,  $cntcanpost,
             $cntparent,      $rules,           $rulestitle,
             $rulesdesc,      $rulescollapse,   $brdpasswr,
-            $brdpassw
+            $brdpassw,       $cntbdrss
         ) = split /\|/xsm, $boardline;
         ## create a global boards array
         push @allboards, $cntboard;
@@ -70,6 +70,7 @@ sub LoadBoardControl {
             'rulescollapse' => $rulescollapse,
             'brdpasswr'     => $brdpasswr,
             'brdpassw'      => $brdpassw,
+			'brdrss'        => $cntbdrss
         );
         if ( $cntann == 1 )  { $annboard = $cntboard; }
         if ( $cntrbin == 1 ) { $binboard = $cntboard; }
@@ -354,14 +355,14 @@ sub KillModerator {
                 $cntattperms,    $spare,          $cntminageperms,
                 $cntmaxageperms, $cntgenderperms, $rules,
                 $rulestitle,     $rulesdesc,      $rulescollapse,
-                $brdpasswr,      $brdpassw
+                $brdpasswr,      $brdpassw,       $cntbrdrss
             ) = split /\|/xsm, $boardline;
             foreach ( split /, /sm, $cntmods ) {
                 if ( $killmod ne $_ ) { push @newmods, $_; }
             }
             $cntmods = join q{, }, @newmods;
             push @boardcontrol,
-"$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$cntmodgroups|$cnttopicperms|$cntreplyperms|$cntpollperms|$cntzero|$cntpassword|$cnttotals|$cntattperms|$spare|$cntminageperms|$cntmaxageperms|$cntgenderperms|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw\n";
+"$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$cntmodgroups|$cnttopicperms|$cntreplyperms|$cntpollperms|$cntzero|$cntpassword|$cnttotals|$cntattperms|$spare|$cntminageperms|$cntmaxageperms|$cntgenderperms|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$cntbrdrss\n";
         }
     }
     seek FORUMCONTROL, 0, 0;
@@ -397,14 +398,14 @@ sub KillModeratorGroup {
                 $cntattperms,    $spare,          $cntminageperms,
                 $cntmaxageperms, $cntgenderperms, $rules,
                 $rulestitle,     $rulesdesc,      $rulescollapse,
-                $brdpasswr,      $brdpassw
+                $brdpasswr,      $brdpassw,       $cntbrdrss
             ) = split /\|/xsm, $boardline;
             foreach ( split /, /sm, $cntmodgroups ) {
                 if ( $killmod ne $_ ) { push @newmods, $_; }
             }
             $cntmodgroups = join q{, }, @newmods;
             push @boardcontrol,
-"$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$cntmodgroups|$cnttopicperms|$cntreplyperms|$cntpollperms|$cntzero|$cntpassword|$cnttotals|$cntattperms|$spare|$cntminageperms|$cntmaxageperms|$cntgenderperms|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw\n";
+"$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$cntmodgroups|$cnttopicperms|$cntreplyperms|$cntpollperms|$cntzero|$cntpassword|$cnttotals|$cntattperms|$spare|$cntminageperms|$cntmaxageperms|$cntgenderperms|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$cntbrdrss\n";
         }
     }
     seek FORUMCONTROL, 0, 0;

@@ -787,6 +787,7 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         $attch    = q{};
         $showpriv = q{};
         $brdpic   = q{};
+        $brdrssch = q{}; ### RSS on Board Index ###
 		$brdpasswr = q{};
 		$brdpassw = ${$uid.$editboards[$i]}{'brdpassw'};
 		$brdpassw3 = q{};
@@ -801,6 +802,9 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         if ( ${ $uid . $id }{'attperms'} == 1 ) {
             $attch = q~ checked="checked"~;
         }
+		if ( ${ $uid . $id }{'brdrss'} == 1 )   { 
+		    $brdrssch = q~ checked="checked"~;
+		} ### RSS on Board Index ###
 
         if ( ${ $uid . $id }{'ann'} == 1 ) {
             $annch  = q~ checked="checked"~;
@@ -936,6 +940,9 @@ qq~<select multiple="multiple" name="moderatorgroups$i" id="moderatorgroups$i" s
   </tr><tr>
     <td class="windowbg"><label for="pic$i"><b>$admin_txt{'64b'}:</b></label></td>
     <td class="windowbg2" colspan="3"><input type="text" name="pic$i" id="pic$i" value="$boardpic" size="50" maxlength="255"$brdpic /></td>
+  </tr><tr>
+    <td class="windowbg"><label for="brdrss$i"><b>$admin_txt{'brdrss1'}:</b></label></td>
+    <td class="windowbg2" colspan="3"><input type="checkbox" name="brdrss$i" id="brdrss$i" value="1"$brdrssch /> <label for="brdrss$i"><span class="small">$admin_txt{'brdrss3'}</span></label></td>
   </tr><tr>
     <td class="windowbg"><label for="zero$i"><b>$admin_txt{'64c'}</b></label></td>
     <td class="windowbg2" colspan="3"><input type="checkbox" name="zero$i" id="zero$i" value="1"$zeroch /> <label for="zero$i">$admin_txt{'64d'}</label></td>
@@ -1377,6 +1384,7 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
             }
             $FORM{"moderators$i"} = join q{, }, @mods;
         }
+ 		if ( $FORM{"brdrss$i"} eq q{} ) { $FORM{"brdrss$i"} = 0; } ### RSS on Board Index ###
         if ( $FORM{"zero$i"} eq q{} ) { $FORM{"zero$i"} = 0; }
         $FORM{"minage$i"} =~ tr/[0-9]//cd;    ## remove non numbers
         $FORM{"maxage$i"} =~ tr/[0-9]//cd;    ## remove non numbers
@@ -1407,7 +1415,7 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
 			if ($FORM{"paswwr$i"}) { $encryptopass = $FORM{"brdpassw$i"}; } else { $encryptopass = q{};}
 		}
         push @boardcontrol,
-"$FORM{\"cat$i\"}|$id|$FORM{\"pic$i\"}|$bdescription|$FORM{\"moderators$i\"}|$FORM{\"moderatorgroups$i\"}|$FORM{\"topicperms$i\"}|$FORM{\"replyperms$i\"}|$FORM{\"pollperms$i\"}|$FORM{\"zero$i\"}|$FORM{\"membergroups$i\"}|$FORM{\"ann$i\"}|$FORM{\"rbin$i\"}|$FORM{\"att$i\"}|$FORM{\"minage$i\"}|$FORM{\"maxage$i\"}|$FORM{\"gender$i\"}|$FORM{\"canpost$i\"}|$FORM{\"parent$i\"}|$FORM{\"rules$i\"}|$brulestitle|$brulesdesc|$FORM{\"rulescollapse$i\"}|$FORM{\"paswwr$i\"}|$encryptopass\n";
+"$FORM{\"cat$i\"}|$id|$FORM{\"pic$i\"}|$bdescription|$FORM{\"moderators$i\"}|$FORM{\"moderatorgroups$i\"}|$FORM{\"topicperms$i\"}|$FORM{\"replyperms$i\"}|$FORM{\"pollperms$i\"}|$FORM{\"zero$i\"}|$FORM{\"membergroups$i\"}|$FORM{\"ann$i\"}|$FORM{\"rbin$i\"}|$FORM{\"att$i\"}|$FORM{\"minage$i\"}|$FORM{\"maxage$i\"}|$FORM{\"gender$i\"}|$FORM{\"canpost$i\"}|$FORM{\"parent$i\"}|$FORM{\"rules$i\"}|$brulestitle|$brulesdesc|$FORM{\"rulescollapse$i\"}|$FORM{\"paswwr$i\"}|$encryptopass|$FORM{\"brdrss$i\"}\n";
         push @changes, $id;
         $yymain .= qq~<i>'$FORM{"name$i"}'</i> $admin_txt{'48'} <br />~;
     }
@@ -1833,16 +1841,16 @@ sub ReorderBoards2 {
                 $rbin,         $att,          $minage,
                 $maxage,       $gender,       $canpost,
                 $parent,       $rules,        $brulestitle,
-                $brulesdesc,   $rulescollapse,$brdpasswr,$brdpassw
+                $brulesdesc,   $rulescollapse,$brdpasswr,$brdpassw, $brdrss
             ) = split /\|/xsm, $oldcontrols[$cnt];
             if ( $moveitem eq $oldboard ) {
                 $oldcontrols[$cnt] =
-qq~${$uid.$moveitem}{'cat'}|$moveitem|$pic|$bdescription|$moderators|$moderatorgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$att|$minage|$maxage|$gender|$canpost|${$uid.$moveitem}{'parent'}|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw\n~;
+qq~${$uid.$moveitem}{'cat'}|$moveitem|$pic|$bdescription|$moderators|$moderatorgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$att|$minage|$maxage|$gender|$canpost|${$uid.$moveitem}{'parent'}|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$brdrss\n~;
             }
             foreach my $changedboard (@updatecats) {
                 if ( $changedboard eq $oldboard ) {
                     $oldcontrols[$cnt] =
-qq~${$uid.$changedboard}{'cat'}|$changedboard|$pic|$bdescription|$moderators|$moderatorgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$att|$minage|$maxage|$gender|$canpost|${$uid.$changedboard}{'parent'}|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw\n~;
+qq~${$uid.$changedboard}{'cat'}|$changedboard|$pic|$bdescription|$moderators|$moderatorgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$att|$minage|$maxage|$gender|$canpost|${$uid.$changedboard}{'parent'}|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$brdrss\n~;
                 }
             }
         }

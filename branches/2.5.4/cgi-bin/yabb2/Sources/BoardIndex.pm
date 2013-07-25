@@ -510,12 +510,12 @@ qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>~
             next;
         }
 
-        my ( $catname, $catperms, $catallowcol, $catimage );
+        my ( $catname, $catperms, $catallowcol, $catimage, $catrss );
 
         # get boards in category if we're not looking for subboards
         if ( !$subboard_sel ) {
             (@bdlist) = split /\,/xsm, $cat{$catid};
-            ( $catname, $catperms, $catallowcol, $catimage ) =
+            ( $catname, $catperms, $catallowcol, $catimage, $catrss ) =
               split /\|/xsm, $catinfo{"$catid"};
             ToChars($catname);
 
@@ -635,6 +635,14 @@ qq~$collapse_link $hash{$catname} <a href="$scripturl?$my_cat=$catid" title="$bo
 
         # Don't need the category headers if we're loading ajax subboards
         if ( !$INFO{'a'} ) {
+	    ### RSS on Board Index Start ###
+			if (!$rss_disabled && $catrss) {
+				$rss_catlink = qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img src="$imagesdir/boardrss.png" alt="$maintxt{'rssfeed'} - $catname" title="$maintxt{'rssfeed'} - $catname" /></a>~;
+			}
+			else {
+				$rss_catlink = q{};
+			}
+	    ### RSS on Board Index End ###
             $templatecat = $catheader;
             $tmpcatimg   = q{};
             if ( $catimage ne q{} ) {
@@ -647,6 +655,7 @@ qq~$collapse_link $hash{$catname} <a href="$scripturl?$my_cat=$catid" title="$bo
                 $tmpcatimg = qq~$catimage~;
             }
             $templatecat =~ s/({|<)yabb catimage(}|>)/$tmpcatimg/gsm;
+			$templatecat =~ s/({|<)yabb catrss(}|>)/$rss_catlink/gsm; ### RSS on Board Index ###
             $templatecat =~ s/({|<)yabb catlink(}|>)/$catlink/gsm;
             $templatecat =~
               s/({|<)yabb newmsg start(}|>)/$newrowstart{$catname}/gsm;
@@ -949,6 +958,17 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
                     $lastpostlink = qq~$img{'lastpost'} $boardindex_txt{'470'}~;
                 }
 
+				### RSS on Board Index Start ###
+				if (!$rss_disabled) {
+			        my (undef, $boardperms, $boardview) = split /\|/xsm, $board{"$curboard"};
+	                if (AccessCheck($curboard, q{}, $boardperms) eq 'granted'  && ${$uid.$curboard}{'brdrss'} == 1 ) {
+		                $rss_boardlink = qq~<a href="$scripturl?action=RSSboard;board=$curboard" target="_blank"><img src="$imagesdir/$mybrd_rss" alt="$maintxt{'rssfeed'} - $boardname" title="$maintxt{'rssfeed'} - $boardname" /></a>~;
+	                } else {
+	                    $rss_boardlink = q{};
+	                }
+	            }
+	            ### RSS on Board Index End ###
+
     # if we have subboards, check to see if there's something new and print name
                 my $template_subboards;
                 my $tmp_sublist = q{};
@@ -1152,6 +1172,7 @@ qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?boa
                     $templateblock =~
                       s/({|<)yabb boardanchor(}|>)/$boardanchor/gsm;
                     $templateblock =~ s/({|<)yabb new(}|>)/$new/gsm;
+					$templateblock =~ s/({|<)yabb boardrss(}|>)/$rss_boardlink/gsm; ### RSS on BoardIndex ###
                     $templateblock =~ s/({|<)yabb newsm(}|>)/$new2/gsm;
                     $templateblock =~ s/({|<)yabb boardpic(}|>)/$bdpic/gsm;
                     $templateblock =~

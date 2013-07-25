@@ -2298,6 +2298,7 @@ qq~<span class="small" style="color: $admcolor;"><b>${$uid.$username}{'realname'
     for my $i ( 1 .. 2 ) {
         my $templateblock = $boardblock;
         $templateblock =~ s/({|<)yabb new(}|>)/$tempnew/gsm;
+ 		$templateblock =~ s/({|<)yabb boardrss(}|>)//gsm; ### RSS on Board Index ###
         $templateblock =~ s/({|<)yabb boardanchor(}|>)/$tempboardanchor/gsm;
         $templateblock =~ s/({|<)yabb boardurl(}|>)/$tempcurboardurl/gsm;
         $templateblock =~ s/({|<)yabb boardpic(}|>)/$tempboardpic/gsm;
@@ -2329,6 +2330,7 @@ qq~$boardindex_txt{'236'} <a href="javascript:;"><b>$templ_txt{'80'}</b></a>~;
     $boardindex_template =~
       s/({|<)yabb boardhandellist(}|>)/$boardhandellist/gsm;
     $boardindex_template =~ s/({|<)yabb catimage(}|>)//gsm;
+ 	$boardindex_template =~ s/({|<)yabb catrss(}|>)//gsm; ### RSS on Board Index ###
     $boardindex_template =~
       s/img src\=\"$tmpimagesdir\/(.+?)\"/TmpImgLoc($1, $x[1], $x[2])/eisgm;
 

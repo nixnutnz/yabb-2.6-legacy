@@ -155,7 +155,7 @@ sub ContextScript {
         }
     }
 
-    -->
+    //-->
     </script>
 ~;
     return;

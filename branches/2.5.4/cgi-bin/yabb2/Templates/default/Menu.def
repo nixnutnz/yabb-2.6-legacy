@@ -15,7 +15,7 @@ aim,aim|img_txt|aim|||imgwindowbg|gif|tmp
 alertmod,alert|img_txt|alertmodtext|img_txt|alertmod|imgwindowbg|png|tmp
 birthdaylist,birthdaylist|img_text|birthdaylist|||imgwindowbg||tmp
 closepoll,poll_lock|img_polltxt|21|||imgcatbg|gif|tmp
-collapse,collapse|img_txt|623|||imgcatbg|gif|tmp
+collapse,collapse|img_txt|623|||imgcatbg|png|tmp
 createpoll,poll_create|img_polltxt|1|||imgcatbg|gif|tmp
 del_notify,del_notify|img_txt|131d|||imgcatbg|gif|tmp
 delete,delete|img_txt|121|||imgwindowbg|gif|tmp
@@ -24,7 +24,7 @@ deletevote,poll_dvote|img_polltxt|43|||imgwindowbg|gif|tmp
 email,email|img_txt|69|||imgcatbg|png|tmp
 email_sm,email|img_txt|69|||imgwindowbg|png|tmp
 eventcal,eventcal|img_txt|eventcal|||imgwindowbg|gif|tmp
-expand,expand|img_txt|624|||imgcatbg|gif|tmp
+expand,expand|img_txt|624|||imgcatbg|png|tmp
 facebook,facebook|img_txt|facebook|||imgwindowbg|gif|tmp
 favorites,favorites|img_txt|70|||imgmenu|gif|tmp
 forward,forward|img_txt|forward|||imgwindowbg|gif|tmp

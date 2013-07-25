@@ -554,6 +554,11 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 'topichover' => 'Enable Topic Hover on Message Index',
 'staff_reason' => q~Enable 'Reason for Editing' for Staff Members~,
 'user_reason' => q~Enable 'Reason for Editing' for Members~,
+### RSS on Board Index Start ###
+'brdrss1' => 'RSS',
+'brdrss2' => 'Check to show RSS Feed for this category on the Board Index.<br /><b>Note:</b> Only relevant if RSS is enabled.',
+'brdrss3' => 'Check to show RSS Feed for this board on the Board Index.<br /><b>Note:</b> Only relevant if RSS is enabled and the board is not an external link board.',
+### RSS on Board Index End ###
 );
 
 %floodtxt = (

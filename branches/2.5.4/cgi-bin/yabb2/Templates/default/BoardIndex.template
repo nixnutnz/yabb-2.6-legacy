@@ -38,6 +38,7 @@ $sub_arrow_dn = 'sub_arrow.png';
 $sub_arrow_up = 'sub_arrow_up.png';
 $extern = 'extern.png';
 $sub_extern = 'extern_sub.png';
+$mybrd_rss = 'boardrss.png';
 $tabfill = q~~;
 $topiccut = 25;
 
@@ -159,7 +160,7 @@ $catheader = qq~
     		<col style="width:8%" />
     		<tr>
 				<td>&nbsp;</td>
-				<td>{yabb catimage} {yabb catlink}</td>
+				<td>{yabb catimage} {yabb catrss} {yabb catlink}</td>
       			<td class="center">$boardindex_txt{'330'}</td>
       			<td class="center">$boardindex_txt{'21'}</td>
       			<td class="center">$boardindex_txt{'22'}</td>
@@ -183,7 +184,7 @@ $boardblock = qq~<tr>
 				</td>
 				<td class="{yabb altbrdcolor}">
 					<div style="position: relative; height: 100%; width: 100%">
-						{yabb new} <a id="{yabb boardanchor}" href="{yabb boardurl}"><b>{yabb boardname}</b></a><br />
+						{yabb new} {yabb boardrss} <a id="{yabb boardanchor}" href="{yabb boardurl}"><b>{yabb boardname}</b></a><br />
 						{yabb boarddesc}
 						<div class="small" style="font-style:italic;">{yabb moderators}</div>
 						<div class="small" style="display: inline-block; margin-top:5px">{yabb subboardlist}</div>

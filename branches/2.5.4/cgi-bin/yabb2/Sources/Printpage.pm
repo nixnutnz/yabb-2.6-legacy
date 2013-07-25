@@ -111,7 +111,7 @@ function do_images() {
 
 <body onload="printPage()">
 
-<table style="width:96%">
+<table style="width:96%; margin-top:10px">
     <tr>
         <td class="vtop">
             <span style="font-family: arial, sans-serif; font-size: 18px; font-weight: bold;">$mbname</span>
@@ -480,7 +480,7 @@ qq~<span style="font-weight: bold;">$guestName ($guestEmail)</span><br />~;
 <br />~;
 
     $output .= qq~
-<table style="width:96%">
+<table class="pad_10px" style="width:96%">
     <tr>
         <td class="center">
             <span style="font-family: arial, sans-serif; font-size: 10px;">
@@ -591,7 +591,7 @@ function do_images() {
 
 <body onload="printPage()">
 
-<table style="width:96%">
+<table style="width:96%; margin-top:10px">
     <tr>
         <td class="vtop">
             <span style="font-family: arial, sans-serif; font-size: 18px; font-weight: bold;">$mbname</span>
@@ -730,7 +730,7 @@ s/<div class="small">/<div class="small" style="margin:8px;">/gsm;
     }
 
     $output .= qq~
-<table style="width:96%">
+<table class="pad_10px" style="width:96%">
     <tr>
         <td class="center" style="font-family: arial, sans-serif; font-size: 10px;">
             $yycopyright
