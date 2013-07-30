@@ -206,7 +206,7 @@ sub RemoveOldAttachments {
     if ( !@attachments ) {
         fopen( ATT, ">$vardir/attachments.txt" )
           || fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
-        print {ATT} q{} or croak 'cannot print ATT';
+        print {ATT} q{} or croak "$croak{'print'} ATT";
         fclose(ATT);
 
         $info = qq~<br /><i>$fatxt{'48'}.</i>~;
@@ -240,7 +240,7 @@ qq~<br /><i>$attachments[$aa]</i> $fatxt{'1'} = $age $admin_txt{'122'}.~;
                 fopen( FILE, ">>$vardir/rem_old_attach.tmp" )
                   || fatal_error( 'cannot_open',
                     "$vardir/rem_old_attach.tmp", 1 );
-                print $info or croak 'cannot print info';
+                print $info or croak "$croak{'print'} rem_old_attach";
                 fclose(FILE);
 
                 $yySetLocation =
@@ -265,7 +265,7 @@ qq~$adminurl?action=removeoldattachments;maxdaysattach=$maxdaysattach;next=~
     unlink "$vardir/rem_old_attach.tmp";
 
     fopen( FILE, ">$vardir/oldestattach.txt" );
-    print {FILE} $maxdaysattach or croak 'cannot print FILE';
+    print {FILE} $maxdaysattach or croak "$croak{'print'} oldestattach";
     fclose(FILE);
 
     $yytitle     = "$fatxt{'34'} $maxdaysattach";
@@ -306,7 +306,7 @@ sub RemoveBigAttachments {
     if ( !@attachments ) {
         fopen( ATT, ">$vardir/attachments.txt" )
           || fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
-        print {ATT} q{} or croak 'cannot print ATT';
+        print {ATT} q{} or croak "$croak{'print'} ATT";
         fclose(ATT);
 
         $info = qq~<br /><i>$fatxt{'48'}.</i>~;
@@ -338,7 +338,7 @@ sub RemoveBigAttachments {
                 fopen( FILE, ">>$vardir/rem_big_attach.tmp" )
                   || fatal_error( 'cannot_open',
                     "$vardir/rem_big_attach.tmp", 1 );
-                print $info or croak 'cannot print info';
+                print $info or croak "$croak{'print'} rem_big_attach";
                 fclose(FILE);
 
                 $yySetLocation =
@@ -362,7 +362,7 @@ qq~$adminurl?action=removebigattachments;maxsizeattach=$maxsizeattach;next=~
     unlink "$vardir/rem_big_attach.tmp";
 
     fopen( FILE, ">$vardir/maxattachsize.txt" );
-    print {FILE} $maxsizeattach or croak 'cannot print FILE';
+    print {FILE} $maxsizeattach or croak "$croak{'print'} FILE";
     fclose(FILE);
 
     automaintenance('off');
@@ -730,7 +730,7 @@ qq~$topicnum|$mreplies|$msub|$mname|$curboard|$asize|$mdate|$_|~
         fopen( NEWATM, ">>$vardir/newattachments.tmp" )
           || fatal_error( 'cannot_open', "$vardir/newattachments.tmp",
             1 );
-        print {NEWATM} @newattachments or croak 'cannot print NEWATM';
+        print {NEWATM} @newattachments or croak "$croak{'print'} NEWATM";
         fclose(NEWATM);
     }
 
@@ -748,7 +748,7 @@ qq~$topicnum|$mreplies|$msub|$mname|$curboard|$asize|$mdate|$_|~
         print {ATM}
           sort( { ( split /\|/xsm, $a )[6] <=> ( split /\|/xsm, $b )[6] }
             @newattachments )
-          or croak 'cannot print ATM';
+          or croak "$croak{'print'} ATM";
         fclose(ATM);
         unlink "$vardir/newattachments.tmp";
 
@@ -871,7 +871,7 @@ sub RemoveAttachments
             $count++;
         }
         else {
-            print {ATM} $attachments[$i] or croak 'cannot print ATM';
+            print {ATM} $attachments[$i] or croak "$croak{'print'} ATM";
         }
     }
     fclose(ATM);
@@ -1170,7 +1170,7 @@ sub RemoveOldPMAttachments {
     if ( !@pmAttachments ) {
         fopen( PMATTACHLOG, ">$vardir/pm.attachments" )
           || admin_fatal_error( 'cannot_open', "$vardir/pm.attachments", 1 );
-        print {PMATTACHLOG} q{} or croak 'cannot print ATT';
+        print {PMATTACHLOG} q{} or croak "$croak{'print'} ATT";
         fclose(PMATTACHLOG);
 
         $info = qq~<br /><i>$fatxt{'48a'}.</i>~;
@@ -1204,7 +1204,7 @@ qq~<br /><i>$pmAttachments[$aa]</i> $fatxt{'1'} = $age $admin_txt{'122'}.~;
                 fopen( FILE, ">>$vardir/rem_old_pm_attach.tmp" )
                   || admin_fatal_error( 'cannot_open',
                     "$vardir/rem_old_pm_attach.tmp", 1 );
-                print $info or croak 'cannot print info';
+                print $info or croak "$croak{'print'} rem_big_attach";
                 fclose(FILE);
 
                 $yySetLocation =
@@ -1229,7 +1229,7 @@ qq~$adminurl?action=removeoldpmattachments;pmmaxdaysattach=$pmMaxDaysAttach;next
     unlink "$vardir/rem_old_pm_attach.tmp";
 
     fopen( FILE, ">$vardir/oldestpmattach.txt" );
-    print {FILE} $pmMaxDaysAttach or croak 'cannot print FILE';
+    print {FILE} $pmMaxDaysAttach or croak "$croak{'print'} FILE";
     fclose(FILE);
 
     $yytitle     = "$fatxt{'34a'} $pmMaxDaysAttach";
@@ -1270,7 +1270,7 @@ sub RemoveBigPMAttachments {
     if ( !@attachments ) {
         fopen( ATT, ">$vardir/pm.attachments" )
           || admin_fatal_error( 'cannot_open', "$vardir/pm.attachments", 1 );
-        print {ATT} q{} or croak 'cannot print ATT';
+        print {ATT} q{} or croak "$croak{'print'} ATT";
         fclose(ATT);
 
         $info = qq~<br /><i>$fatxt{'48a'}.</i>~;
@@ -1302,7 +1302,7 @@ sub RemoveBigPMAttachments {
                 fopen( FILE, ">>$vardir/rem_big_pm_attach.tmp" )
                   || admin_fatal_error( 'cannot_open',
                     "$vardir/rem_big_pm_attach.tmp", 1 );
-                print $info or croak 'cannot print info';
+                print $info or croak "$croak{'print'} rem_big_pm_attach";
                 fclose(FILE);
 
                 $yySetLocation =
@@ -1326,7 +1326,7 @@ qq~$adminurl?action=removebigpmattachments;pmmaxsizeattach=$pmmaxsizeattach;next
     unlink "$vardir/rem_big_pm_attach.tmp";
 
     fopen( FILE, ">$vardir/maxpmattachsize.txt" );
-    print {FILE} $pmmaxsizeattach or croak 'cannot print FILE';
+    print {FILE} $pmmaxsizeattach or croak "$croak{'print'} FILE";
     fclose(FILE);
 
     automaintenance('off');
@@ -1383,7 +1383,7 @@ sub RemovePMAttachments {
             $count++;
         }
         else {
-            print {ATM} $pmAttachments[$i] or croak 'cannot print ATM';
+            print {ATM} $pmAttachments[$i] or croak "$croak{'print'} ATM";
         }
     }
     fclose(ATM);

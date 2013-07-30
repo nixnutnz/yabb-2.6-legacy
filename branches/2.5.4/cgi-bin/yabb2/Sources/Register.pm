@@ -936,11 +936,11 @@ sub Register2 {
         fopen( INACT, ">>$memberdir/memberlist.inactive", 1 );
         print {INACT}
           "$date|$activationcode|$reguser|$regpass|$member{'email'}|$user_ip\n"
-          or croak 'cannot print to INACT';
+          or croak "$croak{'print'} INACT";
         fclose(INACT);
         fopen( REGLOG, ">>$vardir/registration.log", 1 );
         print {REGLOG} "$date|N|$member{'regusername'}||$user_ip\n"
-          or croak 'cannot print to REGLOG';
+          or croak "$croak{'print'} REGLOG";
         fclose(REGLOG);
 
         ## send an e-mail to the user that registration is pending e-mail validation within the given timespan. ##
@@ -990,7 +990,7 @@ sub Register2 {
             fopen( IM, ">$memberdir/$member{'regusername'}.msg", 1 );
             print {IM}
 "$messageid|$sendname|$member{'regusername'}|||$imsubject|$date|$imtext|$messageid|0|$ENV{'REMOTE_ADDR'}|s|u||\n"
-              or croak 'cannot print to IM';
+              or croak "$croak{'print'} IM";
             fclose(IM);
         }
         if ($new_member_notification) {
@@ -1091,7 +1091,7 @@ sub user_activation {
         # add entry to registration log
         fopen( REGLOG, ">>$vardir/registration.log", 1 );
         print {REGLOG} "$date|E|$reguser||$user_ip\n"
-          or croak 'cannot print to REGLOG';
+          or croak "$croak{'print'} REGLOG";
         fclose(REGLOG);
         fatal_error('prereg_expired');
     }
@@ -1114,7 +1114,7 @@ sub user_activation {
             if ( $activationkey ne $testkey ) {
                 fopen( REGLOG, ">>$vardir/registration.log", 1 );
                 print {REGLOG} "$date|E|$reguser||$user_ip\n"
-                  or croak 'cannot print to REGLOG';
+                  or croak "$croak{'print'} REGLOG";
 
                 # add entry to registration log
                 fclose(REGLOG);
@@ -1133,7 +1133,7 @@ sub user_activation {
                 else                           { $actuser = $reguser; }
                 fopen( REGLOG, ">>$vardir/registration.log", 1 );
                 print {REGLOG} "$date|W|$reguser|$actuser|$user_ip\n"
-                  or croak 'cannot print to REGLOG';
+                  or croak "$croak{'print'} REGLOG";
                 fclose(REGLOG);
 
                 LoadUser($reguser);
@@ -1176,7 +1176,7 @@ sub user_activation {
                 # add entry to registration log
                 fopen( REGLOG, ">>$vardir/registration.log", 1 );
                 print {REGLOG} "$date|A|$reguser|$actuser|$user_ip\n"
-                  or croak 'cannot print to REGLOG';
+                  or croak "$croak{'print'} REGLOG";
                 fclose(REGLOG);
 
                 if ($emailpassword) {
@@ -1234,7 +1234,7 @@ sub user_activation {
                 fopen( INBOX, ">$memberdir/$reguser.msg" );
                 print {INBOX}
 "$messageid|$sendname|$reguser|||$imsubject|$date|$imtext|$messageid|0|$ENV{'REMOTE_ADDR'}|s|u||\n"
-                  or croak 'cannot print to INBOX';
+                  or croak "$croak{'print'} INBOX";
                 fclose(INBOX);
             }
             if ($new_member_notification) {
@@ -1265,13 +1265,13 @@ sub user_activation {
 
         # if changed write new inactive list
         fopen( INACT, ">$memberdir/memberlist.inactive" );
-        print {INACT} @chnglist or croak 'cannot print to INACT';
+        print {INACT} @chnglist or croak "$croak{'print'} INACT";
         fclose(INACT);
 
         # update approval user list
         if ( $regtype == 1 ) {
             fopen( APR, ">$memberdir/memberlist.approve" );
-            print {APR} @aprlist or croak 'cannot print to APR';
+            print {APR} @aprlist or croak "$croak{'print'} APR";
             fclose(APR);
         }
     }
@@ -1280,7 +1280,7 @@ sub user_activation {
         # add entry to registration log
         fopen( REGLOG, ">>$vardir/registration.log", 1 );
         print {REGLOG} "$date|E|$reguser|$user_ip\n"
-          or croak 'cannot print to REGLOG';
+          or croak "$croak{'print'} REGLOG";
         fclose(REGLOG);
         fatal_error('wrong_id');
     }

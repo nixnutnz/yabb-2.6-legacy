@@ -15,7 +15,7 @@ use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.5.4';
 
 $mailmemberspmver = 'YaBB 2.5.4 $Revision$';
-if ($action eq 'detailedversion') { return 1; }
+if ( $action eq 'detailedversion' ) { return 1; }
 
 if ($iamguest) { fatal_error('no_access'); }
 
@@ -52,7 +52,7 @@ sub Mailing {
 	~;
 	my $grpselect;
 	my $groupcnt = 0;
-	foreach (sort { $a cmp $b } keys %Group) {
+    foreach ( sort { $a cmp $b } keys %Group ) {
         if ( $_ ne 'Moderator' ) {
             ( $title, $dummy ) = split /\|/xsm, $Group{$_}, 2;
 			$grpselect .= qq~\n<option value="$_"> $title</option>~;
@@ -69,7 +69,7 @@ sub Mailing {
 		$grpselect .= qq~\n<option value="$title"> $title</option>~;
 		$groupcnt++;
 	}
-	if ($groupcnt > 12) { $groupcnt = 12; }
+    if ( $groupcnt > 12 ) { $groupcnt = 12; }
 	$yymain .= qq~
 	<select name="field1" id="field1" size="$groupcnt" multiple="multiple" style="width: 100%; font-size: 11px;">
 	$grpselect
@@ -78,7 +78,7 @@ sub Mailing {
 	</td>
 	</tr>
 	</table>
-	</div>
+</div>
 	~;
 
     if ( $groupcnt != 0 ) {
@@ -98,21 +98,21 @@ sub Mailing {
         </tr>
 	</table>
 		<input type="hidden" name="reused" value="$reused" />
-	</div>
+</div>
 <div class="windowbg2" style="float: left; width: 44%; margin: 0 1%; border: 0;">
     <table class="windowbg2 pad_3px w_98pc">
 	<tr>
             <td class="windowbg2 vtop"><b>$amv_txt{'49'}:</b></td>
 	</tr>
 	</table>
-	</div>
+</div>
 <div class="windowbg2" style="float: left; width: 50%; margin: 0 1%; border: 0;">
     <table class="windowbg2 pad_3px w_98pc">
 	<tr>
             <td class="windowbg2 vtop"><b>$amv_txt{'47'}:</b></td>
 	</tr>
 	</table>
-	</div>
+</div>
 <div class="windowbg2 border h_145px" style="float: left; width: 44%; margin: 1%; ">
     <table class="windowbg2 pad_3px w_98pc">
 	<tr>
@@ -125,7 +125,7 @@ sub Mailing {
 	</td>
 	</tr>~;
 
-		if (-e "$vardir/yabbaddress.csv") {
+        if ( -e "$vardir/yabbaddress.csv" ) {
             $yymain .= qq~<tr>
             <td class="windowbg2 center vtop">
 		<input type="button" value="$amv_txt{'51'}" class="button" onclick="MailListWin('$adminurl?action=mailing3');" />
@@ -135,7 +135,7 @@ sub Mailing {
 
         $yymain .= q~
 	</table>
-	</div>
+</div>
 <script type="text/javascript">
 <!--
 	function MailListWin(FileName,WindowName) {
@@ -148,8 +148,8 @@ sub Mailing {
 </script>
 <div class="windowbg2 border h_145px" style="float: left; width: 50%; margin: 1%; overflow: auto;">
 	~;
-		if (-e ("$vardir/maillist.dat")) {
-			fopen(FILE, "$vardir/maillist.dat");
+        if ( -e ("$vardir/maillist.dat") ) {
+            fopen( FILE, "$vardir/maillist.dat" );
 			@maillist = <FILE>;
 			fclose(FILE);
             $yymain .= q~
@@ -195,7 +195,7 @@ sub Mailing {
 	</tr>
 	</table>
 	</div>
-<div style="clear: both;"></div>
+    <div style="clear: both;"></div>
 </div>
 </form>
 
@@ -240,8 +240,8 @@ sub Mailing2 {
     (@mailgroups) = split /\, /sm, $FORM{'field1'};
     ManageMemberinfo('load');
 	$i = 0;
-	my ($emailsubject,$emailtext);
-	foreach my $user (keys %memberinf) {
+    my ( $emailsubject, $emailtext );
+    foreach my $user ( keys %memberinf ) {
         ( $memrealname, $mememail, $memposition, $memposts, $memaddgrp ) =
           split /\|/xsm, $memberinf{$user};
         FromHTML($memrealname);
@@ -258,14 +258,14 @@ sub Mailing2 {
 		$mailit = 0;
         foreach my $element (@mailgroups) {
 			chomp $element;
-			if ($element eq $memposition) { $mailit = 1; }
+            if ( $element eq $memposition ) { $mailit = 1; }
             foreach my $memberaddgroups ( split /, /sm, $memaddgrp ) {
 				chomp $memberaddgroups;
-				if ($element eq $memberaddgroups) { $mailit = 1; last; }
+                if ( $element eq $memberaddgroups ) { $mailit = 1; last; }
 			}
 			if ($mailit) { last; }
 		}
-		if ($mailit && $FORM{'mailsend'}) {
+        if ( $mailit && $FORM{'mailsend'} ) {
 			require Sources::Mailer;
             sendmail( $mememail, $emailsubject, $emailtext );
         }
@@ -277,10 +277,10 @@ sub Mailing2 {
 	}
 	undef %memberinf;
 	if (@convlist) {
-		fopen(ADDRESSLIST, ">$vardir/yabbaddress.csv", 1);
+        fopen( ADDRESSLIST, ">$vardir/yabbaddress.csv", 1 );
         print {ADDRESSLIST} "Name\;E-mail Address\n"
-          or croak 'cannot print ADDRESSLIST';
-        print {ADDRESSLIST} @convlist or croak 'cannot print ADDRESSLIST';
+          or croak "$croak{'print'} ADDRESSLIST";
+        print {ADDRESSLIST} @convlist or croak "$croak{'print'} ADDRESSLIST";
 		fclose(ADDRESSLIST);
     }
     elsif ( $FORM{'convert'} ) {
@@ -293,13 +293,13 @@ sub Mailing2 {
 }
 
 sub Mailing3 {
-	fopen(FILE, "$vardir/yabbaddress.csv");
+    fopen( FILE, "$vardir/yabbaddress.csv" );
 	@addlist = <FILE>;
 	fclose(FILE);
-    print qq~Content-disposition: inline; filename=yabbaddress.csv\n\n~ or croak 'cannot print content';
+    print qq~Content-disposition: inline; filename=yabbaddress.csv\n\n~ or croak "$croak{'print'} yabbaddress";
     foreach my $curadd (@addlist) {
 		chomp $curadd;
-        print qq~$curadd\n~ or croak 'cannot print content';
+        print qq~$curadd\n~ or croak "$croak{'print'} yabbaddress";
 	}
     return;
 }
@@ -361,15 +361,15 @@ sub MailingMembers {
         $sortgroups = q{};
 		$j          = 0;
 
-		if ($membername eq $username) {
+        if ( $membername eq $username ) {
             $sortgroups = '!!!';
         }
         else {
             if (   $FORM{'sortform'} eq 'position'
                 || $INFO{'sort'} eq 'position' )
             {
-				foreach my $key (keys %Group) {
-					if ($memposition eq $key) {
+                foreach my $key ( keys %Group ) {
+                    if ( $memposition eq $key ) {
                         if ( $key eq 'Administrator' ) {
                             $sortgroups = "aaa.$pstsort.$memberrealname";
                         }
@@ -381,15 +381,15 @@ sub MailingMembers {
                         }
 					}
 				}
-				if (!$sortgroups) {
-					foreach (sort { $a <=> $b } keys %NoPost) {
-						if ($memposition eq $_) {
+                if ( !$sortgroups ) {
+                    foreach ( sort { $a <=> $b } keys %NoPost ) {
+                        if ( $memposition eq $_ ) {
                             $sortgroups =
                               "ddd.$memposition.$pstsort.$memberrealname";
 						}
 					}
 				}
-				if (!$sortgroups) {
+                if ( !$sortgroups ) {
 					$sortgroups = "eee.$pstsort.$memposition.$memberrealname";
 				}
 
@@ -409,7 +409,7 @@ sub MailingMembers {
 	$numshown  = 0;
 	$actualnum = 0;
 
-	while (($numshown < $memcount)) {
+    while ( ( $numshown < $memcount ) ) {
         $user = $toplist[$bb];
 
         ( $memrealname, $mememail, $memposition, $memposts ) = split /\|/xsm,
@@ -436,8 +436,8 @@ qq~<input type="checkbox" name="member$actualnum" value="$user" class="windowbg"
                   $Group{'Mid Moderator'}, 2;
             }
             else {
-				foreach my $key (sort { $a <=> $b } keys %NoPost) {
-					if ($key eq $memberinfo) {
+                foreach my $key ( sort { $a <=> $b } keys %NoPost ) {
+                    if ( $key eq $memberinfo ) {
                         ( $memberinfo, undef ) = split /\|/xsm, $NoPost{$key},
                           2;
 					}
@@ -475,7 +475,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
 
     if ( $memcount != 0 ) {
         if ( $FORM{'sortform'} eq q{} ) { $FORM{'sortform'} = $INFO{'sort'}; }
-		if (!$FORM{'reversed'}) { $FORM{'reversed'} = $INFO{'reversed'}; }
+        if ( !$FORM{'reversed'} ) { $FORM{'reversed'} = $INFO{'reversed'}; }
 
 		@groupinfo = ();
 		$i         = 0;
@@ -541,7 +541,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
 		<select name="field1" id="field1" size="$groupcnt" multiple="multiple" onchange="selectCheck()">~;
 
 		$i = 0;
-		while ($i < $groupcnt) {
+        while ( $i < $groupcnt ) {
 			$yymain .= qq~
 			<option value="$i">$groupinfo[$i]</option>~;
 			$i++;
@@ -562,8 +562,8 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
 	</div>
     <div class="windowbg2 h_115px border" style="float: left; width: 50%; margin: 1%; overflow: auto;">
 	~;
-		if (-e ("$vardir/maillist.dat")) {
-			fopen(FILE, "$vardir/maillist.dat");
+        if ( -e ("$vardir/maillist.dat") ) {
+            fopen( FILE, "$vardir/maillist.dat" );
 			@maillist = <FILE>;
 			fclose(FILE);
             $yymain .= q~
@@ -614,7 +614,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
 	</tr>
 	</table>
 	</div>
-<div style="clear: both;"></div>
+    <div style="clear: both;"></div>
 </div>
 </form>
 <script  type="text/javascript">
@@ -627,9 +627,9 @@ function selectCheckAllmemb(tchecked) {
 }
 
 function selectCheck() {
-var z = 1;
-var grpcnt = 0;
-grp_data = new Array ();
+	var z = 1;
+	var grpcnt = 0;
+	grp_data = new Array ();
 
 	for(x = 0; x < document.adv_membermail.field1.options.length; x++) {
 		if (document.adv_membermail.field1.options[x].selected) {

@@ -117,7 +117,7 @@ sub AddModerators2 {
         $admdmods = join q{, }, @bdmodlist;
         print {FORUMCNT}
 "$admdcat|$admdboard|$admdpic|$admddescription|$admdmods|$admdmodgroups|$admdtopicperms|$admdreplyperms|$admdpollperms|$admdzero|$admdmembergroups|$admdann|$admdrbin|$admdattperms|$admdminageperms|$admdmaxageperms|$admdgenderperms|$adcanpost|$adparent|$adrules|$adbrulestitle|$adbrulesdesc|$adrulescollapse\n"
-          or croak 'cannot print FORUMCNT';
+          or croak "$croak{'print'} FORUMCNT";
     }
     fclose(FORUMCNT);
     return;
@@ -264,12 +264,12 @@ sub ModSearch2 {
         if ( $admdboard eq $modboard ) {
             print {FORUMCNT}
 "$admdcat|$admdboard|$admdpic|$admddescription|$FORM{'moderators'}|$FORM{'moderatorgroups'}|$admdtopicperms|$admdreplyperms|$admdpollperms|$admdzero|$admdmembergroups|$admdann|$admdrbin|$admdattperms|$admdminageperms|$admdmaxageperms|$admdgenderperms|$adcanpost|$adparent|$adrules|$adbrulestitle|$adbrulesdesc|$adrulescollapse\n"
-              or croak 'cannot print FORUMCNT';
+              or croak "$croak{'print'} FORUMCNT";
         }
         else {
             print {FORUMCNT}
 "$admdcat|$admdboard|$admdpic|$admddescription|$admdmods|$admdmodgroups|$admdtopicperms|$admdreplyperms|$admdpollperms|$admdzero|$admdmembergroups|$admdann|$admdrbin|$admdattperms|$admdminageperms|$admdmaxageperms|$admdgenderperms|$adcanpost|$adparent|$adrules|$adbrulestitle|$adbrulesdesc|$adrulescollapse\n"
-              or croak 'cannot print FORUMCNT';
+              or croak "$croak{'print'} FORUMCNT";
         }
     }
     fclose(FORUMCNT);

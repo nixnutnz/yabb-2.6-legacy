@@ -34,6 +34,7 @@ $boardindexlngver = 'YaBB 2.5.4 $Revision$';
 '72'  => 'sub-board has no new posts.',
 '141' => 'Guests',
 '142' => 'Members',
+'bviews' => 'Viewing',
 '143' => 'Search Engines',
 '158' => 'Users Online',
 '200' => 'Forum Statistics',

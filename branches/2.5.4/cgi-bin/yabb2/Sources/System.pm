@@ -79,7 +79,7 @@ sub BoardTotals {
             }
             truncate FORUMTOTALS, 0;
             seek FORUMTOTALS, 0, 0;
-            print {FORUMTOTALS} @lines or croak 'cannot print FORUMTOTALS';
+            print {FORUMTOTALS} @lines or croak "$croak{'print'} FORUMTOTALS";
             fclose(FORUMTOTALS);
 
         }
@@ -97,7 +97,7 @@ sub BoardTotals {
             }
             truncate FORUMTOTALS, 0;
             seek FORUMTOTALS, 0, 0;
-            print {FORUMTOTALS} @lines or croak 'cannot print FORUMTOTALS';
+            print {FORUMTOTALS} @lines or croak "$croak{'print'} FORUMTOTALS";
             fclose(FORUMTOTALS);
 
         }
@@ -106,7 +106,7 @@ sub BoardTotals {
               || fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
             foreach (@updateboards) {
                 print {FORUMTOTALS} "$_|0|0|N/A|N/A||||\n"
-                  or croak 'cannot print FORUMTOTALS';
+                  or croak "$croak{'print'} FORUMTOTALS";
             }
             fclose(FORUMTOTALS);
         }
@@ -290,10 +290,10 @@ sub MessageTotals {
           || fatal_error( 'cannot_open', "$datadir/$updatethread.ctb", 1 );
         print {UPDATE_CTB}
           qq~### ThreadID: $updatethread, LastModified: $newtime ###\n\n~
-          or croak 'cannot print UPDATE_CTB';
+          or croak "$croak{'print'} UPDATE_CTB";
         for my $cnt ( 0 .. ( @tag - 1 ) ) {
             print {UPDATE_CTB} qq~'$tag[$cnt]',"${$updatethread}{$tag[$cnt]}"\n~
-              or croak 'cannot print UPDATE_CTB';
+              or croak "$croak{'print'} UPDATE_CTB";
         }
         fclose(UPDATE_CTB);
     }
@@ -346,10 +346,10 @@ sub UserAccount {
     fopen( UPDATEUSER, ">$memberdir/$user.$userext", 1 )
       || fatal_error( 'cannot_open', "$memberdir/$user.$userext", 1 );
     print {UPDATEUSER} "### User variables for ID: $user ###\n\n"
-      or croak 'cannot print UPDATEUSER';
+      or croak "$croak{'print'} UPDATEUSER";
     for my $cnt ( 0 .. ( @tags - 1 ) ) {
         print {UPDATEUSER} qq~'$tags[$cnt]',"${$uid.$user}{$tags[$cnt]}"\n~
-          or croak 'cannot print UPDATEUSER';
+          or croak "$croak{'print'} UPDATEUSER";
     }
     fclose(UPDATEUSER);
     return;
@@ -387,7 +387,7 @@ sub MemberIndex {
 
         fopen( TTL, ">$memberdir/members.ttl" )
           || fatal_error( 'cannot_open', "$memberdir/members.ttl", 1 );
-        print {TTL} qq~$membershiptotal|$user~ or croak 'cannot print TTL';
+        print {TTL} qq~$membershiptotal|$user~ or croak "$croak{'print'} TTL";
         fclose(TTL);
         return 0;
 
@@ -409,7 +409,7 @@ sub MemberIndex {
 
         fopen( TTL, ">$memberdir/members.ttl" )
           || fatal_error( 'cannot_open', "$memberdir/members.ttl", 1 );
-        print {TTL} qq~$membershiptotal|$lastuser~ or croak 'cannot print TTL';
+        print {TTL} qq~$membershiptotal|$lastuser~ or croak "$croak{'print'} TTL";
         fclose(TTL);
         return 0;
 
@@ -483,7 +483,7 @@ sub MembershipCountTotal {
     fopen( MEMTTL, ">$memberdir/members.ttl" )
       || fatal_error( 'cannot_open', "$memberdir/members.ttl", 1 );
     print {MEMTTL} qq~$membertotal|$latestmember~
-      or croak 'cannot print MEMTTL';
+      or croak "$croak{'print'} MEMTTL";
     fclose(MEMTTL);
 
     if (wantarray) {
@@ -567,7 +567,7 @@ sub activation_check {
             # add entry to registration log
             fopen( REGLOG, ">>$vardir/registration.log", 1 );
             print {REGLOG} "$date|T|$regmember|\n"
-              or croak 'cannot print REGLOG';
+              or croak "$croak{'print'} REGLOG";
             fclose(REGLOG);
         }
         else {
@@ -581,7 +581,7 @@ sub activation_check {
 
         # re-open inactive list for update if changed
         fopen( INACT, ">$memberdir/memberlist.inactive", 1 );
-        print {INACT} @outlist or croak 'cannot print INACT';
+        print {INACT} @outlist or croak "$croak{'print'} INACT";
         fclose(INACT);
     }
     return;
@@ -694,7 +694,7 @@ sub Rearrange_Sticky {
         foreach (@threads) {
             chomp $_;
             next if /^(\s)*$/xsm;
-            print {FILE} "$_\n" or croak 'cannot print FILE';
+            print {FILE} "$_\n" or croak "$croak{'print'} FILE";
         }
         fclose(FILE);
     }

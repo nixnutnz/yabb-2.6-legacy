@@ -330,9 +330,9 @@ sub Reminder2 {
       || fatal_error( 'cannot_open', "$memberdir/forgotten.passes", 1 );
     while ( ( $key, $value ) = each %pass ) {
         print {FILE} qq~\$pass{"$key"} = '$value';\n~
-          or croak 'cannot print to FILE';
+          or croak "$croak{'print'} forgotten.passes";
     }
-    print {FILE} '1;' or croak 'cannot print to FILE';
+    print {FILE} '1;' or croak "$croak{'print'} forgotten.passes";
     fclose(FILE);
 
     $subject = "$loginout_txt{'36'} $mbname: ${$uid.$user}{'realname'}";
@@ -391,9 +391,9 @@ sub Reminder3 {
       || fatal_error( 'cannot_open', "$memberdir/forgotten.passes", 1 );
     while ( ( $key, $value ) = each %pass ) {
         print {FORGOTTEN} qq~\$pass{"$key"} = '$value';\n~
-          or croak 'cannot print to FORGOTTEN';
+          or croak "$croak{'print'} FORGOTTEN";
     }
-    print {FORGOTTEN} "\n1;" or croak 'cannot print to FORGOTTEN';
+    print {FORGOTTEN} "\n1;" or croak "$croak{'print'} FORGOTTEN";
     fclose(FORGOTTEN);
 
     # add newly generated password to user data

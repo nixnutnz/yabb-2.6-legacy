@@ -449,17 +449,17 @@ sub update_htaccess {
         print {HTA} '# Last modified by The Guardian: '
           . timeformat( $date, 1 )
           . " #\n\n"
-          or croak 'cannot print HTA';
-        print {HTA} @htout or croak 'cannot print HTA';
+          or croak "$croak{'print'} HTA";
+        print {HTA} @htout or croak "$croak{'print'} HTA";
         if (@values) {
-            print {HTA} "\n$htheader\n" or croak 'cannot print HTA';
+            print {HTA} "\n$htheader\n" or croak "$croak{'print'} HTA";
             foreach (@values) {
                 chomp $_;
                 if ( $_ ne q{} ) {
-                    print {HTA} "Deny from $_\n" or croak 'cannot print HTA';
+                    print {HTA} "Deny from $_\n" or croak "$croak{'print'} HTA";
                 }
             }
-            print {HTA} "$htfooter\n" or croak 'cannot print HTA';
+            print {HTA} "$htfooter\n" or croak "$croak{'print'} HTA";
         }
         fclose(HTA);
     }

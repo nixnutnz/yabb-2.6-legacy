@@ -599,7 +599,7 @@ s/\$rememberbackup = \d+;/\$rememberbackup = $rememberbackup;/sm;
             unshift @settings, "\$rememberbackup = $rememberbackup;\n";
         }
         fopen( SETTINGS, ">$vardir/Settings.pm" );
-        print {SETTINGS} @settings or croak 'cannot print SETTINGS';
+        print {SETTINGS} @settings or croak "$croak{'print'} SETTINGS";
         fclose(SETTINGS);
     }
 
@@ -1066,10 +1066,10 @@ sub downloadbackup {
 
     # print full header
     print "Content-disposition: inline; filename=$filename\n"
-      or croak 'cannot print Content-disposition';
-    print "Content-Length: $filesize\n" or croak 'cannot print Content-Length';
+      or croak "$croak{'print'} Content-disposition";
+    print "Content-Length: $filesize\n" or croak "$croak{'print'} Content-Length";
     print "Content-Type: application/octet-stream\n\n"
-      or croak 'cannot print Content-Type';
+      or croak "$croak{'print'} Content-Type";
 
     # open in binmode
     fopen( READ, $filename )

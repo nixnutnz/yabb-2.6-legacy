@@ -69,7 +69,7 @@ sub SetStatus {
     }
     truncate BOARDFILE, 0;
     seek BOARDFILE, 0, 0;
-    print {BOARDFILE} @boardfile or croak 'cannot print to BOARDFILE';
+    print {BOARDFILE} @boardfile or croak "$croak{'print'} BOARDFILE";
     fclose(BOARDFILE);
 
     MessageTotals( 'load', $threadid );

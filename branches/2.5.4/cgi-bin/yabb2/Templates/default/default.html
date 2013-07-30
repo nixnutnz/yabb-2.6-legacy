@@ -7,7 +7,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset={yabb charset}" />
 {yabb style}
 <script type="text/javascript" src="{yabb html_root}/YaBB.js"></script>
-<script type="text/javascript" src="{yabb html_root}/ajax.js"></script>
 <script type="text/javascript" src="{yabb html_root}/cache.js"></script>
 <script type="text/javascript">
 	{yabb javascript}
@@ -105,6 +104,7 @@
 		<a href="http://www.perl.org" onclick="target='_blank';"><img src="{yabb images}/perl.gif" alt="Powered by Perl" title="Powered by Perl" /></a>
 		<a href="http://www.sf.net/projects/yabb" onclick="target='_blank';"><img src="{yabb images}/sf.gif" alt="Source Forge" title="Source Forge" /></a><br />
 		{yabb debug}
+        <div id="w3c">{yabb w3cload}</div>
 		<br /><br />
 	</div>
 </div>
@@ -133,5 +133,6 @@ function fixMenu() {
 
 onscroll = fixMenu;
 </script>
+<script type="text/javascript" src="{yabb html_root}/ajax.js"></script>
 </body>
 </html>

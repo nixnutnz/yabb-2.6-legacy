@@ -50,11 +50,11 @@ sub ContextScript {
     }
 
     $contextmain
-    document.write('<div id="contexthlp" class="windowbg" style="position: absolute; top: 20px; left: 20px; width: 400px; filter: alpha(opacity=95); opacity: 0.95; border: 1px solid black; z-index: 10000; display: none;">');
-    document.write('<div id="contexttitle" class="titlebg" style="filter: alpha(opacity=100); opacity: 1.0; padding: 6px;">context_title</div>');
-    document.write('<div id="contexttext" class="windowbg" style="filter: alpha(opacity=100); opacity: 1.0; padding: 8px;">context_text</div>');
+    document.write('<div id="contexthlp" class="windowbg contexthlp" style="display: none;">');
+    document.write('<div id="contexttitle" class="titlebg contexttitle">context_title</div>');
+    document.write('<div id="contexttext" class="windowbg contexttext">context_text</div>');
     document.write('</div>');
-    document.write('<div id="ctxtip" style="position: absolute; top: 20px; left: 90px; font: 11px Helvetica, sans-serif; color: #000; background-color: #ffffdd; border: 1px solid black; padding: 1px 4px; z-index: 10000; display: none;"></div>');
+    document.write('<div id="ctxtip" class="ctxtip" style="display: none;"></div>');
     document.onclick = hidecontexthelp;
 
     function sizecontexthelp() {
@@ -77,7 +77,7 @@ sub ContextScript {
     function showcontexthelp(conimage, contitle) {
         var conkey, contextimage, contexthelp = '';
         conkey = conimage.replace(/(.*)\\/(.*?)\\.(gif|png)/, "\$2");
-        if(conkey) contextimage = '<img src=' + conimage + ' alt=" ' + contitle + ' " style="vertical-align: middle" \/>';
+        if(conkey) contextimage = '<img src=' + conimage + ' alt=" ' + contitle + '" \/>';
         else conkey = conimage;
         contexthelp = contexthash.getItem(conkey);
         if(contexthelp == '') return true;

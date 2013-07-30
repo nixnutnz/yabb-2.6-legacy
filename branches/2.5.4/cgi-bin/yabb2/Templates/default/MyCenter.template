@@ -67,7 +67,7 @@ $mycenter_template = qq~
 		<table class="windowbg">
 			<tr>
 				<td>
-				{yabb mcviewmenu}
+			    {yabb mcviewmenu}
 				{yabb mcpmmenu}
 				{yabb mcprofmenu}
 				{yabb mcpostsmenu}
@@ -121,17 +121,6 @@ $mypmmenu_bmbox = qq~<tr>
                 <td class="windowbg2"><span class="nav bold"><a href="$scripturl?action=im;focus=bmess">$inmes_txt{'broadcast'}</a></span></td>
                 <td class="windowbg2"><span class="nav">{yabb BCCount}{yabb inboxNewCount_bm}</span></td>
             </tr>~;
-
-$my_MCViewMenu = qq~
-        {yabb MCView_tab}
-        <table>
-            <tr>
-                {yabb MCViewMenu_mess}
-                <td style="width:{yabb tabWidth}" class="{yabb tabProfHighlighted} center" id="menu_prof"><a href="javascript:void(0);" onclick="changeToTab('prof'); return false;">{yabb mc_menus_profile}</a></td>
-                <td style="width:{yabb tabWidth}" class="{yabb tabNotifyHighlighted} center" id="menu_posts"><a href="javascript:void(0);" onclick="changeToTab('posts'); return false;">yabb mc_menus_posts}</a></td>
-            </tr>
-        </table>
-~;
 
 $my_MCViewMenu_mess =  qq~<td style="width:{yabb tabWidth}" class="{yabb tabPMHighlighted} center vtop" id="menu_pm"><a href="javascript:void(0);" onclick="changeToTab('pm'); return false;">{yabb mc_menus_messages}</a></td>~;
 

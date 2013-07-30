@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.5.4';
 
-$bookmarksettingspmver = 'YaBB 2.5.4 $Revision$';
+$settings_bookmarkspmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Bookmarks');
@@ -73,10 +73,6 @@ sub Bookmarks {
             }
             ToChars($boardname);
             $sel_board = q{};
-#            foreach ( split /\,\ /sm, $bm_boards ) {
-#                if ( $_ eq $board ) { $sel_board = q~ selected="selected"~; }
-#            }
- #           $board_list .= qq~<option value="$board"$sel_board>&nbsp;&nbsp;$boardname</option>\n~;
         }
 		my $indent = -2;
         get_subboards(@bdlist);
@@ -86,20 +82,20 @@ sub Bookmarks {
       || fatal_error( 'cannot_open', "$vardir/Bookmarks.txt", 1 );
     @bookmarks = <BMARKS>;
     fclose(BMARKS);
+	chomp @bookmarks;
 
     $total_bookmarks = @bookmarks || 0;
 
     if (@bookmarks) {
         $show_bookmarks = qq~
-<tr class="catbg" style="font-weight: bold; font-size: 11px; text-align: center;">
-    <td>$bookmark_txt{'01'}</td>
-    <td>$bookmark_txt{'02'}</td>
-    <td>$bookmark_txt{'03'}</td>
-    <td>$admin_txt{'edit'}</td>
-	<td>$admin_txt{'delete'}</td>
-</tr>~;
+	<tr class="catbg" style="font-weight: bold; font-size: 11px; text-align: center;">
+		<td>$bookmark_txt{'01'}</td>
+		<td>$bookmark_txt{'02'}</td>
+		<td>$bookmark_txt{'03'}</td>
+		<td>$admin_txt{'edit'}</td>
+		<td>$admin_txt{'delete'}</td>
+	</tr>~;
         foreach my $bookmark ( sort { $a <=> $b } @bookmarks ) {
-            chomp $bookmark;
             ( $bm_order, $bm_title, $bm_image, $bm_url, $bm_id ) =
               split /\|/xsm, $bookmark;
             $show_bookmarks .= qq~<tr class="windowbg2">
@@ -123,14 +119,14 @@ sub Bookmarks {
     }
     else {
         $show_bookmarks = qq~
-<tr class="windowbg">
-    <td>$bookmark_txt{'08'}</td>
-</tr>~;
+	<tr class="windowbg">
+		<td>$bookmark_txt{'08'}</td>
+	</tr>~;
     }
 
     $yymain .= qq~
 <form action="$adminurl?action=bookmarks2" method="post">
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
+<div class="bordercolor rightboxdiva">
     <table class="pad_4px cs_thin">
         <colgroup>
             <col width="50%" />
@@ -154,18 +150,22 @@ sub Bookmarks {
         </tr>
     </table>
 </div>
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-top: 1em; margin-left: 0px; margin-right: auto;">
+<div class="bordercolor rightboxdiva">
 	<table class="pad_4px cs_thin">
 		<tr>
-				<th class="titlebg" style="text-align: left; vertical-align: middle;" colspan="2"><img src="$imagesdir/preferences.gif" alt="" /> $admin_txt{'10'}</th>
+			<th class="titlebg" style="text-align: left; vertical-align: middle;" colspan="2"><img src="$imagesdir/preferences.gif" alt="" /> $admin_txt{'10'}</th>
 		</tr><tr>
 			<td class="catbg" style="text-align: center; vertical-align: middle;" colspan="2"><input class="button" type="submit" value="$admin_txt{'10'}" /></td>
 		</tr>
 	</table>
 </div>
 </form>
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-top: 1em; margin-left: 0px; margin-right: auto;">
+<div class="bordercolor  rightboxdiva">
 	<table class="pad_4px cs_thin">
+		<col style="width:10%" />
+		<col style="width:auto" />
+		<col style="width:10%" />
+		<col style="width:7%" span="2" />
 		<tr>
 			<th class="titlebg" colspan="5"><img src="$imagesdir/preferences.gif" alt="" /> $bookmark_txt{'12'} ($total_bookmarks)</th>
 		</tr>
@@ -173,7 +173,7 @@ sub Bookmarks {
 	</table>
 </div>
 <form action="$adminurl?action=bookmarks_add" method="post">
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-top: 1em; margin-left: 0px; margin-right: auto;">
+<div class="bordercolor  rightboxdiva">
 	<table class="pad_4px cs_thin">
 		<colgroup>
 			<col width="50%" />
@@ -196,7 +196,7 @@ sub Bookmarks {
 		</tr>
 	</table>
 </div>
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-top: 1em; margin-left: 0px; margin-right: auto;">
+<div class="bordercolor rightboxdiva">
 	<table class="pad_4px cs_thin">
 		<tr>
 			<th class="titlebg" colspan="2"><img src="$imagesdir/preferences.gif" alt="" /> $admin_txt{'10'}</th>
@@ -254,7 +254,7 @@ sub AddBookmark {
     fopen( BMARKS, ">>$vardir/Bookmarks.txt" )
       || fatal_error( 'cannot_open', "$vardir/Bookmarks.txt", 1 );
     print {BMARKS} "$bm_order|$bm_title|$bm_image|$bm_url|$date\n"
-      or croak 'cannot print BookMark';
+      or croak "$croak{'print'} BookMark";
     fclose(BMARKS);
 
     if ( $action eq 'bookmarks_add' ) {
@@ -276,7 +276,7 @@ sub DeleteBookmark {
     fopen( BMARKS, ">$vardir/Bookmarks.txt" )
       || fatal_error( 'cannot_open', "$vardir/Bookmarks.txt", 1 );
     print {BMARKS} grep { !/$FORM{'bookmark_id'}/xsm } @bookmarks
-      or croak 'cannot print BookMark';
+      or croak "$croak{'print'} BookMark";
     fclose(BMARKS);
 
     if ( $action eq 'bookmarks_delete' ) {
@@ -381,7 +381,7 @@ sub EditBookmark2 {
 
     fopen( BMARKS, ">$vardir/Bookmarks.txt" )
       || fatal_error( 'cannot_open', "$vardir/bookmarks.txt", 1 );
-    print {BMARKS} "$bookmark\n" or croak 'cannot print BookMark';
+    print {BMARKS} "$bookmark\n" or croak "$croak{'print'} BookMark";
     fclose(BMARKS);
 
     if ( $action eq 'bookmarks_edit2' ) {

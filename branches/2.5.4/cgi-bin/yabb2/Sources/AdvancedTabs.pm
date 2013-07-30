@@ -145,7 +145,7 @@ sub AddNewTab2 {
               || fatal_error( 'file_not_open', "$langdir/$lngdir/tabtext.txt",
                 1 );
             print {TABTXT} map { "$_\t$tabtxt{$_}\n" } keys %tabtxt
-              or croak 'cannot print TABTXT';
+              or croak "$croak{'print'} TABTXT";
             fclose(TABTXT);
         }
 
@@ -296,7 +296,7 @@ sub EditTab2 {
         fopen( TABTXT, ">$langdir/$tab_lang/tabtext.txt" )
           || fatal_error( 'file_not_open', "$langdir/$tab_lang/tabtext.txt" );
         print {TABTXT} map { "$_\t$tabtxt{$_}\n" } keys %tabtxt
-          or croak 'cannot print TABTXT';
+          or croak "$croak{'print'} TABTXT";
         fclose(TABTXT);
     }
 
@@ -371,7 +371,7 @@ sub DeleteTab {
             else {
                 fopen( TABTXT, ">$langdir/$lngdir/tabtext.txt" );
                 print {TABTXT} map { "$_\t$tabtxt{$_}\n" } keys %tabtxt
-                  or croak 'cannot print TABTXT';
+                  or croak "$croak{'print'} TABTXT";
                 fclose(TABTXT);
             }
         }

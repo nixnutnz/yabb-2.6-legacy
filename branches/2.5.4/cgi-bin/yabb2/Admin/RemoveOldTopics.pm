@@ -39,7 +39,7 @@ sub RemoveOldThreads {
       qq~<br /><b>$removemess_txt{'1'} $maxdays $removemess_txt{'2'}</b><br />~;
 
     fopen( FILE, ">$vardir/oldestmes.txt" );
-    print {FILE} $maxdays or croak 'cannot print FILE';
+    print {FILE} $maxdays or croak "$croak{'print'} oldestmes";
     fclose(FILE);
 
     require "$boardsdir/forum.master";
@@ -125,7 +125,7 @@ qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'
                         s/^.*?\|//xsm;
                         $_;
                       } reverse sort { lc($a) cmp lc $b } @temparray_1 )
-                      or croak 'cannot print BOARDFILE';
+                      or croak "$croak{'print'} BOARDFILE";
                     fclose(BOARDFILE);
 
                     # remove attachments of removed topics
@@ -144,7 +144,7 @@ qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'
                 s/^.*?\|//xsm;
                 $_;
               } reverse sort { lc($a) cmp lc $b } @temparray_1 )
-              or croak 'cannot print BOARDFILE';
+              or croak "$croak{'print'} BOARDFILE";
             fclose(BOARDFILE);
 
             BoardCountTotals( $boards[$j] );

@@ -35,12 +35,12 @@ sub get_cal_ssi {
 
     ## PRINT SSI EventCal ##
 
-    print qq~Content-type: text/html\n\n~ or croak 'cannot print page';
+    print qq~Content-type: text/html\n\n~ or croak "$croak{'print'} page";
     if ($curcaldisplay) {
-        print $curcaldisplay or croak 'cannot print page';
+        print $curcaldisplay or croak "$croak{'print'} page";
     }
     else {
-        print $ml_txt{'223'} or croak 'cannot print page';
+        print $ml_txt{'223'} or croak "$croak{'print'} page";
     }
     exit;
 }

@@ -50,14 +50,16 @@ $abbr_lang = 'en-us';
 '32' => 'Go',
 '34' => 'Login',
 '35' => 'You can login at the bottom of this page!',
-'40' => 'Multimedia File Viewing and Clickable Links are available for Registered Members only!!',
-'40a' => 'Multimedia File Viewing is not available on RSS Feeds!!',
+'40' => 'Multimedia File Viewing and Clickable Links are available for Registered Members only!',
+'40a' => 'Multimedia File Viewing is not available on RSS Feeds!',
 '41' => 'You need to',
 '42' => 'or',
+'42a' => 'to View Multimedia Files or to click on a Message Link',
 '60' => 'Online',
 '61' => 'Offline',
 '62' => 'Topic Tools',
 '63' => 'Post Tools',
+'64' => 'There are no actions to perform.',
 'away' => 'Away',
 '70' => 'Subject',
 '97' => 'Register',
@@ -145,6 +147,7 @@ $abbr_lang = 'en-us';
 'go_to_board' => 'Go to the Board Index',
 'searchimg' => 'Posts no more than',
 'searchimg2' => 'days old',
+'collapse' => 'collapse',
 );
 
 %load_txt = (
@@ -269,6 +272,12 @@ $forwardedpm = qq~This alert was forwarded as e-mail~;
 '01' => 'Lookup',
 '02' => 'on a Whois server:',
 'iplookup' => 'IP Lookup',
+);
+
+%croak = (
+'open' => 'Cannot open',
+'close' => 'Cannot close',
+'print' => 'Cannot print',
 );
 
 timetostring($date);

@@ -76,8 +76,8 @@ sub DoLiveMessage {
     ToChars($myname);
     $myname = Censor($myname);
     print "Content-type: application/x-www-form-urlencoded\n\n"
-      or croak 'cannot print head';
-    print qq~$csubject|$message|$myname~ or croak 'cannot print';
+      or croak "$croak{'print'} content-type";
+    print qq~$csubject|$message|$myname~ or croak "$croak{'print'}";
     $message = $mess;
     exit;
 }
@@ -145,8 +145,8 @@ sub DoLiveIM {
     liveimage_resize();
 
     print "Content-type: application/x-www-form-urlencoded\n\n"
-      or croak 'cannot print head';
-    print qq~$messageblock\n~ or croak 'cannot print messageblock';
+      or croak "$croak{'print'} content-type";
+    print qq~$messageblock\n~ or croak "$croak{'print'} messageblock";
     $message = $mess;
     exit;
 }
@@ -202,9 +202,9 @@ sub DoLiveCal {
     $mybtimein = timeformat($mybtime);
     $cdate     = dtonly($mybtimein);
     print "Content-type: application/x-www-form-urlencoded\n\n"
-      or croak 'cannot print head';
+      or croak "$croak{'print'} content-type";
     print qq~$message|$myname|$cdate|$txt_icon|$mycal_type~
-      or croak 'cannot print message';
+      or croak "$croak{'print'} message";
     $message = $mess;
     exit;
 }

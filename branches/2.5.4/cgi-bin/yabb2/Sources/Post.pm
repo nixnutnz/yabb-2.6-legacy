@@ -550,7 +550,7 @@ qq~             document.write('<img src="$tmpurl" class="bottom pointer" alt="$
             {
                 if ( $line !~ /banner/ism ) {
                     $moresmilieslist .=
-qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bottom" alt="$name" title="$name" onclick="javascript: MoreSmilies($i);" style="cursor: pointer;" />$SmilieLinebreak[$i] ');\n~;
+qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bottom cursor" alt="$name" title="$name" onclick="javascript: MoreSmilies($i);" />$SmilieLinebreak[$i] ');\n~;
                     $more_smilie_array .= qq~" [smiley=$line]", ~;
                     $i++;
                 }
@@ -835,7 +835,7 @@ qq~<div class="small" style="float: right; width: 100%; text-align: right; margi
             }
             if ( ${ $uid . $tmpmusername }{'signature'} ) {
                 $livesignature_hr =
-q~<hr class="hr" style="margin: 0; margin-top: 5px; margin-bottom: 5px; padding: 0;" />~;
+q~<hr class="hr att_hr" />~;
             }
         }
         $liveipimg = qq~<img src="$imagesdir/$post_ip" alt="" />~;
@@ -889,7 +889,7 @@ s/({|<)yabb userlink(}|>)/<span id="savename" style="font-weight: bold">$liveuse
         if ($prevmain) {
             $my_prevmain = $mypost_preview_main;
             $my_prevmain =~ s/{yabb prevmain}/$prevmain/sm;
-        }
+		}
         $my_postsection_ajx = my_check_prev();
 
         $topicstatus_row = q{};
@@ -957,7 +957,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
 
         if ( $enable_ubbc && $showyabbcbutt ) {
             $my_ubbc = qq~
-            <div style="$style_ubbc_box">~;
+            <div class="style_ubbc_box">~;
             $my_ubbc .= postbox();
             $my_ubbc .= q~</div>~;
         }
@@ -1114,12 +1114,12 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                 {
                     $startcount++;
                     $my_att_a = qq~
-            <div id="attform_a_$y" style="float:left; width:23%;~
-                      . ( $y > 1 ? q~ padding-top:5px~ : q{} )
+            <div id="attform_a_$y" class="att_lft~
+                      . ( $y > 1 ? q~_b~ : q{} )
                       . qq~"><b>$fatxt{'6'} $y:</b></div>
-            <div id="attform_b_$y" style="float:left; width:76%;~
-                      . ( $y > 1 ? q~ padding-top:5px~ : q{} ) . qq~">
-                <input type="file" name="file$y" id="file$y" size="50" onchange="selectNewattach($y);" /><br />
+            <div id="attform_b_$y" class="att_rgt~
+                      . ( $y > 1 ? q~_b~ : q{} ) . qq~">
+                <input type="file" name="file$y" id="file$y" size="50" onchange="selectNewattach($y);" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span><br />
                     <span style="font-size:x-small">
                         <input type="hidden" id="w_filename$y" name="w_filename$y" value="$files[$y-1]" />
                         <select id="w_file$y" name="w_file$y" size="1">
@@ -1131,12 +1131,12 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                 }
                 else {
                     $my_att_a = qq~
-            <div id="attform_a_$y" style="float:left; width:23%;~
-                      . ( $y > 1 ? q~ visibility:hidden; height:0px~ : q{} )
-                      . qq~"><b>$fatxt{'6'} $y:</b></div>
-            <div id="attform_b_$y" style="float:left; width:76%;~
-                      . ( $y > 1 ? q~ visibility:hidden; height:0px~ : q{} )
-                      . qq~">\n             <input type="file" name="file$y" id="file$y" size="50" /></div>~;
+            <div id="attform_a_$y" class="att_lft"~
+                      . ( $y > 1 ? q~ style="visibility:hidden; height:0px"~ : q{} )
+                      . qq~><b>$fatxt{'6'} $y:</b></div>
+            <div id="attform_b_$y" class="att_rgt"~
+                      . ( $y > 1 ? q~ style="visibility:hidden; height:0px"~ : q{} )
+                      . qq~>\n             <input type="file" name="file$y" id="file$y" size="50" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span></div>~;
                 }
                 $mypoll_att .= $my_att_a;
 
@@ -1664,7 +1664,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
         $prevmain .= $mypost_prevmain_error;
         $prevmain =~ s/{yabb preverror}/$error/sm;
         $prevmain =~ s/{yabb error_occurred}/$error_txt{'error_occurred'}/sm;
-    }
+	}
 
     $message = $mess;
 
@@ -2150,7 +2150,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
                 binmode NEWFILE;
                     # needed for operating systems (OS) Windows, ignored by Linux
                 print {NEWFILE} $file_buffer
-                  or croak 'cannot write NEWFILE';    # write new file on HD
+                  or croak "$croak{'print'} NEWFILE";    # write new file on HD
                 fclose(NEWFILE);
 
             }
@@ -2232,14 +2232,14 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
         seek FILE, 0, 0;
         print {FILE}
 qq~$newthreadid|$subject|$name|$email|$date|$mreplies|$username|$icon|$mstate\n~
-          or croak 'cannot print FILE';
-        print {FILE} @buffer or croak 'cannot print FILE';
+          or croak "$croak{'print'} FILE";
+        print {FILE} @buffer or croak "$croak{'print'} FILE";
         fclose(FILE);
         fopen( FILE, ">$datadir/$newthreadid.txt" )
           || fatal_error( 'cannot_open', "$datadir/$newthreadid.txt", 1 );
         print {FILE}
 qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfile\n~
-          or croak 'cannot print FILE';
+          or croak "$croak{'print'} FILE";
         fclose(FILE);
 
         if (@filelist) {
@@ -2248,7 +2248,7 @@ qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfil
             foreach my $fixfile (@filelist) {
                 print {AMP}
 qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$date|$fixfile|0\n~
-                  or croak 'cannot print AMP';
+                  or croak "$croak{'print'} AMP";
             }
             fclose(AMP);
         }
@@ -2256,12 +2256,12 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
             if ( ( $iamadmin || $iamgmod ) && $FORM{'scpoll'} )
             {                 # Save ShowcasePoll
                 fopen( SCFILE, ">$datadir/showcase.poll" );
-                print {SCFILE} $newthreadid or croak 'cannot print SCFILE';
+                print {SCFILE} $newthreadid or croak "$croak{'print'} SCFILE";
                 fclose(SCFILE);
             }
 
             fopen( POLL, ">$datadir/$newthreadid.poll" );
-            print {POLL} @poll_data or croak 'cannot print POLL';
+            print {POLL} @poll_data or croak "$croak{'print'} POLL";
             fclose(POLL);
         }
         ## write the ctb file for the new thread
@@ -2335,7 +2335,7 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
         seek UPDATE_CTB, 0, 0;
         print {UPDATE_CTB}
           qq~### ThreadID: $threadid, LastModified: $newtime ###\n\n~
-          or croak 'cannot print UPDATE_CTB';
+          or croak "$croak{'print'} UPDATE_CTB";
 
         # Check if thread has moved. And do necessary access check
         if ( ${$threadid}{'board'} ne $currentboard ) {
@@ -2343,7 +2343,7 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
                 foreach my $cnt ( 0 .. ( @tag - 1 ) ) {
                     print {UPDATE_CTB}
                       qq~'$tag[$cnt]',"${$threadid}{$tag[$cnt]}"\n~
-                      or croak 'cannot print UPDATE_CTB';
+                      or croak "$croak{'print'} UPDATE_CTB";
                 }
                 fclose(UPDATE_CTB);
                 fatal_error('no_perm_reply');
@@ -2363,7 +2363,7 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
 
         foreach my $cnt ( 0 .. ( @tag - 1 ) ) {
             print {UPDATE_CTB} qq~'$tag[$cnt]',"${$threadid}{$tag[$cnt]}"\n~
-              or croak 'cannot print UPDATE_CTB';
+              or croak "$croak{'print'} UPDATE_CTB";
         }
         fclose(UPDATE_CTB);
 
@@ -2375,11 +2375,11 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
             if ( ( $iamadmin || $iamgmod ) && $FORM{'scpoll'} )
             {                 # Save ShowcasePoll
                 fopen( SCFILE, ">$datadir/showcase.poll" );
-                print {SCFILE} $threadid or croak 'cannot print SCFILE';
+                print {SCFILE} $threadid or croak "$croak{'print'} SCFILE";
                 fclose(SCFILE);
             }
             fopen( POLL, ">$datadir/$threadid.poll" );
-            print {POLL} @poll_data or croak 'cannot print POLL';
+            print {POLL} @poll_data or croak "$croak{'print'} POLL";
             fclose(POLL);
         }
 
@@ -2394,15 +2394,15 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
         }
         print {BOARDFILE}
 qq~$mnum|$msub|$mname|$memail|$date|$mreplies|$musername|$micon|$mstate\n~
-          or croak 'cannot print BOARDFILE';
-        print {BOARDFILE} @buffer or croak 'cannot print BOARDFILE';
+          or croak "$croak{'print'} BOARDFILE";
+        print {BOARDFILE} @buffer or croak "$croak{'print'} BOARDFILE";
         fclose(BOARDFILE);
 
         fopen( THREADFILE, ">>$datadir/$threadid.txt" )
           || fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
         print {THREADFILE}
 qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfile\n~
-          or croak 'cannot print THREADFILE';
+          or croak "$croak{'print'} THREADFILE";
         fclose(THREADFILE);
 
         if (@filelist) {
@@ -2411,7 +2411,7 @@ qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfil
             foreach my $fixfile (@filelist) {
                 print {AMP}
 qq~$mnum|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$date|$fixfile|0\n~
-                  or croak 'cannot print AMP';
+                  or croak "$croak{'print'} AMP";
             }
             fclose(AMP);
         }
@@ -2715,14 +2715,14 @@ sub doshowthread {
 
         if ( @messages => $cutamount && $showpageall ) {
             $showall .=
-qq~ $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threadid;title=PostReply$INFO{'start'};showall=yes" style="text-decoration: underline;">$post_cutts{'4'}</a> $post_cutts{'5'} ~;
+qq~ $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threadid;title=PostReply$INFO{'start'};showall=yes" class="under">$post_cutts{'4'}</a> $post_cutts{'5'} ~;
         }
 
         if ( $INFO{'showall'} ne q{} || $cutamount eq 'all' ) {
             $origcutamount = $cutamount;
             $cutamount     = $pidtxt{'01'};
             $showall =
-qq~$post_cutts{'3'} $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threadid;title=PostReply/$INFO{'start'}" style="text-decoration: underline;"> $post_cutts{'4'}</a> $post_cutts{'6'} ~;
+qq~$post_cutts{'3'} $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threadid;title=PostReply/$INFO{'start'}" class="under"> $post_cutts{'4'}</a> $post_cutts{'6'} ~;
         }
         $my_showmess_disnum = qq~
             <b>$post_txt{'468'} - $post_cutts{'2'} $cutamount $showall</b>~;
@@ -3038,8 +3038,8 @@ sub sendGuestPM2 {
     #           messagestatus|flags|storefolder|attachment
     print {INBOX}
 "$newthreadid|$name $email|admin|||$subject|$date|$message|$newthreadid|0|$ENV{'REMOTE_ADDR'}|g|||\n"
-      or croak 'cannot print INBOX';
-    print {INBOX} @bmessages or croak 'cannot print INBOX';
+      or croak "$croak{'print'} INBOX";
+    print {INBOX} @bmessages or croak "$croak{'print'} INBOX";
     fclose(INBOX);
     undef @bmessages;
 
@@ -3420,8 +3420,8 @@ sub modAlert2 {
             fopen( INBOX, ">$memberdir/$toBoardMod.msg" );
             print {INBOX}
 "$newthreadid|$name|$toBoardMod|||$subject|$date|$message|$newthreadid|0|$user_ip|$mstatus|u||\n"
-              or croak 'cannot print INBOX';
-            print {INBOX} @inmessages or croak 'cannot print INBOX';
+              or croak "$croak{'print'} INBOX";
+            print {INBOX} @inmessages or croak "$croak{'print'} INBOX";
             fclose(INBOX);
             require Sources::MyCenter;
             updateIMS( $toBoardMod, $newthreadid, 'messagein' );
@@ -3438,8 +3438,8 @@ sub modAlert2 {
         fopen( INBOX, ">$memberdir/broadcast.messages" );
         print {INBOX}
 "$newthreadid|$name|$modgrps|||$subject|$date|$message|$newthreadid|0|$ENV{'REMOTE_ADDR'}|ab|||\n"
-          or croak 'cannot print INBOX';
-        print {INBOX} @inmessages or croak 'cannot print INBOX';
+          or croak "$croak{'print'} INBOX";
+        print {INBOX} @inmessages or croak "$croak{'print'} INBOX";
         fclose(INBOX);
     }
 

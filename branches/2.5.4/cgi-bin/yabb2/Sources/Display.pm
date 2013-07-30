@@ -420,9 +420,9 @@ qq~<a href="javascript:void(0);" onclick="ListPages($mnum);">...</a>&nbsp;~;
         }
         else {
             $pagedropindex1 =
-q~<span style="float: left; width: 350px; margin: 0px; margin-top: 2px; border: 0px;">~;
+q~<span class="pagedropindex">~;
             $pagedropindex1 .=
-qq~<span style="float: left; height: 21px; margin: 0; margin-right: 4px;"><a href="$scripturl?num=$viewnum;start=~
+qq~<span class="pagedropindex_inner"><a href="$scripturl?num=$viewnum;start=~
               . ( !$ttsreverse ? $start : $mreplies - $start )
               . qq~;action=threadpagetext"><img src="$imagesdir/$disp_index_togl" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a></span>~;
             $pagedropindex2 = $pagedropindex1;
@@ -439,9 +439,9 @@ qq~<span style="float: left; height: 21px; margin: 0; margin-right: 4px;"><a hre
 
             if ( $pagenumb > $dropdisplaynum ) {
                 $pagedropindex1 .=
-qq~<span style="float: left; height: 21px; margin: 0;"><select size="1" name="decselector1" id="decselector1" style="font-size: 9px; border: 2px inset;" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
+qq~<span class="decselector"><select size="1" name="decselector1" id="decselector1" class="decselector_sel" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
                 $pagedropindex2 .=
-qq~<span style="float: left; height: 21px; margin: 0;"><select size="1" name="decselector2" id="decselector2" style="font-size: 9px; border: 2px inset;" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
+qq~<span class="decselector"><select size="1" name="decselector2" id="decselector2" class="decselector_sel" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
             }
 
             for my $i ( 0 .. ( $indexpages - 1 ) ) {
@@ -476,9 +476,9 @@ qq~<option value="$indexstart|$indexend|$maxmessagedisplay|$indexpage"$selected>
                 $pagedropindex2 .= qq~</select>\n</span>~;
             }
             $pagedropindex1 .=
-q~<span id="ViewIndex1" class="droppageindex" style="height: 14px; visibility: hidden">&nbsp;</span>~;
+q~<span id="ViewIndex1" class="droppageindex viewindex_hid">&nbsp;</span>~;
             $pagedropindex2 .=
-q~<span id="ViewIndex2" class="droppageindex" style="height: 14px; visibility: hidden">&nbsp;</span>~;
+q~<span id="ViewIndex2" class="droppageindex viewindex_hid">&nbsp;</span>~;
             $tmpmaxmessagedisplay = $maxmessagedisplay;
             $prevpage =
                !$ttsreverse
@@ -489,19 +489,19 @@ q~<span id="ViewIndex2" class="droppageindex" style="height: 14px; visibility: h
               ? $start + $maxmessagedisplay
               : $mreplies - $start - $maxmessagedisplay;
             $pagedropindexpvbl =
-qq~<img src="$imagesdir/$disp_index_left0" height="14" width="13" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$disp_index_left0" height="14" width="13" alt="" />~;
             $pagedropindexnxbl =
-qq~<img src="$imagesdir/$disp_index_right0" height="14" width="13" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$disp_index_right0" height="14" width="13" alt="" />~;
 
             if (   ( !$ttsreverse && $start < $maxmessagedisplay )
                 or ( $ttsreverse && $prevpage > $mreplies ) )
             {
                 $pagedropindexpv .=
-qq~<img src="$imagesdir/$disp_index_left0" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$disp_index_left0" height="14" width="13" alt="" />~;
             }
             else {
                 $pagedropindexpv .=
-qq~<img src="$imagesdir/$disp_index_left" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?num=$viewnum/$prevpage\\'" ondblclick="location.href=\\'$scripturl?num=$viewnum/~
+qq~<img src="$imagesdir/$disp_index_left" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" class="cursor" onclick="location.href=\\'$scripturl?num=$viewnum/$prevpage\\'" ondblclick="location.href=\\'$scripturl?num=$viewnum/~
                   . ( !$ttsreverse ? 0 : $mreplies )
                   . q~\\'" />~;
             }
@@ -509,11 +509,11 @@ qq~<img src="$imagesdir/$disp_index_left" height="14" width="13" alt="$pidtxt{'0
                 or ( $ttsreverse && $nextpage < $mreplies - $lastptn ) )
             {
                 $pagedropindexnx .=
-qq~<img src="$imagesdir/$disp_index_right0" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$disp_index_right0" height="14" width="13" alt="" />~;
             }
             else {
                 $pagedropindexnx .=
-qq~<img src="$imagesdir/$disp_index_right" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?num=$viewnum/$nextpage\\'" ondblclick="location.href=\\'$scripturl?num=$viewnum/~
+qq~<img src="$imagesdir/$disp_index_right" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" class="cursor" onclick="location.href=\\'$scripturl?num=$viewnum/$nextpage\\'" ondblclick="location.href=\\'$scripturl?num=$viewnum/~
                   . ( !$ttsreverse ? $lastptn : $mreplies - $lastptn )
                   . q~\\'" />~;
             }
@@ -794,7 +794,8 @@ qq~$menusep<a href="$scripturl?action=print;num=$viewnum" onclick="target='_blan
     }
 
     # For each post in this thread:
-    my ( %attach_gif, %attach_count, $movedflag );
+    my ( %attach_gif, %attach_count );
+	my $movedflag = q{};
     foreach (@messages) {
         my (
             $userlocation,      $aimad,             $yimad,
@@ -875,7 +876,7 @@ qq~$menusep<a href="$scripturl?action=print;num=$viewnum" onclick="target='_blan
                         && $amdisplaypics == 1 )
                     {
                         $showattach .=
-qq~<div class="small" style="float:left; margin:8px;"><a href="$scripturl?action=downloadfile;file=$urlname" onclick="target='_blank';"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $_</a> (~
+qq~<div class="small attbox"><a href="$scripturl?action=downloadfile;file=$urlname" onclick="target='_blank';"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $_</a> (~
                           . int( $filesize / 1024 )
                           . qq~ KB | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> )<br />~
                           . (
@@ -907,10 +908,10 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
                 }
             }
             $showattachhr =
-q~<hr class="hr" style="margin: 0; margin-top: 5px; margin-bottom: 5px; padding: 0;" />~;
+q~<hr class="hr att_hr" />~;
             if ( $showattach && $attachment ) {
                 $attachment =~
-s/<div class="small">/<div class="small" style="margin:8px;">/gsm;
+s/<div class="small">/<div class="small attbox_b">/gsm;
             }
         }
 
@@ -1068,7 +1069,7 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
             }
             if ( ${ $uid . $musername }{'signature'} ) {
                 $signature_hr =
-q~<hr class="hr" style="margin: 0; margin-top: 5px; margin-bottom: 5px; padding: 0;" />~;
+q~<hr class="hr att_hr" />~;
             }
             $memberinfo = "$memberinfo{$musername}$addmembergroup{$musername}";
 
@@ -1316,7 +1317,7 @@ qq~$menusep<a href="$scripturl?action=split_splice;board=$currentboard;thread=$v
               )
             {
                 $template_delete =
-qq~$menusep<a style="cursor: pointer;" onclick="if(confirm('$display_txt{'rempost'}')) {uncheckAllBut($counter);}">$img{'delete'}</a>~;
+qq~$menusep<a class="cursor" onclick="if(confirm('$display_txt{'rempost'}')) {uncheckAllBut($counter);}">$img{'delete'}</a>~;
                 if (
                     (
                            ( $iammod && $mdmod == 1 )
@@ -1328,7 +1329,7 @@ qq~$menusep<a style="cursor: pointer;" onclick="if(confirm('$display_txt{'rempos
                   )
                 {
                     $template_admin =
-qq~<input type="checkbox" class="$css" style="border: 0px;" name="del$counter" value="$counter" />~;
+qq~<input type="checkbox" class="$css" name="del$counter" value="$counter" />~;
                 }
                 else {
 
@@ -1561,6 +1562,7 @@ qq~$menusep<a href="javascript:document.multidel.submit();" onclick="return conf
             CountChars();
             $bm_subject = $convertstr;
             if ($cliped) { $bm_subject .= '...'; }
+			$bm_subject =~ s/([^A-Za-z0-9])/sprintf('%%%02X', ord($1))/segm; 
             $bm_url =~ s/{url}/$scripturl?num=$mnum/gxsm;
             $bm_url =~ s/{title}/$bm_subject/gxsm;
             $show_bookmarks .=
@@ -1878,29 +1880,31 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
     if ( !${ $uid . $gtalkname }{'password'} ) { LoadUser($gtalkname); }
     $gtalkuser = ${ $uid . $gtalkname }{'gtalk'};
 
-    print qq~Content-type: text/html\n\n~ or croak 'cannot print page content';
+    print qq~Content-type: text/html\n\n~ or croak "$croak{'print'} page content";
     print
 qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" style="overflow-x:hidden;overflow-y:hidden">
 <head>
 <title>Google Talk</title>
 $gtalkstyle
+body {margin: 0px; padding: 0px; overflow-x:hidden;overflow-y:hidden;}
+.g_user { height:58px; margin-bottom:2em}
 </head>
-<body class="windowbg2" style="margin: 0px; padding: 0px; overflow-x:hidden;overflow-y:hidden">
+<body class="windowbg2">
 <table class="bordercolor pad_4px cs_thin">
     <tr>
         <td class="titlebg h_22px">
             <img src="$defaultimagesdir/$disp_gtalk2" width="16" height="14" alt="" title="" />Google Talk
         </td>
     </tr><tr>
-        <td class="windowbg" style="height:58px">
-            <img src="$defaultimagesdir/$disp_gtalk2" width="16" height="14" alt="${$uid.$gtalkname}{'realname'}" title="${$uid.$gtalkname}{'realname'}" /> $gtalkuser<br /><br />
+        <td class="windowbg g_user">
+            <img src="$defaultimagesdir/$disp_gtalk2" width="16" height="14" alt="${$uid.$gtalkname}{'realname'}" title="${$uid.$gtalkname}{'realname'}" /> $gtalkuser
         </td>
     </tr>
 </table>
 </body>
 </html>
-~ or croak 'cannot print page';
+~ or croak "$croak{'print'} page";
     return;
 }
 

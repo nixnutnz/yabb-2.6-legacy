@@ -220,7 +220,7 @@ sub SpamQuestionsAdd {
       || fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
         1 );
     print {SPAMQUESTIONS} "$date|$spam_question|$spam_answer\n"
-      or croak 'cannot print SPAMQUESTIONS';
+      or croak "$croak{'print'} SPAMQUESTIONS";
     fclose(SPAMQUESTIONS);
 
     if ( $action eq 'spam_questions_add' ) {
@@ -317,7 +317,7 @@ sub SpamQuestionsEdit2 {
     fopen( SPAMQUESTIONS, ">$langdir/$questions_language/spam.questions" )
       || fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
         1 );
-    print {SPAMQUESTIONS} "$question\n" or croak 'cannot print SPAMQUESTIONS';
+    print {SPAMQUESTIONS} "$question\n" or croak "$croak{'print'} SPAMQUESTIONS";
     fclose(SPAMQUESTIONS);
 
     if ( $action eq 'spam_questions_edit2' ) {
@@ -342,7 +342,7 @@ sub SpamQuestionsDelete {
         1 );
     print {SPAMQUESTIONS}
       grep { !/$FORM{'spam_question_id'}/xsm } @spam_questions
-      or croak 'cannot print SPAMQUESTIONS';
+      or croak "$croak{'print'} SPAMQUESTIONS";
     fclose(SPAMQUESTIONS);
 
     if ( $action eq 'spam_questions_delete' ) {

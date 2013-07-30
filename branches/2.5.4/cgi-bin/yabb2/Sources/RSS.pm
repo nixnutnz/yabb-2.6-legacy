@@ -546,7 +546,7 @@ sub RSS_error {
 }
 
 sub Send304NotModified {
-    print "Status: 304 Not Modified\n\n" or croak 'cannot print 304';
+    print "Status: 304 Not Modified\n\n" or croak "$croak{'print'} 304";
     exit;
 }
 

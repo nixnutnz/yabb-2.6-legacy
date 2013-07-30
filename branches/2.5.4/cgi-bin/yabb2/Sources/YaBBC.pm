@@ -248,8 +248,13 @@ s/\[flash\=(\S+?),(\S+?)](\S+?)\[\/flash\]/<b>$display_txt{'769'} ($1 x $2):<\/b
         # we need to keep normal linebreaks inside <pre> tag
         $code =~ s/&quot;&gt;/\[code_qgt\]/igxsm;
         $codecnt++;
+		if ($guest_media_disallowed && $iamguest) {
+		    $prselect = q{}; }
+		else {
         $prselect =
 qq~<a href="javascript:selectAllCode($codecnt)"><img src="$imagesdir/codeselect.png" alt="$post_txt{'selectall'}" title="$post_txt{'selectall'}" /></a>~;
+		}
+
         $code =
 qq~<pre class="$insclass" id="code$codecnt" style="margin: 0px; width: 90%; $height overflow: scroll;">$code\[code_br][code_br]</pre>~;
         $_ =~ s/XSELECTX/$prselect/gxsm;
@@ -500,19 +505,23 @@ s/([^\"\=\[\]\/\:\.\-(\:\/\/\w+)]|[\n\b]|\&quot\;|\[quote.*?\]|\[edit\]|\[highli
     }
 
     if ( $guest_media_disallowed && $iamguest ) {
+	    if ($action) {$act = qq~;sesredir=action\~$action~;}
+		else {$act = qq~;sesredir=num\~$curnum~;}
         my $oops =
-qq~$maintxt{'40'}&nbsp;&nbsp;$maintxt{'41'} <a href="$scripturl?action=login;sesredir=num\~$curnum">$img{'login'}</a>~;
+qq~ <i>$maintxt{'40'}&nbsp;&nbsp;$maintxt{'41'} <a href="$scripturl?action=login$act"><b>$maintxt{'34'}</b></a></i>~;
         if ($regtype) {
             $oops .=
-qq~ $maintxt{'42'} <a href="$scripturl?action=register">$img{'register'}</a>~;
+qq~<i> $maintxt{'42'} <a href="$scripturl?action=register"><b>$maintxt{'97'}</b></a></i>~;
         }
+		$oops .= qq~<i> $maintxt{'42a'}</i>~;
 
         $showattach   = q{};
         $showattachhr = q{};
         $attachment =~ s/<a href=".+?<\/a>/[oops]/gsm;
         $attachment =~ s/<img src=".+?>/[oops]/gsm;
         $attachment =~ s/\[oops\]/$oops/gsm;
-        $message    =~ s/<a href=".+?<\/a>/[oops]/gsm;
+		if( !$movedflag ) { $message =~ s/<a href=".+?<\/a>/[oops]/gsm; } 
+        #$message    =~ s/<a href=".+?<\/a>/[oops]/gsm;
         $message    =~ s/<img src=".+?>/[oops]/gsm;
         $message    =~ s/\[oops\]/$oops/gsm;
     }

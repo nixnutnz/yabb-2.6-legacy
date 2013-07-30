@@ -178,7 +178,7 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/info.gif" alt="" /> <b>$admintxt{'28'}</b>
+                <img src="$infoimg" alt="" /> <b>$admintxt{'28'}</b>
             </td>
         </tr><tr>
             <td class="catbg">
@@ -291,7 +291,7 @@ qq~<a href="$scripturl?num=$lspostid/$lsreply#$lsreply">$lssub</a> ($lsdatetime)
                 <br />
                 <div class="admin_total_left">$admin_txt{'425'}</div>
                 <div class="admin_total_65pc">
-                    <script src="http://www.yabbforum.com/update/versioncheck.js" type="text/javascript"></script>
+                    <script src="$versionchk" type="text/javascript"></script>
                     <script type="text/javascript">
                         if (typeof STABLE == "undefined" || STABLE == null ) {
                             document.write("$versiontxt{'4'} <b>$YaBBversion</b> - $versiontxt{'5'} <b>$rna</b> <p>");
@@ -485,7 +485,7 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/info.gif" alt="" /> <b>$admin_txt{'693'}</b>
+                <img src="$infoimg" alt="" /> <b>$admin_txt{'693'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2"><br />
@@ -779,10 +779,10 @@ sub ver_detail {
             <col class="w_40pc" />
             <col class="w_30pc" />
             <tr>
-                <td class="titlebg" colspan="3"><img src="$imagesdir/info.gif" alt="" /><b>$admin_txt{'429'}</b></td>
+                <td class="titlebg" colspan="3"><img src="$infoimg" alt="" /> <b>$admin_txt{'429'}</b></td>
             </tr><tr>
                 <td class="windowbg2" colspan="3">
-                    <script src="http://www.yabbforum.com/update/versioncheck.js" type="text/javascript"></script>
+                    <script src="$versionchk" type="text/javascript"></script>
                     $versiontxt{'4'} <b>$YaBBversion</b><br />
                     <script type="text/javascript">
 					    if (typeof STABLE == "undefined" || STABLE == null) {
@@ -791,7 +791,7 @@ sub ver_detail {
 			                document.write("$versiontxt{'5'} <b>"+STABLE+"</b><br />$versiontxt{'7'} <b>"+BETA+"</b>");
 		                } 
                     </script>
-                    <noscript>$versiontxt{'1'} <img src="http://www.yabbforum.com/images/version/versioncheck.gif" alt="" /></noscript>
+                    <noscript>$versiontxt{'1'} <img src="$versionimg" alt="" /></noscript>
                 </td>
             </tr><tr>
                 <td class="catbg center"><b>$admin_txt{'495'}</b><br /></td>
@@ -1002,7 +1002,7 @@ sub Refcontrol2 {
     }
 
     fopen( FILE, ">$vardir/allowed.txt" );
-    print {FILE} @outfile or croak 'cannot print FILE';
+    print {FILE} @outfile or croak "$croak{'print'} FILE";
     fclose(FILE);
 
     $yySetLocation = $adminurl;
@@ -1283,7 +1283,7 @@ sub AddMember2 {
         fopen( IM, ">$memberdir/$member{'regusername'}.msg", 1 );
         print {IM}
 "$messageid|$sendname|$member{'regusername'}|||$imsubject|$date|$imtext|$messageid|0|$ENV{'REMOTE_ADDR'}|s|u||\n"
-          or croak 'cannot print IM';
+          or croak "$croak{'print'} IM";
         fclose(IM);
     }
     $encryptopass = encode_password( $member{'passwrd1'} );

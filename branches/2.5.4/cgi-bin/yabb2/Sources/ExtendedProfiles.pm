@@ -33,7 +33,7 @@ my %field;
 # outputs the value of a user's extended profile field
 ## USAGE: $value = ext_get("admin","my_custom_fieldname");
 ##  or    $value_raw = ext_get("admin","my_custom_fieldname",1);
-## pass the third argument if you want to get the raw content e.g. an unformated date
+## pass the third argument if you want to get the raw content e.g. an unformatted date
 sub ext_get {
     my (
         $pusername, $fieldname, $no_parse,           @ext_profile,
@@ -412,10 +412,10 @@ sub ext_viewprofile {
                 || $field{'type'} eq 'checkbox' )
             {
                 $output .= qq~
-            <div style="float: left; width: 30%; padding-top: 5px;  padding-bottom: 5px;">
+            <div class="ext_lft">
             <b>$field{'name'}:</b>
             </div>
-            <div style="float: left; width: 70%; padding-top: 5px;  padding-bottom: 5px;">
+            <div class="ext_rgt">
             $value&nbsp;
             </div>~;
                 $previous = 0;
@@ -429,7 +429,7 @@ sub ext_viewprofile {
                 {
                     if ( $value eq $ext_spacer_br ) {
                         $output .= qq~
-            <div style="float: left; width: 100%; padding-top: 5px;  padding-bottom: 5px;">
+            <div class="ext_100">
             $ext_spacer_br
             </div>~;
                         $previous = 0;
@@ -449,10 +449,10 @@ sub ext_viewprofile {
             }
             elsif ( $field{'type'} eq 'email' && $value ne q{} ) {
                 $output .= qq~
-            <div style="float: left; width: 30%; padding-top: 5px;  padding-bottom: 5px;">
+            <div class="ext_lft">
             <b>$field{'name'}:</b>
             </div>
-            <div style="float: left; width: 70%; padding-top: 5px;  padding-bottom: 5px;">
+            <div class="ext_rgt">
             ~ . enc_eMail( $img_txt{'69'}, $value, q{}, q{} ) . q~
             </div>~;
                 $previous = 0;
@@ -460,10 +460,10 @@ sub ext_viewprofile {
             }
             elsif ( $field{'type'} eq 'url' && $value ne q{} ) {
                 $output .= qq~
-            <div style="float: left; width: 30%; padding-top: 5px;  padding-bottom: 5px;">
+            <div class="ext_lft">
             <b>$field{'name'}:</b>
             </div>
-            <div style="float: left; width: 70%; padding-top: 5px;  padding-bottom: 5px;">
+            <div class="ext_rgt">
             <a href="$value" onclick="target='_blank';">$value</a>
             </div>~;
                 $previous = 0;
@@ -471,10 +471,10 @@ sub ext_viewprofile {
             }
             elsif ( $field{'type'} eq 'image' && $value ne q{} ) {
                 $output .= qq~
-            <div style="float: left; width: 30%; padding-top: 5px;  padding-bottom: 5px;">
+            <div class="ext_lft">
             <b>$field{'name'}:</b>
             </div>
-            <div style="float: left; width: 70%; padding-top: 5px;  padding-bottom: 5px;">
+            <div class="ext_rgt">
             $value
             </div>~;
                 $previous = 0;

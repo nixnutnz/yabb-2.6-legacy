@@ -44,13 +44,13 @@ function Collapse_All (url,action,imgdir,lng) {
 	if (action == 1) { 
 		boards = browser;
 		noboards = "none";
-		imgsrc = "/cat_collapse.gif";
+		imgsrc = "/" + brd_col;
 		document.getElementById("expandall").style.display = "none";
 		document.getElementById("collapseall").style.display = "";
 	} else {
 		noboards = "";
 		boards = "none";
-		imgsrc = "/cat_expand.gif";
+		imgsrc = "/" + brd_exp;
 		document.getElementById("expandall").style.display = "";
 		document.getElementById("collapseall").style.display = "none";
 	}
@@ -79,14 +79,14 @@ function SendRequest (url,cat,imgdir,lng_collapse,lng_expand) {
 	if (document.getElementById(cat).style.display == "none") {
 		document.getElementById(cat).style.display = browser;
 		document.getElementById("col"+cat).style.display = "none";
-		document.getElementById("img"+cat).src = imgdir+"/cat_collapse.gif";
+		document.getElementById("img"+cat).src = imgdir+"/"+brd_col;
 		document.getElementById("img"+cat).title = lng_collapse;
 		document.getElementById("img"+cat).alt = lng_collapse;
 		document.getElementById("collapseall").style.display = "";
 	} else {
 		document.getElementById(cat).style.display = "none";
 		document.getElementById("col"+cat).style.display = "";
-		document.getElementById("img"+cat).src = imgdir+"/cat_expand.gif";
+		document.getElementById("img"+cat).src = imgdir+"/"+brd_exp;
 		document.getElementById("img"+cat).title = lng_expand;
 		document.getElementById("img"+cat).alt = lng_expand;
 		document.getElementById("expandall").style.display = "";

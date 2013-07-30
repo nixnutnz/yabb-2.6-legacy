@@ -203,7 +203,7 @@ sub ModifyProfile {
     }
 
     $passtext .=
-qq~<br /><span class="small" style="font-weight: normal;">$profile_txt{'895'}</span>~;
+qq~<br /><span class="small norm">$profile_txt{'895'}</span>~;
 
     my $scriptAction = q~profile2~;
     if ($view) {
@@ -966,7 +966,7 @@ qq~<option value="$fld" selected="selected">$displang</option>~;
 <form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator"$my_allow_avatars>~;
     $showProfile .= $myprofile_options;
     $showProfile .=
-qq~         <textarea name="signature" id="signature" rows="4" cols="30" style="width: 100%">$signature</textarea><br />~;
+qq~         <textarea name="signature" id="signature" rows="4" cols="30" class="width_100">$signature</textarea><br />~;
     $showProfile .= $myprofile_options_b;
 
     $showProfile =~ s/{yabb usertext}/${$uid.$user}{'usertext'}/sm;
@@ -1671,7 +1671,7 @@ sub ModifyProfile2 {
                 $attachments[$i] =~
 s/^(\d+\|\d+\|.*?)\|(.*?)\|/ ($2 eq ${$uid.$user}{'realname'} ? "$1|$member{'name'}|" : "$1|$2|") /esm;
             }
-            print {ATM} @attachments or croak 'cannot print ATM';
+            print {ATM} @attachments or croak "$croak{'print'} ATM";
             fclose(ATM);
 
    #Since we have not encountered a fatal error, time to rewrite our memberlist.
@@ -1728,11 +1728,11 @@ s/^(\d+\|\d+\|.*?)\|(.*?)\|/ ($2 eq ${$uid.$user}{'realname'} ? "$1|$member{'nam
                     else                        { $nuser_hide = q{}; }
                     print {FILE}
 qq~$user_yeara|$user_montha|$user_daya|$user_xy|$nuser_hide\n~
-                      or croak 'cannot print birthday';
+                      or croak "$croak{'print'} birthday";
                     $cn++;
                 }
                 else {
-                    print {FILE} qq~$x\n~ or croak 'cannot print to birthday';
+                    print {FILE} qq~$x\n~ or croak "$croak{'print'} birthday";
                 }
             }
             fclose(FILE);
@@ -1750,7 +1750,7 @@ qq~$user_yeara|$user_montha|$user_daya|$user_xy|$nuser_hide\n~
                 else                        { $user_hide  = q{}; }
                 print {FILE}
                   qq~$user_yeara|$user_montha|$user_daya|$user|$nuser_hide\n~
-                  or croak 'cannot print birthday';
+                  or croak "$croak{'print'} birthday";
                 fclose(FILE);
             }
         }
@@ -1811,10 +1811,10 @@ qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};si
             my ( $user_year, $user_month, $user_day, $user_xy, $user_hide ) =
               split /\|/xsm, $x;
             if ( $user_xy ne $user ) {
-                print {FILE} qq~$x\n~ or croak 'cannot print birthday';
+                print {FILE} qq~$x\n~ or croak "$croak{'print'} birthday";
             }
             else {
-                print {FILE} q{} or croak 'cannot print no-birthday';
+                print {FILE} q{} or croak "$croak{'print'} no-birthday";
             }
         }
         fclose(FILE);
@@ -2174,7 +2174,7 @@ sub ModifyProfileOptions2 {
 
             # needed for operating systems (OS) Windows, ignored by Linux
             print {NEWFILE} $file_buffer
-              or croak 'cannot write NEWFILE';    # write new file on HD
+              or croak "$croak{'print'} NEWFILE";    # write new file on HD
             fclose(NEWFILE);
 
         }
@@ -2736,7 +2736,7 @@ qq~<img src="${$uid.$user}{'userpic'}" id="avatar_img_resize" alt="" style="disp
 qq~<img src="$facesurl/${$uid.$user}{'userpic'}" id="avatar_img_resize" alt="" style="display:none" />~;
         }
         $pic_row =
-qq~<div style="float: left; width: 20%; text-align: center; padding: 5px 5px 5px 0px;">
+qq~<div class="picrow">
                         $pic
                         </div>~;
     }
@@ -3626,7 +3626,10 @@ sub usersrecentposts {
 
         $counter++;
 
-        $mname = qq~${$uid.$curuser}{'realname'}~;
+        $tname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tusername}" rel="nofollow">$format_unbold{$tusername}</a>~;
+        $mname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}" rel="nofollow">$format_unbold{$curuser}</a>~; 
+
+
 
         $mdate = timeformat($mdate);
 

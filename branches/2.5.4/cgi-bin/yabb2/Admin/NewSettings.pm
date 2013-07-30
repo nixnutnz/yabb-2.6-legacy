@@ -89,7 +89,7 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
 
     foreach my $tab (@settings) {
         $yymain .= qq~
-    <div class="bordercolor rightboxdiv">
+    <div class="bordercolor borderstyle rightboxdiv">
         <table class="section" style="border-collapse:separate; border-spacing: 1px;" id="tab_$tab->{'id'}">
             <col class=" w_50pc" />
             <tr>
@@ -1098,7 +1098,7 @@ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2
 
     # Write it out
     fopen( SETTINGS, ">$file" ) || fatal_error( 'cannot_open', $file, 1 );
-    print {SETTINGS} $setfile or croak 'cannot print SETTINGS';
+    print {SETTINGS} $setfile or croak "$croak{'print'} SETTINGS";
     fclose(SETTINGS);
     return;
 }

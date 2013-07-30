@@ -383,7 +383,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
             }
             elsif ( $FORM{'scpoll'} ) {
                 fopen( SCFILE, ">$datadir/showcase.poll" );
-                print {SCFILE} $threadid or croak 'cannot print SCFILE';
+                print {SCFILE} $threadid or croak "$croak{'print'}SCFILE";
                 fclose(SCFILE);
             }
         }
@@ -391,7 +391,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
         # showcase poll end
 
         fopen( POLL, ">$datadir/$threadid.poll" );
-        print {POLL} @new_poll_data or croak 'cannot print POLL';
+        print {POLL} @new_poll_data or croak "$croak{'print'} POLL";
         fclose(POLL);
 
         $yySetLocation = qq~$scripturl?num=$threadid~;
@@ -685,7 +685,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
 
                 # needed for operating systems (OS) Windows, ignored by Linux
                 print {NEWFILE} $file_buffer
-                  or croak 'cannot write NEWFILE';    # write new file on HD
+                  or croak "$croak{'print'} NEWFILE";    # write new file on HD
                 fclose(NEWFILE);
 
             }
@@ -759,7 +759,7 @@ qq~$threadid|$postid|$subject|$mname|$currentboard|$filesizekb|$date|$fixfile|0\
     seek ATM, 0, 0;
     print {ATM} sort { ( split /\|/xsm, $a )[6] <=> ( split /\|/xsm, $b )[6] }
       @attachments
-      or croak 'cannot print ATM';
+      or croak "$croak{'print'} ATM";
     fclose(ATM);
 
     # Create the list of files
@@ -769,7 +769,7 @@ qq~$threadid|$postid|$subject|$mname|$currentboard|$filesizekb|$date|$fixfile|0\
 qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$date|$username|$fixfile\n~;
     fopen( FILE, ">$datadir/$threadid.txt" )
       || fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
-    print {FILE} @{ $thread_arrayref{$threadid} } or croak 'cannot print FILE';
+    print {FILE} @{ $thread_arrayref{$threadid} } or croak "$croak{'print'} FILE";
     fclose(FILE);
 
     if ( $postid == 0 || $staff ) {
@@ -786,7 +786,7 @@ qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$
         }
         truncate BOARD, 0;
         seek BOARD, 0, 0;
-        print {BOARD} @board or croak 'cannot print BOARD';
+        print {BOARD} @board or croak "$croak{'print'} BOARD";
         fclose(BOARD);
 
         BoardSetLastInfo( $currentboard, \@board );
@@ -948,7 +948,7 @@ sub MultiDel {    # deletes singel- or multi-Posts
 # if thread has not been deleted: update thread, update message index details ...
     fopen( FILE, ">$datadir/$thread.txt" )
       || fatal_error( 'cannot_open', "$datadir/$thread.txt", 1 );
-    print {FILE} @{ $thread_arrayref{$thread} } or croak 'cannot print FILE';
+    print {FILE} @{ $thread_arrayref{$thread} } or croak "$croak{'print'} FILE";
     fclose(FILE);
 
     my @firstmessage = split /\|/xsm, ${ $thread_arrayref{$thread} }[0];
@@ -1000,7 +1000,7 @@ sub MultiDel {    # deletes singel- or multi-Posts
 
     truncate BOARDFILE, 0;
     seek BOARDFILE, 0, 0;
-    print {BOARDFILE} @buffer or croak 'cannot print BOARD';
+    print {BOARDFILE} @buffer or croak "$croak{'print'} BOARD";
     fclose(BOARDFILE);
 
     BoardSetLastInfo( $currentboard, \@buffer );

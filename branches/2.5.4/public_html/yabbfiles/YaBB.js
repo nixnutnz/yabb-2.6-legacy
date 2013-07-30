@@ -184,7 +184,7 @@ function inElement(el) {
 	}
 	else if (typeof document.selection != "undefined") return contains(sel.createRange().parentElement(), el);
 	return false;
-	}
+}
 
 function get_selection(msg_id, qinfo) {
 	var srcObj = document.getElementById ('mq' + msg_id);

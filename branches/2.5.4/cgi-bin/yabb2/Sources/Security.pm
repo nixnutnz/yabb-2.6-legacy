@@ -207,7 +207,7 @@ sub banning {
                 "$register_txt{'678'}$register_txt{'430'}!" );
         }
         fopen( LOG, ">>$vardir/ban_log.txt" );
-        print {LOG} "$date|$bantry\n" or croak 'cannot print LOG';
+        print {LOG} "$date|$bantry\n" or croak "$croak{'print'} LOG";
         fclose(LOG);
         UpdateCookie( 'delete', $ban_user );
         $username = 'Guest';
@@ -215,7 +215,7 @@ sub banning {
         fatal_error( 'banned', "$security_txt{'678'}$security_txt{'430'}!" );
     };
 
-    fopen( BAN, "<$vardir/banlist.txt" );
+    fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
     @banlist = <BAN>;
     for my $i (@banlist) {
         chomp $i;
@@ -272,7 +272,7 @@ sub check_banlist {
         }
     }
     else {
-        fopen( BAN, "$vardir/banlist.txt" );
+        fopen( BAN, "$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
         @banlist = <BAN>;
         fclose(BAN);
         chomp @banlist;
@@ -640,10 +640,10 @@ sub ipban_update {
         $ihave = 0;
         $ehave = 0;
         $uhave = 0;
-        fopen( BAN, "<$vardir/banlist.txt" ) or croak 'cannot open BAN to read';
+        fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
         my @myban = <BAN>;
         chomp @myban;
-        fclose(BAN) or croak 'cannot close BAN';
+        fclose(BAN);
         if ( $unban != 1 ) {
 
             foreach my $i (@myban) {
@@ -665,28 +665,26 @@ sub ipban_update {
                 }
             }
 
-            fopen( BAN2, ">>$vardir/banlist.txt" )
-              or croak 'cannot open BAN2 to write';
+            fopen( BAN2, ">>$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
             if ( $ban && $ihave == 0 && $ban ne '127.0.0.1' ) {
                 print {BAN2}
 qq~I|$ban|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
-                  or croak 'cannot write to BAN2';
+                  or croak "$croak{'print'} BAN2";
             }
             if ( $ban_email && $ehave == 0 ) {
                 print {BAN2}
 qq~E|$ban_email|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
-                  or croak 'cannot write to BAN2';
+                  or croak "$croak{'print'} BAN2";
             }
             if ( $ban_mem && $uhave == 0 ) {
                 print {BAN2}
 qq~U|$ban_mem|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
-                  or croak 'cannot write to BAN2';
+                  or croak "$croak{'print'} BAN2";
             }
-            fclose(BAN2) or croak 'cannot close BAN2';
+            fclose(BAN2);
         }
         elsif ( $unban == 1 ) {
-            fopen( BAN2, ">$vardir/banlist.txt" )
-              or croak 'cannot open BAN2 to write';
+            fopen( BAN2, ">$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
             foreach my $i (@myban) {
                 @banned = split /\|/xsm, $i;
                 if (   $ban eq $banned[1]
@@ -699,9 +697,9 @@ qq~U|$ban_mem|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
                     $un_ban =
 qq~$banned[0]|$banned[1]|$banned[2]|$banned[3]|$banned[4]|\n~;
                 }
-                print {BAN2} $un_ban;
+                print {BAN2} $un_ban or croak "$croak{'print'} BAN2";
             }
-            fclose(BAN2) or croak 'cannot close BAN2';
+            fclose(BAN2);
         }
         $yySetLocation = qq~$scripturl?action=viewprofile;username=$user~;
         redirectexit();

@@ -113,7 +113,7 @@ sub exit {
     my ($inexit)                = @_;
     my $OUTPUT_AUTOFLUSH        = 1;
     my $OUTPUT_RECORD_SEPARATOR = q{};
-    print q{} or croak 'cannot print null';
+    print q{} or croak "$croak{'print'} null";
     if ($child_pid) { wait; }
     CORE::exit( $inexit || 0 );
     return;
@@ -147,7 +147,7 @@ sub print_output_header {
             if ($yycharset) { $ret .= "; charset=$yycharset"; }
         }
     }
-    print $ret . "\r\n\r\n" or croak 'cannot print ret';
+    print $ret . "\r\n\r\n" or croak "$croak{'print'} ret";
     return;
 }
 
@@ -157,20 +157,20 @@ sub print_HTML_output_and_finish {
         if ( $gzcomp == 1 || $filehandle_exists ) {
             $OUTPUT_AUTOFLUSH = 1;
             if ( !$filehandle_exists ) {
-                open GZIP, "| gzip -f" or croak 'cannot open GZIP';
+                open GZIP, "| gzip -f" or croak "$croak{'open'} GZIP";
             }
-            print {GZIP} $output or croak 'cannot print GZIP';
-            close GZIP or croak 'cannot close GZIP';
+            print {GZIP} $output or croak "$croak{'print'} GZIP";
+            close GZIP or croak "$croak{'close'}";
         }
         else {
             require Compress::Zlib;
             binmode STDOUT;
             print Compress::Zlib::memGzip($output)
-              or croak 'cannot print ZLib';
+              or croak "$croak{'print'} ZLib";
         }
     }
     else {
-        print $output; # or croak 'cannot print output';
+        print $output; # or croak "$croak{'print'} output";
     }
     exit;
 }
@@ -259,7 +259,7 @@ sub template {
     $yysyntax_js = q{};
     $yygreyboxstyle = q{};
     $yygrayscript =q{};
-    
+
     if ( $INFO{'num'} || $action eq 'post' || $action eq 'modify' || $action eq 'preview' || $action eq 'search2' || $action eq 'imshow'|| $action eq 'imsend' || $action eq 'myviewprofile' || $action eq 'eventcal' || $action eq 'help' || $action eq 'recenttopics' || $action eq 'recent' || $action eq 'usersrecentposts' )
     { 
         $yysyntax_js = qq~
@@ -333,6 +333,7 @@ qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp;
 
     # to top button for fixed menu 
     $yyfixtop = qq~$img_txt{'to_top'}~;
+    $yyw3cload = w3c();
 
     $yyboardname = "$mbname";
     $yyboardlink = qq~<a href="$scripturl">$mbname</a>~;
@@ -392,7 +393,7 @@ qq~&nbsp;<script  type="text/javascript">\n<!--\nWriteClock('yabbclock','$aa','$
     }
     else {
         $yymenu =
-qq~<a href="$scripturl">$img{'home'}</a>$menusep<a href="$scripturl?action=help" style="cursor:help;">$img{'help'}</a>~;
+qq~<a href="$scripturl">$img{'home'}</a>$menusep<a href="$scripturl?action=help" class="cursor">$img{'help'}</a>~;
 
         # remove search from menu if disabled by the admin
         if ( $maxsearchdisplay > -1 && $qcksearchaccess eq 'granted' ) {
@@ -798,7 +799,7 @@ s/<\/form>/ <input type="hidden" name="formsession" value="$formsession" \/>\n  
 
     if ( !$copyright ) {
         $output =
-q~<h1 style="text-align:center"><b>Sorry, the copyright tag <yabb copyright> must be in the template.<br />Please notify this forum&#39;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
+q~<h1 class="center"><b>Sorry, the copyright tag <yabb copyright> must be in the template.<br />Please notify this forum&#39;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
     }
 
     print_HTML_output_and_finish();
@@ -959,7 +960,7 @@ qq~<br />$maintxt{'error_location'}: $filename<br />$maintxt{'error_line'}: $lin
     # for ajax calls that return errors, so no page is generated
     if ($no_error_page) {
         print "Content-type: text/plain\n\nerror$errormessage"
-          or croak 'cannot print error';
+          or croak "$croak{'print'} error";
         CORE::exit;    # This is here only to avoid server error log entries!
     }
 
@@ -1025,7 +1026,7 @@ sub fatal_error_logging {
     foreach (@errorlog) {
         chomp;
         if ( $_ ne q{} ) {
-            print {ERRORLOG} $_ . "\n" or croak 'cannot print to ERRORLOG';
+            print {ERRORLOG} $_ . "\n" or croak "$croak{'print'} ERRORLOG";
         }
     }
     fclose(ERRORLOG);
@@ -1271,7 +1272,7 @@ sub dumplog {
             $result = calcdifference( $date1, $date2 );    # output => $result
             if ( $result <= $max_log_days_old ) {
                 print {DUMPLOG} qq~$name|$date1\n~
-                  or croak 'cannot print to DUMPLOG';
+                  or croak "$croak{'print'} DUMPLOG";
             }
         }
         fclose(DUMPLOG);
@@ -1460,7 +1461,7 @@ sub spam_protection {
         }
     }
     fopen( FLOOD, ">$vardir/flood.txt", 1 );
-    print {FLOOD} @floodcontrol or croak 'cannot print to FLOOD';
+    print {FLOOD} @floodcontrol or croak "$croak{'print'} FLOOD";
     fclose(FLOOD);
     return;
 }
@@ -1766,7 +1767,6 @@ sub Split_Splice_Move {
 qq~<b>$maintxt{'160'} <a href="$scripturl?num=$dest"><b>$maintxt{'160a'}</b></a> $maintxt{'160b'}</b> <a href="$scripturl?board=$destboard"><i><b>$1</b></i></a><b> $maintxt{'525'} <i>${$uid.$mover}{'realname'}</i></b>~,
             $dest
         );
-
     }
     elsif ( $s_s_m =~ /\[m by=(.+?) dest=(.+?)\]/sm )
     {          # 'The contents of this Topic have been moved to''this Topic'
@@ -1778,7 +1778,6 @@ qq~<b>$maintxt{'160'} <a href="$scripturl?num=$dest"><b>$maintxt{'160a'}</b></a>
 qq~<b>$maintxt{'160c'}</b> <a href="$scripturl?num=$dest"><i><b>$maintxt{'160d'}</b></i></a><b> $maintxt{'525'} <i>${$uid.$mover}{'realname'}</i></b>~,
             $dest
         );
-
     }
     elsif ( $s_s_m =~ /^\[m\]/sm )
     {    # Old style topic that was moved/spliced before this code
@@ -2062,7 +2061,7 @@ sub MembershipGet {
             if ($faketruncation) {
                 CORE::open( OFH, ">$filename" );
                 if ( !$cmdResult ) { return 0; }
-                print {OFH} q{} or croak 'cannot print to OFH';
+                print {OFH} q{} or croak "$croak{'print'} OFH";
                 CORE::close(OFH);
             }
             else {
@@ -2167,12 +2166,11 @@ sub WriteLog {
             push @new_log, $_;
         }
     }
-    seek LOG, 0, 0;
-    truncate LOG, 0;
-    print {LOG}
-      ( "$field|$date|$user_ip|$user_host#$ENV{'HTTP_USER_AGENT'}\n", @new_log )
-      or croak 'cannot print to LOG';
-    fclose(LOG);
+ 	seek LOG, 0, 0;
+	truncate LOG, 0;
+	print LOG ("$field|$date|$user_ip|$user_host#$ENV{'HTTP_USER_AGENT'}|$username|$currentboard|" . ((!$action && $INFO{'num'} && $currentboard) ? "display" : ((!$action && $ENV{'SCRIPT_FILENAME'} =~ /\/AdminIndex\.(pl|cgi)/) ? "admincenter" : $action)) . "|$INFO{'username'}|$curnum\n", @new_log);
+	fclose(LOG);
+ 
 
     if ( !$action && $enableclicklog == 1 ) {
         $onlinetime = $date - ( $ClickLogTime * 60 );
@@ -2187,10 +2185,10 @@ sub WriteLog {
             : $ENV{'HTTP_REFERER'}
           )
           . "|$ENV{'HTTP_USER_AGENT'}\n"
-          or croak 'cannot print to LOG';
+          or croak "$croak{'print'} LOG";
         foreach (@new_log) {
             if ( ( split /\|/xsm, $_, 3 )[1] >= $onlinetime ) {
-                print {LOG} $_ or croak 'cannot print to LOG';
+                print {LOG} $_ or croak "$croak{'print'} LOG";
             }
         }
         fclose(LOG);
@@ -2208,18 +2206,18 @@ sub RemoveUserOnline {
         my $x = -1;
         for my $i ( 0 .. ( @logentries - 1 ) ) {
             if ( ( split /\|/xsm, $logentries[$i], 2 )[0] ne $user ) {
-                print {LOG} $logentries[$i] or croak 'cannot print to LOG';
+                print {LOG} $logentries[$i] or croak "$croak{'print'} LOG";
             }
             elsif ( $user eq $username ) {
                 $logentries[$i] =~ s/^$user\|/$user_ip\|/xsm;
-                print {LOG} $logentries[$i] or croak 'cannot print to LOG';
+                print {LOG} $logentries[$i] or croak "$croak{'print'} LOG";
             }
             else { $x = $i; }
         }
         if ( $x > -1 ) { splice @logentries, $x, 1; }
     }
     else {
-        print {LOG} q{} or croak 'cannot print to LOG';
+        print {LOG} q{} or croak "$croak{'print'} LOG";
         @logentries = ();
     }
     fclose(LOG);
@@ -2288,10 +2286,10 @@ sub referer_check {
 
 sub Dereferer {
     if ( !$stealthurl ) { fatal_error('no_access'); }
-    print "Content-Type: text/html\n\n" or croak 'cannot print top';
+    print "Content-Type: text/html\n\n" or croak "$croak{'print'} content-type";
     print
 qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />\n<title>-----</title>\n</head>\n<body onload="window.location.href='$INFO{'url'}';">\n<font face="Arial" size="2">$dereftxt{'1'}</font>\n</body></html>\n~
-      or croak 'cannot print to screen';
+      or croak "$croak{'print'}";
     exit;
 }
 
@@ -2338,7 +2336,7 @@ sub Recent_Load {
         require "$memberdir/$who_to_load.wlog";
         fopen( RLOG, ">$memberdir/$who_to_load.rlog" );
         print {RLOG} map { "$_\t$recent{$_}\n" } keys %recent
-          or croak 'cannot print to RLOG';
+          or croak "$croak{'print'} RLOG";
         fclose(RLOG);
         unlink "$memberdir/$who_to_load.wlog";
         Recent_Load($who_to_load);
@@ -2373,7 +2371,7 @@ sub Recent_Save {
     fopen( RLOG, ">$memberdir/$who_to_save.rlog" );
     print {RLOG} map { "$_\t" . join( q{,}, @{ $recent{$_} } ) . "\n" }
       keys %recent
-      or croak 'cannot print to RLOG';
+      or croak "$croak{'print'} RLOG";
     fclose(RLOG);
     return;
 }
@@ -2389,7 +2387,7 @@ sub save_moved_file {
           grep { ( $_ > 0 && $moved_file{$_} > 0 && $_ != $moved_file{$_} ) }
           keys %moved_file )
       . ");\n1;"
-      or croak 'cannot print to MOVEDFILE';
+      or croak "$croak{'print'} MOVEDFILE";
     fclose(MOVEDFILE);
     return;
 }
@@ -2397,10 +2395,10 @@ sub save_moved_file {
 sub Write_ForumMaster {
     fopen( FORUMMASTER, ">$boardsdir/forum.master", 1 );
     print {FORUMMASTER} qq~\$mloaded = 1;\n~
-      or croak 'cannot print to FORUMMASTER';
+      or croak "$croak{'print'} FORUMMASTER";
     @catorder = undupe(@categoryorder);
     print {FORUMMASTER} qq~\@categoryorder = qw(@catorder);\n~
-      or croak 'cannot print to FORUMMASTER';
+      or croak "$croak{'print'} FORUMMASTER";
     my ( $key, $value );
     while ( ( $key, $value ) = each %cat ) {
 
@@ -2410,7 +2408,7 @@ sub Write_ForumMaster {
         # Strip membergroups with a ~ from them
         $value =~ s/\~//gxsm;
         print {FORUMMASTER} qq~\$cat{'$key'} = qq\~$value\~;\n~
-          or croak 'cannot print to FORUMMASTER';
+          or croak "$croak{'print'} FORUMMASTER";
     }
     while ( ( $key, $value ) = each %catinfo ) {
         my ( $catname, $therest ) = split /\|/xsm, $value, 2;
@@ -2425,7 +2423,7 @@ sub Write_ForumMaster {
         # Strip membergroups with a ~ from them
         $value =~ s/\~//gxsm;
         print {FORUMMASTER} qq~\$catinfo{'$key'} = qq\~$value\~;\n~
-          or croak 'cannot print to FORUMMASTER';
+          or croak "$croak{'print'} FORUMMASTER";
     }
     while ( ( $key, $value ) = each %board ) {
         my ( $boardname, $therest ) = split /\|/xsm, $value, 2;
@@ -2440,15 +2438,15 @@ sub Write_ForumMaster {
         # Strip membergroups with a ~ from them
         $value =~ s/\~//gxsm;
         print {FORUMMASTER} qq~\$board{'$key'} = qq\~$value\~;\n~
-          or croak 'cannot print to FORUMMASTER';
+          or croak "$croak{'print'} FORUMMASTER";
     }
     while ( ( $key, $value ) = each %subboard ) {
         if ( $value ne q{} ) {
             print {FORUMMASTER} qq~\$subboard{'$key'} = qq\~$value\~;\n~
-              or croak 'cannot print to FORUMMASTER';
+              or croak "$croak{'print'} FORUMMASTER";
         }
     }
-    print {FORUMMASTER} qq~\n1;~ or croak 'cannot print to FORUMMASTER';
+    print {FORUMMASTER} qq~\n1;~ or croak "$croak{'print'} FORUMMASTER";
     fclose(FORUMMASTER);
     return;
 }
@@ -2545,7 +2543,7 @@ sub ManageMemberlist {
         fopen( MEMBLIST, ">$memberdir/memberlist.txt" );
         print {MEMBLIST} map { "$_\t$memberlist{$_}\n" }
           sort { $memberlist{$a} <=> $memberlist{$b} } keys %memberlist
-          or croak 'cannot print to MEMBLIST';
+          or croak "$croak{'print'} MEMBLIST";
         fclose(MEMBLIST);
         undef %memberlist;
     }
@@ -2602,7 +2600,7 @@ sub ManageMemberinfo {
     {
         fopen( MEMBINFO, ">$memberdir/memberinfo.txt" );
         print {MEMBINFO} map { "$_\t$memberinf{$_}\n" } keys %memberinf
-          or croak 'cannot print to MEMBINFO';
+          or croak "$croak{'print'} MEMBINFO";
         fclose(MEMBINFO);
         undef %memberinf;
     }
@@ -2643,20 +2641,20 @@ sub MailList {
         fclose(FILE);
         fopen( FILE, ">$vardir/maillist.dat" );
         if ( !$INFO{'delmail'} ) {
-            print {FILE} "$mailline\n" or croak 'cannot print FILE';
+            print {FILE} "$mailline\n" or croak "$croak{'print'} FILE";
         }
         foreach my $curmail (@maillist) {
             chomp $curmail;
             $otime = ( split /\|/xsm, $curmail )[0];
             if ( $otime ne $delmailline ) {
-                print {FILE} "$curmail\n" or croak 'cannot print FILE';
+                print {FILE} "$curmail\n" or croak "$croak{'print'} FILE";
             }
         }
         fclose(FILE);
     }
     else {
         fopen( FILE, ">$vardir/maillist.dat" );
-        print {FILE} "$mailline\n" or croak 'cannot print FILE';
+        print {FILE} "$mailline\n" or croak "$croak{'print'} FILE";
         fclose(FILE);
     }
     if ( $INFO{'delmail'} ) {
@@ -3283,4 +3281,27 @@ sub BoardPasswCheck {
     return;
 }
 
+sub w3c {
+	if( $iamadmin ){
+		$myw3ccheck =  q~<script type="text/javascript">
+		var diva = document.getElementById("w3c");
+		var newpath = document.URL;
+		var re = /:/;
+		var rea = /\//g;
+		var reb = /\?/g;
+		var rec = /\=/g;
+		var red = /\;/g;
+		var mynewpath = newpath.replace(re, "%3A");
+		mynewpath = newpath.replace(rea, "%2F");
+		mynewpath = newpath.replace(reb, "%3F");
+		mynewpath = newpath.replace(rec, "%3D");
+		mynewpath = newpath.replace(red, "%3B");
+		diva.innerHTML = '<strong><a href="http://validator.w3.org/check?uri=' + mynewpath + '" target="_blank">W3C Validator</a></strong>';
+	</script>~;
+	}
+	else {
+		$myw3ccheck =  q{};
+	}
+	return $myw3ccheck;
+};
 1;

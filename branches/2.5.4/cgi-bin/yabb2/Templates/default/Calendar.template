@@ -15,10 +15,9 @@
 
 $cal_day = q~ class="titlebg center minical_border"~;
 $cal_days = q~ class="windowbg2 center minical_border"~;
-$style_ubbc_box = q~float:left; width:463px~;
 
-$cat_col = 'cat_collapse.gif';
-$cat_exp = 'cat_expand.gif';
+$cat_col = 'cat_collapse.png';
+$cat_exp = 'cat_expand.png';
 $chrwarn_g0 = 'green0.gif';
 $chrwarn_g1 = 'green1.gif';
 $chrwarn_r0 = 'red0.gif';

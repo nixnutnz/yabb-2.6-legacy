@@ -435,7 +435,7 @@ sub DeleteBoards {
         }
         truncate ATM, 0;
         seek ATM, 0, 0;
-        print {ATM} @buffer or croak 'cannot print ATM';
+        print {ATM} @buffer or croak "$croak{'print'} ATM";
         fclose(ATM);
 
         BoardTotals( 'delete', $board );
@@ -469,7 +469,7 @@ qq~$oldcat|$oldboard|$pic|$bdescription|$moderators|$moderatorgroups|$topicperms
     truncate FORUMCONTROL, 0;
     seek FORUMCONTROL, 0, 0;
     print {FORUMCONTROL} sort @boardcontrol
-      or croak 'cannot print FORUMCONTROL';
+      or croak "$croak{'print'} FORUMCONTROL";
     fclose(FORUMCONTROL);
 
     fopen( FORUMCONTROL, "$boardsdir/forum.control" );
@@ -788,7 +788,7 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         $showpriv = q{};
         $brdpic   = q{};
         $brdrssch = q{}; ### RSS on Board Index ###
-		$brdpasswr = q{};
+ 		$brdpasswr = q{};
 		$brdpassw = ${$uid.$editboards[$i]}{'brdpassw'};
 		$brdpassw3 = q{};
 		$brdpassw2 = q{};
@@ -944,7 +944,7 @@ qq~<select multiple="multiple" name="moderatorgroups$i" id="moderatorgroups$i" s
     <td class="windowbg"><label for="brdrss$i"><b>$admin_txt{'brdrss1'}:</b></label></td>
     <td class="windowbg2" colspan="3"><input type="checkbox" name="brdrss$i" id="brdrss$i" value="1"$brdrssch /> <label for="brdrss$i"><span class="small">$admin_txt{'brdrss3'}</span></label></td>
   </tr><tr>
-    <td class="windowbg"><label for="zero$i"><b>$admin_txt{'64c'}</b></label></td>
+   <td class="windowbg"><label for="zero$i"><b>$admin_txt{'64c'}</b></label></td>
     <td class="windowbg2" colspan="3"><input type="checkbox" name="zero$i" id="zero$i" value="1"$zeroch /> <label for="zero$i">$admin_txt{'64d'}</label></td>
   </tr><tr>
     <td class="windowbg"><label for="show$i"><b>$admin_txt{'64e'}</b></label></td>
@@ -1226,7 +1226,7 @@ sub AddBoards2 {
                 }
             }
             fopen( BOARDINFO, ">$boardsdir/$id.txt" );
-            print {BOARDINFO} q{} or croak 'cannot print BOARDINFO';
+            print {BOARDINFO} q{} or croak "$croak{'print'}' BOARDINFO";
             fclose(BOARDINFO);
         }
         if ( $FORM{'screenornot'} eq 'boardscreen' ) {
@@ -1358,7 +1358,7 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
                     fopen( BOARDINFO, ">$boardsdir/$id.txt" )
                       || fatal_error( 'cannot_open', "$openboard/$id.txt", 1 );
                     print {BOARDINFO} @boardtomodify
-                      or croak 'cannot print BOARDINFO';
+                      or croak "$croak{'print'} BOARDINFO";
                     fclose(BOARDINFO);
                 }
             }
@@ -1457,7 +1457,7 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
 
     truncate FORUMCONTROL, 0;
     seek FORUMCONTROL, 0, 0;
-    print {FORUMCONTROL} sort @boardcontrol or croak 'cannot print FORUMCONTOL';
+    print {FORUMCONTROL} sort @boardcontrol or croak "$croak{'print'} FORUMCONTOL";
     fclose(FORUMCONTROL);
 
     $action_area = 'manageboards';
@@ -1859,7 +1859,7 @@ qq~${$uid.$changedboard}{'cat'}|$changedboard|$pic|$bdescription|$moderators|$mo
         truncate FORUMCONTROL, 0;
         seek FORUMCONTROL, 0, 0;
         print {FORUMCONTROL} sort @boardcontrol
-          or croak 'cannot print FORUMCONTROL';
+          or croak "$croak{'print'} FORUMCONTROL";
         fclose(FORUMCONTROL);
 
     }

@@ -14,8 +14,8 @@
 # $Revision$
 
 $IM_paperclip = 'paperclip.gif';
-$cat_col = 'cat_collapse.gif';
-$cat_exp = 'cat_expand.gif';
+$cat_col = 'cat_collapse.png';
+$cat_exp = 'cat_expand.png';
 $chrwarn_g0 = 'green0.gif';
 $chrwarn_g1 = 'green1.gif';
 $chrwarn_r0 = 'red0.gif';

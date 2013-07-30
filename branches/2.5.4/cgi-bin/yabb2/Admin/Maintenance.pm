@@ -180,7 +180,7 @@ qq~$lastpostdate|$thread|$firstinfo[0]|$firstinfo[1]|$firstinfo[2]|$lastinfo[3]|
                       || fatal_error( 'cannot_open', "$boardsdir/$_.tmp",
                         1 );
                     print {REBBOARD} @{ $rebuildboards{$_} }
-                      or croak 'cannot print REBBOARD';
+                      or croak "$croak{'print'} REBBOARD";
                     fclose(REBBOARD);
                 }
 
@@ -194,7 +194,7 @@ qq~$lastpostdate|$thread|$firstinfo[0]|$firstinfo[1]|$firstinfo[2]|$lastinfo[3]|
             fopen( REBBOARD, ">>$boardsdir/$_.tmp" )
               || fatal_error( 'cannot_open', "$boardsdir/$_.tmp", 1 );
             print {REBBOARD} @{ $rebuildboards{$_} }
-              or croak 'cannot print REBBOARD';
+              or croak "$croak{'print'} REBBOARD";
             fclose(REBBOARD);
         }
 
@@ -227,7 +227,7 @@ qq~$lastpostdate|$thread|$firstinfo[0]|$firstinfo[1]|$firstinfo[2]|$lastinfo[3]|
                     s/^.*?\|//xsm;
                       $_;
                 } reverse sort { lc($a) cmp lc $b } @tempboard
-              or croak 'cannot print NEWBOARD';
+              or croak "$croak{'print'} NEWBOARD";
             fclose(NEWBOARD);
 
             unlink "$boardsdir/$boardname.tmp";
@@ -506,7 +506,7 @@ sub RebuildMemList {
           || fatal_error( 'cannot_open', "$memberdir/membercalc.txt.rebuild",
             1 );
         print {MEMBERCALC} "$start_time\n$sumuser\n"
-          or croak 'cannot print MEMBERCALC';
+          or croak "$croak{'print'} MEMBERCALC";
         fclose(MEMBERCALC);
     }
 
@@ -557,7 +557,7 @@ qq~${$uid.$member}{'realname'}|${$uid.$member}{'email'}|${$uid.$member}{'positio
       || fatal_error( 'cannot_open', "$memberdir/memberlist.txt.rebuild", 1 );
     foreach ( keys %memberlist ) {
         print {MEMBERLIST} "$_\t$memberlist{$_}\n"
-          or croak 'cannot print MEMBERLIST';
+          or croak "$croak{'print'} MEMBERLIST";
     }
     fclose(MEMBERLIST);
 
@@ -565,7 +565,7 @@ qq~${$uid.$member}{'realname'}|${$uid.$member}{'email'}|${$uid.$member}{'positio
       || fatal_error( 'cannot_open', "$memberdir/memberinfo.txt.rebuild", 1 );
     foreach ( keys %memberinf ) {
         print {MEMBERINFO} "$_\t$memberinf{$_}\n"
-          or croak 'cannot print MEMBERINFO';
+          or croak "$croak{'print'} MEMBERINFO";
     }
     fclose(MEMBERINFO);
 
@@ -589,7 +589,7 @@ qq~${$uid.$member}{'realname'}|${$uid.$member}{'email'}|${$uid.$member}{'positio
           )
         {
             print {MEMBERLIST} "$_\t$memberlist{$_}"
-              or croak 'cannot print MEMBERLIST';
+              or croak "$croak{'print'} MEMBERLIST";
         }
         fclose(MEMBERLIST);
 
@@ -619,7 +619,7 @@ qq~${$uid.$member}{'realname'}|${$uid.$member}{'email'}|${$uid.$member}{'positio
         fopen( MEMBERREST, ">$memberdir/memberrest.txt.rebuild" )
           || fatal_error( 'cannot_open', "$memberdir/memberrest.txt.rebuild",
             1 );
-        print {MEMBERREST} @contents or croak 'cannot print MEMBERREST';
+        print {MEMBERREST} @contents or croak "$croak{'print'} MEMBERREST";
         fclose(MEMBERREST);
 
         $restuser = @contents;
@@ -748,7 +748,7 @@ sub RebuildMemHistory {
         fopen( TOPICCALC, ">$datadir/topiccalc.txt.rebuild" )
           || fatal_error( 'cannot_open', "$datadir/topiccalc.txt.rebuild", 1 );
         print {TOPICCALC} "$start_time\n$sumtopic\n"
-          or croak 'cannot print TOPICCALC';
+          or croak "$croak{'print'} TOPICCALC";
         fclose(TOPICCALC);
     }
 
@@ -776,7 +776,7 @@ sub RebuildMemHistory {
             if ( -e "$memberdir/$user.vars" ) {
                 fopen( HIST, ">>$memberdir/$user.rlog" );
                 print {HIST} "$topic\t$posts{$user},$dates{$user}\n"
-                  or croak 'cannot print HIST';
+                  or croak "$croak{'print'} HIST";
                 fclose(HIST);
             }
         }
@@ -798,7 +798,7 @@ sub RebuildMemHistory {
     else {
         fopen( TOPICREST, ">$datadir/topicrest.txt.rebuild" )
           || fatal_error( 'cannot_open', "$datadir/topicrest.txt.rebuild", 1 );
-        print {TOPICREST} @contents or croak 'cannot print TOPICREST';
+        print {TOPICREST} @contents or croak "$croak{'print'} TOPICREST";
         fclose(TOPICREST);
 
         $resttopic = @contents;
@@ -940,7 +940,7 @@ sub RebuildNotifications {
           || fatal_error( 'cannot_open',
             "$vardir/NotificationsCalc.txt.rebuild", 1 );
         print {CALCNOTIF} "$start_time\n$sumuser\n$sumbo\n$sumthr\n"
-          or croak 'cannot print CALNOTIF';
+          or croak "$croak{'print'} CALNOTIF";
         fclose(CALCNOTIF);
     }
 
@@ -1077,20 +1077,20 @@ sub RebuildNotifications {
           || fatal_error( 'cannot_open',
             "$memberdir/NotificationsRebuild.txt.rebuild", 1 );
         print {MEMBNOTIF} map { "$_\t$members{$_}\n" } keys %members
-          or croak 'cannot print MEMBNOTIF';
+          or croak "$croak{'print'} MEMBNOTIF";
         fclose(MEMBNOTIF);
 
         fopen( BOARDNOTIF, ">$boardsdir/NotificationsBmaildir.txt.rebuild" )
           || fatal_error( 'cannot_open',
             "$boardsdir/NotificationsBmaildir.txt.rebuild", 1 );
         print {BOARDNOTIF} map { "$_\n" } @bmaildir
-          or croak 'cannot print BOARDNOTIF';
+          or croak "$croak{'print'} BOARDNOTIF";
         fclose(BOARDNOTIF);
         fopen( THREADNOTIF, ">$datadir/NotificationsTmaildir.txt.rebuild" )
           || fatal_error( 'cannot_open',
             "$datadir/NotificationsTmaildir.txt.rebuild", 1 );
         print {THREADNOTIF} map { "$_\n" } @tmaildir
-          or croak 'cannot print THREADNOTIF';
+          or croak "$croak{'print'} THREADNOTIF";
         fclose(THREADNOTIF);
 
         $restuser  = keys %members;

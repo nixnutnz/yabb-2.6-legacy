@@ -85,7 +85,7 @@ sub ManageBoardNotify {
             fopen( BOARDNOTE, ">$boardsdir/$theboard.mail" );
             print {BOARDNOTE} map { "$_\t$theboard{$_}\n" }
               sort { $theboard{$a} cmp $theboard{$b} } keys %theboard
-              or croak 'cannot print BOARDNOTE';
+              or croak "$croak{'print'} BOARDNOTE";
             fclose(BOARDNOTE);
             undef %theboard;
         }
@@ -219,7 +219,7 @@ sub ManageThreadNotify {
             fopen( THREADNOTE, ">$datadir/$thethread.mail" );
             print {THREADNOTE} map { "$_\t$thethread{$_}\n" }
               sort { $thethread{$a} cmp $thethread{$b} } keys %thethread
-              or croak 'cannot print THREADNOTE';
+              or croak "$croak{'print'} THREADNOTE";
             fclose(THREADNOTE);
             undef %thethread;
         }

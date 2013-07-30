@@ -279,7 +279,7 @@ sub DoContents {
     $Contents .= qq~$TempParse~;
 
     $Contents .=
-      q~<ul style="list-style: none; margin: 0; padding: 2px; border: none;">~;
+      q~<ul class="help_ul">~;
     $i = 1;
     while ( ${ SectionSub . $i } ) {
 
@@ -320,7 +320,7 @@ sub CreateOrderFile {
       or croak(
 "couldn't write order file - check permissions on $vardir and $vardir/$help_area.helporder"
       );
-    print {HELPORDER} qq~$order_list~ or croak 'cannot print HELPORDER';
+    print {HELPORDER} qq~$order_list~ or croak "$croak{'print'} HELPORDER";
     fclose(HELPORDER);
     return;
 }

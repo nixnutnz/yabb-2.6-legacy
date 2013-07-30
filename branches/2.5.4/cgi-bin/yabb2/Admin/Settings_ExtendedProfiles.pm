@@ -16,7 +16,7 @@
 ###############################################################################
 our $VERSION = '2.5.4';
 
-$settings_extendedprofilespmver = 'YaBB 2.5.4 $Revision: 1175 $';
+$settings_extendedprofilespmver = 'YaBB 2.5.4 $Revision: 1521 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('ExtendedProfiles');
@@ -1003,7 +1003,7 @@ $ext_template_blockstop
             $new_content =~ s/\n'ext_$FORM{'id'}',"(?:.*?)"\n/\n/igsm;
             seek EXT_FILE, 0, 0;
             truncate EXT_FILE, 0;
-            print {EXT_FILE} $new_content or croak 'cannot print EXT_FILE';
+            print {EXT_FILE} $new_content or croak "$croak{'print'} EXT_FILE";
             fclose(EXT_FILE);
         }
 

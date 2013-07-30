@@ -131,7 +131,7 @@ sub Split_Splice {
             my $bdnopost =
               ( ${ $uid . $childbd }{'canpost'} || !$subboard{$childbd} )
               ? q{}
-              : q~ class="nopost" style="background-color: #ffbbbb"~;
+              : q~ class="nopost"~;
             $boardlist .=
                 qq~<option$bdnopost value="$childbd" ~
               . ( $newboard eq $childbd ? q~selected="selected"~ : q{} ) . q~>~
@@ -479,7 +479,7 @@ qq~$sstxt{'21'} $tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}
 
         # Update current thread
         fopen( FILE, ">$datadir/$curthreadid.txt" );
-        print {FILE} @utdcurthread or croak 'cannot print to FILE';
+        print {FILE} @utdcurthread or croak "$croak{'print'} FILE";
         fclose(FILE);
     }
     else {
@@ -498,7 +498,7 @@ qq~$sstxt{'21'} $tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}
 
     # Update new thread
     fopen( FILE, ">$datadir/$newthreadid.txt" );
-    print {FILE} @utdnewthread or croak 'cannot print to FILE';
+    print {FILE} @utdnewthread or croak "$croak{'print'} FILE";
     fclose(FILE);
 
     # Update the .rlog files of the users
@@ -691,7 +691,7 @@ qq~$newthreadid|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthrea
     print {BOARD} reverse
       sort { ( split /\|/xsm, $a, 6 )[4] <=> ( split /\|/xsm, $b, 6 )[4] }
       @curmessindex
-      or croak 'cannot print to BOARD';
+      or croak "$croak{'print'} BOARD";
     fclose(BOARD);
 
     if ($boardlog) {
@@ -778,7 +778,7 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
         print {BOARD} reverse
           sort { ( split /\|/xsm, $a, 6 )[4] <=> ( split /\|/xsm, $b, 6 )[4] }
           @newmessindex
-          or croak 'cannot print to BOARD';
+          or croak "$croak{'print'} BOARD";
         fclose(BOARD);
 
         if ($boardlog) {
@@ -995,7 +995,7 @@ qq~$newthreadid|$mreplies|$msub|$mname|$newboard|$asize|$mdate|$_|~
         print {ATM}
           sort { ( split /\|/xsm, $a, 8 )[6] <=> ( split /\|/xsm, $b, 8 )[6] }
           @newattachments
-          or croak 'cannot print to ATM';
+          or croak "$croak{'print'} ATM";
         fclose(ATM);
     }
 

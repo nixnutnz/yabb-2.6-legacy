@@ -333,9 +333,9 @@ qq~<a href="$scripturl?board=$currentboard/$lastptn"><span class="small">$lastpn
         }
         else {
             $pagedropindex1 =
-q~<span style="float: left; width: 350px; margin: 0px; margin-top: 2px; border: 0px;">~;
+q~<span class="pagedropindex">~;
             $pagedropindex1 .=
-qq~<span style="float: left; margin: 0; margin-right: 4px;"><a href="$scripturl?board=$INFO{'board'};start=$start;action=messagepagetext"><img src="$imagesdir/$msgbrd_index_togl"  alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" /></a></span>~;
+qq~<span class="pagedropindex_inner"><a href="$scripturl?board=$INFO{'board'};start=$start;action=messagepagetext"><img src="$imagesdir/$msgbrd_index_togl"  alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" /></a></span>~;
             $pagedropindex2 = $pagedropindex1;
             $tstart         = $start;
 
@@ -350,9 +350,9 @@ qq~<span style="float: left; margin: 0; margin-right: 4px;"><a href="$scripturl?
 
             if ( $pagenumb > $dropdisplaynum ) {
                 $pagedropindex1 .=
-qq~<span style="float: left; margin: 0;"><select size="1" name="decselector1" id="decselector1" style="font-size: 9px; border: 2px inset;" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
+qq~<span class="decselector"><select size="1" name="decselector1" id="decselector1" class="decselector_sel" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
                 $pagedropindex2 .=
-qq~<span style="float: left; margin: 0;"><select size="1" name="decselector2" id="decselector2" style="font-size: 9px; border: 2px inset;" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
+qq~<span class="decselector"><select size="1" name="decselector2" id="decselector2" class="decselector_sel" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
             }
             for my $i ( 0 .. ( $indexpages - 1 ) ) {
                 $indexpage = ( $i * $dropdisplaynum ) * $maxindex;
@@ -382,25 +382,25 @@ qq~<option value="$indexstart|$indexend|$maxindex|$indexpage"$selected>$indxopti
                 $pagedropindex2 .= qq~</select>\n</span>~;
             }
             $pagedropindex1 .=
-q~<span id="ViewIndex1" class="droppageindex" style="height: 14px; visibility: hidden">&nbsp;</span>~;
+q~<span id="ViewIndex1" class="droppageindex viewindex_hid">&nbsp;</span>~;
             $pagedropindex2 .=
-q~<span id="ViewIndex2" class="droppageindex" style="height: 14px; visibility: hidden">&nbsp;</span>~;
+q~<span id="ViewIndex2" class="droppageindex viewindex_hid">&nbsp;</span>~;
             $tmpmaxindex = $maxindex;
 
 #if (substr($INFO{'start'}, 0, 3) eq 'all') { $maxindex = $maxindex * $dropdisplaynum; }
             $prevpage = $start - $tmpmaxindex;
             $nextpage = $start + $maxindex;
             $pagedropindexpvbl =
-qq~<img src="$imagesdir/$msgbrd_index_left0" height="14" width="13"  alt="" style="margin: 0px; display: inline;" />~;
+qq~<img src="$imagesdir/$msgbrd_index_left0" height="14" width="13"  alt="" />~;
             $pagedropindexnxbl =
-qq~<img src="$imagesdir/$msgbrd_index_right0" height="14" width="13"  alt="" style="margin: 0px; display: inline;" />~;
+qq~<img src="$imagesdir/$msgbrd_index_right0" height="14" width="13"  alt="" />~;
             if ( $start < $maxindex ) {
                 $pagedropindexpv .=
-qq~<img src="$imagesdir/$msgbrd_index_left0" height="14" width="13"  alt="" style="display: inline;" />~;
+qq~<img src="$imagesdir/$msgbrd_index_left0" height="14" width="13"  alt="" />~;
             }
             else {
                 $pagedropindexpv .=
-qq~<img src="$imagesdir/$msgbrd_index_left"  height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" style="display: inline; cursor: pointer;" ~;
+qq~<img src="$imagesdir/$msgbrd_index_left"  height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" class="cursor" ~;
                 if ($messagelist) {
                     $pagedropindexpv .=
 qq~onclick="MessageList(\\'$scripturl?board=$currentboard/$prevpage;messagelist=1\\',\\'$yyhtml_root\\', \\'$currentboard\\', 1)" ondblclick="MessageList(\\'$scripturl?board=$currentboard/0;messagelist=1\\', \\'$yyhtml_root\\',\\'$currentboard\\', 1)" />~;
@@ -412,11 +412,11 @@ qq~onclick="location.href=\\'$scripturl?board=$currentboard/$prevpage\\'" ondblc
             }
             if ( $nextpage > $lastptn ) {
                 $pagedropindexnx .=
-qq~<img src="$imagesdir/$msgbrd_index_right0"  height="14" width="13" alt="" style="display: inline;" />~;
+qq~<img src="$imagesdir/$msgbrd_index_right0"  height="14" width="13" alt="" />~;
             }
             else {
                 $pagedropindexnx .=
-qq~<img src="$imagesdir/$msgbrd_index_right" height="14" width="13"  alt="$pidtxt{'03'}" title="$pidtxt{'03'}" style="display: inline; vertical-align: middle; cursor: pointer;" ~;
+qq~<img src="$imagesdir/$msgbrd_index_right" height="14" width="13"  alt="$pidtxt{'03'}" title="$pidtxt{'03'}" class="cursor" ~;
                 if ($messagelist) {
                     $pagedropindexnx .=
 qq~onclick="MessageList(\\'$scripturl?board=$currentboard/$nextpage;messagelist=1\\', \\'$yyhtml_root\\',\\'$currentboard\\', 1)" ondblclick="MessageList(\\'$scripturl?board=$currentboard/$lastptn;messagelist=1\\', \\'$yyhtml_root\\',\\'$currentboard\\', 1)" />~;
@@ -755,13 +755,13 @@ qq~<a href="http://$perm_domain/$symlink$permdate/$permlinkboard/$mnum">$message
         if ($staff) {
             if ( $threadclass eq 'sticky' || $threadclass eq 'stickylock' ) {
                 $stickdir =
-qq~&nbsp;&nbsp;<a href="$scripturl?action=rearrsticky;board=$currentboard;num=$mnum;direction=up"><span style="font-size:medium"><b>&uarr;</b></span></a><a href="$scripturl?action=rearrsticky;board=$currentboard;num=$mnum;direction=down"><span style="font-size:medium"><b>&darr;</b></span> </a>~;
+qq~&nbsp;&nbsp;<a href="$scripturl?action=rearrsticky;board=$currentboard;num=$mnum;direction=up"><span class="sticky_stick"><b>&uarr;</b></span></a><a href="$scripturl?action=rearrsticky;board=$currentboard;num=$mnum;direction=down"><span class="sticky_stick"><b>&darr;</b></span> </a>~;
             }
             elsif (( $threadclass eq 'announcement' )
                 && ( $iamadmin || $iamgmod ) )
             {
                 $stickdir =
-qq~&nbsp;&nbsp;<a href="$scripturl?action=rearrsticky;board=$annboard;num=$mnum;direction=up;oldboard=$currentboard;"><span style="font-size:medium"><b>&uarr;</b></span></a><a href="$scripturl?action=rearrsticky;board=$annboard;num=$mnum;direction=down;oldboard=$currentboard;"><span style="font-size:medium"><b>&darr;</b></span> </a>~;
+qq~&nbsp;&nbsp;<a href="$scripturl?action=rearrsticky;board=$annboard;num=$mnum;direction=up;oldboard=$currentboard;"><span class="sticky_stick"><b>&uarr;</b></span></a><a href="$scripturl?action=rearrsticky;board=$annboard;num=$mnum;direction=down;oldboard=$currentboard;"><span class="sticky_stick"><b>&darr;</b></span> </a>~;
             }
         }
         ### End Sticky Shimmy Shuffle Mod
@@ -820,7 +820,7 @@ qq~<a href="$scripturl?num=$mnum/new#new"><img src="$imagesdir/$msgbrd_new" alt=
                 $poll[0] =
 "$poll_question|$poll_locked|$poll_uname|$poll_name|$poll_email|$poll_date|$guest_vote|$hide_results|$multi_vote|$poll_mod|$poll_modname|$poll_comment|$vote_limit|$pie_radius|$pie_legends|$poll_end\n";
                 fopen( POLL, ">$datadir/$mnum.poll" );
-                print {POLL} @poll or croak 'cannot print POLL';
+                print {POLL} @poll or croak "$croak{'print'} POLL";
                 fclose(POLL);
             }
             get_micon();
@@ -991,7 +991,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">$f
             ( $guest_media_disallowed && $iamguest )
             ? qq~<img src="$imagesdir/$paperclip" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" />~
             : $msg_attach_win
-              . qq~<img src="$imagesdir/$paperclip" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" style="border-style:none;" /></a>~
+              . qq~<img src="$imagesdir/$paperclip" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" /></a>~
           )
           : q{};
         $temp_attachment =~ s/{yabb mnum}/$mnum/sm;
@@ -1016,10 +1016,10 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">$f
         {
             if ( $currentboard eq $annboard ) {
                 $adminbar = qq~
-        <input type="checkbox" name="lockadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />
-        <input type="checkbox" name="hideadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />
-        <input type="checkbox" name="moveadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />
-        <input type="checkbox" name="deleteadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />
+        <input type="checkbox" name="lockadmin$mcount" class="windowbg" value="$mnum" />
+        <input type="checkbox" name="hideadmin$mcount" class="windowbg" value="$mnum" />
+        <input type="checkbox" name="moveadmin$mcount" class="windowbg" value="$mnum" />
+        <input type="checkbox" name="deleteadmin$mcount" class="windowbg" value="$mnum" />
         ~;
             }
             elsif ( $counter < $numanns ) {
@@ -1027,11 +1027,11 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">$f
             }
             else {
                 $adminbar = qq~
-        <input type="checkbox" name="lockadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />
-        <input type="checkbox" name="stickadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />
-        <input type="checkbox" name="hideadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />
-        <input type="checkbox" name="moveadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />
-        <input type="checkbox" name="deleteadmin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />
+        <input type="checkbox" name="lockadmin$mcount" class="windowbg" value="$mnum" />
+        <input type="checkbox" name="stickadmin$mcount" class="windowbg" value="$mnum" />
+        <input type="checkbox" name="hideadmin$mcount" class="windowbg" value="$mnum" />
+        <input type="checkbox" name="moveadmin$mcount" class="windowbg" value="$mnum" />
+        <input type="checkbox" name="deleteadmin$mcount" class="windowbg" value="$mnum" />
         ~;
             }
             $admincol = $admincolumn;
@@ -1056,7 +1056,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">$f
             }
             else {
                 $adminbar =
-qq~<input type="checkbox" name="admin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />~;
+qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~;
             }
             $admincol = $admincolumn;
             $admincol =~ s/({|<)yabb admin(}|>)/$adminbar/gsm;
@@ -1282,24 +1282,24 @@ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies
         if ( $multiview eq '3' ) {
             $tempfooter    = $subfooterbar;
             $adminselector = qq~
-                <label for="toboard">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" /> <select name="toboard" id="toboard" onchange="NoPost(this.selectedIndex)">$boardlist</select><input type="submit" value="$messageindex_txt{'462'}" class="button" />
+                <label for="toboard">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" ondblclick="alert('$messageindex_txt{200}')" /> <select name="toboard" id="toboard" onchange="NoPost(this.selectedIndex)">$boardlist</select><input type="submit" value="$messageindex_txt{'462'}" class="button" />
             ~;
             if ( $currentboard eq $annboard ) {
                 $admincheckboxes = qq~
-                <input type="checkbox" name="lockall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(1); else uncheckAll(1);" />
-                <input type="checkbox" name="hideall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(2); else uncheckAll(2);" />
-                <input type="checkbox" name="moveall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(3); else uncheckAll(3);" />
-                <input type="checkbox" name="deleteall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(4); else uncheckAll(4);" />
+                <input type="checkbox" name="lockall" value="" class="titlebg" onclick="if (this.checked) checkAll(1); else uncheckAll(1);" />
+                <input type="checkbox" name="hideall" value="" class="titlebg" onclick="if (this.checked) checkAll(2); else uncheckAll(2);" />
+                <input type="checkbox" name="moveall" value="" class="titlebg" onclick="if (this.checked) checkAll(3); else uncheckAll(3);" />
+                <input type="checkbox" name="deleteall" value="" class="titlebg" onclick="if (this.checked) checkAll(4); else uncheckAll(4);" />
                 <input type="hidden" name="fromboard" value="$currentboard" />
             ~;
             }
             else {
                 $admincheckboxes = qq~
-                <input type="checkbox" name="lockall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(1); else uncheckAll(1);" />
-                <input type="checkbox" name="stickall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(2); else uncheckAll(2);" />
-                <input type="checkbox" name="hideall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(3); else uncheckAll(3);" />
-                <input type="checkbox" name="moveall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(4); else uncheckAll(4);" />
-                <input type="checkbox" name="deleteall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(5); else uncheckAll(5);" />
+                <input type="checkbox" name="lockall" value="" class="titlebg" onclick="if (this.checked) checkAll(1); else uncheckAll(1);" />
+                <input type="checkbox" name="stickall" value="" class="titlebg" onclick="if (this.checked) checkAll(2); else uncheckAll(2);" />
+                <input type="checkbox" name="hideall" value="" class="titlebg" onclick="if (this.checked) checkAll(3); else uncheckAll(3);" />
+                <input type="checkbox" name="moveall" value="" class="titlebg" onclick="if (this.checked) checkAll(4); else uncheckAll(4);" />
+                <input type="checkbox" name="deleteall" value="" class="titlebg" onclick="if (this.checked) checkAll(5); else uncheckAll(5);" />
                 <input type="hidden" name="fromboard" value="$currentboard" />
             ~;
             }
@@ -1311,10 +1311,10 @@ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies
             $tempfooter = $subfooterbar;
             if ( $currentboard eq $annboard ) {
                 $adminselector = qq~
-                <input type="radio" name="multiaction" id="multiactionlock" value="lock" class="titlebg" style="border: 0px;" /> <label for="multiactionlock">$messageindex_txt{'104'}</label>
-                <input type="radio" name="multiaction" id="multiactionhide" value="hide" class="titlebg" style="border: 0px;" /> <label for="multiactionhide">$messageindex_txt{'844'}</label>
-                <input type="radio" name="multiaction" id="multiactiondelete" value="delete" class="titlebg" style="border: 0px;" /> <label for="multiactiondelete">$messageindex_txt{'31'}</label>
-                <input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" style="border: 0px;" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" />
+                <input type="radio" name="multiaction" id="multiactionlock" value="lock" class="titlebg" /> <label for="multiactionlock">$messageindex_txt{'104'}</label>
+                <input type="radio" name="multiaction" id="multiactionhide" value="hide" class="titlebg" /> <label for="multiactionhide">$messageindex_txt{'844'}</label>
+                <input type="radio" name="multiaction" id="multiactiondelete" value="delete" class="titlebg" /> <label for="multiactiondelete">$messageindex_txt{'31'}</label>
+                <input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" ondblclick="alert('$messageindex_txt{200}')" />
                 <select name="toboard" id="toboard" onchange="NoPost(this.selectedIndex); document.multiadmin.multiaction[3].checked=true;">$boardlist</select>
                 <input type="hidden" name="fromboard" value="$currentboard" />
                 <input type="submit" value="$messageindex_txt{'462'}" class="button" />
@@ -1322,18 +1322,18 @@ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies
             }
             else {
                 $adminselector = qq~
-                <input type="radio" name="multiaction" id="multiactionlock" value="lock" class="titlebg" style="border: 0px;" /> <label for="multiactionlock">$messageindex_txt{'104'}</label>
-                <input type="radio" name="multiaction" id="multiactionstick" value="stick" class="titlebg" style="border: 0px;" /> <label for="multiactionstick">$messageindex_txt{'781'}</label>
-                <input type="radio" name="multiaction" id="multiactionhide" value="hide" class="titlebg" style="border: 0px;" /> <label for="multiactionhide">$messageindex_txt{'844'}</label>
-                <input type="radio" name="multiaction" id="multiactiondelete" value="delete" class="titlebg" style="border: 0px;" /> <label for="multiactiondelete">$messageindex_txt{'31'}</label>
-                <input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" style="border: 0px;" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" style="border: 0px;" ondblclick="alert('$messageindex_txt{200}')" />
+                <input type="radio" name="multiaction" id="multiactionlock" value="lock" class="titlebg" /> <label for="multiactionlock">$messageindex_txt{'104'}</label>
+                <input type="radio" name="multiaction" id="multiactionstick" value="stick" class="titlebg" /> <label for="multiactionstick">$messageindex_txt{'781'}</label>
+                <input type="radio" name="multiaction" id="multiactionhide" value="hide" class="titlebg" /> <label for="multiactionhide">$messageindex_txt{'844'}</label>
+                <input type="radio" name="multiaction" id="multiactiondelete" value="delete" class="titlebg" /> <label for="multiactiondelete">$messageindex_txt{'31'}</label>
+                <input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" ondblclick="alert('$messageindex_txt{200}')" />
                 <select name="toboard" id="toboard" onchange="NoPost(this.selectedIndex); document.multiadmin.multiaction[4].checked=true;">$boardlist</select>
                 <input type="hidden" name="fromboard" value="$currentboard" />
                 <input type="submit" value="$messageindex_txt{'462'}" class="button" />
             ~;
             }
             $admincheckboxes = q~
-                <input type="checkbox" name="checkall" id="checkall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(0); else uncheckAll(0);" />
+                <input type="checkbox" name="checkall" id="checkall" value="" class="titlebg" onclick="if (this.checked) checkAll(0); else uncheckAll(0);" />
             ~;
             $tempfooter =~ s/({|<)yabb admin selector(}|>)/$adminselector/gsm;
             $tempfooter =~
@@ -1472,7 +1472,7 @@ qq~ <img src="$imagesdir/$bdpic" alt="$curboardname" title="$curboardname" /> ~;
         if ( !$iamguest && ${ $uid . $currentboard }{'rulescollapse'} == 1 ) {
             $tmprulelgt = length( ${ $uid . $currentboard }{'rulesdesc'} );
             $rulestitle =
-qq~<img src="$imagesdir/$msgbrd_cat_col" id="bdrulecollapse" alt="$boardindex_exptxt{'2'}" title="$boardindex_exptxt{'2'}" style="cursor: pointer;" onclick="collapseBDrule($tmprulelgt);" />~;
+qq~<img src="$imagesdir/$msgbrd_cat_col" id="bdrulecollapse" alt="$boardindex_exptxt{'2'}" title="$boardindex_exptxt{'2'}" class="cursor" onclick="collapseBDrule($tmprulelgt);" />~;
             my @collbdrules =
               split /\|/xsm, ${ $uid . $username }{'collapsebdrules'};
             for my $i ( 0 .. ( @collbdrules - 1 ) ) {
@@ -1480,7 +1480,7 @@ qq~<img src="$imagesdir/$msgbrd_cat_col" id="bdrulecollapse" alt="$boardindex_ex
                 if ( $rulebd eq $currentboard && $rulelgt == $tmprulelgt ) {
                     $tmpruletxt = qq~$messageindex_txt{'collruletext'}~;
                     $rulestitle =
-qq~<img src="$imagesdir/$msgbrd_cal_exp" id="bdrulecollapse" alt="$boardindex_exptxt{'1'}" title="$boardindex_exptxt{'1'}" style="cursor: pointer;" onclick="collapseBDrule($tmprulelgt);" />~;
+qq~<img src="$imagesdir/$msgbrd_cal_exp" id="bdrulecollapse" alt="$boardindex_exptxt{'1'}" title="$boardindex_exptxt{'1'}" class="cursor" onclick="collapseBDrule($tmprulelgt);" />~;
                 }
             }
         }
@@ -1766,7 +1766,7 @@ qq~    <link rel="alternate" type="application/rss+xml" title="$messageindex_txt
 
         if ( $postlink && $enable_quickpost && !$mindex_postpopup ) {
             $yymain =~
-s/(<!-- Icon and access info end -->)/$1\n<div style="text-align: right; padding-top: 10px; padding-bottom: 10px;">{yabb forumjump}<\/div>/sm;
+s/(<!-- Icon and access info end -->)/$1\n<div class="q_post_space">{yabb forumjump}<\/div>/sm;
             require Sources::Post;
             $action        = 'post';
             $INFO{'title'} = 'StartNewTopic';
@@ -1777,11 +1777,11 @@ s/(<!-- Icon and access info end -->)/$1\n<div style="text-align: right; padding
     }
     else {
         print "Content-type: text/html; charset=$yycharset\n\n"
-          or croak 'cannot print top';
+          or croak "$croak{'print'} content-type";
         print qq~
         $messageindex_template
         $pageindexjs
-        ~ or croak 'cannot print content';
+        ~ or croak "$croak{'print'} content";
         CORE::exit;    # This is here only to avoid server error log entries!
     }
     return;
@@ -1908,7 +1908,7 @@ sub moveto {
                 if ( !${ $uid . $board }{'canpost'} && $subboard{$board} ) {
                     $alert = qq~$messageindex_txt{'nopost'}~;
                     $bdnopost =
-qq~ class="nopost" style="background-color: #ffbbbb" onclick="alert('$alert')"~;
+qq~ class="nopost" onclick="alert('$alert')"~;
                     $my_board = q{};
                 }
                 $boardlist .=

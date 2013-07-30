@@ -37,14 +37,14 @@ sub Debug {
         $openfiles =~ s/\n/<br \/>/gsm;
 
         $yydebug =
-qq~<br /><div class="small" style="float: left; padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;"><span class="under">$debug_txt{'debugging'}<span><br /><br /><span class="under">$debug_txt{'benchmarking'}:</span><br />$yytimeclock<br /><br /><span class="under">$debug_txt{'ipaddress'}:</span><br />$user_ip<br /><br /><span class="under">$debug_txt{'browser'}:</span><br />$ENV{'HTTP_USER_AGENT'}<br />$getpairs<br /><span class="under">$debug_txt{'trace'}:</span>$yytrace<br /><br /><span class="under">$debug_txt{'check'}:</span><br />$yyfileactions<br /><br /><span class="under">$debug_txt{'filehandles'}:</span><br />$debug_txt{'filehandleslegend'}<br /><br />$openfiles<br /><span class="under">$debug_txt{'filesloaded'}:<span class="tt">require</span></span>~;
+qq~<br /><div class="small debug"><span class="under">$debug_txt{'debugging'}<span><br /><br /><span class="under">$debug_txt{'benchmarking'}:</span><br />$yytimeclock<br /><br /><span class="under">$debug_txt{'ipaddress'}:</span><br />$user_ip<br /><br /><span class="under">$debug_txt{'browser'}:</span><br />$ENV{'HTTP_USER_AGENT'}<br />$getpairs<br /><span class="under">$debug_txt{'trace'}:</span>$yytrace<br /><br /><span class="under">$debug_txt{'check'}:</span><br />$yyfileactions<br /><br /><span class="under">$debug_txt{'filehandles'}:</span><br />$debug_txt{'filehandleslegend'}<br /><br />$openfiles<br /><span class="under">$debug_txt{'filesloaded'}:<span class="tt">require</span></span>~;
 
         foreach ( sort keys %INC ) { $yydebug .= qq~<br />$_ => $INC{$_}~; }
 
         $yydebug .= q~<br /><br /><br /></div>~;
         if ( $debug == 3 ) {
             $yydebug =
-qq~<br /><div class="small center" style="float: left; padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">$yytimeclock</div>~;
+qq~<br /><div class="small center debug">$yytimeclock</div>~;
         }
     }
     return $yydebug;

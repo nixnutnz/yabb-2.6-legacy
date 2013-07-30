@@ -509,9 +509,9 @@ qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$la
             }
             else {
                 $pagedropindex1 =
-q~<span style="float: left; width: 350px; margin: 0px; margin-top: 2px; border: 0px;">~;
+q~<span class="pagedropindex">~;
                 $pagedropindex1 .=
-qq~<span style="float: left; height: 21px; margin: 0; margin-right: 4px;"><a href="$scripturl?sort=$FORM{'sortform'};letter=$letter;start=$start;action=memberpagetext$findmember"><img src="$imagesdir/$ml_index_togl" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a></span>~;
+qq~<span class="pagedropindex_inner"><a href="$scripturl?sort=$FORM{'sortform'};letter=$letter;start=$start;action=memberpagetext$findmember"><img src="$imagesdir/$ml_index_togl" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a></span>~;
                 $pagedropindex2 = $pagedropindex1;
                 $tstart         = $start;
                 if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' ) {
@@ -528,9 +528,9 @@ qq~<span style="float: left; height: 21px; margin: 0; margin-right: 4px;"><a hre
 
                 if ( $pagenumb > $dropdisplaynum ) {
                     $pagedropindex1 .=
-qq~<span style="float: left; height: 21px; margin: 0;"><select size="1" name="decselector1" id="decselector1" style="font-size: 9px; border: 2px inset;" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
+qq~<span class="decselector"><select size="1" name="decselector1" id="decselector1" class="decselector_sel" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
                     $pagedropindex2 .=
-qq~<span style="float: left; height: 21px; margin: 0;"><select size="1" name="decselector2" id="decselector2" style="font-size: 9px; border: 2px inset;" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
+qq~<span class="decselector"><select size="1" name="decselector2" id="decselector2" class="decselector_sel" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
                 }
                 for my $i ( 0 .. ( $indexpages - 1 ) ) {
                     $indexpage  = ( $i * $dropdisplaynum ) * $MembersPerPage;
@@ -559,9 +559,9 @@ qq~<option value="$indexstart|$indexend|$MembersPerPage|$indexpage"$selected>$in
                     $pagedropindex2 .= qq~</select>\n</span>~;
                 }
                 $pagedropindex1 .=
-q~<span id="ViewIndex1" class="droppageindex" style="height: 14px; visibility: hidden">&nbsp;</span>~;
+q~<span id="ViewIndex1" class="droppageindex viewindex_hid">&nbsp;</span>~;
                 $pagedropindex2 .=
-q~<span id="ViewIndex2" class="droppageindex" style="height: 14px; visibility: hidden">&nbsp;</span>~;
+q~<span id="ViewIndex2" class="droppageindex viewindex_hid">&nbsp;</span>~;
                 $tmpMembersPerPage = $MembersPerPage;
                 if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' ) {
                     $MembersPerPage = $MembersPerPage * $dropdisplaynum;
@@ -569,24 +569,24 @@ q~<span id="ViewIndex2" class="droppageindex" style="height: 14px; visibility: h
                 $prevpage = $start - $tmpMembersPerPage;
                 $nextpage = $start + $MembersPerPage;
                 $pagedropindexpvbl =
-qq~<img src="$imagesdir/$ml_index_left0" height="14" width="13" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$ml_index_left0" height="14" width="13" alt="" />~;
                 $pagedropindexnxbl =
-qq~<img src="$imagesdir/$ml_index_right0" height="14" width="13" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$ml_index_right0" height="14" width="13" alt="" />~;
                 if ( $start < $MembersPerPage ) {
                     $pagedropindexpv .=
-qq~<img src="$imagesdir/$ml_index_left0" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$ml_index_left0" height="14" width="13" alt="" />~;
                 }
                 else {
                     $pagedropindexpv .=
-qq~<img src="$imagesdir/$ml_index_left" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$prevpage$findmember\\'" ondblclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=0$findmember\\'" />~;
+qq~<img src="$imagesdir/$ml_index_left" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" class="cursor" onclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$prevpage$findmember\\'" ondblclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=0$findmember\\'" />~;
                 }
                 if ( $nextpage > $lastptn ) {
                     $pagedropindexnx .=
-qq~<img src="$imagesdir/$ml_index_right0" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$ml_index_right0" height="14" width="13" alt="" />~;
                 }
                 else {
                     $pagedropindexnx .=
-qq~<img src="$imagesdir/$ml_index_right" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$nextpage$findmember\\'" ondblclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$lastptn$findmember\\'" />~;
+qq~<img src="$imagesdir/$ml_index_right" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" class="cursor" onclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$nextpage$findmember\\'" ondblclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$lastptn$findmember\\'" />~;
                 }
                 $pageindex1 = qq~$pagedropindex1</span>~;
                 $pageindex2 = qq~$pagedropindex2</span>~;

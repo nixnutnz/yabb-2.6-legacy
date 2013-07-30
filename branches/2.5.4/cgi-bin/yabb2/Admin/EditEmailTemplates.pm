@@ -198,7 +198,7 @@ sub editemailtemplates2 {
     fopen( LANG, ">$langdir/$editlang/Email.lng" )
       || fatal_error( 'cannot_open_language',
         "$langdir/$editlang/Email.lng", 1 );
-    print {LANG} $langfile or croak 'cannot print LANG';
+    print {LANG} $langfile or croak "$croak{'print'} LANG";
     fclose(LANG);
 
     $yySetLocation = qq~$adminurl~;

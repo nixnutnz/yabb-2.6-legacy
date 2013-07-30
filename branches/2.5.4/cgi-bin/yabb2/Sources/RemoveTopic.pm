@@ -42,7 +42,7 @@ sub RemoveThread {
     }
     truncate BOARDFILE, 0;
     seek BOARDFILE, 0, 0;
-    print {BOARDFILE} @buffer or croak 'cannot print BOARDFILE';
+    print {BOARDFILE} @buffer or croak "$croak{'print'} BOARDFILE";
     fclose(BOARDFILE);
 
     if ($threadline) {

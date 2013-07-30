@@ -56,11 +56,11 @@ sub sendmail {
 
     if ( $mailtype == 0 ) {
         my $mailprogram = qq~$mailprog -t~;
-        open my $MAIL, q{|-}, $mailprogram or croak 'cannot open MAIL';
+        open my $MAIL, q{|-}, $mailprogram or croak "$croak{'open'} MAIL";
         @mailout =
           ( $fromheader, $toheader, $subject, $message, $charsetheader );
         tomail( $MAIL, \@mailout );
-        close $MAIL;    # or croak 'cannot close mail';
+        close $MAIL;    # or croak "$croak{'close'} MAIL";
 
         return 1;
     }
@@ -125,14 +125,14 @@ sub sendmail {
         # Dummy mail engine
         fopen( MAIL, ">>$vardir/mail.log" );
         print {MAIL} 'Mail sent at ' . scalar localtime() . "\n"
-          or croak 'cannot print mail';
-        print {MAIL} "To: $toheader\n"           or croak 'cannot print mail';
-        print {MAIL} "From: $fromheader\n"       or croak 'cannot print mail';
-        print {MAIL} "X-Mailer: YaBB Sendmail\n" or croak 'cannot print mail';
-        print {MAIL} "Subject: $subject\n\n"     or croak 'cannot print mail';
+          or croak "$croak{'print'} mail";
+        print {MAIL} "To: $toheader\n"           or croak "$croak{'print'} mail";
+        print {MAIL} "From: $fromheader\n"       or croak "$croak{'print'} mail";
+        print {MAIL} "X-Mailer: YaBB Sendmail\n" or croak "$croak{'print'} mail";
+        print {MAIL} "Subject: $subject\n\n"     or croak "$croak{'print'} mail";
         $message =~ s/\r\n/\n/gsm;
-        print {MAIL} "$message\n"         or croak 'cannot print mail';
-        print {MAIL} "End of Message\n\n" or croak 'cannot print mail';
+        print {MAIL} "$message\n"         or croak "$croak{'print'} mail";
+        print {MAIL} "End of Message\n\n" or croak "$croak{'print'} mail";
         fclose(MAIL);
         return 1;
     }
@@ -162,14 +162,14 @@ sub tomail {
     my ( $MAIL, $mailout ) = @_;
     my ( $fromheader, $toheader, $subject, $message, $charsetheader ) =
       @{$mailout};
-    print {$MAIL} "To: $toheader\n"           or croak 'cannot print mail';
-    print {$MAIL} "From: $fromheader\n"       or croak 'cannot print mail';
-    print {$MAIL} "X-Mailer: YaBB Sendmail\n" or croak 'cannot print mail';
-    print {$MAIL} "Subject: $subject\n"       or croak 'cannot print mail';
+    print {$MAIL} "To: $toheader\n"           or croak "$croak{'print'} mail";
+    print {$MAIL} "From: $fromheader\n"       or croak "$croak{'print'} mail";
+    print {$MAIL} "X-Mailer: YaBB Sendmail\n" or croak "$croak{'print'} mail";
+    print {$MAIL} "Subject: $subject\n"       or croak "$croak{'print'} mail";
     print {$MAIL} "Content-Type: text/plain\; charset=$charsetheader\n\n"
-      or croak 'cannot print mail';
+      or croak "$croak{'print'} mail";
     $message =~ s/\r\n/\n/gsm;
-    print {$MAIL} "$message\n" or croak 'cannot print mail';
+    print {$MAIL} "$message\n" or croak "$croak{'print'} mail";
     return;
 }
 

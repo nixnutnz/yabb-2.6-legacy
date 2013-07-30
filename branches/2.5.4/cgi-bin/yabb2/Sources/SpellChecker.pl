@@ -39,7 +39,7 @@ $res =
 
 croak "$res->{_content}" if $res->{_content} =~ /LWP.+https.+Crypt::SSLeay/sm;
 
-print "Content-Type: text/xml\n\n" or croak 'cannot print header';
-print $res->{_content} or croak 'cannot print speller';
+print "Content-Type: text/xml\n\n" or croak "$croak{'print'} content-type";
+print $res->{_content} or croak "$croak{'print'} speller";
 
 1;

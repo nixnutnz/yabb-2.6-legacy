@@ -23,7 +23,7 @@ sub ipban {
     is_admin_or_gmod();
 
     use Time::localtime;
-    fopen( BAN, "<$vardir/banlist.txt" );
+    fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
     @banlist = <BAN>;
     fclose(BAN);
     my @timeban = qw( p d w m );
@@ -209,13 +209,12 @@ sub ipban2 {
     my $ban_e = $FORM{'eban'};
     my $ban_i = $FORM{'iban'};
 
-    fopen( BAN, "<$vardir/banlist.txt" ) or croak 'cannot open BAN to read';
+    fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
     my @myban = <BAN>;
     chomp @myban;
-    fclose(BAN) or croak 'cannot close BAN';
+    fclose(BAN);
 
-    fopen( BAN2, ">$vardir/banlist.txt" )
-      or croak 'cannot open BAN2 to write';
+    fopen( BAN2, ">$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
     my @banned_u = split /\, /sm, $ban_u;
     chomp @banned_u;
     my @banned_e = split /\, /sm, $ban_e;
@@ -247,9 +246,9 @@ sub ipban2 {
     }
 
     foreach my $j (@allban) {
-        print {BAN2} qq~$j\n~ or 'croak cannot print UNBAN';
+        print {BAN2} qq~$j\n~ or croak "$croak{'print'} UNBAN";
     }
-    fclose(BAN2) or croak 'cannot close BAN2';
+    fclose(BAN2);
 
     $yySetLocation = qq~$adminurl?action=ipban~;
     redirectexit();
@@ -263,10 +262,10 @@ sub ipban_add {
 
     my @banin = split /\n/xsm, $ban_in;
 
-    fopen( BAN, "<$vardir/banlist.txt" ) or croak 'cannot open BAN to read';
+    fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
     my @myban = <BAN>;
     chomp @myban;
-    fclose(BAN) or croak 'cannot close BAN';
+    fclose(BAN);
     $time = time;
     my $ihave = 0;
     foreach my $j (@banin) {
@@ -281,15 +280,14 @@ sub ipban_add {
             }
         }
 
-        fopen( BAN2, ">>$vardir/banlist.txt" )
-          or croak 'cannot open BAN2 to write';
+        fopen( BAN2, ">>$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
         if ( $j && $ihave == 0 && $j ne '127.0.0.1' ) {
             print {BAN2}
               qq~$type|$j|$time|${$uid.$username}{'realname'} ($username)|p|\n~
-              or croak 'cannot write to BAN2';
+              or croak "$croak{'print'} BAN2";
         }
-        else { print {BAN2} q~~ or croak 'cannot write to BAN2'; }
-        fclose(BAN2) or croak 'cannot close BAN2';
+        else { print {BAN2} q~~ or croak "$croak{'print'} BAN2"; }
+        fclose(BAN2);
     }
     $yySetLocation = qq~$adminurl?action=ipban~;
     redirectexit();
@@ -313,10 +311,10 @@ sub ipban_update {
     $ihave = 0;
     $ehave = 0;
     $uhave = 0;
-    fopen( BAN, "<$vardir/banlist.txt" ) or croak 'cannot open BAN to read';
+    fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
     my @myban = <BAN>;
     chomp @myban;
-    fclose(BAN) or croak 'cannot close BAN';
+    fclose(BAN);
     if ( $unban != 1 ) {
 
         foreach my $i (@myban) {
@@ -338,28 +336,26 @@ sub ipban_update {
             }
         }
 
-        fopen( BAN2, ">>$vardir/banlist.txt" )
-          or croak 'cannot open BAN2 to write';
+        fopen( BAN2, ">>$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
         if ( $ban && $ihave == 0 && $ban ne '127.0.0.1' ) {
             print {BAN2}
               qq~I|$ban|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
-              or croak 'cannot write to BAN2';
+              or croak "$croak{'print'} BAN2";
         }
         if ( $ban_email && $ehave == 0 ) {
             print {BAN2}
 qq~E|$ban_email|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
-              or croak 'cannot write to BAN2';
+              or croak "$croak{'print'} BAN2";
         }
         if ( $ban_mem && $uhave == 0 ) {
             print {BAN2}
 qq~U|$ban_mem|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
-              or croak 'cannot write to BAN2';
+              or croak "$croak{'print'} BAN2";
         }
-        fclose(BAN2) or croak 'cannot close BAN2';
+        fclose(BAN2);
     }
     elsif ( $unban == 1 ) {
-        fopen( BAN2, ">$vardir/banlist.txt" )
-          or croak 'cannot open BAN2 to write';
+        fopen( BAN2, ">$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
         foreach my $i (@myban) {
             @banned = split /\|/xsm, $i;
             if (   $ban eq $banned[1]
@@ -372,9 +368,9 @@ qq~U|$ban_mem|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
                 $un_ban =
                   qq~$banned[0]|$banned[1]|$banned[2]|$banned[3]|$banned[4]|\n~;
             }
-            print {BAN2} $un_ban or 'croak cannot print UNBAN';
+            print {BAN2} $un_ban or "$croak{'print'} UNBAN";
         }
-        fclose(BAN2) or croak 'cannot close BAN2';
+        fclose(BAN2);
     }
     $yySetLocation = qq~$scripturl?action=viewprofile;username=$user~;
     redirectexit();
@@ -388,12 +384,11 @@ sub ban_clean {
     my @timeban = qw( p d w m );
     my @bandays = ( 365, 1, 7, 30, );
     my $time    = time;
-    fopen( BAN, "<$vardir/banlist.txt" ) or croak 'cannot open BAN to read';
+    fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
     my @myban = <BAN>;
     chomp @myban;
-    fclose(BAN) or croak 'cannot close BAN';
-    fopen( BAN2, ">$vardir/banlist.txt" )
-      or croak 'cannot open BAN2 to write';
+    fclose(BAN);
+    fopen( BAN2, ">$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
 
     *time_ban = sub {
         for my $i ( 0 .. 3 ) {
@@ -407,32 +402,31 @@ sub ban_clean {
         if ( $banned[4] eq 'p' ) {
             print {BAN2}
               qq~$banned[0]|$banned[1]|$banned[2]|$banned[3]|$banned[4]|\n~
-              or croak 'cannot print BAN2';
+              or croak "$croak{'print'} BAN2";
         }
         else {
             time_ban();
             if ( $time > $tmb ) {
-                print {BAN2} q{} or croak 'cannot print BAN2';
+                print {BAN2} q{} or croak "$croak{'print'} BAN2";
             }
             else {
                 print {BAN2}
                   qq~$banned[0]|$banned[1]|$banned[2]|$banned[3]|$banned[4]|\n~
-                  or croak 'cannot print BAN2';
+                  or croak "$croak{'print'} BAN2";
             }
         }
     }
-    fclose(BAN2) or croak 'cannot close BAN2';
+    fclose(BAN2);
     $yySetLocation = qq~$adminurl?action=ipban~;
     redirectexit();
     return;
 }
 
 sub banlog {
-    fopen( BANLOG, "<$vardir/ban_log.txt" )
-      or croak 'cannot open BANLOG to read';
+    fopen( BANLOG, "<$vardir/ban_log.txt" ) || fatal_error( 'cannot_open', "$vardir/ban_log.txt", 1 );
     my @mybanlog = <BANLOG>;
     chomp @mybanlog;
-    fclose(BANLOG) or croak 'cannot close BANLOG';
+    fclose(BANLOG);
     use Time::localtime;
     for my $ban (@mybanlog) {
         @banned = split /\|/xsm, $ban;
@@ -473,13 +467,12 @@ sub ipban_err {
     $ban =~ tr/\r//d;
     $ban =~ s/\A[\s\n]+| |[\s\n]+\Z//gsm;
     $ban =~ s/\n\s*\n/\n/gsm;
-    fopen( BAN, "<$vardir/banlist.txt" )
-      or croak 'cannot open BANLOG to read';
+    fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
     my @myban = <BAN>;
     chomp @myban;
-    fclose(BAN) or croak 'cannot close BANLOG';
-    *time_ban = sub {
+    fclose(BAN);
 
+    *time_ban = sub {
         for my $i ( 0 .. 3 ) {
             if ( $banned[4] eq $timeban[$i] ) {
                 $tmb = $banned[2] + ( $bandays[$i] * 84600 );
@@ -497,13 +490,12 @@ sub ipban_err {
         }
     }
 
-    fopen( BAN2, ">>$vardir/banlist.txt" )
-      or croak 'cannot open BAN2 to write';
+    fopen( BAN2, ">>$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
     if ( $ip_ban && $ihave == 0 && $ip_ban ne '127.0.0.1' ) {
         print {BAN2} qq~I|$ip_ban|$time|${$uid.$username}{'realname'}|$lev|\n~
-          or croak 'cannot write to BAN2';
+          or croak "$croak{'print'} BAN2";
     }
-    fclose(BAN2) or croak 'cannot close BAN2';
+    fclose(BAN2);
 
     $yySetLocation = qq~$adminurl?action=$INFO{'return'}~;
     redirectexit();

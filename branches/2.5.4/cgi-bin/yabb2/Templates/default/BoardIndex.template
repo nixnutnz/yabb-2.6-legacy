@@ -28,8 +28,8 @@ $brd_arrowup = 'arrowup.gif';
 $brd_loadbar = 'loadbar.gif';
 $brd_info = 'info.png';
 $brd_online = 'online.png';
-$cat_col = 'cat_collapse.gif';
-$cat_exp = 'cat_expand.gif';
+$cat_col = 'cat_collapse.png';
+$cat_exp = 'cat_expand.png';
 $brd_fadeleftdropdown = 'fadeleftdropdown.gif';
 $brd_faderightdropdown = 'faderightdropdown.gif';
 $brd_closebutton = 'closebutton.png';
@@ -144,7 +144,10 @@ $boardindex_template .= qq~
 <!-- ## Cal Mod ## -->
 	{yabb sharedlogin}
 <!-- Info Center block end -->
-~;
+		<script type="text/javascript">
+		var brd_col = '$cat_col';
+		var brd_exp = '$cat_exp';
+		</script>~;
 }
 
 # Category header                          #
@@ -184,7 +187,7 @@ $boardblock = qq~<tr>
 				</td>
 				<td class="{yabb altbrdcolor}">
 					<div style="position: relative; height: 100%; width: 100%">
-						{yabb new} {yabb boardrss} <a id="{yabb boardanchor}" href="{yabb boardurl}"><b>{yabb boardname}</b></a><br />
+						{yabb new} {yabb boardrss} <a id="{yabb boardanchor}" href="{yabb boardurl}"><b>{yabb boardname}</b></a>{yabb boardviewers}<br />
 						{yabb boarddesc}
 						<div class="small" style="font-style:italic;">{yabb moderators}</div>
 						<div class="small" style="display: inline-block; margin-top:5px">{yabb subboardlist}</div>
@@ -211,7 +214,7 @@ $boardblockpw = qq~<tr>
 				</td>
 				<td class="{yabb altbrdcolor}" colspan="3">
 					<div style="position: relative; height: 100%; width: 100%">
-						{yabb new} <a id="{yabb boardanchor}" href="{yabb boardurl}"><b>{yabb boardname}</b></a><br />
+						{yabb new} <a id="{yabb boardanchor}" href="{yabb boardurl}"><b>{yabb boardname}</b></a>{yabb boardviewers}<br />
 						{yabb boarddesc}
 						<div class="small" style="font-style:italic;">{yabb moderators}</div>
 						<div class="small" style="display: inline-block; margin-top:5px">{yabb subboardlist}</div>
@@ -259,7 +262,8 @@ $subboard_list = qq~<b>{yabb subdropdown}:</b> {yabb subboardlinks}~;
 # Category footer                          #
 
 $catfooter = qq~		</table>
-		<br />~;
+		<br />
+~;
 
 #advanced tabs
 $brd_advanced_tabs = qq~    <form action="$scripturl?action=addtab2" method="post" name="addtabtext" style="font-size: 11px; display: inline;" onsubmit="if(!checkTab(this)) {return false} else {return submittab()}">

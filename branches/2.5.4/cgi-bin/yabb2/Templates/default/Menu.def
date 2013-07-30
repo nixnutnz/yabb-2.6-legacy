@@ -50,7 +50,7 @@ message,message|img_txt|144|||imgwindowbg|gif|tmp
 message_sm,message|img_txt|144|||imgwindowbg|gif|tmp
 modify,modify|img_txt|66|||imgwindowbg|png|tmp
 modify_profile,modify|img_txt|66|||imgmenu|png|tmp
-modifypoll,poll_modify|img_polltxt|39|||imgcatbg|gif|tmp
+modifypoll,poll_mod|img_polltxt|39|||imgcatbg|gif|tmp
 mquote,maq4|img_txt|145q|img_txt|145q|imgwindowbg|png|tmp
 mycenter,mycenter|img_txt|mycenter|||imgmenu|gif|tmp
 myspace,myspace|img_txt|myspace|||imgwindowbg|gif|tmp
@@ -83,7 +83,7 @@ viewprofile,profile|img_txt|27|||imgwindowbg|gif|tmp
 viewprofile_sm,profile|img_txt|27|||imgwindowbg|gif|tmp
 viewthread,viewthread|img_polltxt|33a|||imgwindowbg|gif|tmp
 viewvotes,poll_vvote|img_polltxt|33|||imgwindowbg|gif|tmp
-website,www|img_txt|515|||imgwindowbg|gif|tmp
-website_sm,www|img_txt|515|||imgwindowbg|gif|tmp
+website,www|img_txt|515|||imgwindowbg|png|tmp
+website_sm,www|img_txt|515|||imgwindowbg|png|tmp
 yim,yim|img_txt|yim|||imgwindowbg|gif|tmp
 youtube,youtube|img_txt|youtube|||imgwindowbg|gif|tmp

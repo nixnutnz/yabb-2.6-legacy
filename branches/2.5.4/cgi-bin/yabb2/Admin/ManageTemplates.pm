@@ -136,7 +136,7 @@ sub ModifyTemplate2 {
     else                       { $templatefile = 'default.html'; }
     fopen( TMPL, ">$templatesdir/$templatefile" );
 
-    print {TMPL} "$FORM{'template'}\n" or croak 'cannot print TMPL';
+    print {TMPL} "$FORM{'template'}\n" or croak "$croak{'print'} TMPL";
     fclose(TMPL);
     $yySetLocation = qq~$adminurl?action=modtemp;templatefile=$templatefile~;
     redirectexit();
@@ -275,7 +275,7 @@ sub ModifyStyle2 {
         fopen( CSS, ">$htmldir/Templates/Forum/$cssfile" )
           || fatal_error( 'cannot_open', "$htmldir/Templates/Forum/$cssfile", 1 );
     }
-    print {CSS} "$FORM{'css'}\n" or croak 'cannot print CSS';
+    print {CSS} "$FORM{'css'}\n" or croak "$croak{'print'} CSS";
     fclose(CSS);
     $yySetLocation = qq~$adminurl?action=modcss;cssfile=$cssfile~;
     redirectexit();
@@ -1663,7 +1663,7 @@ sub ModifyCSS2 {
             if ( $style_sgl =~ m{\;+\Z}sm ) { $style_sgl = qq~\t$style_sgl~; }
             $style_sgl =~ s/$yyhtml_root\/Templates\/Forum/\./gsm;
 			$style_sgl =~ s/$yyhtml_root/\.\.\/\.\./gsm;
-            print {TMPCSS} "$style_sgl\n" or croak 'cannot print TMPCSS';
+            print {TMPCSS} "$style_sgl\n" or croak "$croak{'print'} TMPCSS";
         }
         fclose(TMPCSS);
 
@@ -2303,6 +2303,7 @@ qq~<span class="small" style="color: $admcolor;"><b>${$uid.$username}{'realname'
         $templateblock =~ s/({|<)yabb boardurl(}|>)/$tempcurboardurl/gsm;
         $templateblock =~ s/({|<)yabb boardpic(}|>)/$tempboardpic/gsm;
         $templateblock =~ s/({|<)yabb boardname(}|>)/$tempcurboard $i/gsm;
+		$templateblock =~ s/({|<)yabb boardviewers(}|>)/$boardviewers/gsm;
         $templateblock =~ s/({|<)yabb boarddesc(}|>)/$tempbddescr/gsm;
         $templateblock =~ s/({|<)yabb moderators(}|>)/$tempshowmods/gsm;
         $templateblock =~ s/({|<)yabb threadcount(}|>)/$i/gsm;

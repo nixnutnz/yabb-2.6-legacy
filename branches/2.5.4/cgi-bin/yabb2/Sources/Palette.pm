@@ -106,7 +106,7 @@ function Pickshowcolor(color) {
 <body>
 <div class="windowbg" style="position: absolute; top: 0px; left: 0px; width: 300px; height: 308px; border: 1px black outset;">
 <div style="position: relative; top: 4px; left: 5px; width: 288px; height: 209px; padding-left: 1px; padding-top: 1px; border: 0px; background-color: black;">~
-      or croak 'cannot print colorpicker';
+      or croak "$croak{'print'} colorpicker";
 
     foreach my $z ( 0 .. 255 ) {
         showcolor($z);
@@ -125,7 +125,7 @@ function Pickshowcolor(color) {
     <span class="showcolor" style="background-color: #dddddd;" onclick="Pickshowcolor('#dddddd')">&nbsp;</span>
     <span class="showcolor" style="background-color: #eeeeee;" onclick="Pickshowcolor('#eeeeee')">&nbsp;</span>
     <form name="dodefpal" id="dodefpal" action="">~
-      or croak 'cannot print input';
+      or croak "$croak{'print'} input";
 
     if ( $iamadmin && $picktask eq 'post' ) {
         print qq~
@@ -135,7 +135,7 @@ function Pickshowcolor(color) {
     <span id="defpal_4" style="background-color:$pallist[3]" class="defpalx"><input type="radio" name="defpal" id="defpal4" value="defcolor4" style="background-color:$pallist[3];" class="defpal_b" title="Default palette" /></span>
     <span id="defpal_5" style="background-color:$pallist[4]" class="defpalx"><input type="radio" name="defpal" id="defpal5" value="defcolor5" style="background-color:$pallist[4];" class="defpal_b" title="Default palette" /></span>
     <span id="defpal_6" style="background-color:$pallist[5]" class="defpalx"><input type="radio" name="defpal" id="defpal6" value="defcolor6" style="background-color:$pallist[5];" class="defpal_b" title="Default palette" /></span>~
-          or croak 'cannot print input';
+          or croak "$croak{'print'} input";
     }
     else {
         print q~
@@ -145,7 +145,7 @@ function Pickshowcolor(color) {
     <input type="hidden" id="defpal4" value="" />
     <input type="hidden" id="defpal5" value="" />
     <input type="hidden" id="defpal6" value="" />
-    ~ or croak 'cannot print input';
+    ~ or croak "$croak{'print'} input";
     }
 
     print qq~
@@ -159,18 +159,18 @@ function Pickshowcolor(color) {
 </div>
 <div class="catbg" style="position: relative; top: 15px; left: 10px; width: 277px; height: 56px; border-width: 1px; border-style: outset;">
     <img src="$defaultimagesdir/knapbagrms01.gif" alt="" style="position:absolute; top:0; left:0; z-index:1; width:275px; height:16px;" />
-    <img id="knapImg1" src="$defaultimagesdir/knapred.gif" alt="" class="skyd" style="position:absolute; left:4px; top:2px; cursor:hand; z-index:2; width:13px; height:15px;" />
+    <img src="$defaultimagesdir/knapred.gif" id="knapImg1" alt="" class="skyd" style="position:absolute; left:4px; top:2px; cursor:pointer; z-index:2; width:13px; height:15px;" />
     <img src="$defaultimagesdir/knapbagrms01.gif" alt="" style="position:absolute; top:16px; left:0; z-index:1; width:275px; height:16px;" />
-    <img id="knapImg2" src="$defaultimagesdir/knapgreen.gif" alt="" class="skyd" style="position:absolute; left:4px; top:18px; cursor:hand; z-index:2; width:13px; height:15px;" />
+    <img src="$defaultimagesdir/knapgreen.gif" id="knapImg2" alt="" class="skyd" style="position:absolute; left:4px; top:18px; cursor:pointer; z-index:2; width:13px; height:15px;" />
     <img src="$defaultimagesdir/knapbagrms01.gif" alt="" style="position:absolute; top:32px; left:0; z-index:1; width:275px; height:16px;" />
-    <img id="knapImg3" src="$defaultimagesdir/knapblue.gif" alt="" class="skyd" style="position:absolute; left:4px; top:34px; cursor:hand; z-index:2; width:13px; height:15px;" />
+    <img src="$defaultimagesdir/knapblue.gif" id="knapImg3" alt="" class="skyd" style="position:absolute; left:4px; top:34px; cursor:pointer; z-index:2; width:13px; height:15px;" />
 </div>
 </div>
 
 <script src="$yyhtml_root/palette.js" type="text/javascript"></script>
 
 </body>
-</html>~ or croak 'cannot print body';
+</html>~ or croak "$croak{'print'} body";
     return;
 }
 
@@ -188,7 +188,7 @@ sub showcolor {
                         my $c3 = sprintf '%02x', $x;
                         print
 qq~\n    <span title="#$c3$c2$c1" class="deftrows" style="background-color: #$c3$c2$c1;" onclick="Pickshowcolor('#$c3$c2$c1')">&nbsp;</span>~
-                          or croak 'cannot print span';
+                          or croak "$croak{'print'} span";
                     }
                 }
             }

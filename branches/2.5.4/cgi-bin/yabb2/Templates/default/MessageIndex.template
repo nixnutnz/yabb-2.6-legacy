@@ -32,8 +32,8 @@ else {
     $threadhandelstyle2 = qq~ class="right"~;
 }
 $bdpicExt = 'png';
-$msgbrd_cat_col = 'cat_collapse.gif';
-$msgbrd_cal_exp = 'cat_expand.gif';
+$msgbrd_cat_col = 'cat_collapse.png';
+$msgbrd_cal_exp = 'cat_expand.png';
 $msgbrd_new = 'new.gif';
 $paperclip = 'paperclip.gif';
 $msgbrd_addfav ='addfav.png';

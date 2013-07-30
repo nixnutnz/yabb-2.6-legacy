@@ -118,7 +118,7 @@ sub SaveSettings {
     fopen( NEWS, ">$vardir/news.txt", 1 )
       || fatal_error( 'cannot_open', "$vardir/news.txt", 1 );
     print {NEWS} $settings{'news'}
-      or croak 'cannot print NEWS';    # Remove it from the hash
+      or croak "$croak{'print'} NEWS";    # Remove it from the hash
     fclose(NEWS);
     delete $settings{'news'};
 

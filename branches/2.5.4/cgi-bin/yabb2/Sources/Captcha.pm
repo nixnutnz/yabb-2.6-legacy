@@ -1307,70 +1307,70 @@ sub captcha {
 #   increase the expected code size to 9 bits.
 
     # GIF Signature
-    print 'Content-type: image/gif', "\n\n" or croak 'cannot print';
+    print 'Content-type: image/gif', "\n\n" or croak "$croak{'print'}";
 
     # Screen Descriptor
-    print $TRANSPARENT_INDEX ? 'GIF89a' : 'GIF87a' or croak 'cannot print';
+    print $TRANSPARENT_INDEX ? 'GIF89a' : 'GIF87a' or croak "$croak{'print'}";
 
     # width, height
-    print pack 'v2', $w, $h or croak 'cannot print';
+    print pack 'v2', $w, $h or croak "$croak{'print'}";
 
     # global colour map, 8 bits colour resolution, 7 bits per pixel
-    print pack 'C1', 0xF0 + $BITS_PER_PIXEL - 1 or croak 'cannot print';
+    print pack 'C1', 0xF0 + $BITS_PER_PIXEL - 1 or croak "$croak{'print'}";
 
     # background colour = 0
-    print "\0" or croak 'cannot print';
+    print "\0" or croak "$croak{'print'}";
 
     # reserved
-    print "\0" or croak 'cannot print';
+    print "\0" or croak "$croak{'print'}";
 
     # Global Colour Map
-    print $palette or croak 'cannot print';
-    print "\0" x ( ( 2**$BITS_PER_PIXEL * 3 ) - length $palette ) or croak 'cannot print';
+    print $palette or croak "$croak{'print'}";
+    print "\0" x ( ( 2**$BITS_PER_PIXEL * 3 ) - length $palette ) or croak "$croak{'print'}";
 
     if ($TRANSPARENT_INDEX) {
 
         # Graphic Control Extension
         # extension introducer
-        print "\x21" or croak 'cannot print';
+        print "\x21" or croak "$croak{'print'}";
 
         # graphic control label
-        print "\xF9" or croak 'cannot print';
+        print "\xF9" or croak "$croak{'print'}";
 
         # block size
-        print "\x04" or croak 'cannot print';
+        print "\x04" or croak "$croak{'print'}";
 
         # no disposal method, no user input, transparent colour present
-        print "\x01" or croak 'cannot print';
+        print "\x01" or croak "$croak{'print'}";
 
         # delay time
-        print "\0\0" or croak 'cannot print';
+        print "\0\0" or croak "$croak{'print'}";
 
         # transparent colour index
-        print $TRANSPARENT_INDEX or croak 'cannot print';
+        print $TRANSPARENT_INDEX or croak "$croak{'print'}";
 
         # block terminator
-        print "\0" or croak 'cannot print';
+        print "\0" or croak "$croak{'print'}";
     }
 
     # Image Descriptor
 
     # image separator
-    print q{,} or croak 'cannot print';
+    print q{,} or croak "$croak{'print'}";
 
     # left, top
-    print "\0\0\0\0" or croak 'cannot print';
+    print "\0\0\0\0" or croak "$croak{'print'}";
 
     # width, height
-    print pack 'v2', $w, $h or croak 'cannot print';
+    print pack 'v2', $w, $h or croak "$croak{'print'}";
 
     # use global colour map (not local), sequential (not interlaced)
-    print "\0" or croak 'cannot print';
+    print "\0" or croak "$croak{'print'}";
 
     # Raster Data
 
     # code size
-    print pack 'C', $BITS_PER_PIXEL or croak 'cannot print';
+    print pack 'C', $BITS_PER_PIXEL or croak "$croak{'print'}";
 
     # the data is output in blocks with a leading byte count
     my ( $img, $line, $random_number );
@@ -1473,16 +1473,16 @@ sub captcha {
     while ( $i < length $pkdimg ) {
         $cnt = ( length $pkdimg ) - $i;
         if ( $cnt > 255 ) { $cnt = 255; }
-        print pack 'C', $cnt or croak 'cannot print';
-        print substr $pkdimg, $i, $cnt or croak 'cannot print';
+        print pack 'C', $cnt or croak "$croak{'print'}";
+        print substr $pkdimg, $i, $cnt or croak "$croak{'print'}";
         $i += $cnt;
     }
 
     # Finish up
-    print "\0" or croak 'cannot print';    # zero byte count (end of raster data)
+    print "\0" or croak "$croak{'print'}";    # zero byte count (end of raster data)
 
     # GIF Terminator
-    print ';' or croak 'cannot print';
+    print ';' or croak "$croak{'print'}";
 
     exit;
 }

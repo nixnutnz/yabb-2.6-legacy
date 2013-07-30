@@ -384,7 +384,7 @@ qq~\$CalIconURL[$count] = "$FORM{"caliimg[$tempA]"}";\n\$CalIDescription[$count]
     }
     push @eventcalIcon, '1;';
     fopen( FILE, ">$vardir/eventcalIcon.txt" );
-    print {FILE} @eventcalIcon or croak 'cannot print FILE';
+    print {FILE} @eventcalIcon or croak "$croak{'print'} eventcalIcon";
     fclose(FILE);
 
     $yySetLocation = qq~$adminurl?action=eventcal_set~;

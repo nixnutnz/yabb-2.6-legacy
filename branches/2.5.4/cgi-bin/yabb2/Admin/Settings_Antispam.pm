@@ -195,7 +195,7 @@ sub SaveSettings {
     $settings{'spamrules'} =~ s/\r(?=\n*)//gxsm;
     no strict;
     fopen( SPAM, ">$vardir/spamrules.txt" );
-    print {SPAM} delete $settings{'spamrules'} or croak 'cannot print SPAM';
+    print {SPAM} delete $settings{'spamrules'} or croak "$croak{'print'} SPAM";
     fclose(SPAM);
     use strict;
 
@@ -211,9 +211,9 @@ sub SaveSettings {
     }
     no strict;
     fopen( FILE, ">$vardir/email_domain_filter.txt" );
-    print {FILE} qq~\$adomains = "$domains[0]";\n~ or croak 'cannot print FILE';
-    print {FILE} qq~\$bdomains = "$domains[1]";\n~ or croak 'cannot print FILE';
-    print {FILE} q~1;~                             or croak 'cannot print FILE';
+    print {FILE} qq~\$adomains = "$domains[0]";\n~ or croak "$croak{'print'} emain_domain";
+    print {FILE} qq~\$bdomains = "$domains[1]";\n~ or croak "$croak{'print'} email_domain";
+    print {FILE} q~1;~                             or croak "$croak{'print'} email_domain";
     fclose(FILE);
     use strict;
 

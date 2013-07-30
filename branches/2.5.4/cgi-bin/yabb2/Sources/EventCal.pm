@@ -392,7 +392,7 @@ qq~ <label for="calyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
             $mycalout_cthelp = $ctmain;
             $mycalout_cthelp .=
 qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
-<div style="$style_ubbc_box">~;
+<div class="style_ubbc_box">~;
             $mycalout_cthelp .= postbox();
             $mycalout_cthelp .= q~</div>~;
         }
@@ -509,7 +509,7 @@ qq~<br /><b>$var_cal{'by'}</b> <span id="savename"></span> ($var_cal{'guest'})~;
         if ( !$INFO{'edit_cal_even'} ) {
             $submittxt     = "$var_calpost{'event_send'}";
             $mycalout_send = qq~
-            <input class="button" type="submit" name="calsubmit" value="$submittxt" accesskey="s" />
+            <input id="calsubmit" class="button" type="submit" name="calsubmit" value="$submittxt" accesskey="s" />
             ~;
             if ($speedpostdetection) {
                 $post = 'calsubmit';
@@ -541,10 +541,45 @@ qq~<br /><b>$var_cal{'by'}</b> <span id="savename"></span> ($var_cal{'guest'})~;
 
         $my_postsection_ajx = my_check_prev();
     }
-    $mycalout_post = qq~
+	
+    $my_subcheck = qq~
+<script type="text/javascript">
+	var postas = '$post';
+	function checkForm(theForm) {
+		var isError = 0;
+		var msgError = "$post_txt{'751'}\\n";
+    ~;
+    if ( $iamguest ) { $my_subcheck .= qq~if (theForm.name.value === "" || theForm.name.value == "_" || theForm.name.value == " ") { msgError += "\\n - $post_txt{'75'}"; if (isError === 0) isError = 2; }
+		if (theForm.name.value.length > 25)  { msgError += "\\n - $post_txt{'568'}"; if (isError === 0) isError = 2; }
+		if (theForm.email.value === "") { msgError += "\\n - $post_txt{'76'}"; if (isError === 0) isError = 3; }
+		if (! checkMailaddr(theForm.email.value)) { msgError += "\\n - $post_txt{'500'}"; if (isError === 0) isError = 3; }~;
+	}
+	
+	$my_subcheck .= qq~
+    if (theForm.message.value === "") { msgError += "\\n - $post_txt{'78'}"; if (isError === 0) isError = 5; }
+    else if ($checkallcaps && theForm.message.value.search(/[A-Z]{$checkallcaps,}/g) != -1) {
+        if (isError === 0) { msgError = " - $post_txt{'79'}"; isError = 5; }
+        else { msgError += "\\n - $post_txt{'79'}"; }
+    }
+    if (isError > 0) {
+        alert(msgError);
+        if (isError == 1) imWin();
+        else if (isError == 2) theForm.name.focus();
+        else if (isError == 3) theForm.email.focus();
+        else if (isError == 5) theForm.message.focus();
+        return false;
+    }
+    return true
+}
+</script>
+~;
+
+   $mycalout_post = qq~
 <script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
-<form action="$scripturl?action=add_cal" name="postmodify" method="post" accept-charset="$yycharset">
-$mycalout_addevent~;
+$my_subcheck
+<form action="$scripturl?action=add_cal" name="postmodify" method="post" onsubmit="if(!checkForm(this)) {return false} else {return submitproc()}" accept-charset="$yycharset">
+$mycalout_addevent
+~;
 
     $mycalout_post =~ s/{yabb calevent}/$var_cal{'calevent'}/sm;
     $mycalout_post =~ s/{yabb addevdate}/$addevdate/sm;
@@ -1483,7 +1518,7 @@ sub del_cal {
 
             fopen( FILE, ">$vardir/eventcal.db" );
             print {FILE} grep { !/$INFO{'calid'}/sm } @caldata
-              or croak 'cannot print FILE';
+              or croak "$croak{'print'} eventcal.db";
             fclose(FILE);
         }
     }
@@ -1586,7 +1621,7 @@ sub add_cal {
 "$FORM{'selyear'}$FORM{'selmon'}$FORM{'selday'}|$FORM{'caltype'}|$username|$date||$calmessage|$FORM{'calicon'}|$FORM{'calnoname'}|$FORM{'caltype2'}|$FORM{'ns'}|$g\n";
         }
         fopen( EVENTFILE, ">$vardir/eventcal.db" );
-        print {EVENTFILE} @calinput or croak 'cannot print EVENTFILE';
+        print {EVENTFILE} @calinput or croak "$croak{'print'} EVENTFILE";
         fclose(EVENTFILE);
 
         if ( !$iamguest
@@ -1635,7 +1670,7 @@ sub del_old_events {
         if ( $c_date < $caltoday && $c_type2 < 2 ) { $calinput[$i] = q{}; }
     }
     fopen( EVENTFILE, ">$vardir/eventcal.db" );
-    print {EVENTFILE} @calinput or croak 'cannot print EVENTFILE';
+    print {EVENTFILE} @calinput or croak "$croak{'print'} EVENTFILE";
     fclose(EVENTFILE);
     return;
 }

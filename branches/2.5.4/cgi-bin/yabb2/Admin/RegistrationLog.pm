@@ -259,7 +259,7 @@ sub clean_reglog {
         }
     }
     fopen( REG, ">$vardir/registration.log", 1 );
-    print {REG} @outlist or croak 'cannot print REG';
+    print {REG} @outlist or croak "$croak{'print'} REG";
     fclose(REG);
 
     $yySetLocation = qq~$adminurl?action=view_reglog~;
@@ -288,7 +288,7 @@ sub kill_registration {
             # add entry to registration log
             fopen( REG, ">>$vardir/registration.log", 1 );
             print {REG} "$date|D|$regmember|$username|$user_ip\n"
-              or croak 'cannot print REG';
+              or croak "$croak{'print'} REG";
             fclose(REG);
         }
         else {
@@ -302,7 +302,7 @@ sub kill_registration {
 
         # re-open inactive list for update if changed
         fopen( OUTFILE, ">$memberdir/memberlist.inactive", 1 );
-        print {OUTFILE} @outlist or croak 'cannot print OUTFILE';
+        print {OUTFILE} @outlist or croak "$croak{'print'} OUTFILE";
         fclose(OUTFILE);
     }
     $yySetLocation = qq~$adminurl?action=view_reglog~;
@@ -517,13 +517,13 @@ sub reject_registration {
 
         # update approval user list
         fopen( APR, ">$memberdir/memberlist.approve" );
-        print {APR} @aprchnglist or croak 'cannot print APR';
+        print {APR} @aprchnglist or croak "$croak{'print'} APR";
         fclose(APR);
 
         ## add entry to registration log ##
         fopen( REG, ">>$vardir/registration.log", 1 );
         print {REG} "$date|AR|$deluser|$username|$user_ip\n"
-          or croak 'cannot print REG';
+          or croak "$croak{'print'} REG";
         fclose(REG);
     }
     $yySetLocation = qq~$adminurl?action=view_reglog~;
@@ -575,13 +575,13 @@ qq~<span class="red"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'email'}<
 
         # update approval user list
         fopen( APR, ">$memberdir/memberlist.approve" );
-        print {APR} @aprchnglist or croak 'cannot print APR';
+        print {APR} @aprchnglist or croak "$croak{'print'} APR";
         fclose(APR);
 
         ## add entry to registration log ##
         fopen( REG, ">>$vardir/registration.log", 1 );
         print {REG} "$date|AA|$apruser|$username|$user_ip\n"
-          or croak 'cannot print REG';
+          or croak "$croak{'print'} REG";
         fclose(REG);
 
         ## send a approval email ##
@@ -652,7 +652,7 @@ qq~<span class="red"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'email'}<
             fopen( INBOX, ">$memberdir/$apruser.msg" );
             print {INBOX}
 "$messageid|$sendname|$apruser|||$imsubject|$date|$imtext|$messageid|0|$ENV{'REMOTE_ADDR'}|s|u||\n"
-              or croak 'cannot print INBOX';
+              or croak "$croak{'print'} INBOX";
             fclose(INBOX);
         }
     }

@@ -103,17 +103,17 @@ sub DoVote {
     }
 
     fopen( FILE, ">$datadir/$pollnum.poll" );
-    print {FILE} "$poll_question\n" or croak 'cannot print to POLL FILE';
+    print {FILE} "$poll_question\n" or croak "$croak{'print'} POLL FILE";
     for my $i ( 0 .. ( @poll_data - 1 ) ) {
         print {FILE} "$votes[$i]|$options[$i]|$slicecols[$i]|$split[$i]\n"
-          or croak 'cannot print to POLL FILE';
+          or croak "$croak{'print'} POLL FILE";
     }
     fclose(FILE);
 
     fopen( FILE, ">$datadir/$pollnum.polled" );
     print {FILE} "$user_ip|$username|$vote|$date\n"
-      or croak 'cannot print to POLL FILE';
-    print {FILE} @polled or croak 'cannot print to POLL FILE';
+      or croak "$croak{'print'} POLL FILE";
+    print {FILE} @polled or croak "$croak{'print'} POLL FILE";
     fclose(FILE);
 
     if ($start) { $start = "/$start"; }
@@ -190,15 +190,15 @@ sub UndoVote {
     }
 
     fopen( FILE, ">$datadir/$pollnum.poll" );
-    print {FILE} $poll_question or croak 'cannot print to POLL FILE';
+    print {FILE} $poll_question or croak "$croak{'print'} POLL FILE";
     for my $i ( 0 .. ( @poll_data - 1 ) ) {
         print {FILE} "$votes[$i]|$options[$i]|$slicecols[$i]|$split[$i]\n"
-          or croak 'cannot print to POLL FILE';
+          or croak "$croak{'print'} POLL FILE";
     }
     fclose(FILE);
 
     fopen( FILE, ">$datadir/$pollnum.polled" );
-    print {FILE} @polled or croak 'cannot print to POLL FILE';
+    print {FILE} @polled or croak "$croak{'print'} POLL FILE";
     fclose(FILE);
 
     if ($start) { $start = "/$start"; }
@@ -232,8 +232,8 @@ sub LockPoll {
 
     fopen( FILE, ">$datadir/$pollnum.poll" );
     print {FILE} "$poll_question|$poll_locked|$poll_uname|$poll_stuff\n"
-      or croak 'cannot print to POLL FILE';
-    print {FILE} @poll_data or croak 'cannot print to POLL FILE';
+      or croak "$croak{'print'} POLL FILE";
+    print {FILE} @poll_data or croak "$croak{'print'} POLL FILE";
     fclose(FILE);
 
     if ($start) { $start = "/$start"; }
@@ -453,8 +453,8 @@ qq~&nbsp;/ <a href="$scripturl?action=scpoll;num=$pollnum" class="altlink">$poll
         fopen( FILE, ">$datadir/$pollnum.poll" );
         print {FILE}
 "$poll_question|$poll_locked|$poll_uname|$poll_name|$poll_email|$poll_date|$guest_vote|$hide_results|$multi_vote|$poll_mod|$poll_modname|$poll_comment|$vote_limit|$pie_radius|$pie_legends|$poll_end\n"
-          or croak 'cannot print POLL FILE';
-        print {FILE} @poll_data or croak 'cannot print POLL FILE';
+          or croak "$croak{'print'} POLL FILE";
+        print {FILE} @poll_data or croak "$croak{'print'} POLL FILE";
         fclose(FILE);
     }
 
@@ -493,11 +493,11 @@ qq~&nbsp;/ <a href="$scripturl?action=scpoll;num=$pollnum" class="altlink">$poll
                 my $users_votecount = @users_vote;
                 if ( $users_votecount == 1 ) {
                     $users_votetext =
-qq~<br /><span style="font-weight: bold;">$polltxt{'64'}:</span> $users_votedate<br /><span style="font-weight: bold;">$polltxt{'65'}:</span> ~;
+qq~<br /><b>$polltxt{'64'}:</b> $users_votedate<br /><b>$polltxt{'65'}:</b> ~;
                 }
                 else {
                     $users_votetext =
-qq~<br /><span style="font-weight: bold;">$polltxt{'64'}:</span> $users_votedate<br /><span style="font-weight: bold;">$polltxt{'66'}:</span> ~;
+qq~<br /><b>$polltxt{'64'}:</b> $users_votedate<br /><b>$polltxt{'66'}:</b> ~;
                 }
                 last;
             }
@@ -625,7 +625,7 @@ qq~<span class="small">&#171; $polltxt{'45'}: $poll_name $polltxt{'46'}: $poll_d
         }
         $footer =~ s/, \Z//sm;
         $footer .=
-qq~<br /><br /><span style="font-weight: bold;">$polltxt{'17'}: $totalvotes</span>~;
+qq~<br /><br /><b>$polltxt{'17'}: $totalvotes</b>~;
         $width = q{};
         if ($viewthread) { $deletevote .= $menusep; }
         $deletevote .=
@@ -679,7 +679,7 @@ qq~$polltxt{'47'}<br /><span class="small">($polltxt{'48'})</span><br />~;
         if ($has_voted) {
             if ( $INFO{'view'} eq 'pie' ) {
                 $poll_hasvoted = qq~
-                <div align="center" style="margin-right:auto; margin-left:auto"><script src="$yyhtml_root/piechart.js" type="text/javascript"></script>
+                <div class="center"><script src="$yyhtml_root/piechart.js" type="text/javascript"></script>
                 <script type="text/javascript">
                 <!--
                         if (document.getElementById('piestyle').currentStyle) {
@@ -831,7 +831,7 @@ sub ShowcasePoll {
     is_admin_or_gmod();
     my $thrdid = $INFO{'num'};
     fopen( SCFILE, ">$datadir/showcase.poll" );
-    print {SCFILE} $thrdid or croak 'cannot print SCFILE';
+    print {SCFILE} $thrdid or croak "$croak{'print'} SCFILE";
     fclose(SCFILE);
     $yySetLocation = qq~$scripturl~;
     redirectexit();

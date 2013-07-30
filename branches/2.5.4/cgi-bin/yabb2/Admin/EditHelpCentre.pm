@@ -98,7 +98,7 @@ sub HelpEdit2 {
 
     $FORM{'SectionName'} =~ s/ /_/gsm;
     print {HELPORDER} qq~\$SectionName = "$FORM{'SectionName'}";\n\n~
-      or croak 'cannot print HELPORDER';
+      or croak "$croak{'print'} HELPORDER";
     $aa = 1;
     while ( $FORM{"SectionBody$aa "} ) {
 
@@ -116,21 +116,21 @@ sub HelpEdit2 {
         $FORM{"SectionSub$aa"} =~ s/ /_/gsm;
 
         print {HELPORDER} qq~### Section $aa\n~
-          or croak 'cannot print HELPORDER';
+          or croak "$croak{'print'} HELPORDER";
         print {HELPORDER} qq~#############################################\n~
-          or croak 'cannot print HELPORDER';
+          or croak "$croak{'print'} HELPORDER";
         print {HELPORDER} qq~\$SectionSub$aa = "$FORM{"SectionSub$aa"}";\n~
-          or croak 'cannot print HELPORDER';
+          or croak "$croak{'print'} HELPORDER";
         print {HELPORDER}
           qq~\$SectionBody$aa = qq\~$FORM{"SectionBody$aa"}\~;\n~
-          or croak 'cannot print HELPORDER';
+          or croak "$croak{'print'} HELPORDER";
         print {HELPORDER}
           qq~#############################################\n\n\n~
-          or croak 'cannot print HELPORDER';
+          or croak "$croak{'print'} HELPORDER";
 
         $aa++;
     }
-    print {HELPORDER} q~1;~ or croak 'cannot print HELPORDER';
+    print {HELPORDER} q~1;~ or croak "$croak{'print'} HELPORDER";
 
     fclose(HELPORDER);
 
@@ -174,7 +174,7 @@ sub MainAdmin {
     if ( !-e ("$vardir/Admin.helporder") ) {
         fopen( HELPORDER, ">$vardir/Admin.helporder" )
           or croak("couldn't write order file - check permissions on $vardir");
-        print {HELPORDER} qq~$admin_lst~ or croak 'cannot print HELPORDER';
+        print {HELPORDER} qq~$admin_lst~ or croak "$croak{'print'} HELPORDER";
         fclose(HELPORDER);
     }
     fopen( HELPORDER, "$vardir/Admin.helporder" );
@@ -201,7 +201,7 @@ sub MainAdmin {
     if ( !-e ("$vardir/Gmod.helporder") ) {
         fopen( HELPORDER, ">$vardir/Gmod.helporder" )
           or croak("couldn't write order file - check permissions on $vardir");
-        print {HELPORDER} qq~$gmod_lst~ or croak 'cannot print HELPORDER';
+        print {HELPORDER} qq~$gmod_lst~ or croak "$croak{'print'} HELPORDER";
         fclose(HELPORDER);
     }
     fopen( HELPORDER, "$vardir/Gmod.helporder" );
@@ -228,7 +228,7 @@ sub MainAdmin {
     if ( !-e ("$vardir/Moderator.helporder") ) {
         fopen( HELPORDER, ">$vardir/Moderator.helporder" )
           or croak("couldn't write order file - check permissions on $vardir");
-        print {HELPORDER} qq~$moderator_lst~ or croak 'cannot print HELPORDER';
+        print {HELPORDER} qq~$moderator_lst~ or croak "$croak{'print'} HELPORDER";
         fclose(HELPORDER);
     }
     fopen( HELPORDER, "$vardir/Moderator.helporder" );
@@ -255,7 +255,7 @@ sub MainAdmin {
     if ( !-e ("$vardir/User.helporder") ) {
         fopen( HELPORDER, ">$vardir/User.helporder" )
           or croak("couldn't write order file - check permissions on $vardir");
-        print {HELPORDER} qq~$user_lst~ or croak 'cannot print HELPORDER';
+        print {HELPORDER} qq~$user_lst~ or croak "$croak{'print'} HELPORDER";
         fclose(HELPORDER);
     }
     fopen( HELPORDER, "$vardir/User.helporder" );
@@ -474,7 +474,7 @@ sub SetOrderFile {
     }
     fopen( HELPORDER, ">$vardir/$help_area.helporder" )
       or croak("couldn't write order file - check permissions on $vardir");
-    print {HELPORDER} qq~$theorder~ or croak 'cannot print HELPORDER';
+    print {HELPORDER} qq~$theorder~ or croak "$croak{'print'} HELPORDER";
     fclose(HELPORDER);
     $yytitle       = "$helptxt{'7'}";
     $yySetLocation = qq~$adminurl?action=helpadmin~;

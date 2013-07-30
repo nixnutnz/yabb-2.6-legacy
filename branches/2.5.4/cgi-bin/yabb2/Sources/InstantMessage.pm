@@ -206,7 +206,7 @@ sub buildIMsend {
         ~;
 
         $my_tosend_a =
-qq~<div id="bnttoto" style="float: left; padding: 5px;" class="windowbg2"><a href="javascript:void(0);" onclick="changeRecepientTab('to'); return false;">$inmes_txt{'324'}:</a></div>
+qq~<div id="bnttoto" class="windowbg2 bnttoto"><a href="javascript:void(0);" onclick="changeRecepientTab('to'); return false;">$inmes_txt{'324'}:</a></div>
         ~;
 
         if ($PMenable_cc) {
@@ -215,7 +215,7 @@ qq~<div id="bnttoto" style="float: left; padding: 5px;" class="windowbg2"><a hre
                 document.getElementById('bnttocc').className = 'windowbg';
             ~;
             $my_tosend_a .= qq~
-                    <div id="bnttocc" style="float: left; padding: 5px;" class="windowbg"><a href="javascript:void(0);" onclick="changeRecepientTab('cc'); return false;">$inmes_txt{'325'}:</a></div>
+                    <div id="bnttocc" class="windowbg bnttoto"><a href="javascript:void(0);" onclick="changeRecepientTab('cc'); return false;">$inmes_txt{'325'}:</a></div>
             ~;
         }
         if ($PMenable_bcc) {
@@ -224,7 +224,7 @@ qq~<div id="bnttoto" style="float: left; padding: 5px;" class="windowbg2"><a hre
                 document.getElementById('bnttobcc').className = 'windowbg';
             ~;
             $my_tosend_a .= qq~
-                    <div id="bnttobcc" style="float: left; padding: 5px;" class="windowbg"><a href="javascript:void(0);" onclick="changeRecepientTab('bcc'); return false;">$inmes_txt{'326'}:</a></div>
+                    <div id="bnttobcc" class="windowbg bnttoto"><a href="javascript:void(0);" onclick="changeRecepientTab('bcc'); return false;">$inmes_txt{'326'}:</a></div>
             ~;
         }
         $yyjavascripttoform .= q~
@@ -279,9 +279,9 @@ qq~<div id="bnttoto" style="float: left; padding: 5px;" class="windowbg2"><a hre
         }
         //-->
         </script>
-        <div id="usersto" style="width: 98%; display: inline; float: left;">
+        <div id="usersto" class="usersto">
         <b>$inmes_txt{'324'} $toUsersTitle:</b>&nbsp;<a href="javascript: void(0);" onclick="imWin();" tabindex="1"><span class="small">$inmes_txt{'clickto1'} <i>$inmes_txt{'324'}</i> $toUsersTitle $inmes_txt{'clickto2'}</span></a><br />
-        <select name="toshow" id="toshow" multiple="multiple" size="6" style="width: 100%;" ondblclick="removeUser(this);">\n~;
+        <select name="toshow" id="toshow" multiple="multiple" size="6" class="width_100" ondblclick="removeUser(this);">\n~;
 
         if ( !$sendBMess ) {
             if ($toname) {
@@ -365,9 +365,9 @@ q~            </select><input type="hidden" name="immulti" value="yes" />
                     for (var i = 0; i < oList.options.length; i++){ oList.options[i].selected = true; }
                 ~;
                 $imsend_cc .= qq~
-                <div id="userscc" style="width: 98%; display: none; float: left;">
+                <div id="userscc" class="usersto">
                 <b>$inmes_txt{'325'} $toUsersTitle:</b>&nbsp;<a href="javascript: void(0);" onclick="imWinCC();"><span class="small">$inmes_txt{'clickto1'} <i>$inmes_txt{'325'}</i> $toUsersTitle $inmes_txt{'clickto2'}</span></a><br />
-                <select name="toshowcc" id="toshowcc" multiple="multiple" size="6" style="width: 100%;" ondblclick="removeUser(this);">\n~;
+                <select name="toshowcc" id="toshowcc" multiple="multiple" size="6" class="width_100" ondblclick="removeUser(this);">\n~;
                 if ( $FORM{'toshowcc'} ) {
                     foreach my $touser ( split /\,/xsm, $FORM{'toshowcc'} ) {
                         LoadUser($touser);
@@ -393,9 +393,9 @@ qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'re
                     for (var i = 0; i < oList.options.length; i++) { oList.options[i].selected = true; }
                 ~;
                 $imsend_cc .= qq~
-                <div id="usersbcc" style="width: 98%; display: none; float: left;">
+                <div id="usersbcc" class="usersto">
                 <b>$inmes_txt{'326'} $toUsersTitle:</b>&nbsp;<a href="javascript: void(0);" onclick="imWinBCC();"><span class="small">$inmes_txt{'clickto1'} <i>$inmes_txt{'326'}</i> $toUsersTitle $inmes_txt{'clickto2'}</span></a><br />
-                <select name="toshowbcc" id="toshowbcc" multiple="multiple" size="6" style="width: 100%;" ondblclick="removeUser(this);">\n~;
+                <select name="toshowbcc" id="toshowbcc" multiple="multiple" size="6" class="width_100" ondblclick="removeUser(this);">\n~;
                 if ( $FORM{'toshowbcc'} ) {
                     foreach my $touser ( split /\,/xsm, $FORM{'toshowbcc'} ) {
                         LoadUser($touser);
@@ -493,7 +493,7 @@ qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'re
     if ( !$replyguest ) {
         if ( $enable_ubbc && $showyabbcbutt ) {
             $my_ubbc_yes .= qq~<b>$post_txt{'252'}:</b><br />
-            <div style="float: left; width: 463px;">~;
+            <div class="style_ubbc_box">~;
 
             # ubbc set separated out into PostBox.pm DAR 11/13/2012 #
             $my_ubbc_yes .= postbox();
@@ -519,7 +519,7 @@ qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'re
                 if ( $SmilieURL[$i] =~ /\//ism ) { $tmpurl = $SmilieURL[$i]; }
                 else { $tmpurl = qq~$imagesdir/$SmilieURL[$i]~; }
                 $moresmilieslist .=
-qq~             document.write('<img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="javascript: MoreSmilies($i);" class="bottom" style="cursor: pointer" />$SmilieLinebreak[$i] ');\n~;
+qq~             document.write('<img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="javascript: MoreSmilies($i);" class="bottom cursor" />$SmilieLinebreak[$i] ');\n~;
                 $tmpcode = $SmilieCode[$i];
                 $tmpcode =~ s/\&quot;/"+'"'+"/gsm;
 
@@ -545,7 +545,7 @@ qq~             document.write('<img src="$tmpurl" alt="$SmilieDescription[$i]" 
                 {
                     if ( $line !~ /banner/ism ) {
                         $moresmilieslist .=
-qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javascript: MoreSmilies($i);" style="cursor: pointer; vertical-align:bottom" />$SmilieLinebreak[$i] ');\n~;
+qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javascript: MoreSmilies($i);" class="cursor bottom" />$SmilieLinebreak[$i] ');\n~;
                         $more_smilie_array .= qq~" [smiley=$line]", ~;
                         $i++;
                     }
@@ -623,8 +623,8 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
 
         if ( $allowAttachIM > 1 ) {
             $my_allow_FA = qq~
-            <img src="$defaultimagesdir/$cat_exp" id="attform_add" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" style="cursor:pointer;" onclick="enabPrev2(1);" />
-            <img src="$defaultimagesdir/$cat_col" id="attform_sub" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" style="cursor:pointer; visibility:hidden;" onclick="enabPrev2(-1);" />~;
+            <img src="$defaultimagesdir/$cat_exp" id="attform_add" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" class="cursor" onclick="enabPrev2(1);" />
+            <img src="$defaultimagesdir/$cat_col" id="attform_sub" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" class="cursor" style="visibility:hidden;" onclick="enabPrev2(-1);" />~;
         }
         $my_imFA = $my_FA_attach;
         $my_imFA =~ s/{yabb my_show_FA}/$my_show_FA/sm;
@@ -655,12 +655,12 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
                 $startcount++;
                 $pmAttachUser = cloak( $fileUsers[ $y - 1 ] );
                 $my_att_FA .= qq~
-            <div id="attform_a_$y" style="float:left; width:23%;~
-                  . ( $y > 1 ? q~ padding-top:5px~ : q{} )
+            <div id="attform_a_$y" class="att_ltf~
+                  . ( $y > 1 ? q~_b~: q{} )
                   . qq~"><b>$fatxt{'6'} $y:</b></div>
-            <div id="attform_b_$y" style="float:left; width:76%;~
-                  . ( $y > 1 ? q~ padding-top:5px~ : q{} ) . qq~">
-                <input type="file" name="file$y" id="file$y" size="50" onchange="selectNewattach($y);" /><br />
+            <div id="attform_b_$y" class="att_rgt~
+                  . ( $y > 1 ? q~_b~ : q{} ) . qq~">
+                <input type="file" name="file$y" id="file$y" size="50" onchange="selectNewattach($y);" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span><br />
                         <span style="font-size:x-small">
                 <input type="hidden" id="w_filename$y" name="w_filename$y" value="$files[$y-1]" />
                 <input type="hidden" name="w_fileuser$y" value="$pmAttachUser" />
@@ -673,12 +673,12 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
             }
             else {
                 $my_att_FA .= qq~
-            <div id="attform_a_$y" style="float:left; width:23%;~
-                  . ( $y > 1 ? q~ visibility:hidden; height:0px~ : q{} )
-                  . qq~"><b>$fatxt{'6'} $y:</b></div>
-            <div id="attform_b_$y" style="float:left; width:76%;~
-                  . ( $y > 1 ? q~ visibility:hidden; height:0px~ : q{} )
-                  . qq~">\n             <input type="file" name="file$y" id="file$y" size="50" />~;
+            <div id="attform_a_$y" class="att_lft"~
+                  . ( $y > 1 ? q~ style="visibility:hidden; height:0px"~ : q{} )
+                  . qq~><b>$fatxt{'6'} $y:</b></div>
+            <div id="attform_b_$y" class="att_rgt"~
+                  . ( $y > 1 ? q~ style="visibility:hidden; height:0px"~ : q{} )
+                  . qq~>\n             <input type="file" name="file$y" id="file$y" size="50" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span>~;
             }
             $my_att_FA .= qq~\n            </div>\n~;
 
@@ -1150,7 +1150,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
 
                    # needed for operating systems (OS) Windows, ignored by Linux
                     print {NEWFILE} $file_buffer
-                      or croak 'cannot write NEWFILE';    # write new file on HD
+                      or croak "$croak{'print'} NEWFILE";    # write new file on HD
                     fclose(NEWFILE);
                 }
                 else
@@ -1222,7 +1222,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
             foreach my $logFixfile (@logfilelist) {
                 print {PMATTACHLOG}
             qq~$date|$filesizekb{$logFixfile}|$logFixfile|${$uid.$username}{'realname'}\n~
-                or croak 'cannot print PMATTACHLOG';
+                or croak "$croak{'print'} PMATTACHLOG";
             }
             fclose(PMATTACHLOG);
         }
@@ -1315,8 +1315,8 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                 fopen( INBOX, ">$memberdir/$UserTo.msg" );
                 print {INBOX}
 "$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|0|$ENV{'REMOTE_ADDR'}|$FORM{'status'}|u||$fixfile\n"
-                  or croak 'cannot print INBOX';
-                print {INBOX} @inmessages or croak 'cannot print INBOX';
+                  or croak "$croak{'print'} INBOX";
+                print {INBOX} @inmessages or croak "$croak{'print'} INBOX";
                 fclose(INBOX);
 
                 # we've added the msg to the inbox, now update the ims file
@@ -1330,8 +1330,8 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                     fopen( INBOX, ">$memberdir/$username.msg" );
                     print {INBOX}
 "$rmessageid|$UserTo|$username|||${$uid.$UserTo}{'awaysubj'}|$date|${$uid.$UserTo}{'awayreply'}|$messageid|1|$ENV{'REMOTE_ADDR'}|s|u||$fixfile\n"
-                      or croak 'cannot print INBOX';
-                    print {INBOX} @myinmessages or croak 'cannot print INBOX';
+                      or croak "$croak{'print'} INBOX";
+                    print {INBOX} @myinmessages or croak "$croak{'print'} INBOX";
                     fclose(INBOX);
                 }
                 ## relocated sender msg out of the loop
@@ -1408,8 +1408,8 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
         fopen( INBOX, ">$memberdir/broadcast.messages" );
         print {INBOX}
 "$messageid|$username|$FORM{'toshow'}|||$subject|$date|$message|$messageid|0|$ENV{'REMOTE_ADDR'}|$FORM{'status'}b|u||$fixfile\n"
-          or croak 'cannot print INBOX';
-        print {INBOX} @inmessages or croak 'cannot print INBOX';
+          or croak "$croak{'print'} INBOX";
+        print {INBOX} @inmessages or croak "$croak{'print'} INBOX";
         fclose(INBOX);
     }
 
@@ -1467,8 +1467,8 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
         if ( !$FORM{'draft'} || ( $FORM{'draft'} && !$FORM{'draftid'} ) ) {
             print {OUTBOX}
 "$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|$FORM{'reply'}|$ENV{'REMOTE_ADDR'}|$FORM{'status'}$messFlag|||$fixfile\n"
-              or croak 'cannot print OUTBOX';
-            print {OUTBOX} @outmessages or croak 'cannot print OUTBOX';
+              or croak "$croak{'print'} OUTBOX";
+            print {OUTBOX} @outmessages or croak "$croak{'print'} OUTBOX";
 
         }
         elsif ( $FORM{'draft'} && $FORM{'draftid'} ) {
@@ -1477,12 +1477,12 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
                 chomp $outmessage;
                 if ( ( split /\|/xsm, $outmessage )[0] != $FORM{'draftid'} ) {
                     print {OUTBOX} "$outmessage\n"
-                      or croak 'cannot print OUTBOX';
+                      or croak "$croak{'print'} OUTBOX";
                 }
                 else {
                     print {OUTBOX}
 "$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|$FORM{'reply'}|$ENV{'REMOTE_ADDR'}|$FORM{'status'}$messFlag|||$fixfile\n"
-                      or croak 'cannot print OUTBOX';
+                      or croak "$croak{'print'} OUTBOX";
                 }
             }
         }
@@ -1509,12 +1509,12 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
             chomp $draftmess;
             if ( ( split /\|/xsm, $draftmess )[0] != $FORM{'draftid'} ) {
                 print {DRAFTFILE} "$draftmess\n"
-                  or croak 'cannot print DRAFTFILE';
+                  or croak "$croak{'print'} DRAFTFILE";
             }
             elsif ( $FORM{'draftleave'} ) {
                 print {DRAFTFILE}
 "$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|$FORM{'reply'}|$ENV{'REMOTE_ADDR'}|$FORM{'status'}$messFlag|||$fixfile\n"
-                  or croak 'cannot print DRAFTFILE';
+                  or croak "$croak{'print'} DRAFTFILE";
             }
         }
         fclose(DRAFTFILE);
@@ -1692,9 +1692,9 @@ qq~<a href="$scripturl?action=$action$bmesslink;start=$lastptn$viewfolderinfo"><
         }
         else {
             $pagedropindex1 =
-q~<span style="float: left; width: 350px; margin: 0px; margin-top: 2px; border: 0px;">~;
+q~<span class="pagedropindex">~;
             $pagedropindex1 .=
-qq~<span style="float: left; height: 21px; margin: 0; margin-right: 4px;"><a href="$scripturl?pmaction=$action$bmesslink;start=$start;action=pmpagedrop$viewfolderinfo"><img src="$imagesdir/$IM_index_togl" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a></span>~;
+qq~<span class="pagedropindex_inner"><a href="$scripturl?pmaction=$action$bmesslink;start=$start;action=pmpagedrop$viewfolderinfo"><img src="$imagesdir/$IM_index_togl" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a></span>~;
             $pagedropindex2 = $pagedropindex1;
             $tstart         = $start;
             if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' ) {
@@ -1710,9 +1710,9 @@ qq~<span style="float: left; height: 21px; margin: 0; margin-right: 4px;"><a hre
               int( ( $start / $maxmessagedisplay ) / $dropdisplaynum );
             if ( $pagenumb > $dropdisplaynum ) {
                 $pagedropindex1 .=
-qq~<span style="float: left; height: 21px; margin: 0;"><select size="1" name="decselector1" id="decselector1" style="font-size: 9px; border: 2px inset;" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
+qq~<span class="decselector"><select size="1" name="decselector1" id="decselector1" class="decselector_sel" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
                 $pagedropindex2 .=
-qq~<span style="float: left; height: 21px; margin: 0;"><select size="1" name="decselector2" id="decselector2" style="font-size: 9px; border: 2px inset;" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
+qq~<span class="decselector"><select size="1" name="decselector2" id="decselector2" class="decselector_sel" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
             }
             for my $i ( 0 .. ( $indexpages - 1 ) ) {
                 $indexpage  = ( $i * $dropdisplaynum ) * $maxmessagedisplay;
@@ -1741,9 +1741,9 @@ qq~<option value="$indexstart|$indexend|$maxmessagedisplay|$indexpage"$selected>
                 $pagedropindex2 .= qq~</select>\n</span>~;
             }
             $pagedropindex1 .=
-q~<span id="ViewIndex1" class="droppageindex" style="height: 14px; visibility: hidden;">&nbsp;</span>~;
+q~<span id="ViewIndex1" class="droppageindex viewindex_hid">&nbsp;</span>~;
             $pagedropindex2 .=
-q~<span id="ViewIndex2" class="droppageindex" style="height: 14px; visibility: hidden;">&nbsp;</span>~;
+q~<span id="ViewIndex2" class="droppageindex viewindex_hid">&nbsp;</span>~;
             $tmpmaxmessagedisplay = $maxmessagedisplay;
             if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' ) {
                 $maxmessagedisplay = $maxmessagedisplay * $dropdisplaynum;
@@ -1751,24 +1751,24 @@ q~<span id="ViewIndex2" class="droppageindex" style="height: 14px; visibility: h
             $prevpage = $start - $tmpmaxmessagedisplay;
             $nextpage = $start + $maxmessagedisplay;
             $pagedropindexpvbl =
-qq~<img src="$imagesdir/$IM_index_left0" height="14" width="13" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$IM_index_left0" height="14" width="13" alt="" />~;
             $pagedropindexnxbl =
-qq~<img src="$imagesdir/$IM_index_right0" height="14" width="13" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$IM_index_right0" height="14" width="13" alt="" />~;
             if ( $start < $maxmessagedisplay ) {
                 $pagedropindexpv .=
-qq~<img src="$imagesdir/$IM_index_left0" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$IM_index_left0" height="14" width="13" alt="" />~;
             }
             else {
                 $pagedropindexpv .=
-qq~<img src="$imagesdir/$IM_index_left" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?action=$action$bmesslink;start=$prevpage\\'" ondblclick="location.href=\\'$scripturl?action=$action$bmesslink;start=0\\'" />~;
+qq~<img src="$imagesdir/$IM_index_left" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" class="cursor" onclick="location.href=\\'$scripturl?action=$action$bmesslink;start=$prevpage\\'" ondblclick="location.href=\\'$scripturl?action=$action$bmesslink;start=0\\'" />~;
             }
             if ( $nextpage > $lastptn ) {
                 $pagedropindexnx .=
-qq~<img src="$imagesdir/$IM_index_right0" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$IM_index_right0" height="14" width="13" alt="" />~;
             }
             else {
                 $pagedropindexnx .=
-qq~<img src="$imagesdir/$IM_index_right" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?action=$action$bmesslink;start=$nextpage\\'" ondblclick="location.href=\\'$scripturl?action=$action$bmesslink;start=$lastptn\\'" />~;
+qq~<img src="$imagesdir/$IM_index_right" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" class="cursor"" onclick="location.href=\\'$scripturl?action=$action$bmesslink;start=$nextpage\\'" ondblclick="location.href=\\'$scripturl?action=$action$bmesslink;start=$lastptn\\'" />~;
             }
             $pageindex1  = qq~$pagedropindex1</span>~;
             $pageindexjs = qq~
@@ -2148,7 +2148,7 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
     $my_sig   = q{};
     if ($fromTitle) {
         $my_title = qq~
-        <span class="small" style="width: 99%;">
+        <span class="small totitle">
         <b>$fromTitle</b> $usernamelinkfrom
         </span><br />
         ~;
@@ -2156,7 +2156,7 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
 
     if ($toTitle) {
         $my_title .= qq~
-        <span class="small" style="width: 99%;">
+        <span class="small totitle">
         <b>$toTitle</b> $usernamelinkto
         </span><br />
         ~;
@@ -2164,7 +2164,7 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
 
     if ($toTitleCC) {
         $my_title .= qq~
-        <span class="small" style="width: 99%;">
+        <span class="small totitle">
         <b>$toTitleCC</b> $usernamelinkcc
         </span><br />
         ~;
@@ -2172,7 +2172,7 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
 
     if ($toTitleBCC) {
         $my_title .= qq~
-        <span class="small" style="width: 99%;">
+        <span class="small totitle">
         <b>$toTitleBCC</b> $usernamelinkbcc
         </span><br />
         ~;
@@ -2202,7 +2202,7 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
                     && $pmDisplayPics == 1 )
                 {
                     $pmShowAttach .=
-qq~<div class="small" style="float:left; margin:8px;"><a href="$pmuploadurl/$pmAttachFile" target="_blank"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile</a> (~
+qq~<div class="small attbox"><a href="$pmuploadurl/$pmAttachFile" target="_blank"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile</a> (~
                       . int( $filesize / 1024 )
                       . q~ KB)<br />~
                       . (
@@ -2230,7 +2230,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
         }
         if ( $pmShowAttach && $pmAttachment ) {
             $pmAttachment =~
-              s/<div class="small">/<div class="small" style="margin:8px;">/gsm;
+              s/<div class="small">/<div class="small attbox_b">/gsm;
         }
         $my_attach .= $show_my_attach;
         $my_attach =~ s/{yabb pmAttachment}/$pmAttachment/sm;

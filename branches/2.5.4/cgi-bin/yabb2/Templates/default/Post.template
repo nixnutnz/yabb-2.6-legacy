@@ -13,9 +13,8 @@
 ###############################################################################
 # $Revision$
 
-$style_ubbc_box = q~float: left; width: 463px;~;
-$cat_col = 'cat_collapse.gif';
-$cat_exp = 'cat_expand.gif';
+$cat_col = 'cat_collapse.png';
+$cat_exp = 'cat_expand.png';
 $chrwarn_g0 = 'green0.gif';
 $chrwarn_g1 = 'green1.gif';
 $chrwarn_r0 = 'red0.gif';
@@ -130,8 +129,8 @@ $mypost_reason = qq~
             </tr><tr>~;
 
 $mypost_preview_main = qq~<tr class="windowbg">
-            <td class="vtop"><b>$post_txt{'507'}</b></td>
-            <td>{yabb prevmain}</td>
+			    <td class="vtop"><b>$post_txt{'507'}</b></td>
+				<td>{yabb prevmain}</td>
         </tr>~;
 
 $mypost_topicstatus = qq~

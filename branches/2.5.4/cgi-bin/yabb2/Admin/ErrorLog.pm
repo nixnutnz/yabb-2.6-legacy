@@ -322,7 +322,7 @@ sub DeleteError {
             $tmp_error, $tmp_board, $tmp_action
         ) = split /\|/xsm, $line;
         if ( !exists $FORM{"error$tmp_id"} ) {
-            print {FILE} $line . "\n" or croak 'cannot print FILE';
+            print {FILE} $line . "\n" or croak "$croak{'print'} FILE";
         }
     }
     fclose(FILE);

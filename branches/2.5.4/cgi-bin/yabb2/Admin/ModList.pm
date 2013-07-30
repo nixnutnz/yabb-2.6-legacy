@@ -34,6 +34,9 @@ sub ListMods {
     # You could use "$SuperMod_CoolThings"
 
 ### BOARDMOD ANCHOR ###
+
+	$w3cvalid = "W3C_Validator_Link_YaBB254|Dandello|This mod adds a page specific link to the W3C Validator that is visible to the admin for checking page/template validity on publicly accessible pages.|0.1 alpha|07/02/13";
+	push (@installed_mods, "$w3cvalid");
 ### END BOARDMOD ANCHOR ###
     our ( $yymain, %mod_list, $imagesdir, $yytitle );
     my ( $action_area,  $mod_text_list, $full_description );
@@ -41,7 +44,7 @@ sub ListMods {
 
     if ( !@installed_mods ) {
         $yymain .= qq~
-<div class="bordercolor rightboxdiva">
+<div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg" colspan="3">
@@ -83,7 +86,7 @@ sub ListMods {
         </tr>~;
 
         $full_description .= qq~
-<div class="bordercolor rightboxdiva">
+<div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">

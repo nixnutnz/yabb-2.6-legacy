@@ -166,18 +166,18 @@ sub DownloadView {
         else { $endpage = $max; }
         if ( $startpage > 0 ) {
             $pageindex =
-qq~<a href="$scripturl?action=downloadfile;newstart=0;sort=$sort" style="font-weight: normal;">1</a>&nbsp;...&nbsp;~;
+qq~<a href="$scripturl?action=downloadfile;newstart=0;sort=$sort" class="norm">1</a>&nbsp;...&nbsp;~;
         }
         if ( $startpage == 25 ) {
             $pageindex =
-qq~<a href="$scripturl?action=downloadfile;newstart=0;sort=$sort" style="font-weight: normal;">1</a>&nbsp;~;
+qq~<a href="$scripturl?action=downloadfile;newstart=0;sort=$sort" class="norm">1</a>&nbsp;~;
         }
         foreach my $counter ( $startpage .. ( $endpage - 1 ) ) {
             if ( $counter % 25 == 0 ) {
                 $pageindex .=
                   $newstart == $counter
                   ? qq~<b>$tmpa</b>&nbsp;~
-                  : qq~<a href="$scripturl?action=downloadfile;newstart=$counter;sort=$sort" style="font-weight: normal;">$tmpa</a>&nbsp;~;
+                  : qq~<a href="$scripturl?action=downloadfile;newstart=$counter;sort=$sort" class="norm">$tmpa</a>&nbsp;~;
                 $tmpa++;
             }
         }
@@ -372,11 +372,11 @@ sub DownloadFileCouter {
         $attachments[$aa] =~
 s/(.+\|)(.+)\|(\d+)(\s+)$/ $1 . ($dfile eq $2 ? "$2|" . ($3 + 1) : "$2|$3") . $4 /exsm;
     }
-    print {ATM} @attachments or croak 'cannot print to ATM';
+    print {ATM} @attachments or croak "$croak{'print'} ATM";
     fclose(ATM);
 
     print "Location: $uploadurl/$dfile\n\r\n\r"
-      or croak 'cannot print Location';
+      or croak "$croak{'print'} Location";
 
     exit;
 }

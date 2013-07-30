@@ -211,23 +211,23 @@ qq~<div style="float: left; text-align: center; padding-left: 2px; padding-right
                         && $membername ne $username )
                     {
                         print {FILE} "$membername,$memrealname|$mememail\n"
-                          or croak 'cannot print FILE';
+                          or croak "$croak{'print'} FILE";
                     }
                     elsif ($mememail =~ /$LookFor/igxsm
                         && $membername ne $username )
                     {
                         print {FILE} "$membername,$memrealname|$mememail\n"
-                          or croak 'cannot print FILE';
+                          or croak "$croak{'print'} FILE";
                     }
                 }
                 else {
                     if ( $memrealname =~ /$LookFor/igxsm ) {
                         print {FILE} "$membername,$memrealname|$mememail\n"
-                          or croak 'cannot print FILE';
+                          or croak "$croak{'print'} FILE";
                     }
                     elsif ( $mememail =~ /$LookFor/igxsm ) {
                         print {FILE} "$membername,$memrealname|$mememail\n"
-                          or croak 'cannot print FILE';
+                          or croak "$croak{'print'} FILE";
                     }
                 }
             }
@@ -579,24 +579,24 @@ q~<div id="ViewIndex" class="droppageindex pages" style="visibility: hidden">&nb
                 $prevpage = $start - $tmpMembersPerPage;
                 $nextpage = $start + $MembersPerPage;
                 $pagedropindexpvbl =
-qq~<img src="$imagesdir/$ml_index_left0" height="14" width="13" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$ml_index_left0" height="14" width="13" alt="" />~;
                 $pagedropindexnxbl =
-qq~<img src="$imagesdir/$ml_index_right0" height="14" width="13" alt="" style="margin: 0px; display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$ml_index_right0" height="14" width="13" alt="" />~;
                 if ( $start < $MembersPerPage ) {
                     $pagedropindexpv .=
-qq~<img src="$imagesdir/$ml_index_left0" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$ml_index_left0" height="14" width="13" alt="" />~;
                 }
                 else {
                     $pagedropindexpv .=
-qq~<img src="$imagesdir/$ml_index_left" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$prevpage\\'" ondblclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=0\\'" />~;
+qq~<img src="$imagesdir/$ml_index_left" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" class="cursor" onclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$prevpage\\'" ondblclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=0\\'" />~;
                 }
                 if ( $nextpage > $lastptn ) {
                     $pagedropindexnx .=
-qq~<img src="$imagesdir/$ml_index_right0" height="14" width="13" alt="" style="display: inline; vertical-align: middle;" />~;
+qq~<img src="$imagesdir/$ml_index_right0" height="14" width="13" alt="" />~;
                 }
                 else {
                     $pagedropindexnx .=
-qq~<img src="$imagesdir/$ml_index_right" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" style="display: inline; vertical-align: middle; cursor: pointer;" onclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$nextpage\\'" ondblclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$lastptn\\'" />~;
+qq~<img src="$imagesdir/$ml_index_right" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" class="cursor" onclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$nextpage\\'" ondblclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$lastptn\\'" />~;
                 }
                 $pageindex = qq~$pagedropindex</div>~;
 
@@ -933,8 +933,8 @@ sub doquicksearch {
             push @matches, $realname, $membername;
         }
     }
-    print "Content-type: text/plain\n\n" or croak 'cannot print content';
-    print join q{,}, @matches or croak 'cannot print matches';
+    print "Content-type: text/plain\n\n" or croak "$croak{'print'} content-type";
+    print join q{,}, @matches or croak "$croak{'print'} matches";
 
     CORE::exit;    # This is here only to avoid server error log entries!
     return;
@@ -1049,7 +1049,7 @@ qq~<img src="$imagesdir/cross.png">&nbsp;&nbsp;<span style="color:#dd0000">$type
     }
 
     print "Content-type: text/plain\n\n$INFO{'type'}|$avail"
-      or croak 'cannot print avail';
+      or croak "$croak{'print'} avail";
 
     CORE::exit;    # This is here only to avoid server error log entries!
     return;

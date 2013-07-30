@@ -285,7 +285,7 @@ sub SaveSettings {
     my %settings = @_;
 
     fopen( IPLOOKUP, ">$vardir/iplookup.urls" );
-    print {IPLOOKUP} $settings{'iplookup_urls'} or croak 'cannot print IPLOOKUP';
+    print {IPLOOKUP} $settings{'iplookup_urls'} or croak "$croak{'print'} IPLOOKUP";
     fclose(IPLOOKUP);
 
     if (   length $settings{'masterkey'} < 8

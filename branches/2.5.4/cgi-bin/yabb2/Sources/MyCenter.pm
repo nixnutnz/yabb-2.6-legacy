@@ -364,10 +364,10 @@ sub CallBackRec {
         }
         else {
             if ( $rmessageid != $rid || $fromuser ne $username ) {
-                print {REVMSG} $_ or croak 'cannot print REVMSG';
+                print {REVMSG} $_ or croak "$croak{'print'} REVMSG";
             }
             elsif ( $flags !~ /u/ism ) {
-                print {REVMSG} $_ or croak 'cannot print REVMSG';
+                print {REVMSG} $_ or croak "$croak{'print'} REVMSG";
                 $nodel = 1;
             }
         }
@@ -477,7 +477,7 @@ sub updateMessageFlag {
 "$uMessageId|$uFrom|$uToUser|$uTocc|$uTobcc|$uSubject|$uDate|$uMessage|$uPid|$uReply|$uip|$uStatus|$uMessageFlags|$uStorefolder|$uAttach";
             }
             ${ 'MF' . $user . $pmFile }{$uMessageId} = $uMessageFlags;
-            print {USERFILE} $userMessage or croak 'cannot print USERFILE';
+            print {USERFILE} $userMessage or croak "$croak{'print'} USERFILE";
         }
         fclose(USERFILE);
     }
@@ -579,7 +579,7 @@ sub Del_Some_IM {
                 }
             }
             if ( !exists $FORM{ 'message' . $m[0] } ) {
-                print {USRFILE} $_ or croak 'cannot print USRFILE';
+                print {USRFILE} $_ or croak "$croak{'print'} USRFILE";
 
                 if    ( $INFO{'caller'} == 2 ) { ${$username}{'PMmoutnum'}++; }
                 elsif ( $INFO{'caller'} == 3 ) { $CountStore{ $m[13] }++; }
@@ -630,7 +630,7 @@ sub Del_Some_IM {
         foreach (@messages) {
             if ( !$FORM{ 'message' . ( split /\|/xsm, $_, 2 )[0] } ) {
                 if ( $INFO{'caller'} != 3 ) {
-                    print {USRFILE} $_ or croak 'cannot print USRFILE';
+                    print {USRFILE} $_ or croak "$croak{'print'} USRFILE";
                 }
                 else {
                     my @m = split /\|/xsm, $_;
@@ -669,7 +669,7 @@ sub Del_Some_IM {
             print {TRANSFER}
               map( { join q{|}, @{$_} }
                 reverse sort { ${$a}[6] <=> ${$b}[6] } @newmessages )
-              or croak 'cannot print TRANSFER';
+              or croak "$croak{'print'} TRANSFER";
             fclose(TRANSFER);
 
             ${$username}{'PMfoldersCount'} = q{};
@@ -983,9 +983,9 @@ sub MarkAll {
         if ( $imflags =~ s/u//ism ) {
             print {FILE}
 "$imessageid|$imusername|$imusernameto|$imusernametocc|$imusernametobcc|$imsub|$imdate|$mmessage|$imessagepid|$imreply|$mip|$imstatus|$imflags|$imstore|$imattach"
-              or croak 'cannot print FILE';
+              or croak "$croak{'print'} FILE";
         }
-        else { print {FILE} $_ or croak 'cannot print FILE'; }
+        else { print {FILE} $_ or croak "$croak{'print'} FILE"; }
     }
     fclose(FILE);
 
@@ -1246,7 +1246,7 @@ function insert_user (oElement,username,userid) {
         $tabWidth = '50%';
     }
     $MCViewMenu     = q{};
-    $MCPmMenu       = q{};
+	$MCPmMenu       = q{};
     $MCProfMenu     = q{};
     $MCPostsMenu    = q{};
     $MCExtraSmilies = q{};
@@ -1303,16 +1303,9 @@ function insert_user (oElement,username,userid) {
             $MCViewMenu_mess =~
               s/{yabb mc_menus_messages}/$mc_menus{'messages'}/sm;
         }
-        $MCViewMenu .= $my_MCViewMenu;
-        $MCViewMenu =~ s/{yabb MCView_tab}/$MCView_tab/sm;
-        $MCViewMenu =~ s/{yabb MCViewMenu_mess}/$MCViewMenu_mess/sm;
-        $MCViewMenu =~ s/{yabb tabWidth}/$tabWidth/gsm;
-        $MCViewMenu =~ s/{yabb tabProfHighlighted}/$tabProfHighlighted/sm;
-        $MCViewMenu =~ s/{yabb tabNotifyHighlighted}/$tabNotifyHighlighted/sm;
-        $MCViewMenu =~ s/{yabb mc_menus_profile}/$mc_menus{'profile'}/sm;
-        $MCViewMenu =~ s/{yabb mc_menus_posts}/$mc_menus{'posts'}/sm;
-    }
-
+	}
+#    $MCViewMenu .= $MCView_tab;
+ 	
 ## start Profile div
 
     ## links for profile pages. SID is now cloaked and controls whether or not
@@ -2311,7 +2304,7 @@ qq~<span class="small"><a href="$scripturl?action=imshow;id=$messageid;caller=2"
                   ? $inmes_txt{'attach_3'}
                   : $inmes_txt{'attach_2'};
                 $attachIcon =
-qq~<img src="$imagesdir/$IM_paperclip" alt="$inmes_txt{'attach_1'} $imAttachCount $alt" title="$inmes_txt{'attach_1'} $imAttachCount $alt" style="float: right; padding-right: 0.3em;" />~;
+qq~<img src="$imagesdir/$IM_paperclip" alt="$inmes_txt{'attach_1'} $imAttachCount $alt" title="$inmes_txt{'attach_1'} $imAttachCount $alt" class="mc_clip" />~;
             }
 
             $MCContent_BM = $my_BM_mess;
@@ -2695,7 +2688,7 @@ qq~$callBack<a href="$scripturl?action=imsend;caller=$callerid;quote=$mreplyno;t
                 || ( $viewBMess && ( $iamadmin || $username eq $musername ) ) )
             {
                 $actionsMenuselect =
-qq~<input type="checkbox" name="message$messageid" id="message$messageid" class="$class_PM_list" value="1" style="cursor: pointer;" /> <label for="message$messageid">$inmes_txt{'delete'}</label>~;
+qq~<input type="checkbox" name="message$messageid" id="message$messageid" class="cursor $class_PM_list" value="1" /> <label for="message$messageid">$inmes_txt{'delete'}</label>~;
                 if ( $action ne 'imdraft' && !$viewBMess ) {
                     $actionsMenuselect .=
 qq~/<label for="message$messageid">$inmes_imtxt{'store'}</label>~;
@@ -2985,18 +2978,18 @@ sub mcMenu {
 
     if ( $pm_lev == 1 ) {
         $yymcmenu .=
-qq~<li><span onclick="changeToTab('pm'); return false;"$pmclass id="menu_pm"><a href="$scripturl?action=mycenter" onclick="changeToTab('pm'); return false;">$mc_menus{'messages'}</a></span></li>
+qq~<li><span $pmclass id="menu_pm"><a href="$scripturl?action=mycenter">$mc_menus{'messages'}</a></span></li>
         ~;
     }
 
     # profile link
     $yymcmenu .=
-qq~<li><span onclick="changeToTab('prof'); return false;"$profclass id="menu_prof"><a href="$scripturl?action=myviewprofile;username=$useraccount{$username}" onclick="changeToTab('prof'); return false;">$mc_menus{'profile'}</a></span></li>
+qq~<li><span $profclass id="menu_prof"><a href="$scripturl?action=myviewprofile;username=$useraccount{$username}">$mc_menus{'profile'}</a></span></li>
     ~;
 
     # posts link
     $yymcmenu .=
-qq~<li><span onclick="changeToTab('posts'); return false;"$postclass  id="menu_posts"><a href="$scripturl?action=favorites" onclick="changeToTab('posts'); return false;">$mc_menus{'posts'}</a></span></li>
+qq~<li><span $postclass  id="menu_posts"><a href="$scripturl?action=favorites">$mc_menus{'posts'}</a></span></li>
     ~;
 
     $yymcmenu .= q{};

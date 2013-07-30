@@ -151,7 +151,7 @@ function do_images() {
             }
             $usernameTo =~ s/, $//sm;
             $usernameTo =
-              qq~<span style="font-weight: bold;">$usernameTo</span><br />~;
+              qq~<b>$usernameTo</b><br />~;
             $toTitle = qq~$inmes_txt{'324'}:~;
         }
         if ($threadccusers) {
@@ -168,7 +168,7 @@ function do_images() {
             }
             $usernameCC =~ s/, $//sm;
             $usernameCC =
-              qq~<span style="font-weight: bold;">$usernameCC</span><br />~;
+              qq~<b>$usernameCC</b><br />~;
             $toTitleCC = qq~$inmes_txt{'325'}:~;
         }
         if ($threadbccusers) {
@@ -186,7 +186,7 @@ function do_images() {
             }
             if ($usernameBCC) {
                 $usernameBCC =
-                  qq~<span style="font-weight: bold;">$usernameBCC</span>~;
+                  qq~<b>$usernameBCC</b>~;
                 $toTitleBCC = qq~$inmes_txt{'326'}:~;
             }
         }
@@ -195,7 +195,7 @@ function do_images() {
             my ( $guestName, $guestEmail ) = split / /sm, $threadposter;
             $guestName =~ s/%20/ /gsm;
             $usernameFrom =
-qq~<span style="font-weight: bold;">$guestName ($guestEmail)</span><br />~;
+qq~<b>$guestName ($guestEmail)</b><br />~;
         }
         else {
             LoadUser($threadposter);
@@ -207,7 +207,7 @@ qq~<span style="font-weight: bold;">$guestName ($guestEmail)</span><br />~;
                 : $maintxt{'470a'}
               );    # 470a == Ex-Member
             $usernameFrom =
-              qq~<span style="font-weight: bold;">$usernameFrom</span><br />~;
+              qq~<b>$usernameFrom</b><br />~;
         }
         $fromTitle = qq~$inmes_txt{'318'}:~;
     }
@@ -267,7 +267,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
             : $maintxt{'470a'}
           );    # 470a == Ex-Member
         $usernameFrom =
-          qq~<span style="font-weight: bold;">$usernameFrom</span><br />~;
+          qq~<b>$usernameFrom</b><br />~;
         $fromTitle = qq~$inmes_txt{'318'}:~;
 
         if ( $threadstatus !~ /b/sm ) {
@@ -300,7 +300,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
         }
         $usernameTo =~ s/, $//sm;
         $usernameTo =
-          qq~<span style="font-weight: bold;">$usernameTo</span><br />~;
+          qq~<b>$usernameTo</b><br />~;
         if ($threadccusers) {
             foreach my $uname ( split /,/xsm, $threadccusers ) {
                 LoadUser($uname);
@@ -315,7 +315,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
             }
             $usernameCC =~ s/, $//sm;
             $usernameCC =
-              qq~<span style="font-weight: bold;">$usernameCC</span><br />~;
+              qq~<b>$usernameCC</b><br />~;
             $toTitleCC = qq~$inmes_txt{'325'}:~;
         }
         if ($threadbccusers) {
@@ -332,7 +332,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
             }
             $usernameBCC =~ s/, $//sm;
             $usernameBCC =
-              qq~<span style="font-weight: bold;">$usernameBCC</span>~;
+              qq~<b>$usernameBCC</b>~;
             $toTitleBCC = qq~$inmes_txt{'326'}:~;
         }
     }
@@ -371,7 +371,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
                 }
                 $usernameCC =~ s/, $//sm;
                 $usernameCC =
-                  qq~<span style="font-weight: bold;">$usernameCC</span><br />~;
+                  qq~<b>$usernameCC</b><br />~;
                 $toTitleCC = qq~$inmes_txt{'325'}:~;
             }
             if ( $threadbccusers && $threadposter eq $username ) {
@@ -388,7 +388,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
                 }
                 $usernameBCC =~ s/, $//sm;
                 $usernameBCC =
-                  qq~<span style="font-weight: bold;">$usernameBCC</span>~;
+                  qq~<b>$usernameBCC</b>~;
                 $toTitleBCC = qq~$inmes_txt{'326'}:~;
             }
         }
@@ -401,7 +401,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
         }
         $usernameTo =~ s/, $//sm;
         $usernameTo =
-          qq~<span style="font-weight: bold;">$usernameTo</span><br />~;
+          qq~<b>$usernameTo</b><br />~;
 
         if ( $threadstatus eq 'g' || $threadstatus eq 'ga' ) {
             my ( $guestName, $guestEmail ) = split / /sm, $threadposter;
@@ -419,7 +419,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
               );    # 470a == Ex-Member
         }
         $usernameFrom =
-          qq~<span style="font-weight: bold;">$usernameFrom</span><br />~;
+          qq~<b>$usernameFrom</b><br />~;
         $fromTitle = qq~$inmes_txt{'318'}:~;
 
     }
@@ -429,7 +429,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
         my ( $guestName, $guestEmail ) = split / /sm, $threadposter;
         $guestName =~ s/%20/ /gsm;
         $usernameFrom =
-qq~<span style="font-weight: bold;">$guestName ($guestEmail)</span><br />~;
+qq~<b>$guestName ($guestEmail)</b><br />~;
         $fromTitle = qq~$inmes_txt{'318'}:~;
 
     }
@@ -454,7 +454,7 @@ qq~<span style="font-weight: bold;">$guestName ($guestEmail)</span><br />~;
           );    # 470a == Ex-Member
 
         $usernameFrom =
-          qq~<span style="font-weight: bold;">$usernameFrom</span><br />~;
+          qq~<b>$usernameFrom</b><br />~;
         $fromTitle = qq~$inmes_txt{'318'}:~;
     }
 
@@ -463,8 +463,8 @@ qq~<span style="font-weight: bold;">$guestName ($guestEmail)</span><br />~;
 <table class="cs_10px" style="border: 1px solid #000000; width:96%">
     <tr>
         <td style="font-family: arial, sans-serif; font-size: 12px;">
-            <div>$inmes_txt{'70'}: <span style="font-weight: bold;">$threadtitle</span></div>
-            <div>$inmes_txt{'317'}: <span style="font-weight: bold;">$threadDate</span></div>
+            <div>$inmes_txt{'70'}: <b>$threadtitle</b></div>
+            <div>$inmes_txt{'317'}: <b>$threadDate</b></div>
             $toTitle $usernameTo
             $fromTitle $usernameFrom
             $toTitleCC $usernameCC
@@ -781,7 +781,7 @@ sub donoopen {
 <body>
 <p style="font-size:small; font-family:Arial,Helvetica; text-align:center">$maintxt{'199'}</p>
 </body>
-</html>~ or croak 'cannot print to screen';
+</html>~ or croak "$croak{'print'}";
     exit;
 }
 

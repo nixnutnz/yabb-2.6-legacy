@@ -1607,6 +1607,10 @@ line-height:20px;
 
 .codebox div {
 float:right;
+}
+
+.codebox span {
+vertical-align:top;
 } 
 
 .media_iframe {
@@ -1649,3 +1653,105 @@ z-index: 100;
 overflow: hidden;
 display: none;
 }
+
+.sub_drop {
+position: relative;
+top: 2px;
+cursor: pointer;
+}
+
+.brd_arrow {
+margin: 2px;
+}
+
+.debug {float: left; padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;}
+
+.pagedropindex {
+float: left; width: 350px; margin: 0px; margin-top: 2px; border: 0px;
+}
+
+.pagedropindex_inner {
+float: left; height: 21px; margin: 0; margin-right: 4px;
+}
+
+.decselector {
+ float: left; height: 21px; margin: 0;
+}
+
+.decselector_sel {
+font-size: 9px; border: 2px inset;"
+}
+
+.viewindex_hid {
+height: 14px; visibility: hidden;
+}
+
+.attbox {
+float:left; margin:8px;
+}
+
+.attbox_b {
+margin:8px;
+}
+
+.att_hr {
+margin: 5px 0; padding: 0;
+}
+
+.quoteinfo { float: left; width: 99%; overflow: auto;}
+
+.delcounter {
+border: 0px; visibility: hidden; display: none;
+}
+
+.totitle { width: 99%;}
+
+.load_sig {
+float: left; font-size: 10px; font-family: verdana, sans-serif; overflow: auto; max-height: 200px; height: 200px; width: 99%;}
+.load_sig_b {
+float: left; font-size: 10px; font-family: verdana, sans-serif; overflow: auto; max-height: 200px; width: 99%;}
+
+/* context help */
+.contexthlp {position: absolute; top: 20px; left: 20px; width: 400px; filter: alpha(opacity=95); opacity: 0.95; border: 1px solid black; z-index: 10000;}
+.contexttitle {filter: alpha(opacity=100); opacity: 1.0; padding: 6px;}
+.contexttext {filter: alpha(opacity=100); opacity: 1.0; padding: 8px;}
+.ctxtip {position: absolute; top: 20px; left: 90px; font: 11px Helvetica, sans-serif; color: #000; background-color: #ffffdd; border: 1px solid black; padding: 1px 4px; z-index: 10000;}
+
+/* extended profiles*/
+.ext_lft {float: left; width: 30%; padding-top: 5px;  padding-bottom: 5px;}
+.ext_rgt {float: left; width: 70%; padding-top: 5px;  padding-bottom: 5px;}
+.ext_100 {float: left; width: 100%; padding-top: 5px;  padding-bottom: 5px;}
+
+/*help template*/
+.help_ul {list-style: none; margin: 0; padding: 2px; border: none;}
+
+/* IM */
+.bnttoto {float: left; padding: 5px;}
+.usersto {width: 98%; display: inline; float: left;}
+.att_lft {float:left; width:23%;}
+.att_lft_b {float:left; width:23%;padding-top:5px;}
+.att_rgt {float:left; width:76%;}
+.att_rgt_b {float:left; width:76%;padding-top:5px;}
+.width_100 {width: 100%;}
+
+/*message index */
+.q_post_space {text-align: right; padding-top: 10px; padding-bottom: 10px;}
+
+.nopost {background-color: #ffbbbb;}
+
+/* profile */
+.picrow {float: left; width: 20%; text-align: center; padding: 5px 5px 5px 0px;}
+
+.mc_clip {
+float: right; padding-right: 0.3em;
+}
+
+.load_cllink {position:absolute; right:3px}
+
+.toolbutton_a {display:inline-block; cursor: pointer; padding-top: 2px; background-repeat: no-repeat; padding-left: 22px; height: 17px; text-align: left;}
+.toolbutton_b {position:relative; float:right; display:inline-block; height:10px;}
+.toolbutton_li {text-align:right !important; line-height:4px;}
+
+.sticky_stick {font-size:medium !important;}
+
+.style_ubbc_box {float: left; width: 463px !important;}

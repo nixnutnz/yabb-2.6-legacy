@@ -47,14 +47,14 @@ sub BoardIndex {
 
     my ( $numusers, $guests, $numbots, $user_in_log, $guest_in_log ) =
       ( 0, 0, 0, 0, 0 );
-
+    my %bvusers = ();
     # do not do this stuff when we're calling for sub board display
     if ( !$subboard_sel ) {
         GetBotlist();
 
         my $lastonline = $date - ( $OnlineLogTime * 60 );
-        foreach (@logentries) {
-            ( $name, $date1, $last_ip, $last_host ) = split /\|/xsm, $_;
+		foreach ( @logentries ) {
+            ( $name, $date1, $last_ip, $last_host, undef, $boardv, undef ) = split /\|/xsm, $_,7;
             if ( !$last_ip ) {
                 $last_ip =
 qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="small"><i>~;
@@ -76,6 +76,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                     }
                     if ( $iamadmin || $iamgmod || $iamymod ) {
                         $numusers++;
+						$bvusers{$boardv}++;
                         $users .= QuickLinks($name);
                         $users .= ( ${ $uid . $name }{'stealth'} ? q{*} : q{} )
                           . (
@@ -95,6 +96,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                 else {
                     if ( $name eq $user_ip ) { $guest_in_log = 1; }
                     $guests++;
+					$bvusers{$boardv}++;
                     if (   ( $iamadmin && $show_online_ip_admin )
                         || ( $iamgmod && $show_online_ip_gmod )
                         || ( $iamymod && $show_online_ip_ymod ) )
@@ -107,6 +109,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
         if ( !$iamguest && !$user_in_log ) {
             if ($guests) { $guests--; }
             $numusers++;
+            $bvusers{$boardv}++;
             $users .= QuickLinks($username);
             if ( $iamadmin || $iamgmod || $iamymod ) {
                 $users .= ${ $uid . $username }{'stealth'} ? q{*} : q{};
@@ -121,7 +124,8 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
         }
         elsif ( $iamguest && !$iambot && !$guest_in_log ) {
             $guests++;
-        }
+             $bvusers{$boardv}++;
+		}
 
         if ($numusers) {
             $users =~ s/, \Z//sm;
@@ -153,6 +157,25 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
         if ( !$iamguest ) { Collapse_Load(); }
     }
 
+	else {
+			foreach ( @logentries ) {
+            ( $name, $date1, $last_ip, $last_host, undef, $boardv, undef ) = split /\|/xsm, $_,7;
+             if ($name) {
+                if ( LoadUser($name) ) {
+                    if ( $iamadmin || $iamgmod || $iamymod ) {
+                        $numusers++;
+						$bvusers{$boardv}++;
+                    }
+                }
+                else {
+                    if ( $name eq $user_ip ) { $guest_in_log = 1; }
+                    $guests++;
+					$bvusers{$boardv}++;
+                }
+            }
+        }
+   	}
+	
     my @tmplist;
     if ($subboard_sel) {
         push @tmplist, $subboard_sel;
@@ -264,7 +287,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
     getlog();
     my $dmax = $date - ( $max_log_days_old * 86_400 );
 
-# if loading subboard list by ajax we don't need this (Ajax showcasepoll load does not work, assume this is mistake.)
+# if loading subboard list by ajax we don't need this (Ajax showcasepoll load does not work, assume this is mistake. DAR)
 
     #   if ( !$INFO{'a'} ) {
 
@@ -1044,27 +1067,19 @@ qq~ $childcnt{$childbd} $boardindex_txt{'72'}~;
                             $bdd          = q{};
                             $my_bddescr   = ${ $uid . $childbd }{'description'};
                             my @bname = split /<br \/>/sm, $my_bddescr;
-                            $boardname =
-qq~$scripturl\?action\=showexternal;exboard\=$childbd~;
-                            $tmp_sublinks =~
-                              s/({|<)yabb boardurl(}|>)/$boardname/gsm;
+                            $boardname = qq~$scripturl\?action\=showexternal;exboard\=$childbd~;
+                            $tmp_sublinks =~ s/({|<)yabb boardurl(}|>)/$boardname/gsm;
                             $tmp_sublinks =~ s/({|<)yabb new(}|>)/$new/gsm;
-                            $tmp_sublinks =~
-                              s/({|<)yabb boardname(}|>)/$bname[0]/gsm;
-                            $tmp_sublinks =~
-                              s/({|<)yabb sub_lock(}|>)/$sub_lock/gsm;
+                            $tmp_sublinks =~ s/({|<)yabb boardname(}|>)/$bname[0]/gsm;
+                            $tmp_sublinks =~ s/({|<)yabb sub_lock(}|>)/$sub_lock/gsm;
                         }
                         else {
                             $tmp_sublinks = $subboard_links;
-                            $tmp_sublinks =~
-                              s/({|<)yabb boardname(}|>)/$chldboardname/gsm;
-                            $tmp_sublinks =~
-s/({|<)yabb boardurl(}|>)/$scripturl\?board\=$childbd/gsm;
+                            $tmp_sublinks =~ s/({|<)yabb boardname(}|>)/$chldboardname/gsm;
+                            $tmp_sublinks =~ s/({|<)yabb boardurl(}|>)/$scripturl\?board\=$childbd/gsm;
                             $tmp_sublinks =~ s/({|<)yabb new(}|>)/$sub_new/gsm;
-                            $tmp_sublinks =~
-                              s/({|<)yabb sub_lock(}|>)/$sub_lock/gsm;
-                            $tmp_sublinks =~
-                              s/({|<)yabb boardinfo(}|>)/$boardinfotxt/gsm;
+                            $tmp_sublinks =~ s/({|<)yabb sub_lock(}|>)/$sub_lock/gsm;
+                            $tmp_sublinks =~ s/({|<)yabb boardinfo(}|>)/$boardinfotxt/gsm;
                         }
                         $template_subboards .= qq~$tmp_sublinks, ~;
                     }
@@ -1089,7 +1104,7 @@ s/({|<)yabb boardurl(}|>)/$scripturl\?board\=$childbd/gsm;
                         }
                         else {
                             $subdropdown =
-qq~<a href="javascript:void(0)" id="subdropa_$curboard" style="font-weight:bold" onclick="SubBoardList('$scripturl?board=$curboard','$curboard','$catid',$sub_count,$alternateboardcolor)"><img src="$imagesdir/$sub_arrow_dn" id="subdropbutton_$curboard" style="position: relative; top: 2px; cursor: pointer;" alt="" />&nbsp;$sub_txt</a>~;
+qq~<a href="javascript:void(0)" id="subdropa_$curboard" style="font-weight:bold" onclick="SubBoardList('$scripturl?board=$curboard','$curboard','$catid',$sub_count,$alternateboardcolor)"><img src="$imagesdir/$sub_arrow_dn" id="subdropbutton_$curboard" class="sub_drop" alt="" />&nbsp;$sub_txt</a>~;
                         }
                     }
                     $tmp_sublist =~
@@ -1141,12 +1156,10 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
 # if it's a parent board that cant be posted in, just show sub board list when clicked vs. message index
                 if ( $subboard{$curboard} && !${ $uid . $curboard }{'canpost'} )
                 {
-                    $templateblock =~
-s/({|<)yabb boardurl(}|>)/$scripturl\?boardselect\=$curboard/gsm;
+                    $templateblock =~ s/({|<)yabb boardurl(}|>)/$scripturl\?boardselect\=$curboard/gsm;
                 }
                 else {
-                    $templateblock =~
-s/({|<)yabb boardurl(}|>)/$scripturl\?board\=$curboard/gsm;
+                    $templateblock =~ s/({|<)yabb boardurl(}|>)/$scripturl\?board\=$curboard/gsm;
                 }
 
                 # Make hidden table rows for drop down message list
@@ -1160,42 +1173,34 @@ s/({|<)yabb boardurl(}|>)/$scripturl\?board\=$curboard/gsm;
                     || ( !$iamguest && $access eq 'granted' ) )
                 {
                     $messagedropdown = 
-qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$yyhtml_root','$curboard', 0)" id="dropbutton_$curboard" style="cursor: pointer" alt="" />~;
+qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$yyhtml_root','$curboard', 0)" id="dropbutton_$curboard" class="cursor" alt="" />~;
                 }
                 else { $messagedropdown = q{}; }
                 if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm ) {
-                    $templateblock =~
-                      s/({|<)yabb expandmessages(}|>)/$expandmessages/gsm;
-                    $templateblock =~
-                      s/({|<)yabb messagedropdown(}|>)/$messagedropdown/gsm;
+                    $templateblock =~ s/({|<)yabb expandmessages(}|>)/$expandmessages/gsm;
+                    $templateblock =~ s/({|<)yabb messagedropdown(}|>)/$messagedropdown/gsm;
 
-                    $templateblock =~
-                      s/({|<)yabb boardanchor(}|>)/$boardanchor/gsm;
+                    $templateblock =~ s/({|<)yabb boardanchor(}|>)/$boardanchor/gsm;
                     $templateblock =~ s/({|<)yabb new(}|>)/$new/gsm;
 					$templateblock =~ s/({|<)yabb boardrss(}|>)/$rss_boardlink/gsm; ### RSS on BoardIndex ###
                     $templateblock =~ s/({|<)yabb newsm(}|>)/$new2/gsm;
                     $templateblock =~ s/({|<)yabb boardpic(}|>)/$bdpic/gsm;
-                    $templateblock =~
-                      s/({|<)yabb boardname(}|>)/$boardname $boardpwpic/gsm;
+                    $templateblock =~ s/({|<)yabb boardname(}|>)/$boardname $boardpwpic/gsm;
                     $templateblock =~ s/({|<)yabb boarddesc(}|>)/$bddescr/gsm;
-                    $templateblock =~
-                      s/({|<)yabb moderators(}|>)/$showmods$showmodgroups/gsm;
-                    $templateblock =~
-s/({|<)yabb threadcount(}|>)/${$uid.$curboard}{'threadcount'}/gsm;
-                    $templateblock =~
-s/({|<)yabb messagecount(}|>)/${$uid.$curboard}{'messagecount'}/gsm;
-                    $templateblock =~
-                      s/({|<)yabb lastpostlink(}|>)/$lastpostlink/gsm;
-                    $templateblock =~
-                      s/({|<)yabb lastposter(}|>)/$lastposter/gsm;
-                    $templateblock =~
-                      s/({|<)yabb lasttopiclink(}|>)/$lasttopiclink/gsm;
-                    $templateblock =~
-                      s/({|<)yabb altbrdcolor(}|>)/$altbrdcolor/gsm;
-                    $templateblock =~
-                      s/({|<)yabb altbrdcolor(}|>)/$altbrdcolor/gsm;
-                    $templateblock =~
-                      s/({|<)yabb subboardlist(}|>)/$tmp_sublist/gsm;
+					my $boardviewers;
+					if ( $bvusers{$curboard} ) {
+						$boardviewers = qq~&nbsp;($bvusers{$curboard}&nbsp;$boardindex_txt{'bviews'})~;
+					}
+					$templateblock =~ s/({|<)yabb boardviewers(}|>)/$boardviewers/gsm;
+                    $templateblock =~ s/({|<)yabb moderators(}|>)/$showmods$showmodgroups/gsm;
+                    $templateblock =~ s/({|<)yabb threadcount(}|>)/${$uid.$curboard}{'threadcount'}/gsm;
+                    $templateblock =~ s/({|<)yabb messagecount(}|>)/${$uid.$curboard}{'messagecount'}/gsm;
+                    $templateblock =~ s/({|<)yabb lastpostlink(}|>)/$lastpostlink/gsm;
+                    $templateblock =~ s/({|<)yabb lastposter(}|>)/$lastposter/gsm;
+                    $templateblock =~ s/({|<)yabb lasttopiclink(}|>)/$lasttopiclink/gsm;
+                    $templateblock =~ s/({|<)yabb altbrdcolor(}|>)/$altbrdcolor/gsm;
+                    $templateblock =~ s/({|<)yabb altbrdcolor(}|>)/$altbrdcolor/gsm;
+                    $templateblock =~ s/({|<)yabb subboardlist(}|>)/$tmp_sublist/gsm;
                 }
                 else {
                     $templateblock = $boardblockext;
@@ -1213,13 +1218,10 @@ s/({|<)yabb messagecount(}|>)/${$uid.$curboard}{'messagecount'}/gsm;
                     $templateblock =~ s/({|<)yabb boardpic(}|>)/$bdpic/gsm;
                     $templateblock =~ s/({|<)yabb boardname(}|>)/$bname[0]/gsm;
                     $templateblock =~ s/({|<)yabb boarddesc(}|>)/$bdd/gsm;
-                    $templateblock =~
-                      s/({|<)yabb threadcount(}|>)/$my_blankext/gsm;
-                    $templateblock =~
-                      s/({|<)yabb messagecount(}|>)/$my_blankext/gsm;
+                    $templateblock =~ s/({|<)yabb threadcount(}|>)/$my_blankext/gsm;
+                    $templateblock =~ s/({|<)yabb messagecount(}|>)/$my_blankext/gsm;
                     $lastpostlink = RedirectExternalShow() || 0;
-                    $templateblock =~
-                      s/({|<)yabb lastpostlink(}|>)/$lastpostlink/gsm;
+                    $templateblock =~ s/({|<)yabb lastpostlink(}|>)/$lastpostlink/gsm;
                     $templateblock =~ s/({|<)yabb lastposter(}|>)//gsm;
                     $templateblock =~ s/({|<)yabb lasttopiclink(}|>)//gsm;
                     $templateblock =~
@@ -1361,7 +1363,7 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
     var boardNames = [$template_boardnames];
     var boardOpen = "";
     var subboardOpen = "";
-    var arrowup = '<img src="$imagesdir/$brd_arrowup" style="margin: 2px" />';
+    var arrowup = '<img src="$imagesdir/$brd_arrowup" class="brd_arrow" />';
     var openbutton = "$imagesdir/$brd_dropdown";
     var closebutton = "$imagesdir/$brd_dropup";
     var opensubbutton = "$imagesdir/$sub_arrow_dn";
@@ -1390,13 +1392,13 @@ qq~<span class="small">$boardindex_txt{'143'}: <b>$numbots</b></span>~;
         if ( !-e ("$vardir/mostlog.txt") ) {
             fopen( MOSTUSERS, ">$vardir/mostlog.txt" );
             print {MOSTUSERS} "$numusers|$date\n"
-              or croak 'cannot print MOSTUSERS';
+              or croak "$croak{'print'} MOSTUSERS";
             print {MOSTUSERS} "$guests|$date\n"
-              or croak 'cannot print MOSTUSERS';
+              or croak "$croak{'print'} MOSTUSERS";
             print {MOSTUSERS} "$totalusers|$date\n"
-              or croak 'cannot print MOSTUSERS';
+              or croak "$croak{'print'} MOSTUSERS";
             print {MOSTUSERS} "$numbots|$date\n"
-              or croak 'cannot print MOSTUSERS';
+              or croak "$croak{'print'} MOSTUSERS";
             fclose(MOSTUSERS);
         }
         fopen( MOSTUSERS, "$vardir/mostlog.txt" );
@@ -1443,13 +1445,13 @@ qq~<span class="small">$boardindex_txt{'143'}: <b>$numbots</b></span>~;
                 $datebots = $date;
             }
             print {MOSTUSERS} "$mostmemb|$datememb\n"
-              or croak 'cannot print MOSTUSERS';
+              or croak "$croak{'print'} MOSTUSERS";
             print {MOSTUSERS} "$mostguest|$dateguest\n"
-              or croak 'cannot print MOSTUSERS';
+              or croak "$croak{'print'} MOSTUSERS";
             print {MOSTUSERS} "$mostusers|$dateusers\n"
-              or croak 'cannot print MOSTUSERS';
+              or croak "$croak{'print'} MOSTUSERS";
             print {MOSTUSERS} "$mostbots|$datebots\n"
-              or croak 'cannot print MOSTUSERS';
+              or croak "$croak{'print'} MOSTUSERS";
             fclose(MOSTUSERS);
         }
         $themostmembdate  = timeformat($datememb);
@@ -1813,7 +1815,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
                         var boardNames = [$template_boardnames];
                         var boardOpen = "";
                         var subboardOpen = "";
-                        var arrowup = '<img src="$imagesdir/$brd_arrowup" style="margin: 2px" />';
+                        var arrowup = '<img src="$imagesdir/$brd_arrowup" class="brd_arrow" />';
                         var openbutton = "$imagesdir/$brd_dropdown";
                         var closebutton = "$imagesdir/$brd_dropup";
                         var loadimg = "$imagesdir/$brd_loadbar";
@@ -1832,12 +1834,12 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
     }
     else {
         print "Content-type: text/html; charset=$yycharset\n\n"
-          or croak 'cannot print charset';
+          or croak "$croak{'print'} charset";
         print qq~
             <table id="subloaded_$INFO{'board'}" style="display:none">
             $boardindex_template
             </table>
-        ~ or croak 'cannot print table';
+        ~ or croak "$croak{'print'} table";
         CORE::exit;    # This is here only to avoid server error log entries!
     }
 
@@ -2022,7 +2024,7 @@ sub Del_Max_IM {
     truncate DELMAXIM, 0;
     splice @IMmessages, $max;
 
-    print {DELMAXIM} @IMmessages or croak 'cannot print DELMAXIM';
+    print {DELMAXIM} @IMmessages or croak "$croak{'print'} DELMAXIM";
     fclose(DELMAXIM);
     return;
 }
@@ -2040,10 +2042,10 @@ sub RedirectExternalShow {
         else            { $excount = 1; }
         fopen( COUNT, ">$boardsdir/$exboard.exhits" );
         seek COUNT, 0, 0;
-        print {COUNT} "$excount" or croak 'cannot print COUNT';
+        print {COUNT} "$excount" or croak "$croak{'print'} COUNT";
         fclose(COUNT);
-        print "Content-type: text/html\n" or croak 'cannot print top';
-        print "Location: $link\n\n"       or croak 'cannot print link';
+        print "Content-type: text/html\n" or croak "$croak{'print'} top";
+        print "Location: $link\n\n"       or croak "$croak{'print'} link";
         exit;
     }
     else {

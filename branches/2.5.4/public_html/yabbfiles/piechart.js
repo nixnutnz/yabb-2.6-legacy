@@ -90,7 +90,7 @@ function pieChart() {
 				slicesplit.push(val_label[3]);
 			}
 		}
-		htm += '<div style="position: relative; top: 0px; left: 0px; height: ' + canvas_height + 'px; width: ' + this.canvas_width + 'px;">';
+		htm += '<div style="position: relative; top: 0px; left: 0px; margin-left:auto; margin-right:auto; height: ' + canvas_height + 'px; width: ' + this.canvas_width + 'px;">';
 		for(var i = 0; i < value.length; i++) {
 			angle = Math.round(value[i] / votes_tot * 360);
 			if(!slicecolor[i]) slicecolor[i] = slice_color[i+1];

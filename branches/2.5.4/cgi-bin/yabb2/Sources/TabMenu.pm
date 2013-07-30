@@ -240,7 +240,7 @@ sub GetTabtxt {
         fclose(TABTXT);
         fopen( TABTXT, ">$langdir/$tab_lang/tabtext.txt" );
         print {TABTXT} map { "$_\t$tabtxt{$_}\n" } keys %tabtxt
-          or croak 'cannot print TABTXT';
+          or croak "$croak{'print'} TABTXT";
         fclose(TABTXT);
     }
     return;

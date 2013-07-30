@@ -161,7 +161,7 @@ sub EditBots2 {
     print {BOTS} map { "$_\n"; }
       sort { ( split /\|/xsm, $a )[1] cmp( split /\|/xsm, $b )[1] }
       split /[\n\r]+/xsm, $FORM{'bots'}
-      or croak 'cannot print BOTS';
+      or croak "$croak{'print'} BOTS";
     fclose(BOTS);
 
     $yySetLocation = qq~$adminurl?action=editbots~;
@@ -268,7 +268,7 @@ sub SetCensor2 {    # don't use &FromChars() here!!!
     foreach my $i (@lines) {
         $i =~ tr/\n//d;
         if ( !$i || $i !~ m/.+[\=~].+/sm ) { next; }
-        print {CENSOR} "$i\n" or croak 'cannot print CENSOR';
+        print {CENSOR} "$i\n" or croak "$croak{'print'} CENSOR";
     }
     fclose(CENSOR);
     $yySetLocation = qq~$adminurl~;
@@ -343,13 +343,13 @@ sub SetReserve2 {
     my $matchcase = $FORM{'matchcase'} eq 'checked' ? 'checked' : q{};
     my $matchuser = $FORM{'matchuser'} eq 'checked' ? 'checked' : q{};
     my $matchname = $FORM{'matchname'} eq 'checked' ? 'checked' : q{};
-    print {RESERVE} $FORM{'reserved'} or croak 'cannot print RESERVE';
+    print {RESERVE} $FORM{'reserved'} or croak "$croak{'print'} RESERVE";
     fclose(RESERVE);
     fopen( RESERVECFG, "+>$vardir/reservecfg.txt" );
-    print {RESERVECFG} "$matchword\n" or croak 'cannot print RESERVECFG';
-    print {RESERVECFG} "$matchcase\n" or croak 'cannot print RESERVECFG';
-    print {RESERVECFG} "$matchuser\n" or croak 'cannot print RESERVECFG';
-    print {RESERVECFG} "$matchname\n" or croak 'cannot print RESERVECFG';
+    print {RESERVECFG} "$matchword\n" or croak "$croak{'print'} RESERVECFG";
+    print {RESERVECFG} "$matchcase\n" or croak "$croak{'print'} RESERVECFG";
+    print {RESERVECFG} "$matchuser\n" or croak "$croak{'print'} RESERVECFG";
+    print {RESERVECFG} "$matchname\n" or croak "$croak{'print'} RESERVECFG";
     fclose(RESERVECFG);
     $yySetLocation = qq~$adminurl~;
     redirectexit();
@@ -438,7 +438,7 @@ sub ModifyAgreement2 {
     $FORM{'agreement'} =~ s/\A\n+//xsm;
     $FORM{'agreement'} =~ s/\n+\Z//xsm;
     fopen( AGREE, ">$langdir/$agreementlanguage/agreement.txt" );
-    print {AGREE} $FORM{'agreement'} or croak 'cannot print AGREE';
+    print {AGREE} $FORM{'agreement'} or croak "$croak{'print'} AGREE";
     fclose(AGREE);
 
     $FORM{'agreement'} =~ s/\n/<br \/>\n/gsm;
@@ -453,7 +453,7 @@ sub ModifyAgreement2 {
 #############################################
 
 
-1;^ or croak 'cannot print HELPAGREE';
+1;^ or croak "$croak{'print'} HELPAGREE";
     fclose(HELPAGREE);
 
     $yySetLocation =
@@ -658,7 +658,7 @@ EOF
     $setfile =~ s/^\s\s\s+(\#.+$)/substr( $filler, 0, 70 ) . $1/gesm;
 
     fopen( MODACCESS, ">$vardir/gmodsettings.txt" );
-    print {MODACCESS} $setfile or croak 'cannot print MODACCESS';
+    print {MODACCESS} $setfile or croak "$croak{'print'} MODACCESS";
     fclose(MODACCESS);
 
     $yySetLocation = qq~$adminurl~;
@@ -947,7 +947,7 @@ q~                                                                              
 EOF
 
     fopen( FILE, '>Paths.pm' );
-    print {FILE} nicely_aligned_file($setfile) or croak 'cannot print FILE';
+    print {FILE} nicely_aligned_file($setfile) or croak "$croak{'print'} FILE";
     fclose(FILE);
 
     $yySetLocation = qq~$adminurl~;

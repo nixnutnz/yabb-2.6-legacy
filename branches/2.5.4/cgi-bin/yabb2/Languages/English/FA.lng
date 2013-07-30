@@ -131,6 +131,7 @@ $falngver = 'YaBB 2.5.4 $Revision$',
 '80' => 'Attachments',
 '80a' => 'More Attachments',
 '80s' => 'Less Attachments',
+'81' => 'Remove File',
 );
 
 1;

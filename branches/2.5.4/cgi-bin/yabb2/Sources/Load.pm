@@ -71,7 +71,7 @@ sub LoadBoardControl {
             'brdpasswr'     => $brdpasswr,
             'brdpassw'      => $brdpassw,
 			'brdrss'        => $cntbdrss
-        );
+		);
         if ( $cntann == 1 )  { $annboard = $cntboard; }
         if ( $cntrbin == 1 ) { $binboard = $cntboard; }
     }
@@ -269,7 +269,7 @@ sub LoadUser {
             }
             seek LOADUSER, 0, 0;
             truncate LOADUSER, 0;
-            print {LOADUSER} @settings or croak 'cannot print LOADUSER';
+            print {LOADUSER} @settings or croak "$croak{'print'} LOADUSER";
             fclose(LOADUSER);
         }
 
@@ -368,7 +368,7 @@ sub KillModerator {
     seek FORUMCONTROL, 0, 0;
     truncate FORUMCONTROL, 0;
     @boardcontrol = undupe(@boardcontrol);
-    print {FORUMCONTROL} @boardcontrol or croak 'cannot print FORUMCONTROL';
+    print {FORUMCONTROL} @boardcontrol or croak "$croak{'print'} FORUMCONTROL";
     fclose(FORUMCONTROL);
     return;
 }
@@ -411,7 +411,7 @@ sub KillModeratorGroup {
     seek FORUMCONTROL, 0, 0;
     truncate FORUMCONTROL, 0;
     @boardcontrol = undupe(@boardcontrol);
-    print {FORUMCONTROL} @boardcontrol or croak 'cannot print FORUMCONTROL';
+    print {FORUMCONTROL} @boardcontrol or croak "$croak{'print'} FORUMCONTROL";
     fclose(FORUMCONTROL);
     return;
 }
@@ -455,11 +455,11 @@ sub LoadUserDisplay {
         # use height like code boxes do. Set to 200px at > 15 newlines
         if ( 15 < ${ $uid . $user }{'signature'} =~ /<br \/>|<tr>/gsm ) {
             ${ $uid . $user }{'signature'} =
-qq~<div style="float: left; font-size: 10px; font-family: verdana, sans-serif; overflow: auto; max-height: 200px; height: 200px; width: 99%;">${$uid.$user}{'signature'}</div>~;
+qq~<div class="load_sig">${$uid.$user}{'signature'}</div>~;
         }
         else {
             ${ $uid . $user }{'signature'} =
-qq~<div style="float: left; font-size: 10px; font-family: verdana, sans-serif; overflow: auto; max-height: 200px; width: 99%;">${$uid.$user}{'signature'}</div>~;
+qq~<div class="load_sig_b">${$uid.$user}{'signature'}</div>~;
         }
     }
 
@@ -850,7 +850,7 @@ sub QuickLinks {
             <ul id="$useraccount{$user}$qlcount" class="QuickLinks" onmouseover="keepLinks('$useraccount{$user}$qlcount')" onmouseout="TimeClose('$useraccount{$user}$qlcount')">
                 <li>~
           . userOnLineStatus($user)
-          . qq~<a href="javascript:closeLinks('$useraccount{$user}$qlcount')" style="position:absolute;right:3px"><b>X</b></a></li>\n~;
+          . qq~<a href="javascript:closeLinks('$useraccount{$user}$qlcount')" class="load_cllink"><img src="$imagesdir/tp_arrow_up.png" alt="$maintxt{'collapse'}" title="$maintxt{'collapse'}" /></li>\n~;
         if ( $user ne $username ) {
             $quicklinks .=
 qq~             <li><a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$maintxt{'2'} ${$uid.$user}{'realname'}$maintxt{'3'}</a></li>\n~;
@@ -920,7 +920,7 @@ sub LoadTools {
     foreach my $i ( 0 .. $#tools ) {
         my ( $img_url, $img_txt ) = split /\|/xsm, $tools[$i];
         $tools[$i] =
-qq~[tool=$buttons[$i]]<div style="display:inline-block; cursor: pointer; background-image: url($img_url); padding-top: 2px; background-repeat: no-repeat; padding-left: 22px; height: 17px; text-align: left">$img_txt</div>[/tool]~;
+qq~[tool=$buttons[$i]]<div class="toolbutton_a" style="background-image: url($img_url)">$img_txt</div>[/tool]~;
     }
 
     foreach my $i ( 0 .. $#tools ) {
@@ -942,15 +942,16 @@ sub MakeTools {
         <a href="javascript:quickLinks('threadtools$counter')">$text</a>
     </div>
     </td>
-    <td style="padding:0px; text-align:center; vertical-align:bottom; width:0">
-    <div style="cursor: pointer; position:relative; float:right; display:inline-block; height:10px; text-align:right">
+    <td class="center bottom" style="padding:0px; width:0">
+    <div class="right cursor toolbutton_b">
         <ul class="post_tools_menu" id="threadtools$counter" onmouseover="keepLinks('threadtools$counter')" onmouseout="TimeClose('threadtools$counter')">
             $template
-            <li style="text-align:right;line-height:4px"><span class="small"><a href="javascript:closeLinks('threadtools$counter')"><b>x</b></a></span></li>
+            <li class="toolbutton_li"><span class="small"><a href="javascript:closeLinks('threadtools$counter')"><img src="$imagesdir/tp_arrow_up.png" alt="$maintxt{'collapse'}" title="$maintxt{'collapse'}" /></a></span></li>
         </ul>
     </div>
     ~
-      : qq~<img src="$imagesdir/actionslock.png" alt="$maintxt{'64'}" title="$maintxt{'64'}" />~;
+      : qq~$load_con{'actionslock'}~;
+	  $tools_template =~ s/{yabb actionlock}/$maintxt{'64'}/gsm;
 
     return $tools_template;
 }
@@ -1353,7 +1354,7 @@ sub buildIMS {
                 fopen( STRMESS, "+>$memberdir/$builduser.imstore" )
                   || fatal_error( 'cannot_open',
                     "$memberdir/$builduser.imstore", 1 );
-                print {STRMESS} @imstore or croak 'cannot print STRMESS';
+                print {STRMESS} @imstore or croak "$croak{'print'} STRMESS";
                 fclose(STRMESS);
             }
             $storetotal = @imstore;
@@ -1397,10 +1398,10 @@ sub update_IMS {
     fopen( UPDATE_IMS, ">$memberdir/$builduser.ims", 1 )
       || fatal_error( 'cannot_open', "$memberdir/$builduser.ims", 1 );
     print {UPDATE_IMS} qq~### UserIMS YaBB 2.5.4 Version ###\n\n~
-      or croak 'cannot update IMS';
+      or croak "$croak{'print'} update IMS";
     for my $cnt ( 0 .. ( @tag - 1 ) ) {
         print {UPDATE_IMS} qq~'$tag[$cnt]',"${$builduser}{$tag[$cnt]}"\n~
-          or croak 'cannot update IMS';
+          or croak "$croak{'print'} update IMS";
     }
     fclose(UPDATE_IMS);
     return;

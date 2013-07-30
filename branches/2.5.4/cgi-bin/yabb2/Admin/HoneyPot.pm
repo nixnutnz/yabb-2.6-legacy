@@ -146,7 +146,7 @@ sub honeypot_add {
       || fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt",
         1 );
     print {HONEYPOT} "$h_label\n"
-      or croak 'cannot print HONEYPOT';
+      or croak "$croak{'print'} HONEYPOT";
     fclose(HONEYPOT);
 
     if ( $action eq 'honeypot_add' ) {
@@ -232,9 +232,9 @@ sub honeypot_edit2 {
     foreach my $i ( @h_labels) {
         chomp $i;
         if($aa == $line) {   
-            print {HONEYPOT} "$h_label\n" or croak 'cannot print HONEYPOT';
+            print {HONEYPOT} "$h_label\n" or croak "$croak{'print'} HONEYPOT";
         }
-        else {    print {HONEYPOT} "$i\n" or croak 'cannot print HONEYPOT'; }
+        else {    print {HONEYPOT} "$i\n" or croak "$croak{'print'} HONEYPOT"; }
         $aa++;
     }
 
@@ -262,9 +262,9 @@ sub honeypot_delete {
     foreach my $i ( @h_labels) {
         chomp $i;
         if( $h_label eq $i) {   
-            print {HONEYPOT} q{} or croak 'cannot print HONEYPOT';
+            print {HONEYPOT} q{} or croak "$croak{'print'} HONEYPOT";
         }
-        else {    print {HONEYPOT} "$i\n" or croak 'cannot print HONEYPOT'; }
+        else {    print {HONEYPOT} "$i\n" or croak "$croak{'print'} HONEYPOT"; }
     }
     fclose(HONEYPOT);
 

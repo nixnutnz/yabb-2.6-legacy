@@ -216,7 +216,8 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}" rel
         }
 
         wrap();
-        ( $message, undef ) = Split_Splice_Move( $message, $tnum );
+		$movedflag = q{};
+		( $message, $movedflag ) = Split_Splice_Move( $message,$tnum ); 
         if ($enable_ubbc) {
             $ns = $mns;
             enable_yabbc();
@@ -406,7 +407,8 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}" rel
         }
 
         wrap();
-        ( $message, undef ) = Split_Splice_Move( $message, $tnum );
+		$movedflag = q{};
+		( $message, $movedflag ) = Split_Splice_Move( $message,$tnum ); 
         if ($enable_ubbc) {
             $ns = $mns;
             enable_yabbc();

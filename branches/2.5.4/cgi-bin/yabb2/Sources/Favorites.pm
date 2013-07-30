@@ -226,7 +226,7 @@ qq~<a href="$scripturl?virboard=$currentboard;num=$mnum/new">$micon{'new'}</a>~;
                 $poll[0] =
 "$poll_question|$poll_locked|$poll_uname|$poll_name|$poll_email|$poll_date|$guest_vote|$hide_results|$multi_vote|$poll_mod|$poll_modname|$poll_comment|$vote_limit|$pie_radius|$pie_legends|$poll_end\n";
                 fopen( POLL, ">$datadir/$mnum.poll" );
-                print {POLL} @poll or croak 'cannot print to POLL';
+                print {POLL} @poll or croak "$croak{'print'} POLL";
                 fclose(POLL);
             }
             $micon = qq~$img{'pollicon'}~;
@@ -373,7 +373,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$lastposter">$format_unbold{$
             ? $messageindex_txt{'5'}
             : $messageindex_txt{'4'}
           )
-          . q~" style="border-style:none;" /></a>~
+          . q~" /></a>~
           : q{};
 
         $mydate = timeformat($mdate);
@@ -392,7 +392,7 @@ qq~<a href="$scripturl?num=$mnum/$mreplies#$mreplies">$img{'lastpost'}$mydate</a
         if ($movedFlag) { $tempbar = $threadbarMoved; }
 
         $adminbar =
-qq~<input type="checkbox" name="admin$mcount" class="windowbg" style="border: 0px;" value="$mnum" />~;
+qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~;
         $admincol = $admincolumn;
         $admincol =~ s/({|<)yabb admin(}|>)/$adminbar/gsm;
 
@@ -457,7 +457,7 @@ qq~<form name="multiremfav" action="$scripturl?board=$currentboard;action=multir
     ~;
 
     $admincheckboxes = q~
-    <input type="checkbox" name="checkall" id="checkall" value="" class="titlebg" style="border: 0px;" onclick="if (this.checked) checkAll(0); else uncheckAll(0);" />
+    <input type="checkbox" name="checkall" id="checkall" value="" class="titlebg" onclick="if (this.checked) checkAll(0); else uncheckAll(0);" />
     ~;
     $subfooterbar =~ s/({|<)yabb admin selector(}|>)/$adminselector/gsm;
     $subfooterbar =~ s/({|<)yabb admin checkboxes(}|>)/$admincheckboxes/gsm;
