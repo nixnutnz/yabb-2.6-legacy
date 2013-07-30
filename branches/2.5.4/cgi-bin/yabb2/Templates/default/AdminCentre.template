@@ -14,7 +14,7 @@
 # $Revision$
 
 $adminlogo = 'adminlogo.png';
-$versionchk = 'http://testbed.dandello.net/update/versioncheck.js';
+$versionchk = 'http://www.yabbforum.com/update/versioncheck.js';
 $versionimg = 'http://www.yabbforum.com/images/version/versioncheck.gif';
 $infoimg = qq~$yyhtml_root/Templates/Admin/default/ad_info.png~;
 

@@ -4,7 +4,6 @@
 50|reddit|reddit.png|http://reddit.com/submit?url={url}&title={title}|1298959598
 60|Twitter|twitter.png|http://twitter.com/home?status={title}%20-%20{url}|1298959653
 70|Linked in|linkedin.png|http://www.linkedin.com/shareArticle?mini=true&url={url}&title={title}&ro=false|1298959786
-80|MySpace|myspace.png|http://www.myspace.com/Modules/PostTo/Pages/?u=${url}&t={title}|1298961599
 90|StumbleUpon|stumbleupon.png|http://www.stumbleupon.com/submit?url={url}&amp;title={title}|1299003650
 100|Yahoo|yahoo.png|http://myweb2.search.yahoo.com/myresults/bookmarklet?u={url}&amp;title={title}|1299003740
 10|Google|google.png|http://www.google.com/bookmarks/mark?op=edit&output=popup&bkmk={url}&title={title}|1298955918
