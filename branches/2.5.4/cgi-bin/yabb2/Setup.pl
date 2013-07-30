@@ -100,7 +100,7 @@ if ( !$action ) {
     $rand_cook_sess = "Y2Sess-$rand_integer";
     $rand_cook_sort = "Y2tsort-$rand_integer";
     $rand_cook_view = "Y2view-$rand_integer";
-
+	
     fopen( COOKFILE, ">$vardir/cook.txt" )
       || setup_fatal_error( "$maintext_23 $vardir/cook.txt: ", 1 );
     print {COOKFILE} "$rand_cook_user\n" or croak 'cannot print cook.txt';
@@ -108,7 +108,7 @@ if ( !$action ) {
     print {COOKFILE} "$rand_cook_sess\n" or croak 'cannot print cook.txt';
     print {COOKFILE} "$rand_cook_sort\n" or croak 'cannot print cook.txt';
     print {COOKFILE} "$rand_cook_view\n" or croak 'cannot print cook.txt';
-    fclose(COOKFILE);
+	fclose(COOKFILE);
 
     adminlogin();
 }
@@ -1376,7 +1376,7 @@ sub SetInstall2 {
         $faketruncation = 0;
         $debug          = 0;
 
-        $checkallcaps         = 6;
+        $checkallcaps         = 0;
         $set_subjectMaxLength = 50;
         $honeypot             = 1;
         $speedpostdetection   = 1;
