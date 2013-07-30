@@ -145,7 +145,7 @@ sub AddCats {
             <td class="windowbg"><label for="catimage$i"><b>$admin_txt{'64b2'}:</b></label></td>
 			<td class="windowbg2 padd_8_12px"><br /><input type="text" name="catimage$i" id="catimage$i" value="$catimage" size="40" />~ . ($catimage ? qq~<br /><br  /><img src="$catimage" alt="" />~ : q{}) . qq~</td>
 		</tr><tr>
-			<td class="windowbg right"><label for="catrss$i"><b>$admin_txt{'brdrss1'}:</b></label></td>
+			<td class="windowbg"><label for="catrss$i"><b>$admin_txt{'brdrss1'}:</b></label></td>
 			<td class="windowbg2 padd_8_12px"><br /><input type="checkbox" name="catrss$i" id="catrss$i"$catrssch /> <label for="catrss$i"><span class="small">$admin_txt{'brdrss2'}</span></label></td>
          </tr>~;
     }
