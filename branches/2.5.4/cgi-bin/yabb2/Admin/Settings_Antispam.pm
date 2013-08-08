@@ -16,8 +16,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.5.4';
 
-my ($action);
-our $settings_antispampmver = 'YaBB 2.5.4 $Revision$';
+$settings_antispampmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 our (
@@ -31,13 +30,11 @@ our (
 
 # TSC
 if ( -e "$vardir/spamrules.txt" ) {
-    no strict;
     fopen( SPAM, "$vardir/spamrules.txt" )
       || fatal_error( 'cannot_open', 'spamrules.txt', 1 );
 
     $spamlist = do { local $INPUT_RECORD_SEPARATOR = undef; <SPAM> };
     fclose(SPAM);
-    use strict;
 }
 
 # Email Domain Filter
@@ -193,11 +190,9 @@ sub SaveSettings {
 
     # TSC
     $settings{'spamrules'} =~ s/\r(?=\n*)//gxsm;
-    no strict;
     fopen( SPAM, ">$vardir/spamrules.txt" );
     print {SPAM} delete $settings{'spamrules'} or croak "$croak{'print'} SPAM";
     fclose(SPAM);
-    use strict;
 
     # email domain filter
     my @domains =
@@ -209,13 +204,11 @@ sub SaveSettings {
         s/,+/,/gxsm;
         s/\@/\\@/gxsm;
     }
-    no strict;
     fopen( FILE, ">$vardir/email_domain_filter.txt" );
     print {FILE} qq~\$adomains = "$domains[0]";\n~ or croak "$croak{'print'} emain_domain";
     print {FILE} qq~\$bdomains = "$domains[1]";\n~ or croak "$croak{'print'} email_domain";
     print {FILE} q~1;~                             or croak "$croak{'print'} email_domain";
     fclose(FILE);
-    use strict;
 
     # Settings.pm
     SaveSettingsTo( 'Settings.pm', %settings );

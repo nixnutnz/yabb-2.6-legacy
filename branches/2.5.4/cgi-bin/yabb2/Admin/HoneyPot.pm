@@ -27,10 +27,10 @@ sub honeypot {
     my @lfilesanddirs = readdir LNGDIR;
     closedir LNGDIR;
 
-    foreach my $fld (sort {lc($a) cmp lc($b)} @lfilesanddirs) {
+    foreach my $fld (sort {lc($a) cmp lc $b} @lfilesanddirs) {
 	    if (-e "$langdir/$fld/Main.lng") {
 	        my $displang = $fld;
-            $displang =~ s~(.+?)\_(.+?)$~$1 ($2)~gi;
+            $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
             if ($honey_language eq $fld) { $drawnldirs .= qq~<option value="$fld" selected="selected">$displang</option>~; }
             else { $drawnldirs .= qq~<option value="$fld">$displang</option>~; }
         }
@@ -85,7 +85,7 @@ sub honeypot {
 	<col class="width:w_50pc" />
 	<col span="2" class="w_25pc" />
 	<tr>
-    	<th class="titlebg" colspan="3"><img src="$imagesdir/preferences.gif" alt="" /> $honeypot{'labels'} ($total_labels)
+        <th class="titlebg" colspan="3">$admin_img{'prefimg'} $honeypot{'labels'} ($total_labels)
     		<div style="display: inline; float: right;">
     		<form action="$adminurl?action=honeypot" method="post" enctype="application/x-www-form-urlencoded">
       			<select name="honey_language" id="honey_language" size="1">
@@ -105,7 +105,7 @@ $show_hon_labels
     <col class="w_25pc" />
     <col class="w_75pc" />
 	<tr>
-    	<th class="titlebg" colspan="2"><img src="$imagesdir/preferences.gif" alt="" /> $honeypot{'add_new_label'}</th>
+        <th class="titlebg" colspan="2">$admin_img{'prefimg'} $honeypot{'add_new_label'}</th>
 	</tr><tr class="windowbg2 vtop bold">
     	<td><label for="honey_add">$honeypot{'new_label'}:</label></td>
     	<td><input type="text" name="honey_add" id="honey_add" size="60" maxlength="50" /></td>
@@ -115,7 +115,7 @@ $show_hon_labels
 <div class="bordercolor rightboxdiva">
 <table class="cs_thin pad_4px">
 	<tr>
-    	<th class="titlebg"><img src="$imagesdir/preferences.gif" alt="" /> $admin_txt{'10'}</th>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
 	</tr><tr>
     	<td class="catbg center">
         	<input class="button" type="submit" value="$honeypot{'add_label'}" />
@@ -183,7 +183,7 @@ sub honeypot_edit {
     <col class="w_25pc" />
     <col class="w_75pc" />
 	<tr>
-    	<th class="titlebg" colspan="2"><img src="$imagesdir/preferences.gif" alt="" /> $honeypot{'edit'}</th>
+        <th class="titlebg" colspan="2">$admin_img{'prefimg'} $honeypot{'edit'}</th>
 	</tr><tr class="windowbg2 vtop bold;">
     	<td><label for="hon_label">$honeypot{'label'}:</label></td>
     	<td><input type="text" name="hon_label2" id="hon_label2" size="60" maxlength="50" value="$h_label" /><input type="hidden" name="hon_line" value="$aa" /></td>
@@ -193,7 +193,7 @@ sub honeypot_edit {
 <div class="bordercolor rightboxdiva" style="margin-top: 1em;">
 <table class="cs_thin pad_4px">
 	<tr>
-    	<th class="titlebg"><img src="$imagesdir/preferences.gif" alt="" /> $admin_txt{'10'}</th>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
 	</tr><tr>
     	<td class="catbg center">
     		<input class="button" type="submit" value="$admin_txt{'10'} $honeypot{'save'}" />&nbsp;<input type="button" class="button" value="$admin_txt{'cancel'}" onclick="location.href='$adminurl?action=honeypot;honey_language=$FORM{'honey_language'}';" />

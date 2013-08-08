@@ -147,7 +147,7 @@ qq~<span class="red"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
    <table class="cs_thin pad_4px">
      <tr>
        <td class="titlebg">
-         <img src="$imagesdir/preferences.gif" alt="" /><b>$backup_txt{1}</b>
+         $admin_img{'prefimg'} <b>$backup_txt{1}</b>
        </td>
      </tr>~;
 
@@ -489,7 +489,7 @@ $presetjavascriptcode
    <table class="cs_thin pad_4px">
      <tr>
        <td class="titlebg" colspan="2">
-         <img src="$imagesdir/preferences.gif" alt="" /><b>$backup_txt{21}</b>
+         $admin_img{'prefimg'} <b>$backup_txt{21}</b>
        </td>
      </tr><tr>
        <td class="windowbg2" colspan="2">
@@ -524,7 +524,7 @@ $presetjavascriptcode
    <table class="cs_thin pad_4px">
      <tr>
        <td class="titlebg" colspan="2">
-         <img src="$imagesdir/preferences.gif" alt="" /><b>$backup_txt{35}</b>
+         $admin_img{'prefimg'} <b>$backup_txt{35}</b>
        </td>
      </tr><tr>
        <td class="windowbg2" colspan="2">
@@ -1243,7 +1243,7 @@ sub recoverbackup1 {
    <table class="cs_thin pad_10px">
      <tr>
        <td class="titlebg" colspan="2">
-         <img src="$imagesdir/preferences.gif" alt="" /><b>$backup_txt{100}</b>
+         $admin_img{'prefimg'} <b>$backup_txt{100}</b>
        </td>
      </tr><tr>
        <td class="windowbg2" colspan="2">
@@ -1363,7 +1363,7 @@ sub recoverbackup2 {
    <table class="cs_thin pad_10px">
      <tr>
        <td class="titlebg" colspan="2">
-         <img src="$imagesdir/preferences.gif" alt="" /><b>$backup_txt{100}</b>
+         $admin_img{'prefimg'} <b>$backup_txt{100}</b>
        </td>
      </tr><tr>
        <td class="windowbg2" colspan="2">

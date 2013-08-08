@@ -127,7 +127,7 @@ function uncheckAll() {
             <col style="width:5%" />
             <tr>
                 <td class="titlebg" colspan="5">
-                    <img src="$imagesdir/xx.gif" alt="" /><b>$yytitle</b>
+                    $admin_img{'xx'}<b>$yytitle</b>
        </td>
             </tr><tr>
                 <td class="windowbg2 padd_8_12px" colspan="5">
@@ -364,6 +364,7 @@ sub YaBBsort {
             }
         }
     }
+	return;
 }
 
 1;

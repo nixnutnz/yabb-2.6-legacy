@@ -73,7 +73,7 @@ sub AddCats {
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg" colspan="5">
-                <img src="$imagesdir/cat.gif" alt="" />
+                $admin_img{'cat_img'}
                 <b>$admin_txt{'3'}</b>
             </td>
         </tr><tr>
@@ -246,7 +246,7 @@ qq~<option value="$category" selected="selected">$categoryname</option>~;
 <form action="$adminurl?action=reordercats2" method="post" accept-charset="$yycharset">
     <table class="bordercolor cs_thin pad_4px" style="width:525px">
         <tr>
-            <td class="titlebg"><img src="$imagesdir/board.gif" /> <b>$admin_txt{'829'}</b></td>
+            <td class="titlebg">$admin_img{'board'} <b>$admin_txt{'829'}</b></td>
         </tr><tr>
             <td class="windowbg">~;
 

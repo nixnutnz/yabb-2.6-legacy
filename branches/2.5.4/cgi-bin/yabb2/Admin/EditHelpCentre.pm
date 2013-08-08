@@ -18,7 +18,6 @@ $edithelpcentrepmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('HelpCentre');
-
 $yytitle = $helptxt{'1'};
 
 sub HelpEdit {
@@ -66,7 +65,7 @@ qq~$adminurl?action=modagreement;agreementlanguage=$language;destination=helpadm
         <table class="cs_thin pad_4px">
             <tr>
                 <td class="titlebg">
-                    <img src="$imagesdir/preferences.gif" alt="" /><b>$helptxt{'7'}</b>
+                    $admin_img{'prefimg'} <b>$helptxt{'7'}</b>
                 </td>
             </tr>
         </table>
@@ -280,7 +279,7 @@ sub MainAdmin {
     <table class="bordercolor cs_thin pad_4px w_440" style="margin-bottom:.5em">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/preferences.gif" alt="" /><b>$helptxt{'7'}</b>
+                $admin_img{'prefimg'} <b>$helptxt{'7'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -328,7 +327,7 @@ function adduserhelp() {
     <table class="bordercolor cs_thin pad_4px w_440">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/preferences.gif" alt="" /><b>$helptxt{'7'}</b>
+                $admin_img{'prefimg'} <b>$helptxt{'7'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2 padd_8_12px">

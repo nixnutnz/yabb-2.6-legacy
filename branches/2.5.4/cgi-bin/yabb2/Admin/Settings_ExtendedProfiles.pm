@@ -16,7 +16,7 @@
 ###############################################################################
 our $VERSION = '2.5.4';
 
-$settings_extendedprofilespmver = 'YaBB 2.5.4 $Revision: 1521 $';
+$settings_extendedprofilespmver = 'YaBB 2.5.4 $Revision: 1548 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('ExtendedProfiles');
@@ -305,7 +305,7 @@ sub ext_admin_htmlreq {
 ~;
     $ext_template_headerstart = qq~<tr>
         <td class="titlebg">
-            <img src="$imagesdir/profile.gif" alt="" /><b>~;
+            $admin_img{'profile'}<b>~;
     $ext_template_headerstop = q~</b>
         </td>
     </tr>~;
@@ -1187,7 +1187,7 @@ sub ext_viewprofile_r {
                         if ( $field{'comment'} ne q{} ) {
                             $output .= qq~
         <td class="catbg" colspan="2">
-            <img src="$imagesdir/profile.gif" alt="" />&nbsp;
+            $admin_img{'profile'}&nbsp;
             <span class="text1"><b>$field{'comment'}</b></span>
         </td>
     </tr><tr>

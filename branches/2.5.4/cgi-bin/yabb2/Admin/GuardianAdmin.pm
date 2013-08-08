@@ -18,6 +18,8 @@ $guardianadminpmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Guardian');
+$admin_images = "$yyhtml_root/Templates/Admin/default";
+$guardimg      = 'guardian.png';
 
 sub setup_guardian {
     is_admin_or_gmod();
@@ -80,7 +82,7 @@ sub setup_guardian {
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/guardian.gif" alt="" /> <b>$guardian_txt{'title'}</b>
+                <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'title'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2 padd_8_12px">
@@ -93,7 +95,7 @@ sub setup_guardian {
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/guardian_icon.gif" alt="" /> <b>$guardian_txt{'general'}</b>
+                <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'general'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -136,7 +138,7 @@ sub setup_guardian {
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/guardian_icon.gif" alt="" /> <b>$guardian_txt{'proxy'}</b>
+                <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'proxy'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -166,7 +168,7 @@ sub setup_guardian {
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/guardian_icon.gif" alt="" /> <b>$guardian_txt{'referer'}</b>
+                <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'referer'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -197,7 +199,7 @@ sub setup_guardian {
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/guardian_icon.gif" alt="" /> <b>$guardian_txt{'harvester'}</b>
+                <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'harvester'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -227,7 +229,7 @@ sub setup_guardian {
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/guardian_icon.gif" alt="" /> <b>$guardian_txt{'request'}</b>
+                <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'request'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -257,7 +259,7 @@ sub setup_guardian {
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/guardian_icon.gif" alt="" /> <b>$guardian_txt{'string'}</b>
+                <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'string'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -287,7 +289,7 @@ sub setup_guardian {
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/guardian_icon.gif" alt="" /> <b>$guardian_txt{'script'}</b>
+                <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'script'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -311,7 +313,7 @@ sub setup_guardian {
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/guardian_icon.gif" alt="" /> <b>$guardian_txt{'union'}</b>
+                <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'union'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -335,7 +337,7 @@ sub setup_guardian {
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/guardian_icon.gif" alt="" /> <b>$guardian_txt{'clike'}</b>
+                <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'clike'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">

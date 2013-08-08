@@ -21,12 +21,7 @@ our $VERSION = '2.5.4';
 $adminpmver = 'YaBB 2.5.4 $Revision$';
 LoadLanguage('Credits');
 
-if ( -e ("$templatesdir/$usestyle/AdminCentre.template") ) {
-    require "$templatesdir/$usestyle/AdminCentre.template";
-}
-else {
-    require "$templatesdir/default/AdminCentre.template";
-}
+get_template('AdminCentre');
 
 sub Admin {
     is_admin_or_gmod();
@@ -178,7 +173,7 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <img src="$infoimg" alt="" /> <b>$admintxt{'28'}</b>
+                $admin_img{'infoimg'} <b>$admintxt{'28'}</b>
             </td>
         </tr><tr>
             <td class="catbg">
@@ -299,7 +294,7 @@ qq~<a href="$scripturl?num=$lspostid/$lsreply#$lsreply">$lssub</a> ($lsdatetime)
                            document.write("$versiontxt{'4'} <b>$YaBBversion</b> - $versiontxt{'5'} <b>"+STABLE+"</b> <p>");
 	                    }
                     </script>
-                    <noscript>$versiontxt{'1'} <img src="http://www.yabbforum.com/images/version/versioncheck.gif" alt="" /></noscript>
+                    <noscript>$versiontxt{'1'} <img src="$versionimg" alt="" /></noscript>
                 </div>
             </td>
         </tr>
@@ -485,7 +480,7 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <img src="$infoimg" alt="" /> <b>$admin_txt{'693'}</b>
+                $admin_img{'infoimg'} <b>$admin_txt{'693'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2"><br />
@@ -503,7 +498,7 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
         <col class="w_50pc" />
         <tr>
             <td class="titlebg" colspan="2">
-                <img src="$imagesdir/cat.gif" alt="" /> <b>$admin_txt{'694'}</b>
+                $admin_img{'cat_img'} <b>$admin_txt{'694'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2" colspan="2"><br />
@@ -532,7 +527,7 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/cat.gif" alt="" /> <b>$admin_txt{'695'}</b>
+                $admin_img{'cat_img'} <b>$admin_txt{'695'}</b>
             </td>
         </tr><tr>
             <td class="catbg">
@@ -550,7 +545,7 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/cat.gif" alt="" /> <b>$admin_txt{'696'}</b>
+                $admin_img{'cat_img'} <b>$admin_txt{'696'}</b>
             </td>
         </tr><tr>
             <td class="catbg">
@@ -568,7 +563,7 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/cat.gif" alt="" /> <b>$admin_txt{'696a'}</b>
+                $admin_img{'cat_img'} <b>$admin_txt{'696a'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2"><br />
@@ -582,7 +577,7 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/cat.gif" alt="" /> <b>$admin_txt{'838'}</b>
+                $admin_img{'cat_img'} <b>$admin_txt{'838'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2"><br />
@@ -614,7 +609,7 @@ sub DeleteOldMessages {
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/ban.gif" alt="" /> <b>$aduptxt{'04'}</b>
+                $admin_img{'banimg'} <b>$aduptxt{'04'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2"><br />
@@ -779,7 +774,7 @@ sub ver_detail {
             <col class="w_40pc" />
             <col class="w_30pc" />
             <tr>
-                <td class="titlebg" colspan="3"><img src="$infoimg" alt="" /> <b>$admin_txt{'429'}</b></td>
+                <td class="titlebg" colspan="3">$admin_img{'infoimg'} <b>$admin_txt{'429'}</b></td>
             </tr><tr>
                 <td class="windowbg2" colspan="3">
                     <script src="$versionchk" type="text/javascript"></script>
@@ -949,7 +944,7 @@ qq~<input type="checkbox" name="$actfound" id="$actfound"$selected />&nbsp;<labe
             <col class="w_33pc" />
             <tr>
                 <td class="titlebg" colspan="3">
-                    <img src="$imagesdir/preferences.gif" alt="" /><b>$reftxt{'1'}</b>
+                    $admin_img{'prefimg'} <b>$reftxt{'1'}</b>
                 </td>
             </tr><tr>
                 <td class="windowbg2" colspan="3"><br />
@@ -1021,7 +1016,7 @@ sub AddMember {
     <col class="w_30pc" />
     <tr>
         <td colspan="2" class="titlebg">
-            <img src="$imagesdir/register.gif" alt="" /><b> $admintxt{'17a'}</b>
+            $admin_img{'register'}<b> $admintxt{'17a'}</b>
         </td>
     </tr><tr>
         <td class="windowbg"><label for="regusername"><b>$register_txt{'98'}:</b></label></td>

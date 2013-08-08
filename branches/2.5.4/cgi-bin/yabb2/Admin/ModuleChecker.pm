@@ -121,7 +121,6 @@ background-color: #A7B8CC;
 }
 td {padding:4px;}
 .catbg {
-    background: url("default/admincatbg.gif");
     background-color: #FEFEFE;
     color: #000000;
     font-size: 13px;

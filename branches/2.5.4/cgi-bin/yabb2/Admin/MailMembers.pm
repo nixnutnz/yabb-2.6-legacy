@@ -31,7 +31,7 @@ sub Mailing {
     <table class="bordercolor cs_thin pad_3px" style="margin-bottom:.5em">
 	<tr>
             <td class="titlebg">
-                <img src="$imagesdir/register.gif" alt="" /><b> $admintxt{'19'}</b>
+                $admin_img{'register'}<b> $admintxt{'19'}</b>
                 <form action="$adminurl?action=mailinggrps" method="post" name="mailgrps" style="display: inline;" accept-charset="$yycharset">
 		<span style="float: right;">
 			<input type="submit" value="$amv_txt{'53'}" class="button" />
@@ -326,7 +326,7 @@ sub MailingMembers {
 	<tr>
             <td class="titlebg">
 		<span style="float: left;">
-                    <img src="$imagesdir/register.gif" alt="" /><b> $admintxt{'19'}</b>
+             $admin_img{'register'}<b> $admintxt{'19'}</b>
 		</span>
                 <form action="$adminurl?action=mailinggrps" method="post" name="selsort" style="display: inline" accept-charset="$yycharset">
 		<span style="float: right;">
@@ -684,22 +684,22 @@ function showMailmemb(thesubject, thetext, thetime) {
 }
 
 sub ToJS {
-	$_[0] =~ s/;/&#059;/g;
-	$_[0] =~ s/\!/&#33;/g;
-	$_[0] =~ s/\(/&#40;/g;
-	$_[0] =~ s/\)/&#41;/g;
-	$_[0] =~ s/\-/&#45;/g;
-	$_[0] =~ s/\./&#46;/g;
-	$_[0] =~ s/\:/&#58;/g;
-	$_[0] =~ s/\?/&#63;/g;
-	$_[0] =~ s/\[/&#91;/g;
-	$_[0] =~ s~\\~&#92;&#92;~g;
-	$_[0] =~ s/\]/&#93;/g;
-	$_[0] =~ s/\^/&#94;/g;
-	$_[0] =~ s/\"/&#34;/g;
- 	$_[0] =~ s/\'/&#96;/g;
-	$_[0] =~ s/\</&#60;/g;
-	$_[0] =~ s/\>/&#62;/g;
+    $_[0] =~ s/;/&#059;/gsm;
+    $_[0] =~ s/\!/&#33;/gsm;
+    $_[0] =~ s/\(/&#40;/gsm;
+    $_[0] =~ s/\)/&#41;/gsm;
+    $_[0] =~ s/\-/&#45;/gsm;
+    $_[0] =~ s/\./&#46;/gsm;
+    $_[0] =~ s/\:/&#58;/gsm;
+    $_[0] =~ s/\?/&#63;/gsm;
+    $_[0] =~ s/\[/&#91;/gsm;
+    $_[0] =~ s~\\~&#92;&#92;~gsm;
+    $_[0] =~ s/\]/&#93;/gsm;
+    $_[0] =~ s/\^/&#94;/gsm;
+    $_[0] =~ s/\"/&#34;/gsm;
+    $_[0] =~ s/\'/&#96;/gsm;
+    $_[0] =~ s/\</&#60;/gsm;
+    $_[0] =~ s/\>/&#62;/gsm;
 }
 
 1;

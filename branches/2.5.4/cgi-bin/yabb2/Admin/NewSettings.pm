@@ -94,7 +94,7 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
             <col class=" w_50pc" />
             <tr>
                 <td class="titlebg padd_4px" colspan="2">
-                    <a id="tab_$tab->{'id'}"></a><img src="$imagesdir/preferences.gif" alt="" /> <b>$tab->{'name'}</b>
+                    <a id="tab_$tab->{'id'}"></a>$admin_img{'prefimg'} <b>$tab->{'name'}</b>
          <span style="float: right;" class="js_remove_me"><a href="#top"><b>$settings_txt{'top'}</b></a></span>
        </td>
      </tr>~;
@@ -214,9 +214,7 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
 <div class="bordercolor rightboxdiv" style="margin: .5em auto 0 0">
     <table class="cs_thin pad_4px">
         <tr>
-            <td class="titlebg" colspan="2">
-                <img src="$imagesdir/preferences.gif" alt=""  /> <b>$admin_txt{'10'}</b>
-       </td>
+            <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$admin_txt{'10'}</b></td>
         </tr><tr>
             <td class="catbg center pad_4px" colspan="2">
                 <input class="button" type="submit" value="$admin_txt{'10'}" />
@@ -360,15 +358,15 @@ sub settings2 {
             if ( $item->{'validate'} ) {
 
                 # Handle numbers/nulls better (empty string is 0)
-                if (   $item->{'validate'} =~ /null/
-                    && $item->{'validate'} =~ /number/ )
+                if (   $item->{'validate'} =~ /null/sm
+                    && $item->{'validate'} =~ /number/sm )
                 {
                     $settings{$name} ||= 0;
                 }
 
                 # Handle text/nulls better (empty string is empty string :)
-                if (   $item->{'validate'} =~ /null/
-                    && $item->{'validate'} =~ /text/ )
+                if (   $item->{'validate'} =~ /null/sm
+                    && $item->{'validate'} =~ /text/sm )
                 {
                     $settings{$name} ||= q{};
                 }
@@ -520,6 +518,7 @@ sub SaveSettingsTo {
 \$cookiesession_name = "\Q$cookiesession_name\E";   # Name of the Session cookie
 \$cookietsort = "\Q$cookietsort\E";   # Name of the message Index sort cookie
 \$cookieview = "\Q$cookieview\E";           # Name of the Guest Message Limit cookie
+\$cookieviewtime = $cookieviewtime;         # life time for Guest Message Limit cookie 
 
 \$regtype = $regtype;						# 0 = registration closed (only admin can register), 1 = pre registration with admin approval,
 									# 2 = pre registration and email activation, 3 = open registration
@@ -821,7 +820,7 @@ $ext_prof_fields
 
 \$mdadmin = $mdadmin;
 \$mdglobal = $mdglobal;
-\$mdymod = $mdymod;
+\$mdfmod = $mdfmod;
 \$mdmod = $mdmod;
 \$adminbin = $adminbin;				# Skip recycle bin step for admins and delete directly
 
@@ -829,7 +828,7 @@ $ext_prof_fields
 
 \$adminview = $adminview;			# Multi-admin settings for Administrators: 0=none, 1=icons 2=single checkbox 3=multiple checkboxes
 \$gmodview = $gmodview;				# Multi-admin settings for Global Moderators: 0=none, 1=icons 2=single checkbox 3=multiple checkboxes
-\$ymodview = $ymodview;				# Multi-admin settings for Mid Moderators: 0=none, 1=icons 2=single checkbox 3=multiple checkboxes
+\$fmodview = $fmodview;             # Multi-admin settings for Mid Moderators: 0=none, 1=icons 2=single checkbox 3=multiple checkboxes
 \$modview = $modview;				# Multi-admin settings for Moderators: 0=none, 1=icons 2=single checkbox 3=multiple checkboxes
 
 ########## Advanced Memberview Plus ##########
@@ -982,7 +981,7 @@ $ext_prof_fields
 \$sessions = $sessions;				# Set to 1 to activate session id protection.
 \$show_online_ip_admin = $show_online_ip_admin;	# Set to 1 to show online IP's to admins.
 \$show_online_ip_gmod = $show_online_ip_gmod;	# Set to 1 to show online IP's to global moderators.
-\$show_online_ip_ymod = $show_online_ip_ymod;	# Set to 1 to show online IP's to yabb moderators.
+\$show_online_ip_fmod = $show_online_ip_fmod;   # Set to 1 to show online IP's to yabb moderators.
 \$ipLookup = $ipLookup;                        # Set to 1 to enable IP Lookup.
 \$masterkey = "\Q$masterkey\E";			# Seed for encryption of captcha's
 

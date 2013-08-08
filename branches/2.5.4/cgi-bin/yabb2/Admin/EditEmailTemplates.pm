@@ -34,7 +34,7 @@ sub editemailtemplates {
     <table class="bordercolor cs_thin pad_4px w_440px">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/preferences.gif" alt="" /><b>$emaileditor{'1'}</b>
+                $admin_img{'prefimg'} <b>$emaileditor{'1'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2 center">
@@ -78,7 +78,7 @@ sub editemailtemplates {
     <table class="bordercolor cs_thin pad_4px w_440px">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/preferences.gif" alt="" /><b>$emaileditor{'3'}</b>
+                $admin_img{'prefimg'} <b>$emaileditor{'3'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2 center">
@@ -121,7 +121,7 @@ sub editemailtemplates {
     <table class="bordercolor cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <img src="$imagesdir/preferences.gif" alt="" /><b>$emaileditor{'4'}</b>
+                $admin_img{'prefimg'} <b>$emaileditor{'4'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">

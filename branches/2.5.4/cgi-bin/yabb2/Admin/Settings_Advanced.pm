@@ -361,7 +361,7 @@ qq~<input type="text" name="allowAttachIM" id="allow_attach_im" size="5" value="
             },
 	    {
 		description => qq~<label for="pm_attach_groups">$fatxt{'17b'}</label>~,
-		input_html => qq~<select multiple="multiple" name="pmAttachGroups" id="pm_attach_groups" size="8">~ . DrawPerms($pmAttachGroups, 0) . qq~</select>~,
+        input_html => q~<select multiple="multiple" name="pmAttachGroups" id="pm_attach_groups" size="8">~ . DrawPerms($pmAttachGroups, 0) . q~</select>~,
 		name => 'pmAttachGroups',
 		validate => 'text,null',
 		depends_on => ['allowAttachIM!=0'],

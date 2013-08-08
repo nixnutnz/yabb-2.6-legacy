@@ -25,7 +25,6 @@ sub GmodSettings {
     LoadLanguage('GModPrivileges');
 
     if ( !-e ("$vardir/gmodsettings.txt") ) { GmodSettings2(); }
-
     require "$vardir/gmodsettings.txt";
 
     if ( $gmod_newfile eq q{} ) { GmodSettings2(); }
@@ -82,7 +81,7 @@ qq~\n<input type="checkbox" name="$actfound" id="$actfound"$checked />&nbsp;<lab
    <table class=" cs_thin pad_4px">
      <col class="w_50px" />
      <tr>
-       <td class="titlebg" colspan="2"><img src="$imagesdir/preferences.gif" alt="" /><b>$gmod_settings{'1'}</b></td>
+       <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$gmod_settings{'1'}</b></td>
      </tr><tr>
        <td class="windowbg2 padd_8_12px" colspan="2">
 <input type="checkbox" id="allow_gmod_admin" name="allow_gmod_admin"$gmod_selected_a /> <label for="allow_gmod_admin">$gmod_settings{'2'}</label><br />
@@ -126,7 +125,7 @@ sub EditBots {
     <div class="bordercolor rightboxdiv">
         <table class="cs_thin pad_4px">
             <tr>
-                <td class="titlebg"><img src="$imagesdir/xx.gif" alt="" /><b>$admin_txt{'18'}</b></td>
+                <td class="titlebg">$admin_img{'xx'}<b>$admin_txt{'18'}</b></td>
             </tr><tr>
                 <td class="windowbg2  padd_8_12px">
                     <span class="small">
@@ -203,8 +202,8 @@ sub SetCensor {
  <div class="bordercolor rightboxdiva">
    <table class="cs_thin pad_4px">
      <tr>
-       <td>
-             <img src="$imagesdir/ban.gif" alt="" /><span class="legend"><b>$admin_txt{'135'}</b></span>
+       <td class="titlebg">
+             $admin_img{'banimg'}<span class="legend"><b>$admin_txt{'135'}</b></span>
        </td>
      </tr><tr>
        <td class="windowbg2">
@@ -293,7 +292,7 @@ sub SetReserve {
  <div class="bordercolor rightboxdiv">
    <table class="cs_thin pad_4px">
      <tr>
-       <td class="titlebg"><img src="$imagesdir/profile.gif" alt="" /><b>$admin_txt{'341'}</b></td>
+       <td class="titlebg">$admin_img{'profile'}<b>$admin_txt{'341'}</b></td>
      </tr><tr>
        <td class="windowbg2 padd_8_12px">
              $admin_txt{'699'}
@@ -392,7 +391,7 @@ sub ModifyAgreement {
  <div class="bordercolor rightboxdiv">
    <table class="cs_thin pad_4px">
      <tr>
-       <td class="titlebg"><img src="$imagesdir/xx.gif" alt="" /><b>$admin_txt{'764'}</b></td>
+       <td class="titlebg">$admin_img{'xx'}<b>$admin_txt{'764'}</b></td>
      </tr><tr>
        <td class="windowbg2 padd_8_12px">
             <label for="agreement">$admin_txt{'765'}</label>
@@ -502,12 +501,15 @@ q~                                                                              
 'smilies',"$FORM{'smilies'}",
 'setcensor',"$FORM{'setcensor'}",
 'modagreement',"$FORM{'modagreement'}",
+'eventcal_set',"$FORM{'eventcal_set'}",
+'bookmarks',"$FORM{'bookmarks'}", 
 
 'referer_control',"$FORM{'referer_control'}",
 'newsettings;page=security',"$FORM{'security'}",
 'setup_guardian',"$FORM{'setup_guardian'}",
 'newsettings;page=antispam',"$FORM{'antispam'}",
-
+'spam_questions',"$FORM{'spam_questions'}",
+'honeypot',"$FORM{'honeypot'}", 
 'managecats',"$FORM{'managecats'}",
 'manageboards',"$FORM{'manageboards'}",
 'helpadmin',"$FORM{'helpadmin'}",
@@ -549,11 +551,30 @@ q~                                                                              
 admin => "$FORM{'allow_gmod_admin'}",
 
 newsettings => "$mynewsettings",
-'eventcal_set',"$FORM{'eventcal_set'}",
 newsettings2 => "$mynewsettings",
 eventcal_set2 => "$FORM{'eventcal_set'}",
 eventcal_set3 => "$FORM{'eventcal_set'}",
-
+bookmarks2 => "$FORM{'bookmarks'}",
+bookmarks_add => "$FORM{'bookmarks'}",
+bookmarks_add2 => "$FORM{'bookmarks'}",
+bookmarks_edit => "$FORM{'bookmarks'}",
+bookmarks_edit2 => "$FORM{'bookmarks'}",
+bookmarks_delete => "$FORM{'bookmarks'}",
+bookmarks_delete2 => "$FORM{'bookmarks'}",
+spam_questions2 => "$FORM{'spam_questions'}",
+spam_questions_add => "$FORM{'spam_questions'}",
+spam_questions_add2 => "$FORM{'spam_questions'}",
+spam_questions_edit => "$FORM{'spam_questions'}",
+spam_questions_edit2 => "$FORM{'spam_questions'}",
+spam_questions_delete => "$FORM{'spam_questions'}",
+spam_questions_delete2 => "$FORM{'spam_questions'}",
+honeypot2 => "$FORM{'honeypot'}",
+honeypot_add => "$FORM{'honeypot'}",
+honeypot_add2 => "$FORM{'honeypot'}",
+honeypot_edit => "$FORM{'honeypot'}",
+honeypot_edit2 => "$FORM{'honeypot'}",
+honeypot_delete => "$FORM{'honeypot'}",
+honeypot_delete2 => "$FORM{'honeypot'}", 
 deleteattachment => "$FORM{'manageattachments'}",
 manageattachments2 => "$FORM{'manageattachments'}",
 removeoldattachments => "$FORM{'manageattachments'}",
@@ -661,7 +682,7 @@ EOF
     print {MODACCESS} $setfile or croak "$croak{'print'} MODACCESS";
     fclose(MODACCESS);
 
-    $yySetLocation = qq~$adminurl~;
+    $yySetLocation = qq~$adminurl?action=gmodaccess~;
     redirectexit();
     return;
 }
@@ -707,8 +728,7 @@ sub EditPaths {
    <table class="cs_thin pad_4px">
      <tr>
        <td class="titlebg">
-            <img src="$imagesdir/preferences.gif" alt="" />
-&nbsp;<b>$edit_paths_txt{'1'}</b>
+            $admin_img{'prefimg'}&nbsp;<b>$edit_paths_txt{'1'}</b>
        </td>
      </tr><tr>
        <td class="catbg"><span class="small">$edit_paths_txt{'2'}</span></td>

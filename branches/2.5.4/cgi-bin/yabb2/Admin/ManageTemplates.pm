@@ -92,7 +92,7 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
 	<table class="cs_thin pad_4px" style="table-layout: fixed;">
     	<tr>
         	<td class="titlebg">
-            	<img src="$imagesdir/xx.gif" alt="" /><b> $templ_txt{'52'}</b> - $templatefile
+                $admin_img{'xx'}<b> $templ_txt{'52'}</b> - $templatefile
             </td>
 		</tr><tr>
         	<td class="windowbg2 center">
@@ -206,7 +206,7 @@ sub ModifyStyle {
     	<form action="$adminurl?action=modcss;cssfile=$cssfile" name="modcss" method="post" style="display: inline;" accept-charset="$yycharset">
         <tr>
         	<td class="titlebg">
-            	<img src="$imagesdir/xx.gif" alt="" /><b> $templ_txt{'51'}</b> - $cssfile &nbsp;
+                $admin_img{'xx'}<b> $templ_txt{'51'}</b> - $cssfile &nbsp;
                 <input type="submit" name="wysiwyg" id="wysiwyg" value="wysiwyg" class="button" />
                 <input type="button" name="source" id="source" value=" source " disabled="disabled" />
             </td>
@@ -217,7 +217,7 @@ sub ModifyStyle {
         	<td class="windowbg2 center">
                 <input type="hidden" name="filename" value="$cssfile" />
                 <input type="hidden" name="type" value="$admincs" />
-                <textarea rows="20" cols="95" name="css" style="width: 99%; height: 350px;">$fullcss</textarea>
+                <textarea rows="20" cols="95" name="css" style="width: 99%; height: 350px;; font-family:Courier">$fullcss</textarea>
             </td>
         </tr><tr>
             <td class="catbg center">
@@ -409,38 +409,38 @@ qq~					<option value="$bodystyle" selected="selected">$templ_txt{'25'}</option>
 qq~					<option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</option>\n~;
         }
     }
-	if ($stylestr =~ /\.buttonleft/ && $stylestr =~ /\.buttonright/ && $stylestr =~ /\.buttonimage/ && $stylestr =~ /\.buttontext/) {
+    if ( $stylestr =~ /\.buttonleft/sm && $stylestr =~ /\.buttonright/sm && $stylestr =~ /\.buttonimage/sm && $stylestr =~ /\.buttontext/sm ) {
 		$cssbuttons = 1;
 		$buttonstyle = $stylestr;
-		$buttonstyle =~ s/.*?(\.buttontext\s*?\{.+?\}).*/$1/ig;
+        $buttonstyle =~ s/.*?(\.buttontext\s*?\{.+?\}).*/$1/igsm;
 		$selstyl .= qq~<option value='$buttonstyle'>$templ_txt{'buttontext'}</option>\n~;
 		$prevtext = $buttonstyle;
-		$prevtext =~ s/\.buttontext\s*?\{(.+?)\}/$1/ig;
+        $prevtext =~ s/\.buttontext\s*?\{(.+?)\}/$1/igsm;
 		$drawtxtpos = $prevtext;
-		$drawtxtpos =~ m/.*?top\s*?\:\s*?(\d{1,2})px.*/i;
+        $drawtxtpos =~ m/.*?top\s*?\:\s*?(\d{1,2})px.*/ism;
 		$viewtxty = $1;
 		$viewtxty .= 'px';
 		$drawpos4 = ($1 * 5) + 213;
 		$drawpos4 .= 'px';
 		$buttonleftstyle = $stylestr;
-		$buttonleftstyle =~ s/.*?(\.buttonleft\s*?\{.+?\}).*/$1/ig;
+        $buttonleftstyle =~ s/.*?(\.buttonleft\s*?\{.+?\}).*/$1/igsm;
 		$buttonleftbg = qq~<input type="hidden" id="buttonleftbg" name="buttonleftbg" value="$buttonleftstyle" />\n~;
 		$buttonbg = $buttonleftstyle;
-		$buttonbg =~ s~.*?($yyhtml_root/Buttons/)(.*?)\.(.*)~$2~g;
+        $buttonbg =~ s~.*?($yyhtml_root/Buttons/)(.*?)\.(.*)~$2~gsm;
 		$prevleft = $buttonleftstyle;
-		$prevleft =~ s/\.buttonleft\s*?\{(.+?)\}/$1/ig;
+        $prevleft =~ s/\.buttonleft\s*?\{(.+?)\}/$1/igsm;
 		$buttonrightstyle = $stylestr;
-		$buttonrightstyle =~ s/.*?(\.buttonright\s*?\{.+?\}).*/$1/ig;
+        $buttonrightstyle =~ s/.*?(\.buttonright\s*?\{.+?\}).*/$1/igsm;
 		$buttonrightbg = qq~<input type="hidden" id="buttonrightbg" name="buttonrightbg" value="$buttonrightstyle" />\n~;
 		$prevright = $buttonrightstyle;
-		$prevright =~ s/\.buttonright\s*?\{(.+?)\}/$1/ig;
+        $prevright =~ s/\.buttonright\s*?\{(.+?)\}/$1/igsm;
 		$buttonimagestyle = $stylestr;
-		$buttonimagestyle =~ s/.*?(\.buttonimage\s*?\{.+?\}).*/$1/ig;
+        $buttonimagestyle =~ s/.*?(\.buttonimage\s*?\{.+?\}).*/$1/igsm;
 		$buttonimagebg = qq~<input type="hidden" id="buttonimagebg" name="buttonimagebg" value="$buttonimagestyle" />\n~;
 		$previmage = $buttonimagestyle;
-		$previmage =~ s/\.buttonimage\s*?\{(.+?)\}/$1/ig;
+        $previmage =~ s/\.buttonimage\s*?\{(.+?)\}/$1/igsm;
 		$drawimgpos = $previmage;
-		$drawimgpos =~ m/.*?background\-position\s*?\:\s*?(\d{1,2})px\s*?(\d{1,2})px.*/i;
+        $drawimgpos =~ m/.*?background\-position\s*?\:\s*?(\d{1,2})px\s*?(\d{1,2})px.*/ism;
 		$viewimgy = $2;
 		$viewimgy .= 'px';
 		$drawpos1 = ($2 * 5) + 213;
@@ -450,9 +450,9 @@ qq~					<option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</option>\n~;
 		$drawpos2 = $1 + 213;
 		$drawpos2 .= 'px';
 		$drawimgwd = $previmage;
-		$drawimgwd =~ m/.*?padding\s*?\:\s*?\d{1,2}px\s*?\d{1,2}px\s*?\d{1,2}px\s*?(\d{1,2})px.*/i;
+        $drawimgwd =~ m/.*?padding\s*?\:\s*?\d{1,2}px\s*?\d{1,2}px\s*?\d{1,2}px\s*?(\d{1,2})px.*/ism;
 		$viewimgpad = $1;
-		$viewimgpad .= "px";
+        $viewimgpad .= 'px';
 		$drawpos3 = $1 + 213;
 		$drawpos3 .= 'px';
 	}
@@ -604,7 +604,7 @@ qq~					<option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</option>\n~;
     	<tr>
         	<td class="titlebg">
             	<form action="$adminurl?action=modstyle" name="modstyles" id="modstyles" method="post" accept-charset="$yycharset">
-                	<img src="$imagesdir/xx.gif" alt="" /> <b>$templ_txt{'51'}</b> - $viewcss &nbsp;
+                    $admin_img{'xx'} <b>$templ_txt{'51'}</b> - $viewcss &nbsp;
                 	<input type="hidden" name="cssfile" value="$cssfile" />
                 	<input type="button" name="wysiwyg" id="wysiwyg" value="wysiwyg" disabled="disabled" />
                 	<input type="submit" name="source" id="source" value=" source " class="button" />
@@ -698,18 +698,18 @@ qq~					<option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</option>\n~;
 		</tr>
         ~;
 if($cssbuttons) {
-	$thisbutton = "";
-	opendir(DIR, "$htmldir/Buttons");
-	@contents = readdir(DIR);
-	closedir(DIR);
-	$optbuttons = "";
+    $thisbutton = q{};
+    opendir DIR, "$htmldir/Buttons";
+    @contents = readdir DIR;
+    closedir DIR;
+    $optbuttons = q{};
 	$x = 1;
-	foreach $line (sort @contents){
-		($name, $extension) = split (/\./, $line);
-		($tmpname, $tmpside) = split (/\_/, $name);
-		$checked = "";
-		if ($name eq $buttonbg) { $checked = qq~ checked = "checked"~; }
-		if (($extension =~ /gif/i || $extension =~ /png/i) && $tmpside eq "left") {
+    foreach my $line (sort @contents){
+        ($name, $extension) = split /\./xsm, $line;
+        ($tmpname, $tmpside) = split /\_/xsm, $name;
+        $checked = q{};
+        if ($name eq $buttonbg) { $checked = q~ checked = "checked"~; }
+        if (($extension =~ /gif/ism || $extension =~ /png/ism) && $tmpside eq 'left') {
 			$bleft = qq~_left.$extension~;
 			$bright = qq~_right.$extension~;
 			$thisbutton .= qq~<div style="float: left; width: 99%; margin: 2px; vertical-align: bottom;"><div style="float: left; height: 20px; width: 112px; padding: 0 0 0 6px; background-image: url($yyhtml_root/Buttons/$tmpname$bleft); background-repeat: no-repeat; vertical-align: bottom; cursor: pointer;" onclick="updateButtons('$line');">~;
@@ -892,9 +892,7 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
     }
     if ($istabbed) {
         $tabsep = q{};
-#qq~<img src="$imagesdir/tabsep211.png" alt="" style="float: left; vertical-align: middle;" />~;
         $tabfill = q{};
-#qq~<img src="$imagesdir/tabfill.gif" alt="" style="vertical-align: middle;" />~;
         $tabtime = timeformat( $date, 1 );
 
         $viewstyle .= qq~
@@ -931,7 +929,7 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
         	<td id="tabmnbox" class="rightbox vtop" style="width:160px">
             	<div style="float: left; width: 160px; height: 21px; text-align: center; padding-top: 3px; display: inline;">
                 	<input type="text" name="search" size="16" style="font-size: 11px; vertical-align: middle;" />
-                	<img src="$imagesdir/search.gif" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />
+                    <img src="$imagesdir/search.png" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />
                 </div>
         	</td>
 		</tr><tr>
@@ -1006,10 +1004,10 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
 ~;
 if($cssbuttons) {
 $menusep = qq~<img src="$forumstylesurl/default/buttonsep.png" style="height: 20px; width: 1px; margin: 0px; padding: 0px; vertical-align: top; display: inline-block;" alt="" border="0" />~;
-$viewstyleleft = qq~style="height: 20px; border: 0px; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
-$viewstyleright = qq~style="height: 20px; border: 0px; margin: 0px; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
-$viewstyleimage = qq~height: 20px; border: 0px; margin: 0px; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;~;
-$viewstyletext = qq~style="height: 20px; border: 0px; margin: 0px; padding: 0px; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block;"~;
+$viewstyleleft = q~style="height: 20px; border: 0px; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
+$viewstyleright = q~style="height: 20px; border: 0px; margin: 0px; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
+$viewstyleimage = q~height: 20px; border: 0px; margin: 0px; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;~;
+$viewstyletext = q~style="height: 20px; border: 0px; margin: 0px; padding: 0px; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block;"~;
 
 $viewstyle .= qq~
 <table class="bordercolor" cellpadding="4" cellspacing="1" border="0" width="100%">
@@ -1877,9 +1875,7 @@ sub ModifySkin {
     fclose(TMPL);
 
     $tabsep = q{};
-     # qq~<img src="$imagesdir/tabsep211.png" alt="" style="float: left" />~;
     $tabfill = q{};
-    # qq~<img src="$imagesdir/tabfill.gif" alt="" />~;
 
     $tempforumurl  = $mbname;
     $temptitle     = q~Template Config~;
@@ -1940,6 +1936,8 @@ qq~<div class="yabb_searchbox" style="width:auto"><form><input type="text" name=
     $fulltemplate =~ s/({|<)yabb tabadd(}|>)//gsm;
     $fulltemplate =~ s/({|<)yabb addtab(}|>)//gsm;
     $fulltemplate =~ s/({|<)yabb syntax_js(}|>)//gsm;
+    $fulltemplate =~ s/({|<)yabb grayscript(}|>)//gsm;
+    $fulltemplate =~ s/({|<)yabb high(}|>)//gsm;
 
     if ( $selectedsection eq 'vboard' ) {
         $boardtempl = BoardTempl( $viewboard, $tempimages, $tempimagesdir );
@@ -1977,7 +1975,7 @@ s/<a href="http:\/\/jigsaw.w3.org\/css\-validator\/validator\?uri\=<yabb url>">.
 	<table class="cs_thin pad_4px">
     	<tr>
         	<td class="titlebg">
-            	<img src="$imagesdir/xx.gif" alt="" /><b> $templ_txt{'6'}</b>
+                $admin_img{'xx'}<b> $templ_txt{'6'}</b>
             </td>
         </tr>
 	</table>
@@ -2273,7 +2271,7 @@ qq~$boardindex_txt{'63'}: $templ_txt{'74'}<br />$boardindex_txt{'63a'}: $templ_t
       qq~<a href="javascript:;">${$uid.$username}{'realname'}</a>~;
     my $tmplasttopiclink = qq~<a href="javascript:;">$templ_txt{'80'}</a>~;
     $tempcatlink =
-qq~<img src="$x[1]/cat_collapse.gif" alt="" /> <a href="javascript:;">$templ_txt{'81'}</a>~;
+qq~<img src="$x[1]/cat_collapse.png" alt="" /> <a href="javascript:;">$templ_txt{'81'}</a>~;
     my $templatecat = $catheader;
     $templatecat =~ s/({|<)yabb catlink(}|>)/$tempcatlink/gsm;
     my $tmptemplateblock = $templatecat;
@@ -2293,7 +2291,7 @@ qq~$boardindex_txt{'791'} <select style="font-size: 7pt;"><option>&nbsp;</option
 qq~<span class="small" style="color: $admcolor;"><b>${$uid.$username}{'realname'}</b></span><br />~;
     my $tempmembercount = q~<b>2</b>~;
     my $tempboardpic =
-      qq~ <img src="$imagesdir/boards.gif" alt="$tempcurboard" />~;
+      qq~ <img src="$imagesdir/boards.png" alt="$tempcurboard" />~;
 
     for my $i ( 1 .. 2 ) {
         my $templateblock = $boardblock;
@@ -2427,7 +2425,7 @@ qq~<span class="small" style="vertical-align: middle;"> <b>$messageindex_txt{'13
     $postlink     = qq~$menusep$img{'newthread'}~;
     $polllink     = qq~$menusep$img{'createpoll'}~;
 
-    $bdpic = qq~ <img src="$x[1]/boards.gif" alt="$templ_txt{'72'}" /> ~;
+    $bdpic = qq~ <img src="$x[1]/boards.png" alt="$templ_txt{'72'}" /> ~;
     $message_permalink = $messageindex_txt{'10'};
     $temp_attachment =
       qq~<img src="$x[1]/paperclip.gif" alt="$messageindex_txt{'5'}" />~;
@@ -2531,10 +2529,10 @@ sub DisplayTempl {
 			$aimimg = qq~$menusep<span class="imgwindowbg">AIM</span>~;
 		}
 		else {
-			$viewstyleleft = qq~style="height: 20px; border: 0px; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
-			$viewstyleright = qq~style="height: 20px; border: 0px; margin: 0px; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
-			$viewstyleimage = qq~height: 20px; border: 0px; margin: 0px; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;~;
-			$viewstyletext = qq~style="height: 20px; border: 0px; margin: 0px; padding: 0px; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block;"~;
+            $viewstyleleft = q~style="height: 20px; border: 0px; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
+            $viewstyleright = q~style="height: 20px; border: 0px; margin: 0px; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
+            $viewstyleimage = q~height: 20px; border: 0px; margin: 0px; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;~;
+            $viewstyletext = q~style="height: 20px; border: 0px; margin: 0px; padding: 0px; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block;"~;
 			$yimimg = qq~<span class="buttonleft" $viewstyleleft><span class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/yim.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>YIM</span></span></span></span>~;
 			$aimimg = qq~<span class="buttonleft" $viewstyleleft><span class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/aim.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>AIM</span></span></span></span>~;
 		}
@@ -2739,8 +2737,7 @@ sub MyCenterTempl {
     $imagesdir = $x[1];
     require "$templatesdir/$x[0]/MyCenter.template";
 
-    $tabsep =
-      qq~<img src="$imagesdir/tabsep211.png" alt="" style="float: left" />~;
+    $tabsep = q{};
     $tabfill = qq~<img src="$imagesdir/tabfill.gif" alt="" />~;
 
     if (   $PM_level == 1

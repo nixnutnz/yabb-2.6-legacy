@@ -1,6 +1,6 @@
 ###############################################################################
 # BookmarkSettings.pm                                                         #
-# $Date$                                                         #
+# $Date: 2013-07-30                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -127,13 +127,13 @@ sub Bookmarks {
     $yymain .= qq~
 <form action="$adminurl?action=bookmarks2" method="post">
 <div class="bordercolor rightboxdiva">
-    <table class="pad_4px cs_thin">
+    <table class="cs_thin pad_4px">
         <colgroup>
             <col width="50%" />
             <col width="50%" />
         </colgroup>
         <tr>
-            <th class="titlebg" colspan="2"><img src="$imagesdir/preferences.gif" alt="" /> $bookmark_txt{'09'}</th>
+            <th class="titlebg" colspan="2">$admin_img{'prefimg'} $bookmark_txt{'09'}</th>
         </tr><tr class="windowbg2 vtop">
             <td><label for="en_bookmarks">$bookmark_txt{'10'}</label></td>
             <td><input type="checkbox" name="en_bookmarks" id="en_bookmarks" value="1"$chk_bookmarks /></td>   
@@ -151,9 +151,9 @@ sub Bookmarks {
     </table>
 </div>
 <div class="bordercolor rightboxdiva">
-	<table class="pad_4px cs_thin">
+    <table class="cs_thin pad_4px">
 		<tr>
-			<th class="titlebg" style="text-align: left; vertical-align: middle;" colspan="2"><img src="$imagesdir/preferences.gif" alt="" /> $admin_txt{'10'}</th>
+            <th class="titlebg" style="text-align: left; vertical-align: middle;" colspan="2">$admin_img{'prefimg'} $admin_txt{'10'}</th>
 		</tr><tr>
 			<td class="catbg" style="text-align: center; vertical-align: middle;" colspan="2"><input class="button" type="submit" value="$admin_txt{'10'}" /></td>
 		</tr>
@@ -167,7 +167,7 @@ sub Bookmarks {
 		<col style="width:10%" />
 		<col style="width:7%" span="2" />
 		<tr>
-			<th class="titlebg" colspan="5"><img src="$imagesdir/preferences.gif" alt="" /> $bookmark_txt{'12'} ($total_bookmarks)</th>
+            <th class="titlebg" colspan="5">$admin_img{'prefimg'} $bookmark_txt{'12'} ($total_bookmarks)</th>
 		</tr>
 		$show_bookmarks
 	</table>
@@ -180,7 +180,7 @@ sub Bookmarks {
 			<col width="50%" />
 		</colgroup>
 		<tr>
-			<th class="titlebg" colspan="2"><img src="$imagesdir/preferences.gif" alt="" /> $bookmark_txt{'13'}</th>
+            <th class="titlebg" colspan="2">$admin_img{'prefimg'} $bookmark_txt{'13'}</th>
 		</tr><tr class="windowbg2 vtop">
 			<td><label for="bm_title"><span style="font-weight: bold;">$bookmark_txt{'02'}:</span><br /><span class="small">$bookmark_txt{'18'}</span></label></td>
 			<td><input type="text" name="bm_title" id="bm_title" size="35" /></td> 
@@ -199,7 +199,7 @@ sub Bookmarks {
 <div class="bordercolor rightboxdiva">
 	<table class="pad_4px cs_thin">
 		<tr>
-			<th class="titlebg" colspan="2"><img src="$imagesdir/preferences.gif" alt="" /> $admin_txt{'10'}</th>
+            <th class="titlebg" colspan="2">$admin_img{'prefimg'} $admin_txt{'10'}</th>
 		</tr><tr>
 			<td class="catbg center" colspan="2"><input class="button" type="submit" value="$bookmark_txt{'15'}" /></td>
 		</tr>
@@ -317,7 +317,7 @@ sub EditBookmark {
 			<col width="50%" />
 		</colgroup>
 		<tr>
-			<th class="titlebg"colspan="2"><img src="$imagesdir/preferences.gif" alt="" /> $bookmark_txt{'16'}</th>
+            <th class="titlebg"colspan="2">$admin_img{'prefimg'} $bookmark_txt{'16'}</th>
 		</tr><tr class="windowbg2 vtop">
 			<td><label for="bm_title"><span style="font-weight: bold;">$bookmark_txt{'02'}:</span><br /><span class="small">$bookmark_txt{'18'}</span></label></td>
 			<td><input type="text" name="bm_title" id="bm_title" size="35" value="$bm_title" /></td> 
@@ -336,7 +336,7 @@ sub EditBookmark {
 <div class="bordercolor" style="padding: 0px; width: 99%; margin-top: 1em; margin-left: 0px; margin-right: auto;">
 	<table class="pad_4px cs_thin">
 		<tr>
-			<th class="titlebg" colspan="2"><img src="$imagesdir/preferences.gif" alt="" /> $admin_txt{'10'}</th>
+            <th class="titlebg" colspan="2">$admin_img{'prefimg'} $admin_txt{'10'}</th>
 		</tr><tr>
 			<td class="catbg center" colspan="2"><input class="button" type="submit" value="$admin_txt{'10'}" />&nbsp;<input type="button" class="button" value="$bookmark_txt{'17'}" onclick="location.href='$adminurl?action=bookmarks';" /></td>
 		</tr>

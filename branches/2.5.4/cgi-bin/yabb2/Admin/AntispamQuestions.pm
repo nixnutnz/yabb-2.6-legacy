@@ -29,14 +29,14 @@ sub SpamQuestions {
     if ($spam_questions_case) {
         $chk_spam_question_case = q~ checked="checked"~;
     }
-    opendir(LNGDIR, $langdir);
-    my @lfilesanddirs = readdir(LNGDIR);
-    close(LNGDIR);
+    opendir LNGDIR, $langdir;
+    my @lfilesanddirs = readdir LNGDIR;
+    closedir LNGDIR;
 
-    foreach my $fld (sort {lc($a) cmp lc($b)} @lfilesanddirs) {
+    foreach my $fld (sort {lc($a) cmp lc $b} @lfilesanddirs) {
 	    if (-e "$langdir/$fld/Main.lng") {
 	        my $displang = $fld;
-            $displang =~ s~(.+?)\_(.+?)$~$1 ($2)~gi;
+            $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
             if ($questions_language eq $fld) { $drawnldirs .= qq~<option value="$fld" selected="selected">$displang</option>~; }
             else { $drawnldirs .= qq~<option value="$fld">$displang</option>~; }
         }
@@ -77,7 +77,7 @@ sub SpamQuestions {
     <td>
     <form action="$adminurl?action=spam_questions_delete" method="post">
       <input type="hidden" name="spam_question_id" value="$spam_question_id" />
-      <input class="button" type="submit" value="$admin_txt{'delete'}" onclick="return confirm('$admin_txt{'confirm'}');"/>
+      <input class="button" type="submit" value="$admin_txt{'delete'}" onclick="return confirm('$spam_question_txt{'confirm'}');"/>
       <input type="hidden" name="questions_language" value="$questions_language" />
     </form>
     </td>
@@ -98,7 +98,7 @@ sub SpamQuestions {
     <col class="w_50pc" />
     <col class="w_50pc" />
 	<tr>
-    	<th class="titlebg" colspan="2"><img src="$imagesdir/preferences.gif" alt="" /> $spam_question_txt{'question_settings'}</th>
+        <th class="titlebg" colspan="2">$admin_img{'prefimg'} $spam_question_txt{'question_settings'}</th>
 	</tr><tr class="windowbg2 vtop">
     	<td><label for="en_spam_questions">$spam_question_txt{'enable_question'}</label></td>
     	<td><input type="checkbox" name="en_spam_questions" id="en_spam_questions" value="1"$chk_spam_question /></td>
@@ -117,7 +117,7 @@ sub SpamQuestions {
 <div class="bordercolor rightboxdiva">
 <table class="cs_thin pad_4px">
 	<tr>
-    	<th class="titlebg"><img src="$imagesdir/preferences.gif" alt="" /> $admin_txt{'10'}</th>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
 	</tr><tr>
     	<td class="catbg center">
         	<input class="button" type="submit" value="$admin_txt{'10'}" />
@@ -132,7 +132,7 @@ sub SpamQuestions {
 	<col span="2" class="w_43pc" />
 	<col span="2" class="w_7pc" />
 	<tr>
-    	<th class="titlebg"$header_row><img src="$imagesdir/preferences.gif" alt="" /> $spam_question_txt{'questions'} ($total_questions)
+        <th class="titlebg"$header_row>$admin_img{'prefimg'} $spam_question_txt{'questions'} ($total_questions)
     		<div style="display: inline; float: right;">
     		<form action="$adminurl?action=spam_questions" method="post" enctype="application/x-www-form-urlencoded">
       			<select name="questions_language" id="questions_language" size="1">
@@ -152,7 +152,7 @@ $show_questions
     <col class="w_25pc" />
     <col class="w_75pc" />
 	<tr>
-    	<th class="titlebg" colspan="2"><img src="$imagesdir/preferences.gif" alt="" /> $spam_question_txt{'new_question'}</th>
+        <th class="titlebg" colspan="2">$admin_img{'prefimg'} $spam_question_txt{'new_question'}</th>
 	</tr><tr class="windowbg2 vtop bold">
     	<td><label for="spam_question">$spam_question_txt{'question'}:</label></td>
     	<td><input type="text" name="spam_question" id="spam_question" size="60" maxlength="50" /></td>
@@ -165,7 +165,7 @@ $show_questions
 <div class="bordercolor rightboxdiva">
 <table class="cs_thin pad_4px">
 	<tr>
-    	<th class="titlebg"><img src="$imagesdir/preferences.gif" alt="" /> $admin_txt{'10'}</th>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
 	</tr><tr>
     	<td class="catbg center">
         	<input class="button" type="submit" value="$spam_question_txt{'add_question'}" />
@@ -260,7 +260,7 @@ sub SpamQuestionsEdit {
     <col class="w_25pc" />
     <col class="w_75pc" />
 	<tr>
-    	<th class="titlebg" colspan="2"><img src="$imagesdir/preferences.gif" alt="" /> $spam_question_txt{'edit_question'}</th>
+        <th class="titlebg" colspan="2">$admin_img{'prefimg'} $spam_question_txt{'edit_question'}</th>
 	</tr><tr class="windowbg2 vtop bold">
     	<td><label for="spam_question">$spam_question_txt{'question'}:</label></td>
     	<td><input type="text" name="spam_question" id="spam_question" size="60" maxlength="50" value="$spam_question" /></td>
@@ -273,7 +273,7 @@ sub SpamQuestionsEdit {
 <div class="bordercolor rightboxdiv" style="margin-top: 1em;">
 <table class="cs_thin pad_4px">
 	<tr>
-    	<th class="titlebg"><img src="$imagesdir/preferences.gif" alt="" /> $admin_txt{'10'}</th>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
 	</tr><tr>
     	<td class="catbg center">
     		<input class="button" type="submit" value="$admin_txt{'10'} $spam_question_txt{'question'}" />&nbsp;<input type="button" class="button" value="$admin_txt{'cancel'}" onclick="location.href='$adminurl?action=spam_questions;questions_language=$FORM{'questions_language'}';" />

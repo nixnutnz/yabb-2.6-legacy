@@ -16,6 +16,7 @@ our $VERSION = '2.5.4';
 
 $manageboardspmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
+$admin_images = "$yyhtml_root/Templates/Admin/default";
 
 sub ManageBoards {
     is_admin_or_gmod();
@@ -26,7 +27,7 @@ sub ManageBoards {
         $add     = $admin_txt{'47'};
         $act     = 'catscreen';
         $manage =
-qq~<a href="$adminurl?action=reordercats"><img src="$imagesdir/reorder.gif" alt="$admin_txt{'829'}" title="$admin_txt{'829'}" /></a> &nbsp;<b>$admin_txt{'49'}</b>~;
+qq~<a href="$adminurl?action=reordercats"><img src="$admin_images/reorder.gif" alt="$admin_txt{'829'}" title="$admin_txt{'829'}" /></a> &nbsp;<b>$admin_txt{'49'}</b>~;
         $managedescr = $admin_txt{'678'};
         $act2        = 'addcat';
         $action_area = 'managecats';
@@ -36,7 +37,7 @@ qq~<a href="$adminurl?action=reordercats"><img src="$imagesdir/reorder.gif" alt=
         $add     = $admin_txt{'50'};
         $act     = 'boardscreen';
         $manage =
-qq~<img src="$imagesdir/cat.gif" alt="" /> &nbsp;<b>$admin_txt{'51'}</b>~;
+qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
         $managedescr = $admin_txt{'677'};
         $act2        = 'addboard';
         $action_area = 'manageboards';
@@ -135,7 +136,7 @@ qq~<img src="$imagesdir/cat.gif" alt="" /> &nbsp;<b>$admin_txt{'51'}</b>~;
     <table class="bordercolor cs_thin pad_4px" style="margin-top: 5px;">
         <tr>
         <td class="$tempclass h_25px" $tempcolspan>
-            <a href="$adminurl?action=reorderboards;item=$catid" $temphrefclass><img src="$imagesdir/reorder.gif" alt="$admin_txt{'832'}" title="$admin_txt{'832'}" /></a> &nbsp;<b>$curcatname</b>
+            <a href="$adminurl?action=reorderboards;item=$catid" $temphrefclass><img src="$admin_images/reorder.gif" alt="$admin_txt{'832'}" title="$admin_txt{'832'}" /></a> &nbsp;<b>$curcatname</b>
        </td>
 ~;
         if ( $INFO{'action'} eq 'managecats' ) {
@@ -172,11 +173,11 @@ qq~<img src="$imagesdir/cat.gif" alt="" /> &nbsp;<b>$admin_txt{'51'}</b>~;
                     }
                     if ( ${ $uid . $curboard }{'ann'} == 1 ) {
                         $bicon =
-qq~ <img src="$imagesdir/ann.gif" alt="$admin_txt{'64g'}" title="$admin_txt{'64g'}" />~;
+qq~ <img src="$admin_images/ad_ann.png" alt="$admin_txt{'64g'}" title="$admin_txt{'64g'}" />~;
                     }
                     if ( ${ $uid . $curboard }{'rbin'} == 1 ) {
                         $bicon =
-qq~ <img src="$imagesdir/recycle.gif" alt="$admin_txt{'64i'}" title="$admin_txt{'64i'}" />~;
+qq~ <img src="$admin_images/ad_recycle.png" alt="$admin_txt{'64i'}" title="$admin_txt{'64i'}" />~;
                     }
                     $convertstr = $descr;
                     if ( $convertstr !~ /<.+?>/xsm )
@@ -195,7 +196,7 @@ qq~ <img src="$imagesdir/recycle.gif" alt="$admin_txt{'64i'}" title="$admin_txt{
 
                     $reorder_subs =
                       @children > 0
-                      ? qq~<a href="$adminurl?action=reorderboards;item=$curboard;subboards=1"><img src="$imagesdir/reorder_sub.gif" alt="$admin_txt{'252'}" title="$admin_txt{'252'}" /></a>~
+                      ? qq~<a href="$adminurl?action=reorderboards;item=$curboard;subboards=1"><img src="$admin_images/reorder_sub.png" alt="$admin_txt{'252'}" title="$admin_txt{'252'}" /></a>~
                       : q{};
 
                     my $del_txt  = $admin_txt{'251'};
@@ -218,9 +219,9 @@ qq~ <img src="$imagesdir/recycle.gif" alt="$admin_txt{'64i'}" title="$admin_txt{
             <td class="windowbg2">
                 $boardname
                 <div style="position:relative; display:inline; float:right;">
-                    <a href="$adminurl?action=addboard;parent=$curboard;category=$catid"><img src="$imagesdir/add_sub.gif" alt="$admin_txt{'250'}" title="$admin_txt{'250'}" /></a>
-                    <a href="javascript:editSingle('yitem_$curboard')"><img src="$imagesdir/edit_sub.gif" alt="$edit_txt" title="$edit_txt" /></a>
-                    <a href="javascript:delSingle('yitem_$curboard')"><img src="$imagesdir/delete_sub.gif" alt="$del_txt" title="$del_txt" /></a>
+                    <a href="$adminurl?action=addboard;parent=$curboard;category=$catid"><img src="$admin_images/add_sub.png" alt="$admin_txt{'250'}" title="$admin_txt{'250'}" /></a>
+                    <a href="javascript:editSingle('yitem_$curboard')"><img src="$admin_images/edit_sub.png" alt="$edit_txt" title="$edit_txt" /></a>
+                    <a href="javascript:delSingle('yitem_$curboard')"><img src="$admin_images/delete_sub.png" alt="$del_txt" title="$del_txt" /></a>
         ~ . $reorder_subs . qq~
                </div>
             </td>
@@ -514,7 +515,6 @@ sub AddBoards {
         $indent -= 2;
     };
     foreach $thiscat (@categoryorder) {
-
         # $thiscat cannot be localized
         my @catboards = split /\,/xsm, $cat{$thiscat};
         my $indent = -2;
@@ -670,7 +670,7 @@ function checkParent(id, board) {
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg" colspan="5">
-                <img src="$imagesdir/cat.gif" alt="" /><b>$addtext</b>
+                $admin_img{'cat_img'}<b>$addtext</b>
             </td>
         </tr><tr>
             <td class="windowbg2 padd_8_12px" colspan="5">$admin_txt{'57'}</td>
@@ -1409,7 +1409,7 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
 
 		$FORM{"pasww$i"} =~ s/ //gsm;
 		if ($FORM{"pasww$i"} ne q{}) {
-			if ($FORM{"pasww$i"} !~ /\A[\s0-9A-Za-z!@#$%\^&*\(\)_\+|`~\-=\\:;'",\.\/?\[\]\{\}]+\Z/) { fatal_error("$register_txt{'240'} $register_txt{'36'} $register_txt{'241'}") }
+            if ($FORM{"pasww$i"} !~ /\A[\s0-9A-Za-z!@#$%\^&*\(\)_\+|`~\-=\\:;'",\.\/?\[\]\{\}]+\Z/sm) { fatal_error("$register_txt{'240'} $register_txt{'36'} $register_txt{'241'}") }
 			$encryptopass = encode_password($FORM{"pasww$i"});
 		} else {
 			if ($FORM{"paswwr$i"}) { $encryptopass = $FORM{"brdpassw$i"}; } else { $encryptopass = q{};}
@@ -1575,7 +1575,7 @@ qq~<option value="$board" selected="selected">$boardname</option>~;
 <form action="$adminurl?action=reorderboards2;item=$INFO{'item'}$INFO{'subboards'}" method="post" id="bdform" accept-charset="$yycharset">
     <table class="bordercolor cs_thin pad_4px" style="width:535px">
   <tr>
-            <td class="titlebg"><img src="$imagesdir/board.gif" alt="" /> <b>$cur_txt ($curname)</b></td>
+            <td class="titlebg">$admin_img{'board'} <b>$cur_txt ($curname)</b></td>
         </tr><tr>
             <td class="windowbg">
 ~;

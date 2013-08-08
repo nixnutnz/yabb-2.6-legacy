@@ -191,7 +191,7 @@ qq~<br /><a href="$adminurl?action=apr_regentry;username=$userid">$prereg_txt{'a
         <col class="w_25pc" />
         <col class="w_20pc" />
     <tr>
-        <td class="titlebg" colspan="4"><img src="$imagesdir/xx.gif" alt="" /> <b>$yytitle</b></td>
+        <td class="titlebg" colspan="4">$admin_img{'xx'} <b>$yytitle</b></td>
     </tr><tr>
         <td class="windowbg2 padd_8_12px" colspan="4">$prereg_txt{'20'}</td>
     </tr>
@@ -324,7 +324,7 @@ sub view_registration {
 <table class="bordercolor cs_thin pad_4px">
     <col class="w_320px" />
  <tr>
-   <td colspan="2" class="catbg"><img src="$imagesdir/profile.gif" alt="" /> <b>$prereg_txt{'view'}</b>
+   <td colspan="2" class="catbg">$admin_img{'profile'} <b>$prereg_txt{'view'}</b>
     <input type="hidden" name="type" value="$viewtype" />
     <input type="hidden" name="activationkey" value="$actkey" />
   </td>
@@ -391,7 +391,7 @@ sub view_registration {
 
     if ( $viewtype eq 'approve' ) {
         $yymain .= qq~<tr>
-   <td colspan="2" class="catbg"><img src="$imagesdir/profile.gif" alt="" /> <b>$prereg_txt{'apr_admin_reason_title'}</b></td>
+   <td colspan="2" class="catbg">$admin_img{'profile'}<b>$prereg_txt{'apr_admin_reason_title'}</b></td>
  </tr>
  <tr class="windowbg">
    <td><b>$prereg_txt{'apr_admin_reason'}: </b></td>

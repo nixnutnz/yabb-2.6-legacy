@@ -233,7 +233,7 @@ sub chsettings {
             <col class=" w_50pc" />
             <tr>
                 <td class="titlebg padd_4px" colspan="2">
-                    <a id="tab_$tab->{'id'}"></a><img src="$imagesdir/preferences.gif" alt="" /> <b>$tab->{'name'}</b>
+                    <a id="tab_$tab->{'id'}"></a>$admin_img{'prefimg'} <b>$tab->{'name'}</b>
                 </td>
            </tr>~;
 
@@ -350,7 +350,7 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg" colspan="2">
-                <img src="$imagesdir/preferences.gif" alt=""  /> <b>$admin_txt{'10'}</b>
+                $admin_img{'prefimg'} <b>$admin_txt{'10'}</b>
        </td>
         </tr><tr>
             <td class="catbg center pad_4px" colspan="2">

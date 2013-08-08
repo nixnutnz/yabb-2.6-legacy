@@ -91,7 +91,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
         <table class="cs_thin pad_4px">
             <tr>
                 <td class="titlebg">
-                    <img src="$imagesdir/ban.gif" alt="" /><b>$admin_txt{'340'}</b>
+                    $admin_img{'banimg'}<b>$admin_txt{'340'}</b>
                 </td>
             </tr><tr>
                 <td class="catbg">
@@ -153,7 +153,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
             <col class="w_50pc" />
             <tr>
                 <td class="titlebg">
-                    <img src="$imagesdir/ban.gif" alt="" /><b>$admin_txt{'340a'}</b>
+                    $admin_img{'banimg'}<b>$admin_txt{'340a'}</b>
                 </td>
                 <td class="titlebg">
                     <b>$admin_txt{'340b'}</b>
@@ -186,7 +186,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
         <table class="cs_thin pad_4px">
             <tr>
                 <td class="titlebg">
-                    <img src="$imagesdir/ban.gif" alt="" /><b>$admin_txt{'725d'}</b>
+                    $admin_img{'banimg'}<b>$admin_txt{'725d'}</b>
                 </td>
             </tr><tr>
                 <td class="windowbg2">
@@ -204,7 +204,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
 }
 
 sub ipban2 {
-    is_admin_or_gmod_or_ymod();
+    is_admin_or_gmod_or_fmod();
     my $ban_u = $FORM{'uban'};
     my $ban_e = $FORM{'eban'};
     my $ban_i = $FORM{'iban'};
@@ -297,7 +297,7 @@ sub ipban_add {
 sub ipban_update {
 
     # This is for quick updating for banning + unbanning
-    if ( $iamadmin || $iamgmod || $iamymod ) {
+    if ( $iamadmin || $iamgmod || $iamfmod ) {
     my $ban       = $INFO{'ban'};
     my $lev       = $INFO{'lev'};
     my $ban_email = $INFO{'ban_email'};
@@ -436,7 +436,7 @@ sub banlog {
         $day    = $tm->mday;
         if ( $use_guardian && $use_htaccess ) {
             @banned_ip = ();
-            if ( $banned[1] =~ m/\(/ ) {
+            if ( $banned[1] =~ m/\(/sm ) {
                 @banned_ip = split /\(/xsm,$banned[1];
                 $banned_ip[1] =~ s/\)//xsm;
                 if ($banned_ip[0]) {
@@ -458,8 +458,8 @@ sub ipban_err {
     is_admin_or_gmod();
     my $ip_ban  = $INFO{'ban'};
     my $lev     = $INFO{'lev'};
-    my @timeban = ( 'p', 'd', 'w', 'm', );
-    my @bandays = ( 36500, 1, 7, 30, );
+    my @timeban = qw( p d w m );
+    my @bandays = ( 36_500, 1, 7, 30, );
     my $tmb     = 0;
 
     my $time  = time;
@@ -475,7 +475,7 @@ sub ipban_err {
     *time_ban = sub {
         for my $i ( 0 .. 3 ) {
             if ( $banned[4] eq $timeban[$i] ) {
-                $tmb = $banned[2] + ( $bandays[$i] * 84600 );
+                $tmb = $banned[2] + ( $bandays[$i] * 84_600 );
             }
         }
         return $tmb;

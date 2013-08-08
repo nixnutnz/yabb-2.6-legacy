@@ -89,10 +89,10 @@ qq~<input type="checkbox" name="show_online_ip_gmod" id="show_online_ip_gmod" va
             },
             {
                 description =>
-qq~<label for="show_online_ip_ymod">$admin_txt{'show_ip_ymod'}</label>~,
+qq~<label for="show_online_ip_fmod">$admin_txt{'show_ip_fmod'}</label>~,
                 input_html =>
-qq~<input type="checkbox" name="show_online_ip_ymod" id="show_online_ip_ymod" value="1"${ischecked($show_online_ip_ymod)} />~,
-                name     => 'show_online_ip_ymod',
+qq~<input type="checkbox" name="show_online_ip_fmod" id="show_online_ip_fmod" value="1"${ischecked($show_online_ip_fmod)} />~,
+                name     => 'show_online_ip_fmod',
                 validate => 'boolean',
             },
             {
@@ -283,6 +283,12 @@ qq~<select name="randomizer" id="randomizer" size="1"> <option value="0"${issele
 # Routine to save them
 sub SaveSettings {
     my %settings = @_;
+
+    foreach my $iplookup_url ( split /\s+/sm, $settings{'iplookup_urls'} ) {
+        if ( $iplookup_url =~ /:\/\//xsm && $iplookup_url !~ /http(s|):\/\//xsm ) {
+            fatal_error('invalid_value', $iplookup_url . $admin_txt{'iplookup_protocols'});
+        }
+    } 
 
     fopen( IPLOOKUP, ">$vardir/iplookup.urls" );
     print {IPLOOKUP} $settings{'iplookup_urls'} or croak "$croak{'print'} IPLOOKUP";

@@ -86,7 +86,7 @@ sub RebuildMessageIndex {
 
             if (   $thread eq q{}
                 || !-e "$datadir/$thread.txt"
-                || -s "$datadir/$thread.txt" < 35 )
+                || ( -s "$datadir/$thread.txt" ) < 35 )
             {
                 unlink "$datadir/$thread.txt";
                 unlink "$datadir/$thread.ctb";
@@ -468,7 +468,7 @@ sub RebuildMemList {
     $begin_time = time;
 
     if (   -e "$memberdir/memberrest.txt.rebuild"
-        && -M "$memberdir/memberrest.txt.rebuild" < 1 )
+        && ( -M "$memberdir/memberrest.txt.rebuild" ) < 1 )
     {
         fopen( MEMBERREST, "$memberdir/memberrest.txt.rebuild" )
           || fatal_error( 'cannot_open', "$memberdir/memberrest.txt.rebuild",
@@ -711,7 +711,7 @@ sub RebuildMemHistory {
     $begin_time = time;
 
     if (   -e "$datadir/topicrest.txt.rebuild"
-        && -M "$datadir/topicrest.txt.rebuild" < 1 )
+        && ( -M "$datadir/topicrest.txt.rebuild" ) < 1 )
     {
         fopen( TOPICREST, "$datadir/topicrest.txt.rebuild" )
           || fatal_error( 'cannot_open', "$datadir/topicrest.txt.rebuild", 1 );
@@ -878,7 +878,7 @@ sub RebuildNotifications {
     require Sources::Notify;
 
     if (   -e "$memberdir/NotificationsRebuild.txt.rebuild"
-        && -M "$memberdir/NotificationsRebuild.txt.rebuild" < 1 )
+        && ( -M "$memberdir/NotificationsRebuild.txt.rebuild" ) < 1 )
     {
         fopen( MEMBNOTIF, "$memberdir/NotificationsRebuild.txt.rebuild" )
           || fatal_error( 'cannot_open',

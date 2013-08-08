@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.5.4';
 
-our $modlistpmver = 'YaBB 2.5.4 $Revision$';
+$modlistpmver = 'YaBB 2.5.4 $Revision$';
 my ($action);
 if ( $action eq 'detailedversion' ) { return 1; }
 
@@ -35,8 +35,6 @@ sub ListMods {
 
 ### BOARDMOD ANCHOR ###
 
-	$w3cvalid = "W3C_Validator_Link_YaBB254|Dandello|This mod adds a page specific link to the W3C Validator that is visible to the admin for checking page/template validity on publicly accessible pages.|0.1 alpha|07/02/13";
-	push (@installed_mods, "$w3cvalid");
 ### END BOARDMOD ANCHOR ###
     our ( $yymain, %mod_list, $imagesdir, $yytitle );
     my ( $action_area,  $mod_text_list, $full_description );
@@ -48,7 +46,7 @@ sub ListMods {
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg" colspan="3">
-                <img src="$imagesdir/preferences.gif" alt="" /><b>$mod_list{'5'}</b>
+                $admin_img{'prefimg'} <b>$mod_list{'5'}</b>
              </td>
          </tr><tr>
              <td class="windowbg2 padd_8_12px">
@@ -90,7 +88,7 @@ sub ListMods {
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <a id="$mod_anchor"><img src="$imagesdir/preferences.gif" alt="" /></a><b>$mod_displayname</b> &nbsp; <span class="small">$mod_list{'4'}: $mod_version</span>
+                <a id="$mod_anchor">$admin_img{'prefimg'}</a><b>$mod_displayname</b> &nbsp; <span class="small">$mod_list{'4'}: $mod_version</span>
             </td>
         </tr><tr>
             <td class="catbg">
@@ -115,7 +113,7 @@ sub ListMods {
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg" colspan="3">
-                <img src="$imagesdir/preferences.gif" alt="" /><b>$mod_list{'5'} ($total_mods)</b>
+                $admin_img{'prefimg'} <b>$mod_list{'5'} ($total_mods)</b>
             </td>
         </tr><tr>
             <td class="catbg">

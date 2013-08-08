@@ -18,7 +18,6 @@ $eventcalsetpmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');
-
 if ( $Show_EventCal eq q{} ) { EventCalSet2(); }
 
 ## Calendar Setting ##
@@ -101,7 +100,7 @@ sub EventCalSet {
      <col class="w_50pc" />
      <tr>
        <td class="titlebg" colspan="2">
-         <img src="$imagesdir/preferences.gif" alt="" /><b>$event_cal{'1'}</b>
+         $admin_img{'prefimg'}> <b>$event_cal{'1'}</b>
        </td>
      </tr><tr>
        <td class="catbg" colspan="2"><span class="small">$event_cal{'21'}</span></td>
@@ -270,7 +269,7 @@ sub EventCalSet {
     <col style="width:10%" />
     <col style="width:6%" />
      <tr>
-       <td class="titlebg" colspan="4"><img src="$imagesdir/preferences.gif" alt="" /><b>$event_cal{'26'}</b></td>
+       <td class="titlebg" colspan="4">$admin_img{'prefimg'} <b>$event_cal{'26'}</b></td>
      </tr><tr>
        <td class="windowbg2 padd_8_12px" colspan="4">$event_cal{'33'}</td>
      </tr><tr>
@@ -292,7 +291,7 @@ sub EventCalSet {
     }
 
     $yymain .= qq~<tr>
-       <td class="titlebg" colspan="4"><img src="$imagesdir/preferences.gif" alt="" /><b>$event_cal{'30'}</b></td>
+       <td class="titlebg" colspan="4">$admin_img{'prefimg'} <b>$event_cal{'30'}</b></td>
      </tr>~;
 
     $inew = 0;
@@ -331,20 +330,20 @@ sub EventCalSet2 {
     is_admin_or_gmod();
 
     if ( $FORM{'rebuiltbd'} eq "$event_cal{'54'}" ) {
-        unlink("$vardir/eventcalbday.db");
+        unlink "$vardir/eventcalbday.db";
 
         fopen( FILE, "$memberdir/memberlist.txt" );
         @birthmembers = <FILE>;
         fclose(FILE);
         fopen( FILE, ">$vardir/eventcalbday.db" );
-        foreach $user_name (@birthmembers) {
-            ( $user_xy, $dummy ) = split( /	/, $user_name );
+        foreach my $user_name (@birthmembers) {
+            ( $user_xy, $dummy ) = split / /sm, $user_name;
             chomp $user_xy;
             LoadUser($user_xy);
             $user_xy_bd = ${ $uid . $user_xy }{'bday'};
             if ($user_xy_bd) {
                 ( $user_month, $user_day, $user_year ) =
-                  split( /\//, $user_xy_bd );
+                  split /\//xsm, $user_xy_bd;
                 if ( $user_month < 10 && length($user_month) == 1 ) {
                     $user_month = "0$user_month";
                 }
@@ -353,8 +352,7 @@ sub EventCalSet2 {
                 }
                 if (${ $uid . $user_xy }{'hideage'}){$user_hide = 1;}
                 else {$user_hide = q{};}
-                print FILE qq~$user_year|$user_month|$user_day|$user_xy|$user_hide\n~;
-
+                print {FILE} qq~$user_year|$user_month|$user_day|$user_xy|$user_hide\n~ or qq~$croak{'print'} eventcalbday.db~;
             }
         }
         fclose(FILE);

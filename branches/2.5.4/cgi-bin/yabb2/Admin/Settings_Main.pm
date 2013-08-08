@@ -88,16 +88,16 @@ else { $all_date = qq~$sel_day $sel_month $sel_year~; }
 
 my $sel_hour = qq~
 <select name="forumstart_hour">\n~;
-for($i = 0; $i <= 23; $i++) {
-	$hour_val = sprintf("%02d", $i);
+for my $i ( 0 .. 23 ) {
+    $hour_val = sprintf '%02d', $i;
 	$sel_hour .= qq~<option value="$hour_val" ${isselected($forumstart_hour == $i)}>$hour_val</option>\n~;
 }
 $sel_hour .= qq~</select>\n~;
 
 my $sel_minute = qq~
 <select name="forumstart_minute">\n~;
-for($i = 0; $i <= 59; $i++) {
-	$minute_val = sprintf("%02d", $i);
+for my $i ( 0 .. 59 ) {
+    $minute_val = sprintf '%02d', $i;
 	$sel_minute .= qq~<option value="$minute_val" ${isselected($forumstart_minute == $i)}>$minute_val</option>\n~;
 }
 $sel_minute .= qq~</select>\n~;
@@ -107,28 +107,28 @@ my $all_time = qq~$sel_hour $sel_minute $sel_secund~;
 # End time
 
 # Timezone selector
-my @usertimeoffset = split(/\./, $timeoffset);
-my $timeoffsetselect = qq~<br /></span><select name="usertimesign" id="usertimesign"><option value="">+</option><option value="-"~ . ($usertimeoffset[0] < 0 ? ' selected="selected"' : '') . qq~>-</option></select> <select name="usertimehour">~;
-	for (my $i = 0; 15 > $i; $i++) {
-		$i = sprintf("%02d", $i);
-		$timeoffsetselect .= qq~<option value="$i"~ . (($usertimeoffset[0] == $i || $usertimeoffset[0] == -$i) ? ' selected="selected"' : '') . qq~>$i</option>~;
+my @usertimeoffset = split /\./xsm, $timeoffset;
+my $timeoffsetselect = q~<br /></span><select name="usertimesign" id="usertimesign"><option value="">+</option><option value="-"~ . ($usertimeoffset[0] < 0 ? ' selected="selected"' : q{}) . q~>-</option></select> <select name="usertimehour">~;
+    for my $i ( 0 .. 14 ) {
+        $i = sprintf '%02d', $i;
+        $timeoffsetselect .= qq~<option value="$i"~ . (($usertimeoffset[0] == $i || $usertimeoffset[0] == -$i) ? ' selected="selected"' : q{}) . qq~>$i</option>~;
 	}
-	$timeoffsetselect .= qq~</select> : <select name="usertimemin">~;
-	for (my $i = 0; 60 > $i; $i++) {
+    $timeoffsetselect .= q~</select> : <select name="usertimemin">~;
+    for my $i ( 0 .. 59 ) {
 		my $j = $i / 60;
-		$j = (split(/\./, $j))[1] || 0;
-		$timeoffsetselect .= qq~<option value="$j"~ . ($usertimeoffset[1] eq $j ? ' selected="selected"' : '') . qq~>~ . sprintf("%02d", $i) . qq~</option>~;
+        $j = (split /\./xsm, $j)[1] || 0;
+        $timeoffsetselect .= qq~<option value="$j"~ . ($usertimeoffset[1] eq $j ? ' selected="selected"' : q{}) . q~>~ . sprintf '%02d', $i . q~</option>~;
 	}
-	$timeoffsetselect .= qq~</select>~;
+    $timeoffsetselect .= q~</select>~;
 
 # Language selector
-opendir(LNGDIR, $langdir);
-my @lfilesanddirs = readdir(LNGDIR);
-close(LNGDIR);
-foreach my $fld (sort {lc($a) cmp lc($b)} @lfilesanddirs) {
+opendir LNGDIR, $langdir;
+my @lfilesanddirs = readdir LNGDIR;
+closedir LNGDIR;
+foreach my $fld (sort {lc($a) cmp lc $b} @lfilesanddirs) {
 	if (-e "$langdir/$fld/Main.lng") {
 	  my $displang = $fld;
-        $displang =~ s~(.+?)\_(.+?)$~$1 ($2)~gi;
+        $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
         $drawnldirs .= qq~<option value="$fld" ${isselected($fld eq $lang)}>$displang</option>~;
 	}
 }
@@ -139,20 +139,20 @@ foreach my $curtemplate (sort{ $templateset{$a} cmp $templateset{$b} } keys %tem
 }
 
 # imspam conversion
-$imspam = 0 if $imspam eq 'off';
+if ($imspam eq 'off') { $imspam = 0;}
 $guest_view_limit ||= 15;
 
-$imtext =~ s~<br />~\n~g;
+$imtext =~ s~<br />~\n~gsm;
 
 # max / min for PM search
-$enable_PMsearch =~ s/\D//ig;
-$enable_PMsearch = 0 if !$enable_PMsearch;
-$enable_PMsearch = 50 if $enable_PMsearch > 50;
-$enable_PMsearch = 5 if $enable_PMsearch < 5;
-$set_subjectMaxLength = 50 if $set_subjectMaxLength eq '';
-$RegReasonSymbols = 200 if $RegReasonSymbols eq '';
-$ML_Allowed = 1 if $ML_Allowed eq '';
-$default_userpic = 'nn.gif' if $default_userpic eq '';
+$enable_PMsearch =~ s/\D//igsm;
+if (!$enable_PMsearch) { $enable_PMsearch = 0;}
+if ($enable_PMsearch > 50) {$enable_PMsearch = 50 ;}
+if ($enable_PMsearch < 5) {$enable_PMsearch = 5;}
+if ($set_subjectMaxLength eq q{}) {$set_subjectMaxLength = 50;}
+if ($RegReasonSymbols eq q{}) { $RegReasonSymbols = 200 ;}
+if ($ML_Allowed eq q{}) { $ML_Allowed = 1;}
+if ($default_userpic eq q{}) { $default_userpic = 'nn.gif';}
 
 
 # This is only for update, when coming from YaBB lower or equal version 2.2.3
@@ -164,8 +164,8 @@ require Admin::ManageBoards; # needed for avatar upload settings
 
 # Insert default if forum is beeing upgraded to YaBB 2.4
 if (!$pwstrengthmeter_scores && !$pwstrengthmeter_common && !$pwstrengthmeter_minchar) {
-	$FORM{'pwstrengthmeter_scores'} = "10,15,30,40";
-	$FORM{'pwstrengthmeter_common'} = qq~"123456","abcdef","password"~;
+    $FORM{'pwstrengthmeter_scores'} = '10,15,30,40';
+    $FORM{'pwstrengthmeter_common'} = q~"123456","abcdef","password"~;
 	$FORM{'pwstrengthmeter_minchar'} = 3;
 }
 
@@ -179,11 +179,11 @@ my $modulCrypt = $@;
 
 my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_spell_check" value="1"${ischecked($enable_spell_check)} />~;
  if ($modulLWP || $modulHTTP || $modulCrypt) {
-	$googiehtml = qq~<input type="hidden" name="enable_spell_check" value="0" />~ .
+    $googiehtml = q~<input type="hidden" name="enable_spell_check" value="0" />~ .
 	$admin_txt{'377a'} .
-	"- LWP::UserAgent &lt;- <b>" . ($modulLWP ? $modulLWP : $admin_txt{'377b'}) . "</b><br />" .
-	"- HTTP::Request::Common &lt;- <b>" . ($modulHTTP ? $modulHTTP : $admin_txt{'377b'}) . "</b><br />" .
-	"- Crypt::SSLeay &lt;- <b>" . ($modulCrypt ? $modulCrypt : $admin_txt{'377b'}) . "</b><br />" .
+    '- LWP::UserAgent &lt;- <b>' . ($modulLWP ? $modulLWP : $admin_txt{'377b'}) . '</b><br />' .
+    '- HTTP::Request::Common &lt;- <b>' . ($modulHTTP ? $modulHTTP : $admin_txt{'377b'}) . '</b><br />' .
+    '- Crypt::SSLeay &lt;- <b>' . ($modulCrypt ? $modulCrypt : $admin_txt{'377b'}) . '</b><br />' .
 	$admin_txt{'377c'};
 }
 # googiespell end
@@ -270,7 +270,7 @@ $qckage ||= 31;
 		},
 		{
 			description => qq~<label for="usertimesign">$admin_txt{'371'}</label>~,
-			input_html => &timeformat($date,1,0,1) . $timeoffsetselect,
+            input_html => timeformat($date,1,0,1) . $timeoffsetselect,
 			### Custom validated.
 		},
 		{
@@ -726,7 +726,7 @@ qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdM
 		},
 		{
 			description => qq~<label for="mgadvsearch">$settings_txt{'mgadvsearch'}</label>~,
-			input_html => qq~<select multiple="multiple" name="mgadvsearch" id="mgadvsearch" size="8">~ . &DrawPerms($mgadvsearch, 0) . qq~</select>~,
+            input_html => q~<select multiple="multiple" name="mgadvsearch" id="mgadvsearch" size="8">~ . DrawPerms($mgadvsearch, 0) . q~</select>~,
 			name => 'mgadvsearch',
 			validate => 'text,null',
 		},
@@ -741,7 +741,7 @@ qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdM
 		},
 		{
 			description => qq~<label for="mgqcksearch">$settings_txt{'mgqcksearch'}</label>~,
-			input_html => qq~<select multiple="multiple" name="mgqcksearch" id="mgqcksearch" size="8">~ . &DrawPerms($mgqcksearch, 0) . qq~</select>~,
+            input_html => q~<select multiple="multiple" name="mgqcksearch" id="mgqcksearch" size="8">~ . DrawPerms($mgqcksearch, 0) . q~</select>~,
 			name => 'mgqcksearch',
 			validate => 'text,null',
 		},
@@ -851,11 +851,11 @@ qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdM
 		},
 		{
 			description => $admin_txt{'747a'},
-			input_html => qq~$facesdir/UserAvatars<br />~ . ((-w "$facesdir/UserAvatars" && -d "$facesdir/UserAvatars") ? qq~<span style="color: green;">$admin_txt{'163'}</span>~ : qq~<span style="color: red;">$admin_txt{'164'}</span>~), # Non-changable setting
+            input_html => qq~$facesdir/UserAvatars<br />~ . ((-w "$facesdir/UserAvatars" && -d "$facesdir/UserAvatars") ? qq~<span style="color: green;">$admin_txt{'163'}</span>~ : qq~<span style="color: red;">$admin_txt{'164'}</span>~), # Non-changeable setting
 		},
 		{
 			description => qq~<label for="upload_avatargroup">$admin_txt{'748'}</label>~,
-			input_html => qq~<select multiple="multiple" name="upload_avatargroup" id="upload_avatargroup" size="8">~ . &DrawPerms($upload_avatargroup, 0) . qq~</select>~,
+            input_html => q~<select multiple="multiple" name="upload_avatargroup" id="upload_avatargroup" size="8">~ . DrawPerms($upload_avatargroup, 0) . q~</select>~,
 			name => 'upload_avatargroup',
 			validate => 'text,null',
 			depends_on => ['allowpics','upload_useravatar'],
@@ -922,7 +922,7 @@ qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdM
 		},
 		{
 			description => qq~<label for="user_hide_attach_img">$admin_txt{'753'}</label>~,
-			input_html => qq~<input type="checkbox" name="user_hide_attach_img" id="user_hide_attach_img" value="1"${ischecked($user_hide_attach_img)}~ . ($allowattach ? '' : ' disabled="disabled"') . qq~ />~,
+            input_html => qq~<input type="checkbox" name="user_hide_attach_img" id="user_hide_attach_img" value="1"${ischecked($user_hide_attach_img)}~ . ($allowattach ? q{} : ' disabled="disabled"') . q~ />~,
 			name => 'user_hide_attach_img',
 			validate => 'boolean',
 		},
@@ -934,7 +934,7 @@ qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdM
 		},
 		{
 			description => qq~<label for="user_hide_smilies_row">$admin_txt{'755'}</label>~,
-			input_html => qq~<input type="checkbox" name="user_hide_smilies_row" id="user_hide_smilies_row" value="1"${ischecked((($user_hide_smilies_row && !$removenormalsmilies) ? 1 : 0))}~ . ($removenormalsmilies ? ' disabled="disabled"' : '') . qq~ />~,
+            input_html => qq~<input type="checkbox" name="user_hide_smilies_row" id="user_hide_smilies_row" value="1"${ischecked((($user_hide_smilies_row && !$removenormalsmilies) ? 1 : 0))}~ . ($removenormalsmilies ? ' disabled="disabled"' : q{}) . q~ />~,
 			name => 'user_hide_smilies_row',
 			validate => 'boolean',
 		},
@@ -1017,20 +1017,9 @@ qq~<input type="checkbox" name="self_del_user" id="self_del_user" value="1" ${is
 		},
 		{
 			description => qq~<label for="Cookie_Length">$admin_txt{'432'}</label>~,
-			input_html => qq~
-<select name="Cookie_Length" id="Cookie_Length">
-  <option value="2" ${isselected($Cookie_Length == 2)}>$admin_txt{'497d'}</option>
-  <option value="1" ${isselected($Cookie_Length == 1)}>$admin_txt{'497c'}</option>
-  <option value="60" ${isselected($Cookie_Length == 60)}>1 $admin_txt{'497a'}</option>
-  <option value="180" ${isselected($Cookie_Length == 180)}>3 $admin_txt{'497b'}</option>
-  <option value="360" ${isselected($Cookie_Length == 360)}>6 $admin_txt{'497b'}</option>
-  <option value="480" ${isselected($Cookie_Length == 480)}>8 $admin_txt{'497b'}</option>
-  <option value="600" ${isselected($Cookie_Length == 600)}>10 $admin_txt{'497b'}</option>
-  <option value="720" ${isselected($Cookie_Length == 720)}>12 $admin_txt{'497b'}</option>
-  <option value="1440" ${isselected($Cookie_Length == 1440)}>24 $admin_txt{'497b'}</option>
-</select>~,
+			input_html => qq~<input type="checkbox" name="Cookie_Length" id="Cookie_Length" value="1" ${ischecked($Cookie_Length)}/>~,
 			name => 'Cookie_Length',
-			validate => 'number',
+			validate => 'boolean',
 		},
 		{
 			description => qq~<label for="cookieusername">$admin_txt{'352'}</label>~,
@@ -1061,6 +1050,12 @@ qq~<input type="checkbox" name="self_del_user" id="self_del_user" value="1" ${is
 			input_html => qq~<input type="text" name="cookieview" id="cookieview" size="20" value="$cookieview" />~,
 			name => 'cookieview',
 			validate => 'text',
+        },
+        {
+            description => qq~<label for="cookieviewtime">$admin_txt{'353f'}</label>~,
+            input_html => qq~<input type="text" name="cookieviewtime" id="cookieviewtime" size="20" value="$cookieviewtime" />~,
+            name => 'cookieviewtime',
+            validate => 'number',
 		},		{
 			header => $settings_txt{'registration'},
 		},
@@ -1245,9 +1240,9 @@ qq~<input type="checkbox" name="nomailspammer" id="nomailspammer" value="1" ${is
 			validate => 'boolean',
 		},
 		{
-			description => qq~<label for="mdymod">$mdintxt{'1'} $admin_txt{'684b'}?</label>~,
-			input_html => qq~<input type="checkbox" name="mdymod" id="mdymod" value="1"${ischecked($mdymod)} />~,
-			name => 'mdymod',
+            description => qq~<label for="mdfmod">$mdintxt{'1'} $admin_txt{'684b'}?</label>~,
+            input_html => qq~<input type="checkbox" name="mdfmod" id="mdfmod" value="1"${ischecked($mdfmod)} />~,
+            name => 'mdfmod',
 			validate => 'boolean',
 		},
 		{
@@ -1287,15 +1282,15 @@ qq~<input type="checkbox" name="nomailspammer" id="nomailspammer" value="1" ${is
 			validate => 'number',
 		},
 		{
-			description => qq~<label for="ymodview">$matxt{'6a'}</label>~,
+            description => qq~<label for="fmodview">$matxt{'6a'}</label>~,
 			input_html => qq~
-<select name="ymodview" id="ymodview" size="1">
-  <option value="0" ${isselected($ymodview == 0)}>$matxt{'1'}</option>
-  <option value="1" ${isselected($ymodview == 1)}>$matxt{'2'}</option>
-  <option value="2" ${isselected($ymodview == 2)}>$matxt{'3'}</option>
-  <option value="3" ${isselected($ymodview == 3)}>$matxt{'4'}</option>
+<select name="fmodview" id="fmodview" size="1">
+  <option value="0" ${isselected($fmodview == 0)}>$matxt{'1'}</option>
+  <option value="1" ${isselected($fmodview == 1)}>$matxt{'2'}</option>
+  <option value="2" ${isselected($fmodview == 2)}>$matxt{'3'}</option>
+  <option value="3" ${isselected($fmodview == 3)}>$matxt{'4'}</option>
 </select>~,
-			name => 'ymodview',
+            name => 'fmodview',
 			validate => 'number',
 		},
 		{
@@ -1565,7 +1560,7 @@ sub SaveSettings {
 
 	# Validate forum_start stuff
 	foreach (qw(forumstart_month forumstart_day forumstart_year forumstart_hour forumstart_minute forumstart_secund)) {
-		$FORM{$_} =~ s/\D//g;
+        $FORM{$_} =~ s/\D//gsm;
 	}
 	my $forumstart_month  = $FORM{'forumstart_month'};
 	my $forumstart_day    = $FORM{'forumstart_day'};
@@ -1581,27 +1576,27 @@ sub SaveSettings {
 	} elsif($forumstart_month == 2 && ($forumstart_year % 4 != 0 || $forumstart_year == 0)) {
 		$max_days = 28;
 	}
-	$forumstart_day = $max_days if $forumstart_day > $max_days;
+    if ($forumstart_day > $max_days) { $forumstart_day = $max_days;}
 	$forumstart = qq~$forumstart_month/$forumstart_day/$forumstart_year $maintxt{'107'} $forumstart_hour:$forumstart_minute:$forumstart_secund~;
 
 	# Validate Timezone
-	$timeoffset  = $FORM{'usertimesign'} =~ /^-$/ ? '-' : '';
-	$timeoffset .= $FORM{'usertimehour'} =~ /^\d+$/ ? $FORM{'usertimehour'} : '0';
-	$timeoffset .= '.';
-	$timeoffset .= $FORM{'usertimemin'}  =~ /^\d+$/ ? $FORM{'usertimemin'} : '0';
+    $timeoffset  = $FORM{'usertimesign'} =~ /^-$/sm ? q{-} : q{};
+    $timeoffset .= $FORM{'usertimehour'} =~ /^\d+$/sm ? $FORM{'usertimehour'} : '0';
+    $timeoffset .= q{.};
+    $timeoffset .= $FORM{'usertimemin'}  =~ /^\d+$/sm ? $FORM{'usertimemin'} : '0';
 
 	# Get barmaxnumb
 	$settings{'barmaxnumb'} = $FORM{'barmaxnumb'};
-	$settings{'barmaxnumb'} =~ s/\D//g;
+    $settings{'barmaxnumb'} =~ s/\D//gsm;
 
 	# Fix guestaccess
 	$settings{'guestaccess'} = !$settings{'guestaccess'} || 0;
-	$settings{'imtext'} =~ s/\r(?=\n*)//g;
-	$settings{'imtext'} =~ s~\n~<br />~g;
+    $settings{'imtext'} =~ s/\r(?=\n*)//gsm;
+    $settings{'imtext'} =~ s~\n~<br />~gsm;
 
 	# Fix $pwstrengthmeter_common
-	$settings{'pwstrengthmeter_common'} =~ s/'//g; #' make my syntax checker happy;
-	if (($settings{'set_subjectMaxLength'} < 10 && $settings{'set_subjectMaxLength'} != 0) || $settings{'set_subjectMaxLength'} > 255) { &fatal_error("invalid_value", "set_subjectMaxLength ($admin_txt{'498a'})"); }
+    $settings{'pwstrengthmeter_common'} =~ s/'//gsm; #' make my syntax checker happy;
+    if (($settings{'set_subjectMaxLength'} < 10 && $settings{'set_subjectMaxLength'} != 0) || $settings{'set_subjectMaxLength'} > 255) { fatal_error('invalid_value', "set_subjectMaxLength ($admin_txt{'498a'})"); }
 
 	# Convert unwanted tags in Board Name
 	ToHTML($settings{'mbname'});

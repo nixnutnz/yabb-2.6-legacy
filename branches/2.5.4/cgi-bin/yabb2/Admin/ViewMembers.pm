@@ -147,9 +147,9 @@ sub MLByLetter {
     $memcount = @ToShow;
     if ( !$memcount && $letter ) {
         $pageindex1 =
-qq~<span class="index_tog1 small"><img src="$imagesdir/index_togl.gif" alt="" /></span>~;
+qq~<span class="index_tog1 small">$admin_img{'index_togl'}</span>~;
         $pageindex2 =
-qq~<span class="index_tog1 small"><img src="$imagesdir/index_togl.gif" alt="" /></span>~;
+qq~<span class="index_tog1 small">$admin_img{'index_togl'}</span>~;
     }
     else {
         buildIndex();
@@ -479,14 +479,14 @@ sub buildIndex {
         $lastpn = int( ( $memcount - 1 ) / $MembersPerPage ) + 1;
         $lastptn = ( $lastpn - 1 ) * $MembersPerPage;
         $pageindex1 =
-qq~<span class="index_tog1 small"><img src="$imagesdir/index_togl.gif" alt="" /> $ml_txt{'139'}: $pagenumb</span>~;
+qq~<span class="index_tog1 small">$admin_img{'index_togl'} $ml_txt{'139'}: $pagenumb</span>~;
         $pageindex2 =
-qq~<span class="index_tog1 small"><img src="$imagesdir/index_togl.gif" alt="" /> $ml_txt{'139'}: $pagenumb</span>~;
+qq~<span class="index_tog1 small">$admin_img{'index_togl'} $ml_txt{'139'}: $pagenumb</span>~;
         if ( $pagenumb > 1 || $all ) {
 
             if ( $usermemberpage == 1 ) {
                 $pagetxtindexst =
-qq~<span class="index_tog1 small"><a href="$scripturl?action=memberpagedrop;from=admin;sort=$INFO{'sort'};letter=$INFO{'letter'};start=$INFO{'start'}$sortorder"><img src="$imagesdir/index_togl.gif" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a> $ml_txt{'139'}: ~;
+qq~<span class="index_tog1 small"><a href="$scripturl?action=memberpagedrop;from=admin;sort=$INFO{'sort'};letter=$INFO{'letter'};start=$INFO{'start'}$sortorder"><img src="$imagesdir/index_togl.png" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a> $ml_txt{'139'}: ~;
                 if ( $startpage > 0 ) {
                     $pagetxtindex =
 qq~<a href="$adminurl?action=ml;sort=$FORM{'sortform'};letter=$letter$sortorder" class="norm">1</a>&nbsp;...&nbsp;~;
@@ -519,7 +519,7 @@ qq~<a href="$adminurl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$las
                 $pagedropindex1 =
 q~<span style="float: left; width: 350px; margin: 2px 0 0 0; border: 0px;">~;
                 $pagedropindex1 .=
-qq~<span style="float: left; height: 21px; margin: 0 4px 0 0;"><a href="$scripturl?action=memberpagetext;from=admin;sort=$INFO{'sort'};letter=$INFO{'letter'};start=$INFO{'start'}$sortorder"><img src="$imagesdir/index_togl.gif" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a></span>~;
+qq~<span style="float: left; height: 21px; margin: 0 4px 0 0;"><a href="$scripturl?action=memberpagetext;from=admin;sort=$INFO{'sort'};letter=$INFO{'letter'};start=$INFO{'start'}$sortorder"><img src="$imagesdir/index_togl.png" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a></span>~;
                 $pagedropindex2 = $pagedropindex1;
                 $tstart         = $start;
                 if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' ) {
@@ -577,24 +577,24 @@ q~<span id="ViewIndex2" class="droppageindex" style="height: 14px; visibility: h
                 $prevpage = $start - $tmpMembersPerPage;
                 $nextpage = $start + $MembersPerPage;
                 $pagedropindexpvbl =
-qq~<img src="$imagesdir/index_left0.gif" height="14" width="13" alt="" style="vertical-align: top; margin-top:-1px" />~;
+qq~<img src="$imagesdir/index_left0.png" height="14" width="13" alt="" style="vertical-align: top; margin-top:-1px" />~;
                 $pagedropindexnxbl =
-qq~<img src="$imagesdir/index_right0.gif" height="14" width="13" alt="" style="vertical-align: top; margin-top:-1px;" />~;
+qq~<img src="$imagesdir/index_right0.png" height="14" width="13" alt="" style="vertical-align: top; margin-top:-1px;" />~;
                 if ( $start < $MembersPerPage ) {
                     $pagedropindexpv .=
-qq~<img src="$imagesdir/index_left0.gif" height="14" width="13" alt="" style="vertical-align: top; margin-top:-1px" />~;
+qq~<img src="$imagesdir/index_left0.png" height="14" width="13" alt="" style="vertical-align: top; margin-top:-1px" />~;
                 }
                 else {
                     $pagedropindexpv .=
-qq~<img src="$imagesdir/index_left.gif" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" style="vertical-align: top; cursor: pointer; margin-top:-1px;" onclick="location.href=\\'$adminurl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$prevpage$sortorder\\'" ondblclick="location.href=\\'$adminurl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=0$sortorder\\'" />~;
+qq~<img src="$imagesdir/index_left.png" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" style="vertical-align: top; cursor: pointer; margin-top:-1px;" onclick="location.href=\\'$adminurl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$prevpage$sortorder\\'" ondblclick="location.href=\\'$adminurl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=0$sortorder\\'" />~;
                 }
                 if ( $nextpage > $lastptn ) {
                     $pagedropindexnx .=
-qq~<img src="$imagesdir/index_right0.gif" height="14" width="13" alt="" style="vertical-align: top; margin-top:-1px;" />~;
+qq~<img src="$imagesdir/index_right0.png" height="14" width="13" alt="" style="vertical-align: top; margin-top:-1px;" />~;
                 }
                 else {
                     $pagedropindexnx .=
-qq~<img src="$imagesdir/index_right.gif" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" style="display: inline; vertical-align: top; margin-top:-1px; cursor: pointer;" onclick="location.href=\\'$adminurl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$nextpage$sortorder\\'" ondblclick="location.href=\\'$adminurl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$lastptn$sortorder\\'" />~;
+qq~<img src="$imagesdir/index_right.png" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" style="display: inline; vertical-align: top; margin-top:-1px; cursor: pointer;" onclick="location.href=\\'$adminurl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$nextpage$sortorder\\'" ondblclick="location.href=\\'$adminurl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$lastptn$sortorder\\'" />~;
                 }
                 $pageindex1 = qq~$pagedropindex1</span>~;
                 $pageindex2 = qq~$pagedropindex2</span>~;
@@ -677,7 +677,7 @@ sub buildPages {
         <table class="bordercolor cs_thin pad_3px">
           <tr>
             <td class="titlebg">
-                <span style="float: left;"><img src="$imagesdir/register.gif" alt=""  /><b> $admintxt{'17'}</b></span>
+                <span style="float: left;">$admin_img{'register'}<b> $admintxt{'17'}</b></span>
             </td>
           </tr><tr>
             <td class="titlebg">

@@ -31,8 +31,8 @@ sub EditMemberGroups {
         $pollpermsGMod, $attachpermsGMod, undef
     ) = split /\|/xsm, $Group{'Global Moderator'};
     my (
-        $MemStatYMod,   $MemStarNumYMod,  $MemStarPicYMod, $MemTypeColYMod,
-        $noshowYMod,    $viewpermsYMod,   $topicpermsYMod, $replypermsYMod,
+        $MemStatFMod,   $MemStarNumFMod,  $MemStarPicFMod, $MemTypeColFMod,
+        $noshowFMod,    $viewpermsFMod,   $topicpermsFMod, $replypermsFMod,
         $pollpermsMod,  $attachpermsMod, undef
     ) = split /\|/xsm, $Group{'Mid Moderator'};
     my (
@@ -44,8 +44,8 @@ sub EditMemberGroups {
       ( $noshowAdmin == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
     $noshowGMod =
       ( $noshowGMod == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
-    $noshowYMod =
-      ( $noshowYMod == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
+    $noshowFMod =
+      ( $noshowFMod == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
     $noshowMod =
       ( $noshowMod == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
     my $adminpi = permImage(
@@ -56,9 +56,9 @@ sub EditMemberGroups {
         $viewpermsGMod, $topicpermsGMod, $replypermsGMod,
         $pollpermsGMod, $attachpermsGMod
     );
-    my $ymodpi = permImage(
-        $viewpermsYMod, $topicpermsYMod, $replypermsYMod,
-        $pollpermsYMod, $attachpermsYMod
+    my $fmodpi = permImage(
+        $viewpermsFMod, $topicpermsFMod, $replypermsFMod,
+        $pollpermsFMod, $attachpermsFMod
     );
     my $modpi = permImage(
         $viewpermsMod, $topicpermsMod, $replypermsMod,
@@ -70,7 +70,7 @@ sub EditMemberGroups {
 	<table class="cs_thin pad_4px">
     	<tr>
     		<td class="titlebg">
-				<img src="$imagesdir/guest.gif" alt="" />&nbsp;<b>$admin_txt{'8'}</b>
+                $admin_img{'guest'}&nbsp;<b>$admin_txt{'8'}</b>
 	   		</td>
      	</tr><tr>
        		<td class="windowbg2 padd_8_12px">
@@ -89,7 +89,7 @@ sub EditMemberGroups {
     	<col class="w_15pc" />
 		<tr>
 			<td class="titlebg" colspan="6">
-				<img src="$imagesdir/guest.gif" alt="" />&nbsp;<b>$admin_txt{'12'}</b>
+                $admin_img{'guest'}&nbsp;<b>$admin_txt{'12'}</b>
 			</td>
 		</tr><tr>
 			<td class="catbg center"><b>$amgtxt{'03'}</b></td>
@@ -133,20 +133,20 @@ sub EditMemberGroups {
 			<td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Global Moderator">$admin_txt{'53'}</a></td>
 			<td class="windowbg2 center">&nbsp;</td>
 		</tr><tr>
-			<td class="windowbg2 center">$MemStatYMod</td>
-		<td class="windowbg2 center"><img src="$imagesdir/$MemStarPicYMod" /> x $MemStarNumYMod</td>~;
+            <td class="windowbg2 center">$MemStatFMod</td>
+        <td class="windowbg2 center"><img src="$imagesdir/$MemStarPicFMod" /> x $MemStarNumFMod</td>~;
 
-    if ($MemTypeColYMod) {
-        $thecolname = hextoname($MemTypeColYMod);
+    if ($MemTypeColFMod) {
+        $thecolname = hextoname($MemTypeColFMod);
         $yymain .= qq~
-			<td class="windowbg2 center"><span style="color:$MemTypeColYMod">$thecolname</span></td>~;
+            <td class="windowbg2 center"><span style="color:$MemTypeColFMod">$thecolname</span></td>~;
     }
     else {
         $yymain .= q~
 			<td class="windowbg2 center">&nbsp;</td>~;
     }
     $yymain .= qq~
-			<td class="windowbg2 center">$noshowYMod</td>
+            <td class="windowbg2 center">$noshowFMod</td>
 			<td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Mid Moderator">$admin_txt{'53'}</a></td>
 			<td class="windowbg2 center">&nbsp;</td>
 		</tr><tr>
@@ -195,7 +195,7 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
 	<table class="cs_thin pad_4px">
 		<tr>
 			<td class="titlebg" colspan="$colspan">
-				<img src="$imagesdir/guest.gif" alt="" />&nbsp;<b>$amgtxt{'37'} (<a href="$adminurl?action=editgroup">$admintxt{'18c'}</a>$reorderlink)</b>
+                $admin_img{'guest'}&nbsp;<b>$amgtxt{'37'} (<a href="$adminurl?action=editgroup">$admintxt{'18c'}</a>$reorderlink)</b>
 			</td>
 		</tr><tr>
 			<td class="catbg center w_25pc"><b>$amgtxt{'03'}</b></td>
@@ -270,7 +270,7 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
     	<col class="w_15pc" />
 		<tr>
 			<td class="titlebg" colspan="6">
-				<img src="$imagesdir/guest.gif" alt="" />&nbsp;<b>$amgtxt{'40'}&nbsp;(<a href="$adminurl?action=editgroup1">$admintxt{'18c'}</a>)</b>
+                $admin_img{'guest'}&nbsp;<b>$amgtxt{'40'}&nbsp;(<a href="$adminurl?action=editgroup1">$admintxt{'18c'}</a>)</b>
 			</td>
 		</tr><tr>
 			<td class="catbg center"><b>$amgtxt{'03'}</b></td>
@@ -415,8 +415,8 @@ sub editAddGroup {
 
     # Get star selected if needed.
     my @starsgif = (
-        q{},            'staradmin.gif',  'stargmod.gif', 'starmod.gif',
-        'starblue.gif', 'starsilver.gif', 'stargold.gif',
+        q{},            'staradmin.png',  'stargmod.png', 'starmod.png',
+        'starblue.png', 'starsilver.png', 'stargold.png',
     );
     my @stara = ();
     $stara[1]     = q{ selected="selected"};
@@ -464,8 +464,7 @@ sub editAddGroup {
 <table class="cs_thin pad_4px">
     <col style="width:40%" />
 	<tr>
-		<td class="titlebg" colspan="2">
-		<img src="$imagesdir/preferences.gif" alt="" /> <b>$viewtitle</b>
+        <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$viewtitle</b>
 		</td>
 	</tr><tr>
 		<td class="windowbg"><label for="title">$amgtxt{'51'}:</label></td>
@@ -581,7 +580,7 @@ sub editAddGroup {
 	    <col span="5" class="w_20pc" />
 		<tr>
 			<td class="titlebg" colspan="5">
-				<img src="$imagesdir/preferences.gif" alt="" /><b>$amgtxt{'44'}</b>
+                $admin_img{'prefimg'} <b>$amgtxt{'44'}</b>
 			</td>
 		</tr><tr>
 			<td class="catbg center"><label for="view"><span class="small">$amgtxt{'45'} $amgtxt{'46'}</span></label></td>
