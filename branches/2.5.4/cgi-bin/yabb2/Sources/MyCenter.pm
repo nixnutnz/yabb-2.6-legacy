@@ -1202,7 +1202,7 @@ function insert_user (oElement,username,userid) {
             && (   $PM_level == 0
                 || ( $PM_level == 2 && !$staff )
                 || ( $PM_level == 3 && !$iamadmin && !$iamgmod )
-                || ( $PM_level == 4 && !$iamadmin && !$iamgmod && !$iamymod ) )
+                || ( $PM_level == 4 && !$iamadmin && !$iamgmod && !$iamfmod ) )
         )
       )
     {
@@ -1241,7 +1241,7 @@ function insert_user (oElement,username,userid) {
     if (   $PM_level == 0
         || ( $PM_level == 2 && !$staff )
         || ( $PM_level == 3 && !$iamadmin && !$iamgmod )
-        || ( $PM_level == 4 && !$iamadmin && !$iamgmod && !$iamymod ) )
+        || ( $PM_level == 4 && !$iamadmin && !$iamgmod && !$iamfmod ) )
     {
         $tabWidth = '50%';
     }
@@ -1292,7 +1292,7 @@ function insert_user (oElement,username,userid) {
         if (   $PM_level == 0
             || ( $PM_level == 2 && !$staff )
             || ( $PM_level == 3 && !$iamadmin && !$iamgmod )
-            || ( $PM_level == 4 && !$iamadmin && !$iamgmod && !$iamymod ) )
+            || ( $PM_level == 4 && !$iamadmin && !$iamgmod && !$iamfmod ) )
         {
             $display_prof       = 'inline';
             $tabProfHighlighted = 'windowbg2';
@@ -1304,7 +1304,8 @@ function insert_user (oElement,username,userid) {
               s/{yabb mc_menus_messages}/$mc_menus{'messages'}/sm;
         }
 	}
-#    $MCViewMenu .= $MCView_tab;
+
+    $MCViewMenu .= $MCView_tab;
  	
 ## start Profile div
 
@@ -1649,7 +1650,7 @@ qq~$mycenter_txt{'buddylisttitle'}:<br />$buddiesCurrentStatus~;
                ( $PMenableBm_level == 1 && $staff )
             || ( $PMenableBm_level == 2 && ( $iamadmin || $iamgmod ) )
             || ( $PMenableBm_level == 4
-                && ( $iamadmin || $iamgmod || $iamymod ) )
+                && ( $iamadmin || $iamgmod || $iamfmod ) )
             || ( $PMenableBm_level == 3 && $iamadmin )
           )
         {
@@ -2000,9 +2001,9 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$muser}" rel="no
                     }
                     else {
                         foreach my $muser ( split /\,/xsm, $musernameto ) {
-                            @grps = qw(all mods ymods gmods admins);
+                            @grps = qw(all mods fmods gmods admins);
                             @grps2 =
-                              qw(bmallmembers bmmods bmymods bmgmods bmadmins);
+                              qw(bmallmembers bmmods bmfmods bmgmods bmadmins);
                             for my $grp ( 0 .. ( @grps - 1 ) ) {
                                 if ( $muser eq $grps[$grp] ) {
                                     $usernameto = $inmes_txt{ $grps2[$grp] };
@@ -2010,7 +2011,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$muser}" rel="no
                             }
                             if (   $uname ne 'all'
                                 && $uname ne 'mods'
-                                && $uname ne 'ymods'
+                                && $uname ne 'fmods'
                                 && $uname ne 'gmods'
                                 && $uname ne 'admins' )
                             {
@@ -2037,9 +2038,9 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$muser}" rel="no
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musernameto}" rel="nofollow">$format_unbold{$musernameto}</a>~;
                     }
                     else {
-                        @grps = qw(all mods ymods gmods admins);
+                        @grps = qw(all mods fmods gmods admins);
                         @grps2 =
-                          qw(bmallmembers bmmods bmymods bmgmods bmadmins);
+                          qw(bmallmembers bmmods bmfmods bmgmods bmadmins);
                         for my $grp ( 0 .. ( @grps - 1 ) ) {
                             if ( $musernameto eq $grps[$grp] ) {
                                 $usernameto = $inmes_txt{ $grps2[$grp] };
@@ -2047,7 +2048,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musernameto}" r
                         }
                         if (   $uname ne 'all'
                             && $uname ne 'mods'
-                            && $uname ne 'ymods'
+                            && $uname ne 'fmods'
                             && $uname ne 'gmods'
                             && $uname ne 'admins' )
                         {
@@ -2356,8 +2357,8 @@ qq~$guestName<br />(<a href="mailto:$guestEmail">$guestEmail</a>)~;
                 }
                 elsif ( $messStatus =~ /b/sm ) {
 
-                    @grps  = qw(all mods ymods gmods admins);
-                    @grps2 = qw(bmallmembers bmmods bmymods bmgmods bmadmins);
+                    @grps  = qw(all mods fmods gmods admins);
+                    @grps2 = qw(bmallmembers bmmods bmfmods bmgmods bmadmins);
                     foreach my $uname ( split /,/xsm, $musernameto ) {
                         for my $grp ( 0 .. ( @grps - 1 ) ) {
                             if ( $uname eq $grps[$grp] ) {
@@ -2366,7 +2367,7 @@ qq~$guestName<br />(<a href="mailto:$guestEmail">$guestEmail</a>)~;
                         }
                         if (   $uname ne 'all'
                             && $uname ne 'mods'
-                            && $uname ne 'ymods'
+                            && $uname ne 'fmods'
                             && $uname ne 'gmods'
                             && $uname ne 'admins' )
                         {
@@ -2413,8 +2414,8 @@ qq~$guestName<br />(<a href="mailto:$guestEmail">$guestEmail</a>)~;
             elsif ( $action eq 'imdraft' ) {
                 my @usernameto;
                 if ( $messStatus =~ /b/sm ) {
-                    @grps  = qw(all mods ymods gmods admins);
-                    @grps2 = qw(bmallmembers bmmods bmymods bmgmods bmadmins);
+                    @grps  = qw(all mods fmods gmods admins);
+                    @grps2 = qw(bmallmembers bmmods bmfmods bmgmods bmadmins);
                     foreach my $uname ( split /,/xsm, $musernameto ) {
                         for my $grp ( 0 .. ( @grps - 1 ) ) {
                             if ( $uname eq $grps[$grp] ) {
@@ -2423,7 +2424,7 @@ qq~$guestName<br />(<a href="mailto:$guestEmail">$guestEmail</a>)~;
                         }
                         if (   $uname ne 'all'
                             && $uname ne 'mods'
-                            && $uname ne 'ymods'
+                            && $uname ne 'fmods'
                             && $uname ne 'gmods'
                             && $uname ne 'admins' )
                         {
@@ -2522,8 +2523,8 @@ qq~$guestName<br />(<a href="mailto:$guestEmail">$guestEmail</a>)~;
 
                 }
                 elsif ( $messStatus =~ /b/sm ) {
-                    @grps  = qw(all mods ymods gmods admins);
-                    @grps2 = qw(bmallmembers bmmods bmymods bmgmods bmadmins);
+                    @grps  = qw(all mods fmods gmods admins);
+                    @grps2 = qw(bmallmembers bmmods bmfmods bmgmods bmadmins);
                     foreach my $uname ( split /,/xsm, $musernameto ) {
                         for my $grp ( 0 .. ( @grps - 1 ) ) {
                             if ( $uname eq $grps[$grp] ) {
@@ -2532,7 +2533,7 @@ qq~$guestName<br />(<a href="mailto:$guestEmail">$guestEmail</a>)~;
                         }
                         if (   $uname ne 'all'
                             && $uname ne 'mods'
-                            && $uname ne 'ymods'
+                            && $uname ne 'fmods'
                             && $uname ne 'gmods'
                             && $uname ne 'admins' )
                         {
@@ -2896,7 +2897,7 @@ qq~<a href="mailto:${$uid.$buddyname}{'email'}"><img src="$imagesdir/$IM_email" 
                     && ( $iamadmin || $iamgmod ) )
                 || (   $PM_level == 4
                     && $UserPM_Level{$buddyname} == 4
-                    && ( $iamadmin || $iamgmod || $iamymod ) )
+                    && ( $iamadmin || $iamgmod || $iamfmod ) )
               )
             {
                 $buddypm =
@@ -2951,7 +2952,7 @@ sub mcMenu {
         if (   $PM_level == 0
             || ( $PM_level == 2 && !$staff )
             || ( $PM_level == 3 && !$iamadmin && !$iamgmod )
-            || ( $PM_level == 4 && !$iamadmin && !$iamgmod && !$iamymod ) )
+            || ( $PM_level == 4 && !$iamadmin && !$iamgmod && !$iamfmod ) )
         {
             $profclass = q~ class="selected"~;
         }

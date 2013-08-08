@@ -114,7 +114,7 @@ sub buildIMsend {
                ( $PMenableBm_level != 1 || ( !$staff ) )
             && ( $PMenableBm_level != 2 || ( !$iamadmin && !$iamgmod ) )
             && ( $PMenableBm_level != 4
-                || ( !$iamadmin && !$iamgmod && !$iamymod ) )
+                || ( !$iamadmin && !$iamgmod && !$iamfmod ) )
             && ( $PMenableBm_level != 3 || !$iamadmin )
         )
       )
@@ -322,9 +322,9 @@ qq~<option selected="selected" value="admins">$inmes_txt{'bmadmins'}</option>\n~
                         $imWinop .=
 qq~<option selected="selected" value="gmods">$inmes_txt{'bmgmods'}</option>\n~;
                     }
-                    elsif ( $touser eq 'ymods' ) {
+                    elsif ( $touser eq 'fmods' ) {
                         $imWinop .=
-qq~<option selected="selected" value="ymods">$inmes_txt{'bmymods'}</option>\n~;
+qq~<option selected="selected" value="fmods">$inmes_txt{'bmfmods'}</option>\n~;
                     }
                     elsif ( $touser eq 'mods' ) {
                         $imWinop .=
@@ -655,9 +655,8 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
                 $startcount++;
                 $pmAttachUser = cloak( $fileUsers[ $y - 1 ] );
                 $my_att_FA .= qq~
-            <div id="attform_a_$y" class="att_ltf~
-                  . ( $y > 1 ? q~_b~: q{} )
-                  . qq~"><b>$fatxt{'6'} $y:</b></div>
+            <div id="attform_a_$y" class="att_lft~
+                  . ( $y > 1 ? q~_b~ : q{} ) . qq~"><b>$fatxt{'6'} $y:</b></div>
             <div id="attform_b_$y" class="att_rgt~
                   . ( $y > 1 ? q~_b~ : q{} ) . qq~">
                 <input type="file" name="file$y" id="file$y" size="50" onchange="selectNewattach($y);" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span><br />
@@ -968,7 +967,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     $subject =~ s/^\s+|\s+$//gsm;
 
     $message = $FORM{'message'};
-    $message =~ s/^\s+|\s+$//g;
+    $message =~ s/^\s+|\s+$//gsm;
 
     # no subject/no message are bad!
     if ( !$subject ) { $error = $error_txt{'no_subject'}; }
@@ -1029,6 +1028,8 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
             fatal_error('im_spam_alert');
         }
     }
+    # Create unique Message ID
+    $messageid = getnewid();
     GroupPerms( $allowAttachIM, $pmAttachGroups );
     if ( $allowAttachIM && $allowGroups ) {
         for my $y ( 1 .. $allowAttachIM ) {
@@ -1084,6 +1085,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                 $fixext  =~ s/\.(pl|pm|cgi|php)/._$1/ixsm;
                 $fixname =~ s/\.(?!tar$)/_/gxsm;
                 $fixfile = qq~$fixname$fixext~;
+                if ( $fixfile eq 'index.html' || $fixfile eq '.htaccess' ) { fatal_error('attach_file_blocked') };
 
                 if ( !$pmFileOverwrite ) {
                     $fixfile = check_existence( $pmuploaddir, $fixfile );
@@ -1221,7 +1223,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                 || fatal_error( 'cannot_open', "$vardir/pm.attachments" );
             foreach my $logFixfile (@logfilelist) {
                 print {PMATTACHLOG}
-            qq~$date|$filesizekb{$logFixfile}|$logFixfile|${$uid.$username}{'realname'}\n~
+qq~$messageid|$date|$filesizekb{$logFixfile}|$logFixfile|${$uid.$username}{'realname'}|$username\n~
                 or croak "$croak{'print'} PMATTACHLOG";
             }
             fclose(PMATTACHLOG);
@@ -1230,8 +1232,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
 
     # go through each member in list
     # add to each msg (inbox) but only one to outbox
-    # Create unique Message ID
-    $messageid = getnewid();
+
     $actlang   = $language;
     if ( !$FORM{'draft'} && !$isBMess && !$replyguest ) {
         foreach my $UserTo (@allto) {
@@ -1331,7 +1332,8 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                     print {INBOX}
 "$rmessageid|$UserTo|$username|||${$uid.$UserTo}{'awaysubj'}|$date|${$uid.$UserTo}{'awayreply'}|$messageid|1|$ENV{'REMOTE_ADDR'}|s|u||$fixfile\n"
                       or croak "$croak{'print'} INBOX";
-                    print {INBOX} @myinmessages or croak "$croak{'print'} INBOX";
+                    print {INBOX} @myinmessages
+                      or croak "$croak{'print'} INBOX";
                     fclose(INBOX);
                 }
                 ## relocated sender msg out of the loop
@@ -1691,8 +1693,7 @@ qq~<a href="$scripturl?action=$action$bmesslink;start=$lastptn$viewfolderinfo"><
             $pageindex2 = $pageindex1;
         }
         else {
-            $pagedropindex1 =
-q~<span class="pagedropindex">~;
+            $pagedropindex1 = q~<span class="pagedropindex">~;
             $pagedropindex1 .=
 qq~<span class="pagedropindex_inner"><a href="$scripturl?pmaction=$action$bmesslink;start=$start;action=pmpagedrop$viewfolderinfo"><img src="$imagesdir/$IM_index_togl" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a></span>~;
             $pagedropindex2 = $pagedropindex1;
@@ -2404,12 +2405,12 @@ sub doshowims {
 sub links_to {
     my ($uname) = @_;
     my @opts2 = (
-        [ 'all', 'admins', 'gmods', 'ymods', 'mods', ],
+        [ 'all', 'admins', 'gmods', 'fmods', 'mods', ],
         [
             qq~<b>$inmes_txt{'bmallmembers'}</b>~,
             qq~<b>$inmes_txt{'bmadmins'}</b>~,
             qq~<b>$inmes_txt{'bmgmods'}</b>~,
-            qq~<b>$inmes_txt{'bmymods'}</b>~,
+            qq~<b>$inmes_txt{'bmfmods'}</b>~,
             qq~<b>$inmes_txt{'bmmods'}</b>~,
         ],
     );
@@ -2417,7 +2418,7 @@ sub links_to {
     if (   $uname eq 'all'
         || $uname eq 'admins'
         || $uname eq 'gmods'
-        || $uname eq 'ymods'
+        || $uname eq 'fmods'
         || $uname eq 'mods' )
     {
         foreach my $i ( 0 .. 4 ) {

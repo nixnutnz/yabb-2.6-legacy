@@ -48,13 +48,15 @@ sub BoardIndex {
     my ( $numusers, $guests, $numbots, $user_in_log, $guest_in_log ) =
       ( 0, 0, 0, 0, 0 );
     my %bvusers = ();
+
     # do not do this stuff when we're calling for sub board display
     if ( !$subboard_sel ) {
         GetBotlist();
 
         my $lastonline = $date - ( $OnlineLogTime * 60 );
 		foreach ( @logentries ) {
-            ( $name, $date1, $last_ip, $last_host, undef, $boardv, undef ) = split /\|/xsm, $_,7;
+            ( $name, $date1, $last_ip, $last_host, undef, $boardv, undef ) =
+              split /\|/xsm, $_, 7;
             if ( !$last_ip ) {
                 $last_ip =
 qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="small"><i>~;
@@ -74,7 +76,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                     elsif ( ${ $uid . $name }{'lastonline'} < $lastonline ) {
                         next;
                     }
-                    if ( $iamadmin || $iamgmod || $iamymod ) {
+                    if ( $iamadmin || $iamgmod || $iamfmod ) {
                         $numusers++;
 						$bvusers{$boardv}++;
                         $users .= QuickLinks($name);
@@ -83,7 +85,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                             (
                                      ( $iamadmin && $show_online_ip_admin )
                                   || ( $iamgmod && $show_online_ip_gmod )
-                                  || ( $iamymod && $show_online_ip_ymod )
+                                  || ( $iamfmod && $show_online_ip_fmod )
                             ) ? qq~&nbsp;<i>($lookupIP)</i>, ~ : q{, }
                           );
 
@@ -99,7 +101,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
 					$bvusers{$boardv}++;
                     if (   ( $iamadmin && $show_online_ip_admin )
                         || ( $iamgmod && $show_online_ip_gmod )
-                        || ( $iamymod && $show_online_ip_ymod ) )
+                        || ( $iamfmod && $show_online_ip_fmod ) )
                     {
                         $guestlist .= qq~<i>$lookupIP</i>, ~;
                     }
@@ -111,11 +113,11 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
             $numusers++;
             $bvusers{$boardv}++;
             $users .= QuickLinks($username);
-            if ( $iamadmin || $iamgmod || $iamymod ) {
+            if ( $iamadmin || $iamgmod || $iamfmod ) {
                 $users .= ${ $uid . $username }{'stealth'} ? q{*} : q{};
                 if (   ( $iamadmin && $show_online_ip_admin )
                     || ( $iamgmod && $show_online_ip_gmod )
-                    || ( $iamymod && $show_online_ip_ymod ) )
+                    || ( $iamfmod && $show_online_ip_fmod ) )
                 {
                     $users .= "&nbsp;<i>($user_ip)</i>";
                     $guestlist =~ s/<i>$lookupIP<\/i>, //osm;
@@ -159,10 +161,11 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
 
 	else {
 			foreach ( @logentries ) {
-            ( $name, $date1, $last_ip, $last_host, undef, $boardv, undef ) = split /\|/xsm, $_,7;
+            ( $name, $date1, $last_ip, $last_host, undef, $boardv, undef ) =
+              split /\|/xsm, $_, 7;
              if ($name) {
                 if ( LoadUser($name) ) {
-                    if ( $iamadmin || $iamgmod || $iamymod ) {
+                    if ( $iamadmin || $iamgmod || $iamfmod ) {
                         $numusers++;
 						$bvusers{$boardv}++;
                     }
@@ -218,7 +221,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
             if (   $annboard eq $curboard
                 && !$iamadmin
                 && !$iamgmod
-                && !$iamymod )
+                && !$iamfmod )
             {
                 next;
             }
@@ -246,7 +249,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                         if (   $annboard eq $childbd
                             && !$iamadmin
                             && !$iamgmod
-                            && !$iamymod )
+                            && !$iamfmod )
                         {
                             next;
                         }
@@ -289,9 +292,6 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
 
 # if loading subboard list by ajax we don't need this (Ajax showcasepoll load does not work, assume this is mistake. DAR)
 
-    #   if ( !$INFO{'a'} ) {
-
-    # showcase poll start
     my $polltemp;
     if ( -e "$datadir/showcase.poll" ) {
         fopen( SCPOLLFILE, "$datadir/showcase.poll" );
@@ -302,15 +302,15 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
         my $pollthread;
         if ( -e "$datadir/$scthreadnum.poll" ) {
             MessageTotals( 'load', $scthreadnum );
-            if ( $iamadmin || $iamgmod || $iamymod ) {
+            if ( $iamadmin || $iamgmod || $iamfmod ) {
                 $pollthread = 1;
             }
             else {
                 my $curcat = ${ $uid . ${$scthreadnum}{'board'} }{'cat'};
                 my $catperms = ( split /\|/xsm, $catinfo{$curcat} )[1];
                 if ( CatAccess($catperms) ) { $pollthread = 1; }
-                my $boardperms = split /\|/xsm,
-                  $board{ ${$scthreadnum}{'board'} }[1];
+                my $boardperms =
+                  ( split /\|/xsm, $board{ ${$scthreadnum}{'board'} } )[1];
                 $pollthread =
                   AccessCheck( ${$scthreadnum}{'board'}, q{}, $boardperms ) eq
                   'granted' ? $pollthread : 0;
@@ -354,7 +354,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
             my $tempcurrentboard = $currentboard;
             $currentboard = ${$scthreadnum}{'board'};
             my $tempstaff = $staff;
-            if ( !$iamadmin && !$iamgmod && !$iamymod ) { $staff = 0; }
+            if ( !$iamadmin && !$iamgmod && !$iamfmod ) { $staff = 0; }
             require Sources::Poll;
             display_poll( $scthreadnum, 1 );
             $staff = $tempstaff;
@@ -397,7 +397,7 @@ qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>~
         if (   !$iammodhere
             && !$iamadmin
             && !$iamgmod
-            && !$iamymod
+            && !$iamfmod
             && ${ $uid . $curboard }{'lasttopicstate'} =~ /h/ism )
         {
             ${ $uid . $curboard }{'lastpostid'}   = q{};
@@ -660,7 +660,8 @@ qq~$collapse_link $hash{$catname} <a href="$scripturl?$my_cat=$catid" title="$bo
         if ( !$INFO{'a'} ) {
 	    ### RSS on Board Index Start ###
 			if (!$rss_disabled && $catrss) {
-				$rss_catlink = qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img src="$imagesdir/boardrss.png" alt="$maintxt{'rssfeed'} - $catname" title="$maintxt{'rssfeed'} - $catname" /></a>~;
+                $rss_catlink =
+qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img src="$imagesdir/boardrss.png" alt="$maintxt{'rssfeed'} - $catname" title="$maintxt{'rssfeed'} - $catname" /></a>~;
 			}
 			else {
 				$rss_catlink = q{};
@@ -678,7 +679,7 @@ qq~$collapse_link $hash{$catname} <a href="$scripturl?$my_cat=$catid" title="$bo
                 $tmpcatimg = qq~$catimage~;
             }
             $templatecat =~ s/({|<)yabb catimage(}|>)/$tmpcatimg/gsm;
-			$templatecat =~ s/({|<)yabb catrss(}|>)/$rss_catlink/gsm; ### RSS on Board Index ###
+            $templatecat =~ s/({|<)yabb catrss(}|>)/$rss_catlink/gsm;
             $templatecat =~ s/({|<)yabb catlink(}|>)/$catlink/gsm;
             $templatecat =~
               s/({|<)yabb newmsg start(}|>)/$newrowstart{$catname}/gsm;
@@ -983,10 +984,15 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
 
 				### RSS on Board Index Start ###
 				if (!$rss_disabled) {
-			        my (undef, $boardperms, $boardview) = split /\|/xsm, $board{"$curboard"};
-	                if (AccessCheck($curboard, q{}, $boardperms) eq 'granted'  && ${$uid.$curboard}{'brdrss'} == 1 ) {
-		                $rss_boardlink = qq~<a href="$scripturl?action=RSSboard;board=$curboard" target="_blank"><img src="$imagesdir/$mybrd_rss" alt="$maintxt{'rssfeed'} - $boardname" title="$maintxt{'rssfeed'} - $boardname" /></a>~;
-	                } else {
+                    my ( undef, $boardperms, $boardview ) = split /\|/xsm,
+                      $board{"$curboard"};
+                    if ( AccessCheck( $curboard, q{}, $boardperms ) eq 'granted'
+                        && ${ $uid . $curboard }{'brdrss'} == 1 )
+                    {
+                        $rss_boardlink =
+qq~<a href="$scripturl?action=RSSboard;board=$curboard" target="_blank"><img src="$imagesdir/$mybrd_rss" alt="$maintxt{'rssfeed'} - $boardname" title="$maintxt{'rssfeed'} - $boardname" /></a>~;
+                    }
+                    else {
 	                    $rss_boardlink = q{};
 	                }
 	            }
@@ -1182,12 +1188,13 @@ qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?boa
 
                     $templateblock =~ s/({|<)yabb boardanchor(}|>)/$boardanchor/gsm;
                     $templateblock =~ s/({|<)yabb new(}|>)/$new/gsm;
-					$templateblock =~ s/({|<)yabb boardrss(}|>)/$rss_boardlink/gsm; ### RSS on BoardIndex ###
+                    $templateblock =~ s/({|<)yabb boardrss(}|>)/$rss_boardlink/gsm;
                     $templateblock =~ s/({|<)yabb newsm(}|>)/$new2/gsm;
                     $templateblock =~ s/({|<)yabb boardpic(}|>)/$bdpic/gsm;
                     $templateblock =~ s/({|<)yabb boardname(}|>)/$boardname $boardpwpic/gsm;
                     $templateblock =~ s/({|<)yabb boarddesc(}|>)/$bddescr/gsm;
 					my $boardviewers;
+
 					if ( $bvusers{$curboard} ) {
 						$boardviewers = qq~&nbsp;($bvusers{$curboard}&nbsp;$boardindex_txt{'bviews'})~;
 					}

@@ -26,7 +26,7 @@ if ( $ML_Allowed == 2 && !$staff ) {
     fatal_error('no_access');
 }
 if (   ( $ML_Allowed == 3 && !$iamadmin && !$iamgmod )
-    || ( $ML_Allowed == 4 && !$iamadmin && !$iamgmod && !$iamymod ) )
+    || ( $ML_Allowed == 4 && !$iamadmin && !$iamgmod && !$iamfmod ) )
 {
     fatal_error('no_access');
 }
@@ -508,8 +508,7 @@ qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$la
                 $pageindex2 = qq~$pagetxtindexst$pagetxtindex</span>~;
             }
             else {
-                $pagedropindex1 =
-q~<span class="pagedropindex">~;
+                $pagedropindex1 = q~<span class="pagedropindex">~;
                 $pagedropindex1 .=
 qq~<span class="pagedropindex_inner"><a href="$scripturl?sort=$FORM{'sortform'};letter=$letter;start=$start;action=memberpagetext$findmember"><img src="$imagesdir/$ml_index_togl" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a></span>~;
                 $pagedropindex2 = $pagedropindex1;

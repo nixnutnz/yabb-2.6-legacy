@@ -108,7 +108,7 @@ if ( $currentboard ne q{} ) {
 
     if ($staff) {
         $iammod = is_moderator( $username, $currentboard );
-        if ( !$iammod && !$iamadmin && !$iamgmod && !$iamymod ) { $staff = 0; }
+        if ( !$iammod && !$iamadmin && !$iamgmod && !$iamfmod ) { $staff = 0; }
     }
 
     if ( !$iamadmin ) {
@@ -178,8 +178,8 @@ sub is_admin_or_gmod {
     return;
 }
 
-sub is_admin_or_gmod_or_ymod {
-    if ( !$iamadmin && !$iamgmod && !$iamymod ) { fatal_error('no_access'); }
+sub is_admin_or_gmod_or_fmod {
+    if ( !$iamadmin && !$iamgmod && !$iamfmod ) { fatal_error('no_access'); }
 
     if ( $iamgmod && $action ne q{} ) {
         require "$vardir/gmodsettings.txt";
@@ -215,7 +215,8 @@ sub banning {
         fatal_error( 'banned', "$security_txt{'678'}$security_txt{'430'}!" );
     };
 
-    fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+    fopen( BAN, "<$vardir/banlist.txt" )
+      || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
     @banlist = <BAN>;
     for my $i (@banlist) {
         chomp $i;
@@ -272,7 +273,8 @@ sub check_banlist {
         }
     }
     else {
-        fopen( BAN, "$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+        fopen( BAN, "$vardir/banlist.txt" )
+          || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
         @banlist = <BAN>;
         fclose(BAN);
         chomp @banlist;
@@ -453,7 +455,7 @@ sub AccessCheck {
         if ( $topicperms == 1 ) { $access = 'notgranted'; }
     }
     elsif ( $checktype == 2 ) {    # Reply access check
-        if ( $iamgmod || $iamymod || $boardmod ) { $access = 'granted'; }
+        if ( $iamgmod || $iamfmod || $boardmod ) { $access = 'granted'; }
         else {
             @allowed_groups =
               split /, /sm, ${ $uid . $curboard }{'replyperms'};
@@ -483,7 +485,7 @@ sub AccessCheck {
     }
 
     # age and gender check
-    if ( !$iamadmin && !$iamgmod && !$iamymod && !$boardmod ) {
+    if ( !$iamadmin && !$iamgmod && !$iamfmod && !$boardmod ) {
         if (
             (
                    ${ $uid . $curboard }{'minageperms'}
@@ -533,12 +535,12 @@ sub AccessCheck {
                 $access = 'granted';
             }
             if ( $element eq 'Mid Moderator'
-                && ( $iamadmin || $iamgmod || $iamymod ) )
+                && ( $iamadmin || $iamgmod || $iamfmod ) )
             {
                 $access = 'granted';
             }
             if ( $element eq 'Moderator'
-                && ( $iamadmin || $iamgmod || $iamymod || $boardmod ) )
+                && ( $iamadmin || $iamgmod || $iamfmod || $boardmod ) )
             {
                 $access = 'granted';
             }
@@ -569,7 +571,7 @@ sub CatAccess {
             $access = 1;
         }
         if ( $element eq 'Global Moderator' && $iamgmod ) { $access = 1; }
-        if ( $element eq 'Mid Moderator'    && $iamymod ) { $access = 1; }
+        if ( $element eq 'Mid Moderator'    && $iamfmod ) { $access = 1; }
         if ( $access == 1 ) { last; }
     }
     return $access;
@@ -626,7 +628,7 @@ sub GroupPerms {
 sub ipban_update {
 
     # This is for quick updating for banning + unbanning
-    if ( $iamadmin || $iamgmod || $iamymod ) {
+    if ( $iamadmin || $iamgmod || $iamfmod ) {
         my $ban       = $INFO{'ban'};
         my $lev       = $INFO{'lev'};
         my $ban_email = $INFO{'ban_email'};
@@ -640,10 +642,12 @@ sub ipban_update {
         $ihave = 0;
         $ehave = 0;
         $uhave = 0;
-        fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+        fopen( BAN, "<$vardir/banlist.txt" )
+          || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
         my @myban = <BAN>;
         chomp @myban;
         fclose(BAN);
+
         if ( $unban != 1 ) {
 
             foreach my $i (@myban) {
@@ -665,7 +669,8 @@ sub ipban_update {
                 }
             }
 
-            fopen( BAN2, ">>$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+            fopen( BAN2, ">>$vardir/banlist.txt" )
+              || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
             if ( $ban && $ihave == 0 && $ban ne '127.0.0.1' ) {
                 print {BAN2}
 qq~I|$ban|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
@@ -684,7 +689,8 @@ qq~U|$ban_mem|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
             fclose(BAN2);
         }
         elsif ( $unban == 1 ) {
-            fopen( BAN2, ">$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+            fopen( BAN2, ">$vardir/banlist.txt" )
+              || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
             foreach my $i (@myban) {
                 @banned = split /\|/xsm, $i;
                 if (   $ban eq $banned[1]

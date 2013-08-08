@@ -249,7 +249,8 @@ s/\[flash\=(\S+?),(\S+?)](\S+?)\[\/flash\]/<b>$display_txt{'769'} ($1 x $2):<\/b
         $code =~ s/&quot;&gt;/\[code_qgt\]/igxsm;
         $codecnt++;
 		if ($guest_media_disallowed && $iamguest) {
-		    $prselect = q{}; }
+            $prselect = q{};
+        }
 		else {
         $prselect =
 qq~<a href="javascript:selectAllCode($codecnt)"><img src="$imagesdir/codeselect.png" alt="$post_txt{'selectall'}" title="$post_txt{'selectall'}" /></a>~;
@@ -521,7 +522,6 @@ qq~<i> $maintxt{'42'} <a href="$scripturl?action=register"><b>$maintxt{'97'}</b>
         $attachment =~ s/<img src=".+?>/[oops]/gsm;
         $attachment =~ s/\[oops\]/$oops/gsm;
 		if( !$movedflag ) { $message =~ s/<a href=".+?<\/a>/[oops]/gsm; } 
-        #$message    =~ s/<a href=".+?<\/a>/[oops]/gsm;
         $message    =~ s/<img src=".+?>/[oops]/gsm;
         $message    =~ s/\[oops\]/$oops/gsm;
     }

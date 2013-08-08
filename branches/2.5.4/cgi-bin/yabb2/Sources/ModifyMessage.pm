@@ -371,7 +371,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
         if ( $numcount < 2 ) { fatal_error('no_options'); }
 
         # showcase poll start
-        if ( $iamadmin || $iamgmod || $iamymod ) {
+        if ( $iamadmin || $iamgmod || $iamfmod ) {
             my $scthreadid;
             if ( -e "$datadir/showcase.poll" ) {
                 fopen( FILE, "$datadir/showcase.poll" );
@@ -769,7 +769,8 @@ qq~$threadid|$postid|$subject|$mname|$currentboard|$filesizekb|$date|$fixfile|0\
 qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$date|$username|$fixfile\n~;
     fopen( FILE, ">$datadir/$threadid.txt" )
       || fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
-    print {FILE} @{ $thread_arrayref{$threadid} } or croak "$croak{'print'} FILE";
+    print {FILE} @{ $thread_arrayref{$threadid} }
+      or croak "$croak{'print'} FILE";
     fclose(FILE);
 
     if ( $postid == 0 || $staff ) {

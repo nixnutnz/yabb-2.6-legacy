@@ -79,6 +79,9 @@ qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3
 <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
 <meta name="robots" content="noindex,noarchive" />
 <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
+<style type="text/css">
+    body { background-color:#fff;background-image:none; }
+</style>
 <style type="text/css" media="print">
     .no-print { display: none; }
 </style>
@@ -150,8 +153,7 @@ function do_images() {
                 ) . q{, };    # 470a == Ex-Member
             }
             $usernameTo =~ s/, $//sm;
-            $usernameTo =
-              qq~<b>$usernameTo</b><br />~;
+            $usernameTo = qq~<b>$usernameTo</b><br />~;
             $toTitle = qq~$inmes_txt{'324'}:~;
         }
         if ($threadccusers) {
@@ -167,8 +169,7 @@ function do_images() {
                 ) . q{, };
             }
             $usernameCC =~ s/, $//sm;
-            $usernameCC =
-              qq~<b>$usernameCC</b><br />~;
+            $usernameCC = qq~<b>$usernameCC</b><br />~;
             $toTitleCC = qq~$inmes_txt{'325'}:~;
         }
         if ($threadbccusers) {
@@ -185,8 +186,7 @@ function do_images() {
                 }
             }
             if ($usernameBCC) {
-                $usernameBCC =
-                  qq~<b>$usernameBCC</b>~;
+                $usernameBCC = qq~<b>$usernameBCC</b>~;
                 $toTitleBCC = qq~$inmes_txt{'326'}:~;
             }
         }
@@ -194,8 +194,7 @@ function do_images() {
         if ( $threadstatus eq 'g' || $threadstatus eq 'ga' ) {
             my ( $guestName, $guestEmail ) = split / /sm, $threadposter;
             $guestName =~ s/%20/ /gsm;
-            $usernameFrom =
-qq~<b>$guestName ($guestEmail)</b><br />~;
+            $usernameFrom = qq~<b>$guestName ($guestEmail)</b><br />~;
         }
         else {
             LoadUser($threadposter);
@@ -206,8 +205,7 @@ qq~<b>$guestName ($guestEmail)</b><br />~;
                   $threadposter ? qq~$threadposter ($maintxt{'470a'})~
                 : $maintxt{'470a'}
               );    # 470a == Ex-Member
-            $usernameFrom =
-              qq~<b>$usernameFrom</b><br />~;
+            $usernameFrom = qq~<b>$usernameFrom</b><br />~;
         }
         $fromTitle = qq~$inmes_txt{'318'}:~;
     }
@@ -266,8 +264,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
               $threadposter ? qq~$threadposter ($maintxt{'470a'})~
             : $maintxt{'470a'}
           );    # 470a == Ex-Member
-        $usernameFrom =
-          qq~<b>$usernameFrom</b><br />~;
+        $usernameFrom = qq~<b>$usernameFrom</b><br />~;
         $fromTitle = qq~$inmes_txt{'318'}:~;
 
         if ( $threadstatus !~ /b/sm ) {
@@ -299,8 +296,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
             $toTitle = qq~$inmes_txt{'324'} $inmes_txt{'327'}:~;
         }
         $usernameTo =~ s/, $//sm;
-        $usernameTo =
-          qq~<b>$usernameTo</b><br />~;
+        $usernameTo = qq~<b>$usernameTo</b><br />~;
         if ($threadccusers) {
             foreach my $uname ( split /,/xsm, $threadccusers ) {
                 LoadUser($uname);
@@ -314,8 +310,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
                 ) . q{, };    # 470a == Ex-Member
             }
             $usernameCC =~ s/, $//sm;
-            $usernameCC =
-              qq~<b>$usernameCC</b><br />~;
+            $usernameCC = qq~<b>$usernameCC</b><br />~;
             $toTitleCC = qq~$inmes_txt{'325'}:~;
         }
         if ($threadbccusers) {
@@ -331,8 +326,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
                 ) . q{, };    # 470a == Ex-Member
             }
             $usernameBCC =~ s/, $//sm;
-            $usernameBCC =
-              qq~<b>$usernameBCC</b>~;
+            $usernameBCC = qq~<b>$usernameBCC</b>~;
             $toTitleBCC = qq~$inmes_txt{'326'}:~;
         }
     }
@@ -370,8 +364,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
                     ) . q{, };    # 470a == Ex-Member
                 }
                 $usernameCC =~ s/, $//sm;
-                $usernameCC =
-                  qq~<b>$usernameCC</b><br />~;
+                $usernameCC = qq~<b>$usernameCC</b><br />~;
                 $toTitleCC = qq~$inmes_txt{'325'}:~;
             }
             if ( $threadbccusers && $threadposter eq $username ) {
@@ -387,8 +380,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
                     ) . q{, };    # 470a == Ex-Member
                 }
                 $usernameBCC =~ s/, $//sm;
-                $usernameBCC =
-                  qq~<b>$usernameBCC</b>~;
+                $usernameBCC = qq~<b>$usernameBCC</b>~;
                 $toTitleBCC = qq~$inmes_txt{'326'}:~;
             }
         }
@@ -400,8 +392,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
             $toTitle = qq~$inmes_txt{'324'} $inmes_txt{'327'}:~;
         }
         $usernameTo =~ s/, $//sm;
-        $usernameTo =
-          qq~<b>$usernameTo</b><br />~;
+        $usernameTo = qq~<b>$usernameTo</b><br />~;
 
         if ( $threadstatus eq 'g' || $threadstatus eq 'ga' ) {
             my ( $guestName, $guestEmail ) = split / /sm, $threadposter;
@@ -418,8 +409,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
                 : $maintxt{'470a'}
               );    # 470a == Ex-Member
         }
-        $usernameFrom =
-          qq~<b>$usernameFrom</b><br />~;
+        $usernameFrom = qq~<b>$usernameFrom</b><br />~;
         $fromTitle = qq~$inmes_txt{'318'}:~;
 
     }
@@ -428,8 +418,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
     {
         my ( $guestName, $guestEmail ) = split / /sm, $threadposter;
         $guestName =~ s/%20/ /gsm;
-        $usernameFrom =
-qq~<b>$guestName ($guestEmail)</b><br />~;
+        $usernameFrom = qq~<b>$guestName ($guestEmail)</b><br />~;
         $fromTitle = qq~$inmes_txt{'318'}:~;
 
     }
@@ -453,8 +442,7 @@ qq~<b>$guestName ($guestEmail)</b><br />~;
             : $maintxt{'470a'}
           );    # 470a == Ex-Member
 
-        $usernameFrom =
-          qq~<b>$usernameFrom</b><br />~;
+        $usernameFrom = qq~<b>$usernameFrom</b><br />~;
         $fromTitle = qq~$inmes_txt{'318'}:~;
     }
 
@@ -552,6 +540,9 @@ qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3
 <meta name="robots" content="noindex,noarchive" />
 <link rel="canonical" href="$scripturl?num=$num" />
 <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
+<style type="text/css">
+    body { background-color:#fff;background-image:none; }
+</style>
 <style type="text/css" media="print">
     .no-print { display: none; }
 </style>

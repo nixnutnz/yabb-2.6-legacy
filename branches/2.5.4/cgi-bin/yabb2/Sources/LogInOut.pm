@@ -182,18 +182,20 @@ sub sharedLogin {
     else {
         $sharedlog = $mysharedlog_top;
     }
-    if ($maintenance) { $hide_passbutton = ' visibility: hidden;'; }
+    if ($maintenance) { $hide_passlink = ' style="visibility: hidden;"' }
     if ( $maintenance || !$regtype ) {
-        $hide_regbutton = ' visibility: hidden;';
+        $hide_reglink = ' style="visibility: hidden;"';;
     }
     $sharedlog .= qq~
             <form name="loginform" action="$scripturl?action=login2" method="post" accept-charset="$yycharset">
                 <input type="hidden" name="sredir" value="$INFO{'sesredir'}" />
     $mysharedlog_bodya~;
     $sharedlog =~ s/{yabb regstyle}/$regstyle/sm;
-    $sharedlog =~ s/{yabb hide_regbutton}/$hide_regbutton/gsm;
-    $sharedlog =~ s/{yabb hide_passbutton}/$hide_passbutton/gsm;
-
+    $sharedlog =~ s/{yabb hide_reglink}/$hide_reglink/gsm;
+    $sharedlog =~ s/{yabb hide_passlink}/$hide_passlink/gsm;
+	my $cookielength_sel = q{};
+	if ( $Cookie_Length  ) { $cookielength_sel = ' checked="checked"'} 
+    $sharedlog =~ s/{yabb cookielength_sel}/$cookielength_sel/gsm;
     $loginform         = 1;
     $sharedLogin_title = q{};
     $sharedLogin_text  = q{};
@@ -288,6 +290,7 @@ sub Reminder2 {
     if ( !$iamguest && $sessionvalid == 1 && !$iamadmin ) {
         fatal_error( 'logged_in_already', $username );
     }
+
     # generate random ID for password reset.
     my $randid = keygen( 8, 'A' );
 

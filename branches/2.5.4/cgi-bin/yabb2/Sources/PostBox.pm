@@ -556,8 +556,7 @@ sub attach {
             $startcount++;
             $yymain .= qq~
             <div id="attform_a_$y" class="att_lft~
-              . ( $y > 1 ? q~_b~ : q{} )
-              . qq~"><b>$fatxt{'6'} $y:</b></div>
+              . ( $y > 1 ? q~_b~ : q{} ) . qq~"><b>$fatxt{'6'} $y:</b></div>
             <div id="attform_b_$y" class="att_rgt~
               . ( $y > 1 ? q~_b~ : q{} ) . qq~">
                 <input type="file" name="file$y" id="file$y" size="50" onchange="selectNewattach($y);" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span><br />

@@ -57,10 +57,11 @@ sub Display {
             else {
                 $gtvlcount = 1;
             }
+			my $viewexpire = q{+} . $cookieviewtime . 'm';
             $yySetCookies1 = write_cookie(
                 -name    => $cookieview,
                 -value   => $gtvlcount,
-                -expires => '+525600m'
+                -expires => $viewexpire
             );
         }
         elsif ($iamguest
@@ -419,8 +420,7 @@ qq~<a href="javascript:void(0);" onclick="ListPages($mnum);">...</a>&nbsp;~;
 
         }
         else {
-            $pagedropindex1 =
-q~<span class="pagedropindex">~;
+            $pagedropindex1 = q~<span class="pagedropindex">~;
             $pagedropindex1 .=
 qq~<span class="pagedropindex_inner"><a href="$scripturl?num=$viewnum;start=~
               . ( !$ttsreverse ? $start : $mreplies - $start )
@@ -666,7 +666,7 @@ qq~$menusep<a href="javascript:Notify('$scripturl?action=notify2;num=$viewnum/~
 qq~<a href="$scripturl?board=$vircurrentboard">&lsaquo; $maintxt{'board'}</a>~;
             $template_mods = qq~$showmods$showmodgroups~;
         }
-        elsif ( $iamadmin || $iamgmod || $iamymod ) {
+        elsif ( $iamadmin || $iamgmod || $iamfmod ) {
             $template_cat = qq~<a href="$scripturl?catselect=$curcat">$cat</a>~;
             $template_board =
               qq~<a href="$scripturl?board=$currentboard">$boardname</a>~;
@@ -907,8 +907,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
                       ) . q~)</div>~;
                 }
             }
-            $showattachhr =
-q~<hr class="hr att_hr" />~;
+            $showattachhr = q~<hr class="hr att_hr" />~;
             if ( $showattach && $attachment ) {
                 $attachment =~
 s/<div class="small">/<div class="small attbox_b">/gsm;
@@ -958,7 +957,7 @@ qq~ <a href="$scripturl?action=iplookup;ip=$mip_three"><span class="small">$mip_
             $lookupIP = $mip;
         }
         if (   $iamadmin
-            || $iamymod
+            || $iamfmod
             || $iamgmod && $gmod_access2{'ipban2'} eq 'on' )
         {
             $mip = $lookupIP;
@@ -1010,7 +1009,7 @@ qq~$menusep<a href="$scripturl?num=$viewnum;action=addbuddy;name=$useraccount{$m
                         && ( $iamadmin || $iamgmod ) )
                     || (   $PM_level == 3
                         && $UserPM_Level{$musername} == 4
-                        && ( $iamadmin || $iamgmod || $iamymod ) )
+                        && ( $iamadmin || $iamgmod || $iamfmod ) )
                   )
                 {
                     $template_pm =
@@ -1068,8 +1067,7 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
                   . q~<br />~;
             }
             if ( ${ $uid . $musername }{'signature'} ) {
-                $signature_hr =
-q~<hr class="hr att_hr" />~;
+                $signature_hr = q~<hr class="hr att_hr" />~;
             }
             $memberinfo = "$memberinfo{$musername}$addmembergroup{$musername}";
 
@@ -1183,7 +1181,8 @@ q~<hr class="hr att_hr" />~;
         $msub ||= $display_txt{'24'};
         ToChars($msub);
         my $reason;
-        if (   $lastmodified && ( $staff_reason || $user_reason )
+        if (   $lastmodified
+            && ( $staff_reason || $user_reason )
             && $postmessage =~ s/\[reason\](.+?)\[\/reason\]//isgm )
         {
             $reason = qq~<br /><i><b>$display_txt{'211a'}:</b> $1</i>~;
@@ -1322,7 +1321,7 @@ qq~$menusep<a class="cursor" onclick="if(confirm('$display_txt{'rempost'}')) {un
                     (
                            ( $iammod && $mdmod == 1 )
                         || ( $iamadmin && $mdadmin == 1 )
-                        || ( $iamymod  && $mdymod == 1 )
+                        || ( $iamfmod  && $mdfmod == 1 )
                         || ( $iamgmod  && $mdglobal == 1 )
                     )
                     && $sessionvalid == 1
@@ -1519,7 +1518,7 @@ qq~$menusep<a href="$scripturl?action=sticky;thread=$viewnum">$img{'admin_sticky
         (
                ( $iammod && $mdmod == 1 )
             || ( $iamadmin && $mdadmin == 1 )
-            || ( $iamymod  && $mdymod == 1 )
+            || ( $iamfmod  && $mdfmod == 1 )
             || ( $iamgmod  && $mdglobal == 1 )
         )
         && $sessionvalid == 1
@@ -1880,7 +1879,8 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
     if ( !${ $uid . $gtalkname }{'password'} ) { LoadUser($gtalkname); }
     $gtalkuser = ${ $uid . $gtalkname }{'gtalk'};
 
-    print qq~Content-type: text/html\n\n~ or croak "$croak{'print'} page content";
+    print qq~Content-type: text/html\n\n~
+      or croak "$croak{'print'} page content";
     print
 qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" style="overflow-x:hidden;overflow-y:hidden">

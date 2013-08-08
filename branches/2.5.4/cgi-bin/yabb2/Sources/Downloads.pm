@@ -166,18 +166,18 @@ sub DownloadView {
         else { $endpage = $max; }
         if ( $startpage > 0 ) {
             $pageindex =
-qq~<a href="$scripturl?action=downloadfile;newstart=0;sort=$sort" class="norm">1</a>&nbsp;...&nbsp;~;
+qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=0;sort=$sort" class="norm">1</a>&nbsp;...&nbsp;~;
         }
         if ( $startpage == 25 ) {
             $pageindex =
-qq~<a href="$scripturl?action=downloadfile;newstart=0;sort=$sort" class="norm">1</a>&nbsp;~;
+qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=0;sort=$sort" class="norm">1</a>&nbsp;~;
         }
         foreach my $counter ( $startpage .. ( $endpage - 1 ) ) {
             if ( $counter % 25 == 0 ) {
                 $pageindex .=
                   $newstart == $counter
                   ? qq~<b>$tmpa</b>&nbsp;~
-                  : qq~<a href="$scripturl?action=downloadfile;newstart=$counter;sort=$sort" class="norm">$tmpa</a>&nbsp;~;
+                  : qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$counter;sort=$sort" class="norm">$tmpa</a>&nbsp;~;
                 $tmpa++;
             }
         }
@@ -186,7 +186,7 @@ qq~<a href="$scripturl?action=downloadfile;newstart=0;sort=$sort" class="norm">1
         if ( $endpage < $max - (25) ) { $pageindexadd = q~...&nbsp;~; }
         if ( $endpage != $max ) {
             $pageindexadd .=
-qq~<a href="$scripturl?action=downloadfile;newstart=$lastptn;sort=$sort">$lastpn</a>~;
+qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$lastptn;sort=$sort">$lastpn</a>~;
         }
         $pageindex .= $pageindexadd;
 

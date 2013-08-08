@@ -26,13 +26,16 @@ eval q{
 LoadLanguage('Smtp');
 
 sub use_smtp {
+    my ($smtpaddr);
     $OUTPUT_AUTOFLUSH = 1;
     my ($proto) = ( getprotobyname 'tcp' )[2];
     my ($port) = ( getservbyname 'smtp', 'tcp' )[2] || 25;
-    my ($smtpaddr) =
+    if ( $smtp_server =~ /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/xsm ) {
+        $smtpaddr =
       ( $smtp_server =~ /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/xsm )
       ? pack( 'C4', $1, $2, $3, $4 )
       : ( gethostbyname $smtp_server )[4];
+    }
     $sendlog = q{};
     $auth_ok = 0;
 

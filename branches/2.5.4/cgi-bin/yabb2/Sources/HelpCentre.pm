@@ -278,8 +278,7 @@ sub DoContents {
     $TempParse  =~ s/{yabb section_name}/$SectionNam/gsm;
     $Contents .= qq~$TempParse~;
 
-    $Contents .=
-      q~<ul class="help_ul">~;
+    $Contents .= q~<ul class="help_ul">~;
     $i = 1;
     while ( ${ SectionSub . $i } ) {
 

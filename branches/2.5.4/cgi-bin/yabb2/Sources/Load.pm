@@ -70,7 +70,7 @@ sub LoadBoardControl {
             'rulescollapse' => $rulescollapse,
             'brdpasswr'     => $brdpasswr,
             'brdpassw'      => $brdpassw,
-			'brdrss'        => $cntbdrss
+            'brdrss'        => $cntbdrss,
 		);
         if ( $cntann == 1 )  { $annboard = $cntboard; }
         if ( $cntrbin == 1 ) { $binboard = $cntboard; }
@@ -84,7 +84,7 @@ sub LoadIMs {
         || $PM_level == 0
         || ( $maintenance   && !$iamadmin )
         || ( $PM_level == 2 && ( !$staff ) )
-        || ( $PM_level == 4 && ( !$iamadmin && !$iamgmod && !$iamymod ) )
+        || ( $PM_level == 4 && ( !$iamadmin && !$iamgmod && !$iamfmod ) )
         || ( $PM_level == 3 && ( !$iamadmin && !$iamgmod ) ) );
 
     if ( !exists ${$username}{'PMmnum'} ) { buildIMS( $username, 'load' ); }
@@ -187,7 +187,7 @@ sub LoadUserSettings {
             $iamgmod =
               ( ${ $uid . $username }{'position'} eq 'Global Moderator'
                   && $sessionvalid == 1 ) ? 1 : 0;
-            $iamymod =
+            $iamfmod =
               ( ${ $uid . $username }{'position'} eq 'Mid Moderator'
                   && $sessionvalid == 1 ) ? 1 : 0;
             if ( $sessionvalid == 1 ) {
@@ -209,7 +209,7 @@ sub LoadUserSettings {
     $iamguest = '1';
     $iamadmin = q{};
     $iamgmod  = q{};
-    $iamymod  = q{};
+    $iamfmod  = q{};
     $password = q{};
     local $ENV{'HTTP_COOKIE'} = q{};
     $yyim    = q{};
@@ -860,7 +860,7 @@ qq~             <li><a href="$scripturl?action=viewprofile;username=$useraccount
                 || ( $PM_level == 2 && $UserPM_Level{$user} > 1 && $staff )
                 || (   $PM_level == 3
                     && $UserPM_Level{$user} == 4
-                    && ( $iamadmin || $iamgmod || $iamymod ) )
+                    && ( $iamadmin || $iamgmod || $iamfmod ) )
                 || (   $PM_level == 4
                     && $UserPM_Level{$user} == 3
                     && ( $iamadmin || $iamgmod ) )
@@ -1435,7 +1435,7 @@ sub LoadBroadcastMessages {    #check broadcast messages
         || ( $maintenance   && !$iamadmin )
         || ( $PM_level == 2 && ( !$staff ) )
         || ( $PM_level == 3 && ( !$iamadmin && !$iamgmod ) )
-        || ( $PM_level == 4 && ( !$iamadmin && !$iamgmod && !$iamymod ) ) );
+        || ( $PM_level == 4 && ( !$iamadmin && !$iamgmod && !$iamfmod ) ) );
 
     my $builduser = shift;
     $BCnewMessage = 0;

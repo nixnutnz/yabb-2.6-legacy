@@ -157,7 +157,7 @@ sub print_HTML_output_and_finish {
         if ( $gzcomp == 1 || $filehandle_exists ) {
             $OUTPUT_AUTOFLUSH = 1;
             if ( !$filehandle_exists ) {
-                open GZIP, "| gzip -f" or croak "$croak{'open'} GZIP";
+                open GZIP, '| gzip -f' or croak "$croak{'open'} GZIP";
             }
             print {GZIP} $output or croak "$croak{'print'} GZIP";
             close GZIP or croak "$croak{'close'}";
@@ -260,7 +260,21 @@ sub template {
     $yygreyboxstyle = q{};
     $yygrayscript =q{};
 
-    if ( $INFO{'num'} || $action eq 'post' || $action eq 'modify' || $action eq 'preview' || $action eq 'search2' || $action eq 'imshow'|| $action eq 'imsend' || $action eq 'myviewprofile' || $action eq 'eventcal' || $action eq 'help' || $action eq 'recenttopics' || $action eq 'recent' || $action eq 'usersrecentposts' )
+    if (
+           $INFO{'num'}
+        || $action eq 'post'
+        || $action eq 'modify'
+        || $action eq 'preview'
+        || $action eq 'search2'
+        || $action eq 'imshow'
+        || $action eq 'imsend'
+        || $action eq 'myviewprofile'
+        || $action eq 'eventcal'
+        || $action eq 'help'
+        || $action eq 'recenttopics'
+        || $action eq 'recent'
+        || $action eq 'usersrecentposts'
+       )
     { 
         $yysyntax_js = qq~
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_main.js"></script>
@@ -274,7 +288,8 @@ sub template {
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_php.js"></script>
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_sql.js"></script>
 ~;
-        $yyjsstyle = qq~<link rel="stylesheet" href="$yyhtml_root/shjs/styles/sh_style.css" type="text/css" />\n~;
+        $yyjsstyle =
+qq~<link rel="stylesheet" href="$yyhtml_root/shjs/styles/sh_style.css" type="text/css" />\n~;
         $yyhigh = q~<script type="text/javascript">
     sh_highlightDocument();
 </script>~;
@@ -365,7 +380,7 @@ qq~&nbsp;<script  type="text/javascript">\n<!--\nWriteClock('yabbclock','$aa','$
         window.scrollTo(0,scrpoint);
     }~;
 
-    $yyjavascript .= qq~
+    $yyjavascript .= q~
     function txtInFields(thefield, defaulttxt) {
         if (thefield.value == defaulttxt) thefield.value = "";
         else { if (thefield.value === "") thefield.value = defaulttxt; }
@@ -406,7 +421,7 @@ qq~<a href="$scripturl">$img{'home'}</a>$menusep<a href="$scripturl?action=help"
             || ( $ML_Allowed == 1 && !$iamguest )
             || ( $ML_Allowed == 2 && $staff )
             || ( $ML_Allowed == 3 && ( $iamadmin || $iamgmod ) )
-            || ( $ML_Allowed == 4 && ( $iamadmin || $iamgmod || $iamymod ) ) )
+            || ( $ML_Allowed == 4 && ( $iamadmin || $iamgmod || $iamfmod ) ) )
         {
             $yymenu .=
               qq~$menusep<a href="$scripturl?action=ml">$img{'memberlist'}</a>~;
@@ -535,7 +550,7 @@ qq~$guest_txt{'changelanguage'}: <form action="$scripturl?action=guestlang" meth
             $yyuname .=
 qq~ $maintxt{'377'} <a href="$scripturl?action=register">$maintxt{'97'}</a>~;
         }
-        $yyjavascript .= "        jumptologin = 1;";
+        $yyjavascript .= q~        jumptologin = 1;~;
     }
     else {
         if ( ${ $uid . $username }{'bday'} ne q{} ) {
@@ -549,7 +564,7 @@ qq~ $maintxt{'377'} <a href="$scripturl?action=register">$maintxt{'97'}</a>~;
           (      $PM_level == 0
               || ( $PM_level == 2 && !$staff )
               || ( $PM_level == 3 && !$iamadmin && !$iamgmod )
-              || ( $PM_level == 4 && !$iamadmin && !$iamgmod && !$iamymod ) )
+              || ( $PM_level == 4 && !$iamadmin && !$iamgmod && !$iamfmod ) )
           ? "$wmessage ${$uid.$username}{'realname'}"
           : "$wmessage ${$uid.$username}{'realname'}, ";
     }
@@ -811,7 +826,7 @@ sub PMlev {
     if (   $PM_level == 1
         || ( $PM_level == 2 && $staff )
         || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
-        || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamymod ) ) )
+        || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamfmod ) ) )
     {
         $pm_lev = 1;
     }
@@ -1384,7 +1399,7 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
                 if (   $board eq $annboard
                     && !$iamadmin
                     && !$iamgmod
-                    && !$iamymod )
+                    && !$iamfmod )
                 {
                     next;
                 }
@@ -1651,8 +1666,7 @@ sub enc_eMail {
     my $code2;
 
     foreach my $i ( 0 .. ( $email_length - 1 ) ) {
-        $code2 .=
-          chr( ord( substr $code1, $i, 1 ) ^ ord( substr $email, $i, 1 ) );
+        $code2 .= chr ord( substr $code1, $i, 1 ) ^ ord( substr $email, $i, 1 );
     }
     $code2 = uri_escape($code2);
 
@@ -1759,6 +1773,7 @@ sub Split_Splice_Move {
     elsif ( $s_s_m =~ /\[m by=(.+?) destboard=(.+?) dest=(.+?)\]/sm )
     {                   # 'This Topic has been moved to' a different board
         my ( $mover, $destboard, $dest ) = ( $1, $2, $3 );
+
             # Who moved the topic; destination board; destination id number
         $mover = decloak($mover);
         LoadUser($mover);
@@ -2168,10 +2183,23 @@ sub WriteLog {
     }
  	seek LOG, 0, 0;
 	truncate LOG, 0;
-	print LOG ("$field|$date|$user_ip|$user_host#$ENV{'HTTP_USER_AGENT'}|$username|$currentboard|" . ((!$action && $INFO{'num'} && $currentboard) ? "display" : ((!$action && $ENV{'SCRIPT_FILENAME'} =~ /\/AdminIndex\.(pl|cgi)/) ? "admincenter" : $action)) . "|$INFO{'username'}|$curnum\n", @new_log);
+    print {LOG} (
+"$field|$date|$user_ip|$user_host#$ENV{'HTTP_USER_AGENT'}|$username|$currentboard|"
+          . (
+            ( !$action && $INFO{'num'} && $currentboard )
+            ? 'display'
+            : (
+                (
+                        !$action
+                      && $ENV{'SCRIPT_FILENAME'} =~ /\/AdminIndex\.(pl|cgi)/sm
+                ) ? 'admincenter' : $action
+            )
+          )
+          . "|$INFO{'username'}|$curnum\n",
+        @new_log
+    ) or croak qq~$croak{'print'} log.txt~;
 	fclose(LOG);
  
-
     if ( !$action && $enableclicklog == 1 ) {
         $onlinetime = $date - ( $ClickLogTime * 60 );
         fopen( LOG, "+<$vardir/clicklog.txt", 1 );
@@ -2825,7 +2853,7 @@ sub checkUserLockBypass {
                ( $bypass_lock_perm eq 'fa' && $iamadmin )
             || ( $bypass_lock_perm eq 'gmod' && ( $iamadmin || $iamgmod ) )
             || ( $bypass_lock_perm eq 'fmod'
-                && ( $iamadmin || $iamgmod || $iamymod ) )
+                && ( $iamadmin || $iamgmod || $iamfmod ) )
             || $bypass_lock_perm eq 'mod'
         )
       )
@@ -2903,7 +2931,7 @@ sub BroadMessageView {
             if (
                 (
                        $checkgroup eq 'gmods'
-                    || $checkgroup eq 'ymods'
+                    || $checkgroup eq 'fmods'
                     || $checkgroup eq 'mods'
                 )
                 && $iamgmod
@@ -2911,8 +2939,8 @@ sub BroadMessageView {
             {
                 return 1;
             }
-            if ( ( $checkgroup eq 'ymods' || $checkgroup eq 'mods' )
-                && $iamymod )
+            if ( ( $checkgroup eq 'fmods' || $checkgroup eq 'mods' )
+                && $iamfmod )
             {
                 return 1;
             }
@@ -3281,27 +3309,4 @@ sub BoardPasswCheck {
     return;
 }
 
-sub w3c {
-	if( $iamadmin ){
-		$myw3ccheck =  q~<script type="text/javascript">
-		var diva = document.getElementById("w3c");
-		var newpath = document.URL;
-		var re = /:/;
-		var rea = /\//g;
-		var reb = /\?/g;
-		var rec = /\=/g;
-		var red = /\;/g;
-		var mynewpath = newpath.replace(re, "%3A");
-		mynewpath = newpath.replace(rea, "%2F");
-		mynewpath = newpath.replace(reb, "%3F");
-		mynewpath = newpath.replace(rec, "%3D");
-		mynewpath = newpath.replace(red, "%3B");
-		diva.innerHTML = '<strong><a href="http://validator.w3.org/check?uri=' + mynewpath + '" target="_blank">W3C Validator</a></strong>';
-	</script>~;
-	}
-	else {
-		$myw3ccheck =  q{};
-	}
-	return $myw3ccheck;
-};
 1;

@@ -248,7 +248,7 @@ qq~<div style="float: left; text-align: center; padding-left: 2px; padding-right
         $ToShow[1] = q{};
         $ToShow[2] = 'bmadmins';
         $ToShow[3] = 'bmgmods';
-        $ToShow[4] = 'bmymods';
+        $ToShow[4] = 'bmfmods';
         $ToShow[5] = 'bmmods';
         $ToShow[6] = q{};
         my $x = 6;
@@ -276,14 +276,14 @@ qq~<div style="float: left; text-align: center; padding-left: 2px; padding-right
             $to_id !~ /toshow/sm || ( $PM_level
                 && ( $PM_level != 2 || $staff )
                 && ( $PM_level != 3 || $iamadmin || $iamgmod )
-                && ( $PM_level != 4 || $iamadmin || $iamgmod || $iamymod ) )
+                && ( $PM_level != 4 || $iamadmin || $iamgmod || $iamfmod ) )
         )
         or (
             $to_id !~ /userspec/sm
             || (   ( $ML_Allowed != 1 || !$iamguest )
                 && ( $ML_Allowed != 2 || $staff )
                 && ( $ML_Allowed != 3 || $iamadmin || $iamgmod )
-                && ( $ML_Allowed != 4 || $iamadmin || $iamgmod || $iamymod ) )
+                && ( $ML_Allowed != 4 || $iamadmin || $iamgmod || $iamfmod ) )
         )
       )
     {
@@ -409,7 +409,7 @@ qq~<option value="$cloakedUserName"$colorstyle>${$uid.$user}{'realname'}</option
                         : (
                             $user eq 'bmgmods' ? 'gmods'
                             : (
-                                $user eq 'bmymods' ? 'ymods'
+                                $user eq 'bmfmods' ? 'fmods'
                                 : ( $user eq 'bmmods' ? 'mods' : $user )
                             )
                         )
@@ -660,7 +660,7 @@ sub buildPages {
     if ( $to_id ne 'groups' ) {
         $not_groups = qq~
             <form action="$scripturl?action=findmember;sort=pmsearch;toid=$to_id" method="post" id="form1" name="form1" enctype="application/x-www-form-urlencoded" style="display:inline; vertical-align:middle;" accept-charset="$yycharset">
-                <input type="text" name="member" id="member" value="$usersel_txt{'wildcardinfo'}" onfocus="this.value=''" style="font-size: 11px; width: 140px" />
+                <input type="text" name="member" id="member" value="$usersel_txt{'wildcardinfo'}" onfocus="txtInFields(this, '$usersel_txt{'wildcardinfo'}');" onblur="txtInFields(this, '$usersel_txt{'wildcardinfo'}')" style="font-size: 11px; width: 140px" /> 
                 <input name="submit" type="submit" class="button" style="font-size: 10px;" value="$usersel_txt{'gobutton'}" />
             </form>~;
     }
@@ -727,6 +727,10 @@ qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3
 <script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
 <script type="text/javascript">
 <!--
+function txtInFields(thefield, defaulttxt) {
+    if (thefield.value == defaulttxt) thefield.value = "";
+    else { if (thefield.value === "") thefield.value = defaulttxt; }
+} 
 var scripturl = '$scripturl';
 var noresults = '$usersel_txt{'noresults'}';
 var imageurl = '$imagesdir';
@@ -825,7 +829,7 @@ function copy_option(to_select) {
 // -->
 </script>
 </head>
-<body class="windowbg" style="margin: 0px; padding: 0px;">
+<body class="windowbg" style="width:464px; min-width:464px; margin: 0 auto">
 $yymain
 </body>
 </html>~;
@@ -933,7 +937,8 @@ sub doquicksearch {
             push @matches, $realname, $membername;
         }
     }
-    print "Content-type: text/plain\n\n" or croak "$croak{'print'} content-type";
+    print "Content-type: text/plain\n\n"
+      or croak "$croak{'print'} content-type";
     print join q{,}, @matches or croak "$croak{'print'} matches";
 
     CORE::exit;    # This is here only to avoid server error log entries!

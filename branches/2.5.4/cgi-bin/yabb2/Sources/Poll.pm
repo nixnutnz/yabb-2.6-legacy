@@ -493,11 +493,11 @@ qq~&nbsp;/ <a href="$scripturl?action=scpoll;num=$pollnum" class="altlink">$poll
                 my $users_votecount = @users_vote;
                 if ( $users_votecount == 1 ) {
                     $users_votetext =
-qq~<br /><b>$polltxt{'64'}:</b> $users_votedate<br /><b>$polltxt{'65'}:</b> ~;
+qq~<br /><span style="font-weight: bold;">$polltxt{'64'}:</span> $users_votedate<br /><span style="font-weight: bold;">$polltxt{'65'}:</span> ~;
                 }
                 else {
                     $users_votetext =
-qq~<br /><b>$polltxt{'64'}:</b> $users_votedate<br /><b>$polltxt{'66'}:</b> ~;
+qq~<br /><span style="font-weight: bold;">$polltxt{'64'}:</span> $users_votedate<br /><span style="font-weight: bold;">$polltxt{'66'}:</span> ~;
                 }
                 last;
             }
@@ -642,9 +642,23 @@ qq~<a href="$scripturl?action=undovote;num=$pollnum$scp">$img{'deletevote'}</a>~
         $deletevote = q{};
     }
 
+    if (!$yyUDLoaded{$username}) { LoadUser($username); }
+    $scdivdisp = q~block~;
+    $poll_coll = q{};
+    if(!$INFO{'num'} && !$iamguest) {
+        if(${$uid.$username}{'collapsescpoll'} == $pollnum) {
+            $poll_coll .= qq~<img src="$imagesdir/$cat_exp" id="scpollcollapse" alt="$boardindex_exptxt{'1'}" title="$boardindex_exptxt{'1'}" class="cursor" onclick="collapseSCpoll('$pollnum');" />~;
+            $scdivdisp = q~none~;
+        }
+        else {
+            $poll_coll .= qq~<img src="$imagesdir/$cat_col" id="scpollcollapse" alt="$boardindex_exptxt{'2'}" title="$boardindex_exptxt{'2'}" class="cursor" onclick="collapseSCpoll('$pollnum');" />~;
+        }
+    }
     $pollmain = $mypoll_display;
     $pollmain =~ s/{yabb pollnum}/$pollnum/gsm;
     $pollmain =~ s/{yabb scp}/$scp/sm;
+    $pollmain =~ s/{yabb poll_coll}/$poll_coll/gsm;
+    $pollmain =~ s/{yabb scdivdisp}/$scdivdisp/gsm;
     $pollmain =~ s/{yabb poll_icon}/$poll_icon/gsm;
     $pollmain =~ s/{yabb boardpoll}/$boardpoll/gsm;
     $pollmain =~ s/{yabb lockpoll}/$lockpoll/gsm;
@@ -656,7 +670,7 @@ qq~<a href="$scripturl?action=undovote;num=$pollnum$scp">$img{'deletevote'}</a>~
     if ($has_voted) {
         if ( !$hide_results || $poll_locked ) {
             $poll_notlocked = qq~
-        <div style="float: left; width: 20%; text-align: right;">
+           <div style="float: right; width: 20%; text-align: right;">
             <script type="text/javascript">
                 <!--
                 document.write('<a href="$scripturl?num=$viewnum"><img src="$imagesdir/$poll_bar" alt="" /></a>');
@@ -673,13 +687,12 @@ qq~<a href="$scripturl?action=undovote;num=$pollnum$scp">$img{'deletevote'}</a>~
         # Display Poll Hidden Message
         $poll_hidden .=
 qq~$polltxt{'47'}<br /><span class="small">($polltxt{'48'})</span><br />~;
-
     }
     else {
         if ($has_voted) {
             if ( $INFO{'view'} eq 'pie' ) {
                 $poll_hasvoted = qq~
-                <div class="center"><script src="$yyhtml_root/piechart.js" type="text/javascript"></script>
+        <script src="$yyhtml_root/piechart.js" type="text/javascript"></script>
                 <script type="text/javascript">
                 <!--
                         if (document.getElementById('piestyle').currentStyle) {
@@ -697,7 +710,7 @@ qq~$polltxt{'47'}<br /><span class="small">($polltxt{'48'})</span><br />~;
                         pie.color_style = pie_colorstyle;
                         pie.sliceAdd();
                         //-->
-                </script></div>~;
+        </script>~;
             }
             else {
                 for my $i ( 0 .. ( @options - 1 ) ) {
@@ -735,7 +748,7 @@ qq~<input type="checkbox" name="option$i" id="option$i" value="$i" style="margin
 qq~<input type="radio" name="option" id="option$i" value="$i" style="margin: 0; padding: 0; vertical-align: middle;" />~;
                 }
                 $poll_hasvoted .= qq~
-        <div style="clear: both;">
+        <div class="clear">
             <div style="float: left; height: 22px; text-align: right;">$input <label for="option$i"><b>$options[$i]</b></label></div>
         </div>~;
             }
@@ -774,8 +787,38 @@ qq~<input type="radio" name="option" id="option$i" value="$i" style="margin: 0; 
     }
 
     $pollmain = $mypoll_display;
+    $pollmain .= qq~<script type="text/javascript">
+<!--
+function collapseSCpoll(pollnr) {
+    if (document.getElementById("polldiv").style.display == 'none') linkpollnr = '0';
+    else linkpollnr = pollnr;
+    var doexpand = "$boardindex_exptxt{'1'}";
+    var docollaps = "$boardindex_exptxt{'2'}";
+    if (document.getElementById("polldiv").style.display == 'none') {
+        document.getElementById("polldiv").style.display = 'block';
+        document.getElementById('scpollcollapse').src = "$imagesdir/$cat_col";
+        document.getElementById('scpollcollapse').alt = docollaps;
+        document.getElementById('scpollcollapse').title = docollaps;
+    }
+    else {
+        document.getElementById("polldiv").style.display = 'none';
+        document.getElementById('scpollcollapse').src="$imagesdir/$cat_exp";
+        document.getElementById('scpollcollapse').alt = doexpand;
+        document.getElementById('scpollcollapse').title = doexpand;
+    }
+    var url = '$scripturl?action=scpollcoll&scpoll=' + linkpollnr;
+    GetXmlHttpObject();
+    if (xmlHttp == null) return;
+    xmlHttp.open("GET",url,true);
+    xmlHttp.send(null);
+}
+-->
+</script>
+~;
     $pollmain =~ s/{yabb pollnum}/$pollnum/gsm;
     $pollmain =~ s/{yabb scp}/$scp/sm;
+    $pollmain =~ s/{yabb poll_coll}/$poll_coll/gsm;
+    $pollmain =~ s/{yabb scdivdisp}/$scdivdisp/gsm;
     $pollmain =~ s/{yabb poll_icon}/$poll_icon/sm;
     $pollmain =~ s/{yabb boardpoll}/$boardpoll/sm;
     $pollmain =~ s/{yabb lockpoll}/$lockpoll/sm;
@@ -795,6 +838,13 @@ qq~<input type="radio" name="option" id="option$i" value="$i" style="margin: 0; 
     $pollmain =~ s/{yabb deletevote}/$deletevote/sm;
     $pollmain =~ s/{yabb displayvoters}/$displayvoters/sm;
     return $pollmain;
+}
+
+sub collapse_poll {
+    ${$uid.$username}{'collapsescpoll'} = $INFO{'scpoll'};
+    UserAccount($username, 'update');
+    $elenable = 0;
+    croak q{};
 }
 
 sub check_deletepoll {

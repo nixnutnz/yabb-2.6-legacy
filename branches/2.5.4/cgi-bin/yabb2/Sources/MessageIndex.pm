@@ -46,14 +46,14 @@ sub MessageIndex {
     if ( AccessCheck( $currentboard, q{}, $boardperms ) ne 'granted' ) {
         fatal_error('no_access');
     }
-    if ( $annboard eq $currentboard && !$iamadmin && !$iamgmod && !$iamymod ) {
+    if ( $annboard eq $currentboard && !$iamadmin && !$iamgmod && !$iamfmod ) {
         fatal_error('no_access');
     }
 
     my (
         $counter, $mcount, $showmods, $mnum, $msub,
-        $mname,   $memail, $mdate,    $mreplies,
-        $musername, $micon,  $mstate, $dlp,
+        $mname,   $memail, $mdate,    $mreplies, $musername,
+        $micon,   $mstate, $dlp,
     );
     my (
         $numanns,            $threadcount, $countsticky,
@@ -155,8 +155,11 @@ qq~<a href="$scripturl?board=$currentboard;tsort=0" rel="nofollow">$messageindex
 
     *starter = sub {
         if ( exists $user_info{$_[0]} )  { return $user_info{$_[0]};}
-        if ( !exists $memberinf{$_[0]} ) { return lc((split /\|/xsm, $_[1], 4)[2]);}
-        $user_info{$_[0]} = lc((split /\|/xsm, $memberinf{$_[0]}, 2)[0]);
+        if ( !exists $memberinf{ $_[0] } ) {
+            return lc( ( split /\|/xsm, $_[1], 4 )[2] );
+        }
+        $user_info{ $_[0] } =
+          lc( ( split /\|/xsm, $memberinf{ $_[0] }, 2 )[0] );
     };
 
     if ( $tsort == 1 ) {
@@ -332,8 +335,7 @@ qq~<a href="$scripturl?board=$currentboard/$lastptn"><span class="small">$lastpn
             $pageindex2 = $pageindex1;
         }
         else {
-            $pagedropindex1 =
-q~<span class="pagedropindex">~;
+            $pagedropindex1 = q~<span class="pagedropindex">~;
             $pagedropindex1 .=
 qq~<span class="pagedropindex_inner"><a href="$scripturl?board=$INFO{'board'};start=$start;action=messagepagetext"><img src="$imagesdir/$msgbrd_index_togl"  alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" /></a></span>~;
             $pagedropindex2 = $pagedropindex1;
@@ -511,21 +513,21 @@ qq~javascript:MessageList(\\'$scripturl?board=$currentboard/' + pagstart + ';mes
     if ($staff) {
         if (   ( $iamadmin && $adminview == 3 )
             || ( $iamgmod && $gmodview == 3 )
-            || ( $iamymod && $ymodview == 3 )
+            || ( $iamfmod && $fmodview == 3 )
             || ( $iammod  && $modview == 3 ) )
         {
             $multiview = 3;
         }
         elsif (( $iamadmin && $adminview == 2 )
             || ( $iamgmod && $gmodview == 2 )
-            || ( $iamymod && $ymodview == 2 )
+            || ( $iamfmod && $fmodview == 2 )
             || ( $iammod  && $modview == 2 ) )
         {
             $multiview = 2;
         }
         elsif (( $iamadmin && $adminview == 1 )
             || ( $iamgmod && $gmodview == 1 )
-            || ( $iamymod && $ymodview == 1 )
+            || ( $iamfmod && $fmodview == 1 )
             || ( $iammod  && $modview == 1 ) )
         {
             $multiview = 1;
@@ -654,12 +656,12 @@ qq~<img src="$imagesdir/$msgbrd_locked" alt="$messageindex_txt{'104'}" title="$m
         (
                ( $iamadmin && $adminview != 0 )
             || ( $iamgmod && $gmodview != 0 )
-            || ( $iamymod && $ymodview != 0 )
+            || ( $iamfmod && $fmodview != 0 )
             || (   $iammod
                 && $modview != 0
                 && !$iamadmin
                 && !$iamgmod
-                && !$iamymod )
+                && !$iamfmod )
         )
         && $sessionvalid == 1
       )
@@ -1004,12 +1006,12 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">$f
             (
                    ( $iamadmin && $adminview == 3 )
                 || ( $iamgmod && $gmodview == 3 )
-                || ( $iamymod && $ymodview == 3 )
+                || ( $iamfmod && $fmodview == 3 )
                 || (   $iammod
                     && $modview == 3
                     && !$iamadmin
                     && !$iamgmod
-                    && !$iamymod )
+                    && !$iamfmod )
             )
             && $sessionvalid == 1
           )
@@ -1041,12 +1043,12 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">$f
             (
                    ( $iamadmin && $adminview == 2 )
                 || ( $iamgmod && $gmodview == 2 )
-                || ( $iamymod && $ymodview == 2 )
+                || ( $iamfmod && $fmodview == 2 )
                 || (   $iammod
                     && $modview == 2
                     && !$iamadmin
                     && !$iamgmod
-                    && !$iamymod )
+                    && !$iamfmod )
             )
             && $sessionvalid == 1
           )
@@ -1065,12 +1067,12 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
             (
                    ( $iamadmin && $adminview == 1 )
                 || ( $iamgmod && $gmodview == 1 )
-                || ( $iamymod && $ymodview == 1 )
+                || ( $iamfmod && $fmodview == 1 )
                 || (   $iammod
                     && $modview == 1
                     && !$iamadmin
                     && !$iamgmod
-                    && !$iamymod )
+                    && !$iamfmod )
             )
             && $sessionvalid == 1
           )
@@ -1112,8 +1114,9 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
                 $testlength    = 0;
                 $pretextlength = 0;
                 FromHTML($themessage);
-                $themessage =~ s/\[img\].*?\[\/img\]/[b][IMAGE][\/b]/igsm;
-                $themessage =~ s/\[media].*?\[\/media]/[b][MEDIA][\/b]/igsm;
+                $themessage =~ s~\[img\].*?\[\/img\]~[b][$messageindex_tp{'image_tp'}][/b]~igsm;
+                $themessage =~ s~\[media].*?\[/media]~[b][$messageindex_tp{'media_tp'}][/b]~igsm;
+                $themessage =~ s~\[code(.*?)].*?\[/code]~[b][XCODE$1][/b]~igsm;
                 $themessage =~ s/<br>/<br \/>/igsm;
                 $themessage =~ s/(<br \/>){2,}/<br \/>/igsm;
                 $themessage =~ s/^<br \/>//igsm;
@@ -1170,10 +1173,13 @@ s/^((.*?)(\[(\w+?)[\s|\=]*(.*?)\])(.*?)(\[\/\4\]))/ fixtags($1,$2,$3,$6,$7) /eis
                 $themessage = $message;
                 $message    = q{};
                 ToChars($themessage);
+                $themessage =~ s/XCODE/$messageindex_tp{'code_tp'}/gsm;
+
 #                $themessage =~ s/&/&amp;/igsm;
                 $themessage = Censor($themessage);
                 my $topicsum =
 qq~<div class="windowbg2 topic-hover" id="$mnum">$themessage</div>~;
+
             if ( ${$mnum}{'board'} eq $annboard ) {
                 $msublink =
 qq~<a href="$scripturl?virboard=$currentboard;num=$mnum" onmouseover="topicSum(event, '$mnum')" onmouseout="hidetopicSum('$mnum')" onclick="hidetopicSum('$mnum')">$msub</a>$topicsum~;
@@ -1248,12 +1254,12 @@ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies
         (
                ( $iamadmin && $adminview == 3 )
             || ( $iamgmod && $gmodview == 3 )
-            || ( $iamymod && $ymodview == 3 )
+            || ( $iamfmod && $fmodview == 3 )
             || (   $iammod
                 && $modview == 3
                 && !$iamadmin
                 && !$iamgmod
-                && !$iamymod )
+                && !$iamfmod )
         )
         && $sessionvalid == 1
       )
@@ -1264,12 +1270,12 @@ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies
         (
                ( $iamadmin && $adminview == 2 )
             || ( $iamgmod && $gmodview == 2 )
-            || ( $iamymod && $ymodview == 2 )
+            || ( $iamfmod && $fmodview == 2 )
             || (   $iammod
                 && $modview == 2
                 && !$iamadmin
                 && !$iamgmod
-                && !$iamymod )
+                && !$iamfmod )
         )
         && $sessionvalid == 1
       )
@@ -1582,12 +1588,12 @@ qq~<img src="$imagesdir/$msgbrd_cal_exp" id="bdrulecollapse" alt="$boardindex_ex
         (
                ( $iamadmin && $adminview == 3 )
             || ( $iamgmod && $gmodview == 3 )
-            || ( $iamymod && $ymodview == 3 )
+            || ( $iamfmod && $fmodview == 3 )
             || (   $iammod
                 && $modview == 3
                 && !$iamadmin
                 && !$iamgmod
-                && !$iamymod )
+                && !$iamfmod )
         )
         && $sessionvalid == 1
       )
@@ -1599,12 +1605,12 @@ qq~<img src="$imagesdir/$msgbrd_cal_exp" id="bdrulecollapse" alt="$boardindex_ex
         (
                ( $iamadmin && $adminview != 0 )
             || ( $iamgmod && $gmodview != 0 )
-            || ( $iamymod && $ymodview != 0 )
+            || ( $iamfmod && $fmodview != 0 )
             || (   $iammod
                 && $modview != 0
                 && !$iamadmin
                 && !$iamgmod
-                && !$iamymod )
+                && !$iamfmod )
         )
         && $sessionvalid == 1
       )
@@ -1620,12 +1626,12 @@ qq~<img src="$imagesdir/$msgbrd_cal_exp" id="bdrulecollapse" alt="$boardindex_ex
         (
                ( $iamadmin && $adminview >= 2 )
             || ( $iamgmod && $gmodview >= 2 )
-            || ( $iamymod && $ymodview >= 2 )
+            || ( $iamfmod && $fmodview >= 2 )
             || (   $iammod
                 && $modview >= 2
                 && !$iamadmin
                 && !$iamgmod
-                && !$iamymod )
+                && !$iamfmod )
         )
         && $sessionvalid == 1
       )
@@ -1682,19 +1688,12 @@ qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
     $messageindex_template
     $pageindexjs
     <script type="text/javascript">
-
     function topicSum(e, topicsumm) {
-        if (document.getElementById(topicsumm).style.display == 'inline') {
-            document.getElementById(topicsumm).style.height = '';
-            document.getElementById(topicsumm).style.display = 'none';
-        }
-        else {
-            document.getElementById(topicsumm).style.display = 'inline';
+        document.getElementById(topicsumm).style.display = 'block';
             var dheight = document.getElementById(topicsumm).offsetHeight;
             var dtop = document.all ? e.clientY + document.documentElement.scrollTop - (dheight + 30) : e.pageY - (dheight + 30);
             document.getElementById(topicsumm).style.top = dtop + 'px';
         }
-    }
 
     function hidetopicSum(topicsumm) {
         document.getElementById(topicsumm).style.display = 'none';
@@ -1707,12 +1706,12 @@ qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
         (
                ( $iamadmin && $adminview >= 2 )
             || ( $iamgmod && $gmodview >= 2 )
-            || ( $iamymod && $ymodview >= 2 )
+            || ( $iamfmod && $fmodview >= 2 )
             || (   $iammod
                 && $modview >= 2
                 && !$iamadmin
                 && !$iamgmod
-                && !$iamymod )
+                && !$iamfmod )
         )
         && $sessionvalid == 1
       )
@@ -1907,8 +1906,7 @@ sub moveto {
                 $my_board = $board;
                 if ( !${ $uid . $board }{'canpost'} && $subboard{$board} ) {
                     $alert = qq~$messageindex_txt{'nopost'}~;
-                    $bdnopost =
-qq~ class="nopost" onclick="alert('$alert')"~;
+                    $bdnopost = qq~ class="nopost" onclick="alert('$alert')"~;
                     $my_board = q{};
                 }
                 $boardlist .=

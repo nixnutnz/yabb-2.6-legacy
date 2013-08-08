@@ -121,7 +121,7 @@ sub DeleteThread {
         require Sources::Favorites;
         RemFav($delete);
     }
-    if (   ( !$adminbin || ( !$iamadmin && !$iamgmod && !$iamymod ) )
+    if (   ( !$adminbin || ( !$iamadmin && !$iamgmod && !$iamfmod ) )
         && $binboard ne q{}
         && $currentboard ne $binboard )
     {
@@ -136,7 +136,7 @@ sub DeleteThread {
         $INFO{'newthread'} = 'new';
         Split_Splice_2();
     }
-    elsif ( $iamadmin || $iamgmod || $iamymod || $binboard eq q{} ) {
+    elsif ( $iamadmin || $iamgmod || $iamfmod || $binboard eq q{} ) {
         $INFO{'moveit'} = 1;
         $INFO{'thread'} = $delete;
         RemoveThread();
@@ -239,7 +239,7 @@ sub Multi {
                 require Sources::Favorites;
                 RemFav($delete);
             }
-            if (   ( !$adminbin || ( !$iamadmin && !$iamgmod && !$iamymod ) )
+            if (   ( !$adminbin || ( !$iamadmin && !$iamgmod && !$iamfmod ) )
                 && $binboard ne q{}
                 && $currentboard ne $binboard )
             {
@@ -253,7 +253,7 @@ sub Multi {
                 $INFO{'newthread'} = 'new';
                 Split_Splice_2();
             }
-            elsif ( $iamadmin || $iamgmod || $iamymod || $binboard eq q{} ) {
+            elsif ( $iamadmin || $iamgmod || $iamfmod || $binboard eq q{} ) {
                 $INFO{'moveit'} = 1;
                 $INFO{'thread'} = $delete;
                 RemoveThread();

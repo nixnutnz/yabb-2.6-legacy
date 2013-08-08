@@ -202,8 +202,7 @@ sub ModifyProfile {
         $passtext = $profile_txt{'821'};
     }
 
-    $passtext .=
-qq~<br /><span class="small norm">$profile_txt{'895'}</span>~;
+    $passtext .= qq~<br /><span class="small norm">$profile_txt{'895'}</span>~;
 
     my $scriptAction = q~profile2~;
     if ($view) {
@@ -1194,7 +1193,7 @@ sub ModifyProfileAdmin {
       split /\|/xsm, $Group{'Administrator'};
     ( $MemStatGMod, $MemStarNumGMod, $MemStarPicGMod, $MemTypeColGMod ) =
       split /\|/xsm, $Group{'Global Moderator'};
-    ( $MemStatYMod, $MemStarNumYMod, $MemStarPicYMod, $MemTypeColYMod ) =
+    ( $MemStatFMod, $MemStarNumFMod, $MemStarPicFMod, $MemTypeColFMod ) =
       split /\|/xsm, $Group{'Mid Moderator'};
     ( $MemStatMod, $MemStarNumMod, $MemStarPicMod, $MemTypeColMod ) =
       split /\|/xsm, $Group{'Moderator'};
@@ -1206,7 +1205,7 @@ sub ModifyProfileAdmin {
         $tt = $MemStatGMod;
     }
     elsif ( ${ $uid . $user }{'position'} eq 'Mid Moderator' ) {
-        $tt = $MemStatYMod;
+        $tt = $MemStatFMod;
     }
     elsif ( ${ $uid . $user }{'position'} ) {
         $ttgrp = ${ $uid . $user }{'position'};
@@ -1799,6 +1798,16 @@ qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};si
             unlink "$facesdir/UserAvatars/$1";
         }
 
+        fopen( PMATTACH, "<$vardir/pm.attachments" ) || fatal_error( 'cannot_open', "$vardir/$pm.attachments", 1 );
+        @pmattach = <PMATTACH>;
+        fclose(PMATTACH);
+
+        foreach my $pm_attach ( @pmattach ) {
+            ( undef, undef, undef, $attach_file, undef, $attach_user ) = split /\|/xsm, $pm_attach;
+            chomp $attach_user;
+            if ( $noteuser eq $attach_user ) { unlink "$pmuploaddir/$attach_file"; }
+        }
+
         MemberIndex( 'remove', $noteuser );
 
         # EventCalbday Begin
@@ -1827,7 +1836,7 @@ qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};si
             $iamguest = 1;
             $iamadmin = q{};
             $iamgmod  = q{};
-            $iamymod  = q{};
+            $iamfmod  = q{};
             $password = q{};
             $yyim     = q{};
             local $ENV{'HTTP_COOKIE'} = q{};
@@ -2000,7 +2009,7 @@ sub ModifyProfileContacts2 {
             $iamguest = 1;
             $iamadmin = q{};
             $iamgmod  = q{};
-            $iamymod  = q{};
+            $iamfmod  = q{};
             $password = q{};
             $yyim     = q{};
             local $ENV{'HTTP_COOKIE'} = q{};
@@ -2735,8 +2744,7 @@ qq~<img src="${$uid.$user}{'userpic'}" id="avatar_img_resize" alt="" style="disp
             $pic =
 qq~<img src="$facesurl/${$uid.$user}{'userpic'}" id="avatar_img_resize" alt="" style="display:none" />~;
         }
-        $pic_row =
-qq~<div class="picrow">
+        $pic_row = qq~<div class="picrow">
                         $pic
                         </div>~;
     }
@@ -2757,7 +2765,7 @@ qq~<div class="picrow">
         $showaddgr =~ s/<br \/>/\, /gsm;
         $showaddgr =~ s/\A, //sm;
         $showaddgr =~ s/, \Z//sm;
-        $row_addgrp .= qq~<span class="small">$showaddgr</span><br />~;
+        $row_addgrp .= qq~$showaddgr<br />~;
     }
     if ( ${ $uid . $user }{'gender'} ) {
         if ( ${ $uid . $user }{'gender'} eq 'Male' ) {
@@ -3102,7 +3110,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
                 && ( $iamadmin || $iamgmod ) )
             || (   $PM_level == 4
                 && $UserPM_Level{$user} == 4
-                && ( $iamadmin || $iamgmod || $iamymod ) )
+                && ( $iamadmin || $iamgmod || $iamfmod ) )
         )
       )
     {
@@ -3142,7 +3150,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
             <div class="contactleft"><b>$lastPM: </b></div>
             <div class="contactright">$userlastim</div>~;
     }
-    if (   ( $iamadmin || ( $iamgmod && $gmod_access2{'ipban3'} ) || $iamymod )
+    if (   ( $iamadmin || ( $iamgmod && $gmod_access2{'ipban3'} ) || $iamfmod )
         && !$view
         && $user ne $username
         && ${ $uid . $user }{'position'} ne 'Administrator' )
@@ -3626,10 +3634,10 @@ sub usersrecentposts {
 
         $counter++;
 
-        $tname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tusername}" rel="nofollow">$format_unbold{$tusername}</a>~;
-        $mname = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}" rel="nofollow">$format_unbold{$curuser}</a>~; 
-
-
+        $tname =
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tusername}" rel="nofollow">$format_unbold{$tusername}</a>~;
+        $mname =
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}" rel="nofollow">$format_unbold{$curuser}</a>~;
 
         $mdate = timeformat($mdate);
 

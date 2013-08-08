@@ -153,6 +153,7 @@ if ($action eq 'detailedversion') { return 1; }
 'RSSrecent','RSS.pm&RSS_recent',
 'scpoll','Poll.pm&ShowcasePoll',
 'scpolldel','Poll.pm&DelShowcasePoll',
+'scpollcoll','Poll.pm&collapse_poll',
 'search','Search.pm&plushSearch1',
 'search2','Search.pm&plushSearch2',
 'sendtopic','SendTopic.pm&SendTopic',

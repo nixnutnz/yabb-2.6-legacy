@@ -657,21 +657,6 @@ sub update_htaccess {
         }
     }
     if ( $use_htaccess && ( $action eq 'add' || $action eq 'remove' ) ) {
-        my %seen   = ();
-        my @allban = ();
-    
-       *ban_dupcheck = sub {
-            my @in = @_;
-            foreach my $item (@in) { $seen{$item} = 1 }
-
-            foreach my $item (@denies) {
-                if ( !$seen{$item} ) {
-                    push @allban, $item;
-                }
-            }
-        };
-        ban_dupcheck(@denies);
-
         fopen( HTA, '>.htaccess' );
         print {HTA} '# Last modified by The Guardian: '
           . timeformat( $date, 1 )

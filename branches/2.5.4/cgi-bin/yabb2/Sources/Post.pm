@@ -834,8 +834,7 @@ qq~<div class="small" style="float: right; width: 100%; text-align: right; margi
                 $tmplastmodified = q{};
             }
             if ( ${ $uid . $tmpmusername }{'signature'} ) {
-                $livesignature_hr =
-q~<hr class="hr att_hr" />~;
+                $livesignature_hr = q~<hr class="hr att_hr" />~;
             }
         }
         $liveipimg = qq~<img src="$imagesdir/$post_ip" alt="" />~;
@@ -956,7 +955,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
               || ( $showsmdir == 3 && $showadded != 2 ) ) ? 2 : 3;
 
         if ( $enable_ubbc && $showyabbcbutt ) {
-            $my_ubbc = qq~
+            $my_ubbc = q~
             <div class="style_ubbc_box">~;
             $my_ubbc .= postbox();
             $my_ubbc .= q~</div>~;
@@ -1132,10 +1131,18 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                 else {
                     $my_att_a = qq~
             <div id="attform_a_$y" class="att_lft"~
-                      . ( $y > 1 ? q~ style="visibility:hidden; height:0px"~ : q{} )
+                      . (
+                        $y > 1
+                        ? q~ style="visibility:hidden; height:0px"~
+                        : q{}
+                      )
                       . qq~><b>$fatxt{'6'} $y:</b></div>
             <div id="attform_b_$y" class="att_rgt"~
-                      . ( $y > 1 ? q~ style="visibility:hidden; height:0px"~ : q{} )
+                      . (
+                        $y > 1
+                        ? q~ style="visibility:hidden; height:0px"~
+                        : q{}
+                      )
                       . qq~>\n             <input type="file" name="file$y" id="file$y" size="50" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span></div>~;
                 }
                 $mypoll_att .= $my_att_a;
@@ -1652,6 +1659,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
 
     ToChars($message);
     $message = Censor($message);
+
 #    $prevmain .= $mypost_prevmain;
 #    $prevmain =~ s/{yabb csubject}/$csubject/gsm;
 #    $prevmain =~ s/{yabb cmessage}/$message/gsm;
@@ -2148,6 +2156,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
  # create a new file on the server using the formatted ( new instance ) filename
             if ( fopen( NEWFILE, ">$uploaddir/$fixfile" ) ) {
                 binmode NEWFILE;
+
                     # needed for operating systems (OS) Windows, ignored by Linux
                 print {NEWFILE} $file_buffer
                   or croak "$croak{'print'} NEWFILE";    # write new file on HD

@@ -342,6 +342,7 @@ sub UserAccount {
         push @tags, ext_get_fields_array();
     }
     push @tags, 'topicpreview';
+	push @tags, 'collapsescpoll';
 
     fopen( UPDATEUSER, ">$memberdir/$user.$userext", 1 )
       || fatal_error( 'cannot_open', "$memberdir/$user.$userext", 1 );
@@ -409,7 +410,8 @@ sub MemberIndex {
 
         fopen( TTL, ">$memberdir/members.ttl" )
           || fatal_error( 'cannot_open', "$memberdir/members.ttl", 1 );
-        print {TTL} qq~$membershiptotal|$lastuser~ or croak "$croak{'print'} TTL";
+        print {TTL} qq~$membershiptotal|$lastuser~
+          or croak "$croak{'print'} TTL";
         fclose(TTL);
         return 0;
 

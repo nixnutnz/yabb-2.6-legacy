@@ -123,7 +123,7 @@ function searchMe(chelem) {
         || ( $ML_Allowed == 1 && !$iamguest )
         || ( $ML_Allowed == 2 && $staff )
         || ( $ML_Allowed == 3 && ( $iamadmin || $iamgmod ) )
-        || ( $ML_Allowed == 4 && ( $iamadmin || $iamgmod || $iamymod ) ) )
+        || ( $ML_Allowed == 4 && ( $iamadmin || $iamgmod || $iamfmod ) ) )
     {
         $yymain .= $mysearch_template2;
         if ( !$iamguest ) {
@@ -245,7 +245,7 @@ qq~<option value="$curboard" $selected>$boardname</option>\n          ~;
     if ( $isselected == $allselected ) {
         $boardscheck = q~ checked="checked"~;
     }
-    if ( $iamadmin || $iamymod || $iamgmod && $gmod_access2{'ipban2'} eq 'on' )
+    if ( $iamadmin || $iamfmod || $iamgmod && $gmod_access2{'ipban2'} eq 'on' )
     {
         $search_ip =
 qq~<input type="checkbox" name="search_ip" id="search_ip" value="on" /><label for="search_ip"> $search_txt{'73'}</label>~;
@@ -706,7 +706,7 @@ qq~$menusep<a href="$scripturl?action=multidel;recent=1;thread=$tnum;del$c=$c" o
               ) . qq~$display_txt{'rempost'}')">$img{'delete'}</a>~;
         }
         if (   $iamadmin
-            || $iamymod
+            || $iamfmod
             || $iamgmod && $gmod_access2{'ipban2'} eq 'on' )
         {
             $my_ipfind = $mysearch_template10;
