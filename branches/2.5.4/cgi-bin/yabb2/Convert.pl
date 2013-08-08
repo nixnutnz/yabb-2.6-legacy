@@ -3508,7 +3508,7 @@ sub SetInstall2 {
         $defaultml              = 'regdate';
         $max_avatar_width       = 65;
         $max_avatar_height      = 65;
-        $fix_avatar_img_size    = 0;
+        $fix_avatar_img_size    = 65;
         $max_avatarml_width     = 65;
         $max_avatarml_height    = 65;
         $fix_avatarml_img_size  = 0;

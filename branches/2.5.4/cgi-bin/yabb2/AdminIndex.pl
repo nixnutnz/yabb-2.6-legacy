@@ -73,6 +73,7 @@ LoadUserSettings();    # Load user settings
 WriteLog();            # write into the logfile
 WhatTemplate();        # Figure out which template to be using.
 WhatLanguage();        # Figure out which language file we should be using!
+get_micon();
 
 if ($debug) { require "$sourcedir/Debug.pm"; }
 if ($referersecurity) {

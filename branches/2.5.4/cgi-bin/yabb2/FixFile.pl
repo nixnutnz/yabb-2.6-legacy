@@ -464,7 +464,7 @@ q~<br /><br />After you have tested your forum and made sure everything was conv
                 <br />
                 <span style="color:red">We recommend you delete the file "$ENV{'SCRIPT_NAME'}". This is to prevent someone else running the converter and damaging your files.<br />
                 <br />
-                Further more, we strongly recomend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />
+                Further more, we strongly recommend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />
                 - Rebuild Message Index<br />
                 - Recount Board Totals<br />
                 - Rebuild Members List<br />
@@ -1184,7 +1184,7 @@ sub MoveMessages {
 
 sub MoveVariables {
     my ($convdatadir) = @_;
-    my @mvvar = ( 'allowed.txt','attachments.txt','ban_log.txt','bots.hosts','email_domain_filter.txt','flood.txt','gmodsettings.txt','modlist.txt','mostlog.txt','oldestmes.txt','registration.log','reserve.txt','reservecfg.txt','spamrules.txt',);
+    my @mvvar = ( 'allowed.txt','attachments.txt','ban_log.txt','bots.hosts','email_domain_filter.txt','flood.txt','gmodsettings.txt','modlist.txt','mostlog.txt','Movedthreads.pm','oldestmes.txt','pm.attachments','registration.log','reserve.txt','reservecfg.txt','spamrules.txt',);
     for my $varfl (@mvvar) {
         if ( -e "$convdatadir/$varfl" ) {
             fopen( OLDVAR, "$convdatadir/$varfl" );
@@ -1250,10 +1250,12 @@ sub Convert_Settings {
 	if ( !$cookieview ) { ( undef,$rancook ) = split /\-/xsm, $cookieusername;
         $cookieview = qq~Y2view-$rancook~;
     }
-    if (!$MaxIMMessLen) {$MaxIMMessLen = 2000;}
-    if (!$AdMaxIMMessLen) {$AdMaxIMMessLen = 3000;}
-    if (!$MaxCalMessLen){$MaxCalMessLen = 2000;}
-    if (!$AdMaxCalMessLen){$AdMaxCalMessLen = 3000;}
+	if ( !$cookieviewtime ) { $cookieviewtime = 525600; }
+    if ( !$MaxIMMessLen ) { $MaxIMMessLen = 2000; }
+    if ( !$AdMaxIMMessLen ) { $AdMaxIMMessLen = 3000; }
+    if ( !$MaxCalMessLen ){ $MaxCalMessLen = 2000; }
+    if ( !$AdMaxCalMessLen ){ $AdMaxCalMessLen = 3000; }
+	if ( !$fix_avatar_img_size ) { $fix_avatar_img_size  = 65; }
 	$ip_banlist = q{};
 	$email_banlist = q{};
 	$user_banlist = q{};
