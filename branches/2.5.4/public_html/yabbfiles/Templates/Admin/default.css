@@ -136,7 +136,7 @@ font-weight:normal;
 
 .bordercolor {
 	background-color: #4378AE;
-	border-radius: 5px 5px 5px 0px;
+	border-radius: 5px 5px 0px 0px;
     -webkit-border-radius: 5px 5px 0px 0px;
     -moz-border-radius: 5px 5px 0px 0px;
 }
@@ -433,10 +433,10 @@ padding: 2px;
 table.pad_3px td, .padd_3px {
 padding: 3px;
 }
-table.pad_4px td, .padd_4px {
+table.pad_4px td, table.pad_4px th, .padd_4px {
 padding: 4px;
 }
-.padd_5px {
+table.pad_5px td, table.pad_5px th, .padd_5px {
 padding:5px;
 }
 table.border td {
