@@ -148,16 +148,16 @@ sub DownloadView {
 		$tmpa = 1;
 		if ($newstart >= (($postdisplaynum - 1) * 25)) { $startpage = $newstart - (($postdisplaynum - 1) * 25); $tmpa = int( $startpage / 25 ) + 1; }
 		if ($max >= $newstart + ($postdisplaynum * 25)) { $endpage = $newstart + ($postdisplaynum * 25); } else { $endpage = $max; }
-		if ($startpage > 0) { $pageindex = qq~<a href="$scripturl?action=downloadfile;newstart=0;sort=$sort" style="font-weight: normal;">1</a>&nbsp;...&nbsp;~; }
-		if ($startpage == 25) { $pageindex = qq~<a href="$scripturl?action=downloadfile;newstart=0;sort=$sort" style="font-weight: normal;">1</a>&nbsp;~;}
+		if ($startpage > 0) { $pageindex = qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=0;sort=$sort" style="font-weight: normal;">1</a>&nbsp;...&nbsp;~; }
+		if ($startpage == 25) { $pageindex = qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=0;sort=$sort" style="font-weight: normal;">1</a>&nbsp;~;}
 		for ($counter = $startpage; $counter < $endpage; $counter += 25) {
-			$pageindex .= $newstart == $counter ? qq~<b>$tmpa</b>&nbsp;~ : qq~<a href="$scripturl?action=downloadfile;newstart=$counter;sort=$sort" style="font-weight: normal;">$tmpa</a>&nbsp;~;
+			$pageindex .= $newstart == $counter ? qq~<b>$tmpa</b>&nbsp;~ : qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$counter;sort=$sort" style="font-weight: normal;">$tmpa</a>&nbsp;~;
 			$tmpa++;
 		}
 		$lastpn = int($max / 25) + 1;
 		$lastptn = ($lastpn - 1) * 25;
 		if ($endpage < $max - (25) ) { $pageindexadd = qq~...&nbsp;~; }
-		if ($endpage != $max) { $pageindexadd .= qq~<a href="$scripturl?action=downloadfile;newstart=$lastptn;sort=$sort">$lastpn</a>~; }
+		if ($endpage != $max) { $pageindexadd .= qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$lastptn;sort=$sort">$lastpn</a>~; }
 		$pageindex .= $pageindexadd;
 
 		$pageindex = qq~<div class="small" style="text-align: right;">$fatxt{'64'}: $pageindex</div>~;
