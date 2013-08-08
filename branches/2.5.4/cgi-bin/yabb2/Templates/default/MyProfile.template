@@ -25,7 +25,7 @@ $my_facebook = 'facebook.gif';
 $my_twitter = 'twitter.gif';
 $my_youtube = 'youtube.gif';
 $my_profile = 'profile.gif';
-$my_session = 'session.gif';
+$my_session = 'session.png';
 
 ## UserProfile login
 
@@ -90,7 +90,7 @@ $myprofile_edit = qq~<table class="cs_thin pad_4px">
     <col style="width:320px" />
     <tr class="catbg">
         <td colspan="2">
-            <img src="$imagesdir/profile.gif" alt="" /> <b>{yabb profiletitle}</b><br /><span class="small">$profile_txt{'698'}</span>{yabb my_newpass}
+            <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b><br /><span class="small">$profile_txt{'698'}</span>{yabb my_newpass}
         </td>
     </tr>{yabb my_passchk}
     <tr class="windowbg">
@@ -139,7 +139,7 @@ $myprofile_contact = qq~<table class="bordercolor cs_thin pad_4px">
     <col style="width:320px" />
     <tr>
         <td class="catbg" colspan="2">
-        <img src="$imagesdir/profile.gif" alt="" /> <b>{yabb profiletitle}</b></td>
+        <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b></td>
     </tr><tr class="windowbg">
         <td><label for="email"><b>$profile_txt{'69'}: </b><br /><span class="small">$profile_txt{'679'} </span></label></td>
         <td><input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.value,'email')" name="email" id="email" size="40" value="{yabb user_email}" />
@@ -266,7 +266,7 @@ $myprofile_options = qq~<table class="bordercolor cs_thin pad_4px">
     <col style="width:320px" />
     <tr>
         <td class="catbg" colspan="2">
-        <img src="$imagesdir/profile.gif" alt="" /> <b>{yabb profiletitle}</b> {yabb myprofile_userinfo}</td>
+        <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b> {yabb myprofile_userinfo}</td>
     </tr><tr class="windowbg">
     {yabb my_show_avatar}
     <tr class="windowbg">
@@ -525,7 +525,7 @@ $myprofile_admin_a = qq~<table class="bordercolor cs_thin pad_4px">
     <col style="width:320px" />
     <tr>
         <td class="catbg" colspan="2">
-        <img src="$imagesdir/profile.gif" alt="" /> <b>{yabb profiletitle}</b> {yabb myprofile_userinfo}</td>
+        <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b> {yabb myprofile_userinfo}</td>
     </tr><tr class="windowbg">
         <td><label for="settings6"><b>$profile_txt{'21'}: </b></label></td>
         <td><input type="text" name="settings6" id="settings6" size="4" value="{yabb postcount}" /></td>
@@ -641,7 +641,7 @@ $myshow_profile = qq~
     </tr>{yabb my_gender} {yabb my_extprofile}
     <tr>
         <td class="catbg">
-             <img src="$imagesdir/profile.gif" alt="" />&nbsp;
+             <img src="$imagesdir/$my_profile" alt="" />&nbsp;
              <b>$profile_txt{'819'}</b>
         </td>
     </tr><tr>

@@ -58,8 +58,8 @@ $boardindex_template .= qq~
 		    <col style="width:50%" />
 			<tr class="windowbg">
 				<td class="small">
-						<span class="small bold"><img src="$imagesdir/$brdimg_new" id="on" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" /> $boardindex_txt{'333'}&nbsp;&nbsp;
-						<img src="$imagesdir/$brdimg_old" id="off" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" /> $boardindex_txt{'334'}</span>
+						<span class="small bold"><img src="$imagesdir/$brdimg_new" id="no_edit" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" /> $boardindex_txt{'333'}&nbsp;&nbsp;
+						<img src="$imagesdir/$brdimg_old" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" /> $boardindex_txt{'334'}</span>
 				</td><td class="right small">
 						{yabb boardhandellist}
 				</td>

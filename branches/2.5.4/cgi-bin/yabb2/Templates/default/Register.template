@@ -235,7 +235,7 @@ $myregister_spamquest = qq~<tr>
 
 $myregister_honey = qq~<tr class="green">
             <td class="green right vtop">
-                <label for="add_field0" class="green"><b>{yabb newfieldb}</b>
+                <label for="add_field0" class="green"><b>{yabb newfieldb}</b></label>
             </td>
             <td class="green vtop">
                 <input type="text" name="add_field0" id="add_field0" size="30" value="{yabb newfield}" maxlength="18" autocomplete="off" class="green" />$myreg_req
@@ -384,7 +384,7 @@ $show_check = qq~<tr>
         <td class="windowbg right vtop"><label for="passwrd1"><b>$register_txt{'81'}:</b></label></td>
         <td class="windowbg2">
             <div style="float:left;">
-                <input autocomplete="off" type="password" maxlength="30" name="passwrd1" id="passwrd1" value="{yabb tmpregpasswrd1}" size="30" onkeypress="capsLock(event,'cappasswrd1')" onkeyup="runPassword(this.value);" /> *&nbsp;
+                <input autocomplete="off" type="password" maxlength="30" name="passwrd1" id="passwrd1" value="{yabb tmpregpasswrd1}" size="30" onkeypress="capsLock(event,'cappasswrd1')" onkeyup="runPassword(this.value);" /> $myreg_req
            </div>
            <div class="pass_box">
                <div id="password-strength-meter"></div>
@@ -399,7 +399,7 @@ $show_check = qq~<tr>
             <label for="passwrd2"><b>$register_txt{'82'}:</b></label>
         </td>
         <td class="windowbg2 vtop">
-            <input autocomplete="off" type="password" maxlength="30" name="passwrd2" id="passwrd2" value="{yabb tmpregpasswrd2}" size="30" onkeypress="capsLock(event,'cappasswrd2')" /> *
+            <input autocomplete="off" type="password" maxlength="30" name="passwrd2" id="passwrd2" value="{yabb tmpregpasswrd2}" size="30" onkeypress="capsLock(event,'cappasswrd2')" /> $myreg_req
             <div id="cappasswrd2">$register_txt{'capslock'}</div>
             <div id="cappasswrd2_char">$register_txt{'wrong_char'}: <span id="cappasswrd2_character">&nbsp;</span></div>
             {yabb check_js}

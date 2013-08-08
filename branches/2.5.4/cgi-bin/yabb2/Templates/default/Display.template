@@ -14,10 +14,10 @@
 # $Revision$
 
 $disp_index_togl = 'index_togl.png';
-$disp_index_left = 'index_left.gif';
-$disp_index_left0 = 'index_left0.gif';
-$disp_index_right = 'index_right.gif';
-$disp_index_right0 ='index_right0.gif';
+$disp_index_left = 'index_left.png';
+$disp_index_left0 = 'index_left0.png';
+$disp_index_right = 'index_right.png';
+$disp_index_right0 ='index_right0.png';
 $paperclip = 'paperclip.gif';
 $disp_buddylist ='buddylist.gif';
 $disp_qquname = 'qquname.gif';
@@ -484,7 +484,7 @@ $my_guest_limit = qq~
 </table>~;
 
 $guest_view_limit_w = qq~
-<table class="pad_4px">
+<table class="pad_4px" style="margin-bottom:10px">
 	<tr>
     	<td class="tabtitle" style="height:22px"><img src="$imagesdir/xx.gif" alt=""> $display_txt{'guest_message'}</td>
   	</tr><tr>

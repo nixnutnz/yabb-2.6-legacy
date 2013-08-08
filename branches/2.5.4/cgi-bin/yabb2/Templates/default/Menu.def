@@ -57,7 +57,7 @@ myspace,myspace|img_txt|myspace|||imgwindowbg|gif|tmp
 newthread,new_thread|img_txt|33|||imgcatbg|gif|tmp
 notification,notify|img_txt|418|||imgmenu|gif|tmp
 notify,notify|img_txt|131|||imgcatbg|gif|tmp
-openpoll,poll_unlock|img_polltxt|20|||imgcatbg|gif|tmp
+openpoll,poll_open|img_polltxt|20|||imgcatbg|gif|tmp
 pmadmin,message|img_txt|pmadmin|||imgmenu|gif|tmp
 pollicon,poll_open|img_polltxt|44||||gif|tmp
 polliconclosed,poll_lock|img_polltxt|46||||gif|tmp
@@ -76,13 +76,13 @@ reply_ims,reply|img_txt|146|||imgwindowbg|gif|tmp
 search,search|img_txt|182||2|imgmenu|png|tmp
 sendbmess,new_bcpm|img_txt|sendbmess|||imgwindowbg|gif|tmp
 sendtopic,sendtopic|img_txt|707|||imgcatbg|png|tmp
-sessreval,session|img_txt|34a|||imgmenu|gif|tmp
+sessreval,session|img_txt|34a|||imgmenu|png|tmp
 skype,skype|img_txt|skype|||imgwindowbg|gif|tmp
 twitter,twitter|img_txt|twitter|||imgwindowbg|gif|tmp
 viewprofile,profile|img_txt|27|||imgwindowbg|gif|tmp
 viewprofile_sm,profile|img_txt|27|||imgwindowbg|gif|tmp
-viewthread,viewthread|img_polltxt|33a|||imgwindowbg|gif|tmp
-viewvotes,poll_vvote|img_polltxt|33|||imgwindowbg|gif|tmp
+viewthread,index_togl|img_polltxt|33a|||imgwindowbg|png|tmp
+viewvotes,poll_vvotes-1|img_polltxt|33|||imgwindowbg|png|tmp
 website,www|img_txt|515|||imgwindowbg|png|tmp
 website_sm,www|img_txt|515|||imgwindowbg|png|tmp
 yim,yim|img_txt|yim|||imgwindowbg|gif|tmp

@@ -68,16 +68,16 @@ $mysharedlog_bodya = qq~
                 <div class="clear"></div>
                 <div style="width: 550px; line-height:16px">
                     <span style="float: left; text-align: left;">
-                        <input type="checkbox" name="cookielength" id="cookielength" value="1" tabindex="3" />
+                        <input type="checkbox" name="cookielength" id="cookielength"{yabb cookielength_sel} value="1" tabindex="3" />
                     </span>
                     <span style="float: left; text-align: left">
                         <label for="cookielength">$loginout_txt{'keeps'}</label>
                     </span>
                     <span style="float: right; text-align: right; margin: 0 25px;">
-                        <a href="$scripturl?action=register" style="{yabb hide_regbutton};margin:0">$maintxt{'97'}</a>
+                        <a href="$scripturl?action=register"{yabb hide_reglink}>$maintxt{'97'}</a>
                     </span>
                     <span style="float: right; text-align: right; margin: 0 20px;">
-                        <a href="$scripturl?action=reminder" style="{yabb hide_passbutton};margin:0">$loginout_txt{'315'}</a>
+                        <a href="$scripturl?action=reminder"{yabb hide_passlink}>$loginout_txt{'315'}</a>
                     </span>
                     <br /><br />
                 </div>

@@ -14,9 +14,9 @@
 # $Revision$
 
 $adminlogo = 'adminlogo.png';
-$versionchk = 'http://www.yabbforum.com/update/versioncheck.js';
+$versionchk   = 'http://testbed.dandello.net/update/versioncheck.js';
 $versionimg = 'http://www.yabbforum.com/images/version/versioncheck.gif';
-$infoimg = qq~$yyhtml_root/Templates/Admin/default/ad_info.png~;
+$aarea = 'aarea.jpg';
 
 $header = qq~<?xml version="1.0" encoding="$yycharset" standalone="no" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -80,7 +80,7 @@ $header = qq~<?xml version="1.0" encoding="$yycharset" standalone="no" ?>
 
 $leftmenutop = qq~
 <body>
-	<img src="{yabb images}/$adminlogo" id="adminlogo" alt="Yet Another Bulletin Board"/>
+	<img src="$admin_images/$adminlogo" id="adminlogo" alt="Yet Another Bulletin Board"/>
 	<div id="menu">
 {yabb maintenance}
 ~;
@@ -130,7 +130,7 @@ $front_page = qq~<div class="bordercolor rightboxdiv">
             </td>
         </tr><tr>
             <td class="windowbg2">
-                <img alt="Admin Centre Logo" src="$defaultimagesdir/aarea.jpg" />
+                <img alt="Admin Centre Logo" src="$admin_images/$aarea" />
             </td>
             <td class="windowbg2">
                 $admintxt{'2'}
@@ -271,7 +271,7 @@ $show_check = qq~<tr>
         <td class="windowbg vtop"><label for="passwrd1"><b>{yabb reg_1}:</b></label></td>
         <td class="windowbg2">
             <div style="float:left;">
-                <input autocomplete="off" type="password" maxlength="30" name="passwrd1" id="passwrd1" value="{yabb tmpregpasswrd1}" size="30" onkeypress="capsLock(event,'cappasswrd1')" onkeyup="runPassword(this.value);" /> *&nbsp;
+                <input autocomplete="off" type="password" maxlength="30" name="passwrd1" id="passwrd1" value="{yabb tmpregpasswrd1}" size="30" onkeypress="capsLock(event,'cappasswrd1')" onkeyup="runPassword(this.value);" />
            </div>
            <div class="pass_box">
                <div id="password-strength-meter"></div>
@@ -286,7 +286,7 @@ $show_check = qq~<tr>
             <label for="passwrd2"><b>{yabb reg_2}:</b></label>
         </td>
         <td class="windowbg2 vtop">
-            <input autocomplete="off" type="password" maxlength="30" name="passwrd2" id="passwrd2" value="{yabb tmpregpasswrd2}" size="30" onkeypress="capsLock(event,'cappasswrd2')" /> *
+            <input autocomplete="off" type="password" maxlength="30" name="passwrd2" id="passwrd2" value="{yabb tmpregpasswrd2}" size="30" onkeypress="capsLock(event,'cappasswrd2')" />
             <div id="cappasswrd2">{yabb reg_caplock}</div>
             <div id="cappasswrd2_char">{yabb reg_wrongchar}: <span id="cappasswrd2_character">&nbsp;</span></div>
             {yabb check_js}

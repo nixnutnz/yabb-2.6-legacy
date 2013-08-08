@@ -13,7 +13,7 @@
 ###############################################################################
 # $Revision$
 
-$my_session = 'session.gif';
+$my_session = 'session.png';
 
 ## IPlookup ##
 $my_ipdiv = qq~

@@ -38,10 +38,10 @@ $msgbrd_new = 'new.gif';
 $paperclip = 'paperclip.gif';
 $msgbrd_addfav ='addfav.png';
 $msgbrd_index_togl = 'index_togl.png';
-$msgbrd_index_left = 'index_left.gif';
-$msgbrd_index_left0 = 'index_left0.gif';
-$msgbrd_index_right = 'index_right.gif';
-$msgbrd_index_right0 ='index_right0.gif';
+$msgbrd_index_left = 'index_left.png';
+$msgbrd_index_left0 = 'index_left0.png';
+$msgbrd_index_right = 'index_right.png';
+$msgbrd_index_right0 ='index_right0.png';
 $msgbrd_hotthread = 'hotthread.gif';
 $msgbrd_veryhotthread = 'veryhotthread.gif';
 $msgbrd_admin_move = 'admin_move.gif';
@@ -285,7 +285,7 @@ $brd_tmptempbar = qq~<tr>
             <td class="windowbg2 center" colspan="{yabb colspan}"><br />$messageindex_txt{'841'}<br /><br /></td>
         </tr>~;
 
-$msg_attach_win = qq~<a href="javascript:void(window.open('$scripturl?action=viewdownloads;thread={yabb mnum}','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">~;
+$msg_attach_win = qq~<a href="javascript:void(window.open('$scripturl?action=viewdownloads;thread={yabb mnum}','_blank','width=818,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">~;
 
 # Board Notification                     #
 

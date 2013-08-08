@@ -51,8 +51,7 @@ $downloads_top = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//E
 // -->
 </script>
 </head>
-<body class="littlebody">
-<a id="pagetop">&nbsp;</a><br />
+<body class="littlebody" style="margin:0 auto">
     <div id="container">
     <br />~;
 

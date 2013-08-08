@@ -12,6 +12,8 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
+$admin_images = "$yyhtml_root/Templates/Admin/default";
+
 %micon = (
 'pollicon' => qq~<img src="$imagesdir/poll_open.gif" alt="$img_polltxt{'44'}" />~,
 'polliconclosed' => qq~<img src="$imagesdir/poll_lock.gif" alt="$img_polltxt{'46'}" />~,
@@ -160,6 +162,21 @@
 'gender' => qq~<img src="$imagesdir/{yabb gender}.png" alt="{yabb genderTitle}" title="{yabb genderTitle}" />~,
 'actionslock' => qq~<img src="$imagesdir/actionslock.png" alt="{yabb actionlock}" title="{yabb actionlock}" />~,
 );
+
+%admin_img = (
+'infoimg' => qq~<img src="$admin_images/ad_info.png" alt="" />~,
+'prefimg' => qq~<img src="$admin_images/preferences.png" alt="" />~,
+'guardimg' => qq~<img src="$admin_images/guardian.png" alt="" />~,
+'aarea' => qq~<img src="$admin_images/aarea.jpg" alt="" />~,
+'banimg' => qq~<img src="$admin_images/ban.gif" alt="" />~,
+'profile' => qq~<img src="$admin_images/profile.gif" alt="" />~,
+'cat_img' => qq~<img src="$admin_images/cat.gif" alt="" />~,
+'board' => qq~<img src="admin_images/board.gif" alt="" /~,
+'index_togl' => qq~<img src="$imagesdir/index_togl.png" alt="" />~,
+'register' => qq~<img src="$imagesdir/register.gif" alt="" />~,
+'xx' => qq~<img src="$imagesdir/xx.gif" alt="" />~,
+'guest' => qq~<img src="$imagesdir/guest.gif" alt="" />~,
+ );
 
 #####################################################################
 #                   JS Variables for EventCalendar, IMPost, Post    #

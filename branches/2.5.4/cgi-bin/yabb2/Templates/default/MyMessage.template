@@ -21,10 +21,10 @@ $chrwarn_g1 = 'green1.gif';
 $chrwarn_r0 = 'red0.gif';
 $chrwarn_r1 = 'red1.gif';
 $IM_index_togl = 'index_togl.png';
-$IM_index_left = 'index_left.gif';
-$IM_index_left0 = 'index_left0.gif';
-$IM_index_right = 'index_right.gif';
-$IM_index_right0 ='index_right0.gif';
+$IM_index_left = 'index_left.png';
+$IM_index_left0 = 'index_left0.png';
+$IM_index_right = 'index_right.png';
+$IM_index_right0 ='index_right0.png';
 $IM_ip = 'ip.gif';
 
 

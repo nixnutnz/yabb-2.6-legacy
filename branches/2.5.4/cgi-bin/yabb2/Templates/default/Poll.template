@@ -15,6 +15,8 @@
 
 $poll_bar = 'bars.gif';
 $poll_pie = 'pie.gif';
+$cat_col = 'cat_collapse.png';
+$cat_exp = 'cat_expand.png';
 
 $mypoll_details = qq~
 <br />
@@ -54,11 +56,15 @@ $mypoll_display = qq~
         <input type="hidden" name="id" value="Poll" />
 </form>
 <form name="poll" method="post" action="$scripturl?action=vote;num={yabb pollnum}{yabb scp}" style="display: inline;">
-    <table class="tabtitle">
+	<table>
         <tr>
-            <td style="padding-left:10px">
-                <div style="float: left; width: 50%; text-align: left;">
-                    {yabb poll_icon} <b>$polltxt{'15'}</b>{yabb boardpoll}
+			<td class="tabtitle">{yabb poll_coll}
+				$polltxt{'15'} {yabb boardpoll}
+			</td>
+		</tr><tr>
+            <td class="catbg vtop padd_4px">
+                <div style="float: left; width: 50%; text-align: left; line-height:18px; vertical-align:middle">
+                    {yabb poll_icon} <b>$polltxt{'16'}</b>: {yabb poll_question}
                 </div>
                 <div style="float: left; width: 50%; text-align: right;">
                     <span class="small">{yabb lockpoll}{yabb modifypoll}{yabb deletepoll}</span>
@@ -66,20 +72,17 @@ $mypoll_display = qq~
             </td>
         </tr>
     </table>
-    <table class="pad_4px cs_thin">
+	<div id="polldiv" style="width: 100%; display: {yabb scdivdisp};">
+	<table class="pad_4px">
         <tr>
-            <td class="catbg vtop">
-                <div style="float: left; width: 80%;">
-                    <b>$polltxt{'16'}:</b> {yabb poll_question}
-                </div>
+			<td class="windowbg">
                 {yabb poll_notlocked}
             </td>
         </tr><tr>
             <td class="windowbg2 center" colspan="2">
                 {yabb endedtext}
                 <div class="windowbg2" id="piestyle" style="width: 100%;">
-                <br />{yabb pollhidden} {yabb poll_hasvoted}
-                <br />
+					<br />{yabb pollhidden} {yabb poll_hasvoted}<br />
                 </div>
                 <div style="width: 100%;">
                     <br />{yabb footer}
@@ -94,6 +97,7 @@ $mypoll_display = qq~
             </td>
         </tr>
     </table>
+	</div>
 </form>~;
 
 $mypoll_ended =
