@@ -1373,18 +1373,18 @@ sub SetInstall2 {
         $defaultml              = 'regdate';
         $max_avatar_width       = 65;
         $max_avatar_height      = 65;
-        $fix_avatar_img_size    = 65;
+        $fix_avatar_img_size    = 0;
         $max_avatarml_width     = 65;
         $max_avatarml_height    = 65;
         $fix_avatarml_img_size  = 0;
-        $max_post_img_width     = 0;
-        $max_post_img_height    = 0;
+        $max_post_img_width     = 65;
+        $max_post_img_height    = 65;
         $fix_post_img_size      = 0;
-        $max_signat_img_width   = 0;
-        $max_signat_img_height  = 0;
+        $max_signat_img_width   = 65;
+        $max_signat_img_height  = 65;
         $fix_signat_img_size    = 0;
-        $max_attach_img_width   = 0;
-        $max_attach_img_height  = 0;
+        $max_attach_img_width   = 65;
+        $max_attach_img_height  = 65;
         $fix_attach_img_size    = 0;
         $img_greybox            = 1;
         $extendedprofiles       = 0;
@@ -1394,7 +1394,7 @@ sub SetInstall2 {
         $showregdate            = 1;
         $addtab_on              = 1;
 
-        if ( -e '/bin/gzip' && open GZIP, "|, gzip -f" ) {
+        if ( -e '/bin/gzip' && open GZIP, '|, gzip -f' ) {
             $gzcomp = 1;
         }
         else {
@@ -1403,7 +1403,7 @@ sub SetInstall2 {
         }
         $gzforce        = 0;
         $cachebehaviour = 0;
-        $use_flock      = 1;
+        $use_flock      = 0;
         $faketruncation = 0;
         $debug          = 0;
 
@@ -1646,6 +1646,12 @@ sub SetInstall2 {
 \$fix_avatar_img_size = $fix_avatar_img_size;       # Set to 1 disable the image resize feature and sets the image size to the
                                                     # max_... values. If one of the max_... values is 0 the image is shown in his
                                                     # proportions to the other value. If both are 0 the image is shown at his original size.
+\$max_avatarml_width = $max_avatarml_width;         # Set maximum pixel width to which the selfselected userpics in member list are resized, 0 disables
+                                                    #  this limit
+\$max_avatarml_height = $max_avatarml_height;       #Set maximum pixel height to which the selfselected userpics in member list are resized, 0 disables
+                                                    #  this limit
+\$fix_avatarml_img_size = $fix_avatarml_img_size;                       # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of
+                                                    #  the max_... values is 0 the image is shown in his proportions to the other value. If both are 0 the image is shown at his original size.
 \$max_post_img_width = $max_post_img_width;         # Set maximum pixel width for images, 0 disables this limit
 \$max_post_img_height = $max_post_img_height;       # Set maximum pixel height for images, 0 disables this limit
 \$fix_post_img_size = $fix_post_img_size;           # Set to 1 disable the image resize feature and sets the image size to the
@@ -1797,6 +1803,7 @@ sub SetInstall2 {
 
 ########## Advanced Tabs ##########
 
+\$addtab_on = $addtab_on;                         # show advanced tabs on Forum (For admin only.)
 \@AdvancedTabs = qw(home help search ml admin revalidatesession login register guestpm mycenter logout eventcal birthdaylist ); # Advanced Tabs order and infos
 
 ########## Smilies ##########
