@@ -348,7 +348,6 @@ qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp;
 
     # to top button for fixed menu 
     $yyfixtop = qq~$img_txt{'to_top'}~;
-    $yyw3cload = w3c();
 
     $yyboardname = "$mbname";
     $yyboardlink = qq~<a href="$scripturl">$mbname</a>~;
