@@ -466,21 +466,21 @@ function autofill() {
     <table>
         <col style="width:43%" />
       <tr>
-            <div class="cell_b header" colspan="2">
+            <td class="header" colspan="2">
                 <span style="color: #fefefe;">&nbsp;<b>Absolute Path to the main script directory</b></span>
             </td>
         </tr><tr>
-            <div class="cell_b windowbg2">
+            <td class="windowbg2">
                 <div style="float: left; width: 80%; text-align: left; font-size: 11px;">Only click on the insert button if your server needs the absolute path to the YaBB main script</div>
                   <div style="float: left; width: 20%; text-align: right;"><input type="button" onclick="abspathfill('$support_env_path')" value="Insert" style="font-size: 11px;" /></div>
             </td>
-            <div class="cell_b windowbg2">$support_env_path</td>
+            <td class="windowbg2">$support_env_path</td>
         </tr><tr>
-            <div class="cell_b header" colspan="2">
+            <td class="header" colspan="2">
                 <span style="color: #fefefe;">&nbsp;<b>Change this form if changes are necessary.</b></span>
             </td>
         </tr><tr>
-            <div class="cell_b windowbg2">
+            <td class="windowbg2">
                 <label for="preboarddir">
                   Main Script Directory:
                 <br />
@@ -489,33 +489,33 @@ function autofill() {
                 </span>
                 </label>
             </td>
-            <div class="cell_b windowbg2">
+            <td class="windowbg2">
                   <input type="text" size="60" name ="preboarddir" id ="preboarddir" value="$boarddir" />
             </td>
         </tr><tr>
-            <div class="cell_b windowbg2">
+            <td class="windowbg2">
                 <label for="preboardurl">Board URL:
                 <br />
                 <span style="font-size: 11px;">
                 URL of your board&#39;s folder (without trailing '/')
                   </span></label>
             </td>
-            <div class="cell_b windowbg2">
+            <td class="windowbg2">
                   <input type="text" size="60" name ="preboardurl" id ="preboardurl" value="$boardurl" />
             </td>
         </tr><tr>
-            <div class="cell_b windowbg2">
+            <td class="windowbg2">
                 <label for="prehtmldir">HTML Root Directory:
                 <br />
                 <span style="font-size: 11px;">
                   Base Path for all /html/css files and folders
                   </span></label>
             </td>
-            <div class="cell_b windowbg2">
+            <td class="windowbg2">
                   <input type="text" size="60" name ="prehtmldir" id ="prehtmldir" value="$htmldir" />
             </td>
         </tr><tr>
-            <div class="cell_b windowbg2">
+            <td class="windowbg2">
                 <label for="prehtml_root">
                   HTML Root URL:
                 <br />
@@ -523,7 +523,7 @@ function autofill() {
                   Base URL for all /html/css files and folders
                   </span></label>
             </td>
-            <div class="cell_b windowbg2">
+            <td class="windowbg2">
                   <input type="text" size="60" name ="prehtml_root" id ="prehtml_root" value="$yyhtml_root" />
             </td>
         </tr><tr>
@@ -538,119 +538,119 @@ function autofill() {
         <col style="width:10%" />
         <col style="width:35%" />
       <tr>
-            <div class="cell_b header" colspan="4">
+            <td class="header" colspan="4">
             <input type="hidden" name="lastsaved" value="${$uid.$username}{'realname'}" />
             <input type="hidden" name="lastdate" value="$date" />
                 <span style="color: #fefefe;">&nbsp;<b>These are the settings detected on your server and the last saved settings.</b></span>
             </td>
         </tr><tr>
-            <div class="cell_b catbg">&nbsp;</td>
-            <div class="cell_b catbg"><b>Detected Values</b></td>
-            <div class="cell_b catbg"><b>Transfer</b></td>
-            <div class="cell_b catbg"><b>Saved: $mylastdate</b></td>
+            <td class="catbg">&nbsp;</td>
+            <td class="catbg"><b>Detected Values</b></td>
+            <td class="catbg"><b>Transfer</b></td>
+            <td class="catbg"><b>Saved: $mylastdate</b></td>
         </tr><tr>
-            <div class="cell_b header" colspan="4">
+            <td class="header" colspan="4">
             <span style="color: #fefefe;">&nbsp; <b>CGI-BIN Settings</b></span>
             </td>
         </tr><tr>
-            <div class="cell_b windowbg2">Board URL:</td>
-            <div class="cell_b windowbg">$fnd_boardurl</td>
-            <div class="cell_b catbg"><input type="button" onclick="javascript: document.auto_settings.boardurl.value = '$fnd_boardurl';return false;" value="->" /></td>
-            <div class="cell_b windowbg"><input type="text" size="60" name ="boardurl" value="$boardurl" /></td>
+            <td class="windowbg2">Board URL:</td>
+            <td class="windowbg">$fnd_boardurl</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.boardurl.value = '$fnd_boardurl';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="boardurl" value="$boardurl" /></td>
         </tr><tr>
-            <div class="cell_b windowbg2">Main Script Dir.:</td>
-            <div class="cell_b windowbg">$fnd_boarddir</td>
-            <div class="cell_b catbg"><input type="button" onclick="javascript: document.auto_settings.boarddir.value = '$fnd_boarddir';return false;" value="->" /></td>
-            <div class="cell_b windowbg"><input type="text" size="60" name ="boarddir" value="$boarddir" /></td>
+            <td class="windowbg2">Main Script Dir.:</td>
+            <td class="windowbg">$fnd_boarddir</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.boarddir.value = '$fnd_boarddir';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="boarddir" value="$boarddir" /></td>
         </tr><tr>
-            <div class="cell_b windowbg2">Admin Dir.:</td>
-            <div class="cell_b windowbg">$fnd_admindir</td>
-            <div class="cell_b catbg"><input type="button" onclick="javascript: document.auto_settings.admindir.value = '$fnd_admindir';return false;" value="->" /></td>
-            <div class="cell_b windowbg"><input type="text" size="60" name ="admindir" value="$admindir" /></td>
+            <td class="windowbg2">Admin Dir.:</td>
+            <td class="windowbg">$fnd_admindir</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.admindir.value = '$fnd_admindir';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="admindir" value="$admindir" /></td>
         </tr><tr>
-            <div class="cell_b windowbg2">Boards Dir.:</td>
-            <div class="cell_b windowbg">$fnd_boardsdir</td>
-            <div class="cell_b catbg"><input type="button" onclick="javascript: document.auto_settings.boardsdir.value = '$fnd_boardsdir';return false;" value="->" /></td>
-            <div class="cell_b windowbg"><input type="text" size="60" name ="boardsdir" value="$boardsdir" /></td>
+            <td class="windowbg2">Boards Dir.:</td>
+            <td class="windowbg">$fnd_boardsdir</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.boardsdir.value = '$fnd_boardsdir';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="boardsdir" value="$boardsdir" /></td>
         </tr><tr>
-            <div class="cell_b windowbg2">Help Dir.:</td>
-            <div class="cell_b windowbg">$fnd_helpfile</td>
-            <div class="cell_b catbg"><input type="button" onclick="javascript: document.auto_settings.helpfile.value = '$fnd_helpfile';return false;" value="->" /></td>
-            <div class="cell_b windowbg"><input type="text" size="60" name ="helpfile" value="$helpfile" /></td>
+            <td class="windowbg2">Help Dir.:</td>
+            <td class="windowbg">$fnd_helpfile</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.helpfile.value = '$fnd_helpfile';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="helpfile" value="$helpfile" /></td>
         </tr><tr>
-            <div class="cell_b windowbg2">Languages Dir.:</td>
-            <div class="cell_b windowbg">$fnd_langdir</td>
-            <div class="cell_b catbg"><input type="button" onclick="javascript: document.auto_settings.langdir.value = '$fnd_langdir';return false;" value="->" /></td>
-            <div class="cell_b windowbg"><input type="text" size="60" name ="langdir" value="$langdir" /></td>
+            <td class="windowbg2">Languages Dir.:</td>
+            <td class="windowbg">$fnd_langdir</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.langdir.value = '$fnd_langdir';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="langdir" value="$langdir" /></td>
         </tr><tr>
-            <div class="cell_b windowbg2">Member Dir.:</td>
-            <div class="cell_b windowbg">$fnd_memberdir</td>
-            <div class="cell_b catbg"><input type="button" onclick="javascript: document.auto_settings.memberdir.value = '$fnd_memberdir';return false;" value="->" /></td>
-            <div class="cell_b windowbg"><input type="text" size="60" name ="memberdir" value="$memberdir" /></td>
+            <td class="windowbg2">Member Dir.:</td>
+            <td class="windowbg">$fnd_memberdir</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.memberdir.value = '$fnd_memberdir';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="memberdir" value="$memberdir" /></td>
         </tr><tr>
-            <div class="cell_b windowbg2">Message Dir.:</td>
-            <div class="cell_b windowbg">$fnd_datadir</td>
-            <div class="cell_b catbg"><input type="button" onclick="javascript: document.auto_settings.datadir.value = '$fnd_datadir';return false;" value="->" /></td>
-            <div class="cell_b windowbg"><input type="text" size="60" name ="datadir" value="$datadir" /></td>
+            <td class="windowbg2">Message Dir.:</td>
+            <td class="windowbg">$fnd_datadir</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.datadir.value = '$fnd_datadir';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="datadir" value="$datadir" /></td>
         </tr><tr>
-            <div class="cell_b windowbg2">Sources Dir.:</td>
-            <div class="cell_b windowbg">$fnd_sourcedir</td>
-            <div class="cell_b catbg"><input type="button" onclick="javascript: document.auto_settings.sourcedir.value = '$fnd_sourcedir';return false;" value="->" /></td>
-            <div class="cell_b windowbg"><input type="text" size="60" name ="sourcedir" value="$sourcedir" /></td>
+            <td class="windowbg2">Sources Dir.:</td>
+            <td class="windowbg">$fnd_sourcedir</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.sourcedir.value = '$fnd_sourcedir';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="sourcedir" value="$sourcedir" /></td>
         </tr><tr>
-            <div class="cell_b windowbg2">Template Dir.:</td>
-            <div class="cell_b windowbg">$fnd_templatesdir</td>
-            <div class="cell_b catbg"><input type="button" onclick="javascript: document.auto_settings.templatesdir.value = '$fnd_templatesdir';return false;" value="->" /></td>
-            <div class="cell_b windowbg"><input type="text" size="60" name ="templatesdir" value="$templatesdir" /></td>
+            <td class="windowbg2">Template Dir.:</td>
+            <td class="windowbg">$fnd_templatesdir</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.templatesdir.value = '$fnd_templatesdir';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="templatesdir" value="$templatesdir" /></td>
         </tr><tr>
-            <div class="cell_b windowbg2">Variables Dir.:</td>
-            <div class="cell_b windowbg">$fnd_vardir</td>
-            <div class="cell_b catbg"><input type="button" onclick="javascript: document.auto_settings.vardir.value = '$fnd_vardir';return false;" value="->" /></td>
-            <div class="cell_b windowbg"><input type="text" size="60" name ="vardir" value="$vardir" /></td>
+            <td class="windowbg2">Variables Dir.:</td>
+            <td class="windowbg">$fnd_vardir</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.vardir.value = '$fnd_vardir';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="vardir" value="$vardir" /></td>
         </tr><tr>
-            <div class="cell_b header" style="color: #fefefe;" colspan="4">&nbsp; <b>HTML Settings</b></td>
+            <td class="header" style="color: #fefefe;" colspan="4">&nbsp; <b>HTML Settings</b></td>
         </tr><tr>
-            <div class="cell_b windowbg2">HTML Root Dir.:</td>
-            <div class="cell_b windowbg">$fnd_htmldir</td>
-            <div class="cell_b catbg"><input type="button" onclick="javascript: document.auto_settings.htmldir.value = '$fnd_htmldir';return false;" value="->" /></td>
-            <div class="cell_b windowbg"><input type="text" size="60" name ="htmldir" value="$htmldir" /></td>
+            <td class="windowbg2">HTML Root Dir.:</td>
+            <td class="windowbg">$fnd_htmldir</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.htmldir.value = '$fnd_htmldir';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="htmldir" value="$htmldir" /></td>
         </tr><tr>
-            <div class="cell_b windowbg2">HTML Root URL:</td>
-            <div class="cell_b windowbg">$fnd_html_root</td>
-            <div class="cell_b catbg"><input type="button" onclick="javascript: document.auto_settings.html_root.value = '$fnd_html_root';return false;" value="->" /></td>
-            <div class="cell_b windowbg"><input type="text" size="60" name ="html_root" value="$yyhtml_root" /></td>
+            <td class="windowbg2">HTML Root URL:</td>
+            <td class="windowbg">$fnd_html_root</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.html_root.value = '$fnd_html_root';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="html_root" value="$yyhtml_root" /></td>
         </tr><tr>
-            <div class="cell_b windowbg2">Attachment Dir.:</td>
-            <div class="cell_b windowbg">$fnd_uploaddir</td>
-            <div class="cell_b catbg"><input type="button" onclick="javascript: document.auto_settings.uploaddir.value = '$fnd_uploaddir';return false;" value="->" /></td>
-            <div class="cell_b windowbg"><input type="text" size="60" name ="uploaddir" value="$uploaddir" /></td>
+            <td class="windowbg2">Attachment Dir.:</td>
+            <td class="windowbg">$fnd_uploaddir</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.uploaddir.value = '$fnd_uploaddir';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="uploaddir" value="$uploaddir" /></td>
         </tr><tr>
-            <div class="cell_b windowbg2">Attachment URL:</td>
-            <div class="cell_b windowbg">$fnd_uploadurl</td>
-            <div class="cell_b catbg"><input type="button" onclick="javascript: document.auto_settings.uploadurl.value = '$fnd_uploadurl';return false;" value="->" /></td>
-            <div class="cell_b windowbg"><input type="text" size="60" name ="uploadurl" value="$uploadurl" /></td>
+            <td class="windowbg2">Attachment URL:</td>
+            <td class="windowbg">$fnd_uploadurl</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.uploadurl.value = '$fnd_uploadurl';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="uploadurl" value="$uploadurl" /></td>
         </tr><tr>
-            <div class="cell_b windowbg2">PMAttachment Dir.:</td>
-            <div class="cell_b windowbg">$fnd_pmuploaddir</td>
-            <div class="cell_b catbg"><input type="button" onclick="javascript: document.auto_settings.pmuploaddir.value = '$fnd_pmuploaddir';return false;" value="->" /></td>
-            <div class="cell_b windowbg"><input type="text" size="60" name ="pmuploaddir" value="$pmuploaddir" /></td>
+            <td class="windowbg2">PMAttachment Dir.:</td>
+            <td class="windowbg">$fnd_pmuploaddir</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.pmuploaddir.value = '$fnd_pmuploaddir';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="pmuploaddir" value="$pmuploaddir" /></td>
         </tr><tr>
-            <div class="cell_b windowbg2">PMAttachment URL:</td>
-            <div class="cell_b windowbg">$fnd_pmuploadurl</td>
-            <div class="cell_b catbg"><input type="button" onclick="javascript: document.auto_settings.pmuploadurl.value = '$fnd_pmuploadurl';return false;" value="->" /></td>
-            <div class="cell_b windowbg"><input type="text" size="60" name ="pmuploadurl" value="$pmuploadurl" /></td>
+            <td class="windowbg2">PMAttachment URL:</td>
+            <td class="windowbg">$fnd_pmuploadurl</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.pmuploadurl.value = '$fnd_pmuploadurl';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="pmuploadurl" value="$pmuploadurl" /></td>
         </tr><tr>
-            <div class="cell_b windowbg2">Avatar Dir.:</td>
-            <div class="cell_b windowbg">$fnd_facesdir</td>
-            <div class="cell_b catbg"><input type="button" onclick="javascript: document.auto_settings.facesdir.value = '$fnd_facesdir';return false;" value="->" /></td>
-            <div class="cell_b windowbg"><input type="text" size="60" name ="facesdir" value="$facesdir" /></td>
+            <td class="windowbg2">Avatar Dir.:</td>
+            <td class="windowbg">$fnd_facesdir</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.facesdir.value = '$fnd_facesdir';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="facesdir" value="$facesdir" /></td>
         </tr><tr>
-            <div class="cell_b windowbg2">Avatar URL:</td>
-            <div class="cell_b windowbg">$fnd_facesurl</td>
-            <div class="cell_b catbg"><input type="button" onclick="javascript: document.auto_settings.facesurl.value = '$fnd_facesurl';return false;" value="->" /></td>
-            <div class="cell_b windowbg"><input type="text" size="60" name ="facesurl" value="$facesurl" /></td>
+            <td class="windowbg2">Avatar URL:</td>
+            <td class="windowbg">$fnd_facesurl</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.facesurl.value = '$fnd_facesurl';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="facesurl" value="$facesurl" /></td>
         </tr><tr>
-            <div class="cell_b catbg" style="margin-top:.5em; margin-bottom:1em;"colspan="4">
+            <td class="catbg" style="margin-top:.5em; margin-bottom:1em;"colspan="4">
             <input type="submit" value="Save Settings" />
             </td>
       </tr>
@@ -1124,7 +1124,7 @@ sub checkmodules {
         $yymain .= q~
     <table class="cs_thin pad_4px">
         <tr>
-            <div class="cell_b windowbg2 center" style="margin-top:.5em; margin-bottom:1em; color:red; font-size:large;">
+            <td class="windowbg2 center" style="margin-top:.5em; margin-bottom:1em; color:red; font-size:large;">
                 Sorry, you cannot continue until you have installed at least the "Digest::MD5" module.
             </td>
       </tr>
@@ -1134,7 +1134,7 @@ sub checkmodules {
         $yymain .= q~
     <table class="cs_thin pad_4px">
         <tr >
-            <div class="cell_b catbg center" style="margin-top:.5em; margin-bottom:1em">
+            <td class="catbg center" style="margin-top:.5em; margin-bottom:1em">
                   You can always see the above information on the start page of your AdminCenter.<br />
                   Therefore you can continue now and install missing modules later if you really need them.<br />
                   <br />
@@ -1183,14 +1183,14 @@ sub SetInstall {
 <div class="bordercolor borderbox">
    <table class="cs_thin pad_4px">
        <tr>
-           <div class="cell_b titlebg">System Setup</td>
+           <td class="titlebg">System Setup</td>
       </tr><tr>
-          <div class="cell_b windowbg">
+          <td class="windowbg">
             Here you can set some of the default settings for your new YaBB 2.5.4 forum.<br />
             After finishing the setup procedure, you should login to your forum and go to your 'Admin Center' -&gt; 'Forum Settings' where you can modify this and other settings.
             </td>
      </tr><tr>
-         <div class="cell_b windowbg2">
+         <td class="windowbg2">
              <div class="div45">
             <label for="mbname">Message Board Name</label>
             </div>
@@ -1253,7 +1253,7 @@ sub SetInstall {
       <br />
             </td>
     </tr><tr>
-        <div class="cell_b catbg center">
+        <td class="catbg center">
             <input type="submit" value="Continue" />
             </td>
       </tr>
@@ -2081,7 +2081,7 @@ sub CheckInstall {
         <tr>
              <td colspan="2" class="titlebg">Checking System Files</td>
         </tr><tr>
-            <div class="cell_b catbg" colspan="2">
+            <td class="catbg" colspan="2">
       ~;
     if ($no_brddir) {
         $install_error = 1;
@@ -2089,8 +2089,8 @@ sub CheckInstall {
       A problem has occurred in the /Boards folder!
             </td>
         </tr><tr>
-            <div class="cell_b windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
-            <div class="cell_b windowbg2">No /Boards folder available!</td>
+            <td class="windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
+            <td class="windowbg2">No /Boards folder available!</td>
         </tr>~;
     }
     else {
@@ -2100,8 +2100,8 @@ sub CheckInstall {
       A problem has occurred in the /Boards folder!
             </td>
         </tr><tr>
-            <div class="cell_b windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
-            <div class="cell_b windowbg2">
+            <td class="windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
+            <td class="windowbg2">
                 <b>Missing: </b>
                 <br />$brd_missing
             </td>
@@ -2115,10 +2115,10 @@ sub CheckInstall {
         </tr>~;
             }
             $yymain .= qq~<tr>
-            <div class="cell_b windowbg center">
+            <td class="windowbg center">
       <img src="$imagesdir/a_off.gif" alt="" />
             </td>
-            <div class="cell_b windowbg2">
+            <td class="windowbg2">
                 <b>Installed: </b>
                 <br />$brd_created
             </td>
@@ -2126,7 +2126,7 @@ sub CheckInstall {
         }
     }
     $yymain .= q~<tr>
-            <div class="cell_b catbg" colspan="2">
+            <td class="catbg" colspan="2">
       ~;
 
     if ($no_memdir) {
@@ -2135,8 +2135,8 @@ sub CheckInstall {
       A Problem has occurred in the /Members folder!
             </td>
         </tr><tr>
-            <div class="cell_b windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
-            <div class="cell_b windowbg2">
+            <td class="windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
+            <td class="windowbg2">
       No /Members folder available!
             </td>
         </tr>~;
@@ -2148,8 +2148,8 @@ sub CheckInstall {
       A problem has occurred in the /Members folder!
             </td>
         </tr><tr>
-            <div class="cell_b windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
-            <div class="cell_b windowbg2">
+            <td class="windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
+            <td class="windowbg2">
                 <b>Missing: </b>
                 <br />$mem_missing
             </td>
@@ -2163,8 +2163,8 @@ sub CheckInstall {
         </tr>~;
             }
             $yymain .= qq~<tr>
-            <div class="cell_b windowbg center"><img src="$imagesdir/a_off.gif" alt="" /></td>
-            <div class="cell_b windowbg2">
+            <td class="windowbg center"><img src="$imagesdir/a_off.gif" alt="" /></td>
+            <td class="windowbg2">
                 <b>Installed: </b>
                 <br />$mem_created
             </td>
@@ -2172,7 +2172,7 @@ sub CheckInstall {
         }
     }
     $yymain .= q~<tr>
-            <div class="cell_b catbg" colspan="2">~;
+            <td class="catbg" colspan="2">~;
 
     if ($no_mesdir) {
         $install_error = 1;
@@ -2180,8 +2180,8 @@ sub CheckInstall {
       A problem has occurred in the /Messages folder!
             </td>
         </tr><tr>
-            <div class="cell_b windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
-            <div class="cell_b windowbg2">
+            <td class="windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
+            <td class="windowbg2">
       No /Messages folder available!
             </td>
         </tr>~;
@@ -2193,8 +2193,8 @@ sub CheckInstall {
       A problem has occurred in the /Messages folder!
             </td>
         </tr><tr>
-            <div class="cell_b windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
-            <div class="cell_b windowbg2">
+            <td class="windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
+            <td class="windowbg2">
                 <b>Missing: </b>
                 <br />$msg_missing
             </td>
@@ -2208,8 +2208,8 @@ sub CheckInstall {
         </tr>~;
             }
             $yymain .= qq~<tr>
-            <div class="cell_b windowbg center"><img src="$imagesdir/a_off.gif" alt="" /></td>
-            <div class="cell_b windowbg2">
+            <td class="windowbg center"><img src="$imagesdir/a_off.gif" alt="" /></td>
+            <td class="windowbg2">
                 <b>Installed: </b>
                 <br />$msg_created
             </td>
@@ -2217,7 +2217,7 @@ sub CheckInstall {
         }
     }
     $yymain .= q~<tr>
-            <div class="cell_b catbg" colspan="2">
+            <td class="catbg" colspan="2">
       ~;
     if ($no_vardir) {
         $install_error = 1;
@@ -2225,8 +2225,8 @@ sub CheckInstall {
       A problem has occurred in the /Variables folder!
             </td>
         </tr><tr>
-            <div class="cell_b windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
-            <div class="cell_b windowbg2">
+            <td class="windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
+            <td class="windowbg2">
       No /Variables folder available!
            </td>
         </tr>~;
@@ -2238,8 +2238,8 @@ sub CheckInstall {
       A problem has occurred in the /Variables folder!
             </td>
         </tr><tr>
-            <div class="cell_b windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
-            <div class="cell_b windowbg2">
+            <td class="windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
+            <td class="windowbg2">
                 <b>Missing: </b>
                 <br />$var_missing
             </td>
@@ -2253,8 +2253,8 @@ sub CheckInstall {
         </tr>~;
             }
             $yymain .= qq~<tr>
-            <div class="cell_b windowbg center"><img src="$imagesdir/a_off.gif" alt="" /></td>
-            <div class="cell_b windowbg2">
+            <td class="windowbg center"><img src="$imagesdir/a_off.gif" alt="" /></td>
+            <td class="windowbg2">
                 <b>Installed: </b>
                 <br />$var_created
             </td>
@@ -2263,7 +2263,7 @@ sub CheckInstall {
     }
 
     $yymain .= q~<tr>
-            <div class="cell_b catbg" colspan="2">
+            <td class="catbg" colspan="2">
       ~;
 
     if ($set_missing) {
@@ -2278,10 +2278,10 @@ sub CheckInstall {
       Successfully checked Settings.pm!
             </td>
         </tr><tr>
-            <div class="cell_b windowbg center"><img src="$imagesdir/a_off.gif" alt="" /></td>
-            <div class="cell_b windowbg2">
+            <td class="windowbg center"><img src="$imagesdir/a_off.gif" alt="" /></td>
+            <td class="windowbg2">
       Click on 'Continue' and go to your <i>Admin Center - Forum Settings</i> to set the options for your YaBB 2.5.4 forum.<br />
-                Click on 'Convert' to convert your YaBB 1 Gold - SP 1.x forum to YaBB 2.5.4. Click on 'Fix' to convert your YaBB 2x forum to 2.5.4
+                Click on 'Convert' to convert your YaBB 1 Gold - SP 1.x forum to YaBB 2.5.4. Click on 'Fix' to convert your YaBB 2.0 - 2.4 forum to 2.5.4
             </td>
         </tr>~;
     }
@@ -2289,7 +2289,7 @@ sub CheckInstall {
     if ( !$install_error ) {
 
         $yymain .= qq~<tr>
-            <div class="cell_b catbg center" colspan="2">
+            <td class="catbg center" colspan="2">
       <form action="$set_cgi?action=ready;nextstep=YaBB" method="post" style="display: inline;">
             <input type="submit" value="Continue" />
       </form>
@@ -2299,7 +2299,7 @@ sub CheckInstall {
     }
     else {
         $yymain .= q~<tr>
-            <div class="cell_b catbg" colspan="2">
+            <td class="catbg" colspan="2">
                 <div class="div98"><b>One or more errors occurred while checking the system files. The problems must be solved before you may continue.</b></div>
             </td>
         </tr>~;
@@ -2365,9 +2365,9 @@ sub setup_fatal_error {
       $yymain .= qq~
 <table class="bordercolor center cs_thin pad_4px" width="80%" >
   <tr>
-    <div class="cell_b titlebg"><span class="text1"><b>An Error Has Occurred!</b></span></td>
+    <td class="titlebg"><span class="text1"><b>An Error Has Occurred!</b></span></td>
   </tr><tr>
-    <div class="cell_b windowbg"><br /><span class="text1">$e</span><br /><br /></td>
+    <td class="windowbg"><br /><span class="text1">$e</span><br /><br /></td>
   </tr>
 </table>
 <center><br /><a href="javascript:history.go(-1)">Back</a></center>
@@ -2593,14 +2593,14 @@ qq~The 2x FixFile Utility has already been run.<br />To run Utility again, remov
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <div class="cell_b titlebg" colspan="2">
+            <td class="titlebg" colspan="2">
                 YaBB 2.5.4 Setup
             </td>
         </tr><tr>
-            <div class="cell_b windowbg center">
+            <td class="windowbg center">
                 <img src="$imagesdir/info.gif" alt="" />
             </td>
-            <div class="cell_b windowbg2 center">
+            <td class="windowbg2 center">
                 Setup has already been run.
                 <br />
                 To run Setup again, remove the file "$vardir/Setup.lock" then re-visit this page.<br />
@@ -2608,7 +2608,7 @@ qq~The 2x FixFile Utility has already been run.<br />To run Utility again, remov
                 $fixa2
             </td>
         </tr><tr>
-            <div class="cell_b catbg center" colspan="2">
+            <td class="catbg center" colspan="2">
                 <form action="$boardurl/YaBB.$yyext" method="post" style="display: inline;">
                     <input type="submit" value="Go to your Forum" />
 <!--                  <input type="hidden" name="formsession" value="$formsession" />-->
