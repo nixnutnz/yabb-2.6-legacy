@@ -1246,7 +1246,7 @@ function insert_user (oElement,username,userid) {
         $tabWidth = '50%';
     }
     $MCViewMenu     = q{};
-	$MCPmMenu       = q{};
+    $MCPmMenu       = q{};
     $MCProfMenu     = q{};
     $MCPostsMenu    = q{};
     $MCExtraSmilies = q{};
@@ -1303,10 +1303,18 @@ function insert_user (oElement,username,userid) {
             $MCViewMenu_mess =~
               s/{yabb mc_menus_messages}/$mc_menus{'messages'}/sm;
         }
-	}
+        $MCViewMenu .= $my_MCViewMenu;
+        $MCViewMenu =~ s/{yabb MCView_tab}/$MCView_tab/sm;
+        $MCViewMenu =~ s/{yabb MCViewMenu_mess}/$MCViewMenu_mess/sm;
+        $MCViewMenu =~ s/{yabb tabWidth}/$tabWidth/gsm;
+        $MCViewMenu =~ s/{yabb tabProfHighlighted}/$tabProfHighlighted/sm;
+        $MCViewMenu =~ s/{yabb tabNotifyHighlighted}/$tabNotifyHighlighted/sm;
+        $MCViewMenu =~ s/{yabb mc_menus_profile}/$mc_menus{'profile'}/sm;
+        $MCViewMenu =~ s/{yabb mc_menus_posts}/$mc_menus{'posts'}/sm;
+    }
 
     $MCViewMenu .= $MCView_tab;
- 	
+
 ## start Profile div
 
     ## links for profile pages. SID is now cloaked and controls whether or not
@@ -2979,18 +2987,18 @@ sub mcMenu {
 
     if ( $pm_lev == 1 ) {
         $yymcmenu .=
-qq~<li><span $pmclass id="menu_pm"><a href="$scripturl?action=mycenter">$mc_menus{'messages'}</a></span></li>
+qq~<li><span onclick="changeToTab('pm'); return false;"$pmclass id="menu_pm"><a href="$scripturl?action=mycenter" onclick="changeToTab('pm'); return false;">$mc_menus{'messages'}</a></span></li>
         ~;
     }
 
     # profile link
     $yymcmenu .=
-qq~<li><span $profclass id="menu_prof"><a href="$scripturl?action=myviewprofile;username=$useraccount{$username}">$mc_menus{'profile'}</a></span></li>
+qq~<li><span onclick="changeToTab('prof'); return false;"$profclass id="menu_prof"><a href="$scripturl?action=myviewprofile;username=$useraccount{$username}" onclick="changeToTab('prof'); return false;">$mc_menus{'profile'}</a></span></li>
     ~;
 
     # posts link
     $yymcmenu .=
-qq~<li><span $postclass  id="menu_posts"><a href="$scripturl?action=favorites">$mc_menus{'posts'}</a></span></li>
+qq~<li><span onclick="changeToTab('posts'); return false;"$postclass  id="menu_posts"><a href="$scripturl?action=favorites" onclick="changeToTab('posts'); return false;">$mc_menus{'posts'}</a></span></li>
     ~;
 
     $yymcmenu .= q{};
