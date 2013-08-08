@@ -101,5 +101,8 @@ $messageindexlngver = 'YaBB 2.5.4 $Revision$';
 %messageindex_tp = (
 'enabletp' => 'Enable Topic Preview',
 'disabletp' => 'Disable Topic Preview',
+'code_tp' => 'CODE',
+'image_tp' => 'IMAGE',
+'media_tp' => 'MEDIA',
 );
 1;

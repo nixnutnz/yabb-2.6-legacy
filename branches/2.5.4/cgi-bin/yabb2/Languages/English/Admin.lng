@@ -65,7 +65,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 '61a' => 'Category ID:',
 '61b' => '<span class="small">enter any alphanumeric name you wish with no spaces</span>',
 '62' => 'Description',
-'62a' => 'If this is to be an external board link, the first line of the description should be the title of the Name link.',
+'62a' => 'If this is to be an external board link, the first line of the description should be the title of the Name link, or if using an image as the link the first line should use the HTML &lt;img&gt; tag. e.g. &lt;img src="http://yoursite.com/yourimage.jpg" alt="Your Image Title" /&gt;',
 '63' => 'Moderators',
 '63a' => 'Copy',
 '63b' => 'Paste',
@@ -85,7 +85,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 '64k' => 'Allow attachments?',
 '64l' => 'If checked, users may attach files to posts they make in this board. (See Advanced Settings -> File Attachments to change the forum-wide attachment preferences.)',
 '64m' => 'Set maximum post display age',
-'64n' => 'To only display posts newer than XXX days, enter that value here.<br />Enter 0 (zero) for no restriction.<br /><b>Note: default value for new boards is 0</b>',  ## new
+'64n' => 'To only display posts newer than XXX days, enter that value here.<br />Enter 0 (zero) for no restriction.<br /><b>Note: default value for new boards is 0</b>',
 '65' => 'Group Permissions',
 '65a' => '(Posting/Viewing Permissions)',
 '65b' => 'Allowed to start topics',
@@ -96,7 +96,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 '66' => 'Click here to view the relevant Help section',
 '67' => 'Maintenance Settings',
 '68' => 'Name',
-'68a' => q~If this is to be an external board link, the name should be in the format of 'http://boardlink'~,
+'68a' => q~If this is to be an external board link, the name should be in the format of 'http://boardlink.com'~,
 '70' => 'Subject',
 '72' => 'Message',
 '87' => 'Main Group',
@@ -186,6 +186,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 '353a' => 'Cookie Name - Session',
 '353b' => 'Cookie Prefix - MessageIndex sort',
 '353e' => 'Cookie Name - Guest Message Limit',
+'353f' => 'Guest Message Limit Cookie time to expiration (in minutes - 525600 is approximately 1 year.)',
 '354' => 'Location of Sendmail Program',
 '355' => 'Webmaster E-mail Address',
 '356' => 'YaBB Directory',
@@ -247,7 +248,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 '429' => 'Detailed Version Check',
 '430' => 'Files in Admin Dir:',
 '431' => 'Files in Source Dir:',
-'432' => 'Default lifetime of login cookies',
+'432' => q~Default lifetime of login cookies.<br /><span class="small">If checked, the default lifetime is 'forever', otherwise the login cookies will expire when the user's browser is closed.</span>~,
 '462' => 'GO!',
 '470' => 'N/A',
 '471' => 'Smart Image Resize<br />(resizes image display to the following values if image exceeds them)',
@@ -493,7 +494,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 'loadtime' => 'Show pageload time only - everyone sees output',
 'show_ip_admin' => 'Show IP in Board Index Online List for all online Members/Guests to Administrators?',
 'show_ip_gmod' => 'Show IP in Board Index Online List for all online Members/Guests to Global Moderators?',
-'show_ip_ymod' => 'Show IP in Board Index Online List for all online Members/Guests to Forum Moderators?',
+'show_ip_fmod' => 'Show IP in Board Index Online List for all online Members/Guests to Forum Moderators?',
 'guestmedia' => 'Prevent Guest from seeing media files or having clickable auto-linked urls in messages?',
 'guestlang' => 'Enable Guest language selection?',
 'checkspace' => q~Enabling this will allow you to set the various free disk space checks. Checking the free disk space is primarily a Linux function and may not work properly on Windows/IIS servers. The free disk space functions may return incorrect values when used on shared hosting services.~,
@@ -533,6 +534,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 'rules4' => 'You can use HTML here.',
 'iplookup' => 'Enable IP Lookup?<br /><span class="small">Checking this option will turn IP Addresses into active links allowing you to look them up on a regional Whois server.</span>',
 'iplookup_urls' => 'IP Lookup Whois Servers:<br /><span class="small">Here you can add or remove Whois servers to/from the IP Lookup page.<br />Use {ip} in the URL to substitute the actual IP address, and separate the title and URL with a pipe symbol \'|\'.<br />One URL per line.<br />Example: MyLookupSite|mylookupsite.com?ip={ip}</span>',
+'iplookup_protocols' => '. Valid protocols are http and https.', 
 'show_user_age' => 'Show User Age in Message View?', 
 'show_reg_date' => 'Show User Registration Date?',
 'edit_gender_limit' => 'Set a limit on the amount of times that members can edit their gender:<br /><span class="small">1 = Cannot be edited after the first time it has been entered.<br />0 = No limt.</span>',
@@ -554,11 +556,9 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 'topichover' => 'Enable Topic Hover on Message Index',
 'staff_reason' => q~Enable 'Reason for Editing' for Staff Members~,
 'user_reason' => q~Enable 'Reason for Editing' for Members~,
-### RSS on Board Index Start ###
 'brdrss1' => 'RSS',
 'brdrss2' => 'Check to show RSS Feed for this category on the Board Index.<br /><b>Note:</b> Only relevant if RSS is enabled.',
 'brdrss3' => 'Check to show RSS Feed for this board on the Board Index.<br /><b>Note:</b> Only relevant if RSS is enabled and the board is not an external link board.',
-### RSS on Board Index End ###
 );
 
 %floodtxt = (
@@ -616,10 +616,10 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 '12' => 'Password',
 '13' => 'Del',
 '14' => 'Delete error(s)',
-'15' => 'Are you sure you want to delete the selected ERROR(S)?',
+'15' => 'Are you sure you want to delete the selected errors(s)?',
 '16' => 'Viewing All',
 '17' => 'Errors',
-'18' => 'The error log is a file that will be added automatically (if it isn&#39;t already on the server) when someone encounters even the smallest error, like a wrong password. <br />  This page gives you detailed information on the error, or errors, that has, or have, been encountered. <br />  This page will give you a summary of the time the error happened, the user who caused the error, the address (URL) of the error, and the error itself.<br />Note: All attempts to bypass, thwart or break YaBB Security features, will be shown here - because they FAILED! YaBB Security Works!',
+'18' => 'This page will give you a summary of all errors that have occurred, from the smallest error like a wrong password, to all attempts to bypass, thwart or break YaBB Security features.<br /><br />Below you will see detailed information on the error including the time when the error happened, the user who caused the error, the address (URL) of the error and the error itself, along with the ability to look up an IP and ban the IP of the user if needed.',
 '19' => 'There are no new errors since you last cleaned the error log.',
 '20' => 'Clean Error Log',
 '21' => 'Error #',
@@ -1254,11 +1254,11 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 
 %bypassLock_txt = (
 'enable' => 'Enable?',
-'explain' => 'This allows a FA/GMod/Mod to post or modify a locked thread without having to explicitly unlock/lock it',
+'explain' => 'This allows a FA/GMod/FMod/Mod to post or modify a locked thread without having to explicitly unlock/lock it',
 'allow' => 'Select which Staff Members to allow bypassing the lock on posts:',
 'fa' => 'FA only',
 'gmod' => 'FA/GMod only',
-'ymod' => 'FA/GMod/FMod',
+'fmod' => 'FA/GMod/FMod',
 'mod' => 'FA/GMod/FMod/Mod',
 );
 

@@ -142,6 +142,7 @@ $errorlngver = 'YaBB 2.5.4 $Revision$';
 'no_links_allowed'     => "Sorry, you are not allowed to post messages containing active links to websites or images before you have posted $minlinkpost normal messages.",
 'no_siglinks_allowed'  => "Sorry, you are not allowed to create a signature containing active links to websites or images before you have posted $minlinksig normal messages.",
 'attach_name_blocked'         => "Your attachment name contains a word which is not allowed on this forum.",
+'attach_file_blocked'         => "Sorry, you cannot upload an attachment with that file name.",
 
 ## MoveTopic ##
 'move_not_allowed'     => "You are not allowed to move topics...",

@@ -22,7 +22,6 @@ $gmodprivilegeslngver = 'YaBB 2.5.4 $Revision$';
 '4' => 'Select which actions <i>(action= in URLs)</i> Global Moderators are allowed to access',
 );
 
-
 %gmodprivexpl_txt = (
 'ext_admin' => 'Allow to edit Extended Profiles',
 'main' => 'Allow to edit Forum Preferences and Settings',
@@ -32,10 +31,14 @@ $gmodprivilegeslngver = 'YaBB 2.5.4 $Revision$';
 'smilies' => 'Allow to add More Smilies',
 'setcensor' => 'Allow to set Censored Words',
 'modagreement' => 'Allow to edit Registration Agreement',
+'eventcal_set' => 'Allow to edit Event Calendar',
+'bookmarks' => 'Allow to edit Social Bookmarks', 
 'referer_control' => 'Allow to edit Referrer Security',
 'security' => 'Allow to edit Security Settings',
 'setup_guardian' => 'Allow to edit Guardian Settings',
-'antispam' => 'Allow to edit Antispam Settings ',
+'antispam' => 'Allow to edit Anti-spam Settings',
+'spam_questions' => 'Allow to edit Anti-spam Questions',
+'honeypot' => 'Allow to edit Honeypot', 
 'managecats' => 'Allow to manage Categories',
 'manageboards' => 'Allow to manage Boards',
 'helpadmin' => 'Allow to edit Help Center Entries',
