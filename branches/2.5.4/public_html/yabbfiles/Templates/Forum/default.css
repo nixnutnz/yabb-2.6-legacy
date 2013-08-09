@@ -1256,8 +1256,9 @@ padding-top:3px;
 .pgindex {
 float:left;
 height:21px;
-margin:0px;
-margin-top:2px;
+margin:2px 0 0 0;
+line-height:18px;
+vertical-align:middle;
 }
 
 .bold {
@@ -1759,3 +1760,24 @@ float: right; padding-right: 0.3em;
 .sticky_stick {font-size:medium !important;}
 
 .style_ubbc_box {float: left; width: 463px !important;}
+
+/*user select box */
+.letterlinks_a { float: left; width: 11px; text-align: center; border: 1px #ffffff solid;}
+.letterlinks_b { float: left; width: 13px; text-align: center; margin-top: 1px; margin-bottom: 1px;}
+.letterlinks_c { float: left; text-align: center; border: 1px #ffffff solid; padding-left: 2px; padding-right: 2px;}
+.letterlinks_d { float: left; text-align: center; padding-left: 2px; padding-right: 2px; margin-top: 1px; margin-bottom: 1px;}
+.reclist { width: 456px; font-size: 11px; font-weight: bold;}
+.reclist_b { width: 456px;}
+.reclist_sub { width: 226px;}
+.reclist_no {float: left; width: 456px; height: 139px; text-align:center}
+.pagedrp {float: left; width: 456px; margin: 2px 0; border: 0px;}
+.recentpm {float: left; width: 224px; text-align: center; padding-top: 2px; padding-bottom: 2px; border: 1px; border-style: outset; cursor: pointer;}
+.wildcard {font-size: 11px; width: 140px}
+.select_body {
+background-color: #DEE4EC;
+color: #2D2D2D;
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+width:464px; min-width:464px; margin: 0 auto
+}
