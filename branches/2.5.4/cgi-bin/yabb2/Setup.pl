@@ -1418,6 +1418,9 @@ sub SetInstall2 {
         $minlinksig           = 0;
         $minlinkweb           = 0;
         $showsearchboxnum     = 31;
+		$showregdate          = 1;
+		$enableguestsearch    = 1;
+		$enableguestquicksearch = 1;
         $maxsteps  = 40;
         $stepdelay = 75;
         $fadelinks = 0;
@@ -1545,8 +1548,7 @@ sub SetInstall2 {
 \$parseflash = $parseflash;                         # Set to 1 to parse the flash tag
 \$enableclicklog = $enableclicklog;                 # Set to 1 to track stats in Clicklog (this may slow your board down)
 \$showimageinquote = $showimageinquote;             # Set to 1 to shows images in quotes, 0 displays a link to the image
-\$showsearchboxnum = $showsearchboxnum;             # Maximum post age for Search Box
-
+\$showregdate = $showregdate;                       # Set to 1 to show date of registration.
 \@pallist = ("#ff0000","#00ff00","#0000ff","#00ffff","#ff00ff","#ffff00"); # color settings of the palette
 
 ########## Feature Settings ##########
@@ -1690,7 +1692,13 @@ sub SetInstall2 {
 \$debug = $debug;                                   # If set to 1 debug info is added to the template
                                                     # tags are <yabb fileactions> and <yabb filenames>
 
-
+########## Search Settings ##########
+\$enableguestsearch = $enableguestsearch;       # Set to 1 to enable guests access to advanced search.
+\$enableguestquicksearch = $enableguestquicksearch; # Set to 1 to enable guests access to quick search.
+\$mgqcksearch = "\Q$mgqcksearch\E";
+\$mgadvsearch = "\Q$mgadvsearch\E";
+\$qcksearchtype = "\Q$qcksearchtype\E";
+\$qckage = "\Q$qckage\E";
 
 ###############################################################################
 # Advanced Settings (old AdvSettings.txt                                      #
