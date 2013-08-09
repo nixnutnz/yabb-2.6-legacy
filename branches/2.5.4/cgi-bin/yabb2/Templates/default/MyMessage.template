@@ -27,6 +27,11 @@ $IM_index_right = 'index_right.png';
 $IM_index_right0 ='index_right0.png';
 $IM_ip = 'ip.gif';
 
+#User Select window size (imWin called from InstantMessage)
+$us_winwidth_to = 500;
+$us_winwidth_cc = 464;
+$us_winhight_cc = 370;
+$us_winhight_to = 345;
 
 ## IM show - single post
 $myIM_show = qq~

@@ -82,21 +82,23 @@ sub MemberList {
         elsif ( $to_id eq 'toshowbcc' ) { $bccsel = q~ checked="checked"~; }
         else                            { $tosel  = q~ checked="checked"~; }
         if ( $PMenable_cc || $PMenable_bcc ) {
-            $radiobuttons = qq~
-            <div class="small" style="float: left; width: 50%; padding-bottom: 3px;">
-            <input type="radio" name="selreciepients" id="toshow" value="toshow" class="windowbg" style="border: 0px; vertical-align: middle;" onclick="location.href='$scripturl?action=imlist;sort=$INFO{'sort'};toid=toshow;start=$start;letter=$INFO{'letter'}';"$tosel /><label for="toshow" class="small">$usersel_txt{'pmto'}</label>
+			$my_radio_to = qq~
+            <label for="toshow" class="small">$usersel_txt{'pmto'}</label><input type="radio" name="selreciepients" id="toshow" value="toshow" class="windowbg" onclick="location.href='$scripturl?action=imlist;sort=$INFO{'sort'};toid=toshow;start=$start;letter=$INFO{'letter'}';"$tosel />
             ~;
             if ($PMenable_cc) {
-                $radiobuttons .= qq~
-                <input type="radio" name="selreciepients" id="toshowcc" value="toshowcc" class="windowbg" style="border: 0px; vertical-align: middle;" onclick="location.href='$scripturl?action=imlist;sort=$INFO{'sort'};toid=toshowcc;start=$start;letter=$INFO{'letter'}';"$ccsel /><label for="toshowcc" class="small">$usersel_txt{'pmcc'}</label>
+                $my_radio_cc = qq~
+                <label for="toshowcc" class="small">$usersel_txt{'pmcc'}</label><input type="radio" name="selreciepients" id="toshowcc" value="toshowcc" class="windowbg" onclick="location.href='$scripturl?action=imlist;sort=$INFO{'sort'};toid=toshowcc;start=$start;letter=$INFO{'letter'}';"$ccsel />
                 ~;
             }
             if ($PMenable_bcc) {
-                $radiobuttons .= qq~
-                <input type="radio" name="selreciepients" id="toshowpmbcc" value="toshowbcc" class="windowbg" style="border: 0px; vertical-align: middle;" onclick="location.href='$scripturl?action=imlist;sort=$INFO{'sort'};toid=toshowbcc;start=$start;letter=$INFO{'letter'}';"$bccsel /><label for="toshowpmbcc" class="small">$usersel_txt{'pmbcc'}</label>
+                $my_radio_bcc = qq~
+                <label for="toshowpmbcc" class="small">$usersel_txt{'pmbcc'}</label><input type="radio" name="selreciepients" id="toshowpmbcc" value="toshowbcc" class="windowbg" onclick="location.href='$scripturl?action=imlist;sort=$INFO{'sort'};toid=toshowbcc;start=$start;letter=$INFO{'letter'}';"$bccsel />
                 ~;
             }
-            $radiobuttons .= q~</div>~;
+            $radiobuttons = $my_bcc_radio;
+            $radiobuttons =~ s/{yabb my_radio_to}/$my_radio_to/sm;
+            $radiobuttons =~ s/{yabb my_radio_cc}/$my_radio_cc/sm;
+            $radiobuttons =~ s/{yabb my_radio_bcc}/$my_radio_bcc/sm;
         }
     }
     if ( $to_id =~ /moderators\d/xsm ) {
@@ -130,40 +132,40 @@ sub MemberList {
     while ( $page ne 'z' ) {
         if ( $INFO{'letter'} && $page eq $INFO{'letter'} ) {
             $LetterLinks .=
-qq~<div style="float: left; width: 11px; text-align: center; border: 1px #ffffff solid;"><span class="small"><b>$showpage</b></span></div>~;
+qq~<div class="letterlinks_a"><span class="small"><b>$showpage</b></span></div>~;
         }
         else {
             $LetterLinks .=
-qq~<div style="float: left; width: 13px; text-align: center; margin-top: 1px; margin-bottom: 1px;"><a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$page"><span class="small"><b>$showpage</b></span></a></div>~;
+qq~<div class="letterlinks_b"><a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$page"><span class="small"><b>$showpage</b></span></a></div>~;
         }
         $page++;
         $showpage++;
     }
     if ( $INFO{'letter'} && $INFO{'letter'} eq 'z' ) {
         $LetterLinks .=
-q~<div style="float: left; width: 11px; text-align: center; border: 1px #ffffff solid;"><span class="small"><b>Z</b></span></div>~;
+q~<div class="letterlinks_a"><span class="small"><b>Z</b></span></div>~;
     }
     else {
         $LetterLinks .=
-qq~<div style="float: left; width: 13px; text-align: center; margin-top: 1px; margin-bottom: 1px;"><a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=z"><span class="small"><b>Z</b></span></a></div>~;
+qq~<div class="letterlinks_b"><a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=z"><span class="small"><b>Z</b></span></a></div>~;
     }
     if ( $INFO{'letter'} && $INFO{'letter'} eq 'other' ) {
         $LetterLinks .=
-qq~<div style="float: left; text-align: center; border: 1px #ffffff solid; padding-left: 2px; padding-right: 2px;"><span class="small"><b>$usersel_txt{'other'}</b></span></div>~;
+qq~<div class="letterlinks_c"><span class="small"><b>$usersel_txt{'other'}</b></span></div>~;
     }
     else {
         $LetterLinks .=
-qq~<div style="float: left; text-align: center; padding-left: 2px; padding-right: 2px; margin-top: 1px; margin-bottom: 1px;"><a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=other"><span class="small"><b>$usersel_txt{'other'}</b></span></a></div>~;
+qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=other"><span class="small"><b>$usersel_txt{'other'}</b></span></a></div>~;
     }
 
     if ( $INFO{'sort'} eq 'pmsearch' ) {
         if ( $INFO{'letter'} && $INFO{'letter'} eq 'all' ) {
             $LetterLinks .=
-qq~<div style="float: left; text-align: center; border: 1px #ffffff solid; padding-left: 2px; padding-right: 2px;"><span class="small"><b>$usersel_txt{'allsearch'}</b></span></div>~;
+qq~<div class="letterlinks_c"><span class="small"><b>$usersel_txt{'allsearch'}</b></span></div>~;
         }
         else {
             $LetterLinks .=
-qq~<div style="float: left; text-align: center; padding-left: 2px; padding-right: 2px; margin-top: 1px; margin-bottom: 1px;"><a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=all"><span class="small"><b>$usersel_txt{'allsearch'}</b></span></a></div>~;
+qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=all"><span class="small"><b>$usersel_txt{'allsearch'}</b></span></a></div>~;
         }
     }
     if ( $to_id eq 'groups' ) { $LetterLinks = q{}; }
@@ -263,13 +265,13 @@ qq~<div style="float: left; text-align: center; padding-left: 2px; padding-right
         ManageMemberinfo('load');
     }
 
-    if   ( $INFO{'sort'} eq 'recentpm' ) { $selRecent = q~class="windowbg"~; }
-    else                                 { $selRecent = q~class="windowbg2"~; }
+    if   ( $INFO{'sort'} eq 'recentpm' ) { $selRecent = q~class="windowbg recentpm"~; }
+    else                                 { $selRecent = q~class="windowbg2 recentpm"~; }
 
     if ( $INFO{'sort'} eq 'mlletter' || $INFO{'sort'} eq 'username' ) {
-        $selUser = q~class="windowbg"~;
+        $selUser = q~class="windowbg recentpm"~;
     }
-    else { $selUser = q~class="windowbg2"~; }
+    else { $selUser = q~class="windowbg2 recentpm"~; }
 
     if (
         (
@@ -365,12 +367,12 @@ qq~<div style="float: left; text-align: center; padding-left: 2px; padding-right
         ~;
         if ( $to_id =~ /userspec/sm ) {
             $yymain_inner .= qq~
-            <select name="rec_list" id="rec_list" size="10" style="width: 456px; font-size: 11px; font-weight: bold;" ondblclick="copy_option('$to_id')">\n
+            <select name="rec_list" id="rec_list" size="10" class="reclist" ondblclick="copy_option('$to_id')">\n
         ~;
         }
         else {
             $yymain_inner .= qq~
-            <select name="rec_list" id="rec_list" multiple="multiple" size="10" style="width: 456px; font-size: 11px; font-weight: bold;" ondblclick="copy_option('$to_id')">\n
+            <select name="rec_list" id="rec_list" multiple="multiple" size="10" class="reclist" ondblclick="copy_option('$to_id')">\n
         ~;
         }
         while ( $numshown < $MembersPerPage ) {
@@ -428,12 +430,12 @@ qq~<option value="$cloakedUserName"$colorstyle>${$uid.$user}{'realname'}</option
         }
         $yymain_inner .= qq~
         </select>\n
-        <input type="button" class="button" onclick="copy_option('$to_id')" value="$usersel_txt{'addselected'}" style="width: 226px;" /><input type="button" class="button" onclick="window.close()" value="$usersel_txt{'pageclose'}" style="width: 226px;" />
+        <input type="button" class="button reclist_sub" onclick="copy_option('$to_id')" value="$usersel_txt{'addselected'}" /><input type="button" class="button reclist_sub" onclick="window.close()" value="$usersel_txt{'pageclose'}" />
         ~;
     }
     else {
         $yymain_inner .= q~
-        <div style="float: left; width: 456px; height: 139px; text-align:center">
+        <div class="reclist_no">
         <br /><br />
         ~;
         if ($letter) {
@@ -445,7 +447,7 @@ qq~<option value="$cloakedUserName"$colorstyle>${$uid.$user}{'realname'}</option
         }
         $yymain_inner .= qq~
         </div>
-        <input type="button" class="button" onclick="window.close()" value="$usersel_txt{'pageclose'}" style="width: 456px;" />
+        <input type="button" class="button reclist_b" onclick="window.close()" value="$usersel_txt{'pageclose'}" />
         ~;
     }
     $yymain .= $my_sel_box;
@@ -529,7 +531,7 @@ qq~<a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$lett
             }
             else {
                 $pagedropindex =
-q~<div style="float: left; width: 456px; height: 21px; margin: 0px; margin-top: 2px; border: 0px;">~;
+q~<div class="pagedrp">~;
                 $tstart = $start;
                 if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' ) {
                     ( $tstart, $start ) = split /\-/xsm, $INFO{'start'};
@@ -545,7 +547,7 @@ q~<div style="float: left; width: 456px; height: 21px; margin: 0px; margin-top: 
 
                 if ( $pagenumb > $dropdisplaynum ) {
                     $pagedropindex .=
-qq~<div style="float: left; height: 21px; margin: 0;"><select size="1" name="decselector" id="decselector" style="font-size: 9px; border: 2px inset;" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
+qq~<div class="decselector"><select size="1" name="decselector" id="decselector" class="decselector_sel" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
                 }
                 for my $i ( 0 .. ( $indexpages - 1 ) ) {
                     $indexpage  = ( $i * $dropdisplaynum ) * $MembersPerPage;
@@ -571,7 +573,7 @@ qq~<option value="$indexstart|$indexend|$MembersPerPage|$indexpage"$selected>$in
                     $pagedropindex .= qq~</select>\n~;
                 }
                 $pagedropindex .=
-q~<div id="ViewIndex" class="droppageindex pages" style="visibility: hidden">&nbsp;</div>~;
+q~<div id="ViewIndex" class="droppageindex pages" style="visibility: hidden; padding-bottom:5px">&nbsp;</div>~;
                 $tmpMembersPerPage = $MembersPerPage;
                 if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' ) {
                     $MembersPerPage = $MembersPerPage * $dropdisplaynum;
@@ -660,24 +662,24 @@ sub buildPages {
     if ( $to_id ne 'groups' ) {
         $not_groups = qq~
             <form action="$scripturl?action=findmember;sort=pmsearch;toid=$to_id" method="post" id="form1" name="form1" enctype="application/x-www-form-urlencoded" style="display:inline; vertical-align:middle;" accept-charset="$yycharset">
-                <input type="text" name="member" id="member" value="$usersel_txt{'wildcardinfo'}" onfocus="txtInFields(this, '$usersel_txt{'wildcardinfo'}');" onblur="txtInFields(this, '$usersel_txt{'wildcardinfo'}')" style="font-size: 11px; width: 140px" /> 
+                <input type="text" name="member" id="member" value="$usersel_txt{'wildcardinfo'}" onfocus="txtInFields(this, '$usersel_txt{'wildcardinfo'}');" onblur="txtInFields(this, '$usersel_txt{'wildcardinfo'}')" class="wildcard" /> 
                 <input name="submit" type="submit" class="button" style="font-size: 10px;" value="$usersel_txt{'gobutton'}" />
             </form>~;
     }
     if ( $recent_exist && $to_id =~ /toshow/sm ) {
         $not_groups_b = qq~
-            <div $selRecent onclick="location.href='$scripturl?action=imlist;sort=recentpm;toid=$to_id';" style="float: left; width: 224px; text-align: center; padding-top: 2px; padding-bottom: 2px; border: 1px; border-style: outset; cursor: pointer;"><b>$usersel_txt{'recentlist'}</b></div>
-            <div $selUser onclick="location.href='$scripturl?action=imlist;sort=username;toid=$to_id';" style="float: left; width: 224px; text-align: center; padding-top: 2px; padding-bottom: 2px; border: 1px; border-style: outset; cursor: pointer;"><b>$usersel_txt{'alllist'}</b></div>
+            <div $selRecent onclick="location.href='$scripturl?action=imlist;sort=recentpm;toid=$to_id';"><b>$usersel_txt{'recentlist'}</b></div>
+            <div $selUser onclick="location.href='$scripturl?action=imlist;sort=username;toid=$to_id';"><b>$usersel_txt{'alllist'}</b></div>
         ~;
     }
     elsif ( $to_id ne 'groups' ) {
         $not_groups_b = qq~
-            <div $selUser onclick="location.href='$scripturl?action=imlist;sort=username;toid=$to_id';" style="float: left; width: 454px; text-align: center; padding-top: 2px; padding-bottom: 2px; border: 1px; border-style: outset; cursor: pointer;"><b>$usersel_txt{'alllist'}</b></div>
+            <div $selUser onclick="location.href='$scripturl?action=imlist;sort=username;toid=$to_id';" style="width: 454px;"><b>$usersel_txt{'alllist'}</b></div>
         ~;
     }
     elsif ( $to_id eq 'groups' ) {
         $not_groups_b = qq~
-            <div $selUser onclick="location.href='$scripturl?action=imlist;sort=username;toid=$to_id';" style="float: left; width: 454px; text-align: center; padding-top: 2px; padding-bottom: 2px; border: 1px; border-style: outset; cursor: pointer;"><b>$usersel_txt{'groups'}</b></div>
+            <div $selUser onclick="location.href='$scripturl?action=imlist;sort=username;toid=$to_id';" style="width: 454px;"><b>$usersel_txt{'groups'}</b></div>
         ~;
     }
     if ( $LetterLinks ne q{} ) {
@@ -717,122 +719,34 @@ sub buildPages {
 sub userselectTemplate {
     print_output_header();
 
-    $output =
-qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<title>$yytitle</title>
-<meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
-<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
-<script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
-<script type="text/javascript">
-<!--
-function txtInFields(thefield, defaulttxt) {
-    if (thefield.value == defaulttxt) thefield.value = "";
-    else { if (thefield.value === "") thefield.value = defaulttxt; }
-} 
-var scripturl = '$scripturl';
-var noresults = '$usersel_txt{'noresults'}';
-var imageurl = '$imagesdir';
-
-function copy_option(to_select) {
-    if (to_select == 'groups') { to_select = 'toshow'; var groupflag = true; }
-    if (to_select == 'userspec') {
-        opener.document.getElementById(to_select).value = document.selectuser.rec_list.options[document.selectuser.rec_list.selectedIndex].value;
-        opener.document.getElementById('userspectext').value = document.selectuser.rec_list.options[document.selectuser.rec_list.selectedIndex].text;
-        opener.document.getElementById('usrsel').style.display = 'none';
-        opener.document.getElementById('usrrem').style.display = 'inline';
-        opener.document.getElementById('searchme').disabled = true;
-        window.close();
-        return;
-    }
-    var to_array = new Array();
-    var tmp_array = new Array();
-    var from_select = 'rec_list';
-    var z = 0;
-    var pmtoshow = false;
-    var alt_select1 = '';
-    var alt_select2 = '';
-    opener.document.getElementById(to_select).style.display = 'inline';
-    if (to_select == 'toshow' || to_select == 'toshowcc' || to_select == 'toshowbcc'  || to_select == 'groups') {
-~;
-
+	$show_cc = q{};
     if ( $to_id ne 'groups' ) {
         if ( $PMenable_cc && $PMenable_bcc ) {
-            $output .= q~
+            $show_cc .= q~
             alt_select1 = 'toshowcc'; alt_select2 = 'toshowbcc'; pmtoshow = true;
             if (to_select == 'toshowcc') { alt_select1 = 'toshow'; alt_select2 = 'toshowbcc'; }
             if (to_select == 'toshowbcc') { alt_select1 = 'toshow'; alt_select2 = 'toshowcc'; }
             ~;
         }
         elsif ($PMenable_cc) {
-            $output .= q~
+            $show_cc .= q~
             alt_select1 = 'toshowcc'; pmtoshow = true;
             if (to_select == 'toshowcc') { alt_select1 = 'toshow'; pmtoshow = true; }
             ~;
         }
         elsif ($PMenable_bcc) {
-            $output .= q~
+            $show_cc .= q~
             alt_select1 = 'toshowbcc'; pmtoshow = true;
             if (to_select == 'toshowbcc') { alt_select1 = 'toshow'; pmtoshow = true; }
             ~;
         }
     }
 
-    $output .= qq~
-    }
-    if (pmtoshow) {
-        for (j = 0; j < document.getElementById(from_select).options.length; j++) {
-            if (document.getElementById(from_select).options[j].selected) {
-                for (x = 0; x < opener.document.getElementById(alt_select1).options.length; x++) {
-                    if (document.getElementById(from_select).options[j].text == opener.document.getElementById(alt_select1).options[x].text) document.getElementById(from_select).options[j].selected = false;
-                }
-                if (alt_select2 > '')   {
-                    for (y = 0; y < opener.document.getElementById(alt_select2).options.length; y++) {
-                        if (document.getElementById(from_select).options[j].text == opener.document.getElementById(alt_select2).options[y].text) document.getElementById(from_select).options[j].selected = false;
-                    }
-                }
-            }
-        }
-    }
-    for(i = 0; i < opener.document.getElementById(to_select).options.length; i++) {
-        keep_this = true;
-        for(j = 0; j < document.getElementById(from_select).options.length; j++) {
-        if(document.getElementById(from_select).options[j].selected) {
-            if(document.getElementById(from_select).options[j].text == opener.document.getElementById(to_select).options[i].text) keep_this = false;
-        }
-        }
-        if(keep_this) {
-            tmp_array[opener.document.getElementById(to_select).options[i].text] = opener.document.getElementById(to_select).options[i].value;
-            to_array[z] = opener.document.getElementById(to_select).options[i].text;
-            z++;
-        }
-    }
-    var from_length = 0;
-    var to_length = to_array.length;
-    for(i = 0; i < document.getElementById(from_select).options.length; i++) {
-        tmp_array[document.getElementById(from_select).options[i].text] = document.getElementById(from_select).options[i].value;
-        if(document.getElementById(from_select).options[i].selected && document.getElementById(from_select).options[i].value != "") {
-            to_array[to_length] = document.getElementById(from_select).options[i].text;
-            to_length++;
-        }
-    }
-    opener.document.getElementById(to_select).length = 0;
-    to_array.sort();
-    for(i = 0; i < to_array.length; i++) {
-        var tmp_option = opener.document.createElement("option");
-        opener.document.getElementById(to_select).appendChild(tmp_option);
-        tmp_option.value = tmp_array[to_array[i]];
-        tmp_option.text = to_array[i];
-    }
-}
-// -->
-</script>
-</head>
-<body class="windowbg" style="width:464px; min-width:464px; margin: 0 auto">
-$yymain
-</body>
-</html>~;
+    $output = $my_usersel_tem;
+	$output =~ s/{yabb noresults}/$usersel_txt{'noresults'}/sm;
+	$output =~ s/{yabb title}/$yytitle/sm;
+	$output =~ s/{yabb show_cc}/$show_cc/sm;
+	$output =~ s/{yabb main}/$yymain/sm;
 
     $addsession =
 qq~<input type="hidden" name="formsession" value="$formsession" /></form>~;

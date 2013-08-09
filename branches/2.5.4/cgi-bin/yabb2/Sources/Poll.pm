@@ -624,8 +624,7 @@ qq~<span class="small">&#171; $polltxt{'45'}: $poll_name $polltxt{'46'}: $poll_d
             }
         }
         $footer =~ s/, \Z//sm;
-        $footer .=
-qq~<br /><br /><b>$polltxt{'17'}: $totalvotes</b>~;
+        $footer .= qq~<br /><br /><b>$polltxt{'17'}: $totalvotes</b>~;
         $width = q{};
         if ($viewthread) { $deletevote .= $menusep; }
         $deletevote .=

@@ -202,7 +202,7 @@ sub buildIMsend {
             <!--
             function changeRecepientTab(tabto) {
                 document.getElementById('usersto').style.display = 'none';
-                document.getElementById('bnttoto').className = 'windowbg';
+                document.getElementById('bnttoto').className = 'windowbg  bnttoto';
         ~;
 
         $my_tosend_a =
@@ -212,7 +212,7 @@ qq~<div id="bnttoto" class="windowbg2 bnttoto"><a href="javascript:void(0);" onc
         if ($PMenable_cc) {
             $yyjavascripttoform .= q~
                 document.getElementById('userscc').style.display = 'none';
-                document.getElementById('bnttocc').className = 'windowbg';
+                document.getElementById('bnttocc').className = 'windowbg  bnttoto';
             ~;
             $my_tosend_a .= qq~
                     <div id="bnttocc" class="windowbg bnttoto"><a href="javascript:void(0);" onclick="changeRecepientTab('cc'); return false;">$inmes_txt{'325'}:</a></div>
@@ -221,7 +221,7 @@ qq~<div id="bnttoto" class="windowbg2 bnttoto"><a href="javascript:void(0);" onc
         if ($PMenable_bcc) {
             $yyjavascripttoform .= q~
                 document.getElementById('usersbcc').style.display = 'none';
-                document.getElementById('bnttobcc').className = 'windowbg';
+                document.getElementById('bnttobcc').className = 'windowbg bnttoto';
             ~;
             $my_tosend_a .= qq~
                     <div id="bnttobcc" class="windowbg bnttoto"><a href="javascript:void(0);" onclick="changeRecepientTab('bcc'); return false;">$inmes_txt{'326'}:</a></div>
@@ -229,7 +229,7 @@ qq~<div id="bnttoto" class="windowbg2 bnttoto"><a href="javascript:void(0);" onc
         }
         $yyjavascripttoform .= q~
                 document.getElementById('users' + tabto).style.display = 'inline';
-                document.getElementById('bntto' + tabto).className = 'windowbg2';
+                document.getElementById('bntto' + tabto).className = 'windowbg2 bnttoto';
             }
         //-->
         </script>
@@ -253,10 +253,10 @@ qq~<div id="bnttoto" class="windowbg2 bnttoto"><a href="javascript:void(0);" onc
     if ( !$replyguest ) {
         if ($sendBMess) { $toUsersTitle = $inmes_txt{'togroups'}; }
         if ( $PMenable_cc || $PMenable_bcc ) {
-            $us_winhight = 370;
+            $us_winhight = $us_winhight_cc;
         }
         else {
-            $us_winhight = 345;
+            $us_winhight = $us_winhight_to;
         }
 
         my $toIdtext = $sendBMess ? 'groups' : 'toshow';
@@ -265,13 +265,13 @@ qq~<div id="bnttoto" class="windowbg2 bnttoto"><a href="javascript:void(0);" onc
         <script type="text/javascript">
         <!--
         function imWin() {
-            window.open('$scripturl?action=imlist;sort=recentpm;toid=$toIdtext','imWin','status=no,height=$us_winhight,width=500,menubar=no,toolbar=no,top=50,left=50,scrollbars=no');
+            window.open('$scripturl?action=imlist;sort=recentpm;toid=$toIdtext','imWin','status=no,height=$us_winhight,width=$us_winwidth_to,menubar=no,toolbar=no,top=50,left=50,scrollbars=no');
         }
         function imWinCC() {
-            window.open('$scripturl?action=imlist;sort=recentpm;toid=toshowcc','imWin','status=no,height=$us_winhight,width=464,menubar=no,toolbar=no,top=50,left=50,scrollbars=no');
+            window.open('$scripturl?action=imlist;sort=recentpm;toid=toshowcc','imWin','status=no,height=$us_winhight,width=$us_winwidth_cc,menubar=no,toolbar=no,top=50,left=50,scrollbars=no');
         }
         function imWinBCC() {
-            window.open('$scripturl?action=imlist;sort=recentpm;toid=toshowbcc','imWin','status=no,height=$us_winhight,width=464,menubar=no,toolbar=no,top=50,left=50,scrollbars=no');
+            window.open('$scripturl?action=imlist;sort=recentpm;toid=toshowbcc','imWin','status=no,height=$us_winhight,width=$us_winwidth_cc,menubar=no,toolbar=no,top=50,left=50,scrollbars=no');
         }
         function removeUser(oElement) {
             var indexToRemove = oElement.options.selectedIndex;

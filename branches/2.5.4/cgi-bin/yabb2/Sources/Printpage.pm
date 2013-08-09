@@ -911,10 +911,10 @@ s/\[ftp\]\s*(ftp:\/\/)?(.+?)\s*\[\/ftp\]/<a href="ftp:\/\/$2">$1$2<\/a>/isgm;
 
     if ( $guest_media_disallowed && $iamguest ) {
         my $oops =
-qq~$maintxt{'40'}&nbsp;&nbsp;$maintxt{'41'} <a href="$scripturl?action=login">$img{'login'}</a>~;
+qq~ <i>$maintxt{'40'}&nbsp;&nbsp;$maintxt{'41'} <a href="$scripturl?action=login"><b>$maintxt{'34'}</b></a></i>~;
         if ($regtype) {
             $oops .=
-qq~ $maintxt{'42'} <a href="$scripturl?action=register">$img{'register'}</a>~;
+qq~<i> $maintxt{'42'} <a href="$scripturl?action=register"><b>$maintxt{'97'}</b></a></i>~;
         }
 
         $threadpost =~ s/<a href=".+?<\/a>/[oops]/gsm;

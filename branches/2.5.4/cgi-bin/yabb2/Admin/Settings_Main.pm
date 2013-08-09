@@ -799,18 +799,21 @@ qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdM
 			input_html => qq~<input type="checkbox" name="enable_guestposting" id="enable_guestposting" value="1"${ischecked($enable_guestposting)} />~,
 			name => 'enable_guestposting',
 			validate => 'boolean',
+			depends_on => ['!guestaccess'],
 		},
 		{
 			description => qq~<label for="enable_guestlanguage">$admin_txt{'guestlang'}</label>~,
 			input_html => qq~<input type="checkbox" name="enable_guestlanguage" id="enable_guestlanguage" value="1"${ischecked($enable_guestlanguage)} />~,
 			name => 'enable_guestlanguage',
 			validate => 'boolean',
+			depends_on => ['!guestaccess'],
 		},
 		{
 			description => qq~<label for="guest_media_disallowed">$admin_txt{'guestmedia'}</label>~,
 			input_html => qq~<input type="checkbox" name="guest_media_disallowed" id="guest_media_disallowed" value="1"${ischecked($guest_media_disallowed)} />~,
 			name => 'guest_media_disallowed',
 			validate => 'boolean',
+			depends_on => ['!guestaccess'],
 		},
 		{
 			description => qq~<label for="enable_guest_view_limit">$admin_txt{'enable_guest_view_limit'}</label>~,
@@ -1312,7 +1315,7 @@ qq~<input type="checkbox" name="nomailspammer" id="nomailspammer" value="1" ${is
 			validate => 'boolean',
 		},
 		{
-			description => qq~<label for="bypass_lock_perm">$bypassLock_txt{'allow'}</label>~,
+            description => qq~<label for="bypass_lock_perm">$userlevel_txt{'allowbypass'}</label>~,
 			input_html => qq~
 <select name="bypass_lock_perm" id="bypass_lock_perm" size="1">
   <option value="0" ${isselected($bypass_lock_perm eq '0')}>$userlevel_txt{'none'}</option>

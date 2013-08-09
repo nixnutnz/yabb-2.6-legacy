@@ -70,6 +70,61 @@ sub SmiliePanel {
   <col class="w_10pc" />
   <col span="2" class="w_5pc" />
   <tr>
+    <td class="titlebg" colspan="8" style="height:22px"><b>&nbsp;<img src="$imagesdir/grin.gif" alt="" />&nbsp;$smiltxt{'3'}</b><br /></td>
+  </tr><tr>
+    <td class="windowbg2" colspan="4"><label for="removenormalsmilies"><b>$smiltxt{'24'}</b></label></td>
+    <td class="windowbg2" colspan="4"><input type="checkbox" name="removenormalsmilies" id="removenormalsmilies" value="1"$remnosmi /></td>
+  </tr><tr>
+    <td class="windowbg2" colspan="4"><label for="smiliestyle"><b>$smiltxt{'4'}</b></label></td>
+    <td class="windowbg2" colspan="4">
+      <select name="smiliestyle" id="smiliestyle">
+        <option value="1"$ss1>$smiltxt{'5'}</option>
+        <option value="2"$ss2>$smiltxt{'6'}</option>
+      </select>
+    </td>
+  </tr><tr>
+    <td class="windowbg2" colspan="4"><label for="showadded"><b>$smiltxt{'7'}</b></label></td>
+    <td class="windowbg2" colspan="4">
+      <select name="showadded" id="showadded">
+          <option value="1"$sa[1]>$smiltxt{'8'}</option>
+          <option value="2"$sa[2]>$smiltxt{'9'}</option>
+          <option value="3"$sa[3]>$smiltxt{'10'}</option>
+          <option value="4"$sa[4]>$smiltxt{'11'}</option>
+      </select>
+    </td>
+  </tr><tr>
+    <td class="windowbg2" colspan="4"><label for="showsmdir"><b>$smiltxt{'2'}</b></label></td>
+    <td class="windowbg2" colspan="4">
+      <select name="showsmdir" id="showsmdir">
+          <option value="1"$ssm[1]>$smiltxt{'8'}</option>
+          <option value="2"$ssm[2]>$smiltxt{'9'}</option>
+          <option value="3"$ssm[3]>$smiltxt{'10'}</option>
+          <option value="4"$ssm[4]>$smiltxt{'11'}</option>
+      </select>
+    </td>
+  </tr><tr>
+    <td class="windowbg2" colspan="4"><label for="detachblock"><b>$smiltxt{'12'}</b><br /> $smiltxt{'13'}</label></td>
+    <td class="windowbg2" colspan="4"><input type="checkbox" name="detachblock" id="detachblock" value="1"$dblock /></td>
+  </tr><tr>
+    <td class="windowbg2" colspan="4"><label for="winwidth"><b>$smiltxt{'14'}</b></label></td>
+    <td class="windowbg2" colspan="4"><input type="text" size="10" name="winwidth" id="winwidth" value="$winwidth" /></td>
+  </tr><tr>
+    <td class="windowbg2" colspan="4"><label for="winheight"><b>$smiltxt{'15'}</b></label></td>
+    <td class="windowbg2" colspan="4"><input type="text" size="10" name="winheight" id="winheight" value='$winheight' /></td>
+  </tr><tr>
+    <td class="windowbg2" colspan="4"><label for="showinbox"><b>$smiltxt{'23'}</b></label></td>
+    <td class="windowbg2" colspan="4"><input type="radio" name="showinbox" id="showinbox" value=""~
+              . ( !$showinbox ? ' checked="checked"' : q{} ) . qq~ /></td>
+  </tr><tr>
+    <td class="windowbg2" colspan="4"><b>$smiltxt{'18'}</b></td>
+    <td class="windowbg2" colspan="4">$yyhtml_root/Smilies</td>
+  </tr><tr>
+    <td class="windowbg2" colspan="4"><label for="popback"><b>$smiltxt{'20'}</b></label></td>
+    <td class="windowbg2" colspan="4">#<input type="text" size="10" name="popback" id="popback" value="$popback" /></td>
+  </tr><tr>
+    <td class="windowbg2" colspan="4"><label for="poptext"><b>$smiltxt{'19'}</b></label></td>
+    <td class="windowbg2" colspan="4">#<input type="text" size="10" name="poptext" id="poptext" value="$poptext" /></td>
+  </tr><tr>
     <td class="titlebg" colspan="8"><b>&nbsp;<img src="$imagesdir/grin.gif" alt="" />&nbsp;$asmtxt{'11'}</b></td>
   </tr><tr>
     <td class="catbg center"><b>$smiltxt{'22'}</b></td>
@@ -145,61 +200,6 @@ qq~<a href="$adminurl?action=smiliemove;index=$i;movedown=1"><img src="$imagesdi
     <td class="catbg center"><b>$asmtxt{'04'}</b></td>
     <td class="catbg center" colspan="4"><b>$asmtxt{'06'}</b></td>
   </tr>$smilieslist<tr>
-    <td class="titlebg" colspan="8" style="height:22px"><b>&nbsp;<img src="$imagesdir/grin.gif" alt="" />&nbsp;$smiltxt{'3'}</b><br /></td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><label for="removenormalsmilies"><b>$smiltxt{'24'}</b></label></td>
-    <td class="windowbg2" colspan="4"><input type="checkbox" name="removenormalsmilies" id="removenormalsmilies" value="1"$remnosmi /></td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><label for="smiliestyle"><b>$smiltxt{'4'}</b></label></td>
-    <td class="windowbg2" colspan="4">
-      <select name="smiliestyle" id="smiliestyle">
-        <option value="1"$ss1>$smiltxt{'5'}</option>
-        <option value="2"$ss2>$smiltxt{'6'}</option>
-      </select>
-    </td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><label for="showadded"><b>$smiltxt{'7'}</b></label></td>
-    <td class="windowbg2" colspan="4">
-      <select name="showadded" id="showadded">
-          <option value="1"$sa[1]>$smiltxt{'8'}</option>
-          <option value="2"$sa[2]>$smiltxt{'9'}</option>
-          <option value="3"$sa[3]>$smiltxt{'10'}</option>
-          <option value="4"$sa[4]>$smiltxt{'11'}</option>
-      </select>
-    </td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><label for="showsmdir"><b>$smiltxt{'2'}</b></label></td>
-    <td class="windowbg2" colspan="4">
-      <select name="showsmdir" id="showsmdir">
-          <option value="1"$ssm[1]>$smiltxt{'8'}</option>
-          <option value="2"$ssm[2]>$smiltxt{'9'}</option>
-          <option value="3"$ssm[3]>$smiltxt{'10'}</option>
-          <option value="4"$ssm[4]>$smiltxt{'11'}</option>
-      </select>
-    </td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><label for="detachblock"><b>$smiltxt{'12'}</b><br /> $smiltxt{'13'}</label></td>
-    <td class="windowbg2" colspan="4"><input type="checkbox" name="detachblock" id="detachblock" value="1"$dblock /></td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><label for="winwidth"><b>$smiltxt{'14'}</b></label></td>
-    <td class="windowbg2" colspan="4"><input type="text" size="10" name="winwidth" id="winwidth" value="$winwidth" /></td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><label for="winheight"><b>$smiltxt{'15'}</b></label></td>
-    <td class="windowbg2" colspan="4"><input type="text" size="10" name="winheight" id="winheight" value='$winheight' /></td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><label for="showinbox"><b>$smiltxt{'23'}</b></label></td>
-    <td class="windowbg2" colspan="4"><input type="radio" name="showinbox" id="showinbox" value=""~
-              . ( !$showinbox ? ' checked="checked"' : q{} ) . qq~ /></td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><b>$smiltxt{'18'}</b></td>
-    <td class="windowbg2" colspan="4">$yyhtml_root/Smilies</td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><label for="popback"><b>$smiltxt{'20'}</b></label></td>
-    <td class="windowbg2" colspan="4">#<input type="text" size="10" name="popback" id="popback" value="$popback" /></td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><label for="poptext"><b>$smiltxt{'19'}</b></label></td>
-    <td class="windowbg2" colspan="4">#<input type="text" size="10" name="poptext" id="poptext" value="$poptext" /></td>
-  </tr><tr>
     <td class="catbg center" colspan="8">
     <input type="submit" value="$asmtxt{'09'}" class="button" />&nbsp;<input type="reset" value="$asmtxt{'10'}" class="button" /></td>
   </tr>
