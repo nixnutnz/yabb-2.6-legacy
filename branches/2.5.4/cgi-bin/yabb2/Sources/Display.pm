@@ -57,11 +57,12 @@ sub Display {
             else {
                 $gtvlcount = 1;
             }
-			my $viewexpire = q{+} . $cookieviewtime . 'm';
+			my $guest_view_limit_clength = q{+} . $cookieviewtime . 'm';
             $yySetCookies1 = write_cookie(
+				-path    => q{/},
                 -name    => $cookieview,
                 -value   => $gtvlcount,
-                -expires => $viewexpire
+                -expires => $guest_view_limit_clength
             );
         }
         elsif ($iamguest
