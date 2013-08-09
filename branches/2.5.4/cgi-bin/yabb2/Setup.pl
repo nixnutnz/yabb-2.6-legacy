@@ -1816,7 +1816,7 @@ sub SetInstall2 {
 
 ########## Smilies ##########
 
-\@SmilieURL = ("exclamation.gif","question.gif"); # Additional Smilies URL
+\@SmilieURL = ("exclamation.png","question.gif"); # Additional Smilies URL
 \@SmilieCode = (":exclamation",":question");      # Additional Smilies Code
 \@SmilieDescription = ("Exclaim","Questioning");  # Additional Smilies Description
 \@SmilieLinebreak = ("","");                      # Additional Smilies Linebreak
