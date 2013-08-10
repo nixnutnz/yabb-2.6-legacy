@@ -172,7 +172,7 @@ function uncheckAll() {
         $userlist{$tmp_user} = $userlist{$tmp_user} + 1;
         $tmp_date = timeformat($tmp_date);
         LoadUser($tmp_user);
-        my $ipBlock = ( $use_guardian && $use_htaccess ) ? qq~<br /><a href="$adminurl?action=guardian_block;ip=$tmp_userip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$tmp_userip');">$admin_txt{'ipblock'}</a>~ : q{}; 
+        my $ipBlock = ( $use_guardian && $use_htaccess ) ? qq~<br /><a href="$adminurl?action=guardian_block;ip=$tmp_userip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$tmp_userip');">$admin_txt{'ipblock'}</a>~ : q{};
         my $lookupIP =
           ($ipLookup)
           ? qq~<a href="$scripturl?action=iplookup;ip=$tmp_userip">$tmp_userip</a>~
@@ -186,11 +186,11 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tmp_user}" oncl
                 $username .= qq~$useraccount{$tmp_user}~;
             }
             $username .=
-qq~<br />$lookupIP - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p;return=errorlog" onclick="return confirm('$admin_txt{'ipban_confirm'}$tmp_userip');">$admin_txt{'725f'}</a>$ipBlock~; 
+qq~<br />$lookupIP - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p;return=errorlog" onclick="return confirm('$admin_txt{'ipban_confirm'}$tmp_userip');">$admin_txt{'725f'}</a>$ipBlock~;
         }
         else {
             $username =
-qq~$tmp_user<br />$lookupIP - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p;return=errorlog" onclick="return confirm('$admin_txt{'ipban_confirm'}$tmp_userip');">$admin_txt{'725f'}</a>$ipBlock~; 
+qq~$tmp_user<br />$lookupIP - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p;return=errorlog" onclick="return confirm('$admin_txt{'ipban_confirm'}$tmp_userip');">$admin_txt{'725f'}</a>$ipBlock~;
         }
         if ( $tmp_topic_number eq q{} ) {
             $numb = "&action=$tmp_action";
@@ -364,7 +364,7 @@ sub YaBBsort {
             }
         }
     }
-	return;
+#   return;
 }
 
 1;
