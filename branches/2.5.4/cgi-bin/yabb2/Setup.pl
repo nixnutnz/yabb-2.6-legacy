@@ -1922,7 +1922,7 @@ EOF
         ${ $uid . 'admin' }{'timeselect'} = $timeselected;
         ${ $uid . 'admin' }{'language'}   = $lang;
         UserAccount( 'admin', 'update' );
-        ManageMemberinfo( 'update', 'admin', $date, q{}, $webmaster_email );
+        ManageMemberinfo( 'update', 'admin', 'Administrator', $webmaster_email,'Administrator' );
         $yySetLocation = qq~$set_cgi?action=setup3~;
         redirectexit();
     }
