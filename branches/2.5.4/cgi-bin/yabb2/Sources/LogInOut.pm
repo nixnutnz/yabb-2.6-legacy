@@ -338,7 +338,7 @@ sub Reminder2 {
     print {FILE} '1;' or croak "$croak{'print'} forgotten.passes";
     fclose(FILE);
 
-    $subject = "$loginout_txt{'36'} $mbname: ${$uid.$user}{'realname'}";
+    $subject = "$mbname $loginout_txt{'36'}: ${$uid.$user}{'realname'}";
     if   ($do_scramble_id) { $cryptusername = cloak($user); }
     else                   { $cryptusername = $user; }
     require Sources::Mailer;

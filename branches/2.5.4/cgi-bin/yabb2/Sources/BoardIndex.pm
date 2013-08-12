@@ -54,7 +54,7 @@ sub BoardIndex {
         GetBotlist();
 
         my $lastonline = $date - ( $OnlineLogTime * 60 );
-		foreach ( @logentries ) {
+        foreach (@logentries) {
             ( $name, $date1, $last_ip, $last_host, undef, $boardv, undef ) =
               split /\|/xsm, $_, 7;
             if ( !$last_ip ) {
@@ -78,7 +78,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                     }
                     if ( $iamadmin || $iamgmod || $iamfmod ) {
                         $numusers++;
-						$bvusers{$boardv}++;
+                        $bvusers{$boardv}++;
                         $users .= QuickLinks($name);
                         $users .= ( ${ $uid . $name }{'stealth'} ? q{*} : q{} )
                           . (
@@ -98,7 +98,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                 else {
                     if ( $name eq $user_ip ) { $guest_in_log = 1; }
                     $guests++;
-					$bvusers{$boardv}++;
+                    $bvusers{$boardv}++;
                     if (   ( $iamadmin && $show_online_ip_admin )
                         || ( $iamgmod && $show_online_ip_gmod )
                         || ( $iamfmod && $show_online_ip_fmod ) )
@@ -126,8 +126,8 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
         }
         elsif ( $iamguest && !$iambot && !$guest_in_log ) {
             $guests++;
-             $bvusers{$boardv}++;
-		}
+            $bvusers{$boardv}++;
+        }
 
         if ($numusers) {
             $users =~ s/, \Z//sm;
@@ -159,26 +159,26 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
         if ( !$iamguest ) { Collapse_Load(); }
     }
 
-	else {
-			foreach ( @logentries ) {
+    else {
+        foreach (@logentries) {
             ( $name, $date1, $last_ip, $last_host, undef, $boardv, undef ) =
               split /\|/xsm, $_, 7;
-             if ($name) {
+            if ($name) {
                 if ( LoadUser($name) ) {
                     if ( $iamadmin || $iamgmod || $iamfmod ) {
                         $numusers++;
-						$bvusers{$boardv}++;
+                        $bvusers{$boardv}++;
                     }
                 }
                 else {
                     if ( $name eq $user_ip ) { $guest_in_log = 1; }
                     $guests++;
-					$bvusers{$boardv}++;
+                    $bvusers{$boardv}++;
                 }
             }
         }
-   	}
-	
+    }
+
     my @tmplist;
     if ($subboard_sel) {
         push @tmplist, $subboard_sel;
@@ -658,15 +658,13 @@ qq~$collapse_link $hash{$catname} <a href="$scripturl?$my_cat=$catid" title="$bo
 
         # Don't need the category headers if we're loading ajax subboards
         if ( !$INFO{'a'} ) {
-	    ### RSS on Board Index Start ###
-			if (!$rss_disabled && $catrss) {
+            if ( !$rss_disabled && $catrss ) {
                 $rss_catlink =
 qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img src="$imagesdir/boardrss.png" alt="$maintxt{'rssfeed'} - $catname" title="$maintxt{'rssfeed'} - $catname" /></a>~;
-			}
-			else {
-				$rss_catlink = q{};
-			}
-	    ### RSS on Board Index End ###
+            }
+            else {
+                $rss_catlink = q{};
+            }
             $templatecat = $catheader;
             $tmpcatimg   = q{};
             if ( $catimage ne q{} ) {
@@ -982,8 +980,7 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
                     $lastpostlink = qq~$img{'lastpost'} $boardindex_txt{'470'}~;
                 }
 
-				### RSS on Board Index Start ###
-				if (!$rss_disabled) {
+                if ( !$rss_disabled ) {
                     my ( undef, $boardperms, $boardview ) = split /\|/xsm,
                       $board{"$curboard"};
                     if ( AccessCheck( $curboard, q{}, $boardperms ) eq 'granted'
@@ -993,10 +990,9 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
 qq~<a href="$scripturl?action=RSSboard;board=$curboard" target="_blank"><img src="$imagesdir/$mybrd_rss" alt="$maintxt{'rssfeed'} - $boardname" title="$maintxt{'rssfeed'} - $boardname" /></a>~;
                     }
                     else {
-	                    $rss_boardlink = q{};
-	                }
-	            }
-	            ### RSS on Board Index End ###
+                        $rss_boardlink = q{};
+                    }
+                }
 
     # if we have subboards, check to see if there's something new and print name
                 my $template_subboards;
@@ -1178,7 +1174,7 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
                 if (   ( $boardperms eq q{} && !$crypass )
                     || ( !$iamguest && $access eq 'granted' ) )
                 {
-                    $messagedropdown = 
+                    $messagedropdown =
 qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$yyhtml_root','$curboard', 0)" id="dropbutton_$curboard" class="cursor" alt="" />~;
                 }
                 else { $messagedropdown = q{}; }
@@ -1193,12 +1189,12 @@ qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?boa
                     $templateblock =~ s/({|<)yabb boardpic(}|>)/$bdpic/gsm;
                     $templateblock =~ s/({|<)yabb boardname(}|>)/$boardname $boardpwpic/gsm;
                     $templateblock =~ s/({|<)yabb boarddesc(}|>)/$bddescr/gsm;
-					my $boardviewers;
+                    my $boardviewers;
 
-					if ( $bvusers{$curboard} ) {
-						$boardviewers = qq~&nbsp;($bvusers{$curboard}&nbsp;$boardindex_txt{'bviews'})~;
-					}
-					$templateblock =~ s/({|<)yabb boardviewers(}|>)/$boardviewers/gsm;
+                    if ( $bvusers{$curboard} ) {
+                        $boardviewers = qq~&nbsp;($bvusers{$curboard}&nbsp;$boardindex_txt{'bviews'})~;
+                    }
+                    $templateblock =~ s/({|<)yabb boardviewers(}|>)/$boardviewers/gsm;
                     $templateblock =~ s/({|<)yabb moderators(}|>)/$showmods$showmodgroups/gsm;
                     $templateblock =~ s/({|<)yabb threadcount(}|>)/${$uid.$curboard}{'threadcount'}/gsm;
                     $templateblock =~ s/({|<)yabb messagecount(}|>)/${$uid.$curboard}{'messagecount'}/gsm;
@@ -1740,8 +1736,8 @@ $boardindex_template~;
 </script>~;
             }
         }
-		if ( $enabletopichover ) {
-		$yymain .= q~    <script type="text/javascript">
+        if ($enabletopichover) {
+            $yymain .= q~    <script type="text/javascript">
 
     function topicSum(e, topicsumm) {
         if (document.getElementById(topicsumm).style.display == 'inline') {
@@ -1760,7 +1756,7 @@ $boardindex_template~;
         document.getElementById(topicsumm).style.display = 'none';
     }
     </script>~;
-	}
+        }
 
         # Make browsers aware of our RSS
         if ( !$rss_disabled ) {
@@ -1850,7 +1846,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
         CORE::exit;    # This is here only to avoid server error log entries!
     }
 
-    # cannot have return here - what are we returning?;
+    return 1;
 }
 
 sub GetBotlist {

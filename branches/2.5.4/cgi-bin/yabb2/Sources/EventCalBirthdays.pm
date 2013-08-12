@@ -454,33 +454,28 @@ $bd_today
 sub sortdate {
     my @zahl1 = split /\|/xsm, $a;
     my @zahl2 = split /\|/xsm, $b;
-    $zahl1[2] . $zahl1[0] <=> $zahl2[2] . $zahl2[0];
 
-    #    return;
+    return ($zahl1[2] . $zahl1[0] <=> $zahl2[2] . $zahl2[0]);
 }
 
 sub sortage {
     my @zahl1 = split /\|/xsm, $a;
     my @zahl2 = split /\|/xsm, $b;
-    $zahl1[4] . $zahl1[2] . $zahl1[0] <=> $zahl2[4] . $zahl2[2] . $zahl2[0];
 
-    #    return;
+    return ($zahl1[4] . $zahl1[2] . $zahl1[0] <=> $zahl2[4] . $zahl2[2] . $zahl2[0]);
 }
 
 sub sortstarsign {
     my @name1 = split /\|/xsm, $a;
     my @name2 = split /\|/xsm, $b;
-    $name1[5] cmp $name2[5];
 
-    #    return;
+    return ($name1[5] cmp $name2[5]);
 }
 
 sub sortuser {
     my @name1 = split /\|/xsm, $a;
     my @name2 = split /\|/xsm, $b;
-    lc $name1[6] cmp lc $name2[6];
-
-    #    return;
+    return (lc $name1[6] cmp lc $name2[6]);
 }
 
 1;
