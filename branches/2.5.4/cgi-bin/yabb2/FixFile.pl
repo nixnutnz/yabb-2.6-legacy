@@ -965,16 +965,16 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
 
                 $fadedelay = ( $maxsteps * $stepdelay );
                 $yynews .= qq~
-                        <script type="text/javascript">
-                                    var maxsteps = "$maxsteps";
-                                    var stepdelay = "$stepdelay";
-                                    var fadelinks = $fadelinks;
-                                    var delay = "$fadedelay";
-                                    var bcolor = "$color{'faderbg'}";
-                                    var tcolor = "$color{'fadertext'}";
-                                    var fcontent = new Array();
-                                    var begintag = "";
-                        ~;
+                    <script type="text/javascript">
+                        var maxsteps = "$maxsteps";
+                        var stepdelay = "$stepdelay";
+                        var fadelinks = $fadelinks;
+                        var delay = "$fadedelay";
+                        var bcolor = "$color{'faderbg'}";
+                        var tcolor = "$color{'fadertext'}";
+                        var fcontent = new Array();
+                        var begintag = "";
+                    ~;
                 fopen( NEWS, "$vardir/news.txt" );
                 @newsmessages = <NEWS>;
                 fclose(NEWS);
@@ -993,7 +993,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
                               ~;
                 }
                 $yynews .= q~
-                                    var closetag = '';
+                            var closetag = '';
                         </script>
                         ~;
             }
@@ -1252,10 +1252,10 @@ sub Convert_Settings {
     }
 	if ( !$cookieviewtime ) { $cookieviewtime = 525600; }
     if ( !$MaxIMMessLen ) { $MaxIMMessLen = 2000; }
-    if ( !$AdMaxIMMessLen ) { $AdMaxIMMessLen = 3000; }
-    if ( !$MaxCalMessLen ){ $MaxCalMessLen = 2000; }
-    if ( !$AdMaxCalMessLen ){ $AdMaxCalMessLen = 3000; }
-	if ( !$fix_avatar_img_size ) { $fix_avatar_img_size  = 65; }
+    if (!$AdMaxIMMessLen) {$AdMaxIMMessLen = 3000;}
+    if (!$MaxCalMessLen){$MaxCalMessLen = 2000;}
+    if (!$AdMaxCalMessLen){$AdMaxCalMessLen = 3000;}
+	if (!$fix_avatar_img_size) { $fix_avatar_img_size  = 65;}
 	$ip_banlist = q{};
 	$email_banlist = q{};
 	$user_banlist = q{};
