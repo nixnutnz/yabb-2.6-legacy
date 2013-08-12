@@ -89,36 +89,36 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiva">
-	<table class="cs_thin pad_4px" style="table-layout: fixed;">
-    	<tr>
-        	<td class="titlebg">
-                $admin_img{'xx'}<b> $templ_txt{'52'}</b> - $templatefile
+    <table class="cs_thin pad_4px" style="table-layout: fixed;">
+        <tr>
+            <td class="titlebg">
+                $admin_img{'xx'} <b> $templ_txt{'52'}</b> - $templatefile
             </td>
-		</tr><tr>
-        	<td class="windowbg2 center">
-            	<form action="$adminurl?action=modtemp2" method="post" style="display: inline;" accept-charset="$yycharset">
+        </tr><tr>
+            <td class="windowbg2 center">
+                <form action="$adminurl?action=modtemp2" method="post" style="display: inline;" accept-charset="$yycharset">
                 <textarea rows="20" cols="95" name="template" style="width:99%; height: 350px; font-family:Courier">$fulltemplate</textarea>
                 <input type="hidden" name="filename" value="$templatefile" />
             </td>
-		</tr><tr>
-        	<td class="catbg center">
+        </tr><tr>
+            <td class="catbg center">
                 <input type="submit" value="$admin_txt{'10'} $templatefile" class="button" />
                 </form>
             </td>
-		</tr><tr>
-        	<td class="windowbg2">
+        </tr><tr>
+            <td class="windowbg2">
                 <div style="float: left; width: 30%; padding: 3px;"><label for="templatefile"><b>$templ_txt{'10'}</b></label></div>
                 <div style="float: left; width: 69%;">
-                	<form action="$adminurl?action=modtemp" method="post" style="display: inline;" accept-charset="$yycharset">
-            	    	<select name="templatefile" id="templatefile" size="1" onchange="submit()">
-                	$templs
-                		</select>
-                	<noscript><input type="submit" value="$admin_txt{'32'}" class="button" /></noscript>
-                	</form>
+                    <form action="$adminurl?action=modtemp" method="post" style="display: inline;" accept-charset="$yycharset">
+                        <select name="templatefile" id="templatefile" size="1" onchange="submit()">
+                    $templs
+                        </select>
+                    <noscript><input type="submit" value="$admin_txt{'32'}" class="button" /></noscript>
+                    </form>
                 </div>
             </td>
-		</tr>
-	</table>
+        </tr>
+    </table>
 </div>
 ~;
     $yytitle     = "$admin_txt{'216'}";
@@ -202,19 +202,19 @@ sub ModifyStyle {
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiva">
-	<table class="cs_thin pad_4px">
-    	<form action="$adminurl?action=modcss;cssfile=$cssfile" name="modcss" method="post" style="display: inline;" accept-charset="$yycharset">
+    <table class="cs_thin pad_4px">
+        <form action="$adminurl?action=modcss;cssfile=$cssfile" name="modcss" method="post" style="display: inline;" accept-charset="$yycharset">
         <tr>
-        	<td class="titlebg">
-                $admin_img{'xx'}<b> $templ_txt{'51'}</b> - $cssfile &nbsp;
+            <td class="titlebg">
+                $admin_img{'xx'} <b> $templ_txt{'51'}</b> - $cssfile &nbsp;
                 <input type="submit" name="wysiwyg" id="wysiwyg" value="wysiwyg" class="button" />
                 <input type="button" name="source" id="source" value=" source " disabled="disabled" />
             </td>
         </tr>
-    	</form>
+        </form>
         <form action="$adminurl?action=modstyle2" method="post" accept-charset="$yycharset">
         <tr>
-        	<td class="windowbg2 center">
+            <td class="windowbg2 center">
                 <input type="hidden" name="filename" value="$cssfile" />
                 <input type="hidden" name="type" value="$admincs" />
                 <textarea rows="20" cols="95" name="css" style="width: 99%; height: 350px;; font-family:Courier">$fullcss</textarea>
@@ -229,28 +229,28 @@ sub ModifyStyle {
             <td class="windowbg2">
                 <div style="float: left; width: 30%; padding: 3px;"><b>$templ_txt{'1'}</b></div>
                 <div style="float: left; width: 69%;">
-            	    <form action="$adminurl?action=modstyle" name="selcss" method="post" style="display: inline;" accept-charset="$yycharset">
-                	<div class="small" style="float: left; width: 25%;"><label for="cssfile">$templ_txt{'forum'}:</label><br />
-                  	<select name="cssfile" id="cssfile" size="1" style="width: 90%;" onchange="if(this.options[this.selectedIndex].value) { document.aselcss.admcssfile.selectedIndex = '0'; submit(); }">
+                    <form action="$adminurl?action=modstyle" name="selcss" method="post" style="display: inline;" accept-charset="$yycharset">
+                    <div class="small" style="float: left; width: 25%;"><label for="cssfile">$templ_txt{'forum'}:</label><br />
+                    <select name="cssfile" id="cssfile" size="1" style="width: 90%;" onchange="if(this.options[this.selectedIndex].value) { document.aselcss.admcssfile.selectedIndex = '0'; submit(); }">
                         $forumcss
-                  	</select>
-                  	<br />
-                	<noscript><input type="submit" value="$admin_txt{'32'}" style="width: 90%;" class="button" /></noscript>
-                	</div>
-                	</form>
-                	<form action="$adminurl?action=modstyle" name="aselcss" method="post" style="display: inline;" accept-charset="$yycharset">
-                	<div class="small" style="float: left; width: 25%;"><label for="admcssfile">$templ_txt{'admincenter'}:</label><br />
-                  	<select name="admcssfile" id="admcssfile" size="1" style="width: 90%;" onchange="if(this.options[this.selectedIndex].value) { document.selcss.cssfile.selectedIndex = '0'; submit(); }">
+                    </select>
+                    <br />
+                    <noscript><input type="submit" value="$admin_txt{'32'}" style="width: 90%;" class="button" /></noscript>
+                    </div>
+                    </form>
+                    <form action="$adminurl?action=modstyle" name="aselcss" method="post" style="display: inline;" accept-charset="$yycharset">
+                    <div class="small" style="float: left; width: 25%;"><label for="admcssfile">$templ_txt{'admincenter'}:</label><br />
+                    <select name="admcssfile" id="admcssfile" size="1" style="width: 90%;" onchange="if(this.options[this.selectedIndex].value) { document.selcss.cssfile.selectedIndex = '0'; submit(); }">
                         $admincss
-                  	</select>
-                  	<br />
-                	<noscript><input type="submit" value="$admin_txt{'32'}" style="width: 90%;" class="button" /></noscript>
-                	</div>
-                	</form>
+                    </select>
+                    <br />
+                    <noscript><input type="submit" value="$admin_txt{'32'}" style="width: 90%;" class="button" /></noscript>
+                    </div>
+                    </form>
                 </div>
-			</td>
+            </td>
         </tr>
-	</table>
+    </table>
  </div>
 ~;
     $yytitle     = $templ_txt{'1'};
@@ -302,7 +302,7 @@ sub ModifyCSS {
     $tempimages = qq~$yyhtml_root/Templates/Forum/$aktimages~;
     my $istabbed = 0;
 
-	$cssbuttons = 0;
+    $cssbuttons = 0;
     $stylestr = q{};
 
     opendir TMPLDIR, "$htmldir/Templates/Forum";
@@ -348,50 +348,50 @@ sub ModifyCSS {
     );
 
     $gen_fontsize =
-q~				<select name="cssfntsize" id="cssfntsize" style="vertical-align: middle;" onchange="previewFont()">~;
+q~              <select name="cssfntsize" id="cssfntsize" style="vertical-align: middle;" onchange="previewFont()">~;
     for my $i ( 7 .. 20 ) {
-        $gen_fontsize .= qq~				<option value="$i">$i</option>~;
+        $gen_fontsize .= qq~                <option value="$i">$i</option>~;
     }
     $gen_fontsize .= q~
-    			</select>~;
+                </select>~;
     $gen_fontface =
-q~				<select name="cssfntface" id="cssfntface" style="vertical-align: middle;" onchange="previewFontface()">
-                	<option value="verdana">Verdana</option>
-                	<option value="helvetica">Helvetica</option>
-                	<option value="arial">Arial</option>
-                	<option value="courier">Courier</option>
-                	<option value="courier new">Courier New</option>
-        		</select>~;
+q~              <select name="cssfntface" id="cssfntface" style="vertical-align: middle;" onchange="previewFontface()">
+                    <option value="verdana">Verdana</option>
+                    <option value="helvetica">Helvetica</option>
+                    <option value="arial">Arial</option>
+                    <option value="courier">Courier</option>
+                    <option value="courier new">Courier New</option>
+                </select>~;
     $gen_borderweigth =
-q~				<select name="borderweigth" id="borderweigth" style="vertical-align: middle;" onchange="previewBorder()">~;
+q~              <select name="borderweigth" id="borderweigth" style="vertical-align: middle;" onchange="previewBorder()">~;
     for my $i ( 0 .. 5 ) {
         $gen_borderweigth .= qq~<option value="$i">$i</option>~;
     }
     $gen_borderweigth .= q~
-    			</select>~;
+                </select>~;
     $gen_borderstyle =
-qq~				<select name="borderstyle" id="borderstyle" style="vertical-align: middle;" onchange="previewBorder()">
-                	<option value="solid">$templ_txt{'43'}</option>
-                	<option value="dashed">$templ_txt{'44'}</option>
-                	<option value="dotted">$templ_txt{'45'}</option>
-                	<option value="double">$templ_txt{'46'}</option>
-                	<option value="groove">$templ_txt{'47'}</option>
-                	<option value="ridge">$templ_txt{'48'}</option>
-                	<option value="inset">$templ_txt{'49'}</option>
-                	<option value="outset">$templ_txt{'50'}</option>
-        		</select>~;
+qq~             <select name="borderstyle" id="borderstyle" style="vertical-align: middle;" onchange="previewBorder()">
+                    <option value="solid">$templ_txt{'43'}</option>
+                    <option value="dashed">$templ_txt{'44'}</option>
+                    <option value="dotted">$templ_txt{'45'}</option>
+                    <option value="double">$templ_txt{'46'}</option>
+                    <option value="groove">$templ_txt{'47'}</option>
+                    <option value="ridge">$templ_txt{'48'}</option>
+                    <option value="inset">$templ_txt{'49'}</option>
+                    <option value="outset">$templ_txt{'50'}</option>
+                </select>~;
 
     if ( $stylestr =~ /body/sm ) {
         $bodystyle = $stylestr;
         $bodystyle =~ s/.*?(body\s*?\{.+?\}).*/$1/igsm;
         $selstyl .=
-qq~					<option value="$bodystyle" selected="selected">$templ_txt{'25'}</option>\n~;
+qq~                 <option value="$bodystyle" selected="selected">$templ_txt{'25'}</option>\n~;
     }
     if ( $stylestr =~ /\#container/sm ) {
         $containerstyle = $stylestr;
         $containerstyle =~ s/.*?(\#container.*?\{.+?\}).*/$1/igsm;
         $selstyl .=
-          qq~					<option value='$containerstyle'>$templ_txt{'26'}</option>\n~;
+          qq~                   <option value='$containerstyle'>$templ_txt{'26'}</option>\n~;
     }
     if ( $stylestr =~ /\.tabmenu/sm ) {
         $istabbed = 1;
@@ -401,88 +401,88 @@ qq~					<option value="$bodystyle" selected="selected">$templ_txt{'25'}</option>
         $tabtitlestyle =~ s/.*?(\.tabtitle\s*?\{.+?\}).*/$1/igsm;
         $tabtitlestyle = $tabtitlestyle;
         $selstyl .=
-          qq~					<option value='$tabtitlestyle'>$templ_txt{'tabtitle'}</option>\n~;
+          qq~                   <option value='$tabtitlestyle'>$templ_txt{'tabtitle'}</option>\n~;
         if ( $stylestr =~ /\.tabtitle a/sm ) {
             $tabtitlestyle_a = $stylestr;
             $tabtitlestyle_a =~ s/.*?(\.tabtitle a\s*?\{.+?\}).*/$1/igsm;
             $selstyl .=
-qq~					<option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</option>\n~;
+qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</option>\n~;
         }
     }
     if ( $stylestr =~ /\.buttonleft/sm && $stylestr =~ /\.buttonright/sm && $stylestr =~ /\.buttonimage/sm && $stylestr =~ /\.buttontext/sm ) {
-		$cssbuttons = 1;
-		$buttonstyle = $stylestr;
+        $cssbuttons = 1;
+        $buttonstyle = $stylestr;
         $buttonstyle =~ s/.*?(\.buttontext\s*?\{.+?\}).*/$1/igsm;
-		$selstyl .= qq~<option value='$buttonstyle'>$templ_txt{'buttontext'}</option>\n~;
-		$prevtext = $buttonstyle;
+        $selstyl .= qq~<option value='$buttonstyle'>$templ_txt{'buttontext'}</option>\n~;
+        $prevtext = $buttonstyle;
         $prevtext =~ s/\.buttontext\s*?\{(.+?)\}/$1/igsm;
-		$drawtxtpos = $prevtext;
+        $drawtxtpos = $prevtext;
         $drawtxtpos =~ m/.*?top\s*?\:\s*?(\d{1,2})px.*/ism;
-		$viewtxty = $1;
-		$viewtxty .= 'px';
-		$drawpos4 = ($1 * 5) + 213;
-		$drawpos4 .= 'px';
-		$buttonleftstyle = $stylestr;
+        $viewtxty = $1;
+        $viewtxty .= 'px';
+        $drawpos4 = ($1 * 5) + 213;
+        $drawpos4 .= 'px';
+        $buttonleftstyle = $stylestr;
         $buttonleftstyle =~ s/.*?(\.buttonleft\s*?\{.+?\}).*/$1/igsm;
-		$buttonleftbg = qq~<input type="hidden" id="buttonleftbg" name="buttonleftbg" value="$buttonleftstyle" />\n~;
-		$buttonbg = $buttonleftstyle;
+        $buttonleftbg = qq~<input type="hidden" id="buttonleftbg" name="buttonleftbg" value="$buttonleftstyle" />\n~;
+        $buttonbg = $buttonleftstyle;
         $buttonbg =~ s~.*?($yyhtml_root/Buttons/)(.*?)\.(.*)~$2~gsm;
-		$prevleft = $buttonleftstyle;
+        $prevleft = $buttonleftstyle;
         $prevleft =~ s/\.buttonleft\s*?\{(.+?)\}/$1/igsm;
-		$buttonrightstyle = $stylestr;
+        $buttonrightstyle = $stylestr;
         $buttonrightstyle =~ s/.*?(\.buttonright\s*?\{.+?\}).*/$1/igsm;
-		$buttonrightbg = qq~<input type="hidden" id="buttonrightbg" name="buttonrightbg" value="$buttonrightstyle" />\n~;
-		$prevright = $buttonrightstyle;
+        $buttonrightbg = qq~<input type="hidden" id="buttonrightbg" name="buttonrightbg" value="$buttonrightstyle" />\n~;
+        $prevright = $buttonrightstyle;
         $prevright =~ s/\.buttonright\s*?\{(.+?)\}/$1/igsm;
-		$buttonimagestyle = $stylestr;
+        $buttonimagestyle = $stylestr;
         $buttonimagestyle =~ s/.*?(\.buttonimage\s*?\{.+?\}).*/$1/igsm;
-		$buttonimagebg = qq~<input type="hidden" id="buttonimagebg" name="buttonimagebg" value="$buttonimagestyle" />\n~;
-		$previmage = $buttonimagestyle;
+        $buttonimagebg = qq~<input type="hidden" id="buttonimagebg" name="buttonimagebg" value="$buttonimagestyle" />\n~;
+        $previmage = $buttonimagestyle;
         $previmage =~ s/\.buttonimage\s*?\{(.+?)\}/$1/igsm;
-		$drawimgpos = $previmage;
+        $drawimgpos = $previmage;
         $drawimgpos =~ m/.*?background\-position\s*?\:\s*?(\d{1,2})px\s*?(\d{1,2})px.*/ism;
-		$viewimgy = $2;
-		$viewimgy .= 'px';
-		$drawpos1 = ($2 * 5) + 213;
-		$drawpos1 .= 'px';
-		$viewimgx = $1;
-		$viewimgx .= 'px';
-		$drawpos2 = $1 + 213;
-		$drawpos2 .= 'px';
-		$drawimgwd = $previmage;
+        $viewimgy = $2;
+        $viewimgy .= 'px';
+        $drawpos1 = ($2 * 5) + 213;
+        $drawpos1 .= 'px';
+        $viewimgx = $1;
+        $viewimgx .= 'px';
+        $drawpos2 = $1 + 213;
+        $drawpos2 .= 'px';
+        $drawimgwd = $previmage;
         $drawimgwd =~ m/.*?padding\s*?\:\s*?\d{1,2}px\s*?\d{1,2}px\s*?\d{1,2}px\s*?(\d{1,2})px.*/ism;
-		$viewimgpad = $1;
+        $viewimgpad = $1;
         $viewimgpad .= 'px';
-		$drawpos3 = $1 + 213;
-		$drawpos3 .= 'px';
-	}
+        $drawpos3 = $1 + 213;
+        $drawpos3 .= 'px';
+    }
     if ( $stylestr =~ /\.seperator/sm ) {
         $seperatorstyle = $stylestr;
         $seperatorstyle =~ s/.*?(\.seperator\s*?\{.+?\}).*/$1/igsm;
         $selstyl .=
-          qq~					<option value='$seperatorstyle'>$templ_txt{'27'}</option>\n~;
+          qq~                   <option value='$seperatorstyle'>$templ_txt{'27'}</option>\n~;
     }
     if ( $stylestr =~ /\.bordercolor/sm ) {
         $bordercolorstyle = $stylestr;
         $bordercolorstyle =~ s/.*?(\.bordercolor\s*?\{.+?\}).*/$1/igsm;
         $selstyl .=
-          qq~					<option value='$bordercolorstyle'>$templ_txt{'28'}</option>\n~;
+          qq~                   <option value='$bordercolorstyle'>$templ_txt{'28'}</option>\n~;
     }
     if ( $stylestr =~ /\.hr/sm ) {
         $hrstyle = $stylestr;
         $hrstyle =~ s/.*?(\.hr\s*?\{.+?\}).*/$1/igsm;
-        $selstyl .= qq~					<option value='$hrstyle'>$templ_txt{'29'}</option>\n~;
+        $selstyl .= qq~                 <option value='$hrstyle'>$templ_txt{'29'}</option>\n~;
     }
     if ( $stylestr =~ /\.titlebg/sm ) {
         $titlestyle = $stylestr;
         $titlestyle =~ s/.*?(\.titlebg\s*?\{.+?\}).*/$1/igsm;
         $titlestyle = $titlestyle;
-        $selstyl .= qq~					<option value='$titlestyle'>$templ_txt{'30'}</option>\n~;
+        $selstyl .= qq~                 <option value='$titlestyle'>$templ_txt{'30'}</option>\n~;
         if ( $stylestr =~ /\.titlebg a/sm ) {
             $titlestyle_a = $stylestr;
             $titlestyle_a =~ s/.*?(\.titlebg a\s*?\{.+?\}).*/$1/igsm;
             $selstyl .=
-              qq~					<option value='$titlestyle_a'>$templ_txt{'30a'}</option>\n~;
+              qq~                   <option value='$titlestyle_a'>$templ_txt{'30a'}</option>\n~;
         }
     }
     if ( $stylestr =~ /\.catbg/sm ) {
@@ -490,19 +490,19 @@ qq~					<option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</option>\n~;
         $categorystyle =~ s/.*?(\.catbg\s*?\{.+?\}).*/$1/igsm;
         $categorystyle = $categorystyle;
         $selstyl .=
-          qq~					<option value='$categorystyle'>$templ_txt{'31'}</option>\n~;
+          qq~                   <option value='$categorystyle'>$templ_txt{'31'}</option>\n~;
         if ( $stylestr =~ /\.catbg a/sm ) {
             $categorystyle_a = $stylestr;
             $categorystyle_a =~ s/.*?(\.catbg a\s*?\{.+?\}).*/$1/igsm;
             $selstyl .=
-              qq~					<option value='$categorystyle_a'>$templ_txt{'31a'}</option>\n~;
+              qq~                   <option value='$categorystyle_a'>$templ_txt{'31a'}</option>\n~;
         }
     }
     if ( $stylestr =~ /\.windowbg/sm ) {
         $window1style = $stylestr;
         $window1style =~ s/.*?(\.windowbg\s*?\{.+?\}).*/$1/igsm;
         $selstyl .=
-          qq~					<option value='$window1style'>$templ_txt{'32'}</option>\n~;
+          qq~                   <option value='$window1style'>$templ_txt{'32'}</option>\n~;
     }
     if ( $stylestr =~ /\.windowbg2/sm ) {
         $window2style = $stylestr;
@@ -510,48 +510,48 @@ qq~					<option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</option>\n~;
         $windowcol2 = $window2style;
         $windowcol2 =~ s/.*?(\#[a-f0-9]{3,6}).*/$1/ism;
         $selstyl .=
-          qq~					<option value='$window2style'>$templ_txt{'33'}</option>\n~;
+          qq~                   <option value='$window2style'>$templ_txt{'33'}</option>\n~;
     }
     if ( $stylestr =~ /\.message/sm ) {
         $postsstyle = $stylestr;
         $postsstyle =~ s/.*?(\.message\s*?\{.+?\}).*/$1/igsm;
-        $selstyl .= qq~					<option value='$postsstyle'>$templ_txt{'65'}</option>\n~;
+        $selstyl .= qq~                 <option value='$postsstyle'>$templ_txt{'65'}</option>\n~;
 
         if ( $stylestr =~ /\.message a/sm ) {
             $postsstyle_a = $stylestr;
             $postsstyle_a =~ s/.*?(\.message a\s*?\{.+?\}).*/$1/igsm;
             $selstyl .=
-              qq~					<option value='$postsstyle_a'>$templ_txt{'66'}</option>\n~;
+              qq~                   <option value='$postsstyle_a'>$templ_txt{'66'}</option>\n~;
         }
     }
     if ( $stylestr =~ /input/sm ) {
         $inputstyle = $stylestr;
         $inputstyle =~ s/.*?(input\s*?\{.+?\}).*/$1/igsm;
         $selstyl .=
-          qq~					<option value='$inputstyle'>$templ_txt{'34a'}</option>\n~;
+          qq~                   <option value='$inputstyle'>$templ_txt{'34a'}</option>\n~;
     }
     if ( $stylestr =~ /button/sm ) {
         $buttonstyle = $stylestr;
         $buttonstyle =~ s/.*?(button\s*?\{.+?\}).*/$1/igsm;
         $selstyl .=
-          qq~					<option value='$buttonstyle'>$templ_txt{'34b'}</option>\n~;
+          qq~                   <option value='$buttonstyle'>$templ_txt{'34b'}</option>\n~;
     }
     if ( $stylestr =~ /textarea/sm ) {
         $textareastyle = $stylestr;
         $textareastyle =~ s/.*?(textarea\s*?\{.+?\}).*/$1/igsm;
         $selstyl .=
-          qq~					<option value='$textareastyle'>$templ_txt{'35'}</option>\n~;
+          qq~                   <option value='$textareastyle'>$templ_txt{'35'}</option>\n~;
     }
     if ( $stylestr =~ /select/sm ) {
         $selectstyle = $stylestr;
         $selectstyle =~ s/.*?(select\s*?\{.+?\}).*/$1/igsm;
         $selstyl .=
-          qq~					<option value='$selectstyle'>$templ_txt{'36'}</option>\n~;
+          qq~                   <option value='$selectstyle'>$templ_txt{'36'}</option>\n~;
     }
     if ( $stylestr =~ /.quote/sm ) {
         $quotestyle = $stylestr;
         $quotestyle =~ s/.*?(\.quote\s*?\{.+?\}).*/$1/igsm;
-        $selstyl .= qq~					<option value='$quotestyle'>$templ_txt{'37'}</option>\n~;
+        $selstyl .= qq~                 <option value='$quotestyle'>$templ_txt{'37'}</option>\n~;
         $message = qq~\[quote\]$templ_txt{'53'}\[/quote\]~;
         if ($enable_ubbc) {
             enable_yabbc();
@@ -562,7 +562,7 @@ qq~					<option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</option>\n~;
     if ( $stylestr =~ /.code/sm ) {
         $codestyle = $stylestr;
         $codestyle =~ s/.*?(\.code\s*?\{.+?\}).*/$1/igsm;
-        $selstyl .= qq~					<option value='$codestyle'>$templ_txt{'38'}</option>\n~;
+        $selstyl .= qq~                 <option value='$codestyle'>$templ_txt{'38'}</option>\n~;
         $message = qq~\[code\]$templ_txt{'54'}\[/code\]~;
         if ($enable_ubbc) {
             enable_yabbc();
@@ -574,7 +574,7 @@ qq~					<option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</option>\n~;
         $editbgstyle = $stylestr;
         $editbgstyle =~ s/.*?(\.editbg\s*?\{.+?\}).*/$1/igsm;
         $selstyl .=
-          qq~					<option value='$editbgstyle'>$templ_txt{'24'}</option>\n~;
+          qq~                   <option value='$editbgstyle'>$templ_txt{'24'}</option>\n~;
         $message = qq~\[edit\]$templ_txt{'55'}\[/edit\]~;
         if ($enable_ubbc) {
             enable_yabbc();
@@ -586,7 +586,7 @@ qq~					<option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</option>\n~;
         $highlightstyle = $stylestr;
         $highlightstyle =~ s/.*?(\.highlight\s*?\{.+?\}).*/$1/igsm;
         $selstyl .=
-          qq~					<option value='$highlightstyle'>$templ_txt{'39'}</option>\n~;
+          qq~                   <option value='$highlightstyle'>$templ_txt{'39'}</option>\n~;
         $message = qq~\[highlight\]$templ_txt{'56'}\[/highlight\]~;
         if ($enable_ubbc) {
             enable_yabbc();
@@ -600,34 +600,34 @@ qq~					<option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</option>\n~;
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiva">
-	<table class="cs_thin pad_4px">
-    	<tr>
-        	<td class="titlebg">
-            	<form action="$adminurl?action=modstyle" name="modstyles" id="modstyles" method="post" accept-charset="$yycharset">
+    <table class="cs_thin pad_4px">
+        <tr>
+            <td class="titlebg">
+                <form action="$adminurl?action=modstyle" name="modstyles" id="modstyles" method="post" accept-charset="$yycharset">
                     $admin_img{'xx'} <b>$templ_txt{'51'}</b> - $viewcss &nbsp;
-                	<input type="hidden" name="cssfile" value="$cssfile" />
-                	<input type="button" name="wysiwyg" id="wysiwyg" value="wysiwyg" disabled="disabled" />
-                	<input type="submit" name="source" id="source" value=" source " class="button" />
+                    <input type="hidden" name="cssfile" value="$cssfile" />
+                    <input type="button" name="wysiwyg" id="wysiwyg" value="wysiwyg" disabled="disabled" />
+                    <input type="submit" name="source" id="source" value=" source " class="button" />
                 </form>
             </td>
         </tr>
-	</table>
+    </table>
 <form action="$adminurl?action=modcss2" name="allstyles" id="allstyles" method="post" accept-charset="$yycharset">
-	<table class="cs_thin">
-    	<tr>
-        	<td class="windowbg2 center">
-            	<iframe id="StyleManager" name="StyleManager" width="100%" height="350" marginwidth="0" marginheight="0" frameborder="0" scrolling="yes" style="border-top: 1px inset; border-bottom: 1px inset; visibility: visible; display: inline"></iframe>
+    <table class="cs_thin">
+        <tr>
+            <td class="windowbg2 center">
+                <iframe id="StyleManager" name="StyleManager" width="100%" height="350" marginwidth="0" marginheight="0" frameborder="0" scrolling="yes" style="border-top: 1px inset; border-bottom: 1px inset; visibility: visible; display: inline"></iframe>
             </td>
         </tr>
-	</table>
-	<table class="cs_thin pad_4px">
-    	<tr>
-        	<td class="windowbg2">
-            	<div style="float: left; width: 30%; padding: 3px;"><label for="cssfile"><b>$templ_txt{'1'}</b></label></div>
+    </table>
+    <table class="cs_thin pad_4px">
+        <tr>
+            <td class="windowbg2">
+                <div style="float: left; width: 30%; padding: 3px;"><label for="cssfile"><b>$templ_txt{'1'}</b></label></div>
                 <div style="float: left; width: 69%;">
-                	<input type="hidden" name="button" value="0" />
+                    <input type="hidden" name="button" value="0" />
                     <select name="cssfile" id="cssfile" size="1" onchange="document.allstyles.button.value = '1'; submit();">
-                    	$forumcss
+                        $forumcss
                     </select>
                     <input type="button" value="$templ_txt{'14'}" onclick="document.allstyles.button.value = '3'; if (confirm('$templ_txt{'15'} $cssfile?')) submit();" />
                 </div>
@@ -635,17 +635,17 @@ qq~					<option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</option>\n~;
         </tr><tr>
             <td class="windowbg2">
                 <div style="float: left; width: 30%; padding: 3px;">
-            		<label for="csselement"><b>$templ_txt{'18'}</b><br /><span class="small">$templ_txt{'19'}<br /><br /></span></label>
+                    <label for="csselement"><b>$templ_txt{'18'}</b><br /><span class="small">$templ_txt{'19'}<br /><br /></span></label>
                 </div>
                 <div style="float: left; width: 69%;">
-                	<div style="float: left; text-align: center; margin-left: 0px; margin-right: 6px; vertical-align: middle;">
-                    	<select name="csselement" id="csselement" size="5" onchange="setElement()">
-                        	$selstyl
+                    <div style="float: left; text-align: center; margin-left: 0px; margin-right: 6px; vertical-align: middle;">
+                        <select name="csselement" id="csselement" size="5" onchange="setElement()">
+                            $selstyl
                         </select>
-                	</div>
-                	<div style="float: left;">
+                    </div>
+                    <div style="float: left;">
                         <div class="small" style="float: left; vertical-align: middle;">
-                    		<span style="width: 70px;">
+                            <span style="width: 70px;">
                                 <input type="radio" name="selopt" id="selopt1" value="color" class="windowbg2" style="border: 0px; vertical-align: middle;" onclick="manSelect();" /> <label for="selopt1"><span class="small" style="vertical-align: middle;"><b>$templ_txt{'22'}</b></span></label>
                             </span>
                             <span>
@@ -672,9 +672,9 @@ qq~					<option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</option>\n~;
                             <br />
                         </div>
                         <div style="float: left; height: 68px; width: 92px; overflow: auto; border: 0px; margin-left: 8px;">
-                        	<div style="float: left; height: 22px; width: 91px;">
-                            	<div class="bordercolor" style="height: 20px; width: 66px; padding-left: 1px; padding-top: 1px; margin-top: 1px; float: left;">
-                                	<span class="deftpal" style="background-color: #000000;" onclick="ConvShowcolor('#000000')">&nbsp;</span>
+                            <div style="float: left; height: 22px; width: 91px;">
+                                <div class="bordercolor" style="height: 20px; width: 66px; padding-left: 1px; padding-top: 1px; margin-top: 1px; float: left;">
+                                    <span class="deftpal" style="background-color: #000000;" onclick="ConvShowcolor('#000000')">&nbsp;</span>
                                     <span class="deftpal" style="background-color: #333333;" onclick="ConvShowcolor('#333333')">&nbsp;</span>
                                     <span class="deftpal" style="background-color: #666666;" onclick="ConvShowcolor('#666666')">&nbsp;</span>
                                     <span class="deftpal" style="background-color: #999999;" onclick="ConvShowcolor('#999999')">&nbsp;</span>
@@ -688,14 +688,14 @@ qq~					<option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</option>\n~;
                                     <span class="deftpal" id="defaultpal6" style="background-color: $pallist[5];" onclick="ConvShowcolor(this.style.backgroundColor)">&nbsp;</span>
                                 </div>
                                 <div style="height: 22px; width: 23px; padding-left: 1px; float: right;">
-                                	<img src="$imagesdir/palette1.gif" style="cursor: pointer" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+                                    <img src="$imagesdir/palette1.gif" style="cursor: pointer" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
                                 </div>
                             </div>
                         </div>
-                	</div>
+                    </div>
                 </div>
             </td>
-		</tr>
+        </tr>
         ~;
 if($cssbuttons) {
     $thisbutton = q{};
@@ -703,70 +703,70 @@ if($cssbuttons) {
     @contents = readdir DIR;
     closedir DIR;
     $optbuttons = q{};
-	$x = 1;
+    $x = 1;
     foreach my $line (sort @contents){
         ($name, $extension) = split /\./xsm, $line;
         ($tmpname, $tmpside) = split /\_/xsm, $name;
         $checked = q{};
         if ($name eq $buttonbg) { $checked = q~ checked = "checked"~; }
         if (($extension =~ /gif/ism || $extension =~ /png/ism) && $tmpside eq 'left') {
-			$bleft = qq~_left.$extension~;
-			$bright = qq~_right.$extension~;
-			$thisbutton .= qq~<div style="float: left; width: 99%; margin: 2px; vertical-align: bottom;"><div style="float: left; height: 20px; width: 112px; padding: 0 0 0 6px; background-image: url($yyhtml_root/Buttons/$tmpname$bleft); background-repeat: no-repeat; vertical-align: bottom; cursor: pointer;" onclick="updateButtons('$line');">~;
-			$thisbutton .= qq~<div style="float: left; height: 20px; padding: 0 80px 0 0; background-image: url($yyhtml_root/Buttons/$tmpname$bright); background-position: right; background-repeat: no-repeat; vertical-align: bottom;"><div style="float: left; height: 20px; padding: 0 0 0 25px;"></div></div></div>~;
-			$thisbutton .= qq~<div style="float: left; height: 20px;"><input type="radio" name="selbutton" id="selbutton$x" value="$line" class="windowbg2" style="border: 0px; vertical-align: middle;"$checked onclick="updateButtons(this.value);" /> <label for="selbutton$x" style="vertical-align: middle;"><b>$tmpname</b></label></div></div>\n~;
-			$x++;
-		}
-	}
+            $bleft = qq~_left.$extension~;
+            $bright = qq~_right.$extension~;
+            $thisbutton .= qq~<div style="float: left; width: 99%; margin: 2px; vertical-align: bottom;"><div style="float: left; height: 20px; width: 112px; padding: 0 0 0 6px; background-image: url($yyhtml_root/Buttons/$tmpname$bleft); background-repeat: no-repeat; vertical-align: bottom; cursor: pointer;" onclick="updateButtons('$line');">~;
+            $thisbutton .= qq~<div style="float: left; height: 20px; padding: 0 80px 0 0; background-image: url($yyhtml_root/Buttons/$tmpname$bright); background-position: right; background-repeat: no-repeat; vertical-align: bottom;"><div style="float: left; height: 20px; padding: 0 0 0 25px;"></div></div></div>~;
+            $thisbutton .= qq~<div style="float: left; height: 20px;"><input type="radio" name="selbutton" id="selbutton$x" value="$line" class="windowbg2" style="border: 0px; vertical-align: middle;"$checked onclick="updateButtons(this.value);" /> <label for="selbutton$x" style="vertical-align: middle;"><b>$tmpname</b></label></div></div>\n~;
+            $x++;
+        }
+    }
 
 $yymain .= qq~<tr>
-		<td align="left" class="windowbg2">
-		<div style="float: left; width: 99%; padding: 3px;">
-			<b>$templ_txt{'buttontext'}</b><br /><span class="small">$templ_txt{'buttondescription'}<br /><br /></span>
-		</div>
-		<div style="float: left; width: 330px; height: 136px; padding: 3px;">
-		<div class="catbg" style="position: relative; top: 0px; left: 5px; width: 280px; text-align: center; border-width: 1px; border-style: outset; padding: 3px 0px;">
-		<img src="$forumstylesurl/default/buttonsep.png" style="height: 20px; width: 1px; margin: 0px; padding: 0px; vertical-align: top; display: inline-block;" alt="" border="0" />
-		<span id="butleft" style="height: 20px; border: 0px; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block; $prevleft">
-		<span id="butright" style="height: 20px; border: 0px; margin: 0px; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block; $prevright">
-		<span id="butimage" style="$previmage background-image: url($forumstylesurl/default/home.gif); height: 20px; border: 0px; margin: 0px; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;">
-		<span id="buttext" style="height: 20px; border: 0px; margin: 0px; padding: 0px; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block; $prevtext">$img_txt{'103'}</span>
-		</span></span></span>
-		<img src="$forumstylesurl/default/buttonsep.png" style="height: 20px; width: 1px; margin: 0px; padding: 0px; vertical-align: top; display: inline-block;" alt="" border="0" />
-		</div>
-		<div class="catbg" style="position: relative; top: 4px; left: 5px; width: 280px; height: 18px; border-width: 1px; border-style: outset;">
-		<span class="small" style="position: absolute; top: 3px; left: 6px;"><b>$templ_txt{'moveicon1'}</b>
-		<input class="catbg" name="viewimgy" id="viewimgy" type="text" value="$viewimgy" style="position: absolute; top: 0px; left: 165px; text-align: right; width: 30px; margin: 0px; padding: 0px; border: 0px; font-size: 10px; font-weight: bold; display: inline;" readonly="readonly" /></span>
-		<img src="$defaultimagesdir/knapbagrms02.gif" style="position: absolute; top: 0px; left: 209px; z-index: 1; width: 69px; height: 16px;" />
-		<img id="knapImg1" src="$defaultimagesdir/knapyellow.gif" class="skyd" style="position: absolute; left: $drawpos1; top: 2px; cursor: pointer; z-index: 2; width: 13px; height: 15px;" />
-		</div>
-		<div class="catbg" style="position: relative; top: 8px; left: 5px; width: 280px; height: 18px; border-width: 1px; border-style: outset;">
-		<span class="small" style="position: absolute; top: 3px; left: 6px;"><b>$templ_txt{'moveicon2'}</b>
-		<input class="catbg" name="viewimgx" id="viewimgx" type="text" value="$viewimgx" style="position: absolute; top: 0px; left: 165px; text-align: right; width: 30px; margin: 0px; padding: 0px; border: 0px; font-size: 10px; font-weight: bold; display: inline;" readonly="readonly" /></span>
-		<img src="$defaultimagesdir/knapbagrms02.gif" style="position: absolute; top: 0px; left: 209px; z-index: 1; width: 69px; height: 16px;" />
-		<img id="knapImg2" src="$defaultimagesdir/knapyellow.gif" class="skyd" style="position: absolute; left: $drawpos2; top: 2px; cursor: pointer; z-index: 2; width: 13px; height: 15px;" />
-		</div>
-		<div class="catbg" style="position: relative; top: 12px; left: 5px; width: 280px; height: 18px; border-width: 1px; border-style: outset;">
-		<span class="small" style="position: absolute; top: 3px; left: 6px;"><b>$templ_txt{'iconspace'}</b>
-		<input class="catbg" name="viewimgpad" id="viewimgpad" type="text" value="$viewimgpad" style="position: absolute; top: 0px; left: 165px; text-align: right; width: 30px; margin: 0px; padding: 0px; border: 0px; font-size: 10px; font-weight: bold; display: inline;" readonly="readonly" /></span>
-		<img src="$defaultimagesdir/knapbagrms02.gif" style="position: absolute; top: 0px; left: 209px; z-index: 1; width: 69px; height: 16px;" />
-		<img id="knapImg3" src="$defaultimagesdir/knapyellow.gif" class="skyd" style="position: absolute; left: $drawpos3; top: 2px; cursor: pointer; z-index: 2; width: 13px; height: 15px;" />
-		</div>
-		<div class="catbg" style="position: relative; top: 16px; left: 5px; width: 280px; height: 18px; border-width: 1px; border-style: outset;">
-		<span class="small" style="position: absolute; top: 3px; left: 6px;"><b>$templ_txt{'movetext'}</b>
-		<input class="catbg" name="viewtxty" id="viewtxty" type="text" value="$viewtxty" style="position: absolute; top: 0px; left: 165px; text-align: right; width: 30px; margin: 0px; padding: 0px; border: 0px; font-size: 10px; font-weight: bold; display: inline;" readonly="readonly" /></span>
-		<img src="$defaultimagesdir/knapbagrms02.gif" style="position: absolute; top: 0px; left: 209px; z-index: 1; width: 69px; height: 16px;" />
-		<img id="knapImg4" src="$defaultimagesdir/knapyellow.gif" class="skyd" style="position: absolute; left: $drawpos4; top: 2px; cursor: pointer; z-index: 2; width: 13px; height: 15px;" />
-		</div>
-		</div>
-		<div style="float: left; width: 300px; padding: 3px; padding-left: 13px;">
-			$thisbutton
-		</div>
-		$buttonleftbg
-		$buttonrightbg
-		$buttonimagebg
-		</td>
-	</tr>
+        <td align="left" class="windowbg2">
+        <div style="float: left; width: 99%; padding: 3px;">
+            <b>$templ_txt{'buttontext'}</b><br /><span class="small">$templ_txt{'buttondescription'}<br /><br /></span>
+        </div>
+        <div style="float: left; width: 330px; height: 136px; padding: 3px;">
+        <div class="catbg" style="position: relative; top: 0px; left: 5px; width: 280px; text-align: center; border-width: 1px; border-style: outset; padding: 3px 0px;">
+        <img src="$forumstylesurl/default/buttonsep.png" style="height: 20px; width: 1px; margin: 0px; padding: 0px; vertical-align: top; display: inline-block;" alt="" border="0" />
+        <span id="butleft" style="height: 20px; border: 0px; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block; $prevleft">
+        <span id="butright" style="height: 20px; border: 0px; margin: 0px; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block; $prevright">
+        <span id="butimage" style="$previmage background-image: url($forumstylesurl/default/home.gif); height: 20px; border: 0px; margin: 0px; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;">
+        <span id="buttext" style="height: 20px; border: 0px; margin: 0px; padding: 0px; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block; $prevtext">$img_txt{'103'}</span>
+        </span></span></span>
+        <img src="$forumstylesurl/default/buttonsep.png" style="height: 20px; width: 1px; margin: 0px; padding: 0px; vertical-align: top; display: inline-block;" alt="" border="0" />
+        </div>
+        <div class="catbg" style="position: relative; top: 4px; left: 5px; width: 280px; height: 18px; border-width: 1px; border-style: outset;">
+        <span class="small" style="position: absolute; top: 3px; left: 6px;"><b>$templ_txt{'moveicon1'}</b>
+        <input class="catbg" name="viewimgy" id="viewimgy" type="text" value="$viewimgy" style="position: absolute; top: 0px; left: 165px; text-align: right; width: 30px; margin: 0px; padding: 0px; border: 0px; font-size: 10px; font-weight: bold; display: inline;" readonly="readonly" /></span>
+        <img src="$defaultimagesdir/knapbagrms02.gif" style="position: absolute; top: 0px; left: 209px; z-index: 1; width: 69px; height: 16px;" />
+        <img id="knapImg1" src="$defaultimagesdir/knapyellow.gif" class="skyd" style="position: absolute; left: $drawpos1; top: 2px; cursor: pointer; z-index: 2; width: 13px; height: 15px;" />
+        </div>
+        <div class="catbg" style="position: relative; top: 8px; left: 5px; width: 280px; height: 18px; border-width: 1px; border-style: outset;">
+        <span class="small" style="position: absolute; top: 3px; left: 6px;"><b>$templ_txt{'moveicon2'}</b>
+        <input class="catbg" name="viewimgx" id="viewimgx" type="text" value="$viewimgx" style="position: absolute; top: 0px; left: 165px; text-align: right; width: 30px; margin: 0px; padding: 0px; border: 0px; font-size: 10px; font-weight: bold; display: inline;" readonly="readonly" /></span>
+        <img src="$defaultimagesdir/knapbagrms02.gif" style="position: absolute; top: 0px; left: 209px; z-index: 1; width: 69px; height: 16px;" />
+        <img id="knapImg2" src="$defaultimagesdir/knapyellow.gif" class="skyd" style="position: absolute; left: $drawpos2; top: 2px; cursor: pointer; z-index: 2; width: 13px; height: 15px;" />
+        </div>
+        <div class="catbg" style="position: relative; top: 12px; left: 5px; width: 280px; height: 18px; border-width: 1px; border-style: outset;">
+        <span class="small" style="position: absolute; top: 3px; left: 6px;"><b>$templ_txt{'iconspace'}</b>
+        <input class="catbg" name="viewimgpad" id="viewimgpad" type="text" value="$viewimgpad" style="position: absolute; top: 0px; left: 165px; text-align: right; width: 30px; margin: 0px; padding: 0px; border: 0px; font-size: 10px; font-weight: bold; display: inline;" readonly="readonly" /></span>
+        <img src="$defaultimagesdir/knapbagrms02.gif" style="position: absolute; top: 0px; left: 209px; z-index: 1; width: 69px; height: 16px;" />
+        <img id="knapImg3" src="$defaultimagesdir/knapyellow.gif" class="skyd" style="position: absolute; left: $drawpos3; top: 2px; cursor: pointer; z-index: 2; width: 13px; height: 15px;" />
+        </div>
+        <div class="catbg" style="position: relative; top: 16px; left: 5px; width: 280px; height: 18px; border-width: 1px; border-style: outset;">
+        <span class="small" style="position: absolute; top: 3px; left: 6px;"><b>$templ_txt{'movetext'}</b>
+        <input class="catbg" name="viewtxty" id="viewtxty" type="text" value="$viewtxty" style="position: absolute; top: 0px; left: 165px; text-align: right; width: 30px; margin: 0px; padding: 0px; border: 0px; font-size: 10px; font-weight: bold; display: inline;" readonly="readonly" /></span>
+        <img src="$defaultimagesdir/knapbagrms02.gif" style="position: absolute; top: 0px; left: 209px; z-index: 1; width: 69px; height: 16px;" />
+        <img id="knapImg4" src="$defaultimagesdir/knapyellow.gif" class="skyd" style="position: absolute; left: $drawpos4; top: 2px; cursor: pointer; z-index: 2; width: 13px; height: 15px;" />
+        </div>
+        </div>
+        <div style="float: left; width: 300px; padding: 3px; padding-left: 13px;">
+            $thisbutton
+        </div>
+        $buttonleftbg
+        $buttonrightbg
+        $buttonimagebg
+        </td>
+    </tr>
 
 <script type="text/javascript" language="JavaScript1.2">
 <!--
@@ -774,97 +774,97 @@ $yymain .= qq~<tr>
 var skydobject={
 x: 0, temp2 : null, targetobj : null, skydNu : 0, delEnh : 0,
 initialize:function() {
-	document.onmousedown = this.skydeKnap
-	document.onmouseup=function(){
-		if(this.skydNu) updateStyles();
-		this.skydNu = 0;
-	}
+    document.onmousedown = this.skydeKnap
+    document.onmouseup=function(){
+        if(this.skydNu) updateStyles();
+        this.skydNu = 0;
+    }
 },
 changeStyle:function(deleEnh, knapId) {
-	if (knapId == "knapImg1") {
-		newypos = parseInt(deleEnh/5);
-		thenewstyle = document.allstyles.stylelink.value;
-		cssoption = document.allstyles.buttonimagebg.value;
-		oldxpos=cssoption.replace(/\.*?background\\-position\\s*?\\:\\s*?(\\d{1,2})\.*/i, "\$1");
-		newcssoption=cssoption.replace(/(background\\-position\\s*?\\:\.*?\\d{1,2}px\\s*?)\\d{1,2}(px\\;)/i, "\$1" + newypos + "\$2");
-		document.allstyles.buttonimagebg.value = newcssoption;
-		re=cssoption.replace(/(.*)/, "\$1");
-		thenewstyle=thenewstyle.replace(re, newcssoption);
-		document.allstyles.stylelink.value = thenewstyle;
-		document.getElementById('butimage').style.backgroundPosition = oldxpos+'px '+newypos+'px';
-		document.getElementById('viewimgy').value = newypos+'px';
-	}
-	if (knapId == "knapImg2") {
-		newxpos = parseInt(deleEnh);
-		thenewstyle = document.allstyles.stylelink.value;
-		cssoption = document.allstyles.buttonimagebg.value;
-		oldypos=cssoption.replace(/\.*?background\\-position\\s*?\\:\\s*?\\d{1,2}px\\s*?(\\d{1,2})\.*/i, "\$1");
-		newcssoption=cssoption.replace(/(background\\-position\\s*?\\:\.*?)\\d{1,2}(px\\s*?\\d{1,2}px\\;)/i, "\$1" + newxpos + "\$2");
-		document.allstyles.buttonimagebg.value = newcssoption;
-		re=cssoption.replace(/(.*)/, "\$1");
-		thenewstyle=thenewstyle.replace(re, newcssoption);
-		document.allstyles.stylelink.value = thenewstyle;
-		document.getElementById('butimage').style.backgroundPosition = newxpos+'px '+oldypos+'px';
-		document.getElementById('viewimgx').value = newxpos+'px';
-	}
-	if (knapId == "knapImg3") {
-		newimgpad = parseInt(deleEnh);
-		thenewstyle = document.allstyles.stylelink.value;
-		cssoption = document.allstyles.buttonimagebg.value;
-		newcssoption=cssoption.replace(/(padding\\s*?\\:\.*?\\d{1,2}px\\s*?\\d{1,2}px\\s*?\\d{1,2}px\\s*?)\\d{1,2}(px\\;)/i, "\$1" + newimgpad + "\$2");
-		document.allstyles.buttonimagebg.value = newcssoption;
-		re=cssoption.replace(/(.*)/, "\$1");
-		thenewstyle=thenewstyle.replace(re, newcssoption);
-		document.allstyles.stylelink.value = thenewstyle;
-		document.getElementById('butimage').style.padding = '0px 0px 0px '+newimgpad+'px';
-		document.getElementById('viewimgpad').value = newimgpad+'px';
-	}
-	if (knapId == "knapImg4") {
-		newtxtpad = parseInt(deleEnh/5);
-		thenewstyle = document.allstyles.stylelink.value;
-		allstyleslen = document.allstyles.csselement.length;
-		for (i = 0; i < allstyleslen; i++) {
-			tmpselelement = document.allstyles.csselement[i].value;
-			if (tmpselelement.match(/\\.buttontext/)) {
-				cssoption = document.allstyles.csselement.options[i].value;
-				newcssoption=cssoption.replace(/(top\\s*?\\:\.*?)\\d{1,2}(px\\s*?\\;)/i, "\$1" + newtxtpad + "\$2");
-				document.allstyles.csselement.options[i].value = newcssoption;
-			}
-		}
-		re=cssoption.replace(/(.*)/, "\$1");
-		thenewstyle=thenewstyle.replace(re, newcssoption);
-		document.allstyles.stylelink.value = thenewstyle;
-		document.getElementById('buttext').style.top = newtxtpad+'px';
-		document.getElementById('viewtxty').value = newtxtpad+'px';
-	}
+    if (knapId == "knapImg1") {
+        newypos = parseInt(deleEnh/5);
+        thenewstyle = document.allstyles.stylelink.value;
+        cssoption = document.allstyles.buttonimagebg.value;
+        oldxpos=cssoption.replace(/\.*?background\\-position\\s*?\\:\\s*?(\\d{1,2})\.*/i, "\$1");
+        newcssoption=cssoption.replace(/(background\\-position\\s*?\\:\.*?\\d{1,2}px\\s*?)\\d{1,2}(px\\;)/i, "\$1" + newypos + "\$2");
+        document.allstyles.buttonimagebg.value = newcssoption;
+        re=cssoption.replace(/(.*)/, "\$1");
+        thenewstyle=thenewstyle.replace(re, newcssoption);
+        document.allstyles.stylelink.value = thenewstyle;
+        document.getElementById('butimage').style.backgroundPosition = oldxpos+'px '+newypos+'px';
+        document.getElementById('viewimgy').value = newypos+'px';
+    }
+    if (knapId == "knapImg2") {
+        newxpos = parseInt(deleEnh);
+        thenewstyle = document.allstyles.stylelink.value;
+        cssoption = document.allstyles.buttonimagebg.value;
+        oldypos=cssoption.replace(/\.*?background\\-position\\s*?\\:\\s*?\\d{1,2}px\\s*?(\\d{1,2})\.*/i, "\$1");
+        newcssoption=cssoption.replace(/(background\\-position\\s*?\\:\.*?)\\d{1,2}(px\\s*?\\d{1,2}px\\;)/i, "\$1" + newxpos + "\$2");
+        document.allstyles.buttonimagebg.value = newcssoption;
+        re=cssoption.replace(/(.*)/, "\$1");
+        thenewstyle=thenewstyle.replace(re, newcssoption);
+        document.allstyles.stylelink.value = thenewstyle;
+        document.getElementById('butimage').style.backgroundPosition = newxpos+'px '+oldypos+'px';
+        document.getElementById('viewimgx').value = newxpos+'px';
+    }
+    if (knapId == "knapImg3") {
+        newimgpad = parseInt(deleEnh);
+        thenewstyle = document.allstyles.stylelink.value;
+        cssoption = document.allstyles.buttonimagebg.value;
+        newcssoption=cssoption.replace(/(padding\\s*?\\:\.*?\\d{1,2}px\\s*?\\d{1,2}px\\s*?\\d{1,2}px\\s*?)\\d{1,2}(px\\;)/i, "\$1" + newimgpad + "\$2");
+        document.allstyles.buttonimagebg.value = newcssoption;
+        re=cssoption.replace(/(.*)/, "\$1");
+        thenewstyle=thenewstyle.replace(re, newcssoption);
+        document.allstyles.stylelink.value = thenewstyle;
+        document.getElementById('butimage').style.padding = '0px 0px 0px '+newimgpad+'px';
+        document.getElementById('viewimgpad').value = newimgpad+'px';
+    }
+    if (knapId == "knapImg4") {
+        newtxtpad = parseInt(deleEnh/5);
+        thenewstyle = document.allstyles.stylelink.value;
+        allstyleslen = document.allstyles.csselement.length;
+        for (i = 0; i < allstyleslen; i++) {
+            tmpselelement = document.allstyles.csselement[i].value;
+            if (tmpselelement.match(/\\.buttontext/)) {
+                cssoption = document.allstyles.csselement.options[i].value;
+                newcssoption=cssoption.replace(/(top\\s*?\\:\.*?)\\d{1,2}(px\\s*?\\;)/i, "\$1" + newtxtpad + "\$2");
+                document.allstyles.csselement.options[i].value = newcssoption;
+            }
+        }
+        re=cssoption.replace(/(.*)/, "\$1");
+        thenewstyle=thenewstyle.replace(re, newcssoption);
+        document.allstyles.stylelink.value = thenewstyle;
+        document.getElementById('buttext').style.top = newtxtpad+'px';
+        document.getElementById('viewtxty').value = newtxtpad+'px';
+    }
 },
 flytKnap:function(e) {
-	var evtobj = window.event ? window.event : e
-	if (this.skydNu == 1) {
-		glX = parseInt(this.targetobj.style.left)
-		this.targetobj.style.left = this.temp2 + evtobj.clientX - this.x + "px"
-		nyX = parseInt(this.temp2 + evtobj.clientX - this.x)
-		if (nyX > glX) retning = "vn"; else retning = "hj";
-		if (nyX < 213 && retning == "hj") { this.targetobj.style.left = 213 + "px"; nyX = 213; retning = "vn"; }
-		if (nyX > 263 && retning == "vn") { this.targetobj.style.left = 263 + "px"; nyX = 263; retning = "hj"; }
-		delEnh = parseInt(nyX)-213
-		var knapObj = this.targetobj.id
-		skydobject.changeStyle(delEnh, knapObj)
-		return false
-	}
+    var evtobj = window.event ? window.event : e
+    if (this.skydNu == 1) {
+        glX = parseInt(this.targetobj.style.left)
+        this.targetobj.style.left = this.temp2 + evtobj.clientX - this.x + "px"
+        nyX = parseInt(this.temp2 + evtobj.clientX - this.x)
+        if (nyX > glX) retning = "vn"; else retning = "hj";
+        if (nyX < 213 && retning == "hj") { this.targetobj.style.left = 213 + "px"; nyX = 213; retning = "vn"; }
+        if (nyX > 263 && retning == "vn") { this.targetobj.style.left = 263 + "px"; nyX = 263; retning = "hj"; }
+        delEnh = parseInt(nyX)-213
+        var knapObj = this.targetobj.id
+        skydobject.changeStyle(delEnh, knapObj)
+        return false
+    }
 },
 skydeKnap:function(e) {
-	var evtobj = window.event ? window.event : e
-	this.targetobj = window.event ? event.srcElement : e.target
-	if (this.targetobj.className == "skyd") {
-		this.skydNu = 1
-		this.knapObj = this.targetobj
-		if (isNaN(parseInt(this.targetobj.style.left))) this.targetobj.style.left = 0
-		this.temp2 = parseInt(this.targetobj.style.left)
-		this.x = evtobj.clientX
-		if (evtobj.preventDefault) evtobj.preventDefault()
-		document.onmousemove = skydobject.flytKnap
-	}
+    var evtobj = window.event ? window.event : e
+    this.targetobj = window.event ? event.srcElement : e.target
+    if (this.targetobj.className == "skyd") {
+        this.skydNu = 1
+        this.knapObj = this.targetobj
+        if (isNaN(parseInt(this.targetobj.style.left))) this.targetobj.style.left = 0
+        this.temp2 = parseInt(this.targetobj.style.left)
+        this.x = evtobj.clientX
+        if (evtobj.preventDefault) evtobj.preventDefault()
+        document.onmousemove = skydobject.flytKnap
+    }
 }
 }
 
@@ -896,46 +896,46 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
         $tabtime = timeformat( $date, 1 );
 
         $viewstyle .= qq~
-	<table class="menutop">
-    	<tr>
-        	<td class="small" style="width:2%; height:23px">&nbsp;</td>
+    <table class="menutop">
+        <tr>
+            <td class="small" style="width:2%; height:23px">&nbsp;</td>
             <td class="small">$tabtime</td>
-		</tr>
-	</table>
-	<table class="windowbg2 pad_4px">
-		<tr>
-			<td class="vtop" style="height:30px">&nbsp;</td>
         </tr>
-	</table>
-	<table>
-    	<tr>
-        	<td class="menutop" style="height:22px">&nbsp;</td>
-		</tr>
-	</table>
-	<table>
-		<tr>
-        	<td id="tabmnleft" class="tabmenuleft" style="width:40px">&nbsp;</td>
-        	<td id="tabmn" class="tabmenu">
-        		<span class="selected"><a href="javascript:;">$tabfill$img_txt{'103'}$tabfill</a></span>
-        		$tabsep<span style="cursor:help;"><a href="javascript:;" style="cursor:help;">$tabfill$img_txt{'119'}$tabfill</a></span>
-        		$tabsep<span><a href="javascript:;">$tabfill$img_txt{'182'}$tabfill</a></span>
-        		$tabsep<span><a href="javascript:;">$tabfill$img_txt{'331'}$tabfill</a></span>
-        		$tabsep<span><a href="javascript:;">$tabfill$img_txt{'mycenter'}$tabfill</a></span>
-        		$tabsep<span><a href="javascript:;">$tabfill$img_txt{'108'}$tabfill</a></span>
-        		$tabsep
-        	</td>
-        	<td id="tabmnrss" class="tabmenu vtop" style="width:40px"></td>
-        	<td id="tabmnright" class="tabmenuright" style="width:45px">&nbsp;        </td>
-        	<td id="tabmnbox" class="rightbox vtop" style="width:160px">
-            	<div style="float: left; width: 160px; height: 21px; text-align: center; padding-top: 3px; display: inline;">
-                	<input type="text" name="search" size="16" style="font-size: 11px; vertical-align: middle;" />
+    </table>
+    <table class="windowbg2 pad_4px">
+        <tr>
+            <td class="vtop" style="height:30px">&nbsp;</td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td class="menutop" style="height:22px">&nbsp;</td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td id="tabmnleft" class="tabmenuleft" style="width:40px">&nbsp;</td>
+            <td id="tabmn" class="tabmenu">
+                <span class="selected"><a href="javascript:;">$tabfill$img_txt{'103'}$tabfill</a></span>
+                $tabsep<span style="cursor:help;"><a href="javascript:;" style="cursor:help;">$tabfill$img_txt{'119'}$tabfill</a></span>
+                $tabsep<span><a href="javascript:;">$tabfill$img_txt{'182'}$tabfill</a></span>
+                $tabsep<span><a href="javascript:;">$tabfill$img_txt{'331'}$tabfill</a></span>
+                $tabsep<span><a href="javascript:;">$tabfill$img_txt{'mycenter'}$tabfill</a></span>
+                $tabsep<span><a href="javascript:;">$tabfill$img_txt{'108'}$tabfill</a></span>
+                $tabsep
+            </td>
+            <td id="tabmnrss" class="tabmenu vtop" style="width:40px"></td>
+            <td id="tabmnright" class="tabmenuright" style="width:45px">&nbsp;        </td>
+            <td id="tabmnbox" class="rightbox vtop" style="width:160px">
+                <div style="float: left; width: 160px; height: 21px; text-align: center; padding-top: 3px; display: inline;">
+                    <input type="text" name="search" size="16" style="font-size: 11px; vertical-align: middle;" />
                     <img src="$imagesdir/search.png" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />
                 </div>
-        	</td>
-		</tr><tr>
-        	<td colspan="5"><br />&nbsp;</td>
-		</tr>
-	</table>
+            </td>
+        </tr><tr>
+            <td colspan="5"><br />&nbsp;</td>
+        </tr>
+    </table>
 ~;
     }
     if ($containerstyle) {
@@ -953,32 +953,32 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
     if ($istabbed) {
         $viewstyle .= qq~
 <table style="border-spacing:0" class="bordercolor">
-	<col style="width:1%;  height:25px" /> 
-	<col style="width:49%;  height:25px" /> 
-	<col style="width:50%;  height:25px" /> 
-	<tr>
-    	<td class="tabtitle">&nbsp;</td>
+    <col style="width:1%;  height:25px" />
+    <col style="width:49%;  height:25px" />
+    <col style="width:50%;  height:25px" />
+    <tr>
+        <td class="tabtitle">&nbsp;</td>
         <td class="tabtitle">
-        	$templ_txt{'tabtitle'}
+            $templ_txt{'tabtitle'}
         </td>
         <td class="tabtitle">
             <a href="javascript:;">$templ_txt{'tabtitlea'}</a>
         </td>
-	</tr>
+    </tr>
 </table>
 <br />
 ~;
     }
     $viewstyle .= qq~
 <table class="bordercolor cs_thin pad_4px">
-	<tr>
-		<td id="title" class="titlebg w_50pc">
-			$templ_txt{'30'}
-		</td>
-		<td id="titlea" class="titlebg">
-			<a href="javascript:;">$templ_txt{'30a'}</a>
-		</td>
-	</tr>
+    <tr>
+        <td id="title" class="titlebg w_50pc">
+            $templ_txt{'30'}
+        </td>
+        <td id="titlea" class="titlebg">
+            <a href="javascript:;">$templ_txt{'30a'}</a>
+        </td>
+    </tr>
 </table>
 ~;
     if ($seperatorstyle) {
@@ -992,14 +992,14 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
     }
     $viewstyle .= qq~
 <table class="bordercolor cs_thin pad_4px">
-	<tr>
-		<td id="category" class="catbg w_50pc">
-			$templ_txt{'31'}
-		</td>
-		<td id="categorya" class="catbg">
-			<a href="javascript:;">$templ_txt{'31a'}</a>
-		</td>
-	</tr>
+    <tr>
+        <td id="category" class="catbg w_50pc">
+            $templ_txt{'31'}
+        </td>
+        <td id="categorya" class="catbg">
+            <a href="javascript:;">$templ_txt{'31a'}</a>
+        </td>
+    </tr>
 </table>
 ~;
 if($cssbuttons) {
@@ -1027,32 +1027,32 @@ $viewstyle .= qq~
 }
 $viewstyle .= qq~
 <table class="bordercolor cs_thin pad_4px">
-	<tr>
-		<td id="window1" class="windowbg vtop">
-			$templ_txt{'32'}
-		</td>
-		<td id="window2" class="windowbg2 vtop">
-			$templ_txt{'33'}<br />
-			<hr class="hr">
-			<div id="messages" class="message">$templ_txt{'65'}</div>
-			<div id="messagesa" class="message"><a href="javascript:;">$templ_txt{'66'}</a><br /><br /></div>
-			<textarea rows="4" cols="19">$templ_txt{'35'}</textarea><br />
-			<input type="text" size="19" value="$templ_txt{'34a'}" />&nbsp;
-			<select value="test">
-				<option>$templ_txt{'36'} $templ_txt{'61'}</option>
-				<option>$templ_txt{'36'} 2</option>
-			</select>&nbsp;
-			<input type="button" value="$templ_txt{'34b'}" class="button" />
-		</td>
-	</tr><tr>
-		<td id="window1" class="windowbg vtop">&nbsp;</td>
-		<td id="window2" class="windowbg2 vtop">
-			$aquote
-			$acode
-			$aedit<br />
-			$ahighlight
-		</td>
-	</tr>
+    <tr>
+        <td id="window1" class="windowbg vtop">
+            $templ_txt{'32'}
+        </td>
+        <td id="window2" class="windowbg2 vtop">
+            $templ_txt{'33'}<br />
+            <hr class="hr">
+            <div id="messages" class="message">$templ_txt{'65'}</div>
+            <div id="messagesa" class="message"><a href="javascript:;">$templ_txt{'66'}</a><br /><br /></div>
+            <textarea rows="4" cols="19">$templ_txt{'35'}</textarea><br />
+            <input type="text" size="19" value="$templ_txt{'34a'}" />&nbsp;
+            <select value="test">
+                <option>$templ_txt{'36'} $templ_txt{'61'}</option>
+                <option>$templ_txt{'36'} 2</option>
+            </select>&nbsp;
+            <input type="button" value="$templ_txt{'34b'}" class="button" />
+        </td>
+    </tr><tr>
+        <td id="window1" class="windowbg vtop">&nbsp;</td>
+        <td id="window2" class="windowbg2 vtop">
+            $aquote
+            $acode
+            $aedit<br />
+            $ahighlight
+        </td>
+    </tr>
 </table>
 ~;
     if ($seperatorstyle) {
@@ -1063,11 +1063,11 @@ $viewstyle .= qq~
     }
     if ($istabbed) {
         $viewstyle .= q~
-	<br />
+    <br />
     <div class="mainbottom">
-    	<table>
-        	<tr>
-            	<td class="nav" style="height:22px">&nbsp;</td>
+        <table>
+            <tr>
+                <td class="nav" style="height:22px">&nbsp;</td>
             </tr>
         </table>
     </div>
@@ -1088,29 +1088,29 @@ $viewstyle .= qq~
     ToHTML($stylestr);
     $viewstyle =~ s/[\n\r]//gxsm;
     ToHTML($viewstyle);
-    
-	if($viewcss eq 'default') {
-		$savecss = q{};
-	}
-	else {
-		$savecss = $viewcss;
-	}
+
+    if($viewcss eq 'default') {
+        $savecss = q{};
+    }
+    else {
+        $savecss = $viewcss;
+    }
 
     $yymain .= qq~<tr>
-			<td class="windowbg2">
+            <td class="windowbg2">
                 <div class="center">$templ_txt{'noedit'}<br /></div>
                 <input type="hidden" name="stylestart" value="$viewstylestart" />
                 <input type="hidden" name="stylelink" value="$stylestr" />
                 <input type="hidden" name="stylebody" value="$viewstyle" />
                 <div style="float: left; width: 30%; padding: 3px;"><label for="savecssas"><b>$templ_txt{'12'}</b></label></div>
                 <div style="float: left; width: 69%;">
-            		<input type="text" name="savecssas" id="savecssas" value="~
+                    <input type="text" name="savecssas" id="savecssas" value="~
       . ( split /\./xsm, $cssfile )[0] . qq~" size="30" maxlength="30" />
                     <input type="submit" value="$templ_txt{'13'}" onclick="document.allstyles.button.value = '2';" class="button" />
                 </div>
             </td>
-		</tr>
-	</table>
+        </tr>
+    </table>
 </form>
 </div>
 <script type="text/javascript">
@@ -1144,30 +1144,30 @@ function updateStyles() {
 var buttonurl = '$yyhtml_root/Buttons/';
 
 function updateButtons(thebg) {
-	len = document.allstyles.selbutton.length;
-	for (i = 0; i <len; i++) {
- 		document.allstyles.selbutton[i].checked = false;
-		if (document.allstyles.selbutton[i].value == thebg) document.allstyles.selbutton[i].checked = true;
-	}
-	thenewstyle = document.allstyles.stylelink.value;
-	cssoption = document.allstyles.buttonleftbg.value;
-	newcssoption=cssoption.replace(/(background\\-image\\s*?\\:\.*?\\/Buttons\\/).*?(\\)\\;)/i, "\$1" + thebg + "\$2");
-	document.getElementById('butleft').style.backgroundImage = 'url(' + buttonurl + thebg + ')';
-	document.allstyles.buttonleftbg.value = newcssoption;
-	re=cssoption.replace(/(.*)/, "\$1");
-	thenewstyle=thenewstyle.replace(re, newcssoption);
-	document.allstyles.stylelink.value = thenewstyle;
-	updateStyles();
-	btside = '_right';
-	cssoption = document.allstyles.buttonrightbg.value;
-	newthebg = thebg.replace(/(.*?)\\_left(.*)/i, "\$1" + btside + "\$2");
-	newcssoption=cssoption.replace(/(background\\-image\\s*?\\:\.*?\\/Buttons\\/).*?(\\)\\;)/i, "\$1" + newthebg + "\$2");
-	document.getElementById('butright').style.backgroundImage = 'url(' + buttonurl + newthebg + ')';
-	document.allstyles.buttonrightbg.value = newcssoption;
-	re=cssoption.replace(/(.*)/, "\$1");
-	thenewstyle=thenewstyle.replace(re, newcssoption);
-	document.allstyles.stylelink.value = thenewstyle;
-	updateStyles();
+    len = document.allstyles.selbutton.length;
+    for (i = 0; i <len; i++) {
+        document.allstyles.selbutton[i].checked = false;
+        if (document.allstyles.selbutton[i].value == thebg) document.allstyles.selbutton[i].checked = true;
+    }
+    thenewstyle = document.allstyles.stylelink.value;
+    cssoption = document.allstyles.buttonleftbg.value;
+    newcssoption=cssoption.replace(/(background\\-image\\s*?\\:\.*?\\/Buttons\\/).*?(\\)\\;)/i, "\$1" + thebg + "\$2");
+    document.getElementById('butleft').style.backgroundImage = 'url(' + buttonurl + thebg + ')';
+    document.allstyles.buttonleftbg.value = newcssoption;
+    re=cssoption.replace(/(.*)/, "\$1");
+    thenewstyle=thenewstyle.replace(re, newcssoption);
+    document.allstyles.stylelink.value = thenewstyle;
+    updateStyles();
+    btside = '_right';
+    cssoption = document.allstyles.buttonrightbg.value;
+    newthebg = thebg.replace(/(.*?)\\_left(.*)/i, "\$1" + btside + "\$2");
+    newcssoption=cssoption.replace(/(background\\-image\\s*?\\:\.*?\\/Buttons\\/).*?(\\)\\;)/i, "\$1" + newthebg + "\$2");
+    document.getElementById('butright').style.backgroundImage = 'url(' + buttonurl + newthebg + ')';
+    document.allstyles.buttonrightbg.value = newcssoption;
+    re=cssoption.replace(/(.*)/, "\$1");
+    thenewstyle=thenewstyle.replace(re, newcssoption);
+    document.allstyles.stylelink.value = thenewstyle;
+    updateStyles();
 }
 
 function previewColor(thecolor) {
@@ -1182,7 +1182,7 @@ function previewColor(thecolor) {
                 if(cssoption.match(/\\#container\\s*?\\{/)) {
                         thenewstyle=thenewstyle.replace(/(\\.tabmenu span a\\s*?\\{.*?color\\s*?\\:).+?(\\;)/ig, "\$1 " + thecolor + "\$2");
                 }
-		if(cssoption.match(/\\.buttontext/)) document.getElementById('buttext').style.color = thecolor;
+        if(cssoption.match(/\\.buttontext/)) document.getElementById('buttext').style.color = thecolor;
         }
         if(cssback.checked) {
                 newcssoption=cssoption.replace(/(background-color\\s*?\\:).+?(\\;)/i, "\$1 " + thecolor + "\$2");
@@ -1313,7 +1313,7 @@ function previewFont() {
         re=cssoption.replace(/(.*)/, "\$1");
         thenewstyle=thenewstyle.replace(re, newcssoption);
         document.allstyles.stylelink.value = thenewstyle;
-	    if(cssoption.match(/\\.buttontext/)) document.getElementById('buttext').style.fontSize = thesize;
+        if(cssoption.match(/\\.buttontext/)) document.getElementById('buttext').style.fontSize = thesize;
         updateStyles();
 }
 
@@ -1336,7 +1336,7 @@ function previewFontface() {
         re=cssoption.replace(/(.*)/, "\$1");
         thenewstyle=thenewstyle.replace(re, newcssoption);
         document.allstyles.stylelink.value = thenewstyle;
-	    if(cssoption.match(/\\.buttontext/)) document.getElementById('buttext').style.fontFamily = theface;
+        if(cssoption.match(/\\.buttontext/)) document.getElementById('buttext').style.fontFamily = theface;
         updateStyles();
 }
 
@@ -1359,7 +1359,7 @@ function previewFontweight() {
         re=cssoption.replace(/(.*)/, "\$1");
         thenewstyle=thenewstyle.replace(re, newcssoption);
         document.allstyles.stylelink.value = thenewstyle;
-	    if(cssoption.match(/\\.buttontext/)) document.getElementById('buttext').style.fontWeight = thefontweight;
+        if(cssoption.match(/\\.buttontext/)) document.getElementById('buttext').style.fontWeight = thefontweight;
         updateStyles();
 }
 
@@ -1382,7 +1382,7 @@ function previewFontstyle() {
         re=cssoption.replace(/(.*)/, "\$1");
         thenewstyle=thenewstyle.replace(re, newcssoption);
         document.allstyles.stylelink.value = thenewstyle;
-	    if(cssoption.match(/\\.buttontext/)) document.getElementById('buttext').style.fontStyle = thefontstyle;
+        if(cssoption.match(/\\.buttontext/)) document.getElementById('buttext').style.fontStyle = thefontstyle;
         updateStyles();
 }
 
@@ -1660,7 +1660,7 @@ sub ModifyCSS2 {
             $style_sgl =~ s/\A\s+?//gxsm;
             if ( $style_sgl =~ m{\;+\Z}sm ) { $style_sgl = qq~\t$style_sgl~; }
             $style_sgl =~ s/$yyhtml_root\/Templates\/Forum/\./gsm;
-			$style_sgl =~ s/$yyhtml_root/\.\.\/\.\./gsm;
+            $style_sgl =~ s/$yyhtml_root/\.\.\/\.\./gsm;
             print {TMPCSS} "$style_sgl\n" or croak "$croak{'print'} TMPCSS";
         }
         fclose(TMPCSS);
@@ -1795,15 +1795,15 @@ sub ModifySkin {
     elsif ( $UseMenuType == 1 ) { $menutype1 = ' selected="selected" '; }
     elsif ( $UseMenuType == 2 ) { $menutype2 = ' selected="selected" '; }
 
-	$fullcss =~ s/\s{2,}/ /gsm;
-#	if ($fullcss =~ /\.buttontext/) {
-#		require Admin::Menu_def;
-#		SetMenu();
-#	}
-#	else {
-#		$cssbuttons = 0;
-#		require "$vardir/Menu$UseMenuType.def";
-#	}
+    $fullcss =~ s/\s{2,}/ /gsm;
+#   if ($fullcss =~ /\.buttontext/) {
+#       require Admin::Menu_def;
+#       SetMenu();
+#   }
+#   else {
+#       $cssbuttons = 0;
+#       require "$vardir/Menu$UseMenuType.def";
+#   }
 
     $boardtemplates   = q{};
     $messagetemplates = q{};
@@ -1972,27 +1972,27 @@ s/<a href="http:\/\/jigsaw.w3.org\/css\-validator\/validator\?uri\=<yabb url>">.
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiva">
-	<table class="cs_thin pad_4px">
-    	<tr>
-        	<td class="titlebg">
-                $admin_img{'xx'}<b> $templ_txt{'6'}</b>
+    <table class="cs_thin pad_4px">
+        <tr>
+            <td class="titlebg">
+                $admin_img{'xx'} <b> $templ_txt{'6'}</b>
             </td>
         </tr>
-	</table>
-	<table class="cs_thin">
-    	<tr>
-        	<td class="windowbg2 center">
-            	<iframe id="TempManager" name="TempManager" width="100%" height="350" marginwidth="0" marginheight="0" frameborder="0" scrolling="yes" style="border-top: 1px inset; border-bottom: 1px inset; visibility: visible; display: inline"></iframe>
+    </table>
+    <table class="cs_thin">
+        <tr>
+            <td class="windowbg2 center">
+                <iframe id="TempManager" name="TempManager" width="100%" height="350" marginwidth="0" marginheight="0" frameborder="0" scrolling="yes" style="border-top: 1px inset; border-bottom: 1px inset; visibility: visible; display: inline"></iframe>
             </td>
         </tr>
-	</table>
+    </table>
 <form action="$adminurl?action=modskin2" name="selskin" method="post" style="display: inline;" accept-charset="$yycharset">
-	<table class="cs_thin pad_4px">
-    	<tr>
-        	<td class="windowbg2">
-            	<div style="float: left; width: 30%; padding: 3px;"><label for="templateset"><b>$templ_txt{'10'}</b></label></div>
+    <table class="cs_thin pad_4px">
+        <tr>
+            <td class="windowbg2">
+                <div style="float: left; width: 30%; padding: 3px;"><label for="templateset"><b>$templ_txt{'10'}</b></label></div>
                 <div style="float: left; width: 69%;">
-					<input type="hidden" name="button" value="0" />
+                    <input type="hidden" name="button" value="0" />
                     <select name="templateset" id="templateset" size="1" onchange="submit();">
                         $templatesel
                     </select>
@@ -2010,17 +2010,17 @@ qq~                        <input type="submit" value="$templ_txt{'14'}" onclick
                         <b>$templ_txt{'11'}</b><br /><span class="small">$templ_txt{'7'}</span>
                 </div>
                 <div style="float: left; width: 69%;">
-            		<div style="float: left; width: 32%; text-align: left;">
-                    	<label for="menutype"><span class="small">$admin_txt{'521'}</span></label><br />
-                        	<select name="menutype" id="menutype" size="1" style="width: 90%;">
-                            	<option value="0"$menutype0>$admin_txt{'521a'}</option>
+                    <div style="float: left; width: 32%; text-align: left;">
+                        <label for="menutype"><span class="small">$admin_txt{'521'}</span></label><br />
+                            <select name="menutype" id="menutype" size="1" style="width: 90%;">
+                                <option value="0"$menutype0>$admin_txt{'521a'}</option>
                                 <option value="1"$menutype1>$admin_txt{'521b'}</option>
                                 <option value="2"$menutype2>$admin_txt{'521c'}</option>
                             </select>
                         </div>
-                        	<br />
+                            <br />
                         <div style="float: left; width: 32%; text-align: left;">
-                        	<label for="cssfile"><span class="small">$templ_txt{'1'}</span></label><br />
+                            <label for="cssfile"><span class="small">$templ_txt{'1'}</span></label><br />
                             <select name="cssfile" id="cssfile" size="1" style="width: 90%;">
                                 $forumcss
                             </select>
@@ -2061,20 +2061,20 @@ qq~                        <input type="submit" value="$templ_txt{'14'}" onclick
                                 $mycentertemplates
                             </select>
                         </div>
-                	</div>
+                    </div>
                 </td>
-        	</tr><tr>
+            </tr><tr>
                 <td class="windowbg2">
-            	    <div style="float: left; width: 30%; padding: 3px;"><label for="saveas"><b>$templ_txt{'12'}</b></label></div>
-                	<div style="float: left; width: 69%;">
+                    <div style="float: left; width: 30%; padding: 3px;"><label for="saveas"><b>$templ_txt{'12'}</b></label></div>
+                    <div style="float: left; width: 69%;">
                         <input type="hidden" name="tempname" value="$fulltemplate" />
                         <input type="text" name="saveas" id="saveas" value="$thistemplate" size="30" maxlength="50" />
                         <input type="submit" value="$templ_txt{'13'}" onclick="document.selskin.button.value = '2';" class="button" />
                         <input type="submit" value="$templ_txt{'9'}" onclick="document.selskin.button.value = '1';" class="button" />
-                	</div>
+                    </div>
                 </td>
-        	</tr>
-	</table>
+            </tr>
+    </table>
 </form>
 </div>
 <script type="text/javascript">
@@ -2296,12 +2296,12 @@ qq~<span class="small" style="color: $admcolor;"><b>${$uid.$username}{'realname'
     for my $i ( 1 .. 2 ) {
         my $templateblock = $boardblock;
         $templateblock =~ s/({|<)yabb new(}|>)/$tempnew/gsm;
- 		$templateblock =~ s/({|<)yabb boardrss(}|>)//gsm; ### RSS on Board Index ###
+        $templateblock =~ s/({|<)yabb boardrss(}|>)//gsm; ### RSS on Board Index ###
         $templateblock =~ s/({|<)yabb boardanchor(}|>)/$tempboardanchor/gsm;
         $templateblock =~ s/({|<)yabb boardurl(}|>)/$tempcurboardurl/gsm;
         $templateblock =~ s/({|<)yabb boardpic(}|>)/$tempboardpic/gsm;
         $templateblock =~ s/({|<)yabb boardname(}|>)/$tempcurboard $i/gsm;
-		$templateblock =~ s/({|<)yabb boardviewers(}|>)/$boardviewers/gsm;
+        $templateblock =~ s/({|<)yabb boardviewers(}|>)/$boardviewers/gsm;
         $templateblock =~ s/({|<)yabb boarddesc(}|>)/$tempbddescr/gsm;
         $templateblock =~ s/({|<)yabb moderators(}|>)/$tempshowmods/gsm;
         $templateblock =~ s/({|<)yabb threadcount(}|>)/$i/gsm;
@@ -2309,7 +2309,7 @@ qq~<span class="small" style="color: $admcolor;"><b>${$uid.$username}{'realname'
         $templateblock =~ s/({|<)yabb lastpostlink(}|>)/$templastpostlink/gsm;
         $templateblock =~ s/({|<)yabb lastposter(}|>)/$templastposter/gsm;
         $templateblock =~ s/({|<)yabb lasttopiclink(}|>)/$tmplasttopiclink/gsm;
-        $tmptemplateblock .= $templateblock;
+    	$tmptemplateblock .= $templateblock;
     }
     $tmptemplateblock .= $catfooter;
     $boardindex_template =~ s/({|<)yabb pollshowcase(}|>)//sm;
@@ -2329,7 +2329,7 @@ qq~$boardindex_txt{'236'} <a href="javascript:;"><b>$templ_txt{'80'}</b></a>~;
     $boardindex_template =~
       s/({|<)yabb boardhandellist(}|>)/$boardhandellist/gsm;
     $boardindex_template =~ s/({|<)yabb catimage(}|>)//gsm;
- 	$boardindex_template =~ s/({|<)yabb catrss(}|>)//gsm; ### RSS on Board Index ###
+    $boardindex_template =~ s/({|<)yabb catrss(}|>)//gsm; ### RSS on Board Index ###
     $boardindex_template =~
       s/img src\=\"$tmpimagesdir\/(.+?)\"/TmpImgLoc($1, $x[1], $x[2])/eisgm;
 
@@ -2434,10 +2434,10 @@ qq~<span class="small" style="vertical-align: middle;"> <b>$messageindex_txt{'13
     $messageindex_template =~ s/({|<)yabb category(}|>)/$tempcatnm/gsm;
     $messageindex_template =~ s/({|<)yabb board(}|>)/$tempboardnm/gsm;
     $messageindex_template =~ s/({|<)yabb moderators(}|>)/$tempmodslink/gsm;
-	$messageindex_template =~ s/({|<)yabb sortsubject(}|>)/$sort_subject/gsm;
-	$messageindex_template =~ s/({|<)yabb sortstarter(}|>)/$sort_starter/gsm;
-	$messageindex_template =~ s/({|<)yabb sortanswer(}|>)/$sort_answer/gsm;
-	$messageindex_template =~ s/({|<)yabb sortlastpostim(}|>)/$sort_lastpostim/gsm;
+    $messageindex_template =~ s/({|<)yabb sortsubject(}|>)/$sort_subject/gsm;
+    $messageindex_template =~ s/({|<)yabb sortstarter(}|>)/$sort_starter/gsm;
+    $messageindex_template =~ s/({|<)yabb sortanswer(}|>)/$sort_answer/gsm;
+    $messageindex_template =~ s/({|<)yabb sortlastpostim(}|>)/$sort_lastpostim/gsm;
     $messageindex_template =~ s/({|<)yabb bdpicture(}|>)/$bdpic/gsm;
     $messageindex_template =~ s/({|<)yabb threadcount(}|>)/1/gsm;
     $messageindex_template =~ s/({|<)yabb messagecount(}|>)/2/gsm;
@@ -2519,37 +2519,37 @@ sub DisplayTempl {
         $title,     $stars,      $starpic,    $color,     $noshow,
         $viewperms, $topicperms, $replyperms, $pollperms, $attachperms
     ) = split /\|/xsm, $Group{'Administrator'};
-	if($cssbuttons) {
-		if ($UseMenuType == 0) {
-			$yimimg = qq~$menusep<img src="$_[1]/yim.gif" alt="" />~;
-			$aimimg = qq~$menusep<img src="$_[1]/aim.gif" alt="" />~;
-		}
-		elsif ($UseMenuType == 1) {
-			$yimimg = qq~$menusep<span class="imgwindowbg">YIM</span>~;
-			$aimimg = qq~$menusep<span class="imgwindowbg">AIM</span>~;
-		}
-		else {
+    if($cssbuttons) {
+        if ($UseMenuType == 0) {
+            $yimimg = qq~$menusep<img src="$_[1]/yim.gif" alt="" />~;
+            $aimimg = qq~$menusep<img src="$_[1]/aim.gif" alt="" />~;
+        }
+        elsif ($UseMenuType == 1) {
+            $yimimg = qq~$menusep<span class="imgwindowbg">YIM</span>~;
+            $aimimg = qq~$menusep<span class="imgwindowbg">AIM</span>~;
+        }
+        else {
             $viewstyleleft = q~style="height: 20px; border: 0px; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
             $viewstyleright = q~style="height: 20px; border: 0px; margin: 0px; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
             $viewstyleimage = q~height: 20px; border: 0px; margin: 0px; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;~;
             $viewstyletext = q~style="height: 20px; border: 0px; margin: 0px; padding: 0px; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block;"~;
-			$yimimg = qq~<span class="buttonleft" $viewstyleleft><span class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/yim.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>YIM</span></span></span></span>~;
-			$aimimg = qq~<span class="buttonleft" $viewstyleleft><span class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/aim.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>AIM</span></span></span></span>~;
-		}
-	}
-	else {
-		if ($UseMenuType == 0) {
-			$yimimg = qq~$menusep<img src="$x[1]/yim.gif" alt="" />~;
-			$aimimg = qq~$menusep<img src="$x[1]/aim.gif" alt="" />~;
-		} elsif ($UseMenuType == 1) {
-			$yimimg = qq~$menusep<span class="imgwindowbg">YIM</span>~;
-			$aimimg = qq~$menusep<span class="imgwindowbg">AIM</span>~;
-		} else {
-		    require "$vardir/Menu2.def";
-			$yimimg = qq~$menusep$img{'yim'}~;
-			$aimimg = qq~$menusep$img{'aim'}~;
-		}
-	}
+            $yimimg = qq~<span class="buttonleft" $viewstyleleft><span class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/yim.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>YIM</span></span></span></span>~;
+            $aimimg = qq~<span class="buttonleft" $viewstyleleft><span class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/aim.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>AIM</span></span></span></span>~;
+        }
+    }
+    else {
+        if ($UseMenuType == 0) {
+            $yimimg = qq~$menusep<img src="$x[1]/yim.gif" alt="" />~;
+            $aimimg = qq~$menusep<img src="$x[1]/aim.gif" alt="" />~;
+        } elsif ($UseMenuType == 1) {
+            $yimimg = qq~$menusep<span class="imgwindowbg">YIM</span>~;
+            $aimimg = qq~$menusep<span class="imgwindowbg">AIM</span>~;
+        } else {
+            require "$vardir/Menu2.def";
+            $yimimg = qq~$menusep$img{'yim'}~;
+            $aimimg = qq~$menusep$img{'aim'}~;
+        }
+    }
     my $template_home = qq~<span class="nav">$mbname</span>~;
     my $tempcatnm     = $templ_txt{'72'};
     my $tempboardnm   = $templ_txt{'73'};
@@ -2707,7 +2707,7 @@ qq~<img src="$facesurl/elmerfudd.gif" name="avatar" alt="" style="max-width: $us
       s/({|<)yabb pageindex toggle(}|>)/$temppageindextgl/gsm;
     $display_template =~ s/({|<)yabb pageindex top(}|>)/$temppageindex1/gsm;
     $display_template =~ s/({|<)yabb pageindex bottom(}|>)/$temppageindex1/gsm;
- 	$display_template =~ s/({|<)yabb bookmarks(}|>)//gsm; # Social Bookmarks
+    $display_template =~ s/({|<)yabb bookmarks(}|>)//gsm; # Social Bookmarks
     $display_template =~
       s/({|<)yabb threadhandellist(}|>)/$threadhandellist/gsm;
     $display_template =~

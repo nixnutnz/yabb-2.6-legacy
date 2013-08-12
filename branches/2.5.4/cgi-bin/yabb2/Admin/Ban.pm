@@ -442,14 +442,14 @@ sub banlog {
                 if ($banned_ip[0]) {
                     $banned_ip[0] = qq~ ( $banned_ip[0] )~;
                 }
-                else {$banned_ip[0] = q~~;} 
+                else {$banned_ip[0] = q~~;}
             }
             else {$banned_ip[1] = $banned[1];}
             $banlog .=  qq~<li>$banned_ip[1]$banned_ip[0] - on $mon/$day/$year (<a href="$adminurl?action=guardian_block;ip=$banned_ip[1];return=ipban" onclick="return confirm('$admin_txt{'ipblock_confirm'}$banned_ip[1]');">$admin_txt{'ipblock'}</a>)</li>\n~;
         }
         else {
         $banlog .=  qq~<li>$banned[1] on $mon/$day/$year</li>\n~;
-        } 
+        }
     }
     return $banlog;
 }

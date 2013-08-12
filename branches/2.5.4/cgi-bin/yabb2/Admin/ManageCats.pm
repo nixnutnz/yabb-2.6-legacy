@@ -106,10 +106,10 @@ sub AddCats {
                     $allowChecked = 'checked="checked"';
                 }
                 else { $allowChecked = q{}; }
-				### RSS on Board Index Start ###
-				if ( $catrss == 1 ) { $catrssch = ' checked="checked"'; }
-				else { $catrssch = q{}; }
-				### RSS on Board Index End ###
+                ### RSS on Board Index Start ###
+                if ( $catrss == 1 ) { $catrssch = ' checked="checked"'; }
+                else { $catrssch = q{}; }
+                ### RSS on Board Index End ###
             }
         }
         else {
@@ -137,17 +137,17 @@ sub AddCats {
         }
         $yymain .= qq~
             </td>
-			<td class="windowbg2 center" rowspan="4"><select multiple="multiple" name="catperms$i" id="catperms$i" size="5">$catperms</select><br /><label for="catperms$i"><span class="small">$admin_txt{'14'}</span></label></td>
-			<td class="windowbg2 center" rowspan="4"><input type="checkbox" $allowChecked name="allowcol$i" id="allowcol$i" /></td>
+            <td class="windowbg2 center" rowspan="4"><select multiple="multiple" name="catperms$i" id="catperms$i" size="5">$catperms</select><br /><label for="catperms$i"><span class="small">$admin_txt{'14'}</span></label></td>
+            <td class="windowbg2 center" rowspan="4"><input type="checkbox" $allowChecked name="allowcol$i" id="allowcol$i" /></td>
         </tr><tr>
             <td class="windowbg"><label for="name$i"><b>$admin_txt{'68'}:</b></label></td>
             <td class="windowbg2 padd_8_12px"><input type="text" name="name$i" id="name$i" value="$curcatname" size="40" /></td>
         </tr><tr>
             <td class="windowbg"><label for="catimage$i"><b>$admin_txt{'64b2'}:</b></label></td>
-			<td class="windowbg2 padd_8_12px"><br /><input type="text" name="catimage$i" id="catimage$i" value="$catimage" size="40" />~ . ($catimage ? qq~<br /><br  /><img src="$catimage" alt="" />~ : q{}) . qq~</td>
-		</tr><tr>
-			<td class="windowbg"><label for="catrss$i"><b>$admin_txt{'brdrss1'}:</b></label></td>
-			<td class="windowbg2 padd_8_12px"><br /><input type="checkbox" name="catrss$i" id="catrss$i"$catrssch /> <label for="catrss$i"><span class="small">$admin_txt{'brdrss2'}</span></label></td>
+            <td class="windowbg2 padd_8_12px"><br /><input type="text" name="catimage$i" id="catimage$i" value="$catimage" size="40" />~ . ($catimage ? qq~<br /><br  /><img src="$catimage" alt="" />~ : q{}) . qq~</td>
+        </tr><tr>
+            <td class="windowbg"><label for="catrss$i"><b>$admin_txt{'brdrss1'}:</b></label></td>
+            <td class="windowbg2 padd_8_12px"><br /><input type="checkbox" name="catrss$i" id="catrss$i"$catrssch /> <label for="catrss$i"><span class="small">$admin_txt{'brdrss2'}</span></label></td>
          </tr>~;
     }
     $yymain .= qq~<tr>
@@ -201,13 +201,13 @@ sub AddCats2 {
 
         if   ( $FORM{"allowcol$i"} eq 'on' ) { $FORM{"allowcol$i"} = 1; }
         else                                 { $FORM{"allowcol$i"} = 0; }
- 
-		### RSS on Board Index Start ### 
-		if ( $FORM{"catrss$i"} eq 'on' ) { $FORM{"catrss$i"} = 1; }
-		else { $FORM{"catrss$i"} = 0; }
-		### RSS on Board Index End ###
 
-		$catinfo{"$id"} = qq~$cname|$FORM{"catperms$i"}|$FORM{"allowcol$i"}|$FORM{"catimage$i"}|$FORM{"catrss$i"}~;
+        ### RSS on Board Index Start ###
+        if ( $FORM{"catrss$i"} eq 'on' ) { $FORM{"catrss$i"} = 1; }
+        else { $FORM{"catrss$i"} = 0; }
+        ### RSS on Board Index End ###
+
+        $catinfo{"$id"} = qq~$cname|$FORM{"catperms$i"}|$FORM{"allowcol$i"}|$FORM{"catimage$i"}|$FORM{"catrss$i"}~;
 
         $yymain .= qq~$admin_txt{'830'} <i>$id</i> $admin_txt{'48'}<br />~;
     }

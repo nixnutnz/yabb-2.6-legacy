@@ -67,72 +67,72 @@ sub EditMemberGroups {
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiva">
-	<table class="cs_thin pad_4px">
-    	<tr>
-    		<td class="titlebg">
+    <table class="cs_thin pad_4px">
+        <tr>
+            <td class="titlebg">
                 $admin_img{'guest'}&nbsp;<b>$admin_txt{'8'}</b>
-	   		</td>
-     	</tr><tr>
-       		<td class="windowbg2 padd_8_12px">
-				$admin_txt{'11'}
-	   		</td>
-     	</tr>
-	</table>
+            </td>
+        </tr><tr>
+            <td class="windowbg2 padd_8_12px">
+                $admin_txt{'11'}
+            </td>
+        </tr>
+    </table>
 </div>
 <div class="bordercolor rightboxdiva">
-	<table class="cs_thin pad_4px">
-    	<col class="w_25pc" />
-    	<col class="w_15pc" />
-    	<col class="w_10pc" />
-    	<col class="w_25pc" />
-    	<col class="w_10pc" />
-    	<col class="w_15pc" />
-		<tr>
-			<td class="titlebg" colspan="6">
+    <table class="cs_thin pad_4px">
+        <col class="w_25pc" />
+        <col class="w_15pc" />
+        <col class="w_10pc" />
+        <col class="w_25pc" />
+        <col class="w_10pc" />
+        <col class="w_15pc" />
+        <tr>
+            <td class="titlebg" colspan="6">
                 $admin_img{'guest'}&nbsp;<b>$admin_txt{'12'}</b>
-			</td>
-		</tr><tr>
-			<td class="catbg center"><b>$amgtxt{'03'}</b></td>
-			<td class="catbg center"><b>$amgtxt{'19'}</b></td>
-			<td class="catbg center"><b>$amgtxt{'08'}</b></td>
-			<td class="catbg center"><b>$amgtxt{'01'}</b></td>
-			<td class="catbg center"><b>$admin_txt{'53'}</b></td>
-			<td class="catbg center"><b>&nbsp;</b></td>
-		</tr><tr>
-			<td class="windowbg2 center">$MemStatAdmin</td>
-			<td class="windowbg2 center"><img src="$imagesdir/$MemStarPicAdmin" /> x $MemStarNumAdmin</td>~;
+            </td>
+        </tr><tr>
+            <td class="catbg center"><b>$amgtxt{'03'}</b></td>
+            <td class="catbg center"><b>$amgtxt{'19'}</b></td>
+            <td class="catbg center"><b>$amgtxt{'08'}</b></td>
+            <td class="catbg center"><b>$amgtxt{'01'}</b></td>
+            <td class="catbg center"><b>$admin_txt{'53'}</b></td>
+            <td class="catbg center"><b>&nbsp;</b></td>
+        </tr><tr>
+            <td class="windowbg2 center">$MemStatAdmin</td>
+            <td class="windowbg2 center"><img src="$imagesdir/$MemStarPicAdmin" /> x $MemStarNumAdmin</td>~;
 
     if ($MemTypeColAdmin) {
         $thecolname = hextoname($MemTypeColAdmin);
         $yymain .= qq~
-			<td class="windowbg2 center"><span style="color:$MemTypeColAdmin">$thecolname</span></td>~;
+            <td class="windowbg2 center"><span style="color:$MemTypeColAdmin">$thecolname</span></td>~;
     }
     else {
         $yymain .= q~
-			<td class="windowbg2 center">&nbsp;</td>~;
+            <td class="windowbg2 center">&nbsp;</td>~;
     }
     $yymain .= qq~
-			<td class="windowbg2 center">$noshowAdmin</td>
-			<td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Administrator">$admin_txt{'53'}</a></td>
-			<td class="windowbg2 center">&nbsp;</td>
-		</tr><tr>
-			<td class="windowbg2 center">$MemStatGMod</td>
-		<td class="windowbg2 center"><img src="$imagesdir/$MemStarPicGMod" /> x $MemStarNumGMod</td>~;
+            <td class="windowbg2 center">$noshowAdmin</td>
+            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Administrator">$admin_txt{'53'}</a></td>
+            <td class="windowbg2 center">&nbsp;</td>
+        </tr><tr>
+            <td class="windowbg2 center">$MemStatGMod</td>
+        <td class="windowbg2 center"><img src="$imagesdir/$MemStarPicGMod" /> x $MemStarNumGMod</td>~;
 
     if ($MemTypeColGMod) {
         $thecolname = hextoname($MemTypeColGMod);
         $yymain .= qq~
-			<td class="windowbg2 center"><span style="color:$MemTypeColGMod">$thecolname</span></td>~;
+            <td class="windowbg2 center"><span style="color:$MemTypeColGMod">$thecolname</span></td>~;
     }
     else {
         $yymain .= q~
-			<td class="windowbg2 center">&nbsp;</td>~;
+            <td class="windowbg2 center">&nbsp;</td>~;
     }
     $yymain .= qq~
-			<td class="windowbg2 center">$noshowGMod</td>
-			<td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Global Moderator">$admin_txt{'53'}</a></td>
-			<td class="windowbg2 center">&nbsp;</td>
-		</tr><tr>
+            <td class="windowbg2 center">$noshowGMod</td>
+            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Global Moderator">$admin_txt{'53'}</a></td>
+            <td class="windowbg2 center">&nbsp;</td>
+        </tr><tr>
             <td class="windowbg2 center">$MemStatFMod</td>
         <td class="windowbg2 center"><img src="$imagesdir/$MemStarPicFMod" /> x $MemStarNumFMod</td>~;
 
@@ -143,32 +143,32 @@ sub EditMemberGroups {
     }
     else {
         $yymain .= q~
-			<td class="windowbg2 center">&nbsp;</td>~;
+            <td class="windowbg2 center">&nbsp;</td>~;
     }
     $yymain .= qq~
             <td class="windowbg2 center">$noshowFMod</td>
-			<td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Mid Moderator">$admin_txt{'53'}</a></td>
-			<td class="windowbg2 center">&nbsp;</td>
-		</tr><tr>
-			<td class="windowbg2 center">$MemStatMod</td>
-			<td class="windowbg2 center"><img src="$imagesdir/$MemStarPicMod" /> x $MemStarNumMod</td>~;
+            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Mid Moderator">$admin_txt{'53'}</a></td>
+            <td class="windowbg2 center">&nbsp;</td>
+        </tr><tr>
+            <td class="windowbg2 center">$MemStatMod</td>
+            <td class="windowbg2 center"><img src="$imagesdir/$MemStarPicMod" /> x $MemStarNumMod</td>~;
 
 
     if ($MemTypeColMod) {
         $thecolname = hextoname($MemTypeColMod);
         $yymain .= qq~
-			<td class="windowbg2 center"><span style="color:$MemTypeColMod">$thecolname</span></td>~;
+            <td class="windowbg2 center"><span style="color:$MemTypeColMod">$thecolname</span></td>~;
     }
     else {
         $yymain .= q~
-			<td class="windowbg2 center">&nbsp;</td>~;
+            <td class="windowbg2 center">&nbsp;</td>~;
     }
     $yymain .= qq~
-			<td class="windowbg2 center">$noshowMod</td>
-			<td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Moderator">$admin_txt{'53'}</a></td>
-			<td class="windowbg2 center">&nbsp;</td>
-		</tr>
-	</table>
+            <td class="windowbg2 center">$noshowMod</td>
+            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Moderator">$admin_txt{'53'}</a></td>
+            <td class="windowbg2 center">&nbsp;</td>
+        </tr>
+    </table>
 </div>
 ~;
 
@@ -192,20 +192,20 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiva">
-	<table class="cs_thin pad_4px">
-		<tr>
-			<td class="titlebg" colspan="$colspan">
+    <table class="cs_thin pad_4px">
+        <tr>
+            <td class="titlebg" colspan="$colspan">
                 $admin_img{'guest'}&nbsp;<b>$amgtxt{'37'} (<a href="$adminurl?action=editgroup">$admintxt{'18c'}</a>$reorderlink)</b>
-			</td>
-		</tr><tr>
-			<td class="catbg center w_25pc"><b>$amgtxt{'03'}</b></td>
-			<td class="catbg center w_15pc"><b>$amgtxt{'19'}</b></td>
-			<td class="catbg center w_10pc"><b>$amgtxt{'08'}</b></td>
-			<td class="catbg center $width1"><b>$amgtxt{'01'}</b></td>
-			$additional_tablehead
-			<td class="catbg center $width2"><b>$admin_txt{'53'}</b></td>
-			<td class="catbg center $width3"><b>$admin_txt{'54'}</b></td>
-		</tr>~;
+            </td>
+        </tr><tr>
+            <td class="catbg center w_25pc"><b>$amgtxt{'03'}</b></td>
+            <td class="catbg center w_15pc"><b>$amgtxt{'19'}</b></td>
+            <td class="catbg center w_10pc"><b>$amgtxt{'08'}</b></td>
+            <td class="catbg center $width1"><b>$amgtxt{'01'}</b></td>
+            $additional_tablehead
+            <td class="catbg center $width2"><b>$admin_txt{'53'}</b></td>
+            <td class="catbg center $width3"><b>$admin_txt{'54'}</b></td>
+        </tr>~;
 
     $count = 0;
     foreach (@nopostorder) {
@@ -223,63 +223,63 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
           ( $additional == 0 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
         if ( !$stars ) { $stars = '0'; }
         $yymain .= qq~<tr>
-			<td class="windowbg2 center">$title</td>
-			<td class="windowbg2 center"><img src="$imagesdir/$starpic" /> x $stars</td>~;
+            <td class="windowbg2 center">$title</td>
+            <td class="windowbg2 center"><img src="$imagesdir/$starpic" /> x $stars</td>~;
 
         if ($color) {
             $thecolname = hextoname($color);
             $yymain .= qq~
-			<td class="windowbg2 center"><span style="color:$color">$thecolname</span></td>~;
+            <td class="windowbg2 center"><span style="color:$color">$thecolname</span></td>~;
         }
         else {
             $yymain .= q~
-			<td class="windowbg2 center">&nbsp;</td>~;
+            <td class="windowbg2 center">&nbsp;</td>~;
         }
 
         $yymain .= qq~
-			<td class="windowbg2 center">$noshow</td>~;
+            <td class="windowbg2 center">$noshow</td>~;
 
         if ( $addmemgroup_enabled > 0 ) {
             $yymain .= qq~
-			<td class="windowbg2 center">$additional</td>~;
+            <td class="windowbg2 center">$additional</td>~;
         }
 
         $yymain .= qq~
-			<td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=NP|$_">$admin_txt{'53'}</a></td>
-			<td class="windowbg2 center"><a href="$adminurl?action=delgroup;group=NP|$_">$admin_txt{'54'}</a></td>
-		</tr>~;
+            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=NP|$_">$admin_txt{'53'}</a></td>
+            <td class="windowbg2 center"><a href="$adminurl?action=delgroup;group=NP|$_">$admin_txt{'54'}</a></td>
+        </tr>~;
         $count++;
     }
 
     if ( $count == 0 ) {
         $yymain .= qq~<tr>
-			<td class="windowbg2 center" colspan="6">$amgtxt{'35'}</td>
-		</tr>~;
+            <td class="windowbg2 center" colspan="6">$amgtxt{'35'}</td>
+        </tr>~;
     }
 
     $yymain .= qq~
-	</table>
+    </table>
 </div>
 <div class="bordercolor rightboxdiva">
-	<table class="cs_thin pad_4px">
-    	<col class="w_25pc" />
-    	<col class="w_15pc" />
-    	<col class="w_10pc" />
-    	<col class="w_25pc" />
-    	<col class="w_10pc" />
-    	<col class="w_15pc" />
-		<tr>
-			<td class="titlebg" colspan="6">
+    <table class="cs_thin pad_4px">
+        <col class="w_25pc" />
+        <col class="w_15pc" />
+        <col class="w_10pc" />
+        <col class="w_25pc" />
+        <col class="w_10pc" />
+        <col class="w_15pc" />
+        <tr>
+            <td class="titlebg" colspan="6">
                 $admin_img{'guest'}&nbsp;<b>$amgtxt{'40'}&nbsp;(<a href="$adminurl?action=editgroup1">$admintxt{'18c'}</a>)</b>
-			</td>
-		</tr><tr>
-			<td class="catbg center"><b>$amgtxt{'03'}</b></td>
-			<td class="catbg center"><b>$amgtxt{'19'}</b></td>
-			<td class="catbg center"><b>$amgtxt{'08'}</b></td>
-			<td class="catbg center"><b>$admin_txt{'21'}</b></td>
-			<td class="catbg center"><b>$admin_txt{'53'}</b></td>
-			<td class="catbg center"><b>$admin_txt{'54'}</b></td>
-		</tr>~;
+            </td>
+        </tr><tr>
+            <td class="catbg center"><b>$amgtxt{'03'}</b></td>
+            <td class="catbg center"><b>$amgtxt{'19'}</b></td>
+            <td class="catbg center"><b>$amgtxt{'08'}</b></td>
+            <td class="catbg center"><b>$admin_txt{'21'}</b></td>
+            <td class="catbg center"><b>$admin_txt{'53'}</b></td>
+            <td class="catbg center"><b>$admin_txt{'54'}</b></td>
+        </tr>~;
 
     my $count = 0;
     foreach ( reverse sort { $a <=> $b } keys %Post ) {
@@ -297,34 +297,34 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
         if ( !$stars )             { $stars   = '0'; }
         if ( $starpic !~ /\//xsm ) { $starpic = "$imagesdir/$starpic"; }
         $yymain .= qq~<tr>
-			<td class="windowbg2 center">$title</td>
-			<td class="windowbg2 center"><img src="$starpic" /> x $stars</td>~;
+            <td class="windowbg2 center">$title</td>
+            <td class="windowbg2 center"><img src="$starpic" /> x $stars</td>~;
 
         if ($color) {
             $thecolname = hextoname($color);
             $yymain .= qq~
-			<td class="windowbg2 center"><span style="color: $color;">$thecolname</span></td>~;
+            <td class="windowbg2 center"><span style="color: $color;">$thecolname</span></td>~;
         }
         else {
             $yymain .= q~
-			<td class="windowbg2 center">&nbsp;</td>~;
+            <td class="windowbg2 center">&nbsp;</td>~;
         }
 
         $yymain .= qq~
-			<td class="windowbg2 center">$_</td>
-			<td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=P|$_">$admin_txt{'53'}</a></td>
-			<td class="windowbg2 center"><a href="$adminurl?action=delgroup;group=P|$_">$admin_txt{'54'}</a></td>
-		</tr>~;
+            <td class="windowbg2 center">$_</td>
+            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=P|$_">$admin_txt{'53'}</a></td>
+            <td class="windowbg2 center"><a href="$adminurl?action=delgroup;group=P|$_">$admin_txt{'54'}</a></td>
+        </tr>~;
         $count++;
     }
 
     if ( $count == 0 ) {
         $yymain .= qq~<tr>
-			<td class="windowbg2" colspan="6">$amgtxt{'36'}</td>
-		</tr>~;
+            <td class="windowbg2" colspan="6">$amgtxt{'36'}</td>
+        </tr>~;
     }
     $yymain .= q~
-	</table>
+    </table>
 </div>
 ~;
 
@@ -463,100 +463,100 @@ sub editAddGroup {
 <div class="bordercolor rightboxdiva">
 <table class="cs_thin pad_4px">
     <col style="width:40%" />
-	<tr>
+    <tr>
         <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$viewtitle</b>
-		</td>
-	</tr><tr>
-		<td class="windowbg"><label for="title">$amgtxt{'51'}:</label></td>
-		<td class="windowbg2"><input type="text" name="title" id="title" value="$title" /></td>
-	</tr><tr>
-		<td class="windowbg"><label for="numstars">$amgtxt{'05'}</label></td>
-		<td class="windowbg2"><input type="text" name="numstars" id="numstars" size="2" value="$stars" /></td>
-	</tr><tr>
-		<td class="windowbg"><label for="starsadmin">$amgtxt{'38'}:</label></td>
-		<td class="windowbg2">
-			<select name="starsadmin" id="starsadmin" onchange="stars(this.value); showimage();">
-            	<option value="staradmin.png" $stara[1]>$amgtxt{'20'}</option>
+        </td>
+    </tr><tr>
+        <td class="windowbg"><label for="title">$amgtxt{'51'}:</label></td>
+        <td class="windowbg2"><input type="text" name="title" id="title" value="$title" /></td>
+    </tr><tr>
+        <td class="windowbg"><label for="numstars">$amgtxt{'05'}</label></td>
+        <td class="windowbg2"><input type="text" name="numstars" id="numstars" size="2" value="$stars" /></td>
+    </tr><tr>
+        <td class="windowbg"><label for="starsadmin">$amgtxt{'38'}:</label></td>
+        <td class="windowbg2">
+            <select name="starsadmin" id="starsadmin" onchange="stars(this.value); showimage();">
+                <option value="staradmin.png" $stara[1]>$amgtxt{'20'}</option>
                 <option value="stargmod.png" $stara[2]>$amgtxt{'21'}</option>
                 <option value="starmod.png" $stara[3]>$amgtxt{'22'}</option>
                 <option value="starblue.png" $stara[4]>$amgtxt{'23'}</option>
                 <option value="starsilver.png" $stara[5]>$amgtxt{'24'}</option>
                 <option value="stargold.png" $stara[6]>$amgtxt{'25'}</option>
                 <option value="other" $stara[7]>$amgtxt{'26'}</option>
-			</select>
-			&nbsp;
-			<label for="otherstar"><b>$amgtxt{'26'}</b></label> <input type="text" name="otherstar" id="otherstar" onchange="showimage();" value="$pick"$otherdisable />
-			&nbsp;
-			<img src="$starurl" name="starpic" alt="" />
-		</td>
-	</tr><tr>
-		<td class="windowbg"><label for="color">$amgtxt{'08'}:</label></td>
-		<td class="windowbg2" >
-			<select name="color" id="color" onchange="viscolor(this.options[this.selectedIndex].value);">
-			<option value=""></option>
-			<option value="00FFFF">$amgtxt{'56'}</option>
-			<option value="000000">$amgtxt{'57'}</option>
-			<option value="0000FF">$amgtxt{'58'}</option>
-			<option value="FF00FF">$amgtxt{'59'}</option>
-			<option value="808080">$amgtxt{'60'}</option>
-			<option value="008000">$amgtxt{'61'}</option>
-			<option value="00FF00">$amgtxt{'62'}</option>
-			<option value="800000">$amgtxt{'63'}</option>
-			<option value="000080">$amgtxt{'64'}</option>
-			<option value="808000">$amgtxt{'65'}</option>
-			<option value="800080">$amgtxt{'66'}</option>
-			<option value="FF0000">$amgtxt{'67'}</option>
-			<option value="C0C0C0">$amgtxt{'68'}</option>
-			<option value="008080">$amgtxt{'69'}</option>
-			<option value="FFFFFF">$amgtxt{'70'}</option>
-			<option value="FFFF00">$amgtxt{'71'}</option>
-			<option value="DEB887">$amgtxt{'75'}</option>
-			<option value="FFD700">$amgtxt{'76'}</option>
-			<option value="FFA500">$amgtxt{'77'}</option>
-			<option value="A0522D">$amgtxt{'78'}</option>
-			<option value="87CEEB">$amgtxt{'79'}</option>
-			<option value="6A5ACD">$amgtxt{'80'}</option>
-			<option value="4682B4">$amgtxt{'81'}</option>
-			<option value="9ACD32">$amgtxt{'82'}</option>
-			</select> &nbsp;
-			<span id="grpcolor"~
+            </select>
+            &nbsp;
+            <label for="otherstar"><b>$amgtxt{'26'}</b></label> <input type="text" name="otherstar" id="otherstar" onchange="showimage();" value="$pick"$otherdisable />
+            &nbsp;
+            <img src="$starurl" name="starpic" alt="" />
+        </td>
+    </tr><tr>
+        <td class="windowbg"><label for="color">$amgtxt{'08'}:</label></td>
+        <td class="windowbg2" >
+            <select name="color" id="color" onchange="viscolor(this.options[this.selectedIndex].value);">
+            <option value=""></option>
+            <option value="00FFFF">$amgtxt{'56'}</option>
+            <option value="000000">$amgtxt{'57'}</option>
+            <option value="0000FF">$amgtxt{'58'}</option>
+            <option value="FF00FF">$amgtxt{'59'}</option>
+            <option value="808080">$amgtxt{'60'}</option>
+            <option value="008000">$amgtxt{'61'}</option>
+            <option value="00FF00">$amgtxt{'62'}</option>
+            <option value="800000">$amgtxt{'63'}</option>
+            <option value="000080">$amgtxt{'64'}</option>
+            <option value="808000">$amgtxt{'65'}</option>
+            <option value="800080">$amgtxt{'66'}</option>
+            <option value="FF0000">$amgtxt{'67'}</option>
+            <option value="C0C0C0">$amgtxt{'68'}</option>
+            <option value="008080">$amgtxt{'69'}</option>
+            <option value="FFFFFF">$amgtxt{'70'}</option>
+            <option value="FFFF00">$amgtxt{'71'}</option>
+            <option value="DEB887">$amgtxt{'75'}</option>
+            <option value="FFD700">$amgtxt{'76'}</option>
+            <option value="FFA500">$amgtxt{'77'}</option>
+            <option value="A0522D">$amgtxt{'78'}</option>
+            <option value="87CEEB">$amgtxt{'79'}</option>
+            <option value="6A5ACD">$amgtxt{'80'}</option>
+            <option value="4682B4">$amgtxt{'81'}</option>
+            <option value="9ACD32">$amgtxt{'82'}</option>
+            </select> &nbsp;
+            <span id="grpcolor"~
       . ( $color ne q{} ? qq* style="color: #$color;"* : q{} )
       . qq~><label for="color2"><b>$amgtxt{'08'}</b></label></span>
-			#<input type="text" name="color2" id="color2" size="6" value="$color" maxlength="6" onkeyup="viscolor(this.value);" /> &nbsp;
-			<img src="$imagesdir/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
-		</td>
-	</tr>~;
+            #<input type="text" name="color2" id="color2" size="6" value="$color" maxlength="6" onkeyup="viscolor(this.value);" /> &nbsp;
+            <img src="$imagesdir/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+        </td>
+    </tr>~;
 
     # Get color selected
     $yymain =~ s/(<option value="$color")/$1 selected="selected"/sm;
 
     if ( !exists $Group{ $INFO{'group'} } ) {
         $yymain .= qq~<tr>
-		<td class="windowbg"><label for="postindepend">$amgtxt{'39a'}</label></td>
-		<td class="windowbg2">
+        <td class="windowbg"><label for="postindepend">$amgtxt{'39a'}</label></td>
+        <td class="windowbg2">
             <input type="radio" name="postdepend" id="postindepend" value="No" $post2 class="windowbg2" style="border: 0px; vertical-align: middle;" onclick="depend(this.value)" />
             <br />
-			<label for="viewpublic"><b>$amgtxt{'42'}?</b>
-			<input type="checkbox" name="viewpublic" id="viewpublic" value="1"$pc$pd style="vertical-align: middle;" /> <br />$amgtxt{'43'}</label>
-			<input type="hidden" name="noposts" id="noposts" value="$noposts" />
-		</td>
-	</tr><tr>
-		<td class="windowbg"><label for="postdepend">$amgtxt{'39'}</label></td>
-		<td class="windowbg2">
-			<input type="radio" name="postdepend" id="postdepend" value="Yes" $post1 class="windowbg2" style="border: 0px; vertical-align: middle;" onclick="depend(this.value)" />
+            <label for="viewpublic"><b>$amgtxt{'42'}?</b>
+            <input type="checkbox" name="viewpublic" id="viewpublic" value="1"$pc$pd style="vertical-align: middle;" /> <br />$amgtxt{'43'}</label>
+            <input type="hidden" name="noposts" id="noposts" value="$noposts" />
+        </td>
+    </tr><tr>
+        <td class="windowbg"><label for="postdepend">$amgtxt{'39'}</label></td>
+        <td class="windowbg2">
+            <input type="radio" name="postdepend" id="postdepend" value="Yes" $post1 class="windowbg2" style="border: 0px; vertical-align: middle;" onclick="depend(this.value)" />
             <br />
-			<label for="posts"><b>$amgtxt{'04'}</b></label> <input type="text" name="posts" id="posts" size="5" value="$posts"$pt style="vertical-align: middle;" />
-		</td>
-	</tr>~;
+            <label for="posts"><b>$amgtxt{'04'}</b></label> <input type="text" name="posts" id="posts" size="5" value="$posts"$pt style="vertical-align: middle;" />
+        </td>
+    </tr>~;
 
     }
     else {
         $yymain .= qq~<tr>
-		<td class="windowbg"><label for="viewpublic"><b>$amgtxt{'42'}</b> <br /><b>$amgtxt{'43'}</b></label></td>
-		<td class="windowbg2">
-			<input type="checkbox" name="viewpublic" id="viewpublic" value="1"$pc$pd style="vertical-align: middle;" />
-		</td>
-	</tr>~;
+        <td class="windowbg"><label for="viewpublic"><b>$amgtxt{'42'}</b> <br /><b>$amgtxt{'43'}</b></label></td>
+        <td class="windowbg2">
+            <input type="checkbox" name="viewpublic" id="viewpublic" value="1"$pc$pd style="vertical-align: middle;" />
+        </td>
+    </tr>~;
     }
 
     if ( $addmemgroup_enabled > 0 ) {
@@ -564,11 +564,11 @@ sub editAddGroup {
             || ( !$choosable && $action ne 'editgroup1' && !$INFO{'group'} ) )
         {
             $yymain .= qq~<tr>
-		<td class="windowbg"><label for="additional">$amgtxt{'83'}</label></td>
-		<td class="windowbg2">
-			<input type="checkbox" name="additional" id="additional" value="1"$admg style="vertical-align: middle;" /> <br /><label for="additional">$amgtxt{'84'}</label>
-		</td>
-	</tr>~;
+        <td class="windowbg"><label for="additional">$amgtxt{'83'}</label></td>
+        <td class="windowbg2">
+            <input type="checkbox" name="additional" id="additional" value="1"$admg style="vertical-align: middle;" /> <br /><label for="additional">$amgtxt{'84'}</label>
+        </td>
+    </tr>~;
         }
     }
     if ( $INFO{'group'} ne 'Administrator' ) {
@@ -576,86 +576,86 @@ sub editAddGroup {
     </table>
 </div>
 <div class="bordercolor rightboxdiva">
-	<table class="cs_thin pad_4px">
-	    <col span="5" class="w_20pc" />
-		<tr>
-			<td class="titlebg" colspan="5">
+    <table class="cs_thin pad_4px">
+        <col span="5" class="w_20pc" />
+        <tr>
+            <td class="titlebg" colspan="5">
                 $admin_img{'prefimg'} <b>$amgtxt{'44'}</b>
-			</td>
-		</tr><tr>
-			<td class="catbg center"><label for="view"><span class="small">$amgtxt{'45'} $amgtxt{'46'}</span></label></td>
-			<td class="catbg center"><label for="topics"><span class="small">$amgtxt{'45'} $amgtxt{'47'}</span></label></td>
-			<td class="catbg center"><label for="reply"><span class="small">$amgtxt{'45'} $amgtxt{'48'}</span></label></td>
-			<td class="catbg center"><label for="polls"><span class="small">$amgtxt{'45'} $amgtxt{'49'}</span></label></td>
-			<td class="catbg center"><label for="attach"><span class="small">$amgtxt{'45'} $amgtxt{'50'}</span></label></td>
-		</tr><tr>
-			<td class="windowbg2 center"><span class="small"><input type="checkbox" name="view" id="view" value="1"$vc /></span></td>
-			<td class="windowbg2 center"><span class="small"><input type="checkbox" name="topics" id="topics" value="1"$tc /></span></td>
-			<td class="windowbg2 center"><span class="small"><input type="checkbox" name="reply" id="reply" value="1"$rc /></span></td>
-			<td class="windowbg2 center"><span class="small"><input type="checkbox" name="polls" id="polls" value="1"$poc /></span></td>
-			<td class="windowbg2 center"><span class="small"><input type="checkbox" name="attach" id="attach" value="1"$ac /></span></td>
-		</tr>~;
+            </td>
+        </tr><tr>
+            <td class="catbg center"><label for="view"><span class="small">$amgtxt{'45'} $amgtxt{'46'}</span></label></td>
+            <td class="catbg center"><label for="topics"><span class="small">$amgtxt{'45'} $amgtxt{'47'}</span></label></td>
+            <td class="catbg center"><label for="reply"><span class="small">$amgtxt{'45'} $amgtxt{'48'}</span></label></td>
+            <td class="catbg center"><label for="polls"><span class="small">$amgtxt{'45'} $amgtxt{'49'}</span></label></td>
+            <td class="catbg center"><label for="attach"><span class="small">$amgtxt{'45'} $amgtxt{'50'}</span></label></td>
+        </tr><tr>
+            <td class="windowbg2 center"><span class="small"><input type="checkbox" name="view" id="view" value="1"$vc /></span></td>
+            <td class="windowbg2 center"><span class="small"><input type="checkbox" name="topics" id="topics" value="1"$tc /></span></td>
+            <td class="windowbg2 center"><span class="small"><input type="checkbox" name="reply" id="reply" value="1"$rc /></span></td>
+            <td class="windowbg2 center"><span class="small"><input type="checkbox" name="polls" id="polls" value="1"$poc /></span></td>
+            <td class="windowbg2 center"><span class="small"><input type="checkbox" name="attach" id="attach" value="1"$ac /></span></td>
+        </tr>~;
     }
 
     $yymain .= qq~<tr>
-			<td class="catbg center" colspan="5">
-				<input type="submit" value="$admin_txt{'10'}" class="button" />
-			</td>
-		</tr>
-	</table>
+            <td class="catbg center" colspan="5">
+                <input type="submit" value="$admin_txt{'10'}" class="button" />
+            </td>
+        </tr>
+    </table>
 </div>
 </form>
 
 <script type="text/javascript">
 <!--
 function viscolor(v) {
-	v = v.toUpperCase();
-	v = v.replace(/[^A-F0-9]/g, '');
-	if (v) document.getElementById('grpcolor').style.color = '#' + v;
-	else   document.getElementById('grpcolor').style.color = '#000000';
-	document.getElementById('color2').value = v;
-	j = 0;
-	for (i = 0; i < document.getElementById('color').length; i++) {
-	    if (document.getElementById('color').options[i].value == v) {
-			    document.getElementById('color').options[i].selected = true;
-			    j = 1; break;
-			}
-	}
-	if (j == 0) document.getElementById('color').options[0].selected = true;
+    v = v.toUpperCase();
+    v = v.replace(/[^A-F0-9]/g, '');
+    if (v) document.getElementById('grpcolor').style.color = '#' + v;
+    else   document.getElementById('grpcolor').style.color = '#000000';
+    document.getElementById('color2').value = v;
+    j = 0;
+    for (i = 0; i < document.getElementById('color').length; i++) {
+        if (document.getElementById('color').options[i].value == v) {
+                document.getElementById('color').options[i].selected = true;
+                j = 1; break;
+            }
+    }
+    if (j == 0) document.getElementById('color').options[0].selected = true;
 }
 
 function previewColor(color) {
-	color = color.replace(/#/, '');
-	document.getElementById('color2').value = color;
-	viscolor(color);
+    color = color.replace(/#/, '');
+    document.getElementById('color2').value = color;
+    viscolor(color);
 }
 
 function stars(value) {
-	if (value == "other") document.getElementById('otherstar').disabled = false;
-	else document.getElementById('otherstar').disabled = true;
+    if (value == "other") document.getElementById('otherstar').disabled = false;
+    else document.getElementById('otherstar').disabled = true;
 }
 
 function showimage() {
-	selected = document.groups.starsadmin.options[document.groups.starsadmin.selectedIndex].value;
-	otherurl = document.groups.otherstar.value;
-	useimg = (selected != "other") ? "$imagesdir/"+selected : ((otherurl != "") ? otherurl : "$imagesdir/blank.gif");
-	document.images.starpic.src=useimg;
-	if (document.images.starpic.complete == false) {
-		useimg = (selected != "other") ? "$defaultimagesdir/"+selected : ((otherurl != "") ? otherurl : "$defaultimagesdir/blank.gif");
-		document.images.starpic.src=useimg;
-	}
+    selected = document.groups.starsadmin.options[document.groups.starsadmin.selectedIndex].value;
+    otherurl = document.groups.otherstar.value;
+    useimg = (selected != "other") ? "$imagesdir/"+selected : ((otherurl != "") ? otherurl : "$imagesdir/blank.gif");
+    document.images.starpic.src=useimg;
+    if (document.images.starpic.complete == false) {
+        useimg = (selected != "other") ? "$defaultimagesdir/"+selected : ((otherurl != "") ? otherurl : "$defaultimagesdir/blank.gif");
+        document.images.starpic.src=useimg;
+    }
 }
 
 function depend(value) {
-	if (value == "Yes") {
-		document.getElementById('posts').disabled = false;
-		if (document.getElementById('posts').value == '') document.getElementById('posts').value = 0;
-		document.getElementById('viewpublic').checked = true;
-		document.getElementById('viewpublic').disabled = true;
-	} else{
-		document.getElementById('posts').disabled = true;
-		document.getElementById('viewpublic').disabled = false;
-	}
+    if (value == "Yes") {
+        document.getElementById('posts').disabled = false;
+        if (document.getElementById('posts').value == '') document.getElementById('posts').value = 0;
+        document.getElementById('viewpublic').checked = true;
+        document.getElementById('viewpublic').disabled = true;
+    } else{
+        document.getElementById('posts').disabled = true;
+        document.getElementById('viewpublic').disabled = false;
+    }
 }
 //-->
 </script>
@@ -916,52 +916,52 @@ sub reorderGroups {
     $rowspan = $#nopostorder + 2;
     $yymain .= qq~
 <div class="bordercolor" style="padding: 0px; width: 75%; margin-left: auto; margin-right: auto;">
-	<table class="cs_thin pad_4px">
-    	<col span="2" class="w_33pc" />
-		<tr>
-			<td class="titlebg" colspan="3">
-				<img src="$imagesdir/guest.gif" alt="" />&nbsp;<b>$admintxt{'reordergroups2'}</b>
-			</td>
-		</tr><tr>
-			<td class="catbg center"><b>$amgtxt{'03'}</b></td>
-			<td class="catbg center"><b>$amgtxt{'19'}</b></td>
-			<td class="windowbg center" rowspan="$rowspan">
-				<form action="$adminurl?action=reordergroup2" method="post" name="groupsorder" style="display: inline; white-space: nowrap;" accept-charset="$yycharset">
-					<select name="ordergroups" class="small" size="$selsize" style="width: 130px;">
-						$orderopt
-					</select>
-					<br />
-					<input type="submit" value="$admin_txt{'739a'}" name="moveup" style="font-size: 11px; width: 65px;" class="button" /><input type="submit" value="$admin_txt{'739b'}" name="movedown" style="font-size: 11px; width: 65px;" class="button" />
-				</form>
-			</td>
-		</tr>~;
+    <table class="cs_thin pad_4px">
+        <col span="2" class="w_33pc" />
+        <tr>
+            <td class="titlebg" colspan="3">
+                <img src="$imagesdir/guest.gif" alt="" />&nbsp;<b>$admintxt{'reordergroups2'}</b>
+            </td>
+        </tr><tr>
+            <td class="catbg center"><b>$amgtxt{'03'}</b></td>
+            <td class="catbg center"><b>$amgtxt{'19'}</b></td>
+            <td class="windowbg center" rowspan="$rowspan">
+                <form action="$adminurl?action=reordergroup2" method="post" name="groupsorder" style="display: inline; white-space: nowrap;" accept-charset="$yycharset">
+                    <select name="ordergroups" class="small" size="$selsize" style="width: 130px;">
+                        $orderopt
+                    </select>
+                    <br />
+                    <input type="submit" value="$admin_txt{'739a'}" name="moveup" style="font-size: 11px; width: 65px;" class="button" /><input type="submit" value="$admin_txt{'739b'}" name="movedown" style="font-size: 11px; width: 65px;" class="button" />
+                </form>
+            </td>
+        </tr>~;
 
     foreach (@nopostorder) {
         ( $title, $stars, $starpic, $color, undef ) = split /\|/xsm,
           $NoPost{$_}, 5;
         if ( !$stars ) { $stars = '0'; }
         $yymain .= q~<tr>
-			<td class="windowbg2">~;
+            <td class="windowbg2">~;
 
         if ($color) {
             $yymain .= qq~<span style="color:$color"><b>$title</b></span>~;
         }
         else { $yymain .= qq~<b>$title</b>~; }
         $yymain .= q~
-			</td>
-			<td class="windowbg2 center">~;
+            </td>
+            <td class="windowbg2 center">~;
 
         for ( 1 .. $stars ) {
             $yymain .= qq~<img src="$imagesdir/$starpic" />~;
         }
 
         $yymain .= q~
-			</td>
-		</tr>~;
+            </td>
+        </tr>~;
     }
 
     $yymain .= q~
-	</table>
+    </table>
 </div>~;
 
     $yytitle     = $admintxt{'reordergroups'};

@@ -34,8 +34,8 @@ sub SpamQuestions {
     closedir LNGDIR;
 
     foreach my $fld (sort {lc($a) cmp lc $b} @lfilesanddirs) {
-	    if (-e "$langdir/$fld/Main.lng") {
-	        my $displang = $fld;
+        if (-e "$langdir/$fld/Main.lng") {
+            my $displang = $fld;
             $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
             if ($questions_language eq $fld) { $drawnldirs .= qq~<option value="$fld" selected="selected">$displang</option>~; }
             else { $drawnldirs .= qq~<option value="$fld">$displang</option>~; }
@@ -97,52 +97,52 @@ sub SpamQuestions {
 <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
     <col class="w_50pc" />
     <col class="w_50pc" />
-	<tr>
+    <tr>
         <th class="titlebg" colspan="2">$admin_img{'prefimg'} $spam_question_txt{'question_settings'}</th>
-	</tr><tr class="windowbg2 vtop">
-    	<td><label for="en_spam_questions">$spam_question_txt{'enable_question'}</label></td>
-    	<td><input type="checkbox" name="en_spam_questions" id="en_spam_questions" value="1"$chk_spam_question /></td>
-	</tr><tr class="windowbg2 vtop">
-    	<td><label for="spam_questions_send">$spam_question_txt{'enable_question_send'}</label></td>
-    	<td><input type="checkbox" name="spam_questions_send" id="spam_questions_send" value="1"$chk_spam_question_send /></td>
-	</tr><tr class="windowbg2 vtop">
-    	<td><label for="spam_questions_gp">$spam_question_txt{'enable_question_gp'}</label></td>
-    	<td><input type="checkbox" name="spam_questions_gp" id="spam_questions_gp" value="1"$chk_spam_question_gp /></td>
-	</tr><tr class="windowbg2 vtop">
-    	<td><label for="spam_questions_case">$spam_question_txt{'case_sensitive'}</label></td>
-    	<td><input type="checkbox" name="spam_questions_case" id="spam_questions_case" value="1"$chk_spam_question_case /></td>
-	</tr>
+    </tr><tr class="windowbg2 vtop">
+        <td><label for="en_spam_questions">$spam_question_txt{'enable_question'}</label></td>
+        <td><input type="checkbox" name="en_spam_questions" id="en_spam_questions" value="1"$chk_spam_question /></td>
+    </tr><tr class="windowbg2 vtop">
+        <td><label for="spam_questions_send">$spam_question_txt{'enable_question_send'}</label></td>
+        <td><input type="checkbox" name="spam_questions_send" id="spam_questions_send" value="1"$chk_spam_question_send /></td>
+    </tr><tr class="windowbg2 vtop">
+        <td><label for="spam_questions_gp">$spam_question_txt{'enable_question_gp'}</label></td>
+        <td><input type="checkbox" name="spam_questions_gp" id="spam_questions_gp" value="1"$chk_spam_question_gp /></td>
+    </tr><tr class="windowbg2 vtop">
+        <td><label for="spam_questions_case">$spam_question_txt{'case_sensitive'}</label></td>
+        <td><input type="checkbox" name="spam_questions_case" id="spam_questions_case" value="1"$chk_spam_question_case /></td>
+    </tr>
 </table>
 </div>
 <div class="bordercolor rightboxdiv">
 <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-	<tr>
+    <tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-	</tr><tr>
-    	<td class="catbg center">
-        	<input class="button" type="submit" value="$admin_txt{'10'}" />
-        	<input type="hidden" name="questions_language" value="$questions_language" />
-    	</td>
-	</tr>
+    </tr><tr>
+        <td class="catbg center">
+            <input class="button" type="submit" value="$admin_txt{'10'}" />
+            <input type="hidden" name="questions_language" value="$questions_language" />
+        </td>
+    </tr>
 </table>
 </div>
 </form>
 <div class="bordercolor rightboxdiv" style="margin-bottom: .5em;">
 <table class="cs_thin pad_4px">
-	<col span="2" class="w_43pc" />
-	<col span="2" class="w_7pc" />
-	<tr>
+    <col span="2" class="w_43pc" />
+    <col span="2" class="w_7pc" />
+    <tr>
         <th class="titlebg"$header_row>$admin_img{'prefimg'} $spam_question_txt{'questions'} ($total_questions)
-    		<div style="display: inline; float: right;">
-    		<form action="$adminurl?action=spam_questions" method="post" enctype="application/x-www-form-urlencoded">
-      			<select name="questions_language" id="questions_language" size="1">
-        			$drawnldirs
-      			</select>
-      			<input type="submit" value="$admin_txt{'462'}" class="button" />
-    		</form>
-    		</div>
-		</th>
-	</tr>
+            <div style="display: inline; float: right;">
+            <form action="$adminurl?action=spam_questions" method="post" enctype="application/x-www-form-urlencoded">
+                <select name="questions_language" id="questions_language" size="1">
+                    $drawnldirs
+                </select>
+                <input type="submit" value="$admin_txt{'462'}" class="button" />
+            </form>
+            </div>
+        </th>
+    </tr>
 $show_questions
 </table>
 </div>
@@ -151,27 +151,27 @@ $show_questions
 <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
     <col class="w_25pc" />
     <col class="w_75pc" />
-	<tr>
+    <tr>
         <th class="titlebg" colspan="2">$admin_img{'prefimg'} $spam_question_txt{'new_question'}</th>
-	</tr><tr class="windowbg2 vtop bold">
-    	<td><label for="spam_question">$spam_question_txt{'question'}:</label></td>
-    	<td><input type="text" name="spam_question" id="spam_question" size="60" maxlength="50" /></td>
-	</tr><tr class="windowbg2 vtop bold">
-    	<td><label for="spam_answer">$spam_question_txt{'answer'}:<br /><span class="small" style="font-weight: normal;">$spam_question_txt{'answer_desc'}</span></label></td>
-    	<td><input type="text" name="spam_answer" id="spam_answer" size="60" maxlength="50" /></td>
-	</tr>
+    </tr><tr class="windowbg2 vtop bold">
+        <td><label for="spam_question">$spam_question_txt{'question'}:</label></td>
+        <td><input type="text" name="spam_question" id="spam_question" size="60" maxlength="50" /></td>
+    </tr><tr class="windowbg2 vtop bold">
+        <td><label for="spam_answer">$spam_question_txt{'answer'}:<br /><span class="small" style="font-weight: normal;">$spam_question_txt{'answer_desc'}</span></label></td>
+        <td><input type="text" name="spam_answer" id="spam_answer" size="60" maxlength="50" /></td>
+    </tr>
 </table>
 </div>
 <div class="bordercolor rightboxdiv">
 <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-	<tr>
+    <tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-	</tr><tr>
-    	<td class="catbg center">
-        	<input class="button" type="submit" value="$spam_question_txt{'add_question'}" />
-        	<input type="hidden" name="questions_language" value="$questions_language" />
-		</td>
-	</tr>
+    </tr><tr>
+        <td class="catbg center">
+            <input class="button" type="submit" value="$spam_question_txt{'add_question'}" />
+            <input type="hidden" name="questions_language" value="$questions_language" />
+        </td>
+    </tr>
 </table>
 </div>
 </form>
@@ -224,7 +224,7 @@ sub SpamQuestionsAdd {
     fclose(SPAMQUESTIONS);
 
     if ( $action eq 'spam_questions_add' ) {
-	    $yySetLocation = qq~$adminurl?action=spam_questions;questions_language=$FORM{'questions_language'}~;
+        $yySetLocation = qq~$adminurl?action=spam_questions;questions_language=$FORM{'questions_language'}~;
         redirectexit();
     }
     return;
@@ -259,27 +259,27 @@ sub SpamQuestionsEdit {
 <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
     <col class="w_25pc" />
     <col class="w_75pc" />
-	<tr>
+    <tr>
         <th class="titlebg" colspan="2">$admin_img{'prefimg'} $spam_question_txt{'edit_question'}</th>
-	</tr><tr class="windowbg2 vtop bold">
-    	<td><label for="spam_question">$spam_question_txt{'question'}:</label></td>
-    	<td><input type="text" name="spam_question" id="spam_question" size="60" maxlength="50" value="$spam_question" /></td>
-	</tr><tr class="windowbg2 vtop bold">
-    	<td><label for="spam_answer">$spam_question_txt{'answer'}:<br /><span class="small" style="font-weight: normal;">$spam_question_txt{'answer_desc'}</span></label></td>
-    	<td><input type="text" name="spam_answer" id="spam_answer" size="60" maxlength="50" value="$spam_answer" /><input type="hidden" name="spam_question_id" id="spam_question_id" value="$spam_question_id" /></td>
-	</tr>
+    </tr><tr class="windowbg2 vtop bold">
+        <td><label for="spam_question">$spam_question_txt{'question'}:</label></td>
+        <td><input type="text" name="spam_question" id="spam_question" size="60" maxlength="50" value="$spam_question" /></td>
+    </tr><tr class="windowbg2 vtop bold">
+        <td><label for="spam_answer">$spam_question_txt{'answer'}:<br /><span class="small" style="font-weight: normal;">$spam_question_txt{'answer_desc'}</span></label></td>
+        <td><input type="text" name="spam_answer" id="spam_answer" size="60" maxlength="50" value="$spam_answer" /><input type="hidden" name="spam_question_id" id="spam_question_id" value="$spam_question_id" /></td>
+    </tr>
 </table>
 </div>
 <div class="bordercolor rightboxdiv">
 <table class="cs_thin pad_4px">
-	<tr>
+    <tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-	</tr><tr>
-    	<td class="catbg center">
-    		<input class="button" type="submit" value="$admin_txt{'10'} $spam_question_txt{'question'}" />&nbsp;<input type="button" class="button" value="$admin_txt{'cancel'}" onclick="location.href='$adminurl?action=spam_questions;questions_language=$FORM{'questions_language'}';" />
+    </tr><tr>
+        <td class="catbg center">
+            <input class="button" type="submit" value="$admin_txt{'10'} $spam_question_txt{'question'}" />&nbsp;<input type="button" class="button" value="$admin_txt{'cancel'}" onclick="location.href='$adminurl?action=spam_questions;questions_language=$FORM{'questions_language'}';" />
         <input type="hidden" name="questions_language" value="$questions_language" />
-		</td>
-	</tr>
+        </td>
+    </tr>
 </table>
 </div>
 </form>~;

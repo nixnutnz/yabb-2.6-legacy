@@ -40,7 +40,7 @@ sub Attachments {
     fopen( FILE, "$vardir/oldestattach.txt" );
     $maxdaysattach = <FILE>;
     fclose(FILE);
-    
+
     fopen( FILE, "$vardir/oldestpmattach.txt" );
     $pmMaxDaysAttach = <FILE>;
     fclose(FILE);
@@ -48,20 +48,20 @@ sub Attachments {
     fopen( FILE, "$vardir/maxattachsize.txt" );
     $maxsizeattach = <FILE>;
     fclose(FILE);
-    
+
     fopen( FILE, "$vardir/maxpmattachsize.txt" );
     $pmMaxSizeAttach = <FILE>;
     fclose(FILE);
-    
+
     fopen( PMATTACHLOG, "$vardir/pm.attachments" );
     my @pmAttachments = <PMATTACHLOG>;
     fclose(PMATTACHLOG);
-    
+
     my $pmAttachmentSpace = 0;
     foreach (@pmAttachments) {
         $pmAttachmentSpace += NumberFormat( ( split /\|/xsm, $_, 4 )[2] );
-    }
-    
+	}
+
     my $pmRemainingSpace;
     if ( !$pmDirLimit ) {
         $pmRemainingSpace = "$fatxt{'23a'}";
@@ -410,7 +410,7 @@ qq~<tr><td class="windowbg2 padd_4px center" colspan="8"><b><i>$fatxt{'48'}</i><
         <form name="del_attachments" action="$adminurl?action=deleteattachment" method="post" style="display: inline;">~;
 
         my @attachments;
-        if ( $sort > 0 ) {    # sort ascending
+       if ( $sort > 0 ) {    # sort ascending
             if ( $sort == 5 || $sort == 6 || $sort == 8 ) {
                 @attachments = sort {
                     ( split /\|/xsm, $a )[$sort]
@@ -1021,7 +1021,7 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
                   ? "$ext.gif"
                   : 'paperclip.gif';
             }
-            
+
             $pmthreadid   = $pmAttachDate;
             $pmAttachDate = timeformat($pmAttachDate);
             $pmAttachKB   = NumberFormat($pmAttachKB);
@@ -1337,7 +1337,7 @@ qq~$adminurl?action=removebigpmattachments;pmmaxsizeattach=$pmmaxsizeattach;next
     return;
 }
 
-sub RemovePMAttachments { 
+sub RemovePMAttachments {
     # remove single or multiple attachments stored in a hash-reference
     my $count = 0;
     my $ThreadHashref =

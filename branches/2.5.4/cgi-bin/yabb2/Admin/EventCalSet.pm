@@ -99,9 +99,7 @@ sub EventCalSet {
      <col class="w_50pc" />
      <col class="w_50pc" />
      <tr>
-       <td class="titlebg" colspan="2">
-         $admin_img{'prefimg'} <b>$event_cal{'1'}</b>
-       </td>
+					<td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$event_cal{'1'}</b></td>
      </tr><tr>
        <td class="catbg" colspan="2"><span class="small">$event_cal{'21'}</span></td>
      </tr><tr>
@@ -248,14 +246,15 @@ sub EventCalSet {
  <div class="bordercolor rightboxdiv">
    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
      <tr>
+					<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+				</tr><tr>
        <td class="catbg center">
-		 <input type="submit" name="savesetting" value="$event_cal{'31'}" /> <input type="submit" name="rebuiltbd" value="$event_cal{'54'}" />
+						<input type="submit" name="savesetting" value="$event_cal{'31'}" class="button" />&nbsp;<input type="submit" name="rebuiltbd" value="$event_cal{'54'}" class="button" />
 	   </td>
      </tr>
    </table>
  </div>
-</form>
-~;
+			</form>~;
 
     ## Calendar Event-Icon Setting ##
 
@@ -307,12 +306,15 @@ sub EventCalSet {
  <div class="bordercolor rightboxdiv">
    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
      <tr>
-       <td class="catbg center"><input type="submit" value="$event_cal{'32'}" /></td>
+					<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+				</tr><tr>
+					<td class="catbg center">
+						<input type="submit" value="$event_cal{'32'}" class="button" />
+					</td>
      </tr>
    </table>
  </div>
-</form>
-~;
+		</form>~;
 
     $yytitle     = $event_cal{'1'};
     $action_area = 'eventcal_set';

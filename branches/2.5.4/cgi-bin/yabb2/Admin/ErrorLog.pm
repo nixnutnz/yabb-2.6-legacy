@@ -127,8 +127,8 @@ function uncheckAll() {
             <col style="width:5%" />
             <tr>
                 <td class="titlebg" colspan="5">
-                    $admin_img{'xx'}<b>$yytitle</b>
-       </td>
+                    $admin_img{'xx'} <b>$yytitle</b>
+                </td>
             </tr><tr>
                 <td class="windowbg2 padd_8_12px" colspan="5">
          $errorlog{'18'}
@@ -364,7 +364,7 @@ sub YaBBsort {
             }
         }
     }
-#   return;
+#	return;
 }
 
 1;

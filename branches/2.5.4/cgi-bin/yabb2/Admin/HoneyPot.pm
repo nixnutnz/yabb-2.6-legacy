@@ -28,8 +28,8 @@ sub honeypot {
     closedir LNGDIR;
 
     foreach my $fld (sort {lc($a) cmp lc $b} @lfilesanddirs) {
-	    if (-e "$langdir/$fld/Main.lng") {
-	        my $displang = $fld;
+        if (-e "$langdir/$fld/Main.lng") {
+            my $displang = $fld;
             $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
             if ($honey_language eq $fld) { $drawnldirs .= qq~<option value="$fld" selected="selected">$displang</option>~; }
             else { $drawnldirs .= qq~<option value="$fld">$displang</option>~; }
@@ -83,19 +83,19 @@ sub honeypot {
 <div class="bordercolor rightboxdiv">
 <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
     <col class="w_50pc" />
-	<col span="2" class="w_25pc" />
-	<tr>
+    <col span="2" class="w_25pc" />
+    <tr>
         <th class="titlebg" colspan="3">$admin_img{'prefimg'} $honeypot{'labels'} ($total_labels)
-    		<div style="display: inline; float: right;">
-    		<form action="$adminurl?action=honeypot" method="post" enctype="application/x-www-form-urlencoded">
-      			<select name="honey_language" id="honey_language" size="1">
-        			$drawnldirs
-      			</select>
-      			<input type="submit" value="$admin_txt{'462'}" class="button" />
-    		</form>
-    		</div>
-		</th>
-	</tr>
+            <div style="display: inline; float: right;">
+            <form action="$adminurl?action=honeypot" method="post" enctype="application/x-www-form-urlencoded">
+                <select name="honey_language" id="honey_language" size="1">
+                    $drawnldirs
+                </select>
+                <input type="submit" value="$admin_txt{'462'}" class="button" />
+            </form>
+            </div>
+        </th>
+    </tr>
 $show_hon_labels
 </table>
 </div>
@@ -104,24 +104,24 @@ $show_hon_labels
 <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
     <col class="w_25pc" />
     <col class="w_75pc" />
-	<tr>
+    <tr>
         <th class="titlebg" colspan="2">$admin_img{'prefimg'} $honeypot{'add_new_label'}</th>
-	</tr><tr class="windowbg2 vtop bold">
-    	<td><label for="honey_add">$honeypot{'new_label'}:</label></td>
-    	<td><input type="text" name="honey_add" id="honey_add" size="60" maxlength="50" /></td>
-	</tr>
+    </tr><tr class="windowbg2 vtop bold">
+        <td><label for="honey_add">$honeypot{'new_label'}:</label></td>
+        <td><input type="text" name="honey_add" id="honey_add" size="60" maxlength="50" /></td>
+    </tr>
 </table>
 </div>
 <div class="bordercolor rightboxdiv">
 <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-	<tr>
+    <tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-	</tr><tr>
-    	<td class="catbg center">
-        	<input class="button" type="submit" value="$honeypot{'add_label'}" />
-        	<input type="hidden" name="honey_language" value="$honey_language" />
-		</td>
-	</tr>
+    </tr><tr>
+        <td class="catbg center">
+            <input class="button" type="submit" value="$honeypot{'add_label'}" />
+            <input type="hidden" name="honey_language" value="$honey_language" />
+        </td>
+    </tr>
 </table>
 </div>
 </form>
@@ -150,7 +150,7 @@ sub honeypot_add {
     fclose(HONEYPOT);
 
     if ( $action eq 'honeypot_add' ) {
-	    $yySetLocation = qq~$adminurl?action=honeypot;honey_language=$FORM{'honey_language'}~;
+        $yySetLocation = qq~$adminurl?action=honeypot;honey_language=$FORM{'honey_language'}~;
         redirectexit();
     }
     return;
@@ -158,7 +158,7 @@ sub honeypot_add {
 
 sub honeypot_edit {
     is_admin_or_gmod();
-    
+
     $h_label = $FORM{'hon_label'};
 
     fopen( HONEYPOT, "<$langdir/$honey_language/honey.txt" )
@@ -166,7 +166,7 @@ sub honeypot_edit {
         1 );
     @h_labels = <HONEYPOT>;
     fclose(HONEYPOT);
-    my $aa = 0;    
+    my $aa = 0;
     foreach my $id (@h_labels) {
         chomp $id;
         if ( $id eq $h_label ) {
@@ -182,24 +182,24 @@ sub honeypot_edit {
 <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
     <col class="w_25pc" />
     <col class="w_75pc" />
-	<tr>
+    <tr>
         <th class="titlebg" colspan="2">$admin_img{'prefimg'} $honeypot{'edit'}</th>
-	</tr><tr class="windowbg2 vtop bold;">
-    	<td><label for="hon_label">$honeypot{'label'}:</label></td>
-    	<td><input type="text" name="hon_label2" id="hon_label2" size="60" maxlength="50" value="$h_label" /><input type="hidden" name="hon_line" value="$aa" /></td>
-	</tr>
+    </tr><tr class="windowbg2 vtop bold;">
+        <td><label for="hon_label">$honeypot{'label'}:</label></td>
+        <td><input type="text" name="hon_label2" id="hon_label2" size="60" maxlength="50" value="$h_label" /><input type="hidden" name="hon_line" value="$aa" /></td>
+    </tr>
 </table>
 </div>
 <div class="bordercolor rightboxdiv">
 <table class="cs_thin pad_4px">
-	<tr>
+    <tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-	</tr><tr>
-    	<td class="catbg center">
-    		<input class="button" type="submit" value="$admin_txt{'10'} $honeypot{'save'}" />&nbsp;<input type="button" class="button" value="$admin_txt{'cancel'}" onclick="location.href='$adminurl?action=honeypot;honey_language=$FORM{'honey_language'}';" />
+    </tr><tr>
+        <td class="catbg center">
+            <input class="button" type="submit" value="$admin_txt{'10'} $honeypot{'save'}" />&nbsp;<input type="button" class="button" value="$admin_txt{'cancel'}" onclick="location.href='$adminurl?action=honeypot;honey_language=$FORM{'honey_language'}';" />
         <input type="hidden" name="honey_language" value="$honey_language" />
-		</td>
-	</tr>
+        </td>
+    </tr>
 </table>
 </div>
 </form>~;
@@ -228,10 +228,10 @@ sub honeypot_edit2 {
     fopen( HONEYPOT, ">$langdir/$honey_language/honey.txt" )
       || fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt",
         1 );
-    $aa = 0;    
+    $aa = 0;
     foreach my $i ( @h_labels) {
         chomp $i;
-        if($aa == $line) {   
+        if($aa == $line) {
             print {HONEYPOT} "$h_label\n" or croak "$croak{'print'} HONEYPOT";
         }
         else {    print {HONEYPOT} "$i\n" or croak "$croak{'print'} HONEYPOT"; }
@@ -261,7 +261,7 @@ sub honeypot_delete {
         1 );
     foreach my $i ( @h_labels) {
         chomp $i;
-        if( $h_label eq $i) {   
+        if( $h_label eq $i) {
             print {HONEYPOT} q{} or croak "$croak{'print'} HONEYPOT";
         }
         else {    print {HONEYPOT} "$i\n" or croak "$croak{'print'} HONEYPOT"; }

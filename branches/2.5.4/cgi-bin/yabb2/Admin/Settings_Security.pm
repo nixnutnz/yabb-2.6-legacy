@@ -103,15 +103,15 @@ qq~<input type="checkbox" name="ipLookup" id="ip_lookup" value="1"${ischecked($i
                 name     => 'ipLookup',
                 validate => 'boolean',
             },
-     		{
-			    description => 
+            {
+                description =>
 qq~<label for="ip_lookup_urls">$admin_txt{'iplookup_urls'}</label>~,
-			    input_html => 
+                input_html =>
 qq~<textarea name="iplookup_urls" id="ip_lookup_urls" cols="55" rows="7">$iplookup_urls</textarea>~,
-			    name => 'iplookup_urls',
-			    validate => 'fulltext',
-			    depends_on => ['ipLookup'],
-		    },
+                name => 'iplookup_urls',
+                validate => 'fulltext',
+                depends_on => ['ipLookup'],
+            },
         ],
     },
     {

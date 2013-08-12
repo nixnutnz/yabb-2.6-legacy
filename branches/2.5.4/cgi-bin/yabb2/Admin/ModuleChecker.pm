@@ -23,7 +23,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 my $script_root = $ENV{'SCRIPT_FILENAME'};
 if( ! $script_root ) {
-	$script_root = $ENV{'PATH_TRANSLATED'};
+    $script_root = $ENV{'PATH_TRANSLATED'};
 }
 
 my ( $checker_output, $i );

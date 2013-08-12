@@ -290,9 +290,9 @@ qq~<a href="$scripturl?num=$lspostid/$lsreply#$lsreply">$lssub</a> ($lsdatetime)
                     <script type="text/javascript">
                         if (typeof STABLE == "undefined" || STABLE == null ) {
                             document.write("$versiontxt{'4'} <b>$YaBBversion</b> - $versiontxt{'5'} <b>$rna</b> <p>");
-	                    } else {
+                        } else {
                            document.write("$versiontxt{'4'} <b>$YaBBversion</b> - $versiontxt{'5'} <b>"+STABLE+"</b> <p>");
-	                    }
+                        }
                     </script>
                     <noscript>$versiontxt{'1'} <img src="$versionimg" alt="" /></noscript>
                 </div>
@@ -780,11 +780,11 @@ sub ver_detail {
                     <script src="$versionchk" type="text/javascript"></script>
                     $versiontxt{'4'} <b>$YaBBversion</b><br />
                     <script type="text/javascript">
-					    if (typeof STABLE == "undefined" || STABLE == null) {
-			                document.write("$versiontxt{'5'} <b>$rna</b><br />$versiontxt{'7'} <b>$rna</b>");
-		                } else {
-			                document.write("$versiontxt{'5'} <b>"+STABLE+"</b><br />$versiontxt{'7'} <b>"+BETA+"</b>");
-		                } 
+                        if (typeof STABLE == "undefined" || STABLE == null) {
+                            document.write("$versiontxt{'5'} <b>$rna</b><br />$versiontxt{'7'} <b>$rna</b>");
+                        } else {
+                            document.write("$versiontxt{'5'} <b>"+STABLE+"</b><br />$versiontxt{'7'} <b>"+BETA+"</b>");
+                        }
                     </script>
                     <noscript>$versiontxt{'1'} <img src="$versionimg" alt="" /></noscript>
                 </td>
@@ -964,13 +964,13 @@ qq~<input type="checkbox" name="$actfound" id="$actfound"$selected />&nbsp;<labe
 <table class="cs_thin pad_4px">
 	<tr>
     	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-            </tr><tr>
+	</tr><tr>
     	<td class="catbg center">
-                    <input type="submit" value="$reftxt{'4'}" class="button" />
-                </td>
-            </tr>
-        </table>
-    </div>
+             <input type="submit" value="$reftxt{'4'}" class="button" />
+    	</td>
+	</tr>
+</table>
+</div>
 </form>~;
 
     $yytitle     = "$reftxt{'1'}";
@@ -1408,14 +1408,14 @@ sub AdminCheck2 {
     if ( $FORM{'action'} ) { $my_action = qq~action=$FORM{'action'};~; }
     if ( $FORM{'page'} ) { $my_page = qq~page=$FORM{'page'};~; }
     if ($my_action || $my_page ) { $my_query = q{?}; }
-    
+
     if ( $do_scramble_id ) { $user = decloak($username); }
     else {$user = $username;}
     if ( ( $iamadmin || $iamgmod ) && $password ne ${ $uid . $user }{'password'} )
     {
         fatal_error('no_admin_passwrd');
     }
-    
+
     my $adminpass = 'adminpass';
     my $cookiename = "$cookieusername$adminpass";
     push @otherCookies,
@@ -1425,7 +1425,7 @@ sub AdminCheck2 {
         -path    => q{/},
         -expires => '0'
       );
-    
+
     $yySetLocation = qq~$adminurl$my_query$my_action$my_page~;
     redirectexit();
     return;

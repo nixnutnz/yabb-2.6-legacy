@@ -788,12 +788,12 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         $showpriv = q{};
         $brdpic   = q{};
         $brdrssch = q{}; ### RSS on Board Index ###
- 		$brdpasswr = q{};
-		$brdpassw = ${$uid.$editboards[$i]}{'brdpassw'};
-		$brdpassw3 = q{};
-		$brdpassw2 = q{};
-		if ($brdpassw ne q{}) { $brdpassw2 = qq~$boardpass_txt{'900pt'}~; }
-		if (${$uid.$editboards[$i]}{'brdpasswr'} == 1) { $brdpasswr   = q~ checked="checked"~; }
+        $brdpasswr = q{};
+        $brdpassw = ${$uid.$editboards[$i]}{'brdpassw'};
+        $brdpassw3 = q{};
+        $brdpassw2 = q{};
+        if ($brdpassw ne q{}) { $brdpassw2 = qq~$boardpass_txt{'900pt'}~; }
+        if (${$uid.$editboards[$i]}{'brdpasswr'} == 1) { $brdpasswr   = q~ checked="checked"~; }
         if ( $boardview == 1 ) { $showpriv = q~ checked="checked"~; }
         if ( ${ $uid . $id }{'zero'} == 1 ) {
             $zeroch = q~ checked="checked"~;
@@ -802,9 +802,9 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         if ( ${ $uid . $id }{'attperms'} == 1 ) {
             $attch = q~ checked="checked"~;
         }
-		if ( ${ $uid . $id }{'brdrss'} == 1 )   { 
-		    $brdrssch = q~ checked="checked"~;
-		} ### RSS on Board Index ###
+        if ( ${ $uid . $id }{'brdrss'} == 1 )   {
+            $brdrssch = q~ checked="checked"~;
+        } ### RSS on Board Index ###
 
         if ( ${ $uid . $id }{'ann'} == 1 ) {
             $annch  = q~ checked="checked"~;
@@ -822,7 +822,6 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
             $rbinch    = q~ disabled="disabled"~;
             $rbinexist = 1;
         }
-        ### Board Rules Mod Start ###
         $en_rules = q{};
         if ( ${ $uid . $id }{'rules'} == 1 ) {
             $en_rules = q~ checked="checked"~;
@@ -836,7 +835,6 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         $rulesdesc = ${ $uid . $editboards[$i] }{'rulesdesc'};
         $rulesdesc =~ s/<br \/>/\n/gsm;
         ToChars($rulesdesc);
-        ### Board Rules Mod End ###
 
         #Get Board permissions here
         my $startperms = DrawPerms( ${ $uid . $id }{'topicperms'}, 0 );
@@ -986,9 +984,9 @@ qq~<select multiple="multiple" name="moderatorgroups$i" id="moderatorgroups$i" s
   </tr><tr>
     <td class="windowbg"><b>$boardpass_txt{'900pw'}:</b><br /><br />$boardpass_txt{'900pwb'}</td>
     <td class="windowbg2" colspan="3"><input type="checkbox" name="paswwr$i" value="1"$brdpasswr /> <input type="text" size="15" name="pasww$i" value="$brdfpassw3" />
-    	<br />$boardpass_txt{'900pf'}
-    	<br /><span style="color:red">$brdpassw2</span>
-    	<input type="hidden" name="brdpassw$i" value="$brdpassw" />
+        <br />$boardpass_txt{'900pf'}
+        <br /><span style="color:red">$brdpassw2</span>
+        <input type="hidden" name="brdpassw$i" value="$brdpassw" />
     </td>
   </tr><tr>
     <td class="catbg"  colspan="4"><b>$admin_txt{'65'}:</b> $admin_txt{'65a'} <span class="small">$admin_txt{'14'}</span></td>
@@ -1384,7 +1382,7 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
             }
             $FORM{"moderators$i"} = join q{, }, @mods;
         }
- 		if ( $FORM{"brdrss$i"} eq q{} ) { $FORM{"brdrss$i"} = 0; } ### RSS on Board Index ###
+        if ( $FORM{"brdrss$i"} eq q{} ) { $FORM{"brdrss$i"} = 0; } ### RSS on Board Index ###
         if ( $FORM{"zero$i"} eq q{} ) { $FORM{"zero$i"} = 0; }
         $FORM{"minage$i"} =~ tr/[0-9]//cd;    ## remove non numbers
         $FORM{"maxage$i"} =~ tr/[0-9]//cd;    ## remove non numbers
@@ -1407,13 +1405,13 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         $brulesdesc =~ s/\n/<br \/>/gsm;
         ### Board Rules End ###
 
-		$FORM{"pasww$i"} =~ s/ //gsm;
-		if ($FORM{"pasww$i"} ne q{}) {
+        $FORM{"pasww$i"} =~ s/ //gsm;
+        if ($FORM{"pasww$i"} ne q{}) {
             if ($FORM{"pasww$i"} !~ /\A[\s0-9A-Za-z!@#$%\^&*\(\)_\+|`~\-=\\:;'",\.\/?\[\]\{\}]+\Z/sm) { fatal_error("$register_txt{'240'} $register_txt{'36'} $register_txt{'241'}") }
-			$encryptopass = encode_password($FORM{"pasww$i"});
-		} else {
-			if ($FORM{"paswwr$i"}) { $encryptopass = $FORM{"brdpassw$i"}; } else { $encryptopass = q{};}
-		}
+            $encryptopass = encode_password($FORM{"pasww$i"});
+        } else {
+            if ($FORM{"paswwr$i"}) { $encryptopass = $FORM{"brdpassw$i"}; } else { $encryptopass = q{};}
+        }
         push @boardcontrol,
 "$FORM{\"cat$i\"}|$id|$FORM{\"pic$i\"}|$bdescription|$FORM{\"moderators$i\"}|$FORM{\"moderatorgroups$i\"}|$FORM{\"topicperms$i\"}|$FORM{\"replyperms$i\"}|$FORM{\"pollperms$i\"}|$FORM{\"zero$i\"}|$FORM{\"membergroups$i\"}|$FORM{\"ann$i\"}|$FORM{\"rbin$i\"}|$FORM{\"att$i\"}|$FORM{\"minage$i\"}|$FORM{\"maxage$i\"}|$FORM{\"gender$i\"}|$FORM{\"canpost$i\"}|$FORM{\"parent$i\"}|$FORM{\"rules$i\"}|$brulestitle|$brulesdesc|$FORM{\"rulescollapse$i\"}|$FORM{\"paswwr$i\"}|$encryptopass|$FORM{\"brdrss$i\"}\n";
         push @changes, $id;

@@ -88,7 +88,7 @@ sub ListMods {
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <a id="$mod_anchor">$admin_img{'prefimg'}</a><b>$mod_displayname</b> &nbsp; <span class="small">$mod_list{'4'}: $mod_version</span>
+                <a id="$mod_anchor">$admin_img{'prefimg'}</a> <b>$mod_displayname</b> &nbsp; <span class="small">$mod_list{'4'}: $mod_version</span>
             </td>
         </tr><tr>
             <td class="catbg">

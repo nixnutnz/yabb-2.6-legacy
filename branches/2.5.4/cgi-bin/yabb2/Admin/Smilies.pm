@@ -126,7 +126,7 @@ sub SmiliePanel {
     <td class="windowbg2" colspan="4"><label for="poptext"><b>$smiltxt{'19'}</b></label></td>
     <td class="windowbg2" colspan="4">#<input type="text" size="10" name="poptext" id="poptext" value="$poptext" /></td>
   </tr><tr>
-    <td class="titlebg" colspan="8"><b>&nbsp;<img src="$imagesdir/grin.gif" alt="" />&nbsp;$asmtxt{'11'}</b></td>
+      <td class="titlebg" colspan="8"><b>&nbsp;<img src="$imagesdir/grin.gif" alt="" />&nbsp;$asmtxt{'11'}</b></td>
   </tr><tr>
     <td class="catbg center"><b>$smiltxt{'22'}</b></td>
     <td class="catbg center"><b>$asmtxt{'02'}</b></td>
@@ -211,7 +211,7 @@ qq~<a href="$adminurl?action=smiliemove;index=$i;movedown=1"><img src="$imagesdi
     	<td class="catbg center">
         	<input type="submit" value="$asmtxt{'09'}" class="button" />&nbsp;<input type="reset" value="$asmtxt{'10'}" class="button" />
     	</td>
-  </tr>
+	</tr>
 </table>
 </div>
 </form>

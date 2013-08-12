@@ -99,13 +99,13 @@ qq~\n<input type="checkbox" name="$actfound" id="$actfound"$checked />&nbsp;<lab
 <table class="cs_thin pad_4px">
 	<tr>
     	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-     </tr><tr>
+	</tr><tr>
     	<td class="catbg center">
         	<input type="submit" value="$reftxt{'4'}" class="button" />
     	</td>
-     </tr>
-   </table>
- </div>
+	</tr>
+</table>
+</div>
 </form>
 
 <script type="text/javascript">
@@ -134,7 +134,7 @@ sub EditBots {
     <div class="bordercolor rightboxdiv">
         <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
             <tr>
-                <td class="titlebg">$admin_img{'xx'}<b>$admin_txt{'18'}</b></td>
+                <td class="titlebg">$admin_img{'xx'} <b>$admin_txt{'18'}</b></td>
             </tr><tr>
                 <td class="windowbg2  padd_8_12px">
                     <span class="small">
@@ -156,13 +156,13 @@ sub EditBots {
 <table class="cs_thin pad_4px">
 	<tr>
     	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-            </tr><tr>
+	</tr><tr>
     	<td class="catbg center">
         	<input class="button" type="submit" value="$admin_txt{'10'}" />
     	</td>
-            </tr>
-        </table>
-    </div>
+	</tr>
+</table>
+</div>
 </form>
 ~;
     $yytitle     = "$admin_txt{'18'}";
@@ -221,7 +221,7 @@ sub SetCensor {
    <table class="cs_thin pad_4px">
      <tr>
        <td class="titlebg">
-             $admin_img{'banimg'}<span class="legend"><b>$admin_txt{'135'}</b></span>
+             $admin_img{'banimg'}<span class="legend"> <b>$admin_txt{'135'}</b></span>
        </td>
      </tr><tr>
        <td class="windowbg2">
@@ -234,11 +234,11 @@ sub SetCensor {
       </form>
        </td>
      </tr>
-   </table>
+	 </table>
    <!-- Split for XHTML Validation purposes -->
    <form action="$adminurl?action=setcensor2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
 	<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-     <tr>
+	<tr>
        <td class="windowbg2 padd_8_12px">
          <label for="censored">$admin_txt{'136'}</label>
        </td>
@@ -259,12 +259,12 @@ sub SetCensor {
 	<table class="cs_thin pad_4px">
 		<tr>
 			<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-     </tr><tr>
-       <td class="catbg center">
-<input type="submit" value="$admin_txt{'10'} $censorlanguage" class="button" />
-       </td>
-     </tr>
-   </table>
+		</tr><tr>
+			<td class="catbg center">
+				<input type="submit" value="$admin_txt{'10'} $censorlanguage" class="button" />
+			</td>
+		</tr>
+	</table>
 	</div>
    </form>
 ~;
@@ -412,46 +412,46 @@ sub ModifyAgreement {
     fclose(AGREE);
     $yymain .= qq~
  <div class="bordercolor rightboxdiv">
-   <table class="cs_thin pad_4px">
-     <tr>
-       <td class="titlebg">$admin_img{'xx'}<b>$admin_txt{'764'}</b></td>
-     </tr><tr>
-       <td class="windowbg2 padd_8_12px">
-            <label for="agreement">$admin_txt{'765'}</label>
-       </td>
-     </tr><tr>
-       <td class="windowbg2"><br />
-      <form action="$adminurl?action=modagreement" method="post" enctype="application/x-www-form-urlencoded">
-      $templs{'8'}
-      <select name="agreementlanguage" id="agreementlanguage" size="1">
-            $drawnldirs
-      </select>
-      <input type="submit" value="$admin_txt{'462'}" class="button" />
-      </form>
-       </td>
+    <table class="cs_thin pad_4px">
+        <tr>
+            <td class="titlebg">$admin_img{'xx'} <b>$admin_txt{'764'}</b></td>
+        </tr><tr>
+            <td class="windowbg2 padd_8_12px">
+                <label for="agreement">$admin_txt{'765'}</label>
+            </td>
+        </tr><tr>
+           <td class="windowbg2"><br />
+                <form action="$adminurl?action=modagreement" method="post" enctype="application/x-www-form-urlencoded">
+                $templs{'8'}
+                <select name="agreementlanguage" id="agreementlanguage" size="1">
+                $drawnldirs
+                </select>
+                <input type="submit" value="$admin_txt{'462'}" class="button" />
+                </form>
+            </td>
         </tr>
 	</table>
     <form action="$adminurl?action=modagreement2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
 	<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
 		<tr>
-       <td class="windowbg2 center padd_8_12px">
-      <input type="hidden" name="destination" value="$INFO{'destination'}" />
-      <input type="hidden" name="agreementlanguage" value="$agreementlanguage" />
-      <textarea rows="35" cols="95" name="agreement" id="agreement" style="width:95%">$fullagreement</textarea>
-       </td>
+            <td class="windowbg2 center padd_8_12px">
+                <input type="hidden" name="destination" value="$INFO{'destination'}" />
+                <input type="hidden" name="agreementlanguage" value="$agreementlanguage" />
+                <textarea rows="35" cols="95" name="agreement" id="agreement" style="width:95%">$fullagreement</textarea>
+            </td>
         </tr>
     </table>
     <table class="cs_thin pad_4px">
 	<tr>
     	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-     </tr><tr>
+	</tr><tr>
     	<td class="catbg center">
         	<input type="submit" value="$admin_txt{'10'} $agreementlanguage" class="button" />
     	</td>
-     </tr>
+	</tr>
 </table>
-      </form>
- </div>
+</form>
+</div>
 ~;
     $yytitle     = "$admin_txt{'764'}";
     $action_area = 'modagreement';
@@ -912,15 +912,15 @@ sub EditPaths {
 <table class="cs_thin pad_4px">
 	<tr>
     	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-     </tr><tr>
-       <td class="catbg center">
+	</tr><tr>
+    	<td class="catbg center">
              <input type="hidden" name="lastsaved" value="${$uid.$username}{'realname'}" />
              <input type="hidden" name="lastdate" value="$date" />
         	<input class="button" type="submit" value="$admin_txt{'10'}" />
-       </td>
-     </tr>
-   </table>
- </div>
+    	</td>
+	</tr>
+</table>
+</div>
 </form>
 ~;
     $yytitle     = "$edit_paths_txt{'1'}";
