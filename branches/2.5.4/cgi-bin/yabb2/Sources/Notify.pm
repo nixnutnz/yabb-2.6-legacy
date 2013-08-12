@@ -171,7 +171,7 @@ sub ManageThreadNotify {
         ##  open mail file and build hash
         if ( -e "$datadir/$thethread.mail" ) {
             fopen( THREADNOTE, "$datadir/$thethread.mail" );
-            %thethread = map { /(.*)\t(.*)/xsm } <THREADNOTE>;
+            %thethread = map /(.*)\t(.*)/, <THREADNOTE>;
             fclose(THREADNOTE);
         }
     }
