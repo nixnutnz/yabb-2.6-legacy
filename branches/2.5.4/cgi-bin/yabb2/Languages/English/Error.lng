@@ -107,7 +107,7 @@ $errorlngver = 'YaBB 2.5.4 $Revision$';
 
 ## Post/ModifyMessage/Poll ##
 'topic_locked'         => "This topic is locked, and you are not allowed to post or modify messages.",
-'time_locked'          => "The Forum Admin has set a time limit of ",
+'time_locked'          => "The Administrator has set a time limit of ",
 'change_not_allowed'   => "You are not allowed to change this message",
 'delete_not_allowed'   => "You are not allowed to delete this post!",
 'split_splice_not_allowed'    => "You are not allowed to split or splice this topic; you must be a moderator or administrator to do this.",
