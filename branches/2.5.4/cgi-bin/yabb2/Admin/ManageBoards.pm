@@ -669,11 +669,11 @@ function checkParent(id, board) {
 <div class="bordercolor rightboxdiva">
     <table class="cs_thin pad_4px">
         <tr>
-            <td class="titlebg" colspan="5">
+            <td class="titlebg">
                 $admin_img{'cat_img'}<b>$addtext</b>
             </td>
         </tr><tr>
-            <td class="windowbg2 padd_8_12px" colspan="5">$admin_txt{'57'}</td>
+            <td class="windowbg2 padd_8_12px">$admin_txt{'57'}</td>
         </tr>
     </table>
 </div>
@@ -718,7 +718,7 @@ qq~editbrds[$i] = "${$uid.$editboards[$i]}{'cat'}|$editboards[$i]|${$uid.$editbo
             ( $curcatname, $catperms ) = split /\|/xsm, $catinfo{"$catid"};
             if ( $INFO{'action'} eq 'boardscreen' || $INFO{'parent'} ) {
                 if ( $catid eq $boardcat || $catid eq $INFO{'category'} ) {
-                    $selected = q~selected="selected" ~;
+                    $selected = q~ selected="selected"~;
                 }
                 else { $selected = q{}; }
             }
@@ -843,29 +843,29 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         my $pollperms  = DrawPerms( ${ $uid . $id }{'pollperms'},  0 );
 
         $yymain .= qq~<tr>
-    <td class="titlebg" colspan="5"> <b>$boardtext</b></td>
+    <td class="titlebg" colspan="4"> <b>$boardtext</b></td>
   </tr><tr>
     <td class="catbg" colspan="4"><b>$admin_txt{'59'}:</b> $admin_txt{'60'}</td>
   </tr><tr>~;
         if ( $id ne q{} ) {
             $yymain .= qq~
-    <td class="windowbg w_25pc"><label for="id$i"><b>$admin_txt{'61'}</b></label></td>
+    <td class="windowbg2 w_25pc"><b>$admin_txt{'61'}</b></td>
     <td class="windowbg2" colspan="3"><input type="hidden" name="id$i" id="id$i" value="$id" />$id</td>~;
         }
         else {
             $yymain .= qq~
-    <td class="windowbg w_25pc"><label for="id$i"><b>$admin_txt{'61'}</b><br />$admin_txt{'61b'}</label></td>
+    <td class="windowbg2 w_25pc"><label for="id$i"><b>$admin_txt{'61'}</b><br />$admin_txt{'61b'}</label></td>
     <td class="windowbg2" colspan="3"><input type="text" name="id$i" id="id$i" /></td>~;
         }
         $yymain .= qq~
   </tr><tr>
-    <td class="windowbg"><label for="name$i"><b>$admin_txt{'68'}:</b><br />$admin_txt{'68a'}</label></td>
+    <td class="windowbg2"><label for="name$i"><b>$admin_txt{'68'}:</b><br />$admin_txt{'68a'}</label></td>
     <td class="windowbg2" colspan="3"><input type="text" name="name$i" id="name$i" value="$boardname" size="50" maxlength="100" /></td>
   </tr><tr>
-    <td class="windowbg"><label for="description$i"><b>$admin_txt{'62'}:</b><br />$admin_txt{'62a'}</label></td>
+    <td class="windowbg2"><label for="description$i"><b>$admin_txt{'62'}:</b><br />$admin_txt{'62a'}</label></td>
     <td class="windowbg2" colspan="3"><textarea name="description$i" id="description$i" rows="5" cols="30" style="width:98%; height:60px">$description</textarea></td>
   </tr><tr>
-    <td class="windowbg">
+    <td class="windowbg2">
     <b>$admin_txt{'63'}:</b><br /><span class="small">
     <!-- <a href="javascript:void(0);" onclick="window.open('$scripturl?action=imlist;sort=username;toid=moderators$i','','status=no,height=345,width=464,menubar=no,toolbar=no,top=50,left=50,scrollbars=no')">$selector_txt{linklabel}</a><br/> -->
     <a href="javascript:void(0);" onclick="window.open('$scripturl?action=qsearch;toid=moderators$i','','status=no,height=325px,width=300,menubar=no,toolbar=no,top=50,left=50,scrollbars=no')">$selector_txt{linklabel}</a><br />
@@ -887,11 +887,13 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         }
 
         $yymain .= qq~
+        <option value=""></option>
         </select>
             <br /><span class="small">$selector_txt{instructions}</span>
     <!--<input type="text" name="moderators$i" value="$moderators" size="50" maxlength="100" />-->
+    </td>
   </tr><tr>
-    <td class="windowbg"><label for="moderatorgroups$i"><b>$admin_txt{'13'}:</b></label></td>
+    <td class="windowbg2"><label for="moderatorgroups$i"><b>$admin_txt{'13'}:</b></label></td>
     <td class="windowbg2" colspan="3">
 ~;
 
@@ -922,67 +924,70 @@ qq~<select multiple="multiple" name="moderatorgroups$i" id="moderatorgroups$i" s
         $yymain .= qq~
     </td>
   </tr><tr>
-    <td class="windowbg"><label for="cat$i"><b>$admin_txt{'44'}:</b></label></td>
+    <td class="windowbg2"><label for="cat$i"><b>$admin_txt{'44'}:</b></label></td>
     <td class="windowbg2" colspan="3"><select name="cat$i" id="cat$i" onchange="updateParent(this.value, '$editboards[$i]', $i)">$catsel{$i}</select></td>
   </tr><tr>
-      <td class="windowbg"><label for="parent$i"><b>$admin_txt{'249'}:</b></label></td>
-      <td class="windowbg2" colspan="3"><select onchange="checkParent($i, '$editboards[$i]')" name="parent$i" id="parent$i">$catboardlist{${$uid.$editboards[$i]}{'cat'}}</select></td>
+      <td class="windowbg2"><label for="parent$i"><b>$admin_txt{'249'}:</b></label></td>
+      <td class="windowbg2" colspan="3">
+          <select onchange="checkParent($i, '$editboards[$i]')" name="parent$i" id="parent$i">
+          <option value=""></option>
+          </select></td>
   </tr><tr>
-      <td class="windowbg"><label for="children$i"><b>$admin_txt{'248'}:</b></label></td>
+      <td class="windowbg2"><b>$admin_txt{'248'}:</b></td>
       <td class="windowbg2" colspan="3">$childrenlist</td>
   </tr><tr>
-    <td class="windowbg"><label for="canpost$i"><b>$admin_txt{'247'}</b></label></td>
+    <td class="windowbg2"><label for="canpost$i"><b>$admin_txt{'247'}</b></label></td>
     <td class="windowbg2" colspan="3"><input type="checkbox" name="canpost$i" id="canpost$i" value="1"$canpostch /> <label for="canpost$i">$admin_txt{'247a'}</label></td>
   </tr><tr>
     <td class="catbg"  colspan="4"><b>$admin_txt{'64'}</b> $admin_txt{'64a'} </td>
   </tr><tr>
-    <td class="windowbg"><label for="pic$i"><b>$admin_txt{'64b'}:</b></label></td>
+    <td class="windowbg2"><label for="pic$i"><b>$admin_txt{'64b'}:</b></label></td>
     <td class="windowbg2" colspan="3"><input type="text" name="pic$i" id="pic$i" value="$boardpic" size="50" maxlength="255"$brdpic /></td>
   </tr><tr>
-    <td class="windowbg"><label for="brdrss$i"><b>$admin_txt{'brdrss1'}:</b></label></td>
+    <td class="windowbg2"><label for="brdrss$i"><b>$admin_txt{'brdrss1'}:</b></label></td>
     <td class="windowbg2" colspan="3"><input type="checkbox" name="brdrss$i" id="brdrss$i" value="1"$brdrssch /> <label for="brdrss$i"><span class="small">$admin_txt{'brdrss3'}</span></label></td>
   </tr><tr>
-   <td class="windowbg"><label for="zero$i"><b>$admin_txt{'64c'}</b></label></td>
+   <td class="windowbg2"><label for="zero$i"><b>$admin_txt{'64c'}</b></label></td>
     <td class="windowbg2" colspan="3"><input type="checkbox" name="zero$i" id="zero$i" value="1"$zeroch /> <label for="zero$i">$admin_txt{'64d'}</label></td>
   </tr><tr>
-    <td class="windowbg"><label for="show$i"><b>$admin_txt{'64e'}</b></label></td>
+    <td class="windowbg2"><label for="show$i"><b>$admin_txt{'64e'}</b></label></td>
     <td class="windowbg2" colspan="3"><input type="checkbox" name="show$i" id="show$i" value="1"$showpriv /> <label for="show$i">$admin_txt{'64f'}</label></td>
   </tr><tr>
-    <td class="windowbg"><label for="att$i"><b>$admin_txt{'64k'}</b></label></td>
+    <td class="windowbg2"><label for="att$i"><b>$admin_txt{'64k'}</b></label></td>
     <td class="windowbg2" colspan="3"><input type="checkbox" name="att$i" id="att$i" value="1"$attch /> <label for="att$i">$admin_txt{'64l'}</label></td>
   </tr><tr>
-    <td class="windowbg"><label for="ann$i"><b>$admin_txt{'64g'}</b></label></td>
+    <td class="windowbg2"><label for="ann$i"><b>$admin_txt{'64g'}</b></label></td>
     <td class="windowbg2" colspan="3"><input type="checkbox" id="ann$i" name="ann$i" value="1" $annch onclick="javascript: if (this.checked) checkann(true, '$i'); else checkann(false, '$i');" /> <label for="ann$i">$admin_txt{'64h'}</label></td>
   </tr><tr>
-    <td class="windowbg"><label for="rbin$i"><b>$admin_txt{'64i'}</b></label></td>
+    <td class="windowbg2"><label for="rbin$i"><b>$admin_txt{'64i'}</b></label></td>
     <td class="windowbg2" colspan="3"><input type="checkbox" id="rbin$i" name="rbin$i" value="1" $rbinch onclick="javascript: if (this.checked) checkbin(true, '$i'); else checkbin(false, '$i');" /> <label for="rbin$i">$admin_txt{'64j'}</label></td>
   </tr><tr>
     <td class="catbg"  colspan="4"><b>$admin_txt{'rules'}:</b></td>
   </tr><tr>
-    <td class="windowbg"><label for="rules$i"><b>$admin_txt{'rules1'}:</b></label></td>
+    <td class="windowbg2"><label for="rules$i"><b>$admin_txt{'rules1'}:</b></label></td>
     <td class="windowbg2" colspan="3"><input type="checkbox" name="rules$i" id="rules$i" value="1"$en_rules /></td>
   </tr><tr>
-    <td class="windowbg"><label for="rulescollapse$i"><b>$exptxt{'6'}</b></label></td>
+    <td class="windowbg2"><label for="rulescollapse$i"><b>$exptxt{'6'}</b></label></td>
     <td class="windowbg2" colspan="3"><input type="checkbox" name="rulescollapse$i" id="rulescollapse$i" value="1"$en_rulescoll /></td>
   </tr><tr>
-    <td class="windowbg"><label for="rulestitle$i"><b>$admin_txt{'rules2'}:</b></label></td>
+    <td class="windowbg2"><label for="rulestitle$i"><b>$admin_txt{'rules2'}:</b></label></td>
     <td class="windowbg2" colspan="3"><input type="text" name="rulestitle$i" id="rulestitle$i" value="$rulestitle" size="50" maxlength="100" /></td>
   </tr><tr>
-    <td class="windowbg"><label for="rulesdesc$i"><b>$admin_txt{'rules3'}:</b><br /><span class="small">$admin_txt{'rules4'}</span></label></td>
+    <td class="windowbg2"><label for="rulesdesc$i"><b>$admin_txt{'rules3'}:</b><br /><span class="small">$admin_txt{'rules4'}</span></label></td>
     <td class="windowbg2" colspan="3"><textarea name="rulesdesc$i" id="rulesdesc$i" rows="5" cols="30" style="width:98%; height:60px">$rulesdesc</textarea></td>
   </tr><tr>
     <td class="catbg" colspan="4"><b>$admin_txt{'100'}:</b> $admin_txt{'100a'}</td>
   </tr><tr>
-    <td class="windowbg"><label for="minage$i"><b>$admin_txt{'95'}:</b></label></td>
+    <td class="windowbg2"><label for="minage$i"><b>$admin_txt{'95'}:</b></label></td>
     <td class="windowbg2" colspan="3"><input type="text" size="3" name="minage$i" id="minage$i" value="$boardminage" /> <label for="minage$i">$admin_txt{'96'}</label></td>
   </tr><tr>
-    <td class="windowbg"><label for="maxage$i"><b>$admin_txt{'95a'}:</b></label></td>
+    <td class="windowbg2"><label for="maxage$i"><b>$admin_txt{'95a'}:</b></label></td>
     <td class="windowbg2" colspan="3"><input type="text" size="3" name="maxage$i" id="maxage$i" value="$boardmaxage" /> <label for="maxage$i">$admin_txt{'96a'}</label></td>
   </tr><tr>
-    <td class="windowbg"><label for="gender$i"><b>$admin_txt{'97'}:</b></label></td>
+    <td class="windowbg2"><label for="gender$i"><b>$admin_txt{'97'}:</b></label></td>
     <td class="windowbg2" colspan="3">$genselect <label for="gender$i">$admin_txt{'98'}</label></td>
   </tr><tr>
-    <td class="windowbg"><b>$boardpass_txt{'900pw'}:</b><br /><br />$boardpass_txt{'900pwb'}</td>
+    <td class="windowbg2"><b>$boardpass_txt{'900pw'}:</b><br /><br />$boardpass_txt{'900pwb'}</td>
     <td class="windowbg2" colspan="3"><input type="checkbox" name="paswwr$i" value="1"$brdpasswr /> <input type="text" size="15" name="pasww$i" value="$brdfpassw3" />
         <br />$boardpass_txt{'900pf'}
         <br /><span style="color:red">$brdpassw2</span>
@@ -1072,12 +1077,14 @@ function checkbin(bcheck, bwho) {
 }
 
 selectParentBoard();
-
 //-->
 </script>
 
     ~;
-    $yytitle     = "$admin_txt{'50'}";
+   $yytitle     = "$admin_txt{'50'}";
+   if ( $INFO{'action'} eq 'boardscreen' ) {
+    $yytitle     = "$admin_txt{'50a'}";
+    }
     $action_area = 'manageboards';
     AdminTemplate();
     return;
@@ -1458,6 +1465,7 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
     print {FORUMCONTROL} sort @boardcontrol or croak "$croak{'print'} FORUMCONTOL";
     fclose(FORUMCONTROL);
 
+    $yytitle = $admin_txt{'50a'};
     $action_area = 'manageboards';
     AdminTemplate();
     return;
