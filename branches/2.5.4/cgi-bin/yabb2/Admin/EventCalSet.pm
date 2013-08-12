@@ -94,13 +94,13 @@ sub EventCalSet {
 
     $yymain .= qq~
 <form action="$adminurl?action=eventcal_set2" method="post" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiva">
-   <table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+   <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
      <col class="w_50pc" />
      <col class="w_50pc" />
      <tr>
        <td class="titlebg" colspan="2">
-         $admin_img{'prefimg'}> <b>$event_cal{'1'}</b>
+         $admin_img{'prefimg'} <b>$event_cal{'1'}</b>
        </td>
      </tr><tr>
        <td class="catbg" colspan="2"><span class="small">$event_cal{'21'}</span></td>
@@ -245,8 +245,8 @@ sub EventCalSet {
      </tr>
    </table>
  </div>
- <div class="bordercolor rightboxdiva">
-   <table class="cs_thin pad_4px">
+ <div class="bordercolor rightboxdiv">
+   <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
      <tr>
        <td class="catbg center">
 		 <input type="submit" name="savesetting" value="$event_cal{'31'}" /> <input type="submit" name="rebuiltbd" value="$event_cal{'54'}" />
@@ -263,8 +263,8 @@ sub EventCalSet {
 
     $yymain .= qq~
 <form action="$adminurl?action=eventcal_set3" method="post" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiva">
-   <table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+   <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
     <col span="2" style="width:24%" />
     <col style="width:10%" />
     <col style="width:6%" />
@@ -273,33 +273,29 @@ sub EventCalSet {
      </tr><tr>
        <td class="windowbg2 padd_8_12px" colspan="4">$event_cal{'33'}</td>
      </tr><tr>
-       <td class="catbg center"><b>$event_cal{'27'}</b></td>
-       <td class="catbg center"><b>$event_cal{'28'}</b></td>
-       <td class="catbg center"><b>$event_cal{'29'}</b></td>
-       <td class="catbg center"><b>$var_cal{'caldel'}</b></td>
+       <td class="catbg center small">$event_cal{'27'}</td>
+       <td class="catbg center small">$event_cal{'28'}</td>
+       <td class="catbg center small">$event_cal{'29'}</td>
+       <td class="catbg center small">$var_cal{'caldel'}</td>
      </tr>~;
 
     $i = 0;
     while ( $CalIconURL[$i] ) {
         $yymain .= qq~<tr>
-       <td class="windowbg center"><input type="text" name="caliimg[$i]" value="$CalIconURL[$i]" /></td>
-       <td class="windowbg center"><input type="text" name="calidescr[$i]" value="$CalIDescription[$i]" /></td>
-       <td class="windowbg center"><img src="$yyhtml_root/ModImages/EventCal/EventIcons/$CalIconURL[$i].gif" alt="" /></td>
-       <td class="windowbg center"><input type="checkbox" name="calidelbox[$i]" value="1" /></td>
+       <td class="windowbg padd_4px center"><input type="text" name="caliimg[$i]" value="$CalIconURL[$i]" /></td>
+       <td class="windowbg padd_4px center"><input type="text" name="calidescr[$i]" value="$CalIDescription[$i]" /></td>
+       <td class="windowbg padd_4px center"><img src="$yyhtml_root/ModImages/EventCal/EventIcons/$CalIconURL[$i].gif" alt="" /></td>
+       <td class="windowbg padd_4px center"><input type="checkbox" name="calidelbox[$i]" value="1" /></td>
      </tr>~;
         $i++;
     }
 
-    $yymain .= qq~<tr>
-       <td class="titlebg" colspan="4">$admin_img{'prefimg'} <b>$event_cal{'30'}</b></td>
-     </tr>~;
-
     $inew = 0;
     while ( $inew <= 3 ) {
         $yymain .= qq~<tr>
-       <td class="windowbg center"><input type="text" name="caliimg[$i]" /></td>
-       <td class="windowbg center"><input type="text" name="calidescr[$i]" /></td>
-       <td class="windowbg center" colspan="2">&nbsp;</td>
+       <td class="windowbg padd_4px center"><input type="text" name="caliimg[$i]" /></td>
+       <td class="windowbg padd_4px center"><input type="text" name="calidescr[$i]" /></td>
+       <td class="windowbg padd_4px center" colspan="2">&nbsp;</td>
      </tr>~;
         $i++;
         $inew++;
@@ -308,8 +304,8 @@ sub EventCalSet {
     $yymain .= qq~
    </table>
  </div>
- <div class="bordercolor rightboxdiva">
-   <table class="cs_thin pad_4px">
+ <div class="bordercolor rightboxdiv">
+   <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
      <tr>
        <td class="catbg center"><input type="submit" value="$event_cal{'32'}" /></td>
      </tr>

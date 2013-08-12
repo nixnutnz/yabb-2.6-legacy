@@ -78,8 +78,8 @@ sub setup_guardian {
 
     $yymain .= qq~
 <form action="$adminurl?action=setup_guardian2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'title'}</b>
@@ -91,8 +91,8 @@ sub setup_guardian {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'general'}</b>
@@ -134,8 +134,8 @@ sub setup_guardian {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'proxy'}</b>
@@ -164,8 +164,8 @@ sub setup_guardian {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'referer'}</b>
@@ -194,9 +194,8 @@ sub setup_guardian {
         </tr>
     </table>
 </div>
-<br />
-<div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'harvester'}</b>
@@ -225,8 +224,8 @@ sub setup_guardian {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'request'}</b>
@@ -255,8 +254,8 @@ sub setup_guardian {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'string'}</b>
@@ -309,8 +308,8 @@ sub setup_guardian {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'union'}</b>
@@ -333,8 +332,8 @@ sub setup_guardian {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'clike'}</b>
@@ -357,9 +356,11 @@ sub setup_guardian {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiva">
+<div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px">
         <tr>
+    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+	</tr><tr>
             <td class="catbg center">
                 <input type="submit" value="$guardian_txt{'save'}" class="button" />
             </td>

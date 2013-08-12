@@ -63,7 +63,8 @@ sub SmiliePanel {
     }
     $yymain .= qq~
 <form action="$adminurl?action=addsmilies" method="post" accept-charset="$yycharset">
-<table class="bordercolor cs_thin pad_4px" style="width:98%">
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
   <col class="w_5pc" />
   <col span="3" class="w_20pc" />
   <col class="w_15pc" />
@@ -199,11 +200,20 @@ qq~<a href="$adminurl?action=smiliemove;index=$i;movedown=1"><img src="$imagesdi
     <td class="catbg center"><b>$asmtxt{'03'}</b></td>
     <td class="catbg center"><b>$asmtxt{'04'}</b></td>
     <td class="catbg center" colspan="4"><b>$asmtxt{'06'}</b></td>
-  </tr>$smilieslist<tr>
-    <td class="catbg center" colspan="8">
-    <input type="submit" value="$asmtxt{'09'}" class="button" />&nbsp;<input type="reset" value="$asmtxt{'10'}" class="button" /></td>
+  </tr>$smilieslist
+</table>
+</div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px">
+	<tr>
+    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+	</tr><tr>
+    	<td class="catbg center">
+        	<input type="submit" value="$asmtxt{'09'}" class="button" />&nbsp;<input type="reset" value="$asmtxt{'10'}" class="button" />
+    	</td>
   </tr>
 </table>
+</div>
 </form>
 ~;
 

@@ -93,8 +93,8 @@ sub SpamQuestions {
 
     $yymain = qq~
 <form action="$adminurl?action=spam_questions2" method="post">
-<div class="bordercolor rightboxdiva">
-<table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
     <col class="w_50pc" />
     <col class="w_50pc" />
 	<tr>
@@ -114,8 +114,8 @@ sub SpamQuestions {
 	</tr>
 </table>
 </div>
-<div class="bordercolor rightboxdiva">
-<table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
 	<tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
 	</tr><tr>
@@ -127,7 +127,7 @@ sub SpamQuestions {
 </table>
 </div>
 </form>
-<div class="bordercolor rightboxdiva">
+<div class="bordercolor rightboxdiv" style="margin-bottom: .5em;">
 <table class="cs_thin pad_4px">
 	<col span="2" class="w_43pc" />
 	<col span="2" class="w_7pc" />
@@ -147,8 +147,8 @@ $show_questions
 </table>
 </div>
 <form action="$adminurl?action=spam_questions_add" method="post" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiva">
-<table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
     <col class="w_25pc" />
     <col class="w_75pc" />
 	<tr>
@@ -162,8 +162,8 @@ $show_questions
 	</tr>
 </table>
 </div>
-<div class="bordercolor rightboxdiva">
-<table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
 	<tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
 	</tr><tr>
@@ -256,7 +256,7 @@ sub SpamQuestionsEdit {
     $yymain = qq~
 <form action="$adminurl?action=spam_questions_edit2" method="post" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px">
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
     <col class="w_25pc" />
     <col class="w_75pc" />
 	<tr>
@@ -270,7 +270,7 @@ sub SpamQuestionsEdit {
 	</tr>
 </table>
 </div>
-<div class="bordercolor rightboxdiv" style="margin-top: 1em;">
+<div class="bordercolor rightboxdiv">
 <table class="cs_thin pad_4px">
 	<tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>

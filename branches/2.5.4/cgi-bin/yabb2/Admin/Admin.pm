@@ -940,7 +940,7 @@ qq~<input type="checkbox" name="$actfound" id="$actfound"$selected />&nbsp;<labe
     $yymain .= qq~
 <form action="$adminurl?action=referer_control2" method="post">
     <div class="bordercolor rightboxdiv">
-        <table class="cs_thin pad_4px">
+        <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
             <col class="w_33pc" />
             <tr>
                 <td class="titlebg" colspan="3">
@@ -957,8 +957,15 @@ qq~<input type="checkbox" name="$actfound" id="$actfound"$selected />&nbsp;<labe
                 <td class="windowbg2 vtop">
                 $dismenu
                 </td>
+            </tr>
+        </table>
+    </div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px">
+	<tr>
+    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
             </tr><tr>
-                <td class="catbg center" colspan="3">
+    	<td class="catbg center">
                     <input type="submit" value="$reftxt{'4'}" class="button" />
                 </td>
             </tr>
@@ -1000,7 +1007,7 @@ sub Refcontrol2 {
     print {FILE} @outfile or croak "$croak{'print'} FILE";
     fclose(FILE);
 
-    $yySetLocation = $adminurl;
+    $yySetLocation = qq~$adminurl?action=referer_control~;
     redirectexit();
     return;
 }

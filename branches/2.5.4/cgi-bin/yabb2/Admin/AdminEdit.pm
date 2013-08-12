@@ -78,7 +78,7 @@ qq~\n<input type="checkbox" name="$actfound" id="$actfound"$checked />&nbsp;<lab
     $yymain .= qq~
 <form action="$adminurl?action=gmodsettings2" method="post" enctype="application/x-www-form-urlencoded">
  <div class="bordercolor rightboxdiv">
-   <table class=" cs_thin pad_4px">
+   <table class=" cs_thin pad_4px" style="margin-bottom: .5em;">
      <col class="w_50px" />
      <tr>
        <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$gmod_settings{'1'}</b></td>
@@ -92,8 +92,17 @@ qq~\n<input type="checkbox" name="$actfound" id="$actfound"$checked />&nbsp;<lab
        <td class="catbg" colspan="2"><span class="small">$gmod_settings{'4'}</span></td>
      </tr><tr>
        <td class="windowbg2 vtop">$dismenu</td>
+      </tr>
+   </table>
+ </div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px">
+	<tr>
+    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
      </tr><tr>
-       <td class="catbg center" colspan="2"><input type="submit" value="$reftxt{'4'}" class="button" /></td>
+    	<td class="catbg center">
+        	<input type="submit" value="$reftxt{'4'}" class="button" />
+    	</td>
      </tr>
    </table>
  </div>
@@ -123,7 +132,7 @@ sub EditBots {
     $yymain .= qq~
 <form action="$adminurl?action=editbots2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
     <div class="bordercolor rightboxdiv">
-        <table class="cs_thin pad_4px">
+        <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
             <tr>
                 <td class="titlebg">$admin_img{'xx'}<b>$admin_txt{'18'}</b></td>
             </tr><tr>
@@ -140,8 +149,17 @@ sub EditBots {
     fclose(BOTS);
     $yymain .= qq~</textarea>
                 </td>
+            </tr>
+        </table>
+    </div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px">
+	<tr>
+    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
             </tr><tr>
-                <td class="catbg center"><input type="submit" value="$admin_txt{'10'}" class="button" /></td>
+    	<td class="catbg center">
+        	<input class="button" type="submit" value="$admin_txt{'10'}" />
+    	</td>
             </tr>
         </table>
     </div>
@@ -199,7 +217,7 @@ sub SetCensor {
         $i =~ tr/\n//d;
     }
     $yymain .= qq~
- <div class="bordercolor rightboxdiva">
+ <div class="bordercolor rightboxdiv">
    <table class="cs_thin pad_4px">
      <tr>
        <td class="titlebg">
@@ -217,11 +235,9 @@ sub SetCensor {
        </td>
      </tr>
    </table>
- </div>
- <div class="bordercolor rightboxdiva">
    <!-- Split for XHTML Validation purposes -->
    <form action="$adminurl?action=setcensor2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
-   <table class="cs_thin pad_4px">
+	<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
      <tr>
        <td class="windowbg2 padd_8_12px">
          <label for="censored">$admin_txt{'136'}</label>
@@ -236,14 +252,21 @@ sub SetCensor {
     }
     $yymain .= qq~</textarea>
          </td>
+     </tr>
+   </table>
+   </div>
+	<div class="bordercolor rightboxdiv">
+	<table class="cs_thin pad_4px">
+		<tr>
+			<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
      </tr><tr>
        <td class="catbg center">
 <input type="submit" value="$admin_txt{'10'} $censorlanguage" class="button" />
        </td>
      </tr>
    </table>
+	</div>
    </form>
- </div>
 ~;
     $yytitle     = "$admin_txt{'135'}";
     $action_area = 'setcensor';
@@ -270,7 +293,7 @@ sub SetCensor2 {    # don't use &FromChars() here!!!
         print {CENSOR} "$i\n" or croak "$croak{'print'} CENSOR";
     }
     fclose(CENSOR);
-    $yySetLocation = qq~$adminurl~;
+    $yySetLocation = qq~$adminurl?action=setcensor~;
     redirectexit();
     return;
 }
@@ -406,18 +429,28 @@ sub ModifyAgreement {
       <input type="submit" value="$admin_txt{'462'}" class="button" />
       </form>
        </td>
-     </tr><tr>
+        </tr>
+	</table>
+    <form action="$adminurl?action=modagreement2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
+	<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+		<tr>
        <td class="windowbg2 center padd_8_12px">
-      <form action="$adminurl?action=modagreement2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
       <input type="hidden" name="destination" value="$INFO{'destination'}" />
       <input type="hidden" name="agreementlanguage" value="$agreementlanguage" />
       <textarea rows="35" cols="95" name="agreement" id="agreement" style="width:95%">$fullagreement</textarea>
        </td>
+        </tr>
+    </table>
+    <table class="cs_thin pad_4px">
+	<tr>
+    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
      </tr><tr>
-       <td class="catbg center"><input type="submit" value="$admin_txt{'10'} $agreementlanguage" class="button" /></td>
+    	<td class="catbg center">
+        	<input type="submit" value="$admin_txt{'10'} $agreementlanguage" class="button" />
+    	</td>
      </tr>
+</table>
       </form>
-   </table>
  </div>
 ~;
     $yytitle     = "$admin_txt{'764'}";
@@ -710,8 +743,8 @@ sub EditPaths {
     }
 
     $yymain .= qq~
- <div class="bordercolor rightboxdiva">
-   <table class="cs_thin pad_4px">
+ <div class="bordercolor rightboxdiv">
+   <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
      <tr>
        <td class="titlebg"><b>$edit_paths_txt{'33'}</b></td>
      </tr><tr>
@@ -724,8 +757,8 @@ sub EditPaths {
    </table>
  </div>
 <form action="$adminurl?action=editpaths2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
- <div class="bordercolor rightboxdiva">
-   <table class="cs_thin pad_4px">
+ <div class="bordercolor rightboxdiv">
+   <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
      <tr>
        <td class="titlebg">
             $admin_img{'prefimg'}&nbsp;<b>$edit_paths_txt{'1'}</b>
@@ -872,11 +905,18 @@ sub EditPaths {
                   <input type="text" name="facesurl" id="facesurl" size="50" value="$facesurl" />
             </div>
        </td>
+     </tr>
+   </table>
+ </div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px">
+	<tr>
+    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
      </tr><tr>
        <td class="catbg center">
              <input type="hidden" name="lastsaved" value="${$uid.$username}{'realname'}" />
              <input type="hidden" name="lastdate" value="$date" />
-             <input type="submit" value="$admin_txt{'10'}" class="button" />
+        	<input class="button" type="submit" value="$admin_txt{'10'}" />
        </td>
      </tr>
    </table>
@@ -970,7 +1010,7 @@ EOF
     print {FILE} nicely_aligned_file($setfile) or croak "$croak{'print'} FILE";
     fclose(FILE);
 
-    $yySetLocation = qq~$adminurl~;
+    $yySetLocation = qq~$adminurl?action=editpaths~;
     redirectexit();
     return;
 }

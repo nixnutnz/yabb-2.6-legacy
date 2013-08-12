@@ -113,7 +113,8 @@ sub AddCats {
             }
         }
         else {
-            $cattext = "$admin_txt{'44'} $i:";
+		    my $cat_num = $i + 1;
+            $cattext = "$admin_txt{'44'} $cat_num:"; 
         }
         $catperms = DrawPerms( $catperms, 0 );
         $yymain .= qq~
