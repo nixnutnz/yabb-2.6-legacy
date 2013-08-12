@@ -171,7 +171,7 @@ $admin_images = "$yyhtml_root/Templates/Admin/default";
 'banimg' => qq~<img src="$admin_images/ban.gif" alt="" />~,
 'profile' => qq~<img src="$admin_images/profile.gif" alt="" />~,
 'cat_img' => qq~<img src="$admin_images/cat.gif" alt="" />~,
-'board' => qq~<img src="admin_images/board.gif" alt="" />~,
+'board' => qq~<img src="$admin_images/board.gif" alt="" />~,
 'index_togl' => qq~<img src="$imagesdir/index_togl.png" alt="" />~,
 'register' => qq~<img src="$imagesdir/register.gif" alt="" />~,
 'xx' => qq~<img src="$imagesdir/xx.gif" alt="" />~,
