@@ -15,7 +15,7 @@
 
 $my_blank_avatar = 'blank.gif';
 $nn_avatar = 'nn.gif';
-$my_bdaycake = 'bdaycake.gif';
+$my_bdaycake = 'bdaycake.png';
 $my_buddylist = 'buddylist.gif';
 $my_aim = 'aim.gif';
 $my_gtalk = 'gtalk2.gif';
