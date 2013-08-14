@@ -3638,15 +3638,15 @@ sub SetInstall2 {
 
 ########## MemberGroups ##########
 
-\$Group{'Administrator'} = "Administrator|5|staradmin.gif|red|0|0|0|0|0|0";
-\$Group{'Global Moderator'} = "Global Moderator|5|stargmod.gif|blue|0|0|0|0|0|0";
+\$Group{'Administrator'} = "Administrator|5|staradmin.png|red|0|0|0|0|0|0";
+\$Group{'Global Moderator'} = "Global Moderator|5|stargmod.png|blue|0|0|0|0|0|0";
 \$Group{'Mid Moderator'} = "Forum Moderator|5|starymod.png|teal|0|0|0|0|0|0";
 \$Group{'Moderator'} = "Board Moderator|5|starmod.png|green|0|0|0|0|0|0";
-\$Post{'500'} = "God Member|5|starsilver.gif||0|0|0|0|0|0";
-\$Post{'250'} = "Senior Member|4|stargold.gif||0|0|0|0|0|0";
-\$Post{'100'} = "Full Member|3|starblue.gif||0|0|0|0|0|0";
-\$Post{'50'} = "Junior Member|2|stargold.gif||0|0|0|0|0|0";
-\$Post{'-1'} = "YaBB Newbies|1|stargold.gif||0|0|0|0|0|0";
+\$Post{'500'} = "God Member|5|starsilver.png||0|0|0|0|0|0";
+\$Post{'250'} = "Senior Member|4|stargold.png||0|0|0|0|0|0";
+\$Post{'100'} = "Full Member|3|starblue.png||0|0|0|0|0|0";
+\$Post{'50'} = "Junior Member|2|stargold.png||0|0|0|0|0|0";
+\$Post{'-1'} = "New Member|1|stargold.png||0|0|0|0|0|0";
 
 ########## Layout ##########
 

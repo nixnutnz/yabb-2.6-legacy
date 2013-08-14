@@ -650,7 +650,7 @@ function autofill() {
             <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.facesurl.value = '$fnd_facesurl';return false;" value="->" /></td>
             <td class="windowbg"><input type="text" size="60" name ="facesurl" value="$facesurl" /></td>
         </tr><tr>
-            <td class="catbg" style="margin-top:.5em; margin-bottom:1em;"colspan="4">
+            <div class="cell_b catbg" style="margin-top:.5em; margin-bottom:1em;"colspan="4">
             <input type="submit" value="Save Settings" />
             </td>
       </tr>
@@ -1519,7 +1519,7 @@ sub SetInstall2 {
 \$Post{'250'} = "Senior Member|4|stargold.png||0|0|0|0|0|0";
 \$Post{'100'} = "Full Member|3|starblue.png||0|0|0|0|0|0";
 \$Post{'50'} = "Junior Member|2|stargold.png||0|0|0|0|0|0";
-\$Post{'-1'} = "YaBB Newbies|1|stargold.png||0|0|0|0|0|0";
+\$Post{'-1'} = "New Member|1|stargold.png||0|0|0|0|0|0";
 
 ########## Layout ##########
 
