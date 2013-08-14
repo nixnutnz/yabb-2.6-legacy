@@ -211,7 +211,7 @@ qq~ <img src="$admin_images/ad_recycle.png" alt="$admin_txt{'64i'}" title="$admi
                     }
 
                     $yymain .= q~
-    <table class="bordercolor cs_thin pad_4px" style="margin-bottom: .5em; margin-left:~
+    <table class="bordercolor borderstyle cs_thin pad_4px" style="margin-bottom: .5em; margin-left:~
                       . $indent . q~%; width:~ . $tmpwidth . q~%">
         <col style="width:~ . $tmpwidth2 . qq~%" />
         <col span="2" class="w_5pc" />
