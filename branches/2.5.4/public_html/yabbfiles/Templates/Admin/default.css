@@ -237,12 +237,20 @@ font-weight:normal;
 	font-size: 10px;
 }
 .titlebg {
-	background-color: #4378AE;
-	color: #eee;
-	font-size: 13px; 
-	height: 20px;
-	text-shadow:#2D2D2D 1px 1px 1px;
+    background-color: #4378AE;
+    color: #eee;
+    font-size: 12px;
+    height: 20px;
+    text-shadow:#2D2D2D 1px 1px 1px;
 }
+.titlebg a {
+    color:#BBB;
+    text-shadow: none;
+}
+.titlebg a:hover {
+    color:#fff;
+} 
+
 
 /* YaBB alternating bgcolors */
 .windowbg {
