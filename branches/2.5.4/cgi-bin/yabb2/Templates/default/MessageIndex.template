@@ -364,4 +364,54 @@ $visel_2a = q~<td class="droppages pages">~;
 $visel_3a = q~<td class="small" style="height: 14px; padding-left: 4px;">~;
 $visel_4 = q~</tr></table>~;
 
+
+$boardpassw = qq~
+<table class="tabtitle pad_3px" style="width: 80%;">
+    <tr>
+        <td><img src="$imagesdir/actionslock.png" alt="" /> <b>$maintxt{'900pw'}: $boardname</b></td>
+    </tr>
+</table>
+<table class="bordercolor pad_4px" style="width: 80%;">
+    <tr>
+        <td class="windowbg center">
+            <form action="$scripturl?action=checkboardpw" method="post" name="brdpass" onsubmit="return CheckPassField();">
+                <input type="hidden" name="pswviewnum" value="$viewnum" />
+                <input type="hidden" name="pswcurboard" value="$currentboard" />
+                <input type="password" name="boardpw" value="" size="25" />
+                <input type="submit" value="$maintxt{'900s'}" class="button" />
+            </form>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+<!--
+document.brdpass.boardpw.focus();
+
+function CheckPassField() {
+    if (document.brdpass.boardpw.value == '') {
+        alert("$maintxt{'900pe'}");
+        document.brdpass.boardpw.focus();
+        return false;
+    }
+    return true;
+}
+//-->
+</script>
+<div class="center" style="margin-top: 1em;"><a href="javascript:history.go(-1)">$maintxt{'900b'}</a></div>
+~;
+
+$boardpassw_g = qq~
+<table class="tabtitle pad_3px" style="width: 80%;">
+    <tr>
+        <td><img src="$imagesdir/actionslock.png" alt="" /> <b>$maintxt{'900pw'}: $boardname</b></td>
+    </tr>
+</table>
+<table class="bordercolor pad_4px" style="width: 80%;">
+    <tr>
+        <td class="windowbg center">
+			<p>$maintxt{'900pg'}</p>
+        </td>
+    </tr>
+</table>
+<div class="center" style="margin-top: 1em;"><a href="javascript:history.go(-1)">$maintxt{'900b'}</a></div>~;
 1;

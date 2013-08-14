@@ -13,9 +13,9 @@
 ###############################################################################
 # $Revision$
 
-$adminlogo = 'adminlogo.png';
+$adminlogo    = 'adminlogo.png';
 $versionchk   = 'http://testbed.dandello.net/update/versioncheck.js';
-$versionimg = 'http://www.yabbforum.com/images/version/versioncheck.gif';
+$versionimg   = 'http://www.yabbforum.com/images/version/versioncheck.gif';
 $aarea = 'aarea.jpg';
 
 $header = qq~<?xml version="1.0" encoding="$yycharset" standalone="no" ?>

@@ -24,6 +24,7 @@ $post_ip = 'ip.gif';
 @iconlist = qw( xx thumbup thumbdown exclamation question lamp smiley angry cheesy grin sad wink standard confidential urgent );
 $my_guestpost_col = q~ colspan="2"~;
 if (!$enable_quickreply) {$my_spacer = '; margin-bottom:1em;';}
+$messageclass = 'message';
 
 ## Post Top
 $mypost_title = qq~{yabb my_topper}<table class="tabtitle">
