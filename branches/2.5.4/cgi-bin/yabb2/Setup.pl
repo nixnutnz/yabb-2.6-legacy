@@ -2104,7 +2104,7 @@ sub CheckInstall {
       A problem has occurred in the /Boards folder!
             </td>
         </tr><tr>
-            <td class="windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
+            <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
             <td class="windowbg2">No /Boards folder available!</td>
         </tr>~;
     }
@@ -2115,7 +2115,7 @@ sub CheckInstall {
       A problem has occurred in the /Boards folder!
             </td>
         </tr><tr>
-            <td class="windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
+            <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
             <td class="windowbg2">
                 <b>Missing: </b>
                 <br />$brd_missing
@@ -2131,7 +2131,7 @@ sub CheckInstall {
             }
             $yymain .= qq~<tr>
             <td class="windowbg center">
-      <img src="$imagesdir/a_off.gif" alt="" />
+      <img src="$imagesdir/check.png" alt="" />
             </td>
             <td class="windowbg2">
                 <b>Installed: </b>
@@ -2150,7 +2150,7 @@ sub CheckInstall {
       A Problem has occurred in the /Members folder!
             </td>
         </tr><tr>
-            <td class="windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
+            <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
             <td class="windowbg2">
       No /Members folder available!
             </td>
@@ -2163,7 +2163,7 @@ sub CheckInstall {
       A problem has occurred in the /Members folder!
             </td>
         </tr><tr>
-            <td class="windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
+            <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
             <td class="windowbg2">
                 <b>Missing: </b>
                 <br />$mem_missing
@@ -2178,7 +2178,7 @@ sub CheckInstall {
         </tr>~;
             }
             $yymain .= qq~<tr>
-            <td class="windowbg center"><img src="$imagesdir/a_off.gif" alt="" /></td>
+            <td class="windowbg center"><img src="$imagesdir/check.png" alt="" /></td>
             <td class="windowbg2">
                 <b>Installed: </b>
                 <br />$mem_created
@@ -2195,7 +2195,7 @@ sub CheckInstall {
       A problem has occurred in the /Messages folder!
             </td>
         </tr><tr>
-            <td class="windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
+            <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
             <td class="windowbg2">
       No /Messages folder available!
             </td>
@@ -2208,7 +2208,7 @@ sub CheckInstall {
       A problem has occurred in the /Messages folder!
             </td>
         </tr><tr>
-            <td class="windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
+            <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
             <td class="windowbg2">
                 <b>Missing: </b>
                 <br />$msg_missing
@@ -2223,7 +2223,7 @@ sub CheckInstall {
         </tr>~;
             }
             $yymain .= qq~<tr>
-            <td class="windowbg center"><img src="$imagesdir/a_off.gif" alt="" /></td>
+            <td class="windowbg center"><img src="$imagesdir/check.png" alt="" /></td>
             <td class="windowbg2">
                 <b>Installed: </b>
                 <br />$msg_created
@@ -2240,7 +2240,7 @@ sub CheckInstall {
       A problem has occurred in the /Variables folder!
             </td>
         </tr><tr>
-            <td class="windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
+            <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
             <td class="windowbg2">
       No /Variables folder available!
            </td>
@@ -2253,7 +2253,7 @@ sub CheckInstall {
       A problem has occurred in the /Variables folder!
             </td>
         </tr><tr>
-            <td class="windowbg center"><img src="$imagesdir/a_on.gif" alt="" /></td>
+            <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
             <td class="windowbg2">
                 <b>Missing: </b>
                 <br />$var_missing
@@ -2268,7 +2268,7 @@ sub CheckInstall {
         </tr>~;
             }
             $yymain .= qq~<tr>
-            <td class="windowbg center"><img src="$imagesdir/a_off.gif" alt="" /></td>
+            <td class="windowbg center"><img src="$imagesdir/check.png" alt="" /></td>
             <td class="windowbg2">
                 <b>Installed: </b>
                 <br />$var_created
@@ -2293,7 +2293,7 @@ sub CheckInstall {
       Successfully checked Settings.pm!
             </td>
         </tr><tr>
-            <td class="windowbg center"><img src="$imagesdir/a_off.gif" alt="" /></td>
+            <td class="windowbg center"><img src="$imagesdir/check.png" alt="" /></td>
             <td class="windowbg2">
       Click on 'Continue' and go to your <i>Admin Center - Forum Settings</i> to set the options for your YaBB 2.5.4 forum.<br />
                 Click on 'Convert' to convert your YaBB 1 Gold - SP 1.x forum to YaBB 2.5.4. Click on 'Fix' to convert your YaBB 2.0 - 2.4 forum to 2.5.4
