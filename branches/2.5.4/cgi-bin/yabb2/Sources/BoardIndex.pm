@@ -1621,7 +1621,10 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
         $memcount = NumberFormat($memcount);
         $membercountlink =
           qq~<a href="$scripturl?action=ml"><b>$memcount</b></a>~;
-        $boardindex_template =~
+		if($iamguest && $ML_Allowed) {
+			$membercountlink = qq~<b>$memcount</b>~;
+		}
+         $boardindex_template =~
           s/({|<)yabb membercount(}|>)/$membercountlink/gsm;
         if ($showlatestmember) {
             LoadUser($latestmember);
