@@ -158,9 +158,9 @@ sub AddCats {
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
     </tr><tr>
         <td class="catbg center">
-             <input type="hidden" name="amount" value="$FORM{"amount"}" />
-             <input type="hidden" name="screenornot" value="$INFO{'action'}" />
-             <input type="submit" value="$admin_txt{'10'}" class="button" />
+            <input type="hidden" name="amount" value="$FORM{"amount"}" />
+            <input type="hidden" name="screenornot" value="$INFO{'action'}" />
+            <input type="submit" value="$admin_txt{'10'}" class="button" />
         </td>
     </tr>
 </table>

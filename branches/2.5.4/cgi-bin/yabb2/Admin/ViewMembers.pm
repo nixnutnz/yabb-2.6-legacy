@@ -79,28 +79,41 @@ qq(<a href="$adminurl?action=ml;sort=mlletter;letter=z" class="catbg a"><b>Z</b>
 
     $actualnum = 0;
     $numshown  = 0;
+	$selPost_a = q~windowbg2~;
+	$selReg_a = q~windowbg2~;
+	$selPos_a = q~windowbg2~;
+	$selLastOn_a = q~windowbg2~;
+	$selLastPost_a = q~windowbg2~;
+	$selLastIM_a = q~windowbg2~;
+	$selUser_a = q~windowbg2~;
     if ( $FORM{'sortform'} eq 'posts' || $INFO{'sort'} eq 'posts' ) {
+		$selPost_a = q~windowbg~;
         $selPost .= q~ selected="selected"~;
         MLTop();
     }
     if ( $FORM{'sortform'} eq 'regdate' || $INFO{'sort'} eq 'regdate' ) {
         $selReg .= q~ selected="selected"~;
-        MLDate();
+		$selReg_a = q~windowbg~;
+		MLDate();
     }
     if ( $FORM{'sortform'} eq 'position' || $INFO{'sort'} eq 'position' ) {
         $selPos .= q~ selected="selected"~;
+		$selPos_a = q~windowbg~;
         MLPosition();
     }
     if ( $FORM{'sortform'} eq 'lastonline' || $INFO{'sort'} eq 'lastonline' ) {
         $selLastOn .= q~ selected="selected"~;
+		$selLastOn_a = q~windowbg~;
         MLLastOnline();
     }
     if ( $FORM{'sortform'} eq 'lastpost' || $INFO{'sort'} eq 'lastpost' ) {
-        $selLastPost .= q~ selected="selected"~;
-        MLLastPost();
+		$selLastPost .= q~ selected="selected"~;
+		$selLastPost_a = q~windowbg~;
+		MLLastPost();
     }
     if ( $FORM{'sortform'} eq 'lastim' || $INFO{'sort'} eq 'lastim' ) {
         $selLastIm .= q~ selected="selected"~;
+		$selLastIM_a = q~windowbg~;
         MLLastIm();
     }
     if ( $FORM{'sortform'} eq 'memsearch' || $INFO{'sort'} eq 'memsearch' ) {
@@ -111,6 +124,7 @@ qq(<a href="$adminurl?action=ml;sort=mlletter;letter=z" class="catbg a"><b>Z</b>
         || $INFO{'sort'} eq 'username' )
     {
         $selUser .= q~ selected="selected"~;
+		$selUser_a = q~windowbg~;
         MLByLetter();
     }
     return;
@@ -321,21 +335,33 @@ sub showRows {
         $days_reg = $result;
 
         my ( $tmpa, $tmpb, $tmpc );
-        if ( $userlastonline eq q{} ) { $userlastonline = q{-}; }
+        if ( $userlastonline eq q{} ) { $userlastonline = q{-};
+		     $date1 = stringtotime( ${ $uid . $user }{'regdate'} );
+			calcdifference();
+            $tmpa = $result;
+			}
         else {
             $date1 = $userlastonline;
             calcdifference();
             $userlastonline = $result;
             $tmpa           = $userlastonline;
         }
-        if ( $userlastpost eq q{} ) { $userlastpost = q{-}; }
+        if ( $userlastpost eq q{} ) { $userlastpost = q{-};
+		     $date1 = stringtotime( ${ $uid . $user }{'regdate'} );
+			calcdifference();
+            $tmpb = $result;
+			}
         else {
             $date1 = $userlastpost;
             calcdifference();
             $userlastpost = $result;
-            $tmpb         = $userlastpost;
+             $tmpb         = $userlastpost;
         }
-        if ( $userlastim eq q{} ) { $userlastim = q{-}; }
+        if ( $userlastim eq q{} ) { $userlastim = q{-};
+		    $date1 = stringtotime( ${ $uid . $user }{'regdate'} );
+			calcdifference();
+            $tmpc = $result;
+			}
         else {
             $date1 = $userlastim;
             calcdifference();
@@ -444,7 +470,7 @@ qq~<input type="checkbox" name="member$numshown" value="$user" class="windowbg" 
 sub buildIndex {
     if ( $memcount != 0 ) {
 
-        ( $dummy, $dummy, $usermemberpage ) =
+        ( undef, undef, $usermemberpage ) =
           split /\|/xsm, ${ $uid . $username }{'pageindex'};
 
         # Build the page links list.
@@ -499,7 +525,7 @@ qq~<a href="$adminurl?action=ml;sort=$FORM{'sortform'};letter=$letter$sortorder"
                     if ( $counter % $MembersPerPage == 0 ) {
                         $pagetxtindex .=
                           $start == $counter
-                          ? qq~<b>$tmpa</b>&nbsp;~
+                          ? qq~<b>[$tmpa]</b>&nbsp;~
                           : qq~<a href="$adminurl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$counter$sortorder" class="norm">$tmpa</a>&nbsp;~;
                         $tmpa++;
                     }
@@ -655,6 +681,8 @@ qq~<img src="$imagesdir/index_right.png" height="14" width="13" alt="$pidtxt{'03
 
 sub buildPages {
     my ($inp) = @_;
+	
+	
     $FindForm .= qq~
             <form action="$adminurl?action=ml;sort=memsearch" method="post" id="form1" name="form1" enctype="application/x-www-form-urlencoded" style="display: inline;">
             <input type="text" name="member" id="member" value="$ml_txt{'801'}" style="font-size: 11px; width: 180px;" onfocus="txtInFields(this, '$ml_txt{'801'}');" onblur="txtInFields(this, '$ml_txt{'801'}')" />
@@ -662,18 +690,7 @@ sub buildPages {
             </form>
         ~;
 
-    $SortJump .= qq(
-           <form action="$adminurl?action=ml" method="post" style="display: inline;">
-            <select name="sortform" onchange="submit()">
-            <option value="username"$selcUser>$ml_txt{'35'}</option>
-            <option value="position"$selcPos>$ml_txt{'87'}</option>
-            <option value="posts"$selcPost>$ml_txt{'21'}</option>
-            <option value="regdate"$selcReg>$ml_txt{'233'}</option>
-            </select>
-            </form>
-        );
-
-   $TableHeader .= qq~
+    $TableHeader .= qq~
         <table class="bordercolor borderstyle cs_thin pad_3px">
             <tr>
                 <td class="titlebg right" style="font-size: 11px; text-shadow: none;">
@@ -716,12 +733,14 @@ sub buildPages {
             <col style="width:7%" />
             <col span="2" style="width:6%" />
             <tr>
-                <td class="windowbg2 center"><a href="$adminurl?action=ml;sortform=username"><b>$ml_txt{'35'}</b></a></td>
-                <td class="windowbg2 center"><a href="$adminurl?action=ml;sortform=position"><b>$ml_txt{'87'}</b></a></td>
-                <td class="windowbg2 center" colspan="2"><a href="$adminurl?action=ml;sortform=posts"><b>$ml_txt{'21'}</b></a></td>
-                <td class="windowbg2 center"><a href="$adminurl?action=ml;sortform=regdate"><b>$ml_txt{'234'}</b></a></td>
+                <td class="$selUser_a center"><a href="$adminurl?action=ml;sortform=username"><b>$ml_txt{'35'}</b></a></td>
+                <td class="$selPos_a center"><a href="$adminurl?action=ml;sortform=position"><b>$ml_txt{'87'}</b></a></td>
+                <td class="$selPost_a center" colspan="2"><a href="$adminurl?action=ml;sortform=posts"><b>$ml_txt{'21'}</b></a></td>
+                <td class="$selReg_a center"><a href="$adminurl?action=ml;sortform=regdate"><b>$ml_txt{'234'}</b></a></td>
                 <td class="windowbg2 center" colspan="3"><b>$amv_txt{'4'}</b>
-                    <br /><span class="small" style="float: left; text-align: center; width: 34%;"><a href="$adminurl?action=ml;sortform=lastonline">$amv_txt{'5'}</a></span><span class="small" style="float: left; text-align: center; width: 33%;"><a href="$adminurl?action=ml;sortform=lastpost">$amv_txt{'6'}</a></span><span class="small" style="float: left; text-align: center; width: 33%;"><a href="$adminurl?action=ml;sortform=lastim">$amv_txt{'7'}</a></span></td>
+                    <br /><span class="small $selLastOn_a" style="float: left; text-align: center; width: 34%;"><a href="$adminurl?action=ml;sortform=lastonline">$amv_txt{'5'}</a></span>
+					<span class="small $selLastPost_a" style="float: left; text-align: center; width: 33%;"><a href="$adminurl?action=ml;sortform=lastpost">$amv_txt{'6'}</a></span>
+					<span class="small $selLastIM_a" style="float: left; text-align: center; width: 33%;"><a href="$adminurl?action=ml;sortform=lastim">$amv_txt{'7'}</a></span></td>
                 <td class="windowbg2 center"><b>$admintxt{'38'}</b></td>
             </tr>
         ~;

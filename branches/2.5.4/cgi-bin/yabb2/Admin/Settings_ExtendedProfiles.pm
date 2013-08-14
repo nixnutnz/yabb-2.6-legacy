@@ -16,7 +16,7 @@
 ###############################################################################
 our $VERSION = '2.5.4';
 
-$settings_extendedprofilespmver = 'YaBB 2.5.4 $Revision: 1548 $';
+$settings_extendedprofilespmver = 'YaBB 2.5.4 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('ExtendedProfiles');

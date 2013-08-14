@@ -606,7 +606,7 @@ sub DeleteOldMessages {
     $yymain .= qq~
 <form action="$adminurl?action=removeoldthreads" method="post">
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 $admin_img{'banimg'} <b>$aduptxt{'04'}</b>
@@ -638,14 +638,19 @@ sub DeleteOldMessages {
         }
     }
     $yymain .= qq~
-                </div><br />
-            </td>
-        </tr><tr>
-            <td class="catbg center">
-                <input type="submit" value="$admin_txt{'31'}" class="button" />
-            </td>
         </tr>
     </table>
+</div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+	<tr>
+    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'31'}</th>
+	</tr><tr>
+    	<td class="catbg center">
+             <input type="submit" value="$admin_txt{'31'}" class="button" />
+    	</td>
+	</tr>
+</table>
 </div>
 </form>~;
 

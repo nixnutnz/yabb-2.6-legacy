@@ -72,13 +72,11 @@ sub Attachments {
 
     my $totalattachnum = @attachments;
     my $pmTotalAttachNum = @pmAttachments;
-    $yymain .= qq~
-<table class="bordercolor cs_thin pad_4px w_70pc">
-    <tr>
-        <td class="titlebg">
-            $admin_img{'xx'}
-                <b>$fatxt{'24'}</b>
-        </td>
+     $yymain .= qq~
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px">
+	<tr>
+		<td class="titlebg">$admin_img{'xx'} <b>$fatxt{'24'}</b></td>
     </tr><tr>
         <td class="windowbg padd_8_12px"><span class="small">$fatxt{'25'}</span></td>
     </tr><tr>
@@ -166,7 +164,8 @@ sub Attachments {
             </table>
         </td>
     </tr>
-</table>~;
+</table>
+</div>~;
 
     $yytitle     = "$fatxt{'36'}";
     $action_area = 'manageattachments';
@@ -556,7 +555,8 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
     my $class_sortuser   = $sort =~ /3/sm   ? 'catbg' : 'windowbg';
 
     $yymain .= qq~
-<table class="bordercolor cs_thin pad_8px w_90pc">
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_8px">
     <tr>
         <td class="titlebg padd_4px" colspan="8">
             $admin_img{'xx'}&nbsp;<b>$fatxt{'39'}</b>
@@ -568,11 +568,11 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
     </tr><tr>
         <td class="titlebg center" colspan="8"><b>$fatxt{'55'}</b></td>
     </tr><tr>
-        <td class="titlebg" colspan="8">
+       <td class="catbg h_30px" colspan="8">
         <div class="small" style="float: left; text-align: left;">$fatxt{'28'} $max $numshow</div>
         $pageindex
         </td>
-    </tr><tr>
+    </tr><tr class="h_30px">
         <td class="windowbg center"><b>$fatxt{'45'}</b></td>
         <td onclick="location.href='$adminurl?action=manageattachments2;sort=~
       . ( $sort == 7 ? -7 : 7 )
@@ -611,7 +611,8 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
       . qq~"><b>$fatxt{'42'}</b></a></td>
     </tr>
     $viewattachments
-</table>~;
+</table>
+</div>~;
 
     if ($max) { $yymain .= '</form>'; }
 
@@ -1056,7 +1057,8 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
     my $class_sortuser   = $sort =~ /4/sm   ? 'catbg' : 'windowbg';
 
     $yymain .= qq~
-<table class="bordercolor cs_thin pad_8px w_90pc">
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_8px">
     <tr>
         <td class="titlebg padd_4px" colspan="6">
             $admin_img{'xx'}&nbsp;<b>$fatxt{'39a'}</b>
@@ -1068,11 +1070,11 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
     </tr><tr>
         <td class="titlebg center" colspan="6"><b>$fatxt{'55a'}</b></td>
     </tr><tr>
-        <td class="titlebg" colspan="6">
+         <td class="catbg h_30px" colspan="6">
         <div class="small" style="float: left; text-align: left;">$fatxt{'28'} $max $numshow</div>
         $pageindex
         </td>
-    </tr><tr>
+    </tr><tr class="h_30px">
         <td class="windowbg center"><b>$fatxt{'45'}</b></td>
         <td onclick="location.href='$adminurl?action=managepmattachments2;sort=~
       . ( $sort == 3 ? -3 : 3 )
@@ -1100,8 +1102,9 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
       . ( $sort == 4 ? -4 : 4 )
       . qq~"><b>$fatxt{'42a'}</b></a></td>
     </tr>
-    $viewattachments
-</table>~;
+   $viewattachments
+</table>
+</div>~;
 
     if ($max) { $yymain .= '</form>'; }
 

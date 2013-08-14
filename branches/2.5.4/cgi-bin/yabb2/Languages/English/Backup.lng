@@ -23,7 +23,7 @@ if( ! $script_root ) {
 %backup_txt = (
 '1', 'YaBB Backup',
 '2', 'You have not saved your backup settings yet! You must choose and save your settings before you can backup your forum.',
-'3', 'Choose which directories to backup. Note: the backup routines use the directory paths from Forum Configuration -> Path Settings; make sure these are correct!',
+'3', 'Choose which directories to backup. Note: the backup routines use the directory paths from Forum Configuration -&gt; Path Settings; make sure these are correct!',
 '4', 'Directories to Backup',
 '5', 'Check/Uncheck All',
 '6', 'If you select every directory, you will have a complete copy of your forum. This is the recommended setting for most forums.<br />However, for <i>very</i> large forums, a full backup may cause recovery problems (e.g. timeouts). For such large forums, it may be better to create one backup of only the "static" framework directories (which change very little) and separate backups for each of the Boards, Members and Messages directories.',

@@ -133,7 +133,7 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
         }
 
         $yymain .= qq~
-    <table class="bordercolor cs_thin pad_4px" style="margin-top: 5px;">
+    <table class="bordercolor borderstyle cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
         <td class="$tempclass h_25px" $tempcolspan>
             <a href="$adminurl?action=reorderboards;item=$catid" $temphrefclass><img src="$admin_images/reorder.gif" alt="$admin_txt{'832'}" title="$admin_txt{'832'}" /></a> &nbsp;<b>$curcatname</b>

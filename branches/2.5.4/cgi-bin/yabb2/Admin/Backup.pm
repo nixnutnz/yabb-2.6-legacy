@@ -142,9 +142,9 @@ qq~<span class="red"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
     }
  -->
  </script>
- <form action="$adminurl?action=backupsettings2" method="post" name="backupsettings" accept-charset="$yycharset">
- <div class="bordercolor rightboxdiva">
-   <table class="cs_thin pad_4px">
+<form action="$adminurl?action=backupsettings2" method="post" name="backupsettings" accept-charset="$yycharset">
+<div class="bordercolor rightboxdiv">
+   <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
      <tr>
        <td class="titlebg">
          $admin_img{'prefimg'} <b>$backup_txt{1}</b>
@@ -245,7 +245,7 @@ qq~name="tarmodulecompress" id="label_$label_id" value="$module" $methodchecklis
         }
         $tarcompress1 .= qq~<tr>
        <td class="windowbg $style">
-         <input type="radio" $input/> <label for="label_$label_id">$module $backup_txt{18} $disabledtext</label>
+         <input type="radio" $input/> $module $backup_txt{18} $disabledtext
        </td>
      </tr>~;
     }
@@ -279,7 +279,7 @@ qq~name="bintarcompress" id="label_$label_id" value="$command" $methodchecklist{
         }
         $tarcompress2 .= qq~<tr>
        <td class="windowbg $style">
-         <input type="radio" $input/> <label for="label_$label_id">$newcommand $backup_txt{18} $disabledtext</label>
+         <input type="radio" $input/> $newcommand $backup_txt{18} $disabledtext
        </td>
      </tr>~;
     }
@@ -317,14 +317,15 @@ qq~name="backupmethod" id="backupmethod1" value="$backupprogusr/tar" onclick="do
         $disabledtext = $backup_txt{41};
     }
     $yymain .= qq~<tr>
-       <td class="windowbg2"><label for="backupprogusr">$backup_txt{'path1'}</label> <input id="backupprogusr" type="text" value="$backupprogusr" size="20" name="backupprogusr" />
-       <br /><label for="backupprogbin">$backup_txt{'path2'}</label> <input id="backupprogbin" type="text" value="$backupprogbin" size="20" name="backupprogbin" />
-       <br />$backup_txt{'path3'}
-       </tr><tr>
-       <td class="windowbg2 $style">
-         <input type="radio" $input/> <label for="backupmethod1">Tar ($newcommand) $disabledtext</label>
-       </td>
-     </tr>$tarcompress2~;
+		<td class="windowbg2"><label for="backupprogusr">$backup_txt{'path1'}</label> <input id="backupprogusr" type="text" value="$backupprogusr" size="20" name="backupprogusr" />
+			<br />$backup_txt{'path2'} <input id="backupprogbin" type="text" value="$backupprogbin" size="20" name="backupprogbin" />
+			<br />$backup_txt{'path3'}
+		</td>
+    </tr><tr>
+		<td class="windowbg2 $style">
+			<input type="radio" $input/> Tar ($newcommand) $disabledtext
+		</td>
+    </tr>$tarcompress2~;
 
     $input =
 qq~name="backupmethod" id="backupmethod2" value="$backupprogusr/zip" onclick="domodulecheck('$backupprogusr/zip')" $methodchecklist{"$backupprogusr/zip"}~;
@@ -351,14 +352,14 @@ qq~name="backupmethod" id="backupmethod2" value="$backupprogusr/zip" onclick="do
         $disabledtext = $backup_txt{41};
     }
     $yymain .= qq~<tr>
-       <td class="windowbg2 $style">
-         <input type="radio" $input/> <label for="backupmethod2">Zip ($newcommand) $disabledtext</label>
-       </td>
-     </tr><tr>
-       <td class="windowbg">
-         &nbsp;
-       </td>
-     </tr>~;
+		<td class="windowbg2 $style">
+			<input type="radio" $input/> Zip ($newcommand) $disabledtext
+		</td>
+    </tr><tr>
+		<td class="windowbg">
+			&nbsp;
+		</td>
+	</tr>~;
 
     # Display the modules that we can use
     foreach my $module (qw(Archive::Tar Archive::Zip)) {
@@ -375,9 +376,9 @@ qq~name="backupmethod" id="backupmethod3_$i" value="$module" onclick="domodulech
             ( $style, $disabledtext ) = ( q{}, q{} );
         }
         $yymain .= qq~<tr>
-       <td class="windowbg2 $style">
-         <input type="radio" $input/> <label for="backupmethod3_$i">$module $disabledtext</label>
-       </td>
+		<td class="windowbg2 $style">
+			<input type="radio" $input/> $module $disabledtext
+		</td>
      </tr>~;
         if ( $module eq 'Archive::Tar' ) { $yymain .= $tarcompress1; }
     }
@@ -389,32 +390,35 @@ qq~name="backupmethod" id="backupmethod3_$i" value="$module" onclick="domodulech
         $backupdir = "$1$backupdir";
     }
     $yymain .= qq~<tr>
-       <td class="catbg">
-         <b>$backup_txt{19}</b>
-       </td>
-     </tr><tr>
-       <td class="windowbg2">
-         <label for="backupdir">$backup_txt{'19a'}</label>: <input type="text" name="backupdir" id="backupdir" value="$backupdir" size="80" />
-       </td>
-     </tr><tr>
-       <td class="catbg">
-         <b>$backup_txt{'19b'}</b>
-       </td>
-     </tr><tr>
-       <td class="windowbg2">
-         <label for="rememberbackup">$backup_txt{'19c'}</label> <input type="text" name="rememberbackup" id="rememberbackup" value="~
+		<td class="catbg"><b>$backup_txt{19}</b></td>
+	</tr><tr>
+		<td class="windowbg2">
+			<label for="backupdir">$backup_txt{'19a'}</label>: <input type="text" name="backupdir" id="backupdir" value="$backupdir" size="80" />
+		</td>
+    </tr><tr>
+		<td class="catbg"><b>$backup_txt{'19b'}</b></td>
+    </tr><tr>
+		<td class="windowbg2">
+			<label for="rememberbackup">$backup_txt{'19c'}</label> <input type="text" name="rememberbackup" id="rememberbackup" value="~
       . ( $rememberbackup / 86_400 )
       . qq~" size="3"/> <label for="rememberbackup">$backup_txt{'19d'}</label>
-       </td>
-     </tr><tr>
-       <td class="catbg center">
-         <input type="submit" name="submit" value="$backup_txt{20}" class="button" />
-       </td>
-     </tr>
-   </table>
- </div>
- </form>
- <script type="text/javascript">
+		</td>
+    </tr>
+</table>
+</div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px">
+	<tr>
+    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+	</tr><tr>
+    	<td class="catbg center">
+             <input type="submit" name="submit" value="$backup_txt{20}" class="button" />
+    	</td>
+	</tr>
+</table>
+</div>
+</form>
+<script type="text/javascript">
  <!--
 $presetjavascriptcode
 
@@ -460,48 +464,64 @@ $presetjavascriptcode
 
             $filename = "$1$2.$3.$4.$5";
             $filelist .=
-                q~          <tr><td>~
+                q~          <tr>
+				<td>~
               . timeformat($3)
-              . qq~</td><td class="right">$filesize</td><td>- ~
+              . qq~</td>
+				<td class="right">$filesize</td>
+				<td>- ~
               . join( '<br />- ', @dirs )
-              . q~</td><td>~
+              . q~</td>
+				<td>~
               . (
                 $2
                 ? "<acronym title='$backup_txt{62}'>$backup_txt{'62a'}</acronym><br />"
                 : q{}
               )
-              . qq~$5</td><td><a href="$adminurl?action=downloadbackup;backupid=$file">$backup_txt{60}</a></td><td><a href="$adminurl?action=emailbackup;backupid=$file">$backup_txt{52}</a></td><td><a href="$adminurl?action=runbackup;runbackup_again=$1$2.0.$4.$5">$backup_txt{61}</a><br /><a href="$adminurl?action=runbackup;runbackup_again=$filename">$backup_txt{62}</a></td><td class="center">~
+              . qq~$5</td>
+				<td><a href="$adminurl?action=downloadbackup;backupid=$file">$backup_txt{60}</a></td>
+				<td><a href="$adminurl?action=emailbackup;backupid=$file">$backup_txt{52}</a></td>
+				<td><a href="$adminurl?action=runbackup;runbackup_again=$1$2.0.$4.$5">$backup_txt{61}</a>
+					<br /><a href="$adminurl?action=runbackup;runbackup_again=$filename">$backup_txt{62}</a></td>
+				<td class="center">~
               . (
                 ( $5 =~ /^a\.tar/xsm || $5 !~ /tar/xsm ) ? q{-}
                 : qq~<a href="$adminurl?action=recoverbackup1;recoverfile=$filename">$backup_txt{63}</a>~
               )
-              . qq~</td><td><a href="$adminurl?action=deletebackup;backupid=$file">$backup_txt{53}</a></td></tr>\n~;
+              . qq~</td>
+				<td><a href="$adminurl?action=deletebackup;backupid=$file">$backup_txt{53}</a></td>
+			</tr>~;
         }
 
         $filelist ||=
-          qq~          <tr><td colspan="9"><i>$backup_txt{38}</i></td></tr>\n~;
+          qq~<tr>
+				<td colspan="9"><i>$backup_txt{38}</i></td>
+			</tr>~;
 
         $yymain .= qq~
- <br />
- <form action="$adminurl?action=runbackup" method="post" name="runbackup">
- <input type="hidden" name="backupnewest" value="0" />
- <div class="bordercolor rightboxdiva">
-   <table class="cs_thin pad_4px">
-     <tr>
-       <td class="titlebg" colspan="2">
-         $admin_img{'prefimg'} <b>$backup_txt{21}</b>
-       </td>
-     </tr><tr>
-       <td class="windowbg2" colspan="2">
-         $backup_txt{22} <tt>$backupdir</tt> $backup_txt{23}<br />
-         <br />
-         $backup_txt{24}
-       </td>
-     </tr><tr>
-       <td class="catbg center" colspan="2">
-         <table><tr><td class="center">
-         <input type="button" name="submit1" value="$backup_txt{25}" onclick="BackupNewest(0);" class="button" />~;
-
+<form action="$adminurl?action=runbackup" method="post" name="runbackup">
+<input type="hidden" name="backupnewest" value="0" />
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+	<tr>
+		<td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$backup_txt{21}</b></td>
+	</tr><tr>
+		<td class="windowbg2" colspan="2">
+			$backup_txt{22} <tt>$backupdir</tt> $backup_txt{23}
+			<br />
+			<br />
+			$backup_txt{24}
+		</td>
+	</tr>
+</table>
+</div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+	<tr>
+    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+	</tr><tr>
+    	<td class="catbg center">
+            <input type="button" name="submit1" value="$backup_txt{25}" onclick="BackupNewest(0);" class="button" />~;
         if ( $lastbackupfiletime && $lastbackup == $lastbackupfiletime ) {
             $lastbackupfiletime = timeformat( $lastbackup, 1 );
             $lastbackupfiletime =~ s/<.*?>//gxsm;
@@ -509,35 +529,37 @@ $presetjavascriptcode
                 @lbt = split / /sm, $lastbackupfiletime;
                 $lastbackupfiletime = join q{ }, $lbt[0], $lbt[1], $lbt[2];
             }
-            $yymain .= qq~</td></tr><tr><td class="center">
-         <input type="button" name="submit2" value="$backup_txt{'25a'} $lastbackupfiletime" onclick="BackupNewest($lastbackup);" class="button" />~;
+            $yymain .= qq~
+            <div style="margin-top: .5em;"><input type="button" name="submit2" value="$backup_txt{'25a'} $lastbackupfiletime" onclick="BackupNewest($lastbackup);" class="button" /></div>~;
         }
-
         $yymain .= qq~
-         </td></tr></table>
-       </td>
-     </tr>
-   </table>
- </div>
- </form>
- <div class="bordercolor rightboxdiva">
-   <table class="cs_thin pad_4px">
-     <tr>
-       <td class="titlebg" colspan="2">
-         $admin_img{'prefimg'} <b>$backup_txt{35}</b>
-       </td>
-     </tr><tr>
-       <td class="windowbg2" colspan="2">
-         $backup_txt{37} <i>${$uid.$username}{'email'}</i> $backup_txt{'37a'}<br />
-         $backup_txt{36} <tt>$backupdir</tt>
-         <table class="cs_thin pad_4px border">
-          <tr><td class="center">$backup_txt{70}</td><td class="center">$backup_txt{71}</td><td class="center">$backup_txt{72}</td><td class="center">$backup_txt{73}</td><td class="center" colspan="5">$backup_txt{74}</td></tr>
-          $filelist
-         </table>
-       </td>
-     </tr>
-   </table>
- </div>~;
+    	</td>
+	</tr>
+</table>
+</div>
+</form>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+	<tr>
+		<td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$backup_txt{35}</b></td>
+	</tr><tr>
+		<td class="windowbg2" colspan="2">
+			$backup_txt{37} <i>${$uid.$username}{'email'}</i> $backup_txt{'37a'}<br />
+			$backup_txt{36} <tt>$backupdir</tt>
+			<table class="cs_thin pad_4px border">
+				<tr>
+					<td class="center">$backup_txt{70}</td>
+					<td class="center">$backup_txt{71}</td>
+					<td class="center">$backup_txt{72}</td>
+					<td class="center">$backup_txt{73}</td>
+					<td class="center" colspan="5">$backup_txt{74}</td>
+				</tr>
+				$filelist
+			</table>
+		</td>
+	</tr>
+</table>
+</div>~;
     }
 
     AdminTemplate();
@@ -714,7 +736,6 @@ sub runbackup {
             sprintf( '%02d', ( $mon + 1 ) )
           . sprintf( '%02d', $day )
           . ( 1900 + $year );
-
     }
     elsif ( $FORM{'backupnewest'} && $backupmethod =~ /::/xsm ) {
         $FORM{'backupnewest'} = ( $curtime - $FORM{'backupnewest'} ) / 86_400;
@@ -815,7 +836,6 @@ sub BackupMethodInit {
             if ($@) {
                 fatal_error( q{}, "$backup_txt{28} Compres::Zlib: $@" );
             }
-
         }
         elsif ( $compressmethod eq 'Compress::Bzip2' ) {
             eval 'use Compress::Bzip2 qw(:utilities);'
@@ -823,7 +843,6 @@ sub BackupMethodInit {
             if ($@) {
                 fatal_error( q{}, "$backup_txt{28} Compress::Bzip2: $@" );
             }
-
         }
         else { $compressmethod = 'none'; }
 
@@ -873,8 +892,8 @@ sub BackupDirectory {
         $tarcreated = 1;
         if ( !$recursemode ) { $dir .= '/*.*'; }
         if ( $FORM{'backupnewest'} ) { $Nt = "-N \@$FORM{'backupnewest'}"; }
-        $dir =~ s/^\///xsm
-          ; # needed not to get server log messages like "Removing leading `/' from ..."
+        $dir =~ s/^\///xsm;
+			# needed not to get server log messages like "Removing leading `/' from ..."
         ak_system(
 "tar $cr -C / -f $backupdir/backup$backuptype.$curtime.$filedirs.tar $Nt $dir"
           )
@@ -883,7 +902,6 @@ sub BackupDirectory {
 "'tar $cr -C / -f $backupdir/backup$backuptype.$curtime.$filedirs.tar $Nt $dir' $backup_txt{31}: $!. $backup_txt{32} "
               . ( $CHILD_ERROR >> 8 )
           );
-
     }
     elsif ( $backupmethod eq "$backupprogusr/zip" ) {
         my $recurseoption;
@@ -898,11 +916,9 @@ sub BackupDirectory {
 "'zip -gq$recurseoption $Nt $backupdir/backup$backuptype.$curtime.$filedirs.zip $dir' $backup_txt{31}: $!. $backup_txt{32} "
               . ( $CHILD_ERROR >> 8 )
           );
-
     }
     elsif ( $backupmethod eq 'Archive::Tar' ) {
         $tarball->add_files( RecurseDirectory( $dir, $recursemode ) );
-
     }
     elsif ( $backupmethod eq 'Archive::Zip' ) {
         map { $zipfile->addFile($_) } RecurseDirectory( $dir, $recursemode );
@@ -963,13 +979,11 @@ sub BackupMethodFinalize {
                   . ( $CHILD_ERROR >> 8 )
               );
         }
-
     }
     elsif ( $backupmethod eq 'Archive::Tar' ) {
         if ( $loop || $compressmethod eq 'none' ) {
             $tarball->write(
                 "$backupdir/backup$backuptype.$curtime.$filedirs.a.tar", 0 );
-
         }
         elsif ( $compressmethod eq 'Compress::Zlib' ) {    # Gzip as a module
             my ($gzip) = gzopen(
@@ -978,7 +992,6 @@ sub BackupMethodFinalize {
             $gzip->gzwrite( $tarball->write );
             $gzip->gzclose();
             unlink "$backupdir/backup$backuptype.$curtime.$filedirs.tar";
-
         }
         elsif ( $compressmethod eq 'Compress::Bzip2' ) {    # Bzip2 as a module
             my ($bzip2) = bzopen(
@@ -1238,36 +1251,37 @@ sub recoverbackup1 {
     }
  -->
  </script>
- <div class="bordercolor rightboxdiva">
-   <form action="$adminurl?action=recoverbackup2" method="post" name="recover">
-   <table class="cs_thin pad_10px">
-     <tr>
-       <td class="titlebg" colspan="2">
-         $admin_img{'prefimg'} <b>$backup_txt{100}</b>
-       </td>
-     </tr><tr>
-       <td class="windowbg2" colspan="2">
-         $backup_txt{101}<br />
-         <br />
-         - ~ . join( '<br />- ', @dirs ) . qq~<br />
-         <br />
-         $backup_txt{102}<br />
-         <br />
-         <i>$INFO{'recoverfile'}</i>~
-      . ( $2 ? " (<b>$backup_txt{62}</b>)" : q{} )
+<form action="$adminurl?action=recoverbackup2" method="post" name="recover">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_10px" style="margin-bottom: .5em;">
+		<tr>
+			<td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$backup_txt{100}</b></td>
+		</tr><tr>
+			<td class="windowbg2" colspan="2">
+				$backup_txt{101}<br />
+				<br />
+				- ~ . join( '<br />- ', @dirs ) . qq~<br />
+				<br />
+				$backup_txt{102}<br />
+				<br />
+				<i>$INFO{'recoverfile'}</i>~
+		. ( $2 ? " (<b>$backup_txt{62}</b>)" : q{} )
       . qq~ $backup_txt{103} ~
       . timeformat($3)
-      . qq~<br />
-         <br />
-         <input type="button" onclick="window.location.href='$adminurl?action=backupsettings'" value="$backup_txt{125}" /><br />
-         <br />
-         $backup_txt{104},<br />
-         <br />
-         <input type="checkbox" name="originalrestore" value="1" /> $backup_txt{105}<br />
-         <br />
-         $backup_txt{106}<br />
-         <table class="pad_3px">
-           <tr><td class="center"><b>$backup_txt{107}</b></td><td class="center"><b>$backup_txt{108}</b></td></tr>\n~;
+      . qq~		<br />
+				<br />
+				<input type="button" onclick="window.location.href='$adminurl?action=backupsettings'" value="$backup_txt{125}" /><br />
+				<br />
+				$backup_txt{104},<br />
+				<br />
+				<input type="checkbox" name="originalrestore" value="1" /> $backup_txt{105}<br />
+				<br />
+				$backup_txt{106}<br />
+				<table class="pad_3px">
+					<tr>
+						<td class="center"><b>$backup_txt{107}</b></td>
+						<td class="center"><b>$backup_txt{108}</b></td>
+					</tr>~;
 
     $INFO{'recoverfile'} =~ /\.tar(.*)$/xsm;
     my $recovertype =
@@ -1281,8 +1295,10 @@ sub recoverbackup1 {
         $_ =~ /(.*\/)(.*)/xsm;
         if ( !$checkdir{$1} && $2 ) {
             $checkdir{$1} = 1;
-            $yymain .=
-qq~           <tr><td>/$1 *$backup_txt{114}</td><td class="center"><input type="text" name="u-$1" value="6" size="1" maxlength="1" onkeyup="CheckCHMOD(this.value,6,this);" /> <input type="text" name="g-$1" value="6" size="1" maxlength="1" onkeyup="CheckCHMOD(this.value,6,this);" /> <input type="text" name="a-$1" value="" size="1" maxlength="1" onkeyup="CheckCHMOD(this.value,0,this);" /></td></tr>\n~;
+            $yymain .=qq~<tr>
+					<td>/$1 *$backup_txt{114}</td>
+					<td class="center"><input type="text" name="u-$1" value="6" size="1" maxlength="1" onkeyup="CheckCHMOD(this.value,6,this);" /> <input type="text" name="g-$1" value="6" size="1" maxlength="1" onkeyup="CheckCHMOD(this.value,6,this);" /> <input type="text" name="a-$1" value="" size="1" maxlength="1" onkeyup="CheckCHMOD(this.value,0,this);" /></td>
+				</tr>~;
         }
     }
 
@@ -1298,14 +1314,22 @@ qq~           <tr><td>/$1 *$backup_txt{114}</td><td class="center"><input type="
              <td>$backup_txt{120}</td><td class="center"><input type="text" name="u-newdir" value="7" size="1" maxlength="1" onkeyup="CheckCHMOD(this.value,6,this);" /> <input type="text" name="g-newdir" value="5" size="1" maxlength="1" onkeyup="CheckCHMOD(this.value,5,this);" /> <input type="text" name="a-newdir" value="5" size="1" maxlength="1" onkeyup="CheckCHMOD(this.value,0,this);" /></td>
            </tr>
          </table>
-         <br />
-         <input type="hidden" name="recoverfile" value="$INFO{'recoverfile'}" />
-         <input type="submit" value="$backup_txt{126}" />
-       </td>
-     </tr>
+      </tr>
    </table>
-   </form>
- </div>~;
+</div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+	<tr>
+    	<th class="titlebg">$admin_img{'prefimg'} $backup_txt{'100'}</th>
+	</tr><tr>
+    	<td class="catbg center">
+            <input type="hidden" name="recoverfile" value="$INFO{'recoverfile'}" />
+            <input type="submit" value="$backup_txt{'126'}" class="button" />
+    	</td>
+	</tr>
+</table>
+</div>
+</form>~;
 
     AdminTemplate();
     return;
@@ -1359,17 +1383,15 @@ sub recoverbackup2 {
     qx($recovertype);    # must be done AFTER directory check!
 
     $yymain .= qq~
- <div class="bordercolor rightboxdiva">
-   <table class="cs_thin pad_10px">
-     <tr>
-       <td class="titlebg" colspan="2">
-         $admin_img{'prefimg'} <b>$backup_txt{100}</b>
-       </td>
-     </tr><tr>
-       <td class="windowbg2" colspan="2">
-         $backup_txt{130}<br />
-         <br />
-         <pre>\n~;
+<div class="bordercolor rightboxdiv">
+	<table class="cs_thin pad_10px" style="margin-bottom: .5em;">
+		<tr>
+			<td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$backup_txt{100}</b></td>
+		</tr><tr>
+			<td class="windowbg2" colspan="2">
+				$backup_txt{130}<br />
+				<br />
+				<pre>\n~;
 
     foreach my $o ( split /\n/xsm, $output ) {
         next if -d "/$o/";
@@ -1421,13 +1443,22 @@ sub recoverbackup2 {
     }
 
     $yymain .= qq~         </pre>
-         $backup_txt{131}<br />
-         <br />
-         <input type="button" onclick="window.location.href='$adminurl?action=backupsettings'" value="$backup_txt{132}" />
-       </td>
-     </tr>
-   </table>
- </div>~;
+				$backup_txt{131}<br />
+			</td>
+		</tr>
+	</table>
+</div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+	<tr>
+    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'193'}</th>
+	</tr><tr>
+    	<td class="catbg center">
+             <input type="button" onclick="window.location.href='$adminurl?action=backupsettings'" value="$backup_txt{'132'}" />
+    	</td>
+	</tr>
+</table>
+</div>~;
 
     AdminTemplate();
     return;
