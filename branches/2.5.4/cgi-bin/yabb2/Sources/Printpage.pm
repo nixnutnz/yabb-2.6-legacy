@@ -154,7 +154,7 @@ function do_images() {
             }
             $usernameTo =~ s/, $//sm;
             $usernameTo = qq~<b>$usernameTo</b><br />~;
-            $toTitle = qq~$inmes_txt{'324'}:~;
+            $toTitle    = qq~$inmes_txt{'324'}:~;
         }
         if ($threadccusers) {
             foreach my $uname ( split /,/xsm, $threadccusers ) {
@@ -170,7 +170,7 @@ function do_images() {
             }
             $usernameCC =~ s/, $//sm;
             $usernameCC = qq~<b>$usernameCC</b><br />~;
-            $toTitleCC = qq~$inmes_txt{'325'}:~;
+            $toTitleCC  = qq~$inmes_txt{'325'}:~;
         }
         if ($threadbccusers) {
             foreach my $uname ( split /,/xsm, $threadbccusers ) {
@@ -187,7 +187,7 @@ function do_images() {
             }
             if ($usernameBCC) {
                 $usernameBCC = qq~<b>$usernameBCC</b>~;
-                $toTitleBCC = qq~$inmes_txt{'326'}:~;
+                $toTitleBCC  = qq~$inmes_txt{'326'}:~;
             }
         }
 
@@ -265,7 +265,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
             : $maintxt{'470a'}
           );    # 470a == Ex-Member
         $usernameFrom = qq~<b>$usernameFrom</b><br />~;
-        $fromTitle = qq~$inmes_txt{'318'}:~;
+        $fromTitle    = qq~$inmes_txt{'318'}:~;
 
         if ( $threadstatus !~ /b/sm ) {
             if ( $threadstatus !~ /gr/sm ) {
@@ -311,7 +311,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
             }
             $usernameCC =~ s/, $//sm;
             $usernameCC = qq~<b>$usernameCC</b><br />~;
-            $toTitleCC = qq~$inmes_txt{'325'}:~;
+            $toTitleCC  = qq~$inmes_txt{'325'}:~;
         }
         if ($threadbccusers) {
             foreach my $uname ( split /,/xsm, $threadbccusers ) {
@@ -327,7 +327,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
             }
             $usernameBCC =~ s/, $//sm;
             $usernameBCC = qq~<b>$usernameBCC</b>~;
-            $toTitleBCC = qq~$inmes_txt{'326'}:~;
+            $toTitleBCC  = qq~$inmes_txt{'326'}:~;
         }
     }
     elsif ( $INFO{'caller'} == 3 ) {
@@ -365,7 +365,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
                 }
                 $usernameCC =~ s/, $//sm;
                 $usernameCC = qq~<b>$usernameCC</b><br />~;
-                $toTitleCC = qq~$inmes_txt{'325'}:~;
+                $toTitleCC  = qq~$inmes_txt{'325'}:~;
             }
             if ( $threadbccusers && $threadposter eq $username ) {
                 foreach my $uname ( split /,/xsm, $threadbccusers ) {
@@ -381,7 +381,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
                 }
                 $usernameBCC =~ s/, $//sm;
                 $usernameBCC = qq~<b>$usernameBCC</b>~;
-                $toTitleBCC = qq~$inmes_txt{'326'}:~;
+                $toTitleBCC  = qq~$inmes_txt{'326'}:~;
             }
         }
         else {
@@ -410,7 +410,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
               );    # 470a == Ex-Member
         }
         $usernameFrom = qq~<b>$usernameFrom</b><br />~;
-        $fromTitle = qq~$inmes_txt{'318'}:~;
+        $fromTitle    = qq~$inmes_txt{'318'}:~;
 
     }
     elsif ( $INFO{'caller'} == 5
@@ -419,7 +419,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
         my ( $guestName, $guestEmail ) = split / /sm, $threadposter;
         $guestName =~ s/%20/ /gsm;
         $usernameFrom = qq~<b>$guestName ($guestEmail)</b><br />~;
-        $fromTitle = qq~$inmes_txt{'318'}:~;
+        $fromTitle    = qq~$inmes_txt{'318'}:~;
 
     }
     elsif ( $INFO{'caller'} == 5 && $threadstatus =~ /b/sm ) {
@@ -443,7 +443,7 @@ qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt
           );    # 470a == Ex-Member
 
         $usernameFrom = qq~<b>$usernameFrom</b><br />~;
-        $fromTitle = qq~$inmes_txt{'318'}:~;
+        $fromTitle    = qq~$inmes_txt{'318'}:~;
     }
 
     do_print();

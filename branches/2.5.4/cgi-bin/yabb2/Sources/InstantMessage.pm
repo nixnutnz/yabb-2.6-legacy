@@ -1152,7 +1152,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
 
                    # needed for operating systems (OS) Windows, ignored by Linux
                     print {NEWFILE} $file_buffer
-                      or croak "$croak{'print'} NEWFILE";    # write new file on HD
+                      or croak "$croak{'print'} NEWFILE"; # write new file on HD
                     fclose(NEWFILE);
                 }
                 else
@@ -1216,15 +1216,15 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
         }
 
         # Create the list of files
-        $fixfile = join q{,}, @filelist;
+        $fixfile    = join q{,}, @filelist;
         $logFixfile = join q{,}, @logfilelist;
-        if ( @filelist ) {
+        if (@filelist) {
             fopen( PMATTACHLOG, ">>$vardir/pm.attachments" )
-                || fatal_error( 'cannot_open', "$vardir/pm.attachments" );
+              || fatal_error( 'cannot_open', "$vardir/pm.attachments" );
             foreach my $logFixfile (@logfilelist) {
                 print {PMATTACHLOG}
 qq~$messageid|$date|$filesizekb{$logFixfile}|$logFixfile|${$uid.$username}{'realname'}|$username\n~
-                or croak "$croak{'print'} PMATTACHLOG";
+                  or croak "$croak{'print'} PMATTACHLOG";
             }
             fclose(PMATTACHLOG);
         }

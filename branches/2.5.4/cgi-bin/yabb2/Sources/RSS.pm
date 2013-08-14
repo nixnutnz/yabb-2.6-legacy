@@ -103,7 +103,7 @@ sub RSS_board {
                 || $ENV{'HTTP_IF_MODIFIED_SINCE'} eq $cachedate )
             {
                 Send304NotModified();
-                         # Comment this out to test with caching disabled
+                # Comment this out to test with caching disabled
             }
         }
 
@@ -327,7 +327,7 @@ sub RSS_recent {
                 || $ENV{'HTTP_IF_MODIFIED_SINCE'} eq $cachedate )
             {
                 Send304NotModified();
-                        # Comment this out to test with caching disabled
+                # Comment this out to test with caching disabled
             }
         }
 

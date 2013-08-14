@@ -2717,7 +2717,7 @@ sub ViewProfile {
     ## only show the 'modify' button if not using 'my center' or admin/gmod viewing
     $modify =
       (
-             !$view 
+             !$view
           && ( $user ne 'admin' || $username eq 'admin' )
           && (
             $iamadmin

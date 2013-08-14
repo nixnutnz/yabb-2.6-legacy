@@ -108,8 +108,8 @@ qq~                            <li><span |><a href="$scripturl?action=birthdayli
 qq~                            <li><span |><a href="$scripturl?action=ml" title = "$img_txt{'331'}">$img_txt{'331'}</a></span></li>\n~;
     }
     if ($iamadmin) {
-        if ($do_scramble_id) { $user = cloak($username); }
-        else { $user = $username;}
+        if   ($do_scramble_id) { $user = cloak($username); }
+        else                   { $user = $username; }
 
         $tab{'admin'} =
 qq~                            <li><span |><a href="$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" title = "$img_txt{'2'}">$img_txt{'2'}</a></span></li>\n~;
@@ -118,8 +118,8 @@ qq~                            <li><span |><a href="$boardurl/AdminIndex.$yyaext
     if ($iamgmod) {
         get_gmod();
         if ($allow_gmod_admin) {
-            if ($do_scramble_id) { $user = cloak($username); }
-            else { $user = $username;}
+            if   ($do_scramble_id) { $user = cloak($username); }
+            else                   { $user = $username; }
             $tab{'admin'} =
 qq~                            <li><span |><a href="$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" title = "$img_txt{'2'}">$img_txt{'2'}</a></span></li>\n~;
         }

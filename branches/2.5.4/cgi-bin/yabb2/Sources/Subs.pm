@@ -170,7 +170,7 @@ sub print_HTML_output_and_finish {
         }
     }
     else {
-        print $output; # or croak "$croak{'print'} output";
+        print $output;    # or croak "$croak{'print'} output";
     }
     exit;
 }
@@ -256,9 +256,9 @@ sub template {
     $yytitle         = "$mbname - $yytitle";
     $yyimages        = $imagesdir;
     $yydefaultimages = $defaultimagesdir;
-    $yysyntax_js = q{};
-    $yygreyboxstyle = q{};
-    $yygrayscript =q{};
+    $yysyntax_js     = q{};
+    $yygreyboxstyle  = q{};
+    $yygrayscript    = q{};
 
     if (
            $INFO{'num'}
@@ -275,7 +275,7 @@ sub template {
         || $action eq 'recent'
         || $action eq 'usersrecentposts'
        )
-    { 
+    {
         $yysyntax_js = qq~
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_main.js"></script>
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_cpp.js"></script>
@@ -294,7 +294,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/shjs/styles/sh_style.css" type="tex
     sh_highlightDocument();
 </script>~;
 
-        if ( $img_greybox ) {
+        if ($img_greybox) {
             $yygreyboxstyle =
 qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/css" />\n~;
 
@@ -316,7 +316,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
     $yystyle .= $yygreyboxstyle;
     $yystyle .= $yyinlinestyle;
 
-        # Carsten's 'backtotop';
+    # Carsten's 'backtotop';
     if ( !$yynavback ) { $yynavback .= q~ ~; }
     $yynavback .=
 qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp; $tabsep~;
@@ -330,8 +330,8 @@ qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp;
 
     if ( $iamadmin || $iamgmod ) {
         if ($maintenance) {
-            if ( $do_scramble_id ) { $user = cloak($username); }
-            else {$user = $username;}
+            if   ($do_scramble_id) { $user = cloak($username); }
+            else                   { $user = $username; }
             $yyadmin_alert .=
               qq~<br /><span class="highlight"><b>$load_txt{'616'}</b></span>~;
             $yyadmin_alert =~ s/USER/$user/sm;
@@ -346,8 +346,8 @@ qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp;
         }
     }
 
-    # to top button for fixed menu 
-    $yyfixtop = qq~$img_txt{'to_top'}~;
+    # to top button for fixed menu
+    $yyfixtop  = qq~$img_txt{'to_top'}~;
 
     $yyboardname = "$mbname";
     $yyboardlink = qq~<a href="$scripturl">$mbname</a>~;
@@ -1314,7 +1314,7 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
     if ( !$iamguest ) {
         $pm_lev = PMlev();
         if ( $pm_lev == 1 ) {
-            $selecthtml .=qq~
+            $selecthtml .= qq~
                     <option value="action=im" class="forumjumpcatm">$jumpto_txt{'mess'}</option>~;
         }
         $selecthtml .= qq~
@@ -1773,7 +1773,7 @@ sub Split_Splice_Move {
     {                   # 'This Topic has been moved to' a different board
         my ( $mover, $destboard, $dest ) = ( $1, $2, $3 );
 
-            # Who moved the topic; destination board; destination id number
+        # Who moved the topic; destination board; destination id number
         $mover = decloak($mover);
         LoadUser($mover);
         $board{$destboard} =~ /^(.+?)\|/xsm;
@@ -1783,7 +1783,7 @@ qq~<b>$maintxt{'160'} <a href="$scripturl?num=$dest"><b>$maintxt{'160a'}</b></a>
         );
     }
     elsif ( $s_s_m =~ /\[m by=(.+?) dest=(.+?)\]/sm )
-    {          # 'The contents of this Topic have been moved to''this Topic'
+    {    # 'The contents of this Topic have been moved to''this Topic'
         my ( $mover, $dest ) =
           ( $1, $2 );    # Who moved the topic; destination id number
         $mover = decloak($mover);
@@ -2180,8 +2180,8 @@ sub WriteLog {
             push @new_log, $_;
         }
     }
- 	seek LOG, 0, 0;
-	truncate LOG, 0;
+    seek LOG, 0, 0;
+    truncate LOG, 0;
     print {LOG} (
 "$field|$date|$user_ip|$user_host#$ENV{'HTTP_USER_AGENT'}|$username|$currentboard|"
           . (
@@ -2197,8 +2197,8 @@ sub WriteLog {
           . "|$INFO{'username'}|$curnum\n",
         @new_log
     ) or croak qq~$croak{'print'} log.txt~;
-	fclose(LOG);
- 
+    fclose(LOG);
+
     if ( !$action && $enableclicklog == 1 ) {
         $onlinetime = $date - ( $ClickLogTime * 60 );
         fopen( LOG, "+<$vardir/clicklog.txt", 1 );
@@ -3252,39 +3252,30 @@ sub password_check {
 }
 
 sub BoardPassw {
+#    my ($boardname,$viewnum,$currentboard) = @_;
+	#template in MessageIndex.template
+	$yymain .= $boardpassw;
 
-    #my ($currentboard,$viewnum) = @_;
-    $yymain .= qq~
-<table class="bordercolor pad_4px cs_thin" style="width:80%">
-  <tr>
-    <td class="titlebg"><img src="$imagesdir/locking.gif" alt="" /> <b>$maintxt{'900pw'}: $boardname</b></td>
-  </tr><tr>
-    <td class="windowbg center">
-    <br />
-      <form action="$scripturl?action=checkboardpw" method="POST">
-        <input type="hidden" name="pswviewnum" value="$viewnum" />
-        <input type="hidden" name="pswcurboard" value="$currentboard" />
-        <input type="password" name="boardpw" value="" size="25"> <input type="submit" value="$maintxt{'900s'}">
-      </form>
-    <br />
-    <br />
-    </td>
-  </tr>
-</table>
-<br />
-<p class="center"><a href="javascript:history.go(-1)">$maintxt{'900b'}</a></p>
-~;
+	$yytitle = qq~$maintxt{'900pw'}: $boardname~; 
     template();
     exit;
 }
 
+sub BoardPassw_g {
+	#template in MessageIndex.template
+	$yymain .= $boardpassw_g;
+
+	$yytitle = qq~$maintxt{'900pw'}: $boardname~; 
+    template();
+    exit;
+}
 sub BoardPasswCheck {
 
     my $returnnum   = $FORM{'pswviewnum'};
     my $returnboard = $FORM{'pswcurboard'};
     my $spass       = ${ $uid . $returnboard }{'brdpassw'};
     my $cryptpass   = encode_password("$FORM{'boardpw'}");
-
+    if ( $FORM{'boardpw'} eq q{} ) { fatal_error('', "$maintxt{'900pe'}"); } 
     if ( $spass ne $cryptpass ) { fatal_error('wrong_pass'); }
     $ck{'len'} = 'Sunday, 17-Jan-2030 00:00:00 GMT';
     my $cookiename = "$cookiepassword$returnboard$username";

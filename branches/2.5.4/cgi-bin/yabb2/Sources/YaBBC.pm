@@ -32,7 +32,7 @@ sub MakeSmileys {
     $message =~ s/(\W|^);-?\)/$1<img src="$imagesdir\/wink.gif" class="smil" data-rel=";&#45;&#41;" alt="$post_txt{'292'}" title="$post_txt{'292'}" \/>/gsm;
     $message =~ s/(\W|^);D/$1<img src="$imagesdir\/grin.gif" class="smil" data-rel=";D" alt="$post_txt{'293'}" title="$post_txt{'293'}" \/>/gsm;
     $message =~ s/(\W|^):'\(/$1<img src="$imagesdir\/cry.gif" class="smil" data-rel="&#58;'&#40;" alt="$post_txt{'530'}" title="$post_txt{'530'}" \/>/gsm;
-        #'" make my text editor happy;
+    #'" make my text editor happy;
     $message =~ s/(\W|^):-\//$1<img src="$imagesdir\/undecided.gif" class="smil" data-rel="&#58;&#45;\/" alt="$post_txt{'528'}" title="$post_txt{'528'}" \/>/gsm;
     $message =~ s/(\W|^):-X/$1<img src="$imagesdir\/lipsrsealed.gif" class="smil" data-rel="&#58;&#45;X" alt="$post_txt{'527'}" title="$post_txt{'527'}" \/>/gsm;
     $message =~ s/(\W|^):-\[/$1<img src="$imagesdir\/embarassed.gif" class="smil" data-rel="&#58;&#45;\[" alt="$post_txt{'526'}" title="$post_txt{'526'}" \/>/gsm;
@@ -104,7 +104,7 @@ sub quotemsg {
                 else {
                     $fqauthor = decloak($qauthor);
 
-# if all fails it is a non existing real name so decode and asign as screenname
+ # if all fails it is a non existing real name so decode and asign as screenname
                 }
             }
             else {
@@ -248,13 +248,13 @@ s/\[flash\=(\S+?),(\S+?)](\S+?)\[\/flash\]/<b>$display_txt{'769'} ($1 x $2):<\/b
         # we need to keep normal linebreaks inside <pre> tag
         $code =~ s/&quot;&gt;/\[code_qgt\]/igxsm;
         $codecnt++;
-		if ($guest_media_disallowed && $iamguest) {
+        if ( $guest_media_disallowed && $iamguest ) {
             $prselect = q{};
         }
-		else {
-        $prselect =
+        else {
+            $prselect =
 qq~<a href="javascript:selectAllCode($codecnt)"><img src="$imagesdir/codeselect.png" alt="$post_txt{'selectall'}" title="$post_txt{'selectall'}" /></a>~;
-		}
+        }
 
         $code =
 qq~<pre class="$insclass" id="code$codecnt" style="margin: 0px; width: 90%; $height overflow: scroll;">$code\[code_br][code_br]</pre>~;
@@ -484,12 +484,12 @@ s/([^\"\=\[\]\/\:\.\-(\:\/\/\w+)]|[\n\b]|\&quot\;|\[quote.*?\]|\[edit\]|\[highli
     $message =~ s/\[email\]\s*(\S+?\@\S+?)\s*\[\/email\]/<a href="mailto:$1">$1<\/a>/isgm;
     $message =~ s/\[email=\s*(\S+?\@\S+?)\](.*?)\[\/email\]/<a href="mailto:$1">$2<\/a>/isgm;
 
-	*editsmsg = sub {
-		my ($edittext) = @_;
+    *editsmsg = sub {
+        my ($edittext) = @_;
 		$formedit = qq~<b>$post_txt{'603'}: </b><br /><div class="editbg" style="overflow: auto;">$1</div><!--edit-->~;
-		return $formedit;
-	};
-	while ($message =~ s/\[edit\]\n*(.*?)\n*\[\/edit\]/editsmsg($1)/eisgm) { }
+        return $formedit;
+    };
+    while ( $message =~ s/\[edit\]\n*(.*?)\n*\[\/edit\]/editsmsg($1)/eisgm ) { }
 
     $message =~ s/\/me\s+(.*)/<i><span style="color: #FF0000;"><b>$displayname<\/b><\/span> $1<\/i>/igxsm;
 
@@ -499,31 +499,31 @@ s/([^\"\=\[\]\/\:\.\-(\:\/\/\w+)]|[\n\b]|\&quot\;|\[quote.*?\]|\[edit\]|\[highli
 
         # convert old flash tags to media tags
         while ( $message =~ s/\[flash\s*(.*?)\]\n*(.*?)\n*\[\/flash\]/flashconvert($2,$1)/eisgm ) { }
-            # convert old flash tags to media tags
+        # convert old flash tags to media tags
         while ( $message =~ s/\[media\]\n*(.*?)\n*\[\/media\]/embed($1)/eisgm ) { }
         while ( $message =~ s/\[media\s*(.*?)\]\n*(.*?)\n*\[\/media\]/embed($2,$1)/eisgm ){ }
         $message =~ s/media:/http:/igxsm;
     }
 
     if ( $guest_media_disallowed && $iamguest ) {
-	    if ($action) {$act = qq~;sesredir=action\~$action~;}
-		else {$act = qq~;sesredir=num\~$curnum~;}
+        if   ($action) { $act = qq~;sesredir=action\~$action~; }
+        else           { $act = qq~;sesredir=num\~$curnum~; }
         my $oops =
 qq~ <i>$maintxt{'40'}&nbsp;&nbsp;$maintxt{'41'} <a href="$scripturl?action=login$act"><b>$maintxt{'34'}</b></a></i>~;
         if ($regtype) {
             $oops .=
 qq~<i> $maintxt{'42'} <a href="$scripturl?action=register"><b>$maintxt{'97'}</b></a></i>~;
         }
-		$oops .= qq~<i> $maintxt{'42a'}</i>~;
+        $oops .= qq~<i> $maintxt{'42a'}</i>~;
 
         $showattach   = q{};
         $showattachhr = q{};
         $attachment =~ s/<a href=".+?<\/a>/[oops]/gsm;
         $attachment =~ s/<img src=".+?>/[oops]/gsm;
         $attachment =~ s/\[oops\]/$oops/gsm;
-		if( !$movedflag ) { $message =~ s/<a href=".+?<\/a>/[oops]/gsm; } 
-        $message    =~ s/<img src=".+?>/[oops]/gsm;
-        $message    =~ s/\[oops\]/$oops/gsm;
+        if ( !$movedflag ) { $message =~ s/<a href=".+?<\/a>/[oops]/gsm; }
+        $message =~ s/<img src=".+?>/[oops]/gsm;
+        $message =~ s/\[oops\]/$oops/gsm;
     }
 
     $message = MakeSmileys($message);

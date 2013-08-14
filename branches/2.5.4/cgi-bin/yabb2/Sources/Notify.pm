@@ -49,7 +49,7 @@ sub ManageBoardNotify {
             $bb{$theboard} = 1;
             ${ $uid . $user }{'board_notifications'} = join q{,}, keys %bb;
             UserAccount($user);
-        }
+    }
     }
     elsif ( $todo eq 'update' ) {
         if ( exists $theboard{$user} ) {
@@ -430,7 +430,7 @@ sub NotificationAlert {
     ## run through boards list
     foreach my $myboard (@bmaildir) {    # board name from file name
         if ( !-e "$boardsdir/$myboard.txt" )
-        {                                # remove from user board_notifications
+        {                             # remove from user board_notifications
             ManageBoardNotify( 'delete', $myboard, $username );
             next;
         }
@@ -478,20 +478,20 @@ sub NotificationAlert {
             if ( eval { require Variables::Movedthreads; 1 } ) {
                 next
                   if !exists $moved_file{$mythread} || !$moved_file{$mythread};
-                my $newthread;
-                while ( exists $moved_file{$mythread} ) {
-                    $mythread = $moved_file{$mythread};
+            my $newthread;
+            while ( exists $moved_file{$mythread} ) {
+                $mythread  = $moved_file{$mythread};
                     if ( !exists $moved_file{$mythread}
                         && -e "$datadir/$mythread.txt" )
                     {
                         $newthread = $mythread;
                     }
-                }
-                next if !$newthread;
-                ManageThreadNotify( 'add', $newthread, $username,
-                    ${ $uid . $username }{'language'},
-                    1, 1 );
             }
+            next if !$newthread;
+                ManageThreadNotify( 'add', $newthread, $username,
+                ${ $uid . $username }{'language'},
+                1, 1 );
+        }
         }
 
         ## load threads hash

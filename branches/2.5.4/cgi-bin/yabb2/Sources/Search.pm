@@ -561,9 +561,9 @@ sub plushSearch2 {
                 ## blank? try next = else => build list from found mess/sub
                 ## Search for IP Address start
                 if ( $search_ip && !$msgfound && !$subfound ) {
-                    $ipfound = 0;
-                    @mip = split / /sm, $mip;
-                    $mip = q~~;
+                    $ipfound   = 0;
+                    @mip       = split / /sm, $mip;
+                    $mip       = q~~;
                     $mip_class = q~~;
                     foreach (@mip) {
                         if ( $_ =~ /\b$search_ip/sm ) {
@@ -576,7 +576,7 @@ sub plushSearch2 {
                             $mip .=
 qq~<a href="$scripturl?action=iplookup;ip=$_"><span class="small$mip_class">$_</span></a> ~;
                         }
-          		else {
+                        else {
                             $mip .= qq~<span class="small$mip_class">$_</span> ~;
                         }
                     }

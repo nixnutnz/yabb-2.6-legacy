@@ -51,7 +51,7 @@ sub MessageIndex {
     }
 
     my (
-        $counter, $mcount, $showmods, $mnum, $msub,
+        $counter, $mcount, $showmods, $mnum,     $msub,
         $mname,   $memail, $mdate,    $mreplies, $musername,
         $micon,   $mstate, $dlp,
     );
@@ -102,7 +102,10 @@ sub MessageIndex {
         if ( ${ $uid . $currentboard }{'brdpasswr'} ) {
             my $cookiename = "$cookiepassword$currentboard$username";
             my $crypass    = ${ $uid . $currentboard }{'brdpassw'};
-            if ( !$staff && $yyCookies{$cookiename} ne $crypass ) {
+			if ( $iamguest ) {
+				BoardPassw_g();
+			}
+            elsif ( !$staff && $yyCookies{$cookiename} ne $crypass ) {
                 BoardPassw();
             }
         }
@@ -154,7 +157,7 @@ qq~<a href="$scripturl?board=$currentboard;tsort=0" rel="nofollow">$messageindex
     @temp_list = @threadlist;
 
     *starter = sub {
-        if ( exists $user_info{$_[0]} )  { return $user_info{$_[0]};}
+        if ( exists $user_info{ $_[0] } ) { return $user_info{ $_[0] }; }
         if ( !exists $memberinf{ $_[0] } ) {
             return lc( ( split /\|/xsm, $_[1], 4 )[2] );
         }
@@ -876,7 +879,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$fo
 
         # Build the page links list.
         my $pagesall = q{};
-        my $pages = q{};
+        my $pages    = q{};
         if ($showpageall) {
             $pagesall =
               qq~<a href="$scripturl?num=$mnum/all">$pidtxt{'01'}</a>~;
@@ -1175,17 +1178,17 @@ s/^((.*?)(\[(\w+?)[\s|\=]*(.*?)\])(.*?)(\[\/\4\]))/ fixtags($1,$2,$3,$6,$7) /eis
                 ToChars($themessage);
                 $themessage =~ s/XCODE/$messageindex_tp{'code_tp'}/gsm;
 
-#                $themessage =~ s/&/&amp;/igsm;
+                #                $themessage =~ s/&/&amp;/igsm;
                 $themessage = Censor($themessage);
                 my $topicsum =
 qq~<div class="windowbg2 topic-hover" id="$mnum">$themessage</div>~;
 
-            if ( ${$mnum}{'board'} eq $annboard ) {
-                $msublink =
+                if ( ${$mnum}{'board'} eq $annboard ) {
+                    $msublink =
 qq~<a href="$scripturl?virboard=$currentboard;num=$mnum" onmouseover="topicSum(event, '$mnum')" onmouseout="hidetopicSum('$mnum')" onclick="hidetopicSum('$mnum')">$msub</a>$topicsum~;
-            }
-            else {
-                $msublink =
+                }
+                else {
+                    $msublink =
 qq~<a href="$scripturl?num=$mnum" onmouseover="topicSum(event, '$mnum')" onmouseout="hidetopicSum('$mnum')" onclick="hidetopicSum('$mnum')">$msub</a>$topicsum<div style="float:right"><span style="font-size:xx-small">$stickdir</span></div>~;
                 }
             }
@@ -1404,7 +1407,7 @@ qq~<a href="$scripturl?action=RSSboard;board=$INFO{'board'}" onclick="target='_b
     $messageindex_template =~ s/({|<)yabb category(}|>)/$catlink/gsm;
     $messageindex_template =~ s/({|<)yabb board(}|>)/$boardlink/gsm;
     $messageindex_template =~ s/({|<)yabb moderators(}|>)/$template_mods/gsm;
-    if ( $enabletopichover ) {
+    if ($enabletopichover) {
         if ( !$iamguest && !$INFO{'messagelist'} ) {
             if ( ${ $uid . $username }{'topicpreview'} ) {
                 $enab_topicprev =
@@ -1690,10 +1693,10 @@ qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
     <script type="text/javascript">
     function topicSum(e, topicsumm) {
         document.getElementById(topicsumm).style.display = 'block';
-            var dheight = document.getElementById(topicsumm).offsetHeight;
-            var dtop = document.all ? e.clientY + document.documentElement.scrollTop - (dheight + 30) : e.pageY - (dheight + 30);
-            document.getElementById(topicsumm).style.top = dtop + 'px';
-        }
+        var dheight = document.getElementById(topicsumm).offsetHeight;
+        var dtop = document.all ? e.clientY + document.documentElement.scrollTop - (dheight + 30) : e.pageY - (dheight + 30);
+        document.getElementById(topicsumm).style.top = dtop + 'px';
+    }
 
     function hidetopicSum(topicsumm) {
         document.getElementById(topicsumm).style.display = 'none';
@@ -1905,7 +1908,7 @@ sub moveto {
             if ( $board ne $currentboard ) {
                 $my_board = $board;
                 if ( !${ $uid . $board }{'canpost'} && $subboard{$board} ) {
-                    $alert = qq~$messageindex_txt{'nopost'}~;
+                    $alert    = qq~$messageindex_txt{'nopost'}~;
                     $bdnopost = qq~ class="nopost" onclick="alert('$alert')"~;
                     $my_board = q{};
                 }

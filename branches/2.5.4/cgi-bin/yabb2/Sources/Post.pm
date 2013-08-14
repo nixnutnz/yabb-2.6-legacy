@@ -131,7 +131,7 @@ sub Post {
     if ( $FORM{'title'} eq 'PostReply' ) { $postthread = 2; }
     if ( $pollthread == 2 && $useraddpoll == 0 ) { fatal_error('no_access'); }
 
-    if ($iamguest ) { $guestpost_col = $my_guestpost_col; }
+    if ($iamguest) { $guestpost_col = $my_guestpost_col; }
 
     $guestpost_fields =
         $iamguest
@@ -888,7 +888,7 @@ s/({|<)yabb userlink(}|>)/<span id="savename" style="font-weight: bold">$liveuse
         if ($prevmain) {
             $my_prevmain = $mypost_preview_main;
             $my_prevmain =~ s/{yabb prevmain}/$prevmain/sm;
-		}
+        }
         $my_postsection_ajx = my_check_prev();
 
         $topicstatus_row = q{};
@@ -1228,7 +1228,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             $return_to =~ s/{yabb return_to_select}/$return_to_select/sm;
         }
         ### Return To mod end ###
-		if ( $iamguest || $is_preview ) { $guestpost_col = $my_guestpost_col; }
+        if ( $iamguest || $is_preview ) { $guestpost_col = $my_guestpost_col; }
         $my_postsec_b   = postbox2();
         $my_postsection = $mypost_postblock;
         $my_postsection =~ s/{yabb my_postsection_ajx}/$my_postsection_ajx/sm;
@@ -1660,19 +1660,19 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     ToChars($message);
     $message = Censor($message);
 
-#    $prevmain .= $mypost_prevmain;
-#    $prevmain =~ s/{yabb csubject}/$csubject/gsm;
-#    $prevmain =~ s/{yabb cmessage}/$message/gsm;
-#    $prevmain =~ s/{yabb replycount}/$replycount/gsm;
-#    $prevmain =~ s/{yabb msgdate}/$moddate/gsm;
-#    $prevmain =~ s/{yabb d_icon}/$icon/sm;
+    #    $prevmain .= $mypost_prevmain;
+    #    $prevmain =~ s/{yabb csubject}/$csubject/gsm;
+    #    $prevmain =~ s/{yabb cmessage}/$message/gsm;
+    #    $prevmain =~ s/{yabb replycount}/$replycount/gsm;
+    #    $prevmain =~ s/{yabb msgdate}/$moddate/gsm;
+    #    $prevmain =~ s/{yabb d_icon}/$icon/sm;
 
     if ($error) {
         LoadLanguage('Error');
         $prevmain .= $mypost_prevmain_error;
         $prevmain =~ s/{yabb preverror}/$error/sm;
         $prevmain =~ s/{yabb error_occurred}/$error_txt{'error_occurred'}/sm;
-	}
+    }
 
     $message = $mess;
 
@@ -2157,7 +2157,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
             if ( fopen( NEWFILE, ">$uploaddir/$fixfile" ) ) {
                 binmode NEWFILE;
 
-                    # needed for operating systems (OS) Windows, ignored by Linux
+                # needed for operating systems (OS) Windows, ignored by Linux
                 print {NEWFILE} $file_buffer
                   or croak "$croak{'print'} NEWFILE";    # write new file on HD
                 fclose(NEWFILE);
@@ -2536,7 +2536,7 @@ sub LoadNotifyMessages {
     foreach my $lang ( keys %{$languages} ) {
         next
           if $notifystrings{$lang}
-          {'boardnewtopicnotificationemail'};    # next if allready loaded
+          {'boardnewtopicnotificationemail'};    # next if already loaded
         $language = $lang;
         LoadLanguage('Email');
         $notifystrings{$lang} = {
