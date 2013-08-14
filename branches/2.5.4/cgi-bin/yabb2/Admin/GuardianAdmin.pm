@@ -284,8 +284,8 @@ sub setup_guardian {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'script'}</b>

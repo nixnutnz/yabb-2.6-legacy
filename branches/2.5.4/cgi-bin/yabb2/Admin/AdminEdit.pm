@@ -218,7 +218,7 @@ sub SetCensor {
     }
     $yymain .= qq~
  <div class="bordercolor rightboxdiv">
-   <table class="cs_thin pad_4px">
+   <table class="cs_thin pad_4px" style="margin-bottom: -1px;">
      <tr>
        <td class="titlebg">
              $admin_img{'banimg'}<span class="legend"> <b>$admin_txt{'135'}</b></span>
@@ -419,7 +419,7 @@ sub ModifyAgreement {
     fclose(AGREE);
     $yymain .= qq~
  <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="cs_thin pad_4px" style="margin-bottom: -1px;">
         <tr>
             <td class="titlebg">$admin_img{'xx'} <b>$admin_txt{'764'}</b></td>
         </tr><tr>
@@ -438,7 +438,9 @@ sub ModifyAgreement {
             </td>
         </tr>
     </table>
-    <form action="$adminurl?action=modagreement2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
+</div>
+<form action="$adminurl?action=modagreement2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
+<div class="bordercolor borderstyle rightboxdiv">
     <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="windowbg2 center padd_8_12px">
@@ -448,6 +450,8 @@ sub ModifyAgreement {
             </td>
         </tr>
     </table>
+</div>
+<div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px">
     <tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
@@ -457,8 +461,8 @@ sub ModifyAgreement {
         </td>
     </tr>
 </table>
-</form>
 </div>
+</form>
 ~;
     $yytitle     = "$admin_txt{'764'}";
     $action_area = 'modagreement';

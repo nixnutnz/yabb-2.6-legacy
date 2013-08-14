@@ -647,7 +647,7 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
     <table class="cs_thin">
         <tr>
             <td class="windowbg2 center">
-                <iframe id="StyleManager" name="StyleManager" scrolling="yes"></iframe>
+                <iframe id="StyleManager" name="StyleManager" frameborder="0" scrolling="yes"></iframe>
             </td>
         </tr>
     </table>
@@ -2020,7 +2020,7 @@ s/<a href="http:\/\/jigsaw.w3.org\/css\-validator\/validator\?uri\=<yabb url>">.
     <table class="cs_thin">
         <tr>
             <td class="windowbg2 center">
-                <iframe id="TempManager" name="TempManager" scrolling="yes"></iframe>
+                <iframe id="TempManager" name="TempManager" frameborder="0" scrolling="yes"></iframe>
             </td>
         </tr>
     </table>

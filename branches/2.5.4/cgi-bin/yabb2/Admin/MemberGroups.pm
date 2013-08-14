@@ -575,7 +575,7 @@ sub editAddGroup {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <col span="5" class="w_20pc" />
         <tr>
             <td class="titlebg" colspan="5">
@@ -600,7 +600,7 @@ sub editAddGroup {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px">
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
     <tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
     </tr><tr>
@@ -919,7 +919,7 @@ sub reorderGroups {
 
     $rowspan = $#nopostorder + 2;
     $yymain .= qq~
-<div class="bordercolor" style="padding: 0px; width: 75%; margin-left: auto; margin-right: auto;">
+<div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px">
         <col span="2" class="w_33pc" />
         <tr>

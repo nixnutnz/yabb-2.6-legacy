@@ -75,8 +75,8 @@ sub Attachments {
      $yymain .= qq~
 <div class="bordercolor rightboxdiv">
 <table class="cs_thin pad_4px">
-	<tr>
-		<td class="titlebg">$admin_img{'xx'} <b>$fatxt{'24'}</b></td>
+    <tr>
+        <td class="titlebg">$admin_img{'xx'} <b>$fatxt{'24'}</b></td>
     </tr><tr>
         <td class="windowbg padd_8_12px"><span class="small">$fatxt{'25'}</span></td>
     </tr><tr>
@@ -514,13 +514,16 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
 
             $amdate = timeformat($amdate);
             $amkb   = NumberFormat($amkb);
-            if ( length($amthreadsub) > 20 ) {
-                $amthreadsub = substr( $amthreadsub, 0, 20 ) . q{...};
+            if ( length($amthreadsub) > 30 ) {
+                $amthreadsub = substr( $amthreadsub, 0, 30 ) . q{...};
             }
-
+            my $amfna = $amfn;
+            if ( length($amfn) > 30 ) {
+                $amfna = substr( $amthreadsub, 0, 30 ) . q{...};
+            }
             $viewattachments .= qq~<tr>
             <td class="windowbg2 center"><input type="checkbox" name="del_$amthreadid" value="$amfn" /></td>
-            <td class="windowbg2"><a href="$uploadurl/$amfn" onclick="target='_blank';"> $amfn</a></td>
+            <td class="windowbg2"><a href="$uploadurl/$amfn" onclick="target='_blank';">$amfna</a></td>
             <td class="windowbg2 center"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /></td>
             <td class="windowbg2 right padd_4px">$amkb KB</td>
             <td class="windowbg2 center">$amdate</td>
@@ -557,6 +560,14 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
 <table class="cs_thin pad_8px">
+    <col style="width:7%" />
+    <col style="width:18%" />
+    <col style="width:5%" />
+    <col style="width:7%" />
+    <col style="width:23%" />
+    <col style="width:5%" />
+    <col style="width:22%" />
+    <col style="width:13%" />
     <tr>
         <td class="titlebg padd_4px" colspan="8">
             $admin_img{'xx'}&nbsp;<b>$fatxt{'39'}</b>
@@ -1020,13 +1031,13 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
             $pmAttachDate = timeformat($pmAttachDate);
             $pmAttachKB   = NumberFormat($pmAttachKB);
 
-            if ( length($pmAttachName) > 20 ) {
-                $pmAttachName = substr( $pmAttachName, 0, 20 ) . q{...};
+            my $pmfna = $pmAttachName;
+            if ( length($pmAttachName) > 30 ) {
+                $pmfna = substr( $pmAttachName, 0, 30 ) . q{...};
             }
-
             $viewattachments .= qq~<tr>
             <td class="windowbg2 center"><input type="checkbox" name="del_$pmthreadid" value="$pmAttachName" /></td>
-            <td class="windowbg2"><a href="$pmuploadurl/$pmAttachName" onclick="target='_blank';"> $pmAttachName</a></td>
+            <td class="windowbg2"><a href="$pmuploadurl/$pmAttachName" onclick="target='_blank';">$pmfna</a></td>
             <td class="windowbg2 center"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /></td>
             <td class="windowbg2 right padd_4px">$pmAttachKB KB</td>
             <td class="windowbg2 center">$pmAttachDate</td>
@@ -1059,7 +1070,13 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
 <table class="cs_thin pad_8px">
-    <tr>
+    <col style="width:8%" />
+    <col style="width:30%" />
+    <col style="width:10%" />
+    <col style="width:12%" />
+    <col style="width:30%" />
+    <col style="width:15%" />
+	<tr>
         <td class="titlebg padd_4px" colspan="6">
             $admin_img{'xx'}&nbsp;<b>$fatxt{'39a'}</b>
         </td>

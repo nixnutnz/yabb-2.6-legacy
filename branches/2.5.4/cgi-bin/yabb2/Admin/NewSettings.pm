@@ -94,7 +94,7 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
             <col class=" w_50pc" />
             <tr>
                 <td class="titlebg padd_4px" colspan="2">
-                    <a id="tab_$tab->{'id'}"></a>$admin_img{'prefimg'} <b>$tab->{'name'}</b>
+                    $admin_img{'prefimg'} <b>$tab->{'name'}</b>
          <span style="float: right;" class="js_remove_me"><a href="#top"><b>$settings_txt{'top'}</b></a></span>
        </td>
      </tr>~;

@@ -184,8 +184,8 @@ qq~<br /><a href="$adminurl?action=apr_regentry;username=$userid">$prereg_txt{'a
     $yymain .= qq~
     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
     <form name="reglog_form" action="$adminurl?action=clean_reglog" method="post" onsubmit="return submitproc();">
- <div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px">
+ <div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <col class="w_20pc" />
         <col class="w_35pc" />
         <col class="w_25pc" />
@@ -204,17 +204,18 @@ qq~<br /><a href="$adminurl?action=apr_regentry;username=$userid">$prereg_txt{'a
     </tr>
     $loglist
     </table>
- </div>
- <div class="bordercolor rightboxdiva">
-   <table class="cs_thin pad_4px">
-     <tr>
-       <td class="catbg center">
-         <input type="submit" value="$prereg_txt{'9'}" onclick="return confirm('$prereg_txt{'9'}');" class="button" />
-       </td>
-     </tr>
-   </table>
- </div>
-
+</div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px">
+	<tr>
+    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'725e'}</th>
+	</tr><tr>
+		<td class="catbg center">
+			<input type="submit" value="$prereg_txt{'9'}" onclick="return confirm('$prereg_txt{'9'}');" class="button" />
+		</td>
+	</tr>
+</table>
+</div>
 </form>
 ~;
     $action_area = 'view_reglog';

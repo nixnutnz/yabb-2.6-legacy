@@ -170,7 +170,7 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 $admin_img{'infoimg'} <b>$admintxt{'28'}</b>
@@ -477,7 +477,7 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 $admin_img{'infoimg'} <b>$admin_txt{'693'}</b>
@@ -492,9 +492,8 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
 
     if ($enableclicklog) {
         $yymain .= qq~
-<br />
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <col class="w_50pc" />
         <tr>
             <td class="titlebg" colspan="2">
@@ -522,9 +521,8 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
         </tr>
     </table>
 </div>
-<br />
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 $admin_img{'cat_img'} <b>$admin_txt{'695'}</b>
@@ -540,9 +538,8 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
         </tr>
     </table>
 </div>
-<br />
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 $admin_img{'cat_img'} <b>$admin_txt{'696'}</b>
@@ -558,9 +555,8 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
        </tr>
     </table>
 </div>
-<br />
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 $admin_img{'cat_img'} <b>$admin_txt{'696a'}</b>
@@ -572,9 +568,8 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
         </tr>
     </table>
 </div>
-<br />
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 $admin_img{'cat_img'} <b>$admin_txt{'838'}</b>
@@ -776,12 +771,11 @@ sub ver_detail {
     $yymain .= qq~
         <div class="bordercolor rightboxdiv">
         <table class="cs_thin pad_4px">
-            <col class="w_40pc" />
-            <col class="w_30pc" />
+            <col class="w_50pc" span="2" />
             <tr>
-                <td class="titlebg" colspan="3">$admin_img{'infoimg'} <b>$admin_txt{'429'}</b></td>
+                <td class="titlebg" colspan="2">$admin_img{'infoimg'} <b>$admin_txt{'429'}</b></td>
             </tr><tr>
-                <td class="windowbg2" colspan="3">
+                <td class="windowbg2" colspan="2">
                     <script src="$versionchk" type="text/javascript"></script>
                     $versiontxt{'4'} <b>$YaBBversion</b><br />
                     <script type="text/javascript">
@@ -825,7 +819,7 @@ sub ver_detail {
         }
     }
     $yymain .= qq~<tr>
-                <td class="titlebg" colspan="3"><b>$admin_txt{'430'}</b></td>
+                <td class="titlebg" colspan="2"><b>$admin_txt{'430'}</b></td>
             </tr>~;
 
     opendir DIR, $admindir;
@@ -842,7 +836,7 @@ sub ver_detail {
             $yymain .= qq~<tr>
                 <td class="windowbg2">$fileinDIR</td>
                 <td class="windowbg2"><i>${$txtrevision}</i></td>
-        </tr>~;
+            </tr>~;
         }
         elsif ( $fileinDIR =~ m/\.pm\Z/xsm ) {
             require "$admindir/$fileinDIR";
@@ -852,11 +846,11 @@ sub ver_detail {
             $yymain .= qq~<tr>
                 <td class="windowbg2">$fileinDIR</td>
                 <td class="windowbg2"><i>${$txtrevision}</i></td>
-        </tr>~;
+            </tr>~;
         }
     }
     $yymain .= qq~<tr>
-                <td class="titlebg" colspan="3"><b>$admin_txt{'431'}</b></td>
+                <td class="titlebg" colspan="2"><b>$admin_txt{'431'}</b></td>
         </tr>~;
 
     opendir DIR, $sourcedir;
@@ -883,7 +877,7 @@ sub ver_detail {
             $yymain .= qq~<tr>
                 <td class="windowbg2">$fileinDIR</td>
                 <td class="windowbg2"><i>${$txtrevision}</i></td>
-        </tr>~;
+            </tr>~;
         }
     }
 

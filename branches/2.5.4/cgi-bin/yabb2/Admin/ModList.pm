@@ -47,7 +47,7 @@ sub ListMods {
 <div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px">
         <tr>
-            <td class="titlebg" colspan="3">
+            <td class="titlebg">
                 $admin_img{'prefimg'} <b>$mod_list{'5'}</b>
              </td>
          </tr><tr>
@@ -87,7 +87,7 @@ sub ListMods {
 
         $full_description .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <a id="$mod_anchor">$admin_img{'prefimg'}</a> <b>$mod_displayname</b> &nbsp; <span class="small">$mod_list{'4'}: $mod_version</span>
@@ -106,13 +106,12 @@ sub ListMods {
             </td>
         </tr>
     </table>
-</div>
-~;
+</div>~;
     }
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg" colspan="3">
                 $admin_img{'prefimg'} <b>$mod_list{'5'} ($total_mods)</b>
@@ -129,10 +128,8 @@ sub ListMods {
             </td>
         </tr>
         $mod_text_list
-        </tr>
      </table>
 </div>
-<br />
 $full_description
 ~;
 
