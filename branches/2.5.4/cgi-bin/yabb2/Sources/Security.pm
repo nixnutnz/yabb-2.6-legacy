@@ -356,13 +356,12 @@ sub check_banlist {
 sub CheckIcon {
 
     # Check the icon so HTML cannot be exploited.
-    # Do it in 3 unless's because 1 is too long.
     $icon =~ s/\Ahttp:\/\/.*\/(.*?)\..*?\Z/$1/xsm;
     $icon =~ s/[^A-Za-z]//gxsm;
     $icon =~ s/\\//gxsm;
     $icon =~ s/\///gxsm;
     my @iconlist =
-      qw( xx thumbup thumbdown exclamation question lamp smiley angry cheesy grin sad wink standard confidential urgent );
+      qw( xx thumbup thumbdown exclamation question lamp smiley angry cheesy grin sad wink standard confidential urgent alert );
     my $isicon = 0;
     for my $x (@iconlist) {
 

@@ -2885,7 +2885,7 @@ sub sendGuestPM {
     $t_title     = $post_txt{'sendmessguest'};
     $submittxt   = $post_txt{'148'};
     $destination = 'guestpm2';
-    $icon        = 'exclamation';
+    $icon        = 'alert';
     $is_preview  = 0;
     $post        = 'guestpm';
     $prevmain    = q{};

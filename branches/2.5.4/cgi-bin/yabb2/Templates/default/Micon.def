@@ -31,6 +31,7 @@ $admin_images = "$yyhtml_root/Templates/Admin/default";
 'grin' => qq~<img src="$imagesdir/grin.gif" alt="" />~,
 'sad' => qq~<img src="$imagesdir/sad.gif" alt="" />~,
 'wink' => qq~<img src="$imagesdir/wink.gif" alt="" />~,
+'alert' => qq~<img src="$imagesdir/alert.png" alt="" />~,
 'thread' => qq~<img src="$imagesdir/thread.gif" alt="$messageindex_txt{'457'}" title="$messageindex_txt{'457'}" />~,
 'hide' => qq~<img src="$imagesdir/hide.gif" alt="$messageindex_txt{'458'}" title="$messageindex_txt{'458'}" />~,
 'locked' => qq~<img src="$imagesdir/locked.gif" alt="$messageindex_txt{'456'}" title="$messageindex_txt{'456'}" />~,
@@ -95,6 +96,7 @@ $admin_images = "$yyhtml_root/Templates/Admin/default";
 'locked_moved' => qq~$imagesdir/locked_moved.gif~,
 'tabsave' => qq~$imagesdir/tabsave.gif~,
 'noimg' => qq~$imagesdir/noimg.gif~,
+'alert' => qq~$imagesdir/alert.png~,
 );
 
 %att_img = (

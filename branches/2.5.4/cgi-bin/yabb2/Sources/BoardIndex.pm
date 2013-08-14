@@ -1849,7 +1849,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
         CORE::exit;    # This is here only to avoid server error log entries!
     }
 
-    return;
+    # cannot have return here - breaks subboard display;
 }
 
 sub GetBotlist {

@@ -36,16 +36,16 @@ sub ManageBoardNotify {
         }
     }
     if ( $todo eq 'add' ) {
-        if ( !$maxtnote ) { $maxtnote = 10; }
+#        if ( !$maxtnote ) { $maxtnote = 10; }
         $theboard{$user} = "$userlang|$notetype|$noteview";
         LoadUser($user);
         my %bb;
         my @oldnote = split /,/xsm,
           ${ $uid . $username }{'board_notifications'};
-        if ( @oldnote < ( $maxtnote || 10 ) ) {
+#        if ( @oldnote < ( $maxtnote || 10 ) ) {
             foreach ( split /,/xsm, ${ $uid . $user }{'board_notifications'} ) {
                 $bb{$_} = 1;
-            }
+#            }
             $bb{$theboard} = 1;
             ${ $uid . $user }{'board_notifications'} = join q{,}, keys %bb;
             UserAccount($user);
@@ -319,10 +319,9 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
 
     my @oldnote = split /,/xsm, ${ $uid . $username }{'board_notifications'};
     $curbrd = @oldnote;
-    if ( !$maxtnote ) { $maxtnote = 10; }
+ #   if ( !$maxtnote ) { $maxtnote = 10; }
 
-    $note_brd =
-qq~<br />$notify_txt{'75'}<br />$notify_txt{'76'} $curbrd $notify_txt{'77'} $maxtnote $notify_txt{'78'}~;
+ #   $note_brd = qq~<br />$notify_txt{'75'}<br />$notify_txt{'76'} $curbrd $notify_txt{'77'} $maxtnote $notify_txt{'78'}~;
     $curbrd = NumberFormat($curbrd);
 
     # Show Javascript for 'check all' notifications
