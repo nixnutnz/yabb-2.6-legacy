@@ -66,8 +66,8 @@ sub EditMemberGroups {
     );
 
     $yymain .= qq~
-<div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 $admin_img{'guest'}&nbsp;<b>$admin_txt{'8'}</b>
@@ -79,8 +79,8 @@ sub EditMemberGroups {
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <col class="w_25pc" />
         <col class="w_15pc" />
         <col class="w_10pc" />
@@ -191,8 +191,8 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
     }
 
     $yymain .= qq~
-<div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg" colspan="$colspan">
                 $admin_img{'guest'}&nbsp;<b>$amgtxt{'37'} (<a href="$adminurl?action=editgroup">$admintxt{'18c'}</a>$reorderlink)</b>
@@ -260,8 +260,8 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
     $yymain .= qq~
     </table>
 </div>
-<div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <col class="w_25pc" />
         <col class="w_15pc" />
         <col class="w_10pc" />
@@ -459,9 +459,8 @@ sub editAddGroup {
 <form name="groups" action="$adminurl?action=editAddGroup2" method="post" accept-charset="$yycharset">
 <input type="hidden" name="original" value="$INFO{'group'}" />
 <input type="hidden" name="origin" value="$action" />
-
-<div class="bordercolor rightboxdiva">
-<table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
     <col style="width:40%" />
     <tr>
         <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$viewtitle</b>
@@ -575,7 +574,7 @@ sub editAddGroup {
         $yymain .= qq~
     </table>
 </div>
-<div class="bordercolor rightboxdiva">
+<div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px">
         <col span="5" class="w_20pc" />
         <tr>
@@ -597,15 +596,20 @@ sub editAddGroup {
         </tr>~;
     }
 
-    $yymain .= qq~<tr>
-            <td class="catbg center" colspan="5">
-                <input type="submit" value="$admin_txt{'10'}" class="button" />
-            </td>
-        </tr>
+   $yymain .= qq~
     </table>
 </div>
-</form>
-
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px">
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+    </tr><tr>
+        <td class="catbg center">
+            <input type="submit" value="$admin_txt{'10'}" class="button" />
+        </td>
+    </tr>
+</table>
+</div>
 <script type="text/javascript">
 <!--
 function viscolor(v) {

@@ -31,7 +31,8 @@ sub editemailtemplates {
         $yymain .= qq~
 <form action="$adminurl?action=editemailtemplates" method="get" style="display: inline">
 <input type="hidden" name="action" value="editemailtemplates" />
-    <table class="bordercolor cs_thin pad_4px w_440px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
                 $admin_img{'prefimg'} <b>$emaileditor{'1'}</b>
@@ -65,6 +66,7 @@ sub editemailtemplates {
             </td>
         </tr>
     </table>
+</div>
 </form>~;
     }
     elsif ( !$string ) {
@@ -75,7 +77,8 @@ sub editemailtemplates {
 <form action="$adminurl?action=editemailtemplates" method="get" style="display: inline">
     <input type="hidden" name="action" value="editemailtemplates" />
     <input type="hidden" name="lang" value="$editlang" />
-    <table class="bordercolor cs_thin pad_4px w_440px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
                 $admin_img{'prefimg'} <b>$emaileditor{'3'}</b>
@@ -102,6 +105,7 @@ sub editemailtemplates {
             </td>
         </tr>
     </table>
+</div>
 </form>~;
     }
     else {
@@ -118,7 +122,8 @@ sub editemailtemplates {
 
         $yymain .= qq~
 <form action="$adminurl?action=editemailtemplates2;lang=$editlang;string=$string" method="post" style="display: inline" accept-charset="$yycharset">
-    <table class="bordercolor cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 $admin_img{'prefimg'} <b>$emaileditor{'4'}</b>
@@ -147,17 +152,21 @@ sub editemailtemplates {
         $yymain .= qq~
                 </ul>
             </td>
-        </tr><tr>
-            <td class="catbg">
-                $emaileditor{'8'}
-                <br />$emaileditor{'9'} <span style="font-family:monospace">Languages/$editlang/Email.lng</span> $emaileditor{'10'}
-            </td>
+        </tr>
+    </table>
+</div>
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px">
+        <tr>
+            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
         </tr><tr>
             <td class="catbg center">
                 <input type="submit" value="$emaileditor{'11'}" class="button" />
+                <div class="small">$emaileditor{'8'}<br />$emaileditor{'9'} <span style="font-family:monospace">Languages/$editlang/Email.lng</span> $emaileditor{'10'}</div>
             </td>
         </tr>
     </table>
+</div>
 </form>~;
     }
 

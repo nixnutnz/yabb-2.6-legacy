@@ -364,7 +364,7 @@ sub YaBBsort {
             }
         }
     }
-#	return;
+    return 1;
 }
 
 1;

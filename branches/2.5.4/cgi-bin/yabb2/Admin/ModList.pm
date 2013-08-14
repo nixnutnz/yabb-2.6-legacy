@@ -34,7 +34,6 @@ sub ListMods {
     # You could use "$SuperMod_CoolThings"
 
 ### BOARDMOD ANCHOR ###
-
 ### END BOARDMOD ANCHOR ###
     our ( $yymain, %mod_list, $imagesdir, $yytitle );
     my ( $action_area,  $mod_text_list, $full_description );

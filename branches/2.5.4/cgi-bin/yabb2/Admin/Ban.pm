@@ -68,7 +68,6 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
         if ( $banned[0] eq 'I' ) {
             $ban_i    = $banned[1];
             $timebana = time_ban();
-
             $iban .= qq~<option value="$i"> $ban_i - $timebana</option>\n~;
         }
         if ( $banned[0] eq 'E' ) {
@@ -84,14 +83,17 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
             $uban .= qq~<option value="$i"> $ban_u - $timebana</option>\n~;
         }
     }
+    $iban .= q~<option value=""> </option>~;
+    $eban .= q~<option value=""> </option>~;
+    $uban .= q~<option value=""> </option>~;
 
     $yymain .= qq~
-    <div class="bordercolor rightboxdiva">
     <form action="$adminurl?action=ipban2" method="post">
-        <table class="cs_thin pad_4px">
+    <div class="bordercolor rightboxdiv">
+        <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
             <tr>
                 <td class="titlebg">
-                    $admin_img{'banimg'}<b>$admin_txt{'340'}</b>
+                    $admin_img{'banimg'} <b>$admin_txt{'340'}</b>
                 </td>
             </tr><tr>
                 <td class="catbg">
@@ -103,15 +105,24 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
                         $iban
                     </select>
                 </td>
+            </tr>
+        </table>
+    </div>
+    <div class="bordercolor rightboxdiv">
+        <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+            <tr>
+                <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
             </tr><tr>
-                <td class="windowbg2">
+                <td class="catbg center">
                     <input type="submit" value="$admin_txt{'10'}" class="button" />
                 </td>
             </tr>
         </table>
+    </div>
     </form>
     <form action="$adminurl?action=ipban2" method="post">
-        <table class="cs_thin pad_4px">
+    <div class="bordercolor borderstyle rightboxdiv">
+        <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
             <tr>
                 <td class="catbg">
                     <label for="eban"><span class="small">$admin_txt{'725b'}</span></label>
@@ -122,15 +133,24 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
                         $eban
                     </select>
                 </td>
-            </tr><tr>
-                <td class="windowbg2">
-                    <input type="submit" value="$admin_txt{'10'}" class="button" />
-                </td>
             </tr>
         </table>
+    </div>
+    <div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+        <tr>
+            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+        </tr><tr>
+            <td class="catbg center">
+                <input type="submit" value="$admin_txt{'10'}" class="button" />
+            </td>
+        </tr>
+    </table>
+    </div>
     </form>
     <form action="$adminurl?action=ipban2" method="post">
-        <table class="cs_thin pad_4px">
+    <div class="bordercolor borderstyle rightboxdiv">
+        <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
             <tr>
                 <td class="catbg">
                     <label for="uban"><span class="small">$admin_txt{'725c'}</span></label>
@@ -141,19 +161,28 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
                         $uban
                     </select>
                 </td>
-            </tr><tr>
-                <td class="windowbg2">
-                    <input type="submit" value="$admin_txt{'10'}" class="button" />
-                </td>
             </tr>
         </table>
-        </form>
+    </div>
+    <div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+        <tr>
+            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+        </tr><tr>
+            <td class="catbg center">
+                <input type="submit" value="$admin_txt{'10'}" class="button" />
+            </td>
+        </tr>
+    </table>
+    </div>
+    </form>
         <form action="$adminurl?action=ipban_add" method="post">
-        <table class="cs_thin pad_4px">
+        <div class="bordercolor rightboxdiv">
+        <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
             <col class="w_50pc" />
             <tr>
                 <td class="titlebg">
-                    $admin_img{'banimg'}<b>$admin_txt{'340a'}</b>
+                    $admin_img{'banimg'} <b>$admin_txt{'340a'}</b>
                 </td>
                 <td class="titlebg">
                     <b>$admin_txt{'340b'}</b>
@@ -171,31 +200,44 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
                 </td>
             </tr><tr>
                 <td class="windowbg2">
-               $admin_txt{'340c'}<br /><input type='radio' name='type' value='U' />$admin_txt{'340d'}<br /><input type='radio' name='type' value='I' checked="checked" />$admin_txt{'340e'}<br /><input type='radio' name='type' value='E' />$admin_txt{'307'}<br />
-                <textarea rows="10" cols="100" name="banned" style="width:90%"></textarea>
+               $admin_txt{'340c'}<br /><input type='radio' name='type' value='U' />$admin_txt{'340d'}
+               <br /><input type='radio' name='type' value='I' checked="checked" />$admin_txt{'340e'}
+               <br /><input type='radio' name='type' value='E' />$admin_txt{'307'}
+               <br /><textarea rows="10" cols="100" name="banned" style="width:90%"></textarea>
                 <input type="hidden" name="unban" value="1" />
-                </td>
-            </tr><tr>
-                <td class="windowbg2" colspan="2">
-                    <input type="submit" value="$admin_txt{'10'}" class="button" />
                 </td>
             </tr>
         </table>
-        </form>
-        <form action="$adminurl?action=ban_clean" method="post">
+    </div>
+    <div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+        <tr>
+            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+        </tr><tr>
+            <td class="catbg center">
+                <input type="submit" value="$admin_txt{'10'}" class="button" />
+            </td>
+        </tr>
+    </table>
+    </div>
+    </form>
+    <form action="$adminurl?action=ban_clean" method="post">
+        <div class="bordercolor rightboxdiv">
         <table class="cs_thin pad_4px">
             <tr>
                 <td class="titlebg">
-                    $admin_img{'banimg'}<b>$admin_txt{'725d'}</b>
+                    $admin_img{'banimg'} <b>$admin_txt{'725d'}</b>
                 </td>
             </tr><tr>
-                <td class="windowbg2">
+                <td class="catbg center">
+                    $admin_txt{'725g'}<br />
                     <input type="submit" value="$admin_txt{'725e'}" class="button" />
                 </td>
             </tr>
         </table>
-        </form>
-    </div>~;
+        </div>
+    </form>
+~;
 
     $yytitle     = "$admin_txt{'340'}";
     $action_area = 'ipban';

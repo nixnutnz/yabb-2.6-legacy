@@ -69,21 +69,19 @@ sub AddCats {
 
     $yymain .= qq~
 <form action="$adminurl?action=addcat2" method="post" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
-            <td class="titlebg" colspan="5">
+            <td class="titlebg">
                 $admin_img{'cat_img'}
                 <b>$admin_txt{'3'}</b>
             </td>
         </tr><tr>
-            <td class="windowbg2 padd_8_12px" colspan="5">$admin_txt{'43'}</td>
+            <td class="windowbg2 padd_8_12px">$admin_txt{'43'}</td>
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px">~;
-
+~;
     require Admin::ManageBoards;
 
     # Start Looping through and repeating the board adding wherever needed
@@ -113,13 +111,15 @@ sub AddCats {
             }
         }
         else {
-		    my $cat_num = $i + 1;
-            $cattext = "$admin_txt{'44'} $cat_num:"; 
+            my $cat_num = $i + 1;
+            $cattext = "$admin_txt{'44'} $cat_num:";
         }
         $catperms = DrawPerms( $catperms, 0 );
-        $yymain .= qq~
+       $yymain .= qq~
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
-            <td class="catbg" colspan="4"> <b>$cattext</b></td>
+            <td class="titlebg" colspan="4"><b>$cattext</b></td>
         </tr><tr>
             <td class="windowbg" colspan="2">&nbsp;</td>
             <td class="windowbg center"><label for="catperms$i"><b>$admin_txt{'45'}</b></label></td>
@@ -148,16 +148,22 @@ sub AddCats {
         </tr><tr>
             <td class="windowbg"><label for="catrss$i"><b>$admin_txt{'brdrss1'}:</b></label></td>
             <td class="windowbg2 padd_8_12px"><br /><input type="checkbox" name="catrss$i" id="catrss$i"$catrssch /> <label for="catrss$i"><span class="small">$admin_txt{'brdrss2'}</span></label></td>
-         </tr>~;
-    }
-    $yymain .= qq~<tr>
-            <td class="catbg center" colspan="4">
-                <input type="hidden" name="amount" value="$FORM{"amount"}" />
-                <input type="hidden" name="screenornot" value="$INFO{'action'}" />
-                <input type="submit" value="$admin_txt{'10'}" class="button" />
-            </td>
         </tr>
     </table>
+</div>~;
+    }
+    $yymain .= qq~<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px">
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+    </tr><tr>
+        <td class="catbg center">
+             <input type="hidden" name="amount" value="$FORM{"amount"}" />
+             <input type="hidden" name="screenornot" value="$INFO{'action'}" />
+             <input type="submit" value="$admin_txt{'10'}" class="button" />
+        </td>
+    </tr>
+</table>
 </div>
 </form>~;
 
@@ -202,10 +208,8 @@ sub AddCats2 {
         if   ( $FORM{"allowcol$i"} eq 'on' ) { $FORM{"allowcol$i"} = 1; }
         else                                 { $FORM{"allowcol$i"} = 0; }
 
-        ### RSS on Board Index Start ###
         if ( $FORM{"catrss$i"} eq 'on' ) { $FORM{"catrss$i"} = 1; }
         else { $FORM{"catrss$i"} = 0; }
-        ### RSS on Board Index End ###
 
         $catinfo{"$id"} = qq~$cname|$FORM{"catperms$i"}|$FORM{"allowcol$i"}|$FORM{"catimage$i"}|$FORM{"catrss$i"}~;
 

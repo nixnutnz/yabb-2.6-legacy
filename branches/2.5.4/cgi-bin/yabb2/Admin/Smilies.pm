@@ -205,13 +205,13 @@ qq~<a href="$adminurl?action=smiliemove;index=$i;movedown=1"><img src="$imagesdi
 </div>
 <div class="bordercolor rightboxdiv">
 <table class="cs_thin pad_4px">
-	<tr>
-    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-	</tr><tr>
-    	<td class="catbg center">
-        	<input type="submit" value="$asmtxt{'09'}" class="button" />&nbsp;<input type="reset" value="$asmtxt{'10'}" class="button" />
-    	</td>
-	</tr>
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+    </tr><tr>
+        <td class="catbg center">
+            <input type="submit" value="$asmtxt{'09'}" class="button" />&nbsp;<input type="reset" value="$asmtxt{'10'}" class="button" />
+        </td>
+    </tr>
 </table>
 </div>
 </form>

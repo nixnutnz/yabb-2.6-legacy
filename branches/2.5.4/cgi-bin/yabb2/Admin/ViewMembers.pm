@@ -673,35 +673,30 @@ sub buildPages {
             </form>
         );
 
-    $TableHeader .= qq~
-        <table class="bordercolor cs_thin pad_3px">
-          <tr>
-            <td class="titlebg">
-                <span style="float: left;">$admin_img{'register'}<b> $admintxt{'17'}</b></span>
-            </td>
-          </tr><tr>
-            <td class="titlebg">
-            <span style="float: right;">
-            $FindForm
-            <form action="$adminurl?action=ml" method="post" name="selsort" style="display: inline">
-            <label for="sortform"><b>$ml_txt{'1'}</b></label>
-            <select name="sortform" id="sortform" style="font-size: 9pt;" onchange="submit()">
-            <option value="username"$selUser>$ml_txt{'35'}</option>
-            <option value="position"$selPos>$ml_txt{'87'}</option>
-            <option value="posts"$selPost>$ml_txt{'21'}</option>
-            <option value="regdate"$selReg>$ml_txt{'233'}</option>
-            <option value="lastonline"$selLastOn>$amv_txt{'9'}</option>
-            <option value="lastpost"$selLastPost>$amv_txt{'10'}</option>
-            <option value="lastim"$selLastIm>$amv_txt{'11'}</option>
-            </select>
-            <label for="reversed"><b>$admintxt{'37'}</b></label>
-            <input type="checkbox" onclick="submit()" name="reversed" id="reversed" class="titlebg" style="border: 0;"$selReversed />
-            </span>
-                           <input type="submit" style="display:none" />
-            </form>
-            </td>
-          </tr>
+   $TableHeader .= qq~
+        <table class="bordercolor borderstyle cs_thin pad_3px">
+            <tr>
+                <td class="titlebg right" style="font-size: 11px; text-shadow: none;">
+                    $FindForm
+                    <form action="$adminurl?action=ml" method="post" name="selsort" style="display: inline">
+                        <label for="sortform"><b>$ml_txt{'1'}</b></label>
+                        <select name="sortform" id="sortform" style="font-size: 9pt;" onchange="submit()">
+                        <option value="username"$selUser>$ml_txt{'35'}</option>
+                        <option value="position"$selPos>$ml_txt{'87'}</option>
+                        <option value="posts"$selPost>$ml_txt{'21'}</option>
+                        <option value="regdate"$selReg>$ml_txt{'233'}</option>
+                        <option value="lastonline"$selLastOn>$amv_txt{'9'}</option>
+                        <option value="lastpost"$selLastPost>$amv_txt{'10'}</option>
+                        <option value="lastim"$selLastIm>$amv_txt{'11'}</option>
+                    </select>
+                    <label for="reversed"><b>$admintxt{'37'}</b></label>
+                    <input type="checkbox" onclick="submit()" name="reversed" id="reversed" class="titlebg" style="border: 0;"$selReversed />
+                    <input type="submit" style="display:none" />
+                    </form>
+                </td>
+            </tr>
         </table>
+        </div>
         <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
         <script type="text/javascript">
         <!--
@@ -710,24 +705,25 @@ sub buildPages {
         }
         //-->
         </script>
-
         <form name="adv_memberview" action="$adminurl?action=deletemultimembers$sortmode$sortorder$spages" method="post" style="display: inline" onsubmit="return submitproc()">
         <input type="hidden" name="button" value="0" />
-        <table class="bordercolor cs_thin pad_3px">
+        <div class="rightboxdiv">
+        <table class="bordercolor borderstyle cs_thin pad_3px">
             <col span="2" style="width:19%" />
             <col class="w_5pc" />
             <col style="width:14%" />
             <col style="width:19%" />
             <col style="width:7%" />
             <col span="2" style="width:6%" />
-        <tr>
-            <td class="catbg center"><a href="$adminurl?action=ml;sortform=username"><b>$ml_txt{'35'}</b></a></td>
-            <td class="catbg center"><a href="$adminurl?action=ml;sortform=position"><b>$ml_txt{'87'}</b></a></td>
-            <td class="catbg center" colspan="2"><a href="$adminurl?action=ml;sortform=posts"><b>$ml_txt{'21'}</b></a></td>
-            <td class="catbg center"><a href="$adminurl?action=ml;sortform=regdate"><b>$ml_txt{'234'}</b></a></td>
-            <td class="catbg center" colspan="3"><b>$amv_txt{'4'}</b><br /><span class="small" style="float: left; text-align: center; width: 34%;"><a href="$adminurl?action=ml;sortform=lastonline">$amv_txt{'5'}</a></span><span class="small" style="float: left; text-align: center; width: 33%;"><a href="$adminurl?action=ml;sortform=lastpost">$amv_txt{'6'}</a></span><span class="small" style="float: left; text-align: center; width: 33%;"><a href="$adminurl?action=ml;sortform=lastim">$amv_txt{'7'}</a></span></td>
-            <td class="catbg center"><b>$admintxt{'38'}</b></td>
-        </tr>
+            <tr>
+                <td class="windowbg2 center"><a href="$adminurl?action=ml;sortform=username"><b>$ml_txt{'35'}</b></a></td>
+                <td class="windowbg2 center"><a href="$adminurl?action=ml;sortform=position"><b>$ml_txt{'87'}</b></a></td>
+                <td class="windowbg2 center" colspan="2"><a href="$adminurl?action=ml;sortform=posts"><b>$ml_txt{'21'}</b></a></td>
+                <td class="windowbg2 center"><a href="$adminurl?action=ml;sortform=regdate"><b>$ml_txt{'234'}</b></a></td>
+                <td class="windowbg2 center" colspan="3"><b>$amv_txt{'4'}</b>
+                    <br /><span class="small" style="float: left; text-align: center; width: 34%;"><a href="$adminurl?action=ml;sortform=lastonline">$amv_txt{'5'}</a></span><span class="small" style="float: left; text-align: center; width: 33%;"><a href="$adminurl?action=ml;sortform=lastpost">$amv_txt{'6'}</a></span><span class="small" style="float: left; text-align: center; width: 33%;"><a href="$adminurl?action=ml;sortform=lastim">$amv_txt{'7'}</a></span></td>
+                <td class="windowbg2 center"><b>$admintxt{'38'}</b></td>
+            </tr>
         ~;
 
     if ( $LetterLinks ne q{} ) {
@@ -737,9 +733,9 @@ sub buildPages {
     }
 
     $sel_box = qq~
-            <table class="bordercolor cs_thin pad_3px">
+            <table class="bordercolor borderstyle cs_thin pad_3px" style="margin-bottom: .5em;">
                 <tr>
-                    <td class="titlebg right" colspan="2">
+                    <td class="titlebg right" colspan="2" style="font-size: 11px; text-shadow: none;">
                     <label for="check_all"><b>$amv_txt{'38'}</b></label>
                     <select name="field2" id="field2" onchange="document.adv_memberview.check_all.checked=true;checkAll(1);">
                         <option value="0">$amv_txt{'35'}</option>
@@ -754,19 +750,12 @@ sub buildPages {
                         <option value="3">$amv_txt{'33'}</option>
                         <option value="4">$amv_txt{'34'}</option>
                     </select>
-                    <br />
-                    <label for="del_mail">$amv_txt{'45'}:</label> <input type="checkbox" name="del_mail" id="del_mail" value="1" class="titlebg" style="border: 0;" />
                     </td>
                     <td class="titlebg center w_5pc">
                         <input type="checkbox" name="check_all" id="check_all" value="1" class="titlebg" style="border: 0;" onclick="javascript:if(this.checked)checkAll(1);else checkAll(0);" />
                     </td>
-                </tr><tr>
-                  <td class="windowbg center" colspan="3">
-                        <input type="submit" value="$amv_txt{'15'}" onclick="javascript:window.document.adv_memberview.button.value = '2'; return confirm('$amv_txt{'20'}')" class="button" />
-                  </td>
                 </tr>
             </table>
-          </form>
         <script type="text/javascript">
         mem_data = new Array ( "", $CheckingAll"" );
         function checkAll(ticked) {
@@ -803,26 +792,43 @@ sub buildPages {
     else { $numshow = qq~($numbegin - $numend $ml_txt{'309'} $memcount)~; }
     if ($inp) {
         $yymain .= qq~
-    <div class="rightboxdiva">
+    <div class="rightboxdiv">
     <table class="bordercolor cs_thin pad_3px">
         <tr>
-            <td class="catbg" colspan="9">
-        <div style="float: left; width: 50%; text-align: left;">$pageindex1</div>
-        </td>
+            <td class="titlebg">
+                <span style="float: left;">$admin_img{'register'} <b>$admintxt{'17'}</b></span>
+            </td>
+        </tr><tr>
+            <td class="catbg">
+                <div style="float: left; width: 50%; text-align: left;">$pageindex1</div>
+            </td>
         </tr>
-        </table>
-        $TableHeader~;
+    </table>
+    $TableHeader~;
     }
     else {
         $yymain .= qq~<tr>
         <td class="catbg" colspan="9">
-        <div style="float: left; width: 50%; text-align: left;">$pageindex2</div>
-        $pageindexjs
-        </td>
+            <div style="float: left; width: 50%; text-align: left;">$pageindex2</div>
+            $pageindexjs
+            </td>
         </tr>
-        </table>
-        $sel_box
-    </div>~;
+       </table>
+       $sel_box
+    </div>
+    <div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px">
+        <tr>
+            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'delete'}</th>
+        </tr><tr>
+            <td class="catbg center">
+                <div class="small"><label for="del_mail">$amv_txt{'45'}:</label> <input type="checkbox" name="del_mail" id="del_mail" value="1" /></div>
+                <input type="submit" value="$amv_txt{'15'}" onclick="javascript:window.document.adv_memberview.button.value = '2'; return confirm('$amv_txt{'20'}')" class="button" />
+            </td>
+         </tr>
+    </table>
+    </div>
+    </form>~;
     }
     return;
 }
@@ -985,7 +991,7 @@ sub FindMembers {
     else {
         $yymain .= qq~
             <tr>
-                  <td class="windowbg2c" colspan="7"><br />$ml_txt{'802'} <i>$FORM{'member'}</i><br /><br /></td>
+                  <td class="windowbg2" colspan="7"><br />$ml_txt{'802'} <i>$FORM{'member'}</i><br /><br /></td>
             </tr>~;
     }
     undef @findmemlist;

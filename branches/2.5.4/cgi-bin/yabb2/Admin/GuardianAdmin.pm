@@ -358,13 +358,13 @@ sub setup_guardian {
 </div>
 <div class="bordercolor rightboxdiv">
 <table class="cs_thin pad_4px">
-	<tr>
-    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-	</tr><tr>
-    	<td class="catbg center">
-        	<input type="submit" value="$guardian_txt{'save'}" class="button" />
-    	</td>
-	</tr>
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+    </tr><tr>
+        <td class="catbg center">
+            <input type="submit" value="$guardian_txt{'save'}" class="button" />
+        </td>
+    </tr>
 </table>
 </div>
 </form>

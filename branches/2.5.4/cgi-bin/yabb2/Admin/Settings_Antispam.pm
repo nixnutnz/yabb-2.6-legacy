@@ -100,12 +100,12 @@ qq~<input type="text" name="timeout" id="timeout" size="4" value="$timeout" />~,
                 name     => 'timeout',
                 validate => 'number',
             },
-        	{
-            	description => qq~<label for="min_reg_time">$admin_txt{'min_reg_time'}</label>~,
-            	input_html => qq~<input type="text" name="min_reg_time" id="min_reg_time" size="4" value="$min_reg_time" />~,
-            	name => 'min_reg_time',
-            	validate => 'number',
-        	},
+            {
+                description => qq~<label for="min_reg_time">$admin_txt{'min_reg_time'}</label>~,
+                input_html => qq~<input type="text" name="min_reg_time" id="min_reg_time" size="4" value="$min_reg_time" />~,
+                name => 'min_reg_time',
+                validate => 'number',
+            },
             { header => $settings_txt{'speedban'}, },
             {
                 description =>

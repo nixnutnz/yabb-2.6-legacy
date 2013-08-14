@@ -102,9 +102,9 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
         }
     //-->
 </script>
-<form name="whattodo" id="whattodo" action="$adminurl?action=$act" onSubmit="return checkSubmit(this);" method="post">
-<div class="rightboxdiva">
-    <table class="bordercolor cs_thin pad_4px">
+<form name="whattodo" id="whattodo" action="$adminurl?action=$act" onsubmit="return checkSubmit(this);" method="post">
+<div class="rightboxdiv">
+    <table class="bordercolor cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg" $colspan>
          $manage
@@ -211,13 +211,13 @@ qq~ <img src="$admin_images/ad_recycle.png" alt="$admin_txt{'64i'}" title="$admi
                     }
 
                     $yymain .= q~
-    <table class="bordercolor cs_thin pad_4px" style="margin: 1px; margin-left:~
+    <table class="bordercolor cs_thin pad_4px" style="margin-bottom: .5em; margin-left:~
                       . $indent . q~%; width:~ . $tmpwidth . q~%">
         <col style="width:~ . $tmpwidth2 . qq~%" />
         <col span="2" class="w_5pc" />
         <tr>
             <td class="windowbg2">
-                $boardname
+                <b>$boardname</b>
                 <div style="position:relative; display:inline; float:right;">
                     <a href="$adminurl?action=addboard;parent=$curboard;category=$catid"><img src="$admin_images/add_sub.png" alt="$admin_txt{'250'}" title="$admin_txt{'250'}" /></a>
                     <a href="javascript:editSingle('yitem_$curboard')"><img src="$admin_images/edit_sub.png" alt="$edit_txt" title="$edit_txt" /></a>
@@ -241,7 +241,7 @@ qq~ <img src="$admin_images/ad_recycle.png" alt="$admin_txt{'64i'}" title="$admi
     }
 
     $yymain .= qq~
-    <table class="bordercolor cs_thin pad_4px" style="margin-top: 3px">
+    <table class="bordercolor borderstyle cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="catbg center" $colspan> <label for="baction">$admin_txt{'52'}</label>
                 <input type="radio" name="baction" id="baction" value="edit" checked="checked" /> $admin_txt{'53'}
@@ -252,17 +252,19 @@ qq~ <img src="$admin_images/ad_recycle.png" alt="$admin_txt{'64i'}" title="$admi
     </table>
 </div>
 </form>
-<br />
 <form name="diff" id="diff" action="$adminurl?action=$act2" method="post" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px">
-        <tr>
-            <td class="catbg center"><label for="amount"><b>$add: </b></label>
-                <input type="text" name="amount" id="amount" value="3" size="2" maxlength="2" />
-                <input type="submit" value="$admintxt{'45'}" class="button" />
-            </td>
-        </tr>
-    </table>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px">
+    <tr>
+        <th class="titlebg">$admin_img{'cat_img'} $add</th>
+    </tr><tr>
+        <td class="catbg center">
+            <label for="amount"><b>$add: </b></label>
+            <input type="text" name="amount" id="amount" value="3" size="2" maxlength="2" />
+            <input type="submit" value="$admintxt{'45'}" class="button" />
+        </td>
+    </tr>
+</table>
 </div>
 </form>
 ~;
@@ -666,19 +668,19 @@ function checkParent(id, board) {
 //-->
 </script>
 <form name="boardsadd" id="boardsadd" action="$adminurl?action=addboard2" method="post" onsubmit="selectNames($FORM{'amount'});" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
-            <td class="titlebg">
-                $admin_img{'cat_img'}<b>$addtext</b>
+            <td class="titlebg" colspan="5">
+                $admin_img{'cat_img'} <b>$addtext</b>
             </td>
         </tr><tr>
             <td class="windowbg2 padd_8_12px">$admin_txt{'57'}</td>
         </tr>
     </table>
 </div>
-<div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom:.5em">
         <col span="4" class="w_25pc" />
 ~;
 
@@ -1008,15 +1010,20 @@ qq~<select multiple="multiple" name="moderatorgroups$i" id="moderatorgroups$i" s
   </tr>
 </table>
 </div>
- <div class="bordercolor rightboxdiva">
-<table class="cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
 ~;
     }
     $yymain .= qq~<tr>
-      <td class="catbg center" colspan="5"> <input type="hidden" name="amount" value=\"$FORM{"amount"}\" />
-      <input type="hidden" name="screenornot" value="$INFO{'action'}" />
-      <input type="submit" value="$admin_txt{'10'}" class="button" /></td>
-  </tr>
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+    </tr><tr>
+        <td class="catbg center">
+            <input type="hidden" name="amount" value=\"$FORM{"amount"}\" />
+            <input type="hidden" name="screenornot" value="$INFO{'action'}" />
+            <input type="submit" value="$admin_txt{'10'}" class="button" />
+        </td>
+    </tr>
 </table>
 </div>
 </form>

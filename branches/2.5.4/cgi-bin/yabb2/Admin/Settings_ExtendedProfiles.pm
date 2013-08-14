@@ -40,7 +40,7 @@ sub ext_get {
         $width,     $height,    @allowed_extensions, $extension,
         $match
     ) = ( shift, shift, shift );
-    
+
     require Sources::ExtendedProfiles;
     ext_get_profile($pusername);
     $id    = ext_get_field_id($fieldname);
@@ -82,17 +82,14 @@ sub ext_get {
         elsif ( $field{'type'} eq 'checkbox' ) {
             if   ( $value == 1 ) { $value = $lang_ext{'true'} }
             else                 { $value = $lang_ext{'false'} }
-
         }
         elsif ( $field{'type'} eq 'spacer' ) {
             @options = split /\^/xsm, $field{'options'};
             if   ( $options[0] == 1 ) { $value = qq~$ext_spacer_br~; }
             else                      { $value = qq~$ext_spacer_hr~; }
-
         }
         elsif ( $field{'type'} eq 'url' && $value ne q{} ) {
             if ( $value !~ m{\Ahttp://}sm ) { $value = "http://$value"; }
-
         }
         elsif ( $field{'type'} eq 'image' && $value ne q{} ) {
             @options = split /\^/xsm, $field{'options'};
@@ -148,7 +145,6 @@ sub ext_get_field_id {
 # returns all settings of a specific field
 sub ext_get_field {
     $field{'id'} = shift;
-
     (
         $field{'name'},                   $field{'type'},
         $field{'options'},                $field{'active'},
@@ -296,186 +292,116 @@ sub ext_timeformat {
 }
 
 
-# here we define us some ready-to-use html samples to design the input forms for the admin area
-# this makes it easier to modify the html code afterwards
-sub ext_admin_htmlreq {
-    $ext_template_blockstart = q~
-<div class="bordercolor" style="padding: 0px; width: 99%; margin-left: 0px; margin-right: auto;">
-    <table class="pad_4px cs_thin">
-~;
-    $ext_template_headerstart = qq~<tr>
-        <td class="titlebg">
-            $admin_img{'profile'}<b>~;
-    $ext_template_headerstop = q~</b>
-        </td>
-    </tr>~;
-    $ext_template_commentstart = q~<tr>
-        <td class="catbg">
-      <span class="small">~;
-    $ext_template_commentstop = q~</span>
-        </td>
-    </tr>~;
-    $ext_template_contentstart = q~<tr>
-        <td class="windowbg2">~;
-    $ext_template_contentstop = q~
-        </td>
-    </tr>~;
-    $ext_template_blockstop = q~
-    </table>
-</div>
-~;
-    $ext_template_option_part1 = q~<tr>
-        <td class="vtop"><b>~;
-    $ext_template_option_part2 = q~: </b><br /><span class="small">~;
-    $ext_template_option_part3 = q~</span></td>
-        <td class="vtop">~;
-    $ext_template_option_part4 = q~
-        </td>
-      </tr>~;
-    return;
-}
-
 # returns the output for the Extended Profile Controls in admin center
 sub ext_admin {
     my ( $id, $output, $fieldname, @options, $active, @selected, @contents );
 
     is_admin_or_gmod();
-    ext_admin_htmlreq();
 
     $yymain .= qq~
-$ext_template_blockstart
-$ext_template_headerstart
-$lang_ext{'Profiles_Controls'}
-$ext_template_headerstop
-$ext_template_contentstart
-$lang_ext{'admin_description'}
-$ext_template_contentstop
-$ext_template_blockstop
-
-<br />
-
-$ext_template_blockstart
-$ext_template_headerstart
-$lang_ext{'edit_title'}
-$ext_template_headerstop
-$ext_template_contentstart
-$lang_ext{'edit_description'}
-$ext_template_contentstop
-$ext_template_contentstart
-    <table class="windowbg2 pad_3px">
-      <tr>
-            <td class="center">$lang_ext{'active'}</td>
-            <td class="center">$lang_ext{'field_name'}</td>
-            <td class="center">$lang_ext{'field_type'}</td>
-            <td class="center">$lang_ext{'actions'}</td>
-        </tr>~;
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+        <tr>
+            <td class="titlebg">$admin_img{'profile'}<b>$lang_ext{'Profiles_Controls'}</b></td>
+        </tr><tr>
+            <td class="windowbg2">$lang_ext{'admin_description'}</td>
+        </tr>
+    </table>
+</div>
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+        <tr>
+            <td class="titlebg">$admin_img{'profile'}<b>$lang_ext{'edit_title'}</b></td>
+        </tr><tr>
+            <td class="windowbg2">$lang_ext{'edit_description'}</td>
+        </tr><tr>
+            <td class="windowbg2">
+                <table class="windowbg2 pad_3px">
+                    <col style="width:25%" span="4" />
+                    <tr>
+                        <td class="center">$lang_ext{'active'}</td>
+                        <td class="center">$lang_ext{'field_name'}</td>
+                        <td class="center">$lang_ext{'field_type'}</td>
+                        <td class="center">$lang_ext{'actions'}</td>
+                    </tr>~;
     if ( !@ext_prof_order ) {
-        $yymain .=
-qq~<td class="windowbg2 center" colspan="4"><br /><i>$lang_ext{'no_additional_fields_set'}</i><br /><br /></td>~;
+        $yymain .= qq~<tr>
+                        <td class="windowbg2 center" style="padding:.5em 0 1em 0;" colspan="4"><i>$lang_ext{'no_additional_fields_set'}</i></td>
+                    </tr>
+                </table>~;
     }
     else {
+         $yymain .= q~              </table>~;
         foreach my $fieldname (@ext_prof_order) {
             $id = ext_get_field_id($fieldname);
             ext_get_field($id);
-            if ( $field{'type'} eq 'text' ) {
-                $selected[0] = ' selected="selected"';
+            my @typelist = qw( text text_multi select radiobuttons checkbox date email url spacer image );
+            foreach my $i (0 .. 9) {
+                if ($field{'type'} eq $typelist[$i]) {
+                    $selected[$i] = ' selected="selected"';
             }
-            else { $selected[0] = q{}; }
-            if ( $field{'type'} eq 'text_multi' ) {
-                $selected[1] = ' selected="selected"';
+                else { $selected[$i] = q{}; }
             }
-            else { $selected[1] = q{}; }
-            if ( $field{'type'} eq 'select' ) {
-                $selected[2] = ' selected="selected"';
-            }
-            else { $selected[2] = q{}; }
-            if ( $field{'type'} eq 'radiobuttons' ) {
-                $selected[3] = ' selected="selected"';
-            }
-            else { $selected[3] = q{}; }
-            if ( $field{'type'} eq 'checkbox' ) {
-                $selected[4] = ' selected="selected"';
-            }
-            else { $selected[4] = q{}; }
-            if ( $field{'type'} eq 'date' ) {
-                $selected[5] = ' selected="selected"';
-            }
-            else { $selected[5] = q{}; }
-            if ( $field{'type'} eq 'email' ) {
-                $selected[6] = ' selected="selected"';
-            }
-            else { $selected[6] = q{}; }
-            if ( $field{'type'} eq 'url' ) {
-                $selected[7] = ' selected="selected"';
-            }
-            else { $selected[7] = q{}; }
-            if ( $field{'type'} eq 'spacer' ) {
-                $selected[8] = ' selected="selected"';
-            }
-            else { $selected[8] = q{}; }
-            if ( $field{'type'} eq 'image' ) {
-                $selected[9] = ' selected="selected"';
-            }
-            else { $selected[9] = q{}; }
             if   ( $field{'active'} == 1 ) { $active = ' checked="checked"'; }
             else                           { $active = q{}; }
+
             $yymain .= qq~
-      <tr>
-        <form action="$adminurl?action=ext_edit" method="post">
-        <td class="windowbg2 center">
-          <input name="id" type="hidden" value="$id" />
-          <input type="checkbox" name="active" value="1"$active />
-        </td>
-        <td class="windowbg2 center">
-          <input name="name" value="$field{'name'}" size="20" />
-        </td>
-        <td class="windowbg2 center">
-          <select name="type" size="1">
-            <option value="text"$selected[0]>$lang_ext{'text'}</option>
-            <option value="text_multi"$selected[1]>$lang_ext{'text_multi'}</option>
-            <option value="select"$selected[2]>$lang_ext{'select'}</option>
-            <option value="radiobuttons"$selected[3]>$lang_ext{'radiobuttons'}</option>
-            <option value="checkbox"$selected[4]>$lang_ext{'checkbox'}</option>
-            <option value="date"$selected[5]>$lang_ext{'date'}</option>
-            <option value="email"$selected[6]>$lang_ext{'email'}</option>
-            <option value="url"$selected[7]>$lang_ext{'url'}</option>
-            <option value="spacer"$selected[8]>$lang_ext{'spacer'}</option>
-            <option value="image"$selected[9]>$lang_ext{'image'}</option>
-          </select>
-        </td>
-        <td class="windowbg2 center">
-          <input type="submit" name="apply" value="$lang_ext{'apply'}" />
-          <input type="submit" name="options" value="$lang_ext{'options'}" />
-          <input type="submit" name="delete" value="$lang_ext{'delete'}" />
-        </td>
-        </form>
-      </tr>
-~;
+                <form action="$adminurl?action=ext_edit" method="post">
+                <table class="windowbg2 pad_3px">
+                    <col style="width:25%" span="4" />
+                    <tr>
+                        <td class="windowbg2 center">
+                            <input name="id" type="hidden" value="$id" />
+                            <input type="checkbox" name="active" value="1"$active />
+                        </td>
+                        <td class="windowbg2 center">
+                            <input name="name" value="$field{'name'}" size="20" />
+                        </td>
+                        <td class="windowbg2 center">
+                            <select name="type" size="1">
+                                <option value="text"$selected[0]>$lang_ext{'text'}</option>
+                                <option value="text_multi"$selected[1]>$lang_ext{'text_multi'}</option>
+                                <option value="select"$selected[2]>$lang_ext{'select'}</option>
+                                <option value="radiobuttons"$selected[3]>$lang_ext{'radiobuttons'}</option>
+                                <option value="checkbox"$selected[4]>$lang_ext{'checkbox'}</option>
+                                <option value="date"$selected[5]>$lang_ext{'date'}</option>
+                                <option value="email"$selected[6]>$lang_ext{'email'}</option>
+                                <option value="url"$selected[7]>$lang_ext{'url'}</option>
+                                <option value="spacer"$selected[8]>$lang_ext{'spacer'}</option>
+                                <option value="image"$selected[9]>$lang_ext{'image'}</option>
+                            </select>
+                        </td>
+                        <td class="windowbg2 center">
+                            <input type="submit" name="apply" value="$lang_ext{'apply'}" />
+                            <input type="submit" name="options" value="$lang_ext{'options'}" />
+                            <input type="submit" name="delete" value="$lang_ext{'delete'}" />
+                        </td>
+                    </tr>
+                </table>
+            </form>~;
         }
     }
 
     $yymain .= qq~
-    </table>
-$ext_template_contentstop
-$ext_template_blockstop
-
-<br />
-
-$ext_template_blockstart
-$ext_template_headerstart
-$lang_ext{'create_new_title'}
-$ext_template_headerstop
-$ext_template_contentstart
-$lang_ext{'create_new_description'}
-$ext_template_contentstop
-$ext_template_contentstart
+         </td>
+    </tr>
+</table>
+</div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <tr>
+        <td class="titlebg">$admin_img{'profile'}<b>$lang_ext{'create_new_title'}</b></td>
+    </tr><tr>
+        <td class="windowbg2">$lang_ext{'create_new_description'}</td>
+    </tr><tr>
+        <td class="windowbg2">
+            <form action="$adminurl?action=ext_create" method="post">
     <table class="pad_3px">
       <tr>
         <td class="windowbg2 center"><label for="name">$lang_ext{'field_name'}</label></td>
         <td class="windowbg2 center"><label for="type">$lang_ext{'field_type'}</label></td>
         <td class="windowbg2 center">$lang_ext{'actions'}</td>
       </tr><tr>
-        <form action="$adminurl?action=ext_create" method="post">
         <td class="windowbg2 center">
           <input name="name" id="name" size="30" />
         </td>
@@ -496,20 +422,22 @@ $ext_template_contentstart
         <td class="windowbg2 center">
           <input type="submit" name="create" value="$lang_ext{'create_field'}" />
         </td>
+                </tr>
+            </table>
         </form>
+        </td>
       </tr>
     </table>
-$ext_template_contentstop
-$ext_template_blockstop
-<br />
-$ext_template_blockstart
-$ext_template_headerstart
-$lang_ext{'reorder_title'}
-$ext_template_headerstop
-$ext_template_contentstart
-    <table class="pad_6px">
+</div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
       <tr>
+        <td class="titlebg">$admin_img{'profile'}<b>$lang_ext{'reorder_title'}</b></td>
+    </tr><tr>
+        <td class="windowbg2">
         <form action="$adminurl?action=ext_reorder" method="post">
+            <table class="pad_6px">
+                <tr>
             <td class="windowbg2 vtop">
           <textarea name="reorder" cols="30" rows="6">~;
 
@@ -521,13 +449,13 @@ $ext_template_contentstart
           $lang_ext{'reorder_description'}<br /><br />
           <input type="submit" name="reorder_submit" value="$lang_ext{'reorder'}" />
         </td>
+                </tr>
+            </table>
         </form>
+        </td>
       </tr>
       </table>
-$ext_template_contentstop
-$ext_template_blockstop
-
-<br />
+</div>
 ~;
     $yytitle     = $lang_ext{'Profiles_Controls'};
     $action_area = 'ext_admin';
@@ -576,13 +504,11 @@ sub ext_admin_create {
 # will generate us a nicely formated table row for the input form
 sub ext_admin_gen_inputfield {
     my ( $var1, $var2, $var3, $output ) = ( shift, shift, shift );
-
-    # &ext_admin_htmlreq; has to be called before using this subroutine
-
-    $output = qq~$ext_template_option_part1$var1~;
-    $output .= qq~$ext_template_option_part2$var2~;
-    $output .= qq~$ext_template_option_part3$var3~;
-    $output .= qq~$ext_template_option_part4~;
+    $output = qq~<tr>
+            <td class="windowbg2 vtop"><b>$var1: </b>
+                <br /><span class="small">$var2</span></td>
+            <td class="windowbg2 vtop">$var3</td>
+        </tr>~;
 
     return $output;
 }
@@ -595,20 +521,13 @@ sub ext_admin_gen_groupslist {
     foreach (@groups) {
         $groupcheck{$_} = ' selected="selected"';
     }
-
-    $output =
-        qq~<option value="Administrator"$groupcheck{'Administrator'}>~
-      . ( split /\|/xsm, $Group{'Administrator'} )[0]
-      . qq~</option>\n~
-      . qq~<option value="Global Moderator"$groupcheck{'Global Moderator'}>~
-      . ( split /\|/xsm, $Group{'Global Moderator'} )[0]
-      . qq~</option>\n~
-      . qq~<option value="Mid Moderator"$groupcheck{'Mid Moderator'}>~
-      . ( split /\|/xsm, $Group{'Mid Moderator'} )[0]
-      . qq~</option>\n~
-      . qq~<option value="Moderator"$groupcheck{Moderator}>~
-      . ( split /\|/xsm, $Group{'Moderator'} )[0]
+    my @grps = ( 'Administrator','Global Moderator','Mid Moderator','Moderator',);
+    my $output = q{};
+    foreach (@grps) {
+        $output .= qq~<option value="$_"$groupcheck{$_}>~
+      . ( split /\|/xsm, $Group{$_} )[0]
       . qq~</option>\n~;
+    }
 
     foreach ( sort { $a <=> $b } keys %NoPost ) {
         $groupid = $_;
@@ -671,7 +590,6 @@ sub ext_admin_edit {
 
     }
     elsif ( $FORM{'options'} ne q{} ) {
-        ext_admin_htmlreq();
         ext_get_field( $FORM{'id'} );
         if   ( $field{'active'} == 1 ) { $active = $lang_ext{'true'}; }
         else                           { $active = $lang_ext{'false'}; }
@@ -717,14 +635,14 @@ sub ext_admin_edit {
         $editable_check[ $field{'editable_by_user'} ] = ' selected="selected"';
         $yymain .= qq~
 <form action="$adminurl?action=ext_edit2" method="post" accept-charset="$yycharset">
-$ext_template_blockstart
-$ext_template_headerstart
-$lang_ext{'options_title'}
-$ext_template_headerstop
-$ext_template_commentstart
-$lang_ext{'options_description'}
-$ext_template_commentstop
-$ext_template_contentstart
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <tr>
+        <td class="titlebg">$admin_img{'profile'}<b>$lang_ext{'options_title'}</b></td>
+    </tr><tr>
+        <td class="catbg small">$lang_ext{'options_description'}</td>
+    </tr><tr>
+        <td class="windowbg2">
 <table class="windowbg2 pad_6px">
     <tr>
         <td><b>$lang_ext{'active'}:</b> $active</td>
@@ -733,9 +651,10 @@ $ext_template_contentstart
         <td class="right"><a href="$adminurl?action=ext_admin">&lt;-- $lang_ext{'change_these_settings'}</a></td>
     </tr>
 </table>
-$ext_template_contentstop
-$ext_template_contentstart
-<table class="windowbg2 pad_6px">
+        </td>
+    </tr><tr>
+        <td class="windowbg2">
+            <table class="bordercolor cs_thin pad_6px">
 ~;
         if ( $field{'type'} eq 'text' ) {
             @options = split /\^/xsm, $field{'options'};
@@ -768,7 +687,6 @@ qq~<input name="default" id="default" size="50" value='$options[3]' />~
                 qq~<label for="ubbc">$lang_ext{'ubbc_description'}</label>~,
 qq~<input name="ubbc" id="ubbc" type="checkbox" value="1"$ubbc />~
               );
-
         }
         elsif ( $field{'type'} eq 'text_multi' ) {
             @options = split /\^/xsm, $field{'options'};
@@ -794,7 +712,6 @@ qq~<input name="limit_len" id="limit_len" size="5" value='$options[0]' />~
                 qq~<label for="ubbc">$lang_ext{'ubbc_description'}</label>~,
 qq~<input name="ubbc" id="ubbc" type="checkbox" value="1"$ubbc />~
               );
-
         }
         elsif ( $field{'type'} eq 'select' ) {
             @options = split /\^/xsm, $field{'options'};
@@ -933,9 +850,9 @@ qq~<input name="visible_in_memberlist" id="visible_in_memberlist" type="checkbox
 
         if ( $field{'type'} ne 'spacer' ) {
             $yymain .= ext_admin_gen_inputfield(
-qq~<label for="editable_by_user">$lang_ext{'editable_by_user'}</label>~,
-qq~<label for="editable_by_user">$lang_ext{'editable_by_user_description'}</label>~,
-qq~<select name="editable_by_user" id="editable_by_user" size="1">\n~
+qq~\n        <label for="editable_by_user">$lang_ext{'editable_by_user'}</label>~,
+qq~\n        <label for="editable_by_user">$lang_ext{'editable_by_user_description'}</label>~,
+qq~\n                <select name="editable_by_user" id="editable_by_user" size="1">\n~
                   . qq~  <option value="0"$editable_check[0]>$lang_ext{'page_admin'}</option>\n~
                   . qq~  <option value="1"$editable_check[1]>$lang_ext{'page_edit'}</option>\n~
                   . qq~  <option value="2"$editable_check[2]>$lang_ext{'page_contact'}</option>\n~
@@ -944,8 +861,8 @@ qq~<select name="editable_by_user" id="editable_by_user" size="1">\n~
                   . qq~</select>\n~
             );
         }
-        $yymain .= qq~<tr>
-        <td class="center" colspan="2">
+        $yymain .= qq~
+            </table>
             <input name="id" type="hidden" value="$FORM{'id'}" />
             <input name="name" type="hidden" value="$FORM{'name'}" />
             <input name="type" type="hidden" value="$FORM{'type'}" />
@@ -956,13 +873,22 @@ qq~<select name="editable_by_user" id="editable_by_user" size="1">\n~
               q~<input name="editable_by_user" type="hidden" value="1" />
             ~;
         }
-        $yymain .=
-          qq~<input type="submit" name="save" value="$lang_ext{'Save'}" />
+       $yymain .= qq~
         </td>
     </tr>
 </table>
-$ext_template_contentstop
-$ext_template_blockstop
+</div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px">
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+    </tr><tr>
+        <td class="catbg center">
+             <input type="submit" name="save" value="$lang_ext{'Save'}" />
+        </td>
+    </tr>
+</table>
+</div>
 </form>
 ~;
         $yytitle =
@@ -1070,7 +996,6 @@ sub ext_admin_edit2 {
         if ( $FORM{'ubbc'} eq q{} ) { $FORM{'ubbc'} = 0; }
         $FORM{'options'} =
           "$FORM{'limit_len'}^$FORM{'rows'}^$FORM{'cols'}^$FORM{'ubbc'}";
-
     }
     elsif ( $FORM{'type'} eq 'select' ) {
         $FORM{'options'} =~ tr/\r//d;
@@ -1081,7 +1006,6 @@ sub ext_admin_edit2 {
         $FORM{'options'} = q{};
         foreach (@options) { $FORM{'options'} .= q{\^} . $_; }
         $FORM{'options'} =~ s/^\^//xsm;
-
     }
     elsif ( $FORM{'type'} eq 'radiobuttons' ) {
         $FORM{'options'} =~ tr/\r//d;
@@ -1093,14 +1017,12 @@ sub ext_admin_edit2 {
         foreach (@options) { $FORM{'options'} .= q{\^} . $_; }
         $FORM{'options'} =~ s/^\^//xsm;
         if ( $FORM{'radiounselect'} eq q{} ) { $FORM{'radiounselect'} = 0; }
-
     }
     elsif ( $FORM{'type'} eq 'spacer' ) {
         if ( $FORM{'visible_in_editprofile'} eq q{} ) {
             $FORM{'visible_in_editprofile'} = 0;
         }
         $FORM{'options'} = "$FORM{'hr_or_br'}^$FORM{'visible_in_editprofile'}";
-
     }
     elsif ( $FORM{'type'} eq 'image' ) {
         if ( $FORM{'image_width'} == 0 )  { $FORM{'image_width'}  = q{}; }
@@ -1157,14 +1079,10 @@ sub ext_viewprofile_r {
                 || $field{'type'} eq 'checkbox' )
             {
                 $output .= qq~<tr>
-            <td class="windowbg2 vtop">
-            <b>$field{'name'}:</b>
-            </td><td class="windowbg2 vtop">
-            $value&nbsp;
-            </td>
+            <td class="windowbg2 vtop"><b>$field{'name'}:</b></td>
+            <td class="windowbg2 vtop">$value&nbsp;</td>
         </tr>~;
                 $previous = 0;
-
             }
             elsif ( $field{'type'} eq 'spacer' ) {
 
@@ -1174,9 +1092,7 @@ sub ext_viewprofile_r {
                 {
                     if ( $value eq $ext_spacer_br ) {
                         $output .= qq~<tr>
-        <td class="windowbg2 vtop" colspan="2">
-            $ext_spacer_br
-        </td>
+            <td class="windowbg2 vtop" colspan="2">$ext_spacer_br</td>
     </tr>~;
                         $previous = 0;
                     }
@@ -1200,35 +1116,29 @@ sub ext_viewprofile_r {
                         $previous = 1;
                     }
                 }
-
             }
             elsif ( $field{'type'} eq 'email' && $value ne q{} ) {
-                $output .= qq~
-            <tr><td class="windowbg2 vtop">
-            <b>$field{'name'}:</b>
-            </td><td class="windowbg2 vtop">
+                $output .= qq~<tr>
+                <td class="windowbg2 vtop"><b>$field{'name'}:</b></td>
+                <td class="windowbg2 vtop">
             ~ . enc_eMail( $img_txt{'69'}, $value, q{}, q{} ) . q~
-            </td></tr>~;
+            </td>
+        </tr>~;
                 $previous = 0;
-
             }
             elsif ( $field{'type'} eq 'url' && $value ne q{} ) {
-                $output .= qq~
-            <tr><td class="windowbg2 vtop">
-            <b>$field{'name'}:</b>
-            </td><td class="windowbg2 vtop">
-            <a href="$value" onclick="target='_blank';">$value</a>
-            </td></tr>~;
+                $output .= qq~<tr>
+            <td class="windowbg2 vtop"><b>$field{'name'}:</b></td>
+            <td class="windowbg2 vtop"><a href="$value" onclick="target='_blank';">$value</a></td>
+        </tr>~;
                 $previous = 0;
 
             }
             elsif ( $field{'type'} eq 'image' && $value ne q{} ) {
-                $output .= qq~
-            <tr><td class="windowbg2 vtop">
-            <b>$field{'name'}:</b>
-            </td><td class="windowbg2 vtop">
-            $value
-            </td></tr>~;
+                $output .= qq~<tr>
+            <td class="windowbg2 vtop"><b>$field{'name'}:</b></td>
+            <td class="windowbg2 vtop">$value</td>
+        </tr>~;
                 $previous = 0;
             }
         }

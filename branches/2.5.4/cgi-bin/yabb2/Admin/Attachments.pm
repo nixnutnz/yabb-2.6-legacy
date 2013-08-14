@@ -60,7 +60,7 @@ sub Attachments {
     my $pmAttachmentSpace = 0;
     foreach (@pmAttachments) {
         $pmAttachmentSpace += NumberFormat( ( split /\|/xsm, $_, 4 )[2] );
-	}
+    }
 
     my $pmRemainingSpace;
     if ( !$pmDirLimit ) {
@@ -388,7 +388,6 @@ sub Attachments2 {
     if ( !$max ) {
         $viewattachments .=
 qq~<tr><td class="windowbg2 padd_4px center" colspan="8"><b><i>$fatxt{'48'}</i></b></td></tr>~;
-
     }
     else {
         $yymain .= qq~
@@ -406,11 +405,10 @@ qq~<tr><td class="windowbg2 padd_4px center" colspan="8"><b><i>$fatxt{'48'}</i><
             }
         //-->
         </script>
-
         <form name="del_attachments" action="$adminurl?action=deleteattachment" method="post" style="display: inline;">~;
 
         my @attachments;
-       if ( $sort > 0 ) {    # sort ascending
+        if ( $sort > 0 ) {    # sort ascending
             if ( $sort == 5 || $sort == 6 || $sort == 8 ) {
                 @attachments = sort {
                     ( split /\|/xsm, $a )[$sort]
@@ -516,6 +514,7 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
             }
 
             $amdate = timeformat($amdate);
+            $amkb   = NumberFormat($amkb);
             if ( length($amthreadsub) > 20 ) {
                 $amthreadsub = substr( $amthreadsub, 0, 20 ) . q{...};
             }
@@ -524,9 +523,9 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
             <td class="windowbg2 center"><input type="checkbox" name="del_$amthreadid" value="$amfn" /></td>
             <td class="windowbg2"><a href="$uploadurl/$amfn" onclick="target='_blank';"> $amfn</a></td>
             <td class="windowbg2 center"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /></td>
-            <td class="windowbg2 right">$amkb KB</td>
+            <td class="windowbg2 right padd_4px">$amkb KB</td>
             <td class="windowbg2 center">$amdate</td>
-            <td class="windowbg2 right">$amcount</td>
+            <td class="windowbg2 right padd_4px">$amcount</td>
             <td class="windowbg2"><a href="$scripturl?num=$amthreadid/$amreplies#$amreplies" onclick="target='_blank';">$amthreadsub</a></td>
             <td class="windowbg2 center">$amposter</td>
         </tr>~;
@@ -920,24 +919,18 @@ qq~<tr><td class="windowbg2 padd_4px center" colspan="6"><b><i>$fatxt{'48a'}</i>
                 @pmAttachments = sort {
                     ( split /\|/xsm, $a )[$sort]
                       <=> ( split /\|/xsm, $b )[$sort];
-                } @pmAttachInput;    # sort size, date, count numerically
+                } @pmAttachInput;    # sort size, date numerically
             }
             elsif ( $sort == 100 ) {
                 @pmAttachments = sort {
-                    lc(   ( split /\./xsm, ( split /\|/xsm, $a )[2] )[1] ) cmp
-                      lc( ( split /\./xsm, ( split /\|/xsm, $b )[2] )[1] );
+                    lc(   ( split /\./xsm, ( split /\|/xsm, $a )[3] )[1] ) cmp
+                      lc( ( split /\./xsm, ( split /\|/xsm, $b )[3] )[1] );
                 } @pmAttachInput;    # sort extension lexically
-            }
-            elsif ( $sort == 4 ) {
-                @pmAttachments = sort {
-                    lc(   ( split /\|/xsm, $a )[$sort] ) cmp
-                      lc( ( split /\|/xsm, $b )[$sort] );
-                } @pmAttachInput;   # sort extension lexically
             }
             else {
                 @pmAttachments = sort {
-                    lc(   ( split /\|/xsm, $a )[2] ) cmp
-                      lc( ( split /\|/xsm, $b )[2] );
+                    lc(   ( split /\|/xsm, $a )[$sort] ) cmp
+                      lc( ( split /\|/xsm, $b )[$sort] );
                 } @pmAttachInput;    # sort lexically
             }
         }
@@ -946,12 +939,12 @@ qq~<tr><td class="windowbg2 padd_4px center" colspan="6"><b><i>$fatxt{'48a'}</i>
                 @pmAttachments = reverse sort {
                     ( split /\|/xsm, $a )[ -$sort ]
                       <=> ( split /\|/xsm, $b )[ -$sort ];
-                } @pmAttachInput;    # sort size, date, count numerically
+                } @pmAttachInput;    # sort size, date numerically
             }
             elsif ( $sort == -100 ) {
                 @pmAttachments = reverse sort {
-                    lc(   ( split /\./xsm, ( split /\|/xsm, $a )[2] )[1] ) cmp
-                      lc( ( split /\./xsm, ( split /\|/xsm, $b )[2] )[1] );
+                    lc(   ( split /\./xsm, ( split /\|/xsm, $a )[3] )[1] ) cmp
+                      lc( ( split /\./xsm, ( split /\|/xsm, $b )[3] )[1] );
                 } @pmAttachInput;    # sort extension lexically
             }
             else {
@@ -1026,11 +1019,15 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
             $pmAttachDate = timeformat($pmAttachDate);
             $pmAttachKB   = NumberFormat($pmAttachKB);
 
+            if ( length($pmAttachName) > 20 ) {
+                $pmAttachName = substr( $pmAttachName, 0, 20 ) . q{...};
+            }
+
             $viewattachments .= qq~<tr>
             <td class="windowbg2 center"><input type="checkbox" name="del_$pmthreadid" value="$pmAttachName" /></td>
             <td class="windowbg2"><a href="$pmuploadurl/$pmAttachName" onclick="target='_blank';"> $pmAttachName</a></td>
             <td class="windowbg2 center"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /></td>
-            <td class="windowbg2 right">$pmAttachKB KB</td>
+            <td class="windowbg2 right padd_4px">$pmAttachKB KB</td>
             <td class="windowbg2 center">$pmAttachDate</td>
             <td class="windowbg2 center">$pmAttachUser</td>
         </tr>~;
@@ -1062,7 +1059,7 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
 <table class="bordercolor cs_thin pad_8px w_90pc">
     <tr>
         <td class="titlebg padd_4px" colspan="6">
-            $ademin_img{'xx'}&nbsp;<b>$fatxt{'39a'}</b>
+            $admin_img{'xx'}&nbsp;<b>$fatxt{'39a'}</b>
         </td>
     </tr><tr>
         <td class="windowbg padd_8_12px" colspan="6">

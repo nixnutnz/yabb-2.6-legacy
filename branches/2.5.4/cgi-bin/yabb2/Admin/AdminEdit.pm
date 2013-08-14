@@ -97,13 +97,13 @@ qq~\n<input type="checkbox" name="$actfound" id="$actfound"$checked />&nbsp;<lab
  </div>
 <div class="bordercolor rightboxdiv">
 <table class="cs_thin pad_4px">
-	<tr>
-    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-	</tr><tr>
-    	<td class="catbg center">
-        	<input type="submit" value="$reftxt{'4'}" class="button" />
-    	</td>
-	</tr>
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+    </tr><tr>
+        <td class="catbg center">
+            <input type="submit" value="$reftxt{'4'}" class="button" />
+        </td>
+    </tr>
 </table>
 </div>
 </form>
@@ -154,13 +154,13 @@ sub EditBots {
     </div>
 <div class="bordercolor rightboxdiv">
 <table class="cs_thin pad_4px">
-	<tr>
-    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-	</tr><tr>
-    	<td class="catbg center">
-        	<input class="button" type="submit" value="$admin_txt{'10'}" />
-    	</td>
-	</tr>
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+    </tr><tr>
+        <td class="catbg center">
+            <input class="button" type="submit" value="$admin_txt{'10'}" />
+        </td>
+    </tr>
 </table>
 </div>
 </form>
@@ -234,11 +234,11 @@ sub SetCensor {
       </form>
        </td>
      </tr>
-	 </table>
+     </table>
    <!-- Split for XHTML Validation purposes -->
    <form action="$adminurl?action=setcensor2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
-	<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-	<tr>
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <tr>
        <td class="windowbg2 padd_8_12px">
          <label for="censored">$admin_txt{'136'}</label>
        </td>
@@ -255,17 +255,17 @@ sub SetCensor {
      </tr>
    </table>
    </div>
-	<div class="bordercolor rightboxdiv">
-	<table class="cs_thin pad_4px">
-		<tr>
-			<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-		</tr><tr>
-			<td class="catbg center">
-				<input type="submit" value="$admin_txt{'10'} $censorlanguage" class="button" />
-			</td>
-		</tr>
-	</table>
-	</div>
+    <div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px">
+        <tr>
+            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+        </tr><tr>
+            <td class="catbg center">
+                <input type="submit" value="$admin_txt{'10'} $censorlanguage" class="button" />
+            </td>
+        </tr>
+    </table>
+    </div>
    </form>
 ~;
     $yytitle     = "$admin_txt{'135'}";
@@ -312,18 +312,16 @@ sub SetReserve {
     }
     $yymain .= qq~
 <form action="$adminurl?action=setreserve2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
- <div class="bordercolor rightboxdiv">
-   <table class="cs_thin pad_4px">
-     <tr>
-       <td class="titlebg">$admin_img{'profile'}<b>$admin_txt{'341'}</b></td>
-     </tr><tr>
-       <td class="windowbg2 padd_8_12px">
-             $admin_txt{'699'}
-       </td>
-     </tr><tr>
-       <td class="windowbg2 padd_8_12px">
-            $admin_txt{'342'}
-                  <p class="center"><textarea cols="40" rows="35" name="reserved" style="width:95%">~;
+    <div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+        <tr>
+           <td class="titlebg">$admin_img{'profile'} <b>$admin_txt{'341'}</b></td>
+        </tr><tr>
+            <td class="windowbg2 padd_8_12px">$admin_txt{'699'}</td>
+        </tr><tr>
+            <td class="windowbg2 padd_8_12px">
+                $admin_txt{'342'}
+                <p class="center"><textarea cols="40" rows="35" name="reserved" style="width:95%">~;
     foreach my $i (@reserved) {
         chomp $i;
         $i =~ s/\t//gxsm;
@@ -341,11 +339,20 @@ sub SetReserve {
       <input type="checkbox" name="matchname" id="matchname" value="checked"$reservecheck[3] />
       <label for="matchname">$admin_txt{'729'}</label>
        </td>
-     </tr><tr>
-       <td class="catbg center"><input type="submit" value="$admin_txt{'10'}" class="button" /></td>
      </tr>
    </table>
  </div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px">
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+    </tr><tr>
+        <td class="catbg center">
+            <input type="submit" value="$admin_txt{'10'}" class="button" />
+        </td>
+    </tr>
+</table>
+</div>
 </form>
 ~;
     $yytitle     = "$admin_txt{'341'}";
@@ -430,10 +437,10 @@ sub ModifyAgreement {
                 </form>
             </td>
         </tr>
-	</table>
+    </table>
     <form action="$adminurl?action=modagreement2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
-	<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-		<tr>
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+        <tr>
             <td class="windowbg2 center padd_8_12px">
                 <input type="hidden" name="destination" value="$INFO{'destination'}" />
                 <input type="hidden" name="agreementlanguage" value="$agreementlanguage" />
@@ -442,13 +449,13 @@ sub ModifyAgreement {
         </tr>
     </table>
     <table class="cs_thin pad_4px">
-	<tr>
-    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-	</tr><tr>
-    	<td class="catbg center">
-        	<input type="submit" value="$admin_txt{'10'} $agreementlanguage" class="button" />
-    	</td>
-	</tr>
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+    </tr><tr>
+        <td class="catbg center">
+            <input type="submit" value="$admin_txt{'10'} $agreementlanguage" class="button" />
+        </td>
+    </tr>
 </table>
 </form>
 </div>
@@ -535,14 +542,14 @@ q~                                                                              
 'setcensor',"$FORM{'setcensor'}",
 'modagreement',"$FORM{'modagreement'}",
 'eventcal_set',"$FORM{'eventcal_set'}",
-'bookmarks',"$FORM{'bookmarks'}", 
+'bookmarks',"$FORM{'bookmarks'}",
 
 'referer_control',"$FORM{'referer_control'}",
 'newsettings;page=security',"$FORM{'security'}",
 'setup_guardian',"$FORM{'setup_guardian'}",
 'newsettings;page=antispam',"$FORM{'antispam'}",
 'spam_questions',"$FORM{'spam_questions'}",
-'honeypot',"$FORM{'honeypot'}", 
+'honeypot',"$FORM{'honeypot'}",
 'managecats',"$FORM{'managecats'}",
 'manageboards',"$FORM{'manageboards'}",
 'helpadmin',"$FORM{'helpadmin'}",
@@ -607,7 +614,7 @@ honeypot_add2 => "$FORM{'honeypot'}",
 honeypot_edit => "$FORM{'honeypot'}",
 honeypot_edit2 => "$FORM{'honeypot'}",
 honeypot_delete => "$FORM{'honeypot'}",
-honeypot_delete2 => "$FORM{'honeypot'}", 
+honeypot_delete2 => "$FORM{'honeypot'}",
 deleteattachment => "$FORM{'manageattachments'}",
 manageattachments2 => "$FORM{'manageattachments'}",
 removeoldattachments => "$FORM{'manageattachments'}",
@@ -910,15 +917,15 @@ sub EditPaths {
  </div>
 <div class="bordercolor rightboxdiv">
 <table class="cs_thin pad_4px">
-	<tr>
-    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-	</tr><tr>
-    	<td class="catbg center">
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+    </tr><tr>
+        <td class="catbg center">
              <input type="hidden" name="lastsaved" value="${$uid.$username}{'realname'}" />
              <input type="hidden" name="lastdate" value="$date" />
-        	<input class="button" type="submit" value="$admin_txt{'10'}" />
-    	</td>
-	</tr>
+            <input class="button" type="submit" value="$admin_txt{'10'}" />
+        </td>
+    </tr>
 </table>
 </div>
 </form>

@@ -799,21 +799,21 @@ qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdM
             input_html => qq~<input type="checkbox" name="enable_guestposting" id="enable_guestposting" value="1"${ischecked($enable_guestposting)} />~,
             name => 'enable_guestposting',
             validate => 'boolean',
-			depends_on => ['!guestaccess'],
+            depends_on => ['!guestaccess'],
         },
         {
             description => qq~<label for="enable_guestlanguage">$admin_txt{'guestlang'}</label>~,
             input_html => qq~<input type="checkbox" name="enable_guestlanguage" id="enable_guestlanguage" value="1"${ischecked($enable_guestlanguage)} />~,
             name => 'enable_guestlanguage',
             validate => 'boolean',
-			depends_on => ['!guestaccess'],
+            depends_on => ['!guestaccess'],
         },
         {
             description => qq~<label for="guest_media_disallowed">$admin_txt{'guestmedia'}</label>~,
             input_html => qq~<input type="checkbox" name="guest_media_disallowed" id="guest_media_disallowed" value="1"${ischecked($guest_media_disallowed)} />~,
             name => 'guest_media_disallowed',
             validate => 'boolean',
-			depends_on => ['!guestaccess'],
+            depends_on => ['!guestaccess'],
         },
         {
             description => qq~<label for="enable_guest_view_limit">$admin_txt{'enable_guest_view_limit'}</label>~,
@@ -1019,12 +1019,12 @@ qq~<input type="checkbox" name="self_del_user" id="self_del_user" value="1" ${is
             header => $settings_txt{'login'},
         },
         {
-			description => qq~<label for="Cookie_Length">$admin_txt{'432'}</label>~,
-			input_html => qq~<input type="checkbox" name="Cookie_Length" id="Cookie_Length" value="1" ${ischecked($Cookie_Length)}/>~,
-			name => 'Cookie_Length',
-			validate => 'boolean',
-		},
-		{
+            description => qq~<label for="Cookie_Length">$admin_txt{'432'}</label>~,
+            input_html => qq~<input type="checkbox" name="Cookie_Length" id="Cookie_Length" value="1" ${ischecked($Cookie_Length)}/>~,
+            name => 'Cookie_Length',
+            validate => 'boolean',
+        },
+        {
             description => qq~<label for="cookieusername">$admin_txt{'352'}</label>~,
             input_html => qq~<input type="text" name="cookieusername" id="cookieusername" size="20" value="$cookieusername" />~,
             name => 'cookieusername',
@@ -1606,6 +1606,7 @@ sub SaveSettings {
 
     # Settings.pm stuff
     SaveSettingsTo('Settings.pm', %settings);
+    return;
 }
 
 1;

@@ -93,228 +93,228 @@ sub EventCalSet {
     $CalEventPerms = DrawPerms($CalEventPerms);
 
     $yymain .= qq~
-			<form action="$adminurl?action=eventcal_set2" method="post" accept-charset="$yycharset">
-			<div class="bordercolor rightboxdiv">
-			<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-				<col class="w_50pc" />
-				<col class="w_50pc" />
-				<tr>
-					<td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$event_cal{'1'}</b></td>
-				</tr><tr>
-					<td class="catbg" colspan="2"><span class="small">$event_cal{'21'}</span></td>
-				</tr><tr>
-					<td class="windowbg2"><img src="$defaultimagesdir/$status_calendar" alt="" /> <label for="Show_EventCal">$event_cal{'3'}</label></td>
-					<td class="windowbg2">
-						<select name="Show_EventCal" id="Show_EventCal" size="1">
-						<option value="0"$bevt1>$event_cal{'11'}</option>
-						<option value="1"$bevt2>$event_cal{'46'}</option>
-						<option value="2"$bevt3>$event_cal{'47'}</option>
-						</select>
-					</td>
-				</tr><tr>
-					<td class="windowbg2"><label for="Show_EventButton">$event_cal{'4'}</label></td>
-					<td class="windowbg2">
-						<select name="Show_EventButton" id="Show_EventButton" size="1">
-						<option value="0"$cevt1>$event_cal{'11'}</option>
-						<option value="1"$cevt2>$event_cal{'46'}</option>
-						<option value="2"$cevt3>$event_cal{'47'}</option>
-						</select>
-					</td>
-				</tr><tr>
-					<td class="windowbg2"><label for="Show_EventBirthdays">$event_cal{'5'}</label></td>
-					<td class="windowbg2">
-						<select name="Show_EventBirthdays" id="Show_EventBirthdays" size="1">
-						<option value="0"$gevt1>$event_cal{'11'}</option>
-						<option value="1"$gevt2>$event_cal{'46'}</option>
-						<option value="2"$gevt3>$event_cal{'47'}</option>
-						</select>
-					</td>
-				</tr><tr>
-					<td class="windowbg2"><label for="ShowSunday">$event_cal{'36'}<br /><span class="small">$event_cal{'37'}</span></label></td>
-					<td class="windowbg2"><input type="checkbox" name="ShowSunday" id="ShowSunday" $onsundaychecked /></td>
-				</tr><tr>
-					<td class="windowbg2"><label for="Event_TodayColor">$event_cal{'8'}</label></td>
-					<td class="windowbg2">
-						<input type="text" size="7" maxlength="7" name="Event_TodayColor" id="Event_TodayColor" value="$Event_TodayColor" onkeyup="previewColor(this.value);" />
-						<span id="Event_TodayColor2" style="background-color:$Event_TodayColor">&nbsp; &nbsp; &nbsp;</span> <img src="$defaultimagesdir/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
-						<script type="text/javascript">
+            <form action="$adminurl?action=eventcal_set2" method="post" accept-charset="$yycharset">
+            <div class="bordercolor rightboxdiv">
+            <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+                <col class="w_50pc" />
+                <col class="w_50pc" />
+                <tr>
+                    <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$event_cal{'1'}</b></td>
+                </tr><tr>
+                    <td class="catbg" colspan="2"><span class="small">$event_cal{'21'}</span></td>
+                </tr><tr>
+                    <td class="windowbg2"><img src="$defaultimagesdir/$status_calendar" alt="" /> <label for="Show_EventCal">$event_cal{'3'}</label></td>
+                    <td class="windowbg2">
+                        <select name="Show_EventCal" id="Show_EventCal" size="1">
+                        <option value="0"$bevt1>$event_cal{'11'}</option>
+                        <option value="1"$bevt2>$event_cal{'46'}</option>
+                        <option value="2"$bevt3>$event_cal{'47'}</option>
+                        </select>
+                    </td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="Show_EventButton">$event_cal{'4'}</label></td>
+                    <td class="windowbg2">
+                        <select name="Show_EventButton" id="Show_EventButton" size="1">
+                        <option value="0"$cevt1>$event_cal{'11'}</option>
+                        <option value="1"$cevt2>$event_cal{'46'}</option>
+                        <option value="2"$cevt3>$event_cal{'47'}</option>
+                        </select>
+                    </td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="Show_EventBirthdays">$event_cal{'5'}</label></td>
+                    <td class="windowbg2">
+                        <select name="Show_EventBirthdays" id="Show_EventBirthdays" size="1">
+                        <option value="0"$gevt1>$event_cal{'11'}</option>
+                        <option value="1"$gevt2>$event_cal{'46'}</option>
+                        <option value="2"$gevt3>$event_cal{'47'}</option>
+                        </select>
+                    </td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="ShowSunday">$event_cal{'36'}<br /><span class="small">$event_cal{'37'}</span></label></td>
+                    <td class="windowbg2"><input type="checkbox" name="ShowSunday" id="ShowSunday" $onsundaychecked /></td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="Event_TodayColor">$event_cal{'8'}</label></td>
+                    <td class="windowbg2">
+                        <input type="text" size="7" maxlength="7" name="Event_TodayColor" id="Event_TodayColor" value="$Event_TodayColor" onkeyup="previewColor(this.value);" />
+                        <span id="Event_TodayColor2" style="background-color:$Event_TodayColor">&nbsp; &nbsp; &nbsp;</span> <img src="$defaultimagesdir/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+                        <script type="text/javascript">
         <!--
             function previewColor(color) {
                 document.getElementById('Event_TodayColor2').style.background = color;
                 document.getElementsByName("Event_TodayColor")[0].value = color;
             }
         //-->
-						</script>
-					</td>
-				</tr><tr>
-					<td class="catbg" colspan="2"><span class="small">$event_cal{'22'}</span></td>
-				</tr><tr>
-					<td class="windowbg2"><label for="Show_MiniCalIcons">$event_cal{'43'}</label></td>
-					<td class="windowbg2"><input type="checkbox" name="Show_MiniCalIcons" id="Show_MiniCalIcons" $onminiiconchecked /></td>
-				</tr><tr>
-					<td class="windowbg2"><label for="Show_ColorLinks">$event_cal{'44'}<br /><span class="small">$event_cal{'45'}</span></label></td>
-					<td class="windowbg2"><input type="checkbox" name="Show_ColorLinks" id="Show_ColorLinks" $oncolorlinkschecked /></td>
-				</tr><tr>
-					<td class="windowbg2"><label for="Scroll_Events">$event_cal{'9'}<br /><span class="small">$event_cal{'10'}</span></label></td>
-					<td class="windowbg2">
-						<select name="Scroll_Events" id="Scroll_Events" size="1">
-						<option value="0"$aevt1>$event_cal{'11'}</option>
-						<option value="1"$aevt2>$event_cal{'12'} ($event_cal{'56'})</option>
-						<option value="3"$aevt4>$event_cal{'12'} ($event_cal{'57'})</option>
-						<option value="2"$aevt3>$event_cal{'13'}</option>
-						</select>
-					</td>
-				</tr><tr>
-					<td class="windowbg2"><label for="DisplayCalEvents">$event_cal{'20'}</label></td>
-					<td class="windowbg2"><input type="checkbox" name="DisplayCalEvents" id="DisplayCalEvents" $dcaleventschecked /></td>
-				</tr><tr>
-					<td class="windowbg2"><label for="DisplayEvents">$event_cal{'34'}<br /><span class="small">$event_cal{'35'}</span></label></td>
-					<td class="windowbg2"><input type="text" name="DisplayEvents" id="DisplayEvents" size="5" value="$DisplayEvents" /></td>
-				</tr><tr>
-					<td class="windowbg2"><label for="CalShortEvent">$event_cal{'6'}<br /><span class="small">$event_cal{'7'}</span></label></td>
-					<td class="windowbg2">
-						<input type="text" name="CalShortEvent" id="CalShortEvent" size="5" value="$CalShortEvent" /><br />
-						<input type="checkbox" name="No_ShortUbbc" id="No_ShortUbbc" $onnosubbcchecked /> <span class="small"><label for="No_ShortUbbc">$event_cal{'58'}</label></span>
-					</td>
-				</tr><tr>
-					<td class="windowbg2"><label for="Delete_EventsUntil">$event_cal{'52'}<br /><span class="small">$event_cal{'53'}</span></label></td>
-					<td class="windowbg2"><input type="text" name="Delete_EventsUntil" id="Delete_EventsUntil" size="10" value="$Delete_EventsUntil" /></td>
-				</tr><tr>
-					<td class="catbg" colspan="2"><span class="small">$event_cal{'23'}</span></td>
-				</tr><tr>
-					<td class="windowbg2"><label for="CalEventPerms">$event_cal{'14'}<br /><span class="small">$event_cal{'15'}</span></label></td>
-					<td class="windowbg2"><select multiple="multiple" name="CalEventPerms" id="CalEventPerms" size="5">$CalEventPerms</select></td>
-				</tr><tr>
-					<td class="windowbg2"><label for="CalEventMods">$event_cal{'16'}<br /><span class="small">$event_cal{'17'}</span></label></td>
-					<td class="windowbg2"><input type="text" name="CalEventMods" id="CalEventMods" size="35" value="$CalEventMods" /></td>
-				</tr><tr>
-					<td class="windowbg2"><label for="CalEventPrivate">$event_cal{'18'}<br /><span class="small">$event_cal{'19'}</span></label></td>
-					<td class="windowbg2"><input type="checkbox" name="CalEventPrivate" id="CalEventPrivate" $caleventprivatechecked /></td>
-				</tr><tr>
-					<td class="windowbg2"><label for="CalEventNoName">$event_cal{'24'}</label></td>
-					<td class="windowbg2">
-						<select name="CalEventNoName" id="CalEventNoName" size="1">
-						<option value="0"$noname1>$event_cal{'39'}</option>
-						<option value="1"$noname2>$event_cal{'40'}</option>
-						<option value="2"$noname3>$event_cal{'41'}</option>
-						</select>
-					</td>
-				</tr><tr>
-					<td class="catbg" colspan="2"><span class="small">$event_cal{'49'}</span></td>
-				</tr><tr>
-					<td class="windowbg2"><img src="$defaultimagesdir/$status_bdlist" alt="" /> <label for="Show_BirthdaysList">$event_cal{'42'}</label></td>
-					<td class="windowbg2">
-						<select name="Show_BirthdaysList" id="Show_BirthdaysList" size="1">
-						<option value="0"$devt1>$event_cal{'11'}</option>
-						<option value="1"$devt2>$event_cal{'46'}</option>
-						<option value="2"$devt3>$event_cal{'47'}</option>
-						</select>
-					</td>
-				</tr><tr>
-					<td class="windowbg2"><label for="Show_BirthdayButton">$event_cal{'48'}</label></td>
-					<td class="windowbg2">
-						<select name="Show_BirthdayButton" id="Show_BirthdayButton" size="1">
-						<option value="0"$eevt1>$event_cal{'11'}</option>
-						<option value="1"$eevt2>$event_cal{'46'}</option>
-						<option value="2"$eevt3>$event_cal{'47'}</option>
-						</select>
-					</td>
-				</tr><tr>
-					<td class="windowbg2"><label for="Show_BirthdayDate">$event_cal{'50'}</label></td>
-					<td class="windowbg2">
-						<select name="Show_BirthdayDate" id="Show_BirthdayDate" size="1">
-						<option value="0"$fevt1>$event_cal{'11'}</option>
-						<option value="1"$fevt2>$event_cal{'46'}</option>
-						<option value="2"$fevt3>$event_cal{'47'}</option>
-						</select>
-					</td>
-				</tr><tr>
-					<td class="windowbg2"><label for="MaxCalMessLen">$admin_txt{'498e'}</label></td>
-					<td class="windowbg2"><input type="text" size="5" name="MaxCalMessLen" id="MaxCalMessLen" value="$MaxCalMessLen" /></td>
-				</tr><tr>
-					<td class="windowbg2"><label for="AdMaxCalMessLen">$admin_txt{'498f'}</label></td>
-					<td class="windowbg2"><input type="text" size="5" name="AdMaxCalMessLen" id="AdMaxCalMessLen" value="$AdMaxCalMessLen" /></td>
-				</tr><tr>
-					<td class="windowbg2"><label for="Show_BdColorLinks">$event_cal{'44'}<br /><span class="small">$event_cal{'45'}</span></label></td>
-					<td class="windowbg2"><input type="checkbox" name="Show_BdColorLinks" id="Show_BdColorLinks" $onbdcolorlinkschecked /></td>
-				</tr><tr>
-					<td class="windowbg2"><label for="Show_BdStarsign">$event_cal{'42a'}</label></td>
-					<td class="windowbg2"><input type="checkbox" name="Show_BdStarsign" id="Show_BdStarsign" $onbdstarchecked /></td>
-				</tr>
-			</table>
-			</div>
-			<div class="bordercolor rightboxdiv">
-			<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-				<tr>
-					<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-				</tr><tr>
-					<td class="catbg center">
-						<input type="submit" name="savesetting" value="$event_cal{'31'}" class="button" />&nbsp;<input type="submit" name="rebuiltbd" value="$event_cal{'54'}" class="button" />
-					</td>
-				</tr>
-			</table>
-			</div>
-			</form>~;
+                        </script>
+                    </td>
+                </tr><tr>
+                    <td class="catbg" colspan="2"><span class="small">$event_cal{'22'}</span></td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="Show_MiniCalIcons">$event_cal{'43'}</label></td>
+                    <td class="windowbg2"><input type="checkbox" name="Show_MiniCalIcons" id="Show_MiniCalIcons" $onminiiconchecked /></td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="Show_ColorLinks">$event_cal{'44'}<br /><span class="small">$event_cal{'45'}</span></label></td>
+                    <td class="windowbg2"><input type="checkbox" name="Show_ColorLinks" id="Show_ColorLinks" $oncolorlinkschecked /></td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="Scroll_Events">$event_cal{'9'}<br /><span class="small">$event_cal{'10'}</span></label></td>
+                    <td class="windowbg2">
+                        <select name="Scroll_Events" id="Scroll_Events" size="1">
+                        <option value="0"$aevt1>$event_cal{'11'}</option>
+                        <option value="1"$aevt2>$event_cal{'12'} ($event_cal{'56'})</option>
+                        <option value="3"$aevt4>$event_cal{'12'} ($event_cal{'57'})</option>
+                        <option value="2"$aevt3>$event_cal{'13'}</option>
+                        </select>
+                    </td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="DisplayCalEvents">$event_cal{'20'}</label></td>
+                    <td class="windowbg2"><input type="checkbox" name="DisplayCalEvents" id="DisplayCalEvents" $dcaleventschecked /></td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="DisplayEvents">$event_cal{'34'}<br /><span class="small">$event_cal{'35'}</span></label></td>
+                    <td class="windowbg2"><input type="text" name="DisplayEvents" id="DisplayEvents" size="5" value="$DisplayEvents" /></td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="CalShortEvent">$event_cal{'6'}<br /><span class="small">$event_cal{'7'}</span></label></td>
+                    <td class="windowbg2">
+                        <input type="text" name="CalShortEvent" id="CalShortEvent" size="5" value="$CalShortEvent" /><br />
+                        <input type="checkbox" name="No_ShortUbbc" id="No_ShortUbbc" $onnosubbcchecked /> <span class="small"><label for="No_ShortUbbc">$event_cal{'58'}</label></span>
+                    </td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="Delete_EventsUntil">$event_cal{'52'}<br /><span class="small">$event_cal{'53'}</span></label></td>
+                    <td class="windowbg2"><input type="text" name="Delete_EventsUntil" id="Delete_EventsUntil" size="10" value="$Delete_EventsUntil" /></td>
+                </tr><tr>
+                    <td class="catbg" colspan="2"><span class="small">$event_cal{'23'}</span></td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="CalEventPerms">$event_cal{'14'}<br /><span class="small">$event_cal{'15'}</span></label></td>
+                    <td class="windowbg2"><select multiple="multiple" name="CalEventPerms" id="CalEventPerms" size="5">$CalEventPerms</select></td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="CalEventMods">$event_cal{'16'}<br /><span class="small">$event_cal{'17'}</span></label></td>
+                    <td class="windowbg2"><input type="text" name="CalEventMods" id="CalEventMods" size="35" value="$CalEventMods" /></td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="CalEventPrivate">$event_cal{'18'}<br /><span class="small">$event_cal{'19'}</span></label></td>
+                    <td class="windowbg2"><input type="checkbox" name="CalEventPrivate" id="CalEventPrivate" $caleventprivatechecked /></td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="CalEventNoName">$event_cal{'24'}</label></td>
+                    <td class="windowbg2">
+                        <select name="CalEventNoName" id="CalEventNoName" size="1">
+                        <option value="0"$noname1>$event_cal{'39'}</option>
+                        <option value="1"$noname2>$event_cal{'40'}</option>
+                        <option value="2"$noname3>$event_cal{'41'}</option>
+                        </select>
+                    </td>
+                </tr><tr>
+                    <td class="catbg" colspan="2"><span class="small">$event_cal{'49'}</span></td>
+                </tr><tr>
+                    <td class="windowbg2"><img src="$defaultimagesdir/$status_bdlist" alt="" /> <label for="Show_BirthdaysList">$event_cal{'42'}</label></td>
+                    <td class="windowbg2">
+                        <select name="Show_BirthdaysList" id="Show_BirthdaysList" size="1">
+                        <option value="0"$devt1>$event_cal{'11'}</option>
+                        <option value="1"$devt2>$event_cal{'46'}</option>
+                        <option value="2"$devt3>$event_cal{'47'}</option>
+                        </select>
+                    </td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="Show_BirthdayButton">$event_cal{'48'}</label></td>
+                    <td class="windowbg2">
+                        <select name="Show_BirthdayButton" id="Show_BirthdayButton" size="1">
+                        <option value="0"$eevt1>$event_cal{'11'}</option>
+                        <option value="1"$eevt2>$event_cal{'46'}</option>
+                        <option value="2"$eevt3>$event_cal{'47'}</option>
+                        </select>
+                    </td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="Show_BirthdayDate">$event_cal{'50'}</label></td>
+                    <td class="windowbg2">
+                        <select name="Show_BirthdayDate" id="Show_BirthdayDate" size="1">
+                        <option value="0"$fevt1>$event_cal{'11'}</option>
+                        <option value="1"$fevt2>$event_cal{'46'}</option>
+                        <option value="2"$fevt3>$event_cal{'47'}</option>
+                        </select>
+                    </td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="MaxCalMessLen">$admin_txt{'498e'}</label></td>
+                    <td class="windowbg2"><input type="text" size="5" name="MaxCalMessLen" id="MaxCalMessLen" value="$MaxCalMessLen" /></td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="AdMaxCalMessLen">$admin_txt{'498f'}</label></td>
+                    <td class="windowbg2"><input type="text" size="5" name="AdMaxCalMessLen" id="AdMaxCalMessLen" value="$AdMaxCalMessLen" /></td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="Show_BdColorLinks">$event_cal{'44'}<br /><span class="small">$event_cal{'45'}</span></label></td>
+                    <td class="windowbg2"><input type="checkbox" name="Show_BdColorLinks" id="Show_BdColorLinks" $onbdcolorlinkschecked /></td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="Show_BdStarsign">$event_cal{'42a'}</label></td>
+                    <td class="windowbg2"><input type="checkbox" name="Show_BdStarsign" id="Show_BdStarsign" $onbdstarchecked /></td>
+                </tr>
+            </table>
+            </div>
+            <div class="bordercolor rightboxdiv">
+            <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+                <tr>
+                    <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+                </tr><tr>
+                    <td class="catbg center">
+                        <input type="submit" name="savesetting" value="$event_cal{'31'}" class="button" />&nbsp;<input type="submit" name="rebuiltbd" value="$event_cal{'54'}" class="button" />
+                    </td>
+                </tr>
+            </table>
+            </div>
+            </form>~;
 
     ## Calendar Event-Icon Setting ##
 
     eval { require "$vardir/eventcalIcon.txt"; };
 
     $yymain .= qq~
-			<form action="$adminurl?action=eventcal_set3" method="post" accept-charset="$yycharset">
-			<div class="bordercolor rightboxdiv">
-			<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-				<col span="2" style="width:24%" />
-				<col style="width:10%" />
-				<col style="width:6%" />
-				<tr>
-					<td class="titlebg" colspan="4">$admin_img{'prefimg'} <b>$event_cal{'26'}</b></td>
-				</tr><tr>
-					<td class="windowbg2 padd_8_12px" colspan="4">$event_cal{'33'}</td>
-				</tr><tr>
-					<td class="catbg center small">$event_cal{'27'}</td>
-					<td class="catbg center small">$event_cal{'28'}</td>
-					<td class="catbg center small">$event_cal{'29'}</td>
-					<td class="catbg center small">$var_cal{'caldel'}</td>
-				</tr>~;
+            <form action="$adminurl?action=eventcal_set3" method="post" accept-charset="$yycharset">
+            <div class="bordercolor rightboxdiv">
+            <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+                <col span="2" style="width:24%" />
+                <col style="width:10%" />
+                <col style="width:6%" />
+                <tr>
+                    <td class="titlebg" colspan="4">$admin_img{'prefimg'} <b>$event_cal{'26'}</b></td>
+                </tr><tr>
+                    <td class="windowbg2 padd_8_12px" colspan="4">$event_cal{'33'}</td>
+                </tr><tr>
+                    <td class="catbg center small">$event_cal{'27'}</td>
+                    <td class="catbg center small">$event_cal{'28'}</td>
+                    <td class="catbg center small">$event_cal{'29'}</td>
+                    <td class="catbg center small">$var_cal{'caldel'}</td>
+                </tr>~;
 
     $i = 0;
     while ( $CalIconURL[$i] ) {
         $yymain .= qq~<tr>
-					<td class="windowbg2 padd_4px center"><input type="text" name="caliimg[$i]" value="$CalIconURL[$i]" /></td>
-					<td class="windowbg2 padd_4px center"><input type="text" name="calidescr[$i]" value="$CalIDescription[$i]" /></td>
-					<td class="windowbg2 padd_4px center"><img src="$yyhtml_root/ModImages/EventCal/EventIcons/$CalIconURL[$i].gif" alt="" /></td>
-					<td class="windowbg2 padd_4px center"><input type="checkbox" name="calidelbox[$i]" value="1" /></td>
-				</tr>~;
+                    <td class="windowbg2 padd_4px center"><input type="text" name="caliimg[$i]" value="$CalIconURL[$i]" /></td>
+                    <td class="windowbg2 padd_4px center"><input type="text" name="calidescr[$i]" value="$CalIDescription[$i]" /></td>
+                    <td class="windowbg2 padd_4px center"><img src="$yyhtml_root/ModImages/EventCal/EventIcons/$CalIconURL[$i].gif" alt="" /></td>
+                    <td class="windowbg2 padd_4px center"><input type="checkbox" name="calidelbox[$i]" value="1" /></td>
+                </tr>~;
         $i++;
     }
 
     $inew = 0;
     while ( $inew <= 3 ) {
         $yymain .= qq~<tr>
-					<td class="windowbg2 padd_4px center"><input type="text" name="caliimg[$i]" /></td>
-					<td class="windowbg2 padd_4px center"><input type="text" name="calidescr[$i]" /></td>
-					<td class="windowbg2 padd_4px center" colspan="2">&nbsp;</td>
-				</tr>~;
+                    <td class="windowbg2 padd_4px center"><input type="text" name="caliimg[$i]" /></td>
+                    <td class="windowbg2 padd_4px center"><input type="text" name="calidescr[$i]" /></td>
+                    <td class="windowbg2 padd_4px center" colspan="2">&nbsp;</td>
+                </tr>~;
         $i++;
         $inew++;
     }
 
     $yymain .= qq~
-			</table>
-			</div>
-			<div class="bordercolor rightboxdiv">
-			<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-				<tr>
-					<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-				</tr><tr>
-					<td class="catbg center">
-						<input type="submit" value="$event_cal{'32'}" class="button" />
-					</td>
-				</tr>
-			</table>
-			</div>
-		</form>~;
+            </table>
+            </div>
+            <div class="bordercolor rightboxdiv">
+            <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+                <tr>
+                    <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+                </tr><tr>
+                    <td class="catbg center">
+                        <input type="submit" value="$event_cal{'32'}" class="button" />
+                    </td>
+                </tr>
+            </table>
+            </div>
+        </form>~;
 
     $yytitle     = $event_cal{'1'};
     $action_area = 'eventcal_set';

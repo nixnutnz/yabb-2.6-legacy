@@ -27,8 +27,8 @@ $reused = 0;
 sub Mailing {
     if ($iamguest) { fatal_error('no_access'); }
     $yymain .= qq~
-<div class="rightboxdiva">
-    <table class="bordercolor cs_thin pad_3px" style="margin-bottom:.5em">
+<div class="rightboxdiv">
+    <table class="bordercolor cs_thin pad_3px">
     <tr>
             <td class="titlebg">
                 $admin_img{'register'}<b> $admintxt{'19'}</b>

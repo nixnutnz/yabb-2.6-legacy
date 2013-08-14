@@ -288,7 +288,7 @@ sub SaveSettings {
         if ( $iplookup_url =~ /:\/\//xsm && $iplookup_url !~ /http(s|):\/\//xsm ) {
             fatal_error('invalid_value', $iplookup_url . $admin_txt{'iplookup_protocols'});
         }
-    } 
+    }
 
     fopen( IPLOOKUP, ">$vardir/iplookup.urls" );
     print {IPLOOKUP} $settings{'iplookup_urls'} or croak "$croak{'print'} IPLOOKUP";

@@ -88,27 +88,18 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
     fclose(TMPL);
 
     $yymain .= qq~
-<div class="bordercolor rightboxdiva">
-    <table class="cs_thin pad_4px" style="table-layout: fixed;">
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
                 $admin_img{'xx'} <b> $templ_txt{'52'}</b> - $templatefile
             </td>
-        </tr><tr>
-            <td class="windowbg2 center">
-                <form action="$adminurl?action=modtemp2" method="post" style="display: inline;" accept-charset="$yycharset">
-                <textarea rows="20" cols="95" name="template" style="width:99%; height: 350px; font-family:Courier">$fulltemplate</textarea>
-                <input type="hidden" name="filename" value="$templatefile" />
-            </td>
-        </tr><tr>
-            <td class="catbg center">
-                <input type="submit" value="$admin_txt{'10'} $templatefile" class="button" />
-                </form>
-            </td>
-        </tr><tr>
+        </tr>
+    </table>
+    <table class="cs_thin pad_4px" style="margin-bottom:.5em">
             <td class="windowbg2">
-                <div style="float: left; width: 30%; padding: 3px;"><label for="templatefile"><b>$templ_txt{'10'}</b></label></div>
-                <div style="float: left; width: 69%;">
+                <div style="float: left; width: 40%; padding: 3px;"><label for="templatefile"><b>$templ_txt{'10'}</b></label></div>
+                <div style="float: left; width: 59%;">
                     <form action="$adminurl?action=modtemp" method="post" style="display: inline;" accept-charset="$yycharset">
                         <select name="templatefile" id="templatefile" size="1" onchange="submit()">
                     $templs
@@ -120,6 +111,29 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
         </tr>
     </table>
 </div>
+<form action="$adminurl?action=modtemp2" method="post" style="display: inline;" accept-charset="$yycharset">
+<div class="bordercolor borderstyle rightboxdiv">
+    <table class="cs_thin pad_4px" style="table-layout: fixed; margin-bottom: .5em;">
+        <tr>
+            <td class="windowbg2 center">
+                <textarea rows="20" cols="95" name="template" style="width:99%; height: 350px; font-family:Courier">$fulltemplate</textarea>
+                <input type="hidden" name="filename" value="$templatefile" />
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+    </tr><tr>
+        <td class="catbg center">
+            <input type="submit" value="$admin_txt{'10'} $templatefile" class="button" />
+        </td>
+    </tr>
+</table>
+</div>
+</form>
 ~;
     $yytitle     = "$admin_txt{'216'}";
     $action_area = 'modtemp';
@@ -201,9 +215,9 @@ sub ModifyStyle {
     fclose(CSS);
 
     $yymain .= qq~
-<div class="bordercolor rightboxdiva">
+<div class="bordercolor rightboxdiv">
+    <form action="$adminurl?action=modcss;cssfile=$cssfile" name="modcss" method="post" style="display: inline;" accept-charset="$yycharset">
     <table class="cs_thin pad_4px">
-        <form action="$adminurl?action=modcss;cssfile=$cssfile" name="modcss" method="post" style="display: inline;" accept-charset="$yycharset">
         <tr>
             <td class="titlebg">
                 $admin_img{'xx'} <b> $templ_txt{'51'}</b> - $cssfile &nbsp;
@@ -211,26 +225,15 @@ sub ModifyStyle {
                 <input type="button" name="source" id="source" value=" source " disabled="disabled" />
             </td>
         </tr>
-        </form>
-        <form action="$adminurl?action=modstyle2" method="post" accept-charset="$yycharset">
-        <tr>
-            <td class="windowbg2 center">
-                <input type="hidden" name="filename" value="$cssfile" />
-                <input type="hidden" name="type" value="$admincs" />
-                <textarea rows="20" cols="95" name="css" style="width: 99%; height: 350px;; font-family:Courier">$fullcss</textarea>
-            </td>
-        </tr><tr>
-            <td class="catbg center">
-                <input type="submit" value="$admin_txt{'10'} $cssfile" class="button" />
-            </td>
-        </tr>
-        </form>
+    </table>
+    </form>
+    <table class="cs_thin pad_4px" style="margin-bottom:.5em">
         <tr>
             <td class="windowbg2">
                 <div style="float: left; width: 30%; padding: 3px;"><b>$templ_txt{'1'}</b></div>
                 <div style="float: left; width: 69%;">
                     <form action="$adminurl?action=modstyle" name="selcss" method="post" style="display: inline;" accept-charset="$yycharset">
-                    <div class="small" style="float: left; width: 25%;"><label for="cssfile">$templ_txt{'forum'}:</label><br />
+                    <div class="small" style="float: left; width: 25%;"><label for="cssfile" style="font-weight:bold">$templ_txt{'forum'}:</label><br />
                     <select name="cssfile" id="cssfile" size="1" style="width: 90%;" onchange="if(this.options[this.selectedIndex].value) { document.aselcss.admcssfile.selectedIndex = '0'; submit(); }">
                         $forumcss
                     </select>
@@ -239,7 +242,7 @@ sub ModifyStyle {
                     </div>
                     </form>
                     <form action="$adminurl?action=modstyle" name="aselcss" method="post" style="display: inline;" accept-charset="$yycharset">
-                    <div class="small" style="float: left; width: 25%;"><label for="admcssfile">$templ_txt{'admincenter'}:</label><br />
+                    <div class="small" style="float: left; width: 25%;"><label for="admcssfile" style="font-weight:bold">$templ_txt{'admincenter'}:</label><br />
                     <select name="admcssfile" id="admcssfile" size="1" style="width: 90%;" onchange="if(this.options[this.selectedIndex].value) { document.selcss.cssfile.selectedIndex = '0'; submit(); }">
                         $admincss
                     </select>
@@ -251,7 +254,32 @@ sub ModifyStyle {
             </td>
         </tr>
     </table>
- </div>
+</div>
+<div class="bordercolor borderstyle rightboxdiv">
+    <form action="$adminurl?action=modstyle2" method="post" accept-charset="$yycharset">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+        <tr>
+            <td class="windowbg2 center">
+                <input type="hidden" name="filename" value="$cssfile" />
+                <input type="hidden" name="type" value="$admincs" />
+                <textarea rows="20" cols="95" name="css" style="width: 99%; height: 350px;; font-family:Courier">$fullcss</textarea>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px">
+        <tr>
+            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+        </tr><tr>
+            <td class="catbg center">
+                <input type="submit" value="$admin_txt{'10'} $cssfile" class="button" />
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+
 ~;
     $yytitle     = $templ_txt{'1'};
     $action_area = 'modcss';
@@ -599,28 +627,31 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
     }
 
     $yymain .= qq~
-<div class="bordercolor rightboxdiva">
+<form action="$adminurl?action=modstyle" name="modstyles" id="modstyles" method="post" accept-charset="$yycharset">
+<div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
-                <form action="$adminurl?action=modstyle" name="modstyles" id="modstyles" method="post" accept-charset="$yycharset">
+
                     $admin_img{'xx'} <b>$templ_txt{'51'}</b> - $viewcss &nbsp;
                     <input type="hidden" name="cssfile" value="$cssfile" />
                     <input type="button" name="wysiwyg" id="wysiwyg" value="wysiwyg" disabled="disabled" />
-                    <input type="submit" name="source" id="source" value=" source " class="button" />
-                </form>
+                    <input type="submit" name="source" id="source" value="source" class="button" />
             </td>
         </tr>
     </table>
+</div>
+</form>
 <form action="$adminurl?action=modcss2" name="allstyles" id="allstyles" method="post" accept-charset="$yycharset">
+<div class="bordercolor borderstyle rightboxdiv">
     <table class="cs_thin">
         <tr>
             <td class="windowbg2 center">
-                <iframe id="StyleManager" name="StyleManager" width="100%" height="350" marginwidth="0" marginheight="0" frameborder="0" scrolling="yes" style="border-top: 1px inset; border-bottom: 1px inset; visibility: visible; display: inline"></iframe>
+                <iframe id="StyleManager" name="StyleManager" scrolling="yes"></iframe>
             </td>
         </tr>
     </table>
-    <table class="cs_thin pad_4px">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="windowbg2">
                 <div style="float: left; width: 30%; padding: 3px;"><label for="cssfile"><b>$templ_txt{'1'}</b></label></div>
@@ -1010,18 +1041,18 @@ $viewstyleimage = q~height: 20px; border: 0px; margin: 0px; background-repeat: n
 $viewstyletext = q~style="height: 20px; border: 0px; margin: 0px; padding: 0px; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block;"~;
 
 $viewstyle .= qq~
-<table class="bordercolor" cellpadding="4" cellspacing="1" border="0" width="100%">
-<tr>
-<td id="cssbuttons" class="windowbg2" width="100%" align="left" valign="top">
-<div style="float: left; padding: 4px 0 0 0;">$templ_txt{'buttontext'}</div>
-<div style="float: right;">
-<a href="javascript:;"><span id="button1l" class="buttonleft" $viewstyleleft title="$img_txt{'145'}"><span id="button1r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($forumstylesurl/default/quote.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'145'}</span></span></span></span></a>$menusep
-<a href="javascript:;"><span id="button2l" class="buttonleft" $viewstyleleft title="$img_txt{'66'}"><span id="button2r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($forumstylesurl/default/modify.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'66'}</span></span></span></span></a>$menusep
-<a href="javascript:;"><span id="button3l" class="buttonleft" $viewstyleleft title="$img_txt{'620'}"><span id="button3r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($forumstylesurl/default/admin_split.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'620'}</span></span></span></span></a>$menusep
-<a href="javascript:;"><span id="button4l" class="buttonleft" $viewstyleleft title="$img_txt{'121'}"><span id="button4r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($forumstylesurl/default/delete.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'121'}</span></span></span></span></a>
-</div>
-</td>
-</tr>
+<table class="bordercolor cs_thin pad_4px">
+    <tr>
+        <td id="cssbuttons" class="windowbg2 vtop">
+            <div style="float: left; padding: 4px 0 0 0;">$templ_txt{'buttontext'}</div>
+            <div style="float: right;">
+                <a href="javascript:;"><span id="button1l" class="buttonleft" $viewstyleleft title="$img_txt{'145'}"><span id="button1r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($forumstylesurl/default/quote.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'145'}</span></span></span></span></a>$menusep
+                <a href="javascript:;"><span id="button2l" class="buttonleft" $viewstyleleft title="$img_txt{'66'}"><span id="button2r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($forumstylesurl/default/modify.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'66'}</span></span></span></span></a>$menusep
+                <a href="javascript:;"><span id="button3l" class="buttonleft" $viewstyleleft title="$img_txt{'620'}"><span id="button3r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($forumstylesurl/default/admin_split.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'620'}</span></span></span></span></a>$menusep
+                <a href="javascript:;"><span id="button4l" class="buttonleft" $viewstyleleft title="$img_txt{'121'}"><span id="button4r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($forumstylesurl/default/delete.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'121'}</span></span></span></span></a>
+            </div>
+        </td>
+    </tr>
 </table>
 ~;
 }
@@ -1097,22 +1128,27 @@ $viewstyle .= qq~
     }
 
     $yymain .= qq~<tr>
-            <td class="windowbg2">
-                <div class="center">$templ_txt{'noedit'}<br /></div>
-                <input type="hidden" name="stylestart" value="$viewstylestart" />
-                <input type="hidden" name="stylelink" value="$stylestr" />
-                <input type="hidden" name="stylebody" value="$viewstyle" />
-                <div style="float: left; width: 30%; padding: 3px;"><label for="savecssas"><b>$templ_txt{'12'}</b></label></div>
-                <div style="float: left; width: 69%;">
-                    <input type="text" name="savecssas" id="savecssas" value="~
-      . ( split /\./xsm, $cssfile )[0] . qq~" size="30" maxlength="30" />
-                    <input type="submit" value="$templ_txt{'13'}" onclick="document.allstyles.button.value = '2';" class="button" />
-                </div>
-            </td>
-        </tr>
     </table>
-</form>
 </div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px">
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+    </tr><tr>
+        <td class="catbg center">
+            <input type="hidden" name="stylestart" value="$viewstylestart" />
+            <input type="hidden" name="stylelink" value="$stylestr" />
+            <input type="hidden" name="stylebody" value="$viewstyle" />
+            <label for="savecssas"><b>$templ_txt{'12'}</b></label>
+            <input type="text" name="savecssas" id="savecssas" value="~
+            . ( split /\./xsm, $cssfile )[0] . qq~" size="30" maxlength="30" />
+            <input type="submit" value="$templ_txt{'13'}" onclick="document.allstyles.button.value = '2';" class="button" />
+            <div class="small" style="font-weight: normal;">$templ_txt{'noedit'}</div>
+        </td>
+    </tr>
+</table>
+</div>
+</form>
 <script type="text/javascript">
 <!--
 var cssbold;
@@ -1938,6 +1974,7 @@ qq~<div class="yabb_searchbox" style="width:auto"><form><input type="text" name=
     $fulltemplate =~ s/({|<)yabb syntax_js(}|>)//gsm;
     $fulltemplate =~ s/({|<)yabb grayscript(}|>)//gsm;
     $fulltemplate =~ s/({|<)yabb high(}|>)//gsm;
+    $fulltemplate =~ s/({|<)yabb w3cload(}|>)//gsm;
 
     if ( $selectedsection eq 'vboard' ) {
         $boardtempl = BoardTempl( $viewboard, $tempimages, $tempimagesdir );
@@ -1971,7 +2008,8 @@ s/<a href="http:\/\/jigsaw.w3.org\/css\-validator\/validator\?uri\=<yabb url>">.
     ToHTML($fulltemplate);
 
     $yymain .= qq~
-<div class="bordercolor rightboxdiva">
+<form action="$adminurl?action=modskin2" name="selskin" method="post" style="display: inline;" accept-charset="$yycharset">
+<div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg">
@@ -1982,12 +2020,11 @@ s/<a href="http:\/\/jigsaw.w3.org\/css\-validator\/validator\?uri\=<yabb url>">.
     <table class="cs_thin">
         <tr>
             <td class="windowbg2 center">
-                <iframe id="TempManager" name="TempManager" width="100%" height="350" marginwidth="0" marginheight="0" frameborder="0" scrolling="yes" style="border-top: 1px inset; border-bottom: 1px inset; visibility: visible; display: inline"></iframe>
+                <iframe id="TempManager" name="TempManager" scrolling="yes"></iframe>
             </td>
         </tr>
     </table>
-<form action="$adminurl?action=modskin2" name="selskin" method="post" style="display: inline;" accept-charset="$yycharset">
-    <table class="cs_thin pad_4px">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
             <td class="windowbg2">
                 <div style="float: left; width: 30%; padding: 3px;"><label for="templateset"><b>$templ_txt{'10'}</b></label></div>
@@ -2063,20 +2100,25 @@ qq~                        <input type="submit" value="$templ_txt{'14'}" onclick
                         </div>
                     </div>
                 </td>
-            </tr><tr>
-                <td class="windowbg2">
-                    <div style="float: left; width: 30%; padding: 3px;"><label for="saveas"><b>$templ_txt{'12'}</b></label></div>
-                    <div style="float: left; width: 69%;">
-                        <input type="hidden" name="tempname" value="$fulltemplate" />
-                        <input type="text" name="saveas" id="saveas" value="$thistemplate" size="30" maxlength="50" />
-                        <input type="submit" value="$templ_txt{'13'}" onclick="document.selskin.button.value = '2';" class="button" />
-                        <input type="submit" value="$templ_txt{'9'}" onclick="document.selskin.button.value = '1';" class="button" />
-                    </div>
-                </td>
             </tr>
     </table>
-</form>
 </div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+    </tr><tr>
+        <td class="catbg center">
+           <label for="saveas"><b>$templ_txt{'12'}</b></label>
+            <input type="hidden" name="tempname" value="$fulltemplate" />
+            <input type="text" name="saveas" id="saveas" value="$thistemplate" size="30" maxlength="50" />
+            <input type="submit" value="$templ_txt{'13'}" onclick="document.selskin.button.value = '2';" class="button" />
+            <input type="submit" value="$templ_txt{'9'}" onclick="document.selskin.button.value = '1';" class="button" />
+        </td>
+    </tr>
+</table>
+</div>
+</form>
 <script type="text/javascript">
 <!--
 function updateTemplate() {
@@ -2309,7 +2351,7 @@ qq~<span class="small" style="color: $admcolor;"><b>${$uid.$username}{'realname'
         $templateblock =~ s/({|<)yabb lastpostlink(}|>)/$templastpostlink/gsm;
         $templateblock =~ s/({|<)yabb lastposter(}|>)/$templastposter/gsm;
         $templateblock =~ s/({|<)yabb lasttopiclink(}|>)/$tmplasttopiclink/gsm;
-    	$tmptemplateblock .= $templateblock;
+        $tmptemplateblock .= $templateblock;
     }
     $tmptemplateblock .= $catfooter;
     $boardindex_template =~ s/({|<)yabb pollshowcase(}|>)//sm;

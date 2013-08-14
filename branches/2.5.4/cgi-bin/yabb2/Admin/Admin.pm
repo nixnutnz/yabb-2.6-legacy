@@ -962,13 +962,13 @@ qq~<input type="checkbox" name="$actfound" id="$actfound"$selected />&nbsp;<labe
     </div>
 <div class="bordercolor rightboxdiv">
 <table class="cs_thin pad_4px">
-	<tr>
-    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-	</tr><tr>
-    	<td class="catbg center">
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+    </tr><tr>
+        <td class="catbg center">
              <input type="submit" value="$reftxt{'4'}" class="button" />
-    	</td>
-	</tr>
+        </td>
+    </tr>
 </table>
 </div>
 </form>~;
@@ -1019,7 +1019,8 @@ sub AddMember {
     $yymain .= qq~
 <script type="text/javascript" src="$yyhtml_root/ajax.js"></script>
 <form action="$adminurl?action=addmember2" method="post" name="creator" accept-charset="$yycharset">
-<table class="bordercolor cs_thin pad_3px">
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_3px" style="margin-bottom: .5em;">
     <col class="w_30pc" />
     <tr>
         <td colspan="2" class="titlebg">
@@ -1067,12 +1068,19 @@ sub AddMember {
         $yymain =~ s/{yabb reg_wrongchar}/$register_txt{'wrong_char'}/gsm;
     }
 
-    $yymain .= qq~<tr>
-        <td colspan="2" class="catbg center">
-           <input type="submit" value="$register_txt{'97'}" class="button" />
+   $yymain .= qq~</table>
+</div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px">
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+    </tr><tr>
+        <td class="catbg center">
+             <input type="submit" value="$register_txt{'97'}" class="button" />
         </td>
     </tr>
 </table>
+</div>
 </form>
 <script type="text/javascript">
         document.creator.regusername.focus();
