@@ -62,30 +62,30 @@ $errorlngver = 'YaBB 2.5.4 $Revision$';
 'egg'                  => "Self Destruct Sequence Started !!<br />",
 'domain_not_allowed'   => "You may not register with, post as a guest or change your e-mail address to one from the domain",
 'module_missing'       => "Module(s) or functionality needed not installed on this server !!",
-'low_diskspace'        => "The available disk/hostspace is low. The forum was put to maintenance to avoid file corruption. Please notify the administrator of this error !!",
+'low_diskspace'        => "The available disk/hostspace is low. The forum was put to maintenance to avoid file corruption. Please notify the administrator of this error.",
 'invalid_key'          => "Masterkey is invalid!<br />This should be a text string between 8 and 24 characters long!",
-'wrong_pass' 			=> "Wrong password!",
-'corrupt_member_file'  => "The member data file is corrupt. Please notify the administrator of this error!",
+'wrong_pass'			=> 'The password you entered is not correct', 
+'corrupt_member_file'  => "The member data file is corrupt. Please notify the administrator of this error.",
 'no_admin_passwrd'    => "You need to fill in the correct admin password to enter the Admin Center.",
 
 ## BoardIndex ##
-'collapse_no_member'   => "You must be a member to use the collapsible/expandable categories!",
+'collapse_no_member'   => "You must be a member to use the collapsible/expandable categories.",
 'collapse_invalid_state'    => "The state you specified was invalid. Please go back and try again",
 'collapse_no_usercat'  => "User category file not found - please try refreshing the board index (back then F5).\n If you receive this message again, please inform an administrator.",
 
 ## Guardian ##
-'proxy_reason'         => "Proxy Access to this forum is denied!",
-'referer_reason'       => "Access to the forum from the current url is prohibited!",
-'harvester_reason'     => "This harvester is denied access to the forum!",
-'request_reason'       => "The Request Method you tried to use is not allowed here!",
-'string_reason'        => "Your url contains words not allowed here!",
-'clike_reason'         => "It's useless to try to CLIKE hack this site as it does not run MySQL!",
-'union_reason'         => "It's useless to try to UNION hack this site as it does not run MySQL!",
-'script_reason'        => "You tried to use scripting in the url or form input, which is not allowed!",
+'proxy_reason'         => "Proxy Access to this forum is denied.",
+'referer_reason'       => "Access to the forum from the current URL is prohibited.",
+'harvester_reason'     => "This harvester is denied access to the forum.",
+'request_reason'       => "The Request Method you tried to use is not allowed here.",
+'string_reason'        => "Your URL contains words not allowed here.",
+'clike_reason'         => "It's useless to try to CLIKE hack this site as it does not run MySQL.",
+'union_reason'         => "It's useless to try to UNION hack this site as it does not run MySQL.",
+'script_reason'        => "You tried to use scripting in the URL or form input, which is not allowed.",
 
 ## InstantMessage ##
-'im_deleted'           => "Message was already read by recipient, therefore wasn't called back!",
-'im_deleted_multi'     => "At least one of the recipients has already read the Message, therefore no Message was called back!",
+'im_deleted'           => "Message was already read by recipient, therefore wasn't called back.",
+'im_deleted_multi'     => "At least one of the recipients has already read the Message, therefore no Message was called back.",
 'im_members_only'      => "Personal Messaging is only for members",
 'im_low_postcount'     => "You are only allowed to send Personal Messages if you've reached a post count of $numposts!",
 'im_spam_alert'        => "You are trying to send a personal message to too many users at once. This is being interpreted as possible spamming.",
@@ -94,10 +94,10 @@ $errorlngver = 'YaBB 2.5.4 $Revision$';
 'im_folder_exists'     => "A folder with this name already exists.",
 
 ## LogInOut ##
-'not_activated'        => "Your account is not activated yet<br />Please activate it by clicking the link in the e-mail you received!",
-'time_out'             => "You did not activate your account within $preregspan hours!<br />As a result your pre-registration has been removed!<br />Please re-register again!",
+'not_activated'        => "Your account is not activated yet<br />Please activate it by clicking the link in the e-mail you received.",
+'time_out'             => "You did not activate your account within $preregspan hours!<br />As a result your pre-registration has been removed!<br />Please re-register.",
 'wrong_code'           => "Your activation code is wrong!",
-'admin_login_only'     => "Only the admin can login at the moment, because our forum is in Maintenance Mode.<br />Please try again later. Thank you!",
+'admin_login_only'     => "Only the admin can login at the moment, because our forum is in Maintenance Mode.<br />Please try again later. Thank you.",
 'wrong_id'             => "You have an invalid ID. Please try again.",
 
 ## Mailer ##
@@ -110,7 +110,7 @@ $errorlngver = 'YaBB 2.5.4 $Revision$';
 'time_locked'          => "The Administrator has set a time limit of ",
 'change_not_allowed'   => "You are not allowed to change this message",
 'delete_not_allowed'   => "You are not allowed to delete this post!",
-'split_splice_not_allowed'    => "You are not allowed to split or splice this topic; you must be a moderator or administrator to do this.",
+'split_splice_not_allowed'    => "You are not allowed to split or splice this topic; you must be a staff member to do this.",
 'no_perm_post'         => "You do not have permission to post new topics in this board",
 'no_perm_reply'        => "You do not have permission to reply to topics in this board",
 'no_perm_poll'         => "You do not have permission to post polls in this board",

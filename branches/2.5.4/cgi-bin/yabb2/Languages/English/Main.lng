@@ -135,6 +135,8 @@ $abbr_lang = 'en-us';
 '900s' => 'Submit',
 '900pw' => 'Enter Password for',
 '900pd' => 'Password Access Board',
+'900pe' => 'Please enter a password.',
+'900pg' => qq~Password Access Boards are for Members only. Please <a href="$scripturl?action=register" style="font-weight: bold;">register an account with us</a> or <a href="$scripturl?action=login" style="font-weight: bold;">login</a>.~,
 '900pr' => 'Private',
 'dst' => '<sup>*</sup>',
 'rssfeed' => 'RSS Feed',
