@@ -139,8 +139,8 @@ $front_page = qq~<div class="bordercolor rightboxdiv">
     </table>
 </div>
 <div class="left_49div">
-    <div class="bordercolor rightboxdiva">
-        <table class="cs_thin pad_4px">
+    <div class="bordercolor rightboxdiv">
+        <table class="cs_thin pad_4px" style="margin-bottom:.5em">
             <tr>
                 <td class="titlebg">
                     <b>$admintxt{'6'}</b>
@@ -180,7 +180,7 @@ $front_page = qq~<div class="bordercolor rightboxdiv">
             </tr>
         </table>
     </div>
-    <div class="bordercolor rightboxdiva">
+    <div class="bordercolor rightboxdiv">
         <script src="$versionchk" type="text/javascript"></script>
         <script type="text/javascript">
         document.write('<table class="cs_thin pad_4px">');

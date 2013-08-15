@@ -336,7 +336,7 @@ $brd_advanced_tabs_edit = qq~
 ~;
 
 $brd_expandmessages = 
-qq~           <tr id="dropsubrow_{yabb curboard}" style="display: none">
+qq~         <tr id="dropsubrow_{yabb curboard}" style="display: none">
                 <td id="dropsub_{yabb curboard}" class="center" colspan="5"></td>
             </tr><tr id="droprow_{yabb curboard}" style="display: none">
                 <td class="center" style="padding:0" colspan="5">
@@ -349,7 +349,7 @@ qq~           <tr id="dropsubrow_{yabb curboard}" style="display: none">
                                 <td class="bottom" style="background-image:url($imagesdir/$brd_fadeleftdropdown)">
                                     <img src="$imagesdir/$brd_closebutton" onclick="MessageList('$scripturl\?board\={yabb curboard};messagelist=1','$yyhtml_root','{yabb curboard}', 0)" style="position: absolute; cursor: pointer; bottom: -12px; left: -12px" alt="" />
                                 </td>
-                                <td id="drop_{yabb curboard}" style="padding: 0px; padding-bottom: 8px"></td>
+                                <td id="drop_{yabb curboard}" class="center" style="padding:0 0 8px 0;"></td>
                                 <td class="vtop" style="background-image:url($imagesdir/$brd_faderightdropdown)">
                                     <img src="$imagesdir/$brd_closebutton" onclick="MessageList('$scripturl\?board\={yabb curboard};messagelist=1','$yyhtml_root','{yabb curboard}', 0)" style="position: absolute; cursor: pointer; top: -12px; right: -12px" alt="" />
                                </td>

@@ -59,7 +59,6 @@ sub settings {
     my %requirements;    # a hash that says "Y is required by X"
 
     $yymain .= qq~
-    <a id="top"></a>
     <div class="bordercolor rightboxdiv">
         <table class="cs_thin pad_4px" style="margin-bottom:.5em">
                 <tr>
@@ -95,7 +94,7 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
             <tr>
                 <td class="titlebg padd_4px" colspan="2">
                     $admin_img{'prefimg'} <b>$tab->{'name'}</b>
-         <span style="float: right;" class="js_remove_me"><a href="#top"><b>$settings_txt{'top'}</b></a></span>
+         <span style="float: right;" class="js_remove_me"><a href="#"><b>$settings_txt{'top'}</b></a></span>
        </td>
      </tr>~;
 

@@ -77,13 +77,13 @@ qq~$adminurl?action=modagreement;agreementlanguage=$language;destination=helpadm
     </div>
     <div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-	    <tr>
-    	    <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-	    </tr><tr>
-    	    <td class="catbg center">
-        	    <input type="submit" value="$admin_txt{'10'}" class="button" />
-    	    </td>
-	    </tr>
+        <tr>
+            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+        </tr><tr>
+            <td class="catbg center">
+                <input type="submit" value="$admin_txt{'10'}" class="button" />
+            </td>
+        </tr>
     </table>
     </div>
 </form>~;
@@ -95,42 +95,52 @@ qq~$adminurl?action=modagreement;agreementlanguage=$language;destination=helpadm
 }
 
 sub HelpEdit2 {
-	$Area = $FORM{'area'};
-	$Page = $FORM{'page'};
+    $Area = $FORM{'area'};
+    $Page = $FORM{'page'};
 
-	fopen(HELPORDER, ">$helpfile/$language/$Area/$Page.help");
+    fopen(HELPORDER, ">$helpfile/$language/$Area/$Page.help");
 
-	$FORM{"SectionName"} =~ s/ /_/gsm;
-	print HELPORDER qq~\$SectionName = "$FORM{"SectionName"}";\n\n~;
-	$aa = 1;
-	while ($FORM{"SectionBody$aa"}) {
+    $FORM{"SectionName"} =~ s/ /_/gsm;
+    print HELPORDER qq~\$SectionName = "$FORM{"SectionName"}";\n\n~;
+    $aa = 1;
+    while ($FORM{"SectionBody$aa"}) {
 
-		$FORM{"SectionBody$aa"} =~ tr/\r//d;
-		$FORM{"SectionBody$aa"} =~ s/\cM//gsm;
-		$FORM{"SectionBody$aa"} =~ s~\[([^\]]{0,30})\n([^\]]{0,30})\]~\[$1$2\]~gsm;
-		$FORM{"SectionBody$aa"} =~ s~\[/([^\]]{0,30})\n([^\]]{0,30})\]~\[/$1$2\]~gsm;
-		$FORM{"SectionBody$aa"} =~ s~(\w+://[^<>\s\n\"\]\[]+)\n([^<>\s\n\"\]\[]+)~$1\n$2~gsm;
-		$FORM{"SectionBody$aa"} =~ s~\t~ \&nbsp; \&nbsp; \&nbsp;~gsm;
-		$FORM{"SectionBody$aa"} =~ s~@~\\@~gsm;
+        $FORM{"SectionBody$aa"} =~ tr/\r//d;
+        $FORM{"SectionBody$aa"} =~ s/\cM//gxsm;
+        $FORM{"SectionBody$aa"} =~
+          s/\[([^\]]{0,30})\n([^\]]{0,30})\]/\[$1$2\]/gxsm;
+        $FORM{"SectionBody$aa"} =~
+          s/\[\/([^\]]{0,30})\n([^\]]{0,30})\]/\[\/$1$2\]/gxsm;
+        $FORM{"SectionBody$aa"} =~
+          s/(\w+:\/\/[^<>\s\n\"\]\[]+)\n([^<>\s\n\"\]\[]+)/$1\n$2/gxsm;
+        $FORM{"SectionBody$aa"} =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gsm;
+        $FORM{"SectionBody$aa"} =~ s/@/\\@/gxsm;
 
-		$FORM{"SectionSub$aa"} =~ s/ /_/gsm;
+        $FORM{"SectionSub$aa"} =~ s/ /_/gsm;
 
-		print {HELPORDER} qq~### Section $aa\n~;
-		print {HELPORDER} qq~#############################################\n~;
-		print {HELPORDER} qq~\$SectionSub$aa = "$FORM{"SectionSub$aa"}";\n~;
-		print {HELPORDER} qq~\$SectionBody$aa = qq\~$FORM{"SectionBody$aa"}\~;\n~;
-		print {HELPORDER} qq~#############################################\n\n\n~;
+        print {HELPORDER} qq~### Section $aa\n~
+          or croak "$croak{'print'} HELPORDER";
+        print {HELPORDER} qq~#############################################\n~
+          or croak "$croak{'print'} HELPORDER";
+        print {HELPORDER} qq~\$SectionSub$aa = "$FORM{"SectionSub$aa"}";\n~
+          or croak "$croak{'print'} HELPORDER";
+        print {HELPORDER}
+          qq~\$SectionBody$aa = qq\~$FORM{"SectionBody$aa"}\~;\n~
+          or croak "$croak{'print'} HELPORDER";
+        print {HELPORDER}
+          qq~#############################################\n\n\n~
+          or croak "$croak{'print'} HELPORDER";
 
-		$aa++;
-	}
+        $aa++;
+    }
     print {HELPORDER} q~1;~ or croak 'cannot print HELPORDER';
 
-	fclose(HELPORDER);
+    fclose(HELPORDER);
 
-	$yymain .= "$helptxt{'8'}";
-	$yytitle       = "$helptxt{'7'}";
-	$yySetLocation = qq~$adminurl?action=helpadmin~;
-	redirectexit();
+    $yymain .= "$helptxt{'8'}";
+    $yytitle       = "$helptxt{'7'}";
+    $yySetLocation = qq~$adminurl?action=helpadmin~;
+    redirectexit();
     return;
 }
 

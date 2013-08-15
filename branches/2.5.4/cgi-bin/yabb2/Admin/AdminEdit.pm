@@ -380,7 +380,7 @@ sub SetReserve2 {
     print {RESERVECFG} "$matchuser\n" or croak "$croak{'print'} RESERVECFG";
     print {RESERVECFG} "$matchname\n" or croak "$croak{'print'} RESERVECFG";
     fclose(RESERVECFG);
-    $yySetLocation = qq~$adminurl~;
+    $yySetLocation = qq~$adminurl?action=setreserve~;
     redirectexit();
     return;
 }

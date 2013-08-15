@@ -210,7 +210,7 @@ sub editemailtemplates2 {
     print {LANG} $langfile or croak "$croak{'print'} LANG";
     fclose(LANG);
 
-    $yySetLocation = qq~$adminurl~;
+    $yySetLocation = qq~$adminurl?editemailtemplates&lang=$editlang~;
     redirectexit();
     return;
 }

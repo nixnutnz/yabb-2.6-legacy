@@ -71,7 +71,7 @@ foreach my $module (
 
 if ( $script_root !~ /ModuleChecker\.\w+$/xsm ) {
     $yymain .= qq~
-<div class="bordercolor rightboxdiv" style="float: left; margin-top:1em">
+<div class="bordercolor rightboxdiv" style="float: left; margin-top:.5em">
 <table class="cs_thin pad_4px">
     <tr>
         <td class="titlebg" colspan="3">

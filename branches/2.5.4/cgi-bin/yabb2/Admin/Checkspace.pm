@@ -75,7 +75,7 @@ sub checkspace {
         $my_q_select =
           isselected( $i == $enable_quota
               || ( $ds && $quota[$i] =~ /^$ds/sm ) );
-        $quota_select .= q~<br /><select name="enable_quota_value">~;
+        $quota_select .= q~<br /><select name="enable_quota_value" id="enable_quota_value">~;
         for my $i ( 2 .. ( @quota - 1 ) ) {
             $quota[$i] =~ s/^ +//sm;
             $quota[$i] =~ s/ +/&nbsp;&nbsp;/gsm;
@@ -124,7 +124,7 @@ q~<input type="checkbox" name="enable_quota" id="enable_quota" value="1" ~
 qq~<label for="enable_quota_value">$admin_txt{'quota_value'}</label>~,
                     input_html => (
                         $quota[2] ? $quota_select
-                        : q~<input type="hidden" name="enable_quota_value" id="enable_quota_value" value="0" />~
+                        : q~<input type="text" disabled="disabled" name="enable_quota_value" id="enable_quota_value" value="" />~
                     ),
                     name       => 'enable_quota_value',
                     validate   => 'number,null',
@@ -214,9 +214,8 @@ sub chsettings {
     my %requirements;    # a hash that says "Y is required by X"
 
     $yymain .= qq~
-    <a id="top"></a>
-    <div class="bordercolor rightboxdiva">
-        <table class="cs_thin pad_4px">
+    <div class="bordercolor rightboxdiv">
+        <table class="cs_thin pad_4px" style="margin-bottom:.5em">
             <tr>
                 <td class="titlebg"><b>$yytitle</b></td>
             </tr><tr>
@@ -228,12 +227,12 @@ sub chsettings {
 ~;
     foreach my $tab (@settings) {
         $yymain .= qq~
-    <div class="bordercolor rightboxdiva">
-        <table class="section" style="border-collapse:separate; border-spacing: 1px;" id="tab_$tab->{'id'}">
+    <div class="bordercolor rightboxdiv">
+        <table class="section" style="border-collapse:separate; border-spacing: 1px; margin-bottom:.5em" id="tab_$tab->{'id'}">
             <col class=" w_50pc" />
             <tr>
                 <td class="titlebg padd_4px" colspan="2">
-                    <a id="tab_$tab->{'id'}"></a>$admin_img{'prefimg'} <b>$tab->{'name'}</b>
+                    $admin_img{'prefimg'} <b>$tab->{'name'}</b>
                 </td>
            </tr>~;
 
@@ -346,7 +345,7 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
     $INFO{'tab'} =~ s/\W//gxsm;
     $default_tab = $INFO{'tab'} || $settings[0]->{'id'};
     $yymain .= qq~
-<div class="bordercolor rightboxdiva" style="margin: 1em auto 0 0">
+<div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="titlebg" colspan="2">
