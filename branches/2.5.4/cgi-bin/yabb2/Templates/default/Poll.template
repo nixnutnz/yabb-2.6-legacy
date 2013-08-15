@@ -57,7 +57,7 @@ $mypoll_display = qq~
 </form>
 <form name="poll" method="post" action="$scripturl?action=vote;num={yabb pollnum}{yabb scp}" style="display: inline;">
 	<table>
-        <tr>
+		<tr>
 			<td class="tabtitle">{yabb poll_coll}
 				$polltxt{'15'} {yabb boardpoll}
 			</td>
@@ -66,15 +66,15 @@ $mypoll_display = qq~
                 <div style="float: left; width: 50%; text-align: left; line-height:18px; vertical-align:middle">
                     {yabb poll_icon} <b>$polltxt{'16'}</b>: {yabb poll_question}
                 </div>
-                <div style="float: left; width: 50%; text-align: right;">
+                 <div style="float: left; width: 50%; text-align: right;">
                     <span class="small">{yabb lockpoll}{yabb modifypoll}{yabb deletepoll}</span>
                 </div>
-            </td>
-        </tr>
-    </table>
+			</td>
+		</tr>
+	</table>
 	<div id="polldiv" style="width: 100%; display: {yabb scdivdisp};">
 	<table class="pad_4px">
-        <tr>
+		<tr>
 			<td class="windowbg">
                 {yabb poll_notlocked}
             </td>
