@@ -32,10 +32,10 @@ qq~$adminurl?action=modagreement;agreementlanguage=$language;destination=helpadm
 
     require "$helpfile/$language/$help_area/$page.help";
 
-    $SectionName =~ s/_/ /gsm;
+    $SectionName =~ s/_/ /g;
     $admin_list = qq~<tr>
-        <td class="titlebg">
-            <input type="text" maxlength="50" width="50" value="$SectionName" name="SectionName" />
+        <td class="windowbg2">
+            <b>$helptxt{'7a'}</b>: <input type="text" maxlength="50" size="50" value="$SectionName" name="SectionName" />
         </td>
     </tr>~;
 
@@ -46,12 +46,12 @@ qq~$adminurl?action=modagreement;agreementlanguage=$language;destination=helpadm
         $hmessage = ${ SectionBody . $aa };
 
         $admin_list .= qq~<tr>
-        <td class="catbg">
-            <input type="text" maxlength="50" width="50" value="${SectionSub.$a}" name="SectionSub$a" />
+        <td class="windowbg">
+            <b>$helptxt{'7b'}</b>: <input type="text" maxlength="50" size="50" value="${SectionSub.$aa}" name="SectionSub$aa" />
         </td>
     </tr><tr>
         <td class="windowbg2" style="padding-bottom:1em">
-            <textarea rows="10" name="SectionBody$a" style="width: 100%">$hmessage</textarea>
+            <textarea rows="10" name="SectionBody$aa" style="width: 99%">$hmessage</textarea>
         </td>
     </tr>~;
         $aa++;
@@ -61,7 +61,7 @@ qq~$adminurl?action=modagreement;agreementlanguage=$language;destination=helpadm
 <form name="help_update" action="$adminurl?action=helpediting2" method="post" accept-charset="$yycharset">
     <input type="hidden" name="area" value="$help_area" />
     <input type="hidden" name="page" value="$page" />
-    <div class="bordercolor rightboxdiva" style="margin-bottom: 10px; margin-left: auto;">
+    <div class="bordercolor rightboxdiv">
         <table class="cs_thin pad_4px">
             <tr>
                 <td class="titlebg">
@@ -70,18 +70,23 @@ qq~$adminurl?action=modagreement;agreementlanguage=$language;destination=helpadm
             </tr>
         </table>
     </div>
-    <div class="bordercolor rightboxdiva" style="margin-left: auto;">
-        <table class="cs_thin pad_4px">
+    <div class="bordercolor borderstyle rightboxdiv">
+        <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
             $admin_list
-            <tr>
-                <td class="catbg center">
-                    <input type="submit" value="$admin_txt{'10'}" class="button" />
-                </td>
-            </tr>
         </table>
     </div>
-</form>
-~;
+    <div class="bordercolor rightboxdiv">
+    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+	    <tr>
+    	    <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+	    </tr><tr>
+    	    <td class="catbg center">
+        	    <input type="submit" value="$admin_txt{'10'}" class="button" />
+    	    </td>
+	    </tr>
+    </table>
+    </div>
+</form>~;
 
     $yytitle     = "$helptxt{'7'}";
     $action_area = 'helpadmin';
@@ -90,53 +95,42 @@ qq~$adminurl?action=modagreement;agreementlanguage=$language;destination=helpadm
 }
 
 sub HelpEdit2 {
-    $Area = $FORM{'area'};
-    $Page = $FORM{'page'};
+	$Area = $FORM{'area'};
+	$Page = $FORM{'page'};
 
-    fopen( HELPORDER, ">$helpfile/$language/$Area/$Page.help" );
+	fopen(HELPORDER, ">$helpfile/$language/$Area/$Page.help");
 
-    $FORM{'SectionName'} =~ s/ /_/gsm;
-    print {HELPORDER} qq~\$SectionName = "$FORM{'SectionName'}";\n\n~
-      or croak "$croak{'print'} HELPORDER";
-    $aa = 1;
-    while ( $FORM{"SectionBody$aa "} ) {
+	$FORM{"SectionName"} =~ s/ /_/gsm;
+	print HELPORDER qq~\$SectionName = "$FORM{"SectionName"}";\n\n~;
+	$aa = 1;
+	while ($FORM{"SectionBody$aa"}) {
 
-        $FORM{"SectionBody$aa"} =~ tr/\r//d;
-        $FORM{"SectionBody$aa"} =~ s/\cM//gxsm;
-        $FORM{"SectionBody$aa"} =~
-          s/\[([^\]]{0,30})\n([^\]]{0,30})\]/\[$1$2\]/gxsm;
-        $FORM{"SectionBody$aa"} =~
-          s/\[\/([^\]]{0,30})\n([^\]]{0,30})\]/\[\/$1$2\]/gxsm;
-        $FORM{"SectionBody$aa"} =~
-          s/(\w+:\/\/[^<>\s\n\"\]\[]+)\n([^<>\s\n\"\]\[]+)/$1\n$2/gxsm;
-        $FORM{"SectionBody$aa"} =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gsm;
-        $FORM{"SectionBody$aa"} =~ s/@/\\@/gxsm;
+		$FORM{"SectionBody$aa"} =~ tr/\r//d;
+		$FORM{"SectionBody$aa"} =~ s/\cM//gsm;
+		$FORM{"SectionBody$aa"} =~ s~\[([^\]]{0,30})\n([^\]]{0,30})\]~\[$1$2\]~gsm;
+		$FORM{"SectionBody$aa"} =~ s~\[/([^\]]{0,30})\n([^\]]{0,30})\]~\[/$1$2\]~gsm;
+		$FORM{"SectionBody$aa"} =~ s~(\w+://[^<>\s\n\"\]\[]+)\n([^<>\s\n\"\]\[]+)~$1\n$2~gsm;
+		$FORM{"SectionBody$aa"} =~ s~\t~ \&nbsp; \&nbsp; \&nbsp;~gsm;
+		$FORM{"SectionBody$aa"} =~ s~@~\\@~gsm;
 
-        $FORM{"SectionSub$aa"} =~ s/ /_/gsm;
+		$FORM{"SectionSub$aa"} =~ s/ /_/gsm;
 
-        print {HELPORDER} qq~### Section $aa\n~
-          or croak "$croak{'print'} HELPORDER";
-        print {HELPORDER} qq~#############################################\n~
-          or croak "$croak{'print'} HELPORDER";
-        print {HELPORDER} qq~\$SectionSub$aa = "$FORM{"SectionSub$aa"}";\n~
-          or croak "$croak{'print'} HELPORDER";
-        print {HELPORDER}
-          qq~\$SectionBody$aa = qq\~$FORM{"SectionBody$aa"}\~;\n~
-          or croak "$croak{'print'} HELPORDER";
-        print {HELPORDER}
-          qq~#############################################\n\n\n~
-          or croak "$croak{'print'} HELPORDER";
+		print {HELPORDER} qq~### Section $aa\n~;
+		print {HELPORDER} qq~#############################################\n~;
+		print {HELPORDER} qq~\$SectionSub$aa = "$FORM{"SectionSub$aa"}";\n~;
+		print {HELPORDER} qq~\$SectionBody$aa = qq\~$FORM{"SectionBody$aa"}\~;\n~;
+		print {HELPORDER} qq~#############################################\n\n\n~;
 
-        $aa++;
-    }
-    print {HELPORDER} q~1;~ or croak "$croak{'print'} HELPORDER";
+		$aa++;
+	}
+    print {HELPORDER} q~1;~ or croak 'cannot print HELPORDER';
 
-    fclose(HELPORDER);
+	fclose(HELPORDER);
 
-    $yymain .= "$helptxt{'8'}";
-    $yytitle       = "$helptxt{'7'}";
-    $yySetLocation = qq~$adminurl?action=helpadmin~;
-    redirectexit();
+	$yymain .= "$helptxt{'8'}";
+	$yytitle       = "$helptxt{'7'}";
+	$yySetLocation = qq~$adminurl?action=helpadmin~;
+	redirectexit();
     return;
 }
 

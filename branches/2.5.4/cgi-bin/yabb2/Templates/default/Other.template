@@ -289,16 +289,16 @@ $my_smilie_window_tr = qq~
 ## Error
 
 $my_show_error = qq~
-<table class="tabtitle" style="width:80%">
+<table class="system-info">
     <tr>
-        <td class="center" style="padding-left:1%"><b>$maintxt{'error_description'}</b></td>
+        <td>$maintxt{'error_description'}</td>
     </tr>
 </table>
-<table class="bordercolor pad_4px cs_thin" style="width:80%;">
+<table class="system-info-body">
     <tr>
-        <td class="windowbg" style="padding-bottom:1em"><br />{yabb errormessage}</td>
+        <td>{yabb errormessage}</td>
     </tr>
-</table>
+</table> 
 <br /><div style="width: 100%; text-align: center;"><a href="javascript:history.go(-1)">$maintxt{'193'}</a></div>
 ~;
 

@@ -635,7 +635,7 @@ $myshow_profile = qq~
                 <b>$profile_txt{'233'}: </b>
             </div>
             <div class="contactright">
-                $dr<br /><b>{yabb member_for_days}</b> $profile_txt{'894'}
+                {yabb dr}<br /><b>{yabb member_for_days}</b> $profile_txt{'894'}
             </div>
         </td>
     </tr>{yabb my_gender} {yabb my_extprofile}

@@ -3280,6 +3280,7 @@ qq~<a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccoun
     $showProfile =~ s/{yabb my_star}/$my_star/sm;
     $showProfile =~ s/{yabb post_count}/$post_count/sm;
     $showProfile =~ s/{yabb post_per_day}/$post_per_day/sm;
+    $showProfile =~ s/{yabb dr}/$dr/sm;
     $showProfile =~ s/{yabb member_for_days}/$member_for_days/sm;
     $showProfile =~ s/{yabb my_gender}/$my_gender/sm;
     $showProfile =~ s/{yabb my_extprofile}/$my_extprofile/sm;

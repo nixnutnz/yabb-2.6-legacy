@@ -644,7 +644,7 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
 </form>
 <form action="$adminurl?action=modcss2" name="allstyles" id="allstyles" method="post" accept-charset="$yycharset">
 <div class="bordercolor borderstyle rightboxdiv">
-    <table class="cs_thin">
+    <table class="cs_thin" style="margin-bottom: -1px;">
         <tr>
             <td class="windowbg2 center">
                 <iframe id="StyleManager" name="StyleManager" frameborder="0" scrolling="yes"></iframe>
@@ -760,7 +760,7 @@ $yymain .= qq~<tr>
         <img src="$forumstylesurl/default/buttonsep.png" style="height: 20px; width: 1px; margin: 0px; padding: 0px; vertical-align: top; display: inline-block;" alt="" border="0" />
         <span id="butleft" style="height: 20px; border: 0px; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block; $prevleft">
         <span id="butright" style="height: 20px; border: 0px; margin: 0px; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block; $prevright">
-        <span id="butimage" style="$previmage background-image: url($forumstylesurl/default/home.gif); height: 20px; border: 0px; margin: 0px; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;">
+        <span id="butimage" style="$previmage background-image: url($defaultimagesdir/home.gif); height: 20px; border: 0px; margin: 0px; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;">
         <span id="buttext" style="height: 20px; border: 0px; margin: 0px; padding: 0px; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block; $prevtext">$img_txt{'103'}</span>
         </span></span></span>
         <img src="$forumstylesurl/default/buttonsep.png" style="height: 20px; width: 1px; margin: 0px; padding: 0px; vertical-align: top; display: inline-block;" alt="" border="0" />
@@ -2017,7 +2017,7 @@ s/<a href="http:\/\/jigsaw.w3.org\/css\-validator\/validator\?uri\=<yabb url>">.
             </td>
         </tr>
     </table>
-    <table class="cs_thin">
+    <table class="cs_thin" style="margin-bottom: -1px;">
         <tr>
             <td class="windowbg2 center">
                 <iframe id="TempManager" name="TempManager" frameborder="0" scrolling="yes"></iframe>
