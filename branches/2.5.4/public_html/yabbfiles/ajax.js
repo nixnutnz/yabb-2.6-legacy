@@ -424,8 +424,8 @@ function MessageList(url,includejs,board,loadnew) {
 	
 	document.getElementById("dropbutton_"+board).src = closebutton;
 	
-	if (cachedBoards[board] == null || loadnew) {	
-		MessageListInsert('<img src="'+loadimg+'" border="0" />');
+	if (cachedBoards[board] == null || loadnew) {
+		MessageListInsert('<img src="'+loadimg+'" />');
 		xmlHttp.onreadystatechange=MessageListFinished;
 		xmlHttp.open("GET",url+";r="+Math.random(),true);
 		xmlHttp.send(null);
@@ -456,7 +456,7 @@ function MessageListFinished() {
 
 function MessageListInsert(code) {
 	document.getElementById("drop_"+boardOpen).innerHTML = code;
-	document.getElementById("droprow_"+boardOpen).style.display = "table-row";	
+	document.getElementById("droprow_"+boardOpen).style.display = "table-row";
 }
 
 // drop down sub board display
