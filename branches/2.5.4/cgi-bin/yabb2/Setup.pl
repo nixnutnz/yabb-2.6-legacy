@@ -1821,7 +1821,7 @@ sub SetInstall2 {
 \@SmilieDescription = ("Exclaim","Questioning");  # Additional Smilies Description
 \@SmilieLinebreak = ("","");                      # Additional Smilies Linebreak
 
-\$smiliestyle = "1";                              # smiliestyle
+\$smiliestyle = "2";                              # smiliestyle
 \$showadded = "2";                                # showadded
 \$showsmdir = "2";                                # showsmdir
 \$detachblock = "1";                              # detachblock
