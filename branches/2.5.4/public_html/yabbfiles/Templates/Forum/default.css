@@ -1657,7 +1657,7 @@ padding: 8px;
 z-index: 10000;
 overflow: hidden;
 display: none;
-}
+} 
 
 .sub_drop {
 position: relative;
@@ -1781,3 +1781,36 @@ font-style: normal;
 font-weight: 400;
 width:464px; min-width:464px; margin: 0 auto
 }
+.system-info {
+margin: 0 auto;
+height: 35px;
+width: 80%;
+font-size: 12px;
+font-family: Verdana, Arial, Sans-Serif;
+color: #EEE;
+background:url(./default/tabtitle.png) repeat-x top #1F6EB6;
+border-radius: 5px 5px 0px 0px;
+-webkit-border-radius: 5px 5px 0px 0px;
+-moz-border-radius: 5px 5px 0px 0px;
+border-bottom: 1px solid #195392;
+}
+.system-info td {
+text-align: center;
+font-weight: bold;
+vertical-align: middle;
+}
+.system-info-body {
+width: 80%;
+background-color: #FFF;
+padding: 1px;
+border-collapse: separate;
+border-spacing: 1px;
+}
+.system-info-body td {
+background-color: #DEE4EC;
+font-size: 12px;
+font-weight: 400;
+font-style: normal;
+color: #2D2D2D;
+padding: 1em;
+} 
