@@ -57,7 +57,7 @@ sub GmodSettings {
         $checked = q{};
         if ( $allowed[$aa] eq 'on' ) { $checked = ' checked="checked"'; }
         $dismenu .=
-qq~\n<input type="checkbox" name="$actfound" id="$actfound"$checked />&nbsp;<label for="$actfound"><img src="$imagesdir/question.gif" alt="$reftxt{'1a'} $gmodprivexpl_txt{$actfound}" title="$reftxt{'1a'} $gmodprivexpl_txt{$actfound}" /> $actfound</label><br />~;
+qq~\n<input type="checkbox" name="$actfound" id="$actfound"$checked />&nbsp;<label for="$actfound"><img src="$admin_img{'question'}" alt="$reftxt{'1a'} $gmodprivexpl_txt{$actfound}" title="$reftxt{'1a'} $gmodprivexpl_txt{$actfound}" /> $actfound</label><br />~;
         $counter++;
         $aa++;
         if ( $counter > $column + 1 ) {

@@ -23,7 +23,7 @@ $admin_images = "$yyhtml_root/Templates/Admin/default";
 'exclamation' => qq~<img src="$imagesdir/exclamation.png" alt="" />~,
 'thumbup' => qq~<img src="$imagesdir/thumbup.gif" alt="" />~,
 'thumbdown' => qq~<img src="$imagesdir/thumbdown.gif" alt="" />~,
-'question' => qq~<img src="$imagesdir/question.gif" alt="" />~,
+'question' => qq~<img src="$imagesdir/question.png" alt="" />~,
 'lamp' => qq~<img src="$imagesdir/lamp.gif" alt="" />~,
 'smiley' => qq~<img src="$imagesdir/smiley.gif" alt="" />~,
 'angry' => qq~<img src="$imagesdir/angry.gif" alt="" />~,
@@ -71,7 +71,7 @@ $admin_images = "$yyhtml_root/Templates/Admin/default";
 'exclamation' => qq~$imagesdir/exclamation.png~,
 'thumbup' => qq~$imagesdir/thumbup.gif~,
 'thumbdown' => qq~$imagesdir/thumbdown.gif~,
-'question' => qq~$imagesdir/question.gif~,
+'question' => qq~$imagesdir/question.png~,
 'lamp' => qq~$imagesdir/lamp.gif~,
 'smiley' => qq~$imagesdir/smiley.gif~,
 'angry' => qq~$imagesdir/angry.gif~,
@@ -178,7 +178,8 @@ $admin_images = "$yyhtml_root/Templates/Admin/default";
 'register' => qq~<img src="$imagesdir/register.gif" alt="" />~,
 'xx' => qq~<img src="$imagesdir/xx.gif" alt="" />~,
 'guest' => qq~<img src="$imagesdir/guest.gif" alt="" />~,
- );
+'question' => qq~$imagesdir/question.png~,
+);
 
 #####################################################################
 #                   JS Variables for EventCalendar, IMPost, Post    #

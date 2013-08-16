@@ -930,7 +930,7 @@ sub Refcontrol {
         }
         $refexpl_txt{$actfound} =~ s/"/'/gxsm;    # '" XHTML Validation
         $dismenu .=
-qq~<input type="checkbox" name="$actfound" id="$actfound"$selected />&nbsp;<label for="$actfound"><img src="$imagesdir/question.gif" alt="$reftxt{'1a'} $refexpl_txt{$actfound}" title="$reftxt{'1a'} $refexpl_txt{$actfound}" /> $actfound</label ><br />\n~;
+qq~<input type="checkbox" name="$actfound" id="$actfound"$selected />&nbsp;<label for="$actfound"><img src="$admin_img{'question'}" alt="$reftxt{'1a'} $refexpl_txt{$actfound}" title="$reftxt{'1a'} $refexpl_txt{$actfound}" /> $actfound</label ><br />\n~;
         $counter++;
         if ( $counter > $column + 1 ) {
             $dismenu .= q~</td><td class="windowbg2 vtop">~;

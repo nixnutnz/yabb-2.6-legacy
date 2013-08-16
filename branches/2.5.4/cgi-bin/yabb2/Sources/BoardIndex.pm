@@ -1192,7 +1192,8 @@ qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?boa
                     my $boardviewers;
 
                     if ( $bvusers{$curboard} ) {
-                        $boardviewers = qq~&nbsp;($bvusers{$curboard}&nbsp;$boardindex_txt{'bviews'})~;
+                        $tmpboardviewers = NumberFormat($bvusers{$curboard});
+                        $boardviewers = qq~&nbsp;($tmpboardviewers&nbsp;$boardindex_txt{'bviews'})~; 
                     }
                     $templateblock =~ s/({|<)yabb boardviewers(}|>)/$boardviewers/gsm;
                     $templateblock =~ s/({|<)yabb moderators(}|>)/$showmods$showmodgroups/gsm;
@@ -1673,7 +1674,9 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
         chop $template_catnames;
         chop $template_boardnames;
         $yyjavascript .=
-qq~    var markallreadlang = '$boardindex_txt{'500'}';\n        var markfinishedlang = '$boardindex_txt{'500a'}';~;
+qq~    var markallreadlang = '$boardindex_txt{'500'}';
+     var markfinishedlang = '$boardindex_txt{'500a'}';
+	 var markthreadslang = '$boardindex_txt{'500b'}';~;
         $yymain .= qq~
 <script type="text/javascript">
 <!--

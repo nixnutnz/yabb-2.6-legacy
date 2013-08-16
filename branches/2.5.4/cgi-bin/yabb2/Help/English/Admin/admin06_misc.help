@@ -156,6 +156,12 @@ $SectionBody5 = qq~<p>These are some completely new features to YaBB 2.5.4 that 
 	<li><b>Board Rules</b>
 		<br />The admin can create specific rules for individual boards using html coding.
 	</li>
+	<li><b>Password Protected Boards</b>
+		<br />The admin can Password protect specific boards. Password protected boards can only be viewed by members.
+	</li>
+	<li><b>External-link Boards</b>
+		<br />The admin can create boards that are actually links to other places. YaBB keeps track of how many times the link redirects users to the link's target.
+	</li>
 	<li><b>Event Calendar</b>
 		<br />Allow Members (and, if permitted, Guests) to post events to a calendar.
 		<br />The Event Calendar can also show member birthdays as well as giving the Admin the option for a separate page of Member birthdays.  
@@ -164,7 +170,7 @@ $SectionBody5 = qq~<p>These are some completely new features to YaBB 2.5.4 that 
 		<br /><b>Improved Captcha</b> allows the admin to select characters to be placed before and/or after the regular captcha with instructions to the guest or registrant to skip those characters when inputting the captcha for verification.
 	</li>
 	<li><b>Timed Bans</b>
-		<br />This allows the Administator, Global Moderators, and Forum Moderators to ban Members for a day, a week, a month, or permanently. The Administator can also ban IP addresses from the error log, check IP addresses through IP Lookup as well as add IP addresses to the Guardian ban list from the error log and from the Banlog (which logs access attempts by banned users).
+		<br />This allows the Administrator, Global Moderators, and Forum Moderators to ban Members for a day, a week, a month, or permanently. The Administrator can also ban IP addresses from the error log, check IP addresses through IP Lookup as well as add IP addresses to the Guardian ban list from the error log and from the Banlog (which logs access attempts by banned users).
 	</li>
 	<li><b>Ajax Live Preview</b>
 		<br />An improved version of Live Preview for posting Messages, Calendar events and Personal messages, Ajax Live Preview shows what the post should look like once it's posted. 

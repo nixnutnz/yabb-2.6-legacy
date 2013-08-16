@@ -105,7 +105,12 @@ function SendRequest (url,cat,imgdir,lng_collapse,lng_expand) {
 	}
 }
 
-function MarkAllAsRead(url,imgdir) {
+function MarkAllAsRead(url,imgdir,lang){
+    if (lang == 1) {
+        markallreadlanguage = markthreadslang;
+    } else {
+        markallreadlanguage = markallreadlang;
+    }
 	GetXmlHttpObject();
 	if (xmlHttp == null) {
 		window.location = url + ";oldmarkread=1";
@@ -116,8 +121,8 @@ function MarkAllAsRead(url,imgdir) {
 	var imagebody = document.getElementById("ImageAlertBody");
 	document.getElementById("ImageAlertIFrame").style.display = "none";
 	imagebody.style.display = "block";
-	
-	var insert = '<div class="topper">'+markallreadlang+'</div><div class="rotate"><img src="' + imagedir + '/Rotate.gif">';
+
+	var insert = '<div class="topper">'+markallreadlanguage+'</div><div class="rotate"><img src="' + imagedir + '/Rotate.gif">';
 	imagebody.innerHTML = insert;
 	imagebody.style.width = "230px";
 	imagebody.style.height = "100px";
