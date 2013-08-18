@@ -415,18 +415,21 @@ sub editAddGroup {
 
     # Get star selected if needed.
     my @starsgif = (
-        q{},            'staradmin.png',  'stargmod.png', 'starmod.png',
+        q{},            'staradmin.png',  'stargmod.png', 'starfmod.png', 'starmod.png',
         'starblue.png', 'starsilver.png', 'stargold.png',
     );
     my @stara = ();
     $pick         = $starpic;
     $otherdisable = q{};
-
+    my $stsel = 0;
     foreach my $i ( 1 .. 7 ) {
         if ( $starpic eq $starsgif[$i] ) {
             $stara[$i] = q{ selected="selected"};
+            $stsel++;
         }
-		else { $stara[$i] = q{}; }
+    }
+    if ( $stsel == 0 ) {
+        $stara[8] = q{ selected="selected"};
     }
     my $starurl =
         ( $starpic !~ m{http://}xsm ? "$imagesdir/" : q{} )
@@ -455,34 +458,39 @@ sub editAddGroup {
 
     $yymain .= qq~
 
+<form name="groups" action="$adminurl?action=editAddGroup2" method="post" accept-charset="$yycharset">
+<input type="hidden" name="original" value="$INFO{'group'}" />
+<input type="hidden" name="origin" value="$action" />
+
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-        <col style="width:40%" />
-        <tr>
-		    <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$viewtitle</b></td>
-        </tr><tr>
-            <td class="windowbg"><label for="title">$amgtxt{'51'}:</label></td>
-            <td class="windowbg2"><input type="text" name="title" id="title" value="$title" /></td>
-        </tr><tr>
-            <td class="windowbg"><label for="numstars">$amgtxt{'05'}</label></td>
-            <td class="windowbg2"><input type="text" name="numstars" id="numstars" size="2" value="$stars" /></td>
-        </tr><tr>
-            <td class="windowbg"><label for="starsadmin">$amgtxt{'38'}:</label></td>
-            <td class="windowbg2">
-                <select name="starsadmin" id="starsadmin" onchange="stars(this.value); showimage();">
-                    <option value="staradmin.png" $stara[1]>$amgtxt{'20'}</option>
-                    <option value="stargmod.png" $stara[2]>$amgtxt{'21'}</option>
-                    <option value="starmod.png" $stara[3]>$amgtxt{'22'}</option>
-                    <option value="starblue.png" $stara[4]>$amgtxt{'23'}</option>
-                    <option value="starsilver.png" $stara[5]>$amgtxt{'24'}</option>
-                    <option value="stargold.png" $stara[6]>$amgtxt{'25'}</option>
-                    <option value="other" $stara[7]>$amgtxt{'26'}</option>
-                </select>
-                &nbsp;
-                <label for="otherstar"><b>$amgtxt{'26'}</b></label> <input type="text" name="otherstar" id="otherstar" onchange="showimage();" value="$pick"$otherdisable />
-                &nbsp;
-                <img src="$starurl" name="starpic" alt="" />
-            </td>
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <col style="width:40%" />
+    <tr>
+                <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$viewtitle</b></td>
+    </tr><tr>
+        <td class="windowbg"><label for="title">$amgtxt{'51'}:</label></td>
+        <td class="windowbg2"><input type="text" name="title" id="title" value="$title" /></td>
+    </tr><tr>
+        <td class="windowbg"><label for="numstars">$amgtxt{'05'}</label></td>
+        <td class="windowbg2"><input type="text" name="numstars" id="numstars" size="2" value="$stars" /></td>
+    </tr><tr>
+        <td class="windowbg"><label for="starsadmin">$amgtxt{'38'}:</label></td>
+        <td class="windowbg2">
+            <select name="starsadmin" id="starsadmin" onchange="stars(this.value); showimage();">
+                <option value="staradmin.png" $stara[1]>$amgtxt{'20'}</option>
+                <option value="stargmod.png" $stara[2]>$amgtxt{'21'}</option>
+                <option value="starfmod.png" $stara[3]>$amgtxt{'21a'}</option>
+                <option value="starmod.png" $stara[4]>$amgtxt{'22'}</option>
+                <option value="starblue.png" $stara[5]>$amgtxt{'23'}</option>
+                <option value="starsilver.png" $stara[6]>$amgtxt{'24'}</option>
+                <option value="stargold.png" $stara[7]>$amgtxt{'25'}</option>
+                <option value="other" $stara[8]>$amgtxt{'26'}</option>
+            </select>
+            &nbsp;
+            <label for="otherstar"><b>$amgtxt{'26'}</b></label> <input type="text" name="otherstar" id="otherstar" onchange="showimage();" value="$pick"$otherdisable />
+            &nbsp;
+            <img src="$starurl" name="starpic" alt="" />
+        </td>
     </tr><tr>
         <td class="windowbg"><label for="color">$amgtxt{'08'}:</label></td>
         <td class="windowbg2" >
@@ -600,11 +608,13 @@ sub editAddGroup {
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
     </tr><tr>
         <td class="catbg center">
-            <input type="submit" value="$admin_txt{'10'}" class="button" />
-        </td>
-    </tr>
-</table>
+                <input type="submit" value="$admin_txt{'10'}" class="button" />
+            </td>
+        </tr>
+    </table>
 </div>
+</form>
+
 <script type="text/javascript">
 <!--
 function viscolor(v) {

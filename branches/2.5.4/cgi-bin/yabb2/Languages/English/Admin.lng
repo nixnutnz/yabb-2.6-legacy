@@ -901,6 +901,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 '19' => 'Pic',
 '20' => 'Administrator Star',
 '21' => 'Global Mod Star',
+'21a' => 'Forum Mod Star',
 '22' => 'Moderator Star',
 '23' => 'Blue Star',
 '24' => 'Silver Star',
