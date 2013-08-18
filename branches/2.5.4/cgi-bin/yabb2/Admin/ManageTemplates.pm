@@ -2299,7 +2299,7 @@ qq~$boardindex_txt{'201'} <a href="javascript:;"><b>${$uid.$username}{'realname'
     my $tempims =
 qq~$boardindex_txt{'795'} <a href="javascript:;"><b>2</b></a> $boardindex_txt{'796'} $boardindex_imtxt{'24'} <a href="javascript:;"><b>2</b></a> $boardindex_imtxt{'26'}.~;
     my $tempforumurl    = $mbname;
-    my $tempnew         = qq~<img src="$imagesdir/off.gif" alt="" />~;
+    my $tempnew         = qq~$admin_img{'off'}~;
     my $tempcurboard    = $templ_txt{'77'};
     my $tempcurboardurl = q~javascript:;~;
     my $tempboardanchor = $templ_txt{'78'};

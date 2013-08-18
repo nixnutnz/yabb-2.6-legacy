@@ -178,8 +178,10 @@ $admin_images = "$yyhtml_root/Templates/Admin/default";
 'register' => qq~<img src="$imagesdir/register.gif" alt="" />~,
 'xx' => qq~<img src="$imagesdir/xx.gif" alt="" />~,
 'guest' => qq~<img src="$imagesdir/guest.gif" alt="" />~,
+'off' => qq~<img src="$imagesdir/off.png" alt="" />~,
+'admin_rem' => qq~$imagesdir/admin_rem.gif~,
 'question' => qq~$imagesdir/question.png~,
-);
+'reorder' => qq~$admin_images/reorder.gif~,);
 
 #####################################################################
 #                   JS Variables for EventCalendar, IMPost, Post    #

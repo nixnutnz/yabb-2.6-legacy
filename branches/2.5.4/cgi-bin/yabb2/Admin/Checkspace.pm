@@ -124,7 +124,7 @@ q~<input type="checkbox" name="enable_quota" id="enable_quota" value="1" ~
 qq~<label for="enable_quota_value">$admin_txt{'quota_value'}</label>~,
                     input_html => (
                         $quota[2] ? $quota_select
-                        : q~<input type="text" disabled="disabled" name="enable_quota_value" id="enable_quota_value" value="" />~
+                        : q~<input type="text" disabled="disabled" name="enable_quota_value" id="enable_quota_value" value="" style="display:none" />~
                     ),
                     name       => 'enable_quota_value',
                     validate   => 'number,null',

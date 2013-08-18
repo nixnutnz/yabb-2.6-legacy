@@ -100,7 +100,7 @@ sub EditMemberGroups {
             <td class="catbg center"><b>&nbsp;</b></td>
         </tr><tr>
             <td class="windowbg2 center">$MemStatAdmin</td>
-            <td class="windowbg2 center"><img src="$imagesdir/$MemStarPicAdmin" /> x $MemStarNumAdmin</td>~;
+            <td class="windowbg2 center"><img src="$imagesdir/$MemStarPicAdmin" alt="" /> x $MemStarNumAdmin</td>~;
 
     if ($MemTypeColAdmin) {
         $thecolname = hextoname($MemTypeColAdmin);
@@ -117,7 +117,7 @@ sub EditMemberGroups {
             <td class="windowbg2 center">&nbsp;</td>
         </tr><tr>
             <td class="windowbg2 center">$MemStatGMod</td>
-        <td class="windowbg2 center"><img src="$imagesdir/$MemStarPicGMod" /> x $MemStarNumGMod</td>~;
+        <td class="windowbg2 center"><img src="$imagesdir/$MemStarPicGMod" alt="" /> x $MemStarNumGMod</td>~;
 
     if ($MemTypeColGMod) {
         $thecolname = hextoname($MemTypeColGMod);
@@ -130,11 +130,11 @@ sub EditMemberGroups {
     }
     $yymain .= qq~
             <td class="windowbg2 center">$noshowGMod</td>
-            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Global Moderator">$admin_txt{'53'}</a></td>
+            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Global%20Moderator">$admin_txt{'53'}</a></td>
             <td class="windowbg2 center">&nbsp;</td>
         </tr><tr>
             <td class="windowbg2 center">$MemStatFMod</td>
-        <td class="windowbg2 center"><img src="$imagesdir/$MemStarPicFMod" /> x $MemStarNumFMod</td>~;
+        <td class="windowbg2 center"><img src="$imagesdir/$MemStarPicFMod" alt="" /> x $MemStarNumFMod</td>~;
 
     if ($MemTypeColFMod) {
         $thecolname = hextoname($MemTypeColFMod);
@@ -147,11 +147,11 @@ sub EditMemberGroups {
     }
     $yymain .= qq~
             <td class="windowbg2 center">$noshowFMod</td>
-            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Mid Moderator">$admin_txt{'53'}</a></td>
+            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Mid%20Moderator">$admin_txt{'53'}</a></td>
             <td class="windowbg2 center">&nbsp;</td>
         </tr><tr>
             <td class="windowbg2 center">$MemStatMod</td>
-            <td class="windowbg2 center"><img src="$imagesdir/$MemStarPicMod" /> x $MemStarNumMod</td>~;
+            <td class="windowbg2 center"><img src="$imagesdir/$MemStarPicMod" alt="" /> x $MemStarNumMod</td>~;
 
 
     if ($MemTypeColMod) {
@@ -224,7 +224,7 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
         if ( !$stars ) { $stars = '0'; }
         $yymain .= qq~<tr>
             <td class="windowbg2 center">$title</td>
-            <td class="windowbg2 center"><img src="$imagesdir/$starpic" /> x $stars</td>~;
+            <td class="windowbg2 center"><img src="$imagesdir/$starpic" alt="" /> x $stars</td>~;
 
         if ($color) {
             $thecolname = hextoname($color);
@@ -298,7 +298,7 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
         if ( $starpic !~ /\//xsm ) { $starpic = "$imagesdir/$starpic"; }
         $yymain .= qq~<tr>
             <td class="windowbg2 center">$title</td>
-            <td class="windowbg2 center"><img src="$starpic" /> x $stars</td>~;
+            <td class="windowbg2 center"><img src="$starpic" alt="" /> x $stars</td>~;
 
         if ($color) {
             $thecolname = hextoname($color);
@@ -419,15 +419,14 @@ sub editAddGroup {
         'starblue.png', 'starsilver.png', 'stargold.png',
     );
     my @stara = ();
-    $stara[1]     = q{ selected="selected"};
-    $stara[7]     = q{ selected="selected"};
     $pick         = $starpic;
     $otherdisable = q{};
 
-    foreach my $i ( 1 .. 6 ) {
+    foreach my $i ( 1 .. 7 ) {
         if ( $starpic eq $starsgif[$i] ) {
             $stara[$i] = q{ selected="selected"};
         }
+		else { $stara[$i] = q{}; }
     }
     my $starurl =
         ( $starpic !~ m{http://}xsm ? "$imagesdir/" : q{} )
@@ -456,38 +455,34 @@ sub editAddGroup {
 
     $yymain .= qq~
 
-<form name="groups" action="$adminurl?action=editAddGroup2" method="post" accept-charset="$yycharset">
-<input type="hidden" name="original" value="$INFO{'group'}" />
-<input type="hidden" name="origin" value="$action" />
 <div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-    <col style="width:40%" />
-    <tr>
-        <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$viewtitle</b>
-        </td>
-    </tr><tr>
-        <td class="windowbg"><label for="title">$amgtxt{'51'}:</label></td>
-        <td class="windowbg2"><input type="text" name="title" id="title" value="$title" /></td>
-    </tr><tr>
-        <td class="windowbg"><label for="numstars">$amgtxt{'05'}</label></td>
-        <td class="windowbg2"><input type="text" name="numstars" id="numstars" size="2" value="$stars" /></td>
-    </tr><tr>
-        <td class="windowbg"><label for="starsadmin">$amgtxt{'38'}:</label></td>
-        <td class="windowbg2">
-            <select name="starsadmin" id="starsadmin" onchange="stars(this.value); showimage();">
-                <option value="staradmin.png" $stara[1]>$amgtxt{'20'}</option>
-                <option value="stargmod.png" $stara[2]>$amgtxt{'21'}</option>
-                <option value="starmod.png" $stara[3]>$amgtxt{'22'}</option>
-                <option value="starblue.png" $stara[4]>$amgtxt{'23'}</option>
-                <option value="starsilver.png" $stara[5]>$amgtxt{'24'}</option>
-                <option value="stargold.png" $stara[6]>$amgtxt{'25'}</option>
-                <option value="other" $stara[7]>$amgtxt{'26'}</option>
-            </select>
-            &nbsp;
-            <label for="otherstar"><b>$amgtxt{'26'}</b></label> <input type="text" name="otherstar" id="otherstar" onchange="showimage();" value="$pick"$otherdisable />
-            &nbsp;
-            <img src="$starurl" name="starpic" alt="" />
-        </td>
+        <col style="width:40%" />
+        <tr>
+		    <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$viewtitle</b></td>
+        </tr><tr>
+            <td class="windowbg"><label for="title">$amgtxt{'51'}:</label></td>
+            <td class="windowbg2"><input type="text" name="title" id="title" value="$title" /></td>
+        </tr><tr>
+            <td class="windowbg"><label for="numstars">$amgtxt{'05'}</label></td>
+            <td class="windowbg2"><input type="text" name="numstars" id="numstars" size="2" value="$stars" /></td>
+        </tr><tr>
+            <td class="windowbg"><label for="starsadmin">$amgtxt{'38'}:</label></td>
+            <td class="windowbg2">
+                <select name="starsadmin" id="starsadmin" onchange="stars(this.value); showimage();">
+                    <option value="staradmin.png" $stara[1]>$amgtxt{'20'}</option>
+                    <option value="stargmod.png" $stara[2]>$amgtxt{'21'}</option>
+                    <option value="starmod.png" $stara[3]>$amgtxt{'22'}</option>
+                    <option value="starblue.png" $stara[4]>$amgtxt{'23'}</option>
+                    <option value="starsilver.png" $stara[5]>$amgtxt{'24'}</option>
+                    <option value="stargold.png" $stara[6]>$amgtxt{'25'}</option>
+                    <option value="other" $stara[7]>$amgtxt{'26'}</option>
+                </select>
+                &nbsp;
+                <label for="otherstar"><b>$amgtxt{'26'}</b></label> <input type="text" name="otherstar" id="otherstar" onchange="showimage();" value="$pick"$otherdisable />
+                &nbsp;
+                <img src="$starurl" name="starpic" alt="" />
+            </td>
     </tr><tr>
         <td class="windowbg"><label for="color">$amgtxt{'08'}:</label></td>
         <td class="windowbg2" >
@@ -854,15 +849,15 @@ sub editAddGroup2 {
 sub permImage {
     my @x = @_;
     my $viewperms =
-      ( $x[0] != 1 ) ? qq~<img src="$imagesdir/open.gif" />~ : q{};
+      ( $x[0] != 1 ) ? qq~<img src="$imagesdir/open.gif" alt="" />~ : q{};
     my $topicperms =
-      ( $x[1] != 1 ) ? qq~<img src="$imagesdir/new_thread.gif" />~ : q{};
+      ( $x[1] != 1 ) ? qq~<img src="$imagesdir/new_thread.gif" alt="" />~ : q{};
     my $replyperms =
-      ( $x[2] != 1 ) ? qq~<img src="$imagesdir/reply.gif" />~ : q{};
+      ( $x[2] != 1 ) ? qq~<img src="$imagesdir/reply.gif" alt="" />~ : q{};
     my $pollperms =
-      ( $x[3] != 1 ) ? qq~<img src="$imagesdir/poll_create.gif" />~ : q{};
+      ( $x[3] != 1 ) ? qq~<img src="$imagesdir/poll_create.gif" alt="" />~ : q{};
     my $attachperms =
-      ( $x[4] != 1 ) ? qq~<img src="$imagesdir/paperclip.gif" />~ : q{};
+      ( $x[4] != 1 ) ? qq~<img src="$imagesdir/paperclip.gif" alt="" />~ : q{};
 
     return "$viewperms $topicperms $replyperms $pollperms $attachperms";
 }
@@ -956,7 +951,7 @@ sub reorderGroups {
             <td class="windowbg2 center">~;
 
         for ( 1 .. $stars ) {
-            $yymain .= qq~<img src="$imagesdir/$starpic" />~;
+            $yymain .= qq~<img src="$imagesdir/$starpic" alt="" />~;
         }
 
         $yymain .= q~

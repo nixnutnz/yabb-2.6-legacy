@@ -64,11 +64,15 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
 
     for my $i (@banlist) {
         chomp $i;
+        my $ii = 0;
+        my $ee = 0;
+        my $uu = 0;
         @banned = split /\|/xsm, $i;
         if ( $banned[0] eq 'I' ) {
             $ban_i    = $banned[1];
             $timebana = time_ban();
             $iban .= qq~<option value="$i"> $ban_i - $timebana</option>\n~;
+			$ii ++;
         }
         if ( $banned[0] eq 'E' ) {
             $ban_e  = $banned[1];
@@ -76,16 +80,18 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
             $e_show =~ s/\\@/@/xsm;
             $timebana = time_ban();
             $eban .= qq~<option value="$i"> $e_show - $timebana</option>\n~;
+            $ee++;
         }
         if ( $banned[0] eq 'U' ) {
             $ban_u = $banned[1];
             $timebana = time_ban();
             $uban .= qq~<option value="$i"> $ban_u - $timebana</option>\n~;
+            $uu++;
         }
     }
-    $iban .= q~<option value=""> </option>~;
-    $eban .= q~<option value=""> </option>~;
-    $uban .= q~<option value=""> </option>~;
+    if ( $ii == 0 ) { $iban .= q~<option value=""> </option>~; }
+    if ( $ee == 0 ) { $eban .= q~<option value=""> </option>~; }
+    if ( $uu == 0 ) { $uban .= q~<option value=""> </option>~; }
 
     $yymain .= qq~
     <form action="$adminurl?action=ipban2" method="post">

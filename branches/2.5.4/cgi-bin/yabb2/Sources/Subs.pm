@@ -3245,7 +3245,6 @@ sub password_check {
     $check .= $show_check_bot;
     $check =~ s/{yabb check_js}/$check_js/sm;
     $check =~ s/{yabb tmpregpasswrd1}/$tmpregpasswrd1/sm;
-    $check =~ s/{yabb cappasswrd1_character}/$cappasswrd1_character/sm;
     $check =~ s/{yabb tmpregpasswrd2}/$tmpregpasswrd2/sm;
 
     return $check;

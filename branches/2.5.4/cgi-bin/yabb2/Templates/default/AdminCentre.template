@@ -279,7 +279,7 @@ $show_check = qq~<tr>
                <div class="pstrength-info" id="passwrd1_text">&nbsp;</div>
            </div>
            <div id="cappasswrd1">{yabb reg_caplock}</div>
-           <div id="cappasswrd1_char">{yabb reg_wrongchar}: <span id="{yabb cappasswrd1_character}">&nbsp;</span></div>
+           <div id="cappasswrd1_char">{yabb reg_wrongchar}: <span id="cappasswrd1_character">&nbsp;</span></div>
        </td>
     </tr><tr>
         <td class="windowbg vtop">

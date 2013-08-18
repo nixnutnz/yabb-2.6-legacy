@@ -27,7 +27,7 @@ sub ManageBoards {
         $add     = $admin_txt{'47'};
         $act     = 'catscreen';
         $manage =
-qq~<a href="$adminurl?action=reordercats"><img src="$admin_images/reorder.gif" alt="$admin_txt{'829'}" title="$admin_txt{'829'}" /></a> &nbsp;<b>$admin_txt{'49'}</b>~;
+qq~<a href="$adminurl?action=reordercats"><img src="$admin_img{'reorder'}" alt="$admin_txt{'829'}" title="$admin_txt{'829'}" /></a> &nbsp;<b>$admin_txt{'49'}</b>~;
         $managedescr = $admin_txt{'678'};
         $act2        = 'addcat';
         $action_area = 'managecats';
@@ -136,7 +136,7 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
     <table class="bordercolor borderstyle cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
         <td class="$tempclass h_25px" $tempcolspan>
-            <a href="$adminurl?action=reorderboards;item=$catid" $temphrefclass><img src="$admin_images/reorder.gif" alt="$admin_txt{'832'}" title="$admin_txt{'832'}" /></a> &nbsp;<b>$curcatname</b>
+            <a href="$adminurl?action=reorderboards;item=$catid" $temphrefclass><img src="$admin_img{'reorder'}" alt="$admin_txt{'832'}" title="$admin_txt{'832'}" /></a> &nbsp;<b>$curcatname</b>
        </td>
 ~;
         if ( $INFO{'action'} eq 'managecats' ) {
@@ -671,7 +671,7 @@ function checkParent(id, board) {
 <div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
-            <td class="titlebg" colspan="5">
+            <td class="titlebg">
                 $admin_img{'cat_img'} <b>$addtext</b>
             </td>
         </tr><tr>
@@ -1015,11 +1015,10 @@ qq~<select multiple="multiple" name="moderatorgroups$i" id="moderatorgroups$i" s
 ~;
     }
     $yymain .= qq~<tr>
-    <tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
     </tr><tr>
         <td class="catbg center">
-            <input type="hidden" name="amount" value=$FORM{'amount'}" />
+            <input type="hidden" name="amount" value="$FORM{'amount'}" />
             <input type="hidden" name="screenornot" value="$INFO{'action'}" />
             <input type="submit" value="$admin_txt{'10'}" class="button" />
         </td>

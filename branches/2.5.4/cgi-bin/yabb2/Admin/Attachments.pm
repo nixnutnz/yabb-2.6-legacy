@@ -89,25 +89,25 @@ sub Attachments {
         <td class="windowbg2">
             <table class="pad_3px left">
                 <tr>
-                    <td><span class="small"><b>$fatxt{'28'}</b></span></td>
-                    <td><span class="small">$totalattachnum</span></td>
+                    <td class="small"><b>$fatxt{'28'}</b></td>
+                    <td class="small">$totalattachnum</td>
                 </tr><tr>
-                    <td><span class="small"><b>$fatxt{'29'}</b></span></td>
-                    <td><span class="small">$attachment_space KB</span><br /></td>
+                    <td class="small"><b>$fatxt{'29'}</b></td>
+                    <td class="small">$attachment_space KB<br /></td>
                 </tr><tr>
-                    <td><span class="small"><b>$fatxt{'30'}</b></span></td>
-                    <td><span class="small">$remaining_space</span></td>
+                    <td class="small"><b>$fatxt{'30'}</b></td>
+                    <td class="small">$remaining_space</td>
                 </tr><tr>
                     <td colspan="2"><hr /></td>
                 </tr><tr>
-                    <td><span class="small"><b>$fatxt{'28a'}</b></span></td>
-                    <td><span class="small">$pmTotalAttachNum</span></td>
+                    <td class="small"><b>$fatxt{'28a'}</b></td>
+                    <td class="small">$pmTotalAttachNum</td>
                 </tr><tr>
-                    <td><span class="small"><b>$fatxt{'29a'}</b></span></td>
-                    <td><span class="small">$pmAttachmentSpace KB</span><br /></td>
+                    <td class="small"><b>$fatxt{'29a'}</b></td>
+                    <td class="small">$pmAttachmentSpace KB<br /></td>
                 </tr><tr>
-                    <td><span class="small"><b>$fatxt{'30a'}</b></span></td>
-                    <td><span class="small">$pmRemainingSpace</span></td>
+                    <td class="small"><b>$fatxt{'30a'}</b></td>
+                    <td class="small">$pmRemainingSpace</td>
                 </tr>
             </table><br />
         </td>
@@ -117,25 +117,32 @@ sub Attachments {
         </td>
     </tr><tr>
         <td class="windowbg2">
-            <table class="pad_3px left">
-                <tr>
                 <form action="$adminurl?action=removeoldattachments" method="post">
-                    <td><span class="small">$fatxt{'32'}</span></td>
-                    <td><span class="small"><input type="text" name="maxdaysattach" size="2" value="$maxdaysattach" /> $fatxt{'58'}&nbsp;</span></td>
+			<table class="pad_3px left" style="min-width:30%">
+				<col style="width:60%" />
+				<col style="width:20%" span="2" />
+                <tr>
+                    <td class="small">$fatxt{'32'}</td>
+                    <td class="small"><input type="text" name="maxdaysattach" size="2" value="$maxdaysattach" /> $fatxt{'58'}&nbsp;</td>
                     <td><input type="submit" value="$admin_txt{'32'}" class="button" /></td>
+				</tr>
+			</table>
                 </form>
-                </tr><tr>
                 <form action="$adminurl?action=removebigattachments" method="post">
+			<table class="pad_3px left" style="min-width:30%">
+				<col style="width:60%" />
+				<col style="width:20%" span="2" />
+				<tr>
                     <td><span class="small">$fatxt{'33'}</span></td>
                     <td><span class="small"><input type="text" name="maxsizeattach" size="2" value="$maxsizeattach" /> KB&nbsp;</span></td>
                     <td><input type="submit" value="$admin_txt{'32'}" class="button" /></td>
-                </form>
                 </tr><tr>
                     <td colspan="3">
                         <span class="small bold"><a href="$adminurl?action=manageattachments2">$fatxt{'31a'}</a></span> | <span class="small bold"><a href="$adminurl?action=rebuildattach">$fatxt{'63'}</a></span>
                     </td>
                 </tr>
             </table>
+			</form>
         </td>
     </tr><tr>
         <td class="windowbg h_21px">
@@ -143,25 +150,32 @@ sub Attachments {
         </td>
     </tr><tr>
         <td class="windowbg2">
-            <table class="pad_3px left">
-                <tr>
                 <form action="$adminurl?action=removeoldpmattachments" method="post">
+			<table class="pad_3px left" style="min-width:30%">
+				<col style="width:60%" />
+				<col style="width:20%" span="2" />
+                <tr>
                     <td><span class="small">$fatxt{'32a'}</span></td>
                     <td><span class="small"><input type="text" name="pmmaxdaysattach" size="2" value="$pmMaxDaysAttach" /> $fatxt{'58'}&nbsp;</span></td>
                     <td><input type="submit" value="$admin_txt{'32'}" class="button" /></td>
+				</tr>
+			</table>
                 </form>
-                </tr><tr>
                 <form action="$adminurl?action=removebigpmattachments" method="post">
+			<table class="pad_3px left" style="min-width:30%">
+				<col style="width:60%" />
+				<col style="width:20%" span="2" />
+                <tr>
                     <td><span class="small">$fatxt{'33a'}</span></td>
                     <td><span class="small"><input type="text" name="pmmaxsizeattach" size="2" value="$pmMaxSizeAttach" /> KB&nbsp;</span></td>
                     <td><input type="submit" value="$admin_txt{'32'}" class="button" /></td>
-                </form>
                 </tr><tr>
                     <td colspan="3">
                         <span class="small bold"><a href="$adminurl?action=managepmattachments2">$fatxt{'31c'}</a></span> | <span class="small bold"><a href="$adminurl?action=rebuildpmattach">$fatxt{'63a'}</a></span>
                     </td>
                 </tr>
             </table>
+			</form>
         </td>
     </tr>
 </table>

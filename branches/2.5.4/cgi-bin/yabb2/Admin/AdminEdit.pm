@@ -137,9 +137,7 @@ sub EditBots {
                 <td class="titlebg">$admin_img{'xx'} <b>$admin_txt{'18'}</b></td>
             </tr><tr>
                 <td class="windowbg2  padd_8_12px">
-                    <span class="small">
-                    $admin_txt{'19'}
-                    </span>
+                    <span class="small">$admin_txt{'19'}</span>
                 </td>
             </tr><tr>
                 <td class="windowbg2 center padd_8_12px">
@@ -235,13 +233,13 @@ sub SetCensor {
        </td>
      </tr>
      </table>
+</div>
    <!-- Split for XHTML Validation purposes -->
    <form action="$adminurl?action=setcensor2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
+<div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
     <tr>
-       <td class="windowbg2 padd_8_12px">
-         <label for="censored">$admin_txt{'136'}</label>
-       </td>
+			<td class="windowbg2 padd_8_12px"><label for="censored">$admin_txt{'136'}</label></td>
      </tr><tr>
        <td class="windowbg2 center padd_8_12px">
       <input type="hidden" name="censorlanguage" value="$censorlanguage" />

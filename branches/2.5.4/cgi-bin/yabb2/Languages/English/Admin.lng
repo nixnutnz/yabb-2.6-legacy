@@ -579,7 +579,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 'lower' => 'Lower case characters + Digits',
 'upper' => 'Upper case characters + Digits',
 'all' => 'Upper and lower case characters + Digits',
-'masterkey' => 'Set a masterkey for encryption<br /><span class="small">A random text string (> 8 and < 24 characters long)</span>',
+'masterkey' => 'Set a masterkey for encryption<br /><span class="small">A random text string (&gt; 8 and &lt; 24 characters long)</span>',
 'rm0' => 'No Random Noise',
 'rm1' => 'Using only the shade color',
 'rm2' => 'Using only the foreground color',
@@ -983,7 +983,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 '5' => "Enable <i>UserQuote</i> (<font color='$quoteuser_color'>@</font> <i><b>username</b></i>)?<br /><span class='small'>(If Quick Reply Box is enabled.)</span>",
 '6' => 'Set the color of @ in <i>UserQuote</i> (example: "red" or "#FF0000"):<br /><span class="small">(If <i>UserQuote</i> is enabled.)</span>',
 '7' => 'Enable Jump-To Quick- Post/Reply-Box when clicking on <i>Start New Topic</i>, <i>Reply</i> or <i>Quote</i>?<br /><span class="small">(If Quick Post/Reply Box is enabled.)</span>',
-'8' => 'Max length for Quote:<br /><span class="small">(If "Jump-To Quick- Post/Reply-Box" is enabled.)<br />2000 => means that messages longer than 2000 characters will be Quoted NOT using the Quick-Reply-Box but the default Quotepage. This way the upload volume can be limited!</span>',
+'8' => 'Max length for Quote:<br /><span class="small">(If "Jump-To Quick- Post/Reply-Box" is enabled.)<br />2000 =&gt; means that messages longer than 2000 characters will be Quoted NOT using the Quick-Reply-Box but the default Quotepage. This way the upload volume can be limited!</span>',
 );
 
 %amv_txt = (
@@ -1043,7 +1043,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 '06' => 'Enable Personal Message Limits?',
 '25' => 'Advanced Personal Message Box',
 '33' => 'Want to send new users a Welcome PM?',
-'34' => '&nbsp;&nbsp;&nbsp; - Send to new user from following account name:<br /><span class=small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "Must be a valid User ID", eg: admin </span>', 
+'34' => '&nbsp;&nbsp;&nbsp; - Send to new user from following account name:<br /><span class="small">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "Must be a valid User ID", eg: admin </span>', 
 '35' => '&nbsp;&nbsp;&nbsp; - Enter the PM Text here:',
 '36' => '&nbsp;&nbsp;&nbsp; - Enter the PM Subject here:',
 '46' => 'Storage',
@@ -1069,10 +1069,10 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 %reftxt = (
 '1' => 'Referrer Security',
 '1a' => 'Command Explanation:',
-'2' => 'Select Board Actions (<i>action=...</i> in the URL) which are allowed from outside your own board domainname.<br />"Activate Referrer Security Checking?" must be checked in <i>Security Center</i> => <i>Security Settings</i> => <i>General</i> for it to work!',
+'2' => 'Select Board Actions (<i>action=...</i> in the URL) which are allowed from outside your own board domainname.<br />"Activate Referrer Security Checking?" must be checked in <i>Security Center</i> =&gt; <i>Security Settings</i> =&gt; <i>General</i> for it to work.',
 '3' => "These commands are derived from $sourcedir/SubList.pl<br />Hover over the Question Mark to see the command explanation",
 '4' => 'Save Settings',
-'8' => 'Activate Referrer Security Checking?<br /><span class="small">Fine tuning can be done in <i>Security Center</i> => <i>Referrer Security</i></span>',
+'8' => 'Activate Referrer Security Checking?<br /><span class="small">Fine tuning can be done in <i>Security Center</i> =&gt; <i>Referrer Security</i></span>',
 );
 
 %dereftxt = (
@@ -1085,8 +1085,8 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 );
 
 %versiontxt = (
-'1' => 'Either your browser doesn&#39;t support JavaScript or you need to enable it to allow the versioncheck to work!',
-'2' => '<b><font color="red">There is a new release version available!</font></b><br />If you would like to download ',
+'1' => 'Either your browser doesn&#39;t support JavaScript or you need to enable it to allow the versioncheck to work.',
+'2' => '<b><span style="color:red">There is a new release version available!</span></b><br />If you would like to download ',
 '3' => ', please go to <a href="http://www.yabbforum.com/downloads.php" onclick="target=&#39;_blank&#39;;">http://www.yabbforum.com/downloads.php</a>.',
 '4' => 'YOUR version:',
 '5' => 'Latest RELEASE version:',

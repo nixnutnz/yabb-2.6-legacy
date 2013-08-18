@@ -236,7 +236,7 @@ qq~<span class="red"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
 qq~name="tarmodulecompress" id="label_$label_id" value="$module" $methodchecklist{$module}~;
         eval "use $module();";
         if ($@) {
-            $input        = q~disabled="disabled"~;
+            $input        = qq~disabled="disabled" id="label_$label_id"~;
             $style        = q~backup_disabled~;
             $disabledtext = $backup_txt{41};
         }
@@ -245,7 +245,7 @@ qq~name="tarmodulecompress" id="label_$label_id" value="$module" $methodchecklis
         }
         $tarcompress1 .= qq~<tr>
        <td class="windowbg $style">
-         <input type="radio" $input/> $module $backup_txt{18} $disabledtext
+         <input type="radio" $input/> <label for="label_$label_id">$module $backup_txt{18} $disabledtext</label>
        </td>
      </tr>~;
     }
@@ -269,7 +269,7 @@ qq~name="tarmodulecompress" id="label_$label_id" value="$module" $methodchecklis
 qq~name="bintarcompress" id="label_$label_id" value="$command" $methodchecklist{$command}~;
         $newcommand = CheckPath($command);
         if ( !$newcommand ) {
-            $input        = q~disabled="disabled"~;
+            $input        = qq~disabled="disabled" id="label_$label_id"~;
             $style        = q~backup_disabled~;
             $disabledtext = $backup_txt{41};
             $newcommand   = $command;
@@ -279,7 +279,7 @@ qq~name="bintarcompress" id="label_$label_id" value="$command" $methodchecklist{
         }
         $tarcompress2 .= qq~<tr>
        <td class="windowbg $style">
-         <input type="radio" $input/> $newcommand $backup_txt{18} $disabledtext
+         <input type="radio" $input/> <label for="label_$label_id">$newcommand $backup_txt{18} $disabledtext</label>
        </td>
      </tr>~;
     }
@@ -305,25 +305,25 @@ qq~name="backupmethod" id="backupmethod1" value="$backupprogusr/tar" onclick="do
             unlink "$vardir/backuptest.$curtime.tar";
         }
         else {
-            $input        = q~disabled="disabled"~;
+            $input        = qq~disabled="disabled" id="backupmethod1"~;
             $style        = q~backup_disabled~;
             $disabledtext = ": Tar $backup_txt{31}: $!. $backup_txt{32} "
               . ( $CHILD_ERROR >> 8 );
         }
     }
     else {
-        $input        = q~disabled="disabled"~;
+        $input        = qq~disabled="disabled" id="backupmethod1"~;
         $style        = q~backup_disabled~;
         $disabledtext = $backup_txt{41};
     }
     $yymain .= qq~<tr>
 		<td class="windowbg2"><label for="backupprogusr">$backup_txt{'path1'}</label> <input id="backupprogusr" type="text" value="$backupprogusr" size="20" name="backupprogusr" />
-			<br />$backup_txt{'path2'} <input id="backupprogbin" type="text" value="$backupprogbin" size="20" name="backupprogbin" />
+       <br /><label for="backupprogbin">$backup_txt{'path2'}</label> <input id="backupprogbin" type="text" value="$backupprogbin" size="20" name="backupprogbin" />
 			<br />$backup_txt{'path3'}
 		</td>
     </tr><tr>
 		<td class="windowbg2 $style">
-			<input type="radio" $input/> Tar ($newcommand) $disabledtext
+         <input type="radio" $input/> <label for="backupmethod1">Tar ($newcommand) $disabledtext</label>
 		</td>
     </tr>$tarcompress2~;
 
@@ -340,20 +340,20 @@ qq~name="backupmethod" id="backupmethod2" value="$backupprogusr/zip" onclick="do
             unlink "$vardir/backuptest.$curtime.zip";
         }
         else {
-            $input        = q~disabled="disabled"~;
+            $input        = qq~disabled="disabled" id="backupmethod2"~;
             $style        = q~backup_disabled~;
             $disabledtext = ": Zip $backup_txt{31}: $!. $backup_txt{32} "
               . ( $CHILD_ERROR >> 8 );
         }
     }
     else {
-        $input        = q~disabled="disabled"~;
+        $input        = qq~disabled="disabled" id="backupmethod2"~;
         $style        = q~backup_disabled~;
         $disabledtext = $backup_txt{41};
     }
     $yymain .= qq~<tr>
 		<td class="windowbg2 $style">
-			<input type="radio" $input/> Zip ($newcommand) $disabledtext
+         <input type="radio" $input/> <label for="backupmethod2">Zip ($newcommand) $disabledtext</label>
 		</td>
     </tr><tr>
 		<td class="windowbg">
@@ -368,7 +368,7 @@ qq~name="backupmethod" id="backupmethod2" value="$backupprogusr/zip" onclick="do
 qq~name="backupmethod" id="backupmethod3_$i" value="$module" onclick="domodulecheck('$module')" $methodchecklist{$module}~;
         eval "use $module();";
         if ($@) {
-            $input        = q~disabled="disabled"~;
+            $input        = qq~disabled="disabled" id="backupmethod3_$i"~;
             $style        = q~backup_disabled~;
             $disabledtext = $backup_txt{41};
         }
@@ -377,7 +377,7 @@ qq~name="backupmethod" id="backupmethod3_$i" value="$module" onclick="domodulech
         }
         $yymain .= qq~<tr>
 		<td class="windowbg2 $style">
-			<input type="radio" $input/> $module $disabledtext
+         <input type="radio" $input/> <label for="backupmethod3_$i">$module $disabledtext</label>
 		</td>
      </tr>~;
         if ( $module eq 'Archive::Tar' ) { $yymain .= $tarcompress1; }

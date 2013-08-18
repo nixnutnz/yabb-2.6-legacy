@@ -24,7 +24,10 @@ if ( -e "$vardir/iplookup.urls" ) {
     while (<IPLOOKUP>) {
         chomp;
         $iplookup_urls .= qq~$_\n~;
-    }
+		if ( $iplookup_urls !~ /&(.*amp;)/gsm ) {
+			$iplookup_urls =~ s/&/&amp;/gxsm;
+		}
+	}
     fclose(IPLOOKUP);
 }
 

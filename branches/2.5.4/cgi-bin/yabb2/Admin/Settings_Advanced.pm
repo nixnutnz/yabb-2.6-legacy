@@ -117,7 +117,7 @@ qq~<input type="text" name="rss_limit" id="rss_limit" size="5" value="$rss_limit
                 description =>
                   qq~<label for="showauthor">$rss_txt{'7'}</label>~,
                 input_html =>
-qq~<input type="checkbox" name="showauthor" id="showauthor" size="5"${ischecked($showauthor)} />~,
+qq~<input type="checkbox" name="showauthor" id="showauthor"${ischecked($showauthor)} />~,
                 name       => 'showauthor',
                 validate   => 'boolean',
                 depends_on => ['!rss_disabled'],
@@ -125,7 +125,7 @@ qq~<input type="checkbox" name="showauthor" id="showauthor" size="5"${ischecked(
             {
                 description => qq~<label for="showdate">$rss_txt{'8'}</label>~,
                 input_html =>
-qq~<input type="checkbox" name="showdate" id="showdate" size="5"${ischecked($showdate)} />~,
+qq~<input type="checkbox" name="showdate" id="showdate"${ischecked($showdate)} />~,
                 name       => 'showdate',
                 validate   => 'boolean',
                 depends_on => ['!rss_disabled'],
@@ -464,7 +464,7 @@ qq~<input type="checkbox" name="fix_avatar_img_size" id="fix_avatar_img_size" va
                 validate => 'number',
             },
             {
-                description => qq~<label for="fix_avatarml_img_size">$admin_txt{'473c'}~,
+                description => qq~<label for="fix_avatarml_img_size">$admin_txt{'473c'}</label>~,
                 input_html => qq~<input type="checkbox" name="fix_avatarml_img_size" id="fix_avatarml_img_size" value="1"${ischecked($fix_avatarml_img_size)} />~,
                 name => 'fix_avatarml_img_size',
                 validate => 'boolean',

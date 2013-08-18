@@ -127,7 +127,7 @@ sub AddCats {
         </tr><tr>~;
         if ( $INFO{'action'} eq 'catscreen' ) {
             $yymain .= qq~
-            <td class="windowbg"><label for="theid$i"><b>$admin_txt{'61a'}</b></label></td>
+            <td class="windowbg"><b>$admin_txt{'61a'}</b></td>
             <td class="windowbg2 padd_8_12px"><input type="hidden" name="theid$i" id="theid$i" value="$id" />$id~;
         }
         else {

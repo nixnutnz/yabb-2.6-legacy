@@ -949,9 +949,7 @@ qq~<input type="checkbox" name="$actfound" id="$actfound"$selected />&nbsp;<labe
             </tr><tr>
                 <td class="windowbg2" colspan="3"><br />
                 $reftxt{'2'}<br />
-                <span class="small">
-                    $reftxt{'3'}<br /><br />
-                </span>
+                <span class="small">$reftxt{'3'}<br /><br /></span>
                 </td>
             </tr><tr>
                 <td class="windowbg2 vtop">
@@ -1017,6 +1015,7 @@ sub AddMember {
     LoadLanguage('Register');
 
     $yymain .= qq~
+<script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
 <script type="text/javascript" src="$yyhtml_root/ajax.js"></script>
 <form action="$adminurl?action=addmember2" method="post" name="creator" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">

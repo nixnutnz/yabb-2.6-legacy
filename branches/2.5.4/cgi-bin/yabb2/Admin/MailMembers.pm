@@ -173,7 +173,7 @@ sub Mailing {
                 </td>
                 <td class="windowbg2 vtop"><span class="small">$thetime<br />${$uid.$osender}{'realname'}</span></td>
                 <td class="windowbg2 vtop"><span class="small">$osubject</span></td>
-                <td class="windowbg2"><a href="$adminurl?action=deletemail;delmail=$otime"><img src="$imagesdir/admin_rem.gif" alt="del" /></a></td>
+                <td class="windowbg2"><a href="$adminurl?action=deletemail;delmail=$otime"><img src="$admin_img{'admin_rem'}" alt="del" /></a></td>
             </tr>~;
             }
             $yymain .= q~
@@ -587,7 +587,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
                 </td>
                 <td class="windowbg2 vtop"><span class="small">$thetime<br />${$uid.$osender}{'realname'}</span></td>
                 <td class="windowbg2 vtop"><span class="small">$osubject</span></td>
-                <td class="windowbg2"><a href="$adminurl?action=deletemail;delmail=$otime"><img src="$imagesdir/admin_rem.gif" alt="del" /></a></td>
+                <td class="windowbg2"><a href="$adminurl?action=deletemail;delmail=$otime"><img src="$admin_img{'admin_rem'}" alt="del" /></a></td>
             </tr>~;
             }
             $yymain .= q~
