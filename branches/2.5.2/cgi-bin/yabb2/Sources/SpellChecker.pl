@@ -14,7 +14,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$spellcheckerplver = 'YaBB 2.5.2 $Revision: 1.0 $';
+$spellcheckerplver = 'YaBB 2.5.2 $Revision: 1.1 $';
 
 if ($action eq 'detailedversion') { return 1; }
 
@@ -30,7 +30,7 @@ my $reqXML = "";
 
 read (STDIN, $reqXML, $ENV{'CONTENT_LENGTH'});
 
-my $url = "https://www.google.com/tbproxy/spell?$ENV{QUERY_STRING}";
+$url = "http://orangoo.com/newnox?lang=?$ENV{QUERY_STRING}";
 my $res = $ua->request(POST $url, Content_Type => 'text/xml', Content => $reqXML);
 
 die "$res->{_content}" if $res->{_content} =~ /LWP.+https.+Crypt::SSLeay/;
