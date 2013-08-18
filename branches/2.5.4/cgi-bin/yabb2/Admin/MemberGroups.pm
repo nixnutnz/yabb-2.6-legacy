@@ -418,6 +418,9 @@ sub editAddGroup {
         q{},            'staradmin.png',  'stargmod.png', 'starfmod.png', 'starmod.png',
         'starblue.png', 'starsilver.png', 'stargold.png',
     );
+    my @starstxt = ( q{}, "$amgtxt{'20'}","$amgtxt{'21'}","$amgtxt{'21a'}","$amgtxt{'22'}",
+        "$amgtxt{'23'}","$amgtxt{'24'}","$amgtxt{'25'}",
+    );
     my @stara = ();
     $pick         = $starpic;
     $otherdisable = q{};
@@ -457,7 +460,6 @@ sub editAddGroup {
     if ( $attachperms == 1 ) { $ac  = q~ checked="checked"~; }
 
     $yymain .= qq~
-
 <form name="groups" action="$adminurl?action=editAddGroup2" method="post" accept-charset="$yycharset">
 <input type="hidden" name="original" value="$INFO{'group'}" />
 <input type="hidden" name="origin" value="$action" />
@@ -476,15 +478,11 @@ sub editAddGroup {
     </tr><tr>
         <td class="windowbg"><label for="starsadmin">$amgtxt{'38'}:</label></td>
         <td class="windowbg2">
-            <select name="starsadmin" id="starsadmin" onchange="stars(this.value); showimage();">
-                <option value="staradmin.png" $stara[1]>$amgtxt{'20'}</option>
-                <option value="stargmod.png" $stara[2]>$amgtxt{'21'}</option>
-                <option value="starfmod.png" $stara[3]>$amgtxt{'21a'}</option>
-                <option value="starmod.png" $stara[4]>$amgtxt{'22'}</option>
-                <option value="starblue.png" $stara[5]>$amgtxt{'23'}</option>
-                <option value="starsilver.png" $stara[6]>$amgtxt{'24'}</option>
-                <option value="stargold.png" $stara[7]>$amgtxt{'25'}</option>
-                <option value="other" $stara[8]>$amgtxt{'26'}</option>
+            <select name="starsadmin" id="starsadmin" onchange="stars(this.value); showimage();">~;
+    for my $i ( 1 .. 7 ) {
+            $yymain .= qq~                <option value="$starsgif[$i]"$stara[$i]>$starstxt[$i]</option>\n~;
+    }
+    $yymain .= qq~                <option value="other"$stara[8]>$amgtxt{'26'}</option>
             </select>
             &nbsp;
             <label for="otherstar"><b>$amgtxt{'26'}</b></label> <input type="text" name="otherstar" id="otherstar" onchange="showimage();" value="$pick"$otherdisable />
