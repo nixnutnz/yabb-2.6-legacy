@@ -1745,7 +1745,7 @@ qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
     }
 
     $yyjavascript .=
-qq~\nvar markallreadlang_t = '$messageindex_txt{'500'}';\nvar markfinishedlang = '$messageindex_txt{'500a'}';~;
+qq~\nvar markallreadlang = '$messageindex_txt{'500'}';\nvar markfinishedlang = '$messageindex_txt{'500a'}';~;
     $yymain .= qq~
 <script type="text/javascript">
 <!--
