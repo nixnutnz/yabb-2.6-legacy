@@ -1657,15 +1657,14 @@ sub uri_escape {    # usage: $safe = uri_escape( $string )
 
 sub enc_eMail {
     my ( $title, $email, $subject, $body ) = @_;
-
-#    if ($yycharset eq 'windows-1251') { $charset_value = 848;} # Cyrillic decoding (We are now using UTF-8 only)
+	my ($charset_value);
+	if ($yycharset eq 'windows-1251') { $charset_value = 848;} # Cyrillic decoding
 
     my $email_length = length $email;
     my $code1        = generate_code($email_length);
     my $code2;
-
-    foreach my $i ( 0 .. ( $email_length - 1 ) ) {
-        $code2 .= chr ord( substr $code1, $i, 1 ) ^ ord( substr $email, $i, 1 );
+	for my $i ( 0 .. ( $email_length - 1 ) ) {
+		$code2 .= chr( ord( substr $code1, $i, 1 )^ord( substr $email, $i, 1 ));
     }
     $code2 = uri_escape($code2);
 
