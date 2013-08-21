@@ -565,6 +565,7 @@ qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>~
             $newrowstart{$catname} = q{};
             $newrowend{$catname}   = q{};
             $collapse_link         = q{};
+            $mnew                  = q{};
 
             if ($catallowcol) {
                 $collapse_link =
@@ -613,8 +614,9 @@ qq~<a href="javascript:SendRequest('$scripturl?action=collapse_cat;cat=$catid','
                         $template_colboardtable = qq~id="col$catid"~;
                     }
                     if ($newmsg) {
+                        $mnew = q{new_} . $curboard;
                         $newrowicon{$catname} =
-qq~<img src="$imagesdir/$brdimg_new" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" class="ongif" />~;
+qq~<img src="$imagesdir/$brdimg_new" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" class="ongif" id="$mnew" />~; 
                         $newms{$catname} = $boardindex_exptxt{'5'};
                     }
                     else {
@@ -873,10 +875,12 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
                     if ( AccessCheck( $curboard, q{}, $boardperms ) eq
                         'granted' )
                     {
+                        $mnew = q{new_} . $curboard;
                         $new =
-qq~<img src="$imagesdir/$brdimg_new" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" class="img_new" />~;
+qq~<img src="$imagesdir/$brdimg_new" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" class="img_new" id="$mnew" />~;
                         $new2 =
-qq~<img src="$imagesdir/$brdimg_new_sm" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" class="img_new" />~;
+qq~<img src="$imagesdir/$brdimg_new_sm" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" class="img_new" id="$mnew" />~; 
+
                     }
                     else {
                         $new =
@@ -1035,9 +1039,10 @@ qq~<a href="$scripturl?action=RSSboard;board=$curboard" target="_blank"><img src
                             $sub_new = q{};
                         }
                         elsif ( $new_icon{$childbd} ) {
+                            $mnew = q{new_} . $childbd . q{_sub};
                             $sub_new =
-qq~<img src="$imagesdir/$sub_brdimg_new" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" />~;
-                        }
+qq~<img src="$imagesdir/$sub_brdimg_new" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" id="$mnew" />~;
+                        } 
                         else {
                             $sub_new =
 qq~<img src="$imagesdir/$sub_brdimg_old" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" />~;
@@ -1340,8 +1345,7 @@ qq~<span id="expandall" $exp_vis><a href="javascript:Collapse_All('$scripturl?ac
             $collapselink =
 qq~<span id="collapseall" $col_vis><a href="javascript:Collapse_All('$scripturl?action=collapse_all;status=0',0,'$imagesdir','$boardindex_exptxt{'1'}')">$img{'collapse'}</a>$menusep</span>~;
             $markalllink =
-qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread','$imagesdir')">$img{'markallread'}</a>~;
-
+qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread','$imagesdir','0','1')">$img{'markallread'}</a>~; 
         }
         else {
             $markalllink =
@@ -1674,7 +1678,7 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
         chop $template_catnames;
         chop $template_boardnames;
         $yyjavascript .=
-qq~    var markallreadlang = '$boardindex_txt{'500'}';
+qq~     var markallreadlang = '$boardindex_txt{'500'}';
      var markfinishedlang = '$boardindex_txt{'500a'}';
 	 var markthreadslang = '$boardindex_txt{'500b'}';~;
         $yymain .= qq~

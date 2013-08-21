@@ -26,6 +26,9 @@ $my_guestpost_col = q~ colspan="2"~;
 if (!$enable_quickreply) {$my_spacer = '; margin-bottom:1em;';}
 $messageclass = 'message';
 
+$palwidth = 308;
+$palhight = 302;
+
 ## Post Top
 $mypost_title = qq~{yabb my_topper}<table class="tabtitle">
     <tr>
@@ -392,7 +395,7 @@ $mypost_poll_pie = qq~<tr>
 
             function getSlicecolor(slicenum) {
                 tmpslicecolor = slicenum;
-                window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no');
+                window.open('$scripturl?action=palette;task=templ', '', 'height=$palwidth,width=$palhight,menubar=no,toolbar=no,scrollbars=no');
             }
 
             function previewColor(newsilcecolor) {

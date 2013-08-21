@@ -48,10 +48,10 @@ sub IPLookup {
 		}
         if ( $iplookup_url !~ /http(s|):\/\//xsm ) {
             $iplookup_url = qq~http://$iplookup_url~;
-        } 
+		}
 
         $lookuplink .=
-qq~<a href="$iplookup_url" target="_blank">$iplookup_name</a><br />~;
+          qq~<a href="$iplookup_url" target="_blank">$iplookup_name</a><br />~;
     }
 
     $yymain .= $my_ipdiv;

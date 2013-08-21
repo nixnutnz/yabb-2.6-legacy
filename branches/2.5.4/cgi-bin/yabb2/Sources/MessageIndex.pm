@@ -604,10 +604,14 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
     }
 
     if ( !$iamguest ) {
-        my $mthreadslang = q{};
-        if ( $messagelist ) { $mthreadslang = 1; }
+        my $brdid = q{};
+        if ( $messagelist ) {
+            $mthreadslang = 1;
+            $brdid = q{new_} . $INFO{'board'};
+        }
         $markalllink =
-qq~$menusep<a href="javascript:MarkAllAsRead('$scripturl?board=$INFO{'board'};action=markasread','$imagesdir','$mthreadslang')">$img{'markboardread'}</a>~; 
+qq~$menusep<a href="javascript:MarkAllAsRead('$scripturl?board=$INFO{'board'};action=markasread','$imagesdir','$mthreadslang','$brdid')">$img{'markboardread'}</a>~;
+ 
         $notify_board =
 qq~$menusep<a href="$scripturl?action=boardnotify;board=$INFO{'board'}">$img{'notify'}</a>~;
     }
