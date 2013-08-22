@@ -1579,9 +1579,11 @@ qq~<img src="$imagesdir/$msgbrd_cal_exp" id="bdrulecollapse" alt="$boardindex_ex
 
     # Thread Tools #
     if ($threadtools) {
+	    $dropid = q{};
+	    if ($messagelist) { $dropid = $INFO{'board'}; }
         $topichandellist2 =
-          MakeTools( 'bottom', $maintxt{'62'}, $topichandellist2 );
-        $topichandellist = MakeTools( 'top', $maintxt{'62'}, $topichandellist );
+          MakeTools( "bottom$dropid", $maintxt{'62'}, $topichandellist2 );
+        $topichandellist = MakeTools( "top$dropid", $maintxt{'62'}, $topichandellist );
     }
 
     $messageindex_template =~
