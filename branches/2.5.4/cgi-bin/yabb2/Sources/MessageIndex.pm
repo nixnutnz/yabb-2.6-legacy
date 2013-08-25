@@ -798,11 +798,11 @@ qq~&nbsp;&nbsp;<a href="$scripturl?action=rearrsticky;board=$annboard;num=$mnum;
             {
                 if ( ${$mnum}{'board'} eq $annboard ) {
                     $new =
-qq~<a href="$scripturl?virboard=$currentboard;num=$mnum/new#new"><img src="$imagesdir/$msgbrd_new" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'303'}" /></a>~;
+qq~<a href="$scripturl?virboard=$currentboard;num=$mnum/new#new"><img src="$imagesdir/$newload{'new_mess'}" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'303'}" /></a>~;
                 }
                 else {
                     $new =
-qq~<a href="$scripturl?num=$mnum/new#new"><img src="$imagesdir/$msgbrd_new" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'303'}" /></a>~;
+qq~<a href="$scripturl?num=$mnum/new#new"><img src="$imagesdir/$newload{'new_mess'}" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'303'}" /></a>~;
                 }
             }
             else {
@@ -1476,6 +1476,7 @@ qq~ <img src="$imagesdir/$bdpic" alt="$curboardname" title="$curboardname" /> ~;
           s/({|<)yabb threadcount(}|>)/$tmpthreadcount/gsm;
         $messageindex_template =~
           s/({|<)yabb messagecount(}|>)/$tmpmessagecount/gsm;
+		$messageindex_template =~ s/({|<)yabb new_load(}|>)/$newload/gsm;
     }
     $messageindex_template =~ s/({|<)yabb colspan(}|>)/$colspan/gsm;
     ### Board Rules Start ###
@@ -1487,7 +1488,7 @@ qq~ <img src="$imagesdir/$bdpic" alt="$curboardname" title="$curboardname" /> ~;
         if ( !$iamguest && ${ $uid . $currentboard }{'rulescollapse'} == 1 ) {
             $tmprulelgt = length( ${ $uid . $currentboard }{'rulesdesc'} );
             $rulestitle =
-qq~<img src="$imagesdir/$msgbrd_cat_col" id="bdrulecollapse" alt="$boardindex_exptxt{'2'}" title="$boardindex_exptxt{'2'}" class="cursor" onclick="collapseBDrule($tmprulelgt);" />~;
+qq~<img src="$imagesdir/$newload{'brd_col'}" id="bdrulecollapse" alt="$boardindex_exptxt{'2'}" title="$boardindex_exptxt{'2'}" class="cursor" onclick="collapseBDrule($tmprulelgt);" />~;
             my @collbdrules =
               split /\|/xsm, ${ $uid . $username }{'collapsebdrules'};
             for my $i ( 0 .. ( @collbdrules - 1 ) ) {
@@ -1495,7 +1496,7 @@ qq~<img src="$imagesdir/$msgbrd_cat_col" id="bdrulecollapse" alt="$boardindex_ex
                 if ( $rulebd eq $currentboard && $rulelgt == $tmprulelgt ) {
                     $tmpruletxt = qq~$messageindex_txt{'collruletext'}~;
                     $rulestitle =
-qq~<img src="$imagesdir/$msgbrd_cal_exp" id="bdrulecollapse" alt="$boardindex_exptxt{'1'}" title="$boardindex_exptxt{'1'}" class="cursor" onclick="collapseBDrule($tmprulelgt);" />~;
+qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardindex_exptxt{'1'}" title="$boardindex_exptxt{'1'}" class="cursor" onclick="collapseBDrule($tmprulelgt);" />~;
                 }
             }
         }
@@ -1504,6 +1505,9 @@ qq~<img src="$imagesdir/$msgbrd_cal_exp" id="bdrulecollapse" alt="$boardindex_ex
         $rulesdesc = qq~<div id="bdruledesc">$tmpruletxt</div>~;
 
         if ( !$iamguest && ${ $uid . $currentboard }{'rulescollapse'} == 1 ) {
+			get_micon();
+			$mycat_col = $newload{'brd_col'};
+			$mycat_exp = $newload{'brd_exp'};
             $rulesdesc .= qq~
             <textarea id="actruletxt" name="actruletxt" rows="1" cols="1" style="display: none;">${$uid.$currentboard}{'rulesdesc'}</textarea>
             <input type="hidden" id="tmpruletxt" value="$messageindex_txt{'collruletext'}" />
@@ -1519,13 +1523,13 @@ qq~<img src="$imagesdir/$msgbrd_cal_exp" id="bdrulecollapse" alt="$boardindex_ex
                 var docollaps = "$boardindex_exptxt{'2'}";
                 if (document.getElementById("bdruledesc").innerHTML == tmpruletxt) {
                     document.getElementById("bdruledesc").innerHTML = actruletxt;
-                    document.getElementById('bdrulecollapse').src = "$imagesdir/$msgbrd_cat_col";
+                    document.getElementById('bdrulecollapse').src = "$imagesdir/$mycat_col";
                     document.getElementById('bdrulecollapse').alt = docollaps;
                     document.getElementById('bdrulecollapse').title = docollaps;
                 }
                 else {
                     document.getElementById("bdruledesc").innerHTML = tmpruletxt;
-                    document.getElementById('bdrulecollapse').src="$imagesdir/$msgbrd_cal_exp";
+                    document.getElementById('bdrulecollapse').src="$imagesdir/$mycat_exp";
                     document.getElementById('bdrulecollapse').alt = doexpand;
                     document.getElementById('bdrulecollapse').title = doexpand;
                 }
@@ -1533,7 +1537,7 @@ qq~<img src="$imagesdir/$msgbrd_cal_exp" id="bdrulecollapse" alt="$boardindex_ex
                 GetXmlHttpObject();
                 if (xmlHttp == null) return;
                 xmlHttp.open("GET",url,true);
-                xmlHttp.send(null);
+                //xmlHttp.send(null);
             }
             -->
             </script>

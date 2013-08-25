@@ -15,12 +15,8 @@
 
 $IM_index_togl = 'index_togl.png';
 $IM_callback = 'imcallback.gif';
-$IM_imopen = 'imopen.gif';
-$IM_imclose2 = 'imclose2.gif';
-$IM_imclose = 'imclose.gif';
 $IM_answered = 'answered.gif';
 $IM_callback2 = 'imcallback2.gif';
-$IM_imopen2 = 'imopen2.gif';
 $IM_callback3 = 'imcallback3.gif';
 $IM_imopen3 = 'imopen3.gif';
 $IM_usageempty = 'usageempty.gif';
@@ -38,6 +34,8 @@ $IM_email = 'email.png';
 $IM_www = 'www.png';
 $my_blank_avatar = 'blank.gif';
 $nn_avatar = 'nn.gif';
+
+$imWinwidth_a = 500;
 
 $tabsep = q{};
 $tabfill = q{};
@@ -296,7 +294,7 @@ $my_storetotals = qq~<tr>
 $my_markall = qq~{yabb MCPmMenu_strtot}<tr>
                 <td colspan="3"><hr class="hr" /></td>
             </tr><tr>
-                <td class="nav bold" colspan="3"><a href="javascript:MarkAllAsRead('$scripturl?action=markims','$imagesdir')">$inmes_txt{'764'}</a></td>
+                <td class="nav bold" colspan="3"><a href="javascript:MarkAllAsRead('$scripturl?action=markims','$imagesdir')">$inmes_txt{'764'}</a>{yabb new_load}</td>
             </tr>~;
 
 $my_newfolder = qq~<tr>
@@ -429,7 +427,7 @@ $my_buddiesCurrentStatus = qq~
         <tr class="catbg">
             <td class="center">$profile_txt{'68a'}</td>
             <td class="center">$profile_txt{'68b'}</td>
-            <td class="center"><img src="$imagesdir/$IM_imclose" alt="$profile_txt{'69a'}" title="$profile_txt{'69a'}" /></td>
+            <td class="center"><img src="$imagesdir/{yabb imclose}" alt="$profile_txt{'69a'}" title="$profile_txt{'69a'}" /></td>
             <td class="center"><img src="$imagesdir/$IM_email" alt="$profile_txt{'69'}" title="$profile_txt{'69'}" /></td>
             <td class="center"><img src="$imagesdir/$IM_www" alt="$profile_txt{'96'}" title="$profile_txt{'96'}" /></td>
        </tr>{yabb buddiesCurrentStatus_a}

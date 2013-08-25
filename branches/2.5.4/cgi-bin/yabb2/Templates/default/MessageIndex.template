@@ -32,9 +32,6 @@ else {
     $threadhandelstyle2 = qq~ class="right"~;
 }
 $bdpicExt = 'png';
-$msgbrd_cat_col = 'cat_collapse.png';
-$msgbrd_cal_exp = 'cat_expand.png';
-$msgbrd_new = 'new.gif';
 $paperclip = 'paperclip.gif';
 $msgbrd_addfav ='addfav.png';
 $msgbrd_index_togl = 'index_togl.png';
@@ -85,7 +82,7 @@ if (!$messagelist) {
 			</table>
 			<br />
 <!-- Board Description end -->
-~;
+		{yabb new_load}~;
 	}
 	if (${$uid.$currentboard}{'rules'} == 1) {
 		$messageindex_template .= qq~

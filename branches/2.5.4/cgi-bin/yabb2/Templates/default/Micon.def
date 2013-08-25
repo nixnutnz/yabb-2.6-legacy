@@ -181,7 +181,37 @@ $admin_images = "$yyhtml_root/Templates/Admin/default";
 'off' => qq~<img src="$imagesdir/off.png" alt="" />~,
 'admin_rem' => qq~$imagesdir/admin_rem.gif~,
 'question' => qq~$imagesdir/question.png~,
-'reorder' => qq~$admin_images/reorder.gif~,);
+'reorder' => qq~$admin_images/reorder.gif~,
+);
+
+%newload = (
+'new_mess' => 'new.gif',
+'brd_new' => 'on.png',
+'brd_old' => 'off.png',
+'sub_brd_new' => 'on_sub.png',
+'sub_brd_old' => 'off_sub.png',
+'brd_col' => 'cat_collapse.png',
+'brd_exp' => 'cat_expand.png',
+'imopen' => 'imopen.gif',
+'imopen2' => 'imopen2.gif',
+'imclose' => 'imclose.gif',
+'imclose2' => 'imclose2.gif',
+);
+
+$newload = qq~
+		<script type="text/javascript">
+		var new_mess = "$newload{'new_mess'}";
+		var brd_new = "$newload{'brd_new'}";
+		var brd_old = "$newload{'brd_old'}";
+		var sub_brd_new = "$newload{'sub_brd_new'}";
+		var sub_brd_old = "$newload{'sub_brd_old'}";
+		var brd_col = "$newload{'brd_col'}";
+		var brd_exp = "$newload{'brd_exp'}";
+		var imopen = "$newload{'imopen'}";
+		var imopen2 = "$newload{'imopen2'}";
+		var imclose = "$newload{'imclose'}";
+		var imclose2 = "$newload{'imclose2'}";
+		</script>~;
 
 #####################################################################
 #                   JS Variables for EventCalendar, IMPost, Post    #

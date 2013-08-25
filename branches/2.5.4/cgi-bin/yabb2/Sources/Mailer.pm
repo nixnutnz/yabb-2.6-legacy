@@ -126,11 +126,11 @@ sub sendmail {
         fopen( MAIL, ">>$vardir/mail.log" );
         print {MAIL} 'Mail sent at ' . scalar localtime() . "\n"
           or croak "$croak{'print'} mail";
-        print {MAIL} "To: $toheader\n"           or croak "$croak{'print'} mail";
-        print {MAIL} "From: $fromheader\n"       or croak "$croak{'print'} mail";
+        print {MAIL} "To: $toheader\n"     or croak "$croak{'print'} mail";
+        print {MAIL} "From: $fromheader\n" or croak "$croak{'print'} mail";
         print {MAIL} "X-Mailer: YaBB Sendmail\n"
           or croak "$croak{'print'} mail";
-        print {MAIL} "Subject: $subject\n\n"     or croak "$croak{'print'} mail";
+        print {MAIL} "Subject: $subject\n\n" or croak "$croak{'print'} mail";
         $message =~ s/\r\n/\n/gsm;
         print {MAIL} "$message\n"         or croak "$croak{'print'} mail";
         print {MAIL} "End of Message\n\n" or croak "$croak{'print'} mail";

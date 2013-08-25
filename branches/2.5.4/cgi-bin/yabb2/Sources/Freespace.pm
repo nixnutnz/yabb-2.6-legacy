@@ -91,7 +91,7 @@ sub freespace {
         elsif ($enable_freespace_check) {
             my @x = qx{df -k .};
 
-                # Do an ordinary *nix df -k . command and grab the output
+            # Do an ordinary *nix df -k . command and grab the output
             my $lastline = pop @x;
 
             # should look like: /dev/path 151694892 5495660 134063644 4% /

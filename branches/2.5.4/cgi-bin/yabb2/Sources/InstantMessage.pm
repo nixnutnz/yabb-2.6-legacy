@@ -583,9 +583,9 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
         # SpellChecker start
         if ($enable_spell_check) {
             $yyinlinestyle .= googiea();
-            my $userdefaultlang = ( split /-/xsm, $abbr_lang )[0];
+            $userdefaultlang = ( split /-/xsm, $abbr_lang )[0];
             $userdefaultlang ||= 'en';
-            $im_smilies .= googie();
+            $im_smilies .= googie($userdefaultlang);
         }
 
         # SpellChecker end

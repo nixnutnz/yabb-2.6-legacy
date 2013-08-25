@@ -616,21 +616,21 @@ qq~<a href="javascript:SendRequest('$scripturl?action=collapse_cat;cat=$catid','
                     if ($newmsg) {
                         $mnew = q{new_} . $curboard;
                         $newrowicon{$catname} =
-qq~<img src="$imagesdir/$brdimg_new" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" class="ongif" id="$mnew" />~; 
+qq~<img src="$imagesdir/$newload{'brd_new'}" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" class="ongif" id="$mnew" />~; 
                         $newms{$catname} = $boardindex_exptxt{'5'};
                     }
                     else {
                         $newrowicon{$catname} =
-qq~<img src="$imagesdir/$brdimg_old" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" class="ongif" />~;
+qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" class="ongif" />~;
                         $newms{$catname} = $boardindex_exptxt{'6'};
                     }
                     if ( $catcol{$catid} ) {
                         $hash{$catname} =
-qq~<img src="$imagesdir/$cat_col" id="img$catid" alt="$boardindex_exptxt{'2'}" title="$boardindex_exptxt{'2'}" /></a>~;
+qq~<img src="$imagesdir/$newload{'brd_col'}" id="img$catid" alt="$boardindex_exptxt{'2'}" title="$boardindex_exptxt{'2'}" /></a>~;
                     }
                     else {
                         $hash{$catname} =
-qq~<img src="$imagesdir/$cat_exp" id="img$catid" alt="$boardindex_exptxt{'1'}" title="$boardindex_exptxt{'1'}" /></a>~;
+qq~<img src="$imagesdir/$newload{'brd_exp'}" id="img$catid" alt="$boardindex_exptxt{'1'}" title="$boardindex_exptxt{'1'}" /></a>~;
                     }
                 }
                 else {
@@ -877,19 +877,19 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
                     {
                         $mnew = q{new_} . $curboard;
                         $new =
-qq~<img src="$imagesdir/$brdimg_new" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" class="img_new" id="$mnew" />~;
+qq~<img src="$imagesdir/$newload{'brd_new'}" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" class="img_new" id="$mnew" />~;
                         $new2 =
-qq~<img src="$imagesdir/$brdimg_new_sm" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" class="img_new" id="$mnew" />~; 
+qq~<img src="$imagesdir/$newload{'sub_brd_new'}" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" class="img_new" id="$mnew" />~; 
 
                     }
                     else {
                         $new =
-qq~<img src="$imagesdir/$brdimg_old" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" class="img_new" />~;
+qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" class="img_new" />~;
                     }
                 }
                 else {
                     $new =
-qq~<img src="$imagesdir/$brdimg_old" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" />~;
+qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" />~;
                 }
                 if ( !$bdpic ) {
                     $bdpicExt ||= 'gif';
@@ -1041,11 +1041,11 @@ qq~<a href="$scripturl?action=RSSboard;board=$curboard" target="_blank"><img src
                         elsif ( $new_icon{$childbd} ) {
                             $mnew = q{new_} . $childbd . q{_sub};
                             $sub_new =
-qq~<img src="$imagesdir/$sub_brdimg_new" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" id="$mnew" />~;
+qq~<img src="$imagesdir/$newload{'sub_brd_new'}" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" id="$mnew" />~;
                         } 
                         else {
                             $sub_new =
-qq~<img src="$imagesdir/$sub_brdimg_old" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" />~;
+qq~<img src="$imagesdir/$newload{'sub_brd_old'}" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" />~;
                         }
 
                         my $boardinfotxt =
@@ -1664,6 +1664,7 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
           s/({|<)yabb mostusersdate(}|>)/$themostuserdate/gsm;
         $boardindex_template =~ s/({|<)yabb groupcolors(}|>)/$grpcolors/gsm;
         $boardindex_template =~ s/({|<)yabb sharedlogin(}|>)/$shared_login/gsm;
+        $boardindex_template =~ s/({|<)yabb new_load(}|>)/$newload/gsm;
 
         # EventCal START
         my $cal_display;

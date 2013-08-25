@@ -32,9 +32,9 @@ sub use_smtp {
     my ($port) = ( getservbyname 'smtp', 'tcp' )[2] || 25;
     if ( $smtp_server =~ /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/xsm ) {
         $smtpaddr =
-      ( $smtp_server =~ /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/xsm )
-      ? pack( 'C4', $1, $2, $3, $4 )
-      : ( gethostbyname $smtp_server )[4];
+          ( $smtp_server =~ /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/xsm )
+          ? pack( 'C4', $1, $2, $3, $4 )
+          : ( gethostbyname $smtp_server )[4];
     }
     $sendlog = q{};
     $auth_ok = 0;

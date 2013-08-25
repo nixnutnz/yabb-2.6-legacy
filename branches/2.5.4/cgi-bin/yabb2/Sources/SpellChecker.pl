@@ -33,7 +33,7 @@ $reqXML = q{};
 
 read STDIN, $reqXML, $ENV{'CONTENT_LENGTH'};
 
-$url = "http://orangoo.com/newnox?lang=?$ENV{QUERY_STRING}";
+$url = "http://orangoo.com/newnox?lang=$ENV{'QUERY_STRING'}";
 $res =
   $ua->request( POST $url, Content_Type => 'text/xml', Content => $reqXML );
 

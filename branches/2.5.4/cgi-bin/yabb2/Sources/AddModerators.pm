@@ -31,8 +31,8 @@ LoadLanguage('AddModerators');
 get_template('Other');
 
 sub AddModerators {
-    $addbdmod      = q{};
- 
+    $addbdmod = q{};
+
     *get_subboards = sub {
         my @x = @_;
         $indent += 2;
@@ -44,7 +44,7 @@ sub AddModerators {
               split /\|/xsm, $board{"$board"};
             if (   ${ $uid . $board }{'ann'} == 1
                 || ${ $uid . $board }{'rbin'} == 1
-				|| $boardname =~ m/http:\/\//xsm )
+                || $boardname =~ m/http:\/\//xsm )
             {
                 next;
             }
@@ -64,7 +64,7 @@ sub AddModerators {
     foreach my $catid (@categoryorder) {
         (@bdlist) = split /\,/xsm, $cat{$catid};
         ( $catname, undef, undef, undef ) = split /\|/xsm, $catinfo{"$catid"};
-		ToChars($catname);
+        ToChars($catname);
         $addbdmod .= qq~<option disabled="disabled">$catname</option>\n~;
         foreach my $board (@bdlist) {
             $modsel     = q{};

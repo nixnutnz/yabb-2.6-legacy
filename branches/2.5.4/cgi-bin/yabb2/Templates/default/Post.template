@@ -55,21 +55,21 @@ $mypost_postblock = qq~
     {yabb my_prevmain}{yabb name_field}{yabb email_field}{yabb verification_field}{yabb verification_question_field}
     <tr class="windowbg">
         <td{yabb guestcol}>
-			<div style="height:16px;">
-				<img  src="$imagesdir/$cat_exp" name="prevwin" id="prevwin" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor: pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
+            <div style="height:16px;">
+                <img  src="$imagesdir/$cat_exp" name="prevwin" id="prevwin" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor: pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
             </div>
         </td>
    </tr>
-</table>   
+</table>
    {yabb my_postsection_ajx}
 <table class="pad_3px" style="table-layout: fixed$my_spacer">
     <col style="width: 23%" />
     <tr class="windowbg">
         <td colspan="2">
             <div id="savetable" class="windowbg" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
-		{yabb messageblock}
-		    <div id="checktable" class="small" style="float: right; text-align: left; width: 77%; padding: 6px; margin: 0px; display: none;"></div>
-		</div>
+        {yabb messageblock}
+            <div id="checktable" class="small" style="float: right; text-align: left; width: 77%; padding: 6px; margin: 0px; display: none;"></div>
+        </div>
        </td>
     </tr>
         {yabb my_t_status}{yabb extra}
@@ -99,7 +99,7 @@ $mypost_postblock = qq~
             <input type="checkbox" name="ns" id="ns" value="NS"{yabb nscheck} onchange="autoPreview()" /> <span class="small"> <label for="ns">$post_txt{'277'}</label></span>
         </td>
     </tr>
-    {yabb return_to} 
+    {yabb return_to}
     <tr id="feature_status_8" class="windowbg">
         <td>
             <div id="enable_iecopytext" style="display: none;">
@@ -113,7 +113,7 @@ $mypost_postblock = qq~
         </td>
     </tr>{yabb lastmod}~;
 
-$mypost_formend = q~    
+$mypost_formend = q~
             </script>
             <br /><br />
         </td>
@@ -134,8 +134,8 @@ $mypost_reason = qq~
             </tr><tr>~;
 
 $mypost_preview_main = qq~<tr class="windowbg">
-			    <td class="vtop"><b>$post_txt{'507'}</b></td>
-				<td>{yabb prevmain}</td>
+                <td class="vtop"><b>$post_txt{'507'}</b></td>
+                <td>{yabb prevmain}</td>
         </tr>~;
 
 $mypost_topicstatus = qq~
@@ -193,16 +193,16 @@ $mypost_submit = qq~<tr>
         <td class="titlebg center" colspan="2">~;
 
 $mypost_smiley1 = qq~
-            document.write('<table class="bordercolor pad_2px border" style="height:90px; width:120px"><tr>');
-            document.write('<td class="titlebg center h_15px"><span class="small"><b>$post_smiltxt{'1'}</b></span></td>');
-            document.write('</tr><tr><td class="windowbg2 center vtop h_20px">');
+            document.write('<table class="smiley_top" style="width:124px"><tr>');
+            document.write('<td class="center"><span class="small"><b>$post_smiltxt{'1'}</b></span></td></td></table>');
+            document.write('<table class="pad_2px cs_thin smiley_box"><tr><td class="center vtop h_20px">');
             document.write('<select name="smiliextra_list" onchange="document.images.smiliextra_image.src= smilieurl[document.postmodify.smiliextra_list.value]" style="width:114px; font-size:7pt;">');
             {yabb smilieslist}
             document.write('</select></td>');
             document.write('</tr><tr>');
-            document.write('<td class="windowbg2 center h_70px"><img name="smiliextra_image" src="'+smilieurl[0]+'" alt="" onclick="javascript: Smiliextra();" class="cursor"></td>');
+            document.write('<td class="center h_70px"><img name="smiliextra_image" src="'+smilieurl[0]+'" alt="" onclick="javascript: Smiliextra();" class="cursor"></td>');
             document.write('</tr><tr>');
-            document.write('<td class="windowbg2 center h_15px"><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span></td>');
+            document.write('<td class="center h_15px"><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span></td>');
             document.write('</tr></table>');
             document.images.smiliextra_image.src = smilieurl[document.postmodify.smiliextra_list.value];
             //-->
@@ -214,12 +214,12 @@ $mypost_feata = q~
     </tr><tr>
         <td class="windowbg2 bottom">~;
 
-$mypost_prevmain = q{};		
+$mypost_prevmain = q{};
 $x_mypost_prevmain = qq~
     <script type="text/javascript" src="$yyhtml_root/ubbc.js"></script>
     <div class="bordercolor" style="padding: 1px; width: 100%; margin-left: auto; margin-right: auto;">
         <table class="windowbg pad_3px" style="table-layout: fixed;">
-			<tr>
+            <tr>
                 <td class="windowbg2">
                     <div class="message" style="overflow:auto;">{yabb cmessage}</div>
                 </td>
@@ -297,7 +297,7 @@ $mypost_showmessages_a = qq~<table class="pad_3px" style="table-layout: fixed;">
             <span class="small">$post_txt{'279'}: {yabb displaynamelink}<br />$post_txt{'280'}: {yabb tempdate}</span>
         </td>
         <td class="catbg right">
-             {yabb my_enable_markquote}{yabb my_enable_quickjump}    
+             {yabb my_enable_markquote}{yabb my_enable_quickjump}
         </td>
     </tr><tr>
         <td class="windowbg2" style="height:30px" colspan="2">
@@ -309,7 +309,7 @@ $mypost_showmessages_a = qq~<table class="pad_3px" style="table-layout: fixed;">
 </table>
 ~;
 
-## poll 
+## poll
 $mypost_poll_top = qq~
 <table class="windowbg pad_3px">
     <col style="width:250px" />
@@ -359,7 +359,7 @@ $my_poll_comment = qq~<tr>
         ## textarea cannot be in template##
 $my_poll_comment_b = q~</td>
     </tr>~;
-    
+
 $mypost_poll_pie = qq~<tr>
         <td class="windowbg2" colspan="5" style="font-size: 3px;">
             <script type="text/javascript">
@@ -471,7 +471,7 @@ $mypost_guest_c = qq~<tr>
                     <input type="text" maxlength="30" name="verification" id="verification" size="30" onchange="autoPreview()" />
                 </td>
             </tr>~;
-      
+
 $mypost_guest_e = qq~<tr>
                 <td class="windowbg vtop">
                    <label for="verification_question">
@@ -585,8 +585,8 @@ $mypost_liveprev = qq~
     </div>
     </div>~;
 
-   
-## ModifyPost insert    
+
+## ModifyPost insert
 $mypost_lastmod = qq~<tr class="windowbg">
         <td class="vtop"><b>$post_txt{'211'}:</b></td>
         <td>{yabb lastmod_a}</td>

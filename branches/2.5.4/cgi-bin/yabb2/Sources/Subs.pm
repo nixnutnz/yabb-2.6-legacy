@@ -366,7 +366,7 @@ qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp;
         $aa =~ s/<.+?>//gxsm;
         if ( $mytimeselected == 6 ) { $bb = q{ }; }
         $yytime =
-qq~&nbsp;<script  type="text/javascript">\n<!--\nWriteClock('yabbclock','$aa','$bb');\n//-->\n</script>~;
+qq~&nbsp;<script  type="text/javascript">\nWriteClock('yabbclock','$aa','$bb');\n</script>~;
         $yyjavascripta .=
             qq~\n\nvar OurTime = ~
           . sprintf( '%d', ( $date + ( 3600 * $toffs ) ) )
@@ -599,14 +599,12 @@ qq~ $maintxt{'377'} <a href="$scripturl?action=register">$maintxt{'97'}</a>~;
                 $yyadmin_alert =
 qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a>.$yyadmin_alert~;
                 $yymain .= qq~<script type="text/javascript">
-            <!--
             window.setTimeout("Noti_Popup();", 1000);
             function Noti_Popup() {
                 if (confirm('$notify_txt{'200'} $noti_text.\\n$notify_txt{'203'}'))
                     window.location.href='$scripturl?action=shownotify';
             }
-            //-->
-            </script>~;
+             </script>~;
             }
         }
     }
@@ -653,7 +651,6 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
             $fadedelay = $maxsteps * $stepdelay;
             $yynews .= qq~
             <script type="text/javascript">
-                <!--
                     var index = $startnews;
                     var maxsteps = "$maxsteps";
                     var stepdelay = "$stepdelay";
@@ -754,7 +751,6 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
                         window.attachEvent("onload", changecontent);
                     else if (document.getElementById)
                         window.onload = changecontent;
-                // -->
             </script>
         ~;
         }
@@ -904,7 +900,6 @@ s/"((avatar|avatarml|post|attach|signat)_img_resize)"([^>]*>)/ check_image_resiz
     if ($resize_num) {
         $resize_js =~ s/,$//xsm;
         $resize_js = qq~<script type="text/javascript">
-<!--
     // resize image start
     var resize_time = 2;
     var img_resize_names = new Array ($resize_js);
@@ -930,7 +925,6 @@ s/"((avatar|avatarml|post|attach|signat)_img_resize)"([^>]*>)/ check_image_resiz
 
     resize_images();
     // resize image end
-// -->
 </script>~;
 
         $output =~ s/(<\/body>)/$resize_js\n$1/sm;
@@ -1691,8 +1685,7 @@ sub enc_eMail {
 	$title =~ s/(((<.+?>)|&#\d+;)|.)/ enc_eMail_x($1,$2,$3) /egsm;
 
     return
-qq~<script type='text/javascript'>\n<!--\nSpamInator("$title","$code1","$code2","&#109;&#97;&#105;&#108;&#92;&#117;&#48;&#48;&#55;&#52;&#111;&#92;&#117;&#48;&#48;&#51;&#97;","$subbody");\n// -->\n</script><noscript>$maintxt{'noscript'}</noscript>~;
-
+qq~<script type='text/javascript'>\nSpamInator("$title","$code1","$code2","&#109;&#97;&#105;&#108;&#92;&#117;&#48;&#48;&#55;&#52;&#111;&#92;&#117;&#48;&#48;&#51;&#97;","$subbody");\n</script><noscript>$maintxt{'noscript'}</noscript>~;
 }
 
 sub generate_code {
@@ -2864,9 +2857,7 @@ sub alertbox {
     my ($alert) = @_;
     $yymain .= qq~
 <script type="text/javascript">
-    <!--
         alert("$alert");
-    // -->
 </script>~;
     return;
 }
@@ -3097,7 +3088,7 @@ sub sizefont {
     if    ( !$fontsizemin )         { $fontsizemin = 6; }
     if    ( $tsize < $fontsizemin ) { $tsize       = $fontsizemin; }
     elsif ( $tsize > $fontsizemax ) { $tsize       = $fontsizemax; }
-    return qq~<span style="font-size: $tsize\pt;">$ttext</span><!--size-->~;
+    return qq~<span style="font-size: $tsize\pt;">$ttext</span>~;
 }
 
 sub regex_1 {

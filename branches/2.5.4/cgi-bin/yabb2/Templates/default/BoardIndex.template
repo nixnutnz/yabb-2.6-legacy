@@ -18,18 +18,12 @@ $boardhandellist = qq~
 ~;
 $bdpicExt = 'png'; 
 ## for the default announcement, recycle, subboard and regular board markers ## 
-$brdimg_new = 'on.png';
-$brdimg_old = 'off.png';
-$sub_brdimg_new = 'on_sub.png';
-$sub_brdimg_old = 'off_sub.png';
 $brd_dropdown = 'dropdown.png';
 $brd_dropup = 'dropup.png';
 $brd_arrowup = 'arrowup.gif';
 $brd_loadbar = 'loadbar.gif';
 $brd_info = 'info.png';
 $brd_online = 'online.png';
-$cat_col = 'cat_collapse.png';
-$cat_exp = 'cat_expand.png';
 $brd_fadeleftdropdown = 'fadeleftdropdown.gif';
 $brd_faderightdropdown = 'faderightdropdown.gif';
 $brd_closebutton = 'closebutton.png';
@@ -52,14 +46,15 @@ $boardindex_template = qq~
 ~;
 
 if(!$iamguest && !$subboard_sel) {
+get_micon();
 $boardindex_template .= qq~
 <!-- Board Index Button Bar start -->
 		<table class="bordercolor pad_4px">
 		    <col style="width:50%" />
 			<tr class="windowbg">
 				<td class="small">
-						<span class="small bold"><img src="$imagesdir/$brdimg_new" id="no_edit" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" /> $boardindex_txt{'333'}&nbsp;&nbsp;
-						<img src="$imagesdir/$brdimg_old" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" /> $boardindex_txt{'334'}</span>
+						<span class="small bold"><img src="$imagesdir/$newload{'brd_new'}" id="no_edit" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" /> $boardindex_txt{'333'}&nbsp;&nbsp;
+						<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" /> $boardindex_txt{'334'}</span>
 				</td><td class="right small">
 						{yabb boardhandellist}
 				</td>
@@ -144,10 +139,9 @@ $boardindex_template .= qq~
 <!-- ## Cal Mod ## -->
 	{yabb sharedlogin}
 <!-- Info Center block end -->
-		<script type="text/javascript">
-		var brd_col = '$cat_col';
-		var brd_exp = '$cat_exp';
-		</script>~;
+		{yabb new_load}
+		~;
+
 }
 
 # Category header                          #

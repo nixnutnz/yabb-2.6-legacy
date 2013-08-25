@@ -479,6 +479,7 @@ qq~<link href="$yyhtml_root/googiespell/googiespell.css" rel="stylesheet" type="
 }
 
 sub googie {
+    my ($userdefaultlang) = @_;
     $googie = qq~
             <script type="text/javascript">
             <!--

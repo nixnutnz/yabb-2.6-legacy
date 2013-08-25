@@ -964,9 +964,9 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         # SpellChecker start
         if ($enable_spell_check) {
             $yyinlinestyle .= googiea();
-            my $userdefaultlang = ( split /-/xsm, $abbr_lang )[0];
+            $userdefaultlang = ( split /-/xsm, $abbr_lang )[0];
             $userdefaultlang ||= 'en';
-            $my_googie = googie();
+            $my_googie = googie($userdefaultlang);
         }
 
         # SpellChecker end

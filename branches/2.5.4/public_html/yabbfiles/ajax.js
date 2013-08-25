@@ -145,27 +145,27 @@ function MarkFinished() {
         var images = document.getElementsByTagName("img");
         for (var i=0; i<images.length; i++) {
             var src = images[i].getAttribute("src");
-            if (src.match("/on.png") && images[i].getAttribute("id") == boardid) {
-                document.getElementById(boardid).src = imagedir + "/off.png";
+            if (src.match("/" + brd_new ) && images[i].getAttribute("id") == boardid) {
+                document.getElementById(boardid).src = imagedir + "/" + brd_old;
             }
-            else if (src.match("/on_sub.png") && images[i].getAttribute("id") == boardid_sub) {
-                document.getElementById(boardid_sub).src = imagedir + "/sub_off.png";
+            else if (src.match("/" + sub_brd_new) && images[i].getAttribute("id") == boardid_sub) {
+                document.getElementById(boardid_sub).src = imagedir + "/" + sub_brd_old;
             }
             else if (!images[i].id.match("no_edit") && boardid == 1) {
-                if (src.match("/on.png")) {
-                    images[i].setAttribute("src",src.replace("/on.png","/off.png"));
+                if (src.match("/" + brd_new )) {
+                    images[i].setAttribute("src",src.replace("/" + brd_new ,"/" + brd_old));
                 }
-                else if (src.match("/on_sub.png")) {
-                    images[i].setAttribute("src",src.replace("/on_sub.png","/off_sub.png"));
+                else if (src.match("/" + sub_brd_new)) {
+                    images[i].setAttribute("src",src.replace("/" + sub_brd_new,"/" + sub_brd_old));
                 } 
             } 
-            else if (src.match("imclose.gif")) {
-                images[i].setAttribute("src",src.replace("imclose.gif","imopen.gif"));
+            else if (src.match(imclose)) {
+                images[i].setAttribute("src",src.replace(imclose,imopen));
             }
-            else if (src.match("imclose2.gif")) {
-                images[i].setAttribute("src",src.replace("imclose2.gif","imopen2.gif"));
+            else if (src.match(imclose2)) {
+                images[i].setAttribute("src",src.replace(imclose2,imopen2));
             }
-            else if (src.match("new.gif")) {
+            else if (src.match(new_mess)) {
                 images[i].style.display = "none";
             }
         }

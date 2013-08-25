@@ -71,7 +71,7 @@ sub LoadBoardControl {
             'brdpasswr'     => $brdpasswr,
             'brdpassw'      => $brdpassw,
             'brdrss'        => $cntbdrss,
-		);
+        );
         if ( $cntann == 1 )  { $annboard = $cntboard; }
         if ( $cntrbin == 1 ) { $binboard = $cntboard; }
     }
@@ -455,11 +455,11 @@ sub LoadUserDisplay {
         # use height like code boxes do. Set to 200px at > 15 newlines
         if ( 15 < ${ $uid . $user }{'signature'} =~ /<br \/>|<tr>/gsm ) {
             ${ $uid . $user }{'signature'} =
-qq~<div class="load_sig">${$uid.$user}{'signature'}</div>~;
+              qq~<div class="load_sig">${$uid.$user}{'signature'}</div>~;
         }
         else {
             ${ $uid . $user }{'signature'} =
-qq~<div class="load_sig_b">${$uid.$user}{'signature'}</div>~;
+              qq~<div class="load_sig_b">${$uid.$user}{'signature'}</div>~;
         }
     }
 
@@ -951,7 +951,7 @@ sub MakeTools {
     </div>
     ~
       : qq~$load_con{'actionslock'}~;
-	  $tools_template =~ s/{yabb actionlock}/$maintxt{'64'}/gsm;
+    $tools_template =~ s/{yabb actionlock}/$maintxt{'64'}/gsm;
 
     return $tools_template;
 }
@@ -1070,7 +1070,7 @@ sub UpdateCookie {
             -expires => "$expiration"
         );
 
-        my $adminpass = 'adminpass';
+        my $adminpass   = 'adminpass';
         my $admincookie = "$cookieusername$adminpass";
         if ( $yyCookies{$admincookie} ) {
             push @otherCookies,

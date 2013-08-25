@@ -400,9 +400,9 @@ qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
         # SpellChecker start
         if ($enable_spell_check) {
             $yyinlinestyle .= googiea();
-            my $userdefaultlang = ( split /-/xsm, $abbr_lang )[0];
+            $userdefaultlang = ( split /-/xsm, $abbr_lang )[0];
             $userdefaultlang ||= 'en';
-            $mycalout_googie = googie();
+            $mycalout_googie = googie($userdefaultlang);
         }
 
         # SpellChecker end
@@ -541,23 +541,23 @@ qq~<br /><b>$var_cal{'by'}</b> <span id="savename"></span> ($var_cal{'guest'})~;
 
         $my_postsection_ajx = my_check_prev();
     }
-	
+
     $my_subcheck = qq~
 <script type="text/javascript">
-	var postas = '$post';
-	function checkForm(theForm) {
-		var isError = 0;
-		var msgError = "$post_txt{'751'}\\n";
+    var postas = '$post';
+    function checkForm(theForm) {
+        var isError = 0;
+        var msgError = "$post_txt{'751'}\\n";
     ~;
     if ($iamguest) {
         $my_subcheck .=
 qq~if (theForm.name.value === "" || theForm.name.value == "_" || theForm.name.value == " ") { msgError += "\\n - $post_txt{'75'}"; if (isError === 0) isError = 2; }
-		if (theForm.name.value.length > 25)  { msgError += "\\n - $post_txt{'568'}"; if (isError === 0) isError = 2; }
-		if (theForm.email.value === "") { msgError += "\\n - $post_txt{'76'}"; if (isError === 0) isError = 3; }
-		if (! checkMailaddr(theForm.email.value)) { msgError += "\\n - $post_txt{'500'}"; if (isError === 0) isError = 3; }~;
-	}
-	
-	$my_subcheck .= qq~
+        if (theForm.name.value.length > 25)  { msgError += "\\n - $post_txt{'568'}"; if (isError === 0) isError = 2; }
+        if (theForm.email.value === "") { msgError += "\\n - $post_txt{'76'}"; if (isError === 0) isError = 3; }
+        if (! checkMailaddr(theForm.email.value)) { msgError += "\\n - $post_txt{'500'}"; if (isError === 0) isError = 3; }~;
+    }
+
+    $my_subcheck .= qq~
     if (theForm.message.value === "") { msgError += "\\n - $post_txt{'78'}"; if (isError === 0) isError = 5; }
     else if ($checkallcaps && theForm.message.value.search(/[A-Z]{$checkallcaps,}/g) != -1) {
         if (isError === 0) { msgError = " - $post_txt{'79'}"; isError = 5; }
@@ -576,7 +576,7 @@ qq~if (theForm.name.value === "" || theForm.name.value == "_" || theForm.name.va
 </script>
 ~;
 
-   $mycalout_post = qq~
+    $mycalout_post = qq~
 <script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
 $my_subcheck
 <form action="$scripturl?action=add_cal" name="postmodify" method="post" onsubmit="if(!checkForm(this)) {return false} else {return submitproc()}" accept-charset="$yycharset">

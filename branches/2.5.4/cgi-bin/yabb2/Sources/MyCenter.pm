@@ -1729,6 +1729,7 @@ qq~$mycenter_txt{'buddylisttitle'}:<br />$buddiesCurrentStatus~;
 
             $MCPmMenu_markall = $my_markall;
             $MCPmMenu_markall =~ s/{yabb MCPmMenu_strtot}/$MCPmMenu_strtot/sm;
+            $MCPmMenu_markall =~ s/{yabb new_load}/$newload/sm;
 
             $yyjavascript .=
 qq~\nvar markallreadlang = '$inmes_txt{'500'}';\nvar markfinishedlang = '$inmes_txt{'500a'}';~;
@@ -2104,10 +2105,11 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musernameto}" r
 
                 ## viewing inbox
                 if ( $action eq 'im' ) {
+					get_micon();
                     ## not opened
                     if ( !$imOpened && !$hasMultiRecs ) {
                         $messageIcon =
-qq~<img src="$imagesdir/$IM_imclose" alt="$inmes_imtxt{'innotread'}" title="$inmes_imtxt{'innotread'}" />~;
+qq~<img src="$imagesdir/$newload{'imclose'}" alt="$inmes_imtxt{'innotread'}" title="$inmes_imtxt{'innotread'}" />~;
                     }
                     ## replied to
                     elsif ( $imRepliedTo && !$hasMultiRecs ) {
@@ -2117,17 +2119,17 @@ qq~<img src="$imagesdir/$IM_answered" alt="$inmes_imtxt{'08'}" title="$inmes_imt
                     ## opened
                     elsif ( $imOpened && !$hasMultiRecs ) {
                         $messageIcon =
-qq~<img src="$imagesdir/$IM_imopen" alt="$inmes_imtxt{'inread'}" title="$inmes_imtxt{'inread'}" />~;
+qq~<img src="$imagesdir/$newload{'imopen'}" alt="$inmes_imtxt{'inread'}" title="$inmes_imtxt{'inread'}" />~;
                     }
                     ## not opened multi
                     elsif ( !$imOpened && $hasMultiRecs ) {
                         $messageIcon =
-qq~<img src="$imagesdir/$IM_imclose2" alt="$inmes_imtxt{'inread'}" title="$inmes_imtxt{'inread'}" />~;
+qq~<img src="$imagesdir/$newload{'imclose2'}" alt="$inmes_imtxt{'inread'}" title="$inmes_imtxt{'inread'}" />~;
                     }
                     ## opened multi
                     elsif ( $imOpened && $hasMultiRecs ) {
                         $messageIcon =
-qq~<img src="$imagesdir/$IM_imopen2" alt="$inmes_imtxt{'inread'}" title="$inmes_imtxt{'inread'}" />~;
+qq~<img src="$imagesdir/$newload{'imopen2'}" alt="$inmes_imtxt{'inread'}" title="$inmes_imtxt{'inread'}" />~;
                     }
                 }
 
@@ -2140,13 +2142,13 @@ qq~<img src="$imagesdir/$IM_imopen2" alt="$inmes_imtxt{'inread'}" title="$inmes_
                             || $enable_notifications < 2 )
                         {
                             $messageIcon =
-qq~<img src="$imagesdir/$IM_imclose" alt="$inmes_imtxt{'outnotread'}" title="$inmes_imtxt{'outnotread'}" />~;
+qq~<img src="$imagesdir/$newload{'imclose'}" alt="$inmes_imtxt{'outnotread'}" title="$inmes_imtxt{'outnotread'}" />~;
                             $callBack =
 qq~<span class="small"><a href="$scripturl?action=imcb;rid=$messageid;receiver=$useraccount{$musernameto}" onclick="return confirm('$inmes_imtxt{'73'}')">$inmes_imtxt{'83'}</a> | </span>~;
                         }
                         else {
                             $messageIcon =
-qq~<img src="$imagesdir/$IM_imclose" alt="$inmes_imtxt{'outnotread'}" title="$inmes_imtxt{'outnotread'}" />~;
+qq~<img src="$imagesdir/$newload{'imclose'}" alt="$inmes_imtxt{'outnotread'}" title="$inmes_imtxt{'outnotread'}" />~;
                         }
                     }
                     ## opened
@@ -2154,7 +2156,7 @@ qq~<img src="$imagesdir/$IM_imclose" alt="$inmes_imtxt{'outnotread'}" title="$in
                         $messageIcon =
                           $messageFlags =~ /c/ism
                           ? qq~<img src="$imagesdir/$IM_callback"  alt="$inmes_imtxt{'callback'}" title="$inmes_imtxt{'callback'}" />~
-                          : qq~<img src="$imagesdir/$IM_imopen"  alt="$inmes_imtxt{'outread'}" title="$inmes_imtxt{'outread'}" />~;
+                          : qq~<img src="$imagesdir/$newload{'imopen'}"  alt="$inmes_imtxt{'outread'}" title="$inmes_imtxt{'outread'}" />~;
                     }
 
                     ## for multi rec, and none opened
@@ -2179,7 +2181,7 @@ qq~<img src="$imagesdir/$IM_imclose" alt="$inmes_imtxt{'outnotread'}" title="$in
                         }
                         if ( !$countread ) {
                             $messageIcon =
-qq~<img src="$imagesdir/$IM_imclose2" alt="$inmes_imtxt{'outmultinotread'}" title="$inmes_imtxt{'outmultinotread'}" />~;
+qq~<img src="$imagesdir/$newload{'imclose2'}" alt="$inmes_imtxt{'outmultinotread'}" title="$inmes_imtxt{'outmultinotread'}" />~;
                             $callBack =
 qq~<span class="small"><a href="$scripturl?action=imcb;rid=$messageid;receiver=~
                               . join( q{,}, @receivers )
@@ -2189,7 +2191,7 @@ qq~<span class="small"><a href="$scripturl?action=imcb;rid=$messageid;receiver=~
                             $messageIcon =
                               $messageFlags =~ /c/ism
                               ? qq~<img src="$imagesdir/$IM_imcallback2" alt="$inmes_imtxt{'outmulticallback'}" title="$inmes_imtxt{'outmulticallback'}" />~
-                              : qq~<img src="$imagesdir/$IM_imopen2" alt="$inmes_imtxt{'outmultiread'}" title="$inmes_imtxt{'outmultiread'}" />~;
+                              : qq~<img src="$imagesdir/$newload{'imopen2'}" alt="$inmes_imtxt{'outmultiread'}" title="$inmes_imtxt{'outmultiread'}" />~;
                         }
                         else {
                             $messageIcon =
@@ -2909,7 +2911,7 @@ qq~<a href="mailto:${$uid.$buddyname}{'email'}"><img src="$imagesdir/$IM_email" 
               )
             {
                 $buddypm =
-qq~<a href="$scripturl?action=imsend;to=$useraccount{$buddyname}"><img src="$imagesdir/$IM_imclose"  alt="$profile_txt{'688'} $buddyrealname" title="$profile_txt{'688'} $buddyrealname" /></a>~;
+qq~<a href="$scripturl?action=imsend;to=$useraccount{$buddyname}"><img src="$imagesdir/$newload{'imclose'}"  alt="$profile_txt{'688'} $buddyrealname" title="$profile_txt{'688'} $buddyrealname" /></a>~;
             }
 
             if ( !$minlinkweb ) { $minlinkweb = 0; }
