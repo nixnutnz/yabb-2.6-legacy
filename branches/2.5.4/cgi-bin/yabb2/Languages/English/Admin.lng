@@ -632,7 +632,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 );
 
 %admintxt = (
-'1' => 'Welcome to your YaBB Administration Center',
+'1' => qq~Welcome to your '$mbname' Administration Center~,
 '2' => 'This is your &#39;YaBB Admin Center&#39;. You can modify your forum preferences, edit your template and run maintenance on your forum from here. Please be careful with these functions!<br /><br />Please read the Quick-Guide or refer to the info in the Help section of your forum before you contact any form of support. If you need further help you may find answers to your problems on the YaBB Support Codex or the YaBB Chat and Support Community forum.<br /><br />We thank you for using YaBB!',
 '3' => 'Version Information',
 '4' => 'What&#39;s new at YaBB?',
@@ -643,7 +643,7 @@ $adminlngver = 'YaBB 2.5.4 $Revision$';
 '9' => 'Delete old Back-up files',
 '10' => 'Old Back-up files deleted',
 '11' => 'Detailed Version Check',
-'15' => 'Return to your forum',
+'15' => 'Return to',
 '17' => 'View/Delete Members',
 '17a' => 'Add Member',
 '18' => 'Edit Member Groups',

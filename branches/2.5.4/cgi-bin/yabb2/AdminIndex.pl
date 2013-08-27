@@ -347,7 +347,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
     ParseNavArray(@forum_stats);
     ParseNavArray(@boardmod_mods);
 
-    $topmenu_one = qq~<a href="$boardurl/$yyexec.$yyext">$admintxt{'15'}</a>~;
+    $topmenu_one = qq~<a href="$boardurl/$yyexec.$yyext">$admintxt{'15'} $mbname</a>~;
     $topmenu_two = qq~<a href="$adminurl">$admintxt{'33'}</a>~;
     $topmenu_tree =
       qq~<a href="$scripturl?action=help;section=admin">$admintxt{'35'}</a>~;
@@ -381,6 +381,7 @@ qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{
     $topnav      =~ s/({|<)yabb\ topmenu_two(}|>)/$topmenu_two/xsm;
     $topnav      =~ s/({|<)yabb\ topmenu_tree(}|>)/$topmenu_tree/xsm;
     $topnav      =~ s/({|<)yabb\ topmenu_four(}|>)/$topmenu_four/xsm;
+    $topnav      =~ s/({|<)yabb\ brdname(}|>)/$mbname/xsm;
 
     if ($debug) { Debug(); }
     $mainbody =~ s/({|<)yabb\ main(}|>)/$yymain/gxsm;
