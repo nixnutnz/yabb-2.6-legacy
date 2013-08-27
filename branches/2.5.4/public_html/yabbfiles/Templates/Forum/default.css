@@ -85,7 +85,7 @@ position: relative;
 top: -0.4em;
 }
 
-.button, [type=submit], [type=reset], [type=button]  {
+.button, input[type="submit"], input[type="reset"], input[type="button"] { 
 background-color:#F8G8F8;
 border:1px solid #C6C6C6;
 color:#000;
@@ -130,7 +130,7 @@ input:hover, input:focus, textarea:hover, textarea:focus, select:hover, select:f
 background-color:#F5F5F5;
 }
 
-.button:hover, [type=submit]:hover, [type=reset]:hover, [type=button]:hover  {
+.button:hover, input[type="submit"]:hover, input[type="reset"]:hover, input[type="button"]:hover {
 background-color:#FFF;
 }
 

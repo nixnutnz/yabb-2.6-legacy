@@ -1537,7 +1537,7 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
                 GetXmlHttpObject();
                 if (xmlHttp == null) return;
                 xmlHttp.open("GET",url,true);
-                //xmlHttp.send(null);
+                xmlHttp.send(null);
             }
             -->
             </script>
@@ -1816,7 +1816,9 @@ sub collapse_bdrule {
     $tmpboardrules =~ s/\|\Z//xsm;
     ${ $uid . $username }{'collapsebdrules'} = $tmpboardrules;
     UserAccount( $username, 'update' );
-    return;
+    $elenable = 0;
+    croak q{};
+	return;
 }
 
 sub MarkRead {    # Mark all threads in this board as read.

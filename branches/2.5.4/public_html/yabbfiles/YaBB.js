@@ -232,15 +232,15 @@ function get_selection(msg_id, qinfo) {
 				break;
 			}
 		}
-		str = str.replace(/<a class="message" href="http:\/\/(.+?)num=([0-9\/\#]+?)">(.*?)<\/a>\s*(.+?)<br[^>]*><div class="quote" id="(.+?)"[^>]*>(.*?)<\/div>/i, "[quote" + allInfo + "]" + sqmess + "[/quote]");
+		str = str.replace(/<a class="message" href="http:\/\/(.+?)num=([0-9\/\#]+?)">(.*?)<\/a>\s*(.+?)<br[^>]*><div class="quote" id="(.+?)"[^>]*>(.*?)<\/div><\!--\5-->/i, "[quote" + allInfo + "]" + sqmess + "[/quote]");
 
-		str = str.replace(/<a class="message" href="http:\/\/(.+?)num=([0-9\/\#]+?)">(.*?)<\/a>\s*(.+?)<br[^>]*><div (.*?) id="(.+?)" class="quote"[^>]*>(.*?)<\/div>/i, "[quote" + allInfo + "]" + sqmess + "[/quote]");
+		str = str.replace(/<a class="message" href="http:\/\/(.+?)num=([0-9\/\#]+?)">(.*?)<\/a>\s*(.+?)<br[^>]*><div (.*?) id="(.+?)" class="quote"[^>]*>(.*?)<\/div><\!--\6-->/i, "[quote" + allInfo + "]" + sqmess + "[/quote]");
 
 	}
-	while ( b=str.match(/<a class="message" href="http:\/\/(.+?)num=([0-9\/\#]+?)">(.*?)<\/a>\s*(.+?)<br[^>]*><div class="quote" id="(.+?)"[^>]*>(.*?)<\/div>/i) ) {
+	while ( b=str.match(/<a class="message" href="http:\/\/(.+?)num=([0-9\/\#]+?)">(.*?)<\/a>\s*(.+?)<br[^>]*><div class="quote" id="(.+?)"[^>]*>(.*?)<\/div><\!--\5-->/i) ) {
 		nstsquoteInfo(b[2], b[6]);
 	}
-	while ( b=str.match(/<a class="message" href="http:\/\/(.+?)num=([0-9\/\#]+?)">(.*?)<\/a>\s*(.+?)<br[^>]*><div (.*?) id="(.+?)" class="quote"[^>]*>(.*?)<\/div>/i) ) {
+	while ( b=str.match(/<a class="message" href="http:\/\/(.+?)num=([0-9\/\#]+?)">(.*?)<\/a>\s*(.+?)<br[^>]*><div (.*?) id="(.+?)" class="quote"[^>]*>(.*?)<\/div><\!--\6-->/i) ) {
 		nstsquoteInfo(b[2], b[7]);
 	}
 
@@ -251,7 +251,7 @@ function get_selection(msg_id, qinfo) {
 		simplequoteInfo(bs[3]);
 	}
 
-	str = str.replace(/<p align=(.*)>(.*?)<\/p>/ig, "[$1]$2[\/$1]");
+	str = str.replace(/<p style="text-align:(.*)">(.*?)<\/p>/ig, "[$1]$2[\/$1]");
 	str = str.replace(/<img class="smil"(.*?)data-rel="(\S.+?)"(.*?)>/ig, "$2");
 	function imagemsg(ul, s) {
 		var wid = '';
@@ -285,16 +285,16 @@ function get_selection(msg_id, qinfo) {
 	while(ccr=str.match(/<pre(.*?)class="(.+?)"[^>]*>(.+?)<\/pre>/i)) { codemsg(ccr[2],ccr[3]) }
 
 	str = str.replace(/<span class="sh_(.+?)">(.+?)<\/span>/ig, "$2");
-	str = str.replace(/<span style="(.*?)font-size:\s*(\d+)(px|pt);">(.+?)<\/span>/ig, "[size=$2]$4[/size]");
-	str = str.replace(/<span style="(.*?)font-family:\s*(.+?);">(.+?)<\/span>/ig, "[font=$2]$3[/font]");
-	str = str.replace(/<span style="(.*?)color:\s*(.+?);">(.+?)<\/span>/ig, "[color=$2]$3[/color]");
-	str = str.replace(/<div style="text-align: left;">(.+?)<\/div>/ig, "[left]$1[/left]");
-	str = str.replace(/<div style="text-align: right;">(.+?)<\/div>/ig, "[right]$1[/right]");
-	str = str.replace(/<div style="text-align: justify;">(.+?)<\/div>/ig, "[justify]$1[/justify]");
-	str = str.replace(/<b>(.+?)<\/b><br[^>]*><div(.*?)class="editbg"[^>]*>(.+?)<\/div>/ig, "[edit]$3[/edit]");
-	str = str.replace(/<span class="u">(.+?)<\/span>/ig, "[u]$1[/u]");
-	str = str.replace(/<span style="text-decoration: line-through">(.+?)<\/span>/ig, "[s]$1[/s]");
-	str = str.replace(/<span class="highlight">(.+?)<\/span>/ig, "[highlight]$1[/highlight]");
+	str = str.replace(/<span style="(.*?)font-size:\s*(\d+)(px|pt);">(.+?)<\/span><\!--size-->/ig, "[size=$2]$4[/size]");
+	str = str.replace(/<span style="(.*?)font-family:\s*(.+?);">(.+?)<\/span><\!--font-->/ig, "[font=$2]$3[/font]");
+	str = str.replace(/<span style="(.*?)color:\s*(.+?);">(.+?)<\/span><\!--color-->/ig, "[color=$2]$3[/color]");
+	str = str.replace(/<div style="text-align: left;">(.+?)<\/div><\!--left-->/ig, "[left]$1[/left]");
+	str = str.replace(/<div style="text-align: right;">(.+?)<\/div><\!--right-->/ig, "[right]$1[/right]");
+	str = str.replace(/<div style="text-align: justify;">(.+?)<\/div><\!--justify-->/ig, "[justify]$1[/justify]");
+	str = str.replace(/<b>(.+?)<\/b><br[^>]*><div(.*?)class="editbg"[^>]*>(.+?)<\/div><\!--edit-->/ig, "[edit]$3[/edit]");
+	str = str.replace(/<span class="u">(.+?)<\/span><\!--underline-->/ig, "[u]$1[/u]");
+	str = str.replace(/<span style="text-decoration: line-through">(.+?)<\/span><\!--linethrough-->/ig, "[s]$1[/s]");
+	str = str.replace(/<span class="highlight">(.+?)<\/span><\!--highlight-->/ig, "[highlight]$1[/highlight]");
 	str = str.replace(/&nbsp;/ig, " ");
 	str = str.replace(/<\/p>/ig, "\n");
 	str = str.replace(/<hr(.*?)class="hr"[^>]*>/ig, "[hr]");

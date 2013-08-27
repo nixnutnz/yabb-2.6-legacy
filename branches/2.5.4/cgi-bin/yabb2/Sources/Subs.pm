@@ -1650,17 +1650,17 @@ sub uri_escape {    # usage: $safe = uri_escape( $string )
 }
 
 sub enc_eMail {
-	my ($title,$email,$subject,$body) = @_;
-	my ($charset_value);
-	if ($yycharset eq 'windows-1251') { $charset_value = 848;} # Cyrillic decoding
+    my ($title,$email,$subject,$body) = @_;
+    my ($charset_value);
+    if ($yycharset eq 'windows-1251') { $charset_value = 848;} # Cyrillic decoding
 
-	my $email_length = length $email;
-	my $code1 = generate_code($email_length);
-	my $code2;
-	for my $i ( 0 .. ( $email_length - 1 ) ) {
-		$code2 .= chr( ord( substr $code1, $i, 1 )^ord( substr $email, $i, 1 ));
-	}
-	$code2 = uri_escape($code2);
+    my $email_length = length $email;
+    my $code1 = generate_code($email_length);
+    my $code2;
+    for my $i ( 0 .. ( $email_length - 1 ) ) {
+        $code2 .= chr( ord( substr $code1, $i, 1 )^ord( substr $email, $i, 1 ));
+    }
+    $code2 = uri_escape($code2);
 
     *enc_eMail_x = sub {
         my ( $x, $y, $z ) = @_;
@@ -1674,15 +1674,15 @@ sub enc_eMail {
         }
         return $x;
     };
-	my $subbody;
-	if ($subject or $body) {
-		$subject = uri_escape($subject);
-		$body = uri_escape($body);
-		$subbody = "?subject=$subject&body=$body";
-		$subbody =~ s/(((<.+?>)|&#\d+;)|.)/ enc_eMail_x($1,$2,$3) /egsm;
-	}
+    my $subbody;
+    if ($subject or $body) {
+        $subject = uri_escape($subject);
+        $body = uri_escape($body);
+        $subbody = "?subject=$subject&body=$body";
+        $subbody =~ s/(((<.+?>)|&#\d+;)|.)/ enc_eMail_x($1,$2,$3) /egsm;
+    }
 
-	$title =~ s/(((<.+?>)|&#\d+;)|.)/ enc_eMail_x($1,$2,$3) /egsm;
+    $title =~ s/(((<.+?>)|&#\d+;)|.)/ enc_eMail_x($1,$2,$3) /egsm;
 
     return
 qq~<script type='text/javascript'>\nSpamInator("$title","$code1","$code2","&#109;&#97;&#105;&#108;&#92;&#117;&#48;&#48;&#55;&#52;&#111;&#92;&#117;&#48;&#48;&#51;&#97;","$subbody");\n</script><noscript>$maintxt{'noscript'}</noscript>~;
@@ -3088,7 +3088,7 @@ sub sizefont {
     if    ( !$fontsizemin )         { $fontsizemin = 6; }
     if    ( $tsize < $fontsizemin ) { $tsize       = $fontsizemin; }
     elsif ( $tsize > $fontsizemax ) { $tsize       = $fontsizemax; }
-    return qq~<span style="font-size: $tsize\pt;">$ttext</span>~;
+    return qq~<span style="font-size: $tsize\pt;">$ttext</span><!--size-->~;
 }
 
 sub regex_1 {
@@ -3242,19 +3242,19 @@ sub password_check {
 
 sub BoardPassw {
 #    my ($boardname,$viewnum,$currentboard) = @_;
-	#template in MessageIndex.template
-	$yymain .= $boardpassw;
+    #template in MessageIndex.template
+    $yymain .= $boardpassw;
 
-	$yytitle = qq~$maintxt{'900pw'}: $boardname~; 
+    $yytitle = qq~$maintxt{'900pw'}: $boardname~; 
     template();
     exit;
 }
 
 sub BoardPassw_g {
-	#template in MessageIndex.template
-	$yymain .= $boardpassw_g;
+    #template in MessageIndex.template
+    $yymain .= $boardpassw_g;
 
-	$yytitle = qq~$maintxt{'900pw'}: $boardname~; 
+    $yytitle = qq~$maintxt{'900pw'}: $boardname~; 
     template();
     exit;
 }

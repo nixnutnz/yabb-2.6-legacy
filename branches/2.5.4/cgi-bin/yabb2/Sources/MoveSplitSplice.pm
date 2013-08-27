@@ -60,14 +60,14 @@ sub Split_Splice {
         DoUBBC();
 
         $convertstr = $message;
+        $convertstr =~ s/<(p|br|div).*?>/ /gxsm;
+        $convertstr =~ s/<.*?>//gxsm;              # remove HTML-tags
         $convertcut = 50;
         CountChars();
         $message = $convertstr;
         if ($cliped) { $message .= ' ...'; }
 
         ToChars($message);
-        $message =~ s/<(p|br|div).*?>/ /gxsm;
-        $message =~ s/<.*?>//gxsm;              # remove HTML-tags
         $message = Censor($message);
 
         $messages[$counter] = qq~<option value="$counter" ~

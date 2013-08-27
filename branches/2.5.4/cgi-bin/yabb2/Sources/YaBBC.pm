@@ -376,9 +376,9 @@ sub DoUBBC {
     $message =~ s/\[b\](.*?)\[\/b\]/<b>$1<\/b>/isgm;
     $message =~ s/\[i\](.*?)\[\/i\]/<i>$1<\/i>/isgm;
     $message =~
-      s/\[u\](.*?)\[\/u\]/<span class="u">$1<\/span>/isgm;
+      s/\[u\](.*?)\[\/u\]/<span class="u">$1<\/span><!--underline-->/isgm;
     $message =~
-s/\[s\](.*?)\[\/s\]/<span style="text-decoration: line-through">$1<\/span>/isgm;
+s/\[s\](.*?)\[\/s\]/<span style="text-decoration: line-through">$1<\/span><!--linethrough-->/isgm;
     $message =~ s/\[glb\](.*?)\[\/glb\]/<div class="glb">$1<\/div>/isgm;
 
 #    $message =~
@@ -395,7 +395,7 @@ s/\[quote(\s+author=(.*?)\s+link=(.*?)\s+date=(.*?)\s*)?\]\n*(.*?)\n*\[\/quote\]
 s/(\[url[^\[]*\]\s*)?\[img(.*?)\](.*?)\[\/img\]/ imagemsg($1,$2,$3,$image_type) /eisgm ) { }
 
     $message =~
-s/\[color=([A-Za-z0-9# ]+)\](.+?)\[\/color\]/<span style="color: $1;">$2<\/span>/isgm;
+s/\[color=([A-Za-z0-9# ]+)\](.+?)\[\/color\]/<span style="color: $1;">$2<\/span><!--color-->/isgm;
     $message =~
       s/\[black\](.*?)\[\/black\]/<span style="color:#000000;">$1<\/span>/isgm;
     $message =~
@@ -408,7 +408,7 @@ s/\[color=([A-Za-z0-9# ]+)\](.+?)\[\/color\]/<span style="color: $1;">$2<\/span>
       s/\[blue\](.*?)\[\/blue\]/<span style="color:#0000FF;">$1<\/span>/isgm;
     $message =~ s/\[timestamp\=([\d]{9,10})\]/timeformat($1)/eisgm;
     $message =~
-s/\[font=([A-Za-z0-9# -]+)\](.+?)\[\/font\]/<span style="font-family: $1;">$2<\/span>/isgm;
+s/\[font=([A-Za-z0-9# -]+)\](.+?)\[\/font\]/<span style="font-family: $1;">$2<\/span><!--font-->/isgm;
 
     while ( $message =~
         s/\[size=([A-Za-z0-9# ]+)\](.+?)\[\/size\]/sizefont($1,$2)/eisgm ) { }
@@ -416,13 +416,13 @@ s/\[font=([A-Za-z0-9# -]+)\](.+?)\[\/font\]/<span style="font-family: $1;">$2<\/
     $message =~
       s/\[tt\](.*?)\[\/tt\]/<span style="font-family:monospace">$1<\/span>/isgm;
     $message =~
-s/\[left\](.*?)\[\/left\]/<div style="text-align: left;">$1<\/div>/isgm;
+s/\[left\](.*?)\[\/left\]/<div style="text-align: left;">$1<\/div><!--left-->/isgm;
     $message =~
 s/\[center\](.*?)\[\/center\]/<div style="text-align:center">$1<\/div>/isgm;
     $message =~
-s/\[right\](.*?)\[\/right\]/<div style="text-align: right;">$1<\/div>/isgm;
+s/\[right\](.*?)\[\/right\]/<div style="text-align: right;">$1<\/div><!--right-->/isgm;
     $message =~
-s/\[justify\](.*?)\[\/justify\]/<div style="text-align: justify">$1<\/div>/isgm;
+s/\[justify\](.*?)\[\/justify\]/<div style="text-align: justify">$1<\/div><!--justify-->/isgm;
     $message =~ s/\[sub\](.*?)\[\/sub\]/<sub>$1<\/sub>/isgm;
     $message =~ s/\[sup\](.*?)\[\/sup\]/<sup>$1<\/sup>/isgm;
     $message =~
@@ -435,7 +435,7 @@ s/\[fixed\](.*?)\[\/fixed\]/<span style="display:inline; font-family: Courier Ne
 s/\s$YaBBversion\s/ \<a style\=\"font-weight: bold;\" href\=\"http\:\/\/www\.yabbforum\.com\/downloads\.php\"\>$YaBBversion Forum Software\<\/a\> /gxsm;
 
     $message =~
-s/\[highlight\](.*?)\[\/highlight\]/<span class="highlight">$1<\/span>/isgm;
+s/\[highlight\](.*?)\[\/highlight\]/<span class="highlight">$1<\/span><!--highlight-->/isgm;
 
     $message =~
       s/\[url=\s*(.+?)\s*\]\s*(.+?)\s*\[\/url\]/format_url2($1, $2)/eisgm;
@@ -486,7 +486,7 @@ s/([^\"\=\[\]\/\:\.\-(\:\/\/\w+)]|[\n\b]|\&quot\;|\[quote.*?\]|\[edit\]|\[highli
 
     *editsmsg = sub {
         my ($edittext) = @_;
-		$formedit = qq~<b>$post_txt{'603'}: </b><br /><div class="editbg" style="overflow: auto;">$1</div>~;
+		$formedit = qq~<b>$post_txt{'603'}: </b><br /><div class="editbg" style="overflow: auto;">$1</div><!--edit-->~;
         return $formedit;
     };
     while ( $message =~ s/\[edit\]\n*(.*?)\n*\[\/edit\]/editsmsg($1)/eisgm ) { }
