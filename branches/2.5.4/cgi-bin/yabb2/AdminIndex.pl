@@ -369,7 +369,7 @@ qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{
 
     print_output_header();
 
-    my $yytitle = qq~$admin_txt{'208'}: $yytitle~;
+    my $yytitle = qq~$mbname $admin_txt{'208'}: $yytitle~;
     $header =~ s/({|<)yabb\ title(}|>)/$yytitle/gxsm;
     $header =~ s/({|<)yabb\ style(}|>)/$adminstyle/gxsm;
     $header =~ s/({|<)yabb\ charset(}|>)/$yycharset/gxsm;

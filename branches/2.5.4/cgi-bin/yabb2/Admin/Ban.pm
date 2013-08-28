@@ -236,7 +236,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
                 </td>
             </tr><tr>
                 <td class="catbg center">
-                    $admin_txt{'725g'}<br />
+                    <span class="small">$admin_txt{'725g'}</span><br />
                     <input type="submit" value="$admin_txt{'725e'}" class="button" />
                 </td>
             </tr>
