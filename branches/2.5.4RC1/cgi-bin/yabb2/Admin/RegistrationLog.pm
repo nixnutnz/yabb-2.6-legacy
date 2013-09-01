@@ -377,7 +377,7 @@ sub view_registration {
    <td>${$uid.$readuser}{'language'}</td>
  </tr><tr class="windowbg">
    <td><b>$prereg_txt{'apr_ip'}: </b></td>
-   <td>$lookupIP (<a href="$adminurl?action=ipban_err;ban=${$uid.$readuser}{'lastips'};lev=p;return=view_reglogs">$admin_txt{'725f'}</a>)</td>
+   <td>$lookupIP (<a href="$adminurl?action=ipban_err;ban=${$uid.$readuser}{'lastips'};lev=p;return=view_reglog">$admin_txt{'725f'}</a>)</td>
  </tr>~;
 
     if ( $regtype == 1 ) {
