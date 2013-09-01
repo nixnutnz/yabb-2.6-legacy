@@ -183,7 +183,7 @@ sub adminlogin2 {
 
     if ( -e "$memberdir/$username.vars" ) {
         $Group{'Administrator'} =
-          'Administrator|5|staradmin.png|red|0|0|0|0|0|0';
+          'Forum Administrator|5|staradmin.png|red|0|0|0|0|0|0';
         LoadUser($username);
         my $spass = ${ $uid . $username }{'password'};
         $cryptpass = encode_password( $FORM{'password'} );
@@ -1509,7 +1509,7 @@ sub SetInstall2 {
 
 ########## MemberGroups ##########
 
-\$Group{'Administrator'} = "Administrator|5|staradmin.png|red|0|0|0|0|0|0";
+\$Group{'Administrator'} = "Forum Administrator|5|staradmin.png|red|0|0|0|0|0|0";
 \$Group{'Global Moderator'} = "Global Moderator|5|stargmod.png|blue|0|0|0|0|0|0";
 \$Group{'Mid Moderator'} = "Forum Moderator|5|starfmod.png|teal|0|0|0|0|0|0";
 \$Group{'Moderator'} = "Board Moderator|5|starmod.png|green|0|0|0|0|0|0";
@@ -1920,7 +1920,7 @@ EOF
         ${ $uid . 'admin' }{'timeselect'} = $timeselected;
         ${ $uid . 'admin' }{'language'}   = $lang;
         UserAccount( 'admin', 'update' );
-        ManageMemberinfo( 'update', 'admin', 'Administrator', $webmaster_email,'Administrator' );
+        ManageMemberinfo( 'update', 'admin', 'Administrator', $webmaster_email,'Forum Administrator' );
         $yySetLocation = qq~$set_cgi?action=setup3~;
         redirectexit();
     }
