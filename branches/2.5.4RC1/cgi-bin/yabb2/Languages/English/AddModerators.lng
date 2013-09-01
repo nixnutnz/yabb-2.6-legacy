@@ -1,0 +1,35 @@
+###############################################################################
+# AddModerators.lng                                                           #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.5.41                                                 #
+# Packaged:       September 1, 2013                                           #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+# Mod created by Carsten Dalgaard                                             #
+#               and added to YaBB core in Version 2.5.4                       #
+# Released: January 28, 2013, Copyright 2013 Carsten Dalgaard                 # 
+###############################################################################
+
+$addmoderatorslngver = 'YaBB 2.5.4 RC1 $Revision$';
+
+%addmod_txt = (
+'addmod_title' => 'Moderator',
+'addmod_text' => 'Here you can assign the member as Moderator to any/all boards. Hold down Ctrl or Shift key (Apple key on Mac) and click to select more boards.',
+'addmod_all' => 'Select all.',
+'addmod_save' => 'Save',
+'remove' => 'Are you sure you want to remove the member from the list?',
+'modpagetitle' => 'Select Moderators',
+'instructions' => 'Double-click to remove a name from the list',
+'modsearch' => 'Add/Delete Moderators',
+'addselected' => 'Add Selected',
+'pageclose' => 'Close',
+'instruct' => 'Type the first characters of the new moderator, then select one or more names in the list and click on "Add Selected".',
+'noresults' => 'No Results',
+);
+
+1;
