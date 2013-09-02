@@ -29,6 +29,7 @@ $im_outbox ='im_outbox.gif';
 $paperclip = 'paperclip.gif';
 $IM_quote = 'quote.gif';
 $IM_code1 = 'code1.gif';
+$IM_imclose = 'imclose.gif';
 $IM_lockmail = 'lockmail.gif';
 $IM_email = 'email.png';
 $IM_www = 'www.png';
