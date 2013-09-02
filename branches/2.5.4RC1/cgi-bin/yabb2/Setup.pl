@@ -4,7 +4,7 @@
 # $Source: /Setup.pl $
 ###############################################################################
 # Setup.pl                                                                    #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.02.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -2606,12 +2606,12 @@ qq~The 2x FixFile Utility has already been run.<br />To run Utility again, remov
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="titlebg" colspan="2">
+            <td class="tabtitle" colspan="2">
                 YaBB 2.5.4 Setup
             </td>
         </tr><tr>
             <td class="windowbg center">
-                <img src="$imagesdir/info.gif" alt="" />
+                <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 center">
                 Setup has already been run.

@@ -4,7 +4,7 @@
 # $Source: /FixFile.pl $
 ###############################################################################
 # FixFile.pl                                                                  #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.02.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -89,16 +89,14 @@ if ( -e "$vardir/Setup.lock" ) {
         <table class="cs_thin pad_4px">
             <col style="width:5%" />
             <tr>
-                <td class="titlebg" colspan="2">
-                    YaBB 2.5.4 Converter
-                </td>
+                <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/thread.gif" alt="" />
                 </td>
                 <td class="windowbg2 fontbigger">
                     Make sure your YaBB 2.5.4 installation is running and that it has all the correct folder paths and URLs.<br />
-                    Proceed through the following steps to convert your YaBB 2x forum to YaBB 2.5.4!<br /><br />
+                    Proceed through the following steps to convert your YaBB 2x forum to YaBB 2.5.4.<br /><br />
                     <b>If</b> your YaBB 2x forum is located on the same server as your YaBB 2.5.4 installation:
                     <ol>
                         <li>Insert the path to your YaBB 2x forum in the input field below</li>
@@ -184,9 +182,7 @@ EOF
         <table class="cs_thin pad_4px">
             <col style="width:5%" />
             <tr>
-                <td class="titlebg" colspan="2">
-                    YaBB 2.5.4 Converter
-                </td>
+                <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/thread.gif" alt="" />
@@ -200,7 +196,7 @@ EOF
                 </td>
             </tr><tr>
                 <td class="windowbg center">
-                    <img src="$imagesdir/info.gif" alt="" />
+                    <img src="$imagesdir/info.png" alt="" />
                 </td>
                 <td class="windowbg2 fontbigger">
                   - Conversion can take a long time depending on the size of your forum (30 seconds to a couple hours).<br />
@@ -236,9 +232,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="titlebg" colspan="2">
-                YaBB 2.5.4 Converter
-            </td>
+            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -255,7 +249,7 @@ EOF
             </td>
         </tr><tr>
             <td class="windowbg center">
-                <img src="$imagesdir/info.gif" alt="" />
+                <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
                 User data files have been imported.<br />
@@ -299,9 +293,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="titlebg" colspan="2">
-                YaBB 2.5.4 Converter
-            </td>
+            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -318,7 +310,7 @@ EOF
             </td>
         </tr><tr>
             <td class="windowbg center">
-                <img src="$imagesdir/info.gif" alt="" />
+                <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
                 All Boards threads imported.<br />
@@ -363,9 +355,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="titlebg" colspan="2">
-                YaBB 2.5.4 Converter
-            </td>
+            <td class="titlebg" colspan="2">YaBB 2.5.4 Converter</td>
        </tr><tr>
            <td class="windowbg center">
                <img src="$imagesdir/thread.gif" alt="" />
@@ -382,7 +372,7 @@ EOF
            </td>
        </tr><tr>
            <td class="windowbg center">
-               <img src="$imagesdir/info.gif" alt="" />
+               <img src="$imagesdir/info.png" alt="" />
            </td>
            <td class="windowbg2 fontbigger">
                <i>$INFO{'total_threads'}</i> Threads have been converted.<br />
@@ -433,9 +423,7 @@ q~<br /><br />After you have tested your forum and made sure everything was conv
     <div class="bordercolor borderbox">
     <table class="cs_thin pad_4px">
         <tr>
-            <td class="titlebg" colspan="2">
-                YaBB 2.5.4 Converter
-            </td>
+            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -452,7 +440,7 @@ q~<br /><br />After you have tested your forum and made sure everything was conv
             </td>
         </tr><tr>
             <td class="windowbg center">
-                <img src="$imagesdir/info.gif" alt="" />
+                <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
                 $forumstarttext
@@ -796,7 +784,7 @@ qq~The 2.0-2.4 to 2.5.4 FixFile Utility has already been run.<br />To run Utilit
             </td>
         </tr><tr>
             <td class="windowbg center">
-                <img src="$imagesdir/info.gif" alt="" />
+                <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 center">
                 $fixa2

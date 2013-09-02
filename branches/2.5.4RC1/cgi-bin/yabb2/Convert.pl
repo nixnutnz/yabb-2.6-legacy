@@ -4,7 +4,7 @@
 # $Source: /Convert.pl $
 ###############################################################################
 # Convert.pl                                                                  #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.02.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -119,9 +119,7 @@ if ( -e "$vardir/Setup.lock" ) {
         <table class="cs_thin pad_4px">
             <col style="width:5%" />
             <tr>
-                <td class="titlebg" colspan="2">
-                    YaBB 2.5.4 Converter
-                </td>
+                <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/thread.gif" alt="" />
@@ -217,9 +215,7 @@ EOF
         <table class="cs_thin pad_4px">
             <col style="width:5%" />
             <tr>
-                <td class="titlebg" colspan="2">
-                    YaBB 2.5.4 Converter
-                </td>
+                <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/thread.gif" alt="" />
@@ -234,7 +230,7 @@ EOF
                 </td>
             </tr><tr>
                 <td class="windowbg center">
-                    <img src="$imagesdir/info.gif" alt="" />
+                    <img src="$imagesdir/info.png" alt="" />
                 </td>
                 <td class="windowbg2 fontbigger">
                   - Conversion can take a long time depending on the size of your forum (30 seconds to a couple hours).<br />
@@ -272,9 +268,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="titlebg" colspan="2">
-                YaBB 2.5.4 Converter
-            </td>
+            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -293,7 +287,7 @@ EOF
             </td>
         </tr><tr>
             <td class="windowbg center">
-                <img src="$imagesdir/info.gif" alt="" />
+                <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
                 New User data files have been created.<br />
@@ -384,9 +378,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="titlebg" colspan="2">
-                YaBB 2.5.4 Converter
-            </td>
+            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -409,7 +401,7 @@ EOF
                 </td>
             </tr><tr>
                 <td class="windowbg center">
-                    <img src="$imagesdir/info.gif" alt="" />
+                    <img src="$imagesdir/info.png" alt="" />
                 </td>
                 <td class="windowbg2 fontbigger">
                     To prevent server time-out due to the amount of members to be converted, the conversion is split into more steps.<br />
@@ -472,9 +464,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="titlebg" colspan="2">
-                YaBB 2.5.4 Converter
-            </td>
+            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -493,7 +483,7 @@ EOF
             </td>
         </tr><tr>
             <td class="windowbg center">
-                <img src="$imagesdir/info.gif" alt="" />
+                <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
                 New forum.master file has been created.<br />
@@ -545,9 +535,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="titlebg" colspan="2">
-                YaBB 2.5.4 Converter
-            </td>
+            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -570,7 +558,7 @@ EOF
             </td>
         </tr><tr>
             <td class="windowbg center">
-                <img src="$imagesdir/info.gif" alt="" />
+                <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
                   To prevent server time-out due to the amount of boards to be converted, the conversion is split into more steps.<br />
@@ -625,9 +613,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="titlebg" colspan="2">
-                YaBB 2.5.4 Converter
-            </td>
+            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
        </tr><tr>
            <td class="windowbg center">
                <img src="$imagesdir/thread.gif" alt="" />
@@ -646,7 +632,7 @@ EOF
            </td>
        </tr><tr>
            <td class="windowbg center">
-               <img src="$imagesdir/info.gif" alt="" />
+               <img src="$imagesdir/info.png" alt="" />
            </td>
            <td class="windowbg2 fontbigger">
                New style message files have been created.<br />
@@ -703,9 +689,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="titlebg" colspan="2">
-                YaBB 2.5.4 Converter
-            </td>
+            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -727,7 +711,7 @@ EOF
             </td>
         </tr><tr>
             <td class="windowbg center">
-                <img src="$imagesdir/info.gif" alt="" />
+                <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
                 To prevent server time-out due to the amount of messages to be converted, the conversion is split into more steps.<br />
@@ -794,9 +778,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="titlebg" colspan="2">
-                YaBB 2.5.4 Converter
-            </td>
+            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -815,7 +797,7 @@ EOF
             </td>
         </tr><tr>
             <td class="windowbg center">
-                <img src="$imagesdir/info.gif" alt="" />
+                <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
                 New style timestamps have been created throughout the board. All old style dates have been converted.<br />
@@ -874,9 +856,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="titlebg" colspan="2">
-                YaBB 2.5.4 Converter
-            </td>
+            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -898,7 +878,7 @@ EOF
             </td>
         </tr><tr>
             <td class="windowbg center">
-                <img src="$imagesdir/info.gif" alt="" />
+                <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
                To prevent server time-out due to the amount of Date &amp; Time conversion, the conversion is split into more steps.<br />
@@ -1019,16 +999,14 @@ q~<br /><br />After you have tested your forum and made sure everything was conv
 
         if ( -e "$vardir/fixusers.txt" ) {
             $convtext .=
-qq~<br /><br />There were some illegal usernames. Their names were changed. Please inform them. You can find the list in the $vardir/fixusers.txt~;
+qq~<br /><br />There were some illegal usernames. Their names were changed. Please inform them those users. You can find the list in the $vardir/fixusers.txt~;
         }
 
         $yymain = qq~
     <div class="bordercolor borderbox">
     <table class="cs_thin pad_4px">
         <tr>
-            <td class="titlebg" colspan="2">
-                YaBB 2.5.4 Converter
-            </td>
+            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -1047,7 +1025,7 @@ qq~<br /><br />There were some illegal usernames. Their names were changed. Plea
             </td>
         </tr><tr>
             <td class="windowbg center">
-                <img src="$imagesdir/info.gif" alt="" />
+                <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
                 $forumstarttext
@@ -1099,9 +1077,7 @@ qq~<br /><br />There were some illegal usernames. Their names were changed. Plea
     <div class="bordercolor borderbox">
     <table class="cs_thin pad_4px">
         <tr>
-            <td class="titlebg" colspan="2">
-                YaBB 2.5.4 Converter
-            </td>
+            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -1120,7 +1096,7 @@ qq~<br /><br />There were some illegal usernames. Their names were changed. Plea
             </td>
         </tr><tr>
             <td class="windowbg center">
-                <img src="$imagesdir/info.gif" alt="" />
+                <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
                 The Extended Profiles conversion took <i>~
@@ -1184,9 +1160,7 @@ qq~<br /><br />There were some illegal usernames. Their names were changed. Plea
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="titlebg" colspan="2">
-                YaBB 2.5.4 Converter
-            </td>
+            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -1208,7 +1182,7 @@ qq~<br /><br />There were some illegal usernames. Their names were changed. Plea
             </td>
         </tr><tr>
             <td class="windowbg center">
-                <img src="$imagesdir/info.gif" alt="" />
+                <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
                 To prevent server time-out due to the amount to Clean Up, the Cleanup is split into more steps.<br />
@@ -3005,12 +2979,10 @@ sub FoundConvLock {
     <div class="bordercolor borderbox">
     <table class="cs_thin pad_4px">
         <tr>
-            <td class="titlebg" colspan="2">
-                YaBB 2.5.4 Converter
-            </td>
+            <td class="ttabtitle" colspan="2">YaBB 2.5.4 Converter</td>
         </tr><tr>
             <td class="windowbg center">
-                <img src="$imagesdir/info.gif" alt="" />
+                <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2"  style="font-size: 11px;">
                 Converter has already been run, attempting to run them again will cause damage to your files.<br />
