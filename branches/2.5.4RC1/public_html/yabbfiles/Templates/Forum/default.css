@@ -2155,20 +2155,20 @@ vertical-align: middle;
 
 .system-info-body  {
 width: 80%;
-background-color: #FFF;
+background-color: #DEE4EC;
 padding: 1px;
 border-collapse: separate;
 border-spacing: 1px;
 }
 
 .system-info-body td  {
-background-color: #DEE4EC;
+background-color: #EEE;
 font-size: 12px;
 font-weight: 400;
 font-style: normal;
 color: #2D2D2D;
 padding: 1em;
-}
+} 
 
 .smiley_box  {
 height:65px;

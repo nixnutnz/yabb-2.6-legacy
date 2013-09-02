@@ -680,15 +680,16 @@ text-align: center;
 font-weight: bold;
 vertical-align: middle;
 }
-.system-info-body {
+.system-info-body  {
 width: 80%;
-background-color: #FFF;
+background-color: #DEE4EC;
 padding: 1px;
 border-collapse: separate;
 border-spacing: 1px;
 }
-.system-info-body td {
-background-color: #DEE4EC;
+
+.system-info-body td  {
+background-color: #EEE;
 font-size: 12px;
 font-weight: 400;
 font-style: normal;
