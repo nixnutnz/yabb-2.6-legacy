@@ -322,11 +322,12 @@ sub view_registration {
     LoadUser($readuser);
     $yymain .= qq~
 <form action="$adminurl?action=admin_descision;activationkey=$actkey" method="post" name="creator">
-<input type="hidden" name="username" value="$viewuser" />
-<table class="bordercolor cs_thin pad_4px">
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
     <col class="w_320px" />
  <tr>
-   <td colspan="2" class="catbg">$admin_img{'profile'} <b>$prereg_txt{'view'}</b>
+        <td colspan="2" class="titlebg">$admin_img{'profile'} <b>$prereg_txt{'view'}</b>
+            <input type="hidden" name="username" value="$viewuser" />
     <input type="hidden" name="type" value="$viewtype" />
     <input type="hidden" name="activationkey" value="$actkey" />
   </td>
@@ -393,18 +394,26 @@ sub view_registration {
 
     if ( $viewtype eq 'approve' ) {
         $yymain .= qq~<tr>
-   <td colspan="2" class="catbg">$admin_img{'profile'}<b>$prereg_txt{'apr_admin_reason_title'}</b></td>
+   <td colspan="2" class="titlebg">$admin_img{'profile'}<b>$prereg_txt{'apr_admin_reason_title'}</b></td>
  </tr>
  <tr class="windowbg">
    <td><b>$prereg_txt{'apr_admin_reason'}: </b></td>
    <td><textarea rows="4" cols="50" id="admin_reason" name="admin_reason">$admin_reason</textarea></td>
  </tr>
- <tr class="catbg">
-    <td class="center h_30px" colspan="2">
+</table>
+</div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px">
+	<tr>
+    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'actions'}</th>
+	</tr><tr>
+    	<td class="catbg center">
     <input type="submit" name="moda" value="$prereg_txt{'apr_admin_reject'}" onclick="return confirm('$prereg_txt{'apr_admin_reject'} ?')" class="button" />
     <input type="submit" name="moda" value="$prereg_txt{'apr_admin_approve'}" onclick="return confirm('$prereg_txt{'apr_admin_approve'} ?')" class="button" />
     </td>
- </tr>~;
+	</tr>
+</table>
+</div>~;
 
     }
     elsif ( $viewtype eq 'validate' ) {
