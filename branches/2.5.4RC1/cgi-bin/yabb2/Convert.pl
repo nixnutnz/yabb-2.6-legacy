@@ -3928,6 +3928,7 @@ sub SetInstall2 {
 \$sessions = 1;                             # Set to 1 to activate session id protection.
 \$show_online_ip_admin = 1;                 # Set to 1 to show online IP's to admins.
 \$show_online_ip_gmod = 1;                  # Set to 1 to show online IP's to global moderators.
+\$show_online_ip_fmod = 1;                  # Set to 1 to show online IP's to forum moderators.
 \$masterkey = "$masterkey";                 # Seed for encryption of captcha's
 
 
