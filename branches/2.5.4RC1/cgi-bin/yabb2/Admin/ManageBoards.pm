@@ -990,9 +990,9 @@ qq~<select multiple="multiple" name="moderatorgroups$i" id="moderatorgroups$i" s
     <td class="windowbg2"><label for="gender$i"><b>$admin_txt{'97'}:</b></label></td>
     <td class="windowbg2" colspan="3">$genselect <label for="gender$i">$admin_txt{'98'}</label></td>
   </tr><tr>
-    <td class="windowbg2"><b>$boardpass_txt{'900pw'}:</b><br /><br />$boardpass_txt{'900pwb'}</td>
-    <td class="windowbg2" colspan="3"><input type="checkbox" name="paswwr$i" value="1"$brdpasswr /> <input type="text" size="15" name="pasww$i" value="$brdfpassw3" />
-        <br />$boardpass_txt{'900pf'}
+    <td class="windowbg2"><label for="pasww$i"><b>$boardpass_txt{'900pw'}:</b><br /><br />$boardpass_txt{'900pwb'}</label></td>
+    <td class="windowbg2" colspan="3"><input type="checkbox" name="paswwr$i" id="paswwr$i" value="1"$brdpasswr /> <input type="text" size="15" name="pasww$i" id="pasww$i" value="$brdfpassw3" />
+        <br /><label for="paswwr$i">$boardpass_txt{'900pf'}</label> 
         <br /><span style="color:red">$brdpassw2</span>
         <input type="hidden" name="brdpassw$i" value="$brdpassw" />
     </td>
