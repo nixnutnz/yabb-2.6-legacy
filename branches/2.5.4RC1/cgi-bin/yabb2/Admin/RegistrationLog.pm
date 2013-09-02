@@ -1,6 +1,6 @@
 ###############################################################################
 # RegistrationLog.pm                                                          #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.02.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -211,9 +211,9 @@ qq~<br /><a href="$adminurl?action=apr_regentry;username=$userid">$prereg_txt{'a
 	<tr>
     	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'725e'}</th>
 	</tr><tr>
-		<td class="catbg center">
-			<input type="submit" value="$prereg_txt{'9'}" onclick="return confirm('$prereg_txt{'9'}');" class="button" />
-		</td>
+    	<td class="catbg center">
+        	<input type="submit" value="$prereg_txt{'9'}" onclick="return confirm('$prereg_txt{'9'}');" class="button" />
+    	</td>
 	</tr>
 </table>
 </div>
@@ -394,7 +394,7 @@ sub view_registration {
 
     if ( $viewtype eq 'approve' ) {
         $yymain .= qq~<tr>
-   <td colspan="2" class="titlebg">$admin_img{'profile'}<b>$prereg_txt{'apr_admin_reason_title'}</b></td>
+   <td colspan="2" class="titlebg">$admin_img{'profile'} <b>$prereg_txt{'apr_admin_reason_title'}</b></td>
  </tr>
  <tr class="windowbg">
    <td><b>$prereg_txt{'apr_admin_reason'}: </b></td>
@@ -408,25 +408,33 @@ sub view_registration {
     	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'actions'}</th>
 	</tr><tr>
     	<td class="catbg center">
-    <input type="submit" name="moda" value="$prereg_txt{'apr_admin_reject'}" onclick="return confirm('$prereg_txt{'apr_admin_reject'} ?')" class="button" />
-    <input type="submit" name="moda" value="$prereg_txt{'apr_admin_approve'}" onclick="return confirm('$prereg_txt{'apr_admin_approve'} ?')" class="button" />
-    </td>
+			<input type="submit" name="moda" value="$prereg_txt{'apr_admin_reject'}" onclick="return confirm('$prereg_txt{'apr_admin_reject'} ?')" class="button" />
+			<input type="submit" name="moda" value="$prereg_txt{'apr_admin_approve'}" onclick="return confirm('$prereg_txt{'apr_admin_approve'} ?')" class="button" />
+		</td>
 	</tr>
 </table>
 </div>~;
 
     }
     elsif ( $viewtype eq 'validate' ) {
-        $yymain .= qq~<tr class="catbg">
-    <td class="center h_30px" colspan="2">
-    <input type="submit" name="moda" value="$prereg_txt{'apr_admin_delete'}" onclick="return confirm('$prereg_txt{'apr_admin_delete'} ?')" class="button" />
-    <input type="submit" name="moda" value="$prereg_txt{'apr_admin_validate'}" onclick="return confirm('$prereg_txt{'apr_admin_validate'} ?')" class="button" />
-    </td>
- </tr>~;
+        $yymain .= qq~ 
+</table>
+</div>
+<div class="bordercolor rightboxdiv">
+<table class="cs_thin pad_4px">
+	<tr>
+    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'actions'}</th>
+	</tr><tr>
+    	<td class="catbg center">
+            <input type="submit" name="moda" value="$prereg_txt{'apr_admin_delete'}" onclick="return confirm('$prereg_txt{'apr_admin_delete'} ?')" class="button" />
+            <input type="submit" name="moda" value="$prereg_txt{'apr_admin_validate'}" onclick="return confirm('$prereg_txt{'apr_admin_validate'} ?')" class="button" />
+    	</td>
+	</tr>
+</table>
+</div>~;
     }
 
     $yymain .= q~
-</table>
 </form>~;
 
     $yytitle = "$prereg_txt{'view'}";

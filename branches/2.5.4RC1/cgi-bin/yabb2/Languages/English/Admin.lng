@@ -560,6 +560,7 @@ $adminlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'brdrss1' => 'RSS',
 'brdrss2' => 'Check to show RSS Feed for this category on the Board Index.<br /><b>Note:</b> Only relevant if RSS is enabled.',
 'brdrss3' => 'Check to show RSS Feed for this board on the Board Index.<br /><b>Note:</b> Only relevant if RSS is enabled and the board is not an external link board.',
+'actions' => 'Actions',
 );
 
 %floodtxt = (
