@@ -50,7 +50,7 @@ sub ListMods {
              </td>
          </tr><tr>
              <td class="windowbg2 padd_8_12px">
-                 $mod_list{'8'} <a href="http://www.boardmod.org">$mod_list{'9'}</a>
+                 $mod_list{'8'} <a href="http://www.boardmod.org" target="_blank">$mod_list{'9'}</a>
              </td>
          </tr>
     </table>

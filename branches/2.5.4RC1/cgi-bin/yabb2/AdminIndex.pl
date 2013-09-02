@@ -350,7 +350,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
     $topmenu_two = qq~<a href="$adminurl">$admintxt{'33'}</a>~;
     $topmenu_tree =
       qq~<a href="$scripturl?action=help;section=admin">$admintxt{'35'}</a>~;
-    $topmenu_four = qq~<a href="http://www.yabbforum.com">$admintxt{'36'}</a>~;
+        $topmenu_four = qq~<a href="http://www.yabbforum.com" target="_blank">$admintxt{'36'}</a>~;
 
     if ($maintenance) {
         $yyadmin_alert .=
