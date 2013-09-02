@@ -15,7 +15,7 @@ $SectionBody2 = qq~<p>In the making of YaBB 2.2, we have done an overhaul to the
 	<br />These are some features in YaBB 2.2 that naturally need some adjusting on admin level. These additions are as follows:</p>
 <ul>
 	<li><b>RSS</b>
-		<br />Anyone can now use RSS (Really Simple Syndication, see <a href="http://en.wikipedia.org/wiki/RSS" title="RSS on Wikipedia">this article in Wikipedia</a>) to pull the latest headlines from your forum into an external document or to a browser.
+		<br />Anyone can now use RSS (Really Simple Syndication, see <a href="http://en.wikipedia.org/wiki/RSS" title="RSS on Wikipedia" target="_blank">this article in Wikipedia</a>) to pull the latest headlines from your forum into an external document or to a browser.
 	</li>
 	<li><b>Permalinks</b>
 		<br />To make forum URIs look a bit more 'normal' you can set your forum to use permalinks.
@@ -32,7 +32,7 @@ $SectionBody2 = qq~<p>In the making of YaBB 2.2, we have done an overhaul to the
 		<br />Set your preferred spam rules to trigger a warning (and eventually a ban) based on unwanted post content, specify certain circumstances of the posting process and keep Viagra sellers away.
 	</li>
 	<li><b>Captcha</b>
-		<br />To make it a bit harder for malicious bots entering your forum, use the captcha (visual confirmation, see <a href="http://en.wikipedia.org/wiki/Captcha" title="Captcha in Wikipedia">this article in Wikipedia</a>, but be careful, it is possible that some human users find it hard to use.
+		<br />To make it a bit harder for malicious bots entering your forum, use the captcha (visual confirmation, see <a href="http://en.wikipedia.org/wiki/Captcha" title="Captcha in Wikipedia" target="_blank">this article in Wikipedia</a>, but be careful, it is possible that some human users find it hard to use.
 	</li>
 	<li><b>Broadcast messages</b>
 		<br />Communicate with your forum staff with Broadcast Messages and send messages on group level (moderators, moderator groups, global moderators and admins).
@@ -128,7 +128,7 @@ $SectionBody4 = qq~<p>These are some completely new features to YaBB 2.5.2 that 
 		    	<br />One of the most popular of YaBB's anti-spam measures, SpamFruits requires the registrant to select the proper graphic.
 			</li>
 			<li><b>Anti-Spam Question</b>
-				<br />This requires the registrant to answer a random question from a bank of questions which the Admin has the option of editing. This is a deterrent against Spam registrations. More anti-spam measures can be found at: <a href="http://www.boardmod.org/yabb2/YaBB.pl?catselect=mods_y2">www.boardmod.org/yabb2/YaBB.pl?catselect=mods_y2</a>
+				<br />This requires the registrant to answer a random question from a bank of questions which the Admin has the option of editing. This is a deterrent against Spam registrations. More anti-spam measures can be found at: <a href="http://www.boardmod.org/yabb2/YaBB.pl?catselect=mods_y2" target="_blank">www.boardmod.org/yabb2/YaBB.pl?catselect=mods_y2</a>
 			</li>
 			<li><b>Minimum number of posts a member must have before links and images can be posted</b>
 				<br />The Admin can set the minimum number of posts required to place links and/or images in posts, signatures and user profiles. This is to prevent spammers from registering and immediately posting links and images.
