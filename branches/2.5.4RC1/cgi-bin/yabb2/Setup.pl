@@ -1715,6 +1715,7 @@ sub SetInstall2 {
 
 \$mdadmin = 1;
 \$mdglobal = 1;
+\$mdfmod = 1;
 \$mdmod = 1;
 \$adminbin = 0;                                   # Skip recycle bin step for admins and delete directly
 
@@ -1724,7 +1725,9 @@ sub SetInstall2 {
                                                   # 0=none, 1=icons 2=single checkbox 3=multiple checkboxes
 \$gmodview = 2;                                   # Multi-admin settings for Global Moderators:
                                                   # 0=none, 1=icons 2=single checkbox 3=multiple checkboxes
-\$modview = 2;                                    # Multi-admin settings for Moderators:
+\$fmodview = 2;                                   # Multi-admin settings for Forum Moderators:
+                                                  # 0=none, 1=icons 2=single checkbox 3=multiple checkboxes
+\$modview = 2;                                    # Multi-admin settings for Board Moderators:
                                                   # 0=none, 1=icons 2=single checkbox 3=multiple checkboxes
 
 ########## Advanced Memberview Plus ##########

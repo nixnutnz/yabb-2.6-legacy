@@ -67,6 +67,7 @@ $adminlngver = 'YaBB 2.5.4 RC1 $Revision$';
 '62' => 'Description',
 '62a' => 'If this is to be an external board link, the first line of the description should be the title of the Name link, or if using an image as the link the first line should use the HTML &lt;img&gt; tag. e.g. &lt;img src="http://yoursite.com/yourimage.jpg" alt="Your Image Title" /&gt;',
 '63' => 'Moderators',
+'63d' => 'Board Moderators',
 '63a' => 'Copy',
 '63b' => 'Paste',
 '63c' => 'Paste to all',
@@ -831,7 +832,7 @@ $adminlngver = 'YaBB 2.5.4 RC1 $Revision$';
 '5' => 'Select Administrators Multi-Admin Type:',
 '6' => 'Select Global Moderators Multi-Admin Type:',
 '6a' => 'Select Forum Moderators Multi-Admin Type:',
-'7' => 'Select Moderators Multi-Admin Type:',
+'7' => 'Select Board Moderators Multi-Admin Type:', 
 '8' => 'Moderation Update',
 );
 
