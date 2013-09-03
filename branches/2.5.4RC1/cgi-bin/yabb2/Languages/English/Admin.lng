@@ -451,6 +451,7 @@ $adminlngver = 'YaBB 2.5.4 RC1 $Revision$';
 '753' => 'Allow users to hide attached images in threads',
 '754' => 'Allow users to hide signatures in threads',
 '755' => 'Allow users to hide the Smilies-row below the Post Message inputarea',
+'756' => 'Allow users to hide images in threads', 
 '764' => 'Edit Agreement',
 '765' => 'This form will allow you to edit the file "agreement.txt". This is a flat text file displayed to people when they sign up. Some HTML tags are permitted.',
 '802' => 'Browser Cache Behaviour?<br /><span class="small">Unchecked: No Cache, must revalidate. Checked: Cache allowed</span>',

@@ -925,6 +925,12 @@ qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdM
             depends_on => ['showusertext'],
         },
         {
+            description => qq~<label for="user_hide_img">$admin_txt{'756'}</label>~,
+            input_html => qq~<input type="checkbox" name="user_hide_img" id="user_hide_img" value="1"${ischecked($user_hide_img)} />~,
+            name => 'user_hide_img',
+            validate => 'boolean',
+        }, 
+        {
             description => qq~<label for="user_hide_attach_img">$admin_txt{'753'}</label>~,
             input_html => qq~<input type="checkbox" name="user_hide_attach_img" id="user_hide_attach_img" value="1"${ischecked($user_hide_attach_img)}~ . ($allowattach ? q{} : ' disabled="disabled"') . q~ />~,
             name => 'user_hide_attach_img',

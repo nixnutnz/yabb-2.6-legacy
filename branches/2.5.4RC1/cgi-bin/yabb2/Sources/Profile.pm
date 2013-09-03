@@ -827,6 +827,14 @@ qq~<option value="$fld" selected="selected">$displang</option>~;
         $my_show_avatar_opts =~ s/{yabb hide_user_text}/$my_hide_user_text/sm;
     }
 
+    if ( $user_hide_img )
+    {    # checkbox to hide images in threads
+        $my_show_avatar_opts .= $myprofile_hide_img;
+        $my_hide_img =
+          ${ $uid . $user }{'hide_img'} ? ' checked="checked"' : q{};
+        $my_show_avatar_opts =~ s/{yabb hide_img}/$my_hide_img/sm;
+    } 
+
     if ( $user_hide_attach_img && $allowattach )
     {    # checkbox to hide attached images in threads
         $my_show_avatar_opts .= $myprofile_hide_attach_img;
@@ -2359,6 +2367,8 @@ sub ModifyProfileOptions2 {
       ( $member{'hide_avatars'} && $user_hide_avatars ) ? 1 : 0;
     ${ $uid . $user }{'hide_user_text'} =
       ( $member{'hide_user_text'} && $user_hide_user_text ) ? 1 : 0;
+    ${ $uid . $user }{'hide_img'} =
+      ( $member{'hide_img'} && $user_hide_img ) ? 1 : 0; 
     ${ $uid . $user }{'hide_attach_img'} =
       ( $member{'hide_attach_img'} && $user_hide_attach_img ) ? 1 : 0;
     ${ $uid . $user }{'hide_signat'} =

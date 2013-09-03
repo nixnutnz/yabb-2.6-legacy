@@ -303,7 +303,7 @@ sub ext_admin {
 <div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
-            <td class="titlebg">$admin_img{'profile'}<b>$lang_ext{'Profiles_Controls'}</b></td>
+            <td class="titlebg">$admin_img{'profile'} <b>$lang_ext{'Profiles_Controls'}</b></td>
         </tr><tr>
             <td class="windowbg2">$lang_ext{'admin_description'}</td>
         </tr>
@@ -312,7 +312,7 @@ sub ext_admin {
 <div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
-            <td class="titlebg">$admin_img{'profile'}<b>$lang_ext{'edit_title'}</b></td>
+            <td class="titlebg">$admin_img{'profile'} <b>$lang_ext{'edit_title'}</b></td>
         </tr><tr>
             <td class="windowbg2">$lang_ext{'edit_description'}</td>
         </tr><tr>
@@ -391,7 +391,7 @@ sub ext_admin {
 <div class="bordercolor rightboxdiv">
 <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
     <tr>
-        <td class="titlebg">$admin_img{'profile'}<b>$lang_ext{'create_new_title'}</b></td>
+        <td class="titlebg">$admin_img{'profile'} <b>$lang_ext{'create_new_title'}</b></td>
     </tr><tr>
         <td class="windowbg2">$lang_ext{'create_new_description'}</td>
     </tr><tr>
@@ -433,7 +433,7 @@ sub ext_admin {
 <div class="bordercolor rightboxdiv">
 <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
       <tr>
-        <td class="titlebg">$admin_img{'profile'}<b>$lang_ext{'reorder_title'}</b></td>
+        <td class="titlebg">$admin_img{'profile'} <b>$lang_ext{'reorder_title'}</b></td>
     </tr><tr>
         <td class="windowbg2">
         <form action="$adminurl?action=ext_reorder" method="post">
@@ -639,7 +639,7 @@ sub ext_admin_edit {
 <div class="bordercolor rightboxdiv">
 <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
     <tr>
-        <td class="titlebg">$admin_img{'profile'}<b>$lang_ext{'options_title'}</b></td>
+        <td class="titlebg">$admin_img{'profile'} <b>$lang_ext{'options_title'}</b></td>
     </tr><tr>
         <td class="catbg small">$lang_ext{'options_description'}</td>
     </tr><tr>
@@ -655,7 +655,7 @@ sub ext_admin_edit {
         </td>
     </tr><tr>
         <td class="windowbg2">
-            <table class="bordercolor cs_thin pad_6px">
+            <table class="bordercolor borderstyle cs_thin pad_6px">
 ~;
         if ( $field{'type'} eq 'text' ) {
             @options = split /\^/xsm, $field{'options'};

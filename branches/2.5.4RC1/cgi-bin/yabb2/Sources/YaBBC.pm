@@ -159,7 +159,7 @@ sub parseimgflash {
 s/\[flash\=(\S+?),(\S+?)](\S+?)\[\/flash\]/<b>$display_txt{'769'} ($1 x $2):<\/b> <a href="$3" onclick="target='_blank';" onclick="window.open('$3', 'flash', 'resizable,width=$1,height=$2'); return false;">>$3<\/a>/gxsm;
     my $char_160  = chr 160;
     my $hardspace = q~&nbsp;~;
-    if ( !$showimageinquote ) {
+     if ( !$showimageinquote || ( ${ $uid . $username }{'hide_img'} && $user_hide_img ) ) {
         $tmp_message =~ s/\[img (.+?)\]/[img\]/igsm;
         $tmp_message =~ s/\[img\](?:\s|\t|\n|$hardspace|$char_160)*(http\:\/\/)*(.+?)(?:\s|\t|\n|$hardspace|$char_160)*\[\/img\]/\[url\]$1$2\[\/url\]/igsm;
     }
@@ -355,7 +355,7 @@ sub DoUBBC {
     my ($image_type) = @_;
     $ycsscounter = 2;
     if ( $ns eq 'NS' || $message =~ s/#nosmileys//isgm ) { return $message; }
-
+    if ( ${ $uid . $username }{'hide_img'} && $user_hide_img ) { $message = parseimgflash($message); }
     $message =~ s/\[reason\](.+?)\[\/reason\]//igsm;
     $message =~ s/\[code\]/ \[code\]/igsm;
     $message =~ s/\[\/code\]/ \[\/code\]/igsm;

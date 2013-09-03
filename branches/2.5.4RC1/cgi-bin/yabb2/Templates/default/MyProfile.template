@@ -432,6 +432,11 @@ $myprofile_hide_user_text = qq~<tr class="windowbg">
 		<td><input type="checkbox" name="hide_user_text" id="hide_user_text" {yabb hide_user_text} /></td>
 	</tr>~;
 
+$myprofile_hide_img = qq~<tr class="windowbg">
+        <td><label for="hide_img"><b>$profile_display_options{'hide_img'}</b></label></td>
+        <td><input type="checkbox" name="hide_img" id="hide_img" {yabb hide_img} /></td>
+    </tr>~; 
+
 $myprofile_hide_attach_img = qq~<tr class="windowbg">
 		<td><label for="hide_attach_img"><b>$profile_display_options{'hide_attach_img'}</b></label></td>
 		<td><input type="checkbox" name="hide_attach_img" id="hide_attach_img" {yabb hide_attach_img} /></td>

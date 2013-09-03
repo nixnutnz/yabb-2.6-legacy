@@ -568,6 +568,7 @@ $member_groups
 \$allow_hide_email = $allow_hide_email;     # Allow users to hide their email from public. Set 0 to disable
 \$user_hide_avatars = $user_hide_avatars;       # Allow users to hide Avatars in threads. Set 0 to disable
 \$user_hide_user_text = $user_hide_user_text;       # Allow users to hide User Text in threads. Set 0 to disable
+\$user_hide_img = $user_hide_img;       # Allow users to hide Images in threads. Set 0 to disable 
 \$user_hide_attach_img = $user_hide_attach_img;     # Allow users to hide Attached Images in threads. Set 0 to disable
 \$user_hide_signat = $user_hide_signat;         # Allow users to hide User Signatures in threads. Set 0 to disable
 \$user_hide_smilies_row = $user_hide_smilies_row;   # Allow users to hide Smilies row below the Post Message-inputarea. Set 0 to disable
