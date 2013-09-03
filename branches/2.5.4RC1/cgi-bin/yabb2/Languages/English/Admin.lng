@@ -4,7 +4,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.41                                                 #
-# Packaged:       September 1, 2013                                           #
+# Packaged:       September 3, 2013                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -446,12 +446,12 @@ $adminlngver = 'YaBB 2.5.4 RC1 $Revision$';
 '748' => 'Specify the Member Groups that are allowed to upload avatars:<br /><span class ="small">If no Member Group is selected, all Member Groups are enabled.<br />Use Ctrl or Shift to select/deselect multiple groups.</span>',
 '749' => 'File size limit for avatars:<br /><span class ="small">Set to 0 to disable checking (not recommended) or to a reasonably high value, such as 100&nbsp;KB.</span>',
 '750' => 'Avatar directory size limit:<br /><span class ="small">Set to 0 to disable checking (not recommended).</span>',
-'751' => 'Allow users to hide avatars in threads',
-'752' => 'Allow users to hide "user text" in threads',
-'753' => 'Allow users to hide attached images in threads',
-'754' => 'Allow users to hide signatures in threads',
-'755' => 'Allow users to hide the Smilies-row below the Post Message inputarea',
-'756' => 'Allow users to hide images in threads', 
+'751' => 'Allow users to hide avatars in threads?',
+'752' => 'Allow users to hide "user text" in threads?',
+'753' => 'Allow users to hide attached images in threads?',
+'754' => 'Allow users to hide signatures in threads?',
+'755' => 'Allow users to hide the Smiley-row below the Post/Reply area?',
+'756' => 'Allow users to hide images in threads?', 
 '764' => 'Edit Agreement',
 '765' => 'This form will allow you to edit the file "agreement.txt". This is a flat text file displayed to people when they sign up. Some HTML tags are permitted.',
 '802' => 'Browser Cache Behaviour?<br /><span class="small">Unchecked: No Cache, must revalidate. Checked: Cache allowed</span>',
@@ -539,7 +539,7 @@ $adminlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'iplookup_urls' => 'IP Lookup Whois Servers:<br /><span class="small">Here you can add or remove Whois servers to/from the IP Lookup page.<br />Use {ip} in the URL to substitute the actual IP address, and separate the title and URL with a pipe symbol \'|\'.<br />One URL per line.<br />Example: MyLookupSite|mylookupsite.com?ip={ip}</span>',
 'iplookup_protocols' => '. Valid protocols are http and https.', 
 'show_user_age' => 'Show User Age in Message View?', 
-'show_reg_date' => 'Show User Registration Date?',
+'show_reg_date' => 'Show User Registration Date in Message View?',
 'edit_gender_limit' => 'Set a limit on the amount of times that members can edit their gender:<br /><span class="small">1 = Cannot be edited after the first time it has been entered.<br />0 = No limit.</span>',
 'edit_age_limit' => 'Set a limit on the amount of times that members can edit their birthdate:<br /><span class="small">1 = Cannot be edited after the first time it has been entered.<br />0 = No limit.</span>',
 'min_reg_time' => 'Minimum amount of time in seconds which must be spent on the registration page:<br /><span class="small">This is to stop spambots which automatically fill in the registration form in a time which is humanly impossible.<br />Set to 0 to disable.</span>',
@@ -877,7 +877,7 @@ $adminlngver = 'YaBB 2.5.4 RC1 $Revision$';
 '20' => 'Background color of Detachable Smilies Popup:',
 '21' => 'Click on the smiley you wish to insert into your message:',
 '22' => 'Show',
-'23' => 'Click the <i>radiobutton</i> above on the left side next to the smiley you want to be shown in the <nobr>Smilies-Block</nobr> when loading the page, or click here if you do not want a special one:',
+'23' => 'Click the <i>radiobutton</i> below on the left side next to the smiley you want to be shown in the <nobr>Smilies-Block</nobr> when loading the page, or click here if you do not want a special one:', 
 '24' => 'Remove all Smilies below the Post/Reply message text field?',
 );
 
