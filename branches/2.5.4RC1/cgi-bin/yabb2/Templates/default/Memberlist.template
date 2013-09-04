@@ -266,7 +266,7 @@ $my_tableHeader_lt = qq~<tr>
         </tr>~;
 
 $my_quickSearch = qq~
-    <div class="bordercolor" style="width:300px">
+    <div class="bordercolor" style="width:300px; margin:0 auto">
     <table class="pad_3px cs_thin" style="width:300px">
         <tr>
             <td class="titlebg"><label for="letter">$usersel_txt{'qsearch'}</label></td>
