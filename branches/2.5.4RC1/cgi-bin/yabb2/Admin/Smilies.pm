@@ -5,7 +5,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.41                                                 #
-# Packaged:       September 1, 2013                                           #
+# Packaged:       September 4, 2013                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -122,10 +122,34 @@ sub SmiliePanel {
     <td class="windowbg2" colspan="4">$yyhtml_root/Smilies</td>
   </tr><tr>
     <td class="windowbg2" colspan="4"><label for="popback"><b>$smiltxt{'20'}</b></label></td>
-    <td class="windowbg2" colspan="4">#<input type="text" size="10" name="popback" id="popback" value="$popback" /></td>
+    <td class="windowbg2" colspan="4">
+        #<input type="text" size="10" name="popback" id="popback" value="$popback" />
+        <span id="popback_color" style="background-color: #$popback;">&nbsp; &nbsp; &nbsp;</span> <img src="$imagesdir/palette1.gif" style="cursor: pointer; vertical-align: top;" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+        <script type="text/javascript">
+        <!--
+        function previewColor(color) {
+            document.getElementById('popback_color').style.background = color;
+            color = color.replace(/#/, '');
+            document.getElementsByName("popback")[0].value = color;
+        }
+        //-->
+        </script>
+      </td> 
   </tr><tr>
     <td class="windowbg2" colspan="4"><label for="poptext"><b>$smiltxt{'19'}</b></label></td>
-    <td class="windowbg2" colspan="4">#<input type="text" size="10" name="poptext" id="poptext" value="$poptext" /></td>
+    <td class="windowbg2" colspan="4">
+        #<input type="text" size="10" name="poptext" id="poptext" value="$poptext" />
+        <span id="poptext_color" style="background-color: #$poptext;">&nbsp; &nbsp; &nbsp;</span> <img src="$imagesdir/palette1.gif" style="cursor: pointer; vertical-align: top;" onclick="window.open('$scripturl?action=palette;task=templ_0', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+        <script type="text/javascript">
+        <!--
+        function previewColor_0(color) {
+            document.getElementById('poptext_color').style.background = color;
+            color = color.replace(/#/, '');
+            document.getElementsByName("poptext")[0].value = color;
+        }
+        //-->
+        </script>
+    </td> 
   </tr><tr>
       <td class="titlebg" colspan="8"><b>&nbsp;<img src="$imagesdir/grin.gif" alt="" />&nbsp;$asmtxt{'11'}</b></td>
   </tr><tr>
