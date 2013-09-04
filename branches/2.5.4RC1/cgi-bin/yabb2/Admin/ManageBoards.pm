@@ -1,11 +1,11 @@
 ###############################################################################
 # ManageBoards.pm                                                             #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.04.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.41                                                 #
-# Packaged:       October 15, 2012                                            #
+# Packaged:       September 1, 2013                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -870,8 +870,7 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
   </tr><tr>
     <td class="windowbg2">
     <b>$admin_txt{'63'}:</b><br /><span class="small">
-    <!-- <a href="javascript:void(0);" onclick="window.open('$scripturl?action=imlist;sort=username;toid=moderators$i','','status=no,height=345,width=464,menubar=no,toolbar=no,top=50,left=50,scrollbars=no')">$selector_txt{linklabel}</a><br/> -->
-    <a href="javascript:void(0);" onclick="window.open('$scripturl?action=qsearch;toid=moderators$i','','status=no,height=325px,width=300,menubar=no,toolbar=no,top=50,left=50,scrollbars=no')">$selector_txt{linklabel}</a><br />
+    <a href="javascript:void(0);" onclick="window.open('$scripturl?action=qsearch;toid=moderators$i','','status=no,height=325px,width=464,menubar=no,toolbar=no,top=50,left=50,scrollbars=no')">$selector_txt{linklabel}</a><br />
     <a href="javascript:copyNames($i)">$admin_txt{'63a'}</a><br/>
     <a href="javascript:pasteNames($i,1)">$admin_txt{'63b'}</a><br/>
     <a href="javascript:pasteNames(1,$FORM{'amount'})">$admin_txt{'63c'}</a></span>
