@@ -1509,10 +1509,10 @@ sub SetInstall2 {
 
 ########## MemberGroups ##########
 
-\$Group{'Administrator'} = "Forum Administrator|5|staradmin.png|red|0|0|0|0|0|0";
-\$Group{'Global Moderator'} = "Global Moderator|5|stargmod.png|blue|0|0|0|0|0|0";
-\$Group{'Mid Moderator'} = "Forum Moderator|5|starfmod.png|teal|0|0|0|0|0|0";
-\$Group{'Moderator'} = "Board Moderator|5|starmod.png|green|0|0|0|0|0|0";
+\$Group{'Administrator'} = 'Administrator|5|staradmin.png|#FF0000|0|0|0|0|0|0|0';
+\$Group{'Global Moderator'} = 'Global Moderator|5|stargmod.png|#0000FF|0|0|0|0|0|0|0';
+\$Group{'Mid Moderator'} = 'Forum Moderator|5|starfmod.png|#008080|0|0|0|0|0|0|0';
+\$Group{'Moderator'} = 'Moderator|5|starmod.png|#008000|0|0|0|0|0|0|0';
 \$Post{'500'} = "God Member|5|starsilver.png||0|0|0|0|0|0";
 \$Post{'250'} = "Senior Member|4|stargold.png||0|0|0|0|0|0";
 \$Post{'100'} = "Full Member|3|starblue.png||0|0|0|0|0|0";
