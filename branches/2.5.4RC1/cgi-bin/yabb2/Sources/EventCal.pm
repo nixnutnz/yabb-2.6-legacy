@@ -1,6 +1,6 @@
 ###############################################################################
 # EventCal.pm                                                                 #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.05.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -32,6 +32,52 @@ require Sources::Post;
 
 get_template('Calendar');
 get_micon();
+
+if ( eval { require "$vardir/eventcalIcon.txt"; 1 } ) {
+    $i = 0;
+    while ( $CalIconURL[$i] ) {
+		$cal_icon{"$CalIconURL[$i]"} = qq~<img src="$yyhtml_root/EventIcons/$CalIconURL[$i]" alt="$CalIDescription[$i]" />~;
+		$cal_icon_bg{"$CalIconURL[$i]"} = qq~$yyhtml_root/EventIcons/$CalIconURL[$i]~;
+		$var_cal{"$CalIconURL[$i]"} = $CalIDescription[$i];
+		$add_cal_icon[$i] = qq~$CalIconURL[$i]|$CalIDescription[$i]~;
+	$i++;
+    }
+}
+
+$jsCal = qq~
+var jsCal = new Hash(
+'eventmore', '$cal_icon_bg{'eventmore'}',
+'eventmorebd', '$cal_icon_bg{'eventmore'}',
+'eventmoreadd', '$cal_icon_bg{'eventmore'}',
+'eventannounce', '$cal_icon_bg{'eventannounce'}',
+'eventholiday', '$cal_icon_bg{'eventholiday'}',
+'eventnote', '$cal_icon_bg{'eventnote'}',
+'eventparty', '$cal_icon_bg{'eventparty'}',
+'eventcelebration', '$cal_icon_bg{'eventcelebration'}',
+'eventsport', '$cal_icon_bg{'eventsport'}',
+'eventmedia', '$cal_icon_bg{'eventmedia'}',
+'eventmeeting', '$cal_icon_bg{'eventmeeting'}'~;
+for $i (@add_cal_icon) {
+     my($i_a,$i_b) = split /\|/xsm, $i; 
+	$jsCal .= qq~,\n'$i_a', '$yyhtml_root/EventIcons/$i_a'~;
+}
+$jsCal .= qq~\n);~;
+
+$jsCal_txt = qq~
+var jsCaltxt = new Hash(
+'eventannounce', '$var_cal{'eventannounce'}',
+'eventholiday', '$var_cal{'eventholiday'}',
+'eventnote', '$var_cal{'eventnote'}',
+'eventparty', '$var_cal{'eventparty'}',
+'eventcelebration', '$var_cal{'eventcelebration'}',
+'eventsport', '$var_cal{'eventsport'}',
+'eventmedia', '$var_cal{'eventmedia'}',
+'eventmeeting', '$var_cal{'eventmeeting'}'~;
+for $i (@add_cal_icon) {
+     my($i_a,$i_b) = split /\|/xsm, $i; #
+	$jsCal_txt .= qq~,\n'$i_a', '$i_b'~;
+}
+$jsCal_txt .= qq~\n);~;
 
 sub eventcal {
     my ( $ssicalmode, $ssicaldisplay ) = @_;
@@ -496,6 +542,7 @@ qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
 s/{yabb verification_question_desc}/$verification_question_desc/sm;
             $mycalout_spamquestion =~
               s/{yabb spam_question_id}/$spam_question_id/sm;
+            $mycalout_spamquestion =~ s/{yabb spam_question_image}/$spam_image/sm;
         }
         if ($iamguest) {
             $liveusernamelink =
@@ -790,7 +837,7 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_n
                 $edit_event   = q{};
                 $icon_text    = $var_cal{$cico};
                 $cal_icon     = $cal_icon{$cico};
-                if ( !$var_cal{$cico} ) { $icon_text = calicontext($cico); }
+#                if ( !$var_cal{$cico} ) { $icon_text = calicontext($cico); }
 
                 if ( $ns eq 'NS' ) {
                     $message = q~[noparse]~ . $ceve . q~[/noparse]~;
@@ -929,7 +976,7 @@ qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
                 $delete_event = q{};
                 $edit_event   = q{};
                 $icon_text    = $var_cal{$cico};
-                if ( !$var_cal{$cico} ) { $icon_text = calicontext($cico); }
+#                if ( !$var_cal{$cico} ) { $icon_text = calicontext($cico); }
 
                 if ( $ns eq 'NS' ) {
                     $message = q~[noparse]~ . $ceve . q~[/noparse]~;
@@ -1219,7 +1266,7 @@ qq~<a href="$scripturl?action=eventcal;calshow=1;eventdate=$cyear$cmon$cday;cali
               . qq~;showthisdate=2" title="$var_cal{'calshowevent'}">$cdate</a>~;
             $cal_time  = stringtotime($ctime);
             $icon_text = "$var_cal{$cicon}";
-            if ( !$var_cal{$cicon} ) { $icon_text = calicontext($cicon); }
+#            if ( !$var_cal{$cicon} ) { $icon_text = calicontext($cicon); }
             if ( $g eq 'g' ) {
                 $eventuserlink = qq~$cname ($var_cal{'guest'})~;
             }

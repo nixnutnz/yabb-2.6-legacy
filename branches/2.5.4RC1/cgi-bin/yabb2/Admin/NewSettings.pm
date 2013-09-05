@@ -73,7 +73,7 @@ sub settings {
      </tr>
   </table>
   </div>
-  <form action="$adminurl?action=newsettings2;page=$page" onsubmit="undisableAll(this);" method="post" accept-charset="$yycharset">
+  <form action="$adminurl?action=newsettings2;page=$page" onsubmit="undisableAll(this);" method="post" enctype="multipart/form-data" accept-charset="$yycharset">
   <ul id="navlist">
 ~;
     my $i = 0;

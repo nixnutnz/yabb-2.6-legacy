@@ -1,6 +1,6 @@
 ###############################################################################
 # Register.pm                                                                 #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.05.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -261,6 +261,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
         $yymain =~
           s/{yabb verification_question_desc}/$verification_question_desc/sm;
         $yymain =~ s/{yabb spam_question_id}/$spam_question_id/sm;
+        $yymain =~ s/{yabb spam_question_image}/$spam_image/sm;
     }
     if ( $honeypot == 1 ) {
         fopen( HONEY, "<$langdir/$language/honey.txt" )

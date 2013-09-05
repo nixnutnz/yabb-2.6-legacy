@@ -69,7 +69,7 @@ sub AddCats {
     get_forum_master();
 
     $yymain .= qq~
-<form action="$adminurl?action=addcat2" method="post" accept-charset="$yycharset">
+<form action="$adminurl?action=addcat2" method="post" enctype="multipart/form-data" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
@@ -115,6 +115,10 @@ sub AddCats {
             my $cat_num = $i + 1;
             $cattext = "$admin_txt{'44'} $cat_num:";
         }
+        my $catimage_value = q{};
+        if ( $catimage ) {
+            $catimage_value = qq~<div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Templates/Forum/default/$catimage" target="_blank">$catimage</a><br /><input type="checkbox" name="del_catimage$i" id="del_catimage$i" value="1" /> <label for="del_catimage$i">$admin_txt{'64b5'}</label></div>~;
+        }
         $catperms = DrawPerms( $catperms, 0 );
        $yymain .= qq~
 <div class="bordercolor rightboxdiv">
@@ -144,8 +148,8 @@ sub AddCats {
             <td class="windowbg"><label for="name$i"><b>$admin_txt{'68'}:</b></label></td>
             <td class="windowbg2 padd_8_12px"><input type="text" name="name$i" id="name$i" value="$curcatname" size="40" /></td>
         </tr><tr>
-            <td class="windowbg"><label for="catimage$i"><b>$admin_txt{'64b2'}:</b></label></td>
-            <td class="windowbg2 padd_8_12px"><br /><input type="text" name="catimage$i" id="catimage$i" value="$catimage" size="40" />~ . ($catimage ? qq~<br /><br  /><img src="$catimage" alt="" />~ : q{}) . qq~</td>
+            <td class="windowbg"><label for="catimage$i"><b>$admin_txt{'64b2'}:</b><br /><span class="small">$admin_txt{'64b3'}</span></label></td>
+            <td class="windowbg2 padd_8_12px"><br /><input type="file" name="catimage$i" id="catimage$i" size="35" /><input type="hidden" name="cur_catimage$i" value="$catimage" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('catimage$i').value='';">X</span>~ . ($catimage ? qq~<br /><img src="$imagesdir/$catimage" alt="" />~ : q{}) . qq~$catimage_value</td>
         </tr><tr>
             <td class="windowbg"><label for="catrss$i"><b>$admin_txt{'brdrss1'}:</b></label></td>
             <td class="windowbg2 padd_8_12px"><br /><input type="checkbox" name="catrss$i" id="catrss$i"$catrssch /> <label for="catrss$i"><span class="small">$admin_txt{'brdrss2'}</span></label></td>
@@ -180,14 +184,18 @@ sub AddCats2 {
 
     for my $i ( 0 .. ( $FORM{'amount'} - 1 ) ) {
         if ( $FORM{"catimage$i"} ne q{} ) {
-            if (
-                $FORM{"catimage$i"} =~ /[^0-9a-zA-Z_\.#\%\-:\+\?\$&~,\@\/]/xsm )
-            {
-                fatal_error( 'invalid_character', $FORM{"catimage$i"} );
+            $FORM{"catimage$i"} = UploadFile("catimage$i", 'Templates/Forum/default', 'png jpg jpeg gif', '250'); 
+            if ( $FORM{"cur_catimage$i"} ne q{} ) {
+                unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_catimage$i\"}";
             }
-            if ( $FORM{"catimage$i"} !~ /\.(gif|png|jpe?g)$/xsm ) {
-                fatal_error( q{}, $admintxt{'44'} );
             }
+        else {
+            $FORM{"catimage$i"} = $FORM{"cur_catimage$i"};
+        }
+        
+        if ( $FORM{"cur_catimage$i"} ne q{} && $FORM{"del_catimage$i"} ) {
+            unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_catimage$i\"}";
+            $FORM{"catimage$i"} = q{};
         }
         if ( $FORM{"theid$i"} eq q{} ) { next; }
         $id = $FORM{"theid$i"};

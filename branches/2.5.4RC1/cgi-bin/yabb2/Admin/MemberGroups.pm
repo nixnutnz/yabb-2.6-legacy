@@ -1,6 +1,6 @@
 ###############################################################################
 # MemberGroups.pm                                                             #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.05.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -461,7 +461,7 @@ sub editAddGroup {
     if ( $attachperms == 1 ) { $ac  = q~ checked="checked"~; }
 
     $yymain .= qq~
-<form name="groups" action="$adminurl?action=editAddGroup2" method="post" accept-charset="$yycharset">
+<form name="groups" action="$adminurl?action=editAddGroup2" method="post" enctype="multipart/form-data" accept-charset="$yycharset">
 <input type="hidden" name="original" value="$INFO{'group'}" />
 <input type="hidden" name="origin" value="$action" />
 
@@ -486,7 +486,7 @@ sub editAddGroup {
     $yymain .= qq~                <option value="other"$stara[8]>$amgtxt{'26'}</option>
             </select>
             &nbsp;
-            <label for="otherstar"><b>$amgtxt{'26'}</b></label> <input type="text" name="otherstar" id="otherstar" onchange="showimage();" value="$pick"$otherdisable />
+            <label for="otherstar"><b>$amgtxt{'26'}</b></label> <input type="file" name="otherstar" id="otherstar" size="35"$otherdisable /><input type="hidden" name="cur_otherstar" value="$pick" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('otherstar').value='';">X</span>
             &nbsp;
             <img src="$starurl" name="starpic" alt="" />
         </td>
@@ -645,11 +645,10 @@ function stars(value) {
 
 function showimage() {
     selected = document.groups.starsadmin.options[document.groups.starsadmin.selectedIndex].value;
-    otherurl = document.groups.otherstar.value;
-    useimg = (selected != "other") ? "$imagesdir/"+selected : ((otherurl != "") ? otherurl : "$imagesdir/blank.gif");
+    useimg = (selected != "other") ? "$imagesdir/"+selected : "$imagesdir/blank.gif"; 
     document.images.starpic.src=useimg;
     if (document.images.starpic.complete == false) {
-        useimg = (selected != "other") ? "$defaultimagesdir/"+selected : ((otherurl != "") ? otherurl : "$defaultimagesdir/blank.gif");
+        useimg = (selected != "other") ? "$defaultimagesdir/"+selected :  "$defaultimagesdir/blank.gif";
         document.images.starpic.src=useimg;
     }
 }
@@ -692,10 +691,18 @@ sub editAddGroup2 {
     $name =~ s/\|/&#124;/gxsm;
     $lcname = lc $name;
 
-    $star =
-      ( $FORM{'starsadmin'} eq 'other' )
-      ? $FORM{'otherstar'}
-      : $FORM{'starsadmin'};
+    if ( $FORM{'starsadmin'} eq 'other' ) {
+        $cur_otherstar = $FORM{'cur_otherstar'};
+        if ( $FORM{'otherstar'} ne q{} ) {
+            $star = UploadFile('otherstar', 'Templates/Forum/default', 'png jpg jpeg gif', '250'); 
+            if ( $cur_otherstar !~ /^(staradmin|stargmod|starfmod|starmod|starsilver|starblue|stargold).png$/ ) {
+                unlink "$htmldir/Templates/Forum/default/$cur_otherstar";
+            }
+        } 
+        else {
+            $star = $cur_otherstar;
+        }
+    }
     $color = $FORM{'color2'} ne q{} ? "#$FORM{'color2'}" : q{};
     $postdepend = $FORM{'postdepend'};
     if ( $FORM{'posts'} !~ /\d+/xsm && $postdepend eq 'Yes' ) {

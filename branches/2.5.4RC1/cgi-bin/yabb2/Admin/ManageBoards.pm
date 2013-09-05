@@ -103,7 +103,7 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
         }
     //-->
 </script>
-<form name="whattodo" id="whattodo" action="$adminurl?action=$act" onsubmit="return checkSubmit(this);" method="post">
+<form name="whattodo" id="whattodo" action="$adminurl?action=$act" onsubmit="return checkSubmit(this);" method="post" enctype="multipart/form-data">
 <div class="rightboxdiv">
     <table class="bordercolor cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
@@ -668,7 +668,7 @@ function checkParent(id, board) {
 }
 //-->
 </script>
-<form name="boardsadd" id="boardsadd" action="$adminurl?action=addboard2" method="post" onsubmit="selectNames($FORM{'amount'});" accept-charset="$yycharset">
+<form name="boardsadd" id="boardsadd" action="$adminurl?action=addboard2" method="post" enctype="multipart/form-data" onsubmit="selectNames($FORM{'amount'});" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
     <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
         <tr>
@@ -870,7 +870,7 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
   </tr><tr>
     <td class="windowbg2">
     <b>$admin_txt{'63'}:</b><br /><span class="small">
-    <a href="javascript:void(0);" onclick="window.open('$scripturl?action=qsearch;toid=moderators$i','','status=no,height=325px,width=464,menubar=no,toolbar=no,top=50,left=50,scrollbars=no')">$selector_txt{linklabel}</a><br />
+    <a href="javascript:void(0);" onclick="window.open('$scripturl?action=qsearch;toid=moderators$i','','status=no,height=325px,width=300,menubar=no,toolbar=no,top=50,left=50,scrollbars=no')">$selector_txt{linklabel}</a><br />
     <a href="javascript:copyNames($i)">$admin_txt{'63a'}</a><br/>
     <a href="javascript:pasteNames($i,1)">$admin_txt{'63b'}</a><br/>
     <a href="javascript:pasteNames(1,$FORM{'amount'})">$admin_txt{'63c'}</a></span>
@@ -922,6 +922,10 @@ qq~<select multiple="multiple" name="moderatorgroups$i" id="moderatorgroups$i" s
         else {
             $yymain .= qq~$admin_txt{'15'}~;
         }
+        my $boardpic_value = q{};
+        if ( $boardpic ) {
+            $boardpic_value = qq~<div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Templates/Forum/default/$boardpic" target="_blank">$boardpic</a><br /><input type="checkbox" name="del_pic$i" id="del_pic$i" value="1" /> <label for="del_pic$i">$admin_txt{'64b4'}</label></div>~;
+        }
 
         $yymain .= qq~
     </td>
@@ -943,8 +947,8 @@ qq~<select multiple="multiple" name="moderatorgroups$i" id="moderatorgroups$i" s
   </tr><tr>
     <td class="catbg"  colspan="4"><b>$admin_txt{'64'}</b> $admin_txt{'64a'} </td>
   </tr><tr>
-    <td class="windowbg2"><label for="pic$i"><b>$admin_txt{'64b'}:</b></label></td>
-    <td class="windowbg2" colspan="3"><input type="text" name="pic$i" id="pic$i" value="$boardpic" size="50" maxlength="255"$brdpic /></td>
+    <td class="windowbg2"><label for="pic$i"><b>$admin_txt{'64b'}:</b><br /><span class="small">$admin_txt{'64b3'}</span></label></td>
+    <td class="windowbg2" colspan="3"><input type="file" name="pic$i" id="pic$i" size="35"$brdpic /><input type="hidden" name="cur_pic$i" value="$boardpic" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('pic$i').value='';">X</span>$boardpic_value</td>
   </tr><tr>
     <td class="windowbg2"><label for="brdrss$i"><b>$admin_txt{'brdrss1'}:</b></label></td>
     <td class="windowbg2" colspan="3"><input type="checkbox" name="brdrss$i" id="brdrss$i" value="1"$brdrssch /> <label for="brdrss$i"><span class="small">$admin_txt{'brdrss3'}</span></label></td>
@@ -1195,12 +1199,19 @@ sub AddBoards2 {
     LoadBoardControl();
 
     for my $i ( 1 .. $FORM{'amount'} ) {
-        if (   $FORM{"pic$i"} ne q{}
-            && $FORM{"pic$i"} !~
-            m{^[0-9a-zA-Z_\.\#\%\-\:\+\?\$\&\~\.\,\@/]+\.(gif|png|bmp|jpg)$}xsm
-          )
-        {
-            fatal_error('invalid_picture');
+        if ( $FORM{"pic$i"} ne q{} ) {
+            $FORM{"pic$i"} = UploadFile("pic$i", 'Templates/Forum/default', 'png jpg jpeg gif', '250'); 
+            if ( $FORM{"cur_pic$i"} ne q{} ) {
+                unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_pic$i\"}";
+            }
+        } 
+        else {
+            $FORM{"pic$i"} = $FORM{"cur_pic$i"};
+        }
+        
+        if ( $FORM{"cur_pic$i"} ne q{} && $FORM{"del_pic$i"} ) {
+            unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_pic$i\"}";
+            $FORM{"pic$i"} = q{};
         }
         ##### Dealing with Required Info here #####
         if ( $FORM{"id$i"} eq q{} ) { next; }

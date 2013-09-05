@@ -887,9 +887,9 @@ qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdM
         },
         {
             description => qq~<label for="default_userpic">$admin_txt{'default_userpic'}</label>~,
-            input_html => qq~<input type="text" name="default_userpic" id="default_userpic" size="5" value="$default_userpic" />~,
+            input_html => qq~<input type="file" name="default_userpic" id="default_userpic" size="35" /><input type="hidden" name="cur_default_userpic" value="$default_userpic" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('default_userpic').value='';">X</span><div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Templates/Forum/default/$default_userpic" target="_blank">$default_userpic</a></div>~,
             name => 'default_userpic',
-            validate => 'text',
+            validate => 'text,null',
             depends_on => ['allowpics','default_avatar'],
         },
         {
@@ -1256,7 +1256,7 @@ qq~<input type="checkbox" name="nomailspammer" id="nomailspammer" value="1" ${is
             validate => 'boolean',
         },
         {
-            description => qq~<label for="mdmod">$mdintxt{'1'} $admin_txt{'63'}?</label>~,
+            description => qq~<label for="mdmod">$mdintxt{'1'} $admin_txt{'63d'}?</label>~,
             input_html => qq~<input type="checkbox" name="mdmod" id="mdmod" value="1"${ischecked($mdmod)} />~,
             name => 'mdmod',
             validate => 'boolean',
@@ -1436,7 +1436,7 @@ qq~<input type="checkbox" name="nomailspammer" id="nomailspammer" value="1" ${is
             input_html => qq~<input type="checkbox" name="PMenableGuestButton" id="PMenableGuestButton" value="1"${ischecked($PMenableGuestButton)} />~,
             name => 'PMenableGuestButton',
             validate => 'boolean',
-            depends_on => ['PM_level!=0'],
+            depends_on => ['PM_level!=0','$PMenableBm_level!=0'],
         },
         {
             description => qq~<label for="PMenableAlertButton">$imtxt{'89'}</label>~,
@@ -1610,6 +1610,18 @@ sub SaveSettings {
 
     # Convert unwanted tags in Board Name
     ToHTML($settings{'mbname'});
+
+    # Upload default avatar
+    $cur_default_userpic = $FORM{'cur_default_userpic'};
+    if ( $settings{'default_userpic'} ne q{} ) {
+        $settings{'default_userpic'} = UploadFile('default_userpic', 'Templates/Forum/default', 'png jpg jpeg gif', '250'); 
+        if ( $cur_default_userpic ne 'nn.gif' ) {
+            unlink "$htmldir/Templates/Forum/default/$cur_default_userpic";
+        }
+    } 
+    else {
+        $settings{'default_userpic'} = $cur_default_userpic;
+    }
 
     # Settings.pm stuff
     SaveSettingsTo('Settings.pm', %settings);

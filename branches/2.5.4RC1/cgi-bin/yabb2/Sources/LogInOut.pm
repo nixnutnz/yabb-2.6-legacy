@@ -230,6 +230,7 @@ $myremindera~;
         $yymain .= $myreminder_vericheck;
         $yymain =~ s/{yabb spam_question}/$spam_question/sm;
         $yymain =~ s/{yabb spam_question_id}/$spam_question_id/sm;
+        $yymain =~ s/{yabb spam_question_image}/$spam_image/sm;
         $yymain =~
           s/{yabb verification_question_desc}/$verification_question_desc/sm;
     }

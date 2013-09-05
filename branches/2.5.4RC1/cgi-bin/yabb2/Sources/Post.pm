@@ -1,6 +1,6 @@
 ###############################################################################
 # Post.pm                                                                     #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.05.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -169,6 +169,7 @@ sub Post {
           s/{yabb verification_question_desc}/$verification_question_desc/sm;
         $verification_question_field =~
           s/{yabb spam_question_id}/$spam_question_id/sm;
+        $verification_question_field =~ s/{yabb spam_question_image}/$spam_image/sm;
     }
 
     $sub        = q{};
@@ -605,6 +606,9 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
     }~;
     }
     ToHTML($moddate);
+	if ( $destination eq 'modalert2' ) {
+		$icon = 'alert';
+	}
     $my_topper = qq~
 </script>
 <input type="hidden" name="threadid" value="$threadid" />
@@ -2875,6 +2879,7 @@ sub sendGuestPM {
           s/{yabb verification_question_desc}/$verification_question_desc/gsm;
         $verification_question_field =~
           s/{yabb spam_question_id}/$spam_question_id/gsm;
+        $verification_question_field =~ s/{yabb spam_question_image}/$spam_image/gsm;
     }
     $sub        = q{};
     $settofield = 'subject';
@@ -3353,13 +3358,13 @@ sub modAlert2 {
 # If BM is allowed and no mods and no moderator group is assigned => send the "AlertMod" to admin and gmods via BM
     }
     elsif ( $PMenableBm_level && !$mods && !$modgrps ) {
-        $modgrps = $PMenableBm_level == 3 ? 'admins' : 'admins,gmods,ymods';
+        $modgrps = $PMenableBm_level == 3 ? 'admins' : 'admins,gmods,fmods';
     }
 
     # Check if there is at least one user in the moderator group
     # if not and no mod is assigned too => send the "AlertMod" to admin via PM
     if ( $PMenableBm_level && $modgrps ) {
-        if ( $modgrps =~ /admins|gmods|ymods|mods/xsm ) { $x = 1; }
+        if ( $modgrps =~ /admins|gmods|fmods|mods/xsm ) { $x = 1; }
         else {
             if ( !%memberinf ) { ManageMemberinfo('load'); }
           MANAGEINFO: foreach ( keys %memberinf ) {
@@ -3409,7 +3414,6 @@ sub modAlert2 {
                     qq~$notify_txt{'145'} $fromname ($msubject)~,
                     $chmessage, q{}, $emailcharset
                 );
-
             }
             elsif ( $PMenableBm_level && $x ) {
                 if ( !%memberinf ) { ManageMemberinfo('load'); }
@@ -3438,7 +3442,6 @@ sub modAlert2 {
     }
 
     if ( $PMenableBm_level && $x ) {
-
         # set announcement flag according to status of current board
         fopen( INBOX, "$memberdir/broadcast.messages" )
           || fatal_error( 'cannot_open', "$memberdir/broadcast.messages" );

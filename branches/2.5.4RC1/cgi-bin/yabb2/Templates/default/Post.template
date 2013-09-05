@@ -482,7 +482,7 @@ $mypost_guest_e = qq~<tr>
                    <input type="hidden" name="spam_question" value="{yabb spam_question}" />
                 </td>
                 <td class="windowbg vtop">
-                    <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" onchange="autoPreview()"/>
+                    <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" onchange="autoPreview()"/>{yabb spam_question_image}
                 </td>
             </tr>~;
 
@@ -504,7 +504,7 @@ $mypost_veri_b = qq~<tr>
                 <td class="windowbg">{yabb verification_question}
                     <input type="hidden" name="verification_question" value="{yabb verification_question}" />
                     <input type="hidden" name="verification_question_id" value="{yabb verification_question_id}" />
-                    <input type="hidden" name="spam_question" value="{yabb spam_question}" />
+                    <input type="hidden" name="spam_question" value="{yabb spam_question}" />{yabb spam_question_image}
                 </td>
             </tr>~;
 

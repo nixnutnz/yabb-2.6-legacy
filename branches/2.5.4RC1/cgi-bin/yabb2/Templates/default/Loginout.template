@@ -111,7 +111,7 @@ $myreminder_regcheck = qq~<tr>
     </tr><tr>
         <td class="windowbg">
             <div style="float:left; width:30%"><label for="verification"><b>$floodtxt{'3'}: </b></label></div>
-            <div style="float:left; width:70%"><input type="text" maxlength="30" name="verification" id="verification" size="20" /></div>
+            <div style="float:left; width:70%"><input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" />{yabb spam_question_image}</div>
             <div class="clear"></div>
         </td>
     </tr>~;

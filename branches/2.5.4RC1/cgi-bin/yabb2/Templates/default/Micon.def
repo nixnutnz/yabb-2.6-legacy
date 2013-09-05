@@ -214,39 +214,8 @@ $newload = qq~
 		</script>~;
 
 #####################################################################
-#                   JS Variables for EventCalendar, IMPost, Post    #
+#                   JS Variables for IMPost, Post                   #
 #####################################################################
-
-### Variables for EventCalendar:
-
-$jsCal = qq~
-var jsCal = new Hash(
-'eventmore', '$cal_icon_bg{'eventmore'}',
-'eventmorebd', '$cal_icon_bg{'eventmore'}',
-'eventmoreadd', '$cal_icon_bg{'eventmore'}',
-'eventannounce', '$cal_icon_bg{'eventannounce'}',
-'eventholiday', '$cal_icon_bg{'eventholiday'}',
-'eventnote', '$cal_icon_bg{'eventnote'}',
-'eventparty', '$cal_icon_bg{'eventparty'}',
-'eventcelebration', '$cal_icon_bg{'eventcelebration'}',
-'eventsport', '$cal_icon_bg{'eventsport'}',
-'eventmedia', '$cal_icon_bg{'eventmedia'}',
-'eventmeeting', '$cal_icon_bg{'eventmeeting'}'
-);
-~;
-
-$jsCal_txt = qq~
-var jsCaltxt = new Hash(
-'eventannounce', '$var_cal{'eventannounce'}',
-'eventholiday', '$var_cal{'eventholiday'}',
-'eventnote', '$var_cal{'eventnote'}',
-'eventparty', '$var_cal{'eventparty'}',
-'eventcelebration', '$var_cal{'eventcelebration'}',
-'eventsport', '$var_cal{'eventsport'}',
-'eventmedia', '$var_cal{'eventmedia'}',
-'eventmeeting', '$var_cal{'eventmeeting'}'
-);
-~;
 
 $jsPost = qq~
 var jsPost = new Hash(

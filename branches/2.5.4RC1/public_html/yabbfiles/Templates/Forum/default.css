@@ -2130,7 +2130,18 @@ font-style: normal;
 font-weight: 400;
 width:464px;
 min-width:464px;
-margin: 0 auto
+margin: 0 auto;
+}
+
+.select_body_qsearch  {
+background-color: #DEE4EC;
+color: #2D2D2D;
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+width:300px;
+min-width:300px;
+margin: 0 auto;
 }
 
 .system-info  {

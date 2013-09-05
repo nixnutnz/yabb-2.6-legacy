@@ -29,6 +29,7 @@ $admin_move = 'admin_move_split_splice.png';
 $top_arrow = 'back_to_top.png';
 $my_blank_avatar = 'blank.gif';
 $nn_avatar = 'nn.gif';
+$disp_email = 'email.png';
 
 $outside_threadtools = qq~{yabb reply}~;
 $outside_ttsep = qq~~;
@@ -408,7 +409,7 @@ $mysend_top = qq~
 <table class="tabtitle" style="width:70%">
     <tr>
         <td style="padding-left:20px">
-            <img src="$imagesdir/email.gif" alt="" />
+            <img src="$imagesdir/$disp_email" alt="" />
             <b>$sendtopic_txt{'707'}&nbsp; &#171; {yabb subject} &#187; &nbsp;$sendtopic_txt{'708'}</b>
         </td>
     </tr>
@@ -438,8 +439,8 @@ $mysend_top = qq~
         </td>
     </tr><tr>
         <td class="windowbg center" colspan="2">
-            <input type="hidden" name="board" value="$board" />
-            <input type="hidden" name="topic" value="$topic" />
+            <input type="hidden" name="board" value="{yabb board}" />
+            <input type="hidden" name="topic" value="{yabb topic}" />
             <input type="submit" name="Send" value="$sendtopic_txt{'339'}" class="button" />
         </td>
     </tr>
@@ -468,7 +469,7 @@ $mysend_spam = qq~<tr>
         </td>
         <td class="windowbg vtop">
             <input type="text" name="verification_question" id="verification_question" size="50" maxlength="50" />
-            <input type="hidden" name="verification_question_id" value="{yabb spam_question_id}" />
+            <input type="hidden" name="verification_question_id" value="{yabb spam_question_id}" />{yabb spam_question_image}
         </td>
     </tr>~;
 

@@ -1,6 +1,6 @@
 ###############################################################################
 # Subs.pm                                                                     #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.05.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -1482,8 +1482,9 @@ sub SpamQuestion {
         rand($INPUT_LINE_NUMBER) < 1 && ( $spam_question_rand = $_ );
     }
     fclose(SPAMQUESTIONS);
-    ( $spam_question_id, $spam_question, undef ) =
+    ( $spam_question_id, $spam_question, undef, $spam_questions_case, $spam_image ) =
       split /\|/xsm, $spam_question_rand;
+    $spam_image = $spam_image ? qq~<div style="margin-top: .5em;"><img src="$yyhtml_root/Templates/Forum/default/$spam_image" alt="" /></div>~ : q{};
     return;
 }
 
@@ -1496,7 +1497,7 @@ sub SpamQuestionCheck {
     foreach my $verification_question (@spam_questions) {
         chomp $verification_question;
         if ( $verification_question =~ /$verification_question_id/xsm ) {
-            ( undef, undef, $verification_answer ) =
+            ( undef, undef, $verification_answer, $spam_questions_case, undef ) =
               split /\|/xsm, $verification_question;
         }
     }
@@ -3286,6 +3287,129 @@ sub BoardPasswCheck {
     }
     redirectexit();
     return;
+}
+
+sub UploadFile {
+
+    my ( $file_upload, $file_directory, $file_extensions, $file_size ) = @_;
+    $file_directory = qq~$htmldir/$file_directory~;
+    
+    LoadLanguage('FA');
+    
+    if ($CGI_query) { $file = $CGI_query->upload("$file_upload"); }
+    if ($file) { 
+        $fixfile = $file;
+        $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/xsm;
+        if ( $fixfile =~ /[^0-9A-Za-z\+\-\.:_]/xsm )
+       {    # replace all inappropriate characters
+            # Transliteration
+            my @ISO_8859_1 =
+              qw(A B V G D E JO ZH Z I J K L M N O P R S T U F H C CH SH SHH _ Y _ JE JU JA a b v g d e jo zh z i j k l m n o p r s t u f h c ch sh shh _ y _ je ju ja);
+            my $x = 0;
+            foreach (
+              qw(À Á Â Ã Ä Å ¨ Æ Ç È É Ê Ë Ì Í Î Ï Ð Ñ Ò Ó Ô Õ Ö × Ø Ù Ú Û Ü Ý Þ ß à á â ã ä å ¸ æ ç è é ê ë ì í î ï ð ñ ò ó ô õ ö ÷ ø ù ú û ü ý þ ÿ)
+            )
+            {
+            $fixfile =~ s/$_/$ISO_8859_1[$x]/igxsm;
+            $x++;
+            }
+
+            # END Transliteration. Thanks to "Velocity" for this contribution.
+            $fixfile =~ s/[^0-9A-Za-z\+\-\.:_]/_/gxsm;
+        }
+
+        # replace . with _ in the filename except for the extension
+        my $fixname = $fixfile;
+        if ( $fixname =~ s/(.+)(\..+?)$/$1/xsm ) {
+            $fixext = $2;
+        }
+
+        $fixext  =~ s/\.(pl|pm|cgi|php)/._$1/ixsm;
+        $fixname =~ s/\.(?!tar$)/_/gxsm;
+        $fixfile = qq~$fixname$fixext~;
+        if ( $fixfile eq 'index.html' || $fixfile eq '.htaccess' ) { fatal_error('attach_file_blocked') };
+
+        $fixfile = check_existence( $file_directory, $fixfile );
+ 
+        my $match = 0;
+        foreach my $ext ( split / /, $file_extensions ) {
+            if ( grep { /$ext$/ixsm } $fixfile ) {
+                $match = 1;
+                last;
+            }
+        }
+                
+        if (!$match) {
+            unlink "$file_directory/$fixfile"; 
+            fatal_error( q{}, "$fixfile $fatxt{'20'} $file_extensions" );
+        }
+
+        my ( $size, $buffer, $filesize, $file_buffer );
+        while ( $size = read $file, $buffer, 512 ) {
+            $filesize += $size;
+            $file_buffer .= $buffer;
+        }
+        if ( $file_size && $filesize > ( 1024 * $file_size ) ) {
+            unlink "$file_directory/$fixfile";
+            fatal_error( q{},
+                    "$fatxt{'21'} $fixfile ("
+                    . int( $filesize / 1024 )
+                    . " KB) $fatxt{'21b'} "
+                    . $file_size );
+        }
+
+        # create a new file on the server using the formatted ( new instance ) filename
+        if ( fopen( NEWFILE, ">$file_directory/$fixfile" ) ) {
+            binmode NEWFILE;
+
+            # needed for operating systems (OS) Windows, ignored by Linux
+            print {NEWFILE} $file_buffer
+              or croak "$croak{'print'} NEWFILE"; # write new file on HD
+            fclose(NEWFILE);
+        }
+        else
+        { # return the server's error message if the new file could not be created
+                unlink "$file_directory/$fixfile"; 
+                fatal_error( 'file_not_open', "$file_directory" );
+        }
+
+        # check if file has actually been uploaded, by checking the file has a size
+        $filesizekb{$fixfile} = -s "$file_directory/$fixfile";
+        if ( !$filesizekb{$fixfile} ) {
+            unlink "$file_directory/$fixfile";
+            fatal_error( 'file_not_uploaded', $fixfile );
+        }
+        $filesizekb{$fixfile} = int( $filesizekb{$fixfile} / 1024 );
+
+        if ( $fixfile =~ /\.(jpg|gif|png|jpeg)$/ism ) {
+            my $okatt = 1;
+            if ( $fixfile =~ /gif$/ism ) {
+                my $header;
+                fopen( ATTFILE, "$file_directory/$fixfile" );
+                read ATTFILE, $header, 10;
+                my $giftest;
+                ( $giftest, undef, undef, undef, undef, undef ) =
+                  unpack 'a3a3C4', $header;
+                fclose(ATTFILE);
+                if ( $giftest ne 'GIF' ) { $okatt = 0; }
+            }
+            fopen( ATTFILE, "$file_directory/$fixfile" );
+            while ( read ATTFILE, $buffer, 1024 ) {
+                if ( $buffer =~ /<(html|script|body)/igxsm ) {
+                    $okatt = 0;
+                    last;
+                }
+            }
+            fclose(ATTFILE);
+            if ( !$okatt )
+            {    # delete the file as it contains illegal code
+                unlink "$file_directory/$fixfile";
+                fatal_error( 'file_not_uploaded', "$fixfile $fatxt{'20a'}" );
+             }
+        }
+
+    }        
+    return ($fixfile);
 }
 
 1;

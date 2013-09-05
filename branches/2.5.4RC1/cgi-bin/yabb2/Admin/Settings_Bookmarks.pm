@@ -172,7 +172,7 @@ sub Bookmarks {
         $show_bookmarks
     </table>
 </div>
-<form action="$adminurl?action=bookmarks_add" method="post">
+<form action="$adminurl?action=bookmarks_add" method="post" enctype="multipart/form-data">
 <div class="bordercolor  rightboxdiv">
     <table class="pad_4px cs_thin" style="margin-bottom: .5em;">
         <colgroup>
@@ -186,7 +186,7 @@ sub Bookmarks {
             <td><input type="text" name="bm_title" id="bm_title" size="35" /></td>
         </tr><tr class="windowbg2 vtop">
             <td><label for="bm_image"><span style="font-weight: bold;">$bookmark_txt{'01'}:</span><br /><span class="small">$bookmark_txt{'19'}</span></label></td>
-            <td><input type="text" name="bm_image" id="bm_image" size="35" /></td>
+            <td><input type="file" name="bm_image" id="bm_image" size="35" /></td>
         </tr><tr class="windowbg2 vtop">
             <td><label for="bm_url"><span style="font-weight: bold;">$bookmark_txt{'14'}:</span><br /><span class="small">$bookmark_txt{'20'}</span></label></td>
             <td><input type="text" name="bm_url" id="bm_url" size="70" /></td>
@@ -238,6 +238,7 @@ sub AddBookmark {
     $bm_order = $FORM{'bm_order'};
     $bm_title = $FORM{'bm_title'};
     $bm_image = $FORM{'bm_image'};
+    $bm_cur_image = $FORM{'bm_cur_image'};
     $bm_url   = $FORM{'bm_url'};
 
     if ( $bm_title eq q{} ) {
@@ -250,6 +251,8 @@ sub AddBookmark {
     if ( $bm_order eq q{} ) {
         fatal_error( 'invalid_value', "$bookmark_txt{'03'}" );
     }
+
+    $bm_image = UploadFile('bm_image', 'Bookmarks', 'png jpg jpeg gif', '250');
 
     fopen( BMARKS, ">>$vardir/Bookmarks.txt" )
       || fatal_error( 'cannot_open', "$vardir/Bookmarks.txt", 1 );
@@ -278,6 +281,18 @@ sub DeleteBookmark {
     print {BMARKS} grep { !/$FORM{'bookmark_id'}/xsm } @bookmarks
       or croak "$croak{'print'} BookMark";
     fclose(BMARKS);
+
+    foreach my $bookmark (@bookmarks) {
+        chomp $bookmark;
+        if ( $bookmark =~ /$FORM{'bookmark_id'}/xsm ) {
+            $bm_delete = $bookmark;
+            last;
+        }
+    }
+    ( undef, undef, $bm_image, undef, undef ) = split /\|/xsm,
+      $bm_delete;
+    
+    unlink "$htmldir/Bookmarks/$bm_image";
 
     if ( $action eq 'bookmarks_delete' ) {
         $yySetLocation = qq~$adminurl?action=bookmarks~;
@@ -309,7 +324,7 @@ sub EditBookmark {
       $bm_edit;
 
     $yymain .= qq~
-<form action="$adminurl?action=bookmarks_edit2" method="post">
+<form action="$adminurl?action=bookmarks_edit2" method="post" enctype="multipart/form-data">
 <div class="bordercolor rightboxdiv">
     <table class="pad_4px cs_thin" style="margin-bottom: .5em;">
         <colgroup>
@@ -323,7 +338,11 @@ sub EditBookmark {
             <td><input type="text" name="bm_title" id="bm_title" size="35" value="$bm_title" /></td>
         </tr><tr class="windowbg2 vtop">
             <td><label for="bm_image"><span style="font-weight: bold;">$bookmark_txt{'01'}:</span><br /><span class="small">$bookmark_txt{'19'}</span></label></td>
-            <td><input type="text" name="bm_image" id="bm_image" size="35" value="$bm_image" /></td>
+            <td>
+                <input type="file" name="bm_image" id="bm_image" size="35" />
+                <input type="hidden" name="bm_cur_image" value="$bm_image" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('bm_image').value='';">X</span>
+                <div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Bookmarks/$bm_image" target="_blank">$bm_image</a></div>
+            </td>
         </tr><tr class="windowbg2 vtop">
             <td><label for="bm_url"><span style="font-weight: bold;">$bookmark_txt{'14'}:</span><br /><span class="small">$bookmark_txt{'20'}</span></label></td>
             <td><input type="text" name="bm_url" id="bm_url" size="70" value="$bm_url" /></td>
@@ -360,14 +379,19 @@ sub EditBookmark2 {
     $bm_id    = $FORM{'bm_id'};
 
     if ( $bm_title eq q{} ) {
-        fatal_error( 'no_value', "$bookmark_txt{'02'}" );
+        fatal_error( 'invalid_value', "$bookmark_txt{'02'}" );
     }
-    if ( $bm_image eq q{} ) {
-        fatal_error( 'no_value', "$bookmark_txt{'01'}" );
-    }
-    if ( $bm_url eq q{} ) { fatal_error( 'no_value', "$bookmark_txt{'14'}" ); }
+    if ( $bm_url eq q{} ) { fatal_error( 'invalid_value', "$bookmark_txt{'14'}" ); }
     if ( $bm_order eq q{} ) {
-        fatal_error( 'no_value', "$bookmark_txt{'03'}" );
+        fatal_error( 'invalid_value', "$bookmark_txt{'03'}" );
+    }   
+    
+    if ( $bm_image ne q{} ) {
+        $bm_image = UploadFile('bm_image', 'Bookmarks', 'png jpg jpeg gif', '250'); 
+        unlink "$htmldir/Bookmarks/$bm_cur_image";
+    }
+    else {
+        $bm_image = $bm_cur_image;
     }
 
     fopen( BMARKS, "<$vardir/Bookmarks.txt" )

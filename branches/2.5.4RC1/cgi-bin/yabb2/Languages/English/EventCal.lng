@@ -147,13 +147,13 @@ $eventcallngver = 'YaBB 2.5.4 RC1 $Revision$';
 '23' => 'Access Settings',
 '24' => 'Show "Disable username-link" checkbox to:',
 '26' => 'Calendar Event-Icon Settings',
-'27' => 'Filename (do not include .gif)',
+'27' => 'Select Image', 
 '28' => 'Description',
-'29' => 'Pic',
+'29' => 'Image',
 '30' => 'Add new Calendar Event-Icons here',
 '31' => 'Save Event Calendar Settings',
 '32' => 'Save Event-Icon Settings',
-'33' => qq~This section allows you to customize your Calendar Events by using your own Event Icons. First you must upload the images to the <span class="small">($yyhtml_root/EventCalIcons)</span> folder.<br />Images should be no larger than 25 X 25 px, (or whatever is a good size) must be in .gif format only, and must be uploaded in Binary transfer mode.~,
+'33' => 'This section allows you to customize your Calendar Events by using your own Event Icons.<br />Images look best being no larger than 25x25px.<br />Allowed file types: png jpg jpeg gif<br />Max. file size: 100KB',
 '34' => 'List upcoming events for __ days next to the Event Calendar',
 '35' => '(0 = All events for current month)',
 '36' => 'First day of week (mini calendar)?',
@@ -177,6 +177,8 @@ $eventcallngver = 'YaBB 2.5.4 RC1 $Revision$';
 '56' => 'Marquee',
 '57' => 'XHTML',
 '58' => 'Disable YaBBC Tags in the sneak-preview Text?',
+'error_image' => 'Please select an image for the Event Icon.',
+'error_desc' => 'Please enter a description for the Event Icon.',
 );
 
 1;

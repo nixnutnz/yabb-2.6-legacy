@@ -262,7 +262,7 @@ sub EventCalSet {
     eval { require "$vardir/eventcalIcon.txt"; };
 
     $yymain .= qq~
-            <form action="$adminurl?action=eventcal_set3" method="post" accept-charset="$yycharset">
+            <form action="$adminurl?action=eventcal_set3" method="post" enctype="multipart/form-data" accept-charset="$yycharset">
             <div class="bordercolor rightboxdiv">
             <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
                 <col span="2" style="width:24%" />
@@ -282,9 +282,12 @@ sub EventCalSet {
     $i = 0;
     while ( $CalIconURL[$i] ) {
         $yymain .= qq~<tr>
-                    <td class="windowbg2 padd_4px center"><input type="text" name="caliimg[$i]" value="$CalIconURL[$i]" /></td>
+                    <td class="windowbg2 padd_4px center">
+                        <input type="file" name="caliimg[$i]" id="caliimg[$i]" size="35" />
+                        <input type="hidden" name="cur_caliimg[$i]" value="$CalIconURL[$i]" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('caliimg[$i]').value='';">X</span>
+                    </td>
                     <td class="windowbg2 padd_4px center"><input type="text" name="calidescr[$i]" value="$CalIDescription[$i]" /></td>
-                    <td class="windowbg2 padd_4px center"><img src="$yyhtml_root/ModImages/EventCal/EventIcons/$CalIconURL[$i].gif" alt="" /></td>
+                    <td class="windowbg2 padd_4px center"><img src="$yyhtml_root/EventIcons/$CalIconURL[$i]" alt="" /></td>
                     <td class="windowbg2 padd_4px center"><input type="checkbox" name="calidelbox[$i]" value="1" /></td>
                 </tr>~;
         $i++;
@@ -293,7 +296,7 @@ sub EventCalSet {
     $inew = 0;
     while ( $inew <= 3 ) {
         $yymain .= qq~<tr>
-                    <td class="windowbg2 padd_4px center"><input type="text" name="caliimg[$i]" /></td>
+                    <td class="windowbg2 padd_4px center"><input type="file" name="caliimg[$i]" id="caliimg[$i]" size="35" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('caliimg[$i]').value='';">X</span></td>
                     <td class="windowbg2 padd_4px center"><input type="text" name="calidescr[$i]" /></td>
                     <td class="windowbg2 padd_4px center" colspan="2">&nbsp;</td>
                 </tr>~;
@@ -310,6 +313,7 @@ sub EventCalSet {
                     <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
                 </tr><tr>
                     <td class="catbg center">
+                        <input type="hidden" name="calimg_count" value="$i" />
                         <input type="submit" value="$event_cal{'32'}" class="button" />
                     </td>
                 </tr>
@@ -371,13 +375,29 @@ sub EventCalSet3 {
     my $count = 0;
     my $tempA = 0;
     my @eventcalIcon;
-    while ( $FORM{"caliimg[$tempA]"} ) {
-        if ( $FORM{"calidelbox[$tempA]"} != 1 ) {
+    $calimg_count = $FORM{'calimg_count'};
+
+    for ( 1 .. $calimg_count ) {
+    
+        if ( $FORM{"calidescr[$tempA]"} ne q{} && ( $FORM{"caliimg[$tempA]"} eq q{} && $FORM{"cur_caliimg[$tempA]"} eq q{} ) ) { fatal_error('', $event_cal{'error_image'}); }
+        if ( $FORM{"calidescr[$tempA]"} eq q{} && ( $FORM{"caliimg[$tempA]"} ne q{} || $FORM{"cur_caliimg[$tempA]"} ne q{} ) ) { fatal_error('', $event_cal{'error_desc'}); } 
+        if ( $FORM{"calidelbox[$tempA]"} != 1 && $FORM{"calidescr[$tempA]"} ne q{} && ( $FORM{"caliimg[$tempA]"} ne q{} || $FORM{"cur_caliimg[$tempA]"} ne q{} ) ) {
+            if ( $FORM{"caliimg[$tempA]"} ne q{} ) {
+                $FORM{"caliimg[$tempA]"} = UploadFile("caliimg[$tempA]", 'EventIcons', 'png jpg jpeg gif', '100' ); 
+                unlink "$htmldir/EventIcons/$FORM{\"cur_caliimg[$tempA]\"}";
+            } 
+            else {
+                $FORM{"caliimg[$tempA]"} = $FORM{"cur_caliimg[$tempA]"};
+            } 
             push @eventcalIcon,
 qq~\$CalIconURL[$count] = "$FORM{"caliimg[$tempA]"}";\n\$CalIDescription[$count] = "$FORM{"calidescr[$tempA]"}";\n\n~;
             $count++;
         }
+        if ( $FORM{"calidelbox[$tempA]"} == 1 ) {
+            unlink "$htmldir/EventIcons/$FORM{\"cur_caliimg[$tempA]\"}";
+        }
         $tempA++;
+
     }
     push @eventcalIcon, '1;';
     fopen( FILE, ">$vardir/eventcalIcon.txt" );

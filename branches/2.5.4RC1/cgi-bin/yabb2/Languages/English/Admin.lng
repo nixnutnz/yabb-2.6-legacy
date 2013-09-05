@@ -4,7 +4,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.5.41                                                 #
-# Packaged:       September 3, 2013                                           #
+# Packaged:       September 1, 2013                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2013 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -75,6 +75,9 @@ $adminlngver = 'YaBB 2.5.4 RC1 $Revision$';
 '64a' => '(these do not need to be filled out completely and may have no affect if this is an External Link Board)',
 '64b' => 'Board Picture',
 '64b2' => 'Category Picture',
+'64b3' => 'Allowed file types: png jpg jpeg gif<br />Max. file size: 250KB',
+'64b4' => 'Remove Board Picture',
+'64b5' => 'Remove Category Picture',
 '64c' => 'Zero Post-Count Board?',
 '64d' => 'If checked, posts in this board will not contribute to a user&#39;s post count.',
 '64e' => 'Show to all?',
@@ -549,7 +552,7 @@ $adminlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'userpicml' => 'Show User Avatar in Member List?',
 'group_stars_ml' => 'Show Group Stars in Member List?',
 'default_avatar' => 'Show a default avatar if the member hasn\'t added a picture?',
-'default_userpic' => 'File name of the default avatar:<br /><span class="small">Files must be uploaded the images directory.<br />e.g. myfile.jpg</span>',
+'default_userpic' => 'Default avatar image:<br /><span class="small">Allowed file types: png jpg jpeg gif<br />Max. file size: 250KB</span>',
 'edit' => 'Edit',
 'delete' => 'Delete',
 'cancel' => 'Cancel',
@@ -563,12 +566,15 @@ $adminlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'brdrss2' => 'Check to show RSS Feed for this category on the Board Index.<br /><b>Note:</b> Only relevant if RSS is enabled.',
 'brdrss3' => 'Check to show RSS Feed for this board on the Board Index.<br /><b>Note:</b> Only relevant if RSS is enabled and the board is not an external link board.',
 'actions' => 'Actions',
+'remove_file' => 'Remove File',
+'current_img' => 'Current Image',
+'remove_img' => 'Remove Image',
 );
 
 %floodtxt = (
 '1' => 'YaBB Security Center:',
-'2' => 'Activate validation code (CAPTCHA) on registration, forgot password, and send topic?',
-'3' => 'Activate validation code (CAPTCHA) for Guest posting, Guest contact Admin by Broadcast Message, Guest sending Alert Moderator message and Guest adding event to Calendar?',
+'2' => 'Activate validation code (CAPTCHA) on registration and forgot password?',
+'3' => 'Activate validation code (CAPTCHA) for Guest posting, Guest contact Admin by Broadcast Message, Guest sending Alert Moderator message, Guest sending a topic and Guest adding event to Calendar?', 
 '5' => 'Maximum number of messages returned for Recent Posts on forum and/or by user?<br /> <span class="small">-1 will disable Recent Posts</span>',
 '5a' => 'Maximum number of messages returned for Recent Topics on forum?<br /> <span class="small">-1 will disable Recent Topics</span>',
 '6' => 'Maximum number of messages returned for a search?<br /> <span class="small">-1 will disable Search</span>',
@@ -819,7 +825,7 @@ $adminlngver = 'YaBB 2.5.4 RC1 $Revision$';
 
 %mdintxt = (
 '1' => 'Enable Multi-Delete in Thread View for:',
-'2' => '1st Checkbox: Administrators; 2nd: Global Moderators; 3rd: Moderators',
+'2' => '1st Checkbox: Administrators; 2nd: Global Moderators; 3rd: Board Moderators',
 '3' => 'Delete Selected',
 '4' => 'Do not use the Recycle Bin for messages deleted by Administrators and Global Moderators?<br /><span class="small">If checked, messages deleted by them will be deleted immediately and irreversibly.</span>',
 '5' => 'In-Thread Multi Delete',
@@ -1064,7 +1070,7 @@ $adminlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'enable_PMsearch' => 'Allow members to be able to search their PMs<br /><span class="small">(Set to 0 to disable; maximum 50 results returned)</span>',
 'enablePM' => 'Enable Personal Messaging for',
 '87' => 'Enable Broadcast Messaging for',
-'88' => 'Allow Guests to send Personal/Alert Messages to the Administrator(s)?',
+'88' => 'Allow Guests to send Personal/Alert Messages to the Administrator(s)?<br /><span class="small">(Note: at least one group must be selected above to activate Broadcast messaging.)</span>',
 '89' => 'Enable Alert Moderator button in threads?<br /><span class="small">(Sends Personal Message to Moderators of a board with a link to the thread)</span>',
 '90' => 'Show Alert Moderator button in threads for Guests?',
 '381' => 'Allow users to enable e-mail notification when new PMs are received?',
@@ -1395,7 +1401,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 # Anti-spam Settings
 'generalspam' => 'General Anti-spam Controls',
 'speedban' => 'Speed-Posting Ban',
-'spambot' => qq~Spambot Registration Deterrents (Also see: <a href="$adminurl?action=spam_questions">Anti-Spam Questions</a>)~,
+'spambot' => qq~Spambot Registration Deterrents (Also see: <a href="$adminurl?action=spam_questions">Anti-spam Questions</a>)~,
 );
 
 #HoneyPot
@@ -1416,14 +1422,19 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 %spam_question_txt = (
 'question' => 'Question',
 'answer' => 'Answer',
+'image' => 'Image',
+'na' => 'N/A',
+'optional' => '(Optional)',
 'confirm' => 'Are you sure you want to delete this question?',
 'no_questions' => 'There are currently no Anti-spam Questions',
 'question_settings' => 'Anti-spam Question Settings',
 'enable_question' => 'Enable Anti-spam Questions on Registration?',
-'enable_question_send' => 'Enable Anti-spam Questions on Forgot Password and Send Topic?',
-'enable_question_gp' => 'Enable Anti-spam Questions for Guest posting, Guest contact Admin by Broadcast Message, Guest sending Alert Moderator message and Guest adding event to Calendar?',
-'case_sensitive' => 'Would you like the answers to be case-sensitive?',
+'enable_question_send' => 'Enable Anti-spam Questions on Forgot Password?',
+'enable_question_gp' => 'Enable Anti-spam Questions for Guest posting, Guest contact Admin by Broadcast Message, Guest sending Alert Moderator message, Guest sending a topic and Guest adding event to Calendar?', 
+'case_sensitive' => 'Case-sensitive',
+'case_sensitive_desc' => '- Check this option if you would like the answer to be case-sensitive.',
 'answer_desc' => '- To accept more than one answer separate them with a comma.<br />e.g. 8,eight',
+'image_desc' => '- Here you can select an image to accompany your question.<br />- Allowed file types: png jpg jpeg gif<br />- Max. file size: 250KB',
 'questions' => 'Anti-spam Questions',
 'new_question' => 'Add a New Question',
 'add_question' => 'Add Question',

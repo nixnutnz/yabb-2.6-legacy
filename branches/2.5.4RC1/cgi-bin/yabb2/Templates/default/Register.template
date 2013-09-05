@@ -229,7 +229,7 @@ $myregister_spamquest = qq~<tr>
         </td>
         <td class="windowbg2 vtop">
             <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" />$myreg_req
-            <input type="hidden" name="verification_question_id" value="{yabb spam_question_id}" />
+            <input type="hidden" name="verification_question_id" value="{yabb spam_question_id}" />{yabb spam_question_image}
         </td>
     </tr>~;
 

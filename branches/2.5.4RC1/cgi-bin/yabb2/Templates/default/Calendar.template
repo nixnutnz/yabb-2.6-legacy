@@ -250,7 +250,7 @@ $mycal_spamquest= qq~
         </td>
         <td class="windowbg">
             <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" onchange="autoPreview()" />
-            <input type="hidden" name="verification_question_id" value="{yabb spam_question_id}" />               
+            <input type="hidden" name="verification_question_id" value="{yabb spam_question_id}" />{yabb spam_question_image}
         </td>
     </tr>~;
 

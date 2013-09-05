@@ -663,6 +663,28 @@ visibility: visible;
 display: inline;
 }
 
+.select_body  {
+background-color: #DEE4EC;
+color: #2D2D2D;
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+width:300px;
+max-width:300px;
+margin: 0 auto
+}
+
+.select_body_qsearch  {
+background-color: #DEE4EC;
+color: #2D2D2D;
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+width:300px;
+min-width:300px;
+margin: 0 auto;
+}
+
 .system-info {
 margin: 0 auto;
 height: 35px;
@@ -696,3 +718,7 @@ font-style: normal;
 color: #2D2D2D;
 padding: 1em;
 } 
+
+.cursor  {
+cursor:pointer;
+}

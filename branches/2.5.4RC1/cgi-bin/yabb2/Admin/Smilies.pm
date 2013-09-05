@@ -1,6 +1,6 @@
 ###############################################################################
 # Smilies.pm                                                                  #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.05.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -123,13 +123,13 @@ sub SmiliePanel {
   </tr><tr>
     <td class="windowbg2" colspan="4"><label for="popback"><b>$smiltxt{'20'}</b></label></td>
     <td class="windowbg2" colspan="4">
-        #<input type="text" size="10" name="popback" id="popback" value="$popback" />
+        #<input type="text" size="10" name="popback" id="popback" value="$popback" onkeyup="previewColor(this.value);" />
         <span id="popback_color" style="background-color: #$popback;">&nbsp; &nbsp; &nbsp;</span> <img src="$imagesdir/palette1.gif" style="cursor: pointer; vertical-align: top;" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
         <script type="text/javascript">
         <!--
         function previewColor(color) {
-            document.getElementById('popback_color').style.background = color;
             color = color.replace(/#/, '');
+            document.getElementById('popback_color').style.background = '#' + color; 
             document.getElementsByName("popback")[0].value = color;
         }
         //-->
@@ -138,13 +138,13 @@ sub SmiliePanel {
   </tr><tr>
     <td class="windowbg2" colspan="4"><label for="poptext"><b>$smiltxt{'19'}</b></label></td>
     <td class="windowbg2" colspan="4">
-        #<input type="text" size="10" name="poptext" id="poptext" value="$poptext" />
+        #<input type="text" size="10" name="poptext" id="poptext" value="$poptext" onkeyup="previewColor_0(this.value);"/>
         <span id="poptext_color" style="background-color: #$poptext;">&nbsp; &nbsp; &nbsp;</span> <img src="$imagesdir/palette1.gif" style="cursor: pointer; vertical-align: top;" onclick="window.open('$scripturl?action=palette;task=templ_0', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
         <script type="text/javascript">
         <!--
         function previewColor_0(color) {
-            document.getElementById('poptext_color').style.background = color;
             color = color.replace(/#/, '');
+            document.getElementById('poptext_color').style.background = '#' + color; 
             document.getElementsByName("poptext")[0].value = color;
         }
         //-->
