@@ -1247,7 +1247,14 @@ sub Convert_Settings {
 	$ip_banlist = q{};
 	$email_banlist = q{};
 	$user_banlist = q{};
-    require Admin::NewSettings;
+	$showsearchbox = 1;
+	$fmodview = $gmodview;
+	$mdfmod = $mdglobal;
+	$show_online_ip_admin = 1;
+	$show_online_ip_gmod = 1;
+	$show_online_ip_fmod = 1;
+	$ipLookup = 1;
+	require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');
     
     $ret = 1;
