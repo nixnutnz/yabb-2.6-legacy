@@ -46,6 +46,7 @@ if ( eval { require "$vardir/eventcalIcon.txt"; 1 } ) {
 
 $jsCal = qq~
 var jsCal = new Hash(
+'eventinfo', '$cal_icon_bg{'eventinfo'}',
 'eventmore', '$cal_icon_bg{'eventmore'}',
 'eventmorebd', '$cal_icon_bg{'eventmore'}',
 'eventmoreadd', '$cal_icon_bg{'eventmore'}',
@@ -65,6 +66,7 @@ $jsCal .= qq~\n);~;
 
 $jsCal_txt = qq~
 var jsCaltxt = new Hash(
+'eventinfo', '$var_cal{'eventinfo'}',
 'eventannounce', '$var_cal{'eventannounce'}',
 'eventholiday', '$var_cal{'eventholiday'}',
 'eventnote', '$var_cal{'eventnote'}',
