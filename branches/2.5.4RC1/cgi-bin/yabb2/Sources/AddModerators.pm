@@ -199,9 +199,12 @@ function copy_option(to_select) {
         my $thisModname = ${ $uid . $thisMod }{'realname'};
         if ( !$thisModname ) { $thisModname = $thisMod; }
         if ($do_scramble_id) { $thisMod     = cloak($thisMod); }
-        $modmbr .=
+        if ( $thisMod eq q{} ) { $modmbr .= q{};}
+        else {
+            $modmbr .=
 qq~<option value="$thisMod" selected="selected">$thisModname</option>~;
-        $modmbrcnt++;
+            $modmbrcnt++;
+        }
     }
     if   ( $modmbrcnt == 1 ) { $addmod_list = $messageindex_txt{'298'}; }
     else                     { $addmod_list = $messageindex_txt{'63'}; }
