@@ -285,6 +285,7 @@ sub EventCalSet {
                     <td class="windowbg2 padd_4px center">
                         <input type="file" name="caliimg[$i]" id="caliimg[$i]" size="35" />
                         <input type="hidden" name="cur_caliimg[$i]" value="$CalIconURL[$i]" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('caliimg[$i]').value='';">X</span>
+                        <div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/EventIcons/$CalIconURL[$i]" target="_blank">$CalIconURL[$i]</a></div>
                     </td>
                     <td class="windowbg2 padd_4px center"><input type="text" name="calidescr[$i]" value="$CalIDescription[$i]" /></td>
                     <td class="windowbg2 padd_4px center"><img src="$yyhtml_root/EventIcons/$CalIconURL[$i]" alt="" /></td>
