@@ -1443,14 +1443,14 @@ qq~<input type="checkbox" name="nomailspammer" id="nomailspammer" value="1" ${is
             input_html => qq~<input type="checkbox" name="PMenableAlertButton" id="PMenableAlertButton" value="1"${ischecked($PMenableAlertButton)} />~,
             name => 'PMenableAlertButton',
             validate => 'boolean',
-            depends_on => ['PM_level!=0'],
+            depends_on => ['PM_level!=0','$PMenableBm_level!=0'],
         },
         {
             description => qq~<label for="PMAlertButtonGuests">$imtxt{'90'}</label>~,
             input_html => qq~<input type="checkbox" name="PMAlertButtonGuests" id="PMAlertButtonGuests" value="1"${ischecked($PMAlertButtonGuests)} />~,
             name => 'PMAlertButtonGuests',
             validate => 'boolean',
-            depends_on => ['PMenableAlertButton', 'PM_level!=0'],
+            depends_on => ['PMenableAlertButton', 'PM_level!=0','$PMenableBm_level!=0'],
         },
 
 

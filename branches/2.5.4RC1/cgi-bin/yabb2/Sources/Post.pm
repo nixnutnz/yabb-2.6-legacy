@@ -133,12 +133,12 @@ sub Post {
 
     if ($iamguest) { $guestpost_col = $my_guestpost_col; }
 
-    $guestpost_fields =
-        $iamguest
-      ? $mypost_guest_fields
-      : q{};
+	$guestpost_fields = q{};
+	if ( $iamguest ) {
+    $guestpost_fields = $mypost_guest_fields;
     $guestpost_fields =~ s/{yabb name}/$FORM{'name'}/sm;
     $guestpost_fields =~ s/{yabb email}/$FORM{'email'}/sm;
+	}
 
     if ( $iamguest && $gpvalid_en ) {
         validation_code();
@@ -606,9 +606,6 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
     }~;
     }
     ToHTML($moddate);
-	if ( $destination eq 'modalert2' ) {
-		$icon = 'alert';
-	}
     $my_topper = qq~
 </script>
 <input type="hidden" name="threadid" value="$threadid" />
@@ -1562,12 +1559,12 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     elsif ( $FORM{'status'} eq 'u' ) { $icon = 'urgent'; }
     elsif ( $FORM{'status'} eq 's' ) { $icon = 'standard'; }
 
-    $guestpost_fields =
-        $iamguest
-      ? $mypost_guest_fields
-      : q{};
+	$guestpost_fields = q{};
+    if ( $iamguest ) {
+		$guestpost_fields = $mypost_guest_fields;
     $guestpost_fields =~ s/{yabb name}/$FORM{'name'}/sm;
     $guestpost_fields =~ s/{yabb email}/$FORM{'email'}/sm;
+	}
 
     if ( $iamguest && $gpvalid_en ) {
         $usename = substr $date, 1, length($date) - 4;
@@ -3096,9 +3093,12 @@ sub modAlert {
     $INFO{'title'} =~ tr/+/ /;
     $postthread = 2;
 
+    $guestpost_fields = q{};
+	if ( $iamguest ) {
     $guestpost_fields = $mypost_guest_fields;
     $guestpost_fields =~ s/{yabb name}/$FORM{'name'}/sm;
     $guestpost_fields =~ s/{yabb email}/$FORM{'email'}/sm;
+	}
 
     if ( $iamguest && $gpvalid_en ) {
         validation_code();
@@ -3192,7 +3192,7 @@ qq~[quote author=$hidename link=$threadid/$quotemsg#$quotemsg date=$mdate\]$mess
     $t_title     = $post_txt{'alertmod'};
     $submittxt   = $post_txt{'148'};
     $destination = 'modalert2';
-    $icon        = 'exclamation';
+    $icon        = 'alert';
     $is_preview  = 0;
     $post        = 'modalert';
     $prevmain    = q{};
@@ -3443,13 +3443,16 @@ sub modAlert2 {
 
     if ( $PMenableBm_level && $x ) {
         # set announcement flag according to status of current board
+            if   ($iamguest) { $mstatus = q~ga~; }
+            else             { $mstatus = q~ab~; }
+		#if sender is guest and Alert is going to ModGroup
         fopen( INBOX, "$memberdir/broadcast.messages" )
           || fatal_error( 'cannot_open', "$memberdir/broadcast.messages" );
         my @inmessages = <INBOX>;
         fclose(INBOX);
         fopen( INBOX, ">$memberdir/broadcast.messages" );
         print {INBOX}
-"$newthreadid|$name|$modgrps|||$subject|$date|$message|$newthreadid|0|$ENV{'REMOTE_ADDR'}|ab|||\n"
+"$newthreadid|$name|$modgrps|||$subject|$date|$message|$newthreadid|0|$ENV{'REMOTE_ADDR'}|$mstatus|||\n"
           or croak "$croak{'print'} INBOX";
         print {INBOX} @inmessages or croak "$croak{'print'} INBOX";
         fclose(INBOX);

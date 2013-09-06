@@ -1070,7 +1070,7 @@ $adminlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'enable_PMsearch' => 'Allow members to be able to search their PMs<br /><span class="small">(Set to 0 to disable; maximum 50 results returned)</span>',
 'enablePM' => 'Enable Personal Messaging for',
 '87' => 'Enable Broadcast Messaging for',
-'88' => 'Allow Guests to send Personal/Alert Messages to the Administrator(s)?<br /><span class="small">(Note: at least one group must be selected above to activate Broadcast messaging.)</span>',
+'88' => 'Allow Guests to send Personal/Alert Messages to the Administrator(s)?',
 '89' => 'Enable Alert Moderator button in threads?<br /><span class="small">(Sends Personal Message to Moderators of a board with a link to the thread)</span>',
 '90' => 'Show Alert Moderator button in threads for Guests?',
 '381' => 'Allow users to enable e-mail notification when new PMs are received?',

@@ -3849,6 +3849,7 @@ sub SetInstall2 {
 \$sendname = admin;
 \$imsubject = "Hey Hey :)";
 \$send_welcomeim = 1;
+\$PMenableBm_level = 3;                            # minimum level to send? 0 = off, 1 = mods, 2 = gmod, 3 = admin
 
 ########## Topic Summary Cutter ##########
 
