@@ -1,6 +1,6 @@
 ###############################################################################
 # Smilies.pm                                                                  #
-# $Date: 9.05.13 $                                                            #
+# $Date: 9.06.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -63,7 +63,7 @@ sub SmiliePanel {
         }
     }
     $yymain .= qq~
-<form action="$adminurl?action=addsmilies" method="post" accept-charset="$yycharset">
+<form action="$adminurl?action=addsmilies" method="post" enctype="multipart/form-data" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
 <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
   <col class="w_5pc" />
@@ -184,7 +184,7 @@ qq~<a href="$adminurl?action=smiliemove;index=$i;movedown=1"><img src="$imagesdi
           . ( $showinbox eq $SmilieDescription[$i] ? ' checked="checked"' : q{} )
           . qq~ /></td>
     <td class="windowbg2 center"><input type="text" name="scd[$i]" value="$SmilieCode[$i]" /></td>
-    <td class="windowbg2 center"><input type="text" name="smimg[$i]" value="$SmilieURL[$i]" /></td>
+    <td class="windowbg2 center"><input type="text" name="smimg[$i]" value="$SmilieURL[$i]" /><input type="hidden" name="cur_smimg[$i]" value="$SmilieURL[$i]" /></td>
     <td class="windowbg2 center"><input type="text" name="sdescr[$i]" value="$SmilieDescription[$i]" /></td>
     <td class="windowbg2 center"><input type="checkbox" name="smbox[$i]" value="1"~
           . ( $SmilieLinebreak[$i] eq '<br />' ? ' checked="checked"' : q{} )
@@ -208,7 +208,7 @@ qq~<a href="$adminurl?action=smiliemove;index=$i;movedown=1"><img src="$imagesdi
     while ( $inew <= 5 ) {
         $yymain .= qq~<tr>
     <td class="windowbg2 center">&nbsp;</td>
-    <td class="windowbg2 center"><input type="text" name="scd[$i]" /></td>
+    <td class="windowbg2 center" style="white-space: nowrap;"><input type="file" name="smimg[$i]" id="smimg[$i]" size="35" /><input type="file" name="smimg[$i]" id="smimg[$i]" size="35" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('smimg[$i]').value='';">X</span></td>
     <td class="windowbg2 center"><input type="text" name="smimg[$i]" /></td>
     <td class="windowbg2 center"><input type="text" name="sdescr[$i]" /></td>
     <td class="windowbg2 center"><input type="checkbox" name="smbox[$i]" value="1" /></td>
@@ -234,6 +234,7 @@ qq~<a href="$adminurl?action=smiliemove;index=$i;movedown=1"><img src="$imagesdi
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
     </tr><tr>
         <td class="catbg center">
+            <input type="hidden" name="smimg_count" value="$i" />
             <input type="submit" value="$asmtxt{'09'}" class="button" />&nbsp;<input type="reset" value="$asmtxt{'10'}" class="button" />
         </td>
     </tr>
@@ -265,14 +266,21 @@ sub AddSmilies {
     $poptext =~ s/[^a-f0-9]//igxsm;
     $showinbox           = $FORM{'showinbox'};
     $removenormalsmilies = $FORM{'removenormalsmilies'};
+    $count_smimg = $FORM{'smimg_count'};
 
     @SmilieURL         = ();
     @SmilieCode        = ();
     @SmilieDescription = ();
     @SmilieLinebreak   = ();
     my $temp_a = 0;
-    while ( exists $FORM{"scd[$temp_a]"} ) {
-        if ( !$FORM{"delbox[$temp_a]"} && $FORM{"smimg[$temp_a]"} ) {
+    for ( 1 .. $count_smimg ) {
+        if ( $FORM{"delbox[$temp_a]"} != 1 && $FORM{"sdescr[$temp_a]"} ne q{} && $FORM{"smimg[$temp_a]"} ne q{} ) {   
+            if ( $FORM{"smimg[$temp_a]"} ne q{} && $FORM{"cur_smimg[$temp_a]"} eq q{} ) {
+                $FORM{"smimg[$temp_a]"} = UploadFile("smimg[$temp_a]", 'Templates/Forum/default', 'png jpg jpeg gif', '100' ); 
+            }
+            else {
+                $FORM{"smimg[$temp_a]"} = $FORM{"cur_smimg[$temp_a]"};
+            }
             push @SmilieURL, $FORM{"smimg[$temp_a]"};
 
             ToHTML( $FORM{"scd[$temp_a]"} );
@@ -286,6 +294,9 @@ sub AddSmilies {
             push @SmilieDescription, $FORM{"sdescr[$temp_a]"};
 
             push @SmilieLinebreak, ( $FORM{"smbox[$temp_a]"} ? '<br />' : q{} );
+        }
+        if ( $FORM{"delbox[$temp_a]"} == 1 && $FORM{"cur_smimg[$temp_a]"} !~ /^(exclamation|question).png$/) {
+            unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_smimg[$temp_a]\"}"; 
         }
         ++$temp_a;
     }
