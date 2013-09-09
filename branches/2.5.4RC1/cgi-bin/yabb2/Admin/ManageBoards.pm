@@ -889,7 +889,7 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         }
 
         $yymain .= qq~
-        <option value=""></option>
+        <option value="" disabled="disabled"></option>
         </select>
             <br /><span class="small">$selector_txt{instructions}</span>
     <!--<input type="text" name="moderators$i" value="$moderators" size="50" maxlength="100" />-->
@@ -1418,7 +1418,7 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         if ( $FORM{"maxage$i"} && $FORM{"maxage$i"} < $FORM{"minage$i"} ) {
             $FORM{"maxage$i"} = $FORM{"minage$i"};
         }
-        ### Board Rules Start ###
+
         if ( $FORM{"rules$i"}         eq q{} ) { $FORM{"rules$i"}         = 0; }
         if ( $FORM{"rulescollapse$i"} eq q{} ) { $FORM{"rulescollapse$i"} = 0; }
         $brulestitle = $FORM{"rulestitle$i"};
@@ -1427,7 +1427,6 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         FromChars($brulesdesc);
         $brulesdesc =~ s/\r//gxsm;
         $brulesdesc =~ s/\n/<br \/>/gsm;
-        ### Board Rules End ###
 
         $FORM{"pasww$i"} =~ s/ //gsm;
         if ($FORM{"pasww$i"} ne q{}) {
