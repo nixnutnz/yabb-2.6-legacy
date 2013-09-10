@@ -238,7 +238,6 @@ sub AddBookmark {
     $bm_order = $FORM{'bm_order'};
     $bm_title = $FORM{'bm_title'};
     $bm_image = $FORM{'bm_image'};
-    $bm_cur_image = $FORM{'bm_cur_image'};
     $bm_url   = $FORM{'bm_url'};
 
     if ( $bm_title eq q{} ) {
@@ -377,6 +376,7 @@ sub EditBookmark2 {
     $bm_image = $FORM{'bm_image'};
     $bm_url   = $FORM{'bm_url'};
     $bm_id    = $FORM{'bm_id'};
+    $bm_cur_image = $FORM{'bm_cur_image'};
 
     if ( $bm_title eq q{} ) {
         fatal_error( 'invalid_value', "$bookmark_txt{'02'}" );
