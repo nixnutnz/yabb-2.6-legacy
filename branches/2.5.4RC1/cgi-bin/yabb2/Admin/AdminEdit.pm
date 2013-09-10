@@ -201,9 +201,9 @@ sub SetCensor {
         {
             if ( $censorlanguage eq $fld ) {
                 $drawnldirs .=
-                  qq~<option value="$fld" selected="selected">$fld</option>~;
+                  qq~$drawnldirs .= qq~<option value="$fld" selected="selected">$displang</option>~;
             }
-            else { $drawnldirs .= qq~<option value="$fld">$fld</option>~; }
+            else { $drawnldirs .= qq~<option value="$fld">$displang</option>~; }
         }
     }
 
@@ -395,15 +395,11 @@ sub ModifyAgreement {
       || $INFO{'agreementlanguage'}
       || $lang;
     foreach my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
-        if (   -d "$langdir/$fld"
-            && $fld =~ m{\A[0-9a-zA-Z_\#\%\-\:\+\?\$\&\~\,\@/]+\Z}sm
-            && -e "$langdir/$fld/Main.lng" )
-        {
-            if ( $agreementlanguage eq $fld ) {
-                $drawnldirs .=
-                  qq~<option value="$fld" selected="selected">$fld</option>~;
-            }
-            else { $drawnldirs .= qq~<option value="$fld">$fld</option>~; }
+        if (-e "$langdir/$fld/Main.lng") {
+            my $displang = $fld;
+            $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
+            if ($agreementlanguage eq $fld) { $drawnldirs .= qq~<option value="$fld" selected="selected">$displang</option>~; }
+            else { $drawnldirs .= qq~<option value="$fld">$displang</option>~; }
         }
     }
 
