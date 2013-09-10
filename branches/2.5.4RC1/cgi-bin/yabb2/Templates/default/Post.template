@@ -52,6 +52,7 @@ $mypost_topview = qq~<table class="pad_3px">
 $mypost_postblock = qq~
 <table class="pad_3px" style="table-layout: fixed">
     <col style="width: 23%" />
+	<col style="width: auto" />
     {yabb my_prevmain}{yabb name_field}{yabb email_field}{yabb verification_field}{yabb verification_question_field}
     <tr class="windowbg">
         <td{yabb guestcol}>
@@ -64,6 +65,7 @@ $mypost_postblock = qq~
    {yabb my_postsection_ajx}
 <table class="pad_3px" style="table-layout: fixed$my_spacer">
     <col style="width: 23%" />
+    <col style="width: auto" />
     <tr class="windowbg">
         <td colspan="2">
             <div id="savetable" class="windowbg" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
@@ -133,7 +135,10 @@ $mypost_reason = qq~
                   <td class="windowbg2"><input type="text" name="reason" id="reason" value="{yabb reason}" size="70" maxlength="50" tabindex="6" style="width: 460px;" /></td>
             </tr><tr>~;
 
-$mypost_preview_main = qq~<tr class="windowbg">
+$mypost_preview_main = qq~
+        <col style="width: 23%" />
+        <col style="width:auto" />
+        <tr class="windowbg">
                 <td class="vtop"><b>$post_txt{'507'}</b></td>
                 <td>{yabb prevmain}</td>
         </tr>~;

@@ -106,6 +106,7 @@ $mysearch_template5 = qq~
 $mysearch_template6 =
   qq~<table class="bordercolor cs_thin" style="table-layout: fixed;">
     <col style="width:5%" />
+    <col style="width:95%" />
 	<tr>
 		<td class="titlebg center">{yabb counter}</td>
 		<td class="titlebg">&nbsp;~;
@@ -140,6 +141,7 @@ $mysearch_template10 = qq~
 $mysearch_PM = qq~
 <table class="bordercolor cs_thin" style="table-layout: fixed;">
     <col style="width:5%" />
+    <col style="width:95%" />
     <tr>
         <td class="titlebg center">&nbsp;{yabb counter}&nbsp;</td>
         <td class="titlebg">&nbsp;{yabb FolderName} &raquo; <a href="$scripturl?action=imshow;caller={yabb thispmbox};id={yabb messageid}"><span class="under">{yabb msub}</span></a><br />
