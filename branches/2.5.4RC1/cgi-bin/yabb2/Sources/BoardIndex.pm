@@ -1747,27 +1747,6 @@ $boardindex_template~;
 </script>~;
             }
         }
-        if ($enabletopichover) {
-            $yymain .= q~    <script type="text/javascript">
-
-    function topicSum(e, topicsumm) {
-        if (document.getElementById(topicsumm).style.display == 'inline') {
-            document.getElementById(topicsumm).style.height = '';
-            document.getElementById(topicsumm).style.display = 'none';
-        }
-        else {
-            document.getElementById(topicsumm).style.display = 'inline';
-            var dheight = document.getElementById(topicsumm).offsetHeight;
-            var dtop = document.all ? e.clientY + document.documentElement.scrollTop - (dheight + 30) : e.pageY - (dheight + 30);
-            document.getElementById(topicsumm).style.top = dtop + 'px';
-        }
-    }
-
-    function hidetopicSum(topicsumm) {
-        document.getElementById(topicsumm).style.display = 'none';
-    }
-    </script>~;
-        }
 
         # Make browsers aware of our RSS
         if ( !$rss_disabled ) {

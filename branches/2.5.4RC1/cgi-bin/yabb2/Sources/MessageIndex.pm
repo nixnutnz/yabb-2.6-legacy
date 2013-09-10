@@ -1113,7 +1113,7 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
         $msub = Censor($msub);
         ToChars($msub);
         if ( !$movedFlag ) {
-            if ( ${ $uid . $username }{'topicpreview'} || $iamguest ) {
+            if ( $enabletopichover && !$messagelist && ( ${ $uid . $username }{'topicpreview'} || $iamguest ) ) { 
                 fopen( MNUM, "$datadir/$mnum.txt" );
                 my $thetopic = <MNUM>;
                 fclose(MNUM);
