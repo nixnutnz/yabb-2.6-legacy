@@ -396,7 +396,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$voters_name}">$
 }
 
 sub display_poll {
-    my ( $pollnum, $brdpoll ) = @_;
+    ( $pollnum, $brdpoll ) = @_;
 
     # showcase poll start
     $scp        = q{};
@@ -785,7 +785,28 @@ qq~<input type="radio" name="option" id="option$i" value="$i" style="margin: 0; 
         $poll_end = q{};
     }
 
-    $pollmain = $mypoll_display;
+    $pollmain =~ s/{yabb pollnum}/$pollnum/gsm;
+    $pollmain =~ s/{yabb scp}/$scp/sm;
+    $pollmain =~ s/{yabb poll_coll}/$poll_coll/gsm;
+    $pollmain =~ s/{yabb scdivdisp}/$scdivdisp/gsm;
+    $pollmain =~ s/{yabb poll_icon}/$poll_icon/sm;
+    $pollmain =~ s/{yabb boardpoll}/$boardpoll/sm;
+    $pollmain =~ s/{yabb lockpoll}/$lockpoll/sm;
+    $pollmain =~ s/{yabb modifypoll}/$modifypoll/sm;
+    $pollmain =~ s/{yabb deletepoll}/$deletepoll/sm;
+    $pollmain =~ s/{yabb poll_question}/$poll_question/sm;
+    $pollmain =~ s/{yabb poll_notlocked}/$poll_notlocked/sm;
+    $pollmain =~ s/{yabb poll_notlocked}/$poll_notlocked/sm;
+    $pollmain =~ s/{yabb endedtext}/$endedtext/sm;
+    $pollmain =~ s/{yabb pollhidden}/$pollhidden/sm;
+    $pollmain =~ s/{yabb poll_hasvoted}/$poll_hasvoted/sm;
+    $pollmain =~ s/{yabb footer}/$footer/sm;
+    $pollmain =~ s/{yabb my_pollcomment}/$my_pollcomment/sm;
+    $pollmain =~ s/{yabb poll_end}/$poll_end/sm;
+    $pollmain =~ s/{yabb displaydate}/$displaydate/sm;
+    $pollmain =~ s/{yabb viewthread}/$viewthread/sm;
+    $pollmain =~ s/{yabb deletevote}/$deletevote/sm;
+    $pollmain =~ s/{yabb displayvoters}/$displayvoters/sm;
     $pollmain .= qq~<script type="text/javascript">
 <!--
 function collapseSCpoll(pollnr) {
@@ -814,28 +835,6 @@ function collapseSCpoll(pollnr) {
 -->
 </script>
 ~;
-    $pollmain =~ s/{yabb pollnum}/$pollnum/gsm;
-    $pollmain =~ s/{yabb scp}/$scp/sm;
-    $pollmain =~ s/{yabb poll_coll}/$poll_coll/gsm;
-    $pollmain =~ s/{yabb scdivdisp}/$scdivdisp/gsm;
-    $pollmain =~ s/{yabb poll_icon}/$poll_icon/sm;
-    $pollmain =~ s/{yabb boardpoll}/$boardpoll/sm;
-    $pollmain =~ s/{yabb lockpoll}/$lockpoll/sm;
-    $pollmain =~ s/{yabb modifypoll}/$modifypoll/sm;
-    $pollmain =~ s/{yabb deletepoll}/$deletepoll/sm;
-    $pollmain =~ s/{yabb poll_question}/$poll_question/sm;
-    $pollmain =~ s/{yabb poll_notlocked}/$poll_notlocked/sm;
-    $pollmain =~ s/{yabb poll_notlocked}/$poll_notlocked/sm;
-    $pollmain =~ s/{yabb endedtext}/$endedtext/sm;
-    $pollmain =~ s/{yabb pollhidden}/$pollhidden/sm;
-    $pollmain =~ s/{yabb poll_hasvoted}/$poll_hasvoted/sm;
-    $pollmain =~ s/{yabb footer}/$footer/sm;
-    $pollmain =~ s/{yabb my_pollcomment}/$my_pollcomment/sm;
-    $pollmain =~ s/{yabb poll_end}/$poll_end/sm;
-    $pollmain =~ s/{yabb displaydate}/$displaydate/sm;
-    $pollmain =~ s/{yabb viewthread}/$viewthread/sm;
-    $pollmain =~ s/{yabb deletevote}/$deletevote/sm;
-    $pollmain =~ s/{yabb displayvoters}/$displayvoters/sm;
     return $pollmain;
 }
 
