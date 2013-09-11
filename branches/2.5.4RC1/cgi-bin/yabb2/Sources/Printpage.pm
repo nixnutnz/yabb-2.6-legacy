@@ -949,7 +949,7 @@ qq~<i> $maintxt{'42'} <a href="$scripturl?action=register"><b>$maintxt{'97'}</b>
                 # if not, decrypt it and see if it is a regged user
                 if ( !-e "$memberdir/$author.vars" )
                 {    # if still not found probably the author is a screen name
-                    $testauthor = MemberIndex( 'who_is', "$author" );
+                    $testauthor = MemberIndex( 'check_exist', "$author" );
 
                     # check if this name exists in the memberlist
                     if ( $testauthor ne q{} )

@@ -49,7 +49,7 @@ sub Login2 {
             "$loginout_txt{'35'} $loginout_txt{'241'}" );
     }
 
-    ## Check if login ID is not and email address or screenname ##
+    ## Check if login ID is not an email address ##
     if ( !-e "$memberdir/$username.vars" ) {
         $test_id = MemberIndex( 'who_is', "$FORM{'username'}" );
         if ( $test_id ne q{} ) { $username = $test_id; }
@@ -62,7 +62,7 @@ sub Login2 {
         fatal_error('not_activated');
     }
 
-    # Need to do this to get correct case of username,
+    # Need to do this to get correct case of user ID,
     # for case insensitive systems. Can cause weird issues otherwise
     $caseright = 0;
     ManageMemberlist('load');
@@ -80,7 +80,7 @@ sub Login2 {
         my $spass     = ${ $uid . $username }{'password'};
         my $cryptpass = encode_password("$FORM{'passwrd'}");
 
-        # convert non encrypted password to MD5 crypted one
+        # convert non encrypted password to MD5 encrypted one
         if ( $spass eq $FORM{'passwrd'} && $spass ne $cryptpass ) {
 
             # only encrypt the password if it's not already MD5 encrypted

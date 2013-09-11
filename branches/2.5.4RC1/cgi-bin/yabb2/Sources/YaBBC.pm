@@ -90,7 +90,7 @@ sub quotemsg {
             # if not, decrypt it and see if it is a regged user
             if ( !-e "$memberdir/$qauthor.vars" )
             {          # if still not found probably the author is a screen name
-                $testauthor = MemberIndex( 'who_is', "$qauthor" );
+                $testauthor = MemberIndex( 'check_exist', "$qauthor" );
 
                 # check if this name exists in the memberlist
                 if ( $testauthor ne q{} )

@@ -416,48 +416,21 @@ sub MemberIndex {
         return 0;
 
     }
-    elsif ( $memaction eq 'check_exist' && $user ) {
+    elsif ( ( $memaction eq 'check_exist' || $memaction eq 'who_is' ) && $user ) {
         ManageMemberinfo('load');
         while ( ( $curmemb, $value ) = each %memberinf ) {
             ( $curname, $curmail, $curposition, $curpostcnt ) =
               split /\|/xsm, $value;
-            if ( lc $user eq lc $curmemb ) {
+			if ( $memaction eq 'check_exist' && ( lc $user eq lc $curmemb || lc $user eq lc $curmail || lc $user eq lc $curname ) ){
                 undef %memberinf;
-                return $curmemb;
+                return $curname;
             }
-            elsif ( lc $user eq lc $curmail ) {
-                undef %memberinf;
-                return $curmail;
-            }
-            elsif ( lc $user eq lc $curname ) {
+			elsif ( $memaction eq 'who_is' && ( lc $user eq lc $curmemb || lc $user eq lc $curmail ) ) {
                 undef %memberinf;
                 return $curname;
             }
         }
     }
-    elsif ( $memaction eq 'who_is' && $user ) {
-        ManageMemberinfo('load');
-        while ( ( $curmemb, $value ) = each %memberinf ) {
-            ( $curname, $curmail, $curposition, $curpostcnt ) =
-              split /\|/xsm, $value;
-            if ( lc $user eq lc $curmemb ) {
-                undef %memberinf;
-                return $curmemb;
-            }
-            if ( lc $user eq lc $curmail ) {
-                undef %memberinf;
-                return $curmemb;
-            }
-            elsif ( lc $user eq lc $curname ) {
-                undef %memberinf;
-                return $curmemb;
-            }
-        }
-    }
-
-    # if ($memaction eq "rebuild") { ... Deleted! Don't rebuild
-    # member list here, or you run into browser/server timeout
-    # with xx-large forums!!! Use Admin.pm -> sub RebuildMemList instead!
     return;
 }
 
