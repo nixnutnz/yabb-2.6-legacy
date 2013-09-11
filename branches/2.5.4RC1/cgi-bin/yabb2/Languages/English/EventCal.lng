@@ -177,6 +177,8 @@ $eventcallngver = 'YaBB 2.5.4 RC1 $Revision$';
 '56' => 'Marquee',
 '57' => 'XHTML',
 '58' => 'Disable YaBBC Tags in the sneak-preview Text?',
+'59' => 'Add Event Icon',
+'60' => 'Remove Event Icon',
 'error_image' => 'Please select an image for the Event Icon.',
 'error_desc' => 'Please enter a description for the Event Icon.',
 );
