@@ -23,13 +23,13 @@ $emailcharset = 'ISO-8859-1';
 'mbname', "This forum's name. Example: $mbname",
 
 # New Member related
-'userip', "The IP-Address of the User.",
+'userip', "The IP-address of the User.",
 'useremail', "The e-mail of the User.",
 
 # User-related
-'username', "The User Name of the User.",
-'displayname', "The displayname of the User.",
-'cryptusername', "The username of the User, cloaked for use in a URL.",
+'username', "The User ID of the User.",
+'displayname', "The screen name of the User.",
+'cryptusername', "The user ID of the User, cloaked for use in a URL.",
 'reviewer', "The real name of the Admin/GMod, reviewing registrations.",
 
 # Topic/PM-related
@@ -102,7 +102,7 @@ Congratulations and welcome.
 
 Your membership application has been instantly approved by {yabb reviewer} from the {yabb mbname} Administration.
 
-You can log in using your displayname ({yabb displayname}), your e-mail address, or your user ID ({yabb username}).
+You can log in using your e-mail address, or your user ID ({yabb username}).
 
 You may change your password after you login by clicking on the User CP tab at the top of the {yabb mbname} main page: {yabb scripturl} and then click the Profile tab, click on Edit Profile (you will need to enter your password as a security measure).
 
@@ -117,7 +117,7 @@ Congratulations and welcome.
 
 Your membership application has been instantly approved by {yabb reviewer} from the {yabb mbname} administration.
 
-You can log in using your displayname ({yabb displayname}), your e-mail address, or your user ID ({yabb username}).
+You can log in using your e-mail address, or your user ID ({yabb username}).
 Your current password is : {yabb password}
 
 You may change your password after you login by clicking on the User CP tab at the top of the {yabb mbname} main page: {yabb scripturl} and then click the Profile tab, click on Edit Profile (you will need to enter your password as a security measure).
@@ -148,7 +148,7 @@ The following reason was given by {yabb reviewer}:
 
 {yabb reason}
 
-You can log in using your displayname ({yabb displayname}), your e-mail address, or your user ID ({yabb username}).
+You can log in using your e-mail address, or your user ID ({yabb username}).
 
 You may change your password after you login by clicking on the User CP tab at the top of the {yabb mbname} main page: {yabb scripturl} and then click the Profile tab, click on Edit Profile (you will need to enter your password as a security measure).
 
@@ -166,7 +166,7 @@ The following reason was given by {yabb reviewer}:
 
 {yabb reason}
 
-You can log in using your displayname ({yabb displayname}), your e-mail address, or your user ID ({yabb username}).
+You can log in using your e-mail address, or your user ID ({yabb username}).
 Your current password is : {yabb password}
 
 You may change your password after you login by clicking on the User CP tab at the top of the {yabb mbname} main page: {yabb scripturl} and then click the Profile tab, click on Edit Profile (you will need to enter your password as a security measure).
@@ -183,7 +183,7 @@ The following reason was given by {yabb reviewer}:
 
 {yabb reason}
 
-If you feel this is all a big mistake, you are of course free to apply for membership again using different credentials for review.
+If you feel this is an error, you are of course free to apply for membership again using different credentials for review.
 
 Regards,
 The {yabb mbname} team~;
@@ -194,7 +194,7 @@ $passwordregemail = qq~Welcome, {yabb displayname}!
 
 Your user ID is {yabb username}, and your password is {yabb password}.
 
-You can log in using your displayname ({yabb displayname}), your e-mail address, or your user ID ({yabb username}).
+You can log in using your e-mail address, or your user ID ({yabb username}).
 
 You may change your password after you login by clicking on the User CP tab at the top of the {yabb mbname} main page: {yabb scripturl} and then click the Profile tab, click on Edit Profile (you will need to enter your password as a security measure).
 
@@ -207,7 +207,7 @@ $welcomeregemail = qq~Welcome, {yabb displayname}!
 
 Your user ID is {yabb username}, and your password is {yabb password}.
 
-You can log in using your displayname ({yabb displayname}), your e-mail address, or your user ID ({yabb username}).
+You can log in using your your e-mail address, or your user ID ({yabb username}).
 
 You may change your password after you login by clicking on the User CP tab at the top of the {yabb mbname} main page: {yabb scripturl} and then click the Profile tab, click on Edit Profile (you will need to enter your password as a security measure).
 
@@ -220,7 +220,7 @@ $activatedpassregemail = qq~Welcome, {yabb displayname}!
 
 Your user ID is {yabb username}, and your password is {yabb password}.
 
-You can log in using your displayname ({yabb displayname}), your e-mail address, or your user ID ({yabb username}).
+You can log in using your e-mail address, or your user ID ({yabb username}).
 
 You may change your password after you login by clicking on the User CP tab at the top of the {yabb mbname} main page: {yabb scripturl} and then click the Profile tab, click on Edit Profile (you will need to enter your password as a security measure).
 
@@ -233,7 +233,7 @@ $activatedwelcomeregemail = qq~Welcome, {yabb displayname}!
 
 Your user ID is {yabb username}, and your password is {yabb password}.
 
-You can log in using your displayname ({yabb displayname}), your e-mail address, or your user ID ({yabb username}).
+You can log in using your e-mail address, or your user ID ({yabb username}).
 
 You may change your password after you login by clicking on the User CP tab at the top of the {yabb mbname} main page: {yabb scripturl} and then click the Profile tab, click on Edit Profile (you will need to enter your password as a security measure).
 
@@ -244,8 +244,8 @@ $yabbtags{'newmemberemail'} = qq~displayname username userip useremail~;
 $emaildesc{'newmemberemail'} = qq~The New Member Admin Notification E-mail~;
 $newmemberemail = qq~A new member has registered in your forum!
 
-Display Name: {yabb displayname}
-User Name: {yabb username}
+Screen Name: {yabb displayname}
+User ID: {yabb username}
 IP-Address: {yabb userip}
 User E-mail: {yabb useremail}
 
@@ -360,10 +360,10 @@ Subject: {yabb subject}
 ~;
 
 
-$yabbtags{'deleteduseremail'} = qq~displayname~;
-$emaildesc{'deleteduseremail'} = qq~The Deleted User Notification E-mail~;
-$deletedusersybject = qq~Your account deleted on~;
-$deleteduseremail = qq~Hello, {yabb displayname}!
+$yabbtags{'deleteduseremail'} = q~screen name~;
+$emaildesc{'deleteduseremail'} = q~The Deleted User Notification E-mail~;
+$deletedusersybject = q~Your account deleted on~;
+$deleteduseremail = q~Hello, {yabb displayname}!
 
 Your account on {yabb mbname} is no longer active and deleted!
 

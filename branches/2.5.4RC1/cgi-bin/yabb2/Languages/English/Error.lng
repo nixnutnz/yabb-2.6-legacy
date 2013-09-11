@@ -43,7 +43,7 @@ $errorlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'no_action'            => "No action specified but",
 'no_info'              => "No info specified in url",
 'password_mismatch'    => "Passwords aren't the same!",
-'bad_credentials'      => "Username / Password mismatch. <br />The Username you specified does not exist or you entered a wrong password.",
+'bad_credentials'      => "User ID  / Password mismatch. <br />The User ID you specified does not exist or you entered a wrong password.",
 'invalid_character'    => "There is an invalid character detected in the",
 'invalid_email'        => "Please enter a valid e-mail address.",
 'invalid_picture'      => "Invalid Board Picture Input.",
@@ -51,17 +51,17 @@ $errorlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'no_verification_code' => "The Verification code was not filled out. It is required.", 
 'wrong_verification_code'    => "The Verification code was not the same as the image presented on screen, please go back, refresh (hit F5 on most browsers) and try again.",
 'invalid_verification_code'  => "Verification code contains invalid characters. Only a-z and 0-9 are valid", 
-'form_spoofing'        => "<b>ALERT!!</b> Form Spoofing Detected coming from IP address:",
+'form_spoofing'        => "<b>ALERT!</b> Form Spoofing Detected coming from IP address:",
 'post_flooding'        => "The last POST request from your IP was less than",
 'denial_of_service'    => "The last POST request did output an error message: ",
 'speed_alert'          => "Posting this fast is considered spamming, you are warned!<br />You are only allowed <b>$spam_hits_left_count</b> more attempt(s) after which you will be banned as spammer!",
 'tsc_alert'            => "One of form fields contains text which is considered SPAM, you are warned!<br />You are only allowed <b>$spam_hits_left_count</b> more attempt(s) after which you will be banned as spammer!",
 'speedpostban'         => "You are currently banned from posting due to possible spamming!<br />After <b>$detention_left</b> second(s) your ban will automatically be lifted!",
 'truncation_error'     => "Please make sure you have 'fake truncation' turned on in your Settings.pl file.<br />\$faketruncation = 1;<br />Could not truncate file",
-'referer_violation'    => "This action is not allowed from an outside domain!! <br />Action is: ",
+'referer_violation'    => "This action is not allowed from an outside domain! <br />Action is: ",
 'egg'                  => "Self Destruct Sequence Started !!<br />",
 'domain_not_allowed'   => "You may not register with, post as a guest or change your e-mail address to one from the domain",
-'module_missing'       => "Module(s) or functionality needed not installed on this server !!",
+'module_missing'       => "Module(s) or functionality needed not installed on this server !",
 'low_diskspace'        => "The available disk/hostspace is low. The forum was put to maintenance to avoid file corruption. Please notify the administrator of this error.",
 'invalid_key'          => "Masterkey is invalid!<br />This should be a text string between 8 and 24 characters long!",
 'wrong_pass'			=> 'The password you entered is not correct', 
@@ -84,12 +84,12 @@ $errorlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'script_reason'        => "You tried to use scripting in the URL or form input, which is not allowed.",
 
 ## InstantMessage ##
-'im_deleted'           => "Message was already read by recipient, therefore wasn't called back.",
+'im_deleted'           => "Message was already read by recipient, therefore was not called back.",
 'im_deleted_multi'     => "At least one of the recipients has already read the Message, therefore no Message was called back.",
 'im_members_only'      => "Personal Messaging is only for members",
 'im_low_postcount'     => "You are only allowed to send Personal Messages if you've reached a post count of $numposts!",
 'im_spam_alert'        => "You are trying to send a personal message to too many users at once. This is being interpreted as possible spamming.",
-'im_bad_users'         => "The following user(s) could not be messaged.<br />The username(s) is/are either invalid, or they have you on their ignore list: ",
+'im_bad_users'         => "The following member(s) could not be messaged.<br />The member name(s) is/are either invalid, or they have you on their ignore list: ",
 'cannot_find_draftmess'    => "Draft Message cannot be found.",
 'im_folder_exists'     => "A folder with this name already exists.",
 
@@ -156,22 +156,22 @@ $errorlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'current_password_wrong'    => "Your Current Password is incorrect",
 'no_admin_password'    => "You need to fill in the correct admin password to make changes to this profile.",
 'password_is_userid'   => "For security reasons, you cannot use your user ID as your password.",
-'name_is_userid'       => "For security reasons it is not allowed to have a Displayed Name the same as the login ID.",
-'name_taken'           => "This displayed name is already in use by another member.",
-'name_censored'        => "You have used one or more censored words in your displayed name. Please go back and change your displayed name. The word, or words that caused the problem are:",
-'name_too_long'        => "Please shorten your displayed name. It is too long.",
-'invalid_birthdate'    => "Invalid input in one or more of the Birthdate fields.",
+'name_is_userid'       => "For security reasons it is not allowed to have a Screen Name the same as the login ID.",
+'name_taken'           => "This screen name is already in use by another member.",
+'name_censored'        => "You have used one or more censored words in your displayed name. Please go back and change your screen name. The word, or words that caused the problem are:",
+'name_too_long'        => "Please shorten your screen name. It is too long.",
+'invalid_birthdate'    => "Invalid input in one or more of the Birth-date fields.",
 'not_allowed_gender_edit'	=> "You are not allowed to edit your gender.",
-'not_allowed_birthdate_change'	=> "You are not allowed to change your Birthdate.",
-'id_reserved'          => "The user ID you tried to register contains a reserved name! Please try another user ID. Reserved ID: ",
-'name_reserved'        => "The displayed name you tried to register contains a reserved name! Please try another displayed name. Reserved displayed name: ", #new
+'not_allowed_birthdate_change'  => "You are not allowed to change your Birth-date.",
+'id_reserved'          => "The user ID you tried to register contains a reserved name. Please try another user ID. Reserved name: ",
+'name_reserved'        => "The screen name you tried to register contains a reserved name. Please try another screen name. Reserved name: ",
 'cannot_kill_admin'    => "As a security feature, you cannot delete the account with user ID: ",
 'email_taken'          => "The following e-mail address is being used by a registered member already! If you feel this is a mistake, please go to the login page and use the password reminder with that address.",
 'invalid_template'     => "This is not a valid template name.",
 'invalid_language'     => "This is not a valid language name.",
 'invalid_time_offset'  => "Time offset must be +/- and numeric!",
 'invalid_postcount'    => "The 'number of posts' box can only contain digits.",
-'cannot_regroup_admin' => "The Administrator with username of 'admin' cannot be set to a different membergroup!",
+'cannot_regroup_admin' => "The Administrator with user ID of 'admin' cannot be set to a different membergroup!",
 'session_time_out'     => "Profile Session timed out.",
 
 ## Register ##
@@ -182,7 +182,7 @@ $errorlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'id_alfa_only'         => "User ID may only contain numbers and letters (example: yabber69)",
 'id_taken'             => "The user ID you tried to register already exists.",
 'id_to_long'           => "Please shorten your User ID. It is too long.",
-'realname_to_long'     => "Please shorten your Displayed Name. It is too long.",
+'realname_to_long'     => "Please shorten your Screen Name. It is too long.",
 'email_to_long'        => "Please shorten your e-mail. It is to long.",
 'already_preregged'    => "This user is already pre-registered!",
 'email_already_preregged'    => "This e-mail is already pre-registered!",
@@ -194,7 +194,7 @@ $errorlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'wrong_verification_question' => "The verification question is wrong. Please go back and try again.",
 'censor1'               => "The user name you have chosen has a word that is banned on this forum:",
 'censor2'               => "The e-mail you have chosen has a word that is banned on this forum:",
-'censor3'               => "The display name you have chosen has a word that is banned on this forum:",
+'censor3'               => "The screen name you have chosen has a word that is banned on this forum:",
 'bad_bot'              => "Oops - we don't serve your kind here.",
 
 ## Search ##
@@ -234,7 +234,7 @@ $errorlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'tabext'                => 'A tab for the same action or with the same name already exists!!',
 
 ## MemberGroups ##
-'newpostdep_gmod'       => 'Sorry, Global Mods can&#39;t modify Postdependent users because the Maintenance->"Rebuild Memberlist" must be run after and that function is only available in Maintenance Mode, so it would deny your login!',
+'newpostdep_gmod'       => 'Sorry, Global Mods cannot modify Post-dependent users because the Maintenance->"Rebuild Memberlist" must be run after and that function is only available in Maintenance Mode, so it would deny your login!',
 );
 
 1;

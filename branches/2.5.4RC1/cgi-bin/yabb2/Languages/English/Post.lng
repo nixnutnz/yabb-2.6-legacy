@@ -46,7 +46,7 @@ $postlngver = 'YaBB 2.5.4 RC1 $Revision$';
 '223' => 'Sorry, you must register before using this feature!',
 '240' => 'There is an invalid character in the',
 '241' => 'field!',
-'244' => 'The username you tried to register contains a reserved name! Please try another username. Reserved name: ',
+'244' => 'The user ID you tried to register contains a reserved name! Please try another user ID. Reserved name: ',
 '245' => 'Insert Timestamp',
 '246' => 'Highlight',
 '252' => 'Add YaBBC tags',
@@ -74,7 +74,7 @@ $postlngver = 'YaBB 2.5.4 RC1 $Revision$';
 '274' => 'Maroon',
 '275' => 'Lime Green',
 '276' => 'Disable UBBC and Smilies',
-'277' => 'Check this if you wish to disable parsing of ubbc tags and smileys.',
+'277' => 'Check this if you wish to disable parsing of ubbc tags and smilies.',
 '279' => 'Posted by',
 '280' => 'Posted on',
 '281' => 'Standard',
@@ -94,19 +94,19 @@ $postlngver = 'YaBB 2.5.4 RC1 $Revision$';
 '295' => 'Cool',
 '296' => 'Huh',
 '297' => 'Add Smilies',
-# next 4 entries for MSIE and Safari; these are inside JavaScript!!!
+# next 4 entries for MSIE and Safari; these are inside JavaScript!
 '329'  => 'Shortcut: Press [<i>Alt</i>]+[<i>s</i>] to Post Message',
 '329x'  => 'Shortcut: Press [<i>Alt</i>]+[<i>s</i>] to Post Message or [<i>Alt</i>]+[<i>p</i>] to Preview',
 '329a' => 'Shortcut: Press [<i>Alt</i>]+[<i>s</i>] to Save Poll',
 '329b' => 'Shortcut: Press [<i>Alt</i>]+[<i>s</i>] to Send Message or [<i>Alt</i>]+[<i>d</i>] to Save as Draft',
 '329c' => 'Shortcut: Press [<i>Alt</i>]+[<i>s</i>] to Send Message, [<i>Alt</i>]+[<i>d</i>] to Save as Draft or [<i>Alt</i>]+[<i>p</i>] to Preview',
-# next 4 entries for FF; these are inside JavaScript!!!
+# next 4 entries for FF; these are inside JavaScript!
 '330'  => 'Shortcut: Press [<i>Shift</i>]+[<i>Alt</i>]+[<i>s</i>] to Post Message',
 '330x'  => 'Shortcut: Press [<i>Shift</i>]+[<i>Alt</i>]+[<i>s</i>] to Post Message or [<i>Shift</i>]+[<i>Alt</i>]+[<i>p</i>] to Preview',
 '330a' => 'Shortcut: Press [<i>Shift</i>]+[<i>Alt</i>]+[<i>s</i>] to Save Poll',
 '330b' => 'Shortcut: Press [<i>Shift</i>]+[<i>Alt</i>]+[<i>s</i>] to Send Message or [<i>Shift</i>]+[<i>Alt</i>]+[<i>d</i>] to Save as Draft',
 '330c' => 'Shortcut: Press [<i>Shift</i>]+[<i>Alt</i>]+[<i>s</i>] to Send Message, [<i>Shift</i>]+[<i>Alt</i>]+[<i>d</i>] to Save as Draft or [<i>Shift</i>]+[<i>Alt</i>]+[<i>p</i>] to Preview',
-# next 4 entries for ALL browsers on Mac platforms; these are inside JavaScript!!!
+# next 4 entries for ALL browsers on Mac platforms; these are inside JavaScript!
 '331'  => 'Shortcut: Press [<i>Ctrl</i>]+[<i>s</i>] to Post Message',
 '331x'  => 'Shortcut: Press [<i>Ctrl</i>]+[<i>s</i>] to Post Message or [<i>Ctrl</i>]+[<i>p</i>] to Preview',
 '331a' => 'Shortcut: Press [<i>Ctrl</i>]+[<i>s</i>] to Save Poll',
@@ -165,7 +165,7 @@ $postlngver = 'YaBB 2.5.4 RC1 $Revision$';
 '751' => 'Required information missing:',
 '801' => 'Happy',
 '802' => 'Evil smiley',
-'807' => '(user&#39;s display name not displayed in Preview)',
+'807' => '(user&#39;s screen name not displayed in Preview)',
 'delay' => 'Wait...',
 'iecopytext' => 'Enable auto-copy Message',
 'iecopycheck' => 'Check this if you want the message auto-copied to your clipboard before Post or Preview.',
@@ -265,8 +265,8 @@ $postlngver = 'YaBB 2.5.4 RC1 $Revision$';
 %floodtxt=(
 '1' => 'Your Verification Code is',
 '3' => 'Verification Code',
-'casewarning' => 'Please type exactly what text appears in the image. The characters must be typed in the same order, and it is case-sensitive.',
-'casewarning_1' => 'Please type exactly what text appears in the image,',
+'casewarning' => 'Please type the characters that appear in the image. The characters must be typed in the same order, and they are case-sensitive.',
+'casewarning_1' => 'Please type the characters exactly as they appear in the image,',
 'casewarning_2' => '<br /><span style="font-weight: bold;">without the first',
 'casewarning_3' => '<br /><span style="font-weight: bold;">without the last',
 'casewarning_4' => 'and last',

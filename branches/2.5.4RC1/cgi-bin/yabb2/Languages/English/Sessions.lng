@@ -16,14 +16,14 @@ $sessionslngver = 'YaBB 2.5.4 RC1 $Revision$';
 
 %session_txt = (
 '1' => 'Activate Session ID&#39;s?',
-'2' => 'This protects the Administrative Functions using a three part Session Key based on IP address',
-'3' => "Your Session has expired, as you entered the forum from a different IP address ($user_ip)",
+'2' => 'This protects the Administrative Functions by using a three part Session Key based on IP address',
+'3' => "Your Session has expired as you entered the forum from a different IP address ($user_ip)",
 '4' => 'To check your credentials answer the following question you entered in your profile',
 '6' => 'You failed to validate your credentials and are logged out',
 '8' => 'Select your Session Revalidation Question here',
-'9' => 'To check your credentials select a question and provide an answer to revalidate your session',
+'9' => 'To check your credentials select a question and provide an answer to re-validate your session',
 '9a' => 'If you select your password as validation you can leave the field empty.',
-'10' => 'You did not select a Session Question in your profile<br />so the only way to check your credentials is your password.',
+'10' => 'You did not select a Session Question in your profile<br />so you must use your password as verify your credentials.',
 );
 
 %sesquest_txt = (

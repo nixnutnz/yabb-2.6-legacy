@@ -59,7 +59,7 @@ $searchlngver = 'YaBB 2.5.4 RC1 $Revision$';
 '578' => 'hours',
 '579' => 'days',
 '582' => 'Search for',
-'583' => 'By User',
+'583' => 'By Member name',
 '737' => 'Check all',
 'pmfrom' => 'From', ## new
 'pmto' => 'To',
@@ -82,7 +82,7 @@ $searchlngver = 'YaBB 2.5.4 RC1 $Revision$';
 %searchselector_txt = (
 'select' => 'Select',
 'remove' => 'Remove',
-'removeconfirm' => 'Are you sure you want to remove user name?',
+'removeconfirm' => 'Are you sure you want to remove member name?',
 );
 
 1;

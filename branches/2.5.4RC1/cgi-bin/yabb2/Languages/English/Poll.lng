@@ -61,7 +61,7 @@ $polllngver = 'YaBB 2.5.4 RC1 $Revision$';
 'showcased' => 'Currently Being Showcased',
 'setshowcased' => 'Set Poll Showcased?',
 'showcaserem' => 'Remove Poll from Showcase?',
-'confirm' => 'Are you sure you want to put this Poll Showcased?\\nAnother Poll is already Showcased!', # Test before changing! It's inside a javascript. Do not use " or ' inside parentheses.
+'confirm' => 'Are you sure you want to Showcase this Poll?\\nAnother Poll is already Showcased!', # Test before changing! It's inside a javascript. Do not use " or ' inside parentheses.
 );
 
 1;

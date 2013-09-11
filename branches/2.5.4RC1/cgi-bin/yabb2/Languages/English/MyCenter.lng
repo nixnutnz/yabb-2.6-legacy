@@ -48,7 +48,7 @@ $mycenterlngver = 'YaBB 2.5.4 RC1 $Revision$';
 %pm_search = (
 'all' => 'All',
 'justthis' => 'This folder only',
-'byuser' => 'by Username',
+'byuser' => 'by Screen Name',
 'desc' => 'Search my PMs',
 );
 
