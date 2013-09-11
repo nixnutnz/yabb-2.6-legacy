@@ -220,17 +220,6 @@ sub SpamQuestionsAdd {
     if ( $spam_answer eq q{} ) {
         fatal_error( 'invalid_value', "$spam_question_txt{'answer'}" );
     }
-    if ( $spam_image ne q{} ) {
-        $spam_image = UploadFile('spam_image', 'Templates/Forum/default', 'png jpg jpeg gif', '250'); 
-        unlink "$htmldir/Templates/Forum/default/$cur_spam_image";
-    } 
-    else {
-        $spam_image = $cur_spam_image;
-    }
-    if ( $del_spam_image ) {
-        unlink "$htmldir/Templates/Forum/default/$cur_spam_image";
-        $spam_image = q{};
-    }
 
     $spam_image = UploadFile('spam_image', 'Templates/Forum/default', 'png jpg jpeg gif', '250');
 
@@ -336,6 +325,18 @@ sub SpamQuestionsEdit2 {
     if ( $spam_answer eq q{} ) {
         fatal_error( 'invalid_value', "$spam_question_txt{'answer'}" );
     }
+
+    if ( $spam_image ne q{} ) {
+        $spam_image = UploadFile('spam_image', 'Templates/Forum/default', 'png jpg jpeg gif', '250'); 
+        unlink "$htmldir/Templates/Forum/default/$cur_spam_image";
+    } 
+    else {
+        $spam_image = $cur_spam_image;
+    }
+    if ( $del_spam_image ) {
+        unlink "$htmldir/Templates/Forum/default/$cur_spam_image";
+        $spam_image = q{};
+    } 
 
     fopen( SPAMQUESTIONS, "<$langdir/$questions_language/spam.questions" )
       || fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",

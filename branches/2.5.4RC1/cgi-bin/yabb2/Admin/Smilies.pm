@@ -164,6 +164,7 @@ sub SmiliePanel {
   </tr>~;
 
     $i = 0;
+    my $add_smiley = 1;
     foreach (@SmilieURL) {
         if ( $i != 0 ) {
             $up =
@@ -184,7 +185,11 @@ qq~<a href="$adminurl?action=smiliemove;index=$i;movedown=1"><img src="$imagesdi
           . ( $showinbox eq $SmilieDescription[$i] ? ' checked="checked"' : q{} )
           . qq~ /></td>
     <td class="windowbg2 center"><input type="text" name="scd[$i]" value="$SmilieCode[$i]" /></td>
-    <td class="windowbg2 center"><input type="text" name="smimg[$i]" value="$SmilieURL[$i]" /><input type="hidden" name="cur_smimg[$i]" value="$SmilieURL[$i]" /></td>
+    <td class="windowbg2 center" style="white-space: nowrap;">
+        <input type="file" name="smimg[$i]" id="smimg[$i]" size="35" />
+        <input type="hidden" name="cur_smimg[$i]" value="$SmilieURL[$i]" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('smimg[$i]').value='';">X</span>
+        <div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Templates/Forum/default/$SmilieURL[$i]" target="_blank">$SmilieURL[$i]</a></div>
+    </td>
     <td class="windowbg2 center"><input type="text" name="sdescr[$i]" value="$SmilieDescription[$i]" /></td>
     <td class="windowbg2 center"><input type="checkbox" name="smbox[$i]" value="1"~
           . ( $SmilieLinebreak[$i] eq '<br />' ? ' checked="checked"' : q{} )
@@ -200,23 +205,37 @@ qq~<a href="$adminurl?action=smiliemove;index=$i;movedown=1"><img src="$imagesdi
     <td class="windowbg2 center">$up $down</td>
   </tr>~;
         $i++;
+        $add_smiley++;        
     }
+    my $added_smilies = $i;
     $yymain .= qq~<tr>
     <td class="titlebg" colspan="8"><b>&nbsp;<img src="$imagesdir/grin.gif" alt="" />&nbsp;$asmtxt{'08'}</b></td>
-  </tr>~;
-    $inew = 0;
-    while ( $inew <= 5 ) {
-        $yymain .= qq~<tr>
+  </tr><tr>
     <td class="windowbg2 center">&nbsp;</td>
-    <td class="windowbg2 center" style="white-space: nowrap;"><input type="file" name="smimg[$i]" id="smimg[$i]" size="35" /><input type="file" name="smimg[$i]" id="smimg[$i]" size="35" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('smimg[$i]').value='';">X</span></td>
-    <td class="windowbg2 center"><input type="text" name="smimg[$i]" /></td>
+    <td class="windowbg2 center"><input type="text" name="scd[$i]" /></td>
+    <td class="windowbg2 center" style="white-space: nowrap;"><input type="file" name="smimg[$i]" id="smimg[$i]" size="35" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('smimg[$i]').value='';">X</span></td>
     <td class="windowbg2 center"><input type="text" name="sdescr[$i]" /></td>
     <td class="windowbg2 center"><input type="checkbox" name="smbox[$i]" value="1" /></td>
-    <td class="windowbg2 center" colspan="3"></td>
+    <td class="windowbg2 center" colspan="3">
+        <img src="$imagesdir/cat_expand.png" alt="$smiltxt{'25'}" title="$smiltxt{'25'}" class="cursor" style="visibility: visible;" id="add_smiley$i" onclick="addSmilies($add_smiley);" />
+        <img src="$imagesdir/cat_collapse.png" alt="" style="visibility: hidden;" /> <!-- Used only for alignment purposes -->
+    </td>
   </tr>~;
+    for ( 1 .. 4 ) {
         $i++;
-        $inew++;
-        if ( $inew == 5 ) {
+        $add_smiley++;
+        $yymain .= qq~<tr id="add_smilies$i" style="display: none;">
+    <td class="windowbg2 center">&nbsp;</td>
+    <td class="windowbg2 center"><input type="text" name="scd[$i]" id="scd[$i]" /></td>
+    <td class="windowbg2 center" style="white-space: nowrap;"><input type="file" name="smimg[$i]" id="smimg[$i]" size="35" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('smimg[$i]').value='';">X</span></td>
+    <td class="windowbg2 center"><input type="text" name="sdescr[$i]" id="sdescr[$i]" /></td>
+    <td class="windowbg2 center"><input type="checkbox" name="smbox[$i]" id="smbox[$i]" value="1" /></td>
+    <td class="windowbg2 center" colspan="3">
+        <img src="$imagesdir/cat_expand.png" alt="$smiltxt{'25'}" title="$smiltxt{'25'}" class="cursor" style="visibility: visible;" id="add_smiley$i" onclick="addSmilies($add_smiley);" />
+        <img src="$imagesdir/cat_collapse.png" alt="$smiltxt{'26'}" title="$smiltxt{'26'}" class="cursor" style="visibility: visible;" id="col_smiley$i" onclick="removeSmilies($i);" />
+    </td>
+  </tr>~;
+}            
             $yymain .= qq~<tr>
     <td colspan="8" class="titlebg"><b>&nbsp;<img src="$imagesdir/grin.gif" alt="" />&nbsp;$smiltxt{'2'}</b></td>
   </tr><tr>
@@ -240,14 +259,44 @@ qq~<a href="$adminurl?action=smiliemove;index=$i;movedown=1"><img src="$imagesdi
     </tr>
 </table>
 </div>
+<script type="text/javascript">
+<!--
+sm_added = $added_smilies + 1;
+
+function addSmilies(addsm_id) {
+    var cursm_id = addsm_id - 1;
+    var sm_count = $i;
+    document.getElementById('add_smilies' + addsm_id).style.display = 'table-row';
+    document.getElementById('add_smiley' + cursm_id).style.visibility = 'hidden'; 
+    if (addsm_id != sm_added) {
+        document.getElementById('col_smiley' + cursm_id).style.visibility =' hidden'; 
+    }
+    if (addsm_id == sm_count) {
+        document.getElementById('add_smiley' + sm_count).style.visibility = 'hidden'; 
+    } 
+}
+function removeSmilies(remsm_id) {
+    var prevsm_id = remsm_id - 1
+    document.getElementById('add_smilies' + remsm_id).style.display = 'none'; 
+    document.getElementById('add_smiley' + prevsm_id).style.visibility = 'visible';
+    if (remsm_id != sm_added) {
+        document.getElementById('col_smiley' + prevsm_id).style.visibility = 'visible'; 
+    }
+    sm_elements = ["scd","smimg","sdescr"];
+    for (var i=0; i<sm_elements.length; i++) {
+        document.getElementById(sm_elements[i] + '[' + remsm_id + ']').value = '';
+    }
+    document.getElementById('smbox[' + remsm_id + ']').checked = false; 
+}
+//-->
+</script>
 </form>
 ~;
 
             $yytitle     = "$asmtxt{'01'}";
             $action_area = 'smilies';
             AdminTemplate();
-        }
-    }
+
     return;
 }
 
@@ -274,8 +323,13 @@ sub AddSmilies {
     @SmilieLinebreak   = ();
     my $temp_a = 0;
     for ( 1 .. $count_smimg ) {
-        if ( $FORM{"delbox[$temp_a]"} != 1 && $FORM{"sdescr[$temp_a]"} ne q{} && $FORM{"smimg[$temp_a]"} ne q{} ) {   
-            if ( $FORM{"smimg[$temp_a]"} ne q{} && $FORM{"cur_smimg[$temp_a]"} eq q{} ) {
+        if ( $FORM{"scd[$temp_a]"} ne q{} || $FORM{"smimg[$temp_a]"} ne q{} || $FORM{"sdescr[$temp_a]"} ne q{} ) {
+            if ( $FORM{"scd[$temp_a]"} eq q{} ) { fatal_error('', $smiltxt{'error_code'}); }
+            if ( $FORM{"smimg[$temp_a]"} eq q{} && $FORM{"cur_smimg[$temp_a]"} eq q{} ) { fatal_error(q{}, $smiltxt{'error_image'}); }
+            if ( $FORM{"sdescr[$temp_a]"} eq q{} ) { fatal_error('', $smiltxt{'error_desc'}); }
+        }
+        if ( $FORM{"delbox[$temp_a]"} != 1 && $FORM{"sdescr[$temp_a]"} ne q{} && ( $FORM{"smimg[$temp_a]"} ne q{} || $FORM{"cur_smimg[$temp_a]"} ne q{} ) ) {   
+            if ( $FORM{"smimg[$temp_a]"} ne q{} ) {
                 $FORM{"smimg[$temp_a]"} = UploadFile("smimg[$temp_a]", 'Templates/Forum/default', 'png jpg jpeg gif', '100' ); 
             }
             else {
