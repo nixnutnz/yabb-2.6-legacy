@@ -1,6 +1,6 @@
 ###############################################################################
 # Menu.pm                                                                     #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.11.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -71,7 +71,7 @@ sub SetMenu {
 qq~<img src="$button_imgurl/$button_icon.$imgext" alt="${$alt_text}{$alt_num}" /> <span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}">${$button_text}{$text_num}</span> ~;
             }
             elsif ( $UseMenuType == 1 ) {
-                $menusep = q{ };
+                $menusep = q{ | };
                 $img{$key} =
 qq~<span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}">${$button_text}{$text_num}</span> ~;
             }
@@ -136,7 +136,7 @@ qq~<img src="$button_imgurl/$button_icon.$imgext" alt="${$alt_text}{$alt_num}" /
         }
     }
     elsif ( $UseMenuT == 1 ) {
-        $menusep = q{ };
+        $menusep = q{ | };
         if ( $img_name eq 'gtalk' ) {
             $img_out =
 qq~<span style="white-space: nowrap;" class="$span_class cursor" title="${$alt_text}{$alt_num}" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=0,toolbar=0,scrollbars=0,resizable=1'); return false">${$button_text}{$text_num}</span>~;
