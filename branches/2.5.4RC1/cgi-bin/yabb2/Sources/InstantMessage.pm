@@ -2210,8 +2210,8 @@ qq~<div class="small attbox"><a href="$pmuploadurl/$pmAttachFile" target="_blank
                         $img_greybox
                         ? (
                             $img_greybox == 2
-                            ? qq~<a href="$pmuploadurl/$pmAttachFile" rel="gb_imageset[nice_pics]" title="$pmAttachFile">~
-                            : qq~<a href="$pmuploadurl/$pmAttachFile" rel="gb_image[nice_pics]" title="$pmAttachFile">~
+                            ? qq~<a href="$pmuploadurl/$pmAttachFile" data-rel="gb_imageset[nice_pics]" title="$pmAttachFile">~
+                            : qq~<a href="$pmuploadurl/$pmAttachFile" data-rel="gb_image[nice_pics]" title="$pmAttachFile">~
                           )
                         : qq~<a href="$pmuploadurl/$pmAttachFile" target="_blank">~
                       )

@@ -884,8 +884,8 @@ qq~<div class="small attbox"><a href="$scripturl?action=downloadfile;file=$urlna
                             $img_greybox
                             ? (
                                 $img_greybox == 2
-                                ? qq~<a href="$scripturl?action=downloadfile;file=$urlname" rel="gb_imageset[nice_pics]" title="$_">~
-                                : qq~<a href="$scripturl?action=downloadfile;file=$urlname" rel="gb_image[nice_pics]" title="$_">~
+                                ? qq~<a href="$scripturl?action=downloadfile;file=$urlname" data-rel="gb_imageset[nice_pics]" title="$_">~
+                                : qq~<a href="$scripturl?action=downloadfile;file=$urlname" data-rel="gb_image[nice_pics]" title="$_">~
                               )
                             : qq~<a href="$scripturl?action=downloadfile;file=$urlname" onclick="target='_blank';">~
                           )
