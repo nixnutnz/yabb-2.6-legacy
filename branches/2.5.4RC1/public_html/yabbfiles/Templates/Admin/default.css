@@ -494,7 +494,7 @@ color:red;
 /*height and width*/
 
 .padd_8_12px {
-padding-top:8px; padding-bottom:12px;
+padding-top:8px !important; padding-bottom:12px !important;
 }
 
 .att {

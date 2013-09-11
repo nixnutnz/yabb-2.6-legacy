@@ -131,8 +131,6 @@ sub Post {
     if ( $FORM{'title'} eq 'PostReply' ) { $postthread = 2; }
     if ( $pollthread == 2 && $useraddpoll == 0 ) { fatal_error('no_access'); }
 
-    if ($iamguest) { $guestpost_col = $my_guestpost_col; }
-
 	$guestpost_fields = q{};
 	if ( $iamguest ) {
     $guestpost_fields = $mypost_guest_fields;
@@ -1229,7 +1227,6 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             $return_to =~ s/{yabb return_to_select}/$return_to_select/sm;
         }
         ### Return To mod end ###
-        if ( $iamguest || $is_preview ) { $guestpost_col = $my_guestpost_col; }
         $my_postsec_b   = postbox2();
         $my_postsection = $mypost_postblock;
         $my_postsection =~ s/{yabb my_postsection_ajx}/$my_postsection_ajx/sm;
@@ -1238,7 +1235,6 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         $my_postsection =~ s/{yabb my_t_status}/$my_t_status/sm;
         $my_postsection =~ s/{yabb extra}/$extra/sm;
         $my_postsection =~ s/{yabb name_field}/$guestpost_fields/sm;
-        $my_postsection =~ s/{yabb guestcol}/$guestpost_col/sm;
         $my_postsection =~ s/{yabb email_field}/$email_field/sm;
         $my_postsection =~ s/{yabb verification_field}/$verification_field/sm;
         $my_postsection =~

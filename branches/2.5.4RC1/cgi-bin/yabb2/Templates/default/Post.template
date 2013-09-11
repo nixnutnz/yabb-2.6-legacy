@@ -55,7 +55,7 @@ $mypost_postblock = qq~
 	<col style="width: auto" />
     {yabb my_prevmain}{yabb name_field}{yabb email_field}{yabb verification_field}{yabb verification_question_field}
     <tr class="windowbg">
-        <td{yabb guestcol}>
+        <td colspan="2">
             <div style="height:16px;">
                 <img  src="$imagesdir/$cat_exp" name="prevwin" id="prevwin" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor: pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
             </div>
