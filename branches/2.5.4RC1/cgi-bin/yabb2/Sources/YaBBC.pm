@@ -356,6 +356,7 @@ sub DoUBBC {
     $ycsscounter = 2;
     if ( $ns eq 'NS' || $message =~ s/#nosmileys//isgm ) { return $message; }
     if ( ${ $uid . $username }{'hide_img'} && $user_hide_img ) { $message = parseimgflash($message); }
+    $message =~ s/\[noparse\](.*?)(\[\/noparse\]|$)/noparse($1)/eisgm;
     $message =~ s/\[reason\](.+?)\[\/reason\]//igsm;
     $message =~ s/\[code\]/ \[code\]/igsm;
     $message =~ s/\[\/code\]/ \[\/code\]/igsm;
@@ -368,7 +369,6 @@ sub DoUBBC {
     $message =~ s/\[code\s*(.*?)\]\n*(.+?)\n*\[\/code\]/codemsg($2,$1)/eisgm;
 
     # [code] must come at first! At least before image transformation!
-    $message =~ s/\[noparse\](.*?)(\[\/noparse\]|$)/noparse($1)/eisgm;
     $message =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gsm;
     $message =~ s/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[\/$1$2\]/gsm;
 
