@@ -200,7 +200,6 @@ sub SetCensor {
             && -e "$langdir/$fld/Main.lng" )
         {
             if ( $censorlanguage eq $fld ) {
-                $drawnldirs .=
                   $drawnldirs .= qq~<option value="$fld" selected="selected">$displang</option>~;
             }
             else { $drawnldirs .= qq~<option value="$fld">$displang</option>~; }
