@@ -153,14 +153,14 @@ sub SmiliePanel {
   </tr><tr>
       <td class="titlebg" colspan="8"><b>&nbsp;<img src="$imagesdir/grin.gif" alt="" />&nbsp;$asmtxt{'11'}</b></td>
   </tr><tr>
-    <td class="catbg center"><b>$smiltxt{'22'}</b></td>
-    <td class="catbg center"><b>$asmtxt{'02'}</b></td>
-    <td class="catbg center"><b>$asmtxt{'03'}</b></td>
-    <td class="catbg center"><b>$asmtxt{'04'}</b></td>
-    <td class="catbg center"><b>$asmtxt{'05'}</b></td>
-    <td class="catbg center"><b>$asmtxt{'06'}</b></td>
-    <td class="catbg center"><b>$asmtxt{'07'}</b></td>
-    <td class="catbg center"><b>$asmtxt{'12'}</b></td>
+    <td class="catbg center">$smiltxt{'22'}</td>
+    <td class="catbg center">$asmtxt{'02'}</td>
+    <td class="catbg center">$asmtxt{'03'}</td>
+    <td class="catbg center">$asmtxt{'04'}</td>
+    <td class="catbg center">$asmtxt{'05'}</td>
+    <td class="catbg center">$asmtxt{'06'}</td>
+    <td class="catbg center">$asmtxt{'07'}</td>
+    <td class="catbg center">$asmtxt{'12'}</td>
   </tr>~;
 
     $i = 0;
@@ -239,10 +239,10 @@ qq~<a href="$adminurl?action=smiliemove;index=$i;movedown=1"><img src="$imagesdi
             $yymain .= qq~<tr>
     <td colspan="8" class="titlebg"><b>&nbsp;<img src="$imagesdir/grin.gif" alt="" />&nbsp;$smiltxt{'2'}</b></td>
   </tr><tr>
-    <td class="catbg center"><b>$smiltxt{'22'}</b></td>
-    <td class="catbg center"><b>$asmtxt{'02'}</b></td>
-    <td class="catbg center"><b>$asmtxt{'03'}</b></td>
-    <td class="catbg center"><b>$asmtxt{'04'}</b></td>
+    <td class="catbg center">$smiltxt{'22'}</td>
+    <td class="catbg center">$asmtxt{'02'}</td>
+    <td class="catbg center">$asmtxt{'03'}</td>
+    <td class="catbg center">$asmtxt{'04'}</td>
     <td class="catbg center" colspan="4"><b>$asmtxt{'06'}</b></td>
   </tr>$smilieslist
 </table>

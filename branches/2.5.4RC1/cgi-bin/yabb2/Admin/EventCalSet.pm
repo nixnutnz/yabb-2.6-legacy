@@ -280,6 +280,7 @@ sub EventCalSet {
                 </tr>~;
 
     $i = 0;
+    my $add_icon = 1;
     while ( $CalIconURL[$i] ) {
         $yymain .= qq~<tr>
                     <td class="windowbg2 padd_4px center">
@@ -292,17 +293,28 @@ sub EventCalSet {
                     <td class="windowbg2 padd_4px center"><input type="checkbox" name="calidelbox[$i]" value="1" /></td>
                 </tr>~;
         $i++;
+        $add_icon++;
     }
-
-    $inew = 0;
-    while ( $inew <= 3 ) {
+    my $added_icons = $i;
         $yymain .= qq~<tr>
                     <td class="windowbg2 padd_4px center"><input type="file" name="caliimg[$i]" id="caliimg[$i]" size="35" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('caliimg[$i]').value='';">X</span></td>
                     <td class="windowbg2 padd_4px center"><input type="text" name="calidescr[$i]" /></td>
-                    <td class="windowbg2 padd_4px center" colspan="2">&nbsp;</td>
+                    <td class="windowbg2 padd_4px center" colspan="2">
+                        <img src="$imagesdir/cat_expand.png" alt="$event_cal{'59'}" title="$event_cal{'59'}" class="cursor" style="visibility: visible;" id="add_icon$i" onclick="addIcons($add_icon);" />
+                        <img src="$imagesdir/cat_collapse.png" alt="" style="visibility: hidden;" /> <!-- Used only for alignment purposes -->                   
+                    </td>
                 </tr>~;
+    for ( 1 .. 3 ) {
         $i++;
-        $inew++;
+        $add_icon++;
+        $yymain .= qq~<tr id="add_icons$i" style="display: none;">
+                    <td class="windowbg2 padd_4px center"><input type="file" name="caliimg[$i]" id="caliimg[$i]" size="35" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('caliimg[$i]').value='';">X</span></td>
+                    <td class="windowbg2 padd_4px center"><input type="text" name="calidescr[$i]" id="calidescr[$i]" /></td>
+                    <td class="windowbg2 padd_4px center" colspan="2">
+                        <img src="$imagesdir/cat_expand.png" alt="$event_cal{'59'}" title="$event_cal{'59'}" class="cursor" style="visibility: visible;" id="add_icon$i" onclick="addIcons($add_icon);" />
+                        <img src="$imagesdir/cat_collapse.png" alt="$event_cal{'60'}" title="$event_cal{'60'}" class="cursor" style="visibility: visible;" id="col_icon$i" onclick="removeIcons($i);" />                   
+                    </td>
+                </tr>~;
     }
 
     $yymain .= qq~
@@ -320,6 +332,36 @@ sub EventCalSet {
                 </tr>
             </table>
             </div>
+<script type="text/javascript">
+<!--
+ic_added = $added_icons + 1;
+
+function addIcons(addic_id) {
+    var curic_id = addic_id - 1;
+    var ic_count = $i;
+    document.getElementById('add_icons' + addic_id).style.display = 'table-row';
+    document.getElementById('add_icon' + curic_id).style.visibility = 'hidden'; 
+    if (addic_id != ic_added) {
+        document.getElementById('col_icon' + curic_id).style.visibility =' hidden'; 
+    }
+    if (addic_id == ic_count) {
+        document.getElementById('add_icon' + ic_count).style.visibility = 'hidden'; 
+    } 
+}
+function removeIcons(remic_id) {
+    var previc_id = remic_id - 1
+    document.getElementById('add_icons' + remic_id).style.display = 'none'; 
+    document.getElementById('add_icon' + previc_id).style.visibility = 'visible';
+    if (remic_id != ic_added) {
+        document.getElementById('col_icon' + previc_id).style.visibility = 'visible'; 
+    }
+    ic_elements = ["caliimg","calidescr"];
+    for (var i=0; i<ic_elements.length; i++) {
+        document.getElementById(ic_elements[i] + '[' + remic_id + ']').value = '';
+    }
+}
+//-->
+</script>
         </form>~;
 
     $yytitle     = $event_cal{'1'};
