@@ -201,7 +201,7 @@ sub SetCensor {
         {
             if ( $censorlanguage eq $fld ) {
                 $drawnldirs .=
-                  qq~$drawnldirs .= qq~<option value="$fld" selected="selected">$displang</option>~;
+                  $drawnldirs .= qq~<option value="$fld" selected="selected">$displang</option>~;
             }
             else { $drawnldirs .= qq~<option value="$fld">$displang</option>~; }
         }
