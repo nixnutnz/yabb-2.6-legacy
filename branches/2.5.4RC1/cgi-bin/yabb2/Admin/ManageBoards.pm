@@ -870,7 +870,7 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
   </tr><tr>
     <td class="windowbg2">
     <b>$admin_txt{'63'}:</b><br /><span class="small">
-    <a href="javascript:void(0);" onclick="window.open('$scripturl?action=qsearch;toid=moderators$i','','status=no,height=325px,width=300,menubar=no,toolbar=no,top=50,left=50,scrollbars=no')">$selector_txt{linklabel}</a><br />
+    <a href="javascript:void(0);" onclick="window.open('$scripturl?action=qsearch;toid=moderators$i','','status=no,height=350px,width=300,menubar=no,toolbar=no,top=50,left=50,scrollbars=no')">$selector_txt{linklabel}</a><br />
     <a href="javascript:copyNames($i)">$admin_txt{'63a'}</a><br/>
     <a href="javascript:pasteNames($i,1)">$admin_txt{'63b'}</a><br/>
     <a href="javascript:pasteNames(1,$FORM{'amount'})">$admin_txt{'63c'}</a></span>
