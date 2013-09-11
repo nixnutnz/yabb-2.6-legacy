@@ -1,10 +1,11 @@
-20|Digg|digg.png|http://digg.com/submit?phase=2&url={url}&title={title}|1298959262
-30|del.icio.us|delicious.png|http://del.icio.us/post?v=4&noui&jump=close&url={url}&title={title}|1298959562
-40|Facebook|facebook.png|http://www.facebook.com/share.php?u={url}&t={title}|1298955803
-50|reddit|reddit.png|http://reddit.com/submit?url={url}&title={title}|1298959598
-60|Twitter|twitter.png|http://twitter.com/home?status={title}%20-%20{url}|1298959653
-70|Linked in|linkedin.png|http://www.linkedin.com/shareArticle?mini=true&url={url}&title={title}&ro=false|1298959786
-90|StumbleUpon|stumbleupon.png|http://www.stumbleupon.com/submit?url={url}&amp;title={title}|1299003650
-100|Yahoo|yahoo.png|http://myweb2.search.yahoo.com/myresults/bookmarklet?u={url}&amp;title={title}|1299003740
-10|Google|google.png|http://www.google.com/bookmarks/mark?op=edit&output=popup&bkmk={url}&title={title}|1298955918
-15|Google+|google+.png|https://plus.google.com/share?url={url}|1375144273
+10|Bebo|bebo.png|http://www.bebo.com/c/share?Url={url}
+20|del.icio.us|delicious.png|http://del.icio.us/post?v=4&amp;noui&amp;jump=close&amp;url={url}&amp;title={title}|1298959562
+30|Digg|digg.png|http://digg.com/submit?phase=2&amp;url={url}&amp;title={title}|1298959262
+40|Facebook|facebook.png|http://www.facebook.com/share.php?u={url}&amp;t={title}|1298955803
+50|Google|google.png|http://www.google.com/bookmarks/mark?op=edit&amp;output=popup&amp;bkmk={url}&amp;title={title}|1298955918
+60|Google+|google+.png|https://plus.google.com/share?url={url}|1375144273
+70|Linked in|linkedin.png|http://www.linkedin.com/shareArticle?mini=true&amp;url={url}&amp;title={title}&amp;ro=false|1298959786
+80|reddit|reddit.png|http://reddit.com/submit?url={url}&amp;title={title}|1298959598
+90|StumbleUpon|stumbleupon.png|http://www.stumbleupon.com/submit?url={url}&amp;amp;title={title}|1299003650
+100|Twitter|twitter.png|http://twitter.com/home?status={title}%20-%20{url}|1298959653
+110|Yahoo|yahoo.png|http://myweb2.search.yahoo.com/myresults/bookmarklet?u={url}&amp;amp;title={title}|1299003740
