@@ -317,6 +317,11 @@ sub AddSmilies {
     $removenormalsmilies = $FORM{'removenormalsmilies'};
     $count_smimg = $FORM{'smimg_count'};
 
+    if ( $winwidth  eq q{} ) { fatal_error('invalid_value', "$smiltxt{'14'}"); }
+    if ( $winheight eq q{} ) { fatal_error('invalid_value', "$smiltxt{'15'}"); }
+    if ( $popback   eq q{} ) { fatal_error('invalid_value', "$smiltxt{'20'}"); }
+    if ( $poptext   eq q{} ) { fatal_error('invalid_value', "$smiltxt{'19'}"); }
+
     @SmilieURL         = ();
     @SmilieCode        = ();
     @SmilieDescription = ();

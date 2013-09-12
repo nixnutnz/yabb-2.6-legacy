@@ -107,27 +107,27 @@ sub EventCalSet {
                     <td class="windowbg2"><img src="$defaultimagesdir/$status_calendar" alt="" /> <label for="Show_EventCal">$event_cal{'3'}</label></td>
                     <td class="windowbg2">
                         <select name="Show_EventCal" id="Show_EventCal" size="1">
-                        <option value="0"$bevt1>$event_cal{'11'}</option>
-                        <option value="1"$bevt2>$event_cal{'46'}</option>
-                        <option value="2"$bevt3>$event_cal{'47'}</option>
+                        <option value="0"$bevt1>$userlevel_txt{'none'}</option>
+                        <option value="1"$bevt2>$userlevel_txt{'members'}</option>
+                        <option value="2"$bevt3>$userlevel_txt{'all'}</option>
                         </select>
                     </td>
                 </tr><tr>
                     <td class="windowbg2"><label for="Show_EventButton">$event_cal{'4'}</label></td>
                     <td class="windowbg2">
                         <select name="Show_EventButton" id="Show_EventButton" size="1">
-                        <option value="0"$cevt1>$event_cal{'11'}</option>
-                        <option value="1"$cevt2>$event_cal{'46'}</option>
-                        <option value="2"$cevt3>$event_cal{'47'}</option>
+                        <option value="0"$cevt1>$userlevel_txt{'none'}</option>
+                        <option value="1"$cevt2>$userlevel_txt{'members'}</option>
+                        <option value="2"$cevt3>$userlevel_txt{'all'}</option>
                         </select>
                     </td>
                 </tr><tr>
                     <td class="windowbg2"><label for="Show_EventBirthdays">$event_cal{'5'}</label></td>
                     <td class="windowbg2">
                         <select name="Show_EventBirthdays" id="Show_EventBirthdays" size="1">
-                        <option value="0"$gevt1>$event_cal{'11'}</option>
-                        <option value="1"$gevt2>$event_cal{'46'}</option>
-                        <option value="2"$gevt3>$event_cal{'47'}</option>
+                        <option value="0"$gevt1>$userlevel_txt{'none'}</option>
+                        <option value="1"$gevt2>$userlevel_txt{'members'}</option>
+                        <option value="2"$gevt3>$userlevel_txt{'all'}</option>
                         </select>
                     </td>
                 </tr><tr>
@@ -159,7 +159,7 @@ sub EventCalSet {
                     <td class="windowbg2"><label for="Scroll_Events">$event_cal{'9'}<br /><span class="small">$event_cal{'10'}</span></label></td>
                     <td class="windowbg2">
                         <select name="Scroll_Events" id="Scroll_Events" size="1">
-                        <option value="0"$aevt1>$event_cal{'11'}</option>
+                        <option value="0"$aevt1>$userlevel_txt{'none'}</option>
                         <option value="1"$aevt2>$event_cal{'12'} ($event_cal{'56'})</option>
                         <option value="3"$aevt4>$event_cal{'12'} ($event_cal{'57'})</option>
                         <option value="2"$aevt3>$event_cal{'13'}</option>
@@ -206,27 +206,27 @@ sub EventCalSet {
                     <td class="windowbg2"><img src="$defaultimagesdir/$status_bdlist" alt="" /> <label for="Show_BirthdaysList">$event_cal{'42'}</label></td>
                     <td class="windowbg2">
                         <select name="Show_BirthdaysList" id="Show_BirthdaysList" size="1">
-                        <option value="0"$devt1>$event_cal{'11'}</option>
-                        <option value="1"$devt2>$event_cal{'46'}</option>
-                        <option value="2"$devt3>$event_cal{'47'}</option>
+                        <option value="0"$devt1>$userlevel_txt{'none'}</option>
+                        <option value="1"$devt2>$userlevel_txt{'members'}</option>
+                        <option value="2"$devt3>$userlevel_txt{'all'}</option>
                         </select>
                     </td>
                 </tr><tr>
                     <td class="windowbg2"><label for="Show_BirthdayButton">$event_cal{'48'}</label></td>
                     <td class="windowbg2">
                         <select name="Show_BirthdayButton" id="Show_BirthdayButton" size="1">
-                        <option value="0"$eevt1>$event_cal{'11'}</option>
-                        <option value="1"$eevt2>$event_cal{'46'}</option>
-                        <option value="2"$eevt3>$event_cal{'47'}</option>
+                        <option value="0"$eevt1>$userlevel_txt{'none'}</option>
+                        <option value="1"$eevt2>$userlevel_txt{'members'}</option>
+                        <option value="2"$eevt3>$userlevel_txt{'all'}</option>
                         </select>
                     </td>
                 </tr><tr>
                     <td class="windowbg2"><label for="Show_BirthdayDate">$event_cal{'50'}</label></td>
                     <td class="windowbg2">
                         <select name="Show_BirthdayDate" id="Show_BirthdayDate" size="1">
-                        <option value="0"$fevt1>$event_cal{'11'}</option>
-                        <option value="1"$fevt2>$event_cal{'46'}</option>
-                        <option value="2"$fevt3>$event_cal{'47'}</option>
+                        <option value="0"$fevt1>$userlevel_txt{'none'}</option>
+                        <option value="1"$fevt2>$userlevel_txt{'members'}</option>
+                        <option value="2"$fevt3>$userlevel_txt{'all'}</option>
                         </select>
                     </td>
                 </tr><tr>
