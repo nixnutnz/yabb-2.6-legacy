@@ -158,8 +158,6 @@ $eventcallngver = 'YaBB 2.5.4 RC1 $Revision$';
 '35' => '(0 = All events for current month)',
 '36' => 'First day of week (mini calendar)?',
 '37' => '(unchecked = Monday / checked = Sunday)',
-'40' => 'All Members',
-'41' => 'None',
 '42' => 'Show Member Birthdays List to:',
 '42a' => 'Show Zodiac Signs in Birthday List?',
 '43' => 'Don&#39;t show &#39;Event-Icons&#39; in mini calendar?',

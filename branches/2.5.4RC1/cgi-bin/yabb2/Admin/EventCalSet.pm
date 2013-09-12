@@ -196,8 +196,8 @@ sub EventCalSet {
                     <td class="windowbg2">
                         <select name="CalEventNoName" id="CalEventNoName" size="1">
                         <option value="0"$noname1>$userlevel_txt{'gmodadmin'}</option>
-                        <option value="1"$noname2>$event_cal{'40'}</option>
-                        <option value="2"$noname3>$event_cal{'41'}</option>
+                        <option value="1"$noname2>$userlevel_txt{'members'}</option>
+                        <option value="2"$noname3>$userlevel_txt{'none'}</option>
                         </select>
                     </td>
                 </tr><tr>
