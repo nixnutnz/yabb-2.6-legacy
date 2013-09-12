@@ -80,9 +80,7 @@ sub EventCalSet {
     if ($No_ShortUbbc)        { $onnosubbcchecked       = 'checked="checked"' }
     if ($Show_BdColorLinks)   { $onbdcolorlinkschecked  = 'checked="checked"' }
     if ($Show_BdStarsign)     { $onbdstarchecked  = 'checked="checked"' }
-    if ( !$Event_TodayColor ) { $Event_TodayColor       = '#ff0000'; }
-    else                      { $Event_TodayColor = lc $Event_TodayColor; }
-    if ( !$Delete_EventsUntil ) { $Delete_EventsUntil = '0'; }
+    $Event_TodayColor = lc $Event_TodayColor;
 
     if    ( !$CalEventNoName )     { $noname1 = ' selected="selected"'; }
     elsif ( $CalEventNoName == 1 ) { $noname2 = ' selected="selected"'; }

@@ -1424,8 +1424,10 @@ sub SetInstall2 {
         $fadelinks = 0;
         $cookieviewtime = 525_600;
         $Show_EventCal = 0;
-
-        # Let's generate a masterkey at setup time.
+        $Event_TodayColor       = '#ff0000';
+        $Delete_EventsUntil = 0;
+ 
+ # Let's generate a masterkey at setup time.
         my @chars = ( 'A' .. 'Z', 'a' .. 'z', 0 .. 9 );
         for ( 1 .. 24 ) { $masterkey .= $chars[ rand @chars ]; }
 
@@ -1680,6 +1682,8 @@ sub SetInstall2 {
 
 # Standard Calendar Setting
 \$Show_EventCal = $Show_EventCal;
+\$Event_TodayColor = $Event_TodayColor;
+\$Delete_EventsUntil = $Delete_EventsUntil;
 
 ########## File Locking ##########
 \$checkspace = 0;                                                # Set to 1 to enable any freespace checking (should remain disabled on Windows/IIS servers)

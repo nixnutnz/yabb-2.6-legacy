@@ -1256,6 +1256,8 @@ sub Convert_Settings {
 	$show_online_ip_fmod = 1;
 	$ipLookup = 1;
     $Show_EventCal = 0;
+    $Event_TodayColor       = '#ff0000';
+    $Delete_EventsUntil = 0;
 		require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');
     

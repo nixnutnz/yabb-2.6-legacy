@@ -3497,8 +3497,10 @@ sub SetInstall2 {
         $extendedprofiles       = 0;
         $enable_freespace_check = 0;
         $Show_EventCal = 0;
+        $Event_TodayColor       = '#ff0000';
+        $Delete_EventsUntil = 0; 
 
-        if ( -e '/bin/gzip' && open $GZIP, '|', 'gzip -f' ) {
+		if ( -e '/bin/gzip' && open $GZIP, '|', 'gzip -f' ) {
             $gzcomp = 1;
         }
         else {
