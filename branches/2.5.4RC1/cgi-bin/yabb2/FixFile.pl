@@ -1231,34 +1231,33 @@ sub Convert_Settings {
     }
    
     $settings_file_version = "YaBB 2.5.4";
-	if ($enable_notifications eq q{}) { $enable_notifications = $enable_notification ? 3 : 0; }
-	if ( !$cookietsort ) { ( undef,$rancook ) = split /\-/xsm, $cookieusername;
+    if ($enable_notifications eq q{}) { $enable_notifications = $enable_notification ? 3 : 0; }
+    if ( !$cookietsort ) { ( undef,$rancook ) = split /\-/xsm, $cookieusername;
         $cookietsort = qq~Y2tsort-$rancook~;
     }
-	if ( !$cookieview ) { ( undef,$rancook ) = split /\-/xsm, $cookieusername;
+    if ( !$cookieview ) { ( undef,$rancook ) = split /\-/xsm, $cookieusername;
         $cookieview = qq~Y2view-$rancook~;
     }
-	if ( !$cookieviewtime ) { $cookieviewtime = 525600; }
+    if ( !$cookieviewtime ) { $cookieviewtime = 525_600; }
     if ( !$MaxIMMessLen ) { $MaxIMMessLen = 2000; }
     if (!$AdMaxIMMessLen) {$AdMaxIMMessLen = 3000;}
     if (!$MaxCalMessLen){$MaxCalMessLen = 2000;}
     if (!$AdMaxCalMessLen){$AdMaxCalMessLen = 3000;}
-	if (!$fix_avatar_img_size) { $fix_avatar_img_size  = 65;}
-	
-	$ip_banlist = q{};
-	$email_banlist = q{};
-	$user_banlist = q{};
-	$showsearchbox = 1;
-	$fmodview = $gmodview;
-	$mdfmod = $mdglobal;
-	$show_online_ip_admin = 1;
-	$show_online_ip_gmod = 1;
-	$show_online_ip_fmod = 1;
-	$ipLookup = 1;
-    $Show_EventCal = 0;
-    $Event_TodayColor       = '#ff0000';
-    $Delete_EventsUntil = 0;
-		require Admin::NewSettings;
+    if (!$fix_avatar_img_size) { $fix_avatar_img_size  = 65;}
+    
+    $ip_banlist = q{};
+    $email_banlist = q{};
+    $user_banlist = q{};
+    $showsearchbox = 1;
+    $fmodview = $gmodview;
+    $mdfmod = $mdglobal;
+    $show_online_ip_admin = 1;
+    $show_online_ip_gmod = 1;
+    $show_online_ip_fmod = 1;
+    $ipLookup = 1;
+    $MaxCalMessLen = 200;
+    $AdMaxCalMessLen = 300;
+    require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');
     
     $ret = 1;

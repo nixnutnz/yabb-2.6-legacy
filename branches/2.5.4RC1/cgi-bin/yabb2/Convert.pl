@@ -3462,8 +3462,8 @@ sub SetInstall2 {
         $AdMaxMessLen           = 5000;
         $MaxIMMessLen           = 2000;
         $AdMaxIMMessLen         = 3000;
-        $MaxCalMessLen          = 2000;
-        $AdMaxCalMessLen        = 3000;
+        $MaxCalMessLen          = 200;
+        $AdMaxCalMessLen        = 300;
         $fontsizemin            = 6;
         $fontsizemax            = 32;
         $MaxSigLen              = 200;
@@ -3499,8 +3499,7 @@ sub SetInstall2 {
         $Show_EventCal = 0;
         $Event_TodayColor       = '#ff0000';
         $Delete_EventsUntil = 0; 
-
-		if ( -e '/bin/gzip' && open $GZIP, '|', 'gzip -f' ) {
+        if ( -e '/bin/gzip' && open $GZIP, '|', 'gzip -f' ) {
             $gzcomp = 1;
         }
         else {
