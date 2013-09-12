@@ -100,7 +100,7 @@ if ( !$action ) {
     $rand_cook_sess = "Y2Sess-$rand_integer";
     $rand_cook_sort = "Y2tsort-$rand_integer";
     $rand_cook_view = "Y2view-$rand_integer";
-	
+    
     fopen( COOKFILE, ">$vardir/cook.txt" )
       || setup_fatal_error( "$maintext_23 $vardir/cook.txt: ", 1 );
     print {COOKFILE} "$rand_cook_user\n" or croak 'cannot print cook.txt';
@@ -108,7 +108,7 @@ if ( !$action ) {
     print {COOKFILE} "$rand_cook_sess\n" or croak 'cannot print cook.txt';
     print {COOKFILE} "$rand_cook_sort\n" or croak 'cannot print cook.txt';
     print {COOKFILE} "$rand_cook_view\n" or croak 'cannot print cook.txt';
-	fclose(COOKFILE);
+    fclose(COOKFILE);
 
     adminlogin();
 }
@@ -1352,7 +1352,7 @@ sub SetInstall2 {
         $MaxMessLen             = 5000;
         $AdMaxMessLen           = 5000;
         $MaxIMMessLen           = 2000;
-        $AdMaxIMMessLen 		= 3000;
+        $AdMaxIMMessLen         = 3000;
         $MaxCalMessLen          = 3000;
         $AdMaxCalMessLen        = 3000;
         $fontsizemin            = 6;
@@ -1416,13 +1416,14 @@ sub SetInstall2 {
         $minlinksig           = 0;
         $minlinkweb           = 0;
         $showsearchboxnum     = 31;
-		$showregdate          = 1;
-		$enableguestsearch    = 1;
-		$enableguestquicksearch = 1;
+        $showregdate          = 1;
+        $enableguestsearch    = 1;
+        $enableguestquicksearch = 1;
         $maxsteps  = 40;
         $stepdelay = 75;
         $fadelinks = 0;
-		$cookieviewtime = 525_600;
+        $cookieviewtime = 525_600;
+        $Show_EventCal = 0;
 
         # Let's generate a masterkey at setup time.
         my @chars = ( 'A' .. 'Z', 'a' .. 'z', 0 .. 9 );
@@ -1558,7 +1559,7 @@ sub SetInstall2 {
 \$upload_avatargroup = '$upload_avatargroup';       # membergroups allowed to upload avatars for their profile, '' == all members
 \$avatar_limit = $avatar_limit;                     # set to the maximum size of the uploaded avatar, 0 == no limit
 \$avatar_dirlimit = $avatar_dirlimit;               # set to the maximum size of the upload avatar directory, 0 == no limit
-\$default_avatar = $default_avatar;		            # Set to 1 to show a default avatar if the member hasn't added a picture
+\$default_avatar = $default_avatar;                 # Set to 1 to show a default avatar if the member hasn't added a picture
 \$default_userpic = "\Q$default_userpic\E";         # Set the file name for the default avatar
 
 \$enable_guestposting = $enable_guestposting;       # Set to 0 if do not allow 1 is allow.
@@ -1674,6 +1675,11 @@ sub SetInstall2 {
 
 ########## Extended Profiles ##########
 \$extendedprofiles = $extendedprofiles;             # Set to 1 to enabled 'Extended Profiles'. Turn it off (0) to save server load.
+
+########## Event Calendar ##########
+
+# Standard Calendar Setting
+\$Show_EventCal = $Show_EventCal;
 
 ########## File Locking ##########
 \$checkspace = 0;                                                # Set to 1 to enable any freespace checking (should remain disabled on Windows/IIS servers)
@@ -1798,12 +1804,12 @@ sub SetInstall2 {
                                                   # set to 0 to disable file attaching.
 \$allowguestattach = 0;                           # Set to 1 to allow guests to upload attachments, 0 to disable guest attachment uploading.
 
-\$allowAttachIM = 0;                           	# Set the maximum number of file attachments allowed in personal messages, set to 0 to disable file attachments in personal messages.
+\$allowAttachIM = 0;                            # Set the maximum number of file attachments allowed in personal messages, set to 0 to disable file attachments in personal messages.
 
 \@pmAttachExt = qw(txt doc docx psd pdf bmp jpe jpg jpeg gif png swf zip rar tar); # The allowed file extensions for pm file attachments. Variable should be set in the form of "jpg bmp gif" and so on.
-\$pmFileLimit = 250;			    # Set to the maximum number of kilobytes a pm attachment can be. Set to 0 to disable the file size check.
-\$pmDirLimit = 10000;				# Set to the maximum number of kilobytes the pm attachment directory can hold. Set to 0 to disable the directory size check.
-\$pmFileOverwrite = 0;	            # Set to 0 to auto rename pm attachments if they exist, 1 to overwrite them or 2 to generate an error if the file exists already.
+\$pmFileLimit = 250;                # Set to the maximum number of kilobytes a pm attachment can be. Set to 0 to disable the file size check.
+\$pmDirLimit = 10000;               # Set to the maximum number of kilobytes the pm attachment directory can hold. Set to 0 to disable the directory size check.
+\$pmFileOverwrite = 0;              # Set to 0 to auto rename pm attachments if they exist, 1 to overwrite them or 2 to generate an error if the file exists already.
 
 ########## Error Logger ##########
 
@@ -2311,7 +2317,7 @@ sub CheckInstall {
       <form action="$set_cgi?action=ready;nextstep=YaBB" method="post" style="display: inline;">
             <input type="submit" value="Continue" />
       </form>
-	        <p class="center">You can access the 1x and 2x Conversion Utilities through the Admin Center</p>
+            <p class="center">You can access the 1x and 2x Conversion Utilities through the Admin Center</p>
             </td>
         </tr>~;
     }

@@ -19,7 +19,6 @@ $eventcalsetpmver = 'YaBB 2.5.4 RC1 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');
-if ( $Show_EventCal eq q{} ) { EventCalSet2(); }
 
 ## Calendar Setting ##
 
