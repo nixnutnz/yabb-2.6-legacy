@@ -1244,6 +1244,7 @@ sub Convert_Settings {
     if (!$MaxCalMessLen){$MaxCalMessLen = 2000;}
     if (!$AdMaxCalMessLen){$AdMaxCalMessLen = 3000;}
 	if (!$fix_avatar_img_size) { $fix_avatar_img_size  = 65;}
+	
 	$ip_banlist = q{};
 	$email_banlist = q{};
 	$user_banlist = q{};
@@ -1254,7 +1255,8 @@ sub Convert_Settings {
 	$show_online_ip_gmod = 1;
 	$show_online_ip_fmod = 1;
 	$ipLookup = 1;
-	require Admin::NewSettings;
+    $Show_EventCal = 0;
+		require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');
     
     $ret = 1;

@@ -3419,7 +3419,7 @@ sub SetInstall2 {
         $showtopicrepliers      = 1;
         $showgenderimage        = 1;
         $showyabbcbutt          = 1;
-		$showsearchbox          = 1;
+        $showsearchbox          = 1;
         $nestedquotes           = 1;
         $parseflash             = 0;
         $enableclicklog         = 0;
@@ -3496,6 +3496,7 @@ sub SetInstall2 {
         $img_greybox            = 1;
         $extendedprofiles       = 0;
         $enable_freespace_check = 0;
+        $Show_EventCal = 0;
 
         if ( -e '/bin/gzip' && open $GZIP, '|', 'gzip -f' ) {
             $gzcomp = 1;
