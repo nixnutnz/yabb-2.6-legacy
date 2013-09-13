@@ -25,6 +25,7 @@ $post_ip = 'ip.gif';
 $my_guestpost_col = q~ colspan="2"~;
 if (!$enable_quickreply) {$my_spacer = '; margin-bottom:1em;';}
 $messageclass = 'message';
+$my_guestpost_col = 2;
 
 $palwidth = 308;
 $palhight = 302;
@@ -55,7 +56,7 @@ $mypost_postblock = qq~
 	<col style="width: auto" />
     {yabb my_prevmain}{yabb name_field}{yabb email_field}{yabb verification_field}{yabb verification_question_field}
     <tr class="windowbg">
-        <td colspan="2">
+        <td colspan="{yabb guestcol}">
             <div style="height:16px;">
                 <img  src="$imagesdir/$cat_exp" name="prevwin" id="prevwin" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor: pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
             </div>
@@ -140,7 +141,7 @@ $mypost_preview_main = qq~
         <col style="width:auto" />
         <tr class="windowbg">
                 <td class="vtop"><b>$post_txt{'507'}</b></td>
-                <td>{yabb prevmain}</td>
+                <td colspan="3">{yabb prevmain}</td>
         </tr>~;
 
 $mypost_topicstatus = qq~
