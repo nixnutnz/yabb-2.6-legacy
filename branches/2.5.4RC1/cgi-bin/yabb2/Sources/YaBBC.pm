@@ -509,10 +509,10 @@ s/([^\"\=\[\]\/\:\.\-(\:\/\/\w+)]|[\n\b]|\&quot\;|\[quote.*?\]|\[edit\]|\[highli
         if   ($action) { $act = qq~;sesredir=action\~$action~; }
         else           { $act = qq~;sesredir=num\~$curnum~; }
         my $oops =
-qq~ <i>$maintxt{'40'}&nbsp;&nbsp;$maintxt{'41'} <a href="$scripturl?action=login$act"><b>$maintxt{'34'}</b></a></i>~;
+qq~ <i>$maintxt{'41'} <a href="$scripturl?action=login$act"><b><i>$maintxt{'34'}</i></b></a></i>~;
         if ($regtype) {
             $oops .=
-qq~<i> $maintxt{'42'} <a href="$scripturl?action=register"><b>$maintxt{'97'}</b></a></i>~;
+qq~<i> $maintxt{'42'} <a href="$scripturl?action=register"><b><i>$maintxt{'97'}</i></b></a></i>~;
         }
         $oops .= qq~<i> $maintxt{'42a'}</i>~;
 

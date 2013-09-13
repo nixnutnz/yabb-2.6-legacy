@@ -31,11 +31,7 @@ $my_blank_avatar = 'blank.gif';
 $nn_avatar = 'nn.gif';
 $disp_email = 'email.png';
 
-if ( $UseMenuType == 1 ) {
-    $my_sep = q~ | ~;
-}
-
-$outside_threadtools = qq~{yabb reply}$my_sep~;
+$outside_threadtools = qq~{yabb reply}~;
 $outside_ttsep = q~~;
 
 $threadhandellist = qq~
@@ -155,7 +151,7 @@ $display_template = qq~
 # When thread tools is turned off, these two lists will be combined to display the buttons in the order shown
 # When thread tools is on $outside_threadtools will show buttons normally, while the handle list will show in the thread tools' dropdown
 
-$outside_posttools = qq~{yabb quote}{yabb markquote}$my_sep~;
+$outside_posttools = qq~{yabb quote}{yabb markquote}~;
 $outside_ptsep = q~~;
 
 $posthandellist = qq~

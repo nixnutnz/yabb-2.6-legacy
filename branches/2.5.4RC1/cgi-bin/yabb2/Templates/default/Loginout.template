@@ -122,7 +122,7 @@ $myreminder_vericheck = qq~<tr>
             <br /><span class="small">$loginout_txt{'verification_question_desc'} {yabb verification_question_desc}</span></label>
             <input type="hidden" name="verification_question_id" value="{yabb spam_question_id}" />
             <input type="hidden" name="spam_question" value="{yabb spam_question}" /></div>
-            <div style="float:left; width:70%"><input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" /></div>
+            <div style="float:left; width:70%"><input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" />{yabb spam_question_image}</div>
             <div class="clear"></div>
         </td>
     </tr>~;

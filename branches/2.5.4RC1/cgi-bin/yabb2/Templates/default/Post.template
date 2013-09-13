@@ -523,7 +523,7 @@ $mypost_veri_c = qq~<tr>
                 <td class="windowbg vtop">
                     <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" />
                     <input type="hidden" name="verification_question_id" value="{yabb spam_question_id}" />
-                    <input type="hidden" name="spam_question" value="{yabb spam_question}" />
+                    <input type="hidden" name="spam_question" value="{yabb spam_question}" />{yabb spam_question_image}
                 </td>
             </tr>~;
 
