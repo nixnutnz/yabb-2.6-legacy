@@ -249,11 +249,11 @@ $profilelngver = 'YaBB 2.5.4 RC1 $Revision$';
 );
 
 %profile_display_options = (
-'hide_avatars'     => 'Hide User Avatars in Threads?',
-'hide_user_text'   => 'Hide User Text in Threads?',
+'hide_avatars'     => 'Hide Member Avatars in Threads?',
+'hide_user_text'   => 'Hide Member Text in Threads?',
 'hide_img'         => 'Hide Images in Threads?',
 'hide_attach_img'  => 'Hide Attached Images in Threads?',
-'hide_signat'      => 'Hide User Signatures in Threads?',
+'hide_signat'      => 'Hide Member Signatures in Threads?',
 'hide_smilies_row' => 'Hide Smiley-row below the Post/Reply area?', 
 );
 
