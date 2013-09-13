@@ -362,12 +362,6 @@ $qckage ||= 31;
             validate => 'boolean',
         },
         {
-            description => qq~<label for="hide_signat_for_guests">$admin_txt{'409'}</label>~,
-            input_html => qq~<input type="checkbox" name="hide_signat_for_guests" id="hide_signat_for_guests" value="1"${ischecked($hide_signat_for_guests)} />~,
-            name => 'hide_signat_for_guests',
-            validate => 'boolean',
-        },
-        {
             description => qq~<label for="showuserage">$admin_txt{'show_user_age'}</label>~,
             input_html => qq~<input type="checkbox" name="showuserage" id="showuserage" value="1"${ischecked($showuserage)} />~,
             name => 'showuserage',
@@ -377,6 +371,12 @@ $qckage ||= 31;
             description => qq~<label for="showregdate">$admin_txt{'show_reg_date'}</label>~,
             input_html => qq~<input type="checkbox" name="showregdate" id="showregdate" value="1"${ischecked($showregdate)} />~,
             name => 'showregdate',
+            validate => 'boolean',
+        },
+        {
+            description => qq~<label for="hide_signat_for_guests">$admin_txt{'409'}</label>~,
+            input_html => qq~<input type="checkbox" name="hide_signat_for_guests" id="hide_signat_for_guests" value="1"${ischecked($hide_signat_for_guests)} />~,
+            name => 'hide_signat_for_guests',
             validate => 'boolean',
         },
         {

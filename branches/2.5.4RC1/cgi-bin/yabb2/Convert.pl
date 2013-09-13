@@ -3498,7 +3498,8 @@ sub SetInstall2 {
         $enable_freespace_check = 0;
         $Show_EventCal = 0;
         $Event_TodayColor       = '#ff0000';
-        $Delete_EventsUntil = 0; 
+        $Delete_EventsUntil = 0;
+        $bm_subcut          = 50;
         if ( -e '/bin/gzip' && open $GZIP, '|', 'gzip -f' ) {
             $gzcomp = 1;
         }
@@ -3592,7 +3593,7 @@ sub SetInstall2 {
                                                     # they change their email address
 \$emailwelcome = $emailwelcome;                     # Set to 1 to email a welcome message to users even
                                                     # when you have mail password turned off
-\$name_cannot_be_userid = $name_cannot_be_userid;   # Set to 1 to require users to have different usernames and display names
+\$name_cannot_be_userid = $name_cannot_be_userid;   # Set to 1 to require users to have different user IDs and screen names
 
 \$gender_on_reg = $gender_on_reg;                   # 0: do not ask for gender on registration
                                                     # 1: ask for gender, no input required

@@ -1,6 +1,6 @@
 ###############################################################################
 # EventCalSet.pm                                                              #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.11.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -24,7 +24,7 @@ LoadLanguage('EventCal');
 
 sub EventCalSet {
     is_admin_or_gmod();
-    my ($caleventprivatechecked);
+    my ($caleventprivatechecked, $chkDelete_EventsUntil);
 
     # figure out what to print
     my $status_calendar = 'red1.gif';
@@ -75,6 +75,7 @@ sub EventCalSet {
     if ($Show_MiniCalIcons)   { $onminiiconchecked      = 'checked="checked"' }
     if ($ShowSunday)          { $onsundaychecked        = 'checked="checked"' }
     if ($CalEventPrivate)     { $caleventprivatechecked = 'checked="checked"' }
+    if ($Delete_EventsUntil)  { $chkDelete_EventsUntil = 'checked="checked"' }
     if ($DisplayCalEvents)    { $dcaleventschecked      = 'checked="checked"' }
     if ($Show_ColorLinks)     { $oncolorlinkschecked    = 'checked="checked"' }
     if ($No_ShortUbbc)        { $onnosubbcchecked       = 'checked="checked"' }
@@ -175,8 +176,8 @@ sub EventCalSet {
                         <input type="checkbox" name="No_ShortUbbc" id="No_ShortUbbc" $onnosubbcchecked /> <span class="small"><label for="No_ShortUbbc">$event_cal{'58'}</label></span>
                     </td>
                 </tr><tr>
-                    <td class="windowbg2"><label for="Delete_EventsUntil">$event_cal{'52'}<br /><span class="small">$event_cal{'53'}</span></label></td>
-                    <td class="windowbg2"><input type="text" name="Delete_EventsUntil" id="Delete_EventsUntil" size="10" value="$Delete_EventsUntil" /></td>
+                    <td class="windowbg2"><label for="Delete_EventsUntil">$event_cal{'52'}</label></td>
+                    <td class="windowbg2"><input type="checkbox" name="Delete_EventsUntil" id="Delete_EventsUntil" $chkDelete_EventsUntil /></td>
                 </tr><tr>
                     <td class="catbg" colspan="2"><span class="small">$event_cal{'23'}</span></td>
                 </tr><tr>

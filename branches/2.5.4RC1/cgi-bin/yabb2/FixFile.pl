@@ -1161,7 +1161,7 @@ sub MoveMessages {
           || setup_fatal_error( "$maintext_23 $convdatadir/movedthreads.cgi: ", 1 );
         my @movedmessageline = <OLDMVFILE>;
         fclose(OLDMVFILE);
-        
+
         fopen( MVFILE, ">$vardir/Movedthreads.pm" );
         print {MVFILE} @movedmessageline
               or croak "cannot print $vardir/Movedthreads.pm";
@@ -1229,7 +1229,7 @@ sub Convert_Settings {
     if ( -e "$convvardir/eventcalset.txt" ) {
         require "$convvardir/eventcalset.txt";
     }
-   
+
     $settings_file_version = "YaBB 2.5.4";
     if ($enable_notifications eq q{}) { $enable_notifications = $enable_notification ? 3 : 0; }
     if ( !$cookietsort ) { ( undef,$rancook ) = split /\-/xsm, $cookieusername;
@@ -1240,11 +1240,14 @@ sub Convert_Settings {
     }
     if ( !$cookieviewtime ) { $cookieviewtime = 525_600; }
     if ( !$MaxIMMessLen ) { $MaxIMMessLen = 2000; }
-    if (!$AdMaxIMMessLen) {$AdMaxIMMessLen = 3000;}
-    if (!$MaxCalMessLen){$MaxCalMessLen = 2000;}
-    if (!$AdMaxCalMessLen){$AdMaxCalMessLen = 3000;}
-    if (!$fix_avatar_img_size) { $fix_avatar_img_size  = 65;}
-    
+    if ( !$AdMaxIMMessLen ) { $AdMaxIMMessLen = 3000; }
+    if ( !$MaxCalMessLen ){ $MaxCalMessLen = 200; }
+    if ( !$AdMaxCalMessLen ){ $AdMaxCalMessLen = 300; }
+    if ( !$Show_EventCal ){ $Show_EventCal = 0; }
+    if ( !$Delete_EventsUntil ){ $Delete_EventsUntil = 0; }
+    if ( !$Event_TodayColor ){ $Event_TodayColor = '#ff0000'; }
+    if ( !$fix_avatar_img_size) { $fix_avatar_img_size  = 65; }
+
     $ip_banlist = q{};
     $email_banlist = q{};
     $user_banlist = q{};
@@ -1255,11 +1258,11 @@ sub Convert_Settings {
     $show_online_ip_gmod = 1;
     $show_online_ip_fmod = 1;
     $ipLookup = 1;
-    $MaxCalMessLen = 200;
-    $AdMaxCalMessLen = 300;
+    $bm_subcut = 50;
+
     require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');
-    
+
     $ret = 1;
     return;
 }

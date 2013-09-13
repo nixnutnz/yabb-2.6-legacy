@@ -1353,8 +1353,8 @@ sub SetInstall2 {
         $AdMaxMessLen           = 5000;
         $MaxIMMessLen           = 2000;
         $AdMaxIMMessLen         = 3000;
-        $MaxCalMessLen          = 3000;
-        $AdMaxCalMessLen        = 3000;
+        $MaxCalMessLen          = 200;
+        $AdMaxCalMessLen        = 300;
         $fontsizemin            = 6;
         $fontsizemax            = 32;
         $MaxSigLen              = 200;
@@ -1391,6 +1391,7 @@ sub SetInstall2 {
         $enableguestquicksearch = 1;
         $showregdate            = 1;
         $addtab_on              = 1;
+        $bm_subcut              = 1;
 
         if ( -e '/bin/gzip' && open GZIP, '|, gzip -f' ) {
             $gzcomp = 1;
@@ -1419,15 +1420,13 @@ sub SetInstall2 {
         $showregdate          = 1;
         $enableguestsearch    = 1;
         $enableguestquicksearch = 1;
-        $maxsteps  = 40;
-        $stepdelay = 75;
-        $fadelinks = 0;
+        $maxsteps             = 40;
+        $stepdelay            = 75;
+        $fadelinks            = 0;
         $cookieviewtime = 525_600;
-        $Show_EventCal = 0;
-        $Event_TodayColor       = '#ff0000';
-        $Delete_EventsUntil = 0;
-        $MaxCalMessLen = 0;
-        $AdMaxCalMessLen= 0; 
+        $Show_EventCal        = 0;
+        $Event_TodayColor     = '#ff0000';
+        $Delete_EventsUntil   = 0;
 
 		# Let's generate a masterkey at setup time.
         my @chars = ( 'A' .. 'Z', 'a' .. 'z', 0 .. 9 );
@@ -1686,9 +1685,7 @@ sub SetInstall2 {
 \$Show_EventCal = $Show_EventCal;
 \$Event_TodayColor = $Event_TodayColor;
 \$Delete_EventsUntil = $Delete_EventsUntil;
-\$MaxCalMessLen = $MaxCalMessLen;
-\$AdMaxCalMessLen= $AdMaxCalMessLen;
-
+\$bm_subcut = $bm_subcut;
 ########## File Locking ##########
 \$checkspace = 0;                                                # Set to 1 to enable any freespace checking (should remain disabled on Windows/IIS servers)
 \$enable_freespace_check = $enable_freespace_check; # Enable the free disk space check on every pageview?
@@ -1744,7 +1741,7 @@ sub SetInstall2 {
 \$modview = 2;                                    # Multi-admin settings for Board Moderators:
                                                   # 0=none, 1=icons 2=single checkbox 3=multiple checkboxes
 
-########## Advanced Memberview Plus ##########
+########## Memberview ##########
 
 \$showallgroups = 1;
 \$OnlineLogTime = 15;                             # Time in minutes before Users are removed from the Online Log
@@ -1759,7 +1756,7 @@ sub SetInstall2 {
 \$useraddpoll = 1;                                # Allow users to add polls to existing threads? (1 = yes)
 \$ubbcpolls = 1;                                  # Allow UBBC tags and smilies in polls? (1 = yes)
 
-########## Advanced Instant Message Box ##########
+########## Instant Message ##########
 
 \$PM_level = 1;
 \$numposts = 1;                                   # Number of posts required to send Instant Messages
