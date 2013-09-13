@@ -946,7 +946,7 @@ sub MakeTools {
     <div class="right cursor toolbutton_b">
         <ul class="post_tools_menu" id="threadtools$counter" onmouseover="keepLinks('threadtools$counter')" onmouseout="TimeClose('threadtools$counter')">
             $template
-            <li class="toolbutton_li"><span class="small"><a href="javascript:closeLinks('threadtools$counter')"><img src="$imagesdir/tp_arrow_up.png" alt="$maintxt{'collapse'}" title="$maintxt{'collapse'}" /></a></span></li>
+<!--            <li class="toolbutton_li"><span class="small"><a href="javascript:closeLinks('threadtools$counter')"><img src="$imagesdir/tp_arrow_up.png" alt="$maintxt{'collapse'}" title="$maintxt{'collapse'}" /></a></span></li>-->
         </ul>
     </div>
     ~

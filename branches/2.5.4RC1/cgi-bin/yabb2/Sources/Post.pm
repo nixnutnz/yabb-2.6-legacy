@@ -1227,6 +1227,8 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             $return_to =~ s/{yabb return_to_select}/$return_to_select/sm;
         }
         ### Return To mod end ###
+		$guestpost_col = $my_guestpost_col;
+        if ( $is_preview ) { $guestpost_col = $my_guestpost_col + 2; }
         $my_postsec_b   = postbox2();
         $my_postsection = $mypost_postblock;
         $my_postsection =~ s/{yabb my_postsection_ajx}/$my_postsection_ajx/sm;
@@ -1237,8 +1239,8 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         $my_postsection =~ s/{yabb name_field}/$guestpost_fields/sm;
         $my_postsection =~ s/{yabb email_field}/$email_field/sm;
         $my_postsection =~ s/{yabb verification_field}/$verification_field/sm;
-        $my_postsection =~
-          s/{yabb verification_question_field}/$verification_question_field/sm;
+        $my_postsection =~ s/{yabb guestcol}/$guestpost_col/sm;
+        $my_postsection =~ s/{yabb verification_question_field}/$verification_question_field/sm;
         $my_postsection =~ s/{yabb sub}/$sub/sm;
         $my_postsection =~ s/{yabb my_submax}/$my_submax/sm;
         $my_postsection =~ s/{yabb myreason}/$my_reason/sm;
