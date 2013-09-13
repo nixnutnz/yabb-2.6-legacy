@@ -3128,6 +3128,7 @@ sub modAlert {
           s/{yabb verification_question_desc}/$verification_question_desc/gsm;
         $verification_question_field =~
           s/{yabb spam_question_id}/$spam_question_id/gsm;
+        $verification_question_field =~ s/{yabb spam_question_image}/$spam_image/gsm;
     }
 
     $sub        = q{};
