@@ -707,11 +707,14 @@ font-style:normal;
 }
 
 .imgcatbg  {
-color:#2D2D2D;
+color:#fff;
 font-size:10px;
 font-style:normal;
 font-weight:700;
 }
+.imgcatbg:hover  {
+color: #bbb;
+} 
 
 .imgtitlebg  {
 color:#FFF;
