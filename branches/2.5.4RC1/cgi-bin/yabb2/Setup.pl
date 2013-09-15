@@ -1369,20 +1369,20 @@ sub SetInstall2 {
         $barmaxdepend           = 0;
         $barmaxnumb             = 500;
         $defaultml              = 'regdate';
-        $max_avatar_width       = 65;
-        $max_avatar_height      = 65;
+        $max_avatar_width       = 0;
+        $max_avatar_height      = 0;
         $fix_avatar_img_size    = 0;
-        $max_avatarml_width     = 65;
-        $max_avatarml_height    = 65;
+        $max_avatarml_width     = 0;
+        $max_avatarml_height    = 0;
         $fix_avatarml_img_size  = 0;
-        $max_post_img_width     = 65;
-        $max_post_img_height    = 65;
+        $max_post_img_width     = 0;
+        $max_post_img_height    = 0;
         $fix_post_img_size      = 0;
-        $max_signat_img_width   = 65;
-        $max_signat_img_height  = 65;
+        $max_signat_img_width   = 0;
+        $max_signat_img_height  = 0;
         $fix_signat_img_size    = 0;
-        $max_attach_img_width   = 65;
-        $max_attach_img_height  = 65;
+        $max_attach_img_width   = 0;
+        $max_attach_img_height  = 0;
         $fix_attach_img_size    = 0;
         $img_greybox            = 1;
         $extendedprofiles       = 0;
@@ -1391,7 +1391,7 @@ sub SetInstall2 {
         $enableguestquicksearch = 1;
         $showregdate            = 1;
         $addtab_on              = 1;
-        $bm_subcut              = 1;
+        $bm_subcut              = 50;
 
         if ( -e '/bin/gzip' && open GZIP, '|, gzip -f' ) {
             $gzcomp = 1;
@@ -1424,9 +1424,6 @@ sub SetInstall2 {
         $stepdelay            = 75;
         $fadelinks            = 0;
         $cookieviewtime = 525_600;
-        $Show_EventCal        = 0;
-        $Event_TodayColor     = '#ff0000';
-        $Delete_EventsUntil   = 0;
 
 		# Let's generate a masterkey at setup time.
         my @chars = ( 'A' .. 'Z', 'a' .. 'z', 0 .. 9 );
@@ -1648,29 +1645,29 @@ sub SetInstall2 {
 \$max_avatar_height = $max_avatar_height;           # Set maximum pixel height to which the selfselected userpics are resized,
                                                     # 0 disables this limit
 \$fix_avatar_img_size = $fix_avatar_img_size;       # Set to 1 disable the image resize feature and sets the image size to the
-                                                    # max_... values. If one of the max_... values is 0 the image is shown in his
-                                                    # proportions to the other value. If both are 0 the image is shown at his original size.
+                                                    # max_... values. If one of the max_... values is 0 the image is shown in its
+                                                    # proportions to the other value. If both are 0 the image is shown at its original size.
 \$max_avatarml_width = $max_avatarml_width;         # Set maximum pixel width to which the selfselected userpics in member list are resized, 0 disables
                                                     #  this limit
 \$max_avatarml_height = $max_avatarml_height;       #Set maximum pixel height to which the selfselected userpics in member list are resized, 0 disables
                                                     #  this limit
 \$fix_avatarml_img_size = $fix_avatarml_img_size;                       # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of
-                                                    #  the max_... values is 0 the image is shown in his proportions to the other value. If both are 0 the image is shown at his original size.
+                                                    #  the max_... values is 0 the image is shown in its proportions to the other value. If both are 0 the image is shown at its original size.
 \$max_post_img_width = $max_post_img_width;         # Set maximum pixel width for images, 0 disables this limit
 \$max_post_img_height = $max_post_img_height;       # Set maximum pixel height for images, 0 disables this limit
 \$fix_post_img_size = $fix_post_img_size;           # Set to 1 disable the image resize feature and sets the image size to the
-                                                    # max_... values. If one of the max_... values is 0 the image is shown in his
-                                                    # proportions to the other value. If both are 0 the image is shown at his original size.
+                                                    # max_... values. If one of the max_... values is 0 the image is shown in its
+                                                    # proportions to the other value. If both are 0 the image is shown at its original size.
 \$max_signat_img_width = $max_signat_img_width;     # Set maximum pixel width for images in the signature, 0 disables this limit
 \$max_signat_img_height = $max_signat_img_height;   # Set maximum pixel height for images in the signature, 0 disables this limit
 \$fix_signat_img_size = $fix_signat_img_size;       # Set to 1 disable the image resize feature and sets the image size to the
-                                                    # max_... values. If one of the max_... values is 0 the image is shown in his
-                                                    # proportions to the other value. If both are 0 the image is shown at his original size.
+                                                    # max_... values. If one of the max_... values is 0 the image is shown in its
+                                                    # proportions to the other value. If both are 0 the image is shown at its original size.
 \$max_attach_img_width = $max_attach_img_width;     # Set maximum pixel width for attached images, 0 disables this limit
 \$max_attach_img_height = $max_attach_img_height;   # Set maximum pixel height for attached images, 0 disables this limit
 \$fix_attach_img_size = $fix_attach_img_size;       # Set to 1 disable the image resize feature and sets the image size to the
-                                                    # max_... values. If one of the max_... values is 0 the image is shown in his
-                                                    # proportions to the other value. If both are 0 the image is shown at his original size.
+                                                    # max_... values. If one of the max_... values is 0 the image is shown in its
+                                                    # proportions to the other value. If both are 0 the image is shown at its original size.
 \$img_greybox = $img_greybox;                       # Set to 0 to disable "greybox" (each image is shown in a new window)
                                                     # Set to 1 to enable the attachment and post image "greybox" (one image/page)
                                                     # Set to 2 to enable the attachment and post image "greybox" =>
@@ -1682,9 +1679,11 @@ sub SetInstall2 {
 ########## Event Calendar ##########
 
 # Standard Calendar Setting
-\$Show_EventCal = $Show_EventCal;
-\$Event_TodayColor = $Event_TodayColor;
-\$Delete_EventsUntil = $Delete_EventsUntil;
+\$Show_EventCal = 0;
+\$Event_TodayColor = '#ff000';
+\$Delete_EventsUntil = 0;
+\$DisplayEvents = 0;
+\$CalShortEvent = 0;
 \$bm_subcut = $bm_subcut;
 ########## File Locking ##########
 \$checkspace = 0;                                                # Set to 1 to enable any freespace checking (should remain disabled on Windows/IIS servers)

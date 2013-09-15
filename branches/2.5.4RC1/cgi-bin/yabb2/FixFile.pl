@@ -1246,7 +1246,12 @@ sub Convert_Settings {
     if ( !$Show_EventCal ){ $Show_EventCal = 0; }
     if ( !$Delete_EventsUntil ){ $Delete_EventsUntil = 0; }
     if ( !$Event_TodayColor ){ $Event_TodayColor = '#ff0000'; }
-    if ( !$fix_avatar_img_size) { $fix_avatar_img_size  = 65; }
+    if ( !$fix_avatar_img_size) { $fix_avatar_img_size  = 0; }
+    if ( !$max_avatar_width) { $$max_avatar_width  = 0; }
+    if ( !$max_avatar_height) { $max_avatar_height  = 0; }
+    if ( !$fix_avatarml_img_size) { $fix_avatarml_img_size  = 0; }
+    if ( !$max_avatarml_width) { $$max_avatarml_width  = 0; }
+    if ( !$max_avatarml_height) { $max_avatarml_height  = 0; }
 
     $ip_banlist = q{};
     $email_banlist = q{};

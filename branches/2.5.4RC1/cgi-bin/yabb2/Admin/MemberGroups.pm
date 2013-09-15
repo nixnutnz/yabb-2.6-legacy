@@ -703,6 +703,7 @@ sub editAddGroup2 {
             $star = $cur_otherstar;
         }
     }
+	else { $star = $FORM{'starsadmin'}; }
     $color = $FORM{'color2'} ne q{} ? "#$FORM{'color2'}" : q{};
     $postdepend = $FORM{'postdepend'};
     if ( $FORM{'posts'} !~ /\d+/xsm && $postdepend eq 'Yes' ) {

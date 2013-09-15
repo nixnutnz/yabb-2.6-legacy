@@ -695,21 +695,21 @@ $member_groups
 
 ########## MemberPic Settings ##########
 
-\$max_avatar_width = $max_avatar_width;     # Set maximum pixel width to which the selfselected userpics are resized, 0 disables this limit
-\$max_avatar_height = $max_avatar_height;   # Set maximum pixel height to which the selfselected userpics are resized, 0 disables this limit
-\$fix_avatar_img_size = $fix_avatar_img_size;   # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in his proportions to the other value. If both are 0 the image is shown at his original size.
-\$max_avatarml_width = $max_avatarml_width;         # Set maximum pixel width to which the selfselected userpics in member list are resized, 0 disables this limit
-\$max_avatarml_height = $max_avatarml_height;       # Set maximum pixel height to which the selfselected userpics in member list are resized, 0 disables this limit
-\$fix_avatarml_img_size = $fix_avatarml_img_size;   # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in his proportions to the other value. If both are 0 the image is shown at his original size.
+\$max_avatar_width = $max_avatar_width;     # Set maximum pixel width to which the self-selected userpics are resized, 0 disables this limit
+\$max_avatar_height = $max_avatar_height;   # Set maximum pixel height to which the self-selected userpics are resized, 0 disables this limit
+\$fix_avatar_img_size = $fix_avatar_img_size;   # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in its proportions to the other value. If both are 0 the image is shown at its original size.
+\$max_avatarml_width = $max_avatarml_width;         # Set maximum pixel width to which the self-selected userpics in member list are resized, 0 disables this limit
+\$max_avatarml_height = $max_avatarml_height;       # Set maximum pixel height to which the self-selected userpics in member list are resized, 0 disables this limit
+\$fix_avatarml_img_size = $fix_avatarml_img_size;   # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in its proportions to the other value. If both are 0 the image is shown at its original size.
 \$max_post_img_width = $max_post_img_width; # Set maximum pixel width for images, 0 disables this limit
 \$max_post_img_height = $max_post_img_height;   # Set maximum pixel height for images, 0 disables this limit
-\$fix_post_img_size = $fix_post_img_size;   # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in his proportions to the other value. If both are 0 the image is shown at his original size.
+\$fix_post_img_size = $fix_post_img_size;   # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in its proportions to the other value. If both are 0 the image is shown at its original size.
 \$max_signat_img_width = $max_signat_img_width; # Set maximum pixel width for images in the signature, 0 disables this limit
 \$max_signat_img_height = $max_signat_img_height;   # Set maximum pixel height for images in the signature, 0 disables this limit
-\$fix_signat_img_size = $fix_signat_img_size;   # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in his proportions to the other value. If both are 0 the image is shown at his original size.
+\$fix_signat_img_size = $fix_signat_img_size;   # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in its proportions to the other value. If both are 0 the image is shown at its original size.
 \$max_attach_img_width = $max_attach_img_width; # Set maximum pixel width for attached images, 0 disables this limit
 \$max_attach_img_height = $max_attach_img_height;   # Set maximum pixel height for attached images, 0 disables this limit
-\$fix_attach_img_size = $fix_attach_img_size;   # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in his proportions to the other value. If both are 0 the image is shown at his original size.
+\$fix_attach_img_size = $fix_attach_img_size;   # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in its proportions to the other value. If both are 0 the image is shown at its original size.
 \$img_greybox = $img_greybox;           # Set to 0 to disable "greybox" (each image is shown in a new window)
                             # Set to 1 to enable the attachment and post image "greybox" (one image/page)
                             # Set to 2 to enable the attachment and post image "greybox" => attachmet images: (all images/page), post images: (one image/page)
