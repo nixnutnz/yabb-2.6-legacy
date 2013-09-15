@@ -342,7 +342,7 @@ sub UserAccount {
         push @tags, ext_get_fields_array();
     }
     push @tags, 'topicpreview';
-	push @tags, 'collapsescpoll';
+    push @tags, 'collapsescpoll';
 
     fopen( UPDATEUSER, ">$memberdir/$user.$userext", 1 )
       || fatal_error( 'cannot_open', "$memberdir/$user.$userext", 1 );
@@ -421,13 +421,13 @@ sub MemberIndex {
         while ( ( $curmemb, $value ) = each %memberinf ) {
             ( $curname, $curmail, $curposition, $curpostcnt ) =
               split /\|/xsm, $value;
-			if ( $memaction eq 'check_exist' && ( lc $user eq lc $curmemb || lc $user eq lc $curmail || lc $user eq lc $curname ) ){
+            if ( $memaction eq 'check_exist' && ( lc $user eq lc $curmemb || lc $user eq lc $curmail || lc $user eq lc $curname ) ){
                 undef %memberinf;
                 return $curname;
             }
-			elsif ( $memaction eq 'who_is' && ( lc $user eq lc $curmemb || lc $user eq lc $curmail ) ) {
+            elsif ( $memaction eq 'who_is' && ( lc $user eq lc $curmemb || lc $user eq lc $curmail ) ) {
                 undef %memberinf;
-                return $curname;
+                return $curmemb;
             }
         }
     }
