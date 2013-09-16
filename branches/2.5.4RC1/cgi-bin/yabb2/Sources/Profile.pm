@@ -1,6 +1,6 @@
 ###############################################################################
 # Profile.pm                                                                  #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.16.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -2820,7 +2820,7 @@ qq~<img src="$facesurl/${$uid.$user}{'userpic'}" id="avatar_img_resize" alt="" s
                         <b>$profile_txt{'513'}:</b>
                         </div>
                         <div class="contactright">
-                        <a href="http://web.icq.com/${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" onclick="target='_blank';">
+                        <a href="http://web.icq.com/${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" target="_blank">
                         <img src="http://web.icq.com/whitepages/online?icq=${$uid.$user}{'icq'}&#38;img=5" alt="${$uid.$user}{'icq'}" /> ${$uid.$user}{'icq'}</a>
                         </div>~;
     }
@@ -2841,7 +2841,7 @@ qq~<img src="$facesurl/${$uid.$user}{'userpic'}" id="avatar_img_resize" alt="" s
                         </div>
                         <div class="contactright">
                         <img src="http://opi.yahoo.com/online?u=${$uid.$user}{'yim'}&#38;m=g&#38;t=0" alt="${$uid.$user}{'yim'}" />
-                        <a href="http://edit.yahoo.com/config/send_webmesg?.target=${$uid.$user}{'yim'}" onclick="target='_blank';"> $memsettingsd[10]</a>
+                        <a href="http://edit.yahoo.com/config/send_webmesg?.target=${$uid.$user}{'yim'}" target="_blank"> $memsettingsd[10]</a>
                         </div>~;
     }
     if ( ${ $uid . $user }{'gtalk'} ) {
@@ -2871,7 +2871,7 @@ qq~<img src="$facesurl/${$uid.$user}{'userpic'}" id="avatar_img_resize" alt="" s
                         </div>
                         <div class="contactright">
                         <img src="$imagesdir/$my_myspace" alt="" />
-                        <a href="http://www.myspace.com/${$uid.$user}{'myspace'}" onclick="target='_blank';">$profile_txt{'570'} ${$uid.$user}{'realname'}</a>
+                        <a href="http://www.myspace.com/${$uid.$user}{'myspace'}" target="_blank">$profile_txt{'570'} ${$uid.$user}{'realname'}</a>
                         </div>~;
     }
     if ( ${ $uid . $user }{'facebook'} ) {
@@ -2884,7 +2884,7 @@ qq~<img src="$facesurl/${$uid.$user}{'userpic'}" id="avatar_img_resize" alt="" s
                         <a href="http://www.facebook.com/~
           . (
             ${ $uid . $user }{'facebook'} !~ /\D/xsm ? 'profile.php?id=' : q{} )
-          . qq~${$uid.$user}{'facebook'}" onclick="target='_blank';"> ${$uid.$user}{'facebook'}</a>
+          . qq~${$uid.$user}{'facebook'}" target="_blank"> ${$uid.$user}{'facebook'}</a>
                         </div>~;
     }
     if ( ${ $uid . $user }{'twitter'} ) {
@@ -2954,7 +2954,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
                         <b>$profile_txt{'96'}: </b>
                         </div>
                         <div class="contactright">
-                        <a href="${$uid.$user}{'weburl'}" onclick="target='_blank';">${$uid.$user}{'webtitle'}</a>
+                        <a href="${$uid.$user}{'weburl'}" target="_blank">${$uid.$user}{'webtitle'}</a>
                         </div>~;
     }
     if ( ${ $uid . $user }{'signature'} ) {

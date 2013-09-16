@@ -1,6 +1,6 @@
 ###############################################################################
 # Post.pm                                                                     #
-# $Date: 9.05.13 $                                                            #
+# $Date: 9.16.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -1124,7 +1124,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                         <option value="attachdel">$fatxt{'6c'}</option>
                         <option value="attachnew">$fatxt{'6b'}</option>
                         <option value="attachold" selected="selected">$fatxt{'6a'}</option>
-                        </select>&nbsp;$fatxt{'40'}: <a href="$uploadurl/$files[$y-1]" onclick="target='_blank';">$files[$y-1]</a>
+                        </select>&nbsp;$fatxt{'40'}: <a href="$uploadurl/$files[$y-1]" target="_blank">$files[$y-1]</a>
                     </span></div>~;
                 }
                 else {
@@ -2762,7 +2762,7 @@ qq~$post_cutts{'3'} $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threa
                 && $messagedate > $registrationdate )
             {
                 $displaynamelink =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tempname}" class="catbg">$format_unbold{$tempname}</a>~;
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tempname}">$format_unbold{$tempname}</a>~;
             }
             elsif ($tempname !~ m{Guest}sm
                 && $messagedate < $registrationdate )

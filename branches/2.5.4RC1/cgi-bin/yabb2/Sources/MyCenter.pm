@@ -1,6 +1,6 @@
 ###############################################################################
 # MyCenter.pm                                                                 #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.16.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -2924,7 +2924,7 @@ qq~<a href="$scripturl?action=imsend;to=$useraccount{$buddyname}"><img src="$ima
               )
             {
                 $buddywww =
-qq~<a href="${$uid.$buddyname}{'weburl'}" onclick="target='_blank';"><img src="$imagesdir/$IM_www" alt="${$uid.$buddyname}{'webtitle'}" title="${$uid.$buddyname}{'webtitle'}" /></a>~;
+qq~<a href="${$uid.$buddyname}{'weburl'}" target="_blank"><img src="$imagesdir/$IM_www" alt="${$uid.$buddyname}{'webtitle'}" title="${$uid.$buddyname}{'webtitle'}" /></a>~;
             }
         }
         else {

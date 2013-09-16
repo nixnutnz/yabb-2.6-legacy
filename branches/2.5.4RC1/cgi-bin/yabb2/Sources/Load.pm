@@ -1,6 +1,6 @@
 ###############################################################################
 # Load.pm                                                                     #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.16.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -435,7 +435,7 @@ sub LoadUserDisplay {
             || ${ $uid . $user }{'position'} eq 'Mid Moderator'
             || ${ $uid . $user }{'position'} eq 'Global Moderator' )
       )
-      ? qq~<a href="${$uid.$user}{'weburl'}" onclick="target='_blank';">~
+      ? qq~<a href="${$uid.$user}{'weburl'}" target="_blank">~
       . ( $sm ? $img{'website_sm'} : $img{'website'} ) . '</a>'
       : q{};
 
@@ -484,13 +484,13 @@ sub LoadUserDisplay {
 
     $icqad{$user} =
       $icqad{$user}
-      ? qq~<a href="http://web.icq.com/${$uid.$user}{'icq'}" onclick="target='_blank';">$load_con{'icqadd'}</a>~
+      ? qq~<a href="http://web.icq.com/${$uid.$user}{'icq'}" target="_blank">$load_con{'icqadd'}</a>~
       : q{};
     $icqad{$user} =~ s/{yabb usericq}/${$uid.$user}{'icq'}/gsm;
 
     ${ $uid . $user }{'icq'} =
       ${ $uid . $user }{'icq'}
-      ? qq~<a href="http://web.icq.com/${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" onclick="target='_blank';">$icqimg</a>~
+      ? qq~<a href="http://web.icq.com/${$uid.$user}{'icq'}" title="${$uid.$user}{'icq'}" target="_blank">$icqimg</a>~
       : q{};
 
     ${ $uid . $user }{'aim'} =
@@ -505,14 +505,14 @@ sub LoadUserDisplay {
 
     ${ $uid . $user }{'myspace'} =
       ${ $uid . $user }{'myspace'}
-      ? qq~<a href="http://www.myspace.com/${$uid.$user}{'myspace'}" onclick="target='_blank';">$myspaceimg</a>~
+      ? qq~<a href="http://www.myspace.com/${$uid.$user}{'myspace'}" target="_blank">$myspaceimg</a>~
       : q{};
 
     ${ $uid . $user }{'facebook'} =
       ${ $uid . $user }{'facebook'}
       ? q~<a href="http://www.facebook.com/~
       . ( ${ $uid . $user }{'facebook'} !~ /\D/xsm ? 'profile.php?id=' : q{} )
-      . qq~${$uid.$user}{'facebook'}" onclick="target='_blank';">$facebookimg</a>~
+      . qq~${$uid.$user}{'facebook'}" target="_blank">$facebookimg</a>~
       : q{};
 
     ${ $uid . $user }{'twitter'} =
@@ -534,7 +534,7 @@ sub LoadUserDisplay {
 
     ${ $uid . $user }{'yim'} =
       ${ $uid . $user }{'yim'}
-      ? qq~<a href="http://edit.yahoo.com/config/send_webmesg?.target=${$uid.$user}{'yim'}" onclick="target='_blank';">$yimimg</a>~
+      ? qq~<a href="http://edit.yahoo.com/config/send_webmesg?.target=${$uid.$user}{'yim'}" target="_blank">$yimimg</a>~
       : q{};
 
     if ( $showgenderimage && ${ $uid . $user }{'gender'} ) {

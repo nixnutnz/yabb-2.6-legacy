@@ -1,6 +1,6 @@
 ###############################################################################
 # InstantMessage.pm                                                           #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.16.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #

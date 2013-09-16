@@ -1,6 +1,6 @@
 ###############################################################################
 # Printpage.pm                                                                #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.16.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -875,9 +875,9 @@ s/([^\"\=\[\]\/\:\.\-(\:\/\/\w+)]|[\n\b]|\&quot\;|\[quote.*?\]|\[edit\]|\[highli
 
     if ($stealthurl) {
         $threadpost =~
-s/\[url=\s*(\w+\:\/\/.+?)\](.+?)\s*\[\/url\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=$1" onclick="target='_blank';">$2<\/a>/isgm;
+s/\[url=\s*(\w+\:\/\/.+?)\](.+?)\s*\[\/url\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=$1" target="_blank">$2<\/a>/isgm;
         $threadpost =~
-s/\[url=\s*(.+?)\]\s*(.+?)\s*\[\/url\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=http:\/\/$1" onclick="target='_blank';">$2<\/a>/isgm;
+s/\[url=\s*(.+?)\]\s*(.+?)\s*\[\/url\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=http:\/\/$1" target="_blank">$2<\/a>/isgm;
 
         $threadpost =~
 s/\[link\]\s*www\.\s*(.+?)\s*\[\/link\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=http:\/\/www.$1">www.$1<\/a>/isgm;
@@ -888,13 +888,13 @@ s/\[link=\s*(.+?)\]\s*(.+?)\s*\[\/link\]/<a href="$boardurl\/$yyexec.$yyext?acti
         $threadpost =~
 s/\[link\]\s*(.+?)\s*\[\/link\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=$1">$1<\/a>/isgm;
         $threadpost =~
-s/\[ftp\]\s*(.+?)\s*\[\/ftp\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=$1" onclick="target='_blank';">$1<\/a>/isgm;
+s/\[ftp\]\s*(.+?)\s*\[\/ftp\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=$1" target="_blank">$1<\/a>/isgm;
     }
     else {
         $threadpost =~
-s/\[url=\s*(\S\w+\:\/\/\S+?)\s*\](.+?)\[\/url\]/<a href="$1" onclick="target='_blank';">$2<\/a>/isgm;
+s/\[url=\s*(\S\w+\:\/\/\S+?)\s*\](.+?)\[\/url\]/<a href="$1" target="_blank">$2<\/a>/isgm;
         $threadpost =~
-s/\[url=\s*(\S+?)\](.+?)\s*\[\/url\]/<a href="http:\/\/$1" onclick="target='_blank';">$2<\/a>/isgm;
+s/\[url=\s*(\S+?)\](.+?)\s*\[\/url\]/<a href="http:\/\/$1" target="_blank">$2<\/a>/isgm;
         $threadpost =~
 s/\[link\]\s*www\.(\S+?)\s*\[\/link\]/<a href="http:\/\/www.$1">www.$1<\/a>/isgm;
         $threadpost =~

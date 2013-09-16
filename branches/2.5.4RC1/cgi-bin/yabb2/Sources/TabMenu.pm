@@ -1,6 +1,6 @@
 ###############################################################################
 # TabMenu.pm                                                                  #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.16.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -190,7 +190,7 @@ qq~                            <li><span |><a href="$scripturl?action=logout" ti
                     $tab_url .= qq~;username=$useraccount{$username}~;
                 }
                 if ($exttab_url) { $tab_url .= qq~;$exttab_url~; }
-                my $newwin = $tab_newwin ? q~ onclick="target='_blank';"~ : q{};
+                my $newwin = $tab_newwin ? q~ target="_blank"~ : q{};
                 if ( !$tab_lang ) { GetTabtxt(); }
 
                 $yytabmenu .= q~<li><span ~

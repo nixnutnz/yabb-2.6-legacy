@@ -1,6 +1,6 @@
 ###############################################################################
 # Memberlist.pm                                                               #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.16.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -328,7 +328,7 @@ sub showRows {
           )
         {
             $wwwshow =
-qq~<a href="${$uid.$user}{'weburl'}" onclick="target='_blank';"><img src="$imagesdir/$ml_www" alt="${$uid.$user}{'webtitle'}" title="${$uid.$user}{'webtitle'}" /></a>~;
+qq~<a href="${$uid.$user}{'weburl'}" target="_blank"><img src="$imagesdir/$ml_www" alt="${$uid.$user}{'webtitle'}" title="${$uid.$user}{'webtitle'}" /></a>~;
         }
         $barchart = ${ $uid . $user }{'postcount'};
         $bartemp  = ( ${ $uid . $user }{'postcount'} * $maxbar );

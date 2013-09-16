@@ -1,6 +1,6 @@
 ###############################################################################
 # ExtendedProfiles.pm                                                         #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.16.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Version:        YaBB 2.5.41                                                 #
@@ -464,7 +464,7 @@ sub ext_viewprofile {
             <b>$field{'name'}:</b>
             </div>
             <div class="ext_rgt">
-            <a href="$value" onclick="target='_blank';">$value</a>
+            <a href="$value" target="_blank">$value</a>
             </div>~;
                 $previous = 0;
 
@@ -558,7 +558,7 @@ sub ext_viewinposts {
                 }
                 elsif ( $field{'type'} eq 'url' && $value ne q{} ) {
                     $output .=
-qq~$displayedfieldname<a href="$value" onclick="target='_blank';">$value</a><br />\n~;
+qq~$displayedfieldname<a href="$value" target="_blank">$value</a><br />\n~;
                     $previous = q{};
                 }
                 elsif ( $field{'type'} eq 'image' && $value ne q{} ) {
@@ -665,7 +665,7 @@ sub ext_memberlist_tds {
             elsif ( $field{'type'} eq 'url' ) {
                 if ( $value ne q{} ) {
                     $value =
-qq~<a href="$value" onclick="target='_blank';">$value</a>~;
+qq~<a href="$value" target="_blank">$value</a>~;
                 }
             }
             if ( $value eq q{} ) { $value .= '&nbsp;'; }

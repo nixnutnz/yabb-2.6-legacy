@@ -1,6 +1,6 @@
 ###############################################################################
 # BoardIndex.pm                                                               #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.16.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -1523,16 +1523,16 @@ qq~<div class="grpcolors"><span style="color: $color;"><b>lllll</b></span> $titl
         my ( $rss_link, $rss_text );
         if ( !$rss_disabled ) {
             $rss_link =
-qq~<a href="$scripturl?action=RSSrecent" onclick="target='_blank';"><img src="$imagesdir/$brd_rss" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
+qq~<a href="$scripturl?action=RSSrecent" target="_blank"><img src="$imagesdir/$brd_rss" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
             if ( $INFO{'catselect'} ) {
                 $rss_link =
-qq~<a href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" onclick="target='_blank';"><img src="$imagesdir/$brd_rss" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
+qq~<a href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" target="_blank"><img src="$imagesdir/$brd_rss" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
             }
             $rss_text =
-qq~<a href="$scripturl?action=RSSrecent" onclick="target='_blank';">$boardindex_txt{'792'}</a>~;
+qq~<a href="$scripturl?action=RSSrecent" target="_blank">$boardindex_txt{'792'}</a>~;
             if ( $INFO{'catselect'} ) {
                 $rss_text =
-qq~<a href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" onclick="target='_blank';">$boardindex_txt{'792'}</a>~;
+qq~<a href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" target="_blank">$boardindex_txt{'792'}</a>~;
             }
         }
         $yyrssfeed = $rss_text;

@@ -1,6 +1,6 @@
 ###############################################################################
 # YaBBC.pm                                                                    #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.16.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -156,7 +156,7 @@ sub quotemsg {
 sub parseimgflash {
     my ($tmp_message) = @_;
     $tmp_message =~
-s/\[flash\=(\S+?),(\S+?)](\S+?)\[\/flash\]/<b>$display_txt{'769'} ($1 x $2):<\/b> <a href="$3" onclick="target='_blank';" onclick="window.open('$3', 'flash', 'resizable,width=$1,height=$2'); return false;">>$3<\/a>/gxsm;
+s/\[flash\=(\S+?),(\S+?)](\S+?)\[\/flash\]/<b>$display_txt{'769'} ($1 x $2):<\/b> <a href="$3" target="_blank" onclick="window.open('$3', 'flash', 'resizable,width=$1,height=$2'); return false;">>$3<\/a>/gxsm;
     my $char_160  = chr 160;
     my $hardspace = q~&nbsp;~;
      if ( !$showimageinquote || ( ${ $uid . $username }{'hide_img'} && $user_hide_img ) ) {
@@ -462,17 +462,17 @@ s/([^\"\=\[\]\/\:\.\-(\:\/\/\w+)]|[\n\b]|\&quot\;|\[quote.*?\]|\[edit\]|\[highli
     }
 
     if ($stealthurl) {
-        $message =~ s/\[url=\s*(\w+\:\/\/.+?)\](.+?)\s*\[\/url\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=$1" onclick="target='_blank';">$2<\/a>/isgm;
-        $message =~ s/\[url=\s*(.+?)\]\s*(.+?)\s*\[\/url\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=http:\/\/$1" onclick="target='_blank';">$2<\/a>/isgm;
+        $message =~ s/\[url=\s*(\w+\:\/\/.+?)\](.+?)\s*\[\/url\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=$1" target="_blank">$2<\/a>/isgm;
+        $message =~ s/\[url=\s*(.+?)\]\s*(.+?)\s*\[\/url\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=http:\/\/$1" target="_blank">$2<\/a>/isgm;
         $message =~ s/\[link\]\s*www\.\s*(.+?)\s*\[\/link\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=http:\/\/www.$1">www.$1<\/a>/isgm;
         $message =~ s/\[link=\s*(\w+\:\/\/.+?)\](.+?)\s*\[\/link\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=$1">$2<\/a>/isgm;
         $message =~ s/\[link=\s*(.+?)\]\s*(.+?)\s*\[\/link\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=http:\/\/$1">$2<\/a>/isgm;
         $message =~ s/\[link\]\s*(.+?)\s*\[\/link\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=$1">$1<\/a>/isgm;
-        $message =~ s/\[ftp\]\s*(.+?)\s*\[\/ftp\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=$1" onclick="target='_blank';">$1<\/a>/isgm;
+        $message =~ s/\[ftp\]\s*(.+?)\s*\[\/ftp\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=$1" target="_blank">$1<\/a>/isgm;
     }
     else {
-        $message =~ s/\[url=\s*(\S\w+\:\/\/\S+?)\s*\](.+?)\[\/url\]/<a href="$1" onclick="target='_blank';">$2<\/a>/isgm;
-        $message =~ s/\[url=\s*(\S+?)\](.+?)\s*\[\/url\]/<a href="http:\/\/$1" onclick="target='_blank';">$2<\/a>/isgm;
+        $message =~ s/\[url=\s*(\S\w+\:\/\/\S+?)\s*\](.+?)\[\/url\]/<a href="$1" target="_blank">$2<\/a>/isgm;
+        $message =~ s/\[url=\s*(\S+?)\](.+?)\s*\[\/url\]/<a href="http:\/\/$1" target="_blank">$2<\/a>/isgm;
         $message =~ s/\[link\]\s*www\.(\S+?)\s*\[\/link\]/<a href="http:\/\/www.$1">www.$1<\/a>/isgm;
         $message =~ s/\[link=\s*(\S\w+\:\/\/\S+?)\s*\](.+?)\[\/link\]/<a href="$1">$2<\/a>/isgm;
         $message =~ s/\[link=\s*(\S+?)\](.+?)\s*\[\/link\]/<a href="http:\/\/$1">$2<\/a>/isgm;

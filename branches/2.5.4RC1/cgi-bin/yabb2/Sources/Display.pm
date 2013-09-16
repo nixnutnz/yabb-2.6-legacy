@@ -1,6 +1,6 @@
 ###############################################################################
 # Display.pm                                                                  #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.16.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -726,7 +726,7 @@ qq~<a href="$scripturl?board=$currentboard">&lsaquo; $maintxt{'board'}</a>~;
       ? qq~$menusep<a href="javascript:sendtopicmail($sendtopicmail);">$img{'sendtopic'}</a>~
       : q{};
     $template_print =
-qq~$menusep<a href="$scripturl?action=print;num=$viewnum" onclick="target='_blank';">$img{'print'}</a>~;
+qq~$menusep<a href="$scripturl?action=print;num=$viewnum" target="_blank">$img{'print'}</a>~;
     if ($has_poll) {
         require Sources::Poll;
         display_poll($viewnum);
@@ -877,7 +877,7 @@ qq~$menusep<a href="$scripturl?action=print;num=$viewnum" onclick="target='_blan
                         && $amdisplaypics == 1 )
                     {
                         $showattach .=
-qq~<div class="small attbox"><a href="$scripturl?action=downloadfile;file=$urlname" onclick="target='_blank';"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $_</a> (~
+qq~<div class="small attbox"><a href="$scripturl?action=downloadfile;file=$urlname" target="_blank"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $_</a> (~
                           . int( $filesize / 1024 )
                           . qq~ KB | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> )<br />~
                           . (
@@ -887,7 +887,7 @@ qq~<div class="small attbox"><a href="$scripturl?action=downloadfile;file=$urlna
                                 ? qq~<a href="$scripturl?action=downloadfile;file=$urlname" data-rel="gb_imageset[nice_pics]" title="$_">~
                                 : qq~<a href="$scripturl?action=downloadfile;file=$urlname" data-rel="gb_image[nice_pics]" title="$_">~
                               )
-                            : qq~<a href="$scripturl?action=downloadfile;file=$urlname" onclick="target='_blank';">~
+                            : qq~<a href="$scripturl?action=downloadfile;file=$urlname" target="_blank">~
                           )
                           . qq~<img src="$uploadurl/$_" name="attach_img_resize" alt="$_" title="$_" style="display:none" /></a></div>\n~;
                     }
@@ -1293,7 +1293,7 @@ qq~$menusep<a href="$scripturl?board=$currentboard;action=modify;message=$counte
             }
             $postnum = $counter + 1;
             $template_print_post =
-qq~$menusep<a href="$scripturl?action=print;num=$viewnum;post=$postnum" onclick="target='_blank';">$img{'printp'}</a>~;
+qq~$menusep<a href="$scripturl?action=print;num=$viewnum;post=$postnum" target="_blank">$img{'printp'}</a>~;
 
             if (   $counter > 0
                 && ($staff)

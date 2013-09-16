@@ -1,6 +1,6 @@
 ###############################################################################
 # MessageIndex.pm                                                             #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.16.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -1400,9 +1400,9 @@ qq~<br /><a href="javascript:void(0);" onclick="ModSettings()"><span class="smal
     my ( $rss_link, $rss_text );
     if ( !$rss_disabled ) {
         $rss_link =
-qq~<a href="$scripturl?action=RSSboard;board=$currentboard" onclick="target='_blank';"><img src="$imagesdir/$msgbrd_rss"  alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
+qq~<a href="$scripturl?action=RSSboard;board=$currentboard" target="_blank"><img src="$imagesdir/$msgbrd_rss"  alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
         $rss_text =
-qq~<a href="$scripturl?action=RSSboard;board=$INFO{'board'}" onclick="target='_blank';">$messageindex_txt{843}</a>~;
+qq~<a href="$scripturl?action=RSSboard;board=$INFO{'board'}" target="_blank">$messageindex_txt{843}</a>~;
     }
     $yyrssfeed = $rss_text;
     $yyrss     = $rss_link;

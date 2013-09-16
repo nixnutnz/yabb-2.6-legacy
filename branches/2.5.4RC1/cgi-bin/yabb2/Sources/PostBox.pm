@@ -1,6 +1,6 @@
 ###############################################################################
 # PostBox.pm                                                                  #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.16.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -567,7 +567,7 @@ sub attach {
                 <option value="attachdel">$fatxt{'6c'}</option>
                 <option value="attachnew">$fatxt{'6b'}</option>
                 <option value="attachold" selected="selected">$fatxt{'6a'}</option>
-                </select>&nbsp;$fatxt{'40'}: <a href="$uploadurl/$files[$y-1]" onclick="target='_blank';">$files[$y-1]</a>
+                </select>&nbsp;$fatxt{'40'}: <a href="$uploadurl/$files[$y-1]" target="_blank">$files[$y-1]</a>
                 </span></div>~;
         }
         else {
