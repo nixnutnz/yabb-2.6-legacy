@@ -23,7 +23,7 @@ deletepoll,poll_del|img_polltxt|27|||imgcatbg|gif|tmp
 deletevote,poll_dvote|img_polltxt|43|||imgwindowbg|gif|tmp
 email,email|img_txt|69|||imgcatbg|png|tmp
 email_sm,email|img_txt|69|||imgwindowbg|png|tmp
-eventcal,eventcal|img_txt|eventcal|||imgwindowbg|gif|tmp
+eventcal,eventcalicon|img_txt|eventcal|||imgmenu|gif|tmp
 expand,expand|img_txt|624|||imgcatbg|png|tmp
 facebook,facebook|img_txt|facebook|||imgwindowbg|gif|tmp
 favorites,favorites|img_txt|70|||imgmenu|gif|tmp
