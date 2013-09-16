@@ -1130,7 +1130,7 @@ sub ext_viewprofile_r {
             elsif ( $field{'type'} eq 'url' && $value ne q{} ) {
                 $output .= qq~<tr>
             <td class="windowbg2 vtop"><b>$field{'name'}:</b></td>
-            <td class="windowbg2 vtop"><a href="$value" onclick="target='_blank';">$value</a></td>
+            <td class="windowbg2 vtop"><a href="$value" target="_blank">$value</a></td>
         </tr>~;
                 $previous = 0;
 
