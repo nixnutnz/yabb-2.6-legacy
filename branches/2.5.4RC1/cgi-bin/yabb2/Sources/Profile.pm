@@ -73,6 +73,17 @@ sub SidCheck {
     $sid_expires = $cur_sid + 600 - $sid_check;
 
     if ( $sid_expires < 0 || $cur_sid > $sid_check ) { ProfileCheck( $x[0] ); }
+    if ( $sid_expires < 60 ) {
+        $expsectxt = ( $sid_expires == 1 ) ? $profile_txt{'sid_expires_3'} : $profile_txt{'sid_expires_2'};
+        $expiretxt = qq~$profile_txt{'sid_expires_1'} $sid_expires $expsectxt~;
+    }
+    else {
+        $expiremin = int($sid_expires / 60);
+        $expiresec = $sid_expires % 60;
+        $expmintxt = ( $expiremin == 1 ) ? $profile_txt{'sid_expires_4'} : $profile_txt{'sid_expires_5'};
+        $expsectxt = ( $expiresec == 1 ) ? $profile_txt{'sid_expires_3'} : $profile_txt{'sid_expires_2'};
+        $expiretxt = qq~$profile_txt{'sid_expires_1'} $expiremin $expmintxt $expiresec $expsectxt~;
+    }
     return;
 }
 
@@ -447,7 +458,7 @@ qq~ &nbsp; &nbsp; &nbsp; <input type="submit" name="moda" value="$profile_txt{'8
     }
     $showProfile .= $myprofile_bottom;
     $showProfile =~ s/{yabb show_confdel}/$show_confdel/sm;
-    $showProfile =~ s/{yabb sid_expires}/$sid_expires/sm;
+    $showProfile =~ s/{yabb sid_expires}/$expiretxt/sm;
 
     if ( !$view ) {
         $yymain .= $showProfile;
@@ -573,7 +584,7 @@ $myprofile_contact
     $showProfile =~ s/{yabb my_away}/$my_away/sm;
     $showProfile =~ s/{yabb my_stealth}/$my_stealth/sm;
     $showProfile =~ s/{yabb my_extended}/$my_extended/sm;
-    $showProfile =~ s/{yabb sid_expires}/$sid_expires/sm;
+    $showProfile =~ s/{yabb sid_expires}/$expiretxt/sm;
 
     if ( !$view ) {
         $yymain .= $showProfile;
@@ -989,7 +1000,7 @@ qq~         <textarea name="signature" id="signature" rows="4" cols="30" class="
     $showProfile =~ s/{yabb my_show_lang}/$my_show_lang/sm;
     $showProfile =~ s/{yabb my_show_avatar_opts}/$my_show_avatar_opts/sm;
     $showProfile =~ s/{yabb my_extprofile}/$my_extprofile/sm;
-    $showProfile =~ s/{yabb sid_expires}/$sid_expires/sm;
+    $showProfile =~ s/{yabb sid_expires}/$expiretxt/sm;
 
     if ( !$view ) {
         $yymain .= $showProfile;
@@ -1066,7 +1077,7 @@ qq~<option value="$buddy">${$uid.$buddy}{'realname'}</option>~;
 
     $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
     $showProfile =~ s/{yabb buildBuddyList}/$buildBuddyList/sm;
-    $showProfile =~ s/{yabb sid_expires}/$sid_expires/sm;
+    $showProfile =~ s/{yabb sid_expires}/$expiretxt/sm;
 
     if ( !$view ) {
         $yymain .= $showProfile;
@@ -1179,7 +1190,7 @@ qq~\n                        <option value="$ignoreName">$ignoreUser</option>~;
     $showProfile =~ s/{yabb popup_userim}/$popup_userim/sm;
     $showProfile =~ s/{yabb pmviewMessChecked}/$pmviewMessChecked/sm;
     $showProfile =~ s/{yabb my_extprofile}/$my_extprofile/sm;
-    $showProfile =~ s/{yabb sid_expires}/$sid_expires/sm;
+    $showProfile =~ s/{yabb sid_expires}/$expiretxt/sm;
     $showProfile =~ s/{yabb my_PMnotify}/$my_PMnotify/sm;
 
     if ( !$view ) {
@@ -1425,7 +1436,7 @@ qq~<textarea rows="4" cols="50" name="regreason" id="regreason">$regreason</text
     $showProfile =~ s/{yabb userlastpost}/$userlastpost/sm;
     $showProfile =~ s/{yabb userlastim}/$userlastim/sm;
     $showProfile =~ s/{yabb my_extprofile}/$my_extprofile/sm;
-    $showProfile =~ s/{yabb sid_expires}/$sid_expires/sm;
+    $showProfile =~ s/{yabb sid_expires}/$expiretxt/sm;
 
     if ( !$view ) {
         $yymain .= $showProfile;

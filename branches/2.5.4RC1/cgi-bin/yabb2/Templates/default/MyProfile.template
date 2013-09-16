@@ -128,7 +128,7 @@ $myprofile_bottom = qq~<tr class="catbg">
         <td class="center" style="height:50px" colspan="2">
             {yabb show_confdel}
             <input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />
-            <br /><span class="small">$profile_txt{'sid_expires_1'} {yabb sid_expires} $profile_txt{'sid_expires_2'}</span>
+            <br /><span class="small">{yabb sid_expires}</span>
         </td>
     </tr>
 </table>
@@ -195,7 +195,7 @@ $myprofile_contact = qq~<table class="bordercolor cs_thin pad_4px">
         <td class="center" style="height:50px" colspan="2">
             {yabb show_confdel}
             <input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />
-            <br /><span class="small">$profile_txt{'sid_expires_1'} {yabb sid_expires} $profile_txt{'sid_expires_2'}</span>
+            <br /><span class="small">{yabb sid_expires}</span>
         </td>
     </tr>
 </table>
@@ -305,7 +305,7 @@ $myprofile_options_b = qq~             <span class="small">$profile_txt{'664'} <
         <td class="center" style="height:50px" colspan="2">
             {yabb show_confdel}
             <input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />
-            <br /><span class="small">$profile_txt{'sid_expires_1'} {yabb sid_expires} $profile_txt{'sid_expires_2'}</span>
+            <br /><span class="small">{yabb sid_expires}</span>
         </td>
     </tr>
 </table>
@@ -471,7 +471,7 @@ $myprofile_buddy = qq~<table class="bordercolor cs_thin pad_4px">
         <td class="center" style="height:50px" colspan="2">
             {yabb show_confdel}
             <input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />
-            <br /><span class="small">$profile_txt{'sid_expires_1'} {yabb sid_expires} $profile_txt{'sid_expires_2'}</span>
+            <br /><span class="small">{yabb sid_expires}</span>
         </td>
     </tr>
 </table>
@@ -509,7 +509,7 @@ $myprofile_PMpref = qq~<table class="bordercolor cs_thin pad_4px">
         <td class="center" style="height:50px" colspan="2">
             {yabb show_confdel}
             <input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />
-            <br /><span class="small">$profile_txt{'sid_expires_1'} {yabb sid_expires} $profile_txt{'sid_expires_2'}</span>
+            <br /><span class="small">{yabb sid_expires}</span>
         </td>
     </tr>
 </table>
@@ -579,7 +579,7 @@ $myprofile_admin_bb = qq~</td>
         <td class="center" style="height:50px" colspan="2">
             {yabb show_confdel}
             <input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />
-            <br /><span class="small">$profile_txt{'sid_expires_1'} {yabb sid_expires} $profile_txt{'sid_expires_2'}</span>
+            <br /><span class="small">{yabb sid_expires}</span>
         </td>
     </tr>
 </table>
