@@ -967,7 +967,8 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     $subject =~ s/^\s+|\s+$//gsm;
 
     $message = $FORM{'message'};
-    $message =~ s/^\s+|\s+$//gsm;
+    $message =~ s/^\s+|\s+$//g;
+    #above regex cannot use /s or /m flags. IT WILL BREAK!
 
     # no subject/no message are bad!
     if ( !$subject ) { $error = $error_txt{'no_subject'}; }
