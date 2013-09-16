@@ -716,6 +716,16 @@ font-weight:700;
 color: #bbb;
 } 
 
+tr.search .imgcatbg  {
+color:#3B5998;
+font-size:10px;
+font-style:normal;
+font-weight:700;
+}
+tr.search .imgcatbg:hover {
+color: #3B5998;
+}
+
 .imgtitlebg  {
 color:#FFF;
 font-size:10px;

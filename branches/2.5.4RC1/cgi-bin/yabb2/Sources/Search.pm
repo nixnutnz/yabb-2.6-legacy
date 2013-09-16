@@ -709,8 +709,18 @@ qq~$menusep<a href="$scripturl?action=multidel;recent=1;thread=$tnum;del$c=$c" o
             || $iamfmod
             || $iamgmod && $gmod_access2{'ipban2'} eq 'on' )
         {
+            @my_mip       = split / /sm, $mip;
+            foreach (@my_mip) {
+                if ( $ipLookup ) {
+                    $my_mip .=
+qq~<a href="$scripturl?action=iplookup;ip=$_"><span class="small">$_</span></a> ~;
+                }
+                else {
+                    $my_mip .= qq~<span class="small">$_</span> ~;
+                }
+            }
             $my_ipfind = $mysearch_template10;
-            $my_ipfind =~ s/{yabb mip}/$mip/sm;
+            $my_ipfind =~ s/{yabb mip}/$my_mip/sm;
         }
 
         $yymain .= $mysearch_template9;

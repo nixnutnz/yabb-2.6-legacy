@@ -104,26 +104,23 @@ $mysearch_template5 = qq~
 </table></form>~;
 
 $mysearch_template6 =
-  qq~<table class="bordercolor cs_thin" style="table-layout: fixed;">
+  qq~<table class="tabtitle" style="table-layout: fixed;">
     <col style="width:5%" />
     <col style="width:95%" />
 	<tr>
-		<td class="titlebg center">{yabb counter}</td>
-		<td class="titlebg">&nbsp;~;
+        <td class="center">{yabb counter}</td>
+        <td>&nbsp;~;
 
 $mysearch_template7 = qq~</td>
-	</tr><tr>
-		<td colspan="2">
-			<table class="catbg">
-				<tr>
+    </tr>
+</table>
+<table class="titlebg pad_3px" style="table-layout: fixed;">
+    <tr class="search">
                     <td>$search_txt{'109'} {yabb tname} | $search_txt{'105'} $search_txt{'525'} {yabb mname}</td>
 					<td class="right">&nbsp;~;
 
 $mysearch_template9 = q~
 					</td>
-				</tr>
-			</table>
-		</td>
 	</tr><tr>
 		<td class="windowbg2 vtop h_80px" colspan="2">
 		    <div class="message" style="float: left; width: 99%; overflow: auto;">{yabb message} {yabb my_ipfind}</div>

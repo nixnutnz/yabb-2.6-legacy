@@ -298,11 +298,11 @@ $mypost_showmessages = q~
 </table>{yabb my_showmess_mess}~;
 
 $mypost_showmessages_a = qq~<table class="pad_3px" style="table-layout: fixed;">
-    <tr class="catbg">
+    <tr class="titlebg">
         <td>
             <span class="small">$post_txt{'279'}: {yabb displaynamelink}<br />$post_txt{'280'}: {yabb tempdate}</span>
         </td>
-        <td class="catbg right">
+        <td class="right">
              {yabb my_enable_markquote}{yabb my_enable_quickjump}
         </td>
     </tr><tr>

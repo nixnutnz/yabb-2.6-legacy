@@ -264,7 +264,7 @@ $myrecent = qq~
     <tr>
         <td>
             <table class="titlebg">
-                <tr>
+                <tr class="search">
                     <td style="padding-left:5px">$maintxt{'109'} {yabb tname} | $maintxt{'197'} {yabb mname}</td>
                     {yabb my_tstate}
                 </tr>

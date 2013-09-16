@@ -603,7 +603,7 @@ $member_groups
 
 ########## Feature Settings ##########
 
-\$enable_spell_check = $enable_spell_check; # Set to 1 if you want to enable SpellChecker. By doing this you agree to the terms of license under which googiespell runs. See: http://orangoo.com/labs/GoogieSpell/License/ and /yabbfiles/googiespell/GPL.txt
+\$enable_spell_check = $enable_spell_check; # Set to 1 if you want to enable SpellChecker. By doing this you agree to the terms of license under which googiespell runs. See: /yabbfiles/googiespell/GPL.txt and http://creativecommons.org/licenses/by-nc-sa/3.0/
 \$enable_ubbc = $enable_ubbc;               # Set to 1 if you want to enable UBBC (Uniform Bulletin Board Code)
 \$enable_news = $enable_news;               # Set to 1 to turn news on, or 0 to set news off
 \$allowpics = $allowpics;                   # set to 1 to allow members to choose avatars in their profile

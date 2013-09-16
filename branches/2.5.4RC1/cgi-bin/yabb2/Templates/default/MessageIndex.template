@@ -43,6 +43,9 @@ $msgbrd_hotthread = 'hotthread.gif';
 $msgbrd_veryhotthread = 'veryhotthread.gif';
 $msgbrd_admin_move = 'admin_move.gif';
 $msgbrd_admin_rem = 'admin_rem.gif';
+$msgbrd_hide = 'hide.gif';
+$msgbrd_locked ='locked.gif';
+$msgbrd_sticky = 'sticky.gif';
 $msgbrd_rss = 'rss.png';
 $hoveron = 'tpon.gif';
 $hoveroff = 'tpoff.gif';
@@ -342,11 +345,11 @@ qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3
     </table>
     <table class="pad_4px cs_thin">
         <tr>
-            <td class="catbg center" style="padding:4px 10px">
+            <td class="windowbg center" style="padding:4px 10px">
                 <p>&laquo; $messageindex_txt{'139'} {yabb pages} &raquo;</p>
             </td>
         </tr><tr>
-            <td class="windowbg center"><a href="javascript: window.close();">$messageindex_txt{'903'}</a></td>
+            <td class="catbg center"><a href="javascript: window.close();">$messageindex_txt{'903'}</a></td>
         </tr>
     </table>
 </body>

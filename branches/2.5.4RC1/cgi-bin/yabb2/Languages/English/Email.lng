@@ -132,7 +132,7 @@ $instantrejectedemail = qq~Hello, {yabb displayname}!
 We regret to inform you that your membership application has been instantly rejected by {yabb reviewer} from the {yabb mbname} administration.
 No specific reason was given for rejecting you, but most likely your registration credentials or registration reason resulted in this decision.
 
-If you feel this is all a big mistake, you are of course free to apply for membership again using different credentials for review.
+If you feel this is an error, you are of course free to apply for membership again using different credentials for review.
 
 Regards,
 The {yabb mbname} team~;
