@@ -538,12 +538,12 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
             }
             $viewattachments .= qq~<tr>
             <td class="windowbg2 center"><input type="checkbox" name="del_$amthreadid" value="$amfn" /></td>
-            <td class="windowbg2"><a href="$uploadurl/$amfn" onclick="target='_blank';">$amfna</a></td>
+            <td class="windowbg2"><a href="$uploadurl/$amfn" target="_blank">$amfna</a></td>
             <td class="windowbg2 center"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /></td>
             <td class="windowbg2 right padd_4px">$amkb KB</td>
             <td class="windowbg2 center">$amdate</td>
             <td class="windowbg2 right padd_4px">$amcount</td>
-            <td class="windowbg2"><a href="$scripturl?num=$amthreadid/$amreplies#$amreplies" onclick="target='_blank';">$amthreadsub</a></td>
+            <td class="windowbg2"><a href="$scripturl?num=$amthreadid/$amreplies#$amreplies" target="_blank">$amthreadsub</a></td>
             <td class="windowbg2 center">$amposter</td>
         </tr>~;
         }
@@ -1052,7 +1052,7 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
             }
             $viewattachments .= qq~<tr>
             <td class="windowbg2 center"><input type="checkbox" name="del_$pmthreadid" value="$pmAttachName" /></td>
-            <td class="windowbg2"><a href="$pmuploadurl/$pmAttachName" onclick="target='_blank';">$pmfna</a></td>
+            <td class="windowbg2"><a href="$pmuploadurl/$pmAttachName" target="_blank">$pmfna</a></td>
             <td class="windowbg2 center"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /></td>
             <td class="windowbg2 right padd_4px">$pmAttachKB KB</td>
             <td class="windowbg2 center">$pmAttachDate</td>

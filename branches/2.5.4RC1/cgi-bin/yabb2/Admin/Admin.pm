@@ -453,7 +453,7 @@ qq~$newoslist[$i]->[0] &nbsp;<span class="red">(<i>$newoslist[$i]->[1]</i>)</spa
     for my $i ( 0 .. ( @newtolist - 1 ) ) {
         if ( $newtolist[$i]->[0] =~ /\S+/xsm ) {
             $scriptcalls .=
-qq~<a href="$newtolist[$i]->[0]" onclick="target='_blank';">$newtolist[$i]->[0]</a>&nbsp;<span class="red">(<i>$newtolist[$i]->[1]</i>)</span><br />~;
+qq~<a href="$newtolist[$i]->[0]" target="_blank">$newtolist[$i]->[0]</a>&nbsp;<span class="red">(<i>$newtolist[$i]->[1]</i>)</span><br />~;
         }
     }
 
@@ -468,7 +468,7 @@ qq~<a href="$newtolist[$i]->[0]" onclick="target='_blank';">$newtolist[$i]->[0]<
             && $newfromlist[$i]->[0] !~ m{$boardurl}ism )
         {
             $message =
-qq~<a href="$newfromlist[$i]->[0]" onclick="target='_blank';">$newfromlist[$i]->[0]</a>~;
+qq~<a href="$newfromlist[$i]->[0]" target="_blank">$newfromlist[$i]->[0]</a>~;
 
             wrap2();
             $referlist .=

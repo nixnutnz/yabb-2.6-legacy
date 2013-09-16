@@ -171,7 +171,7 @@ function uncheckAll() {
         if ( $tmp_user eq "$useraccount{$tmp_user}" ) {
             if ( $userprofile{$tmp_user}->[1] ) {
                 $username =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tmp_user}" onclick="target='_blank';">$userprofile{$tmp_user}->[1]</a>~;
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tmp_user}" target="_blank">$userprofile{$tmp_user}->[1]</a>~;
             }
             else {
                 $username .= qq~$useraccount{$tmp_user}~;
