@@ -3213,6 +3213,13 @@ sub modAlert2 {
     if ( $iamguest && $gpvalid_en ) {
         validation_check( $FORM{'verification'} );
     }
+    if (   $iamguest
+        && $spam_questions_gp
+        && -e "$langdir/$language/spam.questions" )
+    {
+        SpamQuestionCheck( $FORM{'verification_question'},
+            $FORM{'verification_question_id'} );
+    } 
 
     # Get the form values
     $name     = $FORM{'name'};

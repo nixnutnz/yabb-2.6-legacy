@@ -1761,6 +1761,9 @@ height: 326px;
 width:400px;
 }
 
+.help {
+cursor:help;}
+
 .help_dd  {
 color: #0099CC;
 padding-bottom:.5em;
