@@ -456,7 +456,6 @@ sub eventcal_save {
     if ( $FORM{'Event_TodayColor'}   eq q{} ) { fatal_error('invalid_value', "$event_cal{'8'}"); }
     if ( $FORM{'DisplayEvents'}      eq q{} ) { fatal_error('invalid_value', "$event_cal{'34'}"); }
     if ( $FORM{'CalShortEvent'}      eq q{} ) { fatal_error('invalid_value', "$event_cal{'6'}"); }
-    if ( $FORM{'Delete_EventsUntil'} eq q{} ) { fatal_error('invalid_value', "$event_cal{'52'}"); }
     if ( $FORM{'MaxCalMessLen'}      eq q{} ) { fatal_error('invalid_value', "$admin_txt{'498e'}"); }
     if ( $FORM{'AdMaxCalMessLen'}    eq q{} ) { fatal_error('invalid_value', "$admin_txt{'498f'}"); } 
         # Set 1 or 0 if box was checked or not
