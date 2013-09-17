@@ -14,7 +14,7 @@ $SectionBody1 = qq~YaBB has many descriptive terms that refer to its component p
 	<dt><b>Admin Edits Screen</b></dt>
 	<dd>This is a screen in the user's Profile available only to Administrators and, if allowed, Global Moderators. This screen is where the user's post count and member group selections are made.</dd>
 	<dt><b>Alert Moderator</b></dt>
-	<dd>A type of Personal Message that can be enabled in Boards for either Guests, Members, or both. Using this Alert sends a PM to the Board's Moderator&#40;s&#41; where the sender can describe the problem they are encountering.</dd> 
+	<dd>A type of Personal Message that can be enabled in Boards for Guests, Members, or both. Using this Alert sends a PM to the Board's Moderator&#40;s&#41; where the sender can describe the problem they are encountering.</dd> 
 	<dt><b>Avatar</b></dt>
 	<dd>Avatars are images that appear under the user's name to the left of each post, and also appear in the user's Profile. Avatars can be selected by the user from a group of available avatar images. The Administrator may also enable users to link to an image on the web, or to upload their own avatar image.</dd> 
 	<dt><b>Attachment</b></dt>
@@ -30,11 +30,11 @@ $SectionBody1 = qq~YaBB has many descriptive terms that refer to its component p
 	<dt><b>Board Moderator</b></dt>
 	<dd>This is a member who is given power to regulate posts one or more Boards. Board Moderators are assigned by editing each Board and assigning a member or group as that Board's Moderator.</dd> 
 	<dt><b>Board Permissions</b></dt>
-	<dd>These are options available for each individual Board that let's the Administrator choose which users will be allowed access to the board itself or to functions in the board. An example would be a Board that set up so a member user can view it but not post in it.</dd>
+	<dd>These are options available for each individual Board that lets the Administrator choose which users will be allowed access to the board itself or to functions in the board. An example would be a Board that set up so a member user can view it but not post in it.</dd>
 	<dt><b>Broadcast Message</b></dt>
 	<dd>A type of message that can be enabled for use by forum staff members.</dd> 
 	<dt><b>Buddy List</b></dt>
-	<dd>This is a section of the user's Profile that gives you the ability to add other members that your frequently contact to a list that will show in your User CP view. Your Buddy List will display each name, their Online/Offline status, and link options to send the user a PM, an e-Mail, or visit the link to their website.</dd>
+	<dd>This is a section of the user's Profile that gives you the ability to add other members that you're frequently contact to a list that will show in your User CP view. Your Buddy List will display each name, their Online/Offline status, and link options to send the user a PM, an e-Mail, or visit the link to their website.</dd>
  </dl><dl> 
 	<dd class="help_dd"><b>C</b></dd> 
 	<dt><b>Categories</b></dt>
@@ -48,7 +48,7 @@ $SectionBody1 = qq~YaBB has many descriptive terms that refer to its component p
 	<dt><b>Display Name</b></dt>
 	<dd>This is the user's "public" name, the name that displays above their avatar picture to the left of the Post Window and in the Member List. A user may change this name by editing the Display Name in their Profile.</dd> 
 	<dt><b>Download Counter</b></dt>
-	<dd>This is a feature associated with files attached to Posts, and is displayed to the right of the file name. This tells how many times the attached file has been downloaded. <span class="underline"><b>NOTE:</b></span> In the case of image files, a user may click on the file name and see the image displayed in their browser, and this counts as a download, even though the user has not truly downloaded the file to their PC.</dd>
+	<dd>This is a feature associated with files attached to Posts, and is displayed to the right of the file name. This tells how many times the attached file has been downloaded. <span class="underline"><b>NOTE:</b></span> In the case of image files, a user may click on the file name and see the image displayed in their browser. This counts as a download, even though the user has not truly downloaded the file to their PC.</dd>
 </dl><dl>
 	<dd class="help_dd"><b>E</b></dd>
 	<dt><b>Error Log</b></dt>
@@ -58,9 +58,9 @@ $SectionBody1 = qq~YaBB has many descriptive terms that refer to its component p
 	<dt><b>Forum</b></dt>
 	<dd>This is your entire installation of YaBB.</dd>
 	<dt><b>Forum Log</b></dt>
-	<dd>This is a log available to the Administrator that records information about each "click" made in your forum. It gives the Administrator an idea of what browser types and versions are being used, users versus guests, referring pages, and more.</dd>
+	<dd>This is a log available to the Administrator that records information about each "click" made in your forum. This gives the Administrator information on what browser types and versions are being used, users versus guests, referring pages, and more.</dd>
 	<dt><b>Forum logo</b></dt>
-	<dd>This is the image that displays on the top of your forum's pages. The standard logo that comes with the forum software has the YaBB logo with a version number. You can change the forum's logo with any image you choose &#40;see Admin Help - Help Topic Index - How Do I.. for instructions&#41;.</dd>
+	<dd>This is the image that displays on the top of your forum's pages. The standard logo that comes with the forum software has the YaBB logo with a version number. You can change the forum's logo with any image you choose &#40;see Admin Help - Help Topic Index - How Do I... for instructions&#41;.</dd>
 	<dt><b>Forum News</b></dt>
 	<dd>These are lines of text the Administrator may choose to display in the top section of the forum. They can be configured to change only with screen refreshes or can be made to cycle or fade within a selectable period.</dd>
 </dl><dl>
@@ -89,7 +89,7 @@ $SectionBody1 = qq~YaBB has many descriptive terms that refer to its component p
 		</ul>
 	</dd>
 	<dt><b>Member List</b></dt>
-	<dd>This is a listing of all of your registered users that is sortable by Display Name, Position, Number of Posts, or Date Registered.</dd>
+	<dd>This is a listing of all of your registered users that is sort-able by Display Name, Position, Number of Posts, or Date Registered.</dd>
 	<dt><b>Message Index</b></dt>
 	<dd>This is the view where you see all the Topics in one Board listed. It is also the name of the .template file that provides this view.</dd> 
 	<dt><b>MOD or Modification</b></dt>
@@ -138,7 +138,7 @@ $SectionBody1 = qq~YaBB has many descriptive terms that refer to its component p
 	<dd class="help_dd"><b>S</b></dd>
 	<dt><b>Search</b></dt>
 	<dd>This feature allows a user to search through the forum for information in posts or posts by users. Several options are listed on the Search page.</dd>
-	<dd class="help_dd"><b><span class="underline">USER TIP:</span></b> For general searches, use the option "Any Poster" in the selection box at the bottom of the "By User" sections.</dd>
+	<dd class="help_dd"><b><span class="underline">User Tip:</span></b> For general searches, use the option "Any Poster" in the selection box at the bottom of the "By User" sections.</dd>
 	<dt><b>Signature</b></dt>
 	<dd>This is a section that shows up at the bottom of each user's post. A signature can contain an image, text, or a combination of both. Signatures can be created by each user in their Profile - Options page.</dd>
 	<dt><b>Smilies</b></dt>

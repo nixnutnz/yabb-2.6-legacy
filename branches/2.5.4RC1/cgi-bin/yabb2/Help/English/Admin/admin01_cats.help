@@ -11,7 +11,7 @@ $SectionBody1 = qq~<p>This YaBB version comes equipped with many powerful tools 
 ### Section 2
 #############################################
 $SectionSub2 = "Adding_New_Categories";
-$SectionBody2 = qq~<p>YaBB allows you to add many new Categories all at once or one at a time. To do this, access the forum's Category management functions as shown above. Once there, scroll to the bottom of the list and find the function titled &#8220;Add Categories:&#8221;. Enter the number of new Categories you wish to create in the box and press the button titled &#8220;Add&#8221;.</p>
+$SectionBody2 = qq~<p>YaBB allows you to add many new Categories all at once or one at a time. To do this, access the forum's Category management functions as shown above. Once there, scroll to the bottom of the list and find the function titled &#8220;Add Categories&#8221;. Enter the number of new Categories you wish to create in the box and press the button titled &#8220;Add&#8221;.</p>
 <p>On this new page, you will be given a set of options for each of the new categories you want to create:</p>
 <ul>
 	<li><b><span class="underline">ID</span></b>
@@ -28,7 +28,7 @@ $SectionBody2 = qq~<p>YaBB allows you to add many new Categories all at once or 
 		<ul>
 			<li>If you wish to use an image for your Category, type the complete URL to the image in this box using the standard format: http:www.domain.com/folder/imagename.jpg</li>
 		</ul>
-		<p class="help_attn"><b><span class="underline">ADMINISTRATOR TIP:</span></b> File types allowed for Category pictures are .bmp, .gif, .jpg, and .png. Category Pictures will need to be about 25px in height to keep the same height aspects of Categories without pictures.</p>
+		<p class="help_attn"><b><span class="underline">Administrator Tip:</span></b> File types allowed for Category pictures are .bmp, .gif, .jpg, and .png. Category Pictures will need to be about 25px in height to keep the same height aspects of Categories without pictures.</p>
 	</li>
 	<li><b><span class="underline">Allowed to View/See Category</span></b>
 		<ul>
@@ -39,7 +39,7 @@ $SectionBody2 = qq~<p>YaBB allows you to add many new Categories all at once or 
 		<ul>
 			<li>Check this box to allow your users to expand and collapse this Category on the Main Index page.</li>
 		</ul>
-		<p class="help_attn"><b><span class="underline">ADMINISTRATOR TIP:</span></b> Your new Category will not be visible on the Board Index &#40;main&#41; page of the forum until it has at least one board in it.</p>
+		<p class="help_attn"><b><span class="underline">Administrator Tip:</span></b> Your new Category will not be visible on the Board Index &#40;main&#41; page of the forum until it has at least one board in it.</p>
 	</li>
 </ul>
 ~;
@@ -49,11 +49,11 @@ $SectionBody2 = qq~<p>YaBB allows you to add many new Categories all at once or 
 #############################################
 $SectionSub3 = "Editing_a_Category";
 $SectionBody3 = qq~<p>Editing a Category with YaBB is fast and easy thanks to the hard work our fantastic team of developers. While inside of the Categories function of your Admin Center &#40;see Accessing the Category Functions above for details&#41;, you will see a list of existing Categories, each with a corresponding check box. Clicking on a check box will flag that Category for editing.</p>
-<p>Once you have checked all the Categories you wish to edit, scroll to the bottom of the list and look for the set of radio buttons titled &#8220;With selected:&#8221;. Click on the radio button for &#8220;Edit&#8221;, then press the button to the right titled &#8220;Go&#8221;. Inside you will find the following items for <i>each</i> Category:</p>
+<p>Once you have checked all the Categories you wish to edit, scroll to the bottom of the list and look for the set of radio buttons titled &#8220;With selected&#8221;. Click on the radio button for &#8220;Edit&#8221; and then press the button to the right titled &#8220;Go&#8221;. Inside you will find the following items for <i>each</i> Category:</p>
 <ul>
 	<li><b><span class="underline">ID</span></b>
 		<ul>
-			<li>This is for internal use only and is <span class="underline"><b>not editable.</b></span> It lets YaBB keep track of things, and it will be used in the URL to view that Category.</li>
+			<li>This is for internal use only and is <span class="underline"><i>not editable.</i></span> It lets YaBB keep track of things, and it will be used in the URL to view that Category.</li>
 		</ul>
 	</li>
 	<li><b><span class="underline">Name</span></b>
@@ -81,8 +81,8 @@ $SectionBody3 = qq~<p>Editing a Category with YaBB is fast and easy thanks to th
 $SectionSub4 = "Deleting_a_Category";
 $SectionBody4 = qq~<p>If you would like to remove a Category, follow the directions &#40;see Accessing the Category Functions above for details&#41; to access your Category management page.</p>
 <ul>
-	<li class="help_attn_strong"><b><span class="underline">WARNING:</span> DELETING A CATEGORY WILL ALSO DELETE ANY BOARDS YOU HAVE IN THAT CATEGORY.</b> Move them to another Category first if you want to save them.</li>
-	<li>In the list of Categories, you will notice a check box that corresponds to each title. Check this box for each and every Category you wish to remove. Once selected, scroll to the bottom of the Category listings and locate the set of radio buttons titled &#8220;With Selected:&#8221;. Click on the radio labeled &#8220;Remove&#8221; then press the button to the right titled &#8220;Go&#8221;.</li>
+	<li class="help_attn_strong"><b><span class="underline">Warning:</span> Deleting a Category will also delete any boards you have in that Category.</b> Move them to another Category first if you want to save them.</li>
+	<li>In the list of Categories, you will notice a check box that corresponds to each title. Check this box for each and every Category you wish to remove. Once selected, scroll to the bottom of the Category listings and locate the set of radio buttons titled &#8220;With selected&#8221;. Click on the radio labeled &#8220;Remove&#8221; then press the button to the right titled &#8220;Go&#8221;.</li>
 	<li>A small pop-up will ask you to confirm that you want to remove these categories. Click &#8220;OK&#8221; to remove them or &#8220;Cancel&#8221; to keep them.</li>
 </ul>
 ~;

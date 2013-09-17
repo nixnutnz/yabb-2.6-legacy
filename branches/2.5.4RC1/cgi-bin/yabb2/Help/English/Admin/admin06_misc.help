@@ -10,9 +10,9 @@ $SectionBody1 = qq~<p>YaBB is a 'living document'. It changes over time. Feature
 ### Section 2
 #############################################
 $SectionSub2 = "Features_in_YaBB_2.2_and_later_versions";
-$SectionBody2 = qq~<p>In the making of YaBB 2.2, we have done an overhaul to the admin panel's various sections.
-	<br />As the number of functions have grown larger, we have re-grouped some of them a bit into tabs and some functions may have changed places.
-	<br />These are some features in YaBB 2.2 that naturally need some adjusting on admin level. These additions are as follows:</p>
+$SectionBody2 = qq~<p>In the making of YaBB 2.2, we have done an overhaul to the admin center's various sections.
+	<br />As the number of functions has grown larger, we have re-grouped some of them a bit into tabs and some functions may have changed places.
+	<br />These are some features in YaBB 2.2 that naturally need some adjusting on the admin level. These additions are as follows:</p>
 <ul>
 	<li><b>RSS</b>
 		<br />Anyone can now use RSS (Really Simple Syndication, see <a href="http://en.wikipedia.org/wiki/RSS" title="RSS on Wikipedia" target="_blank">this article in Wikipedia</a>) to pull the latest headlines from your forum into an external document or to a browser.
@@ -24,11 +24,11 @@ $SectionBody2 = qq~<p>In the making of YaBB 2.2, we have done an overhaul to the
 	<li><b>Separate Search Engines from ordinary users</b>
 		<br />In order to get a bit more accurate picture of your forum visitors, you can separate search engines' spiders from ordinary guests.
 	</li>
-	<li><b>Email Templating</b>
-		<br />When you wish to edit the 'system emails' more fitting to your needs, you don't need to fight with the source code anymore, just use the 'Email Messages' templating tool.
+	<li><b>E-mail Templating</b>
+		<br />When you wish to edit the 'system e-mails' more fitting to your needs, you don't need to fight with the source code anymore, just use the 'E-mail Messages' templating tool.
 	</li>
-	<li><b>Antispam tools</b>
-		<br />Since the spam is here to stay, we need stronger tools against it and now we have one.
+	<li><b>Anti-spam tools</b>
+		<br />Since spam is here to stay, we need stronger tools against it and now we have one.
 		<br />Set your preferred spam rules to trigger a warning (and eventually a ban) based on unwanted post content, specify certain circumstances of the posting process and keep Viagra sellers away.
 	</li>
 	<li><b>Captcha</b>
@@ -75,15 +75,15 @@ $SectionBody3 = qq~<p>These are some completely new features to YaBB 2.3 that we
 		<br />Allows one poll selected by Admins/GMods to show at the top of the Board Index.
 	</li>
 	<li><b>YaBB Backup</b>
-		<br />Admins can make backups of the forum quickly in any of 8 different formats with or without compression. Backups are stored in a new yabb/Backups directory, and can be downloaded, emailed, or deleted. Admin can select full backup &#40;all directories&#41;, partial backups &#40;some directories&#41;, or only files newer than last backup. Also features a selectable alert to tell Admin if backup is older than <i>X</i> days.
+		<br />Admins can make backups of the forum quickly in any of 8 different formats with or without compression. Backups are stored in a new yabb/Backups directory, and can be downloaded, e-mailed, or deleted. Admin can select full backup &#40;all directories&#41;, partial backups &#40;some directories&#41;, or only files newer than last backup. Also features a selectable alert to tell Admin if backup is older than <i>X</i> days.
 	</li>
 	<li><b>Category Pictures</b>
 		<br />Allows the Admin to use an image along with category names.
 	</li>
 	<li><b>Image Resize and Greybox</b>
-		<br />Admins can set limits on maximum display size for avatar pics, posted images, attachment images, and signature images. Larger images will &quot;shrink&quot; to fit within the maximum set limits.
-		<br />Attached images and images inside posts can be shown on a slightly translucent surface instead in a new window. The Administrator can select between single view or gallery style view for attached images.
-		<p class="help_attn"><span class="underline"><b>NOTE:</b></span> An image taller than it is wide will be limited by the maximum height and will adjust the width proportionally, which will be less than maximum. An image wider than taller will be limited by the maximum width and will adjust the height proportionally, which will be less than maximum.</p>
+		<br />Admins can set limits on maximum display size for avatar images, posted images, attachment images, and signature images. Larger images will &quot;shrink&quot; to fit within the maximum set limits.
+		<br />Attached images and images inside posts can be shown on a slightly translucent surface instead in a new window. The Administrator can select between a single view and a gallery style view for attached images.
+		<p class="help_attn"><span class="underline"><b>NOTE:</b></span> An image taller than it is wide will be limited by the maximum height and will adjust the width proportionally, which will be less than the maximum width. An image wider than taller will be limited by the maximum width and will adjust the height proportionally, which will be less than the maximum height.</p>
 	</li>
 	<li><b>Multi-Attachments</b>
 		<br />Admins can choose how many and what type of files a user may attach to a post. A download counter for each attached file is also provided. Files attached will show an icon symbolizing each particular file type for the most common file types.
@@ -139,7 +139,7 @@ $SectionBody4 = qq~<p>These are some completely new features to YaBB 2.5.2 that 
 		</ul>
 	</li>
 	<li><b>Membership Delete Lock</b>
-		<br />The Admin now has the option of allowing (or dis-allowing) members to remove their own accounts. In dis-allowing members to delete their own accounts, the Admin has time to discover the reasons for the member wanting to leave and also maintains the tools the Admin may need to readily delete spam posts, ban the member to keep them from registering under the same credentials, etc., depending on the situation and the needs of the forum.
+		<br />The Admin now has the option of allowing (or disallowing) members to remove their own accounts. In disallowing members to delete their own accounts, the Admin has time to discover the reasons for the member wanting to leave and also maintains the tools the Admin may need to readily delete spam posts, ban the member to keep them from registering under the same credentials, etc., depending on the situation and the needs of the forum.
 	</li>
 </ul>
 ~;

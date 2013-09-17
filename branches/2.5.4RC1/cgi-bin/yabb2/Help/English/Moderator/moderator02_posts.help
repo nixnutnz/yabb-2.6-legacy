@@ -9,10 +9,10 @@ $SectionBody1 = qq~You now have the ability to edit, modify, or delete any post 
 	<li>Identify the post you wish to edit.</li>
 	<li>In that post, you will see a small menu with &#8220;Quote&#8221;, &#8220;Modify&#8221; and &#8220;Delete&#8221;. Click on the one titled &#8220;Modify&#8221;.</li>
 	<li>You will then be given access to the edit page where you may make your changes. When you're done, press the button titled &#8220;Save&#8221;.
-		<p class="help_attn"><b><span class="underline">MODERATOR TIP:</span></b> It's useful to be able to identify any text changed or added by a Moderator when modifying a post. A good way to do this is to use a different color text for the Moderator's text.  To do this, use your mouse to highlight your text then click on a color button, or click on the color palette and select a text color.</p>
+		<p class="help_attn"><b><span class="underline">Moderator Tip:</span></b> It's useful to be able to identify any text changed or added by a Moderator when modifying a post. A good way to do this is to use a different color text for the Moderator's text.  To do this, use your mouse to highlight your text then click on a color button, or click on the color palette and select a text color.</p>
 	</li>
 </ul>
-<p>Please note that a small line of text will show on the post stating that you have made an edit. As such, it is advised you also attach a reason to why you made the edit. This lets the admin, other moderators, the poster and the rest of the community know there was an issue. You can use the Edit button above the Post Window or the [edit][/edit] YaBBC tags to add a message about your edit.</p>
+<p>Please note that a small line of text will show on the post stating that you have made an edit. As such, it is advised you also attach a reason to why you made the edit. This lets the Forum staff, the poster, and the rest of the community know there was an issue. You can use the Edit button above the Post Window or the [edit][/edit] YaBBC tags to add a message about your edit.</p>
 <p>This will enclose your text in a box so it appears similar to the following example:</p>
 [yabbc][edit]I modified this post and this is why![/edit][/yabbc]
 ~;
@@ -52,7 +52,7 @@ $SectionBody3 = qq~<p>In the event that a conversation begins to drift away from
 	<li>Identify the Post where the Topic split will occur.  This will be the first Post of the new Topic that will be created.</li>
 	<li>In that post, you will see a small menu with &#8220;Quote&#8221;, &#8220;Modify&#8221;, &#8220;Split&#8221; and &#8220;Delete&#8221;. Click on the one titled &#8220;Split&#8221;. Note, obviously, this option will <i>not</i> show on the first post of a topic.</li>
 	<li>This function will instantly move the post and all the posts under it to a brand new topic. The subject of the post you split is the new topic's subject.
-		<p class="help_attn"><b><span class="underline">MODERATOR TIP:</span></b> Since the subject of a Topic that has been split will normally be &#8220;re:&#40;original subject of Topic&#41;&#8221;, you may wish to modify the first Post in the new Topic created by the split. You can edit the Subject line of that Post, changing it to something more appropriate for the new subject of conversation.</p>
+		<p class="help_attn"><b><span class="underline">Moderator Tip:</span></b> Since the subject of a Topic that has been split will normally be &#8220;re:&#40;original subject of Topic&#41;&#8221;, you may wish to modify the first Post in the new Topic created by the split. You can edit the Subject line of that Post, changing it to something more appropriate for the new subject of conversation.</p>
 	</li>
 </ul>
 <h4 class="help">Splitting a Topic using Advanced Split/Splice:</h4> 

@@ -113,7 +113,7 @@ Most YaBBC tags can be wrapped around text, by first <span class="highlight">hig
 	</tr><tr>
 		<td colspan="2">
 			<ul>
-				<li>Type mail-addr. and text: myname\@domain.com Click to email me</li>
+				<li>Type e-mail address and text: myname\@domain.com Click to email me</li>
 				<li>Highlight all of it: <span class="highlight">myname\@domain.com Click to email me</span></li>
 				<li>Click the button: [yabbc][email=myname\@domain.com]Click to email me[/email][/yabbc]</li>
 			</ul>

@@ -3,14 +3,14 @@ $SectionName = "Manage_Templates";
 ### Section 1
 #############################################
 $SectionSub1 = "Accessing_the_Template_Editor";
-$SectionBody1 = qq~<p>YaBB gives you the ability to quickly and easily add and/or modify the look and feel of your Forum. In order to access these functions, you must be logged in as an Forum Administrator or Global Moderator with proper access rights. In the &#8220;Admin Center&#8221; find the section in the left hand menu titled &#8220;Forum Layout&#8221;. There you will see three links: &#8220;Template Configuration&#8221;, &#8220;Style Sheet&#8221;, and &#8220;Template&#8221;.</p>
+$SectionBody1 = qq~<p>YaBB gives you the ability to quickly and easily add and/or modify the look and feel of your Forum. In order to access these functions, you must be logged in as a Forum Administrator or Global Moderator with proper access rights. In the &#8220;Admin Center&#8221; find the section in the left hand menu titled &#8220;Forum Layout&#8221;. There you will see three links: &#8220;Template Configuration&#8221;, &#8220;Style Sheet&#8221;, and &#8220;Template&#8221;.</p>
 ~;
 #############################################
 
 ### Section 2
 #############################################
 $SectionSub2 = "Template_Configuration";
-$SectionBody2 = qq~If you would like to add a Template (also known as a skin), change which stylesheet file you'd like to use for your Forum, or use templates other than the default one, this section allows you to to that. 
+$SectionBody2 = qq~If you would like to add a Template (also known as a skin), change which stylesheet file you'd like to use for your Forum, or use templates other than the default one, this section allows you to do that. 
 <p><b>Adding a New Skin</b></p>
 <ul>
 	<li>Create a folder in 'yabbfiles/Templates/Forum' (this location may be different for you) for the graphics for your new skin and upload your graphics. Also upload your new stylesheet to the same place that default stylesheet (default.css) is. (Do <b>NOT</b> overwrite your default stylesheet.) Your new stylesheet should have a name that will be easily associated with your new graphics folder. (For instance, you would like to use a 'Noir' skin. Name the graphics folder 'noir' and the stylesheet 'noir.css'.)</li>

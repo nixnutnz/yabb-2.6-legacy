@@ -13,7 +13,7 @@ $SectionSub2 = "Sessions";
 $SectionBody2 = qq~<p><b>Sessions</b> are a YaBB feature designed to protect administrative functions. If sessions are enabled in the Admin Center, staff will be required to re-validate their session whenever their network connection changes IP address.</p>
 <p>To re-validate your session, simply click &#8220;Update Session&#8221; on the YaBB main menu at the top of the forum. If this link isn't present, then your session doesn't need to be updated.</p>
 <p>By default, it asks you for your Password to re-validate. That can be changed in your Profile, under the &#8220;Edit Profile&#8221; section, near the bottom of the list of settings.</p>
-<p>To check if sessions are enabled, go into the Admin Center&#47;Security Center&#47;Security Settings and look under the &#8220;General&#8221; tab. Sessions are enabled if the checkbox to the right of &#8220;Activate Session ID's&#8221; is checked.</p>
+<p>To check if sessions are enabled, go into the Admin Center&#47;Security Center&#47;Security Settings and look under the &#8220;General&#8221; tab. Sessions are enabled if the checkbox to the right of &#8220;Activate Session IDs&#8221; is checked.</p>
 ~;
 #############################################
 
@@ -30,8 +30,8 @@ $SectionBody3 = qq~<p><b>Stealth Mode</b> is a YaBB feature designed to allow Ad
 $SectionSub4 = "Administrative_Functions";
 $SectionBody4 = qq~<p>The Forum Administrator may select what administrative functions the Global Moderators may control. The Administrator may restrict access to the Admin Center completely, or may choose to allow Global Moderators to control a selected list of these functions. These include items such as editing user Profiles, adding Members, deleting Members, editing the Forum News, altering forum Security Settings, and many more.</p>
 <p>The best way to know for sure what options you have control over is to discuss them with the Forum Administrator.</p>
-<p>If your Administrator has given you access to the Admin Center, the various menus on the left will show you the functions you have <b>at least some</b> control over.</p>
-<p class="help_attn"><b><span class="underline">GLOBAL MODERATOR TIP:</span></b> Access to some screens in the Admin Center display options that <i><b>you may not have access to</b></i>. For example, the Administrator may allow you to ADD and VIEW members, but <span class="underline">not</span> DELETE members. The screen you view them on, however, contains checkboxes and buttons for the DELETE function. If you attempt to use these without having permission, it will result in you receiving an error message. This is NOT a bug - you don't have permission - and the program's proper response is to give you that error message.</p>
+<p>If your Administrator has given you access to the Admin Center, the various menus on the left will show you the functions you have <i>at least some</i> control over.</p>
+<p class="help_attn"><b><span class="underline">Global Moderator Tip:</span></b> Access to some screens in the Admin Center display options that <i>you may not have access to</i>. For example, the Administrator may allow you to <b>add</b> and <b>view</b> members, but <span class="underline">not</span> <b>delete</b> members. The screen you view them on, however, contains checkboxes and buttons for the <b>delete</b> function. If you attempt to use these without having permission, it will result in you receiving an error message. This is <i>not</i> a bug - you don't have permission - and the program's proper response is to give you that error message.</p>
 ~;
 #############################################
 
