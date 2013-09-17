@@ -1244,7 +1244,6 @@ sub Convert_Settings {
     if ( !$MaxCalMessLen ){ $MaxCalMessLen = 200; }
     if ( !$AdMaxCalMessLen ){ $AdMaxCalMessLen = 300; }
     if ( !$Show_EventCal ){ $Show_EventCal = 0; }
-    if ( !$Delete_EventsUntil ){ $Delete_EventsUntil = 0; }
     if ( !$Event_TodayColor ){ $Event_TodayColor = '#ff0000'; }
     if ( !$fix_avatar_img_size) { $fix_avatar_img_size  = 0; }
     if ( !$max_avatar_width) { $$max_avatar_width  = 65; }

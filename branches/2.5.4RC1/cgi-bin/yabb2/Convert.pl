@@ -3498,7 +3498,6 @@ sub SetInstall2 {
         $enable_freespace_check = 0;
         $Show_EventCal = 0;
         $Event_TodayColor       = '#ff0000';
-        $Delete_EventsUntil = 0;
         $bm_subcut          = 50;
         if ( -e '/bin/gzip' && open $GZIP, '|', 'gzip -f' ) {
             $gzcomp = 1;
