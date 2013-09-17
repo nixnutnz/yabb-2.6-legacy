@@ -297,12 +297,14 @@ sub postbox2 {
                                 <option value=" sql" title="SQL">SQL</option>
                             </select>
                         </div>
-                    </div>
-                    <div class="chrwarn">
+                    </div>~;
+    if (!$replyguest) { $box .=          
+                    qq~<div class="chrwarn">
                         <img src="$imagesdir/green1.gif" id="chrwarn" height="8" width="8" alt="" />
                         <span class="small">$npf_txt{'03'} $MaxMessLen $npf_txt{'03a'}<input value="$MaxMessLen" size="3" name="msgCL" class="chrwarn" readonly="readonly" /></span>
-                    </div>
-                    <div class="chrsize">
+                    </div>~;
+    }
+    $box .= qq~                    <div class="chrsize">
                         <span class="small">$post_txt{'textsize'} <input value="$textsize" size="2" name="txtsize" id="txtsize" class="chrsize" readonly="readonly" />pt <img src="$imagesdir/smaller.gif" height="11" width="11" alt="" onclick="sizetext(-1);" /><img src="$imagesdir/larger.gif" height="11" width="11" alt="" onclick="sizetext(1);" /></span>
                     </div>
                 </div>

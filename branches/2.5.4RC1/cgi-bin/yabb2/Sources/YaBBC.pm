@@ -120,7 +120,7 @@ sub quotemsg {
 # it was an old style user id which could be loaded and screen name set to final author
             $fqauthor = ${ $uid . $qauthor }{'realname'};
         }
-        $qmessage =~ s/\/me\s+(.*?)(\n|\Z)(.*?)/<i><span style="color: #FF0000;"><b>$fqauthor<\/b><\/span> $1<\/i>$2$3/igsm;
+        $qmessage =~ s/\/me\s+(.*?)(\n|\Z)(.*?)/<i><span class="my_me">* $fqauthor<\/span> $1<\/i>$2$3/igsm;
     }
 
     # next 2 lines: for display names in Quotes in LivePreview
@@ -491,7 +491,7 @@ s/([^\"\=\[\]\/\:\.\-(\:\/\/\w+)]|[\n\b]|\&quot\;|\[quote.*?\]|\[edit\]|\[highli
     };
     while ( $message =~ s/\[edit\]\n*(.*?)\n*\[\/edit\]/editsmsg($1)/eisgm ) { }
 
-    $message =~ s/\/me\s+(.*)/<i><span style="color: #FF0000;"><b>$displayname<\/b><\/span> $1<\/i>/igxsm;
+    $message =~ s/\/me\s+(.*)/<span class="my_me">* $displayname<\/span> $1/igxsm;
 
     if ( $message =~ /\[media/sm || $message =~ /\[flash/sm ) {
         require Sources::MediaCenter;

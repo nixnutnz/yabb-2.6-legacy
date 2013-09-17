@@ -716,13 +716,13 @@ font-weight:700;
 color: #bbb;
 } 
 
-tr.search .imgcatbg  {
+tr.search .imgcatbg, tr.search .imgwindowbg  {
 color:#3B5998;
 font-size:10px;
 font-style:normal;
 font-weight:700;
 }
-tr.search .imgcatbg:hover {
+tr.search .imgcatbg:hover, tr.search .imgwindowbg:hover {
 color: #3B5998;
 }
 
@@ -756,6 +756,11 @@ font-style:normal;
 font-weight:400;
 padding:4px;
 width:90%;
+}
+
+.my_me {
+color: #FF0000;
+font-style:italic;
 }
 
 .code  {

@@ -248,9 +248,7 @@ qq~<div id="bnttoto" class="windowbg2 bnttoto"><a href="javascript:void(0);" onc
 
     if ( !$replyguest ) {
         $onchangeText = q~ onkeyup="autoPreview();"~;
-    }
 
-    if ( !$replyguest ) {
         if ($sendBMess) { $toUsersTitle = $inmes_txt{'togroups'}; }
         if ( $PMenable_cc || $PMenable_bcc ) {
             $us_winhight = $us_winhight_cc;
@@ -523,7 +521,7 @@ qq~             document.write('<img src="$tmpurl" alt="$SmilieDescription[$i]" 
                 $tmpcode = $SmilieCode[$i];
                 $tmpcode =~ s/\&quot;/"+'"'+"/gsm;
 
-                #" Adding that because if not it screws up my syntax view'
+                #" Adding that because if not it screws up my syntax view;
                 FromHTML($tmpcode);
                 $tmpcode =~ s/&#36;/\$/gxsm;
                 $tmpcode =~ s/&#64;/\@/gxsm;
