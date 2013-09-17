@@ -3,7 +3,7 @@ $SectionName = "Manage_Boards";
 ### Section 1
 #############################################
 $SectionSub1 = "Accessing_the_Board_Functions";
-$SectionBody1 = qq~<p>Now that you have created your Categories, you can use YaBB's amazing Board-creation utilities to manage the postable sections of your community. YaBB allows you to create an unlimited<b>*</b> number of boards in every category. In order to access these functions, you must be logged in as an Administrator or Global Moderator with proper access rights. Once you are, look at the main menu. You will notice a link titled &quot;Admin Center&quot;. Clicking this will bring you to a large control panel. On the left hand menu, search for the section titled &quot;Forum Controls&quot; and click on the second link titled &quot;Boards&quot;.</p>
+$SectionBody1 = qq~<p>Now that you have created your Categories, you can use YaBB's amazing Board-creation utilities to manage the postable sections of your community. YaBB allows you to create an unlimited<b>*</b> number of boards in every category. In order to access these functions, you must be logged in as an Administrator or Global Moderator with proper access rights. Once you are, look at the main menu. You will notice a link titled &#8220;Admin Center&#8221;. Clicking this will bring you to a large control panel. On the left hand menu, search for the section titled &#8220;Forum Controls&#8221; and click on the second link titled &#8220;Boards&#8221;.</p>
 <p><i><b>*</b> YaBB is only limited by the space allocated to you on your web hosting server.</i></p>
 ~;
 #############################################
@@ -11,7 +11,7 @@ $SectionBody1 = qq~<p>Now that you have created your Categories, you can use YaB
 ### Section 2
 #############################################
 $SectionSub2 = "Adding_New_Boards";
-$SectionBody2 = qq~<p>YaBB gives admins the ability to add multiple Boards from a single screen. To do this, access the forum's Board Management functions as explained above. Once there, scroll to the bottom of the list of existing boards &#40;if any&#41; and find the function titled &quot;Add Boards&quot;. Enter the number of new Boards you would like to create in the text box then press the button titled &quot;Add&quot;.</p>
+$SectionBody2 = qq~<p>YaBB gives admins the ability to add multiple Boards from a single screen. To do this, access the forum's Board Management functions as explained above. Once there, scroll to the bottom of the list of existing boards &#40;if any&#41; and find the function titled &#8220;Add Boards&#8221;. Enter the number of new Boards you would like to create in the text box then press the button titled &#8220;Add&#8221;.</p>
 <p>On this Edit Boards page, you will be given a large set of options for each of the new Boards you are trying to add:</p>
 <ul>
 	<li><b><span class="underline">Board ID</span></b>
@@ -29,9 +29,9 @@ $SectionBody2 = qq~<p>YaBB gives admins the ability to add multiple Boards from 
 			<li>Describe this board so your users will know what the subject/topic will be.</li>
 		</ul>
 	</li>
-	<li><b><span class="underline">Moderators</span></b>
+	<li><b><span class="underline">Board Moderators</span></b>
 		<ul>
-			<li>Click on the link under the word &quot;Moderators&quot; to add the members you wish to give Moderator access for <b>this board</b>.</li>
+			<li>Click on the link under the word &#8220;Moderators&#8221; to add the members you wish to give Moderator access for <b>this board</b>.</li>
 		</ul>
 	</li>
 	<li><b><span class="underline">Membergroup Moderators</span></b>
@@ -63,17 +63,17 @@ $SectionBody2 = qq~<p>YaBB gives admins the ability to add multiple Boards from 
 	</li>
 	<li><b><span class="underline">Allow Attachments</span></b>
 		<ul>
-			<li>Checking this option will enable users to attach files to their posts in this board provided the &quot;Allow File Attaching in Posts?&quot; option is checked in the Admin Center&#47;Forum Configuration&#47;Advanced Settings under the &quot;File Attachments&quot; tab.</li>
+			<li>Checking this option will enable users to attach files to their posts in this board provided the &#8220;Allow File Attaching in Posts?&#8221; option is checked in the Admin Center&#47;Forum Configuration&#47;Advanced Settings under the &#8220;File Attachments&#8221; tab.</li>
 		</ul>
 	</li>
 	<li><b><span class="underline">Global Announcements</span></b>
 		<ul>
-			<li>Checking this option will ensure the messages in this board are shown as important on top of every board. No matter how the Board permissions are set, only Administrators and Global Moderators can start new topics or reply. <b><span class="underline">Note:</span> YaBB only allows a single board to have this label.</b></li>
+			<li>Checking this option will ensure the messages in this board are shown as important on top of every board. No matter how the Board permissions are set, only Forum Administrators and Global Moderators can start new topics or reply. <b><span class="underline">Note:</span> YaBB only allows a single board to have this label.</b></li>
 		</ul>
 	</li>
 	<li><b><span class="underline">Recycle Bin</span></b>
 		<ul>
-			<li>Checking this option make this board a recycle bin for messages deleted by moderators. It can also be used as a recycle bin for Administrators by unchecking the box found in the Admin Center&#47;Configuration&#47;Forum Settings under the &quot;Staff&quot; tab. <b><span class="underline">Note:</span> YaBB only allows a single board to have this label.</b></li>
+			<li>Checking this option make this board a recycle bin for messages deleted by moderators. It can also be used as a recycle bin for Forum Administrators by unchecking the box found in the Admin Center&#47;Configuration&#47;Forum Settings under the &#8220;Staff&#8221; tab. <b><span class="underline">Note:</span> YaBB only allows a single board to have this label.</b></li>
 		</ul>
 	</li>
 	<li><b><span class="underline">Minimum Age to Access</span></b>
@@ -114,14 +114,14 @@ $SectionBody2 = qq~<p>YaBB gives admins the ability to add multiple Boards from 
 		<p class="help_attn"><b><span class="underline">ADMINISTRATOR TIP:</span></b> To allow Guests to do <span class="underline">any</span> of the above four functions, <i><b>do not select any member groups</b></i> in that option box.</p>
 	</li>
 </ul>
-<p>Once you have filled out all the information for your new Boards, scroll down to the bottom of the list and click on the button titled &quot;Save&quot;. Your new Boards will be created and opened for posting!</p>
+<p>Once you have filled out all the information for your new Boards, scroll down to the bottom of the list and click on the button titled &#8220;Save&#8221;. Your new Boards will be created and opened for posting!</p>
 ~;
 #############################################
 
 ### Section 3
 #############################################
 $SectionSub3 = "Editing_a_Board";
-$SectionBody3 = qq~<p>If you need to make changes to any of the boards you have created, simply follow the directions above to access your board management section. In the list of boards, you will notice a check box that corresponds to each title. Check this box for each and every board you wish to edit. Once selected, scroll to the bottom of the board listings and locate the set of radio buttons titled &quot;With Selected:&quot;. Click on the radio labeled &quot;Edit&quot; then press the button to the right titled &quot;Go&quot;.</p>
+$SectionBody3 = qq~<p>If you need to make changes to any of the boards you have created, simply follow the directions above to access your board management section. In the list of boards, you will notice a check box that corresponds to each title. Check this box for each and every board you wish to edit. Once selected, scroll to the bottom of the board listings and locate the set of radio buttons titled &#8220;With Selected:&#8221;. Click on the radio labeled &#8220;Edit&#8221; then press the button to the right titled &#8220;Go&#8221;.</p>
 <p>On this Edit Boards page, you will be given a large set of options for each of the new Boards you are trying to edit:</p>
 <ul>
 	<li><b><span class="underline">Board ID</span></b>
@@ -141,7 +141,7 @@ $SectionBody3 = qq~<p>If you need to make changes to any of the boards you have 
 	</li>
 	<li><b><span class="underline">Moderators</span></b>
 		<ul>
-			<li>Click on the link under the word &quot;Moderators&quot; to add the members you wish to give Moderator access for <b>this board</b>.</li>
+			<li>Click on the link under the word &#8220;Moderators&#8221; to add the members you wish to give Moderator access for <b>this board</b>.</li>
 		</ul>
 	</li>
 	<li><b><span class="underline">Membergroup Moderators</span></b>
@@ -190,17 +190,17 @@ $SectionBody3 = qq~<p>If you need to make changes to any of the boards you have 
 	</li>
 	<li><b><span class="underline">Allow Attachments</span></b>
 		<ul>
-			<li>Checking this option will enable users to attach files to their posts in this board provided the &quot;Allow File Attaching in Posts?&quot; option is checked in the Admin Center&#47;Forum Configuration&#47;Advanced Settings under the &quot;File Attachments&quot; tab.</li>
+			<li>Checking this option will enable users to attach files to their posts in this board provided the &#8220;Allow File Attaching in Posts?&#8221; option is checked in the Admin Center&#47;Forum Configuration&#47;Advanced Settings under the &#8220;File Attachments&#8221; tab.</li>
 		</ul>
 	</li>
 	<li><b><span class="underline">Global Announcements</span></b>
 		<ul>
-			<li>Checking this option will ensure the messages in this board are shown as important on top of every board. No matter how the Board permissions are set, only Administrators and Global Moderators can start new topics or reply. <b><span class="underline">Note:</span> YaBB only allows a single board to have this label.</b></li>
+			<li>Checking this option will ensure the messages in this board are shown as important on top of every board. No matter how the Board permissions are set, only Forum Administrators and Global Moderators can start new topics or reply. <b><span class="underline">Note:</span> YaBB only allows a single board to have this label.</b></li>
 		</ul>
 	</li>
 	<li><b><span class="underline">Recycle Bin</span></b>
 		<ul>
-			<li>Checking this option make this board a recycle bin for messages deleted by moderators. It can also be used as a recycle bin for Administrators by unchecking the box found in the Admin Center&#47;Configuration&#47;Forum Settings under the &quot;Staff&quot; tab. <b><span class="underline">Note:</span> YaBB only allows a single board to have this label.</b></li>
+			<li>Checking this option make this board a recycle bin for messages deleted by moderators. It can also be used as a recycle bin for Forum Administrators by unchecking the box found in the Admin Center&#47;Configuration&#47;Forum Settings under the &#8220;Staff&#8221; tab. <b><span class="underline">Note:</span> YaBB only allows a single board to have this label.</b></li>
 		</ul>
 	</li>
 	<li><b><span class="underline">Enable Board Rules</span></b>
@@ -259,7 +259,7 @@ $SectionBody3 = qq~<p>If you need to make changes to any of the boards you have 
 		<p class="help_attn"><b><span class="underline">ADMINISTRATOR TIP:</span></b> To allow Guests to do <span class="underline">any</span> of the above four functions, <i><b>do not select any member groups</b></i> in that option box.</p>
 	</li>
 </ul>
-<p>Once you have edited all the information for your Boards, scroll down to the bottom of the list and click on the button titled &quot;Save&quot;. Your changes to the Boards will be seen immediately.</p>
+<p>Once you have edited all the information for your Boards, scroll down to the bottom of the list and click on the button titled &#8220;Save&#8221;. Your changes to the Boards will be seen immediately.</p>
  ~;
 #############################################
 
@@ -270,9 +270,9 @@ $SectionBody4 = qq~<p>If you would like to remove a Board, follow the directions
 <h4>Deleting a Board</h4>
 <ul>
 	<li>In the list of Boards, you will notice a check box that corresponds to each title. Check this box for each and every Board you wish to remove.</li>
-	<li>Once selected, scroll to the bottom of the Board listings and locate the set of radio buttons titled &quot;With Selected:&quot;.</li>
-	<li>Click on the radio labeled &quot;Remove&quot; then press the button to the right titled &quot;Go&quot;.</li>
-	<li>A small pop-up will ask you to confirm that you want to remove these Boards. Click &quot;OK&quot; to remove them or &quot;Cancel&quot; to keep them</li>
+	<li>Once selected, scroll to the bottom of the Board listings and locate the set of radio buttons titled &#8220;With Selected:&#8221;.</li>
+	<li>Click on the radio labeled &#8220;Remove&#8221; then press the button to the right titled &#8220;Go&#8221;.</li>
+	<li>A small pop-up will ask you to confirm that you want to remove these Boards. Click &#8220;OK&#8221; to remove them or &#8220;Cancel&#8221; to keep them</li>
 </ul>
 ~;
 #############################################

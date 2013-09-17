@@ -3,9 +3,9 @@ $SectionName = "Posting";
 ### Section 1
 #############################################
 $SectionSub1 = "Starting_a_Topic";
-$SectionBody1 = qq~After you have registered an account, you will have the ability to start new topics. To do so, navigate to a category you would like to begin a conversation in. Make sure that this is the correct category for the subject of your post. Once you're inside this category, search for a link or button titled &quot;Start New Topic&quot; and click it. The exact location of this button will vary depending on which template is being used, but it is often near the top of the list of topics.
+$SectionBody1 = qq~After you have registered an account, you will have the ability to start new topics. To do so, navigate to a category you would like to begin a conversation in. Make sure that this is the correct category for the subject of your post. Once you're inside this category, search for a link or button titled &#8220;Start New Topic&#8221; and click it. The exact location of this button will vary depending on which template is being used, but it is often near the top of the list of topics.
 <p>This will present you with a new page where you can begin to type your post, or take you to a form at the bottom of the page. Below you will find a description of the items on this page.</p>
-<h4 class="help">Live Preview:</h4>
+<h4 class="help">Preview:</h4>
 <p>This gives you a view of what your message will look like once it's posted.</p>
 <h4 class="help">Subject:</h4>
 <p>This is the title of your topic and is what will be shown on the category page.</p>
@@ -13,12 +13,12 @@ $SectionBody1 = qq~After you have registered an account, you will have the abili
 <p>If you would like to add a special icon to your post, you may choose one from this list.</p>
 <h4 class="help">Add YaBBC tags:</h4>
 <p>YaBBC tags give you the ability to format the text in your post. To add, simply click on the button of your choice. See below for a complete reference.</p>
-<h4 class="help">Add Smileys:</h4>
+<h4 class="help">Add Smilies:</h4>
 <p>Personalize your post by adding an emoticon, or smiley. Just click on the one you want and YaBB will automatically put it in your post.</p>
 <h4 class="help">Attach:</h4>
-<p>If the Administrator allows, you may be able to add a file to your post by clicking on the &quot;Browse&quot; button to find the file on your hard drive to upload. Pay attention to the allowed file types and maximum file size.</p>
+<p>If the Administrator allows, you may be able to add a file to your post by clicking on the &#8220;Browse&#8221; button to find the file on your hard drive to upload. Pay attention to the allowed file types and maximum file size.</p>
 <h4 class="help">Post:</h4>
-<p>This button does exactly what you would expect. Press the &quot;Post&quot; button if you're ready for the community to view your message.</p>
+<p>This button does exactly what you would expect. Press the &#8220;Post&#8221; button if you're ready for the community to view your message.</p>
 ~;
 #############################################
 
@@ -26,7 +26,7 @@ $SectionBody1 = qq~After you have registered an account, you will have the abili
 ### Section 2
 #############################################
 $SectionSub2 = "Replying_to_a_Post";
-$SectionBody2 = qq~<p>In addition to posting new topics, you can also reply to existing posts or topics quickly and easily. When you find a topic you would like to comment on, look for the button or link titled &quot;Reply&quot; or &quot;Quote&quot;. Using &quot;Reply&quot; will take you to a post page much like the one described above. Quote does exactly he same thing, however, it will add what another user has said to your post in a special box like you see below.</p>
+$SectionBody2 = qq~<p>In addition to posting new topics, you can also reply to existing posts or topics quickly and easily. When you find a topic you would like to comment on, look for the button or link titled &#8220;Reply&#8221; or &#8220;Quote&#8221;. Using &#8220;Reply&#8221; will take you to a post page much like the one described above. Quote does exactly he same thing, however, it will add what another user has said to your post in a special box like you see below.</p>
 [yabbc][quote]This is a quote[/quote][/yabbc]
 ~;
 #############################################
@@ -35,7 +35,7 @@ $SectionBody2 = qq~<p>In addition to posting new topics, you can also reply to e
 ### Section 3
 #############################################
 $SectionSub3 = "Posting_a_Poll";
-$SectionBody3 = qq~<p>If you have a question you would like to ask this community, YaBB gives you the ability to create a poll along with your topic. This is a fantastic way to get a good idea of what this community feels about your question. To post a poll, find the button titled &quot;Start New Poll&quot; from the category view and click it. The exact location of this button will vary depending on which template is being used, but it is often near the top of the list of topics. On this special post page, type in your question and options in the respectively labeled box, then fill out your message as described above.</p>
+$SectionBody3 = qq~<p>If you have a question you would like to ask this community, YaBB gives you the ability to create a poll along with your topic. This is a fantastic way to get a good idea of what this community feels about your question. To post a poll, find the button titled &#8220;Start New Poll&#8221; from the category view and click it. The exact location of this button will vary depending on which template is being used, but it is often near the top of the list of topics. On this special post page, type in your question and options in the respectively labeled box, then fill out your message as described above.</p>
 ~;
 #############################################
 

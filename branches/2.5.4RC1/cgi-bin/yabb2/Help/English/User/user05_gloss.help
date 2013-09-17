@@ -27,6 +27,8 @@ $SectionBody1 = qq~YaBB has many descriptive terms that refer to its component p
 	<dd>The second major subject grouping in your forum, a division of Categories. Boards are where a collection of Topics where users discuss specific subjects.</dd>
 	<dt><b>Board Index</b></dt>
 	<dd>This is the .template file that displays the listing of Categories and Boards on the forum's main or home page.</dd> 
+	<dt><b>Board Moderator</b></dt>
+	<dd>This is a member who is given power to regulate posts one or more Boards. Board Moderators are assigned by editing each Board and assigning a member or group as that Board's Moderator.</dd> 
 	<dt><b>Board Permissions</b></dt>
 	<dd>These are options available for each individual Board that let's the Administrator choose which users will be allowed access to the board itself or to functions in the board. An example would be a Board that set up so a member user can view it but not post in it.</dd>
 	<dt><b>Broadcast Message</b></dt>
@@ -93,15 +95,15 @@ $SectionBody1 = qq~YaBB has many descriptive terms that refer to its component p
 	<dt><b>MOD or Modification</b></dt>
 	<dd>A feature that is not included in the Basic YaBB Forum software installation. Modifications can include everything from a simple change in the program code up to a packaged MOD, which adds or changes features or the behavior of your forum. Modification can be done manually using a text editor or by using the BoardMOD program, which installs the changes within YaBB script files automatically for you. Please visit the <a href="http://www.boardmod.org" target = "_blank">BoardMOD homepage</a> and FAQ for more details.<br /><br />Please ask all support questions regarding MODs or the BoardMOD program on the <a href="http://www.boardmod.org" target = "_blank">BoardMOD Forum</a>.</dd> 
 	<dt><b>Moderator</b></dt>
-	<dd>This is a member who is given power to regulate posts one or more Boards. Moderators are assigned by editing each Board and assigning a member or group as that Board's Moderator.</dd> 
+	<dd>See 'Board Moderator'.</dd>
 	<dt><b>Moderator Group</b></dt>
-	<dd>This is one or more member groups that are assigned in the Edit Boards screen to be Moderators in one or more Boards. Instead of promoting a single user and having to add them as a Moderator in many different Boards, you can create a member group and assign that group to be the Board's Moderators. Then, should you need to add a new Moderator, all you have to do is add them to the member group chosen to moderate instead of editing multiple Boards.</dd>
+	<dd>This is one or more member groups that are assigned in the Edit Boards screen to be Board Moderators in one or more Boards. Instead of promoting a single user and having to add them as a Board Moderator in many different Boards, you can create a member group and assign that group to be the Board's Moderators. Then, should you need to add a new Board Moderator, all you have to do is add them to the member group chosen to moderate instead of editing multiple Boards.</dd>
 </dl><dl>
 	<dd class="help_dd"><b>P</b></dd>
 	<dt><b>Personal Message Pop-Up</b></dt>
 	<dd>A user-selectable option that opens a small pop-up window telling you that you have received a new PM and an option link to view your new message now.</dd>
 	<dt><b>Poll</b></dt>
-	<dd>A type of survey that can be used in the forum, consisting of a question, list of choosable answers, and graphic display of the results.</dd> 
+	<dd>A type of survey that can be used in the forum, consisting of a question, list of selectable answers, and graphic display of the results.</dd> 
 	<dt><b>Post</b></dt>
 	<dd>A singular message from one user that contains the actual text or content. A Post can be a New Topic post, or a Reply to an existing post.</dd>
 	<dt><b>Post Dependent Member Group</b></dt>
@@ -141,8 +143,10 @@ $SectionBody1 = qq~YaBB has many descriptive terms that refer to its component p
 	<dd>This is a section that shows up at the bottom of each user's post. A signature can contain an image, text, or a combination of both. Signatures can be created by each user in their Profile - Options page.</dd>
 	<dt><b>Smilies</b></dt>
 	<dd>Everyone knows what a Smiley is. [yabbc][img]$imagesdir/wink.gif[/img][/yabbc]<br /><br />Just click on the smiley to add it to your post.</dd>
+	<dt><b>Staff</b></dt>
+	<dd>A member of the Forum's administrative staff: Forum Administrator, Global Moderator, Forum Moderator, Board Moderator, or member of a Moderator Group. Staff privileges are set by the Forum Administrator.</dd>
 	<dt><b>Sticky Topic</b></dt>
-	<dd>A Topic that is placed by a Moderator or an Admin above the normal list of Topics in a Board. Sticky Topics will remain above all other Topics in the list to give increased importance to a given subject.</dd> 
+	<dd>A Topic that is placed by a Staff member above the normal list of Topics in a Board. Sticky Topics will remain above all other Topics in the list to give increased importance to a given subject.</dd> 
 	<dt><b>Style Sheet</b></dt>
 	<dd>This is the .css file that controls the style elements for your forum. Template colors, text size and color, backgrounds, and some graphics all come from the style sheet.</dd>
 </dl><dl>

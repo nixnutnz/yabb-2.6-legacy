@@ -5,9 +5,9 @@ $SectionName = "User_CP_and_Profile";
 $SectionSub1 = "User_CP";
 $SectionBody1 = qq~YaBB's User CP (User Control Panel) is a combination of your user profile with Buddy List, Personal
 Messaging, Notifications, and Favorites.
-<p>When you enter the 'User CP', you have multiple choices of what to do:</p>
+<p>When you enter the &#8220;User CP&#8221;, you have multiple choices of what to do:</p>
 <ul>
-	<li>Above the left side pane, you see a tabbed menu containing 'Messages', 'Profile' and 'Posts'.</li>
+    <li>Above the left side pane, you see a tabbed menu containing &#8220;Messages&#8221;, &#8220;Profile&#8221; and &#8220;Posts&#8221;.</li>
 	<li>In <b>Messages</b>, you are controlling all of your personal messages, you can sort them in your folders (if enabled) or send new messages as well as search for a particular message.</li>
 	<li>In <b>Profile</b>, you can view your Profile's appearance and edit its contents. With the 'Buddy List' you can quickly check your friends' online status, send messages to them, and check their details.</li>
 	<li>In <b>Posts</b>, you can check &amp; update your Notifications and Favorites as well as consult your own latest posts.</li>
@@ -20,10 +20,10 @@ Messaging, Notifications, and Favorites.
 #############################################
 $SectionSub2 = "Profile_Overview";
 $SectionBody2 = qq~ YaBB allows you to fill out a profile which tells people about you. You can have your name, age, instant messenger information, personal avatar (picture), and more!
-<p><b>Step 1:</b> To change your Profile, click the "User_CP" option in the forum menu above. Then click "Profile" in the small tabbed
+<p><b>Step 1:</b> To change your Profile, click the &#8220;User_CP&#8221; option in the forum menu above. Then click &#8220;Profile&#8221; in the small tabbed
 menu below the main tabbed menu. This will bring you to the View Profile page.</p>
 <p><b>Step 2:</b> On your View Profile page, you will see several links that allow you access to each part of your user Profile, which is divided into five sections: Edit Profile, Contact Information, Options, Buddy List, and PM Preferences. Click the appropriate link to access that part of your profile.</p>
-<p><b>Step 3:</b> For security reasons, you will then be asked to enter your password. Do so, then click "Confirm Password".</p>
+<p><b>Step 3:</b> For security reasons, you will then be asked to enter your password. Do so, then click &#8220;Confirm Password&#8221;.</p>
 <p>You now have access to all of your account settings and options for this YaBB forum. Details on each of these settings are described below.</p>
 ~;
 #############################################
@@ -40,12 +40,12 @@ this YaBB forum.
 <h4 class="help">Name</h4>
 <p>This is your Displayed Name. This is your name that everyone will see throughout this YaBB forum.</p>
 <h4 class="help">Gender</h4>
-<p>If you want others to know your gender, you may pick "Male" or "Female" from this drop-down box.</p>
+<p>If you want others to know your gender, you may pick &#8220;Male&#8221; or &#8220;Female&#8221; from this drop-down box.</p>
 <h4 class="help">Birthday</h4>
-<p>If you would like others to see how old you are and have a special icon in your profile on your birthday, please enter it in DD (day), MM (month), YYYY (year) format. You may also be able to hide your birthyear and age from Guests and other members.</p>
+<p>If you would like others to see how old you are and have a special icon in your profile on your birthday, please enter it in DD (day), MM (month), YYYY (year) format. You may also be able to hide your birth-year and age from Guests and other members.</p>
 <h4 class="help">Location</h4>
 <p>Optional. This box is available for filling in information about where you live, where your from, or anything else you choose to have displayed in your Profile.</p>
-<p class="help_attn"><b><span class="underline">USER TIP:</span></b> Keep in mind that some Boards may contain an age or gender restriction for access. For example, if you don't enter an age in your profile, there will be no way to know if you should be allowed access to a Board that sets an age limit of over 21. Likewise with gender, if a Board is set up to allow Females only, you won't be allowed access if you don't enter Female as your gender in the Profile. In some cases the Admin may have chosen to make Gender and/or Birthdate mandatory and may limit how many times you may edit this information.</p>
+<p class="help_attn"><b><span class="underline">USER TIP:</span></b> Keep in mind that some Boards may contain an age or gender restriction for access. For example, if you don't enter an age in your profile, there will be no way to know if you should be allowed access to a Board that sets an age limit of over 21. Likewise with gender, if a Board is set up to allow Females only, you won't be allowed access if you don't enter Female as your gender in the Profile. In some cases the Admin may have chosen to make Gender and/or Birth-date mandatory and may limit how many times you may edit this information.</p>
 ~;
 #############################################
 
@@ -120,7 +120,7 @@ $SectionBody5 = qq~The Options section of your YaBB profile allows you to edit f
 <h4 class="help">Hide User Signatures in Threads</h4> 	
 <p>Checking this option will keep all member signatures from appearing when you are viewing a thread.</p>
 <h4 class="help">Hide Smilies row below the Post-Message-inputarea</h4>
-<p>Checking this option will keep the smilie images from appearing when you are posting a new topic or replying to a thread.</p>
+<p>Checking this option will keep the smiley images from appearing when you are posting a new topic or replying to a thread.</p>
 ~;
 #############################################
 
@@ -141,13 +141,13 @@ $SectionSub7 = "PM_Preferences";
 $SectionBody7 = qq~This section of your profile gives you the ability to customize how you view and receive Personal Messages from other community members.
 <p class="help_attn"><b><span class="underline">USER TIP:</span></b> Keep in mind that Personal Messaging is an optional feature and will only be available if the Administrator chooses to enable it.  Likewise, some of the options listed below that are underlined may not be seen in your PM Preferences list because they are also optional at the Administrator's discretion and may be disabled.</p>
 <h4 class="help">Ignorelist</h4>
-<p>This function allows you to ignore other members by preventing you from viewing any personal messages they send. Additionally, you are given a checkbox option to disable all PMs if you wish.</p>
+<p>This function allows you to ignore other members by preventing you from viewing any personal messages they send. Additionally, you are given a check-box option to disable all PMs if you wish.</p>
 <h4 class="help">Notify Me of New PMs by e-mail:</h4>
 <p>If you would like an e-mail when a members sends you a personal message, this option allows you to enable that feature.</p>
-<h4 class="help">Enable Personal Message Popup?</h4>
-<p>Checking this box will display a small popup window to notify you of any new Personal Messages. If <span class="underline">not</span> checked, you will see new messages in the "greeting" at the top of the forum in this format: You have X message&#40;s&#41;, and Y new message&#40;s&#41;.</p>
-<h4 class="help">PM Popup shows PMs in new Window?</h4>
-<p>If you have PM Popups enabled, checking this box will open your PMs in a new window when you click on the link in the popup window, otherwise, it will load in the current one.</p>
+<h4 class="help">Enable Personal Message Pop-up?</h4>
+<p>Checking this box will display a small pop-up window to notify you of any new Personal Messages. If <span class="underline">not</span> checked, you will see new messages in the &#8220;greeting&#8221; at the top of the forum in this format: You have X message&#40;s&#41;, and Y new message&#40;s&#41;.</p>
+<h4 class="help">PM Pop-up shows PMs in new Window?</h4>
+<p>If you have PM Pop-ups enabled, checking this box will open your PMs in a new window when you click on the link in the pop-up window, otherwise, it will load in the current one.</p>
 <h4 class="help">View Message Text In List View of Personal Messages?:</h4>
 <p>Checking the box enables viewing the first line of message text in list views. To view only the sender/recipient and date etc., leave this box unchecked.</p>
 ~;

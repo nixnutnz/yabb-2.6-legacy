@@ -35,7 +35,7 @@ $SectionBody2 = qq~<p>In the making of YaBB 2.2, we have done an overhaul to the
 		<br />To make it a bit harder for malicious bots entering your forum, use the captcha (visual confirmation, see <a href="http://en.wikipedia.org/wiki/Captcha" title="Captcha in Wikipedia" target="_blank">this article in Wikipedia</a>, but be careful, it is possible that some human users find it hard to use.
 	</li>
 	<li><b>Broadcast messages</b>
-		<br />Communicate with your forum staff with Broadcast Messages and send messages on group level (moderators, moderator groups, global moderators and admins).
+		<br />Communicate with your forum staff with Broadcast Messages and send messages on group level (moderators, moderator groups, forum moderators, global moderators, and admins).
 	</li>
 </ul>
 <p>Then there are some smaller additions in the forum settings and in 'Referrer security' which won't be further explained here but may appear as useful for you to go through.</p>
@@ -69,7 +69,7 @@ $SectionBody3 = qq~<p>These are some completely new features to YaBB 2.3 that we
 		</ul>
 	</li>
 	<li><b>Preselected Smilies</b>
-		<br />Allows the Admin to select which Smilie will be shown in the More Smilies block beside the Post and PM windows.
+		<br />Allows the Admin to select which Smiley will be shown in the More Smilies block beside the Post and PM windows.
 	</li>
 	<li><b>Showcase Poll</b>
 		<br />Allows one poll selected by Admins/GMods to show at the top of the Board Index.
@@ -133,8 +133,8 @@ $SectionBody4 = qq~<p>These are some completely new features to YaBB 2.5.2 that 
 			<li><b>Minimum number of posts a member must have before links and images can be posted</b>
 				<br />The Admin can set the minimum number of posts required to place links and/or images in posts, signatures and user profiles. This is to prevent spammers from registering and immediately posting links and images.
 			</li>
-			<li><b>No email on declined membership option</b>
-				<br />The Admin now has the option as to whether or not to send the default 'declined membership' email when using Admin Approval for memberships and removing a registration from the Registration Log screen. Why use your bandwidth sending rejection notices to email addresses that are probably bogus anyway?
+			<li><b>No e-mail on declined membership option</b>
+				<br />The Admin now has the option as to whether or not to send the default 'declined membership' e-mail when using Admin Approval for memberships and removing a registration from the Registration Log screen. Why use your bandwidth sending rejection notices to e-mail addresses that are probably bogus anyway?
 			</li>
 		</ul>
 	</li>
@@ -157,7 +157,7 @@ $SectionBody5 = qq~<p>These are some completely new features to YaBB 2.5.4 that 
 		<br />The admin can create specific rules for individual boards using html coding.
 	</li>
 	<li><b>Password Protected Boards</b>
-		<br />The admin can Password protect specific boards. Password protected boards can only be viewed by members.
+		<br />The admin can Password protect specific boards. Password protected boards can only be viewed by members who also have the password.
 	</li>
 	<li><b>External-link Boards</b>
 		<br />The admin can create boards that are actually links to other places. YaBB keeps track of how many times the link redirects users to the link's target.

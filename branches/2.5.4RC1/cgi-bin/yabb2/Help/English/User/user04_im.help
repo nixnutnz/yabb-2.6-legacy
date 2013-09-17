@@ -6,7 +6,7 @@ $SectionSub1 = "Personal_Messaging";
 $SectionBody1 = qq~<p>YaBB is about community and communication. And there are plenty of ways to communicate: Posting on the boards, Personal Messaging, e-mail, ICQ, AIM, YIM, SKYPE/VoIP, and Gtalk. Of course, all methods of communication are only available to registered members. An exception is when the Forum Staff decides to allow guests to post on one or more boards. If unregistered members &#40;Guests&#41; are allowed to post, they still cannot view the Member List nor send Personal Messages &#40;See exception below&#41;.</p>
 <h4 class="help">Personal Messages</h4>
 <p>While e-mail is a good way to correspond privately with members, it has several drawbacks: You must open your e-mail application to write and send the message; the recipient must open his/her e-mail application; check his/her mail and your message will mixed in with all the other mail and it can take sometimes several minutes to an hour for mail to reach the recipient.</p>
-<p>As an alternative to e-mail, YaBB offers a faster, more private method. Personal Messaging on the forum provides instantaneous delivery to the recipient's private mailbox. The PM is sent and received entirely through YaBB, so neither you nor the recipient have to open another program or leave YaBB. Personal Messaging also gives both the sender and recipient greater privacy: no one's real e-mail address is involved or revealed. Personal Messages show only the username and name of both parties.</p>
+<p>As an alternative to e-mail, YaBB offers a faster, more private method. Personal Messaging on the forum provides instantaneous delivery to the recipient's private mailbox. The PM is sent and received entirely through YaBB, so neither you nor the recipient have to open another program or leave YaBB. Personal Messaging also gives both the sender and recipient greater privacy: no one's real e-mail address is involved or revealed. Personal Messages show only the screen name of both parties.</p>
 <p>YaBB offers an option for Administrators to allow Guests to send an Alert to the Moderator of a Board if there is a problem. If this is enabled, the Moderators of the Board will receive a PM but will not be able to reply except by sending an e-mail to the Guest.</p>
 <p class="help_attn"><b><span class="underline">USER TIP:</span></b> Allowing Guests to post on your forum or send PMs poses risks, such as spam or worse being posted or sent in PMs. To reduce this risk, we highly recommend the Administrator use the option available in the Security Settings to require a Validation Code and/or a Validation Question for any Guest action &#40;Post, PM, Alert&#41;.</p>
 <p>Another option the Administrator can enable is allowing Personal Messages to be sent as copies similar to e-mails.  If enabled, you can send carbon copies (cc) and blind carbon copies (bcc) and the recipients may also respond directly to other original recipients.</p>
@@ -24,14 +24,14 @@ $SectionBody2 = qq~<p>YaBB allows Forum Staff the capability to communicate with
 <ul>
 	<li>Administrators</li>
 	<li>Administrators and Global Moderators</li>
-	<li>Administrators, Global Moderators, Forum Moderators, and Moderators</li>
+	<li>Administrators, Global Moderators, Forum Moderators, and Board Moderators</li>
 </ul>
 <p>Those allowed Broadcast Message permission can send BMs to the following recipients:</p>
 <ul>
 	<li>Administrators</li>
 	<li>Global Moderators</li>
 	<li>Forum Moderators</li>
-	<li>Moderators and all members of member groups assigned as Moderators</li>
+	<li>Board Moderators and all members of member groups assigned as Moderators</li>
 	<li>All forum members</li>
 	<li>Any combination of the above</li>
 </ul>
