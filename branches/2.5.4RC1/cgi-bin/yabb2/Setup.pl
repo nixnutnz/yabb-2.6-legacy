@@ -1680,7 +1680,7 @@ sub SetInstall2 {
 
 # Standard Calendar Setting
 \$Show_EventCal = 0;
-\$Event_TodayColor = '#ff000';
+\$Event_TodayColor = '#ff0000';
 \$Delete_EventsUntil = 0;
 \$DisplayEvents = 0;
 \$CalShortEvent = 0;
