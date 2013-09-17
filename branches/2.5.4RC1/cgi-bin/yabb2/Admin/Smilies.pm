@@ -72,7 +72,7 @@ sub SmiliePanel {
   <col class="w_10pc" />
   <col span="2" class="w_5pc" />
   <tr>
-    <td class="titlebg" colspan="8" style="height:22px">&nbsp;<img src="$imagesdir/grin.gif" alt="" />&nbsp;$smiltxt{'3'}<br /></td>
+    <td class="titlebg" colspan="8" style="height:22px">&nbsp;<img src="$imagesdir/grin.gif" alt="" /><b>&nbsp;$smiltxt{'3'}</b><br /></td>
   </tr><tr>
     <td class="windowbg2" colspan="4"><label for="removenormalsmilies">$smiltxt{'24'}</label></td>
     <td class="windowbg2" colspan="4"><input type="checkbox" name="removenormalsmilies" id="removenormalsmilies" value="1"$remnosmi /></td>
@@ -151,7 +151,7 @@ sub SmiliePanel {
         </script>
     </td> 
   </tr><tr>
-      <td class="titlebg" colspan="8">&nbsp;<img src="$imagesdir/grin.gif" alt="" />&nbsp;$asmtxt{'11'}</td>
+      <td class="titlebg" colspan="8">&nbsp;<img src="$imagesdir/grin.gif" alt="" /><b>&nbsp;$asmtxt{'11'}</b></td>
   </tr><tr>
     <td class="catbg center small">$smiltxt{'22'}</td>
     <td class="catbg center small">$asmtxt{'02'}</td>
@@ -209,7 +209,7 @@ qq~<a href="$adminurl?action=smiliemove;index=$i;movedown=1"><img src="$imagesdi
     }
     my $added_smilies = $i;
     $yymain .= qq~<tr>
-    <td class="titlebg" colspan="8">&nbsp;<img src="$imagesdir/grin.gif" alt="" />&nbsp;$asmtxt{'08'}</td>
+    <td class="titlebg" colspan="8">&nbsp;<img src="$imagesdir/grin.gif" alt="" /><b>&nbsp;$asmtxt{'08'}</b></td>
   </tr><tr>
     <td class="windowbg2 center">&nbsp;</td>
     <td class="windowbg2 center"><input type="text" name="scd[$i]" /></td>
@@ -237,7 +237,7 @@ qq~<a href="$adminurl?action=smiliemove;index=$i;movedown=1"><img src="$imagesdi
   </tr>~;
 }            
             $yymain .= qq~<tr>
-    <td class="titlebg" colspan="8">&nbsp;<img src="$imagesdir/grin.gif" alt="" />&nbsp;$smiltxt{'2'}</td>
+    <td class="titlebg" colspan="8">&nbsp;<img src="$imagesdir/grin.gif" alt="" /><b>&nbsp;$smiltxt{'2'}</b></td>
   </tr><tr>
     <td class="catbg center small">$smiltxt{'22'}</td>
     <td class="catbg center small">$asmtxt{'02'}</td>
