@@ -21,6 +21,8 @@ LoadLanguage("BoardIndex");
 
 $outside_threadtools = qq~{yabb new post button}{yabb new poll button}~;
 $outside_ttsep = q~~;
+$my_ttsep = $menusep;
+
 
 $topichandellist = qq~{yabb notify button}{yabb markall button}~;
 if($threadtools) {

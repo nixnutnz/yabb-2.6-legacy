@@ -123,7 +123,8 @@ $mysearch_template9 = q~
 					</td>
 	</tr><tr>
 		<td class="windowbg2 vtop h_80px" colspan="2">
-		    <div class="message" style="float: left; width: 99%; overflow: auto;">{yabb message} {yabb my_ipfind}</div>
+		    <div class="message" style="float: left; width: 99%; overflow: auto;">{yabb message}</div>
+			<div style="float: left; width: 99%; overflow: auto;">{yabb my_ipfind}</div>
 		</td>
 	</tr>
 </table><br />~;

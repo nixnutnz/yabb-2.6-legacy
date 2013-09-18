@@ -31,14 +31,15 @@ $my_blank_avatar = 'blank.gif';
 $nn_avatar = 'nn.gif';
 $disp_email = 'email.png';
 
-$outside_threadtools = qq~{yabb reply}~;
+$outside_threadtools = qq~{yabb reply}{yabb poll}~;
 $outside_ttsep = q~~;
+$my_ttsep = $menusep;
 
 $threadhandellist = qq~
-      {yabb poll}{yabb notify}{yabb favorite}{yabb sendtopic}{yabb print}{yabb markunread}
+      {yabb notify}{yabb favorite}{yabb sendtopic}{yabb print}{yabb markunread}
 ~;
 $threadhandellist2 = qq~
-    {yabb poll}{yabb notify2}{yabb favorite2}{yabb sendtopic}{yabb print}{yabb markunread}
+    {yabb notify2}{yabb favorite2}{yabb sendtopic}{yabb print}{yabb markunread}
 ~;
 
 if($threadtools) {
