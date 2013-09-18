@@ -563,7 +563,7 @@ sub plushSearch2 {
                 if ( $search_ip && !$msgfound && !$subfound ) {
                     $ipfound   = 0;
                     @mip       = split / /sm, $mip;
-                    $mip       = q~~;
+                    $my_mip       = q~~;
                     $mip_class = q~~;
                     foreach (@mip) {
                         if ( $_ =~ /\b$search_ip/sm ) {
@@ -573,11 +573,24 @@ sub plushSearch2 {
                             if ( $_ =~ /\b$search_ip/sm ) {
                                 $mip_class = ' highlight';
                             }
-                            $mip .=
+                            $my_mip .=
 qq~<a href="$scripturl?action=iplookup;ip=$_"><span class="small$mip_class">$_</span></a> ~;
                         }
                         else {
-                            $mip .= qq~<span class="small$mip_class">$_</span> ~;
+                            $my_mip .= qq~<span class="small$mip_class">$_</span> ~;
+                        }
+                    }
+                }
+                else {
+                    @mip       = split / /sm, $mip;
+                    $my_mip    = q~~;
+                    foreach (@mip) {
+                        if ( $ipLookup ) {
+                            $my_mip .=
+qq~<a href="$scripturl?action=iplookup;ip=$_"><span class="small">$_</span></a> ~;
+                        }
+                        else {
+                            $my_mip .= qq~<span class="small">$_</span> ~;
                         }
                     }
                 }
@@ -709,16 +722,6 @@ qq~$menusep<a href="$scripturl?action=multidel;recent=1;thread=$tnum;del$c=$c" o
             || $iamfmod
             || $iamgmod && $gmod_access2{'ipban2'} eq 'on' )
         {
-            @my_mip       = split / /sm, $mip;
-            foreach (@my_mip) {
-                if ( $ipLookup ) {
-                    $my_mip .=
-qq~<a href="$scripturl?action=iplookup;ip=$_"><span class="small">$_</span></a> ~;
-                }
-                else {
-                    $my_mip .= qq~<span class="small">$_</span> ~;
-                }
-            }
             $my_ipfind = $mysearch_template10;
             $my_ipfind =~ s/{yabb mip}/$my_mip/sm;
         }

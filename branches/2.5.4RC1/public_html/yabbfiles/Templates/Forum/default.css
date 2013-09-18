@@ -2225,3 +2225,9 @@ padding-left: 0.5em;
 vertical-align: middle;
 height:15px;
 }
+
+div.ipfind a {
+color: #3B5998;
+font-weight:400;
+text-decoration:none;
+}

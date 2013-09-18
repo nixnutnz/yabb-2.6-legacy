@@ -124,16 +124,14 @@ $mysearch_template9 = q~
 	</tr><tr>
 		<td class="windowbg2 vtop h_80px" colspan="2">
 		    <div class="message" style="float: left; width: 99%; overflow: auto;">{yabb message}</div>
-			<div style="float: left; width: 99%; overflow: auto;">{yabb my_ipfind}</div>
+			<div class="ipfind right" style="float: left; width: 99%; overflow: auto;">{yabb my_ipfind}</div>
 		</td>
 	</tr>
 </table><br />~;
 
 $mysearch_template10 = qq~ 
 		        <hr class="hr" />
-		        <div class="small" style="float: right; text-align: right;">
 		            <img src="$imagesdir/$disp_ip" alt="" />{yabb mip}
-		        </div>
 ~;
 
 $mysearch_PM = qq~
