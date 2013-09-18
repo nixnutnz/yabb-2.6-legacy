@@ -1780,6 +1780,7 @@ color: #ff0000;
 h4.help  {
 text-decoration:underline;
 margin-bottom:0;
+cursor:default;
 }
 
 .navmenu  {
