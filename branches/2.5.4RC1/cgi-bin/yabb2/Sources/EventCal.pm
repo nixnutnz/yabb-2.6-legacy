@@ -1696,7 +1696,7 @@ qq~$scripturl?action=eventcal;calshow=1;calmon=$FORM{'selmon'};calyear=$FORM{'se
 ## Delete old events ##
 
 sub del_old_events {
-    return if $Delete_EventsUntil < 1;
+    return if !$Delete_EventsUntil;
 
     my $caltoday = $Delete_EventsUntil;
     if ( $caltoday == 1 ) {

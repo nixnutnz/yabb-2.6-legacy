@@ -1560,15 +1560,21 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
     $topichandellist =~ s/({|<)yabb new poll button(}|>)/$polllink$tool_sep/gsm;
     $topichandellist =~ s/\Q$menusep//ism;
 
-    if ( !$threadtools ) { $outside_ttsep = q{}; }
+    if ( !$threadtools ) { $outside_ttsep = $my_ttsep; $inside_ttsep = q{};}
+	else { $outside_ttsep = q{}; $inside_ttsep = $my_ttsep; }
     $outside_threadtools =~
-      s/({|<)yabb notify button(}|>)/$notify_board$outside_ttsep/gsm;
+      s/({|<)yabb notify button(}|>)/$inside_ttsep$notify_board$outside_ttsep/gsm;
     $outside_threadtools =~
-      s/({|<)yabb markall button(}|>)/$markalllink$outside_ttsep/gsm;
+      s/({|<)yabb markall button(}|>)/$inside_ttsep$markalllink$outside_ttsep/gsm;
     $outside_threadtools =~
-      s/({|<)yabb new post button(}|>)/$postlink$outside_ttsep/gsm;
+      s/({|<)yabb new post button(}|>)/$inside_ttsep$postlink$outside_ttsep/gsm;
     $outside_threadtools =~
-      s/({|<)yabb new poll button(}|>)/$polllink$outside_ttsep/gsm;
+      s/({|<)yabb new poll button(}|>)/$inside_ttsep$polllink$outside_ttsep/gsm;
+	if ($threadtools) {
+        $outside_threadtools =~ s/\Q$my_ttsep//ism;}
+	else {
+        $outside_threadtools =~ s/\Q$menusep//ism;
+	}
 
     if ( !$threadtools ) {
         $topichandellist     = $outside_threadtools . $topichandellist;

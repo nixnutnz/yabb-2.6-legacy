@@ -1639,16 +1639,18 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
     $threadhandellist2 =~
       s/({|<)yabb sendtopic(}|>)/$template_sendtopic$tool_sep/gsm;
     $threadhandellist2 =~ s/({|<)yabb print(}|>)/$template_print$tool_sep/gsm;
-    $threadhandellist2 =~ s/\Q$menusep//ism;
+    $threadhandellist2 =~ s/\Q$menusep//ixsm;
 
-    if ( !$threadtools ) { $outside_ttsep = q{}; }
-    $outside_threadtools =~ s/({|<)yabb markunread(}|>)/$mark_unread/gsm;
-    $outside_threadtools =~ s/({|<)yabb reply(}|>)/$replybutton/gsm;
-    $outside_threadtools =~ s/({|<)yabb poll(}|>)/$pollbutton/gsm;
-    $outside_threadtools =~ s/({|<)yabb notify(}|>)/$notify/gsm;
-    $outside_threadtools =~ s/({|<)yabb favorite(}|>)/$template_favorite/gsm;
-    $outside_threadtools =~ s/({|<)yabb sendtopic(}|>)/$template_sendtopic/gsm;
-    $outside_threadtools =~ s/({|<)yabb print(}|>)/$template_print/gsm;
+   if ( !$threadtools ) { $outside_ttsep = $my_ttsep; $inside_ttsep = q{};}
+    else { $outside_ttsep = q{}; $inside_ttsep = $my_ttsep; }
+    $outside_threadtools =~ s/({|<)yabb markunread(}|>)/$inside_ttsep$mark_unread$outside_ttsep/gsm;
+    $outside_threadtools =~ s/({|<)yabb reply(}|>)/$inside_ttsep$replybutton$outside_ttsep/gsm;
+    $outside_threadtools =~ s/({|<)yabb poll(}|>)/$inside_ttsep$pollbutton$outside_ttsep/gsm;
+    $outside_threadtools =~ s/({|<)yabb notify(}|>)/$inside_ttsep$notify$outside_ttsep/gsm;
+    $outside_threadtools =~ s/({|<)yabb favorite(}|>)/$inside_ttsep$template_favorite$outside_ttsep/gsm;
+    $outside_threadtools =~ s/({|<)yabb sendtopic(}|>)/$inside_ttsep$template_sendtopic$outside_ttsep/gsm;
+    $outside_threadtools =~ s/({|<)yabb print(}|>)/$inside_ttsep$template_print$outside_ttsep/gsm;
+    $outside_threadtools =~ s/\Q$menusep//ixsm;
     if ( !$threadtools ) {
         $threadhandellist    = $outside_threadtools . $threadhandellist;
         $threadhandellist2   = $outside_threadtools . $threadhandellist2;

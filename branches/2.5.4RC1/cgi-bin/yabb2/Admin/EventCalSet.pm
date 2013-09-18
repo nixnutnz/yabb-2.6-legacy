@@ -177,7 +177,7 @@ sub EventCalSet {
                     </td>
                 </tr><tr>
                     <td class="windowbg2"><label for="Delete_EventsUntil">$event_cal{'52'}</label></td>
-                    <td class="windowbg2"><input type="checkbox" name="Delete_EventsUntil" id="Delete_EventsUntil" value='1' $chkDelete_EventsUntil /></td>
+                    <td class="windowbg2"><input type="checkbox" name="Delete_EventsUntil" id="Delete_EventsUntil" value="1" $chkDelete_EventsUntil /></td>
                 </tr><tr>
                     <td class="catbg" colspan="2"><span class="small">$event_cal{'23'}</span></td>
                 </tr><tr>
