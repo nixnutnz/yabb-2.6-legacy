@@ -1570,11 +1570,9 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
       s/({|<)yabb new post button(}|>)/$inside_ttsep$postlink$outside_ttsep/gsm;
     $outside_threadtools =~
       s/({|<)yabb new poll button(}|>)/$inside_ttsep$polllink$outside_ttsep/gsm;
-	if ($threadtools) {
-        $outside_threadtools =~ s/\Q$my_ttsep//ism;}
-	else {
+
         $outside_threadtools =~ s/\Q$menusep//ism;
-	}
+        $outside_threadtools =~ s/\Q$my_ttsep//ism;
 
     if ( !$threadtools ) {
         $topichandellist     = $outside_threadtools . $topichandellist;
