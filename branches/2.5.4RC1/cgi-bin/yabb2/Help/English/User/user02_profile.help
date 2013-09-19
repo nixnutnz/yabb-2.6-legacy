@@ -19,7 +19,7 @@ $SectionBody1 = qq~YaBB's User CP (User Control Panel) is a combination of your 
 #############################################
 $SectionSub2 = "Profile_Overview";
 $SectionBody2 = qq~ YaBB allows you to fill out a profile which tells people about you. You can have your name, age, instant messenger information, personal avatar (picture), and more!
-<p><b>Step 1:</b> To change your Profile, click the &#8220;User_CP&#8221; option in the forum menu above. Then click &#8220;Profile&#8221; in the small tabbed
+<p><b>Step 1:</b> To change your Profile, click the &#8220;User CP&#8221; option in the forum menu above. Then click &#8220;Profile&#8221; in the small tabbed
 menu below the main tabbed menu. This will bring you to the View Profile page.</p>
 <p><b>Step 2:</b> On your View Profile page, you will see several links that allow you access to each part of your user Profile, which is divided into five sections: Edit Profile, Contact Information, Options, Buddy List, and PM Preferences. Click the appropriate link to access that part of your profile.</p>
 <p><b>Step 3:</b> For security reasons, you will then be asked to enter your password. Do so and then click &#8220;Confirm Password&#8221;.</p>

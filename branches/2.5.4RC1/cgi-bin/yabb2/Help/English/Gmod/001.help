@@ -10,7 +10,7 @@ $SectionBody1 = qq~<p>A Global Moderator is an Administrator-like position. You 
 <p>The following images of the Moderator Menu are provided for reference.</p>
 <p>{yabb mymoding}</p>
 <p>You may use the menu on the left to quickly jump to any topic below.</p>
-<p>You may use this <img src="$imagesdir/$top_img" alt="Back to Top" title="Back to Top" class="cursor" /> button at the bottom right of each Help section to return to the top of the Global Moderator Help page</p>
+<p>You may use this <img src="$top_img" alt="Back to Top" title="Back to Top" class="cursor" /> button at the bottom right of each Help section to return to the top of the Global Moderator Help page</p>
 ~;
 #############################################
 

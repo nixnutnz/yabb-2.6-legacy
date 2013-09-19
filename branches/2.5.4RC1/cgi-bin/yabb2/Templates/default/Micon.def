@@ -13,6 +13,8 @@
 ###############################################################################
 
 $admin_images = "$yyhtml_root/Templates/Admin/default";
+$my_blank_avatar = 'blank.gif';
+$nn_avatar = 'nn.gif';
 
 %micon = (
 'pollicon' => qq~<img src="$imagesdir/poll_open.gif" alt="$img_polltxt{'44'}" />~,
@@ -64,39 +66,49 @@ $admin_images = "$yyhtml_root/Templates/Admin/default";
 'lockimg' => qq~<img src="$imagesdir/lockclose_001.png" alt="$maintxt{'900pd'}" title="$maintxt{'900pd'}"/>~,
 'lockopen_sub' => qq~<img src="$imagesdir/lockopen_sub.png" alt="$maintxt{'900pd'}" title="$maintxt{'900pd'}" />~,
 'lockimg_sub' => qq~<img src="$imagesdir/lockclose_sub.png" alt="$maintxt{'900pd'}" title="$maintxt{'900pd'}"/>~,
+'addfav' => qq~<img src="$imagesdir/addfav.png" alt="$img_txt{'70'}" title="$img_txt{'70'}" />~,
 );
 
 %micon_bg = (
-'xx' => qq~$imagesdir/xx.gif~,
-'exclamation' => qq~$imagesdir/exclamation.png~,
-'thumbup' => qq~$imagesdir/thumbup.gif~,
-'thumbdown' => qq~$imagesdir/thumbdown.gif~,
-'question' => qq~$imagesdir/question.png~,
-'lamp' => qq~$imagesdir/lamp.gif~,
-'smiley' => qq~$imagesdir/smiley.gif~,
-'angry' => qq~$imagesdir/angry.gif~,
-'cheesy' => qq~$imagesdir/cheesy.gif~,
-'grin' => qq~$imagesdir/grin.gif~,
-'sad' => qq~$imagesdir/sad.gif~,
-'wink' => qq~$imagesdir/wink.gif~,
-'hide' => qq~$imagesdir/hide.gif~,
-'locked' => qq~$imagesdir/locked.gif~,
-'sticky' => qq~$imagesdir/sticky.gif~,
-'standard' => qq~$imagesdir/standard.gif~,
-'confidential' => qq~$imagesdir/confidential.gif~,
-'urgent' => qq~$imagesdir/exclamation.png~,
-'stickylock' => qq~$imagesdir/stickylock.gif~,
-'hidesticky' => qq~$imagesdir/hidesticky.gif~,
-'hidelock' => qq~$imagesdir/hidelock.gif~,
-'hidestickylock' => qq~$imagesdir/hidestickylock.gif~,
-'announcementlock' => qq~$imagesdir/announcementlock.gif~,
-'veryhotthread' => qq~$imagesdir/veryhotthread.gif~,
-'hotthread' => qq~$imagesdir/hotthread.gif~,
-'thread' => qq~$imagesdir/thread.gif~,
-'locked_moved' => qq~$imagesdir/locked_moved.gif~,
-'tabsave' => qq~$imagesdir/tabsave.gif~,
-'noimg' => qq~$imagesdir/noimg.gif~,
+'admin_move' => qq~$imagesdir/admin_move.gif~,
+'admin_rem' => qq~$imagesdir/admin_rem.gif~,
 'alert' => qq~$imagesdir/alert.png~,
+'angry' => qq~$imagesdir/angry.gif~,
+'announcementlock' => qq~$imagesdir/announcementlock.gif~,
+'announcementlock' => qq~$imagesdir/announcementlock.gif~,
+'boardrss' => qq~$imagesdir/boardrss.png~,
+'buddylist' => qq~$imagesdir/buddylist.gif~,
+'cheesy' => qq~$imagesdir/cheesy.gif~,
+'confidential' => qq~$imagesdir/confidential.gif~,
+'email' => qq~$imagesdir/email.png~,
+'exclamation' => qq~$imagesdir/exclamation.png~,
+'grin' => qq~$imagesdir/grin.gif~,
+'hide' => qq~$imagesdir/hide.gif~,
+'hidelock' => qq~$imagesdir/hidelock.gif~,
+'hidesticky' => qq~$imagesdir/hidesticky.gif~,
+'hidestickylock' => qq~$imagesdir/hidestickylock.gif~,
+'hotthread' => qq~$imagesdir/hotthread.gif~,
+'ip' => qq~$imagesdir/ip.gif~,
+'lamp' => qq~$imagesdir/lamp.gif~,
+'locked' => qq~$imagesdir/locked.gif~,
+'locked_moved' => qq~$imagesdir/locked_moved.gif~,
+'noimg' => qq~$imagesdir/noimg.gif~,
+'paperclip' => qq~$imagesdir/paperclip.gif~,
+'question' => qq~$imagesdir/question.png~,
+'rss' => qq~$imagesdir/rss.png~,
+'sad' => qq~$imagesdir/sad.gif~,
+'smiley' => qq~$imagesdir/smiley.gif~,
+'standard' => qq~$imagesdir/standard.gif~,
+'sticky' => qq~$imagesdir/sticky.gif~,
+'stickylock' => qq~$imagesdir/stickylock.gif~,
+'tabsave' => qq~$imagesdir/tabsave.gif~,
+'thread' => qq~$imagesdir/thread.gif~,
+'thumbdown' => qq~$imagesdir/thumbdown.gif~,
+'thumbup' => qq~$imagesdir/thumbup.gif~,
+'urgent' => qq~$imagesdir/exclamation.png~,
+'veryhotthread' => qq~$imagesdir/veryhotthread.gif~,
+'wink' => qq~$imagesdir/wink.gif~,
+'xx' => qq~$imagesdir/xx.gif~,
 );
 
 %att_img = (
@@ -182,6 +194,21 @@ $admin_images = "$yyhtml_root/Templates/Admin/default";
 'admin_rem' => qq~$imagesdir/admin_rem.gif~,
 'question' => qq~$imagesdir/question.png~,
 'reorder' => qq~$admin_images/reorder.gif~,
+);
+
+%index_togl = (
+'index_togl' => qq~$imagesdir/index_togl.png~,
+'index_left' => qq~$imagesdir/index_left.png~,
+'index_left0' => qq~$imagesdir/index_left0.png~,
+'index_right' => qq~$imagesdir/index_right.png~,
+'index_right0' => qq~$imagesdir/index_right0.png~,
+);
+
+%chrwarn = (
+'g0' => qq~$imagesdir/green0.gif~,
+'g1' => qq~$imagesdir/green1.gif~,
+'r0' => qq~$imagesdir/red0.gif~,
+'r1' => qq~$imagesdir/red1.gif~,
 );
 
 %newload = (

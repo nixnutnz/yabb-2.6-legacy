@@ -15,7 +15,7 @@ aim,aim|img_txt|aim|||imgwindowbg|gif|tmp
 alertmod,alert|img_txt|alertmodtext|img_txt|alertmod|imgwindowbg|png|tmp
 birthdaylist,birthdaylist|img_text|birthdaylist|||imgwindowbg||tmp
 closepoll,poll_lock|img_polltxt|21|||imgcatbg|gif|tmp
-collapse,collapse|img_txt|623|||imgcatbg|png|tmp
+collapse,collapse|img_txt|623|||imgwindowbg|png|tmp
 createpoll,poll_create|img_polltxt|1|||imgcatbg|gif|tmp
 del_notify,del_notify|img_txt|131d|||imgcatbg|gif|tmp
 delete,delete|img_txt|121|||imgwindowbg|gif|tmp
@@ -24,7 +24,7 @@ deletevote,poll_dvote|img_polltxt|43|||imgwindowbg|gif|tmp
 email,email|img_txt|69|||imgcatbg|png|tmp
 email_sm,email|img_txt|69|||imgwindowbg|png|tmp
 eventcal,eventcalicon|img_txt|eventcal|||imgmenu|gif|tmp
-expand,expand|img_txt|624|||imgcatbg|png|tmp
+expand,expand|img_txt|624|||imgwindowbg|png|tmp
 facebook,facebook|img_txt|facebook|||imgwindowbg|gif|tmp
 favorites,favorites|img_txt|70|||imgmenu|gif|tmp
 forward,forward|img_txt|forward|||imgwindowbg|gif|tmp
@@ -42,7 +42,7 @@ lastpost,lastpost|img_txt|105||||gif|tmp
 lock,locked|img_txt|104|||imgwindowbg|gif|tmp
 login,session|img_txt|34|||imgmenu|png|tmp
 logout,logout|img_txt|108|||imgmenu|gif|tmp
-markallread,markread|img_txt|452|||imgcatbg|png|tmp
+markallread,markread|img_txt|452|||imgwindowbg|png|tmp
 markboardread,markread|img_txt|300|||imgcatbg|png|tmp
 markunread,markunread|img_txt|627|||imgcatbg|png|tmp
 memberlist,guest|img_txt|331|||imgmenu|gif|tmp

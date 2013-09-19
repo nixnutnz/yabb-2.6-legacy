@@ -27,10 +27,11 @@ undef $guest_media_disallowed;
 @my_modimglist =
   qw( admin_rem admin_move_split_splice admin_lock hide admin_sticky admin_del );
 $my_moding = q{};
-foreach my $x (@my_modimglist) {
-    $modimg = SetImage( $x, $MenuType );
-    $mymoding .= qq~$modimg~;
+foreach (@my_modimglist) {
+    $modimg = SetImage( $_, $MenuType );
+    $mymoding .= qq~$menusep$modimg~;
 }
+$mymoding =~ s/\Q$menusep//ism;
 
 sub SectionDecide {
 
@@ -181,7 +182,11 @@ sub GetHelpFiles {
 sub MainHelp {
 
     $TempParse = $BodyHeader;
+    $BrdID = $mbname;
+    $BrdID =~ s/ /_/gsm;
+    $SectionName =~ s/ /_/gsm;
     $TempParse =~ s/{yabb section_anchor}/$SectionName/gsm;
+    $TempParse =~ s/{yabb_boardname}/$BrdID/gsm;
     $SectionNam = $SectionName;
     $SectionNam =~ s/_/ /gxsm;
     $TempParse  =~ s/{yabb section_name}/$SectionNam/gsm;
@@ -198,9 +203,12 @@ sub MainHelp {
         }
 
         $TempParse     = $BodySubHeader;
+        $BrdID = $mbname;
+        $BrdID =~ s/ /_/gsm;
         $SectionAnchor = ${ SectionSub . $i };
         $SectionSub    = ${ SectionSub . $i };
         $SectionSub =~ s/_/ /gxsm;
+        $SectionAnchor =~ s/ /_/gsm;
         $TempParse  =~ s/{yabb section_anchor}/$SectionAnchor/gsm;
         $TempParse  =~ s/{yabb section_sub}/$SectionSub/gsm;
         $Body .= qq~$TempParse~;
@@ -272,10 +280,13 @@ sub ContentContainer {
 sub DoContents {
     $TempParse = $ContentHeader;
 
+    $BrdID = $mbname;
+    $BrdID =~ s/ /_/gsm;
     $TempParse =~ s/{yabb section_anchor}/$SectionName/gsm;
     $SectionNam = $SectionName;
     $SectionNam =~ s/_/ /gxsm;
     $TempParse  =~ s/{yabb section_name}/$SectionNam/gsm;
+
     $Contents .= qq~$TempParse~;
 
     $Contents .= q~<ul class="help_ul">~;
