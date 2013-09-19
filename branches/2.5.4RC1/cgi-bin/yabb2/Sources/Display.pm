@@ -1374,24 +1374,26 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         $posthandelblock =~
           s/({|<)yabb print_post(}|>)/$template_print_post$tool_sep/gsm;
         $posthandelblock =~ s/({|<)yabb admin(}|>)/$template_admin/gsm;
-        $posthandelblock =~ s/\Q$menusep//ixsm;
+        $posthandelblock =~ s/\Q$menusep//ism;
 
-        if ( !$posttools ) { $outside_ptsep = q{}; }
+        if ( !$posttools ) { $outside_ptsep = q{}; $inside_ptsep = $menusep;}
+        else { $outside_ptsep = q{}; $inside_ptsep = q{}; }
         my $outside_posttools_tmp = $outside_posttools;
         $outside_posttools_tmp =~
-          s/({|<)yabb markquote(}|>)/$template_markquote$outside_ptsep/gsm;
+          s/({|<)yabb markquote(}|>)/$inside_ptsep$template_markquote$outside_ptsep/gsm;
         $outside_posttools_tmp =~
-          s/({|<)yabb quote(}|>)/$template_quote$outside_ptsep/gsm;
+          s/({|<)yabb quote(}|>)/$inside_ptsep$template_quote$outside_ptsep/gsm;
         $outside_posttools_tmp =~
-          s/({|<)yabb modify(}|>)/$template_modify$outside_ptsep/gsm;
+          s/({|<)yabb modify(}|>)/$inside_ptsep$template_modify$outside_ptsep/gsm;
         $outside_posttools_tmp =~
-          s/({|<)yabb split(}|>)/$template_split$outside_ptsep/gsm;
+          s/({|<)yabb split(}|>)/$inside_ptsep$template_split$outside_ptsep/gsm;
         $outside_posttools_tmp =~
-          s/({|<)yabb delete(}|>)/$template_delete$outside_ptsep/gsm;
+          s/({|<)yabb delete(}|>)/$inside_ptsep$template_delete$outside_ptsep/gsm;
         $outside_posttools_tmp =~
-          s/({|<)yabb modalert(}|>)/$PMAlertButton$outside_ptsep/gsm;
-        $outside_posttools =~
-          s/({|<)yabb print_post(}|>)/$template_print_post$outside_ptsep/gsm;
+          s/({|<)yabb modalert(}|>)/$inside_ptsep$PMAlertButton$outside_ptsep/gsm;
+        $outside_posttools_tmp =~
+          s/({|<)yabb print_post(}|>)/$inside_ptsep$template_print_post$outside_ptsep/gsm;
+        $outside_posttools_tmp =~ s/\Q$menusep//ism; 
 
         if ( !$posttools ) {
             $posthandelblock       = $outside_posttools_tmp . $posthandelblock;
@@ -1651,6 +1653,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
     $outside_threadtools =~ s/({|<)yabb sendtopic(}|>)/$inside_ttsep$template_sendtopic$outside_ttsep/gsm;
     $outside_threadtools =~ s/({|<)yabb print(}|>)/$inside_ttsep$template_print$outside_ttsep/gsm;
     $outside_threadtools =~ s/\Q$menusep//ixsm;
+
     if ( !$threadtools ) {
         $threadhandellist    = $outside_threadtools . $threadhandellist;
         $threadhandellist2   = $outside_threadtools . $threadhandellist2;
