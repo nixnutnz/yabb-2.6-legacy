@@ -108,6 +108,7 @@ $nn_avatar = 'nn.gif';
 'urgent' => qq~$imagesdir/exclamation.png~,
 'veryhotthread' => qq~$imagesdir/veryhotthread.gif~,
 'wink' => qq~$imagesdir/wink.gif~,
+'www' => qq~$imagesdir/www.png~,
 'xx' => qq~$imagesdir/xx.gif~,
 );
 

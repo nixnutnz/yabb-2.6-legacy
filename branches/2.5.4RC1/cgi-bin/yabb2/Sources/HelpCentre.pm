@@ -1,6 +1,6 @@
 ###############################################################################
 # HelpCentre.pm                                                               #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.19.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -207,8 +207,10 @@ sub MainHelp {
         $BrdID =~ s/ /_/gsm;
         $SectionAnchor = ${ SectionSub . $i };
         $SectionSub    = ${ SectionSub . $i };
+        $Sectionsub =~ s/{yabb_boardname}/$BrdID/gsm;
         $SectionSub =~ s/_/ /gxsm;
         $SectionAnchor =~ s/ /_/gsm;
+        $SectionAnchor =~ s/{yabb_boardname}/$BrdID/gsm;
         $TempParse  =~ s/{yabb section_anchor}/$SectionAnchor/gsm;
         $TempParse  =~ s/{yabb section_sub}/$SectionSub/gsm;
         $Body .= qq~$TempParse~;
@@ -233,6 +235,7 @@ s/\[yabbc\](.*?)\[\/yabbc\]/my($text) = $1; ToHTML($text); DoUBBCTo($text);/sgem
         $TempParse = $BodyItem;
         $TempParse =~ s/{yabb item}/$message/gsm;
         $TempParse =~ s/{yabb mymoding}/$mymoding/sm;
+        $TempParse  =~ s/{top_img}/$top_img/gsm;
         $Body .= qq~$TempParse~;
         $i++;
     }
@@ -286,7 +289,7 @@ sub DoContents {
     $SectionNam = $SectionName;
     $SectionNam =~ s/_/ /gxsm;
     $TempParse  =~ s/{yabb section_name}/$SectionNam/gsm;
-
+    $TempParse  =~ s/{top_img}/$top_img/gsm;
     $Contents .= qq~$TempParse~;
 
     $Contents .= q~<ul class="help_ul">~;
