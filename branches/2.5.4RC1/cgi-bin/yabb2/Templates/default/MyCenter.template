@@ -12,8 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # $Revision$
-
-$IM_index_togl = 'index_togl.png';
+get_micon();
 $IM_callback = 'imcallback.gif';
 $IM_answered = 'answered.gif';
 $IM_callback2 = 'imcallback2.gif';
@@ -22,19 +21,12 @@ $IM_imopen3 = 'imopen3.gif';
 $IM_usageempty = 'usageempty.gif';
 $IM_usage = 'usage.gif';
 $IM_usagebar ='usagebar.gif';
-$IM_new = 'new.gif';
 $imstore = 'imstore.gif';
 $im_inbox = 'im_inbox.gif';
 $im_outbox ='im_outbox.gif';
-$paperclip = 'paperclip.gif';
 $IM_quote = 'quote.gif';
 $IM_code1 = 'code1.gif';
-$IM_lockmail = 'lockmail.gif';
 $IM_imclose = 'imclose.gif';
-$IM_email = 'email.png';
-$IM_www = 'www.png';
-$my_blank_avatar = 'blank.gif';
-$nn_avatar = 'nn.gif';
 
 $imWinwidth_a = 500;
 
@@ -429,8 +421,8 @@ $my_buddiesCurrentStatus = qq~
             <td class="center">$profile_txt{'68a'}</td>
             <td class="center">$profile_txt{'68b'}</td>
             <td class="center"><img src="$imagesdir/$IM_imclose" alt="$profile_txt{'69a'}" title="$profile_txt{'69a'}" /></td>
-            <td class="center"><img src="$imagesdir/$IM_email" alt="$profile_txt{'69'}" title="$profile_txt{'69'}" /></td>
-            <td class="center"><img src="$imagesdir/$IM_www" alt="$profile_txt{'96'}" title="$profile_txt{'96'}" /></td>
+            <td class="center"><img src="$micon_bg{'email'}" alt="$profile_txt{'69'}" title="$profile_txt{'69'}" /></td>
+            <td class="center"><img src="$micon_bg{'www'}" alt="$profile_txt{'96'}" title="$profile_txt{'96'}" /></td>
        </tr>{yabb buddiesCurrentStatus_a}
 </table>~;
 

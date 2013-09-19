@@ -16,7 +16,7 @@
 ##Favorites
 
 $my_favbrds = 'favboards.png';
-$my_fav_paperclip = 'paperclip.gif';
+
 $favorites_template .= qq~<!-- Board Description start -->
 <table class="tabtitle-sub">
 	<col style="width:8%" />

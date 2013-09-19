@@ -1,6 +1,6 @@
 ###############################################################################
 # Post.pm                                                                     #
-# $Date: 9.16.13 $                                                            #
+# $Date: 9.19.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -836,7 +836,7 @@ qq~<div class="small" style="float: right; width: 100%; text-align: right; margi
                 $livesignature_hr = q~<hr class="hr att_hr" />~;
             }
         }
-        $liveipimg = qq~<img src="$imagesdir/$post_ip" alt="" />~;
+        $liveipimg = qq~<img src="$micon_bg{'ip'}" alt="" />~;
         $livemip   = $display_txt{'511'};
 
         $livemsgimg = qq~<img src="$micon_bg{$icon}" id="liveicons" alt="" />~;
@@ -1050,7 +1050,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
 
         $my_post_feata = $mypost_feata;
         $my_post_feata .= qq~
-            <span class="small"><img src="$imagesdir/$cat_col" id="feature_col" alt="$npf_txt{'collapse_features'}" title="$npf_txt{'collapse_features'}" class="cursor" onclick="show_features(0);" /> $npf_txt{'features_text'}</span>
+            <span class="small"><img src="$imagesdir/$newload{'brd_col'}" id="feature_col" alt="$npf_txt{'collapse_features'}" title="$npf_txt{'collapse_features'}" class="cursor" onclick="show_features(0);" /> $npf_txt{'features_text'}</span>
             <input type="hidden" name="col_rowb" id="col_row" value="$col_row" />~;
 
         if (
@@ -1100,8 +1100,8 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
 
             if ( $allowattach > 1 ) {
                 $my_att_allow = qq~
-            <img src="$defaultimagesdir/$cat_exp" id="attform_add" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" class="cursor" onclick="enabPrev2(1);" />
-            <img src="$defaultimagesdir/$cat_col" id="attform_sub" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" class="cursor" style="visibility:hidden;" onclick="enabPrev2(-1);" />~;
+            <img src="$imagesdir/$newload{'brd_exp'}" id="attform_add" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" class="cursor" onclick="enabPrev2(1);" />
+            <img src="$imagesdir/$newload{'brd_col'}" id="attform_sub" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" class="cursor" style="visibility:hidden;" onclick="enabPrev2(-1);" />~;
             }
 
             my $startcount;

@@ -1,6 +1,6 @@
 ###############################################################################
 # Display.pm                                                                  #
-# $Date: 9.16.13 $                                                            #
+# $Date: 9.19.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -367,7 +367,7 @@ qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboar
     $lastpn  = int( $mreplies / $maxmessagedisplay ) + 1;
     $lastptn = ( $lastpn - 1 ) * $maxmessagedisplay;
     $pageindex1 =
-qq~<span class="small pgindex"><img src="$imagesdir/$disp_index_togl" alt="$display_txt{'19'}" title="$display_txt{'19'}" /> $display_txt{'139'}: $pagenumb</span>~;
+qq~<span class="small pgindex"><img src="$index_togl{'index_togl'}" alt="$display_txt{'19'}" title="$display_txt{'19'}" /> $display_txt{'139'}: $pagenumb</span>~;
     $pageindex2 = $pageindex1;
     if ( $pagenumb > 1 || $all ) {
         if ( $userthreadpage == 1 || $iamguest ) {
@@ -376,11 +376,11 @@ qq~<span class="small pgindex"><img src="$imagesdir/$disp_index_togl" alt="$disp
                 $pagetxtindexst .=
                     qq~<a href="$scripturl?num=$viewnum;start=~
                   . ( !$ttsreverse ? $start : $mreplies - $start )
-                  . qq~;action=threadpagedrop"><img src="$imagesdir/$disp_index_togl" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a> $display_txt{'139'}: ~;
+                  . qq~;action=threadpagedrop"><img src="$index_togl{'index_togl'}" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a> $display_txt{'139'}: ~;
             }
             else {
                 $pagetxtindexst .=
-qq~<img src="$imagesdir/$disp_index_togl" alt="$display_txt{'19'}" title="$display_txt{'19'}" /> $display_txt{'139'}: ~;
+qq~<img src="$index_togl{'index_togl'}" alt="$display_txt{'19'}" title="$display_txt{'19'}" /> $display_txt{'139'}: ~;
             }
             if ( $startpage > 0 ) {
                 $pagetxtindex =
@@ -425,7 +425,7 @@ qq~<a href="javascript:void(0);" onclick="ListPages($mnum);">...</a>&nbsp;~;
             $pagedropindex1 .=
 qq~<span class="pagedropindex_inner"><a href="$scripturl?num=$viewnum;start=~
               . ( !$ttsreverse ? $start : $mreplies - $start )
-              . qq~;action=threadpagetext"><img src="$imagesdir/$disp_index_togl" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a></span>~;
+              . qq~;action=threadpagetext"><img src="$index_togl{'index_togl'}" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a></span>~;
             $pagedropindex2 = $pagedropindex1;
             $tstart         = $start;
 
@@ -490,19 +490,19 @@ q~<span id="ViewIndex2" class="droppageindex viewindex_hid">&nbsp;</span>~;
               ? $start + $maxmessagedisplay
               : $mreplies - $start - $maxmessagedisplay;
             $pagedropindexpvbl =
-qq~<img src="$imagesdir/$disp_index_left0" height="14" width="13" alt="" />~;
+qq~<img src="$index_togl{'index_left0'}" height="14" width="13" alt="" />~;
             $pagedropindexnxbl =
-qq~<img src="$imagesdir/$disp_index_right0" height="14" width="13" alt="" />~;
+qq~<img src="$index_togl{'index_right0'}" height="14" width="13" alt="" />~;
 
             if (   ( !$ttsreverse && $start < $maxmessagedisplay )
                 or ( $ttsreverse && $prevpage > $mreplies ) )
             {
                 $pagedropindexpv .=
-qq~<img src="$imagesdir/$disp_index_left0" height="14" width="13" alt="" />~;
+qq~<img src="$index_togl{'index_left0'}" height="14" width="13" alt="" />~;
             }
             else {
                 $pagedropindexpv .=
-qq~<img src="$imagesdir/$disp_index_left" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" class="cursor" onclick="location.href=\\'$scripturl?num=$viewnum/$prevpage\\'" ondblclick="location.href=\\'$scripturl?num=$viewnum/~
+qq~<img src="$index_togl{'index_left'}" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" class="cursor" onclick="location.href=\\'$scripturl?num=$viewnum/$prevpage\\'" ondblclick="location.href=\\'$scripturl?num=$viewnum/~
                   . ( !$ttsreverse ? 0 : $mreplies )
                   . q~\\'" />~;
             }
@@ -510,11 +510,11 @@ qq~<img src="$imagesdir/$disp_index_left" height="14" width="13" alt="$pidtxt{'0
                 or ( $ttsreverse && $nextpage < $mreplies - $lastptn ) )
             {
                 $pagedropindexnx .=
-qq~<img src="$imagesdir/$disp_index_right0" height="14" width="13" alt="" />~;
+qq~<img src="$index_togl{'index_right0'}" height="14" width="13" alt="" />~;
             }
             else {
                 $pagedropindexnx .=
-qq~<img src="$imagesdir/$disp_index_right" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" class="cursor" onclick="location.href=\\'$scripturl?num=$viewnum/$nextpage\\'" ondblclick="location.href=\\'$scripturl?num=$viewnum/~
+qq~<img src="$index_togl{'index_right'}" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" class="cursor" onclick="location.href=\\'$scripturl?num=$viewnum/$nextpage\\'" ondblclick="location.href=\\'$scripturl?num=$viewnum/~
                   . ( !$ttsreverse ? $lastptn : $mreplies - $lastptn )
                   . q~\\'" />~;
             }
@@ -866,8 +866,8 @@ qq~$menusep<a href="$scripturl?action=print;num=$viewnum" target="_blank">$img{'
                       ( $ext
                           && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}"
                       )
-                      ? "$att_img{$ext}"
-                      : "$paperclip";
+                      ? "$imagesdir/$att_img{$ext}"
+                      : "$micon_bg{'paperclip'}";
                 }
                 my $filesize = -s "$uploaddir/$_";
                 $urlname = $_;
@@ -877,7 +877,7 @@ qq~$menusep<a href="$scripturl?action=print;num=$viewnum" target="_blank">$img{'
                         && $amdisplaypics == 1 )
                     {
                         $showattach .=
-qq~<div class="small attbox"><a href="$scripturl?action=downloadfile;file=$urlname" target="_blank"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $_</a> (~
+qq~<div class="small attbox"><a href="$scripturl?action=downloadfile;file=$urlname" target="_blank"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $_</a> (~
                           . int( $filesize / 1024 )
                           . qq~ KB | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> )<br />~
                           . (
@@ -978,7 +978,7 @@ qq~                 $menusep<a href="$scripturl?action=modalert;num=$viewnum;tit
         ## is member a buddy of mine?
         if ( $buddyListEnabled && !$iamguest && $musername ne $username ) {
             $isbuddy =
-qq~<br /><img src="$imagesdir/$disp_buddylist" alt="$display_txt{'isbuddy'}" title="$display_txt{'isbuddy'}" /> <br />$display_txt{'isbuddy'}~;
+qq~<br /><img src="$micon_bg{'buddylist'}" alt="$display_txt{'isbuddy'}" title="$display_txt{'isbuddy'}" /> <br />$display_txt{'isbuddy'}~;
             $addbuddylink =
 qq~$menusep<a href="$scripturl?num=$viewnum;action=addbuddy;name=$useraccount{$musername};vpost=$counter">$img{'addbuddy'}</a>~;
         }
@@ -1347,7 +1347,7 @@ qq~<input type="checkbox" class="$css" style="border: 0px; visibility: hidden; d
 
         $msgimg =
 qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
-        $ipimg = qq~<img src="$imagesdir/$disp_ip" alt="" />~;
+        $ipimg = qq~<img src="$micon_bg{'ip'}" alt="" />~;
 
         if ($extendedprofiles) {
             require Sources::ExtendedProfiles;
@@ -1893,18 +1893,20 @@ qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3
 <head>
 <title>Google Talk</title>
 $gtalkstyle
+<style type="text/css">
 body {margin: 0px; padding: 0px; overflow-x:hidden;overflow-y:hidden;}
 .g_user { height:58px; margin-bottom:2em}
+</style>
 </head>
 <body class="windowbg2">
 <table class="bordercolor pad_4px cs_thin">
     <tr>
         <td class="titlebg h_22px">
-            <img src="$defaultimagesdir/$disp_gtalk2" width="16" height="14" alt="" title="" />Google Talk
+            <img src="$gtalk" width="16" height="14" alt="" title="" /> Google Talk
         </td>
     </tr><tr>
         <td class="windowbg g_user">
-            <img src="$defaultimagesdir/$disp_gtalk2" width="16" height="14" alt="${$uid.$gtalkname}{'realname'}" title="${$uid.$gtalkname}{'realname'}" /> $gtalkuser
+            <img src="$gtalk" width="16" height="14" alt="${$uid.$gtalkname}{'realname'}" title="${$uid.$gtalkname}{'realname'}" /> $gtalkuser
         </td>
     </tr>
 </table>

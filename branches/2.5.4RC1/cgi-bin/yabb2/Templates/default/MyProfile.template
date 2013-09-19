@@ -13,12 +13,9 @@
 ###############################################################################
 # $Revision$
 
-$my_blank_avatar = 'blank.gif';
-$nn_avatar = 'nn.gif';
 $my_bdaycake = 'bdaycake.png';
-$my_buddylist = 'buddylist.gif';
 $my_aim = 'aim.gif';
-$my_gtalk = 'gtalk2.gif';
+$gtalk = qq~$imagesdir/gtalk2.gif~;
 $my_skype ='skype.gif';
 $my_myspace= 'myspace.gif';
 $my_facebook = 'facebook.gif';
@@ -331,7 +328,7 @@ $myprofile_show_avatar_a = qq~
                     } else {
                         document.creator.userpic.options[0].selected = true;
                         source = document.getElementsByName('userpicpersonal')[0].value;
-                        if (!source || source == 'http{yabb av_s://') source = "$facesurl/$my_blank_avatar";
+                        if (!source || source == 'http{yabb av_s://') source = "facesurl/$my_blank_avatar";
                     }
                     document.images.icons.style.display = 'none';
                     document.images.icons.width = '';

@@ -1,6 +1,6 @@
 ###############################################################################
 # Favorites.pm                                                                #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.18.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -361,7 +361,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$lastposter">$format_unbold{$
 # Check if the thread contains attachments and create a paper-clip icon if it does
         $temp_attachment =
           $attachments{$mnum}
-          ? qq~<a href="javascript:void(window.open('$scripturl?action=viewdownloads;thread=$mnum','_blank','width=800,height=650,scrollbars=yes'))"><img src="$imagesdir/$my_fav_paperclip" alt="$messageindex_txt{'3'} $attachments{$mnum} ~
+          ? qq~<a href="javascript:void(window.open('$scripturl?action=viewdownloads;thread=$mnum','_blank','width=800,height=650,scrollbars=yes'))"><img src="$micon_bg{'paperclip'}" alt="$messageindex_txt{'3'} $attachments{$mnum} ~
           . (
               $attachments{$mnum} == 1
             ? $messageindex_txt{'5'}

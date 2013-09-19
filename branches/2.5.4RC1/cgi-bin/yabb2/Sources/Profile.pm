@@ -1,6 +1,6 @@
 ###############################################################################
 # Profile.pm                                                                  #
-# $Date: 9.16.13 $                                                            #
+# $Date: 9.18.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -26,6 +26,7 @@ LoadLanguage('Register');
 require Sources::AddModerators;
 get_template('MyProfile');
 get_gmod();
+get_micon();
 
 $pm_lev = PMlev();
 
@@ -2775,7 +2776,7 @@ qq~<img src="$facesurl/${$uid.$user}{'userpic'}" id="avatar_img_resize" alt="" s
         $buddybutton = '<br />'
           . (
             $mybuddie{$user}
-            ? qq~<img src="$imagesdir/$my_buddylist" alt="$display_txt{'isbuddy'}" /> $display_txt{'isbuddy'}~
+            ? qq~<img src="$micon_bg{'buddylist'}" alt="$display_txt{'isbuddy'}" /> $display_txt{'isbuddy'}~
             : qq~<a href="$scripturl?action=addbuddy;name=$useraccount{$user}">$img{'addbuddy'}</a>~
           );
     }
@@ -2861,7 +2862,7 @@ qq~<img src="$facesurl/${$uid.$user}{'userpic'}" id="avatar_img_resize" alt="" s
                         <b>$profile_txt{'825'}: </b>
                         </div>
                         <div class="contactright">
-                        <img src="$imagesdir/$my_gtalk" alt="" />
+                        <img src="$gtalk" alt="" />
                         <a href="#" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$user','','height=80,width=340,menubar=0,toolbar=0,scrollbars=0,resizable=1'); return false">$profile_txt{'825'} ${$uid.$user}{'realname'}</a>
                         </div>~;
     }

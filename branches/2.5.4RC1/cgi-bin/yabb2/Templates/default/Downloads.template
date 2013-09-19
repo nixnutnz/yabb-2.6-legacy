@@ -85,7 +85,7 @@ $my_out_att_admin_a = qq~
 $downloads_att_b = qq~<tr>
             {yabb att_admin}
         <td class="windowbg2"><a href="javascript:void(download_file('{yabb amfn}'));"> {yabb amfn}</a></td>
-        <td class="windowbg2 center"><img src="$imagesdir/{yabb attach_gif}" class="bottom" alt="" /></td>
+        <td class="windowbg2 center"><img src="{yabb attach_gif}" class="bottom" alt="" /></td>
         <td class="windowbg2 right">{yabb amkb} KB</td>
         <td class="windowbg2 center">{yabb amdate}</td>
         <td class="windowbg2 right">{yabb amcount}</td>

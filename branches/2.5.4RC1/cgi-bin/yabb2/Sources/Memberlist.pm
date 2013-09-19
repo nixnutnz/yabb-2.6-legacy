@@ -1,6 +1,6 @@
 ###############################################################################
 # Memberlist.pm                                                               #
-# $Date: 9.16.13 $                                                            #
+# $Date: 9.18.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -33,6 +33,7 @@ if (   ( $ML_Allowed == 3 && !$iamadmin && !$iamgmod )
 
 LoadLanguage('MemberList');
 get_template('Memberlist');
+get_micon();
 
 $MembersPerPage = $TopAmmount;
 $maxbar         = 100;
@@ -156,11 +157,11 @@ sub MLByLetter {
         $pageindex1 =
             q~<span ~
           . $pgindex_class
-          . qq~><img src="$imagesdir/$ml_index_togl" alt="" /></span>~;
+          . qq~><img src="$index_togl{'index_togl'}" alt="" /></span>~;
         $pageindex2 =
             q~<span ~
           . $pgindex_class
-          . qq~><img src="$imagesdir/$ml_index_togl" alt="" /></span>~;
+          . qq~><img src="$index_togl{'index_togl'}" alt="" /></span>~;
     }
     else {
         buildIndex();
@@ -328,7 +329,7 @@ sub showRows {
           )
         {
             $wwwshow =
-qq~<a href="${$uid.$user}{'weburl'}" target="_blank"><img src="$imagesdir/$ml_www" alt="${$uid.$user}{'webtitle'}" title="${$uid.$user}{'webtitle'}" /></a>~;
+qq~<a href="${$uid.$user}{'weburl'}" target="_blank"><img src="$micon_bg{'www'}" alt="${$uid.$user}{'webtitle'}" title="${$uid.$user}{'webtitle'}" /></a>~;
         }
         $barchart = ${ $uid . $user }{'postcount'};
         $bartemp  = ( ${ $uid . $user }{'postcount'} * $maxbar );
@@ -383,12 +384,12 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$my_user
             && $allow_hide_email == 1 )
         {
             $lock = qq~
-            <img src="$imagesdir/$ml_lockmail" alt="$ml_txt{'308'}" title="$ml_txt{'308'}" />~;
+            <img src="$micon_bg{'lockmail'}" alt="$ml_txt{'308'}" title="$ml_txt{'308'}" />~;
         }
         else {
             if ( !$iamguest ) {
                 $lock = enc_eMail(
-qq~<img src="$imagesdir/$ml_email" alt="$img_txt{'69'}" title="~
+qq~<img src="$micon_bg{'email'}" alt="$img_txt{'69'}" title="~
                       . (
                         $iamadmin ? ${ $uid . $user }{'email'} : $img_txt{'69'}
                       )
@@ -399,7 +400,7 @@ qq~<img src="$imagesdir/$ml_email" alt="$img_txt{'69'}" title="~
             }
             else {
                 $lock = qq~
-                <img src="$imagesdir/$ml_lockmail" alt="$ml_txt{'308'}" title="$ml_txt{'308'}" />~;
+                <img src="$micon_bg{'lockmail'}" alt="$ml_txt{'308'}" title="$ml_txt{'308'}" />~;
             }
         }
 
@@ -462,22 +463,22 @@ sub buildIndex {
         $pageindex1 =
             q~<span ~
           . $pgindex_class
-          . qq~><img src="$imagesdir/$ml_index_togl" alt="" /> $ml_txt{'139'}: $pagenumb</span>~;
+          . qq~><img src="$index_togl{'index_togl'}" alt="" /> $ml_txt{'139'}: $pagenumb</span>~;
         $pageindex2 =
             q~<span ~
           . $pgindex_class
-          . qq~><img src="$imagesdir/$ml_index_togl" alt="" /> $ml_txt{'139'}: $pagenumb</span>~;
+          . qq~><img src="$index_togl{'index_togl'}" alt="" /> $ml_txt{'139'}: $pagenumb</span>~;
         if ( $pagenumb > 1 || $all ) {
 
             if ( $usermemberpage == 1 || $iamguest ) {
                 $pagetxtindexst = q~<span ~ . $pgindex_class . q~>~;
                 if ( !$iamguest ) {
                     $pagetxtindexst .=
-qq~<a href="$scripturl?sort=$FORM{'sortform'};letter=$letter;start=$start;action=memberpagedrop$findmember"><img src="$imagesdir/$ml_index_togl" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a> $ml_txt{'139'}: ~;
+qq~<a href="$scripturl?sort=$FORM{'sortform'};letter=$letter;start=$start;action=memberpagedrop$findmember"><img src="$index_togl{'index_togl'}" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a> $ml_txt{'139'}: ~;
                 }
                 else {
                     $pagetxtindexst .=
-qq~<img src="$imagesdir/$ml_xx" alt="" /> $ml_txt{'139'}: ~;
+qq~<img src="$micon_bg{'xx'}" alt="" /> $ml_txt{'139'}: ~;
                 }
                 if ( $startpage > 0 ) {
                     $pagetxtindex =
@@ -510,7 +511,7 @@ qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$la
             else {
                 $pagedropindex1 = q~<span class="pagedropindex">~;
                 $pagedropindex1 .=
-qq~<span class="pagedropindex_inner"><a href="$scripturl?sort=$FORM{'sortform'};letter=$letter;start=$start;action=memberpagetext$findmember"><img src="$imagesdir/$ml_index_togl" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a></span>~;
+qq~<span class="pagedropindex_inner"><a href="$scripturl?sort=$FORM{'sortform'};letter=$letter;start=$start;action=memberpagetext$findmember"><img src="$index_togl{'index_togl'}" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a></span>~;
                 $pagedropindex2 = $pagedropindex1;
                 $tstart         = $start;
                 if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' ) {
@@ -568,24 +569,24 @@ q~<span id="ViewIndex2" class="droppageindex viewindex_hid">&nbsp;</span>~;
                 $prevpage = $start - $tmpMembersPerPage;
                 $nextpage = $start + $MembersPerPage;
                 $pagedropindexpvbl =
-qq~<img src="$imagesdir/$ml_index_left0" height="14" width="13" alt="" />~;
+qq~<img src="$index_togl{'index_left0'}" height="14" width="13" alt="" />~;
                 $pagedropindexnxbl =
-qq~<img src="$imagesdir/$ml_index_right0" height="14" width="13" alt="" />~;
+qq~<img src="$index_togl{'index_right0'}" height="14" width="13" alt="" />~;
                 if ( $start < $MembersPerPage ) {
                     $pagedropindexpv .=
-qq~<img src="$imagesdir/$ml_index_left0" height="14" width="13" alt="" />~;
+qq~<img src="$index_togl{'index_left0'}" height="14" width="13" alt="" />~;
                 }
                 else {
                     $pagedropindexpv .=
-qq~<img src="$imagesdir/$ml_index_left" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" class="cursor" onclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$prevpage$findmember\\'" ondblclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=0$findmember\\'" />~;
+qq~<img src="$index_togl{'index_left'}" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" class="cursor" onclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$prevpage$findmember\\'" ondblclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=0$findmember\\'" />~;
                 }
                 if ( $nextpage > $lastptn ) {
                     $pagedropindexnx .=
-qq~<img src="$imagesdir/$ml_index_right0" height="14" width="13" alt="" />~;
+qq~<img src="$index_togl{'index_right0'}" height="14" width="13" alt="" />~;
                 }
                 else {
                     $pagedropindexnx .=
-qq~<img src="$imagesdir/$ml_index_right" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" class="cursor" onclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$nextpage$findmember\\'" ondblclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$lastptn$findmember\\'" />~;
+qq~<img src="$index_togl{'index_right'}" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" class="cursor" onclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$nextpage$findmember\\'" ondblclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$lastptn$findmember\\'" />~;
                 }
                 $pageindex1 = qq~$pagedropindex1</span>~;
                 $pageindex2 = qq~$pagedropindex2</span>~;

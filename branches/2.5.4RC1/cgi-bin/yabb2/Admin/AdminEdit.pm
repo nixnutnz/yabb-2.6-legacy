@@ -1,6 +1,6 @@
 ###############################################################################
 # AdminEdit.pm                                                                #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.17.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -487,7 +487,7 @@ sub ModifyAgreement2 {
 
 ### Section 1
 #############################################
-\$SectionSub1 = "$register_txt{'764a'}";
+\$SectionSub1 = "{yabb_boardname}_$register_txt{'764a'}";
 \$SectionBody1 = qq~<p>$FORM{'agreement'}</p>~;
 #############################################
 

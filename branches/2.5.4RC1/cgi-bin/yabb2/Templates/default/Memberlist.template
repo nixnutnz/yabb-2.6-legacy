@@ -13,22 +13,13 @@
 ###############################################################################
 # $Revision$
 
+get_micon();
 $letterclass = 'catbg a';
 $header_class_selected = 'selected-bg memberlist_td';
 $header_class = 'catbg memberlist_td';
 $pgindex_class = 'class="small pgindex"';
-$ml_index_togl = 'index_togl.png';
-$ml_index_left = 'index_left.png';
-$ml_index_left0 = 'index_left0.png';
-$ml_index_right = 'index_right.png';
-$ml_index_right0 ='index_right0.png';
 $ml_trans ='trans.gif';
-$ml_www ='www.png';
 $ml_bar ='bar.gif';
-$ml_lockmail = 'lockmail.png';
-$ml_email = 'email.png';
-$ml_xx ='xx.gif';
-$my_blank_avatar = 'blank.gif';
 
 $my_findform = qq~<form action="$scripturl?action=ml;sort=memsearch" method="post" id="form1" name="form1" enctype="application/x-www-form-urlencoded" style="display: inline;">
             <input type="text" name="member" id="member" value="$ml_txt{'801'}" style="font-size: 11px; width: 180px;" onfocus="txtInFields(this, '$ml_txt{'801'}');" onblur="txtInFields(this, '$ml_txt{'801'}')" />
@@ -58,8 +49,8 @@ $my_memberlist_main = qq~
 $my_header = qq~<tr>
                 {yabb row_userpic}
                 <td {yabb selUser} onclick="location.href='$scripturl?action=ml;sort=username';"><a href="$scripturl?action=ml;sort=username"><b>$ml_txt{'35'}</b></a></td>
-                <td class="catbg center"><img src="$imagesdir/$ml_email" alt="$ml_txt{'307'}" title="$ml_txt{'307'}" /></td>
-                <td class="catbg center"><img src="$imagesdir/$ml_www" alt="$ml_txt{'96'}" title="$ml_txt{'96'}" /></td>
+                <td class="catbg center"><img src="$micon_bg{'email'}" alt="$ml_txt{'307'}" title="$ml_txt{'307'}" /></td>
+                <td class="catbg center"><img src="$micon_bg{'www'}" alt="$ml_txt{'96'}" title="$ml_txt{'96'}" /></td>
                 <td {yabb selPos} onclick="location.href='$scripturl?action=ml;sort=position';">
                     <a href="$scripturl?action=ml;sort=position"><b>$ml_txt{'87'}</b></a>
                 </td>

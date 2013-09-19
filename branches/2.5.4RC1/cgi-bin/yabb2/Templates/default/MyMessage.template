@@ -13,19 +13,8 @@
 ###############################################################################
 # $Revision$
 
-$IM_paperclip = 'paperclip.gif';
-$cat_col = 'cat_collapse.png';
-$cat_exp = 'cat_expand.png';
-$chrwarn_g0 = 'green0.gif';
-$chrwarn_g1 = 'green1.gif';
-$chrwarn_r0 = 'red0.gif';
-$chrwarn_r1 = 'red1.gif';
-$IM_index_togl = 'index_togl.png';
-$IM_index_left = 'index_left.png';
-$IM_index_left0 = 'index_left0.png';
-$IM_index_right = 'index_right.png';
-$IM_index_right0 ='index_right0.png';
-$IM_ip = 'ip.gif';
+$cat_col = $newload{'brd_col'};
+$cat_exp = $newload{'brd_exp'};
 
 #User Select window size (imWin called from InstantMessage)
 $us_winwidth_to = 500;
@@ -100,7 +89,7 @@ $show_my_attach = qq~<tr>
 $my_showIP = qq~<tr>
         <td class="windowbg right" colspan="2">
             <div class="imcontact">
-                <span class="small"><img src="$imagesdir/$IM_ip" alt="" /> {yabb imip}</span>
+                <span class="small"><img src="$micon_bg{'ip'}" alt="" /> {yabb imip}</span>
             </div>
         </td>
     </tr>~;

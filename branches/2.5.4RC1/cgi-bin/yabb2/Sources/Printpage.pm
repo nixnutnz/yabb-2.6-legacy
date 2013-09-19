@@ -1,6 +1,6 @@
 ###############################################################################
 # Printpage.pm                                                                #
-# $Date: 9.16.13 $                                                            #
+# $Date: 9.18.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -18,7 +18,6 @@ our $VERSION = '2.5.41';
 $printpagepmver = 'YaBB 2.5.4 RC1 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 get_micon();
-$paperclip = 'paperclip.gif';
 
 sub Print_IM {
     if ($iamguest) { fatal_error('not_allowed'); }
@@ -221,7 +220,7 @@ function do_images() {
                 $attach_gif{$ext} =
                   ( $ext
                       && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}"
-                  ) ? "$att_img{$ext}" : "$paperclip";
+                  ) ? "$imagesdir/$att_img{$ext}" : "$micon_bg{'paperclip'}";
             }
             my $filesize = -s "$pmuploaddir/$pmAttachFile";
             if ($filesize) {
@@ -230,7 +229,7 @@ function do_images() {
                 {
                     $imagecount++;
                     $pmShowAttach .=
-qq~<div class="small" style="float:left; margin:8px;"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile (~
+qq~<div class="small" style="float:left; margin:8px;"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile (~
                       . int( $filesize / 1024 )
                       . qq~ KB)<br /><img src="$pmuploadurl/$pmAttachFile" name="attach_img_resize" alt="$pmAttachFile" title="$pmAttachFile" style="display:none;" /></div>\n~;
                 }
@@ -671,8 +670,8 @@ function do_images() {
                       ( $ext
                           && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}"
                       )
-                      ? "$att_img{$ext}"
-                      : "$paperclip";
+                      ? "$imagesdir/$att_img{$ext}"
+                      : "$micon_bg{'paperclip'}";
                 }
                 my $filesize = -s "$uploaddir/$_";
                 if ($filesize) {
@@ -681,7 +680,7 @@ function do_images() {
                     {
                         $imagecount++;
                         $showattach .=
-qq~<div class="small" style="float:left; margin:8px;"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> <span id="urlimagecount$imagecount" style="display:none">$scripturl?action=downloadfile;file=</span>$_ (~
+qq~<div class="small" style="float:left; margin:8px;"><img src="$attach_gif{$ext}" class="bottom" alt="" /> <span id="urlimagecount$imagecount" style="display:none">$scripturl?action=downloadfile;file=</span>$_ (~
                           . int( $filesize / 1024 )
                           . qq~ KB | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> )<br /><img src="$uploadurl/$_" name="attach_img_resize" alt="$_" id="imagecount$imagecount" title="$_" style="display:none" /></div>\n~;
                     }

@@ -1,6 +1,6 @@
 ###############################################################################
 # MessageIndex.pm                                                             #
-# $Date: 9.16.13 $                                                            #
+# $Date: 9.19.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -282,7 +282,7 @@ qq~<a href="$scripturl?board=$currentboard;tsort=1" rel="nofollow">$messageindex
     $lastpn = int( ( $threadcount - 1 ) / $maxindex ) + 1;
     $lastptn = ( $lastpn - 1 ) * $maxindex;
     $pageindex1 =
-qq~<span class="small pgindex"><img src="$imagesdir/$msgbrd_index_togl" alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" /> $messageindex_txt{'139'}: $pagenumb</span>~;
+qq~<span class="small pgindex"><img src="$index_togl{'index_togl'}" alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" /> $messageindex_txt{'139'}: $pagenumb</span>~;
     $pageindex2 = $pageindex1;
 
     if ( $pagenumb > 1 || $all ) {
@@ -291,11 +291,11 @@ qq~<span class="small pgindex"><img src="$imagesdir/$msgbrd_index_togl" alt="$me
             $pagetxtindexst = q~<span class="small pgindex">~;
             if ( !$iamguest ) {
                 $pagetxtindexst .=
-qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=messagepagedrop"><img src="$imagesdir/$msgbrd_index_togl"  alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" /></a> $messageindex_txt{'139'}: ~;
+qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=messagepagedrop"><img src="$index_togl{'index_togl'}"  alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" /></a> $messageindex_txt{'139'}: ~;
             }
             else {
                 $pagetxtindexst .=
-qq~<img src="$imagesdir/$msgbrd_index_togl"  alt="$messageindex_txt{'139'}" title="$messageindex_txt{'139'}" /> $messageindex_txt{'139'}: ~;
+qq~<img src="$index_togl{'index_togl'}"  alt="$messageindex_txt{'139'}" title="$messageindex_txt{'139'}" /> $messageindex_txt{'139'}: ~;
             }
             if ( $startpage > 0 ) {
                 if ($messagelist) {
@@ -340,7 +340,7 @@ qq~<a href="$scripturl?board=$currentboard/$lastptn"><span class="small">$lastpn
         else {
             $pagedropindex1 = q~<span class="pagedropindex">~;
             $pagedropindex1 .=
-qq~<span class="pagedropindex_inner"><a href="$scripturl?board=$INFO{'board'};start=$start;action=messagepagetext"><img src="$imagesdir/$msgbrd_index_togl"  alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" /></a></span>~;
+qq~<span class="pagedropindex_inner"><a href="$scripturl?board=$INFO{'board'};start=$start;action=messagepagetext"><img src="$index_togl{'index_togl'}"  alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" /></a></span>~;
             $pagedropindex2 = $pagedropindex1;
             $tstart         = $start;
 
@@ -396,16 +396,16 @@ q~<span id="ViewIndex2" class="droppageindex viewindex_hid">&nbsp;</span>~;
             $prevpage = $start - $tmpmaxindex;
             $nextpage = $start + $maxindex;
             $pagedropindexpvbl =
-qq~<img src="$imagesdir/$msgbrd_index_left0" height="14" width="13"  alt="" />~;
+qq~<img src="$index_togl{'index_left0'}" height="14" width="13"  alt="" />~;
             $pagedropindexnxbl =
-qq~<img src="$imagesdir/$msgbrd_index_right0" height="14" width="13"  alt="" />~;
+qq~<img src="$index_togl{'index_right0'}" height="14" width="13"  alt="" />~;
             if ( $start < $maxindex ) {
                 $pagedropindexpv .=
-qq~<img src="$imagesdir/$msgbrd_index_left0" height="14" width="13"  alt="" />~;
+qq~<img src="$index_togl{'index_left0'}" height="14" width="13"  alt="" />~;
             }
             else {
                 $pagedropindexpv .=
-qq~<img src="$imagesdir/$msgbrd_index_left"  height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" class="cursor" ~;
+qq~<img src="$index_togl{'index_left'}"  height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" class="cursor" ~;
                 if ($messagelist) {
                     $pagedropindexpv .=
 qq~onclick="MessageList(\\'$scripturl?board=$currentboard/$prevpage;messagelist=1\\',\\'$yyhtml_root\\', \\'$currentboard\\', 1)" ondblclick="MessageList(\\'$scripturl?board=$currentboard/0;messagelist=1\\', \\'$yyhtml_root\\',\\'$currentboard\\', 1)" />~;
@@ -417,11 +417,11 @@ qq~onclick="location.href=\\'$scripturl?board=$currentboard/$prevpage\\'" ondblc
             }
             if ( $nextpage > $lastptn ) {
                 $pagedropindexnx .=
-qq~<img src="$imagesdir/$msgbrd_index_right0"  height="14" width="13" alt="" />~;
+qq~<img src="$index_togl{'index_right0'}"  height="14" width="13" alt="" />~;
             }
             else {
                 $pagedropindexnx .=
-qq~<img src="$imagesdir/$msgbrd_index_right" height="14" width="13"  alt="$pidtxt{'03'}" title="$pidtxt{'03'}" class="cursor" ~;
+qq~<img src="$index_togl{'index_right'}" height="14" width="13"  alt="$pidtxt{'03'}" title="$pidtxt{'03'}" class="cursor" ~;
                 if ($messagelist) {
                     $pagedropindexnx .=
 qq~onclick="MessageList(\\'$scripturl?board=$currentboard/$nextpage;messagelist=1\\', \\'$yyhtml_root\\',\\'$currentboard\\', 1)" ondblclick="MessageList(\\'$scripturl?board=$currentboard/$lastptn;messagelist=1\\', \\'$yyhtml_root\\',\\'$currentboard\\', 1)" />~;
@@ -653,11 +653,11 @@ qq~$menusep<a href="$scripturl?board=$INFO{'board'};action=post;title=CreatePoll
         my $adminlink;
         if ( $currentboard eq $annboard ) {
             $adminlink =
-qq~<img src="$imagesdir/$msgbrd_announcementlock" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" /><img src="$imagesdir/$msgbrd_hide" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" /><img src="$imagesdir/$msgbrd_admin_move" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" /><img src="$imagesdir/$msgbrd_admin_rem" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" />~;
+qq~<img src="$micon_bg{'announcementlock'}" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" /><img src="$micon_bg{'hide'}" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" /><img src="$micon_bg{'admin_move'}" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" /><img src="$micon_bg{'admin_rem'}" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" />~;
         }
         else {
             $adminlink =
-qq~<img src="$imagesdir/$msgbrd_locked" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" /><img src="$imagesdir/$msgbrd_sticky" alt="$messageindex_txt{'781'}" title="$messageindex_txt{'781'}" /><img src="$imagesdir/$msgbrd_hide" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" /><img src="$imagesdir/$msgbrd_admin_move" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" /><img src="$imagesdir/$msgbrd_admin_rem" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" />~;
+qq~<img src="$micon_bg{'locked'}" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" /><img src="$micon_bg{'sticky'}" alt="$messageindex_txt{'781'}" title="$messageindex_txt{'781'}" /><img src="$micon_bg{'hide'}" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" /><img src="$micon_bg{'admin_move'}" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" /><img src="$micon_bg{'admin_rem'}" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" />~;
         }
         $adminheader =~ s/({|<)yabb admin(}|>)/$adminlink/gsm;
     }
@@ -1000,9 +1000,9 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">$f
           $attachments{$mnum}
           ? (
             ( $guest_media_disallowed && $iamguest )
-            ? qq~<img src="$imagesdir/$paperclip" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" />~
+            ? qq~<img src="$micon_bg{'paperclip'}" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" />~
             : $msg_attach_win
-              . qq~<img src="$imagesdir/$paperclip" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" /></a>~
+              . qq~<img src="$micon_bg{'paperclip'}" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" /></a>~
           )
           : q{};
         $temp_attachment =~ s/{yabb mnum}/$mnum/sm;
@@ -1088,10 +1088,10 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
         {
             if ( $currentboard eq $annboard ) {
                 $adminbar = qq~
-        <a href="$scripturl?action=lock;thread=$mnum;tomessageindex=1"><img src="$imagesdir/$msgbrd_announcementlock" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}"  /></a>&nbsp;
-        <a href="$scripturl?action=hide;thread=$mnum;tomessageindex=1"><img src="$imagesdir/$msgbrd_hide" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}"  /></a>&nbsp;
-        <a href="javascript:void(window.open('$scripturl?action=split_splice;board=$currentboard;thread=$mnum;oldposts=all;leave=0;newcat=${$uid.$currentboard}{'cat'};newboard=$currentboard;position=end','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))"><img src="$imagesdir/$msgbrd_admin_move" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}"  /></a>&nbsp;
-        <a href="$scripturl?action=removethread;thread=$mnum" onclick="return confirm('$messageindex_txt{'162'}')"><img src="$imagesdir/$msgbrd_admin_rem" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}"  /></a>
+        <a href="$scripturl?action=lock;thread=$mnum;tomessageindex=1"><img src="$micon_bg{'announcementlock'}" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}"  /></a>&nbsp;
+        <a href="$scripturl?action=hide;thread=$mnum;tomessageindex=1"><img src="$micon_bg{'hide'}" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}"  /></a>&nbsp;
+        <a href="javascript:void(window.open('$scripturl?action=split_splice;board=$currentboard;thread=$mnum;oldposts=all;leave=0;newcat=${$uid.$currentboard}{'cat'};newboard=$currentboard;position=end','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))"><img src="$micon_bg{'admin_move'}" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}"  /></a>&nbsp;
+        <a href="$scripturl?action=removethread;thread=$mnum" onclick="return confirm('$messageindex_txt{'162'}')"><img src="$micon_bg{'admin_rem'}" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}"  /></a>
         ~;
             }
             elsif ( $counter < $numanns ) {
@@ -1099,11 +1099,11 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
             }
             else {
                 $adminbar = qq~
-        <a href="$scripturl?action=lock;thread=$mnum;tomessageindex=1"><img src="$imagesdir/$msgbrd_locked" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}"  /></a>&nbsp;
-        <a href="$scripturl?action=sticky;thread=$mnum"><img src="$imagesdir/$msgbrd_sticky" alt="$messageindex_txt{'781'}" title="$messageindex_txt{'781'}"  /></a>&nbsp;
-        <a href="$scripturl?action=hide;thread=$mnum;tomessageindex=1"><img src="$imagesdir/$msgbrd_hide" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}"  /></a>&nbsp;
-        <a href="javascript:void(window.open('$scripturl?action=split_splice;board=$currentboard;thread=$mnum;oldposts=all;leave=0;newcat=${$uid.$currentboard}{'cat'};newboard=$currentboard;position=end','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))"><img src="$imagesdir/$msgbrd_admin_move" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}"  /></a>&nbsp;
-        <a href="$scripturl?action=removethread;thread=$mnum" onclick="return confirm('$messageindex_txt{'162'}')"><img src="$imagesdir/$msgbrd_admin_rem" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}"  /></a>
+        <a href="$scripturl?action=lock;thread=$mnum;tomessageindex=1"><img src="$micon_bg{'locked'}" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}"  /></a>&nbsp;
+        <a href="$scripturl?action=sticky;thread=$mnum"><img src="$micon_bg{'sticky'}" alt="$messageindex_txt{'781'}" title="$messageindex_txt{'781'}"  /></a>&nbsp;
+        <a href="$scripturl?action=hide;thread=$mnum;tomessageindex=1"><img src="$micon_bg{'hide'}" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}"  /></a>&nbsp;
+        <a href="javascript:void(window.open('$scripturl?action=split_splice;board=$currentboard;thread=$mnum;oldposts=all;leave=0;newcat=${$uid.$currentboard}{'cat'};newboard=$currentboard;position=end','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))"><img src="$micon_bg{'admin_move'}" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}"  /></a>&nbsp;
+        <a href="$scripturl?action=removethread;thread=$mnum" onclick="return confirm('$messageindex_txt{'162'}')"><img src="$micon_bg{'admin_rem'}" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}"  /></a>
         ~;
             }
             $admincol = $admincolumn;
@@ -1227,8 +1227,7 @@ qq~$maintxt{'758'}: '<a href="$scripturl?num=$movedFlag">$2</a>'<br /><span clas
         $tempbar =~ s/({|<)yabb icon(}|>)/$micon/gsm;
         $tempbar =~ s/({|<)yabb new(}|>)/$new/gsm;
         $tempbar =~ s/({|<)yabb poll(}|>)/$mpoll/gsm;
-        $tempbar =~
-s/({|<)yabb favorite(}|>)/ ($favicon{$mnum} ? qq~<img src="$imagesdir\/$msgbrd_addfav" alt="$img_txt{'70'}" title="$img_txt{'70'}" \/>~ : q{}) /egsm;
+        $tempbar =~ s/({|<)yabb favorite(}|>)/ ($favicon{$mnum} ? qq~$micon{'addfav'}~ : q{}) /egsm;
         $tempbar =~ s/({|<)yabb subjectlink(}|>)/$msublink/gsm;
         $tempbar =~ s/({|<)yabb attachmenticon(}|>)/$temp_attachment/gsm;
         $tempbar =~ s/({|<)yabb pages(}|>)/$pages/gsm;
@@ -1400,7 +1399,7 @@ qq~<br /><a href="javascript:void(0);" onclick="ModSettings()"><span class="smal
     my ( $rss_link, $rss_text );
     if ( !$rss_disabled ) {
         $rss_link =
-qq~<a href="$scripturl?action=RSSboard;board=$currentboard" target="_blank"><img src="$imagesdir/$msgbrd_rss"  alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
+qq~<a href="$scripturl?action=RSSboard;board=$currentboard" target="_blank"><img src="$micon_bg{'rss'}"  alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
         $rss_text =
 qq~<a href="$scripturl?action=RSSboard;board=$INFO{'board'}" target="_blank">$messageindex_txt{843}</a>~;
     }

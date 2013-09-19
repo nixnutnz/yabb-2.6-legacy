@@ -13,16 +13,12 @@
 ###############################################################################
 # $Revision$
 
-$cat_col = 'cat_collapse.png';
-$cat_exp = 'cat_expand.png';
-$chrwarn_g0 = 'green0.gif';
-$chrwarn_g1 = 'green1.gif';
-$chrwarn_r0 = 'red0.gif';
-$chrwarn_r1 = 'red1.gif';
-$post_error = 'exclamation.png';
-$post_ip = 'ip.gif';
+$cat_col = $newload{'brd_col'};
+$cat_exp = $newload{'brd_exp'};
+$post_error = qq~$imagesdir/exclamation.png~;
+
 @iconlist = qw( xx thumbup thumbdown exclamation question lamp smiley angry cheesy grin sad wink standard confidential urgent );
-$my_guestpost_col = q~ colspan="2"~;
+
 if (!$enable_quickreply) {$my_spacer = '; margin-bottom:1em;';}
 $messageclass = 'message';
 $my_guestpost_col = 2;
@@ -243,7 +239,7 @@ $mypost_prevmain_error = qq~
             <table class="windowbg pad_3px" style="table-layout: fixed">
                 <tr>
                     <td class="titlebg">
-                        <img src="$imagesdir/$post_error" alt="" /> {yabb error_occurred}
+                        <img src="$post_error" alt="" /> {yabb error_occurred}
                     </td>
                 </tr>
             </table>

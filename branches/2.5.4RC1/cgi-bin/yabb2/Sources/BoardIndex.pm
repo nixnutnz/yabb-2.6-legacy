@@ -1,6 +1,6 @@
 ###############################################################################
 # BoardIndex.pm                                                               #
-# $Date: 9.16.13 $                                                            #
+# $Date: 9.19.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -662,7 +662,7 @@ qq~$collapse_link $hash{$catname} <a href="$scripturl?$my_cat=$catid" title="$bo
         if ( !$INFO{'a'} ) {
             if ( !$rss_disabled && $catrss ) {
                 $rss_catlink =
-qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img src="$imagesdir/boardrss.png" alt="$maintxt{'rssfeed'} - $catname" title="$maintxt{'rssfeed'} - $catname" /></a>~;
+qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img src="$micon_bg{'boardrss'}" alt="$maintxt{'rssfeed'} - $catname" title="$maintxt{'rssfeed'} - $catname" /></a>~;
             }
             else {
                 $rss_catlink = q{};
@@ -991,7 +991,7 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
                         && ${ $uid . $curboard }{'brdrss'} == 1 )
                     {
                         $rss_boardlink =
-qq~<a href="$scripturl?action=RSSboard;board=$curboard" target="_blank"><img src="$imagesdir/$mybrd_rss" alt="$maintxt{'rssfeed'} - $boardname" title="$maintxt{'rssfeed'} - $boardname" /></a>~;
+qq~<a href="$scripturl?action=RSSboard;board=$curboard" target="_blank"><img src="$micon_bg{'boardrss'}" alt="$maintxt{'rssfeed'} - $boardname" title="$maintxt{'rssfeed'} - $boardname" /></a>~;
                     }
                     else {
                         $rss_boardlink = q{};
@@ -1523,10 +1523,10 @@ qq~<div class="grpcolors"><span style="color: $color;"><b>lllll</b></span> $titl
         my ( $rss_link, $rss_text );
         if ( !$rss_disabled ) {
             $rss_link =
-qq~<a href="$scripturl?action=RSSrecent" target="_blank"><img src="$imagesdir/$brd_rss" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
+qq~<a href="$scripturl?action=RSSrecent" target="_blank"><img src="$micon_bg{'rss'}" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
             if ( $INFO{'catselect'} ) {
                 $rss_link =
-qq~<a href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" target="_blank"><img src="$imagesdir/$brd_rss" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
+qq~<a href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" target="_blank"><img src="$micon_bg{'rss'}" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
             }
             $rss_text =
 qq~<a href="$scripturl?action=RSSrecent" target="_blank">$boardindex_txt{'792'}</a>~;

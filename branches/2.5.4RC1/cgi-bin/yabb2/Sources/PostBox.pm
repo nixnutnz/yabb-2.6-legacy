@@ -1,6 +1,6 @@
 ###############################################################################
 # PostBox.pm                                                                  #
-# $Date: 9.16.13 $                                                            #
+# $Date: 9.19.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -19,7 +19,7 @@ our $VERSION = '2.5.41';
 
 $postboxpmver = 'YaBB 2.5.4 RC1 $Revision$';
 if ( defined $actions && $action eq 'detailedversion' ) { return 1; }
-
+get_micon();
 #InstantMessage.pm and Post.pl use the same code for the posting box - why have two copies? #
 
 sub postbox {
@@ -445,7 +445,7 @@ function show_features() {
         }
         document.images.feature_col.alt = "$npf_txt{'expand_features'}";
         document.images.feature_col.title = "$npf_txt{'expand_features'}";
-        document.images.feature_col.src="$defaultimagesdir/$cat_exp";
+        document.images.feature_col.src="$imagesdir/$cat_exp";
         col_row = 0;
     } else {
         for (var i = 1; 14 > i; i++) {
@@ -459,7 +459,7 @@ function show_features() {
         }
         document.images.feature_col.alt = "$npf_txt{'collapse_features'}";
         document.images.feature_col.title = "$npf_txt{'collapse_features'}";
-        document.images.feature_col.src="$defaultimagesdir/$cat_col";
+        document.images.feature_col.src="$imagesdir/$cat_col";
         col_row = 1;
     }
 }
@@ -756,7 +756,7 @@ document.getElementById("saveframe").style.display = "block";~;
     $x .= qq~
         document.images.prevwin.alt = "$npf_txt{'02'}";
         document.images.prevwin.title = "$npf_txt{'02'}";
-        document.images.prevwin.src="$defaultimagesdir/$cat_col";
+        document.images.prevwin.src="$imagesdir/$cat_col";
         autoPreview();
     }
     else {
@@ -787,10 +787,10 @@ function calcCharLeft() {
     charleft = maxLength - document.postmodify.message.value.length
   }
   document.postmodify.msgCL.value = charleft
-  if (charleft >= 100 && noalert) { noalert = false; gralert = true; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$chrwarn_g1"; }
-  if (charleft < 100 && charleft >= 50 && gralert) { noalert = true; gralert = false; rdalert = true; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$chrwarn_g0"; }
-  if (charleft < 50 && charleft > 0 && rdalert) { noalert = true; gralert = true; rdalert = false; clalert = true; document.images.chrwarn.src="$defaultimagesdir/$chrwarn_r0" }
-  if (charleft === 0 && clalert) { noalert = true; gralert = true; rdalert = true; clalert = false; document.images.chrwarn.src="$defaultimagesdir/$chrwarn_r1"; }
+  if (charleft >= 100 && noalert) { noalert = false; gralert = true; rdalert = true; clalert = true; document.images.chrwarn.src="$chrwarn{'g1'}"; }
+  if (charleft < 100 && charleft >= 50 && gralert) { noalert = true; gralert = false; rdalert = true; clalert = true; document.images.chrwarn.src="$chrwarn{'g0'}"; }
+  if (charleft < 50 && charleft > 0 && rdalert) { noalert = true; gralert = true; rdalert = false; clalert = true; document.images.chrwarn.src="$chrwarn{'r0'}" }
+  if (charleft === 0 && clalert) { noalert = true; gralert = true; rdalert = true; clalert = false; document.images.chrwarn.src="$chrwarn{'r1'}"; }
   return clipped
 }
 function autoPreview() {

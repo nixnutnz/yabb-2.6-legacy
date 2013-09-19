@@ -1,6 +1,6 @@
 ###############################################################################
 # InstantMessage.pm                                                           #
-# $Date: 9.16.13 $                                                            #
+# $Date: 9.19.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -621,8 +621,8 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
 
         if ( $allowAttachIM > 1 ) {
             $my_allow_FA = qq~
-            <img src="$defaultimagesdir/$cat_exp" id="attform_add" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" class="cursor" onclick="enabPrev2(1);" />
-            <img src="$defaultimagesdir/$cat_col" id="attform_sub" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" class="cursor" style="visibility:hidden;" onclick="enabPrev2(-1);" />~;
+            <img src="$imagesdir/$newload{'brd_exp'}" id="attform_add" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" class="cursor" onclick="enabPrev2(1);" />
+            <img src="$imagesdir/$newload{'brd_col'}" id="attform_sub" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" class="cursor" style="visibility:hidden;" onclick="enabPrev2(-1);" />~;
         }
         $my_imFA = $my_FA_attach;
         $my_imFA =~ s/{yabb my_show_FA}/$my_show_FA/sm;
@@ -1657,12 +1657,12 @@ sub pageLinksList {
     $lastpn  = int( $#tempim / $maxmessagedisplay ) + 1;
     $lastptn = ( $lastpn - 1 ) * $maxmessagedisplay;
     $pageindex1 =
-qq~<span class="small pgindex"><img src="$imagesdir/$IM_index_togl" alt="$display_txt{'19'}" title="$display_txt{'19'}" /> $display_txt{'139'}: $pagenumb</span>~;
+qq~<span class="small pgindex"><img src="$index_togl{'index_togl'}" alt="$display_txt{'19'}" title="$display_txt{'19'}" /> $display_txt{'139'}: $pagenumb</span>~;
     if ( $pagenumb > 1 || $all ) {
         if ( $userthreadpage == 1 ) {
             $pagetxtindexst = q~<span class="small pgindex">~;
             $pagetxtindexst .=
-qq~<a href="$scripturl?pmaction=$action$bmesslink;start=$start;action=pmpagetext$viewfolderinfo"><img src="$imagesdir/$IM_index_togl" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a> $display_txt{'139'}: ~;
+qq~<a href="$scripturl?pmaction=$action$bmesslink;start=$start;action=pmpagetext$viewfolderinfo"><img src="$index_togl{'index_togl'}" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a> $display_txt{'139'}: ~;
             if ( $startpage > 0 ) {
                 $pagetxtindex =
 qq~<a href="$scripturl?action=$action$bmesslink/0$viewfolderinfo"><span class="small">1</span></a>&nbsp;...&nbsp;~;
@@ -1694,7 +1694,7 @@ qq~<a href="$scripturl?action=$action$bmesslink;start=$lastptn$viewfolderinfo"><
         else {
             $pagedropindex1 = q~<span class="pagedropindex">~;
             $pagedropindex1 .=
-qq~<span class="pagedropindex_inner"><a href="$scripturl?pmaction=$action$bmesslink;start=$start;action=pmpagedrop$viewfolderinfo"><img src="$imagesdir/$IM_index_togl" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a></span>~;
+qq~<span class="pagedropindex_inner"><a href="$scripturl?pmaction=$action$bmesslink;start=$start;action=pmpagedrop$viewfolderinfo"><img src="$index_togl{'index_togl'}" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a></span>~;
             $pagedropindex2 = $pagedropindex1;
             $tstart         = $start;
             if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' ) {
@@ -1751,24 +1751,24 @@ q~<span id="ViewIndex2" class="droppageindex viewindex_hid">&nbsp;</span>~;
             $prevpage = $start - $tmpmaxmessagedisplay;
             $nextpage = $start + $maxmessagedisplay;
             $pagedropindexpvbl =
-qq~<img src="$imagesdir/$IM_index_left0" height="14" width="13" alt="" />~;
+qq~<img src="$index_togl{'index_left0'}" height="14" width="13" alt="" />~;
             $pagedropindexnxbl =
-qq~<img src="$imagesdir/$IM_index_right0" height="14" width="13" alt="" />~;
+qq~<img src="$index_togl{'index_right0'}" height="14" width="13" alt="" />~;
             if ( $start < $maxmessagedisplay ) {
                 $pagedropindexpv .=
-qq~<img src="$imagesdir/$IM_index_left0" height="14" width="13" alt="" />~;
+qq~<img src="$index_togl{'index_left0'}" height="14" width="13" alt="" />~;
             }
             else {
                 $pagedropindexpv .=
-qq~<img src="$imagesdir/$IM_index_left" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" class="cursor" onclick="location.href=\\'$scripturl?action=$action$bmesslink;start=$prevpage\\'" ondblclick="location.href=\\'$scripturl?action=$action$bmesslink;start=0\\'" />~;
+qq~<img src="$index_togl{'index_left'}" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" class="cursor" onclick="location.href=\\'$scripturl?action=$action$bmesslink;start=$prevpage\\'" ondblclick="location.href=\\'$scripturl?action=$action$bmesslink;start=0\\'" />~;
             }
             if ( $nextpage > $lastptn ) {
                 $pagedropindexnx .=
-qq~<img src="$imagesdir/$IM_index_right0" height="14" width="13" alt="" />~;
+qq~<img src="$index_togl{'index_right0'}" height="14" width="13" alt="" />~;
             }
             else {
                 $pagedropindexnx .=
-qq~<img src="$imagesdir/$IM_index_right" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" class="cursor"" onclick="location.href=\\'$scripturl?action=$action$bmesslink;start=$nextpage\\'" ondblclick="location.href=\\'$scripturl?action=$action$bmesslink;start=$lastptn\\'" />~;
+qq~<img src="$index_togl{'index_right'}" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" class="cursor"" onclick="location.href=\\'$scripturl?action=$action$bmesslink;start=$nextpage\\'" ondblclick="location.href=\\'$scripturl?action=$action$bmesslink;start=$lastptn\\'" />~;
             }
             $pageindex1  = qq~$pagedropindex1</span>~;
             $pageindexjs = qq~
@@ -2193,8 +2193,8 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
             if ( !exists $attach_gif{$ext} ) {
                 $attach_gif{$ext} =
                   ( $ext && -e "$htmldir/Templates/Forum/$useimages/$ext.gif" )
-                  ? "$ext.gif"
-                  : "$IM_paperclip";
+                  ? "$imagesdir/$ext.gif"
+                  : "$micon_bg{'paperclip'}";
             }
             my $filesize = -s "$pmuploaddir/$pmAttachFile";
             if ($filesize) {
@@ -2202,7 +2202,7 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
                     && $pmDisplayPics == 1 )
                 {
                     $pmShowAttach .=
-qq~<div class="small attbox"><a href="$pmuploadurl/$pmAttachFile" target="_blank"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile</a> (~
+qq~<div class="small attbox"><a href="$pmuploadurl/$pmAttachFile" target="_blank"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile</a> (~
                       . int( $filesize / 1024 )
                       . q~ KB)<br />~
                       . (
@@ -2296,7 +2296,7 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;repl
         ~;
     }
     $showIM_link .= qq~
-            <a href="$scripturl?action=imprint;caller=$INFO{'caller'};id=$messageid" target="_blank">$img{'print'}</a>
+            $menusep<a href="$scripturl?action=imprint;caller=$INFO{'caller'};id=$messageid" target="_blank">$img{'print_im'}</a>
         ~;
     $my_notme = q{};
     if    ( $mstatus =~ m/c/sm ) { $messIconName = 'confidential'; }

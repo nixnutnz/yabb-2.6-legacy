@@ -13,7 +13,6 @@
 ###############################################################################
 # $Revision$
 
-$disp_ip = 'ip.gif';
 $search_img = 'search.png';
 
 $mysearch_template = qq~
@@ -131,7 +130,7 @@ $mysearch_template9 = q~
 
 $mysearch_template10 = qq~ 
 		        <hr class="hr" />
-		            <img src="$imagesdir/$disp_ip" alt="" />{yabb mip}
+                {yabb ipimg}{yabb mip}
 ~;
 
 $mysearch_PM = qq~

@@ -1,6 +1,6 @@
 ###############################################################################
 # Downloads.pm                                                                #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.18.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -215,8 +215,8 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$lastptn;sor
                   ( $ext
                       && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}"
                   )
-                  ? "$att_img{$ext}"
-                  : $paperclip;
+                  ? "$imagesdir/$att_img{$ext}"
+                  : "$micon_bg{'paperclip'}";
             }
 
             $amdate = timeformat($amdate);

@@ -19,6 +19,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Search');
 get_template('Search');
+get_micon();
 
 if ( $FORM{'searchboards'} =~ /\A\!/xsm ) {
     my $checklist = q{};
@@ -723,6 +724,8 @@ qq~$menusep<a href="$scripturl?action=multidel;recent=1;thread=$tnum;del$c=$c" o
             || $iamgmod && $gmod_access2{'ipban2'} eq 'on' )
         {
             $my_ipfind = $mysearch_template10;
+            $ipimg = qq~<img src="$micon_bg{'ip'}" alt="" />~;
+            $my_ipfind =~ s/{yabb ipimg}/$ipimg/sm;
             $my_ipfind =~ s/{yabb mip}/$mip/sm;
         }
 

@@ -15,8 +15,8 @@
 
 $poll_bar = 'bars.gif';
 $poll_pie = 'pie.gif';
-$cat_col = 'cat_collapse.png';
-$cat_exp = 'cat_expand.png';
+$cat_col = $newload{'brd_col'};
+$cat_exp = $newload{'brd_exp'};
 
 $mypoll_details = qq~
 <br />

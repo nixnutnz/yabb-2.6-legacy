@@ -16,12 +16,8 @@
 $cal_day = q~ class="titlebg center minical_border"~;
 $cal_days = q~ class="windowbg2 center minical_border"~;
 
-$cat_col = 'cat_collapse.png';
-$cat_exp = 'cat_expand.png';
-$chrwarn_g0 = 'green0.gif';
-$chrwarn_g1 = 'green1.gif';
-$chrwarn_r0 = 'red0.gif';
-$chrwarn_r1 = 'red1.gif';
+$cat_col = $newload{'brd_col'};
+$cat_exp = $newload{'brd_exp'};
 $cal_eventcal = 'eventcal.png';
 
 ## Calendar go to date forms ($mycalout_goto_main for BoardIndex, mini cal display, add and edit events. $mycalout_gottobox for day event display ##

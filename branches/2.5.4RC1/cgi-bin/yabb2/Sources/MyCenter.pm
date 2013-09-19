@@ -1,6 +1,6 @@
 ###############################################################################
 # MyCenter.pm                                                                 #
-# $Date: 9.16.13 $                                                            #
+# $Date: 9.19.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -2304,7 +2304,7 @@ qq~<span class="small"><a href="$scripturl?action=imshow;id=$messageid;caller=2"
                 && $viewBMess
                 && !${$username}{ 'PMbcRead' . $messageid } )
             {
-                $BCnew = qq~&nbsp;<img src="$imagesdir/$IM_new" alt="" />~;
+                $BCnew = qq~&nbsp;<img src="$micon_bg{'new_mess'}" alt="" />~;
             }
             my $attachIcon;
             if ( $messageAttachment ne q{} ) {
@@ -2315,7 +2315,7 @@ qq~<span class="small"><a href="$scripturl?action=imshow;id=$messageid;caller=2"
                   ? $inmes_txt{'attach_3'}
                   : $inmes_txt{'attach_2'};
                 $attachIcon =
-qq~<img src="$imagesdir/$IM_paperclip" alt="$inmes_txt{'attach_1'} $imAttachCount $alt" title="$inmes_txt{'attach_1'} $imAttachCount $alt" class="mc_clip" />~;
+qq~<img src="$micon_bg{'paperclip'}" alt="$inmes_txt{'attach_1'} $imAttachCount $alt" title="$inmes_txt{'attach_1'} $imAttachCount $alt" class="mc_clip" />~;
             }
 
             $MCContent_BM = $my_BM_mess;
@@ -2891,11 +2891,11 @@ sub LoadBuddyList {
                 && $allow_hide_email == 1 )
             {
                 $buddyemail =
-qq~<img src="$imagesdir/$IM_lockmail" alt="$mycenter_txt{'hiddenemail'}" title="$mycenter_txt{'hiddenemail'}" />~;
+qq~<img src="$micon_bg{'lockmail'}" alt="$mycenter_txt{'hiddenemail'}" title="$mycenter_txt{'hiddenemail'}" />~;
             }
             else {
                 $buddyemail =
-qq~<a href="mailto:${$uid.$buddyname}{'email'}"><img src="$imagesdir/$IM_email" alt="$profile_txt{'889'} ${$uid.$buddyname}{'email'}" title="$profile_txt{'889'} ${$uid.$buddyname}{'email'}" /></a>~;
+qq~<a href="mailto:${$uid.$buddyname}{'email'}"><img src="$micon_bg{'email'}" alt="$profile_txt{'889'} ${$uid.$buddyname}{'email'}" title="$profile_txt{'889'} ${$uid.$buddyname}{'email'}" /></a>~;
             }
 
             CheckUserPM_Level($buddyname);
@@ -2924,7 +2924,7 @@ qq~<a href="$scripturl?action=imsend;to=$useraccount{$buddyname}"><img src="$ima
               )
             {
                 $buddywww =
-qq~<a href="${$uid.$buddyname}{'weburl'}" target="_blank"><img src="$imagesdir/$IM_www" alt="${$uid.$buddyname}{'webtitle'}" title="${$uid.$buddyname}{'webtitle'}" /></a>~;
+qq~<a href="${$uid.$buddyname}{'weburl'}" target="_blank"><img src="$micon_bg{'www'}" alt="${$uid.$buddyname}{'webtitle'}" title="${$uid.$buddyname}{'webtitle'}" /></a>~;
             }
         }
         else {

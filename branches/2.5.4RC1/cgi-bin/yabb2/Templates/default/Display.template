@@ -13,23 +13,12 @@
 ###############################################################################
 # $Revision$
 
-$disp_index_togl = 'index_togl.png';
-$disp_index_left = 'index_left.png';
-$disp_index_left0 = 'index_left0.png';
-$disp_index_right = 'index_right.png';
-$disp_index_right0 ='index_right0.png';
-$paperclip = 'paperclip.gif';
-$disp_buddylist ='buddylist.gif';
 $disp_qquname = 'qquname.gif';
-$disp_ip = 'ip.gif';
 $disp_arrow_dn = 'arrow_down.gif';
 $disp_arrow_up = 'arrow_up.gif';
-$disp_gtalk2 ='gtalk2.gif';
+$gtalk = qq~$imagesdir/gtalk2.gif~;
 $admin_move = 'admin_move_split_splice.png';
-$top_arrow = 'back_to_top.png';
-$my_blank_avatar = 'blank.gif';
-$nn_avatar = 'nn.gif';
-$disp_email = 'email.png';
+$top_img = qq~$imagesdir/back_to_top.png~;
 
 $outside_threadtools = qq~{yabb reply}{yabb poll}~;
 $outside_ttsep = q~~;
@@ -235,7 +224,7 @@ $messageblock = qq~
                 </td>
             </tr><tr>
                 <td class="{yabb css} bottom" style="background-color: #D7DBEA;">
-                    <span onclick="toTop(0)" class="cursor"><img src="$imagesdir/$top_arrow" alt="$display_txt{'643'}" title="$display_txt{'643'}" /></span>
+                    <span onclick="toTop(0)" class="cursor"><img src="$top_img" alt="$display_txt{'643'}" title="$display_txt{'643'}" /></span>
                 </td>
                 <td class="{yabb css} bottom dividertop" colspan="$postcol">
                     <div class="small" style="float: left; width: 74%;">
@@ -410,7 +399,7 @@ $mysend_top = qq~
 <table class="tabtitle" style="width:70%">
     <tr>
         <td style="padding-left:20px">
-            <img src="$imagesdir/$disp_email" alt="" />
+            <img src="$micon_bg{'email'}" alt="" />
             <b>$sendtopic_txt{'707'}&nbsp; &#171; {yabb subject} &#187; &nbsp;$sendtopic_txt{'708'}</b>
         </td>
     </tr>
@@ -477,7 +466,7 @@ $mysend_spam = qq~<tr>
 $my_guest_limit = qq~
 <table class="pad_4px" style="margin-bottom:10px">
 	 <tr>
-		<td class="tabtitle" style="height:22px"><img src="$imagesdir/xx.gif" alt=""> $display_txt{'guest_message'}</td>
+        <td class="tabtitle" style="height:22px"><img src="$micon_bg{'xx'}" alt=""> $display_txt{'guest_message'}</td>
 	</tr><tr>
     	<td class="windowbg">
       		$display_txt{'guest_message_block'}
@@ -488,7 +477,7 @@ $my_guest_limit = qq~
 $guest_view_limit_w = qq~
 <table class="pad_4px" style="margin-bottom:10px">
 	<tr>
-    	<td class="tabtitle" style="height:22px"><img src="$imagesdir/xx.gif" alt=""> $display_txt{'guest_message'}</td>
+        <td class="tabtitle" style="height:22px"><img src="$micon_bg{'xx'}" alt=""> $display_txt{'guest_message'}</td>
   	</tr><tr>
     	<td class="windowbg">
       		$display_txt{'guest_message_warn'}
