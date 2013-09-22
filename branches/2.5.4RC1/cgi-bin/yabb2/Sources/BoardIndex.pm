@@ -23,6 +23,7 @@ $boardindexpmver = 'YaBB 2.5.4 RC1 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('BoardIndex');
+get_micon();
 
 sub BoardIndex {
     my (
@@ -1024,7 +1025,6 @@ qq~<a href="$scripturl?action=RSSboard;board=$curboard" target="_blank"><img src
                         $crypass    = ${ $uid . $childbd }{'brdpassw'};
                         $sub_lock   = q{};
                         if ($crypass) {
-                            get_micon();
                             if ( $staff || $yyCookies{$cookiename} eq $crypass )
                             {
                                 $sub_lock = qq~ $micon{'lockopen_sub'}~;
@@ -1135,7 +1135,6 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
                 if ( ${ $uid . $curboard }{'brdpasswr'} ) {
                     my $cookiename = "$cookiepassword$curboard$username";
                     $crypass = ${ $uid . $curboard }{'brdpassw'};
-                    get_micon();
                     if (  !$staff
                         && $yyCookies{$cookiename} ne $crypass )
                     {
