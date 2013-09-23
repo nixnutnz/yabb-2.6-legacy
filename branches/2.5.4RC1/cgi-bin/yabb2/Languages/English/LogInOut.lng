@@ -24,7 +24,7 @@ $loginoutlngver = 'YaBB 2.5.4 RC1 $Revision$';
 '192' => 'E-mail successfully sent to:',
 '193' => 'Back',
 '194' => 'request',
-'241' => 'field!',
+'241' => 'field.',
 '315' => 'Forgot Password?',
 '339' => 'Send',
 '669' => 'Forgot Password',
@@ -54,7 +54,7 @@ $loginoutlngver = 'YaBB 2.5.4 RC1 $Revision$';
 );
 
 %prereg_txt=(
-'5' => 'Your account is activated. You can now log in using your user id and password!',
+'5' => 'Your account is activated. You can now log in using your user id and password.',
 );
 
 1;

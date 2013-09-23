@@ -16,7 +16,7 @@ $sendtopiclngver = 'YaBB 2.5.4 RC1 $Revision$';
 
 %sendtopic_txt = (
 '118' => 'Topic',
-'241' => 'field!',
+'241' => 'field.',
 '318' => 'From',
 '335' => 'Your name',
 '336' => 'Your e-mail address',

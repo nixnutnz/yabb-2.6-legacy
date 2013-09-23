@@ -22,8 +22,8 @@ if( ! $script_root ) {
 
 %backup_txt = (
 '1', 'YaBB Backup',
-'2', 'You have not saved your backup settings yet! You must choose and save your settings before you can backup your forum.',
-'3', 'Choose which directories to backup. Note: the backup routines use the directory paths from Forum Configuration -&gt; Path Settings; make sure these are correct!',
+'2', 'You have not saved your backup settings yet. You must choose and save your settings before you can backup your forum.',
+'3', 'Choose which directories to backup. Note: the backup routines use the directory paths from Forum Configuration -&gt; Path Settings; make sure these are correct.',
 '4', 'Directories to Backup',
 '5', 'Check/Uncheck All',
 '6', 'If you select every directory, you will have a complete copy of your forum. This is the recommended setting for most forums.<br />However, for <i>very</i> large forums, a full backup may cause recovery problems (e.g. timeouts). For such large forums, it may be better to create one backup of only the "static" framework directories (which change very little) and separate backups for each of the Boards, Members and Messages directories.',
@@ -98,7 +98,7 @@ if( ! $script_root ) {
 '43', 'Check your permissions and paths.',
 
 '44', 'Couldn&#39;t change directories to',
-'45', 'Invalid backup file!',
+'45', 'Invalid backup file.',
 '46', 'Can&#39;t read from',
 '47', 'Are you sure you want to delete',
 '48', '? This action can&#39;t be reversed.',
@@ -127,11 +127,11 @@ if( ! $script_root ) {
 
 # Loop stuff to prevent running into server time out
 '90' => q~<a href="javascript:stoptick();">Click here to STOP the backup</a>.~,
-'91' => 'Backing up - please wait!<br />If you want to stop, click on STOP before this red message appears again on the next page.',
+'91' => 'Backing up - please wait.<br />If you want to stop, click on STOP before this red message appears again on the next page.',
 
 # Recover stuff
 '100' => 'Recover Backup',
-'101' => '<b>The automated recovery feature is recommended ONLY for the following directories:<br /><i>Boards</i>, <i>Members</i>, <i>Messages</i>, <i>Variables</i>, and <i>yabbfiles/Attachments and yabbfiles/avatars/UserAvatars</i>.<br /><br />Recovered files may not have proper ownership or permissions, and you may therefore experience file access problems! If this occurs, you should recover all other files by downloading the archive file from the previous page, then uploading the backed up files via FTP from your computer.</b><br /><br />Are you sure that you want to recover the following directory(s)?',
+'101' => '<b>The automated recovery feature is recommended ONLY for the following directories:<br /><i>Boards</i>, <i>Members</i>, <i>Messages</i>, <i>Variables</i>, and <i>yabbfiles/Attachments and yabbfiles/avatars/UserAvatars</i>.<br /><br />Recovered files may not have proper ownership or permissions, and you may therefore experience file access problems. If this occurs, you should recover all other files by downloading the archive file from the previous page, then uploading the backed up files via FTP from your computer.</b><br /><br />Are you sure that you want to recover the following directory(s)?',
 '102' => 'from the archive file:',
 '103' => 'from',
 '104' => 'If yes, then',
@@ -139,24 +139,24 @@ if( ! $script_root ) {
 '106' => 'You must set the permissions for the recovered files in the following directories. Depending on your server configuration, the recovered files may be owned by the server daemon user. If that is the case, you may not be able to change the permissions afterwards. To ensure that you can modify and/or delete your files after recovery, the "group" permissions must be 6 or 7; do not use a lower number. The owners permissions must also be 6 or 7.<br /><br />If you are uncertain about any of the above, do not use this automated recovery feature, and instead download the archive file manually (from the previous page) and restore the files via FTP from your computer.',
 '107' => 'Files and Directories',
 '108' => 'Permissions<br />(CHMOD)<br />Owner|Group|All',
-'110' => 'This permission can\\\'t be set below', # Used in JavaScript!!!
-'111' => 'This permission can\\\'t be set higher than 7.', # Used in JavaScript!!!
-'112' => 'Only numbers are allowed!', # Used in JavaScript!!!
+'110' => 'This permission can\\\'t be set below', # Used in JavaScript!
+'111' => 'This permission can\\\'t be set higher than 7.', # Used in JavaScript!
+'112' => 'Only numbers are allowed.', # Used in JavaScript!
 '114' => '(all files)',
 '115' => 'All',
 '116' => 'files',
 '120' => 'If new directories are created, set them to',
 '125' => 'No, return to the YaBB Backup page',
-'126' => 'Yes, I&#39;m ready - Recover Now!',
+'126' => 'Yes, I&#39;m ready - Recover Now.',
 '130' => '<b><u>Output:</u><br /><br />If the CHMOD was successful, the first character will be <i>1</i>; if it is <i>0</i>, the CHMOD failed.</b><br />If the CHMOD failed, the most common problem is that one or more directories were not set to <i>group</i> write permission.',
 '131' => '<b>Now check the CHMODs again with your FTP program, just to be sure &nbsp; ;-)</b>',
 '132' => 'Back to YaBB Backup main page',
 
 # Begin e-mail stuff.
 'mailsubject', "YaBB 2 Backup from $mbname",
-'mailfrom', qq~"YaBB 2 Backup Mailer" <$webmaster_email>~, # do NOT modify anything left and right from *YaBB 2 Backup Mailer*!!!
-'mailsuccess', 'Sent e-mail successfully!',
-'mailfail', 'Sending e-mail failed! See the error message in the info e-mail you will receive.',
+'mailfrom', qq~"YaBB 2 Backup Mailer" <$webmaster_email>~, # do NOT modify anything left and right from *YaBB 2 Backup Mailer*!
+'mailsuccess', 'Sent e-mail successfully.',
+'mailfail', 'Sending e-mail failed. See the error message in the info e-mail you will receive.',
 );
 
 # The actual messages are here.

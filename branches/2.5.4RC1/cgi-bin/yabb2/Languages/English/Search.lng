@@ -41,7 +41,7 @@ $searchlngver = 'YaBB 2.5.4 RC1 $Revision$';
 '191' => 'Display how many results?',
 '191a' => 'Display only one result per thread?',
 '191b' => "Maximum allowed: $maxsearchdisplay",
-'191x' => "You are allowed to set max. $maxsearchdisplay results to be displayed. Please change your value!",
+'191x' => "You are allowed to set max. $maxsearchdisplay results to be displayed. Please change your value.",
 '236' => 'Return',
 '237' => 'to the board index.',
 '343' => 'Match all words',
@@ -68,7 +68,7 @@ $searchlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'pmgroup' => 'Group',
 'searchme' => 'Search own posts',
 'casesensitiv' => 'Case-Sensitive',
-'searchyabbtags' => 'Search also inside YaBBCode-tags <span class="small">(brackets like this [...]. Takes much more time!)</span>',
+'searchyabbtags' => 'Search also inside YaBBCode-tags <span class="small">(brackets like this [...]. Takes much more time.)</span>',
 );
 
 %pmboxes_txt = (

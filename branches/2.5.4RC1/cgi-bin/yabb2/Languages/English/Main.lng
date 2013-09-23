@@ -49,7 +49,7 @@ $abbr_lang = 'en-us';
 '31' => 'Quote',
 '32' => 'Go',
 '34' => 'Login',
-'35' => 'You can login at the bottom of this page!',
+'35' => 'You can login at the bottom of this page.',
 '40a' => 'Multimedia File Viewing is not available on RSS Feeds.',
 '41' => '(You need to',
 '42' => 'or',
@@ -72,7 +72,7 @@ $abbr_lang = 'en-us';
 '133' => 'Move to',
 '155' => 'Maintenance Mode',
 '156' => 'Our Forum is currently in Maintenance Mode.',
-'157' => 'Our Forum is currently in Maintenance Mode. Please try again later. Thank you!',
+'157' => 'Our Forum is currently in Maintenance Mode. Please try again later. Thank you.',
 '160' => 'This',
 '160a' => 'Topic',
 '160b' => 'has been moved to',
@@ -117,7 +117,7 @@ $abbr_lang = 'en-us';
 '470a' => '<i>Ex Member</i>',
 '525' => 'by',
 '609' => q~For purposes of security, YaBB asks that you please always use absolute paths. The '../' (parent directory) symbol is illegal. Please run Setup.pl again and modify the setting to use absolute paths instead of the '../' symbol.~,
-'633' => 'Warning!',
+'633' => 'Warning.',
 '634' => 'Only Registered Members are allowed to access this forum.',
 '635' => 'Please login below or click',
 '636' => '-here-',
@@ -144,7 +144,7 @@ $abbr_lang = 'en-us';
 'redirect' => 'Redirect',
 'redirecttext' => 'If you see this message, it means that the redirection didn&#39;t work.',
 'redirectlink' => 'Click here',
-'noscript' => 'You must enable JavaScript to get full functionality for this forum!',
+'noscript' => 'You must enable JavaScript to get full functionality for this forum.',
 'go_to_board' => 'Go to the Board Index',
 'searchimg' => 'Posts no more than',
 'searchimg2' => 'days old',
@@ -196,7 +196,7 @@ $abbr_lang = 'en-us';
 );
 
 %dereftxt =(
-'1' => 'You are being redirected.... one moment please !',
+'1' => 'You are being redirected.... one moment please.',
 );
 
 %timelocktxt=(
@@ -214,14 +214,6 @@ $abbr_lang = 'en-us';
 '2' => 'nd',
 '3' => 'rd',
 '4' => 'th',
-);
-
-%msntxt = (
-'1' => 'Open Messenger',
-'2' => 'Add to Buddylist',
-'3' => 'Attempting to sign in! Make sure MSN Messenger is installed and online.',
-'4' => '(Only active in IE)',
-'5' => 'MSN Center',
 );
 
 %pidtxt = (

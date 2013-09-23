@@ -29,7 +29,7 @@ $livepreviewlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'mess_empty' => 'The Message Body is not filled out.',
 'subj_allcaps' => 'It appears that you are trying to write using ALL CAPS in the Subject field. This is against forum rules.',
 'mess_allcaps' => 'It appears that you are trying to write using ALL CAPS in the Message field. This is against forum rules.',
-'pm_recipient' => 'You must fill in the recipient field!',
+'pm_recipient' => 'You must fill in the recipient field.',
 'no_links'     => "You are not allowed to include links until you have posted $minlinkpost messages.",
 );
 

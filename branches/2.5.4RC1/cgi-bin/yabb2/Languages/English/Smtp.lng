@@ -15,10 +15,10 @@
 $smtplngver = 'YaBB 2.5.4 RC1 $Revision$';
 
 %smtp_txt = (
-'1' => "SERVER ERROR:Could not find $smtpaddr!",
-'2' => 'SERVER ERROR: Could not open a socket connection!',
-'3' => "SERVER ERROR: Could not connect to $smtpaddr at port $port!",
-'4' => 'SYSTEM ERROR: The To address is empty!',
+'1' => "SERVER ERROR:Could not find $smtpaddr",
+'2' => 'SERVER ERROR: Could not open a socket connection',
+'3' => "SERVER ERROR: Could not connect to $smtpaddr at port $port",
+'4' => 'SYSTEM ERROR: The To address is empty',
 '5' => 'Mail Server communication log:',
 'no_to' => 'The &#39;To&#39; variable (recipient address) is empty and is needed in the SMTP protocol',
 'no_from' => 'The &#39;From&#39; variable (sender address) is empty and is needed in the SMTP protocol',

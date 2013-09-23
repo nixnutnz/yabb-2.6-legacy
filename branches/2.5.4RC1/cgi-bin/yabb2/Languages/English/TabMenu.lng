@@ -15,8 +15,8 @@
 $tabmenulngver = 'YaBB 2.5.4 RC1 $Revision$';
 
 %tabmenu_txt=(
-'texterr' => 'The Text field is empty!',
-'tabext' => 'A tab for the same action or with the same name already exists!there',
+'texterr' => 'The Text field is empty.',
+'tabext' => 'A tab for the same action or with the same name already exists.',
 'tabfront' => 'Front',
 'taburl' => 'URL',
 'tabwin' => 'New window',
@@ -35,7 +35,7 @@ $tabmenulngver = 'YaBB 2.5.4 RC1 $Revision$';
 'edittext2' => 'icon to save the new text or you can delete the tab by clicking on the',
 'edittext3' => 'icon. Note that you <b>cannot edit URLs</b>.',
 'reordertext' => 'On the right hand side there is a list of all your tabs allowing you to change the order they appear in the tab menu. Select the tab you want to move and click on the "&lt;" or "&gt;" button to move the tab in the desired direction.',
-'urlerr' => 'The URL field is empty!',
+'urlerr' => 'The URL field is empty.',
 'viewmem' => 'Members +',
 'viewall' => 'Guests +',
 'newtab' => 'Add a tab',

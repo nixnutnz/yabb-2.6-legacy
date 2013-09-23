@@ -83,7 +83,7 @@ $boardindexlngver = 'YaBB 2.5.4 RC1 $Revision$';
 '11' => 'You had',
 '12' => 'messages in your PM',
 '14' => 'New messages:',
-'15' => '!\nWould you like to view your PM Inbox',
+'15' => '.\nWould you like to view your PM Inbox',
 '16' => 'which exceeded the storage limit of',
 '18' => 'messages',
 '19' => 'The oldest',
@@ -95,7 +95,7 @@ $boardindexlngver = 'YaBB 2.5.4 RC1 $Revision$';
 '46' => 'Storage',
 '47' => 'them',
 '48' => 'the message',
-'50' => 'New Broadcast Personal Messages!',
+'50' => 'New Broadcast Personal Messages.',
 '51' => '\nWould you like to view the Broadcast PM box',
 '50a' => 'New Alert Messages:',
 );

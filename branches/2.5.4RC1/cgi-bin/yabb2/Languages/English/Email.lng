@@ -62,7 +62,7 @@ $emailcharset = 'ISO-8859-1';
 'apr_result_wait' => "Registration pending for",
 'apr_result_reject' => "Registration rejected for",
 'apr_result_approved' => "Registration approved for",
-'new_member_info' => "New Member Registration!",
+'new_member_info' => "New Member Registration.",
 );
 
 $yabbtags{'preregemail'} = qq~displayname preregspan cryptusername activationcode~;
@@ -71,7 +71,7 @@ $preregemail = qq~Welcome, {yabb displayname}!
 Here is your account validation link.
 
 You have been successfully pre-registered at {yabb mbname}.
-Please validate your account within {yabb preregspan} hours!
+Please validate your account within {yabb preregspan} hours.
 
 Please click on the link below to activate your user account
 
@@ -242,7 +242,7 @@ The {yabb mbname} team~;
 
 $yabbtags{'newmemberemail'} = qq~displayname username userip useremail~;
 $emaildesc{'newmemberemail'} = qq~The New Member Admin Notification E-mail~;
-$newmemberemail = qq~A new member has registered in your forum!
+$newmemberemail = qq~A new member has registered in your forum.
 
 Screen Name: {yabb displayname}
 User ID: {yabb username}
@@ -333,8 +333,8 @@ This message is also in your personal message inbox at {yabb mbname}\: {yabb scr
 
 ## for online alert pms.
 %online_alert = (
-newnotify => "New post alert!",
-replynotify => "Reply alert!",
+newnotify => "New post alert.",
+replynotify => "Reply alert.",
 );
 
 
@@ -365,7 +365,7 @@ $emaildesc{'deleteduseremail'} = q~The Deleted User Notification E-mail~;
 $deletedusersybject = q~Your account deleted on~;
 $deleteduseremail = q~Hello, {yabb displayname}!
 
-Your account on {yabb mbname} is no longer active and deleted!
+Your account on {yabb mbname} is no longer active and has been deleted.
 
 Regards,
 The {yabb mbname} team
