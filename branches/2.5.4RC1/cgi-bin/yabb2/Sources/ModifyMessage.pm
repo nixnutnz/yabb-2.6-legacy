@@ -25,8 +25,9 @@ if ( !$post_txt_loaded ) {
 LoadLanguage('FA');
 LoadLanguage('Display');
 
-get_template('Post');
 get_micon();
+get_template('Post');
+
 require Sources::SpamCheck;
 if ( $iamadmin || $iamgmod ) { $MaxMessLen = $AdMaxMessLen; }
 $set_subjectMaxLength ||= 50;

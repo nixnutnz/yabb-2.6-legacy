@@ -113,8 +113,8 @@ $mysearch_template6 =
 $mysearch_template7 = qq~</td>
     </tr>
 </table>
-<table class="titlebg pad_3px" style="table-layout: fixed;">
-    <tr class="search">
+<table class="pad_3px" style="table-layout: fixed;">
+    <tr class="titlebg search">
                     <td>$search_txt{'109'} {yabb tname} | $search_txt{'105'} $search_txt{'525'} {yabb mname}</td>
 					<td class="right">&nbsp;~;
 
@@ -123,7 +123,7 @@ $mysearch_template9 = q~
 	</tr><tr>
 		<td class="windowbg2 vtop h_80px" colspan="2">
 		    <div class="message" style="float: left; width: 99%; overflow: auto;">{yabb message}</div>
-			<div class="ipfind right" style="float: left; width: 99%; overflow: auto;">{yabb my_ipfind}</div>
+            <div class="right" style="float: left; width: 99%; overflow: auto;">{yabb my_ipfind}</div>
 		</td>
 	</tr>
 </table><br />~;
