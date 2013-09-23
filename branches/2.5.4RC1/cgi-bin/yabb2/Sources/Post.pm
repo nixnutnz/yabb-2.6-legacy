@@ -2796,7 +2796,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tempname}">$for
 
             if ( $message ne q{} ) {
                 $my_enable_markquote =
-                  $enable_markquote
+                  ( $enable_markquote && $enable_quickreply )
                   ? qq~&nbsp;&nbsp;<a href="javascript:void(quoteSelection('$quote_mname',$threadid,$quote_msg_id,$messagedate,''))">$img{'mquote'}</a>~
                   : q{};
                 $my_enable_quickjump =
