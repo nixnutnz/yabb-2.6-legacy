@@ -275,7 +275,7 @@ $myshow_recent_b = qq~
             </table>
         </td>
     </tr><tr>
-        <td class="windowbg2 vtop" style="height:80px" colspan="2"><div style="float: left; width: 99%; overflow: auto;">{yabb recentmsg}</div></td>
+        <td class="windowbg2 vtop" style="height:80px" colspan="2"><div class="message" style="float: left; width: 99%; overflow: auto;">{yabb recentmsg}</div></td>
     </tr>
 </table><br />~;
 ##Recent Posts
