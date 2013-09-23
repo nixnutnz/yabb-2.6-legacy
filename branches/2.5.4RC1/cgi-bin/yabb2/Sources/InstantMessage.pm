@@ -2218,14 +2218,14 @@ qq~<div class="small attbox"><a href="$pmuploadurl/$pmAttachFile" target="_blank
                 }
                 else {
                     $pmAttachment .=
-qq~<div class="small"><a href="$pmuploadurl/$pmAttachFile"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile</a> (~
+qq~<div class="small"><a href="$pmuploadurl/$pmAttachFile"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile</a> (~
                       . int( $filesize / 1024 )
                       . q~ KB)</div>~;
                 }
             }
             else {
                 $pmAttachment .=
-qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" />  $pmAttachFile ($fatxt{'1'})</div>~;
+qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pmAttachFile ($fatxt{'1'})</div>~;
             }
         }
         if ( $pmShowAttach && $pmAttachment ) {

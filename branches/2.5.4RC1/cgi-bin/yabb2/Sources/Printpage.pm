@@ -235,14 +235,14 @@ qq~<div class="small" style="float:left; margin:8px;"><img src="$attach_gif{$ext
                 }
                 else {
                     $pmAttachment .=
-qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile (~
+qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile (~
                       . int( $filesize / 1024 )
                       . q~ KB)</div>~;
                 }
             }
             else {
                 $pmAttachment .=
-qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" />  $pmAttachFile ($fatxt{'1'})</div>~;
+qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pmAttachFile ($fatxt{'1'})</div>~;
             }
         }
         if ( $pmShowAttach && $pmAttachment ) {
@@ -686,14 +686,14 @@ qq~<div class="small" style="float:left; margin:8px;"><img src="$attach_gif{$ext
                     }
                     else {
                         $attachment .=
-qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $scripturl?action=downloadfile;file=$_ (~
+qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $scripturl?action=downloadfile;file=$_ (~
                           . int( $filesize / 1024 )
                           . qq~ KB | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> )</div>~;
                     }
                 }
                 else {
                     $attachment .=
-qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" />  $_ ($fatxt{'1'}~
+qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $_ ($fatxt{'1'}~
                       . (
                         exists $attach_count{$_}
                         ? qq~ | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> ~

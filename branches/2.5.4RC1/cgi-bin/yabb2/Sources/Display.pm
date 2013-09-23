@@ -20,9 +20,9 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Display');
 LoadLanguage('FA');
+get_micon();
 get_template('Display');
 get_gmod();
-get_micon();
 
 sub Display {
 
@@ -893,14 +893,14 @@ qq~<div class="small attbox"><a href="$scripturl?action=downloadfile;file=$urlna
                     }
                     else {
                         $attachment .=
-qq~<div class="small"><a href="$scripturl?action=downloadfile;file=$urlname"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /> $_</a> (~
+qq~<div class="small"><a href="$scripturl?action=downloadfile;file=$urlname"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $_</a> (~
                           . int( $filesize / 1024 )
                           . qq~ KB | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> )</div>~;
                     }
                 }
                 else {
                     $attachment .=
-qq~<div class="small"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" />  $_ ($fatxt{'1'}~
+qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $_ ($fatxt{'1'}~
                       . (
                         exists $attach_count{$_}
                         ? qq~ | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> ~
