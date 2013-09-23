@@ -30,8 +30,9 @@ LoadLanguage('LivePreview');
 require Sources::Notify;
 require Sources::SpamCheck;
 require Sources::PostBox;
-get_template('Post');
 get_micon();
+get_template('Post');
+
 
 if (   $iamguest
     && $gpvalid_en
