@@ -192,7 +192,7 @@ $mypost_is_prev = qq~<tr class="windowbg">
     </tr>~;
 
 $mypost_submit = qq~<tr>
-        <td class="titlebg center" colspan="2">~;
+        <td class="catbg center" colspan="2">~;
 
 $mypost_smiley1 = qq~
             document.write('<table class="smiley_top" style="width:124px"><tr>');

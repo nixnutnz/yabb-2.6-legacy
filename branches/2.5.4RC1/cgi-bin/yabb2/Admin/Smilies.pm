@@ -335,7 +335,7 @@ sub AddSmilies {
         }
         if ( $FORM{"delbox[$temp_a]"} != 1 && $FORM{"sdescr[$temp_a]"} ne q{} && ( $FORM{"smimg[$temp_a]"} ne q{} || $FORM{"cur_smimg[$temp_a]"} ne q{} ) ) {   
             if ( $FORM{"smimg[$temp_a]"} ne q{} ) {
-                $FORM{"smimg[$temp_a]"} = UploadFile("smimg[$temp_a]", 'Templates/Forum/default', 'png jpg jpeg gif', '100' ); 
+                $FORM{"smimg[$temp_a]"} = UploadFile("smimg[$temp_a]", 'Templates/Forum/default', 'png jpg jpeg gif', '100', '0'); 
             }
             else {
                 $FORM{"smimg[$temp_a]"} = $FORM{"cur_smimg[$temp_a]"};

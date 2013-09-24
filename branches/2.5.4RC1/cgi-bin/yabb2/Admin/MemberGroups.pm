@@ -694,7 +694,7 @@ sub editAddGroup2 {
     if ( $FORM{'starsadmin'} eq 'other' ) {
         $cur_otherstar = $FORM{'cur_otherstar'};
         if ( $FORM{'otherstar'} ne q{} ) {
-            $star = UploadFile('otherstar', 'Templates/Forum/default', 'png jpg jpeg gif', '250'); 
+            $star = UploadFile('otherstar', 'Templates/Forum/default', 'png jpg jpeg gif', '250', '0'); 
             if ( $cur_otherstar !~ /^(staradmin|stargmod|starfmod|starmod|starsilver|starblue|stargold).png$/ ) {
                 unlink "$htmldir/Templates/Forum/default/$cur_otherstar";
             }

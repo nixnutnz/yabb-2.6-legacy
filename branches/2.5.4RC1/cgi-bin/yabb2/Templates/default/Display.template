@@ -150,12 +150,9 @@ $posthandellist = qq~
 
 if($posttools) {
     $posthandelstyle = qq~ class="post_tools center dividerbot" style="width:100px; height:22px; vertical-align:top; padding-top:10px"~;
-    $posthandeladmin = qq~<div style="float:right; vertical-align:bottom; height:28px">{yabb admin}</div>~;
+    $posthandeladmin = qq~<div style="float:right; vertical-align:bottom; height:100%;">{yabb admin}</div>~;
     $postcol= 3;
     $padd_right = '; padding-right:0; padding-bottom:0; padding-top:0; vertical-align:middle';
-    if ($use_menu == 1) {
-        $lineheight = '; line-height:22px; vertical-align:middle';
-    } 
 }
 else {
     $posthandelstyle = qq~ class="dividerbot" style="text-align:right; height:22px"~;
@@ -197,9 +194,9 @@ $messageblock = qq~
                         <b>{yabb subject}</b>
                         <br /><b>{yabb replycount}</b>{yabb msgdate}
                     </div>
-                    <div class="post_tools_a" style="text-align:right; float:right$lineheight">
+                    <div class="post_tools_a" style="text-align:right; float:right">
                         $posthandeladmin
-                        <div style="float:right$lineheight">{yabb outsideposttools}</div>
+                        <div style="float:right">{yabb outsideposttools}</div>
                     </div>
                     <div class="clear"></div>
                 </td>

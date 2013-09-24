@@ -483,11 +483,13 @@ sub ModifyAgreement2 {
     $FORM{'agreement'} =~ s/\n/<br \/>\n/gsm;
     fopen( HELPAGREE,
         ">$helpfile/$agreementlanguage/User/user00_agreement.help" );
-    print {HELPAGREE} qq^\$SectionName = "$register_txt{'764a'}";
+    $my_regtitle = $register_txt{'764a'};
+    $my_regtitle =~ s/ /_/gsm;
+    print {HELPAGREE} qq^\$SectionName = "$my_regtitle";
 
 ### Section 1
 #############################################
-\$SectionSub1 = "{yabb_boardname}_$register_txt{'764a'}";
+\$SectionSub1 = "{yabb_boardname}_$my_regtitle";
 \$SectionBody1 = qq~<p>$FORM{'agreement'}</p>~;
 #############################################
 

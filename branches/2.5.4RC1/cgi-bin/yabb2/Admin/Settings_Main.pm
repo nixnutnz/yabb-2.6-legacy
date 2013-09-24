@@ -1614,7 +1614,7 @@ sub SaveSettings {
     # Upload default avatar
     $cur_default_userpic = $FORM{'cur_default_userpic'};
     if ( $settings{'default_userpic'} ne q{} ) {
-        $settings{'default_userpic'} = UploadFile('default_userpic', 'Templates/Forum/default', 'png jpg jpeg gif', '250'); 
+        $settings{'default_userpic'} = UploadFile('default_userpic', 'Templates/Forum/default', 'png jpg jpeg gif', '250', '0');
         if ( $cur_default_userpic ne 'nn.gif' ) {
             unlink "$htmldir/Templates/Forum/default/$cur_default_userpic";
         }

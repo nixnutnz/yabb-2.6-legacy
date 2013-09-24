@@ -251,7 +251,7 @@ sub AddBookmark {
         fatal_error( 'invalid_value', "$bookmark_txt{'03'}" );
     }
 
-    $bm_image = UploadFile('bm_image', 'Bookmarks', 'png jpg jpeg gif', '250');
+    $bm_image = UploadFile('bm_image', 'Bookmarks', 'png jpg jpeg gif', '250', '0');
 
     fopen( BMARKS, ">>$vardir/Bookmarks.txt" )
       || fatal_error( 'cannot_open', "$vardir/Bookmarks.txt", 1 );
@@ -387,7 +387,7 @@ sub EditBookmark2 {
     }   
     
     if ( $bm_image ne q{} ) {
-        $bm_image = UploadFile('bm_image', 'Bookmarks', 'png jpg jpeg gif', '250'); 
+        $bm_image = UploadFile('bm_image', 'Bookmarks', 'png jpg jpeg gif', '250', '0'); 
         unlink "$htmldir/Bookmarks/$bm_cur_image";
     }
     else {

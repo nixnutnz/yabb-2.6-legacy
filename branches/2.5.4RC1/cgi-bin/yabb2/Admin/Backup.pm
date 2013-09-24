@@ -43,7 +43,7 @@ my %dirs = (
     'temp' => "Templates/ $backup_txt{10}",
     'var'  => 'Variables/',
     'html' => 'yabbfiles',
-    'upld' => "yabbfiles/Attachments $backup_txt{'and'} yabbfiles/avatars/UserAvatars",
+    'upld' => "yabbfiles/Attachments, yabbfiles/PMAttachments, $backup_txt{'and'} yabbfiles/avatars/UserAvatars",
 );
 
 is_admin_or_gmod();
@@ -210,7 +210,7 @@ qq~<span class="red"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
        </td>
      </tr><tr>
        <td class="windowbg2">
-         <input type="checkbox" onclick="checkYaBB()" name="YaBB_upld" id="YaBB_upld" value="1" $pathchecklist{'upld'}/> <label for="YaBB_upld">yabbfiles/Attachments $backup_txt{'and'} yabbfiles/avatars/UserAvatars $backup_txt{'14a'}</label>
+         <input type="checkbox" onclick="checkYaBB()" name="YaBB_upld" id="YaBB_upld" value="1" $pathchecklist{'upld'}/> <label for="YaBB_upld">yabbfiles/Attachments, yabbfiles/PMAttachments, $backup_txt{'and'} yabbfiles/avatars/UserAvatars $backup_txt{'14a'}</label>
        </td>
      </tr><tr>
        <td class="catbg">
@@ -764,9 +764,9 @@ sub runbackup {
         'var',
         $vardir,
         'html',
-"!$htmldir|!$htmldir/avatars|$htmldir/Buttons|$htmldir/googiespell|$htmldir/greybox|$htmldir/ModImages|$htmldir/Smilies|$htmldir/Templates",
+"!$htmldir|!$htmldir/avatars|$htmldir/BookMarks|$htmldir/Buttons|$htmldir/EventIcons|$htmldir/googiespell|$htmldir/greybox|$htmldir/ModImages|$htmldir/Smilies|$htmldir/Templates",
         'upld',
-        "$htmldir/Attachments|$htmldir/avatars/UserAvatars",
+        "$htmldir/Attachments|$htmldir/PMAttachments|$htmldir/avatars/UserAvatars",
     );
 
     # Set the forum to maintenance mode.

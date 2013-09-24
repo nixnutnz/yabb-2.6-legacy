@@ -184,7 +184,7 @@ sub AddCats2 {
 
     for my $i ( 0 .. ( $FORM{'amount'} - 1 ) ) {
         if ( $FORM{"catimage$i"} ne q{} ) {
-            $FORM{"catimage$i"} = UploadFile("catimage$i", 'Templates/Forum/default', 'png jpg jpeg gif', '250'); 
+            $FORM{"catimage$i"} = UploadFile("catimage$i", 'Templates/Forum/default', 'png jpg jpeg gif', '250', '0'); 
             if ( $FORM{"cur_catimage$i"} ne q{} ) {
                 unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_catimage$i\"}";
             }

@@ -1200,7 +1200,7 @@ sub AddBoards2 {
 
     for my $i ( 1 .. $FORM{'amount'} ) {
         if ( $FORM{"pic$i"} ne q{} ) {
-            $FORM{"pic$i"} = UploadFile("pic$i", 'Templates/Forum/default', 'png jpg jpeg gif', '250'); 
+            $FORM{"pic$i"} = UploadFile("pic$i", 'Templates/Forum/default', 'png jpg jpeg gif', '250', '0'); 
             if ( $FORM{"cur_pic$i"} ne q{} ) {
                 unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_pic$i\"}";
             }

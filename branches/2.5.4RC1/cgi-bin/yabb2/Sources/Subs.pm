@@ -3291,10 +3291,11 @@ sub BoardPasswCheck {
 
 sub UploadFile {
 
-    my ( $file_upload, $file_directory, $file_extensions, $file_size ) = @_;
+    my ( $file_upload, $file_directory, $file_extensions, $file_size, $directory_limit ) = @_;
     $file_directory = qq~$htmldir/$file_directory~;
     
     LoadLanguage('FA');
+    require Sources::SpamCheck;
     
     if ($CGI_query) { $file = $CGI_query->upload("$file_upload"); }
     if ($file) { 
@@ -3322,6 +3323,28 @@ sub UploadFile {
         my $fixname = $fixfile;
         if ( $fixname =~ s/(.+)(\..+?)$/$1/xsm ) {
             $fixext = $2;
+        }
+
+        $spamdetected = spamcheck("$fixname");
+        if ( !$staff ) {
+            if ( $spamdetected == 1 ) {
+                ${ $uid . $username }{'spamcount'}++;
+                ${ $uid . $username }{'spamtime'} = $date;
+                UserAccount( $username, 'update' );
+                $spam_hits_left_count = $post_speed_count -
+                  ${ $uid . $username }{'spamcount'};
+                unlink "$file_directory/$fixfile";
+                fatal_error('tsc_alert');
+            }
+        }
+        if ( $use_guardian && $string_on ) {
+            @bannedstrings = split /\|/xsm, $banned_strings;
+            foreach (@bannedstrings) {
+                chomp $_;
+                if ( $fixname =~ m/$_/ism ) {
+                    fatal_error( 'attach_name_blocked', "($_)" );
+                }
+            }
         }
 
         $fixext  =~ s/\.(pl|pm|cgi|php)/._$1/ixsm;
@@ -3356,6 +3379,22 @@ sub UploadFile {
                     . int( $filesize / 1024 )
                     . " KB) $fatxt{'21b'} "
                     . $file_size );
+        } 
+        if ($directory_limit) {
+            my $dirsize = dirsize($file_directory);
+            if ( $file_size > ( ( 1024 * $directory_limit ) - $dirsize ) ) {
+                unlink "$file_directory/$fixfile";
+                fatal_error(
+                    q{},
+                    "$fatxt{'22'} $fixfile ("
+                      . (
+                        int( $file_size / 1024 ) -
+                          $directory_limit +
+                          int( $dirsize / 1024 )
+                       )
+                       . " KB) $fatxt{'22b'}"
+                );
+            }
         }
 
         # create a new file on the server using the formatted ( new instance ) filename

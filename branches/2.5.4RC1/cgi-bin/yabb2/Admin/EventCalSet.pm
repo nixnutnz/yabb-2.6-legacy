@@ -424,7 +424,7 @@ sub EventCalSet3 {
         if ( $FORM{"calidescr[$tempA]"} eq q{} && ( $FORM{"caliimg[$tempA]"} ne q{} || $FORM{"cur_caliimg[$tempA]"} ne q{} ) ) { fatal_error('', $event_cal{'error_desc'}); } 
         if ( $FORM{"calidelbox[$tempA]"} != 1 && $FORM{"calidescr[$tempA]"} ne q{} && ( $FORM{"caliimg[$tempA]"} ne q{} || $FORM{"cur_caliimg[$tempA]"} ne q{} ) ) {
             if ( $FORM{"caliimg[$tempA]"} ne q{} ) {
-                $FORM{"caliimg[$tempA]"} = UploadFile("caliimg[$tempA]", 'EventIcons', 'png jpg jpeg gif', '100' ); 
+                $FORM{"caliimg[$tempA]"} = UploadFile("caliimg[$tempA]", 'EventIcons', 'png jpg jpeg gif', '100', '0'); 
                 unlink "$htmldir/EventIcons/$FORM{\"cur_caliimg[$tempA]\"}";
             } 
             else {
