@@ -1329,19 +1329,19 @@ qq~$menusep<a class="cursor" onclick="if(confirm('$display_txt{'rempost'}')) {un
                   )
                 {
                     $template_admin =
-qq~<input type="checkbox" class="$css" name="del$counter" value="$counter" />~;
+qq~<input type="checkbox" class="$css" name="del$counter" value="$counter" title="$display_txt{'739a'}" />~;
                 }
                 else {
 
 # need to set visibility to hidden - used for regular users to delete their posts too,
                     $template_admin =
-qq~<input type="checkbox" class="$css" style="border: 0px; visibility: hidden; display: none;" name="del$counter" value="$counter" />~;
+qq~<input type="checkbox" class="$css" style="border: 0px; visibility: hidden; display: none;" name="del$counter" value="$counter" title="$display_txt{'739a'}" />~;
                 }
             }
             else {
                 $template_delete = q{};
                 $template_admin =
-qq~<input type="checkbox" class="$css" style="border: 0px; visibility: hidden; display: none;" name="del$counter" value="$counter" />~;
+qq~<input type="checkbox" class="$css" style="border: 0px; visibility: hidden; display: none;" name="del$counter" value="$counter" title="$display_txt{'739a'}" />~;
             }
         }
 
@@ -1361,18 +1361,13 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
 
         $tool_sep = $posttools ? '|||' : q{};
 
-        $posthandelblock =~
-          s/({|<)yabb markquote(}|>)/$template_markquote$tool_sep/gsm;
+        $posthandelblock =~ s/({|<)yabb markquote(}|>)/$template_markquote$tool_sep/gsm;
         $posthandelblock =~ s/({|<)yabb quote(}|>)/$template_quote$tool_sep/gsm;
-        $posthandelblock =~
-          s/({|<)yabb modify(}|>)/$template_modify$tool_sep/gsm;
+        $posthandelblock =~ s/({|<)yabb modify(}|>)/$template_modify$tool_sep/gsm;
         $posthandelblock =~ s/({|<)yabb split(}|>)/$template_split$tool_sep/gsm;
-        $posthandelblock =~
-          s/({|<)yabb delete(}|>)/$template_delete$tool_sep/gsm;
-        $posthandelblock =~
-          s/({|<)yabb modalert(}|>)/$PMAlertButton$tool_sep/gsm;
-        $posthandelblock =~
-          s/({|<)yabb print_post(}|>)/$template_print_post$tool_sep/gsm;
+        $posthandelblock =~ s/({|<)yabb delete(}|>)/$template_delete$tool_sep/gsm;
+        $posthandelblock =~ s/({|<)yabb modalert(}|>)/$PMAlertButton$tool_sep/gsm;
+        $posthandelblock =~ s/({|<)yabb print_post(}|>)/$template_print_post$tool_sep/gsm;
         $posthandelblock =~ s/({|<)yabb admin(}|>)/$template_admin/gsm;
         $posthandelblock =~ s/\Q$menusep//ism;
 

@@ -51,6 +51,7 @@ $displaylngver = 'YaBB 2.5.4 RC1 $Revision$';
 '645' => 'replying',
 '646' => 'Members replying to this topic',
 '739' => 'Are you sure you want to delete this post?',
+'739a' => 'Delete this post',
 '766' => 'No Topic',
 '767' => 'Next Topic',
 '768' => 'Previous Topic',

@@ -1,6 +1,6 @@
 ###############################################################################
 # Load.pm                                                                     #
-# $Date: 9.16.13 $                                                            #
+# $Date: 9.23.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -935,6 +935,7 @@ sub MakeTools {
     $template = qq~<li>$template</li>~;
     $template =~ s/\|\|\|/$list_item/gsm;
     $template =~ s/<li>[\s]*<\/li>//gsm;
+    $template =~ s/\Q$menusep//gsm;
 
     my $tools_template = $template
       ? qq~
