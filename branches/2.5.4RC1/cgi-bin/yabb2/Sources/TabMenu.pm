@@ -1,6 +1,6 @@
 ###############################################################################
 # TabMenu.pm                                                                  #
-# $Date: 9.16.13 $                                                            #
+# $Date: 9.24.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -18,6 +18,7 @@ $tabmenupmver = 'YaBB 2.5.4 RC1 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('TabMenu');
+get_micon();
 
 $tabsep  = q{};
 $tabfill = q{};
@@ -217,7 +218,6 @@ qq~                            <li><span |><a href="$scripturl?action=logout" ti
         my ( $seladdtab, $seledittab );
         if    ( $action eq 'addtab' )  { $seladdtab  = q~class="selected"~; }
         elsif ( $action eq 'edittab' ) { $seledittab = q~class="selected"~; }
-        get_micon();
         $yytabadd =
 qq~<ul class="advtabs"><li id="addtab"><span $seladdtab><a href="$scripturl?action=addtab" title = "$tabmenu_txt{'newtab'}">$micon{'tabadd'}</a></span></li>\n~;
         $yytabadd .=

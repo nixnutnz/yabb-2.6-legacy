@@ -1,6 +1,6 @@
 ###############################################################################
 # InstantMessage.pm                                                           #
-# $Date: 9.19.13 $                                                            #
+# $Date: 9.24.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -25,8 +25,8 @@ require Sources::SpamCheck;
 LoadLanguage('FA');
 LoadLanguage('Post');
 
-get_template('MyMessage');
 get_micon();
+get_template('MyMessage');
 
 $set_subjectMaxLength ||= 50;
 

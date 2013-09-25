@@ -1,6 +1,6 @@
 ###############################################################################
 # SendTopic.pm                                                                #
-# $Date: 9.05.13 $                                                            #
+# $Date: 9.24.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -22,6 +22,7 @@ if ( !$sendtopicmail || $sendtopicmail == 2 ) { fatal_error('not_allowed'); }
 if ($gpvalid_en && $iamguest) { require Sources::Decoder; }
 
 LoadLanguage('SendTopic');
+get_micon();
 get_template('Display');
 
 sub SendTopic {

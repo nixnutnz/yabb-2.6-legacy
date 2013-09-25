@@ -292,7 +292,6 @@ $mymove_top = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     <a name="top" id="top">&nbsp;</a><br />
     <div id="maincontainer">
         <div id="container">
-            <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
 <script type="text/javascript">
 function NoPost(op) {
     if (document.getElementById("newboard").options[op].className == "nopost") {
@@ -424,11 +423,7 @@ $mysend_top = qq~
         <td class="windowbg"><input type="text" name="r_email" id="r_email" size="50" maxlength="50" /></td>
     </tr> {yabb my_valcode} {yabb my_spam} 
     <tr>
-        <td class="windowbg center vtop" colspan="2">
-            <hr class="hr" />
-        </td>
-    </tr><tr>
-        <td class="windowbg center" colspan="2">
+        <td class="catbg center" colspan="2" style="padding: 8px;">
             <input type="hidden" name="board" value="{yabb board}" />
             <input type="hidden" name="topic" value="{yabb topic}" />
             <input type="submit" name="Send" value="$sendtopic_txt{'339'}" class="button" />

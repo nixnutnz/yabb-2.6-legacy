@@ -1,6 +1,6 @@
 ###############################################################################
 # Post.pm                                                                     #
-# $Date: 9.23.13 $                                                            #
+# $Date: 9.24.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -1266,7 +1266,6 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
     #    if ($is_preview) { $post_txt{'507'} = $post_txt{'771'}; }
     $my_post_submit = qq~$mypost_submit
             $hidestatus
-            <br />
             <input type="submit" name="$post" id="$post" value="$submittxt" accesskey="s" tabindex="5" class="button" />~
 
 # remove Preview

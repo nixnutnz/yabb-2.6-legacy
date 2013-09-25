@@ -1,6 +1,6 @@
 ###############################################################################
 # Search.pm                                                                   #
-# $Date: 9.16.13 $                                                            #
+# $Date: 9.24.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -18,8 +18,8 @@ $searchpmver = 'YaBB 2.5.4 RC1 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Search');
-get_template('Search');
 get_micon();
+get_template('Search');
 
 if ( $FORM{'searchboards'} =~ /\A\!/xsm ) {
     my $checklist = q{};
@@ -72,7 +72,6 @@ sub plushSearch1 {
         Collapse_Load();
     }
     $yymain .= qq~
-<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
 <script type="text/javascript">
 <!--
 function removeUser() {

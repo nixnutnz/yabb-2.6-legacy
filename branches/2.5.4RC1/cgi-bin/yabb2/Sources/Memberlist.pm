@@ -1,6 +1,6 @@
 ###############################################################################
 # Memberlist.pm                                                               #
-# $Date: 9.18.13 $                                                            #
+# $Date: 9.24.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -32,8 +32,8 @@ if (   ( $ML_Allowed == 3 && !$iamadmin && !$iamgmod )
 }
 
 LoadLanguage('MemberList');
-get_template('Memberlist');
 get_micon();
+get_template('Memberlist');
 
 $MembersPerPage = $TopAmmount;
 $maxbar         = 100;

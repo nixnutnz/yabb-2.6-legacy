@@ -1,6 +1,6 @@
 ###############################################################################
 # Poll.pm                                                                     #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.24.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -19,6 +19,7 @@ $pollpmver = 'YaBB 2.5.4 RC1 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 LoadLanguage('Poll');
+get_micon();
 get_template('Poll');
 
 sub DoVote {
@@ -664,7 +665,6 @@ qq~<a href="$scripturl?action=undovote;num=$pollnum$scp">$img{'deletevote'}</a>~
     $pollmain =~ s/{yabb modifypoll}/$modifypoll/gsm;
     $pollmain =~ s/{yabb deletepoll}/$deletepoll/gsm;
     $pollmain =~ s/{yabb poll_question}/$poll_question/gsm;
-    get_micon();
 
 if($has_voted) {
      if ( !$hide_results || $poll_locked ) {

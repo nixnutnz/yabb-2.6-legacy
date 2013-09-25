@@ -93,7 +93,6 @@ function SpamInator(title,v1,v2,adr,subbody) {
 	document.write('<a href="javascript:void(0)" onclick="window.location=\'' + adr + v3 + subbody + '\'">' + title + '</a>');
 }
 
-
 var hideTimer = null;
 var lastOpen = null;
 function quickLinks(num) {
@@ -106,7 +105,7 @@ function quickLinks2(num) {
 	closeLinks(lastOpen);
 	document.getElementById("ql"+num).style.display = "inline-block";
 	document.getElementById("ql"+num).parentNode.style.zIndex = "1000";
-	lastOpen = num;
+	lastOpen = "ql"+num;
 }
 function TimeClose(num) {
 	hideTimer = setTimeout("closeLinks('"+num+"')", 1000);

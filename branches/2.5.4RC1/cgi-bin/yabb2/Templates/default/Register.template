@@ -29,7 +29,7 @@ $myregister_fullagree = qq~
           {yabb fullagree}
         </td>
     </tr><tr>
-        <td class="windowbg2 center">
+        <td class="catbg center" style="padding: 8px;">
             <input type="submit" value="$register_txt{'585'}" name="regagree" class="button" />&nbsp;&nbsp;<input type="submit" value="$register_txt{'586'}" name="regnoagree" class="button" />
         </td>
     </tr>
@@ -38,7 +38,7 @@ $myregister_fullagree = qq~
 
 ## agreement in registration form
 $myregister_regagree = qq~<tr>
-        <td class="titlebg" colspan="2">
+        <td class="catbg" colspan="2">
             <img src="$imagesdir/xx.gif" alt="$register_txt{'764a'}" title="$register_txt{'764a'}" /> <b>$register_txt{'764a'}</b>
         </td>
     </tr><tr>
@@ -252,11 +252,9 @@ $myregister_fruits = qq~<tr>
                 <iframe id="fruits" name="fruits" width="290" height="87" marginwidth="0" marginheight="0" frameborder="0" scrolling="no"></iframe>~;
 
 $myregister_endform = qq~<tr>
-        <td class="titlebg center" colspan="2">
-            <br />
-            <label for="submitbutton">$register_txt{'95'}</label><br />
-            <br />
-            <input type="submit" id="submitbutton" value="$register_txt{'97'}" class="button" /><br /><br />
+        <td class="catbg center" style="padding: 8px;" colspan="2">
+            <div style="margin-bottom: .5em;"><label for="submitbutton">$register_txt{'95'}</label></div>
+            <input type="submit" id="submitbutton" value="$register_txt{'97'}" class="button" /> 
         </td>
     </tr>
 </table>

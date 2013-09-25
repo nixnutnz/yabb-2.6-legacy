@@ -128,7 +128,7 @@ $myreminder_vericheck = qq~<tr>
     </tr>~;
 
 $myreminder_endform = qq~<tr>
-        <td class="windowbg center">
+        <td class="catbg center" style="padding: 8px;">
             <input type="submit" value="$loginout_txt{'339'}" class="button" />
         </td>
     </tr>

@@ -1,6 +1,6 @@
 ###############################################################################
 # MyCenter.pm                                                                 #
-# $Date: 9.19.13 $                                                            #
+# $Date: 9.24.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -24,9 +24,9 @@ if ( $action eq 'detailedversion' ) { return 1; }
 LoadLanguage('InstantMessage');
 LoadLanguage('MyCenter');
 LoadLanguage('Profile');
+get_micon();
 get_template('MyCenter');
 get_gmod();
-get_micon();
 $pm_lev = PMlev();
 
 $mycenter_txt{'welcometxt'} =~ s/USERLABEL/${$uid.$username}{'realname'}/gxsm;
@@ -2105,7 +2105,6 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musernameto}" r
 
                 ## viewing inbox
                 if ( $action eq 'im' ) {
-					get_micon();
                     ## not opened
                     if ( !$imOpened && !$hasMultiRecs ) {
                         $messageIcon =

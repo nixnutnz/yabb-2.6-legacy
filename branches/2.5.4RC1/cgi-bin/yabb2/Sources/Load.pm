@@ -1,6 +1,6 @@
 ###############################################################################
 # Load.pm                                                                     #
-# $Date: 9.23.13 $                                                            #
+# $Date: 9.24.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -850,7 +850,7 @@ sub QuickLinks {
             <ul id="$useraccount{$user}$qlcount" class="QuickLinks" onmouseover="keepLinks('$useraccount{$user}$qlcount')" onmouseout="TimeClose('$useraccount{$user}$qlcount')">
                 <li>~
           . userOnLineStatus($user)
-          . qq~<a href="javascript:closeLinks('$useraccount{$user}$qlcount')" class="load_cllink"><img src="$imagesdir/tp_arrow_up.png" alt="$maintxt{'collapse'}" title="$maintxt{'collapse'}" /></li>\n~;
+          . qq~<a href="javascript:closeLinks('$useraccount{$user}$qlcount')" class="load_cllink"><img src="$imagesdir/tp_arrow_up.png" alt="$maintxt{'collapse'}" title="$maintxt{'collapse'}" /></a></li>\n~;
         if ( $user ne $username ) {
             $quicklinks .=
 qq~             <li><a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$maintxt{'2'} ${$uid.$user}{'realname'}$maintxt{'3'}</a></li>\n~;

@@ -1,6 +1,6 @@
 ###############################################################################
 # LivePreview.pm                                                              #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.24.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -125,7 +125,7 @@ sub DoLiveIM {
     LoadLanguage('InstantMessage');
 
     get_template('MyMessage');
-    $liveipimg = qq~<img src="$imagesdir/$IM_ip" alt="" />~;
+    $liveipimg = qq~<img src="$micon_bg{'ip'}" alt="" />~;
     $livemip   = $inmes_txt{'511'};
 
     $messageblock = $myIM_liveprev_b;

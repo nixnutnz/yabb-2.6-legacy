@@ -114,7 +114,6 @@ $mypost_postblock = qq~
 
 $mypost_formend = q~
             </script>
-            <br /><br />
         </td>
     </tr>
 </table>
@@ -123,7 +122,6 @@ $mypost_formend = q~
 
 $mypost_ubbc = qq~
     <div class="bordercolor" style="padding: 1px; width: 100%; margin-left: auto; margin-right: auto;">
-    <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
     <script type="text/javascript">
     ~;
 
@@ -192,7 +190,7 @@ $mypost_is_prev = qq~<tr class="windowbg">
     </tr>~;
 
 $mypost_submit = qq~<tr>
-        <td class="catbg center" colspan="2">~;
+        <td class="catbg center" colspan="2" style="padding: 8px;">~; 
 
 $mypost_smiley1 = qq~
             document.write('<table class="smiley_top" style="width:124px"><tr>');
@@ -218,7 +216,6 @@ $mypost_feata = q~
 
 $mypost_prevmain = q{};
 $x_mypost_prevmain = qq~
-    <script type="text/javascript" src="$yyhtml_root/ubbc.js"></script>
     <div class="bordercolor" style="padding: 1px; width: 100%; margin-left: auto; margin-right: auto;">
         <table class="windowbg pad_3px" style="table-layout: fixed;">
             <tr>

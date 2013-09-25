@@ -1,6 +1,6 @@
 ###############################################################################
 # Profile.pm                                                                  #
-# $Date: 9.18.13 $                                                            #
+# $Date: 9.24.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -24,9 +24,9 @@ if ( $action eq 'detailedversion' ) { return 1; }
 LoadLanguage('Profile');
 LoadLanguage('Register');
 require Sources::AddModerators;
+get_micon();
 get_template('MyProfile');
 get_gmod();
-get_micon();
 
 $pm_lev = PMlev();
 

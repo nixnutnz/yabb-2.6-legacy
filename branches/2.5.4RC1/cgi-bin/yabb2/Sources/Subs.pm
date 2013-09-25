@@ -1,6 +1,6 @@
 ###############################################################################
 # Subs.pm                                                                     #
-# $Date: 9.05.13 $                                                            #
+# $Date: 9.24.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -621,7 +621,6 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
         if ( $maxsearchdisplay > -1 && $qcksearchaccess eq 'granted' ) {
             $yysearchbox = qq~
                     <div class="yabb_searchbox">
-                    <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
                     <form action="$scripturl?action=search2" method="post" accept-charset="$yycharset">
                         <input type="hidden" name="searchtype" value="$qcksearchtype" />
                         <input type="hidden" name="userkind" value="any" />

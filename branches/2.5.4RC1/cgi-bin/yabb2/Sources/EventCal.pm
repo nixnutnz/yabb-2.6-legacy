@@ -1,6 +1,6 @@
 ###############################################################################
 # EventCal.pm                                                                 #
-# $Date: 9.05.13 $                                                            #
+# $Date: 9.24.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -30,8 +30,9 @@ require Sources::SpamCheck;
 require Sources::PostBox;
 require Sources::Post;
 
-get_template('Calendar');
 get_micon();
+get_template('Calendar');
+
 
 if ( eval { require "$vardir/eventcalIcon.txt"; 1 } ) {
     $i = 0;
@@ -482,7 +483,6 @@ qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
             <span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span>\n~;
         }
 
-        get_micon();
         $mycalout_chars = qq~
 <script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -571,7 +571,7 @@ qq~<br /><b>$var_cal{'by'}</b> <span id="savename"></span> ($var_cal{'guest'})~;
         $col_row ||= 0;
         $mycalout_post2 = postbox2();
         $mycalout_post3 = postbox3();
-        get_micon();
+
         $livemsgimg =
           qq~<img src="$cal_icon_bg{$calicon}" name="liveicons" alt="" />~;
         $my_evtitle = q~<span id="ev_title"></span>~;
@@ -1363,7 +1363,6 @@ qq~<div class="small">$cal_icon{$cicon} $cdate <b>$icon_text</b> $eventuserlink$
     # Print Events end
 
     # Print Mini EventCal begin
-    get_micon();
 
     if ($Show_BirthdaysList) {
         if ( !$iamguest || ( $Show_BirthdaysList != 1 ) ) {

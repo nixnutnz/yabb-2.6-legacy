@@ -1,6 +1,6 @@
 ###############################################################################
 # Favorites.pm                                                                #
-# $Date: 9.18.13 $                                                            #
+# $Date: 9.24.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -23,6 +23,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 sub Favorites {
     LoadLanguage('MessageIndex');
+    get_micon();
     get_template('MyPosts');
 
     my $start = int( $INFO{'start'} ) || 0;
@@ -176,7 +177,6 @@ qq~<a href="http://$perm_domain/$symlink$permdate/$permlinkboard/$mnum">$message
         my $movedFlag;
         ( undef, $movedFlag ) = Split_Splice_Move( $msub, $mnum );
 
-        get_micon();
         if ( !$iamguest && $max_log_days_old ) {
 
             # Decide if thread should have the "NEW" indicator next to it.
