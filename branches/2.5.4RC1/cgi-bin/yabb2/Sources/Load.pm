@@ -724,8 +724,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$userlin
                     if ( $areplyperms == 1 )  { $replyperms  = 1; }
                     if ( $apollperms == 1 )   { $pollperms   = 1; }
                     if ( $aattachperms == 1 ) { $attachperms = 1; }
-                    ${ $uid . $user }{'perms'} =
-"$viewperms|$topicperms|$replyperms|$pollperms|$attachperms";
+                    ${ $uid . $user }{'perms'} = "$viewperms|$topicperms|$replyperms|$pollperms|$attachperms";
                 }
                 if (
                     $anoshow
@@ -850,7 +849,7 @@ sub QuickLinks {
             <ul id="$useraccount{$user}$qlcount" class="QuickLinks" onmouseover="keepLinks('$useraccount{$user}$qlcount')" onmouseout="TimeClose('$useraccount{$user}$qlcount')">
                 <li>~
           . userOnLineStatus($user)
-          . qq~<a href="javascript:closeLinks('$useraccount{$user}$qlcount')" class="load_cllink"><img src="$imagesdir/tp_arrow_up.png" alt="$maintxt{'collapse'}" title="$maintxt{'collapse'}" /></a></li>\n~;
+          . qq~</li>\n~;
         if ( $user ne $username ) {
             $quicklinks .=
 qq~             <li><a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$maintxt{'2'} ${$uid.$user}{'realname'}$maintxt{'3'}</a></li>\n~;

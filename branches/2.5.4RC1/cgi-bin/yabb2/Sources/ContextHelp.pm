@@ -55,7 +55,7 @@ sub ContextScript {
     document.write('<div id="contexttext" class="windowbg contexttext">context_text</div>');
     document.write('</div>');
     document.write('<div id="ctxtip" class="ctxtip" style="display: none;"></div>');
-    document.onclick = hidecontexthelp;
+    DocClick.push("hidecontexthelp()");
 
     function sizecontexthelp() {
         if (!document.all) {
