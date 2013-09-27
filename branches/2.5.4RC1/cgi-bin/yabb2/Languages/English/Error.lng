@@ -33,7 +33,7 @@ $errorlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'members_only'         => "Sorry, this service is for registered members only.",
 'email_no_access'      => "Sorry, you are not allowed to access this user's e-mail address.",
 'no_subject'           => "The Subject field was not filled out. It is required.",
-'no_message'           => "The Message Body was not filled out. It is required.",
+'no_message'           => "The Post or Message Body was not filled out. It is required.",
 'no_recipient'         => "The Recipient field was not filled out. It is required",
 'no_email'             => "The e-mail field was not filled out. It is required.",
 'no_name'              => "The Name field was not filled out. It is required.",
@@ -66,7 +66,7 @@ $errorlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'invalid_key'          => "Masterkey is invalid.<br />This should be a text string between 8 and 24 characters long.",
 'wrong_pass'			=> 'The password you entered is not correct', 
 'corrupt_member_file'  => "The member data file is corrupt. Please notify the administrator of this error.",
-'no_admin_passwrd'    => "You need to fill in the correct admin password to enter the Admin Center.",
+'no_admin_passwrd'    => "You need to fill in the correct administrator password to enter the Admin Center.",
 
 ## BoardIndex ##
 'collapse_no_member'   => "You must be a member to use the collapsible/expandable categories.",
@@ -97,8 +97,8 @@ $errorlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'not_activated'        => "Your account is not activated yet<br />Please activate it by clicking the link in the e-mail you received.",
 'time_out'             => "You did not activate your account within $preregspan hours.<br />As a result your pre-registration has been removed.<br />Please re-register.",
 'wrong_code'           => "Your activation code is wrong.",
-'admin_login_only'     => "Only the admin can login at the moment, because our forum is in Maintenance Mode.<br />Please try again later. Thank you.",
-'wrong_id'             => "You have an invalid ID. Please try again.",
+'admin_login_only'     => "Only the administrator can login at the moment, because our forum is in Maintenance Mode.<br />Please try again later. Thank you.",
+'wrong_id'             => "The User ID you submitted is invalid. Please try again.",
 
 ## Mailer ##
 'net_fatal'            => "Net::SMTP fatal error",
@@ -106,9 +106,9 @@ $errorlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'smtp_unavail'         => "SMTP connection could not be established",
 
 ## Post/ModifyMessage/Poll ##
-'topic_locked'         => "This topic is locked, and you are not allowed to post or modify messages.",
+'topic_locked'         => "This topic is locked, and you are not allowed to create or modify posts.",
 'time_locked'          => "The Administrator has set a time limit of ",
-'change_not_allowed'   => "You are not allowed to change this message",
+'change_not_allowed'   => "You are not allowed to change this post",
 'delete_not_allowed'   => "You are not allowed to delete this post.",
 'split_splice_not_allowed'    => "You are not allowed to split or splice this topic; you must be a staff member to do this.",
 'no_perm_post'         => "You do not have permission to post new topics in this board",
@@ -138,7 +138,7 @@ $errorlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'ip_member_used'       => "A member has already used this IP address to register their vote",
 'voted_already'        => "You have already voted in this poll",
 'guest_taken'          => "The user ID or e-mail address given is already taken by a member.<br />Conflicting name or e-mail: ",
-'quote_too_long'       => "The message you have tried to quote is too long. Please shorten it.",
+'quote_too_long'       => "The text you have tried to quote is too long. Please shorten it.",
 'no_links_allowed'     => "Sorry, you are not allowed to post messages containing active links to websites or images before you have posted $minlinkpost normal messages.",
 'no_siglinks_allowed'  => "Sorry, you are not allowed to create a signature containing active links to websites or images before you have posted $minlinksig normal messages.",
 'attach_name_blocked'         => "Your attachment name contains a word which is not allowed on this forum.",
@@ -154,7 +154,7 @@ $errorlngver = 'YaBB 2.5.4 RC1 $Revision$';
 'not_allowed_profile_change'    => "You are not allowed to change this person's profile.",
 'no_profile_exists'    => "The user whose profile you are trying to view does not exist.",
 'current_password_wrong'    => "Your Current Password is incorrect",
-'no_admin_password'    => "You need to fill in the correct admin password to make changes to this profile.",
+'no_admin_password'    => "You need to fill in the correct administrator password to make changes to this profile.",
 'password_is_userid'   => "For security reasons, you cannot use your user ID as your password.",
 'name_is_userid'       => "For security reasons it is not allowed to have a Screen Name the same as the user ID.",
 'name_taken'           => "This screen name is already in use by another member.",

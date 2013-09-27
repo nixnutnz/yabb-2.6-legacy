@@ -35,7 +35,7 @@ $emailcharset = 'ISO-8859-1';
 # Topic/PM-related
 'sender', "The sender of the PM.",
 'num', "The number of the Topic (for URL purposes)",
-'start', "The number of the Message in the Topic (for URL purposes)",
+'start', "The number of the Post in the Topic (for URL purposes)",
 
 # Registration/Password
 'activationcode', "The Activation Link sent in a Register e-mail.",
@@ -50,7 +50,7 @@ $emailcharset = 'ISO-8859-1';
 'sendto', "Recipient of this PM.",
 'email', "E-mail from User.",
 'date', "The date the PM was sent.",
-'subject', "The subject of the Message or PM.",
+'subject', "The subject of the Post or PM.",
 'message', "The text of the PM.",
 );
 
