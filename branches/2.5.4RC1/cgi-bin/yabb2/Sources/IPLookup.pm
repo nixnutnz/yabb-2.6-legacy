@@ -1,6 +1,6 @@
 ###############################################################################
 # IPLookup.pm                                                                 #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.27.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -23,6 +23,7 @@ if ( !$ipLookup || !$INFO{'ip'} || ( !$iamadmin && !$iamgmod && !$iamfmod ) ) {
 }
 
 LoadCensorList();
+get_micon();
 get_template('Other');
 
 sub IPLookup {

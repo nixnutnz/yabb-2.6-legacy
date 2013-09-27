@@ -14,13 +14,12 @@
 # $Revision$
 
 $my_session = 'session.png';
-$ip_pic = qq~$imagesdir/ip.gif~;
 
 ## IPlookup ##
 $my_ipdiv = qq~
 <table class="tabtitle">
     <tr>
-        <td style="padding-left:1%"><img src="$ip_pic" alt="" /> $lookup_txt{'iplookup'} - {yabb ip}</td>
+        <td style="padding-left:1%"><img src="$micon_bg{'ip'}" alt="" /> $lookup_txt{'iplookup'} - {yabb ip}</td>
     </tr>
 </table>
 <table class="pad_4px cs_thin">
