@@ -1,6 +1,6 @@
 ###############################################################################
 # Sessions.pm                                                                 #
-# $Date: 9.01.13 $                                                            #
+# $Date: 9.27.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -43,7 +43,6 @@ sub SessionReval {
     $yymain =~ s/{yabb sesquestion}/$sesquest_txt{$sesquestion}/sm;
     $yymain =~ s/{yabb sesredir}/$INFO{'sesredir'}/sm;
     $yytitle   = "$img_txt{'34a'}";
-    $yyjsstyle = 1;
     template();
     return;
 }
