@@ -127,7 +127,7 @@ $my_sessions = qq~
 <div class="bordercolor" style="padding: 1px; width: 50%; margin-left: auto; margin-right: auto;">
 <table class="tabtitle">
     <tr>
-        <td colspan="3">
+        <td>
             <img src="$imagesdir/$my_session" alt="" /><b>$img_txt{'34a'}</b>
         </td>
     </tr>
@@ -146,8 +146,7 @@ $my_sessions = qq~
             <input type="hidden" name="sredir" value="{yabb sesredir}" />
         </td>
     </tr><tr>
-        <td class="windowbg center" colspan="2">
-            <br />
+        <td class="catbg center" style="padding: 8px;" colspan="2">
             <input type="submit" value="$img_txt{'34a'}" tabindex="2" class="button" />
         </td>
     </tr>
