@@ -1,6 +1,6 @@
 ###############################################################################
 # Backup.pm                                                                   #
-# $Date: 9.24.13 $                                                            #
+# $Date: 9.29.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -70,12 +70,12 @@ qq~<span style="color:green"><b>$backup_txt{'mailsuccess'}</b></span><br /><br /
 qq~<span class="red"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
     }
 
-    if ( @backup_paths == 8 ) { $allchecked = 'checked="checked" '; }
-
     # Yes, my checklists are really hashes. Oh well.
     foreach my $item (@backup_paths) {
         $pathchecklist{$item} = 'checked="checked" ';
     }
+    if ( @backup_paths == 9 ) { $allchecked = 'checked="checked" '; }
+
     $methodchecklist{$backupmethod}   = 'checked="checked" ';
     $methodchecklist{$compressmethod} = 'checked="checked" ';
 
@@ -85,7 +85,6 @@ qq~<span class="red"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
     # Javascript to make the behavior of the form buttons work better
     $yymain .= qq~
  <script type="text/javascript">
- <!--
     function checkYaBB () {
         // See if the check all box should be checked or unchecked.
         // It should be checked only if all the other boxes are checked.
@@ -140,37 +139,26 @@ qq~<span class="red"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
             }
         }
     }
- -->
  </script>
 <form action="$adminurl?action=backupsettings2" method="post" name="backupsettings" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
      <tr>
-       <td class="titlebg">
-         $admin_img{'prefimg'} <b>$backup_txt{1}</b>
-       </td>
+			<td class="titlebg">$admin_img{'prefimg'} <b>$backup_txt{1}</b></td>
      </tr>~;
 
     if ( !$backupsettingsloaded ) {
         $yymain .= qq~<tr>
-       <td class="catbg">
-         <b>$backup_txt{2}</b>
-       </td>
+			<td class="catbg"><b>$backup_txt{2}</b></td>
      </tr><tr>
-       <td>
-         <!-- Empty td for a spacer -->
-       </td>
+			<td>&nbsp;</td>
      </tr>~;
     }
 
     $yymain .= qq~<tr>
-       <td class="windowbg">
-         $backup_txt{3}
-       </td>
+			<td class="windowbg">$backup_txt{3}</td>
      </tr><tr>
-       <td class="catbg">
-         <b>$backup_txt{4}</b>
-       </td>
+			<td class="catbg"><b>$backup_txt{4}</b></td>
      </tr><tr>
        <td class="windowbg">
          <input type="checkbox" name="YaBB_ALL" id="YaBB_ALL" value="1" onclick="masscheckYaBB(this.checked)" $allchecked/> <label for="YaBB_ALL">$backup_txt{5}<br />
@@ -213,13 +201,9 @@ qq~<span class="red"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
          <input type="checkbox" onclick="checkYaBB()" name="YaBB_upld" id="YaBB_upld" value="1" $pathchecklist{'upld'}/> <label for="YaBB_upld">yabbfiles/Attachments, yabbfiles/PMAttachments, $backup_txt{'and'} yabbfiles/avatars/UserAvatars $backup_txt{'14a'}</label>
        </td>
      </tr><tr>
-       <td class="catbg">
-         <b>$backup_txt{15}</b>
-       </td>
+			<td class="catbg"><b>$backup_txt{15}</b></td>
      </tr><tr>
-       <td class="windowbg">
-         $backup_txt{16}
-       </td>
+			<td class="windowbg">$backup_txt{16}</td>
      </tr>~;
 
     # Make a list of modules that we can use with Tar::Archive
@@ -251,9 +235,7 @@ qq~name="tarmodulecompress" id="label_$label_id" value="$module" $methodchecklis
     }
 
     $tarcompress1 .= q~<tr>
-       <td class="windowbg">
-         &nbsp;
-       </td>
+			<td class="windowbg">&nbsp;</td>
      </tr>~;
 
     # Make a list of compression commands we can use with /usr/bin/tar
@@ -285,9 +267,7 @@ qq~name="bintarcompress" id="label_$label_id" value="$command" $methodchecklist{
     }
 
     $tarcompress2 .= q~<tr>
-       <td class="windowbg">
-         &nbsp;
-       </td>
+			<td class="windowbg">&nbsp;</td>
      </tr>~;
 
 # Display the commands we can use for compression
@@ -356,9 +336,7 @@ qq~name="backupmethod" id="backupmethod2" value="$backupprogusr/zip" onclick="do
          <input type="radio" $input/> <label for="backupmethod2">Zip ($newcommand) $disabledtext</label>
 		</td>
     </tr><tr>
-		<td class="windowbg">
-			&nbsp;
-		</td>
+			<td class="windowbg">&nbsp;</td>
 	</tr>~;
 
     # Display the modules that we can use
@@ -419,7 +397,6 @@ qq~name="backupmethod" id="backupmethod3_$i" value="$module" onclick="domodulech
 </div>
 </form>
 <script type="text/javascript">
- <!--
 $presetjavascriptcode
 
     function BackupNewest(lastbackup) {
@@ -429,18 +406,15 @@ $presetjavascriptcode
             document.runbackup.submit();
         }
     }
- //-->
  </script>~;
 
-    # Here we go again with another table. Here's the backup button area
+    # Here we go again with another table. Here is the backup button area
     if ($backupsettingsloaded) {
 
         # Look for the files.
         opendir BACKUPDIR, $backupdir;
         @backups = readdir BACKUPDIR;
         closedir BACKUPDIR;
-
-# @backup_paths = qw(Admin_Sources Boards Languages Members Messages Templates Variables yabbfiles);
 
         my ( $lastbackupfiletime, $filename );
         foreach my $file (
@@ -463,15 +437,12 @@ $presetjavascriptcode
             }
 
             $filename = "$1$2.$3.$4.$5";
-            $filelist .=
-                q~          <tr>
+            $filelist .= q~            <tr>
 				<td>~
-              . timeformat($3)
-              . qq~</td>
+              . timeformat($3) . qq~</td>
 				<td class="right">$filesize</td>
 				<td>- ~
-              . join( '<br />- ', @dirs )
-              . q~</td>
+              . join( '<br />- ', @dirs ) . q~</td>
 				<td>~
               . (
                 $2
@@ -485,7 +456,8 @@ $presetjavascriptcode
 					<br /><a href="$adminurl?action=runbackup;runbackup_again=$filename">$backup_txt{62}</a></td>
 				<td class="center">~
               . (
-                ( $5 =~ /^a\.tar/xsm || $5 !~ /tar/xsm ) ? q{-}
+                ( $5 =~ /^a\.tar/xsm || $5 !~ /tar/xsm )
+                ? q{-}
                 : qq~<a href="$adminurl?action=recoverbackup1;recoverfile=$filename">$backup_txt{63}</a>~
               )
               . qq~</td>
@@ -493,8 +465,7 @@ $presetjavascriptcode
 			</tr>~;
         }
 
-        $filelist ||=
-          qq~<tr>
+        $filelist ||= qq~<tr>
 				<td colspan="9"><i>$backup_txt{38}</i></td>
 			</tr>~;
 
@@ -635,22 +606,20 @@ sub check_backup_settings {
 
     if ( !$backupmethod ) { fatal_error( q{}, "$backup_txt{29} ''" ); }
 
-    if ( $backupmethod =~ /::/xsm ) {    # It's a module, test-require it
+    if ( $backupmethod =~ /::/xsm ) {    # It is a module, test-require it
         eval "use $backupmethod();";
         if ($@) {
-            fatal_error( q{},
-                "$backup_txt{39} $backupmethod $backup_txt{41}" );
+            fatal_error( q{}, "$backup_txt{39} $backupmethod $backup_txt{41}" );
         }
     }
     else {
         my $newcommand = CheckPath($backupmethod);
         if ( !$newcommand ) {
-            fatal_error( q{},
-                "$backup_txt{40} $backupmethod $backup_txt{41}" );
+            fatal_error( q{}, "$backup_txt{40} $backupmethod $backup_txt{41}" );
         }
     }
 
-    # If we're using $backupprogusr/tar, check for the compression method.
+    # If we are using $backupprogusr/tar, check for the compression method.
     if ( $backupmethod eq "$backupprogusr/tar" && $compressmethod ne 'none' ) {
         my $newcommand = CheckPath($compressmethod);
         if ( !$newcommand ) {
@@ -659,7 +628,7 @@ sub check_backup_settings {
         }
     }
 
-    # If we're using Archive::Tar, check for the compression method.
+    # If we are using Archive::Tar, check for the compression method.
     elsif ( $backupmethod eq 'Archive::Tar' && $compressmethod ne 'none' ) {
         eval "use $compressmethod();";
         if ($@) {
@@ -703,7 +672,8 @@ sub runbackup {
         if ( $again[3] eq 'a' ) {
             $backupmethod =
               $again[4] eq 'tar' ? 'Archive::Tar' : 'Archive::Zip';
-            $compressmethod = $again[5]
+            $compressmethod =
+              $again[5]
               ? ( $again[5] eq 'gz' ? 'Compress::Zlib' : 'Compress::Bzip2' )
               : 'none';
         }
@@ -742,37 +712,30 @@ sub runbackup {
     }
     my $filedirs = join q{_}, @backup_paths;
 
-    # Verify that our method is possible, and load it if it's a module
+    # Verify that our method is possible, and load it if it is a module
     BackupMethodInit($filedirs);
 
 # Handle the conversion of the informal backup_paths stored in the settings file to the real ones
-# I'll build a hash to quickly match them.
+# We will build a hash to quickly match them.
 # A pipe separates them in the case of needing multiple real paths to handle one informal path
     %pathconvert = (
-        'src',
-        "$admindir|$sourcedir|$boarddir/Modules|!$boarddir",
-        'bo',
-        $boardsdir,
-        'lan',
-        "$langdir|$helpfile",
-        'mem',
-        $memberdir,
-        'mes',
-        $datadir,
-        'temp',
-        "$templatesdir|$htmldir/Templates/Forum|$htmldir/Templates/Admin",
-        'var',
-        $vardir,
-        'html',
-"!$htmldir|!$htmldir/avatars|$htmldir/BookMarks|$htmldir/Buttons|$htmldir/EventIcons|$htmldir/googiespell|$htmldir/greybox|$htmldir/ModImages|$htmldir/Smilies|$htmldir/Templates",
-        'upld',
+        'src'  => "$admindir|$sourcedir|$boarddir/Modules|!$boarddir",
+        'bo'   => $boardsdir,
+        'lan'  => "$langdir|$helpfile",
+        'mem'  => $memberdir,
+        'mes'  => $datadir,
+        'temp' => "$htmldir/Templates",
+        'var'  => $vardir,
+        'html' =>
+"!$htmldir|!$htmldir/avatars|$htmldir/BookMarks|$htmldir/Buttons|$htmldir/EventIcons|$htmldir/googiespell|$htmldir/greybox|$htmldir/ModImages|$htmldir/shjs|$htmldir/Smilies",
+        'upld' =>
         "$htmldir/Attachments|$htmldir/PMAttachments|$htmldir/avatars/UserAvatars",
     );
 
     # Set the forum to maintenance mode.
     automaintenance('on');
 
-    # Looping to prevent runt into browser/server timeout
+    # Looping to prevent running into browser/server timeout
     my ( $i, $j, $key, $path );
     foreach my $key (@backup_paths) {
         $i++;
@@ -783,7 +746,7 @@ sub runbackup {
                 if ( $j > $INFO{'loop2'} ) {
                     $INFO{'loop2'} = 0;
 
-# To keep this simple, I'll just point to a generic subroutine that takes care of
+# To keep this simple, I will just point to a generic subroutine that takes care of
 # handling the differences in backup methods.
                     if ( $path =~ s/^\.\///xsm ) {
                         $ENV{'SCRIPT_FILENAME'} =~ /(.*\/)/xsm;
@@ -802,7 +765,7 @@ sub runbackup {
         }
     }
 
- # Last, we'll finalize the archive. If it's a tar, we compress them,
+ # Last, we will finalize the archive. If it is a tar, we compress them,
  # if requested. This can NOT be done with the forum out of maintenance mode
  # due to the maintenance.lock file that is removed with &automaintenance('off')
     BackupMethodFinalize( $filedirs, 0 );
@@ -893,6 +856,7 @@ sub BackupDirectory {
         if ( !$recursemode ) { $dir .= '/*.*'; }
         if ( $FORM{'backupnewest'} ) { $Nt = "-N \@$FORM{'backupnewest'}"; }
         $dir =~ s/^\///xsm;
+
 			# needed not to get server log messages like "Removing leading `/' from ..."
         ak_system(
 "tar $cr -C / -f $backupdir/backup$backuptype.$curtime.$filedirs.tar $Nt $dir"
@@ -1080,7 +1044,8 @@ sub downloadbackup {
     # print full header
     print "Content-disposition: inline; filename=$filename\n"
       or croak "$croak{'print'} Content-disposition";
-    print "Content-Length: $filesize\n" or croak "$croak{'print'} Content-Length";
+    print "Content-Length: $filesize\n"
+      or croak "$croak{'print'} Content-Length";
     print "Content-Type: application/octet-stream\n\n"
       or croak "$croak{'print'} Content-Type";
 
@@ -1129,9 +1094,9 @@ sub deletebackup2 {
 
 sub emailbackup {
 
-    # Unfourtantly, we can't use &sendmail() for this.
-    # So, we'll load MIME::Lite and try that, as it should work.
-    # If not, we'll email out a download link.
+    # Unfortunately, we cannot use &sendmail() for this.
+    # So, we will load MIME::Lite and try that, as it should work.
+    # If not, we will email out a download link.
     my ( $mainmessage, $filename );
 
     $filename = $INFO{'backupid'};
