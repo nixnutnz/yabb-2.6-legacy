@@ -1,6 +1,6 @@
 ###############################################################################
 # MessageIndex.pm                                                             #
-# $Date: 9.19.13 $                                                            #
+# $Date: 9.30.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -543,8 +543,7 @@ qq~javascript:MessageList(\\'$scripturl?board=$currentboard/' + pagstart + ';mes
     ToChars($curboardname);
     if ( $multiview == 1 ) {
         $yymain .=
-          qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
-<script type="text/javascript">
+          qq~<script type="text/javascript">
 function NoPost(op) {
     if (document.getElementById("toboard").options[op].className == "nopost") {
         alert("$messageindex_txt{'nopost'}");
@@ -1559,21 +1558,32 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
     $topichandellist =~ s/({|<)yabb new poll button(}|>)/$polllink$tool_sep/gsm;
     $topichandellist =~ s/\Q$menusep//ism;
 
-    if ( !$threadtools ) { $outside_ttsep = $my_ttsep; $inside_ttsep = q{};}
-	else { $outside_ttsep = q{}; $inside_ttsep = $my_ttsep; }
+    @setmenusep = ( "$notify_board","$markalllink","$postlink","$polllink",);
+    @sep_in = ();
+    @sep_out = ();
+    my $sepcn = 0;
+    for (@setmenusep) {
+        if ($_ ) {
+           if ( !$threadtools ) { $sep_out[$sepcn] = $my_ttsep; $sep_in[$sepcn] = q{};}
+           else  { $sep_out[$sepcn] = q{}; $sep_in[$sepcn] = $my_ttsep; }
+        }
+        else  { $sep_out[$sepcn] = q{}; $sep_in[$sepcn] = q{} }
+        $sepcn++;
+    }
+ 
     $outside_threadtools =~
-      s/({|<)yabb notify button(}|>)/$inside_ttsep$notify_board$outside_ttsep/gsm;
+      s/({|<)yabb notify button(}|>)/$sep_in[0]$notify_board$sep_out[0]/gsm;
     $outside_threadtools =~
-      s/({|<)yabb markall button(}|>)/$inside_ttsep$markalllink$outside_ttsep/gsm;
+      s/({|<)yabb markall button(}|>)/$sep_in[1]$markalllink$sep_out[1]/gsm;
     $outside_threadtools =~
-      s/({|<)yabb new post button(}|>)/$inside_ttsep$postlink$outside_ttsep/gsm;
+      s/({|<)yabb new post button(}|>)/$sep_in[2]$postlink$sep_out[2]/gsm;
     $outside_threadtools =~
-      s/({|<)yabb new poll button(}|>)/$inside_ttsep$polllink$outside_ttsep/gsm;
+      s/({|<)yabb new poll button(}|>)/$sep_in[3]$polllink$sep_out[3]/gsm;
 
-        $outside_threadtools =~ s/\Q$menusep//ism;
         $outside_threadtools =~ s/\Q$my_ttsep//ism;
 
     if ( !$threadtools ) {
+        $outside_threadtools =~ s/\Q$menusep//ism;
         $topichandellist     = $outside_threadtools . $topichandellist;
         $outside_threadtools = q{};
     }

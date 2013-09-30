@@ -1,6 +1,6 @@
 ###############################################################################
 # BoardIndex.pm                                                               #
-# $Date: 9.19.13 $                                                            #
+# $Date: 9.30.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -1681,13 +1681,7 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
 qq~     var markallreadlang = '$boardindex_txt{'500'}';
      var markfinishedlang = '$boardindex_txt{'500a'}';
 	 var markthreadslang = '$boardindex_txt{'500b'}';~;
-        $yymain .= qq~
-<script type="text/javascript">
-<!--
-    var catNames = [$template_catnames];
-//-->
-</script>
-$boardindex_template~;
+        $yymain .= qq~$boardindex_template~;
 
         $yymain .= qq~
 <script type="text/javascript">

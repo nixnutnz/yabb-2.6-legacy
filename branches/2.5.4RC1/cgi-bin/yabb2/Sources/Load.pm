@@ -1,6 +1,6 @@
 ###############################################################################
 # Load.pm                                                                     #
-# $Date: 9.26.13 $                                                            #
+# $Date: 9.30.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -934,7 +934,9 @@ sub MakeTools {
     $template = qq~<li>$template</li>~;
     $template =~ s/\|\|\|/$list_item/gsm;
     $template =~ s/<li>[\s]*<\/li>//gsm;
+    if ($MenuType == 1 ) {
     $template =~ s/\Q$menusep//gsm;
+    }
 
     my $tools_template = $template
       ? qq~
@@ -946,7 +948,6 @@ sub MakeTools {
     <div class="right cursor toolbutton_b">
         <ul class="post_tools_menu" id="threadtools$counter" onmouseover="keepLinks('threadtools$counter')" onmouseout="TimeClose('threadtools$counter')">
             $template
-<!--            <li class="toolbutton_li"><span class="small"><a href="javascript:closeLinks('threadtools$counter')"><img src="$imagesdir/tp_arrow_up.png" alt="$maintxt{'collapse'}" title="$maintxt{'collapse'}" /></a></span></li>-->
         </ul>
     </div>
     ~

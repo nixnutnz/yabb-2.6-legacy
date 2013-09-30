@@ -1,6 +1,6 @@
 ###############################################################################
 # Sessions.pm                                                                 #
-# $Date: 9.27.13 $                                                            #
+# $Date: 9.30.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -18,6 +18,7 @@ $sessionspmver = 'YaBB 2.5.4 RC1 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Sessions');
+get_micon();
 get_template('Other');
 
 sub SessionReval {

@@ -1,6 +1,6 @@
 ###############################################################################
 # Subs.pm                                                                     #
-# $Date: 9.24.13 $                                                            #
+# $Date: 9.30.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -256,9 +256,22 @@ sub template {
     $yytitle         = "$mbname - $yytitle";
     $yyimages        = $imagesdir;
     $yydefaultimages = $defaultimagesdir;
+    $yyubbc          = q{};
     $yysyntax_js     = q{};
     $yygreyboxstyle  = q{};
     $yygrayscript    = q{};
+
+    if (
+        $action eq 'post'
+        || $action eq 'modify'
+        || $action eq 'imshow'
+        || $action eq 'imsend'
+        || ( $action eq 'eventcal' && $INFO{'addnew'} )
+        || $action eq 'mycenter'
+       )
+    {
+        $yyubbc = qq~<script type="text/javascript" src="$yyhtml_root/ubbc.js" ></script>~;
+    }
 
     if (
            $INFO{'num'}
@@ -742,7 +755,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
             }
             $img_greybox = $greybox;
             $yynews .= q~
-                    if (ie4 || DOM2) document.write('<div style="font-size: ' + fntsize + '\\; font-weight: ' + fntweight + '\\; font-style: ' + fntstyle + '\\; font-family: ' + fntfamily + '\\; text-decoration: ' + txtdecoration + '\\;" id="fscroller"></div>');
+                    if (DOM2) document.write('<div style="font-size: ' + fntsize + '\\; font-weight: ' + fntweight + '\\; font-style: ' + fntstyle + '\\; font-family: ' + fntfamily + '\\; text-decoration: ' + txtdecoration + '\\;" id="fscroller"></div>');
 
                     if (window.addEventListener)
                         window.addEventListener("load", changecontent, false);

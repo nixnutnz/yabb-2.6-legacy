@@ -1,6 +1,6 @@
 ###############################################################################
 # EventCal.pm                                                                 #
-# $Date: 9.24.13 $                                                            #
+# $Date: 9.30.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -440,8 +440,7 @@ qq~ <label for="calyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
             ContextScript('post');
             $mycalout_cthelp = $ctmain;
             $mycalout_cthelp .=
-qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
-<div class="style_ubbc_box">~;
+qq~<div class="style_ubbc_box">~;
             $mycalout_cthelp .= postbox();
             $mycalout_cthelp .= q~</div>~;
         }

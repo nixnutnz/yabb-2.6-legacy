@@ -1,6 +1,6 @@
 ###############################################################################
 # InstantMessage.pm                                                           #
-# $Date: 9.24.13 $                                                            #
+# $Date: 9.30.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -176,7 +176,6 @@ sub buildIMsend {
 
     $MCGlobalFormStart .= qq~
     $ctmain
-    <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
     <script type="text/javascript">
     var displayNames = new Object();
     $template_names
