@@ -156,7 +156,7 @@ table.left {
 .borderstyle {
     -webkit-border-radius:0px;
     -moz-border-radius:0px;
-   border-radius:0px;
+    border-radius:0px;
 }
 
 .catbg {
@@ -441,7 +441,7 @@ table.left {
 }
 
 #ql {
-    background:  #4378AE;
+    background: #4378AE;
     font-family: Verdana, Arial, Sans-Serif;
     font-size: 12px;
     height: 31px;
@@ -476,9 +476,9 @@ textarea:disabled, input:disabled, textarea:disabled:hover, input:disabled:hover
 }
 
 /* Fix Gullotine bug using the Holly Hack */
-/*  \*/
+/* Â \*/
 * html #container {height: 1%;}
-/*  */
+/* Â */
 
 table.pad_2px td, .padd_2px {
     padding: 2px;
