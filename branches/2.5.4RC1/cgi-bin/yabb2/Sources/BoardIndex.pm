@@ -360,8 +360,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
             display_poll( $scthreadnum, 1 );
             $staff = $tempstaff;
             $polltemp =
-qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>~
-              . $pollmain
+              $pollmain
               . '<br />';
             $currentboard = $tempcurrentboard;
         }
