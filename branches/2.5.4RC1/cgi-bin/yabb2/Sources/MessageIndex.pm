@@ -20,7 +20,7 @@ our $VERSION = '2.5.41';
 
 $messageindexpmver = 'YaBB 2.5.4 RC1 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
-
+get_micon();
 LoadLanguage('MessageIndex');
 
 if ( $INFO{'tsort'} eq q{} ) {
@@ -151,7 +151,6 @@ qq~<a href="$scripturl?board=$currentboard;tsort=5" rel="nofollow">$messageindex
 qq~<a href="$scripturl?board=$currentboard;tsort=7" rel="nofollow">$messageindex_txt{'110'}</a>~;
     $sort_lastpostim =
 qq~<a href="$scripturl?board=$currentboard;tsort=0" rel="nofollow">$messageindex_txt{'22'}</a>~;
-    get_micon();
 
     my %starter;
     @temp_list = @threadlist;
@@ -808,7 +807,6 @@ qq~<a href="$scripturl?num=$mnum/new#new"><img src="$imagesdir/$newload{'new_mes
                 $new = q{};
             }
         }
-        get_micon();
 
         $micon = qq~$micon{$micon}~;
         $mpoll = q{};
@@ -833,7 +831,6 @@ qq~<a href="$scripturl?num=$mnum/new#new"><img src="$imagesdir/$newload{'new_mes
                 print {POLL} @poll or croak "$croak{'print'} POLL";
                 fclose(POLL);
             }
-            get_micon();
 
             $micon = qq~$micon{'pollicon'}~;
             if ($poll_locked) { $micon = $micon{'polliconclosed'}; }
@@ -1502,7 +1499,6 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
         $rulesdesc = qq~<div id="bdruledesc">$tmpruletxt</div>~;
 
         if ( !$iamguest && ${ $uid . $currentboard }{'rulescollapse'} == 1 ) {
-			get_micon();
 			$mycat_col = $newload{'brd_col'};
 			$mycat_exp = $newload{'brd_exp'};
             $rulesdesc .= qq~
@@ -1563,7 +1559,7 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
     for (@threadin) {
         if ($_ ) {
            if ( !$threadtools ) { $threadout[$sepcn] = "$_$my_ttsep";}
-           else  { $threadout[$sepcn] = "$menusep$_"; }
+           else  { $threadout[$sepcn] = "$my_ttsep$_"; }
         }
         else  { $threadout[$sepcn] = q{}; }
         $sepcn++;

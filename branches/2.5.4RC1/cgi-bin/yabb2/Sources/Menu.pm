@@ -1,6 +1,6 @@
 ###############################################################################
 # Menu.pm                                                                     #
-# $Date: 9.11.13 $                                                            #
+# $Date: 10.01.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -26,6 +26,7 @@ our $VERSION = '2.5.41';
 
 $menupmver = 'YaBB 2.5.4 RC1 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
+get_micon();
 
 sub SetMenu {
     if ( -e ("Templates/$usestyle/Menu.def") ) {

@@ -290,4 +290,8 @@ var jsIM = new Hash(
 );
 ~;
 
+$my_sep = q{ };
+if ( $MenuType == 1 || $UseMenuT == 1) {
+    $my_sep = q{ | };
+}
 1;

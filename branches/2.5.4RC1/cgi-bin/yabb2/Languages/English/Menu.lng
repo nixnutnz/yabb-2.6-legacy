@@ -118,10 +118,6 @@ if (!$language){$language = $lang;}
 );
 
 require Sources::Menu;
-$my_sep = q{ };
-if ( $UseMenuType == 1 || $UseMenuT == 1) {
-    $my_sep = q{ | };
-}
 SetMenu();
 
 1;
