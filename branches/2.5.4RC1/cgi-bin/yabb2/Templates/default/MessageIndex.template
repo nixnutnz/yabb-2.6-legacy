@@ -34,9 +34,10 @@ else {
     $threadhandelstyle2 = qq~ class="right"~;
 }
 $bdpicExt = 'png';
-$paperclip = 'paperclip.gif';
 $hoveron = 'tpon.gif';
 $hoveroff = 'tpoff.gif';
+$brd_notify_img = 'notify.gif';
+$actionlock = 'actionslock.png';
 
 if (!$messagelist) {
     if (!$ShowBDescrip && $action ne 'favorites') {
@@ -54,7 +55,7 @@ if (!$messagelist) {
 	}
 	else {
     	$messageindex_template .= qq~<!-- Board Description start -->
-			<table class="bordercolor pad_4px cs_thin">
+            <table class="bordercolor pad_4px cs_thin" style="margin-bottom: 15px;">
     			<col style="width:6%" />
     			<col style="width:78%" />
     			<col style="width:16%" />
@@ -71,22 +72,22 @@ if (!$messagelist) {
 					</td>
 				</tr>
 			</table>
-			<br />
 <!-- Board Description end -->
 		{yabb new_load}~;
 	}
 	if (${$uid.$currentboard}{'rules'} == 1) {
 		$messageindex_template .= qq~
-
 <!-- Board Rules start -->
-			<table class="bordercolor cs_thin pad_3px">
+             <table class="tabtitle pad_3px">
+                <tr>
+                    <td>{yabb rulestitle}</td>
+                </tr>
+            </table>
+            <table class="pad_3px" style="margin-bottom: 15px;">
 				<tr>
-    				<td class="titlebg" style="height18px">{yabb rulestitle}</td>
-				</tr><tr>
     				<td class="windowbg">{yabb rulesdescription}</td>
 				</tr>
 			</table>
-			<br />
 <!-- Board Rules end -->
 ~;
 	}
@@ -113,8 +114,7 @@ if ($action ne 'favorites') {
 	} 
 	else {
     	$messageindex_template .= qq~
-        <td style="padding:4px 4px 4px 7px;">{yabb pageindex top}
-        </td>
+        <td style="padding:4px 4px 4px 7px;">{yabb pageindex top}</td>
         <td class="post_tools_a right" style="padding:4px 10px 4px 4px">
             <div style="float:right">{yabb outsidethreadtools}</div>
         </td>
@@ -277,12 +277,11 @@ $msg_attach_win = qq~<a href="javascript:void(window.open('$scripturl?action=vie
 
 # Board Notification                     #
 
-$brd_notify_img = 'notify.gif';
-
 $brd_notify = qq~
     <form action="$scripturl?action=boardnotify3;board={yabb currentboard}" method="post">
     <table class="tabtitle" style="width:600px">
        <col style="width:70%" />
+        <col style="width:30%" />
         <tr>
             <td style="padding-left:10px">
                 <img src="$imagesdir/$brd_notify_img" alt="$notify_txt{'136'} - {yabb boardname}" title="$notify_txt{'136'} - {yabb boardname}" /> <b>$notify_txt{'136'} - {yabb boardname}</b>
@@ -291,9 +290,9 @@ $brd_notify = qq~
     </table>
     <table class="pad_4px cs_thin" style="width:600px">
         <col style="width:70%" />
+        <col style="width:30%" />
         <tr>
-            <td class="windowbg">
-                <br />{yabb my_delopt}<br /><br /></td>
+            <td class="windowbg" style="padding:1em 4px">{yabb my_delopt}</td>
         <td class="windowbg">
             <select name="{yabb currentboard}">
                 <option value="1"{yabb selected1}>$notify_txt{'132'}</option>
@@ -356,7 +355,7 @@ $visel_4 = q~</tr></table>~;
 $boardpassw = qq~
 <table class="tabtitle pad_3px" style="width: 80%;">
     <tr>
-        <td><img src="$imagesdir/actionslock.png" alt="" /> <b>$maintxt{'900pw'}: $boardname</b></td>
+        <td><img src="$imagesdir/$actionlock" alt="" /> <b>$maintxt{'900pw'}: $boardname</b></td>
     </tr>
 </table>
 <table class="bordercolor pad_4px" style="width: 80%;">
@@ -391,7 +390,7 @@ function CheckPassField() {
 $boardpassw_g = qq~
 <table class="tabtitle pad_3px" style="width: 80%;">
     <tr>
-        <td><img src="$imagesdir/actionslock.png" alt="" /> <b>$maintxt{'900pw'}: $boardname</b></td>
+        <td><img src="$imagesdir/$actionlock" alt="" /> <b>$maintxt{'900pw'}: $boardname</b></td>
     </tr>
 </table>
 <table class="bordercolor pad_4px" style="width: 80%;">

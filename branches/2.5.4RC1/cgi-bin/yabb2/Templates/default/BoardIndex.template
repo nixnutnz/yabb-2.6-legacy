@@ -165,7 +165,7 @@ $catheader = qq~
 		    <tr><td style="display:none" colspan="5">&nbsp;</td></tr>
 		    {yabb newmsg start}{yabb newmsg icon}{yabb newmsg}{yabb newmsg end}
 		</table>
-		<table {yabb boardtable} class="bordercolor pad_4px cs_thin">
+        <table {yabb boardtable} class="bordercolor pad_4px cs_thin" style="margin-bottom: 15px;">
     		<col style="width:6%" />
     		<col style="width:54%" />
     		<col style="width:8%" />
@@ -254,7 +254,6 @@ $subboard_list = qq~<b>{yabb subdropdown}:</b> {yabb subboardlinks}~;
 # Category footer                          #
 
 $catfooter = qq~		</table>
-		<br />
 ~;
 
 #advanced tabs

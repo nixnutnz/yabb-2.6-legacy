@@ -1234,8 +1234,7 @@ qq~$maintxt{'758'}: '<a href="$scripturl?num=$movedFlag">$2</a>'<br /><span clas
         $tempbar =~ s/({|<)yabb starttime(}|>)/ timeformat($mnum)/egsm;
         $tempbar =~ s/({|<)yabb replies(}|>)/ NumberFormat($mreplies) /egsm;
         $tempbar =~ s/({|<)yabb views(}|>)/ NumberFormat($views) /egsm;
-        $tempbar =~
-s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies">$img{'lastpost'} $mydate<\/a>/gsm;
+        $tempbar =~ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies">$img{'lastpost'} $mydate<\/a>/gsm;
         $tempbar =~ s/({|<)yabb lastposter(}|>)/$lastpostername/gsm;
         $tempbar =~ s/({|<)yabb altthdcolor(}|>)/$altthdcolor/gsm;
 
@@ -1558,28 +1557,26 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
     $topichandellist =~ s/({|<)yabb new poll button(}|>)/$polllink$tool_sep/gsm;
     $topichandellist =~ s/\Q$menusep//ism;
 
-    @setmenusep = ( "$notify_board","$markalllink","$postlink","$polllink",);
-    @sep_in = ();
-    @sep_out = ();
+    @threadin = ( "$notify_board","$markalllink","$postlink","$polllink",);
+    @threadout = ();
     my $sepcn = 0;
-    for (@setmenusep) {
+    for (@threadin) {
         if ($_ ) {
-           if ( !$threadtools ) { $sep_out[$sepcn] = $my_ttsep; $sep_in[$sepcn] = q{};}
-           else  { $sep_out[$sepcn] = q{}; $sep_in[$sepcn] = $my_ttsep; }
+           if ( !$threadtools ) { $threadout[$sepcn] = "$_$my_ttsep";}
+           else  { $threadout[$sepcn] = "$menusep$_"; }
         }
-        else  { $sep_out[$sepcn] = q{}; $sep_in[$sepcn] = q{} }
+        else  { $threadout[$sepcn] = q{}; }
         $sepcn++;
     }
  
     $outside_threadtools =~
-      s/({|<)yabb notify button(}|>)/$sep_in[0]$notify_board$sep_out[0]/gsm;
+      s/({|<)yabb notify button(}|>)/$threadout[0]/gsm;
     $outside_threadtools =~
-      s/({|<)yabb markall button(}|>)/$sep_in[1]$markalllink$sep_out[1]/gsm;
+      s/({|<)yabb markall button(}|>)/$threadout[1]/gsm;
     $outside_threadtools =~
-      s/({|<)yabb new post button(}|>)/$sep_in[2]$postlink$sep_out[2]/gsm;
+      s/({|<)yabb new post button(}|>)/$threadout[2]/gsm;
     $outside_threadtools =~
-      s/({|<)yabb new poll button(}|>)/$sep_in[3]$polllink$sep_out[3]/gsm;
-
+      s/({|<)yabb new poll button(}|>)/$threadout[3]/gsm;
         $outside_threadtools =~ s/\Q$my_ttsep//ism;
 
     if ( !$threadtools ) {

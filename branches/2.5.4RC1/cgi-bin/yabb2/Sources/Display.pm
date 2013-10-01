@@ -1369,32 +1369,24 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         $posthandelblock =~ s/\Q$menusep//ism;
 
     @psetmenusep = ( "$template_markquote","$template_quote","$template_modify","$template_split","$template_delete","$PMAlertButton","$template_print_post",);
-    @psep_in = ();
-    @psep_out = ();
+        @postout = ();
     my $psepcn = 0;
     for (@psetmenusep) {
         if ($_ ) {
-           if ( !$posttools ) { $psep_out[$psepcn] = $my_ttsep; $psep_in[$psepcn] = q{};}
-           else  { $psep_out[$psepcn] = q{}; $psep_in[$psepcn] = $my_ttsep; }
+               if ( !$posttools ) { $postout[$psepcn] = "$_$my_ttsep";}
+               else  { $postout[$psepcn] = "$my_ttsep$_"; }
         }
-        else  { $psep_out[$psepcn] = q{}; $psep_in[$psepcn] = q{} }
+            else  { $postout[$psepcn] = q{} }
         $psepcn++;
     }
         my $outside_posttools_tmp = $outside_posttools;
-        $outside_posttools_tmp =~
-          s/({|<)yabb markquote(}|>)/$psep_in[0]$template_markquote$psep_out[0]/gsm;
-        $outside_posttools_tmp =~
-          s/({|<)yabb quote(}|>)/$psep_in[1]$template_quote$psep_out[1]/gsm;
-        $outside_posttools_tmp =~
-          s/({|<)yabb modify(}|>)/$psep_in[2]$template_modify$psep_out[2]/gsm;
-        $outside_posttools_tmp =~
-          s/({|<)yabb split(}|>)/$psep_in[3]$template_split$psep_out[3]/gsm;
-        $outside_posttools_tmp =~
-          s/({|<)yabb delete(}|>)/$psep_in[4]$template_delete$psep_out[4]/gsm;
-        $outside_posttools_tmp =~
-          s/({|<)yabb modalert(}|>)/$psep_in[5]$PMAlertButton$psep_out[5]/gsm;
-        $outside_posttools_tmp =~
-          s/({|<)yabb print_post(}|>)/$psep_in[6]$template_print_post$psep_out[6]/gsm;
+        $outside_posttools_tmp =~ s/({|<)yabb markquote(}|>)/$postout[0]/gsm;
+        $outside_posttools_tmp =~ s/({|<)yabb quote(}|>)/$postout[1]/gsm;
+        $outside_posttools_tmp =~ s/({|<)yabb modify(}|>)/$postout[2]/gsm;
+        $outside_posttools_tmp =~ s/({|<)yabb split(}|>)/$postout[3]/gsm;
+        $outside_posttools_tmp =~ s/({|<)yabb delete(}|>)/$postout[4]/gsm;
+        $outside_posttools_tmp =~ s/({|<)yabb modalert(}|>)/$postout[5]/gsm;
+        $outside_posttools_tmp =~ s/({|<)yabb print_post(}|>)/$postout[6]/gsm;
         $outside_posttools_tmp =~ s/\Q$my_ttsep//ixsm; 
 
         if ( !$posttools ) {
@@ -1646,26 +1638,25 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
     $threadhandellist2 =~ s/({|<)yabb print(}|>)/$template_print$tool_sep/gsm;
     $threadhandellist2 =~ s/\Q$menusep//ixsm;
 
-   @setmenusep = ( "$mark_unread","$replybutton","$pollbutton","$notify","$template_favorite","$template_sendtopic","$template_print",);
-    @sep_in = ();
-    @sep_out = ();
+    @threadin = ( "$mark_unread","$replybutton","$pollbutton","$notify","$template_favorite","$template_sendtopic","$template_print",);
+    @threadout = ();
     my $sepcn = 0;
-    for (@setmenusep) {
+    for (@threadin) {
         if ($_ ) {
-           if ( !$threadtools ) { $sep_out[$sepcn] = $menusep; $sep_in[$sepcn] = q{};}
-           else  { $sep_out[$sepcn] = q{}; $sep_in[$sepcn] = $menusep; }
+           if ( !$threadtools ) { $threadout[$sepcn] = "$_$menusep";}
+           else  { $threadout[$sepcn] = "$menusep$_"; }
         }
-        else  { $sep_out[$sepcn] = q{}; $sep_in[$sepcn] = q{} }
+        else  { $threadout[$sepcn] = q{}; }
         $sepcn++;
     }
 
-    $outside_threadtools =~ s/({|<)yabb markunread(}|>)/$sep_in[0]$mark_unread$sep_out[0]/gsm;
-    $outside_threadtools =~ s/({|<)yabb reply(}|>)/$sep_in[1]$replybutton$sep_out[1]/gsm;
-    $outside_threadtools =~ s/({|<)yabb poll(}|>)/$sep_in[2]$pollbutton$sep_out[2]/gsm;
-    $outside_threadtools =~ s/({|<)yabb notify(}|>)/$sep_in[3]$notify$sep_out[3]/gsm;
-    $outside_threadtools =~ s/({|<)yabb favorite(}|>)/$sep_in[4]$template_favorite$sep_out[4]/gsm;
-    $outside_threadtools =~ s/({|<)yabb sendtopic(}|>)/$sep_in[5]$template_sendtopic$sep_out[5]/gsm;
-    $outside_threadtools =~ s/({|<)yabb print(}|>)/$sep_in[6]$template_print$sep_out[6]/gsm;
+    $outside_threadtools =~ s/({|<)yabb markunread(}|>)/$threadout[0]/gsm;
+    $outside_threadtools =~ s/({|<)yabb reply(}|>)/$threadout[1]/gsm;
+    $outside_threadtools =~ s/({|<)yabb poll(}|>)/$threadout[2]/gsm;
+    $outside_threadtools =~ s/({|<)yabb notify(}|>)/$threadout[3]/gsm;
+    $outside_threadtools =~ s/({|<)yabb favorite(}|>)/$threadout[4]/gsm;
+    $outside_threadtools =~ s/({|<)yabb sendtopic(}|>)/$threadout[5]/gsm;
+    $outside_threadtools =~ s/({|<)yabb print(}|>)/$threadout[6]/gsm;
 
     $outside_threadtools =~ s/\Q$menusep//ixsm;
 

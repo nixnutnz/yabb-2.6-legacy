@@ -66,12 +66,12 @@ sub SetMenu {
             && $key ne 'polliconclosed' )
         {
             if ( $UseMenuType == 0 ) {
-                $menusep = q{ };
+                $menusep = $my_sep;
                 $img{$key} =
 qq~<img src="$button_imgurl/$button_icon.$imgext" alt="${$alt_text}{$alt_num}" /> <span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}">${$button_text}{$text_num}</span> ~;
             }
             elsif ( $UseMenuType == 1 ) {
-                $menusep = q{ | };
+                $menusep = $my_sep;
                 $img{$key} =
 qq~<span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}">${$button_text}{$text_num}</span> ~;
             }
@@ -125,7 +125,7 @@ sub SetImage {
     if   ( $key eq 'help' ) { $helpstyle = q~ cursor: help;~; }
     else                    { $helpstyle = q~~; }
     if ( $UseMenuT == 0 ) {
-        $menusep = q{ };
+        $menusep = $my_sep;
         if ( $img_name eq 'gtalk' ) {
             $img_out =
 qq~<img src="$button_imgurl/$button_icon.$imgext" class="cursor" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=0,toolbar=0,scrollbars=0,resizable=1'); return false" alt="$thegtalkname" title="$thegtalkname" />~;
@@ -136,7 +136,7 @@ qq~<img src="$button_imgurl/$button_icon.$imgext" alt="${$alt_text}{$alt_num}" /
         }
     }
     elsif ( $UseMenuT == 1 ) {
-        $menusep = q{ | };
+        $menusep = $my_sep;
         if ( $img_name eq 'gtalk' ) {
             $img_out =
 qq~<span style="white-space: nowrap;" class="$span_class cursor" title="${$alt_text}{$alt_num}" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=0,toolbar=0,scrollbars=0,resizable=1'); return false">${$button_text}{$text_num}</span>~;
