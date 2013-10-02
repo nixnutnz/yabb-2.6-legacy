@@ -1,6 +1,6 @@
 ###############################################################################
 # Profile.pm                                                                  #
-# $Date: 10.01.13 $                                                            #
+# $Date: 10.02.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -3695,6 +3695,10 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}" rel="
         $mdate = timeformat($mdate);
 
         get_template('MyPosts');
+        $mypostborder = q{};
+        if ($action eq 'myusersrecentposts') {
+            $mypostborder = ' class="mypostborder"';
+        }
 
         $showProfile .= $myshow_recent_a;
 
@@ -3708,6 +3712,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}" rel="
         $showProfile =~ s/{yabb mdate}/$mdate/sm;
         $showProfile =~ s/{yabb tname}/$mytname/sm;
         $showProfile =~ s/{yabb poster}/$mname/sm;
+        $showProfile =~ s/{yabb mypostborder}/$mypostborder/sm;
 
         if ( $tstate != 1 ) {
             if ( ${ $uid . $username }{'thread_notifications'} =~

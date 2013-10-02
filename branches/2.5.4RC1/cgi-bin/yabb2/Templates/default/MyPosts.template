@@ -261,22 +261,18 @@ $myshow_recent_a = qq~
                 &nbsp;<span class="small">$profile_txt{'30'}: {yabb mdate}</span>&nbsp;</td>
     </tr>
 </table>
-<table style="table-layout: fixed;">
-    <tr>
-        <td colspan="2">
-            <table class="titlebg">
-                <tr>
-                    <td style="padding-left:5px">$maintxt{'109'} {yabb tname} | $maintxt{'197'} {yabb poster}</td>
+<table{yabb mypostborder} style="table-layout: fixed; margin-bottom:.5em;">
+    <tr class="titlebg search">
+        <td style="padding:3px 5px">$maintxt{'109'} {yabb tname} | $maintxt{'197'} {yabb poster}</td>
                     <td class="right">&nbsp;~;
 
 $myshow_recent_b = qq~
                     </td>
-                </tr>
-            </table>
-        </td>
     </tr><tr>
-        <td class="windowbg2 vtop" style="height:80px" colspan="2"><div class="message" style="float: left; width: 99%; overflow: auto;">{yabb recentmsg}</div></td>
+        <td class="windowbg2 vtop" style="height:80px; padding:5px" colspan="2">
+            <div class="message" style="float: left; width: 99%; overflow: auto;">{yabb recentmsg}</div>
+        </td>
     </tr>
-</table><br />~;
+</table>~;
 ##Recent Posts
 1;

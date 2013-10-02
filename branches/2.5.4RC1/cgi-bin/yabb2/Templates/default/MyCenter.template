@@ -27,6 +27,7 @@ $im_outbox ='im_outbox.gif';
 $IM_quote = 'quote.gif';
 $IM_code1 = 'code1.gif';
 $IM_imclose = 'imclose.gif';
+$search = 'search.png';
 
 $imWinwidth_a = 500;
 
@@ -57,18 +58,11 @@ $mycenter_template = qq~
 
 <!-- My Center body start -->
 <div id="PMcontainer">
-	<div class="bordercolor" id="PMmenucontainer" style="float: left; width: 28%; padding: 1px;">
-		<table class="windowbg">
-			<tr>
-				<td>
+    <div id="PMmenucontainer" class="windowbg" style="float: left; width: 28%; padding: 1px; border:thin solid #fff">
 			    {yabb mcviewmenu}
 				{yabb mcpmmenu}
 				{yabb mcprofmenu}
 				{yabb mcpostsmenu}
-				{yabb mcextrasmilies}
-				</td>
-			</tr>
-		</table>
 	</div>
 	<div id="PMcontent" style="float: right; width: 70%; padding: 1px; overflow:auto;">
 		<!-- content table start -->
@@ -261,7 +255,7 @@ $my_MCPmMenu_bm = qq~
 
 $my_MCPmMenuTemp = qq~<tr>
                 <td class="windowbg2" style="width:15%; padding-right:0">{yabb MCPmMenuTemp_chk}</td>
-                <td class="windowbg2 nav" style="width:60%">&nbsp; &nbsp;<b><a href="$scripturl?action=imstorage;viewfolder={yabb storefolder}">{yabb storefolder}</a></b></td>
+                <td class="windowbg2 nav" style="width:60%">&nbsp; &nbsp;<b><a href="$scripturl?action=imstorage;viewfolder={yabb storefolderl}">{yabb storefolder}</a></b></td>
                 <td class="windowbg2"><span class="nav">{yabb foldercount}</span></td>
             </tr>~;
 
@@ -325,11 +319,10 @@ $my_delstore = qq~<tr>
 $my_pmsearch = qq~<tr>
         <td colspan="3">
             <hr class="hr" />
-            <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
             <form action="$scripturl?action=pmsearch" method="post" onsubmit="return submitproc()" style="display: inline" accept-charset="$yycharset">
                 <div class="yabb_searchbox" style="float:left">
                     <input type="text" name="search" id="search" size="16" value="$pm_search{'desc'}" onfocus="txtInFields(this, '$pm_search{'desc'}');" onblur="txtInFields(this, '$pm_search{'desc'}')" style="font-size: 11px; vertical-align: middle;" />
-                    <input type="image" src="$imagesdir/search.png" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />
+                    <input type="image" src="$imagesdir/$search" style="margin-right: 5px; vertical-align: middle;" />
                 </div>
                 <br style="clear: left;" />
                 - <input type="checkbox" name="searchtype" id="searchtype" value="user" /> <label for="searchtype">$pm_search{'byuser'}</label>

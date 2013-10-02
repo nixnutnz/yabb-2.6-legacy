@@ -1706,10 +1706,13 @@ qq~$mycenter_txt{'buddylisttitle'}:<br />$buddiesCurrentStatus~;
                         else {
                             $MCPmMenuTemp_chk = q~&nbsp;~;
                         }
+                        $storefolderl = $storefolder;
+                        $storefolderl =~ s/ /%20/gsm;
 
                         $foldercount = $folderCount[$x] || 0;
                         $MCPmMenuTemp .= $my_MCPmMenuTemp;
                         $MCPmMenuTemp =~ s/{yabb storefolder}/$storefolder/gsm;
+                        $MCPmMenuTemp =~ s/{yabb storefolderl}/$storefolderl/gsm;
                         $MCPmMenuTemp =~
                           s/{yabb MCPmMenuTemp_chk}/$MCPmMenuTemp_chk/gsm;
                         $MCPmMenuTemp =~ s/{yabb foldercount}/$foldercount/gsm;
