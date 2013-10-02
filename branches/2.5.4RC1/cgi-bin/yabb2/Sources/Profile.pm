@@ -1,6 +1,6 @@
 ###############################################################################
 # Profile.pm                                                                  #
-# $Date: 9.24.13 $                                                            #
+# $Date: 10.01.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -75,15 +75,25 @@ sub SidCheck {
 
     if ( $sid_expires < 0 || $cur_sid > $sid_check ) { ProfileCheck( $x[0] ); }
     if ( $sid_expires < 60 ) {
-        $expsectxt = ( $sid_expires == 1 ) ? $profile_txt{'sid_expires_3'} : $profile_txt{'sid_expires_2'};
+        $expsectxt =
+          ( $sid_expires == 1 )
+          ? $profile_txt{'sid_expires_3'}
+          : $profile_txt{'sid_expires_2'};
         $expiretxt = qq~$profile_txt{'sid_expires_1'} $sid_expires $expsectxt~;
     }
     else {
         $expiremin = int($sid_expires / 60);
         $expiresec = $sid_expires % 60;
-        $expmintxt = ( $expiremin == 1 ) ? $profile_txt{'sid_expires_4'} : $profile_txt{'sid_expires_5'};
-        $expsectxt = ( $expiresec == 1 ) ? $profile_txt{'sid_expires_3'} : $profile_txt{'sid_expires_2'};
-        $expiretxt = qq~$profile_txt{'sid_expires_1'} $expiremin $expmintxt $expiresec $expsectxt~;
+        $expmintxt =
+          ( $expiremin == 1 )
+          ? $profile_txt{'sid_expires_4'}
+          : $profile_txt{'sid_expires_5'};
+        $expsectxt =
+          ( $expiresec == 1 )
+          ? $profile_txt{'sid_expires_3'}
+          : $profile_txt{'sid_expires_2'};
+        $expiretxt =
+qq~$profile_txt{'sid_expires_1'} $expiremin $expmintxt $expiresec $expsectxt~;
     }
     return;
 }
@@ -839,8 +849,7 @@ qq~<option value="$fld" selected="selected">$displang</option>~;
         $my_show_avatar_opts =~ s/{yabb hide_user_text}/$my_hide_user_text/sm;
     }
 
-    if ( $user_hide_img )
-    {    # checkbox to hide images in threads
+    if ($user_hide_img) {    # checkbox to hide images in threads
         $my_show_avatar_opts .= $myprofile_hide_img;
         $my_hide_img =
           ${ $uid . $user }{'hide_img'} ? ' checked="checked"' : q{};
@@ -1818,14 +1827,18 @@ qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};si
             unlink "$facesdir/UserAvatars/$1";
         }
 
-        fopen( PMATTACH, "<$vardir/pm.attachments" ) || fatal_error( 'cannot_open', "$vardir/$pm.attachments", 1 );
+        fopen( PMATTACH, "<$vardir/pm.attachments" )
+          || fatal_error( 'cannot_open', "$vardir/$pm.attachments", 1 );
         @pmattach = <PMATTACH>;
         fclose(PMATTACH);
 
         foreach my $pm_attach ( @pmattach ) {
-            ( undef, undef, undef, $attach_file, undef, $attach_user ) = split /\|/xsm, $pm_attach;
+            ( undef, undef, undef, $attach_file, undef, $attach_user ) =
+              split /\|/xsm, $pm_attach;
             chomp $attach_user;
-            if ( $noteuser eq $attach_user ) { unlink "$pmuploaddir/$attach_file"; }
+            if ( $noteuser eq $attach_user ) {
+                unlink "$pmuploaddir/$attach_file";
+            }
         }
 
         MemberIndex( 'remove', $noteuser );
@@ -2101,7 +2114,8 @@ sub ModifyProfileOptions2 {
     ToChars( $member{'usertext'} );
 
     if ($allowpics) {
-        opendir DIR, $facesdir
+        opendir DIR,
+          $facesdir
           || fatal_error( 'cannot_open_dir',
             "($facesdir)!<br \/>$profile_txt{'681'}", 1 );
         closedir DIR;
@@ -3462,10 +3476,12 @@ sub usersrecentposts {
                             if ( pop(@data) < $mdate ) {
                                 chomp $mns;
                                 $data{$mdate} = [
-                                    $curboard,  $tnum,  $c,       $tname,
-                                    $msub,      $mname, $memail,  $mdate,
-                                    $musername, $micon, $mattach, $mip,
-                                    $message,   $mns,   $tstate
+                                    $curboard, $tnum,    $c,
+                                    $tname,    $msub,    $mname,
+                                    $memail,   $mdate,   $musername,
+                                    $micon,    $mattach, $mip,
+                                    $message,  $mns,     $tstate,
+                                    $tusername
                                 ];
                                 if ( !$usercheck ) {
                                     $numfound++;
@@ -3584,11 +3600,14 @@ sub usersrecentposts {
                                     if ( pop(@data) != $mdate ) {
                                         chomp $mns;
                                         $data{$mdate} = [
-                                            $curboard, $tnum,    $c,
-                                            $tname,    $msub,    $mname,
-                                            $memail,   $mdate,   $musername,
-                                            $micon,    $mattach, $mip,
-                                            $message,  $mns,     $tstate
+                                            $curboard,  $tnum,
+                                            $c,         $tname,
+                                            $msub,      $mname,
+                                            $memail,    $mdate,
+                                            $musername, $micon,
+                                            $mattach,   $mip,
+                                            $message,   $mns,
+                                            $tstate,    $tusername
                                         ];
                                         if ( ${ $recent{$tnum} }[1] < $mdate ) {
                                             $save_recent = 1;
@@ -3617,9 +3636,10 @@ sub usersrecentposts {
     if ( $display == 1 ) {
         return if !$data[0];
         (
-            $board,   $tnum,   $c,       $tname,     $msub,
-            $mname,   $memail, $mdate,   $musername, $micon,
-            $mattach, $mip,    $message, $mns,       $tstate
+            $board,     $tnum,  $c,       $tname,
+            $msub,      $mname, $memail,  $mdate,
+            $musername, $micon, $mattach, $mip,
+            $message,   $mns,   $tstate,  $tusername
         ) = @{ $data{ $data[0] } };
         ToChars($msub);
         ( $msub, undef ) = Split_Splice_Move( $msub, 0 );
@@ -3634,9 +3654,10 @@ sub usersrecentposts {
         next if !$data[$i];
 
         (
-            $board,   $tnum,   $c,       $tname,     $msub,
-            $mname,   $memail, $mdate,   $musername, $micon,
-            $mattach, $mip,    $message, $mns,       $tstate
+            $board,     $tnum,  $c,       $tname,
+            $msub,      $mname, $memail,  $mdate,
+            $musername, $micon, $mattach, $mip,
+            $message,   $mns,   $tstate,  $tusername
         ) = @{ $data{ $data[$i] } };
         ( $msub, undef ) = Split_Splice_Move( $msub, 0 );
         wrap();
@@ -3657,8 +3678,17 @@ sub usersrecentposts {
 
         $counter++;
 
-        $tname =
+        if ( $tusername !~ m{Guest}sm  ) {
+            if ( -e ("$memberdir/$tusername.vars") ) {
+                $mytname =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tusername}" rel="nofollow">$format_unbold{$tusername}</a>~;
+            }
+            else { $mytname = qq~$tname - $maintxt{'470a'}~;}
+        }
+        else {
+            $mytname = "$tname ($maintxt{'28'})";
+        }
+
         $mname =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}" rel="nofollow">$format_unbold{$curuser}</a>~;
 
@@ -3676,7 +3706,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}" rel="
         $showProfile =~ s/{yabb tnum}/$tnum\/$c#$c/sm;
         $showProfile =~ s/{yabb msub}/$msub/sm;
         $showProfile =~ s/{yabb mdate}/$mdate/sm;
-        $showProfile =~ s/{yabb tname}/$tname/sm;
+        $showProfile =~ s/{yabb tname}/$mytname/sm;
         $showProfile =~ s/{yabb poster}/$mname/sm;
 
         if ( $tstate != 1 ) {
