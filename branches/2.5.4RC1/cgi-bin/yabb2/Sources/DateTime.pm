@@ -1,6 +1,6 @@
 ###############################################################################
 # DateTime.pm                                                                 #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.01.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -248,6 +248,13 @@ sub timeformat {
         if ( $mytimeselected == $i ) {
             $newformat = $timform[$i];
         }
+        else {
+            $newformat =
+              $daytxt
+              ? qq~$daytxt $maintxt{'107'} $newhour2:$newminute$ampm~
+              : qq~$newday$newday2 $newmonth2, $newyear $maintxt{'107'} $newhour2:$newminute$ampm~;
+        }
+
     }
     return $newformat;
 }
