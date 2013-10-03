@@ -958,7 +958,7 @@ EOF
               or croak 'cannot print FORUMTOTALS';
             print {FORUMTOTALS} "announcements|0|0|N/A|N/A||||\n"
               or croak 'cannot print FORUMTOTALS';
-            print {FORUMTOTALS} "general|1|1|1278201900|admin|1378046604|0|Welcome to your new YaBB 2\.5\.4 forum!|xx|0|\n"
+            print {FORUMTOTALS} "general|1|1|1378046604|admin|1378046604|0|Welcome to your new YaBB 2\.5\.4 forum!|xx|0|\n"
               or croak 'cannot print FORUMTOTALS';
             fclose(FORUMTOTALS);
 
@@ -1985,7 +1985,7 @@ qq{general|general||This is the board for General Discussions.<br /><i>The board
                   || setup_fatal_error(
                     "$maintext_23 $convboardsdir/general.txt: ", 1 );
                 print {BOARDFILE}
-qq{1278201900|Welcome to your new YaBB 2.5.4 forum!|Administrator|webmaster\@yoursite.com|1378046604|0|admin|xx|0\n}
+qq{1378046604|Welcome to your new YaBB 2.5.4 forum!|Administrator|webmaster\@yoursite.com|1378046604|0|admin|xx|0\n}
                   or croak 'cannot print BOARDFILE';
                 fclose(BOARDFILE);
             }
