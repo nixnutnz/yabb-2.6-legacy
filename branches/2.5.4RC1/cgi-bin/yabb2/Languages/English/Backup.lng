@@ -16,7 +16,7 @@ $backuplngver = 'YaBB 2.5.4 RC1 $Revision$';
 
 $script_root = $ENV{'SCRIPT_FILENAME'};
 if( ! $script_root ) {
-	$script_root = $ENV{'PATH_TRANSLATED'};
+    $script_root = $ENV{'PATH_TRANSLATED'};
 }
 ($support_env_path = $script_root) =~ s~/\w+\.pl~~;
 
