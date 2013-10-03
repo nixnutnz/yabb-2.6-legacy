@@ -1,6 +1,6 @@
 ###############################################################################
 # ManageTemplates.pm                                                          #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.03.13 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -90,14 +90,14 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="border-space pad-cell">
         <tr>
             <td class="titlebg">
                 $admin_img{'xx'} <b> $templ_txt{'52'}</b> - $templatefile
             </td>
         </tr>
     </table>
-    <table class="cs_thin pad_4px" style="margin-bottom:.5em">
+    <table class="border-space pad-cell" style="margin-bottom:.5em">
             <td class="windowbg2">
                 <div style="float: left; width: 40%; padding: 3px;"><label for="templatefile"><b>$templ_txt{'10'}</b></label></div>
                 <div style="float: left; width: 59%;">
@@ -114,7 +114,7 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
 </div>
 <form action="$adminurl?action=modtemp2" method="post" style="display: inline;" accept-charset="$yycharset">
 <div class="bordercolor borderstyle rightboxdiv">
-    <table class="cs_thin pad_4px" style="table-layout: fixed; margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="table-layout: fixed; margin-bottom: .5em;">
         <tr>
             <td class="windowbg2 center">
                 <textarea rows="20" cols="95" name="template" style="width:99%; height: 350px; font-family:Courier">$fulltemplate</textarea>
@@ -124,7 +124,7 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
     <tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
     </tr><tr>
@@ -218,7 +218,7 @@ sub ModifyStyle {
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
     <form action="$adminurl?action=modcss;cssfile=$cssfile" name="modcss" method="post" style="display: inline;" accept-charset="$yycharset">
-    <table class="cs_thin pad_4px">
+    <table class="border-space pad-cell">
         <tr>
             <td class="titlebg">
                 $admin_img{'xx'} <b> $templ_txt{'51'}</b> - $cssfile &nbsp;
@@ -228,7 +228,7 @@ sub ModifyStyle {
         </tr>
     </table>
     </form>
-    <table class="cs_thin pad_4px" style="margin-bottom:.5em">
+    <table class="border-space pad-cell" style="margin-bottom:.5em">
         <tr>
             <td class="windowbg2">
                 <div style="float: left; width: 30%; padding: 3px;"><b>$templ_txt{'1'}</b></div>
@@ -258,7 +258,7 @@ sub ModifyStyle {
 </div>
 <div class="bordercolor borderstyle rightboxdiv">
     <form action="$adminurl?action=modstyle2" method="post" accept-charset="$yycharset">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="windowbg2 center">
                 <input type="hidden" name="filename" value="$cssfile" />
@@ -269,7 +269,7 @@ sub ModifyStyle {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="border-space pad-cell">
         <tr>
             <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
         </tr><tr>
@@ -630,7 +630,7 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
     $yymain .= qq~
 <form action="$adminurl?action=modstyle" name="modstyles" id="modstyles" method="post" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="border-space pad-cell">
         <tr>
             <td class="titlebg">
 
@@ -645,14 +645,14 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
 </form>
 <form action="$adminurl?action=modcss2" name="allstyles" id="allstyles" method="post" accept-charset="$yycharset">
 <div class="bordercolor borderstyle rightboxdiv">
-    <table class="cs_thin" style="margin-bottom: -1px;">
+    <table class="border-space" style="margin-bottom: -1px;">
         <tr>
             <td class="windowbg2 center">
                 <iframe id="StyleManager" name="StyleManager" frameborder="0" scrolling="yes"></iframe>
             </td>
         </tr>
     </table>
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="windowbg2">
                 <div style="float: left; width: 30%; padding: 3px;"><label for="cssfile"><b>$templ_txt{'1'}</b></label></div>
@@ -670,7 +670,7 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
                     <label for="csselement"><b>$templ_txt{'18'}</b><br /><span class="small">$templ_txt{'19'}<br /><br /></span></label>
                 </div>
                 <div style="float: left; width: 69%;">
-                    <div style="float: left; text-align: center; margin-left: 0px; margin-right: 6px; vertical-align: middle;">
+                    <div style="float: left; text-align: center; margin-left: 0; margin-right: 6px; vertical-align: middle;">
                         <select name="csselement" id="csselement" size="5" onchange="setElement()">
                             $selstyl
                         </select>
@@ -678,7 +678,7 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
                     <div style="float: left;">
                         <div class="small" style="float: left; vertical-align: middle;">
                             <span style="width: 70px;">
-                                <input type="radio" name="selopt" id="selopt1" value="color" class="windowbg2" style="border: 0px; vertical-align: middle;" onclick="manSelect();" /> <label for="selopt1"><span class="small" style="vertical-align: middle;"><b>$templ_txt{'22'}</b></span></label>
+                                <input type="radio" name="selopt" id="selopt1" value="color" class="windowbg2" style="border: 0; vertical-align: middle;" onclick="manSelect();" /> <label for="selopt1"><span class="small" style="vertical-align: middle;"><b>$templ_txt{'22'}</b></span></label>
                             </span>
                             <span>
                                 <input type="text" size="9" name="textcol" id="textcol" value="$textcol" class="windowbg2" style="font-size: 10px; border: 1px #eef7ff solid; vertical-align: middle;" onchange="previewColor(this.value)" />
@@ -688,14 +688,14 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
                             </span>
                             <br />
                             <span style="width: 70px;">
-                                <input type="radio" name="selopt" id="selopt2" value="background-color" class="windowbg2" style="border: 0px; vertical-align: middle;" onclick="manSelect();" /> <label for="selopt2"><span class="small" style="vertical-align: middle;"><b>$templ_txt{'21'}</b></span></label>
+                                <input type="radio" name="selopt" id="selopt2" value="background-color" class="windowbg2" style="border: 0; vertical-align: middle;" onclick="manSelect();" /> <label for="selopt2"><span class="small" style="vertical-align: middle;"><b>$templ_txt{'21'}</b></span></label>
                             </span>
                             <span>
                                 <input type="text" size="9" name="backcol" id="backcol" value="$backcol" class="windowbg2" style="font-size: 10px; border: 1px #eef7ff solid; vertical-align: middle;" onchange="previewColor(this.value)" />
                             </span>
                             <br />
                             <span style="width: 70px;">
-                                <input type="radio" name="selopt" id="selopt3" value="border" class="windowbg2" style="border: 0px; vertical-align: middle;" onclick="manSelect();" /> <label for="selopt3"><span class="small" style="vertical-align: middle;"><b>$templ_txt{'23'}</b></span></label>
+                                <input type="radio" name="selopt" id="selopt3" value="border" class="windowbg2" style="border: 0; vertical-align: middle;" onclick="manSelect();" /> <label for="selopt3"><span class="small" style="vertical-align: middle;"><b>$templ_txt{'23'}</b></span></label>
                             </span>
                             <span>
                                 <input type="text" size="9" name="bordcol" id="bordcol" value="$bordcol" class="windowbg2" style="font-size: 10px; border: 1px #eef7ff solid; vertical-align: middle;" onchange="previewBorder()" />
@@ -703,7 +703,7 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
                             </span>
                             <br />
                         </div>
-                        <div style="float: left; height: 68px; width: 92px; overflow: auto; border: 0px; margin-left: 8px;">
+                        <div style="float: left; height: 68px; width: 92px; overflow: auto; border: 0; margin-left: 8px;">
                             <div style="float: left; height: 22px; width: 91px;">
                                 <div class="bordercolor" style="height: 20px; width: 66px; padding-left: 1px; padding-top: 1px; margin-top: 1px; float: left;">
                                     <span class="deftpal" style="background-color: #000000;" onclick="ConvShowcolor('#000000')">&nbsp;</span>
@@ -746,7 +746,7 @@ if($cssbuttons) {
             $bright = qq~_right.$extension~;
             $thisbutton .= qq~<div style="float: left; width: 99%; margin: 2px; vertical-align: bottom;"><div style="float: left; height: 20px; width: 112px; padding: 0 0 0 6px; background-image: url($yyhtml_root/Buttons/$tmpname$bleft); background-repeat: no-repeat; vertical-align: bottom; cursor: pointer;" onclick="updateButtons('$line');">~;
             $thisbutton .= qq~<div style="float: left; height: 20px; padding: 0 80px 0 0; background-image: url($yyhtml_root/Buttons/$tmpname$bright); background-position: right; background-repeat: no-repeat; vertical-align: bottom;"><div style="float: left; height: 20px; padding: 0 0 0 25px;"></div></div></div>~;
-            $thisbutton .= qq~<div style="float: left; height: 20px;"><input type="radio" name="selbutton" id="selbutton$x" value="$line" class="windowbg2" style="border: 0px; vertical-align: middle;"$checked onclick="updateButtons(this.value);" /> <label for="selbutton$x" style="vertical-align: middle;"><b>$tmpname</b></label></div></div>\n~;
+            $thisbutton .= qq~<div style="float: left; height: 20px;"><input type="radio" name="selbutton" id="selbutton$x" value="$line" class="windowbg2" style="border: 0; vertical-align: middle;"$checked onclick="updateButtons(this.value);" /> <label for="selbutton$x" style="vertical-align: middle;"><b>$tmpname</b></label></div></div>\n~;
             $x++;
         }
     }
@@ -757,37 +757,37 @@ $yymain .= qq~<tr>
             <b>$templ_txt{'buttontext'}</b><br /><span class="small">$templ_txt{'buttondescription'}<br /><br /></span>
         </div>
         <div style="float: left; width: 330px; height: 136px; padding: 3px;">
-        <div class="catbg" style="position: relative; top: 0px; left: 5px; width: 280px; text-align: center; border-width: 1px; border-style: outset; padding: 3px 0px;">
-        <img src="$forumstylesurl/default/buttonsep.png" style="height: 20px; width: 1px; margin: 0px; padding: 0px; vertical-align: top; display: inline-block;" alt="" border="0" />
-        <span id="butleft" style="height: 20px; border: 0px; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block; $prevleft">
-        <span id="butright" style="height: 20px; border: 0px; margin: 0px; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block; $prevright">
-        <span id="butimage" style="$previmage background-image: url($defaultimagesdir/home.gif); height: 20px; border: 0px; margin: 0px; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;">
-        <span id="buttext" style="height: 20px; border: 0px; margin: 0px; padding: 0px; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block; $prevtext">$img_txt{'103'}</span>
+        <div class="catbg" style="position: relative; top: 0; left: 5px; width: 280px; text-align: center; border-width: 1px; border-style: outset; padding: 3px 0;">
+        <img src="$forumstylesurl/default/buttonsep.png" style="height: 20px; width: 1px; margin: 0; padding: 0; vertical-align: top; display: inline-block;" alt="" border="0" />
+        <span id="butleft" style="height: 20px; border: 0; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block; $prevleft">
+        <span id="butright" style="height: 20px; border: 0; margin: 0; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block; $prevright">
+        <span id="butimage" style="$previmage background-image: url($defaultimagesdir/home.gif); height: 20px; border: 0; margin: 0; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;">
+        <span id="buttext" style="height: 20px; border: 0; margin: 0; padding: 0; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block; $prevtext">$img_txt{'103'}</span>
         </span></span></span>
-        <img src="$forumstylesurl/default/buttonsep.png" style="height: 20px; width: 1px; margin: 0px; padding: 0px; vertical-align: top; display: inline-block;" alt="" border="0" />
+        <img src="$forumstylesurl/default/buttonsep.png" style="height: 20px; width: 1px; margin: 0; padding: 0; vertical-align: top; display: inline-block;" alt="" border="0" />
         </div>
         <div class="catbg" style="position: relative; top: 4px; left: 5px; width: 280px; height: 18px; border-width: 1px; border-style: outset;">
         <span class="small" style="position: absolute; top: 3px; left: 6px;"><b>$templ_txt{'moveicon1'}</b>
-        <input class="catbg" name="viewimgy" id="viewimgy" type="text" value="$viewimgy" style="position: absolute; top: 0px; left: 165px; text-align: right; width: 30px; margin: 0px; padding: 0px; border: 0px; font-size: 10px; font-weight: bold; display: inline;" readonly="readonly" /></span>
-        <img src="$defaultimagesdir/knapbagrms02.gif" style="position: absolute; top: 0px; left: 209px; z-index: 1; width: 69px; height: 16px;" />
+        <input class="catbg" name="viewimgy" id="viewimgy" type="text" value="$viewimgy" style="position: absolute; top: 0; left: 165px; text-align: right; width: 30px; margin: 0; padding: 0; border: 0; font-size: 10px; font-weight: bold; display: inline;" readonly="readonly" /></span>
+        <img src="$defaultimagesdir/knapbagrms02.gif" style="position: absolute; top: 0; left: 209px; z-index: 1; width: 69px; height: 16px;" />
         <img id="knapImg1" src="$defaultimagesdir/knapyellow.gif" class="skyd" style="position: absolute; left: $drawpos1; top: 2px; cursor: pointer; z-index: 2; width: 13px; height: 15px;" />
         </div>
         <div class="catbg" style="position: relative; top: 8px; left: 5px; width: 280px; height: 18px; border-width: 1px; border-style: outset;">
         <span class="small" style="position: absolute; top: 3px; left: 6px;"><b>$templ_txt{'moveicon2'}</b>
-        <input class="catbg" name="viewimgx" id="viewimgx" type="text" value="$viewimgx" style="position: absolute; top: 0px; left: 165px; text-align: right; width: 30px; margin: 0px; padding: 0px; border: 0px; font-size: 10px; font-weight: bold; display: inline;" readonly="readonly" /></span>
-        <img src="$defaultimagesdir/knapbagrms02.gif" style="position: absolute; top: 0px; left: 209px; z-index: 1; width: 69px; height: 16px;" />
+        <input class="catbg" name="viewimgx" id="viewimgx" type="text" value="$viewimgx" style="position: absolute; top: 0; left: 165px; text-align: right; width: 30px; margin: 0; padding: 0; border: 0; font-size: 10px; font-weight: bold; display: inline;" readonly="readonly" /></span>
+        <img src="$defaultimagesdir/knapbagrms02.gif" style="position: absolute; top: 0; left: 209px; z-index: 1; width: 69px; height: 16px;" />
         <img id="knapImg2" src="$defaultimagesdir/knapyellow.gif" class="skyd" style="position: absolute; left: $drawpos2; top: 2px; cursor: pointer; z-index: 2; width: 13px; height: 15px;" />
         </div>
         <div class="catbg" style="position: relative; top: 12px; left: 5px; width: 280px; height: 18px; border-width: 1px; border-style: outset;">
         <span class="small" style="position: absolute; top: 3px; left: 6px;"><b>$templ_txt{'iconspace'}</b>
-        <input class="catbg" name="viewimgpad" id="viewimgpad" type="text" value="$viewimgpad" style="position: absolute; top: 0px; left: 165px; text-align: right; width: 30px; margin: 0px; padding: 0px; border: 0px; font-size: 10px; font-weight: bold; display: inline;" readonly="readonly" /></span>
-        <img src="$defaultimagesdir/knapbagrms02.gif" style="position: absolute; top: 0px; left: 209px; z-index: 1; width: 69px; height: 16px;" />
+        <input class="catbg" name="viewimgpad" id="viewimgpad" type="text" value="$viewimgpad" style="position: absolute; top: 0; left: 165px; text-align: right; width: 30px; margin: 0; padding: 0; border: 0; font-size: 10px; font-weight: bold; display: inline;" readonly="readonly" /></span>
+        <img src="$defaultimagesdir/knapbagrms02.gif" style="position: absolute; top: 0; left: 209px; z-index: 1; width: 69px; height: 16px;" />
         <img id="knapImg3" src="$defaultimagesdir/knapyellow.gif" class="skyd" style="position: absolute; left: $drawpos3; top: 2px; cursor: pointer; z-index: 2; width: 13px; height: 15px;" />
         </div>
         <div class="catbg" style="position: relative; top: 16px; left: 5px; width: 280px; height: 18px; border-width: 1px; border-style: outset;">
         <span class="small" style="position: absolute; top: 3px; left: 6px;"><b>$templ_txt{'movetext'}</b>
-        <input class="catbg" name="viewtxty" id="viewtxty" type="text" value="$viewtxty" style="position: absolute; top: 0px; left: 165px; text-align: right; width: 30px; margin: 0px; padding: 0px; border: 0px; font-size: 10px; font-weight: bold; display: inline;" readonly="readonly" /></span>
-        <img src="$defaultimagesdir/knapbagrms02.gif" style="position: absolute; top: 0px; left: 209px; z-index: 1; width: 69px; height: 16px;" />
+        <input class="catbg" name="viewtxty" id="viewtxty" type="text" value="$viewtxty" style="position: absolute; top: 0; left: 165px; text-align: right; width: 30px; margin: 0; padding: 0; border: 0; font-size: 10px; font-weight: bold; display: inline;" readonly="readonly" /></span>
+        <img src="$defaultimagesdir/knapbagrms02.gif" style="position: absolute; top: 0; left: 209px; z-index: 1; width: 69px; height: 16px;" />
         <img id="knapImg4" src="$defaultimagesdir/knapyellow.gif" class="skyd" style="position: absolute; left: $drawpos4; top: 2px; cursor: pointer; z-index: 2; width: 13px; height: 15px;" />
         </div>
         </div>
@@ -848,7 +848,7 @@ changeStyle:function(deleEnh, knapId) {
         re=cssoption.replace(/(.*)/, "\$1");
         thenewstyle=thenewstyle.replace(re, newcssoption);
         document.allstyles.stylelink.value = thenewstyle;
-        document.getElementById('butimage').style.padding = '0px 0px 0px '+newimgpad+'px';
+        document.getElementById('butimage').style.padding = '0 0 0 '+newimgpad+'px';
         document.getElementById('viewimgpad').value = newimgpad+'px';
     }
     if (knapId == "knapImg4") {
@@ -934,7 +934,7 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
             <td class="small">$tabtime</td>
         </tr>
     </table>
-    <table class="windowbg2 pad_4px">
+    <table class="windowbg2 pad-cell">
         <tr>
             <td class="vtop" style="height:30px">&nbsp;</td>
         </tr>
@@ -1002,9 +1002,10 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
 ~;
     }
     $viewstyle .= qq~
-<table class="bordercolor cs_thin pad_4px">
+<table class="bordercolor border-space pad-cell">
+    <col span="2" style="width: 50%" />
     <tr>
-        <td id="title" class="titlebg w_50pc">
+        <td id="title" class="titlebg">
             $templ_txt{'30'}
         </td>
         <td id="titlea" class="titlebg">
@@ -1023,9 +1024,10 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
         $viewstyle .= q~<div class="seperator">~;
     }
     $viewstyle .= qq~
-<table class="bordercolor cs_thin pad_4px">
+<table class="bordercolor border-space pad-cell">
+    <col span="2" style="width: 50%" />
     <tr>
-        <td id="category" class="catbg w_50pc">
+        <td id="category" class="catbg">
             $templ_txt{'31'}
         </td>
         <td id="categorya" class="catbg">
@@ -1035,14 +1037,14 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
 </table>
 ~;
 if($cssbuttons) {
-$menusep = qq~<img src="$forumstylesurl/default/buttonsep.png" style="height: 20px; width: 1px; margin: 0px; padding: 0px; vertical-align: top; display: inline-block;" alt="" border="0" />~;
-$viewstyleleft = q~style="height: 20px; border: 0px; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
-$viewstyleright = q~style="height: 20px; border: 0px; margin: 0px; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
-$viewstyleimage = q~height: 20px; border: 0px; margin: 0px; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;~;
-$viewstyletext = q~style="height: 20px; border: 0px; margin: 0px; padding: 0px; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block;"~;
+$menusep = qq~<img src="$forumstylesurl/default/buttonsep.png" style="height: 20px; width: 1px; margin: 0; padding: 0; vertical-align: top; display: inline-block;" alt="" border="0" />~;
+$viewstyleleft = q~style="height: 20px; border: 0; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
+$viewstyleright = q~style="height: 20px; border: 0; margin: 0; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
+$viewstyleimage = q~height: 20px; border: 0; margin: 0; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;~;
+$viewstyletext = q~style="height: 20px; border: 0; margin: 0; padding: 0; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block;"~;
 
 $viewstyle .= qq~
-<table class="bordercolor cs_thin pad_4px">
+<table class="bordercolor border-space pad-cell">
     <tr>
         <td id="cssbuttons" class="windowbg2 vtop">
             <div style="float: left; padding: 4px 0 0 0;">$templ_txt{'buttontext'}</div>
@@ -1058,7 +1060,7 @@ $viewstyle .= qq~
 ~;
 }
 $viewstyle .= qq~
-<table class="bordercolor cs_thin pad_4px">
+<table class="bordercolor border-space pad-cell">
     <tr>
         <td id="window1" class="windowbg vtop">
             $templ_txt{'32'}
@@ -1132,7 +1134,7 @@ $viewstyle .= qq~
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px">
+<table class="border-space pad-cell">
     <tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
     </tr><tr>
@@ -2010,21 +2012,21 @@ s/<a href="http:\/\/jigsaw.w3.org\/css\-validator\/validator\?uri\=<yabb url>">.
     $yymain .= qq~
 <form action="$adminurl?action=modskin2" name="selskin" method="post" style="display: inline;" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="border-space pad-cell">
         <tr>
             <td class="titlebg">
                 $admin_img{'xx'} <b> $templ_txt{'6'}</b>
             </td>
         </tr>
     </table>
-    <table class="cs_thin" style="margin-bottom: -1px;">
+    <table class="border-space" style="margin-bottom: -1px;">
         <tr>
             <td class="windowbg2 center">
                 <iframe id="TempManager" name="TempManager" frameborder="0" scrolling="yes"></iframe>
             </td>
         </tr>
     </table>
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="windowbg2">
                 <div style="float: left; width: 30%; padding: 3px;"><label for="templateset"><b>$templ_txt{'10'}</b></label></div>
@@ -2075,25 +2077,25 @@ qq~                        <input type="submit" value="$templ_txt{'14'}" onclick
                             </select>
                         </div>
                         <div style="float: left; width: 32%; text-align: left;">
-                            <input type="radio" name="selsection" id="bradio" value="vboard" class="windowbg2" style="border: 0px; vertical-align: middle;"$boardsel /><label for="bradio" class="small">$templ_txt{'3'}</label><br />
+                            <input type="radio" name="selsection" id="bradio" value="vboard" class="windowbg2" style="border: 0; vertical-align: middle;"$boardsel /><label for="bradio" class="small">$templ_txt{'3'}</label><br />
                             <select name="boardfile" id="boardfile" size="1" style="width: 90%;">
                                 $boardtemplates
                             </select>
                         </div>
                         <div style="float: left; width: 32%; text-align: left;">
-                            <input type="radio" name="selsection" id="mradio" value="vmessage" class="windowbg2" style="border: 0px; vertical-align: middle;"$messagesel /><label for="mradio" class="small">$templ_txt{'4'}</label><br />
+                            <input type="radio" name="selsection" id="mradio" value="vmessage" class="windowbg2" style="border: 0; vertical-align: middle;"$messagesel /><label for="mradio" class="small">$templ_txt{'4'}</label><br />
                             <select name="messagefile" id="messagefile" size="1" style="width: 90%;">
                                 $messagetemplates
                             </select>
                         </div>
                         <div style="float: left; width: 32%; text-align: left;">
-                            <input type="radio" name="selsection" id="dradio" value="vdisplay" class="windowbg2" style="border: 0px; vertical-align: middle;"$displaysel /><label for="dradio" class="small">$templ_txt{'5'}</label><br />
+                            <input type="radio" name="selsection" id="dradio" value="vdisplay" class="windowbg2" style="border: 0; vertical-align: middle;"$displaysel /><label for="dradio" class="small">$templ_txt{'5'}</label><br />
                             <select name="displayfile" id="displayfile" size="1" style="width: 90%;">
                                 $displaytemplates
                             </select>
                         </div>
                         <div style="float: left; width: 32%; text-align: left;">
-                            <input type="radio" name="selsection" id="myradio" value="vmycenter" class="windowbg2" style="border: 0px; vertical-align: middle;"$mycentersel /><label for="myradio" class="small">$templ_txt{'67'}</label><br />
+                            <input type="radio" name="selsection" id="myradio" value="vmycenter" class="windowbg2" style="border: 0; vertical-align: middle;"$mycentersel /><label for="myradio" class="small">$templ_txt{'67'}</label><br />
                             <select name="mycenterfile" id="mycenterfile" size="1" style="width: 90%;">
                                 $mycentertemplates
                             </select>
@@ -2104,7 +2106,7 @@ qq~                        <input type="submit" value="$templ_txt{'14'}" onclick
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
     <tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
     </tr><tr>
@@ -2571,10 +2573,10 @@ sub DisplayTempl {
             $aimimg = qq~$menusep<span class="imgwindowbg">AIM</span>~;
         }
         else {
-            $viewstyleleft = q~style="height: 20px; border: 0px; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
-            $viewstyleright = q~style="height: 20px; border: 0px; margin: 0px; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
-            $viewstyleimage = q~height: 20px; border: 0px; margin: 0px; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;~;
-            $viewstyletext = q~style="height: 20px; border: 0px; margin: 0px; padding: 0px; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block;"~;
+            $viewstyleleft = q~style="height: 20px; border: 0; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
+            $viewstyleright = q~style="height: 20px; border: 0; margin: 0; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
+            $viewstyleimage = q~height: 20px; border: 0; margin: 0; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;~;
+            $viewstyletext = q~style="height: 20px; border: 0; margin: 0; padding: 0; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block;"~;
             $yimimg = qq~<span class="buttonleft" $viewstyleleft><span class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/yim.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>YIM</span></span></span></span>~;
             $aimimg = qq~<span class="buttonleft" $viewstyleleft><span class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/aim.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>AIM</span></span></span></span>~;
         }

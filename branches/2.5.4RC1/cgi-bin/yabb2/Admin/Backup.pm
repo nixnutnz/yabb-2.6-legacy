@@ -1,6 +1,6 @@
 ###############################################################################
 # Backup.pm                                                                   #
-# $Date: 9.29.13 $                                                            #
+# $Date: 10.03.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -13,7 +13,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # Many thanks to AK108 (http://fkp.jkcsi.com/)                                #
-# for his contibution to the YaBB community                                   #
+# for his contribution to the YaBB community                                   #
 ###############################################################################
 # use strict;
 # use warnings;
@@ -43,7 +43,7 @@ my %dirs = (
     'temp' => "Templates/ $backup_txt{10}",
     'var'  => 'Variables/',
     'html' => 'yabbfiles',
-    'upld' => "yabbfiles/Attachments, yabbfiles/PMAttachments, $backup_txt{'and'} yabbfiles/avatars/UserAvatars",
+    'upld' => "yabbfiles/Attachments, yabbfiles/PMAttachments, $backup_txt{'and'} yabbfiles/avatars",
 );
 
 is_admin_or_gmod();
@@ -63,11 +63,11 @@ qq~<b>$backup_txt{33} $INFO{'backupspendtime'} $backup_txt{34}</b><br /><br />~;
     }
     if ( $INFO{'mailinfo'} == 1 ) {
         $yymain .=
-qq~<span style="color:green"><b>$backup_txt{'mailsuccess'}</b></span><br /><br />~;
+qq~<span class="good"><b>$backup_txt{'mailsuccess'}</b></span><br /><br />~;
     }
     if ( $INFO{'mailinfo'} == -1 ) {
         $yymain .=
-qq~<span class="red"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
+qq~<span class="important"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
     }
 
     # Yes, my checklists are really hashes. Oh well.
@@ -84,8 +84,8 @@ qq~<span class="red"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
 
     # Javascript to make the behavior of the form buttons work better
     $yymain .= qq~
- <script type="text/javascript">
-    function checkYaBB () {
+<script type="text/javascript">
+   function checkYaBB () {
         // See if the check all box should be checked or unchecked.
         // It should be checked only if all the other boxes are checked.
         if (document.backupsettings.YaBB_bo.checked && document.backupsettings.YaBB_mes.checked && document.backupsettings.YaBB_mem.checked && document.backupsettings.YaBB_temp.checked && document.backupsettings.YaBB_lan.checked && document.backupsettings.YaBB_var.checked && document.backupsettings.YaBB_src.checked && document.backupsettings.YaBB_html.checked && document.backupsettings.YaBB_upld.checked) {
@@ -139,79 +139,79 @@ qq~<span class="red"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
             }
         }
     }
- </script>
+</script>
 <form action="$adminurl?action=backupsettings2" method="post" name="backupsettings" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiv">
-   <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-     <tr>
-			<td class="titlebg">$admin_img{'prefimg'} <b>$backup_txt{1}</b></td>
-     </tr>~;
+    <div class="bordercolor rightboxdiv">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
+        <tr>
+            <td class="titlebg">$admin_img{'prefimg'} <b>$backup_txt{1}</b></td>
+        </tr>~;
 
     if ( !$backupsettingsloaded ) {
         $yymain .= qq~<tr>
-			<td class="catbg"><b>$backup_txt{2}</b></td>
-     </tr><tr>
-			<td>&nbsp;</td>
-     </tr>~;
+            <td class="catbg"><b>$backup_txt{2}</b></td>
+        </tr><tr>
+            <td>&nbsp;</td>
+        </tr>~;
     }
 
     $yymain .= qq~<tr>
-			<td class="windowbg">$backup_txt{3}</td>
-     </tr><tr>
-			<td class="catbg"><b>$backup_txt{4}</b></td>
-     </tr><tr>
-       <td class="windowbg">
-         <input type="checkbox" name="YaBB_ALL" id="YaBB_ALL" value="1" onclick="masscheckYaBB(this.checked)" $allchecked/> <label for="YaBB_ALL">$backup_txt{5}<br />
-         $backup_txt{6}</label>
-       </td>
-     </tr><tr>
-       <td class="windowbg2">
-         <input type="checkbox" onclick="checkYaBB()" name="YaBB_src" id="YaBB_src" value="1" $pathchecklist{'src'}/> <label for="YaBB_src">Admin/ $backup_txt{'and'} Sources/ $backup_txt{13}</label>
-       </td>
-     </tr><tr>
-       <td class="windowbg2">
-         <input type="checkbox" onclick="checkYaBB()" name="YaBB_bo" id="YaBB_bo" value="1" $pathchecklist{'bo'}/> <label for="YaBB_bo">Boards/ $backup_txt{7}</label>
-       </td>
-     </tr><tr>
-       <td class="windowbg2">
-         <input type="checkbox" onclick="checkYaBB()" name="YaBB_lan" id="YaBB_lan" value="1" $pathchecklist{'lan'}/> <label for="YaBB_lan">Languages/ $backup_txt{'and'} Help/ $backup_txt{11}</label>
-       </td>
-     </tr><tr>
-       <td class="windowbg2">
-         <input type="checkbox" onclick="checkYaBB()" name="YaBB_mem" id="YaBB_mem" value="1" $pathchecklist{'mem'}/> <label for="YaBB_mem">Members/ $backup_txt{9}</label>
-       </td>
-     </tr><tr>
-       <td class="windowbg2">
-         <input type="checkbox" onclick="checkYaBB()" name="YaBB_mes" id="YaBB_mes" value="1" $pathchecklist{'mes'}/> <label for="YaBB_mes">Messages/ $backup_txt{8}</label>
-       </td>
-     </tr><tr>
-       <td class="windowbg2">
-         <input type="checkbox" onclick="checkYaBB()" name="YaBB_temp" id="YaBB_temp" value="1" $pathchecklist{'temp'}/> <label for="YaBB_temp">Templates/ $backup_txt{10} $backup_txt{'10a'}</label>
-       </td>
-     </tr><tr>
-       <td class="windowbg2">
-         <input type="checkbox" onclick="checkYaBB()" name="YaBB_var" id="YaBB_var" value="1" $pathchecklist{'var'}/> <label for="YaBB_var">Variables/ $backup_txt{12}</label>
-       </td>
-     </tr><tr>
-       <td class="windowbg2">
-         <input type="checkbox" onclick="checkYaBB()" name="YaBB_html" id="YaBB_html" value="1" $pathchecklist{'html'}/> <label for="YaBB_html">yabbfiles $backup_txt{14}</label>
-       </td>
-     </tr><tr>
-       <td class="windowbg2">
-         <input type="checkbox" onclick="checkYaBB()" name="YaBB_upld" id="YaBB_upld" value="1" $pathchecklist{'upld'}/> <label for="YaBB_upld">yabbfiles/Attachments, yabbfiles/PMAttachments, $backup_txt{'and'} yabbfiles/avatars/UserAvatars $backup_txt{'14a'}</label>
-       </td>
-     </tr><tr>
-			<td class="catbg"><b>$backup_txt{15}</b></td>
-     </tr><tr>
-			<td class="windowbg">$backup_txt{16}</td>
-     </tr>~;
+            <td class="windowbg">$backup_txt{3}</td>
+        </tr><tr>
+            <td class="catbg"><b>$backup_txt{4}</b></td>
+        </tr><tr>
+            <td class="windowbg">
+                <input type="checkbox" name="YaBB_ALL" id="YaBB_ALL" value="1" onclick="masscheckYaBB(this.checked)" $allchecked /> <label for="YaBB_ALL">$backup_txt{5}<br />
+                $backup_txt{6}</label>
+            </td>
+        </tr><tr>
+            <td class="windowbg2">
+                <input type="checkbox" onclick="checkYaBB()" name="YaBB_src" id="YaBB_src" value="1" $pathchecklist{'src'}/> <label for="YaBB_src">Admin/ $backup_txt{'and'} Sources/ $backup_txt{13}</label>
+            </td>
+        </tr><tr>
+            <td class="windowbg2">
+                <input type="checkbox" onclick="checkYaBB()" name="YaBB_bo" id="YaBB_bo" value="1" $pathchecklist{'bo'}/> <label for="YaBB_bo">Boards/ $backup_txt{7}</label>
+            </td>
+        </tr><tr>
+            <td class="windowbg2">
+                <input type="checkbox" onclick="checkYaBB()" name="YaBB_lan" id="YaBB_lan" value="1" $pathchecklist{'lan'}/> <label for="YaBB_lan">Languages/ $backup_txt{'and'} Help/ $backup_txt{11}</label>
+            </td>
+        </tr><tr>
+            <td class="windowbg2">
+                <input type="checkbox" onclick="checkYaBB()" name="YaBB_mem" id="YaBB_mem" value="1" $pathchecklist{'mem'}/> <label for="YaBB_mem">Members/ $backup_txt{9}</label>
+            </td>
+        </tr><tr>
+            <td class="windowbg2">
+                <input type="checkbox" onclick="checkYaBB()" name="YaBB_mes" id="YaBB_mes" value="1" $pathchecklist{'mes'}/> <label for="YaBB_mes">Messages/ $backup_txt{8}</label>
+            </td>
+        </tr><tr>
+            <td class="windowbg2">
+                <input type="checkbox" onclick="checkYaBB()" name="YaBB_temp" id="YaBB_temp" value="1" $pathchecklist{'temp'}/> <label for="YaBB_temp">Templates/ $backup_txt{10} $backup_txt{'10a'}</label>
+            </td>
+        </tr><tr>
+            <td class="windowbg2">
+                <input type="checkbox" onclick="checkYaBB()" name="YaBB_var" id="YaBB_var" value="1" $pathchecklist{'var'}/> <label for="YaBB_var">Variables/ $backup_txt{12}</label>
+            </td>
+        </tr><tr>
+            <td class="windowbg2">
+                <input type="checkbox" onclick="checkYaBB()" name="YaBB_html" id="YaBB_html" value="1" $pathchecklist{'html'}/> <label for="YaBB_html">yabbfiles $backup_txt{14}</label>
+            </td>
+        </tr><tr>
+            <td class="windowbg2">
+                <input type="checkbox" onclick="checkYaBB()" name="YaBB_upld" id="YaBB_upld" value="1" $pathchecklist{'upld'}/> <label for="YaBB_upld">yabbfiles/Attachments, yabbfiles/PMAttachments, $backup_txt{'and'} yabbfiles/avatars $backup_txt{'14a'}</label>
+            </td>
+        </tr><tr>
+            <td class="catbg"><b>$backup_txt{15}</b></td>
+        </tr><tr>
+            <td class="windowbg">$backup_txt{16}</td>
+        </tr>~;
 
     # Make a list of modules that we can use with Tar::Archive
     $tarcompress1 = qq~<tr>
-       <td class="windowbg">
-         <input type="radio" name="tarmodulecompress" id="tarmodulecompress" value="none" $methodchecklist{'none'}/> <label for="tarmodulecompress">$backup_txt{17}</label>
-       </td>
-     </tr>~;
+            <td class="windowbg">
+                <input type="radio" name="tarmodulecompress" id="tarmodulecompress" value="none" $methodchecklist{'none'}/> <label for="tarmodulecompress">$backup_txt{17}</label>
+            </td>
+        </tr>~;
 
     my $label_id;
     foreach my $module (qw(Compress::Zlib Compress::Bzip2)) {
@@ -221,29 +221,29 @@ qq~name="tarmodulecompress" id="label_$label_id" value="$module" $methodchecklis
         eval "use $module();";
         if ($@) {
             $input        = qq~disabled="disabled" id="label_$label_id"~;
-            $style        = q~backup_disabled~;
+            $style        = q~backup-disabled~;
             $disabledtext = $backup_txt{41};
         }
         else {
             ( $style, $disabledtext ) = ( q{}, q{} );
         }
         $tarcompress1 .= qq~<tr>
-       <td class="windowbg $style">
-         <input type="radio" $input/> <label for="label_$label_id">$module $backup_txt{18} $disabledtext</label>
-       </td>
-     </tr>~;
+            <td class="windowbg $style">
+                <input type="radio" $input/> <label for="label_$label_id">$module $backup_txt{18} $disabledtext</label>
+            </td>
+        </tr>~;
     }
 
     $tarcompress1 .= q~<tr>
-			<td class="windowbg">&nbsp;</td>
-     </tr>~;
+            <td class="windowbg">&nbsp;</td>
+        </tr>~;
 
     # Make a list of compression commands we can use with /usr/bin/tar
     $tarcompress2 = qq~<tr>
-       <td class="windowbg">
-         <input type="radio" name="bintarcompress" id="bintarcompress" value="none" $methodchecklist{'none'}/> <label for="bintarcompress">$backup_txt{17}</label>
-       </td>
-     </tr>~;
+            <td class="windowbg">
+                <input type="radio" name="bintarcompress" id="bintarcompress" value="none" $methodchecklist{'none'}/> <label for="bintarcompress">$backup_txt{17}</label>
+            </td>
+        </tr>~;
 
     foreach my $command ( "$backupprogbin/gzip", "$backupprogbin/bzip2" ) {
         $label_id++;
@@ -252,7 +252,7 @@ qq~name="bintarcompress" id="label_$label_id" value="$command" $methodchecklist{
         $newcommand = CheckPath($command);
         if ( !$newcommand ) {
             $input        = qq~disabled="disabled" id="label_$label_id"~;
-            $style        = q~backup_disabled~;
+            $style        = q~backup-disabled~;
             $disabledtext = $backup_txt{41};
             $newcommand   = $command;
         }
@@ -260,15 +260,15 @@ qq~name="bintarcompress" id="label_$label_id" value="$command" $methodchecklist{
             ( $style, $disabledtext ) = ( q{}, q{} );
         }
         $tarcompress2 .= qq~<tr>
-       <td class="windowbg $style">
-         <input type="radio" $input/> <label for="label_$label_id">$newcommand $backup_txt{18} $disabledtext</label>
-       </td>
-     </tr>~;
+            <td class="windowbg $style">
+                <input type="radio" $input/> <label for="label_$label_id">$newcommand $backup_txt{18} $disabledtext</label>
+            </td>
+        </tr>~;
     }
 
     $tarcompress2 .= q~<tr>
-			<td class="windowbg">&nbsp;</td>
-     </tr>~;
+            <td class="windowbg">&nbsp;</td>
+        </tr>~;
 
 # Display the commands we can use for compression
 # Non-translated here, as I doubt there are words to describe "tar" in another language
@@ -286,26 +286,26 @@ qq~name="backupmethod" id="backupmethod1" value="$backupprogusr/tar" onclick="do
         }
         else {
             $input        = qq~disabled="disabled" id="backupmethod1"~;
-            $style        = q~backup_disabled~;
+            $style        = q~backup-disabled~;
             $disabledtext = ": Tar $backup_txt{31}: $!. $backup_txt{32} "
               . ( $CHILD_ERROR >> 8 );
         }
     }
     else {
         $input        = qq~disabled="disabled" id="backupmethod1"~;
-        $style        = q~backup_disabled~;
+        $style        = q~backup-disabled~;
         $disabledtext = $backup_txt{41};
     }
     $yymain .= qq~<tr>
-		<td class="windowbg2"><label for="backupprogusr">$backup_txt{'path1'}</label> <input id="backupprogusr" type="text" value="$backupprogusr" size="20" name="backupprogusr" />
-       <br /><label for="backupprogbin">$backup_txt{'path2'}</label> <input id="backupprogbin" type="text" value="$backupprogbin" size="20" name="backupprogbin" />
-			<br />$backup_txt{'path3'}
-		</td>
-    </tr><tr>
-		<td class="windowbg2 $style">
-         <input type="radio" $input/> <label for="backupmethod1">Tar ($newcommand) $disabledtext</label>
-		</td>
-    </tr>$tarcompress2~;
+            <td class="windowbg2"><label for="backupprogusr">$backup_txt{'path1'}</label> <input id="backupprogusr" type="text" value="$backupprogusr" size="20" name="backupprogusr" />
+                <br /><label for="backupprogbin">$backup_txt{'path2'}</label> <input id="backupprogbin" type="text" value="$backupprogbin" size="20" name="backupprogbin" />
+                <br />$backup_txt{'path3'}
+            </td>
+        </tr><tr>
+            <td class="windowbg2 $style">
+                <input type="radio" $input/> <label for="backupmethod1">Tar ($newcommand) $disabledtext</label>
+            </td>
+        </tr>$tarcompress2~;
 
     $input =
 qq~name="backupmethod" id="backupmethod2" value="$backupprogusr/zip" onclick="domodulecheck('$backupprogusr/zip')" $methodchecklist{"$backupprogusr/zip"}~;
@@ -321,23 +321,23 @@ qq~name="backupmethod" id="backupmethod2" value="$backupprogusr/zip" onclick="do
         }
         else {
             $input        = qq~disabled="disabled" id="backupmethod2"~;
-            $style        = q~backup_disabled~;
+            $style        = q~backup-disabled~;
             $disabledtext = ": Zip $backup_txt{31}: $!. $backup_txt{32} "
               . ( $CHILD_ERROR >> 8 );
         }
     }
     else {
         $input        = qq~disabled="disabled" id="backupmethod2"~;
-        $style        = q~backup_disabled~;
+        $style        = q~backup-disabled~;
         $disabledtext = $backup_txt{41};
     }
     $yymain .= qq~<tr>
-		<td class="windowbg2 $style">
-         <input type="radio" $input/> <label for="backupmethod2">Zip ($newcommand) $disabledtext</label>
-		</td>
-    </tr><tr>
-			<td class="windowbg">&nbsp;</td>
-	</tr>~;
+            <td class="windowbg2 $style">
+                <input type="radio" $input/> <label for="backupmethod2">Zip ($newcommand) $disabledtext</label>
+            </td>
+        </tr><tr>
+            <td class="windowbg">&nbsp;</td>
+        </tr>~;
 
     # Display the modules that we can use
     foreach my $module (qw(Archive::Tar Archive::Zip)) {
@@ -347,17 +347,17 @@ qq~name="backupmethod" id="backupmethod3_$i" value="$module" onclick="domodulech
         eval "use $module();";
         if ($@) {
             $input        = qq~disabled="disabled" id="backupmethod3_$i"~;
-            $style        = q~backup_disabled~;
+            $style        = q~backup-disabled~;
             $disabledtext = $backup_txt{41};
         }
         else {
             ( $style, $disabledtext ) = ( q{}, q{} );
         }
         $yymain .= qq~<tr>
-		<td class="windowbg2 $style">
-         <input type="radio" $input/> <label for="backupmethod3_$i">$module $disabledtext</label>
-		</td>
-     </tr>~;
+            <td class="windowbg2 $style">
+                <input type="radio" $input/> <label for="backupmethod3_$i">$module $disabledtext</label>
+            </td>
+        </tr>~;
         if ( $module eq 'Archive::Tar' ) { $yymain .= $tarcompress1; }
     }
 
@@ -368,33 +368,33 @@ qq~name="backupmethod" id="backupmethod3_$i" value="$module" onclick="domodulech
         $backupdir = "$1$backupdir";
     }
     $yymain .= qq~<tr>
-		<td class="catbg"><b>$backup_txt{19}</b></td>
-	</tr><tr>
-		<td class="windowbg2">
-			<label for="backupdir">$backup_txt{'19a'}</label>: <input type="text" name="backupdir" id="backupdir" value="$backupdir" size="80" />
-		</td>
-    </tr><tr>
-		<td class="catbg"><b>$backup_txt{'19b'}</b></td>
-    </tr><tr>
-		<td class="windowbg2">
-			<label for="rememberbackup">$backup_txt{'19c'}</label> <input type="text" name="rememberbackup" id="rememberbackup" value="~
+            <td class="catbg"><b>$backup_txt{19}</b></td>
+        </tr><tr>
+            <td class="windowbg2">
+                <label for="backupdir">$backup_txt{'19a'}</label>: <input type="text" name="backupdir" id="backupdir" value="$backupdir" size="80" />
+            </td>
+        </tr><tr>
+            <td class="catbg"><b>$backup_txt{'19b'}</b></td>
+        </tr><tr>
+            <td class="windowbg2">
+                <label for="rememberbackup">$backup_txt{'19c'}</label> <input type="text" name="rememberbackup" id="rememberbackup" value="~
       . ( $rememberbackup / 86_400 )
       . qq~" size="3"/> <label for="rememberbackup">$backup_txt{'19d'}</label>
-		</td>
-    </tr>
-</table>
-</div>
-<div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px">
-	<tr>
-    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-	</tr><tr>
-    	<td class="catbg center">
-             <input type="submit" name="submit" value="$backup_txt{20}" class="button" />
-    	</td>
-	</tr>
-</table>
-</div>
+            </td>
+        </tr>
+    </table>
+    </div>
+    <div class="bordercolor rightboxdiv">
+    <table class="border-space pad-cell">
+        <tr>
+            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+        </tr><tr>
+            <td class="catbg center">
+                <input type="submit" name="submit" value="$backup_txt{20}" class="button" />
+            </td>
+        </tr>
+    </table>
+    </div>
 </form>
 <script type="text/javascript">
 $presetjavascriptcode
@@ -406,7 +406,7 @@ $presetjavascriptcode
             document.runbackup.submit();
         }
     }
- </script>~;
+</script>~;
 
     # Here we go again with another table. Here is the backup button area
     if ($backupsettingsloaded) {
@@ -438,60 +438,60 @@ $presetjavascriptcode
 
             $filename = "$1$2.$3.$4.$5";
             $filelist .= q~            <tr>
-				<td>~
+                <td>~
               . timeformat($3) . qq~</td>
-				<td class="right">$filesize</td>
-				<td>- ~
+                <td class="right">$filesize</td>
+                <td>- ~
               . join( '<br />- ', @dirs ) . q~</td>
-				<td>~
+                <td>~
               . (
                 $2
                 ? "<acronym title='$backup_txt{62}'>$backup_txt{'62a'}</acronym><br />"
                 : q{}
               )
               . qq~$5</td>
-				<td><a href="$adminurl?action=downloadbackup;backupid=$file">$backup_txt{60}</a></td>
-				<td><a href="$adminurl?action=emailbackup;backupid=$file">$backup_txt{52}</a></td>
-				<td><a href="$adminurl?action=runbackup;runbackup_again=$1$2.0.$4.$5">$backup_txt{61}</a>
-					<br /><a href="$adminurl?action=runbackup;runbackup_again=$filename">$backup_txt{62}</a></td>
-				<td class="center">~
+                <td><a href="$adminurl?action=downloadbackup;backupid=$file">$backup_txt{60}</a></td>
+                <td><a href="$adminurl?action=emailbackup;backupid=$file">$backup_txt{52}</a></td>
+                <td><a href="$adminurl?action=runbackup;runbackup_again=$1$2.0.$4.$5">$backup_txt{61}</a>
+                    <br /><a href="$adminurl?action=runbackup;runbackup_again=$filename">$backup_txt{62}</a></td>
+                <td class="center">~
               . (
                 ( $5 =~ /^a\.tar/xsm || $5 !~ /tar/xsm )
                 ? q{-}
                 : qq~<a href="$adminurl?action=recoverbackup1;recoverfile=$filename">$backup_txt{63}</a>~
               )
               . qq~</td>
-				<td><a href="$adminurl?action=deletebackup;backupid=$file">$backup_txt{53}</a></td>
-			</tr>~;
+                <td><a href="$adminurl?action=deletebackup;backupid=$file">$backup_txt{53}</a></td>
+            </tr>~;
         }
 
         $filelist ||= qq~<tr>
-				<td colspan="9"><i>$backup_txt{38}</i></td>
-			</tr>~;
+                <td colspan="9"><i>$backup_txt{38}</i></td>
+            </tr>~;
 
         $yymain .= qq~
 <form action="$adminurl?action=runbackup" method="post" name="runbackup">
 <input type="hidden" name="backupnewest" value="0" />
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-	<tr>
-		<td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$backup_txt{21}</b></td>
-	</tr><tr>
-		<td class="windowbg2" colspan="2">
-			$backup_txt{22} <tt>$backupdir</tt> $backup_txt{23}
-			<br />
-			<br />
-			$backup_txt{24}
-		</td>
-	</tr>
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
+    <tr>
+        <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$backup_txt{21}</b></td>
+    </tr><tr>
+        <td class="windowbg2" colspan="2">
+            $backup_txt{22} <tt>$backupdir</tt> $backup_txt{23}
+            <br />
+            <br />
+            $backup_txt{24}
+        </td>
+    </tr>
 </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-	<tr>
-    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-	</tr><tr>
-    	<td class="catbg center">
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+    </tr><tr>
+        <td class="catbg center">
             <input type="button" name="submit1" value="$backup_txt{25}" onclick="BackupNewest(0);" class="button" />~;
         if ( $lastbackupfiletime && $lastbackup == $lastbackupfiletime ) {
             $lastbackupfiletime = timeformat( $lastbackup, 1 );
@@ -504,31 +504,31 @@ $presetjavascriptcode
             <div style="margin-top: .5em;"><input type="button" name="submit2" value="$backup_txt{'25a'} $lastbackupfiletime" onclick="BackupNewest($lastbackup);" class="button" /></div>~;
         }
         $yymain .= qq~
-    	</td>
-	</tr>
+        </td>
+    </tr>
 </table>
 </div>
 </form>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-	<tr>
-		<td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$backup_txt{35}</b></td>
-	</tr><tr>
-		<td class="windowbg2" colspan="2">
-			$backup_txt{37} <i>${$uid.$username}{'email'}</i> $backup_txt{'37a'}<br />
-			$backup_txt{36} <tt>$backupdir</tt>
-			<table class="cs_thin pad_4px border">
-				<tr>
-					<td class="center">$backup_txt{70}</td>
-					<td class="center">$backup_txt{71}</td>
-					<td class="center">$backup_txt{72}</td>
-					<td class="center">$backup_txt{73}</td>
-					<td class="center" colspan="5">$backup_txt{74}</td>
-				</tr>
-				$filelist
-			</table>
-		</td>
-	</tr>
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
+    <tr>
+        <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$backup_txt{35}</b></td>
+    </tr><tr>
+        <td class="windowbg2" colspan="2">
+            $backup_txt{37} <i>${$uid.$username}{'email'}</i> $backup_txt{'37a'}<br />
+            $backup_txt{36} <tt>$backupdir</tt>
+            <table class="border-space pad-cell border">
+                <tr>
+                    <td class="center">$backup_txt{70}</td>
+                    <td class="center">$backup_txt{71}</td>
+                    <td class="center">$backup_txt{72}</td>
+                    <td class="center">$backup_txt{73}</td>
+                    <td class="center" colspan="5">$backup_txt{74}</td>
+                </tr>
+                $filelist
+            </table>
+        </td>
+    </tr>
 </table>
 </div>~;
     }
@@ -718,18 +718,19 @@ sub runbackup {
 # Handle the conversion of the informal backup_paths stored in the settings file to the real ones
 # We will build a hash to quickly match them.
 # A pipe separates them in the case of needing multiple real paths to handle one informal path
+
+    $boarddir = $support_env_path;
+
     %pathconvert = (
-        'src'  => "$admindir|$sourcedir|$boarddir/Modules|!$boarddir",
+        'src'  => "!$boarddir|$boarddir/Admin|$boarddir/Sources|$boarddir/Modules",
         'bo'   => $boardsdir,
         'lan'  => "$langdir|$helpfile",
         'mem'  => $memberdir,
         'mes'  => $datadir,
         'temp' => "$htmldir/Templates",
         'var'  => $vardir,
-        'html' =>
-"!$htmldir|!$htmldir/avatars|$htmldir/BookMarks|$htmldir/Buttons|$htmldir/EventIcons|$htmldir/googiespell|$htmldir/greybox|$htmldir/ModImages|$htmldir/shjs|$htmldir/Smilies",
-        'upld' =>
-        "$htmldir/Attachments|$htmldir/PMAttachments|$htmldir/avatars/UserAvatars",
+        'html' => "!$htmldir|$htmldir/BookMarks|$htmldir/Buttons|$htmldir/EventIcons|$htmldir/googiespell|$htmldir/greybox|$htmldir/ModImages|$htmldir/shjs|$htmldir/Smilies",
+        'upld' => "$htmldir/Attachments|$htmldir/PMAttachments|$htmldir/avatars",
     );
 
     # Set the forum to maintenance mode.
@@ -811,7 +812,7 @@ sub BackupMethodInit {
 
         $tarball = Archive::Tar->new;
 
-# We need this for the loops, when preventing to run into browser/server timeout.
+# We need this for the loops to keep from running into browser/server timeout.
         if ( -e "$backupdir/backup$backuptype.$curtime.$filedirs.a.tar" ) {
             $tarball->read(
                 "$backupdir/backup$backuptype.$curtime.$filedirs.a.tar", 0 );
@@ -819,7 +820,7 @@ sub BackupMethodInit {
         }
     }
     elsif ( $backupmethod eq 'Archive::Zip' ) {
-        eval 'use Archive::Zip;';    # Everything's exported by default here too
+        eval 'use Archive::Zip;';    # Everything is exported by default here too
         if ($@) {
             fatal_error( q{}, "$backup_txt{28} Archive::Zip: $@" );
         }
@@ -857,7 +858,7 @@ sub BackupDirectory {
         if ( $FORM{'backupnewest'} ) { $Nt = "-N \@$FORM{'backupnewest'}"; }
         $dir =~ s/^\///xsm;
 
-			# needed not to get server log messages like "Removing leading `/' from ..."
+    # needed not to get server log messages like "Removing leading `/' from ..."
         ak_system(
 "tar $cr -C / -f $backupdir/backup$backuptype.$curtime.$filedirs.tar $Nt $dir"
           )
@@ -996,7 +997,7 @@ sub runbackup_loop {
     <script type="text/javascript">
      <!--
         function PleaseWait() {
-            document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>$backup_txt{'91'}</b></span><br />&nbsp;<br />&nbsp;';
+            document.getElementById("memcontinued").innerHTML = '<span style="color:important"><b>$backup_txt{'91'}</b></span><br />&nbsp;<br />&nbsp;';
         }
 
         function stoptick() { stop = 1; }
@@ -1218,35 +1219,35 @@ sub recoverbackup1 {
  </script>
 <form action="$adminurl?action=recoverbackup2" method="post" name="recover">
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_10px" style="margin-bottom: .5em;">
-		<tr>
-			<td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$backup_txt{100}</b></td>
-		</tr><tr>
-			<td class="windowbg2" colspan="2">
-				$backup_txt{101}<br />
-				<br />
-				- ~ . join( '<br />- ', @dirs ) . qq~<br />
-				<br />
-				$backup_txt{102}<br />
-				<br />
-				<i>$INFO{'recoverfile'}</i>~
-		. ( $2 ? " (<b>$backup_txt{62}</b>)" : q{} )
+    <table class="border-space pad_10px" style="margin-bottom: .5em;">
+        <tr>
+            <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$backup_txt{100}</b></td>
+        </tr><tr>
+            <td class="windowbg2" colspan="2">
+                $backup_txt{101}<br />
+                <br />
+                - ~ . join( '<br />- ', @dirs ) . qq~<br />
+                <br />
+                $backup_txt{102}<br />
+                <br />
+                <i>$INFO{'recoverfile'}</i>~
+      . ( $2 ? " (<b>$backup_txt{62}</b>)" : q{} )
       . qq~ $backup_txt{103} ~
       . timeformat($3)
-      . qq~		<br />
-				<br />
-				<input type="button" onclick="window.location.href='$adminurl?action=backupsettings'" value="$backup_txt{125}" /><br />
-				<br />
-				$backup_txt{104},<br />
-				<br />
-				<input type="checkbox" name="originalrestore" value="1" /> $backup_txt{105}<br />
-				<br />
-				$backup_txt{106}<br />
-				<table class="pad_3px">
-					<tr>
-						<td class="center"><b>$backup_txt{107}</b></td>
-						<td class="center"><b>$backup_txt{108}</b></td>
-					</tr>~;
+      . qq~     <br />
+                <br />
+                <input type="button" onclick="window.location.href='$adminurl?action=backupsettings'" value="$backup_txt{125}" /><br />
+                <br />
+                $backup_txt{104},<br />
+                <br />
+                <input type="checkbox" name="originalrestore" value="1" /> $backup_txt{105}<br />
+                <br />
+                $backup_txt{106}<br />
+                <table class="pad-cell">
+                    <tr>
+                        <td class="center"><b>$backup_txt{107}</b></td>
+                        <td class="center"><b>$backup_txt{108}</b></td>
+                    </tr>~;
 
     $INFO{'recoverfile'} =~ /\.tar(.*)$/xsm;
     my $recovertype =
@@ -1260,10 +1261,10 @@ sub recoverbackup1 {
         $_ =~ /(.*\/)(.*)/xsm;
         if ( !$checkdir{$1} && $2 ) {
             $checkdir{$1} = 1;
-            $yymain .=qq~<tr>
-					<td>/$1 *$backup_txt{114}</td>
-					<td class="center"><input type="text" name="u-$1" value="6" size="1" maxlength="1" onkeyup="CheckCHMOD(this.value,6,this);" /> <input type="text" name="g-$1" value="6" size="1" maxlength="1" onkeyup="CheckCHMOD(this.value,6,this);" /> <input type="text" name="a-$1" value="" size="1" maxlength="1" onkeyup="CheckCHMOD(this.value,0,this);" /></td>
-				</tr>~;
+            $yymain .= qq~<tr>
+                    <td>/$1 *$backup_txt{114}</td>
+                    <td class="center"><input type="text" name="u-$1" value="6" size="1" maxlength="1" onkeyup="CheckCHMOD(this.value,6,this);" /> <input type="text" name="g-$1" value="6" size="1" maxlength="1" onkeyup="CheckCHMOD(this.value,6,this);" /> <input type="text" name="a-$1" value="" size="1" maxlength="1" onkeyup="CheckCHMOD(this.value,0,this);" /></td>
+                </tr>~;
         }
     }
 
@@ -1283,15 +1284,15 @@ sub recoverbackup1 {
    </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-	<tr>
-    	<th class="titlebg">$admin_img{'prefimg'} $backup_txt{'100'}</th>
-	</tr><tr>
-    	<td class="catbg center">
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $backup_txt{'100'}</th>
+    </tr><tr>
+        <td class="catbg center">
             <input type="hidden" name="recoverfile" value="$INFO{'recoverfile'}" />
             <input type="submit" value="$backup_txt{'126'}" class="button" />
-    	</td>
-	</tr>
+        </td>
+    </tr>
 </table>
 </div>
 </form>~;
@@ -1340,7 +1341,7 @@ sub recoverbackup2 {
                     $FORM{'originalrestore'} ? "/$path"
                     : "$backupdir/$date/$path"
                   ) ? 1
-                  :   -1;
+                  : -1;
             }
         }
     }
@@ -1349,14 +1350,14 @@ sub recoverbackup2 {
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-	<table class="cs_thin pad_10px" style="margin-bottom: .5em;">
-		<tr>
-			<td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$backup_txt{100}</b></td>
-		</tr><tr>
-			<td class="windowbg2" colspan="2">
-				$backup_txt{130}<br />
-				<br />
-				<pre>\n~;
+    <table class="border-space pad_10px" style="margin-bottom: .5em;">
+        <tr>
+            <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$backup_txt{100}</b></td>
+        </tr><tr>
+            <td class="windowbg2" colspan="2">
+                $backup_txt{130}<br />
+                <br />
+                <pre>\n~;
 
     foreach my $o ( split /\n/xsm, $output ) {
         next if -d "/$o/";
@@ -1408,20 +1409,20 @@ sub recoverbackup2 {
     }
 
     $yymain .= qq~         </pre>
-				$backup_txt{131}<br />
-			</td>
-		</tr>
-	</table>
+                $backup_txt{131}<br />
+            </td>
+        </tr>
+    </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-	<tr>
-    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'193'}</th>
-	</tr><tr>
-    	<td class="catbg center">
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'193'}</th>
+    </tr><tr>
+        <td class="catbg center">
              <input type="button" onclick="window.location.href='$adminurl?action=backupsettings'" value="$backup_txt{'132'}" />
-    	</td>
-	</tr>
+        </td>
+    </tr>
 </table>
 </div>~;
 

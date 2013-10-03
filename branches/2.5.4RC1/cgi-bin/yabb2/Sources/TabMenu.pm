@@ -169,6 +169,7 @@ qq~                            <li><span |><a href="$scripturl?action=mycenter" 
 qq~                            <li><span |><a href="$scripturl?action=logout" title = "$img_txt{'108'}">$img_txt{'108'}</a></span></li>\n~;
     }
 
+    $yytabmenu = q~<ul>~;
     # Advanced Tabs starts here
     for my $i ( 0 .. ( @AdvancedTabs - 1 ) ) {
         if ( $AdvancedTabs[$i] =~ /\|/xsm ) {
@@ -213,6 +214,7 @@ qq~                            <li><span |><a href="$scripturl?action=logout" ti
               ) . $last;
         }
     }
+    $yytabmenu .= q~</ul>~;
 
     if ( $iamadmin && $addtab_on == 1 ) {
         my ( $seladdtab, $seledittab );

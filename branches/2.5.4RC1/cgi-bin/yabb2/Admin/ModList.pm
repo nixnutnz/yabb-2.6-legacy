@@ -1,6 +1,6 @@
 ###############################################################################
 # ModList.pm                                                                  #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.03.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -43,16 +43,18 @@ sub ListMods {
     if ( !@installed_mods ) {
         $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <div class="pad-more"><table class="border-space pad-cell">
         <tr>
             <td class="titlebg">
                 $admin_img{'prefimg'} <b>$mod_list{'5'}</b>
-             </td>
-         </tr><tr>
-             <td class="windowbg2 padd_8_12px">
-                 $mod_list{'8'} <a href="http://www.boardmod.org" target="_blank">$mod_list{'9'}</a>
-             </td>
-         </tr>
+            </td>
+        </tr><tr>
+            <td class="windowbg2">
+                <div class="pad-more">
+                    $mod_list{'8'} <a href="http://www.boardmod.org" target="_blank">$mod_list{'9'}</a>
+                </div>
+            </td>
+        </tr>
     </table>
 </div>
 ~;
@@ -85,7 +87,7 @@ sub ListMods {
 
         $full_description .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <a id="$mod_anchor">$admin_img{'prefimg'}</a> <b>$mod_displayname</b> &nbsp; <span class="small">$mod_list{'4'}: $mod_version</span>
@@ -95,12 +97,12 @@ sub ListMods {
                 <span class="small">$mod_list{'2'}: $mod_author</span>
             </td>
         </tr><tr>
-            <td class="windowbg2 padd_8_12px">
+            <td class="windowbg2">
                 $mod_desc
             </td>
         </tr><tr>
             <td class="catbg right">
-                <span class="small">$mod_list{'3'}: $mod_date</span>
+                <div class="pad-more small">$mod_list{'3'}: $mod_date</div>
             </td>
         </tr>
     </table>
@@ -109,7 +111,7 @@ sub ListMods {
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg" colspan="3">
                 $admin_img{'prefimg'} <b>$mod_list{'5'} ($total_mods)</b>

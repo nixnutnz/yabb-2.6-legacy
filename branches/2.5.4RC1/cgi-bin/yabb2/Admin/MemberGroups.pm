@@ -1,6 +1,6 @@
 ###############################################################################
 # MemberGroups.pm                                                             #
-# $Date: 9.05.13 $                                                            #
+# $Date: 10.03.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -68,26 +68,26 @@ sub EditMemberGroups {
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 $admin_img{'guest'}&nbsp;<b>$admin_txt{'8'}</b>
             </td>
         </tr><tr>
-            <td class="windowbg2 padd_8_12px">
-                $admin_txt{'11'}
+            <td class="windowbg2">
+				<div class="pad-more">$admin_txt{'11'}</div>
             </td>
         </tr>
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-        <col class="w_25pc" />
-        <col class="w_15pc" />
-        <col class="w_10pc" />
-        <col class="w_25pc" />
-        <col class="w_10pc" />
-        <col class="w_15pc" />
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
+        <col style="width: 25%" />
+        <col style="width: 15%" />
+        <col style="width: 10%" />
+        <col style="width: 25%" />
+        <col style="width: 10%" />
+        <col style="width: 15%" />
         <tr>
             <td class="titlebg" colspan="6">
                 $admin_img{'guest'}&nbsp;<b>$admin_txt{'12'}</b>
@@ -174,17 +174,26 @@ sub EditMemberGroups {
 ~;
 
     my $colspan = 6;
-    my $width1  = 'w_25pc';
-    my $width2  = 'w_10pc';
-    my $width3  = 'w_15pc';
+    my $colgroup = q~<col  style="width: 25%" />
+        <col  style="width: 15%" />
+        <col  style="width: 10%" />
+        <col  style="width: 25%" />
+        <col  style="width: 10%" />
+        <col  style="width: 15%" />
+~;
+ 
     if ( $addmemgroup_enabled > 0 ) {
         $additional_tablehead =
-          qq~<td class="catbg center w_15pc"><b>$amgtxt{'83'}</b></td>~;
+          qq~<td class="catbg center"><b>$amgtxt{'83'}</b></td>~;
         $colspan = 7;
-        $width1  = 'w_20pc';
-        $width2  = 'w_5pc';
-        $width3  = 'w_10pc';
-    }
+        $colgroup = q~<col style="width: 25%" />
+        <col  style="width: 15%" />
+        <col  style="width: 10%" />
+        <col  style="width: 20%" />
+        <col  style="width: 15%" />
+        <col  style="width: 5%" />
+        <col  style="width: 10%" />
+~;    }
     my $reorderlink = q{};
     if ($#nopostorder) {
         $reorderlink =
@@ -193,19 +202,20 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
+        $colgroup
         <tr>
             <td class="titlebg" colspan="$colspan">
                 $admin_img{'guest'}&nbsp;<b>$amgtxt{'37'} (<a href="$adminurl?action=editgroup">$admintxt{'18c'}</a>$reorderlink)</b>
             </td>
         </tr><tr>
-            <td class="catbg center w_25pc"><b>$amgtxt{'03'}</b></td>
-            <td class="catbg center w_15pc"><b>$amgtxt{'19'}</b></td>
-            <td class="catbg center w_10pc"><b>$amgtxt{'08'}</b></td>
-            <td class="catbg center $width1"><b>$amgtxt{'01'}</b></td>
+            <td class="catbg center"><b>$amgtxt{'03'}</b></td>
+            <td class="catbg center"><b>$amgtxt{'19'}</b></td>
+            <td class="catbg center"><b>$amgtxt{'08'}</b></td>
+            <td class="catbg center"><b>$amgtxt{'01'}</b></td>
             $additional_tablehead
-            <td class="catbg center $width2"><b>$admin_txt{'53'}</b></td>
-            <td class="catbg center $width3"><b>$admin_txt{'54'}</b></td>
+            <td class="catbg center"><b>$admin_txt{'53'}</b></td>
+            <td class="catbg center"><b>$admin_txt{'54'}</b></td>
         </tr>~;
 
     $count = 0;
@@ -262,13 +272,13 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-        <col class="w_25pc" />
-        <col class="w_15pc" />
-        <col class="w_10pc" />
-        <col class="w_25pc" />
-        <col class="w_10pc" />
-        <col class="w_15pc" />
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
+        <col style="width: 25%" />
+        <col style="width: 15%" />
+        <col style="width: 10%" />
+        <col style="width: 25%" />
+        <col style="width: 10%" />
+        <col style="width: 15%" />
         <tr>
             <td class="titlebg" colspan="6">
                 $admin_img{'guest'}&nbsp;<b>$amgtxt{'40'}&nbsp;(<a href="$adminurl?action=editgroup1">$admintxt{'18c'}</a>)</b>
@@ -466,7 +476,7 @@ sub editAddGroup {
 <input type="hidden" name="origin" value="$action" />
 
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
     <col style="width:40%" />
     <tr>
                 <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$viewtitle</b></td>
@@ -535,7 +545,7 @@ sub editAddGroup {
         $yymain .= qq~<tr>
         <td class="windowbg"><label for="postindepend">$amgtxt{'39a'}</label></td>
         <td class="windowbg2">
-            <input type="radio" name="postdepend" id="postindepend" value="No" $post2 class="windowbg2" style="border: 0px; vertical-align: middle;" onclick="depend(this.value)" />
+            <input type="radio" name="postdepend" id="postindepend" value="No" $post2 class="windowbg2" style="border: 0; vertical-align: middle;" onclick="depend(this.value)" />
             <br />
             <label for="viewpublic"><b>$amgtxt{'42'}?</b>
             <input type="checkbox" name="viewpublic" id="viewpublic" value="1"$pc$pd style="vertical-align: middle;" /> <br />$amgtxt{'43'}</label>
@@ -544,7 +554,7 @@ sub editAddGroup {
     </tr><tr>
         <td class="windowbg"><label for="postdepend">$amgtxt{'39'}</label></td>
         <td class="windowbg2">
-            <input type="radio" name="postdepend" id="postdepend" value="Yes" $post1 class="windowbg2" style="border: 0px; vertical-align: middle;" onclick="depend(this.value)" />
+            <input type="radio" name="postdepend" id="postdepend" value="Yes" $post1 class="windowbg2" style="border: 0; vertical-align: middle;" onclick="depend(this.value)" />
             <br />
             <label for="posts"><b>$amgtxt{'04'}</b></label> <input type="text" name="posts" id="posts" size="5" value="$posts"$pt style="vertical-align: middle;" />
         </td>
@@ -577,8 +587,8 @@ sub editAddGroup {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-        <col span="5" class="w_20pc" />
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
+        <col span="5" style="width: 20%" />
         <tr>
             <td class="titlebg" colspan="5">
                 $admin_img{'prefimg'} <b>$amgtxt{'44'}</b>
@@ -602,7 +612,7 @@ sub editAddGroup {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
     <tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
     </tr><tr>
@@ -703,7 +713,7 @@ sub editAddGroup2 {
             $star = $cur_otherstar;
         }
     }
-	else { $star = $FORM{'starsadmin'}; }
+    else { $star = $FORM{'starsadmin'}; }
     $color = $FORM{'color2'} ne q{} ? "#$FORM{'color2'}" : q{};
     $postdepend = $FORM{'postdepend'};
     if ( $FORM{'posts'} !~ /\d+/xsm && $postdepend eq 'Yes' ) {
@@ -932,8 +942,9 @@ sub reorderGroups {
     $rowspan = $#nopostorder + 2;
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
-        <col span="2" class="w_33pc" />
+    <table class="border-space pad-cell">
+        <col span="2" style="width:33%" />
+        <col style="width:34%" />
         <tr>
             <td class="titlebg" colspan="3">
                 <img src="$imagesdir/guest.gif" alt="" />&nbsp;<b>$admintxt{'reordergroups2'}</b>

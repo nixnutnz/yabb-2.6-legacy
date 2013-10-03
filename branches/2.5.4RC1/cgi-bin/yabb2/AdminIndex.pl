@@ -4,7 +4,7 @@
 # $Source: /AdminIndex.pl $
 ###############################################################################
 # AdminIndex.pl                                                               #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.03.13                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -171,10 +171,9 @@ sub ParseNavArray {
 
         if ($isheader) {
             $started_ul = 1;
-            $leftmenu .=
-qq~        <h3><a href="javascript:toggleList('$isheader')" title="$whatitdoes">$vistext</a></h3>
-              <ul id="$isheader">
-~;
+            $leftmenu .= qq~
+        <h3><a href="javascript:toggleList('$isheader')" title="$whatitdoes">$vistext</a></h3>
+        <ul id="$isheader">~;
             next;
         }
 
@@ -184,18 +183,17 @@ qq~        <h3><a href="javascript:toggleList('$isheader')" title="$whatitdoes">
 
         if ( $action_to_take ne q{#} ) {
             $leftmenu .= qq~
-                  <li><a href="$adminurl?action=$action_to_take" title="$whatitdoes" $currentclass>$vistext</a></li>~;
+            <li><a href="$adminurl?action=$action_to_take" title="$whatitdoes" $currentclass>$vistext</a></li>~;
         }
         else {
             $leftmenu .= qq~
-                  <li><a title="none">$vistext</a></li>~;
+            <li><a title="none">$vistext</a></li>~;
         }
     }
 
     if ($started_ul) {
         $leftmenu .= q~
-              </ul>
-~;
+        </ul>~;
     }
     return;
 }
@@ -350,7 +348,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
     $topmenu_two = qq~<a href="$adminurl">$admintxt{'33'}</a>~;
     $topmenu_tree =
       qq~<a href="$scripturl?action=help;section=admin">$admintxt{'35'}</a>~;
-        $topmenu_four = qq~<a href="http://www.yabbforum.com" target="_blank">$admintxt{'36'}</a>~;
+    $topmenu_four = qq~<a href="http://www.yabbforum.com" target="_blank">$admintxt{'36'}</a>~;
 
     if ($maintenance) {
         $yyadmin_alert .=

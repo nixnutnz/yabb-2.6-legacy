@@ -1,6 +1,6 @@
 ###############################################################################
 # Admin.pm                                                                    #
-# $Date: 09/16/2013 $                                                         #
+# $Date: 10.03.13 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -77,7 +77,7 @@ sub DeleteConverterFiles {
     if ( -e './Setup.pl' ) { unlink './Setup.pl'; }
     if ( -e './Convert.pl' ) { unlink './Convert.pl'; }
     if ( -e './FixFile.pl' ) { unlink './Fixfile.pl'; }
-    if ( -e "$htmldir/Templates/Forum/setup.css" ) { unlink "$htmldir/Templates/Forum/setup.css"; } 
+    if ( -e "$htmldir/Templates/Forum/setup.css" ) { unlink "$htmldir/Templates/Forum/setup.css"; }
 
     $yymain .= qq~<b>$admintxt{'10'}</b>~;
     $yytitle = "$admintxt{'10'}";
@@ -171,7 +171,7 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 $admin_img{'infoimg'} <b>$admintxt{'28'}</b>
@@ -181,43 +181,46 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
                 <i>$admin_txt{'94'}</i>
             </td>
         </tr><tr>
-            <td class="windowbg2 padd_8_12px">
-                <div class="admin_total_left">$admin_txt{'488'}</div>
-                <div class="admin_total_right">$memcount</div>
-                <br />
-                <div class="admin_total_left">$admin_txt{'490'}</div>
-                <div class="admin_total_right">$totalt</div>
-                <br />
-                <div class="admin_total_left">$admin_txt{'489'}</div>
-                <div class="admin_total_right">$totalm</div>
-                <br />
-                <div class="admin_total_left">$admintxt{'39'}</div>
-                <div class="admin_total_right">$avgm</div>
-                <br />
-                <div class="admin_total_left">$admin_txt{'658'}</div>
-                <div class="admin_total_right">$numcats</div>
-                <br />
-                <div class="admin_total_left">$admin_txt{'665'}</div>
-                <div class="admin_total_right">$numboards</div>
-                <br />
-                <div class="admin_total_left">$errorlog{'3'}</div>
-                <div class="admin_total_right">$errorslog</div>
-                <br />
-                <div class="admin_total_left">$admin_txt{'691'}&nbsp;<span class="small">($yyclicktext)</span></div>
-                <div class="admin_total_right">$yyclicks</div>
-                <div class="admin_total_left w_55pc">$yyclicklink</div>
+            <td class="windowbg2">
+                <div class="pad-more">
+                    <div class="admin-total-left">$admin_txt{'488'}</div>
+                    <div class="admin-total-right">$memcount</div>
+                    <br />
+                    <div class="admin-total-left">$admin_txt{'490'}</div>
+                    <div class="admin-total-right">$totalt</div>
+                    <br />
+                    <div class="admin-total-left">$admin_txt{'489'}</div>
+                    <div class="admin-total-right">$totalm</div>
+                    <br />
+                    <div class="admin-total-left">$admintxt{'39'}</div>
+                    <div class="admin-total-right">$avgm</div>
+                    <br />
+                    <div class="admin-total-left">$admin_txt{'658'}</div>
+                    <div class="admin-total-right">$numcats</div>
+                    <br />
+                    <div class="admin-total-left">$admin_txt{'665'}</div>
+                    <div class="admin-total-right">$numboards</div>
+                    <br />
+                    <div class="admin-total-left">$errorlog{'3'}</div>
+                    <div class="admin-total-right">$errorslog</div>
+                    <br />
+                    <div class="admin-total-left">$admin_txt{'691'}&nbsp;<span class="small">($yyclicktext)</span></div>
+                    <div class="admin-total-right">$yyclicks</div>
+                    <div class="admin-total-left" style="width:55%">$yyclicklink</div>
+                </div>
             </td>
         </tr><tr>
             <td class="catbg">
                 <i>$admin_txt{'657'}</i>
             </td>
         </tr><tr>
-            <td class="windowbg2"><br />
-                <div class="admin_total_left">$admin_txt{'656'}</div>
-                <div class="admin_total_65pc">$thelatestmember</div>
-                <br />
-                <div class="admin_total_left">$admin_txt{'659'}</div>
-                <div class="admin_total_65pc">~;
+            <td class="windowbg2">
+                <div class="pad-more">
+                    <div class="admin-total-left">$admin_txt{'656'}</div>
+                    <div class="admin-total-mid">$thelatestmember</div>
+                    <br />
+                    <div class="admin-total-left">$admin_txt{'659'}</div>
+                    <div class="admin-total-mid">~;
 
 # Sorts the threads to find the most recent post
 # No need to check for board access here because only admins have access to this page
@@ -278,24 +281,25 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
     ToChars($lssub);
     $yymain .=
 qq~<a href="$scripturl?num=$lspostid/$lsreply#$lsreply">$lssub</a> ($lsdatetime)</div>
-                <br />
-                <div class="admin_total_left">$admin_txt{'684'}</div>
-                <div class="admin_total_65pc">$administrators</div>
-                <br />
-                <div class="admin_total_left">$admin_txt{'684a'}</div>
-                <div class="admin_total_65pc">$gmods</div>
-                <br />
-                <div class="admin_total_left">$admin_txt{'425'}</div>
-                <div class="admin_total_65pc">
-                    <script src="$versionchk" type="text/javascript"></script>
-                    <script type="text/javascript">
-                        if (typeof STABLE == "undefined" || STABLE == null ) {
-                            document.write("$versiontxt{'4'} <b>$YaBBversion</b> - $versiontxt{'5'} <b>$rna</b> <p>");
-                        } else {
-                           document.write("$versiontxt{'4'} <b>$YaBBversion</b> - $versiontxt{'5'} <b>"+STABLE+"</b> <p>");
-                        }
-                    </script>
-                    <noscript>$versiontxt{'1'} <img src="$versionimg" alt="" /></noscript>
+                    <br />
+                    <div class="admin-total-left">$admin_txt{'684'}</div>
+                    <div class="admin-total-mid">$administrators</div>
+                    <br />
+                    <div class="admin-total-left">$admin_txt{'684a'}</div>
+                    <div class="admin-total-mid">$gmods</div>
+                    <br />
+                    <div class="admin-total-left">$admin_txt{'425'}</div>
+                    <div class="admin-total-mid">
+                        <script src="$versionchk" type="text/javascript"></script>
+                        <script type="text/javascript">
+                            if (typeof STABLE == "undefined" || STABLE == null ) {
+                                document.write("$versiontxt{'4'} <b>$YaBBversion</b> - $versiontxt{'5'} <b>$rna</b> <p>");
+                            } else {
+                                document.write("$versiontxt{'4'} <b>$YaBBversion</b> - $versiontxt{'5'} <b>"+STABLE+"</b> <p>");
+                            }
+                        </script>
+                        <noscript>$versiontxt{'1'} <img src="$versionimg" alt="" /></noscript>
+                    </div>
                 </div>
             </td>
         </tr>
@@ -394,7 +398,7 @@ sub ShowClickLog {
             && $newiplist[$i]->[0] =~ /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/sm )
         {
             $guestiplist .=
-qq~$lookupIP&nbsp;<span class="red">(<i>$newiplist[$i]->[1]</i>)</span><br />~;
+qq~$lookupIP&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span><br />~;
         }
         else {
             LoadUser( $newiplist[$i]->[0] );
@@ -412,7 +416,7 @@ qq~$lookupIP&nbsp;<span class="red">(<i>$newiplist[$i]->[1]</i>)</span><br />~;
                 $displayUserName = ${ $uid . $displayUserName }{'realname'};
             }
             $useriplist .=
-qq~<a href="$scripturl?action=viewprofile;username=$cloakedUserName">$displayUserName</a>&nbsp;<span class="red">(<i>$newiplist[$i]->[1]</i>)</span><br />~;
+qq~<a href="$scripturl?action=viewprofile;username=$cloakedUserName">$displayUserName</a>&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span><br />~;
         }
     }
 
@@ -426,7 +430,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakedUserName">$displayUse
     for my $i ( 0 .. ( @newbrowser .. 1 ) ) {
         if ( $newbrowser[$i]->[0] =~ /\S+/xsm ) {
             $browserlist .=
-qq~$newbrowser[$i]->[0] &nbsp;<span class="red">(<i>$newbrowser[$i]->[1]</i>)</span><br />~;
+qq~$newbrowser[$i]->[0] &nbsp;<span class="important">(<i>$newbrowser[$i]->[1]</i>)</span><br />~;
         }
     }
 
@@ -440,7 +444,7 @@ qq~$newbrowser[$i]->[0] &nbsp;<span class="red">(<i>$newbrowser[$i]->[1]</i>)</s
     for my $i ( 0 .. ( @newoslist - 1 ) ) {
         if ( $newoslist[$i]->[0] =~ /\S+/xsm ) {
             $oslist .=
-qq~$newoslist[$i]->[0] &nbsp;<span class="red">(<i>$newoslist[$i]->[1]</i>)</span><br />~;
+qq~$newoslist[$i]->[0] &nbsp;<span class="important">(<i>$newoslist[$i]->[1]</i>)</span><br />~;
         }
     }
 
@@ -453,7 +457,7 @@ qq~$newoslist[$i]->[0] &nbsp;<span class="red">(<i>$newoslist[$i]->[1]</i>)</spa
     for my $i ( 0 .. ( @newtolist - 1 ) ) {
         if ( $newtolist[$i]->[0] =~ /\S+/xsm ) {
             $scriptcalls .=
-qq~<a href="$newtolist[$i]->[0]" target="_blank">$newtolist[$i]->[0]</a>&nbsp;<span class="red">(<i>$newtolist[$i]->[1]</i>)</span><br />~;
+qq~<a href="$newtolist[$i]->[0]" target="_blank">$newtolist[$i]->[0]</a>&nbsp;<span class="important">(<i>$newtolist[$i]->[1]</i>)</span><br />~;
         }
     }
 
@@ -472,20 +476,20 @@ qq~<a href="$newfromlist[$i]->[0]" target="_blank">$newfromlist[$i]->[0]</a>~;
 
             wrap2();
             $referlist .=
-qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
+qq~$message&nbsp;<span class="important">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
         }
     }
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 $admin_img{'infoimg'} <b>$admin_txt{'693'}</b>
             </td>
         </tr><tr>
-            <td class="windowbg2"><br />
-                $admin_txt{'697'}$logtimetext<br /><br />
+            <td class="windowbg2">
+                <div class="pad-more">$admin_txt{'697'}$logtimetext</div>
             </td>
         </tr>
     </table>
@@ -494,8 +498,8 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
     if ($enableclicklog) {
         $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-        <col class="w_50pc" />
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
+        <col span="2" style="width: 50%" />
         <tr>
             <td class="titlebg" colspan="2">
                 $admin_img{'cat_img'} <b>$admin_txt{'694'}</b>
@@ -523,7 +527,7 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 $admin_img{'cat_img'} <b>$admin_txt{'695'}</b>
@@ -533,14 +537,14 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
                 <i>$admin_txt{'744'}: $totalbrow</i>
             </td>
         </tr><tr>
-            <td class="windowbg2"><br />
-                $browserlist<br />
+            <td class="windowbg2">
+                <div class="pad-more">$browserlist</div>
             </td>
         </tr>
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 $admin_img{'cat_img'} <b>$admin_txt{'696'}</b>
@@ -550,34 +554,34 @@ qq~$message&nbsp;<span class="red">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
                 <i>$admin_txt{'745'}: $totalos</i>
             </td>
         </tr><tr>
-            <td class="windowbg2"><br />
-                $oslist<br />
+            <td class="windowbg2">
+                <div class="pad-more">$oslist</div>
            </td>
        </tr>
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 $admin_img{'cat_img'} <b>$admin_txt{'696a'}</b>
             </td>
         </tr><tr>
-            <td class="windowbg2"><br />
-                $scriptcalls<br />
+            <td class="windowbg2">
+                <div class="pad-more">$scriptcalls</div>
             </td>
         </tr>
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 $admin_img{'cat_img'} <b>$admin_txt{'838'}</b>
             </td>
         </tr><tr>
-            <td class="windowbg2"><br />
-                $referlist<br />
+            <td class="windowbg2">
+                <div class="pad-more">$referlist</div>
             </td>
         </tr>
     </table>
@@ -602,20 +606,21 @@ sub DeleteOldMessages {
     $yymain .= qq~
 <form action="$adminurl?action=removeoldthreads" method="post">
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 $admin_img{'banimg'} <b>$aduptxt{'04'}</b>
             </td>
         </tr><tr>
-            <td class="windowbg2"><br />
-                $aduptxt{'05'}<br /><br />
+            <td class="windowbg2">
+                <div class="pad-more">$aduptxt{'05'}</div>
             </td>
         </tr><tr>
-            <td class="windowbg2"><br />
-                <label for="keep_them">$admin_txt{'4'}</label> <input type="checkbox" name="keep_them" id="keep_them" value="1" /><br />
-                <label for="maxdays">$admin_txt{'124'} <input type=text name="maxdays" id="maxdays" size="4" value="$maxdays" /> $admin_txt{'579'} $admin_txt{'2'}:</label><br /><br />
-                <div class="old_mess_box">~;
+            <td class="windowbg2">
+                <div class="pad-more">
+                    <label for="keep_them">$admin_txt{'4'}</label> <input type="checkbox" name="keep_them" id="keep_them" value="1" /><br />
+                    <label for="maxdays">$admin_txt{'124'} <input type="text" name="maxdays" id="maxdays" size="4" value="$maxdays" /> $admin_txt{'579'} $admin_txt{'2'}:</label>
+                    <div style="margin-left: 25px; margin-right: auto; text-align: left;">~;
 
     get_forum_master();
 
@@ -634,18 +639,21 @@ sub DeleteOldMessages {
         }
     }
     $yymain .= qq~
+                    </div>
+                </div>
+            </td>
         </tr>
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-	<tr>
-    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'31'}</th>
-	</tr><tr>
-    	<td class="catbg center">
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'31'}</th>
+    </tr><tr>
+        <td class="catbg center">
              <input type="submit" value="$admin_txt{'31'}" class="button" />
-    	</td>
-	</tr>
+        </td>
+    </tr>
 </table>
 </div>
 </form>~;
@@ -771,8 +779,8 @@ sub ver_detail {
 
     $yymain .= qq~
         <div class="bordercolor rightboxdiv">
-        <table class="cs_thin pad_4px">
-            <col class="w_50pc" span="2" />
+        <table class="border-space pad-cell">
+            <col span="2" style="width: 50%" />
             <tr>
                 <td class="titlebg" colspan="2">$admin_img{'infoimg'} <b>$admin_txt{'429'}</b></td>
             </tr><tr>
@@ -930,7 +938,7 @@ sub Refcontrol {
         }
         $refexpl_txt{$actfound} =~ s/"/'/gxsm;    # '" XHTML Validation
         $dismenu .=
-qq~<input type="checkbox" name="$actfound" id="$actfound"$selected />&nbsp;<label for="$actfound"><img src="$admin_img{'question'}" alt="$reftxt{'1a'} $refexpl_txt{$actfound}" title="$reftxt{'1a'} $refexpl_txt{$actfound}" /> $actfound</label ><br />\n~;
+qq~<input type="checkbox" name="$actfound" id="$actfound"$selected />&nbsp;<label for="$actfound"><img src="$admin_img{'question'}" alt="$reftxt{'1a'} $refexpl_txt{$actfound}" title="$reftxt{'1a'} $refexpl_txt{$actfound}" /> $actfound</label><br />\n~;
         $counter++;
         if ( $counter > $column + 1 ) {
             $dismenu .= q~</td><td class="windowbg2 vtop">~;
@@ -940,8 +948,10 @@ qq~<input type="checkbox" name="$actfound" id="$actfound"$selected />&nbsp;<labe
     $yymain .= qq~
 <form action="$adminurl?action=referer_control2" method="post">
     <div class="bordercolor rightboxdiv">
-        <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-            <col class="w_33pc" />
+        <table class="border-space pad-cell" style="margin-bottom: .5em;">
+            <col style="width: 33%" />
+            <col style="width: 34%" />
+            <col style="width: 33%" />
             <tr>
                 <td class="titlebg" colspan="3">
                     $admin_img{'prefimg'} <b>$reftxt{'1'}</b>
@@ -959,7 +969,7 @@ qq~<input type="checkbox" name="$actfound" id="$actfound"$selected />&nbsp;<labe
         </table>
     </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px">
+<table class="border-space pad-cell">
     <tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
     </tr><tr>
@@ -1019,8 +1029,9 @@ sub AddMember {
 <script type="text/javascript" src="$yyhtml_root/ajax.js"></script>
 <form action="$adminurl?action=addmember2" method="post" name="creator" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_3px" style="margin-bottom: .5em;">
-    <col class="w_30pc" />
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
+    <col style="width: 30%" />
+    <col style="width: 70%" />
     <tr>
         <td colspan="2" class="titlebg">
             $admin_img{'register'}<b> $admintxt{'17a'}</b>
@@ -1070,7 +1081,7 @@ sub AddMember {
    $yymain .= qq~</table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px">
+<table class="border-space pad-cell">
     <tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
     </tr><tr>

@@ -1,6 +1,6 @@
 ###############################################################################
 # EditEmailTemplates.pm                                                       #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.03.13                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -33,7 +33,7 @@ sub editemailtemplates {
 <form action="$adminurl?action=editemailtemplates" method="get" style="display: inline">
 <input type="hidden" name="action" value="editemailtemplates" />
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="border-space pad-cell">
         <tr>
             <td class="titlebg">
                 $admin_img{'prefimg'} <b>$emaileditor{'1'}</b>
@@ -79,7 +79,7 @@ sub editemailtemplates {
     <input type="hidden" name="action" value="editemailtemplates" />
     <input type="hidden" name="lang" value="$editlang" />
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="border-space pad-cell">
         <tr>
             <td class="titlebg">
                 $admin_img{'prefimg'} <b>$emaileditor{'3'}</b>
@@ -124,7 +124,7 @@ sub editemailtemplates {
         $yymain .= qq~
 <form action="$adminurl?action=editemailtemplates2;lang=$editlang;string=$string" method="post" style="display: inline" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 $admin_img{'prefimg'} <b>$emaileditor{'4'}</b>
@@ -157,7 +157,7 @@ sub editemailtemplates {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="border-space pad-cell">
         <tr>
             <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
         </tr><tr>

@@ -1,6 +1,6 @@
 ###############################################################################
 # HoneyPot.pm                                                                 #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.03.13                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -48,85 +48,83 @@ sub honeypot {
     if ($total_labels) {
         $show_hon_labels =
           qq~<tr class="catbg">
-    <td><b>$honeypot{'label'}</b></td>
-    <td><b>$honeypot{'edits'}</b></td>
-    <td><b>$honeypot{'deletes'}</b></td>
-</tr>~;
+                    <td><b>$honeypot{'label'}</b></td>
+                    <td><b>$honeypot{'edits'}</b></td>
+                    <td><b>$honeypot{'deletes'}</b></td>
+                </tr>~;
 
         foreach my $hon_labels ( sort { $a <=> $b } @honey_label ) {
             chomp $hon_labels;
             $show_hon_labels .= qq~<tr class="windowbg2">
-    <td>$hon_labels</td>
-    <td>
-    <form action="$adminurl?action=honeypot_edit" method="post">
-      <input type="hidden" name="hon_label" value="$hon_labels" />
-      <input class="button" type="submit" value="$admin_txt{'edit'}" />
-      <input type="hidden" name="honey_language" value="$honey_language" />
-    </form>
-    </td>
-    <td>
-    <form action="$adminurl?action=honeypot_delete" method="post">
-      <input type="hidden" name="hon_label" value="$hon_labels" />
-      <input class="button" type="submit" value="$admin_txt{'delete'}" onclick="return confirm('$honeypot{'confirm'}');"/>
-      <input type="hidden" name="honey_language" value="$honey_language" />
-    </form>
-    </td>
-</tr>~;
+                    <td>$hon_labels</td>
+                    <td>
+                        <form action="$adminurl?action=honeypot_edit" method="post">
+                            <input type="hidden" name="hon_label" value="$hon_labels" />
+                            <input class="button" type="submit" value="$admin_txt{'edit'}" />
+                            <input type="hidden" name="honey_language" value="$honey_language" />
+                        </form>
+                    </td>
+                    <td>
+                        <form action="$adminurl?action=honeypot_delete" method="post">
+                            <input type="hidden" name="hon_label" value="$hon_labels" />
+                            <input class="button" type="submit" value="$admin_txt{'delete'}" onclick="return confirm('$honeypot{'confirm'}');"/>
+                            <input type="hidden" name="honey_language" value="$honey_language" />
+                        </form>
+                    </td>
+                </tr>~;
         }
     }
     else {
         $show_hon_labels = qq~<tr class="windowbg2">
-    <td colspan="3">$honeypot{'no_label'}</td>
-</tr>~;
+                    <td colspan="3">$honeypot{'no_label'}</td>
+                </tr>~;
     }
 
-    $yymain = qq~
-<div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-    <col class="w_50pc" />
-    <col span="2" class="w_25pc" />
-    <tr>
-        <th class="titlebg" colspan="3">$admin_img{'prefimg'} $honeypot{'labels'} ($total_labels)
-            <div style="display: inline; float: right;">
-            <form action="$adminurl?action=honeypot" method="post" enctype="application/x-www-form-urlencoded">
-                <select name="honey_language" id="honey_language" size="1">
-                    $drawnldirs
-                </select>
-                <input type="submit" value="$admin_txt{'462'}" class="button" />
-            </form>
+    $yymain = qq~<div class="bordercolor rightboxdiv">
+            <table class="border-space pad-cell" style="margin-bottom: .5em;">
+                <col style="width: 50%" />
+                <col span="2" style="width: 25%" />
+                <tr>
+                    <th class="titlebg" colspan="3">$admin_img{'prefimg'} $honeypot{'labels'} ($total_labels)
+                        <div style="display: inline; float: right;">
+                            <form action="$adminurl?action=honeypot" method="post" enctype="application/x-www-form-urlencoded">
+                                <select name="honey_language" id="honey_language" size="1">
+                                $drawnldirs
+                                </select>
+                                <input type="submit" value="$admin_txt{'462'}" class="button" />
+                            </form>
+                        </div>
+                    </th>
+                </tr>
+                $show_hon_labels
+            </table>
+        </div>
+        <form action="$adminurl?action=honeypot_add" method="post" accept-charset="$yycharset">
+            <div class="bordercolor rightboxdiv">
+                <table class="border-space pad-cell" style="margin-bottom: .5em;">
+                    <col style="width: 25%" />
+                    <col style="width: 75%" />
+                    <tr>
+                        <th class="titlebg" colspan="2">$admin_img{'prefimg'} $honeypot{'add_new_label'}</th>
+                    </tr><tr class="windowbg2 vtop bold">
+                        <td><label for="honey_add">$honeypot{'new_label'}:</label></td>
+                        <td><input type="text" name="honey_add" id="honey_add" size="60" maxlength="50" /></td>
+                    </tr>
+                </table>
             </div>
-        </th>
-    </tr>
-$show_hon_labels
-</table>
-</div>
-<form action="$adminurl?action=honeypot_add" method="post" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-    <col class="w_25pc" />
-    <col class="w_75pc" />
-    <tr>
-        <th class="titlebg" colspan="2">$admin_img{'prefimg'} $honeypot{'add_new_label'}</th>
-    </tr><tr class="windowbg2 vtop bold">
-        <td><label for="honey_add">$honeypot{'new_label'}:</label></td>
-        <td><input type="text" name="honey_add" id="honey_add" size="60" maxlength="50" /></td>
-    </tr>
-</table>
-</div>
-<div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-    <tr>
-        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-    </tr><tr>
-        <td class="catbg center">
-            <input class="button" type="submit" value="$honeypot{'add_label'}" />
-            <input type="hidden" name="honey_language" value="$honey_language" />
-        </td>
-    </tr>
-</table>
-</div>
-</form>
-~;
+            <div class="bordercolor rightboxdiv">
+                <table class="border-space pad-cell" style="margin-bottom: .5em;">
+                    <tr>
+                        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+                    </tr><tr>
+                        <td class="catbg center">
+                            <input class="button" type="submit" value="$honeypot{'add_label'}" />
+                            <input type="hidden" name="honey_language" value="$honey_language" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>~;
 
     $yytitle     = $honeypot{'labels'};
     $action_area = 'honeypot';
@@ -178,32 +176,32 @@ sub honeypot_edit {
 
 
     $yymain = qq~
-<form action="$adminurl?action=honeypot_edit2" method="post" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-    <col class="w_25pc" />
-    <col class="w_75pc" />
-    <tr>
-        <th class="titlebg" colspan="2">$admin_img{'prefimg'} $honeypot{'edit'}</th>
-    </tr><tr class="windowbg2 vtop bold;">
-        <td><label for="hon_label">$honeypot{'label'}:</label></td>
-        <td><input type="text" name="hon_label2" id="hon_label2" size="60" maxlength="50" value="$h_label" /><input type="hidden" name="hon_line" value="$aa" /></td>
-    </tr>
-</table>
-</div>
-<div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px">
-    <tr>
-        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-    </tr><tr>
-        <td class="catbg center">
-            <input class="button" type="submit" value="$admin_txt{'10'} $honeypot{'save'}" />&nbsp;<input type="button" class="button" value="$admin_txt{'cancel'}" onclick="location.href='$adminurl?action=honeypot;honey_language=$FORM{'honey_language'}';" />
-        <input type="hidden" name="honey_language" value="$honey_language" />
-        </td>
-    </tr>
-</table>
-</div>
-</form>~;
+    <form action="$adminurl?action=honeypot_edit2" method="post" accept-charset="$yycharset">
+        <div class="bordercolor rightboxdiv">
+            <table class="border-space pad-cell" style="margin-bottom: .5em;">
+                <col style="width: 25%" />
+                <col style="width: 75%" />
+                <tr>
+                    <th class="titlebg" colspan="2">$admin_img{'prefimg'} $honeypot{'edit'}</th>
+                </tr><tr class="windowbg2 vtop bold;">
+                    <td><label for="hon_label">$honeypot{'label'}:</label></td>
+                    <td><input type="text" name="hon_label2" id="hon_label2" size="60" maxlength="50" value="$h_label" /><input type="hidden" name="hon_line" value="$aa" /></td>
+                </tr>
+            </table>
+        </div>
+        <div class="bordercolor rightboxdiv">
+            <table class="border-space pad-cell">
+                <tr>
+                    <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+                </tr><tr>
+                    <td class="catbg center">
+                        <input class="button" type="submit" value="$admin_txt{'10'} $honeypot{'save'}" />&nbsp;<input type="button" class="button" value="$admin_txt{'cancel'}" onclick="location.href='$adminurl?action=honeypot;honey_language=$FORM{'honey_language'}';" />
+                        <input type="hidden" name="honey_language" value="$honey_language" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>~;
 
     $yytitle = $honeypot{'labels'};
     AdminTemplate();

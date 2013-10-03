@@ -1,6 +1,6 @@
 ###############################################################################
 # BookmarkSettings.pm                                                         #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.03.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -127,7 +127,7 @@ sub Bookmarks {
     $yymain .= qq~
 <form action="$adminurl?action=bookmarks2" method="post">
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <colgroup>
             <col width="50%" />
             <col width="50%" />
@@ -151,7 +151,7 @@ sub Bookmarks {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <th class="titlebg" style="text-align: left; vertical-align: middle;" colspan="2">$admin_img{'prefimg'} $admin_txt{'10'}</th>
         </tr><tr>
@@ -161,7 +161,7 @@ sub Bookmarks {
 </div>
 </form>
 <div class="bordercolor  rightboxdiv">
-    <table class="pad_4px cs_thin" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <col style="width:10%" />
         <col style="width:auto" />
         <col style="width:10%" />
@@ -174,7 +174,7 @@ sub Bookmarks {
 </div>
 <form action="$adminurl?action=bookmarks_add" method="post" enctype="multipart/form-data">
 <div class="bordercolor  rightboxdiv">
-    <table class="pad_4px cs_thin" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <colgroup>
             <col width="50%" />
             <col width="50%" />
@@ -197,7 +197,7 @@ sub Bookmarks {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="pad_4px cs_thin">
+    <table classborder-space pad-cell">
         <tr>
             <th class="titlebg" colspan="2">$admin_img{'prefimg'} $admin_txt{'10'}</th>
         </tr><tr>
@@ -290,7 +290,7 @@ sub DeleteBookmark {
     }
     ( undef, undef, $bm_image, undef, undef ) = split /\|/xsm,
       $bm_delete;
-    
+
     unlink "$htmldir/Bookmarks/$bm_image";
 
     if ( $action eq 'bookmarks_delete' ) {
@@ -325,7 +325,7 @@ sub EditBookmark {
     $yymain .= qq~
 <form action="$adminurl?action=bookmarks_edit2" method="post" enctype="multipart/form-data">
 <div class="bordercolor rightboxdiv">
-    <table class="pad_4px cs_thin" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <colgroup>
             <col width="50%" />
             <col width="50%" />
@@ -352,7 +352,7 @@ sub EditBookmark {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="pad_4px cs_thin">
+    <table class="border-space pad-cell">
         <tr>
             <th class="titlebg" colspan="2">$admin_img{'prefimg'} $admin_txt{'10'}</th>
         </tr><tr>
@@ -384,10 +384,10 @@ sub EditBookmark2 {
     if ( $bm_url eq q{} ) { fatal_error( 'invalid_value', "$bookmark_txt{'14'}" ); }
     if ( $bm_order eq q{} ) {
         fatal_error( 'invalid_value', "$bookmark_txt{'03'}" );
-    }   
-    
+    }
+
     if ( $bm_image ne q{} ) {
-        $bm_image = UploadFile('bm_image', 'Bookmarks', 'png jpg jpeg gif', '250', '0'); 
+        $bm_image = UploadFile('bm_image', 'Bookmarks', 'png jpg jpeg gif', '250', '0');
         unlink "$htmldir/Bookmarks/$bm_cur_image";
     }
     else {

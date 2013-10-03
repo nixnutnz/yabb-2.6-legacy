@@ -1,6 +1,6 @@
 ###############################################################################
 # Settings_ExtendedProfiles.pm                                                #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.03.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Version:        YaBB 2.5.41                                                 #
@@ -301,7 +301,7 @@ sub ext_admin {
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">$admin_img{'profile'} <b>$lang_ext{'Profiles_Controls'}</b></td>
         </tr><tr>
@@ -310,14 +310,14 @@ sub ext_admin {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">$admin_img{'profile'} <b>$lang_ext{'edit_title'}</b></td>
         </tr><tr>
             <td class="windowbg2">$lang_ext{'edit_description'}</td>
         </tr><tr>
             <td class="windowbg2">
-                <table class="windowbg2 pad_3px">
+                <table class="windowbg2 pad-cell">
                     <col style="width:25%" span="4" />
                     <tr>
                         <td class="center">$lang_ext{'active'}</td>
@@ -348,7 +348,7 @@ sub ext_admin {
 
             $yymain .= qq~
                 <form action="$adminurl?action=ext_edit" method="post">
-                <table class="windowbg2 pad_3px">
+                <table class="windowbg2 pad-cell">
                     <col style="width:25%" span="4" />
                     <tr>
                         <td class="windowbg2 center">
@@ -389,15 +389,15 @@ sub ext_admin {
 </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
     <tr>
         <td class="titlebg">$admin_img{'profile'} <b>$lang_ext{'create_new_title'}</b></td>
     </tr><tr>
         <td class="windowbg2">$lang_ext{'create_new_description'}</td>
     </tr><tr>
         <td class="windowbg2">
-            <form action="$adminurl?action=ext_create" method="post">
-    <table class="pad_3px">
+            <form action="$adminurl?action=ext_create" method="Post">
+    <table class="pad-cell">
       <tr>
         <td class="windowbg2 center"><label for="name">$lang_ext{'field_name'}</label></td>
         <td class="windowbg2 center"><label for="type">$lang_ext{'field_type'}</label></td>
@@ -431,7 +431,7 @@ sub ext_admin {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
       <tr>
         <td class="titlebg">$admin_img{'profile'} <b>$lang_ext{'reorder_title'}</b></td>
     </tr><tr>
@@ -637,7 +637,7 @@ sub ext_admin_edit {
         $yymain .= qq~
 <form action="$adminurl?action=ext_edit2" method="post" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
     <tr>
         <td class="titlebg">$admin_img{'profile'} <b>$lang_ext{'options_title'}</b></td>
     </tr><tr>
@@ -655,7 +655,7 @@ sub ext_admin_edit {
         </td>
     </tr><tr>
         <td class="windowbg2">
-            <table class="bordercolor borderstyle cs_thin pad_6px">
+            <table class="bordercolor borderstyle border-space pad_6px">
 ~;
         if ( $field{'type'} eq 'text' ) {
             @options = split /\^/xsm, $field{'options'};
@@ -798,7 +798,7 @@ qq~<input name="required_on_reg" type="radio" value="1"$req2 /> $lang_ext{'req1'
 qq~<label for="visible_in_viewprofile">$lang_ext{'visible_in_viewprofile'}</label>~,
 qq~<label for="visible_in_viewprofile">$lang_ext{'visible_in_viewprofile_description'}</label>~,
 qq~<input name="visible_in_viewprofile" id="visible_in_viewprofile" type="checkbox" value="1"$v_check /><br />\n~
-              . qq~<table class="windowbg2 pad_4px">\n~
+              . qq~<table class="windowbg2 pad-cell">\n~
               . qq~  <tr><td><label for="v_users">$lang_ext{'v_users'}:</label> </td><td><input name="v_users" id="v_users" value="$field{'v_users'}" /></td></tr>\n~
               . qq~  <tr><td class="vtop"><label for="v_groups">$lang_ext{'v_groups'}:</label> </td><td>\n~
               . qq~    <select multiple="multiple" name="v_groups" id="v_groups" size="4">\n~
@@ -811,7 +811,7 @@ qq~<input name="visible_in_viewprofile" id="visible_in_viewprofile" type="checkb
 qq~<label for="visible_in_posts">$lang_ext{'visible_in_posts'}</label>~,
 qq~<label for="visible_in_posts">$lang_ext{'visible_in_posts_description'}</label>~,
 qq~<input name="visible_in_posts" id="visible_in_posts" type="checkbox" value="1"$p_check /><br />\n~
-              . qq~<table class="windowbg2 pad_4px">\n~
+              . qq~<table class="windowbg2 pad-cell">\n~
               . qq~  <tr><td><label for="p_displayfieldname">$lang_ext{'display_fieldname'}:</label> </td><td><input name="p_displayfieldname" id="p_displayfieldname" type="checkbox" value="1"$p_d_check /></td></tr>\n~
               . qq~  <tr><td><label for="p_users">$lang_ext{'p_users'}:</label> </td><td><input name="p_users" id="p_users" value="$field{'p_users'}" /></td></tr>\n~
               . qq~  <tr><td class="vtop"><label for="p_groups">$lang_ext{'p_groups'}:</label> </td><td>\n~
@@ -825,7 +825,7 @@ qq~<input name="visible_in_posts" id="visible_in_posts" type="checkbox" value="1
 qq~<label for="visible_in_posts_popup">$lang_ext{'visible_in_posts_popup'}</label>~,
 qq~<label for="visible_in_posts_popup">$lang_ext{'visible_in_posts_popup_description'}</label>~,
 qq~<input name="visible_in_posts_popup" id="visible_in_posts_popup" type="checkbox" value="1"$pp_check /><br />\n~
-              . qq~<table class="windowbg2 pad_4px">\n~
+              . qq~<table class="windowbg2 pad-cell">\n~
               . qq~  <tr><td><label for="pp_displayfieldname">$lang_ext{'display_fieldname'}:</label> </td><td><input name="pp_displayfieldname" id="pp_displayfieldname" type="checkbox" value="1"$pp_d_check /></td></tr>\n~
               . qq~  <tr><td><label for="pp_users">$lang_ext{'p_users'}:</label> </td><td><input name="pp_users" id="pp_users" value="$field{'pp_users'}" /></td></tr>\n~
               . qq~  <tr><td class="vtop"><label for="pp_groups">$lang_ext{'p_groups'}:</label> </td><td>\n~
@@ -839,7 +839,7 @@ qq~<input name="visible_in_posts_popup" id="visible_in_posts_popup" type="checkb
 qq~<label for="visible_in_memberlist">$lang_ext{'visible_in_memberlist'}</label>~,
 qq~<label for="visible_in_memberlist">$lang_ext{'visible_in_memberlist_description'}</label>~,
 qq~<input name="visible_in_memberlist" id="visible_in_memberlist" type="checkbox" value="1"$m_check /><br />\n~
-              . qq~<table class="windowbg2 pad_4px">\n~
+              . qq~<table class="windowbg2 pad-cell">\n~
               . qq~  <tr><td><label for="m_users">$lang_ext{'m_users'}:</label> </td><td><input name="m_users" id="m_users" value="$field{'m_users'}" /></td></tr>\n~
               . qq~  <tr><td class="vtop"><label for="m_groups">$lang_ext{'m_groups'}:</label> </td><td>\n~
               . qq~    <select multiple="multiple" name="m_groups" id="m_groups" size="4">\n~
@@ -880,7 +880,7 @@ qq~\n                <select name="editable_by_user" id="editable_by_user" size=
 </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px">
+<table class="border-space pad-cell">
     <tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
     </tr><tr>

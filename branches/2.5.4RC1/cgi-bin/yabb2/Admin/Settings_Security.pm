@@ -1,6 +1,6 @@
 ###############################################################################
 # Settings_Security.pm                                                        #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.03.13                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -25,10 +25,10 @@ if ( -e "$vardir/iplookup.urls" ) {
     while (<IPLOOKUP>) {
         chomp;
         $iplookup_urls .= qq~$_\n~;
-		if ( $iplookup_urls !~ /&(.*amp;)/gsm ) {
-			$iplookup_urls =~ s/&/&amp;/gxsm;
-		}
-	}
+        if ( $iplookup_urls !~ /&(.*amp;)/gsm ) {
+            $iplookup_urls =~ s/&/&amp;/gxsm;
+        }
+    }
     fclose(IPLOOKUP);
 }
 
@@ -234,7 +234,7 @@ qq~<input type="text" name="rgb_shade" id="rgb_shade" maxlength="7" size="7" val
                   qq~<label for="rgb_background">$floodtxt{'b'}</label>~,
                 input_html =>
 qq~<input type="text" name="rgb_background" id="rgb_background" maxlength="7" size="7" value="$rgb_background" onkeyup="previewColor_1(this.value);" /> <span id="rgb_background2" style="background-color:$rgb_background">&nbsp; &nbsp; &nbsp;</span> <img src="$defaultimagesdir/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ_1', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
-            <script language="JavaScript1.2" type="text/javascript">
+            <script type="text/javascript">
             <!--
             function previewColor_1(color1) {
                 document.getElementById('rgb_background2').style.background = color1;
@@ -278,7 +278,7 @@ qq~<select name="randomizer" id="randomizer" size="1"> <option value="0"${issele
             {
                 description => $floodtxt{'vpreview'},
                 input_html =>
-                  qq~<div class="windowbg padd_5px">$showcheck</div>~,
+                  qq~<div class="windowbg2 padd-cell">$showcheck</div>~,
             },
         ],
     },

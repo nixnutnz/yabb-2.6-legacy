@@ -1,6 +1,6 @@
 ###############################################################################
 # Settings_Advanced.pm                                                        #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.03.13                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -19,16 +19,16 @@ our $VERSION = '2.5.41';
 $settings_advancedpmver = 'YaBB 2.5.4 RC1 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
-my $uploaddiriscorrect = qq~<span class="red">$admin_txt{'164'}</span>~;
+my $uploaddiriscorrect = qq~<span class="important">$admin_txt{'164'}</span>~;
 if ( -w $uploaddir && -d $uploaddir ) {
     $uploaddiriscorrect =
-      qq~<span style="color: green;">$admin_txt{'163'}</span>~;
+      qq~<span class="good">$admin_txt{'163'}</span>~;
 }
 
-my $pmUploadDirIsCorrect = qq~<span class="red">$admin_txt{'164'}</span>~;
+my $pmUploadDirIsCorrect = qq~<span class="important">$admin_txt{'164'}</span>~;
 if ( -w $pmuploaddir && -d $pmuploaddir ) {
     $pmUploadDirIsCorrect =
-      qq~<span style="color: green;">$admin_txt{'163'}</span>~;
+      qq~<span class="good">$admin_txt{'163'}</span>~;
 }
 
 require Admin::ManageBoards;
@@ -647,7 +647,7 @@ qq~<input type="text" name="OnlineLogTime" id="OnlineLogTime" size="5" value="$O
                 description =>
                   qq~<label for="lastonlineinlink">$amv_txt{'25'}</label>~,
                 input_html =>
-qq~<input type="checkbox" name="lastonlineinlink" id="lastonlineinlink" size="5" value="1" ${ischecked($lastonlineinlink)}/>~,
+qq~<input type="checkbox" name="lastonlineinlink" id="lastonlineinlink" P="1" ${ischecked($lastonlineinlink)}/>~,
                 name     => 'lastonlineinlink',
                 validate => 'boolean',
             },

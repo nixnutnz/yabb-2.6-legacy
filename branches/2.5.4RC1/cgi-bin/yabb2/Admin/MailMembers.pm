@@ -1,6 +1,6 @@
 ###############################################################################
 # MailMembers.pm                                                              #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.03.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -29,28 +29,28 @@ sub Mailing {
     if ($iamguest) { fatal_error('no_access'); }
     $yymain .= qq~
 <div class="rightboxdiv">
-    <table class="bordercolor cs_thin pad_3px">
-    <tr>
+    <table class="bordercolor border-space pad-cell">
+        <tr>
             <td class="titlebg">
                 $admin_img{'register'}<b> $admintxt{'19'}</b>
                 <form action="$adminurl?action=mailinggrps" method="post" name="mailgrps" style="display: inline;" accept-charset="$yycharset">
-        <span style="float: right;">
-            <input type="submit" value="$amv_txt{'53'}" class="button" />
-        </span>
-        </form>
-        </td>
-    </tr>
+                    <span style="float: right;">
+                    <input type="submit" value="$amv_txt{'53'}" class="button" />
+                    </span>
+                </form>
+            </td>
+        </tr>
     </table>
     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
     <form name="adv_membermail" action="$adminurl?action=mailing2" method="post" style="display: inline;" onsubmit="return checkIfSelected(); return submitproc();" accept-charset="$yycharset">
         <div class="windowbg2 border">
-            <div class="windowbg2 border h_260px" style="float: left; width: 44%; margin: 1%;">
-                <table class="windowbg2 pad_3px w_98pc">
+            <div class="windowbg2 border" style="float: left; width: 44%; margin: 1%; height:260px">
+                <table class="windowbg2 pad-cell" style="width: 98%">
                     <tr>
                         <td><label for="field1"><b>$amv_txt{'40'}:</b><br /><span class="small">$amv_txt{'46'}</span></label></td>
                     </tr><tr>
                         <td>
-    ~;
+~;
     my $grpselect;
     my $groupcnt = 0;
     foreach ( sort { $a cmp $b } keys %Group ) {
@@ -72,20 +72,20 @@ sub Mailing {
     }
     if ( $groupcnt > 12 ) { $groupcnt = 12; }
     $yymain .= qq~
-    <select name="field1" id="field1" size="$groupcnt" multiple="multiple" style="width: 100%; font-size: 11px;">
-    $grpselect
-    </select>
-    <label for="check_all"><b>$amv_txt{"42a"}: </b></label><input type="checkbox" name="check_all" id="check_all" value="1" class="windowbg2" style="border: 0; vertical-align: middle;" onclick="javascript: if (this.checked) selectCheckAll(true); else selectCheckAll(false);" />
-    </td>
-    </tr>
-    </table>
-</div>
-    ~;
+                            <select name="field1" id="field1" size="$groupcnt" multiple="multiple" style="width: 100%; font-size: 11px;">
+                            $grpselect
+                            </select>
+                            <label for="check_all"><b>$amv_txt{"42a"}: </b></label><input type="checkbox" name="check_all" id="check_all" value="1" class="windowbg2" style="border: 0; vertical-align: middle;" onclick="javascript: if (this.checked) selectCheckAll(true); else selectCheckAll(false);" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+~;
 
     if ( $groupcnt != 0 ) {
         $yymain .= qq~
-<div class="windowbg2 border h_260px" style="float: left; width: 50%; margin: 1%;">
-    <table class="windowbg2 pad_3px w_98pc">
+<div class="windowbg2 border" style="float: left; width: 50%; margin: 1%; height:260px">
+    <table class="windowbg2 pad-cell" style="width: 98%">
         <tr>
             <td><label for="emailsubject"><b>$amv_txt{'1'}:</b></label></td>
         </tr><tr>
@@ -101,37 +101,37 @@ sub Mailing {
         <input type="hidden" name="reused" value="$reused" />
 </div>
 <div class="windowbg2" style="float: left; width: 44%; margin: 0 1%; border: 0;">
-    <table class="windowbg2 pad_3px w_98pc">
-    <tr>
+    <table class="windowbg2 pad-cell" style="width: 98%">
+        <tr>
             <td class="windowbg2 vtop"><b>$amv_txt{'49'}:</b></td>
-    </tr>
+        </tr>
     </table>
 </div>
 <div class="windowbg2" style="float: left; width: 50%; margin: 0 1%; border: 0;">
-    <table class="windowbg2 pad_3px w_98pc">
-    <tr>
+    <table class="windowbg2 pad-cell" style="width: 98%">
+        <tr>
             <td class="windowbg2 vtop"><b>$amv_txt{'47'}:</b></td>
-    </tr>
+        </tr>
     </table>
 </div>
-<div class="windowbg2 border h_145px" style="float: left; width: 44%; margin: 1%; ">
-    <table class="windowbg2 pad_3px w_98pc">
-    <tr>
+<div class="windowbg2 border" style="float: left; width: 44%; margin: 1%; height:145px">
+    <table class="windowbg2 pad-cell" style="width: 98%">
+        <tr>
             <td class="windowbg2 vtop">
-        <span class="small">$amv_txt{'50'}</span>
-    </td>
+                <span class="small">$amv_txt{'50'}</span>
+            </td>
         </tr><tr>
             <td class="windowbg2 center vtop">
-        <input type="submit" name="convert" value="$amv_txt{'49'}" style="width: 100%;" class="button" />
-    </td>
-    </tr>~;
+                <input type="submit" name="convert" value="$amv_txt{'49'}" style="width: 100%;" class="button" />
+            </td>
+        </tr>~;
 
         if ( -e "$vardir/yabbaddress.csv" ) {
             $yymain .= qq~<tr>
             <td class="windowbg2 center vtop">
-        <input type="button" value="$amv_txt{'51'}" class="button" onclick="MailListWin('$adminurl?action=mailing3');" />
-    </td>
-    </tr>~;
+                <input type="button" value="$amv_txt{'51'}" class="button" onclick="MailListWin('$adminurl?action=mailing3');" />
+            </td>
+        </tr>~;
         }
 
         $yymain .= q~
@@ -147,15 +147,16 @@ sub Mailing {
     }
 // -->
 </script>
-<div class="windowbg2 border h_145px" style="float: left; width: 50%; margin: 1%; overflow: auto;">
+<div class="windowbg2 border" style="float: left; width: 50%; margin: 1%; overflow: auto; height:145px">
     ~;
         if ( -e ("$vardir/maillist.dat") ) {
             fopen( FILE, "$vardir/maillist.dat" );
             @maillist = <FILE>;
             fclose(FILE);
             $yymain .= q~
-    <table class="windowbg2 pad_3px w_98pc">
-        ~;
+        <table class="windowbg2 pad-cell" style="width: 98%">
+            <col span="4" style="width:auto" />
+~;
             foreach my $curmail (@maillist) {
                 chomp $curmail;
                 ( $otime, $osubject, $otext, $osender ) = split /\|/xsm,
@@ -178,6 +179,7 @@ sub Mailing {
             </tr>~;
             }
             $yymain .= q~
+            <tr><td class="windowbg2 small" colspan="4">&nbsp;</td></tr>
         </table>
         ~;
         }
@@ -323,7 +325,7 @@ sub MailingMembers {
     if ($iamguest) { fatal_error('no_access'); }
     $yymain .= qq~
 <div class="rightboxdiv">
-    <table class="bordercolor cs_thin pad_3px">
+    <table class="bordercolor border-space pad-cell">
     <tr>
             <td class="titlebg">
         <span style="float: left;">
@@ -346,10 +348,9 @@ sub MailingMembers {
     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
     <form name="adv_membermail" action="$adminurl?action=mailmultimembers;$sortmode" method="post" style="display: inline" onsubmit="return checkIfChecked(this); return submitproc()" accept-charset="$yycharset">
     <input type="hidden" name="button" value="1" />
-
     <div class="windowbg2 border">
-        <div class="windowbg h_260px border" style="float: left; width: 44%; margin: 1%; overflow: auto;">
-            <table class="windowbg pad_3px w_98pc">
+        <div class="windowbg border" style="float: left; width: 44%; margin: 1%; overflow: auto; height:260px">
+            <table class="windowbg pad-cell" style="width:98%">
     ~;
 
     %TopMembers = ();
@@ -513,8 +514,8 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
         $grp_data .= q~""~;
 
         $yymain .= qq~
-    <div class="windowbg2 h_260px border padd_4px" style="float: left; width: 50%; margin: 1%;">
-        <table class="windowbg2 pad_2px">
+    <div class="windowbg2 border padd-cell" style="float: left; width: 50%; margin: 1%; height:260px">
+        <table class="windowbg2 pad-cell">
         <tr>
                <td><label for="emailsubject"><b>$amv_txt{'1'}:</b></label></td>
             </tr><tr>
@@ -531,8 +532,8 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
     </div>
 
     <div class="windowbg2" style="float: left; width: 44%; margin: 0 1% 1% 1%; border: 0;">
-        <table class="windowbg2 pad_3px">
-    <tr>
+        <table class="windowbg2 pad-cell">
+        <tr>
             <td class="windowbg2 vtop" style="white-space: nowrap;"><label for="check_all"><b>$amv_txt{'42'}:</b></label></td>
             <td class="windowbg2 vtop"><input type="checkbox" name="check_all" id="check_all" value="1" class="windowbg2" style="border: 0;" onclick="javascript: if (this.checked) selectCheckAllmemb(true); else selectCheckAllmemb(false);" /></td>
         </tr><tr>
@@ -555,20 +556,21 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
     </table>
     </div>
     <div class="windowbg2" style="float: left; width: 50%; margin: 0 1%; border: 0;">
-        <table class="windowbg2 pad_3px">
-    <tr>
+        <table class="windowbg2 pad-cell">
+            <tr>
                 <td class="windowbg2 vtop"><b>$amv_txt{'47'}:</b></td>
-    </tr>
+            </tr>
     </table>
     </div>
-    <div class="windowbg2 h_115px border" style="float: left; width: 50%; margin: 1%; overflow: auto;">
+    <div class="windowbg2 border" style="float: left; width: 50%; margin: 1%; overflow: auto; height:115px">
     ~;
         if ( -e ("$vardir/maillist.dat") ) {
             fopen( FILE, "$vardir/maillist.dat" );
             @maillist = <FILE>;
             fclose(FILE);
             $yymain .= q~
-        <table class="windowbg2 pad_3px w_98pc">
+        <table class="windowbg2 pad-cell" style="width: 98%">
+            <col span="4" style="width:auto" />
         ~;
             foreach my $curmail (@maillist) {
                 chomp $curmail;
@@ -592,6 +594,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
             </tr>~;
             }
             $yymain .= q~
+            <tr><td class="windowbg2 small" colspan="4">&nbsp;</td></tr>
         </table>
         ~;
         }
@@ -599,21 +602,19 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
     </div>
     <div class="windowbg2" style="float: left; width: 44%; margin: 0 1% 1% 1%; border: 0;">
         <table>
-    <tr>
-                <td class="center">
-        &nbsp;
-    </td>
-    </tr>
+            <tr>
+                <td class="center">&nbsp;</td>
+            </tr>
     </table>
     </div>
     <div class="windowbg2" style="float: left; width: 50%; margin: 0 1% 1% 1%; border: 0;">
         <table>
-    <tr>
+            <tr>
                 <td class="center">
-        <input type="submit" name="mailsend" value="$amv_txt{'41'}" style="width: 100%;" class="button" />
-    </td>
-    </tr>
-    </table>
+                    <input type="submit" name="mailsend" value="$amv_txt{'41'}" style="width: 100%;" class="button" />
+                </td>
+            </tr>
+        </table>
     </div>
     <div style="clear: both;"></div>
 </div>

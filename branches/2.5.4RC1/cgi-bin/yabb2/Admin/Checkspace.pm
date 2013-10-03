@@ -1,6 +1,6 @@
 ###############################################################################
 # Checkspace.pm                                                               #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.03.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -216,11 +216,11 @@ sub chsettings {
 
     $yymain .= qq~
     <div class="bordercolor rightboxdiv">
-        <table class="cs_thin pad_4px" style="margin-bottom:.5em">
+        <table class="border-space pad-cell" style="margin-bottom:.5em">
             <tr>
                 <td class="titlebg"><b>$yytitle</b></td>
             </tr><tr>
-                <td class="windowbg2 padd_8_12px">$admin_txt{'347'} </td>
+                <td class="windowbg2"><div class="pad-more">$admin_txt{'347'}</div></td>
             </tr>
         </table>
   </div>
@@ -229,10 +229,10 @@ sub chsettings {
     foreach my $tab (@settings) {
         $yymain .= qq~
     <div class="bordercolor rightboxdiv">
-        <table class="section" style="border-collapse:separate; border-spacing: 1px; margin-bottom:.5em" id="tab_$tab->{'id'}">
-            <col class=" w_50pc" />
+        <table class="section border-space pad-cell" style="margin-bottom:.5em" id="tab_$tab->{'id'}">
+            <col span="2" style="width:50%" />
             <tr>
-                <td class="titlebg padd_4px" colspan="2">
+                <td class="titlebg" colspan="2">
                     $admin_img{'prefimg'} <b>$tab->{'name'}</b>
                 </td>
            </tr>~;
@@ -240,28 +240,28 @@ sub chsettings {
         foreach my $item ( @{ $tab->{'items'} } ) {
             if ( $item->{'header'} ) {
                 $yymain .= qq~<tr>
-                <td class="catbg padd_4px" colspan="2">
+                <td class="catbg" colspan="2">
                     <span class="small">$item->{'header'}</span>
                 </td>
             </tr>~;
             }
             elsif ( $item->{'two_rows'} && $item->{'input_html'} ) {
                 $yymain .= qq~<tr>
-                <td class="windowbg2 padd_4px" colspan="2">
+                <td class="windowbg2" colspan="2">
          $item->{'description'}
        </td>
             </tr><tr>
-                <td class="windowbg2 padd_4px" colspan="2">
+                <td class="windowbg2" colspan="2">
          $item->{'input_html'}
        </td>
      </tr>~;
             }
             elsif ( $item->{'input_html'} ) {
                 $yymain .= qq~<tr>
-                <td class="windowbg2 vtop padd_4px">
+                <td class="windowbg2 vtop">
          $item->{'description'}
        </td>
-                <td class="windowbg2 vtop padd_4px">
+                <td class="windowbg2 vtop">
          $item->{'input_html'}
        </td>
      </tr>~;
@@ -347,13 +347,13 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
     $default_tab = $INFO{'tab'} || $settings[0]->{'id'};
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="border-space pad-cell">
         <tr>
             <td class="titlebg" colspan="2">
                 $admin_img{'prefimg'} <b>$admin_txt{'10'}</b>
        </td>
         </tr><tr>
-            <td class="catbg center pad_4px" colspan="2">
+            <td class="catbg center pad-cell" colspan="2">
          <input class="button" type="submit" value="$admin_txt{'10'}" />
        </td>
      </tr>

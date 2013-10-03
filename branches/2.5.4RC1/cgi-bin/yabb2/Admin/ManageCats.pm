@@ -1,6 +1,6 @@
 ###############################################################################
 # ManageCats.pm                                                               #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.03.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -71,14 +71,16 @@ sub AddCats {
     $yymain .= qq~
 <form action="$adminurl?action=addcat2" method="post" enctype="multipart/form-data" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 $admin_img{'cat_img'}
                 <b>$admin_txt{'3'}</b>
             </td>
         </tr><tr>
-            <td class="windowbg2 padd_8_12px">$admin_txt{'43'}</td>
+            <td class="windowbg2">
+                <div class="pad-more">$admin_txt{'43'}</div>
+            </td>
         </tr>
     </table>
 </div>
@@ -122,7 +124,7 @@ sub AddCats {
         $catperms = DrawPerms( $catperms, 0 );
        $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg" colspan="4"><b>$cattext</b></td>
         </tr><tr>
@@ -133,42 +135,54 @@ sub AddCats {
         if ( $INFO{'action'} eq 'catscreen' ) {
             $yymain .= qq~
             <td class="windowbg"><b>$admin_txt{'61a'}</b></td>
-            <td class="windowbg2 padd_8_12px"><input type="hidden" name="theid$i" id="theid$i" value="$id" />$id~;
+            <td class="windowbg2">
+                <div class="pad-more"><input type="hidden" name="theid$i" id="theid$i" value="$id" />$id~;
         }
         else {
             $yymain .= qq~
             <td class="windowbg"><label for="theid$i"><b>$admin_txt{'61a'}</b><br />$admin_txt{'61b'}</label></td>
-            <td class="windowbg2 padd_8_12px"><input type="text" name="theid$i" id="theid$i" value="$id" />~;
+            <td class="windowbg2">
+                <div class="pad-more"><input type="text" name="theid$i" id="theid$i" value="$id" />~;
         }
         $yymain .= qq~
+                </div>
             </td>
             <td class="windowbg2 center" rowspan="4"><select multiple="multiple" name="catperms$i" id="catperms$i" size="5">$catperms</select><br /><label for="catperms$i"><span class="small">$admin_txt{'14'}</span></label></td>
             <td class="windowbg2 center" rowspan="4"><input type="checkbox" $allowChecked name="allowcol$i" id="allowcol$i" /></td>
         </tr><tr>
             <td class="windowbg"><label for="name$i"><b>$admin_txt{'68'}:</b></label></td>
-            <td class="windowbg2 padd_8_12px"><input type="text" name="name$i" id="name$i" value="$curcatname" size="40" /></td>
+            <td class="windowbg2">
+                <div class="pad-more"><input type="text" name="name$i" id="name$i" value="$curcatname" size="40" /></div>
+            </td>
         </tr><tr>
             <td class="windowbg"><label for="catimage$i"><b>$admin_txt{'64b2'}:</b><br /><span class="small">$admin_txt{'64b3'}</span></label></td>
-            <td class="windowbg2 padd_8_12px"><br /><input type="file" name="catimage$i" id="catimage$i" size="35" /><input type="hidden" name="cur_catimage$i" value="$catimage" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('catimage$i').value='';">X</span>~ . ($catimage ? qq~<br /><img src="$imagesdir/$catimage" alt="" />~ : q{}) . qq~$catimage_value</td>
+            <td class="windowbg2">
+                <div class="pad-more">
+                    <input type="file" name="catimage$i" id="catimage$i" size="35" />
+                    <input type="hidden" name="cur_catimage$i" value="$catimage" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('catimage$i').value='';">X</span>~ . ($catimage ? qq~<br /><img src="$imagesdir/$catimage" alt="" />~ : q{}) . qq~$catimage_value
+                </div>
+            </td>
         </tr><tr>
             <td class="windowbg"><label for="catrss$i"><b>$admin_txt{'brdrss1'}:</b></label></td>
-            <td class="windowbg2 padd_8_12px"><br /><input type="checkbox" name="catrss$i" id="catrss$i"$catrssch /> <label for="catrss$i"><span class="small">$admin_txt{'brdrss2'}</span></label></td>
+            <td class="windowbg2">
+                <div class="pad-more"><input type="checkbox" name="catrss$i" id="catrss$i"$catrssch /> <label for="catrss$i"><span class="small">$admin_txt{'brdrss2'}</span></label></div>
+            </td>
         </tr>
     </table>
 </div>~;
     }
     $yymain .= qq~<div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px">
-    <tr>
-        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-    </tr><tr>
-        <td class="catbg center">
-            <input type="hidden" name="amount" value="$FORM{"amount"}" />
-            <input type="hidden" name="screenornot" value="$INFO{'action'}" />
-            <input type="submit" value="$admin_txt{'10'}" class="button" />
-        </td>
-    </tr>
-</table>
+    <table class="border-space pad-cell">
+        <tr>
+            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+        </tr><tr>
+            <td class="catbg center">
+                <input type="hidden" name="amount" value="$FORM{"amount"}" />
+                <input type="hidden" name="screenornot" value="$INFO{'action'}" />
+                <input type="submit" value="$admin_txt{'10'}" class="button" />
+            </td>
+        </tr>
+    </table>
 </div>
 </form>~;
 
@@ -184,15 +198,15 @@ sub AddCats2 {
 
     for my $i ( 0 .. ( $FORM{'amount'} - 1 ) ) {
         if ( $FORM{"catimage$i"} ne q{} ) {
-            $FORM{"catimage$i"} = UploadFile("catimage$i", 'Templates/Forum/default', 'png jpg jpeg gif', '250', '0'); 
+            $FORM{"catimage$i"} = UploadFile("catimage$i", 'Templates/Forum/default', 'png jpg jpeg gif', '250', '0');
             if ( $FORM{"cur_catimage$i"} ne q{} ) {
                 unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_catimage$i\"}";
             }
-            }
+        }
         else {
             $FORM{"catimage$i"} = $FORM{"cur_catimage$i"};
         }
-        
+
         if ( $FORM{"cur_catimage$i"} ne q{} && $FORM{"del_catimage$i"} ) {
             unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_catimage$i\"}";
             $FORM{"catimage$i"} = q{};
@@ -258,7 +272,7 @@ qq~<option value="$category" selected="selected">$categoryname</option>~;
     $yymain .= qq~
 <br /><br />
 <form action="$adminurl?action=reordercats2" method="post" accept-charset="$yycharset">
-    <table class="bordercolor cs_thin pad_4px" style="width:525px">
+    <table class="bordercolor border-space pad-cell" style="width:525px">
         <tr>
             <td class="titlebg">$admin_img{'board'} <b>$admin_txt{'829'}</b></td>
         </tr><tr>

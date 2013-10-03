@@ -1,6 +1,6 @@
 ###############################################################################
 # Maintenance.pm                                                              #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.03.13                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -318,7 +318,7 @@ sub RebuildMessageIndexText {
     <script type="text/javascript">
      <!--
         function PleaseWait() {
-            document.getElementById("memcontinued").innerHTML = '<span class="red"><b>$admin_txt{'545'}</b></span><br />&nbsp;<br />&nbsp;';
+            document.getElementById("memcontinued").innerHTML = '<span class="important"><b>$admin_txt{'545'}</b></span><br />&nbsp;<br />&nbsp;';
         }
 
         function stoptick() { stop = 1; }

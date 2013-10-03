@@ -1,6 +1,6 @@
 ###############################################################################
 # Smilies.pm                                                                  #
-# $Date: 9.06.13 $                                                            #
+# $Date: 10.03.13                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -65,12 +65,12 @@ sub SmiliePanel {
     $yymain .= qq~
 <form action="$adminurl?action=addsmilies" method="post" enctype="multipart/form-data" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-  <col class="w_5pc" />
-  <col span="3" class="w_20pc" />
-  <col class="w_15pc" />
-  <col class="w_10pc" />
-  <col span="2" class="w_5pc" />
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
+  <col style="width: 5%" />
+  <col span="3" style="width: 20%" />
+  <col style="width: 15%" />
+  <col style="width: 10%" />
+  <col span="2" style="width: 5%" />
   <tr>
     <td class="titlebg" colspan="8" style="height:22px">&nbsp;<img src="$imagesdir/grin.gif" alt="" /><b>&nbsp;$smiltxt{'3'}</b><br /></td>
   </tr><tr>
@@ -129,12 +129,12 @@ sub SmiliePanel {
         <!--
         function previewColor(color) {
             color = color.replace(/#/, '');
-            document.getElementById('popback_color').style.background = '#' + color; 
+            document.getElementById('popback_color').style.background = '#' + color;
             document.getElementsByName("popback")[0].value = color;
         }
         //-->
         </script>
-      </td> 
+      </td>
   </tr><tr>
     <td class="windowbg2" colspan="4"><label for="poptext">$smiltxt{'19'}</label></td>
     <td class="windowbg2" colspan="4">
@@ -144,12 +144,12 @@ sub SmiliePanel {
         <!--
         function previewColor_0(color) {
             color = color.replace(/#/, '');
-            document.getElementById('poptext_color').style.background = '#' + color; 
+            document.getElementById('poptext_color').style.background = '#' + color;
             document.getElementsByName("poptext")[0].value = color;
         }
         //-->
         </script>
-    </td> 
+    </td>
   </tr><tr>
       <td class="titlebg" colspan="8">&nbsp;<img src="$imagesdir/grin.gif" alt="" /><b>&nbsp;$asmtxt{'11'}</b></td>
   </tr><tr>
@@ -205,7 +205,7 @@ qq~<a href="$adminurl?action=smiliemove;index=$i;movedown=1"><img src="$imagesdi
     <td class="windowbg2 center">$up $down</td>
   </tr>~;
         $i++;
-        $add_smiley++;        
+        $add_smiley++;
     }
     my $added_smilies = $i;
     $yymain .= qq~<tr>
@@ -235,8 +235,8 @@ qq~<a href="$adminurl?action=smiliemove;index=$i;movedown=1"><img src="$imagesdi
         <img src="$imagesdir/cat_collapse.png" alt="$smiltxt{'26'}" title="$smiltxt{'26'}" class="cursor" style="visibility: visible;" id="col_smiley$i" onclick="removeSmilies($i);" />
     </td>
   </tr>~;
-}            
-            $yymain .= qq~<tr>
+}
+    $yymain .= qq~<tr>
     <td class="titlebg" colspan="8">&nbsp;<img src="$imagesdir/grin.gif" alt="" /><b>&nbsp;$smiltxt{'2'}</b></td>
   </tr><tr>
     <td class="catbg center small">$smiltxt{'22'}</td>
@@ -248,7 +248,7 @@ qq~<a href="$adminurl?action=smiliemove;index=$i;movedown=1"><img src="$imagesdi
 </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px">
+<table class="border-space pad-cell">
     <tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
     </tr><tr>
@@ -267,35 +267,35 @@ function addSmilies(addsm_id) {
     var cursm_id = addsm_id - 1;
     var sm_count = $i;
     document.getElementById('add_smilies' + addsm_id).style.display = 'table-row';
-    document.getElementById('add_smiley' + cursm_id).style.visibility = 'hidden'; 
+    document.getElementById('add_smiley' + cursm_id).style.visibility = 'hidden';
     if (addsm_id != sm_added) {
-        document.getElementById('col_smiley' + cursm_id).style.visibility =' hidden'; 
+        document.getElementById('col_smiley' + cursm_id).style.visibility =' hidden';
     }
     if (addsm_id == sm_count) {
-        document.getElementById('add_smiley' + sm_count).style.visibility = 'hidden'; 
-    } 
+        document.getElementById('add_smiley' + sm_count).style.visibility = 'hidden';
+    }
 }
 function removeSmilies(remsm_id) {
     var prevsm_id = remsm_id - 1
-    document.getElementById('add_smilies' + remsm_id).style.display = 'none'; 
+    document.getElementById('add_smilies' + remsm_id).style.display = 'none';
     document.getElementById('add_smiley' + prevsm_id).style.visibility = 'visible';
     if (remsm_id != sm_added) {
-        document.getElementById('col_smiley' + prevsm_id).style.visibility = 'visible'; 
+        document.getElementById('col_smiley' + prevsm_id).style.visibility = 'visible';
     }
     sm_elements = ["scd","smimg","sdescr"];
     for (var i=0; i<sm_elements.length; i++) {
         document.getElementById(sm_elements[i] + '[' + remsm_id + ']').value = '';
     }
-    document.getElementById('smbox[' + remsm_id + ']').checked = false; 
+    document.getElementById('smbox[' + remsm_id + ']').checked = false;
 }
 //-->
 </script>
 </form>
 ~;
 
-            $yytitle     = "$asmtxt{'01'}";
-            $action_area = 'smilies';
-            AdminTemplate();
+    $yytitle     = "$asmtxt{'01'}";
+    $action_area = 'smilies';
+    AdminTemplate();
 
     return;
 }
@@ -333,9 +333,9 @@ sub AddSmilies {
             if ( $FORM{"smimg[$temp_a]"} eq q{} && $FORM{"cur_smimg[$temp_a]"} eq q{} ) { fatal_error(q{}, $smiltxt{'error_image'}); }
             if ( $FORM{"sdescr[$temp_a]"} eq q{} ) { fatal_error('', $smiltxt{'error_desc'}); }
         }
-        if ( $FORM{"delbox[$temp_a]"} != 1 && $FORM{"sdescr[$temp_a]"} ne q{} && ( $FORM{"smimg[$temp_a]"} ne q{} || $FORM{"cur_smimg[$temp_a]"} ne q{} ) ) {   
+        if ( $FORM{"delbox[$temp_a]"} != 1 && $FORM{"sdescr[$temp_a]"} ne q{} && ( $FORM{"smimg[$temp_a]"} ne q{} || $FORM{"cur_smimg[$temp_a]"} ne q{} ) ) {
             if ( $FORM{"smimg[$temp_a]"} ne q{} ) {
-                $FORM{"smimg[$temp_a]"} = UploadFile("smimg[$temp_a]", 'Templates/Forum/default', 'png jpg jpeg gif', '100', '0'); 
+                $FORM{"smimg[$temp_a]"} = UploadFile("smimg[$temp_a]", 'Templates/Forum/default', 'png jpg jpeg gif', '100', '0');
             }
             else {
                 $FORM{"smimg[$temp_a]"} = $FORM{"cur_smimg[$temp_a]"};
@@ -355,7 +355,7 @@ sub AddSmilies {
             push @SmilieLinebreak, ( $FORM{"smbox[$temp_a]"} ? '<br />' : q{} );
         }
         if ( $FORM{"delbox[$temp_a]"} == 1 && $FORM{"cur_smimg[$temp_a]"} !~ /^(exclamation|question).png$/) {
-            unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_smimg[$temp_a]\"}"; 
+            unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_smimg[$temp_a]\"}";
         }
         ++$temp_a;
     }

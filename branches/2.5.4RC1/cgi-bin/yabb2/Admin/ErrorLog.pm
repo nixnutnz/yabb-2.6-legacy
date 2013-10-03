@@ -1,6 +1,6 @@
 ###############################################################################
 # ErrorLog.pm                                                                 #
-# $Date: 9.16.13 $                                                            #
+# $Date: 10.03.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -120,7 +120,7 @@ function uncheckAll() {
 <form name="errorlog_form" action="$adminurl?action=deleteerror;$sortmode$sortorder" method="post" onsubmit="return submitproc()">
 <input type="hidden" name="button" value="4" />
     <div class="bordercolor rightboxdiv">
-        <table class="cs_thin pad_4px" style="margin-bottom:.5em">
+        <table class="border-space pad-cell" style="margin-bottom:.5em">
             <col style="width:5%" />
             <col style="width:10%" />
             <col style="width:15%" />
@@ -129,15 +129,15 @@ function uncheckAll() {
             <tr>
                 <td class="titlebg" colspan="5">$admin_img{'xx'} <b>$yytitle</b></td>
             </tr><tr>
-                <td class="windowbg2 padd_8_12px" colspan="5">$errorlog{'18'}</td>
+                <td class="windowbg2" colspan="5"><div class="pad-more">$errorlog{'18'}</div></td>
             </tr><tr>
                 <td class="catbg center"><b>$errorlog{'21'}</b></td>
                 <td class="catbg center">
-					<a href="$adminurl?action=errorlog$startmode;sort=time$order_time"><b>$errorlog{'5'}</b></a>
-				</td>
+                    <a href="$adminurl?action=errorlog$startmode;sort=time$order_time"><b>$errorlog{'5'}</b></a>
+                </td>
                 <td class="catbg center">
-					<a href="$adminurl?action=errorlog$startmode;sort=users$order_users"><b>$errorlog{'11'}</b></a> ( <a href="$adminurl?action=errorlog$startmode;sort=ip$order_ip"><b>$errorlog{'6'}</b></a> )
-				</td>
+                    <a href="$adminurl?action=errorlog$startmode;sort=users$order_users"><b>$errorlog{'11'}</b></a> ( <a href="$adminurl?action=errorlog$startmode;sort=ip$order_ip"><b>$errorlog{'6'}</b></a> )
+                </td>
                 <td class="catbg center"><b>$errorlog{'7'} / $errorlog{'8'}</b></td>
                 <td class="catbg center"><b>$errorlog{'13'}</b></td>
             </tr>~;
@@ -204,27 +204,27 @@ qq~$tmp_user<br />$lookupIP - <a href="$adminurl?action=ipban_err;ban=$tmp_useri
         if ( $tmp_error eq $admin_txt{'39'} || $tmp_error eq $admin_txt{'40'} )
         {
             $tmp_error =
-              $tmp_error . qq~ - (<span class="red">$tmp_password</span>)~;
+              $tmp_error . qq~ - (<span class="important">$tmp_password</span>)~;
         }
 
         $b++;
         $addel =
-qq~                <td class="windowbg center"><input type="checkbox" name="error$tmp_id" value="$tmp_id" class="windowbg" style="border: 0px;" /></td>~;
+qq~                <td class="windowbg center"><input type="checkbox" name="error$tmp_id" value="$tmp_id" class="windowbg" style="border: 0;" /></td>~;
         $actualnum++;
         $print_errorlog .= qq~<tr>
-				<td class="windowbg center">$actualnum</td>
-				<td class="windowbg">$tmp_date</td>
-				<td class="windowbg2 center">$username</td>
-				<td class="windowbg center">
+                <td class="windowbg center">$actualnum</td>
+                <td class="windowbg">$tmp_date</td>
+                <td class="windowbg2 center">$username</td>
+                <td class="windowbg center">
                     <div class="small" style="height:5em; overflow:auto">$tmp_error<br /><br /><a href="$all">$all</a></div>
-				</td>
-				$addel
-			</tr>~;
+                </td>
+                $addel
+            </tr>~;
     }
     if ( !($actualnum) ) {
         $print_errorlog = qq~<tr>
-				<td class="windowbg2 center" colspan="5">$errorlog{'19'}</td>
-			</tr>~;
+                <td class="windowbg2 center" colspan="5">$errorlog{'19'}</td>
+            </tr>~;
     }
     $yymain .= qq~
 $print_errorlog
@@ -237,7 +237,7 @@ $print_errorlog
     $errmember =~ s/, \Z//sm;
 
     $yymain .= qq~          <tr>
-                <td class="windowbg2 padd_8_12px" colspan="5"><b>$errorlog{'26'}</b> $errmember</td>
+                <td class="windowbg2" colspan="5"><div class="pad-more"><b>$errorlog{'26'}</b> $errmember</div></td>
             </tr><tr>
                 <td class="windowbg right" colspan="4">&nbsp;~;
     if ( $errorcount > 0 ) {
@@ -245,31 +245,31 @@ $print_errorlog
           qq~<label for="checkall"><b>$admin_txt{'737'}</b></label>&nbsp;~;
     }
     $yymain .= q~
-				</td>
+                </td>
                 <td class="windowbg center">&nbsp;~;
     if ( $errorcount > 0 ) {
         $yymain .=
-q~<input type="checkbox" name="checkall" id="checkall" class="windowbg" style="border: 0px;" onclick="if (this.checked) checkAll(); else uncheckAll();" />~;
+q~<input type="checkbox" name="checkall" id="checkall" class="windowbg" style="border: 0;" onclick="if (this.checked) checkAll(); else uncheckAll();" />~;
     }
     $yymain .= q~
-			</td>
-		</tr>
-	</table>
+            </td>
+        </tr>
+    </table>
 </div>~;
 
     if ( $errorcount > 0 ) {
 
         $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-	<table class="cs_thin pad_4px">
-		<tr>
-			<th class="titlebg">$admin_img{'prefimg'} $errorlog{'14'}</th>
-		</tr><tr>
-			<td class="catbg center">
-				<input type="submit" value="$errorlog{'14'}" onclick="return confirm('$errorlog{'15'}')" class="button" />
-			</td>
-		</tr>
-	</table>
+    <table class="border-space pad-cell">
+        <tr>
+            <th class="titlebg">$admin_img{'prefimg'} $errorlog{'14'}</th>
+        </tr><tr>
+            <td class="catbg center">
+                <input type="submit" value="$errorlog{'14'}" onclick="return confirm('$errorlog{'15'}')" class="button" />
+            </td>
+        </tr>
+    </table>
 </div>~;
     }
 

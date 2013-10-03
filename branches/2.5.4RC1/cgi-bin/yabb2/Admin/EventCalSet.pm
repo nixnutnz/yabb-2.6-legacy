@@ -1,6 +1,6 @@
 ###############################################################################
 # EventCalSet.pm                                                              #
-# $Date: 9.11.13 $                                                            #
+# $Date: 10.03.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -94,9 +94,8 @@ sub EventCalSet {
     $yymain .= qq~
             <form action="$adminurl?action=eventcal_set2" method="post" accept-charset="$yycharset">
             <div class="bordercolor rightboxdiv">
-            <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-                <col class="w_50pc" />
-                <col class="w_50pc" />
+            <table class="border-space pad-cell" style="margin-bottom: .5em;">
+                <col span="2" style="width: 50%" />
                 <tr>
                     <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$event_cal{'1'}</b></td>
                 </tr><tr>
@@ -243,7 +242,7 @@ sub EventCalSet {
             </table>
             </div>
             <div class="bordercolor rightboxdiv">
-            <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+            <table class="border-space pad-cell" style="margin-bottom: .5em;">
                 <tr>
                     <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
                 </tr><tr>
@@ -262,14 +261,14 @@ sub EventCalSet {
     $yymain .= qq~
             <form action="$adminurl?action=eventcal_set3" method="post" enctype="multipart/form-data" accept-charset="$yycharset">
             <div class="bordercolor rightboxdiv">
-            <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+            <table class="border-space pad-cell" style="margin-bottom: .5em;">
                 <col span="2" style="width:24%" />
                 <col style="width:10%" />
                 <col style="width:6%" />
                 <tr>
                     <td class="titlebg" colspan="4">$admin_img{'prefimg'} <b>$event_cal{'26'}</b></td>
                 </tr><tr>
-                    <td class="windowbg2 padd_8_12px" colspan="4">$event_cal{'33'}</td>
+                    <td class="windowbg2" colspan="4"><div class="pad-more">$event_cal{'33'}</div></td>
                 </tr><tr>
                     <td class="catbg center small">$event_cal{'27'}</td>
                     <td class="catbg center small">$event_cal{'28'}</td>
@@ -281,36 +280,36 @@ sub EventCalSet {
     my $add_icon = 1;
     while ( $CalIconURL[$i] ) {
         $yymain .= qq~<tr>
-                    <td class="windowbg2 padd_4px center">
-                        <input type="file" name="caliimg[$i]" id="caliimg[$i]" size="35" />
+                    <td class="windowbg2 center">
+                        <input type="file" name="caliimg[$i]" id="caliimg[$i]" size="35"  />
                         <input type="hidden" name="cur_caliimg[$i]" value="$CalIconURL[$i]" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('caliimg[$i]').value='';">X</span>
                         <div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/EventIcons/$CalIconURL[$i]" target="_blank">$CalIconURL[$i]</a></div>
                     </td>
-                    <td class="windowbg2 padd_4px center"><input type="text" name="calidescr[$i]" value="$CalIDescription[$i]" /></td>
-                    <td class="windowbg2 padd_4px center"><img src="$yyhtml_root/EventIcons/$CalIconURL[$i]" alt="" /></td>
-                    <td class="windowbg2 padd_4px center"><input type="checkbox" name="calidelbox[$i]" value="1" /></td>
+                    <td class="windowbg2 center"><input type="text" name="calidescr[$i]" value="$CalIDescription[$i]" /></td>
+                    <td class="windowbg2 center"><img src="$yyhtml_root/EventIcons/$CalIconURL[$i]" alt="" /></td>
+                    <td class="windowbg2 center"><input type="checkbox" name="calidelbox[$i]" value="1" /></td>
                 </tr>~;
         $i++;
         $add_icon++;
     }
     my $added_icons = $i;
-        $yymain .= qq~<tr>
-                    <td class="windowbg2 padd_4px center"><input type="file" name="caliimg[$i]" id="caliimg[$i]" size="35" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('caliimg[$i]').value='';">X</span></td>
-                    <td class="windowbg2 padd_4px center"><input type="text" name="calidescr[$i]" /></td>
-                    <td class="windowbg2 padd_4px center" colspan="2">
+    $yymain .= qq~<tr>
+                    <td class="windowbg2 center"><input type="file" name="caliimg[$i]" id="caliimg[$i]" size="35" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('caliimg[$i]').value='';">X</span></td>
+                    <td class="windowbg2 center"><input type="text" name="calidescr[$i]" /></td>
+                    <td class="windowbg2 center" colspan="2">
                         <img src="$imagesdir/cat_expand.png" alt="$event_cal{'59'}" title="$event_cal{'59'}" class="cursor" style="visibility: visible;" id="add_icon$i" onclick="addIcons($add_icon);" />
-                        <img src="$imagesdir/cat_collapse.png" alt="" style="visibility: hidden;" /> <!-- Used only for alignment purposes -->                   
+                        <img src="$imagesdir/cat_collapse.png" alt="" style="visibility: hidden;" /> <!-- Used only for alignment purposes -->
                     </td>
                 </tr>~;
     for ( 1 .. 3 ) {
         $i++;
         $add_icon++;
         $yymain .= qq~<tr id="add_icons$i" style="display: none;">
-                    <td class="windowbg2 padd_4px center"><input type="file" name="caliimg[$i]" id="caliimg[$i]" size="35" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('caliimg[$i]').value='';">X</span></td>
-                    <td class="windowbg2 padd_4px center"><input type="text" name="calidescr[$i]" id="calidescr[$i]" /></td>
-                    <td class="windowbg2 padd_4px center" colspan="2">
+                    <td class="windowbg2 center"><input type="file" name="caliimg[$i]" id="caliimg[$i]" size="35" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('caliimg[$i]').value='';">X</span></td>
+                    <td class="windowbg2 center"><input type="text" name="calidescr[$i]" id="calidescr[$i]" /></td>
+                    <td class="windowbg2 center" colspan="2">
                         <img src="$imagesdir/cat_expand.png" alt="$event_cal{'59'}" title="$event_cal{'59'}" class="cursor" style="visibility: visible;" id="add_icon$i" onclick="addIcons($add_icon);" />
-                        <img src="$imagesdir/cat_collapse.png" alt="$event_cal{'60'}" title="$event_cal{'60'}" class="cursor" style="visibility: visible;" id="col_icon$i" onclick="removeIcons($i);" />                   
+                        <img src="$imagesdir/cat_collapse.png" alt="$event_cal{'60'}" title="$event_cal{'60'}" class="cursor" style="visibility: visible;" id="col_icon$i" onclick="removeIcons($i);" />
                     </td>
                 </tr>~;
     }
@@ -319,7 +318,7 @@ sub EventCalSet {
             </table>
             </div>
             <div class="bordercolor rightboxdiv">
-            <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+            <table class="border-space pad-cell" style="margin-bottom: .5em;">
                 <tr>
                     <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
                 </tr><tr>
@@ -338,20 +337,20 @@ function addIcons(addic_id) {
     var curic_id = addic_id - 1;
     var ic_count = $i;
     document.getElementById('add_icons' + addic_id).style.display = 'table-row';
-    document.getElementById('add_icon' + curic_id).style.visibility = 'hidden'; 
+    document.getElementById('add_icon' + curic_id).style.visibility = 'hidden';
     if (addic_id != ic_added) {
-        document.getElementById('col_icon' + curic_id).style.visibility =' hidden'; 
+        document.getElementById('col_icon' + curic_id).style.visibility =' hidden';
     }
     if (addic_id == ic_count) {
-        document.getElementById('add_icon' + ic_count).style.visibility = 'hidden'; 
-    } 
+        document.getElementById('add_icon' + ic_count).style.visibility = 'hidden';
+    }
 }
 function removeIcons(remic_id) {
     var previc_id = remic_id - 1
-    document.getElementById('add_icons' + remic_id).style.display = 'none'; 
+    document.getElementById('add_icons' + remic_id).style.display = 'none';
     document.getElementById('add_icon' + previc_id).style.visibility = 'visible';
     if (remic_id != ic_added) {
-        document.getElementById('col_icon' + previc_id).style.visibility = 'visible'; 
+        document.getElementById('col_icon' + previc_id).style.visibility = 'visible';
     }
     ic_elements = ["caliimg","calidescr"];
     for (var i=0; i<ic_elements.length; i++) {
@@ -419,17 +418,17 @@ sub EventCalSet3 {
     $calimg_count = $FORM{'calimg_count'};
 
     for ( 1 .. $calimg_count ) {
-    
+
         if ( $FORM{"calidescr[$tempA]"} ne q{} && ( $FORM{"caliimg[$tempA]"} eq q{} && $FORM{"cur_caliimg[$tempA]"} eq q{} ) ) { fatal_error('', $event_cal{'error_image'}); }
-        if ( $FORM{"calidescr[$tempA]"} eq q{} && ( $FORM{"caliimg[$tempA]"} ne q{} || $FORM{"cur_caliimg[$tempA]"} ne q{} ) ) { fatal_error('', $event_cal{'error_desc'}); } 
+        if ( $FORM{"calidescr[$tempA]"} eq q{} && ( $FORM{"caliimg[$tempA]"} ne q{} || $FORM{"cur_caliimg[$tempA]"} ne q{} ) ) { fatal_error('', $event_cal{'error_desc'}); }
         if ( $FORM{"calidelbox[$tempA]"} != 1 && $FORM{"calidescr[$tempA]"} ne q{} && ( $FORM{"caliimg[$tempA]"} ne q{} || $FORM{"cur_caliimg[$tempA]"} ne q{} ) ) {
             if ( $FORM{"caliimg[$tempA]"} ne q{} ) {
-                $FORM{"caliimg[$tempA]"} = UploadFile("caliimg[$tempA]", 'EventIcons', 'png jpg jpeg gif', '100', '0'); 
+                $FORM{"caliimg[$tempA]"} = UploadFile("caliimg[$tempA]", 'EventIcons', 'png jpg jpeg gif', '100', '0');
                 unlink "$htmldir/EventIcons/$FORM{\"cur_caliimg[$tempA]\"}";
-            } 
+            }
             else {
                 $FORM{"caliimg[$tempA]"} = $FORM{"cur_caliimg[$tempA]"};
-            } 
+            }
             push @eventcalIcon,
 qq~\$CalIconURL[$count] = "$FORM{"caliimg[$tempA]"}";\n\$CalIDescription[$count] = "$FORM{"calidescr[$tempA]"}";\n\n~;
             $count++;
@@ -457,8 +456,8 @@ sub eventcal_save {
     if ( $FORM{'DisplayEvents'}      eq q{} ) { fatal_error('invalid_value', "$event_cal{'34'}"); }
     if ( $FORM{'CalShortEvent'}      eq q{} ) { fatal_error('invalid_value', "$event_cal{'6'}"); }
     if ( $FORM{'MaxCalMessLen'}      eq q{} ) { fatal_error('invalid_value', "$admin_txt{'498e'}"); }
-    if ( $FORM{'AdMaxCalMessLen'}    eq q{} ) { fatal_error('invalid_value', "$admin_txt{'498f'}"); } 
-        # Set 1 or 0 if box was checked or not
+    if ( $FORM{'AdMaxCalMessLen'}    eq q{} ) { fatal_error('invalid_value', "$admin_txt{'498f'}"); }
+    # Set 1 or 0 if box was checked or not
     map { ${$_} = $FORM{$_} ? 1 : 0; }
           qw{Show_MiniCalIcons CalEventPrivate DisplayCalEvents ShowSunday Show_ColorLinks No_ShortUbbc Show_BdColorLinks Show_BdStarsign};
 
@@ -484,7 +483,7 @@ sub eventcal_save {
         $Show_BirthdayDate = $FORM{'Show_BirthdayDate'} || 0;
         $CalEventNoName    = $FORM{'CalEventNoName'}    || 0;
         $Event_TodayColor =
-          uc( $FORM{'Event_TodayColor'} || '#FF0000' ) . '000000';
+          uc( $FORM{'Event_TodayColor'} || '#f00' ) . '#000';
         $Event_TodayColor =~ s/[^a-fA-F0-9#]//gxsm;
         $Event_TodayColor = substr $Event_TodayColor, 0, 7;
         $Delete_EventsUntil = $FORM{'Delete_EventsUntil'} || 0;

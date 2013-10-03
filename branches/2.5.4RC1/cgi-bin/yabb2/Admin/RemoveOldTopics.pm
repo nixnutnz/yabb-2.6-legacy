@@ -1,6 +1,6 @@
 ###############################################################################
 # RemoveOldTopics.pm                                                          #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.03.13                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -194,7 +194,7 @@ qq~<b>$removemess_txt{'200'} <i>$max_process_time $admin_txt{'533'}</i>.<br />
             <script type="text/javascript">
             <!--
                 function PleaseWait() {
-                    document.getElementById("memcontinued").innerHTML = '<span class="red"><b>$removemess_txt{'213'}</b></span>';
+                    document.getElementById("memcontinued").innerHTML = '<span class="important"><b>$removemess_txt{'213'}</b></span>';
                 }
 
                 function stoptick() { stop = 1; }

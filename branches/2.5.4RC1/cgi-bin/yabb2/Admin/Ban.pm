@@ -1,6 +1,6 @@
 ###############################################################################
 # Ban.pm                                                                      #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.03.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -72,7 +72,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
             $ban_i    = $banned[1];
             $timebana = time_ban();
             $iban .= qq~<option value="$i"> $ban_i - $timebana</option>\n~;
-			$ii ++;
+            $ii ++;
         }
         if ( $banned[0] eq 'E' ) {
             $ban_e  = $banned[1];
@@ -96,7 +96,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
     $yymain .= qq~
     <form action="$adminurl?action=ipban2" method="post">
     <div class="bordercolor rightboxdiv">
-        <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+        <table class="border-space pad-cell" style="margin-bottom: .5em;">
             <tr>
                 <td class="titlebg">
                     $admin_img{'banimg'} <b>$admin_txt{'340'}</b>
@@ -115,7 +115,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
         </table>
     </div>
     <div class="bordercolor rightboxdiv">
-        <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+        <table class="border-space pad-cell" style="margin-bottom: .5em;">
             <tr>
                 <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
             </tr><tr>
@@ -128,7 +128,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
     </form>
     <form action="$adminurl?action=ipban2" method="post">
     <div class="bordercolor borderstyle rightboxdiv">
-        <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+        <table class="border-space pad-cell" style="margin-bottom: .5em;">
             <tr>
                 <td class="catbg">
                     <label for="eban"><span class="small">$admin_txt{'725b'}</span></label>
@@ -143,7 +143,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
         </table>
     </div>
     <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
         </tr><tr>
@@ -156,7 +156,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
     </form>
     <form action="$adminurl?action=ipban2" method="post">
     <div class="bordercolor borderstyle rightboxdiv">
-        <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+        <table class="border-space pad-cell" style="margin-bottom: .5em;">
             <tr>
                 <td class="catbg">
                     <label for="uban"><span class="small">$admin_txt{'725c'}</span></label>
@@ -171,7 +171,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
         </table>
     </div>
     <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
         </tr><tr>
@@ -184,8 +184,8 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
     </form>
         <form action="$adminurl?action=ipban_add" method="post">
         <div class="bordercolor rightboxdiv">
-        <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-            <col class="w_50pc" />
+        <table class="border-space pad-cell" style="margin-bottom: .5em;">
+            <col span="2" style="width: 50%" />
             <tr>
                 <td class="titlebg">
                     $admin_img{'banimg'} <b>$admin_txt{'340a'}</b>
@@ -216,7 +216,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
         </table>
     </div>
     <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
         </tr><tr>
@@ -229,7 +229,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
     </form>
     <form action="$adminurl?action=ban_clean" method="post">
         <div class="bordercolor rightboxdiv">
-        <table class="cs_thin pad_4px">
+        <table class="border-space pad-cell">
             <tr>
                 <td class="titlebg">
                     $admin_img{'banimg'} <b>$admin_txt{'725d'}</b>

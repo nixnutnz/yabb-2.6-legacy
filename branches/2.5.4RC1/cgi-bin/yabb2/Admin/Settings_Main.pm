@@ -1,6 +1,6 @@
 ###############################################################################
 # Settings_Main.pm                                                            #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.03.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -114,11 +114,11 @@ my $timeoffsetselect = q~<br /><select name="usertimesign" id="usertimesign"><op
         $i = sprintf '%02d', $i;
         $timeoffsetselect .= qq~<option value="$i"~ . (($usertimeoffset[0] == $i || $usertimeoffset[0] == -$i) ? ' selected="selected"' : q{}) . qq~>$i</option>~;
     }
-	$timeoffsetselect .= qq~</select> : <select name="usertimemin">~;
-    for my $i ( 0 .. 59 ) {
+    $timeoffsetselect .= qq~</select> : <select name="usertimemin">~;
+    for my $i( 0 .. 59 ) {
         my $j = $i / 60;
         $j = (split /\./xsm, $j)[1] || 0;
-		$timeoffsetselect .= qq~<option value="$j"~ . ($usertimeoffset[1] eq $j ? ' selected="selected"' : q{}) . q~>~ . sprintf('%02d', $i) . q~</option>~;
+        $timeoffsetselect .= qq~<option value="$j"~ . ($usertimeoffset[1] eq $j ? ' selected="selected"' : q{}) . q~>~ . sprintf('%02d', $i) . q~</option>~;
     }
     $timeoffsetselect .= q~</select>~;
 
@@ -855,7 +855,7 @@ qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdM
         },
         {
             description => $admin_txt{'747a'},
-            input_html => qq~$facesdir/UserAvatars<br />~ . ((-w "$facesdir/UserAvatars" && -d "$facesdir/UserAvatars") ? qq~<span style="color: green;">$admin_txt{'163'}</span>~ : qq~<span style="color: red;">$admin_txt{'164'}</span>~), # Non-changeable setting
+            input_html => qq~$facesdir/UserAvatars<br />~ . ((-w "$facesdir/UserAvatars" && -d "$facesdir/UserAvatars") ? qq~<span class="good">$admin_txt{'163'}</span>~ : qq~<span class="important">$admin_txt{'164'}</span>~), # Non-changeable setting
         },
         {
             description => qq~<label for="upload_avatargroup">$admin_txt{'748'}</label>~,
@@ -929,7 +929,7 @@ qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdM
             input_html => qq~<input type="checkbox" name="user_hide_img" id="user_hide_img" value="1"${ischecked($user_hide_img)} />~,
             name => 'user_hide_img',
             validate => 'boolean',
-        }, 
+        },
         {
             description => qq~<label for="user_hide_attach_img">$admin_txt{'753'}</label>~,
             input_html => qq~<input type="checkbox" name="user_hide_attach_img" id="user_hide_attach_img" value="1"${ischecked($user_hide_attach_img)}~ . ($allowattach ? q{} : ' disabled="disabled"') . q~ />~,
@@ -1618,7 +1618,7 @@ sub SaveSettings {
         if ( $cur_default_userpic ne 'nn.gif' ) {
             unlink "$htmldir/Templates/Forum/default/$cur_default_userpic";
         }
-    } 
+    }
     else {
         $settings{'default_userpic'} = $cur_default_userpic;
     }

@@ -1,6 +1,6 @@
 ###############################################################################
 # ModuleChecker.pm                                                            #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.03.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -44,66 +44,49 @@ foreach my $module (
         # comment (#) in next line.
         # $e =~ s/\//\\/g;
         $checker_output .= qq~<tr>
-        <td class="windowbg2">
-            <span style="color:#f00">$module</span>
-        </td>
-        <td class="windowbg2">
-            $modulecheck{'5'}<br />
-            <br />
-            $e
-        </td>
-        <td class="windowbg2">
-            $modulecheck{"$module"}
-        </td>
-    </tr>~;
+                    <td class="windowbg2"><span class="important">$module</span></td>
+                    <td class="windowbg2">
+                        $modulecheck{'5'}<br />
+                        <br />$e
+                    </td>
+                    <td class="windowbg2">$modulecheck{"$module"}</td>
+                </tr>~;
     }
     else {
         $checker_output .= qq~<tr>
-        <td class="windowbg2">
-            <span style="color:green">$module</span>
-        </td>
-        <td class="windowbg2" colspan="2">
-            $modulecheck{'6'}
-        </td>
-    </tr>~;
+                    <td class="windowbg2"><span class="good">$module</span></td>
+                    <td class="windowbg2" colspan="2">$modulecheck{'6'}</td>
+                </tr>~;
     }
 }
 
 if ( $script_root !~ /ModuleChecker\.\w+$/xsm ) {
     $yymain .= qq~
-<div class="bordercolor rightboxdiv" style="float: left; margin-top:.5em">
-<table class="cs_thin pad_4px">
-    <tr>
-        <td class="titlebg" colspan="3">
-            <b>$modulecheck{'1'}</b>
-        </td>
-    </tr><tr>
-        <td class="catbg" colspan="3">
-            <span class="small">$modulecheck{'2'}</span>
-        </td>
-    </tr>~ . (
+        <div class="bordercolor rightboxdiv" style="float: left; margin-top:.5em">
+            <table class="border-space pad-cell">
+                <tr>
+                    <td class="titlebg" colspan="3"><b>$modulecheck{'1'}</b></td>
+                </tr><tr>
+                    <td class="catbg" colspan="3">
+                        <span class="small">$modulecheck{'2'}</span>
+                    </td>
+                </tr>~ . (
         $i
         ? qq~<tr>
-        <td class="windowbg2">
-            <span style="color:red"><b>$modulecheck{'7'}</b></span>
-        </td>
-        <td class="windowbg2" colspan="2">
-            $i
-        </td>
-    </tr>~
+                    <td class="windowbg2">
+                        <span class="important"><b>$modulecheck{'7'}</b></span>
+                    </td>
+                    <td class="windowbg2" colspan="2">$i</td>
+                </tr>~
         : q{}
       )
       . qq~<tr>
-        <td class="catbg center">
-            <b>$modulecheck{'3'}</b>
-        </td>
-        <td class="catbg center" colspan="2">
-            <b>$modulecheck{'4'}</b>
-        </td>
-    </tr>
-    $checker_output
-</table>
-</div>~;
+                    <td class="catbg center"><b>$modulecheck{'3'}</b></td>
+                    <td class="catbg center" colspan="2"><b>$modulecheck{'4'}</b></td>
+                </tr>
+            $checker_output
+            </table>
+        </div>~;
 
 }
 else {
@@ -126,8 +109,8 @@ td {padding:4px;}
     font-size: 13px;
     text-align:center;
 }
-.red {
-color:red;
+.important {
+color: #f00;
 }
 .titlebg {
     background-color: #D2DBE6;
@@ -155,7 +138,7 @@ color:red;
         $i
         ? qq~<tr>
         <td class="windowbg2">
-            <span class="red"><b>$modulecheck{'7'}</b></span>
+            <span class="important"><b>$modulecheck{'7'}</b></span>
         </td>
         <td class="windowbg2" colspan="2">
             $i

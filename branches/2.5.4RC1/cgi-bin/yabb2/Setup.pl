@@ -4,7 +4,7 @@
 # $Source: /Setup.pl $
 ###############################################################################
 # Setup.pl                                                                    #
-# $Date: 9.02.13 $                                                            #
+# $Date: 10.03.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -465,6 +465,7 @@ function autofill() {
 <div id="folderfind">
     <table>
         <col style="width:43%" />
+        <col style="width:57%" />
       <tr>
             <td class="header" colspan="2">
                 <span style="color: #fefefe;">&nbsp;<b>Absolute Path to the main script directory</b></span>
@@ -1120,7 +1121,7 @@ sub checkmodules {
 
     if ($dont_continue_setup) {
         $yymain .= q~
-    <table class="cs_thin pad_4px">
+    <table class="border-space pad-cell">
         <tr>
             <td class="windowbg2 center" style="margin-top:.5em; margin-bottom:1em; color:red; font-size:large;">
                 Sorry, you cannot continue until you have installed at least the "Digest::MD5" module.
@@ -1130,7 +1131,7 @@ sub checkmodules {
     }
     else {
         $yymain .= q~
-    <table class="cs_thin pad_4px">
+    <table class="border-space pad-cell">
         <tr >
             <td class="catbg center" style="margin-top:.5em; margin-bottom:1em">
                   You can always see the above information on the start page of your AdminCenter.<br />
@@ -1179,61 +1180,64 @@ sub SetInstall {
     $yymain .= qq~
 <form action="$set_cgi?action=setinstall2" method="post">
 <div class="bordercolor borderbox">
-   <table class="cs_thin pad_4px">
-       <tr>
-           <td class="titlebg">System Setup</td>
-      </tr><tr>
-          <td class="windowbg">
-            Here you can set some of the default settings for your new YaBB 2.5.4 forum.<br />
-            After finishing the setup procedure, you should login to your forum and go to your 'Admin Center' -&gt; 'Forum Settings' where you can modify this and other settings.
+	<table class="tabtitle">
+		<tr>
+			<td style="padding-left:1%">System Setup</td>
+		</tr>
+	</table>
+	<table class="border-space pad-cell">
+		<tr>
+			<td class="windowbg">
+				Here you can set some of the default settings for your new YaBB 2.5.4 forum.<br />
+				After finishing the setup procedure, you should login to your forum and go to your 'Admin Center' -&gt; 'Forum Settings' where you can modify this and other settings.
             </td>
-     </tr><tr>
-         <td class="windowbg2">
-             <div class="div45">
-            <label for="mbname">Message Board Name</label>
-            </div>
-             <div class="div55">
-            <input type="text" name="mbname" id="mbname" size="35" value="My Perl YaBB Forum" />
-            </div>
-      <br />
-             <div class="div45">
-            <label for="webmaster_email">Webmaster E-mail Address</label>
-            </div>
-             <div class="div55">
-            <input type="text" name="webmaster_email" id="webmaster_email" size="35" value="webmaster\@mysite.com" />
-            </div>
-      <br />
-             <div class="div45">
-            <label for="defaultlanguage">Admin Language / Forum Default Language</label>
-            </div>
-             <div class="div55">
-            <select name="defaultlanguage" id="defaultlanguage">$drawnldirs</select>
-            </div>
-      <br />
-             <div class="div45">
-            <label for="timeselect">Default Time Format</label>
-            </div>
-             <div class="div55">
-            <select name="timeselect" id="timeselect" size="1">
-                  <option value="1">01/31/01 at 13:15:17</option>
-                  <option value="5">01/31/01 at 1:15pm</option>
-                  <option value="4" selected="selected">Jan 12th, 2001 at 1:15pm</option>
-                  <option value="8"> 12th Jan, 2001 at 1:15pm</option>
-                  <option value="2">31.01.01 at 13:15:17</option>
-                  <option value="3">31.01.2001 at 13:15:17</option>
-                  <option value="6">31. Jan at 13:15</option>
-            </select>
-            </div>
-      <br />
-             <div class="div45">
-            Forum Time Zone<br />
-                <span style="font-size:small">If the time displayed here differs from your local time, adjust it by changing the settings.</span>
-            </div>
-             <div class="div55">
-                 <span style="font-size:small">Your actual displayed local time:<br /><b>~
+		</tr><tr>
+			<td class="windowbg2">
+				<div class="div45">
+					<label for="mbname">Message Board Name</label>
+				</div>
+				<div class="div55">
+					<input type="text" name="mbname" id="mbname" size="35" value="My Perl YaBB Forum" />
+				</div>
+				<br />
+				<div class="div45">
+					<label for="webmaster_email">Webmaster E-mail Address</label>
+				</div>
+				<div class="div55">
+					<input type="text" name="webmaster_email" id="webmaster_email" size="35" value="webmaster\@mysite.com" />
+				</div>
+				<br />
+				<div class="div45">
+					<label for="defaultlanguage">Admin Language / Forum Default Language</label>
+				</div>
+				<div class="div55">
+					<select name="defaultlanguage" id="defaultlanguage">$drawnldirs</select>
+				</div>
+				<br />
+				<div class="div45">
+					<label for="timeselect">Default Time Format</label>
+				</div>
+				<div class="div55">
+					<select name="timeselect" id="timeselect" size="1">
+						<option value="1">01/31/01 at 13:15:17</option>
+						<option value="5">01/31/01 at 1:15pm</option>
+						<option value="4" selected="selected">Jan 12th, 2001 at 1:15pm</option>
+						<option value="8"> 12th Jan, 2001 at 1:15pm</option>
+						<option value="2">31.01.01 at 13:15:17</option>
+						<option value="3">31.01.2001 at 13:15:17</option>
+						<option value="6">31. Jan at 13:15</option>
+					</select>
+				</div>
+				<br />
+				<div class="div45">
+					Forum Time Zone<br />
+					<span style="font-size:small">If the time displayed here differs from your local time, adjust it by changing the settings.</span>
+				</div>
+				<div class="div55">
+					<span style="font-size:small">Your actual displayed local time:<br /><b>~
       . timeformat( $date, 4 )
       . q~</b><br /><br /></span><select name="usertimesign"><option value="">+</option><option value="-">-</option></select>
-                  <select name="usertimehour">~;
+					<select name="usertimehour">~;
     for my $i ( 0 .. 14 ) {
         $i = sprintf '%02d', $i;
         $yymain .= qq~<option value="$i">$i</option>~;
@@ -2102,12 +2106,16 @@ sub CheckInstall {
     $var_created =~ s/, $//sm;
 
     $yymain .= q~
-<div class="boardcontainer">
-    <table class="cs_thin pad_4px">
-        <col style="width:6%" />
+    <table class="tabtitle">
         <tr>
-             <td colspan="2" class="titlebg">Checking System Files</td>
-        </tr><tr>
+             <td class="shadow" style="padding-left:1%">Checking System Files</td>
+        </tr>
+    </table>
+<div class="boardcontainer">
+    <table class="border-space pad-cell">
+        <col style="width:6%" />
+        <col style="width:94%" />
+        <tr>
             <td class="catbg" colspan="2">
       ~;
     if ($no_brddir) {
@@ -2326,7 +2334,7 @@ sub CheckInstall {
     }
     else {
         $yymain .= q~<tr>
-            <td class="catbg" colspan="2">
+            <td class="titlebg" colspan="2">
                 <div class="div98"><b>One or more errors occurred while checking the system files. The problems must be solved before you may continue.</b></div>
             </td>
         </tr>~;
@@ -2390,7 +2398,7 @@ sub setup_fatal_error {
       $yymenu .= qq~Login~;
 
       $yymain .= qq~
-<table class="bordercolor center cs_thin pad_4px" width="80%" >
+<table class="bordercolor center border-space pad-cell" width="80%" >
   <tr>
     <td class="titlebg"><span class="text1"><b>An Error Has Occurred!</b></span></td>
   </tr><tr>
@@ -2617,17 +2625,21 @@ qq~The 2x FixFile Utility has already been run.<br />To run Utility again, remov
 
     $yymain = qq~
 <div class="bordercolor borderbox">
-    <table class="cs_thin pad_4px">
-        <col style="width:5%" />
+    <table class="tabtitle">
         <tr>
-            <td class="tabtitle" colspan="2">
+            <td style="padding-left:1%; text-shadow: 1px 1px 1px #2d2d2d;">
                 YaBB 2.5.4 Setup
             </td>
-        </tr><tr>
-            <td class="windowbg center">
+        </tr>
+    </table>
+    <table>
+        <col style="width:5%" />
+        <col style="width:95%" />
+        <tr>
+            <td class="windowbg2 center" style="padding: 4px">
                 <img src="$imagesdir/info.png" alt="" />
             </td>
-            <td class="windowbg2 center">
+            <td class="windowbg2 center" style="padding: 4px">
                 Setup has already been run.
                 <br />
                 To run Setup again, remove the file "$vardir/Setup.lock" then re-visit this page.<br />
@@ -2635,7 +2647,7 @@ qq~The 2x FixFile Utility has already been run.<br />To run Utility again, remov
                 $fixa2
             </td>
         </tr><tr>
-            <td class="catbg center" colspan="2">
+            <td class="catbg center"  style="padding: 4px" colspan="2">
                 <form action="$boardurl/YaBB.$yyext" method="post" style="display: inline;">
                     <input type="submit" value="Go to your Forum" />
 <!--                  <input type="hidden" name="formsession" value="$formsession" />-->

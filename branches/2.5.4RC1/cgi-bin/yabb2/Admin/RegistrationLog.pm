@@ -1,6 +1,6 @@
 ###############################################################################
 # RegistrationLog.pm                                                          #
-# $Date: 9.02.13 $                                                            #
+# $Date: 10.03.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -185,39 +185,41 @@ qq~<br /><a href="$adminurl?action=apr_regentry;username=$userid">$prereg_txt{'a
     $yymain .= qq~
     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
     <form name="reglog_form" action="$adminurl?action=clean_reglog" method="post" onsubmit="return submitproc();">
- <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-        <col class="w_20pc" />
-        <col class="w_35pc" />
-        <col class="w_25pc" />
-        <col class="w_20pc" />
-    <tr>
-        <td class="titlebg" colspan="4">$admin_img{'xx'} <b>$yytitle</b></td>
-    </tr><tr>
-        <td class="windowbg2 padd_8_12px" colspan="4">$prereg_txt{'20'}</td>
-    </tr>
-    $pageindex
-    <tr>
-        <td class="catbg center"><b>$prereg_txt{'17'}</b></td>
-        <td class="catbg center"><b>$prereg_txt{'18'}</b></td>
-        <td class="catbg center"><b>$prereg_txt{'19'}</b></td>
-        <td class="catbg center"><b>$prereg_txt{'action'}</b></td>
-    </tr>
-    $loglist
-    </table>
-</div>
-<div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px">
-	<tr>
-    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'725e'}</th>
-	</tr><tr>
-    	<td class="catbg center">
-        	<input type="submit" value="$prereg_txt{'9'}" onclick="return confirm('$prereg_txt{'9'}');" class="button" />
-    	</td>
-	</tr>
-</table>
-</div>
-</form>
+    <div class="bordercolor rightboxdiv">
+        <table class="border-space pad-cell" style="margin-bottom: .5em;">
+            <col style="width: 20%" />
+            <col style="width: 35%" />
+            <col style="width: 25%" />
+            <col style="width: 20%" />
+            <tr>
+                <td class="titlebg" colspan="4">$admin_img{'xx'} <b>$yytitle</b></td>
+            </tr><tr>
+                <td class="windowbg2" colspan="4">
+                    <div class="pad-more">$prereg_txt{'20'}</div>
+                </td>
+            </tr>
+            $pageindex
+            <tr>
+                <td class="catbg center"><b>$prereg_txt{'17'}</b></td>
+                <td class="catbg center"><b>$prereg_txt{'18'}</b></td>
+                <td class="catbg center"><b>$prereg_txt{'19'}</b></td>
+                <td class="catbg center"><b>$prereg_txt{'action'}</b></td>
+            </tr>
+            $loglist
+            </table>
+        </div>
+        <div class="bordercolor rightboxdiv">
+            <table class="border-space pad-cell">
+                <tr>
+                    <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'725e'}</th>
+                </tr><tr>
+                    <td class="catbg center">
+                        <input type="submit" value="$prereg_txt{'9'}" onclick="return confirm('$prereg_txt{'9'}');" class="button" />
+                    </td>
+                </tr>
+            </table>
+            </div>
+            </form>
 ~;
     $action_area = 'view_reglog';
     AdminTemplate();
@@ -323,27 +325,28 @@ sub view_registration {
     $yymain .= qq~
 <form action="$adminurl?action=admin_descision;activationkey=$actkey" method="post" name="creator">
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-    <col class="w_320px" />
- <tr>
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
+    <col style="width:320px" />
+    <col style="width:auto" />
+    <tr>
         <td colspan="2" class="titlebg">$admin_img{'profile'} <b>$prereg_txt{'view'}</b>
             <input type="hidden" name="username" value="$viewuser" />
-    <input type="hidden" name="type" value="$viewtype" />
-    <input type="hidden" name="activationkey" value="$actkey" />
-  </td>
- </tr><tr class="windowbg">
-   <td><b>$prereg_txt{'apr_id'}: </b></td>
-   <td>$readuser</td>
- </tr><tr class="windowbg">
-   <td><b>$prereg_txt{'apr_name'}: </b></td>
-   <td>${$uid.$readuser}{'realname'}</td>
- </tr>~;
+            <input type="hidden" name="type" value="$viewtype" />
+            <input type="hidden" name="activationkey" value="$actkey" />
+        </td>
+    </tr><tr class="windowbg">
+        <td><b>$prereg_txt{'apr_id'}: </b></td>
+        <td>$readuser</td>
+    </tr><tr class="windowbg">
+       <td><b>$prereg_txt{'apr_name'}: </b></td>
+       <td>${$uid.$readuser}{'realname'}</td>
+    </tr>~;
 
     if ( $viewtype eq 'validate' ) {
         $yymain .= qq~<tr class="windowbg">
-   <td><b>$prereg_txt{'apr_email_invalid'}: </b></td>
-   <td>${$uid.$readuser}{'email'}</td>
- </tr>~;
+        <td><b>$prereg_txt{'apr_email_invalid'}: </b></td>
+        <td>${$uid.$readuser}{'email'}</td>
+    </tr>~;
     }
     elsif ( $viewtype eq 'approve' ) {
         $yymain .= qq~<tr class="windowbg">
@@ -403,33 +406,33 @@ sub view_registration {
 </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px">
-	<tr>
-    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'actions'}</th>
-	</tr><tr>
-    	<td class="catbg center">
-			<input type="submit" name="moda" value="$prereg_txt{'apr_admin_reject'}" onclick="return confirm('$prereg_txt{'apr_admin_reject'} ?')" class="button" />
-			<input type="submit" name="moda" value="$prereg_txt{'apr_admin_approve'}" onclick="return confirm('$prereg_txt{'apr_admin_approve'} ?')" class="button" />
-		</td>
-	</tr>
+<table class="border-space pad-cell">
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'actions'}</th>
+    </tr><tr>
+        <td class="catbg center">
+            <input type="submit" name="moda" value="$prereg_txt{'apr_admin_reject'}" onclick="return confirm('$prereg_txt{'apr_admin_reject'} ?')" class="button" />
+            <input type="submit" name="moda" value="$prereg_txt{'apr_admin_approve'}" onclick="return confirm('$prereg_txt{'apr_admin_approve'} ?')" class="button" />
+        </td>
+    </tr>
 </table>
 </div>~;
 
     }
     elsif ( $viewtype eq 'validate' ) {
-        $yymain .= qq~ 
+        $yymain .= qq~
 </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px">
-	<tr>
-    	<th class="titlebg">$admin_img{'prefimg'} $admin_txt{'actions'}</th>
-	</tr><tr>
-    	<td class="catbg center">
+<table class="border-space pad-cell">
+    <tr>
+        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'actions'}</th>
+    </tr><tr>
+        <td class="catbg center">
             <input type="submit" name="moda" value="$prereg_txt{'apr_admin_delete'}" onclick="return confirm('$prereg_txt{'apr_admin_delete'} ?')" class="button" />
             <input type="submit" name="moda" value="$prereg_txt{'apr_admin_validate'}" onclick="return confirm('$prereg_txt{'apr_admin_validate'} ?')" class="button" />
-    	</td>
-	</tr>
+        </td>
+    </tr>
 </table>
 </div>~;
     }
@@ -584,7 +587,7 @@ sub approve_registration {
             lc MemberIndex( 'check_exist', ${ $uid . $apruser }{'email'} ) )
         {
             $yymain .=
-qq~<span class="red"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'email'}</i> ($prereg_txt{'35'}: $apruser)</b></span>~;
+qq~<span class="important"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'email'}</i> ($prereg_txt{'35'}: $apruser)</b></span>~;
             view_reglog();
         }
 

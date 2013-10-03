@@ -1,6 +1,6 @@
 ###############################################################################
 # ManageBoards.pm                                                             #
-# $Date: 9.04.13 $                                                            #
+# $Date: 10.03.13 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -43,9 +43,7 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
         $act2        = 'addboard';
         $action_area = 'manageboards';
     }
-    $yymain .= qq~
-<script type="text/javascript">
-    <!--
+    $yymain .= qq~<script type="text/javascript">
         function checkSubmit(where){
             var something_checked = false;
             for (i=0; i<where.elements.length; i++){
@@ -101,22 +99,18 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
                 where.submit();
             }
         }
-    //-->
-</script>
-<form name="whattodo" id="whattodo" action="$adminurl?action=$act" onsubmit="return checkSubmit(this);" method="post" enctype="multipart/form-data">
-<div class="rightboxdiv">
-    <table class="bordercolor cs_thin pad_4px" style="margin-bottom: .5em;">
-        <tr>
-            <td class="titlebg" $colspan>
-         $manage
-       </td>
-        </tr><tr>
-            <td class="windowbg2 padd_8_12px" $colspan>
-          $managedescr
-       </td>
-     </tr>
-   </table>
-~;
+        </script>
+        <form name="whattodo" id="whattodo" action="$adminurl?action=$act" onsubmit="return checkSubmit(this);" method="post" enctype="multipart/form-data">
+            <div class="rightboxdiv">
+                <table class="bordercolor border-space pad-cell" style="margin-bottom: .5em;">
+                    <tr>
+                        <td class="titlebg" $colspan>$manage</td>
+                    </tr><tr>
+                        <td class="windowbg2" $colspan>
+                            <div class="pad-more">$managedescr</div>
+                        </td>
+                    </tr>
+                </table>~;
     foreach my $catid (@categoryorder) {
         @bdlist = split /,/xsm, $cat{$catid};
         ( $curcatname, $catperms ) = split /\|/xsm, $catinfo{"$catid"};
@@ -134,19 +128,19 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
         }
 
         $yymain .= qq~
-    <table class="bordercolor borderstyle cs_thin pad_4px" style="margin-bottom: .5em;">
-        <tr>
-        <td class="$tempclass h_25px" $tempcolspan>
-            <a href="$adminurl?action=reorderboards;item=$catid" $temphrefclass><img src="$admin_img{'reorder'}" alt="$admin_txt{'832'}" title="$admin_txt{'832'}" /></a> &nbsp;<b>$curcatname</b>
-       </td>
-~;
+                <table class="bordercolor borderstyle border-space pad-cell" style="margin-bottom: .5em;">
+                    <tr>
+                        <td class="$tempclass" style="height:25px" $tempcolspan>
+                            <a href="$adminurl?action=reorderboards;item=$catid" $temphrefclass><img src="$admin_img{'reorder'}" alt="$admin_txt{'832'}" title="$admin_txt{'832'}" /></a> &nbsp;<b>$curcatname</b>
+                        </td>~;
         if ( $INFO{'action'} eq 'managecats' ) {
             $yymain .= qq~
-        <td class="windowbg center h_25px w_10pc"><input type="checkbox" name="yitem_$catid" value="1" /></td>~;
+                        <td class="windowbg center" style="height:25px; width: 10%"><input type="checkbox" name="yitem_$catid" value="1" /></td>~;
         }
 
-        $yymain .= q~       </tr>
-   </table>~;
+        $yymain .= q~
+                    </tr>
+                </table>~;
         if ( $INFO{'action'} ne 'managecats' ) {
             my $indent = -3;
 
@@ -197,7 +191,7 @@ qq~ <img src="$admin_images/ad_recycle.png" alt="$admin_txt{'64i'}" title="$admi
 
                     $reorder_subs =
                       @children > 0
-                      ? qq~<a href="$adminurl?action=reorderboards;item=$curboard;subboards=1"><img src="$admin_images/reorder_sub.png" alt="$admin_txt{'252'}" title="$admin_txt{'252'}" /></a>~
+                      ? qq~                                <a href="$adminurl?action=reorderboards;item=$curboard;subboards=1"><img src="$admin_images/reorder_sub.png" alt="$admin_txt{'252'}" title="$admin_txt{'252'}" /></a>~
                       : q{};
 
                     my $del_txt  = $admin_txt{'251'};
@@ -212,27 +206,26 @@ qq~ <img src="$admin_images/ad_recycle.png" alt="$admin_txt{'64i'}" title="$admi
                     }
 
                     $yymain .= q~
-    <table class="bordercolor borderstyle cs_thin pad_4px" style="margin-bottom: .5em; margin-left:~
+                <table class="bordercolor borderstyle border-space pad-cell" style="margin-bottom: .5em; margin-left:~
                       . $indent . q~%; width:~ . $tmpwidth . q~%">
-        <col style="width:~ . $tmpwidth2 . qq~%" />
-        <col span="2" class="w_5pc" />
-        <tr>
-            <td class="windowbg2">
-                <b>$boardname</b>
-                <div style="position:relative; display:inline; float:right;">
-                    <a href="$adminurl?action=addboard;parent=$curboard;category=$catid"><img src="$admin_images/add_sub.png" alt="$admin_txt{'250'}" title="$admin_txt{'250'}" /></a>
-                    <a href="javascript:editSingle('yitem_$curboard')"><img src="$admin_images/edit_sub.png" alt="$edit_txt" title="$edit_txt" /></a>
-                    <a href="javascript:delSingle('yitem_$curboard')"><img src="$admin_images/delete_sub.png" alt="$del_txt" title="$del_txt" /></a>
-        ~ . $reorder_subs . qq~
-               </div>
-            </td>
-            <td class="windowbg2 center">$bicon</td>
-            <td class="titlebg center"><input type="checkbox" name="yitem_$curboard" value="1" /></td>
-        </tr><tr>
-            <td class="windowbg" colspan="3">$descr</td>
-        </tr>
-    </table>
-~;
+                    <col style="width:~ . $tmpwidth2 . qq~%" />
+                    <col span="2" style="width: 5%" />
+                    <tr>
+                        <td class="windowbg2">
+                            <b>$boardname</b>
+                            <div style="position:relative; display:inline; float:right;">
+                                <a href="$adminurl?action=addboard;parent=$curboard;category=$catid"><img src="$admin_images/add_sub.png" alt="$admin_txt{'250'}" title="$admin_txt{'250'}" /></a>
+                                <a href="javascript:editSingle('yitem_$curboard')"><img src="$admin_images/edit_sub.png" alt="$edit_txt" title="$edit_txt" /></a>
+                                <a href="javascript:delSingle('yitem_$curboard')"><img src="$admin_images/delete_sub.png" alt="$del_txt" title="$del_txt" /></a>
+~ . $reorder_subs . qq~
+                            </div>
+                        </td>
+                        <td class="windowbg2 center">$bicon</td>
+                        <td class="titlebg center"><input type="checkbox" name="yitem_$curboard" value="1" /></td>
+                    </tr><tr>
+                        <td class="windowbg" colspan="3">$descr</td>
+                    </tr>
+                </table>~;
                     if ( $subboard{$curboard} ) { show_boards(@children); }
                 }
                 $indent -= 3;
@@ -242,33 +235,32 @@ qq~ <img src="$admin_images/ad_recycle.png" alt="$admin_txt{'64i'}" title="$admi
     }
 
     $yymain .= qq~
-    <table class="bordercolor borderstyle cs_thin pad_4px" style="margin-bottom: .5em;">
-        <tr>
-            <td class="catbg center" $colspan> <label for="baction">$admin_txt{'52'}</label>
-                <input type="radio" name="baction" id="baction" value="edit" checked="checked" /> $admin_txt{'53'}
-                <input type="radio" name="baction" id="delme" value="delme" /> $admin_txt{'54'}
-                <input type="submit" value="$admin_txt{'32'}" class="button" />
-            </td>
-        </tr>
-    </table>
-</div>
-</form>
-<form name="diff" id="diff" action="$adminurl?action=$act2" method="post" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px">
-    <tr>
-        <th class="titlebg">$admin_img{'cat_img'} $add</th>
-    </tr><tr>
-        <td class="catbg center">
-            <label for="amount"><b>$add: </b></label>
-            <input type="text" name="amount" id="amount" value="3" size="2" maxlength="2" />
-            <input type="submit" value="$admintxt{'45'}" class="button" />
-        </td>
-    </tr>
-</table>
-</div>
-</form>
-~;
+                <table class="bordercolor borderstyle border-space pad-cell" style="margin-bottom: .5em;">
+                    <tr>
+                        <td class="catbg center" $colspan> <label for="baction">$admin_txt{'52'}</label>
+                            <input type="radio" name="baction" id="baction" value="edit" checked="checked" /> $admin_txt{'53'}
+                            <input type="radio" name="baction" id="delme" value="delme" /> $admin_txt{'54'}
+                            <input type="submit" value="$admin_txt{'32'}" class="button" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+        <form name="diff" id="diff" action="$adminurl?action=$act2" method="post" accept-charset="$yycharset">
+            <div class="bordercolor rightboxdiv">
+                <table class="border-space pad-cell">
+                    <tr>
+                        <th class="titlebg">$admin_img{'cat_img'} $add</th>
+                    </tr><tr>
+                        <td class="catbg center">
+                            <label for="amount"><b>$add: </b></label>
+                            <input type="text" name="amount" id="amount" value="3" size="2" maxlength="2" />
+                            <input type="submit" value="$admintxt{'45'}" class="button" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>~;
     $yytitle = "$admintxt{'a4_title'}";
     AdminTemplate();
     return;
@@ -530,14 +522,13 @@ sub AddBoards {
         ~;
     }
 
-    $yymain .= qq~
-<script type="text/javascript">
-<!--
-var copyValues = new Array();
-var copyList = new Array();
+    $yymain .= qq~<script type="text/javascript">
+    <!--
+    var copyValues = new Array();
+    var copyList = new Array();
 
-var catboardlist = new Array();
-$catboardlist_js
+    var catboardlist = new Array();
+    $catboardlist_js
 
 // this function removes an entry from the IM multi-list
 function removeUser(oElement) {
@@ -667,22 +658,22 @@ function checkParent(id, board) {
     }
 }
 //-->
-</script>
-<form name="boardsadd" id="boardsadd" action="$adminurl?action=addboard2" method="post" enctype="multipart/form-data" onsubmit="selectNames($FORM{'amount'});" accept-charset="$yycharset">
-<div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-        <tr>
-            <td class="titlebg">
-                $admin_img{'cat_img'} <b>$addtext</b>
-            </td>
-        </tr><tr>
-            <td class="windowbg2 padd_8_12px">$admin_txt{'57'}</td>
-        </tr>
-    </table>
-</div>
-<div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom:.5em">
-        <col span="4" class="w_25pc" />
+        </script>
+        <form name="boardsadd" id="boardsadd" action="$adminurl?action=addboard2" method="post" enctype="multipart/form-data" onsubmit="selectNames($FORM{'amount'});" accept-charset="$yycharset">
+            <div class="bordercolor rightboxdiv">
+                <table class="border-space pad-cell" style="margin-bottom: .5em;">
+                    <tr>
+                        <td class="titlebg">$admin_img{'cat_img'} <b>$addtext</b></td>
+                    </tr><tr>
+                        <td class="windowbg2">
+                            <div class="pad-more">$admin_txt{'57'}</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="bordercolor rightboxdiv">
+                <table class="border-space pad-cell" style="margin-bottom:.5em">
+                    <col span="4" style="width:25%" />
 ~;
 
     # Check if and which board are set for announcements or recycle bin
@@ -845,38 +836,38 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         my $viewperms  = DrawPerms( $boardperms,                   0 );
         my $pollperms  = DrawPerms( ${ $uid . $id }{'pollperms'},  0 );
 
-        $yymain .= qq~<tr>
-    <td class="titlebg" colspan="4"> <b>$boardtext</b></td>
-  </tr><tr>
-    <td class="catbg" colspan="4"><b>$admin_txt{'59'}:</b> $admin_txt{'60'}</td>
-  </tr><tr>~;
+        $yymain .= qq~                  <tr>
+                        <td class="titlebg" colspan="4"> <b>$boardtext</b></td>
+                    </tr><tr>
+                        <td class="catbg" colspan="4"><b>$admin_txt{'59'}:</b> $admin_txt{'60'}</td>
+                    </tr><tr>~;
         if ( $id ne q{} ) {
             $yymain .= qq~
-    <td class="windowbg2 w_25pc"><b>$admin_txt{'61'}</b></td>
-    <td class="windowbg2" colspan="3"><input type="hidden" name="id$i" id="id$i" value="$id" />$id</td>~;
+                        <td class="windowbg2"><b>$admin_txt{'61'}</b></td>
+                        <td class="windowbg2" colspan="3"><input type="hidden" name="id$i" id="id$i" value="$id" />$id</td>~;
         }
         else {
             $yymain .= qq~
-    <td class="windowbg2 w_25pc"><label for="id$i"><b>$admin_txt{'61'}</b><br />$admin_txt{'61b'}</label></td>
-    <td class="windowbg2" colspan="3"><input type="text" name="id$i" id="id$i" /></td>~;
+                        <td class="windowbg2"><label for="id$i"><b>$admin_txt{'61'}</b><br />$admin_txt{'61b'}</label></td>
+                        <td class="windowbg2" colspan="3"><input type="text" name="id$i" id="id$i" /></td>~;
         }
         $yymain .= qq~
-  </tr><tr>
-    <td class="windowbg2"><label for="name$i"><b>$admin_txt{'68'}:</b><br />$admin_txt{'68a'}</label></td>
-    <td class="windowbg2" colspan="3"><input type="text" name="name$i" id="name$i" value="$boardname" size="50" maxlength="100" /></td>
-  </tr><tr>
-    <td class="windowbg2"><label for="description$i"><b>$admin_txt{'62'}:</b><br />$admin_txt{'62a'}</label></td>
-    <td class="windowbg2" colspan="3"><textarea name="description$i" id="description$i" rows="5" cols="30" style="width:98%; height:60px">$description</textarea></td>
-  </tr><tr>
-    <td class="windowbg2">
-    <b>$admin_txt{'63'}:</b><br /><span class="small">
-    <a href="javascript:void(0);" onclick="window.open('$scripturl?action=qsearch;toid=moderators$i','','status=no,height=350px,width=300,menubar=no,toolbar=no,top=50,left=50,scrollbars=no')">$selector_txt{linklabel}</a><br />
-    <a href="javascript:copyNames($i)">$admin_txt{'63a'}</a><br/>
-    <a href="javascript:pasteNames($i,1)">$admin_txt{'63b'}</a><br/>
-    <a href="javascript:pasteNames(1,$FORM{'amount'})">$admin_txt{'63c'}</a></span>
-    </td>
-    <td class="windowbg2" colspan="3">
-        <select name="moderators$i" id="moderators$i" multiple="multiple" size="3" style="width: 320px;" ondblclick="removeUser(this);">~;
+                    </tr><tr>
+                        <td class="windowbg2"><label for="name$i"><b>$admin_txt{'68'}:</b><br />$admin_txt{'68a'}</label></td>
+                        <td class="windowbg2" colspan="3"><input type="text" name="name$i" id="name$i" value="$boardname" size="50" maxlength="100" /></td>
+                    </tr><tr>
+                        <td class="windowbg2"><label for="description$i"><b>$admin_txt{'62'}:</b><br />$admin_txt{'62a'}</label></td>
+                        <td class="windowbg2" colspan="3"><textarea name="description$i" id="description$i" rows="5" cols="30" style="width:98%; height:60px">$description</textarea></td>
+                    </tr><tr>
+                        <td class="windowbg2">
+                            <b>$admin_txt{'63'}:</b><br /><span class="small">
+                            <a href="javascript:void(0);" onclick="window.open('$scripturl?action=qsearch;toid=moderators$i','','status=no,height=350px,width=300,menubar=no,toolbar=no,top=50,left=50,scrollbars=no')">$selector_txt{linklabel}</a><br />
+                            <a href="javascript:copyNames($i)">$admin_txt{'63a'}</a><br/>
+                            <a href="javascript:pasteNames($i,1)">$admin_txt{'63b'}</a><br/>
+                            <a href="javascript:pasteNames(1,$FORM{'amount'})">$admin_txt{'63c'}</a></span>
+                        </td>
+                        <td class="windowbg2" colspan="3">
+                            <select name="moderators$i" id="moderators$i" multiple="multiple" size="3" style="width: 320px;" ondblclick="removeUser(this);">~;
 
         my @thisBoardModerators = split /, ?/sm, $moderators;
         foreach my $thisMod (@thisBoardModerators) {
@@ -885,18 +876,17 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
             if ( !$thisModname ) { $thisModname = $thisMod; }
             if ($do_scramble_id) { $thisMod     = cloak($thisMod); }
             $yymain .= qq~
-            <option value="$thisMod">$thisModname</option>~;
+                                <option value="$thisMod">$thisModname</option>~;
         }
 
         $yymain .= qq~
-        <option value="" disabled="disabled"></option>
-        </select>
-            <br /><span class="small">$selector_txt{instructions}</span>
-    <!--<input type="text" name="moderators$i" value="$moderators" size="50" maxlength="100" />-->
-    </td>
-  </tr><tr>
-    <td class="windowbg2"><label for="moderatorgroups$i"><b>$admin_txt{'13'}:</b></label></td>
-    <td class="windowbg2" colspan="3">
+                                <option value="" disabled="disabled"></option>
+                            </select>
+                            <br /><span class="small">$selector_txt{instructions}</span>
+                        </td>
+                    </tr><tr>
+                        <td class="windowbg2"><label for="moderatorgroups$i"><b>$admin_txt{'13'}:</b></label></td>
+                        <td class="windowbg2" colspan="3">
 ~;
 
         # Allows admin to select entire membergroups to be a board moderator
@@ -917,121 +907,134 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         if ( $k > 5 ) { $k = 5; }
         if ( $k > 0 ) {
             $yymain .=
-qq~<select multiple="multiple" name="moderatorgroups$i" id="moderatorgroups$i" size="$k">$box</select> <label for="moderatorgroups$i"><span class="small">$admin_txt{'14'}</span></label>~;
+qq~                     <select multiple="multiple" name="moderatorgroups$i" id="moderatorgroups$i" size="$k">$box</select> <label for="moderatorgroups$i"><span class="small">$admin_txt{'14'}</span></label>~;
         }
         else {
             $yymain .= qq~$admin_txt{'15'}~;
         }
         my $boardpic_value = q{};
         if ( $boardpic ) {
-            $boardpic_value = qq~<div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Templates/Forum/default/$boardpic" target="_blank">$boardpic</a><br /><input type="checkbox" name="del_pic$i" id="del_pic$i" value="1" /> <label for="del_pic$i">$admin_txt{'64b4'}</label></div>~;
+            $boardpic_value = qq~               <div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Templates/Forum/default/$boardpic" target="_blank">$boardpic</a><br /><input type="checkbox" name="del_pic$i" id="del_pic$i" value="1" /> <label for="del_pic$i">$admin_txt{'64b4'}</label></div>~;
         }
 
         $yymain .= qq~
-    </td>
-  </tr><tr>
-    <td class="windowbg2"><label for="cat$i"><b>$admin_txt{'44'}:</b></label></td>
-    <td class="windowbg2" colspan="3"><select name="cat$i" id="cat$i" onchange="updateParent(this.value, '$editboards[$i]', $i)">$catsel{$i}</select></td>
-  </tr><tr>
-      <td class="windowbg2"><label for="parent$i"><b>$admin_txt{'249'}:</b></label></td>
-      <td class="windowbg2" colspan="3">
-          <select onchange="checkParent($i, '$editboards[$i]')" name="parent$i" id="parent$i">
-          <option value=""></option>
-          </select></td>
-  </tr><tr>
-      <td class="windowbg2"><b>$admin_txt{'248'}:</b></td>
-      <td class="windowbg2" colspan="3">$childrenlist</td>
-  </tr><tr>
-    <td class="windowbg2"><label for="canpost$i"><b>$admin_txt{'247'}</b></label></td>
-    <td class="windowbg2" colspan="3"><input type="checkbox" name="canpost$i" id="canpost$i" value="1"$canpostch /> <label for="canpost$i">$admin_txt{'247a'}</label></td>
-  </tr><tr>
-    <td class="catbg"  colspan="4"><b>$admin_txt{'64'}</b> $admin_txt{'64a'} </td>
-  </tr><tr>
-    <td class="windowbg2"><label for="pic$i"><b>$admin_txt{'64b'}:</b><br /><span class="small">$admin_txt{'64b3'}</span></label></td>
-    <td class="windowbg2" colspan="3"><input type="file" name="pic$i" id="pic$i" size="35"$brdpic /><input type="hidden" name="cur_pic$i" value="$boardpic" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('pic$i').value='';">X</span>$boardpic_value</td>
-  </tr><tr>
-    <td class="windowbg2"><label for="brdrss$i"><b>$admin_txt{'brdrss1'}:</b></label></td>
-    <td class="windowbg2" colspan="3"><input type="checkbox" name="brdrss$i" id="brdrss$i" value="1"$brdrssch /> <label for="brdrss$i"><span class="small">$admin_txt{'brdrss3'}</span></label></td>
-  </tr><tr>
-   <td class="windowbg2"><label for="zero$i"><b>$admin_txt{'64c'}</b></label></td>
-    <td class="windowbg2" colspan="3"><input type="checkbox" name="zero$i" id="zero$i" value="1"$zeroch /> <label for="zero$i">$admin_txt{'64d'}</label></td>
-  </tr><tr>
-    <td class="windowbg2"><label for="show$i"><b>$admin_txt{'64e'}</b></label></td>
-    <td class="windowbg2" colspan="3"><input type="checkbox" name="show$i" id="show$i" value="1"$showpriv /> <label for="show$i">$admin_txt{'64f'}</label></td>
-  </tr><tr>
-    <td class="windowbg2"><label for="att$i"><b>$admin_txt{'64k'}</b></label></td>
-    <td class="windowbg2" colspan="3"><input type="checkbox" name="att$i" id="att$i" value="1"$attch /> <label for="att$i">$admin_txt{'64l'}</label></td>
-  </tr><tr>
-    <td class="windowbg2"><label for="ann$i"><b>$admin_txt{'64g'}</b></label></td>
-    <td class="windowbg2" colspan="3"><input type="checkbox" id="ann$i" name="ann$i" value="1" $annch onclick="javascript: if (this.checked) checkann(true, '$i'); else checkann(false, '$i');" /> <label for="ann$i">$admin_txt{'64h'}</label></td>
-  </tr><tr>
-    <td class="windowbg2"><label for="rbin$i"><b>$admin_txt{'64i'}</b></label></td>
-    <td class="windowbg2" colspan="3"><input type="checkbox" id="rbin$i" name="rbin$i" value="1" $rbinch onclick="javascript: if (this.checked) checkbin(true, '$i'); else checkbin(false, '$i');" /> <label for="rbin$i">$admin_txt{'64j'}</label></td>
-  </tr><tr>
-    <td class="catbg"  colspan="4"><b>$admin_txt{'rules'}:</b></td>
-  </tr><tr>
-    <td class="windowbg2"><label for="rules$i"><b>$admin_txt{'rules1'}:</b></label></td>
-    <td class="windowbg2" colspan="3"><input type="checkbox" name="rules$i" id="rules$i" value="1"$en_rules /></td>
-  </tr><tr>
-    <td class="windowbg2"><label for="rulescollapse$i"><b>$exptxt{'6'}</b></label></td>
-    <td class="windowbg2" colspan="3"><input type="checkbox" name="rulescollapse$i" id="rulescollapse$i" value="1"$en_rulescoll /></td>
-  </tr><tr>
-    <td class="windowbg2"><label for="rulestitle$i"><b>$admin_txt{'rules2'}:</b></label></td>
-    <td class="windowbg2" colspan="3"><input type="text" name="rulestitle$i" id="rulestitle$i" value="$rulestitle" size="50" maxlength="100" /></td>
-  </tr><tr>
-    <td class="windowbg2"><label for="rulesdesc$i"><b>$admin_txt{'rules3'}:</b><br /><span class="small">$admin_txt{'rules4'}</span></label></td>
-    <td class="windowbg2" colspan="3"><textarea name="rulesdesc$i" id="rulesdesc$i" rows="5" cols="30" style="width:98%; height:60px">$rulesdesc</textarea></td>
-  </tr><tr>
-    <td class="catbg" colspan="4"><b>$admin_txt{'100'}:</b> $admin_txt{'100a'}</td>
-  </tr><tr>
-    <td class="windowbg2"><label for="minage$i"><b>$admin_txt{'95'}:</b></label></td>
-    <td class="windowbg2" colspan="3"><input type="text" size="3" name="minage$i" id="minage$i" value="$boardminage" /> <label for="minage$i">$admin_txt{'96'}</label></td>
-  </tr><tr>
-    <td class="windowbg2"><label for="maxage$i"><b>$admin_txt{'95a'}:</b></label></td>
-    <td class="windowbg2" colspan="3"><input type="text" size="3" name="maxage$i" id="maxage$i" value="$boardmaxage" /> <label for="maxage$i">$admin_txt{'96a'}</label></td>
-  </tr><tr>
-    <td class="windowbg2"><label for="gender$i"><b>$admin_txt{'97'}:</b></label></td>
-    <td class="windowbg2" colspan="3">$genselect <label for="gender$i">$admin_txt{'98'}</label></td>
-  </tr><tr>
-    <td class="windowbg2"><label for="pasww$i"><b>$boardpass_txt{'900pw'}:</b><br /><br />$boardpass_txt{'900pwb'}</label></td>
-    <td class="windowbg2" colspan="3"><input type="checkbox" name="paswwr$i" id="paswwr$i" value="1"$brdpasswr /> <input type="text" size="15" name="pasww$i" id="pasww$i" value="$brdfpassw3" />
-        <br /><label for="paswwr$i">$boardpass_txt{'900pf'}</label> 
-        <br /><span style="color:red">$brdpassw2</span>
-        <input type="hidden" name="brdpassw$i" value="$brdpassw" />
-    </td>
-  </tr><tr>
-    <td class="catbg"  colspan="4"><b>$admin_txt{'65'}:</b> $admin_txt{'65a'} <span class="small">$admin_txt{'14'}</span></td>
-  </tr><tr>
-    <td class="titlebg center"><label for="topicperms$i"><b>$admin_txt{'65b'}:</b></label></td>
-    <td class="titlebg center"><label for="replyperms$i"><b>$admin_txt{'65c'}:</b></label></td>
-    <td class="titlebg center"><label for="viewperms$i"><b>$admin_txt{'65d'}:</b></label></td>
-    <td class="titlebg center"><label for="pollperms$i"><b>$admin_txt{'65e'}:</b></label></td>
-  </tr><tr>
-    <td class="windowbg2 center"><select multiple="multiple" name="topicperms$i" id="topicperms$i" size="8">$startperms</select></td>
-    <td class="windowbg2 center"><select multiple="multiple" name="replyperms$i" id="replyperms$i" size="8">$replyperms</select></td>
-    <td class="windowbg2 center"><select multiple="multiple" name="viewperms$i" id="viewperms$i" size="8">$viewperms</select></td>
-    <td class="windowbg2 center"><select multiple="multiple" name="pollperms$i" id="pollperms$i" size="8">$pollperms</select></td>
-  </tr>
-</table>
-</div>
-<div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+                        </td>
+                    </tr><tr>
+                        <td class="windowbg2"><label for="cat$i"><b>$admin_txt{'44'}:</b></label></td>
+                        <td class="windowbg2" colspan="3"><select name="cat$i" id="cat$i" onchange="updateParent(this.value, '$editboards[$i]', $i)">$catsel{$i}</select></td>
+                    </tr><tr>
+                        <td class="windowbg2"><label for="parent$i"><b>$admin_txt{'249'}:</b></label></td>
+                        <td class="windowbg2" colspan="3">
+                            <select onchange="checkParent($i, '$editboards[$i]')" name="parent$i" id="parent$i">
+                                <option value=""></option>
+                            </select>
+                        </td>
+                    </tr><tr>
+                        <td class="windowbg2"><b>$admin_txt{'248'}:</b></td>
+                        <td class="windowbg2" colspan="3">$childrenlist</td>
+                    </tr><tr>
+                        <td class="windowbg2"><label for="canpost$i"><b>$admin_txt{'247'}</b></label></td>
+                        <td class="windowbg2" colspan="3"><input type="checkbox" name="canpost$i" id="canpost$i" value="1"$canpostch /> <label for="canpost$i">$admin_txt{'247a'}</label></td>
+                    </tr><tr>
+                        <td class="catbg"  colspan="4"><b>$admin_txt{'64'}</b> $admin_txt{'64a'} </td>
+                    </tr><tr>
+                        <td class="windowbg2"><label for="pic$i"><b>$admin_txt{'64b'}:</b><br /><span class="small">$admin_txt{'64b3'}</span></label></td>
+                        <td class="windowbg2" colspan="3"><input type="file" name="pic$i" id="pic$i" size="35"$brdpic /><input type="hidden" name="cur_pic$i" value="$boardpic" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('pic$i').value='';">X</span>$boardpic_value</td>
+                    </tr><tr>
+                        <td class="windowbg2"><label for="brdrss$i"><b>$admin_txt{'brdrss1'}:</b></label></td>
+                        <td class="windowbg2" colspan="3"><input type="checkbox" name="brdrss$i" id="brdrss$i" value="1"$brdrssch /> <label for="brdrss$i"><span class="small">$admin_txt{'brdrss3'}</span></label></td>
+                    </tr><tr>
+                        <td class="windowbg2"><label for="zero$i"><b>$admin_txt{'64c'}</b></label></td>
+                        <td class="windowbg2" colspan="3"><input type="checkbox" name="zero$i" id="zero$i" value="1"$zeroch /> <label for="zero$i">$admin_txt{'64d'}</label></td>
+                    </tr><tr>
+                        <td class="windowbg2"><label for="show$i"><b>$admin_txt{'64e'}</b></label></td>
+                        <td class="windowbg2" colspan="3"><input type="checkbox" name="show$i" id="show$i" value="1"$showpriv /> <label for="show$i">$admin_txt{'64f'}</label></td>
+                    </tr><tr>
+                        <td class="windowbg2"><label for="att$i"><b>$admin_txt{'64k'}</b></label></td>
+                        <td class="windowbg2" colspan="3"><input type="checkbox" name="att$i" id="att$i" value="1"$attch /> <label for="att$i">$admin_txt{'64l'}</label></td>
+                    </tr><tr>
+                        <td class="windowbg2"><label for="ann$i"><b>$admin_txt{'64g'}</b></label></td>
+                        <td class="windowbg2" colspan="3"><input type="checkbox" id="ann$i" name="ann$i" value="1" $annch onclick="javascript: if (this.checked) checkann(true, '$i'); else checkann(false, '$i');" /> <label for="ann$i">$admin_txt{'64h'}</label></td>
+                    </tr><tr>
+                        <td class="windowbg2"><label for="rbin$i"><b>$admin_txt{'64i'}</b></label></td>
+                        <td class="windowbg2" colspan="3"><input type="checkbox" id="rbin$i" name="rbin$i" value="1" $rbinch onclick="javascript: if (this.checked) checkbin(true, '$i'); else checkbin(false, '$i');" /> <label for="rbin$i">$admin_txt{'64j'}</label></td>
+                    </tr><tr>
+                        <td class="catbg"  colspan="4"><b>$admin_txt{'rules'}:</b></td>
+                    </tr><tr>
+                        <td class="windowbg2"><label for="rules$i"><b>$admin_txt{'rules1'}:</b></label></td>
+                        <td class="windowbg2" colspan="3"><input type="checkbox" name="rules$i" id="rules$i" value="1"$en_rules /></td>
+                    </tr><tr>
+                        <td class="windowbg2"><label for="rulescollapse$i"><b>$exptxt{'6'}</b></label></td>
+                        <td class="windowbg2" colspan="3"><input type="checkbox" name="rulescollapse$i" id="rulescollapse$i" value="1"$en_rulescoll /></td>
+                    </tr><tr>
+                        <td class="windowbg2"><label for="rulestitle$i"><b>$admin_txt{'rules2'}:</b></label></td>
+                        <td class="windowbg2" colspan="3"><input type="text" name="rulestitle$i" id="rulestitle$i" value="$rulestitle" size="50" maxlength="100" /></td>
+                    </tr><tr>
+                        <td class="windowbg2"><label for="rulesdesc$i"><b>$admin_txt{'rules3'}:</b><br /><span class="small">$admin_txt{'rules4'}</span></label></td>
+                        <td class="windowbg2" colspan="3"><textarea name="rulesdesc$i" id="rulesdesc$i" rows="5" cols="30" style="width:98%; height:60px">$rulesdesc</textarea></td>
+                    </tr><tr>
+                        <td class="catbg" colspan="4"><b>$admin_txt{'100'}:</b> $admin_txt{'100a'}</td>
+                    </tr><tr>
+                        <td class="windowbg2"><label for="minage$i"><b>$admin_txt{'95'}:</b></label></td>
+                        <td class="windowbg2" colspan="3"><input type="text" size="3" name="minage$i" id="minage$i" value="$boardminage" /> <label for="minage$i">$admin_txt{'96'}</label></td>
+                    </tr><tr>
+                        <td class="windowbg2"><label for="maxage$i"><b>$admin_txt{'95a'}:</b></label></td>
+                        <td class="windowbg2" colspan="3"><input type="text" size="3" name="maxage$i" id="maxage$i" value="$boardmaxage" /> <label for="maxage$i">$admin_txt{'96a'}</label></td>
+                    </tr><tr>
+                        <td class="windowbg2"><label for="gender$i"><b>$admin_txt{'97'}:</b></label></td>
+                        <td class="windowbg2" colspan="3">$genselect <label for="gender$i">$admin_txt{'98'}</label></td>
+                    </tr><tr>
+                        <td class="windowbg2"><label for="pasww$i"><b>$boardpass_txt{'900pw'}:</b><br /><br />$boardpass_txt{'900pwb'}</label></td>
+                        <td class="windowbg2" colspan="3">
+                            <input type="checkbox" name="paswwr$i" id="paswwr$i" value="1"$brdpasswr /> <input type="text" size="15" name="pasww$i" id="pasww$i" value="$brdfpassw3" />
+                            <br /><label for="paswwr$i">$boardpass_txt{'900pf'}</label>
+                            <br /><span class="important">$brdpassw2</span>
+                            <input type="hidden" name="brdpassw$i" value="$brdpassw" />
+                        </td>
+                    </tr><tr>
+                        <td class="catbg"  colspan="4"><b>$admin_txt{'65'}:</b> $admin_txt{'65a'} <span class="small">$admin_txt{'14'}</span></td>
+                    </tr><tr>
+                        <td class="titlebg center"><label for="topicperms$i"><b>$admin_txt{'65b'}:</b></label></td>
+                        <td class="titlebg center"><label for="replyperms$i"><b>$admin_txt{'65c'}:</b></label></td>
+                        <td class="titlebg center"><label for="viewperms$i"><b>$admin_txt{'65d'}:</b></label></td>
+                        <td class="titlebg center"><label for="pollperms$i"><b>$admin_txt{'65e'}:</b></label></td>
+                    </tr><tr>
+                        <td class="windowbg2 center">
+                            <select multiple="multiple" name="topicperms$i" id="topicperms$i" size="8">\n$startperms
+                            </select>
+                        </td>
+                        <td class="windowbg2 center">
+                            <select multiple="multiple" name="replyperms$i" id="replyperms$i" size="8">\n$replyperms
+                            </select>
+                        </td>
+                        <td class="windowbg2 center">
+                            <select multiple="multiple" name="viewperms$i" id="viewperms$i" size="8">\n$viewperms
+                            </select>
+                        </td>
+                        <td class="windowbg2 center">
+                            <select multiple="multiple" name="pollperms$i" id="pollperms$i" size="8">\n$pollperms
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="bordercolor rightboxdiv">
+                <table class="border-space pad-cell" style="margin-bottom: .5em;">
 ~;
     }
-    $yymain .= qq~<tr>
-        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-    </tr><tr>
-        <td class="catbg center">
-            <input type="hidden" name="amount" value="$FORM{'amount'}" />
-            <input type="hidden" name="screenornot" value="$INFO{'action'}" />
-            <input type="submit" value="$admin_txt{'10'}" class="button" />
-        </td>
-    </tr>
-</table>
-</div>
-</form>
-
-<script type="text/javascript">
+    $yymain .= qq~                  <tr>
+                        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+                    </tr><tr>
+                        <td class="catbg center">
+                            <input type="hidden" name="amount" value="$FORM{'amount'}" />
+                            <input type="hidden" name="screenornot" value="$INFO{'action'}" />
+                            <input type="submit" value="$admin_txt{'10'}" class="button" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+        <script type="text/javascript">
 <!--
 var numboards = "$FORM{'amount'}";
 var annexist = "$annexist";
@@ -1088,7 +1091,7 @@ function checkbin(bcheck, bwho) {
 
 selectParentBoard();
 //-->
-</script>
+        </script>
 
     ~;
    $yytitle     = "$admin_txt{'50'}";
@@ -1114,11 +1117,11 @@ sub DrawPerms {
                 $foundit = 1;
                 $found{$name} = 1;
                 $groupsel .=
-qq~<option value="Topic Starter" selected="selected">$name</option>\n~;
+qq~                         <option value="Topic Starter" selected="selected">$name</option>\n~;
             }
             if ( $count == $#perms && $found{$name} != 1 ) {
                 $groupsel2 .=
-                  qq~<option value="Topic Starter">$name</option>\n~;
+                  qq~                           <option value="Topic Starter">$name</option>\n~;
             }
         }
 
@@ -1127,10 +1130,10 @@ qq~<option value="Topic Starter" selected="selected">$name</option>\n~;
             $foundit = 1;
             $found{$name} = 1;
             $groupsel .=
-qq~<option value="Administrator" selected="selected">$name</option>\n~;
+qq~                         <option value="Administrator" selected="selected">$name</option>\n~;
         }
         if ( $count == $#perms && $found{$name} != 1 ) {
-            $groupsel2 .= qq~<option value="Administrator">$name</option>\n~;
+            $groupsel2 .= qq~                           <option value="Administrator">$name</option>\n~;
         }
 
         ( $name, undef ) = split /\|/xsm, $Group{'Global Moderator'}, 2;
@@ -1138,10 +1141,10 @@ qq~<option value="Administrator" selected="selected">$name</option>\n~;
             $foundit = 1;
             $found{$name} = 1;
             $groupsel .=
-qq~<option value="Global Moderator" selected="selected">$name</option>\n~;
+qq~                         <option value="Global Moderator" selected="selected">$name</option>\n~;
         }
         if ( $count == $#perms && $found{$name} != 1 ) {
-            $groupsel2 .= qq~<option value="Global Moderator">$name</option>\n~;
+            $groupsel2 .= qq~                           <option value="Global Moderator">$name</option>\n~;
         }
 
         ( $name, undef ) = split /\|/xsm, $Group{'Mid Moderator'}, 2;
@@ -1149,10 +1152,10 @@ qq~<option value="Global Moderator" selected="selected">$name</option>\n~;
             $foundit = 1;
             $found{$name} = 1;
             $groupsel .=
-qq~<option value="Mid Moderator" selected="selected">$name</option>\n~;
+qq~                         <option value="Mid Moderator" selected="selected">$name</option>\n~;
         }
         if ( $count == $#perms && $found{$name} != 1 ) {
-            $groupsel2 .= qq~<option value="Mid Moderator">$name</option>\n~;
+            $groupsel2 .= qq~                           <option value="Mid Moderator">$name</option>\n~;
         }
         if ( $foundit != 1 || $count == $#perms ) {
             foreach (@nopostorder) {
@@ -1161,10 +1164,10 @@ qq~<option value="Mid Moderator" selected="selected">$name</option>\n~;
                     $foundit = 1;
                     $found{$_} = 1;
                     $groupsel .=
-qq~<option value="$_" selected="selected">$name</option>\n~;
+qq~                         <option value="$_" selected="selected">$name</option>\n~;
                 }
                 if ( $found{$_} != 1 && $count == $#perms ) {
-                    $groupsel2 .= qq~<option value="$_">$name</option>\n~;
+                    $groupsel2 .= qq~                           <option value="$_">$name</option>\n~;
                 }
             }
             if ( $foundit != 1 || $count == $#perms ) {
@@ -1174,13 +1177,13 @@ qq~<option value="$_" selected="selected">$name</option>\n~;
                         $foundit = 1;
                         $found{$name} = 1;
                         $groupsel .=
-qq~<option value="$name" selected="selected">$name</option>\n~;
+qq~                         <option value="$name" selected="selected">$name</option>\n~;
                     }
                     if ( $count == $#perms
                         && ( $found{$name} != 1 || $found{$name} eq q{} ) )
                     {
                         $groupsel2 .=
-                          qq~<option value="$name">$name</option>\n~;
+                          qq~                           <option value="$name">$name</option>\n~;
                     }
                 }
             }
@@ -1200,15 +1203,15 @@ sub AddBoards2 {
 
     for my $i ( 1 .. $FORM{'amount'} ) {
         if ( $FORM{"pic$i"} ne q{} ) {
-            $FORM{"pic$i"} = UploadFile("pic$i", 'Templates/Forum/default', 'png jpg jpeg gif', '250', '0'); 
+            $FORM{"pic$i"} = UploadFile("pic$i", 'Templates/Forum/default', 'png jpg jpeg gif', '250', '0');
             if ( $FORM{"cur_pic$i"} ne q{} ) {
                 unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_pic$i\"}";
             }
-        } 
+        }
         else {
             $FORM{"pic$i"} = $FORM{"cur_pic$i"};
         }
-        
+
         if ( $FORM{"cur_pic$i"} ne q{} && $FORM{"del_pic$i"} ) {
             unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_pic$i\"}";
             $FORM{"pic$i"} = q{};
@@ -1595,7 +1598,7 @@ qq~<option value="$board" selected="selected">$boardname</option>~;
     $yymain .= qq~
 <br /><br />
 <form action="$adminurl?action=reorderboards2;item=$INFO{'item'}$INFO{'subboards'}" method="post" id="bdform" accept-charset="$yycharset">
-    <table class="bordercolor cs_thin pad_4px" style="width:535px">
+    <table class="bordercolor border-space pad-cell" style="width:535px">
   <tr>
             <td class="titlebg">$admin_img{'board'} <b>$cur_txt ($curname)</b></td>
         </tr><tr>
@@ -1901,7 +1904,7 @@ qq~$adminurl?action=reorderboards;item=$catorbd;theboard=$moveitem;subboards=1~;
 
 sub ConfRemBoard {
     $yymain .= qq~
-    <table class="bordercolor cs_thin">
+    <table class="bordercolor border-space">
         <tr>
             <td class="titlebg"><b>$admin_txt{'31'} - '$FORM{'boardname'}'?</b></td>
         </tr><tr>

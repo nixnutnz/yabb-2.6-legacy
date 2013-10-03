@@ -1,6 +1,6 @@
 ###############################################################################
 # GuardianAdmin.pm                                                            #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.03.13                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -80,31 +80,31 @@ sub setup_guardian {
     $yymain .= qq~
 <form action="$adminurl?action=setup_guardian2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'title'}</b>
             </td>
         </tr><tr>
-            <td class="windowbg2 padd_8_12px">
-                $guardian_txt{'description'}
+            <td class="windowbg2">
+                <div class="pad-more">$guardian_txt{'description'}</div>
             </td>
         </tr>
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'general'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="use_guardian">$guardian_txt{'use_guardian'}</label>
                     <input type="checkbox" name="use_guardian" id="use_guardian" value="1"$guardian_checked />
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="use_htaccess">$guardian_txt{'use_htaccess'}
                     <input type="checkbox" name="use_htaccess" id="use_htaccess" value="1"$htaccess_checked onmouseup="remove_htaccess();" /><br />$guardian_txt{'use_htaccess_support'}</label>
                 </div>
@@ -123,10 +123,10 @@ sub setup_guardian {
             }
         // -->
                 </script>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="access_denied">$guardian_txt{'htaccess_list'}</label>
                 </div>
-                <div class="setting_cell4">
+                <div class="setting-cell4">
                     <textarea cols="40" rows="8" name="access_denied" id="access_denied" style="width:98%"~
       . ( $use_htaccess ? q{} : ' disabled="disabled"' )
       . qq~>$acc_denied</textarea>
@@ -136,28 +136,28 @@ sub setup_guardian {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'proxy'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="disallow_proxy_on">$guardian_txt{'proxy_on'}</label>
                     <input type="checkbox" name="disallow_proxy_on" id="disallow_proxy_on" value="1"$proxy_on_checked />
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="whitelist">$guardian_txt{'white_list'}</label>
                 </div>
-                <div class="setting_cell4">
+                <div class="setting-cell4">
                     <textarea cols="40" rows="8" name="whitelist" id="whitelist" style="width:98%">$whitelist</textarea>
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="disallow_proxy_notify">$guardian_txt{'notify'}</label>
                     <input type="checkbox" name="disallow_proxy_notify" id="disallow_proxy_notify" value="1"$proxy_notify_checked />
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="disallow_proxy_htaccess">$guardian_txt{'htaccess_add'}
                     <input type="checkbox" name="disallow_proxy_htaccess" id="disallow_proxy_htaccess" value="1"$proxy_htaccess_checked /><br />$guardian_txt{'htaccess_support'}</label>
                 </div>
@@ -166,28 +166,28 @@ sub setup_guardian {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'referer'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="referer_on">$guardian_txt{'referer_on'}</label>
                     <input type="checkbox" name="referer_on" id="referer_on" value="1"$referer_on_checked />
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="banned_referers">$guardian_txt{'referer_list'}</label>
                 </div>
-                <div class="setting_cell4">
+                <div class="setting-cell4">
                     <textarea cols="40" rows="8" name="banned_referers" id="banned_referers" style="width:98%">$banned_referers</textarea>
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="referer_notify">$guardian_txt{'notify'}</label>
                     <input type="checkbox" name="referer_notify" id="referer_notify" value="1"$referer_notify_checked />
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="referer_htaccess">$guardian_txt{'htaccess_add'}
                     <input type="checkbox" name="referer_htaccess" id="referer_htaccess" value="1"$referer_htaccess_checked /><br />$guardian_txt{'htaccess_support'}</label>
                 </div>
@@ -196,28 +196,28 @@ sub setup_guardian {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'harvester'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="harvester_on">$guardian_txt{'harvester_on'}</label>
                     <input type="checkbox" name="harvester_on" id="harvester_on" value="1"$harvester_on_checked />
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="banned_harvesters">$guardian_txt{'harvester_list'}</label>
                 </div>
-                <div class="setting_cell4">
+                <div class="setting-cell4">
                     <textarea cols="40" rows="8" name="banned_harvesters" id="banned_harvesters" style="width:98%">$banned_harvesters</textarea>
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="harvester_notify">$guardian_txt{'notify'}</label>
                     <input type="checkbox" name="harvester_notify" id="harvester_notify" value="1"$harvester_notify_checked />
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="harvester_htaccess">$guardian_txt{'htaccess_add'}
                     <input type="checkbox" name="harvester_htaccess" id="harvester_htaccess" value="1"$harvester_htaccess_checked /><br />$guardian_txt{'htaccess_support'}</label>
                 </div>
@@ -226,28 +226,28 @@ sub setup_guardian {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'request'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="request_on">$guardian_txt{'request_on'}</label>
                     <input type="checkbox" name="request_on" id="request_on" value="1"$request_on_checked />
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="banned_requests">$guardian_txt{'request_list'}</label>
                 </div>
-                <div class="setting_cell4">
+                <div class="setting-cell4">
                     <textarea cols="40" rows="8" name="banned_requests" id="banned_requests" style="width:98%">$banned_requests</textarea>
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="request_notify">$guardian_txt{'notify'}</label>
                     <input type="checkbox" name="request_notify" id="request_notify" value="1"$request_notify_checked />
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="request_htaccess">$guardian_txt{'htaccess_add'}
                     <input type="checkbox" name="request_htaccess" id="request_htaccess" value="1"$request_htaccess_checked /><br />$guardian_txt{'htaccess_support'}</label>
                 </div>
@@ -256,28 +256,28 @@ sub setup_guardian {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'string'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="string_on">$guardian_txt{'string_on'}</label>
                     <input type="checkbox" name="string_on" id="string_on" value="1"$string_on_checked />
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="banned_strings">$guardian_txt{'string_list'}</label>
                 </div>
-                <div class="setting_cell4">
+                <div class="setting-cell4">
                     <textarea cols="40" rows="8" name="banned_strings" id="banned_strings" style="width:98%">$banned_strings</textarea>
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="string_notify">$guardian_txt{'notify'}</label>
                     <input type="checkbox" name="string_notify" id="string_notify" value="1"$string_notify_checked />
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="string_htaccess">$guardian_txt{'htaccess_add'}
                     <input type="checkbox" name="string_htaccess" id="string_htaccess" value="1"$string_htaccess_checked /><br />$guardian_txt{'htaccess_support'}</label>
                 </div>
@@ -286,22 +286,22 @@ sub setup_guardian {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'script'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="script_on">$guardian_txt{'script_on'}</label>
                     <input type="checkbox" name="script_on" id="script_on" value="1"$script_on_checked />
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="script_notify">$guardian_txt{'notify'}</label>
                     <input type="checkbox" name="script_notify" id="script_notify" value="1"$script_notify_checked />
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="script_htaccess">$guardian_txt{'htaccess_add'}
                     <input type="checkbox" name="script_htaccess" id="script_htaccess" value="1"$script_htaccess_checked /><br />$guardian_txt{'htaccess_support'}</label>
                 </div>
@@ -310,22 +310,22 @@ sub setup_guardian {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'union'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="union_on">$guardian_txt{'union_on'}</label>
                     <input type="checkbox" name="union_on" id="union_on" value="1"$union_on_checked />
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="union_notify">$guardian_txt{'notify'}</label>
                     <input type="checkbox" name="union_notify" id="union_notify" value="1"$union_notify_checked />
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="union_htaccess">$guardian_txt{'htaccess_add'}
                     <input type="checkbox" name="union_htaccess" id="union_htaccess" value="1"$union_htaccess_checked /><br />$guardian_txt{'htaccess_support'}</label>
                 </div>
@@ -334,22 +334,22 @@ sub setup_guardian {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
                 <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'clike'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="clike_on">$guardian_txt{'clike_on'}</label>
                     <input type="checkbox" name="clike_on" id="clike_on" value="1"$clike_on_checked />
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="clike_notify">$guardian_txt{'notify'}</label>
                     <input type="checkbox" name="clike_notify" id="clike_notify" value="1"$clike_notify_checked />
                 </div>
-                <div class="setting_cell3">
+                <div class="setting-cell3">
                     <label for="clike_htaccess">$guardian_txt{'htaccess_add'}
                     <input type="checkbox" name="clike_htaccess" id="clike_htaccess" value="1"$clike_htaccess_checked /><br />$guardian_txt{'htaccess_support'}</label>
                 </div>
@@ -358,7 +358,7 @@ sub setup_guardian {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px">
+<table class="border-space pad-cell">
     <tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
     </tr><tr>

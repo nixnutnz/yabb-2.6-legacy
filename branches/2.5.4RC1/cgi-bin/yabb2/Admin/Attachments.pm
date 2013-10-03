@@ -1,6 +1,6 @@
 ###############################################################################
 # Attachments.pm                                                              #
-# $Date: 9.16.13 $                                                            #
+# $Date: 10.03.13 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -75,20 +75,22 @@ sub Attachments {
     my $pmTotalAttachNum = @pmAttachments;
      $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px">
+<table class="border-space pad-cell">
     <tr>
         <td class="titlebg">$admin_img{'xx'} <b>$fatxt{'24'}</b></td>
     </tr><tr>
-        <td class="windowbg padd_8_12px"><span class="small">$fatxt{'25'}</span></td>
+        <td class="windowbg">
+            <div class="pad-more small">$fatxt{'25'}</div>
+        </td>
     </tr><tr>
         <td class="catbg"><b>$fatxt{'26'}</b></td>
     </tr><tr>
-        <td class="windowbg h_21px">
-            <b>$fatxt{'27'}</b><br />
+        <td class="windowbg att_h_a">
+            <b>$fatxt{'27'}</b>
         </td>
     </tr><tr>
         <td class="windowbg2">
-            <table class="pad_3px left">
+            <table class="left pad-cell" style="margin-bottom:.5em">
                 <tr>
                     <td class="small"><b>$fatxt{'28'}</b></td>
                     <td class="small">$totalattachnum</td>
@@ -110,30 +112,30 @@ sub Attachments {
                     <td class="small"><b>$fatxt{'30a'}</b></td>
                     <td class="small">$pmRemainingSpace</td>
                 </tr>
-            </table><br />
+            </table>
         </td>
     </tr><tr>
-        <td class="windowbg h_21px">
-            <b>$fatxt{'31'}</b><br />
+        <td class="windowbg att_h_a">
+            <b>$fatxt{'31'}</b>
         </td>
     </tr><tr>
         <td class="windowbg2">
-                <form action="$adminurl?action=removeoldattachments" method="post">
-			<table class="pad_3px left" style="min-width:30%">
-				<col style="width:60%" />
-				<col style="width:20%" span="2" />
+            <form action="$adminurl?action=removeoldattachments" method="post">
+            <table class="pad-cell left" style="min-width:30%">
+                <col style="width:60%" />
+                <col style="width:20%" span="2" />
                 <tr>
                     <td class="small">$fatxt{'32'}</td>
                     <td class="small"><input type="text" name="maxdaysattach" size="2" value="$maxdaysattach" /> $fatxt{'58'}&nbsp;</td>
                     <td><input type="submit" value="$admin_txt{'32'}" class="button" /></td>
-				</tr>
-			</table>
-                </form>
-                <form action="$adminurl?action=removebigattachments" method="post">
-			<table class="pad_3px left" style="min-width:30%">
-				<col style="width:60%" />
-				<col style="width:20%" span="2" />
-				<tr>
+                </tr>
+            </table>
+            </form>
+            <form action="$adminurl?action=removebigattachments" method="post">
+            <table class="pad-cell left" style="min-width:30%">
+                <col style="width:60%" />
+                <col style="width:20%" span="2" />
+                <tr>
                     <td><span class="small">$fatxt{'33'}</span></td>
                     <td><span class="small"><input type="text" name="maxsizeattach" size="2" value="$maxsizeattach" /> KB&nbsp;</span></td>
                     <td><input type="submit" value="$admin_txt{'32'}" class="button" /></td>
@@ -143,29 +145,29 @@ sub Attachments {
                     </td>
                 </tr>
             </table>
-			</form>
+            </form>
         </td>
     </tr><tr>
-        <td class="windowbg h_21px">
-            <b>$fatxt{'31b'}</b><br />
+        <td class="windowbg att_h_a">
+            <b>$fatxt{'31b'}</b>
         </td>
     </tr><tr>
         <td class="windowbg2">
-                <form action="$adminurl?action=removeoldpmattachments" method="post">
-			<table class="pad_3px left" style="min-width:30%">
-				<col style="width:60%" />
-				<col style="width:20%" span="2" />
+            <form action="$adminurl?action=removeoldpmattachments" method="post">
+            <table class="pad-cell left" style="min-width:30%">
+                <col style="width:60%" />
+                <col style="width:20%" span="2" />
                 <tr>
                     <td><span class="small">$fatxt{'32a'}</span></td>
                     <td><span class="small"><input type="text" name="pmmaxdaysattach" size="2" value="$pmMaxDaysAttach" /> $fatxt{'58'}&nbsp;</span></td>
                     <td><input type="submit" value="$admin_txt{'32'}" class="button" /></td>
-				</tr>
-			</table>
-                </form>
-                <form action="$adminurl?action=removebigpmattachments" method="post">
-			<table class="pad_3px left" style="min-width:30%">
-				<col style="width:60%" />
-				<col style="width:20%" span="2" />
+                </tr>
+            </table>
+            </form>
+            <form action="$adminurl?action=removebigpmattachments" method="post">
+            <table class="pad-cell left" style="min-width:30%">
+                <col style="width:60%" />
+                <col style="width:20%" span="2" />
                 <tr>
                     <td><span class="small">$fatxt{'33a'}</span></td>
                     <td><span class="small"><input type="text" name="pmmaxsizeattach" size="2" value="$pmMaxSizeAttach" /> KB&nbsp;</span></td>
@@ -176,7 +178,7 @@ sub Attachments {
                     </td>
                 </tr>
             </table>
-			</form>
+            </form>
         </td>
     </tr>
 </table>
@@ -401,7 +403,7 @@ sub Attachments2 {
 
     if ( !$max ) {
         $viewattachments .=
-qq~<tr><td class="windowbg2 padd_4px center" colspan="8"><b><i>$fatxt{'48'}</i></b></td></tr>~;
+qq~<tr><td class="windowbg2 padd-cell center" colspan="8"><b><i>$fatxt{'48'}</i></b></td></tr>~;
     }
     else {
         $yymain .= qq~
@@ -501,7 +503,7 @@ qq~<a href="$adminurl?action=$action;newstart=$lastptn;sort=$sort">$lastpn</a>~;
         $pageindex .= $pageindexadd;
 
         $pageindex =
-qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{'64'}: $pageindex</div>~;
+qq~<div class="small" style="line-height: 2.5em; float: right; text-align: right; vertical-align: middle;">$fatxt{'64'}: $pageindex</div>~;
 
         $numbegin = ( $newstart + 1 );
         $numend   = ( $newstart + 25 );
@@ -511,6 +513,7 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
 
         my ( %attach_gif, $ext );
         foreach my $row ( splice @attachments, $newstart, 25 ) {
+            chomp $row;
             my (
                 $amthreadid, $amreplies,      $amthreadsub,
                 $amposter,   $amcurrentboard, $amkb,
@@ -540,9 +543,9 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
             <td class="windowbg2 center"><input type="checkbox" name="del_$amthreadid" value="$amfn" /></td>
             <td class="windowbg2"><a href="$uploadurl/$amfn" target="_blank">$amfna</a></td>
             <td class="windowbg2 center"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /></td>
-            <td class="windowbg2 right padd_4px">$amkb KB</td>
+            <td class="windowbg2 right">$amkb KB</td>
             <td class="windowbg2 center">$amdate</td>
-            <td class="windowbg2 right padd_4px">$amcount</td>
+            <td class="windowbg2 right">$amcount</td>
             <td class="windowbg2"><a href="$scripturl?num=$amthreadid/$amreplies#$amreplies" target="_blank">$amthreadsub</a></td>
             <td class="windowbg2 center">$amposter</td>
         </tr>~;
@@ -574,7 +577,7 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_8px">
+<table class="border-space pad-cell">
     <col style="width:7%" />
     <col style="width:18%" />
     <col style="width:5%" />
@@ -584,21 +587,21 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
     <col style="width:22%" />
     <col style="width:13%" />
     <tr>
-        <td class="titlebg padd_4px" colspan="8">
+        <td class="titlebg" colspan="8">
             $admin_img{'xx'}&nbsp;<b>$fatxt{'39'}</b>
         </td>
     </tr><tr>
-        <td class="windowbg padd_8_12px" colspan="8">
-        <span class="small">$fatxt{'38'}</span>
+        <td class="windowbg" colspan="8">
+        <div class="pad-more small">$fatxt{'38'}</div>
         </td>
     </tr><tr>
         <td class="titlebg center" colspan="8"><b>$fatxt{'55'}</b></td>
     </tr><tr>
-       <td class="catbg h_30px" colspan="8">
+       <td class="catbg att_h_b" colspan="8">
         <div class="small" style="float: left; text-align: left;">$fatxt{'28'} $max $numshow</div>
         $pageindex
         </td>
-    </tr><tr class="h_30px">
+    </tr><tr class="att_h_b">
         <td class="windowbg center"><b>$fatxt{'45'}</b></td>
         <td onclick="location.href='$adminurl?action=manageattachments2;sort=~
       . ( $sort == 7 ? -7 : 7 )
@@ -918,7 +921,7 @@ sub PMAttachments2 {
 
     if ( !$max ) {
         $viewattachments .=
-qq~<tr><td class="windowbg2 padd_4px center" colspan="6"><b><i>$fatxt{'48a'}</i></b></td></tr>~;
+qq~<tr><td class="windowbg2 padd-cell center" colspan="6"><b><i>$fatxt{'48a'}</i></b></td></tr>~;
 
     }
     else {
@@ -1020,7 +1023,7 @@ qq~<a href="$adminurl?action=$action;newstart=$lastptn;sort=$sort">$lastpn</a>~;
         $pageindex .= $pageindexadd;
 
         $pageindex =
-qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{'64'}: $pageindex</div>~;
+qq~<div class="small" style="line-height: 2.5em; float: right; text-align: right; vertical-align: middle;">$fatxt{'64'}: $pageindex</div>~;
 
         $numbegin = ( $newstart + 1 );
         $numend   = ( $newstart + 25 );
@@ -1054,7 +1057,7 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
             <td class="windowbg2 center"><input type="checkbox" name="del_$pmthreadid" value="$pmAttachName" /></td>
             <td class="windowbg2"><a href="$pmuploadurl/$pmAttachName" target="_blank">$pmfna</a></td>
             <td class="windowbg2 center"><img src="$imagesdir/$attach_gif{$ext}" class="bottom" alt="" /></td>
-            <td class="windowbg2 right padd_4px">$pmAttachKB KB</td>
+            <td class="windowbg2 right">$pmAttachKB KB</td>
             <td class="windowbg2 center">$pmAttachDate</td>
             <td class="windowbg2 center">$pmAttachUser</td>
         </tr>~;
@@ -1084,29 +1087,29 @@ qq~<div class="small" style="text-align: right; vertical-align: middle;">$fatxt{
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_8px">
+<table class="border-space pad-cell">
     <col style="width:8%" />
     <col style="width:30%" />
     <col style="width:10%" />
     <col style="width:12%" />
     <col style="width:30%" />
     <col style="width:15%" />
-	<tr>
-        <td class="titlebg padd_4px" colspan="6">
+    <tr>
+        <td class="titlebg" colspan="6">
             $admin_img{'xx'}&nbsp;<b>$fatxt{'39a'}</b>
         </td>
     </tr><tr>
-        <td class="windowbg padd_8_12px" colspan="6">
-        <span class="small">$fatxt{'38a'}</span>
+        <td class="windowbg" colspan="6">
+        <div class="pad-more small">$fatxt{'38a'}</div>
         </td>
     </tr><tr>
         <td class="titlebg center" colspan="6"><b>$fatxt{'55a'}</b></td>
     </tr><tr>
-         <td class="catbg h_30px" colspan="6">
+         <td class="catbg att_h_b" colspan="6">
         <div class="small" style="float: left; text-align: left;">$fatxt{'28'} $max $numshow</div>
         $pageindex
         </td>
-    </tr><tr class="h_30px">
+    </tr><tr class="att_h_b">
         <td class="windowbg center"><b>$fatxt{'45'}</b></td>
         <td onclick="location.href='$adminurl?action=managepmattachments2;sort=~
       . ( $sort == 3 ? -3 : 3 )

@@ -1,6 +1,6 @@
 ###############################################################################
 # NewSettings.pm                                                              #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.03.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -61,20 +61,18 @@ sub settings {
 
     $yymain .= qq~
     <div class="bordercolor rightboxdiv">
-        <table class="cs_thin pad_4px" style="margin-bottom:.5em">
-                <tr>
-                    <td class="titlebg">
-         <b>$yytitle</b>
-       </td>
-               </tr><tr>
-                <td class="windowbg2 padd_8_12px">
-        $admin_txt{'347'}
-       </td>
-     </tr>
-  </table>
-  </div>
-  <form action="$adminurl?action=newsettings2;page=$page" onsubmit="undisableAll(this);" method="post" enctype="multipart/form-data" accept-charset="$yycharset">
-  <ul id="navlist">
+        <table class="border-space pad-cell" style="margin-bottom:.5em">
+            <tr>
+                <td class="titlebg"><b>$yytitle</b></td>
+            </tr><tr>
+                <td class="windowbg2">
+                    <div class="pad-more">$admin_txt{'347'}</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+<form action="$adminurl?action=newsettings2;page=$page" onsubmit="undisableAll(this);" method="post" enctype="multipart/form-data" accept-charset="$yycharset">
+    <ul id="navlist">
 ~;
     my $i = 0;
     foreach my $tab (@settings) {
@@ -91,9 +89,9 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
         $yymain .= qq~
     <div class="bordercolor borderstyle rightboxdiv">
         <table class="section" style="border-collapse:separate; border-spacing: 1px;" id="tab_$tab->{'id'}">
-            <col class=" w_50pc" />
+            <col span="2" style="width: 50%" />
             <tr>
-                <td class="titlebg padd_4px" colspan="2">
+                <td class="titlebg padd-cell" colspan="2">
                     $admin_img{'prefimg'} <b>$tab->{'name'}</b>
          <span style="float: right;" class="js_remove_me"><a href="#"><b>$settings_txt{'top'}</b></a></span>
        </td>
@@ -102,28 +100,28 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
         foreach my $item ( @{ $tab->{'items'} } ) {
             if ( $item->{'header'} ) {
                 $yymain .= qq~<tr>
-                <td class="catbg padd_4px" colspan="2">
+                <td class="catbg padd-cell" colspan="2">
          <span class="small">$item->{'header'}</span>
        </td>
      </tr>~;
             }
             elsif ( $item->{'two_rows'} && $item->{'input_html'} ) {
                 $yymain .= qq~<tr>
-                <td class="windowbg2 padd_4px" colspan="2">
+                <td class="windowbg2 padd-cell" colspan="2">
          $item->{'description'}
        </td>
             </tr><tr>
-                <td class="windowbg2 padd_4px" colspan="2">
+                <td class="windowbg2 padd-cell" colspan="2">
          $item->{'input_html'}
        </td>
      </tr>~;
             }
             elsif ( $item->{'input_html'} ) {
                 $yymain .= qq~<tr>
-                <td class="windowbg2 vtop padd_4px">
+                <td class="windowbg2 vtop padd-cell">
          $item->{'description'}
        </td>
-                <td class="windowbg2 vtop padd_4px">
+                <td class="windowbg2 vtop padd-cell">
          $item->{'input_html'}
        </td>
      </tr>~;
@@ -212,11 +210,11 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
     $default_tab = $INFO{'tab'} || $settings[0]->{'id'};
     $yymain .= qq~
 <div class="bordercolor rightboxdiv" style="margin: .5em auto 0 0">
-    <table class="cs_thin pad_4px">
+    <table class="border-space pad-cell">
         <tr>
             <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$admin_txt{'10'}</b></td>
         </tr><tr>
-            <td class="catbg center pad_4px" colspan="2">
+            <td class="catbg center" colspan="2">
                 <input class="button" type="submit" value="$admin_txt{'10'}" />
             </td>
         </tr>
@@ -568,7 +566,7 @@ $member_groups
 \$allow_hide_email = $allow_hide_email;     # Allow users to hide their email from public. Set 0 to disable
 \$user_hide_avatars = $user_hide_avatars;       # Allow users to hide Avatars in threads. Set 0 to disable
 \$user_hide_user_text = $user_hide_user_text;       # Allow users to hide User Text in threads. Set 0 to disable
-\$user_hide_img = $user_hide_img;       # Allow users to hide Images in threads. Set 0 to disable 
+\$user_hide_img = $user_hide_img;       # Allow users to hide Images in threads. Set 0 to disable
 \$user_hide_attach_img = $user_hide_attach_img;     # Allow users to hide Attached Images in threads. Set 0 to disable
 \$user_hide_signat = $user_hide_signat;         # Allow users to hide User Signatures in threads. Set 0 to disable
 \$user_hide_smilies_row = $user_hide_smilies_row;   # Allow users to hide Smilies row below the Post Message-inputarea. Set 0 to disable

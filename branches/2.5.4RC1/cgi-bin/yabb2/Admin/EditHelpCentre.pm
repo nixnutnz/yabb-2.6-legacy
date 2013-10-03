@@ -63,7 +63,7 @@ qq~$adminurl?action=modagreement;agreementlanguage=$language;destination=helpadm
     <input type="hidden" name="area" value="$help_area" />
     <input type="hidden" name="page" value="$page" />
     <div class="bordercolor rightboxdiv">
-        <table class="cs_thin pad_4px">
+        <table class="border-space pad-cell">
             <tr>
                 <td class="titlebg">
                     $admin_img{'prefimg'} <b>$helptxt{'7'}</b>
@@ -72,12 +72,12 @@ qq~$adminurl?action=modagreement;agreementlanguage=$language;destination=helpadm
         </table>
     </div>
     <div class="bordercolor borderstyle rightboxdiv">
-        <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+        <table class="border-space pad-cell" style="margin-bottom: .5em;">
             $admin_list
         </table>
     </div>
     <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
         </tr><tr>
@@ -279,26 +279,25 @@ sub MainAdmin {
     if ( $UseHelp_Perms == 1 ) {
         $perms_check = q~ checked='checked'~;
     }
-    $yymain .= qq~
-<form action="$adminurl?action=helpsettings2" method="post" style="display: inline">
-    <table class="bordercolor cs_thin pad_4px w_440" style="margin-bottom:.5em">
-        <tr>
-            <td class="titlebg">
-                $admin_img{'prefimg'} <b>$helptxt{'7'}</b>
-            </td>
-        </tr><tr>
-            <td class="windowbg2">
-                <label for="UseHelp_Perms">$helptxt{'9'}</label> <input type="checkbox" name="UseHelp_Perms" id="UseHelp_Perms" value="1"$perms_check />
-            </td>
-        </tr><tr>
-            <td class="catbg center">
-                <input type="submit" value="$admin_txt{'10'}" class="button" />
-            </td>
-        </tr>
-    </table>
-</form>
+    $yymain .= qq~<form action="$adminurl?action=helpsettings2" method="post" style="display: inline">
+            <table class="bordercolor border-space pad-cell" style="width:44em; margin-bottom:.5em">
+                <tr>
+                    <td class="titlebg">
+                        $admin_img{'prefimg'} <b>$helptxt{'7'}</b>
+                    </td>
+                </tr><tr>
+                    <td class="windowbg2">
+                        <label for="UseHelp_Perms">$helptxt{'9'}</label> <input type="checkbox" name="UseHelp_Perms" id="UseHelp_Perms" value="1"$perms_check />
+                    </td>
+                </tr><tr>
+                    <td class="catbg center">
+                        <input type="submit" value="$admin_txt{'10'}" class="button" />
+                    </td>
+                </tr>
+            </table>
+        </form>
 
-<script type="text/javascript">
+        <script type="text/javascript">
 <!--
 var nline = '\\n';
 myRe=/\\n\$/;
@@ -328,126 +327,114 @@ function adduserhelp() {
     else document.userorder.order.value += document.userhelp.page.options[document.userhelp.page.selectedIndex].value + nline;
 }
 //-->
-</script>
-    <table class="bordercolor cs_thin pad_4px w_440">
-        <tr>
-            <td class="titlebg">
-                $admin_img{'prefimg'} <b>$helptxt{'7'}</b>
-            </td>
-        </tr><tr>
-            <td class="windowbg2 padd_8_12px">
-                <span class="small">$helptxt{'10'}</span>
-            </td>
-        </tr><tr>
-            <td class="catbg">
-                <i>$helptxt{'6'}</i>
-            </td>
-        </tr><tr>
-            <td class="windowbg2 center">
-                <form name="adminhelp" action="$adminurl?action=helpediting;area=Admin" method="post" style="display: inline" accept-charset="$yycharset">
-					<span class="help_200">
-					<select name="page" size="$admincount" class="help_page">
-                        $admin_list
-                        </select>
-                        <br />
-                        <input type="submit" value="$admin_txt{'53'}" class="button" />
-					</span>
-                </form>
-				<span class="help_30">
-                    <input type="button" value="\-\>" onclick="addadminhelp()" />
-                </span>
-                <form name="adminorder" action="$adminurl?action=helporder;area=Admin" method="post" style="display: inline">
-					<span style="float: right; text-align: center; width: 200px;">
-					<textarea name="order" cols="29" rows="$admincount" class="help_page">$adminlist</textarea>
-                        <input type="hidden" value="$admin_lst" name="testlst" />
-                        <br />
-                        <input type="submit" value="$admin_txt{'10'}" class="button" />
-					</span>
-				</form>
-            </td>
-        </tr><tr>
-            <td class="catbg">
-                <i>$helptxt{'5'}</i>
-            </td>
-        </tr><tr>
-            <td class="windowbg2 center">
-                <form name="gmodhelp" action="$adminurl?action=helpediting;area=Gmod" method="post" style="display: inline" accept-charset="$yycharset">
-                <span class="help_200">
-				<select name="page" size="$gmodcount" class="help_page">
-                        $gmod_list
-                        </select>
-                        <br />
-                        <input type="submit" value="$admin_txt{'53'}" class="button" />
-                </span>
-				</form>
-                <span class="help_30">
-                    <input type="button" value="\-\>" onclick="addgmodhelp()" />
-                </span>
-                <form name="gmodorder" action="$adminurl?action=helporder;area=Gmod" method="post" style="display: inline">
-					<span style="float: right; text-align: center; width: 200px;">
-					<textarea name="order" cols="29" rows="$gmodcount" class="help_page">$gmodlist</textarea>
-                        <input type="hidden" value="$gmod_lst" name="testlst" />
-                        <br />
-                        <input type="submit" value="$admin_txt{'10'}" class="button" />
-					</span>
-                </form>
-            </td>
-        </tr><tr>
-            <td class="catbg">
-                <i>$helptxt{'4'}</i>
-            </td>
-        </tr><tr>
-            <td class="windowbg2 center">
-                <form name="modhelp" action="$adminurl?action=helpediting;area=Moderator" method="post" style="display: inline" accept-charset="$yycharset">
-					<span class="help_200">
-					<select name="page" size="$modcount" class="help_page">
-                        $moderator_list
-                        </select>
-                        <br />
-                        <input type="submit" value="$admin_txt{'53'}" class="button" />
-					</span>
-				</form>
-                <span class="help_30">
-                    <input type="button" value="\-\>" onclick="addmodhelp()" />
-                </span>
-                <form name="modorder" action="$adminurl?action=helporder;area=Moderator" method="post" style="display: inline" accept-charset="$yycharset">
-                <span style="float: right; text-align: center; width: 200px;">
-					<textarea name="order" cols="29" rows="$modcount" class="help_page">$moderatorlist</textarea>
-                        <input type="hidden" value="$moderator_lst" name="testlst" />
-                        <br />
-                        <input type="submit" value="$admin_txt{'10'}" class="button" />
-					</span>
-				</form>
-            </td>
-        </tr><tr>
-            <td class="catbg">
-                <i>$helptxt{'3'}</i>
-            </td>
-        </tr><tr>
-            <td class="windowbg2 center">
-                <form name="userhelp" action="$adminurl?action=helpediting;area=User" method="post" style="display: inline" accept-charset="$yycharset">
-					<span class="help_200">
-					<select name="page" size="$usercount" class="help_page">
-                        $user_list
-                        </select>
-                        <br />
-                        <input type="submit" value="$admin_txt{'53'}" class="button" />
-					</span>
-                </form>
-                <span class="help_30">
-                    <input type="button" value="\-\>" onclick="adduserhelp()" />
-                </span>
-                <form name="userorder" action="$adminurl?action=helporder;area=User" method="post" style="display: inline" accept-charset="$yycharset">
-					<span style="float: right; text-align: center; width: 200px;">
-					<textarea name="order" cols="29" rows="$usercount" class="help_page">$userlist</textarea>
-                        <input type="hidden" value="$user_lst" name="testlst" />
-                        <br />
-                        <input type="submit" value="$admin_txt{'10'}" class="button" />
-					</span>
-                </form>
-            </td>
-        </tr>
-    </table>
+        </script>
+        <table class="bordercolor border-space pad-cell" style="width:44em">
+            <tr>
+                <td class="titlebg">$admin_img{'prefimg'} <b>$helptxt{'7'}</b></td>
+            </tr><tr>
+                <td class="windowbg2">
+                    <div class="pad-more small">$helptxt{'10'}</div>
+                </td>
+            </tr><tr>
+                <td class="catbg"><i>$helptxt{'6'}</i></td>
+            </tr><tr>
+                <td class="windowbg2 center">
+                    <form name="adminhelp" action="$adminurl?action=helpediting;area=Admin" method="post" style="display: inline" accept-charset="$yycharset">
+                        <span class="help-box">
+                        <select name="page" size="$admincount" class="help-page">
+                            $admin_list
+                            </select>
+                            <br />
+                            <input type="submit" value="$admin_txt{'53'}" class="button" />
+                        </span>
+                    </form>
+                    <span class="help-add"><input type="button" value="\-\>" onclick="addadminhelp()" /></span>
+                    <form name="adminorder" action="$adminurl?action=helporder;area=Admin" method="post" style="display: inline">
+                        <span style="float: right; text-align: center; width: 200px;">
+                            <textarea name="order" cols="29" rows="$admincount" class="help-page">$adminlist</textarea>
+                            <input type="hidden" value="$admin_lst" name="testlst" />
+                            <br />
+                            <input type="submit" value="$admin_txt{'10'}" class="button" />
+                        </span>
+                    </form>
+                </td>
+            </tr><tr>
+                <td class="catbg"><i>$helptxt{'5'}</i></td>
+            </tr><tr>
+                <td class="windowbg2 center">
+                    <form name="gmodhelp" action="$adminurl?action=helpediting;area=Gmod" method="post" style="display: inline" accept-charset="$yycharset">
+                        <span class="help-box">
+                            <select name="page" size="$gmodcount" class="help-page">
+                                $gmod_list
+                            </select>
+                            <br />
+                            <input type="submit" value="$admin_txt{'53'}" class="button" />
+                        </span>
+                    </form>
+                    <span class="help-add">
+                        <input type="button" value="\-\>" onclick="addgmodhelp()" />
+                    </span>
+                    <form name="gmodorder" action="$adminurl?action=helporder;area=Gmod" method="post" style="display: inline">
+                        <span style="float: right; text-align: center; width: 200px;">
+                            <textarea name="order" cols="29" rows="$gmodcount" class="help-page">$gmodlist</textarea>
+                            <input type="hidden" value="$gmod_lst" name="testlst" />
+                            <br />
+                            <input type="submit" value="$admin_txt{'10'}" class="button" />
+                        </span>
+                    </form>
+                </td>
+            </tr><tr>
+                <td class="catbg"><i>$helptxt{'4'}</i></td>
+            </tr><tr>
+                <td class="windowbg2 center">
+                    <form name="modhelp" action="$adminurl?action=helpediting;area=Moderator" method="post" style="display: inline" accept-charset="$yycharset">
+                        <span class="help-box">
+                        <select name="page" size="$modcount" class="help-page">
+                            $moderator_list
+                            </select>
+                            <br />
+                            <input type="submit" value="$admin_txt{'53'}" class="button" />
+                        </span>
+                    </form>
+                    <span class="help-add">
+                        <input type="button" value="\-\>" onclick="addmodhelp()" />
+                    </span>
+                    <form name="modorder" action="$adminurl?action=helporder;area=Moderator" method="post" style="display: inline" accept-charset="$yycharset">
+                        <span style="float: right; text-align: center; width: 200px;">
+                            <textarea name="order" cols="29" rows="$modcount" class="help-page">$moderatorlist</textarea>
+                            <input type="hidden" value="$moderator_lst" name="testlst" />
+                            <br />
+                            <input type="submit" value="$admin_txt{'10'}" class="button" />
+                        </span>
+                    </form>
+                </td>
+            </tr><tr>
+                <td class="catbg"><i>$helptxt{'3'}</i></td>
+            </tr><tr>
+                <td class="windowbg2 center">
+                    <form name="userhelp" action="$adminurl?action=helpediting;area=User" method="post" style="display: inline" accept-charset="$yycharset">
+                        <span class="help-box">
+                            <select name="page" size="$usercount" class="help-page">
+                                $user_list
+                            </select>
+                            <br />
+                            <input type="submit" value="$admin_txt{'53'}" class="button" />
+                        </span>
+                    </form>
+                    <span class="help-add">
+                        <input type="button" value="\-\>" onclick="adduserhelp()" />
+                    </span>
+                    <form name="userorder" action="$adminurl?action=helporder;area=User" method="post" style="display: inline" accept-charset="$yycharset">
+                        <span style="float: right; text-align: center; width: 200px;">
+                            <textarea name="order" cols="29" rows="$usercount" class="help-page">$userlist</textarea>
+                            <input type="hidden" value="$user_lst" name="testlst" />
+                            <br />
+                            <input type="submit" value="$admin_txt{'10'}" class="button" />
+                        </span>
+                    </form>
+                </td>
+            </tr>
+        </table>
 ~;
 
     $yytitle     = "$helptxt{'7'}";

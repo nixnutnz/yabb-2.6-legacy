@@ -1,6 +1,6 @@
 ###############################################################################
 # AntispamQuestions.pm                                                        #
-# $Date: 9.05.13 $                                                            #
+# $Date: 10.03.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -95,9 +95,8 @@ sub SpamQuestions {
     $yymain = qq~
 <form action="$adminurl?action=spam_questions2" method="post">
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-    <col class="w_50pc" />
-    <col class="w_50pc" />
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
+    <col span="2" style="width: 50%" />
     <tr>
         <th class="titlebg" colspan="2">$admin_img{'prefimg'} $spam_question_txt{'question_settings'}</th>
     </tr><tr class="windowbg2 vtop">
@@ -113,7 +112,7 @@ sub SpamQuestions {
 </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
     <tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
     </tr><tr>
@@ -126,10 +125,10 @@ sub SpamQuestions {
 </div>
 </form>
 <div class="bordercolor rightboxdiv" style="margin-bottom: .5em;">
-<table class="cs_thin pad_4px">
+<table class="border-space pad-cell">
     <col span="2" style="width: 30%;" />
     <col span="1" style="width: 26%;" />
-    <col span="2" class="w_7pc" />
+    <col span="2" style="width: 7%" />
     <tr>
         <th class="titlebg"$header_row>$admin_img{'prefimg'} $spam_question_txt{'questions'} ($total_questions)
             <div style="display: inline; float: right;">
@@ -147,9 +146,9 @@ $show_questions
 </div>
 <form action="$adminurl?action=spam_questions_add" method="post" enctype="multipart/form-data" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-    <col class="w_25pc" />
-    <col class="w_75pc" />
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
+    <col style="width: 25%" />
+    <col style="width: 75%" />
     <tr>
         <th class="titlebg" colspan="2">$admin_img{'prefimg'} $spam_question_txt{'new_question'}</th>
     </tr><tr class="windowbg2 vtop bold">
@@ -168,7 +167,7 @@ $show_questions
 </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
     <tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
     </tr><tr>
@@ -261,15 +260,15 @@ sub SpamQuestionsEdit {
       $question_edit;
     if ($spam_case)   { $chk_spam_case = q~ checked="checked"~; }
     my $spam_image_value = q{};
-    if ( $spam_image ) { 
-        $spam_image_value = qq~<div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Templates/Forum/default/$spam_image" target="_blank">$spam_image</a><br /><input type="checkbox" name="del_spam_image" id="del_spam_image" value="1" /> <label for="del_spam_image">$admin_txt{'remove_img'}</label></div>~; 
+    if ( $spam_image ) {
+        $spam_image_value = qq~<div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Templates/Forum/default/$spam_image" target="_blank">$spam_image</a><br /><input type="checkbox" name="del_spam_image" id="del_spam_image" value="1" /> <label for="del_spam_image">$admin_txt{'remove_img'}</label></div>~;
     }
     $yymain = qq~
 <form action="$adminurl?action=spam_questions_edit2" method="post" enctype="multipart/form-data" accept-charset="$yycharset">
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px" style="margin-bottom: .5em;">
-    <col class="w_25pc" />
-    <col class="w_75pc" />
+<table class="border-space pad-cell" style="margin-bottom: .5em;">
+    <col style="width: 25%" />
+    <col style="width: 75%" />
     <tr>
         <th class="titlebg" colspan="2">$admin_img{'prefimg'} $spam_question_txt{'edit_question'}</th>
     </tr><tr class="windowbg2 vtop bold">
@@ -289,7 +288,7 @@ sub SpamQuestionsEdit {
 </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="cs_thin pad_4px">
+<table class="border-space pad-cell">
     <tr>
         <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
     </tr><tr>
@@ -327,16 +326,16 @@ sub SpamQuestionsEdit2 {
     }
 
     if ( $spam_image ne q{} ) {
-        $spam_image = UploadFile('spam_image', 'Templates/Forum/default', 'png jpg jpeg gif', '250', '0'); 
+        $spam_image = UploadFile('spam_image', 'Templates/Forum/default', 'png jpg jpeg gif', '250', '0');
         unlink "$htmldir/Templates/Forum/default/$cur_spam_image";
-    } 
+    }
     else {
         $spam_image = $cur_spam_image;
     }
     if ( $del_spam_image ) {
         unlink "$htmldir/Templates/Forum/default/$cur_spam_image";
         $spam_image = q{};
-    } 
+    }
 
     fopen( SPAMQUESTIONS, "<$langdir/$questions_language/spam.questions" )
       || fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
@@ -388,7 +387,7 @@ sub SpamQuestionsDelete {
     }
     ( undef, undef, undef, undef, $spam_image ) = split /\|/xsm,
       $spam_image_delete;
-    
+
     if ( $spam_image ) {
         unlink "$htmldir/Templates/Forum/default/$spam_image";
     }

@@ -1,6 +1,6 @@
 ###############################################################################
 # ViewMembers.pm                                                              #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.03.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -80,41 +80,41 @@ qq(<a href="$adminurl?action=ml;sort=mlletter;letter=z" class="catbg a"><b>Z</b>
 
     $actualnum = 0;
     $numshown  = 0;
-	$selPost_a = q~windowbg2~;
-	$selReg_a = q~windowbg2~;
-	$selPos_a = q~windowbg2~;
-	$selLastOn_a = q~windowbg2~;
-	$selLastPost_a = q~windowbg2~;
-	$selLastIM_a = q~windowbg2~;
-	$selUser_a = q~windowbg2~;
+    $selPost_a = q~windowbg2~;
+    $selReg_a = q~windowbg2~;
+    $selPos_a = q~windowbg2~;
+    $selLastOn_a = q~windowbg2~;
+    $selLastPost_a = q~windowbg2~;
+    $selLastIM_a = q~windowbg2~;
+    $selUser_a = q~windowbg2~;
     if ( $FORM{'sortform'} eq 'posts' || $INFO{'sort'} eq 'posts' ) {
-		$selPost_a = q~windowbg~;
+        $selPost_a = q~windowbg~;
         $selPost .= q~ selected="selected"~;
         MLTop();
     }
     if ( $FORM{'sortform'} eq 'regdate' || $INFO{'sort'} eq 'regdate' ) {
         $selReg .= q~ selected="selected"~;
-		$selReg_a = q~windowbg~;
-		MLDate();
+        $selReg_a = q~windowbg~;
+        MLDate();
     }
     if ( $FORM{'sortform'} eq 'position' || $INFO{'sort'} eq 'position' ) {
         $selPos .= q~ selected="selected"~;
-		$selPos_a = q~windowbg~;
+        $selPos_a = q~windowbg~;
         MLPosition();
     }
     if ( $FORM{'sortform'} eq 'lastonline' || $INFO{'sort'} eq 'lastonline' ) {
         $selLastOn .= q~ selected="selected"~;
-		$selLastOn_a = q~windowbg~;
+        $selLastOn_a = q~windowbg~;
         MLLastOnline();
     }
     if ( $FORM{'sortform'} eq 'lastpost' || $INFO{'sort'} eq 'lastpost' ) {
-		$selLastPost .= q~ selected="selected"~;
-		$selLastPost_a = q~windowbg~;
-		MLLastPost();
+        $selLastPost .= q~ selected="selected"~;
+        $selLastPost_a = q~windowbg~;
+        MLLastPost();
     }
     if ( $FORM{'sortform'} eq 'lastim' || $INFO{'sort'} eq 'lastim' ) {
         $selLastIm .= q~ selected="selected"~;
-		$selLastIM_a = q~windowbg~;
+        $selLastIM_a = q~windowbg~;
         MLLastIm();
     }
     if ( $FORM{'sortform'} eq 'memsearch' || $INFO{'sort'} eq 'memsearch' ) {
@@ -125,7 +125,7 @@ qq(<a href="$adminurl?action=ml;sort=mlletter;letter=z" class="catbg a"><b>Z</b>
         || $INFO{'sort'} eq 'username' )
     {
         $selUser .= q~ selected="selected"~;
-		$selUser_a = q~windowbg~;
+        $selUser_a = q~windowbg~;
         MLByLetter();
     }
     return;
@@ -162,9 +162,9 @@ sub MLByLetter {
     $memcount = @ToShow;
     if ( !$memcount && $letter ) {
         $pageindex1 =
-qq~<span class="index_tog1 small">$admin_img{'index_togl'}</span>~;
+qq~<span class="index-togl small">$admin_img{'index_togl'}</span>~;
         $pageindex2 =
-qq~<span class="index_tog1 small">$admin_img{'index_togl'}</span>~;
+qq~<span class="index-togl small">$admin_img{'index_togl'}</span>~;
     }
     else {
         buildIndex();
@@ -182,8 +182,8 @@ qq~<span class="index_tog1 small">$admin_img{'index_togl'}</span>~;
     else {
         if ($letter) {
             $yymain .= qq~<tr>
-    <td class="windowbg center padd_8_12px" colspan="7">
-        <b>$ml_txt{'760'}</b>
+    <td class="windowbg center" colspan="7">
+        <div class="pad-more"><b>$ml_txt{'760'}</b></div>
     </td>
 </tr>~;
         }
@@ -337,10 +337,10 @@ sub showRows {
 
         my ( $tmpa, $tmpb, $tmpc );
         if ( $userlastonline eq q{} ) { $userlastonline = q{-};
-		     $date1 = stringtotime( ${ $uid . $user }{'regdate'} );
-			calcdifference();
+             $date1 = stringtotime( ${ $uid . $user }{'regdate'} );
+            calcdifference();
             $tmpa = $result;
-			}
+            }
         else {
             $date1 = $userlastonline;
             calcdifference();
@@ -348,10 +348,10 @@ sub showRows {
             $tmpa           = $userlastonline;
         }
         if ( $userlastpost eq q{} ) { $userlastpost = q{-};
-		     $date1 = stringtotime( ${ $uid . $user }{'regdate'} );
-			calcdifference();
+             $date1 = stringtotime( ${ $uid . $user }{'regdate'} );
+            calcdifference();
             $tmpb = $result;
-			}
+            }
         else {
             $date1 = $userlastpost;
             calcdifference();
@@ -359,10 +359,10 @@ sub showRows {
              $tmpb         = $userlastpost;
         }
         if ( $userlastim eq q{} ) { $userlastim = q{-};
-		    $date1 = stringtotime( ${ $uid . $user }{'regdate'} );
-			calcdifference();
+            $date1 = stringtotime( ${ $uid . $user }{'regdate'} );
+            calcdifference();
             $tmpc = $result;
-			}
+            }
         else {
             $date1 = $userlastim;
             calcdifference();
@@ -506,14 +506,14 @@ sub buildIndex {
         $lastpn = int( ( $memcount - 1 ) / $MembersPerPage ) + 1;
         $lastptn = ( $lastpn - 1 ) * $MembersPerPage;
         $pageindex1 =
-qq~<span class="index_tog1 small">$admin_img{'index_togl'} $ml_txt{'139'}: $pagenumb</span>~;
+qq~<span class="index-togl small">$admin_img{'index_togl'} $ml_txt{'139'}: $pagenumb</span>~;
         $pageindex2 =
-qq~<span class="index_tog1 small">$admin_img{'index_togl'} $ml_txt{'139'}: $pagenumb</span>~;
+qq~<span class="index-togl small">$admin_img{'index_togl'} $ml_txt{'139'}: $pagenumb</span>~;
         if ( $pagenumb > 1 || $all ) {
 
             if ( $usermemberpage == 1 ) {
                 $pagetxtindexst =
-qq~<span class="index_tog1 small"><a href="$scripturl?action=memberpagedrop;from=admin;sort=$INFO{'sort'};letter=$INFO{'letter'};start=$INFO{'start'}$sortorder"><img src="$imagesdir/index_togl.png" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a> $ml_txt{'139'}: ~;
+qq~<span class="index-togl small"><a href="$scripturl?action=memberpagedrop;from=admin;sort=$INFO{'sort'};letter=$INFO{'letter'};start=$INFO{'start'}$sortorder"><img src="$imagesdir/index_togl.png" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a> $ml_txt{'139'}: ~;
                 if ( $startpage > 0 ) {
                     $pagetxtindex =
 qq~<a href="$adminurl?action=ml;sort=$FORM{'sortform'};letter=$letter$sortorder" class="norm">1</a>&nbsp;...&nbsp;~;
@@ -544,7 +544,7 @@ qq~<a href="$adminurl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$las
             }
             else {
                 $pagedropindex1 =
-q~<span style="float: left; width: 350px; margin: 2px 0 0 0; border: 0px;">~;
+q~<span style="float: left; width: 350px; margin: 2px 0 0 0; border: 0;">~;
                 $pagedropindex1 .=
 qq~<span style="float: left; height: 21px; margin: 0 4px 0 0;"><a href="$scripturl?action=memberpagetext;from=admin;sort=$INFO{'sort'};letter=$INFO{'letter'};start=$INFO{'start'}$sortorder"><img src="$imagesdir/index_togl.png" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a></span>~;
                 $pagedropindex2 = $pagedropindex1;
@@ -682,7 +682,7 @@ qq~<img src="$imagesdir/index_right.png" height="14" width="13" alt="$pidtxt{'03
 
 sub buildPages {
     my ($inp) = @_;
-	
+
     $FindForm .= qq~
             <form action="$adminurl?action=ml;sort=memsearch" method="post" id="form1" name="form1" enctype="application/x-www-form-urlencoded" style="display: inline;">
             <input type="text" name="member" id="member" value="$ml_txt{'801'}" style="font-size: 11px; width: 180px;" onfocus="txtInFields(this, '$ml_txt{'801'}');" onblur="txtInFields(this, '$ml_txt{'801'}')" />
@@ -691,7 +691,7 @@ sub buildPages {
         ~;
 
     $TableHeader .= qq~
-        <table class="bordercolor borderstyle cs_thin pad_3px">
+        <table class="bordercolor borderstyle border-space pad-cell">
             <tr>
                 <td class="titlebg right" style="font-size: 11px; text-shadow: none;">
                     $FindForm
@@ -725,9 +725,9 @@ sub buildPages {
         <form name="adv_memberview" action="$adminurl?action=deletemultimembers$sortmode$sortorder$spages" method="post" style="display: inline" onsubmit="return submitproc()">
         <input type="hidden" name="button" value="0" />
         <div class="rightboxdiv">
-        <table class="bordercolor borderstyle cs_thin pad_3px">
+        <table class="bordercolor borderstyle border-space pad-cell">
             <col span="2" style="width:19%" />
-            <col class="w_5pc" />
+            <col style="width:5%" />
             <col style="width:14%" />
             <col style="width:19%" />
             <col style="width:7%" />
@@ -739,8 +739,8 @@ sub buildPages {
                 <td class="$selReg_a center"><a href="$adminurl?action=ml;sortform=regdate"><b>$ml_txt{'234'}</b></a></td>
                 <td class="windowbg2 center" colspan="3"><b>$amv_txt{'4'}</b>
                     <br /><span class="small $selLastOn_a" style="float: left; text-align: center; width: 34%;"><a href="$adminurl?action=ml;sortform=lastonline">$amv_txt{'5'}</a></span>
-					<span class="small $selLastPost_a" style="float: left; text-align: center; width: 33%;"><a href="$adminurl?action=ml;sortform=lastpost">$amv_txt{'6'}</a></span>
-					<span class="small $selLastIM_a" style="float: left; text-align: center; width: 33%;"><a href="$adminurl?action=ml;sortform=lastim">$amv_txt{'7'}</a></span></td>
+                    <span class="small $selLastPost_a" style="float: left; text-align: center; width: 33%;"><a href="$adminurl?action=ml;sortform=lastpost">$amv_txt{'6'}</a></span>
+                    <span class="small $selLastIM_a" style="float: left; text-align: center; width: 33%;"><a href="$adminurl?action=ml;sortform=lastim">$amv_txt{'7'}</a></span></td>
                 <td class="windowbg2 center"><b>$admintxt{'38'}</b></td>
             </tr>
         ~;
@@ -752,9 +752,11 @@ sub buildPages {
     }
 
     $sel_box = qq~
-            <table class="bordercolor borderstyle cs_thin pad_3px" style="margin-bottom: .5em;">
+            <table class="bordercolor borderstyle border-space pad-cell" style="margin-bottom: .5em;">
+                <col style="width: 95%" />
+                <col style="width: 5%" />
                 <tr>
-                    <td class="titlebg right" colspan="2" style="font-size: 11px; text-shadow: none;">
+                    <td class="titlebg right" style="font-size: 11px; text-shadow: none;">
                     <label for="check_all"><b>$amv_txt{'38'}</b></label>
                     <select name="field2" id="field2" onchange="document.adv_memberview.check_all.checked=true;checkAll(1);">
                         <option value="0">$amv_txt{'35'}</option>
@@ -770,7 +772,7 @@ sub buildPages {
                         <option value="4">$amv_txt{'34'}</option>
                     </select>
                     </td>
-                    <td class="titlebg center w_5pc">
+                    <td class="titlebg center">
                         <input type="checkbox" name="check_all" id="check_all" value="1" class="titlebg" style="border: 0;" onclick="javascript:if(this.checked)checkAll(1);else checkAll(0);" />
                     </td>
                 </tr>
@@ -812,7 +814,7 @@ sub buildPages {
     if ($inp) {
         $yymain .= qq~
     <div class="rightboxdiv">
-    <table class="bordercolor cs_thin pad_3px">
+    <table class="bordercolor border-space pad-cell">
         <tr>
             <td class="titlebg">
                 <span style="float: left;">$admin_img{'register'} <b>$admintxt{'17'}</b></span>
@@ -836,7 +838,7 @@ sub buildPages {
        $sel_box
     </div>
     <div class="bordercolor rightboxdiv">
-    <table class="cs_thin pad_4px">
+    <table class="border-space pad-cell">
         <tr>
             <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'delete'}</th>
         </tr><tr>
