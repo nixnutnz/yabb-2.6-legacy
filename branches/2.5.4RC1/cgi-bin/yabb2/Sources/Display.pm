@@ -59,7 +59,7 @@ sub Display {
             }
 			my $guest_view_limit_clength = q{+} . $cookieviewtime . 'm';
             $yySetCookies1 = write_cookie(
-				-path    => q{/},
+                -path    => q{/},
                 -name    => $cookieview,
                 -value   => $gtvlcount,
                 -expires => $guest_view_limit_clength
@@ -793,7 +793,7 @@ qq~$menusep<a href="$scripturl?action=print;num=$viewnum" target="_blank">$img{'
 
     # For each post in this thread:
     my ( %attach_gif, %attach_count );
-	my $movedflag = q{};
+    my $movedflag = q{};
     foreach (@messages) {
         my (
             $userlocation,      $aimad,             $yimad,

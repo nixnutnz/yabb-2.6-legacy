@@ -51,7 +51,7 @@ sub MakeSmileys {
     $message =~ s/(\W|^)&gt;:-D/$1<img class="smil" data-rel="&gt;&#58;-D" src="$imagesdir\/evil.gif" alt="$post_txt{'802'}" title="$post_txt{'802'}" \/>/gsm;
 
     my $count = 0;
-    while ( $SmilieURL[$count] ) {
+    while ($SmilieURL[$count]) {
         if ( $SmilieURL[$count] =~ /\//ixsm ) { $tmpurl = $SmilieURL[$count]; }
         else { $tmpurl = qq~$imagesdir/$SmilieURL[$count]~; }
         $tmpcode = $SmilieCode[$count];
@@ -510,8 +510,8 @@ s/([^\"\=\[\]\/\:\.\-(\:\/\/\w+)]|[\n\b]|\&quot\;|\[quote.*?\]|\[edit\]|\[highli
         else           { $act = qq~;sesredir=num\~$curnum~; }
         my $oops =
 qq~ <i>$maintxt{'41'} <a href="$scripturl?action=login$act"><b><i>$maintxt{'34'}</i></b></a></i>~;
-        if ($regtype) {
-            $oops .=
+       if ( $regtype ) {
+           $oops .=
 qq~<i> $maintxt{'42'} <a href="$scripturl?action=register"><b><i>$maintxt{'97'}</i></b></a></i>~;
         }
         $oops .= qq~<i> $maintxt{'42a'}</i>~;

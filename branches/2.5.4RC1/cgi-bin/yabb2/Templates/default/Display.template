@@ -149,13 +149,13 @@ $posthandellist = qq~
 ~;
 
 if($posttools) {
-    $posthandelstyle = qq~ class="post_tools center dividerbot" style="width:100px; height:22px; vertical-align:top; padding-top:10px"~;
+    $posthandelstyle = qq~ class="post_tools center dividerbot" style="width:100px; height: 2em; vertical-align:middle"~;
     $posthandeladmin = qq~<div style="float:right; vertical-align:bottom; height:100%;">{yabb admin}</div>~;
     $postcol= 3;
     $padd_right = '; padding-right:0; padding-bottom:0; padding-top:0; vertical-align:middle';
 }
 else {
-    $posthandelstyle = qq~ class="dividerbot" style="text-align:right; height:22px"~;
+    $posthandelstyle = qq~ class="dividerbot" style="text-align:right; height:2em"~;
     $posthandellist .= qq~&nbsp;{yabb admin}~;
     $postcol = 2;
     $posttoola = ' width:1%';
@@ -188,7 +188,7 @@ $messageblock = qq~
                         {yabb postinfo}{yabb location}{yabb age}{yabb regdate}{yabb gender}{yabb ext_prof}{yabb isbuddy}
                     </div>
                 </td>
-                <td class="dividerbot" style="height:22px; vertical-align:top; padding-top:8px">
+                <td class="dividerbot" style="vertical-align:middle;">
                     <div style="padding: 2px; float:left">{yabb msgimg}</div>
                     <div class="small" style="float:left">
                         <b>{yabb subject}</b>
@@ -287,6 +287,7 @@ $mymove_top = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     <title>$sstxt{'1'}</title>
    <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
     <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
+    <script type="text/javascript" src="$yyhtml_root/ubbc.js" ></script>
 </head>
 <body>
     <a name="top" id="top">&nbsp;</a><br />
