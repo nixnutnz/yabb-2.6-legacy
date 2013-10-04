@@ -388,7 +388,7 @@ table.cs_thin {
 }
 
 #fscroller {
-    line-height: 1.3;
+    line-height: 1.3em;
     min-height: 20px;
 }
 
@@ -792,7 +792,7 @@ tr.search .imgcatbg:hover, tr.search .imgwindowbg:hover { color: #3b5998; }
 
 .post-userinfo {
     background-color: #d7dbea;
-    line-height: 1.2;
+    line-height: 1.2em;
 }
 
 .navbarcontainer { margin: 0; }
@@ -1077,7 +1077,7 @@ table.pad_10px td, .padd_10px { padding: 10px; }
     color: #eee;
     background: url(./default/tabtitle.png) repeat-x top #1f6eb6;
     height: 25%;
-    line-height: 2;
+    line-height: 2em;
     text-align: center;
 }
 
@@ -1137,7 +1137,7 @@ table.pad_10px td, .padd_10px { padding: 10px; }
     padding-top: 10px;
 }
 
-.info-center, .board-perms { line-height: 1.4; }
+.info-center, .board-perms { line-height: 1.4em; }
 
 .clear { clear: both; }
 
@@ -1165,7 +1165,7 @@ table.pad_10px td, .padd_10px { padding: 10px; }
     float: left;
     height: 21px;
     margin: 2px 0 0 0;
-    line-height: .86;
+    line-height: .86em;
     vertical-align: middle;
 }
 
@@ -1584,7 +1584,7 @@ select[name="fontface"],select[name="fontsize"] { padding:0 !important; }
     color: #eee;
     font-weight: bold;
     height: 20px;
-    line-height: 1;
+    line-height: 20px;
 }
 
 .codebox div { float: right; }
