@@ -61,7 +61,7 @@ $myprofile_a = qq~
 ## End UserProfile login
 
 ## admin edit menu ##
-$myprofile_menu = qq~<table class="bordercolor cs_thin pad_4px" style="table-layout:fixed">
+$myprofile_menu = qq~<table class="bordercolor cs_thin pad_4px" style="table-layout:fixed; margin-bottom: -1px">
     <tr>
         <td class="{yabb menucolor0} center bottom"><span class="small"><b><a href="$scripturl?action=profile;username={yabb menu_user};sid=$INFO{'sid'}">$profile_txt{79}</a></b></span></td>
         <td class="{yabb menucolor1} center bottom"><span class="small"><b><a href="$scripturl?action=profileContacts;username={yabb menu_user};sid=$INFO{'sid'}">$profile_txt{819}</a></b></span></td>
@@ -82,7 +82,7 @@ $myprofile_showadmin= qq~
         <td class="{yabb menucolor5} center bottom"><span class="small"><b><a href="$scripturl?action=profileAdmin;username={yabb aduser};sid=$INFO{'sid'}">$profile_txt{820}</a></b></span></td>~;
 ## end admin edit menu ##
 
-#Profile edit 
+#Profile edit
 $myprofile_edit = qq~<table class="cs_thin pad_4px">
     <col style="width:320px" />
     <tr class="catbg">
@@ -224,9 +224,9 @@ $myprofile_away = qq~<tr class="windowbg">
              <label for="awaysubj"><span class="small">$profile_txt{'asubj'}</span></label><br />
              <input type="text" name="awaysubj" id="awaysubj" size="50" maxlength="50" value="{yabb awaysubj}" /><br /><br />
              <label for="awayreply"><span class="small">$profile_txt{'amess'}</span></label><br />~;
-             
+
 $myprofile_away_b =qq~
-             <span class="small">$profile_txt{'664a'} <input value="{yabb MaxAwayLen}" size="3" name="msgCL" class="windowbg" style="border: 0px; width: 40px; padding: 1px; font-size: 11px;" readonly="readonly" /></span><br />
+             <span class="small">$profile_txt{'664a'} <input value="{yabb MaxAwayLen}" size="3" name="msgCL" class="windowbg" style="border: 0; width: 40px; padding: 1px; font-size: 11px;" readonly="readonly" /></span><br />
              <script type="text/javascript">
              <!--
                  var supportsKeys = false;
@@ -272,7 +272,7 @@ $myprofile_options = qq~<table class="bordercolor cs_thin pad_4px">
     </tr><tr class="windowbg">
          <td><label for="signature"><b>$profile_txt{'85'}:</b><br /><span class="small">$profile_txt{'606'}</span></label></td>
          <td>~;
-$myprofile_options_b = qq~             <span class="small">$profile_txt{'664'} <input value="{yabb MaxSigLen}" size="3" name="msgCL" class="windowbg" style="border: 0px; width: 40px; padding: 1px; font-size: 11px;" readonly="readonly" /></span><br /><br />
+$myprofile_options_b = qq~             <span class="small">$profile_txt{'664'} <input value="{yabb MaxSigLen}" size="3" name="msgCL" class="windowbg" style="border: 0; width: 40px; padding: 1px; font-size: 11px;" readonly="readonly" /></span><br /><br />
              <script type="text/javascript">
              <!--
                  var supportsKeys = false;
@@ -407,7 +407,7 @@ $myprofile_reverse = qq~<tr class="windowbg">
 $myprofile_return_to = qq~<tr class="windowbg">
         <td><label for="return_to"><b>$return_to_txt{'01'}:</b><br /><span class="small">$return_to_txt{'03'}</span></label></td>
         <td><select name="return_to" id="return_to" size="1">{yabb return_to_select}</select></td>
-    </tr>~;	
+    </tr>~;
 
 $myprofile_template = qq~<tr class="windowbg">
         <td><label for="usertemplate"><b>$profile_txt{'814'}</b><br /><span class="small">$profile_txt{'815'}</span></label></td>
@@ -420,35 +420,35 @@ $myprofile_show_lang = qq~<tr class="windowbg">
     </tr>~;
 
 $myprofile_show_avatars = qq~<tr class="windowbg">
-		<td><label for="hide_avatars"><b>$profile_display_options{'hide_avatars'}</b></label></td>
-		<td><input type="checkbox" name="hide_avatars" id="hide_avatars" {yabb user_showavatar} /></td>
-	</tr>~;
+        <td><label for="hide_avatars"><b>$profile_display_options{'hide_avatars'}</b></label></td>
+        <td><input type="checkbox" name="hide_avatars" id="hide_avatars" {yabb user_showavatar} /></td>
+    </tr>~;
 
 $myprofile_hide_user_text = qq~<tr class="windowbg">
-		<td><label for="hide_user_text"><b>$profile_display_options{'hide_user_text'}</b></label></td>
-		<td><input type="checkbox" name="hide_user_text" id="hide_user_text" {yabb hide_user_text} /></td>
-	</tr>~;
+        <td><label for="hide_user_text"><b>$profile_display_options{'hide_user_text'}</b></label></td>
+        <td><input type="checkbox" name="hide_user_text" id="hide_user_text" {yabb hide_user_text} /></td>
+    </tr>~;
 
-$myprofile_hide_img = qq~<tr class="windowbg">
+    $myprofile_hide_img = qq~<tr class="windowbg">
         <td><label for="hide_img"><b>$profile_display_options{'hide_img'}</b></label></td>
         <td><input type="checkbox" name="hide_img" id="hide_img" {yabb hide_img} /></td>
-    </tr>~; 
+    </tr>~;
 
 $myprofile_hide_attach_img = qq~<tr class="windowbg">
-		<td><label for="hide_attach_img"><b>$profile_display_options{'hide_attach_img'}</b></label></td>
-		<td><input type="checkbox" name="hide_attach_img" id="hide_attach_img" {yabb hide_attach_img} /></td>
-	</tr>~;
+        <td><label for="hide_attach_img"><b>$profile_display_options{'hide_attach_img'}</b></label></td>
+        <td><input type="checkbox" name="hide_attach_img" id="hide_attach_img" {yabb hide_attach_img} /></td>
+    </tr>~;
 
 $myprofile_hide_signat = qq~<tr class="windowbg">
-		<td><label for="hide_signat"><b>$profile_display_options{'hide_signat'}</b></label></td>
-		<td><input type="checkbox" name="hide_signat" id="hide_signat" {yabb hide_signat} /></td>
-	</tr>~;
+        <td><label for="hide_signat"><b>$profile_display_options{'hide_signat'}</b></label></td>
+        <td><input type="checkbox" name="hide_signat" id="hide_signat" {yabb hide_signat} /></td>
+    </tr>~;
 
 $myprofile_hide_smilies_row = qq~<tr class="windowbg">
-		<td><label for="hide_smilies_row"><b>$profile_display_options{'hide_smilies_row'}</b></label></td>
-		<td><input type="checkbox" name="hide_smilies_row" id="hide_smilies_row" {yabb hide_smilies_row} /></td>
-	</tr>~;
-    
+        <td><label for="hide_smilies_row"><b>$profile_display_options{'hide_smilies_row'}</b></label></td>
+        <td><input type="checkbox" name="hide_smilies_row" id="hide_smilies_row" {yabb hide_smilies_row} /></td>
+    </tr>~;
+
 #Buddylist
 $myprofile_buddy = qq~<table class="bordercolor cs_thin pad_4px">
     <col style="width:320px" />
@@ -560,7 +560,7 @@ $myprofile_admin_b = qq~<tr class="windowbg">
     </tr><tr class="windowbg">
         <td><label for="regreason"><b>$profile_txt{'234'}:</b></label></td>
         <td>~;
-        
+
 $myprofile_admin_bb = qq~</td>
     </tr><tr class="windowbg">
         <td><b>$profile_amv_txt{'9'}: </b></td>
@@ -694,7 +694,7 @@ $myshow_star = qq~<tr>
                 <b>{yabb title}</b><br />
                 {yabb memberstar}
             </div>
-            <div style="float: left; width: 70%; padding: 5px 0px;">{yabb my_mod_star}
+            <div style="float: left; width: 70%; padding: 5px 0;">{yabb my_mod_star}
             </div>
         </td>
     </tr>~;
@@ -706,7 +706,7 @@ $myshow_gender = qq~<tr>
             {yabb row_location}
         </td>
     </tr>~;
-            
+
 $myshow_banning = qq~<tr>
         <td class="windowbg2">
             <div class="contactleft"><b>$profile_txt{'902'}:</b></div>
@@ -719,15 +719,15 @@ $myshow_banning = qq~<tr>
     </tr>~;
 
 $myshow_reminder = qq~<tr>
-		<td class="windowbg2">
-			<div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;"><b>$profile_txt{'pass_reminder_1'}:</b></div>
-			<div style="float: left; width: 70%;">
-			<form action="$scripturl?action=reminder2" method="post">
-		    <input type="hidden" name="user" value="$INFO{'username'}" />
+        <td class="windowbg2">
+            <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;"><b>$profile_txt{'pass_reminder_1'}:</b></div>
+            <div style="float: left; width: 70%;">
+            <form action="$scripturl?action=reminder2" method="post">
+            <input type="hidden" name="user" value="$INFO{'username'}" />
             <input type="submit" value="$profile_txt{'pass_reminder_2'}" class="button" onclick="return confirm('$profile_txt{'pass_reminder_3'} {yabb my_realname}${$uid.$user}{'realname'}?');" />
             </form>
-			</div>
-		</td>
+            </div>
+        </td>
     </tr>~;
 
 $myshow_recent = qq~<tr>
@@ -739,7 +739,7 @@ $myshow_recent = qq~<tr>
             </form>
         </td>
     </tr>~;
-            
+
 $myshow_c = qq~<tr class="windowbg">
          <td><label for="name"><b>$profile_txt{68}: </b><br />~;
 
@@ -777,10 +777,10 @@ $ext_template1 = qq~<tr class="windowbg">
         <label for=""><b>{yabb fieldname}: </b>
         <br /><span class="small">{yabb fieldcomment}</span></label>
     </td><td class="vtop">~;
-    
+
 $ext_pre_output = q~<tr>
         <td class="windowbg2 vtop">~;
-$ext_msgCL = q~ class="windowbg" style="border: 0px; width: 40px; padding: 1px;" ~;
+$ext_msgCL = q~ class="windowbg" style="border: 0; width: 40px; padding: 1px;" ~;
 $ext_output_a = q~
         </td>
     </tr><tr>~;

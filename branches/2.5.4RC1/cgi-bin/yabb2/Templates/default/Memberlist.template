@@ -76,12 +76,11 @@ $my_userpic_td = qq~
 
 $my_row_userpic = qq~<td class="catbg center"><b>$ml_txt{'34'}</b></td>~;
 
-    
 $my_letterlinks = qq~<tr>
                 <td class="catbg" colspan="{yabb headercount}"><span class="small">{yabb letterlinks}</span></td>
             </tr>~;
 
-$my_letter = 
+$my_letter =
 qq~<tr><td class="windowbg center"  colspan="{yabb headercount}"><br /><b>$ml_txt{'760'}</b><br /><br /></td></tr>~;
 
 $my_findmember = qq~<tr>
@@ -127,7 +126,7 @@ $my_usersel_tem = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//
     function txtInFields(thefield, defaulttxt) {
         if (thefield.value == defaulttxt) thefield.value = "";
         else { if (thefield.value === "") thefield.value = defaulttxt; }
-    } 
+    }
     var scripturl = '$scripturl';
     var noresults = '{yabb noresults}';
     var imageurl = '$imagesdir';

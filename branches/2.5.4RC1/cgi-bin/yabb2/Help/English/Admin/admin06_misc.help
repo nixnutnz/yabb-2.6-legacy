@@ -96,7 +96,7 @@ $SectionBody3 = qq~<p>These are some completely new features to YaBB 2.3 that we
 		<p class="help_attn_strong">None of these types are allowed by default. The Admin can allow them, but be warned - it is risky. HTML files can by uploaded as text files &#40;.txt&#41; that are perfectly safe. Let the user who downloads it change it back to HTML and avoid risk to your forum. Do some research and be sure it's necessary before you allow new file types.</p>
 	</li>
 	<li><b>User Avatar Upload</b>
-		<br />Admins can choose to allow users to upload their own avatar image file. Files are identified with the userID in the filename for easy sorting. Users may only access their own image.
+		<br />Admins can choose to allow users to upload their own avatar image file. Files are identified with the user ID in the filename for easy sorting. Users may only access their own image.
 	</li>
 	<li><b>Advanced Split and Splice</b>
 		<br />Allows you to move single posts, selected posts, or all posts to a new thread or into any other post in any board you are allowed access to. You can choose to move the post or copy it, and choose whether or not to leave a split message.

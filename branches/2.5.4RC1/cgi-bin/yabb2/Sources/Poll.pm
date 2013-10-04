@@ -170,7 +170,7 @@ sub UndoVote {
             }
             }
         }
-    else {
+     else {
         if ($iamguest)  { fatal_error('not_allowed'); }
         if ($poll_lock) { fatal_error('locked_poll_no_delete'); }
         $found = 0;
@@ -269,9 +269,9 @@ sub votedetails {
     fclose(FILE);
     chomp $poll_question;
     (
-        $poll_question, $poll_locked, $poll_uname,   $poll_name,
-        $poll_email,    $poll_date,   $guest_vote,   $hide_results,
-        $multi_vote,    $poll_mod,    $poll_modname, $poll_comment,
+        $poll_question, $poll_locked, $poll_uname, $poll_name,
+        $poll_email, $poll_date, $guest_vote, $hide_results,
+        $multi_vote, $poll_mod, $poll_modname, $poll_comment,
         undef
     ) = split /\|/xsm, $poll_question, 13;
 
@@ -666,17 +666,17 @@ qq~<a href="$scripturl?action=undovote;num=$pollnum$scp">$img{'deletevote'}</a>~
     $pollmain =~ s/{yabb deletepoll}/$deletepoll/gsm;
     $pollmain =~ s/{yabb poll_question}/$poll_question/gsm;
 
-if($has_voted) {
+    if($has_voted) {
      if ( !$hide_results || $poll_locked ) {
         $poll_notlocked = qq~
            <div style="float: right; width: 20%; text-align: right;">
             <script type="text/javascript">
-                <!--
+        <!--
                 document.write('<a href="$scripturl?num=$viewnum"><img src="$imagesdir/$poll_bar" alt="" /></a>');
                 document.write('<a href="$scripturl?num=$viewnum;view=pie"><img src="$imagesdir/$poll_pie" alt="" /></a>');
-                //-->
-            </script>
-        </div>
+        //-->
+        </script>
+    </div>
     ~;
         }
     }
@@ -688,7 +688,7 @@ if($has_voted) {
 qq~$polltxt{'47'}<br /><span class="small">($polltxt{'48'})</span><br />~;
     }
     else {
-        if( $has_voted ) {
+        if($has_voted) {
             if ( $INFO{'view'} eq 'pie' ) {
                 $poll_hasvoted = qq~
         <script src="$yyhtml_root/piechart.js" type="text/javascript"></script>
@@ -748,7 +748,7 @@ qq~<input type="radio" name="option" id="option$i" value="$i" style="margin: 0; 
                 }
                 $poll_hasvoted .= qq~
         <div class="clear">
-            <div style="float: left; height: 22px; text-align: right;">$input <label for="option$i"><b>$options[$i]</b></label></div>
+        <div style="float: left; height: 22px; text-align: right;">$input <label for="option$i"><b>$options[$i]</b></label></div>
         </div>~;
             }
         }

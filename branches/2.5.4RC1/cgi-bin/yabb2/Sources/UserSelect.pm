@@ -82,7 +82,7 @@ sub MemberList {
         elsif ( $to_id eq 'toshowbcc' ) { $bccsel = q~ checked="checked"~; }
         else                            { $tosel  = q~ checked="checked"~; }
         if ( $PMenable_cc || $PMenable_bcc ) {
-			$my_radio_to = qq~
+            $my_radio_to = qq~
             <label for="toshow" class="small">$usersel_txt{'pmto'}</label><input type="radio" name="selreciepients" id="toshow" value="toshow" class="windowbg" onclick="location.href='$scripturl?action=imlist;sort=$INFO{'sort'};toid=toshow;start=$start;letter=$INFO{'letter'}';"$tosel />
             ~;
             if ($PMenable_cc) {
@@ -719,7 +719,7 @@ sub buildPages {
 sub userselectTemplate {
     print_output_header();
 
-	$show_cc = q{};
+    $show_cc = q{};
     if ( $to_id ne 'groups' ) {
         if ( $PMenable_cc && $PMenable_bcc ) {
             $show_cc .= q~
@@ -743,10 +743,10 @@ sub userselectTemplate {
     }
 
     $output = $my_usersel_tem;
-	$output =~ s/{yabb noresults}/$usersel_txt{'noresults'}/sm;
-	$output =~ s/{yabb title}/$yytitle/sm;
-	$output =~ s/{yabb show_cc}/$show_cc/sm;
-	$output =~ s/{yabb main}/$yymain/sm;
+    $output =~ s/{yabb noresults}/$usersel_txt{'noresults'}/sm;
+    $output =~ s/{yabb title}/$yytitle/sm;
+    $output =~ s/{yabb show_cc}/$show_cc/sm;
+    $output =~ s/{yabb main}/$yymain/sm;
 
     $addsession =
 qq~<input type="hidden" name="formsession" value="$formsession" /></form>~;

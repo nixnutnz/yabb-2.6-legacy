@@ -3677,7 +3677,7 @@ sub usersrecentposts {
         ToChars( $boardname{$board} );
 
         $counter++;
-
+  
         if ( $tusername !~ m{Guest}sm  ) {
             if ( -e ("$memberdir/$tusername.vars") ) {
                 $mytname =

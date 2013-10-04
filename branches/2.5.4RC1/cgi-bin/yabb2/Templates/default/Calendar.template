@@ -137,29 +137,29 @@ $mycalout_addevent = qq~
     {yabb mycalout_validation}
     {yabb mycalout_spamquestion}
     <tr>
-    	<td class="windowbg2" colspan="2">
-			<div style="height:16px;">
-			<img name="prevwin" id="prevwin" src="$defaultimagesdir/$cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor: pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
+        <td class="windowbg2" colspan="2">
+            <div style="height:16px;">
+            <img name="prevwin" id="prevwin" src="$defaultimagesdir/$cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor: pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
             </div>
         </td>
    </tr>
-   </table>   
+</table>
    {yabb my_postsection_ajx}
 <table class="bordercolor" style="table-layout: fixed;">
     <col style="width:160px" />
     <col style="width:auto" />
     <tr>
         <td class="windowbg2" colspan="2">
-            <div id="savetable" class="windowbg" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
-		{yabb messageblock}
-		<div id="checktable" class="small" style="float: right; text-align: left; width: 77%; padding: 6px; margin: 0px; display: none;"></div>
-		</div>
-		</td>
+            <div id="savetable" class="windowbg" style="float: left; text-align: left; width: 100%; padding: 0; margin: 0; overflow: hidden; display: none;">
+        {yabb messageblock}
+        <div id="checktable" class="small" style="float: right; text-align: left; width: 77%; padding: 6px; margin: 0; display: none;"></div>
+        </div>
+        </td>
     </tr><tr>
         <td class="windowbg2" colspan="2">
             <b>{yabb calevent}</b><br />
         </td>
-    </tr><tr> 
+    </tr><tr>
         <td class="windowbg2 cal_row1">
             <label for="calday"><span class="small"><b>$var_cal{'date'}:</b></span></label>
         </td>
@@ -167,14 +167,14 @@ $mycalout_addevent = qq~
             <span class="small">{yabb addevdate}</span>
         </td>
     </tr>{yabb option_noname}
-    <tr> 
+    <tr>
         <td class="windowbg2 cal_row1">
             <span class="small"><label for="caltype"><b>$var_cal{'calview'}:</b></label></span>
         </td>
         <td class="windowbg2">
             {yabb mycalout_caltype}
         </td>
-     </tr><tr> 
+     </tr><tr>
         <td class="windowbg2 cal_row2">
             <span class="small"><label for="calicon"><b>$var_cal{'event_icon'}:</b></label></span>
         </td>
@@ -184,8 +184,8 @@ $mycalout_addevent = qq~
         </td>
     </tr><tr>
         <td class="windowbg2" colspan="2">
-            <div id="savetable" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
-                <div id="saveframe" class="prevwin" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;"></div>
+            <div id="savetable" style="float: left; text-align: left; width: 100%; padding: 0; margin: 0; overflow: hidden; display: none;">
+                <div id="saveframe" class="prevwin" style="float: left; text-align: left; width: 100%; padding: 0; margin: 0; overflow: hidden; display: none;"></div>
            </div>
        </td>
     </tr><tr>

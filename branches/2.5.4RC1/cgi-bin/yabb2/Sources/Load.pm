@@ -935,7 +935,7 @@ sub MakeTools {
     $template =~ s/\|\|\|/$list_item/gsm;
     $template =~ s/<li>[\s]*<\/li>//gsm;
     if ($MenuType == 1 ) {
-    $template =~ s/\Q$menusep//gsm;
+        $template =~ s/\Q$menusep//gsm;
     }
 
     my $tools_template = $template

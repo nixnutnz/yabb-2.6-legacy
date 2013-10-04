@@ -229,19 +229,19 @@ $nn_avatar = 'nn.gif';
 );
 
 $newload = qq~
-		<script type="text/javascript">
-		var new_mess = "$newload{'new_mess'}";
-		var brd_new = "$newload{'brd_new'}";
-		var brd_old = "$newload{'brd_old'}";
-		var sub_brd_new = "$newload{'sub_brd_new'}";
-		var sub_brd_old = "$newload{'sub_brd_old'}";
-		var brd_col = "$newload{'brd_col'}";
-		var brd_exp = "$newload{'brd_exp'}";
-		var imopen = "$newload{'imopen'}";
-		var imopen2 = "$newload{'imopen2'}";
-		var imclose = "$newload{'imclose'}";
-		var imclose2 = "$newload{'imclose2'}";
-		</script>~;
+        <script type="text/javascript">
+        var new_mess = "$newload{'new_mess'}";
+        var brd_new = "$newload{'brd_new'}";
+        var brd_old = "$newload{'brd_old'}";
+        var sub_brd_new = "$newload{'sub_brd_new'}";
+        var sub_brd_old = "$newload{'sub_brd_old'}";
+        var brd_col = "$newload{'brd_col'}";
+        var brd_exp = "$newload{'brd_exp'}";
+        var imopen = "$newload{'imopen'}";
+        var imopen2 = "$newload{'imopen2'}";
+        var imclose = "$newload{'imclose'}";
+        var imclose2 = "$newload{'imclose2'}";
+        </script>~;
 
 #####################################################################
 #                   JS Variables for IMPost, Post                   #

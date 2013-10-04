@@ -37,11 +37,11 @@ get_template('Calendar');
 if ( eval { require "$vardir/eventcalIcon.txt"; 1 } ) {
     $i = 0;
     while ( $CalIconURL[$i] ) {
-		$cal_icon{"$CalIconURL[$i]"} = qq~<img src="$yyhtml_root/EventIcons/$CalIconURL[$i]" alt="$CalIDescription[$i]" />~;
-		$cal_icon_bg{"$CalIconURL[$i]"} = qq~$yyhtml_root/EventIcons/$CalIconURL[$i]~;
-		$var_cal{"$CalIconURL[$i]"} = $CalIDescription[$i];
-		$add_cal_icon[$i] = qq~$CalIconURL[$i]|$CalIDescription[$i]~;
-	$i++;
+        $cal_icon{"$CalIconURL[$i]"} = qq~<img src="$yyhtml_root/EventIcons/$CalIconURL[$i]" alt="$CalIDescription[$i]" />~;
+        $cal_icon_bg{"$CalIconURL[$i]"} = qq~$yyhtml_root/EventIcons/$CalIconURL[$i]~;
+        $var_cal{"$CalIconURL[$i]"} = $CalIDescription[$i];
+        $add_cal_icon[$i] = qq~$CalIconURL[$i]|$CalIDescription[$i]~;
+    $i++;
     }
 }
 
@@ -60,8 +60,8 @@ var jsCal = new Hash(
 'eventmedia', '$cal_icon_bg{'eventmedia'}',
 'eventmeeting', '$cal_icon_bg{'eventmeeting'}'~;
 for $i (@add_cal_icon) {
-     my($i_a,$i_b) = split /\|/xsm, $i; 
-	$jsCal .= qq~,\n'$i_a', '$yyhtml_root/EventIcons/$i_a'~;
+     my($i_a,$i_b) = split /\|/xsm, $i;
+    $jsCal .= qq~,\n'$i_a', '$yyhtml_root/EventIcons/$i_a'~;
 }
 $jsCal .= qq~\n);~;
 
@@ -78,7 +78,7 @@ var jsCaltxt = new Hash(
 'eventmeeting', '$var_cal{'eventmeeting'}'~;
 for $i (@add_cal_icon) {
      my($i_a,$i_b) = split /\|/xsm, $i; #
-	$jsCal_txt .= qq~,\n'$i_a', '$i_b'~;
+    $jsCal_txt .= qq~,\n'$i_a', '$i_b'~;
 }
 $jsCal_txt .= qq~\n);~;
 

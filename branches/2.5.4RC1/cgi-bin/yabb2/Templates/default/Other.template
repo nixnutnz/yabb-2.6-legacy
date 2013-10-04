@@ -58,8 +58,8 @@ $myshowProfile = qq~<tr class="windowbg">
         </td>
     </tr>~;
 
-$myselectmods = qq~<div style="position: relative; top: 0px; left: 0px; height: 1px; width: 350px; border: 0; z-index: 100002;">
-    <div id="modsettings" style="position: absolute; top: 0px; left: 0px; width: 350px; padding: 1px; color: #000000; background-color: gray; display: none;">
+$myselectmods = qq~<div style="position: relative; top: 0; left: 0; height: 1px; width: 350px; border: 0; z-index: 100002;">
+    <div id="modsettings" style="position: absolute; top: 0; left: 0; width: 350px; padding: 1px; color: #000; background-color: #808080; display: none;">
     <form action="$scripturl?action=modsearch2;toboard={yabb to_board}" method="post" name="moderatoradd" id="moderatoradd"  accept-charset="$yycharset">
     <div class="bordercolor" style="width:350px">
     <table class="cs_thin pad_3px" style="width:350px">
@@ -146,7 +146,7 @@ $my_sessions = qq~
         </td>
     </tr><tr>
         <td class="catbg center" style="padding: 8px;" colspan="2">
-            <input type="submit" value="$img_txt{'34a'}" tabindex="2" class="button" />
+            <input type="submit" value="$img_txt{'34a'}" tabindex="2" class="button" /> 
         </td>
     </tr>
 </table>
@@ -297,7 +297,7 @@ $my_show_error = qq~
     <tr>
         <td>{yabb errormessage}</td>
     </tr>
-</table> 
+</table>
 <br /><div style="width: 100%; text-align: center;"><a href="javascript:history.go(-1)">$maintxt{'193'}</a></div>
 ~;
 

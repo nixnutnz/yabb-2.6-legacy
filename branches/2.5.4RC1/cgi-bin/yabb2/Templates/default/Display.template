@@ -285,7 +285,7 @@ $mymove_top = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <title>$sstxt{'1'}</title>
-   <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
+    <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
     <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
     <script type="text/javascript" src="$yyhtml_root/ubbc.js" ></script>
 </head>
@@ -299,7 +299,7 @@ function NoPost(op) {
         alert("$sstxt{'27'}");
         document.getElementById("newboard").selectedIndex = 0;
     }
-} 
+}
 </script>
 <form action="$scripturl?action=split_splice;board=$currentboard;thread=$INFO{'thread'}" method="post" name="split_splice" onsubmit="return submitproc()" accept-charset="$yycharset">
             <input type="hidden" name="formsession" value="{yabb formsession}" />
@@ -371,7 +371,6 @@ function NoPost(op) {
     </body>
 </html>~;
 
-    
 $mymove_output_a = qq~<tr>
         <td class="windowbg"><b>$sstxt{'9'}</b></td>
     </tr><tr>
@@ -422,10 +421,10 @@ $mysend_top = qq~
     </tr><tr>
         <td class="windowbg"><label for="r_email"><b>$sendtopic_txt{'718'}:</b></label></td>
         <td class="windowbg"><input type="text" name="r_email" id="r_email" size="50" maxlength="50" /></td>
-    </tr> {yabb my_valcode} {yabb my_spam} 
+    </tr> {yabb my_valcode} {yabb my_spam}
     <tr>
         <td class="catbg center" colspan="2" style="padding: 8px;">
-            <input type="hidden" name="board" value="{yabb board}" />
+            <input type="hidden" name="board" value="{yabb board}" /> 
             <input type="hidden" name="topic" value="{yabb topic}" />
             <input type="submit" name="Send" value="$sendtopic_txt{'339'}" class="button" />
         </td>
@@ -461,24 +460,24 @@ $mysend_spam = qq~<tr>
 
 $my_guest_limit = qq~
 <table class="pad_4px" style="margin-bottom:10px">
-	 <tr>
+     <tr>
         <td class="tabtitle" style="height:22px"><img src="$micon_bg{'xx'}" alt=""> $display_txt{'guest_message'}</td>
-	</tr><tr>
-    	<td class="windowbg">
-      		$display_txt{'guest_message_block'}
-    	</td>
-  	</tr>
+    </tr><tr>
+        <td class="windowbg">
+            $display_txt{'guest_message_block'}
+        </td>
+    </tr>
 </table>~;
 
 $guest_view_limit_w = qq~
 <table class="pad_4px" style="margin-bottom:10px">
-	<tr>
+    <tr>
         <td class="tabtitle" style="height:22px"><img src="$micon_bg{'xx'}" alt=""> $display_txt{'guest_message'}</td>
-  	</tr><tr>
-    	<td class="windowbg">
-      		$display_txt{'guest_message_warn'}
-    	</td>
-  	</tr>
+    </tr><tr>
+        <td class="windowbg">
+            $display_txt{'guest_message_warn'}
+        </td>
+    </tr>
 </table>~;
 
 $my_bookmarks =

@@ -19,50 +19,50 @@ $my_favbrds = 'favboards.png';
 
 $favorites_template .= qq~<!-- Board Description start -->
 <table class="tabtitle-sub">
-	<col style="width:8%" />
-	<col style="width:20%" />
-	<col style="width:56%" />
-	<col style="width:16%" />
-	<tr>
-		<td class="center">{yabb bdpicture}</td>
-		<td><b>{yabb board}</b></td>
-		<td>{yabb description} </td>
-		<td class="center small">
-			<span class="bold">$my_favs{'330'}:</span> {yabb threadcount}
-			<br />
-			<span class="bold">$my_favs{'21'}:</span> {yabb messagecount}
-		</td>
-	</tr>
+    <col style="width:8%" />
+    <col style="width:20%" />
+    <col style="width:56%" />
+    <col style="width:16%" />
+    <tr>
+        <td class="center">{yabb bdpicture}</td>
+        <td><b>{yabb board}</b></td>
+        <td>{yabb description} </td>
+        <td class="center small">
+            <span class="bold">$my_favs{'330'}:</span> {yabb threadcount}
+            <br />
+            <span class="bold">$my_favs{'21'}:</span> {yabb messagecount}
+        </td>
+    </tr>
 </table>
 <table class="bordercolor pad_3px cs_thin">
-	<col span="2" style="width:4%" />
-	<col style="width:42%" />
-	<col span="2" style="width:10%" />
-	<col style="width:22%" />
-	<tr>
-		<td class="titlebg center" colspan="2">&nbsp;</td>
-		<td class="titlebg">$my_favs{'70'} / $my_favs{'109'}</td>
-		<td class="titlebg center">$my_favs{'110'}</td>
-		<td class="titlebg center">$my_favs{'301'}</td>
-		<td class="titlebg center">$my_favs{'22'}</td>
-		{yabb admin column}
-	</tr>
-	{yabb threadblock}
-	{yabb adminfooter}
+    <col span="2" style="width:4%" />
+    <col style="width:42%" />
+    <col span="2" style="width:10%" />
+    <col style="width:22%" />
+    <tr>
+        <td class="titlebg center" colspan="2">&nbsp;</td>
+        <td class="titlebg">$my_favs{'70'} / $my_favs{'109'}</td>
+        <td class="titlebg center">$my_favs{'110'}</td>
+        <td class="titlebg center">$my_favs{'301'}</td>
+        <td class="titlebg center">$my_favs{'22'}</td>
+        {yabb admin column}
+    </tr>
+    {yabb threadblock}
+    {yabb adminfooter}
 </table>
 ~;
 
 $favorites_template .= qq~<!-- Icon and access info start -->
 <table class="pad_8px">
-	<col style="width:35%" />
-	<tr>
-		<td class="vtop">
-			<span class="small">{yabb icons}</span>
-		</td>
-		<td class="vtop">
-			<span class="small">{yabb admin icons}</span>
-		</td>
-	</tr>
+    <col style="width:35%" />
+    <tr>
+        <td class="vtop">
+            <span class="small">{yabb icons}</span>
+        </td>
+        <td class="vtop">
+            <span class="small">{yabb admin icons}</span>
+        </td>
+    </tr>
 </table>
 <!-- Icon and access info end -->
 ~;
@@ -75,7 +75,7 @@ $no_favs = qq~<tr>
 # Board description                        #
 
 $boarddescription = qq~
-						<span class="small">{yabb boarddescription}</span>
+                        <span class="small">{yabb boarddescription}</span>
 ~;
 
 # Column Header definition for multi admin        #
@@ -89,52 +89,52 @@ $admincolumn = qq~<td class="windowbg center" style="white-space: nowrap">{yabb 
 # Sticky or global announcements header    #
 
 $stickyheader = qq~<tr>
-					<td colspan="{yabb colspan}" class="catbg">&nbsp;$messageindex_stickygrp{'1'}</td>
-				</tr>~;
+                    <td colspan="{yabb colspan}" class="catbg">&nbsp;$messageindex_stickygrp{'1'}</td>
+                </tr>~;
 
 # Non sticky or global announcements header#
 
 $nonstickyheader = qq~<tr>
-					<td colspan="{yabb colspan}" class="catbg">&nbsp;$messageindex_stickygrp{'2'}</td>
-				</tr>~;
+                    <td colspan="{yabb colspan}" class="catbg">&nbsp;$messageindex_stickygrp{'2'}</td>
+                </tr>~;
 
 # Thread bar                               #
 
 $threadbar = qq~<tr>
-					<td class="windowbg center">{yabb threadpic}</td>
-					<td class="windowbg center">{yabb icon}</td>
-					<td class="windowbg2">
-						<div style="float: left; width: 95%;">{yabb favorite} {yabb new} {yabb poll}{yabb subjectlink}<br /><span class="small">$my_favs{'527'} {yabb starttime} $my_favs{'526'} {yabb starter}{yabb pages}<br />{yabb permalink}</span></div>
-						<div style="float: left; width: 5%; text-align: center;">{yabb attachmenticon}</div>
-					</td>
-					<td class="windowbg center">{yabb replies}</td>
-					<td class="windowbg center">{yabb views}</td>
-					<td class="windowbg2">
-						<span class="small">
-						{yabb lastpostlink}<br />
-						<b>$my_favs{'525'}:</b> {yabb lastposter}</span></td>
-						{yabb admin column}
-				</tr>~;
+                    <td class="windowbg center">{yabb threadpic}</td>
+                    <td class="windowbg center">{yabb icon}</td>
+                    <td class="windowbg2">
+                        <div style="float: left; width: 95%;">{yabb favorite} {yabb new} {yabb poll}{yabb subjectlink}<br /><span class="small">$my_favs{'527'} {yabb starttime} $my_favs{'526'} {yabb starter}{yabb pages}<br />{yabb permalink}</span></div>
+                        <div style="float: left; width: 5%; text-align: center;">{yabb attachmenticon}</div>
+                    </td>
+                    <td class="windowbg center">{yabb replies}</td>
+                    <td class="windowbg center">{yabb views}</td>
+                    <td class="windowbg2">
+                        <span class="small">
+                        {yabb lastpostlink}<br />
+                        <b>$my_favs{'525'}:</b> {yabb lastposter}</span></td>
+                        {yabb admin column}
+                </tr>~;
 
 $threadbarMoved = qq~<tr>
-					<td class="windowbg2 center">{yabb threadpic}</td>
-					<td class="windowbg2 center">{yabb icon}</td>
-					<td class="windowbg" colspan="4">
-						<div style="float: left; width: 99%;">{yabb subjectlink}</div>
-					</td>
-					{yabb admin column}
-				</tr>~; 
+                    <td class="windowbg2 center">{yabb threadpic}</td>
+                    <td class="windowbg2 center">{yabb icon}</td>
+                    <td class="windowbg" colspan="4">
+                        <div style="float: left; width: 99%;">{yabb subjectlink}</div>
+                    </td>
+                    {yabb admin column}
+                </tr>~;
 
 # Admin dependent subfooter                #
 
 $subfooterbar = qq~<tr>
-					<td class="titlebg right" colspan="6">
-						<span class="small">{yabb admin selector} <label for="checkall">$my_favs{'737'}</label></span>
-					</td>
-					<td class="titlebg center" style="white-space: nowrap">
-					{yabb admin checkboxes}
-					</td>
-				</tr>~;
+                    <td class="titlebg right" colspan="6">
+                        <span class="small">{yabb admin selector} <label for="checkall">$my_favs{'737'}</label></span>
+                    </td>
+                    <td class="titlebg center" style="white-space: nowrap">
+                    {yabb admin checkboxes}
+                    </td>
+                </tr>~;
 
 ##############################################################################################
 ## Notifications                     #
@@ -264,10 +264,10 @@ $myshow_recent_a = qq~
 <table{yabb mypostborder} style="table-layout: fixed; margin-bottom:.5em;">
     <tr class="titlebg search">
         <td style="padding:3px 5px">$maintxt{'109'} {yabb tname} | $maintxt{'197'} {yabb poster}</td>
-                    <td class="right">&nbsp;~;
+        <td class="right">&nbsp;~;
 
 $myshow_recent_b = qq~
-                    </td>
+        </td>
     </tr><tr>
         <td class="windowbg2 vtop" style="height:80px; padding:5px" colspan="2">
             <div class="message" style="float: left; width: 99%; overflow: auto;">{yabb recentmsg}</div>

@@ -564,12 +564,12 @@ sub plushSearch2 {
                     $ipfound   = 0;
                     @mip       = split / /sm, $mip;
                     $mip       = q~~;
-                    $mip_class = q~~;
+                    $mip_class    = q~~;
                     foreach (@mip) {
                         if ( $_ =~ /\b$search_ip/sm ) {
                             $ipfound = 1;
                         }
-                        if ($ipLookup) {
+                        if ( $ipLookup ) {
                             if ( $_ =~ /\b$search_ip/sm ) {
                                 $mip_class = ' highlight';
                             }

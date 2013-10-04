@@ -94,7 +94,7 @@ $downloads_att_b = qq~<tr>
         </tr>~;
 
 $downloads_att_c = qq~<tr>
-          {yabb att_admin_b} 
+          {yabb att_admin_b}
         <td class="catbg" colspan="7">
             <table>
                 <col style="width:33%" />
@@ -144,6 +144,6 @@ $downloads_tbl_end = qq~</td>
 $my_att_sort_a = qq~<td onclick="location.href='$scripturl?action=viewdownloads;thread={yabb thread};sort=~;
 $my_att_sort_b = qq~</td>
         <td onclick="location.href='$scripturl?action=viewdownloads;thread={yabb thread};sort=~;
-$my_att_sort_c = qq~style="border: 0px; border-style: outset; cursor: pointer; text-align:center"><a href="$scripturl?action=viewdownloads;thread={yabb thread};sort=~;
+$my_att_sort_c = qq~style="border: 0; border-style: outset; cursor: pointer; text-align:center"><a href="$scripturl?action=viewdownloads;thread={yabb thread};sort=~;
 
 1;

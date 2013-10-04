@@ -261,7 +261,7 @@ sub template {
     $yygreyboxstyle  = q{};
     $yygrayscript    = q{};
 
-    if (
+    if (   
         $action eq 'post'
         || $action eq 'modify'
         || $action eq 'imshow'
@@ -633,7 +633,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
     if ( !$iamguest || $guestaccess != 0 ) {
         if ( $maxsearchdisplay > -1 && $qcksearchaccess eq 'granted' ) {
             $yysearchbox = qq~
-                    <div class="yabb_searchbox">
+                    <div class="yabb_searchbox">              
                     <form action="$scripturl?action=search2" method="post" accept-charset="$yycharset">
                         <input type="hidden" name="searchtype" value="$qcksearchtype" />
                         <input type="hidden" name="userkind" value="any" />
@@ -3388,9 +3388,9 @@ sub UploadFile {
             unlink "$file_directory/$fixfile";
             fatal_error( q{},
                     "$fatxt{'21'} $fixfile ("
-                    . int( $filesize / 1024 )
-                    . " KB) $fatxt{'21b'} "
-                    . $file_size );
+                  . int( $filesize / 1024 )
+                  . " KB) $fatxt{'21b'} "
+                  . $file_size );
         } 
         if ($directory_limit) {
             my $dirsize = dirsize($file_directory);

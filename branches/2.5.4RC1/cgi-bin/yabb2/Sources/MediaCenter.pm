@@ -83,9 +83,9 @@ qq~ $maintxt{'42'} <a href="$scripturl?action=register">$img{'register'}</a> !!~
                 $video = $embed_wma6;
             }
 
-            # file extensions that open flash player
-        }
-        elsif ( $media_url =~ m/(\.ra|\.ram|\.rm)$/ixsm ) {
+        # file extensions that open flash player
+            }
+            elsif ( $media_url =~ m/(\.ra|\.ram|\.rm)$/ixsm ) {
             $video = $embed_ra;
 
         }

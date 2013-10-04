@@ -49,7 +49,7 @@ $mypost_topview = qq~<table class="pad_3px">
 $mypost_postblock = qq~
 <table class="pad_3px" style="table-layout: fixed">
     <col style="width: 23%" />
-	<col style="width: auto" />
+    <col style="width: auto" />
     {yabb my_prevmain}{yabb name_field}{yabb email_field}{yabb verification_field}{yabb verification_question_field}
     <tr class="windowbg">
         <td colspan="{yabb guestcol}">
@@ -65,9 +65,9 @@ $mypost_postblock = qq~
     <col style="width: auto" />
     <tr class="windowbg">
         <td colspan="2">
-            <div id="savetable" class="windowbg" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
+            <div id="savetable" class="windowbg" style="float: left; text-align: left; width: 100%; padding: 0; margin: 0; overflow: hidden; display: none;">
         {yabb messageblock}
-            <div id="checktable" class="small" style="float: right; text-align: left; width: 77%; padding: 6px; margin: 0px; display: none;"></div>
+            <div id="checktable" class="small" style="float: right; text-align: left; width: 77%; padding: 6px; margin: 0; display: none;"></div>
         </div>
        </td>
     </tr>
@@ -216,7 +216,7 @@ $mypost_feata = q~
 
 $mypost_prevmain = q{};
 $x_mypost_prevmain = qq~
-    <div class="bordercolor" style="padding: 1px; width: 100%; margin-left: auto; margin-right: auto;">
+     <div class="bordercolor" style="padding: 1px; width: 100%; margin-left: auto; margin-right: auto;">
         <table class="windowbg pad_3px" style="table-layout: fixed;">
             <tr>
                 <td class="windowbg2">

@@ -298,7 +298,7 @@ sub postbox2 {
                             </select>
                         </div>
                     </div>~;
-    if (!$replyguest) { $box .=          
+    if (!$replyguest) { $box .=
                     qq~<div class="chrwarn">
                         <img src="$imagesdir/green1.gif" id="chrwarn" height="8" width="8" alt="" />
                         <span class="small">$npf_txt{'03'} $MaxMessLen $npf_txt{'03a'}<input value="$MaxMessLen" size="3" name="msgCL" class="chrwarn" readonly="readonly" /></span>

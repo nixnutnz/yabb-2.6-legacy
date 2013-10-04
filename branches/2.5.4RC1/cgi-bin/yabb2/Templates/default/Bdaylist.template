@@ -76,7 +76,7 @@ $mybdlist_nobd = qq~
     </tr>
 </table>~;
 
-$mybdlist_calinfoheader = 
+$mybdlist_calinfoheader =
 qq~<tr>
         <td{yabb class_sortuser}><a href="$scripturl?action=birthdaylist;sort=sortuser" style="text-decoration:none;"><b>$var_cal{'calname'}</b></a></td>
         <td{yabb class_sortage}><a href="$scripturl?action=birthdaylist;sort=sortage" style="text-decoration:none;"><b>$var_cal{'calage'}</b></a></td>

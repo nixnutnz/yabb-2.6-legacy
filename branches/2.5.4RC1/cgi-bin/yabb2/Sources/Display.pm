@@ -57,7 +57,7 @@ sub Display {
             else {
                 $gtvlcount = 1;
             }
-			my $guest_view_limit_clength = q{+} . $cookieviewtime . 'm';
+            my $guest_view_limit_clength = q{+} . $cookieviewtime . 'm';
             $yySetCookies1 = write_cookie(
                 -path    => q{/},
                 -name    => $cookieview,
@@ -1223,8 +1223,8 @@ qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote
                         $quote_mname = $useraccount{$musername};
                         $quote_mname =~ s/'/\\'/gxsm;
                         if ($enable_markquote) {
-							my $quoteinfo;
-							my $quotesmess = $postmessage;
+                            my $quoteinfo;
+                            my $quotesmess = $postmessage;
                             while ( $quotesmess =~ s/\[quote (.*?)\]//sm ) {
                                 my ( $tmpqauth, $tmpqlink, $tmpqdate ) =
                                   split / /sm, $1;
@@ -1232,9 +1232,9 @@ qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote
                                 my ( undef, $tmpqli ) = split /=/xsm, $tmpqlink;
                                 my ( undef, $tmpqda ) = split /=/xsm, $tmpqdate;
 
-								$quoteinfo .= qq~$tmpqau-$tmpqli-$tmpqda|~;
-							}
-							$outblock =~ s/(<div)( class="$messageclass" style="float: left; width: 99%; overflow: auto;">)/$1 id="mq$counter" onmouseup="get_selection($counter, '$quoteinfo');"$2/i;
+                                $quoteinfo .= qq~$tmpqau-$tmpqli-$tmpqda|~;
+                            }
+                            $outblock =~ s/(<div)( class="$messageclass" style="float: left; width: 99%; overflow: auto;">)/$1 id="mq$counter" onmouseup="get_selection($counter, '$quoteinfo');"$2/i;
 
                             $template_quote =
 qq~$menusep<a href="javascript:void(quoteSelection('$quote_mname',$viewnum,$counter,$mdate,''))">$img{'mquote'}</a>~;
@@ -1368,17 +1368,17 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         $posthandelblock =~ s/({|<)yabb admin(}|>)/$template_admin/gsm;
         $posthandelblock =~ s/\Q$menusep//ism;
 
-    @psetmenusep = ( "$template_markquote","$template_quote","$template_modify","$template_split","$template_delete","$PMAlertButton","$template_print_post",);
+        @psetmenusep = ( "$template_markquote","$template_quote","$template_modify","$template_split","$template_delete","$PMAlertButton","$template_print_post",);
         @postout = ();
-    my $psepcn = 0;
-    for (@psetmenusep) {
-        if ($_ ) {
+        my $psepcn = 0;
+        for (@psetmenusep) {
+            if ($_ ) {
                if ( !$posttools ) { $postout[$psepcn] = "$_$my_ttsep";}
                else  { $postout[$psepcn] = "$my_ttsep$_"; }
-        }
+            }
             else  { $postout[$psepcn] = q{} }
-        $psepcn++;
-    }
+            $psepcn++;
+        }
         my $outside_posttools_tmp = $outside_posttools;
         $outside_posttools_tmp =~ s/({|<)yabb markquote(}|>)/$postout[0]/gsm;
         $outside_posttools_tmp =~ s/({|<)yabb quote(}|>)/$postout[1]/gsm;
@@ -1559,14 +1559,14 @@ qq~$menusep<a href="javascript:document.multidel.submit();" onclick="return conf
             CountChars();
             $bm_subject = $convertstr;
             if ($cliped) { $bm_subject .= '...'; }
-			$bm_subject =~ s/([^A-Za-z0-9])/sprintf('%%%02X', ord($1))/segm; 
+            $bm_subject =~ s/([^A-Za-z0-9])/sprintf('%%%02X', ord($1))/segm; 
             $bm_url =~ s/{url}/$scripturl?num=$mnum/gxsm;
             $bm_url =~ s/{title}/$bm_subject/gxsm;
             $show_bookmarks .=
 qq~<a href="$bm_url" rel="nofollow" target="_blank"><img src="$yyhtml_root/Bookmarks/$bm_image" alt="$bm_title" title="$bm_title" /></a>\n~;
         }
         $bookmarks = $my_bookmarks;
-		$bookmarks =~  s/{yabb bookmarks}/$show_bookmarks/sm;
+        $bookmarks =~  s/{yabb bookmarks}/$show_bookmarks/sm;
     }
 
     # Social Bookmarks End

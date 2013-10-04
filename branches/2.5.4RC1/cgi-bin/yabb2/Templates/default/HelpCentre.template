@@ -22,31 +22,31 @@ $UserClass        = 'catbg';
 
 ### Creates the Navigation Bar at the top ###
 $HelpNavBar = qq~
-	<table class="bordercolor pad_2px cs_thin h_25px" style="margin-bottom:10px">
-		<col span="4" style="width:25%" />
-		<tr>
-			<td class="{user class} center">{user menu}</td>
-			<td class="{moderator class} center">{moderator menu}</td>
-			<td class="{global mod class} center">{global mod menu}</td>
-			<td class="{admin class} center">{admin menu}</td>
-		</tr>
-	</table>
+    <table class="bordercolor pad_2px cs_thin h_25px" style="margin-bottom:10px">
+        <col span="4" style="width:25%" />
+        <tr>
+            <td class="{user class} center">{user menu}</td>
+            <td class="{moderator class} center">{moderator menu}</td>
+            <td class="{global mod class} center">{global mod menu}</td>
+            <td class="{admin class} center">{admin menu}</td>
+        </tr>
+    </table>
 ~;
 
 ### The Main Layout for the whole page. ###
 $MainLayout = qq~
-	<div style="float: left; width: 24%; margin-bottom:10px">
-		<table class="bordercolor pad_4px cs_thin">
-			<tr>
-				<td class="catbg small">$helptxt{'2'}</td>
-			</tr><tr>
-				<td class="windowbg2">{yabb contents}</td>
-			</tr>
-		</table>
-	</div>
-	<div style="float: right; width: 74%; margin-bottom: 10px;">
+    <div style="float: left; width: 24%; margin-bottom:10px">
+        <table class="bordercolor pad_4px cs_thin">
+            <tr>
+                <td class="catbg small">$helptxt{'2'}</td>
+            </tr><tr>
+                <td class="windowbg2">{yabb contents}</td>
+            </tr>
+        </table>
+    </div>
+    <div style="float: right; width: 74%; margin-bottom: 10px;">
 {yabb body}
-	</div>
+    </div>
 <div class="clear"></div>~;
 
 ### Prints this for the header of the contents #
@@ -56,38 +56,38 @@ $ContentHeader = qq~
 
 ### Prints this for every item in the contents #
 $ContentItem = qq~
-	<li class="small" style="padding-left: 10px; padding-right: 5px; margin: 0px;">
-		<a href="#{yabb anchor}">{yabb content}</a>
-	</li>~;
+    <li class="small" style="padding-left: 10px; padding-right: 5px; margin: 0;">
+        <a href="#{yabb anchor}">{yabb content}</a>
+    </li>~;
 
 ### Prints this for the Header of the main section (title etc) #
 $BodyHeader = qq~
-	<table class="bordercolor pad_4px cs_thin" style="table-layout: fixed">
-		<tr>
-			<td class="titlebg">
-				<a id="{yabb section_anchor}"></a><b>{yabb section_name}</b>
-			</td>
-		</tr>~;
+    <table class="bordercolor pad_4px cs_thin" style="table-layout: fixed">
+        <tr>
+            <td class="titlebg">
+                <a id="{yabb section_anchor}"></a><b>{yabb section_name}</b>
+            </td>
+        </tr>~;
 
 ### Prints this for the Sub headers of the main section #
 $BodySubHeader = qq~<tr>
-			<td class="catbg">
-				<a id="{yabb section_anchor}"></a><b>{yabb section_sub}</b>
-			</td>
-		</tr>~;
+            <td class="catbg">
+                <a id="{yabb section_anchor}"></a><b>{yabb section_sub}</b>
+            </td>
+        </tr>~;
 
 ### Prints this for every item in the body text #
 $BodyItem = qq~<tr>
-			<td class="windowbg2">
-				{yabb item}
-				<span style="float:right;"><span onclick="toTop(0)" class="cursor"><img src="$top_img" alt="$helptxt{'643'}" title="$helptxt{'643'}" /></span>&nbsp;</span>
-			</td>
-		</tr>~;
+            <td class="windowbg2">
+                {yabb item}
+                <span style="float:right;"><span onclick="toTop(0)" class="cursor"><img src="$top_img" alt="$helptxt{'643'}" title="$helptxt{'643'}" /></span>&nbsp;</span>
+            </td>
+        </tr>~;
 
 ### Prints this after each file in a help directory has finished printing. #
 $BodyFooter = qq~
-	</table>
-	<br />
+    </table>
+    <br />
 ~;
 
 1;

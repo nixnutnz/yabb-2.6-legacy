@@ -102,9 +102,9 @@ sub MessageIndex {
         if ( ${ $uid . $currentboard }{'brdpasswr'} ) {
             my $cookiename = "$cookiepassword$currentboard$username";
             my $crypass    = ${ $uid . $currentboard }{'brdpassw'};
-			if ( $iamguest ) {
-				BoardPassw_g();
-			}
+            if ( $iamguest ) {
+                BoardPassw_g();
+            }
             elsif ( !$staff && $yyCookies{$cookiename} ne $crypass ) {
                 BoardPassw();
             }
@@ -609,7 +609,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
         }
         $markalllink =
 qq~$menusep<a href="javascript:MarkAllAsRead('$scripturl?board=$INFO{'board'};action=markasread','$imagesdir','$mthreadslang','$brdid')">$img{'markboardread'}</a>~;
- 
+
         $notify_board =
 qq~$menusep<a href="$scripturl?action=boardnotify;board=$INFO{'board'}">$img{'notify'}</a>~;
     }
@@ -1109,7 +1109,7 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
         $msub = Censor($msub);
         ToChars($msub);
         if ( !$movedFlag ) {
-            if ( $enabletopichover && !$messagelist && ( ${ $uid . $username }{'topicpreview'} || $iamguest ) ) { 
+            if ( $enabletopichover && !$messagelist && ( ${ $uid . $username }{'topicpreview'} || $iamguest ) ) {
                 fopen( MNUM, "$datadir/$mnum.txt" );
                 my $thetopic = <MNUM>;
                 fclose(MNUM);
@@ -1470,7 +1470,7 @@ qq~ <img src="$imagesdir/$bdpic" alt="$curboardname" title="$curboardname" /> ~;
           s/({|<)yabb threadcount(}|>)/$tmpthreadcount/gsm;
         $messageindex_template =~
           s/({|<)yabb messagecount(}|>)/$tmpmessagecount/gsm;
-		$messageindex_template =~ s/({|<)yabb new_load(}|>)/$newload/gsm;
+        $messageindex_template =~ s/({|<)yabb new_load(}|>)/$newload/gsm;
     }
     $messageindex_template =~ s/({|<)yabb colspan(}|>)/$colspan/gsm;
     ### Board Rules Start ###
@@ -1499,8 +1499,8 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
         $rulesdesc = qq~<div id="bdruledesc">$tmpruletxt</div>~;
 
         if ( !$iamguest && ${ $uid . $currentboard }{'rulescollapse'} == 1 ) {
-			$mycat_col = $newload{'brd_col'};
-			$mycat_exp = $newload{'brd_exp'};
+            $mycat_col = $newload{'brd_col'};
+            $mycat_exp = $newload{'brd_exp'};
             $rulesdesc .= qq~
             <textarea id="actruletxt" name="actruletxt" rows="1" cols="1" style="display: none;">${$uid.$currentboard}{'rulesdesc'}</textarea>
             <input type="hidden" id="tmpruletxt" value="$messageindex_txt{'collruletext'}" />
@@ -1552,7 +1552,7 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
     $topichandellist =~ s/({|<)yabb new post button(}|>)/$postlink$tool_sep/gsm;
     $topichandellist =~ s/({|<)yabb new poll button(}|>)/$polllink$tool_sep/gsm;
     $topichandellist =~ s/\Q$menusep//ism;
-
+    
     @threadin = ( "$notify_board","$markalllink","$postlink","$polllink",);
     @threadout = ();
     my $sepcn = 0;
@@ -1573,7 +1573,7 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
       s/({|<)yabb new post button(}|>)/$threadout[2]/gsm;
     $outside_threadtools =~
       s/({|<)yabb new poll button(}|>)/$threadout[3]/gsm;
-        $outside_threadtools =~ s/\Q$my_ttsep//ism;
+    $outside_threadtools =~ s/\Q$my_ttsep//ism;
 
     if ( !$threadtools ) {
         $outside_threadtools =~ s/\Q$menusep//ism;
@@ -1589,8 +1589,8 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
 
     # Thread Tools #
     if ($threadtools) {
-	    $dropid = q{};
-	    if ($messagelist) { $dropid = $INFO{'board'}; }
+        $dropid = q{};
+        if ($messagelist) { $dropid = $INFO{'board'}; }
         $topichandellist2 =
           MakeTools( "bottom$dropid", $maintxt{'62'}, $topichandellist2 );
         $topichandellist = MakeTools( "top$dropid", $maintxt{'62'}, $topichandellist );
@@ -1824,7 +1824,7 @@ sub collapse_bdrule {
     UserAccount( $username, 'update' );
     $elenable = 0;
     croak q{};
-	return;
+    return;
 }
 
 sub MarkRead {    # Mark all threads in this board as read.

@@ -132,12 +132,12 @@ sub Post {
     if ( $FORM{'title'} eq 'PostReply' ) { $postthread = 2; }
     if ( $pollthread == 2 && $useraddpoll == 0 ) { fatal_error('no_access'); }
 
-	$guestpost_fields = q{};
-	if ( $iamguest ) {
+    $guestpost_fields = q{};
+    if ( $iamguest ) {
     $guestpost_fields = $mypost_guest_fields;
     $guestpost_fields =~ s/{yabb name}/$FORM{'name'}/sm;
     $guestpost_fields =~ s/{yabb email}/$FORM{'email'}/sm;
-	}
+    }
 
     if ( $iamguest && $gpvalid_en ) {
         validation_code();
@@ -1228,7 +1228,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             $return_to =~ s/{yabb return_to_select}/$return_to_select/sm;
         }
         ### Return To mod end ###
-		$guestpost_col = $my_guestpost_col;
+        $guestpost_col = $my_guestpost_col;
         if ( $is_preview ) { $guestpost_col = $my_guestpost_col + 2; }
         $my_postsec_b   = postbox2();
         $my_postsection = $mypost_postblock;
@@ -1557,12 +1557,12 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     elsif ( $FORM{'status'} eq 'u' ) { $icon = 'urgent'; }
     elsif ( $FORM{'status'} eq 's' ) { $icon = 'standard'; }
 
-	$guestpost_fields = q{};
+    $guestpost_fields = q{};
     if ( $iamguest ) {
-		$guestpost_fields = $mypost_guest_fields;
-    $guestpost_fields =~ s/{yabb name}/$FORM{'name'}/sm;
-    $guestpost_fields =~ s/{yabb email}/$FORM{'email'}/sm;
-	}
+        $guestpost_fields = $mypost_guest_fields;
+        $guestpost_fields =~ s/{yabb name}/$FORM{'name'}/sm;
+        $guestpost_fields =~ s/{yabb email}/$FORM{'email'}/sm;
+    }
 
     if ( $iamguest && $gpvalid_en ) {
         $usename = substr $date, 1, length($date) - 4;
@@ -3092,11 +3092,11 @@ sub modAlert {
     $postthread = 2;
 
     $guestpost_fields = q{};
-	if ( $iamguest ) {
+    if ( $iamguest ) {
     $guestpost_fields = $mypost_guest_fields;
     $guestpost_fields =~ s/{yabb name}/$FORM{'name'}/sm;
     $guestpost_fields =~ s/{yabb email}/$FORM{'email'}/sm;
-	}
+    }
 
     if ( $iamguest && $gpvalid_en ) {
         validation_code();
@@ -3219,7 +3219,7 @@ sub modAlert2 {
     {
         SpamQuestionCheck( $FORM{'verification_question'},
             $FORM{'verification_question_id'} );
-    } 
+    }
 
     # Get the form values
     $name     = $FORM{'name'};
@@ -3451,7 +3451,7 @@ sub modAlert2 {
         # set announcement flag according to status of current board
             if   ($iamguest) { $mstatus = q~ga~; }
             else             { $mstatus = q~ab~; }
-		#if sender is guest and Alert is going to ModGroup
+        #if sender is guest and Alert is going to ModGroup
         fopen( INBOX, "$memberdir/broadcast.messages" )
           || fatal_error( 'cannot_open', "$memberdir/broadcast.messages" );
         my @inmessages = <INBOX>;

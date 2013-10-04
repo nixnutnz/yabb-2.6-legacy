@@ -200,7 +200,7 @@ sub SendTopic2 {
     if ( $spam_questions_gp && $iamguest && -e "$langdir/$language/spam.questions" ) {
         SpamQuestionCheck( $FORM{'verification_question'},
             $FORM{'verification_question_id'} );
-    }
+    } 
     if ( !ref $thread_arrayref{$topic} ) {
         fopen( FILE, "$datadir/$topic.txt" )
           || fatal_error( 'cannot_open', "$datadir/$topic.txt", 1 );

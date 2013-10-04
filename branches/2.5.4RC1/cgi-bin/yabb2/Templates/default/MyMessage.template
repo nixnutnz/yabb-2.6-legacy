@@ -67,7 +67,7 @@ $myIM_show = qq~
             <div style="float: right; text-align: right; padding: 2px; margin: 2px;"><span class="small">{yabb PMnav}</span></div>
         </td>
     </tr>
-</table>    
+</table>
 ~;
 
 $show_my_sig = qq~<tr>
@@ -110,8 +110,8 @@ $myIM_liveprev = qq~<tr>
         </td>
     </tr><tr>
         <td class="windowbg vtop">
-            <div id="SaveInfo" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;">
-                <div id="saveframe" class="prevwin" style="float: left; text-align: left; width: 100%; padding: 0px; margin: 0px; overflow: hidden; display: none;"></div>
+            <div id="SaveInfo" style="float: left; text-align: left; width: 100%; padding: 0; margin: 0; overflow: hidden; display: none;">
+                <div id="saveframe" class="prevwin" style="float: left; text-align: left; width: 100%; padding: 0; margin: 0; overflow: hidden; display: none;"></div>
             </div>
         </td>
     </tr>~;
@@ -158,7 +158,7 @@ $my_imsend_Guest = qq~{yabb my_gimsend} {yabb my_send}<tr>
                     <td class="vtop">&nbsp;</td>
                 </tr><tr>
                     <td class="vtop">
-						<b>$post_txt{'69'}:</b> <input type="text" name="guestemail" id="guestemail" value="{yabb guestEmail}" size="50" maxlength="40" style="width: 95%;" />
+                        <b>$post_txt{'69'}:</b> <input type="text" name="guestemail" id="guestemail" value="{yabb guestEmail}" size="50" maxlength="40" style="width: 95%;" />
                         <input type="hidden" name="replyguest" id="replyguest" value="1" />
                     </td>
                     <td class="vtop">&nbsp;</td>
@@ -223,7 +223,7 @@ $my_FA_browse = qq~<tr>{yabb my_ispreview}
             <input type="submit" name="{yabb post}" value="{yabb submittxt}" accesskey="s" tabindex="5" class="button" />{yabb my_spdpost}
             {yabb my_accesskey} {yabb my_browser} {yabb my_savetable} {yabb my_chars} {yabb my_visicon}
             // -->
-            </script>
+            </script> 
         </td>
     </tr>\n~;
 
@@ -278,7 +278,7 @@ $myIM_liveprev_b = qq~<table class="bordercolor cs_thin pad_1px" style="table-la
     </tr>
     {yabb my_sig} {yabb my_attach}
     <tr><td class="windowbg right" colspan="2">{yabb my_showIP}</td></tr>
-</table>    
+</table>
 ~;
 
 #pagedrop (in javascript)
