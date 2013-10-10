@@ -869,7 +869,7 @@ qq~$menusep<a href="$scripturl?action=print;num=$viewnum" target="_blank">$img{'
                 my $filesize = -s "$uploaddir/$_";
                 $urlname = $_;
                 $urlname =~ s/([^A-Za-z0-9])/sprintf('%%%02X', ord($1))/egxsm;
-                $download_txt = ( $attach_count{$_} == 1 ) ? $fatxt{'41b'} : $fatxt{'41a'}; 
+                $download_txt = ( $attach_count{$_} == 1 ) ? $fatxt{'41b'} : $fatxt{'41a'};
                 if ($filesize) {
                     if (   $_ =~ /\.(bmp|jpe|jpg|jpeg|gif|png)$/ixsm
                         && $amdisplaypics == 1 )
@@ -1388,7 +1388,7 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         $outside_posttools_tmp =~ s/({|<)yabb delete(}|>)/$postout[4]/gsm;
         $outside_posttools_tmp =~ s/({|<)yabb modalert(}|>)/$postout[5]/gsm;
         $outside_posttools_tmp =~ s/({|<)yabb print_post(}|>)/$postout[6]/gsm;
-        $outside_posttools_tmp =~ s/\Q$my_ttsep//ixsm; 
+        $outside_posttools_tmp =~ s/\Q$my_ttsep//ixsm;
 
         if ( !$posttools ) {
             $posthandelblock       = $outside_posttools_tmp . $posthandelblock;
@@ -1560,7 +1560,7 @@ qq~$menusep<a href="javascript:document.multidel.submit();" onclick="return conf
             CountChars();
             $bm_subject = $convertstr;
             if ($cliped) { $bm_subject .= '...'; }
-            $bm_subject =~ s/([^A-Za-z0-9])/sprintf('%%%02X', ord($1))/segm; 
+            $bm_subject =~ s/([^A-Za-z0-9])/sprintf('%%%02X', ord($1))/segm;
             $bm_url =~ s/{url}/$scripturl?num=$mnum/gxsm;
             $bm_url =~ s/{title}/$bm_subject/gxsm;
             $show_bookmarks .=
@@ -1658,8 +1658,9 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
     $outside_threadtools =~ s/({|<)yabb favorite(}|>)/$threadout[4]/gsm;
     $outside_threadtools =~ s/({|<)yabb sendtopic(}|>)/$threadout[5]/gsm;
     $outside_threadtools =~ s/({|<)yabb print(}|>)/$threadout[6]/gsm;
-
-    $outside_threadtools =~ s/\Q$menusep//ixsm;
+    if ( $menusep ne q{ } ) {
+        $outside_threadtools =~ s/\Q$menusep//ixsm;
+    }
 
     if ( !$threadtools ) {
         $threadhandellist    = $outside_threadtools . $threadhandellist;

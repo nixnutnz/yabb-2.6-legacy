@@ -1551,8 +1551,8 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
       s/({|<)yabb markall button(}|>)/$markalllink$tool_sep/gsm;
     $topichandellist =~ s/({|<)yabb new post button(}|>)/$postlink$tool_sep/gsm;
     $topichandellist =~ s/({|<)yabb new poll button(}|>)/$polllink$tool_sep/gsm;
-    $topichandellist =~ s/\Q$menusep//ism;
-    
+    $topichandellist =~ s/\Q$menusep//ixsm;
+
     @threadin = ( "$notify_board","$markalllink","$postlink","$polllink",);
     @threadout = ();
     my $sepcn = 0;
@@ -1564,7 +1564,7 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
         else  { $threadout[$sepcn] = q{}; }
         $sepcn++;
     }
- 
+
     $outside_threadtools =~
       s/({|<)yabb notify button(}|>)/$threadout[0]/gsm;
     $outside_threadtools =~
@@ -1573,10 +1573,14 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
       s/({|<)yabb new post button(}|>)/$threadout[2]/gsm;
     $outside_threadtools =~
       s/({|<)yabb new poll button(}|>)/$threadout[3]/gsm;
-    $outside_threadtools =~ s/\Q$my_ttsep//ism;
+    if ( $my_ttsep ne q{ } ) {
+        $outside_threadtools =~ s/\Q$my_ttsep//ixsm;
+    }
 
     if ( !$threadtools ) {
-        $outside_threadtools =~ s/\Q$menusep//ism;
+        if ( $menusep ne q{ } ) {
+            $outside_threadtools =~ s/\Q$menusep//ixsm;
+        }
         $topichandellist     = $outside_threadtools . $topichandellist;
         $outside_threadtools = q{};
     }
