@@ -229,13 +229,13 @@ function do_images() {
                 {
                     $imagecount++;
                     $pmShowAttach .=
-qq~<div class="small" style="float:left; margin:8px;"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile (~
+qq~<div class="small" style="float:left; margin:8px;"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile ( ~
                       . int( $filesize / 1024 )
                       . qq~ KB)<br /><img src="$pmuploadurl/$pmAttachFile" name="attach_img_resize" alt="$pmAttachFile" title="$pmAttachFile" style="display:none;" /></div>\n~;
                 }
                 else {
                     $pmAttachment .=
-qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile (~
+qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $pmAttachFile ( ~
                       . int( $filesize / 1024 )
                       . q~ KB)</div>~;
                 }
