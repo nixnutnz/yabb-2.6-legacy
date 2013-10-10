@@ -182,7 +182,7 @@ sub honeypot_edit {
                 <col style="width: 25%" />
                 <col style="width: 75%" />
                 <tr>
-                    <th class="titlebg" colspan="2">$admin_img{'prefimg'} $honeypot{'edit'}</th>
+                    <th class="titlebg" colspan="2">$admin_img{'prefimg'} $honeypot{'edits'}</th>
                 </tr><tr class="windowbg2 vtop bold;">
                     <td><label for="hon_label">$honeypot{'label'}:</label></td>
                     <td><input type="text" name="hon_label2" id="hon_label2" size="60" maxlength="50" value="$h_label" /><input type="hidden" name="hon_line" value="$aa" /></td>
