@@ -39,8 +39,8 @@
         <div class="body">
             <h3>Step 2 - Uploading YaBB</h3>
             <ol>
-                <li>Your host should specify what folder(s) you may run Perl/cgi scripts in. Some may allow them only in the cgi-bin directory, On some web hosts, it is not required that Perl scripts reside in this cgi-bin folder. Verify this before proceeding. Others may allow Perl scripts anywhere in or below the public_html folder, this is totally up your host, and they can advise you if you are not sure. Use these examples as a guide.  In your 'cgi-bin', create a directory called "yabb2" (or whatever name you wish to use in your forum's URL). See the example file structure provided below.<br /><b>Note</b>: if you are upgrading from a previous version of YaBB, please check <a href="../extras/index.html">Converting</a> prior to installing your new YaBB 2.5.4 forum. Also, note that Windows servers, unlike *nix servers, are case-<b>in</b>sensitive. In this case 'avatars', 'Avatars', and 'AvAtars' refer to the same Windows folder or file - on *nix these are all different folder/file names. This can cause issues if you are moving a forum from a *nix server to a Windows one and files have similar case-sensitive names.</li>
-                <li><span class="underline">Upload all of the files in ASCII mode</span> from the 'cgi-bin/yabb2' folder into your new folder. You can select all of the folders and files at once to upload them in one step if you desire. Do not rename any of these folders for now, or the automatic path detection will not work when you run the setup script. You should have a folder structure similar to the following when this is complete:
+                <li>Your host should specify what folder(s) you may run Perl/cgi scripts in. Some may allow them only in the cgi-bin directory, On some web hosts, it is not required that Perl scripts reside in this cgi-bin folder. Verify this before proceeding. Others may allow Perl scripts anywhere in or below the public_html folder. This is totally up your host and they can advise you if you are not sure. Use these examples as a guide.  In your 'cgi-bin', create a directory called "yabb2" (or whatever name you wish to use in your forum's URL). See the example file structure provided below.<br /><b>Note</b>: if you are upgrading from a previous version of YaBB, please check <a href="../extras/index.html">Converting</a> prior to installing your new YaBB 2.5.4 forum. Also, note that Windows servers, unlike *nix servers, are case-<b>in</b>sensitive. In this case 'avatars', 'Avatars', and 'AvAtars' refer to the same Windows folder or file - on *nix these are all different folder/file names. This can cause issues if you are moving a forum from a *nix server to a Windows one and files have similar case-sensitive names: you will end up losing data. This will also be the same if you extract your full forum Archive on a windows PC/Laptop in one step so on a Windows system it is best to extract the Archive in steps and upload.</li>
+                <li><span class="underline">Upload all of the files in ASCII mode</span> from the 'cgi-bin/yabb2' folder into your new folder. You can select all of the folders and files at once to upload them in one step if you desire. *Do not rename any of these folders for now, or the automatic path detection will not work when you run the setup script. You should have a folder structure similar to the following when this is complete:
                     <ul>
                         <li>cgi-bin/yabb2</li>
                         <li>cgi-bin/yabb2/Admin</li>
@@ -64,7 +64,7 @@
                     </ul>
                 </li>
                 <li>Then, in a section of your webspace (outside the cgi-bin, generally in a 'public_html' or 'htdocs' folder, as suggested in the package's folders), create another directory called 'yabbfiles.'</li>
-                <li>Upload all of the files from the 'public_html/yabbfiles' folder (<b>DO NOT Use the AUTO Transfer mode!</b>) into your new folder. All files should be uploaded using ASCII except for these file types: .gif, .jpg, .png, and .swf, which must be transferred using Binary mode.  Do not rename any of these folders for now, or the automatic path detection will not work when you run the setup script.  Note: <i>Three of the folder names do not begin with capital letters</i>.  You should have a folder structure similar to the following when this is complete:
+                <li>Upload all of the files from the 'public_html/yabbfiles' folder (<b>DO NOT use the AUTO Transfer mode!</b>) into your new folder. All files should be uploaded using ASCII except for these file types: .gif, .jpg, .png, and .swf, which must be transferred using Binary mode.  Do not rename any of these folders for now, or the automatic path detection will not work when you run the setup script. Note: <i>Three of the folder names do not begin with capital letters</i>.  You should have a folder structure similar to the following when this is complete:
                     <ul>
                         <li>yabbfiles/</li>
                         <li>yabbfiles/Attachments</li>
@@ -83,6 +83,7 @@
                     </ul>
                 </li>
             </ol>
+			<p>* YaBB 2.5.4 requires that certain folders <b>not</b> be renamed. These folders (in the cgi-bin) are: Admin, Modules, Sources, and Variables.</p> 
         </div>
         <div class="clr"></div>
     </div>
