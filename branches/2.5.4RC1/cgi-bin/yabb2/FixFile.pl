@@ -1251,6 +1251,7 @@ sub Convert_Settings {
     if ( !$fix_avatarml_img_size) { $fix_avatarml_img_size  = 0; }
     if ( !$max_avatarml_width) { $max_avatarml_width  = 65; }
     if ( !$max_avatarml_height) { $max_avatarml_height  = 65; }
+    $gzcomp = fileno $GZIP ? 1 : 0;
 
     $ip_banlist = q{};
     $email_banlist = q{};

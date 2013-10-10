@@ -3406,7 +3406,7 @@ sub SetInstall2 {
         $maintenancetext =
 'We are currently upgrading our forum again. Please check back shortly!';
         $MenuType               = 2;
-        $profilebutton          = 0;
+        $profilebutton          = 1;
         $allow_hide_email       = 1;
         $showlatestmember       = 1;
         $shownewsfader          = 0;
