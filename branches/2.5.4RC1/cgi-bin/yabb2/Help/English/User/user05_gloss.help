@@ -46,7 +46,7 @@ $SectionBody1 = qq~YaBB has many descriptive terms that refer to its component p
 </dl><dl>
 <dd class="help_dd"><b>D</b></dd>
 	<dt><b>Display Name</b></dt>
-	<dd>This is the user's "public" name, the name that displays above their avatar picture to the left of the Post Window and in the Member List. A user may change this name by editing the Display Name in their Profile.</dd> 
+	<dd>See '<b>Screen Name</b>'.</dd> 
 	<dt><b>Download Counter</b></dt>
 	<dd>This is a feature associated with files attached to Posts, and is displayed to the right of the file name. This tells how many times the attached file has been downloaded. <span class="underline"><b>NOTE:</b></span> In the case of image files, a user may click on the file name and see the image displayed in their browser. This counts as a download, even though the user has not truly downloaded the file to their PC.</dd>
 </dl><dl>
@@ -89,7 +89,7 @@ $SectionBody1 = qq~YaBB has many descriptive terms that refer to its component p
 		</ul>
 	</dd>
 	<dt><b>Member List</b></dt>
-	<dd>This is a listing of all of your registered users that is sort-able by Display Name, Position, Number of Posts, or Date Registered.</dd>
+	<dd>This is a listing of all of your registered users that is sort-able by Screen Name, Position, Number of Posts, or Date Registered.</dd>
 	<dt><b>Message Index</b></dt>
 	<dd>This is the view where you see all the Topics in one Board listed. It is also the name of the .template file that provides this view.</dd> 
 	<dt><b>MOD or Modification</b></dt>
@@ -119,7 +119,7 @@ $SectionBody1 = qq~YaBB has many descriptive terms that refer to its component p
 	<dt><b>Profile</b></dt>
 	<dd>This consists of the user's Profile Page and Profile Settings. It is sometimes used synonymously with Profile Page, as in "I see in your Profile &#40;page&#41; you have 1200 posts."</dd>
 	<dt><b>Profile Page</b></dt>
-	<dd>This is a page where a user's information is displayed, such as display name, number of posts, date registered, link to their website, last posts made by user, etc. You can access a user's profile page by clicking on their Display Name.</dd> 
+	<dd>This is a page where a user's information is displayed, such as Screen Name, number of posts, date registered, link to their website, last posts made by user, etc. You can access a user's profile page by clicking on their Screen Name.</dd> 
 	<dt><b>Profile Settings</b></dt>
 	<dd>These are all settings that are personal to the individual user. Examples are time zone, choice of template, avatar image, etc. These can be changed by the individual user or by Administrators and, if allowed, by Global Moderators.</dd>
 </dl><dl>
@@ -131,11 +131,13 @@ $SectionBody1 = qq~YaBB has many descriptive terms that refer to its component p
 </dl><dl>
 	<dd class="help_dd"><b>R</b></dd>
 	<dt><b>Registration</b></dt>
-	<dd>The process where a user becomes a member of your forum. There are four different modes of registration that the Administrator may choose between</dd>
+	<dd>The process where a user becomes a member of your forum. There are four different modes of registration that the Administrator may choose from.</dd>
 	<dt><b>Reserved Names</b></dt>
-	<dd>These are names that the Administrator has chosen not to allow for use in the registration process and in editing the Display Name in the user's Profile.</dd>
+	<dd>These are names that the Administrator has chosen not to allow for use in User IDs or Screen Names.</dd>
 </dl><dl>
 	<dd class="help_dd"><b>S</b></dd>
+	<dt><b>Screen Name</b></dt>
+	<dd>This is the user's "public" name, the name that displays above their avatar picture to the left of the Post Window and in the Member List. A user may change this name by editing the Screen Name in their Profile.</dd> 
 	<dt><b>Search</b></dt>
 	<dd>This feature allows a user to search through the forum for information in posts or posts by users. Several options are listed on the Search page.</dd>
 	<dd class="help_dd"><b><span class="underline">User Tip:</span></b> For general searches, use the option "Any Poster" in the selection box at the bottom of the "By User" sections.</dd>
