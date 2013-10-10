@@ -457,12 +457,12 @@ qq~$menusep<a href="$scripturl?action=birthdaylist">$img{'birthdaylist'}</a>~;
 
         if ($iamadmin) {
             $yymenu .=
-qq~$menusep<a href="$boardurl/AdminIndex.$yyaext">$img{'admin'}</a>~;
+qq~$menusep<a href="$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user">$img{'admin'}</a>~;
         }
         get_gmod();
         if ( $iamgmod && $allow_gmod_admin ) {
             $yymenu .=
-qq~$menusep<a href="$boardurl/AdminIndex.$yyaext">$img{'admin'}</a>~;
+qq~$menusep<a href="$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user">$img{'admin'}</a>~;
         }
         if ( $sessionvalid == 0 && !$iamguest ) {
             my $sesredir;
