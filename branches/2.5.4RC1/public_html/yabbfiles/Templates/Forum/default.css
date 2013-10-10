@@ -201,19 +201,6 @@ table.cs_thin {
     background: url(./default/tabtitle.png) repeat-x top #3673b3;
 }
 
-.tabtitle-profile {
-    vertical-align: middle;
-    padding-left: 0.5em;
-    font-weight: bold;
-    font-style: normal;
-    font-size: 12px;
-    font-family: Verdana, Arial, Sans-Serif;
-    color: #eee;
-    background: url(./default/tabtitle.png) repeat-x top #3673b3;
-}
-
-.tabtitle-profile td { height: 35px; }
-
 .tabtitle-bottom {
     height: 35px;
     vertical-align: middle;
@@ -230,7 +217,7 @@ table.cs_thin {
     border-top: 1px solid #195392;
 }
 
-.tabtitle a, .tabtitle-bottom a, .tabtitle-profile a {
+.tabtitle a, .tabtitle-bottom a {
     color: #fff;
     font-size: 12px;
     font-family: Verdana, Helvetica, Arial, Sans-Serif;

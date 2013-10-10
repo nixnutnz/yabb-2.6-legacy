@@ -157,7 +157,7 @@ $my_boardnote = qq~
     }
 </script>
     <form action="$scripturl?action=boardnotify2" method="post" name="boardnotify">
-    <table class="tabtitle-profile">
+    <table class="tabtitle">
         <tr>
             <td style="padding-left:10px">
                 <img src="$imagesdir/$brd_notify_img" alt="notify_txt{'136'}" title="$notify_txt{'136'}" /> <b>$notify_txt{'136'}</b>
@@ -165,14 +165,14 @@ $my_boardnote = qq~
             </td>
         </tr>
     </table>
-    <table class="pad_4px cs_thin">
+    <table class="pad_4px cs_thin" style="margin-bottom: 10px;">
         <col style="width:65%" />
         {yabb my_showNotifications_b}
     </table>
     </form>
     <br />
     <form action="$scripturl?action=notify4" method="post" name="threadnotify">
-    <table class="tabtitle-profile">
+    <table class="tabtitle">
         <tr>
             <td style="padding-left:10px">
                 <img src="$imagesdir/$brd_notify_img" alt="$notify_txt{'118'}" title="$notify_txt{'118'}" /> <b>$notify_txt{'118'}</b>
