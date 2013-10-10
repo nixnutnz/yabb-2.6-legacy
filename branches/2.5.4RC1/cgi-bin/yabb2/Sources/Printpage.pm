@@ -674,21 +674,22 @@ function do_images() {
                       : "$micon_bg{'paperclip'}";
                 }
                 my $filesize = -s "$uploaddir/$_";
+                $download_txt = ( $attach_count{$_} == 1 ) ? $fatxt{'41b'} : $fatxt{'41a'}; 
                 if ($filesize) {
                     if (   $_ =~ /\.(bmp|jpe|jpg|jpeg|gif|png)$/ixsm
                         && $amdisplaypics == 1 )
                     {
                         $imagecount++;
                         $showattach .=
-qq~<div class="small" style="float:left; margin:8px;"><img src="$attach_gif{$ext}" class="bottom" alt="" /> <span id="urlimagecount$imagecount" style="display:none">$scripturl?action=downloadfile;file=</span>$_ (~
+qq~<div class="small" style="float:left; margin:8px;"><img src="$attach_gif{$ext}" class="bottom" alt="" /> <span id="urlimagecount$imagecount" style="display:none">$scripturl?action=downloadfile;file=</span>$_ ( ~
                           . int( $filesize / 1024 )
-                          . qq~ KB | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> )<br /><img src="$uploadurl/$_" name="attach_img_resize" alt="$_" id="imagecount$imagecount" title="$_" style="display:none" /></div>\n~;
+                          . qq~ KB | $attach_count{$_} $download_txt )<br /><img src="$uploadurl/$_" name="attach_img_resize" alt="$_" id="imagecount$imagecount" title="$_" style="display:none" /></div>\n~;
                     }
                     else {
                         $attachment .=
-qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $scripturl?action=downloadfile;file=$_ (~
+qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $scripturl?action=downloadfile;file=$_ ( ~
                           . int( $filesize / 1024 )
-                          . qq~ KB | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> )</div>~;
+                          . qq~ KB | $attach_count{$_} $download_txt )</div>~;
                     }
                 }
                 else {
@@ -696,7 +697,7 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $scr
 qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $_ ($fatxt{'1'}~
                       . (
                         exists $attach_count{$_}
-                        ? qq~ | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> ~
+                        ? qq~ | $attach_count{$_} $download_txt ~ 
                         : q{}
                       ) . q~)</div>~;
                 }

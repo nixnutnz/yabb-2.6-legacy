@@ -869,14 +869,15 @@ qq~$menusep<a href="$scripturl?action=print;num=$viewnum" target="_blank">$img{'
                 my $filesize = -s "$uploaddir/$_";
                 $urlname = $_;
                 $urlname =~ s/([^A-Za-z0-9])/sprintf('%%%02X', ord($1))/egxsm;
+                $download_txt = ( $attach_count{$_} == 1 ) ? $fatxt{'41b'} : $fatxt{'41a'}; 
                 if ($filesize) {
                     if (   $_ =~ /\.(bmp|jpe|jpg|jpeg|gif|png)$/ixsm
                         && $amdisplaypics == 1 )
                     {
                         $showattach .=
-qq~<div class="small attbox"><a href="$scripturl?action=downloadfile;file=$urlname" target="_blank"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $_</a> (~
+qq~<div class="small attbox"><a href="$scripturl?action=downloadfile;file=$urlname" target="_blank"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $_</a> ( ~
                           . int( $filesize / 1024 )
-                          . qq~ KB | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> )<br />~
+                          . qq~ KB | $attach_count{$_} $download_txt )<br />~
                           . (
                             $img_greybox
                             ? (
@@ -890,9 +891,9 @@ qq~<div class="small attbox"><a href="$scripturl?action=downloadfile;file=$urlna
                     }
                     else {
                         $attachment .=
-qq~<div class="small"><a href="$scripturl?action=downloadfile;file=$urlname"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $_</a> (~
+qq~<div class="small"><a href="$scripturl?action=downloadfile;file=$urlname"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $_</a> ( ~
                           . int( $filesize / 1024 )
-                          . qq~ KB | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> )</div>~;
+                          . qq~ KB | $attach_count{$_} $download_txt )</div>~;
                     }
                 }
                 else {
@@ -900,7 +901,7 @@ qq~<div class="small"><a href="$scripturl?action=downloadfile;file=$urlname"><im
 qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $_ ($fatxt{'1'}~
                       . (
                         exists $attach_count{$_}
-                        ? qq~ | <acronym title='$attach_count{$_} $fatxt{'41a'}' class="small">$attach_count{$_}</acronym> ~
+                        ? qq~ | $attach_count{$_} $download_txt ~
                         : q{}
                       ) . q~)</div>~;
                 }

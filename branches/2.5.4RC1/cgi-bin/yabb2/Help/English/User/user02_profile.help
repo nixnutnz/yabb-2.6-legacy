@@ -8,9 +8,9 @@ $SectionBody1 = qq~YaBB's User CP (User Control Panel) is a combination of your 
 <ul>
     <li>Above the left side pane, you see a tabbed menu containing &#8220;Messages&#8221;, &#8220;Profile&#8221; and &#8220;Posts&#8221;.</li>
     <li>In <b>Messages</b>, you control all of your personal messages: you can sort them in your folders (if enabled) or send new messages as well as search for a particular message.</li>
-	<li>In <b>Profile</b>, you can view your Profile's appearance and edit its contents. With the 'Buddy List' you can quickly check your friends' online status, send messages to them, and check their details.</li>
-	<li>In <b>Posts</b>, you can check &amp; update your Notifications and Favorites as well as consult your own latest posts.</li>
-	<li>On the right hand pane you'll see part of your Profile as it appears in the Display Posts page, your Buddy List, information regarding your online/offline appearance, and your Board and Topic Notifications.</li>
+    <li>In <b>Profile</b>, you can view your Profile's appearance and edit its contents. With the 'Buddy List' you can quickly check your friends' online status, send messages to them, and check their details.</li>
+    <li>In <b>Posts</b>, you can check &amp; update your Notifications and Favorites as well as consult your own latest posts.</li>
+    <li>On the right hand pane you'll see part of your Profile as it appears in the Display Posts page, your Buddy List, information regarding your online/offline appearance, and your Board and Topic Notifications.</li>
 </ul>
 ~;
 #############################################
@@ -85,13 +85,13 @@ $SectionBody4 = qq~<p>If you would like other members of this YaBB community to 
 $SectionSub5 = "Options";
 $SectionBody5 = qq~The Options section of your YaBB profile allows you to edit forum settings that relate to your account.
 <h4 class="help">Personalized_Picture</h4>
-<p>YaBB allows you to define a small picture (called an avatar) that will display under your name to the left side your posts. This forum has a number of avatars already installed, and you may pick one from the list.  If you wish to use your own image as an avatar, please see the options below.</p>
+<p>YaBB allows you to define a small picture (called an avatar) that will display under your name to the left side your posts. This forum has a number of avatars already installed, and you may pick one from the list. If you wish to use your own image as an avatar, please see the options below.</p>
 <p>The Forum Administrator may also enable either or both of the following options:</p>
 <ul>
-	<li><span class="underline"><b>Linking to your own avatar image</b></span>
-		<br />If you have your own image and would like to use it on this YaBB as an avatar, you may enter the URL here.</li>
-	<li><span class="underline"><b>Uploading your own avatar image</b></span>
-		<br />If you would like to upload your own image and would like to use it on this YaBB as an avatar, click on the Browse button and select a file on your computer to upload.</li>
+    <li><span class="underline"><b>Linking to your own avatar image</b></span>
+        <br />If you have your own image and would like to use it on this YaBB as an avatar, you may enter the URL here.</li>
+    <li><span class="underline"><b>Uploading your own avatar image</b></span>
+        <br />If you would like to upload your own image and would like to use it on this YaBB as an avatar, click on the Browse button and select a file on your computer to upload.</li>
 </ul>
 <h4 class="help">Personal Text</h4>
 <p>This is a small line of text that will display below your avatar.</p>
@@ -127,8 +127,8 @@ $SectionBody5 = qq~The Options section of your YaBB profile allows you to edit f
 $SectionSub6 = "Buddy_List";
 $SectionBody6 = qq~The <span class="underline"><b>Buddy List</b></span> section of the profile gives you the ability to add other members that you're frequently contact to a list that will show in your User CP view.  Your Buddy List will display each name, their Online/Offline status, and link options to send the user a PM, an e-mail, or visit the link to their website.<br />
 <ul>
-	<li>Add users to your Buddy List by clicking on the link below the Buddy List display box.</li>
-	<li>Delete users from your Buddy List by double-clicking on their user name inside the Buddy List display box.</li>
+    <li>Add users to your Buddy List by clicking on the link below the Buddy List display box.</li>
+    <li>Delete users from your Buddy List by double-clicking on their user name inside the Buddy List display box.</li>
 </ul>
 ~;
 #############################################

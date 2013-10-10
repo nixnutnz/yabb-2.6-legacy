@@ -446,7 +446,7 @@ $presetjavascriptcode
                 <td>~
               . (
                 $2
-                ? "<acronym title='$backup_txt{62}'>$backup_txt{'62a'}</acronym><br />"
+                ? "<abbr title='$backup_txt{62}'>$backup_txt{'62a'}</abbr><br />"
                 : q{}
               )
               . qq~$5</td>
