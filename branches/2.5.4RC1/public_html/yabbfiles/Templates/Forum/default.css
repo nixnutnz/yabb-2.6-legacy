@@ -658,15 +658,6 @@ table.tableselect {
 
 .imgcatbg:hover { color: #bbb; } 
 
-tr.search .imgcatbg, tr.search .imgwindowbg {
-    color: #3b5998;
-    font-size: 10px;
-    font-style: normal;
-    font-weight: 700;
-}
-
-tr.search .imgcatbg:hover, tr.search .imgwindowbg:hover { color: #3b5998; }
-
 .imgtitlebg {
     color: #fff;
     font-size: 10px;
@@ -678,14 +669,32 @@ tr.search .imgcatbg:hover, tr.search .imgwindowbg:hover { color: #3b5998; }
     color: #3b5998;
     font-size: 9px;
     font-style: normal;
+    font-weight: 700;
+}
+
+.imgwindowbg:hover {
+    color: #2d2d2d;
 }
 
 .imgmenu {
-    color: #2d2d2d;
+    color: #bbb;
     font-size: 11px;
     font-style: normal;
     font-weight: 700;
 }
+
+.imgmenu:hover {
+    color: #fff;
+}
+
+tr.search .imgcatbg, tr.search .imgwindowbg {
+    color: #3b5998;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 700;
+}
+
+tr.search .imgcatbg:hover, tr.search .imgwindowbg:hover { color: #2d2d2d; } 
 
 .quote {
     background-color: #e8ebef;
@@ -1346,7 +1355,7 @@ table.pad_10px td, .padd_10px { padding: 10px; }
     text-indent: 0;
     top: 11px;
     right: 0;
-    min-width: 104px;
+    min-width: 110px;
 }
 
 .post_tools_menu li {
@@ -1373,7 +1382,7 @@ table.pad_10px td, .padd_10px { padding: 10px; }
 }
 
 .post_tools_a a:hover {
-    color: #fff;
+    color: #bbb;
     text-decoration:none;
 }
 

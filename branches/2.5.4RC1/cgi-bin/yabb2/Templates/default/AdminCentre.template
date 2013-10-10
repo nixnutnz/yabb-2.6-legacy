@@ -297,6 +297,7 @@ $my_admin_login = qq~
         <td class="center"><b>$admin_txt{'901'}</b></td>
     </tr>
 </table>
+<form action="{yabb adminchk}" method="post" name="confirmform">
 <table class="bordercolor border-space pad-cell" style="width:500px; margin-bottom:1em">
     <tr>
         <td class="windowbg2 center">
@@ -304,21 +305,21 @@ $my_admin_login = qq~
         </td>
     </tr><tr>
         <td class="windowbg2 center">
-            <form action="{yabb adminchk}" method="post" name="confirmform">
-                <div style="padding-top: 4px;">
-                    <div><input type="password" name="passwrd" id="passwrd" size="15" style="width: 150px;" onkeypress="capsLock(event,'cappasswrd')" /></div>
-                    <div style="color: $f00; font-weight: bold; display: none" id="cappasswrd">$admin_txt{'capslock'}</div>
-                    <div style="color: #f00; font-weight: bold; display: none" id="cappasswrd_char">$admin_txt{'wrong_char'}: <span id="cappasswrd_character">&nbsp;</span></div>
-                </div>
-                <div style="padding-top: 8px;">
-                    <input type="hidden" name="action" value="{yabb act}" />
-                    <input type="hidden" name="page" value="{yabb page}" />
-                    <input type="submit" value="$admin_txt{'900'}" class="button" />
-                </div>
-            </form>
+            <div style="padding-top: 4px;">
+                <div><input type="password" name="passwrd" id="passwrd" size="15" style="width: 150px;" onkeypress="capsLock(event,'cappasswrd')" /></div>
+                <div style="color: #f00; font-weight: bold; display: none" id="cappasswrd">$admin_txt{'capslock'}</div>
+                <div style="color: #f00; font-weight: bold; display: none" id="cappasswrd_char">$admin_txt{'wrong_char'}: <span id="cappasswrd_character">&nbsp;</span></div>
+            </div>
+        </td>
+    </tr><tr>
+        <td class="catbg center" style="padding: 8px;">
+            <input type="hidden" name="action" value="{yabb act}" />
+            <input type="hidden" name="page" value="{yabb page}" />
+            <input type="submit" value="$admin_txt{'900'}" class="button" />
         </td>
     </tr>
 </table>
+</form> 
 <script type="text/javascript">
 <!--
         document.confirmform.passwrd.focus();

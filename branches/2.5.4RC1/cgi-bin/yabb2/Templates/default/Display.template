@@ -66,7 +66,7 @@ $display_template = qq~
 <!-- Poll end -->
 <!-- Threads Button Bar start -->
 <div class="displaycontainer">
-    <table class="tabtitle pad_4px">
+    <table class="tabtitle pad_4px" style="table-layout: fixed;">
         <tr>
             <td>{yabb pageindex top}</td>
             <td class="post_tools_a" style="padding-right:10px; text-align:right">

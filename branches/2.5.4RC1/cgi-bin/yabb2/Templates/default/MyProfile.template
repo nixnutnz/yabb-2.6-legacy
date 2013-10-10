@@ -32,6 +32,7 @@ $myprofile_a = qq~
         <td class="center"><b>$profile_txt{'901'}</b></td>
     </tr>
 </table>
+<form action="{yabb prof_act}" method="post" name="confirmform">
 <table class="bordercolor cs_thin pad_4px" style="width:500px; margin-bottom:10px">
     <tr>
         <td class="windowbg2 center">
@@ -39,20 +40,20 @@ $myprofile_a = qq~
         </td>
     </tr><tr>
         <td class="windowbg2 center">
-            <form action="{yabb prof_act}" method="post" name="confirmform">
-                <input type="hidden" name="redir" value="{yabb redirsid}" />
-                <div style="padding-top: 4px;">
-                    <div><input type="password" name="passwrd" id="passwrd" size="15" style="width: 150px;" onkeypress="capsLock(event,'cappasswrd')" /></div>
-                    <div style="color: red; font-weight: bold; display: none" id="cappasswrd">$profile_txt{'capslock'}</div>
-                    <div style="color: red; font-weight: bold; display: none" id="cappasswrd_char">$profile_txt{'wrong_char'}: <span id="cappasswrd_character">&nbsp;</span></div>
-                </div>
-                <div style="padding-top: 8px;">
-                    <input type="submit" value="$profile_txt{'900'}" class="button" />
-                </div>
-            </form>
+            <input type="hidden" name="redir" value="{yabb redirsid}" />
+            <div style="padding-top: 4px;">
+                <div><input type="password" name="passwrd" id="passwrd" size="15" style="width: 150px;" onkeypress="capsLock(event,'cappasswrd')" /></div>
+                <div style="color: #f00; font-weight: bold; display: none" id="cappasswrd">$profile_txt{'capslock'}</div>
+                <div style="color: #f00; font-weight: bold; display: none" id="cappasswrd_char">$profile_txt{'wrong_char'}: <span id="cappasswrd_character">&nbsp;</span></div>
+            </div>
+        </td>
+    </tr><tr>
+        <td class="catbg center" style="padding: 8px;">
+            <input type="submit" value="$profile_txt{'900'}" class="button" />
         </td>
     </tr>
 </table>
+</form> 
 <script type="text/javascript">
 <!--
         document.confirmform.passwrd.focus();
