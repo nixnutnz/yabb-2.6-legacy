@@ -1308,7 +1308,7 @@ table.pad_10px td, .padd_10px { padding: 10px; }
 
 /* Post and Thread Tools */
 .windowbg td.post_tools {
-    background: #ddd url(./default/tabtitle.png) repeat-x;
+    background: #3673b3 url(./default/tabtitle.png) repeat-x;
     height: 100%;
     border-top: 0;
     border-bottom: 0;
@@ -1320,7 +1320,7 @@ table.pad_10px td, .padd_10px { padding: 10px; }
 }
 
 .windowbg2 td.post_tools,.tabtitle td.post_tools,.tabtitle-bottom td.post_tools {
-    background: url(./default/tabtitle.png) repeat-x;
+    background: #3673b3 url(./default/tabtitle.png) repeat-x;
     height: 100%;
     border-top: 0;
     border-bottom: 0;

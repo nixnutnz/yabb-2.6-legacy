@@ -758,13 +758,13 @@ $yymain .= qq~<tr>
         </div>
         <div style="float: left; width: 330px; height: 136px; padding: 3px;">
         <div class="catbg" style="position: relative; top: 0; left: 5px; width: 280px; text-align: center; border-width: 1px; border-style: outset; padding: 3px 0;">
-        <img src="$forumstylesurl/default/buttonsep.png" style="height: 20px; width: 1px; margin: 0; padding: 0; vertical-align: top; display: inline-block;" alt="" border="0" />
+        <img src="$defaultimagesdir/buttonsep.png" style="height: 20px; width: 1px; margin: 0; padding: 0; vertical-align: top; display: inline-block;" alt="" border="0" />
         <span id="butleft" style="height: 20px; border: 0; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block; $prevleft">
         <span id="butright" style="height: 20px; border: 0; margin: 0; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block; $prevright">
         <span id="butimage" style="$previmage background-image: url($defaultimagesdir/home.gif); height: 20px; border: 0; margin: 0; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;">
         <span id="buttext" style="height: 20px; border: 0; margin: 0; padding: 0; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block; $prevtext">$img_txt{'103'}</span>
         </span></span></span>
-        <img src="$forumstylesurl/default/buttonsep.png" style="height: 20px; width: 1px; margin: 0; padding: 0; vertical-align: top; display: inline-block;" alt="" border="0" />
+        <img src="$defaultimagesdir/buttonsep.png" style="height: 20px; width: 1px; margin: 0; padding: 0; vertical-align: top; display: inline-block;" alt="" border="0" />
         </div>
         <div class="catbg" style="position: relative; top: 4px; left: 5px; width: 280px; height: 18px; border-width: 1px; border-style: outset;">
         <span class="small" style="position: absolute; top: 3px; left: 6px;"><b>$templ_txt{'moveicon1'}</b>
@@ -800,7 +800,7 @@ $yymain .= qq~<tr>
         </td>
     </tr>
 
-<script type="text/javascript" language="JavaScript1.2">
+<script type="text/javascript">
 <!--
 
 var skydobject={
@@ -1037,7 +1037,7 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
 </table>
 ~;
 if($cssbuttons) {
-$menusep = qq~<img src="$forumstylesurl/default/buttonsep.png" style="height: 20px; width: 1px; margin: 0; padding: 0; vertical-align: top; display: inline-block;" alt="" border="0" />~;
+$menusep = qq~<img src="$defaultimagesdir/buttonsep.png" style="height: 20px; width: 1px; margin: 0; padding: 0; vertical-align: top; display: inline-block;" alt="" border="0" />~;
 $viewstyleleft = q~style="height: 20px; border: 0; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
 $viewstyleright = q~style="height: 20px; border: 0; margin: 0; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
 $viewstyleimage = q~height: 20px; border: 0; margin: 0; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;~;
@@ -1049,10 +1049,10 @@ $viewstyle .= qq~
         <td id="cssbuttons" class="windowbg2 vtop">
             <div style="float: left; padding: 4px 0 0 0;">$templ_txt{'buttontext'}</div>
             <div style="float: right;">
-                <a href="javascript:;"><span id="button1l" class="buttonleft" $viewstyleleft title="$img_txt{'145'}"><span id="button1r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($forumstylesurl/default/quote.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'145'}</span></span></span></span></a>$menusep
-                <a href="javascript:;"><span id="button2l" class="buttonleft" $viewstyleleft title="$img_txt{'66'}"><span id="button2r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($forumstylesurl/default/modify.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'66'}</span></span></span></span></a>$menusep
-                <a href="javascript:;"><span id="button3l" class="buttonleft" $viewstyleleft title="$img_txt{'620'}"><span id="button3r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($forumstylesurl/default/admin_split.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'620'}</span></span></span></span></a>$menusep
-                <a href="javascript:;"><span id="button4l" class="buttonleft" $viewstyleleft title="$img_txt{'121'}"><span id="button4r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($forumstylesurl/default/delete.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'121'}</span></span></span></span></a>
+                <a href="javascript:;"><span id="button1l" class="buttonleft" $viewstyleleft title="$img_txt{'145'}"><span id="button1r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/maq1.png); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'145'}</span></span></span></span></a>$menusep
+                <a href="javascript:;"><span id="button2l" class="buttonleft" $viewstyleleft title="$img_txt{'66'}"><span id="button2r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/modify.png); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'66'}</span></span></span></span></a>$menusep
+                <a href="javascript:;"><span id="button3l" class="buttonleft" $viewstyleleft title="$img_txt{'620'}"><span id="button3r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/admin_split.png); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'620'}</span></span></span></span></a>$menusep
+                <a href="javascript:;"><span id="button4l" class="buttonleft" $viewstyleleft title="$img_txt{'121'}"><span id="button4r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/delete.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'121'}</span></span></span></span></a> 
             </div>
         </td>
     </tr>
@@ -1977,6 +1977,8 @@ qq~<div class="yabb_searchbox" style="width:auto"><form><input type="text" name=
     $fulltemplate =~ s/({|<)yabb syntax_js(}|>)//gsm;
     $fulltemplate =~ s/({|<)yabb grayscript(}|>)//gsm;
     $fulltemplate =~ s/({|<)yabb high(}|>)//gsm;
+    $fulltemplate =~ s/({|<)yabb ubbc(}|>)//gsm;
+    $fulltemplate =~ s/({|<)yabb new_load(}|>)//gsm;
 
     if ( $selectedsection eq 'vboard' ) {
         $boardtempl = BoardTempl( $viewboard, $tempimages, $tempimagesdir );

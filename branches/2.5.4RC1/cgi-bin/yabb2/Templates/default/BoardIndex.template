@@ -65,7 +65,7 @@ $boardindex_template .= qq~
 if(!$subboard_sel) {
 $boardindex_template .= qq~
 <!-- Info Center block start -->
-        <table class="tabtitle tabtitle-text" style="margin-top:10px">
+        <table class="tabtitle tabtitle-text" style="margin-top:1em">
             <col style="width:1%" />
             <tr>
                 <td>&nbsp;</td>
@@ -161,11 +161,11 @@ $catheader = qq~
                 <td class="center">$boardindex_txt{'22'}</td>
             </tr>
         </table>
-        <table {yabb colboardtable} class="bordercolor pad_4px cs_thin">
+        <table {yabb colboardtable} class="bordercolor pad_4px cs_thin" style="margin-bottom:1em">
             <tr><td style="display:none" colspan="5">&nbsp;</td></tr>
             {yabb newmsg start}{yabb newmsg icon}{yabb newmsg}{yabb newmsg end}
         </table>
-        <table {yabb boardtable} class="bordercolor pad_4px cs_thin" style="margin-bottom: 15px;">
+        <table {yabb boardtable} class="bordercolor pad_4px cs_thin" style="margin-bottom: 1em;">
             <col style="width:6%" />
             <col style="width:54%" />
             <col style="width:8%" />

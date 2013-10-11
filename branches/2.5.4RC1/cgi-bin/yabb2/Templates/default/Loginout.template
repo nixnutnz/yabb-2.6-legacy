@@ -90,12 +90,14 @@ $mysharedlog_bodya = qq~
 $myborder_bottom
 ~;
 
-$myremindera = qq~<table class="bordercolor pad_3px cs_thin" style="width:600px">
+$myremindera = qq~<table class="tabtitle cs_thin pad_4px" style="width: 600px;">
     <tr>
-        <td class="tabtitle" style="padding-left:1%">
-            <b>{yabb mbname} $loginout_txt{'36'} $loginout_txt{'194'}</b>
-        </td>
-    </tr><tr>
+        <td>{yabb mbname} $loginout_txt{'36'} $loginout_txt{'194'}</td>
+    </tr>
+</table>
+<table class="bordercolor pad_3px cs_thin" style="width: 600px;">
+    <tr> 
+
         <td class="windowbg">
             <label for="user"><b>$loginout_txt{'35'}:</b></label>
             <input type="text" name="user" id="user" maxlength="100" {yabb regstyle} size="50" />
@@ -136,12 +138,13 @@ $myreminder_endform = qq~<tr>
 </form>~;
 
 $myreminder2 = qq~<br /><br />
-<table class="bordercolor pad_3px cs_thin" style="width:400px">
+<table class="tabtitle cs_thin pad_4px" style="width: 600px;">
     <tr>
-        <td class="tabtitle">
-            <b>{yabb mbname} $loginout_txt{'36'} $loginout_txt{'194'}</b>
-        </td>
-    </tr><tr>
+        <td>{yabb mbname} $loginout_txt{'36'} $loginout_txt{'194'}</td>
+    </tr>
+</table>
+<table class="bordercolor pad_3px cs_thin" style="width: 600px;">
+    <tr> 
         <td class="windowbg center">
             <b>$loginout_txt{'192'} {yabb forum_user}</b>
         </td>
