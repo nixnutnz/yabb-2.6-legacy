@@ -3680,6 +3680,7 @@ sub usersrecentposts {
   
         if ( $tusername !~ m{Guest}sm  ) {
             if ( -e ("$memberdir/$tusername.vars") ) {
+                LoadUser($tusername);
                 $mytname =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tusername}" rel="nofollow">$format_unbold{$tusername}</a>~;
             }
