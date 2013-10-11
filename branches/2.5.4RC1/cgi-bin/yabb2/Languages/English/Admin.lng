@@ -1227,7 +1227,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 '210' => 'If nothing happens in 5 seconds',
 '211' => 'click here to continue',
 '212' => q~If you want to STOP removing old Topics, <a href="javascript:stoptick();">click here</a>.~,
-'213' => 'Removing old Topics - please wait.<br />If you want to stop, click on STOP before this red message appears again on next page.',
+'213' => 'Removing old Topics - please wait.<br />If you want to stop, click on STOP before the red message appears again on next page.',
 );
 
 %emaileditor = (

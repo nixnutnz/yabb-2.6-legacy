@@ -127,7 +127,7 @@ if( ! $script_root ) {
 
 # Loop stuff to prevent running into server time out
 '90' => q~<a href="javascript:stoptick();">Click here to STOP the backup</a>.~,
-'91' => 'Backing up - please wait.<br />If you want to stop, click on STOP before this red message appears again on the next page.',
+'91' => 'Backing up - please wait.<br />If you want to stop, click on STOP before the red message appears again on the next page.',
 
 # Recover stuff
 '100' => 'Recover Backup',
