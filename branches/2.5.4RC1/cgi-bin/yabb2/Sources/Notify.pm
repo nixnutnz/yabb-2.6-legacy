@@ -36,16 +36,16 @@ sub ManageBoardNotify {
         }
     }
     if ( $todo eq 'add' ) {
-#        if ( !$maxtnote ) { $maxtnote = 10; }
+        if ( !$maxtnote ) { $maxtnote = 10; }
         $theboard{$user} = "$userlang|$notetype|$noteview";
         LoadUser($user);
         my %bb;
         my @oldnote = split /,/xsm,
           ${ $uid . $username }{'board_notifications'};
-#        if ( @oldnote < ( $maxtnote || 10 ) ) {
+        if ( @oldnote < ( $maxtnote || 10 ) ) {
             foreach ( split /,/xsm, ${ $uid . $user }{'board_notifications'} ) {
                 $bb{$_} = 1;
-#            }
+            }
             $bb{$theboard} = 1;
             ${ $uid . $user }{'board_notifications'} = join q{,}, keys %bb;
             UserAccount($user);
