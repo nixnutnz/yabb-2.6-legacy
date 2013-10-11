@@ -27,8 +27,6 @@ sub EventCalSet {
     my ($caleventprivatechecked, $chkDelete_EventsUntil);
 
     # figure out what to print
-    my $status_calendar = 'red1.gif';
-    my $status_bdlist   = 'red1.gif';
 
     if    ( !$Scroll_Events )     { $aevt1 = ' selected="selected"'; }
     elsif ( $Scroll_Events == 1 ) { $aevt2 = ' selected="selected"'; }
@@ -38,12 +36,10 @@ sub EventCalSet {
     if ( !$Show_EventCal ) { $bevt1 = ' selected="selected"'; }
     elsif ( $Show_EventCal == 1 ) {
         $bevt2           = ' selected="selected"';
-        $status_calendar = 'green1.gif';
     }
     elsif ( $Show_EventCal == 2 ) {
         $bevt3           = ' selected="selected"';
-        $status_calendar = 'green1.gif';
-    }
+      }
 
     if    ( !$Show_EventButton )     { $cevt1 = ' selected="selected"'; }
     elsif ( $Show_EventButton == 1 ) { $cevt2 = ' selected="selected"'; }
@@ -52,11 +48,9 @@ sub EventCalSet {
     if ( !$Show_BirthdaysList ) { $devt1 = ' selected="selected"'; }
     elsif ( $Show_BirthdaysList == 1 ) {
         $devt2         = ' selected="selected"';
-        $status_bdlist = 'green1.gif';
     }
     elsif ( $Show_BirthdaysList == 2 ) {
         $devt3         = ' selected="selected"';
-        $status_bdlist = 'green1.gif';
     }
 
     if    ( !$Show_BirthdayButton )     { $eevt1 = ' selected="selected"'; }
@@ -101,7 +95,7 @@ sub EventCalSet {
                 </tr><tr>
                     <td class="catbg" colspan="2"><span class="small">$event_cal{'21'}</span></td>
                 </tr><tr>
-                    <td class="windowbg2"><img src="$defaultimagesdir/$status_calendar" alt="" /> <label for="Show_EventCal">$event_cal{'3'}</label></td>
+                    <td class="windowbg2"><label for="Show_EventCal">$event_cal{'3'}</label></td>
                     <td class="windowbg2">
                         <select name="Show_EventCal" id="Show_EventCal" size="1">
                         <option value="0"$bevt1>$userlevel_txt{'none'}</option>
@@ -200,7 +194,7 @@ sub EventCalSet {
                 </tr><tr>
                     <td class="catbg" colspan="2"><span class="small">$event_cal{'49'}</span></td>
                 </tr><tr>
-                    <td class="windowbg2"><img src="$defaultimagesdir/$status_bdlist" alt="" /> <label for="Show_BirthdaysList">$event_cal{'42'}</label></td>
+                    <td class="windowbg2"><label for="Show_BirthdaysList">$event_cal{'42'}</label></td>
                     <td class="windowbg2">
                         <select name="Show_BirthdaysList" id="Show_BirthdaysList" size="1">
                         <option value="0"$devt1>$userlevel_txt{'none'}</option>
