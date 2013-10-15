@@ -168,11 +168,11 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
                     }
                     if ( ${ $uid . $curboard }{'ann'} == 1 ) {
                         $bicon =
-qq~ <img src="$admin_images/ad_ann.png" alt="$admin_txt{'64g'}" title="$admin_txt{'64g'}" />~;
+qq~ <img src="$imagesdir/ann.png" alt="$admin_txt{'64g'}" title="$admin_txt{'64g'}" />~;
                     }
                     if ( ${ $uid . $curboard }{'rbin'} == 1 ) {
                         $bicon =
-qq~ <img src="$admin_images/ad_recycle.png" alt="$admin_txt{'64i'}" title="$admin_txt{'64i'}" />~;
+qq~ <img src="$imagesdir/recycle.png" alt="$admin_txt{'64i'}" title="$admin_txt{'64i'}" />~;
                     }
                     $convertstr = $descr;
                     if ( $convertstr !~ /<.+?>/xsm )

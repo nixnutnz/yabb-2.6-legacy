@@ -37,7 +37,7 @@ sub Favorites {
 # grab all relevant info on the favorite thread for this user and check access to them
     if ( !$maxfavs ) { $maxfavs = 10; }
     my @favboards;
-    if ( eval { require Variables::Movedthreads; 1 } ) {
+    eval { require Variables::Movedthreads };
         foreach my $myfav ( split /,/xsm, ${ $uid . $username }{'favorites'} ) {
 
             # see if thread exists and search for it if moved
@@ -71,7 +71,6 @@ sub Favorites {
             $favoboard = ${$myfav}{'board'};
             push @favboards, "$favoboard|$myfav";
         }
-    }
 
     foreach ( sort @favboards ) {
         ( $loadboard, $loadfav ) = split /\|/xsm, $_;

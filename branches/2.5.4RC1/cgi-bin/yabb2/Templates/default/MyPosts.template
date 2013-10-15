@@ -34,6 +34,7 @@ $favorites_template .= qq~<!-- Board Description start -->
         </td>
     </tr>
 </table>
+{yabb modupdate}
 <table class="bordercolor pad_3px cs_thin">
     <col span="2" style="width:4%" />
     <col style="width:42%" />
@@ -50,6 +51,7 @@ $favorites_template .= qq~<!-- Board Description start -->
     {yabb threadblock}
     {yabb adminfooter}
 </table>
+{yabb modupdateend}
 ~;
 
 $favorites_template .= qq~<!-- Icon and access info start -->
