@@ -478,7 +478,7 @@ sub reject_registration {
     my $deluser = $inp || $INFO{'username'};
     if ( !$admin_reason ) { $admin_reason = $FORM{'admin_reason'}; }
 
-    #    if ($do_scramble_id)  { $deluser      = decloak($deluser); }
+    if ($do_scramble_id)  { $deluser      = decloak($deluser); }
 
     if ( -e "$memberdir/memberlist.approve" && $regtype == 1 ) {
         fopen( APR, "$memberdir/memberlist.approve" );
@@ -559,7 +559,7 @@ sub approve_registration {
     my $apruser = $inp || $INFO{'username'};
     if ( !$admin_reason ) { $admin_reason = $FORM{'admin_reason'}; }
 
-    #    if ($do_scramble_id)  { $apruser      = decloak($apruser); }
+    if ($do_scramble_id)  { $apruser      = decloak($apruser); }
 
     ## load the list with waiting approvals ##
     fopen( APR, "$memberdir/memberlist.approve" );
