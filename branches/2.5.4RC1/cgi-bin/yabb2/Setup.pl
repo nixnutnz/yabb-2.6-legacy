@@ -77,10 +77,10 @@ require Sources::System;
 require Sources::Load;
 require Sources::DateTime;
 
-$windowbg    = '#FEFEFE';
-$windowbg2   = '#DDE3EB';
-$header      = '#6699CC';
-$catbg       = '#ADC7E1';
+$windowbg    = '#dee4ec';
+$windowbg2   = '#edeff4';
+$header      = '#3673b3';
+$catbg       = '#195392';
 $maintext_23 = 'Unable to open';
 
 $yymenu    = q{};
@@ -2425,7 +2425,7 @@ sub SimpleOutput {
 <html lang='en-US'>
 <head>
 <title>YaBB 2.5.4 Setup</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta charset="utf-8">
 <style type="text/css">
 html, body {color:#000; font-family:Verdana, Helvetica, Arial, Sans-Serif; font-size:13px;}
 #folderfind table {width:80%; background-color:#DDE3EB; margin:0 auto; border-collapse:collapse;}
@@ -2434,7 +2434,7 @@ html, body {color:#000; font-family:Verdana, Helvetica, Arial, Sans-Serif; font-
 #folderfind .windowbg {background-color: $windowbg;}
 #folderfind .windowbg2 {background-color: $windowbg2;}
 #folderfind .header {background-color:$header;}
-#folderfind .catbg {background-color:$catbg; text-align:center;}
+#folderfind .catbg {background-color:$catbg; text-align:center; color:#fff; }
 </style>
 </head>
 <body style="margin-top:40px">

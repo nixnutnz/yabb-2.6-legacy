@@ -762,15 +762,15 @@ qq~<a href="http://$perm_domain/$symlink$permdate/$permlinkboard/$mnum">$message
         ### Start Sticky Shimmy Shuffle mod
         my $stickdir;
         if ($staff) {
-            if ( $threadclass eq 'sticky' || $threadclass eq 'stickylock' ) {
+            if ( $threadclass eq 'sticky' || $threadclass eq 'stickylock'  || $threadclass eq 'hidesticky' || $threadclass eq 'hidestickylock') {
                 $stickdir =
-qq~&nbsp;&nbsp;<a href="$scripturl?action=rearrsticky;board=$currentboard;num=$mnum;direction=up"><span class="sticky_stick"><b>&uarr;</b></span></a><a href="$scripturl?action=rearrsticky;board=$currentboard;num=$mnum;direction=down"><span class="sticky_stick"><b>&darr;</b></span> </a>~;
+qq~&nbsp;&nbsp;<a href="$scripturl?action=rearrsticky;board=$currentboard;num=$mnum;direction=up" title="$messageindex_txt{'move_up'}"><span class="sticky_stick"><b>&uarr;</b></span></a><a href="$scripturl?action=rearrsticky;board=$currentboard;num=$mnum;direction=down" title="$messageindex_txt{'move_down'}"><span class="sticky_stick"><b>&darr;</b></span> </a>~;
             }
-            elsif (( $threadclass eq 'announcement' )
+elsif (( $threadclass eq 'announcement' || $threadclass eq 'announcementlock' || ${$mnum}{'board'} eq $annboard && $mstate =~ /h/ism )
                 && ( $iamadmin || $iamgmod ) )
             {
                 $stickdir =
-qq~&nbsp;&nbsp;<a href="$scripturl?action=rearrsticky;board=$annboard;num=$mnum;direction=up;oldboard=$currentboard;"><span class="sticky_stick"><b>&uarr;</b></span></a><a href="$scripturl?action=rearrsticky;board=$annboard;num=$mnum;direction=down;oldboard=$currentboard;"><span class="sticky_stick"><b>&darr;</b></span> </a>~;
+qq~&nbsp;&nbsp;<a href="$scripturl?action=rearrsticky;board=$annboard;num=$mnum;direction=up;oldboard=$currentboard;" title="$messageindex_txt{'move_up'}"><span class="sticky_stick"><b>&uarr;</b></span></a><a href="$scripturl?action=rearrsticky;board=$annboard;num=$mnum;direction=down;oldboard=$currentboard;" title="$messageindex_txt{'move_down'}"><span class="sticky_stick"><b>&darr;</b></span> </a>~;
             }
         }
         ### End Sticky Shimmy Shuffle Mod
@@ -1187,20 +1187,20 @@ qq~<div class="windowbg2 topic-hover" id="$mnum">$themessage</div>~;
 
                 if ( ${$mnum}{'board'} eq $annboard ) {
                     $msublink =
-qq~<a href="$scripturl?virboard=$currentboard;num=$mnum" onmouseover="topicSum(event, '$mnum')" onmouseout="hidetopicSum('$mnum')" onclick="hidetopicSum('$mnum')">$msub</a>$topicsum~;
+qq~<a href="$scripturl?virboard=$currentboard;num=$mnum" onmouseover="topicSum(event, '$mnum')" onmouseout="hidetopicSum('$mnum')" onclick="hidetopicSum('$mnum')">$msub</a>$topicsum<div style="float: right; font-size: xx-small;">$stickdir</div>~;
                 }
                 else {
                     $msublink =
-qq~<a href="$scripturl?num=$mnum" onmouseover="topicSum(event, '$mnum')" onmouseout="hidetopicSum('$mnum')" onclick="hidetopicSum('$mnum')">$msub</a>$topicsum<div style="float:right"><span style="font-size:xx-small">$stickdir</span></div>~;
+qq~<a href="$scripturl?num=$mnum" onmouseover="topicSum(event, '$mnum')" onmouseout="hidetopicSum('$mnum')" onclick="hidetopicSum('$mnum')">$msub</a>$topicsum<div style="float:right; font-size:xx-small">$stickdir</div>~;
                 }
             }
             else {
                 if ( ${$mnum}{'board'} eq $annboard ) {
                     $msublink =
-qq~<a href="$scripturl?virboard=$currentboard;num=$mnum">$msub</a>~;
+qq~<a href="$scripturl?virboard=$currentboard;num=$mnum">$msub</a><div style="float:right; font-size:xx-small">$stickdir</div>~;
                 }
                 else {
-                    $msublink = qq~<a href="$scripturl?num=$mnum">$msub</a>~;
+                     $msublink = qq~<a href="$scripturl?num=$mnum">$msub</a><div style="float:right; style="font-size:xx-small">$stickdir</div>~; 
                 }
             }
         }
@@ -1955,7 +1955,7 @@ sub moveto {
         (@bdlist) = split /\,/xsm, $cat{$catid};
 
         #@bdlist = split(/\,/, $brdlist);
-        ( $catname, $catperms ) = split /\|/xsm, $catinfo{"$catid"};
+        ( $catname, $catperms ) = split /\|/xsm, $catinfo{$catid};
 
         $access = CatAccess($catperms);
         if ( !$access ) { next; }

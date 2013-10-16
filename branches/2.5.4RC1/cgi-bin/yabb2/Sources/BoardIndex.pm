@@ -227,7 +227,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                 next;
             }
             my ( $boardname, $boardperms, $boardview ) =
-              split /\|/xsm, $board{"$curboard"};
+              split /\|/xsm, $board{$curboard};
             my $access = AccessCheck( $curboard, q{}, $boardperms );
             if ( !$iamadmin && $access ne 'granted' && $boardview != 1 ) {
                 next;
@@ -255,7 +255,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                             next;
                         }
                         ( $boardname, $boardperms, $boardview ) =
-                          split /\|/xsm, $board{"$childbd"};
+                          split /\|/xsm, $board{$childbd};
                         $access = AccessCheck( $childbd, q{}, $boardperms );
                         if (  !$iamadmin
                             && $access ne 'granted'
@@ -539,7 +539,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
         if ( !$subboard_sel ) {
             (@bdlist) = split /\,/xsm, $cat{$catid};
             ( $catname, $catperms, $catallowcol, $catimage, $catrss ) =
-              split /\|/xsm, $catinfo{"$catid"};
+              split /\|/xsm, $catinfo{$catid};
             ToChars($catname);
 
             # Category Permissions Check
@@ -583,7 +583,7 @@ qq~<a href="javascript:SendRequest('$scripturl?action=collapse_cat;cat=$catid','
 # as we fill the vars based on all boards we need to skip any cat already shown before
                     if ( $new_icon{$curboard} ) {
                         my ( undef, $boardperms, $boardview ) =
-                          split /\|/xsm, $board{"$curboard"};
+                          split /\|/xsm, $board{$curboard};
                         if ( AccessCheck( $curboard, q{}, $boardperms ) eq
                             'granted' )
                         {
@@ -653,9 +653,11 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="img$catid" alt="$boardindex_exp
 qq~$collapse_link $hash{$catname} <a href="$scripturl?$my_cat=$catid" title="$boardindex_txt{'797'} $catname">$catname</a>~;
         }
         else {
+            if   ( $cat{$catid} ) { $my_cat = 'catselect'; }
+            else                  { $my_cat = 'boardselect'; }
             $template_boardtable    = qq~id="$catid"~;
             $template_colboardtable = qq~id="col$catid" style="display:none;"~;
-            $catlink = qq~<a href="$scripturl?catselect=$catid">$catname</a>~;
+            $catlink = qq~<a href="$scripturl?$my_cat=$catid">$catname</a>~;
         }
 
         # Don't need the category headers if we're loading ajax subboards
@@ -1172,7 +1174,7 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
                 $expandmessages =~ s/{yabb curboard}/$curboard/gsm;
                 $messagedropdown;
                 ( $boardname, $boardperms, $boardview ) =
-                  split /\|/xsm, $board{"$curboard"};
+                  split /\|/xsm, $board{$curboard};
                 $access = AccessCheck( $curboard, q{}, $boardperms );
                 if (   ( $boardperms eq q{} && !$crypass )
                     || ( !$iamguest && $access eq 'granted' ) )
@@ -1770,7 +1772,7 @@ qq~    <link rel="alternate" type="application/rss+xml" title="$boardindex_txt{'
 
             while ($parentboard) {
                 my ( $pboardname, undef, undef ) =
-                  split /\|/xsm, $board{"$parentboard"};
+                  split /\|/xsm, $board{$parentboard};
                 ToChars($pboardname);
                 $yytitle = $pboardname;
                 if ( ${ $uid . $parentboard }{'canpost'}
