@@ -1976,9 +1976,9 @@ sub tempstarter {
 sub CheckInstall {
     tempstarter();
     my $install_error;
-    $windowbg = '#FAFAFA';
-    $header   = '#5488BA';
-    $catbg    = '#DDDDDD';
+    $windowbg = '#fafafa';
+    $header   = '#5488ba';
+    $catbg    = '#ddd';
 
     $set_missing = q{};
     $set_created = q{};
@@ -2612,13 +2612,13 @@ qq~The 1x to 2.5.4 Converter has already been run.<br />To run the Converter aga
     if ( -e "$vardir/FixFile.lock" ) {
         $fixa = q{};
         $fixa2 =
-qq~The 2x FixFile Utility has already been run.<br />To run Utility again, remove the file "$vardir/FixFile.lock," then re-visit this page.~;
+qq~The 2x Conversion Utility has already been run.<br />To run Utility again, remove the file "$vardir/Convert2x.lock," then re-visit this page.~;
 
     }
     else {
         $fixa =
           q~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <form action="FixFile.pl" method="post" style="display: inline;">
+                <form action="Convert2x.pl" method="post" style="display: inline;">
                     <input type="submit" value="Convert 2x files" />
                 </form>~;
 }

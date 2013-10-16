@@ -2928,8 +2928,8 @@ sub SetupImgLoc {
 
 sub tabmenushow {    # used by the converter
     $tabsep =
-      qq~<img src="$imagesdir/tabsep211.png" alt="" style="float: left" />~;
-    $tabfill = qq~<img src="$imagesdir/tabfill.gif" alt="" />~;
+      q~{ &nbsp; };
+    $tabfill = q{ &nbsp; };
 
     $NavLink1 = qq~<span>$tabfill Members $tabfill</span>~;
     $NavLink2 = qq~$tabsep<span>$tabfill Boards & Categories $tabfill</span>~;
@@ -3742,9 +3742,9 @@ sub SetInstall2 {
 
 ########## MemberPic Settings ##########
 
-\$max_avatar_width = $max_avatar_width;             # Set maximum pixel width to which the selfselected userpics are resized,
+\$max_avatar_width = $max_avatar_width;             # Set maximum pixel width to which the self-selected avatars are resized,
                                                     # 0 disables this limit
-\$max_avatar_height = $max_avatar_height;           # Set maximum pixel height to which the selfselected userpics are resized,
+\$max_avatar_height = $max_avatar_height;           # Set maximum pixel height to which the self-selected avatars are resized,
                                                     # 0 disables this limit
 \$fix_avatar_img_size = $fix_avatar_img_size;       # Set to 1 disable the image resize feature and sets the image size to the
                                                     # max_... values. If one of the max_... values is 0 the image is shown in its
