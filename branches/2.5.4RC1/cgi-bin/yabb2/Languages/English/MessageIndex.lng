@@ -82,6 +82,8 @@ $messageindexlngver = 'YaBB 2.5.4 RC1 $Revision$';
 '903' => 'Close Window',
 'collruletext' => 'Board Rules Collapsed',
 'nopost' => 'This board cannot be posted in and no posts can be moved into it.',
+'move_up' => 'Move Up',
+'move_down' => 'Move Down', 
 );
 
 %messageindex_sort = (
