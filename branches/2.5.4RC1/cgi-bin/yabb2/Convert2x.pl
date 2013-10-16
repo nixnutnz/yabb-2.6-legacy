@@ -23,7 +23,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.5.41';
 
-$convert2xplver = 'YaBB 2.5.4 RC1 $Revision: 1348 $';
+$convert2xplver = 'YaBB 2.5.4 RC1 $Revision$';
 
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     $yyIIS = 1;
@@ -774,7 +774,7 @@ sub FoundConvert2xLock {
     if ( -e "$vardir/Convert2x.lock" ) {
         $fixa = q{};
         $fixa2 =
-qq~The 2.0-2.4 to 2.5.4 Convert2x Utility has already been run.<br />To run Utility again, remove the file "$vardir/Convert2x.lock," then re-visit this page.~;
+qq~The 2x Conversion Utility has already been run.<br />To run Utility again, remove the file "$vardir/Convert2x.lock," then re-visit this page.~;
 
     }
     else {
