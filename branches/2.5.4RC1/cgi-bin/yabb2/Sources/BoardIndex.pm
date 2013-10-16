@@ -647,13 +647,13 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="img$catid" alt="$boardindex_exp
                   qq~id="col$catid" style="display:none;"~;
             }
 
-            if   ( $cat{$catid} ) { $my_cat = 'catselect'; }
+            if   ( $cat{$catid} && !$INFO{'board'} ) { $my_cat = 'catselect'; }
             else                  { $my_cat = 'boardselect'; }
             $catlink =
 qq~$collapse_link $hash{$catname} <a href="$scripturl?$my_cat=$catid" title="$boardindex_txt{'797'} $catname">$catname</a>~;
         }
         else {
-            if   ( $cat{$catid} ) { $my_cat = 'catselect'; }
+            if   ( $cat{$catid}  && !$INFO{'board'} ) { $my_cat = 'catselect'; }
             else                  { $my_cat = 'boardselect'; }
             $template_boardtable    = qq~id="$catid"~;
             $template_colboardtable = qq~id="col$catid" style="display:none;"~;
