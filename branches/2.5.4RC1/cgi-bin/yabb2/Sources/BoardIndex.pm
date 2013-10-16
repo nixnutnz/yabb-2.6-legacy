@@ -1812,6 +1812,9 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
                         var insertindex;
                         var insertcat;
                         var prev_subcount;
+                        var markallreadlang = '$boardindex_txt{'500'}';
+                        var markfinishedlang = '$boardindex_txt{'500a'}';
+                        var markthreadslang = '$boardindex_txt{'500b'}';
                         //-->
                         </script>
                         $boardindex_template
