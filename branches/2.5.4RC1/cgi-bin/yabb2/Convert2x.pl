@@ -610,22 +610,22 @@ sub MyUpdateUser {
         }
     }
     fopen( MEMINFO, "$convmemberdir/memberinfo.txt" )
-      || setup_fatal_error( "$maintext_23 $convmemberdir/memberinfo.txt: aa ", 1 );
+      || setup_fatal_error( "$maintext_23 $convmemberdir/memberinfo.txt: ", 1 );
     my @meminfo = <MEMINFO>;
     fclose(MEMINFO);
 
     fopen( NMEMINFO, ">$memberdir/memberinfo.txt" )
-      || setup_fatal_error( "$maintext_23 $memberdir/memberinfo.txt: bb ", 1 );
+      || setup_fatal_error( "$maintext_23 $memberdir/memberinfo.txt: ", 1 );
     print {NMEMINFO} @meminfo or croak 'cannot print NBMEMINFO';
     fclose(NMEMINFO);
 
     fopen( BMEMDIR, "$convmemberdir/broadcast.messages" )
-      || setup_fatal_error( "$maintext_23 $convmemberdir/broadcast.messages: cc", 1 );
+      || setup_fatal_error( "$maintext_23 $convmemberdir/broadcast.messages: ", 1 );
     my @bmessages = <BMEMDIR>;
     fclose(BMEMDIR);
 
     fopen( NBMEMDIR, ">$memberdir/broadcast.messages" )
-      || setup_fatal_error( "$maintext_23 $convmemberdir/broadcast.messages: dd", 1 );
+      || setup_fatal_error( "$maintext_23 $convmemberdir/broadcast.messages: ", 1 );
     print {NBMEMDIR} @bmessages or croak 'cannot print NBMEMDIR';
     fclose(NBMEMDIR);
     return;
