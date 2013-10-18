@@ -4,7 +4,7 @@
 # $Source: /Convert.pl $
 ###############################################################################
 # Convert.pl                                                                  #
-# $Date: 9.02.13 $                                                            #
+# $Date: 10.17.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -76,7 +76,7 @@ $px = 'px';
 # Conversion was rewritten and fixed for xx-large
 # forums by Detlef Pilzecker (deti) in June 2008
 
-# The 'our' function is available sincee Perl v5.6.0
+# The 'our' function is available since Perl v5.6.0
 # If your Perl version is lower, then comment the 'our'-lines out and use this:
 # use vars qw(@categoryorder,@catboards,@catdata,@boarddata,@allboards,%catinfo,%cat,%board,%boarddata,$catfile,$boardfile,$key,$value,$cnt);
 our ( @categoryorder, @catboards, @catdata, @boarddata, @allboards );
@@ -126,7 +126,7 @@ if ( -e "$vardir/Setup.lock" ) {
                 </td>
                 <td class="windowbg2 fontbigger">
                     Make sure your YaBB 2.5.4 installation is running and that it has all the correct folder paths and URLs.<br />
-                    Proceed through the following steps to convert your YaBB 1 Gold - SP 1.x forum to YaBB 2.5.4!<br /><br />
+                    Proceed through the following steps to convert your YaBB 1 Gold - SP 1.x forum to YaBB 2.5.4.<br /><br />
                     <b>If</b> your YaBB 1 Gold - SP 1.x forum is located on the same server as your YaBB 2.5.4 installation:
                     <ol>
                         <li>Insert the path to your YaBB 1 Gold - SP 1.x forum in the input field below</li>
@@ -134,9 +134,9 @@ if ( -e "$vardir/Setup.lock" ) {
                     </ol>
                     <b>Else</b> if your YaBB 1 Gold - SP 1.x forum is located on a different server than your YaBB 2.5.4 installation or if you do not know the path to your SP 1.x forum:
                     <ol>
-                        <li>Copy all files in the /Boards, /Members, and /Messages folders from your YaBB 1 Gold - SP 1.x installation, to the corresponding Convert/Boards, Convert/Members, and Convert/Messages folders of your YaBB 2.5.4 installation, and chmod them 777.</li>
-                        <li>Copy cat.txt from the /Variables folder of your YaBB 1 Gold - SP 1.x installation to the Convert/Variables folder of your YaBB 2.5.4 installation, and chmod it 666.</li>
-                        <li>If you have 'Add More Membergroups' installed on your YaBB 1 Gold - SP 1.x, copy MemberStats.txt from the /Variables folder of your YaBB 1 Gold - SP 1.x installation to the Convert/Variables folder of your YaBB 2.5.4 installation, and chmod it 666.</li>
+                        <li>Copy all files in the /Boards, /Members, and /Messages folders from your YaBB 1 Gold - SP 1.x installation, to the corresponding Convert/Boards, Convert/Members, and Convert/Messages folders of your YaBB 2.5.4 installation, and chmod them 755.</li>
+                        <li>Copy cat.txt from the /Variables folder of your YaBB 1 Gold - SP 1.x installation to the Convert/Variables folder of your YaBB 2.5.4 installation, and chmod it 644.</li>
+                        <li>If you have 'Add More Membergroups' installed on your YaBB 1 Gold - SP 1.x, copy MemberStats.txt from the /Variables folder of your YaBB 1 Gold - SP 1.x installation to the Convert/Variables folder of your YaBB 2.5.4 installation, and chmod it 644.</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
                     <div style="width: 100%; text-align: center;">
@@ -173,16 +173,19 @@ if ( -e "$vardir/Setup.lock" ) {
             setup_fatal_error( "Directory: $convertdir/Boards", 1 );
         }
         else { $convboardsdir = "$convertdir/Boards"; }
+
         if ( !-e "$convertdir/Members/memberlist.txt" ) {
-            setup_fatal_error( "Directory: $convertdir/Members", 1 );
+            setup_fatal_error( "File: $convertdir/Members/memberlist.txt", 1 );
         }
         else { $convmemberdir = "$convertdir/Members"; }
+
         if ( !-d "$convertdir/Messages" ) {
             setup_fatal_error( "Directory: $convertdir/Messages", 1 );
         }
         else { $convdatadir = "$convertdir/Messages"; }
+
         if ( !-e "$convertdir/Variables/cat.txt" ) {
-            setup_fatal_error( "Directory: $convertdir/Variables", 1 );
+            setup_fatal_error( "File: $convertdir/Variables/cat.txt", 1 );
         }
         else { $convvardir = "$convertdir/Variables"; }
 
@@ -251,8 +254,8 @@ EOF
             ~;
     }
     elsif ( $action eq 'members' ) {
+        require qq~$vardir/ConvSettings.txt~;
         if ( !exists $INFO{'mstart1'} ) { PrepareConv(); }
-
         $INFO{'mstart2'} ? ConvertMembers2() : ConvertMembers1();
 
         $yytabmenu =
@@ -324,7 +327,9 @@ EOF
             my @fixed = <FIXUSER>;
             fclose(FIXUSER);
             chomp @fixed;
-
+            foreach my $set(@fixed) {
+                $set =~ s/[\r\n]//gsm;
+            }
             $yymain .= qq~
     <br />
     <div class="bordercolor borderbox">
@@ -445,6 +450,7 @@ EOF
 
     }
     elsif ( $action eq 'cats' ) {
+        require qq~$vardir/ConvSettings.txt~;
         if ( !exists $INFO{'bstart'} || !exists $INFO{'bfstart'} ) {
             GetCats();
             CreateControl();
@@ -598,6 +604,7 @@ EOF
             ~;
     }
     elsif ( $action eq 'messages' ) {
+        require qq~$vardir/ConvSettings.txt~;
         ConvertMessages();
 
         $yytabmenu =
@@ -763,6 +770,7 @@ EOF
 
     }
     elsif ( $action eq 'dates' ) {
+        require qq~$vardir/ConvSettings.txt~;
         ConvertTimeToString();
 
         $yytabmenu =
@@ -828,6 +836,7 @@ EOF
 
     }
     elsif ( $action eq 'dates2' ) {
+        require qq~$vardir/ConvSettings.txt~;
         if ( $INFO{'pollfile'} <= 0 && $INFO{'polledfile'} <= 0 ) {
             setup_fatal_error(
 "Date &amp; Time conversion (dates2) error! pollfile($INFO{'pollfile'}), polledfile($INFO{'polledfile'})",
@@ -934,12 +943,14 @@ EOF
 
     }
     elsif ( $action eq 'cleanup' ) {
+        require qq~$vardir/ConvSettings.txt~;
         require "$boardsdir/forum.master";
 
         if ( !$INFO{'clean'} ) {
             fopen( FORUMTOTALS, ">>$boardsdir/forum.totals" )
               || setup_fatal_error( "Can not open $boardsdir/forum.totals", 1 );
             foreach my $testboard (@allboards) {
+                $testboard =~ s/[\r\n]//gsm;
                 chomp $testboard;
                 if ( -e "$convboardsdir/$testboard.ttl" ) {
                     fopen( BOARDTTL, "$convboardsdir/$testboard.ttl" )
@@ -948,6 +959,7 @@ EOF
                     my $line = <BOARDTTL>;
                     fclose(BOARDTTL);
                     chomp $line;
+                    $line =~ s/[\r\n]//gsm;
                     print {FORUMTOTALS} "$testboard|$line|\n"
                       or croak 'cannot print FORUMTOTALS';
 
@@ -1037,7 +1049,7 @@ qq~<br /><br />There were some illegal usernames. Their names were changed. Plea
                 <br />
                 <span style="color:red">We recommend you delete the file "$ENV{'SCRIPT_NAME'}". This is to prevent someone else running the converter and damaging your files.<br />
                 <br />
-                Further more, we strongly recomend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />
+                Further more, we strongly recommend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />
                 - Rebuild Message Index<br />
                 - Recount Board Totals<br />
                 - Rebuild Members List<br />
@@ -1060,9 +1072,9 @@ qq~<br /><br />There were some illegal usernames. Their names were changed. Plea
         </tr>
     </table>
     </div>~;
-#        CreateConvLock();
     }
     elsif ( $action eq 'extended' ) {
+        require qq~$vardir/ConvSettings.txt~;
         ext_admin_convert();
         $yytabmenu =
             $NavLink1
@@ -1354,6 +1366,8 @@ sub ConvertMembers1 {
       || setup_fatal_error( "$maintext_23 $convmemberdir/memberlist.txt: ", 1 );
     my @memlist = <MEMDIR>;
     fclose(MEMDIR);
+    chomp @memlist;
+
     for my $i ( ( $INFO{'mstart1'} || 0 ) .. ( @memlist - 1 ) ) {
         $uname = $memlist[$i];
         chomp $uname;
@@ -1403,15 +1417,19 @@ sub IllegalUser {
     my ($user) = @_;
 
     my $fixeduser = $user;
-    $fixeduser =~ s/[^\w\+\-\.\@]|guest//gixsm;
+    $fixeduser =~ s/[^\w\+\-\.\@]|guest//gixm;
     if ( !$fixeduser ) { $fixeduser = 'fixeduser'; }
     $fixeduser = check_existence( $memberdir, "$fixeduser.vars" );
-    $fixeduser =~ s/(\S+?)(\.\S+$)/$1/xsm;
+    $fixeduser =~ s/(\S+?)(\.\S+$)/$1/xm;
 
     fopen( LOADOLDUSER, "$convmemberdir/$user.dat" )
       || setup_fatal_error( "$maintext_23 $convmemberdir/$user.dat: ", 1 );
     my @settings = <LOADOLDUSER>;
     fclose(LOADOLDUSER);
+    chomp @settings;
+    foreach my $set(@settings) {
+        $set = s/[\r\n]//gsm;
+    }
     chomp @settings;
 
     my ( $pmignorelist, $pmnotify, $pmpopup, $pmspop );
@@ -1474,8 +1492,7 @@ s/(\d{2}\/\d{2}\/\d{2,4}).*?(\d{2}\:\d{2}\:\d{2})/&conv_stringtotime("$1 at $2")
     if ( $settings[5] ) {
         $settings[5] =~ s/&&/&amp;&amp;/gxsm;
         $settings[5] =~ s/\"/&quot;/gxsm;       #";
-        $settings[5] =~
-s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]" /igesm;
+        $settings[5] =~ s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]" /igesm;
         $settings[5] =~ s/<br>/<br \/>/igsm;
     }
 
@@ -1545,6 +1562,9 @@ sub MyUpdateUser {
       || setup_fatal_error( "$maintext_23 $convmemberdir/$user.dat: ", 1 );
     my @settings = <LOADOLDUSER>;
     fclose(LOADOLDUSER);
+    foreach my $set(@settings) {
+        $set =~ s/[\r\n]//gsm;
+    }
     chomp @settings;
 
     my ( $pmignorelist, $pmnotify, $pmpopup, $pmspop );
@@ -1671,13 +1691,12 @@ sub groupconvert {
     my $z = 1;
     undef %Post;
 
-    $Post{'-1'} =
-qq~$MemStatNewbie|$MemStarNumNewbie|$MemStarPicNewbie|$MemTypeColNewbie|0|0|0|0|0|0~;
+      $Post{'-1'} = qq~$MemStatNewbie|$MemStarNumNewbie|$MemStarPicNewbie|$MemTypeColNewbie|0|0|0|0|0|0~;
 
     while ( $MemStat[$i] ) {
         if ( $MemPostNum[$i] eq 'x' ) {
-            $NoPost{$z} =
-qq~$MemStat[$i]|$MemStarNum[$i]|$MemStarPic[$i]|$MemTypeCol[$i]|0|0|0|0|0|0~;
+            $NoPost{$z} = qq~$MemStat[$i]|$MemStarNum[$i]|$MemStarPic[$i]|$MemTypeCol[$i]|0|0|0|0|0|0~;
+            push @nopostorder, $z;
             $z++;
         }
         else {
@@ -1693,6 +1712,7 @@ qq~$MemStat[$i]|$MemStarNum[$i]|$MemStarPic[$i]|$MemTypeCol[$i]|0|0|0|0|0|0~;
         $Group{$key} = $value;
     }
     foreach my $key ( keys %NoPost ) {
+        push @nopostorder, $key;
         $value = $NoPost{$key};
         $value =~ s/'/&#39;/gxsm;    #';
         $NoPost{$key} = $value;
@@ -1712,6 +1732,7 @@ sub ConvertMembers2 {
       || setup_fatal_error( "$maintext_23 $convmemberdir/memberlist.txt: ", 1 );
     my @memlist = <MEMDIR>;
     fclose(MEMDIR);
+    chomp @memlist;
 
     for my $i ( ( $INFO{'mstart2'} || 0 ) .. ( @memlist - 1 ) ) {
         my $user = $memlist[$i];
@@ -1743,8 +1764,7 @@ sub ConvertMembers2 {
                               exists $fixed_users{$name}
                               ? ${ $fixed_users{$name} }[0]
                               : $name;
-                            $date =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eism;
+                            $date =~ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/conv_stringtotime("$1 at $2")/eism;
                             $message =~ s/<br>/<br \/>/igsm;
                             if ( $folder eq 'outbox' ) {
                                 $folder = 'out';
@@ -1770,8 +1790,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("
                               exists $fixed_users{$name}
                               ? ${ $fixed_users{$name} }[0]
                               : $name;
-                            $date =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eism;
+                            $date =~ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/conv_stringtotime("$1 at $2")/eism;
                             $message =~ s/<br>/<br \/>/igsm;
                             if ( $id < 101 || $id eq q{} ) { $id = $date; }
                             if ( $cnt == 0 ) {    # msg
@@ -1829,6 +1848,9 @@ sub GetCats {
       || setup_fatal_error( "$maintext_23 $convvardir/cat.txt: ", 1 );
     @categoryorder = <VDIR>;
     fclose(VDIR);
+    foreach my $set(@categoryorder) {
+        $set =~ s/[\r\n]//gsm;
+    }
     chomp @categoryorder;
 
     my @allboards;
@@ -1837,6 +1859,9 @@ sub GetCats {
           || setup_fatal_error( "$maintext_23 $convboardsdir/$fcat.cat: ", 1 );
         @catdata = <VCAT>;
         fclose(VCAT);
+        foreach my $set(@catdata) {
+            $set =~ s/[\r\n]//gsm;
+        }
         chomp @catdata;
 
         $catinfo{$fcat} = qq~$catdata[0]|$catdata[1]|1~;
@@ -1854,6 +1879,9 @@ sub GetCats {
             1 );
         @bdata = <VBRD>;
         fclose(VBRD);
+        foreach my $set(@bdata) {
+            $set =~ s/[\r\n]//gsm;
+        }
         chomp $bdata[0];
 
         # get board access data
@@ -1937,6 +1965,9 @@ sub CreateControl {
         fopen( CINFO, "$convboardsdir/$foundboard.ctb" );
         @category = <CINFO>;
         fclose(CINFO);
+        foreach my $set(@category) {
+            $set =~ s/[\r\n]//gsm;
+        }
         chomp $category[0];
         $cntcat = $category[0];
 
@@ -1944,6 +1975,9 @@ sub CreateControl {
         fopen( BINFO, "$convboardsdir/$foundboard.dat" );
         @boardinfo = <BINFO>;
         fclose(BINFO);
+        foreach my $set(@boardinfo) {
+            $set =~ s/[\r\n]//gsm;
+        }
         chomp @boardinfo;
 
         $boardinfo[2] =~ s/^\||\|$//gxsm;
@@ -2042,11 +2076,17 @@ sub ConvertBoards {
             1 );
         @boardfile = <BOARDFILE>;
         fclose(BOARDFILE);
+        foreach my $set(@boardfile) {
+            $set =~ s/[\r\n]//gsm;
+        }
+        chomp @boardfile;
 
         @temparray = ();
         for my $j ( ( $INFO{'bfstart'} || 0 ) .. ( @boardfile - 1 ) ) {
             my $line = $boardfile[$j];
+            $line =~ s/[\r\n]//gsm;
             chomp $line;
+
             my (
                 $mnum,     $msub,      $mname, $memail, $mdate,
                 $mreplies, $musername, $micon, $mstate
@@ -2075,6 +2115,9 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("
                 fopen( BOARDFILE, ">>$boardsdir/$boards[$i].txt" )
                   || setup_fatal_error(
                     "$maintext_23 $boardsdir/$boards[$i].txt: ", 1 );
+                foreach my $set(@temparray) {
+                    $set =~ s/[\r\n]//gsm;
+                }
                 print {BOARDFILE} @temparray or croak 'cannot print BOARDFILE';
                 fclose(BOARDFILE);
                 $yySetLocation =
@@ -2663,6 +2706,9 @@ sub FixNopost {
           || setup_fatal_error( "$maintext_23 $boardsdir/forum.control: ", 1 );
         @boardcontrols = <FORUMCONTROL>;
         fclose(FORUMCONTROL);
+        foreach my $set(@boardcontrols) {
+            $set =~ s/[\r\n]//gsm;
+        }
         chomp @boardcontrols;
 
         my $totalnoposts = keys %NoPost;
@@ -2928,31 +2974,31 @@ sub SetupImgLoc {
 
 sub tabmenushow {    # used by the converter
     $tabsep =
-      q~{ &nbsp; };
+      q{ &nbsp; };
     $tabfill = q{ &nbsp; };
 
-    $NavLink1 = qq~<span>$tabfill Members $tabfill</span>~;
-    $NavLink2 = qq~$tabsep<span>$tabfill Boards & Categories $tabfill</span>~;
-    $NavLink3 = qq~$tabsep<span>$tabfill Messages $tabfill</span>~;
-    $NavLink4 = qq~$tabsep<span>$tabfill Date &amp; Time $tabfill</span>~;
-    $NavLink5 = qq~$tabsep<span>$tabfill Clean Up $tabfill</span>~;
-    $NavLink5 = qq~$tabsep<span>$tabfill Extended Profiles $tabfill</span>~;
-    $NavLink6 = qq~$tabsep<span>$tabfill Login $tabfill</span>$tabsep&nbsp;~;
+    $NavLink1 = qq~<span style="padding:4px">$tabfill Members $tabfill</span>~;
+    $NavLink2 = qq~$tabsep<span style="padding:4px">$tabfill Boards & Categories $tabfill</span>~;
+    $NavLink3 = qq~$tabsep<span style="padding:4px">$tabfill Messages $tabfill</span>~;
+    $NavLink4 = qq~$tabsep<span style="padding:4px">$tabfill Date &amp; Time $tabfill</span>~;
+    $NavLink5 = qq~$tabsep<span style="padding:4px">$tabfill Clean Up $tabfill</span>~;
+    $NavLink6 = qq~$tabsep<span style="padding:4px">$tabfill Login $tabfill</span>$tabsep&nbsp;~;
+    $NavLink7 = qq~$tabsep<span style="padding:4px">$tabfill Extended Profiles $tabfill</span>~;
 
     $NavLink1a =
-qq~<span class="selected"><a href="$set_cgi?action=members;st=$INFO{'st'}" style="color: #FF3333;" class="selected" onClick="PleaseWait();">$tabfill Members $tabfill</a></span>~;
+qq~<span class="selected"><a href="$set_cgi?action=members;st=$INFO{'st'}" style="color: #f33;" class="selected" onClick="PleaseWait();">$tabfill Members $tabfill</a></span>~;
     $NavLink2a =
-qq~$tabsep<span class="selected"><a href="$set_cgi?action=cats;st=$INFO{'st'}" style="color: #FF3333;" class="selected" onClick="PleaseWait();">$tabfill Boards & Categories $tabfill</a></span>~;
+qq~$tabsep<span class="selected"><a href="$set_cgi?action=cats;st=$INFO{'st'}" style="color: #f33;" class="selected" onClick="PleaseWait();">$tabfill Boards & Categories $tabfill</a></span>~;
     $NavLink3a =
-qq~$tabsep<span class="selected"><a href="$set_cgi?action=messages;st=$INFO{'st'}" style="color: #FF3333;" class="selected" onClick="PleaseWait();">$tabfill Messages $tabfill</a></span>~;
+qq~$tabsep<span class="selected"><a href="$set_cgi?action=messages;st=$INFO{'st'}" style="color: #f33;" class="selected" onClick="PleaseWait();">$tabfill Messages $tabfill</a></span>~;
     $NavLink4a =
-qq~$tabsep<span class="selected"><a href="$set_cgi?action=dates;st=$INFO{'st'}" style="color: #FF3333;" class="selected" onClick="PleaseWait();">$tabfill Date &amp; Time $tabfill</a></span>~;
+qq~$tabsep<span class="selected"><a href="$set_cgi?action=dates;st=$INFO{'st'}" style="color: #f33;" class="selected" onClick="PleaseWait();">$tabfill Date &amp; Time $tabfill</a></span>~;
     $NavLink5a =
-qq~$tabsep<span class="selected"><a href="$set_cgi?action=cleanup;st=$INFO{'st'}" style="color: #FF3333;" class="selected" onClick="PleaseWait();">$tabfill Clean Up $tabfill</a></span>~;
+qq~$tabsep<span class="selected"><a href="$set_cgi?action=cleanup;st=$INFO{'st'}" style="color: #f33;" class="selected" onClick="PleaseWait();">$tabfill Clean Up $tabfill</a></span>~;
     $NavLink6a =
-qq~$tabsep<span class="selected"><a href="$boardurl/YaBB.$yyext?action=login" style="color: #FF3333;" class="selected">$tabfill Login $tabfill</a></span>$tabsep&nbsp;~;
+qq~$tabsep<span class="selected"><a href="$boardurl/YaBB.$yyext?action=login" style="color: #f33;" class="selected">$tabfill Login $tabfill</a></span>$tabsep&nbsp;~;
     $NavLink7a =
-qq~$tabsep<span class="selected"><a href="$set_cgi?action=extended;st=$INFO{'st'}" style="color: #FF3333;" class="selected" onClick="PleaseWait();">$tabfill Extended Profiles $tabfill</a></span>~;
+qq~$tabsep<span class="selected"><a href="$set_cgi?action=extended;st=$INFO{'st'}" style="color: #f33;" class="selected" onClick="PleaseWait();">$tabfill Extended Profiles $tabfill</a></span>~;
 
     $ConvDone = q~
             <div class="divvary_m">&nbsp;</div>
@@ -3173,12 +3219,12 @@ q~<h1 style="text-align:center"><b>Sorry, the copyright tag <yabb copyright> mus
 }
 
 sub nicely_aligned_file {
+    my ( $setfile ) = @_;    
+    $setfile =~ s/=\s+;/= 0;/gsm;
     $filler = q{ } x 50;
 
     # Make files look nicely aligned. The comment starts after 50 Col
 
-    my $setfile = shift;
-    $setfile =~ s/=\s+;/= 0;/gsm;
     $setfile =~
 s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2 /gem;
     $setfile =~ s/\t+(#.+$)/$filler$1/gsm;
@@ -3209,25 +3255,26 @@ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2
 # converts ALL old .ext files into the the YaBB 2 file format
 sub ext_admin_convert {
     my ( @contents, $filename, $old_membersdir, $old_vardir, $i );
+    LoadLanguage('ExtendedProfiles');
 
     $old_membersdir = $convmembersdir;
     $old_vardir     = $convvardir;
 
     if ( !-e $old_vardir ) {
-        admin_fatal_error( 'extended_profiles_convert',
+        fatal_error( 'extended_profiles_convert',
             $lang_ext{'converter_missing_vars'} );
     }
     if ( !-e "$old_vardir/extended_profiles_order.txt" ) {
-        admin_fatal_error( 'extended_profiles_convert',
+        fatal_error( 'extended_profiles_convert',
             $lang_ext{'converter_missing_order'} );
     }
     if ( !-e "$old_vardir/extended_profiles_fields.txt" ) {
-        admin_fatal_error( 'extended_profiles_convert',
+        fatal_error( 'extended_profiles_convert',
             $lang_ext{'converter_missing_fields'} );
     }
 
     fopen( CONVERTER, "$old_vardir/extended_profiles_order.txt" )
-      || admin_fatal_error( 'cannot_open',
+      || fatal_error( 'cannot_open',
         "$old_vardir/extended_profiles_order.txt" );
     @ext_prof_order = <CONVERTER>;
     fclose(CONVERTER);
@@ -3235,7 +3282,7 @@ sub ext_admin_convert {
 
     # copy old extended_profiles_fields and extended_profiles_order files
     fopen( CONVERTER, "$old_vardir/extended_profiles_fields.txt" )
-      || admin_fatal_error( 'cannot_open',
+      || fatal_error( 'cannot_open',
         "$old_vardir/extended_profiles_fields.txt" );
     @ext_prof_fields = <CONVERTER>;
     fclose(CONVERTER);
@@ -3385,6 +3432,7 @@ sub SetInstall2 {
         $Cookie_Length         = 1;
         ( undef,$rancook ) = split /\-/xsm, $cookieusername;
         $cookietsort = qq~Y2tsort-$rancook~; 
+        $cookieviewtime        = 525600; 
         $regtype               = 3;
         $RegAgree              = 1;
         $RegReasonSymbols      = 500;
@@ -3546,10 +3594,10 @@ sub SetInstall2 {
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:      YaBB 2.5.4                                                    #
-# Packaged: October 5, 2012                                                   #
+# Packaged: October 1, 2013                                                   #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2012  YaBB (www.yabbforum.com) - All Rights Reserved.    #
+# Copyright (c) 2000-2013  YaBB (www.yabbforum.com) - All Rights Reserved.    #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -3576,6 +3624,7 @@ sub SetInstall2 {
 \$cookiesession_name = "$cookiesession_name";       # Name of the Session cookie
 \$cookietsort = "$cookietsort";                     # Name of the Topic Sort
 \$cookieview = "$cookieview";                       # Name of the Guest Message Limit cookie
+\$cookieviewtime = $cookieviewtime;
 
 \$regtype = $regtype;                               # 0 = registration closed (only admin can register),
                                                     # 1 = pre registration with admin approval,
@@ -3621,7 +3670,7 @@ sub SetInstall2 {
 \$Post{'100'} = "Full Member|3|starblue.png||0|0|0|0|0|0";
 \$Post{'50'} = "Junior Member|2|stargold.png||0|0|0|0|0|0";
 \$Post{'-1'} = "New Member|1|stargold.png||0|0|0|0|0|0";
-
+\@nopostorder = qw(@nopostorder);           # Order how "Post independent Member Groups" are displayed
 ########## Layout ##########
 
 \$maintenancetext = "$maintenancetext";             # User-defined text for Maintenance mode (leave blank for default text)
@@ -3690,10 +3739,12 @@ sub SetInstall2 {
 \$maxdisplay = $maxdisplay;                         # Maximum of topics to display
 \$maxfavs = $maxfavs;                               # Maximum of favorite topics to save in a profile
 \$maxrecentdisplay = $maxrecentdisplay;             # Maximum of topics to display on recent posts by a user (-1 to disable)
+\$maxrecentdisplay_t = $maxrecentdisplay_t;         # Maximum of topics to display on recent topics (-1 to disable)
 \$maxsearchdisplay = $maxsearchdisplay;             # Maximum of messages to display in a search query  (-1 to disable search)
 \$maxmessagedisplay = $maxmessagedisplay;           # Maximum of messages to display
 \$MaxMessLen = $MaxMessLen;                         # Maximum Allowed Characters in a Posts
 \$AdMaxMessLen = $AdMaxMessLen;                     # Maximum Allowed Characters in a Posts for Admins
+\$MaxIMMessLen = $MaxIMMessLen;                     # Maximum Allowed Characters in a PM
 \$AdMaxIMMessLen = $AdMaxIMMessLen;                    # Maximum Allowed Characters in a PM for Admins
 \$MaxCalMessLen = $MaxCalMessLen;           # Maximum Allowed Characters in a Cal event
 \$AdMaxCalMessLen = $AdMaxCalMessLen;                   # Maximum Allowed Characters in a Cal Event for Admins
@@ -3754,6 +3805,12 @@ sub SetInstall2 {
 \$fix_post_img_size = $fix_post_img_size;           # Set to 1 disable the image resize feature and sets the image size to the
                                                     # max_... values. If one of the max_... values is 0 the image is shown in its
                                                     # proportions to the other value. If both are 0 the image is shown at its original size.
+\$max_avatarml_width = $max_avatarml_width;         # Set maximum pixel width to which the selfselected userpics in member list are resized, 0 disables
+                                                    #  this limit
+\$max_avatarml_height = $max_avatarml_height;       #Set maximum pixel height to which the selfselected userpics in member list are resized, 0 disables
+                                                    #  this limit
+\$fix_avatarml_img_size = $fix_avatarml_img_size;                       # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of
+                                                    #  the max_... values is 0 the image is shown in its proportions to the other value. If both are 0 the image is shown at its original size.
 \$max_signat_img_width = $max_signat_img_width;     # Set maximum pixel width for images in the signature, 0 disables this limit
 \$max_signat_img_height = $max_signat_img_height;   # Set maximum pixel height for images in the signature, 0 disables this limit
 \$fix_signat_img_size = $fix_signat_img_size;       # Set to 1 disable the image resize feature and sets the image size to the
@@ -3768,7 +3825,7 @@ sub SetInstall2 {
                                                     # Set to 1 to enable the attachment and post image "greybox" (one image/page)
                                                     # Set to 2 to enable the attachment and post image "greybox" =>
                                                     # attachment images: (all images/page), post images: (one image/page)
-
+\$Event_TodayColor = '#ff0000';
 ########## Extended Profiles ##########
 \$extendedprofiles = $extendedprofiles;             # Set to 1 to enabled 'Extended Profiles'. Turn it off (0) to save server load.
 
@@ -3878,8 +3935,13 @@ sub SetInstall2 {
                                                   # Set to 0 to disable the directory size check.
 \$overwrite = 0;                                  # Set to 0 to auto rename attachments if they exist,
                                                   # 1 to overwrite them or 2 to generate an error if the file exists already.
+\$allowAttachIM = 0;                              # Set the maximum number of file attachments allowed in personal messages, set to 0 to disable file attachments in personal messages.
 \@ext = qw(txt doc docx psd pdf bmp jpe jpg jpeg gif png swf zip rar tar); # The allowed file extensions for file attachements.
+\@pmAttachExt = qw(txt doc docx psd pdf bmp jpe jpg jpeg gif png swf zip rar tar); # The allowed file extensions for file attachements.
                                                   # The variable should be set in the form of "jpg bmp gif" and so on.
+\$pmFileLimit = 250;                # Set to the maximum number of kilobytes a pm attachment can be. Set to 0 to disable the file size check.
+\$pmDirLimit = 10000;               # Set to the maximum number of kilobytes the pm attachment directory can hold. Set to 0 to disable the directory size check.
+\$pmFileOverwrite = 0;              # Set to 0 to auto rename pm attachments if they exist, 1 to overwrite them or 2 to generate an error if the file exists already.
 \$checkext = 1;                                   # Set to 1 to enable file extension checking,
                                                   # set to 0 to allow all file types to be uploaded
 \$amdisplaypics = 1;                              # Set to 1 to display attached pictures in posts,
@@ -4013,4 +4075,5 @@ EOF
     }
     return;
 }
+
 1;

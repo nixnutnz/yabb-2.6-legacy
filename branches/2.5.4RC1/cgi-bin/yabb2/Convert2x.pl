@@ -137,6 +137,7 @@ if ( -e "$vardir/Setup.lock" ) {
         local $ENV{'HTTP_COOKIE'} = q{};
         $yyuname = q{};
 
+        $convertdir = $FORM{'convertdir'};
 
         if ( !-d "$convertdir/Boards" ) {
             setup_fatal_error( "Directory: $convertdir/Boards", 1 );
@@ -576,16 +577,14 @@ sub PrepareConv {
 
 sub MyUpdateUser {
     my ( $convmemberdir, $memberdir ) = @_;
-#     $memberdir = './Members';
-#     $convmemberdir = "$convertdir/Members";
 
     fopen( MEMDIR, "$convmemberdir/memberlist.txt" )
-      || setup_fatal_error( "$maintext_23 $convmemberdir/memberlist.txt: yy", 1 );
+      || setup_fatal_error( "$maintext_23 $convmemberdir/memberlist.txt:", 1 );
     my @memlist = <MEMDIR>;
     fclose(MEMDIR);
 
     fopen( MEMDIRLST, "> $memberdir/memberlist.txt" )
-      || setup_fatal_error( "$maintext_23 $memberdir/memberlist.txt: xx", 1 );
+      || setup_fatal_error( "$maintext_23 $memberdir/memberlist.txt:", 1 );
     print {MEMDIRLST} @memlist or croak 'cannot print MEMDIR';
     fclose(MEMDIRLST);
 

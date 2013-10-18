@@ -1272,7 +1272,7 @@ sub SetInstall {
 
 sub SetInstall2 {
     if ( $action eq 'checkmodules' || $action eq 'setinstall2' ) {
-        $settings_file_version = 'YaBB 0.0.0';
+        $settings_file_version = 'YaBB 2.5.4';
         $yycharset             = "UTF-8";
         $maintenance           = 1;
         $rememberbackup        = 0;
@@ -1351,6 +1351,7 @@ sub SetInstall2 {
         $maxdisplay             = 20;
         $maxfavs                = 20;
         $maxrecentdisplay       = 25;
+        $maxrecentdisplay_t     = 25;
         $maxsearchdisplay       = 15;
         $maxmessagedisplay      = 15;
         $MaxMessLen             = 5000;
@@ -1592,6 +1593,7 @@ sub SetInstall2 {
 \$maxdisplay = $maxdisplay;                         # Maximum of topics to display
 \$maxfavs = $maxfavs;                               # Maximum of favorite topics to save in a profile
 \$maxrecentdisplay = $maxrecentdisplay;             # Maximum of topics to display on recent posts by a user (-1 to disable)
+\$maxrecentdisplay_t = $maxrecentdisplay_t;         # Maximum of topics to display on recent topics (-1 to disable)
 \$maxsearchdisplay = $maxsearchdisplay;             # Maximum of messages to display in a search query  (-1 to disable search)
 \$maxmessagedisplay = $maxmessagedisplay;           # Maximum of messages to display
 \$MaxMessLen = $MaxMessLen;                         # Maximum Allowed Characters in a Posts
@@ -2315,8 +2317,7 @@ sub CheckInstall {
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/check.png" alt="" /></td>
             <td class="windowbg2">
-      Click on 'Continue' and go to your <i>Admin Center - Forum Settings</i> to set the options for your YaBB 2.5.4 forum.<br />
-                Click on 'Convert' to convert your YaBB 1 Gold - SP 1.x forum to YaBB 2.5.4. Click on 'Fix' to convert your YaBB 2.0 - 2.4 forum to 2.5.4
+      Click on 'Continue' and go to your <i>Admin Center - Forum Settings</i> to set the options for your YaBB 2.5.4 forum.<br />Or to convert a 1x or 2x Forum to 2.5.4
             </td>
         </tr>~;
     }
