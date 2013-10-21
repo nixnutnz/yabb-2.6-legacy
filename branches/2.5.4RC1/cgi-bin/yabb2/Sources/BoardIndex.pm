@@ -1383,7 +1383,9 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
     var insertindex;
     var insertcat;
     var prev_subcount;
-      //-->
+    var markallreadlang = '$boardindex_txt{'500'}';
+    var markfinishedlang = '$boardindex_txt{'500a'}';
+    var markthreadslang = '$boardindex_txt{'500b'}';      //-->
 </script>~;
 
     # don't show info center, login, etc. if we're calling from sub boards
@@ -1678,10 +1680,6 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
 
         chop $template_catnames;
         chop $template_boardnames;
-        $yyjavascript .=
-qq~     var markallreadlang = '$boardindex_txt{'500'}';
-     var markfinishedlang = '$boardindex_txt{'500a'}';
-	 var markthreadslang = '$boardindex_txt{'500b'}';~;
         $yymain .= qq~$boardindex_template~;
 
         $yymain .= qq~
@@ -1812,9 +1810,6 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
                         var insertindex;
                         var insertcat;
                         var prev_subcount;
-                        var markallreadlang = '$boardindex_txt{'500'}';
-                        var markfinishedlang = '$boardindex_txt{'500a'}';
-                        var markthreadslang = '$boardindex_txt{'500b'}';
                         //-->
                         </script>
                         $boardindex_template
