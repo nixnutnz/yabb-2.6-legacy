@@ -110,8 +110,7 @@ if ( -e "$vardir/Setup.lock" ) {
 
     }
     elsif ( !$action || $INFO{'convert'} ) {
-        $yytabmenu =
-          $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
+        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
 
         $yymain = qq~
     <div class="bordercolor borderbox">
@@ -134,9 +133,8 @@ if ( -e "$vardir/Setup.lock" ) {
                     </ol>
                     <b>Else</b> if your YaBB 1 Gold - SP 1.x forum is located on a different server than your YaBB 2.5.4 installation or if you do not know the path to your SP 1.x forum:
                     <ol>
-                        <li>Copy all files in the /Boards, /Members, and /Messages folders from your YaBB 1 Gold - SP 1.x installation, to the corresponding Convert/Boards, Convert/Members, and Convert/Messages folders of your YaBB 2.5.4 installation, and chmod them 755.</li>
-                        <li>Copy cat.txt from the /Variables folder of your YaBB 1 Gold - SP 1.x installation to the Convert/Variables folder of your YaBB 2.5.4 installation, and chmod it 644.</li>
-                        <li>If you have 'Add More Membergroups' installed on your YaBB 1 Gold - SP 1.x, copy MemberStats.txt from the /Variables folder of your YaBB 1 Gold - SP 1.x installation to the Convert/Variables folder of your YaBB 2.5.4 installation, and chmod it 644.</li>
+                        <li>Copy all files in the /Boards, /Members, and /Messages folders from your YaBB 1 Gold - SP 1.x installation, to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your YaBB 2.5.4 installation, and chmod them 755.</li>
+                        <li>Copy Settings.pl from the yabb folder of your YaBB 1 Gold - SP 1.x installation to the Convert/Variables folder of your YaBB 2.5.4 installation, and CHMOD it 644.</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
                     <div style="width: 100%; text-align: center;">
@@ -205,13 +203,7 @@ EOF
           or croak 'cannot print SETTING';
         fclose(SETTING);
 
-        $yytabmenu =
-            $NavLink1a
-          . $NavLink2
-          . $NavLink3
-          . $NavLink4
-          . $NavLink5
-          . $NavLink6;
+        $yytabmenu = $NavLink1a . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
 
         $yymain = qq~
     <div class="bordercolor borderbox">
@@ -258,13 +250,7 @@ EOF
         if ( !exists $INFO{'mstart1'} ) { PrepareConv(); }
         $INFO{'mstart2'} ? ConvertMembers2() : ConvertMembers1();
 
-        $yytabmenu =
-            $NavLink1
-          . $NavLink2a
-          . $NavLink3
-          . $NavLink4
-          . $NavLink5
-          . $NavLink6;
+        $yytabmenu = $NavLink1 . $NavLink2a . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
 
         $yymain = qq~
     <div class="bordercolor borderbox">
@@ -371,8 +357,7 @@ EOF
             );
         }
 
-        $yytabmenu =
-          $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
+        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
 
         my $mwidth =
           int( ( ( $INFO{'mstart2'} + $INFO{'mstart1'} ) / 2 ) /
@@ -424,7 +409,7 @@ EOF
             $INFO{'mtotal'} - ( ( $INFO{'mstart2'} + $INFO{'mstart1'} ) / 2 ) )
           . qq~/$INFO{'mtotal'}</b> Members left to be converted.
                   <br />
-                  <p id="memcontinued">If nothing happens in 5 seconds <a href="$set_cgi?action=members;st=$INFO{'st'};mstart1=$INFO{'mstart1'};mstart2=$INFO{'mstart2'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Members' conversion click here</a>. Then copy the actual browser adress and type it in when you are going to continue the conversion.</p>
+                  <p id="memcontinued">If nothing happens in 5 seconds <a href="$set_cgi?action=members;st=$INFO{'st'};mstart1=$INFO{'mstart1'};mstart2=$INFO{'mstart2'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Members' conversion click here</a>. Then copy the actual browser address and type it in when you want to continue the conversion.</p>
               </td>
           </tr>
       </table>
@@ -457,13 +442,7 @@ EOF
         }
         ConvertBoards();
 
-        $yytabmenu =
-            $NavLink1
-          . $NavLink2
-          . $NavLink3a
-          . $NavLink4
-          . $NavLink5
-          . $NavLink6;
+        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3a . $NavLink4 . $NavLink5 . $NavLink6;
 
         $yymain = qq~
     <div class="bordercolor borderbox">
@@ -500,8 +479,7 @@ EOF
                 You are converting <i>~
           . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minutes</i>.<br />
                 <br />
-                <p id="memcontinued">Click on 'Messages' in the menu to continue.<br />
-                    If you do not do that the script will continue by itself in 5 minutes.</p>
+                <p id="memcontinued">Click on 'Messages' in the menu to continue. Otherwise the script will continue by itself in 5 minutes.</p>
             </td>
         </tr>
     </table>
@@ -509,7 +487,7 @@ EOF
 
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Messages\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Messages\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
             }
 
             function membtick() {
@@ -531,8 +509,7 @@ EOF
             );
         }
 
-        $yytabmenu =
-          $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
+        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
 
         my $bwidth = int( $INFO{'bstart'} / $INFO{'btotal'} * 100 );
 
@@ -586,7 +563,7 @@ EOF
 
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Boards & Categories\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Boards & Categories\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
             }
 
             function stoptick() { stop = 1; }
@@ -607,13 +584,7 @@ EOF
         require qq~$vardir/ConvSettings.txt~;
         ConvertMessages();
 
-        $yytabmenu =
-            $NavLink1
-          . $NavLink2
-          . $NavLink3
-          . $NavLink4a
-          . $NavLink5
-          . $NavLink6;
+        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4a . $NavLink5 . $NavLink6;
 
         $yymain = qq~
     <div class="bordercolor borderbox">
@@ -659,7 +630,7 @@ EOF
 
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Date &amp; Time\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Date &amp; Time\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
             }
 
             function membtick() {
@@ -688,8 +659,7 @@ EOF
           ? int( $INFO{'tcount'} / $INFO{'totmess'} * 100 )
           : 0;
 
-        $yytabmenu =
-          $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
+        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
 
         $yymain = qq~
     <div class="bordercolor borderbox">
@@ -751,7 +721,7 @@ EOF
 
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Messages\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Messages\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
             }
 
             function stoptick() { stop = 1; }
@@ -773,13 +743,7 @@ EOF
         require qq~$vardir/ConvSettings.txt~;
         ConvertTimeToString();
 
-        $yytabmenu =
-            $NavLink1
-          . $NavLink2
-          . $NavLink3
-          . $NavLink4
-          . $NavLink5a
-          . $NavLink6;
+        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5a . $NavLink6;
 
         $yymain = qq~
     <div class="bordercolor borderbox">
@@ -822,7 +786,7 @@ EOF
 
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Clean Up\\', click here on STOP before this red message appears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Clean Up\\', click here on STOP before this red message appears again on next page.</b></span>';
             }
 
             function membtick() {
@@ -857,8 +821,7 @@ EOF
         $INFO{'polledfile'} =
           $INFO{'polledfile'} ? $INFO{'polledfile'} : $INFO{'totalpolled'};
 
-        $yytabmenu =
-          $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
+        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
 
         $yymain = qq~
     <div class="bordercolor borderbox">
@@ -924,7 +887,7 @@ EOF
 
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Date &amp; Time\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Date &amp; Time\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
             }
 
             function stoptick() { stop = 1; }
@@ -993,25 +956,18 @@ EOF
 qq~The Forum Start date was set to $setforumstart but the first member was registered $firstmember. So we changed the Forum Start Date to $firstmember.~;
         }
 
-        $yytabmenu =
-            $NavLink1
-          . $NavLink2
-          . $NavLink3
-          . $NavLink4
-          . $NavLink5
-          . $NavLink7a
-          . $NavLink6a;
+        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6a;
 
         $formsession = cloak("$mbname$username");
 
-        if ( -e 'Convert/Members/admin.dat' ) {
+        if ( -e "$convmemberdir/admin.dat" ) {
             $convtext .=
 q~<br /><br />After you have tested your forum and made sure everything was converted correctly you can go to your Admin Center and delete /Convert/Boards, /Convert/Members, /Convert/Messages and /Convert/Variables folders and their contents.~;
         }
 
         if ( -e "$vardir/fixusers.txt" ) {
             $convtext .=
-qq~<br /><br />There were some illegal usernames. Their names were changed. Please inform them those users. You can find the list in the $vardir/fixusers.txt~;
+qq~<br /><br />There were some illegal user IDs. These have been changed. Please inform those users of these changes. You can find the list in the $vardir/fixusers.txt~;
         }
 
         $yymain = qq~
@@ -1047,7 +1003,7 @@ qq~<br /><br />There were some illegal usernames. Their names were changed. Plea
           . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minutes</i>.<br />
                 <br />
                 <br />
-                <span style="color:red">We recommend you delete the file "$ENV{'SCRIPT_NAME'}". This is to prevent someone else running the converter and damaging your files.<br />
+                <span style="color:#f00">We recommend you delete the file "$ENV{'SCRIPT_NAME'}". This is to prevent someone else running the converter and damaging your files.<br />
                 <br />
                 Further more, we strongly recommend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />
                 - Rebuild Message Index<br />
@@ -1060,7 +1016,7 @@ qq~<br /><br />There were some illegal usernames. Their names were changed. Plea
                 - Attachment Functions => Rebuild Attachments<br /></span>
                 <br />
                 <br />
-                You may now log in to your forum or you can run the Extended Profiles converter by clicking on the button above. Enjoy using YaBB 2.5.4!
+                You may now log in to your forum. Enjoy using YaBB 2.5.4!
             </td>
         </tr><tr>
             <td class="catbg center" colspan="2">
@@ -1072,18 +1028,12 @@ qq~<br /><br />There were some illegal usernames. Their names were changed. Plea
         </tr>
     </table>
     </div>~;
+    CreateConvLock();
     }
     elsif ( $action eq 'extended' ) {
         require qq~$vardir/ConvSettings.txt~;
         ext_admin_convert();
-        $yytabmenu =
-            $NavLink1
-          . $NavLink2
-          . $NavLink3
-          . $NavLink4
-          . $NavLink5
-          . $NavLink7a
-          . $NavLink6a;
+        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink7a . $NavLink6;
 
         $yymain = qq~
     <div class="bordercolor borderbox">
@@ -1129,6 +1079,7 @@ qq~<br /><br />There were some illegal usernames. Their names were changed. Plea
     </div>~;
         CreateConvLock();
     }
+    elsif ( $action eq 'setup3' )       { CheckInstall(); }
     elsif ( $action eq 'cleanup2' ) {
         if (   ( !$INFO{'pass_error'} && $INFO{'my_re_tot'} <= 0 )
             && $INFO{'memb_index'} <= 0
@@ -1164,8 +1115,7 @@ qq~<br /><br />There were some illegal usernames. Their names were changed. Plea
           ? int( $INFO{'fix_nopost'} / $INFO{'total_nopost'} * 100 )
           : 0;
 
-        $yytabmenu =
-          $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
+        $yytabmenu =  $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
 
         $yymain = qq~
     <div class="bordercolor borderbox">
@@ -1256,7 +1206,7 @@ qq~<br /><br />There were some illegal usernames. Their names were changed. Plea
 
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Clean Up\\', click here on STOP before this red message appears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Clean Up\\', click here on STOP before this red message appears again on next page.</b></span>';
             }
 
             function stoptick() { stop = 1; }
@@ -1396,6 +1346,9 @@ sub ConvertMembers1 {
     $INFO{'mstart1'} = @memlist;
 
     if ( -e "$convvardir/MemberStats.txt" ) { groupconvert(); }
+    else { memgrpconvert();}
+
+    if ( -e "$convvardir/extended_profiles_fields.txt" ) { ext_admin_convert(); }
 
     if ( -e "$vardir/fixusers.txt" ) {
         fopen( FIXUSER, "$vardir/fixusers.txt" )
@@ -1705,14 +1658,12 @@ qq~$MemStat[$i]|$MemStarNum[$i]|$MemStarPic[$i]|$MemTypeCol[$i]|0|0|0|0|0|0~;
         }
         $i++;
     }
-
     foreach my $key ( keys %Group ) {
         $value = $Group{$key};
         $value =~ s/'/&#39;/gxsm;    #';
         $Group{$key} = $value;
     }
     foreach my $key ( keys %NoPost ) {
-        push @nopostorder, $key;
         $value = $NoPost{$key};
         $value =~ s/'/&#39;/gxsm;    #';
         $NoPost{$key} = $value;
@@ -1722,8 +1673,33 @@ qq~$MemStat[$i]|$MemStarNum[$i]|$MemStarPic[$i]|$MemTypeCol[$i]|0|0|0|0|0|0~;
         $value =~ s/'/&#39;/gxsm;    #';
         $Post{$key} = $value;
     }
+
     require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');    # save %Group, %NoPost and %Post
+    return;
+}
+
+sub memgrpconvert {
+    fopen( MEMGRP, "$convvardir/membergroups.txt" )
+      || setup_fatal_error( "$maintext_23 $convvardir/membergroups.txt: ", 1 );
+    my @memgrp = <MEMGRP>;
+    fclose(MEMGRP);
+    foreach my $set(@memgrp) {
+                $set =~ s/[\r\n]//gsm;
+    }
+    chomp @memgrp;
+    $Group{'Mid Moderator'} = 'Forum Moderator|5|starfmod.png|#008080|0|0|0|0|0|0|0';
+    $Group{'Global Moderator'} = 'Global Moderator|5|stargmod.png|#0000FF|0|0|0|0|0|0|0';
+    $Group{'Administrator'} = "$memgrp[0]|5|staradmin.png|#FF0000|0|0|0|0|0|0|0";
+    $Group{'Moderator'} = "$memgrp[1]|5|starmod.png|#008000|0|0|0|0|0|0|0";
+    $Post{'50'} = "$memgrp[3]|2|stargold.png||0|0|0|0|0|0|0";
+    $Post{'250'} = "$memgrp[5]|4|stargold.png||0|0|0|0|0|0|0";
+    $Post{'500'} = "$memgrp[6]|5|starsilver.png||0|0|0|0|0|0|0";
+    $Post{'100'} = "$memgrp[4]|3|starblue.png||0|0|0|0|0|0|0";
+    $Post{'-1'} = "$memgrp[2]|1|stargold.png||0|0|0|0|0|0|0";
+
+    require Admin::NewSettings;
+    SaveSettingsTo('Settings.pm');    # save %Group and %Post
     return;
 }
 
@@ -1770,17 +1746,14 @@ sub ConvertMembers2 {
                                 $folder = 'out';
                                 if    ( !$read_flag )     { $read_flag = 'u'; }
                                 elsif ( $read_flag == 1 ) { $read_flag = 'r'; }
-                                $divfiles[$i] =
-"$id|$newuser|$name|||$subject|$date|$message|$id|0|$ip|s|$read_flag|$folder|\n";
+                                $divfiles[$i] = "$id|$newuser|$name|||$subject|$date|$message|$id|0|$ip|s|$read_flag|$folder|\n";
                             }
                             elsif ( $folder eq 'inbox' ) {
                                 $folder = 'in';
                                 if    ( $read_flag == 1 ) { $read_flag = 'u'; }
                                 elsif ( $read_flag == 2 ) { $read_flag = 'r'; }
-                                $divfiles[$i] =
-"$id|$name|$newuser|||$subject|$date|$message|$id|0|$ip|s|$read_flag|$folder|\n";
+                                $divfiles[$i] = "$id|$name|$newuser|||$subject|$date|$message|$id|0|$ip|s|$read_flag|$folder|\n";
                             }
-
                         }
                         else {    # msg || outbox
                             my ( $name, $subject, $date, $message, $id, $ip,
@@ -2104,8 +2077,7 @@ sub ConvertBoards {
               exists $fixed_users{$musername}
               ? ${ $fixed_users{$musername} }[0]
               : $musername;
-            $mdate =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eism;
+            $mdate =~ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eism;
             $mstate =~ s/1/l/xsm;
             if ( exists $stickies{$mnum} ) { $mstate .= 's'; }
             push @temparray,
@@ -2223,18 +2195,13 @@ sub ConvertMessages {
                   : $editby;
                 if ( $message =~ /\[[qgs]/ixsm )
                 {    # too many RegExpr take too much time!!!
-                    $message =~
-s/\[quote(\s+author=(.*?)\s+link=(.*?)\s+date=(.*?)\s*)?\](.*?)\[\/quote\]/QuoteFix($2,$3,$4,$5)/eigsm;
-                    $message =~
-s/\[(glow|shadow)=.*?\](.*?)\[\/(glow|shadow)\]/\[glb\]$2\[\/glb\]/igsm;
-                    $message =~
-s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]" /igesm;
+                    $message =~ s/\[quote(\s+author=(.*?)\s+link=(.*?)\s+date=(.*?)\s*)?\](.*?)\[\/quote\]/QuoteFix($2,$3,$4,$5)/eigsm;
+                    $message =~ s/\[(glow|shadow)=.*?\](.*?)\[\/(glow|shadow)\]/\[glb\]$2\[\/glb\]/igsm;
+                    $message =~ s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]" /igesm;
                 }
                 $message =~ s/<br>/<br \/>/igsm;
-                $mdate =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime("$1 at $2")/eism;
-                $editdate =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime("$1 at $2")/eism;
+                $mdate =~ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime("$1 at $2")/eism;
+                $editdate =~ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime("$1 at $2")/eism;
                 push @temparray,
 "$subject|$name|$email|$mdate|$musername|$icon|$dummy|$user_ip|$message|$ns|$editdate|$editby|$attachment\n";
                 if ( $musername ne 'Guest' ) {
@@ -2348,8 +2315,7 @@ sub QuoteFix {
         ( undef, $threadlink, $start ) = split /;/xsm, $qlink;
         ( undef, $num )   = split /=/xsm, $threadlink;
         ( undef, $start ) = split /=/xsm, $start;
-        $quote =
-"\[quote author=$qauthor link=$num/$start date=$qdate\]$qmessage\[/quote\]";
+        $quote = "\[quote author=$qauthor link=$num/$start date=$qdate\]$qmessage\[/quote\]";
     }
     return $quote;
 }
@@ -2414,10 +2380,8 @@ sub ConvertTimeToString {
               exists $fixed_users{$polluname}
               ? ${ $fixed_users{$polluname} }[0]
               : $polluname;
-            $pdate =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eism;
-            $epdate =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime("$1 at $2")/eism;
+            $pdate =~ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eism;
+            $epdate =~ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime("$1 at $2")/eism;
 
             fopen( POLLFILE, ">$datadir/$file" )
               || setup_fatal_error( "$maintext_23 $datadir/$file: ", 1 );
@@ -2463,8 +2427,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime
                   exists $fixed_users{$pollername}
                   ? ${ $fixed_users{$pollername} }[0]
                   : $pollername;
-                $pdate =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eism;
+                $pdate =~ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eism;
                 push @temparray, "$dummy1|$pollername|$dummy3|$pdate\n";
             }
             fopen( POLLEDFILE, ">$datadir/$file" )
@@ -3016,8 +2979,7 @@ sub FoundConvLock {
     tempstarter();
     tabmenushow();
 
-    $yytabmenu =
-      $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
+    $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
 
     $formsession = cloak("$mbname$username");
 
@@ -3205,7 +3167,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
     }
     if ( $yycopyin == 0 ) {
         $output =
-q~<h1 style="text-align:center"><b>Sorry, the copyright tag <yabb copyright> must be in the template.<br />Please notify this forum&#39;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
+q~<h1 style="text-align:center"><b>Sorry, the copyright tag {yabb copyright} must be in the template.<br />Please notify this forum&#39;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
     }
     if ( fileno $GZIP ) {
         $OUTPUT_AUTOFLUSH = 1;
@@ -3254,11 +3216,10 @@ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2
 # from Extended Profiles
 # converts ALL old .ext files into the the YaBB 2 file format
 sub ext_admin_convert {
-    my ( @contents, $filename, $old_membersdir, $old_vardir, $i );
     LoadLanguage('ExtendedProfiles');
 
-    $old_membersdir = $convmembersdir;
-    $old_vardir     = $convvardir;
+    my $old_membersdir = $convmembersdir;
+    my $old_vardir     = $convvardir;
 
     if ( !-e $old_vardir ) {
         fatal_error( 'extended_profiles_convert',
@@ -3410,7 +3371,6 @@ sub ext_admin_convert_fixgroupnames {
             && $groups[$j] !~ m/^(?:No)?Post{\d+}$/sm )
         {
 
-            #delete $groups[$j];
             splice @groups, $j, 1;
             $j--;
         }
@@ -3420,133 +3380,27 @@ sub ext_admin_convert_fixgroupnames {
 
 
 sub SetInstall2 {
-    if ( $action eq 'setinstall2' ) {
+    $ret = 0;
+    my $oldname = q{};
+    if ( -e "$vardir/convSettings.txt" ) { require "$vardir/convSettings.txt"; }
+        if ( -e "$convvardir/Settings.pl" ) {
+            use Time::localtime;
+            $time = time;
+            require "$convvardir/Settings.pl";
+        $oldname = $mbname;
+    }
+    if ( $oldname ) {
+        $mbname = $oldname;
+        }
         $settings_file_version = 'YaBB 2.5.4';
-        $yycharset             = 'UTF-8';
-        $maintenance           = 1;
-        $rememberbackup        = 0;
-        $guestaccess           = 1;
-        $mbname                = $FORM{'mbname'} || 'My Perl YaBB Forum';
-        $mbname =~ s/\"/\'/gxsm;    #'" make my syntax checker happy;
-        $forumstart            = timetostring( int time );
-        $Cookie_Length         = 1;
-        ( undef,$rancook ) = split /\-/xsm, $cookieusername;
-        $cookietsort = qq~Y2tsort-$rancook~; 
-        $cookieviewtime        = 525600; 
-        $regtype               = 3;
-        $RegAgree              = 1;
-        $RegReasonSymbols      = 500;
-        $preregspan            = 24;
-        $emailpassword         = 0;
-        $emailnewpass          = 0;
-        $emailwelcome          = 0;
-        $name_cannot_be_userid = 1;
-        $gender_on_reg         = 0;
+        if ($enable_notifications eq q{}) { $enable_notifications = $enable_notification ? 3 : 0; }
         $lang                  = $FORM{'defaultlanguage'} || 'English';
-        $default_template      = 'Forum default';
-        $mailprog              = '/usr/sbin/sendmail';
-        $smtp_server           = '127.0.0.1';
-        $smtp_auth_required    = 1;
-        $authuser              = q~admin~;
-        $authpass              = q~admin~;
         $webmaster_email = $FORM{'webmaster_email'} || 'webmaster@mysite.com';
-        $mailtype        = 0;
-        $maintenancetext =
-'We are currently upgrading our forum again. Please check back shortly!';
-        $MenuType               = 2;
-        $profilebutton          = 1;
-        $allow_hide_email       = 1;
-        $showlatestmember       = 1;
-        $shownewsfader          = 0;
-        $Show_RecentBar         = 1;
-        $showmodify             = 1;
-        $ShowBDescrip           = 1;
-        $showuserpic            = 1;
-        $showusertext           = 1;
-        $showtopicviewers       = 1;
-        $showtopicrepliers      = 1;
-        $showgenderimage        = 1;
-        $showyabbcbutt          = 1;
-        $showsearchbox          = 1;
-        $nestedquotes           = 1;
-        $parseflash             = 0;
-        $enableclicklog         = 0;
-        $showimageinquote       = 0;
-        $enable_ubbc            = 1;
-        $enable_news            = 1;
-        $allowpics              = 1;
-        $upload_useravatar      = 0;
-        $upload_avatargroup     = q{};
-        $avatar_limit           = 100;
-        $avatar_dirlimit        = 10_000;
-        $enable_guestposting    = 0;
-        $ML_Allowed             = 1;
-        $enable_quickpost       = 0;
-        $enable_quickreply      = 0;
-        $enable_quickjump       = 0;
-        $enable_markquote       = 0;
-        $quick_quotelength      = 1000;
-        $enable_quoteuser       = 0;
-        $quoteuser_color        = '#0033cc';
-        $guest_media_disallowed = 0;
-        $enable_guestlanguage   = 1;
-        $enable_notifications   = 0;
-        $NewNotificationAlert   = 0;
-        $autolinkurls           = 1;
         $forumnumberformat      = $FORM{'forumnumberformat'} || 1;
         $timeselected           = $FORM{'timeselect'} || 0;
-        $timecorrection         = 0;
         $timeoffset =
           "$FORM{'usertimesign'}$FORM{'usertimehour'}.$FORM{'usertimemin'}";
         $dstoffset              = $FORM{'dstoffset'} || 0;
-        $dynamic_clock          = 1;
-        $TopAmmount             = 15;
-        $maxdisplay             = 20;
-        $maxfavs                = 20;
-        $maxrecentdisplay       = 25;
-        $maxsearchdisplay       = 15;
-        $maxmessagedisplay      = 15;
-        $MaxMessLen             = 2000;
-        $AdMaxMessLen           = 5000;
-        $MaxIMMessLen           = 2000;
-        $AdMaxIMMessLen         = 3000;
-        $MaxCalMessLen          = 200;
-        $AdMaxCalMessLen        = 300;
-        $fontsizemin            = 6;
-        $fontsizemax            = 32;
-        $MaxSigLen              = 200;
-        $MaxAwayLen             = 200;
-        $ClickLogTime           = 100;
-        $max_log_days_old       = 90;
-        $fadertime              = 1000;
-        $defaultusertxt         = 'I Love YaBB 2.5.4!';
-        $timeout                = 5;
-        $HotTopic               = 10;
-        $VeryHotTopic           = 25;
-        $barmaxdepend           = 0;
-        $barmaxnumb             = 500;
-        $defaultml              = 'rgdate';
-        $max_avatar_width       = 65;
-        $max_avatar_height      = 65;
-        $fix_avatar_img_size    = 0;
-        $max_avatarml_width     = 65;
-        $max_avatarml_height    = 65;
-        $fix_avatarml_img_size  = 0;
-        $max_post_img_width     = 400;
-        $max_post_img_height    = 0;
-        $fix_post_img_size      = 0;
-        $max_signat_img_width   = 300;
-        $max_signat_img_height  = 0;
-        $fix_signat_img_size    = 0;
-        $max_attach_img_width   = 200;
-        $max_attach_img_height  = 0;
-        $fix_attach_img_size    = 0;
-        $img_greybox            = 1;
-        $extendedprofiles       = 0;
-        $enable_freespace_check = 0;
-        $Show_EventCal = 0;
-        $Event_TodayColor       = '#ff0000';
-        $bm_subcut          = 50;
         if ( -e '/bin/gzip' && open $GZIP, '|', 'gzip -f' ) {
             $gzcomp = 1;
         }
@@ -3555,509 +3409,13 @@ sub SetInstall2 {
             $gzcomp = $@ ? 0 : 2;
         }
         $gzforce        = 0;
-        $cachebehaviour = 0;
-        $use_flock      = 1;
-        $faketruncation = 0;
-        $debug          = 0;
-
-        $checkallcaps         = 6;
-        $set_subjectMaxLength = 50;
-        $honeypot             = 1;
-        $spamfruits           = 0;
-        $speedpostdetection   = 1;
-        $spd_detention_time   = 300;
-        $min_post_speed       = 2;
-        $post_speed_count     = 3;
-        $minlinkpost          = 0;
-        $minlinksig           = 0;
-        $minlinkweb           = 0;
-
-        $maxsteps  = 40;
-        $stepdelay = 75;
-        $fadelinks = 0;
-
-        # Let's generate a masterkey at setup time.
-        my @chars = ( 'A' .. 'Z', 'a' .. 'z', 0 .. 9 );
-        for ( 1 .. 24 ) { $masterkey .= $chars[ rand @chars ]; }
-
-    }
-    else {
+    if ( $action ne 'setinstall2' ) {
         $forumstart = timetostring( $INFO{'firstforum'} );
-        $MaxSigLen  = $siglength || 200;
-        $fadertime  = 1000;
     }
 
-    my $setfile = << "EOF";
-###############################################################################
-# Settings.pm                                                                 #
-###############################################################################
-# YaBB: Yet another Bulletin Board                                            #
-# Open-Source Community Software for Webmasters                               #
-# Version:      YaBB 2.5.4                                                    #
-# Packaged: October 1, 2013                                                   #
-# Distributed by: http://www.yabbforum.com                                    #
-# =========================================================================== #
-# Copyright (c) 2000-2013  YaBB (www.yabbforum.com) - All Rights Reserved.    #
-# Software by:  The YaBB Development Team                                     #
-#               with assistance from the YaBB community.                      #
-###############################################################################
+    require Admin::NewSettings;
+    SaveSettingsTo('Settings.pm');
 
-########## Board Info ##########
-# Note: these settings must be properly changed for YaBB to work
-
-\$settings_file_version = "$settings_file_version"; # If not equal actual YaBBversion then the updating process is run through
-\$yycharset = "$yycharset";                        # character encoding (usually ISO-8859-1 for older forums)
-                                            # or 'UTF-8';
-\%templateset = (
-'Forum default' => "default|default|default|default|default|default|default|",
-);                                                  # Forum templates settings
-
-\$maintenance = $maintenance;                       # Set to 1 to enable Maintenance mode
-\$rememberbackup = $rememberbackup;                 # seconds past since last backup until alert is displayed
-\$guestaccess = $guestaccess;                       # Set to 0 to disallow guests from doing anything but login or register
-
-\$mbname = q^$mbname^;                              # The name of your YaBB forum
-\$forumstart = "$forumstart";                       # The start date of your YaBB Forum
-\$Cookie_Length = $Cookie_Length;                   # Default minutes to set login cookies to stay for
-\$cookieusername = "$cookieusername";               # Name of the username cookie
-\$cookiepassword = "$cookiepassword";               # Name of the password cookie
-\$cookiesession_name = "$cookiesession_name";       # Name of the Session cookie
-\$cookietsort = "$cookietsort";                     # Name of the Topic Sort
-\$cookieview = "$cookieview";                       # Name of the Guest Message Limit cookie
-\$cookieviewtime = $cookieviewtime;
-
-\$regtype = $regtype;                               # 0 = registration closed (only admin can register),
-                                                    # 1 = pre registration with admin approval,
-                                                    # 2 = pre registration and email activation, 3 = open registration
-
-\$RegAgree = $RegAgree;                             # Set to 1 to display the registration agreement when registering
-\$RegReasonSymbols = $RegReasonSymbols;             # Maximum allowed symbols in User reason(s) for registering
-\$preregspan = $preregspan;                         # Time span in hours for users to account activation before cleanup.
-\$pwstrengthmeter_scores = "10,15,30,40";           # Password-Strength-Meter Scores
-\$pwstrengthmeter_common = qq~"123","123456"~;      # Password-Strength-Meter common words
-\$pwstrengthmeter_minchar = 5;                      # Password-Strength-Meter minimum characters
-\$emailpassword = $emailpassword;                   # 0 - instant registration. 1 - password emailed to new members
-\$emailnewpass = $emailnewpass;                     # Set to 1 to email a new password to members if
-                                                    # they change their email address
-\$emailwelcome = $emailwelcome;                     # Set to 1 to email a welcome message to users even
-                                                    # when you have mail password turned off
-\$name_cannot_be_userid = $name_cannot_be_userid;   # Set to 1 to require users to have different user IDs and screen names
-
-\$gender_on_reg = $gender_on_reg;                   # 0: do not ask for gender on registration
-                                                    # 1: ask for gender, no input required
-                                                    # 2: ask for gender, input required
-\$lang = "$lang";                                   # Default Forum Language
-\$default_template = "$default_template";           # Default Forum Template
-
-\$mailprog = "$mailprog";                           # Location of your sendmail program
-\$smtp_server = "$smtp_server";                     # Address of your SMTP-Server (for Net::SMTP::TLS, specify the port number with a ":<portnumber>" at the end)
-\$smtp_auth_required = $smtp_auth_required;         # Set to 1 if the SMTP server requires Authorisation
-\$authuser = q^$authuser^;                          # Username for SMTP authorisation
-\$authpass = q^$authpass^;                          # Password for SMTP authorisation
-\$webmaster_email = q^$webmaster_email^;            # Your email address. (eg: \$webmaster_email = q^admin\@host.com^;)
-\$mailtype = $mailtype;                             # Mail program to use: 0 = sendmail, 1 = SMTP, 2 = Net::SMTP, 3 = Net::SMTP::TLS
-
-\$UseHelp_Perms = 1;                                # Help Center: 1 == use permissions, 0 == do not use permissions
-
-########## MemberGroups ##########
-
-\$Group{'Administrator'} = 'Forum Administrator|5|staradmin.png|#FF0000|0|0|0|0|0|0|0';
-\$Group{'Global Moderator'} = 'Global Moderator|5|stargmod.png|#0000FF|0|0|0|0|0|0|0';
-\$Group{'Mid Moderator'} = 'Forum Moderator|5|starfmod.png|#008080|0|0|0|0|0|0|0';
-\$Group{'Moderator'} = 'Board Moderator|5|starmod.png|#008000|0|0|0|0|0|0|0';
-\$Post{'500'} = "God Member|5|starsilver.png||0|0|0|0|0|0";
-\$Post{'250'} = "Senior Member|4|stargold.png||0|0|0|0|0|0";
-\$Post{'100'} = "Full Member|3|starblue.png||0|0|0|0|0|0";
-\$Post{'50'} = "Junior Member|2|stargold.png||0|0|0|0|0|0";
-\$Post{'-1'} = "New Member|1|stargold.png||0|0|0|0|0|0";
-\@nopostorder = qw(@nopostorder);           # Order how "Post independent Member Groups" are displayed
-########## Layout ##########
-
-\$maintenancetext = "$maintenancetext";             # User-defined text for Maintenance mode (leave blank for default text)
-\$MenuType = $MenuType;                             # 1 for text menu or anything else for images menu
-\$profilebutton = $profilebutton;                   # 1 to show view profile button under post, or 0 for blank
-\$allow_hide_email = $allow_hide_email;             # Allow users to hide their email from public. Set 0 to disable
-\$showlatestmember = $showlatestmember;             # Set to 1 to display "Welcome Newest Member" on the Board Index
-\$shownewsfader = $shownewsfader;                   # 1 to allow or 0 to disallow NewsFader javascript on the Board Index
-                                                    # If 0, you'll have no news at all unless you put <yabb news> tag
-                                                    # back into template.html!!!
-\$Show_RecentBar = $Show_RecentBar;                 # Set to 1 to display the Recent Post on Board Index
-\$showmodify = $showmodify;                         # Set to 1 to display "Last modified: Realname - Date" under each message
-\$ShowBDescrip = $ShowBDescrip;                     # Set to 1 to display board descriptions on the topic (message) index for each board
-\$showuserpic = $showuserpic;                       # Set to 1 to display each member's picture in the
-                                                    # message view (by the ICQ.. etc.)
-\$showusertext = $showusertext;                     # Set to 1 to display each member's personal text
-                                                    # in the message view (by the ICQ.. etc.)
-\$showtopicviewers = $showtopicviewers;             # Set to 1 to display members viewing a topic
-\$showtopicrepliers = $showtopicrepliers;           # Set to 1 to display members replying to a topic
-\$showgenderimage = $showgenderimage;               # Set to 1 to display each member's gender in the
-\$showsearchbox = $showsearchbox;                   # Show the Search Box on all pages
-\$showsearchboxnum = $showsearchboxnum;             # Maximum post age for Search Box
-                                                    # message view (by the ICQ.. etc.)
-\$showyabbcbutt = $showyabbcbutt;                   # Set to 1 to display the yabbc buttons on Posting and IM Send Pages
-\$nestedquotes = $nestedquotes;                     # Set to 1 to allow quotes within quotes
-                                                    # (0 will filter out quotes within a quoted message)
-\$parseflash = $parseflash;                         # Set to 1 to parse the flash tag
-\$enableclicklog = $enableclicklog;                 # Set to 1 to track stats in Clicklog (this may slow your board down)
-\$showimageinquote = $showimageinquote;             # Set to 1 to shows images in quotes, 0 displays a link to the image
-
-\@pallist = ("#ff0000","#00ff00","#0000ff","#00ffff","#ff00ff","#ffff00"); # color settings of the palette
-
-########## Feature Settings ##########
-
-\$enable_ubbc = $enable_ubbc;                       # Set to 1 if you want to enable UBBC (Uniform Bulletin Board Code)
-\$enable_news = $enable_news;                       # Set to 1 to turn news on, or 0 to set news off
-\$allowpics = $allowpics;                           # set to 1 to allow members to choose avatars in their profile
-\$upload_useravatar = $upload_useravatar;           # set to 1 to allow members to upload avatars for their profile
-\$upload_avatargroup = "$upload_avatargroup";       # membergroups allowed to upload avatars for their profile, '' == all members
-\$avatar_limit = $avatar_limit;                     # set to the maximum size of the uploaded avatar, 0 == no limit
-\$avatar_dirlimit = $avatar_dirlimit;               # set to the maximum size of the upload avatar directory, 0 == no limit
-
-\$enable_guestposting = $enable_guestposting;       # Set to 0 if do not allow 1 is allow.
-\$guest_media_disallowed = $guest_media_disallowed; # disallow browsing guests to see media files or
-                                                    # have clickable auto linked urls in messages.
-\$enable_guestlanguage = $enable_guestlanguage;     # allow browsing guests to select their language
-                                                    # - requires more than one language pack!
-                                                    # - Set to 0 if do not allow 1 is allow.
-
-\$enable_notifications = $enable_notifications;     # - Allow e-mail notification for boards/threads
-                                                    #   listed in "My Notifications" => value == 1
-                                                    # - Allow e-mail notification when new PM comes in
-                                                    #   => value == 2
-                                                    # - value == 0 => both disabled | value == 3 => both enabled
-
-\$NewNotificationAlert = $NewNotificationAlert;     # enable notification alerts (popup) for new notifications
-\$autolinkurls = $autolinkurls;                     # Set to 1 to turn URLs into links, or 0 for no auto-linking.
-
-\$forumnumberformat = $forumnumberformat;           # Select your preferred output Format for Numbers
-\$timeselected = $timeselected;                     # Select your preferred output Format of Time and Date
-\$timecorrection = $timecorrection;                 # Set time correction for server time in seconds
-\$timeoffset = "$timeoffset";                       # Time Offset to GMT/UTC (0 for GMT/UTC)
-\$dstoffset = $dstoffset;                           # Time Offset (for daylight savings time, 0 to disable DST)
-\$dynamic_clock = $dynamic_clock;                   # Set to a value enables the dynamic clock at the top of the page
-\$TopAmmount = $TopAmmount;                         # No. of top posters to display on the top members list
-\$maxdisplay = $maxdisplay;                         # Maximum of topics to display
-\$maxfavs = $maxfavs;                               # Maximum of favorite topics to save in a profile
-\$maxrecentdisplay = $maxrecentdisplay;             # Maximum of topics to display on recent posts by a user (-1 to disable)
-\$maxrecentdisplay_t = $maxrecentdisplay_t;         # Maximum of topics to display on recent topics (-1 to disable)
-\$maxsearchdisplay = $maxsearchdisplay;             # Maximum of messages to display in a search query  (-1 to disable search)
-\$maxmessagedisplay = $maxmessagedisplay;           # Maximum of messages to display
-\$MaxMessLen = $MaxMessLen;                         # Maximum Allowed Characters in a Posts
-\$AdMaxMessLen = $AdMaxMessLen;                     # Maximum Allowed Characters in a Posts for Admins
-\$MaxIMMessLen = $MaxIMMessLen;                     # Maximum Allowed Characters in a PM
-\$AdMaxIMMessLen = $AdMaxIMMessLen;                    # Maximum Allowed Characters in a PM for Admins
-\$MaxCalMessLen = $MaxCalMessLen;           # Maximum Allowed Characters in a Cal event
-\$AdMaxCalMessLen = $AdMaxCalMessLen;                   # Maximum Allowed Characters in a Cal Event for Admins
-\$fontsizemin = $fontsizemin;                       # Minimum Allowed Font height in pixels
-\$fontsizemax = $fontsizemax;                       # Maximum Allowed Font height in pixels
-\$checkallcaps = $checkallcaps;                     # Set to 0 to allow ALL CAPS in posts (subject and message) or set to a value > 0 to open a JS-alert if more characters in ALL CAPS were there.
-\$set_subjectMaxLength = $set_subjectMaxLength;     # Maximum Allowed Characters in a Posts Subject
-\$honeypot = $honeypot;                                                    # Set to 1 to activate Honeypot spam deterrent
-\$spamfruits = $spamfruits;                                            # Set to 1 to activate SpamFruits spam deterrent
-\$speedpostdetection = $speedpostdetection;         # Set to 1 to detect speedposters and delay their spam actions
-\$spd_detention_time = $spd_detention_time;         # Time in seconds before a speedposting ban is lifted again
-\$min_post_speed = $min_post_speed;                 # Minimum time in seconds between entering a post form and submitting a post
-\$minlinkpost = $minlinkpost;                       # Minimum amount of posts a member needs to post links and images
-\$minlinksig = $minlinksig;                         # Minimum amount of posts a member needs to create links and images in signature
-\$minlinkweb = $minlinkweb;
-\$post_speed_count = $post_speed_count;             # Maximum amount of abuses befor a user gets banned
-\$MaxSigLen = $MaxSigLen;                           # Maximum Allowed Characters in Signatures
-\$MaxAwayLen = $MaxAwayLen;                         # Maximum Allowed Characters in Away message
-\$ClickLogTime = $ClickLogTime;                     # Time in minutes to log every click to your forum
-                                                    # (longer time means larger log file size)
-\$max_log_days_old = $max_log_days_old;             # If an entry in the user's log is older than ... days remove it
-
-\$maxsteps = $maxsteps;                             # Number of steps to take to change from start color to endcolor
-\$stepdelay = $stepdelay;                           # Time in miliseconds of a single step
-\$fadelinks = $fadelinks;                           # Fade links as well as text?
-
-\$defaultusertxt = "$defaultusertxt";               # The dafault usertext visible in users posts
-\$timeout = $timeout;                               # Minimum time between 2 postings from the same IP
-\$HotTopic = $HotTopic;                             # Number of posts needed in a topic for it to be classed as "Hot"
-\$VeryHotTopic = $VeryHotTopic;                     # Number of posts needed in a topic for it to be classed as "Very Hot"
-\$barmaxdepend = $barmaxdepend;                     # Set to 1 to let bar-max-length depend on top poster
-                                                    # or 0 to depend on a number of your choise
-\$barmaxnumb = $barmaxnumb;                         # Select number of post for max. bar-length in memberlist
-\$defaultml = "$defaultml";
-
-\$ML_Allowed = $ML_Allowed;                         # allow browse MemberList
-
-########## Quick Reply configuration ##########
-\$enable_quickpost = $enable_quickpost;             # Set to 1 if you want to enable the quick post box
-\$enable_quickreply = $enable_quickreply;           # Set to 1 if you want to enable the quick reply box
-\$enable_quickjump = $enable_quickjump;             # Set to 1 if you want to enable the jump to quick reply box
-\$enable_markquote = $enable_markquote;             # Set to 1 if you want to enable the mark&quote feature
-\$quick_quotelength = $quick_quotelength;           # Set the max length for Quick Quotes
-\$enable_quoteuser = $enable_quoteuser;             # Set to 1 if you want to enable userquote
-\$quoteuser_color = "$quoteuser_color";             # Set the default color of @ in userquote
-
-########## MemberPic Settings ##########
-
-\$max_avatar_width = $max_avatar_width;             # Set maximum pixel width to which the self-selected avatars are resized,
-                                                    # 0 disables this limit
-\$max_avatar_height = $max_avatar_height;           # Set maximum pixel height to which the self-selected avatars are resized,
-                                                    # 0 disables this limit
-\$fix_avatar_img_size = $fix_avatar_img_size;       # Set to 1 disable the image resize feature and sets the image size to the
-                                                    # max_... values. If one of the max_... values is 0 the image is shown in its
-                                                    # proportions to the other value. If both are 0 the image is shown at its original size.
-\$max_post_img_width = $max_post_img_width;         # Set maximum pixel width for images, 0 disables this limit
-\$max_post_img_height = $max_post_img_height;       # Set maximum pixel height for images, 0 disables this limit
-\$fix_post_img_size = $fix_post_img_size;           # Set to 1 disable the image resize feature and sets the image size to the
-                                                    # max_... values. If one of the max_... values is 0 the image is shown in its
-                                                    # proportions to the other value. If both are 0 the image is shown at its original size.
-\$max_avatarml_width = $max_avatarml_width;         # Set maximum pixel width to which the selfselected userpics in member list are resized, 0 disables
-                                                    #  this limit
-\$max_avatarml_height = $max_avatarml_height;       #Set maximum pixel height to which the selfselected userpics in member list are resized, 0 disables
-                                                    #  this limit
-\$fix_avatarml_img_size = $fix_avatarml_img_size;                       # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of
-                                                    #  the max_... values is 0 the image is shown in its proportions to the other value. If both are 0 the image is shown at its original size.
-\$max_signat_img_width = $max_signat_img_width;     # Set maximum pixel width for images in the signature, 0 disables this limit
-\$max_signat_img_height = $max_signat_img_height;   # Set maximum pixel height for images in the signature, 0 disables this limit
-\$fix_signat_img_size = $fix_signat_img_size;       # Set to 1 disable the image resize feature and sets the image size to the
-                                                    # max_... values. If one of the max_... values is 0 the image is shown in its
-                                                    # proportions to the other value. If both are 0 the image is shown at its original size.
-\$max_attach_img_width = $max_attach_img_width;     # Set maximum pixel width for attached images, 0 disables this limit
-\$max_attach_img_height = $max_attach_img_height;   # Set maximum pixel height for attached images, 0 disables this limit
-\$fix_attach_img_size = $fix_attach_img_size;       # Set to 1 disable the image resize feature and sets the image size to the
-                                                    # max_... values. If one of the max_... values is 0 the image is shown in its
-                                                    # proportions to the other value. If both are 0 the image is shown at its original size.
-\$img_greybox = $img_greybox;                       # Set to 0 to disable "greybox" (each image is shown in a new window)
-                                                    # Set to 1 to enable the attachment and post image "greybox" (one image/page)
-                                                    # Set to 2 to enable the attachment and post image "greybox" =>
-                                                    # attachment images: (all images/page), post images: (one image/page)
-\$Event_TodayColor = '#ff0000';
-########## Extended Profiles ##########
-\$extendedprofiles = $extendedprofiles;             # Set to 1 to enabled 'Extended Profiles'. Turn it off (0) to save server load.
-
-########## File Locking ##########
-\$enable_freespace_check = $enable_freespace_check; # Enable the free disk space check on every pageview?
-\$gzcomp = $gzcomp;                                 # GZip compression: 0 = No Compression,
-                                                    # 1 = External gzip, 2 = Zlib::Compress
-\$gzforce = $gzforce;                               # Do not try to check whether browser supports GZip
-\$cachebehaviour = $cachebehaviour;                 # Browser Cache Control: 0 = No Cache must revalidate, 1 = Allow Caching
-\$use_flock = $use_flock;                           # Set to 0 if your server doesn't support file locking,
-                                                    # 1 for Unix/Linux and WinNT, and 2 for Windows 95/98/ME
-\$faketruncation = $faketruncation;                 # Enable this option only if YaBB fails with the error:
-                                                    # "truncate() function not supported on this platform."
-                                                    # 0 to disable, 1 to enable.
-\$debug = $debug;                                   # If set to 1 debug info is added to the template
-                                                    # tags are <yabb fileactions> and <yabb filenames>
-
-
-
-###############################################################################
-# Advanced Settings (old AdvSettings.txt                                      #
-###############################################################################
-
-########## New Member Notification Settings ##########
-\$new_member_notification = 0;                    # Set to 1 to enable the new member notification
-\$new_member_notification_mail = '';              # Your "New Member Notification"-email address.
-
-\$sendtopicmail = 2;                              # Set to 0 for send NO topic email to friend
-                                                  # Set to 1 to send topic email to friend via YaBB
-                                                  # Set to 2 to send topic email to friend via user program
-                                                  # Set to 3 to let user decide between 1 and 2
-
-########## In-Thread Multi Delete ##########
-
-\$mdadmin = 1;
-\$mdglobal = 1;
-\$mdfmod = 1;
-\$mdmod = 1;
-\$adminbin = 0;                                   # Skip recycle bin step for admins and delete directly
-
-########## Moderation Update ##########
-
-\$adminview = 2;                                  # Multi-admin settings for Administrators:
-                                                  # 0=none, 1=icons 2=single checkbox 3=multiple checkboxes
-\$gmodview = 2;                                   # Multi-admin settings for Global Moderators:
-                                                  # 0=none, 1=icons 2=single checkbox 3=multiple checkboxes
-\$fmodview = 2;                                   # Multi-admin settings for Forum Moderators:
-                                                  # 0=none, 1=icons 2=single checkbox 3=multiple checkboxes
-\$modview = 2;                                    # Multi-admin settings for Moderators:
-                                                  # 0=none, 1=icons 2=single checkbox 3=multiple checkboxes
-
-########## Advanced Memberview Plus ##########
-
-\$showallgroups = 1;
-\$OnlineLogTime = 15;                             # Time in minutes before Users are removed from the Online Log
-\$lastonlineinlink = 0;                           # Show "Last online X days and XX:XX:XX hours ago." to all members == 1
-
-########## Polls ##########
-
-\$numpolloptions = 8;                             # Number of poll options
-\$maxpq = 60;                                     # Maximum Allowed Characters in a Poll Qestion?
-\$maxpo = 50;                                     # Maximum Allowed Characters in a Poll Option?
-\$maxpc = 0;                                      # Maximum Allowed Characters in a Poll Comment?
-\$useraddpoll = 1;                                # Allow users to add polls to existing threads? (1 = yes)
-\$ubbcpolls = 1;                                  # Allow UBBC tags and smilies in polls? (1 = yes)
-
-########## Advanced Instant Message Box ##########
-
-\$PM_level = 1;
-\$numposts = 1;                                   # Number of posts required to send Instant Messages
-\$imspam = 0;                                     # Percent of Users a user is a allowed to send a message at once
-\$numibox = 20;                                   # Number of maximum Messages in the IM-Inbox
-\$numobox = 20;                                   # Number of maximum Messages in the IM-Outbox
-\$numstore = 20;                                  # Number of maximum Messages in the Storage box
-\$numdraft = 20;                                  # Number of maximum Messages in the Draft box
-\$enable_imlimit = 0;                             # Set to 1 to enable limitation of incoming and outgoing im messages
-\$enable_storefolders = 0;                        # enable additonal store folders - in/out are default for all
-                                                  # 0=no > 1 = number, max 25
-\$imtext = qq~Welcome to my boards~;
-\$sendname = admin;
-\$imsubject = "Hey Hey :)";
-\$send_welcomeim = 1;
-\$PMenableBm_level = 3;                            # minimum level to send? 0 = off, 1 = mods, 2 = gmod, 3 = admin
-
-########## Topic Summary Cutter ##########
-
-\$cutamount  = "15";                              # Number of posts to list in topic summary
-\$ttsreverse = 0;                                 # Reverse Topic Summaries in Topic (most recent becomes first)
-\$ttsureverse = 0;                                # Reverse Topic Summaries in Topic (most recent becomes first) allowed as user wishes? Yes == 1
-\$tsreverse = 1;                                  # Reverse Topic Summaries (So most recent is first
-
-########## Time Lock ##########
-
-\$tlnomodflag = 1;                                # Set to 1 limit time users may modify posts
-\$tlnomodtime = 1;                                # Time limit on modifying posts (days)
-\$tlnodelflag = 1;                                # Set to 1 limit time users may delete posts
-\$tlnodeltime = 5;                                # Time limit on deleting posts (days)
-\$tllastmodflag = 1;                              # Set to 1 allow users to modify posts up to
-                                                  # the specified time limit w/o showing "last Edit" message
-\$tllastmodtime = 60;                             # Time limit to modify posts w/o triggering "last Edit" message (in minutes)
-
-########## File Attachment Settings ##########
-
-\$limit = 250;                                    # Set to the maximum number of kilobytes an attachment can be.
-                                                  # Set to 0 to disable the file size check.
-\$dirlimit = 10000;                               # Set to the maximum number of kilobytes the attachment directory can hold.
-                                                  # Set to 0 to disable the directory size check.
-\$overwrite = 0;                                  # Set to 0 to auto rename attachments if they exist,
-                                                  # 1 to overwrite them or 2 to generate an error if the file exists already.
-\$allowAttachIM = 0;                              # Set the maximum number of file attachments allowed in personal messages, set to 0 to disable file attachments in personal messages.
-\@ext = qw(txt doc docx psd pdf bmp jpe jpg jpeg gif png swf zip rar tar); # The allowed file extensions for file attachements.
-\@pmAttachExt = qw(txt doc docx psd pdf bmp jpe jpg jpeg gif png swf zip rar tar); # The allowed file extensions for file attachements.
-                                                  # The variable should be set in the form of "jpg bmp gif" and so on.
-\$pmFileLimit = 250;                # Set to the maximum number of kilobytes a pm attachment can be. Set to 0 to disable the file size check.
-\$pmDirLimit = 10000;               # Set to the maximum number of kilobytes the pm attachment directory can hold. Set to 0 to disable the directory size check.
-\$pmFileOverwrite = 0;              # Set to 0 to auto rename pm attachments if they exist, 1 to overwrite them or 2 to generate an error if the file exists already.
-\$checkext = 1;                                   # Set to 1 to enable file extension checking,
-                                                  # set to 0 to allow all file types to be uploaded
-\$amdisplaypics = 1;                              # Set to 1 to display attached pictures in posts,
-                                                  # set to 0 to only show a link to them.
-\$allowattach = 1;                                # Set to the number of maximum files attaching a post,
-                                                  # set to 0 to disable file attaching.
-\$allowguestattach = 0;                           # Set to 1 to allow guests to upload attachments, 0 to disable guest attachment uploading.
-
-########## Error Logger ##########
-
-\$elmax  = 50;                                    # Max number of log entries before rotation
-\$elenable = 1;                                   # allow for error logging
-\$elrotate = 1;                                   # Allow for log rotation
-
-########## Advanced Tabs ##########
-
-\@AdvancedTabs = qw(home help search ml admin revalidatesession login register guestpm mycenter logout eventcal birthdaylist ); # Advanced Tabs order and infos
-
-########## Smilies ##########
-
-\@SmilieURL = ("exclamation.png","question.png"); # Additional Smilies URL
-\@SmilieCode = (":exclamation",":question");      # Additional Smilies Code
-\@SmilieDescription = ("Exclaim","Questioning");  # Additional Smilies Description
-\@SmilieLinebreak = ("","");                      # Additional Smilies Linebreak
-
-\$smiliestyle = "1";                              # smiliestyle
-\$showadded = "2";                                # showadded
-\$showsmdir = "2";                                # showsmdir
-\$detachblock = "1";                              # detachblock
-\$winwidth = "400";                               # winwidth
-\$winheight = "400";                              # winheight
-\$popback = "FFFFFF";                             # popback
-\$poptext = "000000";                             # poptext
-
-
-
-###############################################################################
-# Security Settings (old SecSettings.txt)                                     #
-###############################################################################
-
-\$regcheck = 0;                             # Set to 1 if you want to enable automatic flood protection enabled
-\$codemaxchars = 6;                         # Set max length of validation code (15 is max)
-\$rgb_foreground = "\#0000EE";              # Set hex RGB value for validation image foreground color
-\$rgb_shade = "\#999999";                   # Set hex RGB value for validation image shade color
-\$rgb_background = "\#FFFFFF";              # Set hex RGB value for validation image background color
-\$translayer = 0;                           # Set to 1 background for validation image should be transparent
-\$randomizer = 0;                           # Set 0 to 3 to create background random noise
-                                            # based on foreground or shade color or both
-\$stealthurl = 0;                           # Set to 1 to mask referer url to hosts if a hyperlink is clicked.
-\$referersecurity = 0;                      # Set to 1 to activate referer security checking.
-\$do_scramble_id = 1;                       # Set to 1 scambles all visible links containing user ID's
-\$sessions = 1;                             # Set to 1 to activate session id protection.
-\$show_online_ip_admin = 1;                 # Set to 1 to show online IP's to admins.
-\$show_online_ip_gmod = 1;                  # Set to 1 to show online IP's to global moderators.
-\$show_online_ip_fmod = 1;                  # Set to 1 to show online IP's to forum moderators.
-\$masterkey = "$masterkey";                 # Seed for encryption of captcha's
-
-
-
-###############################################################################
-# Guardian Settings (old Guardian.banned and Guardian.settings)               #
-###############################################################################
-
-\$banned_harvesters = qq~alexibot|asterias|backdoorbot|black.hole|blackwidow|blowfish|botalot|builtbottough|bullseye|bunnyslippers|cegbfeieh|cheesebot|cherrypicker|chinaclaw|copyrightcheck|cosmos |crescent|custo|disco|dittospyder|download demon|ecatch|eirgrabber|emailcollector|emailsiphon|emailwolf|erocrawler|eseek-larbin|express webpictures|extractorpro|eyenetie|fast|flashget|foobot|frontpage|fscrawler|getright|getweb|go!zilla|go-ahead-got-it|grabnet|grafula|gsa-crawler|harvest|hloader|hmview|httplib|httrack|humanlinks|ia_archiver|image stripper|image sucker|indy library|infonavirobot|interget|internet ninja|jennybot|jetcar|joc web
-spider|kenjin.spider|keyword.density|larbin|leechftp|lexibot|libweb/clshttp|linkextractorpro|linkscan/8.1a.unix|linkwalker|lwp-trivial|mass downloader|mata.hari|microsoft.url|midown tool|miixpc|mister pix|moget|mozilla.*newt|mozilla/3.mozilla/2.01|navroad|nearsite|net vampire|netants|netmechanic|netspider|netzip|nicerspro|npbot|octopus|offline explorer|offline navigator|openfind|pagegrabber|papa foto|pavuk|pcbrowser|propowerbot/2.14|prowebwalker|queryn.metasearch|realdownload|reget|repomonkey|sitesnagger|slysearch|smartdownload|spankbot|spanner |spiderzilla|steeler|superbot|superhttp|surfbot|suzuran|szukacz|takeout|teleport pro|telesoft|the.intraformant|thenomad|tighttwatbot|titan|tocrawl/urldispatcher|true_robot|turingos|turnitinbot|urly.warning|vci|voideye|web image collector|web sucker|web.image.collector|webauto|webbandit|webbandit|webcopier|webemailextrac.*|webenhancer|webfetch|webgo is|webleacher|webmasterworldforumbot|webreaper|websauger|website extractor|website quester|webster.pro|webstripper|webwhacker|webzip|wget|widow|www-collector-e|wwwoffle|xaldon webspider|xenu link sleuth|zeus~;
-\$banned_referers = qq~hotsex.com|porn.com~;
-\$banned_requests = qq~~;
-\$banned_strings = qq~pussy|cunt~;
-\$whitelist = qq~~;
-
-\$use_guardian = 1;
-\$use_htaccess = 0;
-
-\$disallow_proxy_on = 0;
-\$referer_on = 1;
-\$harvester_on = 0;
-\$request_on = 0;
-\$string_on = 1;
-\$union_on = 1;
-\$clike_on = 1;
-\$script_on = 1;
-
-\$disallow_proxy_notify = 1;
-\$referer_notify = 0;
-\$harvester_notify = 1;
-\$request_notify = 0;
-\$string_notify = 1;
-\$union_notify = 1;
-\$clike_notify = 1;
-\$script_notify = 1;
-
-###############################################################################
-# Banning Settings (old ban.txt) - Moved to ban_list.txt                      #
-###############################################################################
-
-###############################################################################
-# Backup Settings                                                             #
-###############################################################################
-
-\@backup_paths = qw();
-\$backupmethod = '';
-\$compressmethod = '';
-\$backupprogusr = '';
-\$backupprogbin = '';
-\$backupdir = '';
-\$lastbackup = 0;
-\$backupsettingsloaded = 0;
-
-1;
-EOF
-
-    fopen( SETTING, ">$vardir/Settings.pm" )
-      || setup_fatal_error( "$maintext_23 $vardir/Settings.pm: ", 1 );
-    print {SETTING} nicely_aligned_file($setfile)
-      or croak 'cannot print Settings.pm';
-    fclose(SETTING);
     if ( $action eq 'setinstall2' ) {
         LoadUser('admin');
         ${ $uid . 'admin' }{'email'}      = $webmaster_email;
@@ -4073,6 +3431,7 @@ EOF
         $yySetLocation = qq~$set_cgi?action=setup3~;
         redirectexit();
     }
+    $ret = 1;
     return;
 }
 

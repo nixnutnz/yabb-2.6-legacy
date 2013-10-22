@@ -4,7 +4,7 @@
 # $Source: /Convert2x.pl $
 ###############################################################################
 # Convert2x.pl                                                                #
-# $Date: 10.15.13 $                                                            #
+# $Date: 10.15.13 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
