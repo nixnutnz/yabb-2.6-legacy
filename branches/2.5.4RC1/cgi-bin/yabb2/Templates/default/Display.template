@@ -33,8 +33,10 @@ $threadhandellist2 = qq~
 
 if($threadtools) {
     $threadhandelstyle = qq~ class="post_tools center" style="width:100px;"~;
+    $my_fixed = q~ style="table-layout: fixed;"~;
 } else {
     $threadhandelstyle = qq~ style="text-align:right"~;
+    $my_fixed = q{};
 }
 
 $adminhandellist = qq~
@@ -66,7 +68,7 @@ $display_template = qq~
 <!-- Poll end -->
 <!-- Threads Button Bar start -->
 <div class="displaycontainer">
-    <table class="tabtitle pad_4px" style="table-layout: fixed;">
+    <table class="tabtitle pad_4px"$my_fixed>
         <tr>
             <td>{yabb pageindex top}</td>
             <td class="post_tools_a" style="padding-right:10px; text-align:right">
@@ -98,7 +100,7 @@ $display_template = qq~
 <!-- Threads Button Bar start -->
 <div class="displaycontainer">
 <div style="clear: both;"></div>
-    <table class="tabtitle-bottom pad_4px">
+    <table class="tabtitle-bottom pad_4px"$my_fixed>
         <tr>
             <td>{yabb pageindex bottom}</td>
             <td class="post_tools_a" style="padding-right:10px; text-align:right">
