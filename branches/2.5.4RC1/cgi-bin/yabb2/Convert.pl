@@ -4,7 +4,7 @@
 # $Source: /Convert.pl $
 ###############################################################################
 # Convert.pl                                                                  #
-# $Date: 10.17.13 $                                                            #
+# $Date: 10.17.13 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -1016,7 +1016,7 @@ qq~<br /><br />There were some illegal user IDs. These have been changed. Please
                 - Attachment Functions => Rebuild Attachments<br /></span>
                 <br />
                 <br />
-                You may now log in to your forum. Enjoy using YaBB 2.5.4!
+                You may now log in to your forum. If your old forum had Extended Profiles installed, you should turn on Extended Profiles in Admin Center -&gt; Forum Settings -&gt; Members and run the Extended Profiles converter from Admin Center -&gt; Profile Fields. Enjoy using YaBB 2.5.4!
             </td>
         </tr><tr>
             <td class="catbg center" colspan="2">
@@ -1030,55 +1030,7 @@ qq~<br /><br />There were some illegal user IDs. These have been changed. Please
     </div>~;
     CreateConvLock();
     }
-    elsif ( $action eq 'extended' ) {
-        require qq~$vardir/ConvSettings.txt~;
-        ext_admin_convert();
-        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink7a . $NavLink6;
 
-        $yymain = qq~
-    <div class="bordercolor borderbox">
-    <table class="cs_thin pad_4px">
-        <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
-        </tr><tr>
-            <td class="windowbg center">
-                <img src="$imagesdir/thread.gif" alt="" />
-            </td>
-            <td class="windowbg2">
-                <div class="convdone">Member Conversion.</div>
-                $ConvDone
-                <div class="convdone">Board and Category Conversion.</div>
-                $ConvDone
-                <div class="convdone">Message Conversion.</div>
-                $ConvDone
-                <div class="convdone">Date &amp; Time Conversion.</div>
-                $ConvDone
-                <div class="convdone">Final Cleanup.</div>
-                $ConvDone
-            </td>
-        </tr><tr>
-            <td class="windowbg center">
-                <img src="$imagesdir/info.png" alt="" />
-            </td>
-            <td class="windowbg2 fontbigger">
-                The Extended Profiles conversion took <i>~
-          . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minutes</i>.<br />
-                <br />
-                <br />
-                You may now login to your forum . Enjoy using YaBB 2.5.4!
-            </td>
-        </tr><tr>
-            <td class="catbg center" colspan="2">
-                <form action="YaBB.$yyext" method="post" style="display: inline;">
-                    <input type="submit" value="Start" />
-                    <input type="hidden" name="formsession" value="$formsession" />
-                </form>
-            </td>
-        </tr>
-    </table>
-    </div>~;
-        CreateConvLock();
-    }
     elsif ( $action eq 'setup3' )       { CheckInstall(); }
     elsif ( $action eq 'cleanup2' ) {
         if (   ( !$INFO{'pass_error'} && $INFO{'my_re_tot'} <= 0 )
@@ -1347,8 +1299,6 @@ sub ConvertMembers1 {
 
     if ( -e "$convvardir/MemberStats.txt" ) { groupconvert(); }
     else { memgrpconvert();}
-
-    if ( -e "$convvardir/extended_profiles_fields.txt" ) { ext_admin_convert(); }
 
     if ( -e "$vardir/fixusers.txt" ) {
         fopen( FIXUSER, "$vardir/fixusers.txt" )
@@ -1644,7 +1594,7 @@ sub groupconvert {
     my $z = 1;
     undef %Post;
 
-      $Post{'-1'} = qq~$MemStatNewbie|$MemStarNumNewbie|$MemStarPicNewbie|$MemTypeColNewbie|0|0|0|0|0|0~;
+    $Post{'-1'} = qq~$MemStatNewbie|$MemStarNumNewbie|$MemStarPicNewbie|$MemTypeColNewbie|0|0|0|0|0|0~;
 
     while ( $MemStat[$i] ) {
         if ( $MemPostNum[$i] eq 'x' ) {
@@ -2923,7 +2873,6 @@ sub CreateConvLock {
       or croak 'cannot print to LOCKFILE';
     fclose(LOCKFILE);
 
-    unlink "$vardir/convSettings.txt";
     return;
 }
 
@@ -2946,7 +2895,6 @@ sub tabmenushow {    # used by the converter
     $NavLink4 = qq~$tabsep<span style="padding:4px">$tabfill Date &amp; Time $tabfill</span>~;
     $NavLink5 = qq~$tabsep<span style="padding:4px">$tabfill Clean Up $tabfill</span>~;
     $NavLink6 = qq~$tabsep<span style="padding:4px">$tabfill Login $tabfill</span>$tabsep&nbsp;~;
-    $NavLink7 = qq~$tabsep<span style="padding:4px">$tabfill Extended Profiles $tabfill</span>~;
 
     $NavLink1a =
 qq~<span class="selected"><a href="$set_cgi?action=members;st=$INFO{'st'}" style="color: #f33;" class="selected" onClick="PleaseWait();">$tabfill Members $tabfill</a></span>~;
@@ -2960,8 +2908,6 @@ qq~$tabsep<span class="selected"><a href="$set_cgi?action=dates;st=$INFO{'st'}" 
 qq~$tabsep<span class="selected"><a href="$set_cgi?action=cleanup;st=$INFO{'st'}" style="color: #f33;" class="selected" onClick="PleaseWait();">$tabfill Clean Up $tabfill</a></span>~;
     $NavLink6a =
 qq~$tabsep<span class="selected"><a href="$boardurl/YaBB.$yyext?action=login" style="color: #f33;" class="selected">$tabfill Login $tabfill</a></span>$tabsep&nbsp;~;
-    $NavLink7a =
-qq~$tabsep<span class="selected"><a href="$set_cgi?action=extended;st=$INFO{'st'}" style="color: #f33;" class="selected" onClick="PleaseWait();">$tabfill Extended Profiles $tabfill</a></span>~;
 
     $ConvDone = q~
             <div class="divvary_m">&nbsp;</div>
@@ -3213,202 +3159,40 @@ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2
     return $setfile;
 }
 
-# from Extended Profiles
-# converts ALL old .ext files into the the YaBB 2 file format
-sub ext_admin_convert {
-    LoadLanguage('ExtendedProfiles');
-
-    my $old_membersdir = $convmembersdir;
-    my $old_vardir     = $convvardir;
-
-    if ( !-e $old_vardir ) {
-        fatal_error( 'extended_profiles_convert',
-            $lang_ext{'converter_missing_vars'} );
-    }
-    if ( !-e "$old_vardir/extended_profiles_order.txt" ) {
-        fatal_error( 'extended_profiles_convert',
-            $lang_ext{'converter_missing_order'} );
-    }
-    if ( !-e "$old_vardir/extended_profiles_fields.txt" ) {
-        fatal_error( 'extended_profiles_convert',
-            $lang_ext{'converter_missing_fields'} );
-    }
-
-    fopen( CONVERTER, "$old_vardir/extended_profiles_order.txt" )
-      || fatal_error( 'cannot_open',
-        "$old_vardir/extended_profiles_order.txt" );
-    @ext_prof_order = <CONVERTER>;
-    fclose(CONVERTER);
-    chomp @ext_prof_order;
-
-    # copy old extended_profiles_fields and extended_profiles_order files
-    fopen( CONVERTER, "$old_vardir/extended_profiles_fields.txt" )
-      || fatal_error( 'cannot_open',
-        "$old_vardir/extended_profiles_fields.txt" );
-    @ext_prof_fields = <CONVERTER>;
-    fclose(CONVERTER);
-    chomp @ext_prof_fields;
-
-    #check if used membergroups still exist + convert to YaBB new format
-    for my $i ( 0 .. ( @ext_prof_fields - 1 ) ) {
-        my @field = split /\|/xsm, $ext_prof_fields[$i];
-        $field[8]  = ext_admin_convert_fixgroupnames( $field[8] );
-        $field[11] = ext_admin_convert_fixgroupnames( $field[11] );
-        $field[15] = ext_admin_convert_fixgroupnames( $field[15] );
-        $field[19] = ext_admin_convert_fixgroupnames( $field[19] );
-        $ext_prof_fields[$i] = join q{|}, @field;
-    }
-
-    require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm');
-
-    opendir EXT_DIR, "$old_membersdir";
-    @contents = grep { /\.ext$/xsm } readdir EXT_DIR;
-    closedir EXT_DIR;
-
-    foreach my $filename (@contents) {
-        $filename =~ s/.ext$//xsm;
-        ext_user_convert( $filename, $old_membersdir );
-    }
-    return;
-}
-
-sub ext_user_convert {
-    my ( $pusername, $old_membersdir, @ext_profile, $id ) = ( shift, shift );
-
-    if ( -e "$convmembersdir/$pusername.ext" ) {
-        if ( -e "$memberdir/$pusername.vars" ) {
-            ext_get_profile($pusername);
-
-            fopen( EXT_FILE, "$convmembersdir/$pusername.ext" )
-              || admin_fatal_error( 'cannot_open',
-                "$convmembersdir/$pusername.ext" );
-            @ext_profile = <EXT_FILE>;
-            fclose(EXT_FILE);
-            chomp @ext_profile;
-
-            $id = 0;
-            foreach (@ext_prof_fields) {
-                ${ $uid . $pusername }{ 'ext_' . $id } = $ext_profile[$id];
-                $id++;
-            }
-            UserAccount( $pusername, 'update' );
-
-            # don't delete old .ext files anymore, user can do that himself now.
-            #unlink "$old_membersdir/$pusername.ext";
-        }
-    }
-    return;
-}
-
-#'ext_convert',"Settings_ExtendedProfiles.pm&ext_admin_convert",
-
-# convert a string of usergroup names from the old YaBB format into Y2's new format
-sub ext_admin_convert_fixgroupnames {
-    my ( $input, $done, $j, @groups, $group, $groupid, %checkdoubles ) =
-      ( shift, 0 );
-
-    @groups = split /\s*\,\s*/xsm, $input;
-    for my $j ( 0 .. ( @groups - 1 ) ) {
-
-        # if groupname is in old format
-        if (   $groups[$j] ne 'Administrator'
-            && $groups[$j] ne 'Global Moderator'
-            && $groups[$j] ne 'Moderator'
-            && $groups[$j] !~ m/^(?:No)?Post{\d+}$/sm )
-        {
-
-            # find best matching usergroup
-            foreach my $groupid ( sort { $a <=> $b } keys %NoPost ) {
-                if ( $groups[$j] eq
-                    ( split /\|/xsm, ( split /\|/xsm, $NoPost{$groupid} )[0] )
-                    [0] )
-                {
-                    $groups[$j] = "NoPost{$groupid}";
-
-                    # check for doubles
-                    if ( $checkdoubles{ $groups[$j] } == 1 ) {
-                        splice @groups, $j, 1;
-                        $j--;
-                        $done = 1;
-                        last;
-                    }
-                    else {
-                        $checkdoubles{ $groups[$j] } = 1;
-                    }
-                }
-            }
-            if ( $done == 1 ) { $done = 0; next; }
-            foreach my $groupid ( reverse sort { $a <=> $b } keys %Post ) {
-                if ( $groups[$j] eq
-                    ( split /\|/xsm, ( split /\|/xsm, $Post{$groupid} )[0] )[0]
-                  )
-                {
-                    $groups[$j] = "Post{$groupid}";
-
-                    # check for doubles
-                    if ( $checkdoubles{ $groups[$j] } == 1 ) {
-                        splice @groups, $j, 1;
-                        $done = 1;
-                        $j--;
-                        last;
-                    }
-                    else {
-                        $checkdoubles{ $groups[$j] } = 1;
-                    }
-                }
-            }
-            if ( $done == 1 ) { $done = 0; next; }
-        }
-        else {
-            $checkdoubles{ $groups[$j] } = 1;
-        }
-
-        # if still not matching, get rid of it!
-        if (   $groups[$j] ne 'Administrator'
-            && $groups[$j] ne 'Global Moderator'
-            && $groups[$j] ne 'Moderator'
-            && $groups[$j] !~ m/^(?:No)?Post{\d+}$/sm )
-        {
-
-            splice @groups, $j, 1;
-            $j--;
-        }
-    }
-    return join q{,}, @groups;
-}
-
-
 sub SetInstall2 {
     $ret = 0;
     my $oldname = q{};
     if ( -e "$vardir/convSettings.txt" ) { require "$vardir/convSettings.txt"; }
-        if ( -e "$convvardir/Settings.pl" ) {
-            use Time::localtime;
-            $time = time;
-            require "$convvardir/Settings.pl";
+    if ( -e "$convvardir/Settings.pl" ) {
+        use Time::localtime;
+        $time = time;
+        require "$convvardir/Settings.pl";
         $oldname = $mbname;
     }
     if ( $oldname ) {
         $mbname = $oldname;
-        }
-        $settings_file_version = 'YaBB 2.5.4';
-        if ($enable_notifications eq q{}) { $enable_notifications = $enable_notification ? 3 : 0; }
-        $lang                  = $FORM{'defaultlanguage'} || 'English';
-        $webmaster_email = $FORM{'webmaster_email'} || 'webmaster@mysite.com';
-        $forumnumberformat      = $FORM{'forumnumberformat'} || 1;
-        $timeselected           = $FORM{'timeselect'} || 0;
-        $timeoffset =
-          "$FORM{'usertimesign'}$FORM{'usertimehour'}.$FORM{'usertimemin'}";
-        $dstoffset              = $FORM{'dstoffset'} || 0;
-        if ( -e '/bin/gzip' && open $GZIP, '|', 'gzip -f' ) {
-            $gzcomp = 1;
-        }
-        else {
-            eval { require Compress::Zlib; Compress::Zlib::memGzip('test'); };
-            $gzcomp = $@ ? 0 : 2;
-        }
-        $gzforce        = 0;
+    }
+    ( undef,$rancook ) = split /\-/xsm, $cookietsort;
+    $cookieusername = qq~Y2User-$rancook~;
+    $cookiepassword = qq~Y2Pass-$rancook~;
+
+    $settings_file_version = 'YaBB 2.5.4';
+    if ($enable_notifications eq q{}) { $enable_notifications = $enable_notification ? 3 : 0; }
+    $lang                  = $FORM{'defaultlanguage'} || 'English';
+    $webmaster_email = $FORM{'webmaster_email'} || 'webmaster@mysite.com';
+    $forumnumberformat      = $FORM{'forumnumberformat'} || 1;
+    $timeselected           = $FORM{'timeselect'} || 0;
+    $timeoffset =
+      "$FORM{'usertimesign'}$FORM{'usertimehour'}.$FORM{'usertimemin'}";
+    $dstoffset              = $FORM{'dstoffset'} || 0;
+    if ( -e '/bin/gzip' && open $GZIP, '|gzip -f' ) {
+        $gzcomp = 1;
+    }
+    else {
+        eval { require Compress::Zlib; Compress::Zlib::memGzip('test'); };
+        $gzcomp = $@ ? 0 : 2;
+    }
+    $gzforce        = 0;
     if ( $action ne 'setinstall2' ) {
         $forumstart = timetostring( $INFO{'firstforum'} );
     }

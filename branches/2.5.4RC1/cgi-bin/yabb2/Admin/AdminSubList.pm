@@ -77,6 +77,7 @@ our $VERSION = '2.5.41';
 'emailbackup','Backup.pm&emailbackup',
 'errorlog','ErrorLog.pm&ErrorLog',
 'ext_admin','Settings_ExtendedProfiles.pm&ext_admin',
+'ext_convert','Settings_ExtendedProfiles.pm&ext_admin_convert',
 'ext_create','Settings_ExtendedProfiles.pm&ext_admin_create',
 'ext_edit','Settings_ExtendedProfiles.pm&ext_admin_edit',
 'ext_edit2','Settings_ExtendedProfiles.pm&ext_admin_edit2',
