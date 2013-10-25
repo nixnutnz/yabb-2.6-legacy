@@ -4,7 +4,7 @@
 # $Source: /Setup.pl $
 ###############################################################################
 # Setup.pl                                                                    #
-# $Date: 10.03.13 $                                                           #
+# $Date: 10.25.13 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -24,7 +24,7 @@ use English qw(-no_match_vars);
 our $VERSION = '2.5.41';
 
 $setupplver = 'YaBB 2.5.4 RC1 $Revision$';
-$yycharset  = 'ISO-8859-1';
+$yycharset  = 'UTF-8';
 
 # conversion will stop after $max_process_time
 # in seconds, than the browser will call the script
@@ -100,7 +100,7 @@ if ( !$action ) {
     $rand_cook_sess = "Y2Sess-$rand_integer";
     $rand_cook_sort = "Y2tsort-$rand_integer";
     $rand_cook_view = "Y2view-$rand_integer";
-    
+
     fopen( COOKFILE, ">$vardir/cook.txt" )
       || setup_fatal_error( "$maintext_23 $vardir/cook.txt: ", 1 );
     print {COOKFILE} "$rand_cook_user\n" or croak 'cannot print cook.txt';
@@ -147,27 +147,24 @@ SimpleOutput();
 #############################################
 
 sub adminlogin {
+    open LICENSE, '< license.txt' or croak 'cannot load License.';
+    my $license = do { local $/; <LICENSE>; };
+    close LICENSE or croak 'cannot close License';
+
     $yymain .= qq~
+    <div id="license" style="width:50em; height:20em; overflow:auto; margin:2em auto 0 auto; border:thin #000 solid; padding:1em; background-color:#fff">$license</div>
     <form action="$set_cgi?action=adminlogin2" method="post" name="loginform">
-    <table style="width:20%; border: thin black solid; margin:2em auto">
-      <tr>
-            <td style="text-align:center; padding:3px">
-                <label for="password">Enter the password for user <b>admin</b><br />to gain access to the Setup Utility</label>
-            </td>
-        </tr><tr>
-            <td style="text-align:center; padding:3px">
-            <input type="password" name="password" id="password" size="30" />
-            <input type="hidden" name="username" value="admin" />
-            <input type="hidden" name="cookielength" value="1500" />
-            </td>
-        </tr><tr>
-            <td style="text-align:center; padding:3px"><input type="submit" value="Submit" /></td>
-      </tr>
-      </table>
+    <div style="width:25em; border: thin #000 solid; margin:2em auto; padding:1em; text-align:center; background-color:#fff">
+        <label for="password">Enter the password for user <b>admin</b> to acknowledge acceptance of the above license and to gain access to the Setup Utility</label>
+        <p><input type="password" name="password" id="password" size="30" />
+         <input type="hidden" name="username" value="admin" />
+         <input type="hidden" name="cookielength" value="1500" /></p>
+        <p><input type="submit" value="Submit" /></p>
+    </div>
     </form>
     <script type="text/javascript">
-                  document.loginform.password.focus();
-      </script>
+        document.loginform.password.focus();
+    </script>
       ~;
 
     return SimpleOutput();
@@ -219,19 +216,12 @@ qq~Setup Error: Could not find the admin data file in $memberdir! Please check y
     LoadUserSettings();
     $yymain .= qq~
     <form action="$set_cgi?action=setup1" method="post">
-    <table style="width:50%; border: thin black solid; margin:2em auto">
-      <tr>
-            <td style="text-align:center; padding:3px">
-            You are now logged in, <i>${$uid.$username}{'realname'}</i>!<br />Click Continue to proceed with the Setup.
-            </td>
-        </tr><tr>
-            <td style="text-align:center; padding:3px">
-            <input type="submit" value="Continue Set Up" />
-            </td>
-      </tr>
-      </table>
+    <div style="width:50em; border: thin #000 solid; margin:2em auto; padding:1em; text-align:center; background-color:#fff">
+        You are now logged in, <i>${$uid.$username}{'realname'}</i>!<br />Click 'Continue Set Up' to proceed with the Setup.
+        <p><input type="submit" value="Continue Set Up" /></p>
+    </div>
     </form>
-      ~;
+~;
 
     return SimpleOutput();
 }
@@ -859,14 +849,14 @@ sub VarInstall {
 'setcensor',"on",
 'modagreement',"on",
 'eventcal_set',"",
-'bookmarks',"", 
+'bookmarks',"",
 
 'referer_control',"",
 'newsettings;page=security',"",
 'setup_guardian',"",
 'newsettings;page=antispam',"",
 'spam_questions',"",
-'honeypot',"", 
+'honeypot',"",
 
 'managecats',"",
 'manageboards',"",
@@ -930,7 +920,7 @@ honeypot_add2 => "",
 honeypot_edit => "",
 honeypot_edit2 => "",
 honeypot_delete => "",
-honeypot_delete2 => "", 
+honeypot_delete2 => "",
 
 deleteattachment => "on",
 manageattachments2 => "on",
@@ -1180,64 +1170,64 @@ sub SetInstall {
     $yymain .= qq~
 <form action="$set_cgi?action=setinstall2" method="post">
 <div class="bordercolor borderbox">
-	<table class="tabtitle">
-		<tr>
-			<td style="padding-left:1%">System Setup</td>
-		</tr>
-	</table>
-	<table class="border-space pad-cell">
-		<tr>
-			<td class="windowbg">
-				Here you can set some of the default settings for your new YaBB 2.5.4 forum.<br />
-				After finishing the setup procedure, you should login to your forum and go to your 'Admin Center' -&gt; 'Forum Settings' where you can modify this and other settings.
+    <table class="tabtitle">
+        <tr>
+            <td style="padding-left:1%">System Setup</td>
+        </tr>
+    </table>
+    <table class="border-space pad-cell">
+        <tr>
+            <td class="windowbg">
+                Here you can set some of the default settings for your new YaBB 2.5.4 forum.<br />
+                After finishing the setup procedure, you should login to your forum and go to your 'Admin Center' -&gt; 'Forum Settings' where you can modify this and other settings.
             </td>
-		</tr><tr>
-			<td class="windowbg2">
-				<div class="div45">
-					<label for="mbname">Message Board Name</label>
-				</div>
-				<div class="div55">
-					<input type="text" name="mbname" id="mbname" size="35" value="My Perl YaBB Forum" />
-				</div>
-				<br />
-				<div class="div45">
-					<label for="webmaster_email">Webmaster E-mail Address</label>
-				</div>
-				<div class="div55">
-					<input type="text" name="webmaster_email" id="webmaster_email" size="35" value="webmaster\@mysite.com" />
-				</div>
-				<br />
-				<div class="div45">
-					<label for="defaultlanguage">Admin Language / Forum Default Language</label>
-				</div>
-				<div class="div55">
-					<select name="defaultlanguage" id="defaultlanguage">$drawnldirs</select>
-				</div>
-				<br />
-				<div class="div45">
-					<label for="timeselect">Default Time Format</label>
-				</div>
-				<div class="div55">
-					<select name="timeselect" id="timeselect" size="1">
-						<option value="1">01/31/01 at 13:15:17</option>
-						<option value="5">01/31/01 at 1:15pm</option>
-						<option value="4" selected="selected">Jan 12th, 2001 at 1:15pm</option>
-						<option value="8"> 12th Jan, 2001 at 1:15pm</option>
-						<option value="2">31.01.01 at 13:15:17</option>
-						<option value="3">31.01.2001 at 13:15:17</option>
-						<option value="6">31. Jan at 13:15</option>
-					</select>
-				</div>
-				<br />
-				<div class="div45">
-					Forum Time Zone<br />
-					<span style="font-size:small">If the time displayed here differs from your local time, adjust it by changing the settings.</span>
-				</div>
-				<div class="div55">
-					<span style="font-size:small">Your actual displayed local time:<br /><b>~
+        </tr><tr>
+            <td class="windowbg2">
+                <div class="div45">
+                    <label for="mbname">Message Board Name</label>
+                </div>
+                <div class="div55">
+                    <input type="text" name="mbname" id="mbname" size="35" value="My Perl YaBB Forum" />
+                </div>
+                <br />
+                <div class="div45">
+                    <label for="webmaster_email">Webmaster E-mail Address</label>
+                </div>
+                <div class="div55">
+                    <input type="text" name="webmaster_email" id="webmaster_email" size="35" value="webmaster\@mysite.com" />
+                </div>
+                <br />
+                <div class="div45">
+                    <label for="defaultlanguage">Admin Language / Forum Default Language</label>
+                </div>
+                <div class="div55">
+                    <select name="defaultlanguage" id="defaultlanguage">$drawnldirs</select>
+                </div>
+                <br />
+                <div class="div45">
+                    <label for="timeselect">Default Time Format</label>
+                </div>
+                <div class="div55">
+                    <select name="timeselect" id="timeselect" size="1">
+                        <option value="1">01/31/01 at 13:15:17</option>
+                        <option value="5">01/31/01 at 1:15pm</option>
+                        <option value="4" selected="selected">Jan 12th, 2001 at 1:15pm</option>
+                        <option value="8"> 12th Jan, 2001 at 1:15pm</option>
+                        <option value="2">31.01.01 at 13:15:17</option>
+                        <option value="3">31.01.2001 at 13:15:17</option>
+                        <option value="6">31. Jan at 13:15</option>
+                    </select>
+                </div>
+                <br />
+                <div class="div45">
+                    Forum Time Zone<br />
+                    <span style="font-size:small">If the time displayed here differs from your local time, adjust it by changing the settings.</span>
+                </div>
+                <div class="div55">
+                    <span style="font-size:small">Your actual displayed local time:<br /><b>~
       . timeformat( $date, 4 )
       . q~</b><br /><br /></span><select name="usertimesign"><option value="">+</option><option value="-">-</option></select>
-					<select name="usertimehour">~;
+                    <select name="usertimehour">~;
     for my $i ( 0 .. 14 ) {
         $i = sprintf '%02d', $i;
         $yymain .= qq~<option value="$i">$i</option>~;
@@ -1430,7 +1420,7 @@ sub SetInstall2 {
         $fadelinks            = 0;
         $cookieviewtime = 525_600;
 
-		# Let's generate a masterkey at setup time.
+        # Let's generate a masterkey at setup time.
         my @chars = ( 'A' .. 'Z', 'a' .. 'z', 0 .. 9 );
         for ( 1 .. 24 ) { $masterkey .= $chars[ rand @chars ]; }
 
@@ -2301,18 +2291,16 @@ sub CheckInstall {
 
     $yymain .= q~<tr>
             <td class="catbg" colspan="2">
-      ~;
+                ~;
 
     if ($set_missing) {
         $install_error = 1;
-        $yymain .= q~
-      A problem has occurred while creating Settings.pm!
+        $yymain .= q~A problem has occurred while creating Settings.pm!
             </td>
         </tr>~;
     }
     if ($set_created) {
-        $yymain .= qq~
-      Successfully checked Settings.pm!
+        $yymain .= qq~Successfully checked Settings.pm!
             </td>
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/check.png" alt="" /></td>
@@ -2400,14 +2388,14 @@ sub setup_fatal_error {
 
       $yymain .= qq~
 <table class="bordercolor center border-space pad-cell" width="80%" >
-  <tr>
-    <td class="titlebg"><span class="text1"><b>An Error Has Occurred!</b></span></td>
-  </tr><tr>
-    <td class="windowbg"><br /><span class="text1">$e</span><br /><br /></td>
-  </tr>
+    <tr>
+        <td class="titlebg text1"><b>An Error Has Occurred!</b></td>
+  </tr>tr>
+        <td class="windowbg text1" style="padding:1em 1em 2em 1em">$e</td>
+    </tr>
 </table>
-<center><br /><a href="javascript:history.go(-1)">Back</a></center>
-      ~;
+<p style="text-align:center"><a href="javascript:history.go(-1)">Back</a></p>
+~;
       $yyim    = "YaBB 2.5.4 Setup Error.";
       $yytitle = "YaBB 2.5.4 Setup Error.";
 
@@ -2425,20 +2413,21 @@ sub SimpleOutput {
 <!DOCTYPE html>
 <html lang='en-US'>
 <head>
-<title>YaBB 2.5.4 Setup</title>
-<meta charset="utf-8">
-<style type="text/css">
-html, body {color:#000; font-family:Verdana, Helvetica, Arial, Sans-Serif; font-size:13px;}
-#folderfind table {width:80%; background-color:#DDE3EB; margin:0 auto; border-collapse:collapse;}
-#folderfind td {text-align:left; padding:3px; border:thin black solid;}
-#folderfind .txt_a {font-size:11px;}
-#folderfind .windowbg {background-color: $windowbg;}
-#folderfind .windowbg2 {background-color: $windowbg2;}
-#folderfind .header {background-color:$header;}
-#folderfind .catbg {background-color:$catbg; text-align:center; color:#fff; }
-</style>
+    <meta charset="utf-8">
+    <title>YaBB 2.5.4 Setup</title>
+    <style type="text/css">
+        html, body {color:#000; font-family:Verdana, Helvetica, Arial, Sans-Serif; font-size:13px; background-color:#eee}
+        div#folderfind { margin:1em auto; padding:0 1em}
+        #folderfind table {width:100%; background-color:#DDE3EB; margin:0 auto; border-collapse:collapse;}
+        #folderfind td {text-align:left; padding:3px; border:thin #000 solid;}
+        #folderfind .txt_a {font-size:11px;}
+        #folderfind .windowbg {background-color: $windowbg;}
+        #folderfind .windowbg2 {background-color: $windowbg2;}
+        #folderfind .header {background-color:$header;}
+        #folderfind .catbg {background-color:$catbg; text-align:center; color:#fff; }
+    </style>
 </head>
-<body style="margin-top:40px">
+<body>
 <!-- Main Content -->
 $yymain
 </body>
