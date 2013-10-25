@@ -1434,6 +1434,9 @@ sub AdminCheck2 {
     {
         fatal_error('no_admin_passwrd');
     }
+    elsif ( $iamadmin && encode_password( 'admin') eq ${ $uid . $user }{'password'} )  {
+		fatal_error('default_password');
+    }
 
     my $adminpass = 'adminpass';
     my $cookiename = "$cookieusername$adminpass";
