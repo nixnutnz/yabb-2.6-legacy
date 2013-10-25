@@ -1,6 +1,6 @@
 ###############################################################################
 # Notify.pm                                                                   #
-# $Date: 9.01.13 $                                                            #
+# $Date: 10.25.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -45,7 +45,7 @@ sub ManageBoardNotify {
         if ( @oldnote < ( $maxtnote || 10 ) ) {
             foreach ( split /,/xsm, ${ $uid . $user }{'board_notifications'} ) {
                 $bb{$_} = 1;
-            }
+           }
             $bb{$theboard} = 1;
             ${ $uid . $user }{'board_notifications'} = join q{,}, keys %bb;
             UserAccount($user);

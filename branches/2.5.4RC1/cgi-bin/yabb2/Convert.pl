@@ -4,7 +4,7 @@
 # $Source: /Convert.pl $
 ###############################################################################
 # Convert.pl                                                                  #
-# $Date: 10.17.13 $                                                           #
+# $Date: 10.25.13 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -3164,10 +3164,12 @@ sub SetInstall2 {
     my $oldname = q{};
     if ( -e "$vardir/convSettings.txt" ) { require "$vardir/convSettings.txt"; }
     if ( -e "$convvardir/Settings.pl" ) {
-        use Time::localtime;
-        $time = time;
         require "$convvardir/Settings.pl";
         $oldname = $mbname;
+        $oldemail = $webmaster_email;
+        $oldlang = $language;
+        $oldtime = $timeselected;
+        $oldoffset = $timeoffset
     }
     if ( $oldname ) {
         $mbname = $oldname;
@@ -3175,16 +3177,20 @@ sub SetInstall2 {
     ( undef,$rancook ) = split /\-/xsm, $cookietsort;
     $cookieusername = qq~Y2User-$rancook~;
     $cookiepassword = qq~Y2Pass-$rancook~;
+    $forumstart = timetostring($INFO{'firstforum'});
+
+# GMT offset fudgefactor #
+    use Time::Local;
+    @t = localtime(time);
+    $gmt_offset = timegm(@t) - timelocal(@t);
+    $forumstart = timetostring($INFO{'firstforum'} + $gmt_offset  );
 
     $settings_file_version = 'YaBB 2.5.4';
     if ($enable_notifications eq q{}) { $enable_notifications = $enable_notification ? 3 : 0; }
-    $lang                  = $FORM{'defaultlanguage'} || 'English';
-    $webmaster_email = $FORM{'webmaster_email'} || 'webmaster@mysite.com';
-    $forumnumberformat      = $FORM{'forumnumberformat'} || 1;
-    $timeselected           = $FORM{'timeselect'} || 0;
-    $timeoffset =
-      "$FORM{'usertimesign'}$FORM{'usertimehour'}.$FORM{'usertimemin'}";
-    $dstoffset              = $FORM{'dstoffset'} || 0;
+    $lang                  = $oldlang || 'English';
+    $webmaster_email       = $oldemail || 'webmaster@mysite.com';
+    $timeselected          = $oldtime || 0;
+    $timeoffset            = $oldoffset || 0;
     if ( -e '/bin/gzip' && open $GZIP, '|gzip -f' ) {
         $gzcomp = 1;
     }
@@ -3193,9 +3199,6 @@ sub SetInstall2 {
         $gzcomp = $@ ? 0 : 2;
     }
     $gzforce        = 0;
-    if ( $action ne 'setinstall2' ) {
-        $forumstart = timetostring( $INFO{'firstforum'} );
-    }
 
     require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');

@@ -1,6 +1,6 @@
 ###############################################################################
 # BoardIndex.pm                                                               #
-# $Date: 9.30.13 $                                                            #
+# $Date: 10.25.13 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -616,7 +616,7 @@ qq~<a href="javascript:SendRequest('$scripturl?action=collapse_cat;cat=$catid','
                     if ($newmsg) {
                         $mnew = q{new_} . $curboard;
                         $newrowicon{$catname} =
-qq~<img src="$imagesdir/$newload{'brd_new'}" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" class="ongif" id="$mnew" />~; 
+qq~<img src="$imagesdir/$newload{'brd_new'}" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" class="ongif" id="$mnew" />~;
                         $newms{$catname} = $boardindex_exptxt{'5'};
                     }
                     else {
@@ -881,7 +881,7 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
                         $new =
 qq~<img src="$imagesdir/$newload{'brd_new'}" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" class="img_new" id="$mnew" />~;
                         $new2 =
-qq~<img src="$imagesdir/$newload{'sub_brd_new'}" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" class="img_new" id="$mnew" />~; 
+qq~<img src="$imagesdir/$newload{'sub_brd_new'}" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" class="img_new" id="$mnew" />~;
 
                     }
                     else {
@@ -1043,7 +1043,7 @@ qq~<a href="$scripturl?action=RSSboard;board=$curboard" target="_blank"><img src
                             $mnew = q{new_} . $childbd . q{_sub};
                             $sub_new =
 qq~<img src="$imagesdir/$newload{'sub_brd_new'}" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" id="$mnew" />~;
-                        } 
+                        }
                         else {
                             $sub_new =
 qq~<img src="$imagesdir/$newload{'sub_brd_old'}" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" />~;
@@ -1198,7 +1198,7 @@ qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?boa
 
                     if ( $bvusers{$curboard} ) {
                         $tmpboardviewers = NumberFormat($bvusers{$curboard});
-                        $boardviewers = qq~&nbsp;($tmpboardviewers&nbsp;$boardindex_txt{'bviews'})~; 
+                        $boardviewers = qq~&nbsp;($tmpboardviewers&nbsp;$boardindex_txt{'bviews'})~;
                     }
                     $templateblock =~ s/({|<)yabb boardviewers(}|>)/$boardviewers/gsm;
                     $templateblock =~ s/({|<)yabb moderators(}|>)/$showmods$showmodgroups/gsm;
@@ -1345,7 +1345,7 @@ qq~<span id="expandall" $exp_vis><a href="javascript:Collapse_All('$scripturl?ac
             $collapselink =
 qq~<span id="collapseall" $col_vis><a href="javascript:Collapse_All('$scripturl?action=collapse_all;status=0',0,'$imagesdir','$boardindex_exptxt{'1'}')">$img{'collapse'}</a>$menusep</span>~;
             $markalllink =
-qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread','$imagesdir','0','1')">$img{'markallread'}</a>~; 
+qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread','$imagesdir','0','1')">$img{'markallread'}</a>~;
         }
         else {
             $markalllink =
@@ -1628,9 +1628,9 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
         $memcount = NumberFormat($memcount);
         $membercountlink =
           qq~<a href="$scripturl?action=ml"><b>$memcount</b></a>~;
-		if($iamguest && $ML_Allowed) {
-			$membercountlink = qq~<b>$memcount</b>~;
-		}
+        if($iamguest && $ML_Allowed) {
+            $membercountlink = qq~<b>$memcount</b>~;
+        }
          $boardindex_template =~
           s/({|<)yabb membercount(}|>)/$membercountlink/gsm;
         if ($showlatestmember) {

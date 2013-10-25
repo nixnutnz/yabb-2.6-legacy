@@ -1,10 +1,10 @@
 ###############################################################################
 # NewSettings.pm                                                              #
-# $Date: 10.03.13 $                                                            #
+# $Date: 10.25.13 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.5.41                                                #
+# Version:        YaBB 2.5.41                                                 #
 # Packaged:       September 1, 2013                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
