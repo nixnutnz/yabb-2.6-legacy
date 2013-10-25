@@ -3179,12 +3179,6 @@ sub SetInstall2 {
     $cookiepassword = qq~Y2Pass-$rancook~;
     $forumstart = timetostring($INFO{'firstforum'});
 
-# GMT offset fudgefactor #
-    use Time::Local;
-    @t = localtime(time);
-    $gmt_offset = timegm(@t) - timelocal(@t);
-    $forumstart = timetostring($INFO{'firstforum'} + $gmt_offset  );
-
     $settings_file_version = 'YaBB 2.5.4';
     if ($enable_notifications eq q{}) { $enable_notifications = $enable_notification ? 3 : 0; }
     $lang                  = $oldlang || 'English';
