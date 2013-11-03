@@ -44,6 +44,10 @@ sub LoadBoardControl {
         push @allboards, $cntboard;
 
         $cntdescription =~ s/\&/\&amp;/gxsm;
+        if ( substr( $cntmods, 0, 2) eq ', ' ) {
+            substr( $cntmods, 0, 2 ) = q{}; } 
+        if ( substr( $cntmodgroups, 0, 2) eq ', ' ) {
+            substr( $cntmodgroups, 0, 2 ) = q{}; }
 
         %{ $uid . $cntboard } = (
             'cat'           => $cntcat,
