@@ -86,6 +86,7 @@ sub AddModerators2 {
     my @x    = @_;
     my $user = $x[0];
     @modbd = split /, /sm, $x[1];
+    chomp @modbd;
     fopen( FORUMCNTR, "$boardsdir/forum.control" )
       || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     my @boardcntr = <FORUMCNTR>;
@@ -105,6 +106,7 @@ sub AddModerators2 {
             $adbrulesdesc,    $adrulescollapse
         ) = split /\|/xsm, $boardline;
         @bdmodlist = split /, /sm, $admdmods;
+        chomp @bdmodlist;
         $admdmods  = q{};
         $bdi       = 0;
         foreach (@bdmodlist) {

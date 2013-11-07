@@ -810,9 +810,8 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
                 ToChars($bddescr);
                 $iammod     = q{};
                 %moderators = ();
-
-                foreach
-                  my $curuser ( split /, ?/sm, ${ $uid . $curboard }{'mods'} )
+                my $curmods = ${ $uid . $curboard }{'mods'};
+                foreach my $curuser ( split /, ?/sm, $curmods )
                 {
                     if ( $username eq $curuser ) { $iammod = 1; }
                     LoadUser($curuser);

@@ -2952,9 +2952,9 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
         }
         else {
             $rowEmail = enc_eMail(
-                "$profile_txt{'889'} ${$uid.$user}{'realname'}",
+                '',
                 ${ $uid . $user }{'email'},
-                q{}, q{}
+                q{}, q{},1
             );
         }
 
@@ -2963,7 +2963,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
                         <b>$profile_txt{'69'}: </b>
                         </div>
                         <div class="contactright">
-                        $rowEmail
+                        $rowEmail$profile_txt{'889'} ${ $uid . $user }{'realname'}</a>
                         </div>~;
     }
     if ( !$minlinkweb ) { $minlinkweb = 0; }

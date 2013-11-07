@@ -3,8 +3,8 @@
 //##############################################################################
 //# YaBB: Yet another Bulletin Board                                           #
 //# Open-Source Community Software for Webmasters                              #
-//# Version:        YaBB 3.0 Beta                                              #
-//# Packaged:       October 05, 2010                                           #
+//# Version:        YaBB 2.5.4 Beta                                            #
+//# Packaged:       Nov 06, 2013                                               #
 //# Distributed by: http://www.yabbforum.com                                   #
 //# ===========================================================================#
 //# Copyright (c) 2000-2010 YaBB (www.yabbforum.com) - All Rights Reserved.    #
@@ -91,6 +91,13 @@ function SpamInator(title,v1,v2,adr,subbody) {
 	for (var v4 = 0; v4 < v1.length; v4++) { v3 += String.fromCharCode(v1.charCodeAt(v4)^v2.charCodeAt(v4)); }
 	if (!title) title = v3;
 	document.write('<a href="javascript:void(0)" onclick="window.location=\'' + adr + v3 + subbody + '\'">' + title + '</a>');
+}
+
+// for email decoding
+function SpamInator2(title,v1,v2,adr,subbody) {
+	v2 = unescape(v2); var v3 = '';
+	for(var v4 = 0; v4 < v1.length; v4++) { v3 += String.fromCharCode(v1.charCodeAt(v4)^v2.charCodeAt(v4)); }
+	document.write('<a href="javascript:void(0)" onclick="window.location=\'' + adr + v3 + subbody + '\'">');
 }
 
 var hideTimer = null;

@@ -1663,7 +1663,7 @@ sub uri_escape {    # usage: $safe = uri_escape( $string )
 }
 
 sub enc_eMail {
-    my ($title,$email,$subject,$body) = @_;
+    my ($title,$email,$subject,$body,$src) = @_;
     my ($charset_value);
     if ($yycharset eq 'windows-1251') { $charset_value = 848;} # Cyrillic decoding
 
@@ -1696,9 +1696,11 @@ sub enc_eMail {
     }
 
     $title =~ s/(((<.+?>)|&#\d+;)|.)/ enc_eMail_x($1,$2,$3) /egsm;
+    my $eback = 'SpamInator';
+    if ($src) { $eback = 'SpamInator2';}
 
-    return
-qq~<script type='text/javascript'>\nSpamInator("$title","$code1","$code2","&#109;&#97;&#105;&#108;&#92;&#117;&#48;&#48;&#55;&#52;&#111;&#92;&#117;&#48;&#48;&#51;&#97;","$subbody");\n</script><noscript>$maintxt{'noscript'}</noscript>~;
+    return qq~<script type='text/javascript'>\n$eback("$title","$code1","$code2","&#109;&#97;&#105;&#108;&#92;&#117;&#48;&#48;&#55;&#52;&#111;&#92;&#117;&#48;&#48;&#51;&#97;","$subbody");\n</script><noscript>$maintxt{'noscript'}</noscript>~;
+
 }
 
 sub generate_code {
