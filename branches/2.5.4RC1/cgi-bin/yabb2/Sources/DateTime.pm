@@ -1,6 +1,6 @@
 ###############################################################################
 # DateTime.pm                                                                 #
-# $Date: 10.01.13 $                                                            #
+# $Date: 11.06.13 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -233,155 +233,24 @@ sub timeformat {
     }
 
     if ( !$maintxt{'107'} ) { $maintxt{'107'} = $admin_txt{'107'}; }
-
-    if ( $mytimeselected == 7 ) {
-        $mytimeformat = ${ $uid . $username }{'timeformat'};
-        if ( $mytimeformat =~ m/hh/xsm ) { $hourstyle = 12; }
-        if ( $mytimeformat =~ m/HH/xsm ) { $hourstyle = 24; }
-        $mytimeformat =~ s/\@/$maintxt{'107'}/gxsm;
-        $mytimeformat =~ s/mm/$newminute/gxsm;
-        $mytimeformat =~ s/ss/$newsecond/gxsm;
-        $mytimeformat =~ s/ww/$newweek/gxsm;
-
-        if ( $mytimeformat =~ m/\+/sm ) {
-            if ( $newday > 10 && $newday < 20 ) {
-                $dayext = "<sup>$timetxt{'4'}</sup>";
+    my @timform = (
+        q{},
+        time_1( $daytxt, $newday, $newmonth, $newyear, $newtime ),
+        time_2( $daytxt, $newday, $newmonth, $newyear, $newtime ),
+        time_3( $daytxt, $newday, $newmonth, $newyear, $newtime ),
+        time_4( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
+        time_5( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
+        time_6( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
+        time_7(
+            ${ $uid . $username }{'timeformat'},
+            $newday, $newmonth, $newyear, $newhour, $newminute, $newweek
+        ),
+        time_8( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
+    );
+    foreach my $i ( 1 .. 8 ) {
+        if ( $mytimeselected == $i ) {
+            $newformat = $timform[$i];
         }
-            elsif ( $newday % 10 == 1 ) {
-                $dayext = "<sup>$timetxt{'1'}</sup>";
-        }
-            elsif ( $newday % 10 == 2 ) {
-                $dayext = "<sup>$timetxt{'2'}</sup>";
-    }
-            elsif ( $newday % 10 == 3 ) {
-                $dayext = "<sup>$timetxt{'3'}</sup>";
-}
-            else {
-                $dayext = "<sup>$timetxt{'4'}</sup>";
-            }
-                }
-        if ( $hourstyle == 12 ) {
-            $ampm = $newhour > 11 ? 'pm' : 'am';
-            $newhour2 = $newhour % 12 || 12;
-            $mytimeformat =~ s/hh/$newhour2/gxsm;
-            $mytimeformat =~ s/\#/$ampm/gxsm;
-            }
-        elsif ( $hourstyle == 24 ) {
-            $mytimeformat =~ s/HH/$newhour/gxsm;
-        }
-        if ( $daytxt eq q{} ) {
-            $mytimeformat =~ s/YYYY/$newyear/gxsm;
-            $mytimeformat =~ s/YY/$newshortyear/gxsm;
-            $mytimeformat =~ s/SDT/$shortday/gxsm;
-            $mytimeformat =~ s/LDT/$longday/gxsm;
-            $mytimeformat =~ s/DD/$newday/gxsm;
-            $mytimeformat =~ s/D/$newday/gxsm;
-            $mytimeformat =~ s/\+/$dayext/gxsm;
-            if ( $mytimeformat =~ m/MM/sm ) {
-
-                if ($use_rfc) {
-                    $mytimeformat =~ s/MM/$months_rfc[$newmonth-1]/gxsm;
-        }
-                else { $mytimeformat =~ s/MM/$months[$newmonth-1]/gxsm; }
-            }
-            elsif ( $mytimeformat =~ m/M/sm ) {
-                $mytimeformat =~ s/M/$newmonth/gxsm;
-        }
-    }
-    else {
-            $mytimeformat =~ s/SDT/$shortday/gxsm;
-            $mytimeformat =~ s/LDT/$longday/gxsm;
-            $mytimeformat =~ s/DD/$daytxt/gxsm;
-            $mytimeformat =~ s/D/$daytxt/gxsm;
-            $mytimeformat =~ s/YY//gxsm;
-            $mytimeformat =~ s/M//gxsm;
-            $mytimeformat =~ s/\/\///gxsm;
-            $mytimeformat =~ s/\+//gxsm;
-        }
-        if ( $newisdst && ${ $uid . $username }{'dsttimeoffset'} != 0 ) {
-            $mytimeformat =~ s/\*/$maintxt{'dst'}/gxsm;
-    }
-        else {
-            $mytimeformat =~ s/\*//gxsm;
-}
-
-        # Timezones
-        my $timezone = ${ $uid . $username }{'timeoffset'};
-        my $sign     = q{+};
-        if ( $timezone < 0 ) { $sign = q{-}; }
-        $timezone = $sign . sprintf '%04u', abs($timezone) * 100;
-        $mytimeformat =~ s/zzz/$timezone/gxsm;
-        $mytimeformat =~ s/  / /gsm;
-        $mytimeformat =~ s/[\n\r]//gxsm;
-
-        $newformat = $mytimeformat;
-    }
-    elsif ( $mytimeselected == 1 ) {
-    $newformat =
-      $daytxt
-      ? qq~$daytxt $maintxt{'107'} $newtime~
-      : qq~$newmonth/$newday/$newshortyear $maintxt{'107'} $newtime~;
-}
-    elsif ( $mytimeselected == 2 ) {
-    $newformat =
-      $daytxt
-      ? qq~$daytxt $maintxt{'107'} $newtime~
-      : qq~$newday.$newmonth.$newshortyear $maintxt{'107'} $newtime~;
-}
-    elsif ( $mytimeselected == 3 ) {
-    $newformat =
-      $daytxt
-      ? qq~$daytxt $maintxt{'107'} $newtime~
-      : qq~$newday.$newmonth.$newyear $maintxt{'107'} $newtime~;
-}
-    elsif ( $mytimeselected == 4 || $mytimeselected == 8 ) {
-    $ampm = $newhour > 11 ? 'pm' : 'am';
-    $newhour2 = $newhour % 12 || 12;
-    if   ($use_rfc) { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
-    else            { $newmonth2 = $months[ $newmonth - 1 ]; }
-    if ( $newday > 10 && $newday < 20 ) {
-        $newday2 = "<sup>$timetxt{'4'}</sup>";
-    }
-        elsif ( $newday % 10 == 1 ) {
-            $newday2 = "<sup>$timetxt{'1'}</sup>";
-        }
-        elsif ( $newday % 10 == 2 ) {
-            $newday2 = "<sup>$timetxt{'2'}</sup>";
-            }
-        elsif ( $newday % 10 == 3 ) {
-            $newday2 = "<sup>$timetxt{'3'}</sup>";
-        }
-        else {
-            $newday2 = "<sup>$timetxt{'4'}</sup>";
-    }
-    if ( $mytimeselected == 4 ) {
-        $newformat =
-          $daytxt
-          ? qq~$daytxt $maintxt{'107'} $newhour2:$newminute$ampm~
-          : qq~$newmonth2 $newday$newday2, $newyear $maintxt{'107'} $newhour2:$newminute$ampm~;
-    }
-    else {
-        $newformat =
-          $daytxt
-          ? qq~$daytxt $maintxt{'107'} $newhour2:$newminute$ampm~
-          : qq~$newday$newday2 $newmonth2, $newyear $maintxt{'107'} $newhour2:$newminute$ampm~;
-    }
-}
-    elsif ( $mytimeselected == 5 ) {
-    $ampm = $newhour > 11 ? 'pm' : 'am';
-    $newhour2 = $newhour % 12 || 12;
-    $newformat =
-      $daytxt
-      ? qq~$daytxt $maintxt{'107'} $newhour2:$newminute$ampm~
-      : qq~$newmonth/$newday/$newshortyear $maintxt{'107'} $newhour2:$newminute$ampm~;
-}
-    elsif ( $mytimeselected == 6 ) {
-    if   ($use_rfc) { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
-    else            { $newmonth2 = $months[ $newmonth - 1 ]; }
-    $newformat =
-      $daytxt
-      ? qq~$daytxt $maintxt{'107'} $newhour:$newminute~
-      : qq~$newday. $newmonth2 $newyear $maintxt{'107'} $newhour:$newminute~;
     }
     return $newformat;
 }
@@ -400,33 +269,33 @@ sub CalcAge {
             if ( length( ${ $uid . $user }{'bday'} ) <= 2 ) {
                 $age = ${ $uid . $user }{'bday'};
         }
-        else {
+            else {
                 $age = $year - $useryear;
                 if ( $usermonth > $mon_num
                     || ( $usermonth == $mon_num && $userday > $mday ) )
                 {
                     --$age;
-                }
-            }
         }
+    }
+}
         if ( $act eq 'parse' ) {
             if ( length( ${ $uid . $user }{'bday'} ) <= 2 ) { return; }
             $umonth = $usermonth;
             $uday   = $userday;
             $uyear  = $useryear;
-    }
+            }
         if ( $act eq 'isbday' ) {
             if ( $usermonth == $mon_num && $userday == $mday ) {
                 $isbday = 'yes';
+                }
             }
         }
-    }
     else {
         $age    = q{};
         $isbday = q{};
-    }
+        }
     return;
-}
+            }
 
 sub NumberFormat {
     my ($inp) = @_;
@@ -449,12 +318,207 @@ sub NumberFormat {
         $decimal =~ s/(\d{3})/$1$separator/gsm;
         $decimal = reverse $decimal;
         $decimal =~ s/^(\.|\,| )//sm;
-    }
+        }
     $newnumber = $decimal;
     if ($fraction) {
         $newnumber .= "$decimalpt$fraction";
-            }
+    }
     return $newnumber;
+}
+
+sub time_1 {
+    my ( $daytxt, $newday, $newmonth, $newyear, $newtime ) = @_;
+    $newformat =
+      $daytxt
+      ? qq~$daytxt $maintxt{'107'} $newtime~
+      : qq~$newmonth/$newday/$newshortyear $maintxt{'107'} $newtime~;
+
+    return $newformat;
+}
+
+sub time_2 {
+    my ( $daytxt, $newday, $newmonth, $newyear, $newtime ) = @_;
+    $newformat =
+      $daytxt
+      ? qq~$daytxt $maintxt{'107'} $newtime~
+      : qq~$newday.$newmonth.$newshortyear $maintxt{'107'} $newtime~;
+
+    return $newformat;
+}
+
+sub time_3 {
+    my ( $daytxt, $newday, $newmonth, $newyear, $newtime ) = @_;
+    $newformat =
+      $daytxt
+      ? qq~$daytxt $maintxt{'107'} $newtime~
+      : qq~$newday.$newmonth.$newyear $maintxt{'107'} $newtime~;
+
+    return $newformat;
+}
+
+sub time_4 {
+    my ( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ) = @_;
+    $ampm = $newhour > 11 ? 'pm' : 'am';
+    $newhour2 = $newhour % 12 || 12;
+    if   ($use_rfc) { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
+    else            { $newmonth2 = $months[ $newmonth - 1 ]; }
+    $newday2 = "<sup>$timetxt{'4'}</sup>";
+    if ( $newday > 10 && $newday < 20 ) {
+        $newday2 = "<sup>$timetxt{'4'}</sup>";
+    }
+    else {
+        foreach my $i ( 1 .. 3 ) {
+            if ( $newday % 10 == $i ) {
+                $newday2 = qq~<sup>$timetxt{"$i"}</sup>~;
+            }
+        }
+    }
+    if ( $mytimeselected == 4 ) {
+        $newformat =
+          $daytxt
+          ? qq~$daytxt $maintxt{'107'} $newhour2:$newminute$ampm~
+          : qq~$newmonth2 $newday$newday2, $newyear $maintxt{'107'} $newhour2:$newminute$ampm~;
+    }
+    else {
+        $newformat =
+          $daytxt
+          ? qq~$daytxt $maintxt{'107'} $newhour2:$newminute$ampm~
+          : qq~$newday$newday2 $newmonth2, $newyear $maintxt{'107'} $newhour2:$newminute$ampm~;
+    }
+
+    return $newformat;
+}
+
+sub time_5 {
+    my ( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ) = @_;
+    $ampm = $newhour > 11 ? 'pm' : 'am';
+    $newhour2 = $newhour % 12 || 12;
+    $newformat =
+      $daytxt
+      ? qq~$daytxt $maintxt{'107'} $newhour2:$newminute$ampm~
+      : qq~$newmonth/$newday/$newshortyear $maintxt{'107'} $newhour2:$newminute$ampm~;
+
+    return ($newformat);
+}
+
+sub time_6 {
+    my ( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ) = @_;
+    if   ($use_rfc) { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
+    else            { $newmonth2 = $months[ $newmonth - 1 ]; }
+    $newformat =
+      $daytxt
+      ? qq~$daytxt $maintxt{'107'} $newhour:$newminute~
+      : qq~$newday. $newmonth2 $newyear $maintxt{'107'} $newhour:$newminute~;
+
+    return $newformat;
+}
+
+sub time_7 {
+    my ( $mytimeformat, $newday, $newmonth, $newyear, $newhour, $newminute,$newweek ) =
+      @_;
+    if ( $mytimeformat =~ m/hh/sm ) { $hourstyle = 12; }
+    if ( $mytimeformat =~ m/HH/sm ) { $hourstyle = 24; }
+    $mytimeformat =~ s/\@/$maintxt{'107'}/gxsm;
+    $mytimeformat =~ s/mm/$newminute/gxsm;
+    $mytimeformat =~ s/ss/$newsecond/gxsm;
+    $mytimeformat =~ s/ww/$newweek/gxsm;
+
+    $dayext = q{};
+    if ( $mytimeformat =~ m/[+]/sm ) {
+        $dayext = "<sup>$timetxt{'4'}</sup>";
+        if ( $newday > 10 && $newday < 20 ) {
+            $dayext = "<sup>$timetxt{'4'}</sup>";
+        }
+        else {
+            foreach my $i ( 1 .. 3 ) {
+                if ( $newday % 10 == $i ) {
+                    $datext = qq~<sup>$timetxt{"$i"}</sup>~;
+                }
+            }
+        }
+                }
+    if ( $hourstyle == 12 ) {
+        $ampm = $newhour > 11 ? 'pm' : 'am';
+        $newhour2 = $newhour % 12 || 12;
+        $mytimeformat =~ s/hh/$newhour2/gxsm;
+        $mytimeformat =~ s/\#/$ampm/gxsm;
+            }
+    elsif ( $hourstyle == 24 ) {
+        $mytimeformat =~ s/HH/$newhour/gxsm;
+        }
+    if ( $daytxt eq q{} ) {
+        $mytimeformat =~ s/YYYY/$newyear/gxsm;
+        $mytimeformat =~ s/YY/$newshortyear/gxsm;
+        $mytimeformat =~ s/SDT/$shortday/gxsm;
+        $mytimeformat =~ s/LDT/$longday/gxsm;
+        $mytimeformat =~ s/DD/$newday/gxsm;
+        $mytimeformat =~ s/D/$newday/gxsm;
+        $mytimeformat =~ s/[+]/$dayext/gxsm;
+        if ( $mytimeformat =~ m/MM/xsm ) {
+
+            if ($use_rfc) {
+                $mytimeformat =~ s/MM/$months_rfc[$newmonth-1]/gxsm;
+    }
+            else { $mytimeformat =~ s/MM/$months[$newmonth-1]/gxsm; }
+            }
+        elsif ( $mytimeformat =~ m/M/xsm ) {
+            $mytimeformat =~ s/M/$newmonth/gxsm;
+        }
+    }
+    else {
+        $mytimeformat =~ s/SDT/$shortday/gxsm;
+        $mytimeformat =~ s/LDT/$longday/gxsm;
+        $mytimeformat =~ s/DD/$daytxt/gxsm;
+        $mytimeformat =~ s/D/$daytxt/gxsm;
+        $mytimeformat =~ s/YY//gxsm;
+        $mytimeformat =~ s/M//gxsm;
+        $mytimeformat =~ s/\/\///gxsm;
+        $mytimeformat =~ s/[+]//gsm;
+    }
+    if ( $newisdst && ${ $uid . $username }{'dsttimeoffset'} != 0 ) {
+        $mytimeformat =~ s/[*]/$maintxt{'dst'}/gxsm;
+    }
+    else {
+        $mytimeformat =~ s/[*]//gsm;
+    }
+
+    # Timezones
+    my $timezone = ${ $uid . $username }{'timeoffset'};
+    my $sign     = q{+};
+    if ( $timezone < 0 ) { $sign = q{-}; }
+    $timezone = $sign . sprintf '%04u', abs($timezone) * 100;
+    $mytimeformat =~ s/zzz/$timezone/gsm;
+    $mytimeformat =~ s/  / /gsm;
+    $mytimeformat =~ s/[\n\r]//gsm;
+
+    $newformat = $mytimeformat;
+
+    return $newformat;
+}
+
+sub time_8 {
+    my ( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ) = @_;
+    $ampm = $newhour > 11 ? 'pm' : 'am';
+    $newhour2 = $newhour % 12 || 12;
+    if   ($use_rfc) { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
+    else            { $newmonth2 = $months[ $newmonth - 1 ]; }
+    $newday2 = "<sup>$timetxt{'4'}</sup>";
+    if ( $newday > 10 && $newday < 20 ) {
+        $newday2 = "<sup>$timetxt{'4'}</sup>";
+        }
+    else {
+        foreach my $i ( 1 .. 3 ) {
+            if ( $newday % 10 == $i ) {
+                $newday2 = qq~<sup>$timetxt{"$i"}</sup>~;
+    }
+    }
+            }
+    $newformat =
+      $daytxt
+      ? qq~$daytxt $maintxt{'107'} $newhour2:$newminute$ampm~
+      : qq~$newday$newday2 $newmonth2, $newyear $maintxt{'107'} $newhour2:$newminute$ampm~;
+
+    return $newformat;
 }
 
 sub dtonly {
@@ -486,11 +550,11 @@ sub bdayno_year {
         $date_noyear = qq~$date_noyear[0]~ . q{/} . qq~$date_noyear[1]~;
     }
     elsif ( $mytimeselected == 2 || $mytimeselected == 3 ) {
-        @date_noyear = split /\./xsm, $newformat;
+        @date_noyear = split /[.]/xsm, $newformat;
         $date_noyear = qq~$date_noyear[0]~ . q{/} . qq~$date_noyear[1]~;
     }
     elsif ( $mytimeselected == 6 ) {
-        @date_noyear = split /\ /xsm, $newformat;
+        @date_noyear = split / /sm, $newformat;
         $date_noyear = qq~$date_noyear[0] $date_noyear[1]~;
     }
 
