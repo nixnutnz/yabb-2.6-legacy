@@ -32,7 +32,8 @@ sub sendmail {
 # Changed to dash - &#144; misread in mail clients that use semi-colons as a delimiter
     $mbname =~ s/,/-/igsm;
 
-    $charsetheader = $mailcharset ? $mailcharset : $yycharset;
+ #   $charsetheader = $mailcharset ? $mailcharset : $yycharset;
+    $charsetheader = 'UTF-8';
 
     if ( !$from ) {
         $from       = $webmaster_email;
@@ -107,7 +108,7 @@ sub sendmail {
             $smtp->datasend("From: $fromheader\r\n");
             $smtp->datasend("X-Mailer: YaBB Net::SMTP\r\n");
             $smtp->datasend("Subject: $subject\r\n");
-            $smtp->datasend("Content-Type: text/plain\; charset=$charsetheader\r\n");
+            $smtp->datasend("Content-Type: text/html\; charset=$charsetheader\r\n");
             $smtp->datasend("\r\n");
             $smtp->datasend($message);
             $smtp->dataend();
@@ -167,7 +168,7 @@ sub tomail {
     print {$MAIL} "From: $fromheader\n"       or croak "$croak{'print'} mail";
     print {$MAIL} "X-Mailer: YaBB Sendmail\n" or croak "$croak{'print'} mail";
     print {$MAIL} "Subject: $subject\n"       or croak "$croak{'print'} mail";
-    print {$MAIL} "Content-Type: text/plain\; charset=$charsetheader\n\n"
+    print {$MAIL} "Content-Type: text/html\; charset=$charsetheader\n\n"
       or croak "$croak{'print'} mail";
     $message =~ s/\r\n/\n/gsm;
     print {$MAIL} "$message\n" or croak "$croak{'print'} mail";
