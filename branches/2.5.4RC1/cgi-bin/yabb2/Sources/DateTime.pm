@@ -268,34 +268,34 @@ sub CalcAge {
         if ( $act eq 'calc' ) {
             if ( length( ${ $uid . $user }{'bday'} ) <= 2 ) {
                 $age = ${ $uid . $user }{'bday'};
-        }
+            }
             else {
                 $age = $year - $useryear;
                 if ( $usermonth > $mon_num
                     || ( $usermonth == $mon_num && $userday > $mday ) )
                 {
                     --$age;
+                }
+            }
         }
-    }
-}
         if ( $act eq 'parse' ) {
             if ( length( ${ $uid . $user }{'bday'} ) <= 2 ) { return; }
             $umonth = $usermonth;
             $uday   = $userday;
             $uyear  = $useryear;
-            }
+        }
         if ( $act eq 'isbday' ) {
             if ( $usermonth == $mon_num && $userday == $mday ) {
                 $isbday = 'yes';
-                }
             }
         }
+    }
     else {
         $age    = q{};
         $isbday = q{};
-        }
+    }
     return;
-            }
+}
 
 sub NumberFormat {
     my ($inp) = @_;
@@ -318,7 +318,7 @@ sub NumberFormat {
         $decimal =~ s/(\d{3})/$1$separator/gsm;
         $decimal = reverse $decimal;
         $decimal =~ s/^(\.|\,| )//sm;
-        }
+    }
     $newnumber = $decimal;
     if ($fraction) {
         $newnumber .= "$decimalpt$fraction";
@@ -436,16 +436,16 @@ sub time_7 {
                 }
             }
         }
-                }
+    }
     if ( $hourstyle == 12 ) {
         $ampm = $newhour > 11 ? 'pm' : 'am';
         $newhour2 = $newhour % 12 || 12;
         $mytimeformat =~ s/hh/$newhour2/gxsm;
         $mytimeformat =~ s/\#/$ampm/gxsm;
-            }
+    }
     elsif ( $hourstyle == 24 ) {
         $mytimeformat =~ s/HH/$newhour/gxsm;
-        }
+    }
     if ( $daytxt eq q{} ) {
         $mytimeformat =~ s/YYYY/$newyear/gxsm;
         $mytimeformat =~ s/YY/$newshortyear/gxsm;
@@ -458,9 +458,9 @@ sub time_7 {
 
             if ($use_rfc) {
                 $mytimeformat =~ s/MM/$months_rfc[$newmonth-1]/gxsm;
-    }
-            else { $mytimeformat =~ s/MM/$months[$newmonth-1]/gxsm; }
             }
+            else { $mytimeformat =~ s/MM/$months[$newmonth-1]/gxsm; }
+        }
         elsif ( $mytimeformat =~ m/M/xsm ) {
             $mytimeformat =~ s/M/$newmonth/gxsm;
         }
@@ -505,14 +505,14 @@ sub time_8 {
     $newday2 = "<sup>$timetxt{'4'}</sup>";
     if ( $newday > 10 && $newday < 20 ) {
         $newday2 = "<sup>$timetxt{'4'}</sup>";
-        }
+    }
     else {
         foreach my $i ( 1 .. 3 ) {
             if ( $newday % 10 == $i ) {
                 $newday2 = qq~<sup>$timetxt{"$i"}</sup>~;
-    }
-    }
             }
+        }
+    }
     $newformat =
       $daytxt
       ? qq~$daytxt $maintxt{'107'} $newhour2:$newminute$ampm~

@@ -333,6 +333,7 @@ sub ModifyMessage2 {
         if ( !$poll_end_min || $poll_end_min =~ /\D/xsm ) {
             $poll_end_min = q{};
         }
+        my $poll_end = q{};
         if ($poll_end_days) { $poll_end = $poll_end_days * 86_400; }
         if ($poll_end_min) { $poll_end += $poll_end_min * 60; }
         if ($poll_end)     { $poll_end += $date; }

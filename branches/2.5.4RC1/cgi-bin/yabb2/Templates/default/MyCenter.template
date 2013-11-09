@@ -319,6 +319,7 @@ $my_delstore = qq~<tr>
 $my_pmsearch = qq~<tr>
         <td colspan="3">
             <hr class="hr" />
+            <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
             <form action="$scripturl?action=pmsearch" method="post" onsubmit="return submitproc()" style="display: inline" accept-charset="$yycharset">
                 <div class="yabb_searchbox" style="float:left">
                     <input type="text" name="search" id="search" size="16" value="$pm_search{'desc'}" onfocus="txtInFields(this, '$pm_search{'desc'}');" onblur="txtInFields(this, '$pm_search{'desc'}')" style="font-size: 11px; vertical-align: middle;" />

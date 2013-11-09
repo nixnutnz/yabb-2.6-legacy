@@ -256,24 +256,11 @@ sub template {
     $yytitle         = "$mbname - $yytitle";
     $yyimages        = $imagesdir;
     $yydefaultimages = $defaultimagesdir;
-    $yyubbc          = q{};
     $yysyntax_js     = q{};
     $yygreyboxstyle  = q{};
     $yygrayscript    = q{};
 
     if (   
-        $action eq 'post'
-        || $action eq 'modify'
-        || $action eq 'imshow'
-        || $action eq 'imsend'
-        || ( $action eq 'eventcal' && $INFO{'addnew'} )
-        || $action eq 'mycenter'
-       )
-    {
-        $yyubbc = qq~<script type="text/javascript" src="$yyhtml_root/ubbc.js" ></script>~;
-    }
-
-    if (
            $INFO{'num'}
         || $action eq 'post'
         || $action eq 'modify'
@@ -1694,12 +1681,11 @@ sub enc_eMail {
         $subbody = "?subject=$subject&body=$body";
         $subbody =~ s/(((<.+?>)|&#\d+;)|.)/ enc_eMail_x($1,$2,$3) /egsm;
     }
+    $titlesp = $title;
+    $titlesp =~ s/(((<.+?>)|&#\d+;)|.)/ enc_eMail_x($1,$2,$3) /egsm;
+    if ($src) {$titlesp = $title;}
 
-    $title =~ s/(((<.+?>)|&#\d+;)|.)/ enc_eMail_x($1,$2,$3) /egsm;
-    my $eback = 'SpamInator';
-    if ($src) { $eback = 'SpamInator2';}
-
-    return qq~<script type='text/javascript'>\n$eback("$title","$code1","$code2","&#109;&#97;&#105;&#108;&#92;&#117;&#48;&#48;&#55;&#52;&#111;&#92;&#117;&#48;&#48;&#51;&#97;","$subbody");\n</script><noscript>$maintxt{'noscript'}</noscript>~;
+    return qq~<script type='text/javascript'>\nSpamInator("$titlesp","$code1","$code2","&#109;&#97;&#105;&#108;&#92;&#117;&#48;&#48;&#55;&#52;&#111;&#92;&#117;&#48;&#48;&#51;&#97;","$subbody");\n</script>~;
 
 }
 

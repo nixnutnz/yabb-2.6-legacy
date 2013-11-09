@@ -93,13 +93,6 @@ function SpamInator(title,v1,v2,adr,subbody) {
 	document.write('<a href="javascript:void(0)" onclick="window.location=\'' + adr + v3 + subbody + '\'">' + title + '</a>');
 }
 
-// for email decoding
-function SpamInator2(title,v1,v2,adr,subbody) {
-	v2 = unescape(v2); var v3 = '';
-	for(var v4 = 0; v4 < v1.length; v4++) { v3 += String.fromCharCode(v1.charCodeAt(v4)^v2.charCodeAt(v4)); }
-	document.write('<a href="javascript:void(0)" onclick="window.location=\'' + adr + v3 + subbody + '\'">');
-}
-
 var hideTimer = null;
 var lastOpen = null;
 function quickLinks(num) {

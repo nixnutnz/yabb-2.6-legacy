@@ -2325,9 +2325,9 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
         ${ $uid . $username }{'timeformat'} = $timeformat;
         ${ $uid . $username }{'timeselect'} = $timeselect;
 
-# First load the current .ctb info but don't close the file befor saving the changed data
+# First load the current .ctb info but don't close the file before saving the changed data
 # or you can get wrong .ctb files if two users save at the exact same moment.
-# Therfore we can't use &MessageTotals("load", $threadid); her.
+# Therefore we can't use &MessageTotals("load", $threadid); here.
 # File locking should be enabled in AdminCenter!
 # Changes here on @tag must also be done in System.pm -> sub MessageTotals -> my @tag = ...
         my @tag =

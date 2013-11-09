@@ -877,9 +877,10 @@ qq~             <li><a href="$scripturl?action=imsend;to=$useraccount{$user}">$m
                   . enc_eMail(
                     "$maintxt{'1'} ${$uid.$user}{'realname'}",
                     ${ $uid . $user }{'email'},
-                    q{}, q{},1
-                  ) . "$maintxt{'1'} ${$uid.$user}{'realname'}</a></li>\n";
+                    q{}, q{}, 1
+                  ) . "</li>\n";
             }
+
             if ( !%mybuddie ) { loadMyBuddy(); }
             if ( $buddyListEnabled && !$mybuddie{$user} ) {
                 $quicklinks .=

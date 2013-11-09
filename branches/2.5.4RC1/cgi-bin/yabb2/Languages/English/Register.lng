@@ -91,6 +91,7 @@ $registerlngver = 'YaBB 2.5.4 RC1 $Revision$';
 
 # the following error_ variables are inside JavaScript!
 'error_username' => 'You must insert a user ID.',
+'error_numname' => 'You may not create a user ID with only numbers.',
 'error_usernameispass' => 'For security reasons, you cannot use your user ID or screen name as your password.',
 'error_realname' => 'You must insert a screen name.',
 'error_name_cannot_be_userid' => 'User ID and screen name must be different.',
