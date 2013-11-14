@@ -1,6 +1,6 @@
 ###############################################################################
 # ManageBoards.pm                                                             #
-# $Date: 10.03.13 $                                                           #
+# $Date: 11.13.13 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -914,7 +914,9 @@ qq~                     <select multiple="multiple" name="moderatorgroups$i" id=
         }
         my $boardpic_value = q{};
         if ( $boardpic ) {
-            $boardpic_value = qq~               <div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Templates/Forum/default/$boardpic" target="_blank">$boardpic</a><br /><input type="checkbox" name="del_pic$i" id="del_pic$i" value="1" /> <label for="del_pic$i">$admin_txt{'64b4'}</label></div>~;
+            $brdpic_addr = $boardpic;
+            if ( $boardpic !~ /http[s]{0,1}:\/\//xsm ) { $brdpic_addr = qq~$yyhtml_root/Templates/Forum/default/$boardpic~;}
+            $boardpic_value = qq~               <div class="small bold"><input type="checkbox" name="del_pic$i" id="del_pic$i" value="1" /><label for="del_pic$i">$admin_txt{'64b4'}</label><br />$admin_txt{'current_img'}: <a href="$brdpic_addr" target="_blank">$boardpic</a> <img src="$brdpic_addr" alt="board_pic" /> </div>~;
         }
 
         $yymain .= qq~
@@ -938,8 +940,11 @@ qq~                     <select multiple="multiple" name="moderatorgroups$i" id=
                     </tr><tr>
                         <td class="catbg"  colspan="4"><b>$admin_txt{'64'}</b> $admin_txt{'64a'} </td>
                     </tr><tr>
-                        <td class="windowbg2"><label for="pic$i"><b>$admin_txt{'64b'}:</b><br /><span class="small">$admin_txt{'64b3'}</span></label></td>
-                        <td class="windowbg2" colspan="3"><input type="file" name="pic$i" id="pic$i" size="35"$brdpic /><input type="hidden" name="cur_pic$i" value="$boardpic" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('pic$i').value='';">X</span>$boardpic_value</td>
+                        <td class="windowbg2"><label for="pic$i"><b>$admin_txt{'64b'}:</b></label></td>
+                        <td class="windowbg2" colspan="3"><span class="small">$admin_txt{'64b3'}</span><br /><input type="file" name="pic$i" id="pic$i" size="35"$brdpic /><input type="hidden" name="cur_pic$i" value="$boardpic" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('pic$i').value='';">X</span>$boardpic_value
+                        <br /><span class="small">$admin_txt{'64b6'}</span><br />
+                        <input type="text" name="mypic$i" id="mypic$i" value="$myboardpic" size="50" maxlength="255"$brdpic />
+                        </td>
                     </tr><tr>
                         <td class="windowbg2"><label for="brdrss$i"><b>$admin_txt{'brdrss1'}:</b></label></td>
                         <td class="windowbg2" colspan="3"><input type="checkbox" name="brdrss$i" id="brdrss$i" value="1"$brdrssch /> <label for="brdrss$i"><span class="small">$admin_txt{'brdrss3'}</span></label></td>
@@ -1208,12 +1213,21 @@ sub AddBoards2 {
                 unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_pic$i\"}";
             }
         }
+        elsif ( $FORM{"mypic$i"} ne q{} ) {
+            if ( $FORM{"mypic$i"} !~ m{^[0-9a-zA-Z_\.\#\%\-\:\+\?\$\&\~\.\,\@/]+\.(gif|png|bmp|jpg)$}xsm )
+            {
+                fatal_error('invalid_picture');
+            }
+            else { $FORM{"pic$i"} = $FORM{"mypic$i"}; }
+        }
         else {
             $FORM{"pic$i"} = $FORM{"cur_pic$i"};
         }
 
         if ( $FORM{"cur_pic$i"} ne q{} && $FORM{"del_pic$i"} ) {
+            if ( $FORM{"cur_pic$i"} !~ /http[s]{0,1}:\/\//xsm ) {
             unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_pic$i\"}";
+            }
             $FORM{"pic$i"} = q{};
         }
         ##### Dealing with Required Info here #####

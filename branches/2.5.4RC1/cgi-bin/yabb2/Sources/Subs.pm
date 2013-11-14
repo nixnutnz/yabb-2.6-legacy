@@ -260,7 +260,7 @@ sub template {
     $yygreyboxstyle  = q{};
     $yygrayscript    = q{};
 
-    if (   
+    if (
            $INFO{'num'}
         || $action eq 'post'
         || $action eq 'modify'
@@ -620,7 +620,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
     if ( !$iamguest || $guestaccess != 0 ) {
         if ( $maxsearchdisplay > -1 && $qcksearchaccess eq 'granted' ) {
             $yysearchbox = qq~
-                    <div class="yabb_searchbox">              
+                    <div class="yabb_searchbox">
                     <form action="$scripturl?action=search2" method="post" accept-charset="$yycharset">
                         <input type="hidden" name="searchtype" value="$qcksearchtype" />
                         <input type="hidden" name="userkind" value="any" />
@@ -3246,7 +3246,7 @@ sub BoardPassw {
     #template in MessageIndex.template
     $yymain .= $boardpassw;
 
-    $yytitle = qq~$maintxt{'900pw'}: $boardname~; 
+    $yytitle = qq~$maintxt{'900pw'}: $boardname~;
     template();
     exit;
 }
@@ -3255,7 +3255,7 @@ sub BoardPassw_g {
     #template in MessageIndex.template
     $yymain .= $boardpassw_g;
 
-    $yytitle = qq~$maintxt{'900pw'}: $boardname~; 
+    $yytitle = qq~$maintxt{'900pw'}: $boardname~;
     template();
     exit;
 }
@@ -3265,7 +3265,7 @@ sub BoardPasswCheck {
     my $returnboard = $FORM{'pswcurboard'};
     my $spass       = ${ $uid . $returnboard }{'brdpassw'};
     my $cryptpass   = encode_password("$FORM{'boardpw'}");
-    if ( $FORM{'boardpw'} eq q{} ) { fatal_error('', "$maintxt{'900pe'}"); } 
+    if ( $FORM{'boardpw'} eq q{} ) { fatal_error('', "$maintxt{'900pe'}"); }
     if ( $spass ne $cryptpass ) { fatal_error('wrong_pass'); }
     $ck{'len'} = 'Sunday, 17-Jan-2030 00:00:00 GMT';
     my $cookiename = "$cookiepassword$returnboard$username";
@@ -3293,12 +3293,12 @@ sub UploadFile {
 
     my ( $file_upload, $file_directory, $file_extensions, $file_size, $directory_limit ) = @_;
     $file_directory = qq~$htmldir/$file_directory~;
-    
+
     LoadLanguage('FA');
     require Sources::SpamCheck;
-    
+
     if ($CGI_query) { $file = $CGI_query->upload("$file_upload"); }
-    if ($file) { 
+    if ($file) {
         $fixfile = $file;
         $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/xsm;
         if ( $fixfile =~ /[^0-9A-Za-z\+\-\.:_]/xsm )
@@ -3353,7 +3353,7 @@ sub UploadFile {
         if ( $fixfile eq 'index.html' || $fixfile eq '.htaccess' ) { fatal_error('attach_file_blocked') };
 
         $fixfile = check_existence( $file_directory, $fixfile );
- 
+
         my $match = 0;
         foreach my $ext ( split / /, $file_extensions ) {
             if ( grep { /$ext$/ixsm } $fixfile ) {
@@ -3361,9 +3361,9 @@ sub UploadFile {
                 last;
             }
         }
-                
+
         if (!$match) {
-            unlink "$file_directory/$fixfile"; 
+            unlink "$file_directory/$fixfile";
             fatal_error( q{}, "$fixfile $fatxt{'20'} $file_extensions" );
         }
 
@@ -3379,7 +3379,7 @@ sub UploadFile {
                   . int( $filesize / 1024 )
                   . " KB) $fatxt{'21b'} "
                   . $file_size );
-        } 
+        }
         if ($directory_limit) {
             my $dirsize = dirsize($file_directory);
             if ( $file_size > ( ( 1024 * $directory_limit ) - $dirsize ) ) {
@@ -3408,7 +3408,7 @@ sub UploadFile {
         }
         else
         { # return the server's error message if the new file could not be created
-                unlink "$file_directory/$fixfile"; 
+                unlink "$file_directory/$fixfile";
                 fatal_error( 'file_not_open', "$file_directory" );
         }
 
@@ -3447,7 +3447,7 @@ sub UploadFile {
              }
         }
 
-    }        
+    }
     return ($fixfile);
 }
 
