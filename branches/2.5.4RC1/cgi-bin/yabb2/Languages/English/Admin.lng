@@ -78,6 +78,7 @@ $adminlngver = 'YaBB 2.5.4 RC1 $Revision$';
 '64b3' => 'Allowed file types: png jpg jpeg gif<br />Max. file size: 250KB',
 '64b4' => 'Remove Board Picture',
 '64b5' => 'Remove Category Picture',
+'64b6' => 'Or enter the URL for your Board Picture.', 
 '64c' => 'Zero Post-Count Board?',
 '64d' => 'If checked, posts in this board will not contribute to a user&#39;s post count.',
 '64e' => 'Show to all?',
