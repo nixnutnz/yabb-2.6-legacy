@@ -64,7 +64,7 @@
                     </ul>
                 </li>
                 <li>Then, in a section of your webspace (outside the cgi-bin, generally in a 'public_html' or 'htdocs' folder, as suggested in the package's folders), create another directory called 'yabbfiles.'</li>
-                <li>Upload all of the files from the 'public_html/yabbfiles' folder (<b>DO NOT use the AUTO Transfer mode!</b>) into your new folder. All files should be uploaded using ASCII except for these file types: .gif, .jpg, .png, and .swf, which must be transferred using Binary mode.  Do not rename any of these folders for now, or the automatic path detection will not work when you run the setup script. Note: <i>Three of the folder names do not begin with capital letters</i>.  You should have a folder structure similar to the following when this is complete:
+                <li>Upload all of the files from the 'public_html/yabbfiles' folder (<b>DO NOT use the AUTO Transfer mode!</b>) into your new folder. All files should be uploaded using ASCII except for these file types: .gif, .jpg, .png, and .swf, which must be transferred using Binary mode.  Do not rename any of these folders for now, or the automatic path detection will not work when you run the setup script.** Note: <i>Three of the folder names do not begin with capital letters</i>.  You should have a folder structure similar to the following when this is complete:
                     <ul>
                         <li>yabbfiles/</li>
                         <li>yabbfiles/Attachments</li>
@@ -83,7 +83,8 @@
                     </ul>
                 </li>
             </ol>
-			<p>* YaBB 2.5.4 requires that certain folders <b>not</b> be renamed. These folders (in the cgi-bin) are: Admin, Modules, Sources, and Variables.</p> 
+			<p>* YaBB 2.5.4 requires that certain folders <b>not</b> be renamed. These folders (in the cgi-bin) are: Admin, Modules, Sources, and Variables. Members, Boards, and Messages <b>can</b> be renamed so long as you remember to make the appropriate changes in Paths.pm.</p>
+            <p>** Once your YaBB 2.5.4 installation is complete we suggest you rename the yabb2 folder to something unique. This will require hand editing your Paths.pm file to point to your new YaBB folder name. Changing the name of the folder will make it much harder for spammers and spambots to locate and attack your forum.</p>
         </div>
         <div class="clr"></div>
     </div>

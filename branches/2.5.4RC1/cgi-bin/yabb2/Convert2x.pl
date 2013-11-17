@@ -4,7 +4,7 @@
 # $Source: /Convert2x.pl $
 ###############################################################################
 # Convert2x.pl                                                                #
-# $Date: 10.15.13 $                                                           #
+# $Date: 11.17.13 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -414,6 +414,7 @@ EOF
     elsif ( $action eq 'cleanup' ) {
         require qq~$vardir/ConvSettings.txt~;
         MoveVariables($convvardir);
+        FixControl();
         FixNopost();
 
         $yytabmenu =
@@ -631,6 +632,44 @@ sub MyUpdateUser {
     return;
 }
 
+sub FixControl {
+    if ( -e qq~$convvardir/boardconv.txt~ ) {
+        require qq~$convvardir/boardconv.txt~;
+        fopen( OLDFORUMCONTROL, "$convboardsdir/forum.control" )
+          || setup_fatal_error( "$maintext_23 $convboardsdir/forum.control: ", 1 );
+        @oldboardcontrols = <OLDFORUMCONTROL>;
+        fclose(OLDFORUMCONTROL);
+        chomp @oldboardcontrols;
+        foreach (@oldboardcontrols) {
+            my ( $old, $oldboard ) = split /[|]/xsm, $_;
+            push @oldboard, $oldboard;
+        }
+        my $j = 0;
+        my @newboard = ();
+        foreach my $x (@oldboard) {
+#$cat|$board|$pic|$description|$mods|$modgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$attperms|$minageperms|$maxageperms|$genderperms|$canpost|$parent|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$bdrss
+           $newboard[$j] = qq~${$x}{'cat'}|$x|${$x}{'pic'}|${$x}{'description'}|${$x}{'mods'}|${$x}{'modgroups'}|${$x}{'topicperms'}|${$x}{'replyperms'}|${$x}{'pollperms'}|${$x}{'zero'}|${$x}{'membergroups'}|${$x}{'ann'}|${$x}{'rbin'}|${$x}{'attperms'}|${$x}{'minageperms'}|${$x}{'maxageperms'}|${$x}{'genderperms'}|${$x}{'canpost'}|${$x}{'parent'}|${$x}{'rules'}|${$x}{'rulestitle'}|${$x}{'rulesdesc'}|${$x}{'rulescollapse'}|${$x}{'brdpasswr'}|${$x}{'brdpassw'}|${$x}{'brdrss'}\n~;
+            $j++;
+        }
+       fopen( FORUMCONTROL, ">$boardsdir/forum.control" )
+          || setup_fatal_error( "$maintext_23 $boardsdir/forum.control: ", 1 );
+        print {FORUMCONTROL} @newboard
+          or croak 'cannot print FORUMCONTROL';
+        fclose(FORUMCONTROL);
+    }
+    else {
+        fopen( OLDFORUMCONTROL, "$convboardsdir/forum.control" )
+          || setup_fatal_error( "$maintext_23 $convboardsdir/forum.control: ", 1 );
+        @oldboardcontrols = <OLDFORUMCONTROL>;
+        fclose(OLDFORUMCONTROL);
+        fopen( FORUMCONTROL, ">$boardsdir/forum.control" )
+          || setup_fatal_error( "$maintext_23 $boardsdir/forum.control: ", 1 );
+        print {FORUMCONTROL} @oldboardcontrols
+          or croak 'cannot print FORUMCONTROL';
+        fclose(FORUMCONTROL);
+    }
+}
+
 sub FixNopost {
     if ( $NoPost{'1'} ) {
         fopen( FORUMCONTROL, "$boardsdir/forum.control" )
@@ -672,7 +711,7 @@ sub FixNopost {
                     $cnttopicperms,  $cntreplyperms,   $cntpollperms,
                     $cntzero,        $cntmembergroups, $cntann,
                     $cntrbin,        $cntattperms,     $cntminageperms,
-                    $cntmaxageperms, $cntgenderperms
+                    $cntmaxageperms, $cntgenderperms,  $cntbrdrss
                 ) = split /\|/xsm, $boardcontrols[$j];
 
                 $newmodgroups = q{};
@@ -704,7 +743,7 @@ sub FixNopost {
                 $newpollperms =~ s/, $//sm;
 
                 $boardcontrols[$j] =
-qq~$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$newmodgroups|$newtopicperms|$newreplyperms|$newpollperms|$cntzero|$cntmembergroups|$cntann|$cntrbin|$cntattperms|$cntminageperms|$cntmaxageperms|$cntgenderperms\n~;
+qq~$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$newmodgroups|$newtopicperms|$newreplyperms|$newpollperms|$cntzero|$cntmembergroups|$cntann|$cntrbin|$cntattperms|$cntminageperms|$cntmaxageperms|$cntgenderperms|$brdrss\n~;
             }
         }
 
@@ -716,7 +755,6 @@ qq~$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$newmodgroups|$newtopicper
     }
     return;
 }
-
 
 sub tempstarter {
     return if !-e "$vardir/Settings.pm";
@@ -1167,6 +1205,7 @@ sub MoveMessages {
                 fclose(NEWPOLLED);
             }
         }
+        if (-e "$convdatadir/movedthreads.cgi" ) {
         fopen( OLDMVFILE, "$convdatadir/movedthreads.cgi" )
           || setup_fatal_error( "$maintext_23 $convdatadir/movedthreads.cgi: ", 1 );
         my @movedmessageline = <OLDMVFILE>;
@@ -1176,6 +1215,7 @@ sub MoveMessages {
         print {MVFILE} @movedmessageline
               or croak "cannot print $vardir/Movedthreads.pm";
         fclose(MVFILE);
+        }
     }
     return;
 }

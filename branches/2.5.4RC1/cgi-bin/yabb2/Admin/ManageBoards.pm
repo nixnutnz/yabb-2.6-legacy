@@ -1225,7 +1225,7 @@ sub AddBoards2 {
         }
 
         if ( $FORM{"cur_pic$i"} ne q{} && $FORM{"del_pic$i"} ) {
-            if ( $FORM{"cur_pic$i"} !~ /http[s]{0,1}:\/\//xsm ) {
+            if ( $FORM{"cur_pic$i"} !~ /[ht|f]tp[s]{0,1}:\/\//xsm ) {
             unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_pic$i\"}";
             }
             $FORM{"pic$i"} = q{};
