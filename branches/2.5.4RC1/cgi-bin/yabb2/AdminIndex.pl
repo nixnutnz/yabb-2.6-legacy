@@ -62,7 +62,7 @@ if ( $settings_file_version ne $YaBBversion ) {    # If upgrading
     if ( -e "$vardir/membergroups.txt" ) { require "$vardir/membergroups.txt"; }
 }
 
-require Sources::Subs;
+require "$sourcedir/Subs.pm";
 require Sources::System;
 require Sources::DateTime;
 require Sources::Load;

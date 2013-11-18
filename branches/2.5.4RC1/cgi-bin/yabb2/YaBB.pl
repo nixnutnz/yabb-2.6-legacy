@@ -60,7 +60,7 @@ BEGIN {
     }
     $START_TIME = time;
 
-    require Sources::Subs;
+    require "$sourcedir/Subs.pm";
     require Sources::System;
     require Sources::DateTime;
     require Sources::Load;
