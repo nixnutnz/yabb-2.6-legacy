@@ -5,7 +5,7 @@
 # $Source: /YaBB.pl $
 ###############################################################################
 # YaBB.pl                                                                     #
-# $Date: 9.01.13 $                                                            #
+# $Date: 11.18.13 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -60,18 +60,18 @@ BEGIN {
     }
     $START_TIME = time;
 
-    eval (require "$sourcedir/Subs.pm");
-    eval (require "$sourcedir/System.pm");
-    eval (require "$sourcedir/DateTime.pm");
-    eval (require "$sourcedir/Load.pm");
+    require Sources::Subs;
+    require Sources::System;
+    require Sources::DateTime;
+    require Sources::Load;
 
-    eval (require "$sourcedir/Guardian.pm");
+    require Sources::Guardian;
 	get_forum_master();
 }    # END of BEGIN block
 
 # If enabled: check if hard drive has enough space to safely operate the board
 if ($checkspace) {
-    eval (require "$sourcedir/Freespace.pm");
+    require Sources::Freespace;
     $hostchecked = freespace();
 }
 
@@ -160,7 +160,7 @@ if ( $regtype == 1 || $regtype == 2 ) {
     }
 }
 
-eval (require "$sourcedir/Security.pm");
+require Sources::Security;
 
 banning();     # Check for banned people
 LoadIMs();     # Load IM's
@@ -179,14 +179,14 @@ sub yymain {
         #admin login issues with sessions and maintenance mode fix.
         if ( $staff && $sessionvalid == 0 ) {
             UpdateCookie('delete');
-            require "$sourcedir/LogInOut.pm";
+            require Sources::LogInOut;
             InMaintenance();
         }
         if ( $action eq 'login2' ) {
-            eval (require "$sourcedir/LogInOut.pm");
+            require Sources::LogInOut;
             Login2();
         }
-        if ( !$iamadmin ) { eval (require "$sourcedir/LogInOut.pm"); InMaintenance(); }
+        if ( !$iamadmin ) { require Sources::LogInOut; InMaintenance(); }
     }
 
     # Guest can do the very few following actions
@@ -201,32 +201,32 @@ sub yymain {
 
     if ( $action ne q{} ) {
         if ( $action eq $randaction ) {
-            eval (require "$sourcedir/Decoder.pm");
+            require Sources::Decoder;
             convert();
         }
         else {
-            eval (require "$sourcedir/SubList.pm");
+            require Sources::SubList;
             if ( $director{$action} ) {
                 my @act = split /&/xsm, $director{$action};
-                eval (require "$sourcedir/$act[0]");
+                require "$sourcedir/$act[0]";
                 &{ $act[1] };
             }
             else {
-                eval (require "$sourcedir/BoardIndex.pm");
+                require Sources::BoardIndex;
                 BoardIndex();
             }
         }
     }
     elsif ( $INFO{'num'} ne q{} ) {
-        eval (require "$sourcedir/Display.pm");
+        require Sources::Display;
         Display();
     }
     elsif ( $currentboard eq q{} ) {
-        eval (require "$sourcedir/BoardIndex.pm");
+        require Sources::BoardIndex;
         BoardIndex();
     }
     else {
-        eval (require "$sourcedir/MessageIndex.pm");
+        require Sources::MessageIndex;
         MessageIndex();
     }
     return;

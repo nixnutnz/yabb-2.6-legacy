@@ -77,6 +77,7 @@ sub DeleteConverterFiles {
     if ( -e './Setup.pl' ) { unlink './Setup.pl'; }
     if ( -e './Convert.pl' ) { unlink './Convert.pl'; }
     if ( -e './Convert2x.pl' ) { unlink './Convert2x.pl'; }
+    if ( -e './BoardConvert.pl' ) { unlink './BoardConvert.pl'; }
     if ( -e "$htmldir/Templates/Forum/setup.css" ) { unlink "$htmldir/Templates/Forum/setup.css"; }
     if ( -e './Variables/ConvSettings.txt' ) { unlink './Variables/ConvSettings.txt'; }
 

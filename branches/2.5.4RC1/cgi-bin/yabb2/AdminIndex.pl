@@ -4,7 +4,7 @@
 # $Source: /AdminIndex.pl $
 ###############################################################################
 # AdminIndex.pl                                                               #
-# $Date: 10.03.13                                                            #
+# $Date: 11.18.13                                                             #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -62,10 +62,10 @@ if ( $settings_file_version ne $YaBBversion ) {    # If upgrading
     if ( -e "$vardir/membergroups.txt" ) { require "$vardir/membergroups.txt"; }
 }
 
-require "$sourcedir/Subs.pm";
-require "$sourcedir/System.pm";
-require "$sourcedir/DateTime.pm";
-require "$sourcedir/Load.pm";
+require Sources::Subs;
+require Sources::System;
+require Sources::DateTime;
+require Sources::Load;
 
 LoadCookie();          # Load the user's cookie (or set to guest)
 LoadUserSettings();    # Load user settings
@@ -74,12 +74,12 @@ WhatTemplate();        # Figure out which template to be using.
 WhatLanguage();        # Figure out which language file we should be using!
 get_micon();
 
-if ($debug) { require "$sourcedir/Debug.pm"; }
+if ($debug) { require Sources::Debug; }
 if ($referersecurity) {
     referer_check();
 }                      # Check if the action is allowed from an external domain
 
-require "$sourcedir/Security.pm";
+require Sources::Security;
 banning();             # Check for banned people
 
 if ( !$maintenance && -e "$vardir/maintenance.lock" ) { $maintenance = 2; }
@@ -99,7 +99,7 @@ sub yymain {
 
     # Choose what to do based on the form action
     if ( $maintenance && $action eq 'login2' ) {
-        require "$sourcedir/LogInOut.pm";
+        require Sources::LogInOut;
         Login2();
     }
 
@@ -111,7 +111,7 @@ sub yymain {
 
     # Other users can do nothing here.
     if ( !$iamadmin && !$iamgmod ) {
-        if ($maintenance) { require "$sourcedir/LogInOut.pm"; InMaintenance(); }
+        if ($maintenance) { require Sources::LogInOut; InMaintenance(); }
         $yySetLocation = qq~$scripturl~;
         redirectexit();
     }
@@ -126,11 +126,11 @@ sub yymain {
 
     if ( $action ne q{} ) {
         if ( $action eq $randaction ) {
-            require "$sourcedir/Decoder.pm";
+            require Sources::Decoder;
             convert();
         }
         else {
-            require "$admindir/AdminSubList.pm";
+            require Admin::AdminSubList;
             if ( $director{$action} ) {
                 my @act = split /&/xsm, $director{$action};
 #                if ( $action =~ /^ext_/xsm ) {
@@ -142,14 +142,14 @@ sub yymain {
                 &{ $act[1] };
             }
             else {
-                require "$admindir/Admin.pm";
+                require Admin::Admin;
                 Admin();
             }
         }
     }
     else {
         TrackAdminLogins();
-        require "$admindir/Admin.pm";
+        require Admin::Admin;
         Admin();
     }
     return;

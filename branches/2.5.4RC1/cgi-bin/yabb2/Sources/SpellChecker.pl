@@ -21,10 +21,6 @@ $spellcheckerplver = 'YaBB 2.5.4 RC1 $Revision$';
 
 if ( $action eq 'detailedversion' ) { return 1; }
 
-# Take the following comment out to see the error message if you
-# call the script directly from a new window of your browser
-# use CGI::Carp qw(fatalsToBrowser);
-
 use LWP::UserAgent;
 use HTTP::Request::Common;
 
