@@ -110,7 +110,7 @@ $templateslngver = 'YaBB 2.5.4 RC1 $Revision$';
 'moveicon2' => 'Icon Position (horizontal)',
 'iconspace' => 'Icon-Text space',
 'movetext' => 'Text Position (vertical)',
-'noedit' => qq~For security reasons you are not allowed to edit the default template or default stylesheet except by directly editing the source.<br />To make changes from this screen: save your work to a new filename then choose that new file as your default stylesheet in <a href="$adminurl?action=modskin">Template Configuration</a>~,
+'noedit' => qq~For security reasons you are not allowed to edit the default template or default stylesheet except by directly editing the source.<br />To make changes from this screen: save your work to a new filename then choose that new file as your default stylesheet in <a href="$boardurl/AdminIndex.$yyaext?action=modskin">Template Configuration</a>~,
 );
 
 1;

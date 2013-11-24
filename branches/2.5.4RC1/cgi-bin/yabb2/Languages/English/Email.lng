@@ -19,7 +19,7 @@ $emailcharset = 'UTF-8';
 %yabbtagdesc = (
 # Constant tags
 'scripturl', "The URL to YaBB. Example: $scripturl",
-'adminurl', "The URL to YaBB Admin Center. Example: $adminurl",
+'adminurl', "The URL to YaBB Admin Center. Example: $boardurl/AdminIndex.$yyaext",
 'mbname', "This forum's name. Example: $mbname",
 
 # New Member related
