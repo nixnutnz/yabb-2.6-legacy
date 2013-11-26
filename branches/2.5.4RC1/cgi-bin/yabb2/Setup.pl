@@ -255,13 +255,13 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
     if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
         $this_script = "$ENV{'SCRIPT_NAME'}";
         $_           = $PROGRAM_NAME;
-        s/\\/\//gsm;
+        s/\\/\//gxsm;
         s/$this_script//xsm;
         $searchroot = $_ . q{/};
     }
     else {
         $searchroot = $ENV{'DOCUMENT_ROOT'};
-        s/\\/\//gsm;
+        s/\\/\//gxsm;
     }
     $firstslash = index $tempboardurl, q{/}, 8;
     $html_baseurl = substr $tempboardurl, 0, $firstslash;
@@ -324,7 +324,7 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
                 $fnd_uploaddir = "$fnd_htmldir/$tname";
                 $fnd_uploadurl = "$fnd_html_root/$tname";
             }
-            if ( lc($name) eq 'pmattachments' && -d "$fnd_htmldir/$tname" ) {
+            if ( lc($tname) eq 'pmattachments' && -d "$fnd_htmldir/$tname" ) {
                 $fnd_pmuploaddir = "$fnd_htmldir/$tname";
                 $fnd_pmuploadurl = "$fnd_html_root/$tname";
             }
