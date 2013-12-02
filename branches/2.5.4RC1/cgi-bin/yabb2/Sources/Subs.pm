@@ -144,6 +144,7 @@ sub print_output_header {
             if ($LastModified) { $ret .= "Last-Modified: $LastModified\n"; }
             if ( $gzcomp && $gzaccept ) { $ret .= "Content-Encoding: gzip\n"; }
             $ret .= "Content-Type: $contenttype";
+			if ($mycharset) {$yycharset = $mycharset;}
             if ($yycharset) { $ret .= "; charset=$yycharset"; }
         }
     }
