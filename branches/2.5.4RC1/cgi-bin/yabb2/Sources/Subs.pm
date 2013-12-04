@@ -809,7 +809,7 @@ s/<\/form>/ <input type="hidden" name="formsession" value="$formsession" \/>\n  
 
     if ( !$copyright ) {
         $output =
-q~<h1 class="center"><b>Sorry, the copyright tag <yabb copyright> must be in the template.<br />Please notify this forum&#39;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
+q~<h1 class="center"><b>Sorry, the copyright tag &#123;yabb copyright&#125; must be in the template.<br />Please notify this forum&#39;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
     }
 
     print_HTML_output_and_finish();
