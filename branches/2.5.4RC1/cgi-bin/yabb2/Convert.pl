@@ -3050,7 +3050,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
         if (
             !$yycopyin
             && (   $curline =~ m{<yabb\ copyright>}xsm
-                || $curline =~ /{yabb\ copyright}/xsm )
+                || $curline =~ m/{yabb\ copyright}/xsm )
           )
         {
             $yycopyin = 1;
@@ -3113,7 +3113,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
     }
     if ( $yycopyin == 0 ) {
         $output =
-q~<h1 style="text-align:center"><b>Sorry, the copyright tag {yabb copyright} must be in the template.<br />Please notify this forum&#39;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
+q~<h1 style="text-align:center"><b>Sorry, the copyright tag &#123;yabb copyright&#125; must be in the template.<br />Please notify this forum&#39;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
     }
     if ( fileno $GZIP ) {
         $OUTPUT_AUTOFLUSH = 1;
