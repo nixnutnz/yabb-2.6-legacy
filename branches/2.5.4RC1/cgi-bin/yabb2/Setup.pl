@@ -4,7 +4,7 @@
 # $Source: /Setup.pl $
 ###############################################################################
 # Setup.pl                                                                    #
-# $Date: 10.25.13 $                                                           #
+# $Date: 12.06.13 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -152,7 +152,7 @@ sub adminlogin {
     close LICENSE or croak 'cannot close License';
 
     $yymain .= qq~
-    <div id="license" style="width:50em; height:20em; overflow:auto; margin:2em auto 0 auto; border:thin #000 solid; padding:1em; background-color:#fff">$license</div>
+    <div id="license" style="width:50em; height:40em; overflow:auto; margin:2em auto 0 auto; border:thin #000 solid; padding:1em; background-color:#fff">$license</div>
     <form action="$set_cgi?action=adminlogin2" method="post" name="loginform">
     <div style="width:25em; border: thin #000 solid; margin:2em auto; padding:1em; text-align:center; background-color:#fff">
         <label for="password">Enter the password for user <b>admin</b> to acknowledge acceptance of the above license and to gain access to the Setup Utility</label>
@@ -1189,21 +1189,29 @@ sub SetInstall {
                 <div class="div55">
                     <input type="text" name="mbname" id="mbname" size="35" value="My Perl YaBB Forum" />
                 </div>
-                <br />
+                <br style="clear:both" />
                 <div class="div45">
                     <label for="webmaster_email">Webmaster E-mail Address</label>
                 </div>
                 <div class="div55">
                     <input type="text" name="webmaster_email" id="webmaster_email" size="35" value="webmaster\@mysite.com" />
                 </div>
-                <br />
+                <br style="clear:both" />
                 <div class="div45">
                     <label for="defaultlanguage">Admin Language / Forum Default Language</label>
                 </div>
                 <div class="div55">
                     <select name="defaultlanguage" id="defaultlanguage">$drawnldirs</select>
                 </div>
-                <br />
+                <br style="clear:both" />
+                <div class="div45">
+                    <label for="defaultencoding">Default Forum Character Encoding
+                    <br /><span class="small"><b>Note</b>: If you are going to import an older forum, or have additional language packs installed, set this to 'ISO-8859-1'.</span></label>
+                </div>
+                <div class="div55">
+                    <input type="text" name="defaultencoding" id="defaultencoding" size="10" value="UTF-8" />
+                </div>
+                <br style="clear:both" />
                 <div class="div45">
                     <label for="timeselect">Default Time Format</label>
                 </div>
@@ -1218,7 +1226,7 @@ sub SetInstall {
                         <option value="6">31. Jan at 13:15</option>
                     </select>
                 </div>
-                <br />
+                <br style="clear:both" />
                 <div class="div45">
                     Forum Time Zone<br />
                     <span style="font-size:small">If the time displayed here differs from your local time, adjust it by changing the settings.</span>
@@ -1263,7 +1271,7 @@ sub SetInstall {
 sub SetInstall2 {
     if ( $action eq 'checkmodules' || $action eq 'setinstall2' ) {
         $settings_file_version = 'YaBB 2.5.4';
-        $yycharset             = "UTF-8";
+        $yycharset             = $FORM{'defaultencoding'} || 'UTF-8' ;
         $maintenance           = 1;
         $rememberbackup        = 0;
         $guestaccess           = 1;
