@@ -566,7 +566,7 @@ sub backupsettings2 {
 
     $backupdir     = $FORM{'backupdir'};
     $backupprogusr = $FORM{'backupprogusr'};
-    $backupprogbin = $FORM{'backupprogbin'};
+    $backupprogbin = $FORM{'backupprogbin'} || '/usr/bin';
 
     $lastbackup = 0;    # reset when saving settings new
     print_BackupSettings();
