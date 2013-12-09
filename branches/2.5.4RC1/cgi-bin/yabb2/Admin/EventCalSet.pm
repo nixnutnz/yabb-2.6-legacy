@@ -274,7 +274,7 @@ sub EventCalSet {
     my $add_icon = 1;
     while ( $CalIconURL[$i] ) {
         $yymain .= qq~<tr>
-                    <td class="windowbg2 center">
+                    <td class="windowbg2 center" style="white-space:nowrap">
                         <input type="file" name="caliimg[$i]" id="caliimg[$i]" size="35"  />
                         <input type="hidden" name="cur_caliimg[$i]" value="$CalIconURL[$i]" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('caliimg[$i]').value='';">X</span>
                         <div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/EventIcons/$CalIconURL[$i]" target="_blank">$CalIconURL[$i]</a></div>
@@ -288,7 +288,7 @@ sub EventCalSet {
     }
     my $added_icons = $i;
     $yymain .= qq~<tr>
-                    <td class="windowbg2 center"><input type="file" name="caliimg[$i]" id="caliimg[$i]" size="35" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('caliimg[$i]').value='';">X</span></td>
+                    <td class="windowbg2 center" style="white-space:nowrap"><input type="file" name="caliimg[$i]" id="caliimg[$i]" size="35" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('caliimg[$i]').value='';">X</span></td>
                     <td class="windowbg2 center"><input type="text" name="calidescr[$i]" /></td>
                     <td class="windowbg2 center" colspan="2">
                         <img src="$imagesdir/cat_expand.png" alt="$event_cal{'59'}" title="$event_cal{'59'}" class="cursor" style="visibility: visible;" id="add_icon$i" onclick="addIcons($add_icon);" />
