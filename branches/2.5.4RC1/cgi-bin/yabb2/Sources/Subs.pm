@@ -1,6 +1,6 @@
 ###############################################################################
 # Subs.pm                                                                     #
-# $Date: 9.30.13 $                                                            #
+# $Date: 01.04.14 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -402,104 +402,9 @@ qq~&nbsp;<script  type="text/javascript">\nWriteClock('yabbclock','$aa','$bb');\
         }
     }
     ~;
-    if ( $output =~ /\{yabb tabmenu\}/sm ) {
         require Sources::TabMenu;
         mainMenu();
-    }
-    else {
-        $yymenu =
-qq~<a href="$scripturl">$img{'home'}</a>$menusep<a href="$scripturl?action=help" class="cursor">$img{'help'}</a>~;
 
-        # remove search from menu if disabled by the admin
-        if ( $maxsearchdisplay > -1 && $qcksearchaccess eq 'granted' ) {
-            $qcksearchtype ||= 'allwords';
-            $qckage        ||= '31';
-            $yymenu .=
-              qq~$menusep<a href="$scripturl?action=search">$img{'search'}</a>~;
-        }
-        if (   !$ML_Allowed
-            || ( $ML_Allowed == 1 && !$iamguest )
-            || ( $ML_Allowed == 2 && $staff )
-            || ( $ML_Allowed == 3 && ( $iamadmin || $iamgmod ) )
-            || ( $ML_Allowed == 4 && ( $iamadmin || $iamgmod || $iamfmod ) ) )
-        {
-            $yymenu .=
-              qq~$menusep<a href="$scripturl?action=ml">$img{'memberlist'}</a>~;
-        }
-
-        # EventCal START
-        if ( $Show_EventButton == 2
-            || ( !$iamguest && $Show_EventButton == 1 ) )
-        {
-            $yymenu .=
-qq~$menusep<a href="$scripturl?action=eventcal;calshow=1">$img{'eventcal'}</a>~;
-        }
-        if ( $Show_BirthdayButton == 2
-            || ( !$iamguest && $Show_BirthdayButton == 1 ) )
-        {
-            $yymenu .=
-qq~$menusep<a href="$scripturl?action=birthdaylist">$img{'birthdaylist'}</a>~;
-        }
-
-        # EventCal END
-
-        if ($iamadmin) {
-            $yymenu .=
-qq~$menusep<a href="$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user">$img{'admin'}</a>~;
-        }
-        get_gmod();
-        if ( $iamgmod && $allow_gmod_admin ) {
-            $yymenu .=
-qq~$menusep<a href="$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user">$img{'admin'}</a>~;
-        }
-        if ( $sessionvalid == 0 && !$iamguest ) {
-            my $sesredir;
-            if (   $testenv
-                && $action ne 'revalidatesession'
-                && $action ne 'revalidatesession2' )
-            {
-                $sesredir = $testenv;
-                $sesredir =~ s/\=/\~/gxsm;
-                $sesredir =~ s/;/x3B/gxsm;
-                $sesredir = qq~;sesredir=$sesredir~;
-            }
-            $yymenu .=
-qq~$menusep<a href="$scripturl?action=revalidatesession$sesredir">$img{'sessreval'}</a>~;
-        }
-        if ($iamguest) {
-            my $sesredir;
-            if ($testenv) {
-                $sesredir = $testenv;
-                $sesredir =~ s/\=/\~/gxsm;
-                $sesredir =~ s/;/x3B/gxsm;
-                $sesredir = qq~;sesredir=$sesredir~;
-            }
-            $yymenu .= qq~$menusep<a href="~
-              . (
-                $loginform
-                ? "javascript:if(jumptologin>1)alert('$maintxt{'35'}');jumptologin++;window.scrollTo(0,10000);document.loginform.username.focus();"
-                : "$scripturl?action=login$sesredir"
-              ) . qq~">$img{'login'}</a>~;
-            if ( $regtype != 0 ) {
-                $yymenu .=
-qq~$menusep<a href="$scripturl?action=register">$img{'register'}</a>~;
-            }
-            if (   $PMenableGuestButton
-                && $PM_level > 0
-                && $PMenableBm_level > 0 )
-            {
-                $yymenu .=
-qq~$menusep<a href="$scripturl?action=guestpm">$img{'pmadmin'}</a>~;
-            }
-        }
-        else {
-            ## pointing towards pm now
-            $yymenu .=
-qq~$menusep<a href="$scripturl?action=mycenter">$img{'mycenter'}</a>~;
-            $yymenu .=
-              qq~$menusep<a href="$scripturl?action=logout">$img{'logout'}</a>~;
-        }
-    }
 
     $yylangChooser = q{};
     if ( ( $iamguest && !$guestLang ) && $enable_guestlanguage && $guestaccess )
