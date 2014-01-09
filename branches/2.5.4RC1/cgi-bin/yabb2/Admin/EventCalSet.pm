@@ -1,6 +1,6 @@
 ###############################################################################
 # EventCalSet.pm                                                              #
-# $Date: 10.03.13 $                                                            #
+# $Date: 01.08.14 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -374,7 +374,7 @@ sub EventCalSet2 {
         fclose(FILE);
         fopen( FILE, ">$vardir/eventcalbday.db" );
         foreach my $user_name (@birthmembers) {
-            ( $user_xy, $dummy ) = split / /sm, $user_name;
+            ( $user_xy, $dummy ) = split /\t/sm, $user_name;
             chomp $user_xy;
             LoadUser($user_xy);
             $user_xy_bd = ${ $uid . $user_xy }{'bday'};
