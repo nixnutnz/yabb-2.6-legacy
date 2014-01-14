@@ -391,6 +391,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
     $yymain =~ s/{yabb calgotobox}/$calgotobox/sm;
 
     if ($bd_today) {
+        $bd_today =~ s/, $//sm;
         $yymain .= qq~
 <span class="u">$var_cal{'calbirthdaytoday'}:</span><br /><br />
 $bd_today
