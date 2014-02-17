@@ -1,6 +1,6 @@
 ###############################################################################
 # Register.pm                                                                 #
-# $Date: 9.05.13 $                                                            #
+# $Date: 02.17.14$                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -1079,8 +1079,8 @@ sub user_activation {
     if ( !-e "$memberdir/$reguser.pre" && -e "$memberdir/$reguser.vars" ) {
         fatal_error('already_activated');
     }
-    if ( !-e "$memberdir/$reguser.pre" ) { fatal_error('prereg_expired'); }
-
+    if ( ( $regtype != 1 && !-e "$memberdir/$reguser.pre" ) || ( $regtype == 1 && !-e "$memberdir/$reguser.pre" && !-e "$memberdir/$reguser.wait" ) ) { fatal_error('prereg_expired'); }
+    elsif ( $regtype == 1 && -e "$memberdir/$reguser.wait" ) { fatal_error('prereg_wait'); }
     # If a pre-registration list exists load it
     if ( -e "$memberdir/memberlist.inactive" ) {
         fopen( INACT, "$memberdir/memberlist.inactive" );
@@ -1158,7 +1158,7 @@ sub user_activation {
             elsif ( $regtype == 2 ) {
                 LoadUser($reguser);
 
-                # ckeck if email is allready in active use
+                # check if email is already in active use
                 if (
                     lc ${ $uid . $reguser }{'email'} eq
                     lc MemberIndex( 'check_exist',

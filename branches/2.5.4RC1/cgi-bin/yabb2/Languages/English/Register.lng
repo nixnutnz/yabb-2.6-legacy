@@ -57,7 +57,7 @@ $registerlngver = 'YaBB 2.5.4 RC1 $Revision$';
 '586' => 'I Do Not Agree',
 '678' => 'Sorry',
 '679' => 'This must be a valid e-mail address.',
-'703' => 'Thank you for registration. You will receive an e-mail soon with your password. You may change the password after you login for the first time.',
+'703' => 'Thank you for registering. You will receive an e-mail soon with your password. You may change the password after you login for the first time.',
 '704' => qq~<b>You may <a href="$scripturl?action=login">proceed to login</a> once you check your e-mail.</b>~,
 '721' => 'Hide e-mail from public?',
 '730' => 'The e-mail address',

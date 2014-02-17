@@ -926,10 +926,16 @@ sub fatal_error_logging {
         $FORM{$formdata} =~ s/\n//igsm;
     }
 
-    if ($iamguest) {
+    if ($iamguest && !$iambot) {
         push @errorlog,
           int(time)
           . "|$date|$user_ip|$tmperror|$action|$INFO{'num'}|$currentboard|$FORM{'username'}|$FORM{'passwrd'}\n";
+    }
+    elsif ($iambot) {
+	    my $is_a_bot = Is_Bot($last_host);
+        push @errorlog,
+          int(time)
+          . "|$date|$user_ip|$tmperror|$action|$INFO{'num'}|$currentboard|$is_a_bot|$FORM{'passwrd'}\n";
     }
     else {
         push @errorlog,

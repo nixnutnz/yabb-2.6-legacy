@@ -54,15 +54,7 @@ require Variables::Settings;
 eval { require Time::HiRes; import Time::HiRes qw(time); };
 $START_TIME = time;
 
-#Remove if 2.5.4 FixFile or Convert handles these
-
-if ( $settings_file_version ne $YaBBversion ) {    # If upgrading
-    if ( -e "$vardir/advsettings.txt" )  { require "$vardir/advsettings.txt"; }
-    if ( -e "$vardir/secsettings.txt" )  { require "$vardir/secsettings.txt"; }
-    if ( -e "$vardir/membergroups.txt" ) { require "$vardir/membergroups.txt"; }
-}
-
-require "$sourcedir/Subs.pm";
+require './Sources/Subs.pm';
 require Sources::System;
 require Sources::DateTime;
 require Sources::Load;

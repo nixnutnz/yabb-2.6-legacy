@@ -1,6 +1,6 @@
 ###############################################################################
 # BoardIndex.pm                                                               #
-# $Date: 10.25.13 $                                                            #
+# $Date: 02.17.14$                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -65,7 +65,8 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
             my $lookupIP =
               ( $ipLookup && $last_ip )
               ? qq~<a href="$scripturl?action=iplookup;ip=$last_ip">$last_ip</a>~
-              : q~~;
+              : qq~$last_ip~;
+
             my $is_a_bot = Is_Bot($last_host);
             if ($is_a_bot) {
                 $numbots++;
