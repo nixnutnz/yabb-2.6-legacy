@@ -304,7 +304,7 @@ $brd_advanced_tabs_edit = qq~
             <td colspan="2">&nbsp;</td>
             <td class="center vtop" rowspan="3">
                 <form action="$scripturl?action=reordertab" method="post" name="tabsorder" style="display: inline; white-space: nowrap;">
-                    <select name="ordertabs" class="small" size="{yabb selsize}" style="width: 130px;">
+                    <select name="ordertabs" class="small" size="{yabb selsize}" style="width: 18em;">
                         {yabb edittabs}
                     </select>
                     <br />
