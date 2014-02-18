@@ -2398,7 +2398,7 @@ sub setup_fatal_error {
 <table class="bordercolor center border-space pad-cell" width="80%" >
     <tr>
         <td class="titlebg text1"><b>An Error Has Occurred!</b></td>
-  </tr>tr>
+  </tr><tr>
         <td class="windowbg text1" style="padding:1em 1em 2em 1em">$e</td>
     </tr>
 </table>
