@@ -223,7 +223,7 @@ $boardblockpw = qq~<tr>
             </tr>~;
 
 $boardblockext = qq~<tr>
-      <td class="{yabb altbrdcolor} center"><img src="$imagesdir/$extern" alt="" /></td>
+      <td class="{yabb altbrdcolor} center"><a href="{yabb boardurl}" target="_blank"><img src="$imagesdir/$extern" alt="" /></a></td>
       <td class="{yabb altbrdcolor}" colspan="3">
             <a id="{yabb boardanchor}" href="{yabb boardurl}" target="_blank"><b>{yabb boardname}</b></a><br />
             {yabb boarddesc}
