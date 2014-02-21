@@ -187,7 +187,7 @@ sub sharedLogin {
         $hide_reglink = ' style="visibility: hidden;"';;
     }
     $sharedlog .= qq~
-            <form name="loginform" action="$scripturl?action=login2" method="post" accept-charset="$yycharset">
+            <form name="loginform" action="$scripturl?action=login2" method="post" accept-charset="$mycharset">
                 <input type="hidden" name="sredir" value="$INFO{'sesredir'}" />
     $mysharedlog_bodya~;
     $sharedlog =~ s/{yabb regstyle}/$regstyle/sm;
@@ -209,7 +209,7 @@ sub Reminder {
     get_template('Loginout');
 
     $yymain .= qq~<br /><br />
-<form action="$scripturl?action=reminder2" method="post" name="reminder" onsubmit="return CheckReminderField();" accept-charset="$yycharset">
+<form action="$scripturl?action=reminder2" method="post" name="reminder" onsubmit="return CheckReminderField();" accept-charset="$mycharset">
 $myremindera~;
     $yymain =~ s/{yabb mbname}/$mbname/sm;
     $yymain =~ s/{yabb regstyle}/$regstyle/sm;

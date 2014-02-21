@@ -33,7 +33,7 @@ sub Mailing {
         <tr>
             <td class="titlebg">
                 $admin_img{'register'}<b> $admintxt{'19'}</b>
-                <form action="$adminurl?action=mailinggrps" method="post" name="mailgrps" style="display: inline;" accept-charset="$yycharset">
+                <form action="$adminurl?action=mailinggrps" method="post" name="mailgrps" style="display: inline;" accept-charset="$mycharset">
                     <span style="float: right;">
                     <input type="submit" value="$amv_txt{'53'}" class="button" />
                     </span>
@@ -42,7 +42,7 @@ sub Mailing {
         </tr>
     </table>
     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
-    <form name="adv_membermail" action="$adminurl?action=mailing2" method="post" style="display: inline;" onsubmit="return checkIfSelected(); return submitproc();" accept-charset="$yycharset">
+    <form name="adv_membermail" action="$adminurl?action=mailing2" method="post" style="display: inline;" onsubmit="return checkIfSelected(); return submitproc();" accept-charset="$mycharset">
         <div class="windowbg2 border">
             <div class="windowbg2 border" style="float: left; width: 44%; margin: 1%; height:260px">
                 <table class="windowbg2 pad-cell" style="width: 98%">
@@ -331,7 +331,7 @@ sub MailingMembers {
         <span style="float: left;">
              $admin_img{'register'}<b> $admintxt{'19'}</b>
         </span>
-                <form action="$adminurl?action=mailinggrps" method="post" name="selsort" style="display: inline" accept-charset="$yycharset">
+                <form action="$adminurl?action=mailinggrps" method="post" name="selsort" style="display: inline" accept-charset="$mycharset">
         <span style="float: right;">
         <label for="sortform"><b>$ml_txt{'1'}</b></label>
         <select name="sortform" id="sortform" style="font-size: 9pt;" onchange="submit()">
@@ -346,7 +346,7 @@ sub MailingMembers {
     </tr>
     </table>
     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
-    <form name="adv_membermail" action="$adminurl?action=mailmultimembers;$sortmode" method="post" style="display: inline" onsubmit="return checkIfChecked(this); return submitproc()" accept-charset="$yycharset">
+    <form name="adv_membermail" action="$adminurl?action=mailmultimembers;$sortmode" method="post" style="display: inline" onsubmit="return checkIfChecked(this); return submitproc()" accept-charset="$mycharset">
     <input type="hidden" name="button" value="1" />
     <div class="windowbg2 border">
         <div class="windowbg border" style="float: left; width: 44%; margin: 1%; overflow: auto; height:260px">

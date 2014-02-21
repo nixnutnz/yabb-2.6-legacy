@@ -361,7 +361,7 @@ qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{
     my $yytitle = qq~$mbname $admin_txt{'208'}: $yytitle~;
     $header =~ s/({|<)yabb\ title(}|>)/$yytitle/gxsm;
     $header =~ s/({|<)yabb\ style(}|>)/$adminstyle/gxsm;
-    $header =~ s/({|<)yabb\ charset(}|>)/$yycharset/gxsm;
+    $header =~ s/({|<)yabb\ charset(}|>)/$mycharset/gxsm;
     $header =~ s/({|<)yabb\ javascript(}|>)/$yyjavascript/gxsm;
 
     $leftmenutop =~ s/({|<)yabb\ images(}|>)/$adminimages/gxsm;

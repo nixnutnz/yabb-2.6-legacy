@@ -236,9 +236,9 @@ $qckage ||= 31;
             validate => 'text',
         },
         {
-            description => qq~<label for="yycharset">$admin_txt{'816a'}</label>~,
-            input_html => qq~<input type="text" size="20" name="yycharset" id="yycharset" value="$yycharset" />~,
-            name => 'yycharset',
+            description => qq~<label for="mycharset">$admin_txt{'816a'}</label>~,
+            input_html => qq~<input type="text" size="20" name="mycharset" id="mycharset" value="$mycharset" />~,
+            name => 'mycharset',
             validate => 'text',
         },
         {

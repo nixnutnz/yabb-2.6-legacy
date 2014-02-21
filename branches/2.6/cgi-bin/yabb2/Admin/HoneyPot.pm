@@ -99,7 +99,7 @@ sub honeypot {
                 $show_hon_labels
             </table>
         </div>
-        <form action="$adminurl?action=honeypot_add" method="post" accept-charset="$yycharset">
+        <form action="$adminurl?action=honeypot_add" method="post" accept-charset="$mycharset">
             <div class="bordercolor rightboxdiv">
                 <table class="border-space pad-cell" style="margin-bottom: .5em;">
                     <col style="width: 25%" />
@@ -176,7 +176,7 @@ sub honeypot_edit {
 
 
     $yymain = qq~
-    <form action="$adminurl?action=honeypot_edit2" method="post" accept-charset="$yycharset">
+    <form action="$adminurl?action=honeypot_edit2" method="post" accept-charset="$mycharset">
         <div class="bordercolor rightboxdiv">
             <table class="border-space pad-cell" style="margin-bottom: .5em;">
                 <col style="width: 25%" />

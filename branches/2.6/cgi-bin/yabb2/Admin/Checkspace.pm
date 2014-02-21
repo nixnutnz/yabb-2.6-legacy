@@ -224,7 +224,7 @@ sub chsettings {
             </tr>
         </table>
   </div>
-  <form action="$adminurl?action=checkspace_save" method="post" accept-charset="$yycharset">
+  <form action="$adminurl?action=checkspace_save" method="post" accept-charset="$mycharset">
 ~;
     foreach my $tab (@settings) {
         $yymain .= qq~

@@ -471,7 +471,7 @@ sub editAddGroup {
     if ( $attachperms == 1 ) { $ac  = q~ checked="checked"~; }
 
     $yymain .= qq~
-<form name="groups" action="$adminurl?action=editAddGroup2" method="post" enctype="multipart/form-data" accept-charset="$yycharset">
+<form name="groups" action="$adminurl?action=editAddGroup2" method="post" enctype="multipart/form-data" accept-charset="$mycharset">
 <input type="hidden" name="original" value="$INFO{'group'}" />
 <input type="hidden" name="origin" value="$action" />
 
@@ -953,7 +953,7 @@ sub reorderGroups {
             <td class="catbg center"><b>$amgtxt{'03'}</b></td>
             <td class="catbg center"><b>$amgtxt{'19'}</b></td>
             <td class="windowbg center" rowspan="$rowspan">
-                <form action="$adminurl?action=reordergroup2" method="post" name="groupsorder" style="display: inline; white-space: nowrap;" accept-charset="$yycharset">
+                <form action="$adminurl?action=reordergroup2" method="post" name="groupsorder" style="display: inline; white-space: nowrap;" accept-charset="$mycharset">
                     <select name="ordergroups" class="small" size="$selsize" style="width: 130px;">
                         $orderopt
                     </select>

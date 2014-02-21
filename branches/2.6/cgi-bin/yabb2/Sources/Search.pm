@@ -111,7 +111,7 @@ function searchMe(chelem) {
 //-->
 </script>
 
-<form action="$scripturl?action=search2" method="post" name="searchform" onsubmit="return CheckSearchFields();" accept-charset="$yycharset">~;
+<form action="$scripturl?action=search2" method="post" name="searchform" onsubmit="return CheckSearchFields();" accept-charset="$mycharset">~;
     $yymain .= $mysearch_template . (
         $enable_ubbc
         ? qq~<br />

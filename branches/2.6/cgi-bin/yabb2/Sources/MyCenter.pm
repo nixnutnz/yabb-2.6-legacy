@@ -1432,7 +1432,7 @@ function insert_user (oElement,username,userid) {
                 $imstoreFolder = ";viewfolder=$INFO{'viewfolder'}";
             }
             $MCGlobalFormStart .= qq~
-            <form action="$scripturl?action=deletemultimessages;caller=$callerid$imstoreFolder" method="post" name="searchform" enctype="application/x-www-form-urlencoded" accept-charset="$yycharset">
+            <form action="$scripturl?action=deletemultimessages;caller=$callerid$imstoreFolder" method="post" name="searchform" enctype="application/x-www-form-urlencoded" accept-charset="$mycharset">
             ~;
         }
         elsif ( $view eq 'pm' ) {

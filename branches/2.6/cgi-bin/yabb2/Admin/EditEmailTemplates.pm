@@ -122,7 +122,7 @@ sub editemailtemplates {
         my $comment = $emaildesc{$string};
 
         $yymain .= qq~
-<form action="$adminurl?action=editemailtemplates2;lang=$editlang;string=$string" method="post" style="display: inline" accept-charset="$yycharset">
+<form action="$adminurl?action=editemailtemplates2;lang=$editlang;string=$string" method="post" style="display: inline" accept-charset="$mycharset">
 <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>

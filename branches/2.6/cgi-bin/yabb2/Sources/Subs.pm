@@ -144,8 +144,8 @@ sub print_output_header {
             if ($LastModified) { $ret .= "Last-Modified: $LastModified\n"; }
             if ( $gzcomp && $gzaccept ) { $ret .= "Content-Encoding: gzip\n"; }
             $ret .= "Content-Type: $contenttype";
-			if ($mycharset) {$yycharset = $mycharset;}
-            if ($yycharset) { $ret .= "; charset=$yycharset"; }
+			if ($yycharset) {$mycharset = $yycharset;}
+            if ($mycharset) { $ret .= "; charset=$mycharset"; }
         }
     }
     print $ret . "\r\n\r\n" or croak "$croak{'print'} ret";
@@ -527,7 +527,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
         if ( $maxsearchdisplay > -1 && $qcksearchaccess eq 'granted' ) {
             $yysearchbox = qq~
                     <div class="yabb_searchbox">
-                    <form action="$scripturl?action=search2" method="post" accept-charset="$yycharset">
+                    <form action="$scripturl?action=search2" method="post" accept-charset="$mycharset">
                         <input type="hidden" name="searchtype" value="$qcksearchtype" />
                         <input type="hidden" name="userkind" value="any" />
                         <input type="hidden" name="subfield" value="on" />
@@ -1564,7 +1564,7 @@ sub uri_escape {    # usage: $safe = uri_escape( $string )
 sub enc_eMail {
     my ($title,$email,$subject,$body,$src) = @_;
     my ($charset_value);
-    if ($yycharset eq 'windows-1251') { $charset_value = 848;} # Cyrillic decoding
+    if ($mycharset eq 'windows-1251') { $charset_value = 848;} # Cyrillic decoding
 
     my $email_length = length $email;
     my $code1 = generate_code($email_length);
@@ -2220,7 +2220,7 @@ sub Dereferer {
     if ( !$stealthurl ) { fatal_error('no_access'); }
     print "Content-Type: text/html\n\n" or croak "$croak{'print'} content-type";
     print
-qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />\n<title>-----</title>\n</head>\n<body onload="window.location.href='$INFO{'url'}';">\n<font face="Arial" size="2">$dereftxt{'1'}</font>\n</body></html>\n~
+qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/html; charset=$mycharset" />\n<title>-----</title>\n</head>\n<body onload="window.location.href='$INFO{'url'}';">\n<font face="Arial" size="2">$dereftxt{'1'}</font>\n</body></html>\n~
       or croak "$croak{'print'}";
     exit;
 }

@@ -232,7 +232,7 @@ sub EditTab {
                 }
                 $inputlength = length $tabtxt{$tab_key};
                 $edittab{$tab_key} =
-qq~<form action="$scripturl?action=edittab2;savetab=$enc_key" method="post" name="$tab_key$isexttabs" style="display: inline; white-space: nowrap;" accept-charset="$yycharset">~;
+qq~<form action="$scripturl?action=edittab2;savetab=$enc_key" method="post" name="$tab_key$isexttabs" style="display: inline; white-space: nowrap;" accept-charset="$mycharset">~;
                 $edittab{$tab_key} .=
 qq~<input type="text" name="$tab_key" id="$tab_key" value="$tabtxt{$tab_key}" size="$inputlength" class="edittab" />~;
                 $edittab{$tab_key} .=

@@ -117,7 +117,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
 
     $yymain .= qq~
 <script type="text/javascript" src="$yyhtml_root/ajax.js"></script>
-<form action="$scripturl?action=register2" method="post" name="creator" onsubmit="return CheckRegFields();" accept-charset="$yycharset">
+<form action="$scripturl?action=register2" method="post" name="creator" onsubmit="return CheckRegFields();" accept-charset="$mycharset">
     $reg_start_time~;
     if ( $RegAgree == 1 && $FORM{'regagree'} ) {
         $yymain .= q~

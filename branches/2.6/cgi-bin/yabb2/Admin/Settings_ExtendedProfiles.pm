@@ -669,7 +669,7 @@ sub ext_admin_edit {
         else { $radiounselect = q{}; }
         $editable_check[ $field{'editable_by_user'} ] = ' selected="selected"';
         $yymain .= qq~
-<form action="$adminurl?action=ext_edit2" method="post" accept-charset="$yycharset">
+<form action="$adminurl?action=ext_edit2" method="post" accept-charset="$mycharset">
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell" style="margin-bottom: .5em;">
     <tr>

@@ -404,7 +404,7 @@ qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"
     }
 
     $showProfile .= qq~
-<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" accept-charset="$yycharset">
+<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" accept-charset="$mycharset">
 $myprofile_edit~;
     $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
     $showProfile =~ s/{yabb my_newpass}/$my_newpass/sm;
@@ -576,7 +576,7 @@ qq~             <textarea name="awayreply" id="awayreply" rows="4" cols="50">$aw
     }
 
     $showProfile .= qq~
-<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" accept-charset="$yycharset">
+<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" accept-charset="$mycharset">
 $myprofile_contact
 ~;
     $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;

@@ -1818,7 +1818,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
         }
     }
     else {
-        print "Content-type: text/html; charset=$yycharset\n\n"
+        print "Content-type: text/html; charset=$mycharset\n\n"
           or croak "$croak{'print'} charset";
         print qq~
             <table id="subloaded_$INFO{'board'}" style="display:none">
