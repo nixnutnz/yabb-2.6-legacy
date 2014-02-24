@@ -246,7 +246,7 @@ qq~ <img src="$imagesdir/recycle.png" alt="$admin_txt{'64i'}" title="$admin_txt{
                 </table>
             </div>
         </form>
-        <form name="diff" id="diff" action="$adminurl?action=$act2" method="post" accept-charset="$mycharset">
+        <form name="diff" id="diff" action="$adminurl?action=$act2" method="post" accept-charset="$yymycharset">
             <div class="bordercolor rightboxdiv">
                 <table class="border-space pad-cell">
                     <tr>
@@ -659,7 +659,7 @@ function checkParent(id, board) {
 }
 //-->
         </script>
-        <form name="boardsadd" id="boardsadd" action="$adminurl?action=addboard2" method="post" enctype="multipart/form-data" onsubmit="selectNames($FORM{'amount'});" accept-charset="$mycharset">
+        <form name="boardsadd" id="boardsadd" action="$adminurl?action=addboard2" method="post" enctype="multipart/form-data" onsubmit="selectNames($FORM{'amount'});" accept-charset="$yymycharset">
             <div class="bordercolor rightboxdiv">
                 <table class="border-space pad-cell" style="margin-bottom: .5em;">
                     <tr>
@@ -1611,7 +1611,7 @@ qq~<option value="$board" selected="selected">$boardname</option>~;
 
     $yymain .= qq~
 <br /><br />
-<form action="$adminurl?action=reorderboards2;item=$INFO{'item'}$INFO{'subboards'}" method="post" id="bdform" accept-charset="$mycharset">
+<form action="$adminurl?action=reorderboards2;item=$INFO{'item'}$INFO{'subboards'}" method="post" id="bdform" accept-charset="$yymycharset">
     <table class="bordercolor border-space pad-cell" style="width:535px">
   <tr>
             <td class="titlebg">$admin_img{'board'} <b>$cur_txt ($curname)</b></td>

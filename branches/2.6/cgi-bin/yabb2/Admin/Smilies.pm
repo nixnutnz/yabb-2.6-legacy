@@ -63,7 +63,7 @@ sub SmiliePanel {
         }
     }
     $yymain .= qq~
-<form action="$adminurl?action=addsmilies" method="post" enctype="multipart/form-data" accept-charset="$mycharset">
+<form action="$adminurl?action=addsmilies" method="post" enctype="multipart/form-data" accept-charset="$yymycharset">
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell" style="margin-bottom: .5em;">
   <col style="width: 5%" />

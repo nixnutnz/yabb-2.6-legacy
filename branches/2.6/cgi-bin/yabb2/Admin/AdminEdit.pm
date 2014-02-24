@@ -132,7 +132,7 @@ sub EditBots {
     is_admin_or_gmod();
     my ($line);
     $yymain .= qq~
-<form action="$adminurl?action=editbots2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$mycharset">
+<form action="$adminurl?action=editbots2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yymycharset">
     <div class="bordercolor rightboxdiv">
         <table class="border-space pad-cell" style="margin-bottom: .5em;">
             <tr>
@@ -228,7 +228,7 @@ sub SetCensor {
             </th>
         </tr><tr>
             <td class="windowbg2">
-            <form action="$adminurl?action=setcensor" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$mycharset">
+            <form action="$adminurl?action=setcensor" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yymycharset">
                 $templs{'7'}
                 <select name="censorlanguage" id="censorlanguage" size="1">
                     $drawnldirs
@@ -239,7 +239,7 @@ sub SetCensor {
         </tr>
     </table>
 </div>
-<form action="$adminurl?action=setcensor2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$mycharset">
+<form action="$adminurl?action=setcensor2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yymycharset">
     <div class="bordercolor rightboxdiv">
         <table class="border-space" style="margin-bottom: .5em;">
             <tr>
@@ -319,7 +319,7 @@ sub SetReserve {
         if ( $reservecfg[$i] ) { $reservecheck[$i] = q~ checked="checked"~; }
     }
     $yymain .= qq~
-<form action="$adminurl?action=setreserve2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$mycharset">
+<form action="$adminurl?action=setreserve2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yymycharset">
     <div class="bordercolor rightboxdiv">
     <table class="border-space" style="margin-bottom: .5em;">
         <tr>
@@ -448,7 +448,7 @@ sub ModifyAgreement {
         </tr>
     </table>
 </div>
-<form action="$adminurl?action=modagreement2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$mycharset">
+<form action="$adminurl?action=modagreement2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yymycharset">
 <div class="bordercolor borderstyle rightboxdiv">
     <table class="border-space" style="margin-bottom: .5em;">
         <tr>
@@ -782,7 +782,7 @@ sub EditPaths {
         </tr>
     </table>
 </div>
-<form action="$adminurl?action=editpaths2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$mycharset">
+<form action="$adminurl?action=editpaths2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yymycharset">
     <div class="bordercolor rightboxdiv">
         <table class="border-space pad-cell" style="margin-bottom: .5em;">
             <tr>

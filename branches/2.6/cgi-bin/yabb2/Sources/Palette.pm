@@ -43,7 +43,7 @@ sub ColorPicker {
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title>Palette</title>
-<meta http-equiv="Content-Type" content="text/html; charset=$mycharset" />
+<meta http-equiv="Content-Type" content="text/html; charset=$yymycharset" />
 <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
 
 <script type="text/javascript">

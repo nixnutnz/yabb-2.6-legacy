@@ -1029,7 +1029,7 @@ sub AddMember {
     $yymain .= qq~
 <script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
 <script type="text/javascript" src="$yyhtml_root/ajax.js"></script>
-<form action="$adminurl?action=addmember2" method="post" name="creator" accept-charset="$mycharset">
+<form action="$adminurl?action=addmember2" method="post" name="creator" accept-charset="$yymycharset">
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell" style="margin-bottom: .5em;">
     <col style="width: 30%" />

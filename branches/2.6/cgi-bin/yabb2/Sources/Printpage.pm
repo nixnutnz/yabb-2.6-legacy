@@ -75,7 +75,7 @@ qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title>$mbname - $maintxt{'668'}</title>
-<meta http-equiv="Content-Type" content="text/html; charset=$mycharset" />
+<meta http-equiv="Content-Type" content="text/html; charset=$yymycharset" />
 <meta name="robots" content="noindex,noarchive" />
 <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
 <style type="text/css">
@@ -535,7 +535,7 @@ qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title>$mbname - $pageTitle</title>
-<meta http-equiv="Content-Type" content="text/html; charset=$mycharset" />
+<meta http-equiv="Content-Type" content="text/html; charset=$yymycharset" />
 <meta name="robots" content="noindex,noarchive" />
 <link rel="canonical" href="$scripturl?num=$num" />
 <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />

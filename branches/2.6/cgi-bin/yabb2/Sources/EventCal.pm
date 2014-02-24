@@ -628,7 +628,7 @@ qq~if (theForm.name.value === "" || theForm.name.value == "_" || theForm.name.va
     $mycalout_post = qq~
 <script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
 $my_subcheck
-<form action="$scripturl?action=add_cal" name="postmodify" method="post" onsubmit="if(!checkForm(this)) {return false} else {return submitproc()}" accept-charset="$mycharset">
+<form action="$scripturl?action=add_cal" name="postmodify" method="post" onsubmit="if(!checkForm(this)) {return false} else {return submitproc()}" accept-charset="$yymycharset">
 $mycalout_addevent
 ~;
 

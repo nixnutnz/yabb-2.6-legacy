@@ -151,6 +151,7 @@ if ($action eq 'detailedversion') { return 1; }
 'revalidatesession2','Sessions.pm&SessionReval2',
 'RSSboard','RSS.pm&RSS_board',
 'RSSrecent','RSS.pm&RSS_recent',
+'RSS_cat','RSS.pm&RSS_cat',
 'scpoll','Poll.pm&ShowcasePoll',
 'scpolldel','Poll.pm&DelShowcasePoll',
 'scpollcoll','Poll.pm&collapse_poll',

@@ -32,7 +32,7 @@ sub sendmail {
 # Changed to dash - &#144; misread in mail clients that use semi-colons as a delimiter
     $mbname =~ s/,/-/igsm;
 
-    $charsetheader = $mailcharset ? $mailcharset : $mycharset;
+    $charsetheader = $mailcharset ? $mailcharset : $yymycharset;
 #    $charsetheader = 'UTF-8';
 
     if ( !$from ) {

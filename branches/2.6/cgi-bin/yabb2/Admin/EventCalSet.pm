@@ -86,7 +86,7 @@ sub EventCalSet {
     $CalEventPerms = DrawPerms($CalEventPerms);
 
     $yymain .= qq~
-            <form action="$adminurl?action=eventcal_set2" method="post" accept-charset="$mycharset">
+            <form action="$adminurl?action=eventcal_set2" method="post" accept-charset="$yymycharset">
             <div class="bordercolor rightboxdiv">
             <table class="border-space pad-cell" style="margin-bottom: .5em;">
                 <col span="2" style="width: 50%" />
@@ -253,7 +253,7 @@ sub EventCalSet {
     eval { require "$vardir/eventcalIcon.txt"; };
 
     $yymain .= qq~
-            <form action="$adminurl?action=eventcal_set3" method="post" enctype="multipart/form-data" accept-charset="$mycharset">
+            <form action="$adminurl?action=eventcal_set3" method="post" enctype="multipart/form-data" accept-charset="$yymycharset">
             <div class="bordercolor rightboxdiv">
             <table class="border-space pad-cell" style="margin-bottom: .5em;">
                 <col span="2" style="width:24%" />

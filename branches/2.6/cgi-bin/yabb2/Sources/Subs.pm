@@ -144,8 +144,9 @@ sub print_output_header {
             if ($LastModified) { $ret .= "Last-Modified: $LastModified\n"; }
             if ( $gzcomp && $gzaccept ) { $ret .= "Content-Encoding: gzip\n"; }
             $ret .= "Content-Type: $contenttype";
-			if ($yycharset) {$mycharset = $yycharset;}
-            if ($mycharset) { $ret .= "; charset=$mycharset"; }
+			if ($yycharset) {$yymycharset = $yycharset;}
+            if ($yymycharset) { $ret .= "; charset=$yymycharset"; }
+			
         }
     }
     print $ret . "\r\n\r\n" or croak "$croak{'print'} ret";
@@ -527,7 +528,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
         if ( $maxsearchdisplay > -1 && $qcksearchaccess eq 'granted' ) {
             $yysearchbox = qq~
                     <div class="yabb_searchbox">
-                    <form action="$scripturl?action=search2" method="post" accept-charset="$mycharset">
+                    <form action="$scripturl?action=search2" method="post" accept-charset="$yymycharset">
                         <input type="hidden" name="searchtype" value="$qcksearchtype" />
                         <input type="hidden" name="userkind" value="any" />
                         <input type="hidden" name="subfield" value="on" />
@@ -1564,7 +1565,7 @@ sub uri_escape {    # usage: $safe = uri_escape( $string )
 sub enc_eMail {
     my ($title,$email,$subject,$body,$src) = @_;
     my ($charset_value);
-    if ($mycharset eq 'windows-1251') { $charset_value = 848;} # Cyrillic decoding
+    if ($yymycharset eq 'windows-1251') { $charset_value = 848;} # Cyrillic decoding
 
     my $email_length = length $email;
     my $code1 = generate_code($email_length);

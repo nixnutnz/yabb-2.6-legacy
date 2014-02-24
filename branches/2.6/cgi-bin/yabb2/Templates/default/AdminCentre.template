@@ -157,11 +157,11 @@ $front_page = qq~<div class="bordercolor rightboxdiv">
                 </td>
             </tr><tr>
                 <td class="catbg center small">
-                    YaBB 2.5.4
+                    YaBB 2.6.0
                 </td>
             </tr><tr>
                 <td class="windowbg2">
-                    <div class="pad-more">$credits_txt{'yabb254'}</div>
+                    <div class="pad-more">$credits_txt{'yabb260'}</div>
                 </td>
             </tr><tr>
                 <td class="catbg center small">

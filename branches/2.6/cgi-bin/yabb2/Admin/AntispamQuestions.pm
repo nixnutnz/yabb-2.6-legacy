@@ -144,7 +144,7 @@ sub SpamQuestions {
 $show_questions
 </table>
 </div>
-<form action="$adminurl?action=spam_questions_add" method="post" enctype="multipart/form-data" accept-charset="$mycharset">
+<form action="$adminurl?action=spam_questions_add" method="post" enctype="multipart/form-data" accept-charset="$yymycharset">
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell" style="margin-bottom: .5em;">
     <col style="width: 25%" />
@@ -264,7 +264,7 @@ sub SpamQuestionsEdit {
         $spam_image_value = qq~<div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Templates/Forum/default/$spam_image" target="_blank">$spam_image</a><br /><input type="checkbox" name="del_spam_image" id="del_spam_image" value="1" /> <label for="del_spam_image">$admin_txt{'remove_img'}</label></div>~;
     }
     $yymain = qq~
-<form action="$adminurl?action=spam_questions_edit2" method="post" enctype="multipart/form-data" accept-charset="$mycharset">
+<form action="$adminurl?action=spam_questions_edit2" method="post" enctype="multipart/form-data" accept-charset="$yymycharset">
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell" style="margin-bottom: .5em;">
     <col style="width: 25%" />

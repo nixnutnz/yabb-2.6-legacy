@@ -59,7 +59,7 @@ qq~$adminurl?action=modagreement;agreementlanguage=$language;destination=helpadm
     }
 
     $yymain .= qq~
-<form name="help_update" action="$adminurl?action=helpediting2" method="post" accept-charset="$mycharset">
+<form name="help_update" action="$adminurl?action=helpediting2" method="post" accept-charset="$yymycharset">
     <input type="hidden" name="area" value="$help_area" />
     <input type="hidden" name="page" value="$page" />
     <div class="bordercolor rightboxdiv">
@@ -339,7 +339,7 @@ function adduserhelp() {
                 <td class="catbg"><i>$helptxt{'6'}</i></td>
             </tr><tr>
                 <td class="windowbg2 center">
-                    <form name="adminhelp" action="$adminurl?action=helpediting;area=Admin" method="post" style="display: inline" accept-charset="$mycharset">
+                    <form name="adminhelp" action="$adminurl?action=helpediting;area=Admin" method="post" style="display: inline" accept-charset="$yymycharset">
                         <span class="help-box">
                         <select name="page" size="$admincount" class="help-page">
                             $admin_list
@@ -362,7 +362,7 @@ function adduserhelp() {
                 <td class="catbg"><i>$helptxt{'5'}</i></td>
             </tr><tr>
                 <td class="windowbg2 center">
-                    <form name="gmodhelp" action="$adminurl?action=helpediting;area=Gmod" method="post" style="display: inline" accept-charset="$mycharset">
+                    <form name="gmodhelp" action="$adminurl?action=helpediting;area=Gmod" method="post" style="display: inline" accept-charset="$yymycharset">
                         <span class="help-box">
                             <select name="page" size="$gmodcount" class="help-page">
                                 $gmod_list
@@ -387,7 +387,7 @@ function adduserhelp() {
                 <td class="catbg"><i>$helptxt{'4'}</i></td>
             </tr><tr>
                 <td class="windowbg2 center">
-                    <form name="modhelp" action="$adminurl?action=helpediting;area=Moderator" method="post" style="display: inline" accept-charset="$mycharset">
+                    <form name="modhelp" action="$adminurl?action=helpediting;area=Moderator" method="post" style="display: inline" accept-charset="$yymycharset">
                         <span class="help-box">
                         <select name="page" size="$modcount" class="help-page">
                             $moderator_list
@@ -399,7 +399,7 @@ function adduserhelp() {
                     <span class="help-add">
                         <input type="button" value="\-\>" onclick="addmodhelp()" />
                     </span>
-                    <form name="modorder" action="$adminurl?action=helporder;area=Moderator" method="post" style="display: inline" accept-charset="$mycharset">
+                    <form name="modorder" action="$adminurl?action=helporder;area=Moderator" method="post" style="display: inline" accept-charset="$yymycharset">
                         <span style="float: right; text-align: center; width: 200px;">
                             <textarea name="order" cols="29" rows="$modcount" class="help-page">$moderatorlist</textarea>
                             <input type="hidden" value="$moderator_lst" name="testlst" />
@@ -412,7 +412,7 @@ function adduserhelp() {
                 <td class="catbg"><i>$helptxt{'3'}</i></td>
             </tr><tr>
                 <td class="windowbg2 center">
-                    <form name="userhelp" action="$adminurl?action=helpediting;area=User" method="post" style="display: inline" accept-charset="$mycharset">
+                    <form name="userhelp" action="$adminurl?action=helpediting;area=User" method="post" style="display: inline" accept-charset="$yymycharset">
                         <span class="help-box">
                             <select name="page" size="$usercount" class="help-page">
                                 $user_list
@@ -424,7 +424,7 @@ function adduserhelp() {
                     <span class="help-add">
                         <input type="button" value="\-\>" onclick="adduserhelp()" />
                     </span>
-                    <form name="userorder" action="$adminurl?action=helporder;area=User" method="post" style="display: inline" accept-charset="$mycharset">
+                    <form name="userorder" action="$adminurl?action=helporder;area=User" method="post" style="display: inline" accept-charset="$yymycharset">
                         <span style="float: right; text-align: center; width: 200px;">
                             <textarea name="order" cols="29" rows="$usercount" class="help-page">$userlist</textarea>
                             <input type="hidden" value="$user_lst" name="testlst" />

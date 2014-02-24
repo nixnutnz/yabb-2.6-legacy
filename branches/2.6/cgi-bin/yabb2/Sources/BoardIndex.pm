@@ -665,7 +665,7 @@ qq~$collapse_link $hash{$catname} <a href="$scripturl?$my_cat=$catid" title="$bo
         if ( !$INFO{'a'} ) {
             if ( !$rss_disabled && $catrss ) {
                 $rss_catlink =
-qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img src="$micon_bg{'boardrss'}" alt="$maintxt{'rssfeed'} - $catname" title="$maintxt{'rssfeed'} - $catname" /></a>~;
+qq~<a href="$scripturl?action=RSS_cat;catselect=$catid" target="_blank"><img src="$micon_bg{'boardrss'}" alt="$maintxt{'rssfeed'} - $catname" title="$maintxt{'rssfeed'} - $catname" /></a>~;
             }
             else {
                 $rss_catlink = q{};
@@ -1528,13 +1528,13 @@ qq~<div class="grpcolors"><span style="color: $color;"><b>lllll</b></span> $titl
 qq~<a href="$scripturl?action=RSSrecent" target="_blank"><img src="$micon_bg{'rss'}" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
             if ( $INFO{'catselect'} ) {
                 $rss_link =
-qq~<a href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" target="_blank"><img src="$micon_bg{'rss'}" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
+qq~<a href="$scripturl?action=RSS_cat;catselect=$INFO{'catselect'}" target="_blank"><img src="$micon_bg{'rss'}" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
             }
             $rss_text =
 qq~<a href="$scripturl?action=RSSrecent" target="_blank">$boardindex_txt{'792'}</a>~;
             if ( $INFO{'catselect'} ) {
                 $rss_text =
-qq~<a href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" target="_blank">$boardindex_txt{'792'}</a>~;
+qq~<a href="$scripturl?action=RSS_cat;catselect=$INFO{'catselect'}" target="_blank">$boardindex_txt{'792'}</a>~;
             }
         }
         $yyrssfeed = $rss_text;
@@ -1744,7 +1744,7 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
         if ( !$rss_disabled ) {
             if ( $INFO{'catselect'} ) {    # Handle categories properly
                 $yyinlinestyle .=
-qq~    <link rel="alternate" type="application/rss+xml" title="$boardindex_txt{'792'}" href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" />~;
+qq~    <link rel="alternate" type="application/rss+xml" title="$boardindex_txt{'792'}" href="$scripturl?action=RSS_cat;catselect=$INFO{'catselect'}" />~;
             }
             else {
                 $yyinlinestyle .=
@@ -1818,7 +1818,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
         }
     }
     else {
-        print "Content-type: text/html; charset=$mycharset\n\n"
+        print "Content-type: text/html; charset=$yymycharset\n\n"
           or croak "$croak{'print'} charset";
         print qq~
             <table id="subloaded_$INFO{'board'}" style="display:none">

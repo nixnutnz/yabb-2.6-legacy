@@ -101,7 +101,7 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
             <td class="windowbg2">
                 <div style="float: left; width: 40%; padding: 3px;"><label for="templatefile"><b>$templ_txt{'10'}</b></label></div>
                 <div style="float: left; width: 59%;">
-                    <form action="$adminurl?action=modtemp" method="post" style="display: inline;" accept-charset="$mycharset">
+                    <form action="$adminurl?action=modtemp" method="post" style="display: inline;" accept-charset="$yymycharset">
                         <select name="templatefile" id="templatefile" size="1" onchange="submit()">
                     $templs
                         </select>
@@ -112,7 +112,7 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
         </tr>
     </table>
 </div>
-<form action="$adminurl?action=modtemp2" method="post" style="display: inline;" accept-charset="$mycharset">
+<form action="$adminurl?action=modtemp2" method="post" style="display: inline;" accept-charset="$yymycharset">
 <div class="bordercolor borderstyle rightboxdiv">
     <table class="border-space pad-cell" style="table-layout: fixed; margin-bottom: .5em;">
         <tr>
@@ -217,7 +217,7 @@ sub ModifyStyle {
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <form action="$adminurl?action=modcss;cssfile=$cssfile" name="modcss" method="post" style="display: inline;" accept-charset="$mycharset">
+    <form action="$adminurl?action=modcss;cssfile=$cssfile" name="modcss" method="post" style="display: inline;" accept-charset="$yymycharset">
     <table class="border-space pad-cell">
         <tr>
             <td class="titlebg">
@@ -233,7 +233,7 @@ sub ModifyStyle {
             <td class="windowbg2">
                 <div style="float: left; width: 30%; padding: 3px;"><b>$templ_txt{'1'}</b></div>
                 <div style="float: left; width: 69%;">
-                    <form action="$adminurl?action=modstyle" name="selcss" method="post" style="display: inline;" accept-charset="$mycharset">
+                    <form action="$adminurl?action=modstyle" name="selcss" method="post" style="display: inline;" accept-charset="$yymycharset">
                     <div class="small" style="float: left; width: 25%;"><label for="cssfile" style="font-weight:bold">$templ_txt{'forum'}:</label><br />
                     <select name="cssfile" id="cssfile" size="1" style="width: 90%;" onchange="if(this.options[this.selectedIndex].value) { document.aselcss.admcssfile.selectedIndex = '0'; submit(); }">
                         $forumcss
@@ -242,7 +242,7 @@ sub ModifyStyle {
                     <noscript><input type="submit" value="$admin_txt{'32'}" style="width: 90%;" class="button" /></noscript>
                     </div>
                     </form>
-                    <form action="$adminurl?action=modstyle" name="aselcss" method="post" style="display: inline;" accept-charset="$mycharset">
+                    <form action="$adminurl?action=modstyle" name="aselcss" method="post" style="display: inline;" accept-charset="$yymycharset">
                     <div class="small" style="float: left; width: 25%;"><label for="admcssfile" style="font-weight:bold">$templ_txt{'admincenter'}:</label><br />
                     <select name="admcssfile" id="admcssfile" size="1" style="width: 90%;" onchange="if(this.options[this.selectedIndex].value) { document.selcss.cssfile.selectedIndex = '0'; submit(); }">
                         $admincss
@@ -257,7 +257,7 @@ sub ModifyStyle {
     </table>
 </div>
 <div class="bordercolor borderstyle rightboxdiv">
-    <form action="$adminurl?action=modstyle2" method="post" accept-charset="$mycharset">
+    <form action="$adminurl?action=modstyle2" method="post" accept-charset="$yymycharset">
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="windowbg2 center">
@@ -628,7 +628,7 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
     }
 
     $yymain .= qq~
-<form action="$adminurl?action=modstyle" name="modstyles" id="modstyles" method="post" accept-charset="$mycharset">
+<form action="$adminurl?action=modstyle" name="modstyles" id="modstyles" method="post" accept-charset="$yymycharset">
 <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell">
         <tr>
@@ -643,7 +643,7 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
     </table>
 </div>
 </form>
-<form action="$adminurl?action=modcss2" name="allstyles" id="allstyles" method="post" accept-charset="$mycharset">
+<form action="$adminurl?action=modcss2" name="allstyles" id="allstyles" method="post" accept-charset="$yymycharset">
 <div class="bordercolor borderstyle rightboxdiv">
     <table class="border-space" style="margin-bottom: -1px;">
         <tr>
@@ -1949,7 +1949,7 @@ qq~<div class="yabb_searchbox" style="width:auto"><form><input type="text" name=
     $templatejump  = 1;
     $tempforumjump = jumpto();
 
-    $fulltemplate =~ s/({|<)yabb charset(}|>)/$mycharset/gsm;
+    $fulltemplate =~ s/({|<)yabb charset(}|>)/$yymycharset/gsm;
     $fulltemplate =~ s/({|<)yabb title(}|>)/$temptitle/gsm;
     $fulltemplate =~ s/({|<)yabb style(}|>)/$tempstyles/gsm;
     $fulltemplate =~ s/({|<)yabb html_root(}|>)/$yyhtml_root/gsm;
@@ -2012,7 +2012,7 @@ s/<a href="http:\/\/jigsaw.w3.org\/css\-validator\/validator\?uri\=<yabb url>">.
     ToHTML($fulltemplate);
 
     $yymain .= qq~
-<form action="$adminurl?action=modskin2" name="selskin" method="post" style="display: inline;" accept-charset="$mycharset">
+<form action="$adminurl?action=modskin2" name="selskin" method="post" style="display: inline;" accept-charset="$yymycharset">
 <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell">
         <tr>

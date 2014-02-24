@@ -69,7 +69,7 @@ sub AddCats {
     get_forum_master();
 
     $yymain .= qq~
-<form action="$adminurl?action=addcat2" method="post" enctype="multipart/form-data" accept-charset="$mycharset">
+<form action="$adminurl?action=addcat2" method="post" enctype="multipart/form-data" accept-charset="$yymycharset">
 <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
@@ -271,7 +271,7 @@ qq~<option value="$category" selected="selected">$categoryname</option>~;
     }
     $yymain .= qq~
 <br /><br />
-<form action="$adminurl?action=reordercats2" method="post" accept-charset="$mycharset">
+<form action="$adminurl?action=reordercats2" method="post" accept-charset="$yymycharset">
     <table class="bordercolor border-space pad-cell" style="width:525px">
         <tr>
             <td class="titlebg">$admin_img{'board'} <b>$admin_txt{'829'}</b></td>

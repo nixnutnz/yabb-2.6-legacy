@@ -489,7 +489,7 @@ function checkForm(theForm) {
     # if this is an IM from the admin or to groups declare where it goes.
     if ( $INFO{'adminim'} || $INFO{'action'} eq 'imgroups' ) {
         $my_adminim =
-qq~<form action="$scripturl?action=imgroups" method="post" name="postmodify" onsubmit="return submitproc()" accept-charset="$mycharset">~;
+qq~<form action="$scripturl?action=imgroups" method="post" name="postmodify" onsubmit="return submitproc()" accept-charset="$yymycharset">~;
     }
     else {
         if ($curnum) { $thecurboard = qq~num=$curnum\;action=$destination~; }
@@ -502,11 +502,11 @@ qq~<form action="$scripturl?action=imgroups" method="post" name="postmodify" ons
             && ${ $uid . $currentboard }{'attperms'} == 1 )
         {
             $my_adminim =
-qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctype="multipart/form-data" onsubmit="if(!checkForm(this)) {return false} else {return submitproc()}" accept-charset="$mycharset">~;
+qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctype="multipart/form-data" onsubmit="if(!checkForm(this)) {return false} else {return submitproc()}" accept-charset="$yymycharset">~;
         }
         else {
             $my_adminim =
-qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctype="application/x-www-form-urlencoded" onsubmit="if(!checkForm(this)) {return false} else {return submitproc()}" accept-charset="$mycharset">~;
+qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctype="application/x-www-form-urlencoded" onsubmit="if(!checkForm(this)) {return false} else {return submitproc()}" accept-charset="$yymycharset">~;
         }
     }
     if ( $postthread == 2 ) {

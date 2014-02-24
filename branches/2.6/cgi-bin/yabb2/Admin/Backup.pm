@@ -140,7 +140,7 @@ qq~<span class="important"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
         }
     }
 </script>
-<form action="$adminurl?action=backupsettings2" method="post" name="backupsettings" accept-charset="$mycharset">
+<form action="$adminurl?action=backupsettings2" method="post" name="backupsettings" accept-charset="$yymycharset">
     <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>

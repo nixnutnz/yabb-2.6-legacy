@@ -71,7 +71,7 @@ sub settings {
             </tr>
         </table>
     </div>
-<form action="$adminurl?action=newsettings2;page=$page" onsubmit="undisableAll(this);" method="post" enctype="multipart/form-data" accept-charset="$mycharset">
+<form action="$adminurl?action=newsettings2;page=$page" onsubmit="undisableAll(this);" method="post" enctype="multipart/form-data" accept-charset="$yymycharset">
     <ul id="navlist">
 ~;
     my $i = 0;
@@ -497,7 +497,7 @@ sub SaveSettingsTo {
 
 \$settings_file_version = "$YaBBversion";
 # If not equal actual YaBBversion then the updating process is run through
-\$mycharset = '$mycharset';                 # character encoding (usually ISO-8859-1 for older forums)
+\$yymycharset = '$yymycharset';                 # character encoding (usually ISO-8859-1 for older forums)
                                             # or 'UTF-8';
 
 \%templateset = ($templateset);             # Forum templates settings

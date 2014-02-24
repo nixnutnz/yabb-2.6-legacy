@@ -1800,7 +1800,7 @@ s/(<!-- Icon and access info end -->)/$1\n<div class="q_post_space">{yabb forumj
         template();
     }
     else {
-        print "Content-type: text/html; charset=$mycharset\n\n"
+        print "Content-type: text/html; charset=$yymycharset\n\n"
           or croak "$croak{'print'} content-type";
         print qq~
         $messageindex_template
