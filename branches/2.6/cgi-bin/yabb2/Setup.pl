@@ -24,7 +24,7 @@ use English qw(-no_match_vars);
 our $VERSION = '2.6.0';
 
 $setupplver = 'YaBB 2.6.0 $Revision$';
-$mycharset  = 'UTF-8';
+$yymycharset  = 'UTF-8';
 
 # conversion will stop after $max_process_time
 # in seconds, than the browser will call the script
@@ -1458,7 +1458,7 @@ sub SetInstall2 {
 # Note: these settings must be properly changed for YaBB to work
 
 \$settings_file_version = "$settings_file_version"; # If not equal actual YaBBversion then the updating process is run through
-\$mycharset = "$mycharset";                        # character encoding (usually ISO-8859-1 for older forums)
+\$yymycharset = "$yymycharset";                        # character encoding (usually ISO-8859-1 for older forums)
                                             # or 'UTF-8';
 \%templateset = (
 'Forum default' => "default|default|default|default|default|default|default|",

@@ -665,7 +665,7 @@ qq~$collapse_link $hash{$catname} <a href="$scripturl?$my_cat=$catid" title="$bo
         if ( !$INFO{'a'} ) {
             if ( !$rss_disabled && $catrss ) {
                 $rss_catlink =
-qq~<a href="$scripturl?action=RSS_cat;catselect=$catid" target="_blank"><img src="$micon_bg{'boardrss'}" alt="$maintxt{'rssfeed'} - $catname" title="$maintxt{'rssfeed'} - $catname" /></a>~;
+qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img src="$micon_bg{'boardrss'}" alt="$maintxt{'rssfeed'} - $catname" title="$maintxt{'rssfeed'} - $catname" /></a>~;
             }
             else {
                 $rss_catlink = q{};

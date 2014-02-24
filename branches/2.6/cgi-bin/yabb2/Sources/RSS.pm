@@ -244,7 +244,7 @@ sub RSS_recent {
     $topics = $INFO{'topics'} || $rss_limit || 5;
     if ( $rss_limit && $topics > $rss_limit ) { $topics = $rss_limit; }
 
-	    $yytitle = "$topics $maintxt{'214b'}";
+    $yytitle = "$topics $maintxt{'214b'}";
 
     # If this is just a single category, handle it.
     if ( $INFO{'catselect'} ) {
@@ -261,10 +261,10 @@ sub RSS_recent {
         my $cataccess = CatAccess($catperms);
         if ( !$cataccess ) { next; }
 
-		if ( $INFO{'catselect'}) {
-			$yytitle = $catname;
-			$mydesc = $catname;
-		}
+        if ( $INFO{'catselect'}) {
+            $yytitle = $catname;
+            $mydesc = $catname;
+        }
 
         foreach my $curboard (@bdlist) {
             ( $boardname{$curboard}, $boardperms, $boardview ) = split /\|/xsm,
@@ -306,10 +306,8 @@ sub RSS_recent {
 
             # Clean out the extra entries in the threadlist
             @threadlist = reverse sort @threadlist;
-			if ($INFO{'catselect'}) {
-			$threadcount = @threadlist;
-				if ( $threadcount < $topics ) { $topics = $threadcount; }
-			}
+            $threadcount = @threadlist;
+            if ( $threadcount < $topics ) { $topics = $threadcount; }
             @threadlist = @threadlist[ 0 .. $topics - 1 ];
         }
     }

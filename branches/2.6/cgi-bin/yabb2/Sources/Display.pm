@@ -1899,7 +1899,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
 qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" style="overflow-x:hidden;overflow-y:hidden">
 <head>
-<title>Google Talk</title>
+<title>$display_txt{'google'}</title>
 $gtalkstyle
 <style type="text/css">
 body {margin: 0px; padding: 0px; overflow-x:hidden;overflow-y:hidden;}
@@ -1910,7 +1910,7 @@ body {margin: 0px; padding: 0px; overflow-x:hidden;overflow-y:hidden;}
 <table class="bordercolor pad_4px cs_thin">
     <tr>
         <td class="titlebg h_22px">
-            <img src="$gtalk" width="16" height="14" alt="" title="" /> Google Talk
+            <img src="$gtalk" width="16" height="14" alt="" title="" /> $display_txt{'google'}
         </td>
     </tr><tr>
         <td class="windowbg g_user">
