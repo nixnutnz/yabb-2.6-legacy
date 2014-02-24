@@ -1528,13 +1528,13 @@ qq~<div class="grpcolors"><span style="color: $color;"><b>lllll</b></span> $titl
 qq~<a href="$scripturl?action=RSSrecent" target="_blank"><img src="$micon_bg{'rss'}" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
             if ( $INFO{'catselect'} ) {
                 $rss_link =
-qq~<a href="$scripturl?action=RSS_cat;catselect=$INFO{'catselect'}" target="_blank"><img src="$micon_bg{'rss'}" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
+qq~<a href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" target="_blank"><img src="$micon_bg{'rss'}" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
             }
             $rss_text =
 qq~<a href="$scripturl?action=RSSrecent" target="_blank">$boardindex_txt{'792'}</a>~;
             if ( $INFO{'catselect'} ) {
                 $rss_text =
-qq~<a href="$scripturl?action=RSS_cat;catselect=$INFO{'catselect'}" target="_blank">$boardindex_txt{'792'}</a>~;
+qq~<a href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" target="_blank">$boardindex_txt{'792'}</a>~;
             }
         }
         $yyrssfeed = $rss_text;
@@ -1744,7 +1744,7 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
         if ( !$rss_disabled ) {
             if ( $INFO{'catselect'} ) {    # Handle categories properly
                 $yyinlinestyle .=
-qq~    <link rel="alternate" type="application/rss+xml" title="$boardindex_txt{'792'}" href="$scripturl?action=RSS_cat;catselect=$INFO{'catselect'}" />~;
+qq~    <link rel="alternate" type="application/rss+xml" title="$boardindex_txt{'792'}" href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" />~;
             }
             else {
                 $yyinlinestyle .=

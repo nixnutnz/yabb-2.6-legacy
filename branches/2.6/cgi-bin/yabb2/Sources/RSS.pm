@@ -244,6 +244,8 @@ sub RSS_recent {
     $topics = $INFO{'topics'} || $rss_limit || 5;
     if ( $rss_limit && $topics > $rss_limit ) { $topics = $rss_limit; }
 
+	    $yytitle = "$topics $maintxt{'214b'}";
+
     # If this is just a single category, handle it.
     if ( $INFO{'catselect'} ) {
         @categoryorder = ( $INFO{'catselect'} );
@@ -258,6 +260,11 @@ sub RSS_recent {
         my ( $catname, $catperms ) = split /\|/xsm, $catinfo{$catid};
         my $cataccess = CatAccess($catperms);
         if ( !$cataccess ) { next; }
+
+		if ( $INFO{'catselect'}) {
+			$yytitle = $catname;
+			$mydesc = $catname;
+		}
 
         foreach my $curboard (@bdlist) {
             ( $boardname{$curboard}, $boardperms, $boardview ) = split /\|/xsm,
@@ -299,6 +306,10 @@ sub RSS_recent {
 
             # Clean out the extra entries in the threadlist
             @threadlist = reverse sort @threadlist;
+			if ($INFO{'catselect'}) {
+			$threadcount = @threadlist;
+				if ( $threadcount < $topics ) { $topics = $threadcount; }
+			}
             @threadlist = @threadlist[ 0 .. $topics - 1 ];
         }
     }
@@ -441,217 +452,6 @@ sub RSS_recent {
     }
 
     ToChars($boardname);
-    $yytitle = "$topics $maintxt{'214b'}";
-    $yydesc  = ${ $uid . $curboard }{'description'};
-
-    RSS_template();
-    return;
-}
-
-sub RSS_cat {
-    ### Arguments:
-    # catselect: use a specific category instead of the whole forum (optional)
-    # topics: Number of topics to show. Defaults to 5.
-    ###
-
-    # Local variables
-    my ($topics);    # Variables for settings
-    my ( @threadlist, $i );    # Variables for the messages
-
-    # Settings
-    $topics = $INFO{'topics'} || $rss_limit || 5;
-    if ( $rss_limit && $topics > $rss_limit ) { $topics = $rss_limit; }
-
-    $catid = $INFO{'catselect'};
-    my $boardlist = $cat{$catid};
-
-    my @bdlist = split /\,/xsm, $boardlist;
-    my ( $catname, $catperms ) = split /\|/xsm, $catinfo{$catid};
-    my $cataccess = CatAccess($catperms);
-    if ( !$cataccess ) { next; }
-    $yytitle = $catname;
-
-    foreach my $curboard (@bdlist) {
-        ( $boardname{$curboard}, $boardperms, $boardview ) = split /\|/xsm,
-          $board{$curboard};
-
-        my $access = AccessCheck( $curboard, q{}, $boardperms );
-        if ( !$iamadmin && $access ne 'granted' ) { next; }
-        if ( ${ $uid . $curboard }{'brdpasswr'} ) {
-            my $cookiename = "$cookiepassword$curboard$username";
-            my $crypass    = ${ $uid . $curboard }{'brdpassw'};
-            if ( !$staff && $yyCookies{$cookiename} ne $crypass ) { next; }
-        }
-
-        fopen( BOARD, "$boardsdir/$curboard.txt" )
-          || RSS_error( 'cannot_open', "$boardsdir/$curboard.txt", 1 );
-        for my $i ( 0 .. ( $topics - 1 ) ) {
-            my $buffer = <BOARD>;
-            if ( !$buffer ) { last; }
-            chomp $buffer;
-
-            my (
-                $mnum, undef, undef, undef, $mdate,
-                undef, undef, undef, $mstate
-            ) = split /\|/xsm, $buffer;
-            $mdate = sprintf '%010d', $mdate;
-            if ( $rss_message == 2 ) {
-                $mdate = $mnum;
-            }    # Sort by topic creation if requested.
-
-            # Check if it's hidden. If so, don't show it
-            if ( $mstate =~ /h/sm && !$iamadmin && !$iamgmod ) { next; }
-
-     # Add it to an array, using $mdate as the first value so we can easily sort
-            push @threadlist, "$mdate|$curboard|$buffer";
-        }
-        fclose(BOARD);
-            # Clean out the extra entries in the threadlist
-        @threadlist = reverse sort @threadlist;
-        my $threadcount = @threadlist;
-        if ( $threadcount < $topics ) { $topics = $threadcount; }
-        @threadlist = @threadlist[ 0 .. ($topics - 1) ];
-    }
-
-
-    for my $i ( 0 .. ( @threadlist - 1 ) ) {
-
-        # Opening item stuff
-        (
-            $mdate,     $board,  $mnum,   $msub,
-            $mname,     $memail, $modate, $mreplies,
-            $musername, $micon,  $mstate
-        ) = split /\|/xsm, $threadlist[$i];
-        $curnum = $mnum;
-
-        ( $msub, undef ) = Split_Splice_Move( $msub, 0 );
-        FromHTML($msub);
-        ToChars($msub);
-
-        # Censor the subject of the thread.
-        $msub = Censor($msub);
-
-        # Does it need to be returned as a 304?
-        if ( $i == 0 ) {    # Do this for the first request only
-            $cachedate = RFC822Date($mdate);
-            if (   $ENV{'HTTP_IF_NONE_MATCH'} eq qq~"$cachedate"~
-                || $ENV{'HTTP_IF_MODIFIED_SINCE'} eq $cachedate )
-            {
-                Send304NotModified();
-                # Comment this out to test with caching disabled
-            }
-        }
-
-        my $postid = "$mreplies#$mreplies";
-        if ( $rss_message == 2 ) { $postid = '0#0'; }
-
-        my $category = "$mbname/$catname";
-        FromHTML($category);
-        my $bn = $boardname{$board};
-        FromHTML($bn);
-        if ($accept_permalink) {
-            my $permsub = $msub;
-            $permdate = permtimer($curnum);
-            $permsub =~ s/ /$perm_spacer/gsm;
-            $yymain .= q~           <item>
-            <title>~ . RSSDescriptionTrim("$bn - $msub") . q~</title>
-            <link>~
-              . RSSDescriptionTrim(
-                "http://$perm_domain/$symlink$permdate/$board/$curnum")
-              . q~</link>
-            <category>~ . RSSDescriptionTrim($category) . q~</category>
-            <guid isPermaLink="true">~
-              . RSSDescriptionTrim(
-                "http://$perm_domain/$symlink$permdate/$board/$curnum")
-              . qq~</guid>\n~;
-        }
-        else {
-            $yymain .= q~       <item>
-            <title>~ . RSSDescriptionTrim("$bn - $msub") . q~</title>
-            <link>~
-              . RSSDescriptionTrim("$scripturl?num=$curnum/$postid") . q~</link>
-            <category>~ . RSSDescriptionTrim($category) . q~</category>
-            <guid>~
-              . RSSDescriptionTrim("$scripturl?num=$curnum/$postid")
-              . qq~</guid>\n~;
-        }
-
-        my $post;
-        fopen( TOPIC, "$datadir/$curnum.txt" )
-          || RSS_error( 'cannot_open', "$datadir/$curnum.txt, $bn, testing, $category, $catname", 1 );
-        if ( $rss_message == 1 ) {
-
-            # Open up the thread and read the last post.
-            while (<TOPIC>) {
-                chomp $_;
-                if ($_) { $post = $_; }
-            }
-        }
-        elsif ( $rss_message == 2 ) {
-
-            # Open up the thread and read the first post.
-            $post = <TOPIC>;
-        }
-        fclose(TOPIC);
-
-        if ( $post ne q{} ) {
-            (
-                undef, undef, undef, undef,    $musername,
-                undef, undef, undef, $message, $ns
-            ) = split /\|/xsm, $post;
-        }
-
-        if ($showauthor) {
-
-# The spec really wants us to include their email.
-# That's not advisable for us (spambots anyone?). So we skip author if the email hidden flag is on for that user.
-            if ( -e "$memberdir/$musername.vars" ) {
-                LoadUser($musername);
-                if ( !${ $uid . $musername }{'hidemail'} ) {
-                    $yymain .=
-                      q~           <author>~
-                      . RSSDescriptionTrim(
-"${$uid.$musername}{'email'} (${$uid.$musername}{'realname'})"
-                      ) . qq~</author>\n~;
-                }
-                else {
-                    $yymain .=
-                        q~           <author><name>~
-                      . RSSDescriptionTrim("${$uid.$musername}{'realname'}")
-                      . qq~</name></author>\n~;
-                }
-            }
-        }
-
-        if ($showdate) {
-            if ( $rss_message == 2 ) {
-                $mdate = $curnum;
-            }    # Sort by topic creation if requested.
-                 # Get the date how the user wants it.
-            my $realdate = RFC822Date($mdate);
-            $yymain .= qq~          <pubDate>$realdate</pubDate>\n~;
-        }
-
-        if ( $message ne q{} ) {
-            ( $message, undef ) = Split_Splice_Move( $message, $curnum );
-            if ($enable_ubbc) {
-                LoadUser($musername);
-                $displayname = ${ $uid . $musername }{'realname'};
-                DoUBBC();
-            }
-            FromHTML($message);
-            ToChars($message);
-            $message = Censor($message);
-            $yymain .=
-                q~           <description>~
-              . RSSDescriptionTrim($message)
-              . qq~</description>\n~;
-        }
-
-        $yymain .= qq~      </item>\n~;
-    }
-
-    ToChars($boardname);
     $yydesc  = ${ $uid . $curboard }{'description'};
 
     RSS_template();
@@ -680,7 +480,7 @@ sub RSS_template {    # print RSS output
         $descr = ( $boardname ? "$boardname - " : q{} ) . $mbname;
     }
     elsif ( $INFO{'catselect'} ) { $mainlink .= "?catselect=$INFO{'catselect'}";
-        $descr = ( $catselect ? "$catselect - " : q{} ) . $mbname;
+        $descr =  qq{$mydesc - $mbname};
     }
 
 
