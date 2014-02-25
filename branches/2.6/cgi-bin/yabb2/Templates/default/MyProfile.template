@@ -329,7 +329,7 @@ $myprofile_show_avatar_a = qq~
                     } else {
                         document.creator.userpic.options[0].selected = true;
                         source = document.getElementsByName('userpicpersonal')[0].value;
-                        if (!source || source == 'http{yabb av_s://') source = "facesurl/$my_blank_avatar";
+                        if (!source || source == 'http{yabb av_s://') source = "$facesurl/$my_blank_avatar";
                     }
                     document.images.icons.style.display = 'none';
                     document.images.icons.width = '';

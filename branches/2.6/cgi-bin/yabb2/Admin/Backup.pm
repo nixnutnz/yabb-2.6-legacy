@@ -578,7 +578,7 @@ sub backupsettings2 {
         @settings = <SETTINGS>;
         fclose(SETTINGS);
         for my $i ( 0 .. ( @settings - 1 ) ) {
-            if ( $settings[$i] =~ /\$rememberbackup = \d+;/xsm ) {
+            if ( $settings[$i] =~ /\$rememberbackup = \d+;/sm ) {
                 if ( !$rememberbackup ) { $rememberbackup = 0; }
                 $rememberbackup *= 86_400;    # days in seconds
                 $settings[$i] =~
@@ -1350,7 +1350,7 @@ sub recoverbackup2 {
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
-    <table class="border-space pad_10px" style="margin-bottom: .5em;">
+    <table class="border-space pad_more" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$backup_txt{100}</b></td>
         </tr><tr>

@@ -96,8 +96,7 @@ $myremindera = qq~<table class="tabtitle cs_thin pad_4px" style="width: 600px;">
     </tr>
 </table>
 <table class="bordercolor pad_3px cs_thin" style="width: 600px;">
-    <tr> 
-
+    <tr>
         <td class="windowbg">
             <label for="user"><b>$loginout_txt{'35'}:</b></label>
             <input type="text" name="user" id="user" maxlength="100" {yabb regstyle} size="50" />

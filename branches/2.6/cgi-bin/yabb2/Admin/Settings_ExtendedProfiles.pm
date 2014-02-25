@@ -689,7 +689,7 @@ sub ext_admin_edit {
         </td>
     </tr><tr>
         <td class="windowbg2">
-            <table class="bordercolor borderstyle border-space pad_6px">
+            <table class="bordercolor borderstyle border-space pad-cell">
 ~;
         if ( $field{'type'} eq 'text' ) {
             @options = split /\^/xsm, $field{'options'};

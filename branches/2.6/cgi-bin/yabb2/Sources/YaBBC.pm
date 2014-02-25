@@ -385,7 +385,6 @@ s/\[s\](.*?)\[\/s\]/<span style="text-decoration: line-through">$1<\/span><!--li
 #s/( |&nbsp;)*\[move\](.*?)\[\/move\]/<div style="overflow: auto; overflow-style: marquee-line; white-space:nowrap">$2<\/div>/isg;
     $message =~
       s/( |&nbsp;)*\[move\](.*?)\[\/move\]/<marquee>$2<\/marquee>/isgm;
-
     # Quote message
     while ( $message =~
 s/\[quote(\s+author=(.*?)\s+link=(.*?)\s+date=(.*?)\s*)?\]\n*(.*?)\n*\[\/quote\]/ quotemsg($2,$3,$4,$5) /eisgm ){}

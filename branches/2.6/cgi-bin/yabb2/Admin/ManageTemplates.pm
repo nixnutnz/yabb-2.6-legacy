@@ -780,7 +780,7 @@ $yymain .= qq~<tr>
         </div>
         <div class="catbg" style="position: relative; top: 12px; left: 5px; width: 280px; height: 18px; border-width: 1px; border-style: outset;">
         <span class="small" style="position: absolute; top: 3px; left: 6px;"><b>$templ_txt{'iconspace'}</b>
-        <input class="catbg" name="viewimgpad" id="viewimgpad" type="text" value="$viewimgpad" style="position: absolute; top: 0; left: 165px; text-align: right; width: 30px; margin: 0; padding: 0; border: 0; font-size: 10px; font-weight: bold; display: inline;" readonly="readonly" /></span>
+       <input class="catbg" name="viewimgpad" id="viewimgpad" type="text" value="$viewimgpad" style="position: absolute; top: 0; left: 165px; text-align: right; width: 30px; margin: 0; padding: 0; border: 0; font-size: 10px; font-weight: bold; display: inline;" readonly="readonly" /></span>
         <img src="$defaultimagesdir/knapbagrms02.gif" style="position: absolute; top: 0; left: 209px; z-index: 1; width: 69px; height: 16px;" />
         <img id="knapImg3" src="$defaultimagesdir/knapyellow.gif" class="skyd" style="position: absolute; left: $drawpos3; top: 2px; cursor: pointer; z-index: 2; width: 13px; height: 15px;" />
         </div>
