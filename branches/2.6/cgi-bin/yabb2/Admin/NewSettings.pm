@@ -517,6 +517,7 @@ sub SaveSettingsTo {
 \$cookietsort = "\Q$cookietsort\E";   # Name of the message Index sort cookie
 \$cookieview = "\Q$cookieview\E";           # Name of the Guest Message Limit cookie
 \$cookieviewtime = $cookieviewtime;         # life time for Guest Message Limit cookie
+\$screenlogin = $screenlogin;                # allow members to login using their screen name.
 
 \$regtype = $regtype;                       # 0 = registration closed (only admin can register), 1 = pre registration with admin approval,
                                     # 2 = pre registration and email activation, 3 = open registration

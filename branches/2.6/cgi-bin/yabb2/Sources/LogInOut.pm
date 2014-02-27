@@ -43,10 +43,12 @@ sub Login2 {
     if ( $FORM{'username'} eq q{} ) { fatal_error('no_username'); }
     if ( $FORM{'passwrd'}  eq q{} ) { fatal_error('no_password'); }
     $username = $FORM{'username'};
+    $mylogintxt = $loginout_txt{'35'};
+    if ( $screenlogin ) { $mylogintxt = $loginout_txt{'35b'}; }
     $username =~ s/\s/_/gxsm;
     if ( $username =~ /[^ \w\x80-\xFF\[\]\(\)#\%\+,\-\|\.:=\?\@\^]/xsm ) {
         fatal_error( 'invalid_character',
-            "$loginout_txt{'35'} $loginout_txt{'241'}" );
+            "$mylogintxt $loginout_txt{'241'}" );
     }
 
     ## Check if login ID is not an email address ##

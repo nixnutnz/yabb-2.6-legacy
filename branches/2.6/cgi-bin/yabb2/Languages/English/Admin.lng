@@ -254,6 +254,7 @@ $adminlngver = 'YaBB 2.6.0 $Revision$';
 '430' => 'Files in Admin Dir:',
 '431' => 'Files in Source Dir:',
 '432' => q~Default lifetime of login cookies.<br /><span class="small">If checked, the default lifetime is 'forever', otherwise the login cookies will expire when the user's browser is closed.</span>~,
+'432b' => q~Allow members to Login with their Screen Name as well as their User ID or e-mail address?~,
 '462' => 'GO!',
 '470' => 'N/A',
 '471' => 'Smart Image Resize<br />(resizes image display to the following values if image exceeds them)',

@@ -241,7 +241,7 @@ sub RSS_recent {
     my ( @threadlist, $i );    # Variables for the messages
 
     # Settings
-    $topics = $INFO{'topics'} || $rss_limit || 5;
+    $topics = $INFO{'topics'} || $rss_limit || 10;
     if ( $rss_limit && $topics > $rss_limit ) { $topics = $rss_limit; }
 
     $yytitle = "$topics $maintxt{'214b'}";
@@ -402,7 +402,7 @@ sub RSS_recent {
         if ($showauthor) {
 
 # The spec really wants us to include their email.
-# That's not adviseable for us (spambots anyone?). So we skip author if the email hidden flag is on for that user.
+# That's not advisable for us (spambots anyone?). So we skip author if the email hidden flag is on for that user.
             if ( -e "$memberdir/$musername.vars" ) {
                 LoadUser($musername);
                 if ( !${ $uid . $musername }{'hidemail'} ) {

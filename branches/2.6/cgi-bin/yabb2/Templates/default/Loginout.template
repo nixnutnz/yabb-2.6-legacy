@@ -50,10 +50,12 @@ $myborder
         <td class="windowbg center"><img src="$imagesdir/login.png" alt="" /></td>
         <td class="windowbg2 center">~;
 
+    $mylogintxt = $loginout_txt{'35'};
+    if ( $screenlogin ) { $mylogintxt = $loginout_txt{'35b'}; }
 $mysharedlog_bodya = qq~
                 <div style="width: 600px;">
                     <span style="float: left; text-align: left; margin-right:15px;">
-                        <label for="username">$loginout_txt{'35'}</label>:<br />
+                        <label for="username">$mylogintxt</label>:<br />
                         <input type="text" name="username" id="username" size="30" maxlength="100" style="width: 285px;" tabindex="1"{yabb regstyle} />
                     </span>
                     <span style="float: left; text-align: left; margin-right:15px;">
@@ -98,7 +100,7 @@ $myremindera = qq~<table class="tabtitle cs_thin pad_4px" style="width: 600px;">
 <table class="bordercolor pad_3px cs_thin" style="width: 600px;">
     <tr>
         <td class="windowbg">
-            <label for="user"><b>$loginout_txt{'35'}:</b></label>
+            <label for="user"><b>$mylogintxt:</b></label>
             <input type="text" name="user" id="user" maxlength="100" {yabb regstyle} size="50" />
         </td>
     </tr>~;

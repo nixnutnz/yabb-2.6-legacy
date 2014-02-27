@@ -68,6 +68,7 @@ $gmodprivilegeslngver = 'YaBB 2.6.0 $Revision$';
 'errorlog' => 'Allow to View Error Log',
 'view_reglog' => 'Allow to View Registration Log, approve or reject preregistered Members',
 'modlist' => 'Allow to View All Installed Mods',
+'backupsettings' => 'Allow access to the Backup Center',
 );
 
 1;

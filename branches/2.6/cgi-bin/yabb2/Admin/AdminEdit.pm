@@ -593,6 +593,7 @@ q~                                                                              
 'rebuildnotifications',"$FORM{'rebuildnotifications'}",
 'deleteoldthreads',"$FORM{'deleteoldthreads'}",
 'manageattachments',"$FORM{'manageattachments'}",
+'backupsettings',"$FORM{'backupsettings'}",
 
 'detailedversion',"$FORM{'detailedversion'}",
 'stats',"$FORM{'stats'}",

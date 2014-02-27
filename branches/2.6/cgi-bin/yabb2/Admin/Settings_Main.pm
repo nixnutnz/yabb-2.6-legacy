@@ -1066,7 +1066,14 @@ qq~<input type="checkbox" name="self_del_user" id="self_del_user" value="1" ${is
             input_html => qq~<input type="text" name="cookieviewtime" id="cookieviewtime" size="20" value="$cookieviewtime" />~,
             name => 'cookieviewtime',
             validate => 'number',
-        },      {
+        },
+        {
+            description => qq~<label for="screenlogin">$admin_txt{'432b'}</label>~,
+            input_html => qq~<input type="checkbox" name="screenlogin" id="screenlogin" value="1" ${ischecked($screenlogin)}/>~,
+            name => 'screenlogin',
+            validate => 'boolean',
+        },
+		{
             header => $settings_txt{'registration'},
         },
         {

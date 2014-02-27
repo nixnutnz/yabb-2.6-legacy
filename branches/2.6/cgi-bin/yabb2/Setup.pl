@@ -882,6 +882,7 @@ sub VarInstall {
 'rebuildmemhist',"",
 'deleteoldthreads',"",
 'manageattachments',"on",
+'backupsettings',"",
 
 'detailedversion',"on",
 'stats',"on",
