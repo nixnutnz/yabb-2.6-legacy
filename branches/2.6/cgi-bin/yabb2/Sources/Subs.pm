@@ -1388,6 +1388,7 @@ sub SpamQuestion {
         rand($INPUT_LINE_NUMBER) < 1 && ( $spam_question_rand = $_ );
     }
     fclose(SPAMQUESTIONS);
+    chomp $spam_question_rand;
     ( $spam_question_id, $spam_question, undef, $spam_questions_case, $spam_image ) =
       split /\|/xsm, $spam_question_rand;
     $spam_image = $spam_image ? qq~<div style="margin-top: .5em;"><img src="$yyhtml_root/Templates/Forum/default/$spam_image" alt="" /></div>~ : q{};
