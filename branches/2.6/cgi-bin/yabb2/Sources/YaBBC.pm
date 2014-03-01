@@ -28,7 +28,7 @@ sub MakeSmileys {
     my @HTMLtags;
     while ( $message =~ s/(<.+?>)/[HTML$i]/sm ) { push @HTMLtags, $1; $i++; }
 
-    $message =~ s/(\W|^)\[smil(ie|ey)=(\S+?\.(gif|jpg|png|bmp))\]/$1<img class="smil" data-rel="\[smil$2=$3\]"src="$yyhtml_root\/Smilies\/$3"  alt="$post_txt{'287'}" title="$post_txt{'287'}" \/>/igsm;
+    $message =~ s/(\W|^)\[smil(ie|ey)=(\S+?\.(gif|jpg|png|bmp))\]/$1<img class="smil" data-rel="\[smil$2=$3\]" src="$yyhtml_root\/Smilies\/$3"  alt="$post_txt{'287'}" title="$post_txt{'287'}" \/>/igsm;
     $message =~ s/(\W|^);-?\)/$1<img class="smil" data-rel=";&#45;&#41;" src="$imagesdir\/wink.gif" alt="$post_txt{'292'}" title="$post_txt{'292'}" \/>/gsm;
     $message =~ s/(\W|^);D/$1<img class="smil" data-rel=";D" src="$imagesdir\/grin.gif" alt="$post_txt{'293'}" title="$post_txt{'293'}" \/>/gsm;
     $message =~ s/(\W|^):'\(/$1<img class="smil" data-rel="&#58;'&#40;" src="$imagesdir\/cry.gif" alt="$post_txt{'530'}" title="$post_txt{'530'}" \/>/gsm;
