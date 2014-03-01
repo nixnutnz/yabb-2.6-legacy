@@ -1200,7 +1200,7 @@ qq~<a href="$scripturl?num=$mnum" onmouseover="topicSum(event, '$mnum')" onmouse
 qq~<a href="$scripturl?virboard=$currentboard;num=$mnum">$msub</a><div style="float:right; font-size:xx-small">$stickdir</div>~;
                 }
                 else {
-                     $msublink = qq~<a href="$scripturl?num=$mnum">$msub</a><div style="float:right; style="font-size:xx-small">$stickdir</div>~; 
+                     $msublink = qq~<a href="$scripturl?num=$mnum">$msub</a><div style="float:right; font-size:xx-small">$stickdir</div>~; 
                 }
             }
         }
