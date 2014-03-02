@@ -230,7 +230,9 @@ sub chsettings {
         $yymain .= qq~
     <div class="bordercolor rightboxdiv">
         <table class="section border-space pad-cell" style="margin-bottom:.5em" id="tab_$tab->{'id'}">
-            <col span="2" style="width:50%" />
+            <colgroup>
+                <col span="2" style="width:50%" />
+            </colgroup>
             <tr>
                 <td class="titlebg" colspan="2">
                     $admin_img{'prefimg'} <b>$tab->{'name'}</b>

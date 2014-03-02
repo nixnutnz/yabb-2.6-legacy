@@ -96,7 +96,9 @@ sub SpamQuestions {
 <form action="$adminurl?action=spam_questions2" method="post">
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell" style="margin-bottom: .5em;">
-    <col span="2" style="width: 50%" />
+    <colgroup>
+        <col span="2" style="width: 50%" />
+    </colgroup>
     <tr>
         <th class="titlebg" colspan="2">$admin_img{'prefimg'} $spam_question_txt{'question_settings'}</th>
     </tr><tr class="windowbg2 vtop">
@@ -126,9 +128,11 @@ sub SpamQuestions {
 </form>
 <div class="bordercolor rightboxdiv" style="margin-bottom: .5em;">
 <table class="border-space pad-cell">
-    <col span="2" style="width: 30%;" />
-    <col span="1" style="width: 26%;" />
-    <col span="2" style="width: 7%" />
+    <colgroup>
+        <col span="2" style="width: 30%;" />
+        <col span="1" style="width: 26%;" />
+        <col span="2" style="width: 7%" />
+    </colgroup>
     <tr>
         <th class="titlebg"$header_row>$admin_img{'prefimg'} $spam_question_txt{'questions'} ($total_questions)
             <div style="display: inline; float: right;">
@@ -147,8 +151,10 @@ $show_questions
 <form action="$adminurl?action=spam_questions_add" method="post" enctype="multipart/form-data" accept-charset="$yymycharset">
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell" style="margin-bottom: .5em;">
-    <col style="width: 25%" />
-    <col style="width: 75%" />
+    <colgroup>
+        <col style="width: 25%" />
+        <col style="width: 75%" />
+    </colgroup>
     <tr>
         <th class="titlebg" colspan="2">$admin_img{'prefimg'} $spam_question_txt{'new_question'}</th>
     </tr><tr class="windowbg2 vtop bold">
@@ -267,8 +273,10 @@ sub SpamQuestionsEdit {
 <form action="$adminurl?action=spam_questions_edit2" method="post" enctype="multipart/form-data" accept-charset="$yymycharset">
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell" style="margin-bottom: .5em;">
-    <col style="width: 25%" />
-    <col style="width: 75%" />
+    <colgroup>
+        <col style="width: 25%" />
+        <col style="width: 75%" />
+    </colgroup>
     <tr>
         <th class="titlebg" colspan="2">$admin_img{'prefimg'} $spam_question_txt{'edit_question'}</th>
     </tr><tr class="windowbg2 vtop bold">

@@ -1505,7 +1505,6 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
             <textarea id="actruletxt" name="actruletxt" rows="1" cols="1" style="display: none;">${$uid.$currentboard}{'rulesdesc'}</textarea>
             <input type="hidden" id="tmpruletxt" value="$messageindex_txt{'collruletext'}" />
             <script type="text/javascript">
-            <!--
             function collapseBDrule(rulelgt) {
                 var tmpruletxt = document.getElementById('tmpruletxt').value;
                 var actruletxt = document.getElementById('actruletxt').value;
@@ -1532,7 +1531,6 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
                 xmlHttp.open("GET",url,true);
                 xmlHttp.send(null);
             }
-            -->
             </script>
             ~;
         }
@@ -1746,7 +1744,6 @@ qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
         if ( $sessionvalid == 1 ) {
             $yymain .= qq~
 <script type="text/javascript">
-<!--
     function checkAll(j) {
         for (var i = 0; i < document.multiadmin.elements.length; i++) {
             if (document.multiadmin.elements[i].type == "checkbox" && !(/all\$/).test(document.multiadmin.elements[i].name) && (j == 0 || (j != 0 && (i % $modul) == (j - 1))))
@@ -1759,7 +1756,6 @@ qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
                 document.multiadmin.elements[i].checked = false;
         }
     }
-//-->
 </script>\n~;
         }
     }
@@ -1768,10 +1764,8 @@ qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
 qq~\nvar markallreadlang = '$messageindex_txt{'500'}';\nvar markfinishedlang = '$messageindex_txt{'500a'}';~;
     $yymain .= qq~
 <script type="text/javascript">
-<!--
     function ListPages(tid) { window.open('$scripturl?action=pages;num='+tid, '', 'menubar=no,toolbar=no,top=50,left=50,scrollbars=yes,resizable=no,width=400,height=300'); }
     function ListPages2(bid,cid) { window.open('$scripturl?action=pages;board='+bid+';count='+cid, '', 'menubar=no,toolbar=no,top=50,left=50,scrollbars=yes,resizable=no,width=400,height=300'); }
-//-->
 </script>
     ~;
 

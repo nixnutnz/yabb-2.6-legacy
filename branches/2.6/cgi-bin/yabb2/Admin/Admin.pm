@@ -300,7 +300,6 @@ qq~<a href="$scripturl?num=$lspostid/$lsreply#$lsreply">$lssub</a> ($lsdatetime)
                                 document.write("$versiontxt{'4'} <b>$YaBBversion</b> - $versiontxt{'5'} <b>"+STABLE+"</b> <p>");
                             }
                         </script>
-                        <noscript>$versiontxt{'1'} <img src="$versionimg" alt="" /></noscript>
                     </div>
                 </div>
             </td>
@@ -501,7 +500,9 @@ qq~$message&nbsp;<span class="important">(<i>$newfromlist[$i]->[1]</i>)</span><b
         $yymain .= qq~
 <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
-        <col span="2" style="width: 50%" />
+        <colgroup>
+            <col span="2" style="width: 50%" />
+        </colgroup>
         <tr>
             <td class="titlebg" colspan="2">
                 $admin_img{'cat_img'} <b>$admin_txt{'694'}</b>
@@ -782,7 +783,9 @@ sub ver_detail {
     $yymain .= qq~
         <div class="bordercolor rightboxdiv">
         <table class="border-space pad-cell">
-            <col span="2" style="width: 50%" />
+            <colgroup>
+                <col span="2" style="width: 50%" />
+            </colgroup>
             <tr>
                 <td class="titlebg" colspan="2">$admin_img{'infoimg'} <b>$admin_txt{'429'}</b></td>
             </tr><tr>
@@ -796,7 +799,6 @@ sub ver_detail {
                             document.write("$versiontxt{'5'} <b>"+STABLE+"</b><br />$versiontxt{'7'} <b>"+BETA+"</b>");
                         }
                     </script>
-                    <noscript>$versiontxt{'1'} <img src="$versionimg" alt="" /></noscript>
                 </td>
             </tr><tr>
                 <td class="catbg center"><b>$admin_txt{'495'}</b><br /></td>
@@ -951,9 +953,11 @@ qq~<input type="checkbox" name="$actfound" id="$actfound"$selected />&nbsp;<labe
 <form action="$adminurl?action=referer_control2" method="post">
     <div class="bordercolor rightboxdiv">
         <table class="border-space pad-cell" style="margin-bottom: .5em;">
-            <col style="width: 33%" />
-            <col style="width: 34%" />
-            <col style="width: 33%" />
+            <colgroup>
+                <col style="width: 33%" />
+                <col style="width: 34%" />
+                <col style="width: 33%" />
+            </colgroup>
             <tr>
                 <td class="titlebg" colspan="3">
                     $admin_img{'prefimg'} <b>$reftxt{'1'}</b>
@@ -1032,8 +1036,10 @@ sub AddMember {
 <form action="$adminurl?action=addmember2" method="post" name="creator" accept-charset="$yymycharset">
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell" style="margin-bottom: .5em;">
-    <col style="width: 30%" />
-    <col style="width: 70%" />
+    <colgroup>
+        <col style="width: 30%" />
+        <col style="width: 70%" />
+    </colgroup>
     <tr>
         <td colspan="2" class="titlebg">
             $admin_img{'register'}<b> $admintxt{'17a'}</b>
@@ -1436,7 +1442,7 @@ sub AdminCheck2 {
         fatal_error('no_admin_passwrd');
     }
     elsif ( $iamadmin && encode_password( 'admin') eq ${ $uid . $user }{'password'} )  {
-		fatal_error('default_password');
+        fatal_error('default_password');
     }
 
     my $adminpass = 'adminpass';

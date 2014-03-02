@@ -79,7 +79,6 @@ sub DownloadView {
 
             $output .= qq~
         <script type="text/javascript">
-        <!--
             function checkAll() {
                 for (var i = 0; i < document.del_attachments.elements.length; i++) {
                     document.del_attachments.elements[i].checked = true;
@@ -99,7 +98,6 @@ sub DownloadView {
                     }
                 }
             }
-        //-->
         </script>
         <form name="del_attachments" action="$scripturl?action=viewdownloads;thread=$thread" method="post" style="display: inline;" onsubmit="verify_delete();">~;
         }

@@ -55,9 +55,7 @@ $myprofile_a = qq~
 </table>
 </form> 
 <script type="text/javascript">
-<!--
         document.confirmform.passwrd.focus();
-// -->
 </script>~;
 ## End UserProfile login
 
@@ -85,7 +83,10 @@ $myprofile_showadmin= qq~
 
 #Profile edit
 $myprofile_edit = qq~<table class="cs_thin pad_4px">
+	<colgroup>
     <col style="width:320px" />
+	<col style="width:auto" />
+	</colgroup>
     <tr class="catbg">
         <td colspan="2">
             <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b><br /><span class="small">$profile_txt{'698'}</span>{yabb my_newpass}
@@ -229,7 +230,6 @@ $myprofile_away = qq~<tr class="windowbg">
 $myprofile_away_b =qq~
              <span class="small">$profile_txt{'664a'} <input value="{yabb MaxAwayLen}" size="3" name="msgCL" class="windowbg" style="border: 0; width: 40px; padding: 1px; font-size: 11px;" readonly="readonly" /></span><br />
              <script type="text/javascript">
-             <!--
                  var supportsKeys = false;
                  function tick() {
                      calcCharLeft(document.forms[0]);
@@ -249,7 +249,6 @@ $myprofile_away_b =qq~
                      return clipped;
                  }
                  tick();
-                 // -->
              </script>
          </td>
     </tr>~;
@@ -261,7 +260,10 @@ $myprofile_stealth = qq~<tr class="windowbg">
 
 ## Options
 $myprofile_options = qq~<table class="bordercolor cs_thin pad_4px">
+	<colgroup>
     <col style="width:320px" />
+	<col style="width:auto" />
+	</colgroup>
     <tr>
         <td class="catbg" colspan="2">
         <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b> {yabb myprofile_userinfo}</td>
@@ -275,7 +277,6 @@ $myprofile_options = qq~<table class="bordercolor cs_thin pad_4px">
          <td>~;
 $myprofile_options_b = qq~             <span class="small">$profile_txt{'664'} <input value="{yabb MaxSigLen}" size="3" name="msgCL" class="windowbg" style="border: 0; width: 40px; padding: 1px; font-size: 11px;" readonly="readonly" /></span><br /><br />
              <script type="text/javascript">
-             <!--
                  var supportsKeys = false;
                  function tick() {
                      calcCharLeft(document.forms[0]);
@@ -295,7 +296,6 @@ $myprofile_options_b = qq~             <span class="small">$profile_txt{'664'} <
                      return clipped;
                  }
                  tick();
-             // -->
              </script>
         </td>
     </tr>{yabb my_addmemgroup} {yabb my_time} {yabb my_reverse} {yabb my_return_to} {yabb my_template} {yabb my_show_lang} {yabb my_show_avatar_opts} {yabb my_extprofile}
@@ -315,7 +315,6 @@ $myprofile_show_avatar_a = qq~
             <label for="userpicpersonalcheck">$profile_txt{'475'}</label> {yabb my_up_avatar_a}
             <br />$profile_txt{'477'}</span></td>
         <td>            <script type="text/javascript">
-            <!--
                 function showimage(x) {
                     if (!document.images) return;
                     var source;
@@ -339,7 +338,6 @@ $myprofile_show_avatar_a = qq~
                     img_resize_names = new Array ('avatar_img_resize_1');
                     resize_images();
                 }
-            // -->
             </script>
             <select name="userpic" id="userpic" size="6" onchange="showimage(1);">
             {yabb images}
@@ -452,7 +450,10 @@ $myprofile_hide_smilies_row = qq~<tr class="windowbg">
 
 #Buddylist
 $myprofile_buddy = qq~<table class="bordercolor cs_thin pad_4px">
+	<colgroup>
     <col style="width:320px" />
+	<col style="width:auto" />
+	</colgroup>
     <tr>
         <td class="catbg" colspan="2">
         <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b></td>
@@ -525,7 +526,10 @@ $myprofile_PMnotify = qq~<tr class="windowbg">
 
 #Admin edit
 $myprofile_admin_a = qq~<table class="bordercolor cs_thin pad_4px">
+	<colgroup>
     <col style="width:320px" />
+	<col style="width:auto" />
+	</colgroup>
     <tr>
         <td class="catbg" colspan="2">
         <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b> {yabb myprofile_userinfo}</td>
@@ -584,7 +588,10 @@ $myprofile_admin_bb = qq~</td>
 </form>~;
 
 $myprofile_title = qq~<table class="bordercolor cs_thin pad_4px">
+	<colgroup>
     <col style="width:320px" />
+	<col style="width:auto" />
+	</colgroup>
     <tr>
         <td class="catbg" colspan="2">
         <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b> {yabb myprofile_userinfo}</td>

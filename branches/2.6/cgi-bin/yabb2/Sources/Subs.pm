@@ -146,8 +146,7 @@ sub print_output_header {
             $ret .= "Content-Type: $contenttype";
 			if ($yycharset) {$yymycharset = $yycharset;}
             if ($yymycharset) { $ret .= "; charset=$yymycharset"; }
-			
-        }
+       }
     }
     print $ret . "\r\n\r\n" or croak "$croak{'print'} ret";
     return;
@@ -276,6 +275,7 @@ sub template {
         || $action eq 'recenttopics'
         || $action eq 'recent'
         || $action eq 'usersrecentposts'
+        || $action eq 'myusersrecentposts'
        )
     {
         $yysyntax_js = qq~
@@ -403,8 +403,8 @@ qq~&nbsp;<script  type="text/javascript">\nWriteClock('yabbclock','$aa','$bb');\
         }
     }
     ~;
-        require Sources::TabMenu;
-        mainMenu();
+    require Sources::TabMenu;
+    mainMenu();
 
 
     $yylangChooser = q{};
@@ -417,7 +417,6 @@ qq~$guest_txt{'sellanguage'}: <form action="$scripturl?action=guestlang" method=
             <select name="guestlang" onchange="submit();">
             $langopt
             </select>
-            <noscript><input type="submit" value="$maintxt{'32'}" class="button" /></noscript>
             </form>~;
         }
     }
@@ -432,7 +431,6 @@ qq~$guest_txt{'changelanguage'}: <form action="$scripturl?action=guestlang" meth
             <select name="guestlang" onchange="submit();">
             $langopt
             </select>
-            <noscript><input type="submit" value="$maintxt{'32'}" class="button" /></noscript>
             </form>~;
         }
     }
@@ -1205,7 +1203,7 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
         $onchange = q{};
     }
     $selecthtml = qq~
-            <form method="post" action="$scripturl?$action" name="jump" style="display: inline;">
+            <form method="post" action="$scripturl?$action" style="display: inline;">
                 <select name="values"$onchange>
                     <option value="" class="forumjump">$jumpto_txt{'to'}</option>
                     <option value="gohome">$img_txt{'103'}</option>~;
@@ -1336,7 +1334,6 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
         jump_subboards(@bdlist);
     }
     $selecthtml .= qq~</select>
-                <noscript><input type="submit" value="$maintxt{'32'}" class="button" /></noscript>
             </form>~;
     return $selecthtml;
 }

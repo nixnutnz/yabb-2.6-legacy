@@ -261,7 +261,7 @@ sub RSS_recent {
         my $cataccess = CatAccess($catperms);
         if ( !$cataccess ) { next; }
 
-        if ( $INFO{'catselect'}) {
+        if ( $INFO{'catselect'} ) {
             $yytitle = $catname;
             $mydesc = $catname;
         }

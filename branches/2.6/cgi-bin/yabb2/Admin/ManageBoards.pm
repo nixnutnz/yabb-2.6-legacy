@@ -208,8 +208,10 @@ qq~ <img src="$imagesdir/recycle.png" alt="$admin_txt{'64i'}" title="$admin_txt{
                     $yymain .= q~
                 <table class="bordercolor borderstyle border-space pad-cell" style="margin-bottom: .5em; margin-left:~
                       . $indent . q~%; width:~ . $tmpwidth . q~%">
-                    <col style="width:~ . $tmpwidth2 . qq~%" />
-                    <col span="2" style="width: 5%" />
+                    <colgroup>
+                        <col style="width:~ . $tmpwidth2 . qq~%" />
+                        <col span="2" style="width: 5%" />
+                    </colgroup>
                     <tr>
                         <td class="windowbg2">
                             <b>$boardname</b>
@@ -523,7 +525,6 @@ sub AddBoards {
     }
 
     $yymain .= qq~<script type="text/javascript">
-    <!--
     var copyValues = new Array();
     var copyList = new Array();
 
@@ -657,7 +658,6 @@ function checkParent(id, board) {
         alert("$admin_txt{'735'}");
     }
 }
-//-->
         </script>
         <form name="boardsadd" id="boardsadd" action="$adminurl?action=addboard2" method="post" enctype="multipart/form-data" onsubmit="selectNames($FORM{'amount'});" accept-charset="$yymycharset">
             <div class="bordercolor rightboxdiv">
@@ -673,7 +673,9 @@ function checkParent(id, board) {
             </div>
             <div class="bordercolor rightboxdiv">
                 <table class="border-space pad-cell" style="margin-bottom:.5em">
-                    <col span="4" style="width:25%" />
+                    <colgroup>
+                        <col span="4" style="width:25%" />
+                    </colgroup>
 ~;
 
     # Check if and which board are set for announcements or recycle bin
@@ -1040,7 +1042,6 @@ qq~                     <select multiple="multiple" name="moderatorgroups$i" id=
             </div>
         </form>
         <script type="text/javascript">
-<!--
 var numboards = "$FORM{'amount'}";
 var annexist = "$annexist";
 var rbinexist = "$rbinexist";
@@ -1095,9 +1096,7 @@ function checkbin(bcheck, bwho) {
 }
 
 selectParentBoard();
-//-->
         </script>
-
     ~;
    $yytitle     = "$admin_txt{'50'}";
    if ( $INFO{'action'} eq 'boardscreen' ) {

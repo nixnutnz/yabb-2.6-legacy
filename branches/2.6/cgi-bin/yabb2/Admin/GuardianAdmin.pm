@@ -109,7 +109,6 @@ sub setup_guardian {
                     <input type="checkbox" name="use_htaccess" id="use_htaccess" value="1"$htaccess_checked onmouseup="remove_htaccess();" /><br />$guardian_txt{'use_htaccess_support'}</label>
                 </div>
                 <script type="text/javascript">
-        <!--
             var old_htaccess = '';
             function remove_htaccess() {
                 if (document.getElementById("use_htaccess").checked) {
@@ -121,7 +120,6 @@ sub setup_guardian {
                     document.getElementById("access_denied").disabled = "";
                 }
             }
-        // -->
                 </script>
                 <div class="setting-cell3">
                     <label for="access_denied">$guardian_txt{'htaccess_list'}</label>

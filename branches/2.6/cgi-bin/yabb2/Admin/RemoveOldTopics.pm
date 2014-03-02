@@ -192,7 +192,6 @@ qq~<b>$removemess_txt{'200'} <i>$max_process_time $admin_txt{'533'}</i>.<br />
             $yymain
 
             <script type="text/javascript">
-            <!--
                 function PleaseWait() {
                     document.getElementById("memcontinued").innerHTML = '<span class="important"><b>$removemess_txt{'213'}</b></span>';
                 }
@@ -208,7 +207,6 @@ qq~<b>$removemess_txt{'200'} <i>$max_process_time $admin_txt{'533'}</i>.<br />
                 }
 
                 setTimeout("membtick()",2000);
-            // -->
             </script>
 
             ~;

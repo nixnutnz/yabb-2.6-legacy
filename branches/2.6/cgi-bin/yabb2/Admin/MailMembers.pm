@@ -138,14 +138,12 @@ sub Mailing {
     </table>
 </div>
 <script type="text/javascript">
-<!--
     function MailListWin(FileName,WindowName) {
         WindowFeature="resizable=no,scrollbars=yes,menubar=yes,directories=no,toolbar=no,location=no,status=no,width=400,height=400,screenX=0,screenY=0,top=0,left=0"
         newWindow=open(FileName,WindowName,WindowFeature);
         if (newWindow.opener == null) { newWindow.opener = self; }
         if (newWindow.focus) { newWindow.focus(); }
     }
-// -->
 </script>
 <div class="windowbg2 border" style="float: left; width: 50%; margin: 1%; overflow: auto; height:145px">
     ~;
@@ -155,7 +153,9 @@ sub Mailing {
             fclose(FILE);
             $yymain .= q~
         <table class="windowbg2 pad-cell" style="width: 98%">
-            <col span="4" style="width:auto" />
+            <colgroup>
+                <col span="4" style="width:auto" />
+            </colgroup>
 ~;
             foreach my $curmail (@maillist) {
                 chomp $curmail;
@@ -570,7 +570,9 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
             fclose(FILE);
             $yymain .= q~
         <table class="windowbg2 pad-cell" style="width: 98%">
-            <col span="4" style="width:auto" />
+            <colgroup>
+                <col span="4" style="width:auto" />
+            </colgroup>
         ~;
             foreach my $curmail (@maillist) {
                 chomp $curmail;

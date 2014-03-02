@@ -33,7 +33,7 @@ sub sendmail {
     $mbname =~ s/,/-/igsm;
 
     $charsetheader = $mailcharset ? $mailcharset : $yymycharset;
-#    $charsetheader = 'UTF-8';
+#   $charsetheader = 'UTF-8';
 
     if ( !$from ) {
         $from       = $webmaster_email;

@@ -298,7 +298,6 @@ sub MainAdmin {
         </form>
 
         <script type="text/javascript">
-<!--
 var nline = '\\n';
 myRe=/\\n\$/;
 myRg=/\\n\\s*?\\n/;
@@ -326,7 +325,6 @@ function adduserhelp() {
     if( myRg.test(thisstr) ) document.userorder.order.value = document.userorder.order.value.replace(/\\n\\s*?\\n/, "\\n" + document.userhelp.page.options[document.userhelp.page.selectedIndex].value + "\\n");
     else document.userorder.order.value += document.userhelp.page.options[document.userhelp.page.selectedIndex].value + nline;
 }
-//-->
         </script>
         <table class="bordercolor border-space pad-cell" style="width:44em">
             <tr>

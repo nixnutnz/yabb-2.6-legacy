@@ -702,6 +702,9 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
             if ( $FORM{"slicecol$i"} ) {
                 $slicecolor[$i] = $FORM{"slicecol$i"};
             }
+			if (!$slicecolor[$i]) {
+				$slicecolor[$i] = 'transparent';
+			}
             $mypoll_opt .= $my_poll_options;
             $mypoll_opt =~ s/{yabb i}/$i/gsm;
             $mypoll_opt =~ s/{yabb maxpo}/$maxpo/gsm;
@@ -1229,7 +1232,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         }
         ### Return To mod end ###
         $guestpost_col = $my_guestpost_col;
-        if ( $is_preview ) { $guestpost_col = $my_guestpost_col + 2; }
+        if ( $is_preview || $iamguest ) { $guestpost_col = $my_guestpost_col + 2; }
         $my_postsec_b   = postbox2();
         $my_postsection = $mypost_postblock;
         $my_postsection =~ s/{yabb my_postsection_ajx}/$my_postsection_ajx/sm;
@@ -1240,7 +1243,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         $my_postsection =~ s/{yabb name_field}/$guestpost_fields/sm;
         $my_postsection =~ s/{yabb email_field}/$email_field/sm;
         $my_postsection =~ s/{yabb verification_field}/$verification_field/sm;
-        $my_postsection =~ s/{yabb guestcol}/$guestpost_col/sm;
+        $my_postsection =~ s/{yabb guestcol}/$guestpost_col/gsm;
         $my_postsection =~ s/{yabb verification_question_field}/$verification_question_field/sm;
         $my_postsection =~ s/{yabb sub}/$sub/sm;
         $my_postsection =~ s/{yabb my_submax}/$my_submax/sm;

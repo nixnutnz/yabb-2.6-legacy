@@ -129,8 +129,8 @@ sub Bookmarks {
 <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <colgroup>
-            <col width="50%" />
-            <col width="50%" />
+            <col style="width:50%" />
+            <col style="width:50%" />
         </colgroup>
         <tr>
             <th class="titlebg" colspan="2">$admin_img{'prefimg'} $bookmark_txt{'09'}</th>
@@ -162,10 +162,12 @@ sub Bookmarks {
 </form>
 <div class="bordercolor  rightboxdiv">
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
-        <col style="width:10%" />
-        <col style="width:auto" />
-        <col style="width:10%" />
-        <col style="width:7%" span="2" />
+        <colgroup>
+            <col style="width:10%" />
+            <col style="width:auto" />
+            <col style="width:10%" />
+            <col style="width:7%" span="2" />
+        </colgroup>
         <tr>
             <th class="titlebg" colspan="5">$admin_img{'prefimg'} $bookmark_txt{'12'} ($total_bookmarks)</th>
         </tr>
@@ -176,8 +178,8 @@ sub Bookmarks {
 <div class="bordercolor  rightboxdiv">
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <colgroup>
-            <col width="50%" />
-            <col width="50%" />
+            <col style="width:50%" />
+            <col style="width:50%" />
         </colgroup>
         <tr>
             <th class="titlebg" colspan="2">$admin_img{'prefimg'} $bookmark_txt{'13'}</th>
@@ -327,8 +329,8 @@ sub EditBookmark {
 <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <colgroup>
-            <col width="50%" />
-            <col width="50%" />
+            <col style="width:50%" />
+            <col style="width:50%" />
         </colgroup>
         <tr>
             <th class="titlebg"colspan="2">$admin_img{'prefimg'} $bookmark_txt{'16'}</th>

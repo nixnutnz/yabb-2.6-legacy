@@ -134,7 +134,6 @@ sub ModSearch {
     $yymain .= qq~
 <script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
 <script type="text/javascript">
-<!--
 var scripturl = '$scripturl';
 var noresults = '$addmod_txt{'noresults'}';
 var imageurl = '$imagesdir';
@@ -187,8 +186,6 @@ function copy_option(to_select) {
         tmp_option.selected = true;
     }
 }
-
-// -->
 </script>~;
     $yymain .= $myselectmods;
     $yymain =~ s/{yabb to_board}/$to_board/sm;

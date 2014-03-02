@@ -23,7 +23,9 @@ $UserClass        = 'catbg';
 ### Creates the Navigation Bar at the top ###
 $HelpNavBar = qq~
     <table class="bordercolor pad_2px cs_thin h_25px" style="margin-bottom:10px">
+		<colgroup>
         <col span="4" style="width:25%" />
+		</colgroup>
         <tr>
             <td class="{user class} center">{user menu}</td>
             <td class="{moderator class} center">{moderator menu}</td>

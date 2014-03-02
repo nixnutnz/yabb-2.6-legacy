@@ -223,9 +223,6 @@ sub postbox {
             document.write("<img src='$imagesdir/right.gif' onclick='right();' "+HAND+" width='23' height='22' alt='$post_txt{'446'}' title='$post_txt{'446'}' />");
             document.write('</div>');
             </script>
-            <noscript>
-            <span class="small">$maintxt{'noscript'}</span>
-            </noscript>
             ~;
 
     return $box;
@@ -306,9 +303,9 @@ sub postbox2 {
     }
     $box .= qq~                    <div class="chrsize">
                         <span class="small">$post_txt{'textsize'} <input value="$textsize" size="2" name="txtsize" id="txtsize" class="chrsize" readonly="readonly" />pt <img src="$imagesdir/smaller.gif" height="11" width="11" alt="" onclick="sizetext(-1);" /><img src="$imagesdir/larger.gif" height="11" width="11" alt="" onclick="sizetext(1);" /></span>
-                    </div>
-                </div>
             </div>~;
+	if ($action ne 'imsend' ) { $box .='</div></div>';
+	}
     return $box;
 }
 
@@ -484,7 +481,6 @@ sub googie {
     my ($userdefaultlang) = @_;
     $googie = qq~
             <script type="text/javascript">
-            <!--
             GOOGIE_DEFAULT_LANG = '$userdefaultlang';
             var googie1 = new GoogieSpell("$yyhtml_root/googiespell/", "$boardurl/Sources/SpellChecker.pl?lang=");
             googie1.lang_chck_spell = '$spell_check{'chck_spell'}';
@@ -495,7 +491,6 @@ sub googie {
             googie1.lang_no_suggestions = '$spell_check{'no_suggestions'}';
             googie1.setSpellContainer("spell_container");
             googie1.decorateTextarea("message");
-            //-->
             </script>~;
 
     return $googie;
@@ -591,7 +586,6 @@ sub attach {
     if ( $allowattach > 1 ) {
         $yymain .= qq~
             <script type="text/javascript">
-            <!--
             var countattach = $startcount;~
           . (
             $startcount > 1
@@ -628,7 +622,6 @@ sub attach {
                     document.getElementById("attform_add").style.visibility = "visible";
                 }
             }
-            //-->
             </script>~;
     }
 

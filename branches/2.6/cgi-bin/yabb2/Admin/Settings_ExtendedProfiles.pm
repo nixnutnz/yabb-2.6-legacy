@@ -322,7 +322,9 @@ sub ext_admin {
         </tr><tr>
             <td class="windowbg2">
                 <table class="windowbg2 pad-cell">
-                    <col style="width:25%" span="4" />
+                    <colgroup>
+                        <col style="width:25%" span="4" />
+                    </colgroup>
                     <tr>
                         <td class="center">$lang_ext{'active'}</td>
                         <td class="center">$lang_ext{'field_name'}</td>
@@ -353,7 +355,9 @@ sub ext_admin {
             $yymain .= qq~
                 <form action="$adminurl?action=ext_edit" method="post">
                 <table class="windowbg2 pad-cell">
-                    <col style="width:25%" span="4" />
+                    <colgroup>
+                        <col style="width:25%" span="4" />
+                    </colgroup>
                     <tr>
                         <td class="windowbg2 center">
                             <input name="id" type="hidden" value="$id" />
@@ -464,7 +468,7 @@ sub ext_admin {
 </form>
 ~;
     if ( -e "$vardir/Extended.lock" ) { $yymain .= FoundExtLock();}
-	else {
+    else {
     if ( -e "$vardir/ConvSettings.txt" ) {
         require "$vardir/ConvSettings.txt";
     }
@@ -1246,7 +1250,7 @@ sub ext_admin_convert {
     }
 
     $yymain .= $lang_ext{'converter_succeeded'};
-    CreateExtLock();   
+    CreateExtLock();
     $yytitle = "$lang_ext{'Profiles_Controls'} - $lang_ext{'options_title'}";
     $action_area = 'ext_admin';
     AdminTemplate();

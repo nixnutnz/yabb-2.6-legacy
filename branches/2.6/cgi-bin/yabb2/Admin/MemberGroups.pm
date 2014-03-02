@@ -75,19 +75,21 @@ sub EditMemberGroups {
             </td>
         </tr><tr>
             <td class="windowbg2">
-				<div class="pad-more">$admin_txt{'11'}</div>
+                <div class="pad-more">$admin_txt{'11'}</div>
             </td>
         </tr>
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
-        <col style="width: 25%" />
-        <col style="width: 15%" />
-        <col style="width: 10%" />
-        <col style="width: 25%" />
-        <col style="width: 10%" />
-        <col style="width: 15%" />
+        <colgroup>
+            <col style="width: 25%" />
+            <col style="width: 15%" />
+            <col style="width: 10%" />
+            <col style="width: 25%" />
+            <col style="width: 10%" />
+            <col style="width: 15%" />
+        </colgroup>
         <tr>
             <td class="titlebg" colspan="6">
                 $admin_img{'guest'}&nbsp;<b>$admin_txt{'12'}</b>
@@ -174,25 +176,29 @@ sub EditMemberGroups {
 ~;
 
     my $colspan = 6;
-    my $colgroup = q~<col  style="width: 25%" />
-        <col  style="width: 15%" />
-        <col  style="width: 10%" />
-        <col  style="width: 25%" />
-        <col  style="width: 10%" />
-        <col  style="width: 15%" />
+    my $colgroup = q~<colgroup>
+            <col  style="width: 25%" />
+            <col  style="width: 15%" />
+            <col  style="width: 10%" />
+            <col  style="width: 25%" />
+            <col  style="width: 10%" />
+            <col  style="width: 15%" />
+        </colgroup>
 ~;
- 
+
     if ( $addmemgroup_enabled > 0 ) {
         $additional_tablehead =
           qq~<td class="catbg center"><b>$amgtxt{'83'}</b></td>~;
         $colspan = 7;
-        $colgroup = q~<col style="width: 25%" />
-        <col  style="width: 15%" />
-        <col  style="width: 10%" />
-        <col  style="width: 20%" />
-        <col  style="width: 15%" />
-        <col  style="width: 5%" />
-        <col  style="width: 10%" />
+        $colgroup = q~<colgroup>
+            <col style="width: 25%" />
+            <col  style="width: 15%" />
+            <col  style="width: 10%" />
+            <col  style="width: 20%" />
+            <col  style="width: 15%" />
+            <col  style="width: 5%" />
+            <col  style="width: 10%" />
+        </colgroup>
 ~;    }
     my $reorderlink = q{};
     if ($#nopostorder) {
@@ -273,12 +279,14 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
 </div>
 <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
-        <col style="width: 25%" />
-        <col style="width: 15%" />
-        <col style="width: 10%" />
-        <col style="width: 25%" />
-        <col style="width: 10%" />
-        <col style="width: 15%" />
+        <colgroup>
+            <col style="width: 25%" />
+            <col style="width: 15%" />
+            <col style="width: 10%" />
+            <col style="width: 25%" />
+            <col style="width: 10%" />
+            <col style="width: 15%" />
+        </colgroup>
         <tr>
             <td class="titlebg" colspan="6">
                 $admin_img{'guest'}&nbsp;<b>$amgtxt{'40'}&nbsp;(<a href="$adminurl?action=editgroup1">$admintxt{'18c'}</a>)</b>
@@ -477,9 +485,12 @@ sub editAddGroup {
 
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell" style="margin-bottom: .5em;">
-    <col style="width:40%" />
+    <colgroup>
+        <col style="width:40%" />
+        <col style="width:60%" />
+    </colgroup>
     <tr>
-                <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$viewtitle</b></td>
+        <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$viewtitle</b></td>
     </tr><tr>
         <td class="windowbg"><label for="title">$amgtxt{'51'}:</label></td>
         <td class="windowbg2"><input type="text" name="title" id="title" value="$title" /></td>
@@ -588,7 +599,9 @@ sub editAddGroup {
 </div>
 <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
-        <col span="5" style="width: 20%" />
+        <colgroup>
+            <col span="5" style="width: 20%" />
+        </colgroup>
         <tr>
             <td class="titlebg" colspan="5">
                 $admin_img{'prefimg'} <b>$amgtxt{'44'}</b>
@@ -625,7 +638,6 @@ sub editAddGroup {
 </form>
 
 <script type="text/javascript">
-<!--
 function viscolor(v) {
     v = v.toUpperCase();
     v = v.replace(/[^A-F0-9]/g, '');
@@ -655,7 +667,7 @@ function stars(value) {
 
 function showimage() {
     selected = document.groups.starsadmin.options[document.groups.starsadmin.selectedIndex].value;
-    useimg = (selected != "other") ? "$imagesdir/"+selected : "$imagesdir/blank.gif"; 
+    useimg = (selected != "other") ? "$imagesdir/"+selected : "$imagesdir/blank.gif";
     document.images.starpic.src=useimg;
     if (document.images.starpic.complete == false) {
         useimg = (selected != "other") ? "$defaultimagesdir/"+selected :  "$defaultimagesdir/blank.gif";
@@ -674,7 +686,6 @@ function depend(value) {
         document.getElementById('viewpublic').disabled = false;
     }
 }
-//-->
 </script>
 ~;
     $yytitle     = $admin_txt{'8'};
@@ -704,11 +715,11 @@ sub editAddGroup2 {
     if ( $FORM{'starsadmin'} eq 'other' ) {
         $cur_otherstar = $FORM{'cur_otherstar'};
         if ( $FORM{'otherstar'} ne q{} ) {
-            $star = UploadFile('otherstar', 'Templates/Forum/default', 'png jpg jpeg gif', '250', '0'); 
+            $star = UploadFile('otherstar', 'Templates/Forum/default', 'png jpg jpeg gif', '250', '0');
             if ( $cur_otherstar !~ /^(staradmin|stargmod|starfmod|starmod|starsilver|starblue|stargold).png$/ ) {
                 unlink "$htmldir/Templates/Forum/default/$cur_otherstar";
             }
-        } 
+        }
         else {
             $star = $cur_otherstar;
         }
@@ -943,8 +954,10 @@ sub reorderGroups {
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell">
-        <col span="2" style="width:33%" />
-        <col style="width:34%" />
+        <colgroup>
+            <col span="2" style="width:33%" />
+            <col style="width:34%" />
+        </colgroup>
         <tr>
             <td class="titlebg" colspan="3">
                 <img src="$imagesdir/guest.gif" alt="" />&nbsp;<b>$admintxt{'reordergroups2'}</b>

@@ -56,9 +56,11 @@ if (!$messagelist) {
     else {
         $messageindex_template .= qq~<!-- Board Description start -->
             <table class="bordercolor pad_4px cs_thin" style="margin-bottom: 15px;">
+				<colgroup>
                 <col style="width:6%" />
                 <col style="width:78%" />
                 <col style="width:16%" />
+				</colgroup>
                 <tr>
                     <td class="windowbg center">{yabb bdpicture}</td>
                     <td class="windowbg">{yabb board}
@@ -167,9 +169,11 @@ if ($action ne 'favorites') {
 $messageindex_template .= $messagelist ? q{} : qq~
 <!-- Icon and access info start -->
             <table class="pad_8px board-perms">
+				<colgroup>
                 <col style="width:28%" />
                 <col style="width:38%" />
                 <col style="width:33%" />
+				</colgroup>
                 <tr>
                     <td class="vtop">
                         <span class="small">{yabb icons}</span>
@@ -189,7 +193,10 @@ $messageindex_template .= $messagelist ? q{} : qq~
 if ($action eq "favorites") {
     $messageindex_template .= qq~<!-- Icon and access info start -->
             <table class="pad_8px">
+				<colgroup>
                 <col style="width:35%" />
+				<col style="width:65%" />
+				</colgroup>
                 <tr>
                     <td class="vtop">
                         <span class="small">{yabb icons}</span>
@@ -280,8 +287,10 @@ $msg_attach_win = qq~<a href="javascript:void(window.open('$scripturl?action=vie
 $brd_notify = qq~
     <form action="$scripturl?action=boardnotify3;board={yabb currentboard}" method="post">
     <table class="tabtitle" style="width:600px">
+		<colgroup>
         <col style="width:70%" />
         <col style="width:30%" />
+		</colgroup>
         <tr>
             <td style="padding-left:10px">
                 <img src="$imagesdir/$brd_notify_img" alt="$notify_txt{'136'} - {yabb boardname}" title="$notify_txt{'136'} - {yabb boardname}" /> <b>$notify_txt{'136'} - {yabb boardname}</b>
@@ -289,8 +298,10 @@ $brd_notify = qq~
         </tr>
     </table>
     <table class="pad_4px cs_thin" style="width:600px">
+		<colgroup>
         <col style="width:70%" />
         <col style="width:30%" />
+		</colgroup>
         <tr>
             <td class="windowbg" style="padding:1em 4px">{yabb my_delopt}</td>
             <td class="windowbg">
@@ -314,7 +325,7 @@ $msg_listpages =
 qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
+<meta http-equiv="Content-Type" content="text/html; charset=$yymycharset" />
 <title>$messageindex_txt{'139'} $messageindex_txt{'18'}</title>
 <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
 </head>
@@ -371,7 +382,6 @@ $boardpassw = qq~
     </tr>
 </table>
 <script type="text/javascript">
-<!--
 document.brdpass.boardpw.focus();
 
 function CheckPassField() {
@@ -382,7 +392,6 @@ function CheckPassField() {
     }
     return true;
 }
-//-->
 </script>
 <div class="center" style="margin-top: 1em;"><a href="javascript:history.go(-1)">$maintxt{'900b'}</a></div>
 ~;

@@ -82,8 +82,10 @@ sub honeypot {
 
     $yymain = qq~<div class="bordercolor rightboxdiv">
             <table class="border-space pad-cell" style="margin-bottom: .5em;">
-                <col style="width: 50%" />
-                <col span="2" style="width: 25%" />
+                <colgroup>
+                    <col style="width: 50%" />
+                    <col span="2" style="width: 25%" />
+                </colgroup>
                 <tr>
                     <th class="titlebg" colspan="3">$admin_img{'prefimg'} $honeypot{'labels'} ($total_labels)
                         <div style="display: inline; float: right;">
@@ -102,8 +104,10 @@ sub honeypot {
         <form action="$adminurl?action=honeypot_add" method="post" accept-charset="$yymycharset">
             <div class="bordercolor rightboxdiv">
                 <table class="border-space pad-cell" style="margin-bottom: .5em;">
-                    <col style="width: 25%" />
-                    <col style="width: 75%" />
+                    <colgroup>
+                        <col style="width: 25%" />
+                        <col style="width: 75%" />
+                    </colgroup>
                     <tr>
                         <th class="titlebg" colspan="2">$admin_img{'prefimg'} $honeypot{'add_new_label'}</th>
                     </tr><tr class="windowbg2 vtop bold">
@@ -179,8 +183,10 @@ sub honeypot_edit {
     <form action="$adminurl?action=honeypot_edit2" method="post" accept-charset="$yymycharset">
         <div class="bordercolor rightboxdiv">
             <table class="border-space pad-cell" style="margin-bottom: .5em;">
-                <col style="width: 25%" />
-                <col style="width: 75%" />
+                <colgroup>
+                    <col style="width: 25%" />
+                    <col style="width: 75%" />
+                </colgroup>
                 <tr>
                     <th class="titlebg" colspan="2">$admin_img{'prefimg'} $honeypot{'edits'}</th>
                 </tr><tr class="windowbg2 vtop bold;">

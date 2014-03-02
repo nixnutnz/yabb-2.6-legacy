@@ -198,7 +198,6 @@ sub buildIMsend {
     if ( !$replyguest && !$sendBMess && ( $PMenable_cc || $PMenable_bcc ) ) {
         $yyjavascripttoform = q~
             <script type="text/javascript">
-            <!--
             function changeRecepientTab(tabto) {
                 document.getElementById('usersto').style.display = 'none';
                 document.getElementById('bnttoto').className = 'windowbg  bnttoto';
@@ -230,7 +229,6 @@ qq~<div id="bnttoto" class="windowbg2 bnttoto"><a href="javascript:void(0);" onc
                 document.getElementById('users' + tabto).style.display = 'inline';
                 document.getElementById('bntto' + tabto).className = 'windowbg2 bnttoto';
             }
-        //-->
         </script>
         ~;
         $my_send = $my_tosend;
@@ -260,7 +258,6 @@ qq~<div id="bnttoto" class="windowbg2 bnttoto"><a href="javascript:void(0);" onc
 
         $imWinop = qq~
         <script type="text/javascript">
-        <!--
         function imWin() {
             window.open('$scripturl?action=imlist;sort=recentpm;toid=$toIdtext','imWin','status=no,height=$us_winhight,width=$us_winwidth_to,menubar=no,toolbar=no,top=50,left=50,scrollbars=no');
         }
@@ -274,7 +271,6 @@ qq~<div id="bnttoto" class="windowbg2 bnttoto"><a href="javascript:void(0);" onc
             var indexToRemove = oElement.options.selectedIndex;
             if (confirm("$post_txt{'768'}")) { oElement.remove(indexToRemove); }
         }
-        //-->
         </script>
         <div id="usersto" class="usersto">
         <b>$inmes_txt{'324'} $toUsersTitle:</b>&nbsp;<a href="javascript: void(0);" onclick="imWin();" tabindex="1"><span class="small">$inmes_txt{'clickto1'} <i>$inmes_txt{'324'}</i> $toUsersTitle $inmes_txt{'clickto2'}</span></a><br />
@@ -348,7 +344,6 @@ q~            </select><input type="hidden" name="immulti" value="yes" />
 
         $JSandInput = q~
         <script type="text/javascript">
-        <!--
         // this function forces all users listed on IM mult to be selected for processing
         function selectNames() {
             var oList = document.getElementById('toshow')
@@ -415,7 +410,6 @@ qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'re
 
         $JSandInput .= q~
             }
-        //-->
         </script>
         ~;
         $imsend_send = $my_imsend_IM;
@@ -764,11 +758,9 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
             <input type="checkbox" name="iecopy" id="iecopy"$iecopycheck /> <span class="small"> $post_txt{'iecopycheck'}</span>
             </div>
             <script type="text/javascript">
-            <!--
             if (navigator.appName == "Microsoft Internet Explorer") {
                 document.getElementById('enable_iecopy').style.display = 'inline';
             }
-            //-->
             </script>
     ~;
 
@@ -783,8 +775,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
         $my_spdpost = q~
             <script type="text/javascript">~;
         $my_spdpost .= speedpost();
-        $my_spdpost .= q~   //-->
-            </script>~;
+        $my_spdpost .= q~</script>~;
     }
 
     my %accesskey;
@@ -843,7 +834,6 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
     $my_browser =
       qq~<script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
         <script type="text/javascript">
-        <!--
             if (/Opera/.test(navigator.userAgent) === false) {
                 if (/mac/i.test(navigator.platform)) {
                     document.write("<br /><span class='small'>$accesskey{'Browsers_on_Mac'}</span>");
@@ -1772,7 +1762,6 @@ qq~<img src="$index_togl{'index_right'}" height="14" width="13" alt="$pidtxt{'03
             $pageindex1  = qq~$pagedropindex1</span>~;
             $pageindexjs = qq~
             <script type="text/javascript">
-            <!--
             function SelDec(decparam, visel) {
                 splitparam = decparam.split("|");
                 var vistart = parseInt(splitparam[0]);
@@ -1811,7 +1800,6 @@ qq~<img src="$index_togl{'index_right'}" height="14" width="13" alt="$pidtxt{'03
             $pageindexjs .= qq~
         }
         SelDec('$pagejsindex', '$tstart');
-        //-->
         </script>
         ~;
         }

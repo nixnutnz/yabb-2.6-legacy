@@ -187,10 +187,12 @@ qq~<br /><a href="$adminurl?action=apr_regentry;username=$userid">$prereg_txt{'a
     <form name="reglog_form" action="$adminurl?action=clean_reglog" method="post" onsubmit="return submitproc();">
     <div class="bordercolor rightboxdiv">
         <table class="border-space pad-cell" style="margin-bottom: .5em;">
-            <col style="width: 20%" />
-            <col style="width: 35%" />
-            <col style="width: 25%" />
-            <col style="width: 20%" />
+            <colgroup>
+                <col style="width: 20%" />
+                <col style="width: 35%" />
+                <col style="width: 25%" />
+                <col style="width: 20%" />
+            </colgroup>
             <tr>
                 <td class="titlebg" colspan="4">$admin_img{'xx'} <b>$yytitle</b></td>
             </tr><tr>
@@ -326,8 +328,10 @@ sub view_registration {
 <form action="$adminurl?action=admin_descision;activationkey=$actkey" method="post" name="creator">
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell" style="margin-bottom: .5em;">
-    <col style="width:320px" />
-    <col style="width:auto" />
+    <colgroup>
+        <col style="width:320px" />
+        <col style="width:auto" />
+    </colgroup>
     <tr>
         <td colspan="2" class="titlebg">$admin_img{'profile'} <b>$prereg_txt{'view'}</b>
             <input type="hidden" name="username" value="$viewuser" />

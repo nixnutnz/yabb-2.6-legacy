@@ -739,7 +739,6 @@ sub ext_gen_editfield {
               . $id
               . qq~_msgCL" readonly="readonly" disabled="disabled"$ext_msgCL /></span>
     <script type="text/javascript">
-    <!--
     var ext_~ . $id . q~_supportsKeys = false
     function ext_~ . $id . q~_tick() {
       ext_~ . $id . q~_calcCharLeft(document.forms[0])
@@ -768,7 +767,6 @@ sub ext_gen_editfield {
       return clipped
     }
     ext_~ . $id . q~_tick();
-    //-->
     </script>~;
         }
         else { $field{'options'} = q{}; }

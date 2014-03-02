@@ -47,7 +47,6 @@ sub ColorPicker {
 <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
 
 <script type="text/javascript">
-<!--
 var picktask = '$picktask';
 
 function Pickshowcolor(color) {
@@ -99,7 +98,6 @@ function Pickshowcolor(color) {
 //  window.close();
 }
 
-//-->
 </script>
 </head>
 

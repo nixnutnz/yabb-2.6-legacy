@@ -89,7 +89,9 @@ sub EventCalSet {
             <form action="$adminurl?action=eventcal_set2" method="post" accept-charset="$yymycharset">
             <div class="bordercolor rightboxdiv">
             <table class="border-space pad-cell" style="margin-bottom: .5em;">
-                <col span="2" style="width: 50%" />
+                <colgroup>
+                    <col span="2" style="width: 50%" />
+                </colgroup>
                 <tr>
                     <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$event_cal{'1'}</b></td>
                 </tr><tr>
@@ -130,12 +132,10 @@ sub EventCalSet {
                         <input type="text" size="7" maxlength="7" name="Event_TodayColor" id="Event_TodayColor" value="$Event_TodayColor" onkeyup="previewColor(this.value);" />
                         <span id="Event_TodayColor2" style="background-color:$Event_TodayColor">&nbsp; &nbsp; &nbsp;</span> <img src="$defaultimagesdir/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
                         <script type="text/javascript">
-        <!--
             function previewColor(color) {
                 document.getElementById('Event_TodayColor2').style.background = color;
                 document.getElementsByName("Event_TodayColor")[0].value = color;
             }
-        //-->
                         </script>
                     </td>
                 </tr><tr>
@@ -256,9 +256,12 @@ sub EventCalSet {
             <form action="$adminurl?action=eventcal_set3" method="post" enctype="multipart/form-data" accept-charset="$yymycharset">
             <div class="bordercolor rightboxdiv">
             <table class="border-space pad-cell" style="margin-bottom: .5em;">
-                <col span="2" style="width:24%" />
-                <col style="width:10%" />
-                <col style="width:6%" />
+                <colgroup>
+                    <col span="2" style="width:24%" />
+                    <col style="width:10%" />
+                    <col style="width:6%" />
+                    <col style="width:60%" />
+                </colgroup>
                 <tr>
                     <td class="titlebg" colspan="4">$admin_img{'prefimg'} <b>$event_cal{'26'}</b></td>
                 </tr><tr>
@@ -324,7 +327,6 @@ sub EventCalSet {
             </table>
             </div>
 <script type="text/javascript">
-<!--
 ic_added = $added_icons + 1;
 
 function addIcons(addic_id) {
@@ -351,7 +353,6 @@ function removeIcons(remic_id) {
         document.getElementById(ic_elements[i] + '[' + remic_id + ']').value = '';
     }
 }
-//-->
 </script>
         </form>~;
 

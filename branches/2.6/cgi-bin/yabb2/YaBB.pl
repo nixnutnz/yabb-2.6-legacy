@@ -66,7 +66,7 @@ BEGIN {
     require Sources::Load;
 
     require Sources::Guardian;
-	get_forum_master();
+    get_forum_master();
 }    # END of BEGIN block
 
 # If enabled: check if hard drive has enough space to safely operate the board

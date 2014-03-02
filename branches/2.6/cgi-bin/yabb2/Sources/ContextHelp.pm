@@ -33,7 +33,6 @@ sub ContextScript {
 
     $ctmain .= qq~
     <script type="text/javascript">
-    <!--
     function Hash() {
         this.length = 0;
         this.items = new Array();
@@ -154,8 +153,6 @@ sub ContextScript {
             tmpTitle(ctxtitle);
         }
     }
-
-    //-->
     </script>
 ~;
     return;

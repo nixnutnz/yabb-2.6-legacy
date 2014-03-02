@@ -200,13 +200,11 @@ qq~<input type="text" name="masterkey" id="masterkey" maxlength="24" size="50" v
                   qq~<label for="rgb_foreground">$floodtxt{'f'}</label>~,
                 input_html =>
 qq~<input type="text" name="rgb_foreground" id="rgb_foreground" maxlength="7" size="7" value="$rgb_foreground" onkeyup="previewColor(this.value);" /> <span id="rgb_foreground2" style="background-color:$rgb_foreground">&nbsp; &nbsp; &nbsp;</span> <img src="$defaultimagesdir/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
-            <script language="JavaScript1.2" type="text/javascript">
-            <!--
+            <script type="text/javascript">
             function previewColor(color) {
                 document.getElementById('rgb_foreground2').style.background = color;
                 document.getElementsByName("rgb_foreground")[0].value = color;
             }
-            //-->
             </script>~,
                 name       => 'rgb_foreground',
                 validate   => 'text',
@@ -217,13 +215,11 @@ qq~<input type="text" name="rgb_foreground" id="rgb_foreground" maxlength="7" si
                   qq~<label for="rgb_shade">$floodtxt{'s'}</label>~,
                 input_html =>
 qq~<input type="text" name="rgb_shade" id="rgb_shade" maxlength="7" size="7" value="$rgb_shade" onkeyup="previewColor_0(this.value);" /> <span id="rgb_shade2" style="background-color:$rgb_shade">&nbsp; &nbsp; &nbsp;</span> <img src="$defaultimagesdir/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ_0', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
-            <script language="JavaScript1.2" type="text/javascript">
-            <!--
+            <script type="text/javascript">
             function previewColor_0(color0) {
                 document.getElementById('rgb_shade2').style.background = color0;
                 document.getElementsByName("rgb_shade")[0].value = color0;
             }
-            //-->
             </script>~,
                 name       => 'rgb_shade',
                 validate   => 'text',
@@ -235,12 +231,10 @@ qq~<input type="text" name="rgb_shade" id="rgb_shade" maxlength="7" size="7" val
                 input_html =>
 qq~<input type="text" name="rgb_background" id="rgb_background" maxlength="7" size="7" value="$rgb_background" onkeyup="previewColor_1(this.value);" /> <span id="rgb_background2" style="background-color:$rgb_background">&nbsp; &nbsp; &nbsp;</span> <img src="$defaultimagesdir/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ_1', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
             <script type="text/javascript">
-            <!--
             function previewColor_1(color1) {
                 document.getElementById('rgb_background2').style.background = color1;
                 document.getElementsByName("rgb_background")[0].value = color1;
             }
-            //-->
             </script>~,
                 name       => 'rgb_background',
                 validate   => 'text',

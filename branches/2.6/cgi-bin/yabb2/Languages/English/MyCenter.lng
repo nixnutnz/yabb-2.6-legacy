@@ -50,6 +50,7 @@ $mycenterlngver = 'YaBB 2.6.0 $Revision$';
 'justthis' => 'This folder only',
 'byuser' => 'by Screen Name',
 'desc' => 'Search my PMs',
+'search' => 'Search',
 );
 
 %mc_folders = (

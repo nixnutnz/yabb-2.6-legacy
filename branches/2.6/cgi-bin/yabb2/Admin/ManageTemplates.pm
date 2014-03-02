@@ -105,7 +105,6 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
                         <select name="templatefile" id="templatefile" size="1" onchange="submit()">
                     $templs
                         </select>
-                    <noscript><input type="submit" value="$admin_txt{'32'}" class="button" /></noscript>
                     </form>
                 </div>
             </td>
@@ -239,7 +238,6 @@ sub ModifyStyle {
                         $forumcss
                     </select>
                     <br />
-                    <noscript><input type="submit" value="$admin_txt{'32'}" style="width: 90%;" class="button" /></noscript>
                     </div>
                     </form>
                     <form action="$adminurl?action=modstyle" name="aselcss" method="post" style="display: inline;" accept-charset="$yymycharset">
@@ -248,7 +246,6 @@ sub ModifyStyle {
                         $admincss
                     </select>
                     <br />
-                    <noscript><input type="submit" value="$admin_txt{'32'}" style="width: 90%;" class="button" /></noscript>
                     </div>
                     </form>
                 </div>
@@ -780,7 +777,7 @@ $yymain .= qq~<tr>
         </div>
         <div class="catbg" style="position: relative; top: 12px; left: 5px; width: 280px; height: 18px; border-width: 1px; border-style: outset;">
         <span class="small" style="position: absolute; top: 3px; left: 6px;"><b>$templ_txt{'iconspace'}</b>
-       <input class="catbg" name="viewimgpad" id="viewimgpad" type="text" value="$viewimgpad" style="position: absolute; top: 0; left: 165px; text-align: right; width: 30px; margin: 0; padding: 0; border: 0; font-size: 10px; font-weight: bold; display: inline;" readonly="readonly" /></span>
+        <input class="catbg" name="viewimgpad" id="viewimgpad" type="text" value="$viewimgpad" style="position: absolute; top: 0; left: 165px; text-align: right; width: 30px; margin: 0; padding: 0; border: 0; font-size: 10px; font-weight: bold; display: inline;" readonly="readonly" /></span>
         <img src="$defaultimagesdir/knapbagrms02.gif" style="position: absolute; top: 0; left: 209px; z-index: 1; width: 69px; height: 16px;" />
         <img id="knapImg3" src="$defaultimagesdir/knapyellow.gif" class="skyd" style="position: absolute; left: $drawpos3; top: 2px; cursor: pointer; z-index: 2; width: 13px; height: 15px;" />
         </div>
@@ -801,7 +798,6 @@ $yymain .= qq~<tr>
     </tr>
 
 <script type="text/javascript">
-<!--
 
 var skydobject={
 x: 0, temp2 : null, targetobj : null, skydNu : 0, delEnh : 0,
@@ -901,7 +897,7 @@ skydeKnap:function(e) {
 }
 
 skydobject.initialize()
-//-->
+
 </script>
 ~;
 }
@@ -985,9 +981,11 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
     if ($istabbed) {
         $viewstyle .= qq~
 <table style="border-spacing:0" class="bordercolor">
-    <col style="width:1%;  height:25px" />
-    <col style="width:49%;  height:25px" />
-    <col style="width:50%;  height:25px" />
+    <colgroup>
+        <col style="width:1%;  height:25px" />
+        <col style="width:49%;  height:25px" />
+        <col style="width:50%;  height:25px" />
+    </colgroup>
     <tr>
         <td class="tabtitle">&nbsp;</td>
         <td class="tabtitle">
@@ -1003,7 +1001,9 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
     }
     $viewstyle .= qq~
 <table class="bordercolor border-space pad-cell">
-    <col span="2" style="width: 50%" />
+    <colgroup>
+        <col span="2" style="width: 50%" />
+    </colgroup>
     <tr>
         <td id="title" class="titlebg">
             $templ_txt{'30'}
@@ -1025,7 +1025,9 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
     }
     $viewstyle .= qq~
 <table class="bordercolor border-space pad-cell">
-    <col span="2" style="width: 50%" />
+    <colgroup>
+        <col span="2" style="width: 50%" />
+    </colgroup>
     <tr>
         <td id="category" class="catbg">
             $templ_txt{'31'}
@@ -1052,7 +1054,7 @@ $viewstyle .= qq~
                 <a href="javascript:;"><span id="button1l" class="buttonleft" $viewstyleleft title="$img_txt{'145'}"><span id="button1r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/maq1.png); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'145'}</span></span></span></span></a>$menusep
                 <a href="javascript:;"><span id="button2l" class="buttonleft" $viewstyleleft title="$img_txt{'66'}"><span id="button2r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/modify.png); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'66'}</span></span></span></span></a>$menusep
                 <a href="javascript:;"><span id="button3l" class="buttonleft" $viewstyleleft title="$img_txt{'620'}"><span id="button3r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/admin_split.png); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'620'}</span></span></span></span></a>$menusep
-                <a href="javascript:;"><span id="button4l" class="buttonleft" $viewstyleleft title="$img_txt{'121'}"><span id="button4r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/delete.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'121'}</span></span></span></span></a> 
+                <a href="javascript:;"><span id="button4l" class="buttonleft" $viewstyleleft title="$img_txt{'121'}"><span id="button4r" class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/delete.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>$img_txt{'121'}</span></span></span></span></a>
             </div>
         </td>
     </tr>
@@ -1153,7 +1155,6 @@ $viewstyle .= qq~
 </div>
 </form>
 <script type="text/javascript">
-<!--
 var cssbold;
 var cssitalic;
 var stylesurl = '$yyhtml_root/Templates/Forum';
@@ -1657,7 +1658,6 @@ function ConvShowcolor(color) {
         if(thistask == "post") showcolor(newcolor);
         if(thistask == "templ") previewColor(newcolor);
 }
-//-->
 </script>
         ~;
     $yytitle     = $templ_txt{'1'};
@@ -2124,7 +2124,6 @@ qq~                        <input type="submit" value="$templ_txt{'14'}" onclick
 </div>
 </form>
 <script type="text/javascript">
-<!--
 function updateTemplate() {
         var thetemplate = document.selskin.tempname.value;
         thetemplate=thetemplate.replace(/\\&amp\\;/g, "&");
@@ -2138,7 +2137,6 @@ function updateTemplate() {
         TempManager.document.close();
 }
 document.onload = updateTemplate();
-//-->
 </script>
 ~;
     $yytitle     = $templ_txt{'6'};

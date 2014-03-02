@@ -67,7 +67,6 @@ sub SendTopic {
     }
 
     $my_jschecks = qq~<script type="text/javascript">
-<!--
     $focus_y_name
 
     function CheckSendTopicFields() {
@@ -114,7 +113,6 @@ sub SendTopic {
       . q~
         return true;
     }
-//-->
 </script>~;
 
     $yymain .= $mysend_top;

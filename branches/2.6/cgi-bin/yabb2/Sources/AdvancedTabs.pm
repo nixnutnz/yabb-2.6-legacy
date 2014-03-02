@@ -35,7 +35,6 @@ sub AddNewTab {
     $yyaddtab = qq~
     <br />
     <script type="text/javascript">
-    <!--
     function submittab() {
         if (window.submitted) return false;
         window.submitted = true;
@@ -57,7 +56,6 @@ sub AddNewTab {
         }
         return true
     }
-    //-->
     </script>~
       . $brd_advanced_tabs;
     $yyaddtab =~ s/{yabb tabtext}/$tabmenu_txt{'tabtext'}/sm;

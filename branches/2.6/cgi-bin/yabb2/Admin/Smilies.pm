@@ -66,102 +66,100 @@ sub SmiliePanel {
 <form action="$adminurl?action=addsmilies" method="post" enctype="multipart/form-data" accept-charset="$yymycharset">
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell" style="margin-bottom: .5em;">
-  <col style="width: 5%" />
-  <col span="3" style="width: 20%" />
-  <col style="width: 15%" />
-  <col style="width: 10%" />
-  <col span="2" style="width: 5%" />
-  <tr>
-    <td class="titlebg" colspan="8" style="height:22px">&nbsp;<img src="$imagesdir/grin.gif" alt="" /><b>&nbsp;$smiltxt{'3'}</b><br /></td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><label for="removenormalsmilies">$smiltxt{'24'}</label></td>
-    <td class="windowbg2" colspan="4"><input type="checkbox" name="removenormalsmilies" id="removenormalsmilies" value="1"$remnosmi /></td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><label for="smiliestyle">$smiltxt{'4'}</label></td>
-    <td class="windowbg2" colspan="4">
-      <select name="smiliestyle" id="smiliestyle">
-        <option value="1"$ss1>$smiltxt{'5'}</option>
-        <option value="2"$ss2>$smiltxt{'6'}</option>
-      </select>
-    </td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><label for="showadded">$smiltxt{'7'}</label></td>
-    <td class="windowbg2" colspan="4">
-      <select name="showadded" id="showadded">
-          <option value="1"$sa[1]>$smiltxt{'8'}</option>
-          <option value="2"$sa[2]>$smiltxt{'9'}</option>
-          <option value="3"$sa[3]>$smiltxt{'10'}</option>
-          <option value="4"$sa[4]>$smiltxt{'11'}</option>
-      </select>
-    </td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><label for="showsmdir">$smiltxt{'2'}</label></td>
-    <td class="windowbg2" colspan="4">
-      <select name="showsmdir" id="showsmdir">
-          <option value="1"$ssm[1]>$smiltxt{'8'}</option>
-          <option value="2"$ssm[2]>$smiltxt{'9'}</option>
-          <option value="3"$ssm[3]>$smiltxt{'10'}</option>
-          <option value="4"$ssm[4]>$smiltxt{'11'}</option>
-      </select>
-    </td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><label for="detachblock">$smiltxt{'12'}<br /> $smiltxt{'13'}</label></td>
-    <td class="windowbg2" colspan="4"><input type="checkbox" name="detachblock" id="detachblock" value="1"$dblock /></td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><label for="winwidth">$smiltxt{'14'}</label></td>
-    <td class="windowbg2" colspan="4"><input type="text" size="10" name="winwidth" id="winwidth" value="$winwidth" /></td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><label for="winheight">$smiltxt{'15'}</label></td>
-    <td class="windowbg2" colspan="4"><input type="text" size="10" name="winheight" id="winheight" value='$winheight' /></td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><label for="showinbox">$smiltxt{'23'}</label></td>
-    <td class="windowbg2" colspan="4"><input type="radio" name="showinbox" id="showinbox" value=""~
+    <colgroup>
+        <col style="width: 5%" />
+        <col span="3" style="width: 20%" />
+        <col style="width: 15%" />
+        <col style="width: 10%" />
+        <col span="2" style="width: 5%" />
+    </colgroup>
+    <tr>
+        <td class="titlebg" colspan="8" style="height:22px">&nbsp;<img src="$imagesdir/grin.gif" alt="" /><b>&nbsp;$smiltxt{'3'}</b><br /></td>
+    </tr><tr>
+        <td class="windowbg2" colspan="4"><label for="removenormalsmilies">$smiltxt{'24'}</label></td>
+        <td class="windowbg2" colspan="4"><input type="checkbox" name="removenormalsmilies" id="removenormalsmilies" value="1"$remnosmi /></td>
+    </tr><tr>
+        <td class="windowbg2" colspan="4"><label for="smiliestyle">$smiltxt{'4'}</label></td>
+        <td class="windowbg2" colspan="4">
+            <select name="smiliestyle" id="smiliestyle">
+                <option value="1"$ss1>$smiltxt{'5'}</option>
+                <option value="2"$ss2>$smiltxt{'6'}</option>
+            </select>
+        </td>
+    </tr><tr>
+        <td class="windowbg2" colspan="4"><label for="showadded">$smiltxt{'7'}</label></td>
+        <td class="windowbg2" colspan="4">
+            <select name="showadded" id="showadded">
+                <option value="1"$sa[1]>$smiltxt{'8'}</option>
+                <option value="2"$sa[2]>$smiltxt{'9'}</option>
+                <option value="3"$sa[3]>$smiltxt{'10'}</option>
+                <option value="4"$sa[4]>$smiltxt{'11'}</option>
+            </select>
+        </td>
+    </tr><tr>
+        <td class="windowbg2" colspan="4"><label for="showsmdir">$smiltxt{'2'}</label></td>
+        <td class="windowbg2" colspan="4">
+            <select name="showsmdir" id="showsmdir">
+                <option value="1"$ssm[1]>$smiltxt{'8'}</option>
+                <option value="2"$ssm[2]>$smiltxt{'9'}</option>
+                <option value="3"$ssm[3]>$smiltxt{'10'}</option>
+                <option value="4"$ssm[4]>$smiltxt{'11'}</option>
+            </select>
+        </td>
+    </tr><tr>
+        <td class="windowbg2" colspan="4"><label for="detachblock">$smiltxt{'12'}<br /> $smiltxt{'13'}</label></td>
+        <td class="windowbg2" colspan="4"><input type="checkbox" name="detachblock" id="detachblock" value="1"$dblock /></td>
+    </tr><tr>
+        <td class="windowbg2" colspan="4"><label for="winwidth">$smiltxt{'14'}</label></td>
+        <td class="windowbg2" colspan="4"><input type="text" size="10" name="winwidth" id="winwidth" value="$winwidth" /></td>
+    </tr><tr>
+        <td class="windowbg2" colspan="4"><label for="winheight">$smiltxt{'15'}</label></td>
+        <td class="windowbg2" colspan="4"><input type="text" size="10" name="winheight" id="winheight" value='$winheight' /></td>
+    </tr><tr>
+        <td class="windowbg2" colspan="4"><label for="showinbox">$smiltxt{'23'}</label></td>
+        <td class="windowbg2" colspan="4"><input type="radio" name="showinbox" id="showinbox" value=""~
               . ( !$showinbox ? ' checked="checked"' : q{} ) . qq~ /></td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4">$smiltxt{'18'}</td>
-    <td class="windowbg2" colspan="4">$yyhtml_root/Smilies</td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><label for="popback">$smiltxt{'20'}</label></td>
-    <td class="windowbg2" colspan="4">
+    </tr><tr>
+        <td class="windowbg2" colspan="4">$smiltxt{'18'}</td>
+        <td class="windowbg2" colspan="4">$yyhtml_root/Smilies</td>
+    </tr><tr>
+        <td class="windowbg2" colspan="4"><label for="popback">$smiltxt{'20'}</label></td>
+        <td class="windowbg2" colspan="4">
         #<input type="text" size="10" name="popback" id="popback" value="$popback" onkeyup="previewColor(this.value);" />
-        <span id="popback_color" style="background-color: #$popback;">&nbsp; &nbsp; &nbsp;</span> <img src="$imagesdir/palette1.gif" style="cursor: pointer; vertical-align: top;" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
-        <script type="text/javascript">
-        <!--
-        function previewColor(color) {
-            color = color.replace(/#/, '');
-            document.getElementById('popback_color').style.background = '#' + color;
-            document.getElementsByName("popback")[0].value = color;
-        }
-        //-->
-        </script>
-      </td>
-  </tr><tr>
-    <td class="windowbg2" colspan="4"><label for="poptext">$smiltxt{'19'}</label></td>
-    <td class="windowbg2" colspan="4">
+            <span id="popback_color" style="background-color: #$popback;">&nbsp; &nbsp; &nbsp;</span> <img src="$imagesdir/palette1.gif" style="cursor: pointer; vertical-align: top;" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+            <script type="text/javascript">
+            function previewColor(color) {
+                color = color.replace(/#/, '');
+                document.getElementById('popback_color').style.background = '#' + color;
+                document.getElementsByName("popback")[0].value = color;
+            }
+            </script>
+        </td>
+    </tr><tr>
+        <td class="windowbg2" colspan="4"><label for="poptext">$smiltxt{'19'}</label></td>
+        <td class="windowbg2" colspan="4">
         #<input type="text" size="10" name="poptext" id="poptext" value="$poptext" onkeyup="previewColor_0(this.value);"/>
-        <span id="poptext_color" style="background-color: #$poptext;">&nbsp; &nbsp; &nbsp;</span> <img src="$imagesdir/palette1.gif" style="cursor: pointer; vertical-align: top;" onclick="window.open('$scripturl?action=palette;task=templ_0', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
-        <script type="text/javascript">
-        <!--
-        function previewColor_0(color) {
-            color = color.replace(/#/, '');
-            document.getElementById('poptext_color').style.background = '#' + color;
-            document.getElementsByName("poptext")[0].value = color;
-        }
-        //-->
-        </script>
-    </td>
-  </tr><tr>
-      <td class="titlebg" colspan="8">&nbsp;<img src="$imagesdir/grin.gif" alt="" /><b>&nbsp;$asmtxt{'11'}</b></td>
-  </tr><tr>
-    <td class="catbg center small">$smiltxt{'22'}</td>
-    <td class="catbg center small">$asmtxt{'02'}</td>
-    <td class="catbg center small">$asmtxt{'03'}</td>
-    <td class="catbg center small">$asmtxt{'04'}</td>
-    <td class="catbg center small">$asmtxt{'05'}</td>
-    <td class="catbg center small">$asmtxt{'06'}</td>
-    <td class="catbg center small">$asmtxt{'07'}</td>
-    <td class="catbg center small">$asmtxt{'12'}</td>
-  </tr>~;
+            <span id="poptext_color" style="background-color: #$poptext;">&nbsp; &nbsp; &nbsp;</span> <img src="$imagesdir/palette1.gif" style="cursor: pointer; vertical-align: top;" onclick="window.open('$scripturl?action=palette;task=templ_0', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+            <script type="text/javascript">
+            function previewColor_0(color) {
+                color = color.replace(/#/, '');
+                document.getElementById('poptext_color').style.background = '#' + color;
+                document.getElementsByName("poptext")[0].value = color;
+            }
+            </script>
+        </td>
+    </tr><tr>
+        <td class="titlebg" colspan="8">&nbsp;<img src="$imagesdir/grin.gif" alt="" /><b>&nbsp;$asmtxt{'11'}</b></td>
+    </tr><tr>
+        <td class="catbg center small">$smiltxt{'22'}</td>
+        <td class="catbg center small">$asmtxt{'02'}</td>
+        <td class="catbg center small">$asmtxt{'03'}</td>
+        <td class="catbg center small">$asmtxt{'04'}</td>
+        <td class="catbg center small">$asmtxt{'05'}</td>
+        <td class="catbg center small">$asmtxt{'06'}</td>
+        <td class="catbg center small">$asmtxt{'07'}</td>
+        <td class="catbg center small">$asmtxt{'12'}</td>
+    </tr>~;
 
     $i = 0;
     my $add_smiley = 1;
@@ -260,7 +258,6 @@ qq~<a href="$adminurl?action=smiliemove;index=$i;movedown=1"><img src="$imagesdi
 </table>
 </div>
 <script type="text/javascript">
-<!--
 sm_added = $added_smilies + 1;
 
 function addSmilies(addsm_id) {
@@ -288,7 +285,6 @@ function removeSmilies(remsm_id) {
     }
     document.getElementById('smbox[' + remsm_id + ']').checked = false;
 }
-//-->
 </script>
 </form>
 ~;

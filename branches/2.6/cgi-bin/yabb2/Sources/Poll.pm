@@ -671,10 +671,8 @@ qq~<a href="$scripturl?action=undovote;num=$pollnum$scp">$img{'deletevote'}</a>~
         $poll_notlocked = qq~
            <div style="float: right; width: 20%; text-align: right;">
             <script type="text/javascript">
-        <!--
                 document.write('<a href="$scripturl?num=$viewnum"><img src="$imagesdir/$poll_bar" alt="" /></a>');
                 document.write('<a href="$scripturl?num=$viewnum;view=pie"><img src="$imagesdir/$poll_pie" alt="" /></a>');
-        //-->
         </script>
     </div>
     ~;
@@ -693,7 +691,6 @@ qq~$polltxt{'47'}<br /><span class="small">($polltxt{'48'})</span><br />~;
                 $poll_hasvoted = qq~
         <script src="$yyhtml_root/piechart.js" type="text/javascript"></script>
         <script type="text/javascript">
-        <!--
             if (document.getElementById('piestyle').currentStyle) {
                 pie_colorstyle = document.getElementById('piestyle').currentStyle['color'];
             } else if (window.getComputedStyle) {
@@ -708,7 +705,6 @@ qq~$polltxt{'47'}<br /><span class="small">($polltxt{'48'})</span><br />~;
             pie.use_legends = $pie_legends;
             pie.color_style = pie_colorstyle;
             pie.sliceAdd();
-            //-->
         </script>~;
             }
             else {
@@ -807,7 +803,6 @@ qq~<input type="radio" name="option" id="option$i" value="$i" style="margin: 0; 
     $pollmain =~ s/{yabb deletevote}/$deletevote/sm;
     $pollmain =~ s/{yabb displayvoters}/$displayvoters/sm;
     $pollmain .= qq~<script type="text/javascript">
-<!--
 function collapseSCpoll(pollnr) {
     if (document.getElementById("polldiv").style.display == 'none') linkpollnr = '0';
     else linkpollnr = pollnr;
@@ -831,7 +826,6 @@ function collapseSCpoll(pollnr) {
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
 }
--->
 </script>
 ~;
     return $pollmain;

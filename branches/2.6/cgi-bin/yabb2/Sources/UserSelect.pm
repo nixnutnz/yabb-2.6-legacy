@@ -604,7 +604,6 @@ qq~<img src="$imagesdir/$ml_index_right" height="14" width="13" alt="$pidtxt{'03
 
                 $pageindexjs = qq~
 <script type="text/javascript">
-<!--
     function SelDec(decparam, visel) {
         splitparam = decparam.split("|");
         var vistart = parseInt(splitparam[0]);
@@ -643,7 +642,6 @@ qq~<img src="$imagesdir/$ml_index_right" height="14" width="13" alt="$pidtxt{'03
                 $pageindexjs .= qq~
     }
     document.onload = SelDec('$pagejsindex', '$tstart');
-    //-->
 </script>
 ~;
             }
@@ -663,7 +661,7 @@ sub buildPages {
         $not_groups = qq~
             <form action="$scripturl?action=findmember;sort=pmsearch;toid=$to_id" method="post" id="form1" name="form1" enctype="application/x-www-form-urlencoded" style="display:inline; vertical-align:middle;" accept-charset="$yymycharset">
                 <input type="text" name="member" id="member" value="$usersel_txt{'wildcardinfo'}" onfocus="txtInFields(this, '$usersel_txt{'wildcardinfo'}');" onblur="txtInFields(this, '$usersel_txt{'wildcardinfo'}')" class="wildcard" /> 
-                <input name="submit" type="submit" class="button" style="font-size: 10px;" value="$usersel_txt{'gobutton'}" />
+                <input type="submit" class="button" style="font-size: 10px;" value="$usersel_txt{'gobutton'}" />
             </form>~;
     }
     if ( $recent_exist && $to_id =~ /toshow/sm ) {

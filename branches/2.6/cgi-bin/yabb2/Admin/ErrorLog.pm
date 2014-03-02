@@ -96,7 +96,6 @@ sub ErrorLog {
     $yymain .= qq~\
 <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
 <script type="text/javascript">
-<!-- Begin
 function changeBox(cbox) {
   box = eval(cbox);
   box.checked = !box.checked;
@@ -115,17 +114,18 @@ function uncheckAll() {
         }
   }
 }
-//-->
 </script>
 <form name="errorlog_form" action="$adminurl?action=deleteerror;$sortmode$sortorder" method="post" onsubmit="return submitproc()">
 <input type="hidden" name="button" value="4" />
     <div class="bordercolor rightboxdiv">
         <table class="border-space pad-cell" style="margin-bottom:.5em">
-            <col style="width:5%" />
-            <col style="width:10%" />
-            <col style="width:15%" />
-            <col style="width:65%" />
-            <col style="width:5%" />
+            <colgroup>
+                <col style="width:5%" />
+                <col style="width:10%" />
+                <col style="width:15%" />
+                <col style="width:65%" />
+                <col style="width:5%" />
+            </colgroup>
             <tr>
                 <td class="titlebg" colspan="5">$admin_img{'xx'} <b>$yytitle</b></td>
             </tr><tr>

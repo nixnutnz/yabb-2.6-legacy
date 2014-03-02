@@ -23,7 +23,7 @@ $ml_bar ='bar.gif';
 
 $my_findform = qq~<form action="$scripturl?action=ml;sort=memsearch" method="post" id="form1" name="form1" enctype="application/x-www-form-urlencoded" style="display: inline;">
             <input type="text" name="member" id="member" value="$ml_txt{'801'}" style="font-size: 11px; width: 180px;" onfocus="txtInFields(this, '$ml_txt{'801'}');" onblur="txtInFields(this, '$ml_txt{'801'}')" />
-            <input name="submit" type="submit" class="button" style="font-size: 10px;" value="$ml_txt{'2'}" />
+            <input type="submit" class="button" style="font-size: 10px;" value="$ml_txt{'2'}" />
             </form> ~;
 
 $my_memberlist_main = qq~
@@ -36,6 +36,7 @@ $my_memberlist_main = qq~
             </tr>
         </table>
         <table class="bordercolor pad_3px cs_thin" style="margin-top:-3px; padding-top:0">
+			<colgroup>
             {yabb col_userpic}
             <col style="width:auto" />
             <col span="2" style="width:4%" />
@@ -43,6 +44,7 @@ $my_memberlist_main = qq~
             <col style="width:5%" />
             <col style="width:18%" />
             <col style="width:auto" />
+			</colgroup>
 ~;
 
 
@@ -88,6 +90,7 @@ $my_findmember = qq~<tr>
             </tr>~;
 
 $my_memberlist_bottom = qq~
+        </table>
         <table class="tabtitle-bottom pad_3px">
             <tr>
                 <td>
@@ -118,11 +121,10 @@ $my_usersel_tem = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <title>{yabb title}</title>
-    <meta http-equiv="Content-Type" content="text/html; charset={yabb charset}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=$yymycharset" />
     <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
     <script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
     <script type="text/javascript">
-    <!--
     function txtInFields(thefield, defaulttxt) {
         if (thefield.value == defaulttxt) thefield.value = "";
         else { if (thefield.value === "") thefield.value = defaulttxt; }
@@ -198,7 +200,6 @@ $my_usersel_tem = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//
             tmp_option.text = to_array[i];
         }
     }
-    // -->
     </script>
 </head>
 <body class="select_body" id="select_body">

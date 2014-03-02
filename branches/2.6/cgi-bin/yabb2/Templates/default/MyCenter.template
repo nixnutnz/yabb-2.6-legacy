@@ -38,10 +38,12 @@ $mycenter_template = qq~
 <!-- My Center Title Bar start -->
 <div class="seperator">
     <table>
+        <colgroup>
         <col style="width:40px" />
         <col style="width:auto" />
         <col style="width:45px" />
         <col style="width:440px" />
+        </colgroup>
         <tr>
             <td class="tabmenuleft">&nbsp;</td>
             <td class="tabmenu"><ul>{yabb mcmenu}</ul></td>
@@ -179,7 +181,10 @@ $my_MCPost_count = qq~
 ## Mini profile ##
 $my_MCContent = qq~
         <table class="pad_4px cs_thin">
+            <colgroup>
             <col style="width:33%" />
+            <col style="width:67%" />
+            </colgroup>
             <tr>
                 <td class="windowbg2 vtop">
                     {yabb myprofileblock}
@@ -217,8 +222,11 @@ $my_MCContent_PM = qq~
 $my_MCPmMenu = qq~
     <div id="cont_pm" style="display: {yabb display_pm}">
         <table id="pms" class="windowbg2 pad_2px">
+            <colgroup>
             <col style="width:15%" />
-            <col style="width:60%" />{yabb MCPmMenu_bm}{yabb mypmmenu_inbox}{yabb MCPmMenu_bmbox}
+            <col style="width:60%" />
+            <col style="width:25%" />
+            </colgroup>{yabb MCPmMenu_bm}{yabb mypmmenu_inbox}{yabb MCPmMenu_bmbox}
             <tr>
                 <td class="windowbg2"><img src="$imagesdir/$im_outbox" alt="$inmes_txt{'draft'}" title="$inmes_txt{'draft'}" /></td>
                 <td class="windowbg2"><span class="nav bold"><a href="$scripturl?action=imdraft">$inmes_txt{'draft'}</a></span> </td>
@@ -270,8 +278,11 @@ $my_storetotals = qq~<tr>
                 <td class="windowbg2" colspan="3">
                     <form action="$scripturl?action=delpmfolder" method="post" name="delpmfolder" id="delpmfolder" enctype="application/x-www-form-urlencoded" style="display:inline;"  onsubmit="return submitproc()">
                         <table class="pad_2px">
+                            <colgroup>
                             <col style="width:15%" />
                             <col style="width:60%" />
+                            <col style="width:25%" />
+                            </colgroup>
                             {yabb MCPmMenuTemp}
                         </table>
                     </form>
@@ -287,7 +298,7 @@ $my_markall = qq~{yabb MCPmMenu_strtot}<tr>
 $my_newfolder = qq~<tr>
                 <td colspan="3">
                     <hr  class="hr" />
-                    <form action="$scripturl?action=newpmfolder" method="post" name="newpmfolder" id="newpmfolder" enctype="application/x-www-form-urlencoded" style="display:inline;" onsubmit="return submitproc()" accept-charset="$yycharset">
+                    <form action="$scripturl?action=newpmfolder" method="post" name="newpmfolder" id="newpmfolder" enctype="application/x-www-form-urlencoded" style="display:inline;" onsubmit="return submitproc()" accept-charset="$yymycharset">
                     <label for="newfolder">$inmes_imtxt{'newstorefolder'}</label><br />
                     <input type="text" name="newfolder" id="newfolder" size="15" value="$mc_folders{'foldername'}" onfocus="txtInFields(this, '$mc_folders{'foldername'}');" onblur="txtInFields(this, '$mc_folders{'foldername'}')" />
                     <input type="submit" name="addimfolder" id="addimfolder" value="$inmes_txt{'addfolder'}" class="button" />
@@ -320,10 +331,10 @@ $my_pmsearch = qq~<tr>
         <td colspan="3">
             <hr class="hr" />
             <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
-            <form action="$scripturl?action=pmsearch" method="post" onsubmit="return submitproc()" style="display: inline" accept-charset="$yycharset">
+            <form action="$scripturl?action=pmsearch" method="post" onsubmit="return submitproc()" style="display: inline" accept-charset="$yymycharset">
                 <div class="yabb_searchbox" style="float:left">
                     <input type="text" name="search" id="search" size="16" value="$pm_search{'desc'}" onfocus="txtInFields(this, '$pm_search{'desc'}');" onblur="txtInFields(this, '$pm_search{'desc'}')" style="font-size: 11px; vertical-align: middle;" />
-                    <input type="image" src="$imagesdir/$search" style="margin-right: 5px; vertical-align: middle;" />
+                    <input type="image" src="$imagesdir/$search" style="margin-right: 5px; vertical-align: middle;" alt="$pm_search{'search'}" />
                 </div>
                 <br style="clear: left;" />
                 - <input type="checkbox" name="searchtype" id="searchtype" value="user" /> <label for="searchtype">$pm_search{'byuser'}</label>
@@ -343,8 +354,11 @@ $my_pmsearch_b = qq~
 
 $my_IMblock_top = q~
 <table class="bordercolor cs_thin pad_3px" style="border-top:0; margin-top:-2px">
+    <colgroup>
     <col style="width:65%" />
     <col style="width:15%" />
+    <col style="width:25%" />
+    </colgroup>
     {yabb MCContent_page}
     {yabb MCContent_view}
     {yabb MCContent_no_mess}

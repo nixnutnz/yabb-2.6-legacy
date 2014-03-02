@@ -185,7 +185,9 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
         <form action="$adminurl?action=ipban_add" method="post">
         <div class="bordercolor rightboxdiv">
         <table class="border-space pad-cell" style="margin-bottom: .5em;">
-            <col span="2" style="width: 50%" />
+            <colgroup>
+                <col span="2" style="width: 50%" />
+            </colgroup>
             <tr>
                 <td class="titlebg">
                     $admin_img{'banimg'} <b>$admin_txt{'340a'}</b>

@@ -174,8 +174,10 @@ $messageblock = qq~
 <div class="displaycontainer">
     <div class="postcontainer">
         <table class="bordercolor pad_4px" style="table-layout:fixed;">
+			<colgroup>
             <col style="width:13em" />
             <col style="width:auto" />
+			</colgroup>
             <tr class="{yabb css}">
                 <td class="vtop post-userinfo" rowspan="4">
                     <a id="{yabb count}"></a>
@@ -245,7 +247,10 @@ $messageblock = qq~
 #Recent Posts/Topics
 $myrecent = qq~
 <table class="tabtitle">
+	<colgroup>
     <col style="width:5%" />
+	<col style="width:95%" />
+	</colgroup>
     <tr>
         <td class="center h_30px">{yabb counter}</td>
         <td>&nbsp;<a href="$scripturl?catselect={yabb catbrd}"><span class="under">{yabb catname}</span></a>{yabb boardtree} / <a href="$scripturl?num={yabb tnum}"><span class="under">{yabb msub}</span></a><br />
@@ -287,7 +292,7 @@ $mymove_top = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <title>$sstxt{'1'}</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=$yycharset" />
+    <meta http-equiv="Content-Type" content="text/html; charset=$yymycharset" />
     <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
     <script type="text/javascript" src="$yyhtml_root/ubbc.js" ></script>
 </head>
@@ -303,7 +308,7 @@ function NoPost(op) {
     }
 }
 </script>
-<form action="$scripturl?action=split_splice;board=$currentboard;thread=$INFO{'thread'}" method="post" name="split_splice" onsubmit="return submitproc()" accept-charset="$yycharset">
+<form action="$scripturl?action=split_splice;board=$currentboard;thread=$INFO{'thread'}" method="post" name="split_splice" onsubmit="return submitproc()" accept-charset="$yymycharset">
             <input type="hidden" name="formsession" value="{yabb formsession}" />
             <table class="tabtitle" style="width:90%">
                 <tr>
@@ -406,7 +411,10 @@ $mysend_top = qq~
     </tr>
 </table>
 <table class="pad_3px" style="width:70%">
+	<colgroup>
     <col style="width:30%" />
+	<col style="width:70%" />
+	</colgroup>
     <tr>
         <td class="windowbg"><label for="y_name"><b>$sendtopic_txt{'335'}:</b></label></td>
         <td class="windowbg"><input type="text" name="y_name" id="y_name" size="50" maxlength="50" value="{yabb realname}" /></td>

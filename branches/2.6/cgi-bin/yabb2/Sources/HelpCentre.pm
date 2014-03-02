@@ -184,11 +184,11 @@ sub MainHelp {
     $TempParse = $BodyHeader;
     $BrdID = $mbname;
     $BrdID =~ s/ /_/gsm;
+	$SectionName =~ s/{yabb myboardname}/$BrdID/gsm;
     $SectionName =~ s/ /_/gsm;
     $TempParse =~ s/{yabb section_anchor}/$SectionName/gsm;
-    $TempParse =~ s/{yabb_boardname}/$BrdID/gsm;
     $SectionNam = $SectionName;
-    $SectionNam =~ s/_/ /gxsm;
+    $SectionNam =~ s/_/ /gsm;
     $TempParse  =~ s/{yabb section_name}/$SectionNam/gsm;
     $Body .= qq~$TempParse~;
 
@@ -207,12 +207,12 @@ sub MainHelp {
         $BrdID =~ s/ /_/gsm;
         $SectionAnchor = ${ SectionSub . $i };
         $SectionSub    = ${ SectionSub . $i };
-        $Sectionsub =~ s/{yabb_boardname}/$BrdID/gsm;
-        $SectionSub =~ s/_/ /gxsm;
+        $SectionSub =~ s/_/ /gsm;
+		$SectionAnchor =~ s/{yabb myboardname}/$BrdID/gsm;
         $SectionAnchor =~ s/ /_/gsm;
-        $SectionAnchor =~ s/{yabb_boardname}/$BrdID/gsm;
         $TempParse  =~ s/{yabb section_anchor}/$SectionAnchor/gsm;
         $TempParse  =~ s/{yabb section_sub}/$SectionSub/gsm;
+		$TempParse  =~ s/{yabb myboardname}/$mbname/gsm;
         $Body .= qq~$TempParse~;
 
         $message     = ${ SectionBody . $i };
@@ -285,9 +285,10 @@ sub DoContents {
 
     $BrdID = $mbname;
     $BrdID =~ s/ /_/gsm;
+	$SectionName =~ s/{yabb myboardname}/$BrdID/gsm;
     $TempParse =~ s/{yabb section_anchor}/$SectionName/gsm;
     $SectionNam = $SectionName;
-    $SectionNam =~ s/_/ /gxsm;
+    $SectionNam =~ s/_/ /gsm;
     $TempParse  =~ s/{yabb section_name}/$SectionNam/gsm;
     $TempParse  =~ s/{top_img}/$top_img/gsm;
     $Contents .= qq~$TempParse~;
@@ -308,7 +309,9 @@ sub DoContents {
 
         $TempParse = $ContentItem;
         $TempParse =~ s/{yabb anchor}/$SectionAnchor/gsm;
+		$TempParse =~ s/{yabb myboardname}/$BrdID/gsm;
         $TempParse =~ s/{yabb content}/${SectionSub.$i}/gsm;
+		$TempParse =~ s/{yabb myboardname}/$BrdID/gsm;
 
         $Contents .= qq~$TempParse~;
         ${ SectionSub . $i } = q{};

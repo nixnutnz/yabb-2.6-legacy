@@ -28,13 +28,17 @@ $mycalout_goto_main = qq~<tr>
     </tr>
 </table>
 <table class="pad_3px">
-    <col style="width:6%" />
-    <col style="width:30%" />~;
+    <colgroup>
+        <col style="width:6%" />
+        <col style="width:30%" />
+    </colgroup>~;
 
 $mycalout_gottobox = qq~
     <table class="tabtitle tabtitle-text">
-        <col style="width:30%" />
-        <col style="width:70%" />
+		<colgroup>
+            <col style="width:30%" />
+            <col style="width:70%" />
+		</colgroup>
         <tr>
             <td style="padding-left:1%">
                 <!--<img src="$yyhtml_root/Templates/Forum/default/$cal_eventcal" alt="" /> --> $var_cal{'caltitle'}
@@ -49,8 +53,10 @@ $mycalout_gottobox = qq~
 
 $mycalout_board = qq~
 <table class="tabtitle tabtitle-text">
-    <col style="width:30%" />
-    <col style="width:70%" />
+    <colgroup>
+        <col style="width:30%" />
+        <col style="width:70%" />
+    </colgroup>
     {yabb cal_display}
 </table>~;
 
@@ -68,7 +74,10 @@ $mycal_displayssi = qq~
     </tr>
 </table>
 <table class="bordercolor pad_3px minical_border">
-    <col style="width:14%" />
+    <colgroup>
+        <col style="width:14%" span="6" />
+        <col style="width:auto" />
+    </colgroup>
     <tr>
        {yabb weekdays}
     </tr>
@@ -131,29 +140,31 @@ $mycalout_noevent = qq~<tr>
 
 $mycalout_addevent = qq~
 <table class="bordercolor">
-    <col style="width:160px" />
-    <col style="width:auto" />
+    <colgroup>
+        <col style="width:160px" />
+        <col style="width:auto" />
+    </colgroup>
     {yabb guestpost_fields}
     {yabb mycalout_validation}
     {yabb mycalout_spamquestion}
     <tr>
         <td class="windowbg2" colspan="2">
             <div style="height:16px;">
-            <img name="prevwin" id="prevwin" src="$defaultimagesdir/$cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor: pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
+            <img id="prevwin" src="$defaultimagesdir/$cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor: pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
             </div>
         </td>
    </tr>
 </table>
    {yabb my_postsection_ajx}
 <table class="bordercolor" style="table-layout: fixed;">
-    <col style="width:160px" />
-    <col style="width:auto" />
+    <colgroup>
+        <col style="width:160px" />
+        <col style="width:auto" />
+    </colgroup>
     <tr>
         <td class="windowbg2" colspan="2">
-            <div id="savetable" class="windowbg" style="float: left; text-align: left; width: 100%; padding: 0; margin: 0; overflow: hidden; display: none;">
         {yabb messageblock}
-        <div id="checktable" class="small" style="float: right; text-align: left; width: 77%; padding: 6px; margin: 0; display: none;"></div>
-        </div>
+            <div id="checktable" class="small" style="float: right; text-align: left; width: 77%; padding: 6px; margin: 0; display: none;"></div>
         </td>
     </tr><tr>
         <td class="windowbg2" colspan="2">
@@ -195,7 +206,6 @@ $mycalout_addevent = qq~
         </td>
     </tr><tr>
         <td class="windowbg2" colspan="2">{yabb mycalout_googie}{yabb mycalout_smilies}
-            <noscript><span class="small">$maintxt{'noscript'}</span></noscript>
             {yabb mycalout_post3}
             {yabb mycalout_chars}
         </td>
@@ -257,7 +267,10 @@ $mycal_endaddform = q~</td>
 
 $mycal_addnew_left = qq~</table>
 <table class="bordercolor pad_3px" style="border-top:1px solid #fff">
-    <col style="width:6%" />
+    <colgroup>
+        <col style="width:6%" />
+        <col style="width:94%" />
+    </colgroup>
     <tr>
         <td class="windowbg center" style="border-right:1px solid #fff">
             {yabb cal_modify}
@@ -370,7 +383,10 @@ $my_out_a = qq~<table>
 
 $mycal_liveprev = qq~
      <table class="boardborder pad_4px" style="table-layout: fixed;">
-         <col style="width:20px" />
+        <colgroup>
+            <col style="width:20px" />
+            <col style="width:auto" />
+        </colgroup>
          <tr>
             <td class="windowbg vtop" colspan="2">
                 <span class="small">{yabb my_cal_private} {yabb my_cal_icon} {yabb cdate} <b>{yabb icon_text}</b> {yabb eventuserlink}</span><hr class="hr" />

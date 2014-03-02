@@ -21,18 +21,18 @@
 <body>
 <div id="ImageAlert" class="center">
     <img style="position: absolute; top: -12px; right: -12px" src="{yabb images}/closebutton.png" alt="" onclick="HideAlert()" />
-    <iframe id="ImageAlertIFrame" style="display: none; width: 100%; border: 0">
-        <p>Your browser does not support iframes.</p>
-    </iframe>
+    <iframe id="ImageAlertIFrame" style="display: none; width: 100%; border: 0"></iframe>
     <img id="ImageAlertLoad" src="{yabb images}/loadbar.gif" style="display: none; margin: 20px auto;" alt="" />
     <div id="ImageAlertBody" style="display:none;"></div>
 </div>
 <div id="maincontainer">
     <div id="container">
         <table class="menutop" style="table-layout:fixed">
+			<colgroup>
             <col style="width:auto" />
             <col style="width:250px" />
             <col style="width:auto" />
+			</colgroup>
             <tr>
                 <td class="small h_23px" style="padding-left:1%"><div id="yabbclock">{yabb time}</div></td>
                 <td class="small">{yabb langChooser}</td>
@@ -42,9 +42,11 @@
             </tr>
         </table>
         <table id="header" class="pad_4px">
+			<colgroup>
             <col style="width:1%" />
             <col style="width:auto" />
             <col style="width:460px" />
+			</colgroup>
             <tr>
                 <td class="vtop h_40px">&nbsp;</td>
                 <td>{yabb uname}<br />{yabb im}{yabb admin_alert}</td>
@@ -59,8 +61,10 @@
         </table>
         <div id="fixmenu" style="position: relative; width:100%; z-index: 1000; top: 0;">
         <table>
+			<colgroup>
             <col style="width:auto" />
             <col style="width:100px" />
+			</colgroup>
             <tr>
                 <td class="tabmenu">
 				    {yabb tabmenu}
@@ -75,7 +79,10 @@
         {yabb addtab}
         <div id="brcrumb" style="top: 0;">
         <table>
+			<colgroup>
             <col style="width:2%" />
+				<col style="width:98%" />
+			</colgroup>
             <tr>
                 <td class="nav h_30px">&nbsp;</td>
                 <td class="nav">{yabb boardlink} {yabb navigation}</td>
@@ -87,7 +94,10 @@
         </div>
         <div class="mainbottom">
             <table>
+				<colgroup>
                 <col style="width:2%" />
+					<col style="width:98%" />
+				</colgroup>
                 <tr>
                     <td>&nbsp;</td>
                     <td>{yabb navback}</td>

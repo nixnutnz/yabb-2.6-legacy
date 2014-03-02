@@ -105,7 +105,7 @@ $myIM_prevmain = qq~<tr>
 $myIM_liveprev = qq~<tr>
         <td class="vtop">
             <div style="height:16px;">
-                <img name="prevwin" id="prevwin" src="$defaultimagesdir/$cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" class="cursor" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
+                <img id="prevwin" src="$defaultimagesdir/$cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" class="cursor" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
             </div>
         </td>
     </tr><tr>
@@ -189,9 +189,6 @@ $my_postbox_notguest = q~<tr>
         ~;
 
 $my_postbox_smilie = qq~
-            <noscript>
-                <span class="small">$maintxt{'noscript'}</span>
-            </noscript>
         </td>
     </tr>~;
 
@@ -222,7 +219,6 @@ $my_FA_browse = qq~<tr>{yabb my_ispreview}
             {yabb sendBMessFlag}
             <input type="submit" name="{yabb post}" value="{yabb submittxt}" accesskey="s" tabindex="5" class="button" />{yabb my_spdpost}
             {yabb my_accesskey} {yabb my_browser} {yabb my_savetable} {yabb my_chars} {yabb my_visicon}
-            // -->
             </script> 
         </td>
     </tr>\n~;

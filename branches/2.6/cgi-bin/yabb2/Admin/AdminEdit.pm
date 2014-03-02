@@ -80,7 +80,9 @@ qq~\n<input type="checkbox" name="$actfound" id="$actfound"$checked />&nbsp;<lab
 <form action="$adminurl?action=gmodsettings2" method="post" enctype="application/x-www-form-urlencoded">
     <div class="bordercolor rightboxdiv">
         <table class="border-space pad-cell" style="margin-bottom: .5em;">
-            <col span="2" style="width:50%" />
+            <colgroup>
+                <col span="2" style="width:50%" />
+            </colgroup>
             <tr>
                 <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$gmod_settings{'1'}</b></td>
             </tr><tr>

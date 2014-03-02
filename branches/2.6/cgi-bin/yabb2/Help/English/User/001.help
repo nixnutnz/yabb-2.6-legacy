@@ -1,4 +1,4 @@
-$SectionName = "{yabb_boardname}_Help_Center";
+$SectionName = "{yabb myboardname}_Help_Center";
 
 ### Section 1
 #############################################

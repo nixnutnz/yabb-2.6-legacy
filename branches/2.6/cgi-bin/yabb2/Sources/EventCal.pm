@@ -1109,7 +1109,6 @@ q~<marquee behavior='scroll' direction='up' height='130' scrollamount='1' scroll
 qq~\n<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/calscroller.css" type="text/css" />~;
         $outstring .= qq~
 <script type="text/javascript">
-<!--
     // initial position
     var countdownmod=$countdownload;
 
@@ -1161,7 +1160,6 @@ qq~\n<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/calscroller.css" 
         }
         scrollpos = scrollpos - 1;
     }
-// -->
 </script>
     <div id="eventcaldata">~;
     }

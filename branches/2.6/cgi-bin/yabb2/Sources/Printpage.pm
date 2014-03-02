@@ -758,7 +758,7 @@ sub codemsg {
     if ( $code !~ /&\S*;/xsm ) { $code =~ s/;/&#059;/gxsm; }
     $code =~ s/([\(\)\-\:\\\/\?\!\]\[\.\^])/$killhash{$1}/gxsm;
     $_ =
-q~<br /><b>Code:</b><br /><table class="cs_thin" style="width:90%"><tr><td><table class="padd_2px"><tr><td><span style="font-family:courier; font-size:xx_small">CODE</span></td></tr></table></td></tr></table>~;
+q~<br /><b>Code:</b><br /><table class="cs_thin" style="width:90%"><tr><td><table class="padd_2px"><tr><td><span style="font-family:courier; font-size:80%">CODE</span></td></tr></table></td></tr></table>~;
     $_ =~ s/CODE/$code/gxsm;
     return $_;
 }
@@ -781,7 +781,7 @@ sub do_print {
     $threadpost =~ s/<br \/>/\n/igxsm;
     $threadpost =~ s/\[highlight(.*?)\](.*?)\[\/highlight\]/$2/isgxm;
     $threadpost =~
-s/\[code\s*(.+?)\]\n*(.+?)\n*\[\/code\]/<br \/><b>Code ($1):<\/b><br \/><table class=\"cs_thin\"><tr><td><table class=\"pad_2px\"><tr><td><span style=\"font-family:courier; font-size:xx_small\">$2<\/span><\/td><\/tr><\/table><\/td><\/tr><\/table>/isgm;
+s/\[code\s*(.+?)\]\n*(.+?)\n*\[\/code\]/<br \/><b>Code ($1):<\/b><br \/><table class=\"cs_thin\"><tr><td><table class=\"pad_2px\"><tr><td><span style=\"font-family:courier; font-size:80%\">$2<\/span><\/td><\/tr><\/table><\/td><\/tr><\/table>/isgm;
     $threadpost =~ s/\[([^\]]{0,30})\n([^\]]{0,30})\]/\[$1$2\]/gxsm;
     $threadpost =~ s/\[\/([^\]]{0,30})\n([^\]]{0,30})\]/\[\/$1$2\]/gxsm;
     $threadpost =~ s/(\w+:\/\/[^<>\s\n\"\]\[]+)\n([^<>\s\n\"\]\[]+)/$1\n$2/gxsm;
@@ -982,7 +982,7 @@ qq~<i> $maintxt{'42'} <a href="$scripturl?action=register"><b>$maintxt{'97'}</b>
         }
 
         $threadpost =~
-s/\[quote\s+author=.*?link=.*?\s+date=.*?\s*\]\n*(.*?)\n*\[\/quote\]/<br \/><i>$author $maintxt{'30a'} $date<\/a>:<\/i><table style="padding:1px; width:90%; border:thin solid #000"><tr><td style="width:100%;font-size:10px">$1<\/td><\/tr><\/table>/ism;
+s/\[quote\s+author=.*?link=.*?\s+date=.*?\s*\]\n*(.*?)\n*\[\/quote\]/<br \/><i>$author $maintxt{'30a'} $date:<\/i><table style="padding:1px; width:90%; border:thin solid #000"><tr><td style="width:100%;font-size:10px">$1<\/td><\/tr><\/table>/ism;
     }
     $threadpost =~
 s/\[quote\]\n*(.+?)\n*\[\/quote\]/<br \/><i>$maintxt{'31'}:<\/i><table style="padding:1px; width:90%; border:thin solid #000"><tr><td style="width:100%;font-size:10px; font-family:Arial,Helvetica">$1<\/td><\/tr><\/table>/isgm;

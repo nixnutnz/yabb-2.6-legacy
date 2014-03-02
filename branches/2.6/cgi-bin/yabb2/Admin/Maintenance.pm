@@ -316,7 +316,6 @@ sub RebuildMessageIndexText {
     </p>
 
     <script type="text/javascript">
-     <!--
         function PleaseWait() {
             document.getElementById("memcontinued").innerHTML = '<span class="important"><b>$admin_txt{'545'}</b></span><br />&nbsp;<br />&nbsp;';
         }
@@ -332,7 +331,6 @@ sub RebuildMessageIndexText {
         }
 
         setTimeout("membtick()",2000);
-     // -->
     </script>~;
 
     $yytitle     = $admin_txt{'506'};
@@ -414,7 +412,6 @@ sub AdminBoardRecount {
         $rebuild_txt{'2'} <a href="$adminurl?action=boardrecount;topicnum=$topicnum" onclick="rebRecount();">$rebuild_txt{'3'}</a>
         </div>
         <script type="text/javascript">
-        <!--
         function rebRecount() {
             document.getElementById("boardrecountcontinued").innerHTML = '$rebuild_txt{'4'}';
         }
@@ -425,7 +422,6 @@ sub AdminBoardRecount {
         }
 
         setTimeout("recounttick()",2000)
-        // -->
         </script>
         ~;
         AdminTemplate();
@@ -678,7 +674,6 @@ $rebuild_txt{'8'} $time_left
 $rebuild_txt{'2'} <a href="$adminurl?action=rebuildmemlist;actiononfinish=$INFO{'actiononfinish'}" onclick="clearMeminfo();">$rebuild_txt{'3'}</a>
 </div>
 <script type="text/javascript">
- <!--
     function clearMeminfo() {
         document.getElementById("memcontinued").innerHTML = '$rebuild_txt{'4'}';
     }
@@ -689,7 +684,6 @@ $rebuild_txt{'2'} <a href="$adminurl?action=rebuildmemlist;actiononfinish=$INFO{
     }
 
     setTimeout("membtick()", 2000)
- // -->
 </script>~;
     }
 
@@ -848,7 +842,6 @@ $rebuild_txt{'8'} $time_left
 $rebuild_txt{'2'} <a href="$adminurl?action=rebuildmemhist" onclick="clearMeminfo();">$rebuild_txt{'3'}</a>
 </div>
 <script type="text/javascript">
- <!--
     function clearMeminfo() {
         document.getElementById("memcontinued").innerHTML = '$rebuild_txt{'4'}';
     }
@@ -859,7 +852,6 @@ $rebuild_txt{'2'} <a href="$adminurl?action=rebuildmemhist" onclick="clearMeminf
     }
 
     setTimeout("membtick()", 2000)
- // -->
 </script>~;
     }
 
@@ -1150,7 +1142,6 @@ $rebuild_txt{'8'} $time_left
 $rebuild_txt{'2'} <a href="$adminurl?action=rebuildnotifications" onclick="clearMeminfo();">$rebuild_txt{'3'}</a>
 </div>
 <script type="text/javascript">
- <!--
     function clearMeminfo() {
         document.getElementById("memcontinued").innerHTML = '$rebuild_txt{'4'}';
     }
@@ -1161,7 +1152,6 @@ $rebuild_txt{'2'} <a href="$adminurl?action=rebuildnotifications" onclick="clear
     }
 
     setTimeout("membtick()", 2000)
- // -->
 </script>
 <br />
 <br />

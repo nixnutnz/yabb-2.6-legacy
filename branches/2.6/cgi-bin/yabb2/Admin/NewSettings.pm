@@ -89,7 +89,9 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
         $yymain .= qq~
     <div class="bordercolor borderstyle rightboxdiv">
         <table class="section" style="border-collapse:separate; border-spacing: 1px;" id="tab_$tab->{'id'}">
-            <col span="2" style="width: 50%" />
+            <colgroup>
+                <col span="2" style="width: 50%" />
+            </colgroup>
             <tr>
                 <td class="titlebg padd-cell" colspan="2">
                     $admin_img{'prefimg'} <b>$tab->{'name'}</b>

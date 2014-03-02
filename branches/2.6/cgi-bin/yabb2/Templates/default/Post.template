@@ -48,21 +48,25 @@ $mypost_topview = qq~<table class="pad_3px">
 ## main posting block (IMs and Posts) ##
 $mypost_postblock = qq~
 <table class="pad_3px" style="table-layout: fixed">
-    <col style="width: 23%" />
-    <col style="width: auto" />
+    <colgroup>
+        <col style="width: 23%" />
+        <col style="width: auto" />
+    </colgroup>
     {yabb my_prevmain}{yabb name_field}{yabb email_field}{yabb verification_field}{yabb verification_question_field}
     <tr class="windowbg">
         <td colspan="{yabb guestcol}">
             <div style="height:16px;">
-                <img  src="$imagesdir/$cat_exp" name="prevwin" id="prevwin" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor: pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
+                <img src="$imagesdir/$cat_exp" id="prevwin" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor: pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
             </div>
         </td>
    </tr>
 </table>
    {yabb my_postsection_ajx}
 <table class="pad_3px" style="table-layout: fixed$my_spacer">
-    <col style="width: 23%" />
-    <col style="width: auto" />
+    <colgroup>
+        <col style="width: 23%" />
+        <col style="width: auto" />
+    </colgroup>
     <tr class="windowbg">
         <td colspan="2">
             <div id="savetable" class="windowbg" style="float: left; text-align: left; width: 100%; padding: 0; margin: 0; overflow: hidden; display: none;">
@@ -132,8 +136,10 @@ $mypost_reason = qq~
             </tr><tr>~;
 
 $mypost_preview_main = qq~
-        <col style="width: 23%" />
-        <col style="width:auto" />
+        <colgroup>
+            <col style="width: 23%" />
+            <col style="width:auto" />
+        </colgroup>
         <tr class="windowbg">
                 <td class="vtop"><b>$post_txt{'507'}</b></td>
                 <td colspan="3">{yabb prevmain}</td>
@@ -191,7 +197,7 @@ $mypost_is_prev = qq~<tr class="windowbg">
     </tr>~;
 
 $mypost_submit = qq~<tr>
-        <td class="catbg center" colspan="2" style="padding: 8px;">~; 
+        <td class="catbg center" colspan="2" style="padding: 8px;">~;
 
 $mypost_smiley1 = qq~
             document.write('<table class="smiley_top" style="width:124px"><tr>');
@@ -206,7 +212,6 @@ $mypost_smiley1 = qq~
             document.write('<td class="center h_15px"><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span></td>');
             document.write('</tr></table>');
             document.images.smiliextra_image.src = smilieurl[document.postmodify.smiliextra_list.value];
-            //-->
             </script>
             ~;
 
@@ -262,9 +267,6 @@ $mypost_smilies_b = q~
         <td class="windowbg2">~;
 
 $mypost_smilies_c = qq~{yabb my_smilies}
-            <noscript>
-            <span class="small">$maintxt{'noscript'}</span>
-            </noscript>
         </td>
     </tr>~;
 
@@ -312,9 +314,12 @@ $mypost_showmessages_a = qq~<table class="pad_3px" style="table-layout: fixed;">
 ## poll
 $mypost_poll_top = qq~
 <table class="windowbg pad_3px">
-    <col style="width:250px" />
-    <col style="width:240px" />
-    <col span="2" style="width:60px" />
+    <colgroup>
+        <col style="width:250px" />
+        <col style="width:240px" />
+        <col span="2" style="width:60px" />
+        <col style="width:auto" />
+    </colgroup>
     <tr>
         <td class="catbg small" colspan="5"><label for="question"><b>$post_polltxt{'6'}:</b></label></td>
     </tr><tr>
@@ -332,8 +337,6 @@ $mypost_poll_top = qq~
     {yabb my_maxpc}
     {yabb my_pie}
 </table>
-<table class="windowbg pad_3px" style="table-layout: fixed;">
-    <col style="width:23%" />
 ~;
 
 $my_poll_options = qq~<tr>
@@ -444,14 +447,14 @@ $mypost_guest_fields = qq~<tr>
                 <td class="windowbg">
                     <label for="name"><b>$post_txt{'68'}:</b></label>
                 </td>
-                <td class="windowbg">
+                <td class="windowbg" colspan="3">
                     <input type="text" name="name" id="name" size="25" value="{yabb name}" maxlength="25" tabindex="2" onchange="autoPreview()" />
                 </td>
             </tr><tr>
                 <td class="windowbg">
                     <label for="email"><b>$post_txt{'69'}:</b></label>
                 </td>
-                <td class="windowbg">
+                <td class="windowbg" colspan="3">
                     <input type="text" name="email" id="email" size="25" value="{yabb email}" maxlength="40" tabindex="3" onchange="autoPreview()" />
                 </td>
             </tr>~;
@@ -525,8 +528,10 @@ $mypost_liveprev = qq~
 <div class="displaycontainer">
     <div class="postcontainer">
     <table class="pad_4px" style="table-layout: fixed; border:none">
-        <col style="width:13em" />
-        <col style="width:auto" />
+        <colgroup>
+            <col style="width:13em" />
+            <col style="width:auto" />
+        </colgroup>
         <tr class="{yabb css}">
             <td class="vtop post-userinfo" rowspan="4">
                 {yabb userlink}

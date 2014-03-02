@@ -1255,20 +1255,16 @@ qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?boa
     if ( !$iamguest && !$subboard_sel ) {
         if ( ${ $uid . $username }{'im_imspop'} ) {
             $yymain .= qq~\n\n<script type="text/javascript">
-<!--
     function viewIM() { window.open("$scripturl?action=im"); }
     function viewIMOUT() { window.open("$scripturl?action=imoutbox"); }
     function viewIMSTORE() { window.open("$scripturl?action=imstorage"); }
-// -->
 </script>~;
         }
         else {
             $yymain .= qq~\n\n<script type="text/javascript">
-<!--
     function viewIM() { location.href = ("$scripturl?action=im"); }
     function viewIMOUT() { location.href = ("$scripturl?action=imoutbox"); }
     function viewIMSTORE() { location.href = ("$scripturl?action=imstorage"); }
-// -->
 </script>~;
         }
         my $imsweredeleted = 0;
@@ -1277,9 +1273,7 @@ qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?boa
             Del_Max_IM( 'msg', $numibox );
             $imsweredeleted = ${$username}{'PMmnum'} - $numibox;
             $yymain .= qq~\n<script type="text/javascript">
-<!--
     if (confirm('$boardindex_imtxt{'11'} ${$username}{'PMmnum'} $boardindex_imtxt{'12'} $boardindex_txt{'316'}, $boardindex_imtxt{'16'} $numibox $boardindex_imtxt{'18'}. $boardindex_imtxt{'19'} $imsweredeleted $boardindex_imtxt{'20'} $boardindex_txt{'316'} $boardindex_imtxt{'21'}')) viewIM();
-// -->
 </script>~;
             ${$username}{'PMmnum'} = $numibox;
         }
@@ -1290,9 +1284,7 @@ qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?boa
             Del_Max_IM( 'outbox', $numobox );
             $imsweredeleted = ${$username}{'PMmoutnum'} - $numobox;
             $yymain .= qq~\n<script type="text/javascript">
-<!--
     if (confirm('$boardindex_imtxt{'11'} ${$username}{'PMmoutnum'} $boardindex_imtxt{'12'} $boardindex_txt{'320'}, $boardindex_imtxt{'16'} $numobox $boardindex_imtxt{'18'}. $boardindex_imtxt{'19'} $imsweredeleted $boardindex_imtxt{'20'} $boardindex_txt{'320'} $boardindex_imtxt{'21'}')) viewIMOUT();
-// -->
 </script>~;
             ${$username}{'PMmoutnum'} = $numobox;
         }
@@ -1303,9 +1295,7 @@ qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?boa
             Del_Max_IM( 'imstore', $numstore );
             $imsweredeleted = ${$username}{'PMstorenum'} - $numstore;
             $yymain .= qq~\n<script type="text/javascript">
-<!--
 if (confirm('$boardindex_imtxt{'11'} ${$username}{'PMstorenum'} $boardindex_imtxt{'12'} $boardindex_imtxt{'46'}, $boardindex_imtxt{'16'} $numstore $boardindex_imtxt{'18'}. $boardindex_imtxt{'19'} $imsweredeleted $boardindex_imtxt{'20'} $boardindex_imtxt{'46'} $boardindex_imtxt{'21'}')) viewIMSTORE();
-// -->
 </script>~;
             ${$username}{'PMstorenum'} = $numstore;
         }
@@ -1366,7 +1356,6 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
 # no matter if this is ajax subboards, subboards at top of messageindex, or regular boardindex we need these vars now
     $yymain .= qq~
 <script type="text/javascript">
-      <!--
     var catNames = [$template_catnames];
     var boardNames = [$template_boardnames];
     var boardOpen = "";
@@ -1385,7 +1374,7 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
     var prev_subcount;
     var markallreadlang = '$boardindex_txt{'500'}';
     var markfinishedlang = '$boardindex_txt{'500a'}';
-    var markthreadslang = '$boardindex_txt{'500b'}';      //-->
+    var markthreadslang = '$boardindex_txt{'500b'}';
 </script>~;
 
     # don't show info center, login, etc. if we're calling from sub boards
@@ -1684,10 +1673,8 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
 
         $yymain .= qq~
 <script type="text/javascript">
-<!--
     function ListPages(tid) { window.open('$scripturl?action=pages;num='+tid, '', 'menubar=no,toolbar=no,top=50,left=50,scrollbars=yes,resizable=no,width=400,height=300'); }
     function ListPages2(bid,cid) { window.open('$scripturl?action=pages;board='+bid+';count='+cid, '', 'menubar=no,toolbar=no,top=50,left=50,scrollbars=yes,resizable=no,width=400,height=300'); }
-//-->
             </script>
         ~;
 
@@ -1702,17 +1689,13 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
                 if ( ${ $uid . $username }{'im_imspop'} ) {
                     $yymain .= qq~
 <script type="text/javascript">
-<!--
     if (confirm("$boardindex_imtxt{'14'} ${$username}{'PMimnewcount'}$boardindex_imtxt{'15'}?")) window.open("$scripturl?action=im","_blank");
-// -->
 </script>~;
                 }
                 else {
                     $yymain .= qq~
 <script type="text/javascript">
-<!--
     if (confirm("$boardindex_imtxt{'14'} ${$username}{'PMimnewcount'}$boardindex_imtxt{'15'}?")) location.href = ("$scripturl?action=im");
-// -->
 </script>~;
                 }
             }
@@ -1725,17 +1708,13 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
             if ( ${ $uid . $username }{'im_imspop'} ) {
                 $yymain .= qq~
 <script type="text/javascript">
-<!--
     if (confirm("$boardindex_imtxt{'50'}$boardindex_imtxt{'51'}?")) window.open("$scripturl?action=im;focus=bmess","_blank");
-// -->
 </script>~;
             }
             else {
                 $yymain .= qq~
 <script type="text/javascript">
-<!--
     if (confirm("$boardindex_imtxt{'50'}$boardindex_imtxt{'51'}?")) location.href = ("$scripturl?action=im;focus=bmess");
-// -->
 </script>~;
             }
         }
@@ -1795,7 +1774,6 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
             if ($brd_count) {
                 $boardindex_template = qq~
                         <script type="text/javascript">
-                        <!--
                         var catNames = [$template_catnames];
                         var boardNames = [$template_boardnames];
                         var boardOpen = "";
@@ -1810,7 +1788,6 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
                         var insertindex;
                         var insertcat;
                         var prev_subcount;
-                        //-->
                         </script>
                         $boardindex_template
 ~;

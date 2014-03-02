@@ -71,8 +71,10 @@ $myregister_regfill_a = qq~
     </tr>
 </table>
 <table class="cs_thin pad_4px">
+	<colgroup>
     <col style="width:45%" />
     <col style="width:55%" />
+	</colgroup>
     <tr>
         <td class="windowbg center" colspan="2">
             $register_txt{'97a'}$myreg_req $register_txt{'97b'}
@@ -87,7 +89,6 @@ $myregister_morelang = qq~<tr>
             <select name="reglanguage" id="reglanguage" onchange="document.creator.action='$scripturl?action=register'; document.creator.submit();">
             {yabb langopt}
             </select>
-            <noscript><input type="submit" value="$maintxt{'32'}" class="button" /></noscript>
         </td>
     </tr>~;
 
@@ -179,7 +180,6 @@ $myregister_regreason_c = qq~$myreg_req<br />
 
 $myregister_regreason_b = qq~" name="msgCL" class="windowbg" style="border: 0; padding: 1px; font-size: 11px;" readonly="readonly" /></span>
 <script type="text/javascript">
-            <!--
             var supportsKeys = false;
             function tick() {
                 calcCharLeft(document.forms[0]);
@@ -199,7 +199,6 @@ $myregister_regreason_b = qq~" name="msgCL" class="windowbg" style="border: 0; p
                 return clipped;
             }
             tick();
-            //-->
             </script>
         </td>
     </tr>~;

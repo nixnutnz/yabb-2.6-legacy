@@ -628,7 +628,6 @@ qq~<img src="$imagesdir/index_right.png" height="14" width="13" alt="$pidtxt{'03
 
                 $pageindexjs = qq~
 <script type="text/javascript">
-<!--
     function SelDec(decparam, visel) {
         splitparam = decparam.split("|");
         var vistart = parseInt(splitparam[0]);
@@ -670,7 +669,6 @@ qq~<img src="$imagesdir/index_right.png" height="14" width="13" alt="$pidtxt{'03
                 $pageindexjs .= qq~
     }
     document.onload = SelDec('$pagejsindex', '$tstart');
-    //-->
 </script>
 ~;
             }
@@ -716,22 +714,22 @@ sub buildPages {
         </div>
         <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
         <script type="text/javascript">
-        <!--
-        if (document.selsort.sortform.options[document.selsort.sortform.selectedIndex].value == 'username') {
-        document.selsort.reversed.disabled = true;
-        }
-        //-->
+            if (document.selsort.sortform.options[document.selsort.sortform.selectedIndex].value == 'username') {
+                document.selsort.reversed.disabled = true;
+            }
         </script>
         <form name="adv_memberview" action="$adminurl?action=deletemultimembers$sortmode$sortorder$spages" method="post" style="display: inline" onsubmit="return submitproc()">
         <input type="hidden" name="button" value="0" />
         <div class="rightboxdiv">
         <table class="bordercolor borderstyle border-space pad-cell">
-            <col span="2" style="width:19%" />
-            <col style="width:5%" />
-            <col style="width:14%" />
-            <col style="width:19%" />
-            <col style="width:7%" />
-            <col span="2" style="width:6%" />
+            <colgroup>
+                <col span="2" style="width:19%" />
+                <col style="width:5%" />
+                <col style="width:14%" />
+                <col style="width:19%" />
+                <col style="width:7%" />
+                <col span="2" style="width:6%" />
+            </colgroup>
             <tr>
                 <td class="$selUser_a center"><a href="$adminurl?action=ml;sortform=username"><b>$ml_txt{'35'}</b></a></td>
                 <td class="$selPos_a center"><a href="$adminurl?action=ml;sortform=position"><b>$ml_txt{'87'}</b></a></td>
@@ -753,8 +751,10 @@ sub buildPages {
 
     $sel_box = qq~
             <table class="bordercolor borderstyle border-space pad-cell" style="margin-bottom: .5em;">
-                <col style="width: 95%" />
-                <col style="width: 5%" />
+                <colgroup>
+                    <col style="width: 95%" />
+                    <col style="width: 5%" />
+                </colgroup>
                 <tr>
                     <td class="titlebg right" style="font-size: 11px; text-shadow: none;">
                     <label for="check_all"><b>$amv_txt{'38'}</b></label>

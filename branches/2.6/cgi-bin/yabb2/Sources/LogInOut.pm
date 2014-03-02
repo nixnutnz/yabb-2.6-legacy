@@ -189,14 +189,14 @@ sub sharedLogin {
         $hide_reglink = ' style="visibility: hidden;"';;
     }
     $sharedlog .= qq~
-            <form name="loginform" action="$scripturl?action=login2" method="post" accept-charset="$yymycharset">
+            <form id="loginform" name="loginform" action="$scripturl?action=login2" method="post" accept-charset="$yymycharset">
                 <input type="hidden" name="sredir" value="$INFO{'sesredir'}" />
     $mysharedlog_bodya~;
     $sharedlog =~ s/{yabb regstyle}/$regstyle/sm;
     $sharedlog =~ s/{yabb hide_reglink}/$hide_reglink/gsm;
     $sharedlog =~ s/{yabb hide_passlink}/$hide_passlink/gsm;
-	my $cookielength_sel = q{};
-	if ( $Cookie_Length  ) { $cookielength_sel = ' checked="checked"'} 
+    my $cookielength_sel = q{};
+    if ( $Cookie_Length  ) { $cookielength_sel = ' checked="checked"'}
     $sharedlog =~ s/{yabb cookielength_sel}/$cookielength_sel/gsm;
     $loginform         = 1;
     $sharedLogin_title = q{};

@@ -18,16 +18,15 @@ $versionchk   = 'http://www.yabbforum.com/update/versioncheck.js';
 $versionimg   = 'http://www.yabbforum.com/images/version/versioncheck.gif';
 $aarea = 'aarea.jpg';
 
-$header = qq~<?xml version="1.0" encoding="{yabb charset}" standalone="no" ?>
+$header = qq~<?xml version="1.0" encoding="$yymycharset" standalone="no" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset={yabb charset}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=$yymycharset" />
     <title>{yabb title}</title>
     <meta http-equiv="pragma" content="no-cache" />
     {yabb style}
     <script type="text/javascript">
-<!--
     function toggleList(e){
         element = document.getElementById(e).style;
 
@@ -73,7 +72,6 @@ $header = qq~<?xml version="1.0" encoding="{yabb charset}" standalone="no" ?>
         }
     }
     {yabb javascript}
--->
     </script>
 </head>~;
 
@@ -91,7 +89,10 @@ $leftmenubottom = qq~
 $topnav = qq~
     <div id="ql">
         <table style="width:auto; margin-left:0">
+			<colgroup>
             <col style="width:190px" />
+			<col style="width:auto" span="6" />
+			</colgroup>
             <tr>
                 <td>&nbsp;</td>
                 <td class="center">{yabb topmenu_one}</td>
@@ -199,7 +200,6 @@ $front_page = qq~<div class="bordercolor rightboxdiv">
         var p = document.getElementById("version");
         p.innerHTML = aa + bb + cc + dd + ee + ff + gg + hh;
         </script>
-        <noscript>$versiontxt{'1'}</noscript>
     </div>
 </div>
 <div style="float: left; width: 50%; text-align: right;">
@@ -211,7 +211,7 @@ $front_page = qq~<div class="bordercolor rightboxdiv">
                 </td>
             </tr><tr>
                 <td class="windowbg2">
-                    <iframe src="http://www.yabbforum.com/update/" frameborder="0" id="update">{yabb iFrameSupport}</iframe>
+                    <iframe src="http://www.yabbforum.com/update/" frameborder="0" id="update"></iframe>
                 </td>
             </tr>
         </table>
@@ -321,9 +321,7 @@ $my_admin_login = qq~
 </table>
 </form> 
 <script type="text/javascript">
-<!--
         document.confirmform.passwrd.focus();
-// -->
 </script>~;
 
 1;

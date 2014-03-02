@@ -995,7 +995,6 @@ sub runbackup_loop {
     </p>
 
     <script type="text/javascript">
-     <!--
         function PleaseWait() {
             document.getElementById("memcontinued").innerHTML = '<span style="color:important"><b>$backup_txt{'91'}</b></span><br />&nbsp;<br />&nbsp;';
         }
@@ -1011,7 +1010,6 @@ sub runbackup_loop {
         }
 
         setTimeout("membtick()",2000);
-     // -->
     </script>~;
 
     AdminTemplate();
@@ -1200,7 +1198,6 @@ sub recoverbackup1 {
 
     $yymain .= qq~
  <script type="text/javascript">
- <!--
     function CheckCHMOD (v,min,t) {
         if (v == '') {
             return;
@@ -1215,7 +1212,6 @@ sub recoverbackup1 {
             t.value = 7;
         }
     }
- -->
  </script>
 <form action="$adminurl?action=recoverbackup2" method="post" name="recover">
 <div class="bordercolor rightboxdiv">

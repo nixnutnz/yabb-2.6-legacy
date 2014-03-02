@@ -657,7 +657,6 @@ sub buildPages {
             <option value="regdate"$selcReg>$ml_txt{'233'}</option>
             </select>
             <input type="hidden" name="action" value="ml" />
-            <noscript><input type="submit" /></noscript>
            </form>
         );
     if ( $showuserpicml && $allowpics ) {

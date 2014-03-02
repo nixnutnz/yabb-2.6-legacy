@@ -122,8 +122,10 @@ sub Attachments {
         <td class="windowbg2">
             <form action="$adminurl?action=removeoldattachments" method="post">
             <table class="pad-cell left" style="min-width:30%">
-                <col style="width:60%" />
-                <col style="width:20%" span="2" />
+                <colgroup>
+                    <col style="width:60%" />
+                    <col style="width:20%" span="2" />
+                </colgroup>
                 <tr>
                     <td class="small">$fatxt{'32'}</td>
                     <td class="small"><input type="text" name="maxdaysattach" size="2" value="$maxdaysattach" /> $fatxt{'58'}&nbsp;</td>
@@ -133,8 +135,10 @@ sub Attachments {
             </form>
             <form action="$adminurl?action=removebigattachments" method="post">
             <table class="pad-cell left" style="min-width:30%">
-                <col style="width:60%" />
-                <col style="width:20%" span="2" />
+                <colgroup>
+                    <col style="width:60%" />
+                    <col style="width:20%" span="2" />
+                </colgroup>
                 <tr>
                     <td><span class="small">$fatxt{'33'}</span></td>
                     <td><span class="small"><input type="text" name="maxsizeattach" size="2" value="$maxsizeattach" /> KB&nbsp;</span></td>
@@ -155,8 +159,10 @@ sub Attachments {
         <td class="windowbg2">
             <form action="$adminurl?action=removeoldpmattachments" method="post">
             <table class="pad-cell left" style="min-width:30%">
-                <col style="width:60%" />
-                <col style="width:20%" span="2" />
+                <colgroup>
+                    <col style="width:60%" />
+                    <col style="width:20%" span="2" />
+                </colgroup>
                 <tr>
                     <td><span class="small">$fatxt{'32a'}</span></td>
                     <td><span class="small"><input type="text" name="pmmaxdaysattach" size="2" value="$pmMaxDaysAttach" /> $fatxt{'58'}&nbsp;</span></td>
@@ -166,8 +172,10 @@ sub Attachments {
             </form>
             <form action="$adminurl?action=removebigpmattachments" method="post">
             <table class="pad-cell left" style="min-width:30%">
-                <col style="width:60%" />
-                <col style="width:20%" span="2" />
+                <colgroup>
+                    <col style="width:60%" />
+                    <col style="width:20%" span="2" />
+                </colgroup>
                 <tr>
                     <td><span class="small">$fatxt{'33a'}</span></td>
                     <td><span class="small"><input type="text" name="pmmaxsizeattach" size="2" value="$pmMaxSizeAttach" /> KB&nbsp;</span></td>
@@ -408,7 +416,6 @@ qq~<tr><td class="windowbg2 padd-cell center" colspan="8"><b><i>$fatxt{'48'}</i>
     else {
         $yymain .= qq~
         <script type="text/javascript">
-        <!--
             function checkAll() {
                 for (var i = 0; i < document.del_attachments.elements.length; i++) {
                     document.del_attachments.elements[i].checked = true;
@@ -419,7 +426,6 @@ qq~<tr><td class="windowbg2 padd-cell center" colspan="8"><b><i>$fatxt{'48'}</i>
                     document.del_attachments.elements[i].checked = false;
                 }
             }
-        //-->
         </script>
         <form name="del_attachments" action="$adminurl?action=deleteattachment" method="post" style="display: inline;">~;
 
@@ -578,14 +584,16 @@ qq~<div class="small" style="line-height: 2.5em; float: right; text-align: right
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell">
-    <col style="width:7%" />
-    <col style="width:18%" />
-    <col style="width:5%" />
-    <col style="width:7%" />
-    <col style="width:23%" />
-    <col style="width:5%" />
-    <col style="width:22%" />
-    <col style="width:13%" />
+    <colgroup>
+        <col style="width:7%" />
+        <col style="width:18%" />
+        <col style="width:5%" />
+        <col style="width:7%" />
+        <col style="width:23%" />
+        <col style="width:5%" />
+        <col style="width:22%" />
+        <col style="width:13%" />
+    </colgroup>
     <tr>
         <td class="titlebg" colspan="8">
             $admin_img{'xx'}&nbsp;<b>$fatxt{'39'}</b>
@@ -801,7 +809,6 @@ qq~$topicnum|$mreplies|$msub|$mname|$curboard|$asize|$mdate|$_|~
         $rebuild_txt{'2'} <a href="$adminurl?action=rebuildattach;topicnum=$INFO{'topicnum'};boardnum=$INFO{'boardnum'}" onclick="rebAttach();">$rebuild_txt{'3'}</a>
         </div>
     <script type="text/javascript">
-    <!--
         function rebAttach() {
             document.getElementById("attachcontinued").innerHTML = '$rebuild_txt{'4'}';
         }
@@ -812,7 +819,6 @@ qq~$topicnum|$mreplies|$msub|$mname|$curboard|$asize|$mdate|$_|~
         }
 
         setTimeout("attachtick()",3000)
-    // -->
     </script>~;
 
     AdminTemplate();
@@ -927,7 +933,6 @@ qq~<tr><td class="windowbg2 padd-cell center" colspan="6"><b><i>$fatxt{'48a'}</i
     else {
         $yymain .= qq~
         <script type="text/javascript">
-        <!--
             function checkAll() {
                 for (var i = 0; i < document.del_attachments.elements.length; i++) {
                     document.del_attachments.elements[i].checked = true;
@@ -938,7 +943,6 @@ qq~<tr><td class="windowbg2 padd-cell center" colspan="6"><b><i>$fatxt{'48a'}</i
                     document.del_attachments.elements[i].checked = false;
                 }
             }
-        //-->
         </script>
 
         <form name="del_attachments" action="$adminurl?action=deletepmattachment" method="post" style="display: inline;">~;
@@ -1088,12 +1092,14 @@ qq~<div class="small" style="line-height: 2.5em; float: right; text-align: right
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell">
-    <col style="width:8%" />
-    <col style="width:30%" />
-    <col style="width:10%" />
-    <col style="width:12%" />
-    <col style="width:30%" />
-    <col style="width:15%" />
+    <colgroup>
+        <col style="width:8%" />
+        <col style="width:30%" />
+        <col style="width:10%" />
+        <col style="width:12%" />
+        <col style="width:30%" />
+        <col style="width:15%" />
+    </colgroup>
     <tr>
         <td class="titlebg" colspan="6">
             $admin_img{'xx'}&nbsp;<b>$fatxt{'39a'}</b>

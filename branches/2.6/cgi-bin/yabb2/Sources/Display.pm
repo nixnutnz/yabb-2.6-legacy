@@ -1745,7 +1745,6 @@ qq~<form name="multidel" action="$scripturl?board=$currentboard;action=multidel;
     $yymain .= qq~
     $display_template
     <script type="text/javascript">
-    <!-- //
     function uncheckAllBut(counter) {
         for (var i = 0; i < document.forms["multidel"].length; ++i) {
             if (document.forms["multidel"].elements[i].type == "checkbox") document.forms["multidel"].elements[i].checked = false;
@@ -1791,7 +1790,6 @@ qq~<form name="multidel" action="$scripturl?board=$currentboard;action=multidel;
     $yymain .= qq~
     $pageindexjs
     function ListPages(tid) { window.open('$scripturl?action=pages;num='+tid, '', 'menubar=no,toolbar=no,top=50,left=50,scrollbars=yes,resizable=no,width=400,height=300'); }
-    // -->
     </script>
     ~;
 

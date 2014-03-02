@@ -287,7 +287,6 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
         $yymain =~ s/{yabb fruit}/$fruit/gsm;
         $yymain .= qq~
                 <script type="text/javascript">
-                <!--
                     function ShowFruits() {
                         var visfruits = "<html><head><link rel='stylesheet' href='$extpagstyle' type='text/css' /></head><body class='windowbg2'> ";
                         visfruits += "<img src='$defaultimagesdir/fruits.png' width='290' height='75' name='fruitsview' id='fruitsview' style='position: absolute; top: 0px; left: 0px; cursor: pointer;' alt='' onclick='FruitClick(event)' /> ";
@@ -316,7 +315,6 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
                         fruits.document.close();
                     }
                     ShowFruits()
-                //-->
                 </script>~;
         $yymain .= $myregister_endrow;
     }

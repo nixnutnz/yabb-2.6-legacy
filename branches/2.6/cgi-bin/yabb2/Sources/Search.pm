@@ -73,7 +73,6 @@ sub plushSearch1 {
     }
     $yymain .= qq~
 <script type="text/javascript">
-<!--
 function removeUser() {
     if (document.getElementById('userspec').value && confirm("$searchselector_txt{'removeconfirm'}")) {
         document.getElementById('userspec').value = "";
@@ -108,7 +107,6 @@ function searchMe(chelem) {
         document.getElementById('userkind').disabled=false;
     }
 }
-//-->
 </script>
 
 <form action="$scripturl?action=search2" method="post" name="searchform" onsubmit="return CheckSearchFields();" accept-charset="$yymycharset">~;
@@ -257,7 +255,6 @@ qq~<input type="checkbox" name="search_ip" id="search_ip" value="on" /><label fo
             </select>
             <input type="checkbox" name="srchAll" id="srchAll"$boardscheck onclick="if (this.checked) searchAll(true); else searchAll(false);" /> <label for="srchAll">$search_txt{'737'}</label>
             <script type="text/javascript">
-            <!-- //
             function searchAll(_v) {
                 for(var i=0;i<document.searchform.searchboards.length;i++)
                 document.searchform.searchboards[i].selected=_v;
@@ -269,7 +266,6 @@ qq~<input type="checkbox" name="search_ip" id="search_ip" value="on" /><label fo
                     if (! document.searchform.searchboards[i].selected) { document.searchform.srchAll.checked = false; }
                 }
             }
-            // -->
             </script>~;
     $yymain .= $mysearch_template5;
     $yymain =~ s/{yabb maxsearchdisplay}/$maxsearchdisplay/sm;
@@ -278,7 +274,6 @@ qq~<input type="checkbox" name="search_ip" id="search_ip" value="on" /><label fo
     $yymain .= qq~
 <script type="text/javascript">
     document.searchform.search.focus();
-
     function CheckSearchFields() {
         if (document.searchform.numberreturned.value > $maxsearchdisplay) {
             alert("$search_txt{'191x'}");
