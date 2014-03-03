@@ -38,7 +38,7 @@ $registerlngver = 'YaBB 2.6.0 $Revision$';
 '113' => ' is already registered.',
 '114' => ' is available.',
 '115' => ' is reserved.',
-'209' => 'I love YaBB 2.5.4!',
+'209' => 'I love YaBB 2.6.0!',
 '213' => q~Passwords are not the same.~,
 '241' => 'field. Valid Characters are Letters(A-Z, a-z), Numbers (0-9), Spaces and ( _ ! @ # $ % ^ & * ( ) + | ` ~ - = \ : ; &#39; " , . / ? [ ] { } )',
 '241r' => 'field. Valid Characters are Letters(A-Z, a-z), Numbers (0-9), Spaces and ( + - . @ _ )',
