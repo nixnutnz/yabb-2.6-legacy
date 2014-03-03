@@ -682,6 +682,12 @@ sub buildPages {
     my ($inp) = @_;
 
     $FindForm .= qq~
+        <script type="text/javascript">
+            function txtInFields(thefield, defaulttxt) {
+            if (thefield.value == defaulttxt) thefield.value = "";
+            else { if (thefield.value === "") thefield.value = defaulttxt; }
+            }
+        </script>
             <form action="$adminurl?action=ml;sort=memsearch" method="post" id="form1" name="form1" enctype="application/x-www-form-urlencoded" style="display: inline;">
             <input type="text" name="member" id="member" value="$ml_txt{'801'}" style="font-size: 11px; width: 180px;" onfocus="txtInFields(this, '$ml_txt{'801'}');" onblur="txtInFields(this, '$ml_txt{'801'}')" />
             <input name="submit" type="submit" class="button" style="font-size: 10px;" value="$ml_txt{'2'}" />
