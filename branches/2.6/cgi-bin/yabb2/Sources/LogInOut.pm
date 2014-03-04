@@ -55,14 +55,15 @@ sub Login2 {
     if ( !-e "$memberdir/$username.vars" ) {
         $test_id = MemberIndex( 'who_is', "$FORM{'username'}" );
         if ( $test_id ne q{} ) { $username = $test_id; }
+        if ( -e "$memberdir/$username.pre" && ( $regtype == 1 || $regtype == 2 ) ) {
+            fatal_error('not_activated');
+        }
         else                   { fatal_error('bad_credentials'); }
-    }
+        }
     if ( -e "$memberdir/$username.pre" && -e "$memberdir/$username.vars" ) {
         unlink "$memberdir/$username.pre";
     }
-    if ( -e "$memberdir/$username.pre" && ( $regtype == 1 || $regtype == 2 ) ) {
-        fatal_error('not_activated');
-    }
+
 
     # Need to do this to get correct case of user ID,
     # for case insensitive systems. Can cause weird issues otherwise
