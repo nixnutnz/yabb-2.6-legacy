@@ -806,7 +806,7 @@ $adminlngver = 'YaBB 2.6.0 $Revision$';
 
 'a9_title' => 'BoardMod Mods',
 'a9_label' => 'BoardMod Mods Section',
-'conv' => 'To convert 1x or 2x files to 2.5.4',
+'conv' => 'To convert 1x or 2x files to 2.6.0',
 'conv2' => qq~<b><a href="$boardurl/Setup.pl">Go to Setup/Convert</a></b>~,
 'bookmarks' => 'Social Bookmarks', # Social Bookmarks
 'bookmarks1' => 'Social Bookmark Settings', # Social Bookmarks
