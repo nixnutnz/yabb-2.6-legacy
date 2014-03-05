@@ -257,10 +257,10 @@ sub EventCalSet {
             <div class="bordercolor rightboxdiv">
             <table class="border-space pad-cell" style="margin-bottom: .5em;">
                 <colgroup>
-                    <col span="2" style="width:24%" />
-                    <col style="width:10%" />
-                    <col style="width:6%" />
-                    <col style="width:60%" />
+                <colgroup>
+                    <col span="2" style="width:40%" />
+                    <col span="2" style="width:10%" />
+                 </colgroup>
                 </colgroup>
                 <tr>
                     <td class="titlebg" colspan="4">$admin_img{'prefimg'} <b>$event_cal{'26'}</b></td>
