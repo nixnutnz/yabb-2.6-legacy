@@ -2302,7 +2302,7 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
 
         if ( $mstate =~ /l/ism ) {    # locked thread
             if ($bypass_lock_perm) {
-                my $icanbypass = checkUserLockBypass();
+                $icanbypass = checkUserLockBypass();
             }                         # only if bypass switched on
             if ( !$icanbypass ) { fatal_error('topic_locked'); }
         }

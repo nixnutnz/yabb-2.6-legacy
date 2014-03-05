@@ -564,13 +564,6 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
         $im_smilies .= qq~
             </script><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span>\n~;
 
-        if (   ( $showadded == 3 && $showsmdir != 2 )
-            || ( $showsmdir == 3 && $showadded != 2 ) )
-        {
-            $im_smilies .= qq~
-            <a href="javascript: smiliewin();">$post_smiltxt{'1'}</a>~;
-        }
-
         # SpellChecker start
         if ($enable_spell_check) {
             $yyinlinestyle .= googiea();
