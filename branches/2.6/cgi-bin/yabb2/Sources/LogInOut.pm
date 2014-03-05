@@ -58,7 +58,10 @@ sub Login2 {
         if ( -e "$memberdir/$username.pre" && ( $regtype == 1 || $regtype == 2 ) ) {
             fatal_error('not_activated');
         }
-        else                   { fatal_error('bad_credentials'); }
+        elsif ( -e "$memberdir/$username.wait" && $regtype == 1 ) {
+            fatal_error('prereg_wait');
+        }
+        else { fatal_error('bad_credentials'); }
         }
     if ( -e "$memberdir/$username.pre" && -e "$memberdir/$username.vars" ) {
         unlink "$memberdir/$username.pre";
