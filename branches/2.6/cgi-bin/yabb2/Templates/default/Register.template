@@ -364,7 +364,7 @@ $myregister_prereg2 = qq~
                     <img src="$imagesdir/register.gif" alt="$prereg_txt{'1a'}" title="$prereg_txt{'1a'}" /> <b>$prereg_txt{'1a'}</b>
                 </td>
             </table>
-            <table class="pad_4px cs_thin; width:650px">
+            <table class="pad_4px cs_thin" style="width:650px">
                 <td class="windowbg center" colspan="2">
                     <br />$prereg_txt{'5'}~;
 

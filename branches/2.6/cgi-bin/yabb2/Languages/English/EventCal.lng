@@ -110,6 +110,7 @@ $eventcallngver = 'YaBB 2.6.0 $Revision$';
 'bdayhide' => 'has a birthday today.',
 'other' => '123 (Other)',
 'guest' => 'Guest',
+'exmem' => 'Ex-member',
 'by' => 'By:',
 );
 

@@ -856,6 +856,9 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_n
                     if ( $g eq 'g' ) {
                         $eventuserlink = qq~$cnam ($var_cal{'guest'})~;
                     }
+                    elsif ( $g ne 'g' && !-e "$memberdir/$cnam.vars" ) {
+                        $eventuserlink = qq~$cnam ($var_cal{'exmem'})~;
+                    }
                     elsif ($Show_ColorLinks) {
                         LoadUser($cnam);
                         $eventuserlink = qq~$link{$cnam}~;
@@ -992,6 +995,9 @@ qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
                     $eventfound = 1;
                     if ( $g eq 'g' ) {
                         $eventuserlink = qq~$cnam ($var_cal{'guest'})~;
+                    }
+                    elsif ( $g ne 'g' && !-e "$memberdir/$cnam.vars" ) {
+                        $eventuserlink = qq~$cnam ($var_cal{'exmem'})~;
                     }
                     elsif ($Show_ColorLinks) {
                         LoadUser($cnam);
@@ -1269,6 +1275,9 @@ qq~<a href="$scripturl?action=eventcal;calshow=1;eventdate=$cyear$cmon$cday;cali
 #            if ( !$var_cal{$cicon} ) { $icon_text = calicontext($cicon); }
             if ( $g eq 'g' ) {
                 $eventuserlink = qq~$cname ($var_cal{'guest'})~;
+            }
+            elsif ( $g ne 'g' && !-e "$memberdir/$cname.vars" ) {
+                $eventuserlink = qq~$cname ($var_cal{'exmem'})~;
             }
             elsif ($Show_ColorLinks) {
                 LoadUser($cname);

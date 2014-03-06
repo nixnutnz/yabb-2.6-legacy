@@ -139,8 +139,9 @@ function fixMenu() {
         document.getElementById("brcrumb").style.marginTop = 0 + 'px';
     }
 }
-
-onscroll = fixMenu;
+if (screen.width > 1024) {
+    onscroll = fixMenu;
+}
 </script>
 <script type="text/javascript" src="{yabb html_root}/ajax.js"></script>
 </body>

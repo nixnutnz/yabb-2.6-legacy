@@ -421,7 +421,7 @@ sub MemberIndex {
         while ( ( $curmemb, $value ) = each %memberinf ) {
             ( $curname, $curmail, $curposition, $curpostcnt ) =
               split /\|/xsm, $value;
-            if ( $memaction eq 'check_exist' && ( lc $user eq lc $curmemb || lc $user eq lc $curmail || lc $user eq lc $curname ) ){
+            if ( $memaction eq 'check_exist' && ( lc $user eq lc $curmemb || lc $user eq lc $curmail || ($screenlogin && lc $user eq lc $curname ) ) ){
                 undef %memberinf;
                 return $curname;
             }

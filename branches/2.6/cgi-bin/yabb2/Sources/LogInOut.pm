@@ -43,30 +43,27 @@ sub Login2 {
     if ( $FORM{'username'} eq q{} ) { fatal_error('no_username'); }
     if ( $FORM{'passwrd'}  eq q{} ) { fatal_error('no_password'); }
     $username = $FORM{'username'};
-    $mylogintxt = $loginout_txt{'35'};
-    if ( $screenlogin ) { $mylogintxt = $loginout_txt{'35b'}; }
     $username =~ s/\s/_/gxsm;
     if ( $username =~ /[^ \w\x80-\xFF\[\]\(\)#\%\+,\-\|\.:=\?\@\^]/xsm ) {
         fatal_error( 'invalid_character',
-            "$mylogintxt $loginout_txt{'241'}" );
+            "$loginout_txt{'35'} $loginout_txt{'241'}" );
     }
 
     ## Check if login ID is not an email address ##
     if ( !-e "$memberdir/$username.vars" ) {
         $test_id = MemberIndex( 'who_is', "$FORM{'username'}" );
         if ( $test_id ne q{} ) { $username = $test_id; }
+    }
         if ( -e "$memberdir/$username.pre" && ( $regtype == 1 || $regtype == 2 ) ) {
             fatal_error('not_activated');
         }
         elsif ( -e "$memberdir/$username.wait" && $regtype == 1 ) {
             fatal_error('prereg_wait');
         }
-        else { fatal_error('bad_credentials'); }
-        }
+    elsif ( !-e "$memberdir/$username.vars" ) { fatal_error('bad_credentials'); }
     if ( -e "$memberdir/$username.pre" && -e "$memberdir/$username.vars" ) {
         unlink "$memberdir/$username.pre";
     }
-
 
     # Need to do this to get correct case of user ID,
     # for case insensitive systems. Can cause weird issues otherwise
