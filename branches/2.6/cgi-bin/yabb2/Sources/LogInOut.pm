@@ -44,7 +44,7 @@ sub Login2 {
     if ( $FORM{'passwrd'}  eq q{} ) { fatal_error('no_password'); }
     $username = $FORM{'username'};
     $username =~ s/\s/_/gxsm;
-    if ( $username =~ /[^ \w\x80-\xFF\[\]\(\)#\%\+,\-\|\.:=\?\@\^]/xsm ) {
+    if ( $username =~ /[^ \w\x80-\xFF\[\]\(\)#\%\+,\-\|\.:=\?\@\^]/sm ) {
         fatal_error( 'invalid_character',
             "$loginout_txt{'35'} $loginout_txt{'241'}" );
     }

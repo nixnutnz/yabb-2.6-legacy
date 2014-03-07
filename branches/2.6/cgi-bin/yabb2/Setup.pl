@@ -1478,6 +1478,7 @@ sub SetInstall2 {
 \$cookietsort = "$cookietsort";                     # Name of the Topic Sort
 \$cookieview = "$cookieview";                       # Name of the Guest Message Limit cookie
 \$cookieviewtime = "$cookieviewtime";
+\$screenlogin = $screenlogin;                # allow members to login using their screen name.
 
 \$regtype = $regtype;                               # 0 = registration closed (only admin can register),
                                                     # 1 = pre registration with admin approval,
@@ -1713,12 +1714,24 @@ sub SetInstall2 {
 \$qckage = "\Q$qckage\E";
 
 ###############################################################################
-# Advanced Settings (old AdvSettings.txt                                      #
+# Advanced Settings                                                           #
 ###############################################################################
+
+########## RSS Settings ##########
+
+\$rss_disabled = $rss_disabled;         # Set to 1 to disable the RSS feed
+\$rss_limit = $rss_limit;           # Maximum number of topics in the feed
+\$rss_message = $rss_message;           # Message to display in the feed
+                            # 0: None
+                            # 1: Latest Post
+                            # 2: Original Post in the topic
+\$showauthor = $showauthor;         # Show author name
+\$rssemail = '$rssemail';             # default email if author email not shown
+\$showdate = $showdate;             # Show post date
 
 ########## New Member Notification Settings ##########
 \$new_member_notification = 0;                    # Set to 1 to enable the new member notification
-\$new_member_notification_mail = '';              # Your "New Member Notification"-email address.
+\$new_member_notification_mail = "\Q$new_member_notification_mail\E";   # Your "New Member Notification"-email address.
 
 \$sendtopicmail = 2;                              # Set to 0 for send NO topic email to friend
                                                   # Set to 1 to send topic email to friend via YaBB

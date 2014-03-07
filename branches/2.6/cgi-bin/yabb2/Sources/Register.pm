@@ -578,7 +578,7 @@ sub Register2 {
             "($member{'regrealname'} => $convertstr)" );
     }
     if ( $member{'regrealname'} =~
-        /[^ \w\x80-\xFF\[\]\(\)#\%\+,\-\|\.:=\?\@\^]/xsm )
+        /[^ \w\x80-\xFF\[\]\(\)#\%\+,\-\|\.:=\?\@\^]/sm )
     {
         fatal_error( 'invalid_character',
             "$register_txt{'38'} $register_txt{'241re'}" );

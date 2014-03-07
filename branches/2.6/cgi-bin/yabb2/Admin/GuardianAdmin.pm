@@ -78,7 +78,7 @@ sub setup_guardian {
     }
 
     $yymain .= qq~
-<form action="$adminurl?action=setup_guardian2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yymycharset">
+<form action="$adminurl?action=setup_guardian2" method="post" onsubmit="savealert()" enctype="application/x-www-form-urlencoded" accept-charset="$yymycharset">
 <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>

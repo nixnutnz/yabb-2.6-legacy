@@ -123,6 +123,17 @@ qq~<input type="checkbox" name="showauthor" id="showauthor"${ischecked($showauth
                 validate   => 'boolean',
                 depends_on => ['!rss_disabled'],
             },
+
+            {
+                description =>
+                  qq~<label for="rssemail">$rss_txt{'email'}</label>~,
+                input_html =>
+qq~<input type="text" size="30" name="rssemail" id="rssemail" value="$rssemail" />~,
+                name       => 'rssemail',
+                validate   => 'text',
+                depends_on => ['!rss_disabled', 'showauthor'],
+            },
+
             {
                 description => qq~<label for="showdate">$rss_txt{'8'}</label>~,
                 input_html =>
@@ -144,7 +155,6 @@ qq~<input type="checkbox" name="showdate" id="showdate"${ischecked($showdate)} /
                 validate   => 'number',
                 depends_on => ['!rss_disabled'],
             },
-
         ],
     },
     {

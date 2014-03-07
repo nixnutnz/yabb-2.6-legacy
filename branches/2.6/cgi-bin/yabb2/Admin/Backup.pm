@@ -140,7 +140,7 @@ qq~<span class="important"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
         }
     }
 </script>
-<form action="$adminurl?action=backupsettings2" method="post" name="backupsettings" accept-charset="$yymycharset">
+<form action="$adminurl?action=backupsettings2" method="post" name="backupsettings" onsubmit="savealert()" accept-charset="$yymycharset">
     <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
@@ -390,7 +390,7 @@ qq~name="backupmethod" id="backupmethod3_$i" value="$module" onclick="domodulech
             <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
         </tr><tr>
             <td class="catbg center">
-                <input type="submit" name="submit" value="$backup_txt{20}" class="button" />
+                <input type="submit" value="$backup_txt{20}" class="button" />
             </td>
         </tr>
     </table>
@@ -727,7 +727,7 @@ sub runbackup {
         'lan'  => "$langdir|$helpfile",
         'mem'  => $memberdir,
         'mes'  => $datadir,
-        'temp' => "$htmldir/Templates",
+        'temp' => "$boarddir/Templates|$htmldir/Templates",
         'var'  => $vardir,
         'html' => "!$htmldir|$htmldir/BookMarks|$htmldir/Buttons|$htmldir/EventIcons|$htmldir/googiespell|$htmldir/greybox|$htmldir/ModImages|$htmldir/shjs|$htmldir/Smilies",
         'upld' => "$htmldir/Attachments|$htmldir/PMAttachments|$htmldir/avatars",

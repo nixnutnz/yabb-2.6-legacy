@@ -182,8 +182,8 @@ sub RSS_board {
                 }
                 else {
                     $yymain .=
-                        q~           <author>undisclosed_email@noemail.com~
-                      . RSSDescriptionTrim("(${$uid.$musername}{'realname'})")
+                        q~           <author>~
+                      . RSSDescriptionTrim("$rssemail (${$uid.$musername}{'realname'})")
                       . qq~</author>\n~;
                 }
             }
@@ -415,8 +415,8 @@ sub RSS_recent {
                 }
                 else {
                     $yymain .=
-                        q~           <author>undisclosed_email@noemail.com~
-                      . RSSDescriptionTrim(" (${$uid.$musername}{'realname'})")
+                        q~           <author>~
+                      . RSSDescriptionTrim("$rssemail (${$uid.$musername}{'realname'})")
                       . qq~</author>\n~;
                 }
             }

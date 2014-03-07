@@ -71,7 +71,7 @@ sub settings {
             </tr>
         </table>
     </div>
-<form action="$adminurl?action=newsettings2;page=$page" onsubmit="undisableAll(this);" method="post" enctype="multipart/form-data" accept-charset="$yymycharset">
+<form action="$adminurl?action=newsettings2;page=$page" onsubmit="undisableAll(this); savealert()" method="post" enctype="multipart/form-data" accept-charset="$yymycharset">
     <ul id="navlist">
 ~;
     my $i = 0;
@@ -794,7 +794,7 @@ $ext_prof_fields
 \$spam_questions_case = $spam_questions_case;    # Set to 1 to enable case-sensitive answers
 
 ###############################################################################
-# Advanced Settings (old AdvSettings.txt)                                     #
+# Advanced Settings                                                           #
 ###############################################################################
 
 ########## RSS Settings ##########
@@ -806,6 +806,7 @@ $ext_prof_fields
                             # 1: Latest Post
                             # 2: Original Post in the topic
 \$showauthor = $showauthor;         # Show author name
+\$rssemail = '$rssemail';             # default email if author email not shown
 \$showdate = $showdate;             # Show post date
 
 ########## New Member Notification Settings ##########

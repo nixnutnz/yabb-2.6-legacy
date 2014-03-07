@@ -113,6 +113,11 @@ $mainbody = qq~
             <div style="float:left; width:99%; text-align:center;">{yabb_admin debug}</div>
         </div>
     </div>
+    <script type="text/javascript">
+        function savealert() {
+            alert("$admin_txt{'setsettings'}")
+        }
+    </script>
 </body>
 </html>
 ~;
