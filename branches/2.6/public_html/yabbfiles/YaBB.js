@@ -379,7 +379,7 @@ function resize_images() {
 		if (document.images[tmp_image_name].complete == false) {
 			tmp_array[tmp_array.length] = tmp_image_name;
 			// The following is needed since Opera does not load/show
-			// style.display='none' images if they are not already in chache.
+            // style.display='none' images if they are not already in cache.
 			if (/Opera/i.test(navigator.userAgent)) {
 				document.images[tmp_image_name].width  = document.images[tmp_image_name].width  || 0;
 				document.images[tmp_image_name].height = document.images[tmp_image_name].height || 0;

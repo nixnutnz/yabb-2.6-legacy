@@ -319,13 +319,15 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
                 {
 
                     ## User date display begin ##
-                    $mybtime =
-                      stringtotime(qq~$user_bdmon/$user_bdday/$user_bdyear~);
-                    $mybtimein = timeformat($mybtime);
-                    $cdate     = dtonly($mybtimein);
-                    if ( $showage && $user_bdhide ) {
-                        $cdate = bdayno_year($mybtimein);
-                    }
+					if ( $user_bdyear ne q{} && $user_bdmon ne q{} &&  $user_bdday ne q{} && $user_bdday !=0  ) {
+						$mybtime =
+						stringtotime(qq~$user_bdmon/$user_bdday/$user_bdyear~);
+						$mybtimein = timeformat($mybtime);
+						$cdate     = dtonly($mybtimein);
+						if ( $showage && $user_bdhide ) {
+							$cdate = bdayno_year($mybtimein);
+						}
+					}
 
                     ## User date display end ##
                 }
