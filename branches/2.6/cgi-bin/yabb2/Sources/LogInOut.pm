@@ -54,12 +54,12 @@ sub Login2 {
         $test_id = MemberIndex( 'who_is', "$FORM{'username'}" );
         if ( $test_id ne q{} ) { $username = $test_id; }
     }
-        if ( -e "$memberdir/$username.pre" && ( $regtype == 1 || $regtype == 2 ) ) {
-            fatal_error('not_activated');
-        }
-        elsif ( -e "$memberdir/$username.wait" && $regtype == 1 ) {
-            fatal_error('prereg_wait');
-        }
+    if ( -e "$memberdir/$username.pre" && ( $regtype == 1 || $regtype == 2 ) ) {
+        fatal_error('not_activated');
+    }
+    elsif ( -e "$memberdir/$username.wait" && $regtype == 1 ) {
+        fatal_error('prereg_wait');
+    }
     elsif ( !-e "$memberdir/$username.vars" ) { fatal_error('bad_credentials'); }
     if ( -e "$memberdir/$username.pre" && -e "$memberdir/$username.vars" ) {
         unlink "$memberdir/$username.pre";
