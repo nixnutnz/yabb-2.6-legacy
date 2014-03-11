@@ -431,8 +431,9 @@ sub MemberIndex {
                     return $curmail;
                 }
                 elsif ( lc $user eq lc $curname ) {
-                undef %memberinf;
-                return $curname;
+                    undef %memberinf;
+                    return $curname;
+                }
             }
             elsif ( $memaction eq 'who_is' && ( lc $user eq lc $curmemb || lc $user eq lc $curmail || ($screenlogin && lc $user eq lc $curname ) ) ) {
                 undef %memberinf;
