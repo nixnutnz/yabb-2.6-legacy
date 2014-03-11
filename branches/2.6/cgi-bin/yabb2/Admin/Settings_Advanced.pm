@@ -130,8 +130,8 @@ qq~<input type="checkbox" name="showauthor" id="showauthor"${ischecked($showauth
                 input_html =>
 qq~<input type="text" size="30" name="rssemail" id="rssemail" value="$rssemail" />~,
                 name       => 'rssemail',
-                validate   => 'text',
-                depends_on => ['!rss_disabled', 'showauthor'],
+                validate   => 'text,null',
+                depends_on => ['showauthor'],
             },
 
             {

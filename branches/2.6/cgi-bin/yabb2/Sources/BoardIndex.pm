@@ -894,6 +894,7 @@ qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title=
 qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" />~;
                 }
                 if ( !$bdpic ) {
+					if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm  ) {
                     $bdpicExt ||= 'gif';
                     if ($subboard_sel) {
                         $bdpic = qq~subboards.$bdpicExt~;
@@ -902,6 +903,8 @@ qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title=
                         $bdpic = qq~boards.$bdpicExt~;
                     }
                 }
+					else {$bdpic = $extern;}
+				}
 
                 $lastposter = ${ $uid . $curboard }{'lastposter'};
                 $lastposter =~ s/\AGuest-(.*)/$1 ($maintxt{'28'})/ism;
@@ -1208,7 +1211,6 @@ qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?boa
                     $templateblock =~ s/({|<)yabb lastposter(}|>)/$lastposter/gsm;
                     $templateblock =~ s/({|<)yabb lasttopiclink(}|>)/$lasttopiclink/gsm;
                     $templateblock =~ s/({|<)yabb altbrdcolor(}|>)/$altbrdcolor/gsm;
-                    $templateblock =~ s/({|<)yabb altbrdcolor(}|>)/$altbrdcolor/gsm;
                     $templateblock =~ s/({|<)yabb subboardlist(}|>)/$tmp_sublist/gsm;
                 }
                 else {
@@ -1223,7 +1225,6 @@ qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?boa
                       qq~$scripturl\?action\=showexternal;exboard\=$curboard~;
                     $my_blankext = q{--};
                     $templateblock =~ s/({|<)yabb boardurl(}|>)/$boardname/gsm;
-                    $templateblock =~ s/({|<)yabb new(}|>)/$new/gsm;
                     $templateblock =~ s/({|<)yabb boardpic(}|>)/$bdpic/gsm;
                     $templateblock =~ s/({|<)yabb boardname(}|>)/$bname[0]/gsm;
                     $templateblock =~ s/({|<)yabb boarddesc(}|>)/$bdd/gsm;
@@ -1231,10 +1232,6 @@ qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?boa
                     $templateblock =~ s/({|<)yabb messagecount(}|>)/$my_blankext/gsm;
                     $lastpostlink = RedirectExternalShow() || 0;
                     $templateblock =~ s/({|<)yabb lastpostlink(}|>)/$lastpostlink/gsm;
-                    $templateblock =~ s/({|<)yabb lastposter(}|>)//gsm;
-                    $templateblock =~ s/({|<)yabb lasttopiclink(}|>)//gsm;
-                    $templateblock =~
-                      s/({|<)yabb altbrdcolor(}|>)/$altbrdcolor/gsm;
                     $templateblock =~
                       s/({|<)yabb altbrdcolor(}|>)/$altbrdcolor/gsm;
                     $templateblock =~

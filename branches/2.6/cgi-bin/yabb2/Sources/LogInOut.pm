@@ -52,8 +52,9 @@ sub Login2 {
     ## Check if login ID is not an email address ##
     if ( !-e "$memberdir/$username.vars" ) {
         $test_id = MemberIndex( 'who_is', "$FORM{'username'}" );
-        if ( $test_id ne q{} ) { $username = $test_id; }
+        if ( $test_id ) { $username = $test_id; }
     }
+
     if ( -e "$memberdir/$username.pre" && ( $regtype == 1 || $regtype == 2 ) ) {
         fatal_error('not_activated');
     }
@@ -61,6 +62,7 @@ sub Login2 {
         fatal_error('prereg_wait');
     }
     elsif ( !-e "$memberdir/$username.vars" ) { fatal_error('bad_credentials'); }
+
     if ( -e "$memberdir/$username.pre" && -e "$memberdir/$username.vars" ) {
         unlink "$memberdir/$username.pre";
     }
@@ -70,9 +72,11 @@ sub Login2 {
     $caseright = 0;
     ManageMemberlist('load');
     while ( ( $curmemb, $value ) = each %memberlist ) {
-        if ( $username =~ m/\A\Q$curmemb\E\Z/xsm ) { $caseright = 1; last; }
+#        if ( $username =~ m/\Q$curmemb\E/sm ) { $caseright = 1; last; }
+        if ( $username eq $curmemb ) { $caseright = 1; last; }
     }
     undef %memberlist;
+
     if ( !$caseright ) {
         $username = 'Guest';
         fatal_error('bad_credentials');
