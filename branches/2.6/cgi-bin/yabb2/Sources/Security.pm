@@ -198,7 +198,7 @@ sub banning {
     my $ban_email  = $x[1] || ${ $uid . $username }{'email'};
     my $admincheck = $x[2];
 
-    if ( !$admincheck && $username eq 'admin' && $iamadmin ) { return; }
+    if ( !$admincheck && ( $username eq 'admin' || $iamadmin ) ) { return; }
 
     *write_banlog = sub {
         my ($bantry) = @_;
