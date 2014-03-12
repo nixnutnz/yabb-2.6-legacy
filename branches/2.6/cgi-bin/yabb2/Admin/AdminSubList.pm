@@ -99,7 +99,6 @@ our $VERSION = '2.6.0';
 'ipban_add','Ban.pm&ipban_add',
 'ipban_err','Ban.pm&ipban_err',
 'ipban2','Ban.pm&ipban2',
-'ipban3','Ban.pm&ipban_update',
 'mailing','MailMembers.pm&Mailing',
 'mailing2','MailMembers.pm&Mailing2',
 'mailing3','MailMembers.pm&Mailing3',

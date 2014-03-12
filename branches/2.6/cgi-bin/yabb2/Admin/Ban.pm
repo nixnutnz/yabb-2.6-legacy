@@ -19,6 +19,7 @@ our $VERSION = '2.6.0';
 
 $banpmver = 'YaBB 2.6.0 $Revision$';
 
+#the ban list in the Admin Center
 sub ipban {
     is_admin_or_gmod();
 
@@ -26,18 +27,17 @@ sub ipban {
     fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
     @banlist = <BAN>;
     fclose(BAN);
-    my @timeban = qw( p d w m );
-    my @bandays = ( 365, 1, 7, 30, );
     $today = time;
 
     *time_ban = sub {
         my $ban_user = $banned[3];
-        for my $i ( 0 .. 3 ) {
             $tm   = localtime $banned[2];
             $year = $tm->year + 1900;
             $mon  = $tm->mon + 1;
             $day  = $tm->mday;
-
+        $min  = $tm->min;
+        $hr   = $tm->hour;
+        for my $i ( 0 .. 3 ) {
             if ( $banned[4] eq $timeban[$i] ) {
                 $tmb = $banned[2] + ( $bandays[$i] * 86_400 );
             }
@@ -56,8 +56,10 @@ sub ipban {
             $yearb = $tma->year + 1900;
             $monb  = $tma->mon + 1;
             $dayb  = $tma->mday;
+            $minb  = $tma->min;
+            $hrb   = $tma->hour;
             $timeb =
-qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $monb/$dayb/$yearb~;
+qq~$mon/$day/$year at $hr:$min by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $monb/$dayb/$yearb at $hrb:$minb~;
         }
         return $timeb;
     };
@@ -253,6 +255,7 @@ qq~$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $m
     return;
 }
 
+#Admin center ban save
 sub ipban2 {
     is_admin_or_gmod_or_fmod();
     my $ban_u = $FORM{'uban'};
@@ -305,6 +308,7 @@ sub ipban2 {
     return;
 }
 
+#Admin center ban add
 sub ipban_add {
     is_admin_or_gmod();
     my $ban_in = $FORM{'banned'};
@@ -317,6 +321,14 @@ sub ipban_add {
     chomp @myban;
     fclose(BAN);
     $time = time;
+    *time_ban = sub {
+        for my $i ( 0 .. 3 ) {
+            if ( $banned[4] eq $timeban[$i] ) {
+                $tmb = $banned[2] + ( $bandays[$i] * 86_400 );
+            }
+       }
+       return $tmb;
+    };
     my $ihave = 0;
     foreach my $j (@banin) {
         $j =~ tr/\r//d;
@@ -325,7 +337,8 @@ sub ipban_add {
         $j =~ s/@/\\@/xsm;
         foreach my $i (@myban) {
             @banned = split /\|/xsm, $i;
-            if ( $banned[1] eq $j ) {
+            $tmb = time_ban();
+            if ( $banned[1] eq $j && ( $banned[4] eq 'p' || $tmb > $time ) ) {
                 $ihave = 1;
             }
         }
@@ -336,7 +349,6 @@ sub ipban_add {
               qq~$type|$j|$time|${$uid.$username}{'realname'} ($username)|p|\n~
               or croak "$croak{'print'} BAN2";
         }
-        else { print {BAN2} q~~ or croak "$croak{'print'} BAN2"; }
         fclose(BAN2);
     }
     $yySetLocation = qq~$adminurl?action=ipban~;
@@ -344,95 +356,12 @@ sub ipban_add {
     return;
 }
 
-sub ipban_update {
+#ipban_update moved to Sources/Security.pm
 
-    # This is for quick updating for banning + unbanning
-    if ( $iamadmin || $iamgmod || $iamfmod ) {
-    my $ban       = $INFO{'ban'};
-    my $lev       = $INFO{'lev'};
-    my $ban_email = $INFO{'ban_email'};
-    my $ban_mem   = $INFO{'ban_memname'};
-    my $unban     = $INFO{'unban'};
-    my $user      = $INFO{'username'};
-    $ban_mem = $do_scramble_id ? decloak($ban_mem) : $ban_mem;
-    $ban_email =~ s/@/\\@/xsm;
-
-    my $time = time;
-    $ihave = 0;
-    $ehave = 0;
-    $uhave = 0;
-    fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
-    my @myban = <BAN>;
-    chomp @myban;
-    fclose(BAN);
-    if ( $unban != 1 ) {
-
-        foreach my $i (@myban) {
-            @banned = split /\|/xsm, $i;
-            if ($ban) {
-                if ( $banned[1] eq $ban ) {
-                    $ihave = 1;
-                }
-            }
-            elsif ($ban_email) {
-                if ( $banned[1] eq $ban_email ) {
-                    $ehave = 1;
-                }
-            }
-            elsif ($ban_mem) {
-                if ( $banned[1] eq $ban_mem ) {
-                    $uhave = 1;
-                }
-            }
-        }
-
-        fopen( BAN2, ">>$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
-        if ( $ban && $ihave == 0 && $ban ne '127.0.0.1' ) {
-            print {BAN2}
-              qq~I|$ban|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
-              or croak "$croak{'print'} BAN2";
-        }
-        if ( $ban_email && $ehave == 0 ) {
-            print {BAN2}
-qq~E|$ban_email|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
-              or croak "$croak{'print'} BAN2";
-        }
-        if ( $ban_mem && $uhave == 0 ) {
-            print {BAN2}
-qq~U|$ban_mem|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
-              or croak "$croak{'print'} BAN2";
-        }
-        fclose(BAN2);
-    }
-    elsif ( $unban == 1 ) {
-        fopen( BAN2, ">$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
-        foreach my $i (@myban) {
-            @banned = split /\|/xsm, $i;
-            if (   $ban eq $banned[1]
-                || $ban_email eq $banned[1]
-                || $ban_mem   eq $banned[1] )
-            {
-                $un_ban = q~~;
-            }
-            else {
-                $un_ban =
-                  qq~$banned[0]|$banned[1]|$banned[2]|$banned[3]|$banned[4]|\n~;
-            }
-            print {BAN2} $un_ban or "$croak{'print'} UNBAN";
-        }
-        fclose(BAN2);
-    }
-    $yySetLocation = qq~$scripturl?action=viewprofile;username=$user~;
-    redirectexit();
-    }
-    return;
-}
-
+#clean the banlist of expired entries.
 sub ban_clean {
     is_admin_or_gmod();
 
-    my @timeban = qw( p d w m );
-    my @bandays = ( 365, 1, 7, 30, );
     my $time    = time;
     fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
     my @myban = <BAN>;
@@ -504,12 +433,11 @@ sub banlog {
     return $banlog;
 }
 
+#Banning from the error log
 sub ipban_err {
     is_admin_or_gmod();
     my $ip_ban  = $INFO{'ban'};
     my $lev     = $INFO{'lev'};
-    my @timeban = qw( p d w m );
-    my @bandays = ( 36_500, 1, 7, 30, );
     my $tmb     = 0;
 
     my $time  = time;

@@ -3186,12 +3186,11 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
             <div class="contactleft"><b>$lastPM: </b></div>
             <div class="contactright">$userlastim</div>~;
     }
-    if (   ( $iamadmin || ( $iamgmod && $gmod_access2{'ipban3'} ) || $iamfmod )
+    if (   ( $iamadmin || $iamgmod || $iamfmod )
         && !$view
         && $user ne $username
         && ${ $uid . $user }{'position'} ne 'Administrator' )
     {
-        @banlev = qw( d w m p );
         $is_banned = check_banlist( "${$uid.$user}{'email'}", q{}, "$user" );
         $ban_user_email = ${ $uid . $user }{'email'};
         $ban_user_email =~ s/([^A-Za-z0-9])/sprintf('%%%02X', ord($1))/segm;
@@ -3202,9 +3201,9 @@ qq~<span class="small">[ <a href="$scripturl?action=ipban_update;ban_email=$ban_
         }
         else {
             $ban_email_link = qq~<span class="small">[ $profile_txt{'907'}: ~;
-            my $bansep = $#banlev;
+            my $bansep = $#timeban;
             my $levsep = q~ | ~;
-            for my $i (@banlev) {
+            for my $i (@timeban) {
                 if ( !$bansep-- ) { $levsep = q{}; }
                 $ban_email_link .=
 qq~<a href="$scripturl?action=ipban_update;ban_email=$ban_user_email;username=$useraccount{$user};lev=$i" onclick="return confirm('$profile_txt{'907a'}${$uid.$user}{'email'}');">$profile_txt{$i}</a>$levsep~;
@@ -3219,9 +3218,9 @@ qq~<span class="small">[ <a href="$scripturl?action=ipban_update;ban_memname=$ba
         }
         else {
             $ban_user_link = qq~<span class="small">[ $profile_txt{'906'}: ~;
-            my $bansep = $#banlev;
+            my $bansep = $#timeban;
             my $levsep = q~ | ~;
-            for my $i (@banlev) {
+            for my $i (@timeban) {
                 if ( !$bansep-- ) { $levsep = q{}; }
                 $ban_user_link .=
 qq~<a href="$scripturl?action=ipban_update;ban_memname=$ban_user_name;username=$useraccount{$user};lev=$i" onclick="return confirm('$profile_txt{'906a'}$user');">$profile_txt{$i}</a>$levsep~;
@@ -3242,9 +3241,9 @@ qq~<span class="small">[ <a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip
                 else {
                     $banlink[$ip] =
                       qq~<span class="small">[ $profile_txt{'908'}: ~;
-                    my $bansep = $#banlev;
+                    my $bansep = $#timeban;
                     my $levsep = q~ | ~;
-                    for my $i (@banlev) {
+                    for my $i (@timeban) {
                         if ( !$bansep-- ) { $levsep = q{}; }
                         $banlink[$ip] .=
 qq~<a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccount{$user};lev=$i" onclick="return confirm('$profile_txt{'908a'}$ip_ban[$ip]');">$profile_txt{$i}</a>$levsep~;

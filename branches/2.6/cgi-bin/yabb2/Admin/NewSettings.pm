@@ -1033,12 +1033,11 @@ $ext_prof_fields
 
 
 ###############################################################################
-# Banning Settings (old ban.txt) (new banlist.txt)                            #
+# Banning Settings Time bans                                                  #
 ###############################################################################
 
-\$ip_banlist = "\Q$ip_banlist\E";           # IP banlist
-\$email_banlist = "\Q$email_banlist\E";     # EMAIL banlist
-\$user_banlist = "\Q$user_banlist\E";       # USER banlist
+\@timeban = qw( d w m p );
+\@bandays = ( 365, 1, 7, 30, );
 
 ###############################################################################
 # Backup Settings                                                             #
