@@ -515,6 +515,7 @@ sub smilies_list {
                 document.write("<img src='$imagesdir/undecided.gif' onclick='undecided();' "+HAND+" alt='$post_txt{'528'}' title='$post_txt{'528'}'> ");
                 document.write("<img src='$imagesdir/kiss.gif' onclick='kiss();' "+HAND+" alt='$post_txt{'529'}' title='$post_txt{'529'}'> ");
                 document.write("<img src='$imagesdir/cry.gif' onclick='cry();' "+HAND+" alt='$post_txt{'530'}' title='$post_txt{'530'}'> ");
+                $moresmilieslist
                 ~;
 
     return $smilies_list;
