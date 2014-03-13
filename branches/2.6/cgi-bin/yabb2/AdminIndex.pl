@@ -228,7 +228,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
     @forum_settings = (
         "|$admintxt{'a1_title'}|$admintxt{'a1_label'} - $admintxt{'34'}|a1",
         "newsettings;page=main|$admintxt{'a1_sub1'}|$admintxt{'a1_label1'}|",
-"newsettings;page=advanced|$admintxt{'a1_sub2'}|$admintxt{'a1_label2'}|",
+        "newsettings;page=advanced|$admintxt{'a1_sub2'}|$admintxt{'a1_label2'}|",
         "editpaths|$admintxt{'a1_sub3'}|$admintxt{'a1_label3'}|",
         "editbots|$admintxt{'a1_sub4'}|$admintxt{'a1_label4'}|",
     );
@@ -250,11 +250,12 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
 
     @security_settings = (
         "|$admintxt{'a3_title'}|$admintxt{'a3_label'} - $admintxt{'34'}|a3",
-"newsettings;page=security|$admintxt{'a3_sub2'}|$admintxt{'a3_label2'}|",
+        "newsettings;page=security|$admintxt{'a3_sub2'}|$admintxt{'a3_label2'}|",
         "referer_control|$admintxt{'a3_sub1'}|$admintxt{'a3_label1'}|",
         "setup_guardian|$admintxt{'a3_sub3'}|$admintxt{'a3_label3'}|",
-"newsettings;page=antispam|$admintxt{'a3_sub4'}|$admintxt{'a3_label4'}|",
+        "newsettings;page=antispam|$admintxt{'a3_sub4'}|$admintxt{'a3_label4'}|",
         "spam_questions|$admintxt{'a3_sub6'}|$admintxt{'a3_label6'}|",
+        "setreserve|$admintxt{'a6_sub6'}|$admintxt{'a6_label6'}|",
     );
 
     @forum_controls = (
@@ -275,16 +276,17 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
     @member_controls = (
         "|$admintxt{'a6_title'}|$admintxt{'a6_label'} - $admintxt{'34'}|a6",
         "addmember|$admintxt{'a6_sub1'}|$admintxt{'a6_label1'}|",
+		"view_reglog|$admintxt{'a8_sub5'}|$admintxt{'a8_label5'}|",
         "viewmembers|$admintxt{'a6_sub2'}|$admintxt{'a6_label2'}|",
         "modmemgr|$admintxt{'a6_sub3'}|$admintxt{'a6_label3'}|",
         "mailing|$admintxt{'a6_sub4'}|$admintxt{'a6_label4'}|",
         "ipban|$admintxt{'a6_sub5'}|$admintxt{'a6_label5'}|",
-        "setreserve|$admintxt{'a6_sub6'}|$admintxt{'a6_label6'}|",
     );
 
     @maintence_controls = (
         "|$admintxt{'a7_title'}|$admintxt{'a7_label'} - $admintxt{'34'}|a7",
         "newsettings;page=maintenance|$admin_txt{'67'}|$admin_txt{'67'}|",
+        "backupsettings|$admintxt{'a3_sub5'}|$admintxt{'a3_label5'}|",
         "rebuildmesindex|$admintxt{'a7_sub2a'}|$admintxt{'a7_label2a'}|",
         "boardrecount|$admintxt{'a7_sub2'}|$admintxt{'a7_label2'}|",
         "rebuildmemlist|$admintxt{'a7_sub4'}|$admintxt{'a7_label4'}|",
@@ -294,7 +296,6 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
         "clean_log|$admintxt{'a7_sub1'}|$admintxt{'a7_label1'}|",
         "deleteoldthreads|$admintxt{'a7_sub5'}|$admintxt{'a7_label5'}|",
         "manageattachments|$admintxt{'a7_sub6'}|$admintxt{'a7_label6'}|",
-        "backupsettings|$admintxt{'a3_sub5'}|$admintxt{'a3_label5'}|",
     );
 
     @forum_stats = (
@@ -303,7 +304,6 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
         "stats|$admintxt{'a8_sub2'}|$admintxt{'a8_label2'}|",
         "showclicks|$admintxt{'a8_sub3'}|$admintxt{'a8_label3'}|",
         "errorlog|$admintxt{'a8_sub4'}|$admintxt{'a8_label4'}|",
-        "view_reglog|$admintxt{'a8_sub5'}|$admintxt{'a8_label5'}|",
     );
 
     @boardmod_mods = (
@@ -326,13 +326,13 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
 ### BOARDMOD ANCHOR ###
 ### END BOARDMOD ANCHOR ###
 
+    ParseNavArray(@member_controls);
+    ParseNavArray(@maintence_controls);
     ParseNavArray(@forum_settings);
     ParseNavArray(@general_controls);
     ParseNavArray(@security_settings);
     ParseNavArray(@forum_controls);
     ParseNavArray(@forum_layout);
-    ParseNavArray(@member_controls);
-    ParseNavArray(@maintence_controls);
     ParseNavArray(@forum_stats);
     ParseNavArray(@boardmod_mods);
 

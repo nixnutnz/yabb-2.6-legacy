@@ -34,7 +34,7 @@ $sub_extern = 'extern_sub.png';
 $tabfill = q~~;
 $topiccut = 25;
 
-$boardindex_template = qq~
+$boardindex_template = qq~<!-- Default Board Graphics courtesy of http://www.shapes4free.com/ -->
 <!-- Board Index Showcase Poll start -->
 {yabb pollshowcase}
 <!-- Board Index Showcase Poll end-->
@@ -146,9 +146,9 @@ $boardindex_template .= qq~
                 </td>
             </tr>
         </table>
-<!-- ## Cal Mod ## -->
+<!-- ## Event Cal ## -->
     {yabb caldisplay}
-<!-- ## Cal Mod ## -->
+<!-- ## End Event Cal ## -->
     {yabb sharedlogin}
 <!-- Info Center block end -->
         {yabb new_load}
@@ -182,7 +182,7 @@ $catheader = qq~
             <tr><td style="display:none" colspan="5">&nbsp;</td></tr>
             {yabb newmsg start}{yabb newmsg icon}{yabb newmsg}{yabb newmsg end}
         </table>
-        <table {yabb boardtable} class="bordercolor pad_4px cs_thin mar-bot">
+        <table {yabb boardtable} class="bordercolor pad_4px cs_thin mar-bot;" style="table-layout:fixed">
 			<colgroup>
             <col style="width:6%" />
             <col style="width:54%" />

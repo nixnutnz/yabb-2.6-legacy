@@ -54,7 +54,7 @@ if (!$messagelist) {
 ~;
     }
     else {
-        $messageindex_template .= qq~<!-- Board Description start -->
+        $messageindex_template .= qq~<!-- Board Description start --><!-- Default Board Graphics courtesy of http://www.shapes4free.com/ -->
             <table class="bordercolor pad_4px cs_thin" style="margin-bottom: 15px;">
 				<colgroup>
                 <col style="width:6%" />

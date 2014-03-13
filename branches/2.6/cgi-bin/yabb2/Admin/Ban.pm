@@ -31,12 +31,8 @@ sub ipban {
 
     *time_ban = sub {
         my $ban_user = $banned[3];
-            $tm   = localtime $banned[2];
-            $year = $tm->year + 1900;
-            $mon  = $tm->mon + 1;
-            $day  = $tm->mday;
-        $min  = $tm->min;
-        $hr   = $tm->hour;
+        $tm = timeformat($banned[2],1);
+        $tmc = dtonly($tm);
         for my $i ( 0 .. 3 ) {
             if ( $banned[4] eq $timeban[$i] ) {
                 $tmb = $banned[2] + ( $bandays[$i] * 86_400 );
@@ -45,21 +41,16 @@ sub ipban {
 
         if ( $banned[4] eq 'p' ) {
             $timeb =
-"$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Permanent";
+"$tmc by ${$uid.$ban_user}{'realname'} ($ban_user) - Permanent";
         }
         elsif ( $banned[4] ne 'p' && $tmb < $today ) {
             $timeb =
-"$mon/$day/$year by ${$uid.$ban_user}{'realname'} ($ban_user) - Expired";
+"$tmc by ${$uid.$ban_user}{'realname'} ($ban_user) - Expired";
         }
         else {
-            $tma   = localtime $tmb;
-            $yearb = $tma->year + 1900;
-            $monb  = $tma->mon + 1;
-            $dayb  = $tma->mday;
-            $minb  = $tma->min;
-            $hrb   = $tma->hour;
+            $tma = timeformat($tmb,1);
             $timeb =
-qq~$mon/$day/$year at $hr:$min by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $monb/$dayb/$yearb at $hrb:$minb~;
+qq~$tm by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $tma~;
         }
         return $timeb;
     };
