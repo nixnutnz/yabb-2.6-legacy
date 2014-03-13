@@ -635,6 +635,16 @@ sub ipban_update {
 
         my $time = time;
     fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+    my @mybana = <BAN>;
+    chomp @mybana;
+    fclose(BAN);
+    if ( !@mybana ) {
+	    fopen( BANA, ">$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+		print {BANA} qq~1\n~;
+		fclose (BANA);
+	}
+	undef @mybana;
+	fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
         my @myban = <BAN>;
         chomp @myban;
         fclose(BAN);
@@ -684,12 +694,12 @@ sub ipban_update {
                 }
             }
 
+        if ( $banned && $ihave != 1 && $banned ne '127.0.0.1' ) {
+            $add_ban =
+              qq~$type|$banned|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~;
+        }
         fopen( BAN2, ">>$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
-        if ( $banned && $ihave == 0 && $banned ne '127.0.0.1' ) {
-                print {BAN2}
-              qq~$type|$banned|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~
-                  or croak "$croak{'print'} BAN2";
-            }
+        print {BAN2} $add_ban or croak "$croak{'print'} BAN2";
             fclose(BAN2);
         }
 
