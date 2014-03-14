@@ -231,17 +231,22 @@ sub banning {
         chomp $i;
         @banned = split /\|/xsm, $i;
         $tmp = time_ban();
+
         # IP BANNING
         if ( $user_ip =~ /^$banned[1]/xsm ) { write_banlog("$user_ip"); }
         if ( !$iamguest || $action eq 'register2' ) {
 
             # EMAIL BANNING
-            if ( $ban_email =~ /$banned[1]/ixsm  && ( $tmb > $time || $banned[4] eq 'p') ) {
+            if ( $ban_email =~ /$banned[1]/ixsm
+                && ( $tmb > $time || $banned[4] eq 'p' ) )
+            {
                 write_banlog("$banned[1]($user_ip)");
             }
 
             # USERNAME BANNING
-            if ( $ban_user =~ m/^$banned[1]$/sm && ( $tmb > $time  || $banned[4] eq 'p')) {
+            if ( $ban_user =~ m/^$banned[1]$/sm
+                && ( $tmb > $time || $banned[4] eq 'p' ) )
+            {
                 write_banlog("$banned[1]($user_ip)");
             }
         }
@@ -338,7 +343,10 @@ sub check_banlist {
         for my $i (@banlist) {
             @banned = split /\|/xsm, $i;
             $tmb = time_ban();
-            if (  $banned[0] eq 'U' && $u_ban eq $banned[1]  && ( ( $banned[4] ne 'p' && $tmb > $today ) || $banned[4] eq 'p' ) ) 
+            if (   $banned[0] eq 'U'
+                && $u_ban eq $banned[1]
+                && ( ( $banned[4] ne 'p' && $tmb > $today )
+                    || $banned[4] eq 'p' ) )
             {
                 $ban_rtn .= $banned[0];
                 last;
@@ -634,23 +642,18 @@ sub ipban_update {
         $ban_email =~ s/@/\\@/xsm;
 
         my $time = time;
-    fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
-    my @mybana = <BAN>;
-    chomp @mybana;
-    fclose(BAN);
-    if ( !@mybana ) {
-	    fopen( BANA, ">$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
-		print {BANA} qq~1\n~;
-		fclose (BANA);
-	}
-	undef @mybana;
-	fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+        $ihave = 0;
+        $ehave = 0;
+        $uhave = 0;
+        fopen( BAN, "<$vardir/banlist.txt" )
+          || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
         my @myban = <BAN>;
         chomp @myban;
         fclose(BAN);
 
     if ( $unban == 1 ) {
-        fopen( BAN2, ">$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+            fopen( BAN2, ">$vardir/banlist.txt" )
+              || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
             foreach my $i (@myban) {
                 @banned = split /\|/xsm, $i;
             if (   $ban eq $banned[1]
@@ -663,13 +666,25 @@ sub ipban_update {
                 $un_ban =
                   qq~$banned[0]|$banned[1]|$banned[2]|$banned[3]|$banned[4]|\n~;
             }
-            print {BAN2} $un_ban or "$croak{'print'} UNBAN";
+                print {BAN2} $un_ban or croak "$croak{'print'} BAN2";
         }
         fclose(BAN2);
     }
     else {
         $ihave = 0;
-        $tmb = $time;
+        $tmb = 0;
+        if ($ban) {
+            $type = 'I';
+            $banned = $ban;
+        }
+        elsif ( $ban_email ) {
+            $type = 'E';
+            $banned = $ban_email;
+        }
+        elsif ( $ban_mem ) {
+            $type = 'U';
+            $banned = $ban_mem;
+        }
         for my $i (@myban) {
             @banned = split /\|/xsm, $i;
             for my $j ( 0 .. 3 ) {
@@ -677,22 +692,10 @@ sub ipban_update {
                     $tmb = $banned[2] + ( $bandays[$j] * 86_400 );
                 }
             }
-                if ($ban) {
-                $type = 'I';
-                $banned = $ban;
-                }
-                elsif ($ban_email) {
-                $type = 'I';
-                $banned = $ban_email;
-                }
-                elsif ($ban_mem) {
-                $type = 'U';
-                $banned = $ban_mem;
-                    }
-            if ( $banned eq $banned[1] && ( $banned[4] eq 'p' || $tmp > $time ) ) {
+            if ( $banned eq $banned[1] && ( $banned[4] eq 'p' || $tmb > $time ) ) {
                 $ihave = 1;
-                }
             }
+        }
 
         if ( $banned && $ihave != 1 && $banned ne '127.0.0.1' ) {
             $add_ban =
@@ -700,8 +703,8 @@ sub ipban_update {
         }
         fopen( BAN2, ">>$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
         print {BAN2} $add_ban or croak "$croak{'print'} BAN2";
-            fclose(BAN2);
-        }
+        fclose(BAN2);
+    }
 
         $yySetLocation = qq~$scripturl?action=viewprofile;username=$user~;
         redirectexit();
