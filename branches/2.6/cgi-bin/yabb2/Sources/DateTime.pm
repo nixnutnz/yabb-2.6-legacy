@@ -29,18 +29,10 @@ sub timetostring {
     if ( !$maintxt{'107'} ) { $maintxt{'107'} = 'at'; }
 
     # find out what timezone is to be used.
-    if ($iamguest) {
-        $toffs = $timeoffset;
-        $toffs +=
-          ( localtime( $thedate + ( 3600 * $toffs ) ) )[8] ? $dstoffset : 0;
-    }
-    else {
-        $toffs = ${ $uid . $username }{'timeoffset'};
-        $toffs +=
-          ( localtime( $thedate + ( 3600 * $toffs ) ) )[8]
-          ? ${ $uid . $username }{'dsttimeoffset'}
-          : 0;
-    }
+# Timeoffset disabled until we get if fixed
+#   if ( !$iamguest ) {
+#       $toffs = ${ $uid . $username }{'timeoffset'};
+#   }
 
     ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, undef ) =
       gmtime( $thedate + ( 3600 * $toffs ) );
@@ -62,24 +54,16 @@ sub stringtotime {
     my ($spvar) = @_;
     if ( !$spvar ) { return 0; }
     require Time::Local;
-    import Time::Local 'timelocal';
+    import Time::Local 'timegm';
     $splitvar = $spvar;
 
 # receive standard format yabb date/time string.
 # allow for oddities thrown up from y1 , with full year / single digit day/month
 # Timeoffset reverse for day/month year only.
-    if ($iamguest) {
-        $toffs = $timeoffset;
-        $toffs +=
-          ( localtime( $thedate + ( 3600 * $toffs ) ) )[8] ? $dstoffset : 0;
-    }
-    else {
-        $toffs = ${ $uid . $username }{'timeoffset'};
-        $toffs +=
-          ( localtime( $thedate + ( 3600 * $toffs ) ) )[8]
-          ? ${ $uid . $username }{'dsttimeoffset'}
-          : 0;
-    }
+# Timeoffset disabled until we get it fixed
+#    if ( !$iamguest ) {
+#        $toffs = ${ $uid . $username }{'timeoffset'};
+#    }
     my $amonth = 1;
     my $aday   = 1;
     my $ayear  = 0;
@@ -108,74 +92,7 @@ sub stringtotime {
 
     # Uses 1904 and 2036 as the default dates, as both are leap years.
     # If we used the real extremes (1901 and 2038) - there would be problems
-    # As timelocal dies if you provide 29th Feb as a date in a non-leap year
-    # Using leap years as the default years prevents this from happening.
-
-    if    ( $ayear >= 36 && $ayear <= 99 ) { $ayear += 1900; }
-    elsif ( $ayear >= 00 && $ayear <= 35 ) { $ayear += 2000; }
-    if    ( $ayear < 1904 ) { $ayear = 1904; }
-    elsif ( $ayear > 2036 ) { $ayear = 2036; }
-
-    if    ( $amonth < 1 )  { $amonth = 0; }
-    elsif ( $amonth > 12 ) { $amonth = 11; }
-    else                   { --$amonth; }
-
-    if ( $amonth == 3 || $amonth == 5 || $amonth == 8 || $amonth == 10 ) {
-        $max_days = 30;
-    }
-    elsif ( $amonth == 1 && $ayear % 4 == 0 ) { $max_days = 29; }
-    elsif ( $amonth == 1 && $ayear % 4 != 0 ) { $max_days = 28; }
-    else                                      { $max_days = 31; }
-    if ( $aday > $max_days ) { $aday = $max_days; }
-
-    if    ( $ahour < 1 )  { $ahour = 0; }
-    elsif ( $ahour > 23 ) { $ahour = 23; }
-    if    ( $amin < 1 )   { $amin  = 0; }
-    elsif ( $amin > 59 )  { $amin  = 59; }
-    if    ( $asec < 1 )   { $asec  = 0; }
-    elsif ( $asec > 59 )  { $asec  = 59; }
-
-    return ( timelocal( $asec, $amin, $ahour, $aday, $amonth, $ayear ) );
-}
-
-sub stringtotime2 {
-    my ($spvar) = @_;
-    if ( !$spvar ) { return 0; }
-    require Time::Local;
-    import Time::Local 'timegm';
-    $splitvar = $spvar;
-
-# receive standard format yabb date/time string.
-# allow for oddities thrown up from y1 , with full year / single digit day/month
-    my $amonth = 1;
-    my $aday   = 1;
-    my $ayear  = 0;
-    my $ahour  = 0;
-    my $amin   = 0;
-    my $asec   = 0;
-
-     if ( $splitvar =~
-        m/(\d{1,2})\/(\d{1,2})\/(\d{2,4}).*?(\d{1,2})\:(\d{1,2})\:(\d{1,2})/sm )
-    {
-        $amonth = int $1;
-        $aday   = int $2;
-        $ayear  = int $3;
-        $ahour  = int $4;
-        $amin   = int $5;
-        $asec   = int $6;
-    }
-    elsif ( $splitvar =~ m/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/sm ) {
-        $amonth = int $1;
-        $aday   = int $2;
-        $ayear  = int $3;
-        $ahour  = 0;
-        $amin   = 0;
-        $asec   = 0;
-    }
-
-    # Uses 1904 and 2036 as the default dates, as both are leap years.
-    # If we used the real extremes (1901 and 2038) - there would be problems
-    # As timelocal dies if you provide 29th Feb as a date in a non-leap year
+    # As time dies if you provide 29th Feb as a date in a non-leap year
     # Using leap years as the default years prevents this from happening.
 
     if    ( $ayear >= 36 && $ayear <= 99 ) { $ayear += 1900; }
@@ -221,21 +138,19 @@ sub timeformat {
     @days_rfc = qw( Sun Mon Tue Wed Thu Fri Sat );
 
     # for RFC compliant feed time
-    @months_rfc = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec );
+    @months_rfc = qw( Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec );
 
     # find out what timezone is to be used.
-    if ( $iamguest || $forum_default ) {
-        $toffs = $timeoffset;
-        $toffs +=
-          ( localtime( $oldformat + ( 3600 * $toffs ) ) )[8] ? $dstoffset : 0;
-    }
-    else {
-        $toffs = ${ $uid . $username }{'timeoffset'};
-        $toffs +=
-          ( localtime( $oldformat + ( 3600 * $toffs ) ) )[8]
-          ? ${ $uid . $username }{'dsttimeoffset'}
-          : 0;
-    }
+# Timeoffset for users disabled until we get it fixed
+    $toffs = 0;
+#    if ( $iamguest || $forum_default ) {
+#        $toffs = $timeoffset;
+#        $toffs +=
+#          ( gmtime( $oldformat + ( 3600 * $toffs ) ) )[8] ? $dstoffset : 0;
+#    }
+#    else {
+#        $toffs = ${ $uid . $username }{'timeoffset'};
+#    }
 
     my (
         $newsecond, $newminute,  $newhour,    $newday, $newmonth,
@@ -548,7 +463,8 @@ sub time_7 {
     }
 
     # Timezones
-    my $timezone = ${ $uid . $username }{'timeoffset'};
+#    my $timezone = ${ $uid . $username }{'timeoffset'};
+    my $timezone = 0;
     my $sign     = q{+};
     if ( $timezone < 0 ) { $sign = q{-}; }
     $timezone = $sign . sprintf '%04u', abs($timezone) * 100;
@@ -606,20 +522,24 @@ sub tmonly {
 
 sub bdayno_year {
     my ($newformat) = @_;
-    $date_noyear = $newformat;
+    my $mydate_noyear = $newformat;
+    if ( $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ism ) {
+        $mydate_noyear = $1;
+    }
+
     if ( $mytimeselected == 4 || $mytimeselected == 8 ) {
-        ( $date_noyear, undef ) = split /\,/xsm, $newformat;
+        ( $date_noyear, undef ) = split /\,/xsm, $mydate_noyear;
     }
     elsif ( $mytimeselected == 1 || $mytimeselected == 5 ) {
-        @date_noyear = split /\//xsm, $newformat;
+        @date_noyear = split /\//xsm, $mydate_noyear;
         $date_noyear = qq~$date_noyear[0]~ . q{/} . qq~$date_noyear[1]~;
     }
     elsif ( $mytimeselected == 2 || $mytimeselected == 3 ) {
-        @date_noyear = split /[.]/xsm, $newformat;
+        @date_noyear = split /[.]/xsm, $mydate_noyear;
         $date_noyear = qq~$date_noyear[0]~ . q{/} . qq~$date_noyear[1]~;
     }
     elsif ( $mytimeselected == 6 ) {
-        @date_noyear = split / /sm, $newformat;
+        @date_noyear = split / /sm, $mydate_noyear;
         $date_noyear = qq~$date_noyear[0] $date_noyear[1]~;
     }
 

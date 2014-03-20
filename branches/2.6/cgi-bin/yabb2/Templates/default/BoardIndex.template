@@ -48,9 +48,9 @@ get_micon();
 $boardindex_template .= qq~
 <!-- Board Index Button Bar start -->
         <table class="bordercolor pad_4px">
-			<colgroup>
-				<col style="width:50%" span="2" />
-			</colgroup>
+            <colgroup>
+                <col style="width:50%" span="2" />
+            </colgroup>
             <tr class="windowbg">
                 <td class="small">
                         <span class="small bold"><img src="$imagesdir/$newload{'brd_new'}" id="no_edit" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" /> $boardindex_txt{'333'}&nbsp;&nbsp;
@@ -68,20 +68,20 @@ if(!$subboard_sel) {
 $boardindex_template .= qq~
 <!-- Info Center block start -->
         <table class="tabtitle tabtitle-text" style="margin-top:1em">
-			<colgroup>
-            <col style="width:1%" />
-			<col style="width:99%" />
-			</colgroup>
+            <colgroup>
+                <col style="width:1%" />
+                <col style="width:99%" />
+            </colgroup>
             <tr>
                 <td>&nbsp;</td>
                 <td>$boardindex_txt{'200'}</td>
             </tr>
         </table>
         <table class="bordercolor pad_4px cs_thin">
-			<colgroup>
-            <col style="width:6%" />
-				<col style="width:94%" />
-			</colgroup>
+            <colgroup>
+                <col style="width:6%" />
+                <col style="width:94%" />
+            </colgroup>
             <tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/$brd_info" alt="" />
@@ -113,20 +113,20 @@ $boardindex_template .= qq~
             </tr>
         </table>
         <table class="tabtitle tabtitle-text" style="margin-top:10px">
-			<colgroup>
-            <col style="width:1%" />
-				<col style="width:99%" />
-			</colgroup>
+            <colgroup>
+                <col style="width:1%" />
+                <col style="width:99%" />
+            </colgroup>
             <tr>
                 <td>&nbsp;</td>
                 <td>$boardindex_txt{'158'}</td>
             </tr>
         </table>
         <table class="bordercolor pad_4px cs_thin mar-bot">
-			<colgroup>
-            <col style="width:6%" />
-				<col style="width:94%" />
-			</colgroup>
+            <colgroup>
+                <col style="width:6%" />
+                <col style="width:94%" />
+            </colgroup>
             <tr>
                 <td class="windowbg info-center center">
                     <img src="$imagesdir/$brd_online" alt="" />
@@ -163,13 +163,13 @@ $new_msg_class = "small";
 
 $catheader = qq~
         <table class="tabtitle tabtitle-text">
-			<colgroup>
-            <col style="width:1%" />
-            <col style="width:59%" />
-            <col style="width:8%" />
-            <col style="width:8%" />
-				<col style="width:24%" />
-			</colgroup>
+            <colgroup>
+                <col style="width:1%" />
+                <col style="width:59%" />
+                <col style="width:8%" />
+                <col style="width:8%" />
+                <col style="width:24%" />
+            </colgroup>
             <tr>
                 <td>&nbsp;</td>
                 <td>{yabb catimage} {yabb catrss} {yabb catlink}</td>
@@ -183,13 +183,13 @@ $catheader = qq~
             {yabb newmsg start}{yabb newmsg icon}{yabb newmsg}{yabb newmsg end}
         </table>
         <table {yabb boardtable} class="bordercolor pad_4px cs_thin mar-bot;" style="table-layout:fixed">
-			<colgroup>
-            <col style="width:6%" />
-            <col style="width:54%" />
-            <col style="width:8%" />
-				<col style="width:8%" />
-				<col style="width:24%" />
-			</colgroup>~;
+            <colgroup>
+                <col style="width:6%" />
+                <col style="width:54%" />
+                <col style="width:8%" />
+                <col style="width:8%" />
+                <col style="width:24%" />
+            </colgroup>~;
 
 # Looks of each board in category          #
 
@@ -279,10 +279,10 @@ $catfooter = qq~        </table>
 #advanced tabs
 $brd_advanced_tabs = qq~    <form action="$scripturl?action=addtab2" method="post" name="addtabtext" style="font-size: 11px; display: inline;" onsubmit="if(!checkTab(this)) {return false} else {return submittab()}">
     <table>
-		<colgroup>
-        <col style="width:40px" />
-			<col style="width:auto" />
-		</colgroup>
+        <colgroup>
+            <col style="width:40px" />
+            <col style="width:auto" />
+        </colgroup>
         <tr>
             <td class="tabmenuleft">&nbsp;</td>
             <td class="tabmenu">
@@ -312,11 +312,11 @@ $brd_advanced_tabs = qq~    <form action="$scripturl?action=addtab2" method="pos
 $brd_advanced_tabs_edit = qq~
     <br />
     <table>
-		<colgroup>
-        <col style="width:auto" />
-        <col style="width:45px" />
-        <col style="width:160px" />
-		</colgroup>
+        <colgroup>
+            <col style="width:auto" />
+            <col style="width:45px" />
+            <col style="width:160px" />
+        </colgroup>
         <tr>
             <td class="tabmenu">
                 <ul>{yabb edittabmenu}</ul>
@@ -358,11 +358,11 @@ qq~         <tr id="dropsubrow_{yabb curboard}" style="display: none">
                 <td class="center" style="padding:0" colspan="5">
                     <div style="width: 100%; position: relative">
                         <table>
-							<colgroup>
-                            <col style="width:20px" />
-                            <col style="width:auto" />
-                            <col style="width:20px" />
-							</colgroup>
+                            <colgroup>
+                                <col style="width:20px" />
+                                <col style="width:auto" />
+                                <col style="width:20px" />
+                            </colgroup>
                             <tr>
                                 <td class="bottom" style="background-image:url($imagesdir/$brd_fadeleftdropdown)">
                                     <img src="$imagesdir/$brd_closebutton" onclick="MessageList('$scripturl\?board\={yabb curboard};messagelist=1','$yyhtml_root','{yabb curboard}', 0)" style="position: absolute; cursor: pointer; bottom: -12px; left: -12px" alt="" />

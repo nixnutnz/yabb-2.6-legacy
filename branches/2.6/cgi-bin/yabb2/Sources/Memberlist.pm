@@ -38,7 +38,7 @@ get_template('Memberlist');
 $MembersPerPage = $TopAmmount;
 $maxbar         = 100;
 $dr_warning     = q{};
-$forumstart     = $forumstart ? stringtotime2($forumstart) : '1104537600';
+$forumstart     = $forumstart ? stringtotime($forumstart) : '1104537600';
 
 sub Ml {
 

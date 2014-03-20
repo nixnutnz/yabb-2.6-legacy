@@ -1,6 +1,6 @@
 ###############################################################################
 # Admin.pm                                                                    #
-# $Date: 02.20.14 $                                                           #
+# $Date: 03.20.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use English qw(-no_match_vars);
-use Time::Local 'timelocal';
+use Time::Local;
 our $VERSION = '2.6.0';
 
 $adminpmver = 'YaBB 2.6.0 $Revision$';
@@ -88,23 +88,24 @@ sub DeleteConverterFiles {
 }
 
 sub GetLastLogins {
-    fopen( ADMINLOG, "$vardir/adminlog.txt" );
+    fopen( ADMINLOG, "$vardir/adminlog_new.txt" );
     @adminlog = <ADMINLOG>;
     fclose(ADMINLOG);
+    @adminlog = reverse sort @adminlog;
 
     foreach my $line (@adminlog) {
         chomp $line;
         @element = split /\|/xsm, $line;
-        if ( !${ $uid . $element[0] }{'realname'} ) {
-            LoadUser( $element[0] );
+        if ( !${ $uid . $element[1] }{'realname'} ) {
+            LoadUser( $element[1] );
         }    # If user is not in memory, s/he must be loaded.
-        $element[2] = timeformat( $element[2] );
+        $element[0] = timeformat( $element[0] );
         my $lookupIP =
           ($ipLookup)
-          ? qq~<a href="$scripturl?action=iplookup;ip=$element[1]">$element[1]</a>~
+          ? qq~<a href="$scripturl?action=iplookup;ip=$element[2]">$element[2]</a>~
           : qq~$element[1]~;
         $loginadmin .= qq~
-                <a href="$scripturl?action=viewprofile;username=$useraccount{$element[0]}">${$uid.$element[0]}{'realname'}</a> <span class="small">($lookupIP) - $element[2]</span><br />
+                <a href="$scripturl?action=viewprofile;username=$useraccount{$element[1]}">${$uid.$element[1]}{'realname'}</a> <span class="small">($lookupIP) - $element[0]</span><br />
                 ~;
     }
     return $loginadmin;
@@ -421,7 +422,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakedUserName">$displayUse
         }
     }
 
-    for my $i ( 0 .. ( @browser - 1 ) ) { $browser{ $browser[$i] }; }
+    for my $i ( 0 .. ( @browser - 1 ) ) { $browser{ $browser[$i] }++; }
     $i = 0;
     while ( ( $key, $val ) = each %browser ) {
         $newbrowser[$i] = [ $key, $val ];

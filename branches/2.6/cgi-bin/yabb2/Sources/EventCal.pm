@@ -16,7 +16,7 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-use Time::Local 'timelocal';
+use Time::Local;
 our $VERSION = '2.6.0';
 
 $eventcalpmver = 'YaBB 2.6.0 $Revision$';
@@ -148,7 +148,7 @@ qq~$scripturl?action=eventcal;calshow=1;calmon=$gomon;calyear=$goyear~;
         }
     }
 
-    my ($toffs);
+    my $toffs = 0;
     my $newdate = $date;
 
     if ( $INFO{'calyear'} ) {
@@ -161,22 +161,22 @@ qq~$scripturl?action=eventcal;calshow=1;calmon=$gomon;calyear=$goyear~;
         $daterechnug = $date;
     }
 
-    my ( undef, undef, undef, undef, undef, undef, undef, undef, $newisdst ) =
-      localtime $heute;
-    if ( $newisdst > 0 && $dstoffset ) {
-        if ($iamguest) {
-            if ($dstoffset) { $heute += 3600; $newdate += 3600; }
-        }
-        else {
-            if ( ${ $uid . $username }{'dsttimeoffset'} != 0 ) {
-                $heute   += 3600;
-                $newdate += 3600;
-            }
-        }
-    }
+#    my ( undef, undef, undef, undef, undef, undef, undef, undef, $newisdst ) =
+#      gmtime $heute;
+#    if ( $newisdst > 0 && $dstoffset ) {
+#        if ($iamguest) {
+#            if ($dstoffset) { $heute += 3600; $newdate += 3600; }
+#        }
+#        else {
+#            if ( ${ $uid . $username }{'dsttimeoffset'} != 0 ) {
+#                $heute   += 3600;
+#                $newdate += 3600;
+#            }
+#        }
+#    }
 
-    if   ($iamguest) { $toffs = $timeoffset; }
-    else             { $toffs = ${ $uid . $username }{'timeoffset'}; }
+#    if   ($iamguest) { $toffs = $timeoffset; }
+#    else             { $toffs = ${ $uid . $username }{'timeoffset'}; }
 
     my ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $dst ) =
       gmtime( $heute + ( 3600 * $toffs ) );
@@ -230,7 +230,7 @@ qq~<a href="$scripturl?action=eventcal;calshow=1;calmon=$last_mon;calyear=$last_
     $viewyear = substr $viewyear, 2, 4;
     my @mon_days = ( 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 );
     $days = $mon_days[$mon];
-    $wday1 = ( localtime( timelocal( 0, 0, 0, 1, $mon, $year ) ) )[6];
+    $wday1 = ( gmtime( timegm( 0, 0, 0, 1, $mon, $year ) ) )[6];
     if ($ShowSunday) { $wday1++; }
     if ( $wday1 == 0 ) { $wday1 = 7; }
     $mon++;
@@ -727,8 +727,6 @@ qq~$bday_date|0|$user_bdname|$user_bdname|$user_bdhide|<span class="small">$age<
             $cal_type2, $ns,        $g
         ) = split /\|/xsm, $eventline;
 
-#$cal_date,$cal_type,$cal_name,$cal_time,$cal_hide, $cal_event,$cal_icon,$cal_noname,$cal_type2,$ns,$g;
-#20130228  |0        |admin   |1362009097|          |database test|eventannounce||0
         if ( $cal_date =~ /(\d{4})(\d{2})(\d{2})/xsm ) {
             ( $c_year, $c_mon, $c_day ) = ( $1, $2, $3 );
         }
@@ -853,7 +851,7 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_n
 
                 if ( $event_date == $cdat && !$INFO{'edit_cal_even'} ) {
                     $eventfound = 1;
-                    if ( $g eq 'g' ) {
+                    if ( $g eq 'g' || lc $cnam eq 'guest') {
                         $eventuserlink = qq~$cnam ($var_cal{'guest'})~;
                     }
                     elsif ( $g ne 'g' && !-e "$memberdir/$cnam.vars" ) {
@@ -993,7 +991,7 @@ qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
 
                 if ( $event_id eq $ctim && $cdat == $event_date ) {
                     $eventfound = 1;
-                    if ( $g eq 'g' ) {
+                    if ( $g eq 'g'|| lc $cnam eq 'guest' ) {
                         $eventuserlink = qq~$cnam ($var_cal{'guest'})~;
                     }
                     elsif ( $g ne 'g' && !-e "$memberdir/$cnam.vars" ) {
@@ -1263,6 +1261,7 @@ qq~<br /><br /><a href="$scripturl?action=eventcal;calshow=1;eventdate=$cyear$cm
             $mybtime   = stringtotime(qq~$cmon/$cday/$cyear~);
             $mybtimein = timeformat($mybtime);
             $cdate     = dtonly($mybtimein);
+
             if ( $showage && $chide ) {
                 $cdate = bdayno_year($mybtimein);
             }
@@ -1272,8 +1271,7 @@ qq~<a href="$scripturl?action=eventcal;calshow=1;eventdate=$cyear$cmon$cday;cali
               . qq~;showthisdate=2" title="$var_cal{'calshowevent'}">$cdate</a>~;
             $cal_time  = stringtotime($ctime);
             $icon_text = "$var_cal{$cicon}";
-#            if ( !$var_cal{$cicon} ) { $icon_text = calicontext($cicon); }
-            if ( $g eq 'g' ) {
+            if ( $g eq 'g' || lc $cname eq 'guest' ) {
                 $eventuserlink = qq~$cname ($var_cal{'guest'})~;
             }
             elsif ( $g ne 'g' && !-e "$memberdir/$cname.vars" ) {
@@ -1703,12 +1701,12 @@ qq~$scripturl?action=eventcal;calshow=1;calmon=$FORM{'selmon'};calyear=$FORM{'se
 
 sub del_old_events {
     return if !$Delete_EventsUntil;
-
     my $caltoday = $Delete_EventsUntil;
     if ( $caltoday == 1 ) {
-        my $toffs = $timeoffset;
-        $toffs +=
-          ( localtime( $date + ( 3600 * $toffs ) ) )[8] ? $dstoffset : 0;
+        my $toffs = 0;
+#        my $toffs = $timeoffset;
+#        $toffs +=
+#          ( gmtime( $date + ( 3600 * $toffs ) ) )[8] ? $dstoffset : 0;
 
         my ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $dst ) =
           gmtime( $date + ( 3600 * $toffs ) );

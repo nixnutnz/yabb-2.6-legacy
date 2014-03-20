@@ -89,22 +89,22 @@ if ( -e "$vardir/Setup.lock" ) {
         <table class="cs_thin pad_4px">
             <col style="width:5%" />
             <tr>
-                <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
+                <td class="tabtitle" colspan="2">YaBB 2.6.0 Converter</td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/thread.gif" alt="" />
                 </td>
                 <td class="windowbg2 fontbigger">
-                    Make sure your YaBB 2.5.4 installation is running and that it has all the correct folder paths and URLs.<br />
-                    Proceed through the following steps to convert your YaBB 2x forum to YaBB 2.5.4.<br /><br />
-                    <b>If</b> your YaBB 2x forum is located on the same server as your YaBB 2.5.4 installation:
+                    Make sure your YaBB 2.6.0 installation is running and that it has all the correct folder paths and URLs.<br />
+                    Proceed through the following steps to convert your YaBB 2x forum to YaBB 2.6.0.<br /><br />
+                    <b>If</b> your YaBB 2x forum is located on the same server as your YaBB 2.6.0 installation:
                     <ol>
                         <li>Insert the path to your YaBB 2x forum in the input field below</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
-                    <b>Else</b> if your YaBB 2x forum is located on a different server than your YaBB 2.5.4 installation or if you do not know the path to your YaBB 2x forum:
+                    <b>Else</b> if your YaBB 2x forum is located on a different server than your YaBB 2.6.0 installation or if you do not know the path to your YaBB 2x forum:
                     <ol>
-                        <li>Copy all files in the /Boards, /Members, /Messages, and /Variables folders from your YaBB 2x installation, to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your YaBB 2.5.4 installation, and chmod them 755.</li>
+                        <li>Copy all files in the /Boards, /Members, /Messages, and /Variables folders from your YaBB 2x installation, to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your YaBB 2.6.0 installation, and chmod them 755.</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
                     <div style="width: 100%; text-align: center;">
@@ -187,7 +187,7 @@ EOF
         <table class="cs_thin pad_4px">
             <col style="width:5%" />
             <tr>
-                <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
+                <td class="tabtitle" colspan="2">YaBB 2.6.0. Converter</td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/thread.gif" alt="" />
@@ -238,7 +238,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.0 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -300,7 +300,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.0 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -363,7 +363,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="titlebg" colspan="2">YaBB 2.5.4 Converter</td>
+            <td class="titlebg" colspan="2">YaBB 2.6.0 Converter</td>
        </tr><tr>
            <td class="windowbg center">
                <img src="$imagesdir/thread.gif" alt="" />
@@ -433,7 +433,7 @@ q~<br /><br />After you have tested your forum and made sure everything was conv
     <div class="bordercolor borderbox">
     <table class="cs_thin pad_4px">
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.0 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -473,7 +473,7 @@ q~<br /><br />After you have tested your forum and made sure everything was conv
                 - Attachment Functions => Rebuild Attachments<br /></span>
                 <br />
                 <br />
-                You may now login to your forum. Enjoy using YaBB 2.5.4!
+                You may now login to your forum. Enjoy using YaBB 2.6.0!
             </td>
         </tr><tr>
             <td class="catbg center" colspan="2">
@@ -489,8 +489,8 @@ q~<br /><br />After you have tested your forum and made sure everything was conv
         CreateFixLock();
     }
 
-    $yyim    = 'You are running the YaBB 2.5.4 Converter.';
-    $yytitle = 'YaBB 2.5.4 Converter';
+    $yyim    = 'You are running the YaBB 2.6.0 Converter.';
+    $yytitle = 'YaBB 2.6.0 Converter';
     SetupTemplate();
 }
 
@@ -620,7 +620,7 @@ sub MyUpdateUser {
     print {NMEMINFO} @meminfo or croak 'cannot print NBMEMINFO';
     fclose(NMEMINFO);
 
-	if ( -e "$convmemberdir/broadcast.messages" ) {
+    if ( -e "$convmemberdir/broadcast.messages" ) {
     fopen( BMEMDIR, "$convmemberdir/broadcast.messages" )
       || setup_fatal_error( "$maintext_23 $convmemberdir/broadcast.messages: ", 1 );
     my @bmessages = <BMEMDIR>;
@@ -630,7 +630,7 @@ sub MyUpdateUser {
       || setup_fatal_error( "$maintext_23 $convmemberdir/broadcast.messages: ", 1 );
     print {NBMEMDIR} @bmessages or croak 'cannot print NBMEMDIR';
     fclose(NBMEMDIR);
-	}
+    }
 
     return;
 }
@@ -762,7 +762,7 @@ qq~$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$newmodgroups|$newtopicper
 sub tempstarter {
     return if !-e "$vardir/Settings.pm";
 
-    $YaBBversion = 'YaBB 2.5.4';
+    $YaBBversion = 'YaBB 2.6.0';
 
     # Make sure the module path is present
     push @INC, './Modules';
@@ -831,7 +831,7 @@ qq~The 2x Conversion Utility has already been run.<br />To run Utility again, re
         <col style="width:5%" />
         <tr>
             <td class="titlebg" colspan="2">
-                YaBB 2.5.4 Setup
+                YaBB 2.6.0 Setup
             </td>
         </tr><tr>
             <td class="windowbg center">
@@ -853,8 +853,8 @@ qq~The 2x Conversion Utility has already been run.<br />To run Utility again, re
 </div>
       ~;
 
-    $yyim    = 'YaBB 2.5.4 Convert2x Utility has already been run.';
-    $yytitle = 'YaBB 2.5.4 Convert2x Utility';
+    $yyim    = 'YaBB 2.6.0 Convert2x Utility has already been run.';
+    $yytitle = 'YaBB 2.6.0 Convert2x Utility';
     template();
     return;
 }
@@ -923,8 +923,8 @@ sub setup_fatal_error {
     </table>
     <p class="center"><a href="javascript:history.go(-1)">Back</a></p>
       ~;
-    $yyim    = 'YaBB 2.5.4 Convertor Error.';
-    $yytitle = 'YaBB 2.5.4 Convertor Error.';
+    $yyim    = 'YaBB 2.6.0 Convertor Error.';
+    $yytitle = 'YaBB 2.6.0 Convertor Error.';
 
     if ( !-e "$vardir/Settings.pm" ) { SimpleOutput(); }
 
@@ -941,7 +941,7 @@ sub SimpleOutput {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>YaBB 2.5.4 Setup</title>
+<title>YaBB 2.6.0 Setup</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 </head>
 <body>
@@ -1225,9 +1225,35 @@ sub MoveMessages {
 
 sub MoveVariables {
     my ($convdatadir) = @_;
-    my @mvvar = ( 'allowed.txt','attachments.txt','ban_log.txt','bots.hosts','email_domain_filter.txt','flood.txt','gmodsettings.txt','modlist.txt','mostlog.txt','Movedthreads.pm','oldestmes.txt','pm.attachments','registration.log','reserve.txt','reservecfg.txt','spamrules.txt',);
+    my @mvvar = ( 'allowed.txt','attachments.txt','ban_log.txt','bots.hosts','email_domain_filter.txt','eventcal.db','eventcalbday.db','flood.txt','gmodsettings.txt','modlist.txt','mostlog.txt','Movedthreads.pm','oldestmes.txt','pm.attachments','registration.log','reserve.txt','reservecfg.txt','spamrules.txt',);
     for my $varfl (@mvvar) {
         if ( -e "$convdatadir/$varfl" ) {
+            if ( $varfl eq 'eventcal.db') {
+                fopen( OLDVAR, "$convdatadir/$varfl" );
+                my @oldvar = <OLDVAR>;
+                fclose (OLDVAR);
+                chomp @oldvar;
+                my @newvar;
+                foreach my $eventline ( @oldvar ) {
+                    my @eventline = split /\|/xsm, $eventline;
+                    if ( scalar(@eventline) < 9 ) {
+#                   ( $cal_date,$cal_type,$cal_name,$cal_time,$cal_event,$cal_icon,$cal_noname,$cal_type2)
+                        my $g = q{};
+                        if (lc $eventline[2] eq 'guest' ) {
+                            $g = 'g';
+                        }
+                        push @newvar,
+qq~$eventline[0]|$eventline[1]|$eventline[2]|$eventline[3]||$eventline[4]|$eventline[5]|$eventline[6]|$eventline[7]||$g\n~;
+                    }
+                    else { push @newvar, qq~$eventline\n~; }
+                }
+
+                fopen( NEWVAR, ">$vardir/$varfl" );
+                print {NEWVAR} @newvar
+                  or croak "cannot print $vardir/$varfl";
+                fclose(NEWVAR);
+            }
+            else {
             fopen( OLDVAR, "$convdatadir/$varfl" );
             my @oldvar = <OLDVAR>;
             fclose (OLDVAR);
@@ -1236,6 +1262,7 @@ sub MoveVariables {
             print {NEWVAR} @oldvar
                   or croak "cannot print $vardir/$varfl";
             fclose(NEWVAR);
+            }
         }
     }
     Convert_Settings();
@@ -1245,7 +1272,7 @@ sub MoveVariables {
 sub Convert_Settings {
     $ret = 0;
     if ( -e "$convvardir/Settings.pl" ) {
-        use Time::localtime;
+        use Time::gmtime;
         $time = time;
         require "$convvardir/Settings.pl";
         if ($ip_banlist) {
@@ -1283,7 +1310,7 @@ sub Convert_Settings {
         require "$convvardir/eventcalset.txt";
     }
 
-    $settings_file_version = "YaBB 2.5.4";
+    $settings_file_version = "YaBB 2.6.0";
     if ($enable_notifications eq q{}) { $enable_notifications = $enable_notification ? 3 : 0; }
     if ( !$cookietsort ) { ( undef,$rancook ) = split /\-/xsm, $cookieusername;
         $cookietsort = qq~Y2tsort-$rancook~;

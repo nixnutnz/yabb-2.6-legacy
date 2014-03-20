@@ -372,7 +372,7 @@ $myprofile_time = qq~<tr class="windowbg">
                 {yabb my_time_option}
             </select>
         </td>
-    </tr><tr class="windowbg">
+<!--    </tr><tr class="windowbg">
         <td><label for="timeformat"><b>$profile_txt{'486a'}:</b></label></td>
         <td><input type="text" name="timeformat" id="timeformat" size="40" value="{yabb timeformat}" /></td>
     </tr><tr class="windowbg">
@@ -387,7 +387,7 @@ $myprofile_time = qq~<tr class="windowbg">
         </td>
     </tr><tr class="windowbg">
         <td><label for="dsttimeoffset"><b>$profile_txt{'519'}</b></label></td>
-        <td><input type="checkbox" name="dsttimeoffset" id="dsttimeoffset" value="1"{yabb my_dst} /></td>
+        <td><input type="checkbox" name="dsttimeoffset" id="dsttimeoffset" value="1"{yabb my_dst} /></td> -->
     </tr><tr class="windowbg">
        <td><label for="dynamic_clock"><b>$profile_txt{'520'}</b><br /><span class="small">$profile_txt{'521'}</span></label></td>
        <td><input type="checkbox" name="dynamic_clock" id="dynamic_clock" value="1"{yabb my_dynamic} /></td>
@@ -559,7 +559,7 @@ $myprofile_tta = qq~<tr class="windowbg">
 $myprofile_admin_b = qq~<tr class="windowbg">
         <td><label for="dr_day_month"><b>$profile_txt{'233'}:</b></label></td>
         <td>
-            {yabb all_date} $maintxt{'107'} {yabb sel_hour} {yabb sel_minute} <small>(server <b>localtime</b>)</small>
+            {yabb all_date} $maintxt{'107'} {yabb sel_hour} {yabb sel_minute} <span class="small">$maintxt{'UTC'}</span>
             <input type="hidden" value="{yabb dr_secund}" name="dr_secund" />
         </td>
     </tr><tr class="windowbg">

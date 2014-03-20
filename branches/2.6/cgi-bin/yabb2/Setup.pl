@@ -4,7 +4,7 @@
 # $Source: /Setup.pl $
 ###############################################################################
 # Setup.pl                                                                    #
-# $Date: 02.20.14 $                                                           #
+# $Date: 03.20.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -1229,29 +1229,26 @@ sub SetInstall {
                 </div>
                 <br style="clear:both" />
                 <div class="div45">
-                    Forum Time Zone<br />
-                    <span style="font-size:small">If the time displayed here differs from your local time, adjust it by changing the settings.</span>
+                    Forum Time: (Your actual displayed UTC time)
                 </div>
                 <div class="div55">
-                    <span style="font-size:small">Your actual displayed local time:<br /><b>~
-      . timeformat( $date, 4 )
-      . q~</b><br /><br /></span><select name="usertimesign"><option value="">+</option><option value="-">-</option></select>
-                    <select name="usertimehour">~;
-    for my $i ( 0 .. 14 ) {
-        $i = sprintf '%02d', $i;
-        $yymain .= qq~<option value="$i">$i</option>~;
-    }
-    $yymain .= q~</select> : <select name="usertimemin">~;
-    for my $i ( 0 .. 59 ) {
-        my $j = $i / 60;
-        $j = ( split /\./xsm, $j )[1] || 0;
-        $yymain .=
-          qq~<option value="$j">~ . sprintf( '%02d', $i ) . q~</option>~;
-    }
-    $yymain .= q~</select>
+                    <b>~
+      . timeformat( $date, 4 ) . q~</b>~;
+#      . q~</b><br /><br /></span><select name="usertimesign"><option value="">+</option><option value="-">-</option></select>
+#                    <select name="usertimehour">~;
+#    for my $i ( 0 .. 14 ) {
+#        $i = sprintf '%02d', $i;
+#        $yymain .= qq~<option value="$i">$i</option>~;
+#    }
+#    $yymain .= q~</select> : <select name="usertimemin">~;
+#    for my $i ( 0 .. 59 ) {
+#        my $j = $i / 60;
+#        $j = ( split /\./xsm, $j )[1] || 0;
+#        $yymain .=
+#          qq~<option value="$j">~ . sprintf( '%02d', $i ) . q~</option>~;
+#    }
+    $yymain .= q~<!--</select>-->
             </div>
-            <input type="hidden" name="dstoffset" value="1" />
-      <br />
             </td>
     </tr><tr>
         <td class="catbg center">
@@ -1396,6 +1393,7 @@ sub SetInstall2 {
         $showregdate            = 1;
         $addtab_on              = 1;
         $bm_subcut              = 50;
+        $maxadminlog            = 5;
 
         if ( -e '/bin/gzip' && open GZIP, '|, gzip -f' ) {
             $gzcomp = 1;
@@ -1757,6 +1755,7 @@ sub SetInstall2 {
 \$modview = 2;                                    # Multi-admin settings for Board Moderators:
                                                   # 0=none, 1=icons 2=single checkbox 3=multiple checkboxes
 
+\$maxadminlog = $maxadminlog;                                #Maximum number of entries stored in adminlog.txt (oldest entries are deleted).
 ########## Memberview ##########
 
 \$showallgroups = 1;

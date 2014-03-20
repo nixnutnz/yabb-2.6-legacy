@@ -149,6 +149,7 @@ $abbr_lang = 'en-us';
 'searchimg' => 'Posts no more than',
 'searchimg2' => 'days old',
 'collapse' => 'collapse',
+'UTC' => '(UTC)',
 );
 
 %load_txt = (

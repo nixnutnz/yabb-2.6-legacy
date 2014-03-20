@@ -125,7 +125,7 @@ sub sendmail {
 
         # Dummy mail engine
         fopen( MAIL, ">>$vardir/mail.log" );
-        print {MAIL} 'Mail sent at ' . scalar localtime() . "\n"
+        print {MAIL} 'Mail sent at ' . scalar gmtime() . "\n"
           or croak "$croak{'print'} mail";
         print {MAIL} "To: $toheader\n"     or croak "$croak{'print'} mail";
         print {MAIL} "From: $fromheader\n" or croak "$croak{'print'} mail";

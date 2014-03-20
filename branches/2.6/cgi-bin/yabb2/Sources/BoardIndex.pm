@@ -895,14 +895,14 @@ qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title=
                 }
                 if ( !$bdpic ) {
 					if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm  ) {
-                    $bdpicExt ||= 'gif';
-                    if ($subboard_sel) {
-                        $bdpic = qq~subboards.$bdpicExt~;
-                    }
-                    else {
-                        $bdpic = qq~boards.$bdpicExt~;
-                    }
-                }
+						$bdpicExt ||= 'gif';
+						if ($subboard_sel) {
+							$bdpic = qq~subboards.$bdpicExt~;
+						}
+						else {
+							$bdpic = qq~boards.$bdpicExt~;
+						}
+					}
 					else {$bdpic = $extern;}
 				}
 

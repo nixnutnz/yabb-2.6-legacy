@@ -463,14 +463,14 @@ $mypost_guest_c = qq~<tr>
                 <td class="windowbg vtop">
                     <label for="verification"><b>$floodtxt{'1'}:</b></label>
                 </td>
-                <td class="windowbg vtop">{yabb showcheck}
+                <td class="windowbg vtop" colspan="3">{yabb showcheck}
                     <br /><span class="small">{yabb flood_text}</span>
                 </td>
             </tr><tr>
                 <td class="windowbg vtop">
                     <label for="verification"><b>$floodtxt{'3'}:</b></label>
                 </td>
-                <td class="windowbg vtop">
+                <td class="windowbg vtop" colspan="3">
                     <input type="text" maxlength="30" name="verification" id="verification" size="30" onchange="autoPreview()" />
                 </td>
             </tr>~;
@@ -484,7 +484,7 @@ $mypost_guest_e = qq~<tr>
                    <input type="hidden" name="verification_question_id" value="{yabb spam_question_id}" />
                    <input type="hidden" name="spam_question" value="{yabb spam_question}" />
                 </td>
-                <td class="windowbg vtop">
+                <td class="windowbg vtop" colspan="3">
                     <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" onchange="autoPreview()"/>{yabb spam_question_image}
                 </td>
             </tr>~;
@@ -493,7 +493,7 @@ $mypost_veri_a = qq~<tr>
                 <td class="windowbg vtop">
                     <label for="verification"><b>$floodtxt{'3'}:</b></label>
                 </td>
-                <td class="windowbg vtop">{yabb showcheck}
+                <td class="windowbg vtop" colspan="3">{yabb showcheck}
                     <br /><span class="small">{yabb flood_text}</span>
                     <input type="hidden" name="verification" id="verification" value="{yabb verification}" />
                     <input type="hidden" name="sessionid" id="sessionid" value="{yabb sessionid}" />
@@ -504,7 +504,7 @@ $mypost_veri_b = qq~<tr>
                 <td class="windowbg vtop">
                     <label for="verification_question"><b>{yabb spam_question}</b></label>
                 </td>
-                <td class="windowbg">{yabb verification_question}
+                <td class="windowbg" colspan="3">{yabb verification_question}
                     <input type="hidden" name="verification_question" value="{yabb verification_question}" />
                     <input type="hidden" name="verification_question_id" value="{yabb verification_question_id}" />
                     <input type="hidden" name="spam_question" value="{yabb spam_question}" />{yabb spam_question_image}
@@ -517,7 +517,7 @@ $mypost_veri_c = qq~<tr>
                         <br /><span class="small">$post_txt{'verification_question_desc'} {yabb verification_question_desc}</span>
                     </label>
                 </td>
-                <td class="windowbg vtop">
+                <td class="windowbg vtop" colspan="3">
                     <input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" />
                     <input type="hidden" name="verification_question_id" value="{yabb spam_question_id}" />
                     <input type="hidden" name="spam_question" value="{yabb spam_question}" />{yabb spam_question_image}

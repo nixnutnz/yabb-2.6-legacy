@@ -14,7 +14,7 @@
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
-use Time::Local 'timelocal';
+use Time::Local;
 our $VERSION = '2.6.0';
 
 $banpmver = 'YaBB 2.6.0 $Revision$';
@@ -23,7 +23,7 @@ $banpmver = 'YaBB 2.6.0 $Revision$';
 sub ipban {
     is_admin_or_gmod();
 
-    use Time::localtime;
+    use Time::gmtime;
     fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
     @banlist = <BAN>;
     fclose(BAN);
@@ -397,10 +397,10 @@ sub banlog {
     my @mybanlog = <BANLOG>;
     chomp @mybanlog;
     fclose(BANLOG);
-    use Time::localtime;
+    use Time::gmtime;
     for my $ban (@mybanlog) {
         @banned = split /\|/xsm, $ban;
-        $tm     = localtime $banned[0];
+        $tm     = gmtime $banned[0];
         $year   = $tm->year + 1900;
         $mon    = $tm->mon + 1;
         $day    = $tm->mday;

@@ -33,23 +33,23 @@ sub IPLookup {
       || fatal_error( 'cannot_open', "$vardir/iplookup.urls", 1 );
     @iplookup_urls = <IPLOOKUP>;
     fclose(IPLOOKUP);
-	chomp @iplookup_urls;
+    chomp @iplookup_urls;
 
     foreach my $i (@iplookup_urls) {
         my ( $iplookup_name, $iplookup_url ) = split /\|/xsm, $i;
         $iplookup_name = Censor($iplookup_name);
         $iplookup_url =~ s/{ip}/$ip/gxsm;
-		$iplookup_url =~ s/^\s+//gsm;
-		$iplookup_url =~ s/\s+$//gsm;
-		$iplookup_url =~ s/\r//gxsm;
-		$iplookup_url =~ s/\n//gxsm;
-		$iplookup_url =~ s/\t//gsm;
-		if ( $iplookup_url !~ /&(.*amp;)/gsm ) {
-			$iplookup_url =~ s/&/&amp;/gxsm;
-		}
+        $iplookup_url =~ s/^\s+//gsm;
+        $iplookup_url =~ s/\s+$//gsm;
+        $iplookup_url =~ s/\r//gxsm;
+        $iplookup_url =~ s/\n//gxsm;
+        $iplookup_url =~ s/\t//gsm;
+        if ( $iplookup_url !~ /&(.*amp;)/gsm ) {
+            $iplookup_url =~ s/&/&amp;/gxsm;
+        }
         if ( $iplookup_url !~ /http(s|):\/\//xsm ) {
             $iplookup_url = qq~http://$iplookup_url~;
-		}
+        }
 
         $lookuplink .=
           qq~<a href="$iplookup_url" target="_blank">$iplookup_name</a><br />~;

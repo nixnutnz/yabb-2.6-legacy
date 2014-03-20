@@ -1,6 +1,6 @@
 ###############################################################################
 # NewSettings.pm                                                              #
-# $Date: 02.20.14 $                                                           #
+# $Date: 03.20.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -839,6 +839,8 @@ $ext_prof_fields
 \$showallgroups = $showallgroups;
 \$OnlineLogTime = $OnlineLogTime;       # Time in minutes before Users are removed from the Online Log
 \$lastonlineinlink = $lastonlineinlink;     # Show "Last online X days and XX:XX:XX hours ago." to all members == 1
+
+\$maxadminlog = $maxadminlog;               #Maximum number of entries stored in adminlog.txt (oldest entries deleted).
 
 ########## Polls ##########
 

@@ -1,6 +1,6 @@
 ###############################################################################
 # Settings_Main.pm                                                            #
-# $Date: 02.20.14 $                                                           #
+# $Date: 03.20.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -271,15 +271,16 @@ $qckage ||= 31;
         },
         {
             description => qq~<label for="usertimesign">$admin_txt{'371'}</label>~,
-            input_html => timeformat($date,1,0,1) . $timeoffsetselect,
+            input_html => timeformat($date,1,0,1),# . $timeoffsetselect,
+            # TZ disabled for 2.6 - does not work properly - DAR
             ### Custom validated.
         },
-        {
-            description => qq~<label for="dstoffset">$admin_txt{'371a'}</label>~,
-            input_html => qq~<input type="checkbox" name="dstoffset" id="dstoffset" value="1"${ischecked($dstoffset)}/>~,
-            name => 'dstoffset',
-            validate => 'boolean',
-        },
+#        {
+#            description => qq~<label for="dstoffset">$admin_txt{'371a'}</label>~,
+#            input_html => qq~<input type="checkbox" name="dstoffset" id="dstoffset" value="1"${ischecked($dstoffset)}/>~,
+#            name => 'dstoffset',
+#            validate => 'boolean',
+#        },
         {
             description => qq~<label for="dynamic_clock">$admin_txt{'371b'}</label>~,
             input_html => qq~<input type="checkbox" name="dynamic_clock" id="dynamic_clock" value="1"${ischecked($dynamic_clock)}/>~,
@@ -1344,6 +1345,12 @@ qq~<input type="checkbox" name="nomailspammer" id="nomailspammer" value="1" ${is
             input_html => qq~<input type="checkbox" name="staff_reason" id="staff_reason" value="1"${ischecked($staff_reason)} />~,
             name => 'staff_reason',
             validate => 'boolean',
+        },
+        {
+            description => qq~<label for="maxadminlog">$admin_txt{'maxadminlog'}</label>~,
+            input_html => qq~<input type="text" name="maxadminlog" id="maxadminlog" size="5" value="$maxadminlog" />~,
+            name => 'maxadminlog',
+            validate => 'number',
         },
     ],
 },

@@ -206,7 +206,7 @@ $adminlngver = 'YaBB 2.6.0 $Revision$';
 '366' => 'Settings for New Member Notification E-mail',
 '367' => 'Notification e-mail for new member?<br /><span class="small">If checked, a notification concerning the registration of a new member will be sent to the e-mail address below.</span>',
 '368' => "Notification e-mail address:<br /><span class='small'>If left blank, the e-mail will be sent to: $webmaster_email</span>",
-'371' => 'Select Forum Time Zone:<br /><span class="small">If the time displayed here differs from the local forum time, adjust it by changing the settings.</span>',
+'371' => 'Forum Time (UTC)<!--Select Forum Time Zone:<br /><span class="small">If the time displayed here differs from the local forum time, adjust it by changing the settings.</span>-->',
 '371a' => 'Enable automatic Daylight Saving Time change?',
 '371b' => 'Enable the dynamic clock at the top of the page?',
 '371c' => 'Server Time Correction (in seconds +/-)',
@@ -571,7 +571,8 @@ $adminlngver = 'YaBB 2.6.0 $Revision$';
 'remove_file' => 'Remove File',
 'current_img' => 'Current Image',
 'remove_img' => 'Remove Image',
-'setsettings' => q~Settings Saved~,
+'setsettings' => q~Settings Submitted~,
+'maxadminlog' => q~The maximum number of entries stored in the Admin Log.~,
 );
 
 %floodtxt = (

@@ -29,12 +29,12 @@ sub birthdaylist {
         fatal_error('not_allowed');
     }
 
-    ( undef, undef, undef, undef, undef, undef, undef, undef, $newisdst ) =
-      localtime $heute;
-    if ( $newisdst > 0 ) {
-        $userdst = ${ $uid . $username }{'dsttimeoffset'} || $dstoffset;
-        $dst = 1;
-    }
+#    ( undef, undef, undef, undef, undef, undef, undef, undef, $newisdst ) =
+#      gmtime $heute;
+#    if ( $newisdst > 0 ) {
+#        $userdst = ${ $uid . $username }{'dsttimeoffset'} || $dstoffset;
+#        $dst = 1;
+#    }
     $heute = $date;
 
     if ($iamguest) {

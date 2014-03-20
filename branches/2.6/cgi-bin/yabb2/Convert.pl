@@ -106,7 +106,7 @@ if ( -e "$vardir/Setup.lock" ) {
 
         # needed for: sub conv_stringtotime
         require Time::Local;
-        import Time::Local 'timelocal';
+        import Time::Local 'timegm';
 
     }
     elsif ( !$action || $INFO{'convert'} ) {
@@ -118,23 +118,23 @@ if ( -e "$vardir/Setup.lock" ) {
         <table class="cs_thin pad_4px">
             <col style="width:5%" />
             <tr>
-                <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
+                <td class="tabtitle" colspan="2">YaBB 2.6.0 Converter</td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/thread.gif" alt="" />
                 </td>
                 <td class="windowbg2 fontbigger">
-                    Make sure your YaBB 2.5.4 installation is running and that it has all the correct folder paths and URLs.<br />
-                    Proceed through the following steps to convert your YaBB 1 Gold - SP 1.x forum to YaBB 2.5.4.<br /><br />
-                    <b>If</b> your YaBB 1 Gold - SP 1.x forum is located on the same server as your YaBB 2.5.4 installation:
+                    Make sure your YaBB 2.6.0 installation is running and that it has all the correct folder paths and URLs.<br />
+                    Proceed through the following steps to convert your YaBB 1 Gold - SP 1.x forum to YaBB 2.6.0.<br /><br />
+                    <b>If</b> your YaBB 1 Gold - SP 1.x forum is located on the same server as your YaBB 2.6.0 installation:
                     <ol>
                         <li>Insert the path to your YaBB 1 Gold - SP 1.x forum in the input field below</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
-                    <b>Else</b> if your YaBB 1 Gold - SP 1.x forum is located on a different server than your YaBB 2.5.4 installation or if you do not know the path to your SP 1.x forum:
+                    <b>Else</b> if your YaBB 1 Gold - SP 1.x forum is located on a different server than your YaBB 2.6.0 installation or if you do not know the path to your SP 1.x forum:
                     <ol>
-                        <li>Copy all files in the /Boards, /Members, and /Messages folders from your YaBB 1 Gold - SP 1.x installation, to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your YaBB 2.5.4 installation, and chmod them 755.</li>
-                        <li>Copy Settings.pl from the yabb folder of your YaBB 1 Gold - SP 1.x installation to the Convert/Variables folder of your YaBB 2.5.4 installation, and CHMOD it 644.</li>
+                        <li>Copy all files in the /Boards, /Members, and /Messages folders from your YaBB 1 Gold - SP 1.x installation, to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your YaBB 2.6.0 installation, and chmod them 755.</li>
+                        <li>Copy Settings.pl from the yabb folder of your YaBB 1 Gold - SP 1.x installation to the Convert/Variables folder of your YaBB 2.6.0 installation, and CHMOD it 644.</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
                     <div style="width: 100%; text-align: center;">
@@ -210,7 +210,7 @@ EOF
         <table class="cs_thin pad_4px">
             <col style="width:5%" />
             <tr>
-                <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
+                <td class="tabtitle" colspan="2">YaBB 2.6.0 Converter</td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/thread.gif" alt="" />
@@ -257,7 +257,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.0 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -368,7 +368,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.0 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -449,7 +449,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.0 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -518,7 +518,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.0 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -591,7 +591,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.0 Converter</td>
        </tr><tr>
            <td class="windowbg center">
                <img src="$imagesdir/thread.gif" alt="" />
@@ -666,7 +666,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.0 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -750,7 +750,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.0 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -828,7 +828,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.0 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -974,7 +974,7 @@ qq~<br /><br />There were some illegal user IDs. These have been changed. Please
     <div class="bordercolor borderbox">
     <table class="cs_thin pad_4px">
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.0 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -1016,7 +1016,7 @@ qq~<br /><br />There were some illegal user IDs. These have been changed. Please
                 - Attachment Functions => Rebuild Attachments<br /></span>
                 <br />
                 <br />
-                You may now log in to your forum. If your old forum had Extended Profiles installed, you should turn on Extended Profiles in Admin Center -&gt; Forum Settings -&gt; Members and run the Extended Profiles converter from Admin Center -&gt; Profile Fields. Enjoy using YaBB 2.5.4!
+                You may now log in to your forum. If your old forum had Extended Profiles installed, you should turn on Extended Profiles in Admin Center -&gt; Forum Settings -&gt; Members and run the Extended Profiles converter from Admin Center -&gt; Profile Fields. Enjoy using YaBB 2.6.0!
             </td>
         </tr><tr>
             <td class="catbg center" colspan="2">
@@ -1074,7 +1074,7 @@ qq~<br /><br />There were some illegal user IDs. These have been changed. Please
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.5.4 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.0 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -1176,8 +1176,8 @@ qq~<br /><br />There were some illegal user IDs. These have been changed. Please
             ~;
     }
 
-    $yyim    = 'You are running the YaBB 2.5.4 Converter.';
-    $yytitle = 'YaBB 2.5.4 Converter';
+    $yyim    = 'You are running the YaBB 2.6.0 Converter.';
+    $yytitle = 'YaBB 2.6.0 Converter';
     SetupTemplate();
 }
 
@@ -1942,7 +1942,7 @@ qq{general|general||This is the board for General Discussions.<br /><i>The board
                   || setup_fatal_error(
                     "$maintext_23 $convboardsdir/general.txt: ", 1 );
                 print {BOARDFILE}
-qq{1378046604|Welcome to your new YaBB 2.5.4 forum!|Administrator|webmaster\@yoursite.com|1378046604|0|admin|xx|0\n}
+qq{1378046604|Welcome to your new YaBB 2.6.0 forum!|Administrator|webmaster\@yoursite.com|1378046604|0|admin|xx|0\n}
                   or croak 'cannot print BOARDFILE';
                 fclose(BOARDFILE);
             }
@@ -2824,7 +2824,7 @@ sub conv_stringtotime {
     if    ( $asec < 1 )   { $asec  = 0; }
     elsif ( $asec > 59 )  { $asec  = 59; }
 
-    return timelocal( $asec, $amin, $ahour, $aday, $amonth, $ayear );
+    return timegm( $asec, $amin, $ahour, $aday, $amonth, $ayear );
 }
 
 #End Conversion#
@@ -2832,7 +2832,7 @@ sub conv_stringtotime {
 sub tempstarter {
     return if !-e "$vardir/Settings.pm";
 
-    $YaBBversion = 'YaBB 2.5.4';
+    $YaBBversion = 'YaBB 2.6.0';
 
     # Make sure the module path is present
     push @INC, './Modules';
@@ -2933,7 +2933,7 @@ sub FoundConvLock {
     <div class="bordercolor borderbox">
     <table class="cs_thin pad_4px">
         <tr>
-            <td class="ttabtitle" colspan="2">YaBB 2.5.4 Converter</td>
+            <td class="ttabtitle" colspan="2">YaBB 2.6.0 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/info.png" alt="" />
@@ -2955,8 +2955,8 @@ sub FoundConvLock {
     </div>
       ~;
 
-    $yyim    = 'YaBB 2.5.4 Converter has already been run.';
-    $yytitle = 'YaBB 2.5.4 Converter';
+    $yyim    = 'YaBB 2.6.0 Converter has already been run.';
+    $yytitle = 'YaBB 2.6.0 Converter';
     SetupTemplate();
     return;
 }
@@ -2983,8 +2983,8 @@ sub setup_fatal_error {
     </table>
     <p class="center"><a href="javascript:history.go(-1)">Back</a></p>
       ~;
-    $yyim    = 'YaBB 2.5.4 Convertor Error.';
-    $yytitle = 'YaBB 2.5.4 Convertor Error.';
+    $yyim    = 'YaBB 2.6.0 Convertor Error.';
+    $yytitle = 'YaBB 2.6.0 Convertor Error.';
 
     if ( !-e "$vardir/Settings.pm" ) { SimpleOutput(); }
 
@@ -3001,7 +3001,7 @@ sub SimpleOutput {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>YaBB 2.5.4 Setup</title>
+<title>YaBB 2.6.0 Setup</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 </head>
 <body>
@@ -3179,7 +3179,7 @@ sub SetInstall2 {
     $cookiepassword = qq~Y2Pass-$rancook~;
     $forumstart = timetostring($INFO{'firstforum'});
 
-    $settings_file_version = 'YaBB 2.5.4';
+    $settings_file_version = 'YaBB 2.6.0';
     if ($enable_notifications eq q{}) { $enable_notifications = $enable_notification ? 3 : 0; }
     $lang                  = $oldlang || 'English';
     $webmaster_email       = $oldemail || 'webmaster@mysite.com';

@@ -4,7 +4,7 @@
 # $Source: /AdminIndex.pl $
 ###############################################################################
 # AdminIndex.pl                                                               #
-# $Date: 02.20.14                                                             #
+# $Date: 03.20.14                                                             #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -276,7 +276,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
     @member_controls = (
         "|$admintxt{'a6_title'}|$admintxt{'a6_label'} - $admintxt{'34'}|a6",
         "addmember|$admintxt{'a6_sub1'}|$admintxt{'a6_label1'}|",
-		"view_reglog|$admintxt{'a8_sub5'}|$admintxt{'a8_label5'}|",
+        "view_reglog|$admintxt{'a8_sub5'}|$admintxt{'a8_label5'}|",
         "viewmembers|$admintxt{'a6_sub2'}|$admintxt{'a6_label2'}|",
         "modmemgr|$admintxt{'a6_sub3'}|$admintxt{'a6_label3'}|",
         "mailing|$admintxt{'a6_sub4'}|$admintxt{'a6_label4'}|",
@@ -395,21 +395,24 @@ s/img src\=\&quot\;$imagesdir\/(.+?)\&quot;/"img src\=\&quot;" . AdmImgLoc2($1) 
 }
 
 sub TrackAdminLogins {
-    if ( -e "$vardir/adminlog.txt" ) {
-        fopen( ADMINLOG, "$vardir/adminlog.txt" );
+    if ( -e "$vardir/adminlog_new.txt" ) {
+        fopen( ADMINLOG, "$vardir/adminlog_new.txt" );
         @adminlog = <ADMINLOG>;
         fclose(ADMINLOG);
+        @adminlog = reverse sort @adminlog;
     }
-    fopen( ADMINLOG, ">$vardir/adminlog.txt" );
-    print {ADMINLOG} qq~$username|$user_ip|$date\n~
+    $maxadminlog = $maxadminlog || 5;
+    fopen( ADMINLOG, ">$vardir/adminlog_new.txt" );
+    print {ADMINLOG} qq~$date|$username|$user_ip\n~
       or croak 'cannot print ADMINLOG';
-    for my $i ( 0 .. 3 ) {
+    for my $i ( 0 .. ( $maxadminlog - 2 ) ) {
         if ( $adminlog[$i] ) {
             chomp $adminlog[$i];
             print {ADMINLOG} qq~$adminlog[$i]\n~
               or croak 'cannot print ADMINLOG';
         }
     }
+
     fclose(ADMINLOG);
     return;
 }

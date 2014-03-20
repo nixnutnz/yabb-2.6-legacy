@@ -1,6 +1,6 @@
 ###############################################################################
 # Profile.pm                                                                  #
-# $Date: 02.20.14 $                                                           #
+# $Date: 03.20.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -854,7 +854,7 @@ qq~<option value="$fld" selected="selected">$displang</option>~;
         $my_hide_img =
           ${ $uid . $user }{'hide_img'} ? ' checked="checked"' : q{};
         $my_show_avatar_opts =~ s/{yabb hide_img}/$my_hide_img/sm;
-    } 
+    }
 
     if ( $user_hide_attach_img && $allowattach )
     {    # checkbox to hide attached images in threads
@@ -1307,7 +1307,7 @@ qq~\n                        <option value="Mid Moderator">$title</option>~;
         $dr_secund, $dr_minute, $dr_hour, $dr_day, $dr_month,
         $dr_year,   undef,      undef,    undef
       )
-      = localtime(
+      = gmtime(
           ${ $uid . $user }{'regtime'}
         ? ${ $uid . $user }{'regtime'}
         : $forumstart
@@ -2394,7 +2394,7 @@ sub ModifyProfileOptions2 {
     ${ $uid . $user }{'hide_user_text'} =
       ( $member{'hide_user_text'} && $user_hide_user_text ) ? 1 : 0;
     ${ $uid . $user }{'hide_img'} =
-      ( $member{'hide_img'} && $user_hide_img ) ? 1 : 0; 
+      ( $member{'hide_img'} && $user_hide_img ) ? 1 : 0;
     ${ $uid . $user }{'hide_attach_img'} =
       ( $member{'hide_attach_img'} && $user_hide_attach_img ) ? 1 : 0;
     ${ $uid . $user }{'hide_signat'} =
@@ -3189,7 +3189,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
     if (   ( $iamadmin || $iamgmod || $iamfmod )
         && !$view
         && $user ne $username
-        && ${ $uid . $user }{'position'} ne 'Administrator' )
+        && $user ne 'admin' )
     {
         $is_banned = check_banlist( "${$uid.$user}{'email'}", q{}, "$user" );
         $ban_user_email = ${ $uid . $user }{'email'};
@@ -3199,7 +3199,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
             $ban_email_link =
 qq~<span class="small">[ <a href="$scripturl?action=ipban_update;ban_email=$ban_user_email;username=$useraccount{$user};unban=1" onclick="return confirm('$profile_txt{'904a'}${$uid.$user}{'email'}');">$profile_txt{'904'}</a> ]</span>~;
         }
-        else {
+        elsif ( ${ $uid . $user }{'position'} ne 'Administrator' ) {
             $ban_email_link = qq~<span class="small">[ $profile_txt{'907'}: ~;
             my $bansep = $#timeban;
             my $levsep = q~ | ~;
@@ -3210,13 +3210,16 @@ qq~<a href="$scripturl?action=ipban_update;ban_email=$ban_user_email;username=$u
             }
             $ban_email_link .= q~ ]</span>~;
         }
+        else {
+            $ban_email_link = q{};
+        }
         $ban_user_name = $useraccount{$user};
 
         if ( $is_banned =~ /U/sm ) {
             $ban_user_link =
 qq~<span class="small">[ <a href="$scripturl?action=ipban_update;ban_memname=$ban_user_name;username=$useraccount{$user};unban=1" onclick="return confirm('$profile_txt{'903a'}$user');">$profile_txt{'903'}</a> ]</span>~;
         }
-        else {
+        elsif ( ${ $uid . $user }{'position'} ne 'Administrator' ) {
             $ban_user_link = qq~<span class="small">[ $profile_txt{'906'}: ~;
             my $bansep = $#timeban;
             my $levsep = q~ | ~;
@@ -3227,7 +3230,9 @@ qq~<a href="$scripturl?action=ipban_update;ban_memname=$ban_user_name;username=$
             }
             $ban_user_link .= q~ ]</span>~;
         }
-
+        else {
+            $ban_user_link = q{};
+        }
         # Shows the banning stuff for IP's
         @banlink        = ();
         $ip_ban_options = q{};
@@ -3238,7 +3243,7 @@ qq~<a href="$scripturl?action=ipban_update;ban_memname=$ban_user_name;username=$
                     $banlink[$ip] =
 qq~<span class="small">[ <a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccount{$user};unban=1" onclick="return confirm('$profile_txt{'905a'}$ip_ban[$ip]');">$profile_txt{'905'}</a> ]</span>~;
                 }
-                else {
+                elsif ( ${ $uid . $user }{'position'} ne 'Administrator' ) {
                     $banlink[$ip] =
                       qq~<span class="small">[ $profile_txt{'908'}: ~;
                     my $bansep = $#timeban;
@@ -3249,6 +3254,9 @@ qq~<span class="small">[ <a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip
 qq~<a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccount{$user};lev=$i" onclick="return confirm('$profile_txt{'908a'}$ip_ban[$ip]');">$profile_txt{$i}</a>$levsep~;
                     }
                     $banlink[$ip] .= q~ ]</span>~;
+                }
+                else {
+                    $banlink[$ip] .= q{};
                 }
             }
             for my $i ( 0 .. ( @ip_ban - 1 ) ) {
@@ -3268,6 +3276,9 @@ qq~<a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccoun
         $my_banning =~ s/{yabb ban_email}/${$uid.$user}{'email'}/sm;
         $my_banning =~ s/{yabb ban_email_link}/$ban_email_link/sm;
         $my_banning =~ s/{yabb ip_ban_options}/$ip_ban_options/sm;
+    }
+    if ( ${ $uid . $user }{'position'} eq 'Administrator' && !$iamadmin ) {
+        $my_banning = q{};
     }
 
     if (   $iamadmin
@@ -3676,7 +3687,7 @@ sub usersrecentposts {
         ToChars( $boardname{$board} );
 
         $counter++;
-  
+
         if ( $tusername !~ m{Guest}sm  ) {
             if ( -e ("$memberdir/$tusername.vars") ) {
                 LoadUser($tusername);

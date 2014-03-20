@@ -89,10 +89,10 @@ $leftmenubottom = qq~
 $topnav = qq~
     <div id="ql">
         <table style="width:auto; margin-left:0">
-			<colgroup>
-            <col style="width:190px" />
-			<col style="width:auto" span="6" />
-			</colgroup>
+            <colgroup>
+                <col style="width:190px" />
+                <col style="width:auto" span="6" />
+            </colgroup>
             <tr>
                 <td>&nbsp;</td>
                 <td class="center">{yabb topmenu_one}</td>
@@ -228,8 +228,10 @@ $front_page = qq~<div class="bordercolor rightboxdiv">
                     <b>$admintxt{'5'}</b>
                 </td>
             </tr><tr>
-                <td class="windowbg2">
+                <td class="windowbg2" >
+					<div style="height:15em; overflow:auto">
                     {yabb lastlogins}
+					</div>
                 </td>
             </tr>
         </table>
@@ -324,7 +326,7 @@ $my_admin_login = qq~
         </td>
     </tr>
 </table>
-</form> 
+</form>
 <script type="text/javascript">
         document.confirmform.passwrd.focus();
 </script>~;
