@@ -108,19 +108,19 @@ my $all_time = qq~$sel_hour $sel_minute $sel_secund~;
 # End time
 
 # Timezone selector
-my @usertimeoffset = split /\./xsm, $timeoffset;
-my $timeoffsetselect = q~<br /><select name="usertimesign" id="usertimesign"><option value="">+</option><option value="-"~ . ($usertimeoffset[0] < 0 ? ' selected="selected"' : q{}) . q~>-</option></select> <select name="usertimehour">~;
-    for my $i ( 0 .. 14 ) {
-        $i = sprintf '%02d', $i;
-        $timeoffsetselect .= qq~<option value="$i"~ . (($usertimeoffset[0] == $i || $usertimeoffset[0] == -$i) ? ' selected="selected"' : q{}) . qq~>$i</option>~;
-    }
-    $timeoffsetselect .= qq~</select> : <select name="usertimemin">~;
-    for my $i( 0 .. 59 ) {
-        my $j = $i / 60;
-        $j = (split /\./xsm, $j)[1] || 0;
-        $timeoffsetselect .= qq~<option value="$j"~ . ($usertimeoffset[1] eq $j ? ' selected="selected"' : q{}) . q~>~ . sprintf('%02d', $i) . q~</option>~;
-    }
-    $timeoffsetselect .= q~</select>~;
+#my @usertimeoffset = split /\./xsm, $timeoffset;
+#my $timeoffsetselect = q~<br /><select name="usertimesign" id="usertimesign"><option value="">+</option><option value="-"~ . ($usertimeoffset[0] < 0 ? ' selected="selected"' : q{}) . q~>-</option></select> <select name="usertimehour">~;
+#    for my $i ( 0 .. 14 ) {
+#        $i = sprintf '%02d', $i;
+#        $timeoffsetselect .= qq~<option value="$i"~ . (($usertimeoffset[0] == $i || $usertimeoffset[0] == -$i) ? ' selected="selected"' : q{}) . qq~>$i</option>~;
+#    }
+#    $timeoffsetselect .= qq~</select> : <select name="usertimemin">~;
+#    for my $i( 0 .. 59 ) {
+#        my $j = $i / 60;
+#        $j = (split /\./xsm, $j)[1] || 0;
+#        $timeoffsetselect .= qq~<option value="$j"~ . ($usertimeoffset[1] eq $j ? ' selected="selected"' : q{}) . q~>~ . sprintf('%02d', $i) . q~</option>~;
+#    }
+#    $timeoffsetselect .= q~</select>~;
 
 # Language selector
 opendir LNGDIR, $langdir;
