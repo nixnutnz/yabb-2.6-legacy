@@ -939,7 +939,7 @@ qq~<option value="$fld" selected="selected">$displang</option>~;
     elsif ( $timeselected == 2 ) { $tsl2 = ' selected="selected" '; }
     elsif ( $timeselected == 1 ) { $tsl1 = ' selected="selected" '; }
 
-    my @usertimeoffset = split /\./xsm, ${ $uid . $user }{'timeoffset'};
+#    my @usertimeoffset = split /\./xsm, ${ $uid . $user }{'timeoffset'};
 
     $my_num_option = qq~<option value="1"$unfsl1>10987.65</option>
                 <option value="2"$unfsl2>10987,65</option>
@@ -956,26 +956,27 @@ qq~<option value="$fld" selected="selected">$displang</option>~;
                 <option value="6"$tsl6>$profile_txt{'485'}</option>
                 <option value="7"$tsl7>$profile_txt{'480a'}</option>~;
     $my_timeformat = timeformat( $date, 1 );
-    $my_offset = $usertimeoffset[0] < 0 ? ' selected="selected"' : q{};
-    for my $i ( 0 .. 12 ) {
-        $i = sprintf '%02d', $i;
-        $my_offset_hr .= qq~\n                        <option value="$i"~
-          . (
-            ( $usertimeoffset[0] == $i || $usertimeoffset[0] == -$i )
-            ? ' selected="selected"'
-            : q{}
-          ) . qq~>$i</option>~;
-    }
-    for my $i ( 0 .. 59 ) {
-        my $j = $i / 60;
-        $j = ( split /\./xsm, $j )[1] || 0;
-        $my_offset_min .=
-            qq~\n                        <option value="$j"~
-          . ( $usertimeoffset[1] eq $j ? ' selected="selected"' : q{} ) . q~>~
-          . sprintf( '%02d', $i )
-          . q~</option>~;
-    }
-    $my_dst = ${ $uid . $user }{'dsttimeoffset'} ? ' checked="checked"' : q{};
+#    $my_offset = $usertimeoffset[0] < 0 ? ' selected="selected"' : q{};
+#    for my $i ( 0 .. 12 ) {
+#        $i = sprintf '%02d', $i;
+#        $my_offset_hr .= qq~\n                        <option value="$i"~
+#          . (
+#            ( $usertimeoffset[0] == $i || $usertimeoffset[0] == -$i )
+#            ? ' selected="selected"'
+#            : q{}
+#          ) . qq~>$i</option>~;
+#    }
+#    for my $i ( 0 .. 59 ) {
+#        my $j = $i / 60;
+#        $j = ( split /\./xsm, $j )[1] || 0;
+#        $my_offset_min .=
+#            qq~\n                        <option value="$j"~
+#          . ( $usertimeoffset[1] eq $j ? ' selected="selected"' : q{} ) . q~>~
+#          . sprintf( '%02d', $i )
+#          . q~</option>~;
+#    }
+#    $my_dst = ${ $uid . $user }{'dsttimeoffset'} ? ' checked="checked"' : q{};
+
     $my_dynamic =
       ${ $uid . $user }{'dynamic_clock'} ? ' checked="checked"' : q{};
 
@@ -2305,14 +2306,15 @@ sub ModifyProfileOptions2 {
         ext_saveprofile($user);
     }
 
-    if (   $member{'usertimesign'} !~ /^-?$/xsm
-        || $member{'usertimehour'} !~ /^\d+$/xsm
-        || $member{'usertimemin'} !~ /^\d+$/xsm )
-    {
-        fatal_error( 'invalid_time_offset',
-"$member{'usertimesign'}$member{'usertimehour'}.$member{'usertimemin'}"
-        );
-    }
+	#deprecated
+#    if (   $member{'usertimesign'} !~ /^-?$/xsm
+#        || $member{'usertimehour'} !~ /^\d+$/xsm
+#        || $member{'usertimemin'} !~ /^\d+$/xsm )
+#    {
+#        fatal_error( 'invalid_time_offset',
+#"$member{'usertimesign'}$member{'usertimehour'}.$member{'usertimemin'}"
+#        );
+#    }
 
     # update notifications if users language is changed
     if ( ${ $uid . $user }{'language'} ne "$member{'userlanguage'}" ) {
