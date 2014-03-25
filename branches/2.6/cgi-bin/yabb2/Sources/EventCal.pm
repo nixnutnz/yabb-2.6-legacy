@@ -87,7 +87,6 @@ sub eventcal {
     my ( $i, $eventfound );
     ## SSI Variables ##
 
-    #<--------------------------------------------->#
     # Access check to add events begin
 
     if ( !$Show_EventCal || ( $iamguest && $Show_EventCal != 2 ) ) {

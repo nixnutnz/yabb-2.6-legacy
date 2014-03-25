@@ -242,6 +242,7 @@ sub EventCalSet {
                 </tr><tr>
                     <td class="catbg center">
                         <input type="submit" name="savesetting" value="$event_cal{'31'}" class="button" />&nbsp;<input type="submit" name="rebuiltbd" value="$event_cal{'54'}" class="button" />
+                        <br /><input type="submit" name="del_old_events" value="$event_cal{'del'}" class="button" />
                     </td>
                 </tr>
             </table>
@@ -396,6 +397,9 @@ sub EventCalSet2 {
         $yySetLocation = qq~$adminurl?action=eventcal_set;rebok=1~;
         redirectexit();
     }
+    elsif ( $FORM{'del_old_events'} eq "$event_cal{'del'}" ) {
+        del_old_events();
+    }
     else { eventcal_save();}
     return;
 }
@@ -502,4 +506,34 @@ sub eventcal_save {
     return;
 }
 
+sub del_old_events {
+    $caltoday = 1;
+    $toffs = 0;
+#        my $toffs = $timeoffset;
+#        $toffs +=
+#          ( gmtime( $date + ( 3600 * $toffs ) ) )[8] ? $dstoffset : 0;
+
+        my ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $dst ) =
+          gmtime( $date + ( 3600 * $toffs ) );
+        $year += 1900;
+        $mon++;
+        $caltoday = $year . sprintf( '%02d', $mon ) . sprintf '%02d', $mday;
+
+    fopen( EVENTFILE, "$vardir/eventcal.db" );
+    my @calinput = <EVENTFILE>;
+    fclose(EVENTFILE);
+    for my $i ( 0 .. ( @calinput - 1 ) ) {
+        ( $c_date, undef, undef, undef, undef, undef, undef, $c_type2, undef ) =
+          split /\|/xsm, $calinput[$i];
+        chop $c_type2;
+        if ( $c_date < $caltoday && $c_type2 < 2 ) { $calinput[$i] = q{}; }
+    }
+    fopen( EVENTFILE, ">$vardir/eventcal.db" );
+    print {EVENTFILE} @calinput or croak "$croak{'print'} EVENTFILE";
+    fclose(EVENTFILE);
+
+   $yySetLocation = qq~$adminurl?action=eventcal_set~;
+    redirectexit();
+    return;
+}
 1;

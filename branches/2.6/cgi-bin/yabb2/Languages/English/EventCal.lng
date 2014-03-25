@@ -167,7 +167,7 @@ $eventcallngver = 'YaBB 2.6.0 $Revision$';
 '48' => 'Show &#39;Birthday List&#39; Button on the YaBB menu to:',
 '49' => 'Birthday List Settings',
 '50' => 'Show dates of birth to:',
-'52' => 'Delete old events<br /><span class="small">Check to remove events older than the current date</span>',
+'52' => 'Delete old events<br /><span class="small">Check to remove events older than the current date when new event is added.</span>',
 '54' => 'Rebuild Birthday list',
 '56' => 'Marquee',
 '57' => 'XHTML',
@@ -176,6 +176,7 @@ $eventcallngver = 'YaBB 2.6.0 $Revision$';
 '60' => 'Remove Event Icon',
 'error_image' => 'Please select an image for the Event Icon.',
 'error_desc' => 'Please enter a description for the Event Icon.',
+'del' => 'Delete old events',
 );
 
 1;
