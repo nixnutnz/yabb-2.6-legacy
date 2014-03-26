@@ -69,13 +69,6 @@ sub SectionDecide {
         ${ $INFO{'section'} . _class } = 'selected-bg';
         $help_area = 'Admin';
     }
-    elsif ( $INFO{'section'} eq 'moderator' ) {
-        if ( $UseHelp_Perms && !$ismod && !$iamgmod && !$iamadmin ) {
-            fatal_error( 'no_access', 'HelpCentre->SectionDecide' );
-        }
-        ${ $INFO{'section'} . _class } = 'selected-bg';
-        $help_area = 'Moderator';
-    }
     elsif ( $INFO{'section'} eq 'global_mod' ) {
         if ( $UseHelp_Perms && !$iamgmod && !$iamadmin ) {
             fatal_error( 'no_access', 'HelpCentre->SectionDecide' );
@@ -83,6 +76,14 @@ sub SectionDecide {
         ${ $INFO{'section'} . _class } = 'selected-bg';
         $help_area = 'Gmod';
     }
+    elsif ( $INFO{'section'} eq 'moderator' ) {
+        if ( $UseHelp_Perms && !$ismod && !$iamgmod && !$iamadmin && !$iamfmod ) {
+            fatal_error( 'no_access', 'HelpCentre->SectionDecide' );
+        }
+        ${ $INFO{'section'} . _class } = 'selected-bg';
+        $help_area = 'Moderator';
+    }
+
     else {
         $UserClass = 'selected-bg';
         $help_area = 'User';
@@ -95,8 +96,8 @@ sub SectionPrint {
     # Prints the navigation bar for the help section
     $userhlp = qq~<a href="$scripturl?action=help">$helptxt{'3'}</a>~;
     if ($UseHelp_Perms) {
-        if ( !$ismod && !$iamgmod && !$iamadmin ) { return }
-        if ( $ismod || $iamgmod || $iamadmin ) {
+        if ( !$ismod && !$iamgmod && !$iamadmin && !$iamfmod ) { return }
+        if ( $ismod || $iamgmod || $iamadmin || $iamfmod ) {
             $modhlp =
 qq~<a href="$scripturl?action=help;section=moderator">$helptxt{'4'}</a>~;
         }
@@ -124,7 +125,7 @@ qq~<a href="$scripturl?action=help;section=moderator">$helptxt{'4'}</a>~;
         $gmodhlp =
 qq~<a href="$scripturl?action=help;section=global_mod">$helptxt{'5'}</a>~;
         $adminhlp =
-          qq~<a href="$scripturl?action=help;section=admin">$helptxt{'6'}</a>~;
+qq~<a href="$scripturl?action=help;section=admin">$helptxt{'6'}</a>~;
     }
 
     $HelpNavBar =~ s/{user menu}/$userhlp/gsm;
@@ -184,7 +185,7 @@ sub MainHelp {
     $TempParse = $BodyHeader;
     $BrdID = $mbname;
     $BrdID =~ s/ /_/gsm;
-	$SectionName =~ s/{yabb myboardname}/$BrdID/gsm;
+    $SectionName =~ s/{yabb myboardname}/$BrdID/gsm;
     $SectionName =~ s/ /_/gsm;
     $TempParse =~ s/{yabb section_anchor}/$SectionName/gsm;
     $SectionNam = $SectionName;
@@ -208,11 +209,11 @@ sub MainHelp {
         $SectionAnchor = ${ SectionSub . $i };
         $SectionSub    = ${ SectionSub . $i };
         $SectionSub =~ s/_/ /gsm;
-		$SectionAnchor =~ s/{yabb myboardname}/$BrdID/gsm;
+        $SectionAnchor =~ s/{yabb myboardname}/$BrdID/gsm;
         $SectionAnchor =~ s/ /_/gsm;
         $TempParse  =~ s/{yabb section_anchor}/$SectionAnchor/gsm;
         $TempParse  =~ s/{yabb section_sub}/$SectionSub/gsm;
-		$TempParse  =~ s/{yabb myboardname}/$mbname/gsm;
+        $TempParse  =~ s/{yabb myboardname}/$mbname/gsm;
         $Body .= qq~$TempParse~;
 
         $message     = ${ SectionBody . $i };
@@ -285,7 +286,7 @@ sub DoContents {
 
     $BrdID = $mbname;
     $BrdID =~ s/ /_/gsm;
-	$SectionName =~ s/{yabb myboardname}/$BrdID/gsm;
+    $SectionName =~ s/{yabb myboardname}/$BrdID/gsm;
     $TempParse =~ s/{yabb section_anchor}/$SectionName/gsm;
     $SectionNam = $SectionName;
     $SectionNam =~ s/_/ /gsm;
@@ -309,9 +310,9 @@ sub DoContents {
 
         $TempParse = $ContentItem;
         $TempParse =~ s/{yabb anchor}/$SectionAnchor/gsm;
-		$TempParse =~ s/{yabb myboardname}/$BrdID/gsm;
+        $TempParse =~ s/{yabb myboardname}/$BrdID/gsm;
         $TempParse =~ s/{yabb content}/${SectionSub.$i}/gsm;
-		$TempParse =~ s/{yabb myboardname}/$BrdID/gsm;
+        $TempParse =~ s/{yabb myboardname}/$BrdID/gsm;
 
         $Contents .= qq~$TempParse~;
         ${ SectionSub . $i } = q{};
