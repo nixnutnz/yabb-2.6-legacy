@@ -2163,7 +2163,7 @@ sub Censor {
         my ( $tmpa, $tmpb, $tmpc ) = @{$censor};
         if ($tmpc) {
             $string =~
-              s/(^|\W|_)\Q$tmpa\E(?=$OUTPUT_AUTOFLUSH\W|_)/$1$tmpb/gism;
+              s/(^|\W|_)\Q$tmpa\E(?=$|\W|_)/$1$tmpb/gism;
         }
         else {
             $string =~ s/\Q$tmpa\E/$tmpb/gism;

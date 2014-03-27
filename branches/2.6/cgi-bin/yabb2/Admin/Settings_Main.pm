@@ -483,8 +483,7 @@ $qckage ||= 31;
         {
             description =>
               qq~<label for="AdMaxMessLen">$admin_txt{'498b'}</label>~,
-            input_html =>
-qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdMaxMessLen" />~,
+            input_html =>qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdMaxMessLen" />~,
             name     => 'AdMaxMessLen',
             validate => 'number',
         },
@@ -1008,10 +1007,8 @@ qq~<input type="text" size="5" name="AdMaxMessLen" id="AdMaxMessLen" value="$AdM
             validate => 'number',
         },
             {
-                description =>
-qq~<label for="self_del_user">$admin_txt{'586'}</label>~,
-                input_html =>
-qq~<input type="checkbox" name="self_del_user" id="self_del_user" value="1" ${ischecked($self_del_user)}/>~,
+                description =>qq~<label for="self_del_user">$admin_txt{'586'}</label>~,
+                input_html =>qq~<input type="checkbox" name="self_del_user" id="self_del_user" value="1" ${ischecked($self_del_user)}/>~,
                 name     => 'self_del_user',
                 validate => 'boolean',
             },
