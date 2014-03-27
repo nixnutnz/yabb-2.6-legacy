@@ -1,6 +1,6 @@
 ###############################################################################
 # Settings_Antispam.pm                                                        #
-# $Date: 02.20.14 $                                                           #
+# $Date: 03.26.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -20,14 +20,6 @@ our $VERSION = '2.6.0';
 $settings_antispampmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
-our (
-    %settings_txt,      %admin_txt,  %tsc_txt,
-    %domain_filter_txt, $spamlist,   $post_speed_count,
-    $minlinkpost,       $minlinksig, $minlinkweb,
-    $spd_detention,     $timeout,    $spd_detention_time,
-    $honeypot,          $spamfruits, $speedpostdetection,
-    $min_post_speed,    $vardir
-);
 
 # TSC
 if ( -e "$vardir/spamrules.txt" ) {
@@ -42,8 +34,8 @@ if ( -e "$vardir/spamrules.txt" ) {
 if ( -e "$vardir/email_domain_filter.txt" ) {
     require "$vardir/email_domain_filter.txt";
 }
-my $adomains =~ s/,/\n/gsxm;
-my $bdomains =~ s/,/\n/gxsm;
+$adomains =~ s/,/\n/gsxm;
+$bdomains =~ s/,/\n/gxsm;
 
 if ($min_reg_time eq q{}) {$min_reg_time = 15 ;}
 
