@@ -154,7 +154,7 @@ qq~Setup Error: Could not find the admin data file in $memberdir! Please check y
     $yymain .= qq~
     <form action="$set_cgi?action=convbrd" method="post">
     <div style="width:50em; border: thin #000 solid; margin:2em auto; padding:1em; text-align:center; background-color:#fff">
-        You are now logged in, <i>${$uid.$username}{'realname'}</i>!<br />Click 'Continue Set Up' to run the Forum Control Exporter Utility.
+        You are now logged in, <i>${$uid.$username}{'realname'}</i>!<br />Click 'Run Exporter' to run the Forum Control Exporter Utility.
         <p><input type="submit" value="Run Exporter" /></p>
     </div>
     </form>

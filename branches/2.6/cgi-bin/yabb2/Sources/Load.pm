@@ -255,10 +255,11 @@ sub LoadUser {
             }
         }
         else {
-            fopen( LOADUSER, "+<$memberdir/$user.$userextension" )
-              || fatal_error( 'cannot_open', "$memberdir/$user.$userextension",
+            fopen( LOADUSER, "<$memberdir/$user.$userextension" )
+              || fatal_error( 'cannot_open', "$memberdir/$user.$userextension load 1",
                 1 );
             my @settings = <LOADUSER>;
+            fclose(LOADUSER);
             for my $i ( 0 .. ( @settings - 1 ) ) {
                 if ( $settings[$i] =~ /'(.*?)',"(.*?)"/xsm ) {
                     ${ $uid . $user }{$1} = $2;
@@ -271,10 +272,14 @@ sub LoadUser {
                     }
                 }
             }
-            seek LOADUSER, 0, 0;
-            truncate LOADUSER, 0;
+            if ( scalar @settings != 0 ) {
+            fopen( LOADUSER, ">$memberdir/$user.$userextension" )
+              || fatal_error( 'cannot_open', "$memberdir/$user.$userextension load2",
+                1 );
             print {LOADUSER} @settings or croak "$croak{'print'} LOADUSER";
             fclose(LOADUSER);
+            }
+            else { fatal_error('missingvars', "$memberdir/$user.$userextension", 1 ); }
         }
 
         ToChars( ${ $uid . $user }{'realname'} );

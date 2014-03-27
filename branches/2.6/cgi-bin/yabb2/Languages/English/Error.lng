@@ -68,6 +68,7 @@ $errorlngver = 'YaBB 2.6.0 $Revision$';
 'corrupt_member_file'  => "The member data file is corrupt. Please notify the administrator of this error.",
 'no_admin_passwrd'    => "You need to fill in the correct administrator password to enter the Admin Center.",
 'default_password'    => qq~You are still using the YaBB Setup default password. Please login to your <a href="$scripturl?action=myprofile;username=$username">User profile</a> and change your password to something more secure.~,
+'missingvars'         => 'Something bad has happened. Please inform the Admin of this forum of what you were doing when this error occurred.',
 
 ## BoardIndex ##
 'collapse_no_member'   => "You must be a member to use the collapsible/expandable categories.",
