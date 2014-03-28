@@ -700,10 +700,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
         for my $i ( 1 .. $numpolloptions ) {
             if ( $split[$i] ) { $splitchecked[$i] = ' checked="checked"'; }
             if ( $FORM{"slicecol$i"} ) {
-                $slicecolor[$i] = $FORM{"slicecol$i"};
-            }
-			if (!$slicecolor[$i]) {
-				$slicecolor[$i] = 'transparent';
+                $slicecolor[$i] = $FORM{"slicecol$i"} || 'transparent';
 			}
             $mypoll_opt .= $my_poll_options;
             $mypoll_opt =~ s/{yabb i}/$i/gsm;
