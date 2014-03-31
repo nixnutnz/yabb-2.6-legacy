@@ -347,12 +347,6 @@ sub ShowClickLog {
     if   ($enableclicklog) { $logtimetext = $admin_txt{'698'}; }
     else                   { $logtimetext = $admin_txt{'698a'}; }
 
-    my (
-        $totalip,   $totalclick,  $totalbrow, $totalos,    @log,
-        @iplist,    $date,        @to,        @from,       @info,
-        @os,        @browser,     @newiplist, @newbrowser, @newoslist,
-        @newtolist, @newfromlist, $i,         $curentry
-    );
     fopen( LOG, "$vardir/clicklog.txt" );
     @log = <LOG>;
     fclose(LOG);
@@ -776,6 +770,19 @@ qq~$adminurl?action=viewmembers;start=$INFO{'start'};sort=$INFO{'sort'};reversed
 
 sub ver_detail {
     is_admin_or_gmod();
+    if ($maintenance) {
+        $yyadmin_alert .=
+qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{'616a'}</b></span><br /><br />~;
+    }
+    if ( $iamadmin && $rememberbackup ) {
+        if ( $lastbackup && $date > $rememberbackup + $lastbackup ) {
+            require Sources::DateTime;
+            $yyadmin_alert .=
+qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{'617'} ~
+              . timeformat($lastbackup)
+              . q~</b></span>~;
+        }
+    }
 
     require "$boarddir/$yyexec.$yyext";
     $adminindexplver =~ s/\$Revision\: (.*?) \$/Build $1/igsm;

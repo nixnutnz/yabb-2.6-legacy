@@ -342,13 +342,13 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
       qq~<a href="$scripturl?action=help;section=admin">$admintxt{'35'}</a>~;
     $topmenu_four = qq~<a href="http://www.yabbforum.com" target="_blank">$admintxt{'36'}</a>~;
 
-    if ($maintenance) {
+    if ($maintenance && $action ne 'detailedversion') {
         $yyadmin_alert .=
 qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{'616a'}</b></span><br /><br />~;
     }
-    if ( $iamadmin && $rememberbackup ) {
+    if ( $iamadmin && $rememberbackup && $action ne 'detailedversion' ) {
         if ( $lastbackup && $date > $rememberbackup + $lastbackup ) {
-            require "$sourcedir/DateTime.pm";
+            require Sources::DateTime;
             $yyadmin_alert .=
 qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{'617'} ~
               . timeformat($lastbackup)
