@@ -43,7 +43,7 @@ sub LoadBoardControl {
         ## create a global boards array
         push @allboards, $cntboard;
 
-        $cntdescription =~ s/\&/\&amp;/gxsm;
+        $cntdescription =~ s/\&\ /\&amp; /gxsm;
         if ( substr( $cntmods, 0, 2) eq ', ' ) {
             substr( $cntmods, 0, 2 ) = q{}; } 
         if ( substr( $cntmodgroups, 0, 2) eq ', ' ) {

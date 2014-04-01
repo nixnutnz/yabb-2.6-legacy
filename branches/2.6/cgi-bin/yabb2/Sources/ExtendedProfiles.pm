@@ -1,6 +1,6 @@
 ###############################################################################
 # ExtendedProfiles.pm                                                         #
-# $Date: 02.20.14 $                                                           #
+# $Date: 03.31.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Version:        YaBB 2.6.0                                                  #
@@ -302,8 +302,11 @@ sub ext_timeformat {
 
 # returns whenever the current user is allowed to view a field or not
 sub ext_has_access {
-    my ( $allowed_users, $allowed_groups, $usergroup, $useraddgroup, $postcount,
-        $groupid )
+    my (
+        $allowed_users, $allowed_groups, $access,  $usergroup,
+        $useraddgroup,  $postcount,      $user,    @users,
+        $group,         @groups,         $groupid, $postamount
+      )
       = (
         shift, shift, 0,
         ${ $uid . $username }{'position'},
@@ -311,15 +314,19 @@ sub ext_has_access {
         ${ $uid . $username }{'postcount'}, undef,
       );
 
-    if ( $allowed_users ne q{} || $allowed_groups ne q{} ) {
-        foreach ( split /,/xsm, $allowed_users ) {
-            return 1
-              if $_ eq $username;
+    if ( ( $allowed_users ne q{} ) || ( $allowed_groups ne q{} ) ) {
+        if ( $allowed_users ne q{} ) {
+            @users = split /\,/xsm, $allowed_users;
+            foreach my $user (@users) {
+                if ( $user eq $username ) { $access = 1; return $access; }
         }
+        }
+        if ( $allowed_groups ne q{} ) {
 
-   # example list of allowed groups:
-   # ('Administrator', 'Moderator', 'Global Moderator', 'Post{-1}', 'NoPost{1}')
-        foreach my $group ( split /\s*,\s*/xsm, $allowed_groups ) {
+# generate list of allowed groups
+# example: @groups = ('Administrator', 'Moderator', 'Global Moderator', 'Post{-1}', 'NoPost{1}');
+            @groups = split /\s*\,\s*/xsm, $allowed_groups;
+            foreach my $group (@groups) {
 
             # check if user is in one of these groups
             if (   $group eq 'Administrator'
@@ -327,39 +334,50 @@ sub ext_has_access {
                 || $group eq 'Mid Moderator'
                 || $group eq 'Global Moderator' )
             {
-                if ( $usergroup eq $group ) { return 1; }
+                    if ( $group eq $usergroup ) { $access = 1; return $access; }
+                }
+                elsif ( $group =~ m/^NoPost{(\d+)}$/sm ) {
 
                 # check if user is on a post-independent group
-            }
-            elsif ( $group =~ m{^NoPost{(\d+)}$}sm ) {
                 $groupid = $1;
 
                 # check if group exists at all
-                if ( $groupid ne q{} && exists $NoPost{$groupid} ) {
+                    if ( exists $NoPost{$groupid} && $groupid ne q{} ) {
 
                     # check if group id is in user position or addgroup field
-                    if ( $usergroup eq $groupid ) { return 1; }
-                    foreach ( split /,/xsm, $useraddgroup ) {
-                        if ( $_ eq $groupid ) { return 1; }
+                        if ( $usergroup eq $groupid ) {
+                            $access = 1;
+                            return $access;
+                    }
+                        foreach my $group ( split /,/xsm, $useraddgroup ) {
+                            if ( $group eq $groupid ) {
+                                $access = 1;
+                                return $access;
+                            }
+                }
                     }
                 }
+                elsif ( $group =~ m/^Post{(\d+)}$/sm ) {
 
                 # check if user is in one of the post-depending groups...
-            }
-            elsif ( $group =~ m{^Post{(\d+)}$}sm ) {
                 $groupid = $1;
-                foreach ( reverse sort { $a <=> $b } keys %Post ) {
-                    if ( $postcount > $_ ) {
+                    foreach my $postamount ( reverse sort { $a <=> $b } keys %Post ) {
+                        if ( $postcount > $postamount ) {
 
                         # found the group the user is in
-                        if ( $_ eq $groupid ) { return 1; }
+                            if ( $postamount eq $groupid ) {
+                                $access = 1;
+                                return $access;
+                            }
                     }
                 }
             }
         }
-        return 0;
     }
-    return 1;
+    }
+    else { $access = 1; }
+
+    return $access;
 }
 
 # applies UBBC code to a string
@@ -664,8 +682,7 @@ sub ext_memberlist_tds {
             }
             elsif ( $field{'type'} eq 'url' ) {
                 if ( $value ne q{} ) {
-                    $value =
-qq~<a href="$value" target="_blank">$value</a>~;
+                    $value = qq~<a href="$value" target="_blank">$value</a>~;
                 }
             }
             if ( $value eq q{} ) { $value .= '&nbsp;'; }
