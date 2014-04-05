@@ -237,7 +237,12 @@ $qckage ||= 31;
         },
         {
             description => qq~<label for="yymycharset">$admin_txt{'816a'}</label>~,
-            input_html => qq~<input type="text" size="20" name="yymycharset" id="yymycharset" value="$yymycharset" />~,
+            input_html => qq~
+<select name="yymycharset" id="yymycharset" size="1">
+  <option value="UTF-8" ${isselected($yymycharset eq 'UTF-8')}>UTF-8</option>
+  <option value="ISO-8859-1" ${isselected($yymycharset eq 'ISO-8859-1')}>ISO-8859-1</option>
+</select>
+~,
             name => 'yymycharset',
             validate => 'text',
         },

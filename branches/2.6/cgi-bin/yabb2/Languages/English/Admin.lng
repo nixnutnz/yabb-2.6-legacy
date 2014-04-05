@@ -464,7 +464,7 @@ $adminlngver = 'YaBB 2.6.0 $Revision$';
 '804' => 'Parse Flash tags?<br /><span class="small">Enabling this may leave your board open to vulnerabilities</span>',
 '813' => 'Select the default forum template for Guests or new members:',
 '816' => 'Select default language for Guests or new members:',
-'816a' => 'Default character encoding (Usually either ISO-8859-1 or UTF-8)<br /><span class="small"><b>Caution</b>: choosing the wrong encoding may render some characters unreadable. If you are adding additional language packs, or have imported an older forum, choose ISO-8859-1.</span>',
+'816a' => 'Default character encoding (Choose UTF-8 for new English only forums, otherwise choose ISO-8859-1.)<br /><span class="small"><b>Note</b>: This setting only affects the default English language encoding. The add-on Language Packs have their own default character encoding embedded in the Language Packs. This setting <b>does not</b> affect the character encoding for the additional Language Packs.</span>',
 '825' => 'Original Order',
 '826' => 'New Order',
 '827' => q~The 'New Order' boards list contains boards that aren't in the 'Original Order' list, or visa versa.~,
