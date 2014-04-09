@@ -244,20 +244,20 @@ qq~<input type="submit" name="imaction" value="$inmes_imtxt{'store'}" class="but
 qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'}</a> &rsaquo; $mctitle~;
 
     ## set template up
-    $mycenter_template =~ s/({|<)yabb mcviewmenu(}|>)/$MCViewMenu/gsm;
-    $mycenter_template =~ s/({|<)yabb mcmenu(}|>)/$yymcmenu/gsm;
-    $mycenter_template =~ s/({|<)yabb mcpmmenu(}|>)/$MCPmMenu/gsm;
-    $mycenter_template =~ s/({|<)yabb mcprofmenu(}|>)/$MCProfMenu/gsm;
-    $mycenter_template =~ s/({|<)yabb mcpostsmenu(}|>)/$MCPostsMenu/gsm;
+    $mycenter_template =~ s/{yabb mcviewmenu}/$MCViewMenu/gsm;
+    $mycenter_template =~ s/{yabb mcmenu}/$yymcmenu/gsm;
+    $mycenter_template =~ s/{yabb mcpmmenu}/$MCPmMenu/gsm;
+    $mycenter_template =~ s/{yabb mcprofmenu}/$MCProfMenu/gsm;
+    $mycenter_template =~ s/{yabb mcpostsmenu}/$MCPostsMenu/gsm;
     $mycenter_template =~
-      s/({|<)yabb mcglobformstart(}|>)/$MCGlobalFormStart/gsm;
+      s/{yabb mcglobformstart}/$MCGlobalFormStart/gsm;
     $mycenter_template =~
-s/({|<)yabb mcglobformend(}|>)/ ($MCGlobalFormStart ? "<\/form>" : q{}) /esm;
+s/{yabb mcglobformend}/ ($MCGlobalFormStart ? "<\/form>" : q{}) /esm;
 
-    $mycenter_template =~ s/({|<)yabb mccontent(}|>)/$MCContent/gsm;
-    $mycenter_template =~ s/({|<)yabb mctitle(}|>)/$mctitle/gsm;
-    $mycenter_template =~ s/({|<)yabb selecthtml(}|>)/$selecthtml/gsm;
-    $mycenter_template =~ s/({|<)yabb forumjump(}|>)//gsm;
+    $mycenter_template =~ s/{yabb mccontent}/$MCContent/gsm;
+    $mycenter_template =~ s/{yabb mctitle}/$mctitle/gsm;
+    $mycenter_template =~ s/{yabb selecthtml}/$selecthtml/gsm;
+    $mycenter_template =~ s/{yabb forumjump}//gsm;
 
     ## end new style box
     $yymain .= $mycenter_template;
@@ -1195,7 +1195,7 @@ function insert_user (oElement,username,userid) {
     my ( $display_prof, $display_posts, $display_pm, $tabPMHighlighted,
         $tabProfHighlighted, $tabNotifyHighlighted );
 
-    if ( $mycenter_template =~ /({|<)yabb mcmenu(}|>)/gsm ) {
+    if ( $mycenter_template =~ /{yabb mcmenu}/gsm ) {
         mcMenu();
         $newtemplate = 1;
     }
@@ -1517,22 +1517,22 @@ qq~$mycenter_txt{'posts'}: <a href="$scripturl?action=myusersrecentposts;usernam
 
         $mctitle = $mycenter_txt{'welcometxt'};
         #################################
-        $myprofileblock =~ s/({|<)yabb userlink(}|>)/$link{$username}/gsm;
-        $myprofileblock =~ s/({|<)yabb memberinfo(}|>)/$memberinfo/gsm;
-        $myprofileblock =~ s/({|<)yabb stars(}|>)/$memberstar{$username}/gsm;
-        $myprofileblock =~ s/({|<)yabb useronline(}|>)/$userOnline/gsm;
+        $myprofileblock =~ s/{yabb userlink}/$link{$username}/gsm;
+        $myprofileblock =~ s/{yabb memberinfo}/$memberinfo/gsm;
+        $myprofileblock =~ s/{yabb stars}/$memberstar{$username}/gsm;
+        $myprofileblock =~ s/{yabb useronline}/$userOnline/gsm;
         $myprofileblock =~
-          s/({|<)yabb userpic(}|>)/${$uid.$username}{'userpic'}/gsm;
+          s/{yabb userpic}/${$uid.$username}{'userpic'}/gsm;
         $myprofileblock =~
-          s/({|<)yabb usertext(}|>)/${$uid.$username}{'usertext'}/gsm;
-        $myprofileblock =~ s/({|<)yabb postinfo(}|>)/$template_postinfo/gsm;
-        $myprofileblock =~ s/({|<)yabb location(}|>)/$userlocation/gsm;
+          s/{yabb usertext}/${$uid.$username}{'usertext'}/gsm;
+        $myprofileblock =~ s/{yabb postinfo}/$template_postinfo/gsm;
+        $myprofileblock =~ s/{yabb location}/$userlocation/gsm;
         $myprofileblock =~
-          s/({|<)yabb gender(}|>)/${$uid.$username}{'gender'}/gsm;
-        $myprofileblock =~ s/({|<)yabb age(}|>)/$template_age/gsm;
-        $myprofileblock =~ s/({|<)yabb regdate(}|>)/$template_regdate/gsm;
+          s/{yabb gender}/${$uid.$username}{'gender'}/gsm;
+        $myprofileblock =~ s/{yabb age}/$template_age/gsm;
+        $myprofileblock =~ s/{yabb regdate}/$template_regdate/gsm;
         ################################
-        $myprofileblock =~ s/({|<)yabb .+?(}|>)//gsm;
+        $myprofileblock =~ s/{yabb .+?}//gsm;
 
         if ($buddyListEnabled) {
             if ( ${ $uid . $username }{'buddylist'} ) {

@@ -520,13 +520,11 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
         }
     }
 
-# This next line fixes problems created when a fatal_error is called before Security.pm is loaded
-# We don't want to require since it's an error and trying to do anything extra for an error could be bad
-    if (   $output =~ m/<yabb\ copyright>/xsm
-        || $output =~ m/{yabb\ copyright}/xsm )
-    {
+# check for copyright for special error - angle brackets no longer supported for yabb tags
+    if ( $output =~ m/{yabb\ copyright}/xsm ) {
         $yycopyin = 1;
-    }    ## new template style in also
+    }
+
     $yysearchbox = q{};
     if ( !$iamguest || $guestaccess != 0 ) {
         if ( $maxsearchdisplay > -1 && $qcksearchaccess eq 'granted' ) {
@@ -682,17 +680,15 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
         $yynews = '&nbsp;';
     }
 
-    # Moved this down here so it shows more
-    ##  pushed to own file for flexibility
     if ( $debug == 1 || ( $debug == 2 && $iamadmin ) || $debug == 3 ) {
         require Sources::Debug;
         Debug();
     }
 
     $yyurl = $scripturl;
-    my $copyright = $output =~ m/(<|{)yabb copyright(}|>)/sm ? 1 : 0;
+    my $copyright = $output =~ m/{yabb\ copyright}/xsm ? 1 : 0;
 
-    # new and old tag template style decoding
+    # new and old tag template style decoding - the (<|{) and (}|>) must remain for it to work.
     while ( $output =~ s/(<|{)yabb\s+(\w+)(}|>)/${"yy$2"}/gxsm ) { }
 
     # check if image exists, otherwise use the default template image

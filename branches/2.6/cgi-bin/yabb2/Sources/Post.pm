@@ -845,35 +845,35 @@ qq~<div class="small" style="float: right; width: 100%; text-align: right; margi
 
         FromHTML($moddate);
         $messageblock = $mypost_liveprev;
-        $messageblock =~ s/({|<)yabb images(}|>)/$imagesdir/gsm;
-        $messageblock =~ s/({|<)yabb css(}|>)/$css/gsm;
+        $messageblock =~ s/{yabb images}/$imagesdir/gsm;
+        $messageblock =~ s/{yabb css}/$css/gsm;
         $messageblock =~
-s/({|<)yabb userlink(}|>)/<span id="savename" style="font-weight: bold">$liveusernamelink<\/span>/gsm;
-        $messageblock =~ s/({|<)yabb memberinfo(}|>)/$livememberinfo/gsm;
-        $messageblock =~ s/({|<)yabb stars(}|>)/$livememberstar/gsm;
-        $messageblock =~ s/({|<)yabb location(}|>)/$liveuserlocation/gsm;
+s/{yabb userlink}/<span id="savename" style="font-weight: bold">$liveusernamelink<\/span>/gsm;
+        $messageblock =~ s/{yabb memberinfo}/$livememberinfo/gsm;
+        $messageblock =~ s/{yabb stars}/$livememberstar/gsm;
+        $messageblock =~ s/{yabb location}/$liveuserlocation/gsm;
         $messageblock =~
-          s/({|<)yabb gender(}|>)/${$uid.$tmpmusername}{'gender'}/gsm;
+          s/{yabb gender}/${$uid.$tmpmusername}{'gender'}/gsm;
         $messageblock =~
-          s/({|<)yabb usertext(}|>)/${$uid.$tmpmusername}{'usertext'}/gsm;
+          s/{yabb usertext}/${$uid.$tmpmusername}{'usertext'}/gsm;
         $messageblock =~
-          s/({|<)yabb userpic(}|>)/${$uid.$tmpmusername}{'userpic'}/gsm;
-        $messageblock =~ s/({|<)yabb postinfo(}|>)/$livetemplate_postinfo/gsm;
-        $messageblock =~ s/({|<)yabb msgdate(}|>)/$moddate/gsm;
-        $messageblock =~ s/({|<)yabb msgimg(}|>)/$livemsgimg/gsm;
-        $messageblock =~ s/({|<)yabb age(}|>)/$liveuser_age/gsm;
-        $messageblock =~ s/({|<)yabb regdate(}|>)/$liveuser_regdate/gsm;
+          s/{yabb userpic}/${$uid.$tmpmusername}{'userpic'}/gsm;
+        $messageblock =~ s/{yabb postinfo}/$livetemplate_postinfo/gsm;
+        $messageblock =~ s/{yabb msgdate}/$moddate/gsm;
+        $messageblock =~ s/{yabb msgimg}/$livemsgimg/gsm;
+        $messageblock =~ s/{yabb age}/$liveuser_age/gsm;
+        $messageblock =~ s/{yabb regdate}/$liveuser_regdate/gsm;
         $messageblock =~
-          s/({|<)yabb subject(}|>)/<span id="savesubj"><\/span>/gsm;
+          s/{yabb subject}/<span id="savesubj"><\/span>/gsm;
         $messageblock =~
-          s/({|<)yabb message(}|>)/<span id="savemess"><\/span>/gsm;
-        $messageblock =~ s/({|<)yabb modified(}|>)/$tmplastmodified/gsm;
-        $messageblock =~ s/({|<)yabb ipimg(}|>)/$liveipimg/gsm;
-        $messageblock =~ s/({|<)yabb ip(}|>)/$livemip/gsm;
+          s/{yabb message}/<span id="savemess"><\/span>/gsm;
+        $messageblock =~ s/{yabb modified}/$tmplastmodified/gsm;
+        $messageblock =~ s/{yabb ipimg}/$liveipimg/gsm;
+        $messageblock =~ s/{yabb ip}/$livemip/gsm;
         $messageblock =~
-          s/({|<)yabb signature(}|>)/${$uid.$tmpmusername}{'signature'}/gsm;
-        $messageblock =~ s/({|<)yabb signaturehr(}|>)/$livesignature_hr/gsm;
-        $messageblock =~ s/({|<)yabb (.+?)(}|>)//gsm;
+          s/{yabb signature}/${$uid.$tmpmusername}{'signature'}/gsm;
+        $messageblock =~ s/{yabb signaturehr}/$livesignature_hr/gsm;
+        $messageblock =~ s/{yabb (.+?)}//gsm;
         my $nolinkallow;
         if ( !$minlinkpost ) { $minlinkpost = 0; }
 

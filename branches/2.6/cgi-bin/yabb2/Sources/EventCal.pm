@@ -148,7 +148,7 @@ qq~$scripturl?action=eventcal;calshow=1;calmon=$gomon;calyear=$goyear~;
     }
 
     my $newdate = $date;
-	my $toffs = toffs($date);
+    my $toffs = toffs($date);
 
     if ( $INFO{'calyear'} ) {
         $ausgabe1    = qq~$INFO{'calmon'}/01/$INFO{'calyear'} am 00:00:00~;
@@ -559,15 +559,15 @@ qq~<br /><b>$var_cal{'by'}</b> <span id="savename"></span> ($var_cal{'guest'})~;
         $my_private = q~<span id="ev_private"></span>~;
 
         $messageblock = $mycal_liveprev;
-        $messageblock =~ s/({|<)yabb css(}|>)/$css/gsm;
-        $messageblock =~ s/({|<)yabb eventuserlink(}|>)/$liveusernamelink/gsm;
-        $messageblock =~ s/({|<)yabb cdate(}|>)/<span id="cdate"><\/span>/gsm;
-        $messageblock =~ s/({|<)yabb my_cal_icon(}|>)/$livemsgimg/gsm;
+        $messageblock =~ s/{yabb css}/$css/gsm;
+        $messageblock =~ s/{yabb eventuserlink}/$liveusernamelink/gsm;
+        $messageblock =~ s/{yabb cdate}/<span id="cdate"><\/span>/gsm;
+        $messageblock =~ s/{yabb my_cal_icon}/$livemsgimg/gsm;
         $messageblock =~ s/{yabb my_cal_private}/$my_private/sm;
         $messageblock =~ s/{yabb icon_text}/$my_evtitle/sm;
         $messageblock =~
-          s/({|<)yabb message(}|>)/<span id="savemess"><\/span>/gsm;
-        $messageblock =~ s/({|<)yabb (.+?)(}|>)//gsm;
+          s/{yabb message}/<span id="savemess"><\/span>/gsm;
+        $messageblock =~ s/{yabb (.+?)}//gsm;
 
         $my_postsection_ajx = my_check_prev();
     }

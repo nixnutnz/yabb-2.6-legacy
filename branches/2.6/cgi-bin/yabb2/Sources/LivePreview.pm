@@ -132,14 +132,14 @@ sub DoLiveIM {
     $livemip   = $inmes_txt{'511'};
 
     $messageblock = $myIM_liveprev_b;
-    $messageblock =~ s/({|<)yabb css(}|>)/$css/gsm;
-    $messageblock =~ s/({|<)yabb msgimg(}|>)/$msgimg/gsm;
-    $messageblock =~ s/({|<)yabb subjdate(}|>)/$subjdate/gsm;
-    $messageblock =~ s/({|<)yabb csubject(}|>)/$csubject/gsm;
-    $messageblock =~ s/({|<)yabb message(}|>)/$message/gsm;
-    $messageblock =~ s/({|<)yabb my_sig(}|>)/$my_sig/gsm;
-    $messageblock =~ s/({|<)yabb my_attach(}|>)/$my_attach/gsm;
-    $messageblock =~ s/({|<)yabb my_showIP(}|>)/$liveipimg $livemip/gsm;
+    $messageblock =~ s/{yabb css}/$css/gsm;
+    $messageblock =~ s/{yabb msgimg}/$msgimg/gsm;
+    $messageblock =~ s/{yabb subjdate}/$subjdate/gsm;
+    $messageblock =~ s/{yabb csubject}/$csubject/gsm;
+    $messageblock =~ s/{yabb message}/$message/gsm;
+    $messageblock =~ s/{yabb my_sig}/$my_sig/gsm;
+    $messageblock =~ s/{yabb my_attach}/$my_attach/gsm;
+    $messageblock =~ s/{yabb my_showIP}/$liveipimg $livemip/gsm;
 
     liveimage_resize();
 

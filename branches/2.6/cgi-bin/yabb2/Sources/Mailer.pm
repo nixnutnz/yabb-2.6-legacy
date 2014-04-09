@@ -152,11 +152,11 @@ sub sendmail {
 sub template_email {
     my ( $message, $info ) = @_;
     foreach my $key ( keys %{$info} ) {
-        $message =~ s/(<|{)yabb $key(}|>)/$info->{$key}/gsm;
+        $message =~ s/{yabb $key}/$info->{$key}/gsm;
     }
-    $message =~ s/(<|{)yabb scripturl(}|>)/$scripturl/gsm;
-    $message =~ s/(<|{)yabb adminurl(}|>)/$adminurl/gsm;
-    $message =~ s/(<|{)yabb mbname(}|>)/$mbname/gsm;
+    $message =~ s/{yabb scripturl}/$scripturl/gsm;
+    $message =~ s/{yabb adminurl}/$adminurl/gsm;
+    $message =~ s/{yabb mbname}/$mbname/gsm;
     return $message;
 }
 

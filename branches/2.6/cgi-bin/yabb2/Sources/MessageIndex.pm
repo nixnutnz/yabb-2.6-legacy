@@ -657,7 +657,7 @@ qq~<img src="$micon_bg{'announcementlock'}" alt="$messageindex_txt{'104'}" title
             $adminlink =
 qq~<img src="$micon_bg{'locked'}" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" /><img src="$micon_bg{'sticky'}" alt="$messageindex_txt{'781'}" title="$messageindex_txt{'781'}" /><img src="$micon_bg{'hide'}" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" /><img src="$micon_bg{'admin_move'}" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" /><img src="$micon_bg{'admin_rem'}" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" />~;
         }
-        $adminheader =~ s/({|<)yabb admin(}|>)/$adminlink/gsm;
+        $adminheader =~ s/{yabb admin}/$adminlink/gsm;
     }
     elsif (
         (
@@ -674,13 +674,13 @@ qq~<img src="$micon_bg{'locked'}" alt="$messageindex_txt{'104'}" title="$message
       )
     {
         $adminlink = qq~$messageindex_txt{'2'}~;
-        $adminheader =~ s/({|<)yabb admin(}|>)/$adminlink/gsm;
+        $adminheader =~ s/{yabb admin}/$adminlink/gsm;
     }
 
     # check to display moderator column
     my $tmpstickyheader;
     if ($stkynum) {
-        $stickyheader =~ s/({|<)yabb colspan(}|>)/$colspan/gsm;
+        $stickyheader =~ s/{yabb colspan}/$colspan/gsm;
         $tmpstickyheader = $stickyheader;
     }
 
@@ -982,7 +982,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">$f
         $lastpostername = $lastposter || $messageindex_txt{'470'};
 
         if ( ( $stkynum && ( $counter >= $stkynum ) ) && ( $stkyshowed < 1 ) ) {
-            $nonstickyheader =~ s/({|<)yabb colspan(}|>)/$colspan/gsm;
+            $nonstickyheader =~ s/{yabb colspan}/$colspan/gsm;
             $tmptempbar .= $nonstickyheader;
             $stkyshowed = 1;
         }
@@ -1042,7 +1042,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">$f
         ~;
             }
             $admincol = $admincolumn;
-            $admincol =~ s/({|<)yabb admin(}|>)/$adminbar/gsm;
+            $admincol =~ s/{yabb admin}/$adminbar/gsm;
         }
         elsif (
             (
@@ -1066,7 +1066,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">$f
 qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~;
             }
             $admincol = $admincolumn;
-            $admincol =~ s/({|<)yabb admin(}|>)/$adminbar/gsm;
+            $admincol =~ s/{yabb admin}/$adminbar/gsm;
         }
         elsif (
             (
@@ -1103,7 +1103,7 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
         ~;
             }
             $admincol = $admincolumn;
-            $admincol =~ s/({|<)yabb admin(}|>)/$adminbar/gsm;
+            $admincol =~ s/{yabb admin}/$adminbar/gsm;
         }
 
         $msub = Censor($msub);
@@ -1180,7 +1180,6 @@ s/^((.*?)(\[(\w+?)[\s|\=]*(.*?)\])(.*?)(\[\/\4\]))/ fixtags($1,$2,$3,$6,$7) /eis
                 ToChars($themessage);
                 $themessage =~ s/XCODE/$messageindex_tp{'code_tp'}/gsm;
 
-                #                $themessage =~ s/&/&amp;/igsm;
                 $themessage = Censor($themessage);
                 my $topicsum =
 qq~<div class="windowbg2 topic-hover" id="$mnum">$themessage</div>~;
@@ -1218,28 +1217,28 @@ qq~$maintxt{'758'}: '<a href="$scripturl?num=$movedFlag">$2</a>'<br /><span clas
         my $mydate  = timeformat($mdate);
         my $thicon  = $micon{$threadclass};
         my $tempbar = $movedFlag ? $threadbarMoved : $threadbar;
-        $tempbar =~ s/({|<)yabb admin column(}|>)/$admincol/gsm;
-        $tempbar =~ s/({|<)yabb threadpic(}|>)/$thicon/gsm;
-        $tempbar =~ s/({|<)yabb icon(}|>)/$micon/gsm;
-        $tempbar =~ s/({|<)yabb new(}|>)/$new/gsm;
-        $tempbar =~ s/({|<)yabb poll(}|>)/$mpoll/gsm;
-        $tempbar =~ s/({|<)yabb favorite(}|>)/ ($favicon{$mnum} ? qq~$micon{'addfav'}~ : q{}) /egsm;
-        $tempbar =~ s/({|<)yabb subjectlink(}|>)/$msublink/gsm;
-        $tempbar =~ s/({|<)yabb attachmenticon(}|>)/$temp_attachment/gsm;
-        $tempbar =~ s/({|<)yabb pages(}|>)/$pages/gsm;
-        $tempbar =~ s/({|<)yabb starter(}|>)/$mname/gsm;
-        $tempbar =~ s/({|<)yabb starttime(}|>)/ timeformat($mnum)/egsm;
-        $tempbar =~ s/({|<)yabb replies(}|>)/ NumberFormat($mreplies) /egsm;
-        $tempbar =~ s/({|<)yabb views(}|>)/ NumberFormat($views) /egsm;
-        $tempbar =~ s/({|<)yabb lastpostlink(}|>)/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies">$img{'lastpost'} $mydate<\/a>/gsm;
-        $tempbar =~ s/({|<)yabb lastposter(}|>)/$lastpostername/gsm;
-        $tempbar =~ s/({|<)yabb altthdcolor(}|>)/$altthdcolor/gsm;
+        $tempbar =~ s/{yabb admin column}/$admincol/gsm;
+        $tempbar =~ s/{yabb threadpic}/$thicon/gsm;
+        $tempbar =~ s/{yabb icon}/$micon/gsm;
+        $tempbar =~ s/{yabb new}/$new/gsm;
+        $tempbar =~ s/{yabb poll}/$mpoll/gsm;
+        $tempbar =~ s/{yabb favorite}/ ($favicon{$mnum} ? qq~$micon{'addfav'}~ : q{}) /egsm;
+        $tempbar =~ s/{yabb subjectlink}/$msublink/gsm;
+        $tempbar =~ s/{yabb attachmenticon}/$temp_attachment/gsm;
+        $tempbar =~ s/{yabb pages}/$pages/gsm;
+        $tempbar =~ s/{yabb starter}/$mname/gsm;
+        $tempbar =~ s/{yabb starttime}/ timeformat($mnum)/egsm;
+        $tempbar =~ s/{yabb replies}/ NumberFormat($mreplies) /egsm;
+        $tempbar =~ s/{yabb views}/ NumberFormat($views) /egsm;
+        $tempbar =~ s/{yabb lastpostlink}/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies">$img{'lastpost'} $mydate<\/a>/gsm;
+        $tempbar =~ s/{yabb lastposter}/$lastpostername/gsm;
+        $tempbar =~ s/{yabb altthdcolor}/$altthdcolor/gsm;
 
         if ( $accept_permalink == 1 ) {
-            $tempbar =~ s/({|<)yabb permalink(}|>)/$message_permalink/gsm;
+            $tempbar =~ s/{yabb permalink}/$message_permalink/gsm;
         }
         else {
-            $tempbar =~ s/({|<)yabb permalink(}|>)//gsm;
+            $tempbar =~ s/{yabb permalink}//gsm;
         }
         $tmptempbar .= $tempbar;
         $counter++;
@@ -1312,9 +1311,9 @@ qq~$maintxt{'758'}: '<a href="$scripturl?num=$movedFlag">$2</a>'<br /><span clas
                 <input type="hidden" name="fromboard" value="$currentboard" />
             ~;
             }
-            $tempfooter =~ s/({|<)yabb admin selector(}|>)/$adminselector/gsm;
+            $tempfooter =~ s/{yabb admin selector}/$adminselector/gsm;
             $tempfooter =~
-              s/({|<)yabb admin checkboxes(}|>)/$admincheckboxes/gsm;
+              s/{yabb admin checkboxes}/$admincheckboxes/gsm;
         }
         elsif ( $multiview eq '2' ) {
             $tempfooter = $subfooterbar;
@@ -1344,14 +1343,14 @@ qq~$maintxt{'758'}: '<a href="$scripturl?num=$movedFlag">$2</a>'<br /><span clas
             $admincheckboxes = q~
                 <input type="checkbox" name="checkall" id="checkall" value="" class="titlebg" onclick="if (this.checked) checkAll(0); else uncheckAll(0);" />
             ~;
-            $tempfooter =~ s/({|<)yabb admin selector(}|>)/$adminselector/gsm;
+            $tempfooter =~ s/{yabb admin selector}/$adminselector/gsm;
             $tempfooter =~
-              s/({|<)yabb admin checkboxes(}|>)/$admincheckboxes/gsm;
+              s/{yabb admin checkboxes}/$admincheckboxes/gsm;
         }
         $tmptempfooter = $subfooterbar;
-        $tmptempfooter =~ s/({|<)yabb admin selector(}|>)/$adminselector/gsm;
+        $tmptempfooter =~ s/{yabb admin selector}/$adminselector/gsm;
         $tmptempfooter =~
-          s/({|<)yabb admin checkboxes(}|>)/$admincheckboxes/gsm;
+          s/{yabb admin checkboxes}/$admincheckboxes/gsm;
     }
 
     if ( !$messagelist ) {
@@ -1382,7 +1381,7 @@ qq~$maintxt{'758'}: '<a href="$scripturl?num=$movedFlag">$2</a>'<br /><span clas
     }
 
     #template it
-    $messageindex_template =~ s/({|<)yabb board(}|>)/$boardlink/gsm;
+    $messageindex_template =~ s/{yabb board}/$boardlink/gsm;
     $template_mods = qq~$modslink$showmodgroups~;
     if ($iamadmin) {
         require Sources::AddModerators;
@@ -1400,13 +1399,13 @@ qq~<a href="$scripturl?action=RSSboard;board=$INFO{'board'}" target="_blank">$me
     }
     $yyrssfeed = $rss_text;
     $yyrss     = $rss_link;
-    $messageindex_template =~ s/({|<)yabb rssfeed(}|>)/$rss_text/gsm;
-    $messageindex_template =~ s/({|<)yabb rss(}|>)/$rss_link/gsm;
+    $messageindex_template =~ s/{yabb rssfeed}/$rss_text/gsm;
+    $messageindex_template =~ s/{yabb rss}/$rss_link/gsm;
 
-    $messageindex_template =~ s/({|<)yabb home(}|>)/$homelink/gsm;
-    $messageindex_template =~ s/({|<)yabb category(}|>)/$catlink/gsm;
-    $messageindex_template =~ s/({|<)yabb board(}|>)/$boardlink/gsm;
-    $messageindex_template =~ s/({|<)yabb moderators(}|>)/$template_mods/gsm;
+    $messageindex_template =~ s/{yabb home}/$homelink/gsm;
+    $messageindex_template =~ s/{yabb category}/$catlink/gsm;
+    $messageindex_template =~ s/{yabb board}/$boardlink/gsm;
+    $messageindex_template =~ s/{yabb moderators}/$template_mods/gsm;
     if ($enabletopichover) {
         if ( !$iamguest && !$INFO{'messagelist'} ) {
             if ( ${ $uid . $username }{'topicpreview'} ) {
@@ -1422,23 +1421,23 @@ qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;tod
     else {
         $enab_topicprev = q{};
     }
-    $messageindex_template =~ s/({|<)yabb topicpreview(}|>)/$enab_topicprev/gsm;
-    $messageindex_template =~ s/({|<)yabb sortsubject(}|>)/$sort_subject/gsm;
-    $messageindex_template =~ s/({|<)yabb sortstarter(}|>)/$sort_starter/gsm;
-    $messageindex_template =~ s/({|<)yabb sortanswer(}|>)/$sort_answer/gsm;
+    $messageindex_template =~ s/{yabb topicpreview}/$enab_topicprev/gsm;
+    $messageindex_template =~ s/{yabb sortsubject}/$sort_subject/gsm;
+    $messageindex_template =~ s/{yabb sortstarter}/$sort_starter/gsm;
+    $messageindex_template =~ s/{yabb sortanswer}/$sort_answer/gsm;
     $messageindex_template =~
-      s/({|<)yabb sortlastpostim(}|>)/$sort_lastpostim/gsm;
+      s/{yabb sortlastpostim}/$sort_lastpostim/gsm;
 
     if ($ShowBDescrip) {
         if ( $bdescrip ne q{} ) {
             ToChars($bdescrip);
             $boarddescription =~
-              s/({|<)yabb boarddescription(}|>)/$bdescrip/gsm;
+              s/{yabb boarddescription}/$bdescrip/gsm;
             $messageindex_template =~
-              s/({|<)yabb description(}|>)/$boarddescription/gsm;
+              s/{yabb description}/$boarddescription/gsm;
         }
         else {
-            $messageindex_template =~ s/({|<)yabb description(}|>)//gsm;
+            $messageindex_template =~ s/{yabb description}//gsm;
         }
         $bdpicExt ||= 'gif';
         if ( ${ $uid . $currentboard }{'ann'} == 1 ) {
@@ -1461,18 +1460,18 @@ qq~ <img src="$bdpic" alt="$curboardname" title="$curboardname" /> ~;
             $bdpic =
 qq~ <img src="$imagesdir/$bdpic" alt="$curboardname" title="$curboardname" /> ~;
         }
-        $messageindex_template =~ s/({|<)yabb bdpicture(}|>)/$bdpic/gsm;
+        $messageindex_template =~ s/{yabb bdpicture}/$bdpic/gsm;
         my $tmpthreadcount =
           NumberFormat( ${ $uid . $currentboard }{'threadcount'} );
         my $tmpmessagecount =
           NumberFormat( ${ $uid . $currentboard }{'messagecount'} );
         $messageindex_template =~
-          s/({|<)yabb threadcount(}|>)/$tmpthreadcount/gsm;
+          s/{yabb threadcount}/$tmpthreadcount/gsm;
         $messageindex_template =~
-          s/({|<)yabb messagecount(}|>)/$tmpmessagecount/gsm;
-        $messageindex_template =~ s/({|<)yabb new_load(}|>)/$newload/gsm;
+          s/{yabb messagecount}/$tmpmessagecount/gsm;
+        $messageindex_template =~ s/{yabb new_load}/$newload/gsm;
     }
-    $messageindex_template =~ s/({|<)yabb colspan(}|>)/$colspan/gsm;
+    $messageindex_template =~ s/{yabb colspan}/$colspan/gsm;
     ### Board Rules Start ###
     if ( ${ $uid . $currentboard }{'rules'} == 1 ) {
         ToChars( ${ $uid . $currentboard }{'rulestitle'} );
@@ -1535,20 +1534,20 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
             ~;
         }
 
-        $messageindex_template =~ s/({|<)yabb rulestitle(}|>)/$rulestitle/gsm;
+        $messageindex_template =~ s/{yabb rulestitle}/$rulestitle/gsm;
         $messageindex_template =~
-          s/({|<)yabb rulesdescription(}|>)/$rulesdesc/gsm;
+          s/{yabb rulesdescription}/$rulesdesc/gsm;
     }
     ### Board Rules End ###
 
     $tool_sep = $threadtools ? q{|||} : q{};
 
     $topichandellist =~
-      s/({|<)yabb notify button(}|>)/$notify_board$tool_sep/gsm;
+      s/{yabb notify button}/$notify_board$tool_sep/gsm;
     $topichandellist =~
-      s/({|<)yabb markall button(}|>)/$markalllink$tool_sep/gsm;
-    $topichandellist =~ s/({|<)yabb new post button(}|>)/$postlink$tool_sep/gsm;
-    $topichandellist =~ s/({|<)yabb new poll button(}|>)/$polllink$tool_sep/gsm;
+      s/{yabb markall button}/$markalllink$tool_sep/gsm;
+    $topichandellist =~ s/{yabb new post button}/$postlink$tool_sep/gsm;
+    $topichandellist =~ s/{yabb new poll button}/$polllink$tool_sep/gsm;
     $topichandellist =~ s/\Q$menusep//ixsm;
 
     @threadin = ( "$notify_board","$markalllink","$postlink","$polllink",);
@@ -1564,13 +1563,13 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
     }
 
     $outside_threadtools =~
-      s/({|<)yabb notify button(}|>)/$threadout[0]/gsm;
+      s/{yabb notify button}/$threadout[0]/gsm;
     $outside_threadtools =~
-      s/({|<)yabb markall button(}|>)/$threadout[1]/gsm;
+      s/{yabb markall button}/$threadout[1]/gsm;
     $outside_threadtools =~
-      s/({|<)yabb new post button(}|>)/$threadout[2]/gsm;
+      s/{yabb new post button}/$threadout[2]/gsm;
     $outside_threadtools =~
-      s/({|<)yabb new poll button(}|>)/$threadout[3]/gsm;
+      s/{yabb new poll button}/$threadout[3]/gsm;
     if ( $my_ttsep ne q{ } ) {
         $outside_threadtools =~ s/\Q$my_ttsep//ixsm;
     }
@@ -1599,13 +1598,13 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
     }
 
     $messageindex_template =~
-      s/({|<)yabb outsidethreadtools(}|>)/$outside_threadtools/gsm;
+      s/{yabb outsidethreadtools}/$outside_threadtools/gsm;
     $messageindex_template =~
-      s/({|<)yabb topichandellist(}|>)/$topichandellist/gsm;
+      s/{yabb topichandellist}/$topichandellist/gsm;
     $messageindex_template =~
-      s/({|<)yabb topichandellist2(}|>)/$topichandellist2/gsm;
-    $messageindex_template =~ s/({|<)yabb pageindex top(}|>)/$pageindex1/gsm;
-    $messageindex_template =~ s/({|<)yabb pageindex bottom(}|>)/$pageindex2/gsm;
+      s/{yabb topichandellist2}/$topichandellist2/gsm;
+    $messageindex_template =~ s/{yabb pageindex top}/$pageindex1/gsm;
+    $messageindex_template =~ s/{yabb pageindex bottom}/$pageindex2/gsm;
 
     if (
         (
@@ -1622,7 +1621,7 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
       )
     {
         $messageindex_template =~
-          s/({|<)yabb admin column(}|>)/$adminheader/gsm;
+          s/{yabb admin column}/$adminheader/gsm;
     }
     elsif (
         (
@@ -1639,10 +1638,10 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
       )
     {
         $messageindex_template =~
-          s/({|<)yabb admin column(}|>)/$adminheader/gsm;
+          s/{yabb admin column}/$adminheader/gsm;
     }
     else {
-        $messageindex_template =~ s/({|<)yabb admin column(}|>)//gsm;
+        $messageindex_template =~ s/{yabb admin column}//gsm;
     }
 
     if (
@@ -1671,32 +1670,32 @@ qq~<form name="multiadmin" action="$scripturl?board=$currentboard;action=multiad
         }
         $formend =
 qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
-        $messageindex_template =~ s/({|<)yabb modupdate(}|>)/$formstart/gsm;
-        $messageindex_template =~ s/({|<)yabb modupdateend(}|>)/$formend/gsm;
+        $messageindex_template =~ s/{yabb modupdate}/$formstart/gsm;
+        $messageindex_template =~ s/{yabb modupdateend}/$formend/gsm;
     }
     else {
-        $messageindex_template =~ s/({|<)yabb modupdate(}|>)//gsm;
-        $messageindex_template =~ s/({|<)yabb modupdateend(}|>)//gsm;
+        $messageindex_template =~ s/{yabb modupdate}//gsm;
+        $messageindex_template =~ s/{yabb modupdateend}//gsm;
     }
     if ($tmpstickyheader) {
         $messageindex_template =~
-          s/({|<)yabb stickyblock(}|>)/$tmpstickyheader/gsm;
+          s/{yabb stickyblock}/$tmpstickyheader/gsm;
     }
     else {
-        $messageindex_template =~ s/({|<)yabb stickyblock(}|>)//gsm;
+        $messageindex_template =~ s/{yabb stickyblock}//gsm;
     }
-    $messageindex_template =~ s/({|<)yabb threadblock(}|>)/$tmptempbar/gsm;
+    $messageindex_template =~ s/{yabb threadblock}/$tmptempbar/gsm;
     if ($tmptempfooter) {
         $messageindex_template =~
-          s/({|<)yabb adminfooter(}|>)/$tmptempfooter/gsm;
+          s/{yabb adminfooter}/$tmptempfooter/gsm;
     }
     else {
-        $messageindex_template =~ s/({|<)yabb adminfooter(}|>)//gsm;
+        $messageindex_template =~ s/{yabb adminfooter}//gsm;
     }
-    $messageindex_template =~ s/({|<)yabb icons(}|>)/$yabbicons/gsm;
-    $messageindex_template =~ s/({|<)yabb admin icons(}|>)/$yabbadminicons/gsm;
+    $messageindex_template =~ s/{yabb icons}/$yabbicons/gsm;
+    $messageindex_template =~ s/{yabb admin icons}/$yabbadminicons/gsm;
     $messageindex_template =~
-      s/({|<)yabb access(}|>)/ $messagelist ? q{} : LoadAccess() /esm;
+      s/{yabb access}/ $messagelist ? q{} : LoadAccess() /esm;
 
     # Show subboards
     if ( $subboard{$currentboard} ) {

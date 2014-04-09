@@ -80,7 +80,7 @@ $mycenter_template = qq~
 ## version of user/poster block for user's display in 'my center'
 $myprofileblock = qq~
 <div id="userdata" style="width: 95%; border: 2px dashed #B0C4DE; padding: 3px;">
-    <yabb userlink>
+    {yabb userlink}
     <div class="small">
         {yabb memberinfo}
         <br />

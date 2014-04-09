@@ -387,10 +387,10 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$voters_name}">$
     $yymain =~ s/{yabb poll_question}/$poll_question/sm;
     $yymain =~ s/{yabb my_IP}/$my_IP/sm;
 
-    $display_template =~ s/({|<)yabb home(}|>)/$template_home/gsm;
-    $display_template =~ s/({|<)yabb category(}|>)/$template_cat/gsm;
-    $display_template =~ s/({|<)yabb board(}|>)/$template_board/gsm;
-    $display_template =~ s/({|<)yabb threadurl(}|>)/$curthreadurl/gsm;
+    $display_template =~ s/{yabb home}/$template_home/gsm;
+    $display_template =~ s/{yabb category}/$template_cat/gsm;
+    $display_template =~ s/{yabb board}/$template_board/gsm;
+    $display_template =~ s/{yabb threadurl}/$curthreadurl/gsm;
 
     template();
     return;

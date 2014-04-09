@@ -2479,18 +2479,14 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
     }
     for my $i ( 0 .. ( @yytemplate - 1 ) ) {
         $curline = $yytemplate[$i];
-        if (
-            !$yycopyin
-            && (   $curline =~ m{<yabb copyright>}sm
-                || $curline =~ m/{yabb copyright}/sm )
-          )
+        if ( !$yycopyin && $curline =~ m/{yabb copyright}/sm )
         {
             $yycopyin = 1;
         }
-        if ( $curline =~ m{(<|{)yabb newstitle(}|>)}sm && $enable_news ) {
+        if ( $curline =~ m/{yabb newstitle}/sm && $enable_news ) {
             $yynewstitle = qq~<b>$maintxt{'102'}:</b> ~;
         }
-        if ( $curline =~ m{(<|{)yabb news(}|>)}sm && $enable_news ) {
+        if ( $curline =~ m/{yabb news}/sm && $enable_news ) {
             srand;
             if ( $shownewsfader == 1 ) {
 

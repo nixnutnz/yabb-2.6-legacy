@@ -393,27 +393,27 @@ qq~<a href="$scripturl?num=$mnum/$mreplies#$mreplies">$img{'lastpost'}$mydate</a
         $adminbar =
 qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~;
         $admincol = $admincolumn;
-        $admincol =~ s/({|<)yabb admin(}|>)/$adminbar/gsm;
+        $admincol =~ s/{yabb admin}/$adminbar/gsm;
 
-        $tempbar =~ s/({|<)yabb admin column(}|>)/$admincol/gsm;
-        $tempbar =~ s/({|<)yabb threadpic(}|>)/$threadpic/gsm;
-        $tempbar =~ s/({|<)yabb icon(}|>)/$micon/gsm;
-        $tempbar =~ s/({|<)yabb new(}|>)/$new/gsm;
-        $tempbar =~ s/({|<)yabb poll(}|>)/$mpoll/gsm;
-        $tempbar =~ s/({|<)yabb favorite(}|>)/$favicon{$mnum}/gsm;
-        $tempbar =~ s/({|<)yabb subjectlink(}|>)/$msublink/gsm;
-        $tempbar =~ s/({|<)yabb attachmenticon(}|>)/$temp_attachment/gsm;
-        $tempbar =~ s/({|<)yabb pages(}|>)/$pages/gsm;
-        $tempbar =~ s/({|<)yabb starter(}|>)/$mname/gsm;
-        $tempbar =~ s/({|<)yabb replies(}|>)/$fmreplies/gsm;
-        $tempbar =~ s/({|<)yabb views(}|>)/$views/gsm;
-        $tempbar =~ s/({|<)yabb lastpostlink(}|>)/$lastpostlink/gsm;
-        $tempbar =~ s/({|<)yabb lastposter(}|>)/$lastpostername/gsm;
+        $tempbar =~ s/{yabb admin column}/$admincol/gsm;
+        $tempbar =~ s/{yabb threadpic}/$threadpic/gsm;
+        $tempbar =~ s/{yabb icon}/$micon/gsm;
+        $tempbar =~ s/{yabb new}/$new/gsm;
+        $tempbar =~ s/{yabb poll}/$mpoll/gsm;
+        $tempbar =~ s/{yabb favorite}/$favicon{$mnum}/gsm;
+        $tempbar =~ s/{yabb subjectlink}/$msublink/gsm;
+        $tempbar =~ s/{yabb attachmenticon}/$temp_attachment/gsm;
+        $tempbar =~ s/{yabb pages}/$pages/gsm;
+        $tempbar =~ s/{yabb starter}/$mname/gsm;
+        $tempbar =~ s/{yabb replies}/$fmreplies/gsm;
+        $tempbar =~ s/{yabb views}/$views/gsm;
+        $tempbar =~ s/{yabb lastpostlink}/$lastpostlink/gsm;
+        $tempbar =~ s/{yabb lastposter}/$lastpostername/gsm;
         if ( $accept_permalink == 1 ) {
-            $tempbar =~ s/({|<)yabb permalink(}|>)/$message_permalink/gsm;
+            $tempbar =~ s/{yabb permalink}/$message_permalink/gsm;
         }
         else {
-            $tempbar =~ s/({|<)yabb permalink(}|>)//gsm;
+            $tempbar =~ s/{yabb permalink}//gsm;
         }
         $tmptempbar .= $tempbar;
         $counter++;
@@ -458,20 +458,20 @@ qq~<form name="multiremfav" action="$scripturl?board=$currentboard;action=multir
     $admincheckboxes = q~
     <input type="checkbox" name="checkall" id="checkall" value="" class="titlebg" onclick="if (this.checked) checkAll(0); else uncheckAll(0);" />
     ~;
-    $subfooterbar =~ s/({|<)yabb admin selector(}|>)/$adminselector/gsm;
-    $subfooterbar =~ s/({|<)yabb admin checkboxes(}|>)/$admincheckboxes/gsm;
+    $subfooterbar =~ s/{yabb admin selector}/$adminselector/gsm;
+    $subfooterbar =~ s/{yabb admin checkboxes}/$admincheckboxes/gsm;
 
     # Template it
-    $adminheader =~ s/({|<)yabb admin(}|>)/$messageindex_txt{'2'}/gsm;
+    $adminheader =~ s/{yabb admin}/$messageindex_txt{'2'}/gsm;
 
-    $favorites_template =~ s/({|<)yabb home(}|>)//gsm;
-    $favorites_template =~ s/({|<)yabb category(}|>)//gsm;
+    $favorites_template =~ s/{yabb home}//gsm;
+    $favorites_template =~ s/{yabb category}//gsm;
 
     $yynavigation =
 qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'}</a> &rsaquo; $img_txt{'70'}~;
 
     $favboard = qq~<span class="nav">$img_txt{'70'}</span>~;
-    $favorites_template =~ s/({|<)yabb board(}|>)/$favboard/gsm;
+    $favorites_template =~ s/{yabb board}/$favboard/gsm;
     $bdescrip =
 qq~$messageindex_txt{'75'}<br />$messageindex_txt{'76'} $curfav $messageindex_txt{'77'} $maxfavs $messageindex_txt{'78'}~;
     $curfav   = NumberFormat($curfav);
@@ -479,24 +479,24 @@ qq~$messageindex_txt{'75'}<br />$messageindex_txt{'76'} $curfav $messageindex_tx
     $bdpicExt ||= 'gif';
 
     ToChars($bdescrip);
-    $boarddescription   =~ s/({|<)yabb boarddescription(}|>)/$bdescrip/gsm;
-    $favorites_template =~ s/({|<)yabb description(}|>)/$boarddescription/gsm;
+    $boarddescription   =~ s/{yabb boarddescription}/$bdescrip/gsm;
+    $favorites_template =~ s/{yabb description}/$boarddescription/gsm;
     $bdpic =
 qq~ <img src="$imagesdir/$my_favbrds" alt="$img_txt{'70'}" title="$img_txt{'70'}" /> ~;
-    $favorites_template =~ s/({|<)yabb bdpicture(}|>)/$bdpic/gsm;
-    $favorites_template =~ s/({|<)yabb threadcount(}|>)/$curfav/gsm;
-    $favorites_template =~ s/({|<)yabb messagecount(}|>)/$treplies/gsm;
+    $favorites_template =~ s/{yabb bdpicture}/$bdpic/gsm;
+    $favorites_template =~ s/{yabb threadcount}/$curfav/gsm;
+    $favorites_template =~ s/{yabb messagecount}/$treplies/gsm;
 
-    $favorites_template =~ s/({|<)yabb colspan(}|>)/$colspan/gsm;
+    $favorites_template =~ s/{yabb colspan}/$colspan/gsm;
 
-    $favorites_template =~ s/({|<)yabb admin column(}|>)/$adminheader/gsm;
-    $favorites_template =~ s/({|<)yabb modupdate(}|>)/$formstart/gsm;
-    $favorites_template =~ s/({|<)yabb modupdateend(}|>)/$formend/gsm;
+    $favorites_template =~ s/{yabb admin column}/$adminheader/gsm;
+    $favorites_template =~ s/{yabb modupdate}/$formstart/gsm;
+    $favorites_template =~ s/{yabb modupdateend}/$formend/gsm;
 
-    $favorites_template =~ s/({|<)yabb threadblock(}|>)/$tmptempbar/gsm;
-    $favorites_template =~ s/({|<)yabb adminfooter(}|>)/$subfooterbar/gsm;
-    $favorites_template =~ s/({|<)yabb icons(}|>)/$yabbicons/gsm;
-    $favorites_template =~ s/({|<)yabb admin icons(}|>)/$yabbadminicons/gsm;
+    $favorites_template =~ s/{yabb threadblock}/$tmptempbar/gsm;
+    $favorites_template =~ s/{yabb adminfooter}/$subfooterbar/gsm;
+    $favorites_template =~ s/{yabb icons}/$yabbicons/gsm;
+    $favorites_template =~ s/{yabb admin icons}/$yabbadminicons/gsm;
     $showFavorites .= qq~$favorites_template~;
 
     $showFavorites .= qq~

@@ -681,20 +681,20 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
                 }
                 $tmpcatimg = qq~$catimage~;
             }
-            $templatecat =~ s/({|<)yabb catimage(}|>)/$tmpcatimg/gsm;
-            $templatecat =~ s/({|<)yabb catrss(}|>)/$rss_catlink/gsm;
-            $templatecat =~ s/({|<)yabb catlink(}|>)/$catlink/gsm;
+            $templatecat =~ s/{yabb catimage}/$tmpcatimg/gsm;
+            $templatecat =~ s/{yabb catrss}/$rss_catlink/gsm;
+            $templatecat =~ s/{yabb catlink}/$catlink/gsm;
             $templatecat =~
-              s/({|<)yabb newmsg start(}|>)/$newrowstart{$catname}/gsm;
+              s/{yabb newmsg start}/$newrowstart{$catname}/gsm;
             $templatecat =~
-              s/({|<)yabb newmsg icon(}|>)/$newrowicon{$catname}/gsm;
-            $templatecat =~ s/({|<)yabb newmsg(}|>)/$newms{$catname}/gsm;
+              s/{yabb newmsg icon}/$newrowicon{$catname}/gsm;
+            $templatecat =~ s/{yabb newmsg}/$newms{$catname}/gsm;
             $templatecat =~
-              s/({|<)yabb newmsg end(}|>)/$newrowend{$catname}/gsm;
+              s/{yabb newmsg end}/$newrowend{$catname}/gsm;
             $templatecat =~
-              s/({|<)yabb boardtable(}|>)/$template_boardtable/gsm;
+              s/{yabb boardtable}/$template_boardtable/gsm;
             $templatecat =~
-              s/({|<)yabb colboardtable(}|>)/$template_colboardtable/gsm;
+              s/{yabb colboardtable}/$template_colboardtable/gsm;
             $tmptemplateblock .= $templatecat;
         }
 
@@ -1079,18 +1079,18 @@ qq~ $childcnt{$childbd} $boardindex_txt{'72'}~;
                             $my_bddescr   = ${ $uid . $childbd }{'description'};
                             my @bname = split /<br \/>/sm, $my_bddescr;
                             $boardname = qq~$scripturl\?action\=showexternal;exboard\=$childbd~;
-                            $tmp_sublinks =~ s/({|<)yabb boardurl(}|>)/$boardname/gsm;
-                            $tmp_sublinks =~ s/({|<)yabb new(}|>)/$new/gsm;
-                            $tmp_sublinks =~ s/({|<)yabb boardname(}|>)/$bname[0]/gsm;
-                            $tmp_sublinks =~ s/({|<)yabb sub_lock(}|>)/$sub_lock/gsm;
+                            $tmp_sublinks =~ s/{yabb boardurl}/$boardname/gsm;
+                            $tmp_sublinks =~ s/{yabb new}/$new/gsm;
+                            $tmp_sublinks =~ s/{yabb boardname}/$bname[0]/gsm;
+                            $tmp_sublinks =~ s/{yabb sub_lock}/$sub_lock/gsm;
                         }
                         else {
                             $tmp_sublinks = $subboard_links;
-                            $tmp_sublinks =~ s/({|<)yabb boardname(}|>)/$chldboardname/gsm;
-                            $tmp_sublinks =~ s/({|<)yabb boardurl(}|>)/$scripturl\?board\=$childbd/gsm;
-                            $tmp_sublinks =~ s/({|<)yabb new(}|>)/$sub_new/gsm;
-                            $tmp_sublinks =~ s/({|<)yabb sub_lock(}|>)/$sub_lock/gsm;
-                            $tmp_sublinks =~ s/({|<)yabb boardinfo(}|>)/$boardinfotxt/gsm;
+                            $tmp_sublinks =~ s/{yabb boardname}/$chldboardname/gsm;
+                            $tmp_sublinks =~ s/{yabb boardurl}/$scripturl\?board\=$childbd/gsm;
+                            $tmp_sublinks =~ s/{yabb new}/$sub_new/gsm;
+                            $tmp_sublinks =~ s/{yabb sub_lock}/$sub_lock/gsm;
+                            $tmp_sublinks =~ s/{yabb boardinfo}/$boardinfotxt/gsm;
                         }
                         $template_subboards .= qq~$tmp_sublinks, ~;
                     }
@@ -1119,9 +1119,9 @@ qq~<a href="javascript:void(0)" id="subdropa_$curboard" style="font-weight:bold"
                         }
                     }
                     $tmp_sublist =~
-                      s/({|<)yabb subboardlinks(}|>)/$template_subboards/gsm;
+                      s/{yabb subboardlinks}/$template_subboards/gsm;
                     $tmp_sublist =~
-                      s/({|<)yabb subdropdown(}|>)/$subdropdown/gsm;
+                      s/{yabb subdropdown}/$subdropdown/gsm;
                 }
 
                 my $altbrdcolor =
@@ -1166,10 +1166,10 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
 # if it's a parent board that cant be posted in, just show sub board list when clicked vs. message index
                 if ( $subboard{$curboard} && !${ $uid . $curboard }{'canpost'} )
                 {
-                    $templateblock =~ s/({|<)yabb boardurl(}|>)/$scripturl\?boardselect\=$curboard/gsm;
+                    $templateblock =~ s/{yabb boardurl}/$scripturl\?boardselect\=$curboard/gsm;
                 }
                 else {
-                    $templateblock =~ s/({|<)yabb boardurl(}|>)/$scripturl\?board\=$curboard/gsm;
+                    $templateblock =~ s/{yabb boardurl}/$scripturl\?board\=$curboard/gsm;
                 }
 
                 # Make hidden table rows for drop down message list
@@ -1187,31 +1187,31 @@ qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?boa
                 }
                 else { $messagedropdown = q{}; }
                 if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm ) {
-                    $templateblock =~ s/({|<)yabb expandmessages(}|>)/$expandmessages/gsm;
-                    $templateblock =~ s/({|<)yabb messagedropdown(}|>)/$messagedropdown/gsm;
+                    $templateblock =~ s/{yabb expandmessages}/$expandmessages/gsm;
+                    $templateblock =~ s/{yabb messagedropdown}/$messagedropdown/gsm;
 
-                    $templateblock =~ s/({|<)yabb boardanchor(}|>)/$boardanchor/gsm;
-                    $templateblock =~ s/({|<)yabb new(}|>)/$new/gsm;
-                    $templateblock =~ s/({|<)yabb boardrss(}|>)/$rss_boardlink/gsm;
-                    $templateblock =~ s/({|<)yabb newsm(}|>)/$new2/gsm;
-                    $templateblock =~ s/({|<)yabb boardpic(}|>)/$bdpic/gsm;
-                    $templateblock =~ s/({|<)yabb boardname(}|>)/$boardname $boardpwpic/gsm;
-                    $templateblock =~ s/({|<)yabb boarddesc(}|>)/$bddescr/gsm;
+                    $templateblock =~ s/{yabb boardanchor}/$boardanchor/gsm;
+                    $templateblock =~ s/{yabb new}/$new/gsm;
+                    $templateblock =~ s/{yabb boardrss}/$rss_boardlink/gsm;
+                    $templateblock =~ s/{yabb newsm}/$new2/gsm;
+                    $templateblock =~ s/{yabb boardpic}/$bdpic/gsm;
+                    $templateblock =~ s/{yabb boardname}/$boardname $boardpwpic/gsm;
+                    $templateblock =~ s/{yabb boarddesc}/$bddescr/gsm;
                     my $boardviewers;
 
                     if ( $bvusers{$curboard} ) {
                         $tmpboardviewers = NumberFormat($bvusers{$curboard});
                         $boardviewers = qq~&nbsp;($tmpboardviewers&nbsp;$boardindex_txt{'bviews'})~;
                     }
-                    $templateblock =~ s/({|<)yabb boardviewers(}|>)/$boardviewers/gsm;
-                    $templateblock =~ s/({|<)yabb moderators(}|>)/$showmods$showmodgroups/gsm;
-                    $templateblock =~ s/({|<)yabb threadcount(}|>)/${$uid.$curboard}{'threadcount'}/gsm;
-                    $templateblock =~ s/({|<)yabb messagecount(}|>)/${$uid.$curboard}{'messagecount'}/gsm;
-                    $templateblock =~ s/({|<)yabb lastpostlink(}|>)/$lastpostlink/gsm;
-                    $templateblock =~ s/({|<)yabb lastposter(}|>)/$lastposter/gsm;
-                    $templateblock =~ s/({|<)yabb lasttopiclink(}|>)/$lasttopiclink/gsm;
-                    $templateblock =~ s/({|<)yabb altbrdcolor(}|>)/$altbrdcolor/gsm;
-                    $templateblock =~ s/({|<)yabb subboardlist(}|>)/$tmp_sublist/gsm;
+                    $templateblock =~ s/{yabb boardviewers}/$boardviewers/gsm;
+                    $templateblock =~ s/{yabb moderators}/$showmods$showmodgroups/gsm;
+                    $templateblock =~ s/{yabb threadcount}/${$uid.$curboard}{'threadcount'}/gsm;
+                    $templateblock =~ s/{yabb messagecount}/${$uid.$curboard}{'messagecount'}/gsm;
+                    $templateblock =~ s/{yabb lastpostlink}/$lastpostlink/gsm;
+                    $templateblock =~ s/{yabb lastposter}/$lastposter/gsm;
+                    $templateblock =~ s/{yabb lasttopiclink}/$lasttopiclink/gsm;
+                    $templateblock =~ s/{yabb altbrdcolor}/$altbrdcolor/gsm;
+                    $templateblock =~ s/{yabb subboardlist}/$tmp_sublist/gsm;
                 }
                 else {
                     $templateblock = $boardblockext;
@@ -1224,20 +1224,20 @@ qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?boa
                     $boardname =
                       qq~$scripturl\?action\=showexternal;exboard\=$curboard~;
                     $my_blankext = q{--};
-                    $templateblock =~ s/({|<)yabb boardurl(}|>)/$boardname/gsm;
-                    $templateblock =~ s/({|<)yabb boardpic(}|>)/$bdpic/gsm;
-                    $templateblock =~ s/({|<)yabb boardname(}|>)/$bname[0]/gsm;
-                    $templateblock =~ s/({|<)yabb boarddesc(}|>)/$bdd/gsm;
-                    $templateblock =~ s/({|<)yabb threadcount(}|>)/$my_blankext/gsm;
-                    $templateblock =~ s/({|<)yabb messagecount(}|>)/$my_blankext/gsm;
+                    $templateblock =~ s/{yabb boardurl}/$boardname/gsm;
+                    $templateblock =~ s/{yabb boardpic}/$bdpic/gsm;
+                    $templateblock =~ s/{yabb boardname}/$bname[0]/gsm;
+                    $templateblock =~ s/{yabb boarddesc}/$bdd/gsm;
+                    $templateblock =~ s/{yabb threadcount}/$my_blankext/gsm;
+                    $templateblock =~ s/{yabb messagecount}/$my_blankext/gsm;
                     $lastpostlink = RedirectExternalShow() || 0;
-                    $templateblock =~ s/({|<)yabb lastpostlink(}|>)/$lastpostlink/gsm;
+                    $templateblock =~ s/{yabb lastpostlink}/$lastpostlink/gsm;
                     $templateblock =~
-                      s/({|<)yabb altbrdcolor(}|>)/$altbrdcolor/gsm;
+                      s/{yabb altbrdcolor}/$altbrdcolor/gsm;
                     $templateblock =~
-                      s/({|<)yabb subboardlist(}|>)/$tmp_sublist/gsm;
+                      s/{yabb subboardlist}/$tmp_sublist/gsm;
                     $templateblock =~
-                      s/({|<)yabb boardanchor(}|>)/$curboard/gsm;
+                      s/{yabb boardanchor}/$curboard/gsm;
                 }
 
                 $tmptemplateblock .= $templateblock;
@@ -1348,7 +1348,7 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
     $totalm = NumberFormat($totalm);
 
     # Template some stuff for sub boards before the rest
-    $boardindex_template =~ s/({|<)yabb catsblock(}|>)/$tmptemplateblock/gsm;
+    $boardindex_template =~ s/{yabb catsblock}/$tmptemplateblock/gsm;
 
 # no matter if this is ajax subboards, subboards at top of messageindex, or regular boardindex we need these vars now
     $yymain .= qq~
@@ -1525,21 +1525,21 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" target="_b
         }
         $yyrssfeed = $rss_text;
         $yyrss     = $rss_link;
-        $boardindex_template =~ s/({|<)yabb rssfeed(}|>)/$rss_text/gsm;
-        $boardindex_template =~ s/({|<)yabb rss(}|>)/$rss_link/gsm;
+        $boardindex_template =~ s/{yabb rssfeed}/$rss_text/gsm;
+        $boardindex_template =~ s/{yabb rss}/$rss_link/gsm;
 
-        $boardindex_template =~ s/({|<)yabb navigation(}|>)/&nbsp;/gsm;
-        $boardindex_template =~ s/({|<)yabb pollshowcase(}|>)/$polltemp/gsm;
-        $boardindex_template =~ s/({|<)yabb selecthtml(}|>)//gsm;
+        $boardindex_template =~ s/{yabb navigation}/&nbsp;/gsm;
+        $boardindex_template =~ s/{yabb pollshowcase}/$polltemp/gsm;
+        $boardindex_template =~ s/{yabb selecthtml}//gsm;
 
-        $boardhandellist =~ s/({|<)yabb collapse(}|>)/$collapselink/gsm;
-        $boardhandellist =~ s/({|<)yabb expand(}|>)/$expandlink/gsm;
-        $boardhandellist =~ s/({|<)yabb markallread(}|>)/$markalllink/gsm;
+        $boardhandellist =~ s/{yabb collapse}/$collapselink/gsm;
+        $boardhandellist =~ s/{yabb expand}/$expandlink/gsm;
+        $boardhandellist =~ s/{yabb markallread}/$markalllink/gsm;
 
         $boardindex_template =~
-          s/({|<)yabb boardhandellist(}|>)/$boardhandellist/gsm;
-        $boardindex_template =~ s/({|<)yabb totaltopics(}|>)/$totalt/gsm;
-        $boardindex_template =~ s/({|<)yabb totalmessages(}|>)/$totalm/gsm;
+          s/{yabb boardhandellist}/$boardhandellist/gsm;
+        $boardindex_template =~ s/{yabb totaltopics}/$totalt/gsm;
+        $boardindex_template =~ s/{yabb totalmessages}/$totalm/gsm;
 
 ### recent/recentopics?##
         if ($Show_RecentBar) {
@@ -1596,20 +1596,20 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
                 $spc = q~<br />~;
             }
             $boardindex_template =~
-              s/({|<)yabb lastpostlink(}|>)/$lastpostlink/gsm;
+              s/{yabb lastpostlink}/$lastpostlink/gsm;
             $boardindex_template =~
-              s/({|<)yabb recentposts(}|>)/$recentpostslink/gsm;
-            $boardindex_template =~ s/({|<)yabb spc(}|>)/$spc/sm;
+              s/{yabb recentposts}/$recentpostslink/gsm;
+            $boardindex_template =~ s/{yabb spc}/$spc/sm;
             $boardindex_template =~
-              s/({|<)yabb recenttopics(}|>)/$recenttopicslink/gsm;
+              s/{yabb recenttopics}/$recenttopicslink/gsm;
             $boardindex_template =~
-              s/({|<)yabb lastpostdate(}|>)/$tmlsdatetime/gsm;
+              s/{yabb lastpostdate}/$tmlsdatetime/gsm;
         }
         else {
-            $boardindex_template =~ s/({|<)yabb lastpostlink(}|>)//gsm;
-            $boardindex_template =~ s/({|<)yabb recentposts(}|>)//gsm;
-            $boardindex_template =~ s/({|<)yabb recenttopics(}|>)//gsm;
-            $boardindex_template =~ s/({|<)yabb lastpostdate(}|>)//gsm;
+            $boardindex_template =~ s/{yabb lastpostlink}//gsm;
+            $boardindex_template =~ s/{yabb recentposts}//gsm;
+            $boardindex_template =~ s/{yabb recenttopics}//gsm;
+            $boardindex_template =~ s/{yabb lastpostdate}//gsm;
         }
         $memcount = NumberFormat($memcount);
         $membercountlink =
@@ -1618,7 +1618,7 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
             $membercountlink = qq~<b>$memcount</b>~;
         }
          $boardindex_template =~
-          s/({|<)yabb membercount(}|>)/$membercountlink/gsm;
+          s/{yabb membercount}/$membercountlink/gsm;
         if ($showlatestmember) {
             LoadUser($latestmember);
             $latestmemberlink =
@@ -1626,33 +1626,33 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
               . QuickLinks($latestmember)
               . q~.<br />~;
             $boardindex_template =~
-              s/({|<)yabb latestmember(}|>)/$latestmemberlink/gsm;
+              s/{yabb latestmember}/$latestmemberlink/gsm;
         }
         else {
-            $boardindex_template =~ s/({|<)yabb latestmember(}|>)//gsm;
+            $boardindex_template =~ s/{yabb latestmember}//gsm;
         }
-        $boardindex_template =~ s/({|<)yabb ims(}|>)/$ims/gsm;
-        $boardindex_template =~ s/({|<)yabb guests(}|>)/$guestson/gsm;
-        $boardindex_template =~ s/({|<)yabb users(}|>)/$userson/gsm;
-        $boardindex_template =~ s/({|<)yabb bots(}|>)/$botson/gsm;
-        $boardindex_template =~ s/({|<)yabb onlineusers(}|>)/$users/gsm;
-        $boardindex_template =~ s/({|<)yabb onlineguests(}|>)/$guestlist/gsm;
-        $boardindex_template =~ s/({|<)yabb onlinebots(}|>)/$botlist/gsm;
-        $boardindex_template =~ s/({|<)yabb mostmembers(}|>)/$mostmemb/gsm;
-        $boardindex_template =~ s/({|<)yabb mostguests(}|>)/$mostguest/gsm;
-        $boardindex_template =~ s/({|<)yabb mostbots(}|>)/$mostbots/gsm;
-        $boardindex_template =~ s/({|<)yabb mostusers(}|>)/$mostusers/gsm;
+        $boardindex_template =~ s/{yabb ims}/$ims/gsm;
+        $boardindex_template =~ s/{yabb guests}/$guestson/gsm;
+        $boardindex_template =~ s/{yabb users}/$userson/gsm;
+        $boardindex_template =~ s/{yabb bots}/$botson/gsm;
+        $boardindex_template =~ s/{yabb onlineusers}/$users/gsm;
+        $boardindex_template =~ s/{yabb onlineguests}/$guestlist/gsm;
+        $boardindex_template =~ s/{yabb onlinebots}/$botlist/gsm;
+        $boardindex_template =~ s/{yabb mostmembers}/$mostmemb/gsm;
+        $boardindex_template =~ s/{yabb mostguests}/$mostguest/gsm;
+        $boardindex_template =~ s/{yabb mostbots}/$mostbots/gsm;
+        $boardindex_template =~ s/{yabb mostusers}/$mostusers/gsm;
         $boardindex_template =~
-          s/({|<)yabb mostmembersdate(}|>)/$themostmembdate/gsm;
+          s/{yabb mostmembersdate}/$themostmembdate/gsm;
         $boardindex_template =~
-          s/({|<)yabb mostguestsdate(}|>)/$themostguestdate/gsm;
+          s/{yabb mostguestsdate}/$themostguestdate/gsm;
         $boardindex_template =~
-          s/({|<)yabb mostbotsdate(}|>)/$themostbotsdate/gsm;
+          s/{yabb mostbotsdate}/$themostbotsdate/gsm;
         $boardindex_template =~
-          s/({|<)yabb mostusersdate(}|>)/$themostuserdate/gsm;
-        $boardindex_template =~ s/({|<)yabb groupcolors(}|>)/$grpcolors/gsm;
-        $boardindex_template =~ s/({|<)yabb sharedlogin(}|>)/$shared_login/gsm;
-        $boardindex_template =~ s/({|<)yabb new_load(}|>)/$newload/gsm;
+          s/{yabb mostusersdate}/$themostuserdate/gsm;
+        $boardindex_template =~ s/{yabb groupcolors}/$grpcolors/gsm;
+        $boardindex_template =~ s/{yabb sharedlogin}/$shared_login/gsm;
+        $boardindex_template =~ s/{yabb new_load}/$newload/gsm;
 
         # EventCal START
         my $cal_display;
@@ -1660,7 +1660,7 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
             require Sources::EventCal;
             $cal_display = eventcal();
         }
-        $boardindex_template =~ s/({|<)yabb caldisplay(}|>)/$cal_display/gsm;
+        $boardindex_template =~ s/{yabb caldisplay}/$cal_display/gsm;
 
         # EventCal END
 
