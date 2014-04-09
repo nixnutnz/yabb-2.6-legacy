@@ -372,26 +372,19 @@ $myprofile_time = qq~<tr class="windowbg">
                 {yabb my_time_option}
             </select>
         </td>
-<!--    </tr><tr class="windowbg">
-        <td><label for="timeformat"><b>$profile_txt{'486a'}:</b></label></td>
-        <td><input type="text" name="timeformat" id="timeformat" size="40" value="{yabb timeformat}" /></td>
     </tr><tr class="windowbg">
-        <td><label for="usertimesign"><b>$profile_txt{'371'}:</b><br /><span class="small">$profile_txt{'372'}</span></label></td>
-        <td><span class="small">$profile_txt{'373'}:
-            <br /><b>{yabb my_timeformat}</b>
-            <br /><br /></span>
-            <select name="usertimesign" id="usertimesign"><option value="">+</option><option value="-"{yabb my_offset}>-</option></select>
-            <select name="usertimehour" id="usertimehour">{yabb my_offset_hr}
-            </select> : <select name="usertimemin">{yabb my_offset_min}
-            </select>
-        </td>
-    </tr><tr class="windowbg">
-        <td><label for="dsttimeoffset"><b>$profile_txt{'519'}</b></label></td>
-        <td><input type="checkbox" name="dsttimeoffset" id="dsttimeoffset" value="1"{yabb my_dst} /></td> -->
+        <td><label for="user_tz"><b>$profile_txt{'373'}:</td>
+        <td>{yabb my_timeformat}</td>
+		{yabb my_tz_select}
     </tr><tr class="windowbg">
        <td><label for="dynamic_clock"><b>$profile_txt{'520'}</b><br /><span class="small">$profile_txt{'521'}</span></label></td>
        <td><input type="checkbox" name="dynamic_clock" id="dynamic_clock" value="1"{yabb my_dynamic} /></td>
     </tr>{yabb my_notify}~;
+	
+$my_tz_select = qq~    </tr><tr class="windowbg">
+        <td><label for="user_tz"><b>$profile_txt{'371'}:</b><br /><span class="small">$profile_txt{'372'}</span></label></td>
+        <td><b>{yabb my_user_tz}</b>
+        </td>~;
 
 $myprofile_notify = qq~<tr class="windowbg">
         <td class="vtop"><label for="onlinealert"><b>$profile_txt{'onlinealert'}:</b></label></td>

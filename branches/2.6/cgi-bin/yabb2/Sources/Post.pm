@@ -701,7 +701,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
             if ( $split[$i] ) { $splitchecked[$i] = ' checked="checked"'; }
             if ( $FORM{"slicecol$i"} ) {
                 $slicecolor[$i] = $FORM{"slicecol$i"} || 'transparent';
-			}
+            }
             $mypoll_opt .= $my_poll_options;
             $mypoll_opt =~ s/{yabb i}/$i/gsm;
             $mypoll_opt =~ s/{yabb maxpo}/$maxpo/gsm;
@@ -2232,12 +2232,12 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
         else { $mstate = '0'; }
 
         # This is a new thread. Save it.
-        fopen( FILE, "+<$boardsdir/$currentboard.txt", 1 )
+        fopen( FILE, "<$boardsdir/$currentboard.txt", 1 )
           || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
-        seek FILE, 0, 0;
         my @buffer = <FILE>;
-        truncate FILE, 0;
-        seek FILE, 0, 0;
+        fclose(FILE);
+         fopen( FILE, ">$boardsdir/$currentboard.txt", 1 )
+          || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
         print {FILE}
 qq~$newthreadid|$subject|$name|$email|$date|$mreplies|$username|$icon|$mstate\n~
           or croak "$croak{'print'} FILE";
@@ -2391,15 +2391,16 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
             fclose(POLL);
         }
 
-        fopen( BOARDFILE, "+<$boardsdir/$currentboard.txt", 1 )
+        fopen( BOARDFILE, "<$boardsdir/$currentboard.txt", 1 )
           || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
-        seek BOARDFILE, 0, 0;
         my @buffer = <BOARDFILE>;
-        truncate BOARDFILE, 0;
-        seek BOARDFILE, 0, 0;
+        fclose( BOARDFILE );
+
         foreach my $i ( 0 .. ( @buffer - 1 ) ) {
             if ( $buffer[$i] =~ m{\A$mnum\|}oxsm ) { $buffer[$i] = q{}; last; }
         }
+        fopen( BOARDFILE, ">$boardsdir/$currentboard.txt", 1 )
+          || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
         print {BOARDFILE}
 qq~$mnum|$msub|$mname|$memail|$date|$mreplies|$musername|$micon|$mstate\n~
           or croak "$croak{'print'} BOARDFILE";

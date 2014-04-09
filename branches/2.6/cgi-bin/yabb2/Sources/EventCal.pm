@@ -147,8 +147,8 @@ qq~$scripturl?action=eventcal;calshow=1;calmon=$gomon;calyear=$goyear~;
         }
     }
 
-    my $toffs = 0;
     my $newdate = $date;
+	my $toffs = toffs($date);
 
     if ( $INFO{'calyear'} ) {
         $ausgabe1    = qq~$INFO{'calmon'}/01/$INFO{'calyear'} am 00:00:00~;
@@ -160,29 +160,12 @@ qq~$scripturl?action=eventcal;calshow=1;calmon=$gomon;calyear=$goyear~;
         $daterechnug = $date;
     }
 
-#    my ( undef, undef, undef, undef, undef, undef, undef, undef, $newisdst ) =
-#      gmtime $heute;
-#    if ( $newisdst > 0 && $dstoffset ) {
-#        if ($iamguest) {
-#            if ($dstoffset) { $heute += 3600; $newdate += 3600; }
-#        }
-#        else {
-#            if ( ${ $uid . $username }{'dsttimeoffset'} != 0 ) {
-#                $heute   += 3600;
-#                $newdate += 3600;
-#            }
-#        }
-#    }
-
-#    if   ($iamguest) { $toffs = $timeoffset; }
-#    else             { $toffs = ${ $uid . $username }{'timeoffset'}; }
-
     my ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $dst ) =
-      gmtime( $heute + ( 3600 * $toffs ) );
+      gmtime( $heute + $toffs );
     $year += 1900;
 
     my ( undef, undef, undef, $callnewday, $callnewmonth, $callnewyear, undef )
-      = gmtime( $newdate + ( 3600 * $toffs ) );
+      = gmtime( $newdate + $toffs );
     $callnewyear += 1900;
     $callnewmonth++;
 
@@ -190,8 +173,7 @@ qq~$scripturl?action=eventcal;calshow=1;calmon=$gomon;calyear=$goyear~;
         $year = $INFO{'calyear'};
         $mon  = $INFO{'calmon'} - 1;
     }
-
-    timeformat();    # get only correct $mytimeselected
+     timeformat($date);    # get only correct $mytimeselected
 
     # Time/Days end
 
@@ -811,7 +793,7 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_n
         $d_day      = substr $event_date, 6, 2;
 
         $mybtime   = stringtotime(qq~$d_mon/$d_day/$d_year~);
-        $mybtimein = timeformat($mybtime);
+        $mybtimein = timeformatcal($mybtime);
         $cdate     = dtonly($mybtimein);
 
         if ( $INFO{'showmini'} ) {
@@ -1180,8 +1162,7 @@ qq~\n<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/calscroller.css" 
           gmtime( $daterechnug + ( 86_400 * $DisplayEvents ) );
         $m_cal++;
         $y_cal += 1900;
-        $caleventbegin = "$year" . sprintf( '%02d', $mon ) . sprintf '%02d',
-          $mday;
+        $caleventbegin = "$year" . sprintf( '%02d', $mon ) . sprintf '%02d', $mday;
         $caleventend =
           "$y_cal" . sprintf( '%02d', $m_cal ) . sprintf '%02d',
           $d_cal;
@@ -1258,7 +1239,7 @@ qq~<br /><br /><a href="$scripturl?action=eventcal;calshow=1;eventdate=$cyear$cm
 
         if ( $event_found == 1 ) {
             $mybtime   = stringtotime(qq~$cmon/$cday/$cyear~);
-            $mybtimein = timeformat($mybtime);
+            $mybtimein = timeformatcal($mybtime);
             $cdate     = dtonly($mybtimein);
 
             if ( $showage && $chide ) {
@@ -1702,13 +1683,9 @@ sub del_old_events {
     return if !$Delete_EventsUntil;
     my $caltoday = $Delete_EventsUntil;
     if ( $caltoday == 1 ) {
-        my $toffs = 0;
-#        my $toffs = $timeoffset;
-#        $toffs +=
-#          ( gmtime( $date + ( 3600 * $toffs ) ) )[8] ? $dstoffset : 0;
 
         my ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $dst ) =
-          gmtime( $date + ( 3600 * $toffs ) );
+          gmtime($date);
         $year += 1900;
         $mon++;
         $caltoday = $year . sprintf( '%02d', $mon ) . sprintf '%02d', $mday;

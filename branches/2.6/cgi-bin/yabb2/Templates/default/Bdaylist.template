@@ -18,20 +18,20 @@ $cal_info     = 'info.png';
 $cal_eventbd  = 'eventbd.gif';
 
 $cal_col_no_ss = q~
-	<colgroup>
-    <col style="width:30%" />
-    <col style="width:35%" />
-    <col style="width:35%" />
-	</colgroup>
+    <colgroup>
+        <col style="width:30%" />
+        <col style="width:35%" />
+        <col style="width:35%" />
+    </colgroup>
 ~;
 
 $cal_col_ss = q~
-	<colgroup>
-    <col style="width:30%" />
-    <col style="width:20%" />
-    <col style="width:30%" />
-    <col style="width:20%" />
-	</colgroup>
+    <colgroup>
+        <col style="width:30%" />
+        <col style="width:20%" />
+        <col style="width:30%" />
+        <col style="width:20%" />
+    </colgroup>
 ~;
 
 $cal_col_ss_sort = qq~
@@ -42,10 +42,10 @@ $cal_col_ss_top = q~
 
 $mybdlist_calgoto = qq~
 <table class="tabtitle tabtitle-text">
-	<colgroup>
-    <col style="width:30%" />
-    <col style="width:70%" />
-	</colgroup>
+    <colgroup>
+        <col style="width:30%" />
+        <col style="width:70%" />
+    </colgroup>
     <tr>
         <td style="padding-left:1%">$var_cal{'caltitle'}</td>
         <td class="right" style="padding-right:1%">{yabb calgotobox}</td>

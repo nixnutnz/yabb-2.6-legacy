@@ -420,7 +420,7 @@ function autofill() {
       var htmlurl = document.auto_settings.prehtml_root.value || "";
       if(!htmldir) {return 0;}
       if(!htmlurl) {return 0;}
-      var confirmvalue = confirm("Do autofill the forms in the right colum below (Saved:) with the basic values in here?");
+      var confirmvalue = confirm("Do autofill the forms in the right column below (Saved:) with the basic values in here?");
       if(!confirmvalue) {return 0;}
       else {
             // Board URL
@@ -1207,10 +1207,13 @@ sub SetInstall {
                 <br style="clear:both" />
                 <div class="div45">
                     <label for="defaultencoding">Default Forum Character Encoding
-                    <br /><span class="small"><b>Note</b>: If you are going to import an older forum, or have additional language packs installed, set this to 'ISO-8859-1'.</span></label>
+                    <br /><span class="small"><b>Note</b>: If you are going to import an older English Language forum choose 'ISO-8859-1'.</span></label>
                 </div>
                 <div class="div55">
-                    <input type="text" name="defaultencoding" id="defaultencoding" size="10" value="UTF-8" />
+                    <select name="defaultencoding" id="defaultencoding" size="1">
+                        <option value="UTF-8">UTF-8</option>
+                        <option value="ISO-8859-1">ISO-8859-1</option>
+                    </select>
                 </div>
                 <br style="clear:both" />
                 <div class="div45">
@@ -1229,25 +1232,11 @@ sub SetInstall {
                 </div>
                 <br style="clear:both" />
                 <div class="div45">
-                    Forum Time: (Your actual displayed UTC time)
+                    Forum Time: (Your actual displayed UTC time). The Forum Time Zone can be changed in the Admin Center.
                 </div>
                 <div class="div55">
                     <b>~
-      . timeformat( $date, 4 ) . q~</b>~;
-#      . q~</b><br /><br /></span><select name="usertimesign"><option value="">+</option><option value="-">-</option></select>
-#                    <select name="usertimehour">~;
-#    for my $i ( 0 .. 14 ) {
-#        $i = sprintf '%02d', $i;
-#        $yymain .= qq~<option value="$i">$i</option>~;
-#    }
-#    $yymain .= q~</select> : <select name="usertimemin">~;
-#    for my $i ( 0 .. 59 ) {
-#        my $j = $i / 60;
-#        $j = ( split /\./xsm, $j )[1] || 0;
-#        $yymain .=
-#          qq~<option value="$j">~ . sprintf( '%02d', $i ) . q~</option>~;
-#    }
-    $yymain .= q~<!--</select>-->
+      . timeformat( $date, 4 ) . q~</b>
             </div>
             </td>
     </tr><tr>

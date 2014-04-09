@@ -3,8 +3,8 @@
 //##############################################################################
 //# YaBB: Yet another Bulletin Board                                           #
 //# Open-Source Community Software for Webmasters                              #
-//# Version:        YaBB 2.5.4 Beta                                            #
-//# Packaged:       Nov 06, 2013                                               #
+//# Version:        YaBB 2.6.0                                                 #
+//# Packaged:       Apr 09, 2014                                               #
 //# Distributed by: http://www.yabbforum.com                                   #
 //# ===========================================================================#
 //# Copyright (c) 2000-2010 YaBB (www.yabbforum.com) - All Rights Reserved.    #
@@ -12,7 +12,7 @@
 //#               with assistance from the YaBB community.                     #
 //##############################################################################
 
-//YaBB 2.5.4 Beta $Revision$
+//YaBB 2.6.0. $Revision$
 
 // DocClick object for registering multiple document.onclick events
 DocClick = new Array();

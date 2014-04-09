@@ -45,7 +45,7 @@ sub LoadBoardControl {
 
         $cntdescription =~ s/\&\ /\&amp; /gxsm;
         if ( substr( $cntmods, 0, 2) eq ', ' ) {
-            substr( $cntmods, 0, 2 ) = q{}; } 
+            substr( $cntmods, 0, 2 ) = q{}; }
         if ( substr( $cntmodgroups, 0, 2) eq ', ' ) {
             substr( $cntmodgroups, 0, 2 ) = q{}; }
 
@@ -347,9 +347,10 @@ sub KillModerator {
         $cntpollperms, $cntzero,      undef,          undef,
         undef,         $cnttotals,    @boardcontrol
     );
-    fopen( FORUMCONTROL, "+<$boardsdir/forum.control" )
+    fopen( FORUMCONTROL, "<$boardsdir/forum.control" )
       || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     @oldcontrols = <FORUMCONTROL>;
+    fclose( FORUMCONTROL );
 
     my @newmods;
     foreach my $boardline (@oldcontrols) {
@@ -374,9 +375,9 @@ sub KillModerator {
 "$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$cntmodgroups|$cnttopicperms|$cntreplyperms|$cntpollperms|$cntzero|$cntpassword|$cnttotals|$cntattperms|$spare|$cntminageperms|$cntmaxageperms|$cntgenderperms|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$cntbrdrss\n";
         }
     }
-    seek FORUMCONTROL, 0, 0;
-    truncate FORUMCONTROL, 0;
     @boardcontrol = undupe(@boardcontrol);
+    fopen( FORUMCONTROL, ">$boardsdir/forum.control" )
+      || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     print {FORUMCONTROL} @boardcontrol or croak "$croak{'print'} FORUMCONTROL";
     fclose(FORUMCONTROL);
     return;
@@ -390,9 +391,10 @@ sub KillModeratorGroup {
         $cntpollperms, $cntzero,      undef,          undef,
         undef,         $cnttotals,    @boardcontrol
     );
-    fopen( FORUMCONTROL, "+<$boardsdir/forum.control" )
+    fopen( FORUMCONTROL, "<$boardsdir/forum.control" )
       || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     @oldcontrols = <FORUMCONTROL>;
+    fclose( FORUMCONTROL );
 
     my @newmods;
     foreach my $boardline (@oldcontrols) {
@@ -417,9 +419,9 @@ sub KillModeratorGroup {
 "$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$cntmodgroups|$cnttopicperms|$cntreplyperms|$cntpollperms|$cntzero|$cntpassword|$cnttotals|$cntattperms|$spare|$cntminageperms|$cntmaxageperms|$cntgenderperms|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$cntbrdrss\n";
         }
     }
-    seek FORUMCONTROL, 0, 0;
-    truncate FORUMCONTROL, 0;
     @boardcontrol = undupe(@boardcontrol);
+    fopen( FORUMCONTROL, ">$boardsdir/forum.control" )
+      || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     print {FORUMCONTROL} @boardcontrol or croak "$croak{'print'} FORUMCONTROL";
     fclose(FORUMCONTROL);
     return;
@@ -1408,7 +1410,7 @@ sub update_IMS {
 
     fopen( UPDATE_IMS, ">$memberdir/$builduser.ims", 1 )
       || fatal_error( 'cannot_open', "$memberdir/$builduser.ims", 1 );
-    print {UPDATE_IMS} qq~### UserIMS YaBB 2.5.4 Version ###\n\n~
+    print {UPDATE_IMS} qq~### UserIMS YaBB 2.6.0 Version ###\n\n~
       or croak "$croak{'print'} update IMS";
     for my $cnt ( 0 .. ( @tag - 1 ) ) {
         print {UPDATE_IMS} qq~'$tag[$cnt]',"${$builduser}{$tag[$cnt]}"\n~

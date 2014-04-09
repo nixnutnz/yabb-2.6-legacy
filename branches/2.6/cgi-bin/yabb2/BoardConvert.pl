@@ -96,7 +96,7 @@ sub SimpleOutput {
 <html lang='en-US'>
 <head>
     <meta charset="utf-8">
-    <title>YaBB 2.5.4 Forum Control Exporter Utility</title>
+    <title>YaBB 2.6.0 Forum Control Exporter Utility</title>
     <style type="text/css">
         html, body {color:#000; font-family:Verdana, Helvetica, Arial, Sans-Serif; font-size:13px; background-color:#eee}
     </style>

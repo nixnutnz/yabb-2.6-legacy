@@ -146,7 +146,7 @@ sub use_smtp {
     (
         $smtpsec,  $smtpmin,  $smtphour, $smtpmday, $smtpmon,
         $smtpyear, $smtpwday, $smtpyday, $smtpisdst
-    ) = gmtime( $date + ( 3600 * $timeoffset ) );
+    ) = gmtime( $date );
     $smtpyear = sprintf '%02d', ( $smtpyear - 100 );
     $smtphour = sprintf '%02d', $smtphour;
     $smtpmin  = sprintf '%02d', $smtpmin;

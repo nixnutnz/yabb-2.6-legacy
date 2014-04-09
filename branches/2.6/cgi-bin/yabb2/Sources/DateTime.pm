@@ -14,6 +14,7 @@
 ###############################################################################
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
+use Time::Local;
 our $VERSION = '2.6.0';
 
 $datetimepmver = 'YaBB 2.6.0 $Revision$';
@@ -23,19 +24,35 @@ sub calcdifference {    # Input: $date1 $date2
     return $result;
 }
 
+sub toffs {
+    my ($mydate, $forum_default) = @_;
+    use DateTime;
+    use DateTime::TimeZone;
+    if ( $iamguest || $forum_default ) {
+        $tzname = $default_tz || 'UTC';
+    }
+    else {
+        $tzname = ${ $uid . $username }{'user_tz'} || 'UTC';
+    }
+
+    my $tz = DateTime::TimeZone->new(name => $tzname);
+    my $now = DateTime->from_epoch( 'epoch' => $mydate );
+    my $toffs = $tz->offset_for_datetime($now);
+    return $toffs;
+}
+
 sub timetostring {
     my ($thedate) = @_;
     return 0 if !$thedate;
     if ( !$maintxt{'107'} ) { $maintxt{'107'} = 'at'; }
-
-    # find out what timezone is to be used.
-# Timeoffset disabled until we get if fixed
-#   if ( !$iamguest ) {
-#       $toffs = ${ $uid . $username }{'timeoffset'};
-#   }
+    my $toffs = 0;
+    if ($enabletz) {
+        $toffs = toffs($thedate);
+    }
+    my $newtime =  $thedate + $toffs;
 
     ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, undef ) =
-      gmtime( $thedate + ( 3600 * $toffs ) );
+      gmtime( $newtime );
     $sec  = sprintf '%02d', $sec;
     $min  = sprintf '%02d', $min;
     $hour = sprintf '%02d', $hour;
@@ -53,17 +70,10 @@ sub timetostring {
 sub stringtotime {
     my ($spvar) = @_;
     if ( !$spvar ) { return 0; }
-    require Time::Local;
-    import Time::Local 'timegm';
     $splitvar = $spvar;
 
 # receive standard format yabb date/time string.
 # allow for oddities thrown up from y1 , with full year / single digit day/month
-# Timeoffset reverse for day/month year only.
-# Timeoffset disabled until we get it fixed
-#    if ( !$iamguest ) {
-#        $toffs = ${ $uid . $username }{'timeoffset'};
-#    }
     my $amonth = 1;
     my $aday   = 1;
     my $ayear  = 0;
@@ -85,7 +95,7 @@ sub stringtotime {
         $amonth = int $1;
         $aday   = int $2;
         $ayear  = int $3;
-        $ahour  = -$toffs;
+        $ahour  = 0;
         $amin   = 0;
         $asec   = 0;
     }
@@ -141,21 +151,16 @@ sub timeformat {
     @months_rfc = qw( Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec );
 
     # find out what timezone is to be used.
-# Timeoffset for users disabled until we get it fixed
-    $toffs = 0;
-#    if ( $iamguest || $forum_default ) {
-#        $toffs = $timeoffset;
-#        $toffs +=
-#          ( gmtime( $oldformat + ( 3600 * $toffs ) ) )[8] ? $dstoffset : 0;
-#    }
-#    else {
-#        $toffs = ${ $uid . $username }{'timeoffset'};
-#    }
+    my $toffs = 0;
+    if ( $enabletz) {
+        $toffs = toffs($oldformat, $forum_default);
+    }
+    my $mynewtime =  $oldformat + $toffs;
 
     my (
         $newsecond, $newminute,  $newhour,    $newday, $newmonth,
-        $newyear,   $newweekday, $newyearday, undef
-    ) = gmtime( $oldformat + ( 3600 * $toffs ) );
+        $newyear,   $newweekday, $newyearday, $newoff
+    ) = gmtime( $mynewtime );
     $newmonth++;
     $newyear += 1900;
 
@@ -186,31 +191,72 @@ sub timeformat {
 
     $newtime = $newhour . q{:} . $newminute . q{:} . $newsecond;
 
-    ( undef, undef, undef, undef, undef, $yy, undef, $yd, undef ) =
-      gmtime( $date + ( 3600 * $toffs ) );
-    $yy += 1900;
-
-    $daytxt = undef;    # must be a global variable
-    if ( !$dontusetoday ) {
-        if ( $yd == $newyearday && $yy == $newyear ) {
-
-            # today
-            $daytxt = qq~<b>$maintxt{'769'}</b>~;
-
-        }
-        elsif (
-            ( ( $yd - 1 ) == $newyearday && $yy == $newyear )
-            || (   $yd == 0
-                && $newday == 31
-                && $newmonth == 12
-                && ( $yy - 1 ) == $newyear )
-          )
-        {
-
-            # yesterday || yesterday, over a year end.
-            $daytxt = qq~<b>$maintxt{'769a'}</b>~;
+    if ( !$maintxt{'107'} ) { $maintxt{'107'} = $admin_txt{'107'}; }
+    my @timform = (
+        q{},
+        time_1( $daytxt, $newday, $newmonth, $newyear, $newtime ),
+        time_2( $daytxt, $newday, $newmonth, $newyear, $newtime ),
+        time_3( $daytxt, $newday, $newmonth, $newyear, $newtime ),
+        time_4( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
+        time_5( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
+        time_6( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
+        time_7(
+            ${ $uid . $username }{'timeformat'},
+            $newday, $newmonth, $newyear, $newhour, $newminute, $newweek
+        ),
+        time_8( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
+    );
+    foreach my $i ( 1 .. 8 ) {
+        if ( $mytimeselected == $i ) {
+            $newformat = $timform[$i];
         }
     }
+    return $newformat;
+}
+
+sub timeformatcal {
+    my ( $oldformat ) = @_;
+
+    # use forum default time and format
+
+    $mytimeselected =
+      ( $forum_default || !${ $uid . $username }{'timeselect'} )
+      ? $timeselected
+      : ${ $uid . $username }{'timeselect'};
+
+    chomp $oldformat;
+    return if !$oldformat;
+
+     my $mynewtime =  $oldformat;
+
+    my (
+        $newsecond, $newminute,  $newhour,    $newday, $newmonth,
+        $newyear,   $newweekday, $newyearday, $newoff
+    ) = gmtime( $mynewtime );
+    $newmonth++;
+    $newyear += 1900;
+
+    # Calculate number of full weeks this year
+    $newweek = int( ( $newyearday + 1 - $newweekday ) / 7 ) + 1;
+
+    # Add 1 if today isn't Saturday
+    if ( $newweekday < 6 ) { $newweek = $newweek + 1; }
+    $newweek = sprintf '%02d', $newweek;
+
+    $shortday = $days_short[$newweekday];
+
+    $longday      = $days[$newweekday];
+    $newmonth     = sprintf '%02d', $newmonth;
+    $newshortyear = ( $newyear % 100 );
+    $newshortyear = sprintf '%02d', $newshortyear;
+    if ( $mytimeselected != 4 && $mytimeselected != 8 ) {
+        $newday = sprintf '%02d', $newday;
+    }
+    $newhour   = sprintf '%02d', $newhour;
+    $newminute = sprintf '%02d', $newminute;
+    $newsecond = sprintf '%02d', $newsecond;
+
+    $newtime = $newhour . q{:} . $newminute . q{:} . $newsecond;
 
     if ( !$maintxt{'107'} ) { $maintxt{'107'} = $admin_txt{'107'}; }
     my @timform = (
@@ -455,22 +501,7 @@ sub time_7 {
         $mytimeformat =~ s/\/\///gxsm;
         $mytimeformat =~ s/[+]//gsm;
     }
-    if ( $newisdst && ${ $uid . $username }{'dsttimeoffset'} != 0 ) {
-        $mytimeformat =~ s/[*]/$maintxt{'dst'}/gxsm;
-    }
-    else {
-        $mytimeformat =~ s/[*]//gsm;
-    }
-
-    # Timezones
-#    my $timezone = ${ $uid . $username }{'timeoffset'};
-    my $timezone = 0;
-    my $sign     = q{+};
-    if ( $timezone < 0 ) { $sign = q{-}; }
-    $timezone = $sign . sprintf '%04u', abs($timezone) * 100;
-    $mytimeformat =~ s/zzz/$timezone/gsm;
-    $mytimeformat =~ s/  / /gsm;
-    $mytimeformat =~ s/[\n\r]//gsm;
+    $mytimeformat =~ s/[*]//gsm;
 
     $newformat = $mytimeformat;
 
@@ -522,24 +553,20 @@ sub tmonly {
 
 sub bdayno_year {
     my ($newformat) = @_;
-    my $mydate_noyear = $newformat;
-    if ( $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ism ) {
-        $mydate_noyear = $1;
-    }
-
+    $date_noyear = $newformat;
     if ( $mytimeselected == 4 || $mytimeselected == 8 ) {
-        ( $date_noyear, undef ) = split /\,/xsm, $mydate_noyear;
+        ( $date_noyear, undef ) = split /\,/xsm, $newformat;
     }
     elsif ( $mytimeselected == 1 || $mytimeselected == 5 ) {
-        @date_noyear = split /\//xsm, $mydate_noyear;
+        @date_noyear = split /\//xsm, $newformat;
         $date_noyear = qq~$date_noyear[0]~ . q{/} . qq~$date_noyear[1]~;
     }
     elsif ( $mytimeselected == 2 || $mytimeselected == 3 ) {
-        @date_noyear = split /[.]/xsm, $mydate_noyear;
+        @date_noyear = split /[.]/xsm, $newformat;
         $date_noyear = qq~$date_noyear[0]~ . q{/} . qq~$date_noyear[1]~;
     }
     elsif ( $mytimeselected == 6 ) {
-        @date_noyear = split / /sm, $mydate_noyear;
+        @date_noyear = split / /sm, $newformat;
         $date_noyear = qq~$date_noyear[0] $date_noyear[1]~;
     }
 

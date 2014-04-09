@@ -341,14 +341,11 @@ qq~ $profile_txt{'dob_edit_2'} $editAgeCount $profile_txt{'dob_edit_4'}~;
         }
     }
 
-    # EventCal Begin
     $selectyear = q{};
     $seluyear =
 qq~$profile_txt{'566'}<select name="bday3"$disableBdayFields><option value="">  </option>\n~;
     for my $e ( 1905 .. ( $year - 3 ) ) {
-        if   ( $uyear == $e ) { $selectyear = 'selected="selected"'; }
-        else                  { $selectyear = q{}; }
-        $seluyear .= qq~<option value="$e" $selectyear>$e</option>\n~;
+          $seluyear .= qq~<option value="$e" ${isselected($uyear == $e)}>$e</option>\n~;
     }
     $seluyear .= q~</select> ~;
 
@@ -356,11 +353,9 @@ qq~$profile_txt{'566'}<select name="bday3"$disableBdayFields><option value="">  
     $dayormonthm =
 qq~<label for="bday1">$profile_txt{'564'}</label><select name="bday1" id="bday1"$disableBdayFields><option value="">  </option>\n~;
     for my $bb ( 1 .. 12 ) {
-        if   ( $umonth == $bb ) { $selectmnth = 'selected="selected"'; }
-        else                    { $selectmnth = q{}; }
         if   ( $bb < 10 ) { $c = "0$bb"; }
         else              { $c = $bb; }
-        $dayormonthm .= qq~<option value="$c" $selectmnth>$c</option>\n~;
+        $dayormonthm .= qq~<option value="$c" ${isselected($umonth == $bb)}>$c</option>\n~;
     }
     $dayormonthm .= q~</select> ~;
 
@@ -368,15 +363,11 @@ qq~<label for="bday1">$profile_txt{'564'}</label><select name="bday1" id="bday1"
     $dayormonthd =
 qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"$disableBdayFields><option value="">  </option>\n~;
     for my $aa ( 1 .. 31 ) {
-        if   ( $uday == $aa ) { $selectday = 'selected="selected"'; }
-        else                  { $selectday = q{}; }
         if   ( $aa < 10 ) { $d = "0$aa"; }
         else              { $d = $aa; }
-        $dayormonthd .= qq~<option value="$d" $selectday>$d</option>\n~;
+        $dayormonthd .= qq~<option value="$d" ${isselected($uday == $aa)}>$d</option>\n~;
     }
     $dayormonthd .= q~</select> ~;
-
-    # EventCal End
 
     if   ($timeorder) { $dayormonth = $dayormonthd . $dayormonthm; }
     else              { $dayormonth = $dayormonthm . $dayormonthd; }
@@ -802,13 +793,8 @@ qq~                <option value="$line"$checked>$name</option>\n~;
         keys %templateset
       )
     {
-        $selected = q{};
-        if ( $curtemplate eq ${ $uid . $user }{'template'} ) {
-            $selected    = q~ selected="selected"~;
-            $akttemplate = $curtemplate;
-        }
         $drawndirs .=
-          qq~<option value="$curtemplate"$selected>$curtemplate</option>\n~;
+          qq~<option value="$curtemplate"${isselected($curtemplate eq ${ $uid . $user }{'template'})}>$curtemplate</option>\n~;
     }
 
     $my_template = $myprofile_template;
@@ -821,12 +807,9 @@ qq~                <option value="$line"$checked>$name</option>\n~;
         if ( -e "$langdir/$fld/Main.lng" ) {
             my $displang = $fld;
             $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
-            if ( ${ $uid . $user }{'language'} eq $fld ) {
-                $drawnldirs .=
-qq~<option value="$fld" selected="selected">$displang</option>~;
-            }
-            else { $drawnldirs .= qq~<option value="$fld">$displang</option>~; }
-        }
+            $drawnldirs .=
+qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$displang</option>~;
+         }
     }
 
     $my_show_lang = $myprofile_show_lang;
@@ -885,97 +868,88 @@ qq~<option value="$fld" selected="selected">$displang</option>~;
         $my_extprofile = ext_editprofile( $user, 'options' );
     }
 
-    if ( ${ $uid . $user }{'numberformat'} == 1 ) {
-        $unfsl1 = ' selected="selected" ';
+    my $cnnn = 0;
+    for my $i ( 1..5) {
+        if ( ${ $uid . $user }{'numberformat'} == $i ) {
+        $unfsl[$i] = ' selected="selected" ';
+        $cnnn++;
+        }
+        else { $unfsl[$i] = q{};}
     }
-    elsif ( ${ $uid . $user }{'numberformat'} == 2 ) {
-        $unfsl2 = ' selected="selected" ';
+    for my $i ( 1..5) {
+        if ( $forumnumberformat == $i && $cnnn == 0 ) {
+        $unfsl[$i] = ' selected="selected" ';
+        }
     }
-    elsif ( ${ $uid . $user }{'numberformat'} == 3 ) {
-        $unfsl3 = ' selected="selected" ';
-    }
-    elsif ( ${ $uid . $user }{'numberformat'} == 4 ) {
-        $unfsl4 = ' selected="selected" ';
-    }
-    elsif ( ${ $uid . $user }{'numberformat'} == 5 ) {
-        $unfsl5 = ' selected="selected" ';
-    }
-    elsif ( $forumnumberformat == 1 ) { $unfsl1 = ' selected="selected" '; }
-    elsif ( $forumnumberformat == 2 ) { $unfsl2 = ' selected="selected" '; }
-    elsif ( $forumnumberformat == 3 ) { $unfsl3 = ' selected="selected" '; }
-    elsif ( $forumnumberformat == 4 ) { $unfsl4 = ' selected="selected" '; }
-    elsif ( $forumnumberformat == 5 ) { $unfsl5 = ' selected="selected" '; }
 
-    if ( ${ $uid . $user }{'timeselect'} == 7 ) {
-        $tsl7 = ' selected="selected" ';
+    my $cntm = 0;
+    for my $j ( 1..8) {
+        if ( ${ $uid . $user }{'timeselect'} == $j ) {
+            $tsl[$j] = ' selected="selected" ';
+            $cntm++;
+        }
+        else { $tsl[$j] = q{};}
     }
-    elsif ( ${ $uid . $user }{'timeselect'} == 6 ) {
-        $tsl6 = ' selected="selected" ';
+    for my $j ( 1..8) {
+        if (  $timeselected  == $j && $cntm == 0 ) {
+           $tsl[$j] = ' selected="selected" ';
+        }
     }
-    elsif ( ${ $uid . $user }{'timeselect'} == 5 ) {
-        $tsl5 = ' selected="selected" ';
-    }
-    elsif ( ${ $uid . $user }{'timeselect'} == 4 ) {
-        $tsl4 = ' selected="selected" ';
-    }
-    elsif ( ${ $uid . $user }{'timeselect'} == 3 ) {
-        $tsl3 = ' selected="selected" ';
-    }
-    elsif ( ${ $uid . $user }{'timeselect'} == 2 ) {
-        $tsl2 = ' selected="selected" ';
-    }
-    elsif ( ${ $uid . $user }{'timeselect'} == 1 ) {
-        $tsl1 = ' selected="selected" ';
-    }
-    elsif ( ${ $uid . $user }{'timeselect'} == 8 ) {
-        $tsl8 = ' selected="selected" ';
-    }
-    elsif ( $timeselected == 8 ) { $tsl8 = ' selected="selected" '; }
-    elsif ( $timeselected == 7 ) { $tsl7 = ' selected="selected" '; }
-    elsif ( $timeselected == 6 ) { $tsl6 = ' selected="selected" '; }
-    elsif ( $timeselected == 5 ) { $tsl5 = ' selected="selected" '; }
-    elsif ( $timeselected == 4 ) { $tsl4 = ' selected="selected" '; }
-    elsif ( $timeselected == 3 ) { $tsl3 = ' selected="selected" '; }
-    elsif ( $timeselected == 2 ) { $tsl2 = ' selected="selected" '; }
-    elsif ( $timeselected == 1 ) { $tsl1 = ' selected="selected" '; }
 
-#    my @usertimeoffset = split /\./xsm, ${ $uid . $user }{'timeoffset'};
+    $my_num_option = qq~<option value="1"$unfsl[1]>10987.65</option>
+                <option value="2"$unfsl[2]>10987,65</option>
+                <option value="3"$unfsl[3]>10,987.65</option>
+                <option value="4"$unfsl[4]>10.987,65</option>
+                <option value="5"$unfsl[5]>10 987,65</option>~;
 
-    $my_num_option = qq~<option value="1"$unfsl1>10987.65</option>
-                <option value="2"$unfsl2>10987,65</option>
-                <option value="3"$unfsl3>10,987.65</option>
-                <option value="4"$unfsl4>10.987,65</option>
-                <option value="5"$unfsl5>10 987,65</option>~;
-
-    $my_time_option = qq~<option value="1"$tsl1>$profile_txt{'480'}</option>
-                <option value="5"$tsl5>$profile_txt{'484'}</option>
-                <option value="4"$tsl4>$profile_txt{'483'}</option>
-                <option value="8"$tsl8>$profile_txt{'483a'}</option>
-                <option value="2"$tsl2>$profile_txt{'481'}</option>
-                <option value="3"$tsl3>$profile_txt{'482'}</option>
-                <option value="6"$tsl6>$profile_txt{'485'}</option>
-                <option value="7"$tsl7>$profile_txt{'480a'}</option>~;
+    $my_time_option = qq~<option value="1"$tsl[1]>$profile_txt{'480'}</option>
+                <option value="5"$tsl[5]>$profile_txt{'484'}</option>
+                <option value="4"$tsl[4]>$profile_txt{'483'}</option>
+                <option value="8"$tsl[8]>$profile_txt{'483a'}</option>
+                <option value="2"$tsl[2]>$profile_txt{'481'}</option>
+                <option value="3"$tsl[3]>$profile_txt{'482'}</option>
+                <option value="6"$tsl[6]>$profile_txt{'485'}</option>~;
     $my_timeformat = timeformat( $date, 1 );
-#    $my_offset = $usertimeoffset[0] < 0 ? ' selected="selected"' : q{};
-#    for my $i ( 0 .. 12 ) {
-#        $i = sprintf '%02d', $i;
-#        $my_offset_hr .= qq~\n                        <option value="$i"~
-#          . (
-#            ( $usertimeoffset[0] == $i || $usertimeoffset[0] == -$i )
-#            ? ' selected="selected"'
-#            : q{}
-#          ) . qq~>$i</option>~;
-#    }
-#    for my $i ( 0 .. 59 ) {
-#        my $j = $i / 60;
-#        $j = ( split /\./xsm, $j )[1] || 0;
-#        $my_offset_min .=
-#            qq~\n                        <option value="$j"~
-#          . ( $usertimeoffset[1] eq $j ? ' selected="selected"' : q{} ) . q~>~
-#          . sprintf( '%02d', $i )
-#          . q~</option>~;
-#    }
-#    $my_dst = ${ $uid . $user }{'dsttimeoffset'} ? ' checked="checked"' : q{};
+
+if ( $enabletz) {
+    use Locale::Country;
+    my $mytz = ${ $uid . $user }{'user_tz'} || $default_tz;
+    my @cntry = DateTime::TimeZone->countries();
+    my %country;
+    for my $i (@cntry) {
+        if ( code2country($i ,'alpha-2') ne q{} ) {
+            $country{$i} = code2country($i ,'alpha-2');
+        }
+    }
+    my @mycntry = sort { $country{$a} cmp $country{$b} } keys %country;
+    my $myselect = q{};
+    if ( $mytz eq 'UTC' ) {
+        $myselect = ' selected="selected"';
+    }
+    my $user_tz_select = q~<br /><select name="user_tz" id="user_tz">~;
+    $user_tz_select .= qq~<option value="UTC"$myselect>UTC</option>~;
+    for my $j ( @mycntry ) {
+        for my $i ( sort @{DateTime::TimeZone->names_in_country( $j )} ) {
+            if ( $i eq $mytz ) {
+                $myselect = ' selected="selected"';
+            }
+            else { $myselect = q{}; }
+            my @city = split /\//xsm, $i;
+            my $st = q{};
+            if ( $j eq 'us' && $city[2] ) {
+                $st = "$city[1], ";
+            }
+            $st =~ s/_/ /gsm;
+            $city[-1] =~ s/_/ /gsm;
+            $user_tz_select .= qq~<option value="$i"$myselect>$country{$j} - $st$city[-1]</option>~;
+        }
+    }
+    $user_tz_select .= q~</select>~;
+    $my_tz = $my_tz_select;
+    $my_tz =~ s/{yabb my_user_tz}/$user_tz_select/sm;
+
+}
+else { $my_tz = q{};}
 
     $my_dynamic =
       ${ $uid . $user }{'dynamic_clock'} ? ' checked="checked"' : q{};
@@ -985,10 +959,7 @@ qq~<option value="$fld" selected="selected">$displang</option>~;
     $my_time =~ s/{yabb my_time_option}/$my_time_option/sm;
     $my_time =~ s/{yabb timeformat}/${$uid.$user}{'timeformat'}/sm;
     $my_time =~ s/{yabb my_timeformat}/$my_timeformat/sm;
-    $my_time =~ s/{yabb my_offset}/$my_offset/sm;
-    $my_time =~ s/{yabb my_offset_hr}/$my_offset_hr/sm;
-    $my_time =~ s/{yabb my_offset_min}/$my_offset_min/sm;
-    $my_time =~ s/{yabb my_dst}/$my_dst/sm;
+    $my_time =~ s/{yabb my_tz_select}/$my_tz/sm;
     $my_time =~ s/{yabb my_dynamic}/$my_dynamic/sm;
 
     $showProfile .= qq~
@@ -1690,16 +1661,17 @@ sub ModifyProfile2 {
             }
 
             # rewrite attachments.txt with new username
-            fopen( ATM, "+<$vardir/attachments.txt", 1 )
+            fopen( ATM, "<$vardir/attachments.txt", 1 )
               || fatal_error( 'cannot_open', "$vardir/attachments.txt" );
-            seek ATM, 0, 0;
             my @attachments = <ATM>;
-            truncate ATM, 0;
-            seek ATM, 0, 0;
+            fclose( ATM );
+
             for my $i ( 0 .. ( @attachments - 1 ) ) {
                 $attachments[$i] =~
 s/^(\d+\|\d+\|.*?)\|(.*?)\|/ ($2 eq ${$uid.$user}{'realname'} ? "$1|$member{'name'}|" : "$1|$2|") /esm;
             }
+            fopen( ATM, ">$vardir/attachments.txt", 1 )
+              || fatal_error( 'cannot_open', "$vardir/attachments.txt" );
             print {ATM} @attachments or croak "$croak{'print'} ATM";
             fclose(ATM);
 
@@ -2306,16 +2278,6 @@ sub ModifyProfileOptions2 {
         ext_saveprofile($user);
     }
 
-	#deprecated
-#    if (   $member{'usertimesign'} !~ /^-?$/xsm
-#        || $member{'usertimehour'} !~ /^\d+$/xsm
-#        || $member{'usertimemin'} !~ /^\d+$/xsm )
-#    {
-#        fatal_error( 'invalid_time_offset',
-#"$member{'usertimesign'}$member{'usertimehour'}.$member{'usertimemin'}"
-#        );
-#    }
-
     # update notifications if users language is changed
     if ( ${ $uid . $user }{'language'} ne "$member{'userlanguage'}" ) {
         require Sources::Notify;
@@ -2386,7 +2348,7 @@ sub ModifyProfileOptions2 {
         ) ? 2 : 0
       );
     ${ $uid . $user }{'reversetopic'}  = $member{'reversetopic'}  ? 1 : 0;
-    ${ $uid . $user }{'dsttimeoffset'} = $member{'dsttimeoffset'} ? 1 : 0;
+    ${ $uid . $user }{'user_tz'} = $member{'user_tz'};
     ${ $uid . $user }{'dynamic_clock'} = $member{'dynamic_clock'} ? 1 : 0;
     ${ $uid . $user }{'timeselect'}    = int $member{'usertimeselect'};
     ${ $uid . $user }{'template'}      = $member{'usertemplate'};
@@ -2403,7 +2365,6 @@ sub ModifyProfileOptions2 {
       ( $member{'hide_signat'} && $user_hide_signat ) ? 1 : 0;
     ${ $uid . $user }{'hide_smilies_row'} =
       ( $member{'hide_smilies_row'} && $user_hide_smilies_row ) ? 1 : 0;
-    ${ $uid . $user }{'timeformat'}   = $member{'timeformat'};
     ${ $uid . $user }{'numberformat'} = int $member{'usernumberformat'};
     ${ $uid . $user }{'return_to'}    = $member{'return_to'};
 
@@ -3784,4 +3745,11 @@ sub DrawGroups {
     return ( $groupsel, ( $selsize > 6 ? 6 : $selsize ) );
 }
 
+sub isselected {
+    my ($inp) = @_;
+
+    # Return a ref so we can be used like ${isselected($var)} inside a string
+    return \' selected="selected"' if $inp;
+    return \q{};
+}
 1;

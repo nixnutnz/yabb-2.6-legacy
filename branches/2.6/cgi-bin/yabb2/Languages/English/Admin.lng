@@ -206,8 +206,9 @@ $adminlngver = 'YaBB 2.6.0 $Revision$';
 '366' => 'Settings for New Member Notification E-mail',
 '367' => 'Notification e-mail for new member?<br /><span class="small">If checked, a notification concerning the registration of a new member will be sent to the e-mail address below.</span>',
 '368' => "Notification e-mail address:<br /><span class='small'>If left blank, the e-mail will be sent to: $webmaster_email</span>",
-'371' => 'Forum Time (UTC)<!--Select Forum Time Zone:<br /><span class="small">If the time displayed here differs from the local forum time, adjust it by changing the settings.</span>-->',
-'371a' => 'Enable automatic Daylight Saving Time change?',
+'371' => '<b>Current Forum Time</b>',
+'371d' => '<b>Select Forum Time Zone</b>:<br /><span class="small">Choose the country and city that represents your preferred default Time Zone.<br />If Time Zone choices is not enabled, the only choice available will be UTC.</span>',
+'371a' => '<b>Enable Time Zone choices</b>:<br /><span class="small">Enable this only if the necessary <strong>DateTime::TimeZone</strong> and <strong>Locale::Country</strong> Perl Modules are installed and up-to-date.</span>',
 '371b' => 'Enable the dynamic clock at the top of the page?',
 '371c' => 'Server Time Correction (in seconds +/-)',
 '372' => 'Number of Top Posters for Members List',
@@ -1333,9 +1334,12 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'Crypt::SSLeay' => 'Used by "GoogieSpell", our Spell Checker.<br />If this module is not installed, you can not enable the Spell Checker. Otherwise you do not need this module.',
 'IO::Socket::INET' => 'Used to send e-mails via "YaBB SMTP Engine".<br />This module is only needed if you want to send your e-mails via the "YaBB SMTP Engine". Otherwise you do not need this module.',
 'Digest::HMAC_MD5' => 'Used to send e-mails via "YaBB SMTP Engine".<br />This module is only needed if you want to send your e-mails via the "YaBB SMTP Engine". Otherwise you do not need this module.',
-'Carp' => 'Used to send e-mails via "YaBB SMTP Engine".<br />This module is only needed if you want to send your e-mails via the "YaBB SMTP Engine". Otherwise you do not need this module.',
+'Carp' => 'Used to send e-mails via "YaBB SMTP Engine" and render serious server warnings.',
 'bytes' => 'Used to send e-mails via "YaBB SMTP Engine".<br />This module is only needed if you want to send your e-mails via the "YaBB SMTP Engine". Otherwise you do not need this module.',
 'integer' => 'Used to send e-mails via "YaBB SMTP Engine".<br />This module is only needed if you want to send your e-mails via the "YaBB SMTP Engine". Otherwise you do not need this module.',
+'DateTime' => q~Used to create 'DateTime' objects for time formatting.<br />This module is needed if you want to have forum/user timezones set to anything other than UTC.~,
+'DateTime::TimeZone' => q~Used to get user and forum Time Zone offsets based on the user's actual time zone.<br />This module is needed if you want to have forum/user timezones set to anything other than UTC.<br /><span class="important">This Module needs to be kept current as it contains time sensitive Time Zone data. Check with your server host to make sure this Module is being kept current.~,
+'Locale::Country' => 'Used to make the Time Zone selectors more logical for users.<br />This module is needed to present the time zone selection dropdown to users.',
 );
 
 %settings_txt = (

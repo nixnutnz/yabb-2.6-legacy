@@ -32,9 +32,10 @@ sub SetStatus {
         $currentboard = ${$threadid}{'board'};
     }
 
-    fopen( BOARDFILE, "+<$boardsdir/$currentboard.txt" )
+    fopen( BOARDFILE, "<$boardsdir/$currentboard.txt" )
       || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @boardfile = <BOARDFILE>;
+	fclose( BOARDFILE );
     for my $line ( 0 .. ( @boardfile - 1 ) ) {
         if ( $boardfile[$line] =~ m/\A$threadid\|/xsm ) {
             my (
@@ -67,8 +68,8 @@ sub SetStatus {
 "$mnum|$msub|$mname|$memail|$mdate|$mreplies|$musername|$micon|$mstate\n";
         }
     }
-    truncate BOARDFILE, 0;
-    seek BOARDFILE, 0, 0;
+    fopen( BOARDFILE, ">$boardsdir/$currentboard.txt" )
+      || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     print {BOARDFILE} @boardfile or croak "$croak{'print'} BOARDFILE";
     fclose(BOARDFILE);
 

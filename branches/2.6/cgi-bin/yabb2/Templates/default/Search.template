@@ -23,8 +23,8 @@ $mysearch_template = qq~
 </table>
 <table class="bordercolor pad_4px cs_thin" >
 	<colgroup>
-    <col style="width:45%" />
-    <col style="width:55%" />
+        <col style="width:45%" />
+        <col style="width:55%" />
 	</colgroup>
     <tr>
         <td class="windowbg right vtop"><label for="search"><b>$search_txt{'582'}:</b></label></td>
@@ -107,8 +107,8 @@ $mysearch_template5 = qq~
 $mysearch_template6 =
   qq~<table class="tabtitle" style="table-layout: fixed;">
 	<colgroup>
-    <col style="width:5%" />
-    <col style="width:95%" />
+        <col style="width:5%" />
+        <col style="width:95%" />
 	</colgroup>
     <tr>
         <td class="center">{yabb counter}</td>
@@ -140,8 +140,8 @@ $mysearch_template10 = qq~
 $mysearch_PM = qq~
 <table class="bordercolor cs_thin" style="table-layout: fixed;">
 	<colgroup>
-    <col style="width:5%" />
-    <col style="width:95%" />
+        <col style="width:5%" />
+        <col style="width:95%" />
 	</colgroup>
     <tr>
         <td class="titlebg center">&nbsp;{yabb counter}&nbsp;</td>

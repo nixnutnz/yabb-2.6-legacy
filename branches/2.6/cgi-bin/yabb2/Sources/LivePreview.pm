@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 # Mod created by Carsten Dalgaard                                             #
-#                and added to YaBB core in Version 2.5.4                      #
+#                and added to YaBB core in Version 2.5.4/2.6.0                #
 # Released: May 11, 2013, Copyright 2013 Carsten Dalgaard                     # 
 ###############################################################################
 
@@ -23,9 +23,14 @@ $livepreviewpmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 use URI::Escape;
 LoadCensorList();
+guard();
+if ( $enable_ubbc  ) {
+    if (!$yyYaBBCloaded ) {
+        require Sources::YaBBC;
+    }
+}
 
 sub DoLiveMessage {
-    guard();
     $displayname = $FORM{'musername'};
     $FORM{'message'} =~ s/\r//gsm;
     $message = $FORM{'message'};
@@ -45,7 +50,6 @@ sub DoLiveMessage {
     if ( $FORM{'nschecked'} == 1 ) { $ns = 'NS'; }
 
     if ($enable_ubbc) {
-        if ( !$yyYaBBCloaded ) { require Sources::YaBBC; }
         DoUBBC();
         $message =~ s/ style="display:none"/ style="display:inline"/gsm;
     }
@@ -98,7 +102,6 @@ sub DoLiveIM {
     if ( $FORM{'nschecked'} == 1 ) { $ns = 'NS'; }
 
     if ($enable_ubbc) {
-        if ( !$yyYaBBCloaded ) { require Sources::YaBBC; }
         $displayname = ${ $uid . $tmpmusername }{'realname'};
         DoUBBC();
         $message =~ s/ style="display:none"/ style="display:inline"/gsm;
@@ -148,7 +151,6 @@ sub DoLiveIM {
 }
 
 sub DoLiveCal {
-    guard();
     LoadLanguage('EventCal');
     $FORM{'message'} =~ s/\r//gxsm;
     $message = $FORM{'message'};
@@ -168,7 +170,6 @@ sub DoLiveCal {
     if ( $FORM{'nschecked'} == 1 ) { $ns = 'NS'; }
 
     if ($enable_ubbc) {
-        if ( !$yyYaBBCloaded ) { require Sources::YaBBC; }
         $displayname = ${ $uid . $tmpmusername }{'realname'};
         DoUBBC();
         $message =~ s/ style="display:none"/ style="display:inline"/gsm;

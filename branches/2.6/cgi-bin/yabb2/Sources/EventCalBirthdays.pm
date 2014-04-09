@@ -28,25 +28,11 @@ sub birthdaylist {
     if ( !$Show_BirthdaysList || ( $iamguest && $Show_BirthdaysList != 2 ) ) {
         fatal_error('not_allowed');
     }
-
-#    ( undef, undef, undef, undef, undef, undef, undef, undef, $newisdst ) =
-#      gmtime $heute;
-#    if ( $newisdst > 0 ) {
-#        $userdst = ${ $uid . $username }{'dsttimeoffset'} || $dstoffset;
-#        $dst = 1;
-#    }
     $heute = $date;
+    my $toffs = toffs($date);
 
-    if ($iamguest) {
-        $toffs   = $timeoffset;
-        $dstoffs = $dstoffset;
-    }
-    else {
-        $toffs   = ${ $uid . $username }{'timeoffset'};
-        $dstoffs = $userdst;
-    }
     ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $dst ) =
-      gmtime( $heute + ( 3600 * ( $toffs + $dstoffs ) ) );
+      gmtime( $heute + $toffs );
     $year += 1900;
     $mon       = $mon + 1;
     $actualmon = $mon;
@@ -54,7 +40,7 @@ sub birthdaylist {
     if ( $actualmon < 10 ) { $actualmon = "0$actualmon"; }
     if ( $actualday < 10 ) { $actualday = "0$actualday"; }
 
-    timeformat();    # get only correct $mytimeselected
+    timeformat($date);    # get only correct $mytimeselected
 
     # GoTo begin
 
@@ -319,15 +305,15 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
                 {
 
                     ## User date display begin ##
-					if ( $user_bdyear ne q{} && $user_bdmon ne q{} &&  $user_bdday ne q{} && $user_bdday !=0  ) {
-						$mybtime =
-						stringtotime(qq~$user_bdmon/$user_bdday/$user_bdyear~);
-						$mybtimein = timeformat($mybtime);
-						$cdate     = dtonly($mybtimein);
-						if ( $showage && $user_bdhide ) {
-							$cdate = bdayno_year($mybtimein);
-						}
-					}
+                    if ( $user_bdyear ne q{} && $user_bdmon ne q{} &&  $user_bdday ne q{} && $user_bdday !=0  ) {
+                        $mybtime =
+                        stringtotime(qq~$user_bdmon/$user_bdday/$user_bdyear~);
+                        $mybtimein = timeformatcal($mybtime);
+                        $cdate     = dtonly($mybtimein);
+                        if ( $showage && $user_bdhide ) {
+                            $cdate = bdayno_year($mybtimein);
+                        }
+                    }
 
                     ## User date display end ##
                 }

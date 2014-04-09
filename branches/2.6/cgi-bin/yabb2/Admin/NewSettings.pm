@@ -632,8 +632,8 @@ $member_groups
 \$forumnumberformat = $forumnumberformat;   # Select your preferred output Format for Numbers
 \$timeselected = $timeselected;             # Select your preferred output Format of Time and Date
 \$timecorrection = $timecorrection;         # Set time correction for server time in seconds
-\$timeoffset = "\Q$timeoffset\E";           # Time Offset to GMT/UTC (0 for GMT/UTC)
-\$dstoffset = $dstoffset;                   # Time Offset (for daylight savings time, 0 to disable DST)
+\$enabletz = $enabletz;                     # Allow for timezone selection
+\$default_tz = "$default_tz";                 # default forum timezone
 \$dynamic_clock = $dynamic_clock;           # Set to a value enables the dynamic clock at the top of the page
 \$TopAmmount = $TopAmmount;                 # No. of top posters to display on the top members list
 \$maxdisplay = $maxdisplay;                 # Maximum of topics to display

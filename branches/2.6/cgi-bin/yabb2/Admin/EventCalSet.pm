@@ -508,13 +508,7 @@ sub eventcal_save {
 
 sub del_old_events {
     $caltoday = 1;
-    $toffs = 0;
-#        my $toffs = $timeoffset;
-#        $toffs +=
-#          ( gmtime( $date + ( 3600 * $toffs ) ) )[8] ? $dstoffset : 0;
-
-        my ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $dst ) =
-          gmtime( $date + ( 3600 * $toffs ) );
+    my ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $dst ) = gmtime( $date );
         $year += 1900;
         $mon++;
         $caltoday = $year . sprintf( '%02d', $mon ) . sprintf '%02d', $mday;

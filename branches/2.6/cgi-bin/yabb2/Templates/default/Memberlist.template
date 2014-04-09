@@ -37,13 +37,13 @@ $my_memberlist_main = qq~
         </table>
         <table class="bordercolor pad_3px cs_thin" style="margin-top:-3px; padding-top:0">
 			<colgroup>
-            {yabb col_userpic}
-            <col style="width:auto" />
-            <col span="2" style="width:4%" />
-            <col style="width:auto" />
-            <col style="width:5%" />
-            <col style="width:18%" />
-            <col style="width:auto" />
+                {yabb col_userpic}
+                <col style="width:auto" />
+                <col span="2" style="width:4%" />
+                <col style="width:auto" />
+                <col style="width:5%" />
+                <col style="width:18%" />
+                <col style="width:auto" />
 			</colgroup>
 ~;
 

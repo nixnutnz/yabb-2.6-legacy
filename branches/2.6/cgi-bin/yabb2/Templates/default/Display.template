@@ -174,10 +174,12 @@ $messageblock = qq~
 <div class="displaycontainer">
     <div class="postcontainer">
         <table class="bordercolor pad_4px" style="table-layout:fixed;">
-			<colgroup>
-            <col style="width:13em" />
-            <col style="width:auto" />
-			</colgroup>
+	    <colgroup>
+                <col style="width:13em" />
+                <col style="width:auto" />
+                <col style="width:auto" />
+                <col style="width:auto" />
+	    </colgroup>
             <tr class="{yabb css}">
                 <td class="vtop post-userinfo" rowspan="4">
                     <a id="{yabb count}"></a>
@@ -248,8 +250,8 @@ $messageblock = qq~
 $myrecent = qq~
 <table class="tabtitle">
 	<colgroup>
-    <col style="width:5%" />
-	<col style="width:95%" />
+        <col style="width:5%" />
+	    <col style="width:95%" />
 	</colgroup>
     <tr>
         <td class="center h_30px">{yabb counter}</td>
@@ -412,8 +414,8 @@ $mysend_top = qq~
 </table>
 <table class="pad_3px" style="width:70%">
 	<colgroup>
-    <col style="width:30%" />
-	<col style="width:70%" />
+        <col style="width:30%" />
+	    <col style="width:70%" />
 	</colgroup>
     <tr>
         <td class="windowbg"><label for="y_name"><b>$sendtopic_txt{'335'}:</b></label></td>

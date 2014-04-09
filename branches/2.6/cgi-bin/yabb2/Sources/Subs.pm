@@ -34,6 +34,7 @@ $linewrap = 80;
 $newswrap = 0;
 
 # get the current date/time
+
 $date = int( time() + $timecorrection );
 
 # check if browser accepts encoded output
@@ -356,6 +357,10 @@ qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp;
 
     # static/dynamic clock
     $yytime = timeformat( $date, 1 );
+    my $toffs = 0;
+    if ( $enabletz ) {
+        $toffs = toffs($date);
+    }
     if (
         $mytimeselected != 7
         && ( ( $iamguest && $dynamic_clock )
@@ -370,8 +375,9 @@ qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp;
         $yytime =
 qq~&nbsp;<script  type="text/javascript">\nWriteClock('yabbclock','$aa','$bb');\n</script>~;
         $yyjavascripta .=
-            qq~\n\nvar OurTime = ~
-          . sprintf( '%d', ( $date + ( 3600 * $toffs ) ) )
+            qq~
+        var OurTime = ~
+          . sprintf( '%d', ( $date + $toffs ) )
           . qq~000;\nvar YaBBTime = new Date();\nvar TimeDif = YaBBTime.getTime() - (YaBBTime.getTimezoneOffset() * 60000) - OurTime - 1000; // - 1000 compromise to transmission time~;
     }
 
@@ -905,11 +911,9 @@ sub fatal_error_logging {
     ToHTML($currentboard);
 
     $tmperror =~ s/\n//igsm;
-    fopen( ERRORLOG, "+<$vardir/errorlog.txt" );
-    seek ERRORLOG, 0, 0;
+    fopen( ERRORLOG, "<$vardir/errorlog.txt" );
     my @errorlog = <ERRORLOG>;
-    truncate ERRORLOG, 0;
-    seek ERRORLOG, 0, 0;
+    fclose( ERRORLOG );
     chomp @errorlog;
     $errorcount = @errorlog;
 
@@ -935,6 +939,7 @@ sub fatal_error_logging {
           int(time)
           . "|$date|$user_ip|$tmperror|$action|$INFO{'num'}|$currentboard|$username|$FORM{'passwrd'}\n";
     }
+    fopen( ERRORLOG, ">$vardir/errorlog.txt" );
     foreach (@errorlog) {
         chomp;
         if ( $_ ne q{} ) {
@@ -970,8 +975,14 @@ sub FindPermalink {
 
 sub permtimer {
     my ($thetime) = @_;
+    my $toffs = 0;
+    if ( $enabletz ) {
+        $toffs = toffs($thetime);
+    }
+    my $mynewtime =  $thetime + $toffs;
+
     my ( undef, $pmin, $phour, $pmday, $pmon, $pyear, undef, undef, undef ) =
-      gmtime( $thetime + ( 3600 * $timeoffset ) );
+      gmtime( $mynewtime );
     my $pmon_num = $pmon + 1;
     $phour    = sprintf '%02d', $phour;
     $pmin     = sprintf '%02d', $pmin;
@@ -2070,16 +2081,16 @@ sub WriteLog {
         else              { return; }
     }
 
-    fopen( LOG, "+<$vardir/log.txt" );
+    fopen( LOG, "<$vardir/log.txt" );
     @logentries = <LOG>;    # Global variable
+    fclose( LOG );
     foreach (@logentries) {
         ( $name, $logtime, undef ) = split /\|/xsm, $_, 3;
         if ( $name ne $user_ip && $name ne $field && $logtime >= $onlinetime ) {
             push @new_log, $_;
         }
     }
-    seek LOG, 0, 0;
-    truncate LOG, 0;
+   fopen( LOG, ">$vardir/log.txt" );
     print {LOG} (
 "$field|$date|$user_ip|$user_host#$ENV{'HTTP_USER_AGENT'}|$username|$currentboard|"
           . (
@@ -2099,10 +2110,10 @@ sub WriteLog {
 
     if ( !$action && $enableclicklog == 1 ) {
         $onlinetime = $date - ( $ClickLogTime * 60 );
-        fopen( LOG, "+<$vardir/clicklog.txt", 1 );
+        fopen( LOG, "<$vardir/clicklog.txt", 1 );
         @new_log = <LOG>;
-        seek LOG, 0, 0;
-        truncate LOG, 0;
+        fclose( LOG );
+        fopen( LOG, ">$vardir/clicklog.txt", 1 );
         print {LOG} "$field|$date|$ENV{'REQUEST_URI'}|"
           . (
             $ENV{'HTTP_REFERER'} =~ m/$boardurl/ism
@@ -2123,10 +2134,10 @@ sub WriteLog {
 
 sub RemoveUserOnline {
     my $user = shift;
-    fopen( LOG, "+<$vardir/log.txt", 1 );
+    fopen( LOG, "<$vardir/log.txt", 1 );
     @logentries = <LOG>;    # Global variable
-    seek LOG, 0, 0;
-    truncate LOG, 0;
+    fclose( LOG );
+    fopen( LOG, ">$vardir/log.txt", 1 );
     if ($user) {
         my $x = -1;
         for my $i ( 0 .. ( @logentries - 1 ) ) {

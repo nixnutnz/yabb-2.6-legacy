@@ -312,7 +312,6 @@ sub DoContents {
         $TempParse =~ s/{yabb anchor}/$SectionAnchor/gsm;
         $TempParse =~ s/{yabb myboardname}/$BrdID/gsm;
         $TempParse =~ s/{yabb content}/${SectionSub.$i}/gsm;
-        $TempParse =~ s/{yabb myboardname}/$BrdID/gsm;
 
         $Contents .= qq~$TempParse~;
         ${ SectionSub . $i } = q{};

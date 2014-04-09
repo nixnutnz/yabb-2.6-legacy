@@ -894,17 +894,17 @@ qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title=
 qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" />~;
                 }
                 if ( !$bdpic ) {
-					if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm  ) {
-						$bdpicExt ||= 'gif';
-						if ($subboard_sel) {
-							$bdpic = qq~subboards.$bdpicExt~;
-						}
-						else {
-							$bdpic = qq~boards.$bdpicExt~;
-						}
-					}
-					else {$bdpic = $extern;}
-				}
+                    if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm  ) {
+                        $bdpicExt ||= 'gif';
+                        if ($subboard_sel) {
+                            $bdpic = qq~subboards.$bdpicExt~;
+                        }
+                        else {
+                            $bdpic = qq~boards.$bdpicExt~;
+                        }
+                    }
+                    else {$bdpic = $extern;}
+                }
 
                 $lastposter = ${ $uid . $curboard }{'lastposter'};
                 $lastposter =~ s/\AGuest-(.*)/$1 ($maintxt{'28'})/ism;
@@ -1309,11 +1309,11 @@ qq~$boardindex_txt{'795'} <a href="$scripturl?action=im"><b>${$username}{'PMmnum
             if ( ${$username}{'PMmnum'} > 0 ) {
                 if ( ${$username}{'PMimnewcount'} == 1 ) {
                     $ims .=
-qq~ $boardindex_imtxt{'24'} <a href="$scripturl?action=im"><b>${$username}{'PMimnewcount'}</b></a> $boardindex_imtxt{'25'}.~;
+qq~ <span class="newPM">$boardindex_imtxt{'24'} <a href="$scripturl?action=im"><b>${$username}{'PMimnewcount'}</b></a> $boardindex_imtxt{'25'}.</span>~;
                 }
                 else {
                     $ims .=
-qq~ $boardindex_imtxt{'24'} <a href="$scripturl?action=im"><b>${$username}{'PMimnewcount'}</b></a> $boardindex_imtxt{'26'}.~;
+qq~ <span class="newPM">$boardindex_imtxt{'24'} <a href="$scripturl?action=im"><b>${$username}{'PMimnewcount'}</b></a> $boardindex_imtxt{'26'}.</span>~;
                 }
             }
             else {
@@ -1976,13 +1976,12 @@ sub gostRemove {
 
 sub Del_Max_IM {
     my ( $ext, $max ) = @_;
-    fopen( DELMAXIM, "+<$memberdir/$username.$ext" );
-    seek DELMAXIM, 0, 0;
+    fopen( DELMAXIM, "<$memberdir/$username.$ext" );
     my @IMmessages = <DELMAXIM>;
-    seek DELMAXIM, 0, 0;
-    truncate DELMAXIM, 0;
+    fclose( DELMAXIM );
     splice @IMmessages, $max;
 
+    fopen( DELMAXIM, ">$memberdir/$username.$ext" );
     print {DELMAXIM} @IMmessages or croak "$croak{'print'} DELMAXIM";
     fclose(DELMAXIM);
     return;

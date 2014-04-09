@@ -107,20 +107,36 @@ my $sel_secund = qq~<input type="hidden" value="$forumstart_secund" name="forums
 my $all_time = qq~$sel_hour $sel_minute $sel_secund~;
 # End time
 
-# Timezone selector
-#my @usertimeoffset = split /\./xsm, $timeoffset;
-#my $timeoffsetselect = q~<br /><select name="usertimesign" id="usertimesign"><option value="">+</option><option value="-"~ . ($usertimeoffset[0] < 0 ? ' selected="selected"' : q{}) . q~>-</option></select> <select name="usertimehour">~;
-#    for my $i ( 0 .. 14 ) {
-#        $i = sprintf '%02d', $i;
-#        $timeoffsetselect .= qq~<option value="$i"~ . (($usertimeoffset[0] == $i || $usertimeoffset[0] == -$i) ? ' selected="selected"' : q{}) . qq~>$i</option>~;
-#    }
-#    $timeoffsetselect .= qq~</select> : <select name="usertimemin">~;
-#    for my $i( 0 .. 59 ) {
-#        my $j = $i / 60;
-#        $j = (split /\./xsm, $j)[1] || 0;
-#        $timeoffsetselect .= qq~<option value="$j"~ . ($usertimeoffset[1] eq $j ? ' selected="selected"' : q{}) . q~>~ . sprintf('%02d', $i) . q~</option>~;
-#    }
-#    $timeoffsetselect .= q~</select>~;
+my $mytz = $default_tz;
+my $tz_select = q~<select name="default_tz" id="default_tz">~;
+$tz_select .= qq~<option value="UTC" ${isselected('UTC' eq $mytz)}>UTC</option>~;
+
+if ( $enabletz ) {
+    use Locale::Country;
+    my @cntry = DateTime::TimeZone->countries();
+    my %country;
+    for my $i (@cntry) {
+        if ( code2country($i ,'alpha-2') ) {
+            $country{$i} = code2country($i ,'alpha-2');
+        }
+    }
+    my @mycntry = sort { $country{$a} cmp $country{$b} } keys %country;
+
+    for my $j ( @mycntry ) {
+        for my $i ( sort @{DateTime::TimeZone->names_in_country( $j )}) {
+            my @city = split /\//xsm, $i;
+            my $st = q{};
+            if ( $j eq 'us' && $city[2] ) {
+                $st = "$city[1], ";
+            }
+            $st =~ s/_/ /gsm;
+            $city[-1] =~ s/_/ /gsm;
+            $tz_select .= qq~<option value="$i" ${isselected($i eq $mytz)}>$country{$j} - $st$city[-1]</option>~;
+        }
+    }
+}
+
+$tz_select .= '</select>';
 
 # Language selector
 opendir LNGDIR, $langdir;
@@ -275,17 +291,20 @@ $qckage ||= 31;
             validate => 'number',
         },
         {
-            description => qq~<label for="usertimesign">$admin_txt{'371'}</label>~,
-            input_html => timeformat($date,1,0,1),# . $timeoffsetselect,
-            # TZ disabled for 2.6 - does not work properly - DAR
-            ### Custom validated.
+            description => qq~$admin_txt{'371'}~,
+            input_html => timeformat($date,1,0,1),
         },
-#        {
-#            description => qq~<label for="dstoffset">$admin_txt{'371a'}</label>~,
-#            input_html => qq~<input type="checkbox" name="dstoffset" id="dstoffset" value="1"${ischecked($dstoffset)}/>~,
-#            name => 'dstoffset',
-#            validate => 'boolean',
-#        },
+        {
+            description => qq~<label for="enabletz">$admin_txt{'371a'}</label>~,
+            input_html => qq~<input type="checkbox" name="enabletz" id="enabletz" value="1"${ischecked($enabletz)} />~,
+            name => 'enabletz',
+            validate => 'boolean',
+        },
+        {
+            description => qq~<label for="default_tz">$admin_txt{'371d'}</label>~,
+            input_html => $tz_select,
+        },
+            ### Custom validated.
         {
             description => qq~<label for="dynamic_clock">$admin_txt{'371b'}</label>~,
             input_html => qq~<input type="checkbox" name="dynamic_clock" id="dynamic_clock" value="1"${ischecked($dynamic_clock)}/>~,
@@ -1011,12 +1030,12 @@ $qckage ||= 31;
             name => 'addmemgroup_enabled',
             validate => 'number',
         },
-            {
-                description =>qq~<label for="self_del_user">$admin_txt{'586'}</label>~,
-                input_html =>qq~<input type="checkbox" name="self_del_user" id="self_del_user" value="1" ${ischecked($self_del_user)}/>~,
-                name     => 'self_del_user',
-                validate => 'boolean',
-            },
+        {
+            description =>qq~<label for="self_del_user">$admin_txt{'586'}</label>~,
+            input_html =>qq~<input type="checkbox" name="self_del_user" id="self_del_user" value="1" ${ischecked($self_del_user)}/>~,
+            name     => 'self_del_user',
+            validate => 'boolean',
+        },
         {
             description => qq~<label for="extendedprofiles">$admin_txt{'extendedprofiles'}</label>~,
             input_html => qq~<input type="checkbox" name="extendedprofiles" id="extendedprofiles" value="1" ${ischecked($extendedprofiles)}/>~,
@@ -1604,10 +1623,13 @@ sub SaveSettings {
     $forumstart = qq~$forumstart_month/$forumstart_day/$forumstart_year $maintxt{'107'} $forumstart_hour:$forumstart_minute:$forumstart_secund~;
 
     # Validate Timezone
-    $timeoffset  = $FORM{'usertimesign'} =~ /^-$/sm ? q{-} : q{};
-    $timeoffset .= $FORM{'usertimehour'} =~ /^\d+$/sm ? $FORM{'usertimehour'} : '0';
-    $timeoffset .= q{.};
-    $timeoffset .= $FORM{'usertimemin'}  =~ /^\d+$/sm ? $FORM{'usertimemin'} : '0';
+    if ( $enabletz ) {
+        if ( $FORM{'default_tz'} eq '-') {
+            $default_tz = 'UTC';
+        }
+        else { $default_tz = $FORM{'default_tz'}; }
+    }
+    else { $default_tz = 'UTC'; }
 
     # Get barmaxnumb
     $settings{'barmaxnumb'} = $FORM{'barmaxnumb'};

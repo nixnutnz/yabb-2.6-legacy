@@ -39,10 +39,10 @@ $mycenter_template = qq~
 <div class="seperator">
     <table>
         <colgroup>
-        <col style="width:40px" />
-        <col style="width:auto" />
-        <col style="width:45px" />
-        <col style="width:440px" />
+            <col style="width:40px" />
+            <col style="width:auto" />
+            <col style="width:45px" />
+            <col style="width:440px" />
         </colgroup>
         <tr>
             <td class="tabmenuleft">&nbsp;</td>
@@ -182,8 +182,8 @@ $my_MCPost_count = qq~
 $my_MCContent = qq~
         <table class="pad_4px cs_thin">
             <colgroup>
-            <col style="width:33%" />
-            <col style="width:67%" />
+                <col style="width:33%" />
+                <col style="width:67%" />
             </colgroup>
             <tr>
                 <td class="windowbg2 vtop">
@@ -223,9 +223,9 @@ $my_MCPmMenu = qq~
     <div id="cont_pm" style="display: {yabb display_pm}">
         <table id="pms" class="windowbg2 pad_2px">
             <colgroup>
-            <col style="width:15%" />
-            <col style="width:60%" />
-            <col style="width:25%" />
+                <col style="width:15%" />
+                <col style="width:60%" />
+                <col style="width:25%" />
             </colgroup>{yabb MCPmMenu_bm}{yabb mypmmenu_inbox}{yabb MCPmMenu_bmbox}
             <tr>
                 <td class="windowbg2"><img src="$imagesdir/$im_outbox" alt="$inmes_txt{'draft'}" title="$inmes_txt{'draft'}" /></td>
@@ -279,9 +279,9 @@ $my_storetotals = qq~<tr>
                     <form action="$scripturl?action=delpmfolder" method="post" name="delpmfolder" id="delpmfolder" enctype="application/x-www-form-urlencoded" style="display:inline;"  onsubmit="return submitproc()">
                         <table class="pad_2px">
                             <colgroup>
-                            <col style="width:15%" />
-                            <col style="width:60%" />
-                            <col style="width:25%" />
+                                <col style="width:15%" />
+                                <col style="width:60%" />
+                                <col style="width:25%" />
                             </colgroup>
                             {yabb MCPmMenuTemp}
                         </table>
@@ -355,9 +355,9 @@ $my_pmsearch_b = qq~
 $my_IMblock_top = q~
 <table class="bordercolor cs_thin pad_3px" style="border-top:0; margin-top:-2px">
     <colgroup>
-    <col style="width:65%" />
-    <col style="width:15%" />
-    <col style="width:25%" />
+        <col style="width:65%" />
+        <col style="width:15%" />
+        <col style="width:25%" />
     </colgroup>
     {yabb MCContent_page}
     {yabb MCContent_view}

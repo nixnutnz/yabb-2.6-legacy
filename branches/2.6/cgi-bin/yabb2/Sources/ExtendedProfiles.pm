@@ -319,7 +319,7 @@ sub ext_has_access {
             @users = split /\,/xsm, $allowed_users;
             foreach my $user (@users) {
                 if ( $user eq $username ) { $access = 1; return $access; }
-        }
+            }
         }
         if ( $allowed_groups ne q{} ) {
 
@@ -328,52 +328,52 @@ sub ext_has_access {
             @groups = split /\s*\,\s*/xsm, $allowed_groups;
             foreach my $group (@groups) {
 
-            # check if user is in one of these groups
+                # check if user is in one of these groups
             if (   $group eq 'Administrator'
                 || $group eq 'Moderator'
                 || $group eq 'Mid Moderator'
                 || $group eq 'Global Moderator' )
-            {
+                {
                     if ( $group eq $usergroup ) { $access = 1; return $access; }
                 }
                 elsif ( $group =~ m/^NoPost{(\d+)}$/sm ) {
 
-                # check if user is on a post-independent group
-                $groupid = $1;
+                    # check if user is on a post-independent group
+                    $groupid = $1;
 
-                # check if group exists at all
+                    # check if group exists at all
                     if ( exists $NoPost{$groupid} && $groupid ne q{} ) {
 
-                    # check if group id is in user position or addgroup field
+                       # check if group id is in user position or addgroup field
                         if ( $usergroup eq $groupid ) {
                             $access = 1;
                             return $access;
-                    }
+                        }
                         foreach my $group ( split /,/xsm, $useraddgroup ) {
                             if ( $group eq $groupid ) {
                                 $access = 1;
                                 return $access;
                             }
-                }
+                        }
                     }
                 }
                 elsif ( $group =~ m/^Post{(\d+)}$/sm ) {
 
-                # check if user is in one of the post-depending groups...
-                $groupid = $1;
+                    # check if user is in one of the post-depending groups...
+                    $groupid = $1;
                     foreach my $postamount ( reverse sort { $a <=> $b } keys %Post ) {
                         if ( $postcount > $postamount ) {
 
-                        # found the group the user is in
+                            # found the group the user is in
                             if ( $postamount eq $groupid ) {
                                 $access = 1;
                                 return $access;
                             }
+                        }
                     }
                 }
             }
         }
-    }
     }
     else { $access = 1; }
 

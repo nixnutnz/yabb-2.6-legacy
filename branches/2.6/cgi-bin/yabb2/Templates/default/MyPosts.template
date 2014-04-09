@@ -20,10 +20,10 @@ $my_favbrds = 'favboards.png';
 $favorites_template .= qq~<!-- Board Description start -->
 <table class="tabtitle-sub">
 	<colgroup>
-    <col style="width:8%" />
-    <col style="width:20%" />
-    <col style="width:56%" />
-    <col style="width:16%" />
+        <col style="width:8%" />
+        <col style="width:20%" />
+        <col style="width:56%" />
+        <col style="width:16%" />
 	</colgroup>
     <tr>
         <td class="center">{yabb bdpicture}</td>
@@ -39,10 +39,10 @@ $favorites_template .= qq~<!-- Board Description start -->
 {yabb modupdate}
 <table class="bordercolor pad_3px cs_thin">
 	<colgroup>
-    <col span="2" style="width:4%" />
-    <col style="width:42%" />
-    <col span="2" style="width:10%" />
-    <col style="width:22%" />
+        <col span="2" style="width:4%" />
+        <col style="width:42%" />
+        <col span="2" style="width:10%" />
+        <col style="width:22%" />
 	</colgroup>
     <tr>
         <td class="titlebg center" colspan="2">&nbsp;</td>
@@ -61,8 +61,8 @@ $favorites_template .= qq~<!-- Board Description start -->
 $favorites_template .= qq~<!-- Icon and access info start -->
 <table class="pad_8px">
 	<colgroup>
-    <col style="width:35%" />
-	<col style="width:65%" />
+        <col style="width:35%" />
+	    <col style="width:65%" />
 	</colgroup>
     <tr>
         <td class="vtop">
@@ -176,7 +176,7 @@ $my_boardnote = qq~
     </table>
     <table class="pad_4px cs_thin" style="margin-bottom: 10px;">
 		<colgroup>
-        <col style="width:65%" />
+            <col style="width:65%" />
 		</colgroup>
         {yabb my_showNotifications_b}
     </table>
@@ -192,7 +192,7 @@ $my_boardnote = qq~
     </table>
     <table class="pad_4px cs_thin">
 		<colgroup>
-        <col style="85%" />
+            <col style="85%" />
 		</colgroup>
         {yabb my_showNotifications_t}
     </table>
@@ -268,8 +268,8 @@ $my_threadnote_b = qq~<tr>
 $myshow_recent_a = qq~
 <table class="tabtitle">
 	<colgroup>
-    <col style="width:5%" />
-	<col style="width:95%" />
+        <col style="width:5%" />
+	    <col style="width:95%" />
 	</colgroup>
     <tr>
         <td class="center h_30px">{yabb counter}</td>

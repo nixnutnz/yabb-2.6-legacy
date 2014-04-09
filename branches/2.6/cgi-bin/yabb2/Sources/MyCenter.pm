@@ -452,10 +452,10 @@ sub updateMessageFlag {
         && -e "$memberdir/$user.$pmFile"
       )
     {
-        fopen( USERFILE, "+<$memberdir/$user.$pmFile" );
+        fopen( USERFILE, "<$memberdir/$user.$pmFile" );
         my @userFile = <USERFILE>;
-        seek USERFILE, 0, 0;
-        truncate USERFILE, 0;
+        fclose( USERFILE );
+        my @newpmfile = ();
         foreach my $userMessage (@userFile) {
             my (
                 $uMessageId,    $uFrom,        $uToUser, $uTocc,
@@ -477,8 +477,11 @@ sub updateMessageFlag {
 "$uMessageId|$uFrom|$uToUser|$uTocc|$uTobcc|$uSubject|$uDate|$uMessage|$uPid|$uReply|$uip|$uStatus|$uMessageFlags|$uStorefolder|$uAttach";
             }
             ${ 'MF' . $user . $pmFile }{$uMessageId} = $uMessageFlags;
-            print {USERFILE} $userMessage or croak "$croak{'print'} USERFILE";
+            push @newpmfile, $userMessage;
+
         }
+        fopen( USERFILE, ">$memberdir/$user.$pmFile" );
+        print {USERFILE} @newpmfile or croak "$croak{'print'} USERFILE";
         fclose(USERFILE);
     }
     return $messageFoundFlag;
@@ -544,11 +547,10 @@ sub Del_Some_IM {
     elsif ( $INFO{'caller'} == 4 ) { $fileToOpen = "$username.imdraft"; }
     elsif ( $INFO{'caller'} == 5 ) { $fileToOpen = 'broadcast.messages'; }
 
-    fopen( USRFILE, "+<$memberdir/$fileToOpen" );
-    seek USRFILE, 0, 0;
+    fopen( USRFILE, "<$memberdir/$fileToOpen" );
     my @messages = <USRFILE>;
-    seek USRFILE, 0, 0;
-    truncate USRFILE, 0;
+    fclose( USRFILE );
+    my @delusr = ();
 
     # deleting
     if (   $FORM{'imaction'} eq $inmes_txt{'remove'}
@@ -630,7 +632,7 @@ sub Del_Some_IM {
         foreach (@messages) {
             if ( !$FORM{ 'message' . ( split /\|/xsm, $_, 2 )[0] } ) {
                 if ( $INFO{'caller'} != 3 ) {
-                    print {USRFILE} $_ or croak "$croak{'print'} USRFILE";
+                    push @delusr, $_;
                 }
                 else {
                     my @m = split /\|/xsm, $_;
@@ -653,6 +655,8 @@ sub Del_Some_IM {
                 }
             }
         }
+        fopen( USRFILE, ">$memberdir/$fileToOpen" );
+        print {USRFILE} @delusr or croak "$croak{'print'} USRFILE";
         fclose(USRFILE);
 
         if (@newmessages) {
@@ -967,11 +971,11 @@ qq~[quote author=$cloakedAuthor link=impost date=$mdate\]$message\[/quote\]\n~;
 sub MarkAll {
     if ($iamguest) { fatal_error('im_members_only'); }
 
-    fopen( FILE, "+<$memberdir/$username.msg" );
-    seek FILE, 0, 0;
+    fopen( FILE, "<$memberdir/$username.msg" );
     my @messages = <FILE>;
-    seek FILE, 0, 0;
-    truncate FILE, 0;
+    fclose( FILE );
+    my @mymessages = ();
+
     foreach (@messages) {
         my (
             $imessageid,     $imusername,      $imusernameto,
@@ -981,12 +985,13 @@ sub MarkAll {
             $imflags,        $imstore,         $imattach
         ) = split /\|/xsm, $_;
         if ( $imflags =~ s/u//ism ) {
-            print {FILE}
-"$imessageid|$imusername|$imusernameto|$imusernametocc|$imusernametobcc|$imsub|$imdate|$mmessage|$imessagepid|$imreply|$mip|$imstatus|$imflags|$imstore|$imattach"
-              or croak "$croak{'print'} FILE";
+            push @mymessages,
+"$imessageid|$imusername|$imusernameto|$imusernametocc|$imusernametobcc|$imsub|$imdate|$mmessage|$imessagepid|$imreply|$mip|$imstatus|$imflags|$imstore|$imattach";
         }
-        else { print {FILE} $_ or croak "$croak{'print'} FILE"; }
+        else { push @mymessages, $_; }
     }
+    fopen( FILE, "<$memberdir/$username.msg" );
+    print {FILE} @mymessages or croak "$croak{'print'} FILE";
     fclose(FILE);
 
     ${$username}{'PMimnewcount'} = 0;

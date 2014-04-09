@@ -47,9 +47,10 @@ sub BoardTotals {
             }
         }
         elsif ( $job eq 'update' ) {
-            fopen( FORUMTOTALS, "+<$boardsdir/forum.totals" )
+            fopen( FORUMTOTALS, "<$boardsdir/forum.totals" )
               || fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
             @lines = <FORUMTOTALS>;
+            fclose( FORUMTOTALS );
             for my $line ( 0 .. ( @lines - 1 ) ) {
                 @boardvars = split /\|/xsm, $lines[$line];
                 if ( exists $board{ $boardvars[0] } ) {
@@ -77,16 +78,17 @@ sub BoardTotals {
                     $lines[$line] = q{};
                 }
             }
-            truncate FORUMTOTALS, 0;
-            seek FORUMTOTALS, 0, 0;
+            fopen( FORUMTOTALS, ">$boardsdir/forum.totals" )
+              || fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
             print {FORUMTOTALS} @lines or croak "$croak{'print'} FORUMTOTALS";
             fclose(FORUMTOTALS);
 
         }
         elsif ( $job eq 'delete' ) {
-            fopen( FORUMTOTALS, "+<$boardsdir/forum.totals" )
+            fopen( FORUMTOTALS, "<$boardsdir/forum.totals" )
               || fatal_error( 'cannot_open', "$boardsdir/forum.totasl", 1 );
             @lines = <FORUMTOTALS>;
+            fclose( FORUMTOTALS );
             for my $line ( 0 .. ( @lines - 1 ) ) {
                 @boardvars = split /\|/xsm, $lines[$line], 2;
                 if ( $boardvars[0] eq $updateboards[0]
@@ -95,11 +97,10 @@ sub BoardTotals {
                     $lines[$line] = q{};
                 }
             }
-            truncate FORUMTOTALS, 0;
-            seek FORUMTOTALS, 0, 0;
+            fopen( FORUMTOTALS, ">$boardsdir/forum.totals" )
+              || fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
             print {FORUMTOTALS} @lines or croak "$croak{'print'} FORUMTOTALS";
             fclose(FORUMTOTALS);
-
         }
         elsif ( $job eq 'add' ) {
             fopen( FORUMTOTALS, ">>$boardsdir/forum.totals" )
@@ -335,7 +336,7 @@ sub UserAccount {
 
     # using sequential tag writing as hashes do not sort the way we like them to
     my @tags =
-      qw(realname password position addgroups email hidemail regdate regtime regreason location bday hideage disableage gender disablegender userpic usertext signature template language stealth webtitle weburl icq aim yim skype myspace facebook twitter youtube msn gtalk timeselect timeformat timeoffset dsttimeoffset dynamic_clock postcount lastonline lastpost lastim im_ignorelist im_popup im_imspop pmviewMess notify_me board_notifications thread_notifications favorites buddylist cathide pageindex reversetopic postlayout sesquest sesanswer session lastips onlinealert offlinestatus awaysubj awayreply awayreplysent spamcount spamtime hide_avatars hide_user_text hide_img hide_attach_img hide_signat hide_smilies_row numberformat collapsebdrules return_to);
+      qw(realname password position addgroups email hidemail regdate regtime regreason location bday hideage disableage gender disablegender userpic usertext signature template language stealth webtitle weburl icq aim yim skype myspace facebook twitter youtube msn gtalk timeselect user_tz dynamic_clock postcount lastonline lastpost lastim im_ignorelist im_popup im_imspop pmviewMess notify_me board_notifications thread_notifications favorites buddylist cathide pageindex reversetopic postlayout sesquest sesanswer session lastips onlinealert offlinestatus awaysubj awayreply awayreplysent spamcount spamtime hide_avatars hide_user_text hide_img hide_attach_img hide_signat hide_smilies_row numberformat collapsebdrules return_to);
 
     if ($extendedprofiles) {
         require Sources::ExtendedProfiles;

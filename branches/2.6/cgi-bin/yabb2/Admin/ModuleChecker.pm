@@ -29,7 +29,7 @@ if( ! $script_root ) {
 my ( $checker_output, $i );
 
 foreach my $module (
-    qw(Digest::MD5 Time::HiRes Time::Local File::Find CGI Net::SMTP Net::SMTP::TLS Compress::Zlib Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common Crypt::SSLeay IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English)
+    qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone Locale::Country File::Find CGI Net::SMTP Net::SMTP::TLS Compress::Zlib Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common Crypt::SSLeay IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English)
   )
 {
     eval "require $module";
@@ -53,10 +53,21 @@ foreach my $module (
                 </tr>~;
     }
     else {
+        if ($module eq 'DateTime::TimeZone' ) {
+        $checker_output .= qq~<tr>
+                    <td class="windowbg2"><span class="good">$module</span></td>
+                    <td class="windowbg2">
+                        $modulecheck{'6'}
+                    </td>
+                    <td class="windowbg2">$modulecheck{"$module"}</td>
+                </tr>~;
+        }
+        else {
         $checker_output .= qq~<tr>
                     <td class="windowbg2"><span class="good">$module</span></td>
                     <td class="windowbg2" colspan="2">$modulecheck{'6'}</td>
                 </tr>~;
+        }
     }
 }
 
@@ -124,7 +135,7 @@ color: #f00;
     font-size: 11px;
 }
 </style>
-<title>YaBB 2.5.4 Module Checker</title>
+<title>YaBB 2.6.0 Module Checker</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 </head>
 <body>

@@ -31,14 +31,15 @@ $mycalout_goto_main = qq~<tr>
     <colgroup>
         <col style="width:6%" />
         <col style="width:30%" />
+        <col style="width:64%" />
     </colgroup>~;
 
 $mycalout_gottobox = qq~
     <table class="tabtitle tabtitle-text">
-        <colgroup>
+		<colgroup>
             <col style="width:30%" />
             <col style="width:70%" />
-        </colgroup>
+		</colgroup>
         <tr>
             <td style="padding-left:1%">
                 <!--<img src="$yyhtml_root/Templates/Forum/default/$cal_eventcal" alt="" /> --> $var_cal{'caltitle'}

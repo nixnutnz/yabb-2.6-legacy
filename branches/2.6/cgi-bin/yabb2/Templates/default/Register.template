@@ -72,8 +72,8 @@ $myregister_regfill_a = qq~
 </table>
 <table class="cs_thin pad_4px">
 	<colgroup>
-    <col style="width:45%" />
-    <col style="width:55%" />
+        <col style="width:45%" />
+        <col style="width:55%" />
 	</colgroup>
     <tr>
         <td class="windowbg center" colspan="2">

@@ -3,8 +3,8 @@
 //##############################################################################
 //# YaBB: Yet another Bulletin Board                                           #
 //# Open-Source Community Software for Webmasters                              #
-//# Version:        YaBB 3.0 Beta                                              #
-//# Packaged:       October 05, 2010                                           #
+//# Version:        YaBB 2.6.0                                                 #
+//# Packaged:       Apr 09, 2014                                               #
 //# Distributed by: http://www.yabbforum.com                                   #
 //# ===========================================================================#
 //# Copyright (c) 2000-2010 YaBB (www.yabbforum.com) - All Rights Reserved.    #
@@ -12,7 +12,7 @@
 //#               with assistance from the YaBB community.                     #
 //##############################################################################
 
-//YaBB 3.0 Beta $Revision$
+//YaBB 2.6.0 $Revision$
 
 var op = ( navigator.userAgent.indexOf( 'Opera' ) != -1 );
 var konq = ( navigator.userAgent.indexOf( 'Konqueror' ) != -1 );

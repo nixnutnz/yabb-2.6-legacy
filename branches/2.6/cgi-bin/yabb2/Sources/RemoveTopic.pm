@@ -30,9 +30,10 @@ sub RemoveThread {
         $currentboard = ${$thread}{'board'};
     }
     my $threadline = q{};
-    fopen( BOARDFILE, "+<$boardsdir/$currentboard.txt", 1 )
+    fopen( BOARDFILE, "<$boardsdir/$currentboard.txt", 1 )
       || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @buffer = <BOARDFILE>;
+    fclose( BOARDFILE );
     for my $aa ( 0 .. ( @buffer - 1 ) ) {
         if ( $buffer[$aa] =~ m{\A$thread\|}xsm ) {
             $threadline = $buffer[$aa];
@@ -40,8 +41,8 @@ sub RemoveThread {
             last;
         }
     }
-    truncate BOARDFILE, 0;
-    seek BOARDFILE, 0, 0;
+    fopen( BOARDFILE, ">$boardsdir/$currentboard.txt", 1 )
+      || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     print {BOARDFILE} @buffer or croak "$croak{'print'} BOARDFILE";
     fclose(BOARDFILE);
 

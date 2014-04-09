@@ -595,10 +595,9 @@ qq~$sstxt{'21'} $tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}
     }
 
     # Update current message index
-    fopen( BOARD, "+<$boardsdir/$curboard.txt", 1 );
+    fopen( BOARD, "<$boardsdir/$curboard.txt", 1 );
     my @curmessindex = <BOARD>;
-    truncate BOARD, 0;
-    seek BOARD, 0, 0;
+    fclose( BOARD );
 
     my $old_mstate;
     for my $i ( 0 .. ( @curmessindex - 1 ) ) {
@@ -688,11 +687,12 @@ qq~$newthreadid|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthrea
             NewNotify( $newthreadid, $msub );
         }
     }
+    fopen( BOARD, ">$boardsdir/$curboard.txt", 1 );
     print {BOARD} reverse
       sort { ( split /\|/xsm, $a, 6 )[4] <=> ( split /\|/xsm, $b, 6 )[4] }
       @curmessindex
       or croak "$croak{'print'} BOARD";
-    fclose(BOARD);
+    fclose( BOARD );
 
     if ($boardlog) {
         $yyuserlog{$curboard} = $date;
@@ -702,11 +702,9 @@ qq~$newthreadid|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthrea
     if ( $curboard ne $newboard ) {
         $boardlog = 1;    # For: Mark boards as read
 
-        fopen( BOARD, "+<$boardsdir/$newboard.txt", 1 );
-        seek BOARD, 0, 0;
+        fopen( BOARD, "<$boardsdir/$newboard.txt", 1 );
         my @newmessindex = <BOARD>;
-        truncate BOARD, 0;
-        seek BOARD, 0, 0;
+        fclose( BOARD );
 
         if ( $FORM{'newthread'} eq 'new' ) {
 
@@ -739,7 +737,6 @@ qq~$newthreadid|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthrea
                 $msub         = Censor($msub);
                 NewNotify( $newthreadid, $msub );
             }
-
         }
         else {
             for my $i ( 0 .. ( @newmessindex - 1 ) ) {
@@ -775,6 +772,7 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
                 ReplyNotify( $newthreadid, $msub, ${$newthreadid}{'replies'} );
             }
         }
+        fopen( BOARD, ">$boardsdir/$curboard.txt", 1 );
         print {BOARD} reverse
           sort { ( split /\|/xsm, $a, 6 )[4] <=> ( split /\|/xsm, $b, 6 )[4] }
           @newmessindex
@@ -934,10 +932,11 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
             $msub,           $mname,          $mdate,
             $mfn
         );
-        fopen( ATM, "+<$vardir/attachments.txt", 1 )
+        fopen( ATM, "<$vardir/attachments.txt", 1 )
           || fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
-        seek ATM, 0, 0;
-        while (<ATM>) {
+		my @attachfile = <ATM>;
+		fclose( ATM );
+        while ( @attachfile) {
             (
                 $attid, undef, undef, undef, undef, undef, undef,
                 $attachmentname, $downloadscount
@@ -990,13 +989,12 @@ qq~$newthreadid|$mreplies|$msub|$mname|$newboard|$asize|$mdate|$_|~
             $mreplies++;
         }
 
-        truncate ATM, 0;
-        seek ATM, 0, 0;
+        fopen( ATM, ">$vardir/attachments.txt", 1 );
         print {ATM}
           sort { ( split /\|/xsm, $a, 8 )[6] <=> ( split /\|/xsm, $b, 8 )[6] }
           @newattachments
           or croak "$croak{'print'} ATM";
-        fclose(ATM);
+        fclose( ATM );
     }
 
     if ( $#postnum == $#curthread ) {

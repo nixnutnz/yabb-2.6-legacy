@@ -360,16 +360,17 @@ sub DownloadFileCouter {
         fatal_error( q{}, "$dfile $maintxt{'23'}" );
     }
 
-    fopen( ATM, "+<$vardir/attachments.txt", 1 )
+    fopen( ATM, "<$vardir/attachments.txt", 1 )
       || fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
-    seek ATM, 0, 0;
     my @attachments = <ATM>;
-    truncate ATM, 0;
-    seek ATM, 0, 0;
+    fclose( ATM );
+
     for my $aa ( 0 .. ( @attachments - 1 ) ) {
         $attachments[$aa] =~
 s/(.+\|)(.+)\|(\d+)(\s+)$/ $1 . ($dfile eq $2 ? "$2|" . ($3 + 1) : "$2|$3") . $4 /exsm;
     }
+    fopen( ATM, ">$vardir/attachments.txt", 1 )
+      || fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
     print {ATM} @attachments or croak "$croak{'print'} ATM";
     fclose(ATM);
 

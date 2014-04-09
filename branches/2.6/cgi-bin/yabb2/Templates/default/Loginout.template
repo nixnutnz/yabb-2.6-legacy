@@ -23,22 +23,22 @@ $mysharedloga = qq~
 $myborder_with_title
 <table class="pad_4px cs_thin" style="margin-top:10px">
     <tr>
-        <td class="tabtitle" style="height:25px; padding-left:1%" colspan="2"><b>{yabb sharedLogin_title}</b></td></tr>~;
+        <td class="tabtitle" style="height:25px; padding-left:1%"><b>{yabb sharedLogin_title}</b></td></tr>~;
 
 $mysharedlogb = qq~<tr>
         <td class="windowbg" colspan="2">{yabb sharedLogin_text}</td>
     </tr>~;
 
 $mysharedlogc = q~<tr>
-        <td class="windowbg2 center padd_10px" colspan="2">~;
+        <td class="windowbg2 center padd_10px">~;
 
 
 $mysharedlog_top = qq~
 $myborder
 <table class="tabtitle tabtitle-text" style="margin-top:10px">
 	<colgroup>
-    <col style="width:1%" />
-    <col style="width:99%" />
+        <col style="width:1%" />
+        <col style="width:99%" />
 	</colgroup>
     <tr>
         <td>&nbsp;</td>
@@ -47,8 +47,8 @@ $myborder
 </table>
 <table class="bordercolor pad_4px cs_thin">
 	<colgroup>
-    <col style="width:6%" />
-    <col style="width:94%" />
+        <col style="width:6%" />
+        <col style="width:94%" />
 	</colgroup>
     <tr>
         <td class="windowbg center"><img src="$imagesdir/login.png" alt="" /></td>
