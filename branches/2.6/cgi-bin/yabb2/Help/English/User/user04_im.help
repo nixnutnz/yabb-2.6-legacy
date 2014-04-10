@@ -11,7 +11,7 @@ $SectionBody1 = qq~<p>YaBB is about community and communication. And there are p
 <p class="help_attn"><b><span class="underline">User Tip:</span></b> Allowing Guests to post on your forum or send PMs poses risks, such as spam or worse being posted or sent in PMs. To reduce this risk, we highly recommend the Administrator use the option available in the Security Settings to require a Validation Code and/or a Validation Question for any Guest action &#40;Post, PM, Alert&#41;.</p>
 <p>Another option the Administrator can enable is allowing Personal Messages to be sent as copies similar to e-mails.  If enabled, you can send carbon copies (cc) and blind carbon copies (bcc) and the recipients may also respond directly to other original recipients.</p>
 <p>The Administrator may also enable the option for members to create additional storage folders for their PMs, and if the number of messages is large, you can find individual messages by using the PM Search feature.</p>
-<p>If a recipient isn't online, Personal Messages wait in the member's PM box until the next time he/she logs in and manually reads and/or deletes them. Should you for some reason need to call back the message before the other party reads it, you can recall it by going to your PM Outbox and clicking the Recall link under the message.</p>
+<p>If a recipient isn't online, Personal Messages wait in the member's PM box until the next time he/she logs in and manually reads and/or deletes them. Should you for some reason need to call back the message before the other party reads it (and they don't have PM notifications sent to them via e-mail), you can recall it by going to your PM Outbox and clicking the Recall link under the message.</p>
 <p>YaBB Personal Messages center is basically a self-contained, highly private e-mail system.</p>
 ~;
 #############################################
@@ -22,18 +22,18 @@ $SectionSub2 = "Broadcast_Messaging";
 $SectionBody2 = qq~<p>YaBB allows Forum Staff the capability to communicate with each other through the use of <b>Broadcast Messages</b>.</p>
 <p>Broadcast Messaging is an optional feature for Administrators to enable if they choose. The Administrator can enable Broadcast Messaging for these groups:</p>
 <ul>
-	<li>Administrators</li>
-	<li>Administrators and Global Moderators</li>
-	<li>Administrators, Global Moderators, Forum Moderators, and Board Moderators</li>
+    <li>Administrators</li>
+    <li>Administrators and Global Moderators</li>
+    <li>Administrators, Global Moderators, Forum Moderators, and Board Moderators</li>
 </ul>
 <p>Those allowed Broadcast Message permission can send BMs to the following recipients:</p>
 <ul>
-	<li>Administrators</li>
-	<li>Global Moderators</li>
-	<li>Forum Moderators</li>
-	<li>Board Moderators and all members of member groups assigned as Moderators</li>
-	<li>All forum members</li>
-	<li>Any combination of the above</li>
+    <li>Administrators</li>
+    <li>Global Moderators</li>
+    <li>Forum Moderators</li>
+    <li>Board Moderators and all members of member groups assigned as Moderators</li>
+    <li>All forum members</li>
+    <li>Any combination of the above</li>
 </ul>
 <p>The Administrator may also enable the option for Guests to send a <b>PM to the Administrator</b>. These PMs are actually transmitted to the Administrator as a Broadcast Message, so it requires both the PM to Admin option AND Broadcast Messaging allowed for Administrators in order to work.</p>
 ~;

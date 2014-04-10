@@ -73,9 +73,8 @@ sub automaintenance {
     if ( lc($maction) eq 'on' ) {
         fopen( MAINT, ">$vardir/maintenance.lock" );
         print {MAINT}
-          qq~Remove this file if your board is in maintenance for no reason\n~
-          or croak
-'Remove maintenance.lock if your board is in maintenance for no reason';
+          qq~$maintxt{'maint'}\n~
+          or croak qq~$maintxt{'maint'}~;
         fclose(MAINT);
         if ( $mreason eq 'low_disk' ) {
             LoadLanguage('Error');
@@ -357,6 +356,10 @@ qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp;
 
     # static/dynamic clock
     $yytime = timeformat( $date, 1 );
+    my $zone = q{};
+    if ( ($iamguest && $default_tz eq 'UTC') || (${ $uid . $username }{'user_tz'} eq 'UTC') ) {
+        $zone = qq~ $maintxt{'UTC'}~;
+    }
     my $toffs = 0;
     if ( $enabletz ) {
         $toffs = toffs($date);
@@ -380,6 +383,7 @@ qq~&nbsp;<script  type="text/javascript">\nWriteClock('yabbclock','$aa','$bb');\
           . sprintf( '%d', ( $date + $toffs ) )
           . qq~000;\nvar YaBBTime = new Date();\nvar TimeDif = YaBBTime.getTime() - (YaBBTime.getTimezoneOffset() * 60000) - OurTime - 1000; // - 1000 compromise to transmission time~;
     }
+    $yytime .= $zone;
 
     $yyjavascripta .= qq~
     var imagedir = "$imagesdir";

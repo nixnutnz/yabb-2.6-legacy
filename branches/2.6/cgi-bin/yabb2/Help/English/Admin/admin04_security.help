@@ -30,8 +30,8 @@ $SectionBody3 = qq~<p><b>Stealth Mode</b> is a YaBB feature designed to allow Fo
 $SectionSub4 = "Encrypt_User_IDs";
 $SectionBody4 = qq~<p>This feature is designed to enhance security by allowing Forum Administrators the option to conceal the User's <span class="underline">log in</span> name in the link to their Profile. This is the link that appears wherever the mouse cursor is placed over a Member's <span class="underline">Displayed</span> Name.</p>
 <ul>
-	<li><span class="underline"><b>Option disabled:</b></span> When this option is disabled, the link will end with &#8220;username=(user's login ID)&#8221;</li>
-	<li><span class="underline"><b>Option enabled:</b></span> When this option is enable, the link will end with &#8220;username=(encrypted number)&#8221;</li>
+    <li><span class="underline"><b>Option disabled:</b></span> When this option is disabled, the link will end with &#8220;username=(user's login ID)&#8221;</li>
+    <li><span class="underline"><b>Option enabled:</b></span> When this option is enable, the link will end with &#8220;username=(encrypted number)&#8221;</li>
 </ul>
 <p>This option is enabled by default. It may be disabled by unchecking the &#8220;Encrypt User IDs&#8221; box in the Admin Center&#47;Security Center&#47;Security Settings section under the &#8220;General&#8221; tab.</p>
 ~;
@@ -50,7 +50,7 @@ $SectionBody5 = qq~<p>The Forum Administrator may select what administrative fun
 ### Section 6
 #############################################
 $SectionSub6 = "Activate_Referral_Security_Checking";
-$SectionBody6 = qq~<p>This feature is designed to enhance security by allowing Forum Administrators the option to select what actions are allowed in a URL outside the forum's domain name. When enabled, this allows the Administrator to select allowed actions individually in the list found in the Admin Center&#47;Security Center&#47;Referrer Security section.</p> 
+$SectionBody6 = qq~<p>This feature is designed to enhance security by allowing Forum Administrators the option to select what actions are allowed in a URL outside the forum's domain name. When enabled, this allows the Administrator to select allowed actions individually in the list found in the Admin Center&#47;Security Center&#47;Referrer Security section.</p>
 <p>This option is enabled by checking the &#8220;Activate Referral Security Checking&#8221; box in the &#8220;General&#8221; tab found in the Admin Center&#47;Security Center&#47;Security Settings.</p>
 ~;
 #############################################
@@ -58,13 +58,13 @@ $SectionBody6 = qq~<p>This feature is designed to enhance security by allowing F
 ### Section 7
 #############################################
 $SectionSub7 = "Show_IP_in_Board_Index";
-$SectionBody7 = qq~<p>This feature allows Forum Administrators the option to view the IP number of anyone logged in or visiting the forum. This option displays a Guest's or User's IP address at the bottom right of each post and also gives access to the IP Lookup facility if it has been activated.</p> 
-<p>This option may be enabled for Forum Administrators, Global Moderators, Forum Moderators or all three.</p> 
+$SectionBody7 = qq~<p>This feature allows Forum Administrators the option to view the IP number of anyone logged in or visiting the forum. This option displays a Guest's or User's IP address at the bottom right of each post and also gives access to the IP Lookup facility if it has been activated.</p>
+<p>This option may be enabled for Forum Administrators, Global Moderators, Forum Moderators or all three.</p>
 <p>This option is enabled by checking the appropriate boxes in the &#8220;General&#8221; tab found in the Admin Center&#47;Security Center&#47;Security Settings.</p>
 <h4>Enable IPLookup</h4>
 <p>This activates IP Lookup, allowing those able to view IPs the ability to also look up the particulars of an IP address through one of the WhoIs servers.</p>
 <h4>IP Lookup WhoIs Servers</h4>
-<p>Here you can add or remove WhoIs servers used by the IP Lookup utility. Use \{ip\} in the URL to substitute the actual IP address, and separate the title and URL with a pipe symbol '|'. Example: <i>MyLookupSite|mylookupsite.com?ip=\{ip\}</i></p> 
+<p>Here you can add or remove WhoIs servers used by the IP Lookup utility. Use \{ip\} in the URL to substitute the actual IP address, and separate the title and URL with a pipe symbol '|'. Example: <i>MyLookupSite|mylookupsite.com?ip=\{ip\}</i></p>
 ~;
 #############################################
 
@@ -79,7 +79,7 @@ $SectionBody8 = qq~<p>This feature is designed to limit spam by setting a limit 
 ### Section 9
 #############################################
 $SectionSub9 = "Other_Anti-spam_Measures";
-$SectionBody9 = qq~YaBB 2.6.0 has additional features for helping you combat spam registrations. Two such features are the Honeypot and SpamFruits both of which can be turned on or off from the Admin Center&#47;Security Center&#47;Anti-Spam Settings. Honeypot is a 'passive' spambot catcher that catches spambots when they fill in a registration field that can be seen by spambots but not by people using a browser. SpamFruits works by requiring a mouse move to choose the proper picture. Another effective anti-spam utility is Anti-Spam Question found in the Admin Center&#47;Security Center&#47;Anti-Spam Question. 
+$SectionBody9 = qq~YaBB 2.6.0 has additional features for helping you combat spam registrations. Two such features are the Honeypot and SpamFruits both of which can be turned on or off from the Admin Center&#47;Security Center&#47;Anti-Spam Settings. Honeypot is a 'passive' spambot catcher that catches spambots when they fill in a registration field that can be seen by spambots but not by people using a browser. SpamFruits works by requiring a mouse move to choose the proper picture. Another effective anti-spam utility is Anti-Spam Question found in the Admin Center&#47;Security Center&#47;Anti-Spam Question.
 <p>This option must be turned on and it is highly recommended that you use questions that reflect your forum's unique niche. Try not to use questions whose answers are too easily searchable on Google.</p>
 <p><b>Validation Image</b> also has new features: You can now specify characters that will appear before and/or after the randomly generated Validation Image. These characters look like part of the Validation Image but users are instructed to ignore them when putting filling out the Validation Image text box.</p>
 ~;

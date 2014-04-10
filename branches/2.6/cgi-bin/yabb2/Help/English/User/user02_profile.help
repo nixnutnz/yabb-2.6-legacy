@@ -97,14 +97,10 @@ $SectionBody5 = qq~The Options section of your YaBB profile allows you to edit f
 <p>This is a small line of text that will display below your avatar.</p>
 <h4 class="help">Signature</h4>
 <p>Your signature is displayed at the bottom of every post you make and in your profile.</p>
-<h4 class="help">Preset Time Format</h4>
+<h4 class="help">Time Format</h4>
 <p>This option allows you to change how the dates and time are presented to you throughout this YaBB community.</p>
-<h4 class="help">Custom Time Format</h4>
-<p>You may also create a custom time format using the special codes here.</p>
-<h4 class="help">Time Offset</h4>
-<p>Since your time may be different from the server, you can enter your correct time zone to adjust it accordingly.</p>
-<h4 class="help">Enable Automatic Daylight Savings Time Change</h4>
-<p>Checking this option will add or subtract an hour from your time zone as appropriate. NOTE: Times for starting and stopping DST varies around the world, and a server located in one geographic area may not display DST corrections correctly for a user in a different geographic zone.</p>
+<h4 class="help">Time Zone</h4>
+<p>If the Administrator allows, you can choose your time zone by Country and City. This not only sets your personal time offset but allows YaBB to automatically adjust for Daylight Savings time for that Time Zone.</p>
 <h4 class="help">Template</h4>
 <p>If the webmaster of this YaBB forum has more than one template available for use, you may choose one from this box.</p>
 <h4 class="help">Language</h4>

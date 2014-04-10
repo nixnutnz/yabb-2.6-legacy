@@ -187,6 +187,9 @@ $SectionBody5 = qq~<p>These are some completely new features to YaBB 2.6.0 that 
     <li><b>Icon definitions</b>
         <br />Instead of being hard-coded in the source-code, the names of the various image graphics are stored as variables in the templates while the icon image names are stored in an icon definition file &#40;micon.def&#41; in the 'Templates' folder so each 'skin' can have its own set of icons and graphics.
     </li>
+	<li><b>Location based Time-Zones with automatic Daylight Savings time</b>
+		<br />Depending on if the necessary Perl Modules are installed, the admin can choose to make all time stamps on the forum to show as UTC or allow members to choose a Country/City based TimeZone which will automatically adjust to Daylight Savings Time based on the chosen location.  
+	</li>
 </ul>
 ~;
 ### Section 6
@@ -230,10 +233,10 @@ $SectionBody6 = qq~
 <h4>Terms and Conditions for Use</h4>
 <p>You may download and use YaBB only if you agree to the following items:</p>
 <ol>
-	<li>You will keep this license intact with your YaBB Package.</li>
-	<li>You agree to this entire license.</li>
-	<li>You leave the YaBB copyright visible on your installed forum as they were placed in the original Package. This rule does not apply if you have purchased a separate license to remove the copyright or are redistributing the Package and have followed other rules in this license to remove it.</li>
-	<li>You do not use YaBB for any Illegal Actions nor allow those using your copy of YaBB to perform illegal actions on or with YaBB. This includes but is not limited to: using a YaBB forum to post slander against any other individual or group, using a YaBB forum to post "hacks and cracks" for software, or using a YaBB forum to plot a crime or terrorist act. <i>YaBB is not intended or licensed for illegal uses.</i> If you find suspect actions, please report them to the proper authorities or the web host of the offending website.</li>
+    <li>You will keep this license intact with your YaBB Package.</li>
+    <li>You agree to this entire license.</li>
+    <li>You leave the YaBB copyright visible on your installed forum as they were placed in the original Package. This rule does not apply if you have purchased a separate license to remove the copyright or are redistributing the Package and have followed other rules in this license to remove it.</li>
+    <li>You do not use YaBB for any Illegal Actions nor allow those using your copy of YaBB to perform illegal actions on or with YaBB. This includes but is not limited to: using a YaBB forum to post slander against any other individual or group, using a YaBB forum to post "hacks and cracks" for software, or using a YaBB forum to plot a crime or terrorist act. <i>YaBB is not intended or licensed for illegal uses.</i> If you find suspect actions, please report them to the proper authorities or the web host of the offending website.</li>
 </ol>
 <h4>Terms and Conditions for Copying, Distribution, and Modification</h4>
 <p>0. This License applies to any program or other work which contains a notice placed by the copyright holder saying it may be distributed under the terms of this YaBB Public License. </p>

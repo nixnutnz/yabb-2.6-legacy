@@ -150,6 +150,7 @@ $abbr_lang = 'en-us';
 'searchimg2' => 'days old',
 'collapse' => 'collapse',
 'UTC' => '(UTC)',
+'maint' => 'Remove this file if your board is in maintenance for no reason.',
 );
 
 %load_txt = (

@@ -13,16 +13,17 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use strict;
+#use warnings;
 use CGI::Carp qw(fatalsToBrowser);
+use English qw(-no_match_vars);
 our $VERSION = '2.6.0';
 
 our $modulecheckerpmver = 'YaBB 2.6.0 $Revision$';
-my ( $dont_continue_setup );
 our ( $action, $yymain, %modulecheck );
 if ( $action eq 'detailedversion' ) { return 1; }
 
 my $script_root = $ENV{'SCRIPT_FILENAME'};
-if( ! $script_root ) {
+if ( !$script_root ) {
     $script_root = $ENV{'PATH_TRANSLATED'};
 }
 
@@ -32,12 +33,13 @@ foreach my $module (
     qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone Locale::Country File::Find CGI Net::SMTP Net::SMTP::TLS Compress::Zlib Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common Crypt::SSLeay IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English)
   )
 {
-    eval "require $module";
+    eval "require $module;";
+    my $dont_continue_setup = q{};
 
-    if ($@) {
+    if ($EVAL_ERROR) {
         if ( $module eq 'Digest::MD5' ) { $dont_continue_setup = 1; }
         $i = $modulecheck{'8'};
-        my $e = $@;
+        my $e = $EVAL_ERROR;
 
         # IE does display the @INC path it in one line  :-(
         # If you use IE and don't like what you see, remove the
@@ -53,17 +55,22 @@ foreach my $module (
                 </tr>~;
     }
     else {
-        if ($module eq 'DateTime::TimeZone' ) {
-        $checker_output .= qq~<tr>
+        if ( $module eq 'DateTime::TimeZone' ) {
+            my $version   = $module->VERSION;
+            my $myversion = (
+                "%s %s is\n %s\n",
+                $module, ( defined $version ? $version : '<NO $VERSION>' ),
+            );
+            $checker_output .= qq~<tr>
                     <td class="windowbg2"><span class="good">$module</span></td>
                     <td class="windowbg2">
                         $modulecheck{'6'}
                     </td>
-                    <td class="windowbg2">$modulecheck{"$module"}</td>
+                    <td class="windowbg2">$modulecheck{"$module"} <b>$myversion</b></td>
                 </tr>~;
         }
         else {
-        $checker_output .= qq~<tr>
+            $checker_output .= qq~<tr>
                     <td class="windowbg2"><span class="good">$module</span></td>
                     <td class="windowbg2" colspan="2">$modulecheck{'6'}</td>
                 </tr>~;
@@ -71,7 +78,7 @@ foreach my $module (
     }
 }
 
-if ( $script_root !~ /ModuleChecker\.\w+$/xsm ) {
+if ( $script_root !~ /ModuleChecker[.]\w+$/xsm ) {
     $yymain .= qq~
         <div class="bordercolor rightboxdiv" style="float: left; margin-top:.5em">
             <table class="border-space pad-cell">
@@ -100,75 +107,4 @@ if ( $script_root !~ /ModuleChecker\.\w+$/xsm ) {
         </div>~;
 
 }
-else {
-    my (%params);
-    print qq~Content-Type: text/html$params{'-charset'}\r\n
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<style type="text/css">
-table { width: 80%;
-margin:40px auto;
-border-collapse:separate;
-border-spacing: 1px;
-background-color: #A7B8CC;
-}
-td {padding:4px;}
-.catbg {
-    background-color: #FEFEFE;
-    color: #000000;
-    font-size: 13px;
-    text-align:center;
-}
-.important {
-color: #f00;
-}
-.titlebg {
-    background-color: #D2DBE6;
-    color: #475F79;
-    font-size: 13px;
-}
-.windowbg2 {
-    background-color: #FEFEFE;
-    color: #000000;
-    font-family: Verdana, sans-serif;
-    font-size: 11px;
-}
-</style>
-<title>YaBB 2.6.0 Module Checker</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-</head>
-<body>
-<table>
-    <tr>
-        <td class="titlebg" colspan="3">
-            <b>$modulecheck{'1'}</b><br />
-            $modulecheck{'2'}
-        </td>
-    </tr>~ . (
-        $i
-        ? qq~<tr>
-        <td class="windowbg2">
-            <span class="important"><b>$modulecheck{'7'}</b></span>
-        </td>
-        <td class="windowbg2" colspan="2">
-            $i
-        </td>
-    </tr>~
-        : q{}
-      )
-      . qq~<tr>
-        <td class="catbg">
-            <b>$modulecheck{'3'}</b>
-        </td>
-        <td class="catbg" colspan="2">
-            <b>$modulecheck{'4'}</b>
-        </td>
-    </tr>
-    $checker_output
-</table>
-</body>
-</html>~ or croak 'cannot print ModuleChecker';
-}
-
 1;
