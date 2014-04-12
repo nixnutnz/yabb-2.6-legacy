@@ -29,7 +29,10 @@ sub birthdaylist {
         fatal_error('not_allowed');
     }
     $heute = $date;
-    my $toffs = toffs($date);
+    my $toffs = 0;
+    if ($enabletz) {
+        $toffs = toffs($date);
+    }
 
     ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $dst ) =
       gmtime( $heute + $toffs );

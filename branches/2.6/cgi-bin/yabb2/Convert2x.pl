@@ -1326,24 +1326,26 @@ sub Convert_Settings {
     if ( !$Show_EventCal ){ $Show_EventCal = 0; }
     if ( !$Event_TodayColor ){ $Event_TodayColor = '#ff0000'; }
     if ( !$fix_avatar_img_size) { $fix_avatar_img_size  = 0; }
-    if ( !$max_avatar_width) { $$max_avatar_width  = 65; }
-    if ( !$max_avatar_height) { $max_avatar_height  = 65; }
-    if ( !$fix_avatarml_img_size) { $fix_avatarml_img_size  = 0; }
-    if ( !$max_avatarml_width) { $max_avatarml_width  = 65; }
-    if ( !$max_avatarml_height) { $max_avatarml_height  = 65; }
+    if ( !$max_avatar_width ) { $$max_avatar_width  = 65; }
+    if ( !$max_avatar_height ) { $max_avatar_height  = 65; }
+    if ( !$fix_avatarml_img_size ) { $fix_avatarml_img_size  = 0; }
+    if ( !$max_avatarml_width ) { $max_avatarml_width  = 65; }
+    if ( !$max_avatarml_height ) { $max_avatarml_height  = 65; }
+    if ( !$enabletz ) { $enabletz  = 0; }
+    if ( !$default_tz ) { $default_tz = 'UTC'; }
     $gzcomp = fileno $GZIP ? 1 : 0;
 
-    $ip_banlist = q{};
+    $ip_banlist    = q{};
     $email_banlist = q{};
-    $user_banlist = q{};
+    $user_banlist  = q{};
     $showsearchbox = 1;
-    $fmodview = $gmodview;
-    $mdfmod = $mdglobal;
+    $fmodview      = $gmodview;
+    $mdfmod        = $mdglobal;
     $show_online_ip_admin = 1;
-    $show_online_ip_gmod = 1;
-    $show_online_ip_fmod = 1;
-    $ipLookup = 1;
-    $bm_subcut = 50;
+    $show_online_ip_gmod  = 1;
+    $show_online_ip_fmod  = 1;
+    $ipLookup  = 1;
+    $bm_subcut = 50;   
 
     require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');

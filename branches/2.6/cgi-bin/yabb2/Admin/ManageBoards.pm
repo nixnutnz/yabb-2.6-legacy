@@ -450,7 +450,8 @@ sub DeleteBoards {
                 $rbin,         $att,          $minage,
                 $maxage,       $gender,       $canpost,
                 $parent,       $rules,        $brulestitle,
-                $brulesdesc,   $rulescollapse,$brdpasswr,$brdpassw
+                $brulesdesc,   $rulescollapse,$brdpasswr,
+                $brdpassw
             ) = split /\|/xsm, $oldcontrols[$cnt];
 
             foreach my $changedboard (@del_updateparent) {
@@ -1879,7 +1880,8 @@ sub ReorderBoards2 {
                 $rbin,         $att,          $minage,
                 $maxage,       $gender,       $canpost,
                 $parent,       $rules,        $brulestitle,
-                $brulesdesc,   $rulescollapse,$brdpasswr,$brdpassw, $brdrss
+                $brulesdesc,   $rulescollapse,$brdpasswr,
+                $brdpassw,     $brdrss
             ) = split /\|/xsm, $oldcontrols[$cnt];
             if ( $moveitem eq $oldboard ) {
                 $oldcontrols[$cnt] =

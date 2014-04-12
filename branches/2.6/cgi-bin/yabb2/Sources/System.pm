@@ -86,7 +86,7 @@ sub BoardTotals {
         }
         elsif ( $job eq 'delete' ) {
             fopen( FORUMTOTALS, "<$boardsdir/forum.totals" )
-              || fatal_error( 'cannot_open', "$boardsdir/forum.totasl", 1 );
+              || fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
             @lines = <FORUMTOTALS>;
             fclose( FORUMTOTALS );
             for my $line ( 0 .. ( @lines - 1 ) ) {

@@ -14,6 +14,7 @@
 ###############################################################################
 # use strict;
 use CGI::Carp qw(fatalsToBrowser);
+use English qw(-no_match_vars);
 our $VERSION = '2.6.0';
 
 our $settings_mainpmver = 'YaBB 2.6.0 $Revision$';
@@ -112,7 +113,15 @@ my $tz_select = q~<select name="default_tz" id="default_tz">~;
 $tz_select .= qq~<option value="UTC" ${isselected('UTC' eq $mytz)}>UTC</option>~;
 
 if ( $enabletz ) {
-    use Locale::Country;
+    eval {
+          require DateTime;
+          require DateTime::TimeZone;
+          require Locale::Country;
+    };
+    if( !$EVAL_ERROR ) {
+        DateTime->import();
+        DateTime::TimeZone->import();
+        Locale::Country->import();
     my @cntry = DateTime::TimeZone->countries();
     my %country;
     for my $i (@cntry) {
@@ -135,7 +144,7 @@ if ( $enabletz ) {
         }
     }
 }
-
+}
 $tz_select .= '</select>';
 
 # Language selector

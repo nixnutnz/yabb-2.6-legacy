@@ -15,6 +15,7 @@
 # use strict;
 # use warnings;
 no warnings qw(uninitialized once redefine);
+use English qw(-no_match_vars);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.0';
 
@@ -912,39 +913,54 @@ qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$di
     $my_timeformat = timeformat( $date, 1 );
 
 if ( $enabletz) {
-    use Locale::Country;
-    my $mytz = ${ $uid . $user }{'user_tz'} || $default_tz;
-    my @cntry = DateTime::TimeZone->countries();
-    my %country;
-    for my $i (@cntry) {
-        if ( code2country($i ,'alpha-2') ne q{} ) {
-            $country{$i} = code2country($i ,'alpha-2');
-        }
-    }
-    my @mycntry = sort { $country{$a} cmp $country{$b} } keys %country;
-    my $myselect = q{};
-    if ( $mytz eq 'UTC' ) {
-        $myselect = ' selected="selected"';
-    }
-    my $user_tz_select = q~<br /><select name="user_tz" id="user_tz">~;
-    $user_tz_select .= qq~<option value="UTC"$myselect>UTC</option>~;
-    for my $j ( @mycntry ) {
-        for my $i ( sort @{DateTime::TimeZone->names_in_country( $j )} ) {
-            if ( $i eq $mytz ) {
-                $myselect = ' selected="selected"';
+    eval {
+          require DateTime;
+          require DateTime::TimeZone;
+          require Locale::Country
+    };
+    my $user_tz_select = q{};
+    if( !$EVAL_ERROR ) {
+        DateTime->import();
+        DateTime::TimeZone->import();
+        Locale::Country->import();
+        my $mytz = ${ $uid . $user }{'user_tz'} || $default_tz;
+        my @cntry = DateTime::TimeZone->countries();
+        my %country;
+        for my $i (@cntry) {
+            if ( code2country($i ,'alpha-2') ne q{} ) {
+                $country{$i} = code2country($i ,'alpha-2');
             }
-            else { $myselect = q{}; }
-            my @city = split /\//xsm, $i;
-            my $st = q{};
-            if ( $j eq 'us' && $city[2] ) {
-                $st = "$city[1], ";
-            }
-            $st =~ s/_/ /gsm;
-            $city[-1] =~ s/_/ /gsm;
-            $user_tz_select .= qq~<option value="$i"$myselect>$country{$j} - $st$city[-1]</option>~;
         }
+        my @mycntry = sort { $country{$a} cmp $country{$b} } keys %country;
+        my $myselect = q{};
+        if ( $mytz eq 'UTC' ) {
+            $myselect = ' selected="selected"';
+        }
+        $user_tz_select = q~<br /><select name="user_tz" id="user_tz">~;
+        $user_tz_select .= qq~<option value="UTC"$myselect>UTC</option>~;
+        for my $j ( @mycntry ) {
+            for my $i ( sort @{DateTime::TimeZone->names_in_country( $j )} ) {
+                if ( $i eq $mytz ) {
+                    $myselect = ' selected="selected"';
+                }
+                else { $myselect = q{}; }
+                my @city = split /\//xsm, $i;
+                my $st = q{};
+                if ( $j eq 'us' && $city[2] ) {
+                    $st = "$city[1], ";
+                }
+                $st =~ s/_/ /gsm;
+                $city[-1] =~ s/_/ /gsm;
+                $user_tz_select .= qq~<option value="$i"$myselect>$country{$j} - $st$city[-1]</option>~;
+            }
+        }
+        $user_tz_select .= q~</select>~;
     }
-    $user_tz_select .= q~</select>~;
+    else {
+        $user_tz_select = q~<br /><select name="user_tz" id="user_tz">~;
+        $user_tz_select .= qq~<option value="UTC"$myselect>UTC</option>~;
+        $user_tz_select .= q~</select>~;
+    }
     $my_tz = $my_tz_select;
     $my_tz =~ s/{yabb my_user_tz}/$user_tz_select/sm;
 

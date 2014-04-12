@@ -14,6 +14,7 @@
 ###############################################################################
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
+use English qw(-no_match_vars);
 use Time::Local;
 our $VERSION = '2.6.0';
 
@@ -26,18 +27,27 @@ sub calcdifference {    # Input: $date1 $date2
 
 sub toffs {
     my ($mydate, $forum_default) = @_;
-    use DateTime;
-    use DateTime::TimeZone;
+    my $toffs = 0;
+    eval {
+          require DateTime;
+          require DateTime::TimeZone;
+    };
+
+    if( !$EVAL_ERROR ) {
+        DateTime->import();
+        DateTime::TimeZone->import();
     if ( $iamguest || $forum_default ) {
         $tzname = $default_tz || 'UTC';
     }
     else {
         $tzname = ${ $uid . $username }{'user_tz'} || 'UTC';
     }
-
     my $tz = DateTime::TimeZone->new(name => $tzname);
     my $now = DateTime->from_epoch( 'epoch' => $mydate );
-    my $toffs = $tz->offset_for_datetime($now);
+        $toffs = $tz->offset_for_datetime($now);
+    }
+    else { $toffs = 0;}
+
     return $toffs;
 }
 
@@ -70,6 +80,8 @@ sub timetostring {
 sub stringtotime {
     my ($spvar) = @_;
     if ( !$spvar ) { return 0; }
+    require Time::Local;
+    import Time::Local 'timelocal';
     $splitvar = $spvar;
 
 # receive standard format yabb date/time string.

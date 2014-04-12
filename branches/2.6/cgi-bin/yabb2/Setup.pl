@@ -1328,9 +1328,8 @@ sub SetInstall2 {
         $forumnumberformat      = $FORM{'forumnumberformat'} || 1;
         $timeselected           = $FORM{'timeselect'} || 0;
         $timecorrection         = 0;
-        $timeoffset =
-          "$FORM{'usertimesign'}$FORM{'usertimehour'}.$FORM{'usertimemin'}";
-        $dstoffset              = $FORM{'dstoffset'} || 0;
+        $enabletz               = 0;
+        $default_tz             = 'UTC';
         $dynamic_clock          = 1;
         $TopAmmount             = 15;
         $maxdisplay             = 20;
@@ -1573,8 +1572,8 @@ sub SetInstall2 {
 \$forumnumberformat = $forumnumberformat;           # Select your preferred output Format for Numbers
 \$timeselected = $timeselected;                     # Select your preferred output Format of Time and Date
 \$timecorrection = $timecorrection;                 # Set time correction for server time in seconds
-\$timeoffset = "$timeoffset";                       # Time Offset to GMT/UTC (0 for GMT/UTC)
-\$dstoffset = $dstoffset;                           # Time Offset (for daylight savings time, 0 to disable DST)
+\$enabletz = $enabletz;                             # Allow for timezone selection
+\$default_tz = "$default_tz";                       # default forum timezone
 \$dynamic_clock = $dynamic_clock;                   # Set to a value enables the dynamic clock at the top of the page
 \$TopAmmount = $TopAmmount;                         # No. of top posters to display on the top members list
 \$maxdisplay = $maxdisplay;                         # Maximum of topics to display
@@ -1934,8 +1933,6 @@ EOF
     if ( $action eq 'setinstall2' ) {
         LoadUser('admin');
         ${ $uid . 'admin' }{'email'} = $webmaster_email;
-        ${ $uid . 'admin' }{'timeoffset'} =
-          $timeoffset;    # must set before &timetostring($date)
         ${ $uid . 'admin' }{'regdate'}    = timetostring($date);
         ${ $uid . 'admin' }{'regtime'}    = $date;
         ${ $uid . 'admin' }{'timeselect'} = $timeselected;

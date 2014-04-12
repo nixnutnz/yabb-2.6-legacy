@@ -1563,7 +1563,7 @@ s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]
         'location'      => join( ', ', grep { $_ } @location ),
         'bday'          => "$settings[16]",
         'timeselect'    => "$settings[17]",
-        'timeoffset'    => "$timeoffset",
+        'user_tz'       => 'UTC',
         'hidemail'      => ( $settings[19] ? 1 : 0 ),
         'gtalk'         => "$settings[32]",
         'template'      => "$new_template",
@@ -1577,7 +1577,6 @@ s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]
         'im_imspop'     => ( $pmspop ? 1 : 0 ),
         'cathide'       => "$settings[30]",
         'postlayout'    => "$settings[31]|0",
-        'dsttimeoffset' => "$dstoffset",
         'pageindex'     => '1|1|1',
         'lastips'       => "$c_ip_one|$c_ip_two|$c_ip_three",
     );

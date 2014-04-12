@@ -148,7 +148,10 @@ qq~$scripturl?action=eventcal;calshow=1;calmon=$gomon;calyear=$goyear~;
     }
 
     my $newdate = $date;
-    my $toffs = toffs($date);
+    my $toffs = 0;
+    if ($enabletz) {
+        $toffs = toffs($date);
+    }
 
     if ( $INFO{'calyear'} ) {
         $ausgabe1    = qq~$INFO{'calmon'}/01/$INFO{'calyear'} am 00:00:00~;

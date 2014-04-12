@@ -357,7 +357,7 @@ qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp;
     # static/dynamic clock
     $yytime = timeformat( $date, 1 );
     my $zone = q{};
-    if ( ($iamguest && $default_tz eq 'UTC') || (${ $uid . $username }{'user_tz'} eq 'UTC') ) {
+    if ( ($iamguest && $default_tz eq 'UTC') || (${ $uid . $username }{'user_tz'} eq 'UTC') || ( !$default_tz  &&  !${ $uid . $username }{'user_tz'} ) ) {
         $zone = qq~ $maintxt{'UTC'}~;
     }
     my $toffs = 0;
