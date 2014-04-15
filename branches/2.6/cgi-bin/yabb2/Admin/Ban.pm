@@ -193,7 +193,7 @@ qq~$tm by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $tma~;
                     <span class="small">$admin_txt{'724'}<br />$admin_txt{'725'}<br />$admin_txt{'725a'}</span>
                 </td>
                 <td class="windowbg2 vtop" rowspan="2">
-                    <div style="height:20em; overflow:auto">
+                    <div style="height:30em; overflow:auto">
                     <ul>~;
     $yymain .= banlog();
     $yymain .= qq~            </ul>
@@ -397,8 +397,9 @@ sub banlog {
     my @mybanlog = <BANLOG>;
     chomp @mybanlog;
     fclose(BANLOG);
-    use Time::gmtime;
-    for my $ban (@mybanlog) {
+	my @myban = reverse sort @mybanlog;
+    import Time::gmtime;
+    for my $ban (@myban) {
         @banned = split /\|/xsm, $ban;
         $tm     = gmtime $banned[0];
         $year   = $tm->year + 1900;

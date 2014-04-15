@@ -36,14 +36,14 @@ sub toffs {
     if( !$EVAL_ERROR ) {
         DateTime->import();
         DateTime::TimeZone->import();
-    if ( $iamguest || $forum_default ) {
-        $tzname = $default_tz || 'UTC';
-    }
-    else {
-        $tzname = ${ $uid . $username }{'user_tz'} || 'UTC';
-    }
-    my $tz = DateTime::TimeZone->new(name => $tzname);
-    my $now = DateTime->from_epoch( 'epoch' => $mydate );
+        if ( $iamguest || $forum_default ) {
+            $tzname = $default_tz || 'UTC';
+        }
+        else {
+            $tzname = ${ $uid . $username }{'user_tz'} || 'UTC';
+        }
+        my $tz = DateTime::TimeZone->new(name => $tzname);
+        my $now = DateTime->from_epoch( 'epoch' => $mydate );
         $toffs = $tz->offset_for_datetime($now);
     }
     else { $toffs = 0;}
