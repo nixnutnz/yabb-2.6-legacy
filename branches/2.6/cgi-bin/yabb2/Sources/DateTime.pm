@@ -203,72 +203,30 @@ sub timeformat {
 
     $newtime = $newhour . q{:} . $newminute . q{:} . $newsecond;
 
-    if ( !$maintxt{'107'} ) { $maintxt{'107'} = $admin_txt{'107'}; }
-    my @timform = (
-        q{},
-        time_1( $daytxt, $newday, $newmonth, $newyear, $newtime ),
-        time_2( $daytxt, $newday, $newmonth, $newyear, $newtime ),
-        time_3( $daytxt, $newday, $newmonth, $newyear, $newtime ),
-        time_4( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
-        time_5( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
-        time_6( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
-        time_7(
-            ${ $uid . $username }{'timeformat'},
-            $newday, $newmonth, $newyear, $newhour, $newminute, $newweek
-        ),
-        time_8( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
-    );
-    foreach my $i ( 1 .. 8 ) {
-        if ( $mytimeselected == $i ) {
-            $newformat = $timform[$i];
+    ( undef, undef, undef, undef, undef, $yy, undef, $yd, undef ) =
+      gmtime( $date + $toffs );
+    $yy += 1900;
+    $daytxt = undef;    # must be a global variable
+    if ( !$dontusetoday ) {
+        if ( $yd == $newyearday && $yy == $newyear ) {
+
+            # today
+            $daytxt = qq~<b>$maintxt{'769'}</b>~;
+
+        }
+        elsif (
+            ( ( $yd - 1 ) == $newyearday && $yy == $newyear )
+            || (   $yd == 0
+                && $newday == 31
+                && $newmonth == 12
+                && ( $yy - 1 ) == $newyear )
+          )
+        {
+
+            # yesterday || yesterday, over a year end.
+            $daytxt = qq~<b>$maintxt{'769a'}</b>~;
         }
     }
-    return $newformat;
-}
-
-sub timeformatcal {
-    my ( $oldformat ) = @_;
-
-    # use forum default time and format
-
-    $mytimeselected =
-      ( $forum_default || !${ $uid . $username }{'timeselect'} )
-      ? $timeselected
-      : ${ $uid . $username }{'timeselect'};
-
-    chomp $oldformat;
-    return if !$oldformat;
-
-     my $mynewtime =  $oldformat;
-
-    my (
-        $newsecond, $newminute,  $newhour,    $newday, $newmonth,
-        $newyear,   $newweekday, $newyearday, $newoff
-    ) = gmtime( $mynewtime );
-    $newmonth++;
-    $newyear += 1900;
-
-    # Calculate number of full weeks this year
-    $newweek = int( ( $newyearday + 1 - $newweekday ) / 7 ) + 1;
-
-    # Add 1 if today isn't Saturday
-    if ( $newweekday < 6 ) { $newweek = $newweek + 1; }
-    $newweek = sprintf '%02d', $newweek;
-
-    $shortday = $days_short[$newweekday];
-
-    $longday      = $days[$newweekday];
-    $newmonth     = sprintf '%02d', $newmonth;
-    $newshortyear = ( $newyear % 100 );
-    $newshortyear = sprintf '%02d', $newshortyear;
-    if ( $mytimeselected != 4 && $mytimeselected != 8 ) {
-        $newday = sprintf '%02d', $newday;
-    }
-    $newhour   = sprintf '%02d', $newhour;
-    $newminute = sprintf '%02d', $newminute;
-    $newsecond = sprintf '%02d', $newsecond;
-
-    $newtime = $newhour . q{:} . $newminute . q{:} . $newsecond;
 
     if ( !$maintxt{'107'} ) { $maintxt{'107'} = $admin_txt{'107'}; }
     my @timform = (

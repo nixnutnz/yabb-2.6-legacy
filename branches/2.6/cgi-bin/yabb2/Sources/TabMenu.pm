@@ -221,9 +221,9 @@ qq~                            <li><span |><a href="$scripturl?action=logout" ti
         if    ( $action eq 'addtab' )  { $seladdtab  = q~class="selected"~; }
         elsif ( $action eq 'edittab' ) { $seledittab = q~class="selected"~; }
         $yytabadd =
-qq~<ul class="advtabs"><li id="addtab"><span $seladdtab><a href="$scripturl?action=addtab" title = "$tabmenu_txt{'newtab'}">$micon{'tabadd'}</a></span></li>\n~;
+qq~<ul class="advtabs"><li id="addtab"><span $seladdtab><a href="$scripturl?action=addtab" title="$tabmenu_txt{'newtab'}">$micon{'tabadd'}</a></span></li>\n~;
         $yytabadd .=
-qq~<li id="edittab"><span $seledittab><a href="$scripturl?action=edittab" title = "$tabmenu_txt{'edittab'}">$micon{'tabedit'}</a></span></li>\n</ul>~;
+qq~<li id="edittab"><span $seledittab><a href="$scripturl?action=edittab" title="$tabmenu_txt{'edittab'}">$micon{'tabedit'}</a></span></li>\n</ul>~;
     }
     else {
         $yytabadd = q~&nbsp;~;
