@@ -912,7 +912,7 @@ qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$di
                 <option value="6"$tsl[6]>$profile_txt{'485'}</option>~;
     $my_timeformat = timeformat( $date, 1 );
 
-if ( $enabletz) {
+if ( $enabletz ) {
     eval {
           require DateTime;
           require DateTime::TimeZone;
@@ -957,8 +957,20 @@ if ( $enabletz) {
         $user_tz_select .= q~</select>~;
     }
     else {
+        my $mytz = ${ $uid . $user }{'user_tz'} || $default_tz;
+        $localopt = q{};
+        if ( $mytz eq 'local' ) {
+            $myselectb = ' selected="selected"';
+        }
+        elsif ( $mytz eq 'UTC' ) {
+            $myselecta = ' selected="selected"';
+        }
+        if ( $default_tz eq 'local' ) {
+            $localopt = qq~\n<option value="local"$myselectb>Use Forum Time Offset</option>~;
+        }
         $user_tz_select = q~<br /><select name="user_tz" id="user_tz">~;
-        $user_tz_select .= qq~<option value="UTC"$myselect>UTC</option>~;
+        $user_tz_select .= qq~<option value="UTC"$myselecta>UTC</option>~;
+        $user_tz_select .= $localopt;
         $user_tz_select .= q~</select>~;
     }
     $my_tz = $my_tz_select;

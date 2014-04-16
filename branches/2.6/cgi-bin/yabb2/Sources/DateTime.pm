@@ -28,25 +28,38 @@ sub calcdifference {    # Input: $date1 $date2
 sub toffs {
     my ($mydate, $forum_default) = @_;
     my $toffs = 0;
+
+    if ( $iamguest || $forum_default ) {
+        $tzname = $default_tz || 'UTC';
+    }
+    else {
+        $tzname = ${ $uid . $username }{'user_tz'} || 'UTC';
+    }
+
     eval {
           require DateTime;
           require DateTime::TimeZone;
     };
-
     if( !$EVAL_ERROR ) {
         DateTime->import();
         DateTime::TimeZone->import();
-        if ( $iamguest || $forum_default ) {
-            $tzname = $default_tz || 'UTC';
-        }
-        else {
-            $tzname = ${ $uid . $username }{'user_tz'} || 'UTC';
+        if ( $tzname eq 'local' ) {
+            $tzname = 'UTC';
         }
         my $tz = DateTime::TimeZone->new(name => $tzname);
         my $now = DateTime->from_epoch( 'epoch' => $mydate );
         $toffs = $tz->offset_for_datetime($now);
     }
-    else { $toffs = 0;}
+    elsif ( $EVAL_ERROR ) {
+        if ( $tzname eq 'local' ) {
+            $toffs = $timeoffset;
+            $toffs +=
+              ( localtime( $mydate + ( 3600 * $toffs ) ) )[8] ? $dstoffset : 0;
+            $toffs = 3600 * $toffs;
+        }
+        else { $toffs = 0; }
+    }
+    else { $toffs = 0; }
 
     return $toffs;
 }

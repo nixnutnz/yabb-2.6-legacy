@@ -581,7 +581,9 @@ sub Del_Some_IM {
                 }
             }
             if ( !exists $FORM{ 'message' . $m[0] } ) {
+			    fopen( USRFILE, ">$memberdir/$fileToOpen" );
                 print {USRFILE} $_ or croak "$croak{'print'} USRFILE";
+		        fclose(USRFILE);
 
                 if    ( $INFO{'caller'} == 2 ) { ${$username}{'PMmoutnum'}++; }
                 elsif ( $INFO{'caller'} == 3 ) { $CountStore{ $m[13] }++; }
@@ -602,7 +604,6 @@ sub Del_Some_IM {
                 }
             }
         }
-        fclose(USRFILE);
         if ( $INFO{'caller'} == 3 ) {
             ${$username}{'PMfoldersCount'} = q{};
             ${$username}{'PMstorenum'}     = 0;

@@ -112,41 +112,57 @@ my $mytz = $default_tz;
 my $tz_select = q~<select name="default_tz" id="default_tz">~;
 $tz_select .= qq~<option value="UTC" ${isselected('UTC' eq $mytz)}>UTC</option>~;
 
-if ( $enabletz ) {
-    eval {
-          require DateTime;
-          require DateTime::TimeZone;
-          require Locale::Country;
-    };
-    if( !$EVAL_ERROR ) {
-        DateTime->import();
-        DateTime::TimeZone->import();
-        Locale::Country->import();
-        my @cntry = DateTime::TimeZone->countries();
-        my %country;
-        for my $i (@cntry) {
-            if ( code2country($i ,'alpha-2') ) {
-                $country{$i} = code2country($i ,'alpha-2');
-            }
+eval {
+    require DateTime;
+    require DateTime::TimeZone;
+    require Locale::Country;
+};
+if( !$EVAL_ERROR ) {
+    DateTime->import();
+    DateTime::TimeZone->import();
+    Locale::Country->import();
+    my @cntry = DateTime::TimeZone->countries();
+    my %country;
+    for my $i (@cntry) {
+        if ( code2country($i ,'alpha-2') ) {
+            $country{$i} = code2country($i ,'alpha-2');
         }
-        my @mycntry = sort { $country{$a} cmp $country{$b} } keys %country;
+    }
+    my @mycntry = sort { $country{$a} cmp $country{$b} } keys %country;
 
-        for my $j ( @mycntry ) {
-            for my $i ( sort @{DateTime::TimeZone->names_in_country( $j )}) {
-                my @city = split /\//xsm, $i;
-                my $st = q{};
-                if ( $j eq 'us' && $city[2] ) {
-                    $st = "$city[1], ";
-                }
-                $st =~ s/_/ /gsm;
-                $city[-1] =~ s/_/ /gsm;
-                $tz_select .= qq~<option value="$i" ${isselected($i eq $mytz)}>$country{$j} - $st$city[-1]</option>~;
+    for my $j ( @mycntry ) {
+        for my $i ( sort @{DateTime::TimeZone->names_in_country( $j )}) {
+            my @city = split /\//xsm, $i;
+            my $st = q{};
+            if ( $j eq 'us' && $city[2] ) {
+                $st = "$city[1], ";
             }
+            $st =~ s/_/ /gsm;
+            $city[-1] =~ s/_/ /gsm;
+            $tz_select .= qq~<option value="$i" ${isselected($i eq $mytz)}>$country{$j} - $st$city[-1]</option>~;
         }
     }
 }
+# backwards compatibility
+else {
+    $tz_select .= qq~<option value="local" ${isselected('local' eq $mytz)}>local</option>~;
+    my @usertimeoffset = split /\./xsm, $timeoffset;
+    $timeoffsetselect = q~<select name="usertimesign" id="usertimesign"><option value="">+</option><option value="-"~ . ($usertimeoffset[0] < 0 ? ' selected="selected"' : q{}) . q~>-</option></select> <select name="usertimehour">~;
+    for my $i ( 0 .. 14 ) {
+        $i = sprintf '%02d', $i;
+        $timeoffsetselect .= qq~<option value="$i"~ . (($usertimeoffset[0] == $i || $usertimeoffset[0] == -$i) ? ' selected="selected"' : q{}) . qq~>$i</option>~;
+    }
+    $timeoffsetselect .= qq~</select> : <select name="usertimemin">~;
+    for my $i( 0 .. 59 ) {
+        my $j = $i / 60;
+        $j = (split /\./xsm, $j)[1] || 0;
+        $timeoffsetselect .= qq~<option value="$j"~ . ($usertimeoffset[1] eq $j ? ' selected="selected"' : q{}) . q~>~ . sprintf('%02d', $i) . q~</option>~;
+    }
+    $timeoffsetselect .= q~</select>~;
+    $dstoffsetlabel = qq~<label for="dstoffset">$admin_txt{'371e'}</label>~;
+    $dstoffsetinput = qq~<input type="checkbox" name="dstoffset" id="dstoffset" value="1"${ischecked($dstoffset)}/>~,
+}
 $tz_select .= '</select>';
-
 # Language selector
 opendir LNGDIR, $langdir;
 my @lfilesanddirs = readdir LNGDIR;
@@ -314,6 +330,17 @@ $qckage ||= 31;
             input_html => $tz_select,
         },
             ### Custom validated.
+        {
+            description => qq~<label for="usertimesign">$admin_txt{'371f'}</label>~,
+            input_html => $timeoffsetselect,
+            ### Custom validated.
+        },
+        {
+            description => $dstoffsetlabel,
+            input_html => $dstoffsetinput,
+            name => 'dstoffset',
+            validate => 'boolean',
+        },
         {
             description => qq~<label for="dynamic_clock">$admin_txt{'371b'}</label>~,
             input_html => qq~<input type="checkbox" name="dynamic_clock" id="dynamic_clock" value="1"${ischecked($dynamic_clock)}/>~,
@@ -1639,6 +1666,11 @@ sub SaveSettings {
         else { $default_tz = $FORM{'default_tz'}; }
     }
     else { $default_tz = 'UTC'; }
+
+    $timeoffset  = $FORM{'usertimesign'} =~ /^-$/sm ? q{-} : q{};
+    $timeoffset .= $FORM{'usertimehour'} =~ /^\d+$/sm ? $FORM{'usertimehour'} : '0';
+    $timeoffset .= q{.};
+    $timeoffset .= $FORM{'usertimemin'}  =~ /^\d+$/sm ? $FORM{'usertimemin'} : '0';
 
     # Get barmaxnumb
     $settings{'barmaxnumb'} = $FORM{'barmaxnumb'};
