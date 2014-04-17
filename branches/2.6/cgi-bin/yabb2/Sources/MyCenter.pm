@@ -550,7 +550,7 @@ sub Del_Some_IM {
     fopen( USRFILE, "<$memberdir/$fileToOpen" );
     my @messages = <USRFILE>;
     fclose( USRFILE );
-
+    my @delpost = ();
     # deleting
     if (   $FORM{'imaction'} eq $inmes_txt{'remove'}
         || $INFO{'action'} eq $inmes_txt{'remove'}
@@ -567,7 +567,7 @@ sub Del_Some_IM {
         if ( $INFO{'deleteid'} ) {
             $FORM{ 'message' . $INFO{'deleteid'} } = 1;
         }    # single delete
-        fopen( USRFILE, ">$memberdir/$fileToOpen" );
+        @delpost = ();
         foreach (@messages) {
             my @m = split /\|/xsm, $_;
             chomp @m;
@@ -580,9 +580,7 @@ sub Del_Some_IM {
                 }
             }
             if ( !exists $FORM{ 'message' . $m[0] } ) {
-
-                print {USRFILE} $_ or croak "$croak{'print'} USRFILE";
-
+                push @delpost, $_;
 
                 if    ( $INFO{'caller'} == 2 ) { ${$username}{'PMmoutnum'}++; }
                 elsif ( $INFO{'caller'} == 3 ) { $CountStore{ $m[13] }++; }
@@ -603,7 +601,10 @@ sub Del_Some_IM {
                 }
             }
         }
+        fopen( USRFILE, ">$memberdir/$fileToOpen" );
+        print {USRFILE} @delpost or croak "$croak{'print'} USRFILE";
         fclose(USRFILE);
+
         if ( $INFO{'caller'} == 3 ) {
             ${$username}{'PMfoldersCount'} = q{};
             ${$username}{'PMstorenum'}     = 0;
@@ -629,11 +630,11 @@ sub Del_Some_IM {
         }
         elsif ( $INFO{'caller'} == 1 ) { $imstorefolder = 'in'; }
         else                           { $imstorefolder = 'out'; }
-        fopen( USRFILE, ">$memberdir/$fileToOpen" );
+        @delpost = ();
         foreach (@messages) {
             if ( !$FORM{ 'message' . ( split /\|/xsm, $_, 2 )[0] } ) {
                 if ( $INFO{'caller'} != 3 ) {
-                    print {USRFILE} $_ or croak "$croak{'print'} USRFILE";
+                    push @delpost, $_;
                 }
                 else {
                     my @m = split /\|/xsm, $_;
@@ -656,6 +657,8 @@ sub Del_Some_IM {
                 }
             }
         }
+        fopen( USRFILE, ">$memberdir/$fileToOpen" );
+        print {USRFILE} @delpost or croak "$croak{'print'} USRFILE";
         fclose(USRFILE);
 
         if (@newmessages) {
