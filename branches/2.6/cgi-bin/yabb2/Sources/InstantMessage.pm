@@ -1385,7 +1385,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
 
     ##  moved sender's reply marker here, open the sender's inbox and mark 'replied'
     if ( !$FORM{'draft'} && $isBMess ) {
-        fopen( INBOX, "$memberdir/broadcast.messages" );
+        fopen( INBOX, "<$memberdir/broadcast.messages" );
         my @inmessages = <INBOX>;
         fclose(INBOX);
         fopen( INBOX, ">$memberdir/broadcast.messages" );

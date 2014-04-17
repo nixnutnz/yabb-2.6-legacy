@@ -2923,13 +2923,13 @@ sub sendGuestPM2 {
     }
     if ( length( $FORM{'name'} ) > 25 ) { Preview( $post_txt{'568'} ); }
     if ( $FORM{'email'} eq q{} ) { Preview( $post_txt{'76'} ); }
-    if ( $FORM{'email'} !~ /[\w\-\.\+]+\@[\w\-\.\+]+\.(\w{2,4}$)/xsm ) {
+    if ( $FORM{'email'} !~ /^[\w\-\.\+]+\@[\w\-\.\+]+\.\w{2,4}$/xsm ) {
         Preview("$post_txt{'240'} $post_txt{'69'} $post_txt{'241'}");
     }
     if (
-        ( $FORM{'email'} =~ /(@.*@)|(\.\.)|(@\.)|(\.@)|(^\.)|(\.$)/xsm )
-        || ( $FORM{'email'} !~
-            /^.+@\[?(\w|[-.])+\.[a-zA-Z]{2,4}|[0-9]{1,4}\]?$/xsm )
+        $FORM{'email'} =~ /(@.*@)|(\.\.)|(@\.)|(\.@)|(^\.)|(\.$)/xsm
+        || $FORM{'email'} !~
+            /^.+@\[?(\w|[-.])+\.[a-zA-Z]{2,4}|[0-9]{1,4}\]?$/xsm
       )
     {
         Preview( $post_txt{'500'} );
