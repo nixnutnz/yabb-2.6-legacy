@@ -1152,7 +1152,7 @@ sub AddMember2 {
     }
     if ( $member{'regusername'} =~ /[^\w\+\-\.\@]/sm ) {
         fatal_error( 'invalid_character',
-            "$register_txt{'35'} $register_txt{'241re'}" );
+            "$register_txt{'35'} $register_txt{'241e'}" );
     }
     if ( $member{'regusername'} =~ /^[0-9]+$/sm ) {
         fatal_error( 'all_numbers',
@@ -1233,19 +1233,19 @@ sub AddMember2 {
 
     if (
         lc $member{'regusername'} eq
-        lc MemberIndex( 'check_exist', $member{'regusername'} ) )
+        lc MemberIndex( 'check_exist', $member{'regusername'}, 0 ) )
     {
         fatal_error( 'id_taken', "($member{'regusername'})" );
     }
     if (
-        lc $member{'email'} eq lc MemberIndex( 'check_exist', $member{'email'} )
+        lc $member{'email'} eq lc MemberIndex( 'check_exist', $member{'email'}, 2 )
       )
     {
         fatal_error( 'email_taken', "($member{'email'})" );
     }
     if (
         lc $member{'regrealname'} eq
-        lc MemberIndex( 'check_exist', $member{'regrealname'} ) )
+        lc MemberIndex( 'check_exist', $member{'regrealname'}, 1 ) )
     {
         fatal_error( 'name_taken', "($member{'regrealname'})" );
     }

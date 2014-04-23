@@ -2621,10 +2621,7 @@ sub cloak {
 sub decloak {
     my ($input) = @_;
     my ( $user, $ascii, $key, $dec, $hexkey );
-    if ( length($input) % 2 == 0 ) {
-        return old_decloak($input);
-    }    # Old style, return it
-    elsif ( $input !~ /\A[0-9A-F]+\Z/xsm ) {
+    if ( $input !~ /\A[0-9A-F]+\Z/xsm ) {
         return $input;
     }    # probably a non cloaked ID as it contains non hex code
     else { $input =~ s/0$//xsm; }
@@ -2639,29 +2636,6 @@ sub decloak {
             $ascii = chr $ascii;
             $user .= $ascii;
         }
-    }
-    return $user;
-}
-
-# THIS IS BROKEN -- it fails on larger ASCII values (for example chr(255) )
-# It is only here to support YaBBForum's old format.
-sub old_decloak {
-    my ($input) = @_;
-    my ( $user, $ascii, $key, $dec, $hexkey, $x );
-    if ( $input !~ /\A[0-9A-F]+\Z/xsm ) {
-        return $input;
-    }    ## probably a non cloaked ID as it contains non hex code
-    $hexkey = substr $input, length($input) - 2, 2;
-    $key    = hex $hexkey;
-    $x      = 0;
-    for my $n ( 0 .. ( length($input) - 3 ) ) {
-        $dec   = substr $input, $n, 2;
-        $ascii = hex $dec;
-        $ascii = chr( $ascii - $key + $x );
-        $user .= $ascii;
-        $n++;
-        $x++;
-        if ( $x > 32 ) { $x = 0; }
     }
     return $user;
 }

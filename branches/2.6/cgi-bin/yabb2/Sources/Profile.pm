@@ -42,7 +42,7 @@ sub PrepareProfile {
     $INFO{'username'} =~ tr/ /+/;
 
     $user = $INFO{'username'};
-    if ($do_scramble_id) { decloak($user); }
+    if ($do_scramble_id)    { decloak($user); }
     if ( $user =~ m{/}sm )  { fatal_error('no_user_slash'); }
     if ( $user =~ m{\\}sm ) { fatal_error('no_user_backslash'); }
 
@@ -83,7 +83,7 @@ sub SidCheck {
         $expiretxt = qq~$profile_txt{'sid_expires_1'} $sid_expires $expsectxt~;
     }
     else {
-        $expiremin = int($sid_expires / 60);
+        $expiremin = int( $sid_expires / 60 );
         $expiresec = $sid_expires % 60;
         $expmintxt =
           ( $expiremin == 1 )
@@ -346,7 +346,8 @@ qq~ $profile_txt{'dob_edit_2'} $editAgeCount $profile_txt{'dob_edit_4'}~;
     $seluyear =
 qq~$profile_txt{'566'}<select name="bday3"$disableBdayFields><option value="">  </option>\n~;
     for my $e ( 1905 .. ( $year - 3 ) ) {
-          $seluyear .= qq~<option value="$e" ${isselected($uyear == $e)}>$e</option>\n~;
+        $seluyear .=
+          qq~<option value="$e" ${isselected($uyear == $e)}>$e</option>\n~;
     }
     $seluyear .= q~</select> ~;
 
@@ -356,7 +357,8 @@ qq~<label for="bday1">$profile_txt{'564'}</label><select name="bday1" id="bday1"
     for my $bb ( 1 .. 12 ) {
         if   ( $bb < 10 ) { $c = "0$bb"; }
         else              { $c = $bb; }
-        $dayormonthm .= qq~<option value="$c" ${isselected($umonth == $bb)}>$c</option>\n~;
+        $dayormonthm .=
+          qq~<option value="$c" ${isselected($umonth == $bb)}>$c</option>\n~;
     }
     $dayormonthm .= q~</select> ~;
 
@@ -366,7 +368,8 @@ qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"
     for my $aa ( 1 .. 31 ) {
         if   ( $aa < 10 ) { $d = "0$aa"; }
         else              { $d = $aa; }
-        $dayormonthd .= qq~<option value="$d" ${isselected($uday == $aa)}>$d</option>\n~;
+        $dayormonthd .=
+          qq~<option value="$d" ${isselected($uday == $aa)}>$d</option>\n~;
     }
     $dayormonthd .= q~</select> ~;
 
@@ -795,7 +798,7 @@ qq~                <option value="$line"$checked>$name</option>\n~;
       )
     {
         $drawndirs .=
-          qq~<option value="$curtemplate"${isselected($curtemplate eq ${ $uid . $user }{'template'})}>$curtemplate</option>\n~;
+qq~<option value="$curtemplate"${isselected($curtemplate eq ${ $uid . $user }{'template'})}>$curtemplate</option>\n~;
     }
 
     $my_template = $myprofile_template;
@@ -810,7 +813,7 @@ qq~                <option value="$line"$checked>$name</option>\n~;
             $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
             $drawnldirs .=
 qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$displang</option>~;
-         }
+        }
     }
 
     $my_show_lang = $myprofile_show_lang;
@@ -841,7 +844,7 @@ qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$di
     }
 
     if ( $user_hide_attach_img && $allowattach )
-    {    # checkbox to hide attached images in threads
+    {                        # checkbox to hide attached images in threads
         $my_show_avatar_opts .= $myprofile_hide_attach_img;
         $my_hide_attach_img =
           ${ $uid . $user }{'hide_attach_img'} ? ' checked="checked"' : q{};
@@ -870,30 +873,30 @@ qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$di
     }
 
     my $cnnn = 0;
-    for my $i ( 1..5) {
+    for my $i ( 1 .. 5 ) {
         if ( ${ $uid . $user }{'numberformat'} == $i ) {
-        $unfsl[$i] = ' selected="selected" ';
-        $cnnn++;
+            $unfsl[$i] = ' selected="selected" ';
+            $cnnn++;
         }
-        else { $unfsl[$i] = q{};}
+        else { $unfsl[$i] = q{}; }
     }
-    for my $i ( 1..5) {
+    for my $i ( 1 .. 5 ) {
         if ( $forumnumberformat == $i && $cnnn == 0 ) {
-        $unfsl[$i] = ' selected="selected" ';
+            $unfsl[$i] = ' selected="selected" ';
         }
     }
 
     my $cntm = 0;
-    for my $j ( 1..8) {
+    for my $j ( 1 .. 8 ) {
         if ( ${ $uid . $user }{'timeselect'} == $j ) {
             $tsl[$j] = ' selected="selected" ';
             $cntm++;
         }
-        else { $tsl[$j] = q{};}
+        else { $tsl[$j] = q{}; }
     }
-    for my $j ( 1..8) {
-        if (  $timeselected  == $j && $cntm == 0 ) {
-           $tsl[$j] = ' selected="selected" ';
+    for my $j ( 1 .. 8 ) {
+        if ( $timeselected == $j && $cntm == 0 ) {
+            $tsl[$j] = ' selected="selected" ';
         }
     }
 
@@ -912,72 +915,75 @@ qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$di
                 <option value="6"$tsl[6]>$profile_txt{'485'}</option>~;
     $my_timeformat = timeformat( $date, 1 );
 
-if ( $enabletz ) {
-    eval {
-          require DateTime;
-          require DateTime::TimeZone;
-          require Locale::Country
-    };
-    my $user_tz_select = q{};
-    if( !$EVAL_ERROR ) {
-        DateTime->import();
-        DateTime::TimeZone->import();
-        Locale::Country->import();
-        my $mytz = ${ $uid . $user }{'user_tz'} || $default_tz;
-        my @cntry = DateTime::TimeZone->countries();
-        my %country;
-        for my $i (@cntry) {
-            if ( code2country($i ,'alpha-2') ne q{} ) {
-                $country{$i} = code2country($i ,'alpha-2');
-            }
-        }
-        my @mycntry = sort { $country{$a} cmp $country{$b} } keys %country;
-        my $myselect = q{};
-        if ( $mytz eq 'UTC' ) {
-            $myselect = ' selected="selected"';
-        }
-        $user_tz_select = q~<br /><select name="user_tz" id="user_tz">~;
-        $user_tz_select .= qq~<option value="UTC"$myselect>UTC</option>~;
-        for my $j ( @mycntry ) {
-            for my $i ( sort @{DateTime::TimeZone->names_in_country( $j )} ) {
-                if ( $i eq $mytz ) {
-                    $myselect = ' selected="selected"';
+    if ($enabletz) {
+        eval {
+            require DateTime;
+            require DateTime::TimeZone;
+            require Locale::Country;
+        };
+        my $user_tz_select = q{};
+        if ( !$EVAL_ERROR ) {
+            DateTime->import();
+            DateTime::TimeZone->import();
+            Locale::Country->import();
+            my $mytz = ${ $uid . $user }{'user_tz'} || $default_tz;
+            my @cntry = DateTime::TimeZone->countries();
+            my %country;
+            for my $i (@cntry) {
+                if ( code2country( $i, 'alpha-2' ) ne q{} ) {
+                    $country{$i} = code2country( $i, 'alpha-2' );
                 }
-                else { $myselect = q{}; }
-                my @city = split /\//xsm, $i;
-                my $st = q{};
-                if ( $j eq 'us' && $city[2] ) {
-                    $st = "$city[1], ";
-                }
-                $st =~ s/_/ /gsm;
-                $city[-1] =~ s/_/ /gsm;
-                $user_tz_select .= qq~<option value="$i"$myselect>$country{$j} - $st$city[-1]</option>~;
             }
+            my @mycntry = sort { $country{$a} cmp $country{$b} } keys %country;
+            my $myselect = q{};
+            if ( $mytz eq 'UTC' ) {
+                $myselect = ' selected="selected"';
+            }
+            $user_tz_select = q~<br /><select name="user_tz" id="user_tz">~;
+            $user_tz_select .= qq~<option value="UTC"$myselect>UTC</option>~;
+            for my $j (@mycntry) {
+                for my $i ( sort @{ DateTime::TimeZone->names_in_country($j) } )
+                {
+                    if ( $i eq $mytz ) {
+                        $myselect = ' selected="selected"';
+                    }
+                    else { $myselect = q{}; }
+                    my @city = split /\//xsm, $i;
+                    my $st = q{};
+                    if ( $j eq 'us' && $city[2] ) {
+                        $st = "$city[1], ";
+                    }
+                    $st =~ s/_/ /gsm;
+                    $city[-1] =~ s/_/ /gsm;
+                    $user_tz_select .=
+qq~<option value="$i"$myselect>$country{$j} - $st$city[-1]</option>~;
+                }
+            }
+            $user_tz_select .= q~</select>~;
         }
-        $user_tz_select .= q~</select>~;
-    }
-    else {
-        my $mytz = ${ $uid . $user }{'user_tz'} || $default_tz;
-        $localopt = q{};
-        if ( $mytz eq 'local' ) {
-            $myselectb = ' selected="selected"';
+        else {
+            my $mytz = ${ $uid . $user }{'user_tz'} || $default_tz;
+            $localopt = q{};
+            if ( $mytz eq 'local' ) {
+                $myselectb = ' selected="selected"';
+            }
+            elsif ( $mytz eq 'UTC' ) {
+                $myselecta = ' selected="selected"';
+            }
+            if ( $default_tz eq 'local' ) {
+                $localopt =
+qq~\n<option value="local"$myselectb>Use Forum Time Offset</option>~;
+            }
+            $user_tz_select = q~<br /><select name="user_tz" id="user_tz">~;
+            $user_tz_select .= qq~<option value="UTC"$myselecta>UTC</option>~;
+            $user_tz_select .= $localopt;
+            $user_tz_select .= q~</select>~;
         }
-        elsif ( $mytz eq 'UTC' ) {
-            $myselecta = ' selected="selected"';
-        }
-        if ( $default_tz eq 'local' ) {
-            $localopt = qq~\n<option value="local"$myselectb>Use Forum Time Offset</option>~;
-        }
-        $user_tz_select = q~<br /><select name="user_tz" id="user_tz">~;
-        $user_tz_select .= qq~<option value="UTC"$myselecta>UTC</option>~;
-        $user_tz_select .= $localopt;
-        $user_tz_select .= q~</select>~;
-    }
-    $my_tz = $my_tz_select;
-    $my_tz =~ s/{yabb my_user_tz}/$user_tz_select/sm;
+        $my_tz = $my_tz_select;
+        $my_tz =~ s/{yabb my_user_tz}/$user_tz_select/sm;
 
-}
-else { $my_tz = q{};}
+    }
+    else { $my_tz = q{}; }
 
     $my_dynamic =
       ${ $uid . $user }{'dynamic_clock'} ? ' checked="checked"' : q{};
@@ -1255,8 +1261,8 @@ sub ModifyProfileAdmin {
     $userlastpost  = timeformat( ${ $uid . $user }{'lastpost'} );
     $userlastim    = timeformat( ${ $uid . $user }{'lastim'} );
     if ( $userlastlogin eq q{} ) { $userlastlogin = $profile_txt{'470'}; }
-    if ( $userlastpost  eq q{} ) { $userlastpost  = $profile_txt{'470'}; }
-    if ( $userlastim    eq q{} ) { $userlastim    = $profile_txt{'470'}; }
+    if ( $userlastpost eq q{} )  { $userlastpost  = $profile_txt{'470'}; }
+    if ( $userlastim eq q{} )    { $userlastim    = $profile_txt{'470'}; }
 
     my $scriptAction = q~profileAdmin2~;
     if ($view) {
@@ -1606,106 +1612,106 @@ sub ModifyProfile2 {
 
         if ( ${ $uid . $user }{'realname'} ne $member{'name'} ) {
             $member{'name'} =~ s/\t+/\ /gsm;
-            if ( $member{'name'} eq q{} ) { fatal_error('no_name'); }
-            if ( $name_cannot_be_userid
-                && lc $member{'name'} eq lc $member{'username'} )
-            {
-                fatal_error('name_is_userid');
-            }
+        }
+        if ( $member{'name'} eq q{} ) { fatal_error('no_name'); }
+        if ( $name_cannot_be_userid
+            && lc $member{'name'} eq lc $member{'username'} )
+        {
+            fatal_error('name_is_userid');
+        }
 
-            LoadCensorList();
-            if ( Censor( $member{'name'} ) ne $member{'name'} ) {
-                fatal_error( 'name_censored', CheckCensor("$member{'name'}") );
-            }
+        LoadCensorList();
+        if ( Censor( $member{'name'} ) ne $member{'name'} ) {
+            fatal_error( 'name_censored', CheckCensor("$member{'name'}") );
+        }
 
-            if ( ${ $uid . $user }{'password'} eq
-                encode_password( $member{'name'} ) )
-            {
-                fatal_error('password_is_userid');
-            }
+        if ( ${ $uid . $user }{'password'} eq
+            encode_password( $member{'name'} ) )
+        {
+            fatal_error('password_is_userid');
+        }
 
-            FromChars( $member{'name'} );
-            $convertstr = $member{'name'};
-            $convertcut = 30;
-            CountChars();
-            $member{'name'} = $convertstr;
-            if ($cliped) { fatal_error('name_too_long'); }
-            if ( $member{'name'} =~
-                /[^ \w\x80-\xFF\[\]\(\)#\%\+,\-\|\.:=\?\@\^]/sm )
-            {
-                fatal_error( 'invalid_character',
-                    "$profile_txt{'68'} $profile_txt{'241re'}" );
-            }
+        FromChars( $member{'name'} );
+        $convertstr = $member{'name'};
+        $convertcut = 30;
+        CountChars();
+        $member{'name'} = $convertstr;
+        if ($cliped) { fatal_error('name_too_long'); }
+        if (
+            $member{'name'} =~ /[^ \w\x80-\xFF\[\]\(\)#\%\+,\-\|\.:=\?\@\^]/sm )
+        {
+            fatal_error( 'invalid_character',
+                "$profile_txt{'68'} $profile_txt{'241re'}" );
+        }
 
-            ToHTML( $member{'name'} );
-            if ( $user ne 'admin' ) {
+        ToHTML( $member{'name'} );
+        if ( $user ne 'admin' ) {
 
-                # Check to see if name is reserved
-                fopen( FILE, "$vardir/reservecfg.txt" )
-                  || fatal_error( 'cannot_open', "$vardir/reservecfg.txt", 1 );
-                my @reservecfg = <FILE>;
-                fclose(FILE);
-                chomp @reservecfg;
-                my $matchword = $reservecfg[0] eq 'checked';
-                my $matchcase = $reservecfg[1] eq 'checked';
-                my $matchname = $reservecfg[3] eq 'checked';
-                my $namecheck =
-                    $matchcase eq 'checked'
-                  ? $member{'name'}
-                  : lc $member{'name'};
+            # Check to see if name is reserved
+            fopen( FILE, "$vardir/reservecfg.txt" )
+              || fatal_error( 'cannot_open', "$vardir/reservecfg.txt", 1 );
+            my @reservecfg = <FILE>;
+            fclose(FILE);
+            chomp @reservecfg;
+            my $matchword = $reservecfg[0] eq 'checked';
+            my $matchcase = $reservecfg[1] eq 'checked';
+            my $matchname = $reservecfg[3] eq 'checked';
+            my $namecheck =
+                $matchcase eq 'checked'
+              ? $member{'name'}
+              : lc $member{'name'};
 
-                fopen( FILE, "$vardir/reserve.txt" )
-                  || fatal_error( 'cannot_open', "$vardir/reserve.txt", 1 );
-                my @reserve = <FILE>;
-                fclose(FILE);
-                foreach my $reserved (@reserve) {
-                    chomp $reserved;
-                    my $reservecheck = $matchcase ? $reserved : lc $reserved;
-                    if ($matchname) {
-                        if ($matchword) {
-                            if ( $namecheck eq $reservecheck ) {
-                                fatal_error( 'id_reserved', "$reserved" );
-                            }
+            fopen( FILE, "$vardir/reserve.txt" )
+              || fatal_error( 'cannot_open', "$vardir/reserve.txt", 1 );
+            my @reserve = <FILE>;
+            fclose(FILE);
+            foreach my $reserved (@reserve) {
+                chomp $reserved;
+                my $reservecheck = $matchcase ? $reserved : lc $reserved;
+                if ($matchname) {
+                    if ($matchword) {
+                        if ( $namecheck eq $reservecheck ) {
+                            fatal_error( 'id_reserved', "$reserved" );
                         }
-                        else {
-                            if ( $namecheck =~ $reservecheck ) {
-                                fatal_error( 'id_reserved', "$reserved" );
-                            }
+                    }
+                    else {
+                        if ( $namecheck =~ $reservecheck ) {
+                            fatal_error( 'id_reserved', "$reserved" );
                         }
                     }
                 }
             }
+        }
 
-            if (
-                (
-                    lc MemberIndex( 'check_exist', $member{'name'} ) eq
-                    lc $member{'name'}
-                )
-                && ( lc $member{'name'} ne lc ${ $uid . $user }{'realname'} )
-                && ( lc $member{'name'} ne lc $member{'username'} )
-              )
-            {
-                fatal_error( 'name_taken', "($member{'name'})" );
-            }
+        if (
+            (
+                lc MemberIndex( 'check_exist', $member{'name'}, 1 ) eq
+                lc $member{'name'}
+            )
+            && ( lc $member{'name'} ne lc ${ $uid . $user }{'realname'} )
+            && ( lc $member{'name'} ne lc $member{'username'} )
+          )
+        {
+            fatal_error( 'name_taken', "($member{'name'})" );
+        }
 
-            # rewrite attachments.txt with new username
-            fopen( ATM, "<$vardir/attachments.txt", 1 )
-              || fatal_error( 'cannot_open', "$vardir/attachments.txt" );
-            my @attachments = <ATM>;
-            fclose( ATM );
+        # rewrite attachments.txt with new username
+        fopen( ATM, "<$vardir/attachments.txt", 1 )
+          || fatal_error( 'cannot_open', "$vardir/attachments.txt" );
+        my @attachments = <ATM>;
+        fclose(ATM);
 
-            for my $i ( 0 .. ( @attachments - 1 ) ) {
-                $attachments[$i] =~
+        for my $i ( 0 .. ( @attachments - 1 ) ) {
+            $attachments[$i] =~
 s/^(\d+\|\d+\|.*?)\|(.*?)\|/ ($2 eq ${$uid.$user}{'realname'} ? "$1|$member{'name'}|" : "$1|$2|") /esm;
-            }
-            fopen( ATM, ">$vardir/attachments.txt", 1 )
-              || fatal_error( 'cannot_open', "$vardir/attachments.txt" );
-            print {ATM} @attachments or croak "$croak{'print'} ATM";
-            fclose(ATM);
+        }
+        fopen( ATM, ">$vardir/attachments.txt", 1 )
+          || fatal_error( 'cannot_open', "$vardir/attachments.txt" );
+        print {ATM} @attachments or croak "$croak{'print'} ATM";
+        fclose(ATM);
 
    #Since we have not encountered a fatal error, time to rewrite our memberlist.
-            ManageMemberinfo( 'update', $user, $member{'name'} );
-        }
+        ManageMemberinfo( 'update', $user, $member{'name'} );
 
         ToHTML( $member{'gender'} );
         FromChars( $member{'location'} );
@@ -1833,7 +1839,7 @@ qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};si
         @pmattach = <PMATTACH>;
         fclose(PMATTACH);
 
-        foreach my $pm_attach ( @pmattach ) {
+        foreach my $pm_attach (@pmattach) {
             ( undef, undef, undef, $attach_file, undef, $attach_user ) =
               split /\|/xsm, $pm_attach;
             chomp $attach_user;
@@ -1987,15 +1993,15 @@ sub ModifyProfileContacts2 {
     # Check to see if email is already taken
     if ( lc ${ $uid . $user }{'email'} ne lc $member{'email'} ) {
         $testemail = lc $member{'email'};
-        my $is_existing = MemberIndex( 'check_exist', "$testemail" );
+        my $is_existing = MemberIndex( 'check_exist', $testemail, 2 );
         if ( lc $is_existing eq $testemail ) {
             fatal_error( 'email_taken', "($member{'email'})" );
         }
+    }
 
 # Since we haven't encountered a fatal error, time to rewrite our memberlist a little.
-        ManageMemberinfo( 'update', $user, q{}, $member{'email'} );
-    }
-    ## if enabled but not set, default offline status to 'offline'
+    ManageMemberinfo( 'update', $user, q{}, $member{'email'} );
+## if enabled but not set, default offline status to 'offline'
     if ( $enable_MCaway && $member{'offlinestatus'} eq q{} ) {
         $member{'offlinestatus'} = 'offline';
     }
@@ -2375,8 +2381,8 @@ sub ModifyProfileOptions2 {
               || ${ $uid . $user }{'notify_me'} == 3
         ) ? 2 : 0
       );
-    ${ $uid . $user }{'reversetopic'}  = $member{'reversetopic'}  ? 1 : 0;
-    ${ $uid . $user }{'user_tz'} = $member{'user_tz'};
+    ${ $uid . $user }{'reversetopic'}  = $member{'reversetopic'} ? 1 : 0;
+    ${ $uid . $user }{'user_tz'}       = $member{'user_tz'};
     ${ $uid . $user }{'dynamic_clock'} = $member{'dynamic_clock'} ? 1 : 0;
     ${ $uid . $user }{'timeselect'}    = int $member{'usertimeselect'};
     ${ $uid . $user }{'template'}      = $member{'usertemplate'};
@@ -2703,11 +2709,11 @@ sub ViewProfile {
     $INFO{'username'} =~ tr/ /+/;
 
     $user = $INFO{'username'};
-    if ($do_scramble_id) { decloak($user); }
+    if ($do_scramble_id)     { decloak($user); }
     if ( $user =~ m{/}xsm )  { fatal_error('no_user_slash'); }
     if ( $user =~ m{\\}xsm ) { fatal_error('no_user_backslash'); }
 
-    if ( !LoadUser($user) ) { fatal_error('no_profile_exists'); }
+    if ( !LoadUser($user) )   { fatal_error('no_profile_exists'); }
     if ( $user eq $username ) { LoadMiniUser($user); }
 
     my ( $modify, $gender );
@@ -2945,7 +2951,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
             $rowEmail = enc_eMail(
                 "$profile_txt{'889'} ${$uid.$user}{'realname'}",
                 ${ $uid . $user }{'email'},
-                q{}, q{},1
+                q{}, q{}, 1
             );
         }
 
@@ -3153,8 +3159,8 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
     $userlastpost  = timeformat( ${ $uid . $user }{'lastpost'} );
     $userlastim    = timeformat( ${ $uid . $user }{'lastim'} );
     if ( $userlastlogin eq q{} ) { $userlastlogin = "$profile_txt{'470'}"; }
-    if ( $userlastpost  eq q{} ) { $userlastpost  = "$profile_txt{'470'}"; }
-    if ( $userlastim    eq q{} ) { $userlastim    = "$profile_txt{'470'}"; }
+    if ( $userlastpost eq q{} )  { $userlastpost  = "$profile_txt{'470'}"; }
+    if ( $userlastim eq q{} )    { $userlastim    = "$profile_txt{'470'}"; }
     my ( $lastonline, $lastpost, $lastPM );
     ## MF-B code fix for lpd
     if ( ${ $uid . $user }{'postcount'} > 0 ) {
@@ -3224,6 +3230,7 @@ qq~<a href="$scripturl?action=ipban_update;ban_memname=$ban_user_name;username=$
         else {
             $ban_user_link = q{};
         }
+
         # Shows the banning stuff for IP's
         @banlink        = ();
         $ip_ban_options = q{};
@@ -3353,7 +3360,7 @@ qq~<a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccoun
 
 sub usersrecentposts {
     my @x = @_;
-    if ($iamguest) { fatal_error('members_only'); }
+    if ($iamguest)                      { fatal_error('members_only'); }
     if ( $INFO{'username'} =~ /\//xsm ) { fatal_error('no_user_slash'); }
     if ( $INFO{'username'} =~ /\\/xsm ) {
         fatal_error('no_user_backslash');
@@ -3441,7 +3448,7 @@ sub usersrecentposts {
             }
             last
               if $recentfound >= $display
-                  && $data[-1] > ${ $recent{$thread} }[1];
+              && $data[-1] > ${ $recent{$thread} }[1];
             next;
         }
 
@@ -3679,13 +3686,13 @@ sub usersrecentposts {
 
         $counter++;
 
-        if ( $tusername !~ m{Guest}sm  ) {
+        if ( $tusername !~ m{Guest}sm ) {
             if ( -e ("$memberdir/$tusername.vars") ) {
                 LoadUser($tusername);
                 $mytname =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tusername}" rel="nofollow">$format_unbold{$tusername}</a>~;
             }
-            else { $mytname = qq~$tname - $maintxt{'470a'}~;}
+            else { $mytname = qq~$tname - $maintxt{'470a'}~; }
         }
         else {
             $mytname = "$tname ($maintxt{'28'})";
@@ -3698,7 +3705,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}" rel="
 
         get_template('MyPosts');
         $mypostborder = q{};
-        if ($action eq 'myusersrecentposts') {
+        if ( $action eq 'myusersrecentposts' ) {
             $mypostborder = ' class="mypostborder"';
         }
 

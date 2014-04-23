@@ -885,7 +885,7 @@ sub checkUserAvail {
         $INFO{'email'} =~ s/\A\s+|\s+\z//gxsm;
         $type = $register_txt{'112'};
         if (
-            lc $INFO{'email'} eq lc MemberIndex( 'check_exist', $INFO{'email'} )
+            lc $INFO{'email'} eq lc MemberIndex( 'check_exist', $INFO{'email'}, 2 )
           )
         {
             $taken = 'true';
@@ -897,7 +897,7 @@ sub checkUserAvail {
         if (
             (
                 lc $INFO{'display'} eq
-                lc MemberIndex( 'check_exist', $INFO{'display'} )
+                lc MemberIndex( 'check_exist', $INFO{'display'}, 1 )
             )
             && ( lc $INFO{'display'} ne lc ${ $uid . $username }{'realname'} )
           )
@@ -928,7 +928,7 @@ sub checkUserAvail {
         $INFO{'user'} =~ s/\s/_/gxsm;
         $type = $register_txt{'110'};
         if (
-            lc $INFO{'user'} eq lc MemberIndex( 'check_exist', $INFO{'user'} ) )
+            lc $INFO{'user'} eq lc MemberIndex( 'check_exist', $INFO{'user'}, 0 ) )
         {
             $taken = 'true';
         }

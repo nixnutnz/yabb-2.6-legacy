@@ -358,7 +358,7 @@ sub UserAccount {
 }
 
 sub MemberIndex {
-    my ( $memaction, $user ) = @_;
+    my ( $memaction, $user, $mychk ) = @_;
     if ( $memaction eq 'add' && LoadUser($user) ) {
         $theregdate = stringtotime( ${ $uid . $user }{'regdate'} );
         $theregdate = sprintf '%010d', $theregdate;
@@ -423,15 +423,15 @@ sub MemberIndex {
             ( $curname, $curmail, $curposition, $curpostcnt ) =
               split /\|/xsm, $value;
             if ( $memaction eq 'check_exist') {
-                if ( lc $user eq lc $curmemb ) {
+                if ( lc $user eq lc $curmemb && $mychk == 0 ) {
                     undef %memberinf;
                     return $curmemb;
                 }
-                elsif ( lc $user eq lc $curmail ) {
+                elsif ( lc $user eq lc $curmail && $mychk == 2 ) {
                     undef %memberinf;
                     return $curmail;
                 }
-                elsif ( lc $user eq lc $curname ) {
+                elsif ( lc $user eq lc $curname && $mychk == 1 ) {
                     undef %memberinf;
                     return $curname;
                 }

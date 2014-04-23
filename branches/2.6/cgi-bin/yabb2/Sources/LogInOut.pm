@@ -340,7 +340,7 @@ sub Reminder2 {
     fopen( FILE, ">$memberdir/forgotten.passes" )
       || fatal_error( 'cannot_open', "$memberdir/forgotten.passes", 1 );
     while ( ( $key, $value ) = each %pass ) {
-        print {FILE} qq~\$pass{"$key"} = '$value';\n~
+        print {FILE} qq~\$pass{'$key'} = '$value';\n~
           or croak "$croak{'print'} forgotten.passes";
     }
     print {FILE} '1;' or croak "$croak{'print'} forgotten.passes";
@@ -401,7 +401,7 @@ sub Reminder3 {
     fopen( FORGOTTEN, ">$memberdir/forgotten.passes" )
       || fatal_error( 'cannot_open', "$memberdir/forgotten.passes", 1 );
     while ( ( $key, $value ) = each %pass ) {
-        print {FORGOTTEN} qq~\$pass{"$key"} = '$value';\n~
+        print {FORGOTTEN} qq~\$pass{'$key'} = '$value';\n~
           or croak "$croak{'print'} FORGOTTEN";
     }
     print {FORGOTTEN} "\n1;" or croak "$croak{'print'} FORGOTTEN";

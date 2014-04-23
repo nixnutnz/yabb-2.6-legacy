@@ -495,7 +495,7 @@ sub Register2 {
         $member{$key} = $value;
     }
     if ( $member{'domain'} ) { $member{'email'} .= $member{'domain'}; }
-    $member{'regusername'} =~ s/\s/_/gxsm;
+#    $member{'regusername'} =~ s/\s/_/gxsm;
     $member{'regrealname'} =~ s/\t+/\ /gsm;
 
     # Make sure users can't register with banned details
@@ -521,9 +521,9 @@ sub Register2 {
     if ( $member{'regusername'} =~ /guest/ixsm ) {
         fatal_error( 'id_reserved', "$member{'regusername'}" );
     }
-    if ( $member{'regusername'} =~ /[^\w\+\-\.\@]/xsm ) {
+    if ( $member{'regusername'} =~ /[^\w\+\-\_\@\.]/sm ) {
         fatal_error( 'invalid_character',
-            "$register_txt{'35'} $register_txt{'241re'}" );
+            "$register_txt{'35'} $register_txt{'241e'}" );
     }
     if ( $member{'regusername'} =~ /^[0-9]+$/sm ) {
         fatal_error( 'all_numbers',
@@ -592,19 +592,19 @@ sub Register2 {
 
     if (
         lc $member{'regusername'} eq
-        lc MemberIndex( 'check_exist', $member{'regusername'} ) )
+        lc MemberIndex( 'check_exist', $member{'regusername'}, 0 ) )
     {
         fatal_error( 'id_taken', "($member{'regusername'})" );
     }
     if (
-        lc $member{'email'} eq lc MemberIndex( 'check_exist', $member{'email'} )
+        lc $member{'email'} eq lc MemberIndex( 'check_exist', $member{'email'}, 2 )
       )
     {
         fatal_error( 'email_taken', "($member{'email'})" );
     }
     if (
         lc $member{'regrealname'} eq
-        lc MemberIndex( 'check_exist', $member{'regrealname'} ) )
+        lc MemberIndex( 'check_exist', $member{'regrealname'}, 1 ) )
     {
         fatal_error('name_taken');
     }
@@ -1158,7 +1158,7 @@ sub user_activation {
                 if (
                     lc ${ $uid . $reguser }{'email'} eq
                     lc MemberIndex( 'check_exist',
-                        ${ $uid . $reguser }{'email'} ) )
+                        ${ $uid . $reguser }{'email'}, 2 ) )
                 {
                     fatal_error( 'email_taken', "(${$uid.$reguser}{'email'})" );
                 }

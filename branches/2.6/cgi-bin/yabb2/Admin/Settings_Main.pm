@@ -196,15 +196,9 @@ if ($RegReasonSymbols eq q{}) { $RegReasonSymbols = 200 ;}
 if ($ML_Allowed eq q{}) { $ML_Allowed = 1;}
 if ($default_userpic eq q{}) { $default_userpic = 'nn.gif';}
 
-
-# This is only for update, when coming from YaBB lower or equal version 2.2.3
-# I think it can be deleted around version 2.4.0 without causing mayor issues (deti).
-if ($enable_notifications eq q{}) { $enable_notifications = $enable_notification ? 3 : 0; }
-# End update workaround
-
 require Admin::ManageBoards; # needed for avatar upload settings
 
-# Insert default if forum is beeing upgraded to YaBB 2.4
+# Insert default if forum is being upgraded to YaBB 2.4
 if (!$pwstrengthmeter_scores && !$pwstrengthmeter_common && !$pwstrengthmeter_minchar) {
     $FORM{'pwstrengthmeter_scores'} = '10,15,30,40';
     $FORM{'pwstrengthmeter_common'} = q~"123456","abcdef","password"~;
@@ -213,11 +207,11 @@ if (!$pwstrengthmeter_scores && !$pwstrengthmeter_common && !$pwstrengthmeter_mi
 
 # googiespell start
 eval { require LWP::UserAgent };
-my $modulLWP = $@;
+my $modulLWP = $EVAL_ERROR;
 eval { require HTTP::Request::Common };
-my $modulHTTP = $@;
+my $modulHTTP = $EVAL_ERROR;
 eval { require Crypt::SSLeay };
-my $modulCrypt = $@;
+my $modulCrypt = $EVAL_ERROR;
 
 my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_spell_check" value="1"${ischecked($enable_spell_check)} />~;
  if ($modulLWP || $modulHTTP || $modulCrypt) {
@@ -314,6 +308,9 @@ $qckage ||= 31;
 </select>~,
             name => 'timeselected',
             validate => 'number',
+        },
+        {
+            header => $settings_txt{'forumtime'},
         },
         {
             description => qq~$admin_txt{'371'}~,

@@ -3,7 +3,7 @@ $SectionName = "Manage_Categories";
 ### Section 1
 #############################################
 $SectionSub1 = "Accessing_the_Category_Functions";
-$SectionBody1 = qq~<p>This YaBB version comes equipped with many powerful tools to manage and control the conversational flow of your community, the cornerstone of which is the ability to group Boards into an unlimited<b>*</b> number of Categories. In order to access these functions, you must, of course, be logged in as an Administrator (or Global Moderator with proper access rights). Once you are, look at the Main tabbed menu at the top of your forum under the logo. You will notice a link titled “Admin Center”. Clicking this will bring you to a large control panel. On the left hand menu, search for the section titled “Forum Controls” and click on the first link titled “Categories”.</p>
+$SectionBody1 = qq~<p>This YaBB version comes equipped with many powerful tools to manage and control the conversational flow of your community, the cornerstone of which is the ability to group Boards into an unlimited<b>*</b> number of Categories. In order to access these functions, you must, of course, be logged in as an Administrator (or Global Moderator with proper access rights). Once you are, look at the Main tabbed menu at the top of your forum under the logo. You will notice a link titled &#8220;Admin Center&#8221;. Clicking this will bring you to a large control panel. On the left hand menu, search for the section titled &#8220;Forum Controls&#8221; and click on the first link titled &#8220;Categories&#8221;.</p>
 <p><i><b>*</b> YaBB is only limited by the space allocated to you on your web hosting server.</i></p>
 ~;
 #############################################
@@ -82,8 +82,8 @@ $SectionSub4 = "Deleting_a_Category";
 $SectionBody4 = qq~<p>If you would like to remove a Category, follow the directions (see Accessing the Category Functions above for details) to access your Category management page.</p>
 <ul>
     <li class="help_attn_strong"><b><span class="underline">Warning:</span> Deleting a Category will also delete any boards you have in that Category.</b> Move them to another Category first if you want to save them.</li>
-    <li>In the list of Categories, you will notice a check box that corresponds to each title. Check this box for each and every Category you wish to remove. Once selected, scroll to the bottom of the Category listings and locate the set of radio buttons titled “With selected”. Click on the radio labeled “Remove” then press the button to the right titled “Go”.</li>
-    <li>A small pop-up will ask you to confirm that you want to remove these categories. Click “OK” to remove them or “Cancel” to keep them.</li>
+    <li>In the list of Categories, you will notice a check box that corresponds to each title. Check this box for each and every Category you wish to remove. Once selected, scroll to the bottom of the Category listings and locate the set of radio buttons titled &#8220;With selected&#8221;. Click on the radio labeled &#8220;Remove&#8221; then press the button to the right titled &#8220;Go&#8221;.</li>
+    <li>A small pop-up will ask you to confirm that you want to remove these categories. Click &#8220;OK&#8221; to remove them or &#8220;Cancel&#8221; to keep them.</li>
 </ul>
 ~;
 #############################################

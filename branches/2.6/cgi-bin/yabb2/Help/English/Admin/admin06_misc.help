@@ -187,9 +187,25 @@ $SectionBody5 = qq~<p>These are some completely new features to YaBB 2.6.0 that 
     <li><b>Icon definitions</b>
         <br />Instead of being hard-coded in the source-code, the names of the various image graphics are stored as variables in the templates while the icon image names are stored in an icon definition file &#40;micon.def&#41; in the 'Templates' folder so each 'skin' can have its own set of icons and graphics.
     </li>
-	<li><b>Location based Time-Zones with automatic Daylight Savings time</b>
-		<br />Depending on if the necessary Perl Modules are installed, the admin can choose to make all time stamps on the forum to show as UTC or allow members to choose a Country/City based TimeZone which will automatically adjust to Daylight Savings Time based on the chosen location.  
-	</li>
+    <li id="time"><b>Location based Time-Zones with automatic Daylight Savings time</b>
+        <br />The Admin can choose whether or not users have the option to choose their own Time Zone. If the Admin chooses to not allow user choice, all displayed times on the Forum will be the Forum Default Time Zone.
+        <ul>
+            <li>For full functionality the Perl Modules <strong>DateTime</strong>, <strong>DateTime::TimeZone</strong>, and <strong>Locale::Country</strong> need to be installed on the host server. If the Modules are installed:
+                <ul>
+                    <li>The Admin can choose a Forum Default Time Zone based on the Country/City of the Forum or use UTC/GMT time. If a Time Zone based on Country/City is chosen, YaBB will automatically adjust for Daylight Savings Time for that Time Zone.</li>
+                    <li>If users have the option to choose their own Time Zone, their displayed time will also automatically adjust to Daylight Savings Time based on the chosen location.</li>
+                </ul>
+            </li>
+            <li>If the necessary Perl Modules are <b>not</b> installed:
+                <ul>
+                    <li>The Admin can choose from 'UTC' or 'local' for the Forum Default Time Zone.</li>
+                    <li>If the Admin wants to use a 'time offset' (how many hours and minutes Forum Time needs to be from UTC/GMT), the Time Zone must be set to 'local' and the Time Offset set manually.</li>
+                    <li>If users have the option to choose their own Time Zone, Default Forum Time Zone will be available to them only the Forum Default Time Zone is 'local', otherwise their only choice will be UTC.</li>
+                    <li>The DST option will only work properly if the host server's 'localtime' is <strong>not</strong> UTC/GMT and the host servers dates for DST match the Time Zone the Forum is in. Check with your hosting service to find this out.</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
 </ul>
 ~;
 ### Section 6
