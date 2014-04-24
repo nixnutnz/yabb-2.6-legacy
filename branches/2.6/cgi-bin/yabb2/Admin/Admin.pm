@@ -1130,7 +1130,7 @@ sub AddMember2 {
         $value =~ s/[\n\r]//gxsm;
         $member{$key} = $value;
     }
-    $member{'regusername'} =~ s/\s/_/gsm;
+#    $member{'regusername'} =~ s/\s/_/gsm;
 
     # Make sure users can't register with banned details
     banning( $member{'regusername'}, $member{'email'}, 1 );
