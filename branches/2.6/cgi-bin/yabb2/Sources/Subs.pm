@@ -1675,7 +1675,7 @@ sub Split_Splice_Move {
     my ( $s_s_m, $s_s_n ) = @_;
     my $ssm = 0;
     if ( !$s_s_n ) {    # Just for the subject of a message
-        $s_s_m =~ s/^(Re: )?\[m.*?\]/$maintxt{'758'}/xsm;
+        $s_s_m =~ s/^(Re: )?\[m.*?\]/$maintxt{'758'}/sm;
         return $s_s_m;
     }
     elsif ( $s_s_m =~ /\[m by=(.+?) destboard=(.+?) dest=(.+?)\]/sm )
@@ -2316,7 +2316,7 @@ sub save_moved_file {
 
    # This sub saves the hash for the moved files: key == old id, value == new id
     fopen( MOVEDFILE, ">$vardir/Movedthreads.pm" )
-      || fatal_error( 'cannot_open', ">$vardir/Movedthreads.pm", 1 );
+      || fatal_error( 'cannot_open', "$vardir/Movedthreads.pm", 1 );
     print {MOVEDFILE} '%moved_file = ('
       . join( q{,},
         map { qq~"$_","$moved_file{$_}"~ }
