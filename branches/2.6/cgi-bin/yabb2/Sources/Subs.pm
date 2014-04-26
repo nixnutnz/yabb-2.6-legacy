@@ -975,11 +975,7 @@ sub FindPermalink {
 
 sub permtimer {
     my ($thetime) = @_;
-    my $toffs = 0;
-    if ( $enabletz ) {
-        $toffs = toffs($thetime);
-    }
-    my $mynewtime =  $thetime + $toffs;
+    my $mynewtime =  $thetime;
 
     my ( undef, $pmin, $phour, $pmday, $pmon, $pyear, undef, undef, undef ) =
       gmtime( $mynewtime );

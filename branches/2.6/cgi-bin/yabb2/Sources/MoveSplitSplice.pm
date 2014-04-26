@@ -702,9 +702,11 @@ qq~$newthreadid|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthrea
     if ( $curboard ne $newboard ) {
         $boardlog = 1;    # For: Mark boards as read
 
-        fopen( BOARD, "<$boardsdir/$newboard.txt", 1 );
+        fopen( BOARD, "+<$boardsdir/$newboard.txt", 1 );
+        seek BOARD, 0, 0;
         my @newmessindex = <BOARD>;
-        fclose( BOARD );
+        truncate BOARD, 0;
+        seek BOARD, 0, 0;
 
         if ( $FORM{'newthread'} eq 'new' ) {
 
@@ -772,7 +774,6 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
                 ReplyNotify( $newthreadid, $msub, ${$newthreadid}{'replies'} );
             }
         }
-        fopen( BOARD, ">$boardsdir/$curboard.txt", 1 );
         print {BOARD} reverse
           sort { ( split /\|/xsm, $a, 6 )[4] <=> ( split /\|/xsm, $b, 6 )[4] }
           @newmessindex
