@@ -1340,8 +1340,8 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'bytes' => 'Used to send e-mails via "YaBB SMTP Engine".<br />This module is only needed if you want to send your e-mails via the "YaBB SMTP Engine". Otherwise you do not need this module.',
 'integer' => 'Used to send e-mails via "YaBB SMTP Engine".<br />This module is only needed if you want to send your e-mails via the "YaBB SMTP Engine". Otherwise you do not need this module.',
 'DateTime' => q~Used to create 'DateTime' objects for time formatting.<br />This module is needed if you want to have forum/user timezones set to anything other than UTC.~,
-'DateTime::TimeZone' => q~Used to get user and forum Time Zone offsets based on the user's actual time zone.<br />This module is needed if you want to have forum/user timezones set to anything other than UTC.<br /><span class="important">This Module needs to be kept current as it contains time sensitive Time Zone data. Check with your server host to make sure this Module is being kept current.</span><br /><b>Your version</b>:~,
-'Locale::Country' => 'Used to make the Time Zone selectors more logical for users.<br />This module is needed to present the time zone selection drop down to users.',
+'DateTime::TimeZone' => q~Used to get user and forum Time Zone offsets based on the user's actual time zone.<br />This module is needed if you want to have forum/user timezones set to anything other than UTC.<br /><span class="important">This Module needs to be kept current as it contains time sensitive Time Zone data.~,
+'DateTime::TimeZone2' => q~<br /><span class="important">This Module needs to be kept current as it contains time sensitive Time Zone data. Check with your server host to make sure this Module is being kept current.</span><br /><b>Your version</b>:~,
 );
 
 %settings_txt = (

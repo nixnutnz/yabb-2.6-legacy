@@ -115,32 +115,15 @@ $tz_select .= qq~<option value="UTC" ${isselected('UTC' eq $mytz)}>UTC</option>~
 eval {
     require DateTime;
     require DateTime::TimeZone;
-    require Locale::Country;
 };
 if( !$EVAL_ERROR ) {
     DateTime->import();
     DateTime::TimeZone->import();
-    Locale::Country->import();
-    my @cntry = DateTime::TimeZone->countries();
-    my %country;
-    for my $i (@cntry) {
-        if ( code2country($i ,'alpha-2') ) {
-            $country{$i} = code2country($i ,'alpha-2');
-        }
-    }
-    my @mycntry = sort { $country{$a} cmp $country{$b} } keys %country;
+    LoadLanguage('Countries');
+    my @mycntry = sort { $countrytime_txt{$a} cmp $countrytime_txt{$b} } keys %countrytime_txt;
 
-    for my $j ( @mycntry ) {
-        for my $i ( sort @{DateTime::TimeZone->names_in_country( $j )}) {
-            my @city = split /\//xsm, $i;
-            my $st = q{};
-            if ( $j eq 'us' && $city[2] ) {
-                $st = "$city[1], ";
-            }
-            $st =~ s/_/ /gsm;
-            $city[-1] =~ s/_/ /gsm;
-            $tz_select .= qq~<option value="$i" ${isselected($i eq $mytz)}>$country{$j} - $st$city[-1]</option>~;
-        }
+    for my $i ( @mycntry ) {
+            $tz_select .= qq~<option value="$i" ${isselected($i eq $mytz)}>$countrytime_txt{$i}</option>~;
     }
 }
 # backwards compatibility

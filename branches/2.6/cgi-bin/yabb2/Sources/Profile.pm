@@ -919,44 +919,28 @@ qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$di
         eval {
             require DateTime;
             require DateTime::TimeZone;
-            require Locale::Country;
         };
         my $user_tz_select = q{};
         if ( !$EVAL_ERROR ) {
             DateTime->import();
             DateTime::TimeZone->import();
-            Locale::Country->import();
+            LoadLanguage('Countries');
             my $mytz = ${ $uid . $user }{'user_tz'} || $default_tz;
-            my @cntry = DateTime::TimeZone->countries();
-            my %country;
-            for my $i (@cntry) {
-                if ( code2country( $i, 'alpha-2' ) ne q{} ) {
-                    $country{$i} = code2country( $i, 'alpha-2' );
-                }
-            }
-            my @mycntry = sort { $country{$a} cmp $country{$b} } keys %country;
+            my @mycntry = sort { $countrytime_txt{$a} cmp $countrytime_txt{$b} } keys %countrytime_txt;
             my $myselect = q{};
             if ( $mytz eq 'UTC' ) {
                 $myselect = ' selected="selected"';
             }
             $user_tz_select = q~<br /><select name="user_tz" id="user_tz">~;
             $user_tz_select .= qq~<option value="UTC"$myselect>UTC</option>~;
-            for my $j (@mycntry) {
-                for my $i ( sort @{ DateTime::TimeZone->names_in_country($j) } )
+            for my $i (@mycntry) {
                 {
                     if ( $i eq $mytz ) {
                         $myselect = ' selected="selected"';
                     }
                     else { $myselect = q{}; }
-                    my @city = split /\//xsm, $i;
-                    my $st = q{};
-                    if ( $j eq 'us' && $city[2] ) {
-                        $st = "$city[1], ";
-                    }
-                    $st =~ s/_/ /gsm;
-                    $city[-1] =~ s/_/ /gsm;
                     $user_tz_select .=
-qq~<option value="$i"$myselect>$country{$j} - $st$city[-1]</option>~;
+qq~<option value="$i"$myselect>$countrytime_txt{$i}</option>~;
                 }
             }
             $user_tz_select .= q~</select>~;
