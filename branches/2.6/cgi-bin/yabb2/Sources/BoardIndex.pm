@@ -241,7 +241,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                 *recursive_boards = sub {
                     foreach my $childbd (@_) {
 
-               # now fill all the neccesary hashes to show all board index stuff
+               # now fill all the necessary hashes to show all board index stuff
                         if ( !exists $board{$childbd} ) {
                             gostRemove( $catid, $childbd );
                             next;

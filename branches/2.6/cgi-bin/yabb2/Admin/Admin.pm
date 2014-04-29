@@ -74,12 +74,16 @@ sub DeleteConverterFiles {
         }
         rmdir "$convdir";
     }
-    if ( -e './Setup.pl' ) { unlink './Setup.pl'; }
-    if ( -e './Convert.pl' ) { unlink './Convert.pl'; }
-    if ( -e './Convert2x.pl' ) { unlink './Convert2x.pl'; }
+    if ( -e './Setup.pl' )        { unlink './Setup.pl'; }
+    if ( -e './Convert.pl' )      { unlink './Convert.pl'; }
+    if ( -e './Convert2x.pl' )    { unlink './Convert2x.pl'; }
     if ( -e './BoardConvert.pl' ) { unlink './BoardConvert.pl'; }
-    if ( -e "$htmldir/Templates/Forum/setup.css" ) { unlink "$htmldir/Templates/Forum/setup.css"; }
-    if ( -e './Variables/ConvSettings.txt' ) { unlink './Variables/ConvSettings.txt'; }
+    if ( -e "$htmldir/Templates/Forum/setup.css" ) {
+        unlink "$htmldir/Templates/Forum/setup.css";
+    }
+    if ( -e './Variables/ConvSettings.txt' ) {
+        unlink './Variables/ConvSettings.txt';
+    }
 
     $yymain .= qq~<b>$admintxt{'10'}</b>~;
     $yytitle = "$admintxt{'10'}";
@@ -335,7 +339,7 @@ qq~ <a href="$scripturl?action=viewprofile;username=$membernameCloaked">$memberr
         }
     }
     $administrators =~ s/<span class="small">,<\/span> \n\Z//sm;
-    $gmods          =~ s/<span class="small">,<\/span> \n\Z//sm;
+    $gmods =~ s/<span class="small">,<\/span> \n\Z//sm;
     if ( $gmods eq q{} ) { $gmods = q~&nbsp;~; }
     undef %memberinf;
     return;
@@ -630,10 +634,23 @@ sub DeleteOldMessages {
         foreach my $curboard (@bdlist) {
             ( $boardname, $boardperms, $boardview ) =
               split /\|/xsm, $board{"$curboard"};
-
-            $selectname = $curboard . 'check';
-            $yymain .= qq~
-                <input type="checkbox" name="$selectname" id="$selectname" value="1" />&nbsp;<label for="$selectname">$boardname</label><br />~;
+            if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm ) {
+                $selectname = $curboard . 'check';
+                $yymain .= qq~
+                    <input type="checkbox" name="$selectname" id="$selectname" value="1" />&nbsp;<label for="$selectname">$boardname</label><br />~;
+                if ( $subboard{$curboard} ) {
+                    my @childboards = split /\|/xsm, $subboard{$curboard};
+                    foreach my $childbd (@childboards) {
+                        my ( $chldboardname, $chldboardperms, $chldboardview )
+                          = split /\|/xsm, $board{$childbd};
+                        if ( $chldboardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm ) {
+                            $selectname = $childbd . 'check';
+                            $yymain .= qq~
+                        &nbsp; &nbsp; &nbsp; &nbsp;<input type="checkbox" name="$selectname" id="$selectname" value="1" />&nbsp;<label for="$selectname">$chldboardname</label><br />~;
+                        }
+                    }
+                }
+            }
         }
     }
     $yymain .= qq~
@@ -687,8 +704,8 @@ sub DeleteMultiMembers {
 
     if ( $FORM{'button'} == 1 && $FORM{'emailtext'} ne q{} ) {
         $FORM{'emailsubject'} =~ s/\|/&#124/gsm;
-        $FORM{'emailtext'}    =~ s/\|/&#124/gsm;
-        $FORM{'emailtext'}    =~ s/\r(?=\n*)//gxsm;
+        $FORM{'emailtext'} =~ s/\|/&#124/gsm;
+        $FORM{'emailtext'} =~ s/\r(?=\n*)//gxsm;
         $mailline =
           qq~$date|$FORM{'emailsubject'}|$FORM{'emailtext'}|$username~;
         MailList($mailline);
@@ -786,7 +803,7 @@ qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{
 
     require "$boarddir/$yyexec.$yyext";
     $adminindexplver =~ s/\$Revision\: (.*?) \$/Build $1/igsm;
-    $yabbplver       =~ s/\$Revision\: (.*?) \$/Build $1/igsm;
+    $yabbplver =~ s/\$Revision\: (.*?) \$/Build $1/igsm;
 
     $yymain .= qq~
         <div class="bordercolor rightboxdiv">
@@ -1094,7 +1111,7 @@ sub AddMember {
         $yymain =~ s/{yabb reg_wrongchar}/$register_txt{'wrong_char'}/gsm;
     }
 
-   $yymain .= qq~</table>
+    $yymain .= qq~</table>
 </div>
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell">
@@ -1130,7 +1147,8 @@ sub AddMember2 {
         $value =~ s/[\n\r]//gxsm;
         $member{$key} = $value;
     }
-#    $member{'regusername'} =~ s/\s/_/gsm;
+
+    #    $member{'regusername'} =~ s/\s/_/gsm;
 
     # Make sure users can't register with banned details
     banning( $member{'regusername'}, $member{'email'}, 1 );
@@ -1204,8 +1222,7 @@ sub AddMember2 {
     }
     else {
         if ( $member{'passwrd1'} ne $member{'passwrd2'} ) {
-            fatal_error( 'password_mismatch',
-                "($member{'regusername'})" );
+            fatal_error( 'password_mismatch', "($member{'regusername'})" );
         }
         if ( $member{'passwrd1'} eq q{} ) {
             fatal_error( 'no_password', "($member{'regusername'})" );
@@ -1238,8 +1255,8 @@ sub AddMember2 {
         fatal_error( 'id_taken', "($member{'regusername'})" );
     }
     if (
-        lc $member{'email'} eq lc MemberIndex( 'check_exist', $member{'email'}, 2 )
-      )
+        lc $member{'email'} eq
+        lc MemberIndex( 'check_exist', $member{'email'}, 2 ) )
     {
         fatal_error( 'email_taken', "($member{'email'})" );
     }
@@ -1397,29 +1414,28 @@ sub AddMember2 {
     return;
 }
 
-
 sub AdminCheck {
     $yymain .= $my_admin_login;
     $formsession = cloak("$mbname$username");
-    if ( $do_scramble_id ) { $user = cloak($username); }
-    else {$user = $username;}
+    if   ($do_scramble_id) { $user = cloak($username); }
+    else                   { $user = $username; }
 
-    my $adminpass = 'adminpass';
+    my $adminpass  = 'adminpass';
     my $cookiename = "$cookieusername$adminpass";
-    if ($yyCookies{$cookiename} ) {
+    if ( $yyCookies{$cookiename} ) {
         if ( $INFO{'action2'} ) {
             $my_action = qq~action=$INFO{'action2'};~;
         }
         if ( $INFO{'page'} ) {
             $my_page = qq~page=$INFO{'page'};~;
         }
-        if ($my_action || $my_page ) { $my_query = q{?}; }
+        if ( $my_action || $my_page ) { $my_query = q{?}; }
         $yySetLocation = qq~$adminurl$my_query$my_action$my_page~;
         redirectexit();
     }
     else {
         $yymain =~
-s/{yabb adminchk}/$adminurl?action=admincheck2;username=$user/sm;
+          s/{yabb adminchk}/$adminurl?action=admincheck2;username=$user/sm;
         if ( $INFO{'action2'} ) {
             $yymain =~ s/{yabb act}/$INFO{'action2'}/sm;
         }
@@ -1429,8 +1445,8 @@ s/{yabb adminchk}/$adminurl?action=admincheck2;username=$user/sm;
 
         $yynavigation = qq~&rsaquo; $admin_txt{'900'}~;
         $yytitle      = $admin_txt{'900'};
-        $yyuname = qq~${$uid.$username}{'realname'}~;
-         template();
+        $yyuname      = qq~${$uid.$username}{'realname'}~;
+        template();
     }
     return;
 }
@@ -1440,20 +1456,23 @@ sub AdminCheck2 {
     my $password = encode_password( $FORM{'passwrd'} || $INFO{'passwrd'} );
 
     if ( $FORM{'action'} ) { $my_action = qq~action=$FORM{'action'};~; }
-    if ( $FORM{'page'} ) { $my_page = qq~page=$FORM{'page'};~; }
-    if ($my_action || $my_page ) { $my_query = q{?}; }
+    if ( $FORM{'page'} )   { $my_page   = qq~page=$FORM{'page'};~; }
+    if ( $my_action || $my_page ) { $my_query = q{?}; }
 
-    if ( $do_scramble_id ) { $user = decloak($username); }
-    else {$user = $username;}
-    if ( ( $iamadmin || $iamgmod ) && $password ne ${ $uid . $user }{'password'} )
+    if   ($do_scramble_id) { $user = decloak($username); }
+    else                   { $user = $username; }
+    if ( ( $iamadmin || $iamgmod )
+        && $password ne ${ $uid . $user }{'password'} )
     {
         fatal_error('no_admin_passwrd');
     }
-    elsif ( $iamadmin && encode_password( 'admin') eq ${ $uid . $user }{'password'} )  {
+    elsif ( $iamadmin
+        && encode_password('admin') eq ${ $uid . $user }{'password'} )
+    {
         fatal_error('default_password');
     }
 
-    my $adminpass = 'adminpass';
+    my $adminpass  = 'adminpass';
     my $cookiename = "$cookieusername$adminpass";
     push @otherCookies,
       write_cookie(

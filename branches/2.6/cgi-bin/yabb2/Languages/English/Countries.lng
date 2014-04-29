@@ -12,9 +12,10 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$countrieslngver = 'YaBB 2.6.0 $Revision: 1416 $';
+$countrieslngver = 'YaBB 2.6.0 $Revision$';
 
 #NOTE: DO NOT translate the left hand items.
+#This version corresponds with DateTime version 1.65.
 
 %countrytime_txt = (
 'Asia/Kabul' => q~Afghanistan - Kabul~,
@@ -432,5 +433,6 @@ $countrieslngver = 'YaBB 2.6.0 $Revision: 1416 $';
 'Asia/Aden' => q~Yemen - Aden~,
 'Africa/Lusaka' => q~Zambia - Lusaka~,
 'Africa/Harare' => q~Zimbabwe - Harare~,
-);
+);
+
 1;
