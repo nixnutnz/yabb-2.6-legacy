@@ -67,14 +67,14 @@ $BodyHeader = qq~
     <table class="bordercolor pad_4px cs_thin" style="table-layout: fixed">
         <tr>
             <td class="titlebg">
-                <a id="{yabb section_anchor}"></a><b>{yabb section_name}</b>
+                <span class="anchor" id="{yabb section_anchor}"></span><b>{yabb section_name}</b>
             </td>
         </tr>~;
 
 ### Prints this for the Sub headers of the main section #
 $BodySubHeader = qq~<tr>
             <td class="catbg">
-                <a id="{yabb section_anchor}"></a><b>{yabb section_sub}</b>
+                <span class="anchor" id="{yabb section_anchor}"></span><b>{yabb section_sub}</b>
             </td>
         </tr>~;
 

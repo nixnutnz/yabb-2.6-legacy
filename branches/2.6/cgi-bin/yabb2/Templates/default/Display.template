@@ -182,7 +182,7 @@ $messageblock = qq~
 	    </colgroup>
             <tr class="{yabb css}">
                 <td class="vtop post-userinfo" rowspan="4">
-                    <a id="{yabb count}"></a>
+                    <span class="anchor" id="{yabb count}"></span>
                     {yabb userlink}
                     <div class="small">
                         {yabb memberinfo}
