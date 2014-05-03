@@ -157,9 +157,9 @@ if($posttools) {
     $padd_right = '; padding-right:0; padding-bottom:0; padding-top:0; vertical-align:middle';
 }
 else {
-    $posthandelstyle = qq~ class="dividerbot" style="text-align:right; height:2em"~;
+    $posthandelstyle = qq~ class="dividerbot" style="text-align:right; height:2em" colspan="2"~;
     $posthandellist .= qq~&nbsp;{yabb admin}~;
-    $postcol = 2;
+    $postcol = 3;
     $posttoola = ' width:1%';
     $padd_right = q{};
 }
