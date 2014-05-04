@@ -956,7 +956,7 @@ qq~<option value="$i"$myselect>$countrytime_txt{$i}</option>~;
             }
             if ( $default_tz eq 'local' ) {
                 $localopt =
-qq~\n<option value="local"$myselectb>Use Forum Time Offset</option>~;
+qq~\n<option value="local"$myselectb>$profile_txt{'372a'}</option>~;
             }
             $user_tz_select = q~<br /><select name="user_tz" id="user_tz">~;
             $user_tz_select .= qq~<option value="UTC"$myselecta>UTC</option>~;

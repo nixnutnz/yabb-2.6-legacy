@@ -70,6 +70,7 @@ $profilelngver = 'YaBB 2.6.0 $Revision$';
 '327' => 'Notify me of new PMs by e-mail',
 '371' => 'Time Zone',
 '372' => '<span class="small">Choose the area and city that represents your preferred timezone.</span>',
+'372a' => 'Use Forum Time Offset',
 '373' => 'Your displayed time',
 '420' => 'Age',
 '422' => '(no pic)',

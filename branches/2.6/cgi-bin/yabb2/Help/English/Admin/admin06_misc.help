@@ -187,7 +187,7 @@ $SectionBody5 = qq~<p>These are some completely new features to YaBB 2.6.0 that 
     <li><b>Icon definitions</b>
         <br />Instead of being hard-coded in the source-code, the names of the various image graphics are stored as variables in the templates while the icon image names are stored in an icon definition file &#40;micon.def&#41; in the 'Templates' folder so each 'skin' can have its own set of icons and graphics.
     </li>
-    <li id="time"><b>Location based Time-Zones with automatic Daylight Savings time</b>
+    <li><span class="anchor" id="time"></span><b>Location based Time-Zones with automatic Daylight Savings time</b>
         <br />The Admin can choose whether or not users have the option to choose their own Time Zone. If the Admin chooses to not allow user choice, all displayed times on the Forum will be the Forum Default Time Zone.
         <ul>
             <li>For full functionality the Perl Modules <strong>DateTime</strong>, <strong>DateTime::TimeZone</strong>, and <strong>Locale::Country</strong> need to be installed on the host server. If the Modules are installed:

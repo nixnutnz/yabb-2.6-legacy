@@ -128,7 +128,7 @@ if( !$EVAL_ERROR ) {
 }
 # backwards compatibility
 else {
-    $tz_select .= qq~<option value="local" ${isselected('local' eq $mytz)}>local</option>~;
+    $tz_select .= qq~<option value="local" ${isselected('local' eq $mytz)}>$admin_txt{'local'}</option>~;
     my @usertimeoffset = split /\./xsm, $timeoffset;
     $timeoffsetselect = q~<select name="usertimesign" id="usertimesign"><option value="">+</option><option value="-"~ . ($usertimeoffset[0] < 0 ? ' selected="selected"' : q{}) . q~>-</option></select> <select name="usertimehour">~;
     for my $i ( 0 .. 14 ) {

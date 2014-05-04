@@ -209,6 +209,7 @@ $adminlngver = 'YaBB 2.6.0 $Revision$';
 '371' => 'Current Forum Time',
 '371d' => q~Select Forum Time Zone:<br /><span class="small">Choose the country and city that represents your preferred default Time Zone.<br />If the only choices are UTC and 'local', you do not have the necessary Modules to use country/city based Time Zones. In that case, use 'local' and manually set your Forum Time Offset to set your Forum's Time difference from UTC, or choose UTC.</span>~,
 '371a' => q~Enable Time Zone choices for Users:<br /><span class="small">If the necessary <strong>DateTime::TimeZone</strong> and <strong>Locale::Country</strong> Perl Modules are not installed, users will only be able to choose 'UTC'. If the forum default Time Zone is 'local' users will also have 'Forum Default Time Offset' as an option.</span>~,
+'local' => 'local',
 '371e' => q~Enable DST using 'local' Forum Time Zone and Forum Time Offset (above).<br /><span class="small">This setting assumes your hosting server is in a Time Zone that uses the same dates for Daylight Savings Time as you want for your forum and is set to recognize its local time with DST. Otherwise choose UTC as your Time Zone or manually adjust for DST in your Time Zone using the 'Set Forum Time Offset'</span>.~,
 '371f' => q~Set Forum Time Offset:<br /><span class="small">Adjust your forum's time difference from UTC here.</span>~,
 '371b' => 'Enable the dynamic clock at the top of the page?',
