@@ -132,7 +132,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$latestmember}">
         $numcats++;
         @bdlist = split /\,/xsm, $boardlist;
         my ( $catname, $catperms, $catallowcol ) =
-          split /\|/xsm, $catinfo{"$catid"};
+          split /\|/xsm, $catinfo{$catid};
 
         foreach my $curboard (@bdlist) {
             chomp $curboard;
@@ -246,8 +246,10 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
     foreach my $curboard (@goodboards) {
         chomp $curboard;
         $lastposttime = ${ $uid . $curboard }{'lastposttime'};
-        $lastposttime{$curboard} =
-          timeformat( ${ $uid . $curboard }{'lastposttime'} );
+        if (${ $uid . $curboard }{'lastposttime'} ne 'N/A') {
+            $lastposttime{$curboard} =
+                timeformat( ${ $uid . $curboard }{'lastposttime'} );
+        }
         ${ $uid . $curboard }{'lastposttime'} =
           ${ $uid . $curboard }{'lastposttime'} eq 'N/A'
           || !${ $uid . $curboard }{'lastposttime'}
