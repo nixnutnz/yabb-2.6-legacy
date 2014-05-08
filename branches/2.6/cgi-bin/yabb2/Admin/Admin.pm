@@ -246,9 +246,9 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
     foreach my $curboard (@goodboards) {
         chomp $curboard;
         $lastposttime = ${ $uid . $curboard }{'lastposttime'};
-        if (${ $uid . $curboard }{'lastposttime'} ne 'N/A') {
+        if ( $lastposttime =~ /^[0-9]+$/sm ) {
             $lastposttime{$curboard} =
-                timeformat( ${ $uid . $curboard }{'lastposttime'} );
+                timeformat( $lastposttime );
         }
         ${ $uid . $curboard }{'lastposttime'} =
           ${ $uid . $curboard }{'lastposttime'} eq 'N/A'
