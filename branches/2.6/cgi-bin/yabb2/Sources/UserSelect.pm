@@ -965,7 +965,7 @@ qq~<img src="$imagesdir/cross.png">&nbsp;&nbsp;<span style="color:#dd0000">$type
 qq~<img src="$imagesdir/cross.png">&nbsp;&nbsp;<span style="color:#dd0000">$type$register_txt{'115'}</span>~;
     }
 
-    print "Content-type: text/plain\n\n$INFO{'type'}|$avail"
+    print "Content-type: text/plain;charset=$yymycharset;\n\n$INFO{'type'}|$avail"
       or croak "$croak{'print'} avail";
 
     CORE::exit;    # This is here only to avoid server error log entries!
