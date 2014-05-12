@@ -608,13 +608,13 @@ sub Register2 {
     {
         fatal_error('name_taken');
     }
-    if ( CheckCensor( $member{'regusername'} ) ne q{} ) {
+    if ( Censor( $member{'regusername'} ) ne $member{'regusername'} ) {
         fatal_error( 'censor1', CheckCensor( $member{'regusername'} ) );
     }
-    if ( CheckCensor( $member{'email'} ) ne q{} ) {
+    if ( Censor( $member{'email'} ) ne $member{'email'} ) {
         fatal_error( 'censor2', CheckCensor( $member{'email'} ) );
     }
-    if ( CheckCensor( $member{'regrealname'} ) ne q{} ) {
+    if ( Censor( $member{'regrealname'} ) ne $member{'regrealname'} ) {
         fatal_error( 'censor3', CheckCensor( $member{'regrealname'} ) );
     }
     if ( $honeypot == 1 && $member{'add_field0'} ne q{} ) {
