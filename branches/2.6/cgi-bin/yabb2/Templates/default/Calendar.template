@@ -87,7 +87,7 @@ $mycal_displayssi = qq~
 
 $mycal_show_ssi = qq~{yabb cal_display_show}<tr>
         <td class="windowbg center" style="border-right:1px solid #fff">
-            <img src="$yyhtml_root/Templates/Forum/default/$cal_eventcal" alt="" />
+            <img src="$imagesdir/$cal_eventcal" alt="" />
         </td>
         <td class="windowbg2">{yabb cal_displayssi}{yabb ShowBirthdaysLink}{yabb ShowEventAddLink}</td>
         <td class="windowbg2 vtop">{yabb cal_display_calevent} &nbsp;</td>
@@ -151,7 +151,7 @@ $mycalout_addevent = qq~
     <tr>
         <td class="windowbg2" colspan="2">
             <div style="height:16px;">
-            <img id="prevwin" src="$defaultimagesdir/$cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor: pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
+            <img id="prevwin" src="$imagesdir/$cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" style="cursor: pointer;" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
             </div>
         </td>
    </tr>

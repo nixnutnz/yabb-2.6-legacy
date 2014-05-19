@@ -2218,9 +2218,10 @@ sub referer_check {
 
 sub Dereferer {
     if ( !$stealthurl ) { fatal_error('no_access'); }
+    if ($yycharset) {$yymycharset = $yycharset;}
     print "Content-Type: text/html\n\n" or croak "$croak{'print'} content-type";
     print
-qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/html; charset=$mycharset" />\n<title>-----</title>\n</head>\n<body onload="window.location.href='$INFO{'url'}';">\n<font face="Arial" size="2">$dereftxt{'1'}</font>\n</body></html>\n~
+qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/html; charset=$yymycharset" />\n<title>-----</title>\n</head>\n<body onload="window.location.href='$INFO{'url'}';">\n<font face="Arial" size="2">$dereftxt{'1'}</font>\n</body></html>\n~
       or croak "$croak{'print'}";
     exit;
 }
