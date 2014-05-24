@@ -1819,7 +1819,7 @@ qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};si
         }
 
         fopen( PMATTACH, "<$vardir/pm.attachments" )
-          || fatal_error( 'cannot_open', "$vardir/$pm.attachments", 1 );
+          || fatal_error( 'cannot_open', "$vardir/pm.attachments", 1 );
         @pmattach = <PMATTACH>;
         fclose(PMATTACH);
 
