@@ -73,7 +73,7 @@ sub Print_IM {
     if ($yycharset) {$yymycharset = $yycharset;}
     $output =
 qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$abbr_lang" lang="$abbr_lang">
 <head>
 <title>$mbname - $maintxt{'668'}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=$yymycharset" />
@@ -534,7 +534,7 @@ sub Print {
     if ($yycharset) {$yymycharset = $yycharset;}
     $output =
 qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$abbr_lang" lang="$abbr_lang">
 <head>
 <title>$mbname - $pageTitle</title>
 <meta http-equiv="Content-Type" content="text/html; charset=$yymycharset" />

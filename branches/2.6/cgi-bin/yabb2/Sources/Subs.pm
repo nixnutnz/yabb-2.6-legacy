@@ -121,6 +121,7 @@ sub exit {
 
 sub print_output_header {
     if ($header_already_printed) { return; }
+    $yyxml_lang = $abbr_lang;
     $header_already_printed = 1;
     $headerstatus ||= '200 OK';
     $contenttype  ||= 'text/html';
@@ -2221,7 +2222,7 @@ sub Dereferer {
     if ($yycharset) {$yymycharset = $yycharset;}
     print "Content-Type: text/html\n\n" or croak "$croak{'print'} content-type";
     print
-qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/html; charset=$yymycharset" />\n<title>-----</title>\n</head>\n<body onload="window.location.href='$INFO{'url'}';">\n<font face="Arial" size="2">$dereftxt{'1'}</font>\n</body></html>\n~
+qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$abbr_lang" lang="$abbr_lang">\n<head>\n<meta http-equiv="Content-Type" content="text/html; charset=$yymycharset" />\n<title>-----</title>\n</head>\n<body onload="window.location.href='$INFO{'url'}';">\n<span style="font-family:Arial; font-size:medium">$dereftxt{'1'}</span>\n</body></html>\n~
       or croak "$croak{'print'}";
     exit;
 }

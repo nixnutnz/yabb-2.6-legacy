@@ -174,12 +174,13 @@ $messageblock = qq~
 <div class="displaycontainer">
     <div class="postcontainer">
         <table class="bordercolor pad_4px" style="table-layout:fixed;">
-	    <colgroup>
+        <colgroup>
                 <col style="width:13em" />
                 <col style="width:auto" />
                 <col style="width:auto" />
                 <col style="width:auto" />
-	    </colgroup>
+        </colgroup>
+        <tbody>
             <tr class="{yabb css}">
                 <td class="vtop post-userinfo" rowspan="4">
                     <span class="anchor" id="{yabb count}"></span>
@@ -241,6 +242,7 @@ $messageblock = qq~
                     </div>
                 </td>
             </tr>
+            </tbody>
         </table>
     </div>
 </div>
@@ -249,15 +251,17 @@ $messageblock = qq~
 #Recent Posts/Topics
 $myrecent = qq~
 <table class="tabtitle">
-	<colgroup>
+    <colgroup>
         <col style="width:5%" />
-	    <col style="width:95%" />
-	</colgroup>
+        <col style="width:95%" />
+    </colgroup>
+    <tbody>
     <tr>
         <td class="center h_30px">{yabb counter}</td>
         <td>&nbsp;<a href="$scripturl?catselect={yabb catbrd}"><span class="under">{yabb catname}</span></a>{yabb boardtree} / <a href="$scripturl?num={yabb tnum}"><span class="under">{yabb msub}</span></a><br />
         &nbsp;<span class="small">$maintxt{'30'}: {yabb mdate}</span>&nbsp;</td>
     </tr>
+    </tbody>
 </table>
 <table style="table-layout: fixed">
     <tr>
@@ -291,7 +295,7 @@ $mydisp_modify_message = qq~
 ~;
 
 $mymove_top = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$abbr_lang" lang="$abbr_lang">
 <head>
     <title>$sstxt{'1'}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=$yymycharset" />
@@ -413,10 +417,11 @@ $mysend_top = qq~
     </tr>
 </table>
 <table class="pad_3px" style="width:70%">
-	<colgroup>
+    <colgroup>
         <col style="width:30%" />
-	    <col style="width:70%" />
-	</colgroup>
+        <col style="width:70%" />
+    </colgroup>
+    <tbody>
     <tr>
         <td class="windowbg"><label for="y_name"><b>$sendtopic_txt{'335'}:</b></label></td>
         <td class="windowbg"><input type="text" name="y_name" id="y_name" size="50" maxlength="50" value="{yabb realname}" /></td>
@@ -436,11 +441,12 @@ $mysend_top = qq~
     </tr> {yabb my_valcode} {yabb my_spam}
     <tr>
         <td class="catbg center" colspan="2" style="padding: 8px;">
-            <input type="hidden" name="board" value="{yabb board}" /> 
+            <input type="hidden" name="board" value="{yabb board}" />
             <input type="hidden" name="topic" value="{yabb topic}" />
             <input type="submit" name="Send" value="$sendtopic_txt{'339'}" class="button" />
         </td>
     </tr>
+    </tbody>
 </table>
 </form>{yabb my_jschecks}~;
 

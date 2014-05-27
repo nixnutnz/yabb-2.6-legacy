@@ -1451,8 +1451,8 @@ sub ModifyProfile2 {
 
     my ( %member, $key, $value );
     while ( ( $key, $value ) = each %FORM ) {
-        $value =~ s/\A\s+//xsm;
-        $value =~ s/\s+\Z//xsm;
+        $value =~ s/\A\s+//sm;
+        $value =~ s/\s+\Z//sm;
         $value =~ s/[\n\r]//gxsm;
         $member{$key} = $value;
     }
@@ -2553,8 +2553,8 @@ sub ModifyProfileAdmin2 {
 
     my ( %member, $key, $value );
     while ( ( $key, $value ) = each %FORM ) {
-        $value =~ s/\A\s+//xsm;
-        $value =~ s/\s+\Z//xsm;
+        $value =~ s/\A\s+//sm;
+        $value =~ s/\s+\Z//sm;
         if ( $key ne 'regreason' ) { $value =~ s/[\n\r]//gxsm; }
         $member{$key} = $value;
     }
