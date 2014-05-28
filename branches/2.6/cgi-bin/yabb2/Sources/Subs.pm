@@ -1577,21 +1577,15 @@ sub enc_eMail {
 
     *enc_eMail_x = sub {
         my ( $x, $y, $z ) = @_;
-        if ( $yymycharset ne 'UTF-8' ) {
-            if ( !$y ) {
-                $x = ord $x;
-                if ( $charset_value && $x > 126 ) { $x += $charset_value; }
-                $x = "&#$x";
-            }
-            elsif ($z) {
-                $x =~ s/"/\\"/gxsm;
-            }
+        if ( !$y ) {
+            $x = ord $x;
+            if ( $charset_value && $x > 126 ) { $x += $charset_value; }
+            $x = "&#$x";
         }
-        else {
-            if ($z) {
-                $x =~ s/"/\\"/gxsm;
-            }
+        elsif ($z) {
+            $x =~ s/"/\\"/gxsm;
         }
+
         return $x;
     };
     my $subbody;
@@ -1603,7 +1597,7 @@ sub enc_eMail {
     }
     $titlesp = $title;
     $titlesp =~ s/(((<.+?>)|&#\d+;)|.)/ enc_eMail_x($1,$2,$3) /egsm;
-    if ($src) {$titlesp = $title;}
+    if ($src || $yymycharset eq 'UTF-8') {$titlesp = $title;}
 
     return qq~<script type='text/javascript'>\nSpamInator("$titlesp","$code1","$code2","&#109;&#97;&#105;&#108;&#92;&#117;&#48;&#48;&#55;&#52;&#111;&#92;&#117;&#48;&#48;&#51;&#97;","$subbody");\n</script>~;
 
