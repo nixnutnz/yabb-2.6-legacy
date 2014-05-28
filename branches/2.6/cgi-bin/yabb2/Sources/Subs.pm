@@ -1577,13 +1577,20 @@ sub enc_eMail {
 
     *enc_eMail_x = sub {
         my ( $x, $y, $z ) = @_;
-        if ( !$y ) {
-            $x = ord $x;
-            if ( $charset_value && $x > 126 ) { $x += $charset_value; }
-            $x = "&#$x";
+        if ( $yymycharset ne 'UTF-8' ) {
+            if ( !$y ) {
+                $x = ord $x;
+                if ( $charset_value && $x > 126 ) { $x += $charset_value; }
+                $x = "&#$x";
+            }
+            elsif ($z) {
+                $x =~ s/"/\\"/gxsm;
+            }
         }
-        elsif ($z) {
-            $x =~ s/"/\\"/gxsm;
+        else {
+            if ($z) {
+                $x =~ s/"/\\"/gxsm;
+            }
         }
         return $x;
     };

@@ -792,6 +792,12 @@ sub VarInstall {
         print {ATTFILE} q{} or croak 'cannot print ATTFILE';
         fclose(ATTFILE);
     }
+    if ( !-e "$varsdir/pm.attachments" ) {
+        fopen( PMATTFILE, ">$varsdir/pm.attachments" )
+          || setup_fatal_error( "$maintext_23 $varsdir/pm.attachments: ", 1 );
+        print {PMATTFILE} q{} or croak 'cannot print PMATTFILE';
+        fclose(PMATTFILE);
+    }
 
     if ( !-e "$varsdir/ban_log.txt" ) {
         fopen( BANFILE, ">$varsdir/ban_log.txt" )
@@ -2064,10 +2070,10 @@ sub CheckInstall {
     else                                { $var_created .= q~adminlog.txt, ~; }
     if   ( !-e "$vardir/allowed.txt" ) { $var_missing .= q~allowed.txt, ~; }
     else                               { $var_created .= q~allowed.txt, ~; }
-    if ( !-e "$vardir/attachments.txt" ) {
-        $var_missing .= q~attachments.txt, ~;
-    }
-    else { $var_created .= q~attachments.txt, ~; }
+    if   ( !-e "$vardir/attachments.txt" ) { $var_missing .= q~attachments.txt, ~; }
+    else                                   { $var_created .= q~attachments.txt, ~; }
+    if   ( !-e "$vardir/pm.attachments" ) { $var_missing .= q~pm.attachments, ~; }
+    else                                  { $var_created .= q~attachments.txt, ~; }
     if   ( !-e "$vardir/ban_log.txt" ) { $var_missing .= q~ban_log.txt, ~; }
     else                               { $var_created .= q~ban_log.txt, ~; }
     if   ( !-e "$vardir/banlist.txt" ) { $var_missing .= q~banlist.txt, ~; }

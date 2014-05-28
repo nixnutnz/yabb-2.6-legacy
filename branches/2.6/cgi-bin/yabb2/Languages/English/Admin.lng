@@ -1321,7 +1321,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 '5' => 'Information provided by the system:',
 '6' => 'Installed',
 '7' => 'Some modules are not installed on your server.',
-'8' => '<b>If you really need them (read the Info), your first choice should be to ask your server host to install the needed modules for you.<br /><br />If you host your own server, or if your host will not install the module for you, see <a href="http://codex.yabbforum.com/YaBB.pl?num=1225217016" onclick="target=&#39;_blank&#39;;"><b>this post in the <i>YaBB Codex</i> for help</b></a>.</b>',
+'8' => '<b>If you really need them (read the Info), your first choice should be to ask your server host to install the needed modules for you.<br /><br />If you host your own server, or if your host will not install the module for you, see <a href="http://http://www.yabbforum.com/cgi-bin/codex/YaBB.pl?num=1225217016" onclick="target=&#39;_blank&#39;;"><b>this post in the <i>YaBB Codex</i> for help</b></a>.</b>',
 'Digest::MD5' => 'Used for password encryption.<br />This module is essential. Without it, YaBB will not work.',
 'Time::HiRes' => 'Used for the benchmarking time if debug is enabled.<br />If this module in not installed, the benchmarking time will be displayed in full seconds and not in high resolution seconds. Otherwise you do not need this module.',
 'Time::Local' => 'Used to convert time strings into timestamps.<br />This module is essential. Without it, YaBB will not always work.',
@@ -1342,9 +1342,9 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'Carp' => 'Used to send e-mails via "YaBB SMTP Engine" and render serious server warnings.',
 'bytes' => 'Used to send e-mails via "YaBB SMTP Engine".<br />This module is only needed if you want to send your e-mails via the "YaBB SMTP Engine". Otherwise you do not need this module.',
 'integer' => 'Used to send e-mails via "YaBB SMTP Engine".<br />This module is only needed if you want to send your e-mails via the "YaBB SMTP Engine". Otherwise you do not need this module.',
-'DateTime' => q~Used to create 'DateTime' objects for time formatting.<br />This module is needed if you want to have forum/user timezones set to anything other than UTC.~,
 'DateTime::TimeZone' => q~Used to get user and forum Time Zone offsets based on the user's actual time zone.<br />This module is needed if you want to have forum/user timezones set to anything other than UTC.<br /><span class="important">This Module needs to be kept current as it contains time sensitive Time Zone data.~,
 'DateTime::TimeZone2' => q~<br /><span class="important">This Module needs to be kept current as it contains time sensitive Time Zone data. Check with your server host to make sure this Module is being kept current.</span><br /><b>Your version</b>:~,
+'URI::Escape' => q~Used by Post/Message Preview function.<br />This module is essential. Without it, the Preview function will not work.~,
 );
 
 %settings_txt = (

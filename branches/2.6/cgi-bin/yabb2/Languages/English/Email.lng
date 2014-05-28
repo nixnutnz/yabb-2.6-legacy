@@ -14,8 +14,6 @@
 
 $emaillngver = 'YaBB 2.6.0 $Revision$';
 
-$emailcharset = 'UTF-8';
-
 %yabbtagdesc = (
 # Constant tags
 'scripturl', "The URL to YaBB. Example: $scripturl",
