@@ -45,9 +45,11 @@ sub LoadBoardControl {
 
         $cntdescription =~ s/\&\ /\&amp; /gxsm;
         if ( substr( $cntmods, 0, 2) eq ', ' ) {
-            substr( $cntmods, 0, 2 ) = q{}; }
+            substr( $cntmods, 0, 2 ) = q{};
+        }
         if ( substr( $cntmodgroups, 0, 2) eq ', ' ) {
-            substr( $cntmodgroups, 0, 2 ) = q{}; }
+            substr( $cntmodgroups, 0, 2 ) = q{};
+        }
 
         %{ $uid . $cntboard } = (
             'cat'           => $cntcat,
@@ -124,14 +126,23 @@ qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_
 }
 
 sub LoadCensorList {
-    if (   $#censored > 0
-        || ( -s "$langdir/$language/censor.txt" ) < 3
+    opendir DIR, $langdir;
+    my @langDir = readdir DIR;
+    closedir DIR;
+    if ( $#censored > 0 ) {
+        return;
+    }
+    elsif (
+        length @langDir == 1
+        && ( ( -s "$langdir/$language/censor.txt" ) < 3
         || !-e "$langdir/$language/censor.txt" )
+      )
     {
         return;
     }
-    fopen( CENSOR, "$langdir/$language/censor.txt" )
-      || fatal_error( 'cannot_open', "$langdir/$language/censor.txt", 1 );
+    for my $langd (@langDir) {
+        if ( -e "$langdir/$langd/censor.txt" ) {
+            fopen( CENSOR, "$langdir/$langd/censor.txt" );
     while ( chomp( $buffer = <CENSOR> ) ) {
         $buffer =~ s/\r(?=\n*)//gxsm;
         if ( $buffer =~ m/\~/sm ) {
@@ -143,6 +154,8 @@ sub LoadCensorList {
             $tmpc = 1;
         }
         push @censored, [ $tmpa, $tmpb, $tmpc ];
+    }
+        }
     }
     fclose(CENSOR);
     return;
@@ -256,8 +269,8 @@ sub LoadUser {
         }
         else {
             fopen( LOADUSER, "<$memberdir/$user.$userextension" )
-              || fatal_error( 'cannot_open', "$memberdir/$user.$userextension load 1",
-                1 );
+              || fatal_error( 'cannot_open',
+                "$memberdir/$user.$userextension load 1", 1 );
             my @settings = <LOADUSER>;
             fclose(LOADUSER);
             for my $i ( 0 .. ( @settings - 1 ) ) {
@@ -274,12 +287,15 @@ sub LoadUser {
             }
             if ( scalar @settings != 0 ) {
             fopen( LOADUSER, ">$memberdir/$user.$userextension" )
-              || fatal_error( 'cannot_open', "$memberdir/$user.$userextension load2",
-                1 );
+                  || fatal_error( 'cannot_open',
+                    "$memberdir/$user.$userextension load2", 1 );
             print {LOADUSER} @settings or croak "$croak{'print'} LOADUSER";
             fclose(LOADUSER);
             }
-            else { fatal_error('missingvars', "$memberdir/$user.$userextension", 1 ); }
+            else {
+                fatal_error( 'missingvars', "$memberdir/$user.$userextension",
+                    1 );
+            }
         }
 
         ToChars( ${ $uid . $user }{'realname'} );
@@ -735,7 +751,8 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$userlin
                     if ( $areplyperms == 1 )  { $replyperms  = 1; }
                     if ( $apollperms == 1 )   { $pollperms   = 1; }
                     if ( $aattachperms == 1 ) { $attachperms = 1; }
-                    ${ $uid . $user }{'perms'} = "$viewperms|$topicperms|$replyperms|$pollperms|$attachperms";
+                    ${ $uid . $user }{'perms'} =
+"$viewperms|$topicperms|$replyperms|$pollperms|$attachperms";
                 }
                 if (
                     $anoshow
@@ -859,8 +876,7 @@ sub QuickLinks {
         $quicklinks = qq~<div style="position:relative;$display">
             <ul id="$useraccount{$user}$qlcount" class="QuickLinks" onmouseover="keepLinks('$useraccount{$user}$qlcount')" onmouseout="TimeClose('$useraccount{$user}$qlcount')">
                 <li>~
-          . userOnLineStatus($user)
-          . qq~</li>\n~;
+          . userOnLineStatus($user) . qq~</li>\n~;
         if ( $user ne $username ) {
             $quicklinks .=
 qq~             <li><a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$maintxt{'2'} ${$uid.$user}{'realname'}$maintxt{'3'}</a></li>\n~;
