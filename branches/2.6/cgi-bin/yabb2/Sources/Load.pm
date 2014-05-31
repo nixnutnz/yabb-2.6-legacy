@@ -129,18 +129,30 @@ sub LoadCensorList {
     opendir DIR, $langdir;
     my @langDir = readdir DIR;
     closedir DIR;
+    @lang = ();
+    foreach my $langitems ( sort { lc($a) cmp lc $b } @langDir ) {
+        chomp $langitems;
+        if (   ( $langitems ne q{.} )
+            && ( $langitems ne q{..} )
+            && ( $langitems ne q{.htaccess} )
+            && ( $langitems ne q{index.html} ) )
+        {
+            push @lang, $langitems;
+        }
+    }
+
     if ( $#censored > 0 ) {
         return;
     }
     elsif (
-        length @langDir == 1
+        scalar @lang == 1
         && ( ( -s "$langdir/$language/censor.txt" ) < 3
         || !-e "$langdir/$language/censor.txt" )
       )
     {
         return;
     }
-    for my $langd (@langDir) {
+    for my $langd (@lang) {
         if ( -e "$langdir/$langd/censor.txt" ) {
             fopen( CENSOR, "$langdir/$langd/censor.txt" );
     while ( chomp( $buffer = <CENSOR> ) ) {
