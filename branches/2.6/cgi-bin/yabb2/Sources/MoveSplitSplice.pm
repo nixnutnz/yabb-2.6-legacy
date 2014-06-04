@@ -228,8 +228,6 @@ sub Split_Splice {
         }
     }
 
-    #}
-
     if (   $newthread eq 'new'
         || !$threadlist
         || $threadids !~ /\b$newthread\b/xsm )
@@ -433,7 +431,6 @@ qq~$tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$usern
             $leavemess    = 2;
             $forcenewinfo = 1;
         }
-
     }
     elsif ( $leavemess != 1 ) {
         if ( $newboard eq $binboard ) { $leavemess = 2; }

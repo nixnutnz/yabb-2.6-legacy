@@ -992,7 +992,7 @@ sub MarkAll {
         }
         else { push @mymessages, $_; }
     }
-    fopen( FILE, "<$memberdir/$username.msg" );
+    fopen( FILE, ">$memberdir/$username.msg" );
     print {FILE} @mymessages or croak "$croak{'print'} FILE";
     fclose(FILE);
 

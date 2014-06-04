@@ -21,6 +21,7 @@
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
+
 our $VERSION = '2.6.0';
 
 $convert2xplver = 'YaBB 2.6.0 $Revision$';
@@ -34,6 +35,9 @@ if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     chdir $yypath;
     push @INC, $yypath;
 }
+
+$max_process_time = 20;
+$time_to_jump     = time() + $max_process_time;
 
 ### Requirements and Errors ###
 $script_root = $ENV{'SCRIPT_FILENAME'};
@@ -58,7 +62,6 @@ if   ($boardurl) { $set_cgi = "$boardurl/Convert2x.$yyext"; }
 else             { $set_cgi = "Convert2x.$yyext"; }
 $scripturl = "$boardurl/YaBB.$yyext";
 
-
 # Make sure the module path is present
 push @INC, './Modules';
 
@@ -66,8 +69,8 @@ require Sources::Subs;
 require Sources::System;
 require Sources::Load;
 require Sources::DateTime;
-require Admin::Admin;
 
+$date = time();
 #############################################
 # Conversion starts here                    #
 #############################################
@@ -80,8 +83,7 @@ if ( -e "$vardir/Setup.lock" ) {
     tabmenushow();
 
     if ( !$action ) {
-        $yytabmenu =
-          $NavLink1 . $NavLink2 . $NavLink3 . $NavLink5 . $NavLink6;
+        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink5 . $NavLink6;
 
         $yymain = qq~
     <div class="bordercolor borderbox">
@@ -122,8 +124,6 @@ if ( -e "$vardir/Setup.lock" ) {
     </div>
             ~;
     }
-
-
 
     if ( $action eq 'prepare' ) {
         UpdateCookie('delete');
@@ -175,19 +175,14 @@ EOF
           or croak 'cannot print SETTING';
         fclose(SETTING);
 
-        $yytabmenu =
-            $NavLink1a
-          . $NavLink2
-          . $NavLink3
-          . $NavLink5
-          . $NavLink6;
+        $yytabmenu = $NavLink1a . $NavLink2 . $NavLink3 . $NavLink5 . $NavLink6;
 
         $yymain = qq~
     <div class="bordercolor borderbox">
         <table class="cs_thin pad_4px">
             <col style="width:5%" />
             <tr>
-                <td class="tabtitle" colspan="2">YaBB 2.6.0. Converter</td>
+                <td class="tabtitle" colspan="2">YaBB 2.6.0 Converter</td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/thread.gif" alt="" />
@@ -207,7 +202,7 @@ EOF
                   - Conversion can take a long time depending on the size of your forum (30 seconds to a couple hours).<br />
                   - Your browser will be refreshed automatically every $max_process_time seconds and you will see the ongoing process in the status bar.<br />
                   - Some internet connections refresh their IP-Address automatically every 24 hours.<br />
-                  &nbsp; Make sure that your IP-Address will not change during conversion, or you must restart the conversion after that! <br />
+                  &nbsp; Make sure that your IP-Address will not change during conversion, or you must restart the conversion. <br />
                   - Your forum will be set to maintenance while converting.
                   <p id="memcontinued">Click on 'Members' in the menu to start.<br />&nbsp;</p>
                 </td>
@@ -216,22 +211,17 @@ EOF
     </div>
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Members\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f33"><b>Converting - please wait!<br />If you want to stop \\'Members\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
             }
       </script>
             ~;
     }
     elsif ( $action eq 'members' ) {
         require qq~$vardir/ConvSettings.txt~;
-        PrepareConv();
-        MyUpdateUser($convmemberdir, $memberdir);
+        if ( !exists $INFO{'mstart1'} ) { PrepareConv(); }
+        ConvertMembers();
 
-        $yytabmenu =
-            $NavLink1
-          . $NavLink2a
-          . $NavLink3
-          . $NavLink5
-          . $NavLink6;
+        $yytabmenu = $NavLink1 . $NavLink2a . $NavLink3 . $NavLink5 . $NavLink6;
 
         $yymain = qq~
     <div class="bordercolor borderbox">
@@ -244,13 +234,13 @@ EOF
                 <img src="$imagesdir/thread.gif" alt="" />
             </td>
             <td class="windowbg2">
-                <div class="convdone">Member Import.</div>
+                <div class="convdone">Member Conversion.</div>
                 $ConvDone
-                <div class="convnotdone">Board and Category Import.</div>
+                <div class="convnotdone">Board and Category Conversion.</div>
                 $ConvNotDone
-                <div class="convnotdone">Message Import.</div>
+                <div class="convnotdone">Message Conversion.</div>
                 $ConvNotDone
-                <div class="convnotdone">Clean Up</div>
+                <div class="convnotdone">Variables &amp; Clean Up</div>
                 $ConvNotDone
             </td>
         </tr><tr>
@@ -258,9 +248,10 @@ EOF
                 <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
-                User data files have been imported.<br />
+                    To prevent server time-out due to the amount of members to be converted, the conversion is split into more steps.<br />
                 <br />
-                You are importing <i>~
+                    The time-step (\$max_process_time) is set to <i>$max_process_time seconds</i>.<br />
+                 Conversion took <i>~
           . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minutes</i>.
                 <br />
                 <br />
@@ -272,7 +263,7 @@ EOF
     </div>
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Boards & Categories\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f33"><b>Converting - please wait!<br />If you want to stop \\'Boards & Categories\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
             }
 
             function membtick() {
@@ -284,16 +275,91 @@ EOF
     </script>
             ~;
     }
+
+    elsif ( $action eq 'members2' ) {
+        if ( $INFO{'mstart1'} < 0 ) {
+            setup_fatal_error(
+"Member conversion (members2) 'mstart1' ($INFO{'mstart1'})) error!"
+            );
+        }
+        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink5 . $NavLink6;
+
+        my $mwidth =
+          int( ( ( $INFO{'mstart1'} ) / 2 ) / $INFO{'mtotal'} * 100 );
+        $yymain = qq~
+    <div class="bordercolor borderbox">
+    <table class="cs_thin pad_4px">
+        <col style="width:5%" />
+        <tr>
+            <td class="tabtitle" colspan="2">YaBB 2.6.0 Converter</td>
+        </tr><tr>
+            <td class="windowbg center">
+                <img src="$imagesdir/thread.gif" alt="" />
+            </td>
+            <td class="windowbg2">
+                <div class="convdone">Member Conversion.</div>
+                <div class="divouter">
+                    <div class="divvary" style="width: $mwidth$px;">&nbsp;</div>
+                </div>
+                <div class="divvary2">$mwidth %</div>
+                <br />
+                <div class="convnotdone">Board and Category Conversion.</div>
+                $ConvNotDone
+                <div class="convnotdone">Message Conversion.</div>
+                $ConvNotDone
+                <div class="convnotdone">Final Cleanup.</div>
+                $ConvNotDone
+                </td>
+            </tr><tr>
+                <td class="windowbg center">
+                    <img src="$imagesdir/info.png" alt="" />
+                </td>
+                <td class="windowbg2 fontbigger">
+                    To prevent server time-out due to the amount of members to be converted, the conversion is split into more steps.<br />
+                    <br />
+                    The time-step (\$max_process_time) is set to <i>$max_process_time seconds</i>.<br />
+                    The last step took <i>~
+          . ( $time_to_jump - $INFO{'starttime'} ) . q~ seconds</i>.
+                    <br />
+                    Conversion has taken <i>~
+          . int( ( $INFO{'st'} + 60 ) / 60 ) . q~ minutes</i>.
+                  <br />
+                  <br />
+                  There are <b>~
+          . int( $INFO{'mtotal'} - ( $INFO{'mstart1'} / 2 ) )
+          . qq~/$INFO{'mtotal'}</b> Members left to be converted.
+                  <br />
+                  <p id="memcontinued">If nothing happens in 5 seconds <a href="$set_cgi?action=members;st=$INFO{'st'};mstart1=$INFO{'mstart1'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Members' conversion click here</a>. Then copy the actual browser address and type it in when you want to continue the conversion.</p>
+              </td>
+          </tr>
+      </table>
+      </div>
+      <script type="text/javascript">
+            function PleaseWait() {
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f33"><b>Converting - please wait!<br />If you want to stop \\'Members\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
+            }
+
+            function stoptick() { stop = 1; }
+
+            stop = 0;
+            function membtick() {
+                  if (stop != 1) {
+                        PleaseWait();
+                        location.href="$set_cgi?action=members;st=$INFO{'st'};mstart1=$INFO{'mstart1'}";
+                  }
+            }
+
+            setTimeout("membtick()",2000);
+      </script>
+            ~;
+    }
     elsif ( $action eq 'cats' ) {
         require qq~$vardir/ConvSettings.txt~;
-        MoveBoards($convboardsdir);
+        if ( !exists $INFO{'bstart'} ) {
+            MoveBoards();
+        }
 
-        $yytabmenu =
-            $NavLink1
-          . $NavLink2
-          . $NavLink3a
-          . $NavLink5
-          . $NavLink6;
+        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3a . $NavLink5 . $NavLink6;
 
         $yymain = qq~
     <div class="bordercolor borderbox">
@@ -306,13 +372,13 @@ EOF
                 <img src="$imagesdir/thread.gif" alt="" />
             </td>
             <td class="windowbg2">
-                <div class="convdone">Member Import.</div>
+                <div class="convdone">Member Conversion.</div>
                 $ConvDone
-                <div class="convdone">Board &amp; Category Import.</div>
+                <div class="convdone">Board &amp; Category Conversion.</div>
                 $ConvDone
-                <div class="convnotdone">Message Import.</div>
+                <div class="convnotdone">Message Conversion.</div>
                 $ConvNotDone
-                <div class="convnotdone">Clean Up.</div>
+                <div class="convnotdone">Variables &amp; Clean Up.</div>
                 $ConvNotDone
             </td>
         </tr><tr>
@@ -320,9 +386,9 @@ EOF
                 <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
-                All Boards threads imported.<br />
+                All Boards and Subboards moved.<br />
                 <br />
-                You are converting <i>~
+                Conversion has taken <i>~
           . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minutes</i>.<br />
                 <br />
                 <p id="memcontinued">Click on 'Messages' in the menu to continue.<br />
@@ -334,7 +400,7 @@ EOF
 
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Messages\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Messages\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
             }
 
             function membtick() {
@@ -347,16 +413,90 @@ EOF
             ~;
     }
 
+    elsif ( $action eq 'cats2' ) {
+        if (   ( !$INFO{'bstart'} && !$INFO{'bfstart'} )
+            || $INFO{'bstart'} < 0
+            || $INFO{'bfstart'} < 0 )
+        {
+            setup_fatal_error(
+"Boards conversion (cats2) 'bstart' ($INFO{'bstart'}) or 'bfstart' ($INFO{'bfstart'}) error!"
+            );
+        }
+
+        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3a . $NavLink5 . $NavLink6;
+
+        my $bwidth = int( $INFO{'bstart'} / $INFO{'btotal'} * 100 );
+
+        $yymain = qq~
+    <div class="bordercolor borderbox">
+    <table class="cs_thin pad_4px">
+        <col style="width:5%" />
+        <tr>
+            <td class="tabtitle" colspan="2">YaBB 2.6.0 Converter</td>
+        </tr><tr>
+            <td class="windowbg center">
+                <img src="$imagesdir/thread.gif" alt="" />
+            </td>
+            <td class="windowbg2">
+                <div class="convdone">Member Conversion.</div>
+                $ConvDone
+                <div class="convdone">Board and Category Conversion.</div>
+                <div class="divouter">
+                    <div class="divvary" style="width: $bwidth$px;">&nbsp;</div>
+                </div>
+                <div class="divvary2">$bwidth %</div>
+                <br />
+                <div class="convnotdone">Message Conversion.</div>
+                $ConvNotDone
+                <div class="convnotdone">Variables &amp; Clean Up.</div>
+                $ConvNotDone
+            </td>
+        </tr><tr>
+            <td class="windowbg center">
+                <img src="$imagesdir/info.png" alt="" />
+            </td>
+            <td class="windowbg2 fontbigger">
+                  To prevent server time-out due to the amount of boards to be converted, the conversion is split into more steps.<br />
+                  <br />
+                  The time-step (\$max_process_time) is set to <i>$max_process_time seconds</i>.<br />
+                  The last step took <i>~
+          . ( $time_to_jump - $INFO{'starttime'} ) . q~ seconds</i>.<br />
+                  Conversion has taken <i>~
+          . int( ( $INFO{'st'} + 60 ) / 60 ) . q~ minutes</i>.<br />
+                  <br />
+                  There are <b>~
+          . ( $INFO{'btotal'} - $INFO{'bstart'} )
+          . qq~/$INFO{'btotal'}</b> Boards left to be converted.<br />
+                  <p id="memcontinued">If nothing happens in 5 seconds <a href="$set_cgi?action=cats;st=$INFO{'st'};bstart=$INFO{'bstart'};bfstart=$INFO{'bfstart'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Boards & Categories' conversion click here</a>. Then copy the actual browser address and type it in when you are going to continue the conversion.</p>
+            </td>
+        </tr>
+    </table>
+    </div>
+
+    <script type="text/javascript">
+            function PleaseWait() {
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Boards & Categories\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
+            }
+
+            function stoptick() { stop = 1; }
+
+            stop = 0;
+            function membtick() {
+                  if (stop != 1) {
+                        PleaseWait();
+                        location.href="$set_cgi?action=cats;st=$INFO{'st'};bstart=$INFO{'bstart'};bfstart=$INFO{'bfstart'}";
+                  }
+            }
+
+            setTimeout("membtick()",2000);
+      </script>
+            ~;
+    }
     elsif ( $action eq 'messages' ) {
         require qq~$vardir/ConvSettings.txt~;
-        MoveMessages($convdatadir);
+        MoveMessages();
 
-        $yytabmenu =
-            $NavLink1
-          . $NavLink2
-          . $NavLink3
-          . $NavLink5a
-          . $NavLink6;
+        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink5a . $NavLink6;
 
         $yymain = qq~
     <div class="bordercolor borderbox">
@@ -369,13 +509,13 @@ EOF
                <img src="$imagesdir/thread.gif" alt="" />
            </td>
            <td class="windowbg2">
-               <div class="convdone">Member Import.</div>
+               <div class="convdone">Member Conversion.</div>
                $ConvDone
-               <div class="convdone">Board and Category Import.</div>
+               <div class="convdone">Board and Category Conversion.</div>
                $ConvDone
-               <div class="convdone">Message Import.</div>
+               <div class="convdone">Message Conversion.</div>
                $ConvDone
-               <div class="convnotdone">Clean Up.</div>
+               <div class="convnotdone">Variables &amp; Clean Up.</div>
                $ConvNotDone
            </td>
        </tr><tr>
@@ -386,7 +526,7 @@ EOF
                <i>$INFO{'total_threads'}</i> Threads have been converted.<br />
                <i>$INFO{'total_mess'}</i> Messages have been converted.<br />
                <br />
-               You are converting <i>~
+               Conversion has taken <i>~
           . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minutes</i>.<br />
                <br />
                 <p id="memcontinued">Click on 'Clean Up' in the menu to continue.<br />
@@ -398,7 +538,7 @@ EOF
 
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:red"><b>Converting - please wait!<br />If you want to stop \\'Clean Up\\', click here on STOP before this red message appears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Clean Up\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
             }
 
             function membtick() {
@@ -409,20 +549,108 @@ EOF
             setTimeout("membtick()",300000);
     </script>
             ~;
-
     }
+    elsif ( $action eq 'messages2' ) {
+        if (   ( !$INFO{'count'} && !$INFO{'tcount'} )
+            || $INFO{'count'} < 0
+            || $INFO{'tcount'} < 0 )
+        {
+            setup_fatal_error(
+"Message conversion (messages2) 'count' ($INFO{'count'}) or 'tcount' ($INFO{'tcount'}) error!",
+                1
+            );
+        }
+
+        my $bwidth = int( $INFO{'count'} / $INFO{'totboard'} * 100 );
+        my $mwidth =
+          $INFO{'totmess'}
+          ? int( $INFO{'tcount'} / $INFO{'totmess'} * 100 )
+          : 0;
+
+        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink5 . $NavLink6;
+
+        $yymain = qq~
+    <div class="bordercolor borderbox">
+    <table class="cs_thin pad_4px">
+        <col style="width:5%" />
+        <tr>
+            <td class="tabtitle" colspan="2">YaBB 2.6.0 Converter</td>
+        </tr><tr>
+            <td class="windowbg center">
+                <img src="$imagesdir/thread.gif" alt="" />
+            </td>
+            <td class="windowbg2">
+                <div class="convdone">Member Conversion.</div>
+                $ConvDone
+                <div class="convdone">Board and Category Conversion.</div>
+                $ConvDone
+                <div class="convdone">Message Conversion.</div>
+                <div class="divouter">
+                    <div class="divvary" style="width: $bwidth$px;">&nbsp;</div>
+                </div>
+                <div class="divvary2">$bwidth %</div><br />
+                <div class="convnotdone">Variables &amp; Clean Up.</div>
+                $ConvNotDone
+            </td>
+        </tr><tr>
+            <td class="windowbg center">
+                <img src="$imagesdir/info.png" alt="" />
+            </td>
+            <td class="windowbg2 fontbigger">
+                To prevent server time-out due to the amount of messages to be converted, the conversion is split into more steps.<br />
+                <br />
+                The time-step (\$max_process_time) is set to <i>$max_process_time seconds</i>.<br />
+                The last step took <i>~
+          . ( $time_to_jump - $INFO{'starttime'} ) . q~ seconds</i>.<br />
+                  Conversion has taken <i>~
+          . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minutes</i>.<br />
+                <br />
+                <i>$INFO{'total_threads'}</i> Threads have been converted.<br />
+                <i>$INFO{'total_mess'}</i> Messages have been converted.<br />
+                There are <b>~
+          . ( $INFO{'totboard'} - $INFO{'count'} )
+          . qq~/$INFO{'totboard'}</b> Boards left with Messages to be converted.<br />
+                <div style="float: left;">There are <b>~
+          . ( $INFO{'totmess'} - $INFO{'tcount'} )
+          . qq~/$INFO{'totmess'}</b> Threads left to be converted. &nbsp; </div>
+                <div class="divouter">
+                    <div class="divvary" style="width: $mwidth$px;">&nbsp;</div>
+                </div>
+                <div class="divvary2">$mwidth %</div>
+                <br />
+                <p id="memcontinued">If nothing happens in 5 seconds <a href="$set_cgi?action=messages;st=$INFO{'st'};totboard=$INFO{'totboard'};count=$INFO{'count'};tcount=$INFO{'tcount'};total_mess=$INFO{'total_mess'};total_threads=$INFO{'total_threads'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Messages' conversion click here</a>. Then copy the actual browser address and type it in when you are going to continue the conversion.</p>
+            </td>
+        </tr>
+    </table>
+    </div>
+
+    <script type="text/javascript">
+            function PleaseWait() {
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Messages\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
+            }
+
+            function stoptick() { stop = 1; }
+
+            stop = 0;
+            function membtick() {
+                  if (stop != 1) {
+                        PleaseWait();
+                        location.href="$set_cgi?action=messages;st=$INFO{'st'};count=$INFO{'count'};tcount=$INFO{'tcount'};total_mess=$INFO{'total_mess'};total_threads=$INFO{'total_threads'}";
+                  }
+            }
+
+            setTimeout("membtick()",2000);
+      </script>
+            ~;
+    }
+
     elsif ( $action eq 'cleanup' ) {
         require qq~$vardir/ConvSettings.txt~;
-        MoveVariables($convvardir);
+        MoveVariables();
         FixControl();
         FixNopost();
 
-        $yytabmenu =
-            $NavLink1
-          . $NavLink2
-          . $NavLink3
-          . $NavLink5
-          . $NavLink6a;
+        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink5 . $NavLink6a;
 
         $formsession = cloak("$mbname$username");
 
@@ -457,10 +685,10 @@ q~<br /><br />After you have tested your forum and made sure everything was conv
                 $convtext<br />
                 <br />
                 The conversion took <i>~
-          . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minutes</i>.<br />
+          . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minute(s)</i>.<br />
                 <br />
                 <br />
-                <span style="color:red">We recommend you delete the file "$ENV{'SCRIPT_NAME'}". This is to prevent someone else running the converter and damaging your files.<br />
+                <span style="color:#f33">We recommend you delete the file "$ENV{'SCRIPT_NAME'}". This is to prevent someone else running the converter and damaging your files.<br />
                 <br />
                 Further more, we strongly recommend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />
                 - Rebuild Message Index<br />
@@ -486,7 +714,7 @@ q~<br /><br />After you have tested your forum and made sure everything was conv
     </table>
     </div>~;
 
-        CreateFixLock();
+        CreateConvLock();
     }
 
     $yyim    = 'You are running the YaBB 2.6.0 Converter.';
@@ -538,8 +766,6 @@ sub PrepareConv {
 
     automaintenance('on');
 
-    unlink "$vardir/fixusers.txt";
-
     foreach my $file (@boardlist) {
         if (   $file ne '.htaccess'
             && $file ne 'index.html'
@@ -576,24 +802,111 @@ sub PrepareConv {
 
 # Member Conversion ##
 
-sub MyUpdateUser {
-    my ( $convmemberdir, $memberdir ) = @_;
-
+sub ConvertMembers {
     fopen( MEMDIR, "$convmemberdir/memberlist.txt" )
       || setup_fatal_error( "$maintext_23 $convmemberdir/memberlist.txt:", 1 );
     my @memlist = <MEMDIR>;
     fclose(MEMDIR);
-
     fopen( MEMDIRLST, "> $memberdir/memberlist.txt" )
       || setup_fatal_error( "$maintext_23 $memberdir/memberlist.txt:", 1 );
     print {MEMDIRLST} @memlist or croak 'cannot print MEMDIR';
     fclose(MEMDIRLST);
 
-    for my $i ( @memlist ) {
-        ( $user, undef ) = split /\t/xsm, $i;
+    fopen( MEMINFO, "$convmemberdir/memberinfo.txt" )
+      || setup_fatal_error( "$maintext_23 $convmemberdir/memberinfo.txt: ", 1 );
+    my @meminfo = <MEMINFO>;
+    fclose(MEMINFO);
+    fopen( NMEMINFO, ">$memberdir/memberinfo.txt" )
+      || setup_fatal_error( "$maintext_23 $memberdir/memberinfo.txt: ", 1 );
+    print {NMEMINFO} @meminfo or croak 'cannot print NBMEMINFO';
+    fclose(NMEMINFO);
+
+    if ( -e "$convmemberdir/broadcast.messages" ) {
+        fopen( BMEMDIR, "$convmemberdir/broadcast.messages" )
+          || setup_fatal_error(
+            "$maintext_23 $convmemberdir/broadcast.messages: ", 1 );
+        my @bmessages = <BMEMDIR>;
+        fclose(BMEMDIR);
+        fopen( NBMEMDIR, ">$memberdir/broadcast.messages" )
+          || setup_fatal_error(
+            "$maintext_23 $convmemberdir/broadcast.messages: ", 1 );
+        print {NBMEMDIR} @bmessages or croak 'cannot print NBMEMDIR';
+        fclose(NBMEMDIR);
+    }
+
+    if ( -e "$convmemberdir/memberlist.approve" ) {
+        fopen( BMEMDIRA, "$convmemberdir/memberlist.approve" )
+          || setup_fatal_error(
+            "$maintext_23 $convmemberdir/memberlist.approve: ", 1 );
+        my @approve = <BMEMDIRA>;
+        fclose(BMEMDIRA);
+        fopen( NBMEMDIRA, ">$memberdir/memberlist.approve" )
+          || setup_fatal_error(
+            "$maintext_23 $convmemberdir/memberlist.approve: ", 1 );
+        print {NBMEMDIRA} @approve or croak 'cannot print NBMEMDIR';
+        fclose(NBMEMDIRA);
+    }
+
+    if ( -e "$convmemberdir/memberlist.inactive" ) {
+        fopen( BMEMDIRIN, "$convmemberdir/memberlist.inactive" )
+          || setup_fatal_error(
+            "$maintext_23 $convmemberdir/memberlist.inactive: ", 1 );
+        my @inactive = <BMEMDIRIN>;
+        fclose(BMEMDIRIN);
+        fopen( NBMEMDIRIN, ">$memberdir/memberlist.inactive" )
+          || setup_fatal_error(
+            "$maintext_23 $convmemberdir/memberlist.inactive: ", 1 );
+        print {NBMEMDIRIN} @inactive or croak 'cannot print NBMEMDIRIN';
+        fclose(NBMEMDIRIN);
+    }
+
+    if ( -e "$convmemberdir/members.ttl" ) {
+        fopen( BMEMDIRTTL, "$convmemberdir/members.ttl" )
+          || setup_fatal_error( "$maintext_23 $convmemberdir/members.ttl: ",
+            1 );
+        my @memtotl = <BMEMDIRTTL>;
+        fclose(BMEMDIRTTL);
+        fopen( NBMEMDIRTTL, ">$memberdir/members.ttl" )
+          || setup_fatal_error( "$maintext_23 $memberdir/members.ttl: ", 1 );
+        print {NBMEMDIRTTL} @memtotl or croak 'cannot print NBMEMDIRTTL';
+        fclose(NBMEMDIRTTL);
+    }
+
+    if ( -e "$convmemberdir/forgotten.passes" ) {
+        fopen( BMEMDIRP, "$convmemberdir/forgotten.passes" )
+          || setup_fatal_error(
+            "$maintext_23 $convmemberdir/forgotten.passes: ", 1 );
+        my @passes = <BMEMDIRP>;
+        fclose(BMEMDIRP);
+
+        fopen( NBMEMDIRP, ">$memberdir/forgotten.passes" )
+          || setup_fatal_error( "$maintext_23 $memberdir/forgotten.passes: ",
+            1 );
+        print {NBMEMDIRP} @passes or croak 'cannot print NBMEMDIRP';
+        fclose(NBMEMDIRP);
+    }
+
+    for (@approve) {
+        ( undef, undef, $regmember, undef, undef ) =
+          split /\|/xsm, $_;
+        push @memlist, $regmember;
+    }
+    for (@inactive) {
+        ( undef, undef, $regmember, undef, undef ) =
+          split /\|/xsm, $_;
+        push @memlist, $regmember;
+    }
+    my @xtn = qw(vars msg ims imstore log outbox rlog imdraft pre wait);
+    for my $i ( ( $INFO{'mstart1'} || 0 ) .. ( @memlist - 1 ) ) {
+        ( $user, undef ) = split /\t/xsm, $memlist[$i];
         my $newuser = $user;
 
-        my @xtn = qw(vars msg ims imstore log outbox rlog imdraft);
+        if (   !-e "$convmemberdir/$user.vars"
+            && !-e "$convmemberdir/$user.pre"
+            && !-e "$convmemberdir/$user.wait" )
+        {
+            next;
+        }
         for my $cnt ( @xtn ) {
             if ( -e "$convmemberdir/$user.$cnt" ) {
                 fopen( FILEUSER, "$convmemberdir/$user.$cnt" )
@@ -602,36 +915,71 @@ sub MyUpdateUser {
                 my @divfiles = <FILEUSER>;
                 fclose(FILEUSER);
 
-                fopen( FILEUSER, ">$memberdir/$newuser.$cnt" )
+                fopen( FILEUSERB, ">$memberdir/$user.$cnt" )
                   || setup_fatal_error(
-                    "$maintext_23 $memberdir/$newuser.$cnt: ", 1 );
-                print {FILEUSER} @divfiles or croak 'cannot print FILEUSER';
-                fclose(FILEUSER);
+                    "$maintext_23 $memberdir/$user.$cnt: ", 1 );
+                print {FILEUSERB} @divfiles or croak 'cannot print FILEUSER';
+                fclose(FILEUSERB);
             }
         }
-    }
-    fopen( MEMINFO, "$convmemberdir/memberinfo.txt" )
-      || setup_fatal_error( "$maintext_23 $convmemberdir/memberinfo.txt: ", 1 );
-    my @meminfo = <MEMINFO>;
-    fclose(MEMINFO);
 
-    fopen( NMEMINFO, ">$memberdir/memberinfo.txt" )
-      || setup_fatal_error( "$maintext_23 $memberdir/memberinfo.txt: ", 1 );
-    print {NMEMINFO} @meminfo or croak 'cannot print NBMEMINFO';
-    fclose(NMEMINFO);
-
-    if ( -e "$convmemberdir/broadcast.messages" ) {
-    fopen( BMEMDIR, "$convmemberdir/broadcast.messages" )
-      || setup_fatal_error( "$maintext_23 $convmemberdir/broadcast.messages: ", 1 );
-    my @bmessages = <BMEMDIR>;
-    fclose(BMEMDIR);
-
-    fopen( NBMEMDIR, ">$memberdir/broadcast.messages" )
-      || setup_fatal_error( "$maintext_23 $convmemberdir/broadcast.messages: ", 1 );
-    print {NBMEMDIR} @bmessages or croak 'cannot print NBMEMDIR';
-    fclose(NBMEMDIR);
+        if ( time() > $time_to_jump && ( $i + 1 ) < @memlist ) {
+            $yySetLocation =
+                qq~$set_cgi?action=members2;st=~
+              . int( $INFO{'st'} + time() - $time_to_jump + $max_process_time )
+              . qq~;starttime=$time_to_jump;mtotal=~
+              . @memlist
+              . qq~;mstart1=$i~;
+            redirectexit();
+            }
+        }
+    return;
     }
 
+# / Member Conversion ##
+
+# Board + Category Conversion ##
+
+sub MoveBoards {
+    my @brdlst = ( 'forum.master', 'forum.totals', 'forum.control', );
+
+    for my $newbrd (@brdlst) {
+        fopen( OLDBRD, "$convboardsdir/$newbrd" );
+        my @brdinfo = <OLDBRD>;
+        fclose(OLDBRD);
+
+        fopen( NEWBRD, ">$boardsdir/$newbrd" );
+        print {NEWBRD} @brdinfo or croak 'cannot print NEWBRD';
+        fclose(NEWBRD);
+    }
+    require "$boardsdir/forum.master";
+    @boards    = sort keys %board;
+    @subboards = sort keys %subboard;
+    my @brdtype = qw(txt mail exhits);
+    push( @boards, @subboards );
+
+    for my $i ( ( $INFO{'bstart'} || 0 ) .. ( @boards - 1 ) ) {
+        for my $ext (@brdtype) {
+            if ( -e "$convboardsdir/$boards[$i].$ext" ) {
+                fopen( BOARDFILE, "$convboardsdir/$boards[$i].$ext" )
+                  || setup_fatal_error(
+                    "$maintext_23 $convboardsdir/$boards[$i].ext: ", 1 );
+                @brdinfo = <BOARDFILE>;
+                fclose(BOARDFILE);
+                fopen( NEWBRD, ">$boardsdir/$boards[$i].$ext" );
+                print {NEWBRD} @brdinfo or croak 'cannot print NEWBRD';
+                fclose(NEWBRD);
+            }
+        }
+        if ( time() > $time_to_jump && ( $i + 1 ) < @boards ) {
+            $yySetLocation =
+                qq~$set_cgi?action=cats2;st=~
+              . int( $INFO{'st'} + time() - $time_to_jump + $max_process_time )
+              . qq~;starttime=$time_to_jump;bstart=$i;btotal=~
+              . @boards;
+            redirectexit();
+        }
+    }
     return;
 }
 
@@ -639,7 +987,8 @@ sub FixControl {
     if ( -e qq~$convvardir/boardconv.txt~ ) {
         require qq~$convvardir/boardconv.txt~;
         fopen( OLDFORUMCONTROL, "$convboardsdir/forum.control" )
-          || setup_fatal_error( "$maintext_23 $convboardsdir/forum.control: ", 1 );
+          || setup_fatal_error( "$maintext_23 $convboardsdir/forum.control: ",
+            1 );
         @oldboardcontrols = <OLDFORUMCONTROL>;
         fclose(OLDFORUMCONTROL);
         chomp @oldboardcontrols;
@@ -651,7 +1000,8 @@ sub FixControl {
         my @newboard = ();
         foreach my $x (@oldboard) {
 #$cat|$board|$pic|$description|$mods|$modgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$attperms|$minageperms|$maxageperms|$genderperms|$canpost|$parent|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$bdrss
-           $newboard[$j] = qq~${$x}{'cat'}|$x|${$x}{'pic'}|${$x}{'description'}|${$x}{'mods'}|${$x}{'modgroups'}|${$x}{'topicperms'}|${$x}{'replyperms'}|${$x}{'pollperms'}|${$x}{'zero'}|${$x}{'membergroups'}|${$x}{'ann'}|${$x}{'rbin'}|${$x}{'attperms'}|${$x}{'minageperms'}|${$x}{'maxageperms'}|${$x}{'genderperms'}|${$x}{'canpost'}|${$x}{'parent'}|${$x}{'rules'}|${$x}{'rulestitle'}|${$x}{'rulesdesc'}|${$x}{'rulescollapse'}|${$x}{'brdpasswr'}|${$x}{'brdpassw'}|${$x}{'brdrss'}\n~;
+            $newboard[$j] =
+qq~${$x}{'cat'}|$x|${$x}{'pic'}|${$x}{'description'}|${$x}{'mods'}|${$x}{'modgroups'}|${$x}{'topicperms'}|${$x}{'replyperms'}|${$x}{'pollperms'}|${$x}{'zero'}|${$x}{'membergroups'}|${$x}{'ann'}|${$x}{'rbin'}|${$x}{'attperms'}|${$x}{'minageperms'}|${$x}{'maxageperms'}|${$x}{'genderperms'}|${$x}{'canpost'}|${$x}{'parent'}|${$x}{'rules'}|${$x}{'rulestitle'}|${$x}{'rulesdesc'}|${$x}{'rulescollapse'}|${$x}{'brdpasswr'}|${$x}{'brdpassw'}|${$x}{'brdrss'}\n~;
             $j++;
         }
        fopen( FORUMCONTROL, ">$boardsdir/forum.control" )
@@ -662,7 +1012,8 @@ sub FixControl {
     }
     else {
         fopen( OLDFORUMCONTROL, "$convboardsdir/forum.control" )
-          || setup_fatal_error( "$maintext_23 $convboardsdir/forum.control: ", 1 );
+          || setup_fatal_error( "$maintext_23 $convboardsdir/forum.control: ",
+            1 );
         @oldboardcontrols = <OLDFORUMCONTROL>;
         fclose(OLDFORUMCONTROL);
         fopen( FORUMCONTROL, ">$boardsdir/forum.control" )
@@ -759,58 +1110,275 @@ qq~$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$newmodgroups|$newtopicper
     return;
 }
 
-sub tempstarter {
-    return if !-e "$vardir/Settings.pm";
+# / Board + Category Conversion ##
 
-    $YaBBversion = 'YaBB 2.6.0';
+# Messages Conversion ##
 
-    # Make sure the module path is present
-    push @INC, './Modules';
+sub MoveMessages {
+    if ( -e "$convdatadir/movedthreads.cgi" ) {
+        fopen( OLDMVFILE, "$convdatadir/movedthreads.cgi" )
+          || setup_fatal_error( "$maintext_23 $convdatadir/movedthreads.cgi: ",
+            1 );
+        my @movedmessageline = <OLDMVFILE>;
+        fclose(OLDMVFILE);
 
-    if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
-        $yyIIS = 1;
-        if ( $PROGRAM_NAME =~ m{(.*)(\\|/)}xsm ) {
-            $yypath = $1;
+        fopen( MVFILE, ">$vardir/Movedthreads.pm" );
+        print {MVFILE} @movedmessageline
+          or croak "cannot print $vardir/Movedthreads.pm";
+        fclose(MVFILE);
+    }
+    require "$boardsdir/forum.master";
+
+    my @boards    = sort keys %board;
+    my @subboards = sort keys %subboard;
+    push @boards, @subboards;
+
+    my $totalbdr  = @boards;
+    my @threadext = qw(mail poll polled);
+    for my $next_board ( ( $INFO{'count'} || 0 ) .. ( $totalbdr - 1 ) ) {
+        my $boardname = $boards[$next_board];
+        fopen( BRDFILE, "$boardsdir/$boardname.txt" )
+          || setup_fatal_error( "$maintext_23 $boardsdir/$boardname.txt: ", 1 );
+        my @brdmessageline = <BRDFILE>;
+        fclose(BRDFILE);
+        chomp @brdmessageline;
+        $totalmess = @brdmessageline;
+
+        for my $tops ( ( $INFO{'tcount'} || 0 ) .. ( $totalmess - 1 ) ) {
+            my @thread = split /\|/xsm, $brdmessageline[$tops];
+            my $thread = $thread[0];
+            if ( -e "$convdatadir/$thread.txt" && -e "$convdatadir/$thread.ctb" ) {
+                fopen( MSGFILE, "$convdatadir/$thread.txt" )
+                      || setup_fatal_error(
+                        "$maintext_23 $convdatadir/$thread.txt: ", 1 );
+                @messagelines = <MSGFILE>;
+                fclose(MSGFILE);
+                fopen( MSGFILE, ">$datadir/$thread.txt" )
+                      || setup_fatal_error(
+                        "$maintext_23 $datadir/$thread.txt: ", 1 );
+                print {MSGFILE} @messagelines
+                      or croak "cannot print $datadir/$thread.txt";
+                fclose(MSGFILE);
+                $INFO{'total_mess'} += @messagelines;
+                $INFO{'total_threads'}++;
+                fopen( MSGFILE, "$convdatadir/$thread.ctb" )
+                      || setup_fatal_error(
+                        "$maintext_23 $convdatadir/$thread.ctb: ", 1 );
+                @messagelines = <MSGFILE>;
+                fclose(MSGFILE);
+                fopen( MSGFILE, ">$datadir/$thread.ctb" )
+                      || setup_fatal_error(
+                       "$maintext_23 $datadir/$thread.ctb: ", 1 );
+                print {MSGFILE} @messagelines
+                      or croak "cannot print $datadir/$thread.ctb";
+                fclose(MSGFILE);
+                for my $ext (@threadext) {
+                    if ( -e "$convdatadir/$thread.$ext" ) {
+                        fopen( MSGFILE, "$convdatadir/$thread.$ext" )
+                      || setup_fatal_error(
+                        "$maintext_23 $convdatadir/$thread.$ext: ", 1 );
+                        @messagelines = <MSGFILE>;
+                        fclose(MSGFILE);
+                        fopen( MSGFILE, ">$datadir/$thread.$ext" )
+                      || setup_fatal_error(
+                        "$maintext_23 $datadir/$thread.$ext: ", 1 );
+                        print {MSGFILE} @messagelines
+                      or croak "cannot print $datadir/$thread.$ext";
+                        fclose(MSGFILE);
+                    }
+                }
+			}
+            if ( time() > $time_to_jump && ( $tops + 1 ) < $totalmess ) {
+                $yySetLocation =
+                  qq~$set_cgi?action=messages2;st=~
+                  . int( $INFO{'st'} +
+                      time() -
+                      ( $time_to_jump - $max_process_time ) )
+                  . qq~;starttime=$time_to_jump;count=$next_board;tcount=~
+                  . ( $tops + 1 )
+                  . qq~;total_mess=$INFO{'total_mess'};total_threads=$INFO{'total_threads'};totboard=$totalbdr;totmess=$totalmess~;
+                redirectexit();
+            }
         }
-        $yypath =~ s/\\/\//gxsm;
-        chdir $yypath;
-        push @INC, $yypath;
+        if ( time() > $time_to_jump && ( $next_board + 1 ) < $totalbdr ) {
+            $yySetLocation =
+              qq~$set_cgi?action=messages2;st=~
+              . int(
+                $INFO{'st'} + time() - ( $time_to_jump - $max_process_time ) )
+              . qq~;starttime=$time_to_jump;count=~
+              . ( $next_board + 1 )
+              . qq~;tcount=0;total_mess=$INFO{'total_mess'};total_threads=$INFO{'total_threads'};totboard=$totalbdr;totmess=0~;
+            redirectexit();
+        }
+        $INFO{'tcount'} = 0;
+    }
+    return;
+        }
+
+# / Messages Conversion ##
+
+# Variables Conversion ##
+sub MoveVariables {
+    my ($convdatadir) = @_;
+    my @mvvar = (
+        'allowed.txt',             'attachments.txt',
+        'ban_log.txt',             'bots.hosts',
+        'email_domain_filter.txt', 'eventcal.db',
+        'eventcalbday.db',         'flood.txt',
+        'gmodsettings.txt',        'modlist.txt',
+        'mostlog.txt',             'Movedthreads.pm',
+        'oldestmes.txt',           'pm.attachments',
+        'registration.log',        'reserve.txt',
+        'reservecfg.txt',          'spamrules.txt',
+    );
+    for my $varfl (@mvvar) {
+        if ( -e "$convdatadir/$varfl" ) {
+            if ( $varfl eq 'eventcal.db' ) {
+                fopen( OLDVAR, "$convdatadir/$varfl" );
+                my @oldvar = <OLDVAR>;
+                fclose(OLDVAR);
+                chomp @oldvar;
+                my @newvar;
+                foreach my $eventline (@oldvar) {
+                    my @eventline = split /\|/xsm, $eventline;
+                    if ( scalar(@eventline) < 9 ) {
+
+#                   ( $cal_date,$cal_type,$cal_name,$cal_time,$cal_event,$cal_icon,$cal_noname,$cal_type2)
+                        my $g = q{};
+                        if ( lc $eventline[2] eq 'guest' ) {
+                            $g = 'g';
+                        }
+                        push @newvar,
+qq~$eventline[0]|$eventline[1]|$eventline[2]|$eventline[3]||$eventline[4]|$eventline[5]|$eventline[6]|$eventline[7]||$g\n~;
+                    }
+                    else { push @newvar, qq~$eventline\n~; }
     }
 
-    # Requirements and Errors
-    require Variables::Settings;
-    if ( -e "$vardir/convSettings.txt" ) { require "$vardir/convSettings.txt"; }
-    else                                 { $convertdir = './Convert'; }
+                fopen( NEWVAR, ">$vardir/$varfl" );
+                print {NEWVAR} @newvar
+                  or croak "cannot print $vardir/$varfl";
+                fclose(NEWVAR);
+            }
+            else {
+                fopen( OLDVAR, "$convdatadir/$varfl" );
+                my @oldvar = <OLDVAR>;
+                fclose(OLDVAR);
 
-    LoadCookie();    # Load the user's cookie (or set to guest)
-    LoadUserSettings();
-    WhatTemplate();
-    WhatLanguage();
-    require Sources::Security;
-    WriteLog();
+                fopen( NEWVAR, ">$vardir/$varfl" );
+                print {NEWVAR} @oldvar
+                  or croak "cannot print $vardir/$varfl";
+                fclose(NEWVAR);
+            }
+        }
+    }
+    Convert_Settings();
     return;
 }
 
-sub CreateFixLock {
-    fopen( 'LOCKFILE', ">$vardir/Convert2x.lock" )
-      || setup_fatal_error( "$maintext_23 $vardir/Convert2x.lock: ", 1 );
-    print {LOCKFILE} qq~This is a lockfile for the Convert2x Utility.\n~
-      or croak 'cannot print to Convert2x.lock';
-    print {LOCKFILE}
-      qq~It prevents it being run again after it has been run once.\n~
-      or croak 'cannot print to Convert2x.lock';
-    print {LOCKFILE}
-      q~Delete this file if you want to run the Convert2x Utility again.~
-      or croak 'cannot print to Convert2x.lock';
-    fclose('LOCKFILE');
+sub Convert_Settings {
+    $ret = 0;
+    if ( -e "$convvardir/Settings.pl" ) {
+        use Time::gmtime;
+        $time = time;
+        require "$convvardir/Settings.pl";
+        if ($ip_banlist) {
+            @i_ban = ( split /,/xsm, $ip_banlist );
+            chomp @i_ban;
+            for my $j (@i_ban) {
+                fopen( BAN, ">>$vardir/banlist.txt" );
+                print {BAN} qq~I|$j|$time|import|p\n~
+                  or croak 'cannot write to BAN';
+                fclose(BAN);
+            }
+        }
+        if ($email_banlist) {
+            @e_ban = ( split /,/xsm, $email_banlist );
+            chomp @e_ban;
+            for my $j (@e_ban) {
+                fopen( BAN, ">>$vardir/banlist.txt" );
+                print {BAN} qq~E|$j|$time|import|p\n~
+                  or croak 'cannot write to BAN';
+                fclose(BAN);
+            }
+        }
+        if ($user_banlist) {
+            @u_ban = ( split /,/xsm, $user_banlist );
+            chomp @u_ban;
+            for my $j (@u_ban) {
+                fopen( BAN, ">>$vardir/banlist.txt" );
+                print {BAN} qq~U|$j|$time|import|p\n~
+                  or croak 'cannot write to BAN';
+                fclose(BAN);
+            }
+        }
+        $mypl = 1;
+    }
+    elsif ( -e "$convvardir/Settings.pm" ) {
+        require "$convvardir/Settings.pm";
+    }
+
+    if ( -e "$convvardir/eventcalset.txt" ) {
+        require "$convvardir/eventcalset.txt";
+    }
+
+    if ( $mypl == 1 ) {
+        $settings_file_version = "YaBB 2.6.0";
+        if ( $enable_notifications eq q{} ) {
+            $enable_notifications = $enable_notification ? 3 : 0;
+        }
+        if ( !$cookietsort ) {
+            ( undef, $rancook ) = split /\-/xsm, $cookieusername;
+            $cookietsort = qq~Y2tsort-$rancook~;
+        }
+        if ( !$cookieview ) {
+            ( undef, $rancook ) = split /\-/xsm, $cookieusername;
+            $cookieview = qq~Y2view-$rancook~;
+        }
+        if ( !$cookieviewtime )        { $cookieviewtime        = 525_600; }
+        if ( !$MaxIMMessLen )          { $MaxIMMessLen          = 2000; }
+        if ( !$AdMaxIMMessLen )        { $AdMaxIMMessLen        = 3000; }
+        if ( !$MaxCalMessLen )         { $MaxCalMessLen         = 200; }
+        if ( !$AdMaxCalMessLen )       { $AdMaxCalMessLen       = 300; }
+        if ( !$Show_EventCal )         { $Show_EventCal         = 0; }
+        if ( !$Event_TodayColor )      { $Event_TodayColor      = '#ff0000'; }
+        if ( !$fix_avatar_img_size )   { $fix_avatar_img_size   = 0; }
+        if ( !$max_avatar_width )      { $$max_avatar_width     = 65; }
+        if ( !$max_avatar_height )     { $max_avatar_height     = 65; }
+        if ( !$fix_avatarml_img_size ) { $fix_avatarml_img_size = 0; }
+        if ( !$max_avatarml_width )    { $max_avatarml_width    = 65; }
+        if ( !$max_avatarml_height )   { $max_avatarml_height   = 65; }
+        if ( !$enabletz )              { $enabletz              = 0; }
+        if ( !$default_tz )            { $default_tz            = 'UTC'; }
+        $gzcomp = fileno $GZIP ? 1 : 0;
+
+        $ip_banlist           = q{};
+        $email_banlist        = q{};
+        $user_banlist         = q{};
+        $showsearchbox        = 1;
+        $fmodview             = $gmodview;
+        $mdfmod               = $mdglobal;
+        $show_online_ip_admin = 1;
+        $show_online_ip_gmod  = 1;
+        $show_online_ip_fmod  = 1;
+        $ipLookup             = 1;
+        $bm_subcut            = 50;
+    }
+
+    require Admin::NewSettings;
+    SaveSettingsTo('Settings.pm');
+
+    $ret = 1;
     return;
 }
+
+# / Variables Conversion ##
+
+#End Conversion#
 
 sub FoundConvert2xLock {
     tempstarter();
     require Sources::TabMenu;
 
-    #    $formsession = cloak("$mbname$username");
     if ( -e "$vardir/Convert2x.lock" ) {
         $fixa = q{};
         $fixa2 =
@@ -821,7 +1389,7 @@ qq~The 2x Conversion Utility has already been run.<br />To run Utility again, re
         $fixa =
           q~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <form action="Convert2x.pl" method="post" style="display: inline;">
-                    <input type="submit" value="Fix 2.0-2.4 files" />
+                    <input type="submit" value="Fix 2.0-2.5 files" />
                 </form>~;
     }
 
@@ -855,7 +1423,56 @@ qq~The 2x Conversion Utility has already been run.<br />To run Utility again, re
 
     $yyim    = 'YaBB 2.6.0 Convert2x Utility has already been run.';
     $yytitle = 'YaBB 2.6.0 Convert2x Utility';
-    template();
+    SetupTemplate();
+    return;
+}
+
+sub CreateConvLock {
+    fopen( 'LOCKFILE', ">$vardir/Convert2x.lock" )
+      || setup_fatal_error( "$maintext_23 $vardir/Convert2x.lock: ", 1 );
+    print {LOCKFILE} qq~This is a lockfile for the Convert2x Utility.\n~
+      or croak 'cannot print to Convert2x.lock';
+    print {LOCKFILE}
+      qq~It prevents it being run again after it has been run once.\n~
+      or croak 'cannot print to Convert2x.lock';
+    print {LOCKFILE}
+      q~Delete this file if you want to run the Convert2x Utility again.~
+      or croak 'cannot print to Convert2x.lock';
+    fclose('LOCKFILE');
+    return;
+}
+
+sub tempstarter {
+    return if !-e "$vardir/Settings.pm";
+
+    $YaBBversion = 'YaBB 2.6.0';
+
+    # Make sure the module path is present
+    push @INC, './Modules';
+
+    if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
+        $yyIIS = 1;
+        if ( $PROGRAM_NAME =~ m{(.*)(\\|/)}xsm ) {
+            $yypath = $1;
+        }
+        $yypath =~ s/\\/\//gxsm;
+        chdir $yypath;
+        push @INC, $yypath;
+    }
+
+    # Requirements and Errors
+    require Variables::Settings;
+    if ( -e "$vardir/convSettings.txt" ) {
+        require "$vardir/convSettings.txt";
+    }
+    else { $convertdir = './Convert'; }
+
+    LoadCookie();    # Load the user's cookie (or set to guest)
+    LoadUserSettings();
+    WhatTemplate();
+    WhatLanguage();
+    require Sources::Security;
+    WriteLog();
     return;
 }
 
@@ -868,26 +1485,26 @@ sub SetupImgLoc {
 }
 
 sub tabmenushow {    # used by the converter
-    $tabsep =
-      q{ &nbsp; };
+    $tabsep  = q{ &nbsp; };
     $tabfill = q{ &nbsp; };
 
     $NavLink1 = qq~<span>$tabfill Members $tabfill</span>~;
-    $NavLink2 = qq~$tabsep<span>$tabfill Boards & Categories $tabfill</span>~;
+    $NavLink2 =
+      qq~$tabsep<span>$tabfill Boards &amp; Categories $tabfill</span>~;
     $NavLink3 = qq~$tabsep<span>$tabfill Messages $tabfill</span>~;
     $NavLink5 = qq~$tabsep<span>$tabfill Clean Up $tabfill</span>~;
     $NavLink6 = qq~$tabsep<span>$tabfill Login $tabfill</span>$tabsep&nbsp;~;
 
     $NavLink1a =
-qq~<span class="selected"><a href="$set_cgi?action=members;st=$INFO{'st'}" style="color: #FF3333; padding:0" class="selected" onClick="PleaseWait();">$tabfill Members $tabfill</a></span>~;
+qq~<span class="selected"><a href="$set_cgi?action=members;st=$INFO{'st'}" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Members $tabfill</a></span>~;
     $NavLink2a =
-qq~$tabsep<span class="selected"><a href="$set_cgi?action=cats;st=$INFO{'st'}" style="color: #FF3333; padding:0" class="selected" onClick="PleaseWait();">$tabfill Boards & Categories $tabfill</a></span>~;
+qq~$tabsep<span class="selected"><a href="$set_cgi?action=cats;st=$INFO{'st'}" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Boards &amp; Categories $tabfill</a></span>~;
     $NavLink3a =
-qq~$tabsep<span class="selected"><a href="$set_cgi?action=messages;st=$INFO{'st'}" style="color: #FF3333; padding:0" class="selected" onClick="PleaseWait();">$tabfill Messages $tabfill</a></span>~;
+qq~$tabsep<span class="selected"><a href="$set_cgi?action=messages;st=$INFO{'st'}" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Messages $tabfill</a></span>~;
     $NavLink5a =
-qq~$tabsep<span class="selected"><a href="$set_cgi?action=cleanup;st=$INFO{'st'}" style="color: #FF3333; padding:0" class="selected" onClick="PleaseWait();">$tabfill Clean Up $tabfill</a></span>~;
+qq~$tabsep<span class="selected"><a href="$set_cgi?action=cleanup;st=$INFO{'st'}" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Clean Up $tabfill</a></span>~;
     $NavLink6a =
-qq~$tabsep<span class="selected"><a href="$boardurl/YaBB.$yyext?action=login" style="color: #FF3333; padding:0" class="selected">$tabfill Login $tabfill</a></span>$tabsep&nbsp;~;
+qq~$tabsep<span class="selected"><a href="$boardurl/YaBB.$yyext?action=login" style="color: #f33; padding:0" class="selected">$tabfill Login $tabfill</a></span>$tabsep&nbsp;~;
 
     $ConvDone = q~
             <div class="divvary_m">&nbsp;</div>
@@ -909,7 +1526,6 @@ sub setup_fatal_error {
     $yymenu = q~Boards &amp; Categories | ~;
     $yymenu .= q~Members | ~;
     $yymenu .= q~Messages | ~;
-    $yymenu .= q~Date &amp; Time | ~;
     $yymenu .= q~Clean Up | ~;
     $yymenu .= q~Login~;
 
@@ -942,7 +1558,7 @@ sub SimpleOutput {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>YaBB 2.6.0 Setup</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>
 
@@ -976,9 +1592,22 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
 
     my $output = q{};
     $yyboardname = $mbname;
-    $yytime = timeformat( $date, 1 );
+    @months      = qw( Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec );
+    my (
+        $newsecond, $newminute,  $newhour,    $newday, $newmonth,
+        $newyear,   $newweekday, $newyearday, $newoff
+    ) = localtime($date);
+    $newyear += 1900;
+    $newminute = sprintf '%02d', $newminute;
+    $newsecond = sprintf '%02d', $newsecond;
+    $yytime =
+qq~$months[$newmonth] $newday, $newyear $maintxt{'107'} $newhour:$newminute~;
+
+    #     $yytime = timeformat( $date, 1 );
     $yyuname =
-      $iamguest ? q{} : qq~$maintxt{'247'} ${$uid.$username}{'realname'}, ~;
+      $iamguest
+      ? q{}
+      : qq~$maintxt{'247'} ${$uid.$username}{'realname'}, ~;
 
     if ($enable_news) {
         fopen( NEWS, "$vardir/news.txt" );
@@ -987,18 +1616,13 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
     }
     for my $i ( 0 .. ( @yytemplate - 1 ) ) {
         $curline = $yytemplate[$i];
-        if (
-            !$yycopyin
-            && (   $curline =~ m{<yabb\ copyright>}xsm
-                || $curline =~ /{yabb\ copyright}/xsm )
-          )
-        {
+        if ( !$yycopyin && $curline =~ m/{yabb\ copyright}/xsm ) {
             $yycopyin = 1;
         }
-        if ( $curline =~ m{<yabb\ newstitle>}xsm && $enable_news ) {
+        if ( $curline =~ m/{yabb\ newstitle}/xsm && $enable_news ) {
             $yynewstitle = qq~<b>$maintxt{'102'}:</b> ~;
         }
-        if ( $curline =~ m{<yabb\ news>}xsm && $enable_news ) {
+        if ( $curline =~ m/{yabb\ news}/xsm && $enable_news ) {
             srand;
             if ( $shownewsfader == 1 ) {
 
@@ -1053,7 +1677,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
     }
     if ( $yycopyin == 0 ) {
         $output =
-q~<h1 style="text-align:center"><b>Sorry, the copyright tag <yabb copyright> must be in the template.<br />Please notify this forum&#39;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
+q~<h1 style="text-align:center"><b>Sorry, the copyright tag &#123;yabb copyright&#125; must be in the template.<br />Please notify this forum&#39;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
     }
     if ( fileno $GZIP ) {
         $OUTPUT_AUTOFLUSH = 1;
@@ -1061,6 +1685,8 @@ q~<h1 style="text-align:center"><b>Sorry, the copyright tag <yabb copyright> mus
         close $GZIP or croak 'cannot close GZIP';
     }
     else {
+        $mycopy = qq~2000-$newyear~;
+        $output =~ s/2000-1900/$mycopy/xsm;
         print $output or croak 'cannot print page';
     }
     exit;
@@ -1096,262 +1722,6 @@ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2
     };
     $setfile =~ s/(.+)(#.+$)/ $1 . cut_comment($1,$2) /gem;
     return $setfile;
-}
-
-sub MoveBoards {
-   my ($convboardsdir) = @_;
-
-    opendir( BDIR, $convboardsdir ) or croak "cannot read $convboardsdir gg";
-    @boardlist = readdir BDIR;
-    closedir BDIR;
-
-    for my $newbrd ( @boardlist ) {
-        if ( $newbrd ne q{.} && $newbrd ne q{..} ) {
-            fopen( OLDBRD, "$convboardsdir/$newbrd" );
-            my @brdinfo = <OLDBRD>;
-            fclose(OLDBRD);
-
-            fopen( NEWBRD, ">$boardsdir/$newbrd" );
-            print {NEWBRD} @brdinfo or croak 'cannot print NEWBRD hh';
-            fclose(NEWBRD);
-        }
-    }
-    return;
-}
-
-sub MoveMessages {
-    my ($convdatadir) = @_;
-    require "$boardsdir/forum.master";
-
-    my $ctbtime = timeformat( $date, 1, 'rfc' );
-    my @boards = sort keys %board;
-
-    my $totalbdr = @boards;
-    for my $boardname ( @boards ) {
-
-        fopen( BRDFILE, "$boardsdir/$boardname.txt" )
-          || setup_fatal_error( "$maintext_23 $boardsdir/$boardname.txt: ", 1 );
-        my @brdmessageline = <BRDFILE>;
-        fclose(BRDFILE);
-
-        for my $tops ( @brdmessageline  ) {
-            ( $thread, undef, undef, undef, undef, $replies, undef ) =
-              split /\|/xsm, $tops, 7;
-
-            fopen( MSGFILE, "$convdatadir/$thread.txt" )
-              || setup_fatal_error( "$maintext_23 $convdatadir/$thread.txt: ",
-                1 );
-            @messagelines = <MSGFILE>;
-            fclose(MSGFILE);
-
-            foreach my $msgline (@messagelines) {
-                my (
-                    $subject,   $name, $email,    $mdate,
-                    $musername, $icon, $dummy,    $user_ip,
-                    $message,   $ns,   $editdate, $editby,
-                    undef,      $attachment
-                ) = split /\|/xsm, $msgline;
-            }
-            fopen( MSGFILE, ">$datadir/$thread.txt" )
-              || setup_fatal_error( "$maintext_23 $datadir/$thread.txt: ", 1 );
-            print {MSGFILE} @messagelines
-              or croak "cannot print $datadir/$thread.txt";
-            fclose(MSGFILE);
-
-            # do the .ctb
-
-            fopen( OLDCTB, "$convdatadir/$thread.ctb" )
-              || setup_fatal_error( "$maintext_23 $convdatadir/$thread.ctb: ",
-                1 );
-            @ctblines = <OLDCTB>;
-            fclose(OLDCTB);
-
-            fopen( NEWCTB, ">$datadir/$thread.ctb" );
-            print {NEWCTB} @ctblines
-              or croak "cannot print $datadir/$thread.ctb";
-            fclose(NEWCTB);
-
-            if ( -e "$convdatadir/$thread.mail") {
-                fopen( OLDMAIL, "$convdatadir/$thread.mail" )
-                  || setup_fatal_error( "$maintext_23 $convdatadir/$thread.mail: ",
-                    1 );
-                @oldmail = <OLDMAIL>;
-                fclose(OLDMAIL);
-
-                fopen( NEWMAIL, ">$datadir/$thread.mail" );
-                print {NEWMAIL} @oldmail
-                  or croak "cannot print $datadir/$thread.mail";
-                fclose(NEWMAIL);
-            }
-            if ( -e "$convdatadir/$thread.poll") {
-                fopen( OLDPOLL, "$convdatadir/$thread.poll" )
-                  || setup_fatal_error( "$maintext_23 $convdatadir/$thread.poll: ",
-                    1 );
-                @oldpoll = <OLDPOLL>;
-                fclose(OLDPOLL);
-
-                fopen( NEWPOLL, ">$datadir/$thread.poll" );
-                print {NEWPOLL} @oldpoll
-                  or croak "cannot print $datadir/$thread.poll";
-                fclose(NEWPOLL);
-            }
-            if ( -e "$convdatadir/$thread.polled") {
-                fopen( OLDPOLLED, "$convdatadir/$thread.polled" )
-                  || setup_fatal_error( "$maintext_23 $convdatadir/$thread.polled: ",
-                    1 );
-                @oldpolled = <OLDPOLLED>;
-                fclose(OLDPOLLED);
-
-                fopen( NEWPOLLED, ">$datadir/$thread.polled" );
-                print {NEWPOLLED} @oldpolled
-                  or croak "cannot print $datadir/$thread.polled";
-                fclose(NEWPOLLED);
-            }
-        }
-        if (-e "$convdatadir/movedthreads.cgi" ) {
-        fopen( OLDMVFILE, "$convdatadir/movedthreads.cgi" )
-          || setup_fatal_error( "$maintext_23 $convdatadir/movedthreads.cgi: ", 1 );
-        my @movedmessageline = <OLDMVFILE>;
-        fclose(OLDMVFILE);
-
-        fopen( MVFILE, ">$vardir/Movedthreads.pm" );
-        print {MVFILE} @movedmessageline
-              or croak "cannot print $vardir/Movedthreads.pm";
-        fclose(MVFILE);
-        }
-    }
-    return;
-}
-
-sub MoveVariables {
-    my ($convdatadir) = @_;
-    my @mvvar = ( 'allowed.txt','attachments.txt','ban_log.txt','bots.hosts','email_domain_filter.txt','eventcal.db','eventcalbday.db','flood.txt','gmodsettings.txt','modlist.txt','mostlog.txt','Movedthreads.pm','oldestmes.txt','pm.attachments','registration.log','reserve.txt','reservecfg.txt','spamrules.txt',);
-    for my $varfl (@mvvar) {
-        if ( -e "$convdatadir/$varfl" ) {
-            if ( $varfl eq 'eventcal.db') {
-                fopen( OLDVAR, "$convdatadir/$varfl" );
-                my @oldvar = <OLDVAR>;
-                fclose (OLDVAR);
-                chomp @oldvar;
-                my @newvar;
-                foreach my $eventline ( @oldvar ) {
-                    my @eventline = split /\|/xsm, $eventline;
-                    if ( scalar(@eventline) < 9 ) {
-#                   ( $cal_date,$cal_type,$cal_name,$cal_time,$cal_event,$cal_icon,$cal_noname,$cal_type2)
-                        my $g = q{};
-                        if (lc $eventline[2] eq 'guest' ) {
-                            $g = 'g';
-                        }
-                        push @newvar,
-qq~$eventline[0]|$eventline[1]|$eventline[2]|$eventline[3]||$eventline[4]|$eventline[5]|$eventline[6]|$eventline[7]||$g\n~;
-                    }
-                    else { push @newvar, qq~$eventline\n~; }
-                }
-
-                fopen( NEWVAR, ">$vardir/$varfl" );
-                print {NEWVAR} @newvar
-                  or croak "cannot print $vardir/$varfl";
-                fclose(NEWVAR);
-            }
-            else {
-            fopen( OLDVAR, "$convdatadir/$varfl" );
-            my @oldvar = <OLDVAR>;
-            fclose (OLDVAR);
-
-            fopen( NEWVAR, ">$vardir/$varfl" );
-            print {NEWVAR} @oldvar
-                  or croak "cannot print $vardir/$varfl";
-            fclose(NEWVAR);
-            }
-        }
-    }
-    Convert_Settings();
-    return;
-}
-
-sub Convert_Settings {
-    $ret = 0;
-    if ( -e "$convvardir/Settings.pl" ) {
-        use Time::gmtime;
-        $time = time;
-        require "$convvardir/Settings.pl";
-        if ($ip_banlist) {
-            @i_ban = ( split /,/xsm, $ip_banlist );
-            chomp @i_ban;
-            for my $j (@i_ban) {
-                fopen( BAN, ">>$vardir/banlist.txt" );
-                print {BAN} qq~I|$j|$time|import|p\n~
-                  or croak 'cannot write to BAN';
-                fclose(BAN);
-            }
-        }
-        if ($email_banlist) {
-            @e_ban = ( split /,/xsm, $email_banlist );
-            chomp @e_ban;
-            for my $j (@e_ban) {
-                fopen( BAN, ">>$vardir/banlist.txt" );
-                print {BAN} qq~E|$j|$time|import|p\n~
-                  or croak 'cannot write to BAN';
-                fclose(BAN);
-            }
-        }
-        if ($user_banlist) {
-            @u_ban = ( split /,/xsm, $user_banlist );
-            chomp @u_ban;
-            for my $j (@u_ban) {
-                fopen( BAN, ">>$vardir/banlist.txt" );
-                print {BAN} qq~U|$j|$time|import|p\n~
-                  or croak 'cannot write to BAN';
-                fclose(BAN);
-            }
-        }
-    }
-    if ( -e "$convvardir/eventcalset.txt" ) {
-        require "$convvardir/eventcalset.txt";
-    }
-
-    $settings_file_version = "YaBB 2.6.0";
-    if ($enable_notifications eq q{}) { $enable_notifications = $enable_notification ? 3 : 0; }
-    if ( !$cookietsort ) { ( undef,$rancook ) = split /\-/xsm, $cookieusername;
-        $cookietsort = qq~Y2tsort-$rancook~;
-    }
-    if ( !$cookieview ) { ( undef,$rancook ) = split /\-/xsm, $cookieusername;
-        $cookieview = qq~Y2view-$rancook~;
-    }
-    if ( !$cookieviewtime ) { $cookieviewtime = 525_600; }
-    if ( !$MaxIMMessLen ) { $MaxIMMessLen = 2000; }
-    if ( !$AdMaxIMMessLen ) { $AdMaxIMMessLen = 3000; }
-    if ( !$MaxCalMessLen ){ $MaxCalMessLen = 200; }
-    if ( !$AdMaxCalMessLen ){ $AdMaxCalMessLen = 300; }
-    if ( !$Show_EventCal ){ $Show_EventCal = 0; }
-    if ( !$Event_TodayColor ){ $Event_TodayColor = '#ff0000'; }
-    if ( !$fix_avatar_img_size) { $fix_avatar_img_size  = 0; }
-    if ( !$max_avatar_width ) { $$max_avatar_width  = 65; }
-    if ( !$max_avatar_height ) { $max_avatar_height  = 65; }
-    if ( !$fix_avatarml_img_size ) { $fix_avatarml_img_size  = 0; }
-    if ( !$max_avatarml_width ) { $max_avatarml_width  = 65; }
-    if ( !$max_avatarml_height ) { $max_avatarml_height  = 65; }
-    if ( !$enabletz ) { $enabletz  = 0; }
-    if ( !$default_tz ) { $default_tz = 'UTC'; }
-    $gzcomp = fileno $GZIP ? 1 : 0;
-
-    $ip_banlist    = q{};
-    $email_banlist = q{};
-    $user_banlist  = q{};
-    $showsearchbox = 1;
-    $fmodview      = $gmodview;
-    $mdfmod        = $mdglobal;
-    $show_online_ip_admin = 1;
-    $show_online_ip_gmod  = 1;
-    $show_online_ip_fmod  = 1;
-    $ipLookup  = 1;
-    $bm_subcut = 50;   
-
-    require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm');
-
-    $ret = 1;
-    return;
 }
 
 1;
