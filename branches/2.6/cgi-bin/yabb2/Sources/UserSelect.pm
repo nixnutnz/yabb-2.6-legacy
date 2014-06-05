@@ -827,7 +827,7 @@ sub quickSearch {
 
     $to_id  = $INFO{'toid'};
     $yymain = $my_quickSearch;
-    $yymain =~ s/{yabb to_id}/$to_id/sm;
+    $yymain =~ s/{yabb to_id}/$to_id/gsm;
 
     $yytitle = $usersel_txt{'modpagetitle'};
     userselectTemplate();
