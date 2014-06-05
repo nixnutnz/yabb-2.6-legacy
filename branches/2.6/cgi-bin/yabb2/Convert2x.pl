@@ -899,7 +899,6 @@ sub ConvertMembers {
     my @xtn = qw(vars msg ims imstore log outbox rlog imdraft pre wait);
     for my $i ( ( $INFO{'mstart1'} || 0 ) .. ( @memlist - 1 ) ) {
         ( $user, undef ) = split /\t/xsm, $memlist[$i];
-        my $newuser = $user;
 
         if (   !-e "$convmemberdir/$user.vars"
             && !-e "$convmemberdir/$user.pre"
@@ -921,6 +920,13 @@ sub ConvertMembers {
                 print {FILEUSERB} @divfiles or croak 'cannot print FILEUSER';
                 fclose(FILEUSERB);
             }
+        }
+        if ( -e "$convmemberdir/$user.wlog"  && !-e "$convmemberdir/$user.rlog") {
+		    undef %recent;
+            require "$convmemberdir/$user.wlog";
+            fopen( RLOG, ">$memberdir/$user.rlog" );
+            print {RLOG} map { "$_\t$recent{$_}\n" } keys %recent or croak "$croak{'print'} RLOG";
+            fclose(RLOG);
         }
 
         if ( time() > $time_to_jump && ( $i + 1 ) < @memlist ) {

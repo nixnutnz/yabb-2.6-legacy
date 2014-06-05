@@ -26,9 +26,11 @@ LoadLanguage('MessageIndex');
 if ( $INFO{'tsort'} eq q{} ) {
     $tsortcookie = "$cookietsort$currentboard$username";
     $tsort       = $yyCookies{$tsortcookie};
+    $tsort =~ s/\D//gsm;
 }
 else {
     $tsort = $INFO{'tsort'};
+    $tsort =~ s/\D//gsm;
     my $cookiename = "$cookietsort$currentboard$username";
     my $expiration = 'Sunday, 17-Jan-2038 00:00:00 GMT';
     push @otherCookies,

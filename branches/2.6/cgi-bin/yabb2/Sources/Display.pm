@@ -52,6 +52,7 @@ sub Display {
         {
             if ( $yyCookies{$cookieview} ) {
                 $gtvlcount = $yyCookies{$cookieview};
+                $gtvlcount =~ s/\D//gsm;
                 $gtvlcount++;
             }
             else {

@@ -2233,6 +2233,7 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
     }
 
     $mreplyno++;
+	$showIM_link = q{};
     if (   $INFO{'caller'} == 1
         || ( $INFO{'caller'} == 3 && $musername ne q{} )
         || ( $INFO{'caller'} == 5 && $musername ne q{} ) )
