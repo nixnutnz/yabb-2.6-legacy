@@ -423,8 +423,9 @@ $myprofile_edit~;
         && $username eq $user )
     {
         LoadLanguage('Sessions');
-        require Sources::Decoder;
-        my $decanswer = descramble( ${ $uid . $user }{'sesanswer'}, $user );
+#        require Sources::Decoder;
+#        my $decanswer = descramble( ${ $uid . $user }{'sesanswer'}, $user );
+        my $decanswer = ${ $uid . $user }{'sesanswer'};
         $questsel = qq~<select name="sesquest" id="sesquest" size="1">\n~;
         while ( ( $key, $val ) = each %sesquest_txt ) {
             if (   ${ $uid . $user }{'sesquest'} eq $key
@@ -1718,10 +1719,11 @@ s/^(\d+\|\d+\|.*?)\|(.*?)\|/ ($2 eq ${$uid.$user}{'realname'} ? "$1|$member{'nam
         ${ $uid . $user }{'hideage'}  = $member{'hideage'};
         ${ $uid . $user }{'sesquest'} = $member{'sesquest'};
 
-        require Sources::Decoder;
-        ${ $uid . $user }{'sesanswer'} =
-          scramble( $member{'sesanswer'}, $user );
-        ${ $uid . $username }{'session'} = encode_password($user_ip);
+#        require Sources::Decoder;
+#        ${ $uid . $user }{'sesanswer'} =
+#          scramble( $member{'sesanswer'}, $user );
+#        ${ $uid . $username }{'session'} = encode_password($user_ip);
+        ${ $uid . $user }{'sesanswer'} = $member{'sesanswer'};
 
         # EventCal Begin
         if ( $Update_EventCal == 1 ) {

@@ -49,7 +49,7 @@ sub SessionReval {
 }
 
 sub SessionReval2 {
-    require Sources::Decoder;
+#    require Sources::Decoder;
     $FORM{'cookielength'}   = 360;
     $FORM{'cookieneverexp'} = 1;
     if ( $FORM{'sesanswer'} eq q{} ) { fatal_error('no_secret_answer'); }
@@ -61,8 +61,8 @@ sub SessionReval2 {
         chomp $answer;
     }
     else {
-        $question = descramble( ${ $uid . $username }{'sesanswer'}, $username );
-        $answer = $FORM{'sesanswer'};
+        $question = encode_password( ${ $uid . $username }{'sesanswer'} );
+        $answer =   encode_password( $FORM{'sesanswer'} );
 
         #       bug fix courtesy Derek Barnstorm;
         chomp $answer;

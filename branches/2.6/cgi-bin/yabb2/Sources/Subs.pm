@@ -1475,7 +1475,7 @@ sub CountChars {
         FromHTML($teststring);
         $convertcut += $stinglength - length $teststring;
 
-        # correct length for speciall characters, YaBBC and HTML-Tags
+        # correct length for special characters, YaBBC and HTML-Tags
         $teststring = $string;
         $teststring =~ s/\[ch\d{3,}?\]/ /igxsm;
         $teststring =~ s/<.*?>|\[.*?\]//gxsm;
@@ -2424,7 +2424,7 @@ qq~$adminurl?action=ml;sort=$INFO{'sort'};letter=$INFO{'letter'};start=$INFO{'st
     return;
 }
 
-#changed sub for improve perfomance, code from Zoo
+#changed sub for improve performance, code from Zoo
 sub check_existence {
     my ( $dir, $filename ) = @_;
     my ( $origname, $filext );
