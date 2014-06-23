@@ -941,7 +941,7 @@ qq~                     <select multiple="multiple" name="moderatorgroups$i" id=
                         <td class="windowbg2"><label for="canpost$i"><b>$admin_txt{'247'}</b></label></td>
                         <td class="windowbg2" colspan="3"><input type="checkbox" name="canpost$i" id="canpost$i" value="1"$canpostch /> <label for="canpost$i">$admin_txt{'247a'}</label></td>
                     </tr><tr>
-                        <td class="catbg"  colspan="4"><b>$admin_txt{'64'}</b> $admin_txt{'64a'} </td>
+                        <td class="catbg" colspan="4"><b>$admin_txt{'64'}</b> $admin_txt{'64a'} </td>
                     </tr><tr>
                         <td class="windowbg2"><label for="pic$i"><b>$admin_txt{'64b'}:</b></label></td>
                         <td class="windowbg2" colspan="3"><span class="small">$admin_txt{'64b3'}</span><br /><input type="file" name="pic$i" id="pic$i" size="35"$brdpic /><input type="hidden" name="cur_pic$i" value="$boardpic" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('pic$i').value='';">X</span>$boardpic_value

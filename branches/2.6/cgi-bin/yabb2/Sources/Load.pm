@@ -44,10 +44,10 @@ sub LoadBoardControl {
         push @allboards, $cntboard;
 
         $cntdescription =~ s/\&\ /\&amp; /gxsm;
-        if ( substr( $cntmods, 0, 2) eq ', ' ) {
+        if ( substr( $cntmods, 0, 2 ) eq ', ' ) {
             substr( $cntmods, 0, 2 ) = q{};
         }
-        if ( substr( $cntmodgroups, 0, 2) eq ', ' ) {
+        if ( substr( $cntmodgroups, 0, 2 ) eq ', ' ) {
             substr( $cntmodgroups, 0, 2 ) = q{};
         }
 
@@ -147,7 +147,7 @@ sub LoadCensorList {
     elsif (
         scalar @lang == 1
         && ( ( -s "$langdir/$language/censor.txt" ) < 3
-        || !-e "$langdir/$language/censor.txt" )
+            || !-e "$langdir/$language/censor.txt" )
       )
     {
         return;
@@ -155,18 +155,18 @@ sub LoadCensorList {
     for my $langd (@lang) {
         if ( -e "$langdir/$langd/censor.txt" ) {
             fopen( CENSOR, "$langdir/$langd/censor.txt" );
-    while ( chomp( $buffer = <CENSOR> ) ) {
-        $buffer =~ s/\r(?=\n*)//gxsm;
-        if ( $buffer =~ m/\~/sm ) {
-            ( $tmpa, $tmpb ) = split /\~/xsm, $buffer;
-            $tmpc = 0;
-        }
-        else {
-            ( $tmpa, $tmpb ) = split /=/xsm, $buffer;
-            $tmpc = 1;
-        }
-        push @censored, [ $tmpa, $tmpb, $tmpc ];
-    }
+            while ( chomp( $buffer = <CENSOR> ) ) {
+                $buffer =~ s/\r(?=\n*)//gxsm;
+                if ( $buffer =~ m/\~/sm ) {
+                    ( $tmpa, $tmpb ) = split /\~/xsm, $buffer;
+                    $tmpc = 0;
+                }
+                else {
+                    ( $tmpa, $tmpb ) = split /=/xsm, $buffer;
+                    $tmpc = 1;
+                }
+                push @censored, [ $tmpa, $tmpb, $tmpc ];
+            }
         }
     }
     fclose(CENSOR);
@@ -298,11 +298,11 @@ sub LoadUser {
                 }
             }
             if ( scalar @settings != 0 ) {
-            fopen( LOADUSER, ">$memberdir/$user.$userextension" )
+                fopen( LOADUSER, ">$memberdir/$user.$userextension" )
                   || fatal_error( 'cannot_open',
                     "$memberdir/$user.$userextension load2", 1 );
-            print {LOADUSER} @settings or croak "$croak{'print'} LOADUSER";
-            fclose(LOADUSER);
+                print {LOADUSER} @settings or croak "$croak{'print'} LOADUSER";
+                fclose(LOADUSER);
             }
             else {
                 fatal_error( 'missingvars', "$memberdir/$user.$userextension",
@@ -378,7 +378,7 @@ sub KillModerator {
     fopen( FORUMCONTROL, "<$boardsdir/forum.control" )
       || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     @oldcontrols = <FORUMCONTROL>;
-    fclose( FORUMCONTROL );
+    fclose(FORUMCONTROL);
 
     my @newmods;
     foreach my $boardline (@oldcontrols) {
@@ -422,7 +422,7 @@ sub KillModeratorGroup {
     fopen( FORUMCONTROL, "<$boardsdir/forum.control" )
       || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     @oldcontrols = <FORUMCONTROL>;
-    fclose( FORUMCONTROL );
+    fclose(FORUMCONTROL);
 
     my @newmods;
     foreach my $boardline (@oldcontrols) {
@@ -974,7 +974,7 @@ sub MakeTools {
     $template = qq~<li>$template</li>~;
     $template =~ s/\|\|\|/$list_item/gsm;
     $template =~ s/<li>[\s]*<\/li>//gsm;
-    if ($MenuType == 1 ) {
+    if ( $MenuType == 1 ) {
         $template =~ s/\Q$menusep//gsm;
     }
 

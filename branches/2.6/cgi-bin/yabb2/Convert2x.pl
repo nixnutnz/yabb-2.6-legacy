@@ -51,13 +51,13 @@ if    ( -e './Paths.pm' )           { require Paths; }
 elsif ( -e './Variables/Paths.pm' ) { require './Variables/Paths.pm'; }
 
 $boardsdir = './Boards';
-    $sourcedir = './Sources';
-    $memberdir = './Members';
-    $vardir    = './Variables';
+$sourcedir = './Sources';
+$memberdir = './Members';
+$vardir    = './Variables';
 
 $thisscript = "$ENV{'SCRIPT_NAME'}";
 if   ( -e ('YaBB.cgi') ) { $yyext = 'cgi'; }
-else                   { $yyext = 'pl'; }
+else                     { $yyext = 'pl'; }
 if   ($boardurl) { $set_cgi = "$boardurl/Convert2x.$yyext"; }
 else             { $set_cgi = "Convert2x.$yyext"; }
 $scripturl = "$boardurl/YaBB.$yyext";
@@ -152,12 +152,12 @@ if ( -e "$vardir/Setup.lock" ) {
         if ( !-d "$convertdir/Messages" ) {
             setup_fatal_error( "Directory: $convertdir/Messages", 1 );
         }
-        else { $convdatadir = "$convertdir/Messages";}
+        else { $convdatadir = "$convertdir/Messages"; }
 
         if ( !-d "$convertdir/Variables" ) {
             setup_fatal_error( "Directory: $convertdir/Variables", 1 );
         }
-        else {$convvardir = "$convertdir/Variables";}
+        else { $convvardir = "$convertdir/Variables"; }
 
         my $setfile = << "EOF";
 \$convertdir = qq~$convertdir~;
@@ -654,7 +654,7 @@ EOF
 
         $formsession = cloak("$mbname$username");
 
-            $convtext .=
+        $convtext .=
 q~<br /><br />After you have tested your forum and made sure everything was converted correctly you can go to your Admin Center and delete /Convert/Boards, /Convert/Members, /Convert/Messages and /Convert/Variables folders and their contents.~;
 
         $yymain = qq~
@@ -937,10 +937,10 @@ sub ConvertMembers {
               . @memlist
               . qq~;mstart1=$i~;
             redirectexit();
-            }
         }
-    return;
     }
+    return;
+}
 
 # / Member Conversion ##
 
@@ -1002,7 +1002,7 @@ sub FixControl {
             my ( $old, $oldboard ) = split /[|]/xsm, $_;
             push @oldboard, $oldboard;
         }
-        my $j = 0;
+        my $j        = 0;
         my @newboard = ();
         foreach my $x (@oldboard) {
 #$cat|$board|$pic|$description|$mods|$modgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$attperms|$minageperms|$maxageperms|$genderperms|$canpost|$parent|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$bdrss
@@ -1010,7 +1010,7 @@ sub FixControl {
 qq~${$x}{'cat'}|$x|${$x}{'pic'}|${$x}{'description'}|${$x}{'mods'}|${$x}{'modgroups'}|${$x}{'topicperms'}|${$x}{'replyperms'}|${$x}{'pollperms'}|${$x}{'zero'}|${$x}{'membergroups'}|${$x}{'ann'}|${$x}{'rbin'}|${$x}{'attperms'}|${$x}{'minageperms'}|${$x}{'maxageperms'}|${$x}{'genderperms'}|${$x}{'canpost'}|${$x}{'parent'}|${$x}{'rules'}|${$x}{'rulestitle'}|${$x}{'rulesdesc'}|${$x}{'rulescollapse'}|${$x}{'brdpasswr'}|${$x}{'brdpassw'}|${$x}{'brdrss'}\n~;
             $j++;
         }
-       fopen( FORUMCONTROL, ">$boardsdir/forum.control" )
+        fopen( FORUMCONTROL, ">$boardsdir/forum.control" )
           || setup_fatal_error( "$maintext_23 $boardsdir/forum.control: ", 1 );
         print {FORUMCONTROL} @newboard
           or croak 'cannot print FORUMCONTROL';
@@ -1219,7 +1219,7 @@ sub MoveMessages {
         $INFO{'tcount'} = 0;
     }
     return;
-        }
+}
 
 # / Messages Conversion ##
 
@@ -1258,7 +1258,7 @@ sub MoveVariables {
 qq~$eventline[0]|$eventline[1]|$eventline[2]|$eventline[3]||$eventline[4]|$eventline[5]|$eventline[6]|$eventline[7]||$g\n~;
                     }
                     else { push @newvar, qq~$eventline\n~; }
-    }
+                }
 
                 fopen( NEWVAR, ">$vardir/$varfl" );
                 print {NEWVAR} @newvar
@@ -1678,7 +1678,7 @@ qq~$months[$newmonth] $newday, $newyear $maintxt{'107'} $newhour:$newminute~;
         $yyurl = $scripturl;
         $curline =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm;
         $curline =~ s/<yabb\s+(\w+)>/${"yy$1"}/gxsm;
-        $curline =~ s/img src\=\"$imagesdir\/(.+?)\"/SetupImgLoc($1)/eisgm; #";
+        $curline =~ s/img src\=\"$imagesdir\/(.+?)\"/SetupImgLoc($1)/eisgm;  #";
         $output .= $curline;
     }
     if ( $yycopyin == 0 ) {

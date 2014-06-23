@@ -667,7 +667,7 @@ sub update_htaccess {
             print {HTA} "\n$htheader\n" or croak "$croak{'print'} HTA";
             push @denies, $value;
             foreach (@denies) {
-                    print {HTA} "Deny from $_\n"
+                print {HTA} "Deny from $_\n"
                       or croak "$croak{'print'} HTA";
             }
             print {HTA} "$htfooter\n" or croak "$croak{'print'} HTA";

@@ -1599,7 +1599,7 @@ sub enc_eMail {
     $titlesp =~ s/(((<.+?>)|&#\d+;)|.)/ enc_eMail_x($1,$2,$3) /egsm;
     if ($src || $yymycharset eq 'UTF-8') {$titlesp = $title;}
 
-    return qq~<script type='text/javascript'>\nSpamInator("$titlesp","$code1","$code2","&#109;&#97;&#105;&#108;&#92;&#117;&#48;&#48;&#55;&#52;&#111;&#92;&#117;&#48;&#48;&#51;&#97;","$subbody");\n</script>~;
+    return qq~<script type='text/javascript'>\nSpamInator('$titlesp',"$code1","$code2","&#109;&#97;&#105;&#108;&#92;&#117;&#48;&#48;&#55;&#52;&#111;&#92;&#117;&#48;&#48;&#51;&#97;",'$subbody');\n</script>~;
 
 }
 
@@ -2424,7 +2424,7 @@ qq~$adminurl?action=ml;sort=$INFO{'sort'};letter=$INFO{'letter'};start=$INFO{'st
     return;
 }
 
-#changed sub for improve performance, code from Zoo
+#changed sub for improved performance, code from Zoo
 sub check_existence {
     my ( $dir, $filename ) = @_;
     my ( $origname, $filext );
