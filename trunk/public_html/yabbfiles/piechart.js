@@ -3,8 +3,8 @@
 //##############################################################################
 //# YaBB: Yet another Bulletin Board                                           #
 //# Open-Source Community Software for Webmasters                              #
-//# Version:        YaBB 3.0 Beta                                              #
-//# Packaged:       October 05, 2010                                           #
+//# Version:        YaBB 2.6.0                                                 #
+//# Packaged:       June 27, 2014                                              #
 //# Distributed by: http://www.yabbforum.com                                   #
 //# ===========================================================================#
 //# Copyright (c) 2000-2010 YaBB (www.yabbforum.com) - All Rights Reserved.    #
@@ -12,7 +12,7 @@
 //#               with assistance from the YaBB community.                     #
 //##############################################################################
 
-//YaBB 3.0 Beta $Revision$
+//YaBB 2.6.0 $Revision$
 
 function pieChart() {
 	this.pie_array = new Array();
@@ -90,7 +90,7 @@ function pieChart() {
 				slicesplit.push(val_label[3]);
 			}
 		}
-		htm += '<div style="position: relative; top: 0px; left: 0px; height: ' + canvas_height + 'px; width: ' + this.canvas_width + 'px;">';
+		htm += '<div style="position: relative; top: 0px; left: 0px; margin-left:auto; margin-right:auto; height: ' + canvas_height + 'px; width: ' + this.canvas_width + 'px;">';
 		for(var i = 0; i < value.length; i++) {
 			angle = Math.round(value[i] / votes_tot * 360);
 			if(!slicecolor[i]) slicecolor[i] = slice_color[i+1];
