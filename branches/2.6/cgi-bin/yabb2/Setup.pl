@@ -4,12 +4,12 @@
 # $Source: /Setup.pl $
 ###############################################################################
 # Setup.pl                                                                    #
-# $Date: 03.20.14 $                                                           #
+# $Date: 06.27.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.6.0                                                  #
-# Packaged:       February 20, 2014                                           #
+# Packaged:       June 27, 2014                                               #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -691,7 +691,7 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.6.0                                                  #
-# Packaged:       February 20, 2014                                           #
+# Packaged:       June 27, 2014                                               #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014  YaBB (www.yabbforum.com) - All Rights Reserved.    #
@@ -1439,7 +1439,7 @@ sub SetInstall2 {
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.6.0                                                  #
-# Packaged:       February 20, 2014                                           #
+# Packaged:       June 27, 2014                                               #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014  YaBB (www.yabbforum.com) - All Rights Reserved.    #

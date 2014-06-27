@@ -4,10 +4,10 @@
 //# YaBB: Yet another Bulletin Board                                           #
 //# Open-Source Community Software for Webmasters                              #
 //# Version:        YaBB 2.6.0                                                 #
-//# Packaged:       Apr 09, 2014                                               #
+//# Packaged:       June 27, 2014                                              #
 //# Distributed by: http://www.yabbforum.com                                   #
 //# ===========================================================================#
-//# Copyright (c) 2000-2010 YaBB (www.yabbforum.com) - All Rights Reserved.    #
+//# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.    #
 //# Software by:  The YaBB Development Team                                    #
 //#               with assistance from the YaBB community.                     #
 //##############################################################################

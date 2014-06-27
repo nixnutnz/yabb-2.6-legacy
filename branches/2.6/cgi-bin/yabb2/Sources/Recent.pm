@@ -1,11 +1,11 @@
 ###############################################################################
 # Recent.pm                                                                   #
-# $Date: 02.20.14 $                                                           #
+# $Date: 06.27.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.6.0                                                  #
-# Packaged:       February 20, 2014                                           #
+# Packaged:       June 27, 2014                                               #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
