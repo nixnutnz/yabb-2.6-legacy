@@ -1461,7 +1461,7 @@ sub AdminCheck2 {
     if ( $FORM{'page'} )   { $my_page   = qq~page=$FORM{'page'};~; }
     if ( $my_action || $my_page ) { $my_query = q{?}; }
 
-    if   ($do_scramble_id) { $user = decloak($username); }
+    if   ( $do_scramble_id ) { $user = decloak($username); }
     else                   { $user = $username; }
     if ( ( $iamadmin || $iamgmod )
         && $password ne ${ $uid . $user }{'password'} )

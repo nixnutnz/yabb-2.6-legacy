@@ -685,7 +685,6 @@ function checkParent(id, board) {
     $annexist  = q{};
     $rbinexist = q{};
 
-    #     for ( $i = 1 ; $i != $FORM{'amount'} + 1 ; $i++ ) {
     for my $i ( 1 .. $FORM{'amount'} ) {
 
         # differentiate between edit or add boards

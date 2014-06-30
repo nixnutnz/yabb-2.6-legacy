@@ -662,7 +662,7 @@ $member_groups
 \$minlinkpost = $minlinkpost;               # Minimum amount of posts a member needs to post links and images
 \$minlinksig = $minlinksig;                 # Minimum amount of posts a member needs to create links and images in signature
 \$minlinkweb = $minlinkweb;                 # Minimum amount of posts a member needs to link to a website in their profile
-\$post_speed_count = $post_speed_count; # Maximum amount of abuses befor a user gets banned
+\$post_speed_count = $post_speed_count; # Maximum amount of abuses before a user gets banned
 \$fontsizemin = $fontsizemin;               # Minimum Allowed Font height in pixels
 \$fontsizemax = $fontsizemax;               # Maximum Allowed Font height in pixels
 \$MaxSigLen = $MaxSigLen;                   # Maximum Allowed Characters in Signatures
