@@ -18,7 +18,7 @@ use English qw(-no_match_vars);
 use Time::Local;
 our $VERSION = '2.6.0';
 
-$datetimepmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$datetimepmver = 'YaBB 2.6.0 $Revision$';
 
 sub calcdifference {    # Input: $date1 $date2
     $result = int( $date2 / 86_400 ) - int( $date1 / 86_400 );

@@ -861,7 +861,7 @@ qq~$menusep<a href="$scripturl?action=print;num=$viewnum" target="_blank">$img{'
                 }
                 if ( !exists $attach_gif{$ext} ) {
                     $attach_gif{$ext} =
-                      ( $ext
+                      ( $att_img{$ext}
                           && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}"
                       )
                       ? "$imagesdir/$att_img{$ext}"

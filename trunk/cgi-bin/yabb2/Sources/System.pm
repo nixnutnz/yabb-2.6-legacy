@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.0';
 
-$systempmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$systempmver = 'YaBB 2.6.0 $Revision$';
 
 sub BoardTotals {
     my ( $job, @updateboards ) = @_;

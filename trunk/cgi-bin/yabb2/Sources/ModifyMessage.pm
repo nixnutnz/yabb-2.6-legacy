@@ -15,7 +15,7 @@
 our $VERSION = '2.6.0';
 use CGI::Carp qw(fatalsToBrowser);
 
-$modifymessagepmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$modifymessagepmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( !$post_txt_loaded ) {

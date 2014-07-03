@@ -15,7 +15,7 @@
 use English '-no_match_vars';
 our $VERSION = '2.6.0';
 
-$smtppmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$smtppmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 eval q{

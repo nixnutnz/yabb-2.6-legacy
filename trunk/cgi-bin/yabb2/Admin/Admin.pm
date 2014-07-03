@@ -18,7 +18,7 @@ use English qw(-no_match_vars);
 use Time::Local;
 our $VERSION = '2.6.0';
 
-$adminpmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$adminpmver = 'YaBB 2.6.0 $Revision$';
 LoadLanguage('Credits');
 
 get_template('AdminCentre');

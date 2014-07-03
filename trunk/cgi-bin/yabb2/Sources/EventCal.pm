@@ -19,7 +19,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use Time::Local;
 our $VERSION = '2.6.0';
 
-$eventcalpmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$eventcalpmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');

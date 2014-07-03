@@ -18,7 +18,7 @@ no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.0';
 
-$messageindexpmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$messageindexpmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 get_micon();
 LoadLanguage('MessageIndex');

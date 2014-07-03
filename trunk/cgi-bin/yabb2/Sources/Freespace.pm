@@ -19,7 +19,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.0';
 
-$freespacepmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$freespacepmver = 'YaBB 2.6.0 $Revision$';
 
 sub freespace {
     my ( $FreeBytes, $hostchecked );

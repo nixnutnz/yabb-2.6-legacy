@@ -18,7 +18,7 @@ no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.0';
 
-$guardianpmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$guardianpmver = 'YaBB 2.6.0 $Revision$';
 
 $not_from   = qq~$webmaster_email~;
 $not_to     = qq~$webmaster_email~;

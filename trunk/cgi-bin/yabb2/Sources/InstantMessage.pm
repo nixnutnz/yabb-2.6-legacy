@@ -18,7 +18,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.0';
 
-$instantmessagepmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$instantmessagepmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 require Sources::PostBox;
 require Sources::SpamCheck;

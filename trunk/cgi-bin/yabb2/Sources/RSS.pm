@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.0';
 
-$rsspmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$rsspmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Change the error routine for here.

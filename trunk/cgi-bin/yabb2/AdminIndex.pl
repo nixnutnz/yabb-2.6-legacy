@@ -23,7 +23,7 @@ our $VERSION = '2.6.0';
 
 ### Version Info ###
 $YaBBversion     = 'YaBB 2.6.0';
-$adminindexplver = 'YaBB 2.6.0 $Revision: 1503 $';
+$adminindexplver = 'YaBB 2.6.0 $Revision$';
 
 # Make sure the module path is present
 push @INC, './Modules';

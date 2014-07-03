@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.6.0';
 
-$dosmiliespmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$dosmiliespmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Main');

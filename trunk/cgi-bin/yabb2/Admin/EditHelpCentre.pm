@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.0';
 
-$edithelpcentrepmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$edithelpcentrepmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('HelpCentre');

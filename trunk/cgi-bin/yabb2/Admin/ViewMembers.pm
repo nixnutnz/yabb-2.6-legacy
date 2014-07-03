@@ -15,7 +15,7 @@
 # use strict;
 our $VERSION = '2.6.0';
 
-$viewmemberspmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$viewmemberspmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('MemberList');

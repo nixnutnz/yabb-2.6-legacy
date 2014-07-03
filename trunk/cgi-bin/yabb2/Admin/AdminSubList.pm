@@ -13,7 +13,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$adminsublistpmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$adminsublistpmver = 'YaBB 2.6.0 $Revision$';
 our $VERSION = '2.6.0';
 
 %director=( # in alphabetical Order!

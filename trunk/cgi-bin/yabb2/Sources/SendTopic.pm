@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.6.0';
 
-$sendtopicpmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$sendtopicpmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( !$sendtopicmail || $sendtopicmail == 2 ) { fatal_error('not_allowed'); }

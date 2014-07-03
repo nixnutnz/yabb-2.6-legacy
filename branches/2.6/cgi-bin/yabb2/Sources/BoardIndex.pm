@@ -947,15 +947,6 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}" re
                 ${ $uid . $curboard }{'lastposttime'} ||=
                   $boardindex_txt{'470'};
 
-                if ( $bdpic =~ /\//ism ) {
-                    $bdpic =
-qq~ <img src="$bdpic" alt="$boardname" title="$boardname" /> ~;
-                }
-                elsif ($bdpic) {
-                    $bdpic =
-qq~ <img src="$imagesdir/$bdpic" alt="$boardname" title="$boardname" /> ~;
-                }
-
                 my $templateblock = $boardblock;
 
                 # if we can't post in this parent board, change the layout
@@ -1186,6 +1177,15 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
 qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$yyhtml_root','$curboard', 0)" id="dropbutton_$curboard" class="cursor" alt="" />~;
                 }
                 else { $messagedropdown = q{}; }
+                if ( $bdpic =~ /\//ism ) {
+                    $bdpic =
+qq~ <img src="$bdpic" alt="$boardname" title="$boardname" /> ~;
+                }
+                elsif ($bdpic) {
+                    $bdpic =
+qq~ <img src="$imagesdir/$bdpic" alt="$boardname" title="$boardname" /> ~;
+                }
+
                 if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm ) {
                     $templateblock =~ s/{yabb expandmessages}/$expandmessages/gsm;
                     $templateblock =~ s/{yabb messagedropdown}/$messagedropdown/gsm;

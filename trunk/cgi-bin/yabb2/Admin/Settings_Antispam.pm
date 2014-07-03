@@ -17,7 +17,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.0';
 
-$settings_antispampmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$settings_antispampmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 

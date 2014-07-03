@@ -16,7 +16,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.0';
 
-$modlistpmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$modlistpmver = 'YaBB 2.6.0 $Revision$';
 my ($action);
 if ( $action eq 'detailedversion' ) { return 1; }
 

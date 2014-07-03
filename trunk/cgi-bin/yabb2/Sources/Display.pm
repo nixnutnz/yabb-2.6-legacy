@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.0';
 
-$displaypmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$displaypmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Display');
@@ -861,7 +861,7 @@ qq~$menusep<a href="$scripturl?action=print;num=$viewnum" target="_blank">$img{'
                 }
                 if ( !exists $attach_gif{$ext} ) {
                     $attach_gif{$ext} =
-                      ( $ext
+                      ( $att_img{$ext}
                           && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}"
                       )
                       ? "$imagesdir/$att_img{$ext}"

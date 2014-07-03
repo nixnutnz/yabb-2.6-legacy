@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.6.0';
 
-$spamcheckpmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$spamcheckpmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub spamcheck {

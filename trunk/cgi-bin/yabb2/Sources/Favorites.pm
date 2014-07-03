@@ -18,7 +18,7 @@ no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.0';
 
-$favoritespmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$favoritespmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub Favorites {

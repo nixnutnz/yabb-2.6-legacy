@@ -17,7 +17,7 @@ use CGI qw(:standard);
 use Time::Local;
 our $VERSION = '2.6.0';
 
-$banpmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$banpmver = 'YaBB 2.6.0 $Revision$';
 
 #the ban list in the Admin Center
 sub ipban {

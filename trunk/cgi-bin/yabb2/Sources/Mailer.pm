@@ -16,7 +16,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.6.0';
 
-$mailerpmver = 'YaBB 2.6.0 $Revision: 1503 $';
+$mailerpmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub sendmail {
