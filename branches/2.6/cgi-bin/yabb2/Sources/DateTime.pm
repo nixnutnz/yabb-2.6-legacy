@@ -466,14 +466,14 @@ sub time_4 {
     $newhour2 = $newhour % 12 || 12;
     if   ($use_rfc) { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
     else            { $newmonth2 = $months[ $newmonth - 1 ]; }
-    $newday2 = "<sup>$timetxt{'4'}</sup>";
+    $newday2 = "$timetxt{'4'}";
     if ( $newday > 10 && $newday < 20 ) {
-        $newday2 = "<sup>$timetxt{'4'}</sup>";
+        $newday2 = "$timetxt{'4'}";
     }
     else {
         foreach my $i ( 1 .. 3 ) {
             if ( $newday % 10 == $i ) {
-                $newday2 = qq~<sup>$timetxt{"$i"}</sup>~;
+                $newday2 = qq~$timetxt{$i}~;
             }
         }
     }
@@ -529,14 +529,14 @@ sub time_7 {
 
     $dayext = q{};
     if ( $mytimeformat =~ m/[+]/sm ) {
-        $dayext = "<sup>$timetxt{'4'}</sup>";
+        $dayext = "$timetxt{'4'}";
         if ( $newday > 10 && $newday < 20 ) {
-            $dayext = "<sup>$timetxt{'4'}</sup>";
+            $dayext = "$timetxt{'4'}";
         }
         else {
             foreach my $i ( 1 .. 3 ) {
                 if ( $newday % 10 == $i ) {
-                    $datext = qq~<sup>$timetxt{"$i"}</sup>~;
+                    $datext = qq~$timetxt{$i}~;
                 }
             }
         }
@@ -592,14 +592,14 @@ sub time_8 {
     $newhour2 = $newhour % 12 || 12;
     if   ($use_rfc) { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
     else            { $newmonth2 = $months[ $newmonth - 1 ]; }
-    $newday2 = "<sup>$timetxt{'4'}</sup>";
+    $newday2 = "$timetxt{'4'}";
     if ( $newday > 10 && $newday < 20 ) {
-        $newday2 = "<sup>$timetxt{'4'}</sup>";
+        $newday2 = "$timetxt{'4'}";
     }
     else {
         foreach my $i ( 1 .. 3 ) {
             if ( $newday % 10 == $i ) {
-                $newday2 = qq~<sup>$timetxt{"$i"}</sup>~;
+                $newday2 = qq~$timetxt{$i}~;
             }
         }
     }

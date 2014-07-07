@@ -11,9 +11,14 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision: 1503 $
+# $Revision$
 
 $myreg_req = q~ <span style="color:#ff0000; font-weight:700">*</span> ~;
+
+if ( $FORM{'reglanguage'} ) {
+    $language = $FORM{'reglanguage'};
+    LoadLanguage('Register');
+}
 
 ##agreement before registration form
 $myregister_fullagree = qq~
