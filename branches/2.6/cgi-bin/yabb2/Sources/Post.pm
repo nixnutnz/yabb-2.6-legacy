@@ -1051,8 +1051,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
 
         $my_post_feata = $mypost_feata;
         $my_post_feata .= qq~
-            <span class="small"><img src="$imagesdir/$newload{'brd_col'}" id="feature_col" alt="$npf_txt{'collapse_features'}" title="$npf_txt{'collapse_features'}" class="cursor" onclick="show_features(0);" /> $npf_txt{'features_text'}</span>
-            <input type="hidden" name="col_rowb" id="col_row" value="$col_row" />~;
+            <span class="small"><img src="$imagesdir/$newload{'brd_col'}" id="feature_col" alt="$npf_txt{'collapse_features'}" title="$npf_txt{'collapse_features'}" class="cursor" onclick="show_features(0);" /> $npf_txt{'features_text'}</span>~;
 
         if (
             !$removenormalsmilies

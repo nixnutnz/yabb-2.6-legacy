@@ -260,7 +260,7 @@ sub postbox2 {
             <div id="spell_container"></div>
             <div class="left99">
                 <div class="leftleft">
-                    <input type="hidden" name="col_row" value="$col_row" />
+                    <input type="hidden" name="col_row" id="col_row" value="$col_row" />
                     <input type="hidden" name="messagewidth" id="messagewidth" value="$pwidth" />
                     <input type="hidden" name="messageheight" id="messageheight" value="$pheight" />
                     <div id="dragcanvas" style="height: $dheight; width: $dwidth;">
@@ -426,7 +426,7 @@ skydobject.initialize()~;
     #//var col_row = $col_row;
     if ( $action ne 'imsend' && $action ne 'eventcal' ) {
         $box .= qq~
-var col_row = 0;
+var col_row = $col_row;
 
 function show_features() {
     document.getElementById('col_row').value = col_row;
