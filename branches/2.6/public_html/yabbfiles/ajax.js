@@ -767,10 +767,14 @@ function GetXmlHttpObject() {
     try { // test if ajax is supported
         if (typeof( new XMLHttpRequest() ) == 'object') {
             xmlHttp = new XMLHttpRequest();
-        } else if (typeof( new ActiveXObject("Msxml2.XMLHTTP") ) == 'object') {
-            xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+        } else if (typeof( new ActiveXObject("MSXML2.XMLHttp.6.0") ) == 'object') {
+            xmlHttp = new ActiveXObject("MSXML2.XMLHttp.6.0");
+        } else if (typeof( new ActiveXObject("MSXML2.XMLHttp.3.0") ) == 'object') {
+            xmlHttp = new ActiveXObject("MSXML2.XMLHttp.3.0");
+        } else if (typeof( new ActiveXObject("MSXML2.XMLHttp") ) == 'object') {
+            xmlHttp = new ActiveXObject("MSXML2.XMLHttp");
         } else if (typeof( new ActiveXObject("Microsoft.XMLHTTP") ) == 'object') {
             xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
     } catch (e) { }
-}
+} 

@@ -22,8 +22,6 @@ $guardianpmver = 'YaBB 2.6.0 $Revision$';
 
 $not_from   = qq~$webmaster_email~;
 $not_to     = qq~$webmaster_email~;
-$abuse_time = timeformat( $date, 1, 1, 1 );
-$abuse_time =~ s/<.*?>(.*?)<\/.*?>/$1/gxsm;
 
 sub guard {
     if ( !$use_guardian ) { return; }
@@ -59,6 +57,7 @@ sub guard {
     {
         if ($disallow_proxy_notify) {
             LoadLanguage('Guardian');
+			$abuse_time = timeformat($date, 1, 'rfc', 1);
             $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'proxy_abuse'} $guardian_txt{'abuse'}~;
             $not_body =
@@ -77,6 +76,7 @@ qq~$guardian_txt{'abuse_ip'}: (REMOTE_ADDR)->$proxy0, (X_IP_CLIENT)->$proxy1, (H
             $not_body .= qq~$mbname, $guardian_txt{'main'}~;
             $not_subject =~ s/\&trade\;//gxsm;
             $not_body    =~ s/\&trade\;//gxsm;
+            $not_body = qq~<pre>$not_body</pre>~;
             guardian_notify( $not_to, $not_subject, $not_body, $not_from );
         }
         if (   $use_htaccess
@@ -114,6 +114,7 @@ qq~$guardian_txt{'abuse_ip'}: (REMOTE_ADDR)->$proxy0, (X_IP_CLIENT)->$proxy1, (H
             chomp $_;
             if ( $streferer =~ m/$_/xsm && $_ ne q{} ) {
                 LoadLanguage('Guardian');
+				$abuse_time = timeformat($date, 1, 'rfc', 1);
                 if ($referer_notify) {
                     $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'referer_abuse'} $guardian_txt{'abuse'}~;
@@ -135,6 +136,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
                     $not_body .= qq~$mbname, $guardian_txt{'main'}~;
                     $not_subject =~ s/\&trade\;//gxsm;
                     $not_body    =~ s/\&trade\;//gxsm;
+                    $not_body = qq~<pre>$not_body</pre>~;
                     guardian_notify( $not_to, $not_subject, $not_body,
                         $not_from );
                 }
@@ -159,6 +161,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
             if ( $agent =~ m/$_/xsm && $_ ne q{} ) {
                 if ($harvester_notify) {
                     LoadLanguage('Guardian');
+					$abuse_time = timeformat($date, 1, 'rfc', 1);
                     $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'harvester_abuse'} $guardian_txt{'abuse'}~;
                     $not_body =
@@ -179,6 +182,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
                     $not_body .= qq~$mbname, $guardian_txt{'main'}~;
                     $not_subject =~ s/\&trade\;//gxsm;
                     $not_body    =~ s/\&trade\;//gxsm;
+                    $not_body = qq~<pre>$not_body</pre>~;
                     guardian_notify( $not_to, $not_subject, $not_body,
                         $not_from );
                 }
@@ -203,6 +207,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
             if ( $method =~ m/$_/xsm && $_ ne q{} ) {
                 if ($request_notify) {
                     LoadLanguage('Guardian');
+					$abuse_time = timeformat($date, 1, 'rfc', 1);
                     $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'request_abuse'} $guardian_txt{'abuse'}~;
                     $not_body =
@@ -223,6 +228,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
                     $not_body .= qq~$mbname, $guardian_txt{'main'}~;
                     $not_subject =~ s/\&trade\;//gxsm;
                     $not_body    =~ s/\&trade\;//gxsm;
+                    $not_body = qq~<pre>$not_body</pre>~;
                     guardian_notify( $not_to, $not_subject, $not_body,
                         $not_from );
                 }
@@ -254,6 +260,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
             if ( $temp_query =~ m/$_/xsm && $_ ne q{} ) {
                 if ($string_notify) {
                     LoadLanguage('Guardian');
+					$abuse_time = timeformat($date, 1, 'rfc', 1);
                     $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'string_abuse'} $guardian_txt{'abuse'}~;
                     $not_body =
@@ -276,6 +283,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
                     $not_body .= qq~$mbname, $guardian_txt{'main'}~;
                     $not_subject =~ s/\&trade\;//gxsm;
                     $not_body    =~ s/\&trade\;//gxsm;
+                    $not_body = qq~<pre>$not_body</pre>~;
                     guardian_notify( $not_to, $not_subject, $not_body,
                         $not_from );
                 }
@@ -298,6 +306,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
         {
             if ($union_notify) {
                 LoadLanguage('Guardian');
+				$abuse_time = timeformat($date, 1, 'rfc', 1);
                 $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'union_abuse'} $guardian_txt{'abuse'}~;
                 $not_body =
@@ -318,6 +327,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
                 $not_body .= qq~$mbname, $guardian_txt{'main'}~;
                 $not_subject =~ s/\&trade\;//gxsm;
                 $not_body    =~ s/\&trade\;//gxsm;
+                $not_body = qq~<pre>$not_body</pre>~;
                 guardian_notify( $not_to, $not_subject, $not_body, $not_from );
             }
             if ( $use_htaccess && $union_htaccess && !$iamadmin && !$iamgmod ) {
@@ -332,6 +342,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
         if ( $querystring =~ m/\/\*/xsm ) {
             if ($clike_notify) {
                 LoadLanguage('Guardian');
+				$abuse_time = timeformat($date, 1, 'rfc', 1);
                 $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'clike_abuse'} $guardian_txt{'abuse'}~;
                 $not_body =
@@ -352,6 +363,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
                 $not_body .= qq~$mbname, $guardian_txt{'main'}~;
                 $not_subject =~ s/\&trade\;//gxsm;
                 $not_body    =~ s/\&trade\;//gxsm;
+                $not_body = qq~<pre>$not_body</pre>~;
                 guardian_notify( $not_to, $not_subject, $not_body, $not_from );
             }
             if ( $use_htaccess && $clike_htaccess && !$iamadmin && !$iamgmod ) {
@@ -379,6 +391,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
             {    #";
                 if ($script_notify) {
                     LoadLanguage('Guardian');
+					$abuse_time = timeformat($date, 1, 'rfc', 1);
                     $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'script_abuse'} $guardian_txt{'abuse'}~;
                     $not_body =
@@ -399,6 +412,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
                     $not_body .= qq~$mbname, $guardian_txt{'main'}~;
                     $not_subject =~ s/\&trade\;//gxsm;
                     $not_body    =~ s/\&trade\;//gxsm;
+                    $not_body = qq~<pre>$not_body</pre>~;
                     guardian_notify( $not_to, $not_subject, $not_body,
                         $not_from );
                 }
@@ -431,6 +445,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
             {
                 if ($script_notify) {
                     LoadLanguage('Guardian');
+					$abuse_time = timeformat($date, 1, 'rfc', 1);
                     $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'script_abuse'} $guardian_txt{'abuse'}~;
                     $not_body =
@@ -451,6 +466,7 @@ qq~$guardian_txt{'abuse_form_environment'}: $secvalue\n\n~;
                     $not_body .= qq~$mbname, $guardian_txt{'main'}~;
                     $not_subject =~ s/\&trade\;//gxsm;
                     $not_body    =~ s/\&trade\;//gxsm;
+                    $not_body = qq~<pre>$not_body</pre>~;
                     guardian_notify( $not_to, $not_subject, $not_body,
                         $not_from );
                 }
