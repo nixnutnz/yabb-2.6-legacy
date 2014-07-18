@@ -798,11 +798,11 @@ qq~&nbsp;&nbsp;<a href="$scripturl?action=rearrsticky;board=$annboard;num=$mnum;
             {
                 if ( ${$mnum}{'board'} eq $annboard ) {
                     $new =
-qq~<a href="$scripturl?virboard=$currentboard;num=$mnum/new#new"><img src="$imagesdir/$newload{'new_mess'}" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'303'}" /></a>~;
+qq~<a href="$scripturl?virboard=$currentboard;num=$mnum/new#new">$newload{'new_mess'}</a>~;
                 }
                 else {
                     $new =
-qq~<a href="$scripturl?num=$mnum/new#new"><img src="$imagesdir/$newload{'new_mess'}" alt="$messageindex_txt{'302'}" title="$messageindex_txt{'303'}" /></a>~;
+qq~<a href="$scripturl?num=$mnum/new#new">$newload{'new_mess'}</a>~;
                 }
             }
             else {

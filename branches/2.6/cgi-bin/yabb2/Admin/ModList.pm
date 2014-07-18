@@ -27,7 +27,7 @@ sub ListMods {
     # Add it in the following way:
     #        $my_mod = "Name of Mod|Author|Description|Version|Date Released";
     #        push (@installed_mods, "$my_mod");
-    # It is reccomended that you do a "add before" on the end boardmod tag
+    # It is recommended that you do a "add before" on the end boardmod tag
     # This preserves the installation order.
 
     # Also note, you should pick a unique name instead of "$my_mod".

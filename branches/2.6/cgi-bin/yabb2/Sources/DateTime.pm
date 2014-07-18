@@ -20,6 +20,10 @@ our $VERSION = '2.6.0';
 
 $datetimepmver = 'YaBB 2.6.0 $Revision$';
 
+@days_rfc = qw( Sun Mon Tue Wed Thu Fri Sat );
+    # for RFC compliant feed time
+@months_rfc = qw( Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec );
+
 sub calcdifference {    # Input: $date1 $date2
     $result = int( $date2 / 86_400 ) - int( $date1 / 86_400 );
     return $result;
@@ -167,11 +171,6 @@ sub timeformat {
 
     chomp $oldformat;
     return if !$oldformat;
-
-    @days_rfc = qw( Sun Mon Tue Wed Thu Fri Sat );
-
-    # for RFC compliant feed time
-    @months_rfc = qw( Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec );
 
     # find out what timezone is to be used.
     my $toffs = 0;

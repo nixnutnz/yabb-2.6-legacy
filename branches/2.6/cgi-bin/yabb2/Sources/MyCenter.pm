@@ -2313,7 +2313,7 @@ qq~<span class="small"><a href="$scripturl?action=imshow;id=$messageid;caller=2"
                 && $viewBMess
                 && !${$username}{ 'PMbcRead' . $messageid } )
             {
-                $BCnew = qq~&nbsp;<img src="$micon_bg{'new_mess'}" alt="" />~;
+                $BCnew = qq~&nbsp;$micon{'mess'}~;
             }
             my $attachIcon;
             if ( $messageAttachment ne q{} ) {

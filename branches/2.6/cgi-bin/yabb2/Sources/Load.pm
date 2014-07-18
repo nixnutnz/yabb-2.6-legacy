@@ -929,15 +929,15 @@ qq~             <li><a href="$scripturl?action=addbuddy;name=$useraccount{$user}
 qq~             <li><a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$maintxt{'6'}</a></li>\n~;
         }
         $quicklinks .=
-qq~         </ul><a href="javascript:quickLinks('$useraccount{$user}$qlcount')"$lastonline><span class="small">~;
+qq~         </ul><a href="javascript:quickLinks('$useraccount{$user}$qlcount')"$lastonline>~;
         $quicklinks .= $online ? $format_unbold{$user} : $format{$user};
-        $quicklinks .= q~</span></a></div>~;
+        $quicklinks .= q~</a></div>~;
     }
     else {
         $quicklinks =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}"$lastonline><span class="small">~
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}"$lastonline>~
           . ( $online ? $format_unbold{$user} : $format{$user} )
-          . q~</span></a>~;
+          . q~</a>~;
     }
 
     return $quicklinks;

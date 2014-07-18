@@ -112,6 +112,7 @@ $eventcallngver = 'YaBB 2.6.0 $Revision$';
 'guest' => 'Guest',
 'exmem' => 'Ex-member',
 'by' => 'By:',
+'getaddevent' => 'Add a new Event'
 );
 
 ### Event Calendar YaBBC ###

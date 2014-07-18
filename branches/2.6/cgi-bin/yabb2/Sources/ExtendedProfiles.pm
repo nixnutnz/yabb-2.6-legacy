@@ -219,18 +219,18 @@ sub ext_timeformat {
             $newmonth--;
             $newmonth2 = $months[$newmonth];
             if ( $newday > 10 && $newday < 20 ) {
-                $newday2 = "<sup>$timetxt{'4'}</sup>";
+                $newday2 = "$timetxt{'4'}";
             }
             elsif ( $newday % 10 == 1 ) {
-                $newday2 = "<sup>$timetxt{'1'}</sup>";
+                $newday2 = "$timetxt{'1'}";
             }
             elsif ( $newday % 10 == 2 ) {
-                $newday2 = "<sup>$timetxt{'2'}</sup>";
+                $newday2 = "$timetxt{'2'}";
             }
             elsif ( $newday % 10 == 3 ) {
-                $newday2 = "<sup>$timetxt{'3'}</sup>";
+                $newday2 = "$timetxt{'3'}";
             }
-            else { $newday2 = "<sup>$timetxt{'4'}</sup>"; }
+            else { $newday2 = "$timetxt{'4'}"; }
             $newformat = qq~$newmonth2 $newday$newday2, $newyear~;
             return $newformat;
 
@@ -266,18 +266,18 @@ sub ext_timeformat {
 
             if ( $mytimeformat =~ m/\+/sm ) {
                 if ( $newday > 10 && $newday < 20 ) {
-                    $dayext = "<sup>$timetxt{'4'}</sup>";
+                    $dayext = "$timetxt{'4'}";
                 }
                 elsif ( $newday % 10 == 1 ) {
-                    $dayext = "<sup>$timetxt{'1'}</sup>";
+                    $dayext = "$timetxt{'1'}";
                 }
                 elsif ( $newday % 10 == 2 ) {
-                    $dayext = "<sup>$timetxt{'2'}</sup>";
+                    $dayext = "$timetxt{'2'}";
                 }
                 elsif ( $newday % 10 == 3 ) {
-                    $dayext = "<sup>$timetxt{'3'}</sup>";
+                    $dayext = "$timetxt{'3'}";
                 }
-                else { $dayext = "<sup>$timetxt{'4'}</sup>"; }
+                else { $dayext = "$timetxt{'4'}"; }
             }
             $mytimeformat =~ s/YYYY/$newyear/gxsm;
             $mytimeformat =~ s/YY/$newshortyear/gxsm;

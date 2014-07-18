@@ -924,18 +924,13 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
         }
     }
     if ($attachments) {
-        my (
-            $attid,          $attachmentname, $downloadscount,
-            @newattachments, %attachments,    $mreplies,
-            $msub,           $mname,          $mdate,
-            $mfn
-        );
+        my ( @newattachments, %attachments );
         fopen( ATM, "<$vardir/attachments.txt", 1 )
           || fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
-		my @attachfile = <ATM>;
-		fclose( ATM );
-        while ( @attachfile) {
-            (
+        my @attach = <ATM>;
+        fclose(ATM);
+        for (@attach) {
+            my (
                 $attid, undef, undef, undef, undef, undef, undef,
                 $attachmentname, $downloadscount
             ) = split /\|/xsm, $_;
@@ -948,10 +943,10 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
             $attachments{$attachmentname} = $downloadscount;
         }
 
-        $mreplies = 0;
+        my $mreplies = 0;
         if ( $attachments == 1 ) {
             foreach (@utdcurthread) {    # fix new old thread attachments
-                (
+                my (
                     $msub, $mname, undef, $mdate, undef, undef, undef,
                     undef, undef,  undef, undef,  undef, $mfn
                 ) = split /\|/xsm, $_;
@@ -971,7 +966,7 @@ qq~$curthreadid|$mreplies|$msub|$mname|$curboard|$asize|$mdate|$_|~
 
         $mreplies = 0;
         foreach (@utdnewthread) {    # fix new thread attachments
-            (
+            my (
                 $msub, $mname, undef, $mdate, undef, undef, undef,
                 undef, undef,  undef, undef,  undef, $mfn
             ) = split /\|/xsm, $_;
@@ -986,13 +981,12 @@ qq~$newthreadid|$mreplies|$msub|$mname|$newboard|$asize|$mdate|$_|~
             }
             $mreplies++;
         }
-
-        fopen( ATM, ">$vardir/attachments.txt", 1 );
-        print {ATM}
-          sort { ( split /\|/xsm, $a, 8 )[6] <=> ( split /\|/xsm, $b, 8 )[6] }
-          @newattachments
-          or croak "$croak{'print'} ATM";
-        fclose( ATM );
+        fopen( FATM, ">$vardir/attachments.txt" )
+          || fatal_error( 'cannot_open', "$vardir/attachments.txt" );
+            print {FATM}
+            sort { ( split /\|/xsm, $a, 8 )[6] <=> ( split /\|/xsm, $b, 8 )[6] }
+            @newattachments or croak "$croak{'print'} ATM";
+        fclose(FATM);
     }
 
     if ( $#postnum == $#curthread ) {

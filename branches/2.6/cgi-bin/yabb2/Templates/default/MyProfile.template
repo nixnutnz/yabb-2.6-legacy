@@ -673,7 +673,7 @@ $myshow_profile = qq~
         <td class="windowbg2">
             <div class="contactleft"><b>{yabb lastonline}: </b></div>
             <div class="contactright">{yabb userlastlogin}</div>
-            <div class="contactleft"><b>{yabb lastpost}:</b></div>
+            <div class="contactleft"><b>{yabb lastpost}</b></div>
             <div class="contactright">{yabb userlastpost}</div>
             {yabb my_lastPM}
         </td>
