@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$notifylngver = 'YaBB 2.6.0 $Revision: 1503 $';
+$notifylngver = 'YaBB 2.6.0 $Revision$';
 
 %notify_txt = (
 '118' => 'Topic Notification',

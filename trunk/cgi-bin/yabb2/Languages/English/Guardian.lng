@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$guardianlngver = 'YaBB 2.6.0 $Revision: 1503 $';
+$guardianlngver = 'YaBB 2.6.0 $Revision$';
 
 %guardian_txt = (
 'main' => 'The Guardian&trade;',
@@ -52,7 +52,7 @@ $guardianlngver = 'YaBB 2.6.0 $Revision: 1503 $';
 'clike_abuse' => 'CLIKE',
 'union_abuse' => 'UNION',
 'script_abuse' => 'Scripting',
-'abuse' => 'Abuse Detected.',
+'abuse' => 'Abuse Detected',
 'abuse_user' => 'Abusing user ID',
 'abuse_ip' => 'Abuse detected from IP',
 'abuse_referer' => 'Blocked referrer',

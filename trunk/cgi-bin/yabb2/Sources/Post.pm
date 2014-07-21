@@ -230,10 +230,6 @@ qq~[quote author=$hidename link=$threadid/$quotemsg#$quotemsg date=$mdate\]$mess
         $settofield = 'message';
     }
 
-    if ( $ENV{'HTTP_USER_AGENT'} =~ /(MSIE) ([\d]+)/xsm ) {
-        if   ( $2 >= 7.0 ) { $iecopycheck = q{}; }
-        else               { $iecopycheck = q~ checked="checked"~; }
-    }
     $submittxt   = "$post_txt{'105'}";
     $destination = 'post2';
     $icon        = 'xx';
@@ -286,7 +282,7 @@ sub Postpage {
         {
             $tmplastmodified =
                 qq~&#171; <i>$display_txt{'211'}: ~
-              . timeformat($date)
+              . timeformat($date,0,0,0,1)
               . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &#187;~;
         }
         $tmpmusername = $thismusername;
@@ -825,7 +821,7 @@ qq~            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onke
                 {
                     $tmplastmodified =
 qq~<div class="small" style="float: right; width: 100%; text-align: right; margin-top: 5px;">&#171; <i>$display_txt{'211'}: ~
-                      . timeformat($date)
+                      . timeformat($date,0,0,0,1)
                       . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &#187; &nbsp;</div>~;
                 }
             }
@@ -1257,7 +1253,6 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         $my_postsection =~ s/{yabb favoriteadd}/$favoriteadd/sm;
         $my_postsection =~ s/{yabb lastmod}/$lastmod/sm;
         $my_postsection =~ s/{yabb nscheck}/$nscheck/sm;
-        $my_postsection =~ s/{yabb iecopycheck}/$iecopycheck/sm;
         $my_postsection =~ s/{yabb return_to}/$return_to/sm;
     }
 
@@ -1265,31 +1260,9 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
     #    if ($is_preview) { $post_txt{'507'} = $post_txt{'771'}; }
     $my_post_submit = qq~$mypost_submit
             $hidestatus
-            <input type="submit" name="$post" id="$post" value="$submittxt" accesskey="s" tabindex="5" class="button" />~
-
-# remove Preview
-#      . (
-#        $postid ne 'Poll'
-#        ? qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" id="$preview" name="$preview" value="$post_txt{'507'}" accesskey="p" tabindex="6" class="button" />~
-#        : q{}
-#      )
-      . q~
+            <input type="submit" name="$post" id="$post" value="$submittxt" accesskey="s" tabindex="5" class="button" />
             <script type="text/javascript">
-            if (/Opera/.test(navigator.userAgent) === false) {
-                if (/mac/i.test(navigator.platform)) {
-                    document.write("<br /><span class='small'>~
-      . ( $postid ne 'Poll' ? $post_txt{'331'} : $post_txt{'331a'} )
-      . q~</span>"); }
-        else if (/MSIE [7-9]/.test(navigator.userAgent) || (/\\/[3-9]\\.\\d+\\.\\d+ Safari/.test(navigator.userAgent))) {
-                    document.write("<br /><span class='small'>~
-      . ( $postid ne 'Poll' ? $post_txt{'329'} : $post_txt{'329a'} )
-      . q~</span>");}
-         else if (/Firefox\\/[2-9]/.test(navigator.userAgent) || (/Chrome/.test(navigator.userAgent))) {
-                    document.write("<br /><span class='small'>~
-      . ( $postid ne 'Poll' ? $post_txt{'330'} : $post_txt{'330a'} )
-      . qq~</span>");
-                }
-            }\n~;
+~;
 
     if ($speedpostdetection) {
         $my_spdpost = speedpost();
@@ -1350,7 +1323,7 @@ showtpstatus();
         {
             $tmplastmodified =
                 qq~&#171; <i>$display_txt{'211'}: ~
-              . timeformat($date)
+              . timeformat($date,0,0,0,1)
               . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &#187;~;
         }
         $tmpmusername = $thismusername;
@@ -1387,12 +1360,7 @@ if(document.getElementById('toshowcc').length > 0) document.getElementById('tosh
 if(document.getElementById('toshowbcc').length > 0) document.getElementById('toshowbcc').style.display = 'inline';
 ~;
         }
-        $my_iecopy = q~
-if (navigator.appName == "Microsoft Internet Explorer") {
-    document.getElementById('enable_iecopytext').style.display = 'inline';
-    document.getElementById('enable_iecopy').style.display = 'inline';
-}
-</script>
+        $my_postbox_3 .= q~</script>
 ~;
     }
     $yymain .= $ctmain;
@@ -1414,7 +1382,6 @@ if (navigator.appName == "Microsoft Internet Explorer") {
     $yymain .= $my_postbox_3;
     $yymain .= $my_post_visicon;
     $yymain .= $my_showCC;
-    $yymain .= $my_iecopy;
     $yymain =~ s/{yabb my_topper}/$my_topper/sm;
     $yymain =~ s/{yabb icon}/$icon/sm;
     $yymain =~ s/{yabb icon_img}/$micon_bg{$icon}/sm;
@@ -1594,7 +1561,6 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
           s/{yabb verification_question}/$verification_question/gsm;
     }
     if ( $FORM{'ns'} eq 'NS' ) { $nscheck = q~ checked="checked"~; }
-    if ( $FORM{'iecopy'} ) { $iecopycheck = q~ checked="checked"~; }
 
     if ($iamguest) {
         $name .= "($post_txt{'772'})";
@@ -2557,6 +2523,16 @@ sub LoadNotifyMessages {
 sub NewNotify {
     my ( $thisthread, $thissubject ) = @_;
 
+    my $thisauthor = ${ $uid . $username }{'realname'} || $maintxt{'28'};
+    my $thismessage = $message;
+    $thismessage =~ s/ &nbsp; &nbsp; &nbsp;/\t/g;
+    $thismessage =~ s~\[b\](.*?)\[/b\]~*$1*~ig;
+    $thismessage =~ s~\[i\](.*?)\[/i\]~/$1/~ig;
+    $thismessage =~ s~\[u\](.*?)\[/u\]~_$1_~ig;
+    $thismessage =~ s/\[.*?\]//g;
+    $thismessage =~ s/<(br|p).*?>/\n/ig;
+    $thismessage =~ s/<.*?>//g;
+    FromHTML($thismessage);
     my $boardname;
     ( $boardname, undef ) = split /\|/xsm, $board{$currentboard}, 2;
     ToChars($boardname);
@@ -2590,7 +2566,7 @@ sub NewNotify {
                     template_email(
                         $notifystrings{$curlang}
                           {'boardnewtopicnotificationemail'},
-                        { 'subject' => $thissubject, 'num' => $thisthread }
+                        { 'subject' => $thissubject, 'num' => $thisthread, 'tauthor' => $thisauthor, 'tmessage' => $thismessage }
                     ),
                     q{},
                     $notifycharset{$curlang}{'emailcharset'}
@@ -2608,6 +2584,16 @@ sub ReplyNotify {
     my ( $thisthread, $thissubject, $tem ) = @_;
     my $page = qq{$tem#$tem};
 
+    my $thisauthor = ${ $uid . $username }{'realname'} || $maintxt{'28'};
+    my $thismessage = $message;
+    $thismessage =~ s/ &nbsp; &nbsp; &nbsp;/\t/g;
+    $thismessage =~ s~\[b\](.*?)\[/b\]~*$1*~ig;
+    $thismessage =~ s~\[i\](.*?)\[/i\]~/$1/~ig;
+    $thismessage =~ s~\[u\](.*?)\[/u\]~_$1_~ig;
+    $thismessage =~ s/\[.*?\]//g;
+    $thismessage =~ s/<(br|p).*?>/\n/ig;
+    $thismessage =~ s/<.*?>//g;
+    FromHTML($thismessage);
     my $boardname;
     ( $boardname, undef ) = split /\|/xsm, $board{$currentboard}, 2;
     ToChars($boardname);
@@ -2645,8 +2631,10 @@ sub ReplyNotify {
                             $notifystrings{$curlang}{'boardnotificationemail'},
                             {
                                 'subject' => $thissubject,
-                                'num'     => $thisthread,
-                                'start'   => $page
+                                'num' => $thisthread,
+                                'start' => $page,
+                                'tauthor' => $thisauthor,
+                                'tmessage' => $thismessage
                             }
                         ),
                         q{},
@@ -2687,8 +2675,10 @@ sub ReplyNotify {
                             $notifystrings{$curlang}{'topicnotificationemail'},
                             {
                                 'subject' => $thissubject,
-                                'num'     => $thisthread,
-                                'start'   => $page
+                                'num' => $thisthread,
+                                'start' => $page,
+                                'tauthor' => $thisauthor,
+                                'tmessage' => $thismessage
                             }
                         ),
                         q{},
@@ -2759,7 +2749,7 @@ qq~$post_cutts{'3'} $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threa
                 $registrationdate = int time;
             }
             if ( ${ $uid . $tempname }{'regdate'}
-                && $messagedate > $registrationdate )
+                && ($messagedate > $registrationdate || $tempname eq 'admin' ) )
             {
                 $displaynamelink =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tempname}">$format_unbold{$tempname}</a>~;
@@ -2878,10 +2868,6 @@ sub sendGuestPM {
     }
     $sub        = q{};
     $settofield = 'subject';
-    if ( $ENV{'HTTP_USER_AGENT'} =~ /(MSIE) ([\d]+)/xsm ) {
-        if   ( $2 >= 7.0 ) { $iecopycheck = q{}; }
-        else               { $iecopycheck = q~ checked="checked"~; }
-    }
     $t_title     = $post_txt{'sendmessguest'};
     $submittxt   = $post_txt{'148'};
     $destination = 'guestpm2';
@@ -3181,11 +3167,6 @@ qq~[quote author=$hidename link=$threadid/$quotemsg#$quotemsg date=$mdate\]$mess
         }
         $sub        = "Re: $msubject";
         $settofield = 'message';
-    }
-
-    if ( $ENV{'HTTP_USER_AGENT'} =~ /(MSIE) ([\d]+)/xsm ) {
-        if   ( $2 >= 7.0 ) { $iecopycheck = q{}; }
-        else               { $iecopycheck = q~ checked="checked"~; }
     }
 
     $t_title     = $post_txt{'alertmod'};

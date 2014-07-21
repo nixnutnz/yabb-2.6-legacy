@@ -138,7 +138,7 @@ sub EditBots {
     <div class="bordercolor rightboxdiv">
         <table class="border-space pad-cell" style="margin-bottom: .5em;">
             <tr>
-                <td class="titlebg>$admin_img{'xx'} <b>$admin_txt{'18'}</b></td>
+                <td class="titlebg">$admin_img{'xx'} <b>$admin_txt{'18'}</b></td>
             </tr><tr>
                 <td class="windowbg2">
                     <div class="pad-more small">$admin_txt{'19'}</div>

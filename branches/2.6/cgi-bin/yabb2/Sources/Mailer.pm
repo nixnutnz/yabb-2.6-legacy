@@ -33,7 +33,6 @@ sub sendmail {
     $mbname =~ s/,/-/igsm;
 
     $charsetheader = $mailcharset ? $mailcharset : $yymycharset;
-#   $charsetheader = 'UTF-8';
 
     if ( !$from ) {
         $from       = $webmaster_email;
@@ -68,7 +67,7 @@ sub sendmail {
     elsif ( $mailtype == 1 ) {
         $smtp_to      = $to;
         $smtp_from    = $from;
-        $smtp_message = $message;
+        $smtp_message = qq~<pre>$message</pre>~;
         $smtp_subject = $subject;
         $smtp_charset = $charsetheader;
         require Sources::Smtp;
@@ -110,7 +109,7 @@ sub sendmail {
             $smtp->datasend("Subject: $subject\r\n");
             $smtp->datasend("Content-Type: text/html\; charset=$charsetheader\r\n");
             $smtp->datasend("\r\n");
-            $smtp->datasend($message);
+            $smtp->datasend("<pre>$message</pre>");
             $smtp->dataend();
             $smtp->quit();
         ^;
@@ -133,7 +132,7 @@ sub sendmail {
           or croak "$croak{'print'} mail";
         print {MAIL} "Subject: $subject\n\n" or croak "$croak{'print'} mail";
         $message =~ s/\r\n/\n/gsm;
-        print {MAIL} "$message\n"         or croak "$croak{'print'} mail";
+        print {MAIL} "<pre>$message</pre>\n"         or croak "$croak{'print'} mail";
         print {MAIL} "End of Message\n\n" or croak "$croak{'print'} mail";
         fclose(MAIL);
         return 1;
@@ -171,7 +170,7 @@ sub tomail {
     print {$MAIL} "Content-Type: text/html\; charset=$charsetheader\n\n"
       or croak "$croak{'print'} mail";
     $message =~ s/\r\n/\n/gsm;
-    print {$MAIL} "$message\n" or croak "$croak{'print'} mail";
+    print {$MAIL} "<pre>$message</pre>\n" or croak "$croak{'print'} mail";
     return;
 }
 

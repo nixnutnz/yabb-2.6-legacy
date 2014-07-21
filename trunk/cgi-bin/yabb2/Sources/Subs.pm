@@ -21,8 +21,6 @@ our $VERSION = '2.6.0';
 
 $subspmver = 'YaBB 2.6.0 $Revision$';
 
-if ($debug) { LoadLanguage('Debug'); }
-
 use subs 'exit';
 
 $yymain       = q{};
@@ -687,6 +685,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
 
     if ( $debug == 1 || ( $debug == 2 && $iamadmin ) || $debug == 3 ) {
         require Sources::Debug;
+        LoadLanguage('Debug');
         Debug();
     }
 
@@ -866,6 +865,7 @@ sub fatal_error {
     if (   ( $debug == 1 || ( $debug == 2 && $iamadmin ) )
         && ( $filename || $line || $subroutine ) )
     {
+        LoadLanguage('Debug');
         $errormessage .=
 qq~<br />$maintxt{'error_location'}: $filename<br />$maintxt{'error_line'}: $line<br />$maintxt{'error_subroutine'}: $subroutine~;
     }
@@ -1009,6 +1009,7 @@ sub readform {
         $testenv = $ENV{QUERY_STRING};
         $testenv =~ s/\&/\;/gxsm;
         if ( $testenv && $debug ) {
+            LoadLanguage('Debug');
             $getpairs =
 qq~<br /><span class="underline">$debug_txt{'getpairs'}:</span><br />~;
         }
@@ -1030,6 +1031,7 @@ qq~<br /><span class="underline">$debug_txt{'getpairs'}:</span><br />~;
     }
     if ( $ENV{REQUEST_METHOD} eq 'POST' ) {
         if ($debug) {
+            LoadLanguage('Debug');
             $getpairs .=
 qq~<br /><span class="underline">$debug_txt{'postpairs'}:</span><br />~;
         }
@@ -1088,6 +1090,7 @@ qq~<br /><span class="underline">$debug_txt{'postpairs'}:</span><br />~;
         # files are directly called in Profile.pm, Post.pm and ModifyMessages.pl
                 @value = $CGI_query->param($name);
                 if ($debug) {
+                    LoadLanguage('Debug');
                     $getpairs .=
 qq~[$debug_txt{'name'}-&gt;]$name=@value\[&lt;-$debug_txt{'value'}]<br />~;
                 }
@@ -1143,6 +1146,7 @@ sub split_string {
         $value =~ tr/+/ /;
         $value =~ s/%([a-fA-F0-9][a-fA-F0-9])/pack('C', hex($1))/egsm;
         if ($debug) {
+            LoadLanguage('Debug');
             $getpairs .=
 qq~[$debug_txt{'name'}-&gt;]$name=$value\[&lt;-$debug_txt{'value'}]<br />~;
         }
@@ -1841,6 +1845,7 @@ sub MembershipGet {
         $file_open++;
         ## make life easier - spot a file that is not closed!
         if ($debug) {
+            LoadLanguage('Debug');
             $openfiles .=
                 qq~$filehandle (~
               . sprintf( '%.4f', ( time - $START_TIME ) )
@@ -2004,6 +2009,7 @@ sub MembershipGet {
         my ( $pack, $file, $line ) = caller;
         $file_close++;
         if ($debug) {
+            LoadLanguage('Debug');
             $openfiles .=
                 qq~     $filehandle (~
               . sprintf( '%.4f', ( time - $START_TIME ) )

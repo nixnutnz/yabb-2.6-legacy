@@ -793,6 +793,7 @@ qq~                <option value="$line"$checked>$name</option>\n~;
     my $return_to = $myprofile_return_to;
     $return_to =~ s/{yabb return_to_select}/$return_to_select/sm;
 
+    my $tmptcnt = 0;
     foreach my $curtemplate (
         sort { $templateset{$a} cmp $templateset{$b} }
         keys %templateset
@@ -800,25 +801,34 @@ qq~                <option value="$line"$checked>$name</option>\n~;
     {
         $drawndirs .=
 qq~<option value="$curtemplate"${isselected($curtemplate eq ${ $uid . $user }{'template'})}>$curtemplate</option>\n~;
+        $tmptcnt++;
     }
 
+    my $my_template = q{};
+    if ( $tmptcnt > 1 ) {
     $my_template = $myprofile_template;
     $my_template =~ s/{yabb drawndirs}/$drawndirs/sm;
+    }
 
     opendir DIR, $langdir;
     my @lfilesanddirs = readdir DIR;
     closedir DIR;
+    my $lngcnt = 0;
     foreach my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
         if ( -e "$langdir/$fld/Main.lng" ) {
             my $displang = $fld;
             $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
             $drawnldirs .=
 qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$displang</option>~;
+            $lngcnt++;
         }
     }
 
-    $my_show_lang = $myprofile_show_lang;
-    $my_show_lang =~ s/{yabb drawnldirs}/$drawnldirs/sm;
+    my $my_show_lang = q{};
+    if ( $lngcnt > 1 ) {
+        $my_show_lang = $myprofile_show_lang;
+        $my_show_lang =~ s/{yabb drawnldirs}/$drawnldirs/sm;
+    }
 
     if ( $user_hide_avatars && $showuserpic && $allowpics )
     {    # checkbox to hide avatars in threads
@@ -2721,7 +2731,7 @@ sub ViewProfile {
     $memsettingsd[10] =~ tr/+/ /;
 
     if ( ${ $uid . $user }{'regtime'} ) {
-        $dr = timeformat( ${ $uid . $user }{'regtime'} );
+        $dr = timeformat( ${ $uid . $user }{'regtime'},0,0,0,1 );
     }
     else {
         $dr = $profile_txt{'470'};
@@ -3336,7 +3346,8 @@ qq~<a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccoun
     $showProfile =~ s/{yabb my_reminder}/$my_reminder/sm;
     $showProfile =~ s/{yabb my_recent}/$my_recent/sm;
 
-    $yytitle = "$profile_txt{'92'} ${$uid.$user}{'realname'}";
+    $yytitle = $profile_txt{'92u'};
+    $yytitle =~ s/USER/${$uid.$user}{'realname'}/gsm;
     if ( !$view ) {
         $yymain .= $showProfile;
         template();
@@ -3733,7 +3744,8 @@ qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$c#$c;title=PostReply"
     }
     elsif ( !$view ) {
         $showProfile .=
-qq~<p><a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}"><b>$profile_txt{'92'} ${$uid.$curuser}{'realname'}</b></a></p>~;
+qq~<p><a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}"><b>$profile_txt{'92u'}</b></a></p>~;
+        $showProfile =~ s/USER/${$uid.$curuser}{'realname'}/gsm;
     }
 
     $yytitle = "$profile_txt{'458'} ${$uid.$curuser}{'realname'}";

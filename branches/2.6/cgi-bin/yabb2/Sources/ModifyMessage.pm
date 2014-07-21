@@ -137,10 +137,6 @@ sub ModifyMessage {
         $settofield = 'message';
         if ( $message =~ s/\[reason\](.+?)\[\/reason\]//isgm ) { $reason = $1; }
     }
-    if ( $ENV{'HTTP_USER_AGENT'} =~ /(MSIE) (\d)/sm ) {
-        if   ( $2 >= 7.0 ) { $iecopycheck = q{}; }
-        else               { $iecopycheck = q~checked="checked"~; }
-    }
     $submittxt   = $post_txt{'10'};
     $destination = 'modify2';
     $is_preview  = 0;

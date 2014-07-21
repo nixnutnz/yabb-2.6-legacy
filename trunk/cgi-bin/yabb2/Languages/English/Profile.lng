@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$profilelngver = 'YaBB 2.6.0 $Revision: 1503 $';
+$profilelngver = 'YaBB 2.6.0 $Revision$';
 
 %profile_txt = (
 '2' => 'Admin',
@@ -44,6 +44,7 @@ $profilelngver = 'YaBB 2.6.0 $Revision: 1503 $';
 '89' => 'Delete user',
 '91' => 'Password field empty',
 '92' => 'View Profile',
+'92u' => 'View the Profile of USER',
 '96' => 'Website',
 '107' => 'at',
 '113' => 'is',

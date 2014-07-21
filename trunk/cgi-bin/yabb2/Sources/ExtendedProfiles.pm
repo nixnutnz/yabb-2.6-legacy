@@ -75,8 +75,10 @@ sub ext_get {
 
         }
         elsif ( $field{'type'} eq 'date' && $value ne q{} ) {
-            $value = ext_timeformat($value);
-
+            @mytime = split /\//xsm, $value;
+            $mytime = timelocal(0,0,0, $mytime[1],$mytime[0]-1,$mytime[2]);
+            $mytime =  timeformatcal($mytime);
+            $value = dtonly ($mytime);
         }
         elsif ( $field{'type'} eq 'checkbox' ) {
             if   ( $value == 1 ) { $value = $lang_ext{'true'} }
@@ -169,135 +171,6 @@ sub ext_get_field {
         undef
     ) = split /\|/xsm, $ext_prof_fields[ $field{'id'} ];
     return;
-}
-
-# formats a MM/DD/YYYY string to the user's prefered format, ignores time completely!
-sub ext_timeformat {
-    my (
-        $mytimeselected, $oldformat,  $mytimeformat, $newday,
-        $newday2,        $newmonth,   $newmonth2,    $newyear,
-        $newshortyear,   $oldmonth,   $oldday,       $oldyear,
-        $newweekday,     $newyearday, $newweek,      $dummy,
-        $usefullmonth
-    );
-
-    if ( ${ $uid . $username }{'timeselect'} > 0 ) {
-        $mytimeselected = ${ $uid . $username }{'timeselect'};
-    }
-    else { $mytimeselected = $timeselected; }
-
-    $oldformat = shift;
-    if ( $oldformat eq q{} || $oldformat eq "\n" ) { return $oldformat; }
-
-    $oldmonth = substr $oldformat, 0, 2;
-    $oldday   = substr $oldformat, 3, 2;
-    $oldyear  = substr $oldformat, 6, 4;
-
-    if ( $oldformat ne q{} ) {
-        $newday       = $oldday + 0;
-        $newmonth     = $oldmonth + 0;
-        $newyear      = $oldyear + 0;
-        $newshortyear = substr $newyear, 2, 2;
-        if ( $newmonth < 10 ) { $newmonth = "0$newmonth"; }
-        if ( $newday < 10 && $mytimeselected != 4 ) { $newday = "0$newday"; }
-
-        if ( $mytimeselected == 1 ) {
-            qq~$newmonth/$newday/$newshortyear~;
-
-        }
-        elsif ( $mytimeselected == 2 ) {
-            $newformat = qq~$newday.$newmonth.$newshortyear~;
-            return $newformat;
-
-        }
-        elsif ( $mytimeselected == 3 ) {
-            $newformat = qq~$newday.$newmonth.$newyear~;
-            return $newformat;
-
-        }
-        elsif ( $mytimeselected == 4 || $mytimeselected == 8 ) {
-            $newmonth--;
-            $newmonth2 = $months[$newmonth];
-            if ( $newday > 10 && $newday < 20 ) {
-                $newday2 = "<sup>$timetxt{'4'}</sup>";
-            }
-            elsif ( $newday % 10 == 1 ) {
-                $newday2 = "<sup>$timetxt{'1'}</sup>";
-            }
-            elsif ( $newday % 10 == 2 ) {
-                $newday2 = "<sup>$timetxt{'2'}</sup>";
-            }
-            elsif ( $newday % 10 == 3 ) {
-                $newday2 = "<sup>$timetxt{'3'}</sup>";
-            }
-            else { $newday2 = "<sup>$timetxt{'4'}</sup>"; }
-            $newformat = qq~$newmonth2 $newday$newday2, $newyear~;
-            return $newformat;
-
-        }
-        elsif ( $mytimeselected == 5 ) {
-            $newformat = qq~$newmonth/$newday/$newshortyear~;
-            return $newformat;
-
-        }
-        elsif ( $mytimeselected == 6 ) {
-            $newmonth2 = $months[ $newmonth - 1 ];
-            $newformat = qq~$newday. $newmonth2 $newyear~;
-            return $newformat;
-
-        }
-        elsif ( $mytimeselected == 7 ) {
-            (
-                $dummy,      $dummy,      $dummy,
-                $dummy,      $dummy,      $dummy,
-                $newweekday, $newyearday, $dummy
-            ) = gmtime $oldformat;
-            $newweek = int( ( $newyearday + 1 - $newweekday ) / 7 ) + 1;
-
-            $mytimeformat = ${ $uid . $username }{'timeformat'};
-            if ( $mytimeformat =~ m/MM/sm ) { $usefullmonth = 1; }
-            $mytimeformat =~ s/(?:\s)*\@(?:\s)*//gxsm;
-            $mytimeformat =~ s/HH(?:\s)?//gxsm;
-            $mytimeformat =~ s/mm(?:\s)?//gxsm;
-            $mytimeformat =~ s/ss(?:\s)?//gxsm;
-            $mytimeformat =~ s/://gxsm;
-            $mytimeformat =~ s/ww(?:\s)?//gxsm;
-            $mytimeformat =~ s/(.*?)(?:\s)*$/$1/gxsm;
-
-            if ( $mytimeformat =~ m/\+/sm ) {
-                if ( $newday > 10 && $newday < 20 ) {
-                    $dayext = "<sup>$timetxt{'4'}</sup>";
-                }
-                elsif ( $newday % 10 == 1 ) {
-                    $dayext = "<sup>$timetxt{'1'}</sup>";
-                }
-                elsif ( $newday % 10 == 2 ) {
-                    $dayext = "<sup>$timetxt{'2'}</sup>";
-                }
-                elsif ( $newday % 10 == 3 ) {
-                    $dayext = "<sup>$timetxt{'3'}</sup>";
-                }
-                else { $dayext = "<sup>$timetxt{'4'}</sup>"; }
-            }
-            $mytimeformat =~ s/YYYY/$newyear/gxsm;
-            $mytimeformat =~ s/YY/$newshortyear/gxsm;
-            $mytimeformat =~ s/DD/$newday/gxsm;
-            $mytimeformat =~ s/D/$newday/gxsm;
-            $mytimeformat =~ s/\+/$dayext/gxsm;
-            if ( $usefullmonth == 1 ) {
-                $mytimeformat =~ s/MM/$months[$newmonth-1]/gxsm;
-            }
-            else {
-                $mytimeformat =~ s/M/$newmonth/gxsm;
-            }
-
-            $mytimeformat =~ s/\*//gxsm;
-            return $mytimeformat;
-        }
-    }
-    else { return q{}; }
-
-    #no return;
 }
 
 # returns whenever the current user is allowed to view a field or not
@@ -548,7 +421,7 @@ sub ext_viewinposts {
                 else { $displayedfieldname = q{}; }
                 if ( $output eq q{} ) { $output = qq~$ext_spacer_br\n~; }
 
-                # format the output dependend of the field type
+                # format the output depending on the field type
                 if (   ( $field{'type'} eq 'text' && $value ne q{} )
                     || ( $field{'type'} eq 'text_multi'   && $value ne q{} )
                     || ( $field{'type'} eq 'select'       && $value ne q{ } )

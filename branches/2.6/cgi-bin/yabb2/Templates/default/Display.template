@@ -192,7 +192,14 @@ $messageblock = qq~
                         <br />
                         {yabb userpic}{yabb usertext}
                         <br />
-                        {yabb postinfo}{yabb location}{yabb age}{yabb regdate}{yabb gender}{yabb ext_prof}{yabb isbuddy}
+                        {yabb postinfo}
+                        {yabb location}
+                        {yabb age}
+                        {yabb regdate}
+                        {yabb gender}
+                        {yabb zodiac}
+                        {yabb ext_prof}
+                        {yabb isbuddy}
                     </div>
                 </td>
                 <td class="dividerbot" style="vertical-align:middle;">

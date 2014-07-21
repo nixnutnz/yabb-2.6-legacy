@@ -103,18 +103,7 @@ $mypost_postblock = qq~
         </td>
     </tr>
     {yabb return_to}
-    <tr id="feature_status_8" class="windowbg">
-        <td>
-            <div id="enable_iecopytext" style="display: none;">
-                <label for="iecopy"><b>$post_txt{'iecopytext'}:</b></label><br /><br />
-            </div>
-        </td>
-        <td>
-            <div id="enable_iecopy" style="display: none;">
-                <input type="checkbox" name="iecopy" id="iecopy"{yabb iecopycheck} /> <span class="small"> <label for="iecopy">$post_txt{'iecopycheck'}</label></span><br /><br />
-            </div>
-        </td>
-    </tr>{yabb lastmod}~;
+    {yabb lastmod}~;
 
 $mypost_formend = q~
             </script>

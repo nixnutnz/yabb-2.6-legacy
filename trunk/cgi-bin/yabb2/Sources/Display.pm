@@ -933,11 +933,10 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$mlmb}">$format_
             }
             $lastmodified =
                 qq~&#171; <i>$display_txt{'211'}: ~
-              . timeformat($mlm)
+              . timeformat($mlm,0,0,0,1)
               . qq~ $display_txt{'525'} $mlmb</i> &#187;~;
         }
 
-        $messdate = timeformat($mdate);
         if ($ipLookup) {
             ( $mip_one, $mip_two, $mip_three ) = split / /sm, $mip;
             if ($mip_one) {
@@ -1043,7 +1042,7 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
                 $template_age = qq~$display_txt{'age'}: $age<br />~;
             }
             if ( $showregdate && ${ $uid . $musername }{'regtime'} ) {
-                $dr_regdate = timeformat( ${ $uid . $musername }{'regtime'} );
+                $dr_regdate = timeformat( ${ $uid . $musername }{'regtime'},0,0,0,1 );
                 $dr_regdate = dtonly($dr_regdate);
                 $dr_regdate =~ s/(.*)(, 1?[0-9]):[0-9][0-9].*/$1/xsm;
                 $template_regdate =
@@ -1171,6 +1170,11 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
 
         $counterwords =
           $counter != 0 ? "$display_txt{'146'} #$counter - " : q{};
+		
+        $messdate = timeformat($mdate);
+		if ( $counterwords ) {
+	        $messdate = timeformat($mdate,0,0,0,1);
+		}
 
         # Print the post and user info for the poster.
         my $outblock        = $messageblock;

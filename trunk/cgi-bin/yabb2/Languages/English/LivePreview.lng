@@ -15,7 +15,7 @@
 # Released: May 11, 2013, Copyright 2013 Carsten Dalgaard                     # 
 ###############################################################################
 
-$livepreviewlngver = 'YaBB 2.6.0 $Revision: 1503 $';
+$livepreviewlngver = 'YaBB 2.6.0 $Revision$';
 
 %livepreview_txt = (
 'info_missing' => 'Missing or Incorrect Information:',

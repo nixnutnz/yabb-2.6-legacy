@@ -1210,6 +1210,12 @@ $qckage ||= 31;
             depends_on => ['regtype!=0'],
         },
         {
+            description => qq~<label for="imp_email_check">$admin_txt{'imp_email_check'}</label>~,
+            input_html => qq~<input type="checkbox" name="imp_email_check" id="imp_email_check" value="1"${ischecked($imp_email_check)} />~,
+            name => 'imp_email_check',
+            validate => 'boolean',
+        },
+        {
             description =>
                 qq~<label for="nomailspammer">$admin_txt{'nospammer'}</label>~,
             input_html =>

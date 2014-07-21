@@ -1201,7 +1201,7 @@ qq~<a href="$scripturl?num=$mnum" onmouseover="topicSum(event, '$mnum')" onmouse
 qq~<a href="$scripturl?virboard=$currentboard;num=$mnum">$msub</a><div style="float:right; font-size:xx-small">$stickdir</div>~;
                 }
                 else {
-                     $msublink = qq~<a href="$scripturl?num=$mnum">$msub</a><div style="float:right; font-size:xx-small">$stickdir</div>~; 
+                     $msublink = qq~<a href="$scripturl?num=$mnum">$msub</a><div style="float:right; font-size:xx-small">$stickdir</div>~;
                 }
             }
         }
@@ -1229,7 +1229,7 @@ qq~$maintxt{'758'}: '<a href="$scripturl?num=$movedFlag">$2</a>'<br /><span clas
         $tempbar =~ s/{yabb attachmenticon}/$temp_attachment/gsm;
         $tempbar =~ s/{yabb pages}/$pages/gsm;
         $tempbar =~ s/{yabb starter}/$mname/gsm;
-        $tempbar =~ s/{yabb starttime}/ timeformat($mnum)/egsm;
+        $tempbar =~ s/{yabb starttime}/ timeformat($mnum,0,0,0,1)/egsm;
         $tempbar =~ s/{yabb replies}/ NumberFormat($mreplies) /egsm;
         $tempbar =~ s/{yabb views}/ NumberFormat($views) /egsm;
         $tempbar =~ s/{yabb lastpostlink}/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies">$img{'lastpost'} $mydate<\/a>/gsm;

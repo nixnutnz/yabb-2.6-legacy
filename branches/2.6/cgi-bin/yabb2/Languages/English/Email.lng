@@ -34,6 +34,8 @@ $emaillngver = 'YaBB 2.6.0 $Revision$';
 'sender', "The sender of the PM.",
 'num', "The number of the Topic (for URL purposes)",
 'start', "The number of the Post in the Topic (for URL purposes)",
+'tmessage', "Text of the new Topic",
+'tauthor', "Name OF the Author",
 
 # Registration/Password
 'activationcode', "The Activation Link sent in a Register e-mail.",
@@ -65,7 +67,7 @@ $emaillngver = 'YaBB 2.6.0 $Revision$';
 
 $yabbtags{'preregemail'} = qq~displayname preregspan cryptusername activationcode~;
 $emaildesc{'preregemail'} = qq~The Registration E-mail that is sent out when using Activation link~;
-$preregemail = qq~<pre>Welcome, {yabb displayname}!
+$preregemail = qq~Welcome, {yabb displayname}!
 Here is your account validation link.
 
 You have been successfully pre-registered at {yabb mbname}.
@@ -78,11 +80,11 @@ Please click on the link below to activate your user account
 If the link does not work (or if you use AOL or a browser-based e-mail program), copy the link and insert it in the address bar of your Web browser.
 
 Regards,
-The {yabb mbname} team</pre>~;
+The {yabb mbname} team~;
 
 $yabbtags{'approveregemail'} = qq~username displayname~;
 $emaildesc{'approveregemail'} = qq~The Pending Approval E-mail when not sending a password or Activation link~;
-$approveregemail = qq~<pre>Hello, {yabb displayname}!
+$approveregemail = qq~Hello, {yabb displayname}!
 
 Your application with login ID: "{yabb username}" is pending approval of the {yabb mbname} administration.
 
@@ -90,11 +92,11 @@ This may take some time as even Administrators do have to sleep sometime, so ple
 As soon as your application has been reviewed you will be notified.
 
 Regards,
-The {yabb mbname} team</pre>~;
+The {yabb mbname} team~;
 
 $yabbtags{'instantapprovedemail'} = qq~username displayname reviewer~;
 $emaildesc{'instantapprovedemail'} = qq~The Instant Approval E-mail when not sending a password or Activation link~;
-$instantapprovedemail = qq~<pre>Hello, {yabb displayname}!
+$instantapprovedemail = qq~Hello, {yabb displayname}!
 
 Congratulations and welcome.
 
@@ -105,11 +107,11 @@ You can log in using your e-mail address, or your user ID ({yabb username}).
 You may change your password after you login by clicking on the User CP tab at the top of the {yabb mbname} main page: <a href="{yabb scripturl}">{yabb scripturl}</a> and then click the Profile tab, click on Edit Profile (you will need to enter your password as a security measure).
 
 Regards,
-The {yabb mbname} team</pre>~;
+The {yabb mbname} team~;
 
 $yabbtags{'pwinstantapprovedemail'} = qq~username displayname reviewer password~;
 $emaildesc{'pwinstantapprovedemail'} = qq~The Instant Approval E-mail when sending a password~;
-$pwinstantapprovedemail = qq~<pre>Hello, {yabb displayname}!
+$pwinstantapprovedemail = qq~Hello, {yabb displayname}!
 
 Congratulations and welcome.
 
@@ -121,11 +123,11 @@ Your current password is : {yabb password}
 You may change your password after you login by clicking on the User CP tab at the top of the {yabb mbname} main page: <a href="{yabb scripturl}">{yabb scripturl}</a> and then click the Profile tab, click on Edit Profile (you will need to enter your password as a security measure).
 
 Regards,
-The {yabb mbname} team</pre>~;
+The {yabb mbname} team~;
 
 $yabbtags{'instantrejectedemail'} = qq~username displayname reviewer~;
 $emaildesc{'instantrejectedemail'} = qq~The Instant Decline E-mail when not sending a password or Activation link~;
-$instantrejectedemail = qq~<pre>Hello, {yabb displayname}!
+$instantrejectedemail = qq~Hello, {yabb displayname}!
 
 We regret to inform you that your membership application has been instantly rejected by {yabb reviewer} from the {yabb mbname} administration.
 No specific reason was given for rejecting you, but most likely your registration credentials or registration reason resulted in this decision.
@@ -133,11 +135,11 @@ No specific reason was given for rejecting you, but most likely your registratio
 If you feel this is an error, you are of course free to apply for membership again using different credentials for review.
 
 Regards,
-The {yabb mbname} team</pre>~;
+The {yabb mbname} team~;
 
 $yabbtags{'reviewapprovedemail'} = qq~username displayname reviewer~;
 $emaildesc{'reviewapprovedemail'} = qq~The Reviewed Approval E-mail when not sending a password or Activation link~;
-$reviewapprovedemail = qq~<pre>Hello, {yabb displayname}!
+$reviewapprovedemail = qq~Hello, {yabb displayname}!
 
 Congratulations and welcome.
 
@@ -151,11 +153,11 @@ You can log in using your e-mail address, or your user ID ({yabb username}).
 You may change your password after you login by clicking on the User CP tab at the top of the {yabb mbname} main page: <a href="{yabb scripturl}">{yabb scripturl}</a> and then click the Profile tab, click on Edit Profile (you will need to enter your password as a security measure).
 
 Regards,
-The {yabb mbname} team</pre>~;
+The {yabb mbname} team~;
 
 $yabbtags{'pwreviewapprovedemail'} = qq~username displayname reviewer password~;
 $emaildesc{'pwreviewapprovedemail'} = qq~The Reviewed Approval E-mail when sending a password~;
-$pwreviewapprovedemail = qq~<pre>Hello, {yabb displayname}!
+$pwreviewapprovedemail = qq~Hello, {yabb displayname}!
 
 Congratulations and welcome.
 
@@ -170,11 +172,11 @@ Your current password is : {yabb password}
 You may change your password after you login by clicking on the User CP tab at the top of the {yabb mbname} main page: <a href="{yabb scripturl}">{yabb scripturl}</a> and then click the Profile tab, click on Edit Profile (you will need to enter your password as a security measure).
 
 Regards,
-The {yabb mbname} team</pre>~;
+The {yabb mbname} team~;
 
 $yabbtags{'reviewrejectedemail'} = qq~username displayname reviewer reason~;
 $emaildesc{'reviewrejectedemail'} = qq~The Reviewed Decline E-mail when not sending a password or Activation link~;
-$reviewrejectedemail = qq~<pre>Hello, {yabb displayname}!
+$reviewrejectedemail = qq~Hello, {yabb displayname}!
 
 We regret to inform you that your membership application has been reviewed and rejected by {yabb reviewer} from the {yabb mbname} administration.
 The following reason was given by {yabb reviewer}:
@@ -184,11 +186,11 @@ The following reason was given by {yabb reviewer}:
 If you feel this is an error, you are of course free to apply for membership again using different credentials for review.
 
 Regards,
-The {yabb mbname} team</pre>~;
+The {yabb mbname} team~;
 
 $yabbtags{'passwordregemail'} = qq~username password displayname~;
 $emaildesc{'passwordregemail'} = qq~The Registration E-mail when giving the user a random password~;
-$passwordregemail = qq~<pre>Welcome, {yabb displayname}!
+$passwordregemail = qq~Welcome, {yabb displayname}!
 
 Your user ID is {yabb username}, and your password is {yabb password}.
 
@@ -197,11 +199,11 @@ You can log in using your e-mail address, or your user ID ({yabb username}).
 You may change your password after you login by clicking on the User CP tab at the top of the {yabb mbname} main page: <a href="{yabb scripturl}">{yabb scripturl}</a> and then click the Profile tab, click on Edit Profile (you will need to enter your password as a security measure).
 
 Regards,
-The {yabb mbname} team</pre>~;
+The {yabb mbname} team~;
 
 $yabbtags{'welcomeregemail'} = qq~username password displayname~;
 $emaildesc{'welcomeregemail'} = qq~The Registration E-mail when not sending a password or Activation link~;
-$welcomeregemail = qq~<pre>Welcome, {yabb displayname}!
+$welcomeregemail = qq~Welcome, {yabb displayname}!
 
 Your user ID is {yabb username}, and your password is {yabb password}.
 
@@ -210,11 +212,11 @@ You can log in using your your e-mail address, or your user ID ({yabb username})
 You may change your password after you login by clicking on the User CP tab at the top of the {yabb mbname} main page: <a href="{yabb scripturl}">{yabb scripturl}</a> and then click the Profile tab, click on Edit Profile (you will need to enter your password as a security measure).
 
 Regards,
-The {yabb mbname} team</pre>~;
+The {yabb mbname} team~;
 
 $yabbtags{'activatedpassregemail'} = qq~username password displayname~;
 $emaildesc{'activatedpassregemail'} = qq~The Registration Activation Result E-mail (sending a password)~;
-$activatedpassregemail = qq~<pre>Welcome, {yabb displayname}!
+$activatedpassregemail = qq~Welcome, {yabb displayname}!
 
 Your user ID is {yabb username}, and your password is {yabb password}.
 
@@ -223,11 +225,11 @@ You can log in using your e-mail address, or your user ID ({yabb username}).
 You may change your password after you login by clicking on the User CP tab at the top of the {yabb mbname} main page: <a href="{yabb scripturl}">{yabb scripturl}</a> and then click the Profile tab, click on Edit Profile (you will need to enter your password as a security measure).
 
 Regards,
-The {yabb mbname} team</pre>~;
+The {yabb mbname} team~;
 
 $yabbtags{'activatedwelcomeregemail'} = qq~username password displayname~;
 $emaildesc{'activatedwelcomeregemail'} = qq~The Registration Activation Result E-mail (not sending a password)~;
-$activatedwelcomeregemail = qq~<pre>Welcome, {yabb displayname}!
+$activatedwelcomeregemail = qq~Welcome, {yabb displayname}!
 
 Your user ID is {yabb username}, and your password is {yabb password}.
 
@@ -236,11 +238,11 @@ You can log in using your e-mail address, or your user ID ({yabb username}).
 You may change your password after you login by clicking on the User CP tab at the top of the {yabb mbname} main page: <a href="{yabb scripturl}">{yabb scripturl}</a> and then click the Profile tab, click on Edit Profile (you will need to enter your password as a security measure).
 
 Regards,
-The {yabb mbname} team</pre>~;
+The {yabb mbname} team~;
 
 $yabbtags{'newmemberemail'} = qq~displayname username userip useremail~;
 $emaildesc{'newmemberemail'} = qq~The New Member Admin Notification E-mail~;
-$newmemberemail = qq~<pre>A new member has registered in your forum.
+$newmemberemail = qq~A new member has registered in your forum.
 
 Screen Name: {yabb displayname}
 User ID: {yabb username}
@@ -255,11 +257,11 @@ If the link does not work (or if you use AOL or a browser-based e-mail program),
 To examine the profile of the new member please log in to your Forum.
 
 Regards,
-The {yabb mbname} team</pre>~;
+The {yabb mbname} team~;
 
 $yabbtags{'passwordreminderemail'} = qq~displayname mbname remindercode cryptusername~;
 $emaildesc{'passwordreminderemail'} = qq~The Password Reset E-mail~;
-$passwordreminderemail = qq~<pre>Dear {yabb displayname},
+$passwordreminderemail = qq~Dear {yabb displayname},
 
 A request was made by a visitor at {yabb mbname} to reset your password. If you did not submit a request to reset your password, then please ignore this e-mail.
 
@@ -267,67 +269,85 @@ Otherwise, go here to reset your password: <a href="{yabb scripturl}?action=rese
 Note: If the link does not work (or if you use AOL or a browser-based e-mail program), copy the link and insert it in the address bar of your Web browser and confirm with enter. Make sure there are no spaces before or after the link in the address bar.
 
 Regards,
-The {yabb mbname} team</pre>~;
+The {yabb mbname} team~;
 
-$yabbtags{'boardnewtopicnotificationemail'} = qq~num subject~;
+$yabbtags{'boardnewtopicnotificationemail'} = qq~num subject tmessage tauthor~;
 $emaildesc{'boardnewtopicnotificationemail'} = qq~The Notification E-mail (Board-Level, New Topic)~;
-$boardnewtopicnotificationemail = qq~<pre>A new topic, "{yabb subject}", has been posted to a board you are watching.
+$boardnewtopicnotificationemail = qq~A new topic, "{yabb subject}", has been posted from {yabb tauthor} to a board you are watching.
+
+########################################
+
+{yabb tmessage}
+
+########################################
 
 View it at <a href="{yabb scripturl}?num={yabb num}">{yabb scripturl}?num={yabb num}</a>
 
 Regards,
-The {yabb mbname} team</pre>~;
+The {yabb mbname} team~;
 
-$yabbtags{'boardnotificationemail'} = qq~num start subject~;
+$yabbtags{'boardnotificationemail'} = qq~num start subject tmessage tauthor~;
 $emaildesc{'boardnotificationemail'} = qq~The Notification E-mail (Board-Level, Existing Topic)~;
-$boardnotificationemail = qq~<pre>A reply, "{yabb subject}", has been posted to a board you are watching.
+$boardnotificationemail = qq~A reply, "{yabb subject}", has been posted from {yabb tauthor} to a board you are watching.
+
+########################################
+
+{yabb tmessage}
+
+########################################
 
 View it at <a href="{yabb scripturl}?num={yabb num}/{yabb start}">{yabb scripturl}?num={yabb num}/{yabb start}</a>
 
 Regards,
-The {yabb mbname} team</pre>~;
+The {yabb mbname} team~;
 
-$yabbtags{'topicnotificationemail'} = qq~num subject start~;
+$yabbtags{'topicnotificationemail'} = qq~num subject start tmessage tauthor~;
 $emaildesc{'topicnotificationemail'} = qq~The Notification E-mail (Topic-Level)~;
-$topicnotificationemail = qq~<pre>A reply, "{yabb subject}", has been posted to a topic you are watching.
+$topicnotificationemail = qq~A reply, "{yabb subject}", has been posted to {yabb tauthor} to a topic you are watching.
+
+########################################
+
+{yabb tmessage}
+
+########################################
 
 View it at <a href="{yabb scripturl}?num={yabb num}/{yabb start}">{yabb scripturl}?num={yabb num}/{yabb start}</a>
 
 No more notifications will be sent until you visit the topic again.
 
 Regards,
-The {yabb mbname} team</pre>~;
+The {yabb mbname} team~;
 
 $yabbtags{'profilenewpasswordemail'} = qq~displayname password~;
 $emaildesc{'profilenewpasswordemail'} = qq~The Profile E-mail for sending a new password when the existing one is changed~;
-$profilenewpasswordemail = qq~<pre>Dear {yabb displayname},
+$profilenewpasswordemail = qq~Dear {yabb displayname},
 
 Your password has been changed. It is now {yabb password}.
 
 You may change your password after you login by clicking on the User CP tab at the top of the {yabb mbname} main page: <a href="{yabb scripturl}">{yabb scripturl}</a> and then click the Profile tab, click on Edit Profile (you will need to enter your password as a security measure).
 
 Regards,
-The {yabb mbname} team</pre>~;
+The {yabb mbname} team~;
 
 $yabbtags{'sendtopicemail'} = qq~toname subject displayname num~;
 $emaildesc{'sendtopicemail'} = qq~The E-mail for sending a Topic~;
-$sendtopicemail = qq~<pre>Dear {yabb toname},
+$sendtopicemail = qq~Dear {yabb toname},
 I want you to check out the following topic, "{yabb subject}", on {yabb mbname}. To view it, please click the link below:
 
 <a href="{yabb scripturl}?num={yabb num}">{yabb scripturl}?num={yabb num}</a>
 
 Thanks,
-{yabb displayname}</pre>~;
+{yabb displayname}~;
 
 $yabbtags{'privatemessagenotificationemail'} = qq~sender subject message~;
 $emaildesc{'privatemessagenotificationemail'} = qq~The Personal Message Notification E-mail~;
-$privatemessagenotificationemail = qq~<pre>{yabb sender} has sent you a personal message.
+$privatemessagenotificationemail = qq~{yabb sender} has sent you a personal message.
 
 Subject: {yabb subject}
 Message: {yabb message}
 {yabb attachments}
 
-This message is also in your personal message inbox at {yabb mbname}\: <a href="{yabb scripturl}">{yabb scripturl}</a></pre>~;
+This message is also in your personal message inbox at {yabb mbname}\: <a href="{yabb scripturl}">{yabb scripturl}</a>~;
 
 ## for online alert pms.
 %online_alert = (
@@ -339,7 +359,7 @@ replynotify => "Reply alert.",
 
 $yabbtags{'replyguestmail'} = qq~sender email sendto date subject message~;
 $emaildesc{'replyguestmail'} = qq~The Reply Guest PM to Admin E-mail~;
-$replyguestmail = qq~<pre>Dear {yabb sender},
+$replyguestmail = qq~Dear {yabb sender},
 
 Regards,
 The {yabb mbname} team
@@ -353,19 +373,19 @@ Sent: {yabb date}
 Subject: {yabb subject}
 
 {yabb message}
-</pre>~;
+~;
 
 
 $yabbtags{'deleteduseremail'} = q~screen name~;
 $emaildesc{'deleteduseremail'} = q~The Deleted User Notification E-mail~;
 $deletedusersybject = q~Your account deleted on~;
-$deleteduseremail = q~<pre>Hello, {yabb displayname}!
+$deleteduseremail = q~Hello, {yabb displayname}!
 
 Your account on {yabb mbname} is no longer active and has been deleted.
 
 Regards,
 The {yabb mbname} team
 <a href="{yabb scripturl}">{yabb scripturl}</a>
-<pre>~;
+~;
 
 1;

@@ -746,16 +746,6 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
           . qq~ /> <label for="dontstoreinoutbox"><span class="small">$inmes_txt{'320'}$sentboxAttachInfo</span></label><br />~;
     }
 
-    $my_iecopy = qq~
-            <div id="enable_iecopy" style="display: none;">
-            <input type="checkbox" name="iecopy" id="iecopy"$iecopycheck /> <span class="small"> $post_txt{'iecopycheck'}</span>
-            </div>
-            <script type="text/javascript">
-            if (navigator.appName == "Microsoft Internet Explorer") {
-                document.getElementById('enable_iecopy').style.display = 'inline';
-            }
-            </script>
-    ~;
 
     #these are the buttons to submit
     my $sendBMessFlag;
@@ -771,21 +761,10 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
         $my_spdpost .= q~</script>~;
     }
 
-    my %accesskey;
     if ( !$replyguest ) {
-        $my_accesskey .=
+        $my_draft =
 qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$draft" value="$inmes_txt{'savedraft'}" accesskey="d" tabindex="7" class="button" />~;
-        $accesskey{'MSIE_Safari'}     = $post_txt{'329b'};
-        $accesskey{'FireFox'}         = $post_txt{'330b'};
-        $accesskey{'Browsers_on_Mac'} = $post_txt{'331b'};
-
-# remove Preview
-#        $my_accesskey .=
-#qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$preview" id="$preview" value="$post_txt{'507'}" accesskey="p" tabindex="6" class="button" />~;
-#        $accesskey{'MSIE_Safari'}     = $post_txt{'329c'};
-#        $accesskey{'FireFox'}         = $post_txt{'330c'};
-#        $accesskey{'Browsers_on_Mac'} = $post_txt{'331c'};
-    }
+     }
 
     $smilie_url_array  = q{};
     $smilie_code_array = q{};
@@ -827,28 +806,7 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
     $my_browser =
       qq~<script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
         <script type="text/javascript">
-            if (/Opera/.test(navigator.userAgent) === false) {
-                if (/mac/i.test(navigator.platform)) {
-                    document.write("<br /><span class='small'>$accesskey{'Browsers_on_Mac'}</span>");
-                } else if (/MSIE [7-9]/.test(navigator.userAgent) || (/\\/[3-9]\\.\\d+\\.\\d+ Safari/.test(navigator.userAgent))) {
-                    document.write("<br /><span class='small'>$accesskey{'MSIE_Safari'}</span>");
-                } else if (/Firefox\\/[2-9]/.test(navigator.userAgent) || (/Chrome/.test(navigator.userAgent))) {
-                    document.write("<br /><span class='small'>$accesskey{'FireFox'}</span>");
-                }
-            }
-            function Hash() {
-                this.length = 0;
-                this.items = new Array();
-                for (var i = 0; i < arguments.length; i += 2) {
-                    if (typeof(arguments[i + 1]) != 'undefined') {
-                        this.items[arguments[i]] = arguments[i + 1];
-                        this.length++;
-                    }
-                }
-                this.getItem = function(in_key) {
-                    return this.items[in_key];
-                }
-            }~;
+~;
 
     if ( !$replyguest ) {
         $my_ajxcall = 'ajximmessage';
@@ -899,12 +857,11 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
     $imsend =~ s/{yabb my_ispreview}/$my_ispreview/sm;
     $imsend =~ s/{yabb my_isreply}/$my_isreply/sm;
     $imsend =~ s/{yabb post}/$post/sm;
-    $imsend =~ s/{yabb my_iecopy}/$my_iecopy/sm;
     $imsend =~ s/{yabb hidestatus}/$hidestatus/sm;
     $imsend =~ s/{yabb submittxt}/$submittxt/sm;
     $imsend =~ s/{yabb sendBMessFlag}/$sendBMessFlag/sm;
     $imsend =~ s/{yabb my_spdpost}/$my_spdpost/sm;
-    $imsend =~ s/{yabb my_accesskey}/$my_accesskey/sm;
+    $imsend =~ s/{yabb my_draft}/$my_draft/sm;
     $imsend =~ s/{yabb my_browser}/$my_browser/sm;
     $imsend =~ s/{yabb my_savetable}/$my_savetable/sm;
     $imsend =~ s/{yabb my_chars}/$my_chars/sm;
@@ -1859,7 +1816,7 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=$nextMessid">$inm
 qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'190'}</a>~;
     }
 
-    my $mydate = timeformat($mdate);
+    my $mydate = timeformat($mdate,0,0,0,1);
     if ( $INFO{'caller'} == 1 ) {
         if ($mtousers) {
             foreach my $uname ( split /,/xsm, $mtousers ) {

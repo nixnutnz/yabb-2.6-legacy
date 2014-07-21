@@ -22,6 +22,7 @@ $registerlngver = 'YaBB 2.6.0 $Revision$';
 '36' => 'Password',
 '38' => 'Screen Name',
 '69' => 'E-mail',
+'70' => 'Verify e-mail',
 '81' => 'Password',
 '82' => 'Verify password',
 '91' => 'Password field empty',
@@ -107,6 +108,8 @@ $registerlngver = 'YaBB 2.6.0 $Revision$';
 'error_agree' => 'You must agree to the \\"User Agreement\\" before you can be registered.',
 'error_gender' => 'You must select your gender.',
 'error_verification_question' => 'You must answer the verification question.',
+'error_email2' => 'You must verify your e-mail.',
+'error_email3' => 'Your e-mail is not equal the confirmation e-mail.',
 );
 
 %pwstrengthmeter_txt = (
@@ -201,4 +204,19 @@ $registerlngver = 'YaBB 2.6.0 $Revision$';
 '5' => 'Strawberry',
 '6' => 'You failed the fruit check!',
 );
+
+%mail_check = (
+'address' => 'The entered e-mail address:',
+'invalid' => 'is invalid.',
+'reason' => 'The error is:',
+'0' => 'Check is successful.',
+'1' => 'Bad syntax of e-mail address.',
+'2' => 'Mail domain mentioned in the e-mail address is unknown.',
+'3' => 'Timeout has happened during DNS checks.',
+'4' => 'User is unknown on SMTP server.',
+'5' => 'Timeout has happened during SMTP checks.',
+'6' => 'All SMTP servers for the e-mail domain were found unreachable during SMTP checks.',
+'7' => 'Mailbox is temporarily full but probably a valid username.',
+);
+
 1;

@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$adminlngver = 'YaBB 2.6.0 $Revision: 1503 $';
+$adminlngver = 'YaBB 2.6.0 $Revision$';
 
 @days = ('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
 @months = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
@@ -579,6 +579,7 @@ $abbr_lang = 'en-us';
 'remove_img' => 'Remove Image',
 'setsettings' => q~Settings Submitted~,
 'maxadminlog' => q~The maximum number of entries stored in the Admin Log.~,
+'imp_email_check' => 'Enable improved e-mail checking?<br /><span class="small">Checks if the e-mail domain exists, if the user is known on the given SMTP server, if the smtp server(s) are online and valid, and if the users mailbox is full. Also adds a second e-mail field to the registration page for verification.<br />Note that this setting requires Net::DNS to be installed on your server.</span>',
 );
 
 %floodtxt = (

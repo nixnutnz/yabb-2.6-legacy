@@ -83,7 +83,7 @@ sub DoLiveMessage {
 }
 
 sub DoLiveIM {
-    $subjdate = timeformat($date);
+    $subjdate = timeformat($date,0,0,0,1);
     $FORM{'message'} =~ s/\r//gxsm;
     $message = $FORM{'message'};
     uri_unescape($message);

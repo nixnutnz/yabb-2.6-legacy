@@ -140,6 +140,15 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
         $yymain .= qq~
             <br /><span class="small">$register_txt{'521'}</span>~;
     }
+
+    $email2 = q{};
+    if ($imp_email_check) {
+        $email2 = qq~<tr>
+        <td class="windowbg right vtop"><label for="email2"><b>$register_txt{'70'}:</b></td>
+        <td class="windowbg2"><input type="text" maxlength="100" name="email2" id="email2" size="45" />$myreg_req</td>
+    </tr>~;
+    }
+
     $yymain .= $myregister_avail;
     $yymain =~ s/{yabb tmprealname}/$tmprealname/sm;
     $yymain =~ s/{yabb aedomains}/$aedomains/sm;
@@ -150,6 +159,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
         ~;
     }
     $yymain .= $myregister_endrow;
+    $yymain .= $email2;
 
     if ($birthday_on_reg) {
         my $editAgeTxt;
@@ -374,6 +384,18 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
             return false;
         }~ .
 
+        ($imp_email_check ? qq~
+        if (document.creator.email2.value == '') {
+            alert("$register_txt{'error_email2'}");
+            document.creator.email2.focus();
+            return false;
+        }
+        if (document.creator.email.value != document.creator.email2.value) {
+            alert("$register_txt{'error_email3'}");
+            document.creator.email.focus();
+            return false;
+        }~ : '') .
+
       (
         $birthday_on_reg
         ? q~
@@ -498,6 +520,20 @@ sub Register2 {
 #    $member{'regusername'} =~ s/\s/_/gxsm;
     $member{'regrealname'} =~ s/\t+/\ /gsm;
 
+    # If enabled check if user has a valid e-mail address (needs Net::DNS to be installed)
+    if ($imp_email_check) {
+        my $helo;
+        use Mail::CheckUser (qw(check_email last_check));
+        $Mail::CheckUser::Sender_Addr = $webmaster_email;
+        if ($boardurl =~ /http\:\/\/(.*?)\//){ $Mail::CheckUser::Helo_Domain = $1; }
+        if (check_email($member{'email'})) {
+            my $email_ok = 1;
+        } else {
+            my $failure = last_check()->{code};
+            fatal_error(q{}, "$mail_check{'address'} $member{'email'} $mail_check{'invalid'} $mail_check{'reason'} $mail_check{$failure}");
+        }
+    }
+
     # Make sure users can't register with banned details
     email_domain_check( $member{'email'} );
     banning( $member{'regusername'}, $member{'email'} );
@@ -508,6 +544,9 @@ sub Register2 {
     }
     if ( length( $member{'regusername'} ) > 25 ) {
         fatal_error( 'id_to_long', "($member{'regusername'})" );
+    }
+    if ( $member{'email'} ne $member{'email2'} && $imp_email_check ) {
+        fatal_error( 'email_mismatch' );
     }
     if ( length( $member{'email'} ) > 100 ) {
         fatal_error( 'email_to_long', "($member{'email'})" );

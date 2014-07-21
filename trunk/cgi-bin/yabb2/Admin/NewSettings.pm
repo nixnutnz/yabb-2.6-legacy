@@ -524,6 +524,7 @@ sub SaveSettingsTo {
 \$regtype = $regtype;                       # 0 = registration closed (only admin can register), 1 = pre registration with admin approval,
                                     # 2 = pre registration and email activation, 3 = open registration
 \$RegAgree = $RegAgree;                     # 0 = Don't show registration agreement, 1 = Show registration agreement before registration form, 2 = Show registration agreement on registration form
+\$imp_email_check = $imp_email_check;    # Set to 1 to enable improved e-mail check
 \$RegReasonSymbols = $RegReasonSymbols;         # Maximum allowed symbols in User reason(s) for registering
 \$preregspan = $preregspan;                 # Time span in hours for users to account activation before cleanup
 \$pwstrengthmeter_scores = "\Q$pwstrengthmeter_scores\E";   # Password-Strength-Meter Scores

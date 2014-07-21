@@ -177,6 +177,7 @@ $errorlngver = 'YaBB 2.6.0 $Revision$';
 'session_time_out'     => "Profile Session timed out.",
 
 ## Register ##
+'email_mismatch'       => "The e-mail addresses do not match.",
 'registration_disabled'       => "The registration feature has been disabled on this forum.",
 'no_registration_logged_in'   => "You cannot register while logged in.",
 'banned'               => "Banning Notification.",
