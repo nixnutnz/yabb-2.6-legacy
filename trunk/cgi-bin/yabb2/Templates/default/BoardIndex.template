@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision: 1503 $
+# $Revision: 1514 $
 
 $boardhandellist = qq~
     {yabb expand}{yabb collapse}{yabb markallread}
@@ -104,10 +104,10 @@ $boardindex_template .= qq~
                 </td>
                 <td class="windowbg2 info-center center vtop">
                     <div class="small" style="float: left; width: 90%; text-align: left;">
-                    $boardindex_txt{'800'} <b>{yabb mostusers}</b> $maintxt{'30'} {yabb mostusersdate}.<br />
-                    $boardindex_txt{'801'} <b>{yabb mostmembers}</b> $maintxt{'30'} {yabb mostmembersdate}.<br />
-                    $boardindex_txt{'802'} <b>{yabb mostguests}</b> $maintxt{'30'} {yabb mostguestsdate}.<br />
-                    $boardindex_txt{'803'} <b>{yabb mostbots}</b> $maintxt{'30'} {yabb mostbotsdate}.
+                    $boardindex_txt{'800'} <b>{yabb mostusers}</b>$maintxt{'30b'} $maintxt{'30'} {yabb mostusersdate}.<br />
+                    $boardindex_txt{'801'} <b>{yabb mostmembers}</b>$maintxt{'30b'} $maintxt{'30'} {yabb mostmembersdate}.<br />
+                    $boardindex_txt{'802'} <b>{yabb mostguests}</b>$maintxt{'30b'} $maintxt{'30'} {yabb mostguestsdate}.<br />
+                    $boardindex_txt{'803'} <b>{yabb mostbots}</b>$maintxt{'30b'} $maintxt{'30'} {yabb mostbotsdate}.
                     </div>
                 </td>
             </tr>

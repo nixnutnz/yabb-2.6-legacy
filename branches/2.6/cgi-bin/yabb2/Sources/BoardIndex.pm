@@ -934,9 +934,11 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}" re
                             "$datadir/${$uid.$curboard}{'lastpostid'}.txt", 1 );
                         my @x = <EXMEMBERTHREAD>;
                         fclose(EXMEMBERTHREAD);
-                        $lastposter =
-                          ( split /\|/xsm, $x[-1], 3 )[1]
-                          . " - $boardindex_txt{'470a'}";
+                        @lstp = split /\|/xsm, $x[-1];
+                        if ( $lstp[4] eq 'Guest') {
+                            $lastposter = qq~$lstp[1] ($maintxt{'28'})~;
+                        }
+                        else { $lastposter = qq~$lstp[1] - $boardindex_txt{'470a'}~; }
                     }
                 }
                 ${ $uid . $curboard }{'lastposter'} ||= $boardindex_txt{'470'};

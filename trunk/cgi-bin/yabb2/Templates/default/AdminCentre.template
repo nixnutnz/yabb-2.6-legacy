@@ -191,12 +191,13 @@ $front_page = qq~<div class="bordercolor rightboxdiv">
                 var dd = '<tr><td class="titlebg" colspan="2">$rna</b></td></tr>';
                 var ee = '';
                 var ff = '';
+                var gg = '';
         } else {
                 dd = '<tr><td class="windowbg2">$versiontxt{'5'}</td><td class="windowbg2"><b>'+STABLE+'</b></td></tr>';
                 ee = '<tr><td class="windowbg2">$versiontxt{'7'}</td><td class="windowbg2"><b>'+BETA+'</b></td></tr>';
                 ff = '<tr><td class="windowbg2">$versiontxt{'8'}</td><td class="windowbg2"><b>'+ALPHA+'</b></td></tr>';
                 if (STABLE == "{yabb YaBBversion}") {
-                    var gg = '<tr><td class="windowbg2" colspan="2"><div class="pad-more">$versiontxt{'6'}</div></td></tr>';
+                    gg = '<tr><td class="windowbg2" colspan="2"><div class="pad-more">$versiontxt{'6'}</div></td></tr>';
                 } else {
                     gg = '<tr><td class="windowbg2" colspan="2"><div class="pad-more">$versiontxt{'2'}'+STABLE+'$versiontxt{'3'}</div></td></tr>';
                 }

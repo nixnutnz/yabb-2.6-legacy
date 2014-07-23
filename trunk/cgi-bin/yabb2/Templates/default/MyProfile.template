@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision: 1503 $
+# $Revision: 1512 $
 
 $my_bdaycake = 'bdaycake.png';
 $my_aim = 'aim.gif';
@@ -673,7 +673,7 @@ $myshow_profile = qq~
         <td class="windowbg2">
             <div class="contactleft"><b>{yabb lastonline}: </b></div>
             <div class="contactright">{yabb userlastlogin}</div>
-            <div class="contactleft"><b>{yabb lastpost}:</b></div>
+            <div class="contactleft"><b>{yabb lastpost}</b></div>
             <div class="contactright">{yabb userlastpost}</div>
             {yabb my_lastPM}
         </td>

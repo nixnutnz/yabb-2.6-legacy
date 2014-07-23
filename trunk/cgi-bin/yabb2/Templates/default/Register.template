@@ -125,7 +125,8 @@ $myregister_avail = qq~</label>
         </td>
         <td class="windowbg2 vtop">
             {yabb aedomains}$myreg_req
-            <div id="emailavailability"></div>~;
+            <div id="emailavailability"></div>
+            {yabb email2}~;
 
 $myregister_endrow = q~
         </td>
