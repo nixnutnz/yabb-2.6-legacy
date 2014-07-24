@@ -1109,7 +1109,6 @@ sub drawPMbox {
 <script type="text/javascript">
 var postas = '$post';
 function checkForm(theForm) {
-    if (navigator.appName == "Microsoft Internet Explorer" && document.getElementById('iecopy').checked == true) { theForm.message.createTextRange().execCommand("Copy"); }
     if (theForm.subject.value == "") { alert("$post_txt{'77'}"); theForm.subject.focus(); return false }
     ~ . (
         $iamguest && $post ne 'imsend'

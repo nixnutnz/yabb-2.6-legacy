@@ -445,7 +445,6 @@ var postas = '$post';
 function checkForm(theForm) {
     var isError = 0;
     var msgError = "$post_txt{'751'}\\n";
-    if (navigator.appName == "Microsoft Internet Explorer" && document.getElementById('iecopy').checked === true) { theForm.message.createTextRange().execCommand("Copy"); }
     ~ . (
         $iamguest && $post ne 'imsend' && $post ne 'imsend2'
         ? qq~if (theForm.name.value === "" || theForm.name.value == "_" || theForm.name.value == " ") { msgError += "\\n - $post_txt{'75'}"; if (isError === 0) isError = 2; }
