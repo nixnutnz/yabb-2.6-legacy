@@ -290,4 +290,20 @@ $profilelngver = 'YaBB 2.6.0 $Revision$';
 '03' => 'Select the default area you would like to return to after making a post.<br /><b>Note:</b> You can change this option at the time of posting.',
 );
 
+%zodiac_txt = (   #YaBB Zodiac
+'sign' => 'Zodiac sign',
+'Aquarius' => 'Aquarius',
+'Aries' => 'Aries',
+'Libra' => 'Libra',
+'Gemini' => 'Gemini',
+'Leo' => 'Leo',
+'Sagittarius' => 'Sagittarius',
+'Virgo' => 'Virgo',
+'Cancerian' => 'Cancer',
+'Capricorn' => 'Capricorn',
+'Scorpio' => 'Scorpio',
+'Pisces' => 'Pisces',
+'Taurus' => 'Taurus',
+);
+
 1;

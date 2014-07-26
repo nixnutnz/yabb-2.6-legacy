@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision: 1503 $
+# $Revision$
 get_micon();
 $IM_callback = 'imcallback.gif';
 $IM_answered = 'answered.gif';
@@ -94,6 +94,7 @@ $myprofileblock = qq~
         {yabb age}
         {yabb regdate}
         {yabb gender}
+        {yabb zodiac}
     </div>
 </div>
 ~;

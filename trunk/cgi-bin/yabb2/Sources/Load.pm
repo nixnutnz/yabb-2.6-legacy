@@ -592,6 +592,16 @@ sub LoadUserDisplay {
         ${ $uid . $user }{'gender'} = q{};
     }
 
+    if ($showzodiac && ${ $uid . $user }{'bday'}) {
+        require Sources::EventCalBirthdays;
+        my ($user_bdmon, $user_bdday, undef ) = split /\//xsm, ${ $uid . $user }{'bday'} ;
+        $zodiac = starsign($user_bdday, $user_bdmon);
+        ${ $uid . $user }{'zodiac'} = qq~<span style="vertical-align: middle;">$zodiac_txt{'sign'}:</span> $zodiac<br />~;
+    }
+    else {
+        ${ $uid . $user }{'zodiac'} = q{};
+    }
+
     if ( $showusertext && ${ $uid . $user }{'usertext'} )
     {    # Censor the usertext and wrap it
         ${ $uid . $user }{'usertext'} =

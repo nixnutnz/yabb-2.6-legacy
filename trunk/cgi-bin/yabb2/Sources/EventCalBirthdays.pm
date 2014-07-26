@@ -450,7 +450,7 @@ sub sortuser {
 }
 
 sub starsign {
-    my ( $user_bdday,$user_bdmon ) = @_;
+    my ( $user_bdday,$user_bdmon, $text ) = @_;
     my @stars =
       qw(Capricorn Aquarius Aquarius Pisces Pisces Aries Aries Taurus Taurus Gemini Gemini Cancerian Cancerian Leo Leo Virgo Virgo Libra Libra Scorpio Scorpio Sagittarius Sagittarius Capricorn);
     my @bd_1 = (
@@ -471,7 +471,13 @@ sub starsign {
             && $user_bdday <= $bd_2[$i]
             && $user_bdmon == $bd_3[$i] )
         {
-            $sternzeichen = "$var_cal{$stars[$i]}";
+            if ( $text ) {
+                LoadLanguage('Profile');
+                $sternzeichen = "$zodiac_txt{$stars[$i]}";
+            }
+            else {
+                $sternzeichen = "$var_cal{$stars[$i]}";
+            }
         }
     }
     return $sternzeichen;

@@ -403,6 +403,12 @@ $qckage ||= 31;
             validate => 'boolean',
         },
         {
+            description => qq~<label for="showzodiac">$admin_txt{'zodiac'}</label>~,
+            input_html => qq~<input type="checkbox" name="showzodiac" id="showzodiac" value="1"${ischecked($showzodiac)} />~,
+            name => 'showzodiac',
+            validate => 'boolean',
+        },
+        {
             description => qq~<label for="showuserage">$admin_txt{'show_user_age'}</label>~,
             input_html => qq~<input type="checkbox" name="showuserage" id="showuserage" value="1"${ischecked($showuserage)} />~,
             name => 'showuserage',

@@ -2720,6 +2720,7 @@ sub ViewProfile {
         $row_facebook, $row_twitter,   $row_youtube, $row_email,
         $row_website,  $row_signature, $showusertext
     );
+    my ($row_zodiac);
 
     # Convert forum start date to string, if there is no date set,
     # Defaults to 1st Jan, 2005
@@ -2823,6 +2824,18 @@ qq~<img src="$facesurl/${$uid.$user}{'userpic'}" id="avatar_img_resize" alt="" s
                         <div class="contactright">
                         $age$isbday
                         </div>~;
+            if ($showzodiac) {
+            require Sources::EventCalBirthdays;
+            my ($user_bdmon, $user_bdday, undef ) = split /\//xsm, ${ $uid . $user }{'bday'} ;
+            $memberzodiac = starsign($user_bdday, $user_bdmon, 'text' );
+            $row_zodiac = qq~
+                        <div class="contactleft">
+                        <b>$zodiac_txt{'sign'}:</b>
+                        </div>
+                        <div class="contactright">
+                        $memberzodiac
+                        </div>~;
+        }
     }
     if ( ${ $uid . $user }{'location'} ) {
         $row_location = qq~
@@ -3118,6 +3131,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
         $my_gender = $myshow_gender;
         $my_gender =~ s/{yabb row_gender}/$row_gender/sm;
         $my_gender =~ s/{yabb row_age}/$row_age/sm;
+        $my_gender =~ s/{yabb row_zodiac}/$row_zodiac/sm;
         $my_gender =~ s/{yabb row_location}/$row_location/sm;
     }
     if ($extendedprofiles) {

@@ -197,6 +197,7 @@ $messageblock = qq~
                         {yabb age}
                         {yabb regdate}
                         {yabb gender}
+                        {yabb zodiac}
                         {yabb ext_prof}
                         {yabb isbuddy}
                     </div>

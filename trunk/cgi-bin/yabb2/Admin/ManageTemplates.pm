@@ -2696,6 +2696,7 @@ qq~<img src="$facesurl/elmerfudd.gif" name="avatar" alt="" style="max-width: $us
         $outblock =~ s/({|<)yabb att(}|>)//gsm;
         $outblock =~ s/({|<)yabb css(}|>)/$css/gsm;
         $outblock =~ s/({|<)yabb gender(}|>)//gsm;
+        $outblock =~ s/({|<)yabb zodiac(}|>)//gsm;
         $outblock =~ s/({|<)yabb age(}|>)//gsm;
         $outblock =~ s/({|<)yabb regdate(}|>)//gsm;
         $outblock =~ s/({|<)yabb ext_prof(}|>)/$template_ext_prof/gsm;

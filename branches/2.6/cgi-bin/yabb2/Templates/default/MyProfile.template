@@ -704,6 +704,7 @@ $myshow_gender = qq~<tr>
         <td class="windowbg2 vtop">
             {yabb row_gender}
             {yabb row_age}
+            {yabb row_zodiac}
             {yabb row_location}
         </td>
     </tr>~;

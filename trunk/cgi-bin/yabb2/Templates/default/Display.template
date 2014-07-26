@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision: 1514 $
+# $Revision$
 
 $disp_qquname = 'qquname.gif';
 $disp_arrow_dn = 'arrow_down.gif';
@@ -197,6 +197,7 @@ $messageblock = qq~
                         {yabb age}
                         {yabb regdate}
                         {yabb gender}
+                        {yabb zodiac}
                         {yabb ext_prof}
                         {yabb isbuddy}
                     </div>

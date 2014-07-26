@@ -94,6 +94,7 @@ $myprofileblock = qq~
         {yabb age}
         {yabb regdate}
         {yabb gender}
+        {yabb zodiac}
     </div>
 </div>
 ~;

@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision: 1512 $
+# $Revision$
 
 $my_bdaycake = 'bdaycake.png';
 $my_aim = 'aim.gif';
@@ -704,6 +704,7 @@ $myshow_gender = qq~<tr>
         <td class="windowbg2 vtop">
             {yabb row_gender}
             {yabb row_age}
+            {yabb row_zodiac}
             {yabb row_location}
         </td>
     </tr>~;

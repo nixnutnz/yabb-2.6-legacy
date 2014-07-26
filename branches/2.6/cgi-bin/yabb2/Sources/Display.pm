@@ -1448,6 +1448,7 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         }
         $outblock =~ s/{yabb css}/$css/gsm;
         $outblock =~ s/{yabb gender}/${$uid.$musername}{'gender'}/gsm;
+        $outblock =~ s/{yabb zodiac}/${$uid.$musername}{'zodiac'}/gsm;
         $outblock =~ s/{yabb age}/$template_age/gsm;
         $outblock =~ s/{yabb regdate}/$template_regdate/gsm;
         $outblock =~ s/{yabb ext_prof}/$template_ext_prof/gsm;

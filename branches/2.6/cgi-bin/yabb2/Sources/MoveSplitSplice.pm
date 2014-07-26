@@ -149,17 +149,17 @@ sub Split_Splice {
     get_subboards( split /,/xsm, $cat{$newcat} );
 
     # Get threads and make the current one the default selection
-    my ($positionlist);
+    my ( $threadlist, $threadids, $positionlist );
     fopen( FILE, "$boardsdir/$newboard.txt" );
     my @threads = <FILE>;
     fclose(FILE);
 
-    my $threadlist = qq~<option value="new">$sstxt{'30'}</option>\n~;
+    $threadlist = qq~<option value="new">$sstxt{'30'}</option>\n~;
     my $threadid;
     foreach (@threads) {
         ( $threadid, $message, undef ) = split /\|/xsm, $_, 3;
         next if $curthread eq $threadid;
-        my $threadids .= "$threadid,";
+        $threadids .= "$threadid,";
 
         ( $message, undef ) = Split_Splice_Move( $message, $threadid );
         DoUBBC();
@@ -218,8 +218,8 @@ sub Split_Splice {
         }
         $positionlist = qq~<option value="end">$sstxt{'31'}</option>\n~;
         $positionlist .=
-          qq~<option value="begin">$sstxt{'32'}</option>\n~ . join q{},
-          @messages;
+          qq~<option value="begin">$sstxt{'32'}</option>\n~;
+        $positionlist .= join q{}, @messages;
         if (   $FORM{'position'}
             && $newthread == $FORM{'old_position_thread'} )
         {

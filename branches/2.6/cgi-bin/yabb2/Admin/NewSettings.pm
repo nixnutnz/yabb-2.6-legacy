@@ -589,6 +589,7 @@ $member_groups
 \$showtopicrepliers = $showtopicrepliers;   # Set to 1 to display members replying to a topic
 \$hide_signat_for_guests = $hide_signat_for_guests; # Set to 1 to hide all signatures for Guests (only Members can see them).
 \$showgenderimage = $showgenderimage;       # Set to 1 to display each member's gender in the message view (by the ICQ.. etc.)
+\$showzodiac = $showzodiac;                     # Set to 1 to display each member's zodiac sign in view profile and message view
 \$showuserage = $showuserage;               # Set to 1 to display each member's age in the message view
 \$showage = $showage;                       # Set to 1 to allow member to hide their age and birthyear (Except from the Administrator.)
 \$showregdate = $showregdate;               # Set to 1 to show date of registration.
