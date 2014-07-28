@@ -390,6 +390,8 @@ s/img src\=\&quot\;$imagesdir\/(.+?)\&quot;/"img src\=\&quot;" . AdmImgLoc2($1) 
       . $topnav
       . $mainbody;
 
+    image_resize();
+
     print_HTML_output_and_finish();
     return;
 }

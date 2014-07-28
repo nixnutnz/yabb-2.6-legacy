@@ -158,13 +158,21 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
                     $descr =~ s/\<br \/>/\n/gsm;
                     my $bicon = q{};
                     if ( ${ $uid . $curboard }{'pic'} ) {
-                        $bicon = ${ $uid . $curboard }{'pic'};
-                    }
-                    if ( $bicon =~ /\//ixsm ) {
-                        $bicon = qq~ <img src="$bicon" alt="" /> ~;
-                    }
-                    elsif ($bicon) {
-                        $bicon = qq~ <img src="$imagesdir/$bicon" alt="" /> ~;
+                        fopen( BRDPIC, "<$boardsdir/brdpics.db" );
+                        my @brdpics = <BRDPIC>;
+                        fclose( BRDPIC);
+                        chomp @brdpics;
+                        for (@brdpics) {
+                            my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
+                            if ( $brdnm eq $curboard && $style eq $usestyle ) {
+                                if ( $brdpic =~ /\//ixsm ) {
+                                    $bicon = qq~ <img src="$brdpic" id="brd_img_resize" alt="" /> ~;
+                                }
+                                else {
+                                    $bicon = qq~<img src="$yyhtml_root/Templates/Forum/$style/Boards/$brdpic" id="brd_img_resize" alt="$boardname" />~;
+                                }
+                            }
+                        }
                     }
                     if ( ${ $uid . $curboard }{'ann'} == 1 ) {
                         $bicon =
@@ -914,11 +922,41 @@ qq~                     <select multiple="multiple" name="moderatorgroups$i" id=
         else {
             $yymain .= qq~$admin_txt{'15'}~;
         }
+
+        my $drawndirs = q{};
+        for my $curtemplate ( sort { $templateset{$a} cmp $templateset{$b} } keys %templateset ) {
+            @templatelst = split /\|/xsm, $templateset{$curtemplate};
+            $drawndirs .= qq~<option value="$templatelst[1]">$curtemplate</option>\n~;
+            push @tmplt, $templatelst[1];
+        }
+
         my $boardpic_value = q{};
+        my $brdpic_addr = q{};
+        my $brdpic_loc  = q{};
+        my $mystyle = q{};
         if ( $boardpic ) {
-            $brdpic_addr = $boardpic;
-            if ( $boardpic !~ /http[s]{0,1}:\/\//xsm ) { $brdpic_addr = qq~$yyhtml_root/Templates/Forum/default/$boardpic~;}
-            $boardpic_value = qq~               <div class="small bold"><input type="checkbox" name="del_pic$i" id="del_pic$i" value="1" /><label for="del_pic$i">$admin_txt{'64b4'}</label><br />$admin_txt{'current_img'}: <a href="$brdpic_addr" target="_blank">$boardpic</a> <img src="$brdpic_addr" alt="board_pic" /> </div>~;
+            fopen( BRDPIC, "<$boardsdir/brdpics.db" );
+            my @brdpics = <BRDPIC>;
+            fclose( BRDPIC);
+            chomp @brdpics;
+            for (@brdpics) {
+                my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
+
+                if ( $brdnm eq $editboards[$i] ) {
+                    for ( @tmplt ) {
+                        if ($style eq $_) {
+                            $mystyle = $style;
+                            if ( $brdpic =~ /\//ixsm ) {
+                                $brdpic_addr = qq~$brdpic~;
+                            }
+                            else {
+                                $brdpic_addr = qq~$yyhtml_root/Templates/Forum/$style/Boards/$brdpic~;
+                            }
+                        }
+                    }
+                    $boardpic_value .= qq~               <div class="small bold"><input type="checkbox" name="del_pic$i" id="del_pic$i" value="$brdnm|$style|$brdpic" /><label for="del_pic$i">$admin_txt{'64b4'}</label><br />$admin_txt{'current_img'}: <a href="$brdpic_addr" target="_blank">$mystyle - $brdpic</a> <img src="$brdpic_addr" id="brd_img_resize" alt="board_pic" /> </div>~;
+                }
+            }
         }
 
         $yymain .= qq~
@@ -943,10 +981,14 @@ qq~                     <select multiple="multiple" name="moderatorgroups$i" id=
                         <td class="catbg" colspan="4"><b>$admin_txt{'64'}</b> $admin_txt{'64a'} </td>
                     </tr><tr>
                         <td class="windowbg2"><label for="pic$i"><b>$admin_txt{'64b'}:</b></label></td>
-                        <td class="windowbg2" colspan="3"><span class="small">$admin_txt{'64b3'}</span><br /><input type="file" name="pic$i" id="pic$i" size="35"$brdpic /><input type="hidden" name="cur_pic$i" value="$boardpic" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('pic$i').value='';">X</span>$boardpic_value
-                        <br /><span class="small">$admin_txt{'64b6'}</span><br />
-                        <input type="text" name="mypic$i" id="mypic$i" value="$myboardpic" size="50" maxlength="255"$brdpic />
-                        </td>
+                         <td class="windowbg2" colspan="3"><span class="small">$admin_txt{'64b3'}</span>
+                            <br />$admin_txt{'for_template'}: <select name="templt">
+                                $drawndirs
+                            </select>
+                            <br /><input type="file" name="pic$i" id="pic$i" size="35"$brdpic_addr /><input type="hidden" name="cur_pic$i" value="$brdpic_addr" />
+                            <br /><span class="small">$admin_txt{'64b6'}</span>
+                            <br /><input type="text" name="mypic$i" id="mypic$i" value="$myboardpic" size="50" maxlength="255"$brdpic /><span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('pic$i').value='';">X</span>$boardpic_value
+                         </td>
                     </tr><tr>
                         <td class="windowbg2"><label for="brdrss$i"><b>$admin_txt{'brdrss1'}:</b></label></td>
                         <td class="windowbg2" colspan="3"><input type="checkbox" name="brdrss$i" id="brdrss$i" value="1"$brdrssch /> <label for="brdrss$i"><span class="small">$admin_txt{'brdrss3'}</span></label></td>
@@ -1206,10 +1248,26 @@ sub AddBoards2 {
     LoadBoardControl();
 
     for my $i ( 1 .. $FORM{'amount'} ) {
+        ##### Dealing with Required Info here #####
+        if ( $FORM{"id$i"} eq q{} ) { next; }
+        $id = $FORM{"id$i"};
+        if ( $FORM{"ann$i"} )  { $anncount++; }
+        if ( $FORM{"rbin$i"} ) { $rbincount++; }
+        if ( $anncount > 1 )   { fatal_error('announcement_defined'); }
+        if ( $rbincount > 1 )  { fatal_error('recycle_bin_defined'); }
+        if ( $id !~ /\A[0-9A-Za-z#%+-\.@^_]+\Z/xsm ) {
+            fatal_error( 'invalid_character',
+                "$admin_txt{'61'} $admin_txt{'241'}" );
+        }
         if ( $FORM{"pic$i"} ne q{} ) {
-            $FORM{"pic$i"} = UploadFile("pic$i", 'Templates/Forum/default', 'png jpg jpeg gif', '250', '0');
+            my $newpic = $FORM{"pic$i"};
+            $FORM{"pic$i"} = UploadFile("pic$i", "Templates/Forum/$FORM{'templt'}/Boards", 'png jpg jpeg gif', '250', '0');
+            fopen( BRDPIC, ">>$boardsdir/brdpics.db" );
+            print {BRDPIC} qq~$id|$FORM{'templt'}|$newpic\n~;
+            fclose(BRDPIC);
+
             if ( $FORM{"cur_pic$i"} ne q{} ) {
-                unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_pic$i\"}";
+                unlink qq~$htmldir/Templates/Forum/$FORM{'templt'}/Boards/$FORM{"cur_pic$i"}~;
             }
         }
         elsif ( $FORM{"mypic$i"} ne q{} ) {
@@ -1223,22 +1281,25 @@ sub AddBoards2 {
             $FORM{"pic$i"} = $FORM{"cur_pic$i"};
         }
 
-        if ( $FORM{"cur_pic$i"} ne q{} && $FORM{"del_pic$i"} ) {
-            if ( $FORM{"cur_pic$i"} !~ /[ht|f]tp[s]{0,1}:\/\//xsm ) {
-            unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_pic$i\"}";
+        if ( $FORM{"del_pic$i"} ) {
+            my @pklst = split /[|]/xsm, $FORM{"del_pic$i"};
+            if ( $pklst[2] !~ /[ht|f]tp[s]{0,1}:\/\//xsm ) {
+                unlink qq~$htmldir/Templates/Forum/$pklst[1]/Boards/$pklst[2]~;;
+                fopen( BRDPIC, "<$boardsdir/brdpics.db" );
+                @piclist = <BRDPIC>;
+                fclose(BRDPIC);
+                chomp @piclist;
+                fopen( BRDPIC2, ">$boardsdir/brdpics.db" );
+                for ( @piclist) {
+                    if ( $_ ne $FORM{"del_pic$i"} ) {
+                        print {BRDPIC2} qq~$_\n~;
+                    }
+                    else { print {BRDPIC2} q{};
+                    }
+                }
+                fclose(BRDPIC2);
             }
             $FORM{"pic$i"} = q{};
-        }
-        ##### Dealing with Required Info here #####
-        if ( $FORM{"id$i"} eq q{} ) { next; }
-        $id = $FORM{"id$i"};
-        if ( $FORM{"ann$i"} )  { $anncount++; }
-        if ( $FORM{"rbin$i"} ) { $rbincount++; }
-        if ( $anncount > 1 )   { fatal_error('announcement_defined'); }
-        if ( $rbincount > 1 )  { fatal_error('recycle_bin_defined'); }
-        if ( $id !~ /\A[0-9A-Za-z#%+-\.@^_]+\Z/xsm ) {
-            fatal_error( 'invalid_character',
-                "$admin_txt{'61'} $admin_txt{'241'}" );
         }
 
         if ( $FORM{'screenornot'} ne 'boardscreen' ) {
@@ -1451,8 +1512,11 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         } else {
             if ($FORM{"paswwr$i"}) { $encryptopass = $FORM{"brdpassw$i"}; } else { $encryptopass = q{};}
         }
+        if ( $FORM{"pic$i"} ) {
+            $mypic = 'y';
+        }
         push @boardcontrol,
-"$FORM{\"cat$i\"}|$id|$FORM{\"pic$i\"}|$bdescription|$FORM{\"moderators$i\"}|$FORM{\"moderatorgroups$i\"}|$FORM{\"topicperms$i\"}|$FORM{\"replyperms$i\"}|$FORM{\"pollperms$i\"}|$FORM{\"zero$i\"}|$FORM{\"membergroups$i\"}|$FORM{\"ann$i\"}|$FORM{\"rbin$i\"}|$FORM{\"att$i\"}|$FORM{\"minage$i\"}|$FORM{\"maxage$i\"}|$FORM{\"gender$i\"}|$FORM{\"canpost$i\"}|$FORM{\"parent$i\"}|$FORM{\"rules$i\"}|$brulestitle|$brulesdesc|$FORM{\"rulescollapse$i\"}|$FORM{\"paswwr$i\"}|$encryptopass|$FORM{\"brdrss$i\"}\n";
+"$FORM{\"cat$i\"}|$id|$mypic|$bdescription|$FORM{\"moderators$i\"}|$FORM{\"moderatorgroups$i\"}|$FORM{\"topicperms$i\"}|$FORM{\"replyperms$i\"}|$FORM{\"pollperms$i\"}|$FORM{\"zero$i\"}|$FORM{\"membergroups$i\"}|$FORM{\"ann$i\"}|$FORM{\"rbin$i\"}|$FORM{\"att$i\"}|$FORM{\"minage$i\"}|$FORM{\"maxage$i\"}|$FORM{\"gender$i\"}|$FORM{\"canpost$i\"}|$FORM{\"parent$i\"}|$FORM{\"rules$i\"}|$brulestitle|$brulesdesc|$FORM{\"rulescollapse$i\"}|$FORM{\"paswwr$i\"}|$encryptopass|$FORM{\"brdrss$i\"}\n";
         push @changes, $id;
         $yymain .= qq~<i>'$FORM{"name$i"}'</i> $admin_txt{'48'} <br />~;
     }

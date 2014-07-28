@@ -797,6 +797,16 @@ sub image_resize {
             }
             $x[2] =~ s/display:none/display:inline/xsm;
         }
+        elsif ( $fix_brd_img_size  && $perl_do_it == 1 && $x[1] eq 'brd' )
+        {
+            if ( $max_brd_img_width && $x[2] !~ / width=./sm ) {
+                $x[2] =~ s/( style=.)/$1width:$max_brd_img_width\px;/sm;
+            }
+            if ( $max_brd_img_height && $x[2] !~ / height=./sm ) {
+                $x[2] =~ s/( style=.)/$1height:$max_brd_img_height\px;/sm;
+            }
+            $x[2] =~ s/display:none/display:inline/sm;
+        }
         else {
             $resize_num++;
             $x[0] .= "_$resize_num";
@@ -805,7 +815,7 @@ sub image_resize {
         return qq~"$x[0]"$x[2]~;
     };
     $output =~
-s/"((avatar|avatarml|post|attach|signat)_img_resize)"([^>]*>)/ check_image_resize($1,$2,$3) /gesm;
+s/"((avatar|avatarml|post|attach|signat|brd)_img_resize)"([^>]*>)/ check_image_resize($1,$2,$3) /gesm;
 
     if ($resize_num) {
         $resize_js =~ s/,$//xsm;
@@ -829,6 +839,9 @@ s/"((avatar|avatarml|post|attach|signat)_img_resize)"([^>]*>)/ check_image_resiz
     var signat_img_w    = $max_signat_img_width;
     var signat_img_h    = $max_signat_img_height;
     var fix_signat_size = $fix_signat_img_size;
+    var brd_img_w       = $max_brd_img_width;
+    var brd_img_h       = $max_brd_img_height;
+    var fix_brd_size    = $fix_brd_img_size;
 
     noimgdir   = '$imagesdir';
     noimgtitle = '$maintxt{'171'}';

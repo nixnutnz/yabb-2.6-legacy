@@ -221,6 +221,9 @@ sub EventCalSet {
                         </select>
                     </td>
                 </tr><tr>
+                    <td class="windowbg2"><label for="calsplit">$admin_txt{'calsplit'}</label></td>
+                    <td class="windowbg2"><input type="text" size="5" name="calsplit" id="calsplit" value="$calsplit" /></td>
+                </tr><tr>
                     <td class="windowbg2"><label for="MaxCalMessLen">$admin_txt{'498e'}</label></td>
                     <td class="windowbg2"><input type="text" size="5" name="MaxCalMessLen" id="MaxCalMessLen" value="$MaxCalMessLen" /></td>
                 </tr><tr>
@@ -484,19 +487,20 @@ sub eventcal_save {
         $Event_TodayColor =~ s/[^a-fA-F0-9#]//gxsm;
         $Event_TodayColor = substr $Event_TodayColor, 0, 7;
         $Delete_EventsUntil = $FORM{'Delete_EventsUntil'} || 0;
-        $CalShortEvent = $FORM{'CalShortEvent'};
+        $CalShortEvent = $FORM{'CalShortEvent'} || 0;
         $CalShortEvent =~ s/[^\d]//gxsm;
-        $CalShortEvent = $CalShortEvent         || 0;
         $CalEventPerms = $FORM{'CalEventPerms'} || q{};
         $CalEventPerms =~ s/^\s*,\s*|\s*,\s*$//gsm;
         $CalEventPerms =~ s/\s*,\s*/,/gsm;
-        $CalEventPerms = $CalEventPerms;
         $CalEventMods = $FORM{'CalEventMods'} || q{};
         $CalEventMods =~ s/^\s*,\s*|\s*,\s*$//gsm;
         $CalEventMods =~ s/\s*,\s*/,/gsm;
-        $CalEventMods = $CalEventMods;
         $MaxCalMessLen = $FORM{'MaxCalMessLen'};
+        $MaxCalMessLen =~ s/[^\d]//gxsm;
         $AdMaxCalMessLen = $FORM{'AdMaxCalMessLen'};
+        $AdMaxCalMessLen =~ s/[^\d]//gxsm;
+        $calsplit = $FORM{'calsplit'} || 0;
+        $calsplit =~ s/[^\d]//gxsm;
 
     require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');

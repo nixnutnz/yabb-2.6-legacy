@@ -356,6 +356,10 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
     $cal_info_header =~ s/{yabb class_sortage}/$class_sortage/sm;
     $cal_info_header =~ s/{yabb class_sortstarsign}/$class_sortstarsign/sm;
     $cal_info_header =~ s/{yabb class_sortdate}/$class_sortdate/sm;
+    if ( $INFO{'vmonth'} ) {
+        $myvmnthin = qq~;vmonth=$INFO{'vmonth'}~;
+        $cal_info_header =~ s/{yabb vmonth}/$myvmnthin/gsm;
+    }
 
     $yymain .= $mybdlist_calgoto;
     $yymain =~ s/{yabb calgotobox}/$calgotobox/sm;
@@ -377,6 +381,20 @@ $bd_today
     $yymain =~ s/{yabb class_sortstarsign}/$class_sortstarsign/sm;
     $yymain =~ s/{yabb class_sortdate}/$class_sortdate/sm;
 
+    if ( $calsplit &&  @birthmembers >= $calsplit ) {
+        for my $i( 1 .. 12 ) {
+            if ($viewmont[$i]) {
+                $bdmonthlinks .= qq~| <a href="$scripturl?action=birthdaylist;vmonth=$mont[$i]">$var_cal{$calmont[$i]}</a> ~;
+            }
+            else {
+                $bdmonthlinks .= qq~| $var_cal{$calmont[$i]} ~;
+            }
+        }
+        $bdmonths = $mybd_months;
+        $bdmonths =~ s/{yabb bdmonthlink}/$bdmonthlinks/gsm;
+    }
+    $yymain .= $bdmonths;
+
     for my $i ( a .. z ) {
         $yymain .=
             $mybdlist_alpha_a
@@ -389,24 +407,28 @@ $bd_today
     $yymain .= $mybdlist_alpha_c;
     $yabbmain =~ s/{yabb viewbirthdays}/$viewbirthdays/sm;
 
-    for my $i ( 1 .. 12 ) {
-        if ( $viewmont[$i] ) {
-            $yymain .= $mybdlist_viewmont2;
-            $yymain =~ s/{yabb cal_colspan}/$cal_colspan/gsm;
-            $yymain =~ s/{yabb cal_col}/$cal_col/gsm;
-            $yymain =~ s/{yabb cal_col_star_sort}/$cal_col_star_sort/gsm;
-            $yymain =~ s/{yabb calmont}/$var_cal{$calmont[$i]}/sm;
-            $yymain =~ s/{yabb countmont}/$countmont[$i]/sm;
-            $yymain =~ s/{yabb cal_info_header}/$cal_info_header/sm;
-            $yymain =~ s/{yabb viewmont}/$viewmont[$i]/sm;
+    for my $j ( 1 .. 12 ) {
+        if ($viewmont[$j] ) {
+            if ( ( @birthmembers1 >= $calsplit && $INFO{'vmonth'} eq $mont[$j] ) || !$calsplit && ($user_bdmon== $j || $user_bdmon eq "$j" ) ) {
+                $yyvmon .= $mybdlist_viewmont2;
+                $yyvmon =~ s/{yabb cal_colspan}/$cal_colspan/gsm;
+                $yyvmon =~ s/{yabb cal_col}/$cal_col/gsm;
+                $yyvmon =~ s/{yabb cal_col_star_sort}/$cal_col_star_sort/gsm;
+                $yyvmon =~ s/{yabb calmont}/$var_cal{$calmont[$j]}/sm;
+                $yyvmon =~ s/{yabb countmont}/$countmont[$j]/sm;
+                $yyvmon =~ s/{yabb cal_info_header}/$cal_info_header/sm;
+                $yyvmon =~ s/{yabb viewmont}/$viewmont[$j]/sm;
+            }
         }
     }
+    $yymain .= $yyvmon;
 
-    if ( $no_bd_found == 1 ) {
+    if ( $no_bd_found == 1 && !$calsplit ) {
         $yymain .= $mybdlist_nobd;
         for my $i ( 1 .. 12 ) {
             $nobdays .= qq~$no_birthday_found[$i]~;
         }
+
         $yymain =~ s/{yabb cal_colspan}/$cal_colspan/gsm;
         $yymain =~ s/{yabb nobdays}/$nobdays/sm;
     }

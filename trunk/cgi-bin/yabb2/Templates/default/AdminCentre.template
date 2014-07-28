@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision: 1503 $
+# $Revision: 1515 $
 
 $adminlogo    = 'adminlogo.png';
 $versionchk   = 'http://www.yabbforum.com/update/versioncheck.js';
@@ -26,6 +26,7 @@ $header = qq~<?xml version="1.0" encoding="$yymycharset" standalone="no" ?>
     <title>{yabb title}</title>
     <meta http-equiv="pragma" content="no-cache" />
     {yabb style}
+    <script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
     <script type="text/javascript">
     function toggleList(e){
         element = document.getElementById(e).style;

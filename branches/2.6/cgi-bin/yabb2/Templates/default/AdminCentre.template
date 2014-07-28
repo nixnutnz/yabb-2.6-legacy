@@ -26,6 +26,7 @@ $header = qq~<?xml version="1.0" encoding="$yymycharset" standalone="no" ?>
     <title>{yabb title}</title>
     <meta http-equiv="pragma" content="no-cache" />
     {yabb style}
+    <script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
     <script type="text/javascript">
     function toggleList(e){
         element = document.getElementById(e).style;

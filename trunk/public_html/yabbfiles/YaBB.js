@@ -367,9 +367,12 @@ function resize_images() {
         } else if (type == 'signat') {
             maxwidth  = signat_img_w;
             maxheight = signat_img_h;
+        } else if (type == 'brd') {
+            maxwidth  = brd_img_w;
+            maxheight = brd_img_h;
         }
 
-        if ((fix_avatar_size && type == 'avatar') || (fix_avatarml_size && type == 'avatarml') || (fix_post_size && type == 'post') || (fix_attach_size && type == 'attach') || (fix_signat_size && type == 'signat')) {
+        if ((fix_avatar_size && type == 'avatar') || (fix_avatarml_size && type == 'avatarml') || (fix_post_size && type == 'post') || (fix_attach_size && type == 'attach') || (fix_signat_size && type == 'signat')|| (fix_brd_size && type == 'brd')) {
             if (maxwidth)  document.images[tmp_image_name].width  = maxwidth;
             if (maxheight) document.images[tmp_image_name].height = maxheight;
             document.images[tmp_image_name].style.display = 'inline';

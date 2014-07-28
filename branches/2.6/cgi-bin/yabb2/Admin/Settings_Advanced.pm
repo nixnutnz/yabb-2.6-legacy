@@ -554,6 +554,30 @@ qq~<input type="checkbox" name="fix_attach_img_size" id="fix_attach_img_size" va
             },
             {
                 description =>
+qq~<label for="max_brd_img_width">$admin_txt{'brd_pic_w'}</label>~,
+                input_html =>
+qq~<input type="text" name="max_brd_img_width" id="max_brd_img_width" size="5" value="$max_brd_img_width" /> pixel~,
+                name     => 'max_brd_img_width',
+                validate => 'number',
+            },
+            {
+                description =>
+qq~<label for="max_brd_img_height">$admin_txt{'brd_pic_h'}</label>~,
+                input_html =>
+qq~<input type="text" name="max_brd_img_height" id="max_attach_img_height" size="5" value="$max_brd_img_height" /> pixel~,
+                name     => 'max_brd_img_height',
+                validate => 'number',
+            },
+            {
+                description =>
+qq~<label for="fix_brd_img_size">$admin_txt{'brd_pic'}</label>~,
+                input_html =>
+qq~<input type="checkbox" name="fix_brd_img_size" id="fix_brd_img_size" value="1"${ischecked($fix_brd_img_size)} />~,
+                name     => 'fix_brd_img_size',
+                validate => 'boolean',
+            },
+            {
+                description =>
                   qq~<label for="img_greybox">$admin_txt{'479a'}</label>~,
                 input_html => qq~
                 <select name="img_greybox" id="img_greybox">

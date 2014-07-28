@@ -655,6 +655,7 @@ $member_groups
 \$AdMaxIMMessLen = $AdMaxIMMessLen;                    # Maximum Allowed Characters in a PM for Admins
 \$MaxCalMessLen = $MaxCalMessLen;           # Maximum Allowed Characters in a Cal event
 \$AdMaxCalMessLen = $AdMaxCalMessLen;                   # Maximum Allowed Characters in a Cal Event for Admins
+\$calsplit = $calsplit;                     # Maximum number to be shown on page without breaking into months.
 \$honeypot = $honeypot;                     # Set to 1 to activate Honeypot spam deterrent
 \$spamfruits = $spamfruits;                 # Set to 1 to activate SpamFruits spam deterrent
 \$min_reg_time = $min_reg_time;             # Minimum amount of time to be spent filling out the registration form
@@ -715,6 +716,9 @@ $member_groups
 \$max_attach_img_width = $max_attach_img_width; # Set maximum pixel width for attached images, 0 disables this limit
 \$max_attach_img_height = $max_attach_img_height;   # Set maximum pixel height for attached images, 0 disables this limit
 \$fix_attach_img_size = $fix_attach_img_size;   # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in its proportions to the other value. If both are 0 the image is shown at its original size.
+\$max_brd_img_width = $max_brd_img_width;                           # Set maximum pixel width to which the Board Images are resized, 0 disables this limit
+\$max_brd_img_height = $max_brd_img_height;                          # Set maximum pixel height to which the Board Images are resized, 0 disables this limit
+\$fix_brd_img_size = $max_brd_img_size; 
 \$img_greybox = $img_greybox;           # Set to 0 to disable "greybox" (each image is shown in a new window)
                             # Set to 1 to enable the attachment and post image "greybox" (one image/page)
                             # Set to 2 to enable the attachment and post image "greybox" => attachmet images: (all images/page), post images: (one image/page)

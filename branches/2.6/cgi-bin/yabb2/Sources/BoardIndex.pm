@@ -791,18 +791,48 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
                         $subboard{$curboard} );
                 }
 
-                if ( ${ $uid . $curboard }{'ann'} == 1 ) {
-                    ${ $uid . $curboard }{'pic'} = qq~ann.$bdpicExt~;
-                }
-                if ( ${ $uid . $curboard }{'rbin'} == 1 ) {
-                    ${ $uid . $curboard }{'pic'} = qq~recycle.$bdpicExt~;
-                }
                 ( $boardname, $boardperms, $boardview ) =
                   split /\|/xsm, $board{$curboard};
                 ToChars($boardname);
                 $INFO{'zeropost'} = 0;
                 $zero             = q{};
-                $bdpic            = ${ $uid . $curboard }{'pic'};
+                $bdpicfld = q{};
+                    if ( ${ $uid . $curboard }{'pic'} ne 'y' ) {
+                        if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm  ) {
+                            $bdpicExt ||= 'gif';
+                            if ($subboard_sel) {
+                                $bdpic = qq~subboards.$bdpicExt~;
+                            }
+                            else {
+                                $bdpic = qq~boards.$bdpicExt~;
+                            }
+                        }
+                        else {$bdpic = $extern;}
+                    }
+                    else {
+                    fopen( BRDPIC, "<$boardsdir/brdpics.db" );
+                    my @brdpics = <BRDPIC>;
+                    fclose( BRDPIC);
+                    chomp @brdpics;
+                    for (@brdpics) {
+                        my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
+                        if ( $brdnm eq $curboard && $usestyle eq $style) {
+                            if ( $brdpic =~ /\//ism ) {
+                                $bdpic = $brdpic;
+                            }
+                            else {
+                                $bdpicfld = 'Boards/';
+                                $bdpic = $brdpic;
+                            }
+                        }
+                    }
+                }
+                if ( ${ $uid . $curboard }{'ann'} == 1 ) {
+                    $bdpic = qq~ann.$bdpicExt~;
+                }
+                if ( ${ $uid . $curboard }{'rbin'} == 1 ) {
+                    $bdpic = qq~recycle.$bdpicExt~;
+                }
                 $bddescr          = ${ $uid . $curboard }{'description'};
                 ToChars($bddescr);
                 $iammod     = q{};
@@ -889,19 +919,6 @@ qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title=
                     $new =
 qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" />~;
                 }
-                if ( !$bdpic ) {
-                    if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm ) {
-                        $bdpicExt ||= 'gif';
-                        if ($subboard_sel) {
-                            $bdpic = qq~subboards.$bdpicExt~;
-                        }
-                        else {
-                            $bdpic = qq~boards.$bdpicExt~;
-                        }
-                    }
-                    else { $bdpic = $extern; }
-                }
-
                 $lastposter = ${ $uid . $curboard }{'lastposter'};
                 $lastposter =~ s/\AGuest-(.*)/$1 ($maintxt{'28'})/ism;
 
@@ -1176,11 +1193,11 @@ qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?boa
                 else { $messagedropdown = q{}; }
                 if ( $bdpic =~ /\//ism ) {
                     $bdpic =
-qq~ <img src="$bdpic" alt="$boardname" title="$boardname" /> ~;
+qq~ <img src="$bdpic" alt="$boardname" title="$boardname" id="brd_img_resize" /> ~;
                 }
                 elsif ($bdpic) {
                     $bdpic =
-qq~ <img src="$imagesdir/$bdpic" alt="$boardname" title="$boardname" /> ~;
+qq~ <img src="$imagesdir/$bdpicfld$bdpic" alt="$boardname" title="$boardname" id="brd_img_resize" /> ~;
                 }
 
                 if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm ) {

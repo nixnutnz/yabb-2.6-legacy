@@ -35,7 +35,7 @@ $cal_col_ss = q~
 ~;
 
 $cal_col_ss_sort = qq~
-         <td{yabb class_sortstarsign}><a href="$scripturl?action=birthdaylist;sort=sortstarsign" style="text-decoration:none;"><b>$var_cal{'calstarsign'}</b></a></td>~;
+         <td{yabb class_sortstarsign}><a href="$scripturl?action=birthdaylist;sort=sortstarsign{yabb vmonth}" style="text-decoration:none;"><b>$var_cal{'calstarsign'}</b></a></td>~;
 
 $cal_col_ss_top = q~
         <td class="windowbg2 center">{yabb sternzeichen}</td>~;
@@ -84,10 +84,10 @@ $mybdlist_nobd = qq~
 
 $mybdlist_calinfoheader =
 qq~<tr>
-        <td{yabb class_sortuser}><a href="$scripturl?action=birthdaylist;sort=sortuser" style="text-decoration:none;"><b>$var_cal{'calname'}</b></a></td>
-        <td{yabb class_sortage}><a href="$scripturl?action=birthdaylist;sort=sortage" style="text-decoration:none;"><b>$var_cal{'calage'}</b></a></td>
+        <td{yabb class_sortuser}><a href="$scripturl?action=birthdaylist;sort=sortuser{yabb vmonth}" style="text-decoration:none;"><b>$var_cal{'calname'}</b></a></td>
+        <td{yabb class_sortage}><a href="$scripturl?action=birthdaylist;sort=sortage{yabb vmonth}" style="text-decoration:none;"><b>$var_cal{'calage'}</b></a></td>
         {yabb cal_col_star_sort}
-        <td{yabb class_sortdate}><a href="$scripturl?action=birthdaylist;sort=sortdate" style="text-decoration:none;"><b>$var_cal{'calbddate'}</b></a></td>
+        <td{yabb class_sortdate}><a href="$scripturl?action=birthdaylist;sort=sortdate{yabb vmonth}" style="text-decoration:none;"><b>$var_cal{'calbddate'}</b></a></td>
     </tr>~;
 
 $mybdlist_viewmont =
@@ -114,5 +114,11 @@ $mybdlist_alpha_c = qq~
 {yabb viewbirthdays}
 </table>
 ~;
+
+$mybd_months = qq~
+    </tr><tr>
+        <td class="catbg center" style="font-size:110%">
+		{yabb bdmonthlink}|
+</td>~;
 
 1;

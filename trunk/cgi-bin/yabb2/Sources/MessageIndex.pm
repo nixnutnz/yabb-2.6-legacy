@@ -1441,38 +1441,55 @@ qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;tod
         else {
             $messageindex_template =~ s/{yabb description}//gsm;
         }
-        $bdpicExt ||= 'gif';
-        if ( ${ $uid . $currentboard }{'ann'} == 1 ) {
-            ${ $uid . $currentboard }{'pic'} = qq~ann.$bdpicExt~;
+    }
+    $bdpicfld = q{};
+    if ( ${ $uid . $currentboard }{'pic'} ne 'y' ) {
+        if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm  ) {
+            $bdpicExt ||= 'gif';
+            $bdpic = qq~boards.$bdpicExt~;
         }
-        elsif ( ${ $uid . $currentboard }{'rbin'} == 1 ) {
-            ${ $uid . $currentboard }{'pic'} = qq~recycle.$bdpicExt~;
-        }
-        else {
-            if ( !${ $uid . $currentboard }{'pic'} ) {
-                ${ $uid . $currentboard }{'pic'} = qq~boards.$bdpicExt~;
+    }
+    else {
+        fopen( BRDPIC, "<$boardsdir/brdpics.db" );
+        my @brdpics = <BRDPIC>;
+        fclose( BRDPIC);
+        chomp @brdpics;
+        for (@brdpics) {
+            my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
+            if ( $brdnm eq $currentboard && $usestyle eq $style) {
+                if ( $brdpic =~ /\//ism ) {
+                    $bdpic = $brdpic;
+                }
+                else {
+                    $bdpicfld = 'Boards/';
+                    $bdpic = $brdpic;
+                }
             }
         }
-        $bdpic = ${ $uid . $currentboard }{'pic'};
-        if ( $bdpic =~ /\//ism ) {
-            $bdpic =
-qq~ <img src="$bdpic" alt="$curboardname" title="$curboardname" /> ~;
-        }
-        elsif ($bdpic) {
-            $bdpic =
-qq~ <img src="$imagesdir/$bdpic" alt="$curboardname" title="$curboardname" /> ~;
-        }
-        $messageindex_template =~ s/{yabb bdpicture}/$bdpic/gsm;
-        my $tmpthreadcount =
-          NumberFormat( ${ $uid . $currentboard }{'threadcount'} );
-        my $tmpmessagecount =
-          NumberFormat( ${ $uid . $currentboard }{'messagecount'} );
-        $messageindex_template =~
-          s/{yabb threadcount}/$tmpthreadcount/gsm;
-        $messageindex_template =~
-          s/{yabb messagecount}/$tmpmessagecount/gsm;
-        $messageindex_template =~ s/{yabb new_load}/$newload/gsm;
     }
+    if ( ${ $uid . $currentboard }{'ann'} == 1 ) {
+        $bdpic = qq~ann.$bdpicExt~;
+    }
+    if ( ${ $uid . $currentboard }{'rbin'} == 1 ) {
+        $bdpic = qq~recycle.$bdpicExt~;
+    }
+
+    if ( $bdpic =~ /\//ism ) {
+        $bdpic =
+qq~ <img src="$bdpic" alt="$curboardname" title="$curboardname" id="brd_img_resize" /> ~;
+    }
+    elsif ($bdpic) {
+        $bdpic =
+qq~ <img src="$imagesdir/$bdpicfld$bdpic" alt="$curboardname" title="$curboardname" id="brd_img_resize" /> ~;
+    }
+
+    $messageindex_template =~ s/{yabb bdpicture}/$bdpic/gsm;
+    my $tmpthreadcount = NumberFormat( ${ $uid . $currentboard }{'threadcount'} );
+    my $tmpmessagecount = NumberFormat( ${ $uid . $currentboard }{'messagecount'} );
+    $messageindex_template =~ s/{yabb threadcount}/$tmpthreadcount/gsm;
+    $messageindex_template =~ s/{yabb messagecount}/$tmpmessagecount/gsm;
+    $messageindex_template =~ s/{yabb new_load}/$newload/gsm;
+    
     $messageindex_template =~ s/{yabb colspan}/$colspan/gsm;
     ### Board Rules Start ###
     if ( ${ $uid . $currentboard }{'rules'} == 1 ) {
