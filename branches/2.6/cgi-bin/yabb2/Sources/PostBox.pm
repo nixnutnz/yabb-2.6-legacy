@@ -771,21 +771,21 @@ document.getElementById("saveframe").style.display = "none";~;
     }
 }
 function calcCharLeft() {
-  var clipped = false
-  var maxLength = $MaxMessLen
+  var clipped = false;
+  var maxLength = $MaxMessLen;
   if (document.postmodify.message.value.length > maxLength) {
-    document.postmodify.message.value = document.postmodify.message.value.substring(0,maxLength)
-    var charleft = 0
-    clipped = true
+    document.postmodify.message.value = document.postmodify.message.value.substring(0,maxLength);
+    var charleft = 0;
+    clipped = true;
   } else {
-    charleft = maxLength - document.postmodify.message.value.length
+    charleft = maxLength - document.postmodify.message.value.length;
   }
-  document.postmodify.msgCL.value = charleft
+  document.postmodify.msgCL.value = charleft;
   if (charleft >= 100 && noalert) { noalert = false; gralert = true; rdalert = true; clalert = true; document.images.chrwarn.src="$chrwarn{'g1'}"; }
   if (charleft < 100 && charleft >= 50 && gralert) { noalert = true; gralert = false; rdalert = true; clalert = true; document.images.chrwarn.src="$chrwarn{'g0'}"; }
   if (charleft < 50 && charleft > 0 && rdalert) { noalert = true; gralert = true; rdalert = false; clalert = true; document.images.chrwarn.src="$chrwarn{'r0'}" }
   if (charleft === 0 && clalert) { noalert = true; gralert = true; rdalert = true; clalert = false; document.images.chrwarn.src="$chrwarn{'r1'}"; }
-  return clipped
+  return clipped;
 }
 function autoPreview() {
     calcCharLeft();

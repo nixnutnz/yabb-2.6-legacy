@@ -124,17 +124,33 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
 
     # Begin Birthdaylist
 
-    my $sortiert = $INFO{'sort'};
-    my $letter   = lc $INFO{'letter'};
+    my $sortiert = $INFO{'sort'} || $FORM{'sort'};
+    my $letter   = lc $INFO{'letter'} || lc $FORM{'letter'};
+    $vmonth = $INFO{'vmonth'} || $FORM{'vmonth'};
 
-    # Add Star sign and age begin
 
-    ManageMemberinfo('load');
-    fopen( EVENTBIRTH, "$vardir/eventcalbday.db" );
-    my @birthmembers = <EVENTBIRTH>;
-    fclose(EVENTBIRTH);
+    # Begin Letter
 
-    # Birthdaylist output begin
+    if ( !$sortiert ) { $sortiert = 'sortdate'; }
+    my @abcde = ( 'a' .. 'z' );
+    my $letter_s =
+qq~<form method="post" action="$scripturl?action=birthdaylist" name="birthdaylist" /><select size="1" name="letter" onchange="submit()" class="small" style="vertical-align: middle;"><option value="">&nbsp;</option><option value="other">$var_cal{'other'}</option>~;
+for my $i ( 0 .. ( @abcde - 1 ) ) {
+$letter_s .= qq~        <option value="$abcde[$i]"$sel>$abcde[$i]</option>\n~;
+}
+                    $letter_s .=
+qq~</select> <input type="hidden" name="vmonth" value="$vmonth"><input type="hidden" name="sort" value="sortuser"><input type="submit" style="display:none" /></form>~;
+
+    ${"class_$sortiert"}     = ' class="selected-bg center"';
+    ${"styleletter_$letter"} = ' class="catbg center"';
+
+    if ( !$class_sortuser ) { $class_sortuser = ' class="catbg center"'; }
+    if ( !$class_sortage )  { $class_sortage  = ' class="catbg center"'; }
+    if ( !$class_sortstarsign ) {
+        $class_sortstarsign = ' class="catbg center"';
+    }
+    if ( !$class_sortdate ) { $class_sortdate = ' class="catbg center"'; }
+
     if ($Show_BdStarsign) {
         $cal_colspan       = '4';
         $cal_col           = $cal_col_ss;
@@ -148,11 +164,48 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
         $cal_col_star      = q{};
     }
 
+    my @mont =
+      qw (null January February March April May June July August September October November December );
+
+    my @countmont = (
+        'null',           "$countJanuary",
+        "$countFebruary", "$countMarch",
+        "$countApril",    "$countMay",
+        "$countJune",     "$countJuly",
+        "$countAugust",   "$countSeptember",
+        "$countOctober",  "$countNovember",
+        "$countDecember",
+    );
+
+    my @viewmont = (
+        'null',           "$view_January",
+        "$view_February", "$view_March",
+        "$view_April",    "$view_May",
+        "$view_June",     "$view_July",
+        "$view_August",   "$view_September",
+        "$view_October",  "$view_November",
+        "$view_December",
+    );
+
+    my @calmont =
+      qw( null calmon_01 calmon_02 calmon_03 calmon_04 calmon_05 calmon_06 calmon_07 calmon_08 calmon_09 calmon_10 calmon_11 calmon_12 );
+
+    ManageMemberinfo('load');
+    fopen( EVENTBIRTH, "$vardir/eventcalbday.db" );
+    my @birthmembers = <EVENTBIRTH>;
+    fclose(EVENTBIRTH);
+
     my @birthmembers1 = ();
+    my @birthmembers2 = ();
+
+    @no_birthday_found    = ();
+    $no_birthday_found[0] = q{};
+    @no_bd                = ();
+    $no_bd[0]             = 0;
     foreach my $user_name (@birthmembers) {
         chomp $user_name;
-        ( $user_bdyear, $user_bdmon, $user_bdday, $user_bdname, $user_bdhide ) =
-          split /\|/xsm, $user_name;
+        ( $user_bdyear, $user_bdmon, $user_bdday, $user_bdname, $user_bdhide )
+          = split /\|/xsm, $user_name;
 
         $memrealname = ( split /\|/xsm, $memberinf{$user_bdname}, 2 )[0];
 
@@ -165,74 +218,28 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
             $age = $year - $user_bdyear;
         }
         else { $age = $year - $user_bdyear; $age-- }
-
-        $sternzeichen = starsign($user_bdday,$user_bdmon);
-
-        if ($age) {
+        $sternzeichen = q{};
+        if ($Show_BdStarsign) {
+            $sternzeichen = starsign( $user_bdday, $user_bdmon );
+        }
+        if ( $age && $user_bdyear > 1904 && $user_bdmon && $user_bdday ) {
             $string =
 "$user_bdyear|$user_bdmon|$user_bdday|$user_bdname|$age|$sternzeichen|$memrealname|$user_bdhide\n";
             push @birthmembers1, $string;
+            if ( $calsplit && $vmonth eq $mont[$user_bdmon] ) {
+                $string =
+"$user_bdyear|$user_bdmon|$user_bdday|$user_bdname|$age|$sternzeichen|$memrealname|$user_bdhide\n";
+                push @birthmembers2, $string;
+            }
         }
     }
     undef %memberinf;
-
-    # Add Star sign and age end
-
-    # What sort we use?
-
-    if ( !$sortiert ) { $sortiert = 'sortdate'; }
-
-    # What sort we use end
-
-    # sorting <dt> style begin
-
-    ${"class_$sortiert"}     = ' class="selected-bg center"';
-    ${"styleletter_$letter"} = ' class="catbg center"';
-
-    if ( !$class_sortuser ) { $class_sortuser = ' class="catbg center"'; }
-    if ( !$class_sortage )  { $class_sortage  = ' class="catbg center"'; }
-    if ( !$class_sortstarsign ) {
-        $class_sortstarsign = ' class="catbg center"';
-    }
-    if ( !$class_sortdate ) { $class_sortdate = ' class="catbg center"'; }
-
-    # sorting <dt> style end
-
-    # view birthdays begin
-    my @mont =
-      qw (null January February March April May June July August September October November December );
-    my @viewmont = (
-        'null',           "$view_January",
-        "$view_February", "$view_March",
-        "$view_April",    "$view_May",
-        "$view_June",     "$view_July",
-        "$view_August",   "$view_September",
-        "$view_October",  "$view_November",
-        "$view_December",
-    );
-    my @countmont = (
-        'null',           "$countJanuary",
-        "$countFebruary", "$countMarch",
-        "$countApril",    "$countMay",
-        "$countJune",     "$countJuly",
-        "$countAugust",   "$countSeptember",
-        "$countOctober",  "$countNovember",
-        "$countDecember",
-    );
-    my @calmont =
-      qw( null calmon_01 calmon_02 calmon_03 calmon_04 calmon_05 calmon_06 calmon_07 calmon_08 calmon_09 calmon_10 calmon_11 calmon_12 );
-    @no_birthday_found    = ();
-    $no_birthday_found[0] = q{};
-    @no_bd                = ();
-    $no_bd[0]             = 0;
 
     if ( !@birthmembers1 ) {
         $viewbirthdays .= $mybdlist_notbmember;
     }
     else {
-        foreach
-          my $user_name ( sort { &{$sortiert}( $a, $b ); } @birthmembers1 )
-        {
+        foreach my $user_name (@birthmembers1) {
             chomp $user_name;
             (
                 $user_bdyear, $user_bdmon, $user_bdday, $user_bdname, $age,
@@ -263,79 +270,16 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
                   qq~$user_linkprofile <span class="small">($myage)</span>, ~;
             }
 
-            $showviewbd = 0;
-            if ($letter) {
-                $searchbdname = $user_bdrealname;
-                $searchbdname ||= $user_bdname;
-
-                #                if ( $letter ne 'other' ) {
-                if ( $searchbdname =~ /^$letter/ism ) { $showviewbd = 1; }
-
-    #                }
-    #                elsif ( $searchbdname !~ /^[a-z]/ism ) { $showviewbd = 1; }
-            }
-            else {
-                $showviewbd = 1;
-            }
-
-            # what birthday should we show end
-
-            if ($showviewbd) {
-                my $cdate = $var_cal{'hidden'};
-                if ( $Show_BirthdayDate == 2
-                    || ( $Show_BirthdayDate == 1 && !$iamguest ) )
-                {
-
-                    ## User date display begin ##
-                    if ( $user_bdyear ne q{} && $user_bdmon ne q{} &&  $user_bdday ne q{} && $user_bdday !=0  ) {
-                        $mybtime =
-                        stringtotime(qq~$user_bdmon/$user_bdday/$user_bdyear~);
-                        $mybtimein = timeformatcal($mybtime);
-                        $cdate     = dtonly($mybtimein);
-                        if ( $showage && $user_bdhide ) {
-                            $cdate = bdayno_year($mybtimein);
-                        }
-                    }
-
-                    ## User date display end ##
-                }
-
-                if ($Show_BdColorLinks) {
-                    LoadUser($user_bdname);
-                    $user_linkprofile = $link{$user_bdname};
-                }
-                else {
-                    $user_linkname = $user_bdrealname;
-                    LoadUser($user_bdname);
-                    $user_linkprofile =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" rel="nofollow">$format_unbold{$user_bdname}</a>~;
-                }
-
-                # handle with the months begin
-                for my $i ( 1 .. 12 ) {
-                    if ( $user_bdmon == $i || $user_bdmon eq "$i" ) {
-                        if ( $showage && $user_bdhide ) {
-                            $myage = $var_cal{'hidden'};
-                        }
-                        else {
-                            $myage = $age;
-                        }
-
-                        $viewmont[$i] .= $mybdlist_viewmont;
-                        $viewmont[$i] =~ s/{yabb cal_col_star}/$cal_col_star/sm;
-                        $viewmont[$i] =~
-                          s/{yabb user_linkprofile}/$user_linkprofile/sm;
-                        $viewmont[$i] =~ s/{yabb myage}/$myage/sm;
-                        $viewmont[$i] =~ s/{yabb sternzeichen}/$sternzeichen/sm;
-                        $viewmont[$i] =~ s/{yabb cdate}/$cdate/sm;
-
-                        $countmont[$i]++;
-                        $no_bd[$i] = 1;
-                    }
+            $showviewbd = 1;
+            for my $i ( 1 .. 12 ) {
+                if ( $user_bdmon == $i || $user_bdmon eq "$i" ) {
+                    $countmont[$i]++;
+                    $no_bd[$i] = 1;
                 }
             }
         }
     }
+
     for my $i ( 1 .. 12 ) {
         if ( $no_bd[$i] == 0 ) {
             $no_birthday_found[$i] .= qq~&#8226; $var_cal{"$calmont[$i]"} ~;
@@ -356,8 +300,9 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
     $cal_info_header =~ s/{yabb class_sortage}/$class_sortage/sm;
     $cal_info_header =~ s/{yabb class_sortstarsign}/$class_sortstarsign/sm;
     $cal_info_header =~ s/{yabb class_sortdate}/$class_sortdate/sm;
-    if ( $INFO{'vmonth'} ) {
-        $myvmnthin = qq~;vmonth=$INFO{'vmonth'}~;
+
+    if ( $vmonth ) {
+        $myvmnthin = qq~;vmonth=$vmonth~;
         $cal_info_header =~ s/{yabb vmonth}/$myvmnthin/gsm;
     }
 
@@ -381,13 +326,14 @@ $bd_today
     $yymain =~ s/{yabb class_sortstarsign}/$class_sortstarsign/sm;
     $yymain =~ s/{yabb class_sortdate}/$class_sortdate/sm;
 
-    if ( $calsplit &&  @birthmembers >= $calsplit ) {
-        for my $i( 1 .. 12 ) {
-            if ($viewmont[$i]) {
-                $bdmonthlinks .= qq~| <a href="$scripturl?action=birthdaylist;vmonth=$mont[$i]">$var_cal{$calmont[$i]}</a> ~;
+    if ( $calsplit && @birthmembers1 >= $calsplit ) {
+        for my $i ( 1 .. 12 ) {
+            if ( $countmont[$i] ) {
+                $bdmonthlinks .=
+qq~| <a href="$scripturl?action=birthdaylist;vmonth=$mont[$i]">$var_cal{$calmont[$i]}</a> ~;
             }
             else {
-                $bdmonthlinks .= qq~| $var_cal{$calmont[$i]} ~;
+                $bdmonthlinks .= qq~| <span class="off-color">$var_cal{$calmont[$i]}</a> ~;
             }
         }
         $bdmonths = $mybd_months;
@@ -402,14 +348,145 @@ $bd_today
           . q~" style="text-decoration:none;">~
           . uc($i)
           . $mybdlist_alpha_b;
-        $yabbmain =~ s/{yabb sortiert}/$sortiert/sm;    #";
+        $yabbmain =~ s/{yabb sortiert}/$sortiert/sm;
     }
     $yymain .= $mybdlist_alpha_c;
     $yabbmain =~ s/{yabb viewbirthdays}/$viewbirthdays/sm;
 
     for my $j ( 1 .. 12 ) {
-        if ($viewmont[$j] ) {
-            if ( ( @birthmembers1 >= $calsplit && $INFO{'vmonth'} eq $mont[$j] ) || !$calsplit && ($user_bdmon== $j || $user_bdmon eq "$j" ) ) {
+        if ( $calsplit &&  @birthmembers1 >= $calsplit && $vmonth eq $mont[$j] )
+        {
+            $datanum = @birthmembers2;
+            @birthmembers2 = sort { &{$sortiert}( $a, $b ); } @birthmembers2;
+            my $b_sort = q{};
+            if ( @birthmembers2 > 0 ) {
+                if ( $sortiert ) {
+                    $b_sort = qq~;sort=$sortiert~;
+                }
+                my $newstart = $INFO{'newstart'} || 0;
+                $dnprpage       = $calsplit;
+                $postdisplaynum = 8;
+                $max            = $datanum;
+                $tmpa           = 1;
+                if ( $newstart >= ( ( $postdisplaynum - 1 ) * $dnprpage ) ) {
+                    $startpage =
+                      $newstart - ( ( $postdisplaynum - 1 ) * $dnprpage );
+                    $tmpa = int( $startpage / $dnprpage ) + 1;
+                }
+                if ( $max >= $newstart + ( $postdisplaynum * $dnprpage ) ) {
+                    $endpage = $newstart + ( $postdisplaynum * $dnprpage );
+                }
+                else { $endpage = $max }
+                if ( $startpage > 0 ) {
+                    $pageindex =
+qq~<a href="$scripturl?action=$action;newstart=0;vmonth=$vmonth$b_sort" class="norm">1</a>&nbsp;...&nbsp;~;
+                    $pgstart = 0;
+                }
+                if ( $startpage == $dnprpage ) {
+                    $pageindex =
+qq~<a href="$scripturl?action=$action;newstart=0;vmonth=$vmonth$b_sort" class="norm">1</a>&nbsp;~;
+                    $pgstart = 0;
+                }
+                for my $counter ( $startpage .. ( $endpage - 1 ) ) {
+                    if ( $counter % $dnprpage == 0 ) {
+                        $pageindex .=
+                          $newstart == $counter
+                          ? qq~<b>$tmpa</b>&nbsp;~
+                          : qq~<a href="$scripturl?action=$action;newstart=$counter;vmonth=$vmonth$b_sort" class="norm">$tmpa</a>&nbsp;~;
+                        $pgstart = $counter;
+                        $tmpa++;
+                    }
+                }
+                $lastpn  = int( $datanum / $dnprpage ) + 1;
+                $lastptn = ( $lastpn - 1 ) * $dnprpage;
+                if ( $endpage < $max - ($dnprpage) ) {
+                    $pageindexadd = q~...&nbsp;~;
+                }
+                if ( $endpage != $max ) {
+                    $pageindexadd .=
+qq~<a href="$scripturl?action=$action;newstart=$lastptn;vmonth=$vmonth$b_sort">$lastpn</a>~;
+                    $pgstart = $lastptn;
+                }
+                $pageindex .= $pageindexadd;
+
+                $pageindex =
+qq~ <span class="small">$var_cal{'139'}: $pageindex</span>~;
+                $numbegin = ( $newstart + 1 );
+                $numend   = ( $newstart + $dnprpage );
+                if ( $numend > $datanum ) { $numend  = $datanum; }
+                if ( $datanum == 0 )      { $numshow = q{}; }
+                else { $numshow = qq~($numbegin - $numend)~; }
+                @birthmembers2 = splice @birthmembers2, $newstart, $dnprpage;
+            }
+            $yyvmon = $mybdlist_viewmont2;
+            $yyvmon =~ s/{yabb cal_colspan}/$cal_colspan/gsm;
+            $yyvmon =~ s/{yabb cal_col}/$cal_col/gsm;
+            $yyvmon =~ s/{yabb cal_col_star_sort}/$cal_col_star_sort/gsm;
+            $yyvmon =~ s/{yabb calmont}/$var_cal{$calmont[$j]}/sm;
+            $yyvmon =~ s/{yabb countmont}/$countmont[$j]/sm;
+            $yyvmon =~ s/{yabb cal_info_header}/$cal_info_header/sm;
+            $yyvmon =~ s/{yabb pagecall}/\;newstart=$pgstart/gsm;
+            $yyvmon =~ s/{yabb page}/$pageindex/gsm;
+            $yyvmon =~ s/{yabb input_letters}/$letter_s/sm;
+
+            for my $user_name (@birthmembers2) {
+                chomp $user_name;
+                (
+                    $user_bdyear, $user_bdmon, $user_bdday, $user_bdname, $age,
+                    $sternzeichen, $user_bdrealname, $user_bdhide
+                ) = split /\|/xsm, $user_name;
+                $showviewbd = 0;
+                if ( $letter ) {
+                    $searchbdname = $user_bdrealname;
+                    $searchbdname ||= $user_bdname;
+                    if ( $searchbdname =~ /^$letter/i ) { $showviewbd = 1; }
+                }
+                else {
+                    $showviewbd = 1;
+                }
+                if ($showviewbd) {
+                    $cdate = $var_cal{'hidden'};
+                    if ( $Show_BirthdayDate == 2
+                        || ( $Show_BirthdayDate == 1 && !$iamguest ) )
+                    {
+                        $mybtime =
+                          stringtotime(
+                            qq~$user_bdmon/$user_bdday/$user_bdyear~);
+                        $mybtimein = timeformatcal($mybtime);
+                        $cdate     = dtonly($mybtimein);
+                        if ( $showage && $user_bdhide ) {
+                            $cdate = bdayno_year($mybtimein);
+                        }
+                    }
+                    if ($Show_BdColorLinks) {
+                        LoadUser($user_bdname);
+                        $user_linkprofile = $link{$user_bdname};
+                    }
+                    else {
+                        $user_linkname = $user_bdrealname;
+                        LoadUser($user_bdname);
+                        $user_linkprofile =
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" rel="nofollow">$format_unbold{$user_bdname}</a>~;
+                    }
+                    if ( $showage && $user_bdhide ) {
+                        $myage = $var_cal{'hidden'};
+                    }
+                    else {
+                        $myage = $age;
+                    }
+
+                    $viewmont = $mybdlist_viewmont;
+                    $viewmont =~ s/{yabb cal_col_star}/$cal_col_star/sm;
+                    $viewmont =~ s/{yabb user_linkprofile}/$user_linkprofile/sm;
+                    $viewmont =~ s/{yabb myage}/$myage/sm;
+                    $viewmont =~ s/{yabb sternzeichen}/$sternzeichen/sm;
+                    $viewmont =~ s/{yabb cdate}/$cdate/sm;
+                    $montview .= $viewmont;
+                }
+            }
+            $yyvmon =~ s/{yabb viewmont}/$montview/sm;
+        }
+        elsif ( ( !$calsplit || @birthmembers1 < $calsplit ) && $countmont[$j] ) {
                 $yyvmon .= $mybdlist_viewmont2;
                 $yyvmon =~ s/{yabb cal_colspan}/$cal_colspan/gsm;
                 $yyvmon =~ s/{yabb cal_col}/$cal_col/gsm;
@@ -417,13 +494,67 @@ $bd_today
                 $yyvmon =~ s/{yabb calmont}/$var_cal{$calmont[$j]}/sm;
                 $yyvmon =~ s/{yabb countmont}/$countmont[$j]/sm;
                 $yyvmon =~ s/{yabb cal_info_header}/$cal_info_header/sm;
-                $yyvmon =~ s/{yabb viewmont}/$viewmont[$j]/sm;
-            }
+                $yyvmon =~ s/{yabb input_letters}/$letter_s/sm;
+                $montview = q{};
+                for my $user_name ( sort { &{$sortiert}( $a, $b ); } @birthmembers1) {
+                    chomp $user_name;
+                    (
+                        $user_bdyear, $user_bdmon, $user_bdday, $user_bdname, $age,
+                        $sternzeichen, $user_bdrealname, $user_bdhide
+                    ) = split /\|/xsm, $user_name;
+                    if ($user_bdmon == $j || $user_bdmon eq "$j") {
+                        $showviewbd = 0;
+                        if ($letter) {
+                            $searchbdname = $user_bdrealname;
+                            $searchbdname ||= $user_bdname;
+                            if ( $searchbdname =~ /^$letter/ism ) { $showviewbd = 1; }
+                        }
+                        else {
+                            $showviewbd = 1;
+                        }
+                        if ($showviewbd) {
+                            $cdate = $var_cal{'hidden'};
+                            if ( $Show_BirthdayDate == 2 || ( $Show_BirthdayDate == 1 && !$iamguest ) ) {
+                                $mybtime = stringtotime( qq~$user_bdmon/$user_bdday/$user_bdyear~);
+                                $mybtimein = timeformatcal($mybtime);
+                                $cdate     = dtonly($mybtimein);
+                                if ( $showage && $user_bdhide ) {
+                                    $cdate = bdayno_year($mybtimein);
+                                }
+                            }
+                            if ($Show_BdColorLinks) {
+                                LoadUser($user_bdname);
+                                $user_linkprofile = $link{$user_bdname};
+                            }
+                            else {
+                                $user_linkname = $user_bdrealname;
+                                LoadUser($user_bdname);
+                                $user_linkprofile = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" rel="nofollow">$format_unbold{$user_bdname}</a>~;
+                            }
+                            if ( $showage && $user_bdhide ) {
+                                $myage = $var_cal{'hidden'};
+                            }
+                            else {
+                                $myage = $age;
+                            }
+
+                            $viewmont = $mybdlist_viewmont;
+                            $viewmont =~ s/{yabb cal_col_star}/$cal_col_star/sm;
+                            $viewmont =~ s/{yabb user_linkprofile}/$user_linkprofile/sm;
+                            $viewmont =~ s/{yabb myage}/$myage/sm;
+                            $viewmont =~ s/{yabb sternzeichen}/$sternzeichen/sm;
+                            $viewmont =~ s/{yabb cdate}/$cdate/sm;
+                            $montview .= $viewmont;
+                        }
+                    }
+                }
+                $yyvmon =~ s/{yabb viewmont}/$montview/sm;
+
         }
     }
     $yymain .= $yyvmon;
 
-    if ( $no_bd_found == 1 && !$calsplit ) {
+    if ( $no_bd_found == 1 && ( !$calsplit || @birthmembers1 <= $calsplit ) ) {
         $yymain .= $mybdlist_nobd;
         for my $i ( 1 .. 12 ) {
             $nobdays .= qq~$no_birthday_found[$i]~;
@@ -448,31 +579,35 @@ sub sortdate {
     my @zahl1 = split /\|/xsm, $a;
     my @zahl2 = split /\|/xsm, $b;
 
-    return ($zahl1[2] . $zahl1[0] <=> $zahl2[2] . $zahl2[0]);
+    return ( $zahl1[2] . $zahl1[0] <=> $zahl2[2] . $zahl2[0] );
 }
 
 sub sortage {
     my @zahl1 = split /\|/xsm, $a;
     my @zahl2 = split /\|/xsm, $b;
 
-    return ($zahl1[4] . $zahl1[2] . $zahl1[0] <=> $zahl2[4] . $zahl2[2] . $zahl2[0]);
+    return ($zahl1[4]
+          . $zahl1[2]
+          . $zahl1[0] <=> $zahl2[4]
+          . $zahl2[2]
+          . $zahl2[0] );
 }
 
 sub sortstarsign {
     my @name1 = split /\|/xsm, $a;
     my @name2 = split /\|/xsm, $b;
 
-    return ($name1[5] cmp $name2[5]);
+    return ( $name1[5] cmp $name2[5] );
 }
 
 sub sortuser {
     my @name1 = split /\|/xsm, $a;
     my @name2 = split /\|/xsm, $b;
-    return (lc $name1[6] cmp lc $name2[6]);
+    return ( lc $name1[6] cmp lc $name2[6] );
 }
 
 sub starsign {
-    my ( $user_bdday,$user_bdmon, $text ) = @_;
+    my ( $user_bdday, $user_bdmon, $text ) = @_;
     my @stars =
       qw(Capricorn Aquarius Aquarius Pisces Pisces Aries Aries Taurus Taurus Gemini Gemini Cancerian Cancerian Leo Leo Virgo Virgo Libra Libra Scorpio Scorpio Sagittarius Sagittarius Capricorn);
     my @bd_1 = (
@@ -493,7 +628,7 @@ sub starsign {
             && $user_bdday <= $bd_2[$i]
             && $user_bdmon == $bd_3[$i] )
         {
-            if ( $text ) {
+            if ($text) {
                 LoadLanguage('Profile');
                 $sternzeichen = "$zodiac_txt{$stars[$i]}";
             }

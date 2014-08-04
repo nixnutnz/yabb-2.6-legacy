@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision: 1503 $
+# $Revision$
 
 $cal_eventcal = 'eventcal.png';
 $cal_info     = 'info.png';
@@ -63,7 +63,14 @@ $mybdlist_viewmont2 = qq~
     {yabb cal_col}
     <tr>
         <td class="titlebg" colspan="{yabb cal_colspan}">
-            <img class="bottom" src="$imagesdir/$cal_eventbd" alt="$var_cal{calbirthday}" /> <b>{yabb calmont}</b> ({yabb countmont})
+	<table>
+    	<col style="width:50%" />
+    	<col style="width:50%" />
+    	  <tr>
+        	<td class="left"><img class="bottom" src="$imagesdir/$cal_eventbd" alt="$var_cal{calbirthday}" /> <b>{yabb calmont}</b> ({yabb countmont}) {yabb page}</td>
+        	<td class="right" style="padding-right:1%">{yabb input_letters}</td>
+    	  </tr>
+	</table>
         </td>
     </tr>
 {yabb cal_info_header}
@@ -118,7 +125,7 @@ $mybdlist_alpha_c = qq~
 $mybd_months = qq~
     </tr><tr>
         <td class="catbg center" style="font-size:110%">
-		{yabb bdmonthlink}|
+        {yabb bdmonthlink}|
 </td>~;
 
 1;

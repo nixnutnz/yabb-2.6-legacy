@@ -111,7 +111,7 @@ sub exit {
     my ($inexit)                = @_;
     my $OUTPUT_AUTOFLUSH        = 1;
     my $OUTPUT_RECORD_SEPARATOR = q{};
-    print q{} or croak "$croak{'print'} null";
+    print q{};
     if ($child_pid) { wait; }
     CORE::exit( $inexit || 0 );
     return;
@@ -818,29 +818,42 @@ sub image_resize {
 s/"((avatar|avatarml|post|attach|signat|brd)_img_resize)"([^>]*>)/ check_image_resize($1,$2,$3) /gesm;
 
     if ($resize_num) {
+        $avatar_img_w    = $max_avatar_width // 0;
+        $avatar_img_h    = $max_avatar_height // 0;
+        $avatarml_img_w    = $max_avatarml_width // 0;
+        $avatarml_img_h    = $max_avatarml_height // 0;
+        $post_img_w      = $max_post_img_width // 0;
+        $post_img_h      = $max_post_img_height // 0;
+        $attach_img_w    = $max_attach_img_width // 0;
+        $attach_img_h    = $max_attach_img_height // 0;
+        $signat_img_w    = $max_signat_img_width // 0;
+        $signat_img_h    = $max_signat_img_height // 0;
+        $brd_img_w       = $max_brd_img_width // 0;
+        $brd_img_h       = $max_brd_img_height // 0;
+
         $resize_js =~ s/,$//xsm;
         $resize_js = qq~<script type="text/javascript">
     // resize image start
     var resize_time = 2;
     var img_resize_names = new Array ($resize_js);
 
-    var avatar_img_w    = $max_avatar_width;
-    var avatar_img_h    = $max_avatar_height;
+    var avatar_img_w    = $avatar_img_w;
+    var avatar_img_h    = $avatar_img_h;
     var fix_avatar_size = $fix_avatar_img_size;
-    var avatarml_img_w    = $max_avatarml_width;
-    var avatarml_img_h    = $max_avatarml_height;
+    var avatarml_img_w    = $avatarml_img_w;
+    var avatarml_img_h    = $avatarml_img_h;
     var fix_avatarml_size = $fix_avatarml_img_size;
-    var post_img_w      = $max_post_img_width;
-    var post_img_h      = $max_post_img_height;
+    var post_img_w      = $post_img_w;
+    var post_img_h      = $post_img_h;
     var fix_post_size   = $fix_post_img_size;
-    var attach_img_w    = $max_attach_img_width;
-    var attach_img_h    = $max_attach_img_height;
+    var attach_img_w    = $attach_img_w;
+    var attach_img_h    = $attach_img_h;
     var fix_attach_size = $fix_attach_img_size;
-    var signat_img_w    = $max_signat_img_width;
-    var signat_img_h    = $max_signat_img_height;
+    var signat_img_w    = $signat_img_w;
+    var signat_img_h    = $signat_img_h;
     var fix_signat_size = $fix_signat_img_size;
-    var brd_img_w       = $max_brd_img_width;
-    var brd_img_h       = $max_brd_img_height;
+    var brd_img_w       = $brd_img_w;
+    var brd_img_h       = $brd_img_h;
     var fix_brd_size    = $fix_brd_img_size;
 
     noimgdir   = '$imagesdir';

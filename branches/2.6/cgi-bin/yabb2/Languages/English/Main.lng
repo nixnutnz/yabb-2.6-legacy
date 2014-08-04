@@ -18,6 +18,7 @@ $abbr_lang = 'en-us';
 
 @days = ('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
 @months = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
+@months_m = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'); #list for lower case months if needed.
 @days_short = ('Sun','Mon','Tue','Wed','Thu','Fri','Sat'); # for smtp
 
 %maintxt = (
@@ -46,6 +47,7 @@ $abbr_lang = 'en-us';
 '28' => 'Guest',
 '30' => 'on',
 '30a' => 'wrote on',
+'30b' => q{}, #placeholder for non-English strings needed in that spot
 '31' => 'Quote',
 '32' => 'Go',
 '34' => 'Login',

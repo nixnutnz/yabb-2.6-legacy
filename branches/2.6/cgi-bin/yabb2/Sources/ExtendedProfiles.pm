@@ -629,7 +629,7 @@ sub ext_gen_editfield {
               . $id
               . qq~_msgCL" readonly="readonly" disabled="disabled"$ext_msgCL /></span>
     <script type="text/javascript">
-    var ext_~ . $id . q~_supportsKeys = false
+    var ext_~ . $id . q~_supportsKeys = false;
     function ext_~ . $id . q~_tick() {
       ext_~ . $id . q~_calcCharLeft(document.forms[0])
       if (!ext_~
@@ -640,21 +640,21 @@ sub ext_gen_editfield {
     }
 
     function ext_~ . $id . qq~_calcCharLeft(sig) {
-      clipped = false
-      maxLength = $options[0]
+      clipped = false;
+      maxLength = $options[0];
       if (document.creator.ext_~ . $id . q~.value.length > maxLength) {
         document.creator.ext_~
               . $id
               . q~.value = document.creator.ext_~
               . $id
               . q~.value.substring(0,maxLength)
-        charleft = 0
-        clipped = true
+        charleft = 0;
+        clipped = true;
         } else {
-        charleft = maxLength - document.creator.ext_~ . $id . q~.value.length
+        charleft = maxLength - document.creator.ext_~ . $id . q~.value.length;
         }
-      document.creator.ext_~ . $id . q~_msgCL.value = charleft
-      return clipped
+      document.creator.ext_~ . $id . q~_msgCL.value = charleft;
+      return clipped;
     }
     ext_~ . $id . q~_tick();
     </script>~;
