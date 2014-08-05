@@ -647,7 +647,7 @@ sub ext_gen_editfield {
               . $id
               . q~.value = document.creator.ext_~
               . $id
-              . q~.value.substring(0,maxLength)
+              . q~.value.substring(0,maxLength);
         charleft = 0;
         clipped = true;
         } else {

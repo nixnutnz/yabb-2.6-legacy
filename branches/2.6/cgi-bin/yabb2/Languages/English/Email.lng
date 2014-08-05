@@ -16,42 +16,42 @@ $emaillngver = 'YaBB 2.6.0 $Revision$';
 
 %yabbtagdesc = (
 # Constant tags
-'scripturl', "The URL to YaBB. Example: $scripturl",
-'adminurl', "The URL to YaBB Admin Center. Example: $boardurl/AdminIndex.$yyaext",
-'mbname', "This forum's name. Example: $mbname",
+'scripturl' => "The URL to YaBB. Example: $scripturl",
+'adminurl' => "The URL to YaBB Admin Center. Example: $boardurl/AdminIndex.$yyaext",
+'mbname' => "This forum's name. Example: $mbname",
 
 # New Member related
-'userip', "The IP-address of the User.",
-'useremail', "The e-mail of the User.",
+'userip' => "The IP-address of the User.",
+'useremail' => "The e-mail of the User.",
 
 # User-related
-'username', "The User ID of the User.",
-'displayname', "The screen name of the User.",
-'cryptusername', "The user ID of the User, cloaked for use in a URL.",
-'reviewer', "The real name of the Admin/GMod, reviewing registrations.",
+'username' => "The User ID of the User.",
+'displayname' => "The screen name of the User.",
+'cryptusername' => "The user ID of the User, cloaked for use in a URL.",
+'reviewer' => "The real name of the Admin/GMod, reviewing registrations.",
 
 # Topic/PM-related
-'sender', "The sender of the PM.",
-'num', "The number of the Topic (for URL purposes)",
-'start', "The number of the Post in the Topic (for URL purposes)",
-'tmessage', "Text of the new Topic",
-'tauthor', "Name OF the Author",
+'sender' => "The sender of the PM.",
+'num' => "The number of the Topic (for URL purposes)",
+'start' => "The number of the Post in the Topic (for URL purposes)",
+'tmessage' => "Text of the new Topic",
+'tauthor' => "Name of the Author",
 
 # Registration/Password
-'activationcode', "The Activation Link sent in a Register e-mail.",
-'remindercode', "The Password Link sent in a Reminder e-mail.",
-'preregspan', "The time allowed before the Pre-Registration expires. Current value: $preregspan",
-'reason', "Admin reason behind a decision made on a registering User while in register with Admin Approval mode",
+'activationcode' => "The Activation Link sent in a Register e-mail.",
+'remindercode' => "The Password Link sent in a Reminder e-mail.",
+'preregspan' => "The time allowed before the Pre-Registration expires. Current value: $preregspan",
+'reason' => "Admin reason behind a decision made on a registering User while in register with Admin Approval mode",
 
 # Sending a Topic
-'toname', "The name of the person receiving a Topic.",
+'toname' => "The name of the person receiving a Topic.",
 
 # PMs
-'sendto', "Recipient of this PM.",
-'email', "E-mail from User.",
-'date', "The date the PM was sent.",
-'subject', "The subject of the Post or PM.",
-'message', "The text of the PM.",
+'sendto' => "Recipient of this PM.",
+'email' => "E-mail from User.",
+'date' => "The date the PM was sent.",
+'subject' => "The subject of the Post or PM.",
+'message' => "The text of the PM.",
 );
 
 # Pre registration subject lines
@@ -303,7 +303,7 @@ The {yabb mbname} team~;
 
 $yabbtags{'topicnotificationemail'} = qq~num subject start tmessage tauthor~;
 $emaildesc{'topicnotificationemail'} = qq~The Notification E-mail (Topic-Level)~;
-$topicnotificationemail = qq~A reply, "{yabb subject}", has been posted to {yabb tauthor} to a topic you are watching.
+$topicnotificationemail = qq~A reply, "{yabb subject}", has been posted by {yabb tauthor} to a topic you are watching.
 
 ########################################
 
