@@ -264,7 +264,7 @@ sub timeformat {
 }
 
 sub timeformatcal {
-    my ( $mynewtime ) = @_;
+    my ( $mynewtime, $dontusetoday ) = @_;
 
     # use forum default time and format
 
@@ -312,8 +312,11 @@ sub timeformatcal {
 
     $newtime = $newhour . q{:} . $newminute . q{:} . $newsecond;
 
+    if ( $enabletz) {
+        $toffs = toffs($date);
+    }
     ( undef, undef, undef, undef, undef, $yy, undef, $yd, undef ) =
-      gmtime( $date );
+      gmtime( $date + $toffs );
     $yy += 1900;
     $daytxt = undef;    # must be a global variable
     if ( !$dontusetoday ) {
