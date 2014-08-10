@@ -1929,8 +1929,13 @@ sub CreateControl {
         $spare       = q{};
 
         if ( $cntcat && $foundboard ) {
+			$mypic = q{};
+			if ($cntpic ) { $mypic = 'y'; }
             push @boardcontrol,
-"$cntcat|$foundboard|$cntpic|$cntdescription|$cntmods|$cntmodgroups|$cntstartperms|$cntreplyperms|$cntpollperms|$cntzero|$cntpassword|$cnttotals|$cntattperms|$spare|||\n";
+"$cntcat|$foundboard|$mypic|$cntdescription|$cntmods|$cntmodgroups|$cntstartperms|$cntreplyperms|$cntpollperms|$cntzero|$cntpassword|$cnttotals|$cntattperms|$spare|||\n";
+            fopen( BRDPIC, ">>$boardsdir/brdpics.db" );
+            print {BRDPIC} qq~$foundboard|default|$cntpic\n~;
+            fclose(BRDPIC);
         }
         elsif ( !$cntcat && $foundboard eq 'general' )
         {    # add general board if not exist
@@ -3184,6 +3189,35 @@ sub SetInstall2 {
     $webmaster_email       = $oldemail || 'webmaster@mysite.com';
     $timeselected          = $oldtime || 0;
     $timeoffset            = $oldoffset || 0;
+    $cookieviewtime        = 525_600;
+    $MaxIMMessLen          = 2000;
+    $AdMaxIMMessLen        = 3000;
+    $MaxCalMessLen         = 200;
+    $AdMaxCalMessLen       = 300;
+    $Show_EventCal         = 0;
+    $Event_TodayColor      = '#ff0000';
+    $fix_avatar_img_size   = 0;
+    $max_avatar_width     = 65;
+    $max_avatar_height     = 65;
+    $fix_avatarml_img_size = 0;
+    $max_avatarml_width    = 65;
+    $max_avatarml_height   = 65;
+    $fix_brd_img_size      = 0;
+    $max_brd_img_width     = 50;
+    $max_brd_img_height    = 50;
+    $enabletz              = 0;
+    $default_tz            = 'UTC';
+    $ip_banlist           = q{};
+    $email_banlist        = q{};
+    $user_banlist         = q{};
+    $showsearchbox        = 1;
+    $fmodview             = $gmodview;
+    $mdfmod               = $mdglobal;
+    $show_online_ip_admin = 1;
+    $show_online_ip_gmod  = 1;
+    $show_online_ip_fmod  = 1;
+    $ipLookup             = 1;
+    $bm_subcut            = 50;
     if ( -e '/bin/gzip' && open $GZIP, '|gzip -f' ) {
         $gzcomp = 1;
     }

@@ -1005,9 +1005,14 @@ sub FixControl {
         my $j        = 0;
         my @newboard = ();
         foreach my $x (@oldboard) {
+			${$x}{'mypic'} = q{};
+			if (${$x}{'pic'}) { ${$x}{'mypic'} = 'y'; }
 #$cat|$board|$pic|$description|$mods|$modgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$attperms|$minageperms|$maxageperms|$genderperms|$canpost|$parent|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$bdrss
             $newboard[$j] =
-qq~${$x}{'cat'}|$x|${$x}{'pic'}|${$x}{'description'}|${$x}{'mods'}|${$x}{'modgroups'}|${$x}{'topicperms'}|${$x}{'replyperms'}|${$x}{'pollperms'}|${$x}{'zero'}|${$x}{'membergroups'}|${$x}{'ann'}|${$x}{'rbin'}|${$x}{'attperms'}|${$x}{'minageperms'}|${$x}{'maxageperms'}|${$x}{'genderperms'}|${$x}{'canpost'}|${$x}{'parent'}|${$x}{'rules'}|${$x}{'rulestitle'}|${$x}{'rulesdesc'}|${$x}{'rulescollapse'}|${$x}{'brdpasswr'}|${$x}{'brdpassw'}|${$x}{'brdrss'}\n~;
+qq~${$x}{'cat'}|$x|${$x}{'mypic'}|${$x}{'description'}|${$x}{'mods'}|${$x}{'modgroups'}|${$x}{'topicperms'}|${$x}{'replyperms'}|${$x}{'pollperms'}|${$x}{'zero'}|${$x}{'membergroups'}|${$x}{'ann'}|${$x}{'rbin'}|${$x}{'attperms'}|${$x}{'minageperms'}|${$x}{'maxageperms'}|${$x}{'genderperms'}|${$x}{'canpost'}|${$x}{'parent'}|${$x}{'rules'}|${$x}{'rulestitle'}|${$x}{'rulesdesc'}|${$x}{'rulescollapse'}|${$x}{'brdpasswr'}|${$x}{'brdpassw'}|${$x}{'brdrss'}\n~;
+            fopen( BRDPIC, ">>$boardsdir/brdpics.db" );
+            print {BRDPIC} qq~$x|default|${$x}{'pic'}\n~;
+            fclose(BRDPIC);
             $j++;
         }
         fopen( FORUMCONTROL, ">$boardsdir/forum.control" )
@@ -1353,6 +1358,9 @@ sub Convert_Settings {
         if ( !$fix_avatarml_img_size ) { $fix_avatarml_img_size = 0; }
         if ( !$max_avatarml_width )    { $max_avatarml_width    = 65; }
         if ( !$max_avatarml_height )   { $max_avatarml_height   = 65; }
+        if ( !$fix_brd_img_size )      { $fix_brd_img_size      = 0; }
+        if ( !$max_brd_img_width )     { $max_brd_img_width     = 50; }
+        if ( !$max_brd_img_height )    { $max_brd_img_height    = 50; }
         if ( !$enabletz )              { $enabletz              = 0; }
         if ( !$default_tz )            { $default_tz            = 'UTC'; }
         $gzcomp = fileno $GZIP ? 1 : 0;

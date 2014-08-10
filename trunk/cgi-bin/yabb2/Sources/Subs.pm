@@ -818,18 +818,18 @@ sub image_resize {
 s/"((avatar|avatarml|post|attach|signat|brd)_img_resize)"([^>]*>)/ check_image_resize($1,$2,$3) /gesm;
 
     if ($resize_num) {
-        $avatar_img_w    = $max_avatar_width // 0;
-        $avatar_img_h    = $max_avatar_height // 0;
-        $avatarml_img_w    = $max_avatarml_width // 0;
-        $avatarml_img_h    = $max_avatarml_height // 0;
-        $post_img_w      = $max_post_img_width // 0;
-        $post_img_h      = $max_post_img_height // 0;
-        $attach_img_w    = $max_attach_img_width // 0;
-        $attach_img_h    = $max_attach_img_height // 0;
-        $signat_img_w    = $max_signat_img_width // 0;
-        $signat_img_h    = $max_signat_img_height // 0;
-        $brd_img_w       = $max_brd_img_width // 0;
-        $brd_img_h       = $max_brd_img_height // 0;
+        $avatar_img_w    = defined $max_avatar_width ? $max_avatar_width : 65;
+        $avatar_img_h    = defined $max_avatar_height ? $max_avatar_height : 65;
+        $avatarml_img_w  = defined $max_avatarml_width ? $max_avatarml_width : 65;
+        $avatarml_img_h  = defined $max_avatarml_height ? $max_avatarml_height : 65;
+        $post_img_w      = defined $max_post_img_width ? $max_post_img_width : 0;
+        $post_img_h      = defined $max_post_img_height ? $max_post_img_height : 0;
+        $attach_img_w    = defined $max_attach_img_width ? $max_attach_img_width : 0;
+        $attach_img_h    = defined $max_attach_img_height ? $max_attach_img_height : 0;
+        $signat_img_w    = defined $max_signat_img_width ? $max_signat_img_width : 0;
+        $signat_img_h    = defined $max_signat_img_height ? $max_signat_img_height : 0;
+        $brd_img_w       = defined $max_brd_img_width ? $max_brd_img_width : 50;
+        $brd_img_h       = defined $max_brd_img_height ? $max_brd_img_height : 50;
 
         $resize_js =~ s/,$//xsm;
         $resize_js = qq~<script type="text/javascript">
