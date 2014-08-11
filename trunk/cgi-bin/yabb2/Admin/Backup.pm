@@ -729,7 +729,7 @@ sub runbackup {
         'mes'  => $datadir,
         'temp' => "$boarddir/Templates|$htmldir/Templates",
         'var'  => $vardir,
-        'html' => "!$htmldir|$htmldir/BookMarks|$htmldir/Buttons|$htmldir/EventIcons|$htmldir/googiespell|$htmldir/greybox|$htmldir/ModImages|$htmldir/shjs|$htmldir/Smilies",
+        'html' => "!$htmldir|$htmldir/Bookmarks|$htmldir/Buttons|$htmldir/EventIcons|$htmldir/googiespell|$htmldir/greybox|$htmldir/ModImages|$htmldir/shjs|$htmldir/Smilies",
         'upld' => "$htmldir/Attachments|$htmldir/PMAttachments|$htmldir/avatars",
     );
 

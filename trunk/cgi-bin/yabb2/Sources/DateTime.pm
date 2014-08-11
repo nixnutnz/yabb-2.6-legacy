@@ -357,6 +357,7 @@ sub timeformatcal {
             $newformat = $timform[$i];
         }
     }
+    $newformat = dtonly($newformat);
     return $newformat;
 }
 

@@ -176,7 +176,7 @@ qq~$scripturl?action=eventcal;calshow=1;calmon=$gomon;calyear=$goyear~;
         $year = $INFO{'calyear'};
         $mon  = $INFO{'calmon'} - 1;
     }
-     timeformat($date);    # get only correct $mytimeselected
+#    timeformatcal($date);    # get only correct $mytimeselected
 
     # Time/Days end
 
@@ -796,7 +796,7 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_n
         $d_day      = substr $event_date, 6, 2;
 
         $mybtime   = stringtotime(qq~$d_mon/$d_day/$d_year~);
-        $mybtimein = timeformatcal($mybtime);
+        $mybtimein = timeformatcal($mybtime, 1);
         $cdate     = dtonly($mybtimein);
 
         if ( $INFO{'showmini'} ) {
@@ -1242,7 +1242,7 @@ qq~<br /><br /><a href="$scripturl?action=eventcal;calshow=1;eventdate=$cyear$cm
 
         if ( $event_found == 1 ) {
             $mybtime   = stringtotime(qq~$cmon/$cday/$cyear~);
-            $mybtimein = timeformatcal($mybtime);
+            $mybtimein = timeformatcal($mybtime, 1);
             $cdate     = dtonly($mybtimein);
 
             if ( $showage && $chide ) {

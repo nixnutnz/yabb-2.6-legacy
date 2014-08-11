@@ -892,6 +892,13 @@ sub EditPaths {
                     <div class="setting-cell2">
                         <input type="text" name="facesdir" id="facesdir" size="50" value="$facesdir" />
                     </div>
+                    <br />
+                    <div class="setting-cell">
+                        <label for="modimgdir">$edit_paths_txt{'moddir'}</label>
+                    </div>
+                    <div class="setting-cell2">
+                        <input type="text" name="modimgdir" id="modimgdir" size="50" value="$modimgdir" />
+                    </div>
                 </td>
             </tr><tr>
                 <td class="catbg"><span class="small">$edit_paths_txt{'21'}</span></td>
@@ -929,6 +936,13 @@ sub EditPaths {
                     </div>
                     <div class="setting-cell2">
                         <input type="text" name="facesurl" id="facesurl" size="50" value="$facesurl" />
+                    </div>
+                    <br />
+                    <div class="setting-cell">
+                        <label for="modimgurl">$edit_paths_txt{'modurl'}</label>
+                    </div>
+                    <div class="setting-cell2">
+                        <input type="text" name="modimgurl" id="modimgurl" size="50" value="$modimgurl" />
                     </div>
                 </td>
             </tr>
@@ -981,6 +995,8 @@ sub EditPaths2 {
     $templatesdir = $FORM{'templatesdir'};
     $facesdir     = $FORM{'facesdir'};
     $facesurl     = $FORM{'facesurl'};
+    $modimgdir    = $FORM{'modimgdir'};
+    $modimgurl    = $FORM{'modimgurl'};
 
     my $filler =
 q~                                                                               ~;
@@ -1020,6 +1036,7 @@ q~                                                                              
 \$uploaddir = "$uploaddir";                     # Base Path for all attachment files
 \$uploaddir = "$uploaddir";                     # Base Path for post attachment files
 \$pmuploaddir = "$pmuploaddir";                 # Base Path for pm attachment files
+\$modimgdir = "$modimgdir";                       # Base Path for all mod images
 
 ########## URLs ##########
 
@@ -1028,6 +1045,7 @@ q~                                                                              
 \$uploadurl = "$uploadurl";                     # Base URL for all attachment files
 \$uploadurl = "$uploadurl";                     # Base URL for post attachment files
 \$pmuploadurl = "$pmuploadurl";                 # Base URL for pm attachment files
+\$modimgurl = "$modimgurl";                     # Base URL for all mod images
 
 1;
 EOF

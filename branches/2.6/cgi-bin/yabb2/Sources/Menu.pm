@@ -49,7 +49,7 @@ sub SetMenu {
             $alt_num  = $text_num;
         }
         if ( $mod_or_not eq 'mod' ) {
-            $button_imgurl = qq~$yyhtml_root/ModImages~;
+            $button_imgurl = qq~$modimgurl~;
         }
         else {
             $button_imgurl = qq~$yyhtml_root/Templates/Forum/$usestyle~;
