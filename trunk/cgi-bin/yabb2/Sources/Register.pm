@@ -143,10 +143,8 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
 
     $email2 = q{};
     if ($imp_email_check) {
-        $email2 = qq~<tr>
-        <td class="windowbg right vtop"><label for="email2"><b>$register_txt{'70'}:</b></td>
-        <td class="windowbg2"><input type="text" maxlength="100" name="email2" id="email2" size="45" />$myreg_req</td>
-    </tr>~;
+        $email2 = $myregister_email2;
+        $email2 =~ s/{yabb email2}/$register_txt{'70'}/sm;
     }
 
     $yymain .= $myregister_avail;

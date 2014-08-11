@@ -289,6 +289,10 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
                 $fnd_pmuploaddir = "$fnd_htmldir/$name";
                 $fnd_pmuploadurl = "$fnd_html_root/$name";
             }
+            if ( lc($name) eq 'modimages' && -d "$fnd_htmldir/$name" ) {
+                $fnd_modimgdir = "$fnd_htmldir/$name";
+                $fnd_modimgurl = "$fnd_html_root/$name";
+            }
         }
     }
     else {
@@ -327,6 +331,10 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
             if ( lc($tname) eq 'pmattachments' && -d "$fnd_htmldir/$tname" ) {
                 $fnd_pmuploaddir = "$fnd_htmldir/$tname";
                 $fnd_pmuploadurl = "$fnd_html_root/$tname";
+            }
+            if ( lc($tname) eq 'modimages' && -d "$fnd_htmldir/$tname" ) {
+                $fnd_modimgdir = "$fnd_htmldir/$tname";
+                $fnd_modimgurl = "$fnd_html_root/$tname";
             }
         }
     }
@@ -377,6 +385,8 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
 
         $facesdir = $fnd_facesdir;
         $facesurl = $fnd_facesurl;
+        $modimgdir = $fnd_modimgdir;
+        $modimgurl = $fnd_modimgurl;
     }
 
     # Simple output of env variables, for troubleshooting
@@ -443,12 +453,14 @@ function autofill() {
             document.auto_settings.uploadurl.value = htmlurl + "/Attachments";
             document.auto_settings.pmuploadurl.value = htmlurl + "/PMAttachments";
             document.auto_settings.facesurl.value = htmlurl + "/avatars";
+            document.auto_settings.modimgurl.value = htmlurl + "/ModImages";
 
             // HTML Directories
             document.auto_settings.htmldir.value = htmldir;
             document.auto_settings.uploaddir.value = htmldir + "/Attachments";
             document.auto_settings.pmuploaddir.value = htmldir + "/PMAttachments";
             document.auto_settings.facesdir.value = htmldir + "/avatars";
+            document.auto_settings.modimgdir.value = htmldir + "/ModImages";
       }
 }
 </script>
@@ -641,6 +653,16 @@ function autofill() {
             <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.facesurl.value = '$fnd_facesurl';return false;" value="->" /></td>
             <td class="windowbg"><input type="text" size="60" name ="facesurl" value="$facesurl" /></td>
         </tr><tr>
+            <td class="windowbg2">Mod Images Dir.:</td>
+            <td class="windowbg">$fnd_modimgdir</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.modimgdir.value = '$fnd_modimgdir';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="modimgdir" value="$modimgdir" /></td>
+        </tr><tr>
+            <td class="windowbg2">Mod Images URL:</td>
+            <td class="windowbg">$fnd_modimgurl</td>
+            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.modimgurl.value = '$fnd_modimgurl';return false;" value="->" /></td>
+            <td class="windowbg"><input type="text" size="60" name ="modimgurl" value="$modimgurl" /></td>
+        </tr><tr>
             <td class="catbg" style="margin-top:.5em; margin-bottom:1em;" colspan="4"><input type="submit" value="Save Settings" /></td>
         </tr>
     </table>
@@ -683,6 +705,8 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
 
     $facesdir = $FORM{'facesdir'};
     $facesurl = $FORM{'facesurl'};
+    $modimgdir    = $FORM{'modimgdir'};
+    $modimgurl    = $FORM{'modimgurl'};
 
     my $setfile = << "EOF";
 ###############################################################################
@@ -719,6 +743,7 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
 \$facesdir = "$facesdir";                                         # Base Path for all avatar files
 \$uploaddir = "$uploaddir";                                       # Base Path for all attachment files
 \$pmuploaddir = "$pmuploaddir";                                   # Base Path for all PM attachment files
+\$modimgdir = "$modimgdir";                                       # Base Path for all mod images
 
 ########## URLs ##########
 
@@ -726,6 +751,7 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
 \$facesurl = "$facesurl";                                         # Base URL for all avatar files
 \$uploadurl = "$uploadurl";                                       # Base URL for all attachment files
 \$pmuploadurl = "$pmuploadurl";                                   # Base URL for all PM attachment files
+\$modimgurl = "$modimgurl";                                       # Base URL for all mod images
 
 1;
 EOF
@@ -1671,7 +1697,7 @@ sub SetInstall2 {
                                                     # proportions to the other value. If both are 0 the image is shown at its original size.
 \$max_brd_img_width = $max_brd_img_width;                           # Set maximum pixel width to which the Board Images are resized, 0 disables this limit
 \$max_brd_img_height = $max_brd_img_height;                          # Set maximum pixel height to which the Board Images are resized, 0 disables this limit
-\$fix_brd_img_size = $max_brd_img_size; 
+\$fix_brd_img_size = $max_brd_img_size;
 \$img_greybox = $img_greybox;                       # Set to 0 to disable "greybox" (each image is shown in a new window)
                                                     # Set to 1 to enable the attachment and post image "greybox" (one image/page)
                                                     # Set to 2 to enable the attachment and post image "greybox" =>
@@ -1988,6 +2014,7 @@ sub tempstarter {
 sub CheckInstall {
     tempstarter();
     my $install_error;
+    my $firstmstime = time();
     $windowbg = '#fafafa';
     $header   = '#5488ba';
     $catbg    = '#ddd';
@@ -2021,9 +2048,40 @@ sub CheckInstall {
             $brd_missing .= qq~$brdname.txt, ~;
         }
         else { $brd_created .= qq~$brdname.txt, ~; }
+
     }
     $brd_missing =~ s/, $//sm;
     $brd_created =~ s/, $//sm;
+    fopen( FORUMTOTALS, ">$boardsdir/forum.totals" ) || setup_fatal_error( "$maintext_23 $boardsdir/forum.totals: ", 1 );
+    for my $boardstot (@totboards) {
+        chomp $boardstot;
+        ( $brdname, undef, undef, undef, undef, $msgname, undef ) =
+          split /\|/xsm, $boardstot;
+        if ( $brdname eq 'general') {
+            print {FORUMTOTALS} "general|1|1|$firstmstime|admin|$firstmstime|0|Welcome to your new YaBB 2.6.0 forum!|xx|0|\n" or croak 'cannot print FORUMTOTALS';
+        }
+        else { print {FORUMTOTALS} qq~$boardstot\n~; }
+    }
+    fclose(FORUMTOTALS);
+    fopen ( FIRSTMS, ">$datadir/$firstmstime.txt");
+    print {FIRSTMS} qq~Welcome to your New YaBB 2.6.0 Forum!|Administrator|webmaster@mysite.com|$firstmstime|admin|xx|0|127.0.0.1|Welcome to your new YaBB 2.6.0 forum.<br /><br />The YaBB team would like to thank you for choosing Yet another Bulletin Board for your forum needs. We pride ourselves on the cost (FREE), the features, and the security. Visit http://www.yabbforum.com to view the latest development information, read YaBB news, and participate in community discussions.<br /><br />Make sure you login to your new forum as an administrator and visit the Admin Center. From there, you can maintain your forum. You'll want to look at all of the settings, membergroups, categories/boards, and security options to make sure they are set properly according to your needs.<br /><br />And if you are in need of feature changes or new YaBB features, check out <a href="www.yabbforumsoftware.com">YaBBForumSoftware.com</a>. ||||\n~;
+    fclose(FIRSTMS);
+    require Sources::DateTime;
+    fopen (FIRSTMSC, ">$datadir/$firstmstime.ctb");
+    $msgdat = timeformat( $firstmstime, 1, 'rfc' );
+    print {FIRSTMSC} qq~### ThreadID: $firstmstime, LastModified: $msgdat  ###
+
+'board',"general"
+'replies',"0"
+'views',"1"
+'lastposter',"admin"
+'lastpostdate',"$firstmstime"
+'threadstatus',"0"
+'repliers',"$firstmstime|admin|0"~;
+    fclose (FIRSTMSC);
+    fopen ( FIRSTBRD, ">>$boardsdir/general.txt");
+    print {FIRSTBRD} qq~$firstmstime|Welcome to your New YaBB 2.6 Forum!|Administrator|$webmaster_email|$firstmstime|0|admin|xx|0\n~;
+    fclose (FIRSTBRD);
 
     $mem_missing = q{};
     $mem_created = q{};

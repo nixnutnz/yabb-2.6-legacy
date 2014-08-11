@@ -1242,11 +1242,12 @@ sub MoveVariables {
         'registration.log',        'reserve.txt',
         'reservecfg.txt',          'spamrules.txt',
     );
+	my @oldvar = ();
     for my $varfl (@mvvar) {
         if ( -e "$convdatadir/$varfl" ) {
             if ( $varfl eq 'eventcal.db' ) {
                 fopen( OLDVAR, "$convdatadir/$varfl" );
-                my @oldvar = <OLDVAR>;
+                @oldvar = <OLDVAR>;
                 fclose(OLDVAR);
                 chomp @oldvar;
                 my @newvar;
@@ -1272,7 +1273,7 @@ qq~$eventline[0]|$eventline[1]|$eventline[2]|$eventline[3]||$eventline[4]|$event
             }
             else {
                 fopen( OLDVAR, "$convdatadir/$varfl" );
-                my @oldvar = <OLDVAR>;
+                @oldvar = <OLDVAR>;
                 fclose(OLDVAR);
 
                 fopen( NEWVAR, ">$vardir/$varfl" );

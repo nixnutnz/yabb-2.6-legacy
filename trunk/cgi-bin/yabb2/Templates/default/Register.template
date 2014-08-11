@@ -256,6 +256,11 @@ $myregister_fruits = qq~<tr>
                 <input type="hidden" name="thefruit" id="thefruit" value="{yabb fruit}" />
                 <iframe id="fruits" name="fruits" width="290" height="87" marginwidth="0" marginheight="0" frameborder="0" scrolling="no"></iframe>~;
 
+$myregister_email2 = qq~<tr>
+        <td class="windowbg right vtop"><label for="email2"><b>{yabb email2}:</b></td>
+        <td class="windowbg2"><input type="text" maxlength="100" name="email2" id="email2" size="45" />$myreg_req</td>
+    </tr>~;
+
 $myregister_endform = qq~<tr>
         <td class="catbg center" style="padding: 8px;" colspan="2">
             <div style="margin-bottom: .5em;"><label for="submitbutton">$register_txt{'95'}</label></div>

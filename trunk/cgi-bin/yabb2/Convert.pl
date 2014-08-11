@@ -933,9 +933,28 @@ EOF
               or croak 'cannot print FORUMTOTALS';
             print {FORUMTOTALS} "announcements|0|0|N/A|N/A||||\n"
               or croak 'cannot print FORUMTOTALS';
-            print {FORUMTOTALS} "general|1|1|1378046604|admin|1378046604|0|Welcome to your new YaBB 2\.5\.4 forum!|xx|0|\n"
+            $firstmstime = time();
+            print {FORUMTOTALS} "general|1|1|$firstmstime|admin|$firstmstime|0|Welcome to your new YaBB 2.6.0 forum!|xx|0|\n"
               or croak 'cannot print FORUMTOTALS';
             fclose(FORUMTOTALS);
+            fopen ( FIRSTMS, ">$datadir/$firstmstime.txt");
+            print {FIRSTMS} qq~Welcome to your New YaBB 2.6.0 Forum!|Administrator|webmaster@mysite.com|$firstmstime|admin|xx|0|127.0.0.1|Welcome to your new YaBB 2.6.0 forum.<br /><br />The YaBB team would like to thank you for choosing Yet another Bulletin Board for your forum needs. We pride ourselves on the cost (FREE), the features, and the security. Visit http://www.yabbforum.com to view the latest development information, read YaBB news, and participate in community discussions.<br /><br />Make sure you login to your new forum as an administrator and visit the Admin Center. From there, you can maintain your forum. You'll want to look at all of the settings, membergroups, categories/boards, and security options to make sure they are set properly according to your needs.<br /><br />And if you are in need of feature changes or new YaBB features, check out <a href="www.yabbforumsoftware.com">YaBBForumSoftware.com</a>. ||||\n~;
+            flose(FIRSTMS);
+            fopen (FIRSTMSC, ">$datadir/$firstmstime.ctb");
+            $msgdat = timeformat( $firstmstime, 1, 'rfc' );
+            print {FIRSTMSC} qq~### ThreadID: $firstmstime, LastModified: $msgdat  ###
+
+'board',"general"
+'replies',"0"
+'views',"1"
+'lastposter',"admin"
+'lastpostdate',"$firstmstime"
+'threadstatus',"0"
+'repliers',"$firstmstime|admin|0"~;
+            fclose (FIRSTMSC);
+            fopen ( FIRSTBRD, ">>$boardsdir/general.txt")
+            print {FIRSTBRD} qq~$firstmstime|Welcome to your New YaBB 2.6 Forum!|Administrator|webmaster@mysite.com|$firstmstime|0|admin|xx|0\n~;
+            fclose (FIRSTBRD);
 
             $yySetLocation =
                 qq~$set_cgi?action=cleanup2;st=~
@@ -1929,8 +1948,8 @@ sub CreateControl {
         $spare       = q{};
 
         if ( $cntcat && $foundboard ) {
-			$mypic = q{};
-			if ($cntpic ) { $mypic = 'y'; }
+            $mypic = q{};
+            if ($cntpic ) { $mypic = 'y'; }
             push @boardcontrol,
 "$cntcat|$foundboard|$mypic|$cntdescription|$cntmods|$cntmodgroups|$cntstartperms|$cntreplyperms|$cntpollperms|$cntzero|$cntpassword|$cnttotals|$cntattperms|$spare|||\n";
             fopen( BRDPIC, ">>$boardsdir/brdpics.db" );
@@ -3131,7 +3150,7 @@ q~<h1 style="text-align:center"><b>Sorry, the copyright tag &#123;yabb copyright
 }
 
 sub nicely_aligned_file {
-    my ( $setfile ) = @_;    
+    my ( $setfile ) = @_;
     $setfile =~ s/=\s+;/= 0;/gsm;
     $filler = q{ } x 50;
 
