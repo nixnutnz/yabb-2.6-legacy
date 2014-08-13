@@ -74,6 +74,7 @@ foreach my $module (
         }
     }
 }
+my $perlver = $];
 
 if ( $script_root !~ /ModuleChecker[.]\w+$/xsm ) {
     $yymain .= qq~
@@ -84,6 +85,10 @@ if ( $script_root !~ /ModuleChecker[.]\w+$/xsm ) {
                 </tr><tr>
                     <td class="catbg" colspan="3">
                         <span class="small">$modulecheck{'2'}</span>
+                    </td>
+                </tr><tr>
+                    <td class="catbg" colspan="3">
+                        <b>$modulecheck{'perlver'}</b>: $perlver
                     </td>
                 </tr>~ . (
         $i

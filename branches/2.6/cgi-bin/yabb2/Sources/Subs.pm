@@ -800,10 +800,10 @@ sub image_resize {
         elsif ( $fix_brd_img_size  && $perl_do_it == 1 && $x[1] eq 'brd' )
         {
             if ( $max_brd_img_width && $x[2] !~ / width=./sm ) {
-                $x[2] =~ s/( style=.)/$1width:$max_brd_img_width\px;/sm;
+                $x[2] =~ s/( style=.)/$1width:$max_brd_img_width$px;/sm;
             }
             if ( $max_brd_img_height && $x[2] !~ / height=./sm ) {
-                $x[2] =~ s/( style=.)/$1height:$max_brd_img_height\px;/sm;
+                $x[2] =~ s/( style=.)/$1height:$max_brd_img_height$px;/sm;
             }
             $x[2] =~ s/display:none/display:inline/sm;
         }

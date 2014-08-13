@@ -950,10 +950,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
               || ( $showsmdir == 3 && $showadded != 2 ) ) ? 2 : 3;
 
         if ( $enable_ubbc && $showyabbcbutt ) {
-            $my_ubbc = q~
-            <div class="style_ubbc_box">~;
-            $my_ubbc .= postbox();
-            $my_ubbc .= q~</div>~;
+            $my_ubbc = postbox();
         }
 
         # SpellChecker start
@@ -1256,7 +1253,6 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
     }
 
     #    these are the buttons to submit
-    #    if ($is_preview) { $post_txt{'507'} = $post_txt{'771'}; }
     $my_post_submit = qq~$mypost_submit
             $hidestatus
             <input type="submit" name="$post" id="$post" value="$submittxt" accesskey="s" tabindex="5" class="button" />
@@ -1622,13 +1618,6 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
 
     ToChars($message);
     $message = Censor($message);
-
-    #    $prevmain .= $mypost_prevmain;
-    #    $prevmain =~ s/{yabb csubject}/$csubject/gsm;
-    #    $prevmain =~ s/{yabb cmessage}/$message/gsm;
-    #    $prevmain =~ s/{yabb replycount}/$replycount/gsm;
-    #    $prevmain =~ s/{yabb msgdate}/$moddate/gsm;
-    #    $prevmain =~ s/{yabb d_icon}/$icon/sm;
 
     if ($error) {
         LoadLanguage('Error');

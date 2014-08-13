@@ -111,7 +111,7 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
                         </td>
                     </tr>
                 </table>~;
-    foreach my $catid (@categoryorder) {
+    for my $catid (@categoryorder) {
         @bdlist = split /,/xsm, $cat{$catid};
         ( $curcatname, $catperms ) = split /\|/xsm, $catinfo{"$catid"};
         ToChars($curcatname);
@@ -149,7 +149,7 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
             *show_boards = sub {
                 my @brdlist = @_;
                 $indent += 3;
-                foreach my $curboard (@brdlist) {
+                for my $curboard (@brdlist) {
                     ( $boardname, $boardperms, $boardview ) =
                       split /\|/xsm, $board{$curboard};
                     $boardname =~ s/\&quot\;/&#34;/gxsm;
@@ -287,14 +287,14 @@ sub BoardScreen {
         }
     }
     $i = 1;
-    foreach my $thiscat (@categoryorder) {
+    for my $thiscat (@categoryorder) {
         my @catboards = split /,/xsm, $cat{$thiscat};
 
         # make an array of all sub boards recursively
         *recursive_boards = sub {
             my @x = @_;
             push @theboards, @x;
-            foreach my $childbd (@x) {
+            for my $childbd (@x) {
                 if ( $subboard{$childbd} ) {
                     recursive_boards( split /\|/xsm, $subboard{$childbd} );
                 }
@@ -319,14 +319,14 @@ sub BoardScreen {
     elsif ( $FORM{'baction'} eq 'delme' ) {
         shift @editbrd;
         get_forum_master();
-        foreach my $bd (@editbrd) {
+        for my $bd (@editbrd) {
 
 # Remove Board form category it belongs to unless it's a sub board, then it's not in the cat list
             if ( !${ $uid . $bd }{'parent'} ) {
                 $category = ${ $uid . $bd }{'cat'};
                 @bdlist = split /,/xsm, $cat{$category};
                 my $c = 0;
-                foreach (@bdlist) {
+                for (@bdlist) {
                     if ( $_ eq $bd ) { splice @bdlist, $c, 1; last; }
                     $c++;
                 }
@@ -339,7 +339,7 @@ sub BoardScreen {
 
                 # Remove Board from old parent board
                 my $k = 0;
-                foreach (@bdlist) {
+                for (@bdlist) {
                     if ( $bd eq $_ ) { splice @bdlist, $k, 1; }
                     $k++;
                 }
@@ -348,7 +348,7 @@ sub BoardScreen {
 
 # remove the $subboard{} hash that contains children list, since it's a parent board and move children up
             if ( $subboard{$bd} ) {
-                foreach my $childbd ( split /\|/xsm, $subboard{$bd} ) {
+                for my $childbd ( split /\|/xsm, $subboard{$bd} ) {
 
 # if this one has a parent board, move its children up to that, otherwise to category.
                     if ( ${ $uid . $bd }{'parent'} ) {
@@ -395,11 +395,11 @@ sub DeleteBoards {
       || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     seek FORUMCONTROL, 0, 0;
     my @oldcontrols = <FORUMCONTROL>;
-    foreach my $board (@x) {
+    for my $board (@x) {
         fopen( BOARDDATA, "$boardsdir/$board.txt" );
         @messages = <BOARDDATA>;
         fclose(BOARDDATA);
-        foreach my $curmessage (@messages) {
+        for my $curmessage (@messages) {
             my ( $id, undef ) = split /\|/xsm, $curmessage, 2;
             unlink "$datadir/$id\.txt";
             unlink "$datadir/$id\.mail";
@@ -450,22 +450,12 @@ sub DeleteBoards {
     # Update parents for subboards that had a parent deleted.
     if (@del_updateparent) {
         for my $cnt ( 0 .. ( @oldcontrols - 1 ) ) {
-            my (
-                $oldcat,       $oldboard,     $pic,
-                $bdescription, $moderators,   $moderatorgroups,
-                $topicperms,   $replyperms,   $pollperms,
-                $zero,         $membergroups, $ann,
-                $rbin,         $att,          $minage,
-                $maxage,       $gender,       $canpost,
-                $parent,       $rules,        $brulestitle,
-                $brulesdesc,   $rulescollapse,$brdpasswr,
-                $brdpassw
-            ) = split /\|/xsm, $oldcontrols[$cnt];
-
-            foreach my $changedboard (@del_updateparent) {
+            @newbrd = split /\|/xsm, $oldcontrols[$cnt];
+            for my $changedboard (@del_updateparent) {
                 if ( $changedboard eq $oldboard ) {
-                    $oldcontrols[$cnt] =
-qq~$oldcat|$oldboard|$pic|$bdescription|$moderators|$moderatorgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$att|$minage|$maxage|$gender|$canpost|${$uid.$changedboard}{'parent'}|$rules|$brulestitle|$brulesdesc|$rulescollapse|$brdpasswr|$brdpassw\n~;
+                    $newbrd[18] = ${$uid.$changedboard}{'parent'};
+                    $newbrd = join q{|}, @newbrd;
+                    $oldcontrols[$cnt] = $newbrd . "\n";
                     last;
                 }
             }
@@ -503,7 +493,7 @@ sub AddBoards {
     *get_subboards = sub {
         my @x = @_;
         $indent += 2;
-        foreach my $childbd (@x) {
+        for my $childbd (@x) {
             my $dash;
             if ( $indent > 0 ) { $dash = q{-}; }
             ( $chldboardname, undef, undef ) =
@@ -520,8 +510,8 @@ sub AddBoards {
         }
         $indent -= 2;
     };
-    foreach $thiscat (@categoryorder) {
-        # $thiscat cannot be localized
+    for $thiscat (@categoryorder) {
+        # $thiscat cannot be properly localized
         my @catboards = split /\,/xsm, $cat{$thiscat};
         my $indent = -2;
         $catboardlist{$thiscat} = q~||~;
@@ -717,7 +707,7 @@ qq~editbrds[$i] = "${$uid.$editboards[$i]}{'cat'}|$editboards[$i]|${$uid.$editbo
         }
 
         my $boardcat = ${ $uid . $editboards[$i] }{'cat'};
-        foreach my $catid (@categoryorder) {
+        for my $catid (@categoryorder) {
             @bdlist = split /,/xsm, $cat{$catid};
             ( $curcatname, $catperms ) = split /\|/xsm, $catinfo{"$catid"};
             if ( $INFO{'action'} eq 'boardscreen' || $INFO{'parent'} ) {
@@ -750,7 +740,7 @@ qq~editbrds[$i] = "${$uid.$editboards[$i]}{'cat'}|$editboards[$i]|${$uid.$editbo
         $gentag[1]       = 'M';
         $gentag[2]       = 'F';
         $gentag[3]       = 'B';
-        foreach my $genlabel (@gentag) {
+        for my $genlabel (@gentag) {
             $gentext = '99';
             $gentext .= $genlabel;
             if ( $genlabel eq $boardgender ) {
@@ -773,7 +763,7 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         # Make children list if it contains sub boards
         my $childrenlist;
         if ( $subboard{$id} ) {
-            foreach my $childbd ( split /\|/xsm, $subboard{$id} ) {
+            for my $childbd ( split /\|/xsm, $subboard{$id} ) {
                 my ( $chldboardname, undef, undef ) =
                   split /\|/xsm, $board{"$childbd"};
                 ToChars($chldboardname);
@@ -880,7 +870,7 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
                             <select name="moderators$i" id="moderators$i" multiple="multiple" size="3" style="width: 320px;" ondblclick="removeUser(this);">~;
 
         my @thisBoardModerators = split /, ?/sm, $moderators;
-        foreach my $thisMod (@thisBoardModerators) {
+        for my $thisMod (@thisBoardModerators) {
             LoadUser($thisMod);
             my $thisModname = ${ $uid . $thisMod }{'realname'};
             if ( !$thisModname ) { $thisModname = $thisMod; }
@@ -902,10 +892,10 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         # Allows admin to select entire membergroups to be a board moderator
         $k = 0;
         my $box = q{};
-        foreach (@nopostorder) {
+        for (@nopostorder) {
             @groupinfo = split /\|/xsm, $NoPost{$_};
             $box .= qq~<option value="$_"~;
-            foreach ( split /, /sm, $moderatorgroups ) {
+            for ( split /, /sm, $moderatorgroups ) {
                 ( $lineinfo, undef ) = split /\|/xsm, $NoPost{$_}, 2;
                 if ( $lineinfo eq $groupinfo[0] ) {
                     $box .= q~ selected="selected" ~;
@@ -1155,7 +1145,7 @@ sub DrawPerms {
     my $count = 0;
     if ( $permissions eq q{} ) { $permissions = 'xk8yj56ndkal'; }
     my @perms = split /, /sm, $permissions;
-    foreach my $perm (@perms) {
+    for my $perm (@perms) {
         $foundit = 0;
         if ( $permstype == 1 ) {
             $name = $admin_txt{'65f'};
@@ -1204,7 +1194,7 @@ qq~                         <option value="Mid Moderator" selected="selected">$n
             $groupsel2 .= qq~                           <option value="Mid Moderator">$name</option>\n~;
         }
         if ( $foundit != 1 || $count == $#perms ) {
-            foreach (@nopostorder) {
+            for (@nopostorder) {
                 ( $name, undef ) = split /\|/xsm, $NoPost{$_}, 2;
                 if ( $perm eq $_ ) {
                     $foundit = 1;
@@ -1217,7 +1207,7 @@ qq~                         <option value="$_" selected="selected">$name</option
                 }
             }
             if ( $foundit != 1 || $count == $#perms ) {
-                foreach ( reverse sort { $a <=> $b } keys %Post ) {
+                for ( reverse sort { $a <=> $b } keys %Post ) {
                     ( $name, undef ) = split /\|/xsm, $Post{$_}, 2;
                     if ( $perm eq $name ) {
                         $foundit = 1;
@@ -1342,7 +1332,7 @@ sub AddBoards2 {
 
                     *cat_change = sub {
                         my @x = @_;
-                        foreach my $childbd (@x) {
+                        for my $childbd (@x) {
                             ${ $uid . $childbd }{'cat'} = qq~$FORM{"cat$i"}~;
                             push @updatecats, $childbd;
                             if ( $subboard{$childbd} ) {
@@ -1360,7 +1350,7 @@ sub AddBoards2 {
 
                     # Remove Board from old Category
                     my $k = 0;
-                    foreach my $bd (@bdlist) {
+                    for my $bd (@bdlist) {
                         if ( $id eq $bd ) { splice @bdlist, $k, 1; }
                         $k++;
                     }
@@ -1385,7 +1375,7 @@ sub AddBoards2 {
 
                     # Remove Board from old parent board
                     my $k = 0;
-                    foreach my $bd (@bdlist) {
+                    for my $bd (@bdlist) {
                         if ( $id eq $bd ) { splice @bdlist, $k, 1; }
                         $k++;
                     }
@@ -1400,7 +1390,7 @@ sub AddBoards2 {
 
                     # Remove Board from old Category
                     my $k = 0;
-                    foreach my $bd (@bdlist) {
+                    for my $bd (@bdlist) {
                         if ( $id eq $bd ) { splice @bdlist, $k, 1; }
                         $k++;
                     }
@@ -1478,7 +1468,7 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         $bdescription =~ s/\n/<br \/>/gsm;
         if ($do_scramble_id) {
             my @mods;
-            foreach ( split /\, /sm, $FORM{"moderators$i"} ) {
+            for ( split /\, /sm, $FORM{"moderators$i"} ) {
                 push @mods, decloak($_);
             }
             $FORM{"moderators$i"} = join q{, }, @mods;
@@ -1509,14 +1499,23 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         if ($FORM{"pasww$i"} ne q{}) {
             if ($FORM{"pasww$i"} !~ /\A[\s0-9A-Za-z!@#$%\^&*\(\)_\+|`~\-=\\:;'",\.\/?\[\]\{\}]+\Z/sm) { fatal_error("$register_txt{'240'} $register_txt{'36'} $register_txt{'241'}") }
             $encryptopass = encode_password($FORM{"pasww$i"});
-        } else {
+        }
+        else {
             if ($FORM{"paswwr$i"}) { $encryptopass = $FORM{"brdpassw$i"}; } else { $encryptopass = q{};}
         }
         if ( $FORM{"pic$i"} ) {
             $mypic = 'y';
         }
+        @modhook = (
+        );
+        ## BRD Mod Hook ##
+        $modchk = @modhook;
+        $modhook = q{};
+        if ( $modchk > 0 ) {
+            $modhook = join q{|}, @modhook;
+        }
         push @boardcontrol,
-"$FORM{\"cat$i\"}|$id|$mypic|$bdescription|$FORM{\"moderators$i\"}|$FORM{\"moderatorgroups$i\"}|$FORM{\"topicperms$i\"}|$FORM{\"replyperms$i\"}|$FORM{\"pollperms$i\"}|$FORM{\"zero$i\"}|$FORM{\"membergroups$i\"}|$FORM{\"ann$i\"}|$FORM{\"rbin$i\"}|$FORM{\"att$i\"}|$FORM{\"minage$i\"}|$FORM{\"maxage$i\"}|$FORM{\"gender$i\"}|$FORM{\"canpost$i\"}|$FORM{\"parent$i\"}|$FORM{\"rules$i\"}|$brulestitle|$brulesdesc|$FORM{\"rulescollapse$i\"}|$FORM{\"paswwr$i\"}|$encryptopass|$FORM{\"brdrss$i\"}\n";
+qq~$FORM{"cat$i"}|$id|$mypic|$bdescription|$FORM{"moderators$i"}|$FORM{"moderatorgroups$i"}|$FORM{"topicperms$i"}|$FORM{"replyperms$i"}|$FORM{"pollperms$i"}|$FORM{"zero$i"}|$FORM{"membergroups$i"}|$FORM{"ann$i"}|$FORM{"rbin$i"}|$FORM{"att$i"}|$FORM{"minage$i"}|$FORM{"maxage$i"}|$FORM{"gender$i"}|$FORM{"canpost$i"}|$FORM{"parent$i"}|$FORM{"rules$i"}|$brulestitle|$brulesdesc|$FORM{"rulescollapse$i"}|$FORM{"paswwr$i"}|$encryptopass|$FORM{"brdrss$i"}|$modhook\n~;
         push @changes, $id;
         $yymain .= qq~<i>'$FORM{"name$i"}'</i> $admin_txt{'48'} <br />~;
     }
@@ -1535,7 +1534,7 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
     # Update categories for subboards that got changed.
     for my $cnt ( 0 .. ( @oldcontrols - 1 ) ) {
         ( undef, $oldboard, undef ) = split /\|/xsm, $oldcontrols[$cnt], 3;
-        foreach my $changedboard (@updatecats) {
+        for my $changedboard (@updatecats) {
             if ( $changedboard eq $oldboard ) {
                 my ( $oldcat, $therest ) = split /\|/xsm, $oldcontrols[$cnt], 2;
                 $oldcontrols[$cnt] = qq~${$uid.$changedboard}{'cat'}|$therest~;
@@ -1546,7 +1545,7 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
 
     for my $cnt ( 0 .. ( @oldcontrols - 1 ) ) {
         ( undef, $oldboard, undef ) = split /\|/xsm, $oldcontrols[$cnt], 3;
-        foreach my $changedboard (@changes) {
+        for my $changedboard (@changes) {
             if ( $changedboard eq $oldboard ) {
                 $oldcontrols[$cnt] = q{};
                 last;
@@ -1572,7 +1571,7 @@ sub ReorderBoards {
     get_forum_master();
     if ( $INFO{'subboards'} ) { LoadBoardControl(); }
     if ( $#categoryorder > 0 ) {
-        foreach my $category (@categoryorder) {
+        for my $category (@categoryorder) {
             chomp $category;
             ( $categoryname, undef ) = split /\|/xsm, $catinfo{$category};
             ToChars($categoryname);
@@ -1598,7 +1597,7 @@ qq~<option value="$category" selected="selected">$categoryname</option>~;
             *get_subboards2 = sub {
                 my @x = @_;
                 $indent += 2;
-                foreach my $childbd (@x) {
+                for my $childbd (@x) {
                     my $dash;
                     if ( $indent > 0 ) { $dash = q{-}; }
                     ( $chldboardname, undef, undef ) =
@@ -1645,7 +1644,7 @@ qq~<option value="$category" selected="selected">$categoryname</option>~;
     # Prepare the list of current boards to be put in the select box
     $boardslist =
 qq~<select name="selectboards" id="selectboards" size="$bdcnt" style="width: 190px;">~;
-    foreach my $board (@bdlist) {
+    for my $board (@bdlist) {
         chomp $board;
         ( $boardname, undef ) = split /\|/xsm, $board{$board}, 2;
         ToChars($boardname);
@@ -1840,7 +1839,7 @@ sub ReorderBoards2 {
 
                     *cat_change2 = sub {
                         my @x = @_;
-                        foreach my $childbd (@x) {
+                        for my $childbd (@x) {
                             ${ $uid . $childbd }{'cat'} =
                               qq~$FORM{'selectcategory'}~;
                             push @updatecats, $childbd;
@@ -1856,7 +1855,7 @@ sub ReorderBoards2 {
                 # remove from the category list only if it was not a subboard
                 if ( !${ $uid . $moveitem }{'parent'} ) {
                     my $k = 0;
-                    foreach my $bd (@bdlist) {
+                    for my $bd (@bdlist) {
                         if ( $moveitem eq $bd ) { splice @bdlist, $k, 1; }
                         $k++;
                     }
@@ -1883,7 +1882,7 @@ sub ReorderBoards2 {
 
                     # Remove Board from old parent board
                     my $k = 0;
-                    foreach my $bd (@bdlist) {
+                    for my $bd (@bdlist) {
                         if ( $moveitem eq $bd ) { splice @bdlist, $k, 1; }
                         $k++;
                     }
@@ -1899,14 +1898,14 @@ sub ReorderBoards2 {
 
                     # Remove Board from old Category
                     my $k = 0;
-                    foreach my $bd (@bdlist) {
+                    for my $bd (@bdlist) {
                         if ( $moveitem eq $bd ) { splice @bdlist, $k, 1; }
                         $k++;
                     }
                     $cat{$category} = join q{,}, @bdlist;
                 }
 
-# if we're removing the parent board, move it back up to it's category, otherwise add to new parent board
+# if we're removing the parent board, move it back up to its category, otherwise add to new parent board
                 if ( $FORM{'selectboard'} eq q{} ) {
 
                     # only move up to cat if cat is the same as previously
@@ -1935,25 +1934,19 @@ sub ReorderBoards2 {
         seek FORUMCONTROL, 0, 0;
         my @oldcontrols = <FORUMCONTROL>;
         for my $cnt ( 0 .. ( @oldcontrols - 1 ) ) {
-            my (
-                undef,         $oldboard,     $pic,
-                $bdescription, $moderators,   $moderatorgroups,
-                $topicperms,   $replyperms,   $pollperms,
-                $zero,         $membergroups, $ann,
-                $rbin,         $att,          $minage,
-                $maxage,       $gender,       $canpost,
-                $parent,       $rules,        $brulestitle,
-                $brulesdesc,   $rulescollapse,$brdpasswr,
-                $brdpassw,     $brdrss
-            ) = split /\|/xsm, $oldcontrols[$cnt];
+            my @newbrd  = split /\|/xsm, $oldcontrols[$cnt];
             if ( $moveitem eq $oldboard ) {
-                $oldcontrols[$cnt] =
-qq~${$uid.$moveitem}{'cat'}|$moveitem|$pic|$bdescription|$moderators|$moderatorgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$att|$minage|$maxage|$gender|$canpost|${$uid.$moveitem}{'parent'}|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$brdrss\n~;
-            }
-            foreach my $changedboard (@updatecats) {
+                $newbrd[0] = ${$uid.$moveitem}{'cat'};
+                $newbrd[18] = ${$uid.$moveitem}{'parent'};
+                $newboardline = join q{|}, @newbrd;
+                $oldcontrols[$cnt] = $newboardline . "\n";
+			}
+            for my $changedboard (@updatecats) {
                 if ( $changedboard eq $oldboard ) {
-                    $oldcontrols[$cnt] =
-qq~${$uid.$changedboard}{'cat'}|$changedboard|$pic|$bdescription|$moderators|$moderatorgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$att|$minage|$maxage|$gender|$canpost|${$uid.$changedboard}{'parent'}|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$brdrss\n~;
+                    $newbrd[0] = ${$uid.$changedboard}{'cat'};
+                    $newbrd[18] = ${$uid.$changedboard}{'parent'};
+                    $newboardline = join q{|}, @newbrd;
+                    $oldcontrols[$cnt] = $newboardline . "\n";
                 }
             }
         }

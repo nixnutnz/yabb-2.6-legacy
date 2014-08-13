@@ -19,6 +19,8 @@ our $VERSION = '2.6.0';
 $mailerpmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
+$pre = q~style="padding:5px 40px; box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; display:block; white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; width:100%; overflow-x:auto;"~;
+
 sub sendmail {
     my ( $to, $subject, $message, $from, $mailcharset ) = @_;
 
@@ -67,7 +69,7 @@ sub sendmail {
     elsif ( $mailtype == 1 ) {
         $smtp_to      = $to;
         $smtp_from    = $from;
-        $smtp_message = qq~<pre>$message</pre>~;
+        $smtp_message = qq~<pre $pre>$message</pre>~;
         $smtp_subject = $subject;
         $smtp_charset = $charsetheader;
         require Sources::Smtp;
@@ -109,7 +111,7 @@ sub sendmail {
             $smtp->datasend("Subject: $subject\r\n");
             $smtp->datasend("Content-Type: text/html\; charset=$charsetheader\r\n");
             $smtp->datasend("\r\n");
-            $smtp->datasend("<pre>$message</pre>");
+            $smtp->datasend("<pre $pre>$message</pre>");
             $smtp->dataend();
             $smtp->quit();
         ^;
@@ -132,7 +134,7 @@ sub sendmail {
           or croak "$croak{'print'} mail";
         print {MAIL} "Subject: $subject\n\n" or croak "$croak{'print'} mail";
         $message =~ s/\r\n/\n/gsm;
-        print {MAIL} "<pre>$message</pre>\n"         or croak "$croak{'print'} mail";
+        print {MAIL} "<pre $pre>$message</pre>\n"         or croak "$croak{'print'} mail";
         print {MAIL} "End of Message\n\n" or croak "$croak{'print'} mail";
         fclose(MAIL);
         return 1;
@@ -170,7 +172,7 @@ sub tomail {
     print {$MAIL} "Content-Type: text/html\; charset=$charsetheader\n\n"
       or croak "$croak{'print'} mail";
     $message =~ s/\r\n/\n/gsm;
-    print {$MAIL} "<pre>$message</pre>\n" or croak "$croak{'print'} mail";
+    print {$MAIL} "<pre $pre>$message</pre>\n" or croak "$croak{'print'} mail";
     return;
 }
 

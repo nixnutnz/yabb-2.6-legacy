@@ -1197,8 +1197,6 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 '32a' => 'PM Attachments URL:',
 '33' => 'Absolute Path to your main YaBB directory (containing YaBB.pl)',
 '34' => 'This information may be useful for troubleshooting purposes',
-'moddir' => 'Mod Images Dir:',
-'modurl' => 'Mod Images URL:',
 );
 
 %mod_list = (

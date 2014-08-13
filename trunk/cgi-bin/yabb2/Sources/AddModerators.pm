@@ -93,33 +93,23 @@ sub AddModerators2 {
     fclose(FORUMCNTR);
     fopen( FORUMCNT, ">$boardsdir/forum.control" )
       || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
-    foreach my $boardline (@boardcntr) {
+    for my $boardline (@boardcntr) {
         $boardline =~ s/[\r\n]//gsm;
-        (
-            $admdcat,         $admdboard,        $admdpic,
-            $admddescription, $admdmods,         $admdmodgroups,
-            $admdtopicperms,  $admdreplyperms,   $admdpollperms,
-            $admdzero,        $admdmembergroups, $admdann,
-            $admdrbin,        $admdattperms,     $admdminageperms,
-            $admdmaxageperms, $admdgenderperms,  $adcanpost,
-            $adparent,        $adrules,          $adbrulestitle,
-            $adbrulesdesc,    $adrulescollapse
-        ) = split /\|/xsm, $boardline;
-        @bdmodlist = split /, /sm, $admdmods;
+        my @newline = split /\|/xsm, $boardline;
+        my @bdmodlist = split /, /sm, $newbrd[4];
         chomp @bdmodlist;
-        $admdmods  = q{};
+        $newline[4]  = q{};
         $bdi       = 0;
-        foreach (@bdmodlist) {
+        for (@bdmodlist) {
             if ( $_ eq $user ) { splice @bdmodlist, $bdi, 1; last; }
             $bdi++;
         }
-        foreach (@modbd) {
-            if ( $_ eq $admdboard ) { push @bdmodlist, $user; last; }
+        for (@modbd) {
+            if ( $_ eq $newline[1] ) { push @bdmodlist, $user; last; }
         }
-        $admdmods = join q{, }, @bdmodlist;
-        print {FORUMCNT}
-"$admdcat|$admdboard|$admdpic|$admddescription|$admdmods|$admdmodgroups|$admdtopicperms|$admdreplyperms|$admdpollperms|$admdzero|$admdmembergroups|$admdann|$admdrbin|$admdattperms|$admdminageperms|$admdmaxageperms|$admdgenderperms|$adcanpost|$adparent|$adrules|$adbrulestitle|$adbrulesdesc|$adrulescollapse\n"
-          or croak "$croak{'print'} FORUMCNT";
+        $newline[4] = join q{, }, @bdmodlist;
+        $newline = join q{|}, @newline;
+        print {FORUMCNT} "$newbrd\n" or croak "$croak{'print'} FORUMCNT";
     }
     fclose(FORUMCNT);
     return;
@@ -240,7 +230,7 @@ sub ModSearch2 {
     $modboard = $INFO{'toboard'};
     if ($do_scramble_id) {
         my @mods;
-        foreach ( split /, /sm, $FORM{'moderators'} ) {
+        for ( split /, /sm, $FORM{'moderators'} ) {
             push @mods, decloak($_);
         }
         $FORM{'moderators'} = join q{, }, @mods;
@@ -251,27 +241,17 @@ sub ModSearch2 {
     fclose(FORUMCNTR);
     fopen( FORUMCNT, ">$boardsdir/forum.control" )
       || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
-    foreach my $boardline (@boardcntr) {
+    for my $boardline (@boardcntr) {
         $boardline =~ s/[\r\n]//gxsm;
-        (
-            $admdcat,         $admdboard,        $admdpic,
-            $admddescription, $admdmods,         $admdmodgroups,
-            $admdtopicperms,  $admdreplyperms,   $admdpollperms,
-            $admdzero,        $admdmembergroups, $admdann,
-            $admdrbin,        $admdattperms,     $admdminageperms,
-            $admdmaxageperms, $admdgenderperms,  $adcanpost,
-            $adparent,        $adrules,          $adbrulestitle,
-            $adbrulesdesc,    $adrulescollapse
-        ) = split /\|/xsm, $boardline;
-        if ( $admdboard eq $modboard ) {
-            print {FORUMCNT}
-"$admdcat|$admdboard|$admdpic|$admddescription|$FORM{'moderators'}|$FORM{'moderatorgroups'}|$admdtopicperms|$admdreplyperms|$admdpollperms|$admdzero|$admdmembergroups|$admdann|$admdrbin|$admdattperms|$admdminageperms|$admdmaxageperms|$admdgenderperms|$adcanpost|$adparent|$adrules|$adbrulestitle|$adbrulesdesc|$adrulescollapse\n"
-              or croak "$croak{'print'} FORUMCNT";
+        @newline = split /\|/xsm, $boardline;
+        if ( $newline[1] eq $modboard ) {
+            $newline[4] = $FORM{'moderators'};
+            $newline[5] = $FORM{'moderatorgroups'};
+            $newline = join q{|}, @newline;
+            print {FORUMCNT} "$newline\n" or croak "$croak{'print'} FORUMCNT";
         }
         else {
-            print {FORUMCNT}
-"$admdcat|$admdboard|$admdpic|$admddescription|$admdmods|$admdmodgroups|$admdtopicperms|$admdreplyperms|$admdpollperms|$admdzero|$admdmembergroups|$admdann|$admdrbin|$admdattperms|$admdminageperms|$admdmaxageperms|$admdgenderperms|$adcanpost|$adparent|$adrules|$adbrulestitle|$adbrulesdesc|$adrulescollapse\n"
-              or croak "$croak{'print'} FORUMCNT";
+            print {FORUMCNT} "$boardline\n" or croak "$croak{'print'} FORUMCNT";
         }
     }
     fclose(FORUMCNT);

@@ -883,15 +883,8 @@ img#dragImg2 {
     width: 56px;
 }
 
-div.textdecor {
-    float: left;
-    width: 115px;
-}
-
-div.fontface {
-    float: left;
-    text-align: center;
-    width: 162px;
+input[type="button"].npf_txt {
+   font-size: 9px;
 }
 
 div.palettebox {
@@ -901,19 +894,6 @@ div.palettebox {
     padding-left: 1px;
     padding-top: 1px;
     width: 66px;
-}
-
-div.palbox_left {
-    float: left;
-    height: 22px;
-    width: 91px;
-}
-
-div.palbox_right {
-    float: right;
-    height: 22px;
-    padding-left: 1px;
-    width: 23px;
 }
 
 div#bullets {

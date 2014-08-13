@@ -894,7 +894,7 @@ sub EditPaths {
                     </div>
                     <br />
                     <div class="setting-cell">
-                        <label for="modimgdir">$edit_paths_txt{'moddir'}</label>
+                        <label for="modimgdir">$edit_paths_txt{'19'}</label>
                     </div>
                     <div class="setting-cell2">
                         <input type="text" name="modimgdir" id="modimgdir" size="50" value="$modimgdir" />
@@ -939,7 +939,7 @@ sub EditPaths {
                     </div>
                     <br />
                     <div class="setting-cell">
-                        <label for="modimgurl">$edit_paths_txt{'modurl'}</label>
+                        <label for="modimgurl">$edit_paths_txt{'31'}</label>
                     </div>
                     <div class="setting-cell2">
                         <input type="text" name="modimgurl" id="modimgurl" size="50" value="$modimgurl" />

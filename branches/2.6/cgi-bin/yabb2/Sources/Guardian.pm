@@ -136,7 +136,6 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
                     $not_body .= qq~$mbname, $guardian_txt{'main'}~;
                     $not_subject =~ s/\&trade\;//gxsm;
                     $not_body    =~ s/\&trade\;//gxsm;
-                    $not_body = qq~<pre>$not_body</pre>~;
                     guardian_notify( $not_to, $not_subject, $not_body,
                         $not_from );
                 }
@@ -182,7 +181,6 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
                     $not_body .= qq~$mbname, $guardian_txt{'main'}~;
                     $not_subject =~ s/\&trade\;//gxsm;
                     $not_body    =~ s/\&trade\;//gxsm;
-                    $not_body = qq~<pre>$not_body</pre>~;
                     guardian_notify( $not_to, $not_subject, $not_body,
                         $not_from );
                 }
@@ -228,7 +226,6 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
                     $not_body .= qq~$mbname, $guardian_txt{'main'}~;
                     $not_subject =~ s/\&trade\;//gxsm;
                     $not_body    =~ s/\&trade\;//gxsm;
-                    $not_body = qq~<pre>$not_body</pre>~;
                     guardian_notify( $not_to, $not_subject, $not_body,
                         $not_from );
                 }
@@ -283,7 +280,6 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
                     $not_body .= qq~$mbname, $guardian_txt{'main'}~;
                     $not_subject =~ s/\&trade\;//gxsm;
                     $not_body    =~ s/\&trade\;//gxsm;
-                    $not_body = qq~<pre>$not_body</pre>~;
                     guardian_notify( $not_to, $not_subject, $not_body,
                         $not_from );
                 }
@@ -327,7 +323,6 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
                 $not_body .= qq~$mbname, $guardian_txt{'main'}~;
                 $not_subject =~ s/\&trade\;//gxsm;
                 $not_body    =~ s/\&trade\;//gxsm;
-                $not_body = qq~<pre>$not_body</pre>~;
                 guardian_notify( $not_to, $not_subject, $not_body, $not_from );
             }
             if ( $use_htaccess && $union_htaccess && !$iamadmin && !$iamgmod ) {
@@ -363,7 +358,6 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
                 $not_body .= qq~$mbname, $guardian_txt{'main'}~;
                 $not_subject =~ s/\&trade\;//gxsm;
                 $not_body    =~ s/\&trade\;//gxsm;
-                $not_body = qq~<pre>$not_body</pre>~;
                 guardian_notify( $not_to, $not_subject, $not_body, $not_from );
             }
             if ( $use_htaccess && $clike_htaccess && !$iamadmin && !$iamgmod ) {
@@ -412,7 +406,6 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
                     $not_body .= qq~$mbname, $guardian_txt{'main'}~;
                     $not_subject =~ s/\&trade\;//gxsm;
                     $not_body    =~ s/\&trade\;//gxsm;
-                    $not_body = qq~<pre>$not_body</pre>~;
                     guardian_notify( $not_to, $not_subject, $not_body,
                         $not_from );
                 }
@@ -466,7 +459,6 @@ qq~$guardian_txt{'abuse_form_environment'}: $secvalue\n\n~;
                     $not_body .= qq~$mbname, $guardian_txt{'main'}~;
                     $not_subject =~ s/\&trade\;//gxsm;
                     $not_body    =~ s/\&trade\;//gxsm;
-                    $not_body = qq~<pre>$not_body</pre>~;
                     guardian_notify( $not_to, $not_subject, $not_body,
                         $not_from );
                 }

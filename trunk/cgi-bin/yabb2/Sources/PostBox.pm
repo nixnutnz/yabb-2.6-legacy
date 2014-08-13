@@ -23,162 +23,102 @@ get_micon();
 #InstantMessage.pm and Post.pl use the same code for the posting box - why have two copies? #
 
 sub postbox {
-    $box = qq~<script type="text/javascript">
-            HAND = 'class="vtop cursor"';
-            HAND += " onmouseover='contextTip(event, this.alt)' onmouseout='contextTip(event, this.alt)' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'";
-            document.write('<div class="left437">');
-            document.write("<img src='$imagesdir/url.gif' onclick='hyperlink();' "+HAND+" width='23' height='22' alt='$post_txt{'257'}' title='$post_txt{'257'}' />");
-            document.write("<img src='$imagesdir/ftp.gif' onclick='ftp();' "+HAND+" width='23' height='22' alt='$post_txt{'434'}' title='$post_txt{'434'}' />");
-            document.write("<img src='$imagesdir/img.gif' onclick='image();' "+HAND+" width='23' height='22' alt='$post_txt{'435'}' title='$post_txt{'435'}' />");
-            document.write("<img src='$imagesdir/email2.gif' onclick='emai1();' "+HAND+" width='23' height='22' alt='$post_txt{'258'}' title='$post_txt{'258'}' />");
-            document.write("<img src='$imagesdir/media.gif' onclick='flash();' "+HAND+" width='23' height='22' alt='$post_txt{'433'}' title='$post_txt{'433'}' />");
-            document.write("<img src='$imagesdir/table.gif' onclick='table();' "+HAND+" width='23' height='22' alt='$post_txt{'436'}' title='$post_txt{'436'}' />");
-            document.write("<img src='$imagesdir/tr.gif' onclick='trow();' "+HAND+" width='23' height='22' alt='$post_txt{'449'}' title='$post_txt{'449'}' />");
-            document.write("<img src='$imagesdir/td.gif' onclick='tcol();' "+HAND+" width='23' height='22' alt='$post_txt{'437'}' title='$post_txt{'437'}' />");
-            document.write("<img src='$imagesdir/hr.gif' onclick='hr();' "+HAND+" width='23' height='22' alt='$post_txt{'531'}' title='$post_txt{'531'}' />");
-            document.write("<img src='$imagesdir/tele.gif' onclick='teletype();' "+HAND+" width='23' height='22' alt='$post_txt{'440'}' title='$post_txt{'440'}' />");
-            document.write("<img src='$imagesdir/code.gif' onclick='selcodelang();' "+HAND+" width='23' height='22' alt='$post_txt{'259'}' title='$post_txt{'259'}' />");
-            document.write("<img src='$imagesdir/quote2.gif' onclick='quote();' "+HAND+" width='23' height='22' alt='$post_txt{'260'}' title='$post_txt{'260'}' />");
-            document.write("<img src='$imagesdir/edit.gif' onclick='edit();' "+HAND+" width='23' height='22' alt='$post_txt{'603'}' title='$post_txt{'603'}' />");
-            document.write("<img src='$imagesdir/sup.gif' onclick='superscript();' "+HAND+" width='23' height='22' alt='$post_txt{'447'}' title='$post_txt{'447'}' />");
-            document.write("<img src='$imagesdir/sub.gif' onclick='subscript();' "+HAND+" width='23' height='22' alt='$post_txt{'448'}' title='$post_txt{'448'}' />");
+    my %boxlist1 = (
+        'a' => "url.gif|hyperlink()|$post_txt{'257'}",
+        'b' => "ftp.gif|ftp()|$post_txt{'434'}",
+        'c' => "img.gif|image()|$post_txt{'435'}",
+        'd' => "email2.gif|emai1()|$post_txt{'258'}",
+        'e' => "media.gif|flash()|$post_txt{'433'}",
+        'f' => "table.gif|table()|$post_txt{'436'}",
+        'g' => "tr.gif|trow()|$post_txt{'449'}",
+        'h' => "td.gif|tcol()|$post_txt{'437'}",
+        'i' => "hr.gif|hr()|$post_txt{'531'}",
+        'j' => "tele.gif|teletype()|$post_txt{'440'}",
+        'k' => "code.gif|selcodelang()|$post_txt{'259'}",
+        'l' => "quote2.gif|quote()|$post_txt{'260'}",
+        'm' => "edit.gif|edit()|$post_txt{'603'}",
+        'n' => "sup.gif|superscript()|$post_txt{'447'}",
+        'o' => "sub.gif|subscript()|$post_txt{'448'}",
+        'p' => "list.gif|bulletset()|$post_txt{'261'}",
+        'q' => "me.gif|me()|$post_txt{'604'}",
+        'r' => "move.gif|move()|$post_txt{'439'}",
+        's' => "timestamp.gif|timestamp($date)|$post_txt{'245'}",
+        't' => "noparse.gif|noparse()|$post_txt{'noparse'}",
+    );
+    my %textdecor = (
+        'a' => "bold.gif|bold()|$post_txt{'253'}",
+        'b' => "italicize.gif|italicize()|$post_txt{'254'}",
+        'c' => "underline.gif|underline()|$post_txt{'255'}",
+        'd' => "strike.gif|strike()|$post_txt{'441'}",
+        'e' => "highlight.gif|highlight()|$post_txt{'246'}",
+    );
+    my %txtalgn = (
+        'a' => "pre.gif|pre()|$post_txt{'444'}",
+        'b' => "left.gif|left()|$post_txt{'445'}",
+        'c' => "center.gif|center()|$post_txt{'256'}",
+        'd' => "right.gif|right()|$post_txt{'445'}",
+    );
 
-            document.write("<img src='$imagesdir/list.gif' onclick='bulletset();' "+HAND+" width='23' height='22' alt='$post_txt{'261'}' title='$post_txt{'261'}' />");
-            document.write("<img src='$imagesdir/me.gif' onclick='me();' "+HAND+" width='23' height='22' alt='$post_txt{'604'}' title='$post_txt{'604'}' />");
-            document.write("<img src='$imagesdir/move.gif' onclick='move();' "+HAND+" width='23' height='22' alt='$post_txt{'439'}' title='$post_txt{'439'}' />");
-            document.write("<img src='$imagesdir/timestamp.gif' onclick='timestamp($date);' "+HAND+" width='23' height='22' alt='$post_txt{'245'}' title='$post_txt{'245'}' />");
-            document.write("<img src='$imagesdir/noparse.gif' onclick='noparse();' "+HAND+" width='23' height='22' alt='$post_txt{'noparse'}' title='$post_txt{'noparse'}' />");
-            document.write('<br /></div>');
-            document.write('<div class="textdecor">');
-            document.write("<img src='$imagesdir/bold.gif' onclick='bold();' "+HAND+" width='23' height='22' alt='$post_txt{'253'}' title='$post_txt{'253'}' />");
-            document.write("<img src='$imagesdir/italicize.gif' onclick='italicize();' "+HAND+" width='23' height='22' alt='$post_txt{'254'}' title='$post_txt{'254'}' />");
-            document.write("<img src='$imagesdir/underline.gif' onclick='underline();' "+HAND+" width='23' height='22' alt='$post_txt{'255'}' title='$post_txt{'255'}' />");
-            document.write("<img src='$imagesdir/strike.gif' onclick='strike();' "+HAND+" width='23' height='22' alt='$post_txt{'441'}' title='$post_txt{'441'}' />");
-            document.write("<img src='$imagesdir/highlight.gif' onclick='highlight();' "+HAND+" width='23' height='22' alt='$post_txt{'246'}' title='$post_txt{'246'}' />");
-            document.write('</div>');
-            document.write('<div class="fontface">');
-            document.write('<select name="fontface" id="fontface" onchange="if(this.options[this.selectedIndex].value) fontfce(this.options[this.selectedIndex].value);">');
-            document.write('<option value="">Verdana</option>');
-            document.write('<option value="">-\\-\\-\\-\\-\\-\\-\\-\\-</option>');
-            document.write('<option value="Arial" style="font-family: Arial">Arial</option>');
-            document.write('<option value="Bitstream Vera Sans Mono" style="font-family: Bitstream Vera Sans Mono">Bitstream</option>');
-            document.write('<option value="Bradley Hand ITC" style="font-family: Bradley Hand ITC">Bradley Hand ITC</option>');
-            document.write('<option value="Comic Sans MS" style="font-family: Comic Sans MS">Comic Sans MS</option>');
-            document.write('<option value="Courier" style="font-family: Courier">Courier</option>');
-            document.write('<option value="Courier New" style="font-family: Courier New">Courier New</option>');
-            document.write('<option value="Georgia" style="font-family: Georgia">Georgia</option>');
-            document.write('<option value="Impact" style="font-family: Impact">Impact</option>');
-            document.write('<option value="Lucida Sans" style="font-family: Lucida Sans">Lucida Sans</option>');
-            document.write('<option value="Microsoft Sans Serif" style="font-family: Microsoft Sans Serif">MS Sans Serif</option>');
-            document.write('<option value="Papyrus" style="font-family: Papyrus">Papyrus</option>');
-            document.write('<option value="Tahoma" style="font-family: Tahoma">Tahoma</option>');
-            document.write('<option value="Tempus Sans ITC" style="font-family: Tempus Sans ITC">Tempus Sans ITC</option>');
-            document.write('<option value="Times New Roman" style="font-family: Times New Roman">Times New Roman</option>');
-            document.write('<option value="Verdana" style="font-family: Verdana" selected="selected">Verdana</option>');
-            document.write('</select>');
-            var fntoptions = ["6", "7", "8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "36", "48", "56", "72"]
-            document.write('<select name="fontsize" id="fontsize" onchange="if(this.options[this.selectedIndex].value) fntsize(this.options[this.selectedIndex].value);">');
-            document.write('<option value="">11</option>');
-            document.write('<option value="">-\\-</option>');
-            for(var i = 0; i < fntoptions.length; i++) {
-                if(fntoptions[i] >= $fontsizemin && fntoptions[i] <= $fontsizemax) {
-                    if(fntoptions[i] == 11) document.write('<option value="11" selected="selected">11</option>');
-                    else document.write('<option value=' + fntoptions[i] + '>' + fntoptions[i] + '</option>');
+    my %mods = (
+    );
+    ## Mod Hook for UBBC ##
+    ( $mods, $mods_w )           = ubbc_modlist(%mods);
+    ( $boxlist1, $boxlist1_w )   = ubbc_boxlist(%boxlist1);
+    ( $textdecor, $textdecor_w ) = ubbc_boxlist(%textdecor);
+    ( $txtalgn, $txtalgn_w )     = ubbc_boxlist(%txtalgn);
+    $fntcolor_w = 91;
+    $font_w = $boxlist1_w - ( $textdecor_w + $txtalgn_w + $fntcolor_w );
+    $ubbc_box_w = $boxlist1_w + $mods_w;
+    $px = 'px';
+    $box = qq~            <div style="float:left; width:$ubbc_box_w$px">
+            <div style="float:right; width:$mods_w$px">
+            $mods
+            </div>
+            <div style="float:left; width:$boxlist1_w$px">
+            $boxlist1
+            <br /></div>
+            <div style="float:left; width:$textdecor_w$px">
+            $textdecor
+            </div>
+            <div style="float:left; text-align:center; width:$font_w$px">
+            <select name="fontface" id="fontface" onchange="if(this.options[this.selectedIndex].value) fontfce(this.options[this.selectedIndex].value);">
+                <option value="Verdana">Verdana</option>
+                <option value="">-\\-\\-\\-\\-\\-\\-\\-\\-</option>
+                <option value="Arial" style="font-family: Arial">Arial</option>
+                <option value="Bitstream Vera Sans Mono" style="font-family: Bitstream Vera Sans Mono">Bitstream</option>
+                <option value="Bradley Hand ITC" style="font-family: Bradley Hand ITC">Bradley Hand ITC</option>
+                <option value="Comic Sans MS" style="font-family: Comic Sans MS">Comic Sans MS</option>
+                <option value="Courier" style="font-family: Courier">Courier</option>
+                <option value="Courier New" style="font-family: Courier New">Courier New</option>
+                <option value="Georgia" style="font-family: Georgia">Georgia</option>
+                <option value="Impact" style="font-family: Impact">Impact</option>
+                <option value="Lucida Sans" style="font-family: Lucida Sans">Lucida Sans</option>
+                <option value="Microsoft Sans Serif" style="font-family: Microsoft Sans Serif">MS Sans Serif</option>
+                <option value="Papyrus" style="font-family: Papyrus">Papyrus</option>
+                <option value="Tahoma" style="font-family: Tahoma">Tahoma</option>
+                <option value="Tempus Sans ITC" style="font-family: Tempus Sans ITC">Tempus Sans ITC</option>
+                <option value="Times New Roman" style="font-family: Times New Roman">Times New Roman</option>
+                <option value="Verdana" style="font-family: Verdana" selected="selected">Verdana</option>
+            </select>
+            <select name="fontsize" id="fontsize" onchange="if(this.options[this.selectedIndex].value) fntsize(this.options[this.selectedIndex].value);">
+                <option value="">11</option>
+                <option value="">-\\-</option>~;
+            my @fntoptions = ( 6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 36, 48, 56, 72);
+            my $fntopts = q{};
+            for my $i ( 0 .. ( @fntoptions - 1 ) ) {
+                if ( $fntoptions[$i] >= $fontsizemin && $fntoptions[$i] <= $fontsizemax ) {
+                    if( $fntoptions[$i] == 11 ) { $fntopts .= qq~               <option value="11" selected="selected">11</option>\n~;}
+                    else { $fntopts .= qq~              <option value="$fntoptions[$i]">$fntoptions[$i]</option>\n~;}
                 }
             }
-            document.write('</select>');
-            document.write('</div>');
-
-            function selcodelang() {
-                if (document.getElementById("codelang").style.display == "none")
-                document.getElementById("codelang").style.display = "inline-block";
-                else
-                document.getElementById("codelang").style.display = "none";
-                document.getElementById("codelang").style.zIndex = "100";
-
-                var openbox = document.getElementsByTagName("div");
-                for (var i = 0; i < openbox.length; i++) {
-                    if (openbox[i].className == "ubboptions" && openbox[i].id != "codelang") {
-                        openbox[i].style.display = "none";
-                    }
-                }
-            }
-
-            function syntaxlang(lang, optnum) {
-                AddSelText("[code"+lang+"]","[/code]");
-                document.getElementById("codesyntax").options[optnum].selected = false;
-                document.getElementById("codelang").style.display = "none";
-            }
-
-            function bulletset() {
-                if (document.getElementById("bullets").style.display == "none")
-                document.getElementById("bullets").style.display = "block";
-                else
-                document.getElementById("bullets").style.display = "none";
-                document.getElementById("bullets").style.zIndex = "100";
-
-                var openbox = document.getElementsByTagName("div");
-                for (var i = 0; i < openbox.length; i++) {
-                    if (openbox[i].className == "ubboptions" && openbox[i].id != "bullets") {
-                        openbox[i].style.display = "none";
-                    }
-                }
-            }
-
-            function showbullets(bullet) {
-                AddSelText("[list "+bullet+"][*]", "\\n[/list]");
-            }
-
-            function olist() {
-                AddSelText("[olist][*]", "\\n[/olist]");
-            }
-            function ulist() {
-                AddSelText("[list][*]", "\\n[/list]");
-            }
-
-            // Palette
-            var thistask = 'post';
-            function tohex(i) {
-                a2 = ''
-                ihex = hexQuot(i);
-                idiff = eval(i + '-(' + ihex + '*16)')
-                a2 = itohex(idiff) + a2;
-                while( ihex >= 16) {
-                    itmp = hexQuot(ihex);
-                    idiff = eval(ihex + '-(' + itmp + '*16)');
-                    a2 = itohex(idiff) + a2;
-                    ihex = itmp;
-                }
-                a1 = itohex(ihex);
-                return a1 + a2 ;
-            }
-
-            function hexQuot(i) {
-                return Math.floor(eval(i +'/16'));
-            }
-
-            function itohex(i) {
-                if( i === 0) { aa = '0' }
-                else { if( i == 1 ) { aa = '1' }
-                else { if( i == 2 ) { aa = '2' }
-                else { if( i == 3 ) { aa = '3' }
-                else { if( i == 4 ) { aa = '4' }
-                else { if( i == 5 ) { aa = '5' }
-                else { if( i == 6 ) { aa = '6' }
-                else { if( i == 7 ) { aa = '7' }
-                else { if( i == 8 ) { aa = '8' }
-                else { if( i == 9 ) { aa = '9' }
-                else { if( i == 10) { aa = 'a' }
-                else { if( i == 11) { aa = 'b' }
-                else { if( i == 12) { aa = 'c' }
-                else { if( i == 13) { aa = 'd' }
-                else { if( i == 14) { aa = 'e' }
-                else { if( i == 15) { aa = 'f' }
-                }}}}}}}}}}}}}}}
-                return aa;
-            }
-
-            function ConvShowcolor(color) {
+        $box .= qq~
+$fntopts
+            </select>
+            </div>
+            <script type="text/javascript" src="$yyhtml_root/postbox.js"></script>
+            <script type="text/javascript">
+                var thistask = 'post';
+                function ConvShowcolor(color) {
                 if ( c=color.match(/rgb\\((\\d+?)\\, (\\d+?)\\, (\\d+?)\\)/i) ) {
                     var rhex = tohex(c[1]);
                     var ghex = tohex(c[2]);
@@ -191,9 +131,8 @@ sub postbox {
                 if(thistask == "post") showcolor(newcolor);
                 if(thistask == "templ") previewColor(newcolor);
             }
-
             </script>
-            <div class="palbox_left">
+            <div style="float:left; height:22px; width:$fntcolor_w">
                 <div class="palettebox">
                     <span class="deftpal" style="background-color: #000000;" onclick="ConvShowcolor('#000000')">&nbsp;</span>
                     <span class="deftpal" style="background-color: #333333;" onclick="ConvShowcolor('#333333')">&nbsp;</span>
@@ -208,21 +147,14 @@ sub postbox {
                     <span id="defaultpal5" class="deftpal" style="background-color: $pallist[4];" onclick="ConvShowcolor(this.style.backgroundColor)">&nbsp;</span>
                     <span id="defaultpal6" class="deftpal" style="background-color: $pallist[5];" onclick="ConvShowcolor(this.style.backgroundColor)">&nbsp;</span>
                  </div>
-                 <div class="palbox_right">
+                 <div style="float:right; height:22px; padding-left: 1px; width: 23px;">
                      <img src="$imagesdir/palette1.gif" class="cursor" onclick="window.open('$scripturl?action=palette;task=post', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
                   </div>
             </div>
-            <script type="text/javascript">
-
-            HAND = 'class="vtop cursor"';
-            HAND += " onmouseover='contextTip(event, this.alt)' onmouseout='contextTip(event, this.alt)' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'";
-            document.write('<div class="txtalgn">');
-            document.write("<img src='$imagesdir/pre.gif' onclick='pre();' "+HAND+" width='23' height='22' alt='$post_txt{'444'}' title='$post_txt{'444'}' />");
-            document.write("<img src='$imagesdir/left.gif' onclick='left();' "+HAND+" width='23' height='22' alt='$post_txt{'445'}' title='$post_txt{'445'}' />");
-            document.write("<img src='$imagesdir/center.gif' onclick='center();' "+HAND+" width='23' height='22' alt='$post_txt{'256'}' title='$post_txt{'256'}' />");
-            document.write("<img src='$imagesdir/right.gif' onclick='right();' "+HAND+" width='23' height='22' alt='$post_txt{'446'}' title='$post_txt{'446'}' />");
-            document.write('</div>');
-            </script>
+            <div style="float:left; width:$txtalgn_w$px">
+            $txtalgn
+            </div>
+        </div>
             ~;
 
     return $box;
@@ -304,8 +236,7 @@ sub postbox2 {
     $box .= qq~                    <div class="chrsize">
                         <span class="small">$post_txt{'textsize'} <input value="$textsize" size="2" name="txtsize" id="txtsize" class="chrsize" readonly="readonly" />pt <img src="$imagesdir/smaller.gif" height="11" width="11" alt="" onclick="sizetext(-1);" /><img src="$imagesdir/larger.gif" height="11" width="11" alt="" onclick="sizetext(1);" /></span>
             </div>~;
-	if ($action ne 'imsend' ) { $box .='</div></div>';
-	}
+    if ($action ne 'imsend' ) { $box .='</div></div>'; }
     return $box;
 }
 
@@ -976,4 +907,40 @@ tick();
 ~;
     return $x;
 }
+
+sub ubbc_boxlist {
+    my %list = @_;
+    my $hand = q~class="vtop cursor" style="margin:0 -2px;" onmouseover='contextTip(event, this.alt)' onmouseout='contextTip(event, this.alt)' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'~;
+    my $boxlist = q{};
+    my $w = 0;
+    for my $i ( sort keys %list ) {
+        my ($img, $click, $alt) = split /[|]/xsm, $list{$i};
+        $boxlist .= qq~<img src='$imagesdir/$img' onclick='$click' $hand alt='$alt' title='$alt' />\n~;
+        $w++
+    }
+    $boxlist_w = $w * 23;
+    return ($boxlist, $boxlist_w);
+}
+
+sub ubbc_modlist {
+    my %list = @_;
+    my $hand = q~class="vtop cursor" style="margin:0 -2px;" onmouseover='contextTip(event, this.alt)' onmouseout='contextTip(event, this.alt)' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'~;
+    my $boxlist = q{};
+    my $w = 0;
+    for my $i ( sort keys %list ) {
+        my ($img, $click, $alt) = split /[|]/xsm, $list{$i};
+        $boxlist .= qq~<img src='$modimgurl/$img' onclick='$click' $hand alt='$alt' title='$alt' />\n~;
+        $w++
+    }
+    my $mod_w = 0;
+    if ( $w % 2 == 0 ) {
+        $mod_w = $w/2;
+    }
+    else {
+        $mod_w = 1 + int $w/2;
+    }
+    $boxlist_w = $mod_w * 23;
+    return ($boxlist, $boxlist_w);
+}
+
 1;

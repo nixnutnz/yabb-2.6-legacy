@@ -895,7 +895,6 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
                 if ($iamguest) {
                     $new  = q{};
                     $new2 = q{};
-
                 }
                 elsif ( $new_icon{$curboard} ) {
                     my ( undef, $boardperms, $boardview ) =
@@ -1168,13 +1167,48 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
                 ${ $uid . $curboard }{'messagecount'} =
                   NumberFormat( ${ $uid . $curboard }{'messagecount'} );
 
-# if it's a parent board that cant be posted in, just show sub board list when clicked vs. message index
+# if it's a parent board that cannot be posted in, just show sub board list when clicked vs. message index
                 if ( $subboard{$curboard} && !${ $uid . $curboard }{'canpost'} )
                 {
                     $templateblock =~ s/{yabb boardurl}/$scripturl\?boardselect\=$curboard/gsm;
                 }
                 else {
                     $templateblock =~ s/{yabb boardurl}/$scripturl\?board\=$curboard/gsm;
+                }
+
+                $brd_stylea = q{};
+                $brd_styleb = q{};
+                $brd_w = q{};
+                $brd_h = q{};
+                if ( $max_brd_img_width || $max_brd_img_height) {
+                    $px = 'px';
+                    $brd_stylea = q~style="~;
+                    $brd_styleb = q~"~;
+                    if ( $max_brd_img_width > 0 ) {
+                        if ( !$fix_brd_img_size ) {
+                            $brd_w  = qq~ width:100%; max-width:$max_brd_img_width$px;~;
+                        }
+                        else { $brd_w  = qq~ width:$max_brd_img_width$px;~; }
+                    }
+                    if ( $max_brd_img_height > 0 ) {
+                        if ( !$fix_brd_img_size ) {
+                            if ( $max_brd_img_width > 0 ) {
+                                $brd_h = q{};
+                            }
+                            else {
+                                $brd_h = qq~ height:100%; max-height:$max_brd_img_height$px;~;
+                            }
+                        }
+                        else { $brd_h = qq~ height:$max_brd_img_height$px;~;}
+                    }
+                }
+                if ( $bdpic =~ /\//ism ) {
+                    $bdpic =
+qq~ <img src="$bdpic" alt="$boardname" title="$boardname" $brd_stylea$brd_w$brd_h$brd_styleb /> ~;
+                }
+                elsif ($bdpic) {
+                    $bdpic =
+qq~ <img src="$imagesdir/$bdpicfld$bdpic" alt="$boardname" title="$boardname" $brd_stylea$brd_w$brd_h$brd_styleb /> ~;
                 }
 
                 # Make hidden table rows for drop down message list
@@ -1191,14 +1225,6 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
 qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$yyhtml_root','$curboard', 0)" id="dropbutton_$curboard" class="cursor" alt="" />~;
                 }
                 else { $messagedropdown = q{}; }
-                if ( $bdpic =~ /\//ism ) {
-                    $bdpic =
-qq~ <img src="$bdpic" alt="$boardname" title="$boardname" id="brd_img_resize" /> ~;
-                }
-                elsif ($bdpic) {
-                    $bdpic =
-qq~ <img src="$imagesdir/$bdpicfld$bdpic" alt="$boardname" title="$boardname" id="brd_img_resize" /> ~;
-                }
 
                 if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm ) {
                     $templateblock =~ s/{yabb expandmessages}/$expandmessages/gsm;

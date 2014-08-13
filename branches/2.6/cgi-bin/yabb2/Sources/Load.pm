@@ -38,7 +38,8 @@ sub LoadBoardControl {
             $cntmaxageperms, $cntgenderperms,  $cntcanpost,
             $cntparent,      $rules,           $rulestitle,
             $rulesdesc,      $rulescollapse,   $brdpasswr,
-            $brdpassw,       $cntbdrss
+            $brdpassw,       $cntbdrss,
+            ## Mod Hook 1 ##
         ) = split /\|/xsm, $boardline;
         ## create a global boards array
         push @allboards, $cntboard;
@@ -77,6 +78,7 @@ sub LoadBoardControl {
             'brdpasswr'     => $brdpasswr,
             'brdpassw'      => $brdpassw,
             'brdrss'        => $cntbdrss,
+             ## Mod Hook 2 ##
         );
         if ( $cntann == 1 )  { $annboard = $cntboard; }
         if ( $cntrbin == 1 ) { $binboard = $cntboard; }
@@ -369,38 +371,23 @@ sub is_moderator_b {
 
 sub KillModerator {
     my ($killmod) = @_;
-    my (
-        $cntcat,       $cntboard,     $cntpic,        $cntdescription,
-        $cntmods,      $cntmodgroups, $cnttopicperms, $cntreplyperms,
-        $cntpollperms, $cntzero,      undef,          undef,
-        undef,         $cnttotals,    @boardcontrol
-    );
+    my ( @boardcontrol, @newmods, @boardline );
     fopen( FORUMCONTROL, "<$boardsdir/forum.control" )
       || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     @oldcontrols = <FORUMCONTROL>;
     fclose(FORUMCONTROL);
 
-    my @newmods;
     foreach my $boardline (@oldcontrols) {
         chomp $boardline;
         if ( $boardline ne q{} ) {
             @newmods = ();
-            (
-                $cntcat,         $cntboard,       $cntpic,
-                $cntdescription, $cntmods,        $cntmodgroups,
-                $cnttopicperms,  $cntreplyperms,  $cntpollperms,
-                $cntzero,        $cntpassword,    $cnttotals,
-                $cntattperms,    $spare,          $cntminageperms,
-                $cntmaxageperms, $cntgenderperms, $rules,
-                $rulestitle,     $rulesdesc,      $rulescollapse,
-                $brdpasswr,      $brdpassw,       $cntbrdrss
-            ) = split /\|/xsm, $boardline;
-            foreach ( split /, /sm, $cntmods ) {
+            @boardline = split /\|/xsm, $boardline;
+            foreach ( split /, /sm, $boardline[4] ) {
                 if ( $killmod ne $_ ) { push @newmods, $_; }
             }
-            $cntmods = join q{, }, @newmods;
-            push @boardcontrol,
-"$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$cntmodgroups|$cnttopicperms|$cntreplyperms|$cntpollperms|$cntzero|$cntpassword|$cnttotals|$cntattperms|$spare|$cntminageperms|$cntmaxageperms|$cntgenderperms|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$cntbrdrss\n";
+            $boardline[4] = join q{, }, @newmods;
+            $newboardline = join q{|}, @boardline;
+            push @boardcontrol, $newboardline . "\n";
         }
     }
     @boardcontrol = undupe(@boardcontrol);
@@ -413,38 +400,23 @@ sub KillModerator {
 
 sub KillModeratorGroup {
     my ($killmod) = @_;
-    my (
-        $cntcat,       $cntboard,     $cntpic,        $cntdescription,
-        $cntmods,      $cntmodgroups, $cnttopicperms, $cntreplyperms,
-        $cntpollperms, $cntzero,      undef,          undef,
-        undef,         $cnttotals,    @boardcontrol
-    );
+    my ( @boardcontrol, @newmods, @boardline );
     fopen( FORUMCONTROL, "<$boardsdir/forum.control" )
       || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     @oldcontrols = <FORUMCONTROL>;
     fclose(FORUMCONTROL);
 
-    my @newmods;
     foreach my $boardline (@oldcontrols) {
         chomp $boardline;
         if ( $boardline ne q{} ) {
             @newmods = ();
-            (
-                $cntcat,         $cntboard,       $cntpic,
-                $cntdescription, $cntmods,        $cntmodgroups,
-                $cnttopicperms,  $cntreplyperms,  $cntpollperms,
-                $cntzero,        $cntpassword,    $cnttotals,
-                $cntattperms,    $spare,          $cntminageperms,
-                $cntmaxageperms, $cntgenderperms, $rules,
-                $rulestitle,     $rulesdesc,      $rulescollapse,
-                $brdpasswr,      $brdpassw,       $cntbrdrss
-            ) = split /\|/xsm, $boardline;
-            foreach ( split /, /sm, $cntmodgroups ) {
+            @boardline = split /\|/xsm, $boardline;
+            foreach ( split /, /sm, $boardline[5] ) {
                 if ( $killmod ne $_ ) { push @newmods, $_; }
             }
-            $cntmodgroups = join q{, }, @newmods;
-            push @boardcontrol,
-"$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$cntmodgroups|$cnttopicperms|$cntreplyperms|$cntpollperms|$cntzero|$cntpassword|$cnttotals|$cntattperms|$spare|$cntminageperms|$cntmaxageperms|$cntgenderperms|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$cntbrdrss\n";
+            $boardline[5] = join q{, }, @newmods;
+            $newboardline = join q{|}, @boardline;
+            push @boardcontrol, $newboardline . "\n";
         }
     }
     @boardcontrol = undupe(@boardcontrol);
