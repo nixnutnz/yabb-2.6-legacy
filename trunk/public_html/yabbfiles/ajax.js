@@ -7,7 +7,7 @@
 //# Packaged:       June 27, 2014                                              #
 //# Distributed by: http://www.yabbforum.com                                   #
 //# ===========================================================================#
-//# Copyright (c) 2000-2012 YaBB (www.yabbforum.com) - All Rights Reserved.    #
+//# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.    #
 //# Software by:  The YaBB Development Team                                    #
 //#               with assistance from the YaBB community.                     #
 //##############################################################################

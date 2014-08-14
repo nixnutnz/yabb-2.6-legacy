@@ -30,6 +30,15 @@ sub BoardIndex {
         $users,   $lspostid,   $lspostbd,   $lssub,      $lsposter,
         $lsreply, $lsdatetime, @goodboards, @loadboards, $guestlist
     );
+	get_forum_master;
+	my @brd_img_id = sort ( keys %board);
+	my %brd_img_id = ();
+	my $brdimgcnt = 0;
+	for ( @brd_img_id ) {
+		$brd_img_id{$_} = $brdimgcnt;
+		$brdimgcnt++;
+	}
+
     my ( $memcount, $latestmember ) = MembershipGet();
     chomp $latestmember;
     $totalm       = 0;
@@ -1176,41 +1185,6 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
                     $templateblock =~ s/{yabb boardurl}/$scripturl\?board\=$curboard/gsm;
                 }
 
-                $brd_stylea = q{};
-                $brd_styleb = q{};
-                $brd_w = q{};
-                $brd_h = q{};
-                if ( $max_brd_img_width || $max_brd_img_height) {
-                    $px = 'px';
-                    $brd_stylea = q~style="~;
-                    $brd_styleb = q~"~;
-                    if ( $max_brd_img_width > 0 ) {
-                        if ( !$fix_brd_img_size ) {
-                            $brd_w  = qq~ width:100%; max-width:$max_brd_img_width$px;~;
-                        }
-                        else { $brd_w  = qq~ width:$max_brd_img_width$px;~; }
-                    }
-                    if ( $max_brd_img_height > 0 ) {
-                        if ( !$fix_brd_img_size ) {
-                            if ( $max_brd_img_width > 0 ) {
-                                $brd_h = q{};
-                            }
-                            else {
-                                $brd_h = qq~ height:100%; max-height:$max_brd_img_height$px;~;
-                            }
-                        }
-                        else { $brd_h = qq~ height:$max_brd_img_height$px;~;}
-                    }
-                }
-                if ( $bdpic =~ /\//ism ) {
-                    $bdpic =
-qq~ <img src="$bdpic" alt="$boardname" title="$boardname" $brd_stylea$brd_w$brd_h$brd_styleb /> ~;
-                }
-                elsif ($bdpic) {
-                    $bdpic =
-qq~ <img src="$imagesdir/$bdpicfld$bdpic" alt="$boardname" title="$boardname" $brd_stylea$brd_w$brd_h$brd_styleb /> ~;
-                }
-
                 # Make hidden table rows for drop down message list
                 $expandmessages = $brd_expandmessages;
                 $expandmessages =~ s/{yabb curboard}/$curboard/gsm;
@@ -1225,6 +1199,16 @@ qq~ <img src="$imagesdir/$bdpicfld$bdpic" alt="$boardname" title="$boardname" $b
 qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$yyhtml_root','$curboard', 0)" id="dropbutton_$curboard" class="cursor" alt="" />~;
                 }
                 else { $messagedropdown = q{}; }
+
+				$imgid = $brd_img_id{$curboard};
+                if ( $bdpic =~ /\//ism ) {
+                    $bdpic =
+qq~ <img src="$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onload="resize_brd_images(brd_id_$imgid)" $brd_stylea$brd_w$brd_h$brd_styleb /> ~;
+                }
+                elsif ($bdpic) {
+                    $bdpic =
+qq~ <img src="$imagesdir/$bdpicfld$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onload="resize_brd_images(brd_id_$imgid)" /> ~;
+                }
 
                 if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm ) {
                     $templateblock =~ s/{yabb expandmessages}/$expandmessages/gsm;
@@ -1388,6 +1372,8 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
     $boardindex_template =~ s/{yabb catsblock}/$tmptemplateblock/gsm;
 
 # no matter if this is ajax subboards, subboards at top of messageindex, or regular boardindex we need these vars now
+    $brd_img_idw       = defined $max_brd_img_width ? $max_brd_img_width : 50;
+    $brd_img_idh       = defined $max_brd_img_height ? $max_brd_img_height : 50;
     $yymain .= qq~
 <script type="text/javascript">
     var catNames = [$template_catnames];
@@ -1409,6 +1395,9 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
     var markallreadlang = '$boardindex_txt{'500'}';
     var markfinishedlang = '$boardindex_txt{'500a'}';
     var markthreadslang = '$boardindex_txt{'500b'}';
+	var brd_img_idw = $brd_img_idw;
+	var brd_img_idh = $brd_img_idh;
+	var fix_brd_size = $fix_brd_img_size;
 </script>~;
 
     # don't show info center, login, etc. if we're calling from sub boards

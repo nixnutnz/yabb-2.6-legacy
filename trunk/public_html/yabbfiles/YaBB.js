@@ -436,6 +436,46 @@ function resize_images() {
     }
 }
 
+function resize_brd_images(img) {
+        var maxwidth  = brd_img_idw;
+        var maxheight = brd_img_idh;
+        if ( fix_brd_size ) {
+            if (maxwidth)  img.width  = maxwidth;
+            if (maxheight) img.height = maxheight;
+            img.style.display = 'inline';
+        }
+
+        if (img.complete == false) {
+            // The following is needed since Opera does not load/show
+            // style.display='none' images if they are not already in cache.
+            if (/Opera/i.test(navigator.userAgent)) {
+                img.width  = img.width  || 0;
+                img.height = img.height || 0;
+                img.style.display = 'inline';
+            }
+        }
+
+        var tmp_image = new Image;
+        tmp_image.src = img.src;
+
+        var tmpwidth  = img.width  || tmp_image.width;
+        var tmpheight = img.height || tmp_image.height;
+
+        if (maxwidth != 0 && tmpwidth > maxwidth) {
+            tmpheight = tmpheight * maxwidth / tmpwidth;
+            tmpwidth  = maxwidth;
+        }
+
+        if (maxheight != 0 && tmpheight > maxheight) {
+            tmpwidth  = tmpwidth * maxheight / tmpheight;
+            tmpheight = maxheight;
+        }
+
+        img.width  = tmpwidth;
+        img.height = tmpheight;
+        img.style.display = 'inline';
+}
+
 
 /***********************************************
 * New_News_Fader 1.0
