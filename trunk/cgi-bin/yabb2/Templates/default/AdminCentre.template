@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision: 1515 $
+# $Revision$
 
 $adminlogo    = 'adminlogo.png';
 $versionchk   = 'http://www.yabbforum.com/update/versioncheck.js';

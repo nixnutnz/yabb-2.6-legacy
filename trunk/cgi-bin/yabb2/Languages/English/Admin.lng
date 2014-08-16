@@ -1149,10 +1149,10 @@ $maintxt {'769a'} = 'Yesterday'; ## needed to show Today in registration log
 $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 
 %timetxt = (
-'1' => 'st',
-'2' => 'nd',
-'3' => 'rd',
-'4' => 'th',
+'1' => '<sup>st</sup>',
+'2' => '<sup>nd</sup>',
+'3' => '<sup>rd</sup>',
+'4' => '<sup>th</sup>',
 );
 
 %settop_txt = (
