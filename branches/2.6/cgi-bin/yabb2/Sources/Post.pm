@@ -989,7 +989,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                     else { $tmpurl = qq~$defaultimagesdir/$SmilieURL[$i]~; }
                     $smilie_url_array .= qq~"$tmpurl", ~;
                     $tmpcode = $SmilieCode[$i];
-                    $tmpcode =~ s/\&quot;/"+'"'+"/gxsm;    # "'
+                    $tmpcode =~ s/\&quot;/"+'"'+"/gxsm;
                     FromHTML($tmpcode);
                     $tmpcode =~ s/&#36;/\$/gxsm;
                     $tmpcode =~ s/&#64;/\@/gxsm;
@@ -1052,9 +1052,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
           )
         {
             $my_smilies = $mypost_smilies;
-            $my_smilies .= q~<script type="text/javascript">~;
             $my_smilies .= smilies_list();
-            $my_smilies .= q~</script>~;
         }
         else {
             $my_smilies = qq~$mypost_smilies &nbsp; ~;
