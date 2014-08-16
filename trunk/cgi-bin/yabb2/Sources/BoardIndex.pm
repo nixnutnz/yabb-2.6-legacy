@@ -1395,9 +1395,9 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
     var markallreadlang = '$boardindex_txt{'500'}';
     var markfinishedlang = '$boardindex_txt{'500a'}';
     var markthreadslang = '$boardindex_txt{'500b'}';
-	var brd_img_idw = $brd_img_idw;
-	var brd_img_idh = $brd_img_idh;
-	var fix_brd_size = $fix_brd_img_size;
+    var brd_img_idw = $brd_img_idw;
+    var brd_img_idh = $brd_img_idh;
+    var fix_brd_size = $fix_brd_img_size;
 </script>~;
 
     # don't show info center, login, etc. if we're calling from sub boards

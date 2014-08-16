@@ -344,6 +344,7 @@ sub UserAccount {
     }
     push @tags, 'topicpreview';
     push @tags, 'collapsescpoll';
+   ## Mod hook ##
 
     fopen( UPDATEUSER, ">$memberdir/$user.$userext", 1 )
       || fatal_error( 'cannot_open', "$memberdir/$user.$userext", 1 );

@@ -153,10 +153,9 @@ $boardindex_template .= qq~
 <!-- Info Center block end -->
         {yabb new_load}
         ~;
-
 }
 
-# Category header                          #
+## Category header ##
 
 $new_msg_bg = "windowbg";
 $new_msg_class = "small";
@@ -191,7 +190,7 @@ $catheader = qq~
                 <col style="width:24%" />
             </colgroup>~;
 
-# Looks of each board in category          #
+## Looks of each board in category  ##
 
 $boardblock = qq~<tr>
                 <td class="{yabb altbrdcolor} center">

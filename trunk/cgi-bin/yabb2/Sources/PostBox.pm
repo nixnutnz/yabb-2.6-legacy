@@ -428,27 +428,32 @@ sub googie {
 }
 
 sub smilies_list {
-    $smilies_list = qq~
-                HAND = 'class="bottom cursor"';
-                document.write("<img src='$imagesdir/smiley.gif' onclick='smiley();' "+HAND+" alt='$post_txt{'287'}' title='$post_txt{'287'}'> ");
-                document.write("<img src='$imagesdir/wink.gif' onclick='wink();' "+HAND+" alt='$post_txt{'292'}' title='$post_txt{'292'}'> ");
-                document.write("<img src='$imagesdir/cheesy.gif' onclick='cheesy();' "+HAND+" alt='$post_txt{'289'}' title='$post_txt{'289'}'> ");
-                document.write("<img src='$imagesdir/grin.gif' onclick='grin();' "+HAND+" alt='$post_txt{'293'}' title='$post_txt{'293'}'> ");
-                document.write("<img src='$imagesdir/angry.gif' onclick='angry();' "+HAND+" alt='$post_txt{'288'}' title='$post_txt{'288'}'> ");
-                document.write("<img src='$imagesdir/sad.gif' onclick='sad();' "+HAND+" alt='$post_txt{'291'}' title='$post_txt{'291'}'> ");
-                document.write("<img src='$imagesdir/shocked.gif' onclick='shocked();' "+HAND+" alt='$post_txt{'294'}' title='$post_txt{'294'}'> ");
-                document.write("<img src='$imagesdir/cool.gif' onclick='cool();' "+HAND+" alt='$post_txt{'295'}' title='$post_txt{'295'}'> ");
-                document.write("<img src='$imagesdir/huh.gif' onclick='huh();' "+HAND+" alt='$post_txt{'296'}' title='$post_txt{'296'}'> ");
-                document.write("<img src='$imagesdir/rolleyes.gif' onclick='rolleyes();' "+HAND+" alt='$post_txt{'450'}' title='$post_txt{'450'}'> ");
-                document.write("<img src='$imagesdir/tongue.gif' onclick='tongue();' "+HAND+" alt='$post_txt{'451'}' title='$post_txt{'451'}'> ");
-                document.write("<img src='$imagesdir/embarassed.gif' onclick='embarassed();' "+HAND+" alt='$post_txt{'526'}' title='$post_txt{'526'}'> ");
-                document.write("<img src='$imagesdir/lipsrsealed.gif' onclick='lipsrsealed();' "+HAND+" alt='$post_txt{'527'}' title='$post_txt{'527'}'> ");
-                document.write("<img src='$imagesdir/undecided.gif' onclick='undecided();' "+HAND+" alt='$post_txt{'528'}' title='$post_txt{'528'}'> ");
-                document.write("<img src='$imagesdir/kiss.gif' onclick='kiss();' "+HAND+" alt='$post_txt{'529'}' title='$post_txt{'529'}'> ");
-                document.write("<img src='$imagesdir/cry.gif' onclick='cry();' "+HAND+" alt='$post_txt{'530'}' title='$post_txt{'530'}'> ");
-                $moresmilieslist
-~;
+        %smiley_bar = (
+        'a' => "smiley.gif|smiley()|$post_txt{'287'}",
+        'b' => "wink.gif|wink()|$post_txt{'292'}",
+        'c' => "cheesy.gif|cheesy()|$post_txt{'289'}",
+        'd' => "grin.gif|grin()|$post_txt{'293'}",
+        'e' => "angry.gif|angry()|$post_txt{'288'}",
+        'f' => "sad.gif|sad()|$post_txt{'291'}",
+        'g' => "shocked.gif|shocked()|$post_txt{'294'}",
+        'h' => "cool.gif|cool()|$post_txt{'295'}",
+        'i' => "huh.gif|huh()|$post_txt{'296'}",
+        'j' => "rolleyes.gif|rolleyes()|$post_txt{'450'}",
+        'k' => "tongue.gif|tongue()|$post_txt{'451'}",
+        'l' => "embarassed.gif|embarassed()|$post_txt{'526'}",
+        'm' => "lipsrsealed.gif|lipsrsealed()|$post_txt{'527'}",
+        'n' => "undecided.gif|undecided()|$post_txt{'528'}",
+        'o' => "kiss.gif|kiss()|$post_txt{'529'}",
+        'p' => "cry.gif|cry()|$post_txt{'530'}",
+        );
 
+        my $hand = q~class="bottom cursor" style="margin:1px;"~;
+        my $smilies_list = q{};
+        for my $i ( sort keys %smiley_bar ) {
+            my ($img, $click, $alt) = split /[|]/xsm, $smiley_bar{$i};
+            $smilies_list .= qq~<img src='$imagesdir/$img' onclick='$click' $hand alt='$alt' title='$alt' />\n~;
+        }
+        $smilies_list .= $moresmilieslist;
     return $smilies_list;
 }
 
