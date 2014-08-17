@@ -1207,7 +1207,7 @@ qq~ <img src="$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onl
                 }
                 elsif ($bdpic) {
                     $bdpic =
-qq~ <img src="$imagesdir/$bdpicfld$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onload="resize_brd_images(this;)" /> ~;
+qq~ <img src="$imagesdir/$bdpicfld$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onload="resize_brd_images(this);" /> ~;
                 }
 
                 if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm ) {
