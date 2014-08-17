@@ -1203,11 +1203,11 @@ qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?boa
                 $imgid = $brd_img_id{$curboard};
                 if ( $bdpic =~ /\//ism ) {
                     $bdpic =
-qq~ <img src="$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onload="resize_brd_images(this)" /> ~;
+qq~ <img src="$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onload="resize_brd_images(this);" /> ~;
                 }
                 elsif ($bdpic) {
                     $bdpic =
-qq~ <img src="$imagesdir/$bdpicfld$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onload="resize_brd_images(this)" /> ~;
+qq~ <img src="$imagesdir/$bdpicfld$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onload="resize_brd_images(this;)" /> ~;
                 }
 
                 if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm ) {
