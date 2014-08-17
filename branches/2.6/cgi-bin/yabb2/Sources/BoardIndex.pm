@@ -30,14 +30,14 @@ sub BoardIndex {
         $users,   $lspostid,   $lspostbd,   $lssub,      $lsposter,
         $lsreply, $lsdatetime, @goodboards, @loadboards, $guestlist
     );
-	get_forum_master;
-	my @brd_img_id = sort ( keys %board);
-	my %brd_img_id = ();
-	my $brdimgcnt = 0;
-	for ( @brd_img_id ) {
-		$brd_img_id{$_} = $brdimgcnt;
-		$brdimgcnt++;
-	}
+    get_forum_master;
+    my @brd_img_id = sort ( keys %board);
+    my %brd_img_id = ();
+    my $brdimgcnt = 0;
+    for ( @brd_img_id ) {
+        $brd_img_id{$_} = $brdimgcnt;
+        $brdimgcnt++;
+    }
 
     my ( $memcount, $latestmember ) = MembershipGet();
     chomp $latestmember;
@@ -1200,14 +1200,14 @@ qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?boa
                 }
                 else { $messagedropdown = q{}; }
 
-				$imgid = $brd_img_id{$curboard};
+                $imgid = $brd_img_id{$curboard};
                 if ( $bdpic =~ /\//ism ) {
                     $bdpic =
-qq~ <img src="$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onload="resize_brd_images(brd_id_$imgid)" $brd_stylea$brd_w$brd_h$brd_styleb /> ~;
+qq~ <img src="$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onload="resize_brd_images(this)" /> ~;
                 }
                 elsif ($bdpic) {
                     $bdpic =
-qq~ <img src="$imagesdir/$bdpicfld$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onload="resize_brd_images(brd_id_$imgid)" /> ~;
+qq~ <img src="$imagesdir/$bdpicfld$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onload="resize_brd_images(this)" /> ~;
                 }
 
                 if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm ) {

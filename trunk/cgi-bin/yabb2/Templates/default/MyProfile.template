@@ -574,7 +574,8 @@ $myprofile_admin_bb = qq~</td>
     </tr><tr class="windowbg">
         <td><b>$profile_amv_txt{'11'}: </b><br /><br /></td>
         <td>{yabb userlastim}<br /><br /></td>
-    </tr>{yabb my_extprofile}
+    </tr>
+{yabb my_extprofile}
     <tr class="catbg">
         <td class="center" style="height:50px" colspan="2">
             {yabb show_confdel}

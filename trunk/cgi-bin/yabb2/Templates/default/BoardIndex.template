@@ -33,7 +33,7 @@ $extern = 'extern.png';
 $sub_extern = 'extern_sub.png';
 $tabfill = q~~;
 $topiccut = 25;
-
+$brdpicwidth = ($max_brd_img_width || 50) + 20;
 $boardindex_template = qq~<!-- Default Board Graphics courtesy of http://www.shapes4free.com/ -->
 <!-- Board Index Showcase Poll start -->
 {yabb pollshowcase}
@@ -79,8 +79,8 @@ $boardindex_template .= qq~
         </table>
         <table class="bordercolor pad_4px cs_thin">
             <colgroup>
-                <col style="width:6%" />
-                <col style="width:94%" />
+                <col style="width:${brdpicwidth}px" />
+                <col style="width:auto" />
             </colgroup>
             <tr>
                 <td class="windowbg center">
@@ -124,8 +124,8 @@ $boardindex_template .= qq~
         </table>
         <table class="bordercolor pad_4px cs_thin mar-bot">
             <colgroup>
-                <col style="width:6%" />
-                <col style="width:94%" />
+                <col style="width:${brdpicwidth}px" />
+                <col style="width:auto" />
             </colgroup>
             <tr>
                 <td class="windowbg info-center center">
@@ -183,8 +183,8 @@ $catheader = qq~
         </table>
         <table {yabb boardtable} class="bordercolor pad_4px cs_thin mar-bot;" style="table-layout:fixed">
             <colgroup>
-                <col style="width:6%" />
-                <col style="width:54%" />
+                <col style="width:${brdpicwidth}px" />
+                <col style="width:auto" />
                 <col style="width:8%" />
                 <col style="width:8%" />
                 <col style="width:24%" />
