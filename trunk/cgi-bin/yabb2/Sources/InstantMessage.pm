@@ -559,10 +559,10 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name
                     function smiliewin() {
         window.open("$smiliewinlink", 'list', 'width=$winwidth, height=$winheight, scrollbars=yes');
     }
-~;
+    </script>~;
         $im_smilies .= smilies_list();
         $im_smilies .= qq~
-            </script><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span>\n~;
+        <span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span>\n~;
 
         # SpellChecker start
         if ($enable_spell_check) {
