@@ -142,9 +142,14 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
     }
 
     $email2 = q{};
-    if ($imp_email_check) {
-        $email2 = $myregister_email2;
-        $email2 =~ s/{yabb email2}/$register_txt{'70'}/sm;
+    if ( $imp_email_check == 1 ) {
+        eval {
+            require Net::DNS;
+        };
+        if (!$EVAL_ERROR ) {
+            $email2 = $myregister_email2;
+            $email2 =~ s/{yabb email2}/$register_txt{'70'}/sm;
+        }
     }
 
     $yymain .= $myregister_avail;
@@ -159,7 +164,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
     $yymain .= $myregister_endrow;
     $yymain .= $email2;
 
-    if ($birthday_on_reg) {
+    if ($birthday_on_reg == 1 ) {
         my $editAgeTxt;
         if ( $editAgeLimit == 1 ) {
             $editAgeTxt =
@@ -186,7 +191,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
         $yymain .= $myregister_endrow;
     }
 
-    if ($gender_on_reg) {
+    if ($gender_on_reg == 1 ) {
         my $editGenderTxt;
         my $nongen_opt = q{};
         if ( $editGenderLimit == 1 ) {
@@ -519,16 +524,22 @@ sub Register2 {
     $member{'regrealname'} =~ s/\t+/\ /gsm;
 
     # If enabled check if user has a valid e-mail address (needs Net::DNS to be installed)
-    if ($imp_email_check) {
-        my $helo;
-        use Mail::CheckUser (qw(check_email last_check));
-        $Mail::CheckUser::Sender_Addr = $webmaster_email;
-        if ($boardurl =~ /http\:\/\/(.*?)\//){ $Mail::CheckUser::Helo_Domain = $1; }
-        if (check_email($member{'email'})) {
-            my $email_ok = 1;
-        } else {
-            my $failure = last_check()->{code};
-            fatal_error(q{}, "$mail_check{'address'} $member{'email'} $mail_check{'invalid'} $mail_check{'reason'} $mail_check{$failure}");
+    if ( $imp_email_check == 1 ) {
+        eval {
+            require Net::DNS;
+        };
+        if ( !$EVAL_ERROR ) {
+            my $helo;
+            Mail::CheckUser->import(qw(check_email last_check));
+            $Mail::CheckUser::Sender_Addr = $webmaster_email;
+            if ($boardurl =~ /http\:\/\/(.*?)\//){ $Mail::CheckUser::Helo_Domain = $1; }
+            if (check_email($member{'email'})) {
+                my $email_ok = 1;
+            }
+            else {
+                my $failure = last_check()->{code};
+                fatal_error(q{}, "$mail_check{'address'} $member{'email'} $mail_check{'invalid'} $mail_check{'reason'} $mail_check{$failure}");
+            }
         }
     }
 

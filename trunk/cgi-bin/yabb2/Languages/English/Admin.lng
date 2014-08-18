@@ -586,6 +586,7 @@ $abbr_lang = 'en-us';
 'maxadminlog' => q~The maximum number of entries stored in the Admin Log.~,
 'imp_email_check' => 'Enable improved e-mail checking?<br /><span class="small">Checks if the e-mail domain exists, if the user is known on the given SMTP server, if the smtp server(s) are online and valid, and if the users mailbox is full. Also adds a second e-mail field to the registration page for verification.<br />Note that this setting requires Net::DNS to be installed on your server.</span>',
 'zodiac' => 'Show Zodiac Signs in Profile displays?',
+'no_imp_email_check' => q~<br /><span class="important">Improved email check not available. Needs Net::DNS</span>~,
 );
 
 %floodtxt = (
@@ -1353,6 +1354,8 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'DateTime::TimeZone2' => q~<br /><span class="important">This Module needs to be kept current as it contains time sensitive Time Zone data. Check with your server host to make sure this Module is being kept current.</span><br /><b>Your version</b>:~,
 'URI::Escape' => q~Used by Post/Message Preview function.<br />This module is essential. Without it, the Preview function will not work.~,
 'perlver' => 'Your Perl Version',
+'Net::DNS' => 'Used by the improved e-mail checker. If this module is not installed, you cannot enable the improved e-mail checker.',
+'Mail::CheckUser' => 'Used by the improved e-mail checker. This module should have been installed with YaBB.',
 );
 
 %settings_txt = (

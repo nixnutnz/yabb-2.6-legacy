@@ -158,6 +158,17 @@ foreach my $fld (sort {lc($a) cmp lc $b} @lfilesanddirs) {
     }
 }
 
+# For improved email check
+eval {
+    require Net::DNS;
+};
+my $no_imp_email = $EVAL_ERROR;
+if( $no_imp_email ) {
+    $no_imp_email_check = qq~$admin_txt{'no_imp_email_check'}~;
+    $imp_email_check_dis = ' disabled="disabled"';
+    ${ischecked($imp_email_check)} = 0;
+}
+
 # Template selector
 foreach my $curtemplate (sort{ $templateset{$a} cmp $templateset{$b} } keys %templateset) {
     $drawndirs .= qq~<option value="$curtemplate" ${isselected($curtemplate eq $default_template)}>$curtemplate</option>\n~;
@@ -1216,8 +1227,8 @@ $qckage ||= 31;
             depends_on => ['regtype!=0'],
         },
         {
-            description => qq~<label for="imp_email_check">$admin_txt{'imp_email_check'}</label>~,
-            input_html => qq~<input type="checkbox" name="imp_email_check" id="imp_email_check" value="1"${ischecked($imp_email_check)} />~,
+            description => qq~<label for="imp_email_check">$admin_txt{'imp_email_check'}$no_imp_email_check</label>~,
+            input_html => qq~<input type="checkbox" name="imp_email_check" id="imp_email_check" value="1"${ischecked($imp_email_check)}$imp_email_check_dis />~,
             name => 'imp_email_check',
             validate => 'boolean',
         },
