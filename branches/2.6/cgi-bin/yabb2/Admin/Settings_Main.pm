@@ -166,7 +166,6 @@ my $no_imp_email = $EVAL_ERROR;
 if( $no_imp_email ) {
     $no_imp_email_check = qq~$admin_txt{'no_imp_email_check'}~;
     $imp_email_check_dis = ' disabled="disabled"';
-    ${ischecked($imp_email_check)} = 0;
 }
 
 # Template selector
