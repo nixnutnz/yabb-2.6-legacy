@@ -320,6 +320,7 @@ sub timeformatcal {
     $yy += 1900;
     $daytxt = undef;    # must be a global variable
     if ( !$dontusetoday ) {
+        $myleap = IsLeap($yy);
         if ( $yd == $newyearday && $yy == $newyear ) {
 
             # today
@@ -337,6 +338,18 @@ sub timeformatcal {
 
             # yesterday || yesterday, over a year end.
             $daytxt = qq~<b>$maintxt{'769a'}</b>~;
+        }
+        elsif (
+            ( ( $yd + 1 ) == $newyearday && $yy == $newyear )
+            || (   $yd == ( 365 + $myleap )
+                && $newday == 1
+                && $newmonth == 0
+                && ( $yy + 1 ) == $newyear )
+          )
+        {
+
+            # tomorrow || tomorrow, over a year end.
+            $daytxt = qq~<b>$maintxt{'769b'}</b>~;
         }
     }
 
@@ -578,6 +591,14 @@ sub bdayno_year {
     }
 
     return ($date_noyear);
+}
+
+sub IsLeap { 
+   my ($year ) = @_;
+   return 0 if $year % 4;
+   return 1 if $year % 100;
+   return 0 if $year % 400;
+   return 1;
 }
 
 1;

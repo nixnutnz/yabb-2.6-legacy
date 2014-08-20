@@ -216,7 +216,7 @@ LoadLanguage('Micon');
 );
 
 %newload = (
-'new_mess' => qq~<span class="NewLinks" style='background-image: url($imagesdir/new-l.png); height:11px; display: inline-block; vertical-align:middle; padding: 0 0 0 2px; background-position: left bottom;     background-repeat: no-repeat;'><span style='background-image: url($imagesdir/new-r.png); height:11px; display: inline-block; vertical-align:baseline; padding: 0 2px 0 0; background-position: right top; background-repeat: no-repeat;'><span style='background-image: url($imagesdir/new-c.png); color:#fff; font-size:8px; height:11px; display: inline-block; vertical-align:top; padding: 0 2px' title='$messageindex_txt_m{'303'}'><b><i>$messageindex_txt_m{'302'}</i></b></span></span></span>~,
+'new_mess' => qq~<span class='NewLinks' style='background-image: url($imagesdir/new-l.png); height:11px; display: inline-block; vertical-align:middle; padding: 0 0 0 2px; background-position: left bottom;     background-repeat: no-repeat;'><span style='background-image: url($imagesdir/new-r.png); height:11px; display: inline-block; vertical-align:baseline; padding: 0 2px 0 0; background-position: right top; background-repeat: no-repeat;'><span style='background-image: url($imagesdir/new-c.png); color:#fff; font-size:8px; height:11px; display: inline-block; vertical-align:top; padding: 0 2px' title='$messageindex_txt_m{'303'}'><b><i>$messageindex_txt_m{'302'}</i></b></span></span></span>~,
 'brd_new' => 'on.png',
 'brd_old' => 'off.png',
 'sub_brd_new' => 'on_sub.png',
@@ -231,6 +231,7 @@ LoadLanguage('Micon');
 
 $newload = qq~
         <script type="text/javascript">
+        var new_mess = "$newload{'new_mess'}";
         var brd_new = "$newload{'brd_new'}";
         var brd_old = "$newload{'brd_old'}";
         var sub_brd_new = "$newload{'sub_brd_new'}";
