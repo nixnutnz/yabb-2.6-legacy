@@ -229,6 +229,31 @@ LoadLanguage('Micon');
 'imclose2' => 'imclose2.gif',
 );
 
+%iconlist = (
+    'a' => "xx|$mess_icon_txt{'281'}",
+    'b' => "thumbup|$mess_icon_txt{'282'}",
+    'c' => "thumbdown|$mess_icon_txt{'283'}",
+    'd' => "exclamation|$mess_icon_txt{'284'}",
+    'e' => "question|$mess_icon_txt{'285'}",
+    'f' => "lamp|$mess_icon_txt{'286'}",
+    'g' => "smiley|$mess_icon_txt{'287'}",
+    'h' => "angry|$mess_icon_txt{'288'}",
+    'i' => "cheesy|$mess_icon_txt{'289'}",
+    'j' => "grin|$mess_icon_txt{'290'}",
+    'k' => "sad|$mess_icon_txt{'291'}",
+    'l' => "wink|$mess_icon_txt{'292'}",
+    'm' => "rate|$mess_icon_txt{'292a'}",
+    'n' => "partytime|$mess_icon_txt{'292b'}",
+    'o' => "boos|$mess_icon_txt{'292c'}",
+    'p' => "book|$mess_icon_txt{'292d'}",
+);
+
+%pmiconlist = (
+    'a' => "s|$im_message_status_m{'standard'}",
+    'b' => "c|$im_message_status_m{'confidential'}",
+    'c' => "u|$im_message_status_m{'urgent'}",
+);
+
 $newload = qq~
         <script type="text/javascript">
         var new_mess = "$newload{'new_mess'}";

@@ -63,7 +63,7 @@ sub SpamQuestions {
             chomp $question;
             ( $spam_question_id, $spam_question, $spam_answer, undef, $spam_image ) = split /\|/xsm,
               $question;
-              $spam_image = $spam_image ? qq~<a href="$yyhtml_root/Templates/Forum/default/$spam_image" target="_blank">$spam_image</a>~ : $spam_question_txt{'na'};
+              $spam_image = $spam_image ? qq~<a href="$defaultimagesdir/Spam_Img/$spam_image" target="_blank">$spam_image</a>~ : $spam_question_txt{'na'};
             $show_questions .= qq~<tr class="windowbg2">
     <td>$spam_question</td>
     <td>$spam_answer</td>
@@ -226,7 +226,7 @@ sub SpamQuestionsAdd {
         fatal_error( 'invalid_value', "$spam_question_txt{'answer'}" );
     }
 
-    $spam_image = UploadFile('spam_image', 'Templates/Forum/default', 'png jpg jpeg gif', '250', '0');
+    $spam_image = UploadFile('spam_image', 'Templates/Forum/default/Spam_Img', 'png jpg jpeg gif', '250', '0');
 
     fopen( SPAMQUESTIONS, ">>$langdir/$questions_language/spam.questions" )
       || fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
@@ -267,7 +267,7 @@ sub SpamQuestionsEdit {
     if ($spam_case)   { $chk_spam_case = q~ checked="checked"~; }
     my $spam_image_value = q{};
     if ( $spam_image ) {
-        $spam_image_value = qq~<div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Templates/Forum/default/$spam_image" target="_blank">$spam_image</a><br /><input type="checkbox" name="del_spam_image" id="del_spam_image" value="1" /> <label for="del_spam_image">$admin_txt{'remove_img'}</label></div>~;
+        $spam_image_value = qq~<div class="small bold">$admin_txt{'current_img'}: <a href="$defaultimagesdir/Spam_Img/$spam_image" target="_blank">$spam_image</a><br /><input type="checkbox" name="del_spam_image" id="del_spam_image" value="1" /> <label for="del_spam_image">$admin_txt{'remove_img'}</label></div>~;
     }
     $yymain = qq~
 <form action="$adminurl?action=spam_questions_edit2" method="post" enctype="multipart/form-data" accept-charset="$yymycharset">
@@ -334,14 +334,14 @@ sub SpamQuestionsEdit2 {
     }
 
     if ( $spam_image ne q{} ) {
-        $spam_image = UploadFile('spam_image', 'Templates/Forum/default', 'png jpg jpeg gif', '250', '0');
-        unlink "$htmldir/Templates/Forum/default/$cur_spam_image";
+        $spam_image = UploadFile('spam_image', 'Templates/Forum/default/Spam_Img', 'png jpg jpeg gif', '250', '0');
+        unlink "$htmldir/Templates/Forum/default/Spam_Img/$cur_spam_image";
     }
     else {
         $spam_image = $cur_spam_image;
     }
     if ( $del_spam_image ) {
-        unlink "$htmldir/Templates/Forum/default/$cur_spam_image";
+        unlink "$htmldir/Templates/Forum/default/Spam_Img/$cur_spam_image";
         $spam_image = q{};
     }
 
@@ -397,7 +397,7 @@ sub SpamQuestionsDelete {
       $spam_image_delete;
 
     if ( $spam_image ) {
-        unlink "$htmldir/Templates/Forum/default/$spam_image";
+        unlink "$htmldir/Templates/Forum/default/Spam_Img/$spam_image";
     }
 
     if ( $action eq 'spam_questions_delete' ) {

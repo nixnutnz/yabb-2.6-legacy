@@ -119,9 +119,14 @@ sub SetImage {
         $alt_text = $button_text;
         $alt_num  = $text_num;
     }
-    $button_imgurl = qq~$yyhtml_root/Templates/Forum/$usestyle~;
-    if ( !-e ("$htmldir/Templates/Forum/$usestyle/$img_name.$imgext") ) {
-        $button_imgurl = qq~$yyhtml_root/Templates/Forum/default~;
+    if ( $mod_or_not eq 'mod' ) {
+        $button_imgurl = qq~$modimgurl~;
+    }
+    else {
+        $button_imgurl = qq~$yyhtml_root/Templates/Forum/$usestyle~;
+        if ( !-e ("$htmldir/Templates/Forum/$usestyle/$img_name.$imgext") ) {
+            $button_imgurl = qq~$yyhtml_root/Templates/Forum/default~;
+        }
     }
     if   ( $key eq 'help' ) { $helpstyle = q~ cursor: help;~; }
     else                    { $helpstyle = q~~; }

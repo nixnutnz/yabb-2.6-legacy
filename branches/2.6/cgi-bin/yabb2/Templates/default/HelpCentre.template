@@ -19,13 +19,14 @@ $moderator_class  = 'catbg';
 $admin_class      = 'catbg';
 $global_mod_class = 'catbg';
 $UserClass        = 'catbg';
+$ubbcbak = 'ubbc2.png';
 
 ### Creates the Navigation Bar at the top ###
 $HelpNavBar = qq~
     <table class="bordercolor pad_2px cs_thin h_25px" style="margin-bottom:10px">
-		<colgroup>
+        <colgroup>
             <col span="4" style="width:25%" />
-		</colgroup>
+        </colgroup>
         <tr>
             <td class="{user class} center">{user menu}</td>
             <td class="{moderator class} center">{moderator menu}</td>

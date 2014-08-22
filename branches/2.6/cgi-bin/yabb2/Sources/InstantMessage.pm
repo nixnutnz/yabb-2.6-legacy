@@ -412,15 +412,20 @@ qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'re
             }
         </script>
         ~;
+
+    my $iconopts = q{};
+        for my $i ( sort keys %pmiconlist ) {
+            my ($img, $alt) = split /[|]/xsm, $pmiconlist{$i};
+            if ( $icon eq $img ) {$myic = ' selected="selected" '; }
+            $iconopts .= qq~                            <option value="$img"$myic>$alt</option>\n~;
+    }
         $imsend_send = $my_imsend_IM;
         $imsend_send =~ s/{yabb my_send}/$my_send/sm;
         $imsend_send =~ s/{yabb my_gimsend}/$my_gimsend/sm;
         $imsend_send =~ s/{yabb imWinop}/$imWinop/sm;
         $imsend_send =~ s/{yabb imsend_cc}/$imsend_cc/sm;
         $imsend_send =~ s/{yabb onchange_text2}/$onchange_text2/sm;
-        $imsend_send =~ s/{yabb s_select0}/$s_select[0]/sm;
-        $imsend_send =~ s/{yabb s_select1}/$s_select[1]/sm;
-        $imsend_send =~ s/{yabb s_select2}/$s_select[2]/sm;
+        $imsend_send =~ s/{yabb iconopts}/$iconopts/sm;
         $imsend_send =~ s/{yabb pmicon}/$pmicon/gsm;
         $imsend_send =~ s/{yabb pmicon_img}/$micon_bg{$pmicon}/gsm;
     }
@@ -865,7 +870,6 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
     $imsend =~ s/{yabb my_browser}/$my_browser/sm;
     $imsend =~ s/{yabb my_savetable}/$my_savetable/sm;
     $imsend =~ s/{yabb my_chars}/$my_chars/sm;
-    $imsend =~ s/{yabb my_visicon}/$my_visicon/sm;
     ##########  end post code
     return $imsend;
 }

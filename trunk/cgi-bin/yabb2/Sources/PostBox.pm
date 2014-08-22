@@ -24,39 +24,39 @@ get_micon();
 
 sub postbox {
     my %boxlist1 = (
-        'a' => "url.gif|hyperlink()|$post_txt{'257'}",
-        'b' => "ftp.gif|ftp()|$post_txt{'434'}",
-        'c' => "img.gif|image()|$post_txt{'435'}",
-        'd' => "email2.gif|emai1()|$post_txt{'258'}",
-        'e' => "media.gif|flash()|$post_txt{'433'}",
-        'f' => "table.gif|table()|$post_txt{'436'}",
-        'g' => "tr.gif|trow()|$post_txt{'449'}",
-        'h' => "td.gif|tcol()|$post_txt{'437'}",
-        'i' => "hr.gif|hr()|$post_txt{'531'}",
-        'j' => "tele.gif|teletype()|$post_txt{'440'}",
-        'k' => "code.gif|selcodelang()|$post_txt{'259'}",
-        'l' => "quote2.gif|quote()|$post_txt{'260'}",
-        'm' => "edit.gif|edit()|$post_txt{'603'}",
-        'n' => "sup.gif|superscript()|$post_txt{'447'}",
-        'o' => "sub.gif|subscript()|$post_txt{'448'}",
-        'p' => "list.gif|bulletset()|$post_txt{'261'}",
-        'q' => "me.gif|me()|$post_txt{'604'}",
-        'r' => "move.gif|move()|$post_txt{'439'}",
-        's' => "timestamp.gif|timestamp($date)|$post_txt{'245'}",
-        't' => "noparse.gif|noparse()|$post_txt{'noparse'}",
+        'a' => "url.png|hyperlink()|$post_txt{'257'}",
+        'b' => "ftp.png|ftp()|$post_txt{'434'}",
+        'c' => "img.png|image()|$post_txt{'435'}",
+        'd' => "email2.png|emai1()|$post_txt{'258'}",
+        'e' => "media.png|flash()|$post_txt{'433'}",
+        'f' => "table.png|table()|$post_txt{'436'}",
+        'g' => "tr.png|trow()|$post_txt{'449'}",
+        'h' => "td.png|tcol()|$post_txt{'437'}",
+        'i' => "hr.png|hr()|$post_txt{'531'}",
+        'j' => "tele.png|teletype()|$post_txt{'440'}",
+        'k' => "code.png|selcodelang()|$post_txt{'259'}",
+        'l' => "quote2.png|quote()|$post_txt{'260'}",
+        'm' => "edit.png|edit()|$post_txt{'603'}",
+        'n' => "sup.png|superscript()|$post_txt{'447'}",
+        'o' => "sub.png|subscript()|$post_txt{'448'}",
+        'p' => "list.png|bulletset()|$post_txt{'261'}",
+        'q' => "me.png|me()|$post_txt{'604'}",
+        'r' => "move.png|move()|$post_txt{'439'}",
+        's' => "timestamp.png|timestamp($date)|$post_txt{'245'}",
+        't' => "noparse.png|noparse()|$post_txt{'noparse'}",
     );
     my %textdecor = (
-        'a' => "bold.gif|bold()|$post_txt{'253'}",
-        'b' => "italicize.gif|italicize()|$post_txt{'254'}",
-        'c' => "underline.gif|underline()|$post_txt{'255'}",
-        'd' => "strike.gif|strike()|$post_txt{'441'}",
-        'e' => "highlight.gif|highlight()|$post_txt{'246'}",
+        'a' => "bold.png|bold()|$post_txt{'253'}",
+        'b' => "italicize.png|italicize()|$post_txt{'254'}",
+        'c' => "underline.png|underline()|$post_txt{'255'}",
+        'd' => "strike.png|strike()|$post_txt{'441'}",
+        'e' => "highlight.png|highlight()|$post_txt{'246'}",
     );
     my %txtalgn = (
-        'a' => "pre.gif|pre()|$post_txt{'444'}",
-        'b' => "left.gif|left()|$post_txt{'445'}",
-        'c' => "center.gif|center()|$post_txt{'256'}",
-        'd' => "right.gif|right()|$post_txt{'445'}",
+        'a' => "pre.png|pre()|$post_txt{'444'}",
+        'b' => "left.png|left()|$post_txt{'445'}",
+        'c' => "center.png|center()|$post_txt{'256'}",
+        'd' => "right.png|right()|$post_txt{'446'}",
     );
 
     my %mods = (
@@ -132,7 +132,7 @@ $fntopts
                 if(thistask == "templ") previewColor(newcolor);
             }
             </script>
-            <div style="float:left; height:22px; width:$fntcolor_w">
+            <div style="float:left; height:22px; width:$fntcolor_w$px">
                 <div class="palettebox">
                     <span class="deftpal" style="background-color: #000000;" onclick="ConvShowcolor('#000000')">&nbsp;</span>
                     <span class="deftpal" style="background-color: #333333;" onclick="ConvShowcolor('#333333')">&nbsp;</span>
@@ -148,7 +148,7 @@ $fntopts
                     <span id="defaultpal6" class="deftpal" style="background-color: $pallist[5];" onclick="ConvShowcolor(this.style.backgroundColor)">&nbsp;</span>
                  </div>
                  <div style="float:right; height:22px; padding-left: 1px; width: 23px;">
-                     <img src="$imagesdir/palette1.gif" class="cursor" onclick="window.open('$scripturl?action=palette;task=post', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+                     <span class="ubbcbutton" style="background-image: url($imagesdir/UBBC/$ubbcbak);"><img src="$imagesdir/UBBC/palette1.png" class="cursor" onclick="window.open('$scripturl?action=palette;task=post', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" /></span>
                   </div>
             </div>
             <div style="float:left; width:$txtalgn_w$px">
@@ -447,7 +447,7 @@ sub smilies_list {
         'p' => "cry.gif|cry()|$post_txt{'530'}",
         );
 
-        my $hand = q~class="bottom cursor" style="margin:1px;"~;
+        my $hand = q~class='bottom cursor' style='margin:1px;'~;
         my $smilies_list = q{};
         for my $i ( sort keys %smiley_bar ) {
             my ($img, $click, $alt) = split /[|]/xsm, $smiley_bar{$i};
@@ -471,8 +471,8 @@ sub attach {
 
     if ( $allowattach > 1 ) {
         $yymain .= qq~
-            <img name="attform_add" id="attform_add" src="$defaultimagesdir/$cat_exp" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" class="cursor" onclick="enabPrev2(1);" />
-            <img name="attform_sub" id="attform_sub" src="$defaultimagesdir/$cat_col" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" class="cursor" style="visibility:hidden;" onclick="enabPrev2(-1);" />~;
+            <img name="attform_add" id="attform_add" src="$imagesdir/$cat_exp" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" class="cursor" onclick="enabPrev2(1);" />
+            <img name="attform_sub" id="attform_sub" src="$imagesdir/$cat_col" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" class="cursor" style="visibility:hidden;" onclick="enabPrev2(-1);" />~;
     }
 
     $yymain .= qq~
@@ -512,10 +512,6 @@ sub attach {
             <div id="attform_b_$y" class="att_rgt"~
               . ( $y > 1 ? q~ style="visibility:hidden; height:0px"~ : q{} )
               . qq~>\n             <input type="file" name="file$y" id="file$y" size="50" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span></div>~;
-        }
-
-        if ( $is_preview == 1 && $CGI_query->upload("file$y") ) {
-            $is_preview = 2;
         }
     }
     if ( !$startcount ) { $startcount = 1; }
@@ -565,13 +561,6 @@ sub attach {
     $yymain .= q~
         </td>
     </tr>~;
-
-    if ( $is_preview == 2 ) {
-        $is_preview = 1;
-        $yymain .= qq~<tr>
-        <td colspan="2" style="color:red;"><br /><b>$fatxt{'7'}</b><br /><br /></td>
-    </tr>~;
-    }
 
     return;
 }
@@ -915,12 +904,12 @@ tick();
 
 sub ubbc_boxlist {
     my %list = @_;
-    my $hand = q~class="vtop cursor" style="margin:0 -2px;" onmouseover='contextTip(event, this.alt)' onmouseout='contextTip(event, this.alt)' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'~;
+    my $hand = q~class='vtop cursor' style='height:22px; width:23px;' onmouseover='contextTip(event, this.alt);' onmouseout='contextTip(event, this.alt);' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'~;
     my $boxlist = q{};
     my $w = 0;
     for my $i ( sort keys %list ) {
         my ($img, $click, $alt) = split /[|]/xsm, $list{$i};
-        $boxlist .= qq~<img src='$imagesdir/$img' onclick='$click' $hand alt='$alt' title='$alt' />\n~;
+        $boxlist .= qq~<span class="ubbcbutton" style="background-image: url($imagesdir/UBBC/$ubbcbak);"><img src='$imagesdir/UBBC/$img' onclick='$click;' $hand alt='$alt' title='$alt' /></span>\n~;
         $w++
     }
     $boxlist_w = $w * 23;
@@ -929,12 +918,12 @@ sub ubbc_boxlist {
 
 sub ubbc_modlist {
     my %list = @_;
-    my $hand = q~class="vtop cursor" style="margin:0 -2px;" onmouseover='contextTip(event, this.alt)' onmouseout='contextTip(event, this.alt)' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'~;
+    my $hand = q~class='vtop cursor' style='height:22px; width:23px;' onmouseover='contextTip(event, this.alt);' onmouseout='contextTip(event, this.alt);' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'~;
     my $boxlist = q{};
     my $w = 0;
     for my $i ( sort keys %list ) {
         my ($img, $click, $alt) = split /[|]/xsm, $list{$i};
-        $boxlist .= qq~<img src='$modimgurl/$img' onclick='$click' $hand alt='$alt' title='$alt' />\n~;
+        $boxlist .= qq~<span class="ubbcbutton" style="background-image: url($imagesdir/UBBC/$ubbcbak);"><img src='$modimgurl/$img' onclick='$click;' $hand alt='$alt' title='$alt' /></span>\n~;
         $w++
     }
     my $mod_w = 0;

@@ -116,18 +116,8 @@ eval {
     require DateTime;
     require DateTime::TimeZone;
 };
-if( !$EVAL_ERROR ) {
-    DateTime->import();
-    DateTime::TimeZone->import();
-    LoadLanguage('Countries');
-    my @mycntry = sort { $countrytime_txt{$a} cmp $countrytime_txt{$b} } keys %countrytime_txt;
-
-    for my $i ( @mycntry ) {
-            $tz_select .= qq~<option value="$i" ${isselected($i eq $mytz)}>$countrytime_txt{$i}</option>~;
-    }
-}
-# backwards compatibility
-else {
+my $dt_check = $EVAL_ERROR;
+if( $dt_check ) {
     $tz_select .= qq~<option value="local" ${isselected('local' eq $mytz)}>$admin_txt{'local'}</option>~;
     my @usertimeoffset = split /\./xsm, $timeoffset;
     $timeoffsetselect = q~<select name="usertimesign" id="usertimesign"><option value="">+</option><option value="-"~ . ($usertimeoffset[0] < 0 ? ' selected="selected"' : q{}) . q~>-</option></select> <select name="usertimehour">~;
@@ -144,6 +134,16 @@ else {
     $timeoffsetselect .= q~</select>~;
     $dstoffsetlabel = qq~<label for="dstoffset">$admin_txt{'371e'}</label>~;
     $dstoffsetinput = qq~<input type="checkbox" name="dstoffset" id="dstoffset" value="1"${ischecked($dstoffset)}/>~,
+}
+else {
+    DateTime->import();
+    DateTime::TimeZone->import();
+    LoadLanguage('Countries');
+    my @mycntry = sort { $countrytime_txt{$a} cmp $countrytime_txt{$b} } keys %countrytime_txt;
+
+    for my $i ( @mycntry ) {
+            $tz_select .= qq~<option value="$i" ${isselected($i eq $mytz)}>$countrytime_txt{$i}</option>~;
+    }
 }
 $tz_select .= '</select>';
 # Language selector

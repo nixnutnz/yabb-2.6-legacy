@@ -13,8 +13,9 @@
 ###############################################################################
 # $Revision: 1503 $
 
-$poll_bar = 'bars.gif';
-$poll_pie = 'pie.gif';
+$ubbcbak = 'ubbc2.png';
+$poll_bar = qq~<span class="ubbcbutton" style="background-image: url($imagesdir/UBBC/$ubbcbak);"><img src="$imagesdir/bars.png" alt="" /></span>~;
+$poll_pie = qq~<span class="ubbcbutton" style="background-image: url($imagesdir/UBBC/$ubbcbak);"><img src="$imagesdir/pie.png" alt="" /></span>~;
 $cat_col = $newload{'brd_col'};
 $cat_exp = $newload{'brd_exp'};
 

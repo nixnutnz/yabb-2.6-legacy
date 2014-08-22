@@ -229,6 +229,7 @@ s/\[yabbc\](.*?)\[\/yabbc\]/my($text) = $1; ToHTML($text); DoUBBCTo($text);/sgem
 .yabbc td:first-child {width: 25%; vertical-align: top;}
 .yabbc th {width: 100%;}
 .yabbc th img {float: left;}
+.ubbcbutton {float: left;}
 .yabbc table {width: 75%;}
 </style>\n~;
         }

@@ -233,10 +233,8 @@ qq~[quote author=$hidename link=$threadid/$quotemsg#$quotemsg date=$mdate\]$mess
     $submittxt   = "$post_txt{'105'}";
     $destination = 'post2';
     $icon        = 'xx';
-    $is_preview  = 0;
     $post        = 'post';
     $prevmain    = q{};
-    $preview     = 'preview';
     if ( !$Quick_Post ) { $yytitle = "$t_title"; }
     Postpage();
     if ( !$Quick_Post ) { doshowthread(); }
@@ -297,21 +295,22 @@ sub Postpage {
     require Sources::ContextHelp;
     ContextScript('post');
 
-# this defines what the top area of the post box will look like: option 1 ) IM area
-# option 2) all other post areas
-#  im stuff now separate
     if (   $postid ne 'Poll'
         && $destination ne 'modalert2'
         && $destination ne 'guestpm2' )
     {
         $extra = $mypost_extra;
+        my $iconopts = q{};
 
-        foreach my $x ( 0 .. ( @iconlist - 1 ) ) {
-            $myic = qq~ic$x~;
-            if ( $icon eq $iconlist[$x] ) { $ic[$x] = ' selected="selected" '; }
-            $extra =~ s/{yabb $myic}/$ic[$x]/sm;
+        @iconlist =();
+        for my $key ( sort keys %iconlist ) {
+            my ($img, $alt) = split /[|]/xsm, $iconlist{$key};
+            my $myic = q{};
+            if ( $icon eq $img ) {$myic = ' selected="selected" '; }
+            $iconopts .= qq~                <option value="$img"$myic>$alt</option>\n~;
         }
 
+        $extra =~ s/{yabb iconopts}/$iconopts/sm;
         $extra =~ s/{yabb icon}/$icon/sm;
         $extra =~ s/{yabb icon_img}/$micon_bg{$icon}/sm;
 
@@ -631,7 +630,7 @@ qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bot
     }
 
     if (   $threadid
-        && ( !$Quick_Post || $is_preview )
+        && ( !$Quick_Post )
         && $postthread == 2
         && $username ne 'Guest' )
     {
@@ -880,10 +879,7 @@ s/{yabb userlink}/<span id="savename" style="font-weight: bold">$liveusernamelin
         {
             $nolinkallow = 1;
         }
-        if ($prevmain) {
-            $my_prevmain = $mypost_preview_main;
-            $my_prevmain =~ s/{yabb prevmain}/$prevmain/sm;
-        }
+
         $my_postsection_ajx = my_check_prev();
 
         $topicstatus_row = q{};
@@ -969,7 +965,8 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             function Smiliextra() {
                 AddTxt=smiliecode[document.postmodify.smiliextra_list.value];
                 AddText(AddTxt);
-            }~;
+            }
+            </script>~;
 
             $smilieslist       = q{};
             $smilie_url_array  = q{};
@@ -977,12 +974,12 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             $i                 = 0;
             if ( $showadded == 2 ) {
                 while ( $SmilieURL[$i] ) {
-                    $smilieslist .= qq~ document.write('<option value="$i"~
+                    $smilieslist .= qq~ <option value="$i"~
                       . (
                         $SmilieDescription[$i] eq $showinbox
                         ? ' selected="selected"'
                         : q{}
-                      ) . qq~>$SmilieDescription[$i]</option>');\n~;
+                      ) . qq~>$SmilieDescription[$i]</option>\n~;
                     if ( $SmilieURL[$i] =~ /\//ism ) {
                         $tmpurl = $SmilieURL[$i];
                     }
@@ -1010,12 +1007,12 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                     {
                         if ( $line !~ /banner/ism ) {
                             $smilieslist .=
-                              qq~   document.write('<option value="$i"~
+                              qq~   <option value="$i"~
                               . (
                                 $name eq $showinbox
                                 ? ' selected="selected"'
                                 : q{}
-                              ) . qq~>$name</option>');\n~;
+                              ) . qq~>$name</option>\n~;
                             $smilie_url_array .=
                               qq~"$yyhtml_root/Smilies/$line", ~;
                             $smilie_code_array .= qq~" [smiley=$line]", ~;
@@ -1029,8 +1026,10 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
 
             $mypost_smilie_array = qq~
             $mypost_smilie_array_top
+            <script type="text/javascript">
             smilieurl = new Array($smilie_url_array)
             smiliecode = new Array($smilie_code_array)
+            </script>
             $mypost_smiley1
             ~;
             $mypost_smilie_array =~ s/{yabb smilieslist}/$smilieslist/sm;
@@ -1136,9 +1135,6 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                 }
                 $mypoll_att .= $my_att_a;
 
-                if ( $is_preview == 1 && $CGI_query->upload("file$y") ) {
-                    $is_preview = 2;
-                }
             }
             if ( !$startcount ) { $startcount = 1; }
 
@@ -1192,10 +1188,6 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             $my_feat5 =~ s/{yabb mypoll_att}/$mypoll_att/sm;
             $my_feat5 =~ s/{yabb my_att_b}/$my_att_b/sm;
 
-            if ( $is_preview == 2 ) {
-                $is_preview = 1;
-                $my_is_prev = $mypost_is_prev;
-            }
         }
 
         # /File Attachment's Browse Box Code
@@ -1216,14 +1208,13 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             $return_to = $mypost_return_to;
             $return_to =~ s/{yabb return_to_select}/$return_to_select/sm;
         }
-        ### Return To mod end ###
+        ### Return To modify end ###
         $guestpost_col = $my_guestpost_col;
-        if ( $is_preview || $iamguest ) { $guestpost_col = $my_guestpost_col + 2; }
+        if ( $iamguest ) { $guestpost_col = $my_guestpost_col + 2; }
         $my_postsec_b   = postbox2();
         $my_postsection = $mypost_postblock;
         $my_postsection =~ s/{yabb my_postsection_ajx}/$my_postsection_ajx/sm;
         $my_postsection =~ s/{yabb messageblock}/$messageblock/sm;
-        $my_postsection =~ s/{yabb my_prevmain}/$my_prevmain/sm;
         $my_postsection =~ s/{yabb my_t_status}/$my_t_status/sm;
         $my_postsection =~ s/{yabb extra}/$extra/sm;
         $my_postsection =~ s/{yabb name_field}/$guestpost_fields/sm;
@@ -1373,7 +1364,6 @@ if(document.getElementById('toshowbcc').length > 0) document.getElementById('tos
     $yymain .= $mypost_formend;
     $yymain .= $my_tclass;
     $yymain .= $my_postbox_3;
-    $yymain .= $my_post_visicon;
     $yymain .= $my_showCC;
     $yymain =~ s/{yabb my_topper}/$my_topper/sm;
     $yymain =~ s/{yabb icon}/$icon/sm;
@@ -1383,7 +1373,7 @@ if(document.getElementById('toshowbcc').length > 0) document.getElementById('tos
     return;
 }
 
-##  preview message
+##  show Error
 sub Preview {
     my ($error) = @_;
     ToHTML($error);
@@ -1397,225 +1387,6 @@ sub Preview {
     else {
         $tmpmusername = $username;
     }
-
-    $maxpq          ||= 60;
-    $maxpo          ||= 50;
-    $maxpc          ||= 0;
-    $numpolloptions ||= 8;
-    $vote_limit     ||= 0;
-    $pie_radius     ||= 100;
-
-    for my $i ( 1 .. $numpolloptions ) {
-        $options[$i] = $FORM{"option$i"};
-        FromChars( $options[$i] );
-        $convertstr = $options[$i];
-        $convertcut = $maxpo;
-        CountChars();
-        $options[$i] = $convertstr;
-        ToHTML( $options[$i] );
-        ToChars( $options[$i] );
-        $slicecolor[$i] = $FORM{"slicecol$i"};
-        $split[$i]      = $FORM{"split$i"};
-    }
-
-    $guest_vote    = $FORM{'guest_vote'};
-    $hide_results  = $FORM{'hide_results'};
-    $multi_choice  = $FORM{'multi_choice'};
-    $poll_comment  = $FORM{'poll_comment'};
-    $vote_limit    = $FORM{'vote_limit'};
-    $pie_legends   = $FORM{'pie_legends'};
-    $pie_radius    = $FORM{'pie_radius'};
-    $poll_end_days = $FORM{'poll_end_days'};
-    $poll_end_min  = $FORM{'poll_end_min'};
-
-    if ( !$poll_end_days || $poll_end_days =~ /\D/xsm ) {
-        $poll_end_days = q{};
-    }
-    if ( !$poll_end_min || $poll_end_min =~ /\D/xsm ) {
-        $poll_end_min = q{};
-    }
-
-    if ( $pie_radius =~ /\D/xsm ) { $pie_radius = 100; }
-    if ( $pie_radius < 100 ) { $pie_radius = 100; }
-    if ( $pie_radius > 200 ) { $pie_radius = 200; }
-
-    $pollthread = $FORM{'pollthread'} || 0;
-
-    $poll_question = $FORM{'question'};
-    FromChars($poll_question);
-    $convertstr = $poll_question;
-    $convertcut = $maxpq;
-    CountChars();
-    $poll_question = $convertstr;
-    ToHTML($poll_question);
-    ToChars($poll_question);
-
-    FromChars($poll_comment);
-    $convertstr = $poll_comment;
-    $convertcut = $maxpc;
-    CountChars();
-    $poll_comment = $convertstr;
-    ToHTML($poll_comment);
-    ToChars($poll_comment);
-
-    $name  = $FORM{'name'};
-    $email = $FORM{'email'};
-    $sub   = $FORM{'subject'};
-    $FORM{'message'} =~ s/\r//gxsm;
-    $message   = $FORM{'message'};
-    $icon      = $FORM{'icon'};
-    $ns        = $FORM{'ns'};
-    $threadid  = $FORM{'threadid'};
-    $postid    = $FORM{'postid'};
-    $thestatus = $FORM{'topicstatus'};
-    $isBMess   = $FORM{'isBMess'};
-    if ( !$iamguest ) {
-        ${ $uid . $username }{'postlayout'} =
-qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'}~;
-        UserAccount( $username, 'update' );
-    }
-    if ($threadid) { $postthread = 2; }
-
-    $sub =~ s/[\r\n]//gxsm;
-    my $testsub = $sub;
-    $testsub =~ s/ |\&nbsp;//gsm;
-    if ( $sub && !$testsub && $pollthread != 2 ) { $error = $post_txt{'77'}; }
-
-    FromChars($sub);
-    $convertstr = $sub;
-    $convertcut = $set_subjectMaxLength + ( $sub =~ /^Re: /sm ? 4 : 0 );
-    CountChars();
-    $sub = $convertstr;
-    ToHTML($sub);
-
-    $csubject = $sub;
-    ToChars($csubject);
-    $csubject = Censor($csubject);
-
-    my $testmessage = regex_1($message);
-    if ( $testmessage eq q{} && $message ne q{} && $pollthread != 2 ) {
-        fatal_error( 'useless_post', "$testmessage" );
-    }
-
-    FromChars($message);
-    ToHTML($message);
-    my $mess = $message;
-    $message = regex_2($message);
-    $message = regex_3($message);
-
-    CheckIcon();
-
-    foreach my $x ( 0 .. ( @iconlist - 1 ) ) {
-        if ( $icon eq $iconlist[$x] ) {
-            $ic[$x] = q~ selected="selected" ~;
-        }
-        else { $ic[$x] = q{}; }
-    }
-
-    if    ( $FORM{'status'} eq 'c' ) { $icon = 'confidential'; }
-    elsif ( $FORM{'status'} eq 'u' ) { $icon = 'urgent'; }
-    elsif ( $FORM{'status'} eq 's' ) { $icon = 'standard'; }
-
-    $guestpost_fields = q{};
-    if ( $iamguest ) {
-        $guestpost_fields = $mypost_guest_fields;
-        $guestpost_fields =~ s/{yabb name}/$FORM{'name'}/sm;
-        $guestpost_fields =~ s/{yabb email}/$FORM{'email'}/sm;
-    }
-
-    if ( $iamguest && $gpvalid_en ) {
-        $usename = substr $date, 1, length($date) - 4;
-        $sesname = substr $date, 0, length($date) - 4;
-        $verification = $FORM{'verification'};
-        $sessionid    = $FORM{'sessionid'};
-        $verification_field =
-            $verification ne q{}
-          ? $mypost_veri_a
-          : q{};
-        $verification_field =~ s/{yabb showcheck}/$showcheck/sm;
-        $verification_field =~ s/{yabb flood_text}/$flood_text/sm;
-        $verification_field =~ s/{yabb verification}/$verification/sm;
-        $verification_field =~ s/{yabb sessionid}/$sessionid/sm;
-    }
-    if (   $iamguest
-        && $en_spam_questions
-        && -e "$langdir/$language/spam.questions" )
-    {
-        $verification_question    = $FORM{'verification_question'};
-        $verification_question_id = $FORM{'verification_question_id'};
-        $spam_question            = $FORM{'spam_question'};
-        $verification_question_field =
-            $verification_question ne q{}
-          ? $mypost_veri_b
-          : q{};
-        $verification_question_field =~
-          s/{yabb spam_question}/$spam_question/gsm;
-        $verification_question_field =~
-          s/{yabb verification_question}/$verification_question/gsm;
-    }
-    if ( $FORM{'ns'} eq 'NS' ) { $nscheck = q~ checked="checked"~; }
-
-    if ($iamguest) {
-        $name .= "($post_txt{'772'})";
-    }
-
-    if ( $action eq 'modify2' ) {
-        $displayname = $FORM{'mename'};
-    }
-    else {
-        $displayname = ${ $uid . $username }{'realname'};
-    }
-
-    wrap();
-    ( $message, undef ) = Split_Splice_Move( $message, $threadid );
-    if ($enable_ubbc) {
-        enable_yabbc();
-        DoUBBC();
-    }
-    wrap2();
-
-    if ( $FORM{'previewmodify'} || $FORM{'postmodify'} ) {
-        $submittxt   = $post_txt{'10'};
-        $is_preview  = 1;
-        $post        = 'postmodify';
-        $preview     = 'previewmodify';
-        $destination = 'modify2';
-    }
-    elsif ( !$FORM{'previewim'}
-        && $INFO{'action'} ne 'modalert2'
-        && $INFO{'action'} ne 'guestpm2' )
-    {
-        $destination = 'post2';
-        $submittxt   = $post_txt{'105'};
-        $is_preview  = 1;
-        $post        = 'post';
-        $preview     = 'preview';
-    }
-
-    if ( $INFO{'action'} eq 'imgroups' ) { $destination = 'imgroups'; }
-
-    if ( $INFO{'action'} eq 'modalert2' ) {
-        $t_title     = $post_txt{'alertmod'};
-        $destination = 'modalert2';
-        $submittxt   = $post_txt{'148'};
-        $is_preview  = 1;
-        $post        = 'modalert';
-        $preview     = 'preview';
-        $yytitle     = $post_txt{'alertmod'};
-    }
-
-    if ( $INFO{'action'} eq 'guestpm2' ) {
-        $t_title     = $post_txt{'sendmessguest'};
-        $destination = 'guestpm2';
-        $submittxt   = $post_txt{'148'};
-        $is_preview  = 1;
-        $post        = 'guestpm';
-        $preview     = 'preview';
-        $yytitle     = $post_txt{'sendmessguest'};
-    }
-
-    ToChars($message);
-    $message = Censor($message);
 
     if ($error) {
         LoadLanguage('Error');
@@ -1681,33 +1452,6 @@ sub Post2 {
     );
 
     BoardTotals( 'load', $currentboard );
-
-    # If poster is a Guest then evaluate the legality of name and email
-    if ( !${ $uid . $username }{'email'} ) {
-        $FORM{'name'} =~ s/\A\s+//xsm;
-        $FORM{'name'} =~ s/\s+\Z//xsm;
-        if (   $FORM{'name'} eq q{}
-            || $FORM{'name'} eq q{_}
-            || $FORM{'name'} eq q{ } )
-        {
-            Preview( $post_txt{'75'} );
-        }
-        if ( length( $FORM{'name'} ) > 25 ) {
-            Preview( $post_txt{'568'} );
-        }
-        if ( $FORM{'email'} eq {} ) { Preview("$post_txt{'76'}"); }
-        if ( $FORM{'email'} !~ /[\w\-\.\+]+\@[\w\-\.\+]+\.(\w{2,4}$)/xsm ) {
-            Preview("$post_txt{'240'} $post_txt{'69'} $post_txt{'241'}");
-        }
-        if (
-            ( $FORM{'email'} =~ /(@.*@)|(\.\.)|(@\.)|(\.@)|(^\.)|(\.$)/xsm )
-            || ( $FORM{'email'} !~
-                /^.+@\[?(\w|[-.])+\.([a-zA-Z]{2,4}|[0-9]{1,4})\]?$/xsm )
-          )
-        {
-            Preview("$post_txt{'500'}");
-        }
-    }
 
     # Get the form values
     $name     = $FORM{'name'};
@@ -1797,27 +1541,6 @@ sub Post2 {
     # Fixes a bug with posting hexed characters.
     $name =~ s/amp;//gxsm;
 
-    if ( !$username && !$name ) { Preview( $post_txt{'75'} ); }
-    if ( !${ $uid . $username }{'email'} && !$email ) {
-        Preview( $post_txt{'76'} );
-    }
-    if ( !$subject || $subject =~ m{\A[\s_.,]+\Z}xsm ) {
-        Preview( $post_txt{'77'} );
-    }
-    if ( !$message ) { Preview( $post_txt{'78'} ); }
-
-    # Check Message Length Precisely
-    my $mess_len = $message;
-    $mess_len =~ s/[\r\n ]//igsm;
-    $mess_len =~ s/&#\d{3,}?\;/X/igxsm;
-    if ( length($mess_len) > $MaxMessLen ) {
-        Preview($post_txt{'536'} . q{ }
-              . ( length($mess_len) - $MaxMessLen ) . q{ }
-              . $post_txt{'537'} );
-    }
-    undef $mess_len;
-
-    if ( $FORM{'preview'} ) { Preview(); }
     spam_protection();
 
     $subject =~ s/[\r\n]//gxsm;
@@ -1903,12 +1626,7 @@ sub Post2 {
         $convertcut = $maxpq;
         CountChars();
         $FORM{'question'} = $convertstr;
-        if ($cliped) {
-            Preview(
-"$post_polltxt{'40'} $post_polltxt{'34a'} $maxpq $post_polltxt{'34b'} $post_polltxt{'36'}"
-            );
-        }
-        if ( !$FORM{'question'} ) { Preview("$post_polltxt{'37'}"); }
+
         ToHTML( $FORM{'question'} );
 
         $guest_vote   = $FORM{'guest_vote'}   || 0;
@@ -1925,21 +1643,12 @@ sub Post2 {
         if ( $pie_radius < 100 ) { $pie_radius = 100; }
         if ( $pie_radius > 200 ) { $pie_radius = 200; }
 
-        if ( $vote_limit =~ /\D/xsm ) {
-            $vote_limit = 0;
-            Preview("$post_polltxt{'62'}");
-        }
-
         FromChars($poll_comment);
         $convertstr = $poll_comment;
         $convertcut = $maxpc;
         CountChars();
         $poll_comment = $convertstr;
-        if ($cliped) {
-            Preview(
-"$post_polltxt{'57'} $post_polltxt{'34a'} $maxpc $post_polltxt{'34b'} $post_polltxt{'36'}"
-            );
-        }
+
         ToHTML($poll_comment);
         $poll_comment =~ s/\n/<br \/>/gsm;
         $poll_comment =~ s/\r//gxsm;
@@ -1971,11 +1680,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
                 $convertcut = $maxpo;
                 CountChars();
                 $FORM{"option$i"} = $convertstr;
-                if ($cliped) {
-                    Preview(
-"$post_polltxt{'7'} $i  $post_polltxt{'34a'} $maxpo $post_polltxt{'34b'} $post_polltxt{'36'}"
-                    );
-                }
+
                 ToHTML( $FORM{"option$i"} );
 
                 $numcount++;
@@ -1984,7 +1689,6 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
                   qq~0|$FORM{"option$i"}|$FORM{"slicecol$i"}|$split[$i]\n~;
             }
         }
-        if ( $numcount < 2 ) { Preview("$post_polltxt{'38'}"); }
     }
 
     my ( $file, $fixfile, @filelist, %filesizekb );
@@ -2072,7 +1776,6 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
             }
             else {
                 foreach (@filelist) { unlink "$uploaddir/$_"; }
-                Preview("$fixfile $fatxt{'20'} @ext");
             }
 
             my ( $size, $buffer, $filesize, $file_buffer );
@@ -2082,25 +1785,12 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
             }
             if ( $limit && $filesize > ( 1024 * $limit ) ) {
                 foreach (@filelist) { unlink "$uploaddir/$_"; }
-                Preview("$fatxt{'21'} $fixfile ("
-                      . int( $filesize / 1024 )
-                      . " KB) $fatxt{'21b'} "
-                      . $limit );
             }
             if ($dirlimit) {
                 my $dirsize = dirsize($uploaddir);
                 if ( $filesize > ( ( 1024 * $dirlimit ) - $dirsize ) ) {
                     foreach (@filelist) { unlink "$uploaddir/$_"; }
-                    Preview(
-                        "$fatxt{'22'} $fixfile ("
-                          . (
-                            int( $filesize / 1024 ) -
-                              $dirlimit +
-                              int( $dirsize / 1024 )
-                          )
-                          . " KB) $fatxt{'22b'}"
-                    );
-                }
+                 }
             }
 
  # create a new file on the server using the formatted ( new instance ) filename
@@ -2858,10 +2548,8 @@ sub sendGuestPM {
     $submittxt   = $post_txt{'148'};
     $destination = 'guestpm2';
     $icon        = 'alert';
-    $is_preview  = 0;
     $post        = 'guestpm';
     $prevmain    = q{};
-    $preview     = 'preview';
     $yytitle     = $post_txt{'sendmessguest'};
     Postpage();
     template();
@@ -2886,25 +2574,6 @@ sub sendGuestPM2 {
     # Poster is a Guest then evaluate the legality of name and email
     $FORM{'name'} =~ s/\A\s+//xsm;
     $FORM{'name'} =~ s/\s+\Z//xsm;
-    if (   $FORM{'name'} eq q{}
-        || $FORM{'name'} eq q{_}
-        || $FORM{'name'} eq q{ } )
-    {
-        Preview( $post_txt{'75'} );
-    }
-    if ( length( $FORM{'name'} ) > 25 ) { Preview( $post_txt{'568'} ); }
-    if ( $FORM{'email'} eq q{} ) { Preview( $post_txt{'76'} ); }
-    if ( $FORM{'email'} !~ /^[\w\-\.\+]+\@[\w\-\.\+]+\.\w{2,4}$/xsm ) {
-        Preview("$post_txt{'240'} $post_txt{'69'} $post_txt{'241'}");
-    }
-    if (
-        $FORM{'email'} =~ /(@.*@)|(\.\.)|(@\.)|(\.@)|(^\.)|(\.$)/xsm
-        || $FORM{'email'} !~
-            /^.+@\[?(\w|[-.])+\.[a-zA-Z]{2,4}|[0-9]{1,4}\]?$/xsm
-      )
-    {
-        Preview( $post_txt{'500'} );
-    }
 
     # Get the form values
     $name     = $FORM{'name'};
@@ -2943,27 +2612,13 @@ sub sendGuestPM2 {
     # Fixes a bug with posting hexed characters.
     $name =~ s/amp;//gxsm;
 
-    if ( !$username && !$name ) { Preview( $post_txt{'75'} ); }
-    if ( !${ $uid . $username }{'email'} && !$email ) {
-        Preview( $post_txt{'76'} );
-    }
-    if ( !$subject || $subject =~ m{\A[\s_.,]+\Z}xsm ) {
-        Preview( $post_txt{'77'} );
-    }
-    if ( !$message ) { Preview( $post_txt{'78'} ); }
-
     # Check Message Length Precisely
     my $mess_len = $message;
     $mess_len =~ s/[\r\n ]//igsm;
     $mess_len =~ s/&#\d{3,}?\;/X/igxsm;
-    if ( length($mess_len) > $MaxMessLen ) {
-        Preview($post_txt{'536'} . q{ }
-              . ( length($mess_len) - $MaxMessLen ) . q{ }
-              . $post_txt{'537'} );
-    }
+
     undef $mess_len;
 
-    if ( $FORM{'preview'} ) { Preview(); }
     spam_protection();
 
     my $testsub = $subject;
@@ -3159,10 +2814,8 @@ qq~[quote author=$hidename link=$threadid/$quotemsg#$quotemsg date=$mdate\]$mess
     $submittxt   = $post_txt{'148'};
     $destination = 'modalert2';
     $icon        = 'alert';
-    $is_preview  = 0;
     $post        = 'modalert';
     $prevmain    = q{};
-    $preview     = 'preview';
     $yytitle     = $post_txt{'alertmod'};
     Postpage();
     template();
@@ -3203,22 +2856,6 @@ sub modAlert2 {
     if ($iamguest) {
         $name =~ s/\A\s+//xsm;
         $name =~ s/\s+\Z//xsm;
-        if ( $name eq q{} || $name eq q{_} || $name eq q{ } ) {
-            Preview( $post_txt{'75'} );
-        }
-        if ( length($name) > 25 ) { Preview( $post_txt{'568'} ); }
-        if ( $email eq q{} ) { Preview( $post_txt{'76'} ); }
-        if ( $email !~ /[\w\-\.\+]+\@[\w\-\.\+]+\.(\w{2,4}$)/xsm ) {
-            Preview("$post_txt{'240'} $post_txt{'69'} $post_txt{'241'}");
-        }
-        if ( ( $email =~ /(@.*@)|(\.\.)|(@\.)|(\.@)|(^\.)|(\.$)/xsm )
-            || (
-                $email !~ /^.+@\[?(\w|[-.])+\.[a-zA-Z]{2,4}|[0-9]{1,4}\]?$/xsm )
-          )
-        {
-            Preview( $post_txt{'500'} );
-        }
-
         ## clean name and email - remove | from name and turn any _ to spaces for email
         ToHTML($name);
         $tempname = $name;
@@ -3266,27 +2903,6 @@ sub modAlert2 {
         }
     }
 
-    if ( !$username && !$name ) { Preview( $post_txt{'75'} ); }
-    if ( !${ $uid . $username }{'email'} && !$email ) {
-        Preview( $post_txt{'76'} );
-    }
-    if ( !$subject || $subject =~ m{\A[\s_.,]+\Z}xsm ) {
-        Preview( $post_txt{'77'} );
-    }
-    if ( !$message ) { Preview( $post_txt{'78'} ); }
-
-    # Check Message Length Precisely
-    my $mess_len = $message;
-    $mess_len =~ s/[\r\n ]//igsm;
-    $mess_len =~ s/&#\d{3,}?\;/X/igxsm;
-    if ( length($mess_len) > $MaxMessLen ) {
-        Preview($post_txt{'536'} . q{ }
-              . ( length($mess_len) - $MaxMessLen ) . q{ }
-              . $post_txt{'537'} );
-    }
-    undef $mess_len;
-
-    if ( $FORM{'preview'} ) { Preview(); }
     spam_protection();
 
     $subject =~ s/[\r\n]//gxsm;

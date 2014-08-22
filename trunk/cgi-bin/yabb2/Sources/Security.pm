@@ -364,8 +364,7 @@ sub CheckIcon {
     $icon =~ s/[^A-Za-z]//gxsm;
     $icon =~ s/\\//gxsm;
     $icon =~ s/\///gxsm;
-    my @iconlist =
-      qw( xx thumbup thumbdown exclamation question lamp smiley angry cheesy grin sad wink standard confidential urgent alert );
+    my @iconlist = qw( xx thumbup thumbdown exclamation question lamp smiley angry cheesy grin sad wink standard confidential urgent alert );
     my $isicon = 0;
     for my $x (@iconlist) {
 

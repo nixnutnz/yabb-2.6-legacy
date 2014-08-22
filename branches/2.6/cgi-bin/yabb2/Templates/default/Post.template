@@ -16,8 +16,7 @@
 $cat_col = $newload{'brd_col'};
 $cat_exp = $newload{'brd_exp'};
 $post_error = qq~$imagesdir/exclamation.png~;
-
-@iconlist = qw( xx thumbup thumbdown exclamation question lamp smiley angry cheesy grin sad wink standard confidential urgent );
+$ubbcbak = 'ubbc2.png';
 
 if (!$enable_quickreply) {$my_spacer = '; margin-bottom:1em;';}
 $messageclass = 'message';
@@ -124,16 +123,6 @@ $mypost_reason = qq~
                   <td class="windowbg2"><input type="text" name="reason" id="reason" value="{yabb reason}" size="70" maxlength="50" tabindex="6" style="width: 460px;" /></td>
             </tr><tr>~;
 
-$mypost_preview_main = qq~
-        <colgroup>
-            <col style="width: 23%" />
-            <col style="width:auto" />
-        </colgroup>
-        <tr class="windowbg">
-                <td class="vtop"><b>$post_txt{'507'}</b></td>
-                <td colspan="3">{yabb prevmain}</td>
-        </tr>~;
-
 $mypost_topicstatus = qq~
     <tr id="feature_status_4" class="windowbg">
         <td class="vtop"><label for="topicstatus"><b>$post_txt{'34'}:</b></label></td>
@@ -152,18 +141,7 @@ $mypost_extra = qq~
         <td><label for="icon"><b>$post_txt{'71'}:</b></label></td>
         <td>
             <select name="icon" id="icon" onchange="showimage(); autoPreview();">
-            <option value="xx"{yabb ic0}>$post_txt{'281'}</option>
-            <option value="thumbup"{yabb ic1}>$post_txt{'282'}</option>
-            <option value="thumbdown"{yabb ic2}>$post_txt{'283'}</option>
-            <option value="exclamation"{yabb ic3}>$post_txt{'284'}</option>
-            <option value="question"{yabb ic4}>$post_txt{'285'}</option>
-            <option value="lamp"{yabb ic5}>$post_txt{'286'}</option>
-            <option value="smiley"{yabb ic6}>$post_txt{'287'}</option>
-            <option value="angry"{yabb ic7}>$post_txt{'288'}</option>
-            <option value="cheesy"{yabb ic8}>$post_txt{'289'}</option>
-            <option value="grin"{yabb ic9}>$post_txt{'290'}</option>
-            <option value="sad"{yabb ic10}>$post_txt{'291'}</option>
-            <option value="wink"{yabb ic11}>$post_txt{'292'}</option>
+{yabb iconopts}
             </select>
             <img src="{yabb icon_img}" id="icons" style="margin:0 15px" alt="" />
         </td>
@@ -189,17 +167,18 @@ $mypost_submit = qq~<tr>
         <td class="catbg center" colspan="2" style="padding: 8px;">~;
 
 $mypost_smiley1 = qq~
-            document.write('<table class="smiley_top" style="width:124px"><tr>');
-            document.write('<td class="center"><span class="small"><b>$post_smiltxt{'1'}</b></span></td></td></table>');
-            document.write('<table class="pad_2px cs_thin smiley_box"><tr><td class="center vtop h_20px">');
-            document.write('<select name="smiliextra_list" onchange="document.images.smiliextra_image.src= smilieurl[document.postmodify.smiliextra_list.value]" style="width:114px; font-size:7pt;">');
+        <table class="smiley_top" style="width:124px"><tr>
+            <td class="center"><span class="small"><b>$post_smiltxt{'1'}</b></span></td></td></table>
+            <table class="pad_2px cs_thin smiley_box"><tr><td class="center vtop h_20px">
+            <select name="smiliextra_list" onchange="document.images.smiliextra_image.src= smilieurl[document.postmodify.smiliextra_list.value]" style="width:114px; font-size:7pt;">
             {yabb smilieslist}
-            document.write('</select></td>');
-            document.write('</tr><tr>');
-            document.write('<td class="center h_70px"><img name="smiliextra_image" src="'+smilieurl[0]+'" alt="" onclick="javascript: Smiliextra();" class="cursor"></td>');
-            document.write('</tr><tr>');
-            document.write('<td class="center h_15px"><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span></td>');
-            document.write('</tr></table>');
+            </select></td>
+            </tr><tr>
+            <td class="center h_70px"><img name="smiliextra_image" src="'+smilieurl[0]+'" alt="" onclick="javascript: Smiliextra();" class="cursor"></td>
+            </tr><tr>
+            <td class="center h_15px"><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span></td>
+            </tr></table>
+			<script type="text/javascript">
             document.images.smiliextra_image.src = smilieurl[document.postmodify.smiliextra_list.value];
             </script>
             ~;

@@ -93,4 +93,26 @@ if (!$language){$language = $lang;}
 'eventmeeting' => 'Meeting',
 );
 
+%mess_icon_txt = (
+'281' => 'Standard',
+'282' => 'Thumbs Up',
+'283' => 'Thumbs Down',
+'284' => 'Exclamation Point',
+'285' => 'Question Mark',
+'286' => 'Lamp',
+'287' => 'Smiley',
+'288' => 'Angry',
+'289' => 'Cheesy',
+'290' => 'Laugh',
+'291' => 'Sad',
+'292' => 'Wink',
+'292a' => 'Writing',
+'292b' => 'Party Time',
+'292c' => 'Furious',
+'292d' => 'Now Reading',
+'293' => 'Grin',
+'294' => 'Shocked',
+'295' => 'Cool',
+'296' => 'Huh',
+);
 1;

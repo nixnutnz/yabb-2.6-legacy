@@ -136,9 +136,7 @@ $my_imsend_IM = qq~{yabb my_gimsend} {yabb my_send}<tr>
                         <label for="status"><b>$inmes_txt{'status'}:</b></label>
                         <br />
                         <select name="status" id="status" tabindex="2" size="3" onchange="showtpstatus();{yabb onchange_text2}">
-                            <option value="s"{yabb s_select0}>$im_message_status{'standard'}</option>
-                            <option value="c"{yabb s_select2}>$im_message_status{'confidential'}</option>
-                            <option value="u"{yabb s_select1}>$im_message_status{'urgent'}</option>
+{yabb iconopts}
                         </select>
                         <img src="{yabb pmicon_img}" name="icons" style="margin:1em 10px 0 10px; vertical-align:top" alt="$im_message_status{'{yabb pmicon}'}" title="$im_message_status{'{yabb pmicon}'}" />
                         <input type="hidden" id="iconholder" value="{yabb pmicon}" />
@@ -218,7 +216,7 @@ $my_FA_browse = qq~<tr>{yabb my_ispreview}
             {yabb hidestatus}
             {yabb sendBMessFlag}
             <input type="submit" name="{yabb post}" value="{yabb submittxt}" accesskey="s" tabindex="5" class="button" />{yabb my_spdpost}
-            {yabb my_draft} {yabb my_browser} {yabb my_savetable} {yabb my_chars} {yabb my_visicon}
+            {yabb my_draft} {yabb my_browser} {yabb my_savetable} {yabb my_chars}
             </script> 
         </td>
     </tr>\n~;

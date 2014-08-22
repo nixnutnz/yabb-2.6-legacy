@@ -131,7 +131,7 @@ sub quotemsg {
     delete $usernames_life_quote{'temp_quote_autor'};
 
     $qmessage = parseimgflash($qmessage);
-    $qdate = timeformat($qdate);    # generates also the global variable $daytxt
+    $qdate = timeformat($qdate,0,0,0,1);    # generates also the global variable $daytxt
     if ( $yymycharset ne 'UTF-8' ) {
         encode_entities($qdate, "\200-\377"); # escape high ASCII
     }

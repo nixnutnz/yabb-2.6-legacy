@@ -131,6 +131,7 @@ $abbr_lang = 'en-us';
 '758' => 'Moved',
 '769' => 'Today',
 '769a'=> 'Yesterday',
+'769al'=> 'yesterday',
 '769b'=> 'Tomorrow',
 '773' => 'Would you like to print this page now?',
 '900b' => 'Back',

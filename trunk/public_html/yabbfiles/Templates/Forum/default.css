@@ -75,7 +75,7 @@ sup {
     top: -0.4em;
 }
 
-.button, input[type="submit"], input[type="reset"], input[type="button"] { 
+.button, input[type="submit"], input[type="reset"], input[type="button"] {
     background-color: #eee;
     border: 1px solid #c6c6c6;
     color: #000;
@@ -650,7 +650,7 @@ table.tableselect {
     font-weight: 700;
 }
 
-.imgcatbg:hover { color: #bbb; } 
+.imgcatbg:hover { color: #bbb; }
 
 .imgtitlebg {
     color: #fff;
@@ -688,7 +688,7 @@ tr.search .imgcatbg, tr.search .imgwindowbg {
     font-weight: 700;
 }
 
-tr.search .imgcatbg:hover, tr.search .imgwindowbg:hover { color: #2d2d2d; } 
+tr.search .imgcatbg:hover, tr.search .imgwindowbg:hover { color: #2d2d2d; }
 
 .quote {
     background-color: #e8ebef;
@@ -883,15 +883,8 @@ img#dragImg2 {
     width: 56px;
 }
 
-div.textdecor {
-    float: left;
-    width: 115px;
-}
-
-div.fontface {
-    float: left;
-    text-align: center;
-    width: 162px;
+input[type="button"].npf_txt {
+   font-size: 9px;
 }
 
 div.palettebox {
@@ -901,19 +894,6 @@ div.palettebox {
     padding-left: 1px;
     padding-top: 1px;
     width: 66px;
-}
-
-div.palbox_left {
-    float: left;
-    height: 22px;
-    width: 91px;
-}
-
-div.palbox_right {
-    float: right;
-    height: 22px;
-    padding-left: 1px;
-    width: 23px;
 }
 
 div#bullets {
@@ -938,7 +918,7 @@ div#bullets {
 
 #fontface {
     font-size: 9px;
-    margin-left: 2px;
+    margin-left: 1px;
     margin-right: 1px;
     margin-top: 2px;
     width: 113px;
@@ -972,7 +952,7 @@ div.left440 {
     width:440px;
 }
 
-div.left437 {
+div.boxlist1 {
     float: left;
     width: 460px;
 }
@@ -1309,6 +1289,19 @@ table.pad_10px td, .padd_10px { padding: 10px; }
     display: inline-block;
 }
 
+.ubbcbutton {
+    height: 22px;
+    width: 23px;
+    border: 0;
+    margin: 0 -2px;
+    background-position: top right;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    font-size: 18px;
+    vertical-align: top;
+    display: inline-block;
+}
+
 .tt { font-family: Courier, monospace; }
 
 .littlebody { width: 800px; }
@@ -1594,7 +1587,7 @@ select[name="fontface"],select[name="fontsize"] { padding:0 !important; }
 
 .codebox span { vertical-align: top; }
 
-.media_iframe { 
+.media_iframe {
     border: 0;
     height: 326px;
     width: 400px;
@@ -2006,7 +1999,7 @@ h4.help {
     font-style: normal;
     color: #2d2d2d;
     padding: 1em;
-} 
+}
 
 .smiley_box {
     height: 65px;
