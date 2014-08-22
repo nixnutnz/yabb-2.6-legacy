@@ -49,11 +49,13 @@ sub ContextScript {
     }
 
     $contextmain
-    document.write('<div id="contexthlp" class="windowbg contexthlp" style="display: none;">');
-    document.write('<div id="contexttitle" class="titlebg contexttitle">context_title</div>');
-    document.write('<div id="contexttext" class="windowbg contexttext">context_text</div>');
-    document.write('</div>');
-    document.write('<div id="ctxtip" class="ctxtip" style="display: none;"></div>');
+    </script>
+    <div id="contexthlp" class="windowbg contexthlp" style="display: none;">
+        <div id="contexttitle" class="titlebg contexttitle">context_title</div>
+        <div id="contexttext" class="windowbg contexttext">context_text</div>
+    </div>
+    <div id="ctxtip" class="ctxtip" style="display: none;"></div>
+    <script type="text/javascript">
     DocClick.push("hidecontexthelp()");
 
     function sizecontexthelp() {

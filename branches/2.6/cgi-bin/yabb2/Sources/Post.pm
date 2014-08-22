@@ -518,7 +518,7 @@ qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctyp
             if ( $SmilieURL[$i] =~ /\//ism ) { $tmpurl = $SmilieURL[$i]; }
             else { $tmpurl = qq~$imagesdir/$SmilieURL[$i]~; }
             $moresmilieslist .=
-qq~             document.write('<img src="$tmpurl" class="bottom pointer" alt="$SmilieDescription[$i]" title="$SmilieDescription[$i]" onclick="javascript: MoreSmilies($i);" />$SmilieLinebreak[$i] ');\n~;
+qq~             <img src="$tmpurl" class="bottom pointer" alt="$SmilieDescription[$i]" title="$SmilieDescription[$i]" onclick="javascript: MoreSmilies($i);" />$SmilieLinebreak[$i]\n~;
             $tmpcode = $SmilieCode[$i];
             $tmpcode =~ s/\&quot;/"+'"'+"/gxsm;
 
@@ -544,7 +544,7 @@ qq~             document.write('<img src="$tmpurl" class="bottom pointer" alt="$
             {
                 if ( $line !~ /banner/ism ) {
                     $moresmilieslist .=
-qq~             document.write('<img src="$yyhtml_root/Smilies/$line" class="bottom cursor" alt="$name" title="$name" onclick="javascript: MoreSmilies($i);" />$SmilieLinebreak[$i] ');\n~;
+qq~             <img src="$yyhtml_root/Smilies/$line" class="bottom cursor" alt="$name" title="$name" onclick="javascript: MoreSmilies($i);" />$SmilieLinebreak[$i]\n~;
                     $more_smilie_array .= qq~" [smiley=$line]", ~;
                     $i++;
                 }

@@ -515,7 +515,7 @@ qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'re
                 if ( $SmilieURL[$i] =~ /\//ism ) { $tmpurl = $SmilieURL[$i]; }
                 else { $tmpurl = qq~$imagesdir/$SmilieURL[$i]~; }
                 $moresmilieslist .=
-qq~             document.write('<img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="javascript: MoreSmilies($i);" class="bottom cursor" />$SmilieLinebreak[$i] ');\n~;
+qq~             <img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="javascript: MoreSmilies($i);" class="bottom cursor" />$SmilieLinebreak[$i]\n~;
                 $tmpcode = $SmilieCode[$i];
                 $tmpcode =~ s/\&quot;/"+'"'+"/gsm;
 
@@ -541,7 +541,7 @@ qq~             document.write('<img src="$tmpurl" alt="$SmilieDescription[$i]" 
                 {
                     if ( $line !~ /banner/ism ) {
                         $moresmilieslist .=
-qq~             document.write('<img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javascript: MoreSmilies($i);" class="cursor bottom" />$SmilieLinebreak[$i] ');\n~;
+qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javascript: MoreSmilies($i);" class="cursor bottom" />$SmilieLinebreak[$i]\n~;
                         $more_smilie_array .= qq~" [smiley=$line]", ~;
                         $i++;
                     }
