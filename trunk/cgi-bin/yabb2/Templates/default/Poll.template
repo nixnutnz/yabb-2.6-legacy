@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision: 1503 $
+# $Revision$
 
 $ubbcbak = 'ubbc2.png';
 $poll_bar = qq~<span class="ubbcbutton" style="background-image: url($imagesdir/UBBC/$ubbcbak);"><img src="$imagesdir/bars.png" alt="" /></span>~;
