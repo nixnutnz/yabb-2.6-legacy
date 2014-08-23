@@ -2368,13 +2368,12 @@ sub Write_ForumMaster {
       or croak "$croak{'print'} FORUMMASTER";
     my ( $key, $value );
     while ( ( $key, $value ) = each %cat ) {
+        %seen = ();
+        @catval = split /\,/xsm, $value;
+        @unique = grep { !$seen{$_} ++ } @catval;
+        $val2 = join ',', @unique;
 
-        # Escape membergroups with a $ in them
-        $value =~ s/\$/\\\$/gxsm;
-
-        # Strip membergroups with a ~ from them
-        $value =~ s/\~//gxsm;
-        print {FORUMMASTER} qq~\$cat{'$key'} = qq\~$value\~;\n~
+        print {FORUMMASTER} qq~\$cat{'$key'} = qq\~$val2\~;\n~
           or croak "$croak{'print'} FORUMMASTER";
     }
     while ( ( $key, $value ) = each %catinfo ) {
