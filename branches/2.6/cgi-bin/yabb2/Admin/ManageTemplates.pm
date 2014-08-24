@@ -19,6 +19,7 @@ $managetemplatespmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Templates');
+$admin_images = "$yyhtml_root/Templates/Admin/default";
 
 sub ModifyTemplate {
     is_admin_or_gmod();
@@ -717,7 +718,7 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
                                     <span class="deftpal" id="defaultpal6" style="background-color: $pallist[5];" onclick="ConvShowcolor(this.style.backgroundColor)">&nbsp;</span>
                                 </div>
                                 <div style="height: 22px; width: 23px; padding-left: 1px; float: right;">
-                                    <img src="$imagesdir/palette1.gif" style="cursor: pointer" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+                                    <img src="$admin_images/palette1.gif" style="cursor: pointer" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
                                 </div>
                             </div>
                         </div>

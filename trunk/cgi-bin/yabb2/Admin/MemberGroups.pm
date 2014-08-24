@@ -18,6 +18,8 @@ our $VERSION = '2.6.0';
 $membergroupspmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
+$admin_images = "$yyhtml_root/Templates/Admin/default";
+
 sub EditMemberGroups {
     is_admin_or_gmod();
     my (
@@ -545,7 +547,7 @@ sub editAddGroup {
       . ( $color ne q{} ? qq* style="color: #$color;"* : q{} )
       . qq~><label for="color2"><b>$amgtxt{'08'}</b></label></span>
             #<input type="text" name="color2" id="color2" size="6" value="$color" maxlength="6" onkeyup="viscolor(this.value);" /> &nbsp;
-            <img src="$imagesdir/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+            <img src="$admin_images/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
         </td>
     </tr>~;
 

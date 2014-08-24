@@ -18,6 +18,8 @@ our $VERSION = '2.6.0';
 our $smiliespmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
+$admin_images = "$yyhtml_root/Templates/Admin/default";
+
 sub SmiliePanel {
     is_admin_or_gmod();
     if    ( $smiliestyle == 1 ) { $ss1 = q{ selected="selected"}; }
@@ -126,7 +128,7 @@ sub SmiliePanel {
         <td class="windowbg2" colspan="4"><label for="popback">$smiltxt{'20'}</label></td>
         <td class="windowbg2" colspan="4">
         #<input type="text" size="10" name="popback" id="popback" value="$popback" onkeyup="previewColor(this.value);" />
-            <span id="popback_color" style="background-color: #$popback;">&nbsp; &nbsp; &nbsp;</span> <img src="$imagesdir/palette1.gif" style="cursor: pointer; vertical-align: top;" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+            <span id="popback_color" style="background-color: #$popback;">&nbsp; &nbsp; &nbsp;</span> <img src="$admin_images/palette1.gif" style="cursor: pointer; vertical-align: top;" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
             <script type="text/javascript">
             function previewColor(color) {
                 color = color.replace(/#/, '');
@@ -139,7 +141,7 @@ sub SmiliePanel {
         <td class="windowbg2" colspan="4"><label for="poptext">$smiltxt{'19'}</label></td>
         <td class="windowbg2" colspan="4">
         #<input type="text" size="10" name="poptext" id="poptext" value="$poptext" onkeyup="previewColor_0(this.value);"/>
-            <span id="poptext_color" style="background-color: #$poptext;">&nbsp; &nbsp; &nbsp;</span> <img src="$imagesdir/palette1.gif" style="cursor: pointer; vertical-align: top;" onclick="window.open('$scripturl?action=palette;task=templ_0', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+            <span id="poptext_color" style="background-color: #$poptext;">&nbsp; &nbsp; &nbsp;</span> <img src="$admin_images/palette1.gif" style="cursor: pointer; vertical-align: top;" onclick="window.open('$scripturl?action=palette;task=templ_0', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
             <script type="text/javascript">
             function previewColor_0(color) {
                 color = color.replace(/#/, '');

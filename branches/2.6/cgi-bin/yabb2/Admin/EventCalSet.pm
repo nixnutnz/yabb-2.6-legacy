@@ -19,6 +19,7 @@ $eventcalsetpmver = 'YaBB 2.6.0 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');
+$admin_images = "$yyhtml_root/Templates/Admin/default";
 
 ## Calendar Setting ##
 
@@ -130,7 +131,7 @@ sub EventCalSet {
                     <td class="windowbg2"><label for="Event_TodayColor">$event_cal{'8'}</label></td>
                     <td class="windowbg2">
                         <input type="text" size="7" maxlength="7" name="Event_TodayColor" id="Event_TodayColor" value="$Event_TodayColor" onkeyup="previewColor(this.value);" />
-                        <span id="Event_TodayColor2" style="background-color:$Event_TodayColor">&nbsp; &nbsp; &nbsp;</span> <img src="$defaultimagesdir/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+                        <span id="Event_TodayColor2" style="background-color:$Event_TodayColor">&nbsp; &nbsp; &nbsp;</span> <img src="$admin_images/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
                         <script type="text/javascript">
             function previewColor(color) {
                 document.getElementById('Event_TodayColor2').style.background = color;
