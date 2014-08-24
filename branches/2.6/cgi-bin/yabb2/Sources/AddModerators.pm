@@ -109,7 +109,7 @@ sub AddModerators2 {
         }
         $newline[4] = join q{, }, @bdmodlist;
         $newline = join q{|}, @newline;
-        print {FORUMCNT} "$newbrd\n" or croak "$croak{'print'} FORUMCNT";
+        print {FORUMCNT} "$newline\n" or croak "$croak{'print'} FORUMCNT";
     }
     fclose(FORUMCNT);
     return;
