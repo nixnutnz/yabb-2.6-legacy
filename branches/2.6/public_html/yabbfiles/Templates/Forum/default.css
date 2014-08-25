@@ -1289,17 +1289,22 @@ table.pad_10px td, .padd_10px { padding: 10px; }
     display: inline-block;
 }
 
-.ubbcbutton {
+span.ubbcbutton {
     height: 22px;
     width: 23px;
     border: 0;
-    margin: 0 -2px;
+    margin: 0 1px 1px 0;
     background-position: top right;
     background-repeat: no-repeat;
     text-decoration: none;
     font-size: 18px;
     vertical-align: top;
     display: inline-block;
+	float:left;
+}
+
+.ubbcbuttonback {
+	background-image: url(./default/UBBC/ubbc2.png);
 }
 
 .tt { font-family: Courier, monospace; }

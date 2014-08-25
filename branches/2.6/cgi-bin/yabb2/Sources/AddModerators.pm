@@ -88,11 +88,11 @@ sub AddModerators2 {
     @modbd = split /, /sm, $x[1];
     chomp @modbd;
     fopen( FORUMCNTR, "$boardsdir/forum.control" )
-      || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
+      or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     my @boardcntr = <FORUMCNTR>;
     fclose(FORUMCNTR);
     fopen( FORUMCNT, ">$boardsdir/forum.control" )
-      || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
+      or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     for my $boardline (@boardcntr) {
         $boardline =~ s/[\r\n]//gsm;
         my @newline = split /\|/xsm, $boardline;
@@ -236,11 +236,11 @@ sub ModSearch2 {
         $FORM{'moderators'} = join q{, }, @mods;
     }
     fopen( FORUMCNTR, "$boardsdir/forum.control" )
-      || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
+      or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     my @boardcntr = <FORUMCNTR>;
     fclose(FORUMCNTR);
     fopen( FORUMCNT, ">$boardsdir/forum.control" )
-      || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
+      or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     for my $boardline (@boardcntr) {
         $boardline =~ s/[\r\n]//gxsm;
         @newline = split /\|/xsm, $boardline;

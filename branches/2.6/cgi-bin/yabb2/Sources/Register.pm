@@ -278,7 +278,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
     }
     if ( $honeypot == 1 ) {
         fopen( HONEY, "<$langdir/$language/honey.txt" )
-          || fatal_error( 'cannot_open', "$langdir/$language/honey.txt", 1 );
+          or fatal_error( 'cannot_open', "$langdir/$language/honey.txt", 1 );
         @honey = <HONEY>;
         fclose(HONEY);
         chomp @honey;
@@ -742,11 +742,11 @@ sub Register2 {
     }
 
     fopen( RESERVE, "$vardir/reserve.txt" )
-      || fatal_error( 'cannot_open', "$vardir/reserve.txt", 1 );
+      or fatal_error( 'cannot_open', "$vardir/reserve.txt", 1 );
     @reserve = <RESERVE>;
     fclose(RESERVE);
     fopen( RESERVECFG, "$vardir/reservecfg.txt" )
-      || fatal_error( 'cannot_open', "$vardir/reservecfg.txt", 1 );
+      or fatal_error( 'cannot_open', "$vardir/reservecfg.txt", 1 );
     @reservecfg = <RESERVECFG>;
     fclose(RESERVECFG);
 

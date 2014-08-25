@@ -508,7 +508,7 @@ sub NotificationAlert {
                 if ( !${ ${ 'notify' . $boardid . $mythread } }[0] ) {
                     my ( $messageid, $messagesubject );
                     fopen( BOARDTXT, "$boardsdir/$boardid.txt" )
-                      || fatal_error( 'cannot_open', "$boardsdir/$boardid.txt",
+                      or fatal_error( 'cannot_open', "$boardsdir/$boardid.txt",
                         1 );
                     while ( my $brd = <BOARDTXT> ) {
                         (

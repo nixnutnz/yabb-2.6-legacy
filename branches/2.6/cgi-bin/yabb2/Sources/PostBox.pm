@@ -20,6 +20,7 @@ our $VERSION = '2.6.0';
 $postboxpmver = 'YaBB 2.6.0 $Revision$';
 if ( defined $actions && $action eq 'detailedversion' ) { return 1; }
 get_micon();
+
 #InstantMessage.pm and Post.pl use the same code for the posting box - why have two copies? #
 
 sub postbox {
@@ -66,21 +67,20 @@ sub postbox {
     ( $boxlist1, $boxlist1_w )   = ubbc_boxlist(%boxlist1);
     ( $textdecor, $textdecor_w ) = ubbc_boxlist(%textdecor);
     ( $txtalgn, $txtalgn_w )     = ubbc_boxlist(%txtalgn);
-    $fntcolor_w = 91;
-    $font_w = $boxlist1_w - ( $textdecor_w + $txtalgn_w + $fntcolor_w );
+    $fntcolor_w = 68;
+    $font_w = $boxlist1_w - ( $textdecor_w + $txtalgn_w + $fntcolor_w + 25 );
     $ubbc_box_w = $boxlist1_w + $mods_w;
-    $px = 'px';
-    $box = qq~            <div style="float:left; width:$ubbc_box_w$px">
-            <div style="float:right; width:$mods_w$px">
+    $box = qq~            <div style="float:left; width:${ubbc_box_w}px">
+            <div style="float:right; width:${mods_w}px">
             $mods
             </div>
-            <div style="float:left; width:$boxlist1_w$px">
+            <div style="float:left; width:${boxlist1_w}px">
             $boxlist1
             <br /></div>
-            <div style="float:left; width:$textdecor_w$px">
+            <div style="float:left; width:${textdecor_w}px">
             $textdecor
             </div>
-            <div style="float:left; text-align:center; width:$font_w$px">
+            <div style="float:left; text-align:center; width:${font_w}px">
             <select name="fontface" id="fontface" onchange="if(this.options[this.selectedIndex].value) fontfce(this.options[this.selectedIndex].value);">
                 <option value="Verdana">Verdana</option>
                 <option value="">-\\-\\-\\-\\-\\-\\-\\-\\-</option>
@@ -132,8 +132,8 @@ $fntopts
                 if(thistask == "templ") previewColor(newcolor);
             }
             </script>
-            <div style="float:left; height:22px; width:$fntcolor_w$px">
-                <div class="palettebox">
+            <div style="float:left; height:22px; width:${fntcolor_w}px">
+                <div class="palettebox" style="float:left">
                     <span class="deftpal" style="background-color: #000000;" onclick="ConvShowcolor('#000000')">&nbsp;</span>
                     <span class="deftpal" style="background-color: #333333;" onclick="ConvShowcolor('#333333')">&nbsp;</span>
                     <span class="deftpal" style="background-color: #666666;" onclick="ConvShowcolor('#666666')">&nbsp;</span>
@@ -147,11 +147,11 @@ $fntopts
                     <span id="defaultpal5" class="deftpal" style="background-color: $pallist[4];" onclick="ConvShowcolor(this.style.backgroundColor)">&nbsp;</span>
                     <span id="defaultpal6" class="deftpal" style="background-color: $pallist[5];" onclick="ConvShowcolor(this.style.backgroundColor)">&nbsp;</span>
                  </div>
-                 <div style="float:right; height:22px; padding-left: 1px; width: 23px;">
-                     <span class="ubbcbutton" style="background-image: url($imagesdir/UBBC/$ubbcbak);"><img src="$imagesdir/UBBC/palette1.png" class="cursor" onclick="window.open('$scripturl?action=palette;task=post', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" /></span>
-                  </div>
             </div>
-            <div style="float:left; width:$txtalgn_w$px">
+            <div style="float:left; height:22px; padding-left: 1px; padding-right: 1px; width:23px;">
+                <span class="ubbcbutton ubbcbuttonback"><img src="$imagesdir/UBBC/palette1.png" class="cursor" onclick="window.open('$scripturl?action=palette;task=post', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" /></span>
+            </div>
+            <div style="float:left; width:${txtalgn_w}px">
             $txtalgn
             </div>
         </div>
@@ -909,10 +909,10 @@ sub ubbc_boxlist {
     my $w = 0;
     for my $i ( sort keys %list ) {
         my ($img, $click, $alt) = split /[|]/xsm, $list{$i};
-        $boxlist .= qq~<span class="ubbcbutton" style="background-image: url($imagesdir/UBBC/$ubbcbak);"><img src='$imagesdir/UBBC/$img' onclick='$click;' $hand alt='$alt' title='$alt' /></span>\n~;
+        $boxlist .= qq~<span class="ubbcbutton ubbcbuttonback"><img src='$imagesdir/UBBC/$img' onclick='$click;' $hand alt='$alt' title='$alt' /></span>\n~;
         $w++
     }
-    $boxlist_w = $w * 23;
+    $boxlist_w = $w * 24;
     return ($boxlist, $boxlist_w);
 }
 
@@ -923,7 +923,7 @@ sub ubbc_modlist {
     my $w = 0;
     for my $i ( sort keys %list ) {
         my ($img, $click, $alt) = split /[|]/xsm, $list{$i};
-        $boxlist .= qq~<span class="ubbcbutton" style="background-image: url($imagesdir/UBBC/$ubbcbak);"><img src='$modimgurl/$img' onclick='$click;' $hand alt='$alt' title='$alt' /></span>\n~;
+        $boxlist .= qq~<span class="ubbcbutton ubbcbuttonback"><img src='$modimgurl/$img' onclick='$click;' $hand alt='$alt' title='$alt' /></span>\n~;
         $w++
     }
     my $mod_w = 0;
@@ -933,7 +933,7 @@ sub ubbc_modlist {
     else {
         $mod_w = 1 + int $w/2;
     }
-    $boxlist_w = $mod_w * 23;
+    $boxlist_w = $mod_w * 24;
     return ($boxlist, $boxlist_w);
 }
 

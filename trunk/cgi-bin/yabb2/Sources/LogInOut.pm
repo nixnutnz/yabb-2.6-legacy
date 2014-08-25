@@ -338,7 +338,7 @@ sub Reminder2 {
     $pass{"$user"} = $randid;
 
     fopen( FILE, ">$memberdir/forgotten.passes" )
-      || fatal_error( 'cannot_open', "$memberdir/forgotten.passes", 1 );
+      or fatal_error( 'cannot_open', "$memberdir/forgotten.passes", 1 );
     while ( ( $key, $value ) = each %pass ) {
         print {FILE} qq~\$pass{'$key'} = '$value';\n~
           or croak "$croak{'print'} forgotten.passes";
@@ -399,7 +399,7 @@ sub Reminder3 {
     if ( $pass{$user} ne $id ) { fatal_error('wrong_id'); }
     delete $pass{$user};
     fopen( FORGOTTEN, ">$memberdir/forgotten.passes" )
-      || fatal_error( 'cannot_open', "$memberdir/forgotten.passes", 1 );
+      or fatal_error( 'cannot_open', "$memberdir/forgotten.passes", 1 );
     while ( ( $key, $value ) = each %pass ) {
         print {FORGOTTEN} qq~\$pass{'$key'} = '$value';\n~
           or croak "$croak{'print'} FORGOTTEN";

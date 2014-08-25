@@ -16,7 +16,6 @@
 $cat_col = $newload{'brd_col'};
 $cat_exp = $newload{'brd_exp'};
 $post_error = qq~$imagesdir/exclamation.png~;
-$ubbcbak = 'ubbc2.png';
 
 if (!$enable_quickreply) {$my_spacer = '; margin-bottom:1em;';}
 $messageclass = 'message';

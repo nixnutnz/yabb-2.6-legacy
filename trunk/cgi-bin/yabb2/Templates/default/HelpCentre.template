@@ -19,7 +19,6 @@ $moderator_class  = 'catbg';
 $admin_class      = 'catbg';
 $global_mod_class = 'catbg';
 $UserClass        = 'catbg';
-$ubbcbak = 'ubbc2.png';
 
 ### Creates the Navigation Bar at the top ###
 $HelpNavBar = qq~

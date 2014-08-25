@@ -22,51 +22,12 @@ $admin_images = "$yyhtml_root/Templates/Admin/default";
 
 sub EditMemberGroups {
     is_admin_or_gmod();
-    my (
-        $MemStatAdmin,     $MemStarNumAdmin, $MemStarPicAdmin,
-        $MemTypeColAdmin,  $noshowAdmin,     $viewpermsAdmin,
-        $topicpermsAdmin,  $replypermsAdmin, $pollpermsAdmin,
-        $attachpermsAdmin, undef
-    ) = split /\|/xsm, $Group{'Administrator'};
-    my (
-        $MemStatGMod,   $MemStarNumGMod,  $MemStarPicGMod, $MemTypeColGMod,
-        $noshowGMod,    $viewpermsGMod,   $topicpermsGMod, $replypermsGMod,
-        $pollpermsGMod, $attachpermsGMod, undef
-    ) = split /\|/xsm, $Group{'Global Moderator'};
-    my (
-        $MemStatFMod,   $MemStarNumFMod,  $MemStarPicFMod, $MemTypeColFMod,
-        $noshowFMod,    $viewpermsFMod,   $topicpermsFMod, $replypermsFMod,
-        $pollpermsMod,  $attachpermsMod, undef
-    ) = split /\|/xsm, $Group{'Mid Moderator'};
-    my (
-        $MemStatMod,   $MemStarNumMod,  $MemStarPicMod, $MemTypeColMod,
-        $noshowMod,    $viewpermsMod,   $topicpermsMod, $replypermsMod,
-        $pollpermsMod, $attachpermsMod, undef
-    ) = split /\|/xsm, $Group{'Moderator'};
-    $noshowAdmin =
-      ( $noshowAdmin == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
-    $noshowGMod =
-      ( $noshowGMod == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
-    $noshowFMod =
-      ( $noshowFMod == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
-    $noshowMod =
-      ( $noshowMod == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
-    my $adminpi = permImage(
-        $viewpermsAdmin, $topicpermsAdmin, $replypermsAdmin,
-        $pollpermsAdmin, $attachpermsAdmin
-    );
-    my $gmodpi = permImage(
-        $viewpermsGMod, $topicpermsGMod, $replypermsGMod,
-        $pollpermsGMod, $attachpermsGMod
-    );
-    my $fmodpi = permImage(
-        $viewpermsFMod, $topicpermsFMod, $replypermsFMod,
-        $pollpermsFMod, $attachpermsFMod
-    );
-    my $modpi = permImage(
-        $viewpermsMod, $topicpermsMod, $replypermsMod,
-        $pollpermsMod, $attachpermsMod
-    );
+
+#            (
+#                $title,     $stars,       $starpic,    $color,
+#                $noshow,    $viewperms,   $topicperms, $replyperms,
+#                $pollperms, $attachperms, $additional
+#            )
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
@@ -102,76 +63,32 @@ sub EditMemberGroups {
             <td class="catbg center"><b>$amgtxt{'08'}</b></td>
             <td class="catbg center"><b>$amgtxt{'01'}</b></td>
             <td class="catbg center"><b>$admin_txt{'53'}</b></td>
-            <td class="catbg center"><b>&nbsp;</b></td>
-        </tr><tr>
-            <td class="windowbg2 center">$MemStatAdmin</td>
-            <td class="windowbg2 center"><img src="$imagesdir/$MemStarPicAdmin" alt="" /> x $MemStarNumAdmin</td>~;
-
-    if ($MemTypeColAdmin) {
-        $thecolname = hextoname($MemTypeColAdmin);
+            <td class="catbg center"><b>&nbsp;</b></td>~;
+    my @grps = sort keys %Group;
+    my @memstats = ();
+    for ( @grps ) {
+        @memstats = split /\|/xsm, $Group{$_};
+        $memstats[4] = ( $memstats[4] == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
         $yymain .= qq~
-            <td class="windowbg2 center"><span style="color:$MemTypeColAdmin">$thecolname</span></td>~;
+        </tr><tr>
+            <td class="windowbg2 center">$memstats[0]</td>
+            <td class="windowbg2 center"><img src="$imagesdir/$memstats[2]" alt="" /> x $memstats[1]</td>~;
+
+    if ( $memstats[3] ) {
+        $thecolname = hextoname($memstats[3]);
+        $yymain .= qq~
+            <td class="windowbg2 center"><span style="color:$memstats[3]">$thecolname</span></td>~;
     }
     else {
         $yymain .= q~
             <td class="windowbg2 center">&nbsp;</td>~;
     }
     $yymain .= qq~
-            <td class="windowbg2 center">$noshowAdmin</td>
-            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Administrator">$admin_txt{'53'}</a></td>
-            <td class="windowbg2 center">&nbsp;</td>
-        </tr><tr>
-            <td class="windowbg2 center">$MemStatGMod</td>
-        <td class="windowbg2 center"><img src="$imagesdir/$MemStarPicGMod" alt="" /> x $MemStarNumGMod</td>~;
-
-    if ($MemTypeColGMod) {
-        $thecolname = hextoname($MemTypeColGMod);
-        $yymain .= qq~
-            <td class="windowbg2 center"><span style="color:$MemTypeColGMod">$thecolname</span></td>~;
-    }
-    else {
-        $yymain .= q~
+            <td class="windowbg2 center">$memstats[4]</td>
+            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=$_">$admin_txt{'53'}</a></td>
             <td class="windowbg2 center">&nbsp;</td>~;
     }
-    $yymain .= qq~
-            <td class="windowbg2 center">$noshowGMod</td>
-            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Global%20Moderator">$admin_txt{'53'}</a></td>
-            <td class="windowbg2 center">&nbsp;</td>
-        </tr><tr>
-            <td class="windowbg2 center">$MemStatFMod</td>
-        <td class="windowbg2 center"><img src="$imagesdir/$MemStarPicFMod" alt="" /> x $MemStarNumFMod</td>~;
-
-    if ($MemTypeColFMod) {
-        $thecolname = hextoname($MemTypeColFMod);
-        $yymain .= qq~
-            <td class="windowbg2 center"><span style="color:$MemTypeColFMod">$thecolname</span></td>~;
-    }
-    else {
-        $yymain .= q~
-            <td class="windowbg2 center">&nbsp;</td>~;
-    }
-    $yymain .= qq~
-            <td class="windowbg2 center">$noshowFMod</td>
-            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Mid%20Moderator">$admin_txt{'53'}</a></td>
-            <td class="windowbg2 center">&nbsp;</td>
-        </tr><tr>
-            <td class="windowbg2 center">$MemStatMod</td>
-            <td class="windowbg2 center"><img src="$imagesdir/$MemStarPicMod" alt="" /> x $MemStarNumMod</td>~;
-
-
-    if ($MemTypeColMod) {
-        $thecolname = hextoname($MemTypeColMod);
-        $yymain .= qq~
-            <td class="windowbg2 center"><span style="color:$MemTypeColMod">$thecolname</span></td>~;
-    }
-    else {
-        $yymain .= q~
-            <td class="windowbg2 center">&nbsp;</td>~;
-    }
-    $yymain .= qq~
-            <td class="windowbg2 center">$noshowMod</td>
-            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=Moderator">$admin_txt{'53'}</a></td>
-            <td class="windowbg2 center">&nbsp;</td>
+    $yymain .= q~
         </tr>
     </table>
 </div>
@@ -227,28 +144,20 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
         </tr>~;
 
     $count = 0;
-    foreach (@nopostorder) {
-        (
-            $title,     $stars,       $starpic,    $color,
-            $noshow,    $viewperms,   $topicperms, $replyperms,
-            $pollperms, $attachperms, $additional
-        ) = split /\|/xsm, $NoPost{$_};
-        $permimage = q{};
-        $permimage =
-          permImage( $viewperms, $topicperms, $replyperms, $pollperms,
-            $attachperms );
-        $noshow = ( $noshow == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
-        $additional =
-          ( $additional == 0 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
-        if ( !$stars ) { $stars = '0'; }
+    for (@nopostorder) {
+        @memstats = split /\|/xsm, $NoPost{$_};
+        $memstats[4] = ( $memstats[4] == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
+        $memstats[10] =
+          ( $memstats[10] == 0 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
+        if ( !$stars ) { $stars = 0; }
         $yymain .= qq~<tr>
-            <td class="windowbg2 center">$title</td>
-            <td class="windowbg2 center"><img src="$imagesdir/$starpic" alt="" /> x $stars</td>~;
+            <td class="windowbg2 center">$memstats[0]</td>
+            <td class="windowbg2 center"><img src="$imagesdir/$memstats[2]" alt="" /> x $memstats[1]</td>~;
 
-        if ($color) {
-            $thecolname = hextoname($color);
+        if ($memstats[3]) {
+            $thecolname = hextoname($memstats[3]);
             $yymain .= qq~
-            <td class="windowbg2 center"><span style="color:$color">$thecolname</span></td>~;
+            <td class="windowbg2 center"><span style="color:$memstats[3]">$thecolname</span></td>~;
         }
         else {
             $yymain .= q~
@@ -256,11 +165,11 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
         }
 
         $yymain .= qq~
-            <td class="windowbg2 center">$noshow</td>~;
+            <td class="windowbg2 center">$memstats[4]</td>~;
 
         if ( $addmemgroup_enabled > 0 ) {
             $yymain .= qq~
-            <td class="windowbg2 center">$additional</td>~;
+            <td class="windowbg2 center">$memstats[10]</td>~;
         }
 
         $yymain .= qq~
@@ -303,28 +212,19 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
         </tr>~;
 
     my $count = 0;
-    foreach ( reverse sort { $a <=> $b } keys %Post ) {
-        my (
-            $title,     $stars,       $starpic,    $color,
-            $noshow,    $viewperms,   $topicperms, $replyperms,
-            $pollperms, $attachperms, undef
-        ) = split /\|/xsm, $Post{$_};
-
-        $permimage = q{};
-        $permimage =
-          permImage( $viewperms, $topicperms, $replyperms, $pollperms,
-            $attachperms );
-        $noshow = ( $noshow == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
-        if ( !$stars )             { $stars   = '0'; }
-        if ( $starpic !~ /\//xsm ) { $starpic = "$imagesdir/$starpic"; }
+    for ( reverse sort { $a <=> $b } keys %Post ) {
+        @memstats = split /\|/xsm, $Post{$_};
+        $memstats[4] = ( $memstats[4] == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
+        if ( !$memstats[1] )             { $memstats[1]   = 0; }
+        if ( $memstats[2] !~ /\//xsm ) { $memstats[2] = "$imagesdir/$memstats[2]"; }
         $yymain .= qq~<tr>
-            <td class="windowbg2 center">$title</td>
-            <td class="windowbg2 center"><img src="$starpic" alt="" /> x $stars</td>~;
+            <td class="windowbg2 center">$memstats[0]</td>
+            <td class="windowbg2 center"><img src="$memstats[2]" alt="" /> x $memstats[1]</td>~;
 
-        if ($color) {
-            $thecolname = hextoname($color);
+        if ($memstats[3]) {
+            $thecolname = hextoname($memstats[3]);
             $yymain .= qq~
-            <td class="windowbg2 center"><span style="color: $color;">$thecolname</span></td>~;
+            <td class="windowbg2 center"><span style="color: $memstats[3];">$thecolname</span></td>~;
         }
         else {
             $yymain .= q~
@@ -387,45 +287,34 @@ sub hextoname {
 
 sub editAddGroup {
     is_admin_or_gmod();
+    my @memstats = ();
     if ( $INFO{'group'} ) {
         $viewtitle = $admintxt{'18a'};
         ( $type, $element ) = split /\|/xsm, $INFO{'group'};
         if ( $element ne q{} ) {
             if ( $type eq 'P' ) {
                 $posts = $element;
-                (
-                    $title,     $stars,       $starpic,    $color,
-                    $noshow,    $viewperms,   $topicperms, $replyperms,
-                    $pollperms, $attachperms, $additional
-                ) = split /\|/xsm, $Post{$element};
+                @memstats = split /\|/xsm, $Post{$element};
             }
             else {
                 $noposts   = $element;
                 $choosable = 1;
-                (
-                    $title,     $stars,       $starpic,    $color,
-                    $noshow,    $viewperms,   $topicperms, $replyperms,
-                    $pollperms, $attachperms, $additional
-                ) = split /\|/xsm, $NoPost{$element};
+                @memstats = split /\|/xsm, $NoPost{$element};
             }
         }
         else {
-            (
-                $title,     $stars,       $starpic,    $color,
-                $noshow,    $viewperms,   $topicperms, $replyperms,
-                $pollperms, $attachperms, $additional
-            ) = split /\|/xsm, $Group{ $INFO{'group'} };
+            @memstats = split /\|/xsm, $Group{ $INFO{'group'} };
         }
     }
     else {
         $viewtitle = $admintxt{'18b'};
-        $title     = q{};
-        $stars     = q{};
-        $starpic   = q{};
-        $color     = q{};
+        $memstats[0]    = q{};
+        $memstats[1]    = q{};
+        $memstats[2]    = q{};
+        $memstats[3]     = q{};
         $posts     = q{};
         $noposts   = 1;
-        foreach ( sort { $a <=> $b } keys %NoPost ) {
+        for ( sort { $a <=> $b } keys %NoPost ) {
             $noposts = $_ + 1;
         }
     }
@@ -443,11 +332,11 @@ sub editAddGroup {
         "$amgtxt{'23'}","$amgtxt{'24'}","$amgtxt{'25'}",
     );
     my @stara = ();
-    $pick         = $starpic;
+    $pick         = $memstats[2];
     $otherdisable = q{};
     my $stsel = 0;
     foreach my $i ( 1 .. 7 ) {
-        if ( $starpic eq $starsgif[$i] ) {
+        if ( $memstats[2] eq $starsgif[$i] ) {
             $stara[$i] = q{ selected="selected"};
             $stsel++;
         }
@@ -456,17 +345,17 @@ sub editAddGroup {
         $stara[8] = q{ selected="selected"};
     }
     my $starurl =
-        ( $starpic !~ m{http://}xsm ? "$imagesdir/" : q{} )
-      . ( $starpic                  ? $starpic      : 'blank.gif' );
+        ( $memstats[2] !~ m{http://}xsm ? "$imagesdir/" : q{} )
+      . ( $memstats[2]                  ? $memstats[2]      : 'blank.gif' );
 
-    $color =~ s/\#//gxsm;
+    $memstats[3] =~ s/\#//gxsm;
 
     $pc = q~ checked="checked"~;
     $pd = q{};
     $pt = q{};
 
-    if ($noshow)     { $pc   = q{}; }
-    if ($additional) { $admg = q~ checked="checked"~; }
+    if ($memstats[4])     { $pc   = q{}; }
+    if ($memstats[10]) { $admg = q~ checked="checked"~; }
 
     if ( $posts eq q{} && $action ne 'editgroup1' ) {
         $post2 = q{ checked="checked"};
@@ -474,11 +363,11 @@ sub editAddGroup {
     }
     else { $post1 = q~ checked="checked"~; $pd = q~ disabled="disabled"~; }
 
-    if ( $viewperms == 1 )   { $vc  = q~ checked="checked"~; }
-    if ( $topicperms == 1 )  { $tc  = q~ checked="checked"~; }
-    if ( $replyperms == 1 )  { $rc  = q~ checked="checked"~; }
-    if ( $pollperms == 1 )   { $poc = q~ checked="checked"~; }
-    if ( $attachperms == 1 ) { $ac  = q~ checked="checked"~; }
+    if ( $memstats[5] == 1 ) { $vc  = q~ checked="checked"~; }
+    if ( $memstats[6] == 1 ) { $tc  = q~ checked="checked"~; }
+    if ( $memstats[7] == 1 ) { $rc  = q~ checked="checked"~; }
+    if ( $memstats[8] == 1 ) { $poc = q~ checked="checked"~; }
+    if ( $memstats[9] == 1 ) { $ac  = q~ checked="checked"~; }
 
     $yymain .= qq~
 <form name="groups" action="$adminurl?action=editAddGroup2" method="post" enctype="multipart/form-data" accept-charset="$yymycharset">
@@ -495,10 +384,10 @@ sub editAddGroup {
         <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$viewtitle</b></td>
     </tr><tr>
         <td class="windowbg"><label for="title">$amgtxt{'51'}:</label></td>
-        <td class="windowbg2"><input type="text" name="title" id="title" value="$title" /></td>
+        <td class="windowbg2"><input type="text" name="title" id="title" value="$memstats[0]" /></td>
     </tr><tr>
         <td class="windowbg"><label for="numstars">$amgtxt{'05'}</label></td>
-        <td class="windowbg2"><input type="text" name="numstars" id="numstars" size="2" value="$stars" /></td>
+        <td class="windowbg2"><input type="text" name="numstars" id="numstars" size="2" value="$memstats[1]" /></td>
     </tr><tr>
         <td class="windowbg"><label for="starsadmin">$amgtxt{'38'}:</label></td>
         <td class="windowbg2">
@@ -544,15 +433,15 @@ sub editAddGroup {
             <option value="9ACD32">$amgtxt{'82'}</option>
             </select> &nbsp;
             <span id="grpcolor"~
-      . ( $color ne q{} ? qq* style="color: #$color;"* : q{} )
+      . ( $memstats[3] ne q{} ? qq* style="color: #$memstats[3];"* : q{} )
       . qq~><label for="color2"><b>$amgtxt{'08'}</b></label></span>
-            #<input type="text" name="color2" id="color2" size="6" value="$color" maxlength="6" onkeyup="viscolor(this.value);" /> &nbsp;
+            #<input type="text" name="color2" id="color2" size="6" value="$memstats[3]" maxlength="6" onkeyup="viscolor(this.value);" /> &nbsp;
             <img src="$admin_images/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
         </td>
     </tr>~;
 
     # Get color selected
-    $yymain =~ s/(<option value="$color")/$1 selected="selected"/sm;
+    $yymain =~ s/(<option value="$memstats[3]")/$1 selected="selected"/sm;
 
     if ( !exists $Group{ $INFO{'group'} } ) {
         $yymain .= qq~<tr>
@@ -572,7 +461,6 @@ sub editAddGroup {
             <label for="posts"><b>$amgtxt{'04'}</b></label> <input type="text" name="posts" id="posts" size="5" value="$posts"$pt style="vertical-align: middle;" />
         </td>
     </tr>~;
-
     }
     else {
         $yymain .= qq~<tr>

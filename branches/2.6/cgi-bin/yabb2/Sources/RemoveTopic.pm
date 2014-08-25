@@ -31,7 +31,7 @@ sub RemoveThread {
     }
     my $threadline = q{};
     fopen( BOARDFILE, "<$boardsdir/$currentboard.txt", 1 )
-      || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+      or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @buffer = <BOARDFILE>;
     fclose( BOARDFILE );
     for my $aa ( 0 .. ( @buffer - 1 ) ) {
@@ -42,14 +42,14 @@ sub RemoveThread {
         }
     }
     fopen( BOARDFILE, ">$boardsdir/$currentboard.txt", 1 )
-      || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+      or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     print {BOARDFILE} @buffer or croak "$croak{'print'} BOARDFILE";
     fclose(BOARDFILE);
 
     if ($threadline) {
         if ( !ref $thread_arrayref{$thread} ) {
             fopen( FILE, "$datadir/$thread.txt" )
-              || fatal_error( 'cannot_open', "$datadir/$thread.txt", 1 );
+              or fatal_error( 'cannot_open', "$datadir/$thread.txt", 1 );
             @{ $thread_arrayref{$thread} } = <FILE>;
             fclose(FILE);
         }

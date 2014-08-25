@@ -28,7 +28,7 @@ LoadLanguage('Post');
 get_micon();
 get_template('MyMessage');
 
-$set_subjectMaxLength ||= 50;
+$set_subjectMaxLength = defined $set_subjectMaxLength ? $set_subjectMaxLength : 50;
 
 if (   ( $action eq 'imsend' || $action eq 'imsend2' )
     && $MaxIMMessLen
@@ -462,7 +462,7 @@ qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'re
 
     function showimage() {
         $jsIM
-        var icon_set = document.postmodify.status.options[document.postmodify.images.status.selectedIndex].value;
+        var icon_set = document.getElementById("status").options[document.getElementById("status").selectedIndex].value;
         var icon_show = jsIM.getItem(icon_set);
         document.images.status.src = icon_show;
     }
@@ -488,12 +488,9 @@ qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'re
     # this is for the ubbc buttons
     if ( !$replyguest ) {
         if ( $enable_ubbc && $showyabbcbutt ) {
-            $my_ubbc_yes .= qq~<b>$post_txt{'252'}:</b><br />
-            <div class="style_ubbc_box">~;
-
+            $my_ubbc_yes .= qq~<b>$post_txt{'252'}:</b><br />~;
             # ubbc set separated out into PostBox.pm DAR 11/13/2012 #
             $my_ubbc_yes .= postbox();
-            $my_ubbc_yes .= q~</div>~;
         }
     }
 
@@ -820,7 +817,7 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
             $jsIM
             function showtpstatus() {
             var theimg = '$pmicon';
-            var objIconSelected = document.postmodify.status[document.postmodify.status.selectedIndex].value;
+            var objIconSelected = document.getElementById("status").selectedIndex != -1 ? document.getElementById("status").options[document.getElementById("status").selectedIndex].value : 's';
             if (objIconSelected == 's') { theimg = 'standard'; }
             if (objIconSelected == 'c') { theimg = 'confidential'; }
             if (objIconSelected == 'u') { theimg = 'urgent'; }
@@ -1162,7 +1159,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
         $logFixfile = join q{,}, @logfilelist;
         if (@filelist) {
             fopen( PMATTACHLOG, ">>$vardir/pm.attachments" )
-              || fatal_error( 'cannot_open', "$vardir/pm.attachments" );
+              or fatal_error( 'cannot_open', "$vardir/pm.attachments" );
             foreach my $logFixfile (@logfilelist) {
                 print {PMATTACHLOG}
 qq~$messageid|$date|$filesizekb{$logFixfile}|$logFixfile|${$uid.$username}{'realname'}|$username\n~
@@ -1405,7 +1402,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
         || ( $FORM{'dontstoreinoutbox'} && $fixfile ne q{} ) )
     {
         fopen( OUTBOX, "+>$memberdir/$username.$savetofile" )
-          || fatal_error( 'cannot_open', "+>$memberdir/$username.$savetofile",
+          or fatal_error( 'cannot_open', "+>$memberdir/$username.$savetofile",
             1 );
         ## all but drafts being resaved just get added to their file
         if ( !$FORM{'draft'} || ( $FORM{'draft'} && !$FORM{'draftid'} ) ) {

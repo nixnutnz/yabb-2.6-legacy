@@ -926,7 +926,7 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
     if ($attachments) {
         my ( @newattachments, %attachments );
         fopen( ATM, "<$vardir/attachments.txt", 1 )
-          || fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
+          or fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
         my @attach = <ATM>;
         fclose(ATM);
         for (@attach) {
@@ -982,7 +982,7 @@ qq~$newthreadid|$mreplies|$msub|$mname|$newboard|$asize|$mdate|$_|~
             $mreplies++;
         }
         fopen( FATM, ">$vardir/attachments.txt" )
-          || fatal_error( 'cannot_open', "$vardir/attachments.txt" );
+          or fatal_error( 'cannot_open', "$vardir/attachments.txt" );
             print {FATM}
             sort { ( split /\|/xsm, $a, 8 )[6] <=> ( split /\|/xsm, $b, 8 )[6] }
             @newattachments or croak "$croak{'print'} ATM";

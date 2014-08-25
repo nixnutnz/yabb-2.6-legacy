@@ -539,7 +539,7 @@ $myprofile_admin_a = qq~<table class="bordercolor cs_thin pad_4px">
         <td>
             <select name="settings7" id="settings7">
                 <option value="{yabb position}">{yabb tt}</option>
-                <option value="{yabb position}">---------------</option>
+                <option value="">---------------</option>
                 <option value=""></option>{yabb my_group}
             </select>
         </td>

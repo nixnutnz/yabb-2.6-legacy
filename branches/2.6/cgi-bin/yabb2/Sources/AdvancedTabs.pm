@@ -140,7 +140,7 @@ sub AddNewTab2 {
             }
             $tabtxt{$tabaction} = $tabtext;
             fopen( TABTXT, ">$langdir/$lngdir/tabtext.txt" )
-              || fatal_error( 'file_not_open', "$langdir/$lngdir/tabtext.txt",
+              or fatal_error( 'file_not_open', "$langdir/$lngdir/tabtext.txt",
                 1 );
             print {TABTXT} map { "$_\t$tabtxt{$_}\n" } keys %tabtxt
               or croak "$croak{'print'} TABTXT";
@@ -287,12 +287,12 @@ sub EditTab2 {
         ToHTML($tosavetxt);
         $tab_lang = $language ? $language : $lang;
         fopen( TABTXT, "$langdir/$tab_lang/tabtext.txt" )
-          || fatal_error( 'file_not_open', "$langdir/$tab_lang/tabtext.txt" );
+          or fatal_error( 'file_not_open', "$langdir/$tab_lang/tabtext.txt" );
         %tabtxt = map { /(.*)\t(.*)/xsm } <TABTXT>;
         fclose(TABTXT);
         $tabtxt{$tosave} = $tosavetxt;
         fopen( TABTXT, ">$langdir/$tab_lang/tabtext.txt" )
-          || fatal_error( 'file_not_open', "$langdir/$tab_lang/tabtext.txt" );
+          or fatal_error( 'file_not_open', "$langdir/$tab_lang/tabtext.txt" );
         print {TABTXT} map { "$_\t$tabtxt{$_}\n" } keys %tabtxt
           or croak "$croak{'print'} TABTXT";
         fclose(TABTXT);
@@ -359,7 +359,7 @@ sub DeleteTab {
                 next;
             }
             fopen( TABTXT, "$langdir/$lngdir/tabtext.txt" )
-              || fatal_error( 'file_not_open', "$langdir/$lngdir/tabtext.txt" );
+              or fatal_error( 'file_not_open', "$langdir/$lngdir/tabtext.txt" );
             %tabtxt = map { /(.*)\t(.*)/xsm } <TABTXT>;
             fclose(TABTXT);
             delete $tabtxt{$todelete};

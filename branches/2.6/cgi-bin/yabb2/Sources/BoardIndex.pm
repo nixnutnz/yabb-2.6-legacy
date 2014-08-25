@@ -955,7 +955,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}" re
             # Need to load thread to see lastposters DISPLAYname if is Ex-Member
                         fopen( EXMEMBERTHREAD,
                             "$datadir/${$uid.$curboard}{'lastpostid'}.txt" )
-                          || fatal_error( 'cannot_open',
+                          or fatal_error( 'cannot_open',
                             "$datadir/${$uid.$curboard}{'lastpostid'}.txt", 1 );
                         my @x = <EXMEMBERTHREAD>;
                         fclose(EXMEMBERTHREAD);
@@ -1823,7 +1823,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
 sub GetBotlist {
     if ( -e "$vardir/bots.hosts" ) {
         fopen( BOTS, "$vardir/bots.hosts" )
-          || fatal_error( 'cannot_open', "$vardir/bots.hosts", 1 );
+          or fatal_error( 'cannot_open', "$vardir/bots.hosts", 1 );
         my @botlist = <BOTS>;
         fclose(BOTS);
         chomp @botlist;
@@ -2025,4 +2025,5 @@ sub RedirectExternalShow {
         return $excount;
     }
 }
+
 1;

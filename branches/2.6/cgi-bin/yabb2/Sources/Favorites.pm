@@ -90,7 +90,7 @@ sub Favorites {
               );
 
         fopen( BRDTXT, "$boardsdir/$loadboard.txt" )
-          || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+          or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
         while ( my $brd = <BRDTXT> ) {
             if ( ( split /\|/xsm, $brd, 2 )[0] eq $loadfav ) {
                 push @threads, $brd;

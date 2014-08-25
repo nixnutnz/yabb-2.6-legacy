@@ -82,7 +82,7 @@ sub automaintenance {
     }
     elsif ( lc($maction) eq 'off' ) {
         unlink "$vardir/maintenance.lock"
-          || fatal_error( 'cannot_open_dir', "$vardir/maintenance.lock" );
+          or fatal_error( 'cannot_open_dir', "$vardir/maintenance.lock" );
         if ( $maintenance == 2 ) { $maintenance = 0; }
     }
     return;
@@ -1418,7 +1418,7 @@ sub spam_protection {
 sub SpamQuestion {
     srand;
     fopen( SPAMQUESTIONS, "<$langdir/$language/spam.questions" )
-      || fatal_error( 'cannot_open', "$langdir/$language/spam.questions", 1 );
+      or fatal_error( 'cannot_open', "$langdir/$language/spam.questions", 1 );
     while (<SPAMQUESTIONS>) {
         rand($INPUT_LINE_NUMBER) < 1 && ( $spam_question_rand = $_ );
     }
@@ -1433,7 +1433,7 @@ sub SpamQuestion {
 sub SpamQuestionCheck {
     my ( $verification_question, $verification_question_id ) = @_;
     fopen( SPAMQUESTIONS, "<$langdir/$language/spam.questions" )
-      || fatal_error( 'cannot_open', "$langdir/$language/spam.questions", 1 );
+      or fatal_error( 'cannot_open', "$langdir/$language/spam.questions", 1 );
     @spam_questions = <SPAMQUESTIONS>;
     fclose(SPAMQUESTIONS);
     foreach my $verification_question (@spam_questions) {
@@ -2018,7 +2018,7 @@ sub MembershipGet {
             }
             else {
                 truncate( *{$filehandle}, 0 )
-                  || fatal_error( 'truncation_error', "$filename" );
+                  or fatal_error( 'truncation_error', "$filename" );
             }
             seek $filehandle, 0, 0;
         }
@@ -2347,7 +2347,7 @@ sub save_moved_file {
 
    # This sub saves the hash for the moved files: key == old id, value == new id
     fopen( MOVEDFILE, ">$vardir/Movedthreads.pm" )
-      || fatal_error( 'cannot_open', "$vardir/Movedthreads.pm", 1 );
+      or fatal_error( 'cannot_open', "$vardir/Movedthreads.pm", 1 );
     print {MOVEDFILE} '%moved_file = ('
       . join( q{,},
         map { qq~"$_","$moved_file{$_}"~ }

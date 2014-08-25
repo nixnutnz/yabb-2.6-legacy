@@ -32,7 +32,7 @@ sub spamcheck {
     my ( $spamline, $spamcnt, $searchtype );
     if ( -e "$vardir/spamrules.txt" ) {
         fopen( SPAM, "$vardir/spamrules.txt" )
-          || fatal_error( 'cannot_open', 'spamrules.txt', 1 );
+          or fatal_error( 'cannot_open', 'spamrules.txt', 1 );
         while ( $buffer = <SPAM> ) {
             chomp $buffer;
             $spamline = q{};

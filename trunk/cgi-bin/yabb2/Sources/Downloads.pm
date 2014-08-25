@@ -32,7 +32,7 @@ sub DownloadView {
     my $thread = $INFO{'thread'};
     if ( !ref $thread_arrayref{$thread} ) {
         fopen( MSGTXT, "$datadir/$thread.txt" )
-          || fatal_error( 'cannot_open', "$datadir/$thread.txt", 1 );
+          or fatal_error( 'cannot_open', "$datadir/$thread.txt", 1 );
         @{ $thread_arrayref{$thread} } = <MSGTXT>;
         fclose(MSGTXT);
     }
@@ -46,7 +46,7 @@ sub DownloadView {
     map { $attachinput{$_} = 1; } @attachinput;
 
     fopen( AML, "$vardir/attachments.txt" )
-      || fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
+      or fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
     @attachinput =
       grep { $_ =~ /$thread\|.+\|(.+)\|\d+\s+/xsm && exists $attachinput{$1} }
       <AML>;
@@ -361,7 +361,7 @@ sub DownloadFileCouter {
     }
 
     fopen( ATM, "<$vardir/attachments.txt", 1 )
-      || fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
+      or fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
     my @attachments = <ATM>;
     fclose( ATM );
 
@@ -370,7 +370,7 @@ sub DownloadFileCouter {
 s/(.+\|)(.+)\|(\d+)(\s+)$/ $1 . ($dfile eq $2 ? "$2|" . ($3 + 1) : "$2|$3") . $4 /exsm;
     }
     fopen( ATM, ">$vardir/attachments.txt", 1 )
-      || fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
+      or fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
     print {ATM} @attachments or croak "$croak{'print'} ATM";
     fclose(ATM);
 

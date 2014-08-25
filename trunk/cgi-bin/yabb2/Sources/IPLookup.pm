@@ -30,7 +30,7 @@ sub IPLookup {
     $ip = $INFO{'ip'};
     my $lookuplink = q{};
     fopen( IPLOOKUP, "<$vardir/iplookup.urls" )
-      || fatal_error( 'cannot_open', "$vardir/iplookup.urls", 1 );
+      or fatal_error( 'cannot_open', "$vardir/iplookup.urls", 1 );
     @iplookup_urls = <IPLOOKUP>;
     fclose(IPLOOKUP);
     chomp @iplookup_urls;

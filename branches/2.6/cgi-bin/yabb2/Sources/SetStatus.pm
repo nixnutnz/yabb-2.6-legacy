@@ -33,7 +33,7 @@ sub SetStatus {
     }
 
     fopen( BOARDFILE, "<$boardsdir/$currentboard.txt" )
-      || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+      or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @boardfile = <BOARDFILE>;
 	fclose( BOARDFILE );
     for my $line ( 0 .. ( @boardfile - 1 ) ) {
@@ -69,7 +69,7 @@ sub SetStatus {
         }
     }
     fopen( BOARDFILE, ">$boardsdir/$currentboard.txt" )
-      || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+      or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     print {BOARDFILE} @boardfile or croak "$croak{'print'} BOARDFILE";
     fclose(BOARDFILE);
 

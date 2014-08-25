@@ -176,7 +176,7 @@ sub Post {
     if ( $threadid ne q{} ) {
         if ( !ref $thread_arrayref{$threadid} ) {
             fopen( FILE, "$datadir/$threadid.txt" )
-              || fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
+              or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
             @{ $thread_arrayref{$threadid} } = <FILE>;
             fclose(FILE);
         }
@@ -1874,18 +1874,18 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
 
         # This is a new thread. Save it.
         fopen( FILE, "<$boardsdir/$currentboard.txt", 1 )
-          || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+          or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
         my @buffer = <FILE>;
         fclose(FILE);
          fopen( FILE, ">$boardsdir/$currentboard.txt", 1 )
-          || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+          or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
         print {FILE}
 qq~$newthreadid|$subject|$name|$email|$date|$mreplies|$username|$icon|$mstate\n~
           or croak "$croak{'print'} FILE";
         print {FILE} @buffer or croak "$croak{'print'} FILE";
         fclose(FILE);
         fopen( FILE, ">$datadir/$newthreadid.txt" )
-          || fatal_error( 'cannot_open', "$datadir/$newthreadid.txt", 1 );
+          or fatal_error( 'cannot_open', "$datadir/$newthreadid.txt", 1 );
         print {FILE}
 qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfile\n~
           or croak "$croak{'print'} FILE";
@@ -1893,7 +1893,7 @@ qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfil
 
         if (@filelist) {
             fopen( AMP, ">>$vardir/attachments.txt" )
-              || fatal_error( 'cannot_open', "$vardir/attachments.txt" );
+              or fatal_error( 'cannot_open', "$vardir/attachments.txt" );
             foreach my $fixfile (@filelist) {
                 print {AMP}
 qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$date|$fixfile|0\n~
@@ -1974,7 +1974,7 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
         my @tag =
           qw(board replies views lastposter lastpostdate threadstatus repliers);
         fopen( UPDATE_CTB, "+<$datadir/$threadid.ctb", 1 )
-          || fatal_error( 'cannot_open', "$datadir/$threadid.ctb", 1 );
+          or fatal_error( 'cannot_open', "$datadir/$threadid.ctb", 1 );
         while ( my $aa = <UPDATE_CTB> ) {
             if ( $aa =~ /^'(.*?)',"(.*?)"/xsm ) {
                 ${$threadid}{$1} = $2;
@@ -2033,7 +2033,7 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
         }
 
         fopen( BOARDFILE, "<$boardsdir/$currentboard.txt", 1 )
-          || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+          or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
         my @buffer = <BOARDFILE>;
         fclose( BOARDFILE );
 
@@ -2041,7 +2041,7 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
             if ( $buffer[$i] =~ m{\A$mnum\|}oxsm ) { $buffer[$i] = q{}; last; }
         }
         fopen( BOARDFILE, ">$boardsdir/$currentboard.txt", 1 )
-          || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+          or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
         print {BOARDFILE}
 qq~$mnum|$msub|$mname|$memail|$date|$mreplies|$musername|$micon|$mstate\n~
           or croak "$croak{'print'} BOARDFILE";
@@ -2049,7 +2049,7 @@ qq~$mnum|$msub|$mname|$memail|$date|$mreplies|$musername|$micon|$mstate\n~
         fclose(BOARDFILE);
 
         fopen( THREADFILE, ">>$datadir/$threadid.txt" )
-          || fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
+          or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
         print {THREADFILE}
 qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfile\n~
           or croak "$croak{'print'} THREADFILE";
@@ -2057,7 +2057,7 @@ qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfil
 
         if (@filelist) {
             fopen( AMP, ">>$vardir/attachments.txt" )
-              || fatal_error( 'cannot_open', "$vardir/attachments.txt" );
+              or fatal_error( 'cannot_open', "$vardir/attachments.txt" );
             foreach my $fixfile (@filelist) {
                 print {AMP}
 qq~$mnum|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$date|$fixfile|0\n~
@@ -2377,7 +2377,7 @@ sub doshowthread {
 
     if ( !ref( $thread_arrayref{$threadid} ) && $threadid ) {
         fopen( THREADFILE, "$datadir/$threadid.txt" )
-          || fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
+          or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
         @{ $thread_arrayref{$threadid} } = <THREADFILE>;
         fclose(THREADFILE);
     }
@@ -2763,7 +2763,7 @@ sub modAlert {
     if ( $threadid ne q{} ) {
         if ( !ref $thread_arrayref{$threadid} ) {
             fopen( FILE, "$datadir/$threadid.txt" )
-              || fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
+              or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
             @{ $thread_arrayref{$threadid} } = <FILE>;
             fclose(FILE);
         }
@@ -3036,7 +3036,7 @@ sub modAlert2 {
             else             { $mstatus = q~ab~; }
         #if sender is guest and Alert is going to ModGroup
         fopen( INBOX, "$memberdir/broadcast.messages" )
-          || fatal_error( 'cannot_open', "$memberdir/broadcast.messages" );
+          or fatal_error( 'cannot_open', "$memberdir/broadcast.messages" );
         my @inmessages = <INBOX>;
         fclose(INBOX);
         fopen( INBOX, ">$memberdir/broadcast.messages" );

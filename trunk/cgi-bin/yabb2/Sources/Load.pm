@@ -22,7 +22,7 @@ sub LoadBoardControl {
     $annboard = q{};
 
     fopen( FORUMCONTROL, "$boardsdir/forum.control" )
-      || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
+      or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     my @boardcontrols = <FORUMCONTROL>;
     fclose(FORUMCONTROL);
     $maxboards = $#boardcontrols;
@@ -271,7 +271,7 @@ sub LoadUser {
     if ( -e "$memberdir/$user.$userextension" ) {
         if ( $user ne $username ) {
             fopen( LOADUSER, "$memberdir/$user.$userextension" )
-              || fatal_error( 'cannot_open', "$memberdir/$user.$userextension",
+              or fatal_error( 'cannot_open', "$memberdir/$user.$userextension",
                 1 );
             my @settings = <LOADUSER>;
             fclose(LOADUSER);
@@ -283,7 +283,7 @@ sub LoadUser {
         }
         else {
             fopen( LOADUSER, "<$memberdir/$user.$userextension" )
-              || fatal_error( 'cannot_open',
+              or fatal_error( 'cannot_open',
                 "$memberdir/$user.$userextension load 1", 1 );
             my @settings = <LOADUSER>;
             fclose(LOADUSER);
@@ -301,7 +301,7 @@ sub LoadUser {
             }
             if ( scalar @settings != 0 ) {
                 fopen( LOADUSER, ">$memberdir/$user.$userextension" )
-                  || fatal_error( 'cannot_open',
+                  or fatal_error( 'cannot_open',
                     "$memberdir/$user.$userextension load2", 1 );
                 print {LOADUSER} @settings or croak "$croak{'print'} LOADUSER";
                 fclose(LOADUSER);
@@ -373,11 +373,11 @@ sub KillModerator {
     my ($killmod) = @_;
     my ( @boardcontrol, @newmods, @boardline );
     fopen( FORUMCONTROL, "<$boardsdir/forum.control" )
-      || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
+      or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     @oldcontrols = <FORUMCONTROL>;
     fclose(FORUMCONTROL);
 
-    foreach my $boardline (@oldcontrols) {
+    for my $boardline (@oldcontrols) {
         chomp $boardline;
         if ( $boardline ne q{} ) {
             @newmods = ();
@@ -392,7 +392,7 @@ sub KillModerator {
     }
     @boardcontrol = undupe(@boardcontrol);
     fopen( FORUMCONTROL, ">$boardsdir/forum.control" )
-      || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
+      or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     print {FORUMCONTROL} @boardcontrol or croak "$croak{'print'} FORUMCONTROL";
     fclose(FORUMCONTROL);
     return;
@@ -402,7 +402,7 @@ sub KillModeratorGroup {
     my ($killmod) = @_;
     my ( @boardcontrol, @newmods, @boardline );
     fopen( FORUMCONTROL, "<$boardsdir/forum.control" )
-      || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
+      or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     @oldcontrols = <FORUMCONTROL>;
     fclose(FORUMCONTROL);
 
@@ -421,7 +421,7 @@ sub KillModeratorGroup {
     }
     @boardcontrol = undupe(@boardcontrol);
     fopen( FORUMCONTROL, ">$boardsdir/forum.control" )
-      || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
+      or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     print {FORUMCONTROL} @boardcontrol or croak "$croak{'print'} FORUMCONTROL";
     fclose(FORUMCONTROL);
     return;
@@ -623,34 +623,28 @@ sub LoadMiniUser {
 
     $tempgroupcheck = ${ $uid . $user }{'position'} || q{};
 
+    my @memstat = ();
     if ( exists $Group{$tempgroupcheck} && $tempgroupcheck ne q{} ) {
-        (
-            $title,     $stars,     $starpic,    $color,
-            $noshow,    $viewperms, $topicperms, $replyperms,
-            $pollperms, $attachperms
-        ) = split /\|/xsm, $Group{$tempgroupcheck};
-        $temptitle = $title;
+        #(
+        #    $title,     $stars,     $starpic,    $color,
+        #    $noshow,    $viewperms, $topicperms, $replyperms,
+        #    $pollperms, $attachperms
+        #)
+		@memstat = split /\|/xsm, $Group{$tempgroupcheck};
+        $temptitle = $memstat[0];
         $tempgroup = $Group{$tempgroupcheck};
         if ( $noshow == 0 ) { $bold = 1; }
         $memberunfo{$user} = $tempgroupcheck;
     }
     elsif ( $moderators{$user} ) {
-        (
-            $title,     $stars,     $starpic,    $color,
-            $noshow,    $viewperms, $topicperms, $replyperms,
-            $pollperms, $attachperms
-        ) = split /\|/xsm, $Group{'Moderator'};
-        $temptitle         = $title;
+        @memstat = split /\|/xsm, $Group{'Moderator'};
+        $temptitle         = $memstat[0];
         $tempgroup         = $Group{'Moderator'};
         $memberunfo{$user} = $tempgroupcheck;
     }
     elsif ( exists $NoPost{$tempgroupcheck} && $tempgroupcheck ne q{} ) {
-        (
-            $title,     $stars,     $starpic,    $color,
-            $noshow,    $viewperms, $topicperms, $replyperms,
-            $pollperms, $attachperms
-        ) = split /\|/xsm, $NoPost{$tempgroupcheck};
-        $temptitle         = $title;
+        @memstat = split /\|/xsm, $NoPost{$tempgroupcheck};
+        $temptitle         = $memstat[0];
         $tempgroup         = $NoPost{$tempgroupcheck};
         $memberunfo{$user} = $tempgroupcheck;
     }
@@ -658,24 +652,19 @@ sub LoadMiniUser {
     if ( !$tempgroup ) {
         foreach my $postamount ( reverse sort { $a <=> $b } keys %Post ) {
             if ( ${ $uid . $user }{'postcount'} >= $postamount ) {
-                (
-                    $title,     $stars,     $starpic,    $color,
-                    $noshow,    $viewperms, $topicperms, $replyperms,
-                    $pollperms, $attachperms
-                ) = split /\|/xsm, $Post{$postamount};
+                @memstat = split /\|/xsm, $Post{$postamount};
                 $tempgroup = $Post{$postamount};
                 last;
             }
         }
-        $memberunfo{$user} = $title;
+        $memberunfo{$user} = $memstat[0];
     }
 
     if ( $noshow == 1 ) {
-        $temptitle = $title;
+        $temptitle = $memstat[0];
         foreach my $postamount ( reverse sort { $a <=> $b } keys %Post ) {
             if ( ${ $uid . $user }{'postcount'} > $postamount ) {
-                ( $title, $stars, $starpic, $color, undef ) =
-                  split /\|/xsm, $Post{$postamount}, 5;
+                @memstat = split /\|/xsm, $Post{$postamount}, 5;
                 last;
             }
         }
@@ -683,24 +672,15 @@ sub LoadMiniUser {
 
     if ( !$tempgroup ) {
         $temptitle   = 'no group';
-        $title       = q{};
-        $stars       = 0;
-        $starpic     = q{};
-        $color       = q{};
-        $noshow      = 1;
-        $viewperms   = q{};
-        $topicperms  = q{};
-        $replyperms  = q{};
-        $pollperms   = q{};
-        $attachperms = q{};
+		@memstat = ( q{}, 0, q{}, q{}, 1, q{}, q{}, q{}, q{}, q{} );
     }
 
 # The following puts some new has variables in if this user is the user browsing the board
     if ( $user eq $username ) {
         if ($tempgroup) {
             (
-                $trash,     $trash,     $trash,      $trash,
-                $trash,     $viewperms, $topicperms, $replyperms,
+                undef,     undef,      undef,       undef,
+                undef,     $viewperms, $topicperms, $replyperms,
                 $pollperms, $attachperms
             ) = split /\|/xsm, $tempgroup;
         }
@@ -711,17 +691,17 @@ sub LoadMiniUser {
     $userlink = ${ $uid . $user }{'realname'} || $user;
     $userlink = qq~<b>$userlink</b>~;
     if   ( !$scripturl ) { $scripturl         = qq~$boardurl/$yyexec.$yyext~; }
-    if   ( $bold != 1 )  { $memberinfo{$user} = qq~$title~; }
-    else                 { $memberinfo{$user} = qq~<b>$title</b>~; }
+    if   ( $bold != 1 )  { $memberinfo{$user} = qq~$memstat[0]~; }
+    else                 { $memberinfo{$user} = qq~<b>$memstat[0]</b>~; }
 
-    if ( $color ne q{} ) {
+    if ( $memstat[3] ne q{} ) {
         $link{$user} =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}" style="color:$color;">$userlink</a>~;
-        $format{$user} = qq~<span style="color: $color;">$userlink</span>~;
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}" style="color:$memstat[3];">$userlink</a>~;
+        $format{$user} = qq~<span style="color: $memstat[3];">$userlink</span>~;
         $format_unbold{$user} =
-          qq~<span style="color: $color;">${$uid.$user}{'realname'}</span>~;
+          qq~<span style="color: $memstat[3];">${$uid.$user}{'realname'}</span>~;
         $col_title{$user} =
-          qq~<span style="color: $color;">$memberinfo{$user}</span>~;
+          qq~<span style="color: $memstat[3];">$memberinfo{$user}</span>~;
     }
     else {
         $link{$user} =
@@ -731,14 +711,14 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$userlin
         $col_title{$user}     = qq~$memberinfo{$user}~;
     }
     $addmembergroup{$user} = '<br />';
-    foreach my $addgrptitle ( split /,/xsm, ${ $uid . $user }{'addgroups'} ) {
-        foreach my $key ( sort { $a <=> $b } keys %NoPost ) {
+    for my $addgrptitle ( split /,/xsm, ${ $uid . $user }{'addgroups'} ) {
+        for my $key ( sort { $a <=> $b } keys %NoPost ) {
             (
-                $atitle,     $t,          $t,           $t,
+                $atitle,     undef,       undef,        undef,
                 $anoshow,    $aviewperms, $atopicperms, $areplyperms,
                 $apollperms, $aattachperms
             ) = split /\|/xsm, $NoPost{$key};
-            if ( $addgrptitle eq $key && $atitle ne $title ) {
+            if ( $addgrptitle eq $key && $atitle ne $memstat[0] ) {
                 if ( $user eq $username && !$iamadmin ) {
                     if ( $aviewperms == 1 )   { $viewperms   = 1; }
                     if ( $atopicperms == 1 )  { $topicperms  = 1; }
@@ -797,9 +777,9 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$userlin
     }
     $memberaddgroup{$user} = ${ $uid . $user }{'addgroups'};
 
-    my $starnum        = $stars;
+    my $starnum        = $memstat[1];
     my $memberstartemp = q{};
-    if ( $starpic !~ /\//xsm ) { $starpic = "$imagesdir/$starpic"; }
+    if ( $memstat[2] !~ /\//xsm ) { $starpic = "$imagesdir/$memstat[2]"; }
     while ( $starnum-- > 0 ) {
         $memberstartemp .= qq~<img src="$starpic" alt="*" />~;
     }
@@ -854,19 +834,13 @@ sub QuickLinks {
         $qlcount++;
         my $modcol = is_moderator_b($user);
         if ( $modcol == 1 ) {
-            (
-                $title,     $stars,     $starpic,    $color,
-                $noshow,    $viewperms, $topicperms, $replyperms,
-                $pollperms, $attachperms
-            ) = split /\|/xsm, $Group{'Moderator'};
+            @memstats = split /\|/xsm, $Group{'Moderator'};
         }
         my $display = 'display:inline';
-        if ( $ENV{'HTTP_USER_AGENT'} =~ /opera/ism ) {
+        if ( $ENV{'HTTP_USER_AGENT'} =~ /opera/ism || $ENV{'HTTP_USER_AGENT'} =~ /firefox/ism ) {
             $display = 'display:inline-block';
         }
-        elsif ( $ENV{'HTTP_USER_AGENT'} =~ /firefox/ism ) {
-            $display = 'display:inline-block';
-        }
+
         $quicklinks = qq~<div style="position:relative;$display">
             <ul id="$useraccount{$user}$qlcount" class="QuickLinks" onmouseover="keepLinks('$useraccount{$user}$qlcount')" onmouseout="TimeClose('$useraccount{$user}$qlcount')">
                 <li>~
@@ -1309,7 +1283,7 @@ sub buildIMS {
     ## inbox if it exists, either load and count totals or parse and update format.
     if ( -e "$memberdir/$builduser.msg" ) {
         fopen( USERMSG, "$memberdir/$builduser.msg" )
-          || fatal_error( 'cannot_open', "$memberdir/$builduser.msg", 1 );
+          or fatal_error( 'cannot_open', "$memberdir/$builduser.msg", 1 );
 
         # open inbox
         my @messages = <USERMSG>;
@@ -1328,7 +1302,7 @@ sub buildIMS {
     ## do the outbox
     if ( -e "$memberdir/$builduser.outbox" ) {
         fopen( OUTMESS, "$memberdir/$builduser.outbox" )
-          || fatal_error( 'cannot_open', "$memberdir/$builduser.outbox", 1 );
+          or fatal_error( 'cannot_open', "$memberdir/$builduser.outbox", 1 );
         my @outmessages = <OUTMESS>;
         fclose(OUTMESS);
         $outcurr = @outmessages;
@@ -1336,7 +1310,7 @@ sub buildIMS {
 
     if ( -e "$memberdir/$builduser.imdraft" ) {
         fopen( DRAFTMESS, "$memberdir/$builduser.imdraft" )
-          || fatal_error( 'cannot_open', "$memberdir/$builduser.imdraft", 1 );
+          or fatal_error( 'cannot_open', "$memberdir/$builduser.imdraft", 1 );
         my @d = <DRAFTMESS>;
         fclose(DRAFTMESS);
         $draftcount = @d;
@@ -1348,7 +1322,7 @@ sub buildIMS {
     my @currStoreFolders = split /\|/xsm, $storefolders;
     if ( -e "$memberdir/$builduser.imstore" ) {
         fopen( STOREMESS, "$memberdir/$builduser.imstore" )
-          || fatal_error( 'cannot_open', "$memberdir/$builduser.imstore", 1 );
+          or fatal_error( 'cannot_open', "$memberdir/$builduser.imstore", 1 );
         @imstore = <STOREMESS>;
         fclose(STOREMESS);
         if (@imstore) {
@@ -1375,7 +1349,7 @@ sub buildIMS {
             }
             if ( $storeUpdated == 1 ) {
                 fopen( STRMESS, "+>$memberdir/$builduser.imstore" )
-                  || fatal_error( 'cannot_open',
+                  or fatal_error( 'cannot_open',
                     "$memberdir/$builduser.imstore", 1 );
                 print {STRMESS} @imstore or croak "$croak{'print'} STRMESS";
                 fclose(STRMESS);
@@ -1419,7 +1393,7 @@ sub update_IMS {
       qw(PMmnum PMimnewcount PMmoutnum PMstorenum PMdraftnum PMfolders PMfoldersCount PMbcRead);
 
     fopen( UPDATE_IMS, ">$memberdir/$builduser.ims", 1 )
-      || fatal_error( 'cannot_open', "$memberdir/$builduser.ims", 1 );
+      or fatal_error( 'cannot_open', "$memberdir/$builduser.ims", 1 );
     print {UPDATE_IMS} qq~### UserIMS YaBB 2.6.0 Version ###\n\n~
       or croak "$croak{'print'} update IMS";
     for my $cnt ( 0 .. ( @tag - 1 ) ) {
@@ -1435,7 +1409,7 @@ sub load_IMS {
     my @ims;
     if ( -e "$memberdir/$builduser.ims" ) {
         fopen( IMSFILE, "$memberdir/$builduser.ims" )
-          || fatal_error( 'cannot_open', "$memberdir/$builduser.ims", 1 );
+          or fatal_error( 'cannot_open', "$memberdir/$builduser.ims", 1 );
         @ims = <IMSFILE>;
         fclose(IMSFILE);
     }
@@ -1468,7 +1442,7 @@ sub LoadBroadcastMessages {    #check broadcast messages
         map { $PMbcRead{$_} = 1; } split /,/xsm, ${$builduser}{'PMbcRead'};
 
         fopen( BCMESS, "<$memberdir/broadcast.messages" )
-          || fatal_error( 'cannot_open', "$memberdir/broadcast.messages", 1 );
+          or fatal_error( 'cannot_open', "$memberdir/broadcast.messages", 1 );
         my @bcmessages = <BCMESS>;
         fclose(BCMESS);
         foreach (@bcmessages) {

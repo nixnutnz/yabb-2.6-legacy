@@ -27,7 +27,7 @@ sub BoardTotals {
           qw(board threadcount messagecount lastposttime lastposter lastpostid lastreply lastsubject lasticon lasttopicstate);
         if ( $job eq 'load' ) {
             fopen( FORUMTOTALS, "$boardsdir/forum.totals" )
-              || fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
+              or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
             @lines = <FORUMTOTALS>;
             fclose(FORUMTOTALS);
             chomp @lines;
@@ -48,7 +48,7 @@ sub BoardTotals {
         }
         elsif ( $job eq 'update' ) {
             fopen( FORUMTOTALS, "<$boardsdir/forum.totals" )
-              || fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
+              or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
             @lines = <FORUMTOTALS>;
             fclose( FORUMTOTALS );
             for my $line ( 0 .. ( @lines - 1 ) ) {
@@ -79,14 +79,14 @@ sub BoardTotals {
                 }
             }
             fopen( FORUMTOTALS, ">$boardsdir/forum.totals" )
-              || fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
+              or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
             print {FORUMTOTALS} @lines or croak "$croak{'print'} FORUMTOTALS";
             fclose(FORUMTOTALS);
 
         }
         elsif ( $job eq 'delete' ) {
             fopen( FORUMTOTALS, "<$boardsdir/forum.totals" )
-              || fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
+              or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
             @lines = <FORUMTOTALS>;
             fclose( FORUMTOTALS );
             for my $line ( 0 .. ( @lines - 1 ) ) {
@@ -98,13 +98,13 @@ sub BoardTotals {
                 }
             }
             fopen( FORUMTOTALS, ">$boardsdir/forum.totals" )
-              || fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
+              or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
             print {FORUMTOTALS} @lines or croak "$croak{'print'} FORUMTOTALS";
             fclose(FORUMTOTALS);
         }
         elsif ( $job eq 'add' ) {
             fopen( FORUMTOTALS, ">>$boardsdir/forum.totals" )
-              || fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
+              or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
             foreach (@updateboards) {
                 print {FORUMTOTALS} "$_|0|0|N/A|N/A||||\n"
                   or croak "$croak{'print'} FORUMTOTALS";
@@ -120,7 +120,7 @@ sub BoardCountTotals {
     if ( !$cntboard ) { return; }
 
     fopen( BOARD, "$boardsdir/$cntboard.txt" )
-      || fatal_error( 'cannot_open', "$boardsdir/$cntboard.txt", 1 );
+      or fatal_error( 'cannot_open', "$boardsdir/$cntboard.txt", 1 );
     my @threads = <BOARD>;
     fclose(BOARD);
     my $threadcount  = @threads;
@@ -155,7 +155,7 @@ sub BoardSetLastInfo {
             if ( $lastthreadstate !~ /m/sm ) {
                 chomp $lastthreadstate;
                 fopen( FILE, "$datadir/$lastthreadid.txt" )
-                  || fatal_error( 'cannot_open', "$datadir/$lastthreadid.txt",
+                  or fatal_error( 'cannot_open', "$datadir/$lastthreadid.txt",
                     1 );
                 @lastthreadmessages = <FILE>;
                 fclose(FILE);
@@ -232,7 +232,7 @@ sub MessageTotals {
         my $threadstatus;
         my $openboard = ${$updatethread}{'board'};
         fopen( TESTBOARD, "$boardsdir/$openboard.txt" )
-          || fatal_error( 'cannot_open', "$boardsdir/$openboard.txt", 1 );
+          or fatal_error( 'cannot_open', "$boardsdir/$openboard.txt", 1 );
         while ( $ThreadLine = <TESTBOARD> ) {
             if ( $updatethread == ( split /\|/xsm, $ThreadLine, 2 )[0] ) {
                 $threadstatus = ( split /\|/xsm, $ThreadLine )[8];
@@ -244,7 +244,7 @@ sub MessageTotals {
 
         # storing thread other info
         fopen( MSG, "$datadir/$updatethread.txt" )
-          || fatal_error( 'cannot_open', "$datadir/$updatethread.txt", 1 );
+          or fatal_error( 'cannot_open', "$datadir/$updatethread.txt", 1 );
         my @threaddata = <MSG>;
         fclose(MSG);
         my @lastinfo = split /\|/xsm, $threaddata[-1];
@@ -288,7 +288,7 @@ sub MessageTotals {
         my @tag =
           qw(board replies views lastposter lastpostdate threadstatus repliers);
         fopen( UPDATE_CTB, ">$datadir/$updatethread.ctb", 1 )
-          || fatal_error( 'cannot_open', "$datadir/$updatethread.ctb", 1 );
+          or fatal_error( 'cannot_open', "$datadir/$updatethread.ctb", 1 );
         print {UPDATE_CTB}
           qq~### ThreadID: $updatethread, LastModified: $newtime ###\n\n~
           or croak "$croak{'print'} UPDATE_CTB";
@@ -342,12 +342,11 @@ sub UserAccount {
         require Sources::ExtendedProfiles;
         push @tags, ext_get_fields_array();
     }
-    push @tags, 'topicpreview';
-    push @tags, 'collapsescpoll';
+    push @tags, 'topicpreview', 'collapsescpoll';
    ## Mod hook ##
 
     fopen( UPDATEUSER, ">$memberdir/$user.$userext", 1 )
-      || fatal_error( 'cannot_open', "$memberdir/$user.$userext", 1 );
+      or fatal_error( 'cannot_open', "$memberdir/$user.$userext", 1 );
     print {UPDATEUSER} "### User variables for ID: $user ###\n\n"
       or croak "$croak{'print'} UPDATEUSER";
     for my $cnt ( 0 .. ( @tags - 1 ) ) {
@@ -381,7 +380,7 @@ sub MemberIndex {
         );
 
         fopen( TTL, "$memberdir/members.ttl" )
-          || fatal_error( 'cannot_open', "$memberdir/members.ttl", 1 );
+          or fatal_error( 'cannot_open', "$memberdir/members.ttl", 1 );
         $buffer = <TTL>;
         fclose(TTL);
 
@@ -389,7 +388,7 @@ sub MemberIndex {
         $membershiptotal++;
 
         fopen( TTL, ">$memberdir/members.ttl" )
-          || fatal_error( 'cannot_open', "$memberdir/members.ttl", 1 );
+          or fatal_error( 'cannot_open', "$memberdir/members.ttl", 1 );
         print {TTL} qq~$membershiptotal|$user~ or croak "$croak{'print'} TTL";
         fclose(TTL);
         return 0;
@@ -403,7 +402,7 @@ sub MemberIndex {
         removeNotifications($user);
 
         fopen( MEMLIST, "$memberdir/memberlist.txt" )
-          || fatal_error( 'cannot_open', "$memberdir/memberlist.txt", 1 );
+          or fatal_error( 'cannot_open', "$memberdir/memberlist.txt", 1 );
         @memberlt = <MEMLIST>;
         fclose(MEMLIST);
 
@@ -411,7 +410,7 @@ sub MemberIndex {
         my ( $lastuser, undef ) = split /\t/xsm, $memberlt[-1], 2;
 
         fopen( TTL, ">$memberdir/members.ttl" )
-          || fatal_error( 'cannot_open', "$memberdir/members.ttl", 1 );
+          or fatal_error( 'cannot_open', "$memberdir/members.ttl", 1 );
         print {TTL} qq~$membershiptotal|$lastuser~
           or croak "$croak{'print'} TTL";
         fclose(TTL);
@@ -460,7 +459,7 @@ sub MemberPostGroup {
 
 sub MembershipCountTotal {
     fopen( MEMBERLISTREAD, "$memberdir/memberlist.txt" )
-      || fatal_error( 'cannot_open', "$memberdir/memberlist.txt", 1 );
+      or fatal_error( 'cannot_open', "$memberdir/memberlist.txt", 1 );
     my @num = <MEMBERLISTREAD>;
     fclose(MEMBERLISTREAD);
     ( $latestmember, $meminfo ) = split /\t/xsm, $num[-1];
@@ -468,7 +467,7 @@ sub MembershipCountTotal {
     undef @num;
 
     fopen( MEMTTL, ">$memberdir/members.ttl" )
-      || fatal_error( 'cannot_open', "$memberdir/members.ttl", 1 );
+      or fatal_error( 'cannot_open', "$memberdir/members.ttl", 1 );
     print {MEMTTL} qq~$membertotal|$latestmember~
       or croak "$croak{'print'} MEMTTL";
     fclose(MEMTTL);
@@ -639,7 +638,7 @@ sub Rearrange_Sticky {
     $direction = $INFO{'direction'};
     $oldboard  = $INFO{'oldboard'};
     fopen( FILE, "$boardsdir/$board.txt" )
-      || fatal_error(
+      or fatal_error(
         "300 $messageindex_txt{'106'}: $messageindex_txt{'23'} $board.txt");
     @threads = <FILE>;
     fclose(FILE);
@@ -676,7 +675,7 @@ sub Rearrange_Sticky {
         && ( $direction ne 'down' || $stky != $#stickies ) )
     {
         fopen( FILE, ">$boardsdir/$board.txt" )
-          || fatal_error(
+          or fatal_error(
             "300 $messageindex_txt{'106'}: $messageindex_txt{'23'} $board.txt");
         foreach (@threads) {
             chomp $_;

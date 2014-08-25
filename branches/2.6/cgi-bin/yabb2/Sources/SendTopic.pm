@@ -39,7 +39,7 @@ sub SendTopic {
 
     if ( !ref $thread_arrayref{$topic} ) {
         fopen( FILE, "$datadir/$topic.txt" )
-          || fatal_error( 'cannot_open', "$datadir/$topic.txt", 1 );
+          or fatal_error( 'cannot_open', "$datadir/$topic.txt", 1 );
         @{ $thread_arrayref{$topic} } = <FILE>;
         fclose(FILE);
     }
@@ -201,7 +201,7 @@ sub SendTopic2 {
     } 
     if ( !ref $thread_arrayref{$topic} ) {
         fopen( FILE, "$datadir/$topic.txt" )
-          || fatal_error( 'cannot_open', "$datadir/$topic.txt", 1 );
+          or fatal_error( 'cannot_open', "$datadir/$topic.txt", 1 );
         @{ $thread_arrayref{$topic} } = <FILE>;
         fclose(FILE);
     }

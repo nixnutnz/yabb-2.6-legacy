@@ -130,7 +130,7 @@ if ( $currentboard ne q{} ) {
     }
 
     fopen( BOARDFILE, "$boardsdir/$currentboard.txt" )
-      || fatal_error( 'not_found', "$boardsdir/$currentboard.txt", 1 );
+      or fatal_error( 'not_found', "$boardsdir/$currentboard.txt", 1 );
     while ( $yyThreadLine = <BOARDFILE> ) {
         if ( $yyThreadLine =~ m{\A$curnum\|}oxsm ) { last; }
     }
@@ -225,7 +225,7 @@ sub banning {
         return $tmb;
     };
     fopen( BAN, "<$vardir/banlist.txt" )
-      || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+      or fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
     @banlist = <BAN>;
     for my $i (@banlist) {
         chomp $i;
@@ -288,7 +288,7 @@ sub check_banlist {
     }
     else {
         fopen( BAN, "$vardir/banlist.txt" )
-          || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+          or fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
         @banlist = <BAN>;
         fclose(BAN);
         chomp @banlist;
@@ -449,6 +449,7 @@ sub AccessCheck {
         $attachperms = 1;
     }
     my $access = 'denied';
+
     if ( $checktype == 1 ) {    # Post access check
         @allowed_groups = split /, /sm, ${ $uid . $curboard }{'topicperms'};
         if ( ${ $uid . $curboard }{'topicperms'} eq q{} ) {
@@ -645,14 +646,14 @@ sub ipban_update {
         $ehave = 0;
         $uhave = 0;
         fopen( BAN, "<$vardir/banlist.txt" )
-          || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+          or fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
         my @myban = <BAN>;
         chomp @myban;
         fclose(BAN);
 
     if ( $unban == 1 ) {
             fopen( BAN2, ">$vardir/banlist.txt" )
-              || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+              or fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
             foreach my $i (@myban) {
                 @banned = split /\|/xsm, $i;
             if (   $ban eq $banned[1]
@@ -700,7 +701,7 @@ sub ipban_update {
             $add_ban =
               qq~$type|$banned|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~;
         }
-        fopen( BAN2, ">>$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+        fopen( BAN2, ">>$vardir/banlist.txt" ) or fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
         print {BAN2} $add_ban or croak "$croak{'print'} BAN2";
         fclose(BAN2);
     }

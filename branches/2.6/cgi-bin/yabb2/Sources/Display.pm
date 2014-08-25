@@ -37,7 +37,7 @@ sub Display {
           ( gethostbyaddr pack( 'C4', split /\./xsm, $user_ip ), 2 )[0];
         if ( -e "$vardir/bots.hosts" ) {
             fopen( BOTS, "$vardir/bots.hosts" )
-              || fatal_error( 'cannot_open', "$vardir/bots.hosts", 1 );
+              or fatal_error( 'cannot_open', "$vardir/bots.hosts", 1 );
             my @botlist = <BOTS>;
             fclose(BOTS);
             chomp @botlist;
@@ -739,7 +739,7 @@ qq~$menusep<a href="$scripturl?action=print;num=$viewnum" target="_blank">$img{'
 
     if ( !ref $thread_arrayref{$viewnum} ) {
         fopen( MSGTXT, "$datadir/$viewnum.txt" )
-          || fatal_error( 'cannot_open', "$datadir/$viewnum.txt", 1 );
+          or fatal_error( 'cannot_open', "$datadir/$viewnum.txt", 1 );
         @{ $thread_arrayref{$viewnum} } = <MSGTXT>;
         fclose(MSGTXT);
     }
@@ -1553,7 +1553,7 @@ qq~$menusep<a href="javascript:document.multidel.submit();" onclick="return conf
     }
     if ( $en_bookmarks && $board_bookmarks ) {
         fopen( BMARKS, "<$vardir/Bookmarks.txt" )
-          || fatal_error( 'cannot_open', "$vardir/Bookmarks.txt", 1 );
+          or fatal_error( 'cannot_open', "$vardir/Bookmarks.txt", 1 );
         @bookmarks = <BMARKS>;
         fclose(BMARKS);
         foreach my $bookmark ( sort { $a <=> $b } @bookmarks ) {
@@ -1819,14 +1819,14 @@ s/(<!-- Threads Admin Button Bar start -->.*?<\/td>)/$1<td class="right">{yabb f
 sub NextPrev {
     my ( $name, $lastvisit ) = @_;
     fopen( MSGTXT, "$boardsdir/$currentboard.txt" )
-      || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+      or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @threadlist = <MSGTXT>;
     fclose(MSGTXT);
 
     $thevirboard = q~num=~;
     if ($vircurrentboard) {
         fopen( MSGTXT, "$boardsdir/$vircurrentboard.txt" )
-          || fatal_error( 'cannot_open', "$boardsdir/$vircurrentboard.txt", 1 );
+          or fatal_error( 'cannot_open', "$boardsdir/$vircurrentboard.txt", 1 );
         my @virthreadlist = <MSGTXT>;
         fclose(MSGTXT);
         push @threadlist, @virthreadlist;

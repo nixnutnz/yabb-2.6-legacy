@@ -862,11 +862,11 @@ sub checkUserAvail {
     my $taken = 'false';
 
     fopen( RESERVE, "$vardir/reserve.txt" )
-      || fatal_error( 'cannot_open', "$vardir/reserve.txt", 1 );
+      or fatal_error( 'cannot_open', "$vardir/reserve.txt", 1 );
     @reserve = <RESERVE>;
     fclose(RESERVE);
     fopen( RESERVECFG, "$vardir/reservecfg.txt" )
-      || fatal_error( 'cannot_open', "$vardir/reservecfg.txt", 1 );
+      or fatal_error( 'cannot_open', "$vardir/reservecfg.txt", 1 );
     @reservecfg = <RESERVECFG>;
     fclose(RESERVECFG);
 

@@ -102,7 +102,7 @@ sub ModifyMessage {
     else {
         if ( !ref $thread_arrayref{$threadid} ) {
             fopen( FILE, "$datadir/$threadid.txt" )
-              || fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
+              or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
             @{ $thread_arrayref{$threadid} } = <FILE>;
             fclose(FILE);
         }
@@ -192,7 +192,7 @@ sub ModifyMessage2 {
         else {
             if ( !ref $thread_arrayref{$threadid} ) {
                 fopen( FILE, "$datadir/$threadid.txt" )
-                  || fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
+                  or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
                 @{ $thread_arrayref{$threadid} } = <FILE>;
                 fclose(FILE);
             }
@@ -399,7 +399,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
 
     if ( !ref $thread_arrayref{$threadid} ) {
         fopen( FILE, "$datadir/$threadid.txt" )
-          || fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
+          or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
         @{ $thread_arrayref{$threadid} } = <FILE>;
         fclose(FILE);
     }
@@ -766,7 +766,7 @@ qq~$threadid|$postid|$subject|$mname|$currentboard|$filesizekb|$date|$fixfile|0\
     ${ $thread_arrayref{$threadid} }[$postid] =
 qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$date|$username|$fixfile\n~;
     fopen( FILE, ">$datadir/$threadid.txt" )
-      || fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
+      or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
     print {FILE} @{ $thread_arrayref{$threadid} }
       or croak "$croak{'print'} FILE";
     fclose(FILE);
@@ -775,7 +775,7 @@ qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$
 
 # Save the current board. icon, status or subject may have changed -> update board info
         fopen( BOARD, "+<$boardsdir/$currentboard.txt" )
-          || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+          or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
         my @board = <BOARD>;
         for my $c ( 0 .. ( @board - 1 ) ) {
             if ( $board[$c] =~ m{\A$threadid\|}osm ) {
@@ -795,7 +795,7 @@ qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$
 
         # maybe last message changed subject and/or icon -> update board info
         fopen( BOARD, "$boardsdir/$currentboard.txt" )
-          || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+          or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
         my @board = <BOARD>;
         fclose(BOARD);
         BoardSetLastInfo( $currentboard, \@board );
@@ -846,7 +846,7 @@ sub MultiDel {    # deletes singel- or multi-Posts
 
     if ( !ref $thread_arrayref{$thread} ) {
         fopen( FILE, "$datadir/$thread.txt" )
-          || fatal_error( 'cannot_open', "$datadir/$thread.txt", 1 );
+          or fatal_error( 'cannot_open', "$datadir/$thread.txt", 1 );
         @{ $thread_arrayref{$thread} } = <FILE>;
         fclose(FILE);
     }
@@ -946,7 +946,7 @@ sub MultiDel {    # deletes singel- or multi-Posts
 
 # if thread has not been deleted: update thread, update message index details ...
     fopen( FILE, ">$datadir/$thread.txt" )
-      || fatal_error( 'cannot_open', "$datadir/$thread.txt", 1 );
+      or fatal_error( 'cannot_open', "$datadir/$thread.txt", 1 );
     print {FILE} @{ $thread_arrayref{$thread} } or croak "$croak{'print'} FILE";
     fclose(FILE);
 
@@ -969,7 +969,7 @@ sub MultiDel {    # deletes singel- or multi-Posts
 
     my $threadline = q{};
     fopen( BOARDFILE, "+<$boardsdir/$currentboard.txt" )
-      || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+      or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @buffer = <BOARDFILE>;
 
     for my $c ( 0 .. ( @buffer - 1 ) ) {

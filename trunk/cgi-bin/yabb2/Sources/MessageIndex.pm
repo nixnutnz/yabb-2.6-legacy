@@ -142,7 +142,7 @@ sub MessageIndex {
     ToChars($cat);
 
     fopen( BRDTXT, "$boardsdir/$currentboard.txt" )
-      || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+      or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     @threadlist = <BRDTXT>;
     fclose(BRDTXT);
     $sort_subject =
@@ -973,7 +973,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">$f
 
             # Need to load thread to see lastposters DISPLAYname if is Ex-Member
                 fopen( EXMEMBERTHREAD, "$datadir/$mnum.txt" )
-                  || fatal_error( 'cannot_open', "$datadir/$mnum.txt", 1 );
+                  or fatal_error( 'cannot_open', "$datadir/$mnum.txt", 1 );
                 my @x = <EXMEMBERTHREAD>;
                 fclose(EXMEMBERTHREAD);
                 $lastposter =
@@ -1849,7 +1849,7 @@ sub MarkRead {    # Mark all threads in this board as read.
 
     # Look for any threads marked unread in the current board and remove them
     fopen( BRDTXT, "$boardsdir/$currentboard.txt" )
-      || fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+      or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @threadlist = map { /^(\d+)\|/xsm } <BRDTXT>;
     fclose(BRDTXT);
 

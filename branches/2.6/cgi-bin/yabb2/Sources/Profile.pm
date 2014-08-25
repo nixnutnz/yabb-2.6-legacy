@@ -103,16 +103,16 @@ sub ProfileCheck {
     my @x = @_;
     PrepareProfile();
 
-    my $sid_descript = $mycenter_profile_txt{siddescript};
+    my $sid_descript = $mycenter_profile_txt{'siddescript'};
     if ( $x[0] ) {
-        $sid_descript = $mycenter_profile_txt{timeoutdescript};
+        $sid_descript = $mycenter_profile_txt{'timeoutdescript'};
         $redirsid     = $x[0];
         if ( $redirsid =~ s/2$//xsm ) {
             $yyjavascript .= qq~\nalert("$profile_txt{'897'}");~;
         }
     }
     else {
-        $redirsid = $INFO{'page'} || 'profile';
+        $redirsid = defined $INFO{'page'} ? $INFO{'page'} : 'profile';
     }
 
     $yymain .= $myprofile_a;
@@ -130,7 +130,7 @@ s/{yabb prof_act}/$scripturl?action=profileCheck2;username=$useraccount{$user}/s
 sub ProfileCheck2 {
     PrepareProfile();
 
-    my $password = encode_password( $FORM{'passwrd'} || $INFO{'passwrd'} );
+    my $password = defined $FORM{'passwrd'} ? encode_password( $FORM{'passwrd'} ) : encode_password( $INFO{'passwrd'} );
     if ( $user eq $username && $password ne ${ $uid . $username }{'password'} )
     {
         fatal_error('current_password_wrong');
@@ -423,8 +423,6 @@ $myprofile_edit~;
         && $username eq $user )
     {
         LoadLanguage('Sessions');
-#        require Sources::Decoder;
-#        my $decanswer = descramble( ${ $uid . $user }{'sesanswer'}, $user );
         my $decanswer = ${ $uid . $user }{'sesanswer'};
         $questsel = qq~<select name="sesquest" id="sesquest" size="1">\n~;
         while ( ( $key, $val ) = each %sesquest_txt ) {
@@ -645,7 +643,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
 
     if ($allowpics) {
         opendir( DIR, $facesdir )
-          || fatal_error( 'cannot_open_dir',
+          or fatal_error( 'cannot_open_dir',
             "($facesdir)!<br />$profile_txt{'681'}", 1 );
         @contents = readdir DIR;
         closedir DIR;
@@ -676,8 +674,8 @@ qq~                <option value="$line"$checked>$name</option>\n~;
                 }
             }
         }
-        my ( $pic, $tmp, $s, $alt );
-        $tmp = $facesurl;
+        my ( $pic, $s, $alt );
+        my $tmp = $facesurl;
         if ( $tmp =~ /^(http(s?):\/\/)/xsm ) {
             ( $tmp, $s ) = ( $1, $2 );
         }
@@ -724,7 +722,7 @@ qq~                <option value="$line"$checked>$name</option>\n~;
           DrawGroups( ${ $uid . $user }{'addgroups'},
             ${ $uid . $user }{'position'}, 0 );
 
-        if ($addmemgroup) {
+        if ( $addmemgroup ) {
             $my_addmemgroup = $myprofile_addmemgroup;
             $my_addmemgroup =~ s/{yabb selsize}/$selsize/sm;
             $my_addmemgroup =~ s/{yabb addmemgroup}/$addmemgroup/sm;
@@ -932,11 +930,12 @@ qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$di
             require DateTime::TimeZone;
         };
         my $user_tz_select = q{};
+        $default_tz = defined $default_tz ? $default_tz : 'UTC';
         if ( !$EVAL_ERROR ) {
             DateTime->import();
             DateTime::TimeZone->import();
             LoadLanguage('Countries');
-            my $mytz = ${ $uid . $user }{'user_tz'} || $default_tz;
+            $mytz = defined ${ $uid . $user }{'user_tz'} ? ${ $uid . $user }{'user_tz'} : $default_tz;
             my @mycntry = sort { $countrytime_txt{$a} cmp $countrytime_txt{$b} } keys %countrytime_txt;
             my $myselect = q{};
             if ( $mytz eq 'UTC' ) {
@@ -957,7 +956,7 @@ qq~<option value="$i"$myselect>$countrytime_txt{$i}</option>~;
             $user_tz_select .= q~</select>~;
         }
         else {
-            my $mytz = ${ $uid . $user }{'user_tz'} || $default_tz;
+            $mytz = defined ${ $uid . $user }{'user_tz'} ? ${ $uid . $user }{'user_tz'} : $default_tz;
             $localopt = q{};
             if ( $mytz eq 'local' ) {
                 $myselectb = ' selected="selected"';
@@ -1219,29 +1218,23 @@ sub ModifyProfileAdmin {
     $menucolors[5] = 'selected-bg';
     ProfileMenu();
 
-    ( $MemStatAdmin, $MemStarNumAdmin, $MemStarPicAdmin, $MemTypeColAdmin ) =
-      split /\|/xsm, $Group{'Administrator'};
-    ( $MemStatGMod, $MemStarNumGMod, $MemStarPicGMod, $MemTypeColGMod ) =
-      split /\|/xsm, $Group{'Global Moderator'};
-    ( $MemStatFMod, $MemStarNumFMod, $MemStarPicFMod, $MemTypeColFMod ) =
-      split /\|/xsm, $Group{'Mid Moderator'};
-    ( $MemStatMod, $MemStarNumMod, $MemStarPicMod, $MemTypeColMod ) =
-      split /\|/xsm, $Group{'Moderator'};
-
-    if ( ${ $uid . $user }{'position'} eq 'Administrator' ) {
-        $tt = $MemStatAdmin;
+    my @grps = sort keys %Group;
+    my @memstat = ();
+    $mygrp = 0;
+    for ( @grps ) {
+        if ( ${ $uid . $user }{'position'} eq $_ ) {
+            @memstat = split /\|/xsm, $Group{$_};
+            $tt = $memstat[0];
+            $mygrp = 1;
+        }
     }
-    elsif ( ${ $uid . $user }{'position'} eq 'Global Moderator' ) {
-        $tt = $MemStatGMod;
-    }
-    elsif ( ${ $uid . $user }{'position'} eq 'Mid Moderator' ) {
-        $tt = $MemStatFMod;
-    }
-    elsif ( ${ $uid . $user }{'position'} ) {
+    if ( $mygrp != 1) {
+        if ( ${ $uid . $user }{'position'} ) {
         $ttgrp = ${ $uid . $user }{'position'};
         ( $tt, undef ) = split /\|/xsm, $NoPost{$ttgrp}, 2;
+        }
+        else { $tt = ${ $uid . $user }{'position'}; }
     }
-    else { $tt = ${ $uid . $user }{'position'}; }
 
     $regreason = ${ $uid . $user }{'regreason'};
     $regreason =~ s/<br \/>/\n/gsm;
@@ -1275,26 +1268,19 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
           qq~$profile_txt{'79'} ($user) &rsaquo; $profile_txt{'820'}~;
         $yynavigation = qq~&rsaquo; $profiletitle~;
     }
-    if ( !$iamgmod ) {
-        ( $title, $stars, $starpic, $color ) = split /\|/xsm,
-          $Group{'Administrator'};
-        $my_group .=
-qq~\n                        <option value="Administrator">$title</option>~;
-        ( $title, $stars, $starpic, $color ) = split /\|/xsm,
-          $Group{'Global Moderator'};
-        $my_group .=
-qq~\n                        <option value="Global Moderator">$title</option>~;
-        ( $title, $stars, $starpic, $color ) = split /\|/xsm,
-          $Group{'Mid Moderator'};
-        $my_group .=
-qq~\n                        <option value="Mid Moderator">$title</option>~;
+    if ( $iamadmin ) {
+        for ( @grps ) {
+            @memstat = split /\|/xsm, $Group{$_};
+            $my_group .=
+qq~\n                        <option value="$_">$memstat[0]</option>~;
+        }
     }
 
     my $z = 0;
-    foreach (@nopostorder) {
-        ( $title, $stars, $starpic, $color, undef ) = split /\|/xsm,
+    for (@nopostorder) {
+        @memstat = split /\|/xsm,
           $NoPost{$_}, 5;
-        $my_group .= qq~<option value="$_">$title</option>~;
+        $my_group .= qq~<option value="$_">$memstat[0]</option>~;
         $z++;
     }
 
@@ -1528,28 +1514,23 @@ sub ModifyProfile2 {
             }
         }
 
-        if (   $member{'bday1'} ne q{}
-            || $member{'bday2'} ne q{}
-            || $member{'bday3'} ne q{} )
+        if (   ( $member{'bday1'} !~ /^[0-9]+$/xsm || $member{'bday1'} eq q{} )
+            || ( $member{'bday2'} !~ /^[0-9]+$/xsm || $member{'bday2'} eq q{} )
+            || ( $member{'bday3'} !~ /^[0-9]+$/xsm || $member{'bday3'} eq q{}
+            || length( $member{'bday3'} ) < 4 ) )
         {
-            if (   $member{'bday1'} !~ /^[0-9]+$/xsm
-                || $member{'bday2'} !~ /^[0-9]+$/xsm
-                || $member{'bday3'} !~ /^[0-9]+$/xsm
-                || length( $member{'bday3'} ) < 4 )
-            {
                 fatal_error( 'invalid_birthdate',
                     "($member{'bday1'}/$member{'bday2'}/$member{'bday3'})" );
-            }
-            if (   $member{'bday1'} < 1
-                || $member{'bday1'} > 12
-                || $member{'bday2'} < 1
-                || $member{'bday2'} > 31
-                || $member{'bday3'} < 1901
-                || $member{'bday3'} > $year - 5 )
-            {
-                fatal_error( 'invalid_birthdate',
-                    "($member{'bday1'}/$member{'bday2'}/$member{'bday3'})" );
-            }
+        }
+        if (   $member{'bday1'} < 1
+            || $member{'bday1'} > 12
+            || $member{'bday2'} < 1
+            || $member{'bday2'} > 31
+            || $member{'bday3'} < 1901
+            || $member{'bday3'} > $year - 5 )
+        {
+            fatal_error( 'invalid_birthdate',
+                "($member{'bday1'}/$member{'bday2'}/$member{'bday3'})" );
         }
         $member{'bday1'} =~ s/[^0-9]//gxsm;
         $member{'bday2'} =~ s/[^0-9]//gxsm;
@@ -1644,7 +1625,7 @@ sub ModifyProfile2 {
 
             # Check to see if name is reserved
             fopen( FILE, "$vardir/reservecfg.txt" )
-              || fatal_error( 'cannot_open', "$vardir/reservecfg.txt", 1 );
+              or fatal_error( 'cannot_open', "$vardir/reservecfg.txt", 1 );
             my @reservecfg = <FILE>;
             fclose(FILE);
             chomp @reservecfg;
@@ -1657,7 +1638,7 @@ sub ModifyProfile2 {
               : lc $member{'name'};
 
             fopen( FILE, "$vardir/reserve.txt" )
-              || fatal_error( 'cannot_open', "$vardir/reserve.txt", 1 );
+              or fatal_error( 'cannot_open', "$vardir/reserve.txt", 1 );
             my @reserve = <FILE>;
             fclose(FILE);
             foreach my $reserved (@reserve) {
@@ -1692,7 +1673,7 @@ sub ModifyProfile2 {
 
         # rewrite attachments.txt with new username
         fopen( ATM, "<$vardir/attachments.txt", 1 )
-          || fatal_error( 'cannot_open', "$vardir/attachments.txt" );
+          or fatal_error( 'cannot_open', "$vardir/attachments.txt" );
         my @attachments = <ATM>;
         fclose(ATM);
 
@@ -1701,7 +1682,7 @@ sub ModifyProfile2 {
 s/^(\d+\|\d+\|.*?)\|(.*?)\|/ ($2 eq ${$uid.$user}{'realname'} ? "$1|$member{'name'}|" : "$1|$2|") /esm;
         }
         fopen( ATM, ">$vardir/attachments.txt", 1 )
-          || fatal_error( 'cannot_open', "$vardir/attachments.txt" );
+          or fatal_error( 'cannot_open', "$vardir/attachments.txt" );
         print {ATM} @attachments or croak "$croak{'print'} ATM";
         fclose(ATM);
 
@@ -1729,10 +1710,6 @@ s/^(\d+\|\d+\|.*?)\|(.*?)\|/ ($2 eq ${$uid.$user}{'realname'} ? "$1|$member{'nam
         ${ $uid . $user }{'hideage'}  = $member{'hideage'};
         ${ $uid . $user }{'sesquest'} = $member{'sesquest'};
 
-#        require Sources::Decoder;
-#        ${ $uid . $user }{'sesanswer'} =
-#          scramble( $member{'sesanswer'}, $user );
-#        ${ $uid . $username }{'session'} = encode_password($user_ip);
         ${ $uid . $user }{'sesanswer'} = $member{'sesanswer'};
 
         # EventCal Begin
@@ -1831,7 +1808,7 @@ qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};si
         }
 
         fopen( PMATTACH, "<$vardir/pm.attachments" )
-          || fatal_error( 'cannot_open', "$vardir/pm.attachments", 1 );
+          or fatal_error( 'cannot_open', "$vardir/pm.attachments", 1 );
         @pmattach = <PMATTACH>;
         fclose(PMATTACH);
 
@@ -1853,7 +1830,7 @@ qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};si
         fopen( FILE, ">$vardir/eventcalbday.db" );
         foreach my $x (@birthmembers) {
             chomp $x;
-            my ( $user_year, $user_month, $user_day, $user_xy, $user_hide ) =
+            my ( undef, undef, undef, $user_xy, undef ) =
               split /\|/xsm, $x;
             if ( $user_xy ne $user ) {
                 print {FILE} qq~$x\n~ or croak "$croak{'print'} birthday";
@@ -2119,7 +2096,7 @@ sub ModifyProfileOptions2 {
     if ($allowpics) {
         opendir DIR,
           $facesdir
-          || fatal_error( 'cannot_open_dir',
+          or fatal_error( 'cannot_open_dir',
             "($facesdir)!<br \/>$profile_txt{'681'}", 1 );
         closedir DIR;
     }
@@ -2319,7 +2296,7 @@ sub ModifyProfileOptions2 {
         map { $groups{$_} = 2; } split /,/xsm, ${ $uid . $user }{'addgroups'};
         map { $groups{$_} = 1; } split /, /sm, $member{'joinmemgroup'};
         my @nopostmember;
-        foreach ( keys %NoPost ) {
+        for ( keys %NoPost ) {
             next if ${ $uid . $user }{'position'} eq $_;
             if ( $groups{$_} == 1 && ( split /\|/xsm, $NoPost{$_} )[10] ) {
                 push @nopostmember, $_;
@@ -2627,7 +2604,7 @@ qq~$dr_month/$dr_day/$dr_year $maintxt{'107'} $dr_hour:$dr_minute:$dr_secund~;
             $grp_after = qq~$member{'settings7'}~;
         }
         else {
-            foreach my $postamount ( reverse sort { $a <=> $b } keys %Post ) {
+            for my $postamount ( reverse sort { $a <=> $b } keys %Post ) {
                 if ( $member{'settings6'} >= $postamount ) {
                     ( $title, undef ) = split /\|/xsm, $Post{$postamount}, 2;
                     $grp_after = $title;
@@ -2642,7 +2619,7 @@ qq~$dr_month/$dr_day/$dr_year $maintxt{'107'} $dr_hour:$dr_minute:$dr_secund~;
     my %groups;
     map { $groups{$_} = 1; } split /, /sm, $member{'addgroup'};
     my @nopostmember;
-    foreach ( keys %NoPost ) {
+    for ( keys %NoPost ) {
         next if $member{'settings7'} eq $_;
         if ( $groups{$_} ) { push @nopostmember, $_; }
     }
@@ -3062,16 +3039,12 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
         $userismod = is_moderator($user);
     }
     if ($userismod) {
-        (
-            $title,     $stars,     $starpic,    $color,
-            $noshow,    $viewperms, $topicperms, $replyperms,
-            $pollperms, $attachperms
-        ) = split /\|/xsm, $Group{'Moderator'};
-        my $starnum        = $stars;
+        @memstats = split /\|/xsm, $Group{'Moderator'};
+        my $starnum        = $memstats[1];
         my $memberstartemp = q{};
-        if ( $starpic !~ /\//xsm ) { $starpic = "$imagesdir/$starpic"; }
+        if ( $memstats[2] !~ /\//xsm ) { $memstats[2] = "$imagesdir/$memstats[2]"; }
         while ( $starnum-- > 0 ) {
-            $memberstartemp .= qq~<img src="$starpic" alt="*" />~;
+            $memberstartemp .= qq~<img src="$memstats[2]" alt="*" />~;
         }
         $memberstar = $memberstartemp ? "$memberstartemp<br />" : q{};
 
@@ -3083,7 +3056,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
                 if ( $indent > 2 ) { $dash = q{-}; }
 
                 ( $boardname, $boardperms, $boardview ) =
-                  split /\|/xsm, $board{"$board"};
+                  split /\|/xsm, $board{$board};
                 if (   ${ $uid . $board }{'ann'} == 1
                     || ${ $uid . $board }{'rbin'} == 1 )
                 {
@@ -3091,7 +3064,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
                 }
                 $moderators = ${ $uid . $board }{'mods'};
                 my @BoardModerators = split /, ?/sm, $moderators;
-                foreach my $thisMod (@BoardModerators) {
+                for my $thisMod (@BoardModerators) {
                     if ( $thisMod eq $user ) {
                         ( $boardname, $boardperms, $boardview ) =
                           split /\|/xsm, $board{"$board"};
@@ -3116,14 +3089,14 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
             $indent -= 2;
         };
 
-        foreach my $catid (@categoryorder) {
+        for my $catid (@categoryorder) {
             (@bdlist) = split /\,/xsm, $cat{$catid};
             my $indent = -2;
             get_subboards(@bdlist);
         }
 
         $my_star = $myshow_star;
-        $my_star =~ s/{yabb title}/$title/sm;
+        $my_star =~ s/{yabb title}/$memstats[0]/sm;
         $my_star =~ s/{yabb memberstar}/$memberstar/sm;
         $my_star =~ s/{yabb my_mod_star}/$my_mod_star/sm;
     }
@@ -3773,11 +3746,11 @@ qq~<p><a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}"><b
 
 sub DrawGroups {
     my ( $availgroups, $position, $show_additional ) = @_;
-    my ( %groups, $groupsel, $name, $additional );
+    my ( %groups, $groupsel );
     map { $groups{$_} = 1; } split /,/xsm, $availgroups;
 
-    foreach my $key (@nopostorder) {
-        (
+    for my $key (@nopostorder) {
+        my (
             $name, undef, undef, undef, undef, undef,
             undef, undef, undef, undef, $additional
         ) = split /\|/xsm, $NoPost{$key};
