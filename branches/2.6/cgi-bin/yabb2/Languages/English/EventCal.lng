@@ -178,6 +178,7 @@ $eventcallngver = 'YaBB 2.6.0 $Revision$';
 'error_image' => 'Please select an image for the Event Icon.',
 'error_desc' => 'Please enter a description for the Event Icon.',
 'del' => 'Delete old events',
+'showtoday' => 'Use "Today", "Yesterday", and "Tomorrow" in event and birthday displays.',
 );
 
 1;

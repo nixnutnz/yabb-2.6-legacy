@@ -742,6 +742,7 @@ $ext_prof_fields
 \$Show_ColorLinks = $Show_ColorLinks;
 \$No_ShortUbbc = $No_ShortUbbc;
 \$Event_TodayColor = "$Event_TodayColor";
+\$Show_caltoday = $Show_caltoday;
 \$Delete_EventsUntil = $Delete_EventsUntil;
 \$CalShortEvent = $CalShortEvent;
 \$CalEventPerms = qq~$CalEventPerms~;

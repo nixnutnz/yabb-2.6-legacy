@@ -66,16 +66,17 @@ sub EventCalSet {
     elsif ( $Show_EventBirthdays == 1 ) { $gevt2 = ' selected="selected"'; }
     elsif ( $Show_EventBirthdays == 2 ) { $gevt3 = ' selected="selected"'; }
 
-    if ($Show_BirthdaysList)  { $onbirthlistchecked     = 'checked="checked"' }
-    if ($Show_MiniCalIcons)   { $onminiiconchecked      = 'checked="checked"' }
-    if ($ShowSunday)          { $onsundaychecked        = 'checked="checked"' }
-    if ($CalEventPrivate)     { $caleventprivatechecked = 'checked="checked"' }
-    if ($Delete_EventsUntil)  { $chkDelete_EventsUntil = 'checked="checked"' }
-    if ($DisplayCalEvents)    { $dcaleventschecked      = 'checked="checked"' }
-    if ($Show_ColorLinks)     { $oncolorlinkschecked    = 'checked="checked"' }
-    if ($No_ShortUbbc)        { $onnosubbcchecked       = 'checked="checked"' }
-    if ($Show_BdColorLinks)   { $onbdcolorlinkschecked  = 'checked="checked"' }
-    if ($Show_BdStarsign)     { $onbdstarchecked  = 'checked="checked"' }
+    if ($Show_caltoday)       { $Show_caltodaych = 'checked="checked"'; }
+    if ($Show_BirthdaysList)  { $onbirthlistchecked     = 'checked="checked"'; }
+    if ($Show_MiniCalIcons)   { $onminiiconchecked      = 'checked="checked"'; }
+    if ($ShowSunday)          { $onsundaychecked        = 'checked="checked"'; }
+    if ($CalEventPrivate)     { $caleventprivatechecked = 'checked="checked"'; }
+    if ($Delete_EventsUntil)  { $chkDelete_EventsUntil = 'checked="checked"'; }
+    if ($DisplayCalEvents)    { $dcaleventschecked      = 'checked="checked"'; }
+    if ($Show_ColorLinks)     { $oncolorlinkschecked    = 'checked="checked"'; }
+    if ($No_ShortUbbc)        { $onnosubbcchecked       = 'checked="checked"'; }
+    if ($Show_BdColorLinks)   { $onbdcolorlinkschecked  = 'checked="checked"'; }
+    if ($Show_BdStarsign)     { $onbdstarchecked  = 'checked="checked"'; }
     $Event_TodayColor = lc $Event_TodayColor;
 
     if    ( !$CalEventNoName )     { $noname1 = ' selected="selected"'; }
@@ -139,6 +140,9 @@ sub EventCalSet {
             }
                         </script>
                     </td>
+                </tr><tr>
+                    <td class="windowbg2"><label for="Show_caltoday">$event_cal{'showtoday'}</label></td>
+                    <td class="windowbg2"><input type="checkbox" name="Show_caltoday" id="Show_caltoday" value="1" $Show_caltodaych /></td>
                 </tr><tr>
                     <td class="catbg" colspan="2"><span class="small">$event_cal{'22'}</span></td>
                 </tr><tr>

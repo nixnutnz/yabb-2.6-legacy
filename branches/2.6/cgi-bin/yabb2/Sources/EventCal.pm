@@ -424,10 +424,8 @@ qq~ <label for="calyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
             ContextScript('post');
             $mycalout_cthelp = $ctmain;
             $mycalout_cthelp .=
-qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
-<div class="style_ubbc_box">~;
+qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>~;
             $mycalout_cthelp .= postbox();
-            $mycalout_cthelp .= q~</div>~;
         }
 
         # SpellChecker start
@@ -796,7 +794,7 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_n
         $d_day      = substr $event_date, 6, 2;
 
         $mybtime   = stringtotime(qq~$d_mon/$d_day/$d_year~);
-        $mybtimein = timeformatcal($mybtime);
+        $mybtimein = timeformatcal($mybtime, $Show_caltoday);
         $cdate     = dtonly($mybtimein);
 
         if ( $INFO{'showmini'} ) {
@@ -1242,7 +1240,7 @@ qq~<br /><br /><a href="$scripturl?action=eventcal;calshow=1;eventdate=$cyear$cm
 
         if ( $event_found == 1 ) {
             $mybtime   = stringtotime(qq~$cmon/$cday/$cyear~);
-            $mybtimein = timeformatcal($mybtime);
+            $mybtimein = timeformatcal($mybtime, $Show_caltoday);
             $cdate     = dtonly($mybtimein);
 
             if ( $showage && $chide ) {

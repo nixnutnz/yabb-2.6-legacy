@@ -264,7 +264,7 @@ sub timeformat {
 }
 
 sub timeformatcal {
-    my ( $mynewtime, $dontusetoday ) = @_;
+    my ( $mynewtime, $usetoday ) = @_;
 
     # use forum default time and format
 
@@ -319,7 +319,7 @@ sub timeformatcal {
       gmtime( $date + $toffs );
     $yy += 1900;
     $daytxt = undef;    # must be a global variable
-    if ( !$dontusetoday ) {
+    if ( $usetoday == 1 ) {
         $myleap = IsLeap($yy);
         if ( $yd == $newyearday && $yy == $newyear ) {
 
