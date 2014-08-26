@@ -1241,8 +1241,9 @@ sub MoveVariables {
         'oldestmes.txt',           'pm.attachments',
         'registration.log',        'reserve.txt',
         'reservecfg.txt',          'spamrules.txt',
+        'news.txt',
     );
-	my @oldvar = ();
+    my @oldvar = ();
     for my $varfl (@mvvar) {
         if ( -e "$convdatadir/$varfl" ) {
             if ( $varfl eq 'eventcal.db' ) {
