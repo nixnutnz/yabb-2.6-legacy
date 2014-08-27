@@ -625,7 +625,7 @@ sub GroupPerms {
     else {
         $allowGroups = 1;
     }
-    return;
+    return $allowGroups;
 }
 
 sub ipban_update {

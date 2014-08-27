@@ -165,6 +165,7 @@ $SectionBody5 = qq~<p>These are some completely new features to YaBB 2.6.0 that 
     <li><b>Event Calendar</b>
         <br />Allow Members (and, if permitted, Guests) to post events to a calendar.
         <br />The Event Calendar can also show member birthdays as well as giving the Admin the option for a separate page of Member birthdays.
+		<br />The Admin can also set the number of members that will be shown on each page of the the Birthday List.
     </li>
     <li><b>Even More Anti-Spam Measures</b>
         <br /><b>Improved Captcha</b> allows the Admin to select characters to be placed before and/or after the regular captcha with instructions to the guest or registrant to skip those characters when inputting the captcha for verification.
@@ -190,7 +191,7 @@ $SectionBody5 = qq~<p>These are some completely new features to YaBB 2.6.0 that 
     <li><span class="anchor" id="time"></span><b>Location based Time-Zones with automatic Daylight Savings time</b>
         <br />The Admin can choose whether or not users have the option to choose their own Time Zone. If the Admin chooses to not allow user choice, all displayed times on the Forum will be the Forum Default Time Zone.
         <ul>
-            <li>For full functionality the Perl Modules <strong>DateTime</strong>, <strong>DateTime::TimeZone</strong>, and <strong>Locale::Country</strong> need to be installed on the host server. If the Modules are installed:
+            <li>For full functionality the Perl Modules <strong>DateTime</strong>, and <strong>DateTime::TimeZone</strong> need to be installed on the host server along all their required dependencies. Check with your hosting service to make sure you have them or that they can be installed for you. If the Modules are installed:
                 <ul>
                     <li>The Admin can choose a Forum Default Time Zone based on the Country/City of the Forum or use UTC/GMT time. If a Time Zone based on Country/City is chosen, YaBB will automatically adjust for Daylight Savings Time for that Time Zone.</li>
                     <li>If users have the option to choose their own Time Zone, their displayed time will also automatically adjust to Daylight Savings Time based on the chosen location.</li>

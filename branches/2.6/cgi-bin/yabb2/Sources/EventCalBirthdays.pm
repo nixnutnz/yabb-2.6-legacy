@@ -226,7 +226,8 @@ qq~</select> <input type="hidden" name="vmonth" value="$vmonth"><input type="hid
             $string =
 "$user_bdyear|$user_bdmon|$user_bdday|$user_bdname|$age|$sternzeichen|$memrealname|$user_bdhide\n";
             push @birthmembers1, $string;
-            if ( $calsplit && $vmonth eq $mont[$user_bdmon] ) {
+            $calsplit ||= 0;
+            if ( $calsplit > 0 && $vmonth eq $mont[$user_bdmon] ) {
                 $string =
 "$user_bdyear|$user_bdmon|$user_bdday|$user_bdname|$age|$sternzeichen|$memrealname|$user_bdhide\n";
                 push @birthmembers2, $string;
@@ -326,7 +327,7 @@ $bd_today
     $yymain =~ s/{yabb class_sortstarsign}/$class_sortstarsign/sm;
     $yymain =~ s/{yabb class_sortdate}/$class_sortdate/sm;
 
-    if ( $calsplit && @birthmembers1 >= $calsplit ) {
+    if ( $calsplit > 0 && @birthmembers1 >= $calsplit ) {
         for my $i ( 1 .. 12 ) {
             if ( $countmont[$i] ) {
                 $bdmonthlinks .=
@@ -354,7 +355,7 @@ qq~| <a href="$scripturl?action=birthdaylist;vmonth=$mont[$i]">$var_cal{$calmont
     $yabbmain =~ s/{yabb viewbirthdays}/$viewbirthdays/sm;
 
     for my $j ( 1 .. 12 ) {
-        if ( $calsplit &&  @birthmembers1 >= $calsplit && $vmonth eq $mont[$j] )
+        if ( $calsplit > 0 &&  @birthmembers1 >= $calsplit && $vmonth eq $mont[$j] )
         {
             $datanum = @birthmembers2;
             @birthmembers2 = sort { &{$sortiert}( $a, $b ); } @birthmembers2;
@@ -438,7 +439,7 @@ qq~ <span class="small">$var_cal{'139'}: $pageindex</span>~;
                 $showviewbd = 0;
                 if ( $letter ) {
                     $searchbdname = $user_bdrealname;
-                    $searchbdname ||= $user_bdname;
+                    $searchbdname = isempty( $searchbdname, $user_bdname );
                     if ( $searchbdname =~ /^$letter/i ) { $showviewbd = 1; }
                 }
                 else {
@@ -486,7 +487,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
             }
             $yyvmon =~ s/{yabb viewmont}/$montview/sm;
         }
-        elsif ( ( !$calsplit || @birthmembers1 < $calsplit ) && $countmont[$j] ) {
+        elsif ( ( $calsplit == 0 || @birthmembers1 < $calsplit ) && $countmont[$j] ) {
                 $yyvmon .= $mybdlist_viewmont2;
                 $yyvmon =~ s/{yabb cal_colspan}/$cal_colspan/gsm;
                 $yyvmon =~ s/{yabb cal_col}/$cal_col/gsm;
@@ -506,7 +507,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
                         $showviewbd = 0;
                         if ($letter) {
                             $searchbdname = $user_bdrealname;
-                            $searchbdname ||= $user_bdname;
+                            $searchbdname = isempty( $searchbdname, $user_bdname );
                             if ( $searchbdname =~ /^$letter/ism ) { $showviewbd = 1; }
                         }
                         else {
@@ -554,7 +555,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
     }
     $yymain .= $yyvmon;
 
-    if ( $no_bd_found == 1 && ( !$calsplit || @birthmembers1 <= $calsplit ) ) {
+    if ( $no_bd_found == 1 && ( $calsplit == 0 || @birthmembers1 <= $calsplit ) ) {
         $yymain .= $mybdlist_nobd;
         for my $i ( 1 .. 12 ) {
             $nobdays .= qq~$no_birthday_found[$i]~;

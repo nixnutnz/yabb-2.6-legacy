@@ -1182,7 +1182,7 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
         my $contactblock    = $contactlist;
 
         ( $msub, undef ) = Split_Splice_Move( $msub, 0 );
-        $msub ||= $display_txt{'24'};
+        $msub = isempty( $msub, $display_txt{'24'} );
         ToChars($msub);
         my $reason;
         if (   $lastmodified

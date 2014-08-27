@@ -888,6 +888,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$fo
             $pagesall =
               qq~<a href="$scripturl?num=$mnum/all">$pidtxt{'01'}</a>~;
         }
+        $maxmessagedisplay ||= 10;
         if ( int( ( $mreplies + 1 ) / $maxmessagedisplay ) > 6 ) {
             $pages =
                 qq~ <a href="$scripturl?num=$mnum/~
@@ -2007,9 +2008,10 @@ sub LoadAccess {
     }
 
     # Attachments Check
+    $allowattach ||= 0;
     if (
            AccessCheck( $currentboard, 4 ) eq 'granted'
-        && $allowattach
+        && $allowattach > 0
         && ${ $uid . $currentboard }{'attperms'} == 1
         && ( ( $allowguestattach == 0 && !$iamguest )
             || $allowguestattach == 1 )

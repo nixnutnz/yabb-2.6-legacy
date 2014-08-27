@@ -1836,15 +1836,6 @@ sub ModifySkin {
     elsif ( $UseMenuType == 2 ) { $menutype2 = ' selected="selected" '; }
 
     $fullcss =~ s/\s{2,}/ /gsm;
-#   if ($fullcss =~ /\.buttontext/) {
-#       require Admin::Menu_def;
-#       SetMenu();
-#   }
-#   else {
-#       $cssbuttons = 0;
-#       require "$vardir/Menu$UseMenuType.def";
-#   }
-
     $boardtemplates   = q{};
     $messagetemplates = q{};
     $displaytemplates = q{};

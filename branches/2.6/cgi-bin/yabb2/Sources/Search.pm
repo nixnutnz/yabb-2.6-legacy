@@ -743,9 +743,9 @@ $search_txt{'167'}<hr class="hr" />
 ## does a search of all member pm files
 
 sub pmsearch {
-
+    $enable_PMsearch ||= 0;
     # generate error if admin has disabled search options
-    if ( $enable_PMsearch < 0 ) { fatal_error('search_disabled'); }
+    if ( $enable_PMsearch <= 0 ) { fatal_error('search_disabled'); }
 
     my $display = $FORM{'numberreturned'} || $enable_PMsearch;
     if ( $display =~ /\D/xsm ) { fatal_error('only_numbers_allowed'); }

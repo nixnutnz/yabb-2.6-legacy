@@ -46,6 +46,7 @@ sub ModifyMessage {
       $checkext == 1
       ? qq~$fatxt{'2'} $extensions~
       : qq~$fatxt{'2'} $fatxt{'4'}~;
+    $limit ||= 0;
     $filesize_info =
       $limit != 0 ? qq~$fatxt{'3'} $limit KB~ : qq~$fatxt{'3'} $fatxt{'5'}~;
 
@@ -139,9 +140,7 @@ sub ModifyMessage {
     }
     $submittxt   = $post_txt{'10'};
     $destination = 'modify2';
-    $is_preview  = 0;
     $post        = 'postmodify';
-    $preview     = 'previewmodify';
     require Sources::Post;
     $yytitle       = $post_txt{'66'};
     $mename        = $mname;
@@ -566,6 +565,8 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
     }
 
     my ( $file, $fixfile, @filelist, @newfilelist, $fixext );
+    $allowattach ||= 0;
+	if ( $allowattach > 0 ) {
     for my $y ( 1 .. $allowattach ) {
         if ($CGI_query) { $file = $CGI_query->upload("file$y"); }
         if ( $file
@@ -632,7 +633,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
             }
             if ($match) {
                 if (
-                    !$allowattach
+                    $allowattach < 1
                     || ( ( $allowguestattach != 0 || $username eq 'Guest' )
                         && $allowguestattach != 1 )
                   )
@@ -652,7 +653,8 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
                 $filesize += $size;
                 $file_buffer .= $buffer;
             }
-            if ( $limit && $filesize > ( 1024 * $limit ) ) {
+            $limit ||= 0;
+            if ( $limit > 0 && $filesize > ( 1024 * $limit ) ) {
                 foreach (@newfilelist) { unlink "$uploaddir/$_"; }
                 require Sources::Post;
                 Preview("$fatxt{'21'} $fixfile ("
@@ -660,7 +662,8 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
                       . " KB) $fatxt{'21b'} "
                       . $limit );
             }
-            if ($dirlimit) {
+			$dirlimit ||= 0;
+            if ($dirlimit > 0) {
                 my $dirsize = dirsize($uploaddir);
                 if ( $filesize > ( ( 1024 * $dirlimit ) - $dirsize ) ) {
                     foreach (@newfilelist) { unlink "$uploaddir/$_"; }
@@ -770,6 +773,7 @@ qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$
     print {FILE} @{ $thread_arrayref{$threadid} }
       or croak "$croak{'print'} FILE";
     fclose(FILE);
+	}
 
     if ( $postid == 0 || $staff ) {
 
@@ -820,6 +824,7 @@ qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$
         UserAccount( $username, 'update' );
     }
 
+    $maxmessagedisplay ||= 10;
     my $start =
       !$ttsreverse
       ? ( int( $postid / $maxmessagedisplay ) * $maxmessagedisplay )
@@ -841,7 +846,7 @@ qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$
     return;
 }
 
-sub MultiDel {    # deletes singel- or multi-Posts
+sub MultiDel {    # deletes single- or multi-Posts
     $thread = $INFO{'thread'};
 
     if ( !ref $thread_arrayref{$thread} ) {
@@ -1006,6 +1011,8 @@ sub MultiDel {    # deletes singel- or multi-Posts
 
     $postid =
       $postid > ${$thread}{'replies'} ? ${$thread}{'replies'} : ( $postid - 1 );
+
+    $maxmessagedisplay ||= 10;
     my $start =
       !$ttsreverse
       ? ( int( $postid / $maxmessagedisplay ) * $maxmessagedisplay )

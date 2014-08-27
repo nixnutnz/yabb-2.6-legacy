@@ -170,7 +170,7 @@ if ( -e "$vardir/Setup.lock" ) {
 EOF
 
         fopen( SETTING, ">$vardir/ConvSettings.txt" )
-          || setup_fatal_error( "$maintext_23 $vardir/ConvSettings.txt: ", 1 );
+          or setup_fatal_error( "$maintext_23 $vardir/ConvSettings.txt: ", 1 );
         print {SETTING} nicely_aligned_file($setfile)
           or croak 'cannot print SETTING';
         fclose(SETTING);
@@ -725,42 +725,48 @@ q~<br /><br />After you have tested your forum and made sure everything was conv
 # Prepare Conversion ##
 
 sub PrepareConv {
-    fopen( FILE, ">$boardsdir/dummy.testfile" ) || setup_fatal_error(
+    fopen( FILE, ">$boardsdir/dummy.testfile" )
+      or setup_fatal_error(
 "The CHMOD of the $boardsdir is not set correctly! Cannot write this directory!",
         1
-    );
+      );
     print {FILE} "dummy testfile\n" or croak 'cannot print FILE';
     fclose(FILE);
-    opendir( BDIR, $boardsdir ) || setup_fatal_error(
+    opendir( BDIR, $boardsdir )
+      or setup_fatal_error(
 "The CHMOD of the $boardsdir is not set correctly! Cannot read this directory! ",
         1
-    );
+      );
     @boardlist = readdir BDIR;
     closedir BDIR;
 
-    fopen( FILE, ">$memberdir/dummy.testfile" ) || setup_fatal_error(
+    fopen( FILE, ">$memberdir/dummy.testfile" )
+      or setup_fatal_error(
 "The CHMOD of the $memberdir is not set correctly! Cannot write this directory!",
         1
-    );
+      );
     print {FILE} "dummy testfile\n" or croak 'cannot print FILE';
     fclose(FILE);
-    opendir( MBDIR, $memberdir ) || setup_fatal_error(
+    opendir( MBDIR, $memberdir )
+      or setup_fatal_error(
 "The CHMOD of the $memberdir is not set correctly! Cannot read this directory! ",
         1
-    );
+      );
     @memblist = readdir MBDIR;
     closedir MBDIR;
 
-    fopen( FILE, ">$datadir/dummy.testfile" ) || setup_fatal_error(
+    fopen( FILE, ">$datadir/dummy.testfile" )
+      or setup_fatal_error(
 "The CHMOD of the $datadir is not set correctly! Cannot write this directory!",
         1
-    );
+      );
     print {FILE} "dummy testfile\n" or croak 'cannot print FILE';
     fclose(FILE);
-    opendir( MSDIR, $datadir ) || setup_fatal_error(
+    opendir( MSDIR, $datadir )
+      or setup_fatal_error(
 "The CHMOD of the $datadir is not set correctly! Cannot read this directory! ",
         1
-    );
+      );
     @msglist = readdir MSDIR;
     closedir MSDIR;
 
@@ -804,57 +810,61 @@ sub PrepareConv {
 
 sub ConvertMembers {
     fopen( MEMDIR, "$convmemberdir/memberlist.txt" )
-      || setup_fatal_error( "$maintext_23 $convmemberdir/memberlist.txt:", 1 );
+      or setup_fatal_error( "$maintext_23 $convmemberdir/memberlist.txt:", 1 );
     my @memlist = <MEMDIR>;
     fclose(MEMDIR);
     fopen( MEMDIRLST, "> $memberdir/memberlist.txt" )
-      || setup_fatal_error( "$maintext_23 $memberdir/memberlist.txt:", 1 );
+      or setup_fatal_error( "$maintext_23 $memberdir/memberlist.txt:", 1 );
     print {MEMDIRLST} @memlist or croak 'cannot print MEMDIR';
     fclose(MEMDIRLST);
 
     fopen( MEMINFO, "$convmemberdir/memberinfo.txt" )
-      || setup_fatal_error( "$maintext_23 $convmemberdir/memberinfo.txt: ", 1 );
+      or setup_fatal_error( "$maintext_23 $convmemberdir/memberinfo.txt: ", 1 );
     my @meminfo = <MEMINFO>;
     fclose(MEMINFO);
     fopen( NMEMINFO, ">$memberdir/memberinfo.txt" )
-      || setup_fatal_error( "$maintext_23 $memberdir/memberinfo.txt: ", 1 );
+      or setup_fatal_error( "$maintext_23 $memberdir/memberinfo.txt: ", 1 );
     print {NMEMINFO} @meminfo or croak 'cannot print NBMEMINFO';
     fclose(NMEMINFO);
 
     if ( -e "$convmemberdir/broadcast.messages" ) {
         fopen( BMEMDIR, "$convmemberdir/broadcast.messages" )
-          || setup_fatal_error(
-            "$maintext_23 $convmemberdir/broadcast.messages: ", 1 );
+          or
+          setup_fatal_error( "$maintext_23 $convmemberdir/broadcast.messages: ",
+            1 );
         my @bmessages = <BMEMDIR>;
         fclose(BMEMDIR);
         fopen( NBMEMDIR, ">$memberdir/broadcast.messages" )
-          || setup_fatal_error(
-            "$maintext_23 $convmemberdir/broadcast.messages: ", 1 );
+          or
+          setup_fatal_error( "$maintext_23 $convmemberdir/broadcast.messages: ",
+            1 );
         print {NBMEMDIR} @bmessages or croak 'cannot print NBMEMDIR';
         fclose(NBMEMDIR);
     }
 
     if ( -e "$convmemberdir/memberlist.approve" ) {
         fopen( BMEMDIRA, "$convmemberdir/memberlist.approve" )
-          || setup_fatal_error(
-            "$maintext_23 $convmemberdir/memberlist.approve: ", 1 );
+          or
+          setup_fatal_error( "$maintext_23 $convmemberdir/memberlist.approve: ",
+            1 );
         my @approve = <BMEMDIRA>;
         fclose(BMEMDIRA);
         fopen( NBMEMDIRA, ">$memberdir/memberlist.approve" )
-          || setup_fatal_error(
-            "$maintext_23 $convmemberdir/memberlist.approve: ", 1 );
+          or
+          setup_fatal_error( "$maintext_23 $convmemberdir/memberlist.approve: ",
+            1 );
         print {NBMEMDIRA} @approve or croak 'cannot print NBMEMDIR';
         fclose(NBMEMDIRA);
     }
 
     if ( -e "$convmemberdir/memberlist.inactive" ) {
         fopen( BMEMDIRIN, "$convmemberdir/memberlist.inactive" )
-          || setup_fatal_error(
+          or setup_fatal_error(
             "$maintext_23 $convmemberdir/memberlist.inactive: ", 1 );
         my @inactive = <BMEMDIRIN>;
         fclose(BMEMDIRIN);
         fopen( NBMEMDIRIN, ">$memberdir/memberlist.inactive" )
-          || setup_fatal_error(
+          or setup_fatal_error(
             "$maintext_23 $convmemberdir/memberlist.inactive: ", 1 );
         print {NBMEMDIRIN} @inactive or croak 'cannot print NBMEMDIRIN';
         fclose(NBMEMDIRIN);
@@ -862,26 +872,27 @@ sub ConvertMembers {
 
     if ( -e "$convmemberdir/members.ttl" ) {
         fopen( BMEMDIRTTL, "$convmemberdir/members.ttl" )
-          || setup_fatal_error( "$maintext_23 $convmemberdir/members.ttl: ",
-            1 );
+          or
+          setup_fatal_error( "$maintext_23 $convmemberdir/members.ttl: ", 1 );
         my @memtotl = <BMEMDIRTTL>;
         fclose(BMEMDIRTTL);
         fopen( NBMEMDIRTTL, ">$memberdir/members.ttl" )
-          || setup_fatal_error( "$maintext_23 $memberdir/members.ttl: ", 1 );
+          or setup_fatal_error( "$maintext_23 $memberdir/members.ttl: ", 1 );
         print {NBMEMDIRTTL} @memtotl or croak 'cannot print NBMEMDIRTTL';
         fclose(NBMEMDIRTTL);
     }
 
     if ( -e "$convmemberdir/forgotten.passes" ) {
         fopen( BMEMDIRP, "$convmemberdir/forgotten.passes" )
-          || setup_fatal_error(
-            "$maintext_23 $convmemberdir/forgotten.passes: ", 1 );
+          or
+          setup_fatal_error( "$maintext_23 $convmemberdir/forgotten.passes: ",
+            1 );
         my @passes = <BMEMDIRP>;
         fclose(BMEMDIRP);
 
         fopen( NBMEMDIRP, ">$memberdir/forgotten.passes" )
-          || setup_fatal_error( "$maintext_23 $memberdir/forgotten.passes: ",
-            1 );
+          or
+          setup_fatal_error( "$maintext_23 $memberdir/forgotten.passes: ", 1 );
         print {NBMEMDIRP} @passes or croak 'cannot print NBMEMDIRP';
         fclose(NBMEMDIRP);
     }
@@ -906,26 +917,29 @@ sub ConvertMembers {
         {
             next;
         }
-        for my $cnt ( @xtn ) {
+        for my $cnt (@xtn) {
             if ( -e "$convmemberdir/$user.$cnt" ) {
                 fopen( FILEUSER, "$convmemberdir/$user.$cnt" )
-                  || setup_fatal_error(
-                    "$maintext_23 $convmemberdir/$user.$cnt: ", 1 );
+                  or
+                  setup_fatal_error( "$maintext_23 $convmemberdir/$user.$cnt: ",
+                    1 );
                 my @divfiles = <FILEUSER>;
                 fclose(FILEUSER);
 
                 fopen( FILEUSERB, ">$memberdir/$user.$cnt" )
-                  || setup_fatal_error(
-                    "$maintext_23 $memberdir/$user.$cnt: ", 1 );
+                  or setup_fatal_error( "$maintext_23 $memberdir/$user.$cnt: ",
+                    1 );
                 print {FILEUSERB} @divfiles or croak 'cannot print FILEUSER';
                 fclose(FILEUSERB);
             }
         }
-        if ( -e "$convmemberdir/$user.wlog"  && !-e "$convmemberdir/$user.rlog") {
-		    undef %recent;
+        if ( -e "$convmemberdir/$user.wlog" && !-e "$convmemberdir/$user.rlog" )
+        {
+            undef %recent;
             require "$convmemberdir/$user.wlog";
             fopen( RLOG, ">$memberdir/$user.rlog" );
-            print {RLOG} map { "$_\t$recent{$_}\n" } keys %recent or croak "$croak{'print'} RLOG";
+            print {RLOG} map { "$_\t$recent{$_}\n" } keys %recent
+              or croak "$croak{'print'} RLOG";
             fclose(RLOG);
         }
 
@@ -968,7 +982,7 @@ sub MoveBoards {
         for my $ext (@brdtype) {
             if ( -e "$convboardsdir/$boards[$i].$ext" ) {
                 fopen( BOARDFILE, "$convboardsdir/$boards[$i].$ext" )
-                  || setup_fatal_error(
+                  or setup_fatal_error(
                     "$maintext_23 $convboardsdir/$boards[$i].ext: ", 1 );
                 @brdinfo = <BOARDFILE>;
                 fclose(BOARDFILE);
@@ -1005,8 +1019,9 @@ sub FixControl {
         my $j        = 0;
         my @newboard = ();
         foreach my $x (@oldboard) {
-			${$x}{'mypic'} = q{};
-			if (${$x}{'pic'}) { ${$x}{'mypic'} = 'y'; }
+            ${$x}{'mypic'} = q{};
+            if ( ${$x}{'pic'} ) { ${$x}{'mypic'} = 'y'; }
+
 #$cat|$board|$pic|$description|$mods|$modgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$attperms|$minageperms|$maxageperms|$genderperms|$canpost|$parent|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$bdrss
             $newboard[$j] =
 qq~${$x}{'cat'}|$x|${$x}{'mypic'}|${$x}{'description'}|${$x}{'mods'}|${$x}{'modgroups'}|${$x}{'topicperms'}|${$x}{'replyperms'}|${$x}{'pollperms'}|${$x}{'zero'}|${$x}{'membergroups'}|${$x}{'ann'}|${$x}{'rbin'}|${$x}{'attperms'}|${$x}{'minageperms'}|${$x}{'maxageperms'}|${$x}{'genderperms'}|${$x}{'canpost'}|${$x}{'parent'}|${$x}{'rules'}|${$x}{'rulestitle'}|${$x}{'rulesdesc'}|${$x}{'rulescollapse'}|${$x}{'brdpasswr'}|${$x}{'brdpassw'}|${$x}{'brdrss'}\n~;
@@ -1016,19 +1031,19 @@ qq~${$x}{'cat'}|$x|${$x}{'mypic'}|${$x}{'description'}|${$x}{'mods'}|${$x}{'modg
             $j++;
         }
         fopen( FORUMCONTROL, ">$boardsdir/forum.control" )
-          || setup_fatal_error( "$maintext_23 $boardsdir/forum.control: ", 1 );
+          or setup_fatal_error( "$maintext_23 $boardsdir/forum.control: ", 1 );
         print {FORUMCONTROL} @newboard
           or croak 'cannot print FORUMCONTROL';
         fclose(FORUMCONTROL);
     }
     else {
         fopen( OLDFORUMCONTROL, "$convboardsdir/forum.control" )
-          || setup_fatal_error( "$maintext_23 $convboardsdir/forum.control: ",
-            1 );
+          or
+          setup_fatal_error( "$maintext_23 $convboardsdir/forum.control: ", 1 );
         @oldboardcontrols = <OLDFORUMCONTROL>;
         fclose(OLDFORUMCONTROL);
         fopen( FORUMCONTROL, ">$boardsdir/forum.control" )
-          || setup_fatal_error( "$maintext_23 $boardsdir/forum.control: ", 1 );
+          or setup_fatal_error( "$maintext_23 $boardsdir/forum.control: ", 1 );
         print {FORUMCONTROL} @oldboardcontrols
           or croak 'cannot print FORUMCONTROL';
         fclose(FORUMCONTROL);
@@ -1038,7 +1053,7 @@ qq~${$x}{'cat'}|$x|${$x}{'mypic'}|${$x}{'description'}|${$x}{'mods'}|${$x}{'modg
 sub FixNopost {
     if ( $NoPost{'1'} ) {
         fopen( FORUMCONTROL, "$boardsdir/forum.control" )
-          || setup_fatal_error( "$maintext_23 $boardsdir/forum.control: ", 1 );
+          or setup_fatal_error( "$maintext_23 $boardsdir/forum.control: ", 1 );
         @boardcontrols = <FORUMCONTROL>;
         fclose(FORUMCONTROL);
         chomp @boardcontrols;
@@ -1113,7 +1128,7 @@ qq~$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$newmodgroups|$newtopicper
         }
 
         fopen( FORUMCONTROL, ">$boardsdir/forum.control" )
-          || setup_fatal_error( "$maintext_23 $boardsdir/forum.control: ", 1 );
+          or setup_fatal_error( "$maintext_23 $boardsdir/forum.control: ", 1 );
         print {FORUMCONTROL} @boardcontrols
           or croak 'cannot print FORUMCONTROL';
         fclose(FORUMCONTROL);
@@ -1128,7 +1143,7 @@ qq~$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$newmodgroups|$newtopicper
 sub MoveMessages {
     if ( -e "$convdatadir/movedthreads.cgi" ) {
         fopen( OLDMVFILE, "$convdatadir/movedthreads.cgi" )
-          || setup_fatal_error( "$maintext_23 $convdatadir/movedthreads.cgi: ",
+          or setup_fatal_error( "$maintext_23 $convdatadir/movedthreads.cgi: ",
             1 );
         my @movedmessageline = <OLDMVFILE>;
         fclose(OLDMVFILE);
@@ -1149,7 +1164,7 @@ sub MoveMessages {
     for my $next_board ( ( $INFO{'count'} || 0 ) .. ( $totalbdr - 1 ) ) {
         my $boardname = $boards[$next_board];
         fopen( BRDFILE, "$boardsdir/$boardname.txt" )
-          || setup_fatal_error( "$maintext_23 $boardsdir/$boardname.txt: ", 1 );
+          or setup_fatal_error( "$maintext_23 $boardsdir/$boardname.txt: ", 1 );
         my @brdmessageline = <BRDFILE>;
         fclose(BRDFILE);
         chomp @brdmessageline;
@@ -1158,47 +1173,52 @@ sub MoveMessages {
         for my $tops ( ( $INFO{'tcount'} || 0 ) .. ( $totalmess - 1 ) ) {
             my @thread = split /\|/xsm, $brdmessageline[$tops];
             my $thread = $thread[0];
-            if ( -e "$convdatadir/$thread.txt" && -e "$convdatadir/$thread.ctb" ) {
+            if (   -e "$convdatadir/$thread.txt"
+                && -e "$convdatadir/$thread.ctb" )
+            {
                 fopen( MSGFILE, "$convdatadir/$thread.txt" )
-                      || setup_fatal_error(
-                        "$maintext_23 $convdatadir/$thread.txt: ", 1 );
+                  or
+                  setup_fatal_error( "$maintext_23 $convdatadir/$thread.txt: ",
+                    1 );
                 @messagelines = <MSGFILE>;
                 fclose(MSGFILE);
                 fopen( MSGFILE, ">$datadir/$thread.txt" )
-                      || setup_fatal_error(
-                        "$maintext_23 $datadir/$thread.txt: ", 1 );
+                  or
+                  setup_fatal_error( "$maintext_23 $datadir/$thread.txt: ", 1 );
                 print {MSGFILE} @messagelines
-                      or croak "cannot print $datadir/$thread.txt";
+                  or croak "cannot print $datadir/$thread.txt";
                 fclose(MSGFILE);
                 $INFO{'total_mess'} += @messagelines;
                 $INFO{'total_threads'}++;
                 fopen( MSGFILE, "$convdatadir/$thread.ctb" )
-                      || setup_fatal_error(
-                        "$maintext_23 $convdatadir/$thread.ctb: ", 1 );
+                  or
+                  setup_fatal_error( "$maintext_23 $convdatadir/$thread.ctb: ",
+                    1 );
                 @messagelines = <MSGFILE>;
                 fclose(MSGFILE);
                 fopen( MSGFILE, ">$datadir/$thread.ctb" )
-                      || setup_fatal_error(
-                       "$maintext_23 $datadir/$thread.ctb: ", 1 );
+                  or
+                  setup_fatal_error( "$maintext_23 $datadir/$thread.ctb: ", 1 );
                 print {MSGFILE} @messagelines
-                      or croak "cannot print $datadir/$thread.ctb";
+                  or croak "cannot print $datadir/$thread.ctb";
                 fclose(MSGFILE);
+
                 for my $ext (@threadext) {
                     if ( -e "$convdatadir/$thread.$ext" ) {
                         fopen( MSGFILE, "$convdatadir/$thread.$ext" )
-                      || setup_fatal_error(
-                        "$maintext_23 $convdatadir/$thread.$ext: ", 1 );
+                          or setup_fatal_error(
+                            "$maintext_23 $convdatadir/$thread.$ext: ", 1 );
                         @messagelines = <MSGFILE>;
                         fclose(MSGFILE);
                         fopen( MSGFILE, ">$datadir/$thread.$ext" )
-                      || setup_fatal_error(
-                        "$maintext_23 $datadir/$thread.$ext: ", 1 );
+                          or setup_fatal_error(
+                            "$maintext_23 $datadir/$thread.$ext: ", 1 );
                         print {MSGFILE} @messagelines
-                      or croak "cannot print $datadir/$thread.$ext";
+                          or croak "cannot print $datadir/$thread.$ext";
                         fclose(MSGFILE);
                     }
                 }
-			}
+            }
             if ( time() > $time_to_jump && ( $tops + 1 ) < $totalmess ) {
                 $yySetLocation =
                   qq~$set_cgi?action=messages2;st=~
@@ -1339,46 +1359,43 @@ sub Convert_Settings {
         if ( $enable_notifications eq q{} ) {
             $enable_notifications = $enable_notification ? 3 : 0;
         }
-        if ( !$cookietsort ) {
-            ( undef, $rancook ) = split /\-/xsm, $cookieusername;
-            $cookietsort = qq~Y2tsort-$rancook~;
-        }
-        if ( !$cookieview ) {
-            ( undef, $rancook ) = split /\-/xsm, $cookieusername;
-            $cookieview = qq~Y2view-$rancook~;
-        }
-        if ( !$cookieviewtime )        { $cookieviewtime        = 525_600; }
-        if ( !$MaxIMMessLen )          { $MaxIMMessLen          = 2000; }
-        if ( !$AdMaxIMMessLen )        { $AdMaxIMMessLen        = 3000; }
-        if ( !$MaxCalMessLen )         { $MaxCalMessLen         = 200; }
-        if ( !$AdMaxCalMessLen )       { $AdMaxCalMessLen       = 300; }
-        if ( !$Show_EventCal )         { $Show_EventCal         = 0; }
-        if ( !$Event_TodayColor )      { $Event_TodayColor      = '#ff0000'; }
-        if ( !$fix_avatar_img_size )   { $fix_avatar_img_size   = 0; }
-        if ( !$max_avatar_width )      { $$max_avatar_width     = 65; }
-        if ( !$max_avatar_height )     { $max_avatar_height     = 65; }
-        if ( !$fix_avatarml_img_size ) { $fix_avatarml_img_size = 0; }
-        if ( !$max_avatarml_width )    { $max_avatarml_width    = 65; }
-        if ( !$max_avatarml_height )   { $max_avatarml_height   = 65; }
-        if ( !$fix_brd_img_size )      { $fix_brd_img_size      = 0; }
-        if ( !$max_brd_img_width )     { $max_brd_img_width     = 50; }
-        if ( !$max_brd_img_height )    { $max_brd_img_height    = 50; }
-        if ( !$enabletz )              { $enabletz              = 0; }
-        if ( !$default_tz )            { $default_tz            = 'UTC'; }
-        $gzcomp = fileno $GZIP ? 1 : 0;
-
-        $ip_banlist           = q{};
-        $email_banlist        = q{};
-        $user_banlist         = q{};
-        $showsearchbox        = 1;
-        $fmodview             = $gmodview;
-        $mdfmod               = $mdglobal;
-        $show_online_ip_admin = 1;
-        $show_online_ip_gmod  = 1;
-        $show_online_ip_fmod  = 1;
-        $ipLookup             = 1;
-        $bm_subcut            = 50;
+        if ( !$imspan || $imspam eq 'off' ) { $imspam = 0; }
     }
+
+    ( undef, $rancook ) = split /\-/xsm, $cookieusername;
+    $cookietsort         = isempty( $cookietsort,         qq~Y2tsort-$rancook~ );
+    $cookieview          = isempty( $cookieview,          qq~Y2view-$rancook~ );
+    $cookieviewtime      = isempty( $cookieviewtime,      525_600 );
+    $MaxIMMessLen        = isempty( $MaxIMMessLen,        2000 );
+    $AdMaxIMMessLen      = isempty( $AdMaxIMMessLen,      3000 );
+    $MaxCalMessLen       = isempty( $MaxCalMessLen,       200 );
+    $AdMaxCalMessLen     = isempty( $AdMaxCalMessLen,     300 );
+    $Show_EventCal       = isempty( $Show_EventCal,       0 );
+    $Event_TodayColor    = isempty( $Event_TodayColor,    '#ff0000' );
+    $fix_avatar_img_size = isempty( $fix_avatar_img_size, 0 );
+    $max_avatar_width    = isempty( $$max_avatar_width,   65 );
+    $max_avatar_height   = isempty( $max_avatar_height,   65 );
+    $fix_avatarml_img_size = isempty( $fix_avatarml_img_size, 0 );
+    $max_avatarml_width    = isempty( $max_avatarml_width,    65 );
+    $max_avatarml_height   = isempty( $max_avatarml_height,   65 );
+    $fix_brd_img_size      = isempty( $fix_brd_img_size,      0 );
+    $max_brd_img_width     = isempty( $max_brd_img_width,     50 );
+    $max_brd_img_height    = isempty( $max_brd_img_height,    50 );
+    $enabletz              = isempty( $enabletz,              0 );
+    $default_tz            = isempty( $default_tz,            'UTC' );
+    $gzcomp = fileno $GZIP ? 1 : 0;
+
+    $ip_banlist           = q{};
+    $email_banlist        = q{};
+    $user_banlist         = q{};
+    $showsearchbox        = isempty( $showsearchbox, 1 );
+    $fmodview             = isempty( $fmodview, $gmodview );
+    $mdfmod               = isempty( $mdfmod, $mdglobal );
+    $show_online_ip_admin = isempty( $show_online_ip_admin, 1 );
+    $show_online_ip_gmod  = isempty( $show_online_ip_gmod, 1 );
+    $show_online_ip_fmod  = isempty( $show_online_ip_fmod, 1 );
+    $ipLookup             = isempty( $ipLookup, 1 );
+    $bm_subcut            = isempty( $bm_subcut, 50 );
 
     require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');
@@ -1445,7 +1462,7 @@ qq~The 2x Conversion Utility has already been run.<br />To run Utility again, re
 
 sub CreateConvLock {
     fopen( 'LOCKFILE', ">$vardir/Convert2x.lock" )
-      || setup_fatal_error( "$maintext_23 $vardir/Convert2x.lock: ", 1 );
+      or setup_fatal_error( "$maintext_23 $vardir/Convert2x.lock: ", 1 );
     print {LOCKFILE} qq~This is a lockfile for the Convert2x Utility.\n~
       or croak 'cannot print to Convert2x.lock';
     print {LOCKFILE}
@@ -1602,7 +1619,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
 
     $yytemplate = "$templatesdir/$usehead/$usehead.html";
     fopen( TEMPLATE, "$yytemplate" )
-      || setup_fatal_error( "$maintext_23 $yytemplate: ", 1 );
+      or setup_fatal_error( "$maintext_23 $yytemplate: ", 1 );
     @yytemplate = <TEMPLATE>;
     fclose(TEMPLATE);
 

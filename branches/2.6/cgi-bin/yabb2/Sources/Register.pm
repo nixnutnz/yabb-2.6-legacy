@@ -88,6 +88,7 @@ sub Register {
     if ( $FORM{'birth_month'} ) { $birthdate[1]   = $FORM{'birth_month'}; }
     if ( $FORM{'birth_year'} )  { $birthdate[2]   = $FORM{'birth_year'}; }
 
+    $min_reg_time ||= 0;
     if ( $min_reg_time > 0 ) {
         $reg_start_time =
           qq~<input type="hidden" name="reg_start_time" value="$date" />~;
@@ -685,6 +686,7 @@ sub Register2 {
         require Sources::Decoder;
         validation_check( $member{'verification'} );
     }
+    $min_reg_time ||= 0;
     if ( $min_reg_time > 0 ) {
         $reg_finish_time = $date - $member{'reg_start_time'};
         if ( $reg_finish_time < $min_reg_time || !$member{'reg_start_time'} ) {

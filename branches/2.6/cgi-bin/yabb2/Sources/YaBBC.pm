@@ -326,7 +326,7 @@ sub imagemsg {
           $type ? q~id="signat_img_resize"~ : q~id="post_img_resize"~;
     }
 
-    $parameter{'alt'} =~ s/[<>"]/*/gxsm;    #" make my text editor happy;
+    $parameter{'alt'} =~ s/[<>"]/*/gxsm;
     $parameter{'alt'} =~ s/_/ /gxsm;
     if ( $url =~ /([^\/]+?)$/xsm ) {
         $parameter{'alt'} ||= $1;

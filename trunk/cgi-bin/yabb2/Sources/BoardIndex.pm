@@ -966,9 +966,8 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}" re
                         else { $lastposter = qq~$lstp[1] - $boardindex_txt{'470a'}~; }
                     }
                 }
-                ${ $uid . $curboard }{'lastposter'} ||= $boardindex_txt{'470'};
-                ${ $uid . $curboard }{'lastposttime'} ||=
-                  $boardindex_txt{'470'};
+                ${ $uid . $curboard }{'lastposter'} = isempty( ${ $uid . $curboard }{'lastposter'}, $boardindex_txt{'470'} );
+                ${ $uid . $curboard }{'lastposttime'} = isempty( ${ $uid . $curboard }{'lastposttime'}, $boardindex_txt{'470'} );
 
                 my $templateblock = $boardblock;
 
@@ -1372,8 +1371,9 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
     $boardindex_template =~ s/{yabb catsblock}/$tmptemplateblock/gsm;
 
 # no matter if this is ajax subboards, subboards at top of messageindex, or regular boardindex we need these vars now
-    $brd_img_idw       = defined $max_brd_img_width ? $max_brd_img_width : 50;
-    $brd_img_idh       = defined $max_brd_img_height ? $max_brd_img_height : 50;
+    $brd_img_idw       = isempty( $max_brd_img_width, 50 );
+    $brd_img_idh       = isempty( $max_brd_img_height, 50 );
+    $fix_brd_img_size  = isempty( $fix_brd_img_size, 0 );
     $yymain .= qq~
 <script type="text/javascript">
     var catNames = [$template_catnames];

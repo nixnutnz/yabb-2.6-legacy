@@ -192,7 +192,7 @@ sub Post {
                 $message =~
 s/\n{0,1}\[quote([^\]]*)\](.*?)\[\/quote([^\]]*)\]\n{0,1}/\n/isgm;
             }
-            $mname ||= $musername || $post_txt{'470'};
+            $mname = isempty( $mname, isempty( $musername, $post_txt{'470'} ) );
             my $hidename = $musername;
             if ( $musername eq 'Guest' ) { $hidename = $mname; }
             if ($do_scramble_id) { $hidename = cloak($hidename); }
@@ -252,6 +252,7 @@ sub Postpage {
       $checkext == 1
       ? qq~$fatxt{'2'} $extensions~
       : qq~$fatxt{'2'} $fatxt{'4'}~;
+    $limit ||= 0;
     $filesize_info =
       $limit != 0 ? qq~$fatxt{'3'} $limit KB~ : qq~$fatxt{'3'} $fatxt{'5'}~;
     $normalquot = $post_txt{'599'};
@@ -419,6 +420,7 @@ qq~&rsaquo; <a href="$scripturl?catselect=$catid" class="nav">$cat</a> &rsaquo; 
     elsif ( !$Quick_Post ) {
         $yynavigation = qq~&rsaquo; $t_title~;
     }
+    $checkallcaps ||= 0;
 
     #this is the end of the upper area of the post page.
     $my_q_quote = qq~
@@ -491,8 +493,10 @@ qq~<form action="$scripturl?action=imgroups" method="post" name="postmodify" ons
             $thecurboard = qq~action=$destination~;
         }
         else { $thecurboard = qq~board=$currentboard\;action=$destination~; }
+
+        $allowattach ||= 0;
         if (   AccessCheck( $currentboard, 4 ) eq 'granted'
-            && $allowattach
+            && $allowattach > 0
             && ${ $uid . $currentboard }{'attperms'} == 1 )
         {
             $my_adminim =
@@ -759,7 +763,7 @@ qq~            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onke
     }
 
     if ( $postid ne 'Poll' ) {
-        $css ||= 'windowbg';
+        $css = isempty( $css, 'windowbg' );
         if ( $tmpmusername eq 'Guest' ) {
             $liveusernamelink      = qq~<b>$mename</b>~;
             $livememberinfo        = "$maintxt{'28'}";
@@ -1071,9 +1075,10 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         $my_post_smilies =~ s/{yabb my_smilies}/$my_smilies/sm;
 
         # File Attachment's Browse Box Code
+        $allowattach ||= 0;
         if (
                AccessCheck( $currentboard, 4 ) eq 'granted'
-            && $allowattach
+            && $allowattach > 0
             && ${ $uid . $currentboard }{'attperms'} == 1
             && -d "$uploaddir"
             && (   $action eq 'post'
@@ -1516,14 +1521,17 @@ sub Post2 {
             fatal_error('no_perm_poll');
         }
     }
-    for my $y ( 1 .. $allowattach ) {
-        if ( $CGI_query && $CGI_query->upload("file$y") ) {
+    $allowattach ||= 0;
+    if ( $allowattach > 0 ) {
+        for my $y ( 1 .. $allowattach ) {
+            if ( $CGI_query && $CGI_query->upload("file$y") ) {
 
             # Check once for ability to post attachments
-            if ( AccessCheck( $currentboard, 4 ) ne 'granted' ) {
-                fatal_error('no_perm_att');
-            }
-            last;
+                if ( AccessCheck( $currentboard, 4 ) ne 'granted' ) {
+                    fatal_error('no_perm_att');
+                }
+                last;
+			}
         }
     }
 
@@ -1692,13 +1700,15 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
     }
 
     my ( $file, $fixfile, @filelist, %filesizekb );
-    for my $y ( 1 .. $allowattach ) {
-        if ($CGI_query) { $file = $CGI_query->upload("file$y"); }
-        if ($file) {
-            $fixfile = $file;
-            $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/xsm;
-            if ( $fixfile =~ /[^0-9A-Za-z\+\-\.:_]/xsm )
-            {    # replace all inappropriate characters
+    $allowattach ||= 0;
+	if ( $allowattach > 0 ) {
+        for my $y ( 1 .. $allowattach ) {
+            if ($CGI_query) { $file = $CGI_query->upload("file$y"); }
+            if ($file) {
+                $fixfile = $file;
+                $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/xsm;
+                if ( $fixfile =~ /[^0-9A-Za-z\+\-\.:_]/xsm )
+                {    # replace all inappropriate characters
                     # Transliteration
                 my @ISO_8859_1 =
                   qw(A B V G D E JO ZH Z I J K L M N O P R S T U F H C CH SH SHH _ Y _ JE JU JA a b v g d e jo zh z i j k l m n o p r s t u f h c ch sh shh _ y _ je ju ja);
@@ -1763,9 +1773,10 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
                     }
                 }
             }
+            $allowattach ||= 0;
             if ($match) {
                 if (
-                    !$allowattach
+                    $allowattach == 0
                     || ( ( $allowguestattach != 0 && $username eq 'Guest' )
                         && $allowguestattach != 1 )
                   )
@@ -1783,10 +1794,12 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
                 $filesize += $size;
                 $file_buffer .= $buffer;
             }
-            if ( $limit && $filesize > ( 1024 * $limit ) ) {
+            $limit ||= 0;
+            if ( $limit > 0  && $filesize > ( 1024 * $limit ) ) {
                 foreach (@filelist) { unlink "$uploaddir/$_"; }
             }
-            if ($dirlimit) {
+			$dirlimit ||= 0;
+            if ($dirlimit > 0) {
                 my $dirsize = dirsize($uploaddir);
                 if ( $filesize > ( ( 1024 * $dirlimit ) - $dirsize ) ) {
                     foreach (@filelist) { unlink "$uploaddir/$_"; }
@@ -1801,7 +1814,6 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
                 print {NEWFILE} $file_buffer
                   or croak "$croak{'print'} NEWFILE";    # write new file on HD
                 fclose(NEWFILE);
-
             }
             else
             { # return the server's error message if the new file could not be created
@@ -1850,6 +1862,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
             push @filelist, $fixfile;
         }
     }
+	}
 
     #Create the list of files
     $fixfile = join q{,}, @filelist;
@@ -2109,6 +2122,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     $thread = $newthreadid || $threadid;
 
     # Let's figure out what page number to show
+    $maxmessagedisplay ||= 10;
     $pageindex = int( $mreplies / $maxmessagedisplay );
     $start     = $pageindex * $maxmessagedisplay;
 
@@ -2779,7 +2793,7 @@ sub modAlert {
                 $message =~
 s/\n{0,1}\[quote([^\]]*)\](.*?)\[\/quote([^\]]*)\]\n{0,1}/\n/isgxm;
             }
-            $mname ||= $musername || $post_txt{'470'};
+            $mname = isempty( $mname, isempty( $musername, $post_txt{'470'} ) );
             my $hidename = $musername;
             if ( $musername eq 'Guest' ) { $hidename = $mname; }
             if ($do_scramble_id) { $hidename = cloak($hidename); }

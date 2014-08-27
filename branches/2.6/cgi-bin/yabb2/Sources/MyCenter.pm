@@ -192,8 +192,7 @@ qq~<input type="submit" name="imaction" value="$inmes_imtxt{'store'}" class="but
             $PMfileToOpen = 'imstore';
         }
         ## sending a message / previewing
-        elsif ( $action eq 'imsend'
-            || ( $action eq 'imsend2' && $FORM{'previewim'} ) )
+        elsif ( $action eq 'imsend' )
         {
             $IM_box = $inmes_txt{'148'};
             if ( $INFO{'forward'} == 1 ) { $IM_box = $inmes_txt{'forward'}; }
@@ -890,6 +889,7 @@ s/\n{0,1}\[quote([^\]]*)\](.*?)\[\/quote([^\]]*)\]\n{0,1}/\n/isgm;
                 $usernames_life_quote{$cloakedAuthor} =
                   ${ $uid . $mfrom }{'realname'};
 
+                $maxmessagedisplay ||= 10;
                 $quotestart =
                   int( $quotemsg / $maxmessagedisplay ) * $maxmessagedisplay;
                 if ( $INFO{'forward'} || $INFO{'quote'} ) {
@@ -959,10 +959,7 @@ qq~[quote author=$cloakedAuthor link=impost date=$mdate\]$message\[/quote\]\n~;
     if ( $INFO{'forward'} == 1 ) { $submittxt = $inmes_txt{'forward'}; }
     $destination = 'imsend2';
     $waction     = 'imsend';
-    $is_preview  = 0;
     $post        = 'imsend';
-    $previewtxt  = $inmes_txt{'507'};
-    $preview     = 'previewim';
     $icon        = 'xx';
     $draft       = 'draft';
     $mctitle     = $inmes_txt{'sendmess'};
@@ -1442,7 +1439,8 @@ function insert_user (oElement,username,userid) {
             ~;
         }
         elsif ( $view eq 'pm' ) {
-            GroupPerms( $allowAttachIM, $pmAttachGroups );
+			$allowAttachIM ||= 0;
+            $allowGroups = GroupPerms( $allowAttachIM, $pmAttachGroups );
             if ( $allowAttachIM && $allowGroups ) {
                 $MCGlobalFormStart .=
 qq~<form action="$scripturl?action=$destination" method="post" name="postmodify" id="postmodify" enctype="multipart/form-data" onsubmit="~;
@@ -1696,6 +1694,7 @@ qq~$mycenter_txt{'buddylisttitle'}:<br />$buddiesCurrentStatus~;
 
         ## if there are some folders to show under storage
         ## split the list down and show it with link to each folder
+        $enable_storefolders ||= 0;
         if ( $enable_storefolders > 0 ) {
             my $storeFoldersTotal = 0;
             my $DelAdFolder       = 0;
@@ -1751,7 +1750,8 @@ qq~\nvar markallreadlang = '$inmes_txt{'500'}';\nvar markfinishedlang = '$inmes_
             }
         }
 
-        if ( $enable_PMsearch != 0 ) {
+        $enable_PMsearch ||= 0;
+        if ( $enable_PMsearch > 0 ) {
             if ( $view eq 'pm' && $action ne 'pmsearch' ) {
                 $MCPmMenu_pmsearch_b = $my_pmsearch_b;
             }
@@ -1793,6 +1793,7 @@ sub drawPMView {
     my $dateColhead = "$inmes_txt{'317'}";
     if ( $action eq 'imdraft' ) { $dateColhead = $inmes_txt{'datesave'}; }
 
+    $maxmessagedisplay ||= 10;
     if ( ( $#dimmessages >= $maxmessagedisplay || $INFO{'start'} =~ /all/sm )
         && $action ne 'imstorage' )
     {

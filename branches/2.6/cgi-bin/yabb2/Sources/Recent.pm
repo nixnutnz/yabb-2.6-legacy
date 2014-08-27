@@ -32,7 +32,7 @@ get_template('Display');
 sub RecentPosts {
     spam_protection();
 
-    my $display = $FORM{'display'} ||= 10;
+    my $display = isempty( $FORM{'display'}, 10 );
     if ( $display < 0 ) { $display = 5; }
     elsif ( $display > $maxrecentdisplay ) { $display = $maxrecentdisplay; }
 

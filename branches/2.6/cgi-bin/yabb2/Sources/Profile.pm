@@ -112,7 +112,7 @@ sub ProfileCheck {
         }
     }
     else {
-        $redirsid = defined $INFO{'page'} ? $INFO{'page'} : 'profile';
+        $redirsid = $INFO{'page'} || 'profile';
     }
 
     $yymain .= $myprofile_a;
@@ -130,7 +130,7 @@ s/{yabb prof_act}/$scripturl?action=profileCheck2;username=$useraccount{$user}/s
 sub ProfileCheck2 {
     PrepareProfile();
 
-    my $password = defined $FORM{'passwrd'} ? encode_password( $FORM{'passwrd'} ) : encode_password( $INFO{'passwrd'} );
+    my $password = encode_password( $FORM{'passwrd'} || $INFO{'passwrd'} );
     if ( $user eq $username && $password ne ${ $uid . $username }{'password'} )
     {
         fatal_error('current_password_wrong');
@@ -251,7 +251,8 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
 
     my ( $editAgeTxt, $editAgeCount, $disableBdayFields, $editGenderTxt,
         $editGenderCount, $disableGenderField, $genderField, $bdayFields );
-    if (   $editGenderLimit
+    $editGenderLimit ||= 0;
+    if (   $editGenderLimit > 0
         && !$iamadmin
         && ( !$iamgmod || !$allow_gmod_profile ) )
     {
@@ -290,7 +291,9 @@ qq~ $profile_txt{'gender_edit_2'} $editGenderCount $profile_txt{'dob_edit_4'}~;
         }
         $editGenderTxt = qq~<br /><span class="small">$editGenderTxt</span>~;
     }
-    if ( $editAgeLimit && !$iamadmin && ( !$iamgmod || !$allow_gmod_profile ) )
+
+    $editAgeLimit ||= 0;
+    if ( $editAgeLimit > 0 && !$iamadmin && ( !$iamgmod || !$allow_gmod_profile ) )
     {
         if ( $editAgeLimit == 1 && ${ $uid . $user }{'disableage'} eq q{} ) {
             $editAgeTxt = qq~$profile_txt{'dob_edit_1'}~;
@@ -689,6 +692,7 @@ qq~                <option value="$line"$checked>$name</option>\n~;
             $pic = "$facesurl/${$uid.$user}{'userpic'}";
         }
 
+        $avatar_limit ||= 0;
         $my_up_avatar_a = (
             $upload_useravatar
             ? qq~<br />
@@ -852,7 +856,8 @@ qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$di
         $my_show_avatar_opts =~ s/{yabb hide_img}/$my_hide_img/sm;
     }
 
-    if ( $user_hide_attach_img && $allowattach )
+    $allowattach ||= 0;
+    if ( $user_hide_attach_img && $allowattach > 0 )
     {                        # checkbox to hide attached images in threads
         $my_show_avatar_opts .= $myprofile_hide_attach_img;
         $my_hide_attach_img =
@@ -930,12 +935,12 @@ qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$di
             require DateTime::TimeZone;
         };
         my $user_tz_select = q{};
-        $default_tz = defined $default_tz ? $default_tz : 'UTC';
+        $default_tz ||= 'UTC';
         if ( !$EVAL_ERROR ) {
             DateTime->import();
             DateTime::TimeZone->import();
             LoadLanguage('Countries');
-            $mytz = defined ${ $uid . $user }{'user_tz'} ? ${ $uid . $user }{'user_tz'} : $default_tz;
+            $mytz = ${ $uid . $user }{'user_tz'} || $default_tz;
             my @mycntry = sort { $countrytime_txt{$a} cmp $countrytime_txt{$b} } keys %countrytime_txt;
             my $myselect = q{};
             if ( $mytz eq 'UTC' ) {
@@ -956,7 +961,7 @@ qq~<option value="$i"$myselect>$countrytime_txt{$i}</option>~;
             $user_tz_select .= q~</select>~;
         }
         else {
-            $mytz = defined ${ $uid . $user }{'user_tz'} ? ${ $uid . $user }{'user_tz'} : $default_tz;
+            $mytz = ${ $uid . $user }{'user_tz'} || $default_tz;
             $localopt = q{};
             if ( $mytz eq 'local' ) {
                 $myselectb = ' selected="selected"';
@@ -2160,7 +2165,8 @@ sub ModifyProfileOptions2 {
             $filesize += $size;
             $file_buffer .= $buffer;
         }
-        if ( $avatar_limit && $filesize > ( 1024 * $avatar_limit ) ) {
+        $avatar_limit ||= 0;
+        if ( $avatar_limit > 0 && $filesize > ( 1024 * $avatar_limit ) ) {
             LoadLanguage('FA');
             fatal_error( 'file_not_uploaded',
                     "$fatxt{'21'} $file ("
@@ -2168,7 +2174,8 @@ sub ModifyProfileOptions2 {
                   . " KB) $fatxt{'21b'} "
                   . $avatar_limit );
         }
-        if ($avatar_dirlimit) {
+        $avatar_dirlimit ||= 0;
+        if ( $avatar_dirlimit > 0 ) {
             my $dirsize = dirsize("$facesdir/UserAvatars");
             if ( $filesize > ( ( 1024 * $avatar_dirlimit ) - $dirsize ) ) {
                 LoadLanguage('FA');

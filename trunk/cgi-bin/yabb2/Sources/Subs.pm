@@ -337,7 +337,8 @@ qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp;
               qq~<br /><span class="highlight"><b>$load_txt{'616'}</b></span>~;
             $yyadmin_alert =~ s/USER/$user/sm;
         }
-        if ( $iamadmin && $rememberbackup ) {
+        $rememberbackup ||= 0;
+        if ( $iamadmin && $rememberbackup > 0 ) {
             if ( $lastbackup && $date > $rememberbackup + $lastbackup ) {
                 $yyadmin_alert .=
                     qq~<br /><span class="highlight"><b>$load_txt{'617'} ~
@@ -818,18 +819,19 @@ sub image_resize {
 s/"((avatar|avatarml|post|attach|signat|brd)_img_resize)"([^>]*>)/ check_image_resize($1,$2,$3) /gesm;
 
     if ($resize_num) {
-        $avatar_img_w    = defined $max_avatar_width ? $max_avatar_width : 65;
-        $avatar_img_h    = defined $max_avatar_height ? $max_avatar_height : 65;
-        $avatarml_img_w  = defined $max_avatarml_width ? $max_avatarml_width : 65;
-        $avatarml_img_h  = defined $max_avatarml_height ? $max_avatarml_height : 65;
-        $post_img_w      = defined $max_post_img_width ? $max_post_img_width : 0;
-        $post_img_h      = defined $max_post_img_height ? $max_post_img_height : 0;
-        $attach_img_w    = defined $max_attach_img_width ? $max_attach_img_width : 0;
-        $attach_img_h    = defined $max_attach_img_height ? $max_attach_img_height : 0;
-        $signat_img_w    = defined $max_signat_img_width ? $max_signat_img_width : 0;
-        $signat_img_h    = defined $max_signat_img_height ? $max_signat_img_height : 0;
-        $brd_img_w       = defined $max_brd_img_width ? $max_brd_img_width : 50;
-        $brd_img_h       = defined $max_brd_img_height ? $max_brd_img_height : 50;
+        $avatar_img_w    = isempty( $max_avatar_width, 65 );
+        $avatar_img_h    = isempty( $max_avatar_height, 65 );
+        $avatarml_img_w  = isempty( $max_avatarml_width, 65 );
+        $avatarml_img_h  = isempty( $max_avatarml_height, 65 );
+        $post_img_w      = isempty( $max_post_img_width, 0 );
+        $post_img_h      = isempty( $max_post_img_height, 0 );
+        $attach_img_w    = isempty( $max_attach_img_width, 0 );
+        $attach_img_h    = isempty( $max_attach_img_height, 0 );
+        $signat_img_w    = isempty( $max_signat_img_width, 0 );
+        $signat_img_h    = isempty( $max_signat_img_height, 0 );
+        $brd_img_w       = isempty( $max_brd_img_width, 50 );
+        $brd_img_h       = isempty( $max_brd_img_height, 50 );
+        $fix_brd_img_size = isempty( $fix_brd_img_size, 0 );
 
         $resize_js =~ s/,$//xsm;
         $resize_js = qq~<script type="text/javascript">
@@ -1079,21 +1081,26 @@ qq~<br /><span class="underline">$debug_txt{'postpairs'}:</span><br />~;
            # "413 Request entity too large"
            # This value will affect both ordinary POSTs and multipart POSTs,
            # meaning that it limits the maximum size of file uploads as well.
-            if (   $allowattach
+		    $allowattach   ||= 0;
+		    $allowAttachIM ||= 0;
+		    $limit         ||= 0;
+			$pmFileLimit   ||= 0;
+            if (   $allowattach > 0
                 && $ENV{'QUERY_STRING'} =~ /action=(post|modify)2\b/xsm )
             {
                 $CGI::POST_MAX = int( 1024 * $limit * $allowattach );
                 if ($CGI::POST_MAX) { $CGI::POST_MAX += 1_000_000; }    # *
             }
-            elsif ($allowAttachIM
+            elsif ( $allowAttachIM > 0
                 && $ENV{'QUERY_STRING'} =~ /action=(imsend|imsend2)\b/xsm )
             {
                 $CGI::POST_MAX = int( 1024 * $pmFileLimit * $allowAttachIM );
                 if ($CGI::POST_MAX) { $CGI::POST_MAX += 1_000_000; }    # *
             }
-            elsif ($upload_useravatar
+            elsif ( $upload_useravatar
                 && $ENV{'QUERY_STRING'} =~ /action=profileOptions2\b/xsm )
             {
+                $avatar_limit ||= 0;
                 $CGI::POST_MAX = int( 1024 * $avatar_limit );
                 if ($CGI::POST_MAX) { $CGI::POST_MAX += 1_000_000; }    # *
             }
@@ -3369,6 +3376,14 @@ sub UploadFile {
 
     }
     return ($fixfile);
+}
+
+sub isempty {
+    my ($x, $y) = @_;
+    if ( defined $x && $x ne q{} ) {
+        $y = $x;
+    }
+    return $y;
 }
 
 1;

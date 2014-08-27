@@ -199,7 +199,7 @@ sub ext_has_access {
 # generate list of allowed groups
 # example: @groups = ('Administrator', 'Moderator', 'Global Moderator', 'Post{-1}', 'NoPost{1}');
             @groups = split /\s*\,\s*/xsm, $allowed_groups;
-            foreach my $group (@groups) {
+            for my $group (@groups) {
 
                 # check if user is in one of these groups
             if (   $group eq 'Administrator'
@@ -1096,30 +1096,26 @@ sub ext_validate_submition {
     foreach (@ext_prof_fields) {
         ext_get_field($id);
         $value = ext_get( $pusername, $field{'name'}, 1 );
-        if (
-            defined $newprofile{ 'ext_' . $id }
-            && (   $field{'type'} eq 'checkbox'
-                || $field{'type'} eq 'radiobuttons' )
-          )
-        {
-            if ( $newprofile{ 'ext_' . $id } eq q{} ) {
-                $newprofile{ 'ext_' . $id } = 0;
+        if ( defined $newprofile{ 'ext_' . $id } ) {
+            if (   $field{'type'} eq 'checkbox'
+                || $field{'type'} eq 'radiobuttons' ) {
+                if ( $newprofile{ 'ext_' . $id } eq q{} ) {
+                    $newprofile{ 'ext_' . $id } = 0;
+                }
             }
-        }
-        if ( defined $newprofile{ 'ext_' . $id } && $field{'type'} eq 'select' )
-        {
-            if ( $newprofile{ 'ext_' . $id } eq q{} ) {
-                $newprofile{ 'ext_' . $id } = 0;
+            elsif ( $field{'type'} eq 'select' ) {
+                if ( $newprofile{ 'ext_' . $id } eq q{} ) {
+                    $newprofile{ 'ext_' . $id } = 0;
+                }
+                @options = split /\^/xsm, $field{'options'};
+                if ( $options[ $newprofile{ 'ext_' . $id } ] eq q{ } ) {
+                    $newprofile{ 'ext_' . $id } = q{};
+                }
             }
-            @options = split /\^/xsm, $field{'options'};
-            if ( $options[ $newprofile{ 'ext_' . $id } ] eq q{ } ) {
-                $newprofile{ 'ext_' . $id } = q{};
-            }
-        }
-        if ( defined $newprofile{ 'ext_' . $id } && $field{'type'} eq 'image' )
-        {
-            if ( $newprofile{ 'ext_' . $id } eq 'http://' ) {
-                $newprofile{ 'ext_' . $id } = q{};
+            elsif ( $field{'type'} eq 'image' ) {
+                if ( $newprofile{ 'ext_' . $id } eq 'http://' ) {
+                    $newprofile{ 'ext_' . $id } = q{};
+                }
             }
         }
 

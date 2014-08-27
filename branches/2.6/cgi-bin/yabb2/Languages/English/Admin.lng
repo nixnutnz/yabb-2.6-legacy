@@ -1079,7 +1079,7 @@ $abbr_lang = 'en-us';
 '35' => '&nbsp;&nbsp;&nbsp; - Enter the PM Text here:',
 '36' => '&nbsp;&nbsp;&nbsp; - Enter the PM Subject here:',
 '46' => 'Storage',
-'52' => 'Spam Protect - Enter Percent<br /><span class="small">(Read Administrator Help - Spam Protect - Enter Percent for Info, 0 to disable)</span>',
+'52' => qq~Spam Protect - Enter Percent<br /><span class="small">(Read Administrator Help - <a href="$scripturl?action=help;section=admin#Spam_Protect_-_Enter_Percent">Spam Protect - Enter Percent</a> for Info, 0 to disable)</span>~,
 '75' => 'Number Of Posts Required to send Personal Messages?',
 '84' => 'Inbox',
 '85' => 'Sent box',

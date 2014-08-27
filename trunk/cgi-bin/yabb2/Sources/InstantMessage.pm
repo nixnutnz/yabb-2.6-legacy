@@ -28,7 +28,7 @@ LoadLanguage('Post');
 get_micon();
 get_template('MyMessage');
 
-$set_subjectMaxLength = defined $set_subjectMaxLength ? $set_subjectMaxLength : 50;
+$set_subjectMaxLength ||= 50;
 
 if (   ( $action eq 'imsend' || $action eq 'imsend2' )
     && $MaxIMMessLen
@@ -48,11 +48,7 @@ sub buildIMsend {
 
     if ( $FORM{'previewim'} ) {
         require Sources::Post;
-        if ( !$error ) { Preview(); $subject = $csubject; }
-        else           { Preview($error); }
-        FromHTML($message);
-        FromHTML($subject);
-        $is_preview = 1;
+        Preview($error);
     }
     $mctitle = $inmes_txt{'775'};
     if ($sendBMess) { $mctitle = $inmes_txt{'775a'}; }
@@ -413,12 +409,13 @@ qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'re
         </script>
         ~;
 
-    my $iconopts = q{};
+        my $iconopts = q{};
         for my $i ( sort keys %pmiconlist ) {
-            my ($img, $alt) = split /[|]/xsm, $pmiconlist{$i};
-            if ( $icon eq $img ) {$myic = ' selected="selected" '; }
-            $iconopts .= qq~                            <option value="$img"$myic>$alt</option>\n~;
-    }
+            my ( $img, $alt ) = split /[|]/xsm, $pmiconlist{$i};
+            if ( $icon eq $img ) { $myic = ' selected="selected" '; }
+            $iconopts .=
+qq~                            <option value="$img"$myic>$alt</option>\n~;
+        }
         $imsend_send = $my_imsend_IM;
         $imsend_send =~ s/{yabb my_send}/$my_send/sm;
         $imsend_send =~ s/{yabb my_gimsend}/$my_gimsend/sm;
@@ -489,6 +486,7 @@ qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'re
     if ( !$replyguest ) {
         if ( $enable_ubbc && $showyabbcbutt ) {
             $my_ubbc_yes .= qq~<b>$post_txt{'252'}:</b><br />~;
+
             # ubbc set separated out into PostBox.pm DAR 11/13/2012 #
             $my_ubbc_yes .= postbox();
         }
@@ -580,7 +578,9 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
     }
 
     # PM File Attachments Browse Box Code
-    GroupPerms( $allowAttachIM, $pmAttachGroups );
+    $allowAttachIM ||= 0;
+    $pmFileLimit   ||= 0;
+    $allowGroups = GroupPerms( $allowAttachIM, $pmAttachGroups );
     my ( $pmFileTypeInfo, $pmFileSizeInfo, $pmFileExtensions, @files,
         @fileUsers );
     if ( !$replyguest && $allowAttachIM && $allowGroups && -d "$pmuploaddir" ) {
@@ -619,32 +619,34 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
         $my_imFA =~ s/{yabb my_allow_FA}/$my_allow_FA/sm;
 
         my $startcount;
-        for my $y ( 1 .. $allowAttachIM ) {
-            if (
-                (
+        if ( $allowAttachIM > 0 ) {
+            for my $y ( 1 .. $allowAttachIM ) {
+                if (
                     (
-                           $action eq 'imsend2'
-                        || $INFO{'forward'}
-                        || $FORM{'draftid'}
-                        || $INFO{'caller'} == 4
+                        (
+                               $action eq 'imsend2'
+                            || $INFO{'forward'}
+                            || $FORM{'draftid'}
+                            || $INFO{'caller'} == 4
+                        )
+                        && !$FORM{'reply'}
                     )
-                    && !$FORM{'reply'}
-                )
-                && $files[ $y - 1 ] ne q{}
-                && -e "$pmuploaddir/$files[$y-1]"
-              )
-            {
-                if ( $FORM{'draftid'} || $INFO{'caller'} == 4 ) {
-                    $fatxt{'6d'} = $fatxt{'6f'};
-                    $fatxt{'6e'} = $fatxt{'6c'};
-                }
-                $startcount++;
-                $pmAttachUser = cloak( $fileUsers[ $y - 1 ] );
-                $my_att_FA .= qq~
+                    && $files[ $y - 1 ] ne q{}
+                    && -e "$pmuploaddir/$files[$y-1]"
+                  )
+                {
+                    if ( $FORM{'draftid'} || $INFO{'caller'} == 4 ) {
+                        $fatxt{'6d'} = $fatxt{'6f'};
+                        $fatxt{'6e'} = $fatxt{'6c'};
+                    }
+                    $startcount++;
+                    $pmAttachUser = cloak( $fileUsers[ $y - 1 ] );
+                    $my_att_FA .= qq~
             <div id="attform_a_$y" class="att_lft~
-                  . ( $y > 1 ? q~_b~ : q{} ) . qq~"><b>$fatxt{'6'} $y:</b></div>
+                      . ( $y > 1 ? q~_b~ : q{} )
+                      . qq~"><b>$fatxt{'6'} $y:</b></div>
             <div id="attform_b_$y" class="att_rgt~
-                  . ( $y > 1 ? q~_b~ : q{} ) . qq~">
+                      . ( $y > 1 ? q~_b~ : q{} ) . qq~">
                 <input type="file" name="file$y" id="file$y" size="50" onchange="selectNewattach($y);" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span><br />
                         <span style="font-size:x-small">
                 <input type="hidden" id="w_filename$y" name="w_filename$y" value="$files[$y-1]" />
@@ -655,34 +657,34 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
                 <option value="attachnew">$fatxt{'6b'}</option>
                 </select>&nbsp;$fatxt{'40'}: <a href="$pmuploadurl/$files[$y-1]" target="_blank">$files[$y-1]</a>
                         </span>~;
-            }
-            else {
-                $my_att_FA .= qq~
+                }
+                else {
+                    $my_att_FA .= qq~
             <div id="attform_a_$y" class="att_lft"~
-                  . ( $y > 1 ? q~ style="visibility:hidden; height:0px"~ : q{} )
-                  . qq~><b>$fatxt{'6'} $y:</b></div>
+                      . ( $y > 1
+                        ? q~ style="visibility:hidden; height:0px"~
+                        : q{} )
+                      . qq~><b>$fatxt{'6'} $y:</b></div>
             <div id="attform_b_$y" class="att_rgt"~
-                  . ( $y > 1 ? q~ style="visibility:hidden; height:0px"~ : q{} )
-                  . qq~>\n             <input type="file" name="file$y" id="file$y" size="50" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span>~;
+                      . ( $y > 1
+                        ? q~ style="visibility:hidden; height:0px"~
+                        : q{} )
+                      . qq~>\n             <input type="file" name="file$y" id="file$y" size="50" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span>~;
+                }
+                $my_att_FA .= qq~\n            </div>\n~;
             }
-            $my_att_FA .= qq~\n            </div>\n~;
+            if ( !$startcount ) { $startcount = 1; }
 
-            if ( $is_preview == 1 && $CGI_query->upload("file$y") ) {
-                $is_preview = 2;
-            }
-        }
-        if ( !$startcount ) { $startcount = 1; }
-
-        if ( $allowAttachIM > 1 ) {
-            $my_att_FA .= qq~
+            if ( $allowAttachIM > 1 ) {
+                $my_att_FA .= qq~
             <script type="text/javascript">
             var countattach = $startcount;~
-              . (
-                $startcount > 1
-                ? qq~\n         document.getElementById("attform_sub").style.visibility = "visible";~
-                : q{}
-              )
-              . qq~
+                  . (
+                    $startcount > 1
+                    ? qq~\n         document.getElementById("attform_sub").style.visibility = "visible";~
+                    : q{}
+                  )
+                  . qq~
             function enabPrev2(add_sub) {
                 if (add_sub == 1) {
                     countattach = countattach + add_sub;
@@ -713,13 +715,9 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
                 }
             }
             </script>~;
-        }
-        $my_imFA .= $my_FA_att;
-        $my_imFA =~ s/{yabb my_att_FA}/$my_att_FA/sm;
-
-        if ( $is_preview == 2 ) {
-            $is_preview   = 1;
-            $my_ispreview = $myshow_ispreview;
+            }
+            $my_imFA .= $my_FA_att;
+            $my_imFA =~ s/{yabb my_att_FA}/$my_att_FA/sm;
         }
     }
 
@@ -748,7 +746,6 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
           . qq~ /> <label for="dontstoreinoutbox"><span class="small">$inmes_txt{'320'}$sentboxAttachInfo</span></label><br />~;
     }
 
-
     #these are the buttons to submit
     my $sendBMessFlag;
     if ( $sendBMess || $isBMess ) {
@@ -766,7 +763,7 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
     if ( !$replyguest ) {
         $my_draft =
 qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$draft" value="$inmes_txt{'savedraft'}" accesskey="d" tabindex="7" class="button" />~;
-     }
+    }
 
     $smilie_url_array  = q{};
     $smilie_code_array = q{};
@@ -906,6 +903,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
 
     $message = $FORM{'message'};
     $message =~ s/^\s+|\s+$//g;
+
     #above regex cannot use /s or /m flags. IT WILL BREAK!
 
     # no subject/no message are bad!
@@ -960,16 +958,20 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
 
     $memnums = $#multiple + 1;
     ## no need to check for spam if its a broadcast, as this only creates the one post
-    if ( $imspam ne 'off' && !$isBMess ) {
+    if ( $imspam eq 'off' ) { $imspam = 0; }
+    $imspam ||= 0;
+    if ( $imspam > 0 && !$isBMess ) {
         $checkspam = 100 / $allmems * $memnums;
         if ( $memnums == 1 ) { $checkspam = 0; }
         if ( $checkspam > $imspam && !$iamadmin ) {
             fatal_error('im_spam_alert');
         }
     }
+
     # Create unique Message ID
     $messageid = getnewid();
-    GroupPerms( $allowAttachIM, $pmAttachGroups );
+    $allowAttachIM ||= 0;
+    $allowGroups = GroupPerms( $allowAttachIM, $pmAttachGroups );
     if ( $allowAttachIM && $allowGroups ) {
         for my $y ( 1 .. $allowAttachIM ) {
             if ($CGI_query) { $file = $CGI_query->upload("file$y"); }
@@ -1021,10 +1023,12 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                         }
                     }
                 }
-                $fixext  =~ s/\.(pl|pm|cgi|php)/._$1/ixsm;
+                $fixext =~ s/\.(pl|pm|cgi|php)/._$1/ixsm;
                 $fixname =~ s/\.(?!tar$)/_/gxsm;
                 $fixfile = qq~$fixname$fixext~;
-                if ( $fixfile eq 'index.html' || $fixfile eq '.htaccess' ) { fatal_error('attach_file_blocked') };
+                if ( $fixfile eq 'index.html' || $fixfile eq '.htaccess' ) {
+                    fatal_error('attach_file_blocked');
+                }
 
                 if ( !$pmFileOverwrite ) {
                     $fixfile = check_existence( $pmuploaddir, $fixfile );
@@ -1045,7 +1049,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                     }
                 }
                 if ($match) {
-                    if ( !$allowAttachIM ) {
+                    if ( $allowAttachIM == 0 ) {
                         foreach (@filelist) { unlink "$pmuploaddir/$_"; }
                         fatal_error('no_perm_att');
                     }
@@ -1060,7 +1064,8 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                     $filesize += $size;
                     $file_buffer .= $buffer;
                 }
-                if ( $pmFileLimit && $filesize > ( 1024 * $pmFileLimit ) ) {
+                $pmFileLimit ||= 0;
+                if ( $pmFileLimit > 0 && $filesize > ( 1024 * $pmFileLimit ) ) {
                     foreach (@filelist) { unlink "$pmuploaddir/$_"; }
                     fatal_error( q{},
                             "$fatxt{'21'} $fixfile ("
@@ -1068,7 +1073,8 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                           . " KB) $fatxt{'21b'} "
                           . $pmFileLimit );
                 }
-                if ($pmDirLimit) {
+                $pmDirLimit ||= 0;
+                if ( $pmDirLimit > 0 ) {
                     my $dirsize = dirsize($pmuploaddir);
                     if ( $filesize > ( ( 1024 * $pmDirLimit ) - $dirsize ) ) {
                         foreach (@filelist) { unlink "$pmuploaddir/$_"; }
@@ -1172,7 +1178,7 @@ qq~$messageid|$date|$filesizekb{$logFixfile}|$logFixfile|${$uid.$username}{'real
     # go through each member in list
     # add to each msg (inbox) but only one to outbox
 
-    $actlang   = $language;
+    $actlang = $language;
     if ( !$FORM{'draft'} && !$isBMess && !$replyguest ) {
         foreach my $UserTo (@allto) {
             $addnr++;
@@ -1216,7 +1222,7 @@ qq~$messageid|$date|$filesizekb{$logFixfile}|$logFixfile|${$uid.$username}{'real
             my $sendAutoReply = 1;
             if (   ${ $uid . $UserTo }{'offlinestatus'} eq 'away'
                 && ${ $uid . $UserTo }{'awayreply'} ne q{}
-                && ${ $uid . $UserTo }{'awaysubj'}  ne q{} )
+                && ${ $uid . $UserTo }{'awaysubj'} ne q{} )
             {
                 if ( ${ $uid . $UserTo }{'awayreplysent'} eq q{} ) {
                     ${ $uid . $UserTo }{'awayreplysent'} = $username;
@@ -1377,7 +1383,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
 
         $FORM{'toguest'} =~ s/ /%20/gsm;
         $FORM{'toshow'} = $FORM{'toguest'} . q{ } . $FORM{'guestemail'};
-        $FORM{'toshow'}     =~ s/[\n\r]//gsm;
+        $FORM{'toshow'} =~ s/[\n\r]//gsm;
         $FORM{'guestemail'} =~ s/[\n\r]//gsm;
 
         $fromname = ${ $uid . $username }{'realname'};
@@ -1402,8 +1408,8 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
         || ( $FORM{'dontstoreinoutbox'} && $fixfile ne q{} ) )
     {
         fopen( OUTBOX, "+>$memberdir/$username.$savetofile" )
-          or fatal_error( 'cannot_open', "+>$memberdir/$username.$savetofile",
-            1 );
+          or
+          fatal_error( 'cannot_open', "+>$memberdir/$username.$savetofile", 1 );
         ## all but drafts being resaved just get added to their file
         if ( !$FORM{'draft'} || ( $FORM{'draft'} && !$FORM{'draftid'} ) ) {
             print {OUTBOX}
@@ -1507,7 +1513,7 @@ sub ProcIMrecs {
         $toshowList =~ s/,/,to:/gsm;
         push @allto, ( split /\,/xsm, $toshowList );
         $FORM{'toshow'} = join q{,}, @multiple;
-        $FORM{'toshowcc'}  =~ s/ //gsm;
+        $FORM{'toshowcc'} =~ s/ //gsm;
         $FORM{'toshowbcc'} =~ s/ //gsm;
 
         if ( $FORM{'toshowcc'} ) {
@@ -1817,7 +1823,7 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=$nextMessid">$inm
 qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'190'}</a>~;
     }
 
-    my $mydate = timeformat($mdate,0,0,0,1);
+    my $mydate = timeformat( $mdate, 0, 0, 0, 1 );
     if ( $INFO{'caller'} == 1 ) {
         if ($mtousers) {
             foreach my $uname ( split /,/xsm, $mtousers ) {

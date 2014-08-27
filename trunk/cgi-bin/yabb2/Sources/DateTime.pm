@@ -33,11 +33,11 @@ sub toffs {
     my ($mydate, $forum_default) = @_;
     my $toffs = 0;
 
-    if ( $iamguest || $forum_default ) {
+    if ( $iamguest || $forum_default || !${ $uid . $username }{'user_tz'} ) {
         $tzname = $default_tz || 'UTC';
     }
     else {
-        $tzname = ${ $uid . $username }{'user_tz'} || 'UTC';
+        $tzname = ${ $uid . $username }{'user_tz'};
     }
 
     eval {

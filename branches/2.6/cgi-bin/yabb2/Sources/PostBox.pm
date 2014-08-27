@@ -469,6 +469,7 @@ sub attach {
             <b>$fatxt{'80'}</b>
             <input type="hidden" name="oldattach" id="oldattach" value="$mfn" />~;
 
+    $allowattach ||= 0;
     if ( $allowattach > 1 ) {
         $yymain .= qq~
             <img name="attform_add" id="attform_add" src="$imagesdir/$cat_exp" alt="$fatxt{'80a'}" title="$fatxt{'80a'}" class="cursor" onclick="enabPrev2(1);" />
@@ -584,6 +585,7 @@ sub speedpost {
 }
 
 sub my_check_prev {
+    $checkallcaps ||= 0;
     $x = qq~
         <script type="text/javascript">
 

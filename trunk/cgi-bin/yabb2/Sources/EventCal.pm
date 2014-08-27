@@ -588,6 +588,7 @@ qq~if (theForm.name.value === "" || theForm.name.value == "_" || theForm.name.va
         if (! checkMailaddr(theForm.email.value)) { msgError += "\\n - $post_txt{'500'}"; if (isError === 0) isError = 3; }~;
     }
 
+    $checkallcaps ||= 0;
     $my_subcheck .= qq~
     if (theForm.message.value === "") { msgError += "\\n - $post_txt{'78'}"; if (isError === 0) isError = 5; }
     else if ($checkallcaps && theForm.message.value.search(/[A-Z]{$checkallcaps,}/g) != -1) {
@@ -1155,10 +1156,8 @@ qq~\n<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/calscroller.css" 
 
     my ( $caleventbegin, $caleventend );
     if ($ssicaldisplay) { $DisplayEvents = $ssicaldisplay; }
-    if ( !$DisplayEvents ) {
-        $DisplayEvents = 0;
-    }
-    else {
+    $DisplayEvents ||= 0;
+    if ( $DisplayEvents > 0 ) {
         ( undef, undef, undef, $d_cal, $m_cal, $y_cal, undef, undef, undef ) =
           gmtime( $daterechnug + ( 86_400 * $DisplayEvents ) );
         $m_cal++;
@@ -1205,7 +1204,8 @@ qq~$var_cal{'calcoming'} $var_cal{'calsubtitle'} ($DisplayEvents $var_cal{'calda
         }
 
         if ( $cicon eq q{} ) { $cico = 'eventinfo'; }
-        if ( $CalShortEvent && length($cevent) > $CalShortEvent ) {
+        $CalShortEvent ||= 0;
+        if ( $CalShortEvent > 0 && length($cevent) > $CalShortEvent ) {
             if ( $ctime ne 'birthday' ) {
                 if ( $enable_ubbc && $No_ShortUbbc == 1 ) {
                     $cevent =~ s/\[url(.*?)\](.*?)\[\/url\]/$2/isgxm;

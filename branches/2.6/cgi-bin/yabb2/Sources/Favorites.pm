@@ -270,6 +270,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$fo
             $pagesall =
               qq~<a href="$scripturl?num=$mnum/all-0">$pidtxt{'01'}</a>~;
         }
+        $maxmessagedisplay ||= 10;
         if ( int( ( $mreplies + 1 ) / $maxmessagedisplay ) > 6 ) {
             $pages =
                 qq~ <a href="$scripturl?num=$mnum/~
