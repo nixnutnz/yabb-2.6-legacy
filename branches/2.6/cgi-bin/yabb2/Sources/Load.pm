@@ -109,16 +109,24 @@ qq~<a href="$scripturl?action=imshow;caller=1;id=-1">${$username}{'PMimnewcount'
     }
 
     if ( ${$username}{'PMmnum'} == 1 ) {
-        $yyim =
-qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'471'}</a>, $imnewtext~;
+        if ( ${$username}{'PMimnewcount'} == 1 ) {
+          $yyim = qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'155b'}</a>~;
+        }
+        else {
+          $yyim =
+ qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'471'}</a>, $imnewtext~;
+        }
     }
     elsif ( !${$username}{'PMmnum'} && !${$username}{'PMimnewcount'} ) {
         $yyim =
-qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'153'}</a>~;
+ qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'153'}</a>~;
+    }
+    elsif ( ${$username}{'PMmnum'} == ${$username}{'PMimnewcount'} ) {
+        $yyim = qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'154b'}</a>~;
     }
     else {
-        $yyim =
-qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'153'}</a>, $imnewtext~;
+         $yyim =
+ qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'153'}</a>, $imnewtext~;
     }
 
     if ( !$user_ip && $iamadmin ) {
