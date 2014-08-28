@@ -618,7 +618,6 @@ sub LoadMiniUser {
     $g = 0;
     my $dg = 0;
     my $tempgroup;
-    my $noshow = 0;
     my $bold   = 0;
 
     $tempgroupcheck = ${ $uid . $user }{'position'} || q{};
@@ -630,10 +629,10 @@ sub LoadMiniUser {
         #    $noshow,    $viewperms, $topicperms, $replyperms,
         #    $pollperms, $attachperms
         #)
-		@memstat = split /\|/xsm, $Group{$tempgroupcheck};
+        @memstat = split /\|/xsm, $Group{$tempgroupcheck};
         $temptitle = $memstat[0];
         $tempgroup = $Group{$tempgroupcheck};
-        if ( $noshow == 0 ) { $bold = 1; }
+        if ( $memstat[4] == 0 ) { $bold = 1; }
         $memberunfo{$user} = $tempgroupcheck;
     }
     elsif ( $moderators{$user} ) {
@@ -660,7 +659,7 @@ sub LoadMiniUser {
         $memberunfo{$user} = $memstat[0];
     }
 
-    if ( $noshow == 1 ) {
+    if ( $memstat[4] == 1 ) {
         $temptitle = $memstat[0];
         foreach my $postamount ( reverse sort { $a <=> $b } keys %Post ) {
             if ( ${ $uid . $user }{'postcount'} > $postamount ) {
@@ -672,7 +671,7 @@ sub LoadMiniUser {
 
     if ( !$tempgroup ) {
         $temptitle   = 'no group';
-		@memstat = ( q{}, 0, q{}, q{}, 1, q{}, q{}, q{}, q{}, q{} );
+        @memstat = ( q{}, 0, q{}, q{}, 1, q{}, q{}, q{}, q{}, q{} );
     }
 
 # The following puts some new has variables in if this user is the user browsing the board
