@@ -165,7 +165,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
     $yymain .= $myregister_endrow;
     $yymain .= $email2;
 
-    if ($birthday_on_reg == 1 ) {
+    if ($birthday_on_reg) {
         my $editAgeTxt;
         if ( $editAgeLimit == 1 ) {
             $editAgeTxt =
@@ -388,7 +388,8 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
             return false;
         }~ .
 
-        ($imp_email_check ? qq~
+      (
+          $imp_email_check ? qq~
         if (document.creator.email2.value == '') {
             alert("$register_txt{'error_email2'}");
             document.creator.email2.focus();
@@ -398,7 +399,8 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
             alert("$register_txt{'error_email3'}");
             document.creator.email.focus();
             return false;
-        }~ : '') .
+        }~ : q{}
+      ) .
 
       (
         $birthday_on_reg
@@ -531,7 +533,7 @@ sub Register2 {
         };
         if ( !$EVAL_ERROR ) {
             my $helo;
-            Mail::CheckUser->import(qw(check_email last_check));
+            use Mail::CheckUser (qw(check_email last_check));
             $Mail::CheckUser::Sender_Addr = $webmaster_email;
             if ($boardurl =~ /http\:\/\/(.*?)\//){ $Mail::CheckUser::Helo_Domain = $1; }
             if (check_email($member{'email'})) {
