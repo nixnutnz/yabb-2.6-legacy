@@ -870,7 +870,7 @@ qq~$menusep<a href="$scripturl?action=print;num=$viewnum" target="_blank">$img{'
                 my $filesize = -s "$uploaddir/$_";
                 $urlname = $_;
                 $urlname =~ s/([^A-Za-z0-9])/sprintf('%%%02X', ord($1))/egxsm;
-                $download_txt = ( $attach_count{$_} == 1 ) ? $fatxt{'41b'} : $fatxt{'41a'};
+                $download_txt = ( $attach_count{$_} == 1 ) ? $fatxt{'41b'} : isempty( $fatxt{'41c'}, $fatxt{'41a'} );
                 if ($filesize) {
                     if (   $_ =~ /\.(bmp|jpe|jpg|jpeg|gif|png)$/ixsm
                         && $amdisplaypics == 1 )
