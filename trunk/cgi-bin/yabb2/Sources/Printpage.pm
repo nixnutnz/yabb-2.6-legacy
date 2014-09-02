@@ -676,7 +676,7 @@ function do_images() {
                       : "$micon_bg{'paperclip'}";
                 }
                 my $filesize = -s "$uploaddir/$_";
-                $download_txt = ( $attach_count{$_} == 1 ) ? $fatxt{'41b'} : $fatxt{'41a'}; 
+                $download_txt = ( $attach_count{$_} == 1 ) ? $fatxt{'41b'} : isempty( $fatxt{'41c'}, $fatxt{'41a'} ); 
                 if ($filesize) {
                     if (   $_ =~ /\.(bmp|jpe|jpg|jpeg|gif|png)$/ixsm
                         && $amdisplaypics == 1 )
