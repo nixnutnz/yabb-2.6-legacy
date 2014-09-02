@@ -3,15 +3,15 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.0                                                  #
-# Packaged:       June 27, 2014                                               #
+# Version:        YaBB 2.6.1                                                  #
+# Packaged:       September 1, 2014                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision: 1503 $
+# $Revision$
 
 $search_img = 'search.png';
 
@@ -22,10 +22,10 @@ $mysearch_template = qq~
     </tr>
 </table>
 <table class="bordercolor pad_4px cs_thin" >
-	<colgroup>
+    <colgroup>
         <col style="width:45%" />
         <col style="width:55%" />
-	</colgroup>
+    </colgroup>
     <tr>
         <td class="windowbg right vtop"><label for="search"><b>$search_txt{'582'}:</b></label></td>
         <td class="windowbg2 padd_2px">
@@ -106,10 +106,10 @@ $mysearch_template5 = qq~
 
 $mysearch_template6 =
   qq~<table class="tabtitle" style="table-layout: fixed;">
-	<colgroup>
+    <colgroup>
         <col style="width:5%" />
         <col style="width:95%" />
-	</colgroup>
+    </colgroup>
     <tr>
         <td class="center">{yabb counter}</td>
         <td>&nbsp;~;
@@ -139,10 +139,10 @@ $mysearch_template10 = qq~
 
 $mysearch_PM = qq~
 <table class="bordercolor cs_thin" style="table-layout: fixed;">
-	<colgroup>
+    <colgroup>
         <col style="width:5%" />
         <col style="width:95%" />
-	</colgroup>
+    </colgroup>
     <tr>
         <td class="titlebg center">&nbsp;{yabb counter}&nbsp;</td>
         <td class="titlebg">&nbsp;{yabb FolderName} &raquo; <a href="$scripturl?action=imshow;caller={yabb thispmbox};id={yabb messageid}"><span class="under">{yabb msub}</span></a><br />

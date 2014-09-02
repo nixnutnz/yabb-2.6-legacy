@@ -3,8 +3,8 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.0                                                  #
-# Packaged:       June 27, 2014                                               #
+# Version:        YaBB 2.6.1                                                  #
+# Packaged:       September 1, 2014                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -15,7 +15,7 @@
 # Released: January 28, 2013, Copyright 2013 Carsten Dalgaard                 #
 ###############################################################################
 
-$addmoderatorslngver = 'YaBB 2.6.0 $Revision$';
+$addmoderatorslngver = 'YaBB 2.6.1 $Revision$';
 
 %addmod_txt = (
 'addmod_title' => q~Moderator~,

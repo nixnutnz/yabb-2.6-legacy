@@ -2,12 +2,12 @@
 
 ###############################################################################
 # BoardConvert.pl                                                             #
-# $Date: 06.27.14 $                                                           #
+# $Date: 09.01.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.0                                                  #
-# Packaged:       June 27, 2014                                               #
+# Version:        YaBB 2.6.1                                                  #
+# Packaged:       September 1, 2014                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -15,9 +15,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.0';
+our $VERSION = '2.6.1';
 
-$boardconvertplver = 'YaBB 2.6.0 $Revision$';
+$boardconvertplver = 'YaBB 2.6.1 $Revision$';
 
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     $yyIIS = 1;
@@ -96,7 +96,7 @@ sub SimpleOutput {
 <html lang='en-US'>
 <head>
     <meta charset="utf-8">
-    <title>YaBB 2.6.0 Forum Control Exporter Utility</title>
+    <title>YaBB 2.6.1 Forum Control Exporter Utility</title>
     <style type="text/css">
         html, body {color:#000; font-family:Verdana, Helvetica, Arial, Sans-Serif; font-size:13px; background-color:#eee}
     </style>

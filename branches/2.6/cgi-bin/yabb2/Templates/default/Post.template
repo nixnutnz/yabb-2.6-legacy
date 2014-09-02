@@ -3,8 +3,8 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.0                                                  #
-# Packaged:       June 27, 2014                                               #
+# Version:        YaBB 2.6.1                                                  #
+# Packaged:       September 1, 2014                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -177,7 +177,7 @@ $mypost_smiley1 = qq~
             </tr><tr>
             <td class="center h_15px"><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span></td>
             </tr></table>
-			<script type="text/javascript">
+            <script type="text/javascript">
             document.images.smiliextra_image.src = smilieurl[document.postmodify.smiliextra_list.value];
             </script>
             ~;

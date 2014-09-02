@@ -1,21 +1,21 @@
 ###############################################################################
 # ModifyMessage.pm                                                            #
-# $Date: 06.27.14 $                                                           #
+# $Date: 09.01.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.0                                                  #
-# Packaged:       June 27, 2014                                               #
+# Version:        YaBB 2.6.1                                                  #
+# Packaged:       September 1, 2014                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-our $VERSION = '2.6.0';
+our $VERSION = '2.6.1';
 use CGI::Carp qw(fatalsToBrowser);
 
-$modifymessagepmver = 'YaBB 2.6.0 $Revision$';
+$modifymessagepmver = 'YaBB 2.6.1 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( !$post_txt_loaded ) {

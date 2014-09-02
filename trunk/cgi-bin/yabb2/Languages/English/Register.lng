@@ -3,8 +3,8 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.0                                                  #
-# Packaged:       June 27, 2014                                               #
+# Version:        YaBB 2.6.1                                                  #
+# Packaged:       September 1, 2014                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$registerlngver = 'YaBB 2.6.0 $Revision$';
+$registerlngver = 'YaBB 2.6.1 $Revision$';
 
 %register_txt = (
 '4' => 'For security reasons, it&#39;s advisable to have your screen name not the same as your login ID.',
@@ -39,7 +39,7 @@ $registerlngver = 'YaBB 2.6.0 $Revision$';
 '113' => ' is already registered.',
 '114' => ' is available.',
 '115' => ' is reserved.',
-'209' => 'I love YaBB 2.6.0!',
+'209' => 'I love YaBB 2.6.1!',
 '213' => q~Passwords are not the same.~,
 '241' => 'field. Valid Characters are Letters(A-Z, a-z), Numbers (0-9), Spaces and ( _ ! @ # $ % ^ & * ( ) + | ` ~ - = \ : ; &#39; " , . / ? [ ] { } )',
 '241r' => 'field. Valid Characters are Letters(A-Z, a-z), Numbers (0-9), Spaces and ( + - . @ _ )',

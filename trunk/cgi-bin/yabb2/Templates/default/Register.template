@@ -3,8 +3,8 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.0                                                  #
-# Packaged:       June 27, 2014                                               #
+# Version:        YaBB 2.6.1                                                  #
+# Packaged:       September 1, 2014                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -35,7 +35,7 @@ $myregister_fullagree = qq~
         </td>
     </tr><tr>
         <td class="catbg center" style="padding: 8px;">
-            <input type="submit" value="$register_txt{'585'}" name="regagree" class="button" />&nbsp;&nbsp;<input type="submit" value="$register_txt{'586'}" name="regnoagree" class="button" /> 
+            <input type="submit" value="$register_txt{'585'}" name="regagree" class="button" />&nbsp;&nbsp;<input type="submit" value="$register_txt{'586'}" name="regnoagree" class="button" />
         </td>
     </tr>
 </table>
@@ -76,10 +76,10 @@ $myregister_regfill_a = qq~
     </tr>
 </table>
 <table class="cs_thin pad_4px">
-	<colgroup>
+    <colgroup>
         <col style="width:45%" />
         <col style="width:55%" />
-	</colgroup>
+    </colgroup>
     <tr>
         <td class="windowbg center" colspan="2">
             $register_txt{'97a'}$myreg_req $register_txt{'97b'}
@@ -264,7 +264,7 @@ $myregister_email2 = qq~<tr>
 $myregister_endform = qq~<tr>
         <td class="catbg center" style="padding: 8px;" colspan="2">
             <div style="margin-bottom: .5em;"><label for="submitbutton">$register_txt{'95'}</label></div>
-            <input type="submit" id="submitbutton" value="$register_txt{'97'}" class="button" /> 
+            <input type="submit" id="submitbutton" value="$register_txt{'97'}" class="button" />
         </td>
     </tr>
 </table>

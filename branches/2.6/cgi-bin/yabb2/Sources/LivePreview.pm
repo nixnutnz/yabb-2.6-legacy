@@ -1,11 +1,11 @@
 ###############################################################################
 # LivePreview.pm                                                              #
-# $Date: 06.27.14 $                                                           #
+# $Date: 09.01.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.0                                                  #
-# Packaged:       June 27, 2014                                               #
+# Version:        YaBB 2.6.1                                                  #
+# Packaged:       September 1, 2014                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -17,9 +17,9 @@
 ###############################################################################
 
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.0';
+our $VERSION = '2.6.1';
 
-$livepreviewpmver = 'YaBB 2.6.0 $Revision$';
+$livepreviewpmver = 'YaBB 2.6.1 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 use URI::Escape;
 if ( $yymycharset ne 'UTF-8' ) {
@@ -80,7 +80,7 @@ sub DoLiveMessage {
     $myname = $FORM{'guestname'};
     uri_unescape($myname);
     if ( $yymycharset ne 'UTF-8' ) {
-         $csubject = decode_utf8($myname);
+         $myname = decode_utf8($myname);
     }
     $myname =~ s/[\r\n]//gsm;
     FromChars($myname);

@@ -1,11 +1,11 @@
 ###############################################################################
 # ModuleChecker.pm                                                            #
-# $Date: 06.27.14 $                                                           #
+# $Date: 09.01.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.0                                                  #
-# Packaged:       June 27, 2014                                               #
+# Version:        YaBB 2.6.1                                                  #
+# Packaged:       September 1, 2014                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -16,9 +16,9 @@ use strict;
 #use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
-our $VERSION = '2.6.0';
+our $VERSION = '2.6.1';
 
-our $modulecheckerpmver = 'YaBB 2.6.0 $Revision$';
+our $modulecheckerpmver = 'YaBB 2.6.1 $Revision$';
 our ( $action, $yymain, %modulecheck );
 if ( $action eq 'detailedversion' ) { return 1; }
 

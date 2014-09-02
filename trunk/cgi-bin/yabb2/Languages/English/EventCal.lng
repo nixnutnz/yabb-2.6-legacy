@@ -3,8 +3,8 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.0                                                  #
-# Packaged:       June 27, 2014                                               #
+# Version:        YaBB 2.6.1                                                  #
+# Packaged:       September 1, 2014                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -14,7 +14,7 @@
 #                and added to YaBB core in Version 2.5.4 /Version 3.0         #
 ###############################################################################
 
-$eventcallngver = 'YaBB 2.6.0 $Revision$';
+$eventcallngver = 'YaBB 2.6.1 $Revision$';
 
 ### Event Calendar ###
 

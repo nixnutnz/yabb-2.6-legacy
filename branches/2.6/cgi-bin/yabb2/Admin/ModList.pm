@@ -1,11 +1,11 @@
 ###############################################################################
 # ModList.pm                                                                  #
-# $Date: 06.27.14 $                                                           #
+# $Date: 09.01.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.0                                                  #
-# Packaged:       June 27, 2014                                               #
+# Version:        YaBB 2.6.1                                                  #
+# Packaged:       September 1, 2014                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -14,9 +14,9 @@
 ###############################################################################
 # use strict;
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.0';
+our $VERSION = '2.6.1';
 
-$modlistpmver = 'YaBB 2.6.0 $Revision$';
+$modlistpmver = 'YaBB 2.6.1 $Revision$';
 my ($action);
 if ( $action eq 'detailedversion' ) { return 1; }
 

@@ -72,7 +72,7 @@ $SectionBody4 = qq~<p>Member Groups give you the ability to assign a group or cl
     <li><b>Star Type:</b>
         <ul>
             <li>Choose a default star type from the drop down box, or enter the URL to a different image.
-                <p class="help_attn"><b><span class="underline">Administrator Tip:</span></b> If you've imported an older forum to 2.6.0, your old default stars will not appear as 2.6.0 uses different star graphics with different extensions. If you wish to use the old stars or had custom ones, make sure to copy them into the folder that holds your template graphics. This will most likely be 'yabbfiles/Templates/Forum/default'. Otherwise, simply choose new star graphics from the drop down list.</p></li>
+                <p class="help_attn"><b><span class="underline">Administrator Tip:</span></b> If you've imported an older forum to 2.6.0/2.6.1, your old default stars will not appear as 2.6.0 uses different star graphics with different extensions. If you wish to use the old stars or had custom ones, make sure to copy them into the folder that holds your template graphics. This will most likely be 'yabbfiles/Templates/Forum/default'. Otherwise, simply choose new star graphics from the drop down list.</p></li>
         </ul>
     </li>
     <li><b>Color:</b>

@@ -3,8 +3,8 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.0                                                  #
-# Packaged:       June 27, 2014                                               #
+# Version:        YaBB 2.6.1                                                  #
+# Packaged:       September 1, 2014                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$extendedprofileslngver = 'YaBB 2.6.0 $Revision$';
+$extendedprofileslngver = 'YaBB 2.6.1 $Revision$';
 
 %lang_ext = (
 'true' => 'yes',
@@ -124,7 +124,7 @@ $extendedprofileslngver = 'YaBB 2.6.0 $Revision$';
 'converter_title' => 'Convert Old Extended Profile Fields',
 'convlock' => 'Extended Profile Converter',
 'convlock_desc' => qq~The Extended Profiles Converter has already been run. Attempting to run it again may cause damage to your files.<br /><br />To run the Extended Profiles Converter again, remove the file "$vardir/Extended.lock," then re-visit this page.~,
-'converter_description' => 'Here you can convert your old Extended Profiles into YaBB 2.6.0. Before you convert, make sure that you still have your old &#39;Members&#39; and &#39;Variables&#39; in the proper Convert/ folders. Fill in the paths into the boxes below. Then press the convert button. <b>NOTE:</b> only start converting after your normal member data has already been converted. This converter will convert the old .ext files to the new Y2 format and it will move the information the old <i>extended_profiles_fields.txt</i> and <i>extended_profiles_order.txt</i> files into Settings.pm.',
+'converter_description' => 'Here you can convert your old Extended Profiles into YaBB 2.6.1. Before you convert, make sure that you still have your old &#39;Members&#39; and &#39;Variables&#39; in the proper Convert/ folders. Fill in the paths into the boxes below. Then press the convert button. <b>NOTE:</b> only start converting after your normal member data has already been converted. This converter will convert the old .ext files to the new Y2 format and it will move the information the old <i>extended_profiles_fields.txt</i> and <i>extended_profiles_order.txt</i> files into Settings.pm.',
 'converter_button' => 'Convert Now',
 'cannot_open_file' => 'Can&#39;t open file ',
 'invalid_extension' => 'Your image has a forbidden extension.',
