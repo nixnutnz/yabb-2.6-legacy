@@ -937,8 +937,8 @@ qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$di
         my $user_tz_select = q{};
         $default_tz ||= 'UTC';
         if ( !$EVAL_ERROR ) {
-            DateTime->import();
-            DateTime::TimeZone->import();
+            require DateTime;
+            require DateTime::TimeZone;
             LoadLanguage('Countries');
             $mytz = ${ $uid . $user }{'user_tz'} || $default_tz;
             my @mycntry = sort { $countrytime_txt{$a} cmp $countrytime_txt{$b} } keys %countrytime_txt;

@@ -211,7 +211,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
         if ( !$subboard_sel ) {
             (@bdlist) = split /\,/xsm, $cat{$catid};
             my ( $catname, $catperms, $catallowcol ) =
-              split /\|/xsm, $catinfo{"$catid"};
+              split /\|/xsm, $catinfo{$catid};
 
             # Category Permissions Check
             my $access = CatAccess($catperms);
@@ -682,12 +682,13 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
             }
             $templatecat = $catheader;
             $tmpcatimg   = q{};
+            $imgid = $brd_img_id{$catid};
             if ( $catimage ne q{} ) {
                 if ( $catimage =~ /\//ism ) {
-                    $catimage = qq~<img src="$catimage" alt="" />~;
+                    $catimage = qq~<img src="$catimage" alt="" id="brd_id_$imgid" onload="resize_brd_images(this);" />~;
                 }
                 elsif ($catimage) {
-                    $catimage = qq~<img src="$imagesdir/$catimage" alt="" />~;
+                    $catimage = qq~<img src="$imagesdir/$catimage" alt="" id="brd_id_$imgid" onload="resize_brd_images(this);" />~;
                 }
                 $tmpcatimg = qq~$catimage~;
             }

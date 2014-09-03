@@ -134,7 +134,7 @@ Most YaBBC tags can be wrapped around text, by first <span class="highlight">hig
     </tr><tr>
         <td colspan="2"><hr /></td>
     </tr><tr>
-        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src='$imagesdir/UBBC/table.png' alt="Table Button" /></span> <span class="ubbcbutton ubbcbuttonback" style="background-image: url($imagesdir/UBBC/$ubbcbak); margin:0 4px"><img src='$imagesdir/UBBC/td.png' alt="Table Data Button" /></span> <span class="ubbcbutton ubbcbuttonback"><img src='$imagesdir/UBBC/tr.png' alt="Table Row Button" /></span> Insert Table - Column - Row</th>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src='$imagesdir/UBBC/table.png' alt="Table Button" /></span> <span class="ubbcbutton ubbcbuttonback" style="margin:0 4px"><img src='$imagesdir/UBBC/td.png' alt="Table Data Button" /></span> <span class="ubbcbutton ubbcbuttonback"><img src='$imagesdir/UBBC/tr.png' alt="Table Row Button" /></span> Insert Table - Column - Row</th>
     </tr><tr>
         <td>Syntax:</td>
         <td>[table][tr][td]text example[/td][/tr][/table]</td>

@@ -46,7 +46,7 @@ sub Login2 {
     $username =~ s/\s/_/gxsm;
     if ( $username =~ /[^ \w\x80-\xFF\[\]\(\)#\%\+,\-\|\.:=\?\@\^]/sm ) {
         fatal_error( 'invalid_character',
-            "$loginout_txt{'35'} $loginout_txt{'241'}" );
+            "$loginout_txt{'35a'}" );
     }
 
     ## Check if login ID is not an email address ##

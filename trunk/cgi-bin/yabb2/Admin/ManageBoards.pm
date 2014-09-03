@@ -113,9 +113,9 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
                 </table>~;
     for my $catid (@categoryorder) {
         @bdlist = split /,/xsm, $cat{$catid};
-        ( $curcatname, $catperms ) = split /\|/xsm, $catinfo{"$catid"};
+        ( $curcatname, $catperms, undef, $catpic ) = split /\|/xsm, $catinfo{$catid};
         ToChars($curcatname);
-
+        $temppic = q{};
         if ( $INFO{'action'} eq 'managecats' ) {
             $tempcolspan   = q{};
             $tempclass     = 'windowbg2';
@@ -124,6 +124,9 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
         else {
             $tempcolspan   = q~colspan="4"~;
             $tempclass     = 'catbg';
+            if ( $catpic ) {
+                $temppic = qq~<div style="float:right; margin-right: 10%"><img src="$yyhtml_root/Templates/Forum/default/$catpic" id="brd_img_resize" alt="$catid" /></div>~;
+            }
             $temphrefclass = q~class="catbg a"~;
         }
 
@@ -131,8 +134,7 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
                 <table class="bordercolor borderstyle border-space pad-cell" style="margin-bottom: .5em;">
                     <tr>
                         <td class="$tempclass" style="height:25px" $tempcolspan>
-                            <a href="$adminurl?action=reorderboards;item=$catid" $temphrefclass><img src="$admin_img{'reorder'}" alt="$admin_txt{'832'}" title="$admin_txt{'832'}" /></a> &nbsp;<b>$curcatname</b>
-                        </td>~;
+                            <a href="$adminurl?action=reorderboards;item=$catid" $temphrefclass><img src="$admin_img{'reorder'}" alt="$admin_txt{'832'}" title="$admin_txt{'832'}" /></a> &nbsp;<b>$curcatname</b>$temppic</td>~;
         if ( $INFO{'action'} eq 'managecats' ) {
             $yymain .= qq~
                         <td class="windowbg center" style="height:25px; width: 10%"><input type="checkbox" name="yitem_$catid" value="1" /></td>~;
@@ -1249,8 +1251,9 @@ sub AddBoards2 {
             fatal_error( 'invalid_character',
                 "$admin_txt{'61'} $admin_txt{'241'}" );
         }
+        my $newpic = q{};
         if ( $FORM{"pic$i"} ne q{} ) {
-            my $newpic = $FORM{"pic$i"};
+            $newpic = $FORM{"pic$i"};
             $FORM{"pic$i"} = UploadFile("pic$i", "Templates/Forum/$FORM{'templt'}/Boards", 'png jpg jpeg gif', '250', '0');
             fopen( BRDPIC, ">>$boardsdir/brdpics.db" );
             print {BRDPIC} qq~$id|$FORM{'templt'}|$newpic\n~;
@@ -1261,11 +1264,17 @@ sub AddBoards2 {
             }
         }
         elsif ( $FORM{"mypic$i"} ne q{} ) {
-            if ( $FORM{"mypic$i"} !~ m{^[0-9a-zA-Z_\.\#\%\-\:\+\?\$\&\~\.\,\@/]+\.(gif|png|bmp|jpg)$}xsm )
+            $newpic = $FORM{"mypic$i"};
+            if ( $newpic !~ m{^[0-9a-zA-Z_\.\#\%\-\:\+\?\$\&\~\.\,\@/]+\.(gif|png|bmp|jpg)$}xsm )
             {
                 fatal_error('invalid_picture');
             }
-            else { $FORM{"pic$i"} = $FORM{"mypic$i"}; }
+            else {
+                fopen( BRDPIC, ">>$boardsdir/brdpics.db" );
+                print {BRDPIC} qq~$id|$FORM{'templt'}|$newpic\n~;
+                fclose(BRDPIC);
+                $FORM{"pic$i"} = $FORM{"mypic$i"};
+            }
         }
         else {
             $FORM{"pic$i"} = $FORM{"cur_pic$i"};

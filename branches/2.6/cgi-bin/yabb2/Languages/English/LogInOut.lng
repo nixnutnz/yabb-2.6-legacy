@@ -17,6 +17,7 @@ $loginoutlngver = 'YaBB 2.6.1 $Revision$';
 %loginout_txt = (
 '34' => 'Login',
 '35' => 'User ID or e-mail address',
+'35a' => 'User ID or e-mail address field.',
 '35b' => 'User ID, Screen Name or e-mail address',
 '36' => 'Password',
 '36b' => 'Password Reset',
