@@ -3,7 +3,7 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.1                                                  #
+# Version:        YaBB 2.6.2                                                  #
 # Packaged:       September 1, 2014                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
@@ -19,12 +19,12 @@ $my_favbrds = 'favboards.png';
 
 $favorites_template .= qq~<!-- Board Description start -->
 <table class="tabtitle-sub">
-	<colgroup>
+    <colgroup>
         <col style="width:8%" />
         <col style="width:20%" />
         <col style="width:56%" />
         <col style="width:16%" />
-	</colgroup>
+    </colgroup>
     <tr>
         <td class="center">{yabb bdpicture}</td>
         <td><b>{yabb board}</b></td>
@@ -38,12 +38,12 @@ $favorites_template .= qq~<!-- Board Description start -->
 </table>
 {yabb modupdate}
 <table class="bordercolor pad_3px cs_thin">
-	<colgroup>
+    <colgroup>
         <col span="2" style="width:4%" />
         <col style="width:42%" />
         <col span="2" style="width:10%" />
         <col style="width:22%" />
-	</colgroup>
+    </colgroup>
     <tr>
         <td class="titlebg center" colspan="2">&nbsp;</td>
         <td class="titlebg">$my_favs{'70'} / $my_favs{'109'}</td>
@@ -60,10 +60,10 @@ $favorites_template .= qq~<!-- Board Description start -->
 
 $favorites_template .= qq~<!-- Icon and access info start -->
 <table class="pad_8px">
-	<colgroup>
+    <colgroup>
         <col style="width:35%" />
-	    <col style="width:65%" />
-	</colgroup>
+        <col style="width:65%" />
+    </colgroup>
     <tr>
         <td class="vtop">
             <span class="small">{yabb icons}</span>
@@ -175,9 +175,9 @@ $my_boardnote = qq~
         </tr>
     </table>
     <table class="pad_4px cs_thin" style="margin-bottom: 10px;">
-		<colgroup>
+        <colgroup>
             <col style="width:65%" />
-		</colgroup>
+        </colgroup>
         {yabb my_showNotifications_b}
     </table>
     </form>
@@ -191,9 +191,9 @@ $my_boardnote = qq~
         </tr>
     </table>
     <table class="pad_4px cs_thin">
-		<colgroup>
+        <colgroup>
             <col style="85%" />
-		</colgroup>
+        </colgroup>
         {yabb my_showNotifications_t}
     </table>
     </form>~;
@@ -267,10 +267,10 @@ $my_threadnote_b = qq~<tr>
 ##Recent Posts
 $myshow_recent_a = qq~
 <table class="tabtitle">
-	<colgroup>
+    <colgroup>
         <col style="width:5%" />
-	    <col style="width:95%" />
-	</colgroup>
+        <col style="width:95%" />
+    </colgroup>
     <tr>
         <td class="center h_30px">{yabb counter}</td>
         <td>&nbsp;<a href="$scripturl?catselect={yabb brdcat}"><span class="under">{yabb catinfobrd}</span></a> / <a href="$scripturl?board={yabb brd}"><span class="under">{yabb brdbrd}</span></a> / <a href="$scripturl?num={yabb tnum}"><span class="under">{yabb msub}</span></a><br />

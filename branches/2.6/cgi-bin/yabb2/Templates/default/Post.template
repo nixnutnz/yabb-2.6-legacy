@@ -3,7 +3,7 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.1                                                  #
+# Version:        YaBB 2.6.2                                                  #
 # Packaged:       September 1, 2014                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
@@ -50,7 +50,11 @@ $mypost_postblock = qq~
         <col style="width: 23%" />
         <col style="width: auto" />
     </colgroup>
-    {yabb my_prevmain}{yabb name_field}{yabb email_field}{yabb verification_field}{yabb verification_question_field}
+    {yabb my_prevmain}
+	{yabb name_field}
+	{yabb email_field}
+	{yabb verification_field}
+	{yabb verification_question_field}
     <tr class="windowbg">
         <td colspan="{yabb guestcol}">
             <div style="height:16px;">
@@ -73,7 +77,8 @@ $mypost_postblock = qq~
         </div>
        </td>
     </tr>
-        {yabb my_t_status}{yabb extra}
+        {yabb my_t_status}
+		{yabb extra}
     <tr>
         <td class="windowbg2">
             <label for="subject"><b>$post_txt{'70'}:</b></label>
@@ -91,7 +96,15 @@ $mypost_postblock = qq~
             {yabb my_postsec_b}
         </td>
     </tr><tr>
-        <td class="windowbg2 vtop">{yabb my_googie}{yabb mypost_smilie_array}{yabb my_post_feata}{yabb my_post_smilies}{yabb my_feat5}{yabb my_is_prev}{yabb notification}{yabb favoriteadd}
+        <td class="windowbg2 vtop">{yabb my_googie}
+{yabb mypost_smilie_array}
+{yabb my_post_feata}
+{yabb my_post_smilies}
+{yabb my_feat5}
+{yabb my_is_prev}
+{yabb mustViewSet}
+{yabb notification}
+{yabb favoriteadd}
         <tr id="feature_status_7" class="windowbg">
         <td>
             <label for="ns"><b>$post_txt{'276'}:</b></label>
