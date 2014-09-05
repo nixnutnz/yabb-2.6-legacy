@@ -887,7 +887,7 @@ sub fatal_error {
     LoadLanguage('Error');
     get_template('Other');
 
-    my $errormessage = "$error_txt{$x[0]} $x[1]";
+    my $errormessage = $x[0] ? ( $error_txt{$x[0]} . ( $x[1] ? " $x[1]" : q{} ) ) : isempty( $x[1], q{} );
 
     my ( $filename, $line, $subroutine ) = get_caller();
     if (   ( $debug == 1 || ( $debug == 2 && $iamadmin ) )
@@ -1089,26 +1089,26 @@ qq~<br /><span class="underline">$debug_txt{'postpairs'}:</span><br />~;
                 && $ENV{'QUERY_STRING'} =~ /action=(post|modify)2\b/xsm )
             {
                 $CGI::POST_MAX = int( 1024 * $limit * $allowattach );
-                if ($CGI::POST_MAX) { $CGI::POST_MAX += 1_000_000; }    # *
+                if ($CGI::POST_MAX) { $CGI::POST_MAX += 1048576; }    # *
             }
             elsif ( $allowAttachIM > 0
                 && $ENV{'QUERY_STRING'} =~ /action=(imsend|imsend2)\b/xsm )
             {
                 $CGI::POST_MAX = int( 1024 * $pmFileLimit * $allowAttachIM );
-                if ($CGI::POST_MAX) { $CGI::POST_MAX += 1_000_000; }    # *
+                if ($CGI::POST_MAX) { $CGI::POST_MAX += 1048576; }    # *
             }
             elsif ( $upload_useravatar
                 && $ENV{'QUERY_STRING'} =~ /action=profileOptions2\b/xsm )
             {
                 $avatar_limit ||= 0;
                 $CGI::POST_MAX = int( 1024 * $avatar_limit );
-                if ($CGI::POST_MAX) { $CGI::POST_MAX += 1_000_000; }    # *
+                if ($CGI::POST_MAX) { $CGI::POST_MAX += 1048576; }    # *
             }
             else {
 
                 # If NO uploads are allowed YaBB sets this default limit
                 # to 1 MB. Change this values if you get error messages.
-                $CGI::POST_MAX = 1_000_000;
+                $CGI::POST_MAX = 1048576;
             }
 
         # * adds volume, if a upload limit is set, to not get error if the other

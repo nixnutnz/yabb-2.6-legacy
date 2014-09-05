@@ -1519,23 +1519,24 @@ sub ModifyProfile2 {
             }
         }
 
-        if (   ( $member{'bday1'} !~ /^[0-9]+$/xsm || $member{'bday1'} eq q{} )
-            || ( $member{'bday2'} !~ /^[0-9]+$/xsm || $member{'bday2'} eq q{} )
-            || ( $member{'bday3'} !~ /^[0-9]+$/xsm || $member{'bday3'} eq q{}
-            || length( $member{'bday3'} ) < 4 ) )
-        {
+        if ( !$iamadmin && ( !$iamgmod || !$allow_gmod_profile ) && ( $member{'bday1'} eq q{} || $member{'bday2'} eq q{} || $member{'bday3'} eq q{} ) ) {
+            fatal_error( 'invalid_birthdate', "($member{'bday1'}/$member{'bday2'}/$member{'bday3'})" );
+        }
+         elsif ( $member{'bday1'} ne q{} || $member{'bday2'} ne q{} || $member{'bday3'} ne q{} ) {
+            if ( $member{'bday1'} !~ /^[0-9]+$/xsm || $member{'bday2'} !~ /^[0-9]+$/xsm || $member{'bday3'} !~ /^[0-9]+$/xsm || length( $member{'bday3'} ) < 4 ) {
                 fatal_error( 'invalid_birthdate',
                     "($member{'bday1'}/$member{'bday2'}/$member{'bday3'})" );
-        }
-        if (   $member{'bday1'} < 1
-            || $member{'bday1'} > 12
-            || $member{'bday2'} < 1
-            || $member{'bday2'} > 31
-            || $member{'bday3'} < 1901
-            || $member{'bday3'} > $year - 5 )
-        {
-            fatal_error( 'invalid_birthdate',
-                "($member{'bday1'}/$member{'bday2'}/$member{'bday3'})" );
+            }
+            elsif (   $member{'bday1'} < 1
+                || $member{'bday1'} > 12
+                || $member{'bday2'} < 1
+                || $member{'bday2'} > 31
+                || $member{'bday3'} < 1901
+                || $member{'bday3'} > $year - 5 )
+            {
+                fatal_error( 'invalid_birthdate',
+                    "($member{'bday1'}/$member{'bday2'}/$member{'bday3'})" );
+            }
         }
         $member{'bday1'} =~ s/[^0-9]//gxsm;
         $member{'bday2'} =~ s/[^0-9]//gxsm;
