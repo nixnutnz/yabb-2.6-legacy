@@ -242,10 +242,6 @@ LoadLanguage('Micon');
     'j' => "grin|$mess_icon_txt{'290'}",
     'k' => "sad|$mess_icon_txt{'291'}",
     'l' => "wink|$mess_icon_txt{'292'}",
-    'm' => "rate|$mess_icon_txt{'292a'}",
-    'n' => "partytime|$mess_icon_txt{'292b'}",
-    'o' => "boos|$mess_icon_txt{'292c'}",
-    'p' => "book|$mess_icon_txt{'292d'}",
 );
 
 %pmiconlist = (

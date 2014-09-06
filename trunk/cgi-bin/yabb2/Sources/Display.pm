@@ -1170,11 +1170,11 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
 
         $counterwords =
           $counter != 0 ? "$display_txt{'146'} #$counter - " : q{};
-		
+
         $messdate = timeformat($mdate);
-		if ( $counterwords ) {
-	        $messdate = timeformat($mdate,0,0,0,1);
-		}
+        if ( $counterwords ) {
+            $messdate = timeformat($mdate,0,0,0,1);
+        }
 
         # Print the post and user info for the poster.
         my $outblock        = $messageblock;
