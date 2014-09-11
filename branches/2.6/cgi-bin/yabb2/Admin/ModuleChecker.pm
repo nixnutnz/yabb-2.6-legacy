@@ -73,7 +73,7 @@ foreach my $module ( @modules ) {
         }
     }
 }
-my $perlver = $];
+my $perlver = $^V;
 
 if ( $script_root !~ /ModuleChecker[.]\w+$/xsm ) {
     $yymain .= qq~

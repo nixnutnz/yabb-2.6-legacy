@@ -73,7 +73,6 @@ sub Login2 {
     $caseright = 0;
     ManageMemberlist('load');
     while ( ( $curmemb, $value ) = each %memberlist ) {
-#        if ( $username =~ m/\Q$curmemb\E/sm ) { $caseright = 1; last; }
         if ( $username eq $curmemb ) { $caseright = 1; last; }
     }
     undef %memberlist;

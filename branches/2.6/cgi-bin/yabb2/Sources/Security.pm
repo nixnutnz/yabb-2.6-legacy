@@ -4,7 +4,7 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.1                                                  #
+# Version:        YaBB 2.6.2                                                  #
 # Packaged:       September 1, 2014                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
@@ -18,7 +18,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.1';
 
-$securitypmver = 'YaBB 2.6.1 $Revision$';
+$securitypmver = 'YaBB 2.6.2 $Revision$';
 
 # Updates profile with current IP, if changed from last IP.
 # Will only actually update the file when .vars is being updated anyway to save extra load on server.
@@ -53,13 +53,13 @@ if ( $curnum ne q{} ) {
     if ( !-e "$datadir/$curnum.txt" ) {
         if ( eval { require Variables::Movedthreads; 1 } ) {
             if ( !$moved_file{$curnum} ) {
-                fatal_error( 'not_found', "$datadir/$curnum.txt" );
+                fatal_error( 'no_topic_found', $curnum );
             }
             while ( exists $moved_file{$curnum} ) {
                 $curnum = $moved_file{$curnum};
                 next if exists $moved_file{$curnum};
                 if ( !-e "$datadir/$curnum.txt" ) {
-                    fatal_error( 'not_found', "$datadir/$curnum.txt" );
+                    fatal_error( 'no_topic_found', $curnum );
                 }
             }
             $INFO{'num'} = $INFO{'thread'} = $FORM{'threadid'} = $curnum;
@@ -130,7 +130,7 @@ if ( $currentboard ne q{} ) {
     }
 
     fopen( BOARDFILE, "$boardsdir/$currentboard.txt" )
-      or fatal_error( 'not_found', "$boardsdir/$currentboard.txt", 1 );
+      or fatal_error( 'no_board_found', $currentboard, 1 );
     while ( $yyThreadLine = <BOARDFILE> ) {
         if ( $yyThreadLine =~ m{\A$curnum\|}oxsm ) { last; }
     }

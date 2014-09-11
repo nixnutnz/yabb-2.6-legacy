@@ -803,18 +803,18 @@ sub QuickLinks {
 
     if ( $iamadmin || $iamgmod || $lastonlineinlink ) {
         if ( ${ $uid . $user }{'lastonline'} ) {
-            $lastonline = $date - ${ $uid . $user }{'lastonline'};
-            my $days  = int( $lastonline / 86_400 );
+            $lastonline = abs( $date - ${ $uid . $user }{'lastonline'} );
+            my $days  = int( $lastonline / 86400 );
             my $hours = sprintf '%02d',
-              int( ( $lastonline - ( $days * 86_400 ) ) / 3600 );
+              int( ( $lastonline - ( $days * 86400 ) ) / 3600 );
             my $mins = sprintf
               '%02d',
               int(
-                ( $lastonline - ( $days * 86_400 ) - ( $hours * 3600 ) ) / 60 );
+                ( $lastonline - ( $days * 86400 ) - ( $hours * 3600 ) ) / 60 );
             my $secs = sprintf
               '%02d',
               ( $lastonline -
-                  ( $days * 86_400 ) -
+                  ( $days * 86400 ) -
                   ( $hours * 3600 ) -
                   ( $mins * 60 ) );
             if ( !$mins ) {

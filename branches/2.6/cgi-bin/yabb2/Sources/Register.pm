@@ -533,7 +533,7 @@ sub Register2 {
         };
         if ( !$EVAL_ERROR ) {
             my $helo;
-            use Mail::CheckUser (qw(check_email last_check));
+            require Mail::CheckUser;
             $Mail::CheckUser::Sender_Addr = $webmaster_email;
             if ($boardurl =~ /http\:\/\/(.*?)\//){ $Mail::CheckUser::Helo_Domain = $1; }
             if (check_email($member{'email'})) {

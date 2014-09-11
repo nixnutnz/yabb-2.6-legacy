@@ -192,8 +192,10 @@ qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort
             if ( !${ $uid . $recentname }{'password'} ) {
                 LoadUser($recentname);
             }
-            $memberinf{$recentname} =
-              qq~${$uid.$recentname}{'realname'}|${$uid.$recentname}{'email'}~;
+            if ( ${ $uid . $recentname}{'realname'} ) {
+                $memberinf{$recentname} =
+                  qq~${$uid.$recentname}{'realname'}|${$uid.$recentname}{'email'}~;
+            }
         }
     }
     elsif ( $INFO{'sort'} eq 'pmsearch' ) {
