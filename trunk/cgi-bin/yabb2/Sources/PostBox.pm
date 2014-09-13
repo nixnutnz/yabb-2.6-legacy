@@ -401,10 +401,11 @@ show_features()~;
 sub googiea {
     $googiea =
 qq~<link rel="stylesheet" href="$yyhtml_root/googiespell/googiespell.css" type="text/css" />
-
-<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>
 <script type="text/javascript" src="$yyhtml_root/googiespell/googiespell.js"></script>
 <script type="text/javascript" src="$yyhtml_root/googiespell/cookiesupport.js"></script>~;
+    if ( $img_greybox == 0 ) {
+        $googiea .= qq~\n<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>~;
+    }
     return $googiea;
 }
 
