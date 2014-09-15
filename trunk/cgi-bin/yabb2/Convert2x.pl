@@ -1495,8 +1495,8 @@ sub tempstarter {
 
     # Requirements and Errors
     require Variables::Settings;
-    if ( -e "$vardir/convSettings.txt" ) {
-        require "$vardir/convSettings.txt";
+    if ( -e "$vardir/ConvSettings.txt" ) {
+        require "$vardir/ConvSettings.txt";
     }
     else { $convertdir = './Convert'; }
 
