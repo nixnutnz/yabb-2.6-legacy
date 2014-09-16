@@ -30,7 +30,7 @@ sub BoardIndex {
         $users,   $lspostid,   $lspostbd,   $lssub,      $lsposter,
         $lsreply, $lsdatetime, @goodboards, @loadboards, $guestlist
     );
-    get_forum_master;
+    get_forum_master();
     my @brd_img_id = sort ( keys %board);
     my %brd_img_id = ();
     my $brdimgcnt = 0;
@@ -948,8 +948,13 @@ qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title=
                         'Global Moderator'
                       )
                     {
-                        $lastposter =
+                        if ( $iamguest ) {
+                            $lastposter = qq~$format_unbold{$lastposter}~;
+                        }
+                        else {
+                            $lastposter =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}" rel="nofollow">$format_unbold{$lastposter}</a>~;
+                        }
                     }
                     else {
 

@@ -701,7 +701,7 @@ sub LoadMiniUser {
     if   ( $bold != 1 )  { $memberinfo{$user} = qq~$memstat[0]~; }
     else                 { $memberinfo{$user} = qq~<b>$memstat[0]</b>~; }
 
-    if ( $memstat[3] ne q{} ) {
+    if ( $memstat[3] ne q{} && !$iamguest ) {
         $link{$user} =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}" style="color:$memstat[3];">$userlink</a>~;
         $format{$user} = qq~<span style="color: $memstat[3];">$userlink</span>~;
@@ -709,6 +709,23 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}" style="c
           qq~<span style="color: $memstat[3];">${$uid.$user}{'realname'}</span>~;
         $col_title{$user} =
           qq~<span style="color: $memstat[3];">$memberinfo{$user}</span>~;
+    }
+    elsif ( $iamguest ) {
+        if ( $memstat[3] ne q{} ) {
+                $link{$user} =
+qq~<span style="color:$memstat[3];">$userlink</span>~;
+        $format{$user} = qq~<span style="color: $memstat[3];">$userlink</span>~;
+        $format_unbold{$user} =
+          qq~<span style="color: $memstat[3];">${$uid.$user}{'realname'}</span>~;
+        $col_title{$user} =
+          qq~<span style="color: $memstat[3];">$memberinfo{$user}</span>~;
+        }
+        else {
+            $link{$user} = qq~$userlink~;
+            $format{$user}        = qq~$userlink~;
+            $format_unbold{$user} = qq~${$uid.$user}{'realname'}~;
+            $col_title{$user}     = qq~$memberinfo{$user}~;
+        }
     }
     else {
         $link{$user} =

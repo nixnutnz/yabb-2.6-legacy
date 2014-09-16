@@ -870,8 +870,13 @@ qq~<a href="$scripturl?num=$mnum/new#new">$newload{'new_mess'}</a>~;
                 || ${ $uid . $musername }{'position'} eq 'Global Moderator'
               )
             {
-                $mname =
+                if ( $iamguest) {
+                    $mname = $format_unbold{$musername};
+                }
+                else {
+                    $mname =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$format_unbold{$musername}</a>~;
+                }
             }
             else {
                 $mname .= qq~ ($messageindex_txt{'470a'})~;
@@ -967,8 +972,13 @@ qq~<br /><span class="small">&#171; $messageindex_txt{'139'} $pages $pagesall &#
                 || ${ $uid . $lastposter }{'position'} eq 'Global Moderator'
               )
             {
-                $lastposter =
+                if ( $iamguest) {
+                    $lastposter = $format_unbold{$lastposter};
+                }
+                else {
+                    $lastposter =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">$format_unbold{$lastposter}</a>~;
+                }
             }
             else {
 
@@ -1490,7 +1500,7 @@ qq~ <img src="$imagesdir/$bdpicfld$bdpic" alt="$curboardname" title="$curboardna
     $messageindex_template =~ s/{yabb threadcount}/$tmpthreadcount/gsm;
     $messageindex_template =~ s/{yabb messagecount}/$tmpmessagecount/gsm;
     $messageindex_template =~ s/{yabb new_load}/$newload/gsm;
-    
+
     $messageindex_template =~ s/{yabb colspan}/$colspan/gsm;
     ### Board Rules Start ###
     if ( ${ $uid . $currentboard }{'rules'} == 1 ) {

@@ -701,7 +701,7 @@ sub LoadMiniUser {
     if   ( $bold != 1 )  { $memberinfo{$user} = qq~$memstat[0]~; }
     else                 { $memberinfo{$user} = qq~<b>$memstat[0]</b>~; }
 
-    if ( $memstat[3] ne q{} ) {
+    if ( $memstat[3] ne q{} && !$iamguest ) {
         $link{$user} =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}" style="color:$memstat[3];">$userlink</a>~;
         $format{$user} = qq~<span style="color: $memstat[3];">$userlink</span>~;
@@ -709,6 +709,23 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}" style="c
           qq~<span style="color: $memstat[3];">${$uid.$user}{'realname'}</span>~;
         $col_title{$user} =
           qq~<span style="color: $memstat[3];">$memberinfo{$user}</span>~;
+    }
+    elsif ( $iamguest ) {
+        if ( $memstat[3] ne q{} ) {
+                $link{$user} =
+qq~<span style="color:$memstat[3];">$userlink</span>~;
+        $format{$user} = qq~<span style="color: $memstat[3];">$userlink</span>~;
+        $format_unbold{$user} =
+          qq~<span style="color: $memstat[3];">${$uid.$user}{'realname'}</span>~;
+        $col_title{$user} =
+          qq~<span style="color: $memstat[3];">$memberinfo{$user}</span>~;
+        }
+        else {
+            $link{$user} = qq~$userlink~;
+            $format{$user}        = qq~$userlink~;
+            $format_unbold{$user} = qq~${$uid.$user}{'realname'}~;
+            $col_title{$user}     = qq~$memberinfo{$user}~;
+        }
     }
     else {
         $link{$user} =
@@ -803,18 +820,18 @@ sub QuickLinks {
 
     if ( $iamadmin || $iamgmod || $lastonlineinlink ) {
         if ( ${ $uid . $user }{'lastonline'} ) {
-            $lastonline = $date - ${ $uid . $user }{'lastonline'};
-            my $days  = int( $lastonline / 86_400 );
+            $lastonline = abs( $date - ${ $uid . $user }{'lastonline'} );
+            my $days  = int( $lastonline / 86400 );
             my $hours = sprintf '%02d',
-              int( ( $lastonline - ( $days * 86_400 ) ) / 3600 );
+              int( ( $lastonline - ( $days * 86400 ) ) / 3600 );
             my $mins = sprintf
               '%02d',
               int(
-                ( $lastonline - ( $days * 86_400 ) - ( $hours * 3600 ) ) / 60 );
+                ( $lastonline - ( $days * 86400 ) - ( $hours * 3600 ) ) / 60 );
             my $secs = sprintf
               '%02d',
               ( $lastonline -
-                  ( $days * 86_400 ) -
+                  ( $days * 86400 ) -
                   ( $hours * 3600 ) -
                   ( $mins * 60 ) );
             if ( !$mins ) {
