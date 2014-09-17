@@ -146,6 +146,14 @@ function uncheckAll() {
     while ( $numshown <= $errorcount ) {
         my ( $tmp_user, $username, $numb, $ids, $all ) = q{};
         $numshown++;
+        $sortlist[$b] =~ s/<br \/>/\[br \/\]/gsm;
+        $sortlist[$b] =~ s/<b>/\[b\]/gxsm;
+        $sortlist[$b] =~ s/<\/b>/\[\/b\]/gxsm;           
+        $sortlist[$b] =~ s/</&lt;/gxsm;
+        $sortlist[$b] =~ s/>/&rt;/gxsm;
+        $sortlist[$b] =~ s/\[b\]/<b>/gxsm;
+        $sortlist[$b] =~ s/\[\/b\]/<\/b>/gxsm;
+        $sortlist[$b] =~ s/\[br \/\]/<br \/>/gsm;
         my (
             $tmp_datecmp,      $tmp_id,    $tmp_date,
             $tmp_userip,       $tmp_error, $tmp_action,
