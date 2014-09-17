@@ -1071,8 +1071,13 @@ sub addMemberLink {
     if ( ${ $uid . $user }{'regdate'}
         && $mdate >= ( ${ $uid . $user }{'regtime'} || $date ) )
     {
-        $mname =
+        if ( $iamguest) {
+            $mname = $format_unbold{$user};
+        }
+        else {
+            $mname =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$format_unbold{$user}</a>~;
+        }
     }
     elsif ($user !~ m/Guest/sm
         && $mdate < ( ${ $uid . $user }{'regtime'} || $date ) )

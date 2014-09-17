@@ -184,8 +184,13 @@ sub RecentPosts {
 
         if ( ${ $uid . $tusername }{'regdate'} && $trstart > $registrationdate )
         {
-            $tname =
+            if ( $iamguest ) {
+                $tname = qq~$format_unbold{$tusername}~;
+            }
+            else {
+                $tname =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tusername}" rel="nofollow">$format_unbold{$tusername}</a>~;
+            }
         }
         elsif ( $tusername !~ m{Guest}sm && $trstart < $registrationdate ) {
             $tname = qq~$tname - $maintxt{'470a'}~;
@@ -205,8 +210,13 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tusername}" rel
         }
 
         if ( ${ $uid . $musername }{'regdate'} && $mdate > $registrationdate ) {
-            $mname =
+            if ( $iamguest ) {
+                $mname = qq~$format_unbold{$musername}~;
+            }
+            else {
+                $mname =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}" rel="nofollow">$format_unbold{$musername}</a>~;
+            }
         }
         elsif ( $musername !~ m{Guest}sm && $mdate < $registrationdate ) {
             $mname = qq~$mname - $maintxt{'470a'}~;
@@ -375,8 +385,13 @@ sub RecentTopics {
 
         if ( ${ $uid . $tusername }{'regdate'} && $trstart > $registrationdate )
         {
-            $tname =
+            if ( $iamguest ) {
+                $tname = qq~$format_unbold{$tusername}~;
+            }
+            else {
+                $tname =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tusername}" rel="nofollow">$format_unbold{$tusername}</a>~;
+            }
         }
         elsif ( $tusername !~ m{Guest}sm && $trstart < $registrationdate ) {
             $tname = qq~$tname - $maintxt{'470a'}~;
@@ -396,8 +411,13 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tusername}" rel
         }
 
         if ( ${ $uid . $musername }{'regdate'} && $mdate > $registrationdate ) {
-            $mname =
+            if ( $iamguest ) {
+                $mname = qq~$format_unbold{$tusername}~;
+            }
+            else {
+                $mname =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}" rel="nofollow">$format_unbold{$musername}</a>~;
+            }
         }
         elsif ( $musername !~ m{Guest}sm && $mdate < $registrationdate ) {
             $mname = qq~$mname - $maintxt{'470a'}~;

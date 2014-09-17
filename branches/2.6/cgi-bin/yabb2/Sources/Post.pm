@@ -1531,7 +1531,7 @@ sub Post2 {
                     fatal_error('no_perm_att');
                 }
                 last;
-			}
+            }
         }
     }
 
@@ -1701,7 +1701,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
 
     my ( $file, $fixfile, @filelist, %filesizekb );
     $allowattach ||= 0;
-	if ( $allowattach > 0 ) {
+    if ( $allowattach > 0 ) {
         for my $y ( 1 .. $allowattach ) {
             if ($CGI_query) { $file = $CGI_query->upload("file$y"); }
             if ($file) {
@@ -1798,7 +1798,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
             if ( $limit > 0  && $filesize > ( 1024 * $limit ) ) {
                 foreach (@filelist) { unlink "$uploaddir/$_"; }
             }
-			$dirlimit ||= 0;
+            $dirlimit ||= 0;
             if ($dirlimit > 0) {
                 my $dirsize = dirsize($uploaddir);
                 if ( $filesize > ( ( 1024 * $dirlimit ) - $dirsize ) ) {
@@ -1862,7 +1862,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
             push @filelist, $fixfile;
         }
     }
-	}
+    }
 
     #Create the list of files
     $fixfile = join q{,}, @filelist;
@@ -2439,10 +2439,15 @@ qq~$post_cutts{'3'} $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threa
                 $registrationdate = int time;
             }
             if ( ${ $uid . $tempname }{'regdate'}
-                && ($messagedate > $registrationdate || $tempname eq 'admin' ) )
+                && ( $messagedate > $registrationdate || $tempname eq 'admin' ) )
             {
-                $displaynamelink =
+                if ( $iamguest) {
+                    $displaynamelink = qq~$format_unbold{$tempname}~;
+                }
+                else {
+                    $displaynamelink =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tempname}">$format_unbold{$tempname}</a>~;
+                }
             }
             elsif ($tempname !~ m{Guest}sm
                 && $messagedate < $registrationdate )

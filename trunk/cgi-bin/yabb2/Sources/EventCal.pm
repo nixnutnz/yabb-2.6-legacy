@@ -846,8 +846,13 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_n
                     }
                     else {
                         LoadUser($cnam);
-                        $eventuserlink =
+                        if ( $iamguest ) {
+                            $eventuserlink = qq~$format_unbold{$cnam}~;
+                        }
+                        else {
+                            $eventuserlink =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cnam}" rel="nofollow">$format_unbold{$cnam}</a>~;
+                        }
                     }
                     $eventbduserlink = $eventuserlink;
                     if (   $CalEventNoName == 1
@@ -986,8 +991,13 @@ qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
                     }
                     else {
                         LoadUser($cnam);
-                        $eventuserlink =
+                        if ( $iamguest ) {
+                            $eventuserlink = qq~$format_unbold{$cnam}~;
+                        }
+                        else {
+                            $eventuserlink =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cnam}" rel="nofollow">$format_unbold{$cnam}</a>~;
+                        }
                     }
                     $eventbduserlink = $eventuserlink;
                     if (   $CalEventNoName == 1
@@ -1264,8 +1274,13 @@ qq~<a href="$scripturl?action=eventcal;calshow=1;eventdate=$cyear$cmon$cday;cali
             }
             else {
                 LoadUser($cname);
-                $eventuserlink =
+                if ( $iamguest ) {
+                    $eventuserlink = qq~$format_unbold{$cnam}~;
+                }
+                else {
+                    $eventuserlink =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$cname}" rel="nofollow">$format_unbold{$cname}</a>~;
+                }
             }
             $eventbduserlink = $eventuserlink;
             if (   $CalEventNoName == 1

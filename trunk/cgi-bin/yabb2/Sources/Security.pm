@@ -53,13 +53,13 @@ if ( $curnum ne q{} ) {
     if ( !-e "$datadir/$curnum.txt" ) {
         if ( eval { require Variables::Movedthreads; 1 } ) {
             if ( !$moved_file{$curnum} ) {
-                fatal_error( 'not_found', "$datadir/$curnum.txt" );
+                fatal_error( 'no_topic_found', $curnum );
             }
             while ( exists $moved_file{$curnum} ) {
                 $curnum = $moved_file{$curnum};
                 next if exists $moved_file{$curnum};
                 if ( !-e "$datadir/$curnum.txt" ) {
-                    fatal_error( 'not_found', "$datadir/$curnum.txt" );
+                    fatal_error( 'no_topic_found', $curnum );
                 }
             }
             $INFO{'num'} = $INFO{'thread'} = $FORM{'threadid'} = $curnum;
@@ -130,7 +130,7 @@ if ( $currentboard ne q{} ) {
     }
 
     fopen( BOARDFILE, "$boardsdir/$currentboard.txt" )
-      or fatal_error( 'not_found', "$boardsdir/$currentboard.txt", 1 );
+      or fatal_error( 'no_board_found', $currentboard, 1 );
     while ( $yyThreadLine = <BOARDFILE> ) {
         if ( $yyThreadLine =~ m{\A$curnum\|}oxsm ) { last; }
     }

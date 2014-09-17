@@ -318,15 +318,27 @@ sub votedetails {
     if ( $poll_modname ne q{} && $poll_mod ne q{} ) {
         $poll_mod = timeformat($poll_mod);
         LoadUser($poll_modname);
-        $displaydate =
+        if ( $iamguest ) {
+            $displaydate =
+qq~<span class="small">&#171; $polltxt{'45a'}: $format_unbold{$poll_modname} $polltxt{'46'}: $poll_mod &#187;</span>~;
+        }
+        else {
+            $displaydate =
 qq~<span class="small">&#171; $polltxt{'45a'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_modname}">$format_unbold{$poll_modname}</a> $polltxt{'46'}: $poll_mod &#187;</span>~;
+        }
     }
     if ( $poll_uname ne q{} && $poll_date ne q{} ) {
         $poll_date = timeformat($poll_date);
         if ($poll_uname ne 'Guest' && -e "$memberdir/$poll_uname.vars") {
             LoadUser($poll_uname);
-            $displaydate =
+            if ( $iamguest ) {
+                $displaydate =
+qq~<span class="small">&#171; $polltxt{'45a'}: $format_unbold{$poll_uname} $polltxt{'46'}: $poll_mod &#187;</span>~;
+            }
+            else {
+                $displaydate =
 qq~<span class="small">&#171; $polltxt{'45'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_uname}">$format_unbold{$poll_uname}</a> $polltxt{'46'}: $poll_date &#187;</span>~;
+            }
         }
         else {
             $displaydate =
@@ -355,8 +367,13 @@ qq~&rsaquo; $template_cat &rsaquo; $template_board &rsaquo; $curthreadurl~;
         $id = qq~$voters_ip-$voters_name~;
         if ($voters_name ne 'Guest' && -e "$memberdir/$voters_name.vars") {
             LoadUser($voters_name);
-            $voters_name =
+            if ( $iamguest ) {
+                $voters_name = qq~$format_unbold{$voters_name}~;
+            }
+            else {
+                $voters_name =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$voters_name}">$format_unbold{$voters_name}</a>~;
+            }
         }
         foreach my $oldvote ( split /\,/xsm, $voters_vote ) {
             if ($ubbcpolls) {
@@ -562,15 +579,27 @@ qq~<a href="$scripturl?action=showvoters;num=$pollnum">$img{'viewvotes'}</a>~;
     if ( $poll_modname ne q{} && $poll_mod ne q{} && $showmodify ) {
         $poll_mod = timeformat($poll_mod);
         LoadUser($poll_modname);
-        $displaydate =
+        if ( $iamguest ) {
+            $displaydate =
+qq~<span class="small">&#171; $polltxt{'45a'}: $format_unbold{$poll_modname} $polltxt{'46'}: $poll_mod &#187;</span>~;
+        }
+        else {
+            $displaydate =
 qq~<span class="small">&#171; $polltxt{'45a'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_modname}">$format_unbold{$poll_modname}</a> $polltxt{'46'}: $poll_mod &#187;</span>~;
+        }
     }
     elsif ( $poll_uname ne q{} && $poll_date ne q{} ) {
         $poll_date = timeformat($poll_date);
         if ($poll_uname ne 'Guest' && -e "$memberdir/$poll_uname.vars") {
             LoadUser($poll_uname);
-            $displaydate =
+            if ( $iamguest ) {
+                $displaydate =
+qq~<span class="small">&#171; $polltxt{'45'}: $format_unbold{$poll_uname} $polltxt{'46'}: $poll_date &#187;</span>~;
+            }
+            else {
+                $displaydate =
 qq~<span class="small">&#171; $polltxt{'45'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_uname}">$format_unbold{$poll_uname}</a> $polltxt{'46'}: $poll_date &#187;</span>~;
+            }
         }
         elsif ( $poll_name ne q{} ) {
             $displaydate =

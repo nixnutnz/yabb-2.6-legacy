@@ -415,6 +415,7 @@ $myprofile_edit~;
     $showProfile =~ s/{yabb GenderFemale}/$GenderFemale/sm;
     $showProfile =~ s/{yabb genderField}/$genderField/sm;
     $showProfile =~ s/{yabb editAgeTxt}/$editAgeTxt/sm;
+    $showProfile =~ s/{yabb require_bd}/$myrequirebd/sm;
     $showProfile =~ s/{yabb bdaysel}/$dayormonth$seluyear$bdayFields/sm;
     $showProfile =~ s/{yabb showageshow}/$my_showageshow/sm;
     $showProfile =~ s/{yabb user_location}/${$uid.$user}{'location'}/sm;
@@ -1519,7 +1520,8 @@ sub ModifyProfile2 {
             }
         }
 
-        if ( !$iamadmin && ( !$iamgmod || !$allow_gmod_profile ) && ( $member{'bday1'} eq q{} || $member{'bday2'} eq q{} || $member{'bday3'} eq q{} ) ) {
+        if ( ( $require_bd == 1 && !$iamadmin && ( !$iamgmod || !$allow_gmod_profile ) ) && ( $member{'bday1'} eq q{} || $member{'bday2'} eq q{} || $member{'bday3'} eq q{} ) )
+        {
             fatal_error( 'invalid_birthdate', "($member{'bday1'}/$member{'bday2'}/$member{'bday3'})" );
         }
          elsif ( $member{'bday1'} ne q{} || $member{'bday2'} ne q{} || $member{'bday3'} ne q{} ) {

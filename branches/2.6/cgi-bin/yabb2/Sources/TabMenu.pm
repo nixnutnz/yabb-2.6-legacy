@@ -114,7 +114,6 @@ qq~                            <li><span |><a href="$scripturl?action=ml" title 
 
         $tab{'admin'} =
 qq~                            <li><span |><a href="$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" title = "$img_txt{'2'}">$img_txt{'2'}</a></span></li>\n~;
-#qq~<li><span |><a href="$boardurl/AdminIndex.$yyaext" title = "$img_txt{'2'}">$img_txt{'2'}</a></span></li>~;
     }
     if ($iamgmod) {
         get_gmod();
