@@ -1081,10 +1081,10 @@ qq~<br /><span class="underline">$debug_txt{'postpairs'}:</span><br />~;
            # "413 Request entity too large"
            # This value will affect both ordinary POSTs and multipart POSTs,
            # meaning that it limits the maximum size of file uploads as well.
-		    $allowattach   ||= 0;
-		    $allowAttachIM ||= 0;
-		    $limit         ||= 0;
-			$pmFileLimit   ||= 0;
+            $allowattach   ||= 0;
+            $allowAttachIM ||= 0;
+            $limit         ||= 0;
+            $pmFileLimit   ||= 0;
             if (   $allowattach > 0
                 && $ENV{'QUERY_STRING'} =~ /action=(post|modify)2\b/xsm )
             {

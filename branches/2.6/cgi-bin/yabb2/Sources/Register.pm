@@ -358,12 +358,16 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
             alert("$register_txt{'error_username'}");
             document.creator.regusername.focus();
             return false;
-        }
+        }~;
+        if ( !$emailpassword ) {
+            $yymain .= qq~
         if (document.creator.regusername.value == document.creator.passwrd1.value || document.creator.regrealname.value == document.creator.passwrd1.value) {
             alert("$register_txt{'error_usernameispass'}");
             document.creator.regusername.focus();
             return false;
+        }~;
         }
+    $yymain .= qq~
         if (document.creator.regrealname.value === '') {
             alert("$register_txt{'error_realname'}");
             document.creator.regrealname.focus();
@@ -533,7 +537,8 @@ sub Register2 {
         };
         if ( !$EVAL_ERROR ) {
             my $helo;
-            use Mail::CheckUser (qw(check_email last_check));
+            require Mail::CheckUser;
+            Mail::CheckUser->import(qw(check_email last_check));
             $Mail::CheckUser::Sender_Addr = $webmaster_email;
             if ($boardurl =~ /http\:\/\/(.*?)\//){ $Mail::CheckUser::Helo_Domain = $1; }
             if (check_email($member{'email'})) {

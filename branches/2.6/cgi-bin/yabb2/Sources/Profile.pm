@@ -401,6 +401,9 @@ qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"
         $my_show_ext_prof = $show_ext_prof;
     }
 
+    if ( $require_bd == 1 ) {
+        $myrequirebd = qq~ <span class="small">$profile_txt{'563b'}</span>~;
+    }
     $showProfile .= qq~
 <form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" accept-charset="$yymycharset">
 $myprofile_edit~;

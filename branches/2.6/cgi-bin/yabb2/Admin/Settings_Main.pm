@@ -1010,6 +1010,12 @@ $qckage    = defined $qckage ? $qckage : 31;
             validate => 'number,null',
         },
         {
+            description => qq~<label for="require_bd">$admin_txt{'require_bd'}</label>~,
+            input_html => qq~<input type="checkbox" name="require_bd" id="require_bd" value="1"${ischecked($require_bd)} />~,
+            name => 'require_bd',
+            validate => 'boolean',
+        },
+        {
             description => qq~<label for="edit_age_limit">$admin_txt{'edit_age_limit'}</label>~,
             input_html => qq~<input type="text" size="2" name="editAgeLimit" id="edit_age_limit" value="$editAgeLimit" />~,
             name => 'editAgeLimit',
