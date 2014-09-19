@@ -4,7 +4,7 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.1                                                  #
+# Version:        YaBB 2.6.2                                                  #
 # Packaged:       September 1, 2014                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
@@ -13,9 +13,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.1';
+our $VERSION = '2.6.2';
 
-$errorlogpmver = 'YaBB 2.6.1 $Revision$';
+$errorlogpmver = 'YaBB 2.6.2 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ErrorLog {
@@ -105,7 +105,7 @@ function checkAll() {
     if(document.errorlog_form.elements[i].name != "subfield" && document.errorlog_form.elements[i].name != "msgfield") {
             document.errorlog_form.elements[i].checked = true;
         }
-  }
+    }
 }
 function uncheckAll() {
   for (var i = 0; i < document.errorlog_form.elements.length; i++) {
@@ -148,7 +148,7 @@ function uncheckAll() {
         $numshown++;
         $sortlist[$b] =~ s/<br \/>/\[br \/\]/gsm;
         $sortlist[$b] =~ s/<b>/\[b\]/gxsm;
-        $sortlist[$b] =~ s/<\/b>/\[\/b\]/gxsm;           
+        $sortlist[$b] =~ s/<\/b>/\[\/b\]/gxsm;
         $sortlist[$b] =~ s/</&lt;/gxsm;
         $sortlist[$b] =~ s/>/&rt;/gxsm;
         $sortlist[$b] =~ s/\[b\]/<b>/gxsm;
@@ -171,26 +171,32 @@ function uncheckAll() {
         $userlist{$tmp_user} = $userlist{$tmp_user} + 1;
         $tmp_date = timeformat($tmp_date);
         LoadUser($tmp_user);
-        my $ipBlock = ( $use_guardian && $use_htaccess ) ? qq~<br /><a href="$adminurl?action=guardian_block;ip=$tmp_userip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$tmp_userip');">$admin_txt{'ipblock'}</a>~ : q{};
-        my $lookupIP =
-          ($ipLookup)
-          ? qq~<a href="$scripturl?action=iplookup;ip=$tmp_userip">$tmp_userip</a>~
-          : qq~$tmp_userip~;
-        if ( $tmp_user eq "$useraccount{$tmp_user}" ) {
-            if ( $userprofile{$tmp_user}->[1] ) {
+        my $ipBlock = q{};
+        my $lookupIP = qq{$tmp_userip};
+        my $ipBan = q{};
+        if ( $tmp_userip ne '127.0.0.1' ) {
+            $ipBlock = ( $use_guardian && $use_htaccess ) ? qq~<br /><a href="$adminurl?action=guardian_block;ip=$tmp_userip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$tmp_userip');">$admin_txt{'ipblock'}</a>~ : qq~<br /><a href="$adminurl?action=blockip;ip=$tmp_userip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$tmp_userip');">$admin_txt{'ipblock2'}</a>~;
+
+            $lookupIP =
+            ($ipLookup)
+            ? qq~<a href="$scripturl?action=iplookup;ip=$tmp_userip">$tmp_userip</a>~
+            : qq~$tmp_userip~;
+            $ipBan = qq~ - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p;return=errorlog" onclick="return confirm('$admin_txt{'ipban_confirm'}$tmp_userip');">$admin_txt{'725f'}</a>~;
+            }
+            if ( $tmp_user eq "$useraccount{$tmp_user}" ) {
+                if ( $userprofile{$tmp_user}->[1] ) {
                 $username =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tmp_user}" target="_blank">$userprofile{$tmp_user}->[1]</a>~;
+                }
+                else {
+                    $username .= qq~$useraccount{$tmp_user}~;
+                }
+                $username .=
+qq~<br />$lookupIP$ipBan$ipBlock~;
             }
             else {
-                $username .= qq~$useraccount{$tmp_user}~;
+                $username = qq~$tmp_user<br />$lookupIP$ipBan$ipBlock~;
             }
-            $username .=
-qq~<br />$lookupIP - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p;return=errorlog" onclick="return confirm('$admin_txt{'ipban_confirm'}$tmp_userip');">$admin_txt{'725f'}</a>$ipBlock~;
-        }
-        else {
-            $username =
-qq~$tmp_user<br />$lookupIP - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p;return=errorlog" onclick="return confirm('$admin_txt{'ipban_confirm'}$tmp_userip');">$admin_txt{'725f'}</a>$ipBlock~;
-        }
         if ( $tmp_topic_number eq q{} ) {
             $numb = "&amp;action=$tmp_action";
         }
@@ -360,6 +366,65 @@ sub YaBBsort {
         }
     }
     return 1;
+}
+
+sub update_htaccess {
+    my ( $action, @values ) = @_;
+    my ( $htheader, $htfooter, @denies, @htout );
+    if ( !$action ) { return 0; }
+    fopen( HTA, '.htaccess' );
+    @htlines = <HTA>;
+    fclose(HTA);
+
+# header to determine only who has access to the main script, not the admin script
+    $htheader = q~<Files YaBB*>~;
+    $htfooter = q~</Files>~;
+    $start    = 0;
+    foreach (@htlines) {
+        chomp $_;
+        if ( $_ eq $htheader ) { $start = 1; }
+        if ( $start == 0 && $_ !~ m{#}sm && $_ ne q{} ) { push @htout, "$_\n"; }
+        if ( $_ eq $htfooter ) { $start = 0; }
+        if ( $start == 1 && $_ =~ s/Deny from //gsm ) {
+            push @denies, $_;
+        }
+    }
+    if ( $action eq 'load' ) {
+        return @denies;
+    }
+    elsif ( $action eq 'save' ) {
+        fopen( HTA, '>.htaccess' );
+        print {HTA} '# Last modified by YaBB: '
+          . timeformat( $date, 1 )
+          . " #\n\n"
+          or croak "$croak{'print'} HTA";
+        print {HTA} @htout or croak "$croak{'print'} HTA";
+        if (@values) {
+            print {HTA} "\n$htheader\n" or croak "$croak{'print'} HTA";
+            foreach (@values) {
+                chomp $_;
+                if ( $_ ne q{} ) {
+                    print {HTA} "Deny from $_\n" or croak "$croak{'print'} HTA";
+                }
+            }
+            print {HTA} "$htfooter\n" or croak "$croak{'print'} HTA";
+        }
+        fclose(HTA);
+    }
+    elsif ( $action eq 'add' ) {
+        push @denies, @values;
+    update_htaccess( 'save', @denies );
+    }
+    return;
+}
+
+sub blockip {
+    is_admin_or_gmod();
+    my $blockIP = $INFO{'ip'};
+    update_htaccess( 'add', $blockIP );
+    $yySetLocation = qq~$adminurl?action=errorlog~;
+    redirectexit();
+    return;
 }
 
 1;
