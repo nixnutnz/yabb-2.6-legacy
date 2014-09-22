@@ -88,6 +88,7 @@ $abbr_lang = 'en-us';
 '163' => 'Yes',
 '164' => 'No',
 '170' => 'Sorry, no matches were found',
+'170b' => 'No unread Topics found.',
 '171' => 'No image found in 30 seconds. Given up.', # Inside JavaScript!
 '193' => 'Back',
 '195' => 'Message started by',

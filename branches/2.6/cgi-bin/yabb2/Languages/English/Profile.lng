@@ -103,6 +103,7 @@ $profilelngver = 'YaBB 2.6.1 $Revision$';
 '521' => 'Not available if you wrote your own time format.',
 '563' => 'Birthdate',
 '563a' => 'Hide age and birth year?',
+'563b' => '(required)',
 '564' => 'Month (MM)',
 '565' => 'Day (DD)',
 '566' => 'Year (YYYY)',

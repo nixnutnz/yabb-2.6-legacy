@@ -321,6 +321,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
     if ( !$yynavback ) { $yynavback .= q~ ~; }
     $yynavback .=
 qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp; $tabsep~;
+    $yybottom = $img_txt{'102b'};
 
     if ( !$usehead ) { $usehead = q~default~; }
     $yytemplate = "$templatesdir/$usehead/$usehead.html";

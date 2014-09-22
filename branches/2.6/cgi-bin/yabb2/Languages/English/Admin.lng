@@ -560,6 +560,7 @@ $abbr_lang = 'en-us';
 'require_bd' => 'Require members to input their birthdate.',
 'min_reg_time' => 'Minimum amount of time in seconds which must be spent on the registration page:<br /><span class="small">This is to stop spambots which automatically fill in the registration form in a time which is humanly impossible.<br />Set to 0 to disable.</span>',
 'ipblock' => 'Block IP in Guardian',
+'ipblock2' => 'Block IP in .htaccess',
 'ipblock_confirm' => 'Are you sure you want to block this IP?\n\n',
 'ipban_confirm' => 'Are you sure you want to ban this IP?\n\n',
 'userpicml' => 'Show User Avatar in Member List?',
