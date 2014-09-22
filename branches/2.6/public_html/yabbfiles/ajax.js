@@ -376,42 +376,6 @@ function IMPage(url,name,id) {
     imageframe.style.display = "block";
 }
 
-function sendIM(url,params) {
-    GetXmlHttpObject();
-    if (xmlHttp == null) {
-        document.getElementById("ImageAlertIFrame").contentDocument.forms.postmodify.submit();
-        return;
-    }
-    var imagealert = document.getElementById("ImageAlert");
-    var imagebody = document.getElementById("ImageAlertBody");
-    document.getElementById("ImageAlertIFrame").style.display = "none";
-    imagebody.style.display = "block";
-
-    var insert = '<div class="topper">Sending PM</div><div class="rotate"><img src="' + imagedir + '/Rotate.gif">';
-    imagebody.innerHTML = insert;
-    imagebody.style.width = "230px";
-    imagebody.style.height = "100px";
-    imagealert.style.display = "block";
-    imagealert.style.visibility = "visible";
-    imagealert.style.marginLeft = "-115px";
-    imagealert.style.marginTop = "-50px";
-
-    xmlHttp.onreadystatechange=IMComplete;
-    xmlHttp.open("POST",url + "&popup=1",true);
-    xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlHttp.setRequestHeader("Content-length", params.length);
-    xmlHttp.setRequestHeader("Connection", "close");
-    xmlHttp.send(params);
-}
-
-function IMComplete() {
-    if (xmlHttp.readyState == 4 || xmlHttp.readyState == "complete") {
-        var insert = '<div class="topper">Complete</div><div class="rotate"><img style="margin: 4px;" src="' + imagedir + '/Rotate.gif">';
-        document.getElementById("ImageAlertBody").innerHTML = insert;
-        setTimeout("HideAlert()",1500);
-    }
-}
-
 // Drop down message index for board index
 
 function MessageList(url,includejs,board,loadnew) {
