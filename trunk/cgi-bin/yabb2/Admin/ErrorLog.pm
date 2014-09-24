@@ -27,12 +27,17 @@ sub ErrorLog {
     fclose(ERRORFILE);
     $errorcount = @errors;
     $date2      = $date;
-    for my $i ( 0 .. ( $errorcount - 1 ) ) {
+    $mytest = 0;
+    for my $i ( 0 .. ( $#errors ) ) {
         my @tmpArray = split /\|/xsm, $errors[$i];
-        $date1 = $tmpArray[1];
-        calcdifference();
-        $date_ref = $result;
-        $tmplist[$i] = qq~$date_ref\|$errors[$i]~;
+        if ( $tmpArray[0] eq q{} || $tmpArray[0] =~ /[a-z]/igsm || $tmpArray[1] eq q{} || $tmpArray[1] =~ /[a-z]/igsm ) { next; }
+        else {
+            $date1 = $tmpArray[1];
+            calcdifference();
+            $date_ref = $result;
+            $tmplist[$mytest] = qq~$date_ref|$errors[$i]~;
+            $mytest++;
+        }
     }
 
     $sortmode  = $INFO{'sort'};
@@ -93,6 +98,15 @@ sub ErrorLog {
     if ( $sortorder ne q{} ) {
         $sortorder = ';order=' . $INFO{'order'};
     }
+
+    $errorlog_error = q{};
+    if ( $#errors > $#tmplist ) {
+        $err = $#errors - $#tmplist;
+        $errorlog_error = qq~<br /><span class="important"><b>$errorlog{'27a'} $err $errorlog{'27b'}</b></span>~;
+        if ( $err == 1 ) {
+            $errorlog_error = qq~<br /><span class="important"><b>$errorlog{'27c'} $err $errorlog{'27d'}</b></span>~;
+        }
+    }
     $yymain .= qq~\
 <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -105,7 +119,7 @@ function checkAll() {
     if(document.errorlog_form.elements[i].name != "subfield" && document.errorlog_form.elements[i].name != "msgfield") {
             document.errorlog_form.elements[i].checked = true;
         }
-  }
+    }
 }
 function uncheckAll() {
   for (var i = 0; i < document.errorlog_form.elements.length; i++) {
@@ -129,7 +143,7 @@ function uncheckAll() {
             <tr>
                 <td class="titlebg" colspan="5">$admin_img{'xx'} <b>$yytitle</b></td>
             </tr><tr>
-                <td class="windowbg2" colspan="5"><div class="pad-more">$errorlog{'18'}</div></td>
+                <td class="windowbg2" colspan="5"><div class="pad-more">$errorlog{'18'} $errorlog_error</div></td>
             </tr><tr>
                 <td class="catbg center"><b>$errorlog{'21'}</b></td>
                 <td class="catbg center">
@@ -143,23 +157,24 @@ function uncheckAll() {
             </tr>~;
     $numshown  = 0;
     $actualnum = 0;
+    $bb = 0;
     while ( $numshown <= $errorcount ) {
         my ( $tmp_user, $username, $numb, $ids, $all ) = q{};
         $numshown++;
-        $sortlist[$b] =~ s/<br \/>/\[br \/\]/gsm;
-        $sortlist[$b] =~ s/<b>/\[b\]/gxsm;
-        $sortlist[$b] =~ s/<\/b>/\[\/b\]/gxsm;           
-        $sortlist[$b] =~ s/</&lt;/gxsm;
-        $sortlist[$b] =~ s/>/&rt;/gxsm;
-        $sortlist[$b] =~ s/\[b\]/<b>/gxsm;
-        $sortlist[$b] =~ s/\[\/b\]/<\/b>/gxsm;
-        $sortlist[$b] =~ s/\[br \/\]/<br \/>/gsm;
+        $sortlist[$bb] =~ s/<br \/>/\[br \/\]/gsm;
+        $sortlist[$bb] =~ s/<b>/\[b\]/gxsm;
+        $sortlist[$bb] =~ s/<\/b>/\[\/b\]/gxsm;
+        $sortlist[$bb] =~ s/</&lt;/gxsm;
+        $sortlist[$bb] =~ s/>/&rt;/gxsm;
+        $sortlist[$bb] =~ s/\[b\]/<b>/gxsm;
+        $sortlist[$bb] =~ s/\[\/b\]/<\/b>/gxsm;
+        $sortlist[$bb] =~ s/\[br \/\]/<br \/>/gsm;
         my (
             $tmp_datecmp,      $tmp_id,    $tmp_date,
             $tmp_userip,       $tmp_error, $tmp_action,
             $tmp_topic_number, $tmp_board, $tmp_username,
             $tmp_password
-        ) = split /\|/xsm, $sortlist[$b];
+        ) = split /\|/xsm, $sortlist[$bb];
         if ( !$tmp_id ) { next; }
         FormatUserName($tmp_username);
         if ( !$tmp_username ) {
@@ -171,26 +186,32 @@ function uncheckAll() {
         $userlist{$tmp_user} = $userlist{$tmp_user} + 1;
         $tmp_date = timeformat($tmp_date);
         LoadUser($tmp_user);
-        my $ipBlock = ( $use_guardian && $use_htaccess ) ? qq~<br /><a href="$adminurl?action=guardian_block;ip=$tmp_userip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$tmp_userip');">$admin_txt{'ipblock'}</a>~ : q{};
-        my $lookupIP =
-          ($ipLookup)
-          ? qq~<a href="$scripturl?action=iplookup;ip=$tmp_userip">$tmp_userip</a>~
-          : qq~$tmp_userip~;
-        if ( $tmp_user eq "$useraccount{$tmp_user}" ) {
-            if ( $userprofile{$tmp_user}->[1] ) {
+        my $ipBlock = q{};
+        my $lookupIP = qq{$tmp_userip};
+        my $ipBan = q{};
+        if ( $tmp_userip ne '127.0.0.1' ) {
+            $ipBlock = ( $use_guardian && $use_htaccess ) ? qq~<br /><a href="$adminurl?action=guardian_block;ip=$tmp_userip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$tmp_userip');">$admin_txt{'ipblock'}</a>~ : qq~<br /><a href="$adminurl?action=blockip;ip=$tmp_userip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$tmp_userip');">$admin_txt{'ipblock2'}</a>~;
+
+            $lookupIP =
+            ($ipLookup)
+            ? qq~<a href="$scripturl?action=iplookup;ip=$tmp_userip">$tmp_userip</a>~
+            : qq~$tmp_userip~;
+            $ipBan = qq~ - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p;return=errorlog" onclick="return confirm('$admin_txt{'ipban_confirm'}$tmp_userip');">$admin_txt{'725f'}</a>~;
+            }
+            if ( $tmp_user eq "$useraccount{$tmp_user}" ) {
+                if ( $userprofile{$tmp_user}->[1] ) {
                 $username =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tmp_user}" target="_blank">$userprofile{$tmp_user}->[1]</a>~;
+                }
+                else {
+                    $username .= qq~$useraccount{$tmp_user}~;
+                }
+                $username .=
+qq~<br />$lookupIP$ipBan$ipBlock~;
             }
             else {
-                $username .= qq~$useraccount{$tmp_user}~;
+                $username = qq~$tmp_user<br />$lookupIP$ipBan$ipBlock~;
             }
-            $username .=
-qq~<br />$lookupIP - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p;return=errorlog" onclick="return confirm('$admin_txt{'ipban_confirm'}$tmp_userip');">$admin_txt{'725f'}</a>$ipBlock~;
-        }
-        else {
-            $username =
-qq~$tmp_user<br />$lookupIP - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p;return=errorlog" onclick="return confirm('$admin_txt{'ipban_confirm'}$tmp_userip');">$admin_txt{'725f'}</a>$ipBlock~;
-        }
         if ( $tmp_topic_number eq q{} ) {
             $numb = "&amp;action=$tmp_action";
         }
@@ -215,7 +236,7 @@ qq~$tmp_user<br />$lookupIP - <a href="$adminurl?action=ipban_err;ban=$tmp_useri
               $tmp_error . qq~ - (<span class="important">$tmp_password</span>)~;
         }
 
-        $b++;
+        $bb++;
         $addel =
 qq~                <td class="windowbg center"><input type="checkbox" name="error$tmp_id" value="$tmp_id" class="windowbg" style="border: 0;" /></td>~;
         $actualnum++;
@@ -224,7 +245,7 @@ qq~                <td class="windowbg center"><input type="checkbox" name="erro
                 <td class="windowbg">$tmp_date</td>
                 <td class="windowbg2 center">$username</td>
                 <td class="windowbg center">
-                    <div class="small" style="height:5em; overflow:auto">$tmp_error<br /><br /><a href="$all">$all</a></div>
+                    <div class="small" style="height:5em; overflow:auto">$tmp_error<br /><a href="$all">$all</a></div>
                 </td>
                 $addel
             </tr>~;
@@ -275,6 +296,7 @@ q~<input type="checkbox" name="checkall" id="checkall" class="windowbg" style="b
         </tr><tr>
             <td class="catbg center">
                 <input type="submit" value="$errorlog{'14'}" onclick="return confirm('$errorlog{'15'}')" class="button" />
+                <br /><a href="$boardurl/AdminIndex.$yyaext?action=cleanerrorlog" onclick="return confirm('$errorlog{'15a'}')">$errorlog{'14a'}</a>
             </td>
         </tr>
     </table>
@@ -360,6 +382,65 @@ sub YaBBsort {
         }
     }
     return 1;
+}
+
+sub update_htaccess {
+    my ( $action, @values ) = @_;
+    my ( $htheader, $htfooter, @denies, @htout );
+    if ( !$action ) { return 0; }
+    fopen( HTA, '.htaccess' );
+    @htlines = <HTA>;
+    fclose(HTA);
+
+# header to determine only who has access to the main script, not the admin script
+    $htheader = q~<Files YaBB*>~;
+    $htfooter = q~</Files>~;
+    $start    = 0;
+    foreach (@htlines) {
+        chomp $_;
+        if ( $_ eq $htheader ) { $start = 1; }
+        if ( $start == 0 && $_ !~ m{#}sm && $_ ne q{} ) { push @htout, "$_\n"; }
+        if ( $_ eq $htfooter ) { $start = 0; }
+        if ( $start == 1 && $_ =~ s/Deny from //gsm ) {
+            push @denies, $_;
+        }
+    }
+    if ( $action eq 'load' ) {
+        return @denies;
+    }
+    elsif ( $action eq 'save' ) {
+        fopen( HTA, '>.htaccess' );
+        print {HTA} '# Last modified by YaBB: '
+          . timeformat( $date, 1 )
+          . " #\n\n"
+          or croak "$croak{'print'} HTA";
+        print {HTA} @htout or croak "$croak{'print'} HTA";
+        if (@values) {
+            print {HTA} "\n$htheader\n" or croak "$croak{'print'} HTA";
+            foreach (@values) {
+                chomp $_;
+                if ( $_ ne q{} ) {
+                    print {HTA} "Deny from $_\n" or croak "$croak{'print'} HTA";
+                }
+            }
+            print {HTA} "$htfooter\n" or croak "$croak{'print'} HTA";
+        }
+        fclose(HTA);
+    }
+    elsif ( $action eq 'add' ) {
+        push @denies, @values;
+    update_htaccess( 'save', @denies );
+    }
+    return;
+}
+
+sub blockip {
+    is_admin_or_gmod();
+    my $blockIP = $INFO{'ip'};
+    update_htaccess( 'add', $blockIP );
+    $yySetLocation = qq~$adminurl?action=errorlog~;
+    redirectexit();
+    return;
 }
 
 1;

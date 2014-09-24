@@ -656,6 +656,12 @@ $abbr_lang = 'en-us';
 '24' => 'Number of entries before Error Log rotates',
 '25' => 'Error Logger',
 '26' => 'User Error Count:',
+'27a' => 'There are',
+'27b' => 'bad lines in the errorlog.',
+'27c' => 'There is',
+'27d' => 'bad line in the errorlog.',
+'14a' => 'Clean Errorlog',
+'15a' => 'Are you sure you want to clean the Errorlog?\nThis erases the file.',
 );
 
 %admintxt = (
