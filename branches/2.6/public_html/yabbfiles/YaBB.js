@@ -513,7 +513,7 @@ function changecontent() {
         if (fadelinks) linkcolorchange(1);
         colorfadeup(1);
     } else if (ie4) {
-        document.all.fscroller.innerHTML=begintag+fcontent[index]+closetag;
+        document.all.news.innerHTML=begintag+fcontent[index]+closetag;
     }
     index++;
 }

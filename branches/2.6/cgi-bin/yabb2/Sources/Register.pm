@@ -394,7 +394,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
 
       (
           $imp_email_check ? qq~
-        if (document.creator.email2.value == '') {
+        if (document.creator.email2.value === '') {
             alert("$register_txt{'error_email2'}");
             document.creator.email2.focus();
             return false;
@@ -415,7 +415,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
             ? 'document.creator.birth_day.value.length && '
             : q{}
           )
-          . qq~(document.creator.birth_day.value.length < 2 || document.creator.birth_day.value < 1 || document.creator.birth_day.value > 31 || /\\D/.test(document.creator.birth_day.value))) {
+          . qq~(document.creator.birth_day.value.length < 2 || document.creator.birth_day.value < 1 || document.creator.birth_day.value > 31 || (/\\D/.test)(document.creator.birth_day.value))) {
             alert("$register_txt{'error_birth_day'}");
             document.creator.birth_day.focus();
             return false;
@@ -426,7 +426,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
             ? 'document.creator.birth_month.value.length && '
             : q{}
           )
-          . qq~(document.creator.birth_month.value.length < 2 || document.creator.birth_month.value < 1 || document.creator.birth_month.value > 12 || /\\D/.test(document.creator.birth_month.value))) {
+          . qq~(document.creator.birth_month.value.length < 2 || document.creator.birth_month.value < 1 || document.creator.birth_month.value > 12 || (/\\D/.test)(document.creator.birth_month.value))) {
             alert("$register_txt{'error_birth_month'}");
             document.creator.birth_month.focus();
             return false;
@@ -437,7 +437,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
             ? 'document.creator.birth_year.value.length && '
             : q{}
           )
-          . qq~(document.creator.birth_year.value.length < 4 || /\\D/.test(document.creator.birth_year.value))) {
+          . qq~(document.creator.birth_year.value.length < 4 || (/\\D/.test)(document.creator.birth_year.value))) {
             alert("$register_txt{'error_birth_year'}");
             document.creator.birth_year.focus();
             return false;
@@ -457,8 +457,9 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
       )
 
       . qq~
-        if ($emailpassword == 0) {
-            if (document.creator.passwrd1.value == '' || document.creator.passwrd2.value == '') {
+        var emailpassword = $emailpassword;
+        if (emailpassword === 0) {
+            if (document.creator.passwrd1.value === '' || document.creator.passwrd2.value === '') {
                 alert("$register_txt{'error_pass1'}");
                 document.creator.passwrd1.focus();
                 return false;
@@ -469,7 +470,8 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
                 return false;
             }
         }
-        if ($regcheck > 0 && document.creator.verification.value === '') {
+		var regcheck = $regcheck;
+        if (regcheck > 0 && document.creator.verification.value === '') {
             alert("$register_txt{'error_verification'}");
             document.creator.verification.focus();
             return false;
@@ -478,7 +480,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
       (
         $en_spam_questions && -e "$langdir/$language/spam.questions"
         ? qq~
-        if (document.creator.verification_question.value == '') {
+        if (document.creator.verification_question.value === '') {
             alert("$register_txt{'error_verification_question'}");
             document.creator.verification_question.focus();
             return false;
@@ -490,12 +492,12 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
         var regtype = $regtype;
         var RegAgree = $RegAgree;
         var gender_on_reg = $gender_on_reg;
-        if (regtype == 1 && document.creator.reason.value == '') {
+        if (regtype == 1 && document.creator.reason.value === '') {
             alert("$register_txt{'error_reason'}");
             document.creator.reason.focus();
             return false;
         }
-        if (RegAgree == 2 && document.creator.regagree[0].checked != true) {
+        if (RegAgree == 2 && document.creator.regagree[0].checked !== true) {
             alert("$register_txt{'error_agree'}");
             return false;
         }
@@ -503,7 +505,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
         if (gender_on_reg > 1 && !document.creator.gender.value) {
             alert("$register_txt{'error_gender'}");
             document.creator.gender.focus();
-            return false
+            return false;
         }
         return true;
     }

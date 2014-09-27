@@ -298,7 +298,7 @@ qq~ $profile_txt{'gender_edit_2'} $editGenderCount $profile_txt{'dob_edit_4'}~;
         if ( $editAgeLimit == 1 && ${ $uid . $user }{'disableage'} eq q{} ) {
             $editAgeTxt = qq~$profile_txt{'dob_edit_1'}~;
         }
-        elsif ( ${ $uid . $user }{'disableage'} >= $editAgeLimit ) {
+        elsif ( ${ $uid . $user }{'disableage'} >= $editAgeLimit && ${ $uid . $user }{'bday'} ne q{}) {
             $editAgeTxt        = qq~$profile_txt{'dob_edit_7'}~;
             $disableBdayFields = q~ disabled="disabled"~;
             $bdayFields        = qq~
@@ -401,7 +401,7 @@ qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"
         $my_show_ext_prof = $show_ext_prof;
     }
 
-    if ( $require_bd == 1 ) {
+    if ( $birthday_on_reg > 1 ) {
         $myrequirebd = qq~ <span class="small">$profile_txt{'563b'}</span>~;
     }
     $showProfile .= qq~
@@ -1523,7 +1523,7 @@ sub ModifyProfile2 {
             }
         }
 
-        if ( ( $require_bd == 1 && !$iamadmin && ( !$iamgmod || !$allow_gmod_profile ) ) && ( $member{'bday1'} eq q{} || $member{'bday2'} eq q{} || $member{'bday3'} eq q{} ) )
+        if ( ( $birthday_on_reg > 1 && !$iamadmin && ( !$iamgmod || !$allow_gmod_profile ) ) && ( $member{'bday1'} eq q{} || $member{'bday2'} eq q{} || $member{'bday3'} eq q{} ) )
         {
             fatal_error( 'invalid_birthdate', "($member{'bday1'}/$member{'bday2'}/$member{'bday3'})" );
         }

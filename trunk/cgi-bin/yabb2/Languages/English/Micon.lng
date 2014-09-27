@@ -111,4 +111,5 @@ if (!$language){$language = $lang;}
 '295' => 'Cool',
 '296' => 'Huh',
 );
+
 1;

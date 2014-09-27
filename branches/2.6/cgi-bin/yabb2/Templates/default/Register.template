@@ -184,7 +184,7 @@ $myregister_regreason_a = qq~<tr>
 $myregister_regreason_c = qq~$myreg_req<br />
             <span class="small">$prereg_txt{'16'}</span><input value="{yabb RegReasonSymbols}" size="~;
 
-$myregister_regreason_b = qq~" name="msgCL" class="windowbg" style="border: 0; padding: 1px; font-size: 11px;" readonly="readonly" /></span>
+$myregister_regreason_b = qq~" name="msgCL" class="windowbg small" style="border: 0; padding: 1px; font-size: 11px;" readonly="readonly" />
 <script type="text/javascript">
             var supportsKeys = false;
             function tick() {
@@ -257,7 +257,7 @@ $myregister_fruits = qq~<tr>
                 <iframe id="fruits" name="fruits" width="290" height="87" marginwidth="0" marginheight="0" frameborder="0" scrolling="no"></iframe>~;
 
 $myregister_email2 = qq~<tr>
-        <td class="windowbg right vtop"><label for="email2"><b>{yabb email2}:</b></td>
+        <td class="windowbg right vtop"><label for="email2"><b>{yabb email2}:</b></label></td>
         <td class="windowbg2"><input type="text" maxlength="100" name="email2" id="email2" size="45" />$myreg_req</td>
     </tr>~;
 
@@ -361,8 +361,10 @@ $myregister_prereg1 = qq~
                     <table class="tabtitle">
                         <tr>
                             <td style="padding-left:1%; height:25px"><img src="$imagesdir/register.gif" alt="$prereg_txt{'1a'}" title="$prereg_txt{'1a'}" /><b>$prereg_txt{'1a'}</b></td>
+                        </tr>
                     </table>
                     <table class="pad_4px cs_thin">
+                        <tr>
                             <td class="windowbg">$prereg_txt{'13'}</td>
                         </tr>
                     </table>
@@ -371,11 +373,13 @@ $myregister_prereg1 = qq~
 $myregister_prereg2 = qq~
         <table class="tabtitle" style="width:650px">
             <tr>
-                <td style="padding-left:1%; height:25px" colspan="2">
+                <td style="padding-left:1%; height:25px">
                     <img src="$imagesdir/register.gif" alt="$prereg_txt{'1a'}" title="$prereg_txt{'1a'}" /> <b>$prereg_txt{'1a'}</b>
                 </td>
-            </table>
-            <table class="pad_4px cs_thin" style="width:650px">
+            </tr>
+        </table>
+        <table class="pad_4px cs_thin" style="width:650px">
+            <tr>
                 <td class="windowbg center" colspan="2">
                     <br />$prereg_txt{'5'}~;
 

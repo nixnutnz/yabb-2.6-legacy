@@ -53,7 +53,7 @@ $mysearch_template2 = qq~
             ~;
 
 $mysearch_template3 = qq~
-            <input type="hidden" size="30" name="userspec" id="userspec" value="" />
+            <input type="hidden" name="userspec" id="userspec" value="" />
             </div>
             <div style="padding: 4px 0;">
             <select name="userkind" id="userkind">

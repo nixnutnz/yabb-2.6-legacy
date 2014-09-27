@@ -872,7 +872,7 @@ s/{yabb userlink}/<span id="savename" style="font-weight: bold">$liveusernamelin
           s/{yabb signature}/${$uid.$tmpmusername}{'signature'}/gsm;
         $messageblock =~ s/{yabb signaturehr}/$livesignature_hr/gsm;
         $messageblock =~ s/{yabb (.+?)}//gsm;
-#        my $nolinkallow;
+
         if ( !$minlinkpost ) { $minlinkpost = 0; }
 
         if ( ( $iamguest && $minlinkpost > 0 )
@@ -1363,7 +1363,9 @@ if(document.getElementById('toshowbcc').length > 0) document.getElementById('tos
 
     $yymain .= $my_pollsection;
     $yymain .= $my_postsection;
-
+    if ( $postid eq 'Poll' && $action eq 'modify') {
+		$yymain .= $mypoll_tablefix;
+	}
     $yymain .= $my_post_submit;
     $yymain .= $my_spdpost;
     $yymain .= $mypost_formend;

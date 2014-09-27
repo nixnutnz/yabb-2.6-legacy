@@ -573,7 +573,6 @@ $member_groups
 \$user_hide_img = $user_hide_img;       # Allow users to hide Images in threads. Set 0 to disable
 \$user_hide_attach_img = $user_hide_attach_img;     # Allow users to hide Attached Images in threads. Set 0 to disable
 \$user_hide_signat = $user_hide_signat;         # Allow users to hide User Signatures in threads. Set 0 to disable
-\$require_bd = $require_bd;                       # Require users to input their birthdate. Set 0 to disable
 \$user_hide_smilies_row = $user_hide_smilies_row;   # Allow users to hide Smilies row below the Post Message-inputarea. Set 0 to disable
 \$editGenderLimit = $editGenderLimit;       # Set a limit on the amount of times that member's can edit their gender
 \$editAgeLimit = $editAgeLimit;             # Set a limit on the amount of times that member's can edit their birthdate

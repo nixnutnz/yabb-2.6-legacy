@@ -25,7 +25,8 @@ $palwidth = 308;
 $palhight = 302;
 
 ## Post Top
-$mypost_title = qq~{yabb my_topper}<table class="tabtitle">
+$mypost_title = qq~{yabb my_topper}
+<table class="tabtitle">
     <tr>
         <td style="padding-left:1%">
             <img src="{yabb icon_img}" alt="" /> {yabb yytitle}
@@ -51,10 +52,10 @@ $mypost_postblock = qq~
         <col style="width: auto" />
     </colgroup>
     {yabb my_prevmain}
-	{yabb name_field}
-	{yabb email_field}
-	{yabb verification_field}
-	{yabb verification_question_field}
+    {yabb name_field}
+    {yabb email_field}
+    {yabb verification_field}
+    {yabb verification_question_field}
     <tr class="windowbg">
         <td colspan="{yabb guestcol}">
             <div style="height:16px;">
@@ -78,7 +79,7 @@ $mypost_postblock = qq~
        </td>
     </tr>
         {yabb my_t_status}
-		{yabb extra}
+        {yabb extra}
     <tr>
         <td class="windowbg2">
             <label for="subject"><b>$post_txt{'70'}:</b></label>
@@ -351,9 +352,9 @@ $mypost_poll_pie = qq~<tr>
             var slice_col = {yabb piecolarray};
             var defslice_col = new Array();
             function tohex(i) {
-                a2 = ''
+                a2 = '';
                 ihex = Math.floor(eval(i +'/16'));
-                idiff = eval(i + '-(' + ihex + '*16)')
+                idiff = eval(i + '-(' + ihex + '*16)');
                 a2 = itohex[idiff] + a2;
                 while( ihex >= 16) {
                     itmp = Math.floor(eval(ihex +'/16'));
@@ -365,12 +366,14 @@ $mypost_poll_pie = qq~<tr>
                 return a1 + a2;
             }
 
-            for (var tz = 0; tz < 256; tz += 63)
-                for (var ty = 0; ty < 256; ty += 85)
+            for (var tz = 0; tz < 256; tz += 63) {
+                for (var ty = 0; ty < 256; ty += 85) {
                     for (var tx = 0; tx < 256; tx += 127) defslice_col.push('#' + tohex(tx) + tohex(ty) + tohex(tz));
+                }
+            }
 
             for(var i = 1; i <= $numpolloptions; i++) {
-                if(!slice_col[i]) slice_col[i] = defslice_col[i]
+                if(!slice_col[i]) slice_col[i] = defslice_col[i];
                 document.getElementById('slicecolor' + i).style.backgroundColor = slice_col[i];
                 document.getElementById('slicecolor' + i).style.borderColor = slice_col[i];
                 document.getElementById('slicecol' + i).value = slice_col[i];
@@ -419,8 +422,9 @@ $my_poll_hide = qq~<tr>
     </tr><tr>
         <td><label for="pie_radius"><b>$post_polltxt{'pieradius'}</b></label></td>
         <td colspan="4"><input type="text" size="4" name="pie_radius" id="pie_radius" value="{yabb pie_radius}" /> <span  class="small"><label for="pie_radius">$post_polltxt{'pieradius_descr'}</label></span></td>
-    </tr>
-~;
+    </tr>~;
+
+$mypoll_tablefix = q~<table class="pad_3px">~;
 
 #guest posting
 $mypost_guest_fields = qq~<tr>

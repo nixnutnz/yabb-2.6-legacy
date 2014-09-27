@@ -74,7 +74,7 @@ $myselectmods = qq~<div style="position: relative; top: 0; left: 0; height: 1px;
             </td>
         </tr><tr>
             <td class="windowbg">
-                <select name="rec_list" multiple="multiple" id="rec_list" size="6" style="width: 340px; font-size: 11px;" ondblclick="copy_option('moderators')"><option disabled="disabled"></option></select>
+                <select name="rec_list" multiple="multiple" id="rec_list" size="6" style="width: 340px; font-size: 11px;" ondblclick="copy_option('moderators')"><option disabled="disabled" value="">--</option></select>
             </td>
         </tr><tr>
             <td class="windowbg">
@@ -88,7 +88,7 @@ $myselectmods_b  =qq~<tr>
             <td class="windowbg">
                 <select name="moderators" id="moderators" multiple="multiple" size="4" style="width: 340px;">
                 {yabb modmbr}
-                <option disabled="disabled"></option>
+                <option value="" disabled="disabled">--</option>
                 </select>
             </td>
         </tr>

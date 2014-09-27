@@ -97,6 +97,7 @@ LoadLanguage('Micon');
 'new_mess' => qq~$imagesdir/new.gif"~,
 'noimg' => qq~$imagesdir/noimg.gif~,
 'paperclip' => qq~$imagesdir/paperclip.gif~,
+'poll_mod' => qq~$imagesdir/poll_mod.gif~,
 'question' => qq~$imagesdir/question.png~,
 'rss' => qq~$imagesdir/rss.png~,
 'sad' => qq~$imagesdir/sad.gif~,

@@ -1363,7 +1363,9 @@ if(document.getElementById('toshowbcc').length > 0) document.getElementById('tos
 
     $yymain .= $my_pollsection;
     $yymain .= $my_postsection;
-
+    if ( $postid eq 'Poll' && $action eq 'modify') {
+		$yymain .= $mypoll_tablefix;
+	}
     $yymain .= $my_post_submit;
     $yymain .= $my_spdpost;
     $yymain .= $mypost_formend;
