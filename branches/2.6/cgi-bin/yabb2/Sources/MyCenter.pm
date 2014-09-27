@@ -1106,19 +1106,19 @@ sub drawPMbox {
 <script type="text/javascript">
 var postas = '$post';
 function checkForm(theForm) {
-    if (theForm.subject.value == "") { alert("$post_txt{'77'}"); theForm.subject.focus(); return false }
+    if (theForm.subject.value === "") { alert("$post_txt{'77'}"); theForm.subject.focus(); return false; }
     ~ . (
         $iamguest && $post ne 'imsend'
-        ? qq~if (theForm.name.value == "" || theForm.name.value == "_" || theForm.name.value == " ") { alert("$post_txt{'75'}"); theForm.name.focus(); return false }
-    if (theForm.name.value.length > 25)  { alert("$post_txt{'568'}"); theForm.name.focus(); return false }
-    if (theForm.email.value == "") { alert("$post_txt{'76'}"); theForm.email.focus(); return false }
-    if (! checkMailaddr(theForm.email.value)) { alert("$post_txt{'500'}"); theForm.email.focus(); return false }
+        ? qq~if (theForm.name.value === "" || theForm.name.value == "_" || theForm.name.value == " ") { alert("$post_txt{'75'}"); theForm.name.focus(); return false; }
+    if (theForm.name.value.length > 25)  { alert("$post_txt{'568'}"); theForm.name.focus(); return false; }
+    if (theForm.email.value === "") { alert("$post_txt{'76'}"); theForm.email.focus(); return false; }
+    if (! checkMailaddr(theForm.email.value)) { alert("$post_txt{'500'}"); theForm.email.focus(); return false; }
 ~
-        : qq~if (postas == "imsend") { if (theForm.toshow.value == "") { alert("$post_txt{'752'}"); theForm.toshow.focus(); return false } }~
+        : qq~if (postas == "imsend") { if (theForm.toshow.value === "") { alert("$post_txt{'752'}"); theForm.toshow.focus(); return false; } }~
       )
       . qq~
-    if (theForm.message.value == "") { alert("$post_txt{'78'}"); theForm.message.focus(); return false }
-    return true
+    if (theForm.message.value === "") { alert("$post_txt{'78'}"); theForm.message.focus(); return false; }
+    return true;
 }
 function NewWindow(mypage, myname, w, h, scroll) {
     var new_win;

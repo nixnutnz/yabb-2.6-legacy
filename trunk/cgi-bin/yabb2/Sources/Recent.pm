@@ -559,6 +559,9 @@ sub recursive_check {
 
         fopen( REC_BDTXT, "$boardsdir/$curboard.txt" );
         @buffer = <REC_BDTXT>;
+        if ( !$display ) {
+            $display = scalar @buffer;
+        }
         for my $i ( 0 .. ( $display - 1 ) ) {
             if ( $buffer[$i] ) {
                 (

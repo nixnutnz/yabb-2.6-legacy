@@ -321,7 +321,6 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
     if ( !$yynavback ) { $yynavback .= q~ ~; }
     $yynavback .=
 qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp; $tabsep~;
-    $yybottom = $img_txt{'102b'};
 
     if ( !$usehead ) { $usehead = q~default~; }
     $yytemplate = "$templatesdir/$usehead/$usehead.html";
@@ -602,10 +601,11 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
                             thiscolor = thecolor.split("|");
                             return thiscolor;
                         }
-                    } //" make my syntax checker happy;
+                    }
 
-                    if (ie4 || DOM2) document.write('$newstitle<div class="windowbg2" id="fadestylebak" style="display: none;"><div class="newsfader" id="fadestyle" style="display: none;"> </div></div>');
-
+                    if (ie4 || DOM2) var news = ('$newstitle<div class="windowbg2" id="fadestylebak" style="display: none;"><div class="newsfader" id="fadestyle" style="display: none;"> </div></div>');
+                    var div = document.getElementById("news");
+                    div.innerHTML = news;
                     if (document.getElementById('fadestyle').currentStyle) {
                         tcolor = document.getElementById('fadestyle').currentStyle['color'];
                         bcolor = document.getElementById('fadestyle').currentStyle['backgroundColor'];
@@ -656,7 +656,11 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
             }
             $img_greybox = $greybox;
             $yynews .= q~
-                    if (DOM2) document.write('<div style="font-size: ' + fntsize + '\\; font-weight: ' + fntweight + '\\; font-style: ' + fntstyle + '\\; font-family: ' + fntfamily + '\\; text-decoration: ' + txtdecoration + '\\;" id="fscroller"></div>');
+                        document.getElementById("news").style.fontSize=fntsize;
+                        document.getElementById("news").style.fontWeight=fntweight;
+                        document.getElementById("news").style.fontStyle=fntstyle;
+                        document.getElementById("news").style.fontFamily=fntfamily;
+                        document.getElementById("news").style.textDecoration=txtdecoration;
 
                     if (window.addEventListener)
                         window.addEventListener("load", changecontent, false);
@@ -3114,7 +3118,7 @@ sub password_check {
                 }
 
                 function checkPassword(C) {
-                    if (C.length == 0 || C.length < minchar) return -100;
+                    if (C.length === 0 || C.length < minchar) return -100;
 
                     for (var D = 0; D < common.length; D++) {
                         if (C.toLowerCase() == common[D]) return -200;
@@ -3122,39 +3126,39 @@ sub password_check {
 
                     var F = 0;
                     if (C.length >= minchar && C.length <= (minchar+2)) {
-                        F = (F + 6)
+                        F = (F + 6);
                     } else if (C.length >= (minchar + 3) && C.length <= (minchar + 4)) {
-                        F = (F + 12)
+                        F = (F + 12);
                     } else if (C.length >= (minchar + 5)) {
-                        F = (F + 18)
+                        F = (F + 18);
                     }
 
                     if (C.match(/[a-z]/)) {
-                        F = (F + 1)
+                        F = (F + 1);
                     }
                     if (C.match(/[A-Z]/)) {
-                        F = (F + 5)
+                        F = (F + 5);
                     }
                     if (C.match(/d+/)) {
-                        F = (F + 5)
+                        F = (F + 5);
                     }
                     if (C.match(/(.*[0-9].*[0-9].*[0-9])/)) {
-                        F = (F + 7)
+                        F = (F + 7);
                     }
                     if (C.match(/.[!,\@,#,\$,\%,^,&,*,?,_,\~]/)) {
-                        F = (F + 5)
+                        F = (F + 5);
                     }
                     if (C.match(/(.*[!,\@,#,\$,\%,^,&,*,?,_,\~].*[!,\@,#,\$,\%,^,&,*,?,_,\~])/)) {
-                        F = (F + 7)
+                        F = (F + 7);
                     }
                     if (C.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)){
-                        F = (F + 2)
+                        F = (F + 2);
                     }
                     if (C.match(/([a-zA-Z])/) && C.match(/([0-9])/)) {
-                        F = (F + 3)
+                        F = (F + 3);
                     }
                     if (C.match(/([a-zA-Z0-9].*[!,\@,#,\$,\%,^,&,*,?,_,\~])|([!,\@,#,\$,\%,^,&,*,?,_,\~].*[a-zA-Z0-9])/)) {
-                        F = (F + 3)
+                        F = (F + 3);
                     }
                     return F;
                 }

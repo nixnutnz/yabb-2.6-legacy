@@ -93,8 +93,7 @@ var contexthash = new Hash(
 'left', '$contextxt{'left'}',
 'center', '$contextxt{'center'}',
 'right', '$contextxt{'right'}',
-'noparse', '$contextxt{'noparse'}'
-);
+'noparse', '$contextxt{'noparse'}');
 ~;
 
 1;

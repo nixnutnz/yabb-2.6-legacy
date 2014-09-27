@@ -849,7 +849,7 @@ function collapseSCpoll(pollnr) {
     }
     var url = '$scripturl?action=scpollcoll&scpoll=' + linkpollnr;
     GetXmlHttpObject();
-    if (xmlHttp == null) return;
+    if (xmlHttp === null) return;
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
 }

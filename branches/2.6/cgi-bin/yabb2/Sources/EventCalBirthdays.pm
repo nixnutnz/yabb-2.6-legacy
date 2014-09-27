@@ -133,13 +133,20 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
 
     if ( !$sortiert ) { $sortiert = 'sortdate'; }
     my @abcde = ( 'a' .. 'z' );
-    my $letter_s =
-qq~<form method="post" action="$scripturl?action=birthdaylist" name="birthdaylist" /><select size="1" name="letter" onchange="submit()" class="small" style="vertical-align: middle;"><option value="">&nbsp;</option><option value="other">$var_cal{'other'}</option>~;
-for my $i ( 0 .. ( @abcde - 1 ) ) {
-$letter_s .= qq~        <option value="$abcde[$i]"$sel>$abcde[$i]</option>\n~;
-}
-                    $letter_s .=
-qq~</select> <input type="hidden" name="vmonth" value="$vmonth"><input type="hidden" name="sort" value="sortuser"><input type="submit" style="display:none" /></form>~;
+    my $letter_s = qq~
+<form method="post" action="$scripturl?action=birthdaylist" name="birthdaylist">
+    <select size="1" name="letter" onchange="submit()" class="small" style="vertical-align: middle;">
+        <option value="">&nbsp;</option>
+        <option value="other">$var_cal{'other'}</option>~;
+    for my $i ( 0 .. ( @abcde - 1 ) ) {
+        $letter_s .= qq~        <option value="$abcde[$i]"$sel>$abcde[$i]</option>\n~;
+    }
+    $letter_s .=
+qq~    </select>
+    <input type="hidden" name="vmonth" value="$vmonth" />
+    <input type="hidden" name="sort" value="sortuser" />
+    <input type="submit" style="display:none" />
+</form>~;
 
     ${"class_$sortiert"}     = ' class="selected-bg center"';
     ${"styleletter_$letter"} = ' class="catbg center"';

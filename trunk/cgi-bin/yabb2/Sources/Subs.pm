@@ -601,7 +601,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
                             thiscolor = thecolor.split("|");
                             return thiscolor;
                         }
-                    } //" make my syntax checker happy;
+                    }
 
                     if (ie4 || DOM2) document.write('$newstitle<div class="windowbg2" id="fadestylebak" style="display: none;"><div class="newsfader" id="fadestyle" style="display: none;"> </div></div>');
 
@@ -1081,10 +1081,10 @@ qq~<br /><span class="underline">$debug_txt{'postpairs'}:</span><br />~;
            # "413 Request entity too large"
            # This value will affect both ordinary POSTs and multipart POSTs,
            # meaning that it limits the maximum size of file uploads as well.
-		    $allowattach   ||= 0;
-		    $allowAttachIM ||= 0;
-		    $limit         ||= 0;
-			$pmFileLimit   ||= 0;
+            $allowattach   ||= 0;
+            $allowAttachIM ||= 0;
+            $limit         ||= 0;
+            $pmFileLimit   ||= 0;
             if (   $allowattach > 0
                 && $ENV{'QUERY_STRING'} =~ /action=(post|modify)2\b/xsm )
             {
@@ -3113,7 +3113,7 @@ sub password_check {
                 }
 
                 function checkPassword(C) {
-                    if (C.length == 0 || C.length < minchar) return -100;
+                    if (C.length === 0 || C.length < minchar) return -100;
 
                     for (var D = 0; D < common.length; D++) {
                         if (C.toLowerCase() == common[D]) return -200;
@@ -3121,39 +3121,39 @@ sub password_check {
 
                     var F = 0;
                     if (C.length >= minchar && C.length <= (minchar+2)) {
-                        F = (F + 6)
+                        F = (F + 6);
                     } else if (C.length >= (minchar + 3) && C.length <= (minchar + 4)) {
-                        F = (F + 12)
+                        F = (F + 12);
                     } else if (C.length >= (minchar + 5)) {
-                        F = (F + 18)
+                        F = (F + 18);
                     }
 
                     if (C.match(/[a-z]/)) {
-                        F = (F + 1)
+                        F = (F + 1);
                     }
                     if (C.match(/[A-Z]/)) {
-                        F = (F + 5)
+                        F = (F + 5);
                     }
                     if (C.match(/d+/)) {
-                        F = (F + 5)
+                        F = (F + 5);
                     }
                     if (C.match(/(.*[0-9].*[0-9].*[0-9])/)) {
-                        F = (F + 7)
+                        F = (F + 7);
                     }
                     if (C.match(/.[!,\@,#,\$,\%,^,&,*,?,_,\~]/)) {
-                        F = (F + 5)
+                        F = (F + 5);
                     }
                     if (C.match(/(.*[!,\@,#,\$,\%,^,&,*,?,_,\~].*[!,\@,#,\$,\%,^,&,*,?,_,\~])/)) {
-                        F = (F + 7)
+                        F = (F + 7);
                     }
                     if (C.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)){
-                        F = (F + 2)
+                        F = (F + 2);
                     }
                     if (C.match(/([a-zA-Z])/) && C.match(/([0-9])/)) {
-                        F = (F + 3)
+                        F = (F + 3);
                     }
                     if (C.match(/([a-zA-Z0-9].*[!,\@,#,\$,\%,^,&,*,?,_,\~])|([!,\@,#,\$,\%,^,&,*,?,_,\~].*[a-zA-Z0-9])/)) {
-                        F = (F + 3)
+                        F = (F + 3);
                     }
                     return F;
                 }

@@ -12,7 +12,7 @@
         {yabb javascript}
         {yabb javascripta}
         if (top.location != self.location) {
-            top.location = self.location.href
+            top.location = self.location.href;
         }
     </script>
     {yabb syntax_js}
@@ -55,7 +55,7 @@
                 </td>
             </tr><tr>
                 <td class="vtop h_60px">&nbsp;</td>
-                <td class="small vtop">{yabb news}
+                <td class="small vtop"><div id="news"></div>
                 </td>
             </tr>
         </table>
@@ -67,7 +67,7 @@
             </colgroup>
             <tr>
                 <td class="tabmenu">
-                    {yabb tabmenu}
+{yabb tabmenu}
                     <div class="navmenu" id="navmen" style="display: none;">
                         <img src="{yabb images}/back_to_top.png" id="navtotop" alt="{yabb fixtop}" title="{yabb fixtop}" onclick="toTop(0)" class="cursor" style="margin-top:5px;" />
                     </div>
@@ -123,7 +123,7 @@
 
 function fixMenu() {
     if(document.body.scrollTop) var bdelement = document.body.scrollTop;
-    else var bdelement = document.documentElement.scrollTop;
+    else bdelement = document.documentElement.scrollTop;
     if(bdelement > 135) {
         document.getElementById("fixmenu").style.position = 'fixed';
         document.getElementById("fixmenu").style.top = 0 + 'px';
@@ -144,5 +144,6 @@ if (screen.width > 1024) {
 }
 </script>
 <script type="text/javascript" src="{yabb html_root}/ajax.js"></script>
+{yabb news}
 </body>
 </html>

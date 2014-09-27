@@ -300,16 +300,14 @@ var jsPstat = new Hash(
 'announcementlock', '$micon_bg{'announcementlock'}',
 'veryhotthread', '$micon_bg{'veryhotthread'}',
 'hotthread', '$micon_bg{'hotthread'}',
-'thread', '$micon_bg{'thread'}'
-);
+'thread', '$micon_bg{'thread'}');
 ~;
 
 $jsIM = qq~
 var jsIM = new Hash(
 'standard', '$micon_bg{'standard'}',
 'confidential', '$micon_bg{'confidential'}',
-'urgent', '$micon_bg{'urgent'}'
-);
+'urgent', '$micon_bg{'urgent'}');
 ~;
 
 $my_sep = q{ };

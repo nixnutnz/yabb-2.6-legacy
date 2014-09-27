@@ -508,8 +508,8 @@ function changecontent() {
     if (index >= fcontent.length) index = 0;
 
     if (DOM2) {
-        document.getElementById("fscroller").style.color="rgb("+startcolor[0]+", "+startcolor[1]+", "+startcolor[2]+")";
-        document.getElementById("fscroller").innerHTML=begintag+fcontent[index]+closetag;
+        document.getElementById("news").style.color="rgb("+startcolor[0]+", "+startcolor[1]+", "+startcolor[2]+")";
+        document.getElementById("news").innerHTML=begintag+fcontent[index]+closetag;
         if (fadelinks) linkcolorchange(1);
         colorfadeup(1);
     } else if (ie4) {
@@ -519,7 +519,7 @@ function changecontent() {
 }
 
 function linkcolorchange(step) {
-    var obj = document.getElementById("fscroller").getElementsByTagName("A");
+    var obj = document.getElementById("news").getElementsByTagName("A");
     if (obj.length > 0) {
         for (i = 0; i < obj.length; i++) {
             obj[i].style.color=getstepcolor(step);
@@ -529,13 +529,13 @@ function linkcolorchange(step) {
 
 function colorfadeup(step) {
     if (step <= maxsteps) {
-        document.getElementById("fscroller").style.color = getstepcolor(step);
+        document.getElementById("news").style.color = getstepcolor(step);
         if (fadelinks) linkcolorchange(step);
         step++;
         fadecounter = setTimeout("colorfadeup("+step+")", stepdelay);
     } else {
         clearTimeout(fadecounter);
-        document.getElementById("fscroller").style.color = "rgb("+endcolor[0]+", "+endcolor[1]+", "+endcolor[2]+")";
+        document.getElementById("news").style.color = "rgb("+endcolor[0]+", "+endcolor[1]+", "+endcolor[2]+")";
         setTimeout("colorfadedown("+maxsteps+")", delay);
     }
 }
@@ -543,12 +543,12 @@ function colorfadeup(step) {
 function colorfadedown(step) {
     if (step > 1) {
         step--;
-        document.getElementById("fscroller").style.color = getstepcolor(step);
+        document.getElementById("news").style.color = getstepcolor(step);
         if (fadelinks) linkcolorchange(step);
         fadecounter = setTimeout("colorfadedown("+step+")", stepdelay);
     } else {
         clearTimeout(fadecounter);
-        document.getElementById("fscroller").style.color = "rgb("+startcolor[0]+", "+startcolor[1]+", "+startcolor[2]+")";
+        document.getElementById("news").style.color = "rgb("+startcolor[0]+", "+startcolor[1]+", "+startcolor[2]+")";
         setTimeout("changecontent()", delay / 2);
     }
 }

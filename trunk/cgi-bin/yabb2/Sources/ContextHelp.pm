@@ -45,7 +45,7 @@ sub ContextScript {
 
         this.getItem = function(in_key) {
             return this.items[in_key];
-        }
+        };
     }
 
     $contextmain
@@ -81,7 +81,7 @@ sub ContextScript {
         if(conkey) contextimage = '<img src=' + conimage + ' alt=" ' + contitle + '" \/>';
         else conkey = conimage;
         contexthelp = contexthash.getItem(conkey);
-        if(contexthelp == '') return true;
+        if(contexthelp === '') return true;
         sizecontexthelp();
         contexthelp = contexthelp.replace(/\\[TITLE\\]/g, contitle);
         contexthelp = contexthelp.replace(/\\[BUTTON\\]/g, contextimage);

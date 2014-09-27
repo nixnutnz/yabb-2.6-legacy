@@ -1380,6 +1380,8 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
     $brd_img_idw       = isempty( $max_brd_img_width, 50 );
     $brd_img_idh       = isempty( $max_brd_img_height, 50 );
     $fix_brd_img_size  = isempty( $fix_brd_img_size, 0 );
+    $template_catnames =~ s/,\Z//xsm;
+    $template_boardnames =~ s/,\Z//xsm;
     $yymain .= qq~
 <script type="text/javascript">
     var catNames = [$template_catnames];

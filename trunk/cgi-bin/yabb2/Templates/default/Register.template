@@ -222,7 +222,7 @@ $myregister_regcheck = qq~<tr>
             <label for="verification"><b>$floodtxt{'3'}:</b></label>
         </td>
         <td class="windowbg2 vtop">
-            <input type="text" maxlength="30" name="verification" id="verification" size="30" maxlength="50" />$myreg_req
+            <input type="text" name="verification" id="verification" size="30" maxlength="50" />$myreg_req
         </td>
     </tr>~;
 

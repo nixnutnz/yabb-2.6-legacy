@@ -98,9 +98,9 @@ sub Display {
           ? int( $yyuserlog{$mnum} )
           : int $yyuserlog{"$currentboard--mark"};
         $dlp =
-            $dlp > $date - ( $max_log_days_old * 86_400 )
+            $dlp > $date - ( $max_log_days_old * 86400 )
           ? $dlp
-          : $date - ( $max_log_days_old * 86_400 );
+          : $date - ( $max_log_days_old * 86400 );
 
         if ( !ref $thread_arrayref{$mnum} ) {
             fopen( MNUM, "$datadir/$mnum.txt" );
@@ -1791,9 +1791,9 @@ qq~<form name="multidel" action="$scripturl?board=$currentboard;action=multidel;
         var x = "mailto:?subject=$esubject&body=$emessage";
         if (action == 3) {
             Check = confirm('$display_txt{'sendtopicemail'}');
-            if (Check != true) x = '';
+            if (Check !== true) x = '';
         }
-        if (action == 1 || x == '') x = "$scripturl?action=sendtopic;topic=$viewnum";
+        if (action == 1 || x === '') x = "$scripturl?action=sendtopic;topic=$viewnum";
         window.location.href = x;
     }~;
     }

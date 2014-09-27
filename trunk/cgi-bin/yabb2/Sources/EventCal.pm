@@ -63,7 +63,7 @@ for $i (@add_cal_icon) {
      my($i_a,$i_b) = split /\|/xsm, $i;
     $jsCal .= qq~,\n'$i_a', '$yyhtml_root/EventIcons/$i_a'~;
 }
-$jsCal .= qq~\n);~;
+$jsCal .= qq~);\n~;
 
 $jsCal_txt = qq~
 var jsCaltxt = new Hash(
@@ -80,7 +80,7 @@ for $i (@add_cal_icon) {
      my($i_a,$i_b) = split /\|/xsm, $i; #
     $jsCal_txt .= qq~,\n'$i_a', '$i_b'~;
 }
-$jsCal_txt .= qq~\n);~;
+$jsCal_txt .= qq~);\n~;
 
 sub eventcal {
     my ( $ssicalmode, $ssicaldisplay ) = @_;
@@ -448,20 +448,20 @@ qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>~;
                 $smiliewinlink = qq~$scripturl?action=smilieput~;
             }
             else { $smiliewinlink = qq~$scripturl?action=smilieindex~; }
-            $mycalout_smilieslist = smilies_list();
+            $mycalout_smilieslist .= smilies_list();
 
             $mycalout_smilies = qq~
             <script type="text/javascript">
-                moresmiliecode = new Array($more_smilie_array)
+                moresmiliecode = new Array($more_smilie_array);
                 function MoreSmilies(i) {
                     AddTxt=moresmiliecode[i];
                     AddText(AddTxt);
                 }
-                $mycalout_smilieslist
                 function smiliewin() {
                     window.open("$smiliewinlink", 'list', 'width=$winwidth, height=$winheight, scrollbars=yes');
                 }
             </script>
+            $mycalout_smilieslist
             <span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span>\n~;
         }
 
@@ -480,7 +480,7 @@ qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>~;
 
         this.getItem = function(in_key) {
             return this.items[in_key];
-        }
+        };
     }
    $jsCal
    $jsCal_txt
@@ -603,7 +603,7 @@ qq~if (theForm.name.value === "" || theForm.name.value == "_" || theForm.name.va
         else if (isError == 5) theForm.message.focus();
         return false;
     }
-    return true
+    return true;
 }
 </script>
 ~;
@@ -1112,7 +1112,7 @@ qq~\n<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/calscroller.css" 
     window.onload = function() {
         initDOMnews();
         if(countdownmod==1) countdown();
-    }
+    };
 
     // initial position
     var startpos=120;
@@ -1143,9 +1143,9 @@ qq~\n<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/calscroller.css" 
 
         n[counter].style.top=scrollpos+'px';
         // stop scrolling when it reaches the top
-        if (scrollpos==0) {
+        if (scrollpos===0) {
             clearInterval(interval);
-            setTimeout("interval=setInterval('scrollDOMnews()',speed);", pause)
+            setTimeout("interval=setInterval('scrollDOMnews()',speed);", pause);
         }
         if (scrollpos==endpos) {
             counter++;

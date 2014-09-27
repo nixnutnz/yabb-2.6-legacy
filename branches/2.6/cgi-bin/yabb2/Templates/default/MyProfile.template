@@ -99,9 +99,16 @@ $myprofile_edit = qq~<table class="cs_thin pad_4px">
         </td>
     </tr><tr class="windowbg">
          <td><label for="gender"><b>$profile_txt{231}: </b>{yabb editGenderTxt}</label></td>
-         <td><select name="gender" id="gender" size="1"{yabb disableGenderField}><option value=""></option><option value="Male"{yabb GenderMale}>$profile_txt{'238'}</option><option value="Female"{yabb GenderFemale}>$profile_txt{'239'}</option></select>{yabb genderField}</td>
-    </tr><tr class="windowbg">
-       <td><label for="birthday"><b>$profile_txt{'563'}: </b>{yabb editAgeTxt}</label></td>
+         <td><select name="gender" id="gender" size="1"{yabb disableGenderField}>
+            <option value="">--</option>
+            <option value="Male"{yabb GenderMale}>$profile_txt{'238'}</option>
+            <option value="Female"{yabb GenderFemale}>$profile_txt{'239'}</option>
+            </select>{yabb genderField}
+        </td>
+    </tr>
+{yabb my_mood}
+    <tr class="windowbg">
+       <td><label for="birthday"><b>$profile_txt{'563'}:{yabb require_bd}</b>{yabb editAgeTxt}</label></td>
        <td><span class="small">{yabb bdaysel}</span></td>
     </tr>{yabb showageshow}
     <tr class="windowbg">
@@ -134,7 +141,10 @@ $myprofile_bottom = qq~<tr class="catbg">
 
 ## PM and contact preferences ##
 $myprofile_contact = qq~<table class="bordercolor cs_thin pad_4px">
-    <col style="width:320px" />
+    <colgroup>
+        <col style="width:320px" />
+        <col style="width:auto" />
+    </colgroup>
     <tr>
         <td class="catbg" colspan="2">
         <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b></td>
@@ -325,7 +335,7 @@ $myprofile_show_avatar_a = qq~
                 function showimage(x) {
                     if (!document.images) return;
                     var source;
-                    if (x == 1 && document.getElementsByName('userpicpersonalcheck')[0].checked == true) {
+                    if (x == 1 && document.getElementsByName('userpicpersonalcheck')[0].checked === true) {
                         UserPicUrl = document.getElementsByName('userpicpersonal')[0].value;
                         document.getElementsByName('userpicpersonal')[0].value = 'http{yabb av_s}://';
                         document.getElementsByName('userpicpersonalcheck')[0].checked = false;
@@ -348,7 +358,7 @@ $myprofile_show_avatar_a = qq~
             </script>
             <select name="userpic" id="userpic" size="6" onchange="showimage(1);">
             {yabb images}
-            </select>&nbsp;&nbsp;<img src="{yabb av_pic}" id="icons" name="avatar_img_resize" alt="{yabb av_alt}" style="display:none; margin:0 15px; vertical-align:bottom" /><br />
+            </select>&nbsp;&nbsp;<img src="{yabb av_pic}" id="avatar_img_resize" alt="{yabb av_alt}" style="display:none; margin:0 15px; vertical-align:bottom" /><br />
             <br />
             <input type="checkbox" name="userpicpersonalcheck" id="userpicpersonalcheck" {yabb checked} onclick="if(this.checked==false){UserPicUrl=document.getElementsByName('userpicpersonal')[0].value;document.getElementsByName('userpicpersonal')[0].value='http{yabb av_s}://';}else{document.getElementsByName('userpicpersonal')[0].value=UserPicUrl;}showimage(2);" />&nbsp;<input type="text" name="userpicpersonal" size="40" value="{yabb av_tmp}" onkeyup="document.getElementsByName('userpicpersonalcheck')[0].checked=true;showimage(2);" /> {yabb my_up_avatar_b}
         </td>
@@ -380,7 +390,7 @@ $myprofile_time = qq~<tr class="windowbg">
             </select>
         </td>
     </tr><tr class="windowbg">
-        <td><label for="user_tz"><b>$profile_txt{'373'}:</td>
+        <td><label for="user_tz"><b>$profile_txt{'373'}:</b></label></td>
         <td>{yabb my_timeformat}</td>
         {yabb my_tz_select}
     </tr><tr class="windowbg">
@@ -458,7 +468,6 @@ $myprofile_buddy = qq~<table class="bordercolor cs_thin pad_4px">
         <td class="catbg" colspan="2">
         <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b></td>
     </tr><tr class="windowbg">
-    <tr class="windowbg">
         <td><b>$profile_buddy_list{'buddylist'}</b><br /><span class="small">$profile_buddy_list{'explain'}</span></td>
         <td>
             <select name="buddylist" id="buddylist" multiple="multiple" size="3" style="width: 250px; height: 150px;" ondblclick="removeUser(this);">
@@ -478,7 +487,10 @@ $myprofile_buddy = qq~<table class="bordercolor cs_thin pad_4px">
 
 ## PM preferences ##
 $myprofile_PMpref = qq~<table class="bordercolor cs_thin pad_4px">
-    <col style="width:320px" />
+    <colgroup>
+        <col style="width:320px" />
+        <col style="width:auto" />
+    </colgroup>
     <tr>
         <td class="catbg" colspan="2">
         <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b></td>

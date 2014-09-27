@@ -342,15 +342,15 @@ q~            </select><input type="hidden" name="immulti" value="yes" />
         <script type="text/javascript">
         // this function forces all users listed on IM mult to be selected for processing
         function selectNames() {
-            var oList = document.getElementById('toshow')
+            var oList = document.getElementById('toshow');
             for (var i = 0; i < oList.options.length; i++) { oList.options[i].selected = true; }
         ~;
 
         if ( !$sendBMess ) {
             if ($PMenable_cc) {
                 $JSandInput .= q~
-                    var oList = document.getElementById('toshowcc')
-                    for (var i = 0; i < oList.options.length; i++){ oList.options[i].selected = true; }
+                    oList = document.getElementById('toshowcc');
+                    for ( i = 0; i < oList.options.length; i++){ oList.options[i].selected = true; }
                 ~;
                 $imsend_cc .= qq~
                 <div id="userscc" class="usersto">
@@ -377,8 +377,8 @@ qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'re
 
             if ($PMenable_bcc) {
                 $JSandInput .= q~
-                    var oList = document.getElementById('toshowbcc')
-                    for (var i = 0; i < oList.options.length; i++) { oList.options[i].selected = true; }
+                    oList = document.getElementById('toshowbcc');
+                    for ( i = 0; i < oList.options.length; i++) { oList.options[i].selected = true; }
                 ~;
                 $imsend_cc .= qq~
                 <div id="usersbcc" class="usersto">
@@ -454,7 +454,7 @@ qq~                            <option value="$img"$myic>$alt</option>\n~;
 
         this.getItem = function(in_key) {
             return this.items[in_key];
-        }
+        };
     }
 
     function showimage() {
@@ -551,7 +551,7 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
         else { $smiliewinlink = qq~$scripturl?action=smilieindex~; }
 
         $im_smilies .= $imsend_notguest . qq~
-                moresmiliecode = new Array($more_smilie_array)
+                moresmiliecode = new Array($more_smilie_array);
                 function MoreSmilies(i) {
                     AddTxt=moresmiliecode[i];
                     AddText(AddTxt);
@@ -821,7 +821,7 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
             var picon_show = jsIM.getItem(theimg);
             document.images.icons.src = picon_show;
             document.getElementById("iconholder").value = theimg;
-            if (autoprev == true) autoPreview();
+            if (autoprev === true) autoPreview();
         }~;
         $my_savetable .= q~        showtpstatus();
 ~;

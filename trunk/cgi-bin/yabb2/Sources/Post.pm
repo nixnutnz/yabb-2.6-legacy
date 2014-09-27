@@ -477,7 +477,7 @@ function checkForm(theForm) {
         else if (isError == 5) theForm.message.focus();
         return false;
     }
-    return true
+    return true;
 }
 </script>
 ~;
@@ -559,7 +559,7 @@ qq~             <img src="$yyhtml_root/Smilies/$line" class="bottom cursor" alt=
     $more_smilie_array .= q~""~;
 
     $my_smilie_code = qq~
-    moresmiliecode = new Array($more_smilie_array)
+    moresmiliecode = new Array($more_smilie_array);
     function MoreSmilies(i) {
         AddTxt=moresmiliecode[i];
         AddText(AddTxt);
@@ -592,7 +592,7 @@ qq~             <img src="$yyhtml_root/Smilies/$line" class="bottom cursor" alt=
 
         this.getItem = function(in_key) {
             return this.items[in_key];
-        }
+        };
     }
     function showimage() {
         $jsPost
@@ -872,7 +872,7 @@ s/{yabb userlink}/<span id="savename" style="font-weight: bold">$liveusernamelin
           s/{yabb signature}/${$uid.$tmpmusername}{'signature'}/gsm;
         $messageblock =~ s/{yabb signaturehr}/$livesignature_hr/gsm;
         $messageblock =~ s/{yabb (.+?)}//gsm;
-        my $nolinkallow;
+
         if ( !$minlinkpost ) { $minlinkpost = 0; }
 
         if ( ( $iamguest && $minlinkpost > 0 )
@@ -1031,8 +1031,8 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             $mypost_smilie_array = qq~
             $mypost_smilie_array_top
             <script type="text/javascript">
-            smilieurl = new Array($smilie_url_array)
-            smiliecode = new Array($smilie_code_array)
+            smilieurl = new Array($smilie_url_array);
+            smiliecode = new Array($smilie_code_array);
             </script>
             $mypost_smiley1
             ~;
@@ -1270,7 +1270,7 @@ qq~<script type="text/javascript" src="$yyhtml_root/googiespell/cookiesupport.js
         $my_tclass = qq~
 <script type="text/javascript">
 function showtpstatus() {
-    $jsPstat;
+    $jsPstat
     var z = 0;
     var x = 0;
     var theimg = '$threadclass';

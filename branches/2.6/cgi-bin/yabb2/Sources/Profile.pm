@@ -347,7 +347,7 @@ qq~ $profile_txt{'dob_edit_2'} $editAgeCount $profile_txt{'dob_edit_4'}~;
 
     $selectyear = q{};
     $seluyear =
-qq~$profile_txt{'566'}<select name="bday3"$disableBdayFields><option value="">  </option>\n~;
+qq~$profile_txt{'566'}<select name="bday3"$disableBdayFields><option value="">--</option>\n~;
     for my $e ( 1905 .. ( $year - 3 ) ) {
         $seluyear .=
           qq~<option value="$e" ${isselected($uyear == $e)}>$e</option>\n~;
@@ -356,7 +356,7 @@ qq~$profile_txt{'566'}<select name="bday3"$disableBdayFields><option value="">  
 
     $selectmnth = q{};
     $dayormonthm =
-qq~<label for="bday1">$profile_txt{'564'}</label><select name="bday1" id="bday1"$disableBdayFields><option value="">  </option>\n~;
+qq~<label for="bday1">$profile_txt{'564'}</label><select name="bday1" id="bday1"$disableBdayFields><option value="">--</option>\n~;
     for my $bb ( 1 .. 12 ) {
         if   ( $bb < 10 ) { $c = "0$bb"; }
         else              { $c = $bb; }
@@ -367,7 +367,7 @@ qq~<label for="bday1">$profile_txt{'564'}</label><select name="bday1" id="bday1"
 
     $selectday = q{};
     $dayormonthd =
-qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"$disableBdayFields><option value="">  </option>\n~;
+qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"$disableBdayFields><option value="">--</option>\n~;
     for my $aa ( 1 .. 31 ) {
         if   ( $aa < 10 ) { $d = "0$aa"; }
         else              { $d = $aa; }

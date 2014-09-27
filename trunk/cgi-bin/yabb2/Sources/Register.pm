@@ -487,17 +487,20 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
       )
 
       . qq~
-        if ($regtype == 1 && document.creator.reason.value == '') {
+        var regtype = $regtype;
+        var RegAgree = $RegAgree;
+        var gender_on_reg = $gender_on_reg;
+        if (regtype == 1 && document.creator.reason.value == '') {
             alert("$register_txt{'error_reason'}");
             document.creator.reason.focus();
             return false;
         }
-        if ($RegAgree == 2 && document.creator.regagree[0].checked != true) {
+        if (RegAgree == 2 && document.creator.regagree[0].checked != true) {
             alert("$register_txt{'error_agree'}");
             return false;
         }
 
-        if ($gender_on_reg > 1 && !document.creator.gender.value) {
+        if (gender_on_reg > 1 && !document.creator.gender.value) {
             alert("$register_txt{'error_gender'}");
             document.creator.gender.focus();
             return false
@@ -867,11 +870,6 @@ sub Register2 {
                 && $member{'birth_month'}
                 && $member{'birth_year'} )
             {
-                ${ $uid . $reguser }{'bday'} =
-"$member{'birth_month'}/$member{'birth_day'}/$member{'birth_year'}";
-            }
-            elsif ( $birthday_on_reg == 3 || $birthday_on_reg == 4 ) {
-                AgeCheck();
                 ${ $uid . $reguser }{'bday'} =
 "$member{'birth_month'}/$member{'birth_day'}/$member{'birth_year'}";
             }

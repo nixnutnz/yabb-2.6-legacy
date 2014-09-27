@@ -119,7 +119,8 @@ $fntopts
             <script type="text/javascript">
                 var thistask = 'post';
                 function ConvShowcolor(color) {
-                if ( c=color.match(/rgb\\((\\d+?)\\, (\\d+?)\\, (\\d+?)\\)/i) ) {
+                var c = color.match(/rgb\\((\\d+?)\\, (\\d+?)\\, (\\d+?)\\)/i);
+                if ( c ) {
                     var rhex = tohex(c[1]);
                     var ghex = tohex(c[2]);
                     var bhex = tohex(c[3]);
@@ -243,155 +244,150 @@ sub postbox2 {
 sub postbox3 {
     $box = qq~
 <script type="text/javascript">
-var oldwidth = parseInt(document.getElementById('message').style.width) - $jsdragwpos;
-var olddragwidth = parseInt(document.getElementById('dragbgh').style.width) - $jsdragwpos;
-var oldheight = parseInt(document.getElementById('message').style.height) - $jsdraghpos;
-var olddragheight = parseInt(document.getElementById('dragbgw').style.height) - $jsdraghpos;
+    var oldwidth = parseInt(document.getElementById('message').style.width) - $jsdragwpos;
+    var olddragwidth = parseInt(document.getElementById('dragbgh').style.width) - $jsdragwpos;
+    var oldheight = parseInt(document.getElementById('message').style.height) - $jsdraghpos;
+    var olddragheight = parseInt(document.getElementById('dragbgw').style.height) - $jsdraghpos;
 
-var skydobject={
-x: 0, y: 0, temp2 : null, temp3 : null, targetobj : null, skydNu : 0, delEnh : 0,
+    var skydobject={
+        x: 0, y: 0, temp2 : null, temp3 : null, targetobj : null, skydNu : 0, delEnh : 0,
+        initialize:function() {
+            document.onmousedown = this.skydeKnap;
+            document.onmouseup=function(){
+                this.skydNu = 0;
+                document.getElementById('messagewidth').value = parseInt(document.getElementById('message').style.width);
+                document.getElementById('messageheight').value = parseInt(document.getElementById('message').style.height);
+            };
+        },
+        changeSize:function(deleEnh, knapId) {
+            if (knapId == "dragImg1") {
+                newwidth = oldwidth+parseInt(deleEnh);
+                newdragwidth = olddragwidth+parseInt(deleEnh);
+                document.getElementById('message').style.width = newwidth+'px';
+                document.getElementById('dragbgh').style.width = newdragwidth+'px';
+                document.getElementById('dragImg2').style.width = newdragwidth+'px';
+            }
+            if (knapId == "dragImg2") {
+                newheight = oldheight+parseInt(deleEnh);
+                newdragheight = olddragheight+parseInt(deleEnh);
+                document.getElementById('message').style.height = newheight+'px';
+                document.getElementById('dragbgw').style.height = newdragheight+'px';
+                document.getElementById('dragImg1').style.height = newdragheight+'px';
+                document.getElementById('dragcanvas').style.height = newdragheight+'px';
 
-initialize:function() {
-    document.onmousedown = this.skydeKnap
-    document.onmouseup=function(){
-        this.skydNu = 0;
-        document.getElementById('messagewidth').value = parseInt(document.getElementById('message').style.width);
-        document.getElementById('messageheight').value = parseInt(document.getElementById('message').style.height);
+            }
+        },
+        flytKnap:function(e) {
+            var evtobj = window.event ? window.event : e;
+            if (this.skydNu == 1) {
+                sizestop = f_clientWidth();
+                maxstop = parseInt(((sizestop*66)/100)-450);
+                if(maxstop > 413) maxstop = 413;
+                if(maxstop < 60) maxstop = 60;
+                glX = parseInt(this.targetobj.style.left);
+                this.targetobj.style.left = this.temp2 + evtobj.clientX - this.x + "px";
+                nyX = parseInt(this.temp2 + evtobj.clientX - this.x);
+                if (nyX > glX) retning = "vn"; else retning = "hj";
+                if (nyX < 1 && retning == "hj") { this.targetobj.style.left = 0 + "px"; nyX = 0; retning = "vn"; }
+                if (nyX > maxstop && retning == "vn") { this.targetobj.style.left = maxstop + "px"; nyX = maxstop; retning = "hj"; }
+                delEnh = parseInt(nyX);
+                var knapObj = this.targetobj.id;
+                skydobject.changeSize(delEnh, knapObj);
+                return false;
+            }
+            if (this.skydNu == 2) {
+                glY = parseInt(this.targetobj.style.top);
+                this.targetobj.style.top = this.temp3 + evtobj.clientY - this.y + "px";
+                nyY = parseInt(this.temp3 + evtobj.clientY - this.y);
+                if (nyY > glY) retning = "vn"; else retning = "hj";
+                if (nyY < 1 && retning == "hj") { this.targetobj.style.top = 0 + "px"; nyY = 0; retning = "vn"; }
+                if (nyY > 270 && retning == "vn") { this.targetobj.style.top = 270 + "px"; nyY = 270; retning = "hj"; }
+                delEnh = parseInt(nyY);
+                knapObj = this.targetobj.id;
+                skydobject.changeSize(delEnh, knapObj);
+                return false;
+            }
+        },
+        skydeKnap:function(e) {
+            var evtobj = window.event ? window.event : e;
+            this.targetobj = window.event ? event.srcElement : e.target;
+            if (this.targetobj.className == "drag") {
+                if(this.targetobj.id == "dragImg1") this.skydNu = 1;
+                if(this.targetobj.id == "dragImg2") this.skydNu = 2;
+                this.knapObj = this.targetobj;
+                if (isNaN(parseInt(this.targetobj.style.left))) this.targetobj.style.left = 0;
+                if (isNaN(parseInt(this.targetobj.style.top))) this.targetobj.style.top = 0;
+                this.temp2 = parseInt(this.targetobj.style.left);
+                this.temp3 = parseInt(this.targetobj.style.top);
+                this.x = evtobj.clientX;
+                this.y = evtobj.clientY;
+                if (evtobj.preventDefault) evtobj.preventDefault();
+                document.onmousemove = skydobject.flytKnap;
+            }
+        }
+    };
+    function f_clientWidth() {
+        return f_filterResults (
+            window.innerWidth ? window.innerWidth : 0,
+            document.documentElement ? document.documentElement.clientWidth : 0,
+            document.body ? document.body.clientWidth : 0 );
     }
-},
-changeSize:function(deleEnh, knapId) {
-    if (knapId == "dragImg1") {
-        newwidth = oldwidth+parseInt(deleEnh);
-        newdragwidth = olddragwidth+parseInt(deleEnh);
-        document.getElementById('message').style.width = newwidth+'px';
-        document.getElementById('dragbgh').style.width = newdragwidth+'px';
-        document.getElementById('dragImg2').style.width = newdragwidth+'px';
+
+    function f_filterResults(n_win, n_docel, n_body) {
+        var n_result = n_win ? n_win : 0;
+        if (n_docel && (!n_result || (n_result > n_docel))) n_result = n_docel;
+        return n_body && (!n_result || (n_result > n_body)) ? n_body : n_result;
     }
-    if (knapId == "dragImg2") {
-        newheight = oldheight+parseInt(deleEnh);
-        newdragheight = olddragheight+parseInt(deleEnh);
-        document.getElementById('message').style.height = newheight+'px';
-        document.getElementById('dragbgw').style.height = newdragheight+'px';
-        document.getElementById('dragImg1').style.height = newdragheight+'px';
-        document.getElementById('dragcanvas').style.height = newdragheight+'px';
-
+    var orgsize = $textsize;
+    function sizetext(sizefact) {
+        orgsize = orgsize + sizefact;
+        if(orgsize < 6) orgsize = 6;
+        if(orgsize > 16) orgsize = 16;
+        document.getElementById('message').style.fontSize = orgsize+'pt';
+        document.getElementById('txtsize').value = orgsize;
     }
-},
-flytKnap:function(e) {
-    var evtobj = window.event ? window.event : e
-    if (this.skydNu == 1) {
-        sizestop = f_clientWidth()
-        maxstop = parseInt(((sizestop*66)/100)-450)
-        if(maxstop > 413) maxstop = 413
-        if(maxstop < 60) maxstop = 60
 
-        glX = parseInt(this.targetobj.style.left)
-        this.targetobj.style.left = this.temp2 + evtobj.clientX - this.x + "px"
-        nyX = parseInt(this.temp2 + evtobj.clientX - this.x)
-        if (nyX > glX) retning = "vn"; else retning = "hj";
-        if (nyX < 1 && retning == "hj") { this.targetobj.style.left = 0 + "px"; nyX = 0; retning = "vn"; }
-        if (nyX > maxstop && retning == "vn") { this.targetobj.style.left = maxstop + "px"; nyX = maxstop; retning = "hj"; }
-        delEnh = parseInt(nyX)
-        var knapObj = this.targetobj.id
-        skydobject.changeSize(delEnh, knapObj)
-        return false
-    }
-    if (this.skydNu == 2) {
-        glY = parseInt(this.targetobj.style.top)
-        this.targetobj.style.top = this.temp3 + evtobj.clientY - this.y + "px"
-        nyY = parseInt(this.temp3 + evtobj.clientY - this.y)
-        if (nyY > glY) retning = "vn"; else retning = "hj";
-        if (nyY < 1 && retning == "hj") { this.targetobj.style.top = 0 + "px"; nyY = 0; retning = "vn"; }
-        if (nyY > 270 && retning == "vn") { this.targetobj.style.top = 270 + "px"; nyY = 270; retning = "hj"; }
-        delEnh = parseInt(nyY)
-        knapObj = this.targetobj.id
-        skydobject.changeSize(delEnh, knapObj)
-        return false
-    }
-},
-skydeKnap:function(e) {
-    var evtobj = window.event ? window.event : e
-    this.targetobj = window.event ? event.srcElement : e.target
-    if (this.targetobj.className == "drag") {
-        if(this.targetobj.id == "dragImg1") this.skydNu = 1
-        if(this.targetobj.id == "dragImg2") this.skydNu = 2
-        this.knapObj = this.targetobj
-        if (isNaN(parseInt(this.targetobj.style.left))) this.targetobj.style.left = 0
-        if (isNaN(parseInt(this.targetobj.style.top))) this.targetobj.style.top = 0
-        this.temp2 = parseInt(this.targetobj.style.left)
-        this.temp3 = parseInt(this.targetobj.style.top)
-        this.x = evtobj.clientX
-        this.y = evtobj.clientY
-        if (evtobj.preventDefault) evtobj.preventDefault()
-        document.onmousemove = skydobject.flytKnap
-    }
-}
-}
-
-function f_clientWidth() {
-    return f_filterResults (
-        window.innerWidth ? window.innerWidth : 0,
-        document.documentElement ? document.documentElement.clientWidth : 0,
-        document.body ? document.body.clientWidth : 0 );
-}
-
-function f_filterResults(n_win, n_docel, n_body) {
-    var n_result = n_win ? n_win : 0;
-    if (n_docel && (!n_result || (n_result > n_docel))) n_result = n_docel;
-    return n_body && (!n_result || (n_result > n_body)) ? n_body : n_result;
-}
-
-var orgsize = $textsize;
-
-function sizetext(sizefact) {
-    orgsize = orgsize + sizefact;
-    if(orgsize < 6) orgsize = 6;
-    if(orgsize > 16) orgsize = 16;
-    document.getElementById('message').style.fontSize = orgsize+'pt';
-    document.getElementById('txtsize').value = orgsize;
-}
-
-skydobject.initialize()~;
+    skydobject.initialize();~;
 
     #// Collapse/Expand additional features
     #//var col_row = $col_row;
     if ( $action ne 'imsend' && $action ne 'eventcal' ) {
         $box .= qq~
-var col_row = $col_row;
+    var col_row = $col_row;
 
-function show_features() {
-    document.getElementById('col_row').value = col_row;
-    if (col_row == 1) {
-        for (i = 1; 14 > i; i++) {
-            try {
-                if (typeof(document.getElementById("feature_status_" + i).style)) throw "1";
-            } catch (e) {
-                if (e == "1") {
-                    document.getElementById("feature_status_" + i).style.display = "none";
+    function show_features() {
+        document.getElementById('col_row').value = col_row;
+        if (col_row == 1) {
+            for (i = 1; 14 > i; i++) {
+                try {
+                    if (typeof(document.getElementById("feature_status_" + i).style)) throw "1";
+                } catch (e) {
+                    if (e == "1") {
+                        document.getElementById("feature_status_" + i).style.display = "none";
+                    }
                 }
             }
-        }
-        document.images.feature_col.alt = "$npf_txt{'expand_features'}";
-        document.images.feature_col.title = "$npf_txt{'expand_features'}";
-        document.images.feature_col.src="$imagesdir/$cat_exp";
-        col_row = 0;
-    } else {
-        for (var i = 1; 14 > i; i++) {
-            try {
-                if (typeof(document.getElementById("feature_status_" + i).style)) throw "1";
-            } catch (e) {
-                if (e == "1") {
-                    document.getElementById("feature_status_" + i).style.display = "";
+            document.images.feature_col.alt = "$npf_txt{'expand_features'}";
+            document.images.feature_col.title = "$npf_txt{'expand_features'}";
+            document.images.feature_col.src="$imagesdir/$cat_exp";
+            col_row = 0;
+        } else {
+            for (var i = 1; 14 > i; i++) {
+                try {
+                    if (typeof(document.getElementById("feature_status_" + i).style)) throw "1";
+                } catch (e) {
+                    if (e == "1") {
+                        document.getElementById("feature_status_" + i).style.display = "";
+                    }
                 }
             }
+            document.images.feature_col.alt = "$npf_txt{'collapse_features'}";
+            document.images.feature_col.title = "$npf_txt{'collapse_features'}";
+            document.images.feature_col.src="$imagesdir/$cat_col";
+            col_row = 1;
         }
-        document.images.feature_col.alt = "$npf_txt{'collapse_features'}";
-        document.images.feature_col.title = "$npf_txt{'collapse_features'}";
-        document.images.feature_col.src="$imagesdir/$cat_col";
-        col_row = 1;
     }
-}
-show_features()~;
+    show_features();~;
     }
 
     $box .= q~</script>~;
@@ -600,42 +596,42 @@ sub my_check_prev {
             ~ . (
         $iamguest && $post ne 'imsend' && $post ne 'imsend2'
         ? qq~document.getElementById("savename").innerHTML = jsDoTohtml(document.getElementById("name").value);
-            if (document.postmodify.name.value == "" || document.postmodify.name.value == "_" || document.postmodify.name.value == " ") { msgError += "<li>$livepreview_txt{'name_empty'}<\/li>"; if (isError == 0) isError = 1; }
-            if (document.postmodify.name.value.length > 25)  { msgError += "<li>$livepreview_txt{'long_name'}<\/li>"; if (isError == 0) isError = 1; }
-            if (document.postmodify.email.value == "") { msgError += "<li>$livepreview_txt{'mail_empty'} $livepreview_txt{'valid_mail'}<\/li>"; if (isError == 0) isError = 1; }
+            if (document.postmodify.name.value === "" || document.postmodify.name.value == "_" || document.postmodify.name.value == " ") { msgError += "<li>$livepreview_txt{'name_empty'}<\/li>"; if (isError === 0) isError = 1; }
+            if (document.postmodify.name.value.length > 25)  { msgError += "<li>$livepreview_txt{'long_name'}<\/li>"; if (isError === 0) isError = 1; }
+            if (document.postmodify.email.value === "") { msgError += "<li>$livepreview_txt{'mail_empty'} $livepreview_txt{'valid_mail'}<\/li>"; if (isError === 0) isError = 1; }
             else if (! checkMailaddr(document.postmodify.email.value)) { msgError += "<li>$livepreview_txt{'valid_mail'}<\/li>"; if (isError == 0) isError = 1; }~
         : qq~if (livepostas == "imsend" || livepostas == "imsend2") {
-            if (document.postmodify.toshow.options.length == 0 ) { msgError += "<li>$livepreview_txt{'pm_recipient'}<\/li>"; isError = 1; }
+            if (document.postmodify.toshow.options.length === 0 ) { msgError += "<li>$livepreview_txt{'pm_recipient'}<\/li>"; isError = 1; }
             }~
       )
       . (
         $iamguest && $gpvalid_en && $post ne 'imsend' && $post ne 'imsend2'
-        ? qq~if (document.postmodify.verification.value == "") { msgError += "<li>$livepreview_txt{'veri_code'}<\/li>"; isError = 1; }~
+        ? qq~if (document.postmodify.verification.value === "") { msgError += "<li>$livepreview_txt{'veri_code'}<\/li>"; isError = 1; }~
         : q~~
       )
       . (
         $iamguest
           && $spam_questions_gp && $post ne 'imsend' && $post ne 'imsend2'
-        ? qq~if (document.postmodify.verification_question.value == "") { msgError += "<li>$livepreview_txt{'veri_quest'}<\/li>"; isError = 1; }~
+        ? qq~if (document.postmodify.verification_question.value === "") { msgError += "<li>$livepreview_txt{'veri_quest'}<\/li>"; isError = 1; }~
         : q~~
       )
       . (
         $action ne 'eventcal'
         ? qq~
-            if (document.postmodify.subject.value == "") { msgError += "<li>$livepreview_txt{'subj_empty'}<\/li>"; if (isError == 0) isError = 1; }
+            if (document.postmodify.subject.value === "") { msgError += "<li>$livepreview_txt{'subj_empty'}<\/li>"; if (isError === 0) isError = 1; }
             else if ($checkallcaps && document.postmodify.subject.value.search(/[A-Z]{$checkallcaps,}/g) != -1) {
-                if (isError == 0) { msgError = "<li>$livepreview_txt{'subj_allcaps'}<\/li>"; isError = 1; }
+                if (isError === 0) { msgError = "<li>$livepreview_txt{'subj_allcaps'}<\/li>"; isError = 1; }
                 else { msgError += "<li>$livepreview_txt{'subj_allcaps'}<\/li>"; }
             }~
         : q~~
       )
-      . qq~if (document.postmodify.message.value == "") { msgError += "<li>$livepreview_txt{'mess_empty'}<\/li>"; if (isError == 0) isError = 1; }
+      . qq~if (document.postmodify.message.value === "") { msgError += "<li>$livepreview_txt{'mess_empty'}<\/li>"; if (isError === 0) isError = 1; }
             else if ($checkallcaps && document.postmodify.message.value.search(/[A-Z]{$checkallcaps,}/g) != -1) {
-                if (isError == 0) { msgError = "<li>$livepreview_txt{'mess_allcaps'}<\/li>"; isError = 1; }
+                if (isError === 0) { msgError = "<li>$livepreview_txt{'mess_allcaps'}<\/li>"; isError = 1; }
                 else { msgError += "<li>$livepreview_txt{'mess_allcaps'}<\/li>"; }
             }
-            if (nolinks && (livepostas == 'post' || livepostas == 'postmodify') && /(http:\\/\\/|https:\\/\\/|ftp:\\/\\/|www\\.){1,}\\S+?\\.\\S+/i.test(document.postmodify.message.value)) {
-                if (isError == 0) { msgError = "<li>$livepreview_txt{'no_links'}<\/li>"; isError = 1; }
+            if (nolinks && (livepostas == 'post' || livepostas == 'postmodify') && (/(http:\\/\\/|https:\\/\\/|ftp:\\/\\/|www\\.){1,}\\S+?\\.\\S+/i.test)(document.postmodify.message.value)) {
+                if (isError === 0) { msgError = "<li>$livepreview_txt{'no_links'}<\/li>"; isError = 1; }
                 else { msgError += "<li>$livepreview_txt{'no_links'}<\/li>"; }
             }
             if (isError > 0) {
@@ -655,14 +651,14 @@ sub my_check_prev {
 sub my_liveprev {
     $x =
       qq~var noalert = true, gralert = false, rdalert = false, clalert = false;
-var cntsec = 0
+var cntsec = 0;
 
 function tick() {
-  cntsec++
-  var timerID = setTimeout("tick()",1000)
+  cntsec++;
+  var timerID = setTimeout("tick()",1000);
 }
 
-var autoprev = false
+var autoprev = false;
 
 post_txt_807 = "$post_txt{'807'}";
 function enabPrev() {
@@ -711,7 +707,7 @@ function calcCharLeft() {
   document.postmodify.msgCL.value = charleft;
   if (charleft >= 100 && noalert) { noalert = false; gralert = true; rdalert = true; clalert = true; document.images.chrwarn.src="$chrwarn{'g1'}"; }
   if (charleft < 100 && charleft >= 50 && gralert) { noalert = true; gralert = false; rdalert = true; clalert = true; document.images.chrwarn.src="$chrwarn{'g0'}"; }
-  if (charleft < 50 && charleft > 0 && rdalert) { noalert = true; gralert = true; rdalert = false; clalert = true; document.images.chrwarn.src="$chrwarn{'r0'}" }
+  if (charleft < 50 && charleft > 0 && rdalert) { noalert = true; gralert = true; rdalert = false; clalert = true; document.images.chrwarn.src="$chrwarn{'r0'}"; }
   if (charleft === 0 && clalert) { noalert = true; gralert = true; rdalert = true; clalert = false; document.images.chrwarn.src="$chrwarn{'r1'}"; }
   return clipped;
 }
@@ -728,7 +724,7 @@ function autoPreview() {
             pstHttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
     } catch (e) { }
-    if (pstHttp == null) return;
+    if (pstHttp === null) return;
     pstHttp.onreadystatechange = function() {
         if(pstHttp.readyState == 4) {
             if(pstHttp.status == 200 || window.location.href.indexOf("http") == -1) {~;
@@ -770,7 +766,7 @@ function autoPreview() {
     $x .= q~
             }
         }
-    }
+    };
     var nscheck = 0;
     if(document.getElementById("ns").checked) nscheck = 1;~;
     if ( $my_ajxcall ne 'ajxcal' ) {
@@ -853,7 +849,7 @@ function LivePrevImgResize() {
             continue;
         }
 
-        if (document.images[tmp_image_name].complete == false) {
+        if (document.images[tmp_image_name].complete === false) {
             tmp_array[tmp_array.length] = tmp_image_name;
             if (/Opera/i.test(navigator.userAgent)) {
                 document.images[tmp_image_name].width  = document.images[tmp_image_name].width  || 0;
@@ -874,12 +870,12 @@ function LivePrevImgResize() {
             continue;
         }
 
-        if (maxwidth != 0 && tmpwidth > maxwidth) {
+        if (maxwidth !== 0 && tmpwidth > maxwidth) {
             tmpheight = tmpheight * maxwidth / tmpwidth;
             tmpwidth  = maxwidth;
         }
 
-        if (maxheight != 0 && tmpheight > maxheight) {
+        if (maxheight !== 0 && tmpheight > maxheight) {
             tmpwidth  = tmpwidth * maxheight / tmpheight;
             tmpheight = maxheight;
         }

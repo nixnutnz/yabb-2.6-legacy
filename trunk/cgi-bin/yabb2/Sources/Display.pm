@@ -1791,9 +1791,9 @@ qq~<form name="multidel" action="$scripturl?board=$currentboard;action=multidel;
         var x = "mailto:?subject=$esubject&body=$emessage";
         if (action == 3) {
             Check = confirm('$display_txt{'sendtopicemail'}');
-            if (Check != true) x = '';
+            if (Check !== true) x = '';
         }
-        if (action == 1 || x == '') x = "$scripturl?action=sendtopic;topic=$viewnum";
+        if (action == 1 || x === '') x = "$scripturl?action=sendtopic;topic=$viewnum";
         window.location.href = x;
     }~;
     }

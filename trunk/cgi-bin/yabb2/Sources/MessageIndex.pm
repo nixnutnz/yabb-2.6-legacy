@@ -1556,7 +1556,7 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
                 }
                 var url = '$scripturl?action=bdrulecoll&rulebd=' + thisboard + '&rulelg=' + linkdesclg;
                 GetXmlHttpObject();
-                if (xmlHttp == null) return;
+                if (xmlHttp === null) return;
                 xmlHttp.open("GET",url,true);
                 xmlHttp.send(null);
             }
@@ -1775,13 +1775,13 @@ qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
 <script type="text/javascript">
     function checkAll(j) {
         for (var i = 0; i < document.multiadmin.elements.length; i++) {
-            if (document.multiadmin.elements[i].type == "checkbox" && !(/all\$/).test(document.multiadmin.elements[i].name) && (j == 0 || (j != 0 && (i % $modul) == (j - 1))))
+            if (document.multiadmin.elements[i].type == "checkbox" && !(/all\$/).test(document.multiadmin.elements[i].name) && (j === 0 || (j !== 0 && (i % $modul) == (j - 1))))
                 document.multiadmin.elements[i].checked = true;
         }
     }
     function uncheckAll(j) {
         for (var i = 0; i < document.multiadmin.elements.length; i++) {
-            if (document.multiadmin.elements[i].type == "checkbox" && !(/all\$/).test(document.multiadmin.elements[i].name) && (j == 0 || (j != 0 && (i % $modul) == (j - 1))))
+            if (document.multiadmin.elements[i].type == "checkbox" && !(/all\$/).test(document.multiadmin.elements[i].name) && (j === 0 || (j !== 0 && (i % $modul) == (j - 1))))
                 document.multiadmin.elements[i].checked = false;
         }
     }

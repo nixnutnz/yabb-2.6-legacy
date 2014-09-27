@@ -12,7 +12,7 @@
         {yabb javascript}
         {yabb javascripta}
         if (top.location != self.location) {
-            top.location = self.location.href
+            top.location = self.location.href;
         }
     </script>
     {yabb syntax_js}
@@ -123,7 +123,7 @@
 
 function fixMenu() {
     if(document.body.scrollTop) var bdelement = document.body.scrollTop;
-    else var bdelement = document.documentElement.scrollTop;
+    else bdelement = document.documentElement.scrollTop;
     if(bdelement > 135) {
         document.getElementById("fixmenu").style.position = 'fixed';
         document.getElementById("fixmenu").style.top = 0 + 'px';
