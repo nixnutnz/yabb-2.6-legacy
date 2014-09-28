@@ -200,7 +200,7 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
             }
             $dependicies .= qq~     checkDependent("$require");\n~;
         }
-       $dependicies .= qq~ }
+        $dependicies .= qq~ }
     document.getElementsByName("$ritem")[0].onclick = handleDependent_$ritem;
     document.getElementsByName("$ritem")[0].onkeyup = handleDependent_$ritem;
 ~;

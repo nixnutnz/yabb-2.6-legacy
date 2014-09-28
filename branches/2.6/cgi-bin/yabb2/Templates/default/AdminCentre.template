@@ -18,24 +18,22 @@ $versionchk   = 'http://www.yabbforum.com/update/versioncheck.js';
 $versionimg   = 'http://www.yabbforum.com/images/version/versioncheck.gif';
 $aarea = 'aarea.jpg';
 
-$header = qq~<?xml version="1.0" encoding="$yymycharset" standalone="no" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$abbr_lang" lang="$abbr_lang">
+$header = qq~<!DOCTYPE html>
+<html lang='en-US'>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=$yymycharset" />
+    <meta charset="$yymycharset">
     <title>{yabb title}</title>
-    <meta http-equiv="pragma" content="no-cache" />
     {yabb style}
     <script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
     <script type="text/javascript">
     function toggleList(e){
         element = document.getElementById(e).style;
 
-        if (element.display == "") {
-            element.display = "none"
+        if (element.display === "") {
+            element.display = "none";
             setcookie("admin_center" + e, "1", new Date().getTime() + 525600 * 60007);
         } else {
-            element.display = ""
+            element.display = "";
             setcookie("admin_center" + e, "0", new Date());
         }
     }
@@ -116,7 +114,7 @@ $mainbody = qq~
     </div>
     <script type="text/javascript">
         function savealert() {
-            alert("$admin_txt{'setsettings'}")
+            alert("$admin_txt{'setsettings'}");
         }
     </script>
 </body>
@@ -188,7 +186,7 @@ $front_page = qq~<div class="bordercolor rightboxdiv">
         var aa = '<table class="border-space pad-cell">';
         var bb = '<tr><td class="titlebg" colspan="2"><b>$admintxt{'3'}</b></td></tr>';
         var cc = '<tr><td class="windowbg2">$versiontxt{'4'}</td><td class="windowbg2"><b>{yabb YaBBversion}</b></td></tr>';
-        if (typeof STABLE == "undefined" || STABLE == null ) {
+        if (typeof STABLE === "undefined" || STABLE === null ) {
                 var dd = '<tr><td class="titlebg" colspan="2">$rna</b></td></tr>';
                 var ee = '';
                 var ff = '';
@@ -218,7 +216,7 @@ $front_page = qq~<div class="bordercolor rightboxdiv">
                 </td>
             </tr><tr>
                 <td class="windowbg2">
-                    <iframe src="http://www.yabbforum.com/update/" frameborder="0" id="update"></iframe>
+                    <iframe src="http://localhost/testbed/update/" style="border:0;" id="update"></iframe>
                 </td>
             </tr>
         </table>
@@ -231,9 +229,9 @@ $front_page = qq~<div class="bordercolor rightboxdiv">
                 </td>
             </tr><tr>
                 <td class="windowbg2" >
-					<div style="height:15em; overflow:auto">
+                    <div style="height:15em; overflow:auto">
                     {yabb lastlogins}
-					</div>
+                    </div>
                 </td>
             </tr>
         </table>

@@ -698,7 +698,7 @@ qq~<a href="$scripturl?action=undovote;num=$pollnum$scp">$img{'deletevote'}</a>~
     if($has_voted) {
      if ( !$hide_results || $poll_locked ) {
         $poll_notlocked = qq~
-           <div style="float: right; width: 55px; text-align: right;; margin-right:4px">
+           <div style="float: right; width: 55px; text-align: right; margin-right:4px">
                 <a href="$scripturl?num=$viewnum">$poll_bar</a> &nbsp;
                 <a href="$scripturl?num=$viewnum;view=pie">$poll_pie</a>
            </div>

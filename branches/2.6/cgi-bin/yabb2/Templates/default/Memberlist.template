@@ -117,11 +117,11 @@ $visel_4 = q~</tr></table>~;
 
 #UserSelect buildPages
 
-$my_usersel_tem = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$abbr_lang" lang="$abbr_lang">
+$my_usersel_tem = qq~<!DOCTYPE html>
+<html lang='en-US'>
 <head>
     <title>{yabb title}</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=$yymycharset" />
+    <meta charset="{yabb mycharset}">
     <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
     <script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -186,7 +186,7 @@ $my_usersel_tem = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//
         var to_length = to_array.length;
         for(i = 0; i < document.getElementById(from_select).options.length; i++) {
             tmp_array[document.getElementById(from_select).options[i].text] = document.getElementById(from_select).options[i].value;
-            if(document.getElementById(from_select).options[i].selected && document.getElementById(from_select).options[i].value != "") {
+            if(document.getElementById(from_select).options[i].selected && document.getElementById(from_select).options[i].value !== "") {
                 to_array[to_length] = document.getElementById(from_select).options[i].text;
                 to_length++;
             }
@@ -269,7 +269,7 @@ $my_quickSearch = qq~
             </td>
         </tr><tr>
             <td class="windowbg">
-                <select name="rec_list" multiple="multiple" id="rec_list" size="10" style="width: 290px; font-size: 11px;" ondblclick="copy_option('{yabb to_id}')"><option></option></select>
+                <select name="rec_list" multiple="multiple" id="rec_list" size="10" style="width: 290px; font-size: 11px;" ondblclick="copy_option('{yabb to_id}')"><option value="">--</option></select>
             </td>
         </tr><tr>
             <td class="windowbg">
