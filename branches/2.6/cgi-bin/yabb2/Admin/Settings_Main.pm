@@ -737,7 +737,7 @@ $qckage    = defined $qckage ? $qckage : 31;
         },
         {
             description => qq~<label for="quoteuser_color">$qrb_txt{'6'}</label>~,
-            input_html => qq~<input type="text" size="7" maxlength="7" name="quoteuser_color" id="quoteuser_color" value="$quoteuser_color" onkeyup="previewColor(this.value);" /> <span id="quoteuser_color2" style="background-color:$quoteuser_color">&nbsp; &nbsp; &nbsp;</span> <img src="$admin_images/palette1.gif" align="top" style="cursor: pointer" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" border="0" />
+            input_html => qq~<input type="text" size="7" maxlength="7" name="quoteuser_color" id="quoteuser_color" value="$quoteuser_color" onkeyup="previewColor(this.value);" /> <span id="quoteuser_color2" style="background-color:$quoteuser_color">&nbsp; &nbsp; &nbsp;</span> <img src="$admin_images/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
             <script type="text/javascript">
             function previewColor(color) {
                 document.getElementById('quoteuser_color2').style.background = color;

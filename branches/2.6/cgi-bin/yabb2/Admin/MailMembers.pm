@@ -139,9 +139,9 @@ sub Mailing {
 </div>
 <script type="text/javascript">
     function MailListWin(FileName,WindowName) {
-        WindowFeature="resizable=no,scrollbars=yes,menubar=yes,directories=no,toolbar=no,location=no,status=no,width=400,height=400,screenX=0,screenY=0,top=0,left=0"
+        WindowFeature="resizable=no,scrollbars=yes,menubar=yes,directories=no,toolbar=no,location=no,status=no,width=400,height=400,screenX=0,screenY=0,top=0,left=0";
         newWindow=open(FileName,WindowName,WindowFeature);
-        if (newWindow.opener == null) { newWindow.opener = self; }
+        if (newWindow.opener === null || newWindow.opener === undefined ) { newWindow.opener = self; }
         if (newWindow.focus) { newWindow.focus(); }
     }
 </script>
@@ -204,8 +204,10 @@ sub Mailing {
 
 <script type="text/javascript">
 function checkIfSelected() {
-    for(var x = 0; x < document.adv_membermail.field1.options.length; x++) if(document.adv_membermail.field1.options[x].selected) return true;
-    alert("$amv_txt{'48a'}"); return false;
+    for(var x = 0; x < document.adv_membermail.field1.options.length; x++) {
+        if(document.adv_membermail.field1.options[x].selected) return true;
+        alert("$amv_txt{'48a'}"); return false;
+    }
 }
 function selectCheckAll(tchecked) {
     for(var x = 0; x < document.adv_membermail.field1.options.length; x++) document.adv_membermail.field1.options[x].selected = tchecked;
@@ -455,6 +457,7 @@ qq~<input type="checkbox" name="member$actualnum" value="$user" class="windowbg"
 
             if   ($do_scramble_id) { $cloakusername = cloak($user); }
             else                   { $cloakusername = $user; }
+            ToChars($memrealname);
             $linkuser =
 qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealname</b></a>~;
 
@@ -666,8 +669,8 @@ function checkIfChecked(theForm) {
     for(var i = 1; i <= $actualnum; i++) {
         if (document.adv_membermail.elements[i].checked) nonechecked = false;
     }
-    if (nonechecked) { alert("$amv_txt{'48'}"); return false }
-    return true
+    if (nonechecked) { alert("$amv_txt{'48'}"); return false; }
+    return true;
 }
 
 function showMailmemb(thesubject, thetext, thetime) {

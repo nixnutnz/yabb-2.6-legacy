@@ -478,7 +478,7 @@ $presetjavascriptcode
         <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$backup_txt{21}</b></td>
     </tr><tr>
         <td class="windowbg2" colspan="2">
-            $backup_txt{22} <tt>$backupdir</tt> $backup_txt{23}
+            $backup_txt{22} <span style="font-family: monospace;">$backupdir</span> $backup_txt{23}
             <br />
             <br />
             $backup_txt{24}
@@ -516,7 +516,7 @@ $presetjavascriptcode
     </tr><tr>
         <td class="windowbg2" colspan="2">
             $backup_txt{37} <i>${$uid.$username}{'email'}</i> $backup_txt{'37a'}<br />
-            $backup_txt{36} <tt>$backupdir</tt>
+            $backup_txt{36} <span style="font-family: monospace;">$backupdir</span>
             <table class="border-space pad-cell border">
                 <tr>
                     <td class="center">$backup_txt{70}</td>

@@ -799,11 +799,11 @@ sub buildPages {
                     var value1 = eval(mem_data[i].split("|")[field1]);
                     if (value1 != undefined) {
                         var check = 0;
-                        if (field2 == 0 && value1 <  limit) { check = 1; }
+                        if (field2 === 0 && value1 <  limit) { check = 1; }
                         if (field2 == 1 && value1 == limit) { check = 1; }
                         if (field2 == 2 && value1 >  limit) { check = 1; }
-                        if (ctrl_pressed == true) { check = 0; }
-                        if (alt_pressed  == true) { check = 1; }
+                        if (ctrl_pressed === true) { check = 0; }
+                        if (alt_pressed  === true) { check = 1; }
                         if (check == 1) document.adv_memberview.elements[i].checked = true;
                         else            document.adv_memberview.elements[i].checked = false;
                     }

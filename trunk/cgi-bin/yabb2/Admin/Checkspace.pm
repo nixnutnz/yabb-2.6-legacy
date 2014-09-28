@@ -337,7 +337,7 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
             }
             $dependicies .= qq~     checkDependent("$require");\n~;
         }
-        $dependicies .= qq~ };
+        $dependicies .= qq~ }
     document.getElementsByName("$ritem")[0].onclick = handleDependent_$ritem;
     document.getElementsByName("$ritem")[0].onkeyup = handleDependent_$ritem;
 ~;
@@ -365,9 +365,9 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
   <script type="text/javascript">
     function getElementsByClass(searchClass,node,tag) {
         var classElements = new Array();
-        if ( node == null )
+        if ( node === null || node === undefined )
             node = document;
-        if ( tag == null )
+        if ( tag === null || tag === undefined )
             tag = '*';
         var els = node.getElementsByTagName(tag);
         var elsLen = els.length;

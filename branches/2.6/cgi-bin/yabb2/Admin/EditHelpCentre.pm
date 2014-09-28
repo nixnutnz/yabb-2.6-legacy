@@ -303,25 +303,25 @@ myRe=/\\n\$/;
 myRg=/\\n\\s*?\\n/;
 function addadminhelp() {
     thisstr = document.adminorder.order.value;
-    if( ! myRe.test(thisstr) && document.adminorder.order.value != '' ) document.adminorder.order.value = document.adminorder.order.value + nline;
+    if( ! myRe.test(thisstr) && document.adminorder.order.value !== '' ) document.adminorder.order.value = document.adminorder.order.value + nline;
     if( myRg.test(thisstr) ) document.adminorder.order.value = document.adminorder.order.value.replace(/\\n\\s*?\\n/, "\\n" + document.adminhelp.page.options[document.adminhelp.page.selectedIndex].value + "\\n");
     else document.adminorder.order.value += document.adminhelp.page.options[document.adminhelp.page.selectedIndex].value + nline;
 }
 function addgmodhelp() {
     thisstr = document.gmodorder.order.value;
-    if( ! myRe.test(thisstr) && document.gmodorder.order.value != '' ) document.gmodorder.order.value = document.gmodorder.order.value + nline;
+    if( ! myRe.test(thisstr) && document.gmodorder.order.value !== '' ) document.gmodorder.order.value = document.gmodorder.order.value + nline;
     if( myRg.test(thisstr) ) document.gmodorder.order.value = document.gmodorder.order.value.replace(/\\n\\s*?\\n/, "\\n" + document.gmodhelp.page.options[document.gmodhelp.page.selectedIndex].value + "\\n");
     else document.gmodorder.order.value += document.gmodhelp.page.options[document.gmodhelp.page.selectedIndex].value + nline;
 }
 function addmodhelp() {
     thisstr = document.modorder.order.value;
-    if( ! myRe.test(thisstr) && document.modorder.order.value != '' ) document.modorder.order.value = document.modorder.order.value + nline;
+    if( ! myRe.test(thisstr) && document.modorder.order.value !== '' ) document.modorder.order.value = document.modorder.order.value + nline;
     if( myRg.test(thisstr) ) document.modorder.order.value = document.modorder.order.value.replace(/\\n\\s*?\\n/, "\\n" + document.modhelp.page.options[document.modhelp.page.selectedIndex].value + "\\n");
     else document.modorder.order.value += document.modhelp.page.options[document.modhelp.page.selectedIndex].value + nline;
 }
 function adduserhelp() {
     thisstr = document.userorder.order.value;
-    if( ! myRe.test(thisstr) && document.userorder.order.value != '' ) document.userorder.order.value = document.userorder.order.value + nline;
+    if( ! myRe.test(thisstr) && document.userorder.order.value !== '' ) document.userorder.order.value = document.userorder.order.value + nline;
     if( myRg.test(thisstr) ) document.userorder.order.value = document.userorder.order.value.replace(/\\n\\s*?\\n/, "\\n" + document.userhelp.page.options[document.userhelp.page.selectedIndex].value + "\\n");
     else document.userorder.order.value += document.userhelp.page.options[document.userhelp.page.selectedIndex].value + nline;
 }

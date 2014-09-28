@@ -564,7 +564,7 @@ qq~<input type="text" name="max_brd_img_width" id="max_brd_img_width" size="5" v
                 description =>
 qq~<label for="max_brd_img_height">$admin_txt{'brd_pic_h'}</label>~,
                 input_html =>
-qq~<input type="text" name="max_brd_img_height" id="max_attach_img_height" size="5" value="$max_brd_img_height" /> pixel~,
+qq~<input type="text" name="max_brd_img_height" id="max_brd_img_height" size="5" value="$max_brd_img_height" /> pixel~,
                 name     => 'max_brd_img_height',
                 validate => 'number',
             },
@@ -681,7 +681,7 @@ qq~<input type="text" name="OnlineLogTime" id="OnlineLogTime" size="5" value="$O
                 description =>
                   qq~<label for="lastonlineinlink">$amv_txt{'25'}</label>~,
                 input_html =>
-qq~<input type="checkbox" name="lastonlineinlink" id="lastonlineinlink" P="1" ${ischecked($lastonlineinlink)}/>~,
+qq~<input type="checkbox" name="lastonlineinlink" id="lastonlineinlink" value="1" ${ischecked($lastonlineinlink)}/>~,
                 name     => 'lastonlineinlink',
                 validate => 'boolean',
             },

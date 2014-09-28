@@ -38,7 +38,7 @@ sub GmodSettings {
     $counter   = 0;
     foreach my $scriptline (@scriptlines) {
         chomp $scriptline;
-        if ( substr( $scriptline, 0, 1 ) eq q{'} ) {    #';
+        if ( substr( $scriptline, 0, 1 ) eq q{'} ) {
             $scriptline =~ s/newsettings\;page\=//xsm;
             if ( $scriptline =~ /\"(.*?)\"/sm ) {
                 $allow = $1;

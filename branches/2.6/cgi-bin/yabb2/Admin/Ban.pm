@@ -31,26 +31,25 @@ sub ipban {
 
     *time_ban = sub {
         my $ban_user = $banned[3];
-        $tm = timeformat($banned[2],1);
-        $tmc = dtonly($tm);
+        $tmc = localtime($banned[2]);
         for my $i ( 0 .. 3 ) {
             if ( $banned[4] eq $timeban[$i] ) {
-                $tmb = $banned[2] + ( $bandays[$i] * 86_400 );
+                $tmb = $banned[2] + ( $bandays[$i] * 86400 );
             }
         }
 
         if ( $banned[4] eq 'p' ) {
             $timeb =
-"$tmc by ${$uid.$ban_user}{'realname'} ($ban_user) - Permanent";
+"$tmc by ${$uid.$ban_user}{'realname'} [$ban_user] - Permanent";
         }
         elsif ( $banned[4] ne 'p' && $tmb < $today ) {
             $timeb =
-"$tmc by ${$uid.$ban_user}{'realname'} ($ban_user) - Expired";
+"$tmc by ${$uid.$ban_user}{'realname'} [$ban_user] - Expired";
         }
         else {
             $tma = timeformat($tmb,1);
             $timeb =
-qq~$tm by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $tma~;
+qq~$tmc by ${$uid.$ban_user}{'realname'} [$ban_user] - Expires on: $tma~;
         }
         return $timeb;
     };
@@ -82,9 +81,9 @@ qq~$tm by ${$uid.$ban_user}{'realname'} ($ban_user) - Expires on: $tma~;
             $uu++;
         }
     }
-    if ( $ii == 0 ) { $iban .= q~<option value=""> </option>~; }
-    if ( $ee == 0 ) { $eban .= q~<option value=""> </option>~; }
-    if ( $uu == 0 ) { $uban .= q~<option value=""> </option>~; }
+    if ( $ii == 0 ) { $iban .= q~<option value="">--</option>~; }
+    if ( $ee == 0 ) { $eban .= q~<option value="">--</option>~; }
+    if ( $uu == 0 ) { $uban .= q~<option value="">--</option>~; }
 
     $yymain .= qq~
     <form action="$adminurl?action=ipban2" method="post">
@@ -397,7 +396,7 @@ sub banlog {
     my @mybanlog = <BANLOG>;
     chomp @mybanlog;
     fclose(BANLOG);
-	my @myban = reverse sort @mybanlog;
+    my @myban = reverse sort @mybanlog;
     import Time::gmtime;
     for my $ban (@myban) {
         @banned = split /\|/xsm, $ban;

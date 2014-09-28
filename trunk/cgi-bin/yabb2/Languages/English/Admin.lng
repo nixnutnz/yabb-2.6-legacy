@@ -1486,7 +1486,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 '6' => 'Show Original Post (sort by Original Post Time)',
 '7' => 'Show the author&#39;s screen name and e-mail address (if not hidden)?',
 '8' => 'Show Post Date?',
-'email' => q~Default e-mail if author's e-mail is hidden. <span class="small"><strong>Note</strong>: e-mail is required by the RSS specification if author is shown.<span>~,
+'email' => q~Default e-mail if author's e-mail is hidden. <span class="small"><strong>Note</strong>: e-mail is required by the RSS specification if author is shown.</span>~,
 );
 
 %userlevel_txt = (

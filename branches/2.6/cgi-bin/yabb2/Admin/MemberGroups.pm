@@ -83,9 +83,11 @@ sub EditMemberGroups {
         $yymain .= q~
             <td class="windowbg2 center">&nbsp;</td>~;
     }
+	$mgrp = $_;
+	$mgrp =~ s/\ /%20/gsm;
     $yymain .= qq~
             <td class="windowbg2 center">$memstats[4]</td>
-            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=$_">$admin_txt{'53'}</a></td>
+            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=$mgrp">$admin_txt{'53'}</a></td>
             <td class="windowbg2 center">&nbsp;</td>~;
     }
     $yymain .= q~
@@ -400,13 +402,13 @@ sub editAddGroup {
             &nbsp;
             <label for="otherstar"><b>$amgtxt{'26'}</b></label> <input type="file" name="otherstar" id="otherstar" size="35"$otherdisable /><input type="hidden" name="cur_otherstar" value="$pick" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('otherstar').value='';">X</span>
             &nbsp;
-            <img src="$starurl" name="starpic" alt="" />
+            <img src="$starurl" id="starpic" alt="" />
         </td>
     </tr><tr>
         <td class="windowbg"><label for="color">$amgtxt{'08'}:</label></td>
         <td class="windowbg2" >
             <select name="color" id="color" onchange="viscolor(this.options[this.selectedIndex].value);">
-            <option value=""></option>
+            <option value="">--</option>
             <option value="00FFFF">$amgtxt{'56'}</option>
             <option value="000000">$amgtxt{'57'}</option>
             <option value="0000FF">$amgtxt{'58'}</option>
@@ -541,7 +543,7 @@ function viscolor(v) {
                 j = 1; break;
             }
     }
-    if (j == 0) document.getElementById('color').options[0].selected = true;
+    if (j === 0) document.getElementById('color').options[0].selected = true;
 }
 
 function previewColor(color) {
@@ -559,7 +561,7 @@ function showimage() {
     selected = document.groups.starsadmin.options[document.groups.starsadmin.selectedIndex].value;
     useimg = (selected != "other") ? "$imagesdir/"+selected : "$imagesdir/blank.gif";
     document.images.starpic.src=useimg;
-    if (document.images.starpic.complete == false) {
+    if (document.images.starpic.complete === false) {
         useimg = (selected != "other") ? "$defaultimagesdir/"+selected :  "$defaultimagesdir/blank.gif";
         document.images.starpic.src=useimg;
     }
@@ -568,7 +570,7 @@ function showimage() {
 function depend(value) {
     if (value == "Yes") {
         document.getElementById('posts').disabled = false;
-        if (document.getElementById('posts').value == '') document.getElementById('posts').value = 0;
+        if (document.getElementById('posts').value === '') document.getElementById('posts').value = 0;
         document.getElementById('viewpublic').checked = true;
         document.getElementById('viewpublic').disabled = true;
     } else{

@@ -165,7 +165,7 @@ function uncheckAll() {
         $sortlist[$bb] =~ s/<b>/\[b\]/gxsm;
         $sortlist[$bb] =~ s/<\/b>/\[\/b\]/gxsm;
         $sortlist[$bb] =~ s/</&lt;/gxsm;
-        $sortlist[$bb] =~ s/>/&rt;/gxsm;
+        $sortlist[$bb] =~ s/>/&gt;/gxsm;
         $sortlist[$bb] =~ s/\[b\]/<b>/gxsm;
         $sortlist[$bb] =~ s/\[\/b\]/<\/b>/gxsm;
         $sortlist[$bb] =~ s/\[br \/\]/<br \/>/gsm;

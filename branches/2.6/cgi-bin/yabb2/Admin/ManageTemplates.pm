@@ -176,7 +176,7 @@ sub ModifyStyle {
     @styles = readdir TMPLDIR;
     closedir TMPLDIR;
     $forumcss = q{};
-    $forumcss = qq~<option value=""></option>\n~;
+    $forumcss = qq~<option value="">--</option>\n~;
 
     foreach my $file ( sort @styles ) {
         ( $name, $ext ) = split /\./xsm, $file;
@@ -193,7 +193,7 @@ sub ModifyStyle {
     @astyles = readdir TMPLDIR;
     closedir TMPLDIR;
     $admincss = q{};
-    $admincss = qq~<option value=""></option>\n~;
+    $admincss = qq~<option value="">--</option>\n~;
     foreach my $file ( sort @astyles ) {
         ( $name, $ext ) = split /\./xsm, $file;
         $selected = q{};

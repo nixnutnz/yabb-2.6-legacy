@@ -439,12 +439,12 @@ sub ext_admin {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
+<form action="$adminurl?action=ext_reorder" method="post">
 <table class="border-space pad-cell" style="margin-bottom: .5em;">
       <tr>
         <td class="titlebg">$admin_img{'profile'} <b>$lang_ext{'reorder_title'}</b></td>
     </tr><tr>
         <td class="windowbg2">
-        <form action="$adminurl?action=ext_reorder" method="post">
             <table class="pad_6px">
                 <tr>
             <td class="windowbg2 vtop">
@@ -464,8 +464,8 @@ sub ext_admin {
         </td>
     </tr>
     </table>
-</div>
 </form>
+</div>
 ~;
     if ( -e "$vardir/Extended.lock" ) { $yymain .= FoundExtLock();}
     else {

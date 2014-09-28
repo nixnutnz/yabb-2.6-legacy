@@ -349,7 +349,7 @@ function addIcons(addic_id) {
     }
 }
 function removeIcons(remic_id) {
-    var previc_id = remic_id - 1
+    var previc_id = remic_id - 1;
     document.getElementById('add_icons' + remic_id).style.display = 'none';
     document.getElementById('add_icon' + previc_id).style.visibility = 'visible';
     if (remic_id != ic_added) {

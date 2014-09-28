@@ -404,7 +404,7 @@ $embed_flv = qq~
     <embed src="$yyhtml_root/mediaplayer.swf" allowfullscreen="true" allowscriptaccess="always" width="_width_" height="_height_" flashvars="&file=_media_&height=_height_&width=_width_&autostart=_autostart_" />~;
 
 $iframe_thenutz = q~
-    <script type="text/javascript">var host=document.location;document.write("<iframe src=\"http://www.thenutz.tv/embed.php?video_id=_media_&host=" + host + "\" frameborder=\"0\" height=\"326\" width=\"400\" scrolling=\"No\"></iframe>");</script>
+    <script type="text/javascript">var host=document.location;document.write("<iframe src='http://www.thenutz.tv/embed.php?video_id=_media_&host=" + host + "' frameborder='0' height='326' width='400' scrolling='No'></iframe>");</script>
 ~;
 
 1;

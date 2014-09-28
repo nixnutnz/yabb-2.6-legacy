@@ -199,7 +199,7 @@ sub Bookmarks {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-    <table classborder-space pad-cell">
+    <table class="border-space pad-cell">
         <tr>
             <th class="titlebg" colspan="2">$admin_img{'prefimg'} $admin_txt{'10'}</th>
         </tr><tr>

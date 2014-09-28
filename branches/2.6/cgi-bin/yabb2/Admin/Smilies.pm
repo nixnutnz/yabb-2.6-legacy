@@ -275,7 +275,7 @@ function addSmilies(addsm_id) {
     }
 }
 function removeSmilies(remsm_id) {
-    var prevsm_id = remsm_id - 1
+    var prevsm_id = remsm_id - 1;
     document.getElementById('add_smilies' + remsm_id).style.display = 'none';
     document.getElementById('add_smiley' + prevsm_id).style.visibility = 'visible';
     if (remsm_id != sm_added) {

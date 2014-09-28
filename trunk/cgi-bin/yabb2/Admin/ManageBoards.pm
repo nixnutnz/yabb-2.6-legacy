@@ -882,7 +882,7 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         }
 
         $yymain .= qq~
-                                <option value="" disabled="disabled"></option>
+                                <option value="" disabled="disabled">--</option>
                             </select>
                             <br /><span class="small">$selector_txt{instructions}</span>
                         </td>
@@ -960,7 +960,7 @@ qq~                     <select multiple="multiple" name="moderatorgroups$i" id=
                         <td class="windowbg2"><label for="parent$i"><b>$admin_txt{'249'}:</b></label></td>
                         <td class="windowbg2" colspan="3">
                             <select onchange="checkParent($i, '$editboards[$i]')" name="parent$i" id="parent$i">
-                                <option value=""></option>
+                                <option value="">--</option>
                             </select>
                         </td>
                     </tr><tr>
