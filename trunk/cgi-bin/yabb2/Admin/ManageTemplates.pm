@@ -19,6 +19,7 @@ $managetemplatespmver = 'YaBB 2.6.1 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Templates');
+LoadLanguage('Menu');
 $admin_images = "$yyhtml_root/Templates/Admin/default";
 
 sub ModifyTemplate {
@@ -84,6 +85,8 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
         $line =~ s/[\r\n]//gxsm;
         $line =~ s/&nbsp;/&#38;nbsp;/gxsm;
         $line =~ s/&amp;/&#38;amp;/gxsm;
+        $line =~ s/^\s+//gsm;
+        $line =~ s/\s+$//gsm;
         FromHTML($line);
         $fulltemplate .= qq~$line\n~;
     }
@@ -175,9 +178,8 @@ sub ModifyStyle {
     opendir TMPLDIR, "$htmldir/Templates/Forum";
     @styles = readdir TMPLDIR;
     closedir TMPLDIR;
-    $forumcss = q{};
-    $forumcss = qq~<option value="">--</option>\n~;
 
+    $forumcss = qq~<option value="" disabled="disabled">--</option>\n~;
     foreach my $file ( sort @styles ) {
         ( $name, $ext ) = split /\./xsm, $file;
         $selected = q{};
@@ -192,8 +194,7 @@ sub ModifyStyle {
     opendir TMPLDIR, "$htmldir/Templates/Admin";
     @astyles = readdir TMPLDIR;
     closedir TMPLDIR;
-    $admincss = q{};
-    $admincss = qq~<option value="">--</option>\n~;
+    $admincss = qq~<option value="" disabled="disabled">--</option>\n~;
     foreach my $file ( sort @astyles ) {
         ( $name, $ext ) = split /\./xsm, $file;
         $selected = q{};
@@ -338,14 +339,16 @@ sub ModifyCSS {
     $forumcss = q{};
     $imgdirs  = q{};
     foreach my $file ( sort @styles ) {
+        if ( $file ne 'calscroller.css' && $file ne 'setup.css' ) {
         ( $name, $ext ) = split /\./xsm, $file;
         $selected = q{};
-        if ( $ext eq 'css' ) {
-            if ( $file eq $cssfile ) {
-                $selected = q~ selected="selected"~;
-                $viewcss  = $name;
+            if ( $ext eq 'css' ) {
+                if ( $file eq $cssfile ) {
+                    $selected = q~ selected="selected"~;
+                    $viewcss  = $name;
+                }
+                $forumcss .= qq~<option value="$file"$selected>$name</option>\n~;
             }
-            $forumcss .= qq~<option value="$file"$selected>$name</option>\n~;
         }
     }
 
@@ -358,6 +361,8 @@ sub ModifyCSS {
         $style_sgl =~ s/\A\s*//xsm;
         $style_sgl =~ s/\s*\Z//xsm;
         $style_sgl =~ s/\t//gsm;
+        $style_sgl =~ s/^\s+//gsm;
+        $style_sgl =~ s/\s+$//gsm;
         $style_sgl =~ s/\.\/default/$yyhtml_root\/Templates\/Forum\/default/gsm;
         $style_sgl =~ s/\.\/$viewcss/$yyhtml_root\/Templates\/Forum\/$viewcss/gsm;
         $style_sgl =~ s/\.\.\/\.\.\/Buttons/$yyhtml_root\/Buttons/gsm;
@@ -646,7 +651,7 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
     <table class="border-space" style="margin-bottom: -1px;">
         <tr>
             <td class="windowbg2 center">
-                <iframe id="StyleManager" name="StyleManager" frameborder="0" scrolling="yes"></iframe>
+                <iframe id="StyleManager" name="StyleManager" style="border:0" scrolling="yes"></iframe>
             </td>
         </tr>
     </table>
@@ -905,10 +910,10 @@ skydobject.initialize()
 
     $viewstylestart =
 q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$abbr_lang" lang="$abbr_lang">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{yabb xml_lang}" lang="{yabb xml_lang}">
 <head>
 <title>Test Styles</title>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 ~;
     $viewstyle = q~
 <body>
@@ -927,8 +932,12 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
         $viewstyle .= qq~
     <table class="menutop">
         <tr>
-            <td class="small" style="width:2%; height:23px">&nbsp;</td>
-            <td class="small">$tabtime</td>
+            <td class="small h_23px" style="padding-left:1%">$tabtime</td>
+            <td class="right vtop">
+                <div class="yabb_searchbox"><input id="search1" type="text" onblur="txtInFields(this, 'Search')" onfocus="txtInFields(this, 'Search');" style="font-size: 11px;" value="Search" size="16" name="search">
+                <input type="image" style="background-color: transparent; margin-right: 5px; vertical-align: middle;" title="Posts no more than 31 days old" alt="Posts no more than 31 days old" src="http://yabbforumsoftware.com/yabbfiles/Templates/Forum/default/search.png">
+                </div>
+            </td>
         </tr>
     </table>
     <table class="windowbg2 pad-cell">
@@ -943,26 +952,14 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
     </table>
     <table>
         <tr>
-            <td id="tabmnleft" class="tabmenuleft" style="width:40px">&nbsp;</td>
-            <td id="tabmn" class="tabmenu">
+            <td id="tabmenu" class="tabmenu">
                 <span class="selected"><a href="javascript:;">$tabfill$img_txt{'103'}$tabfill</a></span>
                 $tabsep<span style="cursor:help;"><a href="javascript:;" style="cursor:help;">$tabfill$img_txt{'119'}$tabfill</a></span>
                 $tabsep<span><a href="javascript:;">$tabfill$img_txt{'182'}$tabfill</a></span>
                 $tabsep<span><a href="javascript:;">$tabfill$img_txt{'331'}$tabfill</a></span>
                 $tabsep<span><a href="javascript:;">$tabfill$img_txt{'mycenter'}$tabfill</a></span>
                 $tabsep<span><a href="javascript:;">$tabfill$img_txt{'108'}$tabfill</a></span>
-                $tabsep
             </td>
-            <td id="tabmnrss" class="tabmenu vtop" style="width:40px"></td>
-            <td id="tabmnright" class="tabmenuright" style="width:45px">&nbsp;        </td>
-            <td id="tabmnbox" class="rightbox vtop" style="width:160px">
-                <div style="float: left; width: 160px; height: 21px; text-align: center; padding-top: 3px; display: inline;">
-                    <input type="text" name="search" size="16" style="font-size: 11px; vertical-align: middle;" />
-                    <img src="$imagesdir/search.png" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" />
-                </div>
-            </td>
-        </tr><tr>
-            <td colspan="5"><br />&nbsp;</td>
         </tr>
     </table>
 ~;
@@ -988,12 +985,8 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
         <col style="width:50%;  height:25px" />
     </colgroup>
     <tr>
-        <td class="tabtitle">&nbsp;</td>
-        <td class="tabtitle">
-            $templ_txt{'tabtitle'}
-        </td>
-        <td class="tabtitle">
-            <a href="javascript:;">$templ_txt{'tabtitlea'}</a>
+        <td class="tabtitle" colspan="3">
+            $templ_txt{'tabtitle'} <a href="javascript:;">$templ_txt{'tabtitlea'}</a>
         </td>
     </tr>
 </table>
@@ -1118,12 +1111,20 @@ $viewstyle .= qq~
 </div>
 </body>
 </html>~;
-
+    $viewstylestart =~ s/^\s+//gsm;
+    $viewstylestart =~ s/\s+$//gsm;
     $viewstylestart =~ s/[\n\r]//gxsm;
+    $viewstylestart =~ s/({|<)yabb xml_lang(}|>)/$abbr_lang/gsm;
     ToHTML($viewstylestart);
+    $stylestr =~ s/^\s+//gsm;
+    $stylestr =~ s/\s+$//gsm;
     $stylestr =~ s/[\n\r]//gxsm;
+    $stylestr =~ s/({|<)yabb xml_lang(}|>)/$abbr_lang/gsm;
     ToHTML($stylestr);
+    $viewstyle =~ s/^\s+//gsm;
+    $viewstyle =~ s/\s+$//gsm;
     $viewstyle =~ s/[\n\r]//gxsm;
+    $viewstyle =~ s/({|<)yabb xml_lang(}|>)/$abbr_lang/gsm;
     ToHTML($viewstyle);
 
     if($viewcss eq 'default') {
@@ -1900,6 +1901,8 @@ sub ModifySkin {
 
     fopen( TMPL, "$templatesdir/$viewhead/$viewhead.html" );
     while ( $line = <TMPL> ) {
+        $line =~ s/^\s+//gsm;
+        $line =~ s/\s+$//gsm;
         $line =~ s/[\r\n]//gxsm;
         $fulltemplate .= qq~$line\n~;
     }
@@ -1917,7 +1920,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$viewcss.css" type=
     $tempimages    = qq~$yyhtml_root/Templates/Forum/$viewimg~;
     $tempimagesdir = qq~$htmldir/Templates/Forum/$viewimg~;
     $tempmenu =
-qq~<ul><li><span class="tabstyle" title="$img_txt{'103'}" class="selected">$tabfill$img_txt{'103'}$tabfill</span></li>~;
+qq~<ul><li><span class="tabstyle selected" title="$img_txt{'103'}">$tabfill$img_txt{'103'}$tabfill</span></li>~;
     $tempmenu .=
 qq~<li><span class="tabstyle" title="$img_txt{'119'}" style="cursor:help;">$tabfill$img_txt{'119'}$tabfill</span></li>~;
     $tempmenu .=
@@ -1934,14 +1937,19 @@ s/img src\=\"$imagesdir\/(.+?)\"/TmpImgLoc($1, $tempimages, $tempimagesdir)/eisg
     $temptime  = timeformat( $date, 1 );
     my $tempsearchbox =
 qq~<div class="yabb_searchbox" style="width:auto"><form><input type="text" name="search" size="16" id="search1" value="$img_txt{'182'}" style="font-size: 11px;" onfocus="txtInFields(this, '$img_txt{'182'}');" onblur="txtInFields(this, '$img_txt{'182'}')" />
-   <input type="image" src="$imagesdir/search.png" title="$maintxt{'searchimg'} $showsearchboxnum $maintxt{'searchimg2'}" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" /></form></div>
+   <input type="image" src="$imagesdir/search.png" alt="$maintxt{'searchimg'} $showsearchboxnum $maintxt{'searchimg2'}" style="border: 0; background-color: transparent; margin-right: 5px; vertical-align: middle;" /></form></div>
 ~;
     $altbrdcolor = q~windowbg2~;
     $boardtable = q~id="General"~;
     $templatejump  = 1;
     $tempforumjump = jumpto();
 
-    $fulltemplate =~ s/({|<)yabb charset(}|>)/$yymycharset/gsm;
+    $fulltemplate =~ s/({|<)yabb bottom(}|>)//gsm;
+    $fulltemplate =~ s/({|<)yabb fixtop(}|>)//gsm;
+    $fulltemplate =~ s/({|<)yabb javascripta(}|>)//gsm;
+    $fulltemplate =~ s/({|<)yabb javascript(}|>)//gsm;
+    $fulltemplate =~ s/({|<)yabb xml_lang(}|>)/$abbr_lang/gsm;
+    $fulltemplate =~ s/({|<)yabb mycharset(}|>)/$yymycharset/gsm;
     $fulltemplate =~ s/({|<)yabb title(}|>)/$temptitle/gsm;
     $fulltemplate =~ s/({|<)yabb style(}|>)/$tempstyles/gsm;
     $fulltemplate =~ s/({|<)yabb html_root(}|>)/$yyhtml_root/gsm;
@@ -1999,7 +2007,7 @@ s/img src\=\"$tempimages\/(.+?)\"/TmpImgLoc($1, $tempimages, $tempimagesdir)/eis
     $fulltemplate =~
       s/<a href="http:\/\/validator.w3.org\/check\/referer">.+?<\/a>//gsm;
     $fulltemplate =~
-s/<a href="http:\/\/jigsaw.w3.org\/css\-validator\/validator\?uri\=<yabb url>">.+?<\/a>//gsm;
+s/<a href="http:\/\/jigsaw.w3.org\/css\-validator\/validator\?uri\={yabb url}">.+?<\/a>//gsm;
     $fulltemplate =~ s/[\n\r]//gxsm;
     ToHTML($fulltemplate);
 
@@ -2016,7 +2024,7 @@ s/<a href="http:\/\/jigsaw.w3.org\/css\-validator\/validator\?uri\=<yabb url>">.
     <table class="border-space" style="margin-bottom: -1px;">
         <tr>
             <td class="windowbg2 center">
-                <iframe id="TempManager" name="TempManager" frameborder="0" scrolling="yes"></iframe>
+                <iframe id="TempManager" name="TempManager" style="border:0" scrolling="yes"></iframe>
             </td>
         </tr>
     </table>
@@ -2119,7 +2127,7 @@ qq~                        <input type="submit" value="$templ_txt{'14'}" onclick
 function updateTemplate() {
         var thetemplate = document.selskin.tempname.value;
         thetemplate=thetemplate.replace(/\\&amp\\;/g, "&");
-        thetemplate=thetemplate.replace(/\\&quot\\;/g, '"'); //";
+        thetemplate=thetemplate.replace(/\\&quot\\;/g, '"');
         thetemplate=thetemplate.replace(/\\&nbsp\\;/g, " ");
         thetemplate=thetemplate.replace(/\\&\\#124\\;/g, "|");
         thetemplate=thetemplate.replace(/\\&lt\\;/g, "<");
@@ -2314,7 +2322,7 @@ qq~<img src="$x[1]/cat_collapse.png" alt="" /> <a href="javascript:;">$templ_txt
     my $templastpostdate = timeformat($date);
     $templastpostdate = qq~($templastpostdate).<br />~;
     my $temprecentposts =
-qq~$boardindex_txt{'791'} <select style="font-size: 7pt;"><option>&nbsp;</option><option>5</option></select> $boardindex_txt{'792'} $boardindex_txt{'793'}~;
+qq~$boardindex_txt{'791'} <select style="font-size: 7pt;"><option>--</option><option>5</option></select> $boardindex_txt{'792'} $boardindex_txt{'793'}~;
     my $tempguestson =
       qq~<span class="small">$boardindex_txt{'141'}: <b>2</b></span>~;
     my $tempbotson =
@@ -2333,7 +2341,7 @@ qq~<span class="small" style="color: $admcolor;"><b>${$uid.$username}{'realname'
         my $templateblock = $boardblock;
         $templateblock =~ s/({|<)yabb new(}|>)/$tempnew/gsm;
         $templateblock =~ s/({|<)yabb boardrss(}|>)//gsm; ### RSS on Board Index ###
-        $templateblock =~ s/({|<)yabb boardanchor(}|>)/$tempboardanchor/gsm;
+        $templateblock =~ s/({|<)yabb boardanchor(}|>)/$tempboardanchor_$i/gsm;
         $templateblock =~ s/({|<)yabb boardurl(}|>)/$tempcurboardurl/gsm;
         $templateblock =~ s/({|<)yabb boardpic(}|>)/$tempboardpic/gsm;
         $templateblock =~ s/({|<)yabb boardname(}|>)/$tempcurboard $i/gsm;
@@ -2350,17 +2358,19 @@ qq~<span class="small" style="color: $admcolor;"><b>${$uid.$username}{'realname'
     $tmptemplateblock .= $catfooter;
     $boardindex_template =~ s/({|<)yabb pollshowcase(}|>)//sm;
     $boardindex_template =~ s/({|<)yabb catsblock(}|>)/$tmptemplateblock/gsm;
-
-    $collapselink = qq~$menusep$img{'collapse'}~;
-    $expandlink   = qq~$menusep$img{'expand'}~;
-    $markalllink  = qq~$menusep$img{'markallread'}~;
-
+    require Sources::Menu;
+    $collapselink = SetImage('collapse', $UseMenuType);
+    $markalllink  = SetImage('markallread', $UseMenuType);
+    $menusep = q{&nbsp;};
+    if ( $UseMenuType == 1 ) {
+        $menusep = q{ | };
+    }
     my $templasttopiclink =
 qq~$boardindex_txt{'236'} <a href="javascript:;"><b>$templ_txt{'80'}</b></a>~;
 
-    $boardhandellist =~ s/({|<)yabb collapse(}|>)/$collapselink/gsm;
+    $boardhandellist =~ s/({|<)yabb collapse(}|>)/$menusep$collapselink/gsm;
     $boardhandellist =~ s/({|<)yabb expand(}|>)//gsm;
-    $boardhandellist =~ s/({|<)yabb markallread(}|>)/$markalllink/gsm;
+    $boardhandellist =~ s/({|<)yabb markallread(}|>)/$menusep$markalllink/gsm;
     $boardhandellist =~ s/\Q$menusep//ism;
     $boardindex_template =~
       s/({|<)yabb boardhandellist(}|>)/$boardhandellist/gsm;
@@ -2380,6 +2390,7 @@ qq~$boardindex_txt{'236'} <a href="javascript:;"><b>$templ_txt{'80'}</b></a>~;
       s/({|<)yabb lastpostlink(}|>)/$templasttopiclink/gsm;
     $boardindex_template =~ s/({|<)yabb lastpostdate(}|>)/$templastpostdate/gsm;
     $boardindex_template =~ s/({|<)yabb recentposts(}|>)/$temprecentposts/gsm;
+    $boardindex_template =~ s/({|<){yabb recenttopics(}|>)//gsm;
 
     $boardindex_template =~ s/({|<)yabb mostusers(}|>)/$themostuser/gsm;
     $boardindex_template =~ s/({|<)yabb mostmembers(}|>)/$themostmemb/gsm;
@@ -2398,6 +2409,7 @@ qq~$boardindex_txt{'236'} <a href="javascript:;"><b>$templ_txt{'80'}</b></a>~;
     $boardindex_template =~ s/({|<)yabb latestmember(}|>)/$latestmemberlink/gsm;
     $boardindex_template =~ s/({|<)yabb ims(}|>)/$tempims/gsm;
     $boardindex_template =~ s/({|<)yabb users(}|>)/$tempuserson/gsm;
+    $boardindex_template =~ s/({|<)yabb spc(}|>)//gsm;
     $boardindex_template =~ s/({|<)yabb onlineusers(}|>)/$tempusers/gsm;
     $boardindex_template =~ s/({|<)yabb guests(}|>)/$tempguestson/gsm;
     $boardindex_template =~ s/({|<)yabb onlineguests(}|>)//gsm;
@@ -2406,12 +2418,15 @@ qq~$boardindex_txt{'236'} <a href="javascript:;"><b>$templ_txt{'80'}</b></a>~;
     $boardindex_template =~ s/({|<)yabb caldisplay(}|>)/$cal_display/gsm;
     $boardindex_template =~ s/({|<)yabb sharedlogin(}|>)//gsm;
     $boardindex_template =~ s/({|<)yabb selecthtml(}|>)//gsm;
+    $boardindex_template =~ s/({|<)yabb new_load(}|>)//gsm;
     $boardindex_template =~
                   s/({|<)yabb subboardlist(}|>)//gsm;
     $boardindex_template =~
                   s/({|<)yabb messagedropdown(}|>)//gsm;
     $boardindex_template =~
       s/img src\=\"$x[1]\/(.+?)\"/TmpImgLoc($1, $x[1], $x[2])/eisgm;
+    $boardindex_template =~ s/^\s+//gsm;
+    $boardindex_template =~ s/\s+$//gsm;
     $imagesdir = $tmpimagesdir;
     return $boardindex_template;
 }
@@ -2438,28 +2453,10 @@ qq~<span class="small" style="vertical-align: middle;"> <b>$messageindex_txt{'13
     my $templastpostlink =
       qq~<img src="$x[1]/lastpost.gif" alt="" /> $templ_txt{'82'}~;
     my $templastposter = $tempmname;
-    my $tempyabbicons  = qq~
-        <img src="$x[1]/thread.gif" alt="" /> $messageindex_txt{'457'}<br />
-        <img src="$x[1]/hotthread.gif" alt="" /> $messageindex_txt{'454'} x $messageindex_txt{'454a'}<br />
-        <img src="$x[1]/veryhotthread.gif" alt="" /> $messageindex_txt{'455'} x $messageindex_txt{'454a'}<br />
-        <img src="$x[1]/locked.gif" alt="" /> $messageindex_txt{'456'}<br />
-        <img src="$x[1]/locked_moved.gif" alt="" /> $messageindex_txt{'845'}
-        ~;
-    my $tempyabbadminicons .= qq~
-        <img src="$x[1]/hide.gif" alt="" /> $messageindex_txt{'458'}<br />
-        <img src="$x[1]/hidesticky.gif" alt="" /> $messageindex_txt{'459'}<br />
-        <img src="$x[1]/hidelock.gif" alt="" /> $messageindex_txt{'460'}<br />
-        <img src="$x[1]/hidestickylock.gif" alt="" /> $messageindex_txt{'461'}<br />
-        <img src="$x[1]/announcement.gif" alt="" /> $messageindex_txt{'779a'}<br />
-        <img src="$x[1]/announcementlock.gif" alt="" /> $messageindex_txt{'779b'}<br />
-        <img src="$x[1]/sticky.gif" alt="" /> $messageindex_txt{'779'}<br />
-        <img src="$x[1]/stickylock.gif" alt="" /> $messageindex_txt{'780'}
-        ~;
-
-    $notify_board = qq~$menusep$img{'notify'}~;
-    $markalllink  = qq~$menusep$img{'markboardread'}~;
-    $postlink     = qq~$menusep$img{'newthread'}~;
-    $polllink     = qq~$menusep$img{'createpoll'}~;
+    my $tempyabbicons  = qq~<img src="$x[1]/thread.gif" alt="" /> $messageindex_txt{'457'}<br /><img src="$x[1]/hotthread.gif" alt="" /> $messageindex_txt{'454'} x $messageindex_txt{'454a'}<br /><img src="$x[1]/veryhotthread.gif" alt="" /> $messageindex_txt{'455'} x $messageindex_txt{'454a'}<br /><img src="$x[1]/locked.gif" alt="" /> $messageindex_txt{'456'}<br /><img src="$x[1]/locked_moved.gif" alt="" /> $messageindex_txt{'845'}
+~;
+    my $tempyabbadminicons .= qq~<img src="$x[1]/hide.gif" alt="" /> $messageindex_txt{'458'}<br /><img src="$x[1]/hidesticky.gif" alt="" /> $messageindex_txt{'459'}<br /><img src="$x[1]/hidelock.gif" alt="" /> $messageindex_txt{'460'}<br /><img src="$x[1]/hidestickylock.gif" alt="" /> $messageindex_txt{'461'}<br /><img src="$x[1]/announcement.gif" alt="" /> $messageindex_txt{'779a'}<br /><img src="$x[1]/announcementlock.gif" alt="" /> $messageindex_txt{'779b'}<br /><img src="$x[1]/sticky.gif" alt="" /> $messageindex_txt{'779'}<br /><img src="$x[1]/stickylock.gif" alt="" /> $messageindex_txt{'780'}
+~;
 
     $bdpic = qq~ <img src="$x[1]/boards.png" alt="$templ_txt{'72'}" /> ~;
     $message_permalink = $messageindex_txt{'10'};
@@ -2470,37 +2467,51 @@ qq~<span class="small" style="vertical-align: middle;"> <b>$messageindex_txt{'13
     $messageindex_template =~ s/({|<)yabb category(}|>)/$tempcatnm/gsm;
     $messageindex_template =~ s/({|<)yabb board(}|>)/$tempboardnm/gsm;
     $messageindex_template =~ s/({|<)yabb moderators(}|>)/$tempmodslink/gsm;
-    $messageindex_template =~ s/({|<)yabb sortsubject(}|>)/$sort_subject/gsm;
-    $messageindex_template =~ s/({|<)yabb sortstarter(}|>)/$sort_starter/gsm;
-    $messageindex_template =~ s/({|<)yabb sortanswer(}|>)/$sort_answer/gsm;
-    $messageindex_template =~ s/({|<)yabb sortlastpostim(}|>)/$sort_lastpostim/gsm;
+    $messageindex_template =~ s/({|<)yabb sortsubject(}|>)/$messageindex_txt{'70'}/gsm;
+    $messageindex_template =~ s/({|<)yabb sortstarter(}|>)/$messageindex_txt{'109'}/gsm;
+    $messageindex_template =~ s/({|<)yabb sortanswer(}|>)/$messageindex_txt{'110'}/gsm;
+    $messageindex_template =~ s/({|<)yabb sortlastpostim(}|>)/$messageindex_txt{'22'}/gsm;
     $messageindex_template =~ s/({|<)yabb bdpicture(}|>)/$bdpic/gsm;
     $messageindex_template =~ s/({|<)yabb threadcount(}|>)/1/gsm;
     $messageindex_template =~ s/({|<)yabb messagecount(}|>)/2/gsm;
     $boarddescription =~ s/({|<)yabb boarddescription(}|>)/$tempbdescrip/gsm;
-    $messageindex_template =~
-      s/({|<)yabb description(}|>)/$boarddescription/gsm;
+    $messageindex_template =~ s/({|<)yabb description(}|>)/$boarddescription/gsm;
     $messageindex_template =~ s/({|<)yabb colspan(}|>)/7/gsm;
 
     $messageindex_template =~
       s/({|<)yabb pageindex top(}|>)/$temppageindex1/gsm;
     $messageindex_template =~
       s/({|<)yabb pageindex bottom(}|>)/$temppageindex1/gsm;
-    $topichandellist =~ s/({|<)yabb notify button(}|>)/$notify_board/gsm;
-    $topichandellist =~ s/({|<)yabb markall button(}|>)/$markalllink/gsm;
-    $topichandellist =~ s/({|<)yabb new post button(}|>)/$postlink/gsm;
-    $topichandellist =~ s/({|<)yabb new poll button(}|>)/$polllink/gsm;
+    $messageindex_template =~ s/({|<)yabb new_load(}|>)//gsm;
+
+    require Sources::Menu;
+    $notify_board = SetImage('notify', $UseMenuType);
+    $markalllink  = SetImage('markboardread', $UseMenuType);
+    $postlink     = SetImage('newthread', $UseMenuType);
+    $polllink     = SetImage('createpoll', $UseMenuType);
+    $menusep = q{&nbsp;};
+    if ( $UseMenuType == 1 ) {
+        $menusep = q{ | };
+    }
+    $topichandellist .= qq~{yabb new post button}{yabb new poll button}~;
+    $topichandellist =~ s/({|<)yabb notify button(}|>)/$menusep$notify_board/gsm;
+    $topichandellist =~ s/({|<)yabb markall button(}|>)/$menusep$markalllink/gsm;
+    $topichandellist =~ s/({|<)yabb new post button(}|>)/$menusep$postlink/gsm;
+    $topichandellist =~ s/({|<)yabb new poll button(}|>)/$menusep$polllink/gsm;
     $topichandellist =~ s/\Q$menusep//ism;
     $messageindex_template =~
       s/({|<)yabb topichandellist(}|>)/$topichandellist/gsm;
     $messageindex_template =~
       s/({|<)yabb topichandellist2(}|>)/$topichandellist/gsm;
+    $messageindex_template =~
+      s/class="post_tools center" style="width:10em"/class="right"/gsm;
 
     $messageindex_template =~ s/({|<)yabb pageindex(}|>)/$temppageindex/gsm;
     $messageindex_template =~
       s/({|<)yabb pageindex toggle(}|>)/$temppageindextgl/gsm;
     $messageindex_template =~ s/({|<)yabb admin column(}|>)//gsm;
     $messageindex_template =~ s/({|<)yabb outsidethreadtools(}|>)//gsm;
+    $messageindex_template =~ s/({|<)yabb topicpreview(}|>)//gsm;
 
     my $tempbar = $threadbar;
     $tempbar =~ s/({|<)yabb admin column(}|>)//gsm;
@@ -2541,6 +2552,8 @@ qq~<span class="small" style="vertical-align: middle;"> <b>$messageindex_txt{'13
       s/img src\=\"$tmpimagesdir\/(.+?)\"/TmpImgLoc($1, $x[1], $x[2])/eisgm;
     $messageindex_template =~
       s/img src\=\"$x[1]\/(.+?)\"/TmpImgLoc($1, $x[1], $x[2])/eisgm;
+    $messageindex_template =~ s/^\s+//gsm;
+    $messageindex_template =~ s/\s+$//gsm;
     $imagesdir = $tmpimagesdir;
     return $messageindex_template;
 }
@@ -2555,37 +2568,7 @@ sub DisplayTempl {
         $title,     $stars,      $starpic,    $color,     $noshow,
         $viewperms, $topicperms, $replyperms, $pollperms, $attachperms
     ) = split /\|/xsm, $Group{'Administrator'};
-    if($cssbuttons) {
-        if ($UseMenuType == 0) {
-            $yimimg = qq~$menusep<img src="$_[1]/yim.gif" alt="" />~;
-            $aimimg = qq~$menusep<img src="$_[1]/aim.gif" alt="" />~;
-        }
-        elsif ($UseMenuType == 1) {
-            $yimimg = qq~$menusep<span class="imgwindowbg">YIM</span>~;
-            $aimimg = qq~$menusep<span class="imgwindowbg">AIM</span>~;
-        }
-        else {
-            $viewstyleleft = q~style="height: 20px; border: 0; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
-            $viewstyleright = q~style="height: 20px; border: 0; margin: 0; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
-            $viewstyleimage = q~height: 20px; border: 0; margin: 0; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;~;
-            $viewstyletext = q~style="height: 20px; border: 0; margin: 0; padding: 0; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block;"~;
-            $yimimg = qq~<span class="buttonleft" $viewstyleleft><span class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/yim.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>YIM</span></span></span></span>~;
-            $aimimg = qq~<span class="buttonleft" $viewstyleleft><span class="buttonright" $viewstyleright><span class="buttonimage" style="background-image: url($defaultimagesdir/aim.gif); $viewstyleimage"><span class="buttontext" $viewstyletext>AIM</span></span></span></span>~;
-        }
-    }
-    else {
-        if ($UseMenuType == 0) {
-            $yimimg = qq~$menusep<img src="$x[1]/yim.gif" alt="" />~;
-            $aimimg = qq~$menusep<img src="$x[1]/aim.gif" alt="" />~;
-        } elsif ($UseMenuType == 1) {
-            $yimimg = qq~$menusep<span class="imgwindowbg">YIM</span>~;
-            $aimimg = qq~$menusep<span class="imgwindowbg">AIM</span>~;
-        } else {
-            require "$vardir/Menu2.def";
-            $yimimg = qq~$menusep$img{'yim'}~;
-            $aimimg = qq~$menusep$img{'aim'}~;
-        }
-    }
+
     my $template_home = qq~<span class="nav">$mbname</span>~;
     my $tempcatnm     = $templ_txt{'72'};
     my $tempboardnm   = $templ_txt{'73'};
@@ -2596,18 +2579,46 @@ qq~($display_txt{'298'}: $templ_txt{'74'} - $display_txt{'298a'}: $templ_txt{'74
     my $temppageindextgl = qq~<img src="$x[1]/xx.gif" alt="" />~;
     my $temppageindex1 =
 qq~<span class="small" style="vertical-align: middle;"> <b>$display_txt{'139'}:</b> 1</span>~;
-    my $replybutton          = qq~$menusep$img{'reply'}~;
-    my $pollbutton           = qq~$menusep$img{'addpoll'}~;
-    my $notify               = qq~$menusep$img{'notify'}~;
-    my $template_sendtopic   = qq~$menusep$img{'sendtopic'}~;
-    my $template_print       = qq~$menusep$img{'print'}~;
+
+## Make Buttons ##
+    require Sources::Menu;
+    $replybutton          = SetImage('reply', $UseMenuType);
+    $pollbutton           = SetImage('addpoll', $UseMenuType);
+    $notify               = SetImage('notify', $UseMenuType);
+    $favorite             = SetImage('favorites', $UseMenuType);
+    $template_sendtopic   = SetImage('sendtopic', $UseMenuType);
+    $template_print       = SetImage('print', $UseMenuType);
+    $template_alertmod    = SetImage('alertmod', $UseMenuType);
+    $template_quote       = SetImage('quote', $UseMenuType);
+    $template_modify      = SetImage('modify', $UseMenuType);
+    $template_split       = SetImage('admin_split', $UseMenuType);
+    $template_delete      = SetImage('delete', $UseMenuType);
+    $template_print_post  = SetImage('printp', $UseMenuType);
+    $template_email  = SetImage('email_sm', $UseMenuType);
+    $template_pm     = SetImage('message_sm', $UseMenuType);
+    $template_remove = SetImage('admin_rem', $UseMenuType);
+    $template_splice = SetImage('admin_move_split_splice', $UseMenuType);
+    $template_lock   = SetImage('admin_lock', $UseMenuType);
+    $template_hide   = SetImage('hide', $UseMenuType);
+    $template_sticky = SetImage('admin_sticky', $UseMenuType);
+    $menusep = q{&nbsp;};
+    if ( $UseMenuType == 1 ) {
+        $menusep = q{ | };
+    }
+    $replybutton          = qq~$menusep$replybutton~;
+    $pollbutton           = qq~$menusep$pollbutton~;
+    $notify               = qq~$menusep$notify~;
+    $favorite             = qq~$menusep$favorite~;
+    $template_sendtopic   = qq~$menusep$template_sendtopic~;
+    $template_print       = qq~$menusep$template_print~;
     my $template_threadimage = qq~<img src="$x[1]/thread.gif" alt="" />~;
     my $threadurl            = $templ_txt{'75'};
-    my $template_alertmod    = qq~$menusep$img{'alertmod'}~;
-    my $template_quote       = qq~$menusep$img{'quote'}~;
-    my $template_modify      = qq~$menusep$img{'modify'}~;
-    my $template_split       = qq~$menusep$img{'admin_split'}~;
-    my $template_delete      = qq~$menusep$img{'delete'}~;
+    $template_alertmod    = qq~$menusep$template_alertmod~;
+    $template_quote       = qq~$menusep$template_quote~;
+    $template_modify      = qq~$menusep$template_modify~;
+    $template_split       = qq~$menusep$template_split~;
+    $template_delete      = qq~$menusep$template_delete~;
+    $template_print_post  = qq~$menusep$template_print_post~;
     my $memberinfo           = qq~<span class="small"><b>$title</b></span>~;
     my $usernamelink =
 qq~<span style="color: $color;"><b>${$uid.$username}{'realname'}</b></span><br />~;
@@ -2623,20 +2634,19 @@ qq~<span style="color: $color;"><b>${$uid.$username}{'realname'}</b></span><br /
     my $template_usertext = qq~${$uid.$username}{'usertext'}<br />~;
     my $px = 'px';
     my $avatar =
-qq~<img src="$facesurl/elmerfudd.gif" name="avatar" alt="" style="max-width: $userpic_width\px\; max-height: $userpic_height$px" />~;
+qq~<img src="$facesurl/elmerfudd.gif" alt="" style="max-width: 50px; max-height: 50px" />~;
     my $message =
       qq~$templ_txt{'65'}<br /><a href="javascript:;">$templ_txt{'66'}</a>~;
-    my $template_email  = qq~$menusep$img{'email_sm'}~;
-    my $template_pm     = qq~$menusep$img{'message_sm'}~;
+    $template_email  = qq~$menusep$template_email~;
+    $template_pm     = qq~$menusep$template_pm~;
     my $ipimg           = qq~<img src="$imagesdir/ip.gif" alt="" />~;
-    my $template_remove = qq~$menusep$img{'admin_rem'}~;
-    my $template_splice = qq~$menusep$img{'admin_move_split_splice'}~;
-    my $template_lock   = qq~$menusep$img{'admin_lock'}~;
-    my $template_hide   = qq~$menusep$img{'hide'}~;
-    my $template_sticky = qq~$menusep$img{'admin_sticky'}~;
+    $template_remove = qq~$menusep$template_remove~;
+    $template_splice = qq~$menusep$template_splice~;
+    $template_lock   = qq~$menusep$template_lock~;
+    $template_hide   = qq~$menusep$template_hide~;
+    $template_sticky = qq~$menusep$template_sticky~;
 
     $online = qq~<span class="useronline">$maintxt{'60'}</span>~;
-
     for my $i ( 0 .. 1 ) {
         my $outblock        = $messageblock;
         my $posthandelblock = $posthandellist;
@@ -2657,6 +2667,7 @@ qq~<img src="$facesurl/elmerfudd.gif" name="avatar" alt="" style="max-width: $us
         $posthandelblock =~ s/({|<)yabb split(}|>)/$template_split/gsm;
         $posthandelblock =~ s/({|<)yabb delete(}|>)/$template_delete/gsm;
         $posthandelblock =~ s/({|<)yabb admin(}|>)/$template_admin/gsm;
+        $posthandelblock =~ s/({|<)yabb print_post(}|>)/$template_print_post/gsm;
         $posthandelblock =~ s/\Q$menusep//ism;
 
         $contactblock =~ s/({|<)yabb email(}|>)/$template_email/gsm;
@@ -2713,14 +2724,16 @@ qq~<img src="$facesurl/elmerfudd.gif" name="avatar" alt="" style="max-width: $us
         $outblock =~ s/({|<)yabb contactlist(}|>)/$contactblock/gsm;
         $tempoutblock .= $outblock;
     }
-
+    $threadhandellist .= qq~{yabb reply}{yabb poll}~;
     $threadhandellist =~ s/({|<)yabb reply(}|>)/$replybutton/gsm;
-    $threadhandellist =~ s/({|<)yabb poll(}|>)/$template_poll/gsm;
-    $threadhandellist =~ s/({|<)yabb notify(}|>)/$template_notify/gsm;
-    $threadhandellist =~ s/({|<)yabb favorite(}|>)/$template_favorite/gsm;
+    $threadhandellist =~ s/({|<)yabb poll(}|>)/$pollbutton/gsm;
+    $threadhandellist =~ s/({|<)yabb notify(}|>)/$notify/gsm;
+    $threadhandellist =~ s/({|<)yabb favorite(}|>)/$favorite/gsm;
     $threadhandellist =~ s/({|<)yabb sendtopic(}|>)/$template_sendtopic/gsm;
     $threadhandellist =~ s/({|<)yabb print(}|>)/$template_print/gsm;
     $threadhandellist =~ s/({|<)yabb markunread(}|>)//gsm;
+    $threadhandellist =~ s/<td class="dividerbot" colspan="3" style="vertical-align:middle;">/<td class="dividerbot" colspan="2" style="vertical-align:middle;">/gsm;
+    $threadhandellist =~ s/<td class="post_tools center dividerbot" style="width:100px; height: 2em; vertical-align:middle">/<td class="center dividerbot" style="height: 2em; vertical-align:middle">/gsm;
     $threadhandellist =~ s/\Q$menusep//ism;
 
     $adminhandellist =~ s/({|<)yabb remove(}|>)/$template_remove/gsm;
@@ -2758,10 +2771,25 @@ qq~<img src="$facesurl/elmerfudd.gif" name="avatar" alt="" style="max-width: $us
     $display_template =~ s/({|<)yabb postsblock(}|>)/$tempoutblock/gsm;
     $display_template =~ s/({|<)yabb adminhandellist(}|>)/$adminhandellist/gsm;
     $display_template =~ s/({|<)yabb forumselect(}|>)//gsm;
+    $display_template =~ s/({|<)yabb guestview(}|>)//gsm;
+    $display_template =~ s/({|<)yabb reason(}|>)//gsm;
+    $display_template =~ s/<td class="dividerbot" style="vertical-align:middle;">/<td class="dividerbot" style="vertical-align:middle;" colspan="2">/gsm;
+    $display_template =~ s/<td class="post_tools center dividerbot" style="width:100px; height: 2em; vertical-align:middle">/<td class="center dividerbot" style="height: 2em; vertical-align:middle">/gsm;
+    $display_template =~ s/class="post_tools center" style="width:100px;"/style="text-align:right"/gsm;
+    $display_template =~ s/class="windowbg2 vtop" style="height:10em" colspan="3"/class="windowbg2 vtop" colspan="4" style="height:10em"/gsm;
+    $display_template =~ s/class="windowbg vtop" style="height:10em" colspan="3"/class="windowbg vtop" colspan="4" style="height:10em"/gsm;
+    $display_template =~ s/class="windowbg2 bottom" style="height:12px" colspan="3"/class="windowbg2 bottom" colspan="4" style="height:12px"/gsm;
+    $display_template =~ s/class="windowbg bottom" style="height:12px" colspan="3"/class="windowbg bottom" colspan="4" style="height:12px"/gsm;
+    $display_template =~ s/class="windowbg2 bottom" colspan="3"/class="windowbg2 bottom" colspan="4"/gsm;
+    $display_template =~ s/class="windowbg bottom" colspan="3"/class="windowbg bottom" colspan="4"/gsm;
+    $display_template =~ s/class="windowbg2 bottom dividertop" colspan="3"/class="windowbg2 bottom dividertop" colspan="4"/gsm;
+    $display_template =~ s/class="windowbg bottom dividertop" colspan="3"/class="windowbg bottom dividertop" colspan="4"/gsm;
     $display_template =~
       s/img src\=\"$tmpimagesdir\/(.+?)\"/TmpImgLoc($1, $x[1], $x[2])/eisgm;
     $display_template =~
       s/img src\=\"$x[1]\/(.+?)\"/TmpImgLoc($1, $x[1], $x[2])/eisgm;
+    $display_template =~ s/^\s+//gsm;
+    $display_template =~ s/\s+$//gsm;
     $imagesdir = $tmpimagesdir;
     return $display_template;
 }
@@ -2800,7 +2828,6 @@ qq~$tabsep<span title="$mc_menus{'posts'}">$tabfill$mc_menus{'posts'}$tabfill</s
     $mycenter_template =~ s/{yabb mcglobformstart}/$MCGlobalFormStart/gsm;
     $mycenter_template =~
       s/{yabb mcglobformend}/ ($MCGlobalFormStart ? "<\/form>" : q{}) /esm;
-    $mycenter_template =~ s/{yabb mcextrasmilies}/$MCExtraSmilies/gsm;
     $mycenter_template =~ s/{yabb mccontent}/$MCContent/gsm;
     $mycenter_template =~ s/{yabb mctitle}/$mctitle/gsm;
     $mycenter_template =~ s/{yabb selecthtml}/$selecthtml/gsm;
@@ -2809,6 +2836,8 @@ qq~$tabsep<span title="$mc_menus{'posts'}">$tabfill$mc_menus{'posts'}$tabfill</s
       s/img src\=\"$tmpimagesdir\/(.+?)\"/TmpImgLoc($1, $x[1], $x[2])/eisgm;
     $mycenter_template =~
       s/img src\=\"$x[1]\/(.+?)\"/TmpImgLoc($1, $x[1], $x[2])/eisgm;
+    $mycenter_template =~ s/^\s+//gsm;
+    $mycenter_template =~ s/\s+$//gsm;
     $imagesdir = $tmpimagesdir;
     return $mycenter_template;
 }

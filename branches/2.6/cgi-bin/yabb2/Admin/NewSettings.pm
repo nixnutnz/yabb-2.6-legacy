@@ -102,30 +102,20 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
         foreach my $item ( @{ $tab->{'items'} } ) {
             if ( $item->{'header'} ) {
                 $yymain .= qq~<tr>
-                <td class="catbg padd-cell" colspan="2">
-         <span class="small">$item->{'header'}</span>
-       </td>
+                <td class="catbg padd-cell" colspan="2"><span class="small">$item->{'header'}</span></td>
      </tr>~;
             }
             elsif ( $item->{'two_rows'} && $item->{'input_html'} ) {
                 $yymain .= qq~<tr>
-                <td class="windowbg2 padd-cell" colspan="2">
-         $item->{'description'}
-       </td>
+                <td class="windowbg2 padd-cell" colspan="2">$item->{'description'}</td>
             </tr><tr>
-                <td class="windowbg2 padd-cell" colspan="2">
-         $item->{'input_html'}
-       </td>
+                <td class="windowbg2 padd-cell" colspan="2">$item->{'input_html'}</td>
      </tr>~;
             }
             elsif ( $item->{'input_html'} ) {
                 $yymain .= qq~<tr>
-                <td class="windowbg2 vtop padd-cell">
-         $item->{'description'}
-       </td>
-                <td class="windowbg2 vtop padd-cell">
-         $item->{'input_html'}
-       </td>
+                <td class="windowbg2 vtop padd-cell">$item->{'description'}</td>
+                <td class="windowbg2 vtop padd-cell">$item->{'input_html'}</td>
      </tr>~;
             }
 
@@ -198,7 +188,7 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
                 $requirejs{$require} .=
                   qq~$C\document.getElementsByName("$ritem")[0].checked$AndOr ~;
             }
-            $dependicies .= qq~     checkDependent("$require");\n~;
+            $dependicies .= qq~        checkDependent("$require");\n~;
         }
         $dependicies .= qq~ }
     document.getElementsByName("$ritem")[0].onclick = handleDependent_$ritem;

@@ -108,7 +108,7 @@ if ($action ne 'favorites') {
         <td class="post_tools_a right" style="padding:4px 10px 4px 4px">
             <div style="float:right">{yabb outsidethreadtools}</div>
         </td>
-        <td $threadhandelstyle>
+        <td$threadhandelstyle>
             {yabb topichandellist}
         </td>
         <td style="width:1%">&nbsp;</td>
@@ -120,7 +120,7 @@ if ($action ne 'favorites') {
         <td class="post_tools_a right" style="padding:4px 10px 4px 4px">
             <div style="float:right">{yabb outsidethreadtools}</div>
         </td>
-        <td $threadhandelstyle>{yabb topichandellist}</td>
+        <td$threadhandelstyle>{yabb topichandellist}</td>
         <td style="width:1%">&nbsp;</td>
 ~;
     }
@@ -156,7 +156,7 @@ if ($action ne 'favorites') {
                     <td class="post_tools_a right" style="padding:4px 10px 4px 4px">
                         <div style="width: 100%; text-align: right">{yabb outsidethreadtools}</div>
                     </td>
-                    <td $threadhandelstyle2>
+                    <td$threadhandelstyle2>
                         {yabb topichandellist2}
                     </td>
                     <td style="width:1%">&nbsp;</td>
@@ -169,11 +169,11 @@ if ($action ne 'favorites') {
 $messageindex_template .= $messagelist ? q{} : qq~
 <!-- Icon and access info start -->
             <table class="pad_8px board-perms">
-				<colgroup>
+                <colgroup>
                     <col style="width:28%" />
                     <col style="width:38%" />
                     <col style="width:33%" />
-				</colgroup>
+                </colgroup>
                 <tr>
                     <td class="vtop">
                         <span class="small">{yabb icons}</span>
@@ -193,10 +193,10 @@ $messageindex_template .= $messagelist ? q{} : qq~
 if ($action eq "favorites") {
     $messageindex_template .= qq~<!-- Icon and access info start -->
             <table class="pad_8px">
-				<colgroup>
+                <colgroup>
                     <col style="width:35%" />
-				    <col style="width:65%" />
-				</colgroup>
+                    <col style="width:65%" />
+                </colgroup>
                 <tr>
                     <td class="vtop">
                         <span class="small">{yabb icons}</span>
@@ -287,10 +287,10 @@ $msg_attach_win = qq~<a href="javascript:void(window.open('$scripturl?action=vie
 $brd_notify = qq~
     <form action="$scripturl?action=boardnotify3;board={yabb currentboard}" method="post">
     <table class="tabtitle" style="width:600px">
-		<colgroup>
+        <colgroup>
             <col style="width:70%" />
             <col style="width:30%" />
-		</colgroup>
+        </colgroup>
         <tr>
             <td style="padding-left:10px">
                 <img src="$imagesdir/$brd_notify_img" alt="$notify_txt{'136'} - {yabb boardname}" title="$notify_txt{'136'} - {yabb boardname}" /> <b>$notify_txt{'136'} - {yabb boardname}</b>
@@ -298,10 +298,10 @@ $brd_notify = qq~
         </tr>
     </table>
     <table class="pad_4px cs_thin" style="width:600px">
-		<colgroup>
+        <colgroup>
             <col style="width:70%" />
             <col style="width:30%" />
-		</colgroup>
+        </colgroup>
         <tr>
             <td class="windowbg" style="padding:1em 4px">{yabb my_delopt}</td>
             <td class="windowbg">

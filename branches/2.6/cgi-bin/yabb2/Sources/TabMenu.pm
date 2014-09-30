@@ -237,7 +237,9 @@ sub GetTabtxt {
         fclose(TABTXT);
         chomp @tabtext;
         for ( @tabtext ) {
-            %tabtxt = map { /(.*)\t(.*)/xsm } $_;
+            if ( $_ ne q{} ) {
+                %tabtxt = map { /(.*)\t(.*)/xsm } $_;
+            }
         }
     }
     elsif ( fopen( TABTXT, "$langdir/English/tabtext.txt" ) ) {
@@ -245,7 +247,9 @@ sub GetTabtxt {
         fclose(TABTXT);
         chomp @tabtext;
         for ( @tabtext ) {
-            %tabtxt = map { /(.*)\t(.*)/xsm } $_;
+            if ( $_ ne q{} ) {
+                %tabtxt = map { /(.*)\t(.*)/xsm } $_;
+            }
         }
         fopen( TABTXT, ">$langdir/$tab_lang/tabtext.txt" );
         print {TABTXT} map { "$_\t$tabtxt{$_}\n" } keys %tabtxt

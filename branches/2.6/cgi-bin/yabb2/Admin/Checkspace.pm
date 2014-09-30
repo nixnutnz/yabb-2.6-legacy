@@ -363,46 +363,6 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
   </div>
   </form>
   <script type="text/javascript">
-    function getElementsByClass(searchClass,node,tag) {
-        var classElements = new Array();
-        if ( node === null || node === undefined )
-            node = document;
-        if ( tag === null || tag === undefined )
-            tag = '*';
-        var els = node.getElementsByTagName(tag);
-        var elsLen = els.length;
-        var pattern = new RegExp('(^|\\s)'+searchClass+'(\\s|\$)');
-        for (i = 0, j = 0; i < elsLen; i++) {
-            if ( pattern.test(els[i].className) ) {
-                classElements[j] = els[i];
-                j++;
-            }
-        }
-        return classElements;
-    }
-    function changeToTab(tab) {
-        var elements = getElementsByClass('section');
-        var i;
-        for(i = 0; i < elements.length; i++) {
-            if(elements[i].id == 'tab_' + tab) {
-                elements[i].style.display = '';
-            }
-            else {
-                elements[i].style.display = 'none';
-            }
-        }
-        var elm = getElementsByClass('curtab')[0];
-        if(elm) {
-            elm.className = '';
-        }
-        document.getElementById('button_' + tab).className = 'curtab';
-    }
-    var removables = getElementsByClass('js_remove_me');
-    var i;
-    for(i = 0; i < removables.length; i++) {
-        removables[i].innerHTML = '';
-    }
-    changeToTab('$default_tab'); // Focus default tab
     function checkDependent(eid) {
         var elm = document.getElementsByName(eid)[0];\n~;
 
@@ -436,7 +396,6 @@ $dependicies
             elements[i].disabled = false;
         }
     }
-  // -->
   </script>~;
 
     return;

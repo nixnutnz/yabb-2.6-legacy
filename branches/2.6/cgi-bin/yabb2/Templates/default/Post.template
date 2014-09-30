@@ -330,7 +330,7 @@ $my_poll_options = qq~<tr>
             <input type="hidden" name="slicecol{yabb i}" id="slicecol{yabb i}" value="{yabb slicecolor_i}" />
         </td>
         <td class="windowbg2 center">
-            <input type="checkbox" name="split{yabb i}" value="1"{yabb splitchecked_i} /> <span  class="small">$post_polltxt{'splitslice'}</span>
+            <input type="checkbox" name="split{yabb i}" value="1"{yabb splitchecked_i} /> <span class="small">$post_polltxt{'splitslice'}</span>
         </td>
         <td class="windowbg2">
             &nbsp;
@@ -396,32 +396,32 @@ $mypost_poll_pie = qq~<tr>
 
 $my_poll_end = qq~<tr>
         <td><label for="poll_end_days"><b>$post_polltxt{'31'}</b></label></td>
-        <td colspan="4"><span  class="small"><input type="text" name="poll_end_days" id="poll_end_days" value="{yabb poll_end_days}" size="4" /> $post_polltxt{'31a'} <input type="text" name="poll_end_min" value="{yabb poll_end_min}" size="4" /> $post_polltxt{'31b'} $post_polltxt{'31c'}</span></td>
+        <td colspan="4"><span class="small"><input type="text" name="poll_end_days" id="poll_end_days" value="{yabb poll_end_days}" size="4" /> $post_polltxt{'31a'} <input type="text" name="poll_end_min" value="{yabb poll_end_min}" size="4" /> $post_polltxt{'31b'} $post_polltxt{'31c'}</span></td>
     </tr>~;
 
 $my_poll_sc = qq~<tr>
         <td><label for="scpoll"><b>$post_polltxt{'30'}</b></label></td>
-        <td colspan="4"><input type="checkbox" name="scpoll" id="scpoll" value="1"{yabb scchecked} /> <span  class="small"><label for="scpoll">$post_polltxt{'30a'}</label></span></td>
+        <td colspan="4"><input type="checkbox" name="scpoll" id="scpoll" value="1"{yabb scchecked} /> <span class="small"><label for="scpoll">$post_polltxt{'30a'}</label></span></td>
     </tr>~;
 
 $my_poll_hide = qq~<tr>
         <td><label for="guest_vote"><b>$post_polltxt{'32'}</b></label></td>
-        <td colspan="4"><input type="checkbox" name="guest_vote" id="guest_vote" value="1"{yabb gvchecked} /> <span  class="small"><label for="guest_vote">$post_polltxt{'54'}</label></span></td>
+        <td colspan="4"><input type="checkbox" name="guest_vote" id="guest_vote" value="1"{yabb gvchecked} /> <span class="small"><label for="guest_vote">$post_polltxt{'54'}</label></span></td>
     </tr><tr>
         <td><label for="hide_results"><b>$post_polltxt{'26'}</b></label></td>
-        <td colspan="4"><input type="checkbox" name="hide_results" id="hide_results" value="1"{yabb hrchecked} /> <span  class="small"><label for="hide_results">$post_polltxt{'55'}</label></span></td>
+        <td colspan="4"><input type="checkbox" name="hide_results" id="hide_results" value="1"{yabb hrchecked} /> <span class="small"><label for="hide_results">$post_polltxt{'55'}</label></span></td>
     </tr><tr>
         <td><label for="multi_choice"><b>$post_polltxt{'58'}</b></label></td>
-        <td colspan="4"><input type="checkbox" name="multi_choice" id="multi_choice" value="1"{yabb mcchecked} /> <span  class="small"><label for="multi_choice">$post_polltxt{'56'}</label></span></td>
+        <td colspan="4"><input type="checkbox" name="multi_choice" id="multi_choice" value="1"{yabb mcchecked} /> <span class="small"><label for="multi_choice">$post_polltxt{'56'}</label></span></td>
     </tr><tr>
         <td><label for="vote_limit"><b>$post_polltxt{'60'}</b></label></td>
-        <td colspan="4"><input type="text" size="6" name="vote_limit" id="vote_limit" value="{yabb vote_limit}" /> <span  class="small"><label for="vote_limit">$post_polltxt{'61'}</label></span></td>
+        <td colspan="4"><input type="text" size="6" name="vote_limit" id="vote_limit" value="{yabb vote_limit}" /> <span class="small"><label for="vote_limit">$post_polltxt{'61'}</label></span></td>
     </tr><tr>
         <td><label for="pie_legends"><b>$post_polltxt{'pielegends'}</b></label></td>
-        <td colspan="4"><input type="checkbox" name="pie_legends" id="pie_legends" value="1"{yabb legchecked} /> <span  class="small"><label for="pie_legends">$post_polltxt{'pielegends_descr'}</label></span></td>
+        <td colspan="4"><input type="checkbox" name="pie_legends" id="pie_legends" value="1"{yabb legchecked} /> <span class="small"><label for="pie_legends">$post_polltxt{'pielegends_descr'}</label></span></td>
     </tr><tr>
         <td><label for="pie_radius"><b>$post_polltxt{'pieradius'}</b></label></td>
-        <td colspan="4"><input type="text" size="4" name="pie_radius" id="pie_radius" value="{yabb pie_radius}" /> <span  class="small"><label for="pie_radius">$post_polltxt{'pieradius_descr'}</label></span></td>
+        <td colspan="4"><input type="text" size="4" name="pie_radius" id="pie_radius" value="{yabb pie_radius}" /> <span class="small"><label for="pie_radius">$post_polltxt{'pieradius_descr'}</label></span></td>
     </tr>~;
 
 $mypoll_tablefix = q~<table class="pad_3px">~;

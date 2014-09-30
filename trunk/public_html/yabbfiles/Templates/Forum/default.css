@@ -138,6 +138,9 @@ table.cs_thin {
     border-collapse: separate;
     border-spacing: 1px;
 }
+ table.fixed {
+    table-layout:fixed;
+}
 
 #maincontainer {
     border-top: 0;

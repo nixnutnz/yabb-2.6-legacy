@@ -74,7 +74,7 @@ $display_template = qq~
             <td class="post_tools_a" style="padding-right:10px; text-align:right">
                 {yabb outsidethreadtools}
             </td>
-           <td $threadhandelstyle>{yabb threadhandellist}</td>
+           <td$threadhandelstyle>{yabb threadhandellist}</td>
            <td style="width: 1%;"> </td>
         </tr>
     </table>
@@ -106,7 +106,7 @@ $display_template = qq~
             <td class="post_tools_a" style="padding-right:10px; text-align:right">
                 <div style="float:right">{yabb outsidethreadtools}</div>
             </td>
-            <td $threadhandelstyle>{yabb threadhandellist2}</td>
+            <td$threadhandelstyle>{yabb threadhandellist2}</td>
             <td style="width:1%"> </td>
         </tr>
     </table>
@@ -214,7 +214,7 @@ $messageblock = qq~
                     </div>
                     <div class="clear"></div>
                 </td>
-                <td $posthandelstyle>{yabb posthandellist}</td>
+                <td$posthandelstyle>{yabb posthandellist}</td>
             </tr><tr>
                 <td class="{yabb css} vtop" style="height:10em" colspan="$postcol">
                     <div class="$messageclass" style="float: left; width: 99%; overflow: auto;">

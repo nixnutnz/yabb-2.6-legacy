@@ -257,7 +257,7 @@ $nopost_boardblock = qq~<tr>
                     <a href="{yabb boardurl}">{yabb boardpic}</a>
                 </td>
                 <td class="{yabb altbrdcolor}" colspan="4">
-                    {yabb new} <a name="{yabb boardanchor}" href="{yabb boardurl}"><b>{yabb boardname}</b></a><br />
+                    {yabb new} <a id="{yabb boardanchor}" href="{yabb boardurl}"><b>{yabb boardname}</b></a><br />
                     {yabb boarddesc}
                     <br />
                     <div class="small" style="display: inline-block; margin-top:5px">{yabb subboardlist}</div>
