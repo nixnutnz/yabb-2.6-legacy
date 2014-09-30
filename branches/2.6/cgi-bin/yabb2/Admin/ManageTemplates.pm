@@ -935,7 +935,7 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
             <td class="small h_23px" style="padding-left:1%">$tabtime</td>
             <td class="right vtop">
                 <div class="yabb_searchbox"><input id="search1" type="text" onblur="txtInFields(this, 'Search')" onfocus="txtInFields(this, 'Search');" style="font-size: 11px;" value="Search" size="16" name="search">
-                <input type="image" style="background-color: transparent; margin-right: 5px; vertical-align: middle;" title="Posts no more than 31 days old" alt="Posts no more than 31 days old" src="http://yabbforumsoftware.com/yabbfiles/Templates/Forum/default/search.png">
+                <input type="image" style="background-color: transparent; margin-right: 5px; vertical-align: middle;" title="Posts no more than 31 days old" alt="Posts no more than 31 days old" src="$imagesdir/search.png">
                 </div>
             </td>
         </tr>
