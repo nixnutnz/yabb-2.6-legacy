@@ -173,7 +173,7 @@ $mypost_smiley1 = qq~
             {yabb smilieslist}
             </select></td>
             </tr><tr>
-            <td class="center h_70px"><img src="$imagesdir/$SmilieURL[0]" name="smiliextra_image" alt="" onclick="javascript: Smiliextra();" class="cursor"></td>
+            <td class="center h_70px"><img src="$imagesdir/$SmilieURL[0]" name="smiliextra_image" alt="" onclick="javascript: Smiliextra();" class="cursor" /></td>
             </tr><tr>
             <td class="center h_15px"><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span></td>
             </tr></table>

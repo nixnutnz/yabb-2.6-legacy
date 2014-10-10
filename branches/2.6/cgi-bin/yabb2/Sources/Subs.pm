@@ -321,6 +321,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
     if ( !$yynavback ) { $yynavback .= q~ ~; }
     $yynavback .=
 qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp; $tabsep~;
+    $yybottom = $img_txt{'102b'};
 
     if ( !$usehead ) { $usehead = q~default~; }
     $yytemplate = "$templatesdir/$usehead/$usehead.html";
@@ -554,8 +555,8 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
         fclose(NEWS);
         chomp @newsmessages;
         my $startnews = int rand @newsmessages;
-        my $newstitle = qq~<b>$maintxt{'102'}:</b>~;
-        $newstitle =~ s/'/\\'/gxsm;
+        $yynewstitle = qq~<b>$maintxt{'102'}:</b>~;
+        $yynewstitle =~ s/'/\\'/gxsm;
         $guest_media_disallowed = 0;
         $newswrap               = 40;
 
@@ -602,14 +603,13 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
                             return thiscolor;
                         }
                     }
-
-                    if (ie4 || DOM2) var news = ('$newstitle<div class="windowbg2" id="fadestylebak" style="display: none;"><div class="newsfader" id="fadestyle" style="display: none;"> </div></div>');
-                    var div = document.getElementById("news");
+                    if (ie4 || DOM2) var news = ('<span class="windowbg2" id="fadestylebak" style="display: none;"><span class="newsfader" id="fadestyle" style="display: none;"> </span></span>');
+                    var div = document.getElementById("newsdiv");
                     div.innerHTML = news;
                     if (document.getElementById('fadestyle').currentStyle) {
                         tcolor = document.getElementById('fadestyle').currentStyle['color'];
                         bcolor = document.getElementById('fadestyle').currentStyle['backgroundColor'];
-                        fntsize = document.getElementById('fadestyle').currentStyle['fontSize'];
+                        nfntsize = document.getElementById('fadestyle').currentStyle['fontSize'];
                         fntstyle = document.getElementById('fadestyle').currentStyle['fontStyle'];
                         fntweight = document.getElementById('fadestyle').currentStyle['fontWeight'];
                         fntfamily = document.getElementById('fadestyle').currentStyle['fontFamily'];
@@ -618,7 +618,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
                     else if (window.getComputedStyle) {
                         tcolor = window.getComputedStyle(document.getElementById('fadestyle'), null).getPropertyValue('color');
                         bcolor = window.getComputedStyle(document.getElementById('fadestyle'), null).getPropertyValue('background-color');
-                        fntsize = window.getComputedStyle(document.getElementById('fadestyle'), null).getPropertyValue('font-size');
+                        nfntsize = window.getComputedStyle(document.getElementById('fadestyle'), null).getPropertyValue('font-size');
                         fntstyle = window.getComputedStyle(document.getElementById('fadestyle'), null).getPropertyValue('font-style');
                         fntweight = window.getComputedStyle(document.getElementById('fadestyle'), null).getPropertyValue('font-weight');
                         fntfamily = window.getComputedStyle(document.getElementById('fadestyle'), null).getPropertyValue('font-family');
@@ -656,11 +656,11 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
             }
             $img_greybox = $greybox;
             $yynews .= q~
-                        document.getElementById("news").style.fontSize=fntsize;
-                        document.getElementById("news").style.fontWeight=fntweight;
-                        document.getElementById("news").style.fontStyle=fntstyle;
-                        document.getElementById("news").style.fontFamily=fntfamily;
-                        document.getElementById("news").style.textDecoration=txtdecoration;
+                        document.getElementById("newsdiv").style.fontSize=nfntsize;
+                        document.getElementById("newsdiv").style.fontWeight=fntweight;
+                        document.getElementById("newsdiv").style.fontStyle=fntstyle;
+                        document.getElementById("newsdiv").style.fontFamily=fntfamily;
+                        document.getElementById("newsdiv").style.textDecoration=txtdecoration;
 
                     if (window.addEventListener)
                         window.addEventListener("load", changecontent, false);

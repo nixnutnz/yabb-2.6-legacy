@@ -925,13 +925,7 @@ s/<div class="small">/<div class="small attbox_b">/gsm;
         {
             if ($mlmb) {
                 LoadUser($mlmb);
-                if ( $iamguest ) {
-                    $mlmb = qq~$format_unbold{$mlmb}~;
-                }
-                else {
-                    $mlmb =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$mlmb}">$format_unbold{$mlmb}</a>~;
-                }
+                $mlmb = profile_view($mlmb);
             }
             else {
                 $mlmb = $display_txt{'470'};

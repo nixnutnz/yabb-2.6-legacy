@@ -124,7 +124,7 @@ sub Post {
         $pollthread = 2;
         $t_title    = $post_polltxt{'2a'};
     }
-    elsif ( $INFO{'title'} eq 'PostReply' ) {
+    elsif ( $INFO{'title'} eq 'PostReply' || $INFO{'num'} ) {
         $postthread = 2;
         $t_title    = $display_txt{'116'};
     }
@@ -725,9 +725,9 @@ qq~            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onke
                 $poll_end_min = 1;
             }
             else {
-                $poll_end_days = int( $x / 86_400 );
+                $poll_end_days = int( $x / 86400 );
                 $poll_end_min =
-                  int( ( $x - ( $poll_end_days * 86_400 ) ) / 60 );
+                  int( ( $x - ( $poll_end_days * 86400 ) ) / 60 );
             }
         }
 
@@ -2443,13 +2443,7 @@ qq~$post_cutts{'3'} $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threa
             if ( ${ $uid . $tempname }{'regdate'}
                 && ( $messagedate > $registrationdate || $tempname eq 'admin' ) )
             {
-                if ( $iamguest) {
-                    $displaynamelink = qq~$format_unbold{$tempname}~;
-                }
-                else {
-                    $displaynamelink =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tempname}">$format_unbold{$tempname}</a>~;
-                }
+                $displaynamelink = profile_view($tempname);
             }
             elsif ($tempname !~ m{Guest}sm
                 && $messagedate < $registrationdate )

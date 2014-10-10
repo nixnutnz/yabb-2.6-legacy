@@ -514,7 +514,6 @@ qq~             <img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="javascr
                 $tmpcode = $SmilieCode[$i];
                 $tmpcode =~ s/\&quot;/"+'"'+"/gsm;
 
-                #" Adding that because if not it screws up my syntax view;
                 FromHTML($tmpcode);
                 $tmpcode =~ s/&#36;/\$/gxsm;
                 $tmpcode =~ s/&#64;/\@/gxsm;
@@ -1347,7 +1346,6 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
         }
     }
 
-    ##  moved sender's reply marker here, open the sender's inbox and mark 'replied'
     if ( !$FORM{'draft'} && $isBMess ) {
         fopen( INBOX, "<$memberdir/broadcast.messages" );
         my @inmessages = <INBOX>;
@@ -1435,7 +1433,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
         }
         fclose(OUTBOX);
 
-        ## pdate ims for sent
+        ## update ims for sent
         if ( !$FORM{'draft'} ) {
             updateIMS( $username, $messageid, 'messageout' );
         }

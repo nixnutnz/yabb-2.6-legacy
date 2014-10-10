@@ -873,7 +873,7 @@ sub IMPost {
             if ( $INFO{'quote'} ) {
 
                 # swap out brs and spaces
-                $message =~ s/<br.*?>/\n/gism;
+                $message =~ s/<br.*?>/\n/igsm;
                 $message =~ s/ \&nbsp; \&nbsp; \&nbsp;/\t/igsm;
                 if ( !$nestedquotes ) {
                     $message =~
@@ -1439,7 +1439,7 @@ function insert_user (oElement,username,userid) {
             ~;
         }
         elsif ( $view eq 'pm' ) {
-			$allowAttachIM ||= 0;
+            $allowAttachIM ||= 0;
             $allowGroups = GroupPerms( $allowAttachIM, $pmAttachGroups );
             if ( $allowAttachIM && $allowGroups ) {
                 $MCGlobalFormStart .=
@@ -1860,7 +1860,7 @@ sub drawPMView {
             my $oldestDate = ( split /\|/xsm, $dimmessages[-1] )[6];
             $groupByDate = 1;
             ## work out the span of days - today less oldest message, in days
-            $dateSpan = int( ( $date - $oldestDate ) / 86_400 );    # in days
+            $dateSpan = int( ( $date - $oldestDate ) / 86400 );    # in days
             $latestPM = ( ( $date - $topMDate ) / 3600 );           # in hours
         }
         ## if sort is grouped, extra block is added per group
@@ -2244,12 +2244,12 @@ qq~<span class="small"><a href="$scripturl?action=imshow;id=$messageid;caller=2"
             if ( $sortBy eq 'gpdate' ) {
                 $uselegend = q{};
                 if (   $latestDateSet
-                    && ( $date - $mdate ) / 86_400 > 1
+                    && ( $date - $mdate ) / 86400 > 1
                     && $counter > $counterCheck )
                 {
                     $latestDateSet = 0;
                     if ($lastWeekSet) {
-                        if ( ( $date - $mdate ) / 86_400 <= 7 ) {
+                        if ( ( $date - $mdate ) / 86400 <= 7 ) {
                             $counterCheck = $counter;
                         }
                         $uselegend = 'oneweek';
@@ -2257,12 +2257,12 @@ qq~<span class="small"><a href="$scripturl?action=imshow;id=$messageid;caller=2"
                 }
 
                 if (   $lastWeekSet
-                    && ( $date - $mdate ) / 86_400 > 7
+                    && ( $date - $mdate ) / 86400 > 7
                     && $counter > $counterCheck )
                 {
                     $lastWeekSet = 0;
                     if ($twoWeeksSet) {
-                        if ( ( $date - $mdate ) / 86_400 <= 14 ) {
+                        if ( ( $date - $mdate ) / 86400 <= 14 ) {
                             $counterCheck = $counter;
                         }
                         $uselegend = 'twoweeks';
@@ -2270,12 +2270,12 @@ qq~<span class="small"><a href="$scripturl?action=imshow;id=$messageid;caller=2"
                 }
 
                 if (   $twoWeeksSet
-                    && ( $date - $mdate ) / 86_400 > 14
+                    && ( $date - $mdate ) / 86400 > 14
                     && $counter > $counterCheck )
                 {
                     $twoWeeksSet = 0;
                     if ($threeWeeksSet) {
-                        if ( ( $date - $mdate ) / 86_400 <= 21 ) {
+                        if ( ( $date - $mdate ) / 86400 <= 21 ) {
                             $counterCheck = $counter;
                         }
                         $uselegend = 'threeweeks';
@@ -2283,12 +2283,12 @@ qq~<span class="small"><a href="$scripturl?action=imshow;id=$messageid;caller=2"
                 }
 
                 if (   $threeWeeksSet
-                    && ( $date - $mdate ) / 86_400 > 21
+                    && ( $date - $mdate ) / 86400 > 21
                     && $counter > $counterCheck )
                 {
                     $threeWeeksSet = 0;
                     if ($monthSet) {
-                        if ( ( $date - $mdate ) / 86_400 <= 31 ) {
+                        if ( ( $date - $mdate ) / 86400 <= 31 ) {
                             $counterCheck = $counter;
                         }
                         $uselegend = 'fourweeks';
@@ -2296,7 +2296,7 @@ qq~<span class="small"><a href="$scripturl?action=imshow;id=$messageid;caller=2"
                 }
 
                 if (   $monthSet
-                    && ( $date - $mdate ) / 86_400 > 31
+                    && ( $date - $mdate ) / 86400 > 31
                     && $counter > $counterCheck )
                 {
                     $monthSet = 0;

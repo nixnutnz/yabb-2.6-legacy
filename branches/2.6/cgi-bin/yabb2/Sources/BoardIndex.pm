@@ -299,7 +299,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
 
     BoardTotals( 'load', @loadboards );
     getlog();
-    my $dmax = $date - ( $max_log_days_old * 86_400 );
+    my $dmax = $date - ( $max_log_days_old * 86400 );
 
 # if loading subboard list by ajax we don't need this (Ajax showcasepoll load does not work, assume this is mistake. DAR)
 
@@ -948,13 +948,7 @@ qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title=
                         'Global Moderator'
                       )
                     {
-                        if ( $iamguest ) {
-                            $lastposter = qq~$format_unbold{$lastposter}~;
-                        }
-                        else {
-                            $lastposter =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}" rel="nofollow">$format_unbold{$lastposter}</a>~;
-                        }
+                        $lastposter = profile_view($lastposter);
                     }
                     else {
 

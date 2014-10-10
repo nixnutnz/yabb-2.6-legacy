@@ -724,7 +724,7 @@ function autoPreview() {
             pstHttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
     } catch (e) { }
-    if (pstHttp === null) return;
+    if (pstHttp == null) return;
     pstHttp.onreadystatechange = function() {
         if(pstHttp.readyState == 4) {
             if(pstHttp.status == 200 || window.location.href.indexOf("http") == -1) {~;

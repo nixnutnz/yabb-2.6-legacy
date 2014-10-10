@@ -368,7 +368,6 @@ qq~ <label for="calyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
         if ( $INFO{'edit_nonam'} == 1 ) { $cecknonam = 'checked="checked"' }
         ## Edit Infos End ##
 
-        my ( $option_noname, $option_private );
         if (   ( $CalEventNoName == 0 && ( $iamadmin || $iamgmod ) )
             || ( $CalEventNoName == 1 && !$iamguest ) )
         {
@@ -930,6 +929,20 @@ qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
             {
                 $mycalout_no = $mycalout_noevent;
             }
+            if ( $Allow_Event_Imput && !$INFO{'addnew'} == 1 ) {
+                $ShowEventAddLink2 =
+qq~<span class="small"> $cal_icon{'eventmoreadd'} <a href="$scripturl?action=eventcal;calshow=1;addnew=1">$var_calpost{'getaddevent'}</a></span><br />~;
+            }
+            if ( $Show_BirthdaysList && (!$iamguest || $Show_BirthdaysList != 1) ) {
+                $ShowBirthdaysLink2 =
+qq~<span class="small"> $cal_icon{'eventmorebd'} <a href="$scripturl?action=birthdaylist">$var_cal{'calbdaylist'}</a></span>~;
+            }
+            if ( $ShowEventAddLink2 || $ShowBirthdaysLink2 ) {
+                $event_link = qq~    <tr><td class="windowbg2" colspan="2">
+                $ShowBirthdaysLink2
+                $ShowEventAddLink2
+                </td></tr>~;
+            }
             $yymain .= $mycalout_showevent;
             $yymain =~ s/{yabb mycalout_top}/$mycalout_top/sm;
             $yymain =~ s/{yabb calgotobox}/$calgotobox/sm;
@@ -937,6 +950,7 @@ qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
             $yymain =~ s/{yabb mycalout_no}/$mycalout_no/sm;
             $yymain =~ s/{yabb myevent_ann}/$myevent_ann/sm;
             $yymain =~ s/{yabb nscheck}/$nscheck/sm;
+            $yymain =~ s/{yabb ShowEventAddLink2}/$event_link/sm;
 
             $yytitle = $var_cal{'yytitle'};
             template();
@@ -1365,11 +1379,9 @@ qq~<div class="small">$cal_icon{$cicon} $cdate <b>$icon_text</b> $eventuserlink$
 
     # Print Mini EventCal begin
 
-    if ($Show_BirthdaysList) {
-        if ( !$iamguest || ( $Show_BirthdaysList != 1 ) ) {
-            $ShowBirthdaysLink =
+    if ($Show_BirthdaysList && ( !$iamguest || $Show_BirthdaysList != 1 ) ) {
+        $ShowBirthdaysLink =
 qq~<span class="small"> $cal_icon{'eventmorebd'} <a href="$scripturl?action=birthdaylist">$var_cal{'calbdaylist'}</a></span>~;
-        }
     }
     if ( $Allow_Event_Imput && !$INFO{'addnew'} == 1 ) {
         $ShowEventAddLink =

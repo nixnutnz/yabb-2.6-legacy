@@ -264,13 +264,7 @@ qq~    </select>
                 else {
                     $user_linkname = $user_bdrealname;
                     LoadUser($user_bdname);
-                    if ( $iamguest ) {
-                        $user_linkprofile = qq~$format_unbold{$user_bdname}~;
-                    }
-                    else {
-                        $user_linkprofile =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" rel="nofollow">$format_unbold{$user_bdname}</a>~;
-                    }
+                    $user_linkprofile = profile_view($user_bdname);
                 }
                 if ( $showage && $user_bdhide ) {
                     $myage = $var_cal{'hidden'};
@@ -478,13 +472,7 @@ qq~ <span class="small">$var_cal{'139'}: $pageindex</span>~;
                     else {
                         $user_linkname = $user_bdrealname;
                         LoadUser($user_bdname);
-                        if ( $iamguest ) {
-                            $user_linkprofile = qq~$format_unbold{$user_bdname}~;
-                        }
-                        else {
-                            $user_linkprofile =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" rel="nofollow">$format_unbold{$user_bdname}</a>~;
-                        }
+                        $user_linkprofile = profile_view($user_bdname);
                     }
                     if ( $showage && $user_bdhide ) {
                         $myage = $var_cal{'hidden'};
@@ -547,12 +535,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
                             else {
                                 $user_linkname = $user_bdrealname;
                                 LoadUser($user_bdname);
-                                if ( $iamguest ) {
-                                    $user_linkprofile = qq~$format_unbold{$user_bdname}~;
-                                }
-                                else {
-                                    $user_linkprofile = qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" rel="nofollow">$format_unbold{$user_bdname}</a>~;
-                                }
+                                $user_linkprofile = profile_view($user_bdname);
                             }
                             if ( $showage && $user_bdhide ) {
                                 $myage = $var_cal{'hidden'};

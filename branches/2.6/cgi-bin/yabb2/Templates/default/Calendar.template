@@ -126,6 +126,7 @@ $mycal_tr = "<tr>\n";
 $mycalout_showevent = q~
 {yabb mycalout_top}
 <table class="bordercolor pad_3px">{yabb mycalout_greet}{yabb mycalout_no}
+    {yabb ShowEventAddLink2}
 </table>
 ~;
 

@@ -301,7 +301,7 @@ sub plushSearch2 {
     spam_protection();
 
     my $maxage = $FORM{'age'}
-      || ( int( ( $date - stringtotime($forumstart) ) / 86_400 ) + 1 );
+      || ( int( ( $date - stringtotime($forumstart) ) / 86400 ) + 1 );
 
     my $display = $FORM{'numberreturned'} || $maxsearchdisplay;
     if ( $maxage  =~ /\D/xsm ) { fatal_error('only_numbers_allowed'); }
@@ -369,7 +369,7 @@ sub plushSearch2 {
     my $maxtime =
       $date +
       ( 3600 * ${ $uid . $username }{'timeoffset'} ) -
-      ( $maxage * 86_400 );
+      ( $maxage * 86400 );
     my $oldestfound = 9_999_999_999;
 
     get_forum_master();
@@ -1071,13 +1071,7 @@ sub addMemberLink {
     if ( ${ $uid . $user }{'regdate'}
         && $mdate >= ( ${ $uid . $user }{'regtime'} || $date ) )
     {
-        if ( $iamguest) {
-            $mname = $format_unbold{$user};
-        }
-        else {
-            $mname =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$format_unbold{$user}</a>~;
-        }
+        $mname = profile_view($user);
     }
     elsif ($user !~ m/Guest/sm
         && $mdate < ( ${ $uid . $user }{'regtime'} || $date ) )

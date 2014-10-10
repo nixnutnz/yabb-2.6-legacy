@@ -3011,7 +3011,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
 
     if ( $string_curdate < $forumstart ) { $string_curdate = $forumstart }
 
-    $member_for_days = int( ( $string_curdate - $string_regdate ) / 86_400 );
+    $member_for_days = int( ( $string_curdate - $string_regdate ) / 86400 );
 
     if   ( $member_for_days < 1 ) { $tmpmember_for_days = 1; }
     else                          { $tmpmember_for_days = $member_for_days; }

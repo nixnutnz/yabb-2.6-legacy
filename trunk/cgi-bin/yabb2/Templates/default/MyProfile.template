@@ -107,7 +107,7 @@ $myprofile_edit = qq~<table class="cs_thin pad_4px">
         </td>
     </tr>
     <tr class="windowbg">
-       <td><label for="birthday"><b>$profile_txt{'563'}:{yabb require_bd}</b>{yabb editAgeTxt}</label></td>
+       <td><label for="birthday"><b>$profile_txt{'563'}:</b>{yabb editAgeTxt}</label></td>
        <td><span class="small">{yabb bdaysel}</span></td>
     </tr>{yabb showageshow}
     <tr class="windowbg">

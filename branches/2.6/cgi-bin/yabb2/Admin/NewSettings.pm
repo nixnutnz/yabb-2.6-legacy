@@ -662,10 +662,10 @@ $member_groups
 \$max_log_days_old = $max_log_days_old; # If an entry in the user's log is older than ... days remove it
 
 \$maxsteps = $maxsteps;                     # Number of steps to take to change from start color to endcolor
-\$stepdelay = $stepdelay;                   # Time in miliseconds of a single step
+\$stepdelay = $stepdelay;                   # Time in milliseconds of a single step
 \$fadelinks = $fadelinks;                   # Fade links as well as text?
 
-\$defaultusertxt = "\Q$defaultusertxt\E";   # The dafault usertext visible in users posts
+\$defaultusertxt = "\Q$defaultusertxt\E";   # The default user text visible in users posts
 \$timeout = $timeout;                       # Minimum time between 2 postings from the same IP
 \$HotTopic = $HotTopic;                     # Number of posts needed in a topic for it to be classed as "Hot"
 \$VeryHotTopic = $VeryHotTopic;             # Number of posts needed in a topic for it to be classed as "Very Hot"
@@ -710,7 +710,7 @@ $member_groups
 \$fix_brd_img_size = $fix_brd_img_size; 
 \$img_greybox = $img_greybox;           # Set to 0 to disable "greybox" (each image is shown in a new window)
                             # Set to 1 to enable the attachment and post image "greybox" (one image/page)
-                            # Set to 2 to enable the attachment and post image "greybox" => attachmet images: (all images/page), post images: (one image/page)
+                            # Set to 2 to enable the attachment and post image "greybox" => attachment images: (all images/page), post images: (one image/page)
 
 ########## Extended Profiles ##########
 

@@ -721,7 +721,7 @@ qq~<span style="color:$memstat[3];">$userlink</span>~;
           qq~<span style="color: $memstat[3];">$memberinfo{$user}</span>~;
         }
         else {
-            $link{$user} = qq~$userlink~;
+            $link{$user} = qq~<span title="$maintxt{'members_only'}">$userlink</span>~;
             $format{$user}        = qq~$userlink~;
             $format_unbold{$user} = qq~${$uid.$user}{'realname'}~;
             $col_title{$user}     = qq~$memberinfo{$user}~;

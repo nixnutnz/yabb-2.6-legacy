@@ -699,7 +699,7 @@ qq~<img src="$micon_bg{'locked'}" alt="$messageindex_txt{'104'}" title="$message
     # Begin printing the message index for current board.
     $counter = $start;
     dumplog($currentboard);    # Mark current board as seen
-    my $dmax = $date - ( $max_log_days_old * 86_400 );
+    my $dmax = $date - ( $max_log_days_old * 86400 );
     foreach (@threads) {
         (
             $mnum,     $msub,      $mname, $memail, $mdate,
@@ -838,7 +838,7 @@ qq~<a href="$scripturl?num=$mnum/new#new">$newload{'new_mess'}</a>~;
             if ($poll_locked) { $micon = $micon{'polliconclosed'}; }
             elsif ( !$iamguest
                 && $max_log_days_old
-                && $mdate > $date - ( $max_log_days_old * 86_400 ) )
+                && $mdate > $date - ( $max_log_days_old * 86400 ) )
             {
                 if ( $dlp < $createpoll_date ) {
                     $micon = qq~$micon{'polliconnew'}~;
@@ -870,13 +870,7 @@ qq~<a href="$scripturl?num=$mnum/new#new">$newload{'new_mess'}</a>~;
                 || ${ $uid . $musername }{'position'} eq 'Global Moderator'
               )
             {
-                if ( $iamguest) {
-                    $mname = $format_unbold{$musername};
-                }
-                else {
-                    $mname =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$format_unbold{$musername}</a>~;
-                }
+                $mname = profile_view($musername);
             }
             else {
                 $mname .= qq~ ($messageindex_txt{'470a'})~;
@@ -972,13 +966,7 @@ qq~<br /><span class="small">&#171; $messageindex_txt{'139'} $pages $pagesall &#
                 || ${ $uid . $lastposter }{'position'} eq 'Global Moderator'
               )
             {
-                if ( $iamguest) {
-                    $lastposter = $format_unbold{$lastposter};
-                }
-                else {
-                    $lastposter =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}">$format_unbold{$lastposter}</a>~;
-                }
+                $lastposter = profile_view($lastposter);
             }
             else {
 

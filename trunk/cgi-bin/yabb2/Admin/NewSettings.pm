@@ -720,7 +720,7 @@ $member_groups
 \$fix_brd_img_size = $fix_brd_img_size; 
 \$img_greybox = $img_greybox;           # Set to 0 to disable "greybox" (each image is shown in a new window)
                             # Set to 1 to enable the attachment and post image "greybox" (one image/page)
-                            # Set to 2 to enable the attachment and post image "greybox" => attachmet images: (all images/page), post images: (one image/page)
+                            # Set to 2 to enable the attachment and post image "greybox" => attachment images: (all images/page), post images: (one image/page)
 
 ########## Extended Profiles ##########
 

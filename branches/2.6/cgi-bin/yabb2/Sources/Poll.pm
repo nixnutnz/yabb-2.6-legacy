@@ -315,30 +315,21 @@ sub votedetails {
     @polled = <FILE>;
     fclose(FILE);
 
+    $linkprofile = q{};
     if ( $poll_modname ne q{} && $poll_mod ne q{} ) {
         $poll_mod = timeformat($poll_mod);
         LoadUser($poll_modname);
-        if ( $iamguest ) {
-            $displaydate =
-qq~<span class="small">&#171; $polltxt{'45a'}: $format_unbold{$poll_modname} $polltxt{'46'}: $poll_mod &#187;</span>~;
-        }
-        else {
-            $displaydate =
-qq~<span class="small">&#171; $polltxt{'45a'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_modname}">$format_unbold{$poll_modname}</a> $polltxt{'46'}: $poll_mod &#187;</span>~;
-        }
+        $linkprofile = profile_view($poll_modname);
+        $displaydate =
+qq~<span class="small">&#171; $polltxt{'45a'}: $linkprofile $polltxt{'46'}: $poll_mod &#187;</span>~;
     }
     if ( $poll_uname ne q{} && $poll_date ne q{} ) {
         $poll_date = timeformat($poll_date);
         if ($poll_uname ne 'Guest' && -e "$memberdir/$poll_uname.vars") {
             LoadUser($poll_uname);
-            if ( $iamguest ) {
-                $displaydate =
-qq~<span class="small">&#171; $polltxt{'45a'}: $format_unbold{$poll_uname} $polltxt{'46'}: $poll_mod &#187;</span>~;
-            }
-            else {
-                $displaydate =
-qq~<span class="small">&#171; $polltxt{'45'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_uname}">$format_unbold{$poll_uname}</a> $polltxt{'46'}: $poll_date &#187;</span>~;
-            }
+            $linkprofile = profile_view($poll_uname);
+            $displaydate =
+qq~<span class="small">&#171; $polltxt{'45a'}: $linkprofile $polltxt{'46'}: $poll_mod &#187;</span>~;
         }
         else {
             $displaydate =
@@ -367,13 +358,7 @@ qq~&rsaquo; $template_cat &rsaquo; $template_board &rsaquo; $curthreadurl~;
         $id = qq~$voters_ip-$voters_name~;
         if ($voters_name ne 'Guest' && -e "$memberdir/$voters_name.vars") {
             LoadUser($voters_name);
-            if ( $iamguest ) {
-                $voters_name = qq~$format_unbold{$voters_name}~;
-            }
-            else {
-                $voters_name =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$voters_name}">$format_unbold{$voters_name}</a>~;
-            }
+            $voters_name = profile_view($voters_name);
         }
         foreach my $oldvote ( split /\,/xsm, $voters_vote ) {
             if ($ubbcpolls) {
@@ -579,27 +564,17 @@ qq~<a href="$scripturl?action=showvoters;num=$pollnum">$img{'viewvotes'}</a>~;
     if ( $poll_modname ne q{} && $poll_mod ne q{} && $showmodify ) {
         $poll_mod = timeformat($poll_mod);
         LoadUser($poll_modname);
-        if ( $iamguest ) {
-            $displaydate =
-qq~<span class="small">&#171; $polltxt{'45a'}: $format_unbold{$poll_modname} $polltxt{'46'}: $poll_mod &#187;</span>~;
-        }
-        else {
-            $displaydate =
-qq~<span class="small">&#171; $polltxt{'45a'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_modname}">$format_unbold{$poll_modname}</a> $polltxt{'46'}: $poll_mod &#187;</span>~;
-        }
+        $linkprofile = profile_view($poll_modname);
+        $displaydate =
+qq~<span class="small">&#171; $polltxt{'45a'}: $linkprofile $polltxt{'46'}: $poll_mod &#187;</span>~;
     }
     elsif ( $poll_uname ne q{} && $poll_date ne q{} ) {
         $poll_date = timeformat($poll_date);
         if ($poll_uname ne 'Guest' && -e "$memberdir/$poll_uname.vars") {
             LoadUser($poll_uname);
-            if ( $iamguest ) {
-                $displaydate =
-qq~<span class="small">&#171; $polltxt{'45'}: $format_unbold{$poll_uname} $polltxt{'46'}: $poll_date &#187;</span>~;
-            }
-            else {
-                $displaydate =
-qq~<span class="small">&#171; $polltxt{'45'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_uname}">$format_unbold{$poll_uname}</a> $polltxt{'46'}: $poll_date &#187;</span>~;
-            }
+            $linkprofile = profile_view($poll_uname);
+            $displaydate =
+qq~<span class="small">&#171; $polltxt{'45'}: $linkprofile $polltxt{'46'}: $poll_date &#187;</span>~;
         }
         elsif ( $poll_name ne q{} ) {
             $displaydate =
@@ -791,9 +766,9 @@ qq~<input type="radio" name="option" id="option$i" value="$i" style="margin: 0; 
     }
     if (!$poll_locked && $poll_end) {
         my $x = $poll_end - $date;
-        my $days  = int( $x / 86_400 );
-        my $hours = int( ( $x - ( $days * 86_400 ) ) / 3600 );
-        my $min   = int( ( $x - ( $days * 86_400 ) - ( $hours * 3600 ) ) / 60 );
+        my $days  = int( $x / 86400 );
+        my $hours = int( ( $x - ( $days * 86400 ) ) / 3600 );
+        my $min   = int( ( $x - ( $days * 86400 ) - ( $hours * 3600 ) ) / 60 );
         $poll_end = "$post_polltxt{'100'} ";
         if ($days) {
             $poll_end .= "$days $post_polltxt{'100a'}"

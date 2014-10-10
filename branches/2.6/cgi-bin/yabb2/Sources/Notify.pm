@@ -424,7 +424,7 @@ sub NotificationAlert {
 
     # to get ${$uid.$myboard}{'lastposttime'}
     getlog();    # sub in Subs.pm, for $yyuserlog{$myboard}
-    my $dmax = $date - ( $max_log_days_old * 86_400 );
+    my $dmax = $date - ( $max_log_days_old * 86400 );
 
     ## run through boards list
     foreach my $myboard (@bmaildir) {    # board name from file name
