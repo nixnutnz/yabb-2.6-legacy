@@ -122,7 +122,7 @@ sub buildIMsend {
     if (   !$iamadmin
         && !$iamgmod
         && !$staff
-        && ${ $uid . $username }{'postcount'} < $numposts )
+        && ${ $uid . $username }{'postcount'} < $numposts && $pm_spam_chk != 1 )
     {
         fatal_error('im_low_postcount');
     }
@@ -731,6 +731,44 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
     if ( !$replyguest ) {
         $my_isreply .= qq~
             <input type="checkbox" name="ns" id="ns" value="NS"$nscheck onchange="autoPreview();" /> <label for="ns"><span class="small">$post_txt{'277'}</span></label><br />~;
+        if (!$staff && ${ $uid . $username }{'postcount'} < $numposts && $pm_spam_chk == 1 ) {
+            get_template('Post');
+            require Sources::Decoder;
+            if ($gpvalid_en) {
+                validation_code();
+                $verification_field =
+                $verification eq q{}
+                ? $mypost_guest_c
+                : q{};
+                $verification_field =~ s/{yabb showcheck}/$showcheck/sm;
+                $verification_field =~ s/{yabb flood_text}/$flood_text/sm;
+            }
+            if (   $spam_questions_gp &&
+                -e "$langdir/$language/spam.questions" )
+            {
+            SpamQuestion();
+            my $verification_question_desc;
+            if ($spam_questions_case) {
+                $verification_question_desc =
+                    qq~<br />$post_txt{'verification_question_case'}~;
+            }
+            $verification_question_field =
+                $verification_question eq q{}
+                ? $mypost_veri_c
+                : q{};
+            $verification_question_field =~
+          s/{yabb spam_question}/$spam_question/gsm;
+            $verification_question_field =~
+          s/{yabb verification_question_desc}/$verification_question_desc/gsm;
+            $verification_question_field =~
+          s/{yabb spam_question_id}/$spam_question_id/gsm;
+            $verification_question_field =~ s/{yabb spam_question_image}/$spam_image/gsm;
+            }
+            $my_isreply .= q~<table><tr><td>~;
+            $my_isreply .= qq~$verification_field~;
+            $my_isreply .= qq~$verification_question_field~;
+            $my_isreply .= q~</td></tr></table>~;
+        }
         if ( $FORM{'draftid'} || $INFO{'caller'} == 4 ) {
             $my_isreply .= qq~
             <input type="checkbox" name="draftleave" id="draftleave" value="1" /> <span class="small"> $post_txt{'draftleave'}</span><br />~;

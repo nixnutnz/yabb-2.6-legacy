@@ -117,6 +117,14 @@ qq~<input type="text" name="min_post_speed" id="min_post_speed" size="5" value="
                 validate   => 'number',
                 depends_on => ['speedpostdetection'],
             },
+            {
+                description =>
+                  qq~<label for="error_spd">$admin_txt{'error_spd'}</label>~,
+                input_html =>
+qq~<input type="text" name="error_spd" id="error_spd" size="4" value="$error_spd" />~,
+                name     => 'error_spd',
+                validate => 'number',
+            },
             { header => $settings_txt{'spambot'}, },
             {
                 description =>

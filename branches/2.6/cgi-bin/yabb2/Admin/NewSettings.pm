@@ -651,6 +651,7 @@ $member_groups
 \$speedpostdetection = $speedpostdetection; # Set to 1 to detect speedposters and delay their spam actions
 \$spd_detention_time = $spd_detention_time; # Time in seconds before a speedposting ban is lifted again
 \$min_post_speed = $min_post_speed;         # Minimum time in seconds between entering a post form and submitting a post
+\$error_spd = $error_spd;                   # Minimum time in seconds between error log entries from the same IP address.
 \$minlinkpost = $minlinkpost;               # Minimum amount of posts a member needs to post links and images
 \$minlinksig = $minlinksig;                 # Minimum amount of posts a member needs to create links and images in signature
 \$minlinkweb = $minlinkweb;                 # Minimum amount of posts a member needs to link to a website in their profile
@@ -675,6 +676,7 @@ $member_groups
 \$defaultml = "\Q$defaultml\E";
 
 \$ML_Allowed = $ML_Allowed;                 # allow browse MemberList
+\$profile_int = $profile_int;               # 1 redirects guest clicks on member names to a register or login screen. 0 disables links on member names.
 \$showuserpicml = $showuserpicml;           # Set to 1 to display each member's avatar in the member list
 \$group_stars_ml = $group_stars_ml;         # Set to 1 to display group stars in the member list
 
@@ -863,6 +865,7 @@ $ext_prof_fields
 \$imtext = "\Q$imtext\E";           # message sent to new member
 
 \$numposts = $numposts;             # Number of posts required to send Instant Messages
+\$pm_spam_chk = $pm_spam_chk;       # Allow PMs when less than numposts number with added anti-spam checks (0 disables)
 \$imspam = $imspam;             # Percent of Users a user is a allowed to send a message at once
 
 \$enable_imlimit = $enable_imlimit;     # Set to 1 to enable limitation of incoming and outgoing im messages

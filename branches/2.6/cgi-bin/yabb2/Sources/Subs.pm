@@ -963,7 +963,16 @@ sub fatal_error_logging {
         $FORM{$formdata} =~ s/\n//igsm;
     }
 
-    if ($iamguest) {
+    if ($iamguest ) {
+        if ( $error_spd > 0 ) {
+            @erloga = split /[|]/xsm, $errorlog[-1];
+            @erlogb = split /[|]/xsm, $errorlog[$#errorlog-1];
+            if ($erloga[2] eq $user_ip && $erlogb[2] eq $user_ip && ($erloga[1] - $erlogb[1]) < $error_spd && ( $date - $erloga[1] ) < $error_spd ) {
+                require Admin::ErrorLog;
+                update_htaccess( 'add', $user_ip );
+                $tmperror .= q~<br />IP blocked~;
+            }
+        }
         push @errorlog,
           int(time)
           . "|$date|$user_ip|$tmperror|$action|$INFO{'num'}|$currentboard|$FORM{'username'}|$FORM{'passwrd'}\n";
@@ -3389,6 +3398,32 @@ sub isempty {
         $y = $x;
     }
     return $y;
+}
+
+sub profile_view {
+    my($puser) = @_;
+    if ( $iamguest ) {
+        $pname = qq~<span title="$maintxt{'members_only'}">$format_unbold{$puser}</span>~;
+        if ( $profile_int ) {
+            $pname = qq~<a href="$scripturl?action=link_profileview">$format_unbold{$puser}</a>~;
+        }
+    }
+    else {
+        $pname =
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$puser}" rel="nofollow">$format_unbold{$puser}</a>~;
+    }
+
+    return $pname;
+}
+
+sub link_profileview {
+    get_template('Other');
+    $yymain .= $my_profile_int;
+    $yytitle      = qq~$maintxt{'regplease'}~;
+    $yynavigation = qq~&rsaquo; $maintxt{'regplease'}~;
+    template();
+
+    return;
 }
 
 1;

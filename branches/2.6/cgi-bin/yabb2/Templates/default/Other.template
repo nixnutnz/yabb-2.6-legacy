@@ -293,5 +293,20 @@ $my_show_error = qq~
 <br /><div style="width: 100%; text-align: center;"><a href="javascript:history.go(-1)">$maintxt{'193'}</a></div>
 ~;
 
+## Guest Profile link interrupt
+
+$my_profile_int = qq~
+<table class="system-info" style="width:50em">
+    <tr>
+        <td>$maintxt{'members_only'}</td>
+    </tr>
+</table>
+<table class="system-info-body" style="width:50em">
+    <tr>
+        <td class="center">$maintxt{'reg_please'}</td>
+    </tr>
+</table>
+<br /><div style="width: 100%; text-align: center;"><a href="javascript:history.go(-1)">$maintxt{'193'}</a></div>
+~;
 
 1;

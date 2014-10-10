@@ -713,12 +713,12 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}" style="c
     elsif ( $iamguest ) {
         if ( $memstat[3] ne q{} ) {
                 $link{$user} =
-qq~<span style="color:$memstat[3];">$userlink</span>~;
-        $format{$user} = qq~<span style="color: $memstat[3];">$userlink</span>~;
+qq~<span style="color:$memstat[3];" title="$maintxt{'members_only'}">$userlink</span>~;
+        $format{$user} = qq~<span style="color: $memstat[3];" title="$maintxt{'members_only'}">$userlink</span>~;
         $format_unbold{$user} =
-          qq~<span style="color: $memstat[3];">${$uid.$user}{'realname'}</span>~;
+          qq~<span style="color: $memstat[3];" title="$maintxt{'members_only'}">${$uid.$user}{'realname'}</span>~;
         $col_title{$user} =
-          qq~<span style="color: $memstat[3];">$memberinfo{$user}</span>~;
+          qq~<span style="color: $memstat[3];" title="$maintxt{'members_only'}">$memberinfo{$user}</span>~;
         }
         else {
             $link{$user} = qq~<span title="$maintxt{'members_only'}">$userlink</span>~;

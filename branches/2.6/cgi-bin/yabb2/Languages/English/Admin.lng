@@ -588,12 +588,14 @@ $abbr_lang = 'en-us';
 'imp_email_check' => 'Enable improved e-mail checking?<br /><span class="small">Checks if the e-mail domain exists, if the user is known on the given SMTP server, if the smtp server(s) are online and valid, and if the users mailbox is full. Also adds a second e-mail field to the registration page for verification.<br />Note that this setting requires Net::DNS to be installed on your server.</span>',
 'zodiac' => 'Show Zodiac Signs in Profile displays?',
 'no_imp_email_check' => q~<br /><span class="important">Improved email check not available. Needs Net::DNS</span>~,
+'error_spd'=> q~ErrorLog speed banning. Minimum number of seconds between multiple error log entries from the same IP address. <br /><span class="small">Violators are banned through .htaccess if allowed. Set to '0' to disable</span>~,
+'profile_int'=> q~Redirect guest clicks on member name links to a 'Register or Login' page. Uncheck to disable member name links for guests.~,
 );
 
 %floodtxt = (
 '1' => 'YaBB Security Center:',
 '2' => 'Activate validation code (CAPTCHA) on registration and forgot password?',
-'3' => 'Activate validation code (CAPTCHA) for Guest posting, Guest contact Admin by Broadcast Message, Guest sending Alert Moderator message, Guest sending a topic and Guest adding event to Calendar?',
+'3' => 'Activate validation code (CAPTCHA) for Guest posting, Guest contact Admin by Broadcast Message, Guest sending Alert Moderator message, Guest sending a topic, Guest adding event to Calendar, or member sending PM without the minimum number of posts?',
 '5' => 'Maximum number of messages returned for Recent Posts on forum and/or by user?<br /> <span class="small">-1 will disable Recent Posts</span>',
 '5a' => 'Maximum number of messages returned for Recent Topics on forum?<br /> <span class="small">-1 will disable Recent Topics</span>',
 '6' => 'Maximum number of messages returned for a search?<br /> <span class="small">-1 will disable Search</span>',
@@ -1087,7 +1089,7 @@ $abbr_lang = 'en-us';
 '36' => '&nbsp;&nbsp;&nbsp; - Enter the PM Subject here:',
 '46' => 'Storage',
 '52' => qq~Spam Protect - Enter Percent<br /><span class="small">(Read Administrator Help - <a href="$scripturl?action=help;section=admin#Spam_Protect_-_Enter_Percent">Spam Protect - Enter Percent</a> for Info, 0 to disable)</span>~,
-'75' => 'Number Of Posts Required to send Personal Messages?',
+'75' => 'Number of Posts Required to send Personal Messages?',
 '84' => 'Inbox',
 '85' => 'Sent box',
 'draft' => 'Draft',
@@ -1103,6 +1105,7 @@ $abbr_lang = 'en-us';
 '89' => 'Enable Alert Moderator button in threads?<br /><span class="small">(Sends Personal Message to Moderators of a board with a link to the thread)</span>',
 '90' => 'Show Alert Moderator button in threads for Guests?',
 '381' => 'Allow users to enable e-mail notification when new PMs are received?',
+'pmspamchk'=> qq~Allow members with fewer than $numposts posts to send PMs using anti-spam measures.~,
 );
 
 %reftxt = (
@@ -1466,7 +1469,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'question_settings' => 'Anti-spam Question Settings',
 'enable_question' => 'Enable Anti-spam Questions on Registration?',
 'enable_question_send' => 'Enable Anti-spam Questions on Forgot Password?',
-'enable_question_gp' => 'Enable Anti-spam Questions for Guest posting, Guest contact Admin by Broadcast Message, Guest sending Alert Moderator message, Guest sending a topic and Guest adding event to Calendar?',
+'enable_question_gp' => 'Enable Anti-spam Questions for Guest posting, Guest contact Admin by Broadcast Message, Guest sending Alert Moderator message, Guest sending a topic, Guest adding event to Calendar, or member sending PM without the minimum number of posts?',
 'case_sensitive' => 'Case-sensitive',
 'case_sensitive_desc' => '- Check this option if you would like the answer to be case-sensitive.',
 'answer_desc' => '- To accept more than one answer separate them with a comma.<br />e.g. 8,eight',

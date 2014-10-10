@@ -893,6 +893,11 @@ $qckage    = defined $qckage ? $qckage : 31;
             depends_on => ['enable_guest_view_limit', '!guestaccess'],
         },
         {
+            description => qq~<label for="profile_int">$admin_txt{'profile_int'}</label>~,
+            input_html => qq~<input type="checkbox" name="profile_int" id="profile_int" value="1"${ischecked($profile_int)} />~,
+            name => 'profile_int',
+        },
+        {
             header => $settings_txt{'profile'},
         },
         {
@@ -1439,6 +1444,13 @@ qq~<input type="checkbox" name="nomailspammer" id="nomailspammer" value="1" ${is
             input_html => qq~<input type="text" name="numposts" id="numposts" size="5" value="$numposts" />~,
             name => 'numposts',
             validate => 'number',
+            depends_on => ['PM_level!=0'],
+        },
+        {
+            description => qq~<label for="pm_spam_chk">$imtxt{'pmspamchk'}</label>~,
+            input_html => qq~<input type="checkbox" name="pm_spam_chk" id="pm_spam_chk" value="1"${ischecked($pm_spam_chk)} />~,
+            name => 'pm_spam_chk',
+            validate => 'boolean',
             depends_on => ['PM_level!=0'],
         },
         {

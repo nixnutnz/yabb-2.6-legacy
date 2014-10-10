@@ -1668,7 +1668,7 @@ sub Post2 {
         if ( !$poll_end_min || $poll_end_min =~ /\D/xsm ) {
             $poll_end_min = q{};
         }
-        if ($poll_end_days) { $poll_end = $poll_end_days * 86_400; }
+        if ($poll_end_days) { $poll_end = $poll_end_days * 86400; }
         if ($poll_end_min) { $poll_end += $poll_end_min * 60; }
         if ($poll_end)     { $poll_end += $date; }
 

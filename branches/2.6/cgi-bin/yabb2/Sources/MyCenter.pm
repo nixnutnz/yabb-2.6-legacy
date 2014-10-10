@@ -202,7 +202,21 @@ qq~<input type="submit" name="imaction" value="$inmes_imtxt{'store'}" class="but
             doshowims();
         }
         ## posting the message or draft
-        elsif ( $action eq 'imsend2' || $FORM{'draft'} ) {
+        elsif ( $action eq 'imsend2' ) {
+            $IM_box = $inmes_txt{'148'};
+            if ( $INFO{'forward'} == 1 ) { $IM_box = $inmes_txt{'forward'}; }
+            if ( $INFO{'reply'} )        { $IM_box = $inmes_txt{'replymess'}; }
+            if ( !$staff && ${ $uid . $username }{'postcount'} < $numposts && $pm_spam_chk == 1 && $gpvalid_en ) {
+                require Sources::Decoder;
+                validation_check( $FORM{'verification'} );
+            }
+            if (!$staff && ${ $uid . $username }{'postcount'} < $numposts && $pm_spam_chk == 1 && $spam_questions_gp && -e "$langdir/$language/spam.questions" )
+            {
+                SpamQuestionCheck( $FORM{'verification_question'}, $FORM{'verification_question_id'} );
+            }
+            IMsendMessage();
+        }
+        elsif ( $FORM{'draft'} ) {
             $IM_box = $inmes_txt{'148'};
             if ( $INFO{'forward'} == 1 ) { $IM_box = $inmes_txt{'forward'}; }
             if ( $INFO{'reply'} )        { $IM_box = $inmes_txt{'replymess'}; }
@@ -821,12 +835,12 @@ qq~ <span class="small">(<a href="$scripturl?action=imcb;rid=$messageid;receiver
 #  posting the IM
 sub IMPost {
     if ( ( $INFO{'bmess'} || $FORM{'isBMess'} ) eq 'yes' ) { $sendBMess = 1; }
-    ##  if user is not a FA/gmod and has a postcount below the threshold
-    if ( !$staff && ${ $uid . $username }{'postcount'} < $numposts ) {
-        fatal_error('im_low_postcount');
-    }
     ##  guests not allowed
     if ($iamguest) { fatal_error('im_members_only'); }
+    ##  if user is not a FA/gmod and has a postcount below the threshold
+    if ( !$staff && ${ $uid . $username }{'postcount'} < $numposts && $pm_spam_chk != 1 ) {
+        fatal_error('im_low_postcount');
+    }
     my ( $mdate, $mip, $mmessage );
     ##  if the IM has a number assigned already, open the right IM file
     if ( $INFO{'id'} ne q{} ) {
@@ -1528,8 +1542,7 @@ qq~$mycenter_txt{'posts'}: <a href="$scripturl?action=myusersrecentposts;usernam
         $myprofileblock =~ s/{yabb location}/$userlocation/gsm;
         $myprofileblock =~
           s/{yabb gender}/${$uid.$username}{'gender'}/gsm;
-        $myprofileblock =~ 
-          s/{yabb zodiac}/${$uid.$username}{'zodiac'}/gsm;
+        $myprofileblock =~ s/{yabb zodiac}/${$uid.$username}{'zodiac'}/gsm;
         $myprofileblock =~ s/{yabb age}/$template_age/gsm;
         $myprofileblock =~ s/{yabb regdate}/$template_regdate/gsm;
         ################################
