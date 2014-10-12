@@ -53,11 +53,6 @@ sub SetMenu {
         }
         else {
             $button_imgurl = qq~$yyhtml_root/Templates/Forum/$usestyle~;
-            if ( !-e ("$htmldir/Templates/Forum/$usestyle/$button_icon.$imgext")
-              )
-            {
-                $button_imgurl = qq~$yyhtml_root/Templates/Forum/default~;
-            }
         }
         if   ( $key eq 'help' ) { $helpstyle = q~ cursor: help;~; }
         else                    { $helpstyle = q~ cursor: pointer;~; }
@@ -77,14 +72,8 @@ qq~<img src="$button_imgurl/$button_icon.$imgext" alt="${$alt_text}{$alt_num}" /
 qq~<span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}">${$button_text}{$text_num}</span> ~;
             }
             else {
-                $menusep_url = qq~$yyhtml_root/Templates/Forum/$usestyle~;
-                if ( !-e ("$htmldir/Templates/Forum/$usestyle/buttonsep.png")
-                )
-                {
-                    $menusep_url = qq~$yyhtml_root/Templates/Forum/default~;
-                }
                 $menusep =
-qq~<img src='$menusep_url/buttonsep.png' class='cssbutton1' alt='' title='' />~;
+qq~<img src='$yyhtml_root/Templates/Forum/$usestyle/buttonsep.png' class='cssbutton1' alt='' title='' />~;
                 $img{$key} =
 qq~<span class="buttonleft cssbutton2" title="${$alt_text}{$alt_num}" style="$helpstyle">~;
                 $img{$key} .= q~<span class="buttonright cssbutton3">~;
@@ -130,9 +119,6 @@ sub SetImage {
     }
     else {
         $button_imgurl = qq~$yyhtml_root/Templates/Forum/$usestyle~;
-        if ( !-e ("$htmldir/Templates/Forum/$usestyle/$img_name.$imgext") ) {
-            $button_imgurl = qq~$yyhtml_root/Templates/Forum/default~;
-        }
     }
     if   ( $key eq 'help' ) { $helpstyle = q~ cursor: help;~; }
     else                    { $helpstyle = q~~; }
@@ -164,14 +150,8 @@ qq~<span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$a
           qq~$button_imgurl/$button_icon.$imgext|${$button_text}{$text_num}~;
     }
     else {
-        $menusep_url = qq~$yyhtml_root/Templates/Forum/$usestyle~;
-        if ( !-e ("$htmldir/Templates/Forum/$usestyle/buttonsep.png")
-        )
-        {
-            $menusep_url = qq~$yyhtml_root/Templates/Forum/default~;
-        }
-        $menusep = qq~<img src='$menusep_url/buttonsep.png' class='cssbutton1' alt='' title='' />~;
-
+        $menusep =
+qq~<img src='$yyhtml_root/Templates/Forum/$usestyle/buttonsep.png' class='cssbutton1' alt='' title='' />~;
         if ( $img_name eq 'gtalk' ) {
             $img_out =
               qq~<span class="buttonleft cssbutton2" style="$helpstyle">~;
