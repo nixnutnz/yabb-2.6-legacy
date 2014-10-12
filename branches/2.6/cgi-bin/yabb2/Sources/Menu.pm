@@ -53,6 +53,11 @@ sub SetMenu {
         }
         else {
             $button_imgurl = qq~$yyhtml_root/Templates/Forum/$usestyle~;
+            if ( !-e ("$htmldir/Templates/Forum/$usestyle/$button_icon.$imgext")
+              )
+            {
+                $button_imgurl = qq~$yyhtml_root/Templates/Forum/default~;
+            }
         }
         if   ( $key eq 'help' ) { $helpstyle = q~ cursor: help;~; }
         else                    { $helpstyle = q~ cursor: pointer;~; }
@@ -119,6 +124,11 @@ sub SetImage {
     }
     else {
         $button_imgurl = qq~$yyhtml_root/Templates/Forum/$usestyle~;
+        if ( !-e ("$htmldir/Templates/Forum/$usestyle/$button_icon.$imgext")
+          )
+        {
+            $button_imgurl = qq~$yyhtml_root/Templates/Forum/default~;
+        }
     }
     if   ( $key eq 'help' ) { $helpstyle = q~ cursor: help;~; }
     else                    { $helpstyle = q~~; }
