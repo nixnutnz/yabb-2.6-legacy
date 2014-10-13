@@ -159,20 +159,18 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
                     $descr = ${ $uid . $curboard }{'description'};
                     $descr =~ s/\<br \/>/\n/gsm;
                     my $bicon = q{};
-                    if ( ${ $uid . $curboard }{'pic'} ) {
-                        fopen( BRDPIC, "<$boardsdir/brdpics.db" );
-                        my @brdpics = <BRDPIC>;
-                        fclose( BRDPIC);
-                        chomp @brdpics;
-                        for (@brdpics) {
-                            my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
-                            if ( $brdnm eq $curboard && $style eq $usestyle ) {
-                                if ( $brdpic =~ /\//ixsm ) {
-                                    $bicon = qq~ <img src="$brdpic" id="brd_img_resize" alt="" /> ~;
-                                }
-                                else {
-                                    $bicon = qq~<img src="$yyhtml_root/Templates/Forum/$style/Boards/$brdpic" id="brd_img_resize" alt="$boardname" />~;
-                                }
+                    fopen( BRDPIC, "<$boardsdir/brdpics.db" );
+                    my @brdpics = <BRDPIC>;
+                    fclose( BRDPIC);
+                    chomp @brdpics;
+                    for (@brdpics) {
+                        my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
+                        if ( $brdnm eq $curboard && $style eq $usestyle ) {
+                            if ( $brdpic =~ /\//ixsm ) {
+                                $bicon = qq~ <img src="$brdpic" id="brd_img_resize" alt="" /> ~;
+                            }
+                            else {
+                                $bicon = qq~<img src="$yyhtml_root/Templates/Forum/$style/Boards/$brdpic" id="brd_img_resize" alt="$boardname" />~;
                             }
                         }
                     }

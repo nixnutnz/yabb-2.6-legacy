@@ -806,7 +806,7 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
                 ToChars($boardname);
                 $INFO{'zeropost'} = 0;
                 $zero             = q{};
-                $bdpicfld = q{};
+                $bdpic = qq~$imagesdir/boards.$bdpicExt~;
                 fopen( BRDPIC, "<$boardsdir/brdpics.db" );
                 my @brdpics = <BRDPIC>;
                 fclose( BRDPIC);

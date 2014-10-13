@@ -1442,6 +1442,7 @@ qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;tod
         }
     }
     $bdpicfld = q{};
+    $bdpic = qq~$imagesdir/boards.$bdpicExt~;
     fopen( BRDPIC, "<$boardsdir/brdpics.db" );
     my @brdpics = <BRDPIC>;
     fclose( BRDPIC);
@@ -1454,10 +1455,10 @@ qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;tod
             }
             else {
                 $bdpicfld = 'Boards/';
-				if ( -e "$htmldir/Templates/Forum/$useimages/$bdpicfld/$brdpic" ) {
-					$bdpic = $brdpic;
-				}
-				else { $bdpic = qq~boards.$bdpicExt~; }
+                if ( -e "$htmldir/Templates/Forum/$useimages/$bdpicfld/$brdpic" ) {
+                    $bdpic = $brdpic;
+                }
+                else { $bdpic = qq~boards.$bdpicExt~; }
             }
         }
     }
