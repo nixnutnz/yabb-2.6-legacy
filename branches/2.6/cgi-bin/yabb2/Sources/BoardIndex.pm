@@ -807,41 +807,38 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
                 $INFO{'zeropost'} = 0;
                 $zero             = q{};
                 $bdpicfld = q{};
-                    if ( ${ $uid . $curboard }{'pic'} ne 'y' ) {
-                        if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm  ) {
-                            $bdpicExt ||= 'gif';
-                            if ($subboard_sel) {
-                                $bdpic = qq~subboards.$bdpicExt~;
-                            }
-                            else {
-                                $bdpic = qq~boards.$bdpicExt~;
-                            }
+                fopen( BRDPIC, "<$boardsdir/brdpics.db" );
+                my @brdpics = <BRDPIC>;
+                fclose( BRDPIC);
+                chomp @brdpics;
+                for (@brdpics) {
+                    my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
+                    if ( $brdnm eq $curboard && $usestyle eq $style ) {
+                        if ( $brdpic =~ /\//ism ) {
+                            $bdpic = $brdpic;
+                            last;
                         }
-                        else {$bdpic = $extern;}
+                        else {
+                            if ( -e "$htmldir/Templates/Forum/$useimages/Boards/$brdpic" ) {
+                                $bdpic = qq~$imagesdir/Boards/$brdpic~;
+                            }
+                            else { $bdpic = qq~$imagesdir/boards.$bdpicExt~; }
+                            last;
+                        }
                     }
                     else {
-                    fopen( BRDPIC, "<$boardsdir/brdpics.db" );
-                    my @brdpics = <BRDPIC>;
-                    fclose( BRDPIC);
-                    chomp @brdpics;
-                    for (@brdpics) {
-                        my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
-                        if ( $brdnm eq $curboard && $usestyle eq $style) {
-                            if ( $brdpic =~ /\//ism ) {
-                                $bdpic = $brdpic;
-                            }
-                            else {
-                                $bdpicfld = 'Boards/';
-                                $bdpic = $brdpic;
-                            }
+                        if ( $boardname =~ m/[ht|f]tp[s]{0,1}:\/\//sm  ) {
+                            $bdpic = qq~$imagesdir/$extern~;
                         }
+                        else {$bdpic = qq~$imagesdir/boards.$bdpicExt~; }
                     }
                 }
+
                 if ( ${ $uid . $curboard }{'ann'} == 1 ) {
-                    $bdpic = qq~ann.$bdpicExt~;
+                    $bdpic = qq~$imagesdir/ann.$bdpicExt~;
                 }
                 if ( ${ $uid . $curboard }{'rbin'} == 1 ) {
-                    $bdpic = qq~recycle.$bdpicExt~;
+                    $bdpic = qq~$imagesdir/recycle.$bdpicExt~;
                 }
                 $bddescr          = ${ $uid . $curboard }{'description'};
                 ToChars($bddescr);
@@ -1200,14 +1197,8 @@ qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?boa
                 else { $messagedropdown = q{}; }
 
                 $imgid = $brd_img_id{$curboard};
-                if ( $bdpic =~ /\//ism ) {
-                    $bdpic =
+                $bdpic =
 qq~ <img src="$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onload="resize_brd_images(this);" /> ~;
-                }
-                elsif ($bdpic) {
-                    $bdpic =
-qq~ <img src="$imagesdir/$bdpicfld$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onload="resize_brd_images(this);" /> ~;
-                }
 
                 if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm ) {
                     $templateblock =~ s/{yabb expandmessages}/$expandmessages/gsm;

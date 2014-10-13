@@ -1454,27 +1454,22 @@ qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;tod
         }
     }
     $bdpicfld = q{};
-    if ( ${ $uid . $currentboard }{'pic'} ne 'y' ) {
-        if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm  ) {
-            $bdpicExt ||= 'gif';
-            $bdpic = qq~boards.$bdpicExt~;
-        }
-    }
-    else {
-        fopen( BRDPIC, "<$boardsdir/brdpics.db" );
-        my @brdpics = <BRDPIC>;
-        fclose( BRDPIC);
-        chomp @brdpics;
-        for (@brdpics) {
-            my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
-            if ( $brdnm eq $currentboard && $usestyle eq $style) {
-                if ( $brdpic =~ /\//ism ) {
-                    $bdpic = $brdpic;
-                }
-                else {
-                    $bdpicfld = 'Boards/';
-                    $bdpic = $brdpic;
-                }
+    fopen( BRDPIC, "<$boardsdir/brdpics.db" );
+    my @brdpics = <BRDPIC>;
+    fclose( BRDPIC);
+    chomp @brdpics;
+    for (@brdpics) {
+        my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
+        if ( $brdnm eq $currentboard && $usestyle eq $style) {
+            if ( $brdpic =~ /\//ism ) {
+                $bdpic = $brdpic;
+            }
+            else {
+                $bdpicfld = 'Boards/';
+				if ( -e "$htmldir/Templates/Forum/$useimages/$bdpicfld/$brdpic" ) {
+					$bdpic = $brdpic;
+				}
+				else { $bdpic = qq~boards.$bdpicExt~; }
             }
         }
     }

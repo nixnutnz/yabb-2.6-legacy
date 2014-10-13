@@ -974,10 +974,10 @@ qq~                     <select multiple="multiple" name="moderatorgroups$i" id=
                     </tr><tr>
                         <td class="windowbg2"><label for="pic$i"><b>$admin_txt{'64b'}:</b></label></td>
                          <td class="windowbg2" colspan="3"><span class="small">$admin_txt{'64b3'}</span>
-                            <br />$admin_txt{'for_template'}: <select name="templt">
+                            <br />$admin_txt{'for_template'}: <select id="templt$i" name="templt$i">
                                 $drawndirs
                             </select>
-                            <br /><input type="file" name="pic$i" id="pic$i" size="35"$brdpic_addr /><input type="hidden" name="cur_pic$i" value="$brdpic_addr" />
+                            <br /><input type="file" name="pic$i" id="pic$i" size="35" /><input type="hidden" name="cur_pic$i" value="$brdpic_addr" />
                             <br /><span class="small">$admin_txt{'64b6'}</span>
                             <br /><input type="text" name="mypic$i" id="mypic$i" value="$myboardpic" size="50" maxlength="255"$brdpic /><span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('pic$i').value='';">X</span>$boardpic_value
                          </td>
@@ -1254,13 +1254,13 @@ sub AddBoards2 {
         my $newpic = q{};
         if ( $FORM{"pic$i"} ne q{} ) {
             $newpic = $FORM{"pic$i"};
-            $FORM{"pic$i"} = UploadFile("pic$i", "Templates/Forum/$FORM{'templt'}/Boards", 'png jpg jpeg gif', '250', '0');
+            $FORM{"pic$i"} = UploadFile("pic$i", qq~Templates/Forum/$FORM{"templt$i"}/Boards~, 'png jpg jpeg gif', '250', '0');
             fopen( BRDPIC, ">>$boardsdir/brdpics.db" );
-            print {BRDPIC} qq~$id|$FORM{'templt'}|$newpic\n~;
+            print {BRDPIC} qq~$id|$FORM{"templt$i"}|$newpic\n~;
             fclose(BRDPIC);
 
             if ( $FORM{"cur_pic$i"} ne q{} ) {
-                unlink qq~$htmldir/Templates/Forum/$FORM{'templt'}/Boards/$FORM{"cur_pic$i"}~;
+                unlink qq~$htmldir/Templates/Forum/$FORM{"templt$i"}/Boards/$FORM{"cur_pic$i"}~;
             }
         }
         elsif ( $FORM{"mypic$i"} ne q{} ) {
@@ -1271,7 +1271,7 @@ sub AddBoards2 {
             }
             else {
                 fopen( BRDPIC, ">>$boardsdir/brdpics.db" );
-                print {BRDPIC} qq~$id|$FORM{'templt'}|$newpic\n~;
+                print {BRDPIC} qq~$id|$FORM{"templt$i"}|$newpic\n~;
                 fclose(BRDPIC);
                 $FORM{"pic$i"} = $FORM{"mypic$i"};
             }
