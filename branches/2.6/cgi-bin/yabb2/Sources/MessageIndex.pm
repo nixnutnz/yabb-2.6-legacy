@@ -1454,29 +1454,22 @@ qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;tod
                 $bdpic = $brdpic;
             }
             else {
-                $bdpicfld = 'Boards/';
-                if ( -e "$htmldir/Templates/Forum/$useimages/$bdpicfld/$brdpic" ) {
-                    $bdpic = $brdpic;
+                if ( -e "$htmldir/Templates/Forum/$useimages/Boards/$brdpic" ) {
+                    $bdpic = qq~$imagesdir/Boards/$brdpic~;
                 }
-                else { $bdpic = qq~boards.$bdpicExt~; }
+                else { $bdpic = qq~$imagesdir/boards.$bdpicExt~; }
             }
         }
     }
     if ( ${ $uid . $currentboard }{'ann'} == 1 ) {
-        $bdpic = qq~ann.$bdpicExt~;
+        $bdpic = qq~$imagesdir/ann.$bdpicExt~;
     }
     if ( ${ $uid . $currentboard }{'rbin'} == 1 ) {
-        $bdpic = qq~recycle.$bdpicExt~;
+        $bdpic = qq~$imagesdir/recycle.$bdpicExt~;
     }
 
-    if ( $bdpic =~ /\//ism ) {
-        $bdpic =
+    $bdpic =
 qq~ <img src="$bdpic" alt="$curboardname" title="$curboardname" id="brd_img_resize" /> ~;
-    }
-    elsif ($bdpic) {
-        $bdpic =
-qq~ <img src="$imagesdir/$bdpicfld$bdpic" alt="$curboardname" title="$curboardname" id="brd_img_resize" /> ~;
-    }
 
     $messageindex_template =~ s/{yabb bdpicture}/$bdpic/gsm;
     my $tmpthreadcount = NumberFormat( ${ $uid . $currentboard }{'threadcount'} );
